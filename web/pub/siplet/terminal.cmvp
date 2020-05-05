@@ -1,5 +1,6 @@
 <HTML>
 <HEAD>
+	<META CHARSET="utf-8"/>
 <TITLE>Siplet</TITLE>
 <LINK REL=StyleSheet HREF="/siplet/term.css" TYPE="text/css">
 	<link rel="coffeemud icon" href="../images/coffeemud.ico" >

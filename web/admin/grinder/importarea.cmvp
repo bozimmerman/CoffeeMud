@@ -3,6 +3,7 @@
 @if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
 @if?!CheckAuthCode?AUTH_IMPORTROOMS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 <html>
+	<META CHARSET="utf-8"/>
 <head>
 	<!-- tell spiders to sod off -->
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">

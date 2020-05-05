@@ -2,6 +2,7 @@
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 @if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
 <html>
+	<META CHARSET="utf-8"/>
 <head>
 	<link rel="grinder icon" href="/images/grinder.ico" >
 	<title>MOB Skills and Abilities</title>

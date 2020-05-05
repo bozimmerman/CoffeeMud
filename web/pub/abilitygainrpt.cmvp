@@ -2,6 +2,7 @@
 
 <html>
 <head>
+	<META CHARSET="utf-8"/>
 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
 	<title>Ability Gain Report</title>
 	<link rel="coffeemud icon" href="images/coffeemud.ico" >

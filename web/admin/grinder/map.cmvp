@@ -4,6 +4,7 @@
 @if?!CheckAuthCode?ANYMODAREAS=true@ <BODY> @AddFile?/grinder/nopriv.cmvp@ @else@
 
 <head>
+	<META CHARSET="utf-8"/>
 	<!--map.cmvp-->
 	<!-- tell spiders to sod off -->
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">

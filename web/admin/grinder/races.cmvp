@@ -3,6 +3,7 @@
 @if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
 @if?!CheckAuthCode?AUTH_CMDQUESTS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 <html>
+	<META CHARSET="utf-8"/>
 <head>
     <link rel="grinder icon" href="/images/grinder.ico" >
     <title>Races List</title>

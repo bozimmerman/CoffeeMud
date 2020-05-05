@@ -3,6 +3,7 @@
 @if?!Authenticate@ you are not logged in @else@
 <html>
 <head>
+	<META CHARSET="utf-8"/>
 	<link rel="coffeemud icon" href="images/coffeemud.ico" >
 	<title>Email Browser</title>
 	<script language=JavaScript>

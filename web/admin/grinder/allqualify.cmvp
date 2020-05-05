@@ -4,6 +4,7 @@
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 <html>
 <head>
+	<META CHARSET="utf-8"/>
     <link rel="grinder icon" href="/images/grinder.ico" >
     <title>@RequestParameter?ALLQUALID@ All Qualify Information</title>
     <script language=JavaScript>

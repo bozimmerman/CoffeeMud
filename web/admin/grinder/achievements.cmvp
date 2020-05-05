@@ -4,6 +4,7 @@
 @if?!CheckAuthCode?AUTH_TITLES=true&||AUTH_ACHIEVEMENTS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 <html>
 <head>
+	<META CHARSET="utf-8"/>
     <link rel="grinder icon" href="/images/grinder.ico" >
     <title>Achievements / Auto-Titles</title>
     <script language=JavaScript>

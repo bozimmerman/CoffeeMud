@@ -3,6 +3,7 @@
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 <html>
 <head>
+	<META CHARSET="utf-8"/>
 	<link rel="coffeemud icon" href="images/coffeemud.ico" >
 	<title>Player Information</title>
 	<script language=JavaScript>

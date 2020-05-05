@@ -9,6 +9,7 @@
 @else@ 
 <HTML>
 <head>
+	<META CHARSET="utf-8"/>
  	<link rel="grinder icon" href="/images/grinder.ico" >
 </head>
 	<FRAMESET ROWS=80%,20% FRAMEBORDER=NO FRAMESPACING=0>

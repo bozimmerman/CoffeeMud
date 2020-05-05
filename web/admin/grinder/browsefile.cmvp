@@ -3,6 +3,7 @@
 @if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
 @if?!CheckAuthCode?ANYFILEBROWSE=true&SYSOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 <html>
+	<META CHARSET="utf-8"/>
 <head>
 	<title>File/Script Editor</title>
  	<link rel="grinder icon" href="/images/grinder.ico" >

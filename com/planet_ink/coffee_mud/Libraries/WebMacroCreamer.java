@@ -90,7 +90,11 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 
 		try
 		{
-			return ByteBuffer.wrap(virtualPageFilter(request, request.getRequestObjects(), systemStartTime, new String[] { "" }, new StringBuffer(new String(buffer.array()))).toString().getBytes());
+			return ByteBuffer.wrap(virtualPageFilter(request, request.getRequestObjects(), systemStartTime, new String[] { "" }, new StringBuffer(new String(buffer.array(),"UTF-8"))).toString().getBytes("UTF-8"));
+		}
+		catch (final UnsupportedEncodingException e)
+		{
+			throw new HTTPException(HTTPStatus.S500_INTERNAL_ERROR, e.getMessage());
 		}
 		catch (final HTTPRedirectException he)
 		{

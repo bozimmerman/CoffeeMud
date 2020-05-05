@@ -8,6 +8,7 @@
 	@AddFile?player.cmvp&AUTH=@Authenticate?AUTH@&PLAYER=@@RequestParameterEncoded?PLAYER@@ @
 @else@ 
 <HTML>
+	<META CHARSET="utf-8"/>
 <head>
  	<link rel="grinder icon" href="/images/grinder.ico" >
 </head>

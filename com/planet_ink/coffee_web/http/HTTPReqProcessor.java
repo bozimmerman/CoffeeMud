@@ -240,7 +240,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 			{
 				str.append(HTTPHeader.Common.LAST_MODIFIED.makeLine(HTTPIOHandler.DATE_FORMAT.format(response.getLastModified())));
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				str.append(HTTPHeader.Common.LAST_MODIFIED.makeLine(HTTPIOHandler.DATE_FORMAT.format(new Date(System.currentTimeMillis()))));
 			}

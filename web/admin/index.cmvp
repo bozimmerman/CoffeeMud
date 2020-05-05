@@ -2,6 +2,7 @@
 
 <html>
 <head>
+	<META CHARSET="utf-8"/>
  	<link rel="grinder icon" href="/images/grinder.ico" >
 	<!-- tell spiders to sod off -->
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">

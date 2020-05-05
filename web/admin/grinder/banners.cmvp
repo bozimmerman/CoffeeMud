@@ -3,6 +3,7 @@
 @if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
 @if?!CheckAuthCode?AUTH_BAN=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 <html>
+	<META CHARSET="utf-8"/>
 <head>
 	<title>Banned List Management</title>
  	<link rel="grinder icon" href="/images/grinder.ico" >
