@@ -656,28 +656,72 @@ public class Backend
 						break;
 					if (c == '\\')
 					{
-						if (fileBuffer[dex[0] + 1] == '\\')
+						switch(fileBuffer[dex[0] + 1])
+						{
+						case '\\':
 						{
 							buffer.append('\\');
 							dex[0]++;
+							break;
 						}
-						else
-						if (fileBuffer[dex[0] + 1] == 'n')
+						case 'n':
 						{
 							buffer.append((char) 0x0A);
 							dex[0]++;
+							break;
 						}
-						else
+						case '#':
 						{
-							int val = 0;
-							for (int i = 0; i < 4; i++)
+							dex[0]++;
+							final int count= (fileBuffer[++dex[0]] & 0xFF)-'0';
+							final byte[] bt=new byte[count];
+							for (int i = 0; i < count; i++)
 							{
-								c = (char) (fileBuffer[++dex[0]] & 0xFF);
-								if (c >= 'A')
-									val = (16 * val) + (c - 'A');
-								else
-									val = (16 * val) + (c - '0');
+								int val=0;
+								for (int bi = 0; bi < 2; bi++)
+								{
+									c = (char) (fileBuffer[++dex[0]] & 0xFF);
+									if (c >= 'A')
+										val = (16 * val) + 10 + (c - 'A');
+									else
+										val = (16 * val) + (c - '0');
+								}
+								bt[i]=(byte)(val & 0xff);
 							}
+							try
+							{
+								buffer.append(new String(bt,"UTF-8"));
+							}
+							catch (final UnsupportedEncodingException e)
+							{
+							}
+							break;
+						}
+						default:
+						{
+							final byte[] bt=new byte[2];
+							for (int i = 0; i < 2; i++)
+							{
+								int val=0;
+								for (int bi = 0; bi < 2; bi++)
+								{
+									c = (char) (fileBuffer[++dex[0]] & 0xFF);
+									if (c >= 'A')
+										val = (16 * val) + 10 + (c - 'A');
+									else
+										val = (16 * val) + (c - '0');
+								}
+								bt[i]=(byte)(val & 0xff);
+							}
+							try
+							{
+								buffer.append(new String(bt,"UTF-8"));
+							}
+							catch (final UnsupportedEncodingException e)
+							{
+							}
+							break;
+						}
 						}
 					}
 					else
@@ -759,7 +803,7 @@ public class Backend
 							increaseBuffer(ofs + size + 1);
 						for (int sub = 0; sub < s.length(); sub++)
 						{
-							char c = s.charAt(sub);
+							final char c = s.charAt(sub);
 							if (c == '\\')
 							{
 								fileBuffer[ofs] = (byte) '\\';
@@ -777,11 +821,18 @@ public class Backend
 							if (c > 255)
 							{
 								fileBuffer[ofs++] = (byte) '\\';
-								for (int i = 0; i < 4; i++)
+								final String cs="" + c;
+								final byte[] bytes=cs.getBytes("UTF-8");
+								final StringBuilder s1=new StringBuilder("#"+bytes.length);
+								for(int ib=0;ib<bytes.length;ib++)
 								{
-									fileBuffer[ofs++] = (byte) ("0123456789ABCDEF".charAt(c >>> 12));
-									c <<= 4;
+									final String bs=Integer.toHexString(bytes[ib] & 0xff).toUpperCase();
+									if(bs.length()==1)
+										s1.append("0");
+									s1.append(bs);
 								}
+								for (int i = 0; i < s1.length(); i++)
+									fileBuffer[ofs++] = (byte)s1.charAt(i);
 							}
 							else
 								fileBuffer[ofs++] = (byte) c;
