@@ -18,7 +18,7 @@
 # A data entry that is DATA_ only will apply to the previously defined expertise.
 #
 
-EXPCRAFT@x1=Wise Crafting @x2,10,XPCOST,-SKILL +Alchemy +ClanCrafting +Herbalism +Skill_SongWrite +Spell_Fabricate +Spell_Duplicate +Spell_EnchantArmor +Spell_EnchantArrows +Spell_EnchantWand +Spell_EnchantWeapon +Spell_FindFamiliar +Spell_MagicItem +Spell_Scribe +Spell_Wish +Dissertating +ScrollScribing,-MAXCLASSLEVEL +>={26+(5*@x1)},+CHA {12+@x1},0,1,0,0,0
+EXPCRAFT@x1=Wise Crafting @x2,10,XPCOST,-SKILL +Alchemy +ClanCrafting +Herbalism +Skill_SongWrite +Spell_Fabricate +Spell_Duplicate +Spell_EnchantArmor +Spell_EnchantArrows +Spell_EnchantWand +Spell_EnchantWeapon +Spell_GreaterEnchantArmor +Spell_GreaterEnchantWeapon +Spell_FindFamiliar +Spell_MagicItem +Spell_Scribe +Spell_Wish +Dissertating +ScrollScribing,-MAXCLASSLEVEL +>={26+(5*@x1)},+CHA {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to ameliorate the experience cost of certain spells and skills, especially concerning items.
 
 ARMOROPT@x1=Armor Optimizing @x2,10,LEVEL,-SKILL +Fighter_ArmorTweaking -SKILLFLAG +ARMOR_USE,-MAXCLASSLEVEL +>={28+(5*@x1)},+CON {12+@x1},0,1,0,0,0
