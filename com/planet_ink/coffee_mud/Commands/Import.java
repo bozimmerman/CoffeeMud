@@ -6900,42 +6900,59 @@ public class Import extends StdCommand
 					}
 				}
 
+				// do the resets
 				if(session!=null)
 					session.print(L("Loading objects.."));
 				final Map<String,Container> containerHash=new HashMap<String,Container>();
-				MOB M=null;
-				Room R=null;
-				for(int nrd=0;nrd<nextResetData.size();nrd++)
-					resetData.add(nextResetData.get(nrd));
-				nextResetData.clear();
-				while(resetData.size()>0)
 				{
-					if(session!=null)
-						session.print(".");
-					final String s=eatNextLine(resetData).trim();
-					if((s.startsWith("#RE"))||(s.startsWith("*"))||(s.startsWith("S")))
+					MOB M=null;
+					Room R=null;
+					Item I=null;
+					for(int nrd=0;nrd<nextResetData.size();nrd++)
+						resetData.add(nextResetData.get(nrd));
+					nextResetData.clear();
+					while(resetData.size()>0)
 					{
-					}
-					else
-					if(s.startsWith("M "))
-					{
-						final String mobID=CMParms.getCleanBit(s,2).trim();
-						final String roomID=CMParms.getCleanBit(s,4).trim();
-						R=getRoom(areaRooms,doneRooms,areaName,roomID);
-						if(R==null)
+						if(session!=null)
+							session.print(".");
+						final String s=eatNextLine(resetData).trim();
+						if((s.startsWith("#RE"))||(s.startsWith("*"))||(s.startsWith("S")))
 						{
-							if(multiArea)
-								nextResetData.add(s);
-							else
-								returnAnError(session,"Reset error (no room) on line: "+s+", area="+areaName,compileErrors,errorList);
 						}
 						else
+						if(s.startsWith("M "))
 						{
-							final List<Object> md1=CMParms.copyFlattenList(mobData);
-							final List<Object> mpd1=CMParms.copyFlattenList(mobProgData);
-							final List<Object> spd1=CMParms.copyFlattenList(specialData);
-							final List<Object> shd1=CMParms.copyFlattenList(shopData);
-							M=getMOB("#"+mobID,R,session,md1,mpd1,spd1,shd1,areaMOBS,doneMOBS,areaFileName,compileErrors,commands,errorList);
+							final String mobID=CMParms.getCleanBit(s,2).trim();
+							final String roomID=CMParms.getCleanBit(s,4).trim();
+							R=getRoom(areaRooms,doneRooms,areaName,roomID);
+							if(R==null)
+							{
+								if(multiArea)
+									nextResetData.add(s);
+								else
+									returnAnError(session,"Reset error (no room) on line: "+s+", area="+areaName,compileErrors,errorList);
+							}
+							else
+							{
+								final List<Object> md1=CMParms.copyFlattenList(mobData);
+								final List<Object> mpd1=CMParms.copyFlattenList(mobProgData);
+								final List<Object> spd1=CMParms.copyFlattenList(specialData);
+								final List<Object> shd1=CMParms.copyFlattenList(shopData);
+								M=getMOB("#"+mobID,R,session,md1,mpd1,spd1,shd1,areaMOBS,doneMOBS,areaFileName,compileErrors,commands,errorList);
+								if(M==null)
+								{
+									if(multiArea)
+										nextResetData.add(s);
+									else
+										returnAnError(session,"Reset error (no mob) on line: "+s+", area="+areaName,compileErrors,errorList);
+								}
+								else
+									M.bringToLife(R,true);
+							}
+						}
+						else
+						if(s.startsWith("G "))
+						{
 							if(M==null)
 							{
 								if(multiArea)
@@ -6944,204 +6961,227 @@ public class Import extends StdCommand
 									returnAnError(session,"Reset error (no mob) on line: "+s+", area="+areaName,compileErrors,errorList);
 							}
 							else
-								M.bringToLife(R,true);
-						}
-					}
-					else
-					if(s.startsWith("G "))
-					{
-						if(M==null)
-						{
-							if(multiArea)
-								nextResetData.add(s);
-							else
-								returnAnError(session,"Reset error (no mob) on line: "+s+", area="+areaName,compileErrors,errorList);
-						}
-						else
-						{
-							final String itemID=CMParms.getCleanBit(s,2).trim();
-							final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenList(objectData),CMParms.copyFlattenList(objProgData),
-												areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands,errorList);
-							if(I==null)
 							{
-								if(multiArea)
-									nextResetData.add(s);
-								else
-									returnAnError(session,"Reset error (no item) on line: "+s+", area="+areaName,compileErrors,errorList);
-							}
-							else
-							{
-								I.recoverPhyStats();
-								if(M instanceof ShopKeeper)
+								final String itemID=CMParms.getCleanBit(s,2).trim();
+								I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenList(objectData),CMParms.copyFlattenList(objProgData),
+										  areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands,errorList);
+								if(I==null)
 								{
-									if(I.basePhyStats().level()<1)
-									{
-										I.basePhyStats().setLevel(1);
-										I.recoverPhyStats();
-									}
-									int num=CMath.s_int(CMParms.getCleanBit(s,3).trim());
-									if(num<0)
-										num=100;
-									final CoffeeShop shop=(M instanceof Librarian)?((Librarian)M).getBaseLibrary():((ShopKeeper)M).getShop();
-									shop.addStoreInventory(I,num,-1);
-									if((I instanceof Light)&&(!shop.doIHaveThisInStock("OilFlask",null)))
-										shop.addStoreInventory(CMClass.getBasicItem("OilFlask"),num*2,-1);
-									else
-									if(((I.ID().equals("GenReadable"))
-									||(I instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap))
-									&&(!shop.doIHaveThisInStock("Parchment",null)))
-									{
-										((ShopKeeper)M).setWhatIsSoldMask(0);
-										((ShopKeeper)M).addSoldType(ShopKeeper.DEAL_INVENTORYONLY);
-										shop.addStoreInventory(CMClass.getBasicItem("Parchment"),num,-1);
-										final Item journal2=CMClass.getBasicItem("GenJournal");
-										journal2.setName(L("the adventurers journal"));
-										journal2.setBaseValue(250);
-										journal2.recoverPhyStats();
-										journal2.text();
-										shop.addStoreInventory(journal2,num,-1);
-									}
-									else
-									if(((ShopKeeper)M).isSold(ShopKeeper.DEAL_WEAPONS))
-									{
-										final Item arrows=CMClass.getBasicItem("GenAmmunition");
-										((Ammunition)arrows).setAmmunitionType("arrows");
-										arrows.setName(L("a pack of 20 arrows"));
-										((Ammunition)arrows).setAmmoRemaining(20);
-										arrows.setBaseValue(50);
-										arrows.setDescription(L("They are sturdy and wooden, but probably not much use without a bow."));
-										arrows.setDisplayText(L("Some arrows have been left here."));
-										arrows.recoverPhyStats();
-										arrows.text();
-										shop.addStoreInventory(arrows,num,-1);
-									}
-								}
-								else
-								{
-									if(I.basePhyStats().level()<1)
-									{
-										I.basePhyStats().setLevel(M.basePhyStats().level());
-										I.recoverPhyStats();
-									}
-									M.addItem(I);
-								}
-								I.recoverPhyStats();
-								M.recoverCharStats();
-								M.recoverPhyStats();
-								M.recoverMaxState();
-								M.text();
-								if(I instanceof Container)
-									containerHash.put(itemID,(Container)I);
-							}
-						}
-					}
-					else
-					if(s.startsWith("EC "))
-					{
-						String roomID=CMParms.getCleanBit(s,1).trim();
-						final String mobID=CMParms.getCleanBit(s,2).trim();
-						final int x=roomID.lastIndexOf('#');
-						if(x>=0)
-							roomID=roomID.substring(x);
-						final Room R2=getRoom(areaRooms,doneRooms,areaName,roomID);
-						MOB M2=null;
-						if(R2!=null)
-							M2=R2.fetchInhabitant(mobID);
-						if((R2==null)||(M2==null))
-						{
-							if(multiArea)
-								nextResetData.add(s);
-							else
-								returnAnError(session,"Reset error (no mob) on line: "+s+", area="+areaName,compileErrors,errorList);
-						}
-						else
-						{
-							final String itemID=CMParms.getCleanBit(s,5).trim();
-							final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenList(objectData),CMParms.copyFlattenList(objProgData),
-													areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands,errorList);
-							if(I==null)
-							{
-								if(multiArea)
-									nextResetData.add(s);
-								else
-									returnAnError(session,"Reset error (no item) on line: "+s+", area="+areaName,compileErrors,errorList);
-							}
-							else
-							{
-								if(I.basePhyStats().level()<1)
-									I.basePhyStats().setLevel(M2.basePhyStats().level());
-								M2.addItem(I);
-								I.wearIfPossible(M2);
-								I.recoverPhyStats();
-								M2.recoverCharStats();
-								M2.recoverPhyStats();
-								M2.recoverMaxState();
-								M2.text();
-								if(I instanceof Container)
-									containerHash.put(itemID,(Container)I);
-							}
-						}
-					}
-					else
-					if(s.startsWith("E "))
-					{
-						if(M==null)
-						{
-							if(multiArea)
-								nextResetData.add(s);
-							else
-							returnAnError(session,"Reset error (no mob) on line: "+s+", area="+areaName,compileErrors,errorList);
-						}
-						else
-						{
-							final String itemID=CMParms.getCleanBit(s,2).trim();
-							final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenList(objectData),CMParms.copyFlattenList(objProgData),
-													areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands,errorList);
-							if(I==null)
-							{
-								if(multiArea)
-								{
-									if(M.location()!=null)
-										nextResetData.add("EC '"+M.location().roomID()+"' '"+M.Name()+"' "+s);
-									else
+									if(multiArea)
 										nextResetData.add(s);
+									else
+										returnAnError(session,"Reset error (no item) on line: "+s+", area="+areaName,compileErrors,errorList);
 								}
 								else
-									returnAnError(session,"Reset error (no item) on line: "+s+", area="+areaName,compileErrors,errorList);
+								{
+									I.recoverPhyStats();
+									if(M instanceof ShopKeeper)
+									{
+										if(I.basePhyStats().level()<1)
+										{
+											I.basePhyStats().setLevel(1);
+											I.recoverPhyStats();
+										}
+										int num=CMath.s_int(CMParms.getCleanBit(s,3).trim());
+										if(num<0)
+											num=100;
+										final CoffeeShop shop=(M instanceof Librarian)?((Librarian)M).getBaseLibrary():((ShopKeeper)M).getShop();
+										shop.addStoreInventory(I,num,-1);
+										if((I instanceof Light)&&(!shop.doIHaveThisInStock("OilFlask",null)))
+											shop.addStoreInventory(CMClass.getBasicItem("OilFlask"),num*2,-1);
+										else
+										if(((I.ID().equals("GenReadable"))
+										||(I instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap))
+										&&(!shop.doIHaveThisInStock("Parchment",null)))
+										{
+											((ShopKeeper)M).setWhatIsSoldMask(0);
+											((ShopKeeper)M).addSoldType(ShopKeeper.DEAL_INVENTORYONLY);
+											shop.addStoreInventory(CMClass.getBasicItem("Parchment"),num,-1);
+											final Item journal2=CMClass.getBasicItem("GenJournal");
+											journal2.setName(L("the adventurers journal"));
+											journal2.setBaseValue(250);
+											journal2.recoverPhyStats();
+											journal2.text();
+											shop.addStoreInventory(journal2,num,-1);
+										}
+										else
+										if(((ShopKeeper)M).isSold(ShopKeeper.DEAL_WEAPONS))
+										{
+											final Item arrows=CMClass.getBasicItem("GenAmmunition");
+											((Ammunition)arrows).setAmmunitionType("arrows");
+											arrows.setName(L("a pack of 20 arrows"));
+											((Ammunition)arrows).setAmmoRemaining(20);
+											arrows.setBaseValue(50);
+											arrows.setDescription(L("They are sturdy and wooden, but probably not much use without a bow."));
+											arrows.setDisplayText(L("Some arrows have been left here."));
+											arrows.recoverPhyStats();
+											arrows.text();
+											shop.addStoreInventory(arrows,num,-1);
+										}
+									}
+									else
+									{
+										if(I.basePhyStats().level()<1)
+										{
+											I.basePhyStats().setLevel(M.basePhyStats().level());
+											I.recoverPhyStats();
+										}
+										M.addItem(I);
+									}
+									I.recoverPhyStats();
+									M.recoverCharStats();
+									M.recoverPhyStats();
+									M.recoverMaxState();
+									M.text();
+									if(I instanceof Container)
+										containerHash.put(itemID,(Container)I);
+								}
+							}
+						}
+						else
+						if(s.startsWith("EC "))
+						{
+							String roomID=CMParms.getCleanBit(s,1).trim();
+							final String mobID=CMParms.getCleanBit(s,2).trim();
+							final int x=roomID.lastIndexOf('#');
+							if(x>=0)
+								roomID=roomID.substring(x);
+							final Room R2=getRoom(areaRooms,doneRooms,areaName,roomID);
+							MOB M2=null;
+							if(R2!=null)
+								M2=R2.fetchInhabitant(mobID);
+							if((R2==null)||(M2==null))
+							{
+								if(multiArea)
+									nextResetData.add(s);
+								else
+									returnAnError(session,"Reset error (no mob) on line: "+s+", area="+areaName,compileErrors,errorList);
 							}
 							else
 							{
-								if(I.basePhyStats().level()<1)
-									I.basePhyStats().setLevel(M.basePhyStats().level());
-								M.addItem(I);
-								I.wearIfPossible(M);
-								I.recoverPhyStats();
-								M.recoverCharStats();
-								M.recoverPhyStats();
-								M.recoverMaxState();
-								M.text();
-								if(I instanceof Container)
-									containerHash.put(itemID,(Container)I);
+								final String itemID=CMParms.getCleanBit(s,5).trim();
+								I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenList(objectData),CMParms.copyFlattenList(objProgData),
+										  areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands,errorList);
+								if(I==null)
+								{
+									if(multiArea)
+										nextResetData.add(s);
+									else
+										returnAnError(session,"Reset error (no item) on line: "+s+", area="+areaName,compileErrors,errorList);
+								}
+								else
+								{
+									if(I.basePhyStats().level()<1)
+										I.basePhyStats().setLevel(M2.basePhyStats().level());
+									M2.addItem(I);
+									I.wearIfPossible(M2);
+									I.recoverPhyStats();
+									M2.recoverCharStats();
+									M2.recoverPhyStats();
+									M2.recoverMaxState();
+									M2.text();
+									if(I instanceof Container)
+										containerHash.put(itemID,(Container)I);
+								}
 							}
 						}
-					}
-					else
-					if(s.startsWith("O "))
-					{
-						final String itemID=CMParms.getCleanBit(s,2).trim();
-						final String roomID=CMParms.getCleanBit(s,4).trim();
-						R=getRoom(areaRooms,doneRooms,areaName,roomID);
-						if(R==null)
+						else
+						if(s.startsWith("E "))
 						{
-							if(multiArea)
-								nextResetData.add(s);
+							if(M==null)
+							{
+								if(multiArea)
+									nextResetData.add(s);
+								else
+								returnAnError(session,"Reset error (no mob) on line: "+s+", area="+areaName,compileErrors,errorList);
+							}
 							else
-								returnAnError(session,"Reset error (no room) on line: "+s+"/"+roomID+"/"+roomID.length()+", area="+areaName,compileErrors,errorList);
+							{
+								final String itemID=CMParms.getCleanBit(s,2).trim();
+								I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenList(objectData),CMParms.copyFlattenList(objProgData),
+										  areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands,errorList);
+								if(I==null)
+								{
+									if(multiArea)
+									{
+										if(M.location()!=null)
+											nextResetData.add("EC '"+M.location().roomID()+"' '"+M.Name()+"' "+s);
+										else
+											nextResetData.add(s);
+									}
+									else
+										returnAnError(session,"Reset error (no item) on line: "+s+", area="+areaName,compileErrors,errorList);
+								}
+								else
+								{
+									if(I.basePhyStats().level()<1)
+										I.basePhyStats().setLevel(M.basePhyStats().level());
+									M.addItem(I);
+									I.wearIfPossible(M);
+									I.recoverPhyStats();
+									M.recoverCharStats();
+									M.recoverPhyStats();
+									M.recoverMaxState();
+									M.text();
+									if(I instanceof Container)
+										containerHash.put(itemID,(Container)I);
+								}
+							}
 						}
 						else
+						if(s.startsWith("O "))
 						{
-							final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenList(objectData),CMParms.copyFlattenList(objProgData),
-												areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands,errorList);
+							final String itemID=CMParms.getCleanBit(s,2).trim();
+							final String roomID=CMParms.getCleanBit(s,4).trim();
+							R=getRoom(areaRooms,doneRooms,areaName,roomID);
+							if(R==null)
+							{
+								if(multiArea)
+									nextResetData.add(s);
+								else
+									returnAnError(session,"Reset error (no room) on line: "+s+"/"+roomID+"/"+roomID.length()+", area="+areaName,compileErrors,errorList);
+							}
+							else
+							{
+								I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenList(objectData),CMParms.copyFlattenList(objProgData),
+										  areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands,errorList);
+								if(I==null)
+								{
+									if(multiArea)
+										nextResetData.add(s);
+									else
+										returnAnError(session,"Reset error (no item) on line: "+s+", area="+areaName,compileErrors,errorList);
+								}
+								else
+								{
+									if(I.basePhyStats().level()<1)
+										I.basePhyStats().setLevel(1);
+									R.addItem(I);
+									if(CMLib.flags().isGettable(I))
+									{
+										final int rejuv=(int)Math.round(CMath.div((long)60000,CMProps.getTickMillis())*4.0);
+										I.basePhyStats().setRejuv(rejuv*I.basePhyStats().level());
+									}
+									I.recoverPhyStats();
+									if(I instanceof Container)
+									{
+										containerHash.remove(itemID);
+										containerHash.put(itemID,(Container)I);
+									}
+								}
+							}
+						}
+						else
+						if(s.startsWith("P "))
+						{
+							final String itemID=CMParms.getCleanBit(s,2).trim();
+							final Item oldI = I;
+							final String containerID=CMParms.getCleanBit(s,4).trim();
+							I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenList(objectData),CMParms.copyFlattenList(objProgData),
+									  areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands,errorList);
+							Container C=containerHash.get(containerID);
+							if((C==null)&&(containerID.equals("0")&&(oldI instanceof Container)))
+								C=(Container)oldI;
 							if(I==null)
 							{
 								if(multiArea)
@@ -7150,203 +7190,172 @@ public class Import extends StdCommand
 									returnAnError(session,"Reset error (no item) on line: "+s+", area="+areaName,compileErrors,errorList);
 							}
 							else
+							if(C==null)
 							{
+								if(multiArea)
+									nextResetData.add(s);
+								else
+									returnAnError(session,"Reset error (no container) on line: "+s+", area="+areaName,compileErrors,errorList);
+							}
+							else
+							if(C.owner()==null)
+							{
+								if(multiArea)
+									nextResetData.add(s);
+								else
+									returnAnError(session,"Reset error (no container owner) on line: "+s+", area="+areaName,compileErrors,errorList);
+							}
+							else
+							if(C.owner() instanceof Room)
+							{
+								final Room RR=(Room)C.owner();
 								if(I.basePhyStats().level()<1)
 									I.basePhyStats().setLevel(1);
-								R.addItem(I);
+								RR.addItem(I);
+								I.setContainer(C);
 								if(CMLib.flags().isGettable(I))
-								{
-									final int rejuv=(int)Math.round(CMath.div((long)60000,CMProps.getTickMillis())*4.0);
-									I.basePhyStats().setRejuv(rejuv*I.basePhyStats().level());
-								}
+									I.basePhyStats().setRejuv(1000);
 								I.recoverPhyStats();
 								if(I instanceof Container)
-								{
-									containerHash.remove(itemID);
 									containerHash.put(itemID,(Container)I);
-								}
+							}
+							else
+							if(C.owner() instanceof MOB)
+							{
+								final MOB MM=(MOB)C.owner();
+								if(I.basePhyStats().level()<1)
+									I.basePhyStats().setLevel(MM.basePhyStats().level());
+								MM.addItem(I);
+								I.setContainer(C);
+								MM.text();
+								I.recoverPhyStats();
+								if(I instanceof Container)
+									containerHash.put(itemID,(Container)I);
 							}
 						}
-					}
-					else
-					if(s.startsWith("P "))
-					{
-						final String itemID=CMParms.getCleanBit(s,2).trim();
-						final String containerID=CMParms.getCleanBit(s,4).trim();
-						final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenList(objectData),CMParms.copyFlattenList(objProgData),
-												areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands,errorList);
-						final Container C=containerHash.get(containerID);
-						if(I==null)
-						{
-							if(multiArea)
-								nextResetData.add(s);
-							else
-								returnAnError(session,"Reset error (no item) on line: "+s+", area="+areaName,compileErrors,errorList);
-						}
 						else
-						if(C==null)
+						if(s.startsWith("D "))
 						{
-							if(multiArea)
-								nextResetData.add(s);
-							else
-								returnAnError(session,"Reset error (no container) on line: "+s+", area="+areaName,compileErrors,errorList);
-						}
-						else
-						if(C.owner()==null)
-						{
-							if(multiArea)
-								nextResetData.add(s);
-							else
-								returnAnError(session,"Reset error (no container owner) on line: "+s+", area="+areaName,compileErrors,errorList);
-						}
-						else
-						if(C.owner() instanceof Room)
-						{
-							final Room RR=(Room)C.owner();
-							if(I.basePhyStats().level()<1)
-								I.basePhyStats().setLevel(1);
-							RR.addItem(I);
-							I.setContainer(C);
-							if(CMLib.flags().isGettable(I))
-								I.basePhyStats().setRejuv(1000);
-							I.recoverPhyStats();
-							if(I instanceof Container)
-								containerHash.put(itemID,(Container)I);
-						}
-						else
-						if(C.owner() instanceof MOB)
-						{
-							final MOB MM=(MOB)C.owner();
-							if(I.basePhyStats().level()<1)
-								I.basePhyStats().setLevel(MM.basePhyStats().level());
-							MM.addItem(I);
-							I.setContainer(C);
-							MM.text();
-							I.recoverPhyStats();
-							if(I instanceof Container)
-								containerHash.put(itemID,(Container)I);
-						}
-					}
-					else
-					if(s.startsWith("D "))
-					{
-						final String roomID=CMParms.getCleanBit(s,2).trim();
-						int dirCode=(int)getBitMask(s,3);
-						R=getRoom(areaRooms,doneRooms,areaName,roomID);
-						if(R==null)
-						{
-							if(multiArea)
-								nextResetData.add(s);
-							else
-								returnAnError(session,"Reset error (no room) on line: "+s+", area="+areaName,compileErrors,errorList);
-						}
-						else
-						{
-							switch(dirCode)
+							final String roomID=CMParms.getCleanBit(s,2).trim();
+							int dirCode=(int)getBitMask(s,3);
+							R=getRoom(areaRooms,doneRooms,areaName,roomID);
+							if(R==null)
 							{
-							case 0:
-								dirCode = Directions.NORTH;
-								break;
-							case 1:
-								dirCode = Directions.EAST;
-								break;
-							case 2:
-								dirCode = Directions.SOUTH;
-								break;
-							case 3:
-								dirCode = Directions.WEST;
-								break;
-							case 4:
-								dirCode = Directions.UP;
-								break;
-							case 5:
-								dirCode = Directions.DOWN;
-								break;
-							case 6:
-							case 7:
-							case 8:
-							case 9:
-								for (int d = Directions.NUM_DIRECTIONS() - 1; d >= 0; d--)
-								{
-									if ((R.getRawExit(d) != null) && (!R.getRawExit(d).hasADoor()))
-									{
-										dirCode = d;
-										break;
-									}
-								}
-								break;
-							case 10:
-								dirCode = Directions.GATE;
-								break;
-							default:
-								returnAnError(session,"Room: "+R.roomID()+", Unknown direction code: "+dirCode+" (not so bad at this point, it was probably aborted earlier"
-											+ ", area="+areaName,compileErrors,errorList);
-							}
-							if(dirCode<Directions.NUM_DIRECTIONS())
-							{
-								final Exit E=R.getRawExit(dirCode);
-								if(E==null)
-									returnAnError(session,"Room: "+R.roomID()+", Unknown exit in dir: "+dirCode+" very confusing!, area="+areaName,compileErrors,errorList);
+								if(multiArea)
+									nextResetData.add(s);
 								else
+									returnAnError(session,"Reset error (no room) on line: "+s+", area="+areaName,compileErrors,errorList);
+							}
+							else
+							{
+								switch(dirCode)
 								{
-									final int lockBit=(int)getBitMask(s,4);
-									boolean HasDoor=E.hasADoor();
-									final boolean HasLock=E.hasALock();
-									boolean DefaultsClosed=E.defaultsClosed();
-									boolean DefaultsLocked=E.defaultsLocked();
-									boolean Open=E.isOpen();
-									boolean Locked=E.isLocked();
-									switch(lockBit)
+								case 0:
+									dirCode = Directions.NORTH;
+									break;
+								case 1:
+									dirCode = Directions.EAST;
+									break;
+								case 2:
+									dirCode = Directions.SOUTH;
+									break;
+								case 3:
+									dirCode = Directions.WEST;
+									break;
+								case 4:
+									dirCode = Directions.UP;
+									break;
+								case 5:
+									dirCode = Directions.DOWN;
+									break;
+								case 6:
+								case 7:
+								case 8:
+								case 9:
+									for (int d = Directions.NUM_DIRECTIONS() - 1; d >= 0; d--)
 									{
-									case 0:
-										HasDoor=true;
-										Locked=false;
-										DefaultsLocked=false;
-										Open=true;
-										DefaultsClosed=false;
-										break;
-									case 1:
-										HasDoor=true;
-										Locked=false;
-										DefaultsLocked=false;
-										Open=false;
-										DefaultsClosed=true;
-										break;
-									case 2:
-										HasDoor=true;
-										Locked=true;
-										DefaultsLocked=true;
-										Open=false;
-										DefaultsClosed=true;
-										break;
-									default:
-										returnAnError(session,"Room: "+R.roomID()+", Unknown door code: "+lockBit+", area="+areaName,compileErrors,errorList);
-										break;
+										if ((R.getRawExit(d) != null) && (!R.getRawExit(d).hasADoor()))
+										{
+											dirCode = d;
+											break;
+										}
 									}
-									E.setDoorsNLocks(HasDoor,Open,DefaultsClosed,HasLock,Locked,DefaultsLocked);
-									if(E.hasADoor()&&E.name().equals("the ground"))
+									break;
+								case 10:
+									dirCode = Directions.GATE;
+									break;
+								default:
+									returnAnError(session,"Room: "+R.roomID()+", Unknown direction code: "+dirCode+" (not so bad at this point, it was probably aborted earlier"
+												+ ", area="+areaName,compileErrors,errorList);
+								}
+								if(dirCode<Directions.NUM_DIRECTIONS())
+								{
+									final Exit E=R.getRawExit(dirCode);
+									if(E==null)
+										returnAnError(session,"Room: "+R.roomID()+", Unknown exit in dir: "+dirCode+" very confusing!, area="+areaName,compileErrors,errorList);
+									else
 									{
-										E.setName(L("a door"));
-										E.setExitParams("door","close","open","a door, closed.");
+										final int lockBit=(int)getBitMask(s,4);
+										boolean HasDoor=E.hasADoor();
+										final boolean HasLock=E.hasALock();
+										boolean DefaultsClosed=E.defaultsClosed();
+										boolean DefaultsLocked=E.defaultsLocked();
+										boolean Open=E.isOpen();
+										boolean Locked=E.isLocked();
+										switch(lockBit)
+										{
+										case 0:
+											HasDoor=true;
+											Locked=false;
+											DefaultsLocked=false;
+											Open=true;
+											DefaultsClosed=false;
+											break;
+										case 1:
+											HasDoor=true;
+											Locked=false;
+											DefaultsLocked=false;
+											Open=false;
+											DefaultsClosed=true;
+											break;
+										case 2:
+											HasDoor=true;
+											Locked=true;
+											DefaultsLocked=true;
+											Open=false;
+											DefaultsClosed=true;
+											break;
+										default:
+											returnAnError(session,"Room: "+R.roomID()+", Unknown door code: "+lockBit+", area="+areaName,compileErrors,errorList);
+											break;
+										}
+										E.setDoorsNLocks(HasDoor,Open,DefaultsClosed,HasLock,Locked,DefaultsLocked);
+										if(E.hasADoor()&&E.name().equals("the ground"))
+										{
+											E.setName(L("a door"));
+											E.setExitParams("door","close","open","a door, closed.");
+										}
 									}
 								}
 							}
 						}
+						else
+						if(s.startsWith("R "))
+						{
+							// have no idea what this is, but its not important.
+						}
+						else
+						if(s.startsWith("*"))
+						{
+							// usually a comment of some sort
+						}
+						else
+						if(s.length()>0)
+							returnAnError(session,"Reset, unknown command: "+s+", area="+areaName,compileErrors,errorList);
 					}
-					else
-					if(s.startsWith("R "))
-					{
-						// have no idea what this is, but its not important.
-					}
-					else
-					if(s.startsWith("*"))
-					{
-						// usually a comment of some sort
-					}
-					else
-					if(s.length()>0)
-						returnAnError(session,"Reset, unknown command: "+s+", area="+areaName,compileErrors,errorList);
-				}
+				} // done with resets
+
+
 				// now fix the pet shops!
 				for(final Iterator<Room> e=petShops.keySet().iterator();e.hasNext();)
 				{
