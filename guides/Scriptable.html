@@ -4603,7 +4603,7 @@ referenced using the $g and $G codes. See the MPCALLFUNC statement
 above for more information on creating functions.</p>
 <p>The callfunc function
 returns true ONLY if the FUNCTION_PROG
-includes a RETURN statement that includes a non-empty string parameter.</p>
+includes a RETURN statement that includes a non-empty string parameter which is not CANCEL.</p>
 <p>EXAMPLE:</p>
 <pre>function_prog myfunc<br />return $g<br />~<br /><br />once_prog<br />if callfunc(myfunc ASTRING)<br /> mpecho This callfunc function will always return true.<br /> mpecho This is because myfunc just returns the parameter it is given.<br /> mpecho And this callfunc is passing in a non-empty string as a parameter.<br />endif<br /><br />if !callfunc(myfunc)<br /> mpecho This callfunc function will always return false, since my parameters are empty.<br />endif<br />~<br /></pre>
 <h3><a name="clan">clan</a></h3>

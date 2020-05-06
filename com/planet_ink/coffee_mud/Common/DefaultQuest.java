@@ -215,7 +215,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			if(eval == null)
 				return false;
 			eval=eval.toLowerCase();
-			return (eval.startsWith("t")||(eval.length()==0));
+			return (!eval.equals("cancel")) && (eval.length()!=0);
 		}
 		return false;
 	}

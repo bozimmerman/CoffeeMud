@@ -3668,7 +3668,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						logError(scripted,"CALLFUNC","Unknown","Function: "+arg1);
 					else
 					if(found!=null)
-						returnable=!(found.trim().length()==0);
+					{
+						final String resp=found.trim().toLowerCase();
+						if(resp.equals("cancel"))
+							returnable=false;
+						else
+							returnable=resp.length()!=0;
+					}
 					else
 						returnable=false;
 					break;

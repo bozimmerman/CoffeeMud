@@ -293,7 +293,7 @@ FUNCTION_PROG CAN_ACCEPT
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if VAR($n $QUEST_ID_ACCEPTED == '')
-				RETURN
+				RETURN TRUE
 			endif
 		endif
 	endif
