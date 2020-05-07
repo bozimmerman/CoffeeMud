@@ -102,10 +102,11 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * mob for the caller.
 	 *
 	 * @param C the class to use.
+	 * @param R the race to use.
 	 * @param level the level of the mob
 	 * @return the filled in mob
 	 */
-	public MOB fillOutMOB(CharClass C, int level);
+	public MOB fillOutMOB(CharClass C, Race R, int level);
 
 	/**
 	 * Returns the amount of hp the given player would have being their current

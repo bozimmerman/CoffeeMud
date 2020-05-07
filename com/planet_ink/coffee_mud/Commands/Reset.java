@@ -465,7 +465,7 @@ public class Reset extends StdCommand
 
 	public boolean fixMob(MOB M, final StringBuffer recordedChanges)
 	{
-		final MOB M2 = CMLib.leveler().fillOutMOB(M.baseCharStats().getCurrentClass(),M.basePhyStats().level());
+		final MOB M2 = CMLib.leveler().fillOutMOB(M.baseCharStats().getCurrentClass(),M.baseCharStats().getMyRace(),M.basePhyStats().level());
 		if((M.basePhyStats().attackAdjustment() != M2.basePhyStats().attackAdjustment())
 		||(M.basePhyStats().armor() != M2.basePhyStats().armor())
 		||(M.basePhyStats().damage() != M2.basePhyStats().damage())

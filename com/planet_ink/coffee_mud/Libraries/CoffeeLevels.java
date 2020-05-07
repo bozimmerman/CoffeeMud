@@ -171,15 +171,26 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	}
 
 	@Override
-	public MOB fillOutMOB(final CharClass C, final int level)
+	public MOB fillOutMOB(final CharClass C, final Race R, final int level)
 	{
 		final MOB mob=CMClass.getFactoryMOB();
-		mob.baseCharStats().setCurrentClass(C);
-		mob.charStats().setCurrentClass(C);
+		if(C!=null)
+		{
+			mob.baseCharStats().setCurrentClass(C);
+			mob.charStats().setCurrentClass(C);
+		}
+		if(R!=null)
+		{
+			mob.baseCharStats().setMyRace(R);
+			mob.charStats().setMyRace(R);
+		}
 		mob.baseCharStats().setCurrentClassLevel(level);
 		mob.charStats().setCurrentClassLevel(level);
 		mob.basePhyStats().setLevel(level);
 		mob.phyStats().setLevel(level);
+		mob.recoverCharStats();
+		mob.recoverPhyStats();
+		mob.recoverMaxState();
 		fillOutMOB(mob,level);
 		return mob;
 	}
