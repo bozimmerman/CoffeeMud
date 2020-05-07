@@ -89,10 +89,12 @@
 	</TD>
 	<TD>
 		@if?CheckReqParm?!ROOM=@
+			@AddRequestParameter?ROOM=@
 			<SCRIPT LANGUAGE=JavaScript>
 			<!--
 				var w;
 				var room =document.RESOURCES.ROOM.value;
+				document.RESOURCES.ROOM.value='';
 				// use @RequestParameter?ROOM@ for auto-open
 				if(room != '')
 				{
