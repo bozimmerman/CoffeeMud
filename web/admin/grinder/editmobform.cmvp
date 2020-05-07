@@ -102,18 +102,20 @@
 		function ChangedClass()
 		{
 			document.AREAEDIT.CHANGEDCLASS.value="true";
-			ReShow();
+			document.AREAEDIT.action='/grinder/editmobform.cmvp';
+			document.AREAEDIT.submit();
 		}
 		function ChangedLevel()
 		{
 			document.AREAEDIT.CHANGEDLEVEL.value="true";
-			ReShow();
+			document.AREAEDIT.action='/grinder/editmobform.cmvp';
+			document.AREAEDIT.submit();
 		}
 		
 		function ReShow()
 		{
 			document.AREAEDIT.action='/grinder/editmobform.cmvp';
-			document.AREAEDIT.target=properTarget;
+			//document.AREAEDIT.target=properTarget;
 			document.AREAEDIT.submit();
 		}
 		function OpenUp(file,named)

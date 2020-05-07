@@ -73,7 +73,7 @@
 		function ReShow()
 		{
 			document.AREAEDIT.action='/grinder/edititemform.cmvp';
-			document.AREAEDIT.target=properTarget;
+			//document.AREAEDIT.target=properTarget;
 			document.AREAEDIT.submit();
 		}
         function DelItem()
