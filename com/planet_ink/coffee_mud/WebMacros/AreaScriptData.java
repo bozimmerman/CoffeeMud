@@ -205,7 +205,7 @@ public class AreaScriptData extends AreaScriptNext
 			str.append(entry.key.toLowerCase().startsWith("custom")+", ");
 
 		if(parms.containsKey("ISFILE") && (entry != null))
-			str.append(!entry.key.toLowerCase().startsWith("Custom")+", ");
+			str.append(!entry.key.toLowerCase().startsWith("custom")+", ");
 
 		String strstr=str.toString();
 		if(strstr.endsWith(", "))
