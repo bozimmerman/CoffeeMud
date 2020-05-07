@@ -1139,6 +1139,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		OPPONENT_HEALTH_MAX,
 		OPPONENT_NAME,
 		OPPONENT_STRENGTH,
+		OPPONENT_RANGE,
 		WORLD_TIME,
 		ROOM,
 		LOCATION,
@@ -1228,6 +1229,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		case OPPONENT_HEALTH:
 			if((M!=null)&&(M.getVictim()!=null))
 				return Integer.valueOf(M.getVictim().curState().getHitPoints());
+			break;
+		case OPPONENT_RANGE:
+			if((M!=null)&&(M.getVictim()!=null))
+				return Integer.valueOf(M.rangeToTarget());
 			break;
 		case OPPONENT_HEALTH_MAX:
 			if((M!=null)&&(M.getVictim()!=null))
@@ -1371,6 +1376,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		case OPPONENT_HEALTH:
 			if((M!=null)&&(M.getVictim()!=null))
 				buf.write(Integer.toString(M.getVictim().curState().getHitPoints()).getBytes(Session.MSDP_CHARSET));
+			break;
+		case OPPONENT_RANGE:
+			if((M!=null)&&(M.getVictim()!=null))
+				buf.write(Integer.toString(M.rangeToTarget()).getBytes(Session.MSDP_CHARSET));
 			break;
 		case OPPONENT_HEALTH_MAX:
 			if((M!=null)&&(M.getVictim()!=null))
@@ -2273,6 +2282,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						{
 							doc.append(",");
 							doc.append("\"enemy\":\"").append(vicM.name()).append("\",");
+							doc.append("\"enemyrange\":").append(mob.rangeToTarget()).append(",");
 							doc.append("\"enemypct\":").append(Math.round((double)vicM.curState().getHitPoints()/(double)vicM.maxState().getHitPoints()*100.0));
 						}
 						doc.append("}");
