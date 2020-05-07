@@ -3252,6 +3252,9 @@ public class Import extends StdCommand
 				// ignore the above, coffeemud does it better!
 				final int numAbiles=M.numAbilities();
 				M.baseCharStats().getMyRace().startRacing(M,false);
+				final int oldWeight=M.basePhyStats().weight();
+				M.baseCharStats().getMyRace().setHeightWeight(M.basePhyStats(), (char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
+				M.basePhyStats().setWeight(oldWeight);
 				//if(CMath.isSet(off,0)) // no area killers in coffeemud
 				//if(CMath.isSet(off,1)) // no circling in coffeemud
 
