@@ -197,7 +197,7 @@ public class Spell_PlanarBurst extends Spell
 						mob.location().send(mob,msg2);
 						invoker=mob;
 
-						int damage = target.curState().getHitPoints()+10;
+						int damage = (int)Math.round(CMath.mul(target.maxState().getHitPoints(),1.2));
 
 						final int midLevel=(int)Math.round(CMath.div(adjustedLevel(mob,asLevel),2.0));
 						if(midLevel<target.phyStats().level())
