@@ -278,6 +278,7 @@ settable vars:
 		<STRING>${SELECT:name FROM $source_area}</STRING>
 	</STRING>
 
+	<STRING ID="item_level" define="item_level">$target_level</STRING>
 	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
 		<STRING>${SELECT:MED_LEVEL from $target_area}</STRING>
 	</STRING>
