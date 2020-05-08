@@ -6906,6 +6906,7 @@ public class Import extends StdCommand
 				// do the resets
 				if(session!=null)
 					session.print(L("Loading objects.."));
+				final TreeSet<String> resetsDone = new TreeSet<String>();
 				final Map<String,Container> containerHash=new HashMap<String,Container>();
 				{
 					MOB M=null;
@@ -6950,7 +6951,10 @@ public class Import extends StdCommand
 										returnAnError(session,"Reset error (no mob) on line: "+s+", area="+areaName,compileErrors,errorList);
 								}
 								else
+								{
+									resetsDone.add("M"+mobID);
 									M.bringToLife(R,true);
+								}
 							}
 						}
 						else
@@ -6977,6 +6981,7 @@ public class Import extends StdCommand
 								}
 								else
 								{
+									resetsDone.add("I"+itemID);
 									I.recoverPhyStats();
 									if(M instanceof ShopKeeper)
 									{
@@ -7074,6 +7079,7 @@ public class Import extends StdCommand
 								}
 								else
 								{
+									resetsDone.add("I"+itemID);
 									if(I.basePhyStats().level()<1)
 										I.basePhyStats().setLevel(M2.basePhyStats().level());
 									M2.addItem(I);
@@ -7117,6 +7123,7 @@ public class Import extends StdCommand
 								}
 								else
 								{
+									resetsDone.add("I"+itemID);
 									if(I.basePhyStats().level()<1)
 										I.basePhyStats().setLevel(M.basePhyStats().level());
 									M.addItem(I);
@@ -7157,6 +7164,7 @@ public class Import extends StdCommand
 								}
 								else
 								{
+									resetsDone.add("I"+itemID);
 									if(I.basePhyStats().level()<1)
 										I.basePhyStats().setLevel(1);
 									R.addItem(I);
@@ -7211,6 +7219,7 @@ public class Import extends StdCommand
 							else
 							if(C.owner() instanceof Room)
 							{
+								resetsDone.add("I"+itemID);
 								final Room RR=(Room)C.owner();
 								if(I.basePhyStats().level()<1)
 									I.basePhyStats().setLevel(1);
@@ -7225,6 +7234,7 @@ public class Import extends StdCommand
 							else
 							if(C.owner() instanceof MOB)
 							{
+								resetsDone.add("I"+itemID);
 								final MOB MM=(MOB)C.owner();
 								if(I.basePhyStats().level()<1)
 									I.basePhyStats().setLevel(MM.basePhyStats().level());
@@ -7358,6 +7368,72 @@ public class Import extends StdCommand
 					}
 				} // done with resets
 
+				// process unused stuff
+
+				final List<PhysicalAgent> unusedObj = new ArrayList<PhysicalAgent>();
+				for(final Object o : CMParms.copyFlattenList(objectData))
+				{
+					final String ikey;
+					if(!(o instanceof List))
+						continue;
+					final List<String> L=(List<String>)o;
+					if(L.size()>0)
+						ikey=L.get(0);
+					else
+						continue;
+					if((ikey.startsWith("#"))
+					&&(CMath.isNumber(ikey.substring(1)))
+					&&(!resetsDone.contains("I"+ikey.substring(1))))
+					{
+						final Item I=getItem(ikey,session,areaName,CMParms.copyFlattenList(objectData),CMParms.copyFlattenList(objProgData),
+											 areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands,errorList);
+						if(I!=null)
+							unusedObj.add(I);
+					}
+				}
+				for(final Object o : CMParms.copyFlattenList(mobData))
+				{
+					final String ikey;
+					if(!(o instanceof List))
+						continue;
+					final List<String> L=(List<String>)o;
+					if(L.size()>0)
+						ikey=L.get(0);
+					else
+						continue;
+					if((ikey.startsWith("#"))
+					&&(CMath.isNumber(ikey.substring(1)))
+					&&(!resetsDone.contains("M"+ikey.substring(1))))
+					{
+						final List<Object> md1=CMParms.copyFlattenList(mobData);
+						final List<Object> mpd1=CMParms.copyFlattenList(mobProgData);
+						final List<Object> spd1=CMParms.copyFlattenList(specialData);
+						final List<Object> shd1=CMParms.copyFlattenList(shopData);
+						final MOB M=getMOB("#"+ikey,null,session,md1,mpd1,spd1,shd1,areaMOBS,doneMOBS,areaFileName,compileErrors,commands,errorList);
+						if(M!=null)
+							unusedObj.add(M);
+					}
+				}
+				if((unusedObj.size()>0)&&(doneRooms.size()>0))
+				{
+					final Room doneR=doneRooms.values().iterator().next();
+					final Area A=doneR.getArea();
+					final Room newR = CMClass.getLocale("StoneRoom");
+					newR.setRoomID(A.getNewRoomID(newR,-1));
+					newR.addNonUninvokableEffect(CMClass.getAbility("Prop_Hidden"));
+					newR.setDisplayText("Unused Objects");
+					newR.setDescription("The objects here were defined by the .are file, but not used.");
+					newR.setArea(A);
+					for(final PhysicalAgent I : unusedObj)
+					{
+						if(I instanceof Item)
+							newR.addItem((Item)I);
+						else
+						if(I instanceof MOB)
+							((MOB)I).bringToLife(newR, false);
+					}
+					newR.recoverRoomStats();
+				}
 
 				// now fix the pet shops!
 				for(final Iterator<Room> e=petShops.keySet().iterator();e.hasNext();)
