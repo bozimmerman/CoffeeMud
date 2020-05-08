@@ -186,9 +186,11 @@ public class GModify extends StdCommand
 					newLevel = ((Physical)E).basePhyStats().level();
 					oldLevel=newLevel;
 					if(CMath.isInteger(value))
+					{
 						newLevel=CMath.s_int(value);
-					((Item) E).basePhyStats().setLevel(newLevel);
-					((Item) E).phyStats().setLevel(newLevel);
+						((Item) E).basePhyStats().setLevel(newLevel);
+						((Item) E).phyStats().setLevel(newLevel);
+					}
 				}
 
 				if(E instanceof Item)
