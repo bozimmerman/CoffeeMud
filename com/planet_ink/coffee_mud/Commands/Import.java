@@ -7424,6 +7424,9 @@ public class Import extends StdCommand
 					newR.setDisplayText("Unused Objects");
 					newR.setDescription("The objects here were defined by the .are file, but not used.");
 					newR.setArea(A);
+					newR.basePhyStats().setSensesMask(newR.basePhyStats().sensesMask()|PhyStats.SENSE_ROOMUNEXPLORABLE);
+					newR.basePhyStats().setSensesMask(newR.basePhyStats().sensesMask()|PhyStats.SENSE_ROOMUNMAPPABLE);
+					newR.recoverPhyStats();
 					for(final PhysicalAgent I : unusedObj)
 					{
 						if(I instanceof Item)
