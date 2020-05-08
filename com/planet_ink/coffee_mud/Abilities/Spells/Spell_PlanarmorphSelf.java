@@ -85,8 +85,8 @@ public class Spell_PlanarmorphSelf extends Spell_Planarmorph
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(givenTarget == null)
-			return super.invoke(mob, mob, auto, asLevel);
+			return super.invoke(mob, commands, mob, auto, asLevel);
 		else
-			return super.invoke(mob, givenTarget, auto, asLevel);
+			return super.invoke(mob, commands, givenTarget, auto, asLevel);
 	}
 }
