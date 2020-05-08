@@ -142,6 +142,12 @@ public interface PlanarAbility extends Ability
 	public List<String> getCategories();
 
 	/**
+	 * Get the planes that oppose this plane
+	 * @return the opposed planes
+	 */
+	public List<String> getOpposed();
+
+	/**
 	 * Get the list of behaviors and parms for this plane
 	 * @return the behavList
 	 */
@@ -275,6 +281,7 @@ public interface PlanarAbility extends Ability
 		ROOMADJS,
 		FACTIONS,
 		CATEGORY,
+		OPPOSED,
 		PROMOTIONS,
 		LIKE,
 		DESCRIPTION

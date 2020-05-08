@@ -90,5 +90,6 @@ public class Evoker extends SpecialistMage
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_LimbRack",0,"",false,SecretFlag.SECRET);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),27,"Spell_Lighthouse",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_MassDisintegrate",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Spell_PlanarBurst", 0, "", false, SecretFlag.MASKED, null, "+PLANE \"-Prime Material\"");
 	}
 }

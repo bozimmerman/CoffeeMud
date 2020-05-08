@@ -87,6 +87,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 	protected String					planarPrefix	= null;
 	protected PairList<Integer,String>	promotions		= null;
 	protected List<String>				categories		= null;
+	protected List<String>				opposed			= null;
 	protected PairList<String, String>	behavList		= null;
 	protected PairList<String, String>	reffectList		= null;
 	protected PairList<String, String>	factionList		= null;
@@ -206,6 +207,15 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 	}
 
 	/**
+	 * @return the opposed planes
+	 */
+	@Override
+	public final List<String> getOpposed()
+	{
+		return opposed;
+	}
+
+	/**
 	 * @return the behavList
 	 */
 	@Override
@@ -303,6 +313,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 		planeVars=null;
 		promotions=null;
 		categories=null;
+		opposed=null;
 		planarPrefix=null;
 		this.planarName="";
 		this.behavList=null;
@@ -467,6 +478,11 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 				if((!planeVars.containsKey(PlanarVar.TRANSITIONAL.toString()))
 				&&(catStr.toLowerCase().indexOf("transitional")>=0))
 					planeVars.put(PlanarVar.TRANSITIONAL.toString(), "true");
+			}
+			if(planeVars.containsKey(PlanarVar.OPPOSED.toString()))
+			{
+				final String catStr=planeVars.get(PlanarVar.OPPOSED.toString());
+				this.opposed=CMParms.parseCommas(catStr, true);
 			}
 			this.recoverRate = CMath.s_int(planeVars.get(PlanarVar.RECOVERRATE.toString()));
 			this.fatigueRate = CMath.s_int(planeVars.get(PlanarVar.FATIGUERATE.toString()));

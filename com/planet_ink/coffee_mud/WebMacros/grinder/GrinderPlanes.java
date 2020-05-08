@@ -218,8 +218,17 @@ public class GrinderPlanes
 					finalStr.append(standardField(var,httpVal));
 					break;
 				case CATEGORY:
-					finalStr.append(standardField(var,httpVal));
+				{
+					final List<String> selected = CMParms.parseSpaces(httpVal,true);
+					if(httpReq.isUrlParameter(key))
+					{
+						selected.add(httpReq.getUrlParameter(key));
+						for(int i=1;httpReq.isUrlParameter(key+i);i++)
+							selected.add(CMStrings.capitalizeAllFirstLettersAndLower(httpReq.getUrlParameter(key+i)));
+					}
+					finalStr.append(standardField(var,CMParms.toListString(selected)));
 					break;
+				}
 				case DESCRIPTION:
 				{
 					httpVal=CMStrings.replaceAll(httpVal,"\n", "%0D");

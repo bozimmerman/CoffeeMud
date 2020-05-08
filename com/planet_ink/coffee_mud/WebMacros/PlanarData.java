@@ -276,6 +276,22 @@ public class PlanarData extends StdWebMacro
 							   .append(CMStrings.capitalizeAndLower(CharStats.CODES.NAME(stat)));
 						}
 						break;
+					case OPPOSED:
+					{
+						final List<String> selected = CMParms.parseSpaces(httpVal,true);
+						if(httpReq.isUrlParameter(key))
+						{
+							selected.add(httpReq.getUrlParameter(key));
+							for(int i=1;httpReq.isUrlParameter(key+i);i++)
+								selected.add(httpReq.getUrlParameter(key+i).toLowerCase());
+						}
+						for(final String pkey : planeObj.getAllPlaneKeys())
+						{
+							str.append("<OPTION VALUE=\""+CMStrings.capitalizeAllFirstLettersAndLower(pkey)+"\" "+(selected.contains(pkey.toLowerCase())?"SELECTED":"")+">")
+							   .append(CMStrings.capitalizeAllFirstLettersAndLower(pkey));
+						}
+						break;
+					}
 					case CATEGORY:
 						str.append(httpVal).append(", ");
 						break;

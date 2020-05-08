@@ -120,7 +120,6 @@ public class Spell_PlanarBanish extends Spell
 			return false;
 		}
 
-
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

@@ -114,6 +114,14 @@
         </TD>
     </TR>
     <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Opposed: </FONT></TD>
+        <TD WIDTH=75%>
+            <SELECT NAME="OPPOSED" MULTIPLE>
+            @PlanarData?OPPOSED@
+            </SELECT>
+        </TD>
+    </TR>
+    <TR>
         <TD WIDTH=25%><FONT COLOR=YELLOW>Alignment: </FONT></TD>
         <TD WIDTH=75%><INPUT TYPE=TEXT SIZE=10 NAME="ALIGNMENT" VALUE="@PlanarData?ALIGNMENT@"></TD>
     </TR>

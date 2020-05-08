@@ -9284,6 +9284,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				case CATEGORY:
 					modSet.setStat(var.name(), promptCommaList(mob, modSet.getStat(var.name()), ++showNumber, showFlag, "Category(s)", null, null, null));
 					break;
+				case OPPOSED:
+					modSet.setStat(var.name(), promptCommaList(mob, modSet.getStat(var.name()), ++showNumber, showFlag, "Opposed(s)",
+							CMParms.toListString(planeAble.getAllPlaneKeys()), null, planeAble.getAllPlaneKeys().toArray(new String[0])));
+					break;
 				case DESCRIPTION:
 					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,"Description",var.name(),true);
 					break;
