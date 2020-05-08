@@ -4,7 +4,6 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
-import com.planet_ink.coffee_mud.Areas.interfaces.Area.AreaInstanceChild;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
@@ -35,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class SubThinInstance extends StdThinInstance
+public class SubThinInstance extends StdThinInstance implements SubArea
 {
 	@Override
 	public String ID()
@@ -67,11 +66,11 @@ public class SubThinInstance extends StdThinInstance
 	}
 
 	@Override
-	protected Area getParentArea()
+	public Area getSuperArea()
 	{
 		if((parentArea!=null)&&(parentArea.get()!=null))
 			return parentArea.get();
-		final Area A=super.getParentArea();
+		final Area A=super.getSuperArea();
 		if(A!=null)
 			return A;
 		int x=Name().indexOf('_');
@@ -92,7 +91,7 @@ public class SubThinInstance extends StdThinInstance
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return emptyStats;
-		final Area parentArea=getParentArea();
+		final Area parentArea=getSuperArea();
 		final String areaName = (parentArea==null)?Name():parentArea.Name();
 		final int[] statData=(int[])Resources.getResource("STATS_"+areaName.toUpperCase());
 		if(statData!=null)
@@ -107,7 +106,7 @@ public class SubThinInstance extends StdThinInstance
 	{
 		if(instanceChildren.size()==0)
 		{
-			final Area oldArea = this.getParentArea();
+			final Area oldArea = this.getSuperArea();
 			if(oldArea == null)
 				return null;
 			properRooms=new STreeMap<String, Room>(new Area.RoomIDComparator());

@@ -36,7 +36,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdThinInstance extends StdThinArea
+public class StdThinInstance extends StdThinArea implements SubArea
 {
 	@Override
 	public String ID()
@@ -79,7 +79,8 @@ public class StdThinInstance extends StdThinArea
 		&&(!CMath.bset(parentA.flags(),Area.FLAG_INSTANCE_CHILD));
 	}
 
-	protected Area getParentArea()
+	@Override
+	public Area getSuperArea()
 	{
 		if((parentArea!=null)&&(parentArea.get()!=null))
 			return parentArea.get();
@@ -107,7 +108,7 @@ public class StdThinInstance extends StdThinArea
 		final Room existingR=super.getRoom(roomID);
 		if(((existingR==null)||(existingR.amDestroyed()))&&(roomID!=null))
 		{
-			final Area parentA=getParentArea();
+			final Area parentA=getSuperArea();
 			if(parentA==null)
 				return null;
 
@@ -546,7 +547,7 @@ public class StdThinInstance extends StdThinArea
 						msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_ACTION,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT, L("You must be at an entrance to reset the area.")));
 						return;
 					}
-					final Area A=this.getParentArea();
+					final Area A=this.getSuperArea();
 					if(A instanceof StdThinInstance)
 					{
 						final StdThinInstance parentA=(StdThinInstance)A;
@@ -600,7 +601,7 @@ public class StdThinInstance extends StdThinArea
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return emptyStats;
-		final Area parentArea=getParentArea();
+		final Area parentArea=getSuperArea();
 		final String areaName = (parentArea==null)?Name():parentArea.Name();
 		int[] statData=(int[])Resources.getResource("STATS_"+areaName.toUpperCase());
 		if(statData!=null)

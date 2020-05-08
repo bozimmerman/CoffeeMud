@@ -19,6 +19,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.lang.ref.WeakReference;
 import java.util.*;
 
 /*
@@ -95,6 +96,27 @@ public class StdArea implements Area
 	@Override
 	public void initializeClass()
 	{
+	}
+
+	/**
+	 * Class to hold a reference to a child area instance,
+	 * and the inhabitants who belong there.
+	 * @author Bo Zimmerman
+	 */
+	public static class AreaInstanceChild
+	{
+		/** List of players and their pets that belong in this instance */
+		public final List<WeakReference<MOB>> mobs;
+		/** Reference to the actual area where they go. */
+		public final Area A;
+		/** the time the instance was created */
+		public final long creationTime;
+		public AreaInstanceChild(final Area A, final List<WeakReference<MOB>> mobs)
+		{
+			this.A=A;
+			this.mobs=mobs;
+			this.creationTime = System.currentTimeMillis();
+		}
 	}
 
 	@Override

@@ -710,7 +710,9 @@ public class GenAbility extends StdAbility
 							{
 								CMLib.combat().postHealing(mob,finalTargetMOB,me,-dmg,CMMsg.MASK_ALWAYS|((OTH.intValue()<=0)?finalCastCode:OTH.intValue()),null);
 							}
-							if(CMLib.flags().isInTheGame(mob,true)&&((finalTarget==null)||CMLib.flags().isInTheGame((MOB)finalTarget,true)))
+							if(CMLib.flags().isInTheGame(mob,true)
+							&&(finalTarget != null)
+							&&((!(finalTarget instanceof MOB))||CMLib.flags().isInTheGame((MOB)finalTarget,true)))
 							{
 								final ScriptingEngine S=getScripter();
 								if((success[0])&&(S!=null))
@@ -723,7 +725,8 @@ public class GenAbility extends StdAbility
 							}
 						}
 						if(((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
-						&&(CMLib.flags().isInTheGame(mob,true)&&((finalTarget==null)||CMLib.flags().isInTheGame(finalTarget,true))))
+						&&(CMLib.flags().isInTheGame(mob,true)
+						&&((finalTarget==null)||CMLib.flags().isInTheGame(finalTarget,true))))
 						{
 							final String afterCast=(String)V(ID,V_PABL);
 							if(afterCast.length()>0)
