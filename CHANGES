@@ -28,7 +28,7 @@
  26. Grinder area editor now includes a Tree selector for Areas
  27. New Planar reactions/faction, new eliteing system for planes.  See planesofexistence.txt
  28. New achievement type: AREAVISIT
- 29. Planes of Existence can now be edited from CL and MudGrinder.
+ 29. Planes of Existence have categories, opposed plans, and can now be edited from CL and MudGrinder.
  30. New spells: Imprisonment, Planarmorph Self, Planarmorph, Improved Planarmorph, Planar Block
  31. The hit point/mana/move colors will now go yellow < 50% and red < 25%.
  32. When coming off AFK, the system will now mention any missed Tells.
