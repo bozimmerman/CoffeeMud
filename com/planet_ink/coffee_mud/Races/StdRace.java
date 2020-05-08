@@ -861,7 +861,7 @@ public class StdRace implements Race
 					break;
 				case 5:
 					naturalWeapon.setName(L("an elbow"));
-					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
+					naturalWeapon.setWeaponDamageType(Weapon.TYPE_NATURAL);
 					break;
 				case 6:
 					naturalWeapon.setName(L("a backhand"));
@@ -887,7 +887,7 @@ public class StdRace implements Race
 					break;
 				case 10:
 					naturalWeapon.setName(L("a head butt"));
-					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
+					naturalWeapon.setWeaponDamageType(Weapon.TYPE_NATURAL);
 					break;
 				}
 				naturalWeapon.setUsesRemaining(1000);

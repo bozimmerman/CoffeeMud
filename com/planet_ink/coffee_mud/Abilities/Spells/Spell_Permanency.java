@@ -112,7 +112,8 @@ public class Spell_Permanency extends Spell
 					 &&(!A.isAutoInvoked())
 					 &&(A.canBeUninvoked())
 					 &&(A instanceof StdAbility)
-					 &&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
+					 &&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+					 &&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<25))
 					{
 						theOne=(StdAbility)A;
 						break;
