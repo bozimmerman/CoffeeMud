@@ -177,6 +177,32 @@ public class GModify extends StdCommand
 			&&(E instanceof Physical))
 				((Physical)E).basePhyStats().setRejuv(CMath.s_int(value));
 			else
+			if(stat.equalsIgnoreCase("REBALANCE"))
+			{
+				int newLevel = 0;
+				int oldLevel = 0;
+				if(E instanceof Physical)
+				{
+					newLevel = ((Physical)E).basePhyStats().level();
+					oldLevel=newLevel;
+					if(CMath.isInteger(value))
+						newLevel=CMath.s_int(value);
+					((Item) E).basePhyStats().setLevel(newLevel);
+					((Item) E).phyStats().setLevel(newLevel);
+				}
+
+				if(E instanceof Item)
+					CMLib.itemBuilder().balanceItemByLevel((Item)E);
+				else
+				if(E instanceof MOB)
+					CMLib.leveler().fillOutMOB((MOB)E, ((MOB) E).basePhyStats().level());
+				if(E instanceof Physical)
+				{
+					((Item) E).basePhyStats().setLevel(oldLevel);
+					((Item) E).phyStats().setLevel(oldLevel);
+				}
+			}
+			else
 			if((stat.equalsIgnoreCase("RESOURCE"))
 			&&(E instanceof Item))
 				((Item)E).setStat("MATERIAL", value);
@@ -621,7 +647,7 @@ public class GModify extends StdCommand
 				if(F.isPreLoaded())
 					allFieldsMsg.append(F.factionID()).append(" ");
 			}
-			allFieldsMsg.append("CLASSTYPE ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT REJUV GENDER DESTROY RESOURCE MATERIALTYPE DELFACTION ");
+			allFieldsMsg.append("CLASSTYPE ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT REJUV GENDER DESTROY RESOURCE MATERIALTYPE DELFACTION REBALANCE ");
 			mob.tell(L("Valid field names are @x1",allFieldsMsg.toString()));
 			return false;
 		}
@@ -686,7 +712,8 @@ public class GModify extends StdCommand
 			}
 		}
 		allFieldsMsg.append("CLASSTYPE REJUV DESTROY ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT DELFACTION ");
-		allKnownFields.addAll(Arrays.asList(new String[]{"CLASSTYPE","REJUV","RESOURCE","MATERIALTYPE","GENDER","DESTROY","ADDABILITY","DELABILITY","ADDBEHAVIOR","DELBEHAVIOR","ADDAFFECT","DELAFFECT","DELFACTION"}));
+		allKnownFields.addAll(Arrays.asList(new String[]{"CLASSTYPE","REJUV","RESOURCE","MATERIALTYPE","GENDER","DESTROY",
+				"ADDABILITY","DELABILITY","ADDBEHAVIOR","DELBEHAVIOR","ADDAFFECT","DELAFFECT","DELFACTION","REBALANCE"}));
 
 		use=onfields;
 		final Vector<String> newSet=new Vector<String>();
