@@ -3097,7 +3097,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 							final Session session=deadMOB.session();
 							if(session!=null)
 								session.stopSession(true, true, true);
-							CMLib.players().obliteratePlayer(deadMOB,true,false);
+							CMLib.players().obliteratePlayer(deadMOB,true,CMSecurity.isDisabled(CMSecurity.DisFlag.DEATHCRY));
 							deadMOB.destroy();
 						}
 					});

@@ -161,7 +161,7 @@ public class Destroy extends StdCommand
 			for(final Enumeration<String> p=theAccount.getPlayers();p.hasMoreElements();)
 			{
 				final MOB deadMOB=CMLib.players().getLoadPlayer(p.nextElement());
-				CMLib.players().obliteratePlayer(deadMOB,true,false);
+				CMLib.players().obliteratePlayer(deadMOB,true,CMSecurity.isDisabled(CMSecurity.DisFlag.DEATHCRY));
 				mob.tell(L("The user '@x1' is no more!\n\r",CMParms.combine(commands,2)));
 				Log.sysOut("Mobs",mob.Name()+" destroyed user "+deadMOB.Name()+".");
 				deadMOB.destroy();
@@ -195,7 +195,7 @@ public class Destroy extends StdCommand
 		if(mob.session().confirm(L("This will complete OBLITERATE the user '@x1' forever.  Are you SURE?! (y/N)?",name),"N"))
 		{
 			final MOB deadMOB=CMLib.players().getLoadPlayer(name);
-			CMLib.players().obliteratePlayer(deadMOB,true,false);
+			CMLib.players().obliteratePlayer(deadMOB,true,CMSecurity.isDisabled(CMSecurity.DisFlag.DEATHCRY));
 			mob.tell(L("The user '@x1' is no more!\n\r",CMParms.combine(commands,2)));
 			Log.sysOut("Mobs",mob.Name()+" destroyed user "+deadMOB.Name()+".");
 			deadMOB.destroy();

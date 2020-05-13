@@ -2801,7 +2801,8 @@ public class CMSecurity
 		COMBATSTATS("player combat stats"),
 		MQLCACHE("parsed mql cache"),
 		ITEMGENCACHE("generated item cache"),
-		AUTOMOODS("automatic mood changes")
+		AUTOMOODS("automatic mood changes"),
+		DEATHCRY("player purge death cry")
 		;
 		private final String desc;
 

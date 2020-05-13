@@ -87,7 +87,7 @@ public class Retire extends StdCommand
 					{
 						Log.sysOut("Retire", "Retired: " + mob.Name());
 						CMLib.achievements().possiblyBumpAchievement(mob, Event.RETIRE, 1);
-						CMLib.players().obliteratePlayer(mob, true, false);
+						CMLib.players().obliteratePlayer(mob, true, CMSecurity.isDisabled(CMSecurity.DisFlag.DEATHCRY));
 						session.logout(true);
 					}
 					else
@@ -109,7 +109,7 @@ public class Retire extends StdCommand
 						{
 							Log.sysOut("Retire", "Retired: " + mob.Name() + ": " + this.input);
 							CMLib.achievements().possiblyBumpAchievement(mob, Event.RETIRE, 1);
-							CMLib.players().obliteratePlayer(mob, true, false);
+							CMLib.players().obliteratePlayer(mob, true, CMSecurity.isDisabled(CMSecurity.DisFlag.DEATHCRY));
 							session.logout(true);
 						}
 					});

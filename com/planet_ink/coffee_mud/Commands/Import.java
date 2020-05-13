@@ -5858,7 +5858,7 @@ public class Import extends StdCommand
 							if((session!=null)&&(!session.confirm(L("Player: \"@x1\" exists, obliterate first?",M.Name()),"Y")))
 								continue;
 							else
-								CMLib.players().obliteratePlayer(CMLib.players().getLoadPlayer(M.Name()),false,false);
+								CMLib.players().obliteratePlayer(CMLib.players().getLoadPlayer(M.Name()),false,CMSecurity.isDisabled(CMSecurity.DisFlag.DEATHCRY));
 						}
 						if(M.playerStats()!=null)
 							M.playerStats().setLastUpdated(System.currentTimeMillis());

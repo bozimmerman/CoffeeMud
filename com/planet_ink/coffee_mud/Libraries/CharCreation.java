@@ -2138,7 +2138,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				final MOB M=CMLib.players().getLoadPlayer(delPlayer.name());
 				if(M!=null)
 				{
-					CMLib.players().obliteratePlayer(M, true, false);
+					CMLib.players().obliteratePlayer(M, true, CMSecurity.isDisabled(CMSecurity.DisFlag.DEATHCRY));
 				}
 				acct.delPlayer(delPlayer.name());
 				session.println(L("@x1 has been deleted.",delPlayer.name()));
