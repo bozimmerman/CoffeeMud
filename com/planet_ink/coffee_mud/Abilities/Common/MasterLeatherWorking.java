@@ -568,7 +568,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			if(bundling)
 				buildingI.setBaseValue(lostValue);
 			final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
-			addSpells(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
+			addSpellsOrBehaviors(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
 			if(buildingI instanceof Wand)
 			{
 				if(foundRecipe.get(RCP_CAPACITY).trim().length()>0)

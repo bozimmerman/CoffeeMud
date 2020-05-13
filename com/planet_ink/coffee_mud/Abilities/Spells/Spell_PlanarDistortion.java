@@ -34,16 +34,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Spell_PlanarBubble extends Spell
+public class Spell_PlanarDistortion extends Spell
 {
 
 	@Override
 	public String ID()
 	{
-		return "Spell_PlanarBubble";
+		return "Spell_PlanarDistortion";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Planar Bubble");
+	private final static String localizedName = CMLib.lang().L("Planar Distortion");
 
 	@Override
 	public String name()
@@ -51,7 +51,7 @@ public class Spell_PlanarBubble extends Spell
 		return localizedName;
 	}
 
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Planar Bubble)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Planar Distortion)");
 
 	@Override
 	public String displayText()
@@ -62,13 +62,13 @@ public class Spell_PlanarBubble extends Spell
 	@Override
 	protected int canAffectCode()
 	{
-		return CAN_ROOMS;
+		return CAN_MOBS;
 	}
 
 	@Override
 	protected int canTargetCode()
 	{
-		return CAN_ROOMS;
+		return CAN_MOBS;
 	}
 
 	@Override
@@ -80,13 +80,14 @@ public class Spell_PlanarBubble extends Spell
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;
 	}
 
-	protected Room			newRoom		= null;
+	protected volatile Room	newRoom		= null;
+	protected volatile Room	lastRoom	= null;
 	protected String		planeName	= null;
+	protected PlanarAbility	planarA		= null;
 	protected volatile long	contentHash	= 0;
-	protected volatile int	oldAtmo		= 0;
 
 	protected final List<Ability> aeffects = new Vector<Ability>();
 	protected final List<Behavior> abehavs = new Vector<Behavior>();
@@ -113,41 +114,49 @@ public class Spell_PlanarBubble extends Spell
 		// undo the affects of this spell
 		if(affected==null)
 			return;
-		if(!(affected instanceof Room))
+		if(!(affected instanceof MOB))
 			return;
-		final Room room=(Room)affected;
 		if(canBeUninvoked())
-			room.showHappens(CMMsg.MSG_OK_VISUAL, L("The nature of this place returns to normal."));
+			((MOB)affected).tell(L("The nature of this place seems to return to normal."));
 		final Room R = room();
 		if(R!=null)
 			totallyClearRoom(R);
-		if(oldAtmo != 0)
-			room.setAtmosphere(oldAtmo);
 		aeffects.clear();
 		abehavs.clear();
 		super.unInvoke();
 	}
 
-	@Override
-	public void setMiscText(final String newMiscText)
+	protected PlanarAbility getPlanarAbility()
 	{
-		super.setMiscText(newMiscText);
-		if(newMiscText.length()>0)
-			this.planeName=newMiscText;
+		if(planarA!=null)
+			return planarA;
+		final PlanarAbility planarA=(PlanarAbility)CMClass.getAbility("StdPlanarAbility");
+		planarA.setPlanarName(planeName);
+		return planarA;
 	}
 
 	protected Room room()
 	{
-		if(newRoom==null)
+		if(!(affected instanceof MOB))
+			return null;
+		final Room baseRoom=((MOB)affected).location();
+		if((newRoom==null)
+		||(baseRoom!=null)&&(baseRoom!=lastRoom))
 		{
+			final PlanarAbility planarA=this.getPlanarAbility();
+			lastRoom=baseRoom;
+			if(newRoom != null)
+			{
+				totallyClearRoom(newRoom);
+				newRoom.setArea(null);
+				newRoom.setRoomID("");
+				newRoom.destroy();
+			}
 			aeffects.clear();
 			abehavs.clear();
-			if((affected instanceof Room)
+			if((affected instanceof MOB)
 			&&(planeName != null))
 			{
-				oldAtmo = ((Room)affected).getAtmosphereCode();
-				final PlanarAbility planeA=(PlanarAbility)CMClass.getAbility("StdPlanarAbility");
-				final Room baseRoom=(Room)affected;
 				newRoom=CMClass.getLocale(baseRoom.ID());
 				newRoom.setDisplayText(baseRoom.displayText());
 				newRoom.setDescription(baseRoom.description());
@@ -156,31 +165,20 @@ public class Spell_PlanarBubble extends Spell
 					newRoom.rawDoors()[d]=baseRoom.rawDoors()[d];
 					newRoom.setRawExit(d, baseRoom.getRawExit(d));
 				}
-				planeA.setPlanarName(planeName);
-				planeA.doPlanarRoomColoring(newRoom);
-				final String atmosphere = planeA.getPlaneVars().get(PlanarVar.ATMOSPHERE.toString());
+				planarA.doPlanarRoomColoring(newRoom);
+				final String atmosphere = planarA.getPlaneVars().get(PlanarVar.ATMOSPHERE.toString());
 				if((atmosphere!=null)&&(atmosphere.length()>0))
 				{
-					final int atmo=RawMaterial.CODES.FIND_IgnoreCase(atmosphere);
-					baseRoom.setAtmosphere(atmo);
 				}
-				for(final CMObject O : planeA.getAreaEffectsBehavs())
+				for(final CMObject O : planarA.getAreaEffectsBehavs())
 				{
 					if(O instanceof Ability)
 					{
-						((Ability)O).setAffectedOne(baseRoom.getArea());
-						aeffects.add((Ability)O);
 					}
 					else
-					if(O instanceof Behavior)
+					if((O instanceof Behavior)
+					&&(((Behavior)O).ID().equals("Emoter")))
 						abehavs.add((Behavior)O);
-				}
-				final String absorb = planeA.getPlaneVars().get(PlanarVar.ABSORB.toString());
-				if(absorb != null)
-				{
-					final Ability A=CMClass.getAbility("Prop_AbsorbDamage");
-					A.setMiscText(absorb);
-					aeffects.add(A);
 				}
 			}
 		}
@@ -212,8 +210,7 @@ public class Spell_PlanarBubble extends Spell
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected!=null)
-		&&(affected instanceof Room)
+		if((msg.source()==affected)
 		&&(room()!=null))
 		{
 			for(final Ability A : this.aeffects)
@@ -226,13 +223,13 @@ public class Spell_PlanarBubble extends Spell
 				if(!B.okMessage(this,msg))
 					return false;
 			}
-			if((msg.amITarget(affected))
+			if((msg.amITarget(msg.source().location()))
 			&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
 			{
 				try
 				{
-					final Room baseRoom=(Room)affected;
-					long currentHash = msg.source().hashCode();
+					final Room baseRoom=msg.source().location();
+					long currentHash = 0;
 					final Room R=room();
 					for(final Enumeration<Item> r=baseRoom.items();r.hasMoreElements();)
 					{
@@ -256,6 +253,7 @@ public class Spell_PlanarBubble extends Spell
 					}
 					if(currentHash != this.contentHash)
 					{
+						final PlanarAbility planarA=this.getPlanarAbility();
 						totallyClearRoom(R);
 						final Map<Integer,CMObject> map = new HashMap<Integer,CMObject>();
 						for(final Enumeration<Item> r=baseRoom.items();r.hasMoreElements();)
@@ -283,14 +281,26 @@ public class Spell_PlanarBubble extends Spell
 							final MOB M=m.nextElement();
 							if(M == msg.source())
 								continue;
-							final MOB wrapM;
-							if(M instanceof Rideable)
-								wrapM=CMClass.getMOB("StdRideableWrapper");
+							if(planarA.isPlanarMob(M))
+							{
+								final MOB M1=(MOB)M.copyOf();
+								CMLib.threads().deleteAllTicks(M1);
+								planarA.applyMobPrefix(M1, null);
+								M1.setVictim(M.getVictim());
+								R.addInhabitant(M1);
+								map.put(Integer.valueOf(M.hashCode()), M1);
+							}
 							else
-								wrapM=CMClass.getMOB("StdMobWrapper");
-							((CMObjectWrapper)wrapM).setWrappedObject(M);
-							R.addInhabitant(wrapM);
-							map.put(Integer.valueOf(M.hashCode()), wrapM);
+							{
+								final MOB wrapM;
+								if(M instanceof Rideable)
+									wrapM=CMClass.getMOB("StdRideableWrapper");
+								else
+									wrapM=CMClass.getMOB("StdMobWrapper");
+								((CMObjectWrapper)wrapM).setWrappedObject(M);
+								R.addInhabitant(wrapM);
+								map.put(Integer.valueOf(M.hashCode()), wrapM);
+							}
 						}
 						for(final Enumeration<Item> r=baseRoom.items();r.hasMoreElements();)
 						{
@@ -342,6 +352,15 @@ public class Spell_PlanarBubble extends Spell
 	}
 
 	@Override
+	public void setMiscText(final String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		if(newMiscText.length()>0)
+			this.planeName=newMiscText;
+		this.planarA=null;
+	}
+
+	@Override
 	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
@@ -355,62 +374,37 @@ public class Spell_PlanarBubble extends Spell
 		return super.castingQuality(mob,target);
 	}
 
+	protected String getPlaneName(final MOB mob, final List<String> commands)
+	{
+		final PlanarAbility planeA=(PlanarAbility)CMClass.getAbility("StdPlanarAbility");
+		return planeA.getAllPlaneKeys().get(CMLib.dice().roll(1, planeA.getAllPlaneKeys().size(), -1));
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		final PlanarAbility planeA=(PlanarAbility)CMClass.getAbility("StdPlanarAbility");
 
-		if((commands.size()==0)
-		&&(mob.isMonster()))
-			commands.add(planeA.getAllPlaneKeys().get(CMLib.dice().roll(1, planeA.getAllPlaneKeys().size(), -1)));
-		final String planeName = CMParms.combine(commands,0);
-		if(commands.size()==0)
-		{
-			mob.tell(L("You need to specify which plane to create a bubble of."));
-			mob.tell(L("Known planes: @x1",planeA.listOfPlanes()+L("Prime Material")));
+		final String planeName = getPlaneName(mob, commands);
+		if(planeName == null)
 			return false;
-		}
-		if(!planeA.getAllPlaneKeys().contains(planeName.toUpperCase()))
-		{
-			mob.tell(L("'@x1' is not a plane name.",planeName));
-			mob.tell(L("Known planes: @x1",planeA.listOfPlanes()+L("Prime Material")));
+
+		final MOB target=super.getTarget(mob, commands, givenTarget);
+		if(target == null)
 			return false;
-		}
-
-		final Set<MOB> grpMembers = mob.getGroupMembers(new HashSet<MOB>());
-		final Room R=mob.location();
-		for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
-		{
-			final MOB M=m.nextElement();
-			if((M!=null)
-			&&(M!=mob)
-			&&(!grpMembers.contains(M))
-			&&(!mob.mayIFight(M)))
-			{
-				mob.tell(L("This powerful magic can not be invoked around @x1.",M.Name()));
-				return false;
-			}
-		}
-
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final Physical target = mob.location();
 		final boolean success=proficiencyCheck(mob,0,auto);
-
 		if(success)
 		{
-			final CMMsg msg = CMClass.getMsg(mob, target, this, somanticCastCode(mob,target,auto), auto?"":L("^S<S-NAME> speak(s) and gesture(s) ominously!^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, somanticCastCode(mob,target,auto), auto?"":L("^S<S-NAME> gesture(s) ominously around <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The fundamental nature of this place changes..."));
-				final Spell_PlanarBubble A;
-				if(CMLib.law().doesOwnThisLand(mob,mob.location()))
-					A=(Spell_PlanarBubble)maliciousAffect(mob, target, asLevel, 0, -1);
-				else
-					A=(Spell_PlanarBubble)beneficialAffect(mob, target, asLevel, 3);
+				if(target instanceof MOB)
+					target.tell(L("The fundamental nature of this place seems to change..."));
+				final Spell_PlanarDistortion A=(Spell_PlanarDistortion)maliciousAffect(mob, target, asLevel, 0, -1);
 				if(A!=null)
 				{
 					A.planeName = planeName;
@@ -420,7 +414,7 @@ public class Spell_PlanarBubble extends Spell
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,L("<S-NAME> speak(s) and gesture(s) ominously, but the spell fizzles."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> gesture(s) ominously around <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

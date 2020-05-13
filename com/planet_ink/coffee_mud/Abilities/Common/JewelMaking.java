@@ -709,7 +709,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			//int capacity=CMath.s_int((String)foundRecipe.get(RCP_CAPACITY));
 			final int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
 			final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
-			addSpells(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
+			addSpellsOrBehaviors(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
 			if((buildingI instanceof Armor)&&(!(buildingI instanceof FalseLimb)))
 			{
 				((Armor)buildingI).basePhyStats().setArmor(0);

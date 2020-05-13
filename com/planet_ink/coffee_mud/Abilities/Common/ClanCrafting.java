@@ -499,7 +499,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		&&((buildingI.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN))
 			buildingI.setMaterial(RawMaterial.RESOURCE_PAPER);
 
-		addSpells(buildingI,spell,null,null);
+		addSpellsOrBehaviors(buildingI,spell,null,null);
 		if((buildingI instanceof Armor)&&(!(buildingI instanceof FalseLimb)))
 		{
 			((Armor)buildingI).basePhyStats().setArmor(0);

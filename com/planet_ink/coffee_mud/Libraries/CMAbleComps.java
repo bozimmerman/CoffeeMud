@@ -691,7 +691,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		{
 			return record;
 		}
-		final XVector<Ability> props=new XVector<Ability>();
+		final XVector<CMObject> props=new XVector<CMObject>();
 		record.lostProps=props;
 		while(found.size()>0)
 		{
@@ -711,6 +711,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 				&&(found.get(0) instanceof Item))
 				{
 					props.addAll(((Item)found.get(0)).effects());
+					props.addAll(((Item)found.get(0)).behaviors());
 					record.lostAmt += ((Item)found.get(0)).basePhyStats().weight();
 					record.lostValue +=((Item)found.get(0)).value();
 					((Item)found.get(0)).destroy();

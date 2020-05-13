@@ -55,7 +55,7 @@ public interface GenericEditor extends CMLibrary
 	public String modifyPlane(final MOB mob, final String planeName, final Map<String,String> planeSet, int showFlag) throws IOException;
 
 	public Room changeRoomType(Room R, Room newRoom);
-	public void spells(MOB mob, List<Ability> V, int showNumber, int showFlag, boolean inParms) throws IOException;
+	public void spellsOrBehavs(MOB mob, List<CMObject> V, int showNumber, int showFlag, boolean inParms) throws IOException;
 	public void spellsOrBehaviors(MOB mob, List<CMObject> V, int showNumber, int showFlag, boolean inParms) throws IOException;
 	public void wornLocation(MOB mob, long[] oldWornLocation, boolean[] logicalAnd, int showNumber, int showFlag) throws IOException;
 	public void wornLayer(MOB mob, short[] layerAtt, short[] clothingLayer, int showNumber, int showFlag) throws IOException;

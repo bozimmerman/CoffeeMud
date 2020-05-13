@@ -560,7 +560,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 				buildingI.setBaseValue(lostValue);
 				buildingI.basePhyStats().setWeight(woodRequired);
 			}
-			addSpells(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
+			addSpellsOrBehaviors(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
 			if(buildingI instanceof Weapon)
 			{
 				((Weapon)buildingI).setWeaponClassification(Weapon.CLASS_FLAILED);

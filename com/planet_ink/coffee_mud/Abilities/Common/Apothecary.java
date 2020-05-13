@@ -130,7 +130,7 @@ public class Apothecary extends Cooking
 					if(V.size()>RCP_BONUSSPELL)
 					{
 						final String spells=V.get(RCP_BONUSSPELL);
-						final List<Ability> spellsV=CMLib.ableParms().getCodedSpells(spells);
+						final List<CMObject> spellsV=CMLib.coffeeMaker().getCodedSpellsOrBehaviors(spells);
 						if(spellsV.size()>0)
 						{
 							final String name=V.get(RCP_FINALNAME);

@@ -548,7 +548,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 						data[0][FOUND_CODE],data[0][FOUND_SUB],data[1][FOUND_CODE],data[1][FOUND_SUB]);
 			}
 			final MaterialLibrary.DeadResourceRecord deadComps = CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
-			addSpells(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
+			addSpellsOrBehaviors(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
 			final int lostValue=autoGenerate>0?0:(deadMats.lostValue + deadComps.lostValue);
 			if(bundling)
 				buildingI.setBaseValue(lostValue);

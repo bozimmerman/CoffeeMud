@@ -234,4 +234,26 @@ public interface GenericBuilder extends CMLibrary
 	public Area copyArea(Area A, String newName, boolean setSavable);
 	public String getFactionXML(MOB mob);
 	public void setFactionFromXML(MOB mob, List<XMLTag> xml);
+
+	/**
+	 * Returns all of the given effect Abilities on the given Affectable as a semicolon delimited
+	 * string of Ability IDs.  If any of the abilities contain parameters, they come after the
+	 * ability and another semicolon.  This method can't really capture all permutations and
+	 * combinations, but, well, it seemed like a good idea at the time.
+	 * @see Affectable#effects()
+	 * @see GenericBuilder#getCodedSpellsOrBehaviors(String)
+	 * @param I the Affectable one to look at the effects of
+	 * @return the coded string of those effects
+	 */
+	public String getCodedSpellsOrBehaviors(PhysicalAgent I);
+
+	/**
+	 * Parses the coded effects available from an ability parameter column and generates
+	 * the Ability objects with any parameters of their own.
+	 * @param spells the coded ability parameter affectable effects string
+	 * @see Affectable#effects()
+	 * @see GenericBuilder#getCodedSpellsOrBehaviors(PhysicalAgent)
+	 * @return the list of ability which are the effects
+	 */
+	public List<CMObject> getCodedSpellsOrBehaviors(String spells);
 }

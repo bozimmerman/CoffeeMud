@@ -503,7 +503,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 			if(bundling)
 				buildingI.setBaseValue(lostValue);
-			addSpells(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
+			addSpellsOrBehaviors(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
 			key=null;
 
 			if((misctype.equalsIgnoreCase("statue"))

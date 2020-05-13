@@ -96,6 +96,6 @@ public interface MaterialLibrary extends CMLibrary
 		public int lostAmt=0;
 		public int resCode=-1;
 		public String subType="";
-		public List<Ability> lostProps = null;
+		public List<CMObject> lostProps = null;
 	}
 }

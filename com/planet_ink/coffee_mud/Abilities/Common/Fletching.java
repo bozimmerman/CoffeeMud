@@ -471,7 +471,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			final int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
 			if(bundling)
 				buildingI.setBaseValue(lostValue);
-			addSpells(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
+			addSpellsOrBehaviors(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
 			if(buildingI instanceof Weapon)
 			{
 				if(buildingI instanceof AmmunitionWeapon)

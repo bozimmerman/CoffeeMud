@@ -408,44 +408,62 @@ public class CraftingSkill extends GatheringSkill
 		return false;
 	}
 
-	protected void addSpells(final Physical P, String spells, final List<Ability> otherSpells1, final List<Ability> otherSpells2)
+	protected void addOtherThings(final PhysicalAgent P, final List<CMObject> otherThings)
+	{
+		if(otherThings == null)
+			return;
+
+		for(final CMObject O : otherThings)
+		{
+			if(O instanceof Ability)
+			{
+				final Ability A=(Ability)O;
+				if((!A.canBeUninvoked())
+				&&(P.fetchEffect(A.ID())==null))
+				{
+					final Ability A2=(Ability)A.copyOf();
+					P.addNonUninvokableEffect(A2);
+				}
+			}
+			else
+			if(O instanceof Behavior)
+			{
+				final Behavior B=(Behavior)O;
+				if(P.fetchBehavior(B.ID())==null)
+				{
+					final Behavior B2=(Behavior)B.copyOf();
+					B2.setParms(B.getParms());
+					P.addBehavior(B2);
+				}
+			}
+		}
+	}
+
+	protected void addSpellsOrBehaviors(final PhysicalAgent P, String spells, final List<CMObject> otherSpells1, final List<CMObject> otherSpells2)
 	{
 		if(spells.equalsIgnoreCase("bundle"))
 			return;
 		if(otherSpells1 != null)
-		{
-			for(final Ability A : otherSpells1)
-			{
-				if((!A.canBeUninvoked())
-				&&(P.fetchEffect(A.ID())==null))
-				{
-					final Ability A2=(Ability)A.copyOf();
-					P.addNonUninvokableEffect(A2);
-				}
-			}
-		}
+			addOtherThings(P,otherSpells1);
 		if(otherSpells2 != null)
-		{
-			for(final Ability A : otherSpells2)
-			{
-				if((!A.canBeUninvoked())
-				&&(P.fetchEffect(A.ID())==null))
-				{
-					final Ability A2=(Ability)A.copyOf();
-					P.addNonUninvokableEffect(A2);
-				}
-			}
-		}
+			addOtherThings(P,otherSpells2);
 		if(spells.length()==0)
 			return;
 		if(spells.startsWith("*") && spells.endsWith(";__DELETE__"))
 		{
 			String ableID=spells.substring(1, spells.indexOf(';'));
 			Ability oldA=P.fetchEffect(ableID);
+			Behavior oldB=P.fetchBehavior(ableID);
 			if(oldA!=null)
 			{
 				oldA.unInvoke();
 				P.delEffect(oldA);
+				spells="";
+			}
+			else
+			if(oldB!=null)
+			{
+				P.delBehavior(oldB);
 				spells="";
 			}
 			else
@@ -462,35 +480,57 @@ public class CraftingSkill extends GatheringSkill
 						break;
 					}
 				}
+				if(spells.length()>0)
+				{
+					for(final Enumeration<Behavior> eB = P.behaviors();eB.hasMoreElements();)
+					{
+						oldB=eB.nextElement();
+						if((oldB!=null) && (oldB.getParms().toLowerCase().indexOf(ableID)>=0))
+						{
+							P.delBehavior(oldB);
+							spells="";
+							break;
+						}
+					}
+				}
 			}
 		}
 		else
 		{
-			final List<Ability> V=CMLib.ableParms().getCodedSpells(spells);
-			for(int v=0;v<V.size();v++)
+			final List<CMObject> V=CMLib.coffeeMaker().getCodedSpellsOrBehaviors(spells);
+			for(final CMObject O : V)
 			{
-				final Ability A=V.get(v);
-				if(P instanceof Wand)
+				if(O instanceof Ability)
 				{
-					if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)
-					||(((Wand)P).getSpell()!=null))
-						P.addNonUninvokableEffect(A);
+					final Ability A=(Ability)O;
+					if(P instanceof Wand)
+					{
+						if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)
+						||(((Wand)P).getSpell()!=null))
+							P.addNonUninvokableEffect(A);
+						else
+							((Wand)P).setSpell(A);
+					}
 					else
-						((Wand)P).setSpell(A);
+					if(P instanceof SpellHolder)
+					{
+						if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)
+							P.addNonUninvokableEffect(A);
+						else
+						if(((SpellHolder)P).getSpells().size()==0)
+							((SpellHolder)P).setSpellList(A.ID()+((A.text().length()==0)?"":("("+A.text()+")")));
+						else
+							((SpellHolder)P).setSpellList(((SpellHolder)P).getSpellList()+";"+A.ID()+((A.text().length()==0)?"":("("+A.text()+")")));
+					}
+					else
+						P.addNonUninvokableEffect(A);
 				}
 				else
-				if(P instanceof SpellHolder)
+				if(O instanceof Behavior)
 				{
-					if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)
-						P.addNonUninvokableEffect(A);
-					else
-					if(((SpellHolder)P).getSpells().size()==0)
-						((SpellHolder)P).setSpellList(A.ID()+((A.text().length()==0)?"":("("+A.text()+")")));
-					else
-						((SpellHolder)P).setSpellList(((SpellHolder)P).getSpellList()+";"+A.ID()+((A.text().length()==0)?"":("("+A.text()+")")));
+					final Behavior B=(Behavior)O;
+					P.addBehavior(B);
 				}
-				else
-					P.addNonUninvokableEffect(A);
 			}
 		}
 	}

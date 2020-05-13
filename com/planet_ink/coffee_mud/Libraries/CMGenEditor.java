@@ -5060,7 +5060,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	@Override
-	public void spells(final MOB mob, final List<Ability> V, final int showNumber, final int showFlag, final boolean inParms) throws IOException
+	public void spellsOrBehavs(final MOB mob, final List<CMObject> V, final int showNumber, final int showFlag, final boolean inParms) throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
@@ -5070,12 +5070,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			String affectstr="";
 			for(int b=0;b<V.size();b++)
 			{
-				final Ability A=V.get(b);
-				if((A!=null)&&(A.isSavable()))
+				final CMObject A=V.get(b);
+				if((A instanceof Contingent)
+				&&(((Contingent)A).isSavable()))
 				{
+
 					affectstr+=A.ID();
-					if(A.text().trim().length()>0)
-						affectstr+="("+A.text().trim()+"), ";
+					final String txt=(A instanceof Ability)?(((Ability)A).text()):((Behavior)A).getParms();
+					if(txt.trim().length()>0)
+						affectstr+="("+txt.trim()+"), ";
 					else
 						affectstr+=", ";
 				}
@@ -5086,17 +5089,20 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			mob.tell(L("@x1. Effects: '@x2'.",""+showNumber,affectstr));
 			if((showFlag!=showNumber)&&(showFlag>-999))
 				return;
-			behave=mob.session().prompt(L("Enter a spell to add/remove (?)\n\r:"),"");
+			behave=mob.session().prompt(L("Enter a spell/behavior to add/remove (?)\n\r:"),"");
 			if(behave.length()>0)
 			{
 				if(behave.equalsIgnoreCase("?"))
+				{
 					mob.tell(CMLib.lister().reallyList(mob,CMClass.abilities(),-1).toString());
+					mob.tell(CMLib.lister().reallyList(mob,CMClass.behaviors(),-1).toString());
+				}
 				else
 				{
-					Ability chosenOne=null;
+					CMObject chosenOne=null;
 					for(int a=0;a<V.size();a++)
 					{
-						final Ability A=V.get(a);
+						final CMObject A=V.get(a);
 						if((A!=null)&&(A.ID().equalsIgnoreCase(behave)))
 							chosenOne=A;
 					}
@@ -5108,8 +5114,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					else
 					{
 						chosenOne=CMClass.getAbility(behave);
-						if((chosenOne!=null)
-						&&((chosenOne.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+						if(chosenOne==null)
+							chosenOne=CMClass.getBehavior(behave);
+						if((chosenOne instanceof Ability)
+						&&((((Ability)chosenOne).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
 						&&(!CMSecurity.isASysOp(mob)))
 							chosenOne=null;
 						if(chosenOne!=null)
@@ -5119,8 +5127,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 								String parms="?";
 								while(parms.equals("?"))
 								{
-									parms=chosenOne.text();
-									parms=mob.session().prompt(L("Enter any effect parameters (?)\n\r:@x1",parms));
+									parms=(chosenOne instanceof Ability)?(((Ability)chosenOne).text()):((Behavior)chosenOne).getParms();
+									parms=mob.session().prompt(L("Enter any parameters (?)\n\r:@x1",parms));
 									if(parms.equals("?"))
 									{
 										final StringBuilder s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true);
@@ -5129,7 +5137,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 										else mob.tell(L("no help!"));
 									}
 								}
-								chosenOne.setMiscText(parms.trim());
+								if(chosenOne instanceof Ability)
+									((Ability)chosenOne).setMiscText(parms.trim());
+								else
+									((Behavior)chosenOne).setParms(parms.trim());
 							}
 							mob.tell(L("@x1 added.",chosenOne.ID()));
 							V.add(chosenOne);

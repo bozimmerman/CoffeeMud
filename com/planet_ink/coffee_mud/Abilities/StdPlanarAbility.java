@@ -775,6 +775,17 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 	}
 
 	@Override
+	public boolean isPlanarMob(final MOB M)
+	{
+		final String badTattooName = "NOPLANE "+this.planarName.toUpperCase().trim();
+		return (M!=null)
+			 &&(M.isMonster())
+			 &&(M.getStartRoom()!=null)
+			 &&(M.findTattoo(badTattooName)==null)
+			 &&(M.findTattoo("NOPLANE")==null);
+	}
+
+	@Override
 	public void doPlanarRoomColoring(final Room room)
 	{
 		if(planeVars.containsKey(PlanarVar.ROOMCOLOR.toString()))
@@ -818,6 +829,63 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 				desc=desc.substring(prefix.length());
 			}
 			room.setDescription(prefix+CMLib.english().insertAdjectives(desc, words, chance));
+		}
+	}
+
+	@Override
+	public void applyMobPrefix(final MOB M, final int[] eliteBump)
+	{
+		String planarPrefix = this.planarPrefix;
+		if((this.promotions!=null)&&(this.promotions.size()>0))
+		{
+			final int randomRoll = CMLib.dice().rollPercentage();
+			Pair<Integer,String> bestAvail = null;
+			for(int index=0;index<this.promotions.size();index++)
+			{
+				if(randomRoll <= this.promotions.getFirst(index).intValue())
+					bestAvail = new Pair<Integer,String>(Integer.valueOf(index),this.promotions.getSecond(index));
+			}
+			if(bestAvail != null)
+			{
+				if(planarPrefix == null)
+					planarPrefix = "";
+				planarPrefix = (bestAvail.second+" "+planarPrefix).trim();
+				if(eliteBump != null)
+					eliteBump[0] += 1+(bestAvail.first.intValue()*2);
+			}
+		}
+		if((planarPrefix!=null)&&(planarPrefix.length()>0))
+		{
+			final String oldName=M.Name();
+			int x;
+			if(oldName.toLowerCase().indexOf(planarPrefix.toLowerCase())<0)
+			{
+				if(CMLib.english().startsWithAnArticle(M.Name()))
+				{
+					final String Name = M.Name().substring(M.Name().indexOf(' ')).trim();
+					M.setName(CMLib.english().startWithAorAn(planarPrefix+" "+Name));
+				}
+				else
+				{
+					M.setName(CMStrings.capitalizeFirstLetter(planarPrefix)+" "+M.Name());
+				}
+				if((x=M.displayText().toLowerCase().indexOf(oldName.toLowerCase()))>=0)
+				{
+					M.setDisplayText(M.displayText().substring(0,x)+M.Name()+M.displayText().substring(x+oldName.length()));
+				}
+				else
+				if(CMLib.english().startsWithAnArticle(M.displayText()))
+				{
+					final String Name = M.displayText().substring(M.displayText().indexOf(' ')).trim();
+					M.setDisplayText(CMLib.english().startWithAorAn(planarPrefix+" "+Name));
+				}
+				else
+				if((x=M.displayText().toLowerCase().indexOf(M.charStats().getMyRace().name().toLowerCase()))>=0)
+				{
+					final int len=M.charStats().getMyRace().name().toLowerCase().length();
+					M.setDisplayText(M.displayText().substring(0,x)+planarPrefix+M.Name()+M.displayText().substring(x+len));
+				}
+			}
 		}
 	}
 
@@ -936,17 +1004,13 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 			}
 			for(final Item I : delItems)
 				I.destroy();
-			final String badTattooName = "NOPLANE "+this.planarName.toUpperCase().trim();
 			for(final Enumeration<MOB> m=room.inhabitants();m.hasMoreElements();)
 			{
 				final MOB M=m.nextElement();
 				if((M!=null)
 				&&(invoker!=null)
-				&&(M.isMonster())
-				&&(M.getStartRoom()!=null)
-				&&(M.getStartRoom().getArea()==planeArea)
-				&&(M.findTattoo(badTattooName)==null)
-				&&(M.findTattoo("NOPLANE")==null))
+				&&(isPlanarMob(M))
+				&&(M.getStartRoom().getArea()==planeArea))
 				{
 					if(planeVars.containsKey(PlanarVar.MIXRACE.toString()))
 					{
@@ -971,57 +1035,9 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 						M.baseCharStats().setBreathables(new int[]{room.getAtmosphere()});
 					final double[] vars=new double[] {planarLevel, M.phyStats().level(), invoker.phyStats().level() } ;
 					final int newLevel = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0));
-					String planarPrefix = this.planarPrefix;
-					if((this.promotions!=null)&&(this.promotions.size()>0))
-					{
-						final int randomRoll = CMLib.dice().rollPercentage();
-						Pair<Integer,String> bestAvail = null;
-						for(int index=0;index<this.promotions.size();index++)
-						{
-							if(randomRoll <= this.promotions.getFirst(index).intValue())
-								bestAvail = new Pair<Integer,String>(Integer.valueOf(index),this.promotions.getSecond(index));
-						}
-						if(bestAvail != null)
-						{
-							if(planarPrefix == null)
-								planarPrefix = "";
-							planarPrefix = (bestAvail.second+" "+planarPrefix).trim();
-							eliteLevel += 1+(bestAvail.first.intValue()*2);
-						}
-					}
-					if((planarPrefix!=null)&&(planarPrefix.length()>0))
-					{
-						final String oldName=M.Name();
-						int x;
-						if(oldName.toLowerCase().indexOf(planarPrefix.toLowerCase())<0)
-						{
-							if(CMLib.english().startsWithAnArticle(M.Name()))
-							{
-								final String Name = M.Name().substring(M.Name().indexOf(' ')).trim();
-								M.setName(CMLib.english().startWithAorAn(planarPrefix+" "+Name));
-							}
-							else
-							{
-								M.setName(CMStrings.capitalizeFirstLetter(planarPrefix)+" "+M.Name());
-							}
-							if((x=M.displayText().toLowerCase().indexOf(oldName.toLowerCase()))>=0)
-							{
-								M.setDisplayText(M.displayText().substring(0,x)+M.Name()+M.displayText().substring(x+oldName.length()));
-							}
-							else
-							if(CMLib.english().startsWithAnArticle(M.displayText()))
-							{
-								final String Name = M.displayText().substring(M.displayText().indexOf(' ')).trim();
-								M.setDisplayText(CMLib.english().startWithAorAn(planarPrefix+" "+Name));
-							}
-							else
-							if((x=M.displayText().toLowerCase().indexOf(M.charStats().getMyRace().name().toLowerCase()))>=0)
-							{
-								final int len=M.charStats().getMyRace().name().toLowerCase().length();
-								M.setDisplayText(M.displayText().substring(0,x)+planarPrefix+M.Name()+M.displayText().substring(x+len));
-							}
-						}
-					}
+					final int[] eliteBump = new int[1];
+					this.applyMobPrefix(M, eliteBump);
+					eliteLevel += eliteBump[0];
 					M.basePhyStats().setLevel(newLevel);
 					M.phyStats().setLevel(newLevel);
 					CMLib.leveler().fillOutMOB(M,M.basePhyStats().level()+hardBumpLevel);

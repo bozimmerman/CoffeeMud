@@ -5719,6 +5719,94 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	}
 
 	@Override
+	public String getCodedSpellsOrBehaviors(final PhysicalAgent I)
+	{
+		final StringBuilder str=new StringBuilder("");
+		for(final Enumeration<Ability> a=I.effects();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
+			if(A.text().indexOf(";")>0)
+				return A.ID()+";"+A.text();
+			if(str.length()>0)
+				str.append(";");
+			str.append(A.ID());
+			if(A.text().length()>0)
+				str.append(";").append(A.text());
+		}
+		for(final Enumeration<Behavior> a=I.behaviors();a.hasMoreElements();)
+		{
+			final Behavior A=a.nextElement();
+			if(A.getParms().indexOf(";")>0)
+				return A.ID()+";"+A.getParms();
+			if(str.length()>0)
+				str.append(";");
+			str.append(A.ID());
+			if(A.getParms().length()>0)
+				str.append(";").append(A.getParms());
+		}
+		return str.toString();
+	}
+
+	@Override
+	public List<CMObject> getCodedSpellsOrBehaviors(String spellsOrBehavsList)
+	{
+		final Vector<CMObject> spellsV=new Vector<CMObject>();
+		if(spellsOrBehavsList.length()==0)
+			return spellsV;
+		if(spellsOrBehavsList.startsWith("*"))
+		{
+			spellsOrBehavsList=spellsOrBehavsList.substring(1);
+			int x=spellsOrBehavsList.indexOf(';');
+			if(x<0)
+				x=spellsOrBehavsList.length();
+			final Ability A=CMClass.getAbility(spellsOrBehavsList.substring(0,x));
+			if(A!=null)
+			{
+				if(x<spellsOrBehavsList.length())
+					A.setMiscText(spellsOrBehavsList.substring(x+1));
+				spellsV.addElement(A);
+				return spellsV;
+			}
+			final Behavior B=CMClass.getBehavior(spellsOrBehavsList.substring(0,x));
+			if(B!=null)
+			{
+				if(x<spellsOrBehavsList.length())
+					B.setParms(spellsOrBehavsList.substring(x+1));
+				spellsV.addElement(B);
+				return spellsV;
+			}
+		}
+		final List<String> V=CMParms.parseSemicolons(spellsOrBehavsList,true);
+		CMObject lastThing=null;
+		for(int v=0;v<V.size();v++)
+		{
+			spellsOrBehavsList=V.get(v);
+			final Ability A=CMClass.getAbility(spellsOrBehavsList);
+			if(A!=null)
+			{
+				lastThing=A;
+				spellsV.addElement(A);
+			}
+			else
+			{
+				final Behavior B=CMClass.getBehavior(spellsOrBehavsList);
+				if(B!=null)
+				{
+					lastThing=B;
+					spellsV.addElement(B);
+				}
+				else
+				if(lastThing instanceof Ability)
+					((Ability)lastThing).setMiscText(spellsOrBehavsList);
+				else
+				if(lastThing instanceof Behavior)
+					((Behavior)lastThing).setParms(spellsOrBehavsList);
+			}
+		}
+		return spellsV;
+	}
+
+	@Override
 	public void setFactionFromXML(final MOB mob, final List<XMLTag> xml)
 	{
 	   if(xml!=null)

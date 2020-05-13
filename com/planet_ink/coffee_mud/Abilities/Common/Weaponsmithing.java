@@ -528,7 +528,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			setBrand(mob, buildingI);
 			if(bundling)
 				buildingI.setBaseValue(lostValue);
-			addSpells(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
+			addSpellsOrBehaviors(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
 			if(buildingI instanceof Weapon)
 			{
 				final Weapon w=(Weapon)buildingI;

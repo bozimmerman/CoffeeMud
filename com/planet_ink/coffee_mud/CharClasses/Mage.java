@@ -384,6 +384,12 @@ public class Mage extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Spell_MeteorStorm",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Spell_EnchantWeapon",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Spell_DetectSentience",false);
+		if(!ID().equals("Diviner"))
+		{
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Spell_PlanarDistortion", ID().equals("Illusionist")?25:0, "", false,
+													 SecretFlag.MASKED, null, "+PLANE \"-Prime Material\"");
+		}
+
 		// level 23
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Spell_Dragonfire",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Spell_MindBlock",false);

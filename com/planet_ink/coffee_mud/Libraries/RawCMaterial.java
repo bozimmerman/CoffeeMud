@@ -966,7 +966,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		if((howMuch<=0)&&(otherMaterial<=0))
 			return record;
 
-		final XVector<Ability> props=new XVector<Ability>();
+		final XVector<CMObject> props=new XVector<CMObject>();
 		record.lostProps=props;
 		if(firstMaterialI == null)
 			firstMaterialI = (finalMaterial>0)?this.findFirstResource(V, finalMaterial, C, null):null;
@@ -1000,6 +1000,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 					{
 						record.lostValue+=((Item)E).value();
 						props.addAll(((Item)E).effects());
+						props.addAll(((Item)E).behaviors());
 					}
 					E.destroy();
 				}
@@ -1007,6 +1008,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				{
 					record.lostValue+=I.value();
 					props.addAll(I.effects());
+					props.addAll(I.behaviors());
 					((RawMaterial)I).quickDestroy();
 				}
 				otherMaterial=-1;
@@ -1036,6 +1038,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 						record.lostValue+=(((Item)E).value());
 						record.subType=rI.getSubType();
 						props.addAll(((Item)E).effects());
+						props.addAll(((Item)E).behaviors());
 					}
 					E.destroy();
 					howMuch=0;

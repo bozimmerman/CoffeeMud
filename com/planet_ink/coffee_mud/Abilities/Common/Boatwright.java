@@ -496,7 +496,7 @@ public class Boatwright extends CraftingSkill implements ItemCraftor, MendingSki
 			final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 			if(bundling)
 				buildingI.setBaseValue(lostValue);
-			addSpells(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
+			addSpellsOrBehaviors(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
 			key=null;
 			if(buildingI instanceof Rideable)
 			{

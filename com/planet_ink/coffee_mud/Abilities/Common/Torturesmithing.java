@@ -383,7 +383,7 @@ public class Torturesmithing extends EnhancedCraftingSkill implements ItemCrafto
 		final int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
 		final int hardness=RawMaterial.CODES.HARDNESS(buildingI.material())-3;
 		final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
-		addSpells(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
+		addSpellsOrBehaviors(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
 		if(buildingI instanceof Container)
 		{
 			((Container)buildingI).setCapacity(capacity+woodRequired);

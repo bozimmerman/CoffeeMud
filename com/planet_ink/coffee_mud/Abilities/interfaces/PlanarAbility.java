@@ -89,6 +89,23 @@ public interface PlanarAbility extends Ability
 	public void doPlanarRoomColoring(final Room room);
 
 	/**
+	 * Applies the prefix and random promotions string to the given
+	 * mob according to the parsed configuration for the current plane.
+	 *
+	 * @param M the mob to apply
+	 */
+	public void applyMobPrefix(final MOB M, final int[] eliteBump);
+
+	/**
+	 * Returns whether the given mob can be planarfied according
+	 * to the parsed configuration for the current plane.
+	 *
+	 * @param M the mob to apply
+	 * @return true if the mob can be planarfied
+	 */
+	public boolean isPlanarMob(final MOB M);
+
+	/**
 	 * The xtra difficulty level of this plane
 	 * @return the hardBumpLevel
 	 */

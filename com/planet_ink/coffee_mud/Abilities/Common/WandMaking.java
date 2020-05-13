@@ -536,7 +536,7 @@ public class WandMaking extends EnhancedCraftingSkill implements ItemCraftor
 			if(bundling)
 				buildingI.setBaseValue(lostValue);
 			final int maxuses=CMath.s_int(foundRecipe.get(RCP_MAXUSES));
-			addSpells(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
+			addSpellsOrBehaviors(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
 			if((buildingI instanceof Wand)
 			&&(foundRecipe.get(RCP_MAXUSES).trim().length()>0))
 				((Wand)buildingI).setMaxUses(maxuses);

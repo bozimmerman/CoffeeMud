@@ -91,5 +91,7 @@ public class Illusionist extends SpecialistMage
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Spell_AlternateReality",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_EndlessRoad",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_FeelTheVoid",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Spell_ImprovedPlanarDistortion", 25, "", false,
+				 SecretFlag.MASKED, null, "+PLANE \"-Prime Material\"");
 	}
 }

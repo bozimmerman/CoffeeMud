@@ -543,7 +543,7 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 			final int maxuses=CMath.s_int(foundRecipe.get(RCP_MAXUSES));
 			if(bundling)
 				buildingI.setBaseValue(lostValue);
-			addSpells(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
+			addSpellsOrBehaviors(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
 			if((buildingI instanceof Wand)
 			&&(foundRecipe.get(RCP_MAXUSES).trim().length()>0))
 				((Wand)buildingI).setMaxUses(maxuses);
