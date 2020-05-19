@@ -4354,8 +4354,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		{
 			for(final PreservedQuestObject PO : questState.worldObjects)
 				PO.preserveState=0;
-			for(int q=0;q<questState.addons.size();q++)
-				questState.addons.get(q).second=Integer.valueOf(0);
+			for(final Pair<List<Object>,Integer> p : questState.addons)
+				p.second=Integer.valueOf(0);
 			questState.autoStepAfterDuration=false;
 		}
 		cleanQuestStep();
