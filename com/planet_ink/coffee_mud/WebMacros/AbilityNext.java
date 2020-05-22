@@ -92,7 +92,7 @@ public class AbilityNext extends StdWebMacro
 		final boolean unqualifiedNormalOK=parms.containsKey("UNQUALIFIEDNORMALOK");
 		final String levelName=httpReq.getUrlParameter("LEVEL");
 		final boolean notFlag =parms.containsKey("NOT");
-		final boolean allFlag =parms.containsKey("ALL");
+		final boolean allFlag =parms.containsKey("ALL") || (parm==null);
 		final boolean domainFlag=parms.containsKey("DOMAIN");
 		final String domain=parms.get("DOMAIN");
 		boolean containsACodeMask=false;
