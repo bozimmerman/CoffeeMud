@@ -1948,6 +1948,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	{
 		if(isHygienicMessage(msg))
 		{
+			final String tattooName="SYSTEM_HYGEIENE_MSG";
 			final MOB mob=msg.source();
 			if(mob.playerStats().getHygiene()>(-adjHygiene))
 			{
@@ -1962,7 +1963,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			}
 			else
 			if(adjHygiene==0)
+			{
+				if(mob.findTattoo(tattooName) != null)
+					return;
+				mob.addTattoo(tattooName, 20);
 				mob.tell(L("You are already perfectly clean."));
+			}
 			else
 			if((msg.sourceMinor()!=CMMsg.TYP_NOISYMOVEMENT)
 			||(mob.riding()!=null)
@@ -1977,6 +1983,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)))
 				{
 					mob.playerStats().adjHygiene(-h);
+					if(mob.findTattoo(tattooName) != null)
+						return;
+					mob.addTattoo(tattooName, 20);
 					mob.tell(L("You can't get any cleaner here."));
 				}
 				else
