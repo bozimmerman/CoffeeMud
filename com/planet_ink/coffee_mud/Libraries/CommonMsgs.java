@@ -2124,6 +2124,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 									+"\n\rAbile:"+viewedmob.basePhyStats().ability()
 									+((!viewedmob.isMonster())?", Thirst="+viewedmob.curState().getThirst():"")
 									+"\n\rLevel:"+viewedmob.basePhyStats().level()
+									+((viewedmob.isPlayer())?", Hygeine="+viewedmob.playerStats().getHygiene():"")
 									+"\n\rDesc : "+viewedmob.description()
 									+"\n\rStart: "+((viewedmob.getStartRoom()==null)?"null":viewedmob.getStartRoom().roomID())
 									+"\n\rMisc : "+viewedmob.text()
