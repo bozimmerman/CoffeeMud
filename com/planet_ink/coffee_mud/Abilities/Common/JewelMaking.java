@@ -374,7 +374,12 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				{
 					final String item=replacePercent(V.get(RCP_FINALNAME),"");
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
-					final String wood=getComponentDescription(mob,V,RCP_WOOD);
+					String wood=getComponentDescription(mob,V,RCP_WOOD);
+					final String otherRequired=V.get(RCP_EXTRAREQ);
+					if((otherRequired!=null)
+					&&(otherRequired.equalsIgnoreCase("PRECIOUS"))
+					&&(CMath.s_int(wood)==0))
+						wood = "1*";
 					if(wood.length()>5)
 					{
 						if(toggler>1)
@@ -383,12 +388,18 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 					}
 					if((level<=xlevel(mob))||allFlag)
 					{
-						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+CMStrings.padRightPreserve(""+wood,cols[2])+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(CMStrings.padRight(item,cols[0])+" "+
+									CMStrings.padRight(""+level,cols[1])+" "+
+									CMStrings.padRightPreserve(""+wood,cols[2])
+									+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop)
 							toggler=1;
 					}
 				}
 			}
+			if(!buf.toString().endsWith("\n\r"))
+				buf.append("\n\r");
+			buf.append(L("* Instead of metal, these recipes require precious stones.\n\r"));
 			commonTell(mob,buf.toString());
 			enhanceList(mob);
 			return true;
