@@ -65,6 +65,8 @@ public class GModify extends StdCommand
 	{
 		if((stat!=null)&&(stat.length()>0))
 		{
+			if(stat.equalsIgnoreCase("WEIGHT"))
+				System.out.println("hi");
 			if((stat.equalsIgnoreCase("REJUV"))
 			&&(E instanceof Physical))
 			{
