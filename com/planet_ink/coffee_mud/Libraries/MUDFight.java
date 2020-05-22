@@ -3042,7 +3042,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		for (final String command : consequences)
 		{
 			final String whatToDo=command.toUpperCase();
-			if(whatToDo.startsWith("UNL"))
+			if(whatToDo.startsWith("UNL")) // "UNLEVEL
 			{
 				final Vector<String> V=CMParms.parse(whatToDo);
 				int times=1;
@@ -3055,7 +3055,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			if(whatToDo.startsWith("RECALL"))
 				deadM.killMeDead(false);
 			else
-			if(whatToDo.startsWith("ASTR"))
+			if(whatToDo.startsWith("ASTR")) // "ASTRAL
 			{
 				final Ability A=CMClass.getAbility("Prop_AstralSpirit");
 				if((A!=null)&&(deadM.fetchAbility(A.ID())==null))
@@ -3084,7 +3084,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				}
 			}
 			else
-			if(whatToDo.startsWith("PUR"))
+			if(whatToDo.startsWith("PUR")) // "PURGE"
 			{
 				final MOB deadMOB=(!deadM.isPlayer())?CMLib.get(deadM.session())._players().getLoadPlayer(deadM.Name()):deadM;
 				if((deadMOB!=null)&&(deadM.session()!=null))
@@ -3097,6 +3097,26 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 							final Session session=deadMOB.session();
 							if(session!=null)
 								session.stopSession(true, true, true);
+							// preserve their corpse, if it is in the game
+							final PlayerStats pStat = deadMOB.playerStats();
+							if(pStat != null)
+							{
+								final List<Item> removeThese=new ArrayList<Item>(1);
+								for(final Enumeration<Item>  o = pStat.getExtItems().items();o.hasMoreElements();)
+								{
+									final Item I = o.nextElement();
+									Item chkI = I;
+									if(I.container() instanceof DeadBody)
+										chkI=I.container();
+									if((chkI instanceof DeadBody)
+									&&(((DeadBody)chkI).isPlayerCorpse())
+									&&(CMLib.flags().isInTheGame(chkI, true)))
+										removeThese.add(I);
+								}
+								for(final Item I : removeThese)
+									pStat.getExtItems().delItem(I);
+
+							}
 							CMLib.players().obliteratePlayer(deadMOB,true,CMSecurity.isDisabled(CMSecurity.DisFlag.DEATHCRY));
 							deadMOB.destroy();
 						}
@@ -3105,7 +3125,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				}
 			}
 			else
-			if(whatToDo.startsWith("LOSESK"))
+			if(whatToDo.startsWith("LOSESK")) // "LOSESKILL
 			{
 				if(deadM.numAbilities()>0)
 				{
@@ -3135,7 +3155,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				}
 			}
 			else
-			if(whatToDo.startsWith("EXPER"))
+			if(whatToDo.startsWith("EXPER")) // "EXPERIENCE
 			{
 				lostExperience[0]=baseExperience;
 				if(lostExperience[0]>0)
