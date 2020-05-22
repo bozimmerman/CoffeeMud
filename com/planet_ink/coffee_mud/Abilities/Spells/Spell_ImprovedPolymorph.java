@@ -78,11 +78,24 @@ public class Spell_ImprovedPolymorph extends Spell
 	protected boolean	noxp	= false;
 
 	@Override
+	public void setMiscText(final String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		if(newMiscText.trim().length()>0)
+		{
+			final Race R=CMClass.getRace(CMParms.getParmStr(newMiscText, "RACE", "None"));
+			if(R!=null)
+				newRace=R;
+			noxp = CMParms.getParmBool(newMiscText, "NOXP", false);
+		}
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
 		&&(noxp)
-		&&((msg.target()==affected)   &&(affected instanceof MOB)))
+		&&((msg.target()==affected)&&(affected instanceof MOB)))
 		{
 			msg.setValue(0);
 		}
@@ -282,6 +295,7 @@ public class Spell_ImprovedPolymorph extends Spell
 					final Spell_ImprovedPolymorph morph = (Spell_ImprovedPolymorph) beneficialAffect(mob,target,asLevel,0);
 					if(morph != null)
 					{
+						morph.setMiscText("RACE="+newRace.ID()+" NOXP="+noxp);
 						success=true;
 						morph.noxp = noxp;
 					}

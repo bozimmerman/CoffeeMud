@@ -34,7 +34,6 @@ import java.util.*;
 */
 public class Spell_AchillesArmor extends Spell
 {
-
 	@Override
 	public String ID()
 	{
@@ -84,6 +83,18 @@ public class Spell_AchillesArmor extends Spell
 	protected int vulnerability=0;
 
 	@Override
+	public void setMiscText(final String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		if(newMiscText.length()>0)
+		{
+			if(vulnerability==0)
+				vulnerability=CMLib.dice().roll(1, Weapon.TYPE_DESCS.length, -1);
+			vulnerability=CMParms.getParmInt(newMiscText, "VULNERABILITY", vulnerability);
+		}
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -95,9 +106,7 @@ public class Spell_AchillesArmor extends Spell
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> Achilles Armor is now gone."));
 		}
-
 		super.unInvoke();
-
 	}
 
 	@Override
@@ -196,7 +205,9 @@ public class Spell_AchillesArmor extends Spell
 			{
 				mob.location().send(mob,msg);
 				vulnerability=CMLib.dice().roll(1,Weapon.TYPE_DESCS.length,-1);
-				beneficialAffect(mob,target,asLevel,0);
+				final Ability A=beneficialAffect(mob,target,asLevel,0);
+				if(A!=null)
+					A.setMiscText("VULNERABILITY="+vulnerability);
 			}
 		}
 		else

@@ -91,6 +91,8 @@ public class Spell_Immunity extends Spell
 	@Override
 	public void setMiscText(final String misc)
 	{
+		super.setMiscText(misc);
+		immunityCode=-1;
 		if((misc!=null)
 		&&(misc.length()>0)
 		&&(CMath.isInteger(misc)))
@@ -180,7 +182,7 @@ public class Spell_Immunity extends Spell
 				immunityCode=-1;
 				final Spell_Immunity A=(Spell_Immunity)beneficialAffect(mob,target,asLevel,0);
 				if(A!=null)
-					A.setImmunityVars(CMLib.dice().roll(1,5,0));
+					A.setMiscText(""+CMLib.dice().roll(1,5,0));
 			}
 		}
 		else
