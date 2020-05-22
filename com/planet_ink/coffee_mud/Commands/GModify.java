@@ -112,6 +112,12 @@ public class GModify extends StdCommand
 						return ""+((FactionMember)E).fetchFaction(F.factionID());
 				}
 			}
+			else
+			if(!E.isStat(stat))
+			{
+				if((E instanceof Physical) && ((Physical)E).basePhyStats().isStat(stat))
+					return ((Physical)E).basePhyStats().getStat(stat);
+			}
 			return E.getStat(stat);
 		}
 		return "";
@@ -333,7 +339,17 @@ public class GModify extends StdCommand
 					}
 				}
 				if(!found)
+				{
+					if(!E.isStat(stat))
+					{
+						if((E instanceof Physical) && ((Physical)E).basePhyStats().isStat(stat))
+						{
+							((Physical)E).basePhyStats().setStat(stat, value);
+							return E;
+						}
+					}
 					E.setStat(stat,value);
+				}
 			}
 		}
 		return E;
@@ -650,6 +666,15 @@ public class GModify extends StdCommand
 					allFieldsMsg.append(F.factionID()).append(" ");
 			}
 			allFieldsMsg.append("CLASSTYPE ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT REJUV GENDER DESTROY RESOURCE MATERIALTYPE DELFACTION REBALANCE ");
+			final PhyStats phy = (PhyStats)CMClass.getCommon("DefaultPhyStats");
+			for(final String stat : phy.getStatCodes())
+			{
+				if(!allKnownFields.contains(stat))
+				{
+					allKnownFields.add(stat);
+					allFieldsMsg.append(stat).append(" ");
+				}
+			}
 			mob.tell(L("Valid field names are @x1",allFieldsMsg.toString()));
 			return false;
 		}
