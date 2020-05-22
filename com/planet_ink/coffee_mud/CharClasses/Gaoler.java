@@ -468,6 +468,7 @@ public class Gaoler extends StdCharClass
 				}
 			}
 		}
+		super.executeMsg(host, msg);
 	}
 
 	private final String[] raceRequiredList = new String[] { "All" };
