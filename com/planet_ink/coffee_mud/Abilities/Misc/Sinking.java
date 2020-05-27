@@ -62,12 +62,6 @@ public class Sinking extends StdAbility
 	}
 
 	@Override
-	public int classificationCode()
-	{
-		return Ability.ACODE_PROPERTY;
-	}
-
-	@Override
 	protected int canTargetCode()
 	{
 		return 0;
