@@ -627,40 +627,43 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			woodRequired=data[0][FOUND_AMT];
 
 			final Session session=mob.session();
-			if((misctype.equalsIgnoreCase("statue"))
-			&&(session!=null)
+			if((misctype.indexOf("STATUE")>=0)
 			&&((statue==null)||(statue.trim().length()==0)))
 			{
 				final Ability me=this;
 				final Physical target=givenTarget;
-				if(autoGenerate>0)
+				if((autoGenerate>0)
+				||(session==null))
 					statue=mob.Name();
 				else
-				session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 				{
-					@Override
-					public void showPrompt()
+					session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 					{
-						session.promptPrint(L("What is this item a representation of?\n\r: "));
-					}
+						@Override
+						public void showPrompt()
+						{
+							session.promptPrint(L("What is this item a representation of?\n\r: "));
+						}
 
-					@Override
-					public void timedOut()
-					{
-					}
+						@Override
 
-					@Override
-					public void callBack()
-					{
-						final String of=this.input;
-						if((of.trim().length()==0)||(of.indexOf('<')>=0))
-							return;
-						final Vector<String> newCommands=new XVector<String>(originalCommands);
-						newCommands.add("STATUE="+of);
-						me.invoke(mob, newCommands, target, auto, asLevel);
-					}
-				});
-				return false;
+						public void timedOut()
+						{
+						}
+
+						@Override
+						public void callBack()
+						{
+							final String of=this.input;
+							if((of.trim().length()==0)||(of.indexOf('<')>=0))
+								return;
+							final Vector<String> newCommands=new XVector<String>(originalCommands);
+							newCommands.add("STATUE="+of);
+							me.invoke(mob, newCommands, target, auto, asLevel);
+						}
+					});
+					return false;
+				}
 			}
 
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
