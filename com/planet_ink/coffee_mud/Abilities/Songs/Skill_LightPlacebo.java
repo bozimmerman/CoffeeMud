@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Prayers;
+package com.planet_ink.coffee_mud.Abilities.Songs;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -130,7 +130,7 @@ public class Skill_LightPlacebo extends BardSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final int healing=CMLib.dice().roll(2,adjustedLevel(mob,asLevel),4);
+				int healing=CMLib.dice().roll(2,adjustedLevel(mob,asLevel),4);
 				final int oldHP=target.curState().getHitPoints();
 				Ability A=null;
 				for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
