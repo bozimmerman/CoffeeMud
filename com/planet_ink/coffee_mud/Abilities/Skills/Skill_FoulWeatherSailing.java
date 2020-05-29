@@ -50,6 +50,14 @@ public class Skill_FoulWeatherSailing extends StdSkill
 
 	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Foul Weather Sailing)");
 
+	private static final String[]	triggerStrings	= I(new String[] { "FOULWEATHERSAILING"});
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
 	@Override
 	public String displayText()
 	{
