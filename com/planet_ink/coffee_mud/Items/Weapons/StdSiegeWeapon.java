@@ -329,9 +329,9 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon
 	@Override
 	public boolean requiresAmmunition()
 	{
-		if((readableText()==null)||(this instanceof Wand))
+		if((ammunitionType()==null)||(this instanceof Wand))
 			return false;
-		return readableText().length()>0;
+		return ammunitionType().length()>0 && (ammunitionCapacity()>0);
 	}
 
 	@Override

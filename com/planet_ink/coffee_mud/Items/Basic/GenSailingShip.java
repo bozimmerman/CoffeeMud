@@ -600,7 +600,11 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 							this.aimings.removeFirst(weapon);
 							this.aimings.add(new Pair<Weapon,int[]>(weapon,targetCoords));
 							mobR.send(msg.source(), msg2);
-							msg.source().tell(L("@x1 is now aimed and will be fired in @x2 seconds.",I.name(),timeToFire));
+							if((!(I instanceof AmmunitionWeapon))
+							||(!((AmmunitionWeapon)I).requiresAmmunition()))
+								msg.source().tell(L("@x1 is now aimed and will be engage in @x2 seconds.",I.name(),timeToFire));
+							else
+								msg.source().tell(L("@x1 is now aimed and will be fired in @x2 seconds.",I.name(),timeToFire));
 						}
 					}
 					return false;
