@@ -111,6 +111,109 @@ public class Skill_LightPlacebo extends BardSkill
 		return "pray(s)";
 	}
 
+	protected volatile int baseHp = -1;
+	protected volatile int fakeHp = -1;
+
+	protected boolean doAdjustments()
+	{
+		final Physical affected = this.affected;
+		if(affected instanceof MOB)
+		{
+			final MOB target=(MOB)affected;
+			synchronized(this)
+			{
+				if(baseHp < 0)
+					baseHp = target.curState().getHitPoints();
+				if(target.curState().getHitPoints() > baseHp)
+				{
+					final int amountOfNaturalHealing=target.curState().getHitPoints() - baseHp;
+					fakeHp -= amountOfNaturalHealing;
+					target.curState().setHitPoints(baseHp);
+				}
+				else
+					baseHp = target.curState().getHitPoints();
+			}
+			if(fakeHp <= 0)
+			{
+				unInvoke();
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public void setMiscText(final String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		if(newMiscText.startsWith("+"))
+		{
+			this.tickDown=500;
+			if(affected instanceof MOB)
+			{
+				final MOB target=(MOB)affected;
+				final int healing=CMath.s_int(newMiscText.substring(1));
+				if(doAdjustments())
+				{
+					target.curState().adjHitPoints(healing, target.maxState());
+					synchronized(this)
+					{
+						baseHp = target.curState().getHitPoints();
+						fakeHp += healing;
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public boolean okMessage(final Environmental affecting, final CMMsg msg)
+	{
+		if(!super.okMessage(affecting, msg))
+			return false;
+		if((affected!=null)&&(msg.amITarget(affected))&&(affected instanceof MOB))
+		{
+			if(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+			{
+				if(fakeHp > 0)
+					msg.setValue(msg.value()+fakeHp);
+				unInvoke();
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public void executeMsg(final Environmental affecting, final CMMsg msg)
+	{
+		super.executeMsg(affecting,msg);
+		if((affected!=null)&&(msg.amITarget(affected))&&(affected instanceof MOB))
+		{
+			if(msg.targetMinor()==CMMsg.TYP_HEALING)
+			{
+				final Skill_LightPlacebo meRef = this;
+				msg.addTrailerRunnable(new Runnable()
+				{
+					final Skill_LightPlacebo me=meRef;
+					@Override
+					public void run()
+					{
+						if(!me.unInvoked)
+							me.doAdjustments();
+					}
+				});
+			}
+		}
+	}
+
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(!super.tick(ticking,tickID))
+			return false;
+		return doAdjustments();
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -140,16 +243,18 @@ public class Skill_LightPlacebo extends BardSkill
 						A=A1;
 				}
 				if(A==null)
-					A=this.beneficialAffect(mob, target, asLevel, Integer.MAX_VALUE/3);
+					A=this.beneficialAffect(mob, target, asLevel, 500);
 				if(A!=null)
 				{
 					if(target.curState().getHitPoints() + healing > target.maxState().getHitPoints())
 						healing = mob.maxState().getHitPoints() - target.curState().getHitPoints();
-					target.curState().adjHitPoints(healing, target.maxState());
-					A.setMiscText("+"+healing);
-					//CMLib.combat().postHealing(mob,target,this,healing,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,null);
-					if(target.curState().getHitPoints()>oldHP)
-						target.tell(L("You feel a little better!"));
+					if(healing > 0)
+					{
+						A.setMiscText("+"+healing);
+						//CMLib.combat().postHealing(mob,target,this,healing,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,null);
+						if(target.curState().getHitPoints()>oldHP)
+							target.tell(L("You feel a little better!"));
+					}
 				}
 				lastCastHelp=System.currentTimeMillis();
 			}
