@@ -29,7 +29,7 @@ two-headed % flail	6	60	15	222	GenWeapon	FLAILED	BASHING	15	-1	2	0
 % halberd	6	40	24	400	GenWeapon	POLEARM	SLASHING	20	-10	2	1		
 % flamberge	6	40	24	324	GenWeapon	SWORD	SLASHING	18	0	2	0		
 broad % axe	7	90	22	420	GenWeapon	AXE	SLASHING	21	-5	2	0	WOODEN	
-% sceptre	7	110	12	64	GenWeapon	BLUNT	BASHING	6	2	1	0		
+% sceptre	7	60	12	64	GenWeapon	BLUNT	BASHING	6	2	1	0		
 % military fork	7	50	18	324	GenWeapon	POLEARM	PIERCING	18	-10	2	1		
 short % staff	7	20	10	104	GenWeapon	STAFF	BASHING	10	2	2	0		
 % foil	7	80	2	20	GenWeapon	SWORD	PIERCING	3	5	1	0		
@@ -39,7 +39,7 @@ short % staff	7	20	10	104	GenWeapon	STAFF	BASHING	10	2	2	0
 % craftsmans hammer	8	40	4	60	GenWeapon	HAMMER	BASHING	6	0	1	0	WOODEN	
 % maul	8	40	30	728	GenWeapon	HAMMER	BASHING	28	-10	2	0	WOODEN	
 % cutlass	8	40	8	98	GenWeapon	SWORD	SLASHING	8	-3	1	0		
-% shuriken	8	120	2	8	GenSpear	THROWN	SLASHING	2	5	1	1		
+% shuriken	8	60	2	8	GenSpear	THROWN	SLASHING	2	5	1	1		
 spiked % club	9	30	15	112	GenWeapon	BLUNT	PIERCING	8	2	1	0		
 % yari	9	40	14	224	GenWeapon	POLEARM	PIERCING	14	0	2	1		
 % gladius	9	40	10	135	GenWeapon	SWORD	PIERCING	9	0	1	0		
