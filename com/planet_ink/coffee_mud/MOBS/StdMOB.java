@@ -3804,14 +3804,6 @@ public class StdMOB implements MOB
 						setActions(actions() + (flag.isSitting(this) ? phyStats().speed() / 2.0 : phyStats().speed()));
 					}
 
-					if ((--recoverTickCter) <= 0)
-					{
-						CMLib.combat().recoverTick(this);
-						recoverTickCter = CMProps.getIntVar(CMProps.Int.RECOVERRATE) * CharState.REAL_TICK_ADJUST_FACTOR;
-					}
-					if (!isMonster)
-						CMLib.combat().expendEnergy(this, false);
-
 					if(!flag.isGolem(this))
 					{
 						if (!flag.canBreathe(this))
@@ -3821,6 +3813,7 @@ public class StdMOB implements MOB
 													(int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)),
 													CMMsg.MASK_ALWAYS | CMMsg.TYP_WATER, -1,
 													L("^Z<T-NAME> can't breathe!^.^?") + CMLib.protocol().msp("choke.wav", 10));
+							recoverTickCter = CMProps.getIntVar(CMProps.Int.RECOVERRATE) * CharState.REAL_TICK_ADJUST_FACTOR;
 						}
 						else
 						if(!flag.canBreatheHere(this,R))
@@ -3838,6 +3831,7 @@ public class StdMOB implements MOB
 														(int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)),
 														CMMsg.MASK_ALWAYS | CMMsg.TYP_WATER, -1,
 														msgStr);
+								recoverTickCter = CMProps.getIntVar(CMProps.Int.RECOVERRATE) * CharState.REAL_TICK_ADJUST_FACTOR;
 							}
 							else
 							{
@@ -3853,9 +3847,18 @@ public class StdMOB implements MOB
 								CMLib.combat().postDamage(killerM, this, this,
 														(int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)),
 														CMMsg.MASK_ALWAYS | CMMsg.TYP_GAS, -1, msgStr);
+								recoverTickCter = CMProps.getIntVar(CMProps.Int.RECOVERRATE) * CharState.REAL_TICK_ADJUST_FACTOR;
 							}
 						}
 					}
+
+					if ((--recoverTickCter) <= 0)
+					{
+						CMLib.combat().recoverTick(this);
+						recoverTickCter = CMProps.getIntVar(CMProps.Int.RECOVERRATE) * CharState.REAL_TICK_ADJUST_FACTOR;
+					}
+					if (!isMonster)
+						CMLib.combat().expendEnergy(this, false);
 
 					if (isInCombat())
 					{
