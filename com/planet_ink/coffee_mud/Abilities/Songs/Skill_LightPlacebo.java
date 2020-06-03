@@ -79,9 +79,22 @@ public class Skill_LightPlacebo extends BardSkill
 	}
 
 	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT|USAGE_MANA;
+	}
+
+	@Override
 	public long flags()
 	{
 		return 0;
+	}
+
+	private static final String[] triggerStrings =I(new String[] {"LIGHTPLACEBO"});
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
 	}
 
 	@Override
@@ -153,6 +166,16 @@ public class Skill_LightPlacebo extends BardSkill
 			{
 				final MOB target=(MOB)affected;
 				final int healing=CMath.s_int(newMiscText.substring(1));
+				if(fakeHp < 0)
+				{
+					target.curState().adjHitPoints(healing, target.maxState());
+					synchronized(this)
+					{
+						baseHp = target.curState().getHitPoints();
+						fakeHp += healing;
+					}
+				}
+				else
 				if(doAdjustments())
 				{
 					target.curState().adjHitPoints(healing, target.maxState());
@@ -181,6 +204,12 @@ public class Skill_LightPlacebo extends BardSkill
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public void unInvoke()
+	{
+		super.unInvoke();
 	}
 
 	@Override
@@ -214,10 +243,21 @@ public class Skill_LightPlacebo extends BardSkill
 		return doAdjustments();
 	}
 
+	protected String getMessage(final MOB mob, final boolean auto)
+	{
+		return auto?L("A faint white glow surrounds <T-NAME>."):
+			L("^S<S-NAME> @x1, delivering a light healing touch to <T-NAMESELF>.^?",prayWord(mob));
+	}
+
+	protected int generateHealing(final MOB mob, final int asLevel)
+	{
+		return CMLib.dice().roll(2,adjustedLevel(mob,asLevel),4);
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		final MOB target=this.getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget,false,true);
 		if(target==null)
 			return false;
 		final boolean undead=CMLib.flags().isUndead(target);
@@ -229,11 +269,12 @@ public class Skill_LightPlacebo extends BardSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,(!undead?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),auto?L("A faint white glow surrounds <T-NAME>."):L("^S<S-NAME> @x1, delivering a light healing touch to <T-NAMESELF>.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,(!undead?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),
+					getMessage(mob,auto));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				int healing=CMLib.dice().roll(2,adjustedLevel(mob,asLevel),4);
+				int healing=generateHealing(mob,asLevel);
 				final int oldHP=target.curState().getHitPoints();
 				Ability A=null;
 				for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
