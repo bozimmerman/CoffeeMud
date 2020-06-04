@@ -3510,6 +3510,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					return RawMaterial.CODES.MAT_NAME(((Item)P).material());
 				case RESOURCENAME:
 					return RawMaterial.CODES.NAME(((Item)P).material());
+				case LIQUIDREMAINING:
+					if(P instanceof Drink)
+						return ""+((Drink)P).liquidRemaining();
+					break;
 				default:
 					break;
 				}
@@ -3756,6 +3760,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					final int resourceCode = RawMaterial.CODES.FIND_IgnoreCase(value);
 					if(resourceCode > 0)
 						((Item)P).setMaterial(resourceCode);
+					return;
+				}
+				case LIQUIDREMAINING:
+				{
+					if(P instanceof Drink)
+						((Drink)P).setLiquidRemaining(CMath.s_parseIntExpression(value));
 					return;
 				}
 				default:

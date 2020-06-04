@@ -140,7 +140,8 @@ public interface GenericBuilder extends CMLibrary
 	public enum GenItemBonusFakeStats
 	{
 		MATERIALNAME,
-		RESOURCENAME
+		RESOURCENAME,
+		LIQUIDREMAINING
 	}
 
 	public enum GenPhysBonusFakeStats
