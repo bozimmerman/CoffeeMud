@@ -222,9 +222,9 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 							if(siegeCap<Integer.MAX_VALUE)
 							{
 								final int roomItemCount=getRoomSiegeCount(R);
-								if(roomItemCount>itemCap)
+								if(roomItemCount>siegeCap)
 								{
-									int totOver=roomItemCount-itemCap;
+									int totOver=roomItemCount-siegeCap;
 									Room targetRoom = null;
 									int smallestCount=Integer.MAX_VALUE/2;
 									for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
@@ -410,7 +410,8 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 								return false;
 							}
 						}
-						if(siegeCap<Integer.MAX_VALUE)
+						if((siegeCap<Integer.MAX_VALUE)
+						&&(CMLib.combat().isAShipSiegeWeapon((Item)msg.target())))
 						{
 							int soFar=0;
 							for(int i=0;i<R.numItems();i++)
