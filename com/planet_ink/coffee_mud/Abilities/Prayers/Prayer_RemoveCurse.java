@@ -63,7 +63,7 @@ public class Prayer_RemoveCurse extends Prayer implements MendingSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;
 	}
 
 	@Override
