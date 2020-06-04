@@ -144,6 +144,11 @@ public class Spell_FindFamiliar extends Spell
 			{
 				mob.location().send(mob,msg);
 				final MOB target = determineMonster(mob, mob.phyStats().level());
+				target.bringToLife(mob.location(),true);
+				CMLib.beanCounter().clearZeroMoney(target,null);
+				target.setMoneyVariation(0);
+				target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
+				mob.location().recoverRoomStats();
 				if(target.isInCombat())
 					target.makePeace(true);
 				CMLib.commands().postFollow(target,mob,true);
@@ -254,11 +259,6 @@ public class Spell_FindFamiliar extends Spell
 		A.makeNonUninvokable();
 		A.makeLongLasting();
 		newMOB.text();
-		newMOB.bringToLife(caster.location(),true);
-		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		newMOB.setMoneyVariation(0);
-		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
-		caster.location().recoverRoomStats();
 		return(newMOB);
 
 	}

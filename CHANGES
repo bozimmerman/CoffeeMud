@@ -36,6 +36,7 @@
  34. Siplet and MUDGrinder and fakedb now supports UTF-8
  35. Crafting recipes can now include behaviors as well as effects.
  36. New spells: Planar Distortion, Improved Planar Distortion
+ 37. EXAMINE can now see clothing layers with sufficient level and int.
 # Build 5.9.9 Release 12/18/2019
   * Minor database change: CMQUESID in CMQUESTS, CMRCID in CMGRAC, CMPKEY in CMPDAT enlarged.  Mostly optional.
   1. New prayers: empower unholy weapon, morph unholy weapon, faithful hellhound, discipline

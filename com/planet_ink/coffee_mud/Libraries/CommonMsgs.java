@@ -974,6 +974,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 		else
 			level=""+item.phyStats().level();
+		final int mobLevel = (mob!=null)?mob.phyStats().level():0;
+		final int mobInt = (mob!=null)?mob.charStats().getStat(CharStats.STAT_INTELLIGENCE):0;
 		double divider=100.0;
 		if(item.phyStats().weight()<10)
 			divider=4.0;
@@ -984,13 +986,13 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(item.phyStats().weight()<150)
 			divider=20.0;
 		String weight=null;
-		if((mob!=null)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<10))
+		if((mob!=null)&&(mobInt<10))
 		{
 			final double l=Math.floor(CMath.div(item.phyStats().level(),divider));
 			weight=(int)Math.round(CMath.mul(l,divider))+"-"+(int)Math.round(CMath.mul(l,divider)+(divider-1.0));
 		}
 		else
-		if((mob!=null)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<18))
+		if((mob!=null)&&(mobInt<18))
 		{
 			divider=divider/2.0;
 			final double l=Math.floor(CMath.div(item.phyStats().level(),divider));
@@ -1021,10 +1023,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			&&(!CMLib.flags().isABonusItems(item))
 			&&(item.rawSecretIdentity().length()>0)
 			&&(item.basePhyStats().weight()>1)
-			&&((mob==null)||(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>3)))
+			&&((mob==null)||(mobInt>3)))
 				response.append(L("It appears to be a bundle of `@x1`.  ",item.rawSecretIdentity()));
 
-			if((mob!=null)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<10))
+			if((mob!=null)&&(mobInt<10))
 				response.append(L("It is mostly made of a kind of @x1.  ",RawMaterial.Material.findByMask(item.material()&RawMaterial.MATERIAL_MASK).noun()));
 			else
 			if((item instanceof RawMaterial)&&(((RawMaterial)item).getSubType().length()>0))
@@ -1042,7 +1044,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			}
 			if((item instanceof Container)
 			&&(((Container)item).capacity()>=item.phyStats().weight())
-			&&((mob==null)||(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>7)))
+			&&((mob==null)||(mobInt>7)))
 			{
 				final Container C=(Container)item;
 				String suffix="";
@@ -1055,10 +1057,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					response.append(L("It is a container@x1.  ",suffix));
 				else
 					response.append(L("It is a container@x1 that can hold @x2.  ",suffix,this.makeContainerTypes(C)));
-				if((mob==null)||(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10))
+				if((mob==null)||(mobInt>10))
 				{
 
-					final double error = 5.0*(18.0 - ((mob==null)?18:mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)));
+					final double error = 5.0*(18.0 - ((mob==null)?18:mobInt));
 					int finalCap = C.capacity() - C.basePhyStats().weight();
 					if((error > 0) && (finalCap > 0))
 					{
@@ -1073,7 +1075,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			if((item instanceof Drink)
 			&&(!CMath.bset(item.material(), RawMaterial.MATERIAL_LIQUID))
 			&&(!CMath.bset(item.material(), RawMaterial.MATERIAL_GAS))
-			&&((mob==null)||(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>4)))
+			&&((mob==null)||(mobInt>4)))
 			{
 				if(!((Drink)item).containsDrink())
 					response.append(L("It is empty.  "));
@@ -1163,7 +1165,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			}
 			else
 			if((item instanceof Food)
-			&&((mob==null)||(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>4))
+			&&((mob==null)||(mobInt>4))
 			&&(((Food)item).nourishment()>0))
 			{
 				final int remain = ((Food)item).nourishment();
@@ -1234,7 +1236,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			else
 			if(item instanceof Weapon)
 			{
-				if((mob==null)||mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10)
+				if((mob==null)||mobInt>10)
 				{
 					response.append(L("It is a "));
 					if((item.rawLogicalAnd())&&CMath.bset(item.rawProperLocationBitmap(),Wearable.WORN_WIELD|Wearable.WORN_HELD))
@@ -1248,7 +1250,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			}
 			else
 			if((item instanceof Armor)
-			&&((mob==null)||mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10))
+			&&((mob==null)||mobInt>10))
 			{
 				if(item.phyStats().height()>0)
 					response.append(L(" It is a size @x1, and is ",""+item.phyStats().height()));
@@ -1280,6 +1282,17 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				if(response.toString().endsWith(" or "))
 					response.delete(response.length()-4,response.length());
 				response.append(".  ");
+				if(mobLevel >= item.phyStats().level()+CMath.div(100.0, mobInt<=0?1:mobInt))
+				{
+					final short layer=((Armor)item).getClothingLayer();
+					if(layer!=0)
+					{
+						if(layer < 0)
+							response.append("It is worn "+(-layer)+" layers beneath other closing.  ");
+						else
+							response.append("It is worn "+(layer)+" layers over other closing.  ");
+					}
+				}
 			}
 		}
 		return response.toString();
