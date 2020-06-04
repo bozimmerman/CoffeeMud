@@ -1378,13 +1378,28 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		for(int r=0;r<data.length;r++)
 		{
 			final Building buildCode = Building.valueOf(data[r][DAT_BUILDCODE]);
-			if((data[r][0].toUpperCase().startsWith(allWords))
+			if((data[r][0].toUpperCase().equals(allWords))
 			&&((data[r][DAT_BUILDERMASK].length()==0)
 				||(CMLib.masking().maskCheck(data[r][DAT_BUILDERMASK], mob, false))
 				||CMSecurity.isASysOp(mob)))
 			{
 				doingCode=buildCode;
 				recipe = data[r];
+			}
+		}
+		if((doingCode==null) || (recipe == null))
+		{
+			for(int r=0;r<data.length;r++)
+			{
+				final Building buildCode = Building.valueOf(data[r][DAT_BUILDCODE]);
+				if((data[r][0].toUpperCase().startsWith(allWords))
+				&&((data[r][DAT_BUILDERMASK].length()==0)
+					||(CMLib.masking().maskCheck(data[r][DAT_BUILDERMASK], mob, false))
+					||CMSecurity.isASysOp(mob)))
+				{
+					doingCode=buildCode;
+					recipe = data[r];
+				}
 			}
 		}
 		if((doingCode==null) || (recipe == null))
