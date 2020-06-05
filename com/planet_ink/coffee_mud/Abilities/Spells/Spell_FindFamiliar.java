@@ -164,9 +164,8 @@ public class Spell_FindFamiliar extends Spell
 		return success;
 	}
 
-	public MOB determineMonster(final MOB caster, final int level)
+	protected MOB determineMonster(final MOB caster, final int level)
 	{
-
 		final MOB newMOB=CMClass.getMOB("GenMOB");
 		newMOB.basePhyStats().setAbility(7);
 		newMOB.basePhyStats().setLevel(level);

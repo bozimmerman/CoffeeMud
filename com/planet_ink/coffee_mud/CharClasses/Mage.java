@@ -358,6 +358,11 @@ public class Mage extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_Delude",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_ResistPetrification",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_Summon",false);
+		if(!ID().equals("Transmuter"))
+		{
+			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_FindPlanarFamiliar", ID().equals("Conjurer")?25:0, "", false,
+					 SecretFlag.MASKED, null, "+PLANE \"-Prime Material\"");
+		}
 		// level 19
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Spell_FleshStone",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Spell_Forget",false);
@@ -418,7 +423,8 @@ public class Mage extends StdCharClass
 
 		if(!ID().equals("Illusionist"))
 		{
-			CMLib.ableMapper().addCharAbilityMapping(ID(),27,"Spell_PlanarTimer", 0, "", false, SecretFlag.MASKED, null, "+PLANE \"-Prime Material\"");
+			CMLib.ableMapper().addCharAbilityMapping(ID(),27,"Spell_PlanarTimer", 0, "", false, SecretFlag.MASKED,
+													 null, "+PLANE \"-Prime Material\"");
 		}
 
 		if(!ID().equals("Conjurer"))
