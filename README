@@ -36,7 +36,10 @@ build.xml         : ANT build file for coffeemud binaries
 
 CoffeeMud:
 coffeemud.ini     : main coffeemud server configuration file
-changelog.txt     : high-level list of changes per version
+CHANGES           : high-level list of changes per version
+NOTICE            : copyright notice information
+LICENSE           : Apache 2.0 license
+TODO              : meaningless text file with some ideas
 
 Directories in this directory:
 
