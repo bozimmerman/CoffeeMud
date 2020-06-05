@@ -339,7 +339,8 @@ public class Druid_ShapeShift extends StdAbility
 		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A!=null)&&(A instanceof Druid_ShapeShift))
+			if((A!=null)
+			&&((A instanceof Druid_ShapeShift)||(A instanceof Druid_Krakenform)))
 				return true;
 		}
 		return false;
@@ -373,7 +374,8 @@ public class Druid_ShapeShift extends StdAbility
 		for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A!=null)&&(A instanceof Druid_ShapeShift))
+			if((A!=null)
+			&&((A instanceof Druid_ShapeShift)||(A instanceof Druid_Krakenform)))
 			{
 				A.unInvoke();
 				return true;
@@ -392,7 +394,7 @@ public class Druid_ShapeShift extends StdAbility
 		{
 			final Ability A=mob.fetchAbility(a);
 			if((A!=null)
-			&&(A instanceof Druid_ShapeShift))
+			&&((A instanceof Druid_ShapeShift)||(A instanceof Druid_Krakenform)))
 			{
 				final Druid_ShapeShift D=(Druid_ShapeShift)A;
 				allShapeshifts.addElement(D);

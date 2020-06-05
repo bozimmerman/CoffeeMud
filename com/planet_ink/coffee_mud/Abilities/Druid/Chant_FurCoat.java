@@ -129,7 +129,7 @@ public class Chant_FurCoat extends Chant
 			return true;
 
 		if((msg.source()==theArmor.owner())
-		&&(msg.tool() instanceof Druid_ShapeShift))
+		&&((msg.tool() instanceof Druid_ShapeShift)||(msg.tool() instanceof Druid_Krakenform)))
 		{
 			unInvoke();
 			return true;
