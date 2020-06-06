@@ -79,8 +79,8 @@ public class Spell_Portal extends Spell
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
-	Room newRoom=null;
-	Room oldRoom=null;
+	protected volatile Room newRoom=null;
+	protected volatile Room oldRoom=null;
 
 	@Override
 	public void unInvoke()
