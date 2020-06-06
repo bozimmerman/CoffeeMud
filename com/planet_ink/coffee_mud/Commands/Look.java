@@ -200,9 +200,15 @@ public class Look extends StdCommand
 				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=CMProps.Int.EXVIEW_MIXED)!=mob.isAttributeSet(MOB.Attrib.BRIEF))
 					exitMsg.setValue(CMMsg.MASK_OPTIMIZE);
 				msg.addTrailerMsg(exitMsg);
+				if(R.okMessage(mob,msg))
+				{
+					exitMsg.setTarget(msg.target());
+					((Room)msg.target()).send(mob,msg);
+				}
 			}
+			else
 			if(R.okMessage(mob,msg))
-				R.send(mob,msg);
+				((Room)msg.target()).send(mob,msg);
 		}
 		return false;
 	}
