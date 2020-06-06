@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -136,6 +137,16 @@ public class Spell_Geas extends Spell
 		{
 			if((STEPS!=null)&&((STEPS.size()==0)||(STEPS.isDone())))
 			{
+				if(CMSecurity.isDebugging(DbgFlag.GEAS))
+				{
+					if(STEPS==null)
+						Log.debugOut("Done GEAS because: null STEPS");
+					else
+					if(STEPS.size()==0)
+						Log.debugOut("Done GEAS because: empty STEPS");
+					else
+						Log.debugOut("Done GEAS because: done did STEPS");
+				}
 				if(((MOB)ticking).isInCombat())
 					return true; // let them finish fighting.
 				unInvoke();

@@ -37,6 +37,7 @@
  35. Crafting recipes can now include behaviors as well as effects.
  36. New spells: Planar Distortion, Improved Planar Distortion, Find Planar Familiar, Planar Ward
  37. EXAMINE can now see clothing layers with sufficient level and int.
+ 38. New spells: True Name
 # Build 5.9.9 Release 12/18/2019
   * Minor database change: CMQUESID in CMQUESTS, CMRCID in CMGRAC, CMPKEY in CMPDAT enlarged.  Mostly optional.
   1. New prayers: empower unholy weapon, morph unholy weapon, faithful hellhound, discipline

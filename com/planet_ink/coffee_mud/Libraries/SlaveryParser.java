@@ -997,7 +997,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 					return "HOLD";
 				}
 				step=Step.EVAL;
-				return "Can you help me "+CMParms.combine(cur,1)+"?";
+				return "0Can you help me "+CMParms.combine(cur,1)+"?";
 			}
 			else
 			{

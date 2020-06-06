@@ -96,5 +96,8 @@ public class Diviner extends SpecialistMage
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Spell_DetectAmbush",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_TrueSight",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_FutureDeath",25,true);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Spell_TrueName", 25, "", false,
+				 SecretFlag.MASKED, null, "+PLANE \"-Prime Material\"");
 	}
 }
