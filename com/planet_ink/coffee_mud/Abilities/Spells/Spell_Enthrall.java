@@ -239,17 +239,15 @@ public class Spell_Enthrall extends Spell
 		if(levelDiff<0)
 			levelDiff=0;
 
-		if(!CMLib.flags().canSpeak(mob))
+		if(!CMLib.flags().isSeeable(mob))
 		{
-			mob.tell(L("You can't speak!"));
+			mob.tell(L("You can't be seen!"));
 			return false;
 		}
 
-		// if they can't hear the sleep spell, it
-		// won't happen
-		if((!auto)&&(!CMLib.flags().canBeHeardSpeakingBy(mob,target)))
+		if((!auto)&&(!CMLib.flags().canBeSeenBy(mob,target)))
 		{
-			mob.tell(L("@x1 can't hear your words.",target.charStats().HeShe()));
+			mob.tell(L("@x1 can't see you.",target.charStats().HeShe()));
 			return false;
 		}
 

@@ -88,5 +88,7 @@ public class Enchanter extends SpecialistMage
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Spell_MassHold",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_RogueLimb",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_Permanency",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Spell_PlanarEnthrall", 25, "", false,
+				 SecretFlag.MASKED, null, "+PLANE \"-Prime Material\"");
 	}
 }
