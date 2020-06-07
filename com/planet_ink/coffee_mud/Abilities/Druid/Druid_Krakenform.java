@@ -97,6 +97,120 @@ public class Druid_Krakenform extends StdAbility
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
+		affectableStats.setRaceName("Kraken");
+	}
+	
+	protected final static String ammoType="tentacle";
+
+	protected SailingShip ship = null;
+	protected SailingShip getShip()
+	{
+		if(ship == null)
+		{
+			final Physical affected=this.affected;
+			if(affected instanceof MOB)
+			{
+				final MOB mob=(MOB)affected;
+				final Room R=mob.location();
+				ship=(SailingShip)CMClass.getItem("GenSailingShip");
+				ship.basePhyStats().setAbility((int)Math.round(Math.ceil(CMath.div(adjustedLevel(mob,0),15.0))));
+				ship.recoverPhyStats();
+				ship.setSavable(false);
+				ship.setAnchorDown(false);
+				ship.setName("a kraken");
+				ship.setStat("SPECIAL_NOUN_SHIP", "kraken");
+				ship.setStat("SPECIAL_VERB_SAIL","swim");
+				ship.setStat("SPECIAL_VERB_SAILING","swimming");
+				ship.setStat("SPECIAL_DISABLE_CMDS", "anchor,throw,tender");
+				if(ship instanceof PrivateProperty)
+					((PrivateProperty)ship).setOwnerName(mob.Name());
+				final Area A=ship.getShipArea();
+				final Room deckR=CMClass.getLocale("ShipDeck");
+				deckR.setRoomID(A.getNewRoomID(R,-1));
+				deckR.setArea(A);
+				deckR.bringMobHere(mob, false);
+				AmmunitionWeapon weap1=(AmmunitionWeapon)CMClass.getWeapon("GenSiegeWeapon");
+				weap1.setName("a tentacle");
+				weap1.setAmmoCapacity(1);
+				weap1.setAmmoRemaining(1);
+				weap1.setAmmunitionType(ammoType);
+				weap1.basePhyStats().setDamage(20);
+				weap1.recoverPhyStats();
+				CMLib.flags().setGettable(weap1, false);
+				deckR.addItem(weap1);
+				AmmunitionWeapon weap2=(AmmunitionWeapon)weap1.copyOf();
+				deckR.addItem(weap2);
+				final int numRooms = (int)Math.round(Math.ceil(CMath.div(mob.phyStats().level(),9)))-1;
+				// this is dumb, but it's the only way to give hit points
+				for(int i=0;i<numRooms;i++)
+				{
+					final Room hpR=CMClass.getLocale("WoodRoom");
+					hpR.setRoomID(A.getNewRoomID(R,-1));
+					hpR.setArea(A);
+				}
+				R.addItem(ship);
+				CMLib.map().registerWorldObjectLoaded(A, R, ship);
+			}
+		}
+		return ship;
+	}
+	
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost, msg))
+			return false;
+		if(msg.target() instanceof Room)
+		{
+			final Physical P=affected;
+			if((P instanceof MOB)
+			&&(((MOB)P).location()==msg.target()))
+				msg.setTarget(CMLib.map().roomLocation(getShip()));
+		}
+		else
+		if((msg.sourceMinor()==CMMsg.TYP_HUH)
+		&&(msg.source()==affected)
+		&&(msg.targetMessage()!=null))
+		{
+			final List<String> cmds=CMParms.parse(msg.targetMessage());
+			if(cmds.size()==0)
+				return true;
+			final String word=cmds.get(0).toUpperCase();
+			int dir=CMLib.directions().getDirectionCode(word);
+			if(dir >= 0)
+			{
+				final SailingShip ship=getShip();
+				if(ship != null)
+				{
+					msg.setTargetMessage("SAIL "+word);
+					if(ship.okMessage(myHost, msg))
+						ship.executeMsg(myHost, msg);
+					msg.setTargetMessage("do nothing");
+					return false;
+				}
+			}
+			else
+			if(word.equalsIgnoreCase("lower"))
+				return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+		if((msg.target()==ship)
+		&&(msg.targetMinor()==CMMsg.TYP_CAUSESINK)
+		&&(affected instanceof MOB))
+		{
+			final MOB mob=(MOB)affected;
+			if(mob != null)
+			{
+				unInvoke(); // revert them
+				CMLib.combat().postDeath(msg.source(), mob, msg);
+			}
+		}
 	}
 
 	@Override
@@ -109,6 +223,16 @@ public class Druid_Krakenform extends StdAbility
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob.location()!=null))
 		{
+			if(ship != null)
+			{
+				final Room shipR=CMLib.map().roomLocation(ship);
+				if(shipR != null)
+				{
+					shipR.bringMobHere(mob, true);
+					ship.destroy();
+					ship=null;
+				}
+			}
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> revert(s) to @x1 form.",mob.charStats().raceName().toLowerCase()));
 		}
 	}
@@ -126,7 +250,7 @@ public class Druid_Krakenform extends StdAbility
 		}
 		return false;
 	}
-
+	
 	@Override
 	public int castingQuality(final MOB mob, final Physical target)
 	{
@@ -143,6 +267,38 @@ public class Druid_Krakenform extends StdAbility
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		final SailingShip ship=this.getShip();
+		if(ship != null)
+		{
+			ship.setAnchorDown(false);
+			if(ship.isInCombat())
+			{
+				final Area A=ship.getShipArea();
+				if(A!=null)
+				{
+					for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+					{
+						final Room R = r.nextElement();
+						for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
+						{
+							final Item I=i.nextElement();
+							if((I instanceof AmmunitionWeapon)
+							&&(ammoType.equalsIgnoreCase(((AmmunitionWeapon)I).ammunitionType()))
+							&&(!CMLib.flags().isGettable(I)))
+								((AmmunitionWeapon)I).setAmmoRemaining(((AmmunitionWeapon)I).ammunitionCapacity());
+						}
+					}
+				}
+			}
+		}
+		return true;
+	}
+	
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -178,8 +334,9 @@ public class Druid_Krakenform extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> take(s) on Kraken form."));
-				beneficialAffect(mob,mob,asLevel,Ability.TICKS_FOREVER);
-				CMLib.utensils().confirmWearability(mob);
+				Druid_Krakenform form = (Druid_Krakenform)beneficialAffect(mob,mob,asLevel,Ability.TICKS_FOREVER);
+				if(form != null)
+					form.getShip();
 			}
 		}
 		else

@@ -66,6 +66,11 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 	protected int					maxHullPoints	= -1;
 	protected volatile int			lastSpamCt		= 0;
 	protected volatile String		lastSpamMsg		= "";
+	
+	protected String		verb_sail		= "sail";
+	protected String		verb_sailing	= "sailing";
+	protected String		noun_ship		= "ship";
+	protected Set<String>	disableCmds		= new HashSet<String>();
 
 	public GenSailingShip()
 	{
@@ -266,7 +271,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 				final String dir=CMLib.directions().getDirectionName(targetShip.directionFacing);
 				final String speed=""+targetShip.getShipSpeed();
 				final String dirFromYou = CMLib.directions().getDirectionName(Directions.getRelative11Directions(myCoords, targetCoords));
-				return L("@x1 is @x2 of you sailing @x3 at a speed of @x4 and a distance of @x5.",targetShip.name(),dirFromYou,dir,speed,dist);
+				return L("@x1 is @x2 of you "+verb_sailing+" @x3 at a speed of @x4 and a distance of @x5.",targetShip.name(),dirFromYou,dir,speed,dist);
 			}
 		}
 		return "";
@@ -523,7 +528,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 					||(this.targetedShip==null)
 					||(!thisRoom.isContent((Item)this.targetedShip)))
 					{
-						msg.source().tell(L("You ship must be targeting an enemy to aim weapons."));
+						msg.source().tell(L("Your "+noun_ship+" must be targeting an enemy to aim weapons."));
 						return false;
 					}
 					if(cmds.size()<3)
@@ -566,7 +571,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 							final int direction = ((GenSailingShip)this.targetedShip).directionFacing;
 							if(targetCoords == null)
 							{
-								msg.source().tell(L("You ship must be targeting an enemy to aim weapons."));
+								msg.source().tell(L("You must be targeting an enemy to aim weapons."));
 								return false;
 							}
 							distance = this.getTacticalDistance(this.targetedShip);
@@ -720,6 +725,8 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 				case WEIGH_ANCHOR:
 				case RAISE_ANCHOR:
 				{
+					if(disableCmds.contains("ANCHOR"))
+						return true;
 					if(!securityCheck(msg.source()))
 					{
 						msg.source().tell(L("The captain does not permit you."));
@@ -727,7 +734,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 					}
 					if(safetyMove())
 					{
-						msg.source().tell(L("The ship has moved!"));
+						msg.source().tell(L("The "+noun_ship+" has moved!"));
 						return false;
 					}
 					final Room R=CMLib.map().roomLocation(this);
@@ -747,6 +754,8 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 				}
 				case LOWER_ANCHOR:
 				{
+					if(disableCmds.contains("ANCHOR"))
+						return true;
 					if(!securityCheck(msg.source()))
 					{
 						msg.source().tell(L("The captain does not permit you."));
@@ -754,7 +763,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 					}
 					if(safetyMove())
 					{
-						msg.source().tell(L("The ship has moved!"));
+						msg.source().tell(L("The "+noun_ship+" has moved!"));
 						return false;
 					}
 					final Room R=CMLib.map().roomLocation(this);
@@ -782,12 +791,12 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 					}
 					if(CMLib.flags().isFalling(this) || ((this.subjectToWearAndTear() && (usesRemaining()<=0))))
 					{
-						msg.source().tell(L("The ship won't seem to move!"));
+						msg.source().tell(L("The "+noun_ship+" won't seem to move!"));
 						return false;
 					}
 					if(safetyMove())
 					{
-						msg.source().tell(L("The ship has moved!"));
+						msg.source().tell(L("The "+noun_ship+" has moved!"));
 						return false;
 					}
 					if((courseDirection >=0)||(courseDirections.size()>0))
@@ -800,7 +809,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 					final int dir=CMLib.directions().getCompassDirectionCode(secondWord);
 					if(dir<0)
 					{
-						msg.source().tell(L("Steer the ship which direction?"));
+						msg.source().tell(L("Steer the "+noun_ship+" which direction?"));
 						return false;
 					}
 					final Room R=CMLib.map().roomLocation(this);
@@ -831,7 +840,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 						directionFacing = getDirectionFacing(dir);
 						if(dir == this.directionFacing)
 						{
-							msg.source().tell(L("Your ship is already sailing @x1.",dirName));
+							msg.source().tell(L("Your "+noun_ship+" is already "+verb_sailing+" @x1.",dirName));
 							return false;
 						}
 					}
@@ -851,12 +860,12 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 					}
 					if(CMLib.flags().isFalling(this) || ((this.subjectToWearAndTear() && (usesRemaining()<=0))))
 					{
-						msg.source().tell(L("The ship won't seem to move!"));
+						msg.source().tell(L("The "+noun_ship+" won't seem to move!"));
 						return false;
 					}
 					if(safetyMove())
 					{
-						msg.source().tell(L("The ship has moved!"));
+						msg.source().tell(L("The "+noun_ship+" has moved!"));
 						return false;
 					}
 					if((courseDirection >=0)||(courseDirections.size()>0))
@@ -875,13 +884,13 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 					if(((msg.source().location().domainType()&Room.INDOORS)==Room.INDOORS)
 					&&(msg.source().isPlayer()))
 					{
-						msg.source().tell(L("You must be on deck to sail your ship."));
+						msg.source().tell(L("You must be on deck to "+verb_sail+" your ship."));
 						return false;
 					}
 					final int dir=CMLib.directions().getCompassDirectionCode(secondWord);
 					if(dir<0)
 					{
-						msg.source().tell(L("Sail the ship which direction?"));
+						msg.source().tell(L(""+CMStrings.capitalizeFirstLetter(verb_sail)+" the "+noun_ship+" which direction?"));
 						return false;
 					}
 					if(!this.amInTacticalMode())
@@ -900,7 +909,8 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 						directionFacing = getDirectionFacing(dir);
 						if(dir != this.directionFacing)
 						{
-							msg.source().tell(L("When in tactical mode, your ship can only SAIL @x1.  Use COURSE for more complex maneuvers, or STEER.",dirName));
+							msg.source().tell(L("When in tactical mode, your "+noun_ship+" can only "+verb_sail.toUpperCase()+
+											    " @x1.  Use COURSE for more complex maneuvers, or STEER.",dirName));
 							return false;
 						}
 					}
@@ -921,12 +931,12 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 					}
 					if(CMLib.flags().isFalling(this) || ((this.subjectToWearAndTear() && (usesRemaining()<=0))))
 					{
-						msg.source().tell(L("The ship won't seem to move!"));
+						msg.source().tell(L("The "+noun_ship+" won't seem to move!"));
 						return false;
 					}
 					if(safetyMove())
 					{
-						msg.source().tell(L("The ship has moved!"));
+						msg.source().tell(L("The "+noun_ship+" has moved!"));
 						return false;
 					}
 					if((courseDirection >=0)||(courseDirections.size()>0))
@@ -959,7 +969,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 						final String dirFacingName = CMLib.directions().getDirectionName(directionFacing);
 						if(dirIndex >= cmds.size())
 						{
-							msg.source().tell(L("Your ship is currently sailing @x1. To set a course, you must specify up to @x2 directions of travel, "
+							msg.source().tell(L("Your "+noun_ship+" is currently "+verb_sailing+" @x1. To set a course, you must specify up to @x2 directions of travel, "
 												+ "of which only the last may be something other than @x3.",dirFacingName,""+speed,dirFacingName));
 							return false;
 						}
@@ -984,7 +994,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 								{
 									if(getLowestTacticalDistanceFromThis() >= R.maxRange())
 									{
-										msg.source().tell(L("There doesn't look to be anywhere you can sail in that direction."));
+										msg.source().tell(L("There doesn't look to be anywhere you can "+verb_sail+" in that direction."));
 										return false;
 									}
 								}
@@ -1105,7 +1115,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 					this.courseDirections.clear();
 					this.courseDirections.add(Integer.valueOf(-1));
 					this.courseDirection = dir;
-					this.announceActionToDeck(msg.source(),L("<S-NAME> start(s) sailing @x1.",CMLib.directions().getDirectionName(dir)));
+					this.announceActionToDeck(msg.source(),L("<S-NAME> start(s) "+verb_sailing+" @x1.",CMLib.directions().getDirectionName(dir)));
 				}
 				return false;
 			}
@@ -1128,7 +1138,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 					this.courseDirections.clear();
 					this.courseDirections.add(Integer.valueOf(-1));
 					this.courseDirection = dir;
-					this.announceActionToDeck(msg.source(),L("<S-NAME> start(s) steering the ship @x1.",CMLib.directions().getDirectionName(dir)));
+					this.announceActionToDeck(msg.source(),L("<S-NAME> start(s) steering the "+noun_ship+" @x1.",CMLib.directions().getDirectionName(dir)));
 				}
 				return false;
 			}
@@ -1229,6 +1239,8 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 			}
 			case 'T': // throwing things to another ship, like a grapple
 			{
+				if(disableCmds.contains("THROW"))
+					return true;
 				final List<String> parsedFail = CMParms.parse(msg.targetMessage());
 				final String cmd=parsedFail.get(0).toUpperCase();
 				if(("THROW".startsWith(cmd))
@@ -1321,6 +1333,8 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 		&&(msg.target() instanceof Room)
 		&&(msg.target() == owner()))
 		{
+			if(disableCmds.contains("LEAVE"))
+				return false;
 			if((msg.source().riding() != null)
 			&&(this.targetedShip == msg.source().riding())
 			&&(CMLib.flags().isWaterWorthy(msg.source().riding())))
@@ -1351,7 +1365,11 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 		&&(msg.othersMessage()!=null)
 		&&(msg.othersMessage().indexOf("<S-NAME>")>=0)
 		&&(msg.othersMessage().indexOf(L(CMLib.flags().getPresentDispositionVerb(msg.source(),CMFlagLibrary.ComingOrGoing.ARRIVES)))>=0))
+		{
+			if(disableCmds.contains("LEAVE"))
+				return false;
 			msg.setOthersMessage(L("<S-NAME> disembark(s) @x1.",Name()));
+		}
 		else
 		if((msg.sourceMinor()==CMMsg.TYP_HUH)
 		&&(msg.targetMessage()!=null)
@@ -1375,6 +1393,8 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 					break;
 				case TENDER:
 				{
+					if(disableCmds.contains("TENDER"))
+						return false;
 					if(cmds.size()==1)
 					{
 						msg.source().tell(L("You must specify another ship to offer to board."));
@@ -2051,7 +2071,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 				else
 				if((this.courseDirection >= 0)
 				&&(getTopCourse()>=0))
-					visualCondition.append(L("^H@x1 is under full sail, traveling @x2^.^?",CMStrings.capitalizeFirstLetter(name(msg.source())), CMLib.directions().getDirectionName(courseDirection & 127)));
+					visualCondition.append(L("^H@x1 is "+verb_sailing+" @x2^.^?",CMStrings.capitalizeFirstLetter(name(msg.source())), CMLib.directions().getDirectionName(courseDirection & 127)));
 				if(this.subjectToWearAndTear() && (usesRemaining() <= 100))
 				{
 					final double pct=(CMath.div(usesRemaining(),100.0));
@@ -2091,7 +2111,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 					else
 					if((this.courseDirection >= 0)
 					&&(getTopCourse()>=0))
-						visualCondition.append(L("\n\r^H@x1 is under full sail, traveling @x2^.^?",name(msg.source()), CMLib.directions().getDirectionName(courseDirection & 127)));
+						visualCondition.append(L("\n\r^H@x1 is "+verb_sailing+" @x2^.^?",name(msg.source()), CMLib.directions().getDirectionName(courseDirection & 127)));
 					if(this.subjectToWearAndTear() && (usesRemaining() <= 100) && (this.targetedShip != null))
 					{
 						final double pct=(CMath.div(usesRemaining(),100.0));
@@ -2615,7 +2635,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 				&&(destRoom.domainType()!=Room.DOMAIN_INDOORS_CAVE_SEAPORT)
 				&&(destRoom.domainType()!=Room.DOMAIN_INDOORS_SEAPORT))
 				{
-					announceToShip(L("As there is no where to sail @x1, <S-NAME> meanders along the waves.",CMLib.directions().getInDirectionName(direction)));
+					announceToShip(L("As there is no where to "+verb_sail+" @x1, <S-NAME> meanders along the waves.",CMLib.directions().getInDirectionName(direction)));
 					courseDirections.clear();
 					return SailResult.CANCEL;
 				}
@@ -2632,8 +2652,8 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 				try
 				{
 					final boolean isSneaking = CMLib.flags().isSneaking(this);
-					final String sailEnterStr = isSneaking ? null : L("<S-NAME> sail(s) in from @x1.",otherDirectionName);
-					final String sailAwayStr = isSneaking ? null : L("<S-NAME> sail(s) @x1.",directionName);
+					final String sailEnterStr = isSneaking ? null : L("<S-NAME> "+verb_sail+"(s) in from @x1.",otherDirectionName);
+					final String sailAwayStr = isSneaking ? null : L("<S-NAME> "+verb_sail+"(s) @x1.",directionName);
 					final CMMsg enterMsg=CMClass.getMsg(mob,destRoom,exit,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,sailEnterStr);
 					final CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,sailAwayStr);
 					if((exit.okMessage(mob,enterMsg))
@@ -2668,7 +2688,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 			}
 			else
 			{
-				announceToShip(L("As there is no where to sail @x1, <S-NAME> meanders along the waves.",CMLib.directions().getInDirectionName(direction)));
+				announceToShip(L("As there is no where to "+verb_sail+" @x1, <S-NAME> meanders along the waves.",CMLib.directions().getInDirectionName(direction)));
 				courseDirections.clear();
 				return SailResult.CANCEL;
 			}
@@ -2738,7 +2758,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 	{
 		directionFacing = dir;
 		final String outerStr;
-		final String innerStr = L("<S-NAME> sail(s) @x1 @x2.",name(mob),CMLib.directions().getDirectionName(dir));
+		final String innerStr = L("<S-NAME> "+verb_sail+"(s) @x1 @x2.",name(mob),CMLib.directions().getDirectionName(dir));
 		if(CMLib.flags().isSneaking(this))
 			outerStr=null;
 		else
@@ -3163,8 +3183,29 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 			setRideString(val);
 			break;
 		default:
-			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+		{
+			final String up_code = (""+code).toUpperCase();
+			if(up_code.startsWith("SPECIAL_"))
+			{
+				if(up_code.equals("SPECIAL_NOUN_SHIP"))
+					noun_ship=val;
+				else
+				if(up_code.equals("SPECIAL_VERB_SAIL"))
+					verb_sail=val;
+				else
+				if(up_code.equals("SPECIAL_VERB_SAILING"))
+					verb_sailing=val;
+				else
+				if(up_code.equals("SPECIAL_DISABLE_CMDS"))
+				{
+					disableCmds.clear();
+					disableCmds.addAll(CMParms.parseCommas(val.toUpperCase().trim(),true));
+				}
+			}
+			else
+				CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
+		}
 		}
 	}
 
