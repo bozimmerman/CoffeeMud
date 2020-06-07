@@ -1630,6 +1630,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 		final Item targetedShip = (Item)this.targetedShip;
 		final Room shipCombatRoom = this.shipCombatRoom;
 		if((targetedShip != null)
+		&& (!targetedShip.amDestroyed())
 		&& (shipCombatRoom != null)
 		&& (shipCombatRoom.isContent(targetedShip))
 		&& (shipCombatRoom.isContent(this))
@@ -2112,7 +2113,9 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 					if((this.courseDirection >= 0)
 					&&(getTopCourse()>=0))
 						visualCondition.append(L("\n\r^H@x1 is "+verb_sailing+" @x2^.^?",name(msg.source()), CMLib.directions().getDirectionName(courseDirection & 127)));
-					if(this.subjectToWearAndTear() && (usesRemaining() <= 100) && (this.targetedShip != null))
+					if(this.subjectToWearAndTear() && (usesRemaining() <= 100) 
+					&& (this.targetedShip != null)
+					&& (!this.targetedShip.amDestroyed()))
 					{
 						final double pct=(CMath.div(usesRemaining(),100.0));
 						appendCondition(visualCondition,pct,name(msg.source()));
@@ -2840,8 +2843,18 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 	@Override
 	public boolean isInCombat()
 	{
-		return (targetedShip != null)
-			&& (shipCombatRoom != null);
+		final Physical targetedShip=this.targetedShip;
+		if((targetedShip != null)&& (shipCombatRoom != null))
+		{
+			if(targetedShip.amDestroyed())
+			{
+				this.clearTacticalMode();
+				return false;
+			}
+			return true;
+			
+		}
+		return false;
 	}
 
 	@Override
