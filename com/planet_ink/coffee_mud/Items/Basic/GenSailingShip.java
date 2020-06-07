@@ -2635,7 +2635,10 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 				&&(destRoom.domainType()!=Room.DOMAIN_INDOORS_CAVE_SEAPORT)
 				&&(destRoom.domainType()!=Room.DOMAIN_INDOORS_SEAPORT))
 				{
-					announceToShip(L("As there is no where to "+verb_sail+" @x1, <S-NAME> meanders along the waves.",CMLib.directions().getInDirectionName(direction)));
+					if(CMLib.flags().isWateryRoom(thisRoom))
+						announceToShip(L("As there is no where to "+verb_sail+" @x1, <S-NAME> meanders along the waves.",CMLib.directions().getInDirectionName(direction)));
+					else
+						announceToShip(L("As there is no where to "+verb_sail+" @x1, <S-NAME> go(es) nowhere.",CMLib.directions().getInDirectionName(direction)));
 					courseDirections.clear();
 					return SailResult.CANCEL;
 				}

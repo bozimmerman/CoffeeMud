@@ -91,6 +91,8 @@ public class Druid_Krakenform extends StdAbility
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setHeight(420);
+		affectableStats.setWeight(5000);
 	}
 
 	@Override
@@ -118,6 +120,7 @@ public class Druid_Krakenform extends StdAbility
 				ship.setSavable(false);
 				ship.setAnchorDown(false);
 				ship.setName("a kraken");
+				ship.setDisplayText("a kraken is here");
 				ship.setStat("SPECIAL_NOUN_SHIP", "kraken");
 				ship.setStat("SPECIAL_VERB_SAIL","swim");
 				ship.setStat("SPECIAL_VERB_SAILING","swimming");
