@@ -340,6 +340,8 @@ public class Druid_Krakenform extends StdAbility
 				Druid_Krakenform form = (Druid_Krakenform)beneficialAffect(mob,mob,asLevel,Ability.TICKS_FOREVER);
 				if(form != null)
 					form.getShip();
+				mob.recoverCharStats();
+				mob.recoverPhyStats();
 			}
 		}
 		else
