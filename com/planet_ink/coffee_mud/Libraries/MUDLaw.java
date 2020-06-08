@@ -632,15 +632,14 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		final LandTitle title=getLandTitle(room);
 		if(title==null)
 			return false;
-		if(title.getOwnerName()==null)
+		final String ownerName = title.getOwnerName();
+		if((ownerName==null)||(ownerName.length()==0))
 			return false;
-		if(title.getOwnerName().length()==0)
-			return false;
-		if(title.getOwnerName().equals(mob.Name()))
+		if(ownerName.equals(mob.Name()))
 			return true;
-		if((title.getOwnerName().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
+		if((ownerName.equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
 			return true;
-		final Pair<Clan,Integer> clanRole=mob.getClanRole(title.getOwnerName());
+		final Pair<Clan,Integer> clanRole=mob.getClanRole(ownerName);
 		if((clanRole!=null)&&(clanRole.first.getAuthority(clanRole.second.intValue(),Clan.Function.PROPERTY_OWNER)!=Clan.Authority.CAN_NOT_DO))
 			return true;
 		if(mob.amFollowing()!=null)
