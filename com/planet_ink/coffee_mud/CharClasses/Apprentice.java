@@ -150,6 +150,26 @@ public class Apprentice extends StdCharClass
 	}
 
 	@Override
+	public boolean qualifiesForThisClass(final MOB mob, final boolean quiet)
+	{
+		if(!super.qualifiesForThisClass(mob, quiet))
+			return false;
+		if(mob==null)
+			return true;
+		final CharClass curClass = mob.baseCharStats().getCurrentClass();
+		final String currentClassID=curClass.ID();
+		if(currentClassID.equalsIgnoreCase("StdCharClass")) // this is the starting character rule
+			return true;
+		if(mob.basePhyStats().level()>1)
+		{
+			if(!quiet)
+				mob.tell(L("You are beyond apprentice skill at this point."));
+			return false;
+		}
+		return true;
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
