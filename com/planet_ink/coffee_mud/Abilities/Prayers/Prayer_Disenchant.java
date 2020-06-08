@@ -95,15 +95,7 @@ public class Prayer_Disenchant extends Prayer
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
 				target.basePhyStats().setAbility(0);
-				target.delAllEffects(true);
-				if(target instanceof Wand)
-				{
-					((Wand)target).setSpell(null);
-					((Wand)target).setUsesRemaining(0);
-				}
-				else
-				if(target instanceof SpellHolder)
-					((SpellHolder)target).setSpellList("");
+				CMLib.utensils().disenchantItem(target);
 				target.recoverPhyStats();
 				mob.location().recoverRoomStats();
 			}
