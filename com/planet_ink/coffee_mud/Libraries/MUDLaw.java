@@ -176,6 +176,9 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			return null;
 		if(area instanceof LandTitle)
 			return (LandTitle)area;
+		if((area instanceof BoardableShip)
+		&&(((BoardableShip)area).getShipItem() instanceof LandTitle))
+			return (LandTitle)((BoardableShip)area).getShipItem();
 		for(final Enumeration<Ability> a=area.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
@@ -629,10 +632,10 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	@Override
 	public boolean doesOwnThisLand(final MOB mob, final Room room)
 	{
-		final LandTitle title=getLandTitle(room);
-		if(title==null)
+		final PrivateProperty prop=this.getPropertyRecord(room);
+		if(prop==null)
 			return false;
-		final String ownerName = title.getOwnerName();
+		final String ownerName = prop.getOwnerName();
 		if((ownerName==null)||(ownerName.length()==0))
 			return false;
 		if(ownerName.equals(mob.Name()))
