@@ -334,7 +334,10 @@ public class Charlatan extends StdCharClass
 				&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_DIVINATION)
 				&&(CMLib.dice().roll(1,100,0)<(myChar.charStats().getClassLevel(this)*4)))
 				{
-					myChar.location().show(msg.source(),myChar,CMMsg.MSG_OK_ACTION,L("<T-NAME> fool(s) <S-NAMESELF>, causing <S-HIM-HER> to fizzle @x1.",msg.tool().name()));
+					if(msg.source().name().equalsIgnoreCase("someone"))
+						myChar.location().show(msg.source(),myChar,CMMsg.MSG_OK_ACTION,L("<T-NAME> fool(s) <T-NAMESELF>, causing @x1 to fizzle.",msg.tool().name()));
+					else
+						myChar.location().show(msg.source(),myChar,CMMsg.MSG_OK_ACTION,L("<T-NAME> fool(s) <S-NAMESELF>, causing <S-HIM-HER> to fizzle @x1.",msg.tool().name()));
 					return false;
 				}
 			}
