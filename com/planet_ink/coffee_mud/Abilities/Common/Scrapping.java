@@ -177,6 +177,12 @@ public class Scrapping extends CommonSkill
 			return false;
 		}
 
+		if(CMath.bset(I.phyStats().sensesMask(),PhyStats.SENSE_ITEMNOSCRAP))
+		{
+			commonTell(mob,L("@x1 can't be scrapped for some reason.",I.name(mob)));
+			return false;
+		}
+
 		if(I instanceof RawMaterial)
 		{
 			commonTell(mob,L("@x1 already looks like scrap.",I.name(mob)));

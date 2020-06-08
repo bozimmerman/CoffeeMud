@@ -138,6 +138,7 @@ public class Prayer_UnholyArmament extends Prayer
 				I.setDescription(L("Whatever made this twisted thing couldn`t have been good.."));
 				I.basePhyStats().setLevel(mob.phyStats().level());
 				I.basePhyStats().setWeight(20);
+				I.basePhyStats().setSensesMask(I.basePhyStats().sensesMask()|PhyStats.SENSE_ITEMNOSCRAP);
 				I.setMaterial(RawMaterial.RESOURCE_MITHRIL);
 				I.recoverPhyStats();
 				final Map<String,String> H=CMLib.itemBuilder().timsItemAdjustments(I,mob.phyStats().level()+(2*getXLEVELLevel(mob)),I.material(),1,((Weapon)I).weaponClassification(),0,I.rawProperLocationBitmap());
@@ -154,6 +155,7 @@ public class Prayer_UnholyArmament extends Prayer
 				I.setDescription(L("Whatever made this hideous shield couldn`t have been good."));
 				I.basePhyStats().setLevel(mob.phyStats().level());
 				I.basePhyStats().setWeight(20);
+				I.basePhyStats().setSensesMask(I.basePhyStats().sensesMask()|PhyStats.SENSE_ITEMNOSCRAP);
 				I.setMaterial(RawMaterial.RESOURCE_MITHRIL);
 				I.recoverPhyStats();
 				final Map<String,String> H=CMLib.itemBuilder().timsItemAdjustments(I,mob.phyStats().level()+(2*getXLEVELLevel(mob)),I.material(),1,0,0,I.rawProperLocationBitmap());
@@ -174,6 +176,7 @@ public class Prayer_UnholyArmament extends Prayer
 				final Map<String,String> H=CMLib.itemBuilder().timsItemAdjustments(I,mob.phyStats().level()+(2*getXLEVELLevel(mob)),I.material(),1,0,0,I.rawProperLocationBitmap());
 				I.basePhyStats().setArmor(CMath.s_int(H.get("ARMOR")));
 				I.basePhyStats().setWeight(CMath.s_int(H.get("WEIGHT")));
+				I.basePhyStats().setSensesMask(I.basePhyStats().sensesMask()|PhyStats.SENSE_ITEMNOSCRAP);
 				I.setBaseValue(0);
 				if(pos==Wearable.WORN_TORSO)
 				{
