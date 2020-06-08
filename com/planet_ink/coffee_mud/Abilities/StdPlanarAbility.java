@@ -2044,6 +2044,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 				return false;
 
 			this.lastCasting=System.currentTimeMillis();
+			this.planeArea = planeArea;
 			final PlanarAbility A=(PlanarAbility)this.beneficialAffect(mob, planeArea, asLevel, 0);
 			if(A!=null)
 			{
