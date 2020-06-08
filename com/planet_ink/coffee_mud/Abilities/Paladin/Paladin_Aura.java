@@ -68,7 +68,9 @@ public class Paladin_Aura extends PaladinSkill
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		pass=(invoker==null)||(invoker.fetchAbility(ID())==null)||proficiencyCheck(null,0,false);
+		final Ability profAble = (invoker == null) ? null : invoker.fetchAbility(ID());
+		pass=(profAble==null)
+			||profAble.proficiencyCheck(null,0,false);
 		final Room R=CMLib.map().roomLocation(invoker != null ? invoker : (affected != null ? affected : (ticking instanceof Physical ? (Physical)ticking : null)));
 		if(pass && (R!=null))
 		{
