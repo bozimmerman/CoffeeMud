@@ -199,7 +199,7 @@ public class Thief_Scuttle extends ThiefSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to scuttle <T-NAME>, but fails."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to scuttle <T-NAME>, but fail(s)."));
 
 		// return whether it worked
 		return success;
