@@ -4712,6 +4712,15 @@ public class ListCmd extends StdCommand
 					templateName="PropertyTemplate";
 				if((A.classificationCode()&Ability.ALL_ACODES)==(Ability.ACODE_DISEASE))
 					templateName="DiseaseTemplate";
+				String alignment = "";
+				if(CMath.bset(A.flags(), Ability.FLAG_HOLY|Ability.FLAG_UNHOLY))
+					alignment="Neutral";
+				else
+				if(CMath.bset(A.flags(), Ability.FLAG_HOLY))
+					alignment="Good";
+				else
+				if(CMath.bset(A.flags(), Ability.FLAG_HOLY))
+					alignment="Evil";
 				str.append("\n\r==="+A.name()+"===\n\r");
 				str.append("{{"+templateName
 						+ "|ID="+A.ID()
@@ -4719,6 +4728,7 @@ public class ListCmd extends StdCommand
 						+ "|Domain=[["+domainID+"(Domain)|"+domainName+"]]"
 						+ "|Available="+availStr.toString()
 						+ "|Allows="+allowsStr.toString()
+						+ "|Align="+alignment
 						+ "|UseCost="+cost
 						+ "|Quality="+quality
 						+ "|Targets="+targets
