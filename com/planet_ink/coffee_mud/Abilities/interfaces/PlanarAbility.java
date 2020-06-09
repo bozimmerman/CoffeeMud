@@ -258,6 +258,16 @@ public interface PlanarAbility extends Ability
 	 */
 	public String listOfPlanes();
 
+
+	/**
+	 * Completely destroyed the given plane of existence, kicking
+	 * all players inside it back to the starting room they came
+	 * from.
+	 *
+	 * @param planeA the plane to destroy.
+	 */
+	public void destroyPlane(final Area planeA);
+
 	/**
 	 * The definitions variables for the attributes of each plane
 	 *

@@ -1573,7 +1573,8 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 		return null;
 	}
 
-	protected void destroyPlane(final Area planeA)
+	@Override
+	public void destroyPlane(final Area planeA)
 	{
 		if((planeA != null)
 		&&(CMath.bset(planeA.flags(), Area.FLAG_INSTANCE_CHILD)))
@@ -2034,7 +2035,6 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 		target.setArea(planeArea);
 
 		//CMLib.map().delArea(this.planeArea);
-
 		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),castingMessage(mob, auto));
 		if((mob.location().okMessage(mob,msg))&&(target.okMessage(mob,msg)))
 		{
@@ -2055,8 +2055,11 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 			final Room thisRoom=mob.location();
 			for (final MOB follower : h)
 			{
-				final CMMsg enterMsg=CMClass.getMsg(follower,target,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,("<S-NAME> fade(s) into view.")+CMLib.protocol().msp("appear.wav",10));
-				final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,L("<S-NAME> fade(s) away."));
+				final boolean invisible = !CMLib.flags().isSeeable(follower);
+				final CMMsg enterMsg=CMClass.getMsg(follower,target,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,
+						invisible?"":("<S-NAME> fade(s) into view.")+CMLib.protocol().msp("appear.wav",10));
+				final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,
+						invisible?"":L("<S-NAME> fade(s) away."));
 				if(thisRoom.okMessage(follower,leaveMsg)&&target.okMessage(follower,enterMsg))
 				{
 					if(follower.isInCombat())

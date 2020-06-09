@@ -197,10 +197,13 @@ public class Doomsayer extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_SummonElemental",0,"FIRE",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_Regeneration",false);
 
+		CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Prayer_PlanarPlague", 25, "", false,
+				 SecretFlag.MASKED, null, "+PLANE \"-Prime Material\"");
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_FireHealing",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_Stoning",0,"",false,SecretFlag.SECRET);
-		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Prayer_PlanarPlague", 25, "", false,
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Prayer_MalignedPortal", 35, "", false,
 				 SecretFlag.MASKED, null, "+PLANE \"-Prime Material\"");
 	}
 
