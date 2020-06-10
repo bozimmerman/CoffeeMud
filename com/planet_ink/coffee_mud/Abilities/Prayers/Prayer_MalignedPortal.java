@@ -274,12 +274,15 @@ public class Prayer_MalignedPortal extends Prayer
 					{
 						CMLib.commands().forceStandardCommand(M, "ENTER", new XVector<String>("ENTER",affected.Name()));
 						// dress the mob with Mobileaggressive with -name +invoker
-						if((invoker()!=null)
-						&&(CMLib.flags().isInTheGame(invoker(), true)))
+						final MOB invoker=invoker();
+						if((invoker!=null)
+						&&(CMLib.flags().isInTheGame(invoker, true))
+						&&(invoker.numFollowers()<invoker.maxFollowers()))
 						{
-							final List<String> trackCmds=new XVector<String>("and","befriend","and","persist",invoker().Name());
+
+							final List<String> trackCmds=new XVector<String>("and","befriend","and","persist",invoker.Name());
 							final Ability trackA=CMClass.getAbility("Skill_Track");
-							trackA.invoke(M, trackCmds, invoker(), true, 0);
+							trackA.invoke(M, trackCmds, invoker, true, 0);
 						}
 						final Ability A=CMClass.getAbility("WanderHomeLater");
 						final int ticks=super.tickDown;

@@ -2020,12 +2020,12 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 		else
 			this.recentVisits.put(planeCodeString, new long[] {System.currentTimeMillis(),0});
 		final String newPlaneName = planeIDNum.addAndGet(1)+"_"+cloneArea.Name();
-		final Area planeArea = CMClass.getAreaType("SubThinInstance");
+		Area planeArea = CMClass.getAreaType("SubThinInstance");
 		planeArea.setName(newPlaneName);
 		planeArea.addBlurbFlag("PLANEOFEXISTENCE {"+planeName+"}");
 		CMLib.map().addArea(planeArea);
 		planeArea.setAreaState(Area.State.ACTIVE); // starts ticking
-		final Room target=CMClass.getLocale("StdRoom");
+		Room target=CMClass.getLocale("StdRoom");
 		String newRoomID=this.convertToMyArea(newPlaneName,cloneRoomID);
 		if(newRoomID==null)
 			newRoomID=cloneRoomID;
@@ -2035,21 +2035,37 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 		target.setArea(planeArea);
 
 		//CMLib.map().delArea(this.planeArea);
+		final Area oldPlaneArea=planeArea;
 		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),castingMessage(mob, auto));
-		if((mob.location().okMessage(mob,msg))&&(target.okMessage(mob,msg)))
+		if((mob.location().okMessage(mob,msg))
+		&&(target.okMessage(mob,msg)))
 		{
 			mob.location().send(mob,msg);
+			target=(Room)msg.target();
+			planeArea = ((Room)msg.target()).getArea();
+
 			final List<MOB> h=properTargetList(mob,givenTarget,false);
 			if(h==null)
 				return false;
 
 			this.lastCasting=System.currentTimeMillis();
 			this.planeArea = planeArea;
-			final PlanarAbility A=(PlanarAbility)this.beneficialAffect(mob, planeArea, asLevel, 0);
-			if(A!=null)
+			final PlanarAbility A;
+			if((planeArea!=oldPlaneArea)
+			&&(planeArea.fetchEffect(ID())!=null))
 			{
-				A.setHardBumpLevel(hardBumpLevel);
-				A.setMiscText(planeName);
+				oldPlaneArea.destroy();
+				CMLib.map().delArea(oldPlaneArea);
+				A=(PlanarAbility)planeArea.fetchEffect(ID());
+			}
+			else
+			{
+				A=(PlanarAbility)this.beneficialAffect(mob, planeArea, asLevel, 0);
+				if(A!=null)
+				{
+					A.setHardBumpLevel(hardBumpLevel);
+					A.setMiscText(planeName);
+				}
 			}
 
 			final Room thisRoom=mob.location();

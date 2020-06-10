@@ -2,7 +2,7 @@
   1. Wands/etc have enchant type as a restriction, WandMaking/StaffMaking/Rodsmithing support.
   2. New PLAYERDEATH option: RETAIN -- to allow player mobs to keep their items on death.
   3. Scriptable GSTAT now supports BASESTRENGTH, BASEDEXTERITY, etc.. and BASEDAMAGE, etc..
-  4. New skills: Shard Use, Relic Use, Light Placebo, Placebo, Krakenform
+  4. New skills: Shard Use, Relic Use, Light Placebo, Placebo, Krakenform, Planar Tactics
   5. New prayers: enchant relic, recharge relic, read prayer, clarify prayer, planar plague
   6. New chants: Enchant Shards, Recharge Shards, Read Runes, Refresh Runes, Fishy Fecundity
   7. New songs: Restore Music, Enchant Instrument, Recharge Instrument, Read Music
@@ -39,6 +39,8 @@
  37. EXAMINE can now see clothing layers with sufficient level and int.
  38. New spells: True Name, Planar Enthrall
  39. New prayers: maligned portal, benigned portal, elemental portal
+ 40. New chants: planar link, planar adaptation
+ 41. New skills: Cosmic Adaptation
 # Build 5.9.9 Release 12/18/2019
   * Minor database change: CMQUESID in CMQUESTS, CMRCID in CMGRAC, CMPKEY in CMPDAT enlarged.  Mostly optional.
   1. New prayers: empower unholy weapon, morph unholy weapon, faithful hellhound, discipline

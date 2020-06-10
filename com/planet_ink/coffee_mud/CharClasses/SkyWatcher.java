@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.MoonPhase;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -254,7 +255,13 @@ public class SkyWatcher extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_SummonTornado",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_MeteorStrike",true);
 
+		CMLib.ableMapper().addCharAbilityMapping(ID(),28,"Chant_PlanarAdaptation", 0, "", false,
+				 SecretFlag.MASKED, null, "+PLANE \"-Prime Material\"");
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Chant_MoveSky",true);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Chant_PlanarLink", 0, "", false,
+				 SecretFlag.MASKED, null, "+PLANE \"-Prime Material\"");
 	}
 
 	@Override

@@ -128,96 +128,102 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 			if(CMath.isInteger(s))
 				current=Integer.valueOf(CMath.s_int(s));
 			else
-			if((s.startsWith("+") && (!allFound))
-			||(s.startsWith("-") && allFound))
 			{
-				s=s.substring(1);
-				boolean found=false;
-				int code=CharStats.CODES.findWhole(s,true);
-				if(code>=0)
+				if((!allFound)
+				&&(s.length()>0)
+				&&(Character.isLetter(s.charAt(0))))
+					s="+"+s;
+				if((s.startsWith("+") && (!allFound))
+				||(s.startsWith("-") && allFound))
 				{
-					code=CharStats.CODES.CMMSGMAP(code);
-					if(code>0)
+					s=s.substring(1);
+					boolean found=false;
+					int code=CharStats.CODES.findWhole(s,true);
+					if(code>=0)
+					{
+						code=CharStats.CODES.CMMSGMAP(code);
+						if(code>0)
+						{
+							found=true;
+							if(this.msgTypes==null)
+								this.msgTypes=new HashMap<Integer,Object>();
+							this.msgTypes.put(Integer.valueOf(code), current);
+						}
+					}
+					code=CMParms.indexOf(Weapon.TYPE_DESCS, s);
+					if(code>=0)
 					{
 						found=true;
-						if(this.msgTypes==null)
-							this.msgTypes=new HashMap<Integer,Object>();
-						this.msgTypes.put(Integer.valueOf(code), current);
+						if(this.weapTypes==null)
+							this.weapTypes=new HashMap<Integer,Object>();
+						this.weapTypes.put(Integer.valueOf(code), current);
 					}
-				}
-				code=CMParms.indexOf(Weapon.TYPE_DESCS, s);
-				if(code>=0)
-				{
-					found=true;
-					if(this.weapTypes==null)
-						this.weapTypes=new HashMap<Integer,Object>();
-					this.weapTypes.put(Integer.valueOf(code), current);
-				}
-				code=CMParms.indexOf(Weapon.CLASS_DESCS, s);
-				if(code>=0)
-				{
-					found=true;
-					if(this.weapClass==null)
-						this.weapClass=new HashMap<Integer,Object>();
-					this.weapClass.put(Integer.valueOf(code), current);
-				}
-				code=CMParms.indexOf(Ability.ACODE_DESCS_, s);
-				if(code>=0)
-				{
-					found=true;
-					if(this.ableCodes==null)
-						this.ableCodes=new HashMap<Integer,Object>();
-					this.ableCodes.put(Integer.valueOf(code), current);
-				}
-				code=CMParms.indexOf(Ability.DOMAIN_DESCS, s);
-				if(code>=0)
-				{
-					found=true;
-					if(this.ableDomains==null)
-						this.ableDomains=new HashMap<Integer,Object>();
-					this.ableDomains.put(Integer.valueOf(code<<5), current);
-				}
-				code=CMParms.indexOf(Ability.FLAG_DESCS, s);
-				if(code>=0)
-				{
-					found=true;
-					if(this.ableFlags==null)
-						this.ableFlags=new HashMap<Long,Object>();
-					this.ableFlags.put(Long.valueOf(CMath.pow(2, code)), current);
-				}
-				if(CMClass.getAbility(s)!=null)
-				{
-					found=true;
-					if(this.ableIDs==null)
-						this.ableIDs=new HashMap<String,Object>();
-					this.ableIDs.put(CMClass.getAbility(s).ID(), current);
-				}
-				code=RawMaterial.CODES.FIND_CaseSensitive(s);
-				if(code>=0)
-				{
-					found=true;
-					if(this.weapMats==null)
-						this.weapMats=new HashMap<Integer,Object>();
-					this.weapMats.put(Integer.valueOf(code), current);
-				}
-				if(s.equals("MAGIC"))
-				{
-					found=true;
-					this.weapMagic=current;
-				}
-				if(s.startsWith("LEVEL")&&(CMath.isInteger(s.substring(5))))
-				{
-					found=true;
-					if(this.weapLvls==null)
-						this.weapLvls=new HashMap<Integer,Object>();
-					this.weapLvls.put(Integer.valueOf(CMath.s_int(s.substring(5))), current);
-				}
-				if(!found)
-				{
-					if(affected!=null)
-						Log.errOut("Prop_AbsorbDamage","Unknown '"+s+"' on "+affected.Name()+" in "+CMLib.map().getDescriptiveExtendedRoomID(CMLib.map().roomLocation(affected)));
-					else
-						Log.errOut("Prop_AbsorbDamage","Unknown '"+s+"'");
+					code=CMParms.indexOf(Weapon.CLASS_DESCS, s);
+					if(code>=0)
+					{
+						found=true;
+						if(this.weapClass==null)
+							this.weapClass=new HashMap<Integer,Object>();
+						this.weapClass.put(Integer.valueOf(code), current);
+					}
+					code=CMParms.indexOf(Ability.ACODE_DESCS_, s);
+					if(code>=0)
+					{
+						found=true;
+						if(this.ableCodes==null)
+							this.ableCodes=new HashMap<Integer,Object>();
+						this.ableCodes.put(Integer.valueOf(code), current);
+					}
+					code=CMParms.indexOf(Ability.DOMAIN_DESCS, s);
+					if(code>=0)
+					{
+						found=true;
+						if(this.ableDomains==null)
+							this.ableDomains=new HashMap<Integer,Object>();
+						this.ableDomains.put(Integer.valueOf(code<<5), current);
+					}
+					code=CMParms.indexOf(Ability.FLAG_DESCS, s);
+					if(code>=0)
+					{
+						found=true;
+						if(this.ableFlags==null)
+							this.ableFlags=new HashMap<Long,Object>();
+						this.ableFlags.put(Long.valueOf(CMath.pow(2, code)), current);
+					}
+					if(CMClass.getAbility(s)!=null)
+					{
+						found=true;
+						if(this.ableIDs==null)
+							this.ableIDs=new HashMap<String,Object>();
+						this.ableIDs.put(CMClass.getAbility(s).ID(), current);
+					}
+					code=RawMaterial.CODES.FIND_CaseSensitive(s);
+					if(code>=0)
+					{
+						found=true;
+						if(this.weapMats==null)
+							this.weapMats=new HashMap<Integer,Object>();
+						this.weapMats.put(Integer.valueOf(code), current);
+					}
+					if(s.equals("MAGIC"))
+					{
+						found=true;
+						this.weapMagic=current;
+					}
+					if(s.startsWith("LEVEL")&&(CMath.isInteger(s.substring(5))))
+					{
+						found=true;
+						if(this.weapLvls==null)
+							this.weapLvls=new HashMap<Integer,Object>();
+						this.weapLvls.put(Integer.valueOf(CMath.s_int(s.substring(5))), current);
+					}
+					if(!found)
+					{
+						if(affected!=null)
+							Log.errOut("Prop_AbsorbDamage","Unknown '"+s+"' on "+affected.Name()+" in "+CMLib.map().getDescriptiveExtendedRoomID(CMLib.map().roomLocation(affected)));
+						else
+							Log.errOut("Prop_AbsorbDamage","Unknown '"+s+"'");
+					}
 				}
 			}
 		}
@@ -251,6 +257,10 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 				||(msg.target()!=((Item)affected).owner()))
 					return true;
 			}
+
+			if(msg.source().phyStats().isAmbiance("-"+this)
+			||(((msg.target() instanceof MOB)&&(((MOB)msg.target()).phyStats().isAmbiance("-"+this)))))
+				return true;
 
 			Object absorb=null;
 			if(this.allAbsorb!=null)

@@ -182,7 +182,7 @@ public class Fighter_FieldTactics extends FighterSkill
 		return super.okMessage(myHost,msg);
 	}
 
-	public boolean oneOf(final int dom)
+	protected boolean oneOf(final int dom)
 	{
 		for(int i=0;i<landClasses().length;i++)
 		{
@@ -193,13 +193,21 @@ public class Fighter_FieldTactics extends FighterSkill
 		return false;
 	}
 
+	protected boolean appliesHere(final Room R)
+	{
+		if(R==null)
+			return false;
+		return oneOf(R.domainType());
+
+	}
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if((affected instanceof MOB)
 		&&(((MOB)affected).location()!=null)
-		&&(oneOf(((MOB)affected).location().domainType())))
+		&&(appliesHere(((MOB)affected).location())))
 		{
 			if((hidden)&&((System.currentTimeMillis()-sitTime)>(60*2*1000)))
 				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
