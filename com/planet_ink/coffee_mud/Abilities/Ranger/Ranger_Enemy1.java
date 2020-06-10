@@ -146,6 +146,19 @@ public class Ranger_Enemy1 extends StdAbility
 		return super.text();
 	}
 
+	protected volatile Pair<MOB, Boolean> cache = null;
+
+	protected boolean isCachedEnemy(final MOB mob)
+	{
+		final Pair<MOB, Boolean> c=cache;
+		if((c != null)
+		&&(c.first==mob))
+			return c.second;
+		final Boolean B=Boolean.valueOf(isTheEnemy(mob));
+		this.cache = new Pair<MOB, Boolean>(mob, B);
+		return B.booleanValue();
+	}
+
 	protected boolean isTheEnemy(final MOB mob)
 	{
 		if(mob != null)
@@ -164,7 +177,7 @@ public class Ranger_Enemy1 extends StdAbility
 		if(!(affected instanceof MOB))
 			return;
 		final MOB mob=(MOB)affected;
-		if(isTheEnemy(mob.getVictim()))
+		if(isCachedEnemy(mob.getVictim()))
 		{
 			final int level=1+adjustedLevel(mob,0);
 			final double damBonus=CMath.mul(CMath.div(proficiency(),100.0),level);
@@ -180,7 +193,7 @@ public class Ranger_Enemy1 extends StdAbility
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.source()==affected)
 		&&(msg.target() instanceof MOB)
-		&&(isTheEnemy(((MOB)msg.target())))
+		&&(isCachedEnemy(((MOB)msg.target())))
 		&&(CMLib.dice().roll(1, 10, 0)==1))
 			helpProficiency(msg.source(), 0);
 		return super.okMessage(myHost, msg);
