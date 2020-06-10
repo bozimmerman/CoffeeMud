@@ -208,6 +208,27 @@ public class Prayer_MalignedPortal extends Prayer
 		return true;
 	}
 
+	protected void fixPlanarMob(final MOB M)
+	{
+		final String aggroParms="CHECKLEVEL MOBKILL NOGANG +NAMES -"+invoker.Name();
+		final Behavior B;
+		if(CMLib.flags().isMobile(M))
+		{
+			if(!CMLib.flags().isAggressiveTo(M, null))
+			{
+				B=CMClass.getBehavior("Aggressive");
+				B.setParms(aggroParms);
+				M.addBehavior(B);
+			}
+		}
+		else
+		{
+			B=CMClass.getBehavior("MobileAggressive");
+			B.setParms(aggroParms);
+			M.addBehavior(B);
+		}
+	}
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -265,23 +286,7 @@ public class Prayer_MalignedPortal extends Prayer
 						A.setMiscText("areaok=true destroy=true ignorepcs=true ignorefollow=true "
 								+ "respectfollow=false once=true minticks="+ticks+" maxticks="+ticks);
 						M.addNonUninvokableEffect(A);
-						final String aggroParms="CHECKLEVEL MOBKILL NOGANG +NAMES -"+invoker.Name();
-						final Behavior B;
-						if(CMLib.flags().isMobile(M))
-						{
-							if(!CMLib.flags().isAggressiveTo(M, null))
-							{
-								B=CMClass.getBehavior("Aggressive");
-								B.setParms(aggroParms);
-								M.addBehavior(B);
-							}
-						}
-						else
-						{
-							B=CMClass.getBehavior("MobileAggressive");
-							B.setParms(aggroParms);
-							M.addBehavior(B);
-						}
+						fixPlanarMob(M);
 					}
 				}
 			}
@@ -327,6 +332,11 @@ public class Prayer_MalignedPortal extends Prayer
 		return true;
 	}
 
+	protected String getCategory()
+	{
+		return "lower";
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -353,7 +363,7 @@ public class Prayer_MalignedPortal extends Prayer
 			final Map<String,String> planeVars = planeAble.getPlanarVars(planeKey);
 			final String catStr=planeVars.get(PlanarVar.CATEGORY.toString());
 			final List<String> categories=CMParms.parseCommas(catStr.toLowerCase(), true);
-			if(categories.contains("lower"))
+			if(categories.contains(getCategory()))
 			{
 				choicesl.add(CMStrings.capitalizeAllFirstLettersAndLower(planeKey));
 				final int align=CMath.s_int(planeVars.get(PlanarVar.ALIGNMENT.toString()));
