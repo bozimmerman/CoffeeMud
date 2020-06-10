@@ -91,6 +91,36 @@ public class Ranger_Enemy1 extends StdAbility
 		return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;
 	}
 
+	protected String pickAnEnemy(final MOB mob)
+	{
+		final List<String> choices=new ArrayList<String>();
+		for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+		{
+			final Race R=r.nextElement();
+			if((!choices.contains(R.racialCategory()))
+			&&(CMath.bset(R.availabilityCode(),Area.THEME_FANTASY)))
+				choices.add(R.racialCategory());
+		}
+		for(int a=0;a<mob.numAbilities();a++)
+		{
+			final Ability A=mob.fetchAbility(a);
+			if((A instanceof Ranger_Enemy1)
+			   &&(((Ranger_Enemy1)A).miscText.length()>0))
+				choices.remove(((Ranger_Enemy1)A).miscText);
+		}
+		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
+			if((A instanceof Ranger_Enemy1)
+			   &&(((Ranger_Enemy1)A).miscText.length()>0))
+				choices.remove(((Ranger_Enemy1)A).miscText);
+		}
+		choices.remove("Unique");
+		choices.remove("Unknown");
+		choices.remove(mob.charStats().getMyRace().racialCategory());
+		return choices.get(CMLib.dice().roll(1,choices.size(),-1));
+	}
+
 	@Override
 	public String text()
 	{
@@ -99,32 +129,7 @@ public class Ranger_Enemy1 extends StdAbility
 			if(!(affected instanceof MOB))
 				return super.text();
 			final MOB mob=(MOB)affected;
-			final List<String> choices=new ArrayList<String>();
-			for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
-			{
-				final Race R=r.nextElement();
-				if((!choices.contains(R.racialCategory()))
-				&&(CMath.bset(R.availabilityCode(),Area.THEME_FANTASY)))
-					choices.add(R.racialCategory());
-			}
-			for(int a=0;a<mob.numAbilities();a++)
-			{
-				final Ability A=mob.fetchAbility(a);
-				if((A instanceof Ranger_Enemy1)
-				   &&(((Ranger_Enemy1)A).miscText.length()>0))
-					choices.remove(((Ranger_Enemy1)A).miscText);
-			}
-			for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
-			{
-				final Ability A=a.nextElement();
-				if((A instanceof Ranger_Enemy1)
-				   &&(((Ranger_Enemy1)A).miscText.length()>0))
-					choices.remove(((Ranger_Enemy1)A).miscText);
-			}
-			choices.remove("Unique");
-			choices.remove("Unknown");
-			choices.remove(mob.charStats().getMyRace().racialCategory());
-			miscText=choices.get(CMLib.dice().roll(1,choices.size(),-1));
+			miscText = pickAnEnemy(mob);
 			for(int a=0;a<mob.numAbilities();a++)
 			{
 				final Ability A=mob.fetchAbility(a);
@@ -141,6 +146,17 @@ public class Ranger_Enemy1 extends StdAbility
 		return super.text();
 	}
 
+	protected boolean isTheEnemy(final MOB mob)
+	{
+		if(mob != null)
+		{
+			final Race R=mob.charStats().getMyRace();
+			if(R.racialCategory().equals(text()))
+				return true;
+		}
+		return false;
+	}
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
@@ -148,18 +164,13 @@ public class Ranger_Enemy1 extends StdAbility
 		if(!(affected instanceof MOB))
 			return;
 		final MOB mob=(MOB)affected;
-		final MOB victim=mob.getVictim();
-		if(victim != null)
+		if(isTheEnemy(mob.getVictim()))
 		{
-			final Race R=victim.charStats().getMyRace();
-			if(R.racialCategory().equals(text()))
-			{
-				final int level=1+adjustedLevel(mob,0);
-				final double damBonus=CMath.mul(CMath.div(proficiency(),100.0),level);
-				final double attBonus=CMath.mul(CMath.div(proficiency(),100.0),3*level);
-				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(attBonus));
-				affectableStats.setDamage(affectableStats.damage()+(int)Math.round(damBonus));
-			}
+			final int level=1+adjustedLevel(mob,0);
+			final double damBonus=CMath.mul(CMath.div(proficiency(),100.0),level);
+			final double attBonus=CMath.mul(CMath.div(proficiency(),100.0),3*level);
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(attBonus));
+			affectableStats.setDamage(affectableStats.damage()+(int)Math.round(damBonus));
 		}
 	}
 
@@ -168,13 +179,10 @@ public class Ranger_Enemy1 extends StdAbility
 	{
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.source()==affected)
-		&&(msg.target() instanceof MOB))
-		{
-			final Race R=((MOB)msg.target()).charStats().getMyRace();
-			if((R.racialCategory().equals(text()))
-			&&(CMLib.dice().roll(1, 10, 0)==1))
-				helpProficiency(msg.source(), 0);
-		}
+		&&(msg.target() instanceof MOB)
+		&&(isTheEnemy(((MOB)msg.target())))
+		&&(CMLib.dice().roll(1, 10, 0)==1))
+			helpProficiency(msg.source(), 0);
 		return super.okMessage(myHost, msg);
 	}
 

@@ -40,7 +40,7 @@
  38. New spells: True Name, Planar Enthrall
  39. New prayers: maligned portal, benigned portal, elemental portal
  40. New chants: planar link, planar adaptation
- 41. New skills: Cosmic Adaptation
+ 41. New skills: Cosmic Adaptation, Planar Enemy
 # Build 5.9.9 Release 12/18/2019
   * Minor database change: CMQUESID in CMQUESTS, CMRCID in CMGRAC, CMPKEY in CMPDAT enlarged.  Mostly optional.
   1. New prayers: empower unholy weapon, morph unholy weapon, faithful hellhound, discipline
