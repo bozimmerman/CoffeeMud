@@ -86,7 +86,7 @@ public class Prayer_MalignedPortal extends Prayer
 	protected volatile	Room			oldRoom		= null;
 	protected volatile	PlanarAbility	planeAble	= null;
 	protected volatile	int				radius		= 1;
-	protected volatile	int				hitPoints	= 100;
+	protected 			MOB				fakeTarget	= null;
 	protected final 	List<Item>		items		= new Vector<Item>();
 	protected final		List<Room>		zoneRooms	= new Vector<Room>();
 
@@ -97,11 +97,17 @@ public class Prayer_MalignedPortal extends Prayer
 		if(canBeUninvoked())
 		{
 			P=affected;
+			if(this.fakeTarget!=null)
+				fakeTarget.destroy();
 			final Room newRoom=this.newRoom;
 			final PlanarAbility planeAble=this.planeAble;
 			Item I;
-			while((I=items.remove(0))!=null)
-				I.destroy();
+			while(items.size()>0)
+			{
+				I=items.remove(0);
+				if(I!=null)
+					I.destroy();
+			}
 			if(newRoom!=null)
 			{
 				if((CMLib.flags().getPlaneOfExistence(newRoom)!=null)
@@ -120,6 +126,86 @@ public class Prayer_MalignedPortal extends Prayer
 			P=null;
 		super.unInvoke();
 		P.destroy();
+	}
+
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost, msg))
+			return false;
+		if((msg.sourceMinor()==CMMsg.TYP_COMMANDFAIL)
+		&&(msg.targetMessage()!=null)
+		&&(msg.targetMessage().length()>0))
+		{
+			switch(Character.toUpperCase(msg.targetMessage().charAt(0)))
+			{
+			case 'A':
+			case 'K':
+			{
+				final List<String> parsedFail = CMParms.parse(msg.targetMessage());
+				final String cmd=parsedFail.get(0).toUpperCase();
+				final Room R=msg.source().location();
+				if(("ATTACK".startsWith(cmd)||"KILL".startsWith(cmd))
+				&&(R!=null)
+				&&(R==oldRoom))
+				{
+					final String rest = CMParms.combine(parsedFail,1);
+					if(R.findItem(null, rest) == affected)
+					{
+						if(msg.source().actions()<1.0)
+							msg.source().tell(L("You can't do that yet."));
+						if(msg.source().isInCombat())
+							msg.source().tell(L("You are too busy right now."));
+						else
+						if(msg.source().curState().getMovement()<5)
+							msg.source().tell(L("You are too tired right now."));
+						else
+						{
+							final Item I=msg.source().fetchWieldedItem();
+							final MOB fakeTarget=this.fakeTarget;
+							if(!(I instanceof Weapon))
+								msg.source().tell(L("You need a weapon to do that."));
+							else
+							if(fakeTarget!=null)
+							{
+								final double actions;
+								synchronized(R)
+								{
+									actions=msg.source().actions();
+								}
+								synchronized(fakeTarget)
+								{
+									try
+									{
+										R.addInhabitant(fakeTarget);
+										CMLib.combat().postAttack(msg.source(), fakeTarget, I);
+										msg.source().setActions(actions-1.0);
+										if((fakeTarget.curState().getHitPoints()<=0)
+										||(fakeTarget.amDead()))
+											unInvoke();
+									}
+									finally
+									{
+										fakeTarget.setVictim(null);
+										msg.source().setVictim(null);
+										if(R.isInhabitant(fakeTarget))
+											R.delInhabitant(fakeTarget);
+									}
+								}
+							}
+							else
+								msg.source().tell(L("The portal is unattackable."));
+						}
+						return false;
+					}
+				}
+				return true;
+			}
+			default:
+				return true;
+			}
+		}
+		return true;
 	}
 
 	@Override
@@ -384,7 +470,18 @@ public class Prayer_MalignedPortal extends Prayer
 					{
 						portal.planeAble = planeAble;
 						portal.items.add((Item)e2);
-						portal.hitPoints=mob.maxState().getHitPoints()+(10*super.getXLEVELLevel(mob));
+						final MOB fakeTarget=CMClass.getFactoryMOB(e.Name(),1,oldRoom);
+						final int hitPoints = mob.maxState().getHitPoints()+(10*super.getXLEVELLevel(mob));
+						fakeTarget.baseState().setHitPoints(hitPoints);
+						fakeTarget.maxState().setHitPoints(hitPoints);
+						fakeTarget.curState().setHitPoints(hitPoints);
+						final Ability immA=CMClass.getAbility("Prop_WeaponImmunity");
+						if(immA!=null)
+						{
+							immA.setMiscText("+ALL -MAGIC");
+							fakeTarget.addNonUninvokableEffect(immA);
+						}
+						portal.fakeTarget=fakeTarget;
 					}
 				}
 			}
