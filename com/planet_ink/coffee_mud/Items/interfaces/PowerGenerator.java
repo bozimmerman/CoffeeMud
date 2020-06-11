@@ -31,7 +31,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    limitations under the License.
 */
 /**
- * An interface that combines both a PowerSource and and FuelConsumer
+ * An interface that combines both a PowerSource and FuelConsumer
  * to produce a Power Generator, or converter from fuel to electricity.
  * @see FuelConsumer
  * @see PowerSource

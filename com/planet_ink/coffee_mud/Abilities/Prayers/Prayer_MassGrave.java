@@ -274,7 +274,7 @@ public class Prayer_MassGrave extends Prayer
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,L("<S-NAME> wave(s) <S-HIS-HER> arms and and speak(s), but nothing happens."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> wave(s) <S-HIS-HER> arms and speak(s), but nothing happens."));
 
 		return success;
 	}
