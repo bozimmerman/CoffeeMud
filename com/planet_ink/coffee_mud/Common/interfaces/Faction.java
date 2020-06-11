@@ -1291,6 +1291,12 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		public int high();
 
 		/**
+		 * Returns the numerically median value of this faction range
+		 * @return the numerically median value of this faction range
+		 */
+		public int med();
+
+		/**
 		 * Sets the numerically high value of this faction range
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FRange#high()
 		 * @param newVal the numerically high value of this faction range

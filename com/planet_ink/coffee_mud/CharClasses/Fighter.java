@@ -216,6 +216,9 @@ public class Fighter extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Fighter_Behead",0,"",false,SecretFlag.SECRET);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Fighter_CoupDeGrace",true);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Fighter_PlanarVeteran", 0, "", false,
+				 SecretFlag.MASKED, null, "+PLANE \"-Prime Material\"");
 	}
 
 	@Override

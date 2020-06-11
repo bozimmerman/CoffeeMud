@@ -2318,6 +2318,12 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
+		public int med()
+		{
+			return high - (high-low)/2;
+		}
+
+		@Override
 		public int compareTo(final FRange o)
 		{
 			if(low < o.low())

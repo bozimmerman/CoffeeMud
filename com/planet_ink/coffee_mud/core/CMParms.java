@@ -3372,6 +3372,18 @@ public class CMParms
 	 */
 	public final static String toEqListString(final Map<?,?> V)
 	{
+		return toEqListString(V,' ');
+	}
+
+	/**
+	 * Returns the key/value pairs in the given map as a single string of the form
+	 * KEY=VALUE KEY="VALUE" etc... by calling toString() on the objects.
+	 * @param V the map of key/value pairs
+	 * @parame delimeter the thing separating each key pair combo
+	 * @return a single string list of all the key=value pairs
+	 */
+	public final static String toEqListString(final Map<?,?> V, final char delimiter)
+	{
 		if((V==null)||(V.size()==0))
 		{
 			return "";
@@ -3382,7 +3394,7 @@ public class CMParms
 			String val = V.get(KEY).toString();
 			if(val.indexOf(' ')>0)
 				val="\""+val+"\"";
-			s.append(KEY.toString()+"="+val+" ");
+			s.append(KEY.toString()+"="+val+delimiter);
 		}
 		return s.toString().trim();
 	}
