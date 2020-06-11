@@ -159,7 +159,7 @@ public class Put extends StdCommand
 		commands.remove(0);
 		if(commands.size()<2)
 		{
-			CMLib.commands().postCommandFail(mob,origCmds,L("Where should I put the @x1",commands.get(0)));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Where should I put the @x1?",commands.get(0)));
 			return false;
 		}
 
