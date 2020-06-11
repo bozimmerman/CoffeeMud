@@ -406,6 +406,24 @@ VIGOPREP@x1=Creative Food Prep @x2,10,X4,-SKILL +FoodPrep +MasterFoodPrep,-MAXCL
 HELP_=<EXPERTISE>The ability to prep foods that fortify movement.
 DATA_=Least,Lesser,Minor,Moderate,Great,Incredibe,Major,Wonderful,Super,Ultimate
 
+REDUCEDILLUSION@x1=Reduced Illusing @x2,10,LOWCOST,-SKILLFLAG +ILLUSION,-MAXCLASSLEVEL +>={1+(3*@x1)},+WIS {9+@x1} +STR {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to cast illusion spells using less mana.
+
+POWERILLUSION@x1=Power Illusing @x2,10,LEVEL,-SKILLFLAG +ILLUSION,-MAXCLASSLEVEL +>={19+(5*@x1)},+CHA {9+@x1} +INT {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to cast illusion spells at a higher power level, producing longer and more malicious/beneficial magic.
+
+EXTENDEDILLUSION@x1=Extended Illusing @x2,10,TIME,-SKILLFLAG +ILLUSION,-MAXCLASSLEVEL +>={19+(5*@x1)},+CON {9+@x1} +STR {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to cast illusion spells that last even longer.
+
+REDUCEDCOSMOLOGY@x1=Planar Finessing @x2,10,LOWCOST,-SKILLFLAG +COSMOLOGY,-MAXCLASSLEVEL +>={29+(6*@x1)},+WIS {13+@x1} +DEX {13+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to use cosmology magic using less mana/movement.
+
+POWERCOSMOLOGY@x1=Planar Empowering @x2,10,LEVEL,-SKILLFLAG +COSMOLOGY,-MAXCLASSLEVEL +>={31+(6*@x1)},+CHA {13+@x1} +INT {13+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to use cosmology magic at a higher power level, producing longer and more malicious/beneficial effects.
+
+EXTENDEDCOSMOLOGY@x1=Planar Extending @x2,10,TIME,-SKILLFLAG +COSMOLOGY,-MAXCLASSLEVEL +>={30+(6*@x1)},+CON {13+@x1} +STR {13+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to use cosmology magic that last even longer.
+
 ADVNCRAFT@x1=Advanced Crafting @x2,3,LEVEL,-SKILLFLAG "+CRAFTING&!NATURE_LORE" +JAVACLASS -TEXTILING,-MAXCLASSLEVEL +>={1+(20*@x1)},+WIS {10+(4*@x1)} +INT {10+(4*@x1)},0,2,0,0,0
 HELP_=<EXPERTISE>The ability to craft items of higher level.
 HELP_ADVNCRAFT1=<EXPERTISE>The ability to craft items of higher level. Items crafted "Improved" are also a tiny bit better.

@@ -61,7 +61,7 @@ public class Chant_PlaneWalking extends StdPlanarAbility
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_CHANT | Ability.DOMAIN_CONJURATION;
+		return Ability.ACODE_CHANT | Ability.DOMAIN_COSMOLOGY;
 	}
 
 	@Override

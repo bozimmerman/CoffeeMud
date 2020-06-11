@@ -61,7 +61,7 @@ public class Prayer_PlanarTravel extends StdPlanarAbility
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_PRAYER | Ability.DOMAIN_CONJURATION;
+		return Ability.ACODE_PRAYER | Ability.DOMAIN_COSMOLOGY;
 	}
 
 	@Override
