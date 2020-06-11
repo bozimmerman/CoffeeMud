@@ -144,7 +144,10 @@ public class Dress extends StdCommand
 								mob.location().show(mob,target,item,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> put(s) <O-NAME> on <T-NAMESELF>."));
 							}
 							else
+							{
 								CMLib.commands().postCommandFail(mob,origCmds,L("You cannot seem to get @x1 on @x2.",item.name(),target.name(mob)));
+								mob.moveItemTo(item);
+							}
 						}
 						else
 							CMLib.commands().postCommandFail(mob,origCmds,L("You cannot seem to get @x1 to @x2.",item.name(),target.name(mob)));
