@@ -112,7 +112,7 @@ public class Spell_ImprovedPlanarmorph extends Spell_Planarmorph
 		if(mob.isMonster())
 		{
 			if(commands.size()==0)
-				commands.add(givenTarget==null?"all":givenTarget.Name());
+				cmds.add(givenTarget==null?"all":givenTarget.Name());
 			this.selectedPlane = plane.getAllPlaneKeys().get(CMLib.dice().roll(1, plane.getAllPlaneKeys().size(), -1)).toUpperCase();
 		}
 		else
@@ -120,6 +120,6 @@ public class Spell_ImprovedPlanarmorph extends Spell_Planarmorph
 			mob.tell(L("You must specify a target, and the name of a plane of existence."));
 			return false;
 		}
-		return super.invoke(mob, commands, givenTarget, auto, asLevel);
+		return super.invoke(mob, cmds, givenTarget, auto, asLevel);
 	}
 }
