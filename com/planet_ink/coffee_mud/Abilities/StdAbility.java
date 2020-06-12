@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -1208,10 +1209,13 @@ public class StdAbility implements Ability
 			pctChance += charStats.getAbilityAdjustment("prof+*");
 		}
 
-		if(pctChance>95)
-			pctChance=95;
-		if(pctChance<5)
-			pctChance=5;
+		if(!CMSecurity.isDisabled(DisFlag.DIS955RULE))
+		{
+			if(pctChance>95)
+				pctChance=95;
+			if(pctChance<5)
+				pctChance=5;
+		}
 
 		if(adjustment>=0)
 			pctChance+=adjustment;

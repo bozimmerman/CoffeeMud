@@ -2802,7 +2802,8 @@ public class CMSecurity
 		MQLCACHE("parsed mql cache"),
 		ITEMGENCACHE("generated item cache"),
 		AUTOMOODS("automatic mood changes"),
-		DEATHCRY("player purge death cry")
+		DEATHCRY("player purge death cry"),
+		DIS955RULE("no 5% failure chance")
 		;
 		private final String desc;
 
