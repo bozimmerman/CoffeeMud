@@ -1288,9 +1288,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					if(layer!=0)
 					{
 						if(layer < 0)
-							response.append("It is worn "+(-layer)+" layers beneath other closing.  ");
+							response.append("It is worn "+(-layer)+" layers beneath other clothing.  ");
 						else
-							response.append("It is worn "+(layer)+" layers over other closing.  ");
+							response.append("It is worn "+(layer)+" layers over other clothing.  ");
 					}
 				}
 			}

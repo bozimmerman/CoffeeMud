@@ -101,7 +101,7 @@ public class Druid_Krakenform extends StdAbility
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setRaceName("Kraken");
 	}
-	
+
 	protected final static String ammoType="tentacle";
 
 	protected SailingShip ship = null;
@@ -128,11 +128,12 @@ public class Druid_Krakenform extends StdAbility
 				if(ship instanceof PrivateProperty)
 					((PrivateProperty)ship).setOwnerName(mob.Name());
 				final Area A=ship.getShipArea();
+				A.setName("Krakenform_"+mob.Name());
 				final Room deckR=CMClass.getLocale("ShipDeck");
 				deckR.setRoomID(A.getNewRoomID(R,-1));
 				deckR.setArea(A);
 				deckR.bringMobHere(mob, false);
-				AmmunitionWeapon weap1=(AmmunitionWeapon)CMClass.getWeapon("GenSiegeWeapon");
+				final AmmunitionWeapon weap1=(AmmunitionWeapon)CMClass.getWeapon("GenSiegeWeapon");
 				weap1.setName("a tentacle");
 				weap1.setAmmoCapacity(1);
 				weap1.setAmmoRemaining(1);
@@ -141,7 +142,7 @@ public class Druid_Krakenform extends StdAbility
 				weap1.recoverPhyStats();
 				CMLib.flags().setGettable(weap1, false);
 				deckR.addItem(weap1);
-				AmmunitionWeapon weap2=(AmmunitionWeapon)weap1.copyOf();
+				final AmmunitionWeapon weap2=(AmmunitionWeapon)weap1.copyOf();
 				deckR.addItem(weap2);
 				final int numRooms = (int)Math.round(Math.ceil(CMath.div(mob.phyStats().level(),9)))-1;
 				// this is dumb, but it's the only way to give hit points
@@ -157,7 +158,7 @@ public class Druid_Krakenform extends StdAbility
 		}
 		return ship;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -179,7 +180,7 @@ public class Druid_Krakenform extends StdAbility
 			if(cmds.size()==0)
 				return true;
 			final String word=cmds.get(0).toUpperCase();
-			int dir=CMLib.directions().getDirectionCode(word);
+			final int dir=CMLib.directions().getDirectionCode(word);
 			if(dir >= 0)
 			{
 				final SailingShip ship=getShip();
@@ -198,7 +199,7 @@ public class Druid_Krakenform extends StdAbility
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -253,7 +254,7 @@ public class Druid_Krakenform extends StdAbility
 		}
 		return false;
 	}
-	
+
 	@Override
 	public int castingQuality(final MOB mob, final Physical target)
 	{
@@ -301,7 +302,7 @@ public class Druid_Krakenform extends StdAbility
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -337,7 +338,7 @@ public class Druid_Krakenform extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> take(s) on Kraken form."));
-				Druid_Krakenform form = (Druid_Krakenform)beneficialAffect(mob,mob,asLevel,Ability.TICKS_FOREVER);
+				final Druid_Krakenform form = (Druid_Krakenform)beneficialAffect(mob,mob,asLevel,Ability.TICKS_FOREVER);
 				if(form != null)
 					form.getShip();
 				mob.recoverCharStats();
