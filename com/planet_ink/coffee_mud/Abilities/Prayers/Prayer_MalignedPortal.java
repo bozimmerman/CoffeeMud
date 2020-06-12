@@ -290,6 +290,18 @@ public class Prayer_MalignedPortal extends Prayer
 								+ "respectfollow=false once=true minticks="+ticks+" maxticks="+ticks);
 						M.addNonUninvokableEffect(A);
 						fixPlanarMob(M);
+						if(!CMLib.flags().canBreatheHere(M, M.location()))
+						{
+							final int[] breathables = M.charStats().getBreathables();
+							if(Arrays.binarySearch(breathables, M.location().getAtmosphere())<0)
+							{
+								final int[] newSet=Arrays.copyOf(breathables,breathables.length+1);
+								newSet[newSet.length-1]=M.location().getAtmosphere();
+								Arrays.sort(newSet);
+								M.baseCharStats().setBreathables(newSet);
+								M.charStats().setBreathables(newSet);
+							}
+						}
 					}
 				}
 			}
@@ -338,6 +350,97 @@ public class Prayer_MalignedPortal extends Prayer
 	protected String getCategory()
 	{
 		return "lower";
+	}
+
+	@Override
+	public double castingTime(final MOB mob, final List<String> cmds)
+	{
+		return CMath.div(CMProps.getSkillCombatActionCost(ID(), 3000.0),100.0);
+	}
+
+	@Override
+	public double combatCastingTime(final MOB mob, final List<String> cmds)
+	{
+		return CMath.div(CMProps.getSkillCombatActionCost(ID(), 3000.0),100.0);
+	}
+
+	@Override
+	public boolean preInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel, final int secondsElapsed, final double actionsRemaining)
+	{
+		if(!super.preInvoke(mob, commands, givenTarget, auto, asLevel, secondsElapsed, actionsRemaining))
+			return false;
+
+		final Room oldRoom=mob.location();
+		if(oldRoom == null)
+			return false;
+		if(mob.isInCombat())
+		{
+			if(secondsElapsed > 0)
+				oldRoom.show(mob,null,null,CMMsg.MSG_OK_VISUAL, "<S-YOUPOSS> prayer is disrupted.");
+			else
+				mob.tell(L("Being in combat disrupts your prayer."));
+			return false;
+		}
+		if((!CMLib.flags().isAliveAwakeMobileUnbound(mob, false))
+		||((secondsElapsed > 1) && (this.oldRoom != mob.location())))
+		{
+			if(secondsElapsed > 0)
+				oldRoom.show(mob,null,null,CMMsg.MSG_OK_VISUAL, "<S-YOUPOSS> prayer is disrupted.");
+			else
+				mob.tell(L("You can't do that right now."));
+			return false;
+		}
+		if(!CMLib.flags().isStanding(mob))
+		{
+			if(secondsElapsed > 0)
+				oldRoom.show(mob,null,null,CMMsg.MSG_OK_VISUAL, "<S-YOUPOSS> prayer is disrupted.");
+			else
+				mob.tell(L("You need to stand up!"));
+			return false;
+		}
+
+		if(secondsElapsed==0)
+		{
+			this.oldRoom=oldRoom;
+			newRoom=null;
+			planeAble=null;
+
+			final PlanarAbility planeAble = (PlanarAbility)CMClass.getAbility("StdPlanarAbility");
+			final List<String> choices = new ArrayList<String>();
+			final List<String> choicesl = new ArrayList<String>();
+			for(final String planeKey : planeAble.getAllPlaneKeys())
+			{
+				final Map<String,String> planeVars = planeAble.getPlanarVars(planeKey);
+				final String catStr=planeVars.get(PlanarVar.CATEGORY.toString());
+				if(catStr != null)
+				{
+					final List<String> categories=CMParms.parseCommas(catStr.toLowerCase(), true);
+					if(categories.contains(getCategory()))
+					{
+						choicesl.add(CMStrings.capitalizeAllFirstLettersAndLower(planeKey));
+						final int align=CMath.s_int(planeVars.get(PlanarVar.ALIGNMENT.toString()));
+						if(align < -7500)
+							choices.add(CMStrings.capitalizeAllFirstLettersAndLower(planeKey));
+					}
+				}
+			}
+			if(choices.size()==0)
+				choices.addAll(choicesl);
+			if(choices.size()==0)
+			{
+				mob.tell(L("There is nowhere to portal to."));
+				return false;
+			}
+
+			return oldRoom.show(mob,oldRoom,this,verbalCastCode(mob,oldRoom,auto),L("^S<S-NAME> begin(s) a powerful prayer to @x1.^?",super.hisHerDiety(mob)));
+		}
+		else
+		if(secondsElapsed % 8 == 0)
+		{
+			if(!oldRoom.show(mob,null,null,CMMsg.MSG_NOISE, L("<S-NAME> continue(s) <S-HIS-HER> powerful prayer to @x1.^?",super.hisHerDiety(mob))))
+				return false;
+		}
+		return true;
 	}
 
 	@Override
@@ -440,10 +543,11 @@ public class Prayer_MalignedPortal extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,oldRoom,this,verbalCastCode(mob,oldRoom,auto),L("^S<S-NAME> evoke(s) a blinding, swirling portal here.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,oldRoom,this,verbalCastCode(mob,oldRoom,auto),L("^S<S-NAME> @x1 a blinding, swirling portal here.^?",prayForWord(mob)));
 			if(oldRoom.okMessage(mob,msg))
 			{
-				final MOB invoker = CMClass.getFactoryMOB(mob.Name(), mob.phyStats().level(), mob.location());
+				final int minLevel = oldRoom.getArea().getAreaIStats()[Area.Stats.MIN_LEVEL.ordinal()];
+				final MOB invoker = CMClass.getFactoryMOB(mob.Name(), minLevel, mob.location());
 				invoker.basePhyStats().setDisposition(invoker.basePhyStats().disposition()|PhyStats.IS_NOT_SEEN);
 				invoker.basePhyStats().setDisposition(invoker.phyStats().disposition()|PhyStats.IS_NOT_SEEN);
 				final Vector<String> cmds=new XVector<String>(planeName);
@@ -458,7 +562,8 @@ public class Prayer_MalignedPortal extends Prayer
 							planeAble = (PlanarAbility)A;
 					}
 				}
-				invoker.destroy();
+				// invoker.destroy(); -- let them continue their mission
+				planeAble.setPlanarLevel(minLevel);
 
 				final CMMsg msg2=CMClass.getMsg(mob,newRoom,this,verbalCastCode(mob,newRoom,auto),L("A blinding, swirling portal appears here."));
 				if(newRoom.okMessage(mob,msg2))

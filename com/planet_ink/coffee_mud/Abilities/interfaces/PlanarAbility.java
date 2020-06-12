@@ -63,6 +63,14 @@ public interface PlanarAbility extends Ability
 	public int getPlanarLevel();
 
 	/**
+	 * Change the planar level, hopefully before rooms
+	 * are generated.
+	 *
+	 * @param level the level to change to.
+	 */
+	public void setPlanarLevel(final int level);
+
+	/**
 	 * Get the return room when leaving/entering this plane
 	 * @return the oldRoom
 	 */

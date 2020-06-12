@@ -1559,6 +1559,11 @@ public class StdAbility implements Ability
 	@Override
 	public boolean preInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel, final int secondsElapsed, final double actionsRemaining)
 	{
+		if(mob.commandQueSize() > 1)
+		{
+			mob.tell(L("You cancel @x1.",name()));
+			return false;
+		}
 		return true;
 	}
 

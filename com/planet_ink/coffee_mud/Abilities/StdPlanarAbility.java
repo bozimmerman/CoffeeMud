@@ -174,6 +174,15 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 	}
 
 	/**
+	 * @param level the new planarLevel
+	 */
+	@Override
+	public final void setPlanarLevel(final int level)
+	{
+		planarLevel = level;
+	}
+
+	/**
 	 * @return the planarName
 	 */
 	@Override
