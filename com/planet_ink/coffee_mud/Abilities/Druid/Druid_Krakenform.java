@@ -138,6 +138,7 @@ public class Druid_Krakenform extends StdAbility
 				weap1.setAmmoCapacity(1);
 				weap1.setAmmoRemaining(1);
 				weap1.setAmmunitionType(ammoType);
+				weap1.setRanges(0, 3+(super.getXLEVELLevel(mob)/2));
 				weap1.basePhyStats().setDamage(20);
 				weap1.recoverPhyStats();
 				CMLib.flags().setGettable(weap1, false);
