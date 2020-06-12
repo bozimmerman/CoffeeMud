@@ -2088,7 +2088,9 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 						invisible?"":("<S-NAME> fade(s) into view.")+CMLib.protocol().msp("appear.wav",10));
 				final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,
 						invisible?"":L("<S-NAME> fade(s) away."));
-				if(thisRoom.okMessage(follower,leaveMsg)&&target.okMessage(follower,enterMsg))
+				if(thisRoom.okMessage(follower,leaveMsg)
+				&&(follower.okMessage(follower, enterMsg))
+				&&target.okMessage(follower,enterMsg))
 				{
 					if(follower.isInCombat())
 					{

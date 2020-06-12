@@ -85,7 +85,7 @@ public class Spell_PlanarBlock extends Spell
 
 		final MOB mob=(MOB)affected;
 		final Room R=mob.location();
-		if((msg.tool() instanceof Ability)
+		if((msg.tool() instanceof PlanarAbility)
 		&&(msg.source()==mob)
 		&&(msg.sourceMinor()==CMMsg.TYP_ENTER)
 		&&(R!=null)
@@ -120,6 +120,8 @@ public class Spell_PlanarBlock extends Spell
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> no longer feel(s) planar blocked."));
 	}
 
+
+
 	@Override
 	public int castingQuality(final MOB mob, final Physical target)
 	{
@@ -129,6 +131,23 @@ public class Spell_PlanarBlock extends Spell
 				return Ability.QUALITY_INDIFFERENT;
 		}
 		return super.castingQuality(mob,target);
+	}
+
+	@Override
+	public void setMiscText(final String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		if((newMiscText!=null)&&(newMiscText.length()>0))
+		{
+			this.forbiddenPlanes.clear();
+			this.forbiddenPlanes.addAll(CMParms.parseCommas(newMiscText.toLowerCase(),true));
+		}
+	}
+
+	@Override
+	public String text()
+	{
+		return CMParms.combineWith(this.forbiddenPlanes, ',');
 	}
 
 	@Override
