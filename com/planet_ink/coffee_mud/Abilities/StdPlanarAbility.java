@@ -474,10 +474,13 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 			if(planeVars.containsKey(PlanarVar.CATEGORY.toString()))
 			{
 				final String catStr=planeVars.get(PlanarVar.CATEGORY.toString());
-				this.categories=CMParms.parseCommas(catStr, true);
-				if((!planeVars.containsKey(PlanarVar.TRANSITIONAL.toString()))
-				&&(catStr.toLowerCase().indexOf("transitional")>=0))
-					planeVars.put(PlanarVar.TRANSITIONAL.toString(), "true");
+				if(catStr != null)
+				{
+					this.categories=CMParms.parseCommas(catStr, true);
+					if((!planeVars.containsKey(PlanarVar.TRANSITIONAL.toString()))
+					&&(catStr.toLowerCase().indexOf("transitional")>=0))
+						planeVars.put(PlanarVar.TRANSITIONAL.toString(), "true");
+				}
 			}
 			if(planeVars.containsKey(PlanarVar.OPPOSED.toString()))
 			{

@@ -70,16 +70,19 @@ public class Ranger_PlanarEnemy extends Ranger_Enemy1
 		{
 			final Map<String,String> planeVars = planeAble.getPlanarVars(planeKey);
 			final String catStr=planeVars.get(PlanarVar.CATEGORY.toString());
-			final List<String> categories=CMParms.parseCommas(catStr.toLowerCase(), true);
-			if((category.length()==0)||(!categories.contains(category)))
+			if(catStr != null)
 			{
-				choicesl.add(CMStrings.capitalizeAllFirstLettersAndLower(planeKey));
-				final int align=CMath.s_int(planeVars.get(PlanarVar.ALIGNMENT.toString()));
-				if((align - mobAlign) > 15000)
-					choices.add(CMStrings.capitalizeAllFirstLettersAndLower(planeKey));
-				else
-				if((align - mobAlign) > 10000)
-					choicesh.add(CMStrings.capitalizeAllFirstLettersAndLower(planeKey));
+				final List<String> categories=CMParms.parseCommas(catStr.toLowerCase(), true);
+				if((category.length()==0)||(!categories.contains(category)))
+				{
+					choicesl.add(CMStrings.capitalizeAllFirstLettersAndLower(planeKey));
+					final int align=CMath.s_int(planeVars.get(PlanarVar.ALIGNMENT.toString()));
+					if((align - mobAlign) > 15000)
+						choices.add(CMStrings.capitalizeAllFirstLettersAndLower(planeKey));
+					else
+					if((align - mobAlign) > 10000)
+						choicesh.add(CMStrings.capitalizeAllFirstLettersAndLower(planeKey));
+				}
 			}
 		}
 		if(choicesh.size()==0)

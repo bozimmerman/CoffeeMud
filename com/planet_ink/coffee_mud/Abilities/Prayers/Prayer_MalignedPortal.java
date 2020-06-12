@@ -365,13 +365,16 @@ public class Prayer_MalignedPortal extends Prayer
 		{
 			final Map<String,String> planeVars = planeAble.getPlanarVars(planeKey);
 			final String catStr=planeVars.get(PlanarVar.CATEGORY.toString());
-			final List<String> categories=CMParms.parseCommas(catStr.toLowerCase(), true);
-			if(categories.contains(getCategory()))
+			if(catStr != null)
 			{
-				choicesl.add(CMStrings.capitalizeAllFirstLettersAndLower(planeKey));
-				final int align=CMath.s_int(planeVars.get(PlanarVar.ALIGNMENT.toString()));
-				if(align < -7500)
-					choices.add(CMStrings.capitalizeAllFirstLettersAndLower(planeKey));
+				final List<String> categories=CMParms.parseCommas(catStr.toLowerCase(), true);
+				if(categories.contains(getCategory()))
+				{
+					choicesl.add(CMStrings.capitalizeAllFirstLettersAndLower(planeKey));
+					final int align=CMath.s_int(planeVars.get(PlanarVar.ALIGNMENT.toString()));
+					if(align < -7500)
+						choices.add(CMStrings.capitalizeAllFirstLettersAndLower(planeKey));
+				}
 			}
 		}
 		if(choices.size()==0)

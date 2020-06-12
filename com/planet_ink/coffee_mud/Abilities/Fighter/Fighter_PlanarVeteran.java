@@ -128,73 +128,76 @@ public class Fighter_PlanarVeteran extends FighterSkill
 			&&(planeVars.size()>0))
 			{
 				final String catStr=planeVars.get(PlanarVar.CATEGORY.toString());
-				final List<String> categories=CMParms.parseCommas(catStr.toLowerCase(), true);
-				if(categories.contains("inner"))
-					statBonus[STAT_ARMOR] += 2;
-				if(categories.contains("transitional"))
-					statBonus[STAT_SPEED] += 10;
-				final Faction aF=CMLib.factions().getFaction(CMLib.factions().getAlignmentID());
-				if(categories.contains("outer"))
+				if(catStr != null)
 				{
-					final List<com.planet_ink.coffee_mud.Common.interfaces.Faction.Align> aligns = new
-							ArrayList<com.planet_ink.coffee_mud.Common.interfaces.Faction.Align>();
-					if(aF!=null)
+					final List<String> categories=CMParms.parseCommas(catStr.toLowerCase(), true);
+					if(categories.contains("inner"))
+						statBonus[STAT_ARMOR] += 2;
+					if(categories.contains("transitional"))
+						statBonus[STAT_SPEED] += 10;
+					final Faction aF=CMLib.factions().getFaction(CMLib.factions().getAlignmentID());
+					if(categories.contains("outer"))
 					{
-						final int align = CMath.s_int(planeVars.get(PlanarVar.ALIGNMENT.name()));
-						final Faction.FRange range = aF.fetchRange(align);
-						if((range != null)&&(range.alignEquiv()!=Align.INDIFF))
-							aligns.add(range.alignEquiv());
-					}
-					final String factions = planeVars.get(PlanarVar.FACTIONS.toString());
-					if(factions!=null)
-					{
-						final PairList<String,String> factionList=new PairVector<String,String>(CMParms.parseSpaceParenList(factions));
-						for(final Pair<String,String> p : factionList)
+						final List<com.planet_ink.coffee_mud.Common.interfaces.Faction.Align> aligns = new
+								ArrayList<com.planet_ink.coffee_mud.Common.interfaces.Faction.Align>();
+						if(aF!=null)
 						{
-							final String factionName = p.first;
-							if(p.first.equals("*"))
-								continue;
-							Faction F=null;
-							if(CMLib.factions().isFactionID(factionName))
-								F=CMLib.factions().getFaction(factionName);
-							if(F==null)
-								F=CMLib.factions().getFactionByName(factionName);
-							if(F!=null)
+							final int align = CMath.s_int(planeVars.get(PlanarVar.ALIGNMENT.name()));
+							final Faction.FRange range = aF.fetchRange(align);
+							if((range != null)&&(range.alignEquiv()!=Align.INDIFF))
+								aligns.add(range.alignEquiv());
+						}
+						final String factions = planeVars.get(PlanarVar.FACTIONS.toString());
+						if(factions!=null)
+						{
+							final PairList<String,String> factionList=new PairVector<String,String>(CMParms.parseSpaceParenList(factions));
+							for(final Pair<String,String> p : factionList)
 							{
-								Faction.FRange FR;
-								if(CMath.isInteger(p.second))
-									FR=F.fetchRange(CMath.s_int(p.second));
-								else
-									FR = F.fetchRange(p.second);
-								if((FR != null)&&(FR.alignEquiv()!=Align.INDIFF))
-									aligns.add(FR.alignEquiv());
+								final String factionName = p.first;
+								if(p.first.equals("*"))
+									continue;
+								Faction F=null;
+								if(CMLib.factions().isFactionID(factionName))
+									F=CMLib.factions().getFaction(factionName);
+								if(F==null)
+									F=CMLib.factions().getFactionByName(factionName);
+								if(F!=null)
+								{
+									Faction.FRange FR;
+									if(CMath.isInteger(p.second))
+										FR=F.fetchRange(CMath.s_int(p.second));
+									else
+										FR = F.fetchRange(p.second);
+									if((FR != null)&&(FR.alignEquiv()!=Align.INDIFF))
+										aligns.add(FR.alignEquiv());
+								}
 							}
 						}
-					}
-					for(final Align A : aligns)
-					{
-						switch(A)
+						for(final Align A : aligns)
 						{
-						case GOOD:
-							statBonus[STAT_MOVES] += 5;
-							break;
-						case NEUTRAL:
-							statBonus[STAT_HITPOINTS] += 5;
-							break;
-						case EVIL:
-							statBonus[STAT_DAMAGE] += 1;
-							break;
-						case LAWFUL:
-							statBonus[STAT_MINDSAVE] += 3;
-							break;
-						case MODERATE:
-							statBonus[STAT_ARMOR] += 2;
-							break;
-						case CHAOTIC:
-							statBonus[STAT_ATTACK] += 1;
-							break;
-						default:
-							break;
+							switch(A)
+							{
+							case GOOD:
+								statBonus[STAT_MOVES] += 5;
+								break;
+							case NEUTRAL:
+								statBonus[STAT_HITPOINTS] += 5;
+								break;
+							case EVIL:
+								statBonus[STAT_DAMAGE] += 1;
+								break;
+							case LAWFUL:
+								statBonus[STAT_MINDSAVE] += 3;
+								break;
+							case MODERATE:
+								statBonus[STAT_ARMOR] += 2;
+								break;
+							case CHAOTIC:
+								statBonus[STAT_ATTACK] += 1;
+								break;
+							default:
+								break;
+							}
 						}
 					}
 				}
