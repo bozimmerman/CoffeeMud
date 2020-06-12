@@ -225,7 +225,7 @@ public class Where extends StdCommand
 						zapperMask=true;
 						who=who.substring(8).trim();
 						String desc=CMLib.masking().maskDesc(who);
-						if(desc.equalsIgnoreCase("Anyone") && (who.length()>0))
+						if(desc.toLowerCase().startsWith("anyone") && (who.length()>0))
 						{
 							desc+="... and I doubt you meant that.";
 							mob.tell(L("^xMask entered:^?^.^N @x1\n\r",desc));
@@ -241,7 +241,7 @@ public class Where extends StdCommand
 						zapperMask=true;
 						who=who.substring(9).trim();
 						String desc=CMLib.masking().maskDesc(who);
-						if(desc.equalsIgnoreCase("Anyone") && (who.length()>0))
+						if(desc.toLowerCase().startsWith("anyone") && (who.length()>0))
 						{
 							desc+="... and I doubt you meant that.";
 							mob.tell(L("^xMask entered:^?^.^N @x1\n\r",desc));
@@ -293,8 +293,11 @@ public class Where extends StdCommand
 
 					try
 					{
+						final Session sess = mob.session();
 						for(;r.hasMoreElements();)
 						{
+							if((sess != null)&&(sess.isStopped()))
+								break;
 							R=r.nextElement();
 							if((R!=null)&&(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.WHERE))&&(CMLib.flags().canAccess(mob,R.getArea())))
 							{
