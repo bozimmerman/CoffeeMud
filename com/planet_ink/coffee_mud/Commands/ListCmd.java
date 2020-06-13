@@ -31,6 +31,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.*;
 import com.planet_ink.coffee_web.interfaces.HTTPRequest;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -4085,7 +4086,8 @@ public class ListCmd extends StdCommand
 		BANKS("BANKS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDMOBS}),
 		PLANES("PLANES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.PLANES}),
 		LIBRARIES("LIBRARIES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDMOBS}),
-		POSTOFFICES("POSTOFFICES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDMOBS})
+		POSTOFFICES("POSTOFFICES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDMOBS}),
+		WHO("WHO",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDPLAYERS})
 		;
 		public String[]			   cmd;
 		public CMSecurity.SecGroup flags;
@@ -5341,6 +5343,18 @@ public class ListCmd extends StdCommand
 		case POSTOFFICES:
 			mob.tell(listPostOffices(mob,s,commands).toString());
 			break;
+		case WHO:
+		{
+			final Command C=CMClass.getCommand("Who");
+			try
+			{
+				mob.tell(C.executeInternal(mob, 0, Boolean.FALSE, null, "Characters").toString());
+			}
+			catch (final IOException e)
+			{
+			}
+			break;
+		}
 		case BANKS:
 			mob.tell(listBanks(mob,s,commands).toString());
 			break;

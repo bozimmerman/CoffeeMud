@@ -47,7 +47,11 @@ public class Who extends StdCommand
 	}
 
 	@SuppressWarnings("rawtypes")
-	private final static Class[][]	filterParameters	= new Class[][] { { Boolean.class, Filterer.class } };
+	private final static Class[][]	filterParameters	= new Class[][]
+	{
+		{ Boolean.class, Filterer.class},
+		{ Boolean.class, Filterer.class, String.class }
+	};
 
 	public int[] getShortColWidths(final MOB seer)
 	{
@@ -71,6 +75,16 @@ public class Who extends StdCommand
 			head.append(CMStrings.padRight(L("Level"),colWidths[2]));
 		head.append("] Character name^.^N\n\r");
 		return head.toString();
+	}
+
+	public String getTail(final int[] colWidths, final String word, final int amt)
+	{
+		int width=colWidths[0];
+		for(int i=1;i<=2;i++)
+			width+=colWidths[i]+1;
+		final StringBuilder tail=new StringBuilder("");
+		tail.append(L("^x["+CMStrings.padRight(L("Total "+word+" online"),width)+"]^.^N @x1\n\r",""+amt));
+		return tail.toString();
 	}
 
 	public StringBuffer showWhoShort(final MOB who, final int[] colWidths)
@@ -144,7 +158,7 @@ public class Who extends StdCommand
 		return false;
 	}
 
-	public String getWho(final MOB mob, final boolean emptyOnNone, final Filterer<MOB> mobFilter, final Comparator<MOB> mobSort)
+	public String getWho(final MOB mob, final boolean emptyOnNone, final Filterer<MOB> mobFilter, final Comparator<MOB> mobSort, final String tailStr)
 	{
 		final StringBuffer msg=new StringBuffer("");
 		final int[] colWidths=getShortColWidths(mob);
@@ -160,6 +174,7 @@ public class Who extends StdCommand
 		}
 		if(mobSort != null)
 			Collections.sort(mobs, mobSort);
+		final int count=mobs.size();
 		for(final MOB mob2 : mobs)
 			msg.append(showWhoShort(mob2,colWidths));
 		mobs.clear();
@@ -169,6 +184,8 @@ public class Who extends StdCommand
 		{
 			final StringBuffer head=new StringBuffer(getHead(colWidths));
 			head.append(msg.toString());
+			if(tailStr != null)
+				head.append(getTail(colWidths, tailStr, count));
 			return head.toString();
 		}
 	}
@@ -236,6 +253,8 @@ public class Who extends StdCommand
 			}
 		};
 
+		@SuppressWarnings("unused")
+		String summaryName = "Characters";
 		if((mobName != null) && (mob != null))
 		{
 			if((mobName.equalsIgnoreCase("friends"))
@@ -251,6 +270,7 @@ public class Who extends StdCommand
 					}
 				};
 				mobName=null;
+				summaryName="Friends";
 			}
 			else
 			if((mobName.equalsIgnoreCase("pk")
@@ -274,6 +294,7 @@ public class Who extends StdCommand
 					}
 				};
 				mobName = null;
+				summaryName="Targets";
 			}
 			else
 			if((mobName.equalsIgnoreCase("acct")
@@ -331,12 +352,13 @@ public class Who extends StdCommand
 					msg.append("] "+CMStrings.padRight(name,colWidths[1]));
 					msg.append("\n\r");
 				}
+				//msg.append(L("^x["+CMStrings.padRight("Total Characters",colWidths[0])+"]^.^N @x1\n\r",""+mobs.size()));
 				mob.tell(msg.toString());
 				return false;
 			}
 		}
 
-		final String msg = getWho(mob,mobName!=null,mobFilter,mobSort);
+		final String msg = getWho(mob,mobName!=null,mobFilter,mobSort, null);
 		if((mobName!=null)&&(msg.length()==0))
 			mob.tell(L("That person doesn't appear to be online.\n\r"));
 		else
@@ -349,10 +371,18 @@ public class Who extends StdCommand
 	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		if(args.length==0)
-			return getWho(mob,false,null,null);
+			return getWho(mob,false,null,null, null);
 		else
 		if(super.checkArguments(filterParameters, args))
-			return getWho(mob,((Boolean)args[0]).booleanValue(),(Filterer<MOB>)args[1],null);
+		{
+			if(args.length<=2)
+				return getWho(mob,((Boolean)args[0]).booleanValue(),(Filterer<MOB>)args[1],null,null);
+			else
+			if(args[2] instanceof String)
+				return getWho(mob,((Boolean)args[0]).booleanValue(),(Filterer<MOB>)args[1],null,(String)args[2]);
+			else
+				return getWho(mob,((Boolean)args[0]).booleanValue(),(Filterer<MOB>)args[1],null,null);
+		}
 		return Boolean.FALSE;
 	}
 

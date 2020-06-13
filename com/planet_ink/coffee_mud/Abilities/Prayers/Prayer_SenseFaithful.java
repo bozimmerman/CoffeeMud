@@ -115,7 +115,7 @@ public class Prayer_SenseFaithful extends Prayer
 										return (obj!=null) && (obj.getWorshipCharID().equals(deityName));
 									}
 
-								}
+								}, "Faithful"
 							).toString());
 						}
 					}
