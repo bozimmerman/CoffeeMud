@@ -97,11 +97,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 			if(usesRemaining()>0)
 				phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_SWIMMING);
 			else
-			{
-				final Room R=(Room)owner;
-				if((R!=null)&&(R.getRoomInDir(Directions.DOWN)!=null))
-					phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_FALLING);
-			}
+				phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_FALLING);
 		}
 	}
 

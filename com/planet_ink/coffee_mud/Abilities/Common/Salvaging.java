@@ -193,13 +193,6 @@ public class Salvaging extends CommonSkill
 			return false;
 		}
 
-		if(CMLib.flags().isFalling(I)
-		||(I.fetchEffect("Sinking")!=null))
-		{
-			commonTell(mob,L("@x1 is sinking, and can't yet be salvaged.",I.name(mob)));
-			return false;
-		}
-
 		if(CMLib.flags().isEnchanted(I))
 		{
 			commonTell(mob,L("@x1 is enchanted, and can't be salvaged.",I.name(mob)));

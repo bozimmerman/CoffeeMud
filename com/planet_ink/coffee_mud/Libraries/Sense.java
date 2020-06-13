@@ -1960,7 +1960,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			if((A!=null)
 			&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PROPERTY)
 			&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_DISEASE)
-			&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_POISON))
+			&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_POISON)
+			&&(!(A.ID().equals("Sinking")))
+			&&(!(A.ID().equals("Falling"))))
 				return true;
 		}
 		return false;
@@ -2287,7 +2289,10 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				case Room.DOMAIN_OUTDOORS_SEAPORT:
 				case Room.DOMAIN_INDOORS_SEAPORT:
 				case Room.DOMAIN_INDOORS_CAVE_SEAPORT:
-					say.append(" (^psinking^?)");
+					if(R.rawDoors()[Directions.DOWN]==null)
+						say.append(" (^psunk^?)");
+					else
+						say.append(" (^psinking^?)");
 					break;
 				default:
 					if(!(seen instanceof MOB))
