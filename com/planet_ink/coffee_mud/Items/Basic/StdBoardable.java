@@ -488,7 +488,20 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		{
 			if(amDestroyed())
 				return false;
-
+			/* this is necessary, but why wasn't it there before?
+			if(numEffects()>0)
+			{
+				eachEffect(new EachApplicable<Ability>()
+				{
+					@Override
+					public final void apply(final Ability A)
+					{
+						if(!A.tick(ticking,tickID))
+							A.unInvoke();
+					}
+				});
+			}
+			*/
 			return true;
 		}
 		return super.tick(ticking, tickID);

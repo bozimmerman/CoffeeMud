@@ -66,7 +66,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 	protected int					maxHullPoints	= -1;
 	protected volatile int			lastSpamCt		= 0;
 	protected volatile String		lastSpamMsg		= "";
-	
+
 	protected String		verb_sail		= "sail";
 	protected String		verb_sailing	= "sailing";
 	protected String		noun_ship		= "ship";
@@ -97,7 +97,11 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 			if(usesRemaining()>0)
 				phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_SWIMMING);
 			else
-				phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_FALLING);
+			{
+				final Room R=(Room)owner;
+				if((R!=null)&&(R.getRoomInDir(Directions.DOWN)!=null))
+					phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_FALLING);
+			}
 		}
 	}
 
@@ -2113,7 +2117,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 					if((this.courseDirection >= 0)
 					&&(getTopCourse()>=0))
 						visualCondition.append(L("\n\r^H@x1 is "+verb_sailing+" @x2^.^?",name(msg.source()), CMLib.directions().getDirectionName(courseDirection & 127)));
-					if(this.subjectToWearAndTear() && (usesRemaining() <= 100) 
+					if(this.subjectToWearAndTear() && (usesRemaining() <= 100)
 					&& (this.targetedShip != null)
 					&& (!this.targetedShip.amDestroyed()))
 					{
@@ -2852,7 +2856,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 				return false;
 			}
 			return true;
-			
+
 		}
 		return false;
 	}
