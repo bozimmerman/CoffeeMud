@@ -121,7 +121,7 @@ public class Thief_Appraise extends ThiefSkill
 		}
 		final StringBuffer str=new StringBuffer("");
 		str.append(L("@x1 is made of @x2",target.name(mob),RawMaterial.CODES.NAME(materialCode)));
-		str.append(L(" is worth about @x1.",CMLib.beanCounter().nameCurrencyShort(mob,realValue)));
+		str.append(L(" and worth about @x1.",CMLib.beanCounter().nameCurrencyShort(mob,realValue)));
 		if(target instanceof Armor)
 			str.append(L("\n\r@x1 is a size @x2.",target.name(mob),""+height));
 		if(weight!=allWeight)
