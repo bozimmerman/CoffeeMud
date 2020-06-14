@@ -70,6 +70,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 	protected String		verb_sail		= "sail";
 	protected String		verb_sailing	= "sailing";
 	protected String		noun_ship		= "ship";
+	protected String		head_offTheDeck = "^HOff the deck you see: ^N";
 	protected Set<String>	disableCmds		= new HashSet<String>();
 
 	public GenSailingShip()
@@ -2053,7 +2054,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 			else
 			{
 				final CMMsg msg2=(CMMsg)msg.copyOf();
-				msg2.setOthersMessage(L("^HOff the deck you see: ^N")+msg.othersMessage());
+				msg2.setOthersMessage(L(head_offTheDeck)+msg.othersMessage());
 				cleanMsgForRepeat(msg2);
 				sendAreaMessage(msg2, true);
 			}
@@ -3211,6 +3212,9 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 				else
 				if(up_code.equals("SPECIAL_VERB_SAILING"))
 					verb_sailing=val;
+				else
+				if(up_code.equals("SPECIAL_HEAD_OFFTHEDECK"))
+					head_offTheDeck=val;
 				else
 				if(up_code.equals("SPECIAL_DISABLE_CMDS"))
 				{

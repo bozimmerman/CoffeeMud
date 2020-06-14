@@ -91,6 +91,7 @@ public class Druid_Krakenform extends StdAbility
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setName("a kraken");
 		affectableStats.setHeight(420);
 		affectableStats.setWeight(5000);
 	}
@@ -105,6 +106,8 @@ public class Druid_Krakenform extends StdAbility
 	protected final static String ammoType="tentacle";
 
 	protected SailingShip ship = null;
+	protected Language	krakenSpeak = null;
+	
 	protected SailingShip getShip()
 	{
 		if(ship == null)
@@ -126,6 +129,7 @@ public class Druid_Krakenform extends StdAbility
 				ship.setStat("SPECIAL_VERB_SAIL","swim");
 				ship.setStat("SPECIAL_VERB_SAILING","swimming");
 				ship.setStat("SPECIAL_DISABLE_CMDS", "anchor,throw,tender");
+				ship.setStat("SPECIAL_HEAD_OFFTHEDECK", "");
 				((Exit)ship).setDoorsNLocks(true, false, true, true, true, true);
 				((Exit)ship).setKeyName(""+Math.random());
 				//((Exit)ship).setExitParams("", newCloseWord, newOpenWord, newClosedText);
@@ -177,30 +181,57 @@ public class Druid_Krakenform extends StdAbility
 				msg.setTarget(CMLib.map().roomLocation(getShip()));
 		}
 		else
-		if((msg.sourceMinor()==CMMsg.TYP_HUH)
-		&&(msg.source()==affected)
-		&&(msg.targetMessage()!=null))
+		if(msg.source()==affected)
 		{
-			final List<String> cmds=CMParms.parse(msg.targetMessage());
-			if(cmds.size()==0)
-				return true;
-			final String word=cmds.get(0).toUpperCase();
-			final int dir=CMLib.directions().getDirectionCode(word);
-			if(dir >= 0)
+			switch(msg.sourceMinor())
 			{
-				final SailingShip ship=getShip();
-				if(ship != null)
+			case CMMsg.TYP_SPEAK:
+			{
+				final Room R= CMLib.map().roomLocation(getShip());
+				if(krakenSpeak == null)
 				{
-					msg.setTargetMessage("SAIL "+word);
-					if(ship.okMessage(myHost, msg))
-						ship.executeMsg(myHost, msg);
-					msg.setTargetMessage("do nothing");
-					return false;
+					krakenSpeak=(Language)CMClass.getAbility("Krakenspeak");
+					krakenSpeak.setProficiency(100);
+					krakenSpeak.setMiscText("ALWAYS=true SPOKEN=true");
 				}
-			}
-			else
-			if(word.equalsIgnoreCase("lower"))
+				if(msg.tool() instanceof Language)
+					msg.setTool(null);
+				krakenSpeak.setAffectedOne(msg.source());
+				if(krakenSpeak.okMessage(msg.source(), msg))
+				{
+					krakenSpeak.executeMsg(msg.source(), msg);
+					R.send(msg.source(), msg);
+				}
 				return false;
+			}
+			case CMMsg.TYP_HUH:
+			{
+				if(msg.targetMessage()!=null)
+				{
+					final List<String> cmds=CMParms.parse(msg.targetMessage());
+					if(cmds.size()==0)
+						return true;
+					final String word=cmds.get(0).toUpperCase();
+					final int dir=CMLib.directions().getDirectionCode(word);
+					if(dir >= 0)
+					{
+						final SailingShip ship=getShip();
+						if(ship != null)
+						{
+							msg.setTargetMessage("SAIL "+word);
+							if(ship.okMessage(myHost, msg))
+								ship.executeMsg(myHost, msg);
+							msg.setTargetMessage("do nothing");
+							return false;
+						}
+					}
+					else
+					if(word.equalsIgnoreCase("lower"))
+						return false;
+				}
+				break;
+			}
+			}
 		}
 		return true;
 	}
