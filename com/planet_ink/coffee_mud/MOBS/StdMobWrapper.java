@@ -966,6 +966,13 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	{
 		return (mob == null) ? "" : mob.titledName();
 	}
+	
+	@Override
+	public String titledName(final MOB viewer)
+	{
+		return (mob == null) ? "" : mob.titledName(viewer);
+	}
+
 
 	@Override
 	public String genericName()

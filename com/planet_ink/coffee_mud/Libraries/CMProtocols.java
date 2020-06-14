@@ -2062,7 +2062,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 									if(comma)
 										doc.append(",");
 									comma=true;
-									final String lname=(M.Name().equals(M.name())?M.titledName():M.name(mob));
+									final String lname=(M.Name().equals(M.name())?M.titledName(mob):M.name(mob));
 									doc.append("\""+M.Name()+"\":\"").append(MiniJSON.toJSONString(lname)).append("\"");
 								}
 							}
@@ -2089,7 +2089,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 									if(comma)
 										doc.append(",");
 									comma=true;
-									final String lname=(M.Name().equals(M.name())?M.titledName():M.name(mob));
+									final String lname=(M.Name().equals(M.name())?M.titledName(mob):M.name(mob));
 									doc.append("\""+M.Name()+"\":\"").append(MiniJSON.toJSONString(lname)).append("\"");
 								}
 							}

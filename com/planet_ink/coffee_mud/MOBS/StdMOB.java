@@ -1764,6 +1764,19 @@ public class StdMOB implements MOB
 	}
 
 	@Override
+	public String titledName(final MOB viewer)
+	{
+		if (CMProps.getBoolVar(CMProps.Bool.INTRODUCTIONSYSTEM)
+		&& (playerStats() != null)
+		&& (viewer != null)
+		&& (viewer.playerStats() != null)
+		&& (!viewer.playerStats().isIntroducedTo(Name()))
+		&& (!CMSecurity.isASysOp(viewer)))
+			return CMLib.english().startWithAorAn(genericName()).toLowerCase();
+		return titledName();
+	}
+	
+	@Override
 	public String name(final MOB viewer)
 	{
 		if (CMProps.getBoolVar(CMProps.Bool.INTRODUCTIONSYSTEM)
@@ -1795,7 +1808,7 @@ public class StdMOB implements MOB
 			if (!name(viewerMob).equals(Name()))
 				sendBack = new StringBuilder(name(viewerMob));
 			else
-				sendBack = new StringBuilder(titledName());
+				sendBack = new StringBuilder(titledName(viewerMob));
 			sendBack.append(" ");
 			sendBack.append(L(CMLib.flags().getPresentDispositionVerb(this, CMFlagLibrary.ComingOrGoing.IS)+" here"));
 			if (riding() != null)

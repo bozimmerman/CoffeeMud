@@ -87,6 +87,20 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the name with a title, or not
 	 */
 	public String titledName();
+	
+	/**
+	 * If this player is using a title, this method returns
+	 * the players Name() with the title.  If not using a
+	 * title, this method returns name(), respecting the 
+	 * introduction system.
+	 * 
+	 * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#Name()
+	 * @see com.planet_ink.coffee_mud.core.interfaces.Tickable#name()
+	 * @param viewer the person viewing
+	 * @return the name with a title, or not
+	 */
+	public String titledName(final MOB viewer);
+
 
 	/**
 	 * Returns the age-range and race of this mob, as if it were someone
