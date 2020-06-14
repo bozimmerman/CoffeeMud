@@ -114,7 +114,7 @@ public class WhoIs extends Who
 					&&(mob.phyStats().level()>=mob2.phyStats().level())))
 			&&(mob2.phyStats().level()>0)
 			&&(mob2.name().toUpperCase().startsWith(mobName.toUpperCase())))
-				msg.append(showWhoShort(mob2,colWidths));
+				msg.append(showWhoShort(mob2,mob,colWidths));
 		}
 		if(msg.length()==0)
 			mob.tell(L("That person doesn't appear to be online.\n\r"));

@@ -125,7 +125,8 @@ public class Prayer_MalignedPortal extends Prayer
 		else
 			P=null;
 		super.unInvoke();
-		P.destroy();
+		if(P!=null)
+			P.destroy();
 	}
 
 	@Override

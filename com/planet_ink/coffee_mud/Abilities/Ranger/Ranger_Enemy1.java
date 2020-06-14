@@ -153,7 +153,7 @@ public class Ranger_Enemy1 extends StdAbility
 		final Pair<MOB, Boolean> c=cache;
 		if((c != null)
 		&&(c.first==mob))
-			return c.second;
+			return c.second.booleanValue();
 		final Boolean B=Boolean.valueOf(isTheEnemy(mob));
 		this.cache = new Pair<MOB, Boolean>(mob, B);
 		return B.booleanValue();

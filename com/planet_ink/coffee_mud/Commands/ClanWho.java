@@ -148,7 +148,7 @@ public class ClanWho extends Who
 						&&(CMLib.flags().isInTheGame(mob2,true))
 						&&(mob2.phyStats().level()>0))
 						{
-							msg.append(showWhoShort(mob2,colWidths));
+							msg.append(showWhoShort(mob2,mob,colWidths));
 							alreadyDone.add(mob2);
 						}
 					}

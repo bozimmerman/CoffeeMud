@@ -72,7 +72,6 @@ public class Prayer_BenignedPortal extends Prayer_MalignedPortal
 	@Override
 	protected void fixPlanarMob(final MOB M)
 	{
-		;
 		if(!CMLib.flags().isMobile(M))
 		{
 			final Behavior B=CMClass.getBehavior("Mobile");

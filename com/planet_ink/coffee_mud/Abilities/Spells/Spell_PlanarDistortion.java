@@ -155,7 +155,8 @@ public class Spell_PlanarDistortion extends Spell
 			aeffects.clear();
 			abehavs.clear();
 			if((affected instanceof MOB)
-			&&(planeName != null))
+			&&(planeName != null)
+			&&(baseRoom != null))
 			{
 				newRoom=CMClass.getLocale(baseRoom.ID());
 				newRoom.setDisplayText(baseRoom.displayText());

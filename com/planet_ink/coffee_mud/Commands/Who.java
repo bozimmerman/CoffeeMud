@@ -87,7 +87,7 @@ public class Who extends StdCommand
 		return tail.toString();
 	}
 
-	public StringBuffer showWhoShort(final MOB who, final int[] colWidths)
+	public StringBuffer showWhoShort(final MOB who, final MOB viewerM, final int[] colWidths)
 	{
 		final StringBuffer msg=new StringBuffer("");
 		msg.append("[");
@@ -117,19 +117,19 @@ public class Who extends StdCommand
 			else
 				msg.append(CMStrings.padRight(levelStr,colWidths[2]));
 		}
-		final String name=getWhoName(who);
+		final String name=getWhoName(who, viewerM);
 		msg.append("] "+CMStrings.padRight(name,colWidths[3]));
 		msg.append("\n\r");
 		return msg;
 	}
 
-	public String getWhoName(final MOB seenM)
+	public String getWhoName(final MOB seenM, final MOB viewerM)
 	{
 		String name;
 		if(CMLib.flags().isCloaked(seenM))
-			name="("+(seenM.Name().equals(seenM.name())?seenM.titledName():seenM.name())+")^N";
+			name="("+(seenM.Name().equals(seenM.name())?seenM.titledName(viewerM):seenM.name(viewerM))+")^N";
 		else
-			name=((seenM.Name().equals(seenM.name())?seenM.titledName():seenM.name()))+"^N";
+			name=((seenM.Name().equals(seenM.name())?seenM.titledName(viewerM):seenM.name(viewerM)))+"^N";
 		if((seenM.session()!=null)&&(seenM.session().isAfk()))
 			name=name+(" (idle: "+CMLib.time().date2BestShortEllapsedTime(seenM.session().getIdleMillis())+")");
 		return name;
@@ -176,7 +176,7 @@ public class Who extends StdCommand
 			Collections.sort(mobs, mobSort);
 		final int count=mobs.size();
 		for(final MOB mob2 : mobs)
-			msg.append(showWhoShort(mob2,colWidths));
+			msg.append(showWhoShort(mob2,mob,colWidths));
 		mobs.clear();
 		if((emptyOnNone)&&(msg.length()==0))
 			return "";

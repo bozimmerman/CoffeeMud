@@ -174,7 +174,7 @@ public class Paladin_PlanarDefiance extends PaladinSkill
 					}
 					this.defiance=defiance;
 				}
-				if(defiance.length()>0)
+				if((defiance!=null)&&(defiance.length()>0))
 					affectableStats.addAmbiance(defiance);
 			}
 			else

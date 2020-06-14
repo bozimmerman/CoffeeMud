@@ -372,39 +372,43 @@ public class Skill_Track extends StdSkill
 
 		boolean befriend=false;
 		boolean persist = false;
-		if(commands.size()>2)
+		if(commands != null)
 		{
-			if(commands.get(0).equalsIgnoreCase("and")
-			&&(commands.get(1).equalsIgnoreCase("follow")||commands.get(1).equalsIgnoreCase("befriend")))
+			if(commands.size()>2)
 			{
-				commands.remove(0);
-				commands.remove(0);
-				befriend=true;
+				if(commands.get(0).equalsIgnoreCase("and")
+				&&(commands.get(1).equalsIgnoreCase("follow")||commands.get(1).equalsIgnoreCase("befriend")))
+				{
+					commands.remove(0);
+					commands.remove(0);
+					befriend=true;
+				}
 			}
-		}
-		if(commands.size()>2)
-		{
-			if(commands.get(0).equalsIgnoreCase("and")
-			&&(commands.get(1).equalsIgnoreCase("persist")))
+			if(commands.size()>2)
 			{
-				commands.remove(0);
-				commands.remove(0);
-				persist=true;
+				if(commands.get(0).equalsIgnoreCase("and")
+				&&(commands.get(1).equalsIgnoreCase("persist")))
+				{
+					commands.remove(0);
+					commands.remove(0);
+					persist=true;
+				}
+			}
+			
+			final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
+			for(final Ability A : V)
+				A.unInvoke();
+			if(V.size()>0)
+			{
+				mob.tell(L("You stop tracking."));
+				if((commands.size()==0)||(CMParms.combine(commands,0).equalsIgnoreCase("stop")))
+				{
+					tickStatus=Tickable.STATUS_NOT;
+					return true;
+				}
 			}
 		}
 
-		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
-		for(final Ability A : V)
-			A.unInvoke();
-		if(V.size()>0)
-		{
-			mob.tell(L("You stop tracking."));
-			if((commands.size()==0)||(CMParms.combine(commands,0).equalsIgnoreCase("stop")))
-			{
-				tickStatus=Tickable.STATUS_NOT;
-				return true;
-			}
-		}
 
 		tickStatus=Tickable.STATUS_MISC6+2;
 		theTrail=null;
@@ -420,28 +424,31 @@ public class Skill_Track extends StdSkill
 		int radius=50 + (10*(super.getXMAXRANGELevel(mob)+super.getXLEVELLevel(mob)));
 		boolean allowAir=true;
 		boolean allowWater=true;
-		if((commands.size()>1)
-		&&((commands.get(commands.size()-1)).toUpperCase().startsWith("RADIUS="))
-		&&(CMath.isInteger((commands.get(commands.size()-1)).substring(7))))
+		if(commands != null)
 		{
-			radius=CMath.s_int((commands.get(commands.size()-1)).substring(7));
-			commands.remove(commands.size()-1);
-		}
-		if((commands.size()>1)&&((commands.get(commands.size()-1)).equalsIgnoreCase("LANDONLY")))
-		{
-			allowAir=false;
-			allowWater=false;
-			commands.remove(commands.size()-1);
-		}
-		if((commands.size()>1)&&((commands.get(commands.size()-1)).equalsIgnoreCase("NOAIR")))
-		{
-			allowAir=false;
-			commands.remove(commands.size()-1);
-		}
-		if((commands.size()>1)&&((commands.get(commands.size()-1)).equalsIgnoreCase("NOWATER")))
-		{
-			allowWater=false;
-			commands.remove(commands.size()-1);
+			if((commands.size()>1)
+			&&((commands.get(commands.size()-1)).toUpperCase().startsWith("RADIUS="))
+			&&(CMath.isInteger((commands.get(commands.size()-1)).substring(7))))
+			{
+				radius=CMath.s_int((commands.get(commands.size()-1)).substring(7));
+				commands.remove(commands.size()-1);
+			}
+			if((commands.size()>1)&&((commands.get(commands.size()-1)).equalsIgnoreCase("LANDONLY")))
+			{
+				allowAir=false;
+				allowWater=false;
+				commands.remove(commands.size()-1);
+			}
+			if((commands.size()>1)&&((commands.get(commands.size()-1)).equalsIgnoreCase("NOAIR")))
+			{
+				allowAir=false;
+				commands.remove(commands.size()-1);
+			}
+			if((commands.size()>1)&&((commands.get(commands.size()-1)).equalsIgnoreCase("NOWATER")))
+			{
+				allowWater=false;
+				commands.remove(commands.size()-1);
+			}
 		}
 
 		final String mobName=CMParms.combine(commands,0);
