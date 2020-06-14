@@ -127,9 +127,9 @@ public class Who extends StdCommand
 	{
 		String name;
 		if(CMLib.flags().isCloaked(seenM))
-			name="("+(seenM.Name().equals(seenM.name())?seenM.titledName(viewerM):seenM.name(viewerM))+")^N";
+			name="("+(seenM.Name().equals(seenM.name())?seenM.titledName():seenM.name())+")^N";
 		else
-			name=((seenM.Name().equals(seenM.name())?seenM.titledName(viewerM):seenM.name(viewerM)))+"^N";
+			name=((seenM.Name().equals(seenM.name())?seenM.titledName():seenM.name()))+"^N";
 		if((seenM.session()!=null)&&(seenM.session().isAfk()))
 			name=name+(" (idle: "+CMLib.time().date2BestShortEllapsedTime(seenM.session().getIdleMillis())+")");
 		return name;
