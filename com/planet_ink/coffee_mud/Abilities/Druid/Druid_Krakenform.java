@@ -126,6 +126,9 @@ public class Druid_Krakenform extends StdAbility
 				ship.setStat("SPECIAL_VERB_SAIL","swim");
 				ship.setStat("SPECIAL_VERB_SAILING","swimming");
 				ship.setStat("SPECIAL_DISABLE_CMDS", "anchor,throw,tender");
+				((Exit)ship).setDoorsNLocks(true, false, true, true, true, true);
+				((Exit)ship).setKeyName(""+Math.random());
+				//((Exit)ship).setExitParams("", newCloseWord, newOpenWord, newClosedText);
 				if(ship instanceof PrivateProperty)
 					((PrivateProperty)ship).setOwnerName(mob.Name());
 				final Area A=ship.getShipArea();
