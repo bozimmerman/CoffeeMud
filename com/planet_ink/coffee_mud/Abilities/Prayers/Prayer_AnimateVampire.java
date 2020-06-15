@@ -237,7 +237,7 @@ public class Prayer_AnimateVampire extends Prayer
 				newMOB.baseState().setHitPoints(30*newMOB.basePhyStats().level());
 				newMOB.baseState().setMovement(CMLib.leveler().getLevelMove(newMOB));
 				newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
-				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
+				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
 				newMOB.baseState().setMana(100);
 				Behavior B=CMClass.getBehavior("Aggressive");
 				if(B!=null)

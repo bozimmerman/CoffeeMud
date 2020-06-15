@@ -1049,6 +1049,22 @@ public class CMClass extends ClassLoader
 	}
 
 	/**
+	 * Returns a new instance of a ability object of the given ID from your
+	 * classloader and lets you set the misc text
+	 *
+	 * @param calledThis the ID() of the object to return
+	 * @param miscText the misc text to give the ability
+	 * @return a new instance of a ability object of the given ID
+	 */
+	public static final Ability getAbility(final String calledThis, final String miscText)
+	{
+		final Ability A=(Ability) getNewGlobal(c().abilities, calledThis);
+		if(A!=null)
+			A.setMiscText(miscText);
+		return A;
+	}
+
+	/**
 	 * Returns the prototype instance of the ability object of the given ID from
 	 * your classloader
 	 *

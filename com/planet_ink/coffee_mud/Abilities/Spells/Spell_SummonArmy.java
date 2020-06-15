@@ -150,7 +150,7 @@ public class Spell_SummonArmy extends Spell
 				for(int i=0;i<num;i++)
 				{
 					final MOB newMOB=CMClass.getMOB(choices[CMLib.dice().roll(1,choices.length,-1)]);
-					newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
+					newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
 					newMOB.setLocation(mob.location());
 					newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 					newMOB.recoverCharStats();

@@ -241,7 +241,7 @@ public class Prayer_AnimateGhast extends Prayer
 					newMOB.addBehavior(B);
 				}
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Spell_CauseStink"));
-				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
+				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
 				newMOB.text();
 				newMOB.bringToLife(mob.location(),true);
 				CMLib.beanCounter().clearZeroMoney(newMOB,null);

@@ -318,7 +318,7 @@ public class Chant_HowlersMoon extends Chant
 		newMOB.setName(L("a ferocious wolf"));
 		newMOB.setDisplayText(L("a huge, ferocious wolf is here"));
 		newMOB.setDescription(L("Dark black fur, always standing on end surrounds its muscular body.  The eyes are deep red, and his teeth are bared, snarling at you."));
-		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
+		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
 		Behavior B=CMClass.getBehavior("CorpseEater");
 		if(B!=null)
 			newMOB.addBehavior(B);

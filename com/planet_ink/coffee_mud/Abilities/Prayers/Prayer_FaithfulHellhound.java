@@ -157,7 +157,7 @@ public class Prayer_FaithfulHellhound extends Prayer
 				newMOB.setName(L("a faithful hellhound"));
 				newMOB.setDisplayText(L("an ferocious hellhound is here watching you carefully"));
 				newMOB.setDescription(L("He looks like he likes his meat well done."));
-				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
+				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
 				newMOB.recoverCharStats();
 				newMOB.recoverPhyStats();
 				newMOB.recoverMaxState();

@@ -564,7 +564,7 @@ public class Skill_HireCrewmember extends StdSkill
 			targetM.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(targetM));
 			targetM.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(targetM));
 			targetM.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(targetM));
-			//targetM.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience")); -- could be dangerous not having this, but 5-10 levels lower, so...
+			//targetM.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0")); -- could be dangerous not having this, but 5-10 levels lower, so...
 			targetM.recoverCharStats();
 			targetM.recoverPhyStats();
 			targetM.recoverMaxState();

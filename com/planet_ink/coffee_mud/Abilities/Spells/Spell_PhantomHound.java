@@ -240,7 +240,7 @@ public class Spell_PhantomHound extends Spell
 				newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 				for(final int i : CharStats.CODES.SAVING_THROWS())
 					newMOB.baseCharStats().setStat(i,200);
-				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
+				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
 				newMOB.basePhyStats().setAbility(100);
 				newMOB.baseState().setMana(100);
 				newMOB.baseState().setMovement(1000);

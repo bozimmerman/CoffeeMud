@@ -387,7 +387,7 @@ public class Chant_SummonAnimal extends Chant
 		genM.setBasePhyStats((PhyStats)newMOB.basePhyStats().copyOf());
 		genM.setBaseState((CharState)newMOB.baseState().copyOf());
 		genM.setLocation(caster.location());
-		genM.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
+		genM.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
 		CMLib.leveler().fillOutMOB(genM,genM.basePhyStats().level());
 		genM.setMoney(0);
 		genM.setMoneyVariation(0);

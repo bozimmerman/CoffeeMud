@@ -195,7 +195,7 @@ public class Spell_PryingEye extends Spell
 				newMOB.setMoneyVariation(0);
 				newMOB.setLocation(R);
 				newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
-				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
+				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
 				newMOB.recoverCharStats();
 				newMOB.recoverPhyStats();
 				newMOB.recoverMaxState();

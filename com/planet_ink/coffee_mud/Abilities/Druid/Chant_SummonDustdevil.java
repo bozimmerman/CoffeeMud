@@ -302,7 +302,7 @@ public class Chant_SummonDustdevil extends Chant
 		newMOB.basePhyStats().setAttackAdjustment(0);
 		newMOB.basePhyStats().setArmor(100);
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'N');
-		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
+		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
 		newMOB.setMiscText(newMOB.text());
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();

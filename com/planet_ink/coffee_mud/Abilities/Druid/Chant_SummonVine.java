@@ -266,7 +266,7 @@ public class Chant_SummonVine extends Chant
 		newMOB.basePhyStats().setAttackAdjustment(10);
 		newMOB.basePhyStats().setArmor(100-(30+(level/2)));
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'N');
-		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
+		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
 		newMOB.setMiscText(newMOB.text());
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();

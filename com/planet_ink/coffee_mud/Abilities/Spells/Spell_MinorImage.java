@@ -387,7 +387,7 @@ public class Spell_MinorImage extends Spell
 		newMOB.setName(L("an image of @x1",target.Name()));
 		newMOB.setDisplayText(L("@x1 is here.",target.Name()));
 		newMOB.setDescription(target.description());
-		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
+		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();
