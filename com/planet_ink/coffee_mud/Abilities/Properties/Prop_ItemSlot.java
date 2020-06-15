@@ -70,17 +70,23 @@ public class Prop_ItemSlot extends Property
 	public CMObject copyOf()
 	{
 		final Prop_ItemSlot pA = (Prop_ItemSlot)super.copyOf();
-		pA.slots = new Item[slots.length];
-		for(int i=0;i<slots.length;i++)
+		if(slots != null)
 		{
-			if(slots[i]!=null)
-				pA.slots[i] = (Item)slots[i].copyOf();
+			pA.slots = new Item[slots.length];
+			for(int i=0;i<slots.length;i++)
+			{
+				if(slots[i]!=null)
+					pA.slots[i] = (Item)slots[i].copyOf();
+			}
 		}
-		pA.slotProps = new Ability[slotProps.length];
-		for(int i=0;i<slotProps.length;i++)
+		if(slotProps != null)
 		{
-			if(slotProps[i]!=null)
-				pA.slotProps[i] = (Ability)slotProps[i].copyOf();
+			pA.slotProps = new Ability[slotProps.length];
+			for(int i=0;i<slotProps.length;i++)
+			{
+				if(slotProps[i]!=null)
+					pA.slotProps[i] = (Ability)slotProps[i].copyOf();
+			}
 		}
 		return pA;
 	}
