@@ -88,6 +88,12 @@ public class Prop_Artifact extends Property
 		}
 		return itemID;
 	}
+	
+	@Override
+	public void setAffectedOne(final Physical P)
+	{
+		super.setAffectedOne(P);
+	}
 
 	@Override
 	public String text()
@@ -415,8 +421,9 @@ public class Prop_Artifact extends Property
 	{
 		if(I==null)
 			return;
+		final Physical oldAff = this.affected;
 		I.delEffect(this);
-		I.delEffect(I.fetchEffect(ID()));
+		this.setAffectedOne(oldAff);
 		I.phyStats().setSensesMask(0);
 		I.basePhyStats().setSensesMask(0);
 		I.destroy();

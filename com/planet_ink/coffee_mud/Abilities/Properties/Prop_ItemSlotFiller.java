@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.core.collections.IteratorEnumeration;
 import com.planet_ink.coffee_mud.core.collections.Pair;
 import com.planet_ink.coffee_mud.core.collections.PairList;
 import com.planet_ink.coffee_mud.core.collections.PairVector;
+import com.planet_ink.coffee_mud.core.collections.XVector;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
@@ -65,6 +66,23 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 
 	protected PairList<String, String>	adds		= new PairVector<String, String>(0);
 
+
+	@Override
+	public CMObject copyOf()
+	{
+		final Prop_ItemSlotFiller pA = (Prop_ItemSlotFiller)super.copyOf();
+		pA.skips = new XVector<String>(skips);
+		pA.adds = new PairVector<String, String>();
+		pA.adds.addAll(adds);
+		pA.affects = new Ability[affects.length];
+		for(int i=0;i<affects.length;i++)
+		{
+			if(affects[i]!=null)
+				pA.affects[i] = (Ability)affects[i].copyOf();
+		}
+		return pA;
+	}
+	
 	@Override
 	public String accountForYourself()
 	{
