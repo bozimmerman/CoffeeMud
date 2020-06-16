@@ -57,7 +57,7 @@ public interface Social extends Environmental, CMCommon
 	public String tailName();
 
 	/**
-	 * Target name is the social's target argument only, such as <T-NAME>.
+	 * Target name is the social's target argument only, such as &lt;T-NAME&gt;.
 	 * It is NOT unique to a social object however, since a socials name usually
 	 * includes their target extension.
 	 *
@@ -66,7 +66,7 @@ public interface Social extends Environmental, CMCommon
 	public String targetName();
 
 	/**
-	 * Returns whether targetName is an -NAME> code, meaning it is targettable
+	 * Returns whether targetName is an -NAME&gt; code, meaning it is targettable
 	 * at a person or mob or something.
 	 *
 	 * @return true if this social is targetable at someone other than the user

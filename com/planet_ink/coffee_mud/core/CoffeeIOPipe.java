@@ -80,7 +80,7 @@ public class CoffeeIOPipe
 				return b;
 			}
 		}
-		
+
 		public int peek() throws IOException
 		{
 			if(closed)
@@ -255,7 +255,7 @@ public class CoffeeIOPipe
 		 * @param addr the fake address to use when asked.
 		 * @param myPipe the pipe to one side of the socket
 		 * @param friendPipe the pipe to the other side of the socket
-		 * @throws IOException
+		 * @throws IOException an exception creating the pipe
 		 */
 		public CoffeePipeSocket(final InetAddress addr, final CoffeeIOPipe myPipe, final CoffeeIOPipe friendPipe) throws IOException
 		{

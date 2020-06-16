@@ -498,6 +498,7 @@ public interface ColorLibrary extends CMLibrary
 	/**
 	 * Returns an enumeration of the supported ansi-256 colors
 	 * that are supported by the system in general.
+	 * @return the enumeration of all the ansi 256 colors
 	 */
 	public Enumeration<Color256> getColors256();
 

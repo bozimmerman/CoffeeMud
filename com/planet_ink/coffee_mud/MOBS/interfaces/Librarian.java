@@ -318,6 +318,7 @@ public interface Librarian extends ShopKeeper
 	/**
 	 * Returns the underlying basic book stock of the library, as opposed to the
 	 * current shop, which reflects only what is there at the moment.
+	 * @return the underlying basic book stock of the library
 	 */
 	public CoffeeShop getBaseLibrary();
 }

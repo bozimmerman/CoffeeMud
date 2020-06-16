@@ -85,6 +85,7 @@ public class DBConnections
 	 * @param dbParms	extra jdbc parameters
 	 * @param numConnections    Connections to maintain
 	 * @param reuse    Whether to reuse connections
+	 * @param transact true to group statements into a transaction
 	 * @param doErrorQueueing    whether to save errors to a file
 	 */
 	public DBConnections(final String dbClass,

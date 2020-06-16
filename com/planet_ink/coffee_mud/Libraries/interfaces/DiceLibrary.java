@@ -49,12 +49,12 @@ public interface DiceLibrary extends CMLibrary
 	 * Generates hit points for an NPC based on bizarre
 	 * rules.
 	 *
-	 * If the code given is > 32768, then the
+	 * If the code given is &gt; 32768, then the
 	 * bits above 23 are number of roles, bits 15-23
 	 * are the die type, and low bits added. The
 	 * level is not used at all.
 	 *
-	 * If the code is < 32768, then the level is
+	 * If the code is &lt; 32768, then the level is
 	 * used in the basic npc formula from the properties.
 	 * The code is then the die-base for the formula.
 	 *
@@ -109,19 +109,19 @@ public interface DiceLibrary extends CMLibrary
 
 	/**
 	 * Generates the die roll parts for an encoded hit
-	 * point bitmap when the code is > 32768,
+	 * point bitmap when the code is &gt; 32768,
 	 * or according to another formula otherwise.
 	 * The 3 parts of the result are:
 	 * [0] the number of rolls
 	 * [1] the sides of the die
 	 * [2] an amount to add to the total
 	 *
-	 * If the code given is > 32768, then the
+	 * If the code given is &gt; 32768, then the
 	 * bits above 23 are number of roles, bits 15-23
 	 * are the die type, and low bits added. The
 	 * level is not used at all.
 	 *
-	 * If the code is < 32768, then the level is
+	 * If the code is &lt; 32768, then the level is
 	 * the number of rolls, the code is the sides
 	 * of the die, and the add is level * level * 0.85.
 	 *

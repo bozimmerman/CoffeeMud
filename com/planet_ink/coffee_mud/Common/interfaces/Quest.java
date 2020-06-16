@@ -141,7 +141,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * Returns whether the given mob can accept this quest.  If the mob
 	 * is null, this method should return whether this quest even
 	 * supports auto-accepting at all.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#acceptQuest()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#acceptQuest(MOB)
 	 * @param mob the mob to check
 	 * @return true if the quest can be accepted by this mob
 	 */
@@ -149,7 +149,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 
 	/**
 	 * Causes the given mob to accept the quest.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#canAcceptQuest()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#canAcceptQuest(MOB)
 	 * @param mob the mob to accept
 	 */
 	public void acceptQuest(final MOB mob);

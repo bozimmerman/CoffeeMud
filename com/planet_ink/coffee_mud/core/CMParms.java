@@ -1950,6 +1950,7 @@ public class CMParms
 	 * in parenthis after the id.  For example ID1(parm1) ID2 ID3 ID4(parm2)
 	 * @param list the list of things to parse
 	 * @param delim the delimited
+	 * @param upKey true to uppercase the keys, false to leave as-is
 	 * @return the parsed list.
 	 */
 	public static final List<Pair<String,String>> parseDelimitedParenList(final String list, final char delim, final boolean upKey)
@@ -3379,7 +3380,7 @@ public class CMParms
 	 * Returns the key/value pairs in the given map as a single string of the form
 	 * KEY=VALUE KEY="VALUE" etc... by calling toString() on the objects.
 	 * @param V the map of key/value pairs
-	 * @parame delimeter the thing separating each key pair combo
+	 * @param delimiter the thing separating each key pair combo
 	 * @return a single string list of all the key=value pairs
 	 */
 	public final static String toEqListString(final Map<?,?> V, final char delimiter)

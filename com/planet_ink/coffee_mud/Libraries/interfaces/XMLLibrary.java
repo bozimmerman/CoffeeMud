@@ -371,13 +371,15 @@ public interface XMLLibrary extends CMLibrary
 	/**
 	 * Converts a map into an xml document.  This method handles
 	 * angle brackets and such.
+	 * @param map the map to turn into an xml doc
 	 * @return an xml document
 	 */
 	public String toXML(final Map<String,String> map);
 
 	/**
-	 * Converts a map into an xml document.   This method handles
+	 * Converts an xml document into a map.   This method handles
 	 * angle brackets and such.
+	 * @param str the xml document
 	 * @return an xml document
 	 */
 	public Map<String,String> fromXML(final String str);

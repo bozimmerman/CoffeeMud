@@ -130,6 +130,7 @@ public interface Banker extends ShopKeeper
 	 * Returns true if the given name has an account at this bank.
 	 * The name is quite case sensitive.
 	 *
+	 * @param name the name to look for
 	 * @return true if the account was found
 	 */
 	public boolean isAccountName(String name);

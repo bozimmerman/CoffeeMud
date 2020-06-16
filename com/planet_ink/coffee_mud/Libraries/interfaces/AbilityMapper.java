@@ -47,7 +47,7 @@ public interface AbilityMapper extends CMLibrary
 	 * Adds a mapping between a charclass, race, or whatever, and an Ability, by String Ability ID.
 	 * Also allows specifying numerous other attributes.
 	 * @see AbilityMapping
-	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, boolean, boolean, List, String, Integer[])
+	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, SecretFlag, boolean, List, String, Integer[])
 	 * @see AbilityMapper#delCharAbilityMapping(String, String)
 	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, boolean, List)
 	 * @param ID the race ID(), charclass ID(), "All" is also acceptable.
@@ -62,7 +62,7 @@ public interface AbilityMapper extends CMLibrary
 	 * Adds a mapping between a charclass, race, or whatever, and an Ability, by String Ability ID.
 	 * Also allows specifying numerous other attributes.
 	 * @see AbilityMapping
-	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, boolean, boolean, List, String, Integer[])
+	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, SecretFlag, boolean, List, String, Integer[])
 	 * @see AbilityMapper#delCharAbilityMapping(String, String)
 	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, boolean)
 	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, boolean, String)
@@ -79,7 +79,7 @@ public interface AbilityMapper extends CMLibrary
 	 * Adds a mapping between a charclass, race, or whatever, and an Ability, by String Ability ID.
 	 * Also allows specifying numerous other attributes.
 	 * @see AbilityMapping
-	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, boolean, boolean, List, String, Integer[])
+	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, SecretFlag, boolean, List, String, Integer[])
 	 * @see AbilityMapper#delCharAbilityMapping(String, String)
 	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, boolean, List)
 	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, boolean, List, String)
@@ -96,7 +96,7 @@ public interface AbilityMapper extends CMLibrary
 	 * Adds a mapping between a charclass, race, or whatever, and an Ability, by String Ability ID.
 	 * Also allows specifying numerous other attributes.
 	 * @see AbilityMapping
-	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, boolean, boolean, List, String, Integer[])
+	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, SecretFlag, boolean, List, String, Integer[])
 	 * @see AbilityMapper#delCharAbilityMapping(String, String)
 	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, boolean, String)
 	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, String, boolean)
@@ -114,7 +114,7 @@ public interface AbilityMapper extends CMLibrary
 	 * Adds a mapping between a charclass, race, or whatever, and an Ability, by String Ability ID.
 	 * Also allows specifying numerous other attributes.
 	 * @see AbilityMapping
-	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, boolean, boolean, List, String, Integer[])
+	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, SecretFlag, boolean, List, String, Integer[])
 	 * @see AbilityMapper#delCharAbilityMapping(String, String)
 	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, boolean, List, String)
 	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, boolean)
@@ -132,10 +132,10 @@ public interface AbilityMapper extends CMLibrary
 	 * Adds a mapping between a charclass, race, or whatever, and an Ability, by String Ability ID.
 	 * Also allows specifying numerous other attributes.
 	 * @see AbilityMapping
-	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, boolean, boolean, List, String, Integer[])
+	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, SecretFlag, boolean, List, String, Integer[])
 	 * @see AbilityMapper#delCharAbilityMapping(String, String)
 	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, String, boolean)
-	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, String, boolean, boolean)
+	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, String, boolean, SecretFlag)
 	 * @param ID the race ID(), charclass ID(), "All" is also acceptable.
 	 * @param qualLevel the charclass or race player level at which one qualifies to receive the ability
 	 * @param abilityID the Ability ID()
@@ -150,10 +150,10 @@ public interface AbilityMapper extends CMLibrary
 	 * Also allows specifying numerous other attributes.
 	 *
 	 * @see AbilityMapping
-	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, boolean, boolean, List, String, Integer[])
+	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, SecretFlag, boolean, List, String, Integer[])
 	 * @see AbilityMapper#delCharAbilityMapping(String, String)
 	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, String, boolean)
-	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, String, boolean, boolean)
+	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, String, boolean, SecretFlag)
 	 *
 	 * @param ID the race ID(), charclass ID(), "All" is also acceptable.
 	 * @param qualLevel the charclass or race player level at which one qualifies to receive the ability
@@ -169,10 +169,10 @@ public interface AbilityMapper extends CMLibrary
 	 * Adds a mapping between a charclass, race, or whatever, and an Ability, by String Ability ID.
 	 * Also allows specifying numerous other attributes.
 	 * @see AbilityMapping
-	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, boolean, boolean, List, String, Integer[])
+	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, SecretFlag, boolean, List, String, Integer[])
 	 * @see AbilityMapper#delCharAbilityMapping(String, String)
 	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, boolean)
-	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, String, boolean, boolean, List, String)
+	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, String, boolean, SecretFlag, List, String)
 	 * @see AbilityMapper.SecretFlag
 	 * @param ID the race ID(), charclass ID(), "All" is also acceptable.
 	 * @param qualLevel the charclass or race player level at which one qualifies to receive the ability
@@ -190,10 +190,10 @@ public interface AbilityMapper extends CMLibrary
 	 * Adds a mapping between a charclass, race, or whatever, and an Ability, by String Ability ID.
 	 * Also allows specifying numerous other attributes.
 	 * @see AbilityMapping
-	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, boolean, boolean, List, String, Integer[])
+	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, SecretFlag, boolean, List, String, Integer[])
 	 * @see AbilityMapper#delCharAbilityMapping(String, String)
-	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, String, boolean, boolean)
-	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, int, String, boolean, boolean, List, String, Integer[])
+	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, String, boolean, SecretFlag)
+	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, int, String, boolean, SecretFlag, List, String, Integer[])
 	 * @see AbilityMapper.SecretFlag
 	 * @param ID the race ID(), charclass ID(), "All" is also acceptable.
 	 * @param qualLevel the charclass or race player level at which one qualifies to receive the ability
@@ -214,10 +214,10 @@ public interface AbilityMapper extends CMLibrary
 	 * Adds a mapping between a charclass, race, or whatever, and an Ability, by String Ability ID.
 	 * Also allows specifying numerous other attributes.
 	 * @see AbilityMapping
-	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, boolean, boolean, List, String, Integer[])
+	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, SecretFlag, boolean, List, String, Integer[])
 	 * @see AbilityMapper#delCharAbilityMapping(String, String)
-	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, String, boolean, boolean, List, String)
-	 * @see AbilityMapper#addDynaAbilityMapping(String, int, String, int, String, boolean, boolean, String)
+	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, String, boolean, SecretFlag, List, String)
+	 * @see AbilityMapper#addDynaAbilityMapping(String, int, String, int, String, boolean, SecretFlag, String)
 	 * @see AbilityMapper.SecretFlag
 	 * @param ID the race ID(), charclass ID(), "All" is also acceptable.
 	 * @param qualLevel the charclass or race player level at which one qualifies to receive the ability
@@ -263,7 +263,7 @@ public interface AbilityMapper extends CMLibrary
 	/**
 	 * Creates a new, blank ability mapping object
 	 * @see AbilityMapping
-	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, boolean, boolean, List, String, Integer[])
+	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, SecretFlag, boolean, List, String, Integer[])
 	 * @return a new, blank ability mapping object
 	 */
 	public AbilityMapping newAbilityMapping();
@@ -271,13 +271,13 @@ public interface AbilityMapper extends CMLibrary
 	/**
 	 * Adds a mapping between a charclass, race, or whatever, and an Ability, by String Ability ID.
 	 * Also allows specifying numerous other attributes.
-	 * Substantially identical to methods like {@link AbilityMapper#addCharAbilityMapping(String, int, String, int, String, boolean, boolean, List, String)}
+	 * Substantially identical to methods like {@link AbilityMapper#addCharAbilityMapping(String, int, String, int, String, boolean, SecretFlag, List, String)}
 	 * except that the Each/global ability mappings are not initialized if this is the first class
 	 * mapping, meaning it's best to call this at runtime instead of boot time.
 	 * @see AbilityMapping
-	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, boolean, boolean, List, String, Integer[])
+	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, SecretFlag, boolean, List, String, Integer[])
 	 * @see AbilityMapper#delCharAbilityMapping(String, String)
-	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, int, String, boolean, boolean, List, String, Integer[])
+	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, int, String, boolean, SecretFlag, List, String, Integer[])
 	 * @see AbilityMapper.SecretFlag
 	 * @param ID the race ID(), charclass ID(), "All" is also acceptable.
 	 * @param qualLevel the charclass or race player level at which one qualifies to receive the ability
@@ -295,8 +295,8 @@ public interface AbilityMapper extends CMLibrary
 	/**
 	 * Removes the specified mapping between charclass, race, or whatever, and an Ability, by String ability ID.
 	 * @see AbilityMapping
-	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, boolean, boolean, List, String, Integer[])
-	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, int, String, boolean, boolean, List, String, Integer[])
+	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, SecretFlag, boolean, List, String, Integer[])
+	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, int, String, boolean, SecretFlag, List, String, Integer[])
 	 * @see AbilityMapper#delCharMappings(String)
 	 * @see AbilityMapper.SecretFlag
 	 * @param ID the race ID(), charclass ID(), "All" is also acceptable.
@@ -308,8 +308,8 @@ public interface AbilityMapper extends CMLibrary
 	/**
 	 * Removes all ability mappings for the given charclass, race, or whatever.
 	 * @see AbilityMapping
-	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, boolean, boolean, List, String, Integer[])
-	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, int, String, boolean, boolean, List, String, Integer[])
+	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, SecretFlag, boolean, List, String, Integer[])
+	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, int, String, boolean, SecretFlag, List, String, Integer[])
 	 * @see AbilityMapper#delCharAbilityMapping(String, String)
 	 * @param ID the race ID(), charclass ID(), "All" is also acceptable.
 	 */
@@ -1196,7 +1196,7 @@ public interface AbilityMapper extends CMLibrary
 		/**
 		 * Gets whether this skill is secret and unseen even when
 		 * qualified for.
-		 * @see AbilityMapper.AbilityMapping#isSecret(boolean)
+		 * @see AbilityMapper.AbilityMapping#secretFlag(SecretFlag)
 		 * @return whether this skill is secret and unseen
 		 */
 		public SecretFlag				secretFlag();
@@ -1204,7 +1204,7 @@ public interface AbilityMapper extends CMLibrary
 		/**
 		 * Sets whether this skill is secret and unseen even when
 		 * qualified for.
-		 * @see AbilityMapper.AbilityMapping#isSecret()
+		 * @see AbilityMapper.AbilityMapping#secretFlag()
 		 * @param newValue whether this skill is secret and unseen
 		 * @return this
 		 */

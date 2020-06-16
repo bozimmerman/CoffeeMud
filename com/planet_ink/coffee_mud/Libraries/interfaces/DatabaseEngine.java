@@ -221,6 +221,8 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBReadAreaFull(String)
 	 *
 	 * @param areaName the name of the area to load
+	 *
+	 * @return the Area object
 	 */
 	public Area DBReadAreaObject(String areaName);
 
@@ -236,6 +238,8 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBReadAreaObject(String)
 	 *
 	 * @param areaName the name of the area to load
+	 *
+	 * @return true if the area was read into the system map
 	 */
 	public boolean DBReadAreaFull(String areaName);
 
@@ -364,7 +368,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * freshly created.  It must exist in a room.
 	 *
 	 * @param roomID the room id
-	 * @param itemNum the mob database id code
+	 * @param mobID the mob database id code
 	 * @return the mob object
 	 */
 	public MOB DBReadRoomMOB(final String roomID, final String mobID);

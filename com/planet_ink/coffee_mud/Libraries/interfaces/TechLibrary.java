@@ -205,7 +205,7 @@ public interface TechLibrary extends CMLibrary
 	 * If the two given objects are within an appropriate distance
 	 * from each other, this will return the correct amount of
 	 * acceleration g-force applied by the second object to the
-	 * first. typically <= 1G
+	 * first. typically &lt;= 1G
 	 *
 	 * @param S the object being pulled
 	 * @param cO the object pulling

@@ -99,8 +99,11 @@ public interface PlanarAbility extends Ability
 	/**
 	 * Applies the prefix and random promotions string to the given
 	 * mob according to the parsed configuration for the current plane.
+	 * Also takes an optional eliteBump 1-dimensional array to return
+	 * the elite level of the mob applies.
 	 *
 	 * @param M the mob to apply
+	 * @param eliteBump null, or 1-dimensional array with 0
 	 */
 	public void applyMobPrefix(final MOB M, final int[] eliteBump);
 
@@ -232,8 +235,8 @@ public interface PlanarAbility extends Ability
 
 	/**
 	 * Get the mob/item level adjustment formula for this plane.
-	 * @x1 = base areas median level, @x2 = specific mob/item level
-	 * @x2 = the plane traveling players level
+	 * (at)x1 = base areas median level, (at)x2 = specific mob/item level
+	 * (at)@x2 = the plane traveling players level
 	 * @return the levelFormula
 	 */
 	public CompiledFormula getLevelFormula();

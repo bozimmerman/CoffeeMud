@@ -150,7 +150,7 @@ public interface CommonCommands extends CMLibrary
 	 *
 	 * @param mob the mob who tried the command
 	 * @param commands the command that was typed in
-	 * @param msgStr the message explaining the failure, using <S-NAME>, <T-NAME>, etc..
+	 * @param msgStr the message explaining the failure, using &lt;S-NAME&gt;,  &lt;T-NAME&gt;, etc..
 	 * @return true if the command failure went through, and false if the command failure failed
 	 */
 	public boolean postCommandFail(final MOB mob, final List<String> commands, final String msgStr);
@@ -163,7 +163,7 @@ public interface CommonCommands extends CMLibrary
 	 * @param target the target of the command, if applicable and identified
 	 * @param tools the tool used by the command, if applicable and identified
 	 * @param command the command that was typed in
-	 * @param msgStr the message explaining the failure, using <S-NAME>, <T-NAME>, etc..
+	 * @param msgStr the message explaining the failure, using  &lt;S-NAME&gt;,  &lt;T-NAME&gt;, etc..
 	 * @return true if the command failure went through, and false if the command failure failed
 	 */
 	public boolean postCommandFail(final MOB mob, Environmental target, Environmental tools, final List<String> command, final String msgStr);
@@ -419,7 +419,7 @@ public interface CommonCommands extends CMLibrary
 	/**
 	 * Parse variable display and description texts to generate
 	 * the dynamic text seen in some rooms.
-	 * 
+	 *
 	 * @param mob the mob who is looking
 	 * @param area the area containing the mob
 	 * @param room the room containing the mob
@@ -427,7 +427,7 @@ public interface CommonCommands extends CMLibrary
 	 * @return the dynamic text
 	 */
 	public String parseVaries(final MOB mob, final Area area, final Room room, final String text);
-	
+
 	/**
 	 * Handler function for when a mob looks at something, or
 	 * examines it closely.  Things like items, mobs, rooms, etc.

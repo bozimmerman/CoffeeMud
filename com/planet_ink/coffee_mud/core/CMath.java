@@ -2303,6 +2303,7 @@ public class CMath
 	 * Rounds to specified precision
 	 * @see java.lang.Math#round(float)
 	 * @param d the real number
+	 * @param precision the precision
 	 * @return the rounded number as a long
 	 */
 	public final static double round(final double d, final int precision)
@@ -2316,6 +2317,7 @@ public class CMath
 	 * Rounds to specified precision
 	 * @see java.lang.Math#round(float)
 	 * @param d the real number
+	 * @param precision the precision
 	 * @return the rounded number as a long
 	 */
 	public final static float round(final float d, final int precision)

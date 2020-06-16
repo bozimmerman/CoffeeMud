@@ -95,6 +95,7 @@ public class DBConnection
 	 * @param dbUser	ODBC LOGIN USERNAME
 	 * @param dbPass	ODBC LOGIN PASSWORD
 	 * @param dbParms	JDBC extra arguments
+	 * @param useTransactions true to group statements into a transaction
 	 * @param dbReuse   Whether the connection can be reused.
 	 * @throws SQLException a sql error
 	 */

@@ -123,8 +123,8 @@ public interface ClanPosition extends Modifiable, CMCommon
 
 	/**
 	 * Gets the max members in this position.
-	 * A number >= 1.0 is an absolute number, while
-	 * a number >= 0 but less than 1 is a percentage.
+	 * A number &gt;= 1.0 is an absolute number, while
+	 * a number &gt;= 0 but less than 1 is a percentage.
 	 *
 	 * @see ClanPosition#setMax(double)
 	 * @return the max
@@ -133,8 +133,8 @@ public interface ClanPosition extends Modifiable, CMCommon
 
 	/**
 	 * Sets the max members in this position.
-	 * A number >= 1.0 is an absolute number, while
-	 * a number >= 0 but less than 1 is a percentage.
+	 * A number &gt;= 1.0 is an absolute number, while
+	 * a number &gt;= 0 but less than 1 is a percentage.
 	 *
 	 * @see ClanPosition#getMax()
 	 * @param max the new max

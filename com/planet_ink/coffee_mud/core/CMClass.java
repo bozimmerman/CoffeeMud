@@ -855,6 +855,8 @@ public class CMClass extends ClassLoader
 	/**
 	 * Returns a numbered available ability prototype from your classloader
 	 *
+	 * @param x the index number of the ability to get
+	 *
 	 * @return a numbered available ability prototype -- automatically scaled correctly.
 	 */
 	public static final Ability getAbility(final int x)

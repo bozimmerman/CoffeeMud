@@ -349,6 +349,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * one, or an empty list if none exist yet.
 	 * @see Room#clearSky()
 	 * @see Room#getSky()
+	 * @return the sky rooms
 	 */
 	public List<Room> getSky();
 

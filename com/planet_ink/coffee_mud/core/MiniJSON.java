@@ -831,6 +831,7 @@ public class MiniJSON
 	 * Converts a JSON document to a pojo object.
 	 * @param json the json document
 	 * @param o the object to convert
+	 * @throws MJSONException a parse exception
 	 */
 	public void fromJSONtoPOJO(final String json, final Object o) throws MJSONException
 	{
@@ -840,6 +841,7 @@ public class MiniJSON
 	 * Converts a json object to a pojo object.
 	 * @param jsonObj the json object
 	 * @param o the object to convert
+	 * @throws MJSONException a parse exception
 	 */
 	public void fromJSONtoPOJO(final MiniJSON.JSONObject jsonObj, final Object o) throws MJSONException
 	{
