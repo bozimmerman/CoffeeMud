@@ -74,12 +74,12 @@ public class LimitedTreeMap<K> extends TreeMap<String,K>
 	{
 		key = caseLess?key.toLowerCase():key;
 		check();
-    	final K k = super.put(key, value);
 		synchronized(expirations)
 		{
+	    	final K k = super.put(key, value);
 			expirations.put(key, new long[] {System.currentTimeMillis()});
+	    	return k;
 		}
-    	return k;
     }
 
 	@Override
@@ -165,12 +165,12 @@ public class LimitedTreeMap<K> extends TreeMap<String,K>
 	{
 		if(key instanceof String)
 			key = caseLess?((String)key).toLowerCase():key;
-    	final K obj=super.remove(key);
 		synchronized(expirations)
 		{
+	    	final K obj=super.remove(key);
     		expirations.remove(key);
+        	return obj;
 		}
-    	return obj;
 	}
 
 	@Override
