@@ -139,15 +139,15 @@ public class LimitedTreeMap<K> extends TreeMap<String,K>
 		if(key instanceof String)
 			key = caseLess?((String)key).toLowerCase():key;
 		check();
-    	final K obj=super.get(key);
 		synchronized(expirations)
 		{
+	    	final K obj=super.get(key);
 	    	if(super.containsKey(key)&&(key instanceof String))
 	    	{
 	    		expirations.put((String)key, new long[] {System.currentTimeMillis()});
     		}
+	    	return obj;
     	}
-    	return obj;
     }
 
 	@Override
