@@ -202,8 +202,13 @@ public class Look extends StdCommand
 				msg.addTrailerMsg(exitMsg);
 				if(R.okMessage(mob,msg))
 				{
-					exitMsg.setTarget(msg.target());
-					((Room)msg.target()).send(mob,msg);
+					if(msg.target() instanceof Room)
+					{
+						exitMsg.setTarget(msg.target());
+						((Room)msg.target()).send(mob,msg);
+					}
+					else
+						R.send(mob,msg);
 				}
 			}
 			else
