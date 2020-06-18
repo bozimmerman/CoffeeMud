@@ -1168,6 +1168,32 @@ public class CraftingSkill extends GatheringSkill
 				}
 			}
 		}
+
+		if(supportsArmors() && (matches.size()==0))
+		{
+			final long code=Wearable.CODES.FIND_ignoreCase(recipeName.toUpperCase().trim());
+			if(code > 0)
+			{
+				final String wearLoc = Wearable.CODES.NAMEUP(code);
+				for(int r=0;r<recipes.size();r++)
+				{
+					final List<String> V=recipes.get(r);
+					for(int v=0;v<V.size();v++)
+					{
+						final String fieldUp=V.get(v).toUpperCase();
+						final int x=fieldUp.indexOf(wearLoc);
+						if((x>=0)
+						&&((x==0)||(!Character.isLetter(fieldUp.charAt(x-1))))
+						&&((x>=fieldUp.length()-wearLoc.length())||(!Character.isLetter(fieldUp.charAt(x+wearLoc.length())))))
+						{
+							matches.add(V);
+							break;
+						}
+					}
+				}
+			}
+		}
+
 		if(matches.size()==0)
 		{
 			for(int r=0;r<recipes.size();r++)
@@ -1182,6 +1208,7 @@ public class CraftingSkill extends GatheringSkill
 				}
 			}
 		}
+
 		if(beLoose && (matches.size()==0))
 		{
 			for(int r=0;r<recipes.size();r++)
