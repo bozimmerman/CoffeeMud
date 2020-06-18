@@ -102,13 +102,16 @@ public class Transcribing extends CommonSkill
 						String tmsg="";
 						final CMMsg rmsg=CMClass.getMsg(mob,foundI,this,CMMsg.TYP_READ,null,pageNum,null);
 						foundI.executeMsg(foundI, rmsg);
-						for(final CMMsg m2 : rmsg.trailerMsgs())
+						if(rmsg.trailerMsgs() != null)
 						{
-							if((m2.source()==mob)
-							&&(m2.target()==foundI)
-							&&(m2.targetMessage().length()>0)
-							&&(m2.sourceMinor()==CMMsg.TYP_WASREAD))
-								tmsg+=m2.targetMessage();
+							for(final CMMsg m2 : rmsg.trailerMsgs())
+							{
+								if((m2.source()==mob)
+								&&(m2.target()==foundI)
+								&&(m2.targetMessage().length()>0)
+								&&(m2.sourceMinor()==CMMsg.TYP_WASREAD))
+									tmsg+=m2.targetMessage();
+							}
 						}
 						if((foundI instanceof Recipe)
 						&&(targetI instanceof Recipe)

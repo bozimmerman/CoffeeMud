@@ -440,11 +440,15 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(mob.amDead())
 			return;
 		if((addHere!=null)&&(addHere.trailerMsgs()!=null))
+		{
 			for(final CMMsg msg : addHere.trailerMsgs())
+			{
 				if((msg.source()==mob)
 				&&((msg.sourceMinor()==CMMsg.TYP_PANIC))
 				   ||(msg.sourceMinor()==CMMsg.TYP_DEATH))
 					return;
+			}
+		}
 		final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_PANIC,null);
 		if(addHere!=null)
 			addHere.addTrailerMsg(msg);
