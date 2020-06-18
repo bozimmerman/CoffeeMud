@@ -958,30 +958,28 @@ public class CraftingSkill extends GatheringSkill
 			if(rscs.size()==0)
 				rscs=new XVector<Integer>(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
 			final int material;
-			if(((rscs.get(0).intValue()&RawMaterial.RESOURCE_MASK)>0)
-			&&((rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK)>0))
-				material = rscs.get(0).intValue();
-			else
+			switch(rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK)
 			{
-				switch(rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK)
-				{
-				case RawMaterial.MATERIAL_CLOTH:
-					material = RawMaterial.RESOURCE_COTTON;
-					break;
-				case RawMaterial.MATERIAL_METAL:
-				case RawMaterial.MATERIAL_MITHRIL:
-					material = RawMaterial.RESOURCE_IRON;
-					break;
-				case RawMaterial.MATERIAL_WOODEN:
-					material = RawMaterial.RESOURCE_WOOD;
-					break;
-				case RawMaterial.MATERIAL_ROCK:
-					material = RawMaterial.RESOURCE_STONE;
-					break;
-				default:
+			case RawMaterial.MATERIAL_CLOTH:
+				material = RawMaterial.RESOURCE_COTTON;
+				break;
+			case RawMaterial.MATERIAL_METAL:
+			case RawMaterial.MATERIAL_MITHRIL:
+				material = RawMaterial.RESOURCE_IRON;
+				break;
+			case RawMaterial.MATERIAL_WOODEN:
+				material = RawMaterial.RESOURCE_WOOD;
+				break;
+			case RawMaterial.MATERIAL_ROCK:
+				material = RawMaterial.RESOURCE_STONE;
+				break;
+			default:
+				if(((rscs.get(0).intValue()&RawMaterial.RESOURCE_MASK)>0)
+				&&((rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK)>0))
+					material = rscs.get(0).intValue();
+				else
 					material=RawMaterial.CODES.MOST_FREQUENT(rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK);
-					break;
-				}
+				break;
 			}
 			final List<List<String>> recipes=addRecipes(mob,loadRecipes());
 			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);

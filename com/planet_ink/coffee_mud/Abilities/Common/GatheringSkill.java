@@ -241,6 +241,31 @@ public class GatheringSkill extends CommonSkill
 				}
 			}
 		}
+		// sort, reverse, so most freq->least
+		Collections.sort(maskV,new Comparator<Integer>()
+		{
+			@Override
+			public int compare(final Integer o1, final Integer o2)
+			{
+				if(o1 == o2)
+					return 0;
+				final int f1=RawMaterial.CODES.FREQUENCY(o1.intValue());
+				final int f2=RawMaterial.CODES.FREQUENCY(o2.intValue());
+				if(f1==f2)
+				{
+					final int v1=RawMaterial.CODES.VALUE(o1.intValue());
+					final int v2=RawMaterial.CODES.VALUE(o2.intValue());
+					if(v1 == v2)
+						return 0;
+					if(v1>v2)
+						return 1;
+					return -1;
+				}
+				if(f1>f2)
+					return -1;
+				return 1;
+			}
+		});
 		supportedResources.put(ID(),maskV);
 		return maskV;
 	}
