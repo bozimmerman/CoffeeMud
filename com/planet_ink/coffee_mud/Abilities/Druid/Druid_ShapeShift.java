@@ -394,7 +394,7 @@ public class Druid_ShapeShift extends StdAbility
 		{
 			final Ability A=mob.fetchAbility(a);
 			if((A!=null)
-			&&((A instanceof Druid_ShapeShift)||(A instanceof Druid_Krakenform)))
+			&&((A instanceof Druid_ShapeShift)))
 			{
 				final Druid_ShapeShift D=(Druid_ShapeShift)A;
 				allShapeshifts.addElement(D);
