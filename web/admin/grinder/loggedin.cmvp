@@ -125,14 +125,14 @@
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=SELECTAREA METHOD=POST ACTION="" TARGET=_top>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 @block?AREAEDITOR@
-    @if?MUDGrinder?ISSPACE@
         <FONT SIZE=-1>
          <INPUT TYPE=RADIO NAME=AREAMASKTYPE VALUE=AREA @if?CheckReqParm?AREAMASKTYPE=&||AREAMASKTYPE=AREA@CHECKED@endif@ ONCLICK="Refresh();">Areas
+	    @if?MUDGrinder?ISSPACE@
          <INPUT TYPE=RADIO NAME=AREAMASKTYPE VALUE=PLANET @if?CheckReqParm?AREAMASKTYPE=PLANET@CHECKED@endif@ ONCLICK="Refresh();">Space
+	    @endif@
          &nbsp;&nbsp;&nbsp;&nbsp;
          <INPUT TYPE=RADIO NAME=AREAMASKTYPE VALUE=TREE @if?CheckReqParm?AREAMASKTYPE=TREE@CHECKED@endif@ ONCLICK="Refresh();">Tree
         </FONT>
-    @endif@
     @if?CheckReqParm?AREAMASKTYPE=@
         @AddRequestParameter?AREAMASKTYPE=AREA@
     @endif@
