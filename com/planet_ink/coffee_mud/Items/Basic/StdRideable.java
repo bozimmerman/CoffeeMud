@@ -1078,8 +1078,10 @@ public class StdRideable extends StdContainer implements Rideable
 							final String sinkString = L("<T-NAME> start(s) sinking!");
 							shipR.show(msg.source(), this, CMMsg.MSG_OK_ACTION, sinkString);
 						}
+						/*
 						if(!CMLib.leveler().postExperienceToAllAboard(msg.source().riding(), 500, this))
 							CMLib.leveler().postExperience(msg.source(), null, null, 500, false);
+						*/
 					}
 					else
 					{
