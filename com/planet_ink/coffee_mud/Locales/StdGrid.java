@@ -239,23 +239,27 @@ public class StdGrid extends StdRoom implements GridLocale
 		this.displayTexts=displayTexts.toArray(new String[0]);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Iterator<CrossExit> outerExits()
 	{
+		if(gridexits==null)
+			return EmptyIterator.INSTANCE;
 		return gridexits.iterator();
 	}
 
 	@Override
 	public void addOuterExit(final CrossExit x)
 	{
-		if(x!=null)
+		if((x!=null)&&(gridexits!=null))
 			gridexits.add(x);
 	}
 
 	@Override
 	public void delOuterExit(final CrossExit x)
 	{
-		gridexits.remove(x);
+		if(gridexits != null)
+			gridexits.remove(x);
 	}
 
 	public Room getAltRoomFrom(Room loc, final int direction)
