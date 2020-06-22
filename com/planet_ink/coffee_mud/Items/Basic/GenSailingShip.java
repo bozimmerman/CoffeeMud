@@ -3272,7 +3272,11 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 				return false;
 		}
 		final Area eA = ((GenSailingShip)E).getShipArea();
+		if(eA==null)
+			return getShipArea()==null;
 		final Area A = this.getShipArea();
+		if(A==null)
+			return false;
 		final Enumeration<Room> er = eA.getProperMap();
 		final Enumeration<Room> r = A.getProperMap();
 		for(;r.hasMoreElements();)
