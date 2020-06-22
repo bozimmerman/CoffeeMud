@@ -89,7 +89,6 @@
 	</TD>
 	<TD>
 		@if?CheckReqParm?!ROOM=@
-			@AddRequestParameter?ROOM=@
 			<SCRIPT LANGUAGE=JavaScript>
 			<!--
 				var w;
@@ -113,6 +112,7 @@
 				}
 			//-->
 			</SCRIPT>
+			@AddRequestParameter?ROOM=@
 		@endif@
 		<!-- TODO -->
 	</TD>
