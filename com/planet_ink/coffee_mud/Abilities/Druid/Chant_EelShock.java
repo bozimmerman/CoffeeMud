@@ -206,7 +206,7 @@ public class Chant_EelShock extends Chant
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,L("<S-NAME> sees tiny sparks dance across <S-HIS-HER> skin, but nothing more happens."));
+			return maliciousFizzle(mob,null,L("<S-NAME> see(s) tiny sparks dance across <S-HIS-HER> skin, but nothing more happens."));
 		// return whether it worked
 		return success;
 	}
