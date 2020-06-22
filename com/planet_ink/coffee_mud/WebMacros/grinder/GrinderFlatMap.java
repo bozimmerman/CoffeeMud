@@ -919,7 +919,10 @@ public class GrinderFlatMap
 		case Room.DOMAIN_INDOORS_UNDERWATER:
 			return ("BGCOLOR=\"#6666CC\"");
 		case Room.DOMAIN_INDOORS_WATERSURFACE:
-			return ("BGCOLOR=\"#3399CC\"");
+			if(R.rawDoors()[Directions.DOWN]!=null)
+				return ("BGCOLOR=\"#3399CC\"");
+			else
+				return ("BGCOLOR=\"#AAAAFF\"");
 		case Room.DOMAIN_INDOORS_WOOD:
 			return ("BGCOLOR=\"#999900\"");
 		case Room.DOMAIN_OUTDOORS_AIR:
@@ -966,7 +969,10 @@ public class GrinderFlatMap
 		case Room.DOMAIN_OUTDOORS_UNDERWATER:
 			return ("BGCOLOR=\"#6666CC\"");
 		case Room.DOMAIN_OUTDOORS_WATERSURFACE:
-			return ("BGCOLOR=\"#3399CC\"");
+			if(R.rawDoors()[Directions.DOWN]!=null)
+				return ("BGCOLOR=\"#3399CC\"");
+			else
+				return ("BGCOLOR=\"#AAAAFF\"");
 		case Room.DOMAIN_OUTDOORS_WOODS:
 			return ("BGCOLOR=\"#009900\"");
 		default:
