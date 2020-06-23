@@ -1095,6 +1095,7 @@ public class StdItem implements Item
 		else
 		if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MAGIC))
 		&&(!CMLib.flags().isGettable(this))
+		&&(!(this instanceof BoardableShip))
 		&&((displayText().isEmpty())
 		   ||((msg.tool() instanceof Ability)
 			&&(((Ability)msg.tool()).abstractQuality()==Ability.QUALITY_MALICIOUS))))
