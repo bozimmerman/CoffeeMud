@@ -1678,7 +1678,7 @@ public class RocketShipProgram extends GenShipProgram
 				}
 				if(sensorReports.size()==0)
 				{
-					super.addScreenMessage(L("Error: no sensor data found to identify landing position."));
+					super.addScreenMessage(L("Error: no sensor data found to identify target."));
 					return;
 				}
 				final String targetStr=CMParms.combine(parsed, 1);
