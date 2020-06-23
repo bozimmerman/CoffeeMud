@@ -53,7 +53,7 @@ public class Shearing extends CommonSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_ANIMALAFFINITY;
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_GATHERINGSKILL;
 	}
 
 	@Override
