@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.Area.State;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
@@ -52,6 +53,7 @@ public class MovingRoom extends ActiveTicker
 	protected List<List<String>>messageInfo		= new Vector<List<String>>();
 	protected List<String>		mapInfo			= new Vector<String>();
 	protected List<String>		stubs			= new Vector<String>();
+	protected Set<Area>			areas			= new HashSet<Area>();
 	protected String			xmlInfo			= "";
 	private int					currentStop		= 0;
 	private int					nextStop		= 0;
@@ -100,6 +102,7 @@ public class MovingRoom extends ActiveTicker
 		messageInfo=new Vector<List<String>>();
 		mapInfo=new Vector<String>();
 		stubs=new Vector<String>();
+		areas=new HashSet<Area>();
 
 		char c=';';
 		int x=myParms.indexOf(c);
@@ -278,6 +281,39 @@ public class MovingRoom extends ActiveTicker
 				Log.errOut("MovingRoom",ticking.ID()+"/"+ticking.name()+" is NOT A DADGUM ROOM!!!!");
 				return false;
 			}
+			if(areas.size()==0)
+			{
+				synchronized(areas)
+				{
+					if(areas.size()==0)
+					{
+						for(final String roomID : listOfRooms)
+						{
+							final Room currentStopRoom = CMLib.map().getRoom(roomID);
+							if((currentStopRoom != null)&&(!areas.contains(currentStopRoom.getArea())))
+								areas.add(currentStopRoom.getArea());
+						}
+						if((areas.size()>0)
+								&&(!areas.contains(subwayRoom.getArea())))
+							areas.add(subwayRoom.getArea());
+					}
+				}
+			}
+			else
+			{
+				boolean proceed=false;
+				synchronized(areas)
+				{
+					for(final Area A : areas)
+					{
+						if(A.getAreaState()==State.ACTIVE)
+							proceed=true;
+					}
+				}
+				if(!proceed)
+					return false;
+			}
+
 			if (currentStop==0)
 			{
 				isReversed=false;
@@ -327,7 +363,9 @@ public class MovingRoom extends ActiveTicker
 					//DEPARTING
 					if (isReversed)
 					{
-						currentStopRoom.showHappens(CMMsg.MSG_OK_ACTION,fixOutputString(reverseVec.get(CODE0_OUTSIDEDEPARTMSG).toString(),nextStopRoom));
+						if((currentStopRoom.getArea()!=null)
+						&&(currentStopRoom.getArea().getAreaState()==State.ACTIVE))
+							currentStopRoom.showHappens(CMMsg.MSG_OK_ACTION,fixOutputString(reverseVec.get(CODE0_OUTSIDEDEPARTMSG).toString(),nextStopRoom));
 						subwayRoom.showHappens(CMMsg.MSG_OK_ACTION,fixOutputString(reverseVec.get(CODE0_INSIDEDEPARTMSG).toString(),nextStopRoom));
 						if (((subwayRoom.rawDoors()[CMLib.directions().getGoodDirectionCode(normalVec.get(1).toString())]!=null)
 								&& ((currentStop==0)
@@ -348,8 +386,10 @@ public class MovingRoom extends ActiveTicker
 								subwayRoom.rawDoors()[CMLib.directions().getGoodDirectionCode(reverseVec.get(1).toString())]=null;
 								subwayRoom.setRawExit(CMLib.directions().getGoodDirectionCode(reverseVec.get(1).toString()),null);
 							}
-							CMLib.database().DBUpdateExits(subwayRoom);
-							CMLib.database().DBUpdateExits(currentStopRoom);
+							/* OMG NO!
+								CMLib.database().DBUpdateExits(subwayRoom);
+								CMLib.database().DBUpdateExits(currentStopRoom);
+							*/
 							subwayRoom.getArea().fillInAreaRoom(subwayRoom);
 							nextStopRoom.getArea().fillInAreaRoom(currentStopRoom);
 							removeStubs(subwayRoom,currentStopRoom);
@@ -393,8 +433,10 @@ public class MovingRoom extends ActiveTicker
 								subwayRoom.rawDoors()[CMLib.directions().getGoodDirectionCode(normalVec.get(1).toString())]=null;
 								subwayRoom.setRawExit(CMLib.directions().getGoodDirectionCode(normalVec.get(1).toString()),null);
 							}
-							CMLib.database().DBUpdateExits(subwayRoom);
-							CMLib.database().DBUpdateExits(currentStopRoom);
+							/* OMG NO!
+								CMLib.database().DBUpdateExits(subwayRoom);
+								CMLib.database().DBUpdateExits(currentStopRoom);
+							*/
 							subwayRoom.getArea().fillInAreaRoom(subwayRoom);
 							nextStopRoom.getArea().fillInAreaRoom(currentStopRoom);
 							removeStubs(subwayRoom,currentStopRoom);
@@ -431,8 +473,10 @@ public class MovingRoom extends ActiveTicker
 							subwayRoom.setRawExit(CMLib.directions().getGoodDirectionCode(reverseVec.get(1).toString()),thisNewExit);
 							nextStopRoom.rawDoors()[CMLib.directions().getOpDirectionCode(reverseVec.get(1).toString())]=subwayRoom;
 							nextStopRoom.setRawExit(CMLib.directions().getOpDirectionCode(reverseVec.get(1).toString()),thisNewExit);
-							CMLib.database().DBUpdateExits(subwayRoom);
-							CMLib.database().DBUpdateExits(nextStopRoom);
+							/* OMG NO!
+								CMLib.database().DBUpdateExits(subwayRoom);
+								CMLib.database().DBUpdateExits(nextStopRoom);
+							*/
 							subwayRoom.getArea().fillInAreaRoom(subwayRoom);
 							nextStopRoom.getArea().fillInAreaRoom(nextStopRoom);
 							removeStubs(subwayRoom,nextStopRoom);
@@ -466,8 +510,10 @@ public class MovingRoom extends ActiveTicker
 							subwayRoom.setRawExit(CMLib.directions().getGoodDirectionCode(normalVec.get(1).toString()),thisNewExit);
 							nextStopRoom.rawDoors()[CMLib.directions().getOpDirectionCode(normalVec.get(1).toString())]=subwayRoom;
 							nextStopRoom.setRawExit(CMLib.directions().getOpDirectionCode(normalVec.get(1).toString()),thisNewExit);
-							CMLib.database().DBUpdateExits(subwayRoom);
-							CMLib.database().DBUpdateExits(nextStopRoom);
+							/* OMG NO!
+								CMLib.database().DBUpdateExits(subwayRoom);
+								CMLib.database().DBUpdateExits(nextStopRoom);
+							*/
 							subwayRoom.getArea().fillInAreaRoom(subwayRoom);
 							nextStopRoom.getArea().fillInAreaRoom(nextStopRoom);
 							removeStubs(subwayRoom,nextStopRoom);
