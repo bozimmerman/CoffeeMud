@@ -127,8 +127,9 @@ public class QuestBound implements Ability
 	@Override
 	public long flags()
 	{
-		return 0;
+		return Ability.FLAG_NONENCHANTMENT;
 	}
+
 
 	@Override
 	public int getTickStatus()

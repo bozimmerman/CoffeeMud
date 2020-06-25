@@ -92,6 +92,12 @@ public class Age extends StdAbility
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_NONENCHANTMENT;
+	}
+
+	@Override
 	public String accountForYourself()
 	{
 		return displayText();

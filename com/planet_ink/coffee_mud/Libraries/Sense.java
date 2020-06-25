@@ -1961,8 +1961,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PROPERTY)
 			&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_DISEASE)
 			&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_POISON)
-			&&(!(A.ID().equals("Sinking")))
-			&&(!(A.ID().equals("Falling"))))
+			&&(!CMath.bset(A.flags(), Ability.FLAG_NONENCHANTMENT)))
 				return true;
 		}
 		return false;

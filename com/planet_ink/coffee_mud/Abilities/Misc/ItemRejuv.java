@@ -70,6 +70,12 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_NONENCHANTMENT;
+	}
+
+	@Override
 	public int abstractQuality()
 	{
 		return Ability.QUALITY_MALICIOUS;

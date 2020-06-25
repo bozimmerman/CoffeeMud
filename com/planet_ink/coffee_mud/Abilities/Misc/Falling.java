@@ -64,6 +64,12 @@ public class Falling extends StdAbility
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_NONENCHANTMENT;
+	}
+
+	@Override
 	protected int canTargetCode()
 	{
 		return 0;

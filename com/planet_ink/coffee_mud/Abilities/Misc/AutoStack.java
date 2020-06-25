@@ -70,6 +70,12 @@ public class AutoStack extends StdAbility
 		return Ability.ACODE_PROPERTY;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_NONENCHANTMENT;
+	}
+
 	protected final static int	INTERVAL				= (2 * 60) / 4000;
 
 	protected int				numberOfItemsToTrigger	= 1000;

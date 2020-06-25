@@ -67,6 +67,12 @@ public class Sinking extends StdAbility
 		return 0;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_NONENCHANTMENT;
+	}
+
 	protected boolean	isTreading		= false;
 	public Room			room			= null;
 	protected int		sinkTickDown	= 1;
