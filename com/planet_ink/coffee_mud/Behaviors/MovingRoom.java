@@ -290,7 +290,8 @@ public class MovingRoom extends ActiveTicker
 						for(final String roomID : listOfRooms)
 						{
 							final Room currentStopRoom = CMLib.map().getRoom(roomID);
-							if((currentStopRoom != null)&&(!areas.contains(currentStopRoom.getArea())))
+							if((currentStopRoom != null)
+							&&(!areas.contains(currentStopRoom.getArea())))
 								areas.add(currentStopRoom.getArea());
 						}
 						if((areas.size()>0)
