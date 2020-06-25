@@ -299,7 +299,7 @@ public class MovingRoom extends ActiveTicker
 					}
 				}
 			}
-			else
+			if(areas.size()>0)
 			{
 				boolean proceed=false;
 				synchronized(areas)
