@@ -85,7 +85,7 @@ public class Template extends StdCommand
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		Room R=mob.location();
+		final Room R=mob.location();
 		if(R==null)
 			return false;
 		if((commands!=null)&&(commands.size()>1))
@@ -98,7 +98,7 @@ public class Template extends StdCommand
 				final String mask=CMParms.combine(commands,0);
 				final StringBuffer list=new StringBuffer("");
 				final List<Triad<String,String,String>> dats = CMLib.catalog().getBuilderTemplateList(mob.Name());
-				int tot =  CMLib.lister().fixColWidth(78, mob.session());
+				final int tot =  CMLib.lister().fixColWidth(78, mob.session());
 				int numCols = (int)Math.round(CMath.floor(CMath.div(tot, 78)));
 				if(numCols == 0)
 					numCols=1;
@@ -115,7 +115,7 @@ public class Template extends StdCommand
 						filter = new Filterer<Triad<String,String,String>>()
 						{
 							@Override
-							public boolean passesFilter(Triad<String,String,String> obj)
+							public boolean passesFilter(final Triad<String,String,String> obj)
 							{
 								return obj.second.startsWith(" ")
 										&&((whatKind==null)||(whatKind.name().equalsIgnoreCase(obj.second.substring(1))))
@@ -127,7 +127,7 @@ public class Template extends StdCommand
 						filter = new Filterer<Triad<String,String,String>>()
 						{
 							@Override
-							public boolean passesFilter(Triad<String,String,String> obj)
+							public boolean passesFilter(final Triad<String,String,String> obj)
 							{
 								return obj.second.startsWith("+")
 									&&((whatKind==null)||(whatKind.name().equalsIgnoreCase(obj.second.substring(1))))
@@ -139,7 +139,7 @@ public class Template extends StdCommand
 						filter = new Filterer<Triad<String,String,String>>()
 						{
 							@Override
-							public boolean passesFilter(Triad<String,String,String> obj)
+							public boolean passesFilter(final Triad<String,String,String> obj)
 							{
 								return obj.second.startsWith("*")
 									&&((whatKind==null)||(whatKind.name().equalsIgnoreCase(obj.second.substring(1))))
@@ -165,7 +165,7 @@ public class Template extends StdCommand
 						switch(ttyp)
 						{
 						case 0:
-							list.append(L("\n\r^HPersonal and Private template objects^N\n\r"));
+							list.append(L("\n\r^HPersonal Private template objects^N\n\r"));
 							break;
 						case 1:
 							list.append(L("\n\r^HPersonal Shared template objects^N\n\r"));
@@ -272,7 +272,7 @@ public class Template extends StdCommand
 					mob.tell(L("Add which id of what object?"));
 					return false;
 				}
-				String possID=commands.get(0);
+				final String possID=commands.get(0);
 				commands.remove(0);
 				final String ID = CMLib.catalog().makeValidNewBuilderTemplateID(possID);
 				if(ID==null)
