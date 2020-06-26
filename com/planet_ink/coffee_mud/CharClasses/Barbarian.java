@@ -332,7 +332,8 @@ public class Barbarian extends StdCharClass
 			else
 			if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 			&&(msg.tool() instanceof Ability)
-			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ENCHANTMENT))
+			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ENCHANTMENT)
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			{
 				if(CMLib.dice().rollPercentage()<=myChar.charStats().getClassLevel(this))
 				{

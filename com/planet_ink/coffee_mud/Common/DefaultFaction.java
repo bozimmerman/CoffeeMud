@@ -1392,7 +1392,8 @@ public class DefaultFaction implements Faction, MsgListener
 			{
 				if((msg.target()==myHost)	// Arrested watching
 				&&(msg.source().isMonster())
-				&&(msg.tool().ID().equals("Skill_HandCuff")))
+				&&(msg.tool().ID().equals("Skill_HandCuff"))
+				&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 				{
 					final Room R=msg.source().location();
 					if((R!=null)&&(R.getArea()!=null))

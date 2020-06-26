@@ -119,6 +119,7 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 	{
 		if ((msg.target() != null)
 		&& (msg.tool() instanceof Ability )
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 		&& ((msg.amITarget(affected))
 			||(affected instanceof Area)
 			||(owner && (affected instanceof Item) && (msg.target()==((Item)affected).owner()))
