@@ -2254,7 +2254,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				else
 					myDescription.append(viewedmob.charStats().HeShe()+" is wearing:\n\r"+eq.toString());
 			}
-			viewermob.tell(myDescription.toString());
+			viewermob.tell(msg.source(), viewedmob, null, myDescription.toString());
 			if(longlook)
 			{
 				final Command C=CMClass.getCommand("Consider");
