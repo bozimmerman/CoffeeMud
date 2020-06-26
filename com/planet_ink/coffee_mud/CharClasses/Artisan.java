@@ -102,6 +102,24 @@ public class Artisan extends StdCharClass
 		return CharClass.WEAPONS_DAGGERONLY;
 	}
 
+	@Override
+	public int maxNonCraftingSkills()
+	{
+		return Integer.MAX_VALUE;
+	}
+
+	@Override
+	public int maxCraftingSkills()
+	{
+		return Integer.MAX_VALUE;
+	}
+
+	@Override
+	public int maxCommonSkills()
+	{
+		return Integer.MAX_VALUE;
+	}
+
 	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
 
 	@Override
