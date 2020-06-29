@@ -233,7 +233,7 @@
 			<BR>
 			@endif@
 		</TD><TD ALIGN=CENTER VALIGN=TOP ROWSPAN=3>
-			@if?CheckAuthCode?AUTH_CMDRACE=true@
+			@if?CheckAuthCode?AUTH_CMDRACES=true@
 			<A href="javascript:Clicked('races.cmvp')"><FONT COLOR=WHITE>Races</FONT></a>
 			<BR>
 			@endif@
