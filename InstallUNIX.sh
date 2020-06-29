@@ -26,7 +26,7 @@ read yesnodocs
 echo "3. Do you want to compile the full program right now (say no if you're only doing the docs, or changing the name of your MUD)? [y/n]"
 read yesnofullcompile
 
-echo "3. What have you decided to name your MUD (you can change this later by editing the mudUNIX.sh file) ?"
+echo "4. What have you decided to name your MUD (you can change this later by editing the mudUNIX.sh file) ?"
 read MUDname
 
 echo "Alright, we're good to go, compiling will begin in 5 seconds."
