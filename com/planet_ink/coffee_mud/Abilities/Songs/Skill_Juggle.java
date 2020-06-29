@@ -526,7 +526,7 @@ public class Skill_Juggle extends BardSkill
 			A.pause=false;
 		}
 		else
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to juggle, but messes up."));
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to juggle, but mess(es) up."));
 
 		// return whether it worked
 		return success;
