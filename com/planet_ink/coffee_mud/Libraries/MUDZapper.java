@@ -4866,6 +4866,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							if(CMParms.indexOf(entry.parms(), Integer.valueOf(((Weapon)W).weaponDamageType())) < 0)
 								return false;
 						}
+						else
+							return false;
 					}
 					break;
 				case WEAPONAMMO: // +weaponammo
