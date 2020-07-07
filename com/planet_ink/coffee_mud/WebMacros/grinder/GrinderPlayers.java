@@ -519,12 +519,17 @@ public class GrinderPlayers extends GrinderMobs
 				}
 			}
 		}
-		String error=GrinderExits.dispositions(M,httpReq,parms);
+		String error;
+		/* not supported
+		error=GrinderExits.dispositions(M,httpReq,parms);
 		if(error.length()>0)
 			return error;
+		*/
+		/* not supported
 		error=GrinderMobs.senses(M,httpReq,parms);
 		if(error.length()>0)
 			return error;
+		*/
 		error=titleList(M,httpReq,parms);
 		if(error.length()>0)
 			return error;
