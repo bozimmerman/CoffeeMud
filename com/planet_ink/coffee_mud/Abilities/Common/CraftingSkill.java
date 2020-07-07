@@ -963,6 +963,9 @@ public class CraftingSkill extends GatheringSkill
 			case RawMaterial.MATERIAL_CLOTH:
 				material = RawMaterial.RESOURCE_COTTON;
 				break;
+			case RawMaterial.MATERIAL_LEATHER:
+				material = RawMaterial.RESOURCE_LEATHER;
+				break;
 			case RawMaterial.MATERIAL_METAL:
 			case RawMaterial.MATERIAL_MITHRIL:
 				material = RawMaterial.RESOURCE_IRON;

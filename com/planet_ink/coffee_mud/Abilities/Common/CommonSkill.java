@@ -979,23 +979,23 @@ public class CommonSkill extends StdAbility
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		aborted=false;
-		if(mob.isInCombat())
+		if(mob.isInCombat()&&(!auto))
 		{
 			commonEmote(mob,L("<S-NAME> <S-IS-ARE> in combat!"));
 			return false;
 		}
-		if((!allowedWhileMounted())&&(mob.riding()!=null))
+		if((!allowedWhileMounted())&&(mob.riding()!=null)&&(!auto))
 		{
 			commonEmote(mob,L("You can't do that while @x1 @x2.",mob.riding().stateString(mob),mob.riding().name()));
 			return false;
 		}
 
-		if((!allowedInTheDark())&&(!CMLib.flags().canBeSeenBy(mob.location(),mob)))
+		if((!allowedInTheDark())&&(!auto)&&(!CMLib.flags().canBeSeenBy(mob.location(),mob)))
 		{
 			commonTell(mob,L("<S-NAME> can't see to do that!"));
 			return false;
 		}
-		if((CMLib.flags().isSitting(mob)&&(!canBeDoneSittingDown()))||CMLib.flags().isSleeping(mob))
+		if((CMLib.flags().isSitting(mob)&&(!auto)&&(!canBeDoneSittingDown()))||CMLib.flags().isSleeping(mob))
 		{
 			commonTell(mob,L("You need to stand up!"));
 			return false;
