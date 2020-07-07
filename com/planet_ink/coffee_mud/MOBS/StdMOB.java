@@ -1776,7 +1776,7 @@ public class StdMOB implements MOB
 			return CMLib.english().startWithAorAn(genericName()).toLowerCase();
 		return titledName();
 	}
-	
+
 	@Override
 	public String name(final MOB viewer)
 	{
@@ -2561,7 +2561,7 @@ public class StdMOB implements MOB
 					final int movesReq = ((msg.targetMinor()==CMMsg.TYP_PUSH)?
 						((Physical)msg.target()).phyStats().movesReqToPush():
 						((Physical)msg.target()).phyStats().movesReqToPull())
-							- (maxCarry() / 3);
+							- ((maxCarry()-phyStats().weight()) / 3);
 					if((curState.getMovement()<movesReq)
 					&&(curState.getMovement()<maxState.getMovement()))
 					{
