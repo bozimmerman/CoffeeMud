@@ -1,5 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+	<META CHARSET="utf-8"/>
 	<head>
 	  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	  <title>Archon Commands Help</title>
@@ -15,6 +16,8 @@
 			
 			
 			<li> <a href="#ABILITY_PREREQS">ABILITY_PREREQS</a>
+			
+			<li> <a href="#ABILITY_SECRET">ABILITY_SECRET</a>
 			
 			<li> <a href="#ACCOUNT">ACCOUNT</a>
 			
@@ -254,6 +257,8 @@
 			
 			<li> <a href="#LIST_ONEWAYDOORS">LIST_ONEWAYDOORS</a>
 			
+			<li> <a href="#LIST_PLANES">LIST_PLANES</a>
+			
 			<li> <a href="#LIST_PLANETS">LIST_PLANETS</a>
 			
 			<li> <a href="#LIST_POISONS">LIST_POISONS</a>
@@ -458,6 +463,11 @@
 			</P>
 			
 			<p>
+			<a name="ABILITY_SECRET"><B>ABILITY_SECRET</B></a>
+			<pre>Ability secret status is a flag with three states: Public means that characters<BR>know about the ability, and teachers will normally teach it.  Secret means that<BR>characters and teachers will not know about the ability, which means a scroll<BR>or other means is required. Masked means the ability is secret except when the<BR>Ability mask criteria are met.</pre>
+			</P>
+			
+			<p>
 			<a name="ACCOUNT"><B>ACCOUNT</B></a>
 			<pre>Command : ACCOUNT <BR>Usage   : ACCOUNT [ACCOUNT/PLAYER NAME] <BR>Example : account bob <BR>Short(s):  <BR>If this mud supports accounts, this command will show the account name, a list<BR>of characters, and the account expiration date, if applicable.</pre>
 			</P>
@@ -594,7 +604,7 @@
 			
 			<p>
 			<a name="CREATE"><B>CREATE</B></a>
-			<pre>Command : CREATE <BR>Usage   : CREATE [ITEM TYPE] ...  <BR>Example : create room e StdRoom <BR>Example : create item Longsword <BR>Example : create item Longsword@room <BR>Example : create item Longsword@an orc <BR>Example : create StdExit east <BR>Example : create news <BR>Short(s):  <BR>A command for the creation of items, mobs, quests, rooms, polls, exits,<BR>classes, races, etc. Enter CREATE for more information on command usage on<BR>items, mobs, components, and exits. Use AHELP QUESTS for more information on<BR>creating quests.  </pre>
+			<pre>Command : CREATE <BR>Usage   : CREATE [ITEM TYPE] ...  <BR>Example : create room e StdRoom <BR>Example : create item Longsword <BR>Example : create item Longsword@room <BR>Example : create item Longsword@an orc <BR>Example : create StdExit east <BR>Example : create news <BR>Short(s):  <BR>A command for the creation of items, mobs, quests, rooms, polls, exits,<BR>classes, races, etc. Enter CREATE for more information on command usage on<BR>items, mobs, components, planes, and exits. Use AHELP QUESTS for more<BR>information on creating quests.  </pre>
 			</P>
 			
 			<p>
@@ -604,7 +614,7 @@
 			
 			<p>
 			<a name="DESTROY"><B>DESTROY</B></a>
-			<pre>Command : DESTROY <BR>Usage   : DESTROY [ITEM TYPE] ...  <BR>Example : destroy room e <BR>Example : destroy orc <BR>Example : destroy item longsword <BR>Example : destroy item longsword@an orc <BR>Short(s):  <BR>A command for the destruction of items, quests, components, mobs, rooms, exits,<BR>polls, classes, races, and listed bugs, typos, ideas, and ban. Enter DESTROY<BR>for more information on command usage.</pre>
+			<pre>Command : DESTROY <BR>Usage   : DESTROY [ITEM TYPE] ...  <BR>Example : destroy room e <BR>Example : destroy orc <BR>Example : destroy item longsword <BR>Example : destroy item longsword@an orc <BR>Short(s):  <BR>A command for the destruction of items, quests, components, planes, mobs,<BR>rooms, exits, polls, classes, races, and listed bugs, typos, ideas, and ban.<BR>Enter DESTROY for more information on command usage.</pre>
 			</P>
 			
 			<p>
@@ -754,7 +764,7 @@
 			
 			<p>
 			<a name="LIST_ABILITIES"><B>LIST_ABILITIES</B></a>
-			<pre>Command  : LIST  <BR>Usage    : LIST ABILITIES (DOMAIN) <BR>Example  : list abilities <BR>Example  : list abilities enchantment/charm <BR>Shows the list of java classes (ability ids) available to archons.</pre>
+			<pre>Command  : LIST  <BR>Usage    : LIST ABILITIES (DOMAIN/FLAG) <BR>Example  : list abilities <BR>Example  : list abilities enchantment/charm <BR>Example  : list abilities moving <BR>Shows the list of java classes (ability ids) available to archons. For domain<BR>options, do LIST ABILITYDOMAINS, and for flags LIST ABILITYFLAGS</pre>
 			</P>
 			
 			<p>
@@ -1053,6 +1063,11 @@
 			</P>
 			
 			<p>
+			<a name="LIST_PLANES"><B>LIST_PLANES</B></a>
+			<pre>Command  : LIST <BR>Usage    : LIST PLANES <BR>Example  : list planes <BR>Lists the planes of existence.</pre>
+			</P>
+			
+			<p>
 			<a name="LIST_PLANETS"><B>LIST_PLANETS</B></a>
 			<pre>Command  : LIST <BR>Usage    : LIST PLANETS (SORTBY [COLUMN]...) (COLS [COLUMN]...)) <BR>Example  : list planets <BR>Example  : list planets sortby name cols name population <BR>Example  : list planets sortby name <BR>Lists all the planets in your game.  By default, it also shows whether the<BR>planet is Hidden, how many rooms are in the planet, whether it is in a passive<BR>or active state, its current population, and the median level.  If the sortby<BR>parameter is used, then you can follow it with the order of columns to sort by.<BR> Valid columns include: NAME, AUTHOR, DESCRIPTION , ROOMS, STATE, HIDDEN,<BR>POPULATION, MIN_LEVEL, MAX_LEVEL, AVG_LEVEL, MED_LEVEL, AVG_ALIGNMENT,<BR>MED_ALIGNMENT, TOTAL_LEVELS, TOTAL_INTELLIGENT_LEVELS, VISITABLE_ROOMS,<BR>INDOOR_ROOMS.  If the columns parameter is used, then you can follow it with<BR>columns to substitute in the table.</pre>
 			</P>
@@ -1299,7 +1314,7 @@
 			
 			<p>
 			<a name="MODIFY"><B>MODIFY</B></a>
-			<pre>Command : MODIFY <BR>Usage   : MODIFY [ITEM TYPE] ...  <BR>Example : modify room name The Grassy Knole <BR>Example : modify mob orc <BR>Example : modify item longsword <BR>Example : modify item "longsword@an orc" <BR>Example : modify jscript <BR>Example : modify news <BR>Short(s):  <BR>A command for the modification of items, mobs, users, quests, rooms, polls,<BR>classes, races, news, areas, and exits. Enter MODIFY for more information on<BR>command usage.</pre>
+			<pre>Command : MODIFY <BR>Usage   : MODIFY [ITEM TYPE] ...  <BR>Example : modify room name The Grassy Knole <BR>Example : modify mob orc <BR>Example : modify item longsword <BR>Example : modify item "longsword@an orc" <BR>Example : modify jscript <BR>Example : modify news <BR>Short(s):  <BR>A command for the modification of items, mobs, users, quests, rooms, polls,<BR>classes, races, news, areas, components, planes, and exits. Enter MODIFY for<BR>more information on command usage.</pre>
 			</P>
 			
 			<p>
@@ -1389,7 +1404,7 @@
 			
 			<p>
 			<a name="RESET"><B>RESET</B></a>
-			<pre>Command  : RESET <BR>Usage    : RESET (REJUV) ROOM/AREA (ITEMS/MOBS) <BR>Usage    : RESET MOBSTATS ROOM/AREA/WORLD/CATALOG (NOSAVE) ([AREANAME]) <BR>Usage    : RESET ITEMSTATS ROOM/AREA/WORLD/CATALOG (NOSAVE) ([AREANAME]) <BR>Usage    : RESET INIFILE <BR>Usage    : RESET PASSWORD [NAME] <BR>Usage    : RESET RELEVEL <BR>Example  : reset room <BR>Example  : reset area <BR>Example  : reset rejuv area items <BR>Example  : reset mobstats world <BR>Example  : reset itemstats catalog nosave midgaard <BR>Example  : reset password krogon <BR>Short(s) :  <BR>The reset room or area command will revive any wandered or dead mobs whose<BR>location is the same as the invokers.  Any removed items which are resettable<BR>will also return.  Any items or mobs which do not belong in the location will<BR>be returned to their proper homes. <BR> <BR>The reset rejuv room or area command will revive any dead mobs or resettable<BR>items at the location of the invoker.  Mobs that have wandered away will not be<BR>returned.  No other mobs or items in the room will be affected. <BR> <BR>The reset itemstats and reset mobstats commands serve a similar purpose.  Both<BR>will modify the vital statistics of all the mobs or items in the room, area,<BR>world, or catalog specified.  The statistics will be "normalizations" of vital<BR>combat scores based on the mob or items level, and the game engine's definition<BR>of nominal ratings for that level.  They will allow a "preview" of changes to<BR>be made by specifying the "nosave" parameter on the command line, which<BR>prevents permanent changes.  Area names may also be specified on the command<BR>line to cause the command to skip certain areas (for use with WORLD parameter<BR>only). <BR> <BR>Reset relevel is a dangerous but potentially time saving command to change the<BR>levels of all mobs and items in the same area as the user from falling within<BR>its current range of levels to a new range.  See help [areaname] to see the<BR>existing minimum and maximum levels of the area.  <BR>The reset password command will let you generate a random password for the<BR>given player or account and email it to their address on file, or change it to<BR>a neutral word when no email address is on file. <BR> <BR>You can also reload your ini settings, or the lists.ini file using reset<BR>inifile.</pre>
+			<pre>Command  : RESET <BR>Usage    : RESET (REJUV) ROOM/AREA (ITEMS/MOBS) <BR>Usage    : RESET MOBCOMBATSTATS ROOM/AREA/WORLD/CATALOG (NOSAVE) ([AREANAME]) <BR>Usage    : RESET ITEMSTATS ROOM/AREA/WORLD/CATALOG (NOSAVE) ([AREANAME]) <BR>Usage    : RESET INIFILE <BR>Usage    : RESET PASSWORD [NAME] <BR>Usage    : RESET RELEVEL <BR>Example  : reset room <BR>Example  : reset area <BR>Example  : reset rejuv area items <BR>Example  : reset mobcombatstats world <BR>Example  : reset itemstats catalog nosave midgaard <BR>Example  : reset password krogon <BR>Short(s) :  <BR>The reset room or area command will revive any wandered or dead mobs whose<BR>location is the same as the invokers.  Any removed items which are resettable<BR>will also return.  Any items or mobs which do not belong in the location will<BR>be returned to their proper homes. <BR> <BR>The reset rejuv room or area command will revive any dead mobs or resettable<BR>items at the location of the invoker.  Mobs that have wandered away will not be<BR>returned.  No other mobs or items in the room will be affected. <BR> <BR>The reset itemstats and reset mobstats commands serve a similar purpose.  Both<BR>will modify the vital statistics of all the mobs or items in the room, area,<BR>world, or catalog specified.  The statistics will be "normalizations" of vital<BR>combat scores based on the mob or items level, and the game engine's definition<BR>of nominal ratings for that level.  They will allow a "preview" of changes to<BR>be made by specifying the "nosave" parameter on the command line, which<BR>prevents permanent changes.  Area names may also be specified on the command<BR>line to cause the command to skip certain areas (for use with WORLD parameter<BR>only). <BR> <BR>Reset relevel is a dangerous but potentially time saving command to change the<BR>levels of all mobs and items in the same area as the user from falling within<BR>its current range of levels to a new range.  See help [areaname] to see the<BR>existing minimum and maximum levels of the area.  <BR>The reset password command will let you generate a random password for the<BR>given player or account and email it to their address on file, or change it to<BR>a neutral word when no email address is on file. <BR> <BR>You can also reload your ini settings, or the lists.ini file using reset<BR>inifile.</pre>
 			</P>
 			
 			<p>
@@ -1424,7 +1439,7 @@
 			
 			<p>
 			<a name="STAT"><B>STAT</B></a>
-			<pre>Command : STAT <BR>Usage   : STAT ((SKILL/STAT TYPE) [TARGET NAME])/([NUMBER]<BR>[DAYS/WEEKS/MONTHS/YEARS] <BR>Usage   : ... (/SKILLUSE/QUEST/AREA)) <BR>Example : stat <BR>Example : stat 2 weeks <BR>Example : stat tom <BR>Example : stat equipment bob <BR>Example : stat combat bob <BR>Example : stat inventory bob <BR>Example : stat questwins bob <BR>Example : stat tattoos bob <BR>Example : stat titles bob <BR>Example : stat scripts bob <BR>Example : stat charstats bob <BR>Example : stat roomsexplored bob <BR>Example : stat factions bob <BR>Example : stat spell bob <BR>Example : stat skill hassan <BR>Example : stat chant hassan <BR>Example : stat prayer hassan <BR>Example : stat area midgaard <BR>Example : stat item my longsword <BR>Example : stat clan bob <BR>Example : stat fountain <BR>Short(s):  <BR>This command serves two purposes.  The first is to allow you to view a usage<BR>statistics report on your mud.  Entering STAT alone allows you to see<BR>information gathered since midnight.  You may also enter a number and a scale<BR>(days, weeks, months, or years) to view information going farther back. <BR> <BR>STAT will also allow you to retrieve basic stat information on a player, mob,<BR>item, room, or exit in the game.  Entering STAT and the objects name brings up<BR>the most basic information.  Specifying AREA, MOB, ITEM, ROOM, or EXIT before<BR>the name will make the search more specific. Including a skill type before a<BR>mob or player name will list their abilities of that type.  Valid skill types<BR>include: SKILL, SPELL, PRAYER, SONG, TRAP, PROPERTY, "THIEF SKILL", LANGUAGE,<BR>CHANT, "COMMON SKILL", DISEASE, POISON.  You can also get special reports by<BR>entering one of the following before the name: EQUIPMENT, COMBAT, INVENTORY,<BR>STINK, DEITY, QUESTWINS, TATTOOS, TITLES, SCRIPTS, WORLDEXPLORED,<BR>AREASEXPLORED, ROOMSEXPLORED, ALIGNMENT, INCLINATION, FACTIONS, FACTIONID,<BR>FACTIONAMT, MATTRIB, OBJATTRIB, CLAN, CLANROLE, LEVELTIMES, and CHARSTATS.  As<BR>per the player version of this command, you can also use basic stats, such as:<BR>HITS, MANA, MOVE, HUNGER, THIRST, FATIGUE, MAXHITS, MAXMANA, MAXMOVE,<BR>MAXHUNGER, MAXTHIRST, MAXFATIGUE, STRENGTH, INTELLIGENCE, DEXTERITY,<BR>CONSTITUTION, CHARISMA, WISDOM, GENDER, PARALYSIS, FIRE, COLD, WATER, GAS,<BR>MIND, GENERAL, JUSTICE, ACID, ELECTRICITY, POISON, UNDEAD, MAGIC, DISEASE,<BR>TRAPS, MAXSTRENGTH, MAXINTELLIGENCE, MAXDEXTERITY, MAXCONSTITUTION,<BR>MAXCHARISMA, MAXWISDOM, AGE, DETECTION, CONVERSION, WEIGHTADJ, LEVEL, SENSES,<BR>ARMOR, DAMAGE, ATTACK, DISPOSITION, REJUV, WEIGHT, ABILITY, HEIGHT, XP<BR>(experience), XPFNL (experience for next level), and XPTNL (experience to next<BR>level), QUESTPOINTS, TRAINS, PRACTICES, and any factions shown in the score<BR>command, such as ALIGNMENT.  Many of the basic character stats, such as<BR>INTELLIGENCE, etc, can also be prefixed like CURRENT_INTELLIGENCE to ensure you<BR>are getting the fully adjusted value.</pre>
+			<pre>Command : STAT <BR>Usage   : STAT ((SKILL/STAT TYPE) [TARGET NAME])/([NUMBER]<BR>[DAYS/WEEKS/MONTHS/YEARS] <BR>Usage   : ... (/SKILLUSE/QUEST/AREA/CRIME)) <BR>Example : stat <BR>Example : stat 2 weeks <BR>Example : stat tom <BR>Example : stat equipment bob <BR>Example : stat combat bob <BR>Example : stat inventory bob <BR>Example : stat questwins bob <BR>Example : stat tattoos bob <BR>Example : stat titles bob <BR>Example : stat scripts bob <BR>Example : stat charstats bob <BR>Example : stat roomsexplored bob <BR>Example : stat factions bob <BR>Example : stat spell bob <BR>Example : stat skill hassan <BR>Example : stat chant hassan <BR>Example : stat prayer hassan <BR>Example : stat area midgaard <BR>Example : stat item my longsword <BR>Example : stat clan bob <BR>Example : stat fountain <BR>Short(s):  <BR>This command serves two purposes.  The first is to allow you to view a usage<BR>statistics report on your mud.  Entering STAT alone allows you to see<BR>information gathered since midnight.  You may also enter a number and a scale<BR>(days, weeks, months, or years) to view information going farther back. <BR> <BR>STAT will also allow you to retrieve basic stat information on a player, mob,<BR>item, room, or exit in the game.  Entering STAT and the objects name brings up<BR>the most basic information.  Specifying AREA, MOB, ITEM, ROOM, or EXIT before<BR>the name will make the search more specific. Including a skill type before a<BR>mob or player name will list their abilities of that type.  Valid skill types<BR>include: SKILL, SPELL, PRAYER, SONG, TRAP, PROPERTY, "THIEF SKILL", LANGUAGE,<BR>CHANT, "COMMON SKILL", DISEASE, POISON.  You can also get special reports by<BR>entering one of the following before the name: EQUIPMENT, COMBAT, INVENTORY,<BR>STINK, DEITY, QUESTWINS, TATTOOS, TITLES, SCRIPTS, WORLDEXPLORED,<BR>AREASEXPLORED, ROOMSEXPLORED, ALIGNMENT, INCLINATION, FACTIONS, FACTIONID,<BR>FACTIONAMT, MATTRIB, OBJATTRIB, CLAN, CLANROLE, LEVELTIMES, and CHARSTATS.  As<BR>per the player version of this command, you can also use basic stats, such as:<BR>HITS, MANA, MOVE, HUNGER, THIRST, FATIGUE, MAXHITS, MAXMANA, MAXMOVE,<BR>MAXHUNGER, MAXTHIRST, MAXFATIGUE, STRENGTH, INTELLIGENCE, DEXTERITY,<BR>CONSTITUTION, CHARISMA, WISDOM, GENDER, PARALYSIS, FIRE, COLD, WATER, GAS,<BR>MIND, GENERAL, JUSTICE, ACID, ELECTRICITY, POISON, UNDEAD, MAGIC, DISEASE,<BR>TRAPS, MAXSTRENGTH, MAXINTELLIGENCE, MAXDEXTERITY, MAXCONSTITUTION,<BR>MAXCHARISMA, MAXWISDOM, AGE, DETECTION, CONVERSION, WEIGHTADJ, LEVEL, SENSES,<BR>ARMOR, DAMAGE, ATTACK, DISPOSITION, REJUV, WEIGHT, ABILITY, HEIGHT, XP<BR>(experience), XPFNL (experience for next level), and XPTNL (experience to next<BR>level), QUESTPOINTS, TRAINS, PRACTICES, and any factions shown in the score<BR>command, such as ALIGNMENT.  Many of the basic character stats, such as<BR>INTELLIGENCE, etc, can also be prefixed like CURRENT_INTELLIGENCE to ensure you<BR>are getting the fully adjusted value.</pre>
 			</P>
 			
 			<p>
