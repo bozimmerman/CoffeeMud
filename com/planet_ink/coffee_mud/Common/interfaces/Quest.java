@@ -629,7 +629,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 
 	/**
 	 * Returns the zappermask that determines who counts as an
-	 * elligible player for the purposes of the minPlayer setting.
+	 * eligible player for the purposes of the minPlayer setting.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setMinPlayers(int)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#minPlayers()
@@ -640,7 +640,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 
 	/**
 	 * Sets the zappermask that determines who counts as an
-	 * elligible player for the purposes of the minPlayer setting.
+	 * eligible player for the purposes of the minPlayer setting.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setMinPlayers(int)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#minPlayers()

@@ -359,7 +359,7 @@ public class StdClanItem extends StdItem implements ClanItem
 			{
 				if (CMLib.clans().findRivalrousClan(msg.source()) == null)
 				{
-					msg.source().tell(CMLib.lang().L("You must belong to an elligible clan to do that to a clan item."));
+					msg.source().tell(CMLib.lang().L("You must belong to an eligible clan to do that to a clan item."));
 					return false;
 				}
 				else

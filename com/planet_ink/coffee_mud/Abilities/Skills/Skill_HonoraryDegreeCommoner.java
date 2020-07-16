@@ -126,7 +126,7 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 	protected final Set<String>		myTitles	= new HashSet<String>();
 	protected volatile int			numSkills	= -1;
 	protected volatile CharClass	activatedC	= null;
-	protected volatile CharClass	elligibleC	= null;
+	protected volatile CharClass	eligibleC	= null;
 	protected String				lastTitle	= "";
 
 	@Override
@@ -230,7 +230,7 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 					synchronized(this)
 					{
 						this.lastTitle=pStats.getActiveTitle();
-						this.elligibleC = null;
+						this.eligibleC = null;
 						if((this.lastTitle!=null)
 						&&(myTitles.contains(this.lastTitle)))
 						{
@@ -238,7 +238,7 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 							{
 								if(degree[DEG_TITLE].equals(this.lastTitle))
 								{
-									this.elligibleC = CMClass.getCharClass(degree[DEG_CID]);
+									this.eligibleC = CMClass.getCharClass(degree[DEG_CID]);
 									this.helpProficiency(mob,0);
 									break;
 								}
@@ -272,12 +272,12 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 	{
 		synchronized(this)
 		{
-			if(this.elligibleC != null)
+			if(this.eligibleC != null)
 			{
 				if(!super.proficiencyCheck(msg.source(), 0, false))
 					return;
 
-				this.activatedC = this.elligibleC;
+				this.activatedC = this.eligibleC;
 				msg.source().recoverCharStats();
 			}
 			else

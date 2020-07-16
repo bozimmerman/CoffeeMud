@@ -130,7 +130,7 @@ public interface LegalBehavior extends Behavior
 	 * @param mob the pc/npc to test
 	 * @return whether the mob is an officer of the law
 	 */
-	public boolean isElligibleOfficer(Area myArea, MOB mob);
+	public boolean isEligibleOfficer(Area myArea, MOB mob);
 
 	/**
 	 * Returns whether the given mob has a valid warrant out for his/her arrest.

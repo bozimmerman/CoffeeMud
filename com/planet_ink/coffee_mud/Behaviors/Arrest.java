@@ -174,7 +174,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	}
 
 	@Override
-	public boolean isElligibleOfficer(final Area myArea, final MOB mob)
+	public boolean isEligibleOfficer(final Area myArea, final MOB mob)
 	{
 		if(!theLawIsEnabled())
 			return false;
@@ -182,7 +182,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		if((mob.isMonster())
 		&&(mob.location()!=null)
 		&&(laws!=null)
-		&&(isElligibleOfficer(laws,mob,mob.location().getArea())))
+		&&(isEligibleOfficer(laws,mob,mob.location().getArea())))
 			return true;
 		return false;
 	}
@@ -691,7 +691,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		return false;
 	}
 
-	public boolean isElligibleOfficer(final Law laws, final MOB M, final Area myArea)
+	public boolean isEligibleOfficer(final Law laws, final MOB M, final Area myArea)
 	{
 		if((M!=null)&&(M.isMonster())&&(M.location()!=null))
 		{
@@ -707,11 +707,11 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		return false;
 	}
 
-	public MOB getElligibleOfficerHere(final Law laws,
-									   final Area myArea,
-									   final Room R,
-									   final MOB criminal,
-									   final MOB victim)
+	public MOB getEligibleOfficerHere(final Law laws,
+									  final Area myArea,
+									  final Room R,
+									  final MOB criminal,
+									  final MOB victim)
 	{
 		if(R==null)
 			return null;
@@ -723,30 +723,30 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			&&(M.location()!=null)
 			&&(myArea.inMyMetroArea(M.location().getArea()))
 			&&((victim==null)||(M!=victim))
-			&&(isElligibleOfficer(laws,M,myArea))
+			&&(isEligibleOfficer(laws,M,myArea))
 			&&(CMLib.flags().canBeSeenBy(criminal,M)))
 				return M;
 		}
 		return null;
 	}
 
-	public MOB getAnyElligibleOfficer(final Law laws,
-									  final Area myArea,
-									  final MOB criminal,
-									  final MOB victim)
+	public MOB getAnyEligibleOfficer(final Law laws,
+									 final Area myArea,
+									 final MOB criminal,
+									 final MOB victim)
 	{
 		final Room R=criminal.location();
 		if(R==null)
 			return null;
 		if((myArea!=null)&&(!myArea.inMyMetroArea(R.getArea())))
 			return null;
-		MOB M=getElligibleOfficerHere(laws,myArea,R,criminal,victim);
+		MOB M=getEligibleOfficerHere(laws,myArea,R,criminal,victim);
 		if((M==null)&&(myArea!=null))
 		{
 			for(final Enumeration<Room> e=myArea.getMetroMap();e.hasMoreElements();)
 			{
 				final Room R2=e.nextElement();
-				M=getElligibleOfficerHere(laws,myArea,R2,criminal,victim);
+				M=getEligibleOfficerHere(laws,myArea,R2,criminal,victim);
 				if(M!=null)
 					break;
 			}
@@ -754,17 +754,17 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		return M;
 	}
 
-	public MOB getElligibleOfficer(final Law laws,
-								   final Area myArea,
-								   final MOB criminal,
-								   final MOB victim)
+	public MOB getEligibleOfficer(final Law laws,
+								  final Area myArea,
+								  final MOB criminal,
+								  final MOB victim)
 	{
 		final Room R=criminal.location();
 		if(R==null)
 			return null;
 		if((myArea!=null)&&(!myArea.inMyMetroArea(R.getArea())))
 			return null;
-		MOB M=getElligibleOfficerHere(laws,myArea,R,criminal,victim);
+		MOB M=getEligibleOfficerHere(laws,myArea,R,criminal,victim);
 		if(M!=null)
 			return M;
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -772,7 +772,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			final Room R2=R.getRoomInDir(d);
 			if(R2!=null)
 			{
-				M=getElligibleOfficerHere(laws,myArea,R2,criminal,victim);
+				M=getEligibleOfficerHere(laws,myArea,R2,criminal,victim);
 				if(M!=null)
 				{
 					final int direction=R.getReverseDir(d);
@@ -2674,7 +2674,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				if((officer==null)||(!W.criminal().location().isInhabitant(officer)))
 					officer=null;
 				if(officer==null)
-					officer=getElligibleOfficer(laws,myArea,W.criminal(),W.victim());
+					officer=getEligibleOfficer(laws,myArea,W.criminal(),W.victim());
 				W.setTravelAttemptTime(0);
 				if((officer!=null)
 				&&(W.criminal().location()!=null)
@@ -3676,9 +3676,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						||(!CMLib.flags().isInTheGame(W.criminal(),true))
 						||(!W.criminal().location().isInhabitant(officer)))
 						{
-							W.setArrestingOfficer(myArea,getAnyElligibleOfficer(laws,W.jail().getArea(),W.criminal(),W.victim()));
+							W.setArrestingOfficer(myArea,getAnyEligibleOfficer(laws,W.jail().getArea(),W.criminal(),W.victim()));
 							if(W.arrestingOfficer()==null)
-								W.setArrestingOfficer(myArea,getAnyElligibleOfficer(laws,myArea,W.criminal(),W.victim()));
+								W.setArrestingOfficer(myArea,getAnyEligibleOfficer(laws,myArea,W.criminal(),W.victim()));
 							if(W.arrestingOfficer()==null)
 								break;
 							officer=W.arrestingOfficer();

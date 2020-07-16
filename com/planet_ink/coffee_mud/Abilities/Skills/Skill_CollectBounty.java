@@ -109,7 +109,7 @@ public class Skill_CollectBounty extends StdSkill
 		return warrants;
 	}
 
-	public MOB findElligibleOfficer(final Area myArea, final Area legalA)
+	public MOB findEligibleOfficer(final Area myArea, final Area legalA)
 	{
 		LegalBehavior B=null;
 		if(legalA!=null)
@@ -122,7 +122,7 @@ public class Skill_CollectBounty extends StdSkill
 				for(int i=0;i<R.numInhabitants();i++)
 				{
 					final MOB M=R.fetchInhabitant(i);
-					if((M!=null)&&(B.isElligibleOfficer(legalA,M)))
+					if((M!=null)&&(B.isEligibleOfficer(legalA,M)))
 						return M;
 				}
 			}
@@ -133,7 +133,7 @@ public class Skill_CollectBounty extends StdSkill
 				for(int i=0;i<R.numInhabitants();i++)
 				{
 					final MOB M=R.fetchInhabitant(i);
-					if((M!=null)&&(B.isElligibleOfficer(legalA,M)))
+					if((M!=null)&&(B.isEligibleOfficer(legalA,M)))
 						return M;
 				}
 			}
@@ -213,7 +213,7 @@ public class Skill_CollectBounty extends StdSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final MOB officer=findElligibleOfficer(mob.location().getArea(),legalA);
+				final MOB officer=findEligibleOfficer(mob.location().getArea(),legalA);
 				if((officer!=null)&&(!mob.location().isInhabitant(officer)))
 					CMLib.tracking().wanderFromTo(officer,mob.location(),true);
 				if((officer==null)||(!mob.location().isInhabitant(officer)))

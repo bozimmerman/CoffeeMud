@@ -741,7 +741,7 @@ public class Sailor extends StdBehavior
 								||((I instanceof Rideable)&&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_WATER)))
 							&&(CMLib.flags().canBeSeenBy(I, mob)))
 							{
-								final LinkedList<MOB> elligible=new LinkedList<MOB>();
+								final LinkedList<MOB> eligible=new LinkedList<MOB>();
 								if(I instanceof Rideable)
 								{
 									for(final Enumeration<Rider> r=((Rideable)I).riders();r.hasMoreElements();)
@@ -749,7 +749,7 @@ public class Sailor extends StdBehavior
 										final Rider R=r.nextElement();
 										if((R instanceof MOB)
 										&&((aggrMobs) || (((MOB)R).isPlayer())))
-											elligible.add((MOB)R);
+											eligible.add((MOB)R);
 									}
 								}
 								if(I instanceof BoardableShip)
@@ -767,16 +767,16 @@ public class Sailor extends StdBehavior
 													final MOB M=m.nextElement();
 													if((M!=null)
 													&&((aggrMobs) || M.isPlayer()))
-														elligible.add(M);
+														eligible.add(M);
 												}
 											}
 										}
 									}
 								}
-								if(elligible.size()>0)
+								if(eligible.size()>0)
 								{
 									MOB captaiM = null;
-									for(final MOB M : elligible)
+									for(final MOB M : eligible)
 									{
 										if((M.isPlayer())
 										&&(CMLib.law().doesHaveWeakPriviledgesHere(M, M.location())))
@@ -785,7 +785,7 @@ public class Sailor extends StdBehavior
 									if(captaiM == null)
 									{
 										final MOB[] Ms=new MOB[5];
-										for(final MOB M : elligible)
+										for(final MOB M : eligible)
 										{
 											if(!M.isPlayer())
 											{
@@ -813,7 +813,7 @@ public class Sailor extends StdBehavior
 									}
 									if(captaiM == null)
 									{
-										for(final MOB M : elligible)
+										for(final MOB M : eligible)
 										{
 											if((!M.isPlayer())
 											&&(CMLib.law().doesHaveWeakPriviledgesHere(M, M.location())))
@@ -822,14 +822,14 @@ public class Sailor extends StdBehavior
 									}
 									if(captaiM==null)
 									{
-										for(final MOB M : elligible)
+										for(final MOB M : eligible)
 										{
 											if(M.isPlayer())
 												captaiM=M;
 										}
 									}
 									if(captaiM==null)
-										captaiM=elligible.get(0);
+										captaiM=eligible.get(0);
 									if((captaiM!=null)
 									&&((!aggrLvlChk)||(mob.phyStats().level()<(captaiM.phyStats().level()+5)))
 									&&(CMLib.masking().maskCheck(aggrMask,captaiM,false)))

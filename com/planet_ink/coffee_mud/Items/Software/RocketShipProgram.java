@@ -314,6 +314,8 @@ public class RocketShipProgram extends GenShipProgram
 		||uword.equals("ACTIVATE")
 		||uword.equals("DEACTIVATE")
 		||uword.equals("TARGET")
+		||uword.equals("FACE")
+		||uword.equals("MOON")
 		||uword.equals("FIRE")
 		||(uword.startsWith("WEAPON")&&(CMath.isInteger(uword.substring(6))))
 		||(uword.startsWith("ENGINE")&&(CMath.isInteger(uword.substring(6))))
@@ -1251,6 +1253,8 @@ public class RocketShipProgram extends GenShipProgram
 						+ "DEACTIVATE [SYSTEM/ALL]: turn off any system specified\n\r"
 						+ "LAUNCH / ORBIT         : take your ship off the planet\n\r"
 						+ "TARGET [NAME]          : target a sensor object\n\r"
+						+ "FACE [NAME]            : face a sensor object\n\r"
+						+ "MOON [NAME]            : moon a sensor object\n\r"
 						+ "FIRE [WEAPON]          : fire weapon at target\n\r"
 						+ "STOP   : negate all velocity\n\r"
 						+ "LAND   : land your ship on the nearest planet. \n\r"
@@ -1704,6 +1708,98 @@ public class RocketShipProgram extends GenShipProgram
 				return;
 			}
 			else
+			if(uword.equalsIgnoreCase("FACE"))
+			{
+				final SpaceObject spaceObject=CMLib.map().getSpaceObject(this,true);
+				final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+				if(ship==null)
+				{
+					super.addScreenMessage(L("Error: Malfunctioning hull interface."));
+					return;
+				}
+				if(parsed.size()<2)
+				{
+					super.addScreenMessage(L("Error: FACE requires the name of the object.   Try HELP."));
+					return;
+				}
+				if(sensorReports.size()==0)
+				{
+					super.addScreenMessage(L("Error: no sensor data found to identify object."));
+					return;
+				}
+				final String targetStr=CMParms.combine(parsed, 1);
+				final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
+				for(final TechComponent sensor : sensors)
+					allObjects.addAll(takeSensorReport(sensor));
+				Collections.sort(allObjects, new DistanceSorter(spaceObject));
+				SpaceObject targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, false);
+				if(targetObj == null)
+					targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, true);
+				if(targetObj == null)
+				{
+					super.addScreenMessage(L("No suitable object @x1 found within sensor range.",targetStr));
+					return;
+				}
+				if(targetObj.coordinates() == null)
+				{
+					super.addScreenMessage(L("Can not face @x1 due to lack of coordinate information.",targetObj.Name()));
+					return;
+				}
+				final double[] dirTo = CMLib.map().getDirection(spaceObject, targetObj);
+				final double deltaTo = CMLib.map().getAngleDelta(ship.facing(), dirTo);
+				if(deltaTo < 0.01)
+					super.addScreenMessage(L("Already facing @x1.",targetObj.Name()));
+				else
+				{
+					//final String code=TechCommand.THRUST.makeCommand(portDir,Double.valueOf(amount));
+					//msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+
+					super.addScreenMessage(L("Now facing @x1.",targetObj.Name()));
+				}
+				return;
+			}
+			else
+			if(uword.equalsIgnoreCase("MOON"))
+			{
+				final SpaceObject spaceObject=CMLib.map().getSpaceObject(this,true);
+				final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+				if(ship==null)
+				{
+					super.addScreenMessage(L("Error: Malfunctioning hull interface."));
+					return;
+				}
+				if(parsed.size()<2)
+				{
+					super.addScreenMessage(L("Error: MOON requires the name of the object.   Try HELP."));
+					return;
+				}
+				if(sensorReports.size()==0)
+				{
+					super.addScreenMessage(L("Error: no sensor data found to identify object."));
+					return;
+				}
+				final String targetStr=CMParms.combine(parsed, 1);
+				final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
+				for(final TechComponent sensor : sensors)
+					allObjects.addAll(takeSensorReport(sensor));
+				Collections.sort(allObjects, new DistanceSorter(spaceObject));
+				SpaceObject targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, false);
+				if(targetObj == null)
+					targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, true);
+				if(targetObj == null)
+				{
+					super.addScreenMessage(L("No suitable object @x1 found within sensor range.",targetStr));
+					return;
+				}
+				if(targetObj.coordinates() == null)
+				{
+					super.addScreenMessage(L("Can not moon @x1 due to lack of coordinate information.",targetObj.Name()));
+					return;
+				}
+				super.addScreenMessage(L("Now facing away from @x1.",targetObj.Name()));
+				return;
+			}
+			else
 			if(uword.equalsIgnoreCase("FIRE"))
 			{
 				final String rest = CMParms.combine(parsed,1).toUpperCase();
@@ -1782,10 +1878,13 @@ public class RocketShipProgram extends GenShipProgram
 
 					code=TechCommand.WEAPONTARGETSET.makeCommand(Double.valueOf(targetDirection[0]), Double.valueOf(targetDirection[1]));
 					msg=CMClass.getMsg(mob, finalWeaponToFire, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
-					this.sendMessage(mob, finalWeaponToFire, msg, message);
-
-					code = TechCommand.WEAPONFIRE.makeCommand();
-					msg=CMClass.getMsg(mob, finalWeaponToFire, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+					if(sendMessage(mob, finalWeaponToFire, msg, message))
+					{
+						code = TechCommand.WEAPONFIRE.makeCommand();
+						msg=CMClass.getMsg(mob, finalWeaponToFire, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+					}
+					else
+						msg=null;
 				}
 			}
 			else

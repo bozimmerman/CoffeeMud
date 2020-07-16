@@ -208,7 +208,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 					final Room R = CMLib.map().roomLocation(this);
 					if (CMLib.clans().findRivalrousClan(msg.source()) == null)
 					{
-						msg.source().tell(L("You must belong to an elligible clan to take a clan item."));
+						msg.source().tell(L("You must belong to an eligible clan to take a clan item."));
 						return false;
 					}
 					else

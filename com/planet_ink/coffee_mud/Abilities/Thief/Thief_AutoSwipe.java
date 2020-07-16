@@ -109,7 +109,7 @@ public class Thief_AutoSwipe extends ThiefSkill
 			&&(swipeA!=null))
 			{
 				final MOB mob=msg.source();
-				final List<MOB> elligible=new ArrayList<MOB>(2);
+				final List<MOB> eligible=new ArrayList<MOB>(2);
 				for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 				{
 					final MOB M=m.nextElement();
@@ -118,12 +118,12 @@ public class Thief_AutoSwipe extends ThiefSkill
 					&&(swipeA.getAllowedSwipe(mob, M))
 					)
 					{
-						elligible.add(M);
+						eligible.add(M);
 					}
 				}
-				if(elligible.size()>1)
+				if(eligible.size()>1)
 				{
-					for(final Iterator<MOB> i=elligible.iterator();i.hasNext();)
+					for(final Iterator<MOB> i=eligible.iterator();i.hasNext();)
 					{
 						final MOB M=i.next();
 						if((M!=null)
@@ -131,11 +131,11 @@ public class Thief_AutoSwipe extends ThiefSkill
 							i.remove();
 					}
 				}
-				if(elligible.size()>1)
+				if(eligible.size()>1)
 				{
 					CMLib.threads().scheduleRunnable(new Runnable()
 					{
-						final MOB M=elligible.get(CMLib.dice().roll(1, elligible.size(), -1));
+						final MOB M=eligible.get(CMLib.dice().roll(1, eligible.size(), -1));
 						final Room R=M.location();
 						final Ability swiperA=swipeA;
 						final MOB invokM=mob;

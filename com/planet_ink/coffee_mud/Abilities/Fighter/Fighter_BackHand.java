@@ -109,7 +109,7 @@ public class Fighter_BackHand extends MonkSkill
 			&&(mob.location()!=null)
 			&&(!anyWeapons(mob)))
 			{
-				MOB elligibleTarget=null;
+				MOB eligibleTarget=null;
 				for(int m=0;m<mob.location().numInhabitants();m++)
 				{
 					final MOB M=mob.location().fetchInhabitant(m);
@@ -118,11 +118,11 @@ public class Fighter_BackHand extends MonkSkill
 					&&(mob.getVictim()!=M)
 					&&(M.rangeToTarget()==0))
 					{
-						elligibleTarget=M;
+						eligibleTarget=M;
 						break;
 					}
 				}
-				if(elligibleTarget!=null)
+				if(eligibleTarget!=null)
 				{
 					if((naturalWeapon==null)
 					||(naturalWeapon.amDestroyed()))
@@ -138,8 +138,8 @@ public class Fighter_BackHand extends MonkSkill
 					if(CMLib.dice().rollPercentage()>95)
 						helpProficiency(mob, 0);
 					final MOB prevVictim=mob.getVictim();
-					CMLib.combat().postAttack(mob,elligibleTarget,naturalWeapon);
-					if((prevVictim!=mob.getVictim())&&(elligibleTarget==mob.getVictim())&&((prevVictim==null)||(!prevVictim.amDead())))
+					CMLib.combat().postAttack(mob,eligibleTarget,naturalWeapon);
+					if((prevVictim!=mob.getVictim())&&(eligibleTarget==mob.getVictim())&&((prevVictim==null)||(!prevVictim.amDead())))
 						mob.setVictim(prevVictim);
 				}
 			}

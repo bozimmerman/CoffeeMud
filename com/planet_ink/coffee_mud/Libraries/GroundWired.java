@@ -462,10 +462,13 @@ public class GroundWired extends StdLibrary implements TechLibrary
 						&&((speed>0)||(cO.speed()>0))
 						&&((oMass < SpaceObject.MOONLET_MASS)||(cO.getMass() < SpaceObject.MOONLET_MASS)))
 						{
-							//System.out.println(O.name()+"->"+cO.Name()+": speed="+speed+", dir="+((CMath.div((double)Math.round(O.direction()[0]*100.0),100)))+","+((CMath.div((double)Math.round(O.direction()[1]*100.0),100))));
-							//System.out.println("From:   ("+CMParms.toListString(startCoords)+"  to  "+CMParms.toListString(cO.coordinates())+")");
-							//final double[] exactDir=CMLib.map().getDirection(startCoords, cO.coordinates());
-							//System.out.println(minDistance+" to  ("+CMParms.toListString(O.coordinates())+"): Exact dir="+((CMath.div((double)Math.round(exactDir[0]*100.0),100)))+","+((CMath.div((double)Math.round(exactDir[1]*100.0),100))));
+							if(cO instanceof BoardableShip)
+							{
+								System.out.println(O.name()+"->"+cO.Name()+": speed="+speed+", dir="+((CMath.div((double)Math.round(O.direction()[0]*100.0),100)))+","+((CMath.div((double)Math.round(O.direction()[1]*100.0),100))));
+								System.out.println("Moved from:   ("+CMParms.toListString(startCoords)+"  to  "+CMParms.toListString(O.coordinates())+")");
+								final double[] exactDir=CMLib.map().getDirection(startCoords, cO.coordinates());
+								System.out.println("Closest distance is "+minDistance+" to  object@("+CMParms.toListString(cO.coordinates())+"): Exact dir="+((CMath.div((double)Math.round(exactDir[0]*100.0),100)))+","+((CMath.div((double)Math.round(exactDir[1]*100.0),100))));
+							}
 							final MOB host=map.deity();
 							CMMsg msg;
 							if((O instanceof Weapon)||(cO instanceof Weapon))

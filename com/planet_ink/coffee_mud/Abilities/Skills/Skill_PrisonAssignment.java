@@ -221,7 +221,7 @@ public class Skill_PrisonAssignment extends StdSkill
 			return false;
 		}
 
-		if(!B.isElligibleOfficer(legalA, target))
+		if(!B.isEligibleOfficer(legalA, target))
 		{
 			mob.tell(L("@x1 is too busy to talk to you right now.",target.name(mob)));
 			return false;

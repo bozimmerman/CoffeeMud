@@ -108,7 +108,7 @@ public class Thief_SenseLaw extends ThiefSkill
 			final MOB M=room.fetchInhabitant(m);
 			if((M!=null)
 			&&(M.isMonster())
-			&&(B.isElligibleOfficer(legalObject,M)))
+			&&(B.isEligibleOfficer(legalObject,M)))
 				V.add(M);
 		}
 		return V;

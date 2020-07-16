@@ -376,7 +376,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	public ChameleonList<Ability> racialEffects(MOB mob);
 
 	/**
-	 * Returns the number of racial effects elligible to the given lob. Must
+	 * Returns the number of racial effects eligible to the given lob. Must
 	 * faster and more efficient than getting the whole list and checking its
 	 * size.
 	 * @param mob the mob to grant the abilities to

@@ -575,7 +575,7 @@ public class Age extends StdAbility
 				}
 
 				final Room R=CMLib.map().roomLocation(affected);
-				// check if player elligible,
+				// check if player eligible,
 				// and if not, grow up to be nothing but a mob
 				if((R==null)
 				||(affected.Name().indexOf(' ')>0)

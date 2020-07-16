@@ -75,7 +75,7 @@ public class ClanCreate extends StdCommand
 			if(p!=null)
 				mob.tell(L("You are already a member of @x1. You need to resign before you can create another.",p.first.getName()));
 			else
-				mob.tell(L("You are not elligible to create a new clan at this time."));
+				mob.tell(L("You are not eligible to create a new clan at this time."));
 			return false;
 		}
 
