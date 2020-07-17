@@ -73,6 +73,24 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		return CMClass.getAbility(helpStr)!=null;
 	}
 
+	protected final int[] proficiencyRanges=new int[]{5,10,20,30,40,50,60,70,75,80,85,90,95,100};
+
+	@Override
+	public String getRPProficiencyStr(final int proficiency)
+	{
+		int ordinal=0;
+		for(int i=0;i<proficiencyRanges.length;i++)
+		{
+			if(proficiency<=proficiencyRanges[i])
+			{
+				ordinal=i;
+				break;
+			}
+		}
+		final String message=CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.SKILL_PROFICIENCY_DESC, ordinal);
+		return message;
+	}
+
 	@Override
 	public StringBuilder getHelpText(final String helpStr, final MOB forMOB, final boolean favorAHelp)
 	{
@@ -374,6 +392,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	public String fixHelp(final String tag, String str, final MOB forMOB)
 	{
 		boolean worldCurrency=str.startsWith("<CURRENCIES>");
+		final int prowessCode = CMProps.getIntVar(CMProps.Int.COMBATPROWESS);
+		final boolean useWords=CMProps.Int.Prowesses.SKILL_PROFICIENCY.is(prowessCode);
 		if(str.startsWith("<CURRENCY>")||worldCurrency)
 		{
 			str=str.substring(worldCurrency?12:10);
@@ -635,7 +655,14 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					{
 						final Ability A2=forMOB.fetchAbility(A.ID());
 						if(A2!=null)
-							prepend.append(L("   (Proficiency: @x1%)",""+A2.proficiency()));
+						{
+							final String prof;
+							if(useWords)
+								prof=getRPProficiencyStr(A2.proficiency());
+							else
+								prof=A2.proficiency()+"%";
+							prepend.append(L("   (Proficiency: @x1)",prof));
+						}
 					}
 					if((A.classificationCode()&Ability.ALL_DOMAINS)>0)
 					{

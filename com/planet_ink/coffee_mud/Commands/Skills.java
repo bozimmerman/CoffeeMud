@@ -40,8 +40,6 @@ public class Skills extends StdCommand
 
 	private final String[]	access	= I(new String[] { "SKILLS", "SK" });
 
-	protected final int[] proficiencyRanges=new int[]{5,10,20,30,40,50,60,70,75,80,85,90,95,100};
-
 	@Override
 	public String[] getAccessWords()
 	{
@@ -87,7 +85,7 @@ public class Skills extends StdCommand
 				line.append("\n\rLevel ^!"+level+"^?:\n\r");
 				if(useWords)
 				{
-					final String message = this.getRPProficiencyStr(A2.proficiency());
+					final String message = CMLib.help().getRPProficiencyStr(A2.proficiency());
 					line.append(CMStrings.padRight("^<HELP^>"+A2.name()+"^</HELP^>",19));
 					line.append(" ("+CMStrings.padRight(message,3)+")");
 				}
@@ -225,21 +223,6 @@ public class Skills extends StdCommand
 		}
 	};
 
-	protected String getRPProficiencyStr(final int proficiency)
-	{
-		int ordinal=0;
-		for(int i=0;i<proficiencyRanges.length;i++)
-		{
-			if(proficiency<=proficiencyRanges[i])
-			{
-				ordinal=i;
-				break;
-			}
-		}
-		final String message=CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.SKILL_PROFICIENCY_DESC, ordinal);
-		return message;
-	}
-
 	protected StringBuilder getAbilities(final MOB viewerM, final MOB ableM, final List<Integer> ofTypes, final int mask, final boolean addQualLine, final int maxLevel)
 	{
 		final int prowessCode = CMProps.getIntVar(CMProps.Int.COMBATPROWESS);
@@ -305,7 +288,7 @@ public class Skills extends StdCommand
 					else
 					{
 						thisLine.append(CMStrings.padRight("^<HELP^>",A.name(),"^</HELP^>",COL_LEN2));
-						final String message = this.getRPProficiencyStr(A.proficiency());
+						final String message = CMLib.help().getRPProficiencyStr(A.proficiency());
 						if(col < MAX_COLS)
 							thisLine.append(CMStrings.padRight("^N(^H",message,"^?)^N",COL_LEN3));
 						else

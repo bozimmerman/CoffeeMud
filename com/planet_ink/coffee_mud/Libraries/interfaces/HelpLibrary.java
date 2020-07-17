@@ -45,6 +45,7 @@ public interface HelpLibrary extends CMLibrary
 	public Properties getArcHelpFile();
 	public Properties getHelpFile();
 	public void unloadHelpFile(MOB mob);
+	public String getRPProficiencyStr(final int proficiency);
 	public boolean isPlayerSkill(String helpStr);
 	public void addHelpEntry(String ID, String text, boolean archon);
 
