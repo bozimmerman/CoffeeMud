@@ -16,6 +16,7 @@
 <!ELEMENT EItem '<SEND HREF="REMOVE &text;|LOOK &text;" hint="Right-Click to use this object|REMOVE &text;|LOOK &text;">'>
 <!ELEMENT RItem '<SEND HREF="GET &name;|LOOK &name;|DRINK &name;|READ &name;" hint="Right-Click to use this object|GET &name;|LOOK &name;|DRINK &name;|READ &name;">' ATT='name'>
 <!ELEMENT RMob '<SEND HREF="CONSIDER &name;|LOOK &name;|KILL &name;" hint="Right-Click to affect this creature|CONSIDER &name;|LOOK &name;|KILL &name;">' ATT='name'>
+<!ELEMENT RShopM '<SEND HREF="CONSIDER &name;|LOOK &name;|KILL &name;|LIST &name;" hint="Right-Click to affect this creature|CONSIDER &name;|LOOK &name;|KILL &name;|LIST &name;">' ATT='name'>
 <!ELEMENT WItem '<SEND HREF="LOOK &name;|READ &name;" hint="Right-Click to use this object|LOOK &name;|READ &name;">' ATT='name'>
 <!-- ********************************************************************* -->
 <!-- miscellaneous tags -->

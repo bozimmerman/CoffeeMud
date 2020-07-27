@@ -1801,14 +1801,20 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					{
 						if((!compress)&&(!mob.isMonster())&&(sess.getClientTelnetMode(Session.TELNET_MXP)))
 							finalLookStr.append(CMLib.protocol().mxpImage(mob2," H=10 W=10",""," "));
-						finalLookStr.append("^M^<RMob \""+CMStrings.removeColors(mob2.name())+"\"^>");
+						if(mob2 instanceof ShopKeeper)
+							finalLookStr.append("^M^<RShopM \""+CMStrings.removeColors(mob2.name())+"\"^>");
+						else
+							finalLookStr.append("^M^<RMob \""+CMStrings.removeColors(mob2.name())+"\"^>");
 						if(compress)
 							finalLookStr.append(CMLib.flags().getDispositionBlurbs(mob2,mob)+"^M ");
 						if((displayText.length()>0)&&(!useName))
 							finalLookStr.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(displayText)));
 						else
 							finalLookStr.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(mob2.name())));
-						finalLookStr.append("^</RMob^>");
+						if(mob2 instanceof ShopKeeper)
+							finalLookStr.append("^</RShopM^>");
+						else
+							finalLookStr.append("^</RMob^>");
 						if(sysmsgs)
 							finalLookStr.append("^H("+CMClass.classID(mob2)+")^N ");
 						if(!compress)
