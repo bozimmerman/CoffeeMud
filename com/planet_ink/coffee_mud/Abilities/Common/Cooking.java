@@ -252,7 +252,16 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
 	{
-		return "Not implemented";
+		final StringBuilder desc = new StringBuilder("");
+		for(int vr=RCP_MAININGR;vr<recipe.size();vr+=2)
+		{
+			final String ingredient=recipe.get(vr);
+			if(ingredient.length()>0)
+				desc.append(ingredient).append(", ");
+		}
+		if(desc.length()<3)
+			return "Nothing";
+		return desc.toString().substring(0,desc.length()-2);
 	}
 
 	@Override
