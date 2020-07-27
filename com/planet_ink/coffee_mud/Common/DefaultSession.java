@@ -348,7 +348,7 @@ public class DefaultSession implements Session
 				rawBytesOut(rawout,("\n\r#$#mcp version: 2.1 to: 2.1\n\r").getBytes(CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
 			}
 			rawBytesOut(rawout,("\n\rConnecting to "+CMProps.getVar(CMProps.Str.MUDNAME)+"...\n\r").getBytes("US-ASCII"));
-			rawout.flush();
+			//rawout.flush(); rawBytesOut already flushes
 
 			setServerTelnetMode(TELNET_ANSI,true);
 			setClientTelnetMode(TELNET_ANSI,true);
@@ -372,7 +372,7 @@ public class DefaultSession implements Session
 			//changeTelnetMode(rawout,TELNET_BINARY,true);
 			if(mightSupportTelnetMode(TELNET_GA))
 				rawBytesOut(rawout,TELNETGABYTES);
-			rawout.flush();
+			//rawout.flush(); rawBytesOut already flushes
 
 			final Charset charSet=Charset.forName(CMProps.getVar(CMProps.Str.CHARSETINPUT));
 			inMaxBytesPerChar=(int)Math.round(Math.ceil(charSet.newEncoder().maxBytesPerChar()));
@@ -406,7 +406,7 @@ public class DefaultSession implements Session
 						{
 							if((!terminalType.equals("ANSI"))&&(getClientTelnetMode(TELNET_ECHO)))
 								changeTelnetModeBackwards(rawout,TELNET_ECHO,false);
-							rawout.flush();
+							//rawout.flush(); rawBytesOut already flushes
 							setStatus(SessionStatus.HANDSHAKE_MCCP);
 							break;
 						}
@@ -418,7 +418,7 @@ public class DefaultSession implements Session
 								if(getClientTelnetMode(TELNET_COMPRESS2))
 								{
 									negotiateTelnetMode(rawout,TELNET_COMPRESS2);
-									rawout.flush();
+									//rawout.flush(); rawBytesOut already flushes
 									if(getClientTelnetMode(TELNET_COMPRESS2))
 									{
 										final ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
@@ -529,9 +529,9 @@ public class DefaultSession implements Session
 
 	protected void compress2Off() throws IOException
 	{
-		changeTelnetMode(rawout,TELNET_COMPRESS2,false);
 		out.flush();
-		rawout.flush();
+		changeTelnetMode(rawout,TELNET_COMPRESS2,false);
+		//rawout.flush(); rawBytesOut already flushes
 		rawout=new BufferedOutputStream(sock.getOutputStream());
 		out = new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
 		CMLib.s_sleep(50);
@@ -577,7 +577,7 @@ public class DefaultSession implements Session
 			final byte[] stream={(byte)TELNET_IAC,(byte)TELNET_SB,(byte)optionCode,(byte)TELNET_IAC,(byte)TELNET_SE};
 			rawBytesOut(out, stream);
 		}
-		out.flush();
+		//out.flush(); rawBytesOut already flushes
 	}
 
 	private boolean mightSupportTelnetMode(final int telnetCode)
@@ -633,7 +633,7 @@ public class DefaultSession implements Session
 		else
 			command=new byte[]{(byte)TELNET_IAC,onOff?(byte)TELNET_WILL:(byte)TELNET_WONT,(byte)telnetCode};
 		rawBytesOut(out, command);
-		out.flush();
+		//rawout.flush(); rawBytesOut already flushes
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
 			Log.debugOut("Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
@@ -702,7 +702,7 @@ public class DefaultSession implements Session
 			final byte[] command={(byte)TELNET_IAC,onOff?(byte)TELNET_WILL:(byte)TELNET_WONT,(byte)telnetCode};
 			out.flush();
 			rawBytesOut(rawout, command);
-			rawout.flush();
+			//rawout.flush(); rawBytesOut already flushes
 		}
 		catch (final Exception e)
 		{
@@ -718,7 +718,7 @@ public class DefaultSession implements Session
 		if(out!=null)
 			out.flush();
 		rawBytesOut(rawout, command);
-		rawout.flush();
+		//rawout.flush(); rawBytesOut already flushes
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
 			Log.debugOut("Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
@@ -728,7 +728,7 @@ public class DefaultSession implements Session
 	{
 		final byte[] command={(byte)TELNET_IAC,onOff?(byte)TELNET_DO:(byte)TELNET_DONT,(byte)telnetCode};
 		rawBytesOut(out, command);
-		out.flush();
+		//rawout.flush(); rawBytesOut already flushes
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
 			Log.debugOut("Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
@@ -750,7 +750,7 @@ public class DefaultSession implements Session
 				final byte[] command={(byte)TELNET_IAC,(byte)TELNET_SB,(byte)telnetCode,(byte)TELNET_IAC,(byte)TELNET_SE};
 				rawBytesOut(rawout, command);
 			}
-			rawout.flush();
+			//rawout.flush(); rawBytesOut already flushes
 		}
 		catch (final Exception e)
 		{
@@ -1986,7 +1986,7 @@ public class DefaultSession implements Session
 									if(getClientTelnetMode(TELNET_COMPRESS2))
 									{
 										negotiateTelnetMode(rawout,TELNET_COMPRESS2);
-										rawout.flush();
+										//rawout.flush(); rawBytesOut already flushes
 										final ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
 										rawout=zOut;
 										zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
