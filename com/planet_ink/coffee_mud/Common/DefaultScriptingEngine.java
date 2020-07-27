@@ -8577,7 +8577,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					return null;
 				}
 				if((subScript != null)
-				&&(subScript.size()>1))
+				&&(subScript.size()>1)
+				&&(subScript != script))
 				{
 					//source.tell(L("Starting @x1",conditionStr));
 					//for(int v=0;v<V.size();v++)
