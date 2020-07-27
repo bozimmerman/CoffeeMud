@@ -129,6 +129,7 @@ public class Chant_Fertility extends Chant
 		}
 	}
 
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking, tickID))
@@ -143,10 +144,9 @@ public class Chant_Fertility extends Chant
 				if((CMLib.dice().roll(1, 160+((numKids-1)*50)-(super.getXLEVELLevel(mob)*10), 0)==1)
 				&&(numKids<9)
 				&&(canBeUninvoked()))
-				{
 					pregA.setStat("NUMBABIES", ""+(numKids+1));
-					this.unInvoke();
-				}
+				if(canBeUninvoked() && (CMLib.dice().rollPercentage()<10))
+					unInvoke();
 			}
 		}
 		return true;
