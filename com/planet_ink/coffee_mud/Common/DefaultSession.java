@@ -1103,39 +1103,57 @@ public class DefaultSession implements Session
 	{
 		try
 		{
-			if(debugBinOutput && Log.debugChannelOn())
+			if(writeLock.tryLock(10000, TimeUnit.MILLISECONDS))
 			{
-				final StringBuilder str=new StringBuilder("OUTPUT: '");
-				for(final byte c : bytes)
-					str.append((c & 0xff)).append(" ");
-				Log.debugOut( str.toString()+"'");
+				if((sock==null)||(sock.isClosed())||(!sock.isConnected()))
+					return;
+				try
+				{
+					writeThread=Thread.currentThread();
+					writeStartTime=System.currentTimeMillis();
+					if(debugBinOutput && Log.debugChannelOn())
+					{
+						final StringBuilder str=new StringBuilder("OUTPUT: '");
+						for(final byte c : bytes)
+							str.append((c & 0xff)).append(" ");
+						Log.debugOut( str.toString()+"'");
+					}
+					if(debugStrOutput && Log.debugChannelOn())
+					{
+						final StringBuilder str=new StringBuilder("OUTPUT: '");
+						for(final byte c : bytes)
+							str.append(((c<32)||(c>127))?"%"+CMStrings.padLeftWith(Integer.toHexString((c & 0xff)).toUpperCase(), '0', 2):(""+(char)c));
+						Log.debugOut( str.toString()+"'");
+					}
+					if(this.out!=null)
+						this.out.flush();
+					out.write(bytes);
+					out.flush();
+				}
+				catch(final ArrayIndexOutOfBoundsException x)
+				{
+					Log.errOut("ZLibFail",x.getMessage());
+					this.setKillFlag(true);
+				}
+				catch(final NullPointerException x)
+				{
+					final IOException ioe=new IOException("rawBytesOut: "+x.getMessage());
+					ioe.setStackTrace(new StackTraceElement[0]);
+					throw ioe;
+				}
+				finally
+				{
+					writeThread=null;
+					writeStartTime=0;
+					lastWriteTime=System.currentTimeMillis();
+					writeLock.unlock();
+				}
 			}
-			if(debugStrOutput && Log.debugChannelOn())
-			{
-				final StringBuilder str=new StringBuilder("OUTPUT: '");
-				for(final byte c : bytes)
-					str.append(((c<32)||(c>127))?"%"+CMStrings.padLeftWith(Integer.toHexString((c & 0xff)).toUpperCase(), '0', 2):(""+(char)c));
-				Log.debugOut( str.toString()+"'");
-			}
-			if(this.out!=null)
-				this.out.flush();
-			out.write(bytes);
-			out.flush();
 		}
-		catch(final ArrayIndexOutOfBoundsException x)
+		catch (final Exception ioe)
 		{
-			Log.errOut("ZLibFail",x.getMessage());
-			this.setKillFlag(true);
-		}
-		catch(final NullPointerException x)
-		{
-			final IOException ioe=new IOException("rawBytesOut: "+x.getMessage());
-			ioe.setStackTrace(new StackTraceElement[0]);
-			throw ioe;
-		}
-		finally
-		{
-			lastWriteTime=System.currentTimeMillis();
+			stopSession(true,true,false);
+			setKillFlag(true);
 		}
 	}
 
