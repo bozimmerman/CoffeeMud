@@ -629,6 +629,8 @@ public class Age extends StdAbility
 						liege.tell(babe.name()+" can't grow up because someone stole that name.");
 					else
 						CMLib.commands().postSay(babe, "I can't grow up because someone stole my name!");
+					if(CMath.isLong(text()))
+						setMiscText(Long.toString(CMath.s_long(text())-600000L));
 					return;
 				}
 				final MOB newMan=CMClass.getMOB("StdMOB");
