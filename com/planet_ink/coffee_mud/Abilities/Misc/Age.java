@@ -622,6 +622,15 @@ public class Age extends StdAbility
 					liege=CMLib.players().getLoadPlayer(babe.getLiegeID());
 				if(liege==null)
 					liege=babe.amFollowing();
+				// catch any last second name collisions
+				if(CMLib.players().playerExistsAllHosts(babe.Name()))
+				{
+					if((liege != null)&&(!liege.isMonster()))
+						liege.tell(babe.name()+" can't grow up because someone stole that name.");
+					else
+						CMLib.commands().postSay(babe, "I can't grow up because someone stole my name!");
+					return;
+				}
 				final MOB newMan=CMClass.getMOB("StdMOB");
 				newMan.setAgeMinutes(babe.getAgeMinutes());
 				newMan.setBaseCharStats(babe.baseCharStats());
