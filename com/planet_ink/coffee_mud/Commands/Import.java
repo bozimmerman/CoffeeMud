@@ -5447,7 +5447,16 @@ public class Import extends StdCommand
 						{
 							final String areaName=error.substring(13).trim();
 							if((nodelete)&&(!prompt))
-								return returnAnError(session,"Area '"+areaName+"' already exists.",compileErrors,errorList);
+							{
+								if(areas.size()==1)
+									return returnAnError(session,"Area '"+areaName+"' already exists.",compileErrors,errorList);
+								else
+								{
+									areas.remove(area);
+									a++;
+									continue;
+								}
+							}
 							else
 							if(((!prompt)||((session!=null)&&session.confirm(L("Area: \"@x1\" exists, obliterate first?",areaName),"N"))))
 							{
@@ -5476,7 +5485,16 @@ public class Import extends StdCommand
 									return false;
 							}
 							else
-								return false;
+							{
+								if(areas.size()==1)
+									return false;
+								else
+								{
+									areas.remove(area);
+									a++;
+									continue;
+								}
+							}
 						}
 						else
 						if(error.length()>0)
