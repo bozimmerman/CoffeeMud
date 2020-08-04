@@ -3337,9 +3337,12 @@ public class StdMOB implements MOB
 					CMLib.get(mySession)._combat().handleDeath(msg);
 					break;
 				case CMMsg.TYP_REBUKE:
-					if (((msg.target() == null) && (getLiegeID().length() > 0))
-					|| ((msg.target() != null) && (msg.target().Name().equals(getLiegeID())) && (!isMarriedToLiege())))
-						setLiegeID("");
+					if((getLiegeID().length() > 0) && (!isMarriedToLiege()))
+					{
+						if ((msg.target() == null)
+						|| ((msg.target() != null) && (msg.target().Name().equals(getLiegeID())) && (!isMarriedToLiege())))
+							setLiegeID("");
+					}
 					tell(this, msg.target(), msg.tool(), msg.sourceMessage());
 					break;
 				case CMMsg.TYP_SERVE:
