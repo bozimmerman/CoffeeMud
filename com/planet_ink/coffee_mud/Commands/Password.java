@@ -115,6 +115,9 @@ public class Password extends StdCommand
 									if (!nep.equals(ne2))
 										mob.tell(L("Your new password was not entered the same way twice!"));
 									else
+									if (nep.length()>40)
+										mob.tell(L("Your new password is too long!"));
+									else
 									{
 										pstats.setPassword(nep);
 										mob.tell(L("Your password has been changed."));

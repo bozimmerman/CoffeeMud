@@ -2012,7 +2012,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
 				return LoginResult.INPUT_REQUIRED;
 			}
-			if(parms[2].length()==0)
+			if((parms[2].length()==0)||(parms[2].length()>40))
 			{
 				session.println(L("Aborted."));
 				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
@@ -2186,7 +2186,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				return LoginResult.INPUT_REQUIRED;
 			}
 			final String password=parms[2];
-			if((password==null)||(password.trim().length()==0))
+			if((password==null)||(password.trim().length()==0)||(password.length()>40))
 			{
 				session.println(L("Aborted."));
 				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
@@ -2407,10 +2407,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		String password=(loginObj.acct!=null)?loginObj.acct.getPasswordStr():"";
 		final boolean emailPassword=((CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
 				 &&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0));
-		if((!emailPassword)&&(password.length()==0))
+		if(!emailPassword)
 		{
 			password=loginObj.lastInput;
-			if(password.length()==0)
+			if((password.length()==0)||(password.length()>40))
 			{
 				session.println(L("\n\rYou must enter a password to continue."));
 				session.promptPrint(L("\n\rEnter a password: "));
