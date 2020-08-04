@@ -96,7 +96,7 @@ public class Paladin_HolyStrike extends StdAbility
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
-		affectableStats.setArmor(affectableStats.armor()-200);
+		affectableStats.setArmor(affectableStats.armor()+200);
 	}
 
 	@Override
