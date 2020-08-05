@@ -1479,6 +1479,13 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						((MOB)E2).setBaseState((CharState)((MOB)o).baseState().copyOf());
 					}
 					fillOutCopyStats(E,E2);
+					if(E instanceof Physical)
+						((Physical)E).recoverPhyStats();
+					if(E instanceof MOB)
+					{
+						((MOB)E).recoverCharStats();
+						((MOB)E).recoverMaxState();
+					}
 				}
 				else
 				{
@@ -1533,6 +1540,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(M.isGeneric())
 			{
 				copyFilled = fillOutCopyCodes(M,ignoreStats,"MOB_",piece,defined);
+				for(final Iterator<String> k = defined.keySet().iterator();k.hasNext();)
+					if(k.next().startsWith("MOB_"))
+						k.remove();
 				String name = fillOutStatCode(M,ignoreStats,"MOB_","NAME",piece,defined, false);
 				if((!copyFilled) && ((name == null)||(name.length()==0)))
 					name = fillOutStatCode(M,ignoreStats,"MOB_","NAME",piece,defined, false);

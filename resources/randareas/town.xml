@@ -610,8 +610,18 @@ See guides/RandomAreas.html for information about documents of this type.
 						<ITEM class="metacraft:all-jewelmaking<$mob_level" material="$any_cheap_metal" number=20/>
 					</ITEM>
 					<MOB select="all" condition="$shoptype='pet'">
-						<MOB class="Monkey" number=20/><MOB class="Dog" number=20/><MOB class="Fox" number=20/><MOB class="Duck" number=20/><MOB class="Falcon" number=20/><MOB class="Bee" number=20/>
-						<MOB class="Tiger" number=20/><MOB class="Rat" number=20/><MOB class="Puppy" number=20/><MOB class="Pig" number=20/><MOB class="Lizard" number=20/><MOB class="Lion" number=20/>
+						<MOB class="genmob" copyof="Monkey" number=20 level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
+						<MOB class="genmob" copyof="Dog" number=20 level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
+						<MOB class="genmob" copyof="Fox" number=20 level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
+						<MOB class="genmob" copyof="Duck" number=20 level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
+						<MOB class="genmob" copyof="Falcon" number=20 level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
+						<MOB class="genmob" copyof="Bee" number=20 level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
+						<MOB class="genmob" copyof="Tiger" number=20 level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
+						<MOB class="genmob" copyof="Rat" number=20 level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
+						<MOB class="genmob" copyof="Puppy" number=20 level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
+						<MOB class="genmob" copyof="Pig" number=20 level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
+						<MOB class="genmob" copyof="Lizard" number=20 level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
+						<MOB class="genmob" copyof="Lion" number=20 level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
 					</MOB>
 					<ITEM select="all" condition="$shoptype='potion'">
 					    <ITEM select="repeat-40">
