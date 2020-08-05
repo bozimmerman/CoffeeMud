@@ -985,6 +985,9 @@ public class StdDeity extends StdMOB implements Deity
 						xpwrath=-CMLib.leveler().postExperience(msg.source(),null,null,-xpwrath,false);
 						msg.source().tell(L("@x1 takes @x2 of experience from you.",name(),""+xpwrath));
 					}
+					final Ability doubtA=CMClass.getAbility("Prayer_ReligiousDoubt");
+					if((doubtA!=null)&&(msg.source().fetchEffect(doubtA.ID())==null))
+						doubtA.startTickDown(this, msg.source(), (int)CMProps.getTicksPerDay());
 				}
 				break;
 			}
