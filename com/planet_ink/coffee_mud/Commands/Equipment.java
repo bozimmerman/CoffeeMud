@@ -192,7 +192,7 @@ public class Equipment extends StdCommand
 							{
 								String name=thisItem.name();
 								if(!allPlaces)
-									name=CMStrings.ellipse(name,wrap);
+									name=CMStrings.ellipseColored(name,wrap);
 								if(wornCode==Wearable.WORN_HELD)
 								{
 									if(msg.length()==0)
@@ -224,7 +224,7 @@ public class Equipment extends StdCommand
 							{
 								String name=thisItem.name();
 								if((name.length()>shortWrap)&&(!allPlaces))
-									name=name.substring(0,shortWrap)+"...";
+									name=CMStrings.ellipseColored(name,shortWrap);
 								if(mob==seer)
 									msg.append(header+"^<EItem^>"+name+"^</EItem^>"+CMLib.flags().getDispositionBlurbs(thisItem,seer).toString().trim()+"^?\n\r");
 								else

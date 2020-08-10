@@ -1619,6 +1619,125 @@ public class CMStrings
 	}
 
 	/**
+	 * Returns the given string, limited by the given length, with
+	 * colors accounted for.
+	 * @param s the string to limit
+	 * @param thisMuch the length to limit it to
+	 * @return the limited string
+	 */
+	private static String limitCut(final String s, final int thisMuch)
+	{
+		if(s==null)
+			return "";
+		if(s.indexOf('^')<0)
+			return s;
+		final StringBuilder str=new StringBuilder(s);
+		int count = 0;
+		int colorStart=-1;
+		for(int i=0;i<str.length();i++)
+		{
+			switch(str.charAt(i))
+			{
+			case 'm':
+				if(colorStart>=0)
+					colorStart=-1;
+				break;
+			case (char) 27:
+				colorStart = i;
+				break;
+			case '^':
+			{
+				if((i+1)<str.length())
+				{
+					final char c=str.charAt(i+1);
+					switch(c)
+					{
+					case ColorLibrary.COLORCODE_BACKGROUND:
+						if(i+3<=str.length())
+							i+=2;
+						else
+							return str.toString();
+						break;
+					case ColorLibrary.COLORCODE_FANSI256:
+					case ColorLibrary.COLORCODE_BANSI256:
+						if(i+5<=str.length())
+							i+=4;
+						else
+							return str.toString();
+						break;
+					case '<':
+					{
+						i+=2;
+						while(i<(str.length()-1))
+						{
+							if((str.charAt(i)!='^')||(str.charAt(i+1)!='>'))
+							{
+								i++;
+								if(i>=(str.length()-1))
+									return str.toString();
+							}
+							else
+							{
+								i++;
+								break;
+							}
+						}
+						break;
+					}
+					case '&':
+					{
+						i+=2;
+						while(i<(str.length()-1))
+						{
+							if(str.charAt(i)!=';')
+							{
+								i++;
+								if(i>=(str.length()-1))
+									return str.toString();
+							}
+							else
+							{
+								// probably viewable
+								count++;
+								if(count >= thisMuch)
+									return str.substring(0,i+1);
+							}
+							break;
+						}
+						break;
+					}
+					case '^':
+					{
+						i++;
+						count++;
+						if(count >= thisMuch)
+							return str.substring(0,i+1);
+						break;
+					}
+					default:
+					{
+						i++;
+						break;
+					}
+					}
+				}
+				else
+					return str.toString();
+				break;
+			}
+			default:
+			{
+				count++;
+				if(count >= thisMuch)
+					return str.substring(0,i+1);
+				break;
+			}
+			}
+		}
+		return str.toString();
+	}
+
+	/**
 	 * Strips colors, of both the ansi, and cm code variety
 	 * @param s the string to strip
 	 * @return the stripped string
@@ -2688,6 +2807,24 @@ public class CMStrings
 	}
 
 	/**
+	 * Truncates the given string if the string is larger than the given number,
+	 * or returns it unchanged otherwise. If the string is larger than the given
+	 * number, color codes are preserved.
+	 * This method preserves any special CoffeeMud/ANSI color codes before calculating
+	 * length as if colors weren't there.
+	 * @param thisStr the string to pad or truncate
+	 * @param thisMuch the final maximum length of the string.
+	 * @return the string truncated, or unchanged if not long enough
+	 */
+	public final static String limitColors(final String thisStr, final int thisMuch)
+	{
+		final int lenMinusColors=lengthMinusColors(thisStr);
+		if(lenMinusColors>thisMuch)
+			return limitCut(thisStr, thisMuch);
+		return thisStr;
+	}
+
+	/**
 	 * Pads the string to the right with three dots if the string is larger than
 	 * the given number, or returns it unchanged otherwise. If the string is
 	 * larger than the given number, the string is truncated at the end, color codes
@@ -2703,6 +2840,26 @@ public class CMStrings
 		final int lenMinusColors=lengthMinusColors(thisStr);
 		if(lenMinusColors>thisMuch)
 			return removeColors(thisStr).substring(0,thisMuch)+"...";
+		return thisStr;
+	}
+
+
+	/**
+	 * Pads the string to the right with three dots if the string is larger than
+	 * the given number, or returns it unchanged otherwise. If the string is
+	 * larger than the given number, the string is truncated at the end, color codes
+	 * preserved, until it is the given length, and the ellipse added.
+	 * This method preserves any special CoffeeMud/ANSI color codes while calculating
+	 * length as if they weren't there.
+	 * @param thisStr the string to pad or truncate
+	 * @param thisMuch the final maximum length of the string before ...
+	 * @return the string padded, or unchanged if not long enough
+	 */
+	public final static String ellipseColored(final String thisStr, final int thisMuch)
+	{
+		final int lenMinusColors=lengthMinusColors(thisStr);
+		if(lenMinusColors>thisMuch)
+			return limitCut(thisStr, thisMuch)+"^.^N...";
 		return thisStr;
 	}
 
