@@ -616,136 +616,147 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				final int x=subTag.lastIndexOf('_');
 				subTag=subTag.substring(0,x)+subTag.substring(x+1);
 			}
-
-			for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+			Ability A=CMClass.getAbility(tag);
+			if((A==null)
+			||((type>=0)&&(type!=(A.classificationCode()&Ability.ALL_ACODES))))
+				A=CMClass.getAbility(subTag);
+			if((A==null)
+			||((type>=0)&&(type!=(A.classificationCode()&Ability.ALL_ACODES))))
 			{
-				final Ability A=a.nextElement();
-				if(((A.ID().equalsIgnoreCase(tag)||A.ID().equalsIgnoreCase(subTag))
-						&&((type<0)||(type==(A.classificationCode()&Ability.ALL_ACODES)))
-					||(A.name().equalsIgnoreCase(name)))
-				&&(!helpedPreviously.contains(A)))
+				for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 				{
-					helpedPreviously.addElement(A);
-					final StringBuilder prepend=new StringBuilder("");
-					type=(A.classificationCode()&Ability.ALL_ACODES);
-					prepend.append("\n\r");
-					switch(type)
+					final Ability chkA=a.nextElement();
+					if(((chkA.ID().equalsIgnoreCase(tag)||chkA.ID().equalsIgnoreCase(subTag))
+						&&((type<0)||(type==(chkA.classificationCode()&Ability.ALL_ACODES))))
+					||(chkA.name().equalsIgnoreCase(name)))
 					{
-					case Ability.ACODE_SPELL:
-						prepend.append(CMStrings.padRight(L("Spell"),9));
-						break;
-					case Ability.ACODE_PRAYER:
-						prepend.append(CMStrings.padRight(L("Prayer"),9));
-						break;
-					case Ability.ACODE_CHANT:
-						prepend.append(CMStrings.padRight(L("Chant"),9));
-						break;
-					case Ability.ACODE_SUPERPOWER:
-						prepend.append(CMStrings.padRight(L("SuperPower"),9));
-						break;
-					case Ability.ACODE_SONG:
-						prepend.append(CMStrings.padRight(L("Song"),9));
-						break;
-					default:
-						prepend.append(CMStrings.padRight(L("Skill"),9));
-						break;
+						A=chkA;
 					}
-					prepend.append(": "+A.name());
-					if((forMOB!=null)&&(forMOB.session()!=null)&&(!forMOB.session().isStopped()))
-					{
-						final Ability A2=forMOB.fetchAbility(A.ID());
-						if(A2!=null)
-						{
-							final String prof;
-							if(useWords)
-								prof=getRPProficiencyStr(A2.proficiency());
-							else
-								prof=A2.proficiency()+"%";
-							prepend.append(L("   (Proficiency: @x1)",prof));
-						}
-					}
-					if((A.classificationCode()&Ability.ALL_DOMAINS)>0)
-					{
-						prepend.append(L("\n\rDomain   : "));
-						final int school=(A.classificationCode()&Ability.ALL_DOMAINS)>>5;
-						prepend.append(CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[school].replace('_',' ')));
-					}
-					final PairList<String,Integer> avail=CMLib.ableMapper().getAvailabilityList(A, 2);
-					for(int c=0;c<avail.size();c++)
-					{
-						if((c%4)==0)
-							prepend.append(L("\n\rAvailable: "));
-						final CharClass C=CMClass.getCharClass(avail.getFirst(c));
-						final Integer I=avail.getSecond(c);
-						prepend.append((C!=null)?C.name(I.intValue()):avail.getFirst(c)).append(" ");
-					}
-
-					DVector preReqs;
-					if(forMOB==null)
-						preReqs=CMLib.ableMapper().getCommonPreRequisites(A);
-					else
-						preReqs=CMLib.ableMapper().getCommonPreRequisites(forMOB,A);
-					if(preReqs.size()>0)
-					{
-						final String names=CMLib.ableMapper().formatPreRequisites(preReqs);
-						prepend.append(L("\n\rRequires : @x1",names));
-					}
-					final String mask;
-					if(forMOB == null)
-						mask=CMLib.ableMapper().getCommonExtraMask(A);
-					else
-						mask=CMLib.ableMapper().getApplicableMask(forMOB,A);
-					if((mask!=null)&&(mask.length()>0))
-						prepend.append(L("\n\rRequires : @x1",CMLib.masking().maskDesc(mask,true)));
-					appendAllowed(forMOB,prepend,A.ID());
-					if(type==Ability.ACODE_PRAYER)
-					{
-						String rangeDescs=null;
-						for(final Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
-						{
-							final Faction F=e.nextElement();
-							rangeDescs=F.usageFactorRangeDescription(A);
-							if(rangeDescs.length()>0)
-							{
-								prepend.append("\n\r"+CMStrings.padRight(L("Alignment"),9)+": "
-										+rangeDescs);
-							}
-						}
-					}
-
-					if((!A.isAutoInvoked())
-					||((A.triggerStrings().length>0)))
-					{
-						final Vector<AbilityComponent> components=(Vector<AbilityComponent>)CMLib.ableComponents().getAbilityComponentMap().get(A.ID().toUpperCase());
-						if(components!=null)
-						{
-							prepend.append(L("\n\rComponent: "));
-							prepend.append(CMLib.ableComponents().getAbilityComponentDesc(forMOB,A.ID()));
-						}
-						prepend.append(L("\n\rUse Cost : "));
-						prepend.append(this.getAbilityCostDesc(A, forMOB));
-						prepend.append(L("\n\rQuality  : "));
-						prepend.append(this.getAbilityQualityDesc(A));
-						prepend.append(L("\n\rTargets  : "));
-						prepend.append(this.getAbilityTargetDesc(A));
-						prepend.append(L("\n\rRange    : "));
-						prepend.append(this.getAbilityRangeDesc(A));
-						if((A.triggerStrings()!=null)
-						   &&(A.triggerStrings().length>0))
-						{
-							prepend.append(L("\n\rCommands : "));
-							for(int i=0;i<A.triggerStrings().length;i++)
-							{
-								prepend.append(A.triggerStrings()[i]);
-								if(i<(A.triggerStrings().length-1))
-									prepend.append(", ");
-							}
-						}
-					}
-					else
-						prepend.append(L("\n\rInvoked  : Automatic"));
-					str=prepend.toString()+"\n\r"+str;
 				}
+			}
+			if((A!=null)
+			&&(!helpedPreviously.contains(A)))
+			{
+				helpedPreviously.addElement(A);
+				final StringBuilder prepend=new StringBuilder("");
+				type=(A.classificationCode()&Ability.ALL_ACODES);
+				prepend.append("\n\r");
+				switch(type)
+				{
+				case Ability.ACODE_SPELL:
+					prepend.append(CMStrings.padRight(L("Spell"),9));
+					break;
+				case Ability.ACODE_PRAYER:
+					prepend.append(CMStrings.padRight(L("Prayer"),9));
+					break;
+				case Ability.ACODE_CHANT:
+					prepend.append(CMStrings.padRight(L("Chant"),9));
+					break;
+				case Ability.ACODE_SUPERPOWER:
+					prepend.append(CMStrings.padRight(L("SuperPower"),9));
+					break;
+				case Ability.ACODE_SONG:
+					prepend.append(CMStrings.padRight(L("Song"),9));
+					break;
+				default:
+					prepend.append(CMStrings.padRight(L("Skill"),9));
+					break;
+				}
+				prepend.append(": "+A.name());
+				if((forMOB!=null)&&(forMOB.session()!=null)&&(!forMOB.session().isStopped()))
+				{
+					final Ability A2=forMOB.fetchAbility(A.ID());
+					if(A2!=null)
+					{
+						final String prof;
+						if(useWords)
+							prof=getRPProficiencyStr(A2.proficiency());
+						else
+							prof=A2.proficiency()+"%";
+						prepend.append(L("   (Proficiency: @x1)",prof));
+					}
+				}
+				if((A.classificationCode()&Ability.ALL_DOMAINS)>0)
+				{
+					prepend.append(L("\n\rDomain   : "));
+					final int school=(A.classificationCode()&Ability.ALL_DOMAINS)>>5;
+					prepend.append(CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[school].replace('_',' ')));
+				}
+				final PairList<String,Integer> avail=CMLib.ableMapper().getAvailabilityList(A, 2);
+				for(int c=0;c<avail.size();c++)
+				{
+					if((c%4)==0)
+						prepend.append(L("\n\rAvailable: "));
+					final CharClass C=CMClass.getCharClass(avail.getFirst(c));
+					final Integer I=avail.getSecond(c);
+					prepend.append((C!=null)?C.name(I.intValue()):avail.getFirst(c)).append(" ");
+				}
+
+				DVector preReqs;
+				if(forMOB==null)
+					preReqs=CMLib.ableMapper().getCommonPreRequisites(A);
+				else
+					preReqs=CMLib.ableMapper().getCommonPreRequisites(forMOB,A);
+				if(preReqs.size()>0)
+				{
+					final String names=CMLib.ableMapper().formatPreRequisites(preReqs);
+					prepend.append(L("\n\rRequires : @x1",names));
+				}
+				final String mask;
+				if(forMOB == null)
+					mask=CMLib.ableMapper().getCommonExtraMask(A);
+				else
+					mask=CMLib.ableMapper().getApplicableMask(forMOB,A);
+				if((mask!=null)&&(mask.length()>0))
+					prepend.append(L("\n\rRequires : @x1",CMLib.masking().maskDesc(mask,true)));
+				appendAllowed(forMOB,prepend,A.ID());
+				if(type==Ability.ACODE_PRAYER)
+				{
+					String rangeDescs=null;
+					for(final Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
+					{
+						final Faction F=e.nextElement();
+						rangeDescs=F.usageFactorRangeDescription(A);
+						if(rangeDescs.length()>0)
+						{
+							prepend.append("\n\r"+CMStrings.padRight(L("Alignment"),9)+": "
+									+rangeDescs);
+						}
+					}
+				}
+
+				if((!A.isAutoInvoked())
+				||((A.triggerStrings().length>0)))
+				{
+					final Vector<AbilityComponent> components=(Vector<AbilityComponent>)CMLib.ableComponents().getAbilityComponentMap().get(A.ID().toUpperCase());
+					if(components!=null)
+					{
+						prepend.append(L("\n\rComponent: "));
+						prepend.append(CMLib.ableComponents().getAbilityComponentDesc(forMOB,A.ID()));
+					}
+					prepend.append(L("\n\rUse Cost : "));
+					prepend.append(this.getAbilityCostDesc(A, forMOB));
+					prepend.append(L("\n\rQuality  : "));
+					prepend.append(this.getAbilityQualityDesc(A));
+					prepend.append(L("\n\rTargets  : "));
+					prepend.append(this.getAbilityTargetDesc(A));
+					prepend.append(L("\n\rRange    : "));
+					prepend.append(this.getAbilityRangeDesc(A));
+					if((A.triggerStrings()!=null)
+					   &&(A.triggerStrings().length>0))
+					{
+						prepend.append(L("\n\rCommands : "));
+						for(int i=0;i<A.triggerStrings().length;i++)
+						{
+							prepend.append(A.triggerStrings()[i]);
+							if(i<(A.triggerStrings().length-1))
+								prepend.append(", ");
+						}
+					}
+				}
+				else
+					prepend.append(L("\n\rInvoked  : Automatic"));
+				str=prepend.toString()+"\n\r"+str;
 			}
 		}
 		try
