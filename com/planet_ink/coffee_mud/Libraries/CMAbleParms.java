@@ -4211,7 +4211,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public int appliesToClass(final Object o)
 				{
-					return ((o instanceof Weapon) || (o instanceof Ammunition)) ? 2 : -1;
+					return ((o instanceof AmmunitionWeapon) || (o instanceof Ammunition)) ? 2 : -1;
 				}
 
 				@Override
@@ -4225,6 +4225,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				{
 					if(I instanceof Ammunition)
 						return ""+((Ammunition)I).ammunitionType();
+					if((I instanceof AmmunitionWeapon)&&(((AmmunitionWeapon)I).requiresAmmunition()))
+						return ""+((AmmunitionWeapon)I).ammunitionType();
 					return "";
 				}
 			},
@@ -4238,7 +4240,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public int appliesToClass(final Object o)
 				{
-					return ((o instanceof Weapon) || (o instanceof Ammunition)) ? 2 : -1;
+					return ((o instanceof AmmunitionWeapon) || (o instanceof Ammunition)) ? 2 : -1;
 				}
 
 				@Override
