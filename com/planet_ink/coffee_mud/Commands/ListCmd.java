@@ -1953,6 +1953,14 @@ public class ListCmd extends StdCommand
 						help=new StringBuilder(help.toString().substring(6));
 					else
 						help=new StringBuilder("");
+					try
+					{
+						if((help!=null)&&(help.toString().indexOf('@')>=0))
+							help = new StringBuilder(CMLib.webMacroFilter().virtualPageFilter(help.toString()));
+					}
+					catch (final com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException x)
+					{
+					}
 					String eqStr="";
 					if(R.outfit(null)!=null)
 					{
@@ -2073,6 +2081,14 @@ public class ListCmd extends StdCommand
 					help=new StringBuilder(help.toString().substring(11));
 				else
 					help=new StringBuilder("");
+				try
+				{
+					if((help!=null)&&(help.toString().indexOf('@')>=0))
+						help = new StringBuilder(CMLib.webMacroFilter().virtualPageFilter(help.toString()));
+				}
+				catch (final com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException x)
+				{
+				}
 				final List<Item> items=C.outfit(null);
 				final StringBuilder outfit=new StringBuilder("");
 				if(items !=null)
@@ -4272,9 +4288,17 @@ public class ListCmd extends StdCommand
 			else
 			if(wiki == WikiFlag.WIKIHELP)
 			{
-				final StringBuilder help=CMLib.help().getHelpText(s,null,false,true);
+				StringBuilder help=CMLib.help().getHelpText(s,null,false,true);
 				if(help==null)
 					continue;
+				try
+				{
+					if((help!=null)&&(help.toString().indexOf('@')>=0))
+						help = new StringBuilder(CMLib.webMacroFilter().virtualPageFilter(help.toString()));
+				}
+				catch (final com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException x)
+				{
+				}
 				String helpStr=help.toString();
 				if(helpStr.startsWith("<ABILITY>"))
 					continue;
@@ -4650,6 +4674,14 @@ public class ListCmd extends StdCommand
 				String helpStr="";
 				if(help==null)
 					help=CMLib.help().getHelpText(A.name(),null,archon,true);
+				try
+				{
+					if((help!=null)&&(help.toString().indexOf('@')>=0))
+						help = new StringBuilder(CMLib.webMacroFilter().virtualPageFilter(help.toString()));
+				}
+				catch (final com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException x)
+				{
+				}
 				if((help!=null)&&(help.toString().startsWith("<ABILITY>")
 				||help.toString().startsWith("Property")
 				||help.toString().startsWith("Disease")))
@@ -4776,6 +4808,14 @@ public class ListCmd extends StdCommand
 					help=CMLib.help().getHelpText(B.name(),null,false,true);
 				if((help!=null)&&(help.toString().length()>0))
 				{
+					try
+					{
+						if(help.toString().indexOf('@')>=0)
+							help = new StringBuilder(CMLib.webMacroFilter().virtualPageFilter(help.toString()));
+					}
+					catch (final com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException x)
+					{
+					}
 					helpStr=help.toString();
 					if(helpStr.startsWith("Behavior"))
 					{
