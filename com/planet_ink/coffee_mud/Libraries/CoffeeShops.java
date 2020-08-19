@@ -153,12 +153,20 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	}
 
 	@Override
-	public String getViewDescription(final MOB viewerM, final Environmental E, final Set<ViewType> flags)
+	public String getViewDescription(final MOB viewerM, Environmental E, final Set<ViewType> flags)
 	{
 		final StringBuilder str=new StringBuilder("");
 		if(E==null)
 			return str.toString();
 		final boolean lie = flags.contains(ViewType.FALSE);
+		MOB destroyMe = null;
+		if(E instanceof CagedAnimal)
+		{
+			final String ct = ((CagedAnimal)E).cageText();
+			E=((CagedAnimal)E).unCageMe();
+			if((E!=null)&&(ct != null) && (ct.length()>0) && (!CMLib.flags().isInTheGame(E, true)))
+				destroyMe = (MOB)E;
+		}
 		final int lieHash = E.name().hashCode();
 		int level = 1;
 		if(!flags.contains(ViewType.BASIC))
@@ -201,6 +209,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				{
 					if(E instanceof Electronics)
 						str.append(L("Electronic "));
+					if(E instanceof MOB)
+						str.append(L("Creature"));
+					else
 					if(E instanceof BoardableShip)
 						str.append(L("Vessel"));
 					else
@@ -410,6 +421,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				str.append(L("\n\rSpecial    : @x1",addOn.toString()));
 			}
 		}
+		if(destroyMe != null)
+			destroyMe.destroy();
 		return str.toString();
 	}
 

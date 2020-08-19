@@ -1581,7 +1581,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			mob.tell(L("(no change)"));
 	}
 
-	protected void genMountText2(final MOB mob, final Rideable E, final int showNumber, final int showFlag)
+	protected void genMountRideMountText(final MOB mob, final Rideable E, final int showNumber, final int showFlag)
 			throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -1901,7 +1901,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genReadable1(final MOB mob, final Item E, final int showNumber, final int showFlag)
+	protected void genIsReadable(final MOB mob, final Item E, final int showNumber, final int showFlag)
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
@@ -1964,7 +1964,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genReadable2(final MOB mob, final Item E, final int showNumber, final int showFlag)
+	protected void genReadableTextMisc(final MOB mob, final Item E, final int showNumber, final int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -3263,22 +3263,22 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		P.basePhyStats().setDamage(prompt(mob, P.basePhyStats().damage(), showNumber, showFlag, "Damage"));
 	}
 
-	protected void genBanker1(final MOB mob, final Banker M, final int showNumber, final int showFlag) throws IOException
+	protected void genBankerCoinInterest(final MOB mob, final Banker M, final int showNumber, final int showFlag) throws IOException
 	{
 		M.setCoinInterest(prompt(mob, M.getCoinInterest(), showNumber, showFlag, "Coin Interest [% per real day]"));
 	}
 
-	protected void genBanker2(final MOB mob, final Banker M, final int showNumber, final int showFlag) throws IOException
+	protected void genBankerItemInterest(final MOB mob, final Banker M, final int showNumber, final int showFlag) throws IOException
 	{
 		M.setItemInterest(prompt(mob, M.getItemInterest(), showNumber, showFlag, "Item Interest [% per real day]"));
 	}
 
-	protected void genBanker3(final MOB mob, final Banker M, final int showNumber, final int showFlag) throws IOException
+	protected void genBankerChain(final MOB mob, final Banker M, final int showNumber, final int showFlag) throws IOException
 	{
 		M.setBankChain(prompt(mob, M.bankChain(), showNumber, showFlag, "Bank Chain", false, false));
 	}
 
-	protected void genBanker4(final MOB mob, final Banker M, final int showNumber, final int showFlag) throws IOException
+	protected void genBankerLoanInterest(final MOB mob, final Banker M, final int showNumber, final int showFlag) throws IOException
 	{
 		M.setLoanInterest(prompt(mob, M.getLoanInterest(), showNumber, showFlag, "Loan Interest [% per mud month]"));
 	}
@@ -4482,7 +4482,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genRideable1(final MOB mob, final Rideable R, final int showNumber, final int showFlag)
+	protected void genRideableType(final MOB mob, final Rideable R, final int showNumber, final int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -4515,12 +4515,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genRideable2(final MOB mob, final Rideable E, final int showNumber, final int showFlag) throws IOException
+	protected void genRideableRideCapacity(final MOB mob, final Rideable E, final int showNumber, final int showFlag) throws IOException
 	{
 		E.setRiderCapacity(prompt(mob, E.riderCapacity(), showNumber, showFlag, "Number of MOBs held"));
 	}
 
-	protected void genShopkeeper1(final MOB mob, final ShopKeeper M, final int showNumber, final int showFlag)
+	protected void genShopkeeperType(final MOB mob, final ShopKeeper M, final int showNumber, final int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -4612,7 +4612,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genShopkeeper2(final MOB mob, final ShopKeeper M, final int showNumber, final int showFlag)
+	protected void genShopkeeperShopInventory(final MOB mob, final ShopKeeper M, final int showNumber, final int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -4672,6 +4672,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 								if((item instanceof MOB)&&(!((MOB)item).isMonster()))
 									item=null;
 							}
+							if(item==null)
+								item=mob.findItem(null,itemstr);
 						}
 						if((item!=null)
 						&&((!(item instanceof ArchonOnly))
@@ -4719,7 +4721,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genShopkeeper3(final MOB mob, final ShopKeeper M, final int showNumber, final int showFlag)
+	protected void genShopkeeperTypeFlags(final MOB mob, final ShopKeeper M, final int showNumber, final int showFlag)
 			throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -4761,12 +4763,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genEconomics1(final MOB mob, final Economics E, final int showNumber, final int showFlag) throws IOException
+	protected void genEconomicsPrejudice(final MOB mob, final Economics E, final int showNumber, final int showFlag) throws IOException
 	{
 		E.setPrejudiceFactors(prompt(mob, E.prejudiceFactors(), showNumber, showFlag, "Prejudice", true, false));
 	}
 
-	protected void genEconomics2(final MOB mob, final Economics E, final int showNumber, final int showFlag)
+	protected void genEconomicsPriceFactors(final MOB mob, final Economics E, final int showNumber, final int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -4888,22 +4890,22 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genEconomics3(final MOB mob, final Economics E, final int showNumber, final int showFlag) throws IOException
+	protected void genEconomicsBudget(final MOB mob, final Economics E, final int showNumber, final int showFlag) throws IOException
 	{
 		E.setBudget(prompt(mob, E.budget(), showNumber, showFlag, "Budget", true, false));
 	}
 
-	protected void genEconomics4(final MOB mob, final Economics E, final int showNumber, final int showFlag) throws IOException
+	protected void genEconomicsDevaluationRate(final MOB mob, final Economics E, final int showNumber, final int showFlag) throws IOException
 	{
 		E.setDevalueRate(prompt(mob, E.devalueRate(), showNumber, showFlag, "Devaluation rate(s)", true, false));
 	}
 
-	protected void genEconomics5(final MOB mob, final Economics E, final int showNumber, final int showFlag) throws IOException
+	protected void genEconomicsInventoryReset(final MOB mob, final Economics E, final int showNumber, final int showFlag) throws IOException
 	{
 		E.setInvResetRate(prompt(mob, E.invResetRate(), showNumber, showFlag, "Inventory reset rate [ticks]"));
 	}
 
-	protected void genEconomics6(final MOB mob, final Economics E, final int showNumber, final int showFlag) throws IOException
+	protected void genEconomicsIgnoreMask(final MOB mob, final Economics E, final int showNumber, final int showFlag) throws IOException
 	{
 		E.setIgnoreMask(prompt(mob, E.ignoreMask(), showNumber, showFlag, "Ignore Mask", true, false));
 	}
@@ -5407,27 +5409,27 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genDeity1(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
+	protected void genDeityClericReq(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
 	{
 		E.setClericRequirements(prompt(mob, E.getClericRequirements(), showNumber, showFlag, "Cleric Requirements", false, false));
 	}
 
-	protected void genDeity2(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
+	protected void genDeityClericRitual(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
 	{
 		E.setClericRitual(prompt(mob, E.getClericRitual(), showNumber, showFlag, "Cleric Ritual", false, false));
 	}
 
-	protected void genDeity3(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
+	protected void genDeityWorshipReq(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
 	{
 		E.setWorshipRequirements(prompt(mob, E.getWorshipRequirements(), showNumber, showFlag, "Worshiper Requirements", false, false));
 	}
 
-	protected void genDeity4(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
+	protected void genDeityWorshipRitual(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
 	{
 		E.setWorshipRitual(prompt(mob, E.getWorshipRitual(), showNumber, showFlag, "Worshiper Ritual", false, false));
 	}
 
-	protected void genDeity5(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
+	protected void genDeityBlessings(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
@@ -5501,7 +5503,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genDeity6(final MOB mob, final Deity E, final int showNumber, final int showFlag)
+	protected void genDeityCurses(final MOB mob, final Deity E, final int showNumber, final int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -5576,7 +5578,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genDeity7(final MOB mob, final Deity E, final int showNumber, final int showFlag)
+	protected void genDeityPowers(final MOB mob, final Deity E, final int showNumber, final int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -5650,22 +5652,22 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genDeity8(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
+	protected void genDeityClericSin(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
 	{
 		E.setClericSin(prompt(mob,E.getClericSin(),showNumber,showFlag,"Cleric Sin",false,false));
 	}
 
-	protected void genDeity9(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
+	protected void genDeityWorhsipperSin(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
 	{
 		E.setWorshipSin(prompt(mob,E.getWorshipSin(),showNumber,showFlag,"Worshiper Sin",false,false));
 	}
 
-	protected void genDeity0(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
+	protected void genDeityClericPowerRitual(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
 	{
 		E.setClericPowerup(prompt(mob,E.getClericPowerup(),showNumber,showFlag,"Cleric Power Ritual",false,false));
 	}
 
-	protected void genDeity11(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
+	protected void genDeityServiceRitual(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
 	{
 		E.setServiceRitual(prompt(mob,E.getServiceRitual(),showNumber,showFlag,"Service Ritual",false,false));
 	}
@@ -9627,8 +9629,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				promptStatInt(mob,me,null,++showNumber,showFlag,"Price","PRICE");
 			}
 			genGettable(mob,me,++showNumber,showFlag);
-			genReadable1(mob,me,++showNumber,showFlag);
-			genReadable2(mob,me,++showNumber,showFlag);
+			genIsReadable(mob,me,++showNumber,showFlag);
+			genReadableTextMisc(mob,me,++showNumber,showFlag);
 			if(me instanceof Recipe)
 				genRecipe(mob,(Recipe)me,++showNumber,showFlag);
 			if(me instanceof Light)
@@ -9716,8 +9718,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genBiteSize(mob,me,++showNumber,showFlag);
 			genDisposition(mob,me.basePhyStats(),++showNumber,showFlag);
 			genGettable(mob,me,++showNumber,showFlag);
-			genReadable1(mob,me,++showNumber,showFlag);
-			genReadable2(mob,me,++showNumber,showFlag);
+			genIsReadable(mob,me,++showNumber,showFlag);
+			genReadableTextMisc(mob,me,++showNumber,showFlag);
 			if(me instanceof Light)
 				genBurnout(mob,(Light)me,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
@@ -9821,8 +9823,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				genMaterialSubType(mob,(RawMaterial)me,++showNumber,showFlag);
 			genDrinkHeld(mob,me,++showNumber,showFlag);
 			genGettable(mob,(Item)me,++showNumber,showFlag);
-			genReadable1(mob,(Item)me,++showNumber,showFlag);
-			genReadable2(mob,(Item)me,++showNumber,showFlag);
+			genIsReadable(mob,(Item)me,++showNumber,showFlag);
+			genReadableTextMisc(mob,(Item)me,++showNumber,showFlag);
 			if(me instanceof Light)
 				genBurnout(mob,(Light)me,++showNumber,showFlag);
 			if(me instanceof PhysicalAgent)
@@ -9885,8 +9887,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				mob.tell(L("*. Class: @x1",me.ID()));
 			genName(mob,me,++showNumber,showFlag);
 			genDescription(mob,me,++showNumber,showFlag);
-			genReadable1(mob,me,++showNumber,showFlag);
-			genReadable2(mob,me,++showNumber,showFlag);
+			genIsReadable(mob,me,++showNumber,showFlag);
+			genReadableTextMisc(mob,me,++showNumber,showFlag);
 			if(me instanceof Light)
 				genBurnout(mob,(Light)me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
@@ -9936,8 +9938,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genLevel(mob,me,++showNumber,showFlag);
 			genSecretIdentity(mob,me,++showNumber,showFlag);
 			genGettable(mob,me,++showNumber,showFlag);
-			genReadable1(mob,me,++showNumber,showFlag);
-			genReadable2(mob,me,++showNumber,showFlag);
+			genIsReadable(mob,me,++showNumber,showFlag);
+			genReadableTextMisc(mob,me,++showNumber,showFlag);
 			genValue(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
 			genRejuv(mob,me,++showNumber,showFlag);
@@ -10052,19 +10054,19 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof ClanItem)
 				genClanItem(mob,(ClanItem)me,++showNumber,showFlag);
 			genGettable(mob,me,++showNumber,showFlag);
-			genReadable1(mob,me,++showNumber,showFlag);
-			genReadable2(mob,me,++showNumber,showFlag);
+			genIsReadable(mob,me,++showNumber,showFlag);
+			genReadableTextMisc(mob,me,++showNumber,showFlag);
 			if(me instanceof Light)
 				genBurnout(mob,(Light)me,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			if(me instanceof Rideable)
 			{
-				genRideable1(mob,(Rideable)me,++showNumber,showFlag);
-				genRideable2(mob,(Rideable)me,++showNumber,showFlag);
+				genRideableType(mob,(Rideable)me,++showNumber,showFlag);
+				genRideableRideCapacity(mob,(Rideable)me,++showNumber,showFlag);
 				genMountText(mob,(Rideable)me,++showNumber,showFlag);
 				if(!(me instanceof Exit)) // doesn't make sense for portals
-					genMountText2(mob,(Rideable)me,++showNumber,showFlag);
+					genMountRideMountText(mob,(Rideable)me,++showNumber,showFlag);
 			}
 			if(me instanceof Exit)
 			{
@@ -10132,16 +10134,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genWeaponRanges(mob,me,++showNumber,showFlag);
 			if(me instanceof Rideable)
 			{
-				genRideable1(mob,(Rideable)me,++showNumber,showFlag);
-				genRideable2(mob,(Rideable)me,++showNumber,showFlag);
+				genRideableType(mob,(Rideable)me,++showNumber,showFlag);
+				genRideableRideCapacity(mob,(Rideable)me,++showNumber,showFlag);
 				genMountText(mob,(Rideable)me,++showNumber,showFlag);
 				if(!(me instanceof Exit)) // doesn't make sense for portals
-					genMountText2(mob,(Rideable)me,++showNumber,showFlag);
+					genMountRideMountText(mob,(Rideable)me,++showNumber,showFlag);
 			}
 			if(me instanceof Wand)
 			{
-				genReadable1(mob,me,++showNumber,showFlag);
-				genReadable2(mob,me,++showNumber,showFlag);
+				genIsReadable(mob,me,++showNumber,showFlag);
+				genReadableTextMisc(mob,me,++showNumber,showFlag);
 				genUses(mob,me,++showNumber,showFlag);
 				genMaxUses(mob,(Wand)me,++showNumber,showFlag);
 				promptStatChoices(mob,me,null,++showNumber,showFlag,"Enchant Type","ENCHTYPE", CMParms.toStringArraySingle(Wand.WandUsage.WAND_OPTIONS, 1));
@@ -10248,8 +10250,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				else
 					genDoorsNLocks(mob,(Container)me,L("lid"),++showNumber,showFlag);
 			}
-			//genReadable1(mob,me,++showNumber,showFlag); // since they can have keys, no readability for you.
-			//genReadable2(mob,me,++showNumber,showFlag);
 			if(me instanceof Light)
 				genBurnout(mob,(Light)me,++showNumber,showFlag);
 			genValue(mob,me,++showNumber,showFlag);
@@ -10315,7 +10315,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof Wand)
 			{
 				promptStatChoices(mob,me,null,++showNumber,showFlag,"Enchant Type","ENCHTYPE", CMParms.toStringArraySingle(Wand.WandUsage.WAND_OPTIONS, 1));
-				this.genReadable2(mob, me, ++showNumber, showFlag);
+				this.genReadableTextMisc(mob, me, ++showNumber, showFlag);
 				this.genMaxUses(mob, (Wand)me, ++showNumber, showFlag);
 			}
 			genValue(mob,me,++showNumber,showFlag);
@@ -10488,10 +10488,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genSensesMask(mob,me.basePhyStats(),++showNumber,showFlag);
 			if(me instanceof Rideable)
 			{
-				genRideable1(mob,(Rideable)me,++showNumber,showFlag);
-				genRideable2(mob,(Rideable)me,++showNumber,showFlag);
+				genRideableType(mob,(Rideable)me,++showNumber,showFlag);
+				genRideableRideCapacity(mob,(Rideable)me,++showNumber,showFlag);
 				genMountText(mob,(Rideable)me,++showNumber,showFlag);
-				genMountText2(mob,(Rideable)me,++showNumber,showFlag);
+				genMountRideMountText(mob,(Rideable)me,++showNumber,showFlag);
 			}
 			if(me instanceof Drink)
 			{
@@ -10501,17 +10501,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			if(me instanceof Deity)
 			{
-				genDeity1(mob,(Deity)me,++showNumber,showFlag);
-				genDeity2(mob,(Deity)me,++showNumber,showFlag);
-				genDeity3(mob,(Deity)me,++showNumber,showFlag);
-				genDeity4(mob,(Deity)me,++showNumber,showFlag);
-				genDeity5(mob,(Deity)me,++showNumber,showFlag);
-				genDeity8(mob,(Deity)me,++showNumber,showFlag);
-				genDeity9(mob,(Deity)me,++showNumber,showFlag);
-				genDeity6(mob,(Deity)me,++showNumber,showFlag);
-				genDeity0(mob,(Deity)me,++showNumber,showFlag);
-				genDeity7(mob,(Deity)me,++showNumber,showFlag);
-				genDeity11(mob,(Deity)me,++showNumber,showFlag);
+				genDeityClericReq(mob,(Deity)me,++showNumber,showFlag);
+				genDeityClericRitual(mob,(Deity)me,++showNumber,showFlag);
+				genDeityWorshipReq(mob,(Deity)me,++showNumber,showFlag);
+				genDeityWorshipRitual(mob,(Deity)me,++showNumber,showFlag);
+				genDeityBlessings(mob,(Deity)me,++showNumber,showFlag);
+				genDeityClericSin(mob,(Deity)me,++showNumber,showFlag);
+				genDeityWorhsipperSin(mob,(Deity)me,++showNumber,showFlag);
+				genDeityCurses(mob,(Deity)me,++showNumber,showFlag);
+				genDeityClericPowerRitual(mob,(Deity)me,++showNumber,showFlag);
+				genDeityPowers(mob,(Deity)me,++showNumber,showFlag);
+				genDeityServiceRitual(mob,(Deity)me,++showNumber,showFlag);
 			}
 			genFaction(mob,me,++showNumber,showFlag);
 			genTattoos(mob,me,++showNumber,showFlag);
@@ -10644,10 +10644,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genSensesMask(mob,me.basePhyStats(),++showNumber,showFlag);
 			if(me instanceof Rideable)
 			{
-				genRideable1(mob,(Rideable)me,++showNumber,showFlag);
-				genRideable2(mob,(Rideable)me,++showNumber,showFlag);
+				genRideableType(mob,(Rideable)me,++showNumber,showFlag);
+				genRideableRideCapacity(mob,(Rideable)me,++showNumber,showFlag);
 				genMountText(mob,(Rideable)me,++showNumber,showFlag);
-				genMountText2(mob,(Rideable)me,++showNumber,showFlag);
+				genMountRideMountText(mob,(Rideable)me,++showNumber,showFlag);
 			}
 			genFaction(mob,me,++showNumber,showFlag);
 			genTattoos(mob,me,++showNumber,showFlag);
@@ -11035,20 +11035,20 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genAffects(mob,M,++showNumber,showFlag);
 			if(!(me instanceof Auctioneer))
 			{
-				genShopkeeper1(mob,me,++showNumber,showFlag);
+				genShopkeeperType(mob,me,++showNumber,showFlag);
 				me.setWhatIsSoldZappermask(prompt(mob,me.getWhatIsSoldZappermask(),++showNumber,showFlag,"Item Buy Mask (?)", true, CMLib.masking().maskHelp("\n\r", "disallow")));
-				genShopkeeper2(mob,me,++showNumber,showFlag);
-				genShopkeeper3(mob,me,++showNumber,showFlag);
-				genEconomics1(mob,me,++showNumber,showFlag);
-				genEconomics5(mob,me,++showNumber,showFlag);
+				genShopkeeperShopInventory(mob,me,++showNumber,showFlag);
+				genShopkeeperTypeFlags(mob,me,++showNumber,showFlag);
+				genEconomicsPrejudice(mob,me,++showNumber,showFlag);
+				genEconomicsInventoryReset(mob,me,++showNumber,showFlag);
 			}
-			genEconomics6(mob,me,++showNumber,showFlag);
+			genEconomicsIgnoreMask(mob,me,++showNumber,showFlag);
 			if(me instanceof Banker)
 			{
-				genBanker1(mob,(Banker)me,++showNumber,showFlag);
-				genBanker2(mob,(Banker)me,++showNumber,showFlag);
-				genBanker3(mob,(Banker)me,++showNumber,showFlag);
-				genBanker4(mob,(Banker)me,++showNumber,showFlag);
+				genBankerCoinInterest(mob,(Banker)me,++showNumber,showFlag);
+				genBankerItemInterest(mob,(Banker)me,++showNumber,showFlag);
+				genBankerChain(mob,(Banker)me,++showNumber,showFlag);
+				genBankerLoanInterest(mob,(Banker)me,++showNumber,showFlag);
 			}
 			else
 			if(me instanceof PostOffice)
@@ -11084,9 +11084,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			else
 			{
-				genEconomics2(mob,me,++showNumber,showFlag);
-				genEconomics3(mob,me,++showNumber,showFlag);
-				genEconomics4(mob,me,++showNumber,showFlag);
+				genEconomicsPriceFactors(mob,me,++showNumber,showFlag);
+				genEconomicsBudget(mob,me,++showNumber,showFlag);
+				genEconomicsDevaluationRate(mob,me,++showNumber,showFlag);
 			}
 			genDisposition(mob,M.basePhyStats(),++showNumber,showFlag);
 			genSensesMask(mob,M.basePhyStats(),++showNumber,showFlag);
@@ -11402,12 +11402,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if((showFlag<=0)||((showFlag>=showNumber)&&(showFlag<=showNumber+7)))
 			mob.tell(L("*** Area Economics settings: "));
 			genCurrency(mob,myArea,++showNumber,showFlag);
-			genEconomics1(mob,myArea,++showNumber,showFlag);
-			genEconomics2(mob,myArea,++showNumber,showFlag);
-			genEconomics3(mob,myArea,++showNumber,showFlag);
-			genEconomics4(mob,myArea,++showNumber,showFlag);
-			genEconomics5(mob,myArea,++showNumber,showFlag);
-			genEconomics6(mob,myArea,++showNumber,showFlag);
+			genEconomicsPrejudice(mob,myArea,++showNumber,showFlag);
+			genEconomicsPriceFactors(mob,myArea,++showNumber,showFlag);
+			genEconomicsBudget(mob,myArea,++showNumber,showFlag);
+			genEconomicsDevaluationRate(mob,myArea,++showNumber,showFlag);
+			genEconomicsInventoryReset(mob,myArea,++showNumber,showFlag);
+			genEconomicsIgnoreMask(mob,myArea,++showNumber,showFlag);
 			if (showFlag < -900)
 			{
 				ok = true;
