@@ -280,6 +280,8 @@ public class Composting extends GatheringSkill
 			req1Required=fixResourceRequirement(data[0][CraftingSkill.FOUND_CODE],req1Required);
 		}
 
+		if((req1Required == Integer.MAX_VALUE) && (data[0][CraftingSkill.FOUND_AMT] > 0))
+			req1Required = data[0][CraftingSkill.FOUND_AMT];
 		if(req1Required>data[0][CraftingSkill.FOUND_AMT])
 		{
 			commonTell(mob,L("You need @x1 pounds of @x2 to do that.  There is not enough here.  Are you sure you set it all on the ground first?",
@@ -305,7 +307,7 @@ public class Composting extends GatheringSkill
 				return bundle(mob,commands);
 			return false;
 		}
-		
+
 		if(commands.size()==0)
 		{
 			if(auto)
@@ -399,7 +401,10 @@ public class Composting extends GatheringSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		CMLib.materials().destroyResourcesAmt(mob.location(),amount,data[0][CraftingSkill.FOUND_CODE],((RawMaterial)found).getSubType(), null);
+		if(amount == Integer.MAX_VALUE)
+			amount = data[0][CraftingSkill.FOUND_AMT];
+		CMLib.materials().destroyResourcesAmt(mob.location(),amount,data[0][CraftingSkill.FOUND_CODE],
+				((RawMaterial)found).getSubType(), null);
 		this.compost=null;
 		if(proficiencyCheck(mob,0,auto))
 		{
