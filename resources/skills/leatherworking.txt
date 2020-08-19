@@ -26,7 +26,7 @@
 % Whip	6	10	10	120	GenWeapon	FLAILED	0	6		
 % Pants	6	20	12	306	GenArmor	LEGS	5	6	2	
 % Bandolier	6	25	2	91	GenArmor	S5:BODY	40	1	0	
-% Waterskin	6	10	5	90	GenDrink		25		0	
+% Waterskin	6	10	5	90	GenEmptyDrink		25		0	
 % Gloves	7	30	2	106	GenArmor	HANDS	0	1	0	
 % Cap	7	10	6	132	GenArmor	HEAD	0	3	0	
 % Halter Top	7	20	8	205	GenArmor	S-1:TORSO	0	5	0	

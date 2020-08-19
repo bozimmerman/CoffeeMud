@@ -1,7 +1,7 @@
 description	1	10	0			DESC	NA	-	-	description		Long elaborate description of the room details.
 title	1	15	0			TITLE	NA	-	-	title		Brief 1-6 word description of a room.
 demolish	1	25	0		DIR	DEMOLISH	Plains	-		demolishing		Demolishes something, which has different effects.
-archway	1	25	10		DIR	DOOR	GenExit	archway		archway @x1		A specially named open exit between two places.
+archway	1	25	10		DIR	DOOR	GenExit	archway|an archway		archway @x1		A specially named open exit between two places.
 wall	1	45	100		DIR INDOOR	WALL	NA	-		wall @x1		Blocks entry or exit between two indoor places.
 roof	1	110	350		OUTDOOR	ROOM	WoodRoom	0		frame and roof		Turns an outdoor place into an indoor one.
 curtain	3	25	20	CLOTH	INDOOR DIR	DOOR	GenCurtain	curtain|draw open|draw close|A closed curtain.|An open doorway.		curtain @x1		Openable cloth exit between two indoor places.
@@ -13,7 +13,7 @@ simple gate	8	25	30		OUTDOOR DIR	DOOR	GenDoor	gate		gate @x1		Openable exit betw
 low roof	9	85	250		OUTDOOR	ROOM	WoodRoom	0	Prop_Crawlspace()	lower frame and roof		Turns an outdoor place into an indoor one you crawl through.
 weak door	10	35	40		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.
 crawlway	11	50	250		INDOOR DIR NOWALL	DOOR	GenExit	crawlway	Prop_Crawlspace	crawlway @x1		Exit between two indoor places you crawl through.
-beaded curtain	13	35	25	CLOTH	INDOOR DIR	DOOR	GenCurtain	curtain|draw open|draw close|A closed curtain.|An open doorway.		curtain @x1		Openable cloth exit between two indoor places.
+beaded curtain	13	35	25	CLOTH	INDOOR DIR	DOOR	GenCurtain	beaded curtain|draw open|draw close|A closed beaded curtain.|An open doorway.		curtain @x1		Openable bead strands exit between two indoor places.
 half door	15	35	45		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.
 water pad	16	35	200		OUTDOOR	ROOM	ShallowWater	0		wet room		Turns outdoor room into a very wet outdoor room.
 medium maze	17	185	2500		OUTDOOR	ROOM	WoodRoomMaze	5		maze frame and roof		Turns an outdoor place into a larger indoor one of twisting turns.
@@ -21,31 +21,31 @@ light gate	18	35	35		OUTDOOR DIR	DOOR	GenDoor	gate		gate @x1		Openable exit betw
 wide roof	19	135	1000		OUTDOOR	ROOM	WoodRoom	0	Prop_EnlargeRoom(10)	broad frame and roof		Turns an outdoor place into an indoor one of exceptional size.
 simple door	20	45	60		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.
 stairs	21	195	2550		INDOOR	STAIRS		@x1stairs to the @x2 floor		stairway @x1		Exit from an indoor place to a new indoor room above it.
-tab drape	23	45	50	CLOTH	INDOOR DIR	DOOR	GenCurtain	curtain|draw open|draw close|A closed curtain.|A passage offstage.		curtain @x1		Openable cloth exit between a stage and offstage.
+tab drape	23	45	50	CLOTH	INDOOR DIR	DOOR	GenCurtain	tab drape|draw open|draw close|A closed tab drape.|A passage offstage.		curtain @x1		Openable cloth exit between a stage and offstage.
 light door	25	45	70		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.
 window	26	45	50	GLASS	INDOOR DIR NOWALL	DOOR	GenDoor	window|open|close|A window.|An open window.	Prop_Crawlspace()Prop_RoomView()	window @x1		Object that, when looked at, shows you what's behind it.
 big maze	27	210	3500		OUTDOOR	ROOM	WoodRoomMaze	7		large maze frame and roof		Turns an outdoor place into a large indoor one of twisting turns.
 standard gate	28	45	40		OUTDOOR DIR	DOOR	GenDoor	gate		gate @x1		Openable exit between two outdoor places.
-hole	29	165	2550		INDOOR	STAIRS		@x1 a hole to the @x2 floor.	Spell_Fly()	hole @x1 to another floor		Exit from an indoor place to an existing room above it.
+hole	29	165	2550		INDOOR DOWNONLY	STAIRS		@x1 a hole to the @x2 floor.	Spell_Fly()	hole @x1 to another floor		Exit from an indoor place to a new indoor room below it.
 standard door	30	55	80		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.
 obscured door	30	100	100		INDOOR DIR	DOOR	GenDoor	secret door	Prop_Hidden	secret door @x1	-BASECLASS +Thief	Very high-level hidden openable exit between two indoor places.
-trap door	33	55	120		DOWNONLY INDOOR	DOOR	GenDoor	trapdoor|open(s)|close(s)|A closed trapdoor.|An open doorway.		door @x1		Openable exit between two indoor rooms above or below each other.
+trap door	33	55	120		DIRUPDOWN INDOOR	DOOR	GenDoor	trapdoor|open(s)|close(s)|A closed trapdoor.|An open doorway.		door @x1		Openable exit between two indoor rooms above or below each other.
 sturdy door	35	55	90		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.
 diving board	36	125	250		OUTDOOR WATERONLY UPONLY	ROOM	OverTheLedge	0		high dive platform		Turns the space above an outdoor water room into a platform above the room that can be jumped from.
 small crawlmaze	37	120	1000		OUTDOOR	ROOM	WoodRoomMaze	3	Prop_Crawlspace()	crawlmaze		Turns an outdoor place into a small, short indoor maze of twisting turns.
 sturdy gate	38	55	45		OUTDOOR DIR	DOOR	GenDoor	gate		gate @x1		Openable exit between two outdoor places.
 strong door	40	65	100		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.
-back curtain	43	65	100	CLOTH	INDOOR DIR	DOOR	GenCurtain	curtain|raise|lower|A backdrop.|An passage backstage.		curtain @x1		Openable cloth exit between the stage and backstage.
+back curtain	43	65	100	CLOTH	INDOOR DIR	DOOR	GenCurtain	back curtain|raise|lower|A backdrop.|An passage backstage.		curtain @x1		Openable cloth exit between the stage and backstage.
 heavy door	45	65	120		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.
 medium crawlmaze	45	145	2000		OUTDOOR	ROOM	WoodRoomMaze	5	Prop_Crawlspace()	crawlmaze		Turns an outdoor place into a medium, short indoor maze of twisting turns.
 strong gate	48	65	90		OUTDOOR DIR	DOOR	GenDoor	gate		gate @x1		Openable exit between two outdoor places.
 folding door	50	75	125		INDOOR DIR	DOOR	GenDoor	door|fold(s) open|fold(s) closed|A closed folding door|An open doorway with folding doors.		door @x1		Openable exit between two indoor places.
-front curtain	53	75	150	CLOTH	INDOOR DIR	DOOR	GenCurtain	curtain|raise|lower|A closed stage curtain.|To the stage.		curtain @x1		Openable cloth exit between the stage and the audience.
+front curtain	53	75	150	CLOTH	INDOOR DIR	DOOR	GenCurtain	front curtain|raise|lower|A closed stage curtain.|To the stage.		curtain @x1		Openable cloth exit between the stage and the audience.
 saloon door	55	75	135		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.
 large crawlmaze	57	170	3000		OUTDOOR	ROOM	WoodRoomMaze	7	Prop_Crawlspace()	crawlmaze		Turns an outdoor place into a large, short indoor maze of twisting turns.
 heavy gate	58	75	60		OUTDOOR DIR	DOOR	GenDoor	gate		gate @x1		Openable exit between two outdoor places.
 hidden door	60	150	200		INDOOR DIR	DOOR	GenDoor	secret door	Prop_Hidden	hidden door @x1	-BASECLASS +Thief	High-level hidden openable exit between two indoor places.
-grand drape	63	85	200	CLOTH	INDOOR DIR	DOOR	GenCurtain	curtain|raise|lower|A closed stage curtain.|To the stage.		curtain @x1		Openable cloth exit between the stage and the audience.
+grand drape	63	85	200	CLOTH	INDOOR DIR	DOOR	GenCurtain	grand drape|raise|lower|A closed grand drape.|To the stage.		curtain @x1		Openable cloth exit between the stage and the audience.
 glass door	65	85	100	GLASS	INDOOR DIR	DOOR	GenDoor	glass door|open(s)|close(s)|A glass door.|An open glass door.	Prop_RoomView()	glass door @x1		Door that, when looked at, shows you what's behind it.
 huge maze	67	450	10000		OUTDOOR	ROOM	WoodRoomMaze	9		huge maze frame and roof		Turns an outdoor place into a huge indoor one of twisting turns.
 reinforced gate	68	85	75		OUTDOOR DIR	DOOR	GenDoor	gate		gate @x1		Openable exit between two outdoor places.
@@ -64,3 +64,6 @@ huge orchestra Box	71	180	1000		INDOOR	ROOMEFFECT			SoundEcho(4)	acoustic paneli
 remove orchestra box	41	30	0		INDOOR	DELEFFECT			SoundEcho()	removed acoustic paneling	-ANYCLASS +Minstrel	Removes acoustic effects from the room.
 auditorium	31	120	250		INDOOR DIR	ROOMEFFECT			Prop_RoomWatch()	sloped floor	-BASECLASS +Bard	Makes a room see all of the target rooms actions, but does not allow the audience to interact with them.
 deauditorium	31	30	0		INDOOR	DELEFFECT			Prop_RoomWatch()	releveled floor	-BASECLASS +Bard	Removes the auditorium effect from an indoor room.
+ladder	41	65	120		DIRUPDOWN INDOOR	DOOR	GenExit	ladder|a ladder		ladder @x1		Open exit between two indoor rooms above or below each other.
+spiral staircase	61	75	250		DIRUPDOWN INDOOR	DOOR	GenExit	spiral staircase|a spiral staircase		staircase @x1		Open exit between two indoor rooms above or below each other.
+grand staircase	81	95	500		DIRUPDOWN INDOOR	DOOR	GenExit	grand staircase|a grand staircase		staircase @x1		Open exit between two indoor rooms above or below each other.

@@ -21,7 +21,7 @@ stairs	21	210	2550		INDOOR	STAIRS		@x1stairs to the @x2 floor		stairway @x1		Exi
 window	26	25	100		INDOOR DIR NOWALL	DOOR	GenDoor	window|open(s)|close(s)|A window.|An open window.	Prop_Crawlspace()Prop_RoomView()	window @x1		Object that, when looked at, shows you what's behind it.
 outdoor deep pool	27	200	700		OUTDOOR	ROOM	WaterSurface	1		pool		Turns an outdoor place into a deep diveable swimmable place.
 big maze	28	225	3500		OUTDOOR	ROOM	StoneMaze	7		large maze frame and roof		Turns an outdoor place into a large indoor one of twisting turns.
-hole	29	180	2550		INDOOR	STAIRS		@x1 a hole to the @x2 floor.	Spell_Fly()	hole @x1 to another floor		Exit from an indoor place to an existing room below it.
+hole	29	180	2550		INDOOR DOWNONLY	STAIRS		@x1 a hole to the @x2 floor.	Spell_Fly()	hole @x1 to another floor		Exit from an indoor place to a new room below it.
 great room	19	150	750		OUTDOOR	ROOM	LargeStoneRoom	0		large frame and roof		Turns an outdoor place into a large indoor place.
 yett	30	55	30	METAL	DIR	DOOR	GenDoor	yett		yett @x1		Openable exit between two places.
 cellar	31	300	3000		DOWNONLY	STAIRS	CaveRoom	@x1stairs to the @x2 cellar		cellar @x1		Exit from an indoor place to a new indoor room below it.
@@ -45,3 +45,5 @@ fire room	87	375	1000		OUTDOOR	ROOM	StoneRoom	0	FieryRoom()	fire-resistant frame
 defire room	87	25	0		INDOOR	DELEFFECT			FieryRoom()	room clear		Removes the fiery status from a fire room.
 vault door	90	125	100	METAL	DIR	DOOR	GenDoor	vault door|swing(s) open|swing(s) closed|A heavy vault door blocks your way.|An open doorway.		door @x1		Openable exit between two places.
 secret stone door	90	200	250		INDOOR DIR	DOOR	GenDoor	secret door	Prop_Hidden	secret door @x1	-BASECLASS +Thief	Hidden openable exit between two indoor places.
+spiral staircase	61	75	250		DIRUPDOWN INDOOR	DOOR	GenExit	spiral staircase|a spiral staircase		staircase @x1		Open exit between two indoor rooms above or below each other.
+grand staircase	81	95	500		DIRUPDOWN INDOOR	DOOR	GenExit	grand staircase|a grand staircase		staircase @x1		Open exit between two indoor rooms above or below each other.
