@@ -1746,7 +1746,9 @@ public class Quests extends StdLibrary implements QuestManager
 				continue;
 			if(SE.defaultQuestName().length()>1)
 			{
-				final Quest Q=CMLib.quests().fetchQuest(SE.defaultQuestName());
+				Quest Q=CMLib.quests().fetchQuest(SE.defaultQuestName());
+				if(Q==null)
+					Q=CMLib.quests().findQuest(SE.defaultQuestName());
 				if(Q==null)
 				{
 					SE.endQuest(player, player, SE.defaultQuestName());

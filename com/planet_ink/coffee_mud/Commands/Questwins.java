@@ -46,6 +46,26 @@ public class Questwins extends StdCommand
 		return access;
 	}
 
+	private final Comparator<Quest> questNameSorter = new Comparator<Quest>()
+	{
+		@Override
+		public int compare(final Quest o1, final Quest o2)
+		{
+			if(o1 == null)
+				return (o2==null) ? 0 : -1;
+			else
+			if(o2 == null)
+				return 1;
+			else
+			{
+				final String name1=o1.displayName().trim().length()>0?o1.displayName():o1.name();
+				final String name2=o2.displayName().trim().length()>0?o2.displayName():o2.name();
+				return name1.compareTo(name2);
+			}
+		}
+
+	};
+
 	public String getQuestsWonList(final MOB mob, final String pronoun)
 	{
 		final ArrayList<Quest> qVec=new ArrayList<Quest>();
@@ -58,25 +78,7 @@ public class Questwins extends StdCommand
 					qVec.add(Q);
 			}
 		}
-		Collections.sort(qVec,new Comparator<Quest>()
-		{
-			@Override
-			public int compare(final Quest o1, final Quest o2)
-			{
-				if(o1 == null)
-					return (o2==null) ? 0 : -1;
-				else
-				if(o2 == null)
-					return 1;
-				else
-				{
-					final String name1=o1.displayName().trim().length()>0?o1.displayName():o1.name();
-					final String name2=o2.displayName().trim().length()>0?o2.displayName():o2.name();
-					return name1.compareTo(name2);
-				}
-			}
-
-		});
+		Collections.sort(qVec,questNameSorter);
 		final StringBuffer msg=new StringBuffer(L("^HQuests @x1 listed as having won:^?^N\n\r",pronoun));
 		for(final Quest Q : qVec)
 		{
@@ -89,38 +91,43 @@ public class Questwins extends StdCommand
 
 	public String getQuestsDoingList(final MOB mob, final String pronoun)
 	{
+		final List<Quest> qVec=getQuestsDoingList(mob);
+		final StringBuffer msg=new StringBuffer(L("^HQuests @x1 listed as having accepted:^?^N\n\r",pronoun));
+		for(int i=0;i<qVec.size();i++)
+		{
+			final Quest Q=qVec.get(i);
+			final String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
+			msg.append((i+1)+") "+(name)+"^N\n\r");
+		}
+		return msg.toString();
+	}
+
+	public List<Quest> getQuestsDoingList(final MOB mob)
+	{
 		final List<Quest> qQVec=CMLib.quests().getPlayerPersistentQuests(mob);
-		final Vector<String> qVec = new Vector<String>();
+		final Set<String> namesDone = new HashSet<String>();
+		final Vector<Quest> qVec = new Vector<Quest>();
 		for(final Quest Q : qQVec)
 		{
 			final String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
-			if(!qVec.contains(name))
-				qVec.add(name);
+			if(!namesDone.contains(name))
+			{
+				namesDone.add(name);
+				qVec.add(Q);
+			}
 		}
-		Collections.sort(qVec);
-		final StringBuffer msg=new StringBuffer(L("^HQuests @x1 listed as having accepted:^?^N\n\r",pronoun));
-		for(int i=0;i<qVec.size();i++)
-			msg.append((qVec.get(i))+"^N\n\r");
-		return msg.toString();
+		Collections.sort(qVec, questNameSorter);
+		return qVec;
 	}
 
 	public Quest findScriptedQuest(final MOB mob, final String rest)
 	{
-		final List<Quest> quests = new ArrayList<Quest>(mob.numScripts());
-		for(final Enumeration<ScriptingEngine> e=mob.scripts();e.hasMoreElements();)
+		final List<Quest> quests = getQuestsDoingList(mob);
+		if(CMath.isInteger(rest))
 		{
-			final ScriptingEngine SE=e.nextElement();
-			if(SE!=null)
-			{
-				if(SE.defaultQuestName().length()>0)
-				{
-					Quest Q=CMLib.quests().fetchQuest(SE.defaultQuestName());
-					if(Q==null)
-						Q=CMLib.quests().findQuest(SE.defaultQuestName());
-					if(Q!=null)
-						quests.add(Q);
-				}
-			}
+			final int x=CMath.s_int(rest)-1;
+			if((x>=0)&&(x<quests.size()))
+				return quests.get(x);
 		}
 		return findQuest(quests, rest);
 	}
@@ -128,6 +135,12 @@ public class Questwins extends StdCommand
 	public Quest findQuest(final List<Quest> fromList, final String rest)
 	{
 		Quest Q=null;
+		if(CMath.isInteger(rest))
+		{
+			final int x=CMath.s_int(rest)-1;
+			if((x>=0)&&(x<fromList.size()))
+				return fromList.get(x);
+		}
 		final String lowerRest = rest.toLowerCase();
 		for(final Iterator<Quest> q=fromList.iterator();q.hasNext();)
 		{
