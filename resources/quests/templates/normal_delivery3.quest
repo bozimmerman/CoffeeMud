@@ -289,22 +289,26 @@ ONCE_PROG 100
 		MPENDQUEST '$QUEST_ID'
 	ENDIF
 	mpsetvar $i PROGRESS Delivered: $<$i $QUEST_ID_DELIVERED>/$DELIVEREE_COUNT
-    if QVAR(* REMAINING == '')
-        MPENDQUEST $i
-    else
-        mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
-    endif
+	IF QVAR(* DURATION != '0')
+	    if QVAR(* REMAINING == '')
+	        MPENDQUEST $i
+	    else
+			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+		endif
+	ENDIF
 ~
 
 RAND_PROG 25
 	IF !isquestmobalive(1 '$QUEST_ID')
 		MPENDQUEST '$QUEST_ID'
 	else
-		if QVAR(* REMAINING == '')
-			MPENDQUEST $i
-		else
-			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
-		endif
+		IF QVAR(* DURATION != '0')
+			if QVAR(* REMAINING == '')
+				MPENDQUEST $i
+			else
+				mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+			endif
+		ENDIF
 	ENDIF
 ~
 

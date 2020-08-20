@@ -280,11 +280,13 @@ RAND_PROG 25
 	IF !isquestmobalive(1 '$QUEST_ID')
 		MPENDQUEST '$QUEST_ID'
 	else
-		if QVAR(* REMAINING == '')
-			MPENDQUEST $i
-		else
-			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
-		endif
+		IF QVAR(* DURATION != '0')
+			if QVAR(* REMAINING == '')
+				MPENDQUEST $i
+			else
+				mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+			endif
+		ENDIF
 	ENDIF
 ~
 
