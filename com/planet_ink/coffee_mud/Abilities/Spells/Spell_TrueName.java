@@ -182,6 +182,11 @@ public class Spell_TrueName extends Spell
 								final Ability charm=CMClass.getAbility("Spell_AweOther");
 								charm.setMiscText(caster.Name());
 								monster.addNonUninvokableEffect(charm);
+								monster.setMoney(0);
+								monster.setMoneyVariation(0);
+								monster.basePhyStats().setRejuv(PhyStats.NO_REJUV);
+								monster.phyStats().setRejuv(PhyStats.NO_REJUV);
+								monster.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
 								monster.text();
 								monster.bringToLife(R,true);
 								CMLib.threads().scheduleRunnable(periodicCheckToGoHome, 4000);
