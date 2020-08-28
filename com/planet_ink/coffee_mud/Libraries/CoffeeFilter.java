@@ -1587,8 +1587,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					}
 				case '.':
 					capitalize=(loop < buf.length()-3)
-					&& (buf.charAt(loop+1)==' ')
-					&& ((buf.charAt(loop+2)==' ')||(buf.charAt(loop+2)=='<'));
+						&& (buf.charAt(loop+1)==' ')
+						&& ((buf.charAt(loop+2)==' ')||(buf.charAt(loop+2)=='<'));
 					break;
 				default:
 					{
@@ -1646,6 +1646,28 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			buf.append(S.getColorCodes()['N']);
 			S.setLastColor(S.getCurrentColor());
 			S.setCurrentColor(normalColor);
+		}
+
+		// the a-an fix
+		loop = 0;
+		while(loop < buf.length()-6)
+		{
+			if (((buf.charAt(loop)=='a')||(buf.charAt(loop)=='A'))
+			&&(buf.charAt(loop+1)=='(')
+			&&((buf.charAt(loop+2)=='n')||(buf.charAt(loop+2)=='N'))
+			&&(buf.charAt(loop+3)==')')
+			&&(buf.charAt(loop+4)==' ')
+			&&(Character.isLetter(buf.charAt(loop+5))))
+			{
+				if("aeiouAEIOU".indexOf(buf.charAt(loop+5))>=0)
+				{
+					buf.delete(loop+3, loop+4);
+					buf.delete(loop+1, loop+2);
+				}
+				else
+					buf.delete(loop+1, loop+4);
+			}
+			loop++;
 		}
 
 		/* fabulous debug code
