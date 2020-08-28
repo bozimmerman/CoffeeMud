@@ -2592,7 +2592,8 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_JUSTICE:
 					if ((charStats().getBodyPart(Race.BODY_HAND) == 0)
 					&&(baseCharStats().getMyRace().bodyMask()[Race.BODY_HAND] > 0)
-					&& (msg.target() instanceof Item))
+					&& (msg.target() instanceof Item)
+					&& (!((msg.tool() instanceof Ability) &&  CMLib.ableMapper().qualifiesOnlyByRace(msg.source(), (Ability)msg.tool()))))
 					{
 						tell(L("You need hands to do that."));
 						return false;
