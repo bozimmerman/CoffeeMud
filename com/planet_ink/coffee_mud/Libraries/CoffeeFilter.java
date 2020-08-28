@@ -1611,6 +1611,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 						else
 							doPostFilter = true;
 					}
+					//$FALL-THROUGH$
 				default:
 					{
 						if((firstAlpha < 0)&&(Character.isLetter(buf.charAt(loop))))
