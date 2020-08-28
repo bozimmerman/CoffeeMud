@@ -949,6 +949,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		int lastSpace=0;
 		int firstAlpha=-1;
 		int amperStop = -1;
+		boolean doPostFilter = false;
 
 		int loopDebugCtr=0;
 		int lastLoop=-1;
@@ -1590,6 +1591,26 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 						&& (buf.charAt(loop+1)==' ')
 						&& ((buf.charAt(loop+2)==' ')||(buf.charAt(loop+2)=='<'));
 					break;
+				case 'a':
+				case 'A':
+					if((buf.charAt(loop+1)=='(')
+					&&((buf.charAt(loop+2)=='n')||(buf.charAt(loop+2)=='N'))
+					&&(buf.charAt(loop+3)==')')
+					&&(buf.charAt(loop+4)==' '))
+					{
+						if(Character.isLetter(buf.charAt(loop+5)))
+						{
+							if("aeiouAEIOU".indexOf(buf.charAt(loop+5))>=0)
+							{
+								buf.delete(loop+3, loop+4);
+								buf.delete(loop+1, loop+2);
+							}
+							else
+								buf.delete(loop+1, loop+4);
+						}
+						else
+							doPostFilter = true;
+					}
 				default:
 					{
 						if((firstAlpha < 0)&&(Character.isLetter(buf.charAt(loop))))
@@ -1649,25 +1670,28 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		}
 
 		// the a-an fix
-		loop = 0;
-		while(loop < buf.length()-6)
+		if(doPostFilter)
 		{
-			if (((buf.charAt(loop)=='a')||(buf.charAt(loop)=='A'))
-			&&(buf.charAt(loop+1)=='(')
-			&&((buf.charAt(loop+2)=='n')||(buf.charAt(loop+2)=='N'))
-			&&(buf.charAt(loop+3)==')')
-			&&(buf.charAt(loop+4)==' ')
-			&&(Character.isLetter(buf.charAt(loop+5))))
+			loop = 0;
+			while(loop < buf.length()-6)
 			{
-				if("aeiouAEIOU".indexOf(buf.charAt(loop+5))>=0)
+				if (((buf.charAt(loop)=='a')||(buf.charAt(loop)=='A'))
+				&&(buf.charAt(loop+1)=='(')
+				&&((buf.charAt(loop+2)=='n')||(buf.charAt(loop+2)=='N'))
+				&&(buf.charAt(loop+3)==')')
+				&&(buf.charAt(loop+4)==' ')
+				&&(Character.isLetter(buf.charAt(loop+5))))
 				{
-					buf.delete(loop+3, loop+4);
-					buf.delete(loop+1, loop+2);
+					if("aeiouAEIOU".indexOf(buf.charAt(loop+5))>=0)
+					{
+						buf.delete(loop+3, loop+4);
+						buf.delete(loop+1, loop+2);
+					}
+					else
+						buf.delete(loop+1, loop+4);
 				}
-				else
-					buf.delete(loop+1, loop+4);
+				loop++;
 			}
-			loop++;
 		}
 
 		/* fabulous debug code
