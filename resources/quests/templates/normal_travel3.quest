@@ -301,6 +301,10 @@ FUNCTION_PROG SUCCESS
 				mpoloadroom $GOLD
 				mpforce $i GET $GOLD
 			endif
+			mpoloadroom fromfile $QUEST_ID_rewarditems.xml any
+			if EVAL('$b' != '')
+				mpforce $i GET "$b"
+			endif
 			mpquestwin $i *
 			$TRAVEL_RESPONSE_TYPE $TRAVEL_RESPONSE
 			mpendquest $i
