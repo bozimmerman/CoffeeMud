@@ -113,7 +113,7 @@ public class Prop_Weather extends Property
 		if(climask>=0)
 		{
 			if(affected instanceof Room)
-				((Room)affected).getArea().setClimateType(climask);
+				((Room)affected).setClimateType(climask);
 			else
 				((Area)affected).setClimateType(climask);
 		}
