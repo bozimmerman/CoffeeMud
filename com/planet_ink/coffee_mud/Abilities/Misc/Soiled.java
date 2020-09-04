@@ -178,7 +178,7 @@ public class Soiled extends StdAbility
 				smell = L("<T-NAME> must have let one go!");
 				break;
 			}
-			final Physical target=(affected==null)?msg.source():affected;
+			final Physical target=(affected==null)?((myHost instanceof Physical)?(Physical)myHost:msg.source()):affected;
 			if((CMLib.flags().canSmell(msg.source()))&&(smell!=null))
 				msg.source().tell(msg.source(),target,null,smell);
 		}
