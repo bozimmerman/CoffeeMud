@@ -19,6 +19,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Award;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Event;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -166,6 +167,16 @@ public class Achievements extends StdCommand
 			{
 				whoM=CMLib.players().getLoadPlayer(lastParm);
 				parms.remove(parms.size()-1);
+				if((whoM!=null)
+				&&(whoM.isAttributeSet(Attrib.PRIVACY))
+				&&(whoM!=mob)
+				&&(!whoM.getGroupMembers(new HashSet<MOB>()).contains(mob))
+				&&(!CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDPLAYERS))
+				&&(!CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.ACHIEVEMENTS)))
+				{
+					mob.tell(L("You may not do that."));
+					return false;
+				}
 			}
 			else
 			{
