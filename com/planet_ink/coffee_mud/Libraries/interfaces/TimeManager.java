@@ -72,6 +72,15 @@ public interface TimeManager extends CMLibrary
 	public long string2Millis(String dateTimeStr);
 
 	/**
+	 * Converts a string of some future time into a Calendar object.
+	 *
+	 * Usage: Calendar.string2Time(GetRes(Results,"StartDateTime"));
+	 * @param timeStr The string to retrieve time from
+	 * @return Calendar Calendar object, or null if invalid
+	 */
+	public Calendar string2TimeFuture(String timeStr);
+
+	/**
 	 * Converts a string of some form into a Calendar object.
 	 *
 	 * Usage: Calendar.string2Date(GetRes(Results,"StartDateTime"));

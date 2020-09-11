@@ -175,6 +175,87 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		return D;
 	}
 
+
+	@Override
+	public Calendar string2TimeFuture(String timeStr)
+	{
+		if(timeStr==null)
+			return null;
+		if(timeStr.trim().length()==0)
+			return null;
+		timeStr=timeStr.toUpperCase();
+		int hrNum=0;
+		int hrDex=0;
+		while((hrDex<timeStr.length())&&(Character.isDigit(timeStr.charAt(hrDex))))
+			hrDex++;
+		if(hrDex==0)
+			return null;
+		hrNum=CMath.s_int(timeStr.substring(0,hrDex));
+		// If it has no time, give it one!
+		final Calendar todayD=Calendar.getInstance();
+		if(timeStr.indexOf(':')<0)
+		{
+			if(hrDex==timeStr.length())
+				timeStr += ":00";
+			else
+			if(timeStr.charAt(hrDex)==' ')
+				timeStr=timeStr.substring(0,hrDex)+":00"+timeStr.substring(hrDex);
+			else
+				timeStr=timeStr.substring(0,hrDex)+":00 "+timeStr.substring(hrDex);
+		}
+		if((timeStr.indexOf("AM")<0)
+		&&(timeStr.indexOf("PM")<0))
+		{
+			int incomDex=timeStr.indexOf('A');
+			if(incomDex<0)
+				incomDex=timeStr.indexOf('P');
+			if(incomDex>0)
+				timeStr=timeStr.substring(0,incomDex+1)+"M"+timeStr.substring(incomDex+1);
+			else
+			if(hrNum==12)
+			{
+				if(todayD.get(Calendar.HOUR)!=0)
+					timeStr += todayD.get(Calendar.AM_PM)==Calendar.AM?" PM":" AM";
+				else
+					timeStr += todayD.get(Calendar.AM_PM)==Calendar.AM?" AM":" PM";
+			}
+			else
+			if(hrNum >= todayD.get(Calendar.HOUR)+1)
+				timeStr += todayD.get(Calendar.AM_PM)==Calendar.AM?" AM":" PM";
+			else
+				timeStr += todayD.get(Calendar.AM_PM)==Calendar.AM?" PM":" AM";
+		}
+		int apDex = timeStr.indexOf("AM");
+		if(apDex < 0)
+			apDex = timeStr.indexOf("PM");
+		if(apDex <= 0)
+			return null;
+		if(timeStr.charAt(apDex-1)!= ' ')
+			timeStr=timeStr.substring(0,apDex)+" "+timeStr.substring(apDex);
+
+
+		Calendar D=null;
+		try
+		{
+			final DateFormat fmt=DateFormat.getTimeInstance(DateFormat.SHORT);
+			fmt.parse(timeStr);
+			D=fmt.getCalendar();
+			D.set(Calendar.SECOND,0);
+			D.set(Calendar.MILLISECOND,0);
+			D.set(Calendar.YEAR, todayD.get(Calendar.YEAR));
+			D.set(Calendar.MONTH, todayD.get(Calendar.MONTH));
+			D.set(Calendar.DAY_OF_MONTH, todayD.get(Calendar.DAY_OF_MONTH));
+			if(todayD.compareTo(D) > 0)
+				D.add(Calendar.DATE, 1);
+		}
+		catch(final ParseException e)
+		{
+			return null;
+		}
+		confirmDateAMPM(timeStr,D);
+		return D;
+	}
+
 	@Override
 	public boolean isValidDateString(String dateTimeStr)
 	{
