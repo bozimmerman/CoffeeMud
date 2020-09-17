@@ -273,6 +273,12 @@ public class Spell_Cogniportive extends Spell
 			return false;
 		}
 
+		if(target instanceof Wand)
+		{
+			mob.tell(L("You can't cast this spell a wand!"));
+			return false;
+		}
+
 		Ability A=target.fetchEffect(ID());
 		if(A!=null)
 		{
