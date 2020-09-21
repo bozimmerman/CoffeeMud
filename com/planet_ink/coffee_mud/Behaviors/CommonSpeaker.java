@@ -192,6 +192,7 @@ public class CommonSpeaker extends StdBehavior
 		if((ticking instanceof MOB)&&(!((MOB)ticking).isMine(lang)))
 			lang=null;
 		else
+		if(lang != null)
 		{
 			final Language spoken=(Language)((Physical)ticking).fetchEffect(lang.ID());
 			if((spoken==null)
