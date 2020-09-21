@@ -98,17 +98,20 @@ public class Thief_WarningShot extends ThiefSkill
 		if(P instanceof BoardableShip)
 		{
 			final BoardableShip myShip=(BoardableShip)P;
-			for(final Enumeration<Room> r=myShip.getShipArea().getProperMap();r.hasMoreElements();)
+			if(myShip.getShipArea()!=null)
 			{
-				final Room R2=r.nextElement();
-				if((R2!=null)&&(R2.numItems()>0)&&(((R2.domainType()&Room.INDOORS)==0)))
+				for(final Enumeration<Room> r=myShip.getShipArea().getProperMap();r.hasMoreElements();)
 				{
-					for(final Enumeration<Item> i=R2.items();i.hasMoreElements();)
+					final Room R2=r.nextElement();
+					if((R2!=null)&&(R2.numItems()>0)&&(((R2.domainType()&Room.INDOORS)==0)))
 					{
-						final Item I2=i.nextElement();
-						if((I2.container()==null)
-						&&(CMLib.combat().isAShipSiegeWeapon(I2)))
-							items.add(I2);
+						for(final Enumeration<Item> i=R2.items();i.hasMoreElements();)
+						{
+							final Item I2=i.nextElement();
+							if((I2.container()==null)
+							&&(CMLib.combat().isAShipSiegeWeapon(I2)))
+								items.add(I2);
+						}
 					}
 				}
 			}
