@@ -1593,7 +1593,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					break;
 				case 'a':
 				case 'A':
-					if((buf.charAt(loop+1)=='(')
+					if((loop<buf.length()-6)
+					&&(buf.charAt(loop+1)=='(')
 					&&((buf.charAt(loop+2)=='n')||(buf.charAt(loop+2)=='N'))
 					&&(buf.charAt(loop+3)==')')
 					&&(buf.charAt(loop+4)==' '))
