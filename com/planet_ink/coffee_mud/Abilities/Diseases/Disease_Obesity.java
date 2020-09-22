@@ -142,10 +142,6 @@ public class Disease_Obesity extends Disease
 
 	protected int amountOfFat()
 	{
-		if((fatAmount<0)&&(CMath.isNumber(text())))
-			fatAmount=CMath.s_int(text());
-		if(fatAmount<0)
-			fatAmount=0;
 		if(fatAmount>=0)
 			return fatAmount;
 		return 1;
@@ -156,6 +152,10 @@ public class Disease_Obesity extends Disease
 	{
 		super.setMiscText(newText);
 		fatAmount=-1;
+		if((fatAmount<0)&&(CMath.isNumber(newText)))
+			fatAmount=CMath.s_int(newText);
+		if(fatAmount<0)
+			fatAmount=0;
 	}
 
 	private void setFatAmountChange(final int change)
@@ -169,7 +169,7 @@ public class Disease_Obesity extends Disease
 		super.affectCharStats(affectedMob, affectableStats);
 		affectableStats.setStat(CharStats.STAT_WEIGHTADJ,
 			affectableStats.getStat(CharStats.STAT_WEIGHTADJ)
-			+(int)Math.round(CMath.mul(affectedMob.basePhyStats().weight(),CMath.div(CMath.s_int(text()),100.0))));
+			+(int)Math.round(CMath.mul(affectedMob.basePhyStats().weight(),CMath.div(amountOfFat(),100.0))));
 	}
 
 	@Override
@@ -183,7 +183,7 @@ public class Disease_Obesity extends Disease
 	{
 		super.affectCharState(affected,affectableState);
 		final int oldMovement=affectableState.getMovement();
-		affectableState.setMovement(affectableState.getMovement()-(int)Math.round(CMath.mul(affectableState.getMovement(),CMath.div(CMath.s_int(text()),100.0))));
+		affectableState.setMovement(affectableState.getMovement()-(int)Math.round(CMath.mul(affectableState.getMovement(),CMath.div(amountOfFat(),100.0))));
 		if((affectableState.getMovement()<20)&&(oldMovement>20))
 			affectableState.setMovement(20);
 	}
