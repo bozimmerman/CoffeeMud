@@ -929,13 +929,16 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			if(dir>=0)
 			{
 				Exit E=room.getExitInDir(dir);
-				if((!E.isGeneric())&&(room.getRawExit(dir)==E))
+				if(E!=null)
 				{
-					E=generify(E);
-					room.setRawExit(dir,E);
+					if((!E.isGeneric())&&(room.getRawExit(dir)==E))
+					{
+						E=generify(E);
+						room.setRawExit(dir,E);
+					}
+					E.setDescription(designDescription);
+					CMLib.database().DBUpdateExits(room);
 				}
-				E.setDescription(designDescription);
-				CMLib.database().DBUpdateExits(room);
 			}
 			else
 			{
