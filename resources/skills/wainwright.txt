@@ -47,7 +47,7 @@ huge % wagon	68	165	500	1160	GenRideable		25000	2	0
 % trolley	72	195	650	1430	GenRideable	LOCK	25000	2	0		
 % plow	74	120	100	1580	GenRideable		0	1	0		*Prop_RideEnabler;Chant_Fertilization
 % portable forge	76	250	(onground:consumed:800:ROCK:)	3800	GenRideable	LID	1000	0	0		*Burning;
-% seige tower	78	120	500	1230	GenRideable		2000	16	0		*Prop_RideEnabler;Skill_MountedCombat
+% siege tower	78	120	500	1230	GenRideable		2000	16	0		*Prop_RideEnabler;Skill_MountedCombat
 fur-lined % sleigh	80	180	350	1570	GenRideable		2000	6	0		*Prop_RideSpellCast;Prayer_ProtCold
 % portable aquarium	82	300	1000	4700	GenRideable		0	4	0		*Prop_RideSpellCast;Chant_BreatheAir
 % signal tower	84	120	350	930	GenRideable		0	1	0		*Prop_RideEnabler;Fighter_SmokeSignals
