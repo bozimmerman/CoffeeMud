@@ -167,6 +167,8 @@ public class WeatherAffects extends PuddleMaker
 	{
 		if(room==null)
 			return 0;
+		if(CMath.bset(room.getClimateType(),Places.CLIMASK_VOID))
+			return 0;
 		final Area A=(host instanceof Area)?(Area)host:CMLib.map().roomLocation(host).getArea();
 		if(A!=null)
 			return A.getClimateObj().weatherType(room);
