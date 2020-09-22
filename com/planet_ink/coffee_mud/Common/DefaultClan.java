@@ -1970,7 +1970,8 @@ public class DefaultClan implements Clan
 				if(!isSafeFromPurge())
 				{
 					final long duration=(3L * 24L * 60L * 60L * 1000L);
-					if((System.currentTimeMillis() - this.lastStatusChange)>duration)
+					if((lastStatusChange > 0)
+					&& ((System.currentTimeMillis() - this.lastStatusChange)>duration))
 					{
 						if(getStatus()==CLANSTATUS_FADING)
 						{
