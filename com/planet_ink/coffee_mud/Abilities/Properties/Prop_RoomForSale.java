@@ -328,6 +328,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		synchronized(("SYNC"+R.roomID()).intern())
 		{
 			R=CMLib.map().getRoom(R);
+			if(R==null)
+				return new int[] {0,0};
 			if(T.getOwnerName().length()==0)
 			{
 				Item I=null;
