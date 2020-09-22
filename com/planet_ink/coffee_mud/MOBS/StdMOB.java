@@ -800,6 +800,7 @@ public class StdMOB implements MOB
 	public void recoverPhyStats()
 	{
 		basePhyStats.copyInto(phyStats);
+		phyStats.setWeight(phyStats.weight()+charStats.getStat(CharStats.STAT_WEIGHTADJ));
 		if (location() != null)
 			location().affectPhyStats(this, phyStats);
 		if(getMoney()>0)
