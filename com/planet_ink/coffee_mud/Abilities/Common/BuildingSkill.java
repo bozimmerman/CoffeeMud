@@ -926,6 +926,8 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		synchronized(("SYNC"+room.roomID()).intern())
 		{
 			room=CMLib.map().getRoom(room);
+			if(room == null)
+				return;
 			if(dir>=0)
 			{
 				Exit E=room.getExitInDir(dir);
