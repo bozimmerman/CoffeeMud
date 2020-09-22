@@ -109,7 +109,7 @@ public class Stat  extends Skills
 				str.append(PhyStats.CAN_SEE_DESCS[i].replace(' ','_')).append(" ");
 		}
 		if(str.length()==0)
-			str.append("NONE");
+			str.append("NONE ");
 		return str.toString().trim();
 	}
 
@@ -122,7 +122,7 @@ public class Stat  extends Skills
 				str.append(PhyStats.IS_DESCS[i].replace(' ','_')).append(" ");
 		}
 		if(str.length()==0)
-			str.append("NONE");
+			str.append("NONE ");
 		return str.toString().trim();
 	}
 
@@ -1786,7 +1786,7 @@ public class Stat  extends Skills
 						if(stat.equals(thisStat))
 						{
 							if(stat.startsWith("MAX"))
-								str.append(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+CMath.s_int(M.charStats().getStat(stat)));
+								str.append(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+CMath.s_int(M.charStats().getStat(stat))).append(" ");
 							else
 								str.append(M.charStats().getStat(stat)).append(" ");
 							found=true;
@@ -1830,7 +1830,7 @@ public class Stat  extends Skills
 				{
 					if(CMLib.coffeeMaker().isAnyGenStat(M, thisStat))
 					{
-						str.append(CMLib.coffeeMaker().getAnyGenStat(M, thisStat));
+						str.append(CMLib.coffeeMaker().getAnyGenStat(M, thisStat)).append(" ");
 						found=true;
 					}
 				}
