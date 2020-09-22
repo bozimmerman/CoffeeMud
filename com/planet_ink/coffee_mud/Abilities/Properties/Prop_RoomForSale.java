@@ -329,7 +329,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		{
 			R=CMLib.map().getRoom(R);
 			if(R==null)
-				return new int[] {0,0};
+				return new int[] {-1,0};
 			if(T.getOwnerName().length()==0)
 			{
 				Item I=null;
