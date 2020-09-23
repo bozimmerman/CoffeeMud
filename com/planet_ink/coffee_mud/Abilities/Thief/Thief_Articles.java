@@ -270,7 +270,7 @@ public class Thief_Articles extends ThiefSkill
 			return false;
 		}
 
-		final MOB target=this.getTarget(mob,commands,givenTarget);
+		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
 
@@ -410,6 +410,27 @@ public class Thief_Articles extends ThiefSkill
 					A=(Ability)copyOf();
 					A.setMiscText(myShipItem.Name()+";"+nextType.name());
 					A.setAbilityCode(super.getXLEVELLevel(mob));
+					if(target.isMonster()
+					&& (target.getStartRoom()!=null)
+					&& (target.getStartRoom()!=R)
+					&& (CMLib.flags().validCheck(target.getStartRoom())==null)
+					&& (target.databaseID()!=null)
+					&& (target.databaseID().length()>0))
+					{
+						final Room startR=target.getStartRoom();
+						final MOB folM = target.amFollowing();
+						if(folM!=null)
+							target.setFollowing(null);
+						while(target.numFollowers()>0)
+							target.fetchFollower(0).setFollowing(null);
+						final MOB oldTarget = target;
+						target=(MOB)target.copyOf();
+						R.delInhabitant(oldTarget);
+						oldTarget.bringToLife(startR, true);
+						target.bringToLife(R, false);
+						target.setFollowing(folM);
+
+					}
 					target.addNonUninvokableEffect(A);
 				}
 			}
