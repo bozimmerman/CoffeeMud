@@ -427,8 +427,17 @@ public class Thief_Articles extends ThiefSkill
 						target=(MOB)target.copyOf();
 						R.delInhabitant(oldTarget);
 						oldTarget.bringToLife(startR, true);
-						target.bringToLife(R, false);
 						target.setFollowing(folM);
+						target.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
+						target.setMiscText(target.text());
+						target.recoverCharStats();
+						target.recoverPhyStats();
+						target.recoverMaxState();
+						target.resetToMaxState();
+						target.bringToLife(R, false);
+						CMLib.beanCounter().clearZeroMoney(target,null);
+						target.setMoneyVariation(0);
+						target.setStartRoom(null);
 
 					}
 					target.addNonUninvokableEffect(A);
