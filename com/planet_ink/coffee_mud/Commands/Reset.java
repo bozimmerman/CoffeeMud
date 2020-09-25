@@ -633,24 +633,26 @@ public class Reset extends StdCommand
 					if(sess!=null)
 						sess.print(".");
 					final Room R=CMLib.map().getRoom(r.nextElement());
-					if((R!=null)&&(R.roomID()!=null)&&(R.roomID().length()>0))
+					if((R!=null)
+					&&(R.roomID()!=null)
+					&&(R.roomID().length()>0))
 					{
-						final Room room=CMLib.coffeeMaker().makeNewRoomContent(R,false);
-						if(room==null)
+						final Room roomR=CMLib.coffeeMaker().makeNewRoomContent(R,false);
+						if(roomR==null)
 						{
 							if(sess != null)
 								sess.println(L("Unable to load room @x1, skipping.",CMLib.map().getExtendedRoomID(R)));
 						}
 						else
-						if(CMLib.percolator().relevelRoom(room, oldMinLevel, oldMaxLevel, levelLow, levelHigh))
+						if(CMLib.percolator().relevelRoom(roomR, oldMinLevel, oldMaxLevel, levelLow, levelHigh))
 						{
-							CMLib.database().DBUpdateItems(room);
-							CMLib.database().DBUpdateMOBs(room);
-							room.destroy();
+							CMLib.database().DBUpdateItems(roomR);
+							CMLib.database().DBUpdateMOBs(roomR);
+							roomR.destroy();
 							CMLib.map().resetRoom(R, true);
 						}
 						else
-							room.destroy();
+							roomR.destroy();
 					}
 				}
 				if(sess!=null)

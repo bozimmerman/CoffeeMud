@@ -197,6 +197,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				which=useArray.length-1;
 			level=useArray[which];
 		}
+		if(level < 1)
+			level = 1;
 		level+=itemI.basePhyStats().ability()*5;
 		for(final Ability A : props)
 			level += CMath.s_int(A.getStat("STAT-LEVEL"));
