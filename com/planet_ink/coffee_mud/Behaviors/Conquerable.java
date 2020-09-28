@@ -1066,7 +1066,7 @@ public class Conquerable extends Arrest
 	}
 
 	protected volatile long	nextFlagScan = System.currentTimeMillis();
-	
+
 	protected boolean flagFound(final Area A, final Clan C)
 	{
 		if((C==null)||(!C.getGovernment().isConquestEnabled()))
@@ -1380,6 +1380,7 @@ public class Conquerable extends Arrest
 			&&(msg.source().getStartRoom()!=null)
 			&&(((Area)myHost).inMyMetroArea(msg.source().getStartRoom().getArea()))
 			&&(!CMLib.flags().isAnimalIntelligence(msg.source()))
+			&&(msg.source().findTattoo("SYSTEM_SUMMONED")==null)
 			&&(msg.source().getClanRole(holdingClan)==null))
 			{
 				final Clan C=CMLib.clans().getClanAnyHost(holdingClan);
