@@ -29,7 +29,7 @@
 27	luminous vivid cobalt blue	cobalt-blue	1	12	#005fff	9	015
 28	emerald green	slytherin-green	1	2	#008700	2	020
 29	strong turquoise-colored	eucalyptus-colored	1	6	#00875f	1	021
-30	strong artic blue	cadet-blue	1	6	#008787	2	022
+30	strong arctic blue	cadet-blue	1	6	#008787	2	022
 31	cerulean	cerulean	1	6	#0087af	3	023
 32	vivid cornflower blue	lochmara-blue	1	4	#0087d7	7	024
 33	luminous vivid azure	azure	1	12	#0087ff	8	025
@@ -37,14 +37,14 @@
 35	strong spring green	jade-colored	1	2	#00af5f	4	031
 36	turquoise-colored	thalosian-green	1	6	#00af87	4	032
 37	strong cyan	celadon	1	6	#00afaf	5	033
-38	vivid artic blue	artic-blue	1	6	#00afd7	6	034
+38	vivid arctic blue	arctic-blue	1	6	#00afd7	6	034
 39	lumionus vivid cornflower blue	azure-radiance	1	12	#00afff	7	035
 40	vivid green	shamrock-green	1	2	#00d700	5	040
 41	vivid spring green	spring-green	1	2	#00d75f	6	041
 42	vivid aquamarine-colored	caribbean-green	1	2	#00d787	7	042
 43	vivid opal	opal-colored	1	6	#00d7af	7	043
 44	vivid cyan	downy-blue	1	6	#00d7d7	8	044
-45	luminious vivid artic blue	turquoisey-colored	1	14	#00d7ff	1	045
+45	luminious vivid arctic blue	turquoisey-colored	1	14	#00d7ff	1	045
 46	luminous vivid green	harlequin-green	1	10	#00ff00	1	050
 47	luminous vivid sea green	malachite-green	1	10	#00ff5f	2	051
 48	luminous vivid spring green	Medium-spring-green	1	10	#00ff87	3	052
