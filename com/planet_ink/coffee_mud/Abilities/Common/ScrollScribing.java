@@ -300,7 +300,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 		}
 		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
 		final String pos=commands.get(commands.size()-1);
-		if(((commands.get(0))).equalsIgnoreCase("list"))
+		if(((commands.get(0))).equalsIgnoreCase("list") && (autoGenerate <= 0))
 		{
 			String mask=CMParms.combine(commands,1);
 			boolean allFlag=false;
@@ -479,7 +479,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			{
 				if(((Scroll)buildingI).usesRemaining()>0)
 				{
-					int theSpellType = theSpell.classificationCode()&Ability.ALL_ACODES;
+					final int theSpellType = theSpell.classificationCode()&Ability.ALL_ACODES;
 					for(final Ability spell: ((Scroll)buildingI).getSpells())
 					{
 						if(spell.ID().equals(theSpell.ID()))

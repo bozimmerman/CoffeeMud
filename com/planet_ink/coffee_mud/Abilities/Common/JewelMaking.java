@@ -346,7 +346,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 		bundling=false;
 		int duration=4;
 		String misctype="";
-		if(str.equalsIgnoreCase("list"))
+		if(str.equalsIgnoreCase("list") && (autoGenerate <= 0))
 		{
 			String mask=CMParms.combine(commands,1);
 			boolean allFlag=false;

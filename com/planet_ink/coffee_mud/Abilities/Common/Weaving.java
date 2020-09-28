@@ -329,7 +329,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		bundling=false;
 		String startStr=null;
 		int duration=4;
-		if(str.equalsIgnoreCase("list"))
+		if(str.equalsIgnoreCase("list") && (autoGenerate <= 0))
 		{
 			String mask=CMParms.combine(commands,1);
 			boolean allFlag=false;

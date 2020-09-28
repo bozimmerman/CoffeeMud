@@ -195,7 +195,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		final String str=commands.get(0);
 		String startStr=null;
 		int duration=4;
-		if(str.equalsIgnoreCase("list"))
+		if(str.equalsIgnoreCase("list") && (autoGenerate <= 0))
 		{
 			String mask=CMParms.combine(commands,1);
 			boolean allFlag=false;

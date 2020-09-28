@@ -221,7 +221,7 @@ public class InstrumentMaking extends EnhancedCraftingSkill implements ItemCraft
 		String startStr=null;
 		int duration=4;
 		final boolean archon=CMSecurity.isASysOp(mob)||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ALLSKILLS);
-		if(str.equalsIgnoreCase("list"))
+		if(str.equalsIgnoreCase("list") && (autoGenerate <= 0))
 		{
 			String mask=CMParms.combine(commands,1);
 			boolean allFlag=false;

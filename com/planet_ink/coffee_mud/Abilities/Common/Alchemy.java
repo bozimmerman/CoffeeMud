@@ -303,7 +303,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			};
 		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
 		final String pos=commands.get(commands.size()-1);
-		if(((commands.get(0))).equalsIgnoreCase("list"))
+		if(((commands.get(0))).equalsIgnoreCase("list") && (autoGenerate <= 0))
 		{
 			String mask=CMParms.combine(commands,1);
 			boolean allFlag=false;

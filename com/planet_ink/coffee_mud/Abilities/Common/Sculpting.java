@@ -256,7 +256,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 		String startStr=null;
 		int duration=4;
 		bundling=false;
-		if(str.equalsIgnoreCase("list"))
+		if(str.equalsIgnoreCase("list") && (autoGenerate <= 0))
 		{
 			String mask=CMParms.combine(commands,1);
 			boolean allFlag=false;

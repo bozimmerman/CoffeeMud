@@ -443,7 +443,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		bundling=false;
 		helpingAbility=null;
 		helping=false;
-		if(str.equalsIgnoreCase("list"))
+		if(str.equalsIgnoreCase("list") && (autoGenerate <= 0))
 		{
 			String mask=CMParms.combine(commands,1);
 			boolean allFlag=false;

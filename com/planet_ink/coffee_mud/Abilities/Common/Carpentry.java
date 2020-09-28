@@ -322,7 +322,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			CMLib.lister().fixColWidth(3,mob.session()),
 			CMLib.lister().fixColWidth(4,mob.session())
 		};
-		if(str.equalsIgnoreCase("list"))
+		if(str.equalsIgnoreCase("list") && (autoGenerate <= 0))
 		{
 			String mask=CMParms.combine(commands,1);
 			boolean allFlag=false;

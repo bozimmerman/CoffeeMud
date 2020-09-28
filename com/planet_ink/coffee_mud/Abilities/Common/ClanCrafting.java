@@ -155,7 +155,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		}
 		return V;
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -279,7 +279,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 				CMLib.lister().fixColWidth(14,mob.session()),
 				CMLib.lister().fixColWidth(4,mob.session())
 			};
-		if(str.equalsIgnoreCase("list"))
+		if(str.equalsIgnoreCase("list") && (autoGenerate<=0))
 		{
 			String mask=CMParms.combine(commands,1);
 			boolean allFlag=false;

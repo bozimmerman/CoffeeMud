@@ -301,7 +301,7 @@ public class GlassBlowing extends EnhancedCraftingSkill implements ItemCraftor
 			else
 				commands.remove(commands.size()-1);
 		}
-		if(str.equalsIgnoreCase("list"))
+		if(str.equalsIgnoreCase("list") && (autoGenerate <= 0))
 		{
 			String mask=CMParms.combine(commands,1);
 			boolean allFlag=false;
