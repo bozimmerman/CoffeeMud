@@ -222,12 +222,13 @@ public class Chant_BrownMold extends Chant
 		newMOB.basePhyStats().setArmor(-super.getX1Level(caster));
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'N');
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
+		newMOB.addTattoo("SYSTEM_SUMMONED");
 		newMOB.setMiscText(newMOB.text());
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
-		newMOB.bringToLife(caster.location(),true);
+		newMOB.bringToLife(caster.location(),true); // does setstartroom, and then calls bringtolife, which sucks
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		newMOB.setMoneyVariation(0);
 		newMOB.setStartRoom(null); // keep before postFollow for Conquest

@@ -187,6 +187,7 @@ public class Spell_TrueName extends Spell
 								monster.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 								monster.phyStats().setRejuv(PhyStats.NO_REJUV);
 								monster.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
+								monster.addTattoo("SYSTEM_SUMMONED");
 								monster.text();
 								monster.bringToLife(R,true);
 								CMLib.threads().scheduleRunnable(periodicCheckToGoHome, 4000);

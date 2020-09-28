@@ -606,7 +606,7 @@ public class Factions extends StdLibrary implements FactionManager
 						{
 							A.setMiscText("Doesn't Exist"); // initialize the planes list
 						}
-						catch(Exception e)
+						catch(final Exception e)
 						{
 						}
 					}
@@ -691,7 +691,9 @@ public class Factions extends StdLibrary implements FactionManager
 	@Override
 	public void updatePlayerFactions(final MOB mob, final Room R, final boolean forceAutoCheck)
 	{
-		if((mob==null)||(R==null))
+		if((mob==null)
+		||(R==null)
+		||(mob.findTattoo("SYSTEM_SUMMONED")!=null))
 			return;
 		else
 		{

@@ -221,6 +221,7 @@ public class Prayer_AnimateZombie extends Prayer
 				newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
 				newMOB.baseState().setMana(0);
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
+				newMOB.addTattoo("SYSTEM_SUMMONED");
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Spell_CauseStink"));
 				final Behavior B=CMClass.getBehavior("Aggressive");
 				if(B!=null)

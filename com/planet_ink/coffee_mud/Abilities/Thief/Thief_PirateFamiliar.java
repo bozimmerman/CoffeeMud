@@ -309,6 +309,7 @@ public class Thief_PirateFamiliar extends ThiefSkill
 		newMOB.setExperience(CMLib.leveler().getLevelExperience(newMOB, newMOB.basePhyStats().level()));
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
+		newMOB.addTattoo("SYSTEM_SUMMONED");
 		CMLib.factions().setAlignment(newMOB,Faction.Align.GOOD);
 		newMOB.setStartRoom(null);
 		newMOB.recoverCharStats();

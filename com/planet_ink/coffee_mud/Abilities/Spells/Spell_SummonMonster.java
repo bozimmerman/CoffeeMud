@@ -234,6 +234,8 @@ public class Spell_SummonMonster extends Spell
 		newMOB.setLocation(R);
 		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
+		newMOB.addTattoo("SYSTEM_SUMMONED");
+		newMOB.setMiscText(newMOB.text());
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();

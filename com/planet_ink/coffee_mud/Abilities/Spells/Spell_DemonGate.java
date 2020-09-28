@@ -226,6 +226,7 @@ public class Spell_DemonGate extends Spell
 		newMOB.setDisplayText(L("a horrendous demonbeast is stalking around here"));
 		newMOB.setDescription(L("Blood red skin with massive horns, and of course muscles in places you didn`t know existed."));
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
+		newMOB.addTattoo("SYSTEM_SUMMONED");
 		ride.setRiderCapacity(2);
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();

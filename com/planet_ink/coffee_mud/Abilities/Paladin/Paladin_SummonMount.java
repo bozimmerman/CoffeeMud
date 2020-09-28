@@ -245,6 +245,7 @@ public class Paladin_SummonMount extends StdAbility
 		newMOB.setDisplayText(L("a proud white horse stands here"));
 		newMOB.setDescription(L("A proud and noble steed; albino white and immaculate."));
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
+		newMOB.addTattoo("SYSTEM_SUMMONED");
 		ride.setRiderCapacity(4);
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();

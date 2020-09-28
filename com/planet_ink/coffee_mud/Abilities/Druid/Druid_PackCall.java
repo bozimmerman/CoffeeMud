@@ -267,6 +267,7 @@ public class Druid_PackCall extends StdAbility
 					newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
 					newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
 					newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
+					newMOB.addTattoo("SYSTEM_SUMMONED");
 					newMOB.setMiscText(newMOB.text());
 					newMOB.recoverPhyStats();
 					newMOB.recoverCharStats();

@@ -196,6 +196,7 @@ public class Prayer_AnimateDead extends Prayer
 					newMOB.addBehavior(B);
 				}
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
+				newMOB.addTattoo("SYSTEM_SUMMONED");
 				newMOB.recoverCharStats();
 				newMOB.recoverPhyStats();
 				newMOB.recoverMaxState();

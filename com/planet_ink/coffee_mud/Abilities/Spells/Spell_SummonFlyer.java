@@ -221,6 +221,7 @@ public class Spell_SummonFlyer extends Spell
 		ride.setRideBasis(Rideable.RIDEABLE_AIR);
 		ride.setRiderCapacity(2);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
+		newMOB.addTattoo("SYSTEM_SUMMONED");
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();

@@ -220,6 +220,7 @@ public class Prayer_AnimateMummy extends Prayer
 				newMOB.baseState().setMovement(CMLib.leveler().getLevelMove(newMOB));
 				newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
+				newMOB.addTattoo("SYSTEM_SUMMONED");
 				newMOB.baseState().setMana(100);
 				newMOB.recoverCharStats();
 				newMOB.recoverPhyStats();

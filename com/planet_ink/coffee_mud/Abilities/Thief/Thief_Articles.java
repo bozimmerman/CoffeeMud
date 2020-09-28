@@ -429,6 +429,7 @@ public class Thief_Articles extends ThiefSkill
 						oldTarget.bringToLife(startR, true);
 						target.setFollowing(folM);
 						target.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
+						target.addTattoo("SYSTEM_SUMMONED");
 						target.setMiscText(target.text());
 						target.recoverCharStats();
 						target.recoverPhyStats();

@@ -221,6 +221,7 @@ public class Chant_SummonRockGolem extends Chant
 		newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB)+20);
 		newMOB.basePhyStats().setSensesMask(newMOB.basePhyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
+		newMOB.addTattoo("SYSTEM_SUMMONED");
 		final Ability P=CMClass.getAbility("Prop_StatTrainer");
 		if(P!=null)
 		{

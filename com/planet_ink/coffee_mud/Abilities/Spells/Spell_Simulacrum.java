@@ -297,6 +297,7 @@ public class Spell_Simulacrum extends Spell
 		newMOB.setDisplayText(L("@x1 is here.",caster.Name()));
 		newMOB.setDescription(caster.description());
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
+		newMOB.addTattoo("SYSTEM_SUMMONED");
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();

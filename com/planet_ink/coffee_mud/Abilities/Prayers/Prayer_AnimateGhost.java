@@ -183,6 +183,7 @@ public class Prayer_AnimateGhost extends Prayer
 		newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
 		newMOB.baseState().setMana(100);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
+		newMOB.addTattoo("SYSTEM_SUMMONED");
 		final Ability A=CMClass.getAbility("Immunities");
 		if(A!=null)
 		{

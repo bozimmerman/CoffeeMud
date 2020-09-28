@@ -233,6 +233,7 @@ public class Spell_WatchfulHound extends Spell
 		newMOB.setDisplayText(L("a hound dog is here watching you carefully"));
 		newMOB.setDescription(L("Those sad eyes never leave you, and those teeth look sharp."));
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
+		newMOB.addTattoo("SYSTEM_SUMMONED");
 		newMOB.basePhyStats().setArmor(newMOB.basePhyStats().armor()-50);
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();
