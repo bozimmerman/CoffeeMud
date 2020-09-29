@@ -323,9 +323,9 @@ public class AbilityData extends StdWebMacro
 						else
 						if(parms.containsKey("NEXT"))
 						{
-							String lastID="";
 							final String lastNum = httpReq.getUrlParameter("HASHWORDNUM");
 							String nextName = "HASHWORD1";
+							String lastID="";
 							String nextDefName = "HASHWORDDEF1";
 							for(int i=1;i<=hashWords.keySet().size();i++)
 							{
@@ -333,7 +333,7 @@ public class AbilityData extends StdWebMacro
 								final String thisDefName="HASHWORDDEF"+Integer.toString(i);
 								nextName="HASHWORD"+Integer.toString(i+1);
 								nextDefName="HASHWORDDEF"+Integer.toString(i+1);
-								if((lastNum==null)||((lastNum.length()>0)&&(lastNum.equals(lastID))&&(!thisName.equals(lastID))))
+								if((lastNum==null)||((lastNum.length()>0)&&(lastNum.equals(lastID))&&(!thisName.equals(lastNum))))
 								{
 									httpReq.addFakeUrlParameter("HASHWORDNUM",thisName);
 									httpReq.addFakeUrlParameter("HASHWORDDEFNUM",thisDefName);
@@ -341,7 +341,7 @@ public class AbilityData extends StdWebMacro
 									return "";
 								}
 								lastID=thisName;
-								i++;
+								//i++;
 							}
 							httpReq.addFakeUrlParameter("HASHWORDNUM","");
 							httpReq.addFakeUrlParameter("HASHWORDDEFNUM","");
