@@ -1315,7 +1315,9 @@ public class StdMOB implements MOB
 		}
 		if(!confirmLocation(newLocation))
 			return;
-		CMLib.factions().updatePlayerFactions(this, location(), false);
+
+		if((this.tattoos.size() == 0) || (findTattoo("SYSTEM_SUMMONED")==null))
+			CMLib.factions().updatePlayerFactions(this, location(), false);
 		if (tickStatus == Tickable.STATUS_NOT)
 		{
 			final boolean isImMobile=CMath.bset(phyStats.sensesMask(), PhyStats.CAN_NOT_MOVE);

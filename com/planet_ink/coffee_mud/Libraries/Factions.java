@@ -692,8 +692,7 @@ public class Factions extends StdLibrary implements FactionManager
 	public void updatePlayerFactions(final MOB mob, final Room R, final boolean forceAutoCheck)
 	{
 		if((mob==null)
-		||(R==null)
-		||(mob.findTattoo("SYSTEM_SUMMONED")!=null))
+		||(R==null))
 			return;
 		else
 		{
