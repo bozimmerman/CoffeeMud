@@ -100,8 +100,8 @@ public class Merfolk extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	culturalAbilityNames			= { "Aquan", "Fishing" };
-	private final int[]		culturalAbilityProficiencies	= { 25, 100 };
+	private final String[]	culturalAbilityNames			= { "Aquan", "Fishing", "Chant_LandLegs" };
+	private final int[]		culturalAbilityProficiencies	= { 25, 100, 25 };
 
 	@Override
 	public String[] culturalAbilityNames()
@@ -115,11 +115,11 @@ public class Merfolk extends StdRace
 		return culturalAbilityProficiencies;
 	}
 
-	private final String[]					racialAbilityNames			= { "Skill_Swim", "Skill_Autoswim", "Chant_LandLegs" };
-	private final int[]						racialAbilityLevels			= { 1, 1, 1 };
-	private final int[]						racialAbilityProficiencies	= { 100, 100, 25 };
-	private final boolean[]					racialAbilityQuals			= { false,false,false };
-	private final String[]					racialAbilityParms			= { "", "", ""};
+	private final String[]					racialAbilityNames			= { "Skill_Swim", "Skill_Autoswim" };
+	private final int[]						racialAbilityLevels			= { 1, 1 };
+	private final int[]						racialAbilityProficiencies	= { 100, 100 };
+	private final boolean[]					racialAbilityQuals			= { false,false };
+	private final String[]					racialAbilityParms			= { "", ""};
 
 	@Override
 	protected String[] racialAbilityNames()
