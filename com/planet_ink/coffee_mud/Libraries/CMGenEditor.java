@@ -6351,7 +6351,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						str.append(R.racialCategory()+", ");
 					}
 				}
-				str=new StringBuilder(str.toString().substring(0,str.length()-2)+".");
+				str=new StringBuilder(str.toString().substring(0,str.length()-2)+". ");
+				str.append("To create a new category, put the word 'new' in front of it. ");
 				mob.tell(str.toString());
 			}
 			else
