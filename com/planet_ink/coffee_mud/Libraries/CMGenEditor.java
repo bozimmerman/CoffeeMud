@@ -855,7 +855,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			final Physical origCataP = CMLib.catalog().getCatalogObj(P);
 			final Physical cataP=(Physical)origCataP.copyOf();
 			CMLib.catalog().changeCatalogUsage(cataP,true);
-			final StringBuffer detailedDiff=new StringBuffer("");
+			final StringBuilder detailedDiff=new StringBuilder("");
 			final List<String> V=CMParms.parseCommas(diffs.toString(),true);
 
 			for(int v=0;v<V.size();v++)
@@ -1043,7 +1043,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
 		final TimeClock TC=A.getTimeObj();
-		StringBuffer report=new StringBuffer("");
+		StringBuilder report=new StringBuilder("");
 		boolean usingParent = false;
 		for(final Enumeration<Area> a=A.getParents();a.hasMoreElements();)
 		{
@@ -1069,7 +1069,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		String newName="";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(newName.length()==0))
 		{
-			report=new StringBuffer("\n\rCalendar/Clock settings:\n\r");
+			report=new StringBuilder("\n\rCalendar/Clock settings:\n\r");
 			report.append("1. "+TC.getHoursInDay()+" hours per day\n\r");
 			report.append("2. Dawn Hour: "+TC.getDawnToDusk()[TimeClock.TimeOfDay.DAWN.ordinal()]+"\n\r");
 			report.append("3. Day Hour: "+TC.getDawnToDusk()[TimeClock.TimeOfDay.DAY.ordinal()]+"\n\r");
@@ -1943,7 +1943,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			final String newType=mob.session().prompt(L("Enter a new type (?)\n\r:"),RawMaterial.CODES.NAME(E.liquidType()));
 			if(newType.equals("?"))
 			{
-				final StringBuffer say=new StringBuffer("");
+				final StringBuilder say=new StringBuilder("");
 				final List<Integer> liquids = RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_LIQUID);
 				for(final Integer code : liquids)
 					say.append(RawMaterial.CODES.NAME(code.intValue())+", ");
@@ -2384,7 +2384,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						 "unattackable"};
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
-			final StringBuffer buf=new StringBuffer(showNumber+". Dispositions: ");
+			final StringBuilder buf=new StringBuilder(showNumber+". Dispositions: ");
 			for(int i=0;i<disps.length;i++)
 			{
 				final int mask=disps[i];
@@ -2575,7 +2575,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
-			final StringBuffer buf=new StringBuffer(showNumber+". New Char Bonuses: ");
+			final StringBuilder buf=new StringBuilder(showNumber+". New Char Bonuses: ");
 			buf.append(" C:").append(pStats.getBonusCommonSkillLimits())
 			   .append(" F:").append(pStats.getBonusCraftingSkillLimits())
 			   .append(" G:").append(pStats.getBonusNonCraftingSkillLimits())
@@ -2599,7 +2599,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
-			final StringBuffer buf=new StringBuffer(showNumber+". Stats: ");
+			final StringBuilder buf=new StringBuilder(showNumber+". Stats: ");
 			for(final int i : CharStats.CODES.BASECODES())
 				buf.append(CharStats.CODES.ABBR(i)+":"+E.baseCharStats().getStat(i)+" ");
 			mob.tell(buf.toString());
@@ -2643,7 +2643,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		final CharState baseState=E.baseState();
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
-			final StringBuffer buf=new StringBuffer(showNumber+". State: ");
+			final StringBuilder buf=new StringBuilder(showNumber+". State: ");
 			for(final String i : baseState.getStatCodes())
 				buf.append(i.substring(0,2)+":"+E.baseState().getStat(i)+" ");
 			mob.tell(buf.toString());
@@ -2707,7 +2707,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 								 "items"};
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
-			final StringBuffer buf=new StringBuffer(showNumber+". Senses: ");
+			final StringBuilder buf=new StringBuilder(showNumber+". Senses: ");
 			for(int i=0;i<senses.length;i++)
 			{
 				final int mask=senses[i];
@@ -3112,14 +3112,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			||(!CMath.isDouble(newDenom))
 			||((DV!=null)&&(CMLib.beanCounter().getDenominationIndex(I.getCurrency(), CMath.s_double(newDenom))<0)))
 			{
-				StringBuffer allDenoms=new StringBuffer("");
+				StringBuilder allDenoms=new StringBuilder("");
 				if(DV!=null)
 				{
 					for (final MoneyDenomination element : DV)
 						allDenoms.append(element.value()+"("+element.name()+"), ");
 				}
 				if(allDenoms.toString().endsWith(", "))
-					allDenoms=new StringBuffer(allDenoms.substring(0,allDenoms.length()-2));
+					allDenoms=new StringBuilder(allDenoms.substring(0,allDenoms.length()-2));
 				mob.tell(L("'@x1' is not a defined denomination. Try one of these: @x2.",newDenom,allDenoms.toString()));
 				gocontinue=true;
 			}
@@ -3418,7 +3418,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			final String newType=mob.session().prompt(L("Enter a new level (?)\n\r"),Area.THEME_PHRASE[A.getThemeCode()]);
 			if(newType.equals("?"))
 			{
-				final StringBuffer say=new StringBuffer("");
+				final StringBuilder say=new StringBuilder("");
 				for(int i=1;i<Area.THEME_PHRASE.length;i++)
 					say.append(i+") "+Area.THEME_PHRASE[i]+"\n\r");
 				mob.tell(say.toString());
@@ -3468,7 +3468,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 			if(newType.equals("?"))
 			{
-				final StringBuffer say=new StringBuffer("");
+				final StringBuilder say=new StringBuilder("");
 				for(final String codeName : RawMaterial.CODES.NAMES())
 					say.append(codeName+", ");
 				mob.tell(say.toString().substring(0,say.length()-2));
@@ -3525,7 +3525,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 			if(newType.equals("?"))
 			{
-				final StringBuffer say=new StringBuffer("");
+				final StringBuilder say=new StringBuilder("");
 				for(final String codeName : CMMsg.TYPE_DESCS)
 					say.append(codeName+", ");
 				mob.tell(say.toString().substring(0,say.length()-2));
@@ -3584,7 +3584,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			final String newType=mob.session().prompt(L("Enter a new material (?)\n\r:"),matName);
 			if(newType.equals("?"))
 			{
-				final StringBuffer say=new StringBuffer("");
+				final StringBuilder say=new StringBuilder("");
 				if(inheritOk)
 					say.append("Inherited, ");
 				for(final String S : RawMaterial.CODES.NAMES())
@@ -3635,7 +3635,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				return;
 			if(newType.equals("?"))
 			{
-				final StringBuffer say=new StringBuffer("");
+				final StringBuilder say=new StringBuilder("");
 				say.append("ANYTHING, ");
 				for(final String S : RawMaterial.CODES.NAMES())
 					say.append(S+", ");
@@ -3709,7 +3709,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			final String newType=mob.session().prompt(L("Enter a new type (?)\n\r:"),E.getInstrumentTypeName());
 			if(newType.equals("?"))
 			{
-				final StringBuffer say=new StringBuffer("");
+				final StringBuilder say=new StringBuilder("");
 				for(final InstrumentType type : MusicalInstrument.InstrumentType.values())
 					say.append(type.name()+", ");
 				mob.tell(say.toString().substring(0,say.length()-2));
@@ -3949,7 +3949,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		String classID="begin!";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(classID.length()>0))
 		{
-			final StringBuffer str=new StringBuffer("");
+			final StringBuilder str=new StringBuilder("");
 			for(int c=0;c<M.baseCharStats().numClasses();c++)
 			{
 				final CharClass C=M.baseCharStats().getMyClass(c);
@@ -3975,8 +3975,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							mob.tell(L("Final class may not be removed.  To change a class, add the new one first."));
 						else
 						{
-							final StringBuffer charClasses=new StringBuffer("");
-							final StringBuffer classLevels=new StringBuffer("");
+							final StringBuilder charClasses=new StringBuilder("");
+							final StringBuilder classLevels=new StringBuilder("");
 							for(int c=0;c<M.baseCharStats().numClasses();c++)
 							{
 								final CharClass C2=M.baseCharStats().getMyClass(c);
@@ -4532,8 +4532,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if((showFlag!=showNumber)&&(showFlag>-999))
 				return;
 
-			final StringBuffer buf=new StringBuffer("");
-			final StringBuffer codes=new StringBuffer("");
+			final StringBuilder buf=new StringBuilder("");
+			final StringBuilder codes=new StringBuilder("");
 			final String codeStr="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!=+-@#$%&*~;:,<.>_";
 			if(M instanceof Banker)
 			{
@@ -4733,8 +4733,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if((showFlag!=showNumber)&&(showFlag>-999))
 				return;
 
-			final StringBuffer buf=new StringBuffer("");
-			final StringBuffer codes=new StringBuffer("");
+			final StringBuilder buf=new StringBuilder("");
+			final StringBuilder codes=new StringBuilder("");
 			final String codeStr="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!=+-@#$%&*~;:,<.>_";
 			for(int r=0;r<ViewType.values().length;r++)
 			{
@@ -5678,7 +5678,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
-			final StringBuffer buf=new StringBuffer();
+			final StringBuilder buf=new StringBuilder();
 			buf.append(showNumber+". ");
 			buf.append(L("Player Level: @x1",""+A.getPlayerLevel()));
 			if(A.getPlayerLevel()==0)
@@ -5713,7 +5713,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
-			final StringBuffer buf=new StringBuffer();
+			final StringBuilder buf=new StringBuilder();
 			buf.append(showNumber+". ");
 			buf.append(L("Radius: @x1, Coords in space: @x2\n\r",CMLib.english().sizeDescShort(E.radius()),CMLib.english().coordDescShort(E.coordinates())));
 			buf.append(showNumber+". Moving: ");
@@ -5892,7 +5892,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
-			final StringBuffer buf=new StringBuffer(showNumber+". ");
+			final StringBuilder buf=new StringBuilder(showNumber+". ");
 			if(!logicalAnd[0])
 				buf.append(L("Wear on any one of: "));
 			else
@@ -6042,7 +6042,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
 		final List<String> set=CMParms.parseCommas(E.getStat(field),true);
-		final StringBuffer str=new StringBuffer("");
+		final StringBuilder str=new StringBuilder("");
 		for(int v=0;v<set.size();v++)
 			str.append(" "+Weapon.CLASS_DESCS[CMath.s_int(set.get(v))].toLowerCase());
 
@@ -6102,7 +6102,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
 		final List<String> set=CMParms.parseCommas(E.getStat(field),true);
-		final StringBuffer str=new StringBuffer("");
+		final StringBuilder str=new StringBuilder("");
 		for(int v=0;v<set.size();v++)
 			str.append(" "+CMLib.materials().getMaterialDesc(CMath.s_int(set.get(v))));
 
@@ -6162,7 +6162,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		String newName="?";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(newName.equals("?")))
 		{
-			final StringBuffer disabled=new StringBuffer("");
+			final StringBuilder disabled=new StringBuilder("");
 			for(int i=0;i<Race.GENFLAG_DESCS.length;i++)
 			{
 				if(CMath.isSet(flags,i))
@@ -6188,7 +6188,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 			if(newName.equalsIgnoreCase("?"))
 			{
-				final StringBuffer str=new StringBuffer(L("Valid values: \n\r"));
+				final StringBuilder str=new StringBuilder(L("Valid values: \n\r"));
 				for (final String element : Race.GENFLAG_DESCS)
 					str.append(element+"\n\r");
 				mob.tell(str.toString());
@@ -6209,7 +6209,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		final Wearable.CODES codes = Wearable.CODES.instance();
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(newName.equals("?")))
 		{
-			final StringBuffer wearable=new StringBuffer("");
+			final StringBuilder wearable=new StringBuilder("");
 			for(int i=1;i<codes.total();i++)
 			{
 				if(CMath.isSet(flags,i-1))
@@ -6238,7 +6238,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 			if(newName.equalsIgnoreCase("?"))
 			{
-				final StringBuffer str=new StringBuffer(L("Valid values: \n\r"));
+				final StringBuilder str=new StringBuilder(L("Valid values: \n\r"));
 				for(final String name : codes.names())
 					str.append(name+" ");
 				mob.tell(str.toString());
@@ -6269,7 +6269,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 			if(newName.equalsIgnoreCase("?"))
 			{
-				final StringBuffer str=new StringBuffer(L("Valid values: \n\r"));
+				final StringBuilder str=new StringBuilder(L("Valid values: \n\r"));
 				for(int i=0;i<Area.THEME_PHRASE_EXT.length;i++)
 					str.append(i+") "+Area.THEME_PHRASE_EXT[i]+"\n\r");
 				mob.tell(str.toString());
@@ -6299,7 +6299,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 			if(newName.equalsIgnoreCase("?"))
 			{
-				final StringBuffer str=new StringBuffer(L("Valid values: \n\r"));
+				final StringBuilder str=new StringBuilder(L("Valid values: \n\r"));
 				for(int i=0;i<Area.THEME_PHRASE_EXT.length;i++)
 					str.append(i+") "+Area.THEME_PHRASE_EXT[i]+"\n\r");
 				mob.tell(str.toString());
@@ -6340,7 +6340,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			if(!found)
 			{
-				final StringBuffer str=new StringBuffer(L("That category does not exist.  Valid categories include: "));
+				StringBuilder str=new StringBuilder(L("That category does not exist.  Valid categories include: "));
 				final HashSet<String> H=new HashSet<String>();
 				for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 				{
@@ -6351,7 +6351,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						str.append(R.racialCategory()+", ");
 					}
 				}
-				mob.tell(str.toString().substring(0,str.length()-2)+".");
+				str=new StringBuilder(str.toString().substring(0,str.length()-2)+".");
+				mob.tell(str.toString());
 			}
 			else
 				E.setStat("CAT",newName);
@@ -6378,7 +6379,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				R2=null;
 			if(R2==null)
 			{
-				final StringBuffer str=new StringBuffer(L("That race name is invalid or is generic.  Valid races include: "));
+				final StringBuilder str=new StringBuilder(L("That race name is invalid or is generic.  Valid races include: "));
 				for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 				{
 					final Race R=r.nextElement();
@@ -6415,7 +6416,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				C2=null;
 			if(C2==null)
 			{
-				final StringBuffer str=new StringBuffer(L("That char class name is invalid or is generic.  Valid char classes include: "));
+				final StringBuilder str=new StringBuilder(L("That char class name is invalid or is generic.  Valid char classes include: "));
 				for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 				{
 					final CharClass C=c.nextElement();
@@ -6499,7 +6500,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
-		final StringBuffer parts=new StringBuffer("");
+		final StringBuilder parts=new StringBuilder("");
 		for(int i=0;i<Race.BODYPARTSTR.length;i++)
 		{
 			if(E.bodyMask()[i]!=0)
@@ -6514,7 +6515,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			final Integer partNum=Race.BODYPARTHASH.get(newName.toUpperCase().trim());
 			if(partNum==null)
 			{
-				final StringBuffer str=new StringBuffer(L("That body part is invalid.  Valid parts include: "));
+				final StringBuilder str=new StringBuilder(L("That body part is invalid.  Valid parts include: "));
 				for (final String element : Race.BODYPARTSTR)
 					str.append(element+", ");
 				mob.tell(str.toString().substring(0,str.length()-2)+".");
@@ -6540,7 +6541,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		final PhyStats S=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 		S.setAllValues(0);
 		CMLib.coffeeMaker().setPhyStats(S,R.getStat("ESTATS"));
-		final StringBuffer parts=new StringBuffer("");
+		final StringBuilder parts=new StringBuilder("");
 		for(int i=0;i<S.getStatCodes().length;i++)
 		{
 			if(CMath.s_int(S.getStat(S.getStatCodes()[i]))!=0)
@@ -6566,7 +6567,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 				if(partName==null)
 				{
-					final StringBuffer str=new StringBuffer(L("That stat is invalid.  Valid stats include: "));
+					final StringBuilder str=new StringBuilder(L("That stat is invalid.  Valid stats include: "));
 					for(int i=0;i<S.getStatCodes().length;i++)
 						str.append(S.getStatCodes()[i]+", ");
 					mob.tell(str.toString().substring(0,str.length()-2)+".");
@@ -6634,7 +6635,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		final CharState S=(CharState)CMClass.getCommon("DefaultCharState"); S.setAllValues(0);
 		CMLib.coffeeMaker().setCharState(S,R.getStat(field));
-		final StringBuffer parts=new StringBuffer("");
+		final StringBuilder parts=new StringBuilder("");
 		for(int i=0;i<S.getStatCodes().length;i++)
 		{
 			if(CMath.s_int(S.getStat(S.getStatCodes()[i]))!=0)
@@ -6660,7 +6661,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 				if(partName==null)
 				{
-					final StringBuffer str=new StringBuffer(L("That stat is invalid.  Valid stats include: "));
+					final StringBuilder str=new StringBuilder(L("That stat is invalid.  Valid stats include: "));
 					for(int i=0;i<S.getStatCodes().length;i++)
 						str.append(S.getStatCodes()[i]+", ");
 					mob.tell(str.toString().substring(0,str.length()-2)+".");
@@ -6704,7 +6705,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		final CharStats S=(CharStats)CMClass.getCommon("DefaultCharStats"); S.setAllValues(0);
 		CMLib.coffeeMaker().setCharStats(S,R.getStat(field));
-		final StringBuffer parts=new StringBuffer("");
+		final StringBuilder parts=new StringBuilder("");
 		for(final int i : CharStats.CODES.ALLCODES())
 		{
 			if(S.getStat(i)!=0)
@@ -6730,7 +6731,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 				if(partNum<0)
 				{
-					final StringBuffer str=new StringBuffer(L("That stat is invalid.  Valid stats include: "));
+					final StringBuilder str=new StringBuilder(L("That stat is invalid.  Valid stats include: "));
 					for(final int i : CharStats.CODES.ALLCODES())
 						str.append(CharStats.CODES.DESC(i)+", ");
 					mob.tell(str.toString().substring(0,str.length()-2)+".");
@@ -6787,7 +6788,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		final PhyStats S=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 		S.setAllValues(0);
 		CMLib.coffeeMaker().setPhyStats(S,R.getStat("ESTATS"));
-		final StringBuffer parts=new StringBuffer("");
+		final StringBuilder parts=new StringBuilder("");
 		for(int i=0;i<S.getStatCodes().length;i++)
 			if((i!=PhyStats.STAT_REJUV)||(!skipRejuv))
 				if(CMath.s_int(S.getStat(S.getStatCodes()[i]))!=0)
@@ -6815,7 +6816,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 				if(partName==null)
 				{
-					final StringBuffer str=new StringBuffer(L("That stat is invalid.  Valid stats include: "));
+					final StringBuilder str=new StringBuilder(L("That stat is invalid.  Valid stats include: "));
 					for(int i=0;i<S.getStatCodes().length;i++)
 						str.append(S.getStatCodes()[i]+", ");
 					mob.tell(str.toString().substring(0,str.length()-2)+".");
@@ -6883,7 +6884,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		final CharState S=(CharState)CMClass.getCommon("DefaultCharState"); S.setAllValues(0);
 		CMLib.coffeeMaker().setCharState(S,R.getStat(field));
-		final StringBuffer parts=new StringBuffer("");
+		final StringBuilder parts=new StringBuilder("");
 		for(int i=0;i<S.getStatCodes().length;i++)
 		{
 			if(CMath.s_int(S.getStat(S.getStatCodes()[i]))!=0)
@@ -6909,7 +6910,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 				if(partName==null)
 				{
-					final StringBuffer str=new StringBuffer(L("That stat is invalid.  Valid stats include: "));
+					final StringBuilder str=new StringBuilder(L("That stat is invalid.  Valid stats include: "));
 					for(int i=0;i<S.getStatCodes().length;i++)
 						str.append(S.getStatCodes()[i]+", ");
 					mob.tell(str.toString().substring(0,str.length()-2)+".");
@@ -6953,7 +6954,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		final CharStats S=(CharStats)CMClass.getCommon("DefaultCharStats"); S.setAllValues(0);
 		CMLib.coffeeMaker().setCharStats(S,R.getStat(field));
-		final StringBuffer parts=new StringBuffer("");
+		final StringBuilder parts=new StringBuilder("");
 		for(final int i : CharStats.CODES.ALLCODES())
 		{
 			if(S.getStat(i)!=0)
@@ -6979,7 +6980,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 				if(partNum<0)
 				{
-					final StringBuffer str=new StringBuffer(L("That stat is invalid.  Valid stats include: "));
+					final StringBuilder str=new StringBuilder(L("That stat is invalid.  Valid stats include: "));
 					for(final int i : CharStats.CODES.ALLCODES())
 						str.append(CharStats.CODES.DESC(i)+", ");
 					mob.tell(str.toString().substring(0,str.length()-2)+".");
@@ -7023,7 +7024,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
 		{
-			final StringBuffer parts=new StringBuffer("");
+			final StringBuilder parts=new StringBuilder("");
 			final int numResources=CMath.s_int(E.getStat("NUMRSC"));
 			final DVector DV=new DVector(2);
 			for(int r=0;r<numResources;r++)
@@ -7163,7 +7164,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
 		{
-			final StringBuffer parts=new StringBuffer("");
+			final StringBuilder parts=new StringBuilder("");
 			final int numResources=CMath.s_int(E.getStat("NUMOFT"));
 			final List<Item> V=new ArrayList<Item>();
 			for(int v=0;v<numResources;v++)
@@ -7246,7 +7247,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
 		{
-			final StringBuffer parts=new StringBuffer("");
+			final StringBuilder parts=new StringBuilder("");
 			final int numResources=CMath.s_int(E.getStat("NUMOFT"));
 			final List<Item> V=new ArrayList<Item>();
 			for(int v=0;v<numResources;v++)
@@ -7329,7 +7330,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
 		{
-			final StringBuffer parts=new StringBuffer("");
+			final StringBuilder parts=new StringBuilder("");
 			final int numResources=CMath.s_int(E.getStat("NUMMINSTATS"));
 			final Vector<Pair<String,Integer>> V=new Vector<Pair<String,Integer>>();
 			for(int v=0;v<numResources;v++)
@@ -7409,7 +7410,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
-		final StringBuffer parts=new StringBuffer("");
+		final StringBuilder parts=new StringBuilder("");
 		Item I=CMClass.getItem(E.getStat("WEAPONCLASS"));
 		if(I!=null)
 		{
@@ -7503,7 +7504,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 
 		int flags=CMath.s_int(E.getStat("DISFLAGS"));
-		final StringBuffer sets=new StringBuffer("");
+		final StringBuilder sets=new StringBuilder("");
 		if(CMath.bset(flags,CharClass.GENFLAG_NORACE))
 			sets.append("Raceless ");
 		if(CMath.bset(flags,CharClass.GENFLAG_NOLEVELS))
@@ -7551,7 +7552,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
 		{
-			final StringBuffer parts=new StringBuffer("");
+			final StringBuilder parts=new StringBuilder("");
 			final int numResources=CMath.s_int(E.getStat("NUMRABLE"));
 			final Vector<Ability> ables=new Vector<Ability>();
 			final Vector<String> data=new Vector<String>();
@@ -7620,7 +7621,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						mob.tell(L("'@x1' cannot be named, as it has no trigger/command words.",A.name()));
 					else
 					{
-						final StringBuffer str=new StringBuffer(A.ID()+";");
+						final StringBuilder str=new StringBuilder(A.ID()+";");
 						final String level=mob.session().prompt(L("Enter the level of this skill (1): "),"1");
 						str.append((""+CMath.s_int(level))+";");
 						if(mob.session().confirm(L("Is this skill automatically gained (Y/n)?"),"Y"))
@@ -7716,7 +7717,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
 		{
-			final StringBuffer parts=new StringBuffer("");
+			final StringBuilder parts=new StringBuilder("");
 			final int numResources=CMath.s_int(E.getStat("NUMREFF"));
 			final Vector<Ability> ables=new Vector<Ability>();
 			final Vector<String> data=new Vector<String>();
@@ -7780,7 +7781,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					}
 					else
 					{
-						final StringBuffer str=new StringBuffer(A.ID()+"~");
+						final StringBuilder str=new StringBuilder(A.ID()+"~");
 						final String level=mob.session().prompt(L("Enter the @x1 level to gain this effect (1): ",levelName),"1");
 						str.append((""+CMath.s_int(level))+"~");
 						final String prof=mob.session().prompt(L("Enter any parameters: "),"");
@@ -7868,7 +7869,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
 		{
-			final StringBuffer parts=new StringBuffer("");
+			final StringBuilder parts=new StringBuilder("");
 			final int numResources=CMath.s_int(E.getStat("NUMIABLE"));
 			final Vector<Ability> ables=new Vector<Ability>();
 			final Vector<String> data=new Vector<String>();
@@ -8051,7 +8052,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
 		{
-			final StringBuffer parts=new StringBuffer("");
+			final StringBuilder parts=new StringBuilder("");
 			int numAbles=CMath.s_int(E.getStat("NUMCABLE"));
 			final DVector levelSets=new DVector(2);
 			int maxAbledLevel=Integer.MIN_VALUE;
@@ -8273,7 +8274,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
 		{
-			final StringBuffer parts=new StringBuffer("");
+			final StringBuilder parts=new StringBuilder("");
 			final int numResources=CMath.s_int(E.getStat("NUMCABLE"));
 			final Vector<Ability> ables=new Vector<Ability>();
 			final Vector<String> data=new Vector<String>();
@@ -8322,7 +8323,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					}
 					else
 					{
-						final StringBuffer str=new StringBuffer(A.ID()+";");
+						final StringBuilder str=new StringBuilder(A.ID()+";");
 						final String prof=mob.session().prompt(L("Enter the default proficiency level (100): "),"100");
 						str.append((""+CMath.s_int(prof)));
 						final String levelStr=mob.session().prompt(L("Enter the character level (0): "),"0");
@@ -10761,14 +10762,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				return;
 			}
 			int newGovt=-1;
-			StringBuffer gvts=new StringBuffer();
+			StringBuilder gvts=new StringBuilder();
 			for(final ClanGovernment gvt : CMLib.clans().getStockGovernments())
 			{
 				gvts.append(gvt.getName()+", ");
 				if(newName.equalsIgnoreCase(gvt.getName()))
 					newGovt=gvt.getID();
 			}
-			gvts=new StringBuffer(gvts.substring(0,gvts.length()-2));
+			gvts=new StringBuilder(gvts.substring(0,gvts.length()-2));
 			if(newGovt<0)
 				mob.tell(L("That government type is invalid.  Valid types include: @x1",gvts.toString()));
 			else
@@ -10825,14 +10826,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				return;
 			}
 			int newRole=-1;
-			StringBuffer roles=new StringBuffer();
+			StringBuilder roles=new StringBuilder();
 			for(int i=0;i<C.getRolesList().length;i++)
 			{
 				roles.append(C.getRolesList()[i]+", ");
 				if(newName.equalsIgnoreCase(C.getRolesList()[i]))
 					newRole=i;
 			}
-			roles=new StringBuffer(roles.substring(0,roles.length()-2));
+			roles=new StringBuilder(roles.substring(0,roles.length()-2));
 			if(newRole<0)
 				mob.tell(L("That role is invalid.  Valid roles include: @x1",roles.toString()));
 			else
@@ -10870,7 +10871,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				return;
 			}
 			CharClass newC=null;
-			StringBuffer clss=new StringBuffer();
+			StringBuilder clss=new StringBuilder();
 			for(final Enumeration<CharClass> e=CMClass.charClasses();e.hasMoreElements();)
 			{
 				CC=e.nextElement();
@@ -10878,7 +10879,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(newName.equalsIgnoreCase(CC.name())||(newName.equalsIgnoreCase(CC.ID())))
 					newC=CC;
 			}
-			clss=new StringBuffer(clss.substring(0,clss.length()-2));
+			clss=new StringBuilder(clss.substring(0,clss.length()-2));
 			if((newC==null)||(newC.availabilityCode()==0))
 				mob.tell(L("That class name is invalid.  Valid names include: @x1",clss.toString()));
 			else
