@@ -54,6 +54,14 @@ public class PirateTalk extends StdLanguage
 		super();
 	}
 
+	final private static Set<String> supp = new XHashSet<String>(new String[]{"PirateTalk", "", "Common"});
+
+	@Override
+	public Set<String> languagesSupported()
+	{
+		return supp;
+	}
+
 	private static final Hashtable<String,String> hashWords=new Hashtable<String,String>();
 
 	@Override

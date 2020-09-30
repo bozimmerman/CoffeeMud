@@ -64,7 +64,8 @@ public class Prop_LangTranslator extends Property implements Language
 		return CAN_MOBS | CAN_ITEMS | CAN_ROOMS;
 	}
 
-	protected PairVector<String,Integer> langs=new PairVector<String,Integer>();
+	protected PairVector<String, Integer>	langs	= new PairVector<String, Integer>();
+	protected Set<String>					ints	= new XHashSet<String>("Common");
 
 	@Override
 	public String accountForYourself()
@@ -78,6 +79,7 @@ public class Prop_LangTranslator extends Property implements Language
 		super.setMiscText(text);
 		final Vector<String> V=CMParms.parse(text);
 		langs.clear();
+		ints.clear();
 		int lastpct=100;
 		for(int v=0;v<V.size();v++)
 		{
@@ -90,15 +92,18 @@ public class Prop_LangTranslator extends Property implements Language
 			{
 				final Ability A=CMClass.getAbility(s);
 				if(A!=null)
+				{
 					langs.addElement(A.ID(),Integer.valueOf(lastpct));
+					ints.add(A.ID());
+				}
 			}
 		}
 	}
 
 	@Override
-	public List<String> languagesSupported()
+	public Set<String> languagesSupported()
 	{
-		return Arrays.asList(langs.toArrayFirst(new String[0]));
+		return ints;
 	}
 
 	@Override

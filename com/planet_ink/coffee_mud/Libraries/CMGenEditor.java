@@ -8783,6 +8783,45 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					}
 				}
 			}
+			++showNumber;
+			if((showFlag<=0)||(showFlag==showNumber))
+			{
+				mob.tell(L("@x1. Translate IDs: @x2",""+showNumber,me.getStat("INTERPRETS")));
+				if((showFlag==showNumber)||(showFlag<=-999))
+				{
+					final String promptStr=L("Enter a language ID to add or remove\n\r:");
+					while((mob.session()!=null)&&(!mob.session().isStopped()))
+					{
+						String word=mob.session().prompt(promptStr,"");
+						if(word.trim().length()==0)
+						{
+							break;
+						}
+						if(!(CMClass.findAbility(word) instanceof Language))
+							mob.tell(L("You can not add or remove @x1, it is not a known language.",word));
+						else
+						{
+							word = CMClass.findAbility(word).ID();
+							if(me.languagesSupported().contains(word))
+							{
+								if(me.languagesSupported().size()==1)
+									mob.tell(L("You must leave at least one translation id."));
+								else
+								{
+									me.languagesSupported().remove(word);
+									mob.tell(L("'@x1' removed.",word));
+								}
+							}
+							else
+							{
+								me.languagesSupported().add(word);
+								mob.tell(L("'@x1' added.",word));
+							}
+						}
+					}
+				}
+			}
+
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Help Text","HELP",true);
 
 			if (showFlag < -900)

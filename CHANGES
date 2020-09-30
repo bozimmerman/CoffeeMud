@@ -1,6 +1,7 @@
 # Build 5.9.11 Release 6/16/2020
   1. a(n) is now official filter syntax for a/an
   2. Shutdown command now supports AT syntax to set a RL time certain.
+  3. Languages now support a translation ID to assist shopkeepers with slang languages.
 
 # Build 5.9.10 Release 6/16/2020
   1. Wands/etc have enchant type as a restriction, WandMaking/StaffMaking/Rodsmithing support.

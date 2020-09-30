@@ -422,9 +422,9 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 	}
 
 	@Override
-	public List<String> languagesSupported()
+	public Set<String> languagesSupported()
 	{
-		return new LinkedList<String>();
+		return myLanguages.keySet();
 	}
 
 	@Override

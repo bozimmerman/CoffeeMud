@@ -68,6 +68,78 @@ public class AbilityData extends StdWebMacro
 		return list.toString();
 	}
 
+	public static StringBuffer interprets(final Language E, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize)
+	{
+		final StringBuffer str=new StringBuffer("");
+		if(parms.containsKey("INTERPRETS"))
+		{
+			final Vector<String> theclasses=new Vector<String>();
+			if(httpReq.isUrlParameter("INTERPRET1"))
+			{
+				int num=1;
+				String ID=httpReq.getUrlParameter("INTERPRET"+num);
+				while(ID!=null)
+				{
+					if(ID.length()>0)
+						theclasses.addElement(ID);
+					num++;
+					ID=httpReq.getUrlParameter("INTERPRET"+num);
+				}
+			}
+			else
+			for(final String ID : E.languagesSupported())
+			{
+				if(ID!=null)
+					theclasses.addElement(ID);
+			}
+			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
+			for(int i=0;i<theclasses.size();i++)
+			{
+				final String theclass=theclasses.elementAt(i);
+				str.append("<TR><TD WIDTH=50%>");
+				str.append("<SELECT ONCHANGE=\"EditInterpret(this);\" NAME=INTERPRET"+(i+1)+">");
+				str.append("<OPTION VALUE=\"\">Delete!");
+				str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
+				str.append("</SELECT>");
+				str.append("</TD><TD WIDTH=50%>");
+				str.append("</TD></TR>");
+			}
+			str.append("<TR><TD WIDTH=50%>");
+			str.append("<SELECT ONCHANGE=\"EditInterpret(this);\" NAME=INTERPRET"+(theclasses.size()+1)+">");
+			str.append("<OPTION SELECTED VALUE=\"\">Select a Language");
+
+			Object[] sortedB=null;
+			final Vector<String> sortMeB=new Vector<String>();
+			for(final Enumeration<Ability> b=CMClass.abilities(new Filterer<Ability>() {
+				@Override
+				public boolean passesFilter(Ability obj)
+				{
+					return (obj instanceof Language)
+							&&(!obj.ID().equals("GenLanguage"))
+							&&(!obj.ID().equals("StdLanguage"))
+							;
+				}
+
+			});b.hasMoreElements();)
+			{
+				final Ability A=b.nextElement();
+				if(!theclasses.contains(A.ID()))
+					sortMeB.addElement(A.ID());
+			}
+			sortedB=(new TreeSet<String>(sortMeB)).toArray();
+			for(int r=0;r<sortedB.length;r++)
+			{
+				final String cnam=(String)sortedB[r];
+				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
+			}
+			str.append("</SELECT>");
+			str.append("</TD><TD WIDTH=50%>");
+			str.append("</TD></TR>");
+			str.append("</TABLE>");
+		}
+		return str;
+	}
+
 	// valid parms include help, ranges, quality, target, alignment, domain,
 	// qualifyQ, auto
 	@Override
@@ -220,7 +292,6 @@ public class AbilityData extends StdWebMacro
 						return "<!--EMPTY-->";
 					return " @break@";
 				}
-
 				if(A instanceof Language)
 				{
 					if(parms.containsKey("WORDLISTS"))
@@ -282,6 +353,9 @@ public class AbilityData extends StdWebMacro
 							return " @break@";
 						}
 					}
+
+					if(parms.containsKey("INTERPRETS"))
+						str.append(interprets((Language)A, httpReq, parms, 0));
 
 					if(parms.containsKey("HASHWORDS"))
 					{

@@ -92,6 +92,12 @@
             document.RESOURCES.action='/grinder/ability.cmvp';
             document.RESOURCES.submit();
         }
+        function EditInterpret()
+        {
+            document.RESOURCES.FUNCTION.value='';
+            document.RESOURCES.action='/grinder/ability.cmvp';
+            document.RESOURCES.submit();
+        }
         function ReAbility()
         {
             document.RESOURCES.FUNCTION.value='REABILITY';
@@ -163,7 +169,7 @@
                         <INPUT TYPE=HIDDEN NAME=CLASSIFICATION_ACODE VALUE=7>
                     </TD>
                 </TR>
-            <TR>
+	            <TR>
                 <TD><FONT COLOR=YELLOW>Word replacements: </FONT></TD><TD>
                 @AbilityData?HASHWORDS&RESET@
                 @loop@
@@ -181,6 +187,10 @@
                     <TD></TD>
                     <TD><A HREF="JavaScript:ReShow();"><FONT COLOR=WHITE SIZE=-1>Add another word replacement</FONT></A></TD>
                 </TR>
+		        <TR>
+		            <TD><FONT COLOR=YELLOW>Translate Langs:</FONT></TD>
+		            <TD>@AbilityData?INTERPRETS@</TD>
+		        </TR>
         @else@
         @if?AbilityData?ISCRAFTSKILL@
             <TR>

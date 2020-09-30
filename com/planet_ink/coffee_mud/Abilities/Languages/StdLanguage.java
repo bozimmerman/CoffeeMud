@@ -114,6 +114,8 @@ public class StdLanguage extends StdAbility implements Language
 	private final static String			consonants	= "bcdfghjklmnpqrstvwxz";
 	private final static String			vowels		= "aeiouy";
 
+	private final static Map<String,Set<String>> allLangIDsCache = new Hashtable<String,Set<String>>();
+
 	@Override
 	public boolean beingSpoken(final String language)
 	{
@@ -150,9 +152,11 @@ public class StdLanguage extends StdAbility implements Language
 	}
 
 	@Override
-	public List<String> languagesSupported()
+	public Set<String> languagesSupported()
 	{
-		return new XVector<String>(ID());
+		if(!allLangIDsCache.containsKey(ID()))
+			allLangIDsCache.put(ID(), new XHashSet<String>(ID()));
+		return allLangIDsCache.get(ID());
 	}
 
 	@Override
@@ -390,6 +394,8 @@ public class StdLanguage extends StdAbility implements Language
 					break;
 			}
 		}
+		if((winner == null)&&(languagesSupported().contains(id)))
+			return this;
 		return winner;
 	}
 

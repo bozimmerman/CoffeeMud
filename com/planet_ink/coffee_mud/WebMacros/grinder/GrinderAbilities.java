@@ -275,6 +275,21 @@ public class GrinderAbilities
 					x++;
 				}
 			}
+			((Language)A).languagesSupported().clear();
+			((Language)A).languagesSupported().add(((Language)A).ID());
+			if(httpReq.isUrlParameter("INTERPRET1"))
+			{
+				int x=1;
+				while(httpReq.isUrlParameter("INTERPRET"+x))
+				{
+					final String word=httpReq.getUrlParameter("INTERPRET"+x).trim();
+					if((word != null)
+					&&(!((Language)A).ID().equals(word))
+					&&(CMClass.getAbility(word) instanceof Language))
+						((Language)A).languagesSupported().add(CMClass.getAbility(word).ID());
+					x++;
+				}
+			}
 		}
 		return "";
 	}

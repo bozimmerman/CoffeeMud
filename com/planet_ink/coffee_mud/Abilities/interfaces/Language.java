@@ -50,13 +50,16 @@ public interface Language extends Ability
 	public String writtenName();
 
 	/**
-	 * Returns a list of the languages understood by this ability
+	 * Returns a list of the languages understood by this ability.
+	 * Narrowly used to allow this language to translate others,
+	 * including Common.
 	 * @return vector of language ids supported (usually 1 element == ID())
 	 */
-	public List<String> languagesSupported();
+	public Set<String> languagesSupported();
 
 	/**
-	 * Returns whether the given language is translated by this one
+	 * Returns whether the given language is translated by this one.
+	 * Does not use {@link Language.languaesSupported()}
 	 * @param language the language to test
 	 * @return true if this language translates (usually ID() == language)
 	 */
