@@ -40,7 +40,7 @@ public class Skill_Chirgury extends StdSkill
 		return "Skill_Chirgury";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Chirurgy");
+	private final static String localizedName = CMLib.lang().L("Chirgury");
 
 	@Override
 	public String name()
@@ -66,7 +66,7 @@ public class Skill_Chirgury extends StdSkill
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"CHIRURGY"});
+	private static final String[] triggerStrings =I(new String[] {"CHIRGURY"});
 	@Override
 	public String[] triggerStrings()
 	{
