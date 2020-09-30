@@ -443,7 +443,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			   ||(((((Item)jewelE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PRECIOUS)
 				  &&((((Item)jewelE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_GLASS)))
 			{
-				commonTell(mob,L("A @x1 is not suitable to @x2 on anything.",jewelE.name(),word));
+				commonTell(mob,L("@x1 is not suitable to @x2 on anything.",jewelE.name(),word));
 				return false;
 			}
 			final Item jewelI=(Item)CMLib.materials().unbundle((Item)jewelE,1,null);
@@ -462,7 +462,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				  &&((((Item)thangE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
 				  &&((((Item)thangE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER)))
 			{
-				commonTell(mob,L("A @x1 is not suitable to be @x2ed on.",thangE.name(),word));
+				commonTell(mob,L("@x1 is not suitable to be @x2ed on.",thangE.name(),word));
 				return false;
 			}
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
