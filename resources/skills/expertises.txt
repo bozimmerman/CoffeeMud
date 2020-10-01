@@ -153,8 +153,8 @@ HELP_=<EXPERTISE>The ability to do more damage when using a piercing-type unarme
 UNARMEDBASH@x1=Unarmed Bashing @x2,10,X3,-SKILL +Specialization_Natural,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to do more damage when using a bashing-type unarmed attack.
 
-UNARMEDFOCUS@x1=Unarmed Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_Natural,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability for fighters to wield higher level natural weapons.
+# UNARMEDFOCUS@x1=Unarmed Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_Natural,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
+# HELP_=<EXPERTISE>The ability for fighters to wield higher level natural weapons.
 
 BLUNTSTRIKE@x1=Blunt Striking @x2,10,LEVEL,-SKILL +Specialization_BluntWeapon,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using a blunt-class weapon.
