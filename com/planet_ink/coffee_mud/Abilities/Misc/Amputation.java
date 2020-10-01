@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -652,6 +653,11 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		String choice="";
+		String confirmedSessID = null;
+		final List<String> origCommands = new XVector<String>(commands);
+		if((commands.size()>0)
+		&&(commands.get(commands.size()-1).startsWith("CONFIRMED!:")))
+			confirmedSessID=commands.remove(commands.size()-1).substring(11);
 		if(givenTarget!=null)
 		{
 			if((commands.size()>0)&&((commands.get(0)).equals(givenTarget.name())))
@@ -684,8 +690,18 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 				warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),target);
 			if((warrants.size()==0)&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ABOVELAW)))
 			{
-				mob.tell(L("You are not authorized by law to amputate from @x1 at this time.",target.Name()));
-				return false;
+				final Session sess = target.session();
+				if((sess != null)
+				&&(mob.getGroupMembers(new TreeSet<MOB>()).contains(target))
+				&&(!target.isMonster()))
+				{
+					// law doesn't matter on a follower player
+				}
+				else
+				{
+					mob.tell(L("You are not authorized by law to amputate from @x1 at this time.",target.Name()));
+					return false;
+				}
 			}
 			final Item w=mob.fetchWieldedItem();
 			if(!CMSecurity.isASysOp(mob))
@@ -707,9 +723,72 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 					mob.tell(L("You are too far away to try that!"));
 					return false;
 				}
+				final Session sess = target.session();
+				final String readyChoice = choice;
+				if(!CMLib.flags().isSleeping(target))
+				{
+					mob.tell(L("@x1 must be asleep on an operating bed before you can amputate.",target.charStats().HeShe()));
+					return false;
+				}
+				if(mob==target)
+				{
+					// this is OK, I guess?
+				}
+				else
+				if((sess != null)
+				&&(mob.getGroupMembers(new TreeSet<MOB>()).contains(target))
+				&&(!target.isMonster()))
+				{
+					if(!(""+sess).equals(confirmedSessID))
+					{
+						final Ability preMe=this;
+						sess.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N",0)
+						{
+							final Ability meA=preMe;
+							final Session S=sess;
+							final MOB M=mob;
+							final List<String> cmds=new XVector<String>(origCommands);
+							final Physical givenTargetM=givenTarget;
+							final boolean givenAuto=auto;
+							final int givenLevel=asLevel;
+							final String givenChoice = readyChoice;
+
+							@Override
+							public void showPrompt()
+							{
+								S.promptPrint(L("\n\r'@x1' wants to amputate your @x2.  Is this OK (y/N)? ", mob.name(),givenChoice));
+							}
+
+							@Override
+							public void timedOut()
+							{
+							}
+
+							@Override
+							public void callBack()
+							{
+								if(this.input.equals("Y"))
+								{
+									cmds.add("CONFIRMED!:"+S);
+									CMLib.threads().executeRunnable(new Runnable() {
+
+										@Override
+										public void run()
+										{
+											meA.invoke(M, cmds, givenTargetM, givenAuto, givenLevel);
+										}
+									});
+								}
+							}
+						});
+						mob.tell(mob,target,null,L("This requires <T-YOUPOSS> permission.  You will begin if it is given."));
+						return true;
+					}
+				}
+				else
 				if((!CMLib.flags().isBoundOrHeld(target))||(!CMLib.flags().isSleeping(target)))
 				{
-					mob.tell(L("@x1 must be bound, and asleep on an operating bed before you can amputate.",target.charStats().HeShe()));
+					mob.tell(L("@x1 must be bound before you can amputate.",target.charStats().HeShe()));
 					return false;
 				}
 			}
@@ -789,7 +868,8 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 			final String goneName = (fakeLimb!=null)?fakeLimb.name():gone;
 
 			final String str=auto?"":L("^F^<FIGHT^><S-NAME> amputate(s) <T-YOUPOSS> @x1!^</FIGHT^>^?",goneName);
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),str);
+			final int move = mob.getGroupMembers(new TreeSet<MOB>()).contains(target)?CMMsg.MASK_MOVE:CMMsg.MSK_MALICIOUS_MOVE;
+			final CMMsg msg=CMClass.getMsg(mob,target,this,move|CMMsg.TYP_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),str);
 			CMLib.color().fixSourceFightColor(msg);
 			if(target.location().okMessage(target,msg))
 			{
