@@ -33,6 +33,16 @@ public class XVector<T> extends Vector<T>
 			addAll(V);
 	}
 
+	public XVector(final List<? extends T> V, final int start)
+	{
+		super((V==null)?0:V.size());
+		if (V != null)
+		{
+			for(int i=start;i<V.size();i++)
+				add(V.get(i));
+		}
+	}
+
 	public XVector()
 	{
 		super();

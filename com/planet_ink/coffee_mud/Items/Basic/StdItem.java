@@ -1118,9 +1118,27 @@ public class StdItem implements Item
 			||((this instanceof Rideable)&&(((Rideable)this).rideBasis()==Rideable.RIDEABLE_WATER)))
 				return true;
 			break;
-		case CMMsg.TYP_EXPIRE:
 		case CMMsg.TYP_LOOK:
 		case CMMsg.TYP_EXAMINE:
+		{
+			if(container()!=null)
+			{
+				final Item iC=ultimateContainer(null);
+				if(iC instanceof Container)
+				{
+					final Container C=(Container)iC;
+					final Container cC=container();
+					if(((C.hasADoor()&&!C.isOpen()))
+					||((cC.hasADoor()&&!cC.isOpen())))
+					{
+						msg.source().tell(L("@x1 is not open!",C.name(msg.source())));
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+		case CMMsg.TYP_EXPIRE:
 		case CMMsg.TYP_READ:
 		case CMMsg.TYP_WASREAD:
 		case CMMsg.TYP_QUIETMOVEMENT:
