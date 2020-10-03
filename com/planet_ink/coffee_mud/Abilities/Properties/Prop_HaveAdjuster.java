@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -67,6 +68,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	protected boolean		multiplyCharStates	= false;
 	protected boolean		firstTime			= false;
 	protected String[]		parameters			= new String[] { "", "" };
+	private static String[]	allParms			= null;
 
 	@Override
 	public long flags()
@@ -80,14 +82,31 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		return TriggeredAffect.TRIGGER_GET;
 	}
 
-	public boolean addIfPlussed(final String newText, final String parm, final int parmCode, final ArrayList<Object> addTo)
+	public boolean addIfPlussed(final Map<String,String> ps, final String newText, final String parm, final int parmCode, final ArrayList<Object> addTo, final List<String> errors)
 	{
-		final int val=CMParms.getParmPlus(newText,parm);
-		if(val==0)
-			return false;
-		addTo.add(Integer.valueOf(parmCode));
-		addTo.add(Integer.valueOf(val));
-		return true;
+		if(ps.containsKey(parm))
+		{
+			final String val=ps.get(parm);
+			if(val.startsWith("+")
+			&&(CMath.isNumber(val.substring(1))))
+			{
+				addTo.add(Integer.valueOf(parmCode));
+				addTo.add(Integer.valueOf(CMath.s_int(val.substring(1))));
+				return true;
+			}
+			else
+			if(val.startsWith("-")
+			&&(CMath.isNumber(val.substring(1))))
+			{
+				addTo.add(Integer.valueOf(parmCode));
+				addTo.add(Integer.valueOf(CMath.s_int(val)));
+				return true;
+			}
+			else
+			if(errors!=null)
+				errors.add("Argument "+parm+": expected +-, got '"+val+"' in '"+newText+"'");
+		}
+		return false;
 	}
 
 	public Object[] makeObjectArray(final ArrayList<? extends Object> V)
@@ -100,6 +119,105 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		for(int i=0;i<V.size();i++)
 			O[i]=V.get(i);
 		return O;
+	}
+
+	private final Boolean getParmBool(final Map<String,String> ps, final String newText, final String parm, final boolean def, final List<String> errors)
+	{
+		if(ps.containsKey(parm))
+		{
+			final String val=ps.get(parm);
+			if(CMath.isBool(val))
+				return Boolean.valueOf(CMath.s_bool(val));
+			else
+			if(errors!=null)
+				errors.add("Argument "+parm+": expected boolean, got '"+val+"' in '"+newText+"'");
+		}
+		return Boolean.valueOf(def);
+	}
+
+	private final void addAbleAdjustments(final Map<String,String> ps, final String newText, final String parm, final String prefix, final List<Object> charStatsV, final List<String> errors)
+	{
+		final String ableProfs=this.getParmStr(ps, parameters[0], parm, "");
+		if(ableProfs.length()>0)
+		{
+			final int size=charStatsV.size();
+			final List<String> parts=CMParms.parseCommas(ableProfs, true);
+			for(final String s : parts)
+			{
+				if(s.endsWith(")"))
+				{
+					final int x=s.indexOf('(');
+					if(x>0)
+					{
+						final String ableID = s.substring(0,x);
+						String amts=s.substring(x+1, s.length()-1).trim();
+						if(amts.startsWith("+"))
+							amts=amts.substring(1);
+						if(CMath.isInteger(amts))
+							charStatsV.add(new Pair<String,Integer>(prefix+ableID.toUpperCase(),Integer.valueOf(CMath.s_int(amts))));
+					}
+				}
+			}
+			if(charStatsV.size()-parts.size()!=size)
+				errors.add("Unable to properly parse all "+parm+": "+ableProfs);
+		}
+	}
+
+	private final double getParmDoublePlus(final Map<String,String> ps, final String newText, final String parm, final double def, final List<String> errors)
+	{
+		if(ps.containsKey(parm))
+		{
+			String val=ps.get(parm);
+			if(val.startsWith("+")
+			&&(CMath.isNumber(val.substring(1))))
+				val=val.substring(1);
+			else
+			if(val.startsWith("-")
+			&&(CMath.isNumber(val.substring(1))))
+			{}
+			else
+			{
+				if(errors!=null)
+					errors.add("Argument "+parm+": expected +-, got '"+val+"' in '"+newText+"'");
+				return def;
+			}
+			return CMath.s_double(val);
+		}
+		return def;
+	}
+
+	private final String getParmStr(final Map<String,String> ps, final String newText, final String parm, final String def)
+	{
+		if(ps.containsKey(parm))
+			return ps.get(parm);
+		return def;
+	}
+
+	private final void getComplexPhyTerm(final Map<String,String> ps, final String parm, final int parmCode, final String[] parmCodeStr, final ArrayList<Object> addTo, final List<String> errors)
+	{
+		if(ps.containsKey(parm))
+		{
+			final String senStr=ps.get(parm).toUpperCase();
+			if((senStr.startsWith("+")||senStr.startsWith("-"))
+			&&(CMath.isNumber(senStr.substring(1))))
+				addIfPlussed(ps,parameters[0],parm,parmCode,addTo,errors);
+			else
+			{
+				boolean found=false;
+				for(int chc=0;chc<parmCodeStr.length;chc++)
+				{
+					if(parmCodeStr[chc].indexOf(senStr)>=0)
+					{
+						found=true;
+						addTo.add(Integer.valueOf(parmCode));
+						addTo.add(Integer.valueOf(chc));
+						break;
+					}
+				}
+				if(!found)
+					errors.add("Illegal "+parm+" term: "+senStr);
+			}
+		}
 	}
 
 	@Override
@@ -117,35 +235,58 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		else
 			mask=CMLib.masking().getPreCompiledMask(parameters[1]);
 
-		multiplyPhyStats = CMParms.getParmBool(parameters[0],"MULTIPLYPH",false);
-		multiplyCharStates = CMParms.getParmBool(parameters[0],"MULTIPLYCH",false);
+		if(allParms == null)
+		{
+			final List<String> tempV=new ArrayList<String>();
+			tempV.addAll(Arrays.asList(new String[] {
+				"MULTIPLYPH", "MULTIPLYCH", "abi", "arm", "att", "dam", "dis", "lev", "rej", "sen", "spe", "wei", "hei", "gen",
+				"cla", "cls", "rac", "hit", "hun", "man", "mov", "thi", "ALLSAVES", "ABLEPROFS", "ABLELVLS"
+			}));
+			for(final int i : CharStats.CODES.BASECODES())
+			{
+				final String name = CMStrings.limit(CharStats.CODES.NAME(i).toLowerCase(),3);
+				tempV.add(name);
+				tempV.add("max"+name);
+			}
+			for(final int c : CharStats.CODES.SAVING_THROWS())
+				tempV.add("save"+CMStrings.limit(CharStats.CODES.NAME(c).toLowerCase(),3));
+			for(int c = CharStats.STAT_FAITH; c<CharStats.CODES.TOTAL();c++)
+				tempV.add(CharStats.CODES.NAME(c).toLowerCase());
+			allParms = tempV.toArray(new String[tempV.size()]);
+		}
+		final List<String> errors = new LinkedList<String>();
+		final Map<String,String> ps = CMParms.parseLooseParms(parameters[0], allParms, errors);
+
+		multiplyPhyStats = getParmBool(ps, parameters[0],"MULTIPLYPH",false,errors);
+		multiplyCharStates = getParmBool(ps, parameters[0],"MULTIPLYCH",false,errors);
 
 		final ArrayList<Object> phyStatsV=new ArrayList<Object>();
-		addIfPlussed(parameters[0],"abi",PhyStats.STAT_ABILITY,phyStatsV);
-		addIfPlussed(parameters[0],"arm",PhyStats.STAT_ARMOR,phyStatsV);
-		addIfPlussed(parameters[0],"att",PhyStats.STAT_ATTACK,phyStatsV);
-		addIfPlussed(parameters[0],"dam",PhyStats.STAT_DAMAGE,phyStatsV);
-		addIfPlussed(parameters[0],"dis",PhyStats.STAT_DISPOSITION,phyStatsV);
-		addIfPlussed(parameters[0],"lev",PhyStats.STAT_LEVEL,phyStatsV);
-		addIfPlussed(parameters[0],"rej",PhyStats.STAT_REJUV,phyStatsV);
-		addIfPlussed(parameters[0],"sen",PhyStats.STAT_SENSES,phyStatsV);
-		final double dval=CMParms.getParmDoublePlus(parameters[0],"spe");
+		addIfPlussed(ps,parameters[0],"abi",PhyStats.STAT_ABILITY,phyStatsV,errors);
+		addIfPlussed(ps,parameters[0],"arm",PhyStats.STAT_ARMOR,phyStatsV,errors);
+		addIfPlussed(ps,parameters[0],"att",PhyStats.STAT_ATTACK,phyStatsV,errors);
+		addIfPlussed(ps,parameters[0],"dam",PhyStats.STAT_DAMAGE,phyStatsV,errors);
+		getComplexPhyTerm(ps, "dis", PhyStats.STAT_DISPOSITION, PhyStats.IS_CODES, phyStatsV, errors);
+		addIfPlussed(ps,parameters[0],"lev",PhyStats.STAT_LEVEL,phyStatsV,errors);
+		addIfPlussed(ps,parameters[0],"rej",PhyStats.STAT_REJUV,phyStatsV,errors);
+		getComplexPhyTerm(ps, "sen", PhyStats.STAT_SENSES, PhyStats.CAN_SEE_CODES, phyStatsV, errors);
+		final double dval=getParmDoublePlus(ps,parameters[0],"spe",0,errors);
 		if(dval!=0)
 		{
 			phyStatsV.add(Integer.valueOf(PhyStats.NUM_STATS));
 			phyStatsV.add(Double.valueOf(dval));
 		}
-		addIfPlussed(parameters[0],"wei",PhyStats.STAT_WEIGHT,phyStatsV);
-		addIfPlussed(parameters[0],"hei",PhyStats.STAT_HEIGHT,phyStatsV);
+		addIfPlussed(ps,parameters[0],"wei",PhyStats.STAT_WEIGHT,phyStatsV,errors);
+		addIfPlussed(ps,parameters[0],"hei",PhyStats.STAT_HEIGHT,phyStatsV,errors);
 
 		final ArrayList<Object> charStatsV=new ArrayList<Object>();
-		String val=CMParms.getParmStr(parameters[0],"gen","").toUpperCase();
-		if((val.length()>0)&&((val.charAt(0)=='M')||(val.charAt(0)=='F')||(val.charAt(0)=='N')))
+		String val=getParmStr(ps,parameters[0],"gen","").toUpperCase();
+		if((val.length()>0)
+		&&((val.charAt(0)=='M')||(val.charAt(0)=='F')||(val.charAt(0)=='N')))
 		{
 			charStatsV.add(new Character('G'));
 			charStatsV.add(new Character(val.charAt(0)));
 		}
-		val=CMParms.getParmStr(parameters[0],"cla","").toUpperCase();
+		val=getParmStr(ps,parameters[0],"cla","").toUpperCase();
 		if(val.length()>0)
 		{
 			final CharClass C=CMClass.findCharClass(val);
@@ -155,13 +296,13 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 				charStatsV.add(C);
 			}
 		}
-		val=CMParms.getParmStr(parameters[0],"cls","").toUpperCase();
+		val=getParmStr(ps,parameters[0],"cls","").toUpperCase();
 		if(val.length()>0)
 		{
 			charStatsV.add(new Character('S'));
 			charStatsV.add(Integer.valueOf(CMath.s_int(val)));
 		}
-		val=CMParms.getParmStr(parameters[0],"rac","").toUpperCase();
+		val=getParmStr(ps,parameters[0],"rac","").toUpperCase();
 		if((val.length()>0)&&(CMClass.getRace(val)!=null))
 		{
 			charStatsV.add(new Character('R'));
@@ -170,39 +311,58 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		for(final int i : CharStats.CODES.BASECODES())
 		{
 			final String name = CMStrings.limit(CharStats.CODES.NAME(i).toLowerCase(),3);
-			addIfPlussed(parameters[0],name,i,charStatsV);
-			addIfPlussed(parameters[0],"max"+name,CharStats.CODES.toMAXBASE(i),charStatsV);
+			addIfPlussed(ps,parameters[0],name,i,charStatsV,errors);
+			addIfPlussed(ps,parameters[0],"max"+name,CharStats.CODES.toMAXBASE(i),charStatsV,errors);
 		}
 		final int[] CMMSGMAP=CharStats.CODES.CMMSGMAP();
 		for(final int c : CharStats.CODES.SAVING_THROWS())
-		{
-			addIfPlussed(parameters[0],"save"+CMStrings.limit(CharStats.CODES.NAME(c).toLowerCase(),3),c,charStatsV);
-		}
+			addIfPlussed(ps,parameters[0],"save"+CMStrings.limit(CharStats.CODES.NAME(c).toLowerCase(),3),c,charStatsV,errors);
 		for(int c = CharStats.STAT_FAITH; c<CharStats.CODES.TOTAL();c++)
-			addIfPlussed(parameters[0],CharStats.CODES.NAME(c).toLowerCase(),c,charStatsV);
+			addIfPlussed(ps,parameters[0],CharStats.CODES.NAME(c).toLowerCase(),c,charStatsV,errors);
 
 		final ArrayList<Object> charStateV=new ArrayList<Object>();
-		addIfPlussed(parameters[0],"hit",CharState.STAT_HITPOINTS,charStateV);
-		addIfPlussed(parameters[0],"hun",CharState.STAT_HUNGER,charStateV);
-		addIfPlussed(parameters[0],"man",CharState.STAT_MANA,charStateV);
-		addIfPlussed(parameters[0],"mov",CharState.STAT_MOVE,charStateV);
-		addIfPlussed(parameters[0],"thi",CharState.STAT_THIRST,charStateV);
+		addIfPlussed(ps,parameters[0],"hit",CharState.STAT_HITPOINTS,charStateV,errors);
+		addIfPlussed(ps,parameters[0],"hun",CharState.STAT_HUNGER,charStateV,errors);
+		addIfPlussed(ps,parameters[0],"man",CharState.STAT_MANA,charStateV,errors);
+		addIfPlussed(ps,parameters[0],"mov",CharState.STAT_MOVE,charStateV,errors);
+		addIfPlussed(ps,parameters[0],"thi",CharState.STAT_THIRST,charStateV,errors);
 
-		final int allSavesPlus=CMParms.getParmPlus(newText,"ALLSAVES");
+		final double allSavesPlus=getParmDoublePlus(ps,newText,"ALLSAVES",0,errors);
 		if(allSavesPlus!=0)
 		{
+			final int allSavesPlusInt = (int)Math.round(allSavesPlus);
 			for(final int c : CharStats.CODES.SAVING_THROWS())
 			{
 				if(CMMSGMAP[c]!=-1)
 				{
 					charStatsV.add(Integer.valueOf(c));
-					charStatsV.add(Integer.valueOf(allSavesPlus));
+					charStatsV.add(Integer.valueOf(allSavesPlusInt));
 				}
 			}
 		}
+		this.addAbleAdjustments(ps, parameters[0], "ABLEPROFS", "PROF+", charStatsV, errors);
+		this.addAbleAdjustments(ps, parameters[0], "ABLELVLS", "LEVEL+", charStatsV, errors);
 		this.charStateChanges=makeObjectArray(charStateV);
 		this.phyStatsChanges=makeObjectArray(phyStatsV);
 		this.charStatsChanges=makeObjectArray(charStatsV);
+		if(errors.size()>0)
+		{
+			final Prop_HaveAdjuster meSave=this;
+			CMLib.threads().scheduleRunnable(new Runnable()
+			{
+				final Prop_HaveAdjuster me=meSave;
+				final List<String> errs = new LinkedList<String>(errors);
+				@Override
+				public void run()
+				{
+					if(me.affected != null)
+						Log.errOut(ID(),"Following errors found on adjuster on "+me.affected.Name()+"@"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(me.affected))+": ");
+					for(final String err: errs)
+						Log.errOut(ID(),err);
+				}
+
+			}, 500);
+		}
 	}
 
 	public void phyStuff(final Object[] changes, final PhyStats phyStats)
@@ -370,6 +530,13 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 					charStats.setWearableRestrictionsBitmap(charStats.getWearableRestrictionsBitmap()|charStats.getMyRace().forbiddenWornBits());
 					break;
 				}
+			}
+			else
+			if(changes[i] instanceof Pair)
+			{
+				@SuppressWarnings("unchecked")
+				final Pair<String,Integer> p = (Pair<String,Integer>)changes[i];
+				charStats.adjustAbilityAdjustment(p.first, p.second.intValue());
 			}
 		}
 	}

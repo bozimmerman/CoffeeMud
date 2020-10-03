@@ -131,7 +131,7 @@ public interface CharStats extends CMCommon, Modifiable
 	/** stat constant for  bonus damage % to critical hits with magic */
 	public static final int STAT_CRIT_DAMAGE_PCT_MAGIC=43;
 	/** constant for total number of stat codes */
-	public final static int DEFAULT_NUM_STATS=42;
+	public final static int DEFAULT_NUM_STATS=44;
 
 	/**
 	 * Copies the internal data of this object into another of kind.

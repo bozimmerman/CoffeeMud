@@ -45,6 +45,7 @@ public class CMParms
 	}
 
 	public static boolean[] PUNCTUATION_TABLE=null;
+	private final static Set<Character> badLastCs=new XHashSet<Character>(new Character[] {Character.valueOf('+'),Character.valueOf('-'),Character.valueOf('=')});
 
 	/**
 	 * Example delimeter checker for spaces
@@ -1138,7 +1139,7 @@ public class CMParms
 	 * The value ends when either an end quote is encountered, or a whitespace, semicolon, or
 	 * comma.
 	 * @param text the string to search
-	 * @param key the key to search for, case insensitive
+	 * @param key the key to search for, case insensitive, starts_with rules
 	 * @param defaultVal the value to return if the key is not found
 	 * @return the value
 	 */
@@ -1417,7 +1418,8 @@ public class CMParms
 					&&(str.substring(x,x+element.length()).equalsIgnoreCase(element)))
 					{
 						int chkX=x+element.length();
-						while((chkX<str.length())&&(Character.isWhitespace(str.charAt(chkX))))
+						while((chkX<str.length())
+						&&(Character.isWhitespace(str.charAt(chkX))||Character.isLetter(str.charAt(chkX))))
 							chkX++;
 						if((chkX<str.length())&&(str.charAt(chkX)=='='))
 						{
@@ -1447,12 +1449,118 @@ public class CMParms
 		return h;
 	}
 
+
+	private final static String cleanArgVal(String val, final char eqParm, final List<String> errors)
+	{
+		if(eqParm!='=')
+		{
+			final int spx=val.indexOf(' ');
+			if(spx>0)
+				val=val.substring(0,spx).trim();
+			if(val.endsWith(";"))
+				val=val.substring(0,val.length()-1).trim();
+		}
+		if(val.startsWith("\"")&&(val.endsWith("\"")))
+			val=val.substring(1,val.length()-1).trim();
+		else
+		if(val.startsWith("'")&&(val.endsWith("'")))
+			val=val.substring(1,val.length()-1).trim();
+		return val;
+	}
+
+	/**
+	 * Parses the given string for [PARAM]=[VALUE] or [PARAM]="[VALUE]" formatted key/pair
+	 * values, or + or - separated, relying on the given parmList to provide possible [PARAM] values.
+	 * Returns a map of the found parameters and their values.
+	 * This method is a sloppy, forgiving method doing KEY=VALUE value searches in a string.
+	 * The key is case insensitive, and start-partial.  For example, a key of NAME will match NAMEY or NAME12.
+	 * The value ends when the next parameter is encountered.  If it's not on the parmList, it
+	 * is a value.
+	 * @param str the unparsed string
+	 * @param parmList exhaustive list of all parameters
+	 * @param errors an empty list to put errors in, or null
+	 * @return the map of parameters
+	 */
+	public final static Map<String,String> parseLooseParms(final String str, final String[] parmList, final List<String> errors)
+	{
+		final Hashtable<String,String> h=new Hashtable<String,String>();
+		int lastEQ=-1;
+		String lastParm=null;
+		char lastEQChar='=';
+		Character C;
+		Character lastC=Character.valueOf(' ');
+		final Map<Character,String[]> chkMap=new HashMap<Character,String[]>();
+		for (final String element : parmList)
+		{
+			C=Character.valueOf(Character.toUpperCase(element.charAt(0)));
+			if(!chkMap.containsKey(C))
+				chkMap.put(C, new String[] {element});
+			else
+			{
+				final String[] newList = Arrays.copyOf(chkMap.get(C), chkMap.get(C).length+1);
+				newList[newList.length-1]=element;
+				chkMap.put(C, newList);
+			}
+		}
+		for(int x=0;x<str.length();x++)
+		{
+			C=Character.valueOf(Character.toUpperCase(str.charAt(x)));
+			if(Character.isLetter(C)
+			&&(!Character.isLetterOrDigit(lastC))
+			&&(chkMap.containsKey(C))
+			&&(!badLastCs.contains(C)))
+			{
+				final int remain=str.length()-x;
+				boolean found=false;
+				for (final String element : chkMap.get(C))
+				{
+					if((remain >= element.length())
+					&&(str.substring(x,x+element.length()).equalsIgnoreCase(element)))
+					{
+						found=true;
+						int chkX=x+element.length();
+						while((chkX<str.length())
+						&&(Character.isWhitespace(str.charAt(chkX))||Character.isLetter(str.charAt(chkX))))
+							chkX++;
+						if((chkX<str.length())
+						&&((str.charAt(chkX)=='=')||(str.charAt(chkX)=='+')||(str.charAt(chkX)=='-')))
+						{
+							chkX++;
+							if((lastParm!=null)&&(lastEQ>0))
+							{
+								final String val=cleanArgVal(str.substring(lastEQ,x).trim(),lastEQChar,errors);
+								h.put(lastParm,val);
+							}
+							lastParm=element;
+							x=chkX;
+							lastEQChar=str.charAt(chkX-1);
+							if(lastEQChar=='=')
+								lastEQ=chkX;
+							else
+								lastEQ=chkX-1;
+							break;
+						}
+					}
+				}
+				if((!found)&&(errors != null))
+					errors.add("Illegal parameter starts at: "+str.substring(x));
+			}
+			lastC=C;
+		}
+		if((lastParm!=null)&&(lastEQ>0))
+		{
+			final String val=cleanArgVal(str.substring(lastEQ).trim(),lastEQChar,errors);
+			h.put(lastParm,val);
+		}
+		return h;
+	}
+
 	/**
 	 * Parses the given string for[PAREM1] [PARAM2]=[VALUE] or [PARAM]="[VALUE]" formatted key/pair
 	 * values. Returns a map of the found parameters and their values.
 	 * This method is a strict, unforgiving method doing KEY=VALUE value searches in a string.
 	 * The key is case insensitive, returned as uppercase.  Values may be put in quotes, with
-	 * escapped quotes and escapped escapes.
+	 * escaped quotes and escaped escapes.
 	 * @param str the unparsed string
 	 * @return the map of parameters
 	 */
@@ -2018,7 +2126,7 @@ public class CMParms
 	 * 'joe larry bibob+5 moe="uiuiui bob-2 lou", bob+2' will still return -2.
 	 * If the key is found, but followed by a =, 0 is returned.
 	 * @param text the string to search
-	 * @param key the key to search for, case insensitive
+	 * @param key the key to search for, case insensitive, starts_with rules
 	 * @return the value
 	 */
 	public final static int getParmPlus(String text, final String key)
@@ -2074,7 +2182,7 @@ public class CMParms
 	 * 'joe larry bibob+5.2 moe="uiuiui bob-2.1 lou", bob+3.9' will still return -2.1
 	 * If the key is found, but followed by a =, 0.0 is returned.
 	 * @param text the string to search
-	 * @param key the key to search for, case insensitive
+	 * @param key the key to search for, case insensitive, starts_with rules
 	 * @return the value
 	 */
 	public final static double getParmDoublePlus(String text, final String key)
@@ -2142,7 +2250,7 @@ public class CMParms
 	 * The value ends when either an end quote is encountered, or a whitespace, semicolon, or
 	 * comma.
 	 * @param text the string to search
-	 * @param key the key to search for, case insensitive
+	 * @param key the key to search for, case insensitive, starts_with rules
 	 * @param defaultValue the value to return if the key is not found
 	 * @return the value
 	 */
@@ -2208,7 +2316,7 @@ public class CMParms
 	 * The value ends when either an end quote is encountered, or a whitespace, semicolon, or
 	 * comma.
 	 * @param text the string to search
-	 * @param key the key to search for, case insensitive
+	 * @param key the key to search for, case insensitive, starts_with rules
 	 * @param defaultValue the value to return if the key is not found
 	 * @return the value
 	 */
@@ -2230,7 +2338,7 @@ public class CMParms
 	 * The value ends when either an end quote is encountered, or a whitespace, semicolon, or
 	 * comma.
 	 * @param text the string to search
-	 * @param key the key to search for, case insensitive
+	 * @param key the key to search for, case insensitive, starts_with rules
 	 * @param defaultValue the value to return if the key is not found
 	 * @return the value
 	 */
@@ -2348,7 +2456,7 @@ public class CMParms
 	 * The value ends when either an end quote is encountered, or a whitespace, semicolon, or
 	 * comma.
 	 * @param text the string to search
-	 * @param key the key to search for, case insensitive
+	 * @param key the key to search for, case insensitive, starts_with rules
 	 * @param defaultValue the value to return if the key is not found
 	 * @return the value
 	 */

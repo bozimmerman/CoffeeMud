@@ -836,7 +836,7 @@ public class DefaultCharStats implements CharStats
 		final Map<String,Integer> prof=this.profAdj;
 		if(prof == null)
 			return 0;
-		final Integer value = prof.get(ableID);
+		final Integer value = prof.get(ableID.toUpperCase());
 		if(value == null)
 			return 0;
 		return value.intValue();
@@ -851,7 +851,7 @@ public class DefaultCharStats implements CharStats
 			prof = new TreeMap<String,Integer>();
 			this.profAdj=prof;
 		}
-		prof.put(ableID, Integer.valueOf(newValue));
+		prof.put(ableID.toUpperCase(), Integer.valueOf(newValue));
 	}
 
 	@Override
