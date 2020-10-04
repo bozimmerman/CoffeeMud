@@ -585,10 +585,10 @@ public class CMMap extends StdLibrary implements WorldMap
 
 	public Pair<ShipDir,Double>[] getRocketFacingDelta(final SpaceShip ship, final SpaceObject targetObj)
 	{
-		final double[] dirMe = ship.facing();
-		final double[] dirTo = CMLib.map().getDirection(ship, targetObj);
+		//final double[] dirMe = ship.facing();
+		//final double[] dirTo = CMLib.map().getDirection(ship, targetObj);
 		final List<Pair<ShipDir,Double>> list = new ArrayList<Pair<ShipDir,Double>>(2);
-		final double rotDiff = dirTo[0] - dirMe[0];
+		//final double rotDiff = dirTo[0] - dirMe[0];
 		// if rottDiff 0 < x < 90 then definitely add rotate port x
 		// if rotDiff -90 < x < 0 then definitely add rotate starboard x
 		//

@@ -1505,8 +1505,8 @@ public class CMParms
 		for(int x=0;x<str.length();x++)
 		{
 			C=Character.valueOf(Character.toUpperCase(str.charAt(x)));
-			if(Character.isLetter(C)
-			&&(!Character.isLetterOrDigit(lastC))
+			if(Character.isLetter(C.charValue())
+			&&(!Character.isLetterOrDigit(lastC.charValue()))
 			&&(chkMap.containsKey(C))
 			&&(!badLastCs.contains(C)))
 			{

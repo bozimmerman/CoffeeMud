@@ -307,6 +307,7 @@ public class GenLanguage extends StdLanguage
 			if(!ints.contains(ID()))
 				ints.add(ID());
 			SV(ID, V_INTS, ints);
+			break;
 		}
 		default:
 			if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenLanguage"))

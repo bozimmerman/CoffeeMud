@@ -257,8 +257,8 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		final List<String> errors = new LinkedList<String>();
 		final Map<String,String> ps = CMParms.parseLooseParms(parameters[0], allParms, errors);
 
-		multiplyPhyStats = getParmBool(ps, parameters[0],"MULTIPLYPH",false,errors);
-		multiplyCharStates = getParmBool(ps, parameters[0],"MULTIPLYCH",false,errors);
+		multiplyPhyStats = getParmBool(ps, parameters[0],"MULTIPLYPH",false,errors).booleanValue();
+		multiplyCharStates = getParmBool(ps, parameters[0],"MULTIPLYCH",false,errors).booleanValue();
 
 		final ArrayList<Object> phyStatsV=new ArrayList<Object>();
 		addIfPlussed(ps,parameters[0],"abi",PhyStats.STAT_ABILITY,phyStatsV,errors);

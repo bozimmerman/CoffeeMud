@@ -4293,7 +4293,7 @@ public class ListCmd extends StdCommand
 					continue;
 				try
 				{
-					if((help!=null)&&(help.toString().indexOf('@')>=0))
+					if(help.toString().indexOf('@')>=0)
 						help = new StringBuilder(CMLib.webMacroFilter().virtualPageFilter(help.toString()));
 				}
 				catch (final com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException x)
