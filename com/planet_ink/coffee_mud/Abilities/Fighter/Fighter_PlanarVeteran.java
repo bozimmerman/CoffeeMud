@@ -263,7 +263,7 @@ public class Fighter_PlanarVeteran extends FighterSkill
 			final long expires = E.getValue().longValue();
 			if(now > expires)
 			{
-				e.remove();
+				visits.remove(E);
 				changed=true;
 			}
 			else
