@@ -53,8 +53,15 @@ public class CMUniqNameSortSVec<T extends CMObject> extends CMUniqSortSVec<T>
 		return arg0.name().compareToIgnoreCase(arg1.name());
 	}
 
-	@SuppressWarnings("unchecked")
+	@Override
+	protected int compareToStarts(final CMObject arg0, final String arg1)
+	{
+		if(arg0.name().toLowerCase().startsWith(arg1.toLowerCase()))
+			return 0;
+		return arg0.name().compareToIgnoreCase(arg1);
+	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public synchronized SVector<T> copyOf()
 	{
