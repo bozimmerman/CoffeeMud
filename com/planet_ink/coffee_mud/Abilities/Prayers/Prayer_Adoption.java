@@ -275,7 +275,7 @@ public class Prayer_Adoption extends Prayer
 			if((child!=mob)
 			&&(child.session()!=null)
 			&&(!child.session().isStopped())
-			&&(confirmChildSessID==null)
+			&&((confirmChildSessID==null)||(!(""+child.session()).equals(confirmChildSessID)))
 			&&(!child.session().isWaitingForInput()))
 			{
 				child.session().prompt(childConfirm[0]);
@@ -286,7 +286,7 @@ public class Prayer_Adoption extends Prayer
 			if((parent!=mob)
 			&&(parent.session()!=null)
 			&&(!parent.session().isStopped())
-			&&(confirmParentSessID==null)
+			&&((confirmParentSessID==null)||(!(""+parent.session()).equals(confirmParentSessID)))
 			&&(!parent.session().isWaitingForInput()))
 			{
 				mob.tell(L("\n\rYour prayer seeks consent before invoking..."));
