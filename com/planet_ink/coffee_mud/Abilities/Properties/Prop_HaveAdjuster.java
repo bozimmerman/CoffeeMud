@@ -115,7 +115,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			&&(CMath.isMathExpression(val.substring(1))))
 			{
 				addTo.add(Integer.valueOf(parmCode));
-				addTo.add(Integer.valueOf(CMath.s_parseIntExpression(val.substring(1))));
+				addTo.add(Integer.valueOf(CMath.s_parseIntExpression(val)));
 				return true;
 			}
 			else
