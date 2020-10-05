@@ -5308,6 +5308,8 @@ public class StdMOB implements MOB
 	{
 		if ((of == null) || (of.length() == 0))
 			return null;
+		if(of.endsWith("*"))
+			return tattoos.findStartsWith(of.substring(0,of.length()-1));
 		return tattoos.find(of.trim());
 	}
 
