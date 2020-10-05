@@ -197,7 +197,7 @@ public class Prayer_Adoption extends Prayer
 						if((parent!=M)
 						&&(parent.session()!=null)
 						&&(!parent.session().isStopped())
-						&&(confirmParentSessID==null)
+						&&((confirmParentSessID==null)||(!(""+parent.session()).equals(confirmParentSessID)))
 						&&(!parent.session().isWaitingForInput()))
 							parent.session().prompt(parentConfirm[0]);
 						else
@@ -254,7 +254,7 @@ public class Prayer_Adoption extends Prayer
 						if((child!=M)
 						&&(child.session()!=null)
 						&&(!child.session().isStopped())
-						&&(confirmChildSessID==null)
+						&&((confirmChildSessID==null)||(!(""+child.session()).equals(confirmChildSessID)))
 						&&(!child.session().isWaitingForInput()))
 							child.session().prompt(childConfirm[0]);
 						else
