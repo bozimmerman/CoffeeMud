@@ -103,6 +103,22 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 				return true;
 			}
 			else
+			if(val.startsWith("+")
+			&&(CMath.isMathExpression(val.substring(1))))
+			{
+				addTo.add(Integer.valueOf(parmCode));
+				addTo.add(Integer.valueOf(CMath.s_parseIntExpression(val)));
+				return true;
+			}
+			else
+			if(val.startsWith("-")
+			&&(CMath.isMathExpression(val.substring(1))))
+			{
+				addTo.add(Integer.valueOf(parmCode));
+				addTo.add(Integer.valueOf(CMath.s_parseIntExpression(val)));
+				return true;
+			}
+			else
 			if(errors!=null)
 				errors.add("Argument "+parm+": expected +-, got '"+val+"' in '"+newText+"'");
 		}
@@ -240,7 +256,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			final List<String> tempV=new ArrayList<String>();
 			tempV.addAll(Arrays.asList(new String[] {
 				"MULTIPLYPH", "MULTIPLYCH", "abi", "arm", "att", "dam", "dis", "lev", "rej", "sen", "spe", "wei", "hei", "gen",
-				"cla", "cls", "rac", "hit", "hun", "man", "mov", "thi", "ALLSAVES", "ABLEPROFS", "ABLELVLS"
+				"cla", "cls", "rac", "hit", "hun", "man", "mov", "thi", "ALLSAVES", "ABLEPROFS", "ABLELVLS","chr","hp"
 			}));
 			for(final int i : CharStats.CODES.BASECODES())
 			{
@@ -322,6 +338,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 
 		final ArrayList<Object> charStateV=new ArrayList<Object>();
 		addIfPlussed(ps,parameters[0],"hit",CharState.STAT_HITPOINTS,charStateV,errors);
+		addIfPlussed(ps,parameters[0],"hp",CharState.STAT_HITPOINTS,charStateV,errors);
 		addIfPlussed(ps,parameters[0],"hun",CharState.STAT_HUNGER,charStateV,errors);
 		addIfPlussed(ps,parameters[0],"man",CharState.STAT_MANA,charStateV,errors);
 		addIfPlussed(ps,parameters[0],"mov",CharState.STAT_MOVE,charStateV,errors);
@@ -342,6 +359,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		}
 		this.addAbleAdjustments(ps, parameters[0], "ABLEPROFS", "PROF+", charStatsV, errors);
 		this.addAbleAdjustments(ps, parameters[0], "ABLELVLS", "LEVEL+", charStatsV, errors);
+		addIfPlussed(ps,parameters[0],"chr",CharStats.STAT_CHARISMA,charStatsV,errors);
 		this.charStateChanges=makeObjectArray(charStateV);
 		this.phyStatsChanges=makeObjectArray(phyStatsV);
 		this.charStatsChanges=makeObjectArray(charStatsV);
