@@ -107,7 +107,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			&&(CMath.isMathExpression(val.substring(1))))
 			{
 				addTo.add(Integer.valueOf(parmCode));
-				addTo.add(Integer.valueOf(CMath.s_parseIntExpression(val)));
+				addTo.add(Integer.valueOf(CMath.s_parseIntExpression(val.substring(1))));
 				return true;
 			}
 			else
@@ -115,7 +115,25 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			&&(CMath.isMathExpression(val.substring(1))))
 			{
 				addTo.add(Integer.valueOf(parmCode));
-				addTo.add(Integer.valueOf(CMath.s_parseIntExpression(val)));
+				addTo.add(Integer.valueOf(CMath.s_parseIntExpression(val.substring(1))));
+				return true;
+			}
+			else
+			if(val.startsWith("+'")
+			&& val.endsWith("'")
+			&&(CMath.isMathExpression(val.substring(2,val.length()-1))))
+			{
+				addTo.add(Integer.valueOf(parmCode));
+				addTo.add(Integer.valueOf(CMath.s_parseIntExpression(val.substring(2,val.length()-1))));
+				return true;
+			}
+			else
+			if(val.startsWith("-'")
+			&& val.endsWith("'")
+			&&(CMath.isMathExpression("-"+val.substring(2,val.length()-1))))
+			{
+				addTo.add(Integer.valueOf(parmCode));
+				addTo.add(Integer.valueOf(CMath.s_parseIntExpression("-"+val.substring(2,val.length()-1))));
 				return true;
 			}
 			else
