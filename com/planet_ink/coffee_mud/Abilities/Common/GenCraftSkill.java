@@ -263,6 +263,8 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			code=code.substring(0,numDex);
 		}
 		*/
+		if(super.getInternalCodeNum(code)>=0)
+			return super.getStat(code);
 		switch(getCodeNum(code))
 		{
 		case 0:
@@ -314,6 +316,9 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			num=CMath.s_int(code.substring(numDex));
 			code=code.substring(0,numDex);
 		}
+		if(super.getInternalCodeNum(code)>=0)
+			super.setStat(code, val);
+		else
 		switch(getCodeNum(code))
 		{
 		case 0:

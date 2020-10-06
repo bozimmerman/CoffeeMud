@@ -465,16 +465,16 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 	}
 
 	@Override
-	public String getStat(String statVar)
+	public String getStat(String code)
 	{
-		if(statVar != null)
+		if(code != null)
 		{
-			statVar=statVar.toUpperCase();
-			if(statVar.startsWith("TIDBITS"))
+			code=code.toUpperCase();
+			if(code.startsWith("TIDBITS"))
 			{
 				String parmText = text().toUpperCase();
-				if(statVar.startsWith("TIDBITS="))
-					parmText = statVar.substring(8).toUpperCase().trim();
+				if(code.startsWith("TIDBITS="))
+					parmText = code.substring(8).toUpperCase().trim();
 				final StringBuilder str=new StringBuilder("");
 				final List<String> parms = CMParms.parse(parmText);
 				final boolean allFound=parms.contains("+ALL");
@@ -512,33 +512,33 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 					||(s.startsWith("-") && allFound))
 					{
 						s=s.substring(1);
-						int code=CharStats.CODES.findWhole(s,true);
-						if(code>=0)
+						int statCode=CharStats.CODES.findWhole(s,true);
+						if(statCode>=0)
 						{
-							code=CharStats.CODES.CMMSGMAP(code);
-							if(code>0)
+							statCode=CharStats.CODES.CMMSGMAP(statCode);
+							if(statCode>0)
 								str.append(this.makeStatMsg(s.toLowerCase(), current)+"\n\r");
 						}
-						code=CMParms.indexOf(Weapon.TYPE_DESCS, s);
-						if(code>=0)
+						statCode=CMParms.indexOf(Weapon.TYPE_DESCS, s);
+						if(statCode>=0)
 							str.append(this.makeStatMsg(s.toLowerCase(), current)+"\n\r");
-						code=CMParms.indexOf(Weapon.CLASS_DESCS, s);
-						if(code>=0)
+						statCode=CMParms.indexOf(Weapon.CLASS_DESCS, s);
+						if(statCode>=0)
 							str.append(this.makeStatMsg(s.toLowerCase(), current)+"\n\r");
-						code=CMParms.indexOf(Ability.ACODE_DESCS_, s);
-						if(code>=0)
+						statCode=CMParms.indexOf(Ability.ACODE_DESCS_, s);
+						if(statCode>=0)
 							str.append(this.makeStatMsg(s.toLowerCase(), current)+"\n\r");
-						code=CMParms.indexOf(Ability.DOMAIN_DESCS, s);
-						if(code>=0)
+						statCode=CMParms.indexOf(Ability.DOMAIN_DESCS, s);
+						if(statCode>=0)
 							str.append(this.makeStatMsg(s.toLowerCase(), current)+"\n\r");
-						code=CMParms.indexOf(Ability.FLAG_DESCS, s);
-						if(code>=0)
+						statCode=CMParms.indexOf(Ability.FLAG_DESCS, s);
+						if(statCode>=0)
 							str.append(this.makeStatMsg(s.toLowerCase(), current)+"\n\r");
 						final Ability A=CMClass.getAbility(s);
 						if(A!=null)
 							str.append(this.makeStatMsg(A.Name()+" effects or ", current)+"\n\r");
-						code=RawMaterial.CODES.FIND_CaseSensitive(s);
-						if(code>=0)
+						statCode=RawMaterial.CODES.FIND_CaseSensitive(s);
+						if(statCode>=0)
 							str.append(this.makeStatMsg(s.toLowerCase()+" weapon", current)+"\n\r");
 						if(s.equals("MAGIC"))
 							str.append(this.makeStatMsg(s.toLowerCase()+" weapon", current)+"\n\r");

@@ -1064,7 +1064,7 @@ public class CommonSkill extends StdAbility
 	@Override
 	public String getStat(final String code)
 	{
-		if(super.isStat(code))
+		if((super.getCodeNum(code)>=0) || (super.getInternalCodeNum(code)>=0))
 			return super.getStat(code);
 		switch(getMyCodeNum(code))
 		{
@@ -1075,7 +1075,7 @@ public class CommonSkill extends StdAbility
 			final int tot= tickUp +tickDown;
 			if((tot > 0)
 			&&(affected != null))
-				return CMath.toPct(CMath.div(tickUp, tot));
+				return CMath.toPct(CMath.div(Math.round(CMath.div(tickUp, tot)*100.0),100.0));
 			return "";
 		}
 		case 2:
@@ -1088,7 +1088,7 @@ public class CommonSkill extends StdAbility
 	@Override
 	public void setStat(final String code, final String val)
 	{
-		if(super.isStat(code))
+		if((super.getCodeNum(code)>=0) || (super.getInternalCodeNum(code)>=0))
 			super.setStat(code,  val);
 		else
 		switch(getMyCodeNum(code))

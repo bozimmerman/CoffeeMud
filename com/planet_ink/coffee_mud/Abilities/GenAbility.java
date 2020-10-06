@@ -999,6 +999,9 @@ public class GenAbility extends StdAbility
 	@Override
 	public String getStat(final String code)
 	{
+		if(super.getInternalCodeNum(code)>=0)
+			return super.getStat(code);
+		else
 		switch(getCodeNum(code))
 		{
 		case 0:
@@ -1094,6 +1097,9 @@ public class GenAbility extends StdAbility
 			num=CMath.s_int(code.substring(numDex));
 			code=code.substring(0,numDex);
 		}
+		if(super.getInternalCodeNum(code)>=0)
+			super.setStat(code, val);
+		else
 		switch(getCodeNum(code))
 		{
 		case 0:
