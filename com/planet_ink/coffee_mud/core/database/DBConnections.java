@@ -510,7 +510,7 @@ public class DBConnections
 		consecutiveFailures=0;
 		disconnected=false;
 		lockedUp=false;
-		if(isFakeDB==null)
+		if((isFakeDB==null)&&(newConn!=null))
 		{
 			isFakeDB=Boolean.valueOf(newConn.isFakeDB());
 		}
