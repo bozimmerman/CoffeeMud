@@ -99,7 +99,7 @@ public class Elf extends StdRace
 	}
 
 	private final String[]	culturalAbilityNames			= { "Elvish", "Foraging" };
-	private final int[]		culturalAbilityProficiencies	= { 75, 50 };
+	private final int[]		culturalAbilityProficiencies	= { 100, 50 };
 
 	@Override
 	public String[] culturalAbilityNames()

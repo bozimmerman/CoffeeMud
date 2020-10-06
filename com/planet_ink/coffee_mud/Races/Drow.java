@@ -122,10 +122,10 @@ public class Drow extends Elf
 		return racialEffectParms;
 	}
 
-	private final String[]	culturalAbilityNames			= { "Drowish", "Spell_DarknessGlobe", "Spell_FaerieFire", "Undercommon" };
-	private final int[]		culturalAbilityProficiencies	= { 100, 100, 25, 25 };
-	private final int[]		culturalAbilityLevels			= { 0, 1, 0, 0 };
-	private final boolean[] culturalAbilityAutoGains		= { true, true, true, true };
+	private final String[]	culturalAbilityNames			= { "Drowish", "Spell_DarknessGlobe", "Spell_FaerieFire", "Undercommon", "Elvish" };
+	private final int[]		culturalAbilityProficiencies	= { 100, 100, 25, 25, 25 };
+	private final int[]		culturalAbilityLevels			= { 0, 1, 0, 0, 0 };
+	private final boolean[] culturalAbilityAutoGains		= { true, true, true, true, true };
 
 	@Override
 	public String[] culturalAbilityNames()

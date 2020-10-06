@@ -93,7 +93,7 @@ public class HalfElf extends StdRace
 	}
 
 	private final String[]	culturalAbilityNames			= { "Elvish", "Fishing", "Skill_CulturalAdaptation" };
-	private final int[]		culturalAbilityProficiencies	= { 50, 50, 50 };
+	private final int[]		culturalAbilityProficiencies	= { 75, 50, 50 };
 
 	@Override
 	public String[] culturalAbilityNames()
