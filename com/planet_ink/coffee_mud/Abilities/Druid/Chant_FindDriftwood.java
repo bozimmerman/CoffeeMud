@@ -167,7 +167,7 @@ public class Chant_FindDriftwood extends Chant_FindPlant
 		else
 			theDriftroom=checkSet.get(checkSet.size()-1);
 		theDriftwood=CMLib.materials().makeItemResource(this.whatImLookingFor);
-		final int amount=CMLib.dice().roll(1,4,3);
+		final int amount=CMLib.dice().roll(1,4+(super.adjustedLevel(mob, 0)/15),3+super.getXLEVELLevel(mob));
 		theDriftwood.basePhyStats().setWeight(amount);
 		theDriftwood.phyStats().setWeight(amount);
 		CMLib.materials().adjustResourceName(theDriftwood);
