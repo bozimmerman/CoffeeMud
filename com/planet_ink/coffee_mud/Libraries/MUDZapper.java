@@ -4546,7 +4546,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _BASECLASS: // -baseclass
 				{
 					String baseClass=mob.baseCharStats().getCurrentClass().baseClass();
-					if((!actual)&&(!baseClass.equals(mob.charStats().displayClassName())))
+					if((!actual)
+					&&(!baseClass.equals(mob.charStats().displayClassName())))
 					{
 						final CharClass C=CMClass.getCharClass(mob.charStats().displayClassName());
 						if(C!=null)
@@ -4559,7 +4560,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case BASECLASS: // +baseclass
 				{
 					String baseClass=mob.baseCharStats().getCurrentClass().baseClass();
-					if((!actual)&&(!baseClass.equals(mob.charStats().displayClassName())))
+					if((!actual)
+					&&(!baseClass.equals(mob.charStats().displayClassName())))
 					{
 						final CharClass C=CMClass.getCharClass(mob.charStats().displayClassName());
 						if(C!=null)
@@ -5307,7 +5309,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _RACECAT: // -racecat
 				{
 					String raceCat=mob.baseCharStats().getMyRace().racialCategory();
-					if((!actual)&&(!mob.baseCharStats().getMyRace().name().equals(mob.charStats().raceName())))
+					if((!actual)
+					&&(!mob.baseCharStats().getMyRace().name().equals(mob.charStats().raceName())))
 					{
 						final Race R2=CMClass.getRace(mob.charStats().raceName());
 						if(R2!=null)

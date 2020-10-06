@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -38,20 +39,22 @@ import java.util.*;
 
 public class DefaultSocial implements Social
 {
-	protected String	socialFullID;
-	protected String	socialFullTail;
-	protected String	socialBaseName;
-	protected String	socialTarget;
-	protected boolean	isTargetable;
-	protected String	socialArg;
-	protected String	sourceMsg;
-	protected String	othersSeeMsg;
-	protected String	targetSeesMsg;
-	protected String	failedTargetMsg;
-	protected String	soundFile		= "";
-	protected int		sourceCode		= CMMsg.MSG_OK_ACTION;
-	protected int		othersCode		= CMMsg.MSG_OK_ACTION;
-	protected int		targetCode		= CMMsg.MSG_OK_ACTION;
+	protected String		socialFullID;
+	protected String		socialFullTail;
+	protected String		socialBaseName;
+	protected String		socialTarget;
+	protected boolean		isTargetable;
+	protected String		socialArg;
+	protected String		sourceMsg;
+	protected String		othersSeeMsg;
+	protected String		targetSeesMsg;
+	protected String		failedTargetMsg;
+	protected String		soundFile	= "";
+	protected String		zapperMask	= "";
+	protected CompiledZMask	zMask		= null;
+	protected int			sourceCode	= CMMsg.MSG_OK_ACTION;
+	protected int			othersCode	= CMMsg.MSG_OK_ACTION;
+	protected int			targetCode	= CMMsg.MSG_OK_ACTION;
 
 	@Override
 	public String ID()
@@ -296,6 +299,33 @@ public class DefaultSocial implements Social
 	}
 
 	@Override
+	public boolean meetsCriteriaToUse(final MOB mob)
+	{
+		if(mob.Name().equals("Assy"))
+			System.out.println("!");
+		return (this.zMask == null) || (mob==null) || CMLib.masking().maskCheck(zMask, mob, false);
+	}
+
+	@Override
+	public void setCriteriaZappermask(final String mask)
+	{
+		this.zMask=null;
+		this.zapperMask = "";
+		if((mask!=null)
+		&&(mask.trim().length()>0))
+		{
+			this.zapperMask=mask.trim();
+			zMask = CMLib.masking().maskCompile(this.zapperMask);
+		}
+	}
+
+	@Override
+	public String getCriteriaZappermask()
+	{
+		return this.zapperMask != null ? this.zapperMask : "";
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical target, final boolean auto)
 	{
 		if(mob == null)
@@ -325,7 +355,8 @@ public class DefaultSocial implements Social
 			if ((targetE != null) && (!targetable(targetE)))
 			{
 				final Social S = CMLib.socials().fetchSocial(baseName(), targetE, restArg, true);
-				if (S != null)
+				if((S != null)
+				&& (S.meetsCriteriaToUse(mob)))
 					return S.invoke(mob, commands, targetE, auto);
 			}
 		}

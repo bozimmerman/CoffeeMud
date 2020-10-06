@@ -632,7 +632,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			return null;
 
 		Social social=CMLib.socials().fetchSocial(commands,true,true);
-		if(social!=null)
+		if((social!=null)
+		&&(social.meetsCriteriaToUse(mob)))
 			return social;
 
 		for(int c=0;c<CMLib.channels().getNumChannels();c++)
@@ -697,7 +698,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			return CMLib.leveler().deferCommandCheck(mob, C, commands);
 
 		social=CMLib.socials().fetchSocial(commands,false,true);
-		if(social!=null)
+		if((social!=null)
+		&&(social.meetsCriteriaToUse(mob)))
 		{
 			commands.set(0,social.baseName());
 			return social;

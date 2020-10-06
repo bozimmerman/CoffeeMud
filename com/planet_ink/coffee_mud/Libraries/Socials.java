@@ -138,7 +138,17 @@ public class Socials extends StdLibrary implements SocialsList
 									getline=getline.substring(x+1);
 									x=getline.indexOf("\t");
 									if(x>=0)
+									{
 										socobj.setSoundFile(getline.substring(0,x));
+										getline=getline.substring(x+1);
+										x=getline.indexOf("\t");
+										if(x>=0)
+										{
+											socobj.setCriteriaZappermask(getline.substring(0,x));
+										}
+										else
+											socobj.setCriteriaZappermask(getline);
+									}
 									else
 										socobj.setSoundFile(getline);
 								}
@@ -679,6 +689,7 @@ public class Socials extends StdLibrary implements SocialsList
 					||soc.targetName().equals("ALL"))
 						soc.setFailedMessage(CMLib.genEd().prompt(mob,soc.getFailedTargetMessage(),++showNumber,showFlag,L("You-see when no target"),false,true));
 					soc.setSoundFile(CMLib.genEd().prompt(mob,soc.getSoundFile(),++showNumber,showFlag,L("Sound file"),true,false));
+					soc.setCriteriaZappermask(CMLib.genEd().prompt(mob,soc.getCriteriaZappermask(),++showNumber,showFlag,L("Zappermask"),true,false));
 					resaveSocials=true;
 					if(showFlag<-900)
 					{
@@ -1057,13 +1068,15 @@ public class Socials extends StdLibrary implements SocialsList
 				buf.append(' ');
 				break;
 			}
-			final String[] stuff=new String[6];
-			stuff[0]=I.name();
-			stuff[1]=I.getSourceMessage();
-			stuff[2]=I.getOthersMessage();
-			stuff[3]=I.getTargetMessage();
-			stuff[4]=I.getFailedTargetMessage();
-			stuff[5]=I.getSoundFile();
+			final String[] stuff=new String[] {
+				I.name(),
+				I.getSourceMessage(),
+				I.getOthersMessage(),
+				I.getTargetMessage(),
+				I.getFailedTargetMessage(),
+				I.getSoundFile(),
+				I.getCriteriaZappermask()
+			};
 			buf.append('\t');
 			for (final String element : stuff)
 			{

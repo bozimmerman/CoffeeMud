@@ -42,7 +42,7 @@ public class SocialData extends StdWebMacro
 	}
 	static String[] BTYPES={"NONE","ALL","SELF","TARGETMOB","TARGETITEM","TARGETINV","TARGETEQUIP"};
 	static String[] BEXTNS={""," ALL"," SELF"," <T-NAME>"," <I-NAME>"," <V-NAME>"," <E-NAME>"};
-	static String[] BFIELDS={"YOM","YONM","YOM","YTONMA","YONM","YONM","YONM"};
+	static String[] BFIELDS={"YOMZ","YONMZ","YOMZ","YTONMAZ","YONMZ","YONMZ","YONMZ"};
 
 	static String[] CODESTR={"WORDS","MOVEMENT","SOUND","VISUAL","HANDS","QUIETMOVE"};
 	static int[] CODES={CMMsg.MSG_SPEAK,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISE,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_HANDS,CMMsg.MSG_SUBTLEMOVEMENT};
@@ -267,6 +267,9 @@ public class SocialData extends StdWebMacro
 						case 'M':
 							S.setSoundFile(old);
 							break;
+						case 'Z':
+							S.setCriteriaZappermask(old);
+							break;
 						case 'T':
 							S.setTargetMessage(old);
 							break;
@@ -289,6 +292,8 @@ public class SocialData extends StdWebMacro
 						case 'M':
 							break;
 						case 'T':
+							break;
+						case 'Z':
 							break;
 						}
 					}
@@ -534,6 +539,9 @@ public class SocialData extends StdWebMacro
 									case 'M':
 										old = S.getSoundFile();
 										break;
+									case 'Z':
+										old = S.getCriteriaZappermask();
+										break;
 									case 'A':
 										old = S.argumentName();
 										break;
@@ -566,6 +574,8 @@ public class SocialData extends StdWebMacro
 									case 'A':
 										break;
 									case 'T':
+										break;
+									case 'Z':
 										break;
 									}
 								}

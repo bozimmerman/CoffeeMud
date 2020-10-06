@@ -141,7 +141,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			}
 		};
 	}
-	
+
 	@Override
 	public List<ChannelMsg> getChannelQue(final int channelNumber, final int numNewToSkip, final int numToReturn)
 	{
@@ -417,7 +417,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	}
 
 	@Override
-	public List<String> getFlaggedChannelNames(final ChannelFlag flag, MOB mob)
+	public List<String> getFlaggedChannelNames(final ChannelFlag flag, final MOB mob)
 	{
 		final List<String> channels=new Vector<String>();
 		for(int c=0;c<channelList.size();c++)
@@ -432,7 +432,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				else
 				if(!CMLib.masking().maskCheck(chan.mask(),mob,true))
 					channels.add(chan.name().toUpperCase());
-				
+
 			}
 		}
 		return channels;
@@ -795,7 +795,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			Social S=CMLib.socials().fetchSocial(V,true,false);
 			if(S==null)
 				S=CMLib.socials().fetchSocial(V,false,false);
-			if(S!=null)
+			if((S!=null)
+			&&(S.meetsCriteriaToUse(mob)))
 				msg=S.makeChannelMsg(mob,channelInt,channelName,V,false);
 			else
 			{

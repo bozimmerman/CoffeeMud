@@ -85,7 +85,8 @@ public class Emote extends StdCommand
 				if(social!=null)
 					commands.set(0,social.baseName());
 			}
-			if(social==null)
+			if((social==null)
+			||(!social.meetsCriteriaToUse(mob)))
 				commands.add(0,",");
 			else
 			{

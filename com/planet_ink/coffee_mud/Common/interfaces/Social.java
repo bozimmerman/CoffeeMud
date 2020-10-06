@@ -262,6 +262,28 @@ public interface Social extends Environmental, CMCommon
 	public void setSoundFile(String newFile);
 
 	/**
+	 * Returns whether the given mob meets the criteria necessary to use
+	 * this social at this time.
+	 * @param mob the mob to check
+	 * @return true if they can use this social
+	 */
+	public boolean meetsCriteriaToUse(final MOB mob);
+
+	/**
+	 * Sets the zapper mask for whether a mob meets the critera necessary
+	 * to use this social at the moment.
+	 * @param mask the zapper mask to use
+	 */
+	public void setCriteriaZappermask(final String mask);
+
+	/**
+	 * Gets the zapper mask for whether a mob meets the critera necessary
+	 * to use this social at the moment.
+	 * @return mask the zapper mask to use
+	 */
+	public String getCriteriaZappermask();
+
+	/**
 	 * Executes this social by the given mob, using the target provided, with
 	 * help from the provided command line strings in a vector,
 	 * and with override message code flag.  It will generate a proper message

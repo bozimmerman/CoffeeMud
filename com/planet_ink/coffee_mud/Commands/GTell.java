@@ -88,7 +88,8 @@ public class GTell extends StdCommand
 			Social S=CMLib.socials().fetchSocial(V,true,false);
 			if(S==null)
 				S=CMLib.socials().fetchSocial(V,false,false);
-			if(S!=null)
+			if((S!=null)
+			&&(S.meetsCriteriaToUse(mob)))
 			{
 				tellMsg=S.makeMessage(mob,
 						"^t^<GTELL \""+CMStrings.removeColors(mob.name())+"\"^>[GTELL] ",

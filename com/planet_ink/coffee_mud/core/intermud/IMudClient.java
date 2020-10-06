@@ -451,7 +451,8 @@ public class IMudClient implements I3Interface
 				if(S==null)
 					S=CMLib.socials().fetchSocial(V,false,false);
 				CMMsg msg=null;
-				if(S!=null)
+				if((S!=null)
+				&&(S.meetsCriteriaToUse(mob)))
 				{
 					msg=S.makeChannelMsg(mob,0,channelName,V,true);
 					if((msg.target()!=null)&&(msg.target().name().indexOf('@')>=0))
