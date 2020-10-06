@@ -129,6 +129,16 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 				for(int i=0;i<pleaseAdd2.size();i++)
 					recipes.add(pleaseAdd2.get(i));
 			}
+			Collections.sort(recipes,new Comparator<List<String>>()
+			{
+				@Override
+				public int compare(final List<String> o1, final List<String> o2)
+				{
+					final Integer l1=Integer.valueOf(CMath.s_int(o1.get(RCP_LEVEL)));
+					final Integer l2=Integer.valueOf(CMath.s_int(o2.get(RCP_LEVEL)));
+					return l1.compareTo(l2);
+				}
+			});
 			Resources.submitResource("PARSED_RECIPE: "+filename,recipes);
 		}
 		return recipes;

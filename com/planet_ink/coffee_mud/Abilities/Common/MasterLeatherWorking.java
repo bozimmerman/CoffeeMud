@@ -293,6 +293,16 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 				recipes.clear();
 				recipes=newRecipes;
 			}
+			Collections.sort(recipes,new Comparator<List<String>>()
+			{
+				@Override
+				public int compare(final List<String> o1, final List<String> o2)
+				{
+					final Integer l1=Integer.valueOf(CMath.s_int(o1.get(RCP_LEVEL)));
+					final Integer l2=Integer.valueOf(CMath.s_int(o2.get(RCP_LEVEL)));
+					return l1.compareTo(l2);
+				}
+			});
 			Resources.submitResource("PARSED_RECIPE: "+filename,recipes);
 		}
 		return recipes;
