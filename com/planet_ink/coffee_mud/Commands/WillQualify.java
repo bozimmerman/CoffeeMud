@@ -56,7 +56,8 @@ public class WillQualify  extends Skills
 											  final String raceID,
 											  final int maxLevel,
 											  final String prefix,
-											  final HashSet<Object> types)
+											  final Set<Object> types,
+											  final Set<Object> noTypes)
 	{
 		final int highestLevel = maxLevel;
 		final StringBuffer msg = new StringBuffer("");
@@ -93,6 +94,9 @@ public class WillQualify  extends Skills
 					&&((types.size()==0)
 						||(types.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_ACODES)))
 						||(types.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_DOMAINS))))
+					&&((noTypes.size()==0)
+						||((!noTypes.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_ACODES)))
+						&&(!noTypes.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_DOMAINS)))))
 					&&(CMLib.ableComponents().getSpecialSkillLimit(ableM, A).specificSkillLimit() > 0))
 					{
 						if ( (++col) > 2)
@@ -122,7 +126,12 @@ public class WillQualify  extends Skills
 						||types.contains("EXPERTISE")
 						||types.contains("EXPERTISES")
 						||types.contains(E.ID().toUpperCase())
-						||types.contains(E.name().toUpperCase())))
+						||types.contains(E.name().toUpperCase()))
+					&&((noTypes.size()==0)
+						||((!noTypes.contains("EXPERTISE"))
+						&&(!noTypes.contains("EXPERTISES"))
+						&&(!noTypes.contains(E.ID().toUpperCase()))
+						&&(!noTypes.contains(E.name().toUpperCase())))))
 					{
 						if ( (++col) > 2)
 						{
@@ -158,6 +167,7 @@ public class WillQualify  extends Skills
 		int level=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
 		CharClass C=mob.charStats().getCurrentClass();
 		final HashSet<Object> types=new HashSet<Object>();
+		final HashSet<Object> notypes=new HashSet<Object>();
 		if(commands.size()>0)
 			commands.remove(0);
 		if((commands.size()>0)&&(CMath.isNumber(commands.get(0))))
@@ -185,16 +195,24 @@ public class WillQualify  extends Skills
 		}
 		while(commands.size()>0)
 		{
-			final String str=commands.get(0).toUpperCase().trim();
+			String str=commands.get(0).toUpperCase().trim();
 			final String bothStr=(commands.size()<2) ? str :
 				commands.get(0).toUpperCase().trim() + " " + commands.get(1).toUpperCase().trim();
+			final Set<Object> useTypes;
+			if(str.startsWith("NO"))
+			{
+				str=str.substring(2);
+				useTypes = notypes;
+			}
+			else
+				useTypes = types;
 			int x=CMParms.indexOf(Ability.ACODE_DESCS,str);
 			if(x<0)
 				x=CMParms.indexOf(Ability.ACODE_DESCS,str.replace(' ','_'));
 			if(x>=0)
 			{
 				commands.remove(0);
-				types.add(Integer.valueOf(x));
+				useTypes.add(Integer.valueOf(x));
 				continue;
 			}
 			else
@@ -207,7 +225,7 @@ public class WillQualify  extends Skills
 
 					commands.remove(0);
 					commands.remove(0);
-					types.add(Integer.valueOf(x));
+					useTypes.add(Integer.valueOf(x));
 					continue;
 				}
 			}
@@ -218,7 +236,7 @@ public class WillQualify  extends Skills
 			if(x>=0)
 			{
 				commands.remove(0);
-				types.add(Integer.valueOf(x<<5));
+				useTypes.add(Integer.valueOf(x<<5));
 				continue;
 			}
 			else
@@ -230,7 +248,7 @@ public class WillQualify  extends Skills
 				{
 					commands.remove(0);
 					commands.remove(0);
-					types.add(Integer.valueOf(x<<5));
+					useTypes.add(Integer.valueOf(x<<5));
 					continue;
 				}
 			}
@@ -240,7 +258,7 @@ public class WillQualify  extends Skills
 			||str.equalsIgnoreCase("EXPERTISES"))
 			{
 				commands.remove(0);
-				types.add(str.toUpperCase().trim());
+				useTypes.add(str.toUpperCase().trim());
 				continue;
 			}
 			else
@@ -248,7 +266,7 @@ public class WillQualify  extends Skills
 			{
 				commands.remove(0);
 				commands.remove(0);
-				types.add(bothStr.toUpperCase().trim());
+				useTypes.add(bothStr.toUpperCase().trim());
 				continue;
 			}
 			mob.tell(L("'@x1' is not a valid skill type, domain, expertise, or character class.",str));
@@ -258,7 +276,7 @@ public class WillQualify  extends Skills
 
 		msg.append(L("At level @x1 of class '@x2', you could qualify for:\n\r",""+level,C.name()));
 		final String raceID = mob.baseCharStats().getMyRace().ID();
-		msg.append(getQualifiedAbilities(mob,mob,C.ID(),raceID,level,"",types));
+		msg.append(getQualifiedAbilities(mob,mob,C.ID(),raceID,level,"",types, notypes));
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());
 		return false;
