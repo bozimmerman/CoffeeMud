@@ -215,6 +215,40 @@ public class CMSecurity
 		instance().groups.clear();
 	}
 
+
+	/**
+	 * Clear this security class
+	 */
+	public final void unload()
+	{
+		disVars.clear();
+		cmdDisVars.clear();
+		racDisVars.clear();
+		clsDisVars.clear();
+		facDisVars.clear();
+		ablDisVars.clear();
+		expDisVars.clear();
+		dbgVars.clear();
+		saveFlags.clear();
+		journalFlags.clear();
+		racEnaVars.clear();
+		clsEnaVars.clear();
+		compiledSysop= null;
+		groups.clear();
+	}
+
+	/**
+	 * Unload all security classes
+	 */
+	public static final void unloadAll()
+	{
+		for(final CMSecurity sec : secs)
+		{
+			if(sec != null)
+				sec.unload();
+		}
+	}
+
 	/**
 	 * Iterates through all the properties on the given property page, finding
 	 * any security group definitions and, when found, registering them with

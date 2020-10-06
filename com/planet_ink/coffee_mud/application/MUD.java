@@ -1021,6 +1021,7 @@ public class MUD extends Thread implements MudHost
 		}
 		shutdownStateTime.set(0);
 		CMLib.hosts().clear();
+		CMSecurity.unloadAll();
 		if(!keepItDown)
 			CMProps.setBoolAllVar(CMProps.Bool.MUDSHUTTINGDOWN,false);
 		Log.debugOut("Used memory = "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
