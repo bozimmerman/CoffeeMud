@@ -116,6 +116,12 @@ public interface RoomnumberSet extends CMCommon
 	public Enumeration<String> getRoomIDs();
 
 	/**
+	 * Returns timestamp of when this was last altered
+	 * @return timestamp of when this was last altered
+	 */
+	public long	getLastChangedMs();
+
+	/**
 	 * Returns an enumerator for all area names in this object
 	 * @return an enumerator for all area names in this object
 	 */

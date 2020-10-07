@@ -50,6 +50,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 	}
 
 	public STreeMap<String,LongSet> root=new STreeMap<String,LongSet>();
+	private volatile long lastChangedTime = 0;
 
 	@Override
 	public int compareTo(final CMObject o)
@@ -89,6 +90,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 			else
 				R.root.put(area,CI.copyOf());
 		}
+		R.lastChangedTime = lastChangedTime;
 		return R;
 	}
 
@@ -112,6 +114,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 			else
 				mine.add(his);
 		}
+		lastChangedTime=System.currentTimeMillis();
 	}
 
 	@Override
@@ -131,6 +134,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 			if(CI!=null)
 			{
 				root.remove(areaName);
+				lastChangedTime=System.currentTimeMillis();
 				return;
 			}
 		}
@@ -164,6 +168,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		CI.remove(Long.valueOf(roomNum));
 		if(CI.size()==0)
 			root.remove(areaName.toUpperCase());
+		lastChangedTime=System.currentTimeMillis();
 	}
 
 	@Override
@@ -379,6 +384,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 				}
 			}
 		}
+		lastChangedTime=System.currentTimeMillis();
 	}
 
 	@Override
@@ -429,6 +435,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		{
 			CI.add(Long.valueOf(roomNum));
 		}
+		lastChangedTime=System.currentTimeMillis();
 	}
 
 	@Override
@@ -494,5 +501,11 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 			final long num=nums[n++];
 			nextID=convertRoomID(areaName,num);
 		}
+	}
+
+	@Override
+	public long getLastChangedMs()
+	{
+		return this.lastChangedTime;
 	}
 }
