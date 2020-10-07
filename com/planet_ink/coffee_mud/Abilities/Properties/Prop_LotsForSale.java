@@ -444,7 +444,12 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		finally
 		{
 			if(didAnything)
+			{
+				this.lastArea=null;
+				this.lastRoomsTimestamp=0;
+				this.lastRoomsV.clear();
 				getConnectedPropertyRooms(); // recalculates the unique id for this lot of rooms
+			}
 		}
 	}
 }
