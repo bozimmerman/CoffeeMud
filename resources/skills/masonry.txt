@@ -3,7 +3,7 @@ title	1	15	0			TITLE	NA	-	-	title		Brief 1-6 word description of a room.
 demolish	1	25	0		DIR	DEMOLISH	Plains	-	-	demolishing		Demolishes something, which has different effects.
 wall	1	60	250		DIR INDOOR	WALL	NA	-		wall @x1		Blocks entry or exit between two indoor places.
 roof	1	125	500		OUTDOOR	ROOM	StoneRoom	0		frame and roof		Turns an outdoor place into an indoor one.
-archway	5	25	200		DIR	DOOR	GenExit	archway		archway @x1		A specially named open exit between two places.
+archway	5	25	200		DIR	DOOR	GenExit	archway|an archway||||An archway to @x1		archway @x1		A specially named open exit between two places.
 dark room	7	100	100		INDOOR	ROOMEFFECT		0	Prop_RoomDark()	light-proff frame and roof		Makes an indoor room completely dark.
 nondark room	7	25	0		INDOOR	DELEFFECT			Prop_RoomDark()	room clear		Removes the darkening affect from a dark room.
 small maze	8	175	1500		OUTDOOR	ROOM	StoneMaze	3		small maze frame and roof		Turns an outdoor place into a small indoor one of twisting turns.

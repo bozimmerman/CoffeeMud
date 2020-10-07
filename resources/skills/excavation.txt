@@ -3,7 +3,7 @@ title	1	15	0			TITLE	NA	-	-	title		Brief 1-6 word description of a room.
 wall	1	25	0		DIRUPDOWN CAVEONLY INDOOR	WALL	NA	-		wall @x1		Blocks entry/exit between two caves.
 demolish	1	200	0		DIRUPDOWN	DEMOLISH		-		demolishing		Demolishes something, which has different effects.
 room	3	145	0		DIRUPDOWN CAVEONLY	EXCAVATE	CaveRoom	0		new room @x1		Excavates a new room in the given direction.
-archway	5	25	200		CAVEONLY DIR NOWALL	DOOR	GenExit	archway		archway @x1		A special kind of open passageway between two cave rooms.
+archway	5	25	200		CAVEONLY DIR NOWALL	DOOR	GenExit	archway|an archway||||An archway to @x1		archway @x1		A special kind of open passageway between two cave rooms.
 shallow water	7	35	0		CAVEONLY	ROOM	WetCaveRoom	0		shallow water		Turns a room into a very wet one.
 light boulder	10	15	50		CAVEONLY DIRUPDOWN NOWALL	DOOR	GenDoor	light boulder|push(s) aside|set(s) in place|A light boulder blocks your way.		light boulder closure @x1		Very low level openable exit between two rooms.
 small maze	15	190	1500		CAVEONLY	ROOM	CaveMaze	3		small maze frame and roof		Turns a room into a small series of twists and turns.

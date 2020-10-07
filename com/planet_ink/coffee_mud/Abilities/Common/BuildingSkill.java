@@ -665,6 +665,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			String openWord=null;
 			String closedWord=null;
 			String displayText="";
+			String description="";
 			if(doorName.indexOf("|")>0)
 			{
 				final List<String> split=CMParms.parseAny(doorName, '|',false);
@@ -678,6 +679,8 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 					closedWord=split.get(3);
 				if((split.size()>4)&&(split.get(4).length()>0))
 					displayText=split.get(4);
+				if((split.size()>5)&&(split.get(5).length()>0))
+					description=split.get(5);
 			}
 			if(closeWord == null)
 				closeWord="close";
@@ -688,7 +691,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			room=CMLib.map().getRoom(room);
 			final Exit X=CMClass.getExit(localeName);
 			X.setName(CMLib.english().startWithAorAn(doorName));
-			X.setDescription("");
+			X.setDescription(description);
 			X.setDisplayText(displayText);
 			X.setOpenDelayTicks(9999);
 			X.setExitParams(doorName,closeWord,openWord,closedWord);

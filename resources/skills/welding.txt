@@ -5,7 +5,7 @@ Wide Roof	1	180	1000		OUTDOOR	ROOM	MetalRoom	0	Prop_EnlargeRoom(10)	broad frame 
 Small Maze	1	205	1500		OUTDOOR	ROOM	MetalRoomMaze	3		small maze frame and roof		Turns an outdoor place into a small indoor one of twisting turns.
 Maze	1	230	2500		OUTDOOR	ROOM	MetalRoomMaze	5		maze frame and roof		Turns an outdoor place into a larger indoor one of twisting turns
 Big Maze	1	255	3500		OUTDOOR	ROOM	MetalRoomMaze	7		large maze frame and roof		Turns an outdoor place into a large indoor one of twisting turns
-Archway	1	25	200		DIR	DOOR	GenExit	archway		archway @x1		A specially named open exit between two places.
+Archway	1	25	200		DIR	DOOR	GenExit	archway|an archway||||An archway to @x1		archway @x1		A specially named open exit between two places.
 Demolish	1	25	0		DIR	DEMOLISH	Plains	-	-	demolishing		Demolishes something, which has different effects.
 Title	1	15	0			TITLE	NA	-	-	title		Brief 1-6 word description of a room.
 Description	1	10	0			DESC	NA	-	-	description		Long elaborate description of the room details.

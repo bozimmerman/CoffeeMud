@@ -2980,7 +2980,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					if(oldVal.trim().length()==0)
 						return true;
 					final String[] names = CMParms.parseAny(oldVal.trim(), '|', true).toArray(new String[0]);
-					if(names.length > 5)
+					if(names.length > 6)
 						return false;
 					return true;
 				}
@@ -2994,7 +2994,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public String defaultValue()
 				{
-					return "door|open|close|A closed door.|An open doorway.";
+					return "door|open|close|A closed door.|An open doorway.|";
 				}
 
 				@Override
@@ -3003,7 +3003,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 
 					final Vector<String> V = new Vector<String>();
 					V.addAll(CMParms.parseAny(oldVal.trim(), '|', true));
-					while(V.size()<5)
+					while(V.size()<6)
 						V.add("");
 					return CMParms.toStringArray(V);
 				}
@@ -3018,7 +3018,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						str.append(httpReq.getUrlParameter(fieldName+"_W2")).append("|");
 						str.append(httpReq.getUrlParameter(fieldName+"_W3")).append("|");
 						str.append(httpReq.getUrlParameter(fieldName+"_W4")).append("|");
-						str.append(httpReq.getUrlParameter(fieldName+"_W5"));
+						str.append(httpReq.getUrlParameter(fieldName+"_W5")).append("|");
+						str.append(httpReq.getUrlParameter(fieldName+"_W6"));
 						String s=str.toString();
 						while(s.endsWith("|"))
 							s=s.substring(0,s.length()-1);
@@ -3036,7 +3037,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					final StringBuffer str = new StringBuffer("");
 					str.append("<TABLE WIDTH=100% BORDER=\"1\" CELLSPACING=0 CELLPADDING=0>");
 					final String[] vals = this.fakeUserInput(oldVal);
-					final String[] keys = new String[]{"Noun","Open","Close","Closed Display","Open Display"};
+					final String[] keys = new String[]{"Noun","Open","Close","Closed Display","Open Display","Description"};
 					for(int i=0;i<keys.length;i++)
 					{
 						str.append("<TR><TD WIDTH=30%><FONT COLOR=WHITE>"+L(keys[i])+"</FONT></TD>");
@@ -3056,7 +3057,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					newVal.append(CMLib.genEd().prompt(mob, vals[1], ++showNumber[0], showFlag, L("Open Verb"), true)).append("|");
 					newVal.append(CMLib.genEd().prompt(mob, vals[2], ++showNumber[0], showFlag, L("Close Verb"), true)).append("|");
 					newVal.append(CMLib.genEd().prompt(mob, vals[3], ++showNumber[0], showFlag, L("Opened Text"), true)).append("|");
-					newVal.append(CMLib.genEd().prompt(mob, vals[4], ++showNumber[0], showFlag, L("Closed Text"), true));
+					newVal.append(CMLib.genEd().prompt(mob, vals[4], ++showNumber[0], showFlag, L("Closed Text"), true)).append("|");
+					newVal.append(CMLib.genEd().prompt(mob, vals[5], ++showNumber[0], showFlag, L("Description"), true));
 					String s=newVal.toString();
 					while(s.endsWith("|"))
 						s=s.substring(0,s.length()-1);

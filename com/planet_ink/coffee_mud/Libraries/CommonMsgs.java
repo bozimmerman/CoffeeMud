@@ -2045,73 +2045,86 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		final MOB mob=msg.source();
 		if(CMLib.flags().canBeSeenBy(exit,mob))
 		{
-			if(exit.description(mob).trim().length()>0)
-				mob.tell(exit.description(mob));
-			else
-			if(mob.location()!=null)
+			final Room mobR=mob.location();
+			if(mobR!=null)
 			{
-				Room room=null;
+				Room lookAtR=null;
 				int direction=-1;
 				if(msg.tool() instanceof Room)
-					room=(Room)msg.tool();
+					lookAtR=(Room)msg.tool();
 				else
-				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					if(mob.location().getExitInDir(d)==exit)
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
-						room=mob.location().getRoomInDir(d);
-						break;
+						if(mobR.getExitInDir(d)==exit)
+						{
+							lookAtR=mobR.getRoomInDir(d);
+							break;
+						}
 					}
 				}
-				if(room!=null)
-				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+				if(lookAtR!=null)
 				{
-					if((mob.location().getRoomInDir(d)==room)
-					&&((mob.location().getExitInDir(d)==exit)))
-						direction=d;
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+					{
+						if((mobR.getRoomInDir(d)==lookAtR)
+						&&((mobR.getExitInDir(d)==exit)))
+							direction=d;
+					}
 				}
-				mob.tell(exit.viewableText(mob,room).toString());
-				if(isAClearExitView(mob,room,exit)&&(direction>=0)&&(room!=null))
+				if(exit.description(mob).trim().length()>0)
+					mob.tell(CMStrings.replaceAll(exit.description(mob),"@x1",exit.viewableText(mob,lookAtR).toString()));
+				else
 				{
-					List<Room> view=null;
-					final Vector<Environmental> items=new Vector<Environmental>();
-					if(room.getGridParent()!=null)
-						view=room.getGridParent().getAllRooms();
-					else
+					// for backward compatibility, this is not allowed for exits with descriptions
+					mob.tell(exit.viewableText(mob,lookAtR).toString());
+					if(isAClearExitView(mob,lookAtR,exit)
+					&&(direction>=0)
+					&&(lookAtR!=null))
 					{
-						view=new Vector<Room>();
-						view.add(room);
-						for(int i=0;i<5;i++)
+						List<Room> view=null;
+						final List<Environmental> items=new ArrayList<Environmental>();
+						if(lookAtR.getGridParent()!=null)
+							view=lookAtR.getGridParent().getAllRooms();
+						else
 						{
-							room=room.getRoomInDir(direction);
-							if(room==null)
-								break;
-							final Exit E=room.getExitInDir(direction);
-							if((isAClearExitView(mob,room,E)))
-								view.add(room);
+							view=new ArrayList<Room>();
+							view.add(lookAtR);
+							for(int i=0;i<5;i++)
+							{
+								lookAtR=lookAtR.getRoomInDir(direction);
+								if(lookAtR==null)
+									break;
+								final Exit E=lookAtR.getExitInDir(direction);
+								if((isAClearExitView(mob,lookAtR,E)))
+									view.add(lookAtR);
+							}
 						}
+						for(int r=0;r<view.size();r++)
+						{
+							lookAtR=view.get(r);
+							for(int i=0;i<lookAtR.numItems();i++)
+							{
+								final Item E=lookAtR.getItem(i);
+								if(E!=null)
+									items.add(E);
+							}
+							for(int i=0;i<lookAtR.numInhabitants();i++)
+							{
+								final MOB E=lookAtR.fetchInhabitant(i);
+								if(E!=null)
+									items.add(E);
+							}
+						}
+						final StringBuilder seenThatWay=CMLib.lister().lister(msg.source(),items,true,"","",false,true);
+						if(seenThatWay.length()>0)
+							mob.tell(L("Yonder, you can also see: @x1",seenThatWay.toString()));
 					}
-					for(int r=0;r<view.size();r++)
-					{
-						room=view.get(r);
-						for(int i=0;i<room.numItems();i++)
-						{
-							final Item E=room.getItem(i);
-							if(E!=null)
-								items.add(E);
-						}
-						for(int i=0;i<room.numInhabitants();i++)
-						{
-							final MOB E=room.fetchInhabitant(i);
-							if(E!=null)
-								items.add(E);
-						}
-					}
-					final StringBuilder seenThatWay=CMLib.lister().lister(msg.source(),items,true,"","",false,true);
-					if(seenThatWay.length()>0)
-						mob.tell(L("Yonder, you can also see: @x1",seenThatWay.toString()));
 				}
 			}
+			else
+			if(exit.description(mob).trim().length()>0)
+				mob.tell(exit.description(mob));
 			else
 				mob.tell(L("You don't see anything special."));
 			if(mob.isAttributeSet(MOB.Attrib.SYSOPMSGS))
