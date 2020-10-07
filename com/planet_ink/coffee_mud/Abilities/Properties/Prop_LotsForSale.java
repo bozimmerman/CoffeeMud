@@ -50,7 +50,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 
 	protected volatile long			lastRoomsTimestamp	= 0;
 	protected volatile Area			lastArea			= null;
-	protected volatile List<Room>	lastRoomsV			= new ArrayList<Room>();
+	protected final    List<Room>	lastRoomsV			= new ArrayList<Room>();
 
 	@Override
 	public boolean allowsExpansionConstruction()
