@@ -1228,7 +1228,11 @@ public class StdItem implements Item
 					}
 					else
 					{
-						mob.tell(L("You need hands to hold things."));
+						if(CMath.bset(mob.charStats().getWearableRestrictionsBitmap(),Wearable.WORN_WIELD)
+						&&(mob.charStats().getBodyPart(Race.BODY_HAND)>0))
+							mob.tell(L("You need at least two properly shaped hands to hold things."));
+						else
+							mob.tell(L("You need hands to hold things."));
 						return false;
 					}
 				}
@@ -1277,7 +1281,11 @@ public class StdItem implements Item
 					}
 					else
 					{
-						mob.tell(L("You need hands to wield things."));
+						if(CMath.bset(mob.charStats().getWearableRestrictionsBitmap(),Wearable.WORN_WIELD)
+						&&(mob.charStats().getBodyPart(Race.BODY_HAND)>0))
+							mob.tell(L("You need properly shaped hands to wield things."));
+						else
+							mob.tell(L("You need hands to wield things."));
 						return false;
 					}
 				}
