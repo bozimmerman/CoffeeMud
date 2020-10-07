@@ -1544,16 +1544,19 @@ public class StdRoom implements Room
 			}
 		}
 
-		if(o instanceof Room)
-			((Room)o).recoverRoomStats();
-		else
-		if(o instanceof MOB)
+		if(!CMParms.contains(moveFlags, Move.Optimize))
 		{
-			((MOB)o).recoverCharStats();
-			((MOB)o).recoverPhyStats();
-			((MOB)o).recoverMaxState();
+			if(o instanceof Room)
+				((Room)o).recoverRoomStats();
+			else
+			if(o instanceof MOB)
+			{
+				((MOB)o).recoverCharStats();
+				((MOB)o).recoverPhyStats();
+				((MOB)o).recoverMaxState();
+			}
+			recoverRoomStats();
 		}
-		recoverRoomStats();
 	}
 
 	@Override
@@ -2283,6 +2286,9 @@ public class StdRoom implements Room
 		case Never:
 			addItem(item);
 			break;
+		case Inheret:
+			addItem(item);
+			return;
 		}
 		if(numMins==0)
 			item.setExpirationDate(0);

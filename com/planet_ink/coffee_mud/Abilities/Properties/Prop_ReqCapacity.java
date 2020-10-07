@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Move;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -197,8 +199,11 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 									{
 										final Room R2=R.getRoomInDir(d);
 										final Exit E2=R.getExitInDir(d);
-										if((R2!=null)&&(E2!=null)
-										&&(E2.isOpen())&&(!CMLib.flags().isAiryRoom(R2)))
+										if((R2!=null)
+										&&(E2!=null)
+										&&(E2.isOpen())
+										&&(!CMLib.flags().isAiryRoom(R2))
+										&&(R2!=R))
 										{
 											final int rct=this.getRoomItemCount(R2);
 											if(rct < smallestCount)
@@ -213,9 +218,12 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 										for(int ri=R.numItems()-1;ri>=0 && totOver>0;ri--,totOver--)
 										{
 											final Item I=R.getItem(ri);
-											if((I!=null)&&(I.container()==null))
-												targetRoom.moveItemTo(I);
+											if((I!=null)
+											&&(I.container()==null))
+												targetRoom.moveItemTo(I, Expire.Inheret, Move.Optimize);
 										}
+										R.recoverRoomStats();
+										targetRoom.recoverRoomStats();
 									}
 								}
 							}
@@ -231,8 +239,11 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 									{
 										final Room R2=R.getRoomInDir(d);
 										final Exit E2=R.getExitInDir(d);
-										if((R2!=null)&&(E2!=null)
-										&&(E2.isOpen())&&(!CMLib.flags().isAiryRoom(R2)))
+										if((R2!=null)
+										&&(E2!=null)
+										&&(R2!=R)
+										&&(E2.isOpen())
+										&&(!CMLib.flags().isAiryRoom(R2)))
 										{
 											final int rct=this.getRoomSiegeCount(R2);
 											if(rct < smallestCount)
@@ -248,8 +259,10 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 										{
 											final Item I=R.getItem(ri);
 											if(CMLib.combat().isAShipSiegeWeapon(I))
-												targetRoom.moveItemTo(I);
+												targetRoom.moveItemTo(I, Expire.Inheret, Move.Optimize);
 										}
+										R.recoverRoomStats();
+										targetRoom.recoverRoomStats();
 									}
 								}
 							}
@@ -265,8 +278,11 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 									{
 										final Room R2=R.getRoomInDir(d);
 										final Exit E2=R.getExitInDir(d);
-										if((R2!=null)&&(E2!=null)
-										&&(E2.isOpen())&&(!CMLib.flags().isAiryRoom(R2)))
+										if((R2!=null)
+										&&(E2!=null)
+										&&(E2.isOpen())
+										&&(R2!=R)
+										&&(!CMLib.flags().isAiryRoom(R2)))
 										{
 											final int rct=this.getRoomWeight(R2);
 											if(rct < smallestCount)
@@ -283,10 +299,12 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 											final Item I=R.getItem(ri);
 											if((I!=null)&&(I.container()==null))
 											{
-												targetRoom.moveItemTo(I);
+												targetRoom.moveItemTo(I, Expire.Inheret, Move.Optimize);
 												totOver -= I.phyStats().weight();
 											}
 										}
+										R.recoverRoomStats();
+										targetRoom.recoverRoomStats();
 									}
 								}
 							}
