@@ -54,21 +54,36 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		return true;
 	}
 
-	protected void fillCluster(final Room R, final List<Room> V)
+	protected void fillCluster(final Room R, final List<Room> roomsV)
 	{
-		V.add(R);
+		final Set<Room> roomsS=new HashSet<Room>();
+		final boolean[] foundEntrance=new boolean[1];
+		foundEntrance[0] = false;
+		roomsS.add(R);
+		fillCluster(R, roomsV, roomsS, foundEntrance);
+	}
+
+	protected void fillCluster(final Room R, final List<Room> roomsV, final Set<Room> visitedS, final boolean[] foundEntrance)
+	{
+		roomsV.add(R);
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			final Room R2=R.getRoomInDir(d);
-			if((R2!=null)&&(R2.roomID().length()>0)&&(!V.contains(R2)))
+			if((R2!=null)
+			&&(R2.roomID().length()>0)
+			&&(!visitedS.contains(R2)))
 			{
+				visitedS.add(R2);
 				final Ability A=R2.fetchEffect(ID());
-				if((R2.getArea()==R.getArea())&&(A!=null))
-					fillCluster(R2,V);
+				if((R2.getArea()==R.getArea())
+				&&(A!=null))
+					fillCluster(R2,roomsV, visitedS, foundEntrance);
 				else
+				if(!foundEntrance[0])
 				{
-					V.remove(R); // purpose here is to put the "front" door up front.
-					V.add(0,R);
+					roomsV.remove(R); // purpose here is to put the "front" door up front.
+					roomsV.add(0,R);
+					foundEntrance[0] = true;
 				}
 			}
 		}
@@ -77,7 +92,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 	@Override
 	public List<Room> getConnectedPropertyRooms()
 	{
-		final List<Room> V=new ArrayList<Room>();
+		final List<Room> roomsV=new ArrayList<Room>();
 		Room R=null;
 		if(affected instanceof Room)
 			R=(Room)affected;
@@ -85,11 +100,11 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			R=CMLib.map().getRoom(landPropertyID());
 		if(R!=null)
 		{
-			fillCluster(R,V);
+			fillCluster(R,roomsV);
 			String uniqueID="LOTS_PROPERTY_"+this;
-			if(V.size()>0)
-				uniqueID="LOTS_PROPERTY_"+CMLib.map().getExtendedRoomID(V.get(0));
-			for(final Iterator<Room> r=V.iterator();r.hasNext();)
+			if(roomsV.size()>0)
+				uniqueID="LOTS_PROPERTY_"+CMLib.map().getExtendedRoomID(roomsV.get(0));
+			for(final Iterator<Room> r=roomsV.iterator();r.hasNext();)
 			{
 				Ability A=null;
 				R=r.next();
@@ -101,7 +116,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		}
 		else
 			uniqueLotID="";
-		return V;
+		return roomsV;
 
 	}
 
