@@ -539,6 +539,12 @@
                 </TD>
             </TR>
             <TR>
+                <TD><FONT COLOR=YELLOW>Target Fail Msg: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=255 NAME=TARGETFAILMSG VALUE="@AbilityData?TARGETFAILMSG@">
+                </TD>
+            </TR>
+            <TR>
                 <TD><FONT COLOR=YELLOW>Fizzle Message: </FONT></TD>
                 <TD>
                     <INPUT TYPE=TEXT SIZE=80 MAXLENGTH=255 NAME=FIZZLEMSG VALUE="@AbilityData?FIZZLEMSG@">

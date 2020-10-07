@@ -172,6 +172,8 @@ public class GrinderAbilities
 		A.setStat("MOCKABILITY",(old==null)?"":old);
 		old=httpReq.getUrlParameter("MOCKABLETEXT");
 		A.setStat("MOCKABLETEXT",(old==null)?"":old);
+		old=httpReq.getUrlParameter("TARGETFAILMSG");
+		A.setStat("TARGETFAILMSG",(old==null)?"":old);
 
 		old=httpReq.getUrlParameter("ROOMMASK");
 		A.setStat("ROOMMASK",(old==null)?"":old);

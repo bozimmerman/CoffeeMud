@@ -676,6 +676,13 @@ public class AbilityData extends StdWebMacro
 						old=A.getStat("MOCKABLETEXT");
 					str.append(old+", ");
 				}
+				if(parms.containsKey("TARGETFAILMSG"))
+				{
+					String old=httpReq.getUrlParameter("TARGETFAILMSG");
+					if(old==null)
+						old=A.getStat("TARGETFAILMSG");
+					str.append(old+", ");
+				}
 				if(parms.containsKey("UNINVOKEMSG"))
 				{
 					String old=httpReq.getUrlParameter("UNINVOKEMSG");

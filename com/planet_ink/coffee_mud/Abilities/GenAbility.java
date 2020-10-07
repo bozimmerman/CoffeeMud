@@ -80,8 +80,9 @@ public class GenAbility extends StdAbility
 	private static final int V_UNIN=30;//S
 	private static final int V_MOCK=31;//S
 	private static final int V_MOKT=32;//S
+	private static final int V_TMSF=33;//S
 
-	private static final int NUM_VS=33;//S
+	private static final int NUM_VS=34;//S
 
 	private static final Object[] makeEmpty()
 	{
@@ -119,6 +120,7 @@ public class GenAbility extends StdAbility
 		O[V_UNIN]="";
 		O[V_MOCK]="";
 		O[V_MOKT]="";
+		O[V_TMSF]="";
 		return O;
 	}
 
@@ -451,7 +453,10 @@ public class GenAbility extends StdAbility
 		&&(((String)V(ID,V_TMSK)).length()>0)
 		&&(!CMLib.masking().maskCheck((String)V(ID,V_TMSK), target,true)))
 		{
-			mob.tell(L("The target is invalid: @x1",CMLib.masking().maskDesc((String)V(ID,V_TMSK))));
+			if(((String)V(ID,V_TMSF)).length()>0)
+				mob.tell(CMLib.masking().maskDesc((String)V(ID,V_TMSF)));
+			else
+				mob.tell(L("The target is invalid: @x1",CMLib.masking().maskDesc((String)V(ID,V_TMSK))));
 			return false;
 		}
 
@@ -977,6 +982,7 @@ public class GenAbility extends StdAbility
 										 "UNINVOKEMSG", //32S
 										 "MOCKABILITY", //33A
 										 "MOCKABLETEXT", //34S
+										 "TARGETFAILMSG", //35S
 										};
 
 	@Override
@@ -1074,6 +1080,8 @@ public class GenAbility extends StdAbility
 			return (String) V(ID,V_MOCK);
 		case 34:
 			return (String) V(ID,V_MOKT);
+		case 35:
+			return (String) V(ID, V_TMSF);
 		default:
 			if (code.equalsIgnoreCase("javaclass"))
 				return "GenAbility";
@@ -1220,6 +1228,9 @@ public class GenAbility extends StdAbility
 			break;
 		case 34:
 			SV(ID, V_MOKT, val);
+			break;
+		case 35:
+			SV(ID, V_TMSF, val);
 			break;
 		default:
 			if (code.equalsIgnoreCase("allxml") && ID.equalsIgnoreCase("GenAbility"))
