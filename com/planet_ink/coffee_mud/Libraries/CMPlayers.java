@@ -1599,6 +1599,9 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					Log.errOut(e);
 				}
 			}
+			else
+			if(debugTopThread)
+				Log.debugOut(name()+": Won't Save");
 		}
 		else
 		if(debugTopThread)
