@@ -2722,7 +2722,8 @@ public class CMSecurity
 		GMCP("GMCP Protocol"),
 		ELECTRICTHREAD("Electric currents"),
 		SCRIPTVARS("MOBPROG Script vars"),
-		SCRIPTTRACE("MOBPROG Script traving")
+		SCRIPTTRACE("MOBPROG Script traving"),
+		TOPTHREAD("Top report thread")
 		;
 		private final String desc;
 

@@ -1562,7 +1562,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return true;
 	}
 
-	protected void saveLastMonthsTopsData()
+	protected void saveLastMonthsTopsData(final boolean debugTopThread)
 	{
 		final Command C=CMClass.getCommand("Top");
 		if(C!=null)
@@ -1573,6 +1573,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			if(!dirF.exists())
 				dirF.mkdir();
 			final String filename = "::/resources/sys_reports/"+name()+"_top_report_"+calC.get(Calendar.YEAR)+"-"+(calC.get(Calendar.MONTH)+1)+"-"+calC.get(Calendar.DAY_OF_MONTH)+".txt";
+			if(debugTopThread)
+				Log.debugOut(name()+": Want to dump: "+filename);
 			final CMFile F=new CMFile(filename, null);
 			if(!F.exists())
 			{
@@ -1584,8 +1586,13 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					if(o instanceof String)
 					{
 						final String str=CMStrings.removeColors((String)o);
+						if(debugTopThread)
+							Log.debugOut(name()+": Saved");
 						F.saveText(str);
 					}
+					else
+					if(debugTopThread)
+						Log.debugOut(name()+": Not Saved");
 				}
 				catch (final IOException e)
 				{
@@ -1593,6 +1600,9 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				}
 			}
 		}
+		else
+		if(debugTopThread)
+			Log.debugOut(ID()+": No C");
 	}
 
 	@Override
@@ -1637,19 +1647,26 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					final long now=System.currentTimeMillis();
 					List<Pair<String,Integer>> top;
 					boolean dumpTried = false;
+					final boolean debugTopThread = CMSecurity.isDebugging(DbgFlag.TOPTHREAD);
+					if(debugTopThread)
+						Log.debugOut(name()+": Current Time: "+Math.round(now/60000));
 					for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
 					{
 						if(period == TimeClock.TimePeriod.ALLTIME)
 							continue;
+						if(debugTopThread)
+							Log.debugOut(name()+": "+period.name()+": Expires @"+Math.round(topPrideExpiration[period.ordinal()]/60000));
 						if(now > topPrideExpiration[period.ordinal()])
 						{
 							if((period == TimeClock.TimePeriod.MONTH)
 							&&(!dumpTried))
 							{
 								dumpTried=true;
-								saveLastMonthsTopsData();
+								saveLastMonthsTopsData(debugTopThread);
 							}
 							topPrideExpiration[period.ordinal()] = period.nextPeriod();
+							if(debugTopThread)
+								Log.debugOut(name()+": "+period.name()+": Next Expire @"+Math.round(topPrideExpiration[period.ordinal()]/60000));
 							for(final AccountStats.PrideStat stat : AccountStats.PrideStat.values())
 							{
 								top=topAccounts[period.ordinal()][stat.ordinal()];
