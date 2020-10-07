@@ -147,7 +147,7 @@
 	<INPUT TYPE=BUTTON NAME=NEWAREA VALUE="New" ONCLICK="Clicked('newarea.cmvp');">
 	<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Edit" ONCLICK="Clicked('possmodarea.cmvp');">
 	<INPUT TYPE=BUTTON NAME=MAPAREA VALUE="Map" ONCLICK="Clicked('maparea.cmvp');">
-	<INPUT TYPE=BUTTON NAME=DELAREA VALUE="Del" ONCLICK="if(confirm('Are you sure you want to delete this area?'))Clicked('areagone.cmvp');">
+	<INPUT TYPE=BUTTON NAME=DELAREA VALUE="Del" ONCLICK="if(confirm('Are you sure you want to delete the area '+document.SELECTAREA.AREA.value+'?'))Clicked('areagone.cmvp');">
 	<br>
 	<INPUT TYPE=CHECKBOX NAME=MAPSTYLE VALUE=Z><FONT SIZE=-1 COLOR=WHITE>Use Z-Level Mapping</FONT>
 	<br>
