@@ -907,6 +907,8 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 				break;
 			case CMMsg.TYP_LIFE:
 				if((msg.source()!=null)
+				&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+				&&(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
 				&&(msg.source().isMonster())
 				&&(msg.source().getStartRoom()!=null)
 				&&(msg.source().getStartRoom()==msg.source().location())
