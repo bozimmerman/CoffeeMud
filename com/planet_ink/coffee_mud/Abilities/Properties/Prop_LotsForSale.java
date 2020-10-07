@@ -48,6 +48,10 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 
 	protected String	uniqueLotID	= null;
 
+	protected volatile long			lastRoomsTimestamp	= 0;
+	protected volatile Area			lastArea			= null;
+	protected volatile List<Room>	lastRoomsV			= new ArrayList<Room>();
+
 	@Override
 	public boolean allowsExpansionConstruction()
 	{
@@ -100,18 +104,30 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			R=CMLib.map().getRoom(landPropertyID());
 		if(R!=null)
 		{
-			fillCluster(R,roomsV);
-			String uniqueID="LOTS_PROPERTY_"+this;
-			if(roomsV.size()>0)
-				uniqueID="LOTS_PROPERTY_"+CMLib.map().getExtendedRoomID(roomsV.get(0));
-			for(final Iterator<Room> r=roomsV.iterator();r.hasNext();)
+			final Area A=R.getArea();
+			if((A!=null)
+			&&(A==this.lastArea)
+			&&(A.getProperRoomnumbers().getLastChangedMs() == this.lastRoomsTimestamp))
+				roomsV.addAll(this.lastRoomsV);
+			else
 			{
-				Ability A=null;
-				R=r.next();
-				if(R!=null)
-					A=R.fetchEffect(ID());
-				if(A instanceof Prop_LotsForSale)
-					((Prop_LotsForSale)A).uniqueLotID=uniqueID;
+				fillCluster(R,roomsV);
+				String uniqueID="LOTS_PROPERTY_"+this;
+				if(roomsV.size()>0)
+					uniqueID="LOTS_PROPERTY_"+CMLib.map().getExtendedRoomID(roomsV.get(0));
+				for(final Iterator<Room> r=roomsV.iterator();r.hasNext();)
+				{
+					Ability bA=null;
+					R=r.next();
+					if(R!=null)
+						bA=R.fetchEffect(ID());
+					if(bA instanceof Prop_LotsForSale)
+						((Prop_LotsForSale)bA).uniqueLotID=uniqueID;
+				}
+				this.lastArea = A;
+				this.lastRoomsV.clear();
+				this.lastRoomsV.addAll(roomsV);
+				this.lastRoomsTimestamp = A.getProperRoomnumbers().getLastChangedMs();
 			}
 		}
 		else
