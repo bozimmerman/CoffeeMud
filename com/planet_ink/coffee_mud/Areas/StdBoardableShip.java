@@ -905,6 +905,20 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 			case CMMsg.TYP_COMMAND:
 				this.shipItem.executeMsg(myHost, msg);
 				break;
+			case CMMsg.TYP_LIFE:
+				if((msg.source()!=null)
+				&&(msg.source().isMonster())
+				&&(msg.source().getStartRoom()!=null)
+				&&(msg.source().getStartRoom()==msg.source().location())
+				&&(msg.source().basePhyStats().rejuv()>0)
+				&&(msg.source().basePhyStats().rejuv()<Integer.MAX_VALUE)
+				&&(this.shipItem instanceof SailingShip)
+				&&((SailingShip)this.shipItem).isSunk())
+				{
+					// this might be a bad idea?
+					msg.source().destroy();
+				}
+				//$FALL-THROUGH$
 			default:
 			{
 				final Room R=msg.source().location();

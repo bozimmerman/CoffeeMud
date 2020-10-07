@@ -2297,9 +2297,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		if((P==null)||(room==null))
 			return;
 
-		Room R=room.getRoomInDir(Directions.DOWN);
-		if(reverseSink)
-			R=room.getRoomInDir(Directions.UP);
+		final Room R=(reverseSink) ?
+				room.getRoomInDir(Directions.UP) :
+				room.getRoomInDir(Directions.DOWN);
 		if((R==null)
 		||((R.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
 		   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)))

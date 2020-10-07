@@ -69,6 +69,12 @@ public interface SailingShip extends BoardableShip, Item, Combatant, Rideable
 	public int getShipSpeed();
 
 	/**
+	 * Returns whether this ship is sunk or sinking..
+	 * @return true if this ship is sunk or sinking
+	 */
+	public boolean isSunk();
+
+	/**
 	 * Sets whether the anchor is down, thus holding the ship in place.
 	 * @param truefalse true if the anchor is down, false if the anchor is up
 	 */

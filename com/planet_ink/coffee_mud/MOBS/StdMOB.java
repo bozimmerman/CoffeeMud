@@ -1356,10 +1356,13 @@ public class StdMOB implements MOB
 
 		CMLib.map().registerWorldObjectLoaded(null, getStartRoom(), this);
 		location().show(this, null, CMMsg.MSG_BRINGTOLIFE, null);
-		if (CMLib.flags().isSleeping(this))
-			tell(L("(You are asleep)"));
-		else
-			CMLib.commands().postLook(this, true);
+		if(!amDestroyed)
+		{
+			if (CMLib.flags().isSleeping(this))
+				tell(L("(You are asleep)"));
+			else
+				CMLib.commands().postLook(this, true);
+		}
 		possWieldedItem= null;
 		possHeldItem = null;
 		inventory.trimToSize();

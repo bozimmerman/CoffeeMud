@@ -3318,4 +3318,18 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 			return false;
 		return true;
 	}
+
+	@Override
+	public boolean isSunk()
+	{
+		final ItemPossessor owner = owner();
+		if((owner instanceof Room)
+		&&(this.area instanceof BoardableShip))
+		{
+			final Room R = (Room)owner;
+			final boolean isWater=CMLib.flags().isUnderWateryRoom(R);
+			return isWater && (R.getGridParent()!=null) && (R.getGridParent().roomID().length()==0);
+		}
+		return false;
+	}
 }
