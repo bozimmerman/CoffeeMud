@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Behaviors;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Move;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -132,7 +133,8 @@ public class WaterCurrents extends ActiveTicker
 				}
 			}
 		}
-		if((todo.size()>0)&&(R!=null))
+		if((todo.size()>0
+		)&&(R!=null))
 		{
 			int dir=-1;
 			Room R2=null;
@@ -153,7 +155,8 @@ public class WaterCurrents extends ActiveTicker
 					}
 				}
 			}
-			if(R2!=null)
+			if((R2!=null)
+			&&(todo.size()>0))
 			{
 				MOB M=null;
 				Item I=null;
@@ -190,13 +193,15 @@ public class WaterCurrents extends ActiveTicker
 										R3.showHappens(CMMsg.MSG_OK_ACTION, L("@x1 is swept @x2 by the current.",I.name(),CMLib.directions().getDirectionName(dir).toLowerCase()));
 								}
 							}
-							R2.moveItemTo(I,ItemPossessor.Expire.Player_Drop);
+							R2.moveItemTo(I,ItemPossessor.Expire.Inheret,Move.Optimize);
 							R2.showOthers(srcM,I,new AWaterCurrent(),CMMsg.MSG_OK_ACTION,L("@x1 is swept in from @x2 by the current.",
 									I.name(),CMLib.directions().getFromCompassDirectionName(R.getReverseDir(dir)).toLowerCase()));
 						}
 					}
 				}
 				srcM.destroy();
+				R2.recoverRoomStats();
+				R.recoverRoomStats();
 			}
 		}
 	}
