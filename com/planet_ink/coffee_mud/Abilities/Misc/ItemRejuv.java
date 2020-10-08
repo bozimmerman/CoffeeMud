@@ -229,6 +229,11 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 				CMLib.threads().setTickPending(ticking,Tickable.TICKID_ROOM_ITEM_REJUV);
 				return true; // it will just come back next time
 			}
+			if(CMSecurity.isDisabled(CMSecurity.DisFlag.ITEMREJUV))
+			{
+				CMLib.threads().setTickPending(ticking,Tickable.TICKID_ROOM_ITEM_REJUV);
+				return true; // it will just come back next time
+			}
 
 			if(!verifyFixContents())
 				return false;

@@ -2838,7 +2838,8 @@ public class CMSecurity
 		ITEMGENCACHE("generated item cache"),
 		AUTOMOODS("automatic mood changes"),
 		DEATHCRY("player purge death cry"),
-		DIS955RULE("no 5% failure chance")
+		DIS955RULE("no 5% failure chance"),
+		ITEMREJUV("disable item rejuv")
 		;
 		private final String desc;
 

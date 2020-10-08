@@ -2863,10 +2863,12 @@ public class CMMap extends StdLibrary implements WorldMap
 				I=i.nextElement();
 				if(I != null)
 				{
-					if((I instanceof PrivateProperty)&&((((PrivateProperty)I).getOwnerName().length()>0)))
+					if((I instanceof PrivateProperty)
+					&&((((PrivateProperty)I).getOwnerName().length()>0)))
 					{
-						final Room R=this.getSafeRoomToMovePropertyTo(room, (PrivateProperty)I);
-						if((R!=null)&&(R!=room))
+						final Room R=getSafeRoomToMovePropertyTo(room, (PrivateProperty)I);
+						if((R!=null)
+						&&(R!=room))
 							R.moveItemTo(I,ItemPossessor.Expire.Player_Drop);
 					}
 					else
