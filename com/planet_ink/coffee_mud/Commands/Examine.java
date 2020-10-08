@@ -103,6 +103,8 @@ public class Examine extends StdCommand
 					thisThang=R.fetchFromMOBRoomFavorsItems(mob,null,ID,Wearable.FILTER_ANY);
 			}
 			*/
+			if(thisThang==null)
+				thisThang=R.fetchFromMOBRoomFavorsItems(mob,null,ID,Wearable.FILTER_ANY);
 			if(thisThang == null)
 			{
 				final CMFlagLibrary flagLib=CMLib.flags();
