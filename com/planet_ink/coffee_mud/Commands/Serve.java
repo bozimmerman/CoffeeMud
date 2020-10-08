@@ -67,6 +67,12 @@ public class Serve extends StdCommand
 			CMLib.commands().postCommandFail(mob,origCmds,L("I don't see @x1 here.",CMParms.combine(commands,0)));
 			return false;
 		}
+		if((recipient.phyStats().level()<mob.phyStats().level())
+		&&(!(recipient instanceof Deity)))
+		{
+			CMLib.commands().postCommandFail(mob,origCmds,L("@x1 is not worthy of your service.",recipient.name(mob)));
+			return false;
+		}
 		final CMMsg msg=CMClass.getMsg(mob,recipient,null,CMMsg.MSG_SERVE,L("<S-NAME> swear(s) fealty to <T-NAMESELF>."));
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
