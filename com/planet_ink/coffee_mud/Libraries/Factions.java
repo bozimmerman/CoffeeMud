@@ -1333,7 +1333,7 @@ public class Factions extends StdLibrary implements FactionManager
 						mob.tell(L("Valid triggers: \n\r@x1",me.ALL_CHANGE_EVENT_TYPES()));
 						continue;
 					}
-					CE=me.createChangeEvent(newID);
+					CE=me.createChangeEvent("CHOICE"+Math.random(), newID);
 					if(CE==null)
 					{
 						mob.tell(L("That ID is invalid.  Try '?'."));

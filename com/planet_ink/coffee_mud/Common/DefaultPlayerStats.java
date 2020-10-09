@@ -109,6 +109,7 @@ public class DefaultPlayerStats implements PlayerStats
 	protected SecGroup		 securityFlags	= new SecGroup(new CMSecurity.SecFlag[]{});
 	protected long			 accountExpires	= 0;
 	protected RoomnumberSet  visitedRoomSet	= null;
+	protected RoomnumberSet  tVisitedRoomSet= null;
 	protected Set<String>	 introductions	= new SHashSet<String>();
 	protected long[]	 	 prideExpireTime= new long[TimeClock.TimePeriod.values().length];
 	protected int[][]		 prideStats		= new int[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
@@ -166,6 +167,7 @@ public class DefaultPlayerStats implements PlayerStats
 				O.visitedRoomSet=(RoomnumberSet)visitedRoomSet.copyOf();
 			else
 				O.visitedRoomSet=null;
+			O.tVisitedRoomSet = null;
 			O.securityFlags=securityFlags.copyOf();
 			O.friends=new SHashSet<String>(friends);
 			O.ignored=new SHashSet<String>(ignored);
@@ -489,7 +491,7 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 		return msgs;
 	}
-	
+
 	@Override
 	public List<TellMsg> getTellStack()
 	{
@@ -501,6 +503,16 @@ public class DefaultPlayerStats implements PlayerStats
 		if(visitedRoomSet==null)
 			visitedRoomSet=((RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet"));
 		return visitedRoomSet;
+	}
+
+	private RoomnumberSet tempRoomSet()
+	{
+		if(tVisitedRoomSet==null)
+		{
+			tVisitedRoomSet=((RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet"));
+			tVisitedRoomSet.setSingleAreaFlag(true);
+		}
+		return tVisitedRoomSet;
 	}
 
 	protected TellMsg makeTellMsg(final String from, final String to, final String msg)
@@ -535,10 +547,10 @@ public class DefaultPlayerStats implements PlayerStats
 			{
 				return msgStr;
 			}
-			
+
 		};
 	}
-	
+
 	@Override
 	public void addGTellStack(final String from, final String to, final String msg)
 	{
@@ -560,7 +572,7 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 		return msgs;
 	}
-	
+
 	@Override
 	public List<TellMsg> getGTellStack()
 	{
@@ -1315,11 +1327,13 @@ public class DefaultPlayerStats implements PlayerStats
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.ROOMVISITS))
 		&&(R!=null)
 		&&(!CMath.bset(R.phyStats().sensesMask(),PhyStats.SENSE_ROOMUNEXPLORABLE))
-		&&(!(R.getArea() instanceof AutoGenArea))
 		&&(R.getArea()!=null)
 		&&(!hasVisited(R)))
 		{
-			roomSet().add(CMLib.map().getExtendedRoomID(R));
+			if(R.getArea() instanceof AutoGenArea)
+				tempRoomSet().add(CMLib.map().getExtendedRoomID(R));
+			else
+				roomSet().add(CMLib.map().getExtendedRoomID(R));
 			return true;
 		}
 		return false;
@@ -1328,7 +1342,8 @@ public class DefaultPlayerStats implements PlayerStats
 	@Override
 	public boolean hasVisited(final Room R)
 	{
-		return roomSet().contains(CMLib.map().getExtendedRoomID(R));
+		final String roomID=CMLib.map().getExtendedRoomID(R);
+		return roomSet().contains(roomID) || tempRoomSet().contains(roomID);
 	}
 
 	@Override
@@ -1337,7 +1352,7 @@ public class DefaultPlayerStats implements PlayerStats
 		final int numRooms=A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()];
 		if(numRooms<=0)
 			return true;
-		return roomSet().roomCount(A.Name())>0;
+		return (roomSet().roomCount(A.Name())>0) || (tempRoomSet().roomCount(A.Name())>0);
 	}
 
 	@Override
@@ -1345,8 +1360,11 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		if(R != null)
 		{
-			if(roomSet().contains(CMLib.map().getExtendedRoomID(R)))
-				roomSet().remove(CMLib.map().getExtendedRoomID(R));
+			final String roomID=CMLib.map().getExtendedRoomID(R);
+			if(roomSet().contains(roomID))
+				roomSet().remove(roomID);
+			if(tempRoomSet().contains(roomID))
+				tempRoomSet().remove(roomID);
 		}
 	}
 
@@ -1355,14 +1373,31 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		if(A != null)
 		{
-			Room R;
 			for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
-			{
-				R=r.nextElement();
-				if(roomSet().contains(CMLib.map().getExtendedRoomID(R)))
-					roomSet().remove(CMLib.map().getExtendedRoomID(R));
-			}
+				unVisit(r.nextElement());
 		}
+	}
+
+	@Override
+	public int totalVisitedRooms(final MOB mob, Area A)
+	{
+		if(A==null)
+		{
+			int totalVisits=0;
+			for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
+			{
+				A=e.nextElement();
+				if((!CMLib.flags().isHidden(A))
+				&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
+				{
+					final int[] stats=A.getAreaIStats();
+					if(stats[Area.Stats.VISITABLE_ROOMS.ordinal()]>0)
+						totalVisits+=roomSet().roomCount(A.Name()) + tempRoomSet().roomCount(A.Name());
+				}
+			}
+			return totalVisits;
+		}
+		return roomSet().roomCount(A.Name()) + tempRoomSet().roomCount(A.Name());
 	}
 
 	@Override
@@ -1382,7 +1417,7 @@ public class DefaultPlayerStats implements PlayerStats
 					if(stats[Area.Stats.VISITABLE_ROOMS.ordinal()]>0)
 					{
 						totalRooms+=stats[Area.Stats.VISITABLE_ROOMS.ordinal()];
-						totalVisits+=roomSet().roomCount(A.Name());
+						totalVisits+=roomSet().roomCount(A.Name()) + tempRoomSet().roomCount(A.Name());
 					}
 				}
 			}
@@ -1394,7 +1429,7 @@ public class DefaultPlayerStats implements PlayerStats
 		final int numRooms=A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()];
 		if(numRooms<=0)
 			return 100;
-		final double pct=CMath.div(roomSet().roomCount(A.Name()),numRooms);
+		final double pct=CMath.div(roomSet().roomCount(A.Name()) + tempRoomSet().roomCount(A.Name()),numRooms);
 		return (int)Math.round(100.0*pct);
 	}
 
@@ -2118,6 +2153,7 @@ public class DefaultPlayerStats implements PlayerStats
 		autoInvokeSet.clear();
 		account = null;
 		visitedRoomSet	= null;
+		tVisitedRoomSet	= null;
 		introductions.clear();
 		extItems.delAllItems(true);
 		achievementers.clear();

@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.Command;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent;
+import com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent.MiscTrigger;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -396,8 +397,8 @@ public class FactionData extends StdWebMacro
 					str.append("<TR><TD>");
 					str.append("<SELECT NAME=CHANGESTRIGGER"+showNum+" ONCHANGE=\"AddItem(this);\">");
 					str.append("<OPTION VALUE=\"\">Select a trigger");
-					for (final String element : Faction.FactionChangeEvent.MISC_TRIGGERS)
-						str.append("<OPTION VALUE=\""+element+"\">"+CMStrings.limit(CMStrings.capitalizeAndLower(element),20));
+					for (final MiscTrigger element : Faction.FactionChangeEvent.MiscTrigger.values())
+						str.append("<OPTION VALUE=\""+element+"\">"+CMStrings.limit(CMStrings.capitalizeAndLower(element.name()),20));
 					for (final String element : Ability.ACODE_DESCS)
 						str.append("<OPTION VALUE=\""+element+"\">"+CMStrings.limit(CMStrings.capitalizeAndLower(element),20));
 					for (final String element : Ability.DOMAIN_DESCS)

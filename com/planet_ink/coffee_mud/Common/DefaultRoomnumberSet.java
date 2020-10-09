@@ -51,6 +51,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 
 	public STreeMap<String,LongSet> root=new STreeMap<String,LongSet>();
 	private volatile long lastChangedTime = 0;
+	private boolean singleAreaFlag = false;
 
 	@Override
 	public int compareTo(final CMObject o)
@@ -81,6 +82,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 	{
 		final DefaultRoomnumberSet R=new DefaultRoomnumberSet();
 		R.root=new STreeMap<String,LongSet>();
+		R.singleAreaFlag=this.singleAreaFlag;
 		LongSet CI=null;
 		for(final String area : root.keySet())
 		{
@@ -92,6 +94,12 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		}
 		R.lastChangedTime = lastChangedTime;
 		return R;
+	}
+
+	@Override
+	public void setSingleAreaFlag(final boolean tf)
+	{
+		this.singleAreaFlag = tf;
 	}
 
 	@Override
@@ -109,6 +117,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 			{
 				if(his!=null)
 					mine=his.copyOf();
+				if(singleAreaFlag)
+					root.clear();
 				root.put(arName.toUpperCase(),mine);
 			}
 			else
@@ -203,6 +213,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 	@Override
 	public int roomCount(String areaName)
 	{
+		if(root.size()==0)
+			return 0;
 		final int x=areaName.indexOf('#');
 		if(x>0)
 			areaName=areaName.substring(0,x).toUpperCase();
@@ -310,6 +322,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 	{
 		if(str==null)
 			return false;
+		if(root.size()==0)
+			return false;
 		String theRest=null;
 		long roomNum=0;
 		final int origX=str.indexOf('#');
@@ -377,7 +391,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 				{
 					ID=ablk.getValFromPieces("ID").toUpperCase();
 					NUMS=ablk.getValFromPieces("NUMS");
-					if((NUMS!=null)&&(NUMS.length()>0))
+					if((NUMS!=null)
+					&&(NUMS.length()>0))
 						root.put(ID,new LongSet().parseString(NUMS));
 					else
 						root.put(ID,null);
@@ -427,6 +442,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		LongSet CI = root.get(areaName);
 		if(CI==null)
 		{
+			if(singleAreaFlag)
+				root.clear();
 			if(roomNum>=0)
 				CI=new LongSet();
 			root.put(areaName,CI);

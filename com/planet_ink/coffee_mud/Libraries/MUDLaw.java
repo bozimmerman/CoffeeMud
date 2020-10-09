@@ -439,6 +439,8 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			return false;
 		if((doesHavePriviledgesHere(mob,R))||((overrideID.length()>0)&&(mob.Name().equals(overrideID))))
 			return true;
+		if(CMSecurity.isAllowed(mob, R, CMSecurity.SecFlag.CMDROOMS))
+			return true;
 		if(overrideID.length()>0)
 		{
 			if(doesHaveClanFriendlyPrivilegesHere(mob, overrideID))

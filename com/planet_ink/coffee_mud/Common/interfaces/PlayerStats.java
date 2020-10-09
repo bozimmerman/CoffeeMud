@@ -258,16 +258,16 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	/**
 	 * Queries the Tell stack for messages matching given criteria.
 	 * Returns the found messages.
-	 * 
+	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getTellStack()
-	 * 
+	 *
 	 * @param fromName null, or a from-name to match
 	 * @param toName null, or a to name to match
 	 * @param sinceTime null, or a time, in ms, since epoc
 	 * @return the found messages
 	 */
 	public List<TellMsg> queryTellStack(final String fromName, final String toName, final Long sinceTime);
-	
+
 	/**
 	 * Adds a new string message to the tell stack.
 	 * @param from who the message is from
@@ -302,16 +302,16 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	/**
 	 * Queries the GTell stack for messages matching given criteria.
 	 * Returns the found messages.
-	 * 
+	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getGTellStack()
-	 * 
+	 *
 	 * @param fromName null, or a from-name to match
 	 * @param toName null, or a to name to match
 	 * @param sinceTime null, or a time, in ms, since epoc
 	 * @return the found messages
 	 */
 	public List<TellMsg> queryGTellStack(final String fromName, final String toName, final Long sinceTime);
-	
+
 	/**
 	 * For player with the GOTO command, this is the message seen by all when
 	 * the player arrives from using GOTO.
@@ -550,6 +550,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#hasVisited(Area)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#percentVisited(MOB, Area)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#totalVisitedRooms(MOB, Area)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#addRoomVisit(Room)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#unVisit(Room)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#unVisit(Area)
@@ -564,6 +565,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * Returns whether this player has visited the given area.
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#hasVisited(Room)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#totalVisitedRooms(MOB, Area)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#percentVisited(MOB, Area)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#addRoomVisit(Room)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#unVisit(Room)
@@ -578,6 +580,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * Returns the percentage (0-100) of the given area that the
 	 * given player has explored.
 	 *
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#totalVisitedRooms(MOB, Area)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#hasVisited(Room)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#hasVisited(Area)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#addRoomVisit(Room)
@@ -591,10 +594,29 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	public int percentVisited(MOB mob, Area A);
 
 	/**
+	 * Returns the number of rooms in the given area that the
+	 * given player has explored.
+	 *
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#percentVisited(MOB, Area)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#totalVisitedRooms(MOB, Area)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#hasVisited(Room)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#hasVisited(Area)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#addRoomVisit(Room)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#unVisit(Room)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#unVisit(Area)
+	 *
+	 * @param mob the player of these stats
+	 * @param A the Area to check
+	 * @return the percent of the area the player has explored
+	 */
+	public int totalVisitedRooms(MOB mob, Area A);
+
+	/**
 	 * Records the fact that this player has been to the given room.
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#hasVisited(Room)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#hasVisited(Area)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#totalVisitedRooms(MOB, Area)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#percentVisited(MOB, Area)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#unVisit(Room)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#unVisit(Area)
@@ -1062,7 +1084,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	/**
 	 * Interface for an archived Tell message to or from
 	 * this player.
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 *
 	 */
@@ -1073,27 +1095,27 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 		 * @return who the message was to
 		 */
 		public String to();
-		
+
 		/**
 		 * Who the message was from
 		 * @return who the message was from
 		 */
 		public String from();
-		
+
 		/**
 		 * When the message was sent/received
 		 * @return when the message was sent/received
 		 */
 		public long time();
-		
+
 		/**
 		 * The message text itself
 		 * @return the message text itself
 		 */
 		public String message();
 	}
-	
-	
+
+
 	/** Constant for day of birthday, as from {@link PlayerStats#getBirthday()} */
 	public static final int BIRTHDEX_DAY = 0;
 	/** Constant for month of birthday, as from {@link PlayerStats#getBirthday()} */

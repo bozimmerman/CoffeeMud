@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Faction.FData;
 import com.planet_ink.coffee_mud.Common.interfaces.Faction.FRange;
+import com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent.MiscTrigger;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
@@ -536,7 +537,7 @@ public class DefaultFaction implements Faction, MsgListener
 			if(key.startsWith("RANGE"))
 				addRange(words);
 			if(key.startsWith("CHANGE"))
-				createChangeEvent(words);
+				createChangeEvent(key, words);
 			if(key.startsWith("AFFBEHAV"))
 			{
 				final Object[] O=CMParms.parseSafeSemicolonList(words,false).toArray();
@@ -1179,23 +1180,92 @@ public class DefaultFaction implements Faction, MsgListener
 		FactionChangeEvent[] events;
 		switch(msg.sourceMinor())
 		{
+		case CMMsg.TYP_ENTER:
+		{
+			if((msg.source() == myHost)
+			&&(msg.source().isPlayer())
+			&&(msg.target() instanceof Room))
+			{
+				events=getChangeEvents("AREAEXPLORE");
+				if(events != null)
+				{
+					final Room R=(Room)msg.target();
+					if(!msg.source().playerStats().hasVisited(R))
+					{
+						for (final FactionChangeEvent event : events)
+						{
+							if(event.applies(msg.source(),msg.source()))
+								executeChange(msg.source(),msg.source(),event);
+						}
+					}
+				}
+			}
+			break;
+		}
 		case CMMsg.TYP_DEATH:
-			if(((msg.source()==myHost)||(msg.tool()==myHost))
-			&&(msg.tool() instanceof MOB))
+			if((msg.source()==myHost)||(msg.tool()==myHost))
 			{
 				final MOB killedM=msg.source();
-				final MOB killingBlowM=(MOB)msg.tool();
-				events=getChangeEvents((msg.source()==myHost)?"MURDER":"KILL");
-				if(events!=null)
+				if(msg.tool() instanceof MOB)
 				{
-					for (final FactionChangeEvent event : events)
+					final MOB killingBlowM=(MOB)msg.tool();
+					events=getChangeEvents((msg.source()==myHost)?"MURDER":"KILL");
+					if(events!=null)
 					{
-						if(event.applies(killingBlowM,killedM))
+						for (final FactionChangeEvent event : events)
 						{
-							final CharClass combatCharClass=CMLib.combat().getCombatDominantClass(killingBlowM,killedM);
-							final Set<MOB> combatBeneficiaries=CMLib.combat().getCombatBeneficiaries(killingBlowM,killedM,combatCharClass);
-							for (final MOB mob : combatBeneficiaries)
-								executeChange(mob,killedM,event);
+							if(event.applies(killingBlowM,killedM))
+							{
+								final CharClass combatCharClass=CMLib.combat().getCombatDominantClass(killingBlowM,killedM);
+								final Set<MOB> combatBeneficiaries=CMLib.combat().getCombatBeneficiaries(killingBlowM,killedM,combatCharClass);
+								for (final MOB mob : combatBeneficiaries)
+									executeChange(mob,killedM,event);
+							}
+						}
+					}
+					final Room R = msg.source().location();
+					if((R!=null)&&(R.getArea()!=null))
+					{
+						events=getChangeEvents("AREAASS");
+						if((events!=null)
+						&&(killedM.phyStats().level()==R.getArea().getAreaIStats()[Area.Stats.MAX_LEVEL.ordinal()]))
+						{
+							for (final FactionChangeEvent event : events)
+							{
+								if(event.applies(killingBlowM,killedM))
+								{
+									final CharClass combatCharClass=CMLib.combat().getCombatDominantClass(killingBlowM,killedM);
+									final Set<MOB> combatBeneficiaries=CMLib.combat().getCombatBeneficiaries(killingBlowM,killedM,combatCharClass);
+									for (final MOB mob : combatBeneficiaries)
+										executeChange(mob,killedM,event);
+								}
+							}
+						}
+						events=getChangeEvents("AREAKILL");
+						if(events!=null)
+						{
+							for (final FactionChangeEvent event : events)
+							{
+								if(event.applies(killingBlowM,killedM))
+								{
+									final CharClass combatCharClass=CMLib.combat().getCombatDominantClass(killingBlowM,killedM);
+									final Set<MOB> combatBeneficiaries=CMLib.combat().getCombatBeneficiaries(killingBlowM,killedM,combatCharClass);
+									for (final MOB mob : combatBeneficiaries)
+										executeChange(mob,killedM,event);
+								}
+							}
+						}
+					}
+				}
+				if(msg.source()==myHost)
+				{
+					events=getChangeEvents("DYING");
+					if(events!=null)
+					{
+						for (final FactionChangeEvent event : events)
+						{
+							if(event.applies(killedM,killedM))
+								executeChange(killedM,killedM,event);
 						}
 					}
 				}
@@ -1461,7 +1531,7 @@ public class DefaultFaction implements Faction, MsgListener
 					Faction.FData data = mob.fetchFactionData(factionID());
 					for (final FactionChangeEvent event : events)
 					{
-						if(event.eventID().equals("SOCIAL"))
+						if(event.miscEvent()==MiscTrigger.SOCIAL)
 						{
 							final String triggerID=event.getTriggerParm("ID");
 							if(triggerID.length()==0)
@@ -1534,7 +1604,7 @@ public class DefaultFaction implements Faction, MsgListener
 		int targetFaction = sourceFaction * -1;
 		if((source==target)
 		&&(!event.selfTargetOK())
-		&&(!event.eventID().equalsIgnoreCase("TIME")))
+		&&(event.miscEvent() != MiscTrigger.TIME))
 			return;
 
 		if(target!=null)
@@ -1548,8 +1618,9 @@ public class DefaultFaction implements Faction, MsgListener
 		else
 			target = source;
 
-		final String chance=event.getTriggerParm("CHANCE");
-		if(CMath.isInteger(chance) && (CMLib.dice().rollPercentage()<CMath.s_int(chance)))
+		if((event.getPctChance()<100)
+		&&(event.getPctChance()>0)
+		&& (CMLib.dice().rollPercentage()<event.getPctChance()))
 			return;
 
 		double baseChangeAmount=100.0;
@@ -1574,6 +1645,24 @@ public class DefaultFaction implements Faction, MsgListener
 			CMLib.leveler().postExperience(source, target, "", event.getBonusXP(), false);
 		if(event.getBonusRoleplayXP()!=0)
 			CMLib.leveler().postRPExperience(source, target, "", event.getBonusRoleplayXP(), true);
+
+		final String resetTimerEventID = event.getTriggerParm("RESTIME");
+		if(resetTimerEventID.length()>0)
+		{
+			final Faction.FactionChangeEvent[] events = getChangeEvents(resetTimerEventID);
+			if(events != null)
+			{
+				final Faction.FData sdata = source.fetchFactionData(factionID());
+				final Faction.FData tdata = target.fetchFactionData(factionID());
+				for(final Faction.FactionChangeEvent event2 : events)
+				{
+					if(sdata != null)
+						sdata.resetEventTimer(event2.eventID());
+					if(tdata != null)
+						tdata.resetEventTimer(event2.eventID());
+				}
+			}
+		}
 
 		int factionAdj=1;
 		int changeDir=0;
@@ -1715,8 +1804,8 @@ public class DefaultFaction implements Faction, MsgListener
 		final StringBuffer ALL_TYPES=new StringBuffer("");
 		if(_ALL_TYPES!=null)
 			return _ALL_TYPES;
-		for (final String element : Faction.FactionChangeEvent.MISC_TRIGGERS)
-			ALL_TYPES.append(element+", ");
+		for (final MiscTrigger element : Faction.FactionChangeEvent.MiscTrigger.values())
+			ALL_TYPES.append(element.name()+", ");
 		for (final String element : Ability.ACODE_DESCS)
 			ALL_TYPES.append(element+", ");
 		for (final String element : Ability.DOMAIN_DESCS)
@@ -1739,19 +1828,19 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public Faction.FactionChangeEvent createChangeEvent(final String key)
+	public Faction.FactionChangeEvent createChangeEvent(final String eventKey, final String eventData)
 	{
 		Faction.FactionChangeEvent event;
-		if(key==null)
+		if(eventData==null)
 			return null;
-		if(key.indexOf(';')<0)
+		if(eventData.indexOf(';')<0)
 		{
 			event=new DefaultFaction.DefaultFactionChangeEvent(this);
-			if(!event.setEventID(key))
+			if(!event.setEventID(eventData))
 				return null;
 		}
 		else
-			event=new DefaultFaction.DefaultFactionChangeEvent(this,key);
+			event=new DefaultFaction.DefaultFactionChangeEvent(this,eventKey,eventData);
 		abilChangeCache.clear();
 		socChangeCache.clear();
 		Faction.FactionChangeEvent[] events=changes.get(event.eventID().toUpperCase().trim());
@@ -1827,7 +1916,8 @@ public class DefaultFaction implements Faction, MsgListener
 
 	public class DefaultFactionChangeEvent implements Faction.FactionChangeEvent
 	{
-		private String		ID				= "";
+		private String		eventTriggerID	= "";
+		private MiscTrigger miscEventTrigger= null;
 		private String		flagCache		= "";
 		private int			IDclassFilter	= -1;
 		private long		IDflagFilter	= -1;
@@ -1842,6 +1932,8 @@ public class DefaultFaction implements Faction, MsgListener
 		private int			bonusRPXP		= 0;
 		private Object[]	stateVariables	= new Object[0];
 		private String		triggerParms	= "";
+		private int			withinTicks		= -1;
+		private int			pctChance		= 100;
 
 		private final Faction	myFaction;
 
@@ -1853,7 +1945,13 @@ public class DefaultFaction implements Faction, MsgListener
 		@Override
 		public String eventID()
 		{
-			return ID;
+			return eventTriggerID;
+		}
+
+		@Override
+		public MiscTrigger miscEvent()
+		{
+			return miscEventTrigger;
 		}
 
 		@Override
@@ -1896,6 +1994,18 @@ public class DefaultFaction implements Faction, MsgListener
 		public int getBonusXP()
 		{
 			return bonusXP;
+		}
+
+		@Override
+		public int getWithinTicks()
+		{
+			return withinTicks;
+		}
+
+		@Override
+		public int getPctChance()
+		{
+			return pctChance;
 		}
 
 		@Override
@@ -1984,9 +2094,9 @@ public class DefaultFaction implements Faction, MsgListener
 		public String toString()
 		{
 			if(triggerParms.trim().length()>0)
-				return ID+"("+triggerParms.replace(';',',')+");"+CHANGE_DIRECTION_DESCS[direction]+";"+((int)Math.round(factor*100.0))+"%;"+flagCache+";"+targetZapperStr;
+				return eventTriggerID+"("+triggerParms.replace(';',',')+");"+CHANGE_DIRECTION_DESCS[direction]+";"+((int)Math.round(factor*100.0))+"%;"+flagCache+";"+targetZapperStr;
 			else
-				return ID+";"+CHANGE_DIRECTION_DESCS[direction]+";"+((int)Math.round(factor*100.0))+"%;"+flagCache+";"+targetZapperStr;
+				return eventTriggerID+";"+CHANGE_DIRECTION_DESCS[direction]+";"+((int)Math.round(factor*100.0))+"%;"+flagCache+";"+targetZapperStr;
 		}
 
 		public DefaultFactionChangeEvent(final Faction F)
@@ -1994,10 +2104,10 @@ public class DefaultFaction implements Faction, MsgListener
 			myFaction = F;
 		}
 
-		public DefaultFactionChangeEvent(final Faction F, final String key)
+		public DefaultFactionChangeEvent(final Faction F, final String eventKey, final String eventData)
 		{
 			myFaction=F;
-			final List<String> v = CMParms.parseSemicolons(key,false);
+			final List<String> v = CMParms.parseSemicolons(eventData,false);
 
 			String trigger =v.get(0);
 			triggerParms="";
@@ -2028,11 +2138,13 @@ public class DefaultFaction implements Faction, MsgListener
 			IDclassFilter=-1;
 			IDflagFilter=-1;
 			IDdomainFilter=-1;
-			for (final String element : MISC_TRIGGERS)
+			miscEventTrigger = null;
+			for (final MiscTrigger element : MiscTrigger.values())
 			{
-				if(element.equalsIgnoreCase(newID))
+				if(element.name().equalsIgnoreCase(newID))
 				{
-					ID = element;
+					eventTriggerID = element.name();
+					miscEventTrigger = element;
 					return true;
 				}
 			}
@@ -2041,7 +2153,7 @@ public class DefaultFaction implements Faction, MsgListener
 				if(Ability.ACODE_DESCS[i].equalsIgnoreCase(newID))
 				{
 					IDclassFilter = i;
-					ID = newID;
+					eventTriggerID = newID;
 					return true;
 				}
 			}
@@ -2050,7 +2162,7 @@ public class DefaultFaction implements Faction, MsgListener
 				if(Ability.DOMAIN_DESCS[i].equalsIgnoreCase(newID))
 				{
 					IDdomainFilter = i << 5;
-					ID = newID;
+					eventTriggerID = newID;
 					return true;
 				}
 			}
@@ -2059,24 +2171,24 @@ public class DefaultFaction implements Faction, MsgListener
 				if(Ability.FLAG_DESCS[i].equalsIgnoreCase(newID))
 				{
 					IDflagFilter = Math.round(Math.pow(2, i));
-					ID = newID;
+					eventTriggerID = newID;
 					return true;
 				}
 			}
 			if(CMClass.getAbility(newID)!=null)
 			{
-				ID = newID;
+				eventTriggerID = newID;
 				return true;
 			}
 			if(CMLib.socials().fetchSocial(newID, true)!=null)
 			{
-				ID=newID.toUpperCase();
+				eventTriggerID=newID.toUpperCase();
 				return true;
 			}
 			if((newID.endsWith(" *"))
 			&&(CMLib.socials().fetchSocial(newID.substring(0,newID.length()-2).trim(), true)!=null))
 			{
-				ID=newID.toUpperCase().trim();
+				eventTriggerID=newID.toUpperCase().trim();
 				return true;
 			}
 			return false;
@@ -2162,6 +2274,76 @@ public class DefaultFaction implements Faction, MsgListener
 				return false;
 			if(!CMLib.masking().maskCheck(compiledSourceZapper(),target,false))
 				return false;
+			final Faction F=getFaction();
+			if(F!=null)
+			{
+				if(withinTicks > 0)
+				{
+					final long now=System.currentTimeMillis() - withinTicks * CMProps.getTickMillis();
+					Faction.FData data;
+					data = source.fetchFactionData(F.factionID());
+					if((data != null)&&(now > data.getEventTime(eventTriggerID)))
+						return false;
+					if(source != target)
+					{
+						data = target.fetchFactionData(F.factionID());
+						if((data != null)&&(now > data.getEventTime(eventTriggerID)))
+							return false;
+					}
+				}
+				if((miscEventTrigger != null)
+				&&(savedTriggerParms.containsKey("PCT"))
+				&&(target!=null)
+				&&(source!=target)
+				&&(source.isPlayer())
+				&&(target.isMonster())
+				&&(target.getStartRoom()!=null)
+				&&(target.location()!=null)
+				&&(target.getStartRoom().getArea()==target.location().getArea()))
+				{
+					final Area A=target.getStartRoom().getArea();
+					final int pct = CMath.s_int(savedTriggerParms.get("PCT"));
+					switch(miscEventTrigger)
+					{
+					case AREAKILL:
+					{
+						final Faction.FData data = source.fetchFactionData(F.factionID());
+						final double population = A.getAreaIStats()[Area.Stats.POPULATION.ordinal()];
+						final int count = data.getCounter(miscEventTrigger.name())+1;
+						data.setCounter(miscEventTrigger.name(), count);
+						final int myPct = (int)Math.round(100.0*CMath.div(count, population));
+						if(myPct < pct)
+							return false;
+						break;
+					}
+					case AREAASS:
+					{
+						if(target.phyStats().level()<A.getAreaIStats()[Area.Stats.MAX_LEVEL.ordinal()])
+							return false;
+						final double population = A.getAreaIStats()[Area.Stats.MAX_LEVEL_MOBS.ordinal()];
+						final Faction.FData data = source.fetchFactionData(F.factionID());
+						final int count = data.getCounter(miscEventTrigger.name())+1;
+						data.setCounter(miscEventTrigger.name(), count);
+						final int myPct = (int)Math.round(100.0*CMath.div(count, population));
+						if(myPct < pct)
+							return false;
+						break;
+					}
+					case AREAEXPLORE:
+						if(pct==0)
+						{
+							if(source.playerStats().totalVisitedRooms(source, A)!=1)
+								return false;
+						}
+						else
+						if(source.playerStats().percentVisited(source, A) < pct)
+							return false;
+						break;
+					default:
+						break;
+					}
+				}
+			}
 			return true;
 		}
 
@@ -2177,6 +2359,8 @@ public class DefaultFaction implements Faction, MsgListener
 			triggerParms=newVal;
 			savedTriggerParms=CMParms.parseEQParms(newVal);
 			compiledSourceZapper=null;
+			withinTicks=savedTriggerParms.containsKey("WITHIN")?CMath.s_int(savedTriggerParms.get("WITHIN")):-1;
+			pctChance=savedTriggerParms.containsKey("CHANCE")?CMath.s_int(savedTriggerParms.get("CHANCE")):100;
 		}
 
 		@Override
@@ -2372,8 +2556,11 @@ public class DefaultFaction implements Faction, MsgListener
 		private Faction			myFaction;
 		public boolean			isReset	= false;
 		private DVector			currentReactionSets;
+		private final long			birthTime = System.currentTimeMillis();
 
-		private Map<Faction.FactionChangeEvent, Long> nextChangeTime;
+		private final CMap<String, Long>				timers	= new SHashtable<String, Long>();
+		private final CMap<String, int[]>				counters= new SHashtable<String, int[]>();
+		private Map<Faction.FactionChangeEvent, Long>	nextChangeTime;
 
 		public DefaultFactionData(final Faction F)
 		{
@@ -2399,7 +2586,23 @@ public class DefaultFaction implements Faction, MsgListener
 				erroredOut=false;
 				isReset = true;
 				nextChangeTime = new Hashtable<Faction.FactionChangeEvent, Long>();
+				timers.clear();
+				counters.clear();
 			}
+		}
+
+		@Override
+		public long getEventTime(final String eventID)
+		{
+			if(!timers.containsKey(eventID))
+				return this.birthTime;
+			return timers.get(eventID).longValue();
+		}
+
+		@Override
+		public void resetEventTimer(final String eventID)
+		{
+			timers.put(eventID, Long.valueOf(System.currentTimeMillis()));
 		}
 
 		@Override
@@ -2709,6 +2912,23 @@ public class DefaultFaction implements Faction, MsgListener
 					return false;
 			}
 			return true;
+		}
+
+		@Override
+		public int getCounter(final String key)
+		{
+			if(counters.containsKey(key))
+				return counters.get(key)[0];
+			return 0;
+		}
+
+		@Override
+		public void setCounter(final String key, final int newValue)
+		{
+			if(counters.containsKey(key))
+				counters.get(key)[0]=newValue;
+			else
+				counters.put(key, new int[] {newValue});
 		}
 	}
 

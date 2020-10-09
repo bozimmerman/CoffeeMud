@@ -153,7 +153,7 @@ public class GrinderFactions
 					old+=" RPXP="+v;
 				old+=";";
 				old+=httpReq.getUrlParameter("CHANGESMASK"+num);
-				F.createChangeEvent(old);
+				F.createChangeEvent("CHANGE"+num, old);
 			}
 			num++;
 		}

@@ -727,7 +727,8 @@ public interface Area extends Economics, PhysicalAgent, Places
 		DESERT_ROOMS,
 		CITY_ROOMS,
 		CAVE_ROOMS,
-		INTELLIGENT_MOBS
+		INTELLIGENT_MOBS,
+		MAX_LEVEL_MOBS
 		/*
 		HUMANOIDS,
 		GOOD_MOBS,

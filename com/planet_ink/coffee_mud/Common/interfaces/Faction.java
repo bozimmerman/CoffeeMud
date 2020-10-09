@@ -499,7 +499,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * Returns an enumeration of change event keys, which are the code names of
 	 * the triggers that cause faction values to change automatically.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#createChangeEvent(String eventID)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#createChangeEvent(String eventKey, String eventData)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#delChangeEvent(Faction.FactionChangeEvent event)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALL_CHANGE_EVENT_TYPES()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#executeChange(MOB, MOB, com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent)
@@ -537,10 +537,10 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#MISC_TRIGGERS
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#executeChange(MOB, MOB, com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALL_CHANGE_EVENT_TYPES()
-	 * @param key the code name of the event that occurred
+	 * @param eventID the code name of the event that occurred
 	 * @return the FactionChangeEvent triggered by that event
 	 */
-	public FactionChangeEvent[] getChangeEvents(String key);
+	public FactionChangeEvent[] getChangeEvents(String eventID);
 
 	/**
 	 * Adds a new FactionChangeEvent object to this faction using the given event code
@@ -548,14 +548,15 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * trigger code (an ability name, event code name), or a fully encoded string
 	 * which is a semicolon delimited field consisting of event (trigger) id, direction
 	 * code, and amount
+	 * @param eventKey the faction event key
+	 * @param eventData the field used to create the new FactionChangeEvent
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changeEventKeys()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#MISC_TRIGGERS
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALL_CHANGE_EVENT_TYPES()
-	 * @param key the field used to create the new FactionChangeEvent
 	 * @return the FactionChangeEvent object created and added to this faction, or null
 	 */
-	public FactionChangeEvent createChangeEvent(String key);
+	public FactionChangeEvent createChangeEvent(final String eventKey, String eventData);
 
 	/**
 	 * Removes a FactionChangeEvent of the given event (trigger) id.
@@ -926,6 +927,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		/**
 		 * Returns the event trigger id
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALL_CHANGE_EVENT_TYPES()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#miscEvent()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#setEventID(String)
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#IDclassFilter()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#IDdomainFilter()
@@ -933,11 +935,23 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @return the event trigger id
 		 */
 		public String eventID();
+		/**
+		 * Returns the event trigger code, for non-ability related static-type triggers
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALL_CHANGE_EVENT_TYPES()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#eventID()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#setEventID(String)
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#IDclassFilter()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#IDdomainFilter()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#IDflagFilter()
+		 * @return the misc event trigger object
+		 */
+		public MiscTrigger miscEvent();
 
 		/**
 		 * Sets the event trigger id
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALL_CHANGE_EVENT_TYPES()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#eventID()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#miscEvent()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#IDclassFilter()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#IDdomainFilter()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#IDflagFilter()
@@ -947,10 +961,24 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		public boolean setEventID(String newID);
 
 		/**
+		 * Returns the num ticks after the reset of this event that the event
+		 * will be valid for.  0 means never, -1 means always.
+		 * @return the num ticks before timeout of the event
+		 */
+		public int getWithinTicks();
+
+		/**
+		 * Returns the pct chance 0-100 that this event will trigger
+		 * @return the pct chance
+		 */
+		public int getPctChance();
+
+		/**
 		 * A derivative of the event id, this will return a value of 0 or above
 		 * if the event id was of a particular Ability ACODE_.  Returns -1 if
 		 * this value does not apply, or an index into ACODE_DESCS.
 		 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#ACODE_DESCS
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#miscEvent()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#eventID()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#IDdomainFilter()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#IDflagFilter()
@@ -964,6 +992,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * this value does not apply, or an index into FLAG_DESCS.
 		 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#FLAG_DESCS
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#eventID()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#miscEvent()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#IDclassFilter()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#IDdomainFilter()
 		 * @return -1, or an mask for an Ability FLAG
@@ -976,6 +1005,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * this value does not apply, or an index into DOMAIN_DESCS.
 		 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#DOMAIN_DESCS
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#eventID()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#miscEvent()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#IDclassFilter()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#IDflagFilter()
 		 * @return -1, or a mask for an Ability domain
@@ -1203,7 +1233,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 
 		/**
 		 * Returns a semicolon delimited list of all the settings in this change event
-		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#createChangeEvent(String)
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#createChangeEvent(String, String)
 		 * @return a semicolon delimited list of all the settings in this change event
 		 */
 		@Override
@@ -1248,7 +1278,12 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		/** the code words for the various flags to set miscellaneous change event values, such as xp grants */
 		public static final String[] FLAG_KEYVALS={"XP","RPXP"};
 		/** some non-ability-related event trigger ids */
-		public static final String[] MISC_TRIGGERS={"MURDER","TIME","ADDOUTSIDER","KILL","BRIBE","TALK","MUDCHAT","ARRESTED","SOCIAL","SINK","SUNK"};
+		public static enum MiscTrigger
+		{
+			MURDER,  TIME,  ADDOUTSIDER, KILL, BRIBE, TALK,
+			MUDCHAT, ARRESTED, SOCIAL, SINK, SUNK, AREAKILL,
+			AREAASS,  AREAEXPLORE, DYING
+		};
 	}
 
 	/**
@@ -1390,6 +1425,23 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 */
 		public boolean tick(final Tickable ticking, final int tickID);
 
+
+		/**
+		 * Returns the creation time of this data object, or the
+		 * last time the event with the given id was reset,
+		 * whichever is later.
+		 * @param eventID the event id to look for
+		 * @return the time, in ms
+		 */
+		public long getEventTime(final String eventID);
+
+		/**
+		 * Resets the event timer with the given event id to
+		 * the current time.
+		 * @param eventID the event id to reset the timer for
+		 */
+		public void resetEventTimer(final String eventID);
+
 		/**
 		 * Return the parent faction for which this data stands.
 		 * @return this data objects parent faction.
@@ -1407,6 +1459,19 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @param newValue the faction value
 		 */
 		public void setValue(int newValue);
+
+		/**
+		 * Returns the counter value for the given key/event id
+		 * @return the counter value
+		 */
+		public int getCounter(final String key);
+
+		/**
+		 * Sets the counter value for the given key/event id
+		 * @param key the counter key/event id
+		 * @param newValue the counter value
+		 */
+		public void setCounter(final String key, int newValue);
 
 		/**
 		 * Clears and re-adds all the necessary message listeners and tickers

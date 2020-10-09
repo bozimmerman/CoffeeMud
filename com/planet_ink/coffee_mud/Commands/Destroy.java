@@ -509,7 +509,9 @@ public class Destroy extends StdCommand
 		Item deadItem=getItem(allFlag,srchRoom,srchContainer,srchMob,itemID);
 
 		final int spaceDex=itemID.indexOf(' ');
-		if((deadItem == null)&&(spaceDex>0)&&(CMath.isInteger(itemID.substring(0,spaceDex))))
+		if((deadItem == null)
+		&&(spaceDex>0)
+		&&(CMath.isInteger(itemID.substring(0,spaceDex))))
 		{
 			max=CMath.s_int(itemID.substring(0,spaceDex));
 			itemID=itemID.substring(spaceDex+1).trim();

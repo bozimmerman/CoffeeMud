@@ -85,6 +85,14 @@ public interface RoomnumberSet extends CMCommon
 	public void parseXML(String xml);
 
 	/**
+	 * Sets whether this set should never contain more
+	 * than one Area.  It will automatically clear the
+	 * list whenever a new area is added.
+	 * @param tf true to use one area, false for many
+	 */
+	public void setSingleAreaFlag(final boolean tf);
+
+	/**
 	 * Adds the given room id to this object
 	 * @param str a room id
 	 */

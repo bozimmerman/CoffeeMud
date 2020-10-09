@@ -329,6 +329,8 @@ public class StdArea implements Area
 	{
 		CMLib.map().registerWorldObjectDestroyed(this, null, this);
 		phyStats = (PhyStats) CMClass.getCommon("DefaultPhyStats");
+		Resources.removeResource("HELP_" + Name().toUpperCase());
+		Resources.removeResource("STATS_" + Name().toUpperCase());
 		basePhyStats = phyStats;
 		amDestroyed = true;
 		miscText = null;
@@ -1609,8 +1611,15 @@ public class StdArea implements Area
 			}
 			if (lvl < statData[Area.Stats.MIN_LEVEL.ordinal()])
 				statData[Area.Stats.MIN_LEVEL.ordinal()] = lvl;
-			if (lvl > statData[Area.Stats.MAX_LEVEL.ordinal()])
-				statData[Area.Stats.MAX_LEVEL.ordinal()] = lvl;
+			if (lvl >= statData[Area.Stats.MAX_LEVEL.ordinal()])
+			{
+				if (lvl > statData[Area.Stats.MAX_LEVEL.ordinal()])
+				{
+					statData[Area.Stats.MAX_LEVEL.ordinal()] = lvl;
+					statData[Area.Stats.MAX_LEVEL_MOBS.ordinal()] = 0;
+				}
+				statData[Area.Stats.MAX_LEVEL_MOBS.ordinal()]++;
+			}
 			/*
 			 * if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD)) {
 			 * if(CMLib.flags().isGood(mob))
