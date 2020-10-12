@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.core.exceptions.CoffeeMudException;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.PlanarAbility.PlanarVar;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -80,6 +81,7 @@ public class InstanceArea extends StdAbility
 
 	protected volatile long				lastCasting		= 0;
 	protected WeakReference<Room>		oldRoom			= null;
+	protected Area						targetArea		= null;
 	protected Area						instArea		= null;
 	protected Map<String, String>		instVars		= null;
 	protected WeakArrayList<Room>		roomsDone		= new WeakArrayList<Room>();
@@ -1258,42 +1260,60 @@ public class InstanceArea extends StdAbility
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;
-		switch(msg.targetMinor())
+		if((affected instanceof Area)
+		&&(CMath.bset(((Area)affected).flags(), Area.FLAG_INSTANCE_CHILD)))
 		{
-		case CMMsg.TYP_WEAPONATTACK:
-			if((msg.tool() instanceof AmmunitionWeapon)
-			&&(((AmmunitionWeapon)msg.tool()).requiresAmmunition())
-			&&(msg.target() instanceof MOB)
-			&&(instVars!=null)
-			&&(instVars.containsKey(InstVar.WEAPONMAXRANGE.toString()))
-			&&((msg.source().rangeToTarget()>0)||(((MOB)msg.target()).rangeToTarget()>0)))
+			switch(msg.targetMinor())
 			{
-				final int maxRange=CMath.s_int(instVars.get(InstVar.WEAPONMAXRANGE.toString()));
-				if(((msg.source().rangeToTarget()>maxRange)||(((MOB)msg.target()).rangeToTarget()>maxRange)))
+			case CMMsg.TYP_WEAPONATTACK:
+				if((msg.tool() instanceof AmmunitionWeapon)
+				&&(((AmmunitionWeapon)msg.tool()).requiresAmmunition())
+				&&(msg.target() instanceof MOB)
+				&&(instVars!=null)
+				&&(instVars.containsKey(InstVar.WEAPONMAXRANGE.toString()))
+				&&((msg.source().rangeToTarget()>0)||(((MOB)msg.target()).rangeToTarget()>0)))
 				{
-					final String ammo=((AmmunitionWeapon)msg.tool()).ammunitionType();
-					final String msgOut=L("The @x1 fired by <S-NAME> from <O-NAME> at <T-NAME> stops moving!",ammo);
-					final Room R=msg.source().location();
-					if(R!=null)
-						R.show(msg.source(), msg.target(), msg.tool(), CMMsg.MSG_OK_VISUAL, msgOut);
-					return false;
+					final int maxRange=CMath.s_int(instVars.get(InstVar.WEAPONMAXRANGE.toString()));
+					if(((msg.source().rangeToTarget()>maxRange)||(((MOB)msg.target()).rangeToTarget()>maxRange)))
+					{
+						final String ammo=((AmmunitionWeapon)msg.tool()).ammunitionType();
+						final String msgOut=L("The @x1 fired by <S-NAME> from <O-NAME> at <T-NAME> stops moving!",ammo);
+						final Room R=msg.source().location();
+						if(R!=null)
+							R.show(msg.source(), msg.target(), msg.tool(), CMMsg.MSG_OK_VISUAL, msgOut);
+						return false;
+					}
 				}
+				break;
+			case CMMsg.TYP_DAMAGE:
+				if((msg.tool() instanceof Weapon)
+				&&(this.reqWeapons!=null)
+				&&(msg.value()>0))
+				{
+					if((CMLib.flags().isABonusItems((Weapon)msg.tool()) && (this.reqWeapons.contains("MAGICAL")))
+					||(this.reqWeapons.contains(Weapon.CLASS_DESCS[((Weapon)msg.tool()).weaponClassification()]))
+					||(this.reqWeapons.contains(Weapon.TYPE_DESCS[((Weapon)msg.tool()).weaponDamageType()])))
+					{ // pass
+					}
+					else
+						msg.setValue(0);
+				}
+				break;
 			}
-			break;
-		case CMMsg.TYP_DAMAGE:
-			if((msg.tool() instanceof Weapon)
-			&&(this.reqWeapons!=null)
-			&&(msg.value()>0))
+		}
+		else
+		{
+			if((msg.sourceMinor()==CMMsg.TYP_ENTER)
+			&&(msg.target() instanceof Room)
+			&&((((Room)msg.target()).getArea()==affected)
+				||((((Room)msg.target()).getArea()==targetArea)&&(targetArea!=null))))
 			{
-				if((CMLib.flags().isABonusItems((Weapon)msg.tool()) && (this.reqWeapons.contains("MAGICAL")))
-				||(this.reqWeapons.contains(Weapon.CLASS_DESCS[((Weapon)msg.tool()).weaponClassification()]))
-				||(this.reqWeapons.contains(Weapon.TYPE_DESCS[((Weapon)msg.tool()).weaponDamageType()])))
-				{ // pass
+				//TODO: finish this too
+				if(instArea == null)
+				{
+
 				}
-				else
-					msg.setValue(0);
 			}
-			break;
 		}
 		return true;
 	}
@@ -1627,11 +1647,6 @@ public class InstanceArea extends StdAbility
 		int instTypeIDCt=0;
 		while((getInstVars(instTypeID)==null)&&(commands.size()>instTypeIDCt))
 			instTypeID=CMParms.combine(commands,++instTypeIDCt).trim().toUpperCase();
-		oldRoom=new WeakReference<Room>(mob.location());
-		Area doCloneArea = mob.location().getArea();
-		final Area mobArea = doCloneArea;
-		String cloneRoomID=CMLib.map().getExtendedRoomID(mob.location());
-		final InstanceArea currentInstanceAbility = getInstanceArea(mobArea);
 		final Map<String,String> instFound = getInstVars(instTypeID);
 		if(instFound == null)
 		{
@@ -1643,6 +1658,12 @@ public class InstanceArea extends StdAbility
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
+
+		oldRoom=new WeakReference<Room>(mob.location());
+		Area doCloneArea = mob.location().getArea();
+		final Area mobArea = doCloneArea;
+		String cloneRoomID=CMLib.map().getExtendedRoomID(mob.location());
+		final InstanceArea currentInstanceAbility = getInstanceArea(mobArea);
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if((currentInstanceAbility!=null)
