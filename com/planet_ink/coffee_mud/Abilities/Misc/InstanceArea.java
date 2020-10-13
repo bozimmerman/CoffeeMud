@@ -1313,6 +1313,12 @@ public class InstanceArea extends StdAbility
 				{
 
 				}
+				/*
+				 * TODO: alter the existing stats to what they would be if this were a real area:
+				int[] statData=(int[])Resources.getResource("STATS_"+Name().toUpperCase());
+				if(statData!=null)
+					return statData;
+				 */
 			}
 		}
 		return true;
