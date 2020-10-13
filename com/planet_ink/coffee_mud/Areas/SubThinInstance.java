@@ -91,9 +91,12 @@ public class SubThinInstance extends StdThinInstance implements SubArea
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return emptyStats;
+		int[] statData=(int[])Resources.getResource("STATS_"+Name().toUpperCase());
+		if(statData!=null)
+			return statData;
 		final Area parentArea=getSuperArea();
 		final String areaName = (parentArea==null)?Name():parentArea.Name();
-		final int[] statData=(int[])Resources.getResource("STATS_"+areaName.toUpperCase());
+		statData=(int[])Resources.getResource("STATS_"+areaName.toUpperCase());
 		if(statData!=null)
 			return statData;
 		if((parentArea!=null)&&(parentArea!=this))
