@@ -102,7 +102,7 @@ public class InstanceArea extends StdAbility
 	protected CompiledFormula			levelFormula	= null;
 	protected PairList<Pair<Integer,Integer>,PairList<String,String>> enableList=null;
 
-	protected static final Map<Area,List<AreaInstanceChild>> instanceChildren = new SHashtable<Area,List<AreaInstanceChild>>();
+	protected static final Map<Area,List<AreaInstanceChild>> instanceChildren = new HashMap<Area,List<AreaInstanceChild>>();
 	protected static final long			 hardBumpTimeout	= (60L * 60L * 1000L);
 	protected static final AtomicInteger instIDNum = new AtomicInteger(0);
 
@@ -324,21 +324,38 @@ public class InstanceArea extends StdAbility
 	}
 
 	@Override
-	public void setMiscText(final String newText)
+	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		//TODO: is it an effect setting, is it an id, or is it variables inline?
 		clearVars();
 		if(newText.length()>0)
 		{
-			this.instTypeID=newText;
-			this.instVars=getInstVars(newText);
-			if(this.instVars==null)
+			if(newText.indexOf('=')>0)
 			{
-				if(newText.equalsIgnoreCase("DEFAULT_NEW"))
-					this.instVars=new Hashtable<String,String>();
+				final Map<String,String> instParms = CMParms.parseEQParms(newText);
+				for(final String key : instParms.keySet())
+				{
+					if((CMath.s_valueOf(InstVar.class, key)==null)
+					&&(CMLib.factions().getFaction(key)==null)
+					&&(CMLib.factions().getFactionByName(key)==null))
+						Log.errOut("InstanceArea","Unknown instance var: "+key);
+				}
+				if(!instParms.containsKey(InstVar.ID.toString()))
+					Log.errOut("InstanceArea","Missing ID in parms");
 				else
-					throw new IllegalArgumentException("Unknown: "+newText);
+					newText = instParms.get(InstVar.ID.toString());
+			}
+			else
+			{
+				this.instTypeID=newText;
+				this.instVars=getInstVars(newText);
+				if(this.instVars==null)
+				{
+					if(newText.equalsIgnoreCase("DEFAULT_NEW"))
+						this.instVars=new Hashtable<String,String>();
+					else
+						throw new IllegalArgumentException("Unknown: "+newText);
+				}
 			}
 			this.roomsDone=new WeakArrayList<Room>();
 			this.colorPrefix=instVars.get(InstVar.PREFIX.toString());
@@ -357,8 +374,8 @@ public class InstanceArea extends StdAbility
 				colorPrefix=choices.get(CMLib.dice().roll(1, choices.size(), -1));
 			}
 			Area instArea = null;
-			//TODO: make sure it's an instance child before doing this.
-			if(affected instanceof Area)
+			if((affected instanceof Area)
+			&& (CMath.bset(((Area)affected).flags(), Area.FLAG_INSTANCE_CHILD)))
 			{
 				instArea=(Area)affected;
 				int medianLevel=instArea.getPlayerLevel();
@@ -1424,7 +1441,7 @@ public class InstanceArea extends StdAbility
 							childList = new ArrayList<AreaInstanceChild>();
 							instanceChildren.put(parentA, childList);
 						}
-						final List<WeakReference<MOB>> newMobList = new SVector<WeakReference<MOB>>(grp.size());
+						final List<WeakReference<MOB>> newMobList = new ArrayList<WeakReference<MOB>>(grp.size());
 						for(final MOB mob : grp)
 							newMobList.add(new WeakReference<MOB>(mob));
 						final AreaInstanceChild aChild = new AreaInstanceChild(instA, newMobList);
@@ -1588,22 +1605,30 @@ public class InstanceArea extends StdAbility
 			if(instA instanceof SubArea)
 			{
 				final Area pA = ((SubArea)instA).getSuperArea();
-				for(final Area A : instanceChildren.keySet())
+				synchronized(instanceChildren)
 				{
-					if(A==pA)
+					for(final Iterator<Area> a = instanceChildren.keySet().iterator(); a.hasNext();)
 					{
-						final List<AreaInstanceChild> l = instanceChildren.get(A);
-						for(final AreaInstanceChild C : l)
+						final Area A=a.next();
+						if(A==pA)
 						{
-							if(C.A == instA)
+							final List<AreaInstanceChild> l = instanceChildren.get(A);
+							synchronized(l) // just for multi-cpu issues
 							{
-								l.remove(C);
-								break;
+								for(final Iterator<AreaInstanceChild> c =  l.iterator(); c.hasNext();)
+								{
+									final AreaInstanceChild C = c.next();
+									if(C.A == instA)
+									{
+										c.remove();
+										break;
+									}
+								}
+								if(l.size()==0)
+									instanceChildren.remove(A);
 							}
+							break;
 						}
-						if(l.size()==0)
-							instanceChildren.remove(A);
-						break;
 					}
 				}
 			}
