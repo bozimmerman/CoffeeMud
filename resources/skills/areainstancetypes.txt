@@ -1,0 +1,54 @@
+InstanceArea types definitions
+# (C) 2020-2020 Bo Zimmerman
+# The Format:  One type per line, line must begin with quote ", then the 
+# name of the type, then ending quote, a space, and one or more arguments,
+# separated by spaces.  Argument values can also be in quotes.  Argument
+# keys include:
+# CATEGORY: comma delimited list of descriptive categories.
+# OPPOSED: comma delimited list of opposing types.
+# TRANSITIONAL: set to "true" to designate the type as transitional
+# ALIGNMENT: numeric value for the alignment of mobs in the instance
+# PREFIX: comma delimited list of strings to prefix mob names with
+# LEVELADJ: either a number, or a formula to adjust mob/item levels:
+#           @x1 = base areas median level, @x2 = specific mob/item level
+#           @x2 = the instance traveling players level
+# MOBRESIST: instance mob resistance arguments, see Prop_Resistance
+# SETSTAT: instance mob stat settings, see Prop_StatTrainer
+# BEHAVAFFID: space delimited list of behavior id = replacement behavior id
+# ADJSTAT: instance mob stat changes, see Prop_StatAdjuster
+# ADJSIZE: mob size multipliers, use height=x and/or weight=y to multiply
+# ADJUST: mob adjuster arguments, see Prop_Adjuster
+# MOBCOPY: number of times to copy each mob in an area
+# BEHAVE: space delimited list of behavior ids with optional args in ()
+# ENABLE: space delimited list of ability-granting code entries.
+#         Each entry is either AbilityID(arg) or AbilityDomain(arg),
+#         or AbilityFlag(arg) or AbilityType(arg) or number(x/y) where
+#         x is the number of skills per y levels of the mob
+# WEAPONMAXRANGE: max range number that any weapon in the instance can work at
+# BONUSDAMAGESTAT: name of mob charstat (strength, etc) to add (STAT-10)*2 dmg
+# REQWEAPONS: types of weapons that do damage: wep type or class or word MAGICAL
+# ATMOSPHERE: raw material type that makes up instance atmosphere
+# AREABLURBS: space delimited key=\"blurb\" values
+# ABSORB: instance mob damage absorptions, see Prop_AbsorbDamage
+# HOURS: multiplier by which to change the # hours in instance day
+# RECOVERRATE: number of extra player stat recovers
+# FATIGUERATE: multiplier to extra hunger/thirst
+# REFFECT: space delimited AbilityID/BehaviorID(arg) list for rooms
+# AEFFECT: space delimited AbilityID/BehaviorID(arg) list for instance area
+# SPECFLAGS: space delim flags: NOINFRAVISION, BADMUNDANEARMOR, ALLBREATHE
+# MIXRACE: RaceID of race to make every instance mob a mix of
+# ELITE: elite level 1+, increases hit points, attack, damage, saves
+# ROOMCOLOR: A color code (^r) or "UP " followed by color, for room title
+# ROOMADJS: Comma delimited list of adjectives to sprinkle in room 
+#           descriptions.  List may be prefixed with a number for % chance.
+#           List may also begin with "UP " to make description uppercase.
+# FACTIONS: Space delimited list of FactionIDs(AMOUNT) to give mobs faction.
+#           Use a FactionID of "*" to activate coffeemud.ini reaction faction
+# LIKE: Name/ID of another instance to make this one like (exceptions optional)
+# DESCRIPTION: arbitrary description
+# PROMOTIONS: Comma delimited List of promotion names with % chance in ()
+#
+# * In normal areas, add tattoo NOAINST <type name> to prevent a mob from 
+#   spawning in an instance.
+
+"Triumph" category="Main" promotions="" prefix="" leveladj=0 mobresist="" enable="" behave="" absorb="" aeffect="" roomadjs="" 

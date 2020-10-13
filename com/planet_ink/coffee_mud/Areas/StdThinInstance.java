@@ -664,7 +664,7 @@ public class StdThinInstance extends StdThinArea implements SubArea
 			newA.addProperRoomnumber(newA.convertToMyArea(e.nextElement()));
 		CMLib.map().addArea(newA);
 		newA.setAreaState(Area.State.ACTIVE); // starts ticking
-		final List<WeakReference<MOB>> newMobList = new SVector<WeakReference<MOB>>(5);
+		final List<WeakReference<MOB>> newMobList = new SVector<WeakReference<MOB>>(mobs.size());
 		for(final MOB mob : mobs)
 			newMobList.add(new WeakReference<MOB>(mob));
 		final AreaInstanceChild child = new AreaInstanceChild(newA,newMobList);
