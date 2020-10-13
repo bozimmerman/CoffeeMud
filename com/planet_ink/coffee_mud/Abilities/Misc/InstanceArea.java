@@ -7,7 +7,7 @@ import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.core.exceptions.CoffeeMudException;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
-import com.planet_ink.coffee_mud.Abilities.interfaces.PlanarAbility.PlanarVar;
+import com.planet_ink.coffee_mud.Areas.StdArea.AreaInstanceChild;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -82,10 +82,9 @@ public class InstanceArea extends StdAbility
 	protected volatile long				lastCasting		= 0;
 	protected WeakReference<Room>		oldRoom			= null;
 	protected Area						targetArea		= null;
-	protected Area						instArea		= null;
 	protected Map<String, String>		instVars		= null;
 	protected WeakArrayList<Room>		roomsDone		= new WeakArrayList<Room>();
-	protected int						instanceLevel		= 1;
+	protected int						instanceLevel	= 1;
 	protected String					instTypeID		= "";
 	protected String					colorPrefix		= null;
 	protected PairList<Integer,String>	promotions		= null;
@@ -101,12 +100,10 @@ public class InstanceArea extends StdAbility
 	protected Set<InstSpecFlag>			specFlags		= null;
 	protected int						hardBumpLevel	= 0;
 	protected CompiledFormula			levelFormula	= null;
-	protected final Map<String,long[]>	recentVisits	= new TreeMap<String,long[]>();
-
-	protected final static long			hardBumpTimeout	= (60L * 60L * 1000L);
-
 	protected PairList<Pair<Integer,Integer>,PairList<String,String>> enableList=null;
 
+	protected static final Map<Area,List<AreaInstanceChild>> instanceChildren = new SHashtable<Area,List<AreaInstanceChild>>();
+	protected static final long			 hardBumpTimeout	= (60L * 60L * 1000L);
 	protected static final AtomicInteger instIDNum = new AtomicInteger(0);
 
 	/**
@@ -186,7 +183,6 @@ public class InstanceArea extends StdAbility
 
 	protected void clearVars()
 	{
-		instArea = null;
 		instanceLevel=1;
 		roomsDone=new WeakArrayList<Room>();
 		instVars=null;
@@ -360,6 +356,8 @@ public class InstanceArea extends StdAbility
 				final List<String> choices=CMParms.parseCommas(colorPrefix, true);
 				colorPrefix=choices.get(CMLib.dice().roll(1, choices.size(), -1));
 			}
+			Area instArea = null;
+			//TODO: make sure it's an instance child before doing this.
 			if(affected instanceof Area)
 			{
 				instArea=(Area)affected;
@@ -511,7 +509,6 @@ public class InstanceArea extends StdAbility
 				}
 			}
 
-			final Area instArea=this.instArea;
 			if(instArea == null)
 				return;
 			final String areablurbs = instVars.get(InstVar.AREABLURBS.toString());
@@ -525,11 +522,11 @@ public class InstanceArea extends StdAbility
 			if(atmosphere!=null)
 			{
 				if(atmosphere.length()==0)
-					this.instArea.setAtmosphere(Integer.MIN_VALUE);
+					instArea.setAtmosphere(Integer.MIN_VALUE);
 				else
 				{
 					final int atmo=RawMaterial.CODES.FIND_IgnoreCase(atmosphere);
-					this.instArea.setAtmosphere(atmo);
+					instArea.setAtmosphere(atmo);
 				}
 			}
 			final String absorb = instVars.get(InstVar.ABSORB.toString());
@@ -747,6 +744,8 @@ public class InstanceArea extends StdAbility
 	{
 		try
 		{
+			final Area instArea = ((affected instanceof Area) && (CMath.bset(((Area)affected).flags(), Area.FLAG_INSTANCE_CHILD)))
+								 ?(Area)affected:null;
 			room.toggleMobility(false);
 			CMLib.threads().suspendResumeRecurse(room, false, true);
 			for(int i=0;i<Directions.NUM_DIRECTIONS();i++)
@@ -1191,9 +1190,9 @@ public class InstanceArea extends StdAbility
 		&&(this.affected instanceof Area)
 		&&(CMath.bset(((Area)this.affected).flags(), Area.FLAG_INSTANCE_CHILD)))
 		{
+			final Area instArea = (Area)affected;
 			if(((this.recoverRate>0)||(this.fatigueRate>0))
-			&&(--this.recoverTick <= 0)
-			&& (this.instArea!=null))
+			&&(--this.recoverTick <= 0))
 			{
 				this.recoverTick = CMProps.getIntVar(CMProps.Int.RECOVERRATE) * CharState.REAL_TICK_ADJUST_FACTOR;
 				for(final Enumeration<Room> r=instArea.getFilledProperMap();r.hasMoreElements();)
@@ -1242,17 +1241,108 @@ public class InstanceArea extends StdAbility
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if(msg.targetMinor()==CMMsg.TYP_NEWROOM)
+		if((msg.targetMinor()==CMMsg.TYP_NEWROOM)
+		&&(affected instanceof Area)
+		&&(CMath.bset(((Area)affected).flags(), Area.FLAG_INSTANCE_CHILD)))
 		{
 			if((msg.target() instanceof Room)
 			&&(!roomDone((Room)msg.target()))
-			&&(((Room)msg.target()).getArea()==instArea))
+			&&(((Room)msg.target()).getArea()==affected))
 			{
 				doneRoom((Room)msg.target());
 				fixRoom((Room)msg.target());
 			}
 		}
 		super.executeMsg(myHost, msg);
+	}
+
+	private Set<MOB> getAppropriateGroup(final MOB mob)
+	{
+		final Set<MOB> grp = mob.getGroupMembers(new HashSet<MOB>());
+		if(mob.isMonster()
+		&&(mob.riding() instanceof BoardableShip))
+		{
+			final List<MOB> mobSet=new LinkedList<MOB>();
+			boolean playerFound=false;
+			final Area subA=((BoardableShip)mob.riding()).getShipArea();
+			for(final Enumeration<Room> r=subA.getProperMap();r.hasMoreElements();)
+			{
+				final Room R=r.nextElement();
+				if(R!=null)
+				{
+					for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+					{
+						final MOB M=m.nextElement();
+						if(M!=null)
+						{
+							mobSet.add(M);
+							playerFound = playerFound || (!M.isMonster());
+						}
+					}
+				}
+			}
+			if(playerFound)
+			{
+				grp.addAll(mobSet);
+			}
+		}
+		return grp;
+	}
+
+	private Area findExistingInstance(final MOB mob, final Set<MOB> grp, final Area targetArea)
+	{
+
+		synchronized(instanceChildren)
+		{
+			final List<AreaInstanceChild> areaInstChildren = instanceChildren.get(targetArea);
+			if(areaInstChildren == null)
+				return null;
+			int myDex=-1;
+			for(int i=0;i<areaInstChildren.size();i++)
+			{
+				final List<WeakReference<MOB>> V=areaInstChildren.get(i).mobs;
+				for (final WeakReference<MOB> weakReference : V)
+				{
+					if(mob == weakReference.get())
+					{
+						myDex=i;
+						break;
+					}
+				}
+			}
+			for(int i=0;i<areaInstChildren.size();i++)
+			{
+				if(i!=myDex)
+				{
+					final List<WeakReference<MOB>> V=areaInstChildren.get(i).mobs;
+					for(int v=V.size()-1;v>=0;v--)
+					{
+						final WeakReference<MOB> wmob=V.get(v);
+						if(wmob==null)
+							continue;
+						final MOB M=wmob.get();
+						if(grp.contains(M))
+						{
+							if(myDex<0)
+							{
+								myDex=i;
+								break;
+							}
+							else
+							if((CMLib.flags().isInTheGame(M,true))
+							&&(M.location().getArea()!=areaInstChildren.get(i).A))
+							{
+								V.remove(wmob);
+								areaInstChildren.get(myDex).mobs.add(new WeakReference<MOB>(M));
+							}
+						}
+					}
+				}
+			}
+			if(myDex>=0)
+				return areaInstChildren.get(myDex).A;
+		}
+		return null;
 	}
 
 	@Override
@@ -1302,23 +1392,78 @@ public class InstanceArea extends StdAbility
 			}
 		}
 		else
+		if((msg.sourceMinor()==CMMsg.TYP_ENTER)
+		&&(msg.target() instanceof Room)
+		&&(msg.source().location()!=null)
+		&&(msg.source().location().getArea()!=((Room)msg.target()).getArea())
+		&&((((Room)msg.target()).getArea()==affected)
+			||((((Room)msg.target()).getArea()==targetArea)&&(targetArea!=null)))
+		&&((!CMSecurity.isAllowed(msg.source(),(Room)msg.target(),CMSecurity.SecFlag.CMDAREAS))
+				||(!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS))))
 		{
-			if((msg.sourceMinor()==CMMsg.TYP_ENTER)
-			&&(msg.target() instanceof Room)
-			&&((((Room)msg.target()).getArea()==affected)
-				||((((Room)msg.target()).getArea()==targetArea)&&(targetArea!=null))))
+			final Area parentA = (targetArea != null)?targetArea:(Area)affected;
+			final Room srcStartRoom =msg.source().getStartRoom();
+			if(((srcStartRoom==null)||(srcStartRoom.getArea()!=parentA)))
 			{
-				//TODO: finish this too
-				if(instArea == null)
+				final Set<MOB> grp = this.getAppropriateGroup(msg.source());
+				Area instA = findExistingInstance(msg.source(), grp, targetArea);
+				if(instA == null)
 				{
-
+					final String newInstanceName = instIDNum.addAndGet(1)+"_"+parentA.Name();
+					instA = CMClass.getAreaType("SubThinInstance");
+					instA.setName(newInstanceName);
+					instA.addBlurbFlag("AREAINSTANCE {"+instTypeID+"}");
+					CMLib.map().addArea(instA);
+					instA.setAreaState(Area.State.ACTIVE); // starts ticking
+					List<AreaInstanceChild> childList = null;
+					synchronized(instanceChildren)
+					{
+						childList = instanceChildren.get(parentA);
+						if(childList == null)
+						{
+							childList = new ArrayList<AreaInstanceChild>();
+							instanceChildren.put(parentA, childList);
+						}
+						final List<WeakReference<MOB>> newMobList = new SVector<WeakReference<MOB>>(grp.size());
+						for(final MOB mob : grp)
+							newMobList.add(new WeakReference<MOB>(mob));
+						final AreaInstanceChild aChild = new AreaInstanceChild(instA, newMobList);
+						childList.add(aChild);
+					}
+					final int[] statData=(int[])Resources.getResource("STATS_"+instA.Name().toUpperCase());
+					if(statData == null) // and it damn well better be null
+					{
+						 //TODO: alter the existing stats to what they would be if this were a real area:
+					}
 				}
-				/*
-				 * TODO: alter the existing stats to what they would be if this were a real area:
-				int[] statData=(int[])Resources.getResource("STATS_"+Name().toUpperCase());
-				if(statData!=null)
-					return statData;
-				 */
+				if((instA instanceof SubArea)
+				&&(CMath.bset(instA.flags(), Area.FLAG_INSTANCE_CHILD)))
+				{
+					InstanceArea able = (InstanceArea)instA.fetchEffect(ID());
+					if(able == null)
+					{
+						able = (InstanceArea)this.copyOf();
+						instA.addNonUninvokableEffect(able);
+						able.setMiscText(text());
+					}
+					Room R=instA.getRoom(convertToMyArea(instA, CMLib.map().getExtendedRoomID((Room)msg.target())));
+					int tries=1000;
+					while((R==null)
+					&&((--tries)>0)&&(instA.numberOfProperIDedRooms()>0))
+					{
+						R=instA.getRandomProperRoom();
+						if(R!=null)
+						{
+							msg.setTarget(R);
+							if((!CMLib.flags().canAccess(msg.source(),R))
+							||(CMLib.law().getLandTitle(R)!=null)
+							||(!R.okMessage(msg.source(), msg)))
+								R=null;
+						}
+					}
+					if(R!=null)
+						msg.setTarget(R);
+				}
 			}
 		}
 		return true;
@@ -1440,6 +1585,28 @@ public class InstanceArea extends StdAbility
 		if((instA != null)
 		&&(CMath.bset(instA.flags(), Area.FLAG_INSTANCE_CHILD)))
 		{
+			if(instA instanceof SubArea)
+			{
+				final Area pA = ((SubArea)instA).getSuperArea();
+				for(final Area A : instanceChildren.keySet())
+				{
+					if(A==pA)
+					{
+						final List<AreaInstanceChild> l = instanceChildren.get(A);
+						for(final AreaInstanceChild C : l)
+						{
+							if(C.A == instA)
+							{
+								l.remove(C);
+								break;
+							}
+						}
+						if(l.size()==0)
+							instanceChildren.remove(A);
+						break;
+					}
+				}
+			}
 			Area parentArea = null;
 			int x=instA.Name().indexOf('_');
 			if(x<0)
@@ -1561,12 +1728,6 @@ public class InstanceArea extends StdAbility
 		}
 	}
 
-	protected void destroyInstance()
-	{
-		destroyInstance(instArea);
-		this.instArea=null;
-	}
-
 	protected String getStrippedRoomID(final String roomID)
 	{
 		final int x=roomID.indexOf('#');
@@ -1575,12 +1736,17 @@ public class InstanceArea extends StdAbility
 		return roomID.substring(x);
 	}
 
-	protected String convertToMyArea(final String Name, final String roomID)
+	protected String convertToMyArea(final String newAreaName, final String oldRoomID)
 	{
-		final String strippedID=getStrippedRoomID(roomID);
+		final String strippedID=getStrippedRoomID(oldRoomID);
 		if(strippedID==null)
 			return null;
-		return Name+strippedID;
+		return newAreaName+strippedID;
+	}
+
+	protected String convertToMyArea(final Area childA, final String parentAreaRoomID)
+	{
+		return this.convertToMyArea(childA.Name(), parentAreaRoomID);
 	}
 
 	@Override
@@ -1632,7 +1798,10 @@ public class InstanceArea extends StdAbility
 	{
 		if(canBeUninvoked())
 		{
-			destroyInstance();
+			final Area instArea = ((affected instanceof Area) && (CMath.bset(((Area)affected).flags(), Area.FLAG_INSTANCE_CHILD)))
+					 ?(Area)affected:null;
+			if(instArea != null)
+				destroyInstance(instArea);
 		}
 		super.unInvoke();
 	}
@@ -1719,21 +1888,6 @@ public class InstanceArea extends StdAbility
 			}
 		}
 
-		final String instCodeString = instTypeID + "_" + doCloneArea.Name();
-		int hardBumpLevel = 0;
-		if(recentVisits.containsKey(instCodeString)
-		&&((recentVisits.get(instCodeString)[0]+hardBumpTimeout)>System.currentTimeMillis()))
-		{
-			final long[] data = this.recentVisits.get(instCodeString);
-			data[0]=System.currentTimeMillis();
-			if(data[1]==0)
-				data[1]++;
-			else
-				data[1]*=2;
-			hardBumpLevel=(int)data[1];
-		}
-		else
-			this.recentVisits.put(instCodeString, new long[] {System.currentTimeMillis(),0});
 		final String newInstanceName = instIDNum.addAndGet(1)+"_"+doCloneArea.Name();
 		Area instArea = CMClass.getAreaType("SubThinInstance");
 		instArea.setName(newInstanceName);
@@ -1764,7 +1918,6 @@ public class InstanceArea extends StdAbility
 				return false;
 
 			this.lastCasting=System.currentTimeMillis();
-			this.instArea = instArea;
 			final InstanceArea A;
 			if((instArea!=oldInstanceArea)
 			&&(instArea.fetchEffect(ID())!=null))
