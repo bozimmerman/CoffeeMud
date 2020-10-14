@@ -92,6 +92,7 @@ public class InstanceArea extends StdAbility
 	protected PairList<String, String>	behavList		= null;
 	protected PairList<String, String>	reffectList		= null;
 	protected PairList<String, String>	factionList		= null;
+	protected PairList<String, String>	pFactionList	= null;
 	protected int						bonusDmgStat	= -1;
 	protected Set<String>				reqWeapons		= null;
 	protected int						recoverRate		= 0;
@@ -147,8 +148,10 @@ public class InstanceArea extends StdAbility
 		CATEGORY,
 		PROMOTIONS,
 		LIKE,
-		DESCRIPTION
+		DESCRIPTION,
+		PLAYFACTIONS
 	}
+	//TODO: add timeout with failure event
 
 	/**
 	 * The special attribute flags for instances
@@ -194,6 +197,7 @@ public class InstanceArea extends StdAbility
 		this.enableList=null;
 		this.reffectList=null;
 		this.factionList=null;
+		this.pFactionList=null;
 		this.levelFormula=null;
 		bonusDmgStat=-1;
 		this.reqWeapons=null;
@@ -412,12 +416,16 @@ public class InstanceArea extends StdAbility
 			final String factions = instVars.get(InstVar.FACTIONS.toString());
 			if(factions!=null)
 				this.factionList=new PairVector<String,String>(CMParms.parseSpaceParenList(factions));
+			this.pFactionList = null;
+			final String playerFactions = instVars.get(InstVar.PLAYFACTIONS.toString());
+			if(playerFactions != null)
+				this.pFactionList=new PairVector<String,String>(CMParms.parseSpaceParenList(playerFactions));
 			String levelFormulaStr = instVars.get(InstVar.LEVELADJ.toString());
 			if((levelFormulaStr == null)||(levelFormulaStr.trim().length()==0))
-				levelFormulaStr = "(@x3 - (@x1 - @x2) + 0) > 1";
+				levelFormulaStr = "@x3 + ((((1+@x5-@x4)-(1+@x5-@x2))/(1+@x5-@x4))*(1+@x6)) > 1";
 			else
 			if(CMath.isInteger(levelFormulaStr.trim()))
-				levelFormulaStr = "(@x3 - (@x1 - @x2) + "+levelFormulaStr+") > 1";
+				levelFormulaStr = "@x3 + ((((1+@x5-@x4)-(1+@x5-@x2))/(1+@x5-@x4))*(1+@x6)) + "+levelFormulaStr+") > 1";
 			this.levelFormula = CMath.compileMathExpression(levelFormulaStr);
 			final String enables = instVars.get(InstVar.ENABLE.toString());
 			this.enableList=null;
@@ -763,6 +771,19 @@ public class InstanceArea extends StdAbility
 		{
 			final Area instArea = ((affected instanceof Area) && (CMath.bset(((Area)affected).flags(), Area.FLAG_INSTANCE_CHILD)))
 								 ?(Area)affected:null;
+			final Area parentArea;
+			if(instArea instanceof SubArea)
+				parentArea=((SubArea)instArea).getSuperArea();
+			else
+				parentArea=null;
+			final int[] stats;
+			if(parentArea != null)
+				stats=parentArea.getAreaIStats();
+			else
+			if(instArea != null)
+				stats=instArea.getAreaIStats();
+			else
+				stats=CMLib.map().getRandomArea().getAreaIStats();
 			room.toggleMobility(false);
 			CMLib.threads().suspendResumeRecurse(room, false, true);
 			for(int i=0;i<Directions.NUM_DIRECTIONS();i++)
@@ -856,7 +877,9 @@ public class InstanceArea extends StdAbility
 				else
 				if((invoker!=null)&&((I instanceof Weapon)||(I instanceof Armor)))
 				{
-					final double[] vars=new double[] {instanceLevel, I.phyStats().level(), invoker.phyStats().level() } ;
+					final double[] vars = new double[] {instanceLevel, I.phyStats().level(), instanceLevel,
+														stats[Area.Stats.MIN_LEVEL.ordinal()], stats[Area.Stats.MAX_LEVEL.ordinal()],
+														CMProps.getIntVar(CMProps.Int.EXPRATE)+1} ;
 					final int newILevel = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0));
 					CMLib.itemBuilder().itemFix(I, newILevel, null);
 					I.basePhyStats().setLevel(newILevel);
@@ -903,7 +926,9 @@ public class InstanceArea extends StdAbility
 
 					if(instVars.containsKey(InstVar.ATMOSPHERE.toString()))
 						M.baseCharStats().setBreathables(new int[]{room.getAtmosphere()});
-					final double[] vars=new double[] {instanceLevel, M.phyStats().level(), invoker.phyStats().level() } ;
+					final double[] vars = new double[] {instanceLevel, M.phyStats().level(), instanceLevel,
+														stats[Area.Stats.MIN_LEVEL.ordinal()], stats[Area.Stats.MAX_LEVEL.ordinal()],
+														CMProps.getIntVar(CMProps.Int.EXPRATE)+1} ;
 					final int newLevel = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0));
 					final int[] eliteBump = new int[1];
 					this.applyMobPrefix(M, eliteBump);
@@ -961,7 +986,9 @@ public class InstanceArea extends StdAbility
 						final Item mI=mi.nextElement();
 						if((mI!=null)&&(invoker!=null))
 						{
-							final double[] ivars=new double[] {instanceLevel, mI.phyStats().level(), invoker.phyStats().level() } ;
+							final double[] ivars = new double[] {instanceLevel, mI.phyStats().level(), instanceLevel,
+																 stats[Area.Stats.MIN_LEVEL.ordinal()], stats[Area.Stats.MAX_LEVEL.ordinal()],
+																 CMProps.getIntVar(CMProps.Int.EXPRATE)+1} ;
 							final int newILevel = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, ivars, 0.0));
 							mI.basePhyStats().setLevel(newILevel);
 							mI.phyStats().setLevel(newILevel);
@@ -1424,8 +1451,10 @@ public class InstanceArea extends StdAbility
 			{
 				final Set<MOB> grp = this.getAppropriateGroup(msg.source());
 				Area instA = findExistingInstance(msg.source(), grp, targetArea);
+				boolean created = false;
 				if(instA == null)
 				{
+					created = true;
 					final String newInstanceName = instIDNum.addAndGet(1)+"_"+parentA.Name();
 					instA = CMClass.getAreaType("SubThinInstance");
 					instA.setName(newInstanceName);
@@ -1433,6 +1462,53 @@ public class InstanceArea extends StdAbility
 					CMLib.map().addArea(instA);
 					instA.setAreaState(Area.State.ACTIVE); // starts ticking
 					List<AreaInstanceChild> childList = null;
+					int topLevel = 0;
+					for(final MOB M : grp)
+					{
+						if(M.phyStats().level()>topLevel)
+							topLevel=M.phyStats().level();
+						if(M.isPlayer())
+						{
+							if(this.pFactionList!=null)
+							{
+								for(final Pair<String,String> p : this.pFactionList)
+								{
+									final String factionName = (p.first.equals("*")
+											?("AINST_"+this.instTypeID.toUpperCase().trim())
+											:p.first);
+									Faction F=null;
+									if(CMLib.factions().isFactionID(factionName))
+										F=CMLib.factions().getFaction(factionName);
+									if(F==null)
+										F=CMLib.factions().getFactionByName(factionName);
+									if(F!=null)
+									{
+										final Faction.FData fdata = M.fetchFactionData(F.factionID());
+										if(fdata == null)
+										{
+											if(p.second.length()==0)
+												M.addFaction(F.factionID(), F.findDefault(M));
+											else
+											if(CMath.isInteger(p.second))
+												M.addFaction(F.factionID(), CMath.s_int(p.second));
+											else
+											{
+												final Faction.FRange FR = F.fetchRange(p.second);
+												if(FR != null)
+													M.addFaction(F.factionID(), FR.random());
+												else
+													M.addFaction(F.factionID(), F.findDefault(M));
+											}
+										}
+										else
+										if(created)
+											fdata.resetEventTimer(null);
+									}
+								}
+							}
+						}
+					}
+					instA.setPlayerLevel(topLevel);
 					synchronized(instanceChildren)
 					{
 						childList = instanceChildren.get(parentA);
@@ -1447,10 +1523,22 @@ public class InstanceArea extends StdAbility
 						final AreaInstanceChild aChild = new AreaInstanceChild(instA, newMobList);
 						childList.add(aChild);
 					}
-					final int[] statData=(int[])Resources.getResource("STATS_"+instA.Name().toUpperCase());
+					int[] statData=(int[])Resources.getResource("STATS_"+instA.Name().toUpperCase());
 					if(statData == null) // and it damn well better be null
 					{
-						 //TODO: alter the existing stats to what they would be if this were a real area:
+						final int[] oldParentStats = parentA.getAreaIStats();
+						statData = Arrays.copyOf(oldParentStats, oldParentStats.length);
+						final double[] vars = new double[] {topLevel, statData[Area.Stats.MIN_LEVEL.ordinal()], topLevel,
+								statData[Area.Stats.MIN_LEVEL.ordinal()], statData[Area.Stats.MAX_LEVEL.ordinal()],
+								CMProps.getIntVar(CMProps.Int.EXPRATE)+1} ;
+						statData[Area.Stats.MIN_LEVEL.ordinal()] = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0));
+						vars[1] = statData[Area.Stats.MAX_LEVEL.ordinal()];
+						statData[Area.Stats.MAX_LEVEL.ordinal()] = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0));
+						vars[1] = statData[Area.Stats.MED_LEVEL.ordinal()];
+						statData[Area.Stats.MED_LEVEL.ordinal()] = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0));
+						vars[1] = statData[Area.Stats.AVG_LEVEL.ordinal()];
+						statData[Area.Stats.AVG_LEVEL.ordinal()] = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0));
+						Resources.submitResource("STATS_"+instA.Name().toUpperCase(), statData);
 					}
 				}
 				if((instA instanceof SubArea)

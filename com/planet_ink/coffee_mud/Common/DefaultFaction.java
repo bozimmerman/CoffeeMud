@@ -2556,7 +2556,7 @@ public class DefaultFaction implements Faction, MsgListener
 		private Faction			myFaction;
 		public boolean			isReset	= false;
 		private DVector			currentReactionSets;
-		private final long			birthTime = System.currentTimeMillis();
+		private long			birthTime = System.currentTimeMillis();
 
 		private final CMap<String, Long>				timers	= new SHashtable<String, Long>();
 		private final CMap<String, int[]>				counters= new SHashtable<String, int[]>();
@@ -2602,7 +2602,11 @@ public class DefaultFaction implements Faction, MsgListener
 		@Override
 		public void resetEventTimer(final String eventID)
 		{
-			timers.put(eventID, Long.valueOf(System.currentTimeMillis()));
+			this.birthTime = System.currentTimeMillis();
+			if(eventID == null)
+				timers.clear();
+			else
+				timers.put(eventID, Long.valueOf(System.currentTimeMillis()));
 		}
 
 		@Override

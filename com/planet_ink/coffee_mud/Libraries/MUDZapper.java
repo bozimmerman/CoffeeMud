@@ -2331,11 +2331,49 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.append(".  ");
 					}
 					break;
+				case AREABLURB: // +Areablurb
+					{
+						buf.append(L("Disallows the following area blurb"+(multipleQuals(V,v,"-")?"s":"")+": "));
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+								break;
+							if(str2.startsWith("-"))
+								buf.append(str2.substring(1)+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
+				case _AREABLURB: // -Areablurb
+					{
+						buf.append(L((skipFirstWord?"The":"Requires the")+" following area blurb"+(multipleQuals(V,v,"+")?"s":"")+": "));
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+								break;
+							if(str2.startsWith("+"))
+								buf.append(str2.substring(1)+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+				break;
 				case ISHOME: // +isHome
 					buf.append(L("Disallows those who are not in their home area.  "));
 					break;
 				case _ISHOME: // -isHome
 					buf.append(L("Disallows those who are in their home area.  "));
+					break;
+				case AREAINSTANCE: // +areainstance
+					buf.append(L("Disallows those who are not in an area instance.  "));
+					break;
+				case _AREAINSTANCE: // -areainstance
+					buf.append(L("Disallows those who are in an area instance.  "));
 					break;
 				case HOME: // +Home
 					{
@@ -3555,6 +3593,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					}
 					break;
 				case _AREA: // -Area
+				case _AREABLURB: // -Areablurb
 					buildRoomFlag=true;
 				//$FALL-THROUGH$
 				case _TATTOO: // -Tattoos
@@ -3734,6 +3773,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					}
 					break;
 				case AREA: // +Area
+				case AREABLURB: // +Areablurb
 					buildRoomFlag=true;
 				//$FALL-THROUGH$
 				case TATTOO: // +Tattoos
@@ -4048,17 +4088,19 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					}
 					break;
 				case OFFICER: // +officer
-				case _OFFICER: // +officer
+				case _OFFICER: // -officer
 				case JUDGE: // +judge
-				case _JUDGE: // +judge
+				case _JUDGE: // -judge
 				case SUBOP: // +subop
-				case _SUBOP: // +subop
+				case _SUBOP: // -subop
+				case AREAINSTANCE: // +areainstance
+				case _AREAINSTANCE: // -areainstance-
 					buildRoomFlag=true;
 				//$FALL-THROUGH$
 				case ISHOME: // +ishome
 				case _ISHOME: // -ishome
 				case SYSOP: // +sysop
-				case _SYSOP: // +sysop
+				case _SYSOP: // -sysop
 				{
 					buf.add(new CompiledZapperMaskEntryImpl(entryType,new Object[0]));
 					break;
@@ -6213,6 +6255,92 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						}
 						break;
 					}
+				case _AREAINSTANCE: // -areainstance
+					if(room!=null)
+					{
+						final Area A=room.getArea();
+						if(CMath.bset(A.flags(), Area.FLAG_INSTANCE_CHILD))
+							return false;
+					}
+					break;
+				case AREAINSTANCE: // +areainstance
+					if(room!=null)
+					{
+						final Area A=room.getArea();
+						if(!CMath.bset(A.flags(), Area.FLAG_INSTANCE_CHILD))
+							return false;
+					}
+					break;
+				case _AREABLURB: // -areablurb
+					{
+						boolean found=false;
+						if(room!=null)
+						{
+							final Area A=room.getArea();
+							for(final Enumeration<String> b = A.areaBlurbFlags(); b.hasMoreElements();)
+							{
+								final String areaBlurb = b.nextElement().toLowerCase();
+								for(final Object o : entry.parms())
+								{
+									if(((String)o).startsWith("*"))
+									{
+										if(areaBlurb.toLowerCase().endsWith(((String)o).substring(1).toLowerCase()))
+										{
+											found = true;
+											break;
+										}
+									}
+									else
+									if(((String)o).endsWith("*"))
+									{
+										if(areaBlurb.toLowerCase().startsWith(((String)o).substring(0,((String)o).length()-1).toLowerCase()))
+										{
+											found = true;
+											break;
+										}
+									}
+									else
+									if(areaBlurb.equalsIgnoreCase((String)o))
+									{
+										found = true;
+										break;
+									}
+								}
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
+				case AREABLURB: // +areablurb
+					{
+						if(room!=null)
+						{
+							final Area A=room.getArea();
+							for(final Object o : entry.parms())
+							{
+								for(final Enumeration<String> b = A.areaBlurbFlags(); b.hasMoreElements();)
+								{
+									final String areaBlurb = b.nextElement().toLowerCase();
+									if(((String)o).startsWith("*"))
+									{
+										if(areaBlurb.toLowerCase().endsWith(((String)o).substring(1).toLowerCase()))
+											return false;
+									}
+									else
+									if(((String)o).endsWith("*"))
+									{
+										if(areaBlurb.toLowerCase().startsWith(((String)o).substring(0,((String)o).length()-1).toLowerCase()))
+											return false;
+									}
+									else
+									if(areaBlurb.equalsIgnoreCase((String)o))
+										return false;
+								}
+							}
+						}
+						break;
+					}
 				case _ISHOME: // -ishome
 					{
 						final Area homeA=CMLib.map().getStartArea(E);
@@ -6999,6 +7127,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _VALUE: // -value
 				case _AREA: // -area
 				case AREA: // +area
+				case _AREAINSTANCE: // -areainstance
+				case AREAINSTANCE: // +areainstance
+				case _AREABLURB: // -areablurb
+				case AREABLURB: // +areablurb
 				case _HOME: // -home
 				case HOME: // +home
 				case _PLANE: // -plane

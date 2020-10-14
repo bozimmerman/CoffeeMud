@@ -11,7 +11,8 @@ InstanceArea types definitions
 # PREFIX: comma delimited list of strings to prefix mob names with
 # LEVELADJ: either a number, or a formula to adjust mob/item levels:
 #           @x1 = base areas median level, @x2 = specific mob/item level
-#           @x2 = the instance traveling players level
+#           @x3 = the instance traveling players level
+#           @x4-@x5 = base area min level/max level, @x6 = exprate
 # MOBRESIST: instance mob resistance arguments, see Prop_Resistance
 # SETSTAT: instance mob stat settings, see Prop_StatTrainer
 # BEHAVAFFID: space delimited list of behavior id = replacement behavior id
@@ -44,6 +45,7 @@ InstanceArea types definitions
 #           List may also begin with "UP " to make description uppercase.
 # FACTIONS: Space delimited list of FactionIDs(AMOUNT) to give mobs faction.
 #           Use a FactionID of "*" to activate coffeemud.ini reaction faction
+# PLAYFACTIONS: Space delimited list of FactionIDs(AMOUNT) to give entering players
 # LIKE: Name/ID of another instance to make this one like (exceptions optional)
 # DESCRIPTION: arbitrary description
 # PROMOTIONS: Comma delimited List of promotion names with % chance in ()
@@ -51,4 +53,4 @@ InstanceArea types definitions
 # * In normal areas, add tattoo NOAINST <type name> to prevent a mob from 
 #   spawning in an instance.
 
-"Triumph" category="Main" promotions="" prefix="" leveladj=0 mobresist="" enable="" behave="" absorb="" aeffect="" roomadjs="" 
+"Triumph" category="Main" PLAYFACTIONS="trimph.ini" prefix="" leveladj="@x3 + ((((1+@x5-@x4)-(1+@x5-@x2))/(1+@x5-@x4))*(1+@x6)) > 1"  
