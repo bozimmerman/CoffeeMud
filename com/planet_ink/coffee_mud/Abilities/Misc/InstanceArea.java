@@ -81,7 +81,7 @@ public class InstanceArea extends StdAbility
 
 	protected volatile long				lastCasting		= 0;
 	protected WeakReference<Room>		oldRoom			= null;
-	protected Area						targetArea		= null;
+	protected Set<Area>					targetAreas		= null;
 	protected Map<String, String>		instVars		= null;
 	protected WeakArrayList<Room>		roomsDone		= new WeakArrayList<Room>();
 	protected int						instanceLevel	= 1;
@@ -162,7 +162,8 @@ public class InstanceArea extends StdAbility
 		SAVEADJ,
 		HPADJ,
 		DAMAGEADJ,
-		LIMIT
+		LIMIT,
+		AREAMATCH
 	}
 
 	/**
@@ -351,6 +352,21 @@ public class InstanceArea extends StdAbility
 			if(newText.indexOf('=')>0)
 			{
 				final Map<String,String> instParms = CMParms.parseEQParms(newText);
+				final String likeVal = instParms.get(InstVar.LIKE.toString());
+				if(likeVal != null)
+				{
+					final Map<String,String> likeInstVars=getInstVars(likeVal);
+					if(likeInstVars == null)
+						throw new IllegalArgumentException("Missing match to "+likeVal+" LIKE in parms");
+					else
+					{
+						for(final String likeKey : likeInstVars.keySet())
+						{
+							if(!instParms.containsKey(likeKey))
+								instParms.put(likeKey, likeInstVars.get(likeKey));
+						}
+					}
+				}
 				for(final String key : instParms.keySet())
 				{
 					if((CMath.s_valueOf(InstVar.class, key)==null)
@@ -362,6 +378,8 @@ public class InstanceArea extends StdAbility
 					Log.errOut("InstanceArea","Missing ID in parms");
 				else
 					newText = instParms.get(InstVar.ID.toString());
+				this.instVars=instParms;
+				this.instTypeID=newText;
 			}
 			else
 			{
@@ -375,6 +393,9 @@ public class InstanceArea extends StdAbility
 						throw new IllegalArgumentException("Unknown: "+newText);
 				}
 			}
+			this.targetAreas=null;
+
+
 			this.roomsDone=new WeakArrayList<Room>();
 			this.colorPrefix=instVars.get(InstVar.PREFIX.toString());
 			this.totalTickDown=CMath.s_int(instVars.get(InstVar.DURATION.toString()));
@@ -1500,23 +1521,44 @@ public class InstanceArea extends StdAbility
 				}
 				break;
 			}
+			return true;
 		}
-		else
+		// if not an instance case...
+		if(this.targetAreas==null)
+		{
+			if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+				return true;
+			this.targetAreas=new HashSet<Area>();
+			if(!(affected instanceof Area))
+			{
+				final String targetAreasStr = instVars.get(InstVar.AREAMATCH.toString());
+				if(targetAreasStr!=null)
+				{
+					for(final String areaMatch : CMParms.parseCommas(targetAreasStr, true))
+					{
+						final Area A=CMLib.map().findArea(areaMatch);
+						if(A!=null)
+							this.targetAreas.add(A);
+					}
+				}
+			}
+		}
+
 		if((msg.sourceMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target() instanceof Room)
 		&&(msg.source().location()!=null)
 		&&(msg.source().location().getArea()!=((Room)msg.target()).getArea())
 		&&((((Room)msg.target()).getArea()==affected)
-			||((((Room)msg.target()).getArea()==targetArea)&&(targetArea!=null)))
+			||(targetAreas.contains((((Room)msg.target()).getArea()))))
 		&&((!CMSecurity.isAllowed(msg.source(),(Room)msg.target(),CMSecurity.SecFlag.CMDAREAS))
 				||(!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS))))
 		{
-			final Area parentA = (targetArea != null)?targetArea:(Area)affected;
+			final Area parentA = ((Room)msg.target()).getArea();
 			final Room srcStartRoom =msg.source().getStartRoom();
 			if(((srcStartRoom==null)||(srcStartRoom.getArea()!=parentA)))
 			{
 				final Set<MOB> grp = this.getAppropriateGroup(msg.source());
-				Area instA = findExistingInstance(msg.source(), grp, targetArea);
+				Area instA = findExistingInstance(msg.source(), grp, parentA);
 				boolean created = false;
 				int topPlayerFactionValue = 0;
 				if(instA == null)
@@ -2021,15 +2063,43 @@ public class InstanceArea extends StdAbility
 	{
 		if(canBeUninvoked())
 		{
-			if(this.tickDown<=1)
-			{
-				// we've timed out!
-				//TODO: send a failure message!
-			}
 			final Area instArea = ((affected instanceof Area) && (CMath.bset(((Area)affected).flags(), Area.FLAG_INSTANCE_CHILD)))
 					 ?(Area)affected:null;
 			if(instArea != null)
+			{
+				if(this.tickDown<=1)
+				{
+					final List<MOB> sendTo=new ArrayList<MOB>();
+					synchronized(instanceChildren)
+					{
+						for(final List<AreaInstanceChild> childList : instanceChildren.values())
+						{
+							for(final AreaInstanceChild childA : childList)
+							{
+								if(childA.A == instArea)
+								{
+									for(final WeakReference<MOB> rM : childA.mobs)
+									{
+										final MOB M=rM.get();
+										if(M != null)
+											sendTo.add(M);
+									}
+								}
+							}
+						}
+					}
+					for(final MOB M : sendTo)
+					{
+						final CMMsg msg=CMClass.getMsg(M,null,affected,CMMsg.MASK_ALWAYS|CMMsg.TYP_ENDINSTANCE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+						if(M.location()!=null)
+						{
+							if(M.location().okMessage(M,msg))
+								M.location().send(M,msg);
+						}
+					}
+				}
 				destroyInstance(instArea);
+			}
 		}
 		super.unInvoke();
 	}

@@ -1643,6 +1643,7 @@ public class DefaultFaction implements Faction, MsgListener
 		if(resetTimerEventID.length()>0)
 		{
 			//TODO: figure out flawless victories (events conditional on another event NOT happening)
+			//TODO: also, you have ENDINSTANCE now to play with.
 			final boolean reset;
 			final Faction.FactionChangeEvent[] events;
 			if(resetTimerEventID.startsWith("-"))

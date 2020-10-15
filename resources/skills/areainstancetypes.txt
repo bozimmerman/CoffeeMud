@@ -53,6 +53,7 @@ InstanceArea types definitions
 # DESCRIPTION: arbitrary description
 # LIMIT: comma delimited [number]/[period] on limits to leaders of groups entering
 # PROMOTIONS: Comma delimited List of promotion names with % chance in ()
+# AREAMATCH: comma delimited list of area names to match, limiting instance creation
 #
 # * In normal areas, add tattoo NOAINST <type name> to prevent a mob from 
 #   spawning in an instance.
