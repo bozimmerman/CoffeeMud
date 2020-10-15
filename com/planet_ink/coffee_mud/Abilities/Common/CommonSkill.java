@@ -1064,8 +1064,6 @@ public class CommonSkill extends StdAbility
 	@Override
 	public String getStat(final String code)
 	{
-		if((super.getCodeNum(code)>=0) || (super.getInternalCodeNum(code)>=0))
-			return super.getStat(code);
 		switch(getMyCodeNum(code))
 		{
 		case 0:
@@ -1081,16 +1079,13 @@ public class CommonSkill extends StdAbility
 		case 2:
 			return name();
 		default:
-			return "";
+			return super.getStat(code);
 		}
 	}
 
 	@Override
 	public void setStat(final String code, final String val)
 	{
-		if((super.getCodeNum(code)>=0) || (super.getInternalCodeNum(code)>=0))
-			super.setStat(code,  val);
-		else
 		switch(getMyCodeNum(code))
 		{
 		case 0:
@@ -1101,6 +1096,7 @@ public class CommonSkill extends StdAbility
 		case 2:
 			break;
 		default:
+			super.setStat(code,  val);
 			break;
 		}
 	}

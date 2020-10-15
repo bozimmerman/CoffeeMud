@@ -248,9 +248,6 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 			code=code.substring(0,numDex);
 		}
 		*/
-		if(super.getInternalCodeNum(code)>=0)
-			return super.getStat(code);
-		else
 		switch(getCodeNum(code))
 		{
 		case 0:
@@ -303,9 +300,8 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 			else
 			if(code.equalsIgnoreCase("allxml"))
 				return getAllXML();
-			break;
+			return super.getStat(code);
 		}
-		return "";
 	}
 
 	@Override
@@ -320,9 +316,6 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 			num=CMath.s_int(code.substring(numDex));
 			code=code.substring(0,numDex);
 		}
-		if(super.getInternalCodeNum(code)>=0)
-			super.setStat(code, val);
-		else
 		switch(getCodeNum(code))
 		{
 		case 0:
@@ -430,6 +423,8 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 		default:
 			if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenGatheringSkill"))
 				parseAllXML(val);
+			else
+				super.setStat(code, val);
 			break;
 		}
 	}

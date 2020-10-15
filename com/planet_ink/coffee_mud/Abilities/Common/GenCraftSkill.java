@@ -263,8 +263,6 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			code=code.substring(0,numDex);
 		}
 		*/
-		if(super.getInternalCodeNum(code)>=0)
-			return super.getStat(code);
 		switch(getCodeNum(code))
 		{
 		case 0:
@@ -299,9 +297,8 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			else
 			if(code.equalsIgnoreCase("allxml"))
 				return getAllXML();
-			break;
+			return super.getStat(code);
 		}
-		return "";
 	}
 
 	@Override
@@ -316,9 +313,6 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			num=CMath.s_int(code.substring(numDex));
 			code=code.substring(0,numDex);
 		}
-		if(super.getInternalCodeNum(code)>=0)
-			super.setStat(code, val);
-		else
 		switch(getCodeNum(code))
 		{
 		case 0:
@@ -376,6 +370,8 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		default:
 			if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenCraftSkill"))
 				parseAllXML(val);
+			else
+				super.setStat(code, val);
 			break;
 		}
 	}
