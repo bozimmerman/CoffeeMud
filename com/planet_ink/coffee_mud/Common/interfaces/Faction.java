@@ -968,6 +968,13 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		public int getWithinTicks();
 
 		/**
+		 * Returns the amount of time that must pass between uses of this event
+		 * by a particular player.
+		 * @return amount of milliseconds, or -1
+		 */
+		public long getWaitBetweenMs();
+
+		/**
 		 * Returns the pct chance 0-100 that this event will trigger
 		 * @return the pct chance
 		 */
@@ -1440,7 +1447,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * the current time.
 		 * @param eventID the event id to reset the timer for
 		 */
-		public void resetEventTimer(final String eventID);
+		public void resetEventTimers(final String eventID);
 
 		/**
 		 * Return the parent faction for which this data stands.

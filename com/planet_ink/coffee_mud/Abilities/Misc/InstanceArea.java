@@ -93,6 +93,7 @@ public class InstanceArea extends StdAbility
 	protected PairList<String, String>	reffectList		= null;
 	protected PairList<String, String>	factionList		= null;
 	protected PairList<String, String>	pFactionList	= null;
+	protected PairList<Integer, Long>	limits 			= null;
 	protected int						bonusDmgStat	= -1;
 	protected Set<String>				reqWeapons		= null;
 	protected int						recoverRate		= 0;
@@ -100,8 +101,12 @@ public class InstanceArea extends StdAbility
 	protected volatile int				recoverTick		= 0;
 	protected Set<InstSpecFlag>			specFlags		= null;
 	protected int						hardBumpLevel	= 0;
+	protected int						totalTickDown	= 0;
 	protected CompiledFormula			levelFormula	= null;
-	protected PairList<Pair<Integer,Integer>,PairList<String,String>> enableList=null;
+	protected CompiledFormula			iLevelFormula	= null;
+	protected int 						topPlayerFacVal = 0;
+
+	protected PairList<Pair<Integer, Integer>, PairList<String, String>>	enableList	= null;
 
 	protected static final Map<Area,List<AreaInstanceChild>> instanceChildren = new HashMap<Area,List<AreaInstanceChild>>();
 	protected static final long			 hardBumpTimeout	= (60L * 60L * 1000L);
@@ -149,9 +154,16 @@ public class InstanceArea extends StdAbility
 		PROMOTIONS,
 		LIKE,
 		DESCRIPTION,
-		PLAYFACTIONS
+		PLAYFACTIONS,
+		DURATION,
+		ILEVELADJ,
+		ARMORADJ,
+		ATTACKADJ,
+		SAVEADJ,
+		HPADJ,
+		DAMAGEADJ,
+		LIMIT
 	}
-	//TODO: add timeout with failure event
 
 	/**
 	 * The special attribute flags for instances
@@ -198,7 +210,9 @@ public class InstanceArea extends StdAbility
 		this.reffectList=null;
 		this.factionList=null;
 		this.pFactionList=null;
+		this.limits=null;
 		this.levelFormula=null;
+		this.iLevelFormula=null;
 		bonusDmgStat=-1;
 		this.reqWeapons=null;
 		this.recoverTick=-1;
@@ -363,6 +377,7 @@ public class InstanceArea extends StdAbility
 			}
 			this.roomsDone=new WeakArrayList<Room>();
 			this.colorPrefix=instVars.get(InstVar.PREFIX.toString());
+			this.totalTickDown=CMath.s_int(instVars.get(InstVar.DURATION.toString()));
 			if(instVars.containsKey(InstVar.CATEGORY.toString()))
 			{
 				final String catStr=instVars.get(InstVar.CATEGORY.toString());
@@ -427,6 +442,32 @@ public class InstanceArea extends StdAbility
 			if(CMath.isInteger(levelFormulaStr.trim()))
 				levelFormulaStr = "@x3 + ((((1+@x5-@x4)-(1+@x5-@x2))/(1+@x5-@x4))*(1+@x6)) + "+levelFormulaStr+") > 1";
 			this.levelFormula = CMath.compileMathExpression(levelFormulaStr);
+			final String iLevelFormulaStr = instVars.get(InstVar.ILEVELADJ.toString());
+			if((iLevelFormulaStr == null)||(iLevelFormulaStr.trim().length()==0))
+				this.iLevelFormula = null;
+			else
+				this.iLevelFormula = CMath.compileMathExpression(iLevelFormulaStr.trim());
+			final String limitStr = instVars.get(InstVar.LIMIT.toString());
+			this.limits=null;
+			if(limitStr!=null)
+			{
+				this.limits=new PairVector<Integer, Long>();
+				for(final String lstr : CMParms.parseCommas(limitStr, true))
+				{
+					final int x=lstr.indexOf('/');
+					if(x<=0)
+						continue;
+					final Integer amt = Integer.valueOf(CMath.s_int(lstr.substring(0,x).trim()));
+					if(amt.intValue()<=0)
+						continue;
+					final String multiplier=lstr.substring(x+1).trim();
+					final Long timeMultiplier = Long.valueOf(CMLib.english().getMillisMultiplierByName(multiplier));
+					if(timeMultiplier<0)
+						continue;
+					this.limits.add(new Pair<Integer,Long>(amt,timeMultiplier));
+				}
+			}
+
 			final String enables = instVars.get(InstVar.ENABLE.toString());
 			this.enableList=null;
 			if(enables!=null)
@@ -794,7 +835,18 @@ public class InstanceArea extends StdAbility
 			}
 			int eliteLevel=0;
 			if(instVars.containsKey(InstVar.ELITE.toString()))
-				eliteLevel=CMath.s_int(instVars.get(InstVar.ELITE.toString()));
+			{
+				final String eliteStr=instVars.get(InstVar.ELITE.toString());
+				if(CMath.isInteger(eliteStr))
+					eliteLevel=CMath.s_int(eliteStr);
+				else
+				{
+					final double[] vars = new double[] {instanceLevel, instanceLevel, instanceLevel,
+							stats[Area.Stats.MIN_LEVEL.ordinal()], stats[Area.Stats.MAX_LEVEL.ordinal()],
+							CMProps.getIntVar(CMProps.Int.EXPRATE)+1, topPlayerFacVal} ;
+					eliteLevel=CMath.parseIntExpression(eliteStr, vars);
+				}
+			}
 			if(instVars.containsKey(InstVar.ATMOSPHERE.toString()))
 				room.setAtmosphere(instArea.getAtmosphere());
 			doInstanceRoomColoring(room);
@@ -879,12 +931,19 @@ public class InstanceArea extends StdAbility
 				{
 					final double[] vars = new double[] {instanceLevel, I.phyStats().level(), instanceLevel,
 														stats[Area.Stats.MIN_LEVEL.ordinal()], stats[Area.Stats.MAX_LEVEL.ordinal()],
-														CMProps.getIntVar(CMProps.Int.EXPRATE)+1} ;
+														CMProps.getIntVar(CMProps.Int.EXPRATE)+1, topPlayerFacVal} ;
 					final int newILevel = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0));
+					final int newIPLevel;
+					if(this.iLevelFormula != null)
+						newIPLevel = (int)CMath.round(CMath.parseMathExpression(this.iLevelFormula, vars, 0.0));
+					else
+						newIPLevel = newILevel;
 					CMLib.itemBuilder().itemFix(I, newILevel, null);
+					I.basePhyStats().setLevel(newIPLevel);
+					I.phyStats().setLevel(newIPLevel);
+					CMLib.itemBuilder().balanceItemByLevel(I);
 					I.basePhyStats().setLevel(newILevel);
 					I.phyStats().setLevel(newILevel);
-					CMLib.itemBuilder().balanceItemByLevel(I);
 					if((I instanceof Weapon)
 					&&(this.reqWeapons!=null)
 					&&(this.reqWeapons.contains("MAGICAL")))
@@ -928,7 +987,7 @@ public class InstanceArea extends StdAbility
 						M.baseCharStats().setBreathables(new int[]{room.getAtmosphere()});
 					final double[] vars = new double[] {instanceLevel, M.phyStats().level(), instanceLevel,
 														stats[Area.Stats.MIN_LEVEL.ordinal()], stats[Area.Stats.MAX_LEVEL.ordinal()],
-														CMProps.getIntVar(CMProps.Int.EXPRATE)+1} ;
+														CMProps.getIntVar(CMProps.Int.EXPRATE)+1, topPlayerFacVal} ;
 					final int newLevel = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0));
 					final int[] eliteBump = new int[1];
 					this.applyMobPrefix(M, eliteBump);
@@ -988,11 +1047,18 @@ public class InstanceArea extends StdAbility
 						{
 							final double[] ivars = new double[] {instanceLevel, mI.phyStats().level(), instanceLevel,
 																 stats[Area.Stats.MIN_LEVEL.ordinal()], stats[Area.Stats.MAX_LEVEL.ordinal()],
-																 CMProps.getIntVar(CMProps.Int.EXPRATE)+1} ;
+																 CMProps.getIntVar(CMProps.Int.EXPRATE)+1, topPlayerFacVal} ;
 							final int newILevel = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, ivars, 0.0));
+							final int newIPLevel;
+							if(this.iLevelFormula != null)
+								newIPLevel = (int)CMath.round(CMath.parseMathExpression(this.iLevelFormula, ivars, 0.0));
+							else
+								newIPLevel = newILevel;
+							mI.basePhyStats().setLevel(newIPLevel);
+							mI.phyStats().setLevel(newIPLevel);
+							CMLib.itemBuilder().balanceItemByLevel(mI);
 							mI.basePhyStats().setLevel(newILevel);
 							mI.phyStats().setLevel(newILevel);
-							CMLib.itemBuilder().balanceItemByLevel(mI);
 							if((mI instanceof Weapon)
 							&&(this.reqWeapons!=null)
 							&&(this.reqWeapons.contains("MAGICAL")))
@@ -1452,9 +1518,44 @@ public class InstanceArea extends StdAbility
 				final Set<MOB> grp = this.getAppropriateGroup(msg.source());
 				Area instA = findExistingInstance(msg.source(), grp, targetArea);
 				boolean created = false;
+				int topPlayerFactionValue = 0;
 				if(instA == null)
 				{
 					created = true;
+					final MOB leaderM = (msg.source().amFollowing()!=null)?msg.source().amUltimatelyFollowing():msg.source();
+					if((this.limits!=null)
+					&&(this.limits.size()>0)
+					&&(leaderM.isPlayer()))
+					{
+						final PlayerStats pStats=leaderM.playerStats();
+						final CharClass stdC=CMClass.getCharClass("StdClasClass");
+						final Map<String,Object> classMap = pStats.getClassVariableMap(stdC);
+						final long now=System.currentTimeMillis();
+						for(final Pair<Integer,Long> limit : this.limits)
+						{
+							final String limitKey=this.instTypeID+"/"+limit.hashCode();
+							if(classMap.containsKey(limitKey))
+							{
+								@SuppressWarnings("unchecked")
+								final Pair<int[],long[]> bunch=(Pair<int[],long[]>)classMap.get(limitKey);
+								if(now > bunch.second[0])
+								{
+									bunch.first[0]=1;
+									bunch.second[0]=now+limit.second.longValue();
+								}
+								else
+								if(bunch.first[0]>=limit.first.intValue())
+								{
+									msg.source().tell(L("You are not allowed to re-enter this special place right now."));
+									return false;
+								}
+								else
+									bunch.first[0]++;
+							}
+							else
+								classMap.put(limitKey, new Pair<int[],long[]>(new int[] {1},new long[] {now+limit.second.longValue()}));
+						}
+					}
 					final String newInstanceName = instIDNum.addAndGet(1)+"_"+parentA.Name();
 					instA = CMClass.getAreaType("SubThinInstance");
 					instA.setName(newInstanceName);
@@ -1502,7 +1603,11 @@ public class InstanceArea extends StdAbility
 										}
 										else
 										if(created)
-											fdata.resetEventTimer(null);
+										{
+											if(fdata.value() > topPlayerFactionValue)
+												topPlayerFactionValue=fdata.value();
+											fdata.resetEventTimers(null);
+										}
 									}
 								}
 							}
@@ -1530,7 +1635,7 @@ public class InstanceArea extends StdAbility
 						statData = Arrays.copyOf(oldParentStats, oldParentStats.length);
 						final double[] vars = new double[] {topLevel, statData[Area.Stats.MIN_LEVEL.ordinal()], topLevel,
 								statData[Area.Stats.MIN_LEVEL.ordinal()], statData[Area.Stats.MAX_LEVEL.ordinal()],
-								CMProps.getIntVar(CMProps.Int.EXPRATE)+1} ;
+								CMProps.getIntVar(CMProps.Int.EXPRATE)+1, topPlayerFacVal} ;
 						statData[Area.Stats.MIN_LEVEL.ordinal()] = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0));
 						vars[1] = statData[Area.Stats.MAX_LEVEL.ordinal()];
 						statData[Area.Stats.MAX_LEVEL.ordinal()] = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0));
@@ -1548,8 +1653,13 @@ public class InstanceArea extends StdAbility
 					if(able == null)
 					{
 						able = (InstanceArea)this.copyOf();
-						instA.addNonUninvokableEffect(able);
+						if(this.totalTickDown <= 0)
+							instA.addNonUninvokableEffect(able);
+						else
+							able.startTickDown(msg.source(), instA, this.totalTickDown);
 						able.setMiscText(text());
+						if(created)
+							able.topPlayerFacVal = topPlayerFactionValue;
 					}
 					Room R=instA.getRoom(convertToMyArea(instA, CMLib.map().getExtendedRoomID((Room)msg.target())));
 					int tries=1000;
@@ -1911,6 +2021,11 @@ public class InstanceArea extends StdAbility
 	{
 		if(canBeUninvoked())
 		{
+			if(this.tickDown<=1)
+			{
+				// we've timed out!
+				//TODO: send a failure message!
+			}
 			final Area instArea = ((affected instanceof Area) && (CMath.bset(((Area)affected).flags(), Area.FLAG_INSTANCE_CHILD)))
 					 ?(Area)affected:null;
 			if(instArea != null)

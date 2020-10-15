@@ -13,6 +13,8 @@ InstanceArea types definitions
 #           @x1 = base areas median level, @x2 = specific mob/item level
 #           @x3 = the instance traveling players level
 #           @x4-@x5 = base area min level/max level, @x6 = exprate
+#           @x7 = if playerfactions set, the best value
+# ILEVELADJ: replaces LEVELADJ for items, if existing
 # MOBRESIST: instance mob resistance arguments, see Prop_Resistance
 # SETSTAT: instance mob stat settings, see Prop_StatTrainer
 # BEHAVAFFID: space delimited list of behavior id = replacement behavior id
@@ -38,7 +40,7 @@ InstanceArea types definitions
 # AEFFECT: space delimited AbilityID/BehaviorID(arg) list for instance area
 # SPECFLAGS: space delim flags: NOINFRAVISION, BADMUNDANEARMOR, ALLBREATHE
 # MIXRACE: RaceID of race to make every instance mob a mix of
-# ELITE: elite level 1+, increases hit points, attack, damage, saves
+# ELITE: elite level 1+, increases hit points, attack, damage, saves (see LEVELADJ)
 # ROOMCOLOR: A color code (^r) or "UP " followed by color, for room title
 # ROOMADJS: Comma delimited list of adjectives to sprinkle in room 
 #           descriptions.  List may be prefixed with a number for % chance.
@@ -47,10 +49,12 @@ InstanceArea types definitions
 #           Use a FactionID of "*" to activate coffeemud.ini reaction faction
 # PLAYFACTIONS: Space delimited list of FactionIDs(AMOUNT) to give entering players
 # LIKE: Name/ID of another instance to make this one like (exceptions optional)
+# DURATION: number of ticks before the instance times out
 # DESCRIPTION: arbitrary description
+# LIMIT: comma delimited [number]/[period] on limits to leaders of groups entering
 # PROMOTIONS: Comma delimited List of promotion names with % chance in ()
 #
 # * In normal areas, add tattoo NOAINST <type name> to prevent a mob from 
 #   spawning in an instance.
 
-"Triumph" category="Main" PLAYFACTIONS="trimph.ini" prefix="" leveladj="@x3 + ((((1+@x5-@x4)-(1+@x5-@x2))/(1+@x5-@x4))*(1+@x6)) > 1"  
+"Triumph" category="Main" PLAYFACTIONS="trimph.ini" prefix="" leveladj="@x3 + ((((1+@x5-@x4)-(1+@x5-@x2))/(1+@x5-@x4))*(1+@x6)) > 1" ELITE="1+(((@x7 / 25)-0.49999999)>0)" LIMIT="1/DAY"

@@ -124,6 +124,7 @@ public class DefaultFaction implements Faction, MsgListener
 	protected CList<String>   					choices			 = new SVector<String>();
 	protected CList<Faction.FReactionItem>		reactions		 = new SVector<Faction.FReactionItem>();
 	protected CMap<String,CList<FReactionItem>>	reactionHash	 = new SHashtable<String,CList<Faction.FReactionItem>>();
+	//TODO: implement timed cap on points per day/week/whatever
 
 	@Override
 	public Enumeration<Faction.FReactionItem> reactions()
@@ -1174,6 +1175,20 @@ public class DefaultFaction implements Faction, MsgListener
 		return 1.0;
 	}
 
+	private boolean checkApplyEventWait(final FactionChangeEvent event, final MOB mob)
+	{
+		final Faction.FData data = mob.fetchFactionData(factionID());
+		if(data != null)
+		{
+			if(System.currentTimeMillis() < data.getNextChangeTimers(event))
+				return false;
+			final long newTime=event.getWaitBetweenMs();
+			if(newTime > 0)
+				data.setNextChangeTimers(event, System.currentTimeMillis()+newTime);
+		}
+		return true;
+	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -1195,7 +1210,10 @@ public class DefaultFaction implements Faction, MsgListener
 						for (final FactionChangeEvent event : events)
 						{
 							if(event.applies(msg.source(),msg.source()))
-								executeChange(msg.source(),msg.source(),event);
+							{
+								if(this.checkApplyEventWait(event, msg.source()))
+									executeChange(msg.source(),msg.source(),event);
+							}
 						}
 					}
 				}
@@ -1219,7 +1237,10 @@ public class DefaultFaction implements Faction, MsgListener
 								final CharClass combatCharClass=CMLib.combat().getCombatDominantClass(killingBlowM,killedM);
 								final Set<MOB> combatBeneficiaries=CMLib.combat().getCombatBeneficiaries(killingBlowM,killedM,combatCharClass);
 								for (final MOB mob : combatBeneficiaries)
-									executeChange(mob,killedM,event);
+								{
+									if(checkApplyEventWait(event, mob))
+										executeChange(mob,killedM,event);
+								}
 							}
 						}
 					}
@@ -1237,7 +1258,10 @@ public class DefaultFaction implements Faction, MsgListener
 									final CharClass combatCharClass=CMLib.combat().getCombatDominantClass(killingBlowM,killedM);
 									final Set<MOB> combatBeneficiaries=CMLib.combat().getCombatBeneficiaries(killingBlowM,killedM,combatCharClass);
 									for (final MOB mob : combatBeneficiaries)
-										executeChange(mob,killedM,event);
+									{
+										if(checkApplyEventWait(event, mob))
+											executeChange(mob,killedM,event);
+									}
 								}
 							}
 						}
@@ -1251,7 +1275,10 @@ public class DefaultFaction implements Faction, MsgListener
 									final CharClass combatCharClass=CMLib.combat().getCombatDominantClass(killingBlowM,killedM);
 									final Set<MOB> combatBeneficiaries=CMLib.combat().getCombatBeneficiaries(killingBlowM,killedM,combatCharClass);
 									for (final MOB mob : combatBeneficiaries)
-										executeChange(mob,killedM,event);
+									{
+										if(checkApplyEventWait(event, mob))
+											executeChange(mob,killedM,event);
+									}
 								}
 							}
 						}
@@ -1265,7 +1292,10 @@ public class DefaultFaction implements Faction, MsgListener
 						for (final FactionChangeEvent event : events)
 						{
 							if(event.applies(killedM,killedM))
-								executeChange(killedM,killedM,event);
+							{
+								if(checkApplyEventWait(event, killedM))
+									executeChange(killedM,killedM,event);
+							}
 						}
 					}
 				}
@@ -1350,7 +1380,7 @@ public class DefaultFaction implements Faction, MsgListener
 					if((sayMsg!=null)&&(sayMsg.length()>0)&&(R!=null))
 					{
 						final MOB mob=msg.source();
-						Faction.FData data = mob.fetchFactionData(factionID());
+						final Faction.FData data = mob.fetchFactionData(factionID());
 						for (final FactionChangeEvent event : events)
 						{
 							Pattern P=(Pattern)event.stateVariable(0);
@@ -1378,16 +1408,7 @@ public class DefaultFaction implements Faction, MsgListener
 									}
 								}
 								if(foundOne)
-								{
-									if(data == null)
-										data = mob.fetchFactionData(factionID());
-									if(data != null)
-									{
-										final long newTime=CMath.s_long(event.getTriggerParm("WAIT"))*CMProps.getTickMillis();
-										if(newTime != 0)
-											data.setNextChangeTimers(event, System.currentTimeMillis()+newTime);
-									}
-								}
+									checkApplyEventWait(event, mob);
 							}
 						}
 					}
@@ -1425,7 +1446,6 @@ public class DefaultFaction implements Faction, MsgListener
 							if((sayMsg!=null)&&(sayMsg.length()>0))
 							{
 								final MOB mob=msg.source();
-								Faction.FData data = mob.fetchFactionData(factionID());
 								for (final FactionChangeEvent event : events)
 								{
 									if(event.applies(mob,target))
@@ -1434,17 +1454,10 @@ public class DefaultFaction implements Faction, MsgListener
 										&&(mudChatB.getLastThingSaid()!=null)
 										&&(!mudChatB.getLastThingSaid().equalsIgnoreCase(sayMsg)))
 										{
-											if((data != null) && (System.currentTimeMillis() < data.getNextChangeTimers(event)))
-												continue;
-											executeChange(mob,target,event);
-											foundOne=true;
-											if(data == null)
-												data = mob.fetchFactionData(factionID());
-											if(data != null)
+											if(checkApplyEventWait(event, mob))
 											{
-												final long newTime=CMath.s_long(event.getTriggerParm("WAIT"))*CMProps.getTickMillis();
-												if(newTime != 0)
-													data.setNextChangeTimers(event, System.currentTimeMillis()+newTime);
+												executeChange(mob,target,event);
+												foundOne=true;
 											}
 										}
 									}
@@ -1498,18 +1511,8 @@ public class DefaultFaction implements Faction, MsgListener
 							target=null;
 						else
 							continue;
-						Faction.FData data = msg.source().fetchFactionData(factionID());
-						if((data != null) && (System.currentTimeMillis() < data.getNextChangeTimers(C)))
-							continue;
-						executeChange(msg.source(),target,C);
-						if(data == null)
-							data = msg.source().fetchFactionData(factionID());
-						if(data != null)
-						{
-							final long newTime=CMath.s_long(C.getTriggerParm("WAIT"))*CMProps.getTickMillis();
-							if(newTime != 0)
-								data.setNextChangeTimers(C, System.currentTimeMillis()+newTime);
-						}
+						if(checkApplyEventWait(C, msg.source()))
+							executeChange(msg.source(),target,C);
 					}
 				}
 			}
@@ -1528,7 +1531,6 @@ public class DefaultFaction implements Faction, MsgListener
 					final Social social = (Social)msg.tool();
 					final String socialName = social.baseName();
 					final MOB mob=msg.source();
-					Faction.FData data = mob.fetchFactionData(factionID());
 					for (final FactionChangeEvent event : events)
 					{
 						if(event.miscEvent()==MiscTrigger.SOCIAL)
@@ -1542,17 +1544,8 @@ public class DefaultFaction implements Faction, MsgListener
 						}
 						if((event.applies(mob,(MOB)msg.target())))
 						{
-							if((data != null) && (System.currentTimeMillis() < data.getNextChangeTimers(event)))
-								continue;
-							executeChange(mob,(MOB)msg.target(),event);
-							if(data == null)
-								data = mob.fetchFactionData(factionID());
-							if(data != null)
-							{
-								final long newTime=CMath.s_long(event.getTriggerParm("WAIT"))*CMProps.getTickMillis();
-								if(newTime != 0)
-									data.setNextChangeTimers(event, System.currentTimeMillis()+newTime);
-							}
+							if(checkApplyEventWait(event, mob))
+								executeChange(mob,(MOB)msg.target(),event);
 						}
 					}
 				}
@@ -1649,7 +1642,19 @@ public class DefaultFaction implements Faction, MsgListener
 		final String resetTimerEventID = event.getTriggerParm("RESTIME");
 		if(resetTimerEventID.length()>0)
 		{
-			final Faction.FactionChangeEvent[] events = getChangeEvents(resetTimerEventID);
+			//TODO: figure out flawless victories (events conditional on another event NOT happening)
+			final boolean reset;
+			final Faction.FactionChangeEvent[] events;
+			if(resetTimerEventID.startsWith("-"))
+			{
+				reset=false;
+				events = getChangeEvents(resetTimerEventID.substring(1));
+			}
+			else
+			{
+				events = getChangeEvents(resetTimerEventID);
+				reset=true;
+			}
 			if(events != null)
 			{
 				final Faction.FData sdata = source.fetchFactionData(factionID());
@@ -1657,9 +1662,19 @@ public class DefaultFaction implements Faction, MsgListener
 				for(final Faction.FactionChangeEvent event2 : events)
 				{
 					if(sdata != null)
-						sdata.resetEventTimer(event2.eventID());
+					{
+						if(reset)
+							sdata.resetEventTimers(event2.eventID());
+						else
+							sdata.setNextChangeTimers(event2, Long.MAX_VALUE);
+					}
 					if(tdata != null)
-						tdata.resetEventTimer(event2.eventID());
+					{
+						if(reset)
+							tdata.resetEventTimers(event2.eventID());
+						else
+							tdata.setNextChangeTimers(event2, Long.MAX_VALUE);
+					}
 				}
 			}
 		}
@@ -1737,7 +1752,9 @@ public class DefaultFaction implements Faction, MsgListener
 		if(factionAdj==0)
 			return;
 
-		CMMsg facMsg=CMClass.getMsg(source,target,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,ID);
+		final String announceMsg = event.getTriggerParm("ANNOUCE");
+		final String seenMsg = announceMsg.length()>0 ? announceMsg : null;
+		CMMsg facMsg=CMClass.getMsg(source,target,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FACTIONCHANGE,seenMsg,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,ID);
 		facMsg.setValue(factionAdj);
 		final Room R=source.location();
 		if(R!=null)
@@ -1933,6 +1950,7 @@ public class DefaultFaction implements Faction, MsgListener
 		private Object[]	stateVariables	= new Object[0];
 		private String		triggerParms	= "";
 		private int			withinTicks		= -1;
+		private long		waitMs			= -1;
 		private int			pctChance		= 100;
 
 		private final Faction	myFaction;
@@ -2000,6 +2018,12 @@ public class DefaultFaction implements Faction, MsgListener
 		public int getWithinTicks()
 		{
 			return withinTicks;
+		}
+
+		@Override
+		public long getWaitBetweenMs()
+		{
+			return this.waitMs;
 		}
 
 		@Override
@@ -2361,6 +2385,7 @@ public class DefaultFaction implements Faction, MsgListener
 			compiledSourceZapper=null;
 			withinTicks=savedTriggerParms.containsKey("WITHIN")?CMath.s_int(savedTriggerParms.get("WITHIN")):-1;
 			pctChance=savedTriggerParms.containsKey("CHANCE")?CMath.s_int(savedTriggerParms.get("CHANCE")):100;
+			waitMs=savedTriggerParms.containsKey("WAIT")?(CMath.s_long(savedTriggerParms.get("WAIT"))*CMProps.getTickMillis()):-1;
 		}
 
 		@Override
@@ -2600,13 +2625,27 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
-		public void resetEventTimer(final String eventID)
+		public void resetEventTimers(final String eventID)
 		{
 			this.birthTime = System.currentTimeMillis();
 			if(eventID == null)
+			{
 				timers.clear();
+				nextChangeTime.clear();
+			}
 			else
+			{
 				timers.put(eventID, Long.valueOf(System.currentTimeMillis()));
+				for(final Iterator<Faction.FactionChangeEvent> e = nextChangeTime.keySet().iterator();e.hasNext();)
+				{
+					final Faction.FactionChangeEvent event = e.next();
+					if(event.eventID().equalsIgnoreCase(eventID))
+					{
+						nextChangeTime.remove(event);
+						break;
+					}
+				}
+			}
 		}
 
 		@Override
