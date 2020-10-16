@@ -4389,7 +4389,7 @@ endlessly, or something equally abusable.
 <p>This command sends the
 victim to a designated destination. The
 victim can be either a mob keyword or a character variable. The
-destination can be a room id, room name or description, a mob keyword,
+destination can be a full room id, room number from the current area,&nbsp; room name, room description, a mob keyword,
 or a character variable.&nbsp;If you need to be need to find mobile
 mobs or items, you can include the mob or item name, followed by @
 followed by a room id or area name. If there is no destination given,
@@ -4399,7 +4399,7 @@ message given to this command, so if you want there to be one, you need
 to include an mpecho in your mobprog. This command is a good way to
 move players around your zone or into other zones.</p>
 <p>EXAMPLES:</p>
-<pre> mptransfer $n myarea#10049<br /> mptransfer $n<br /> mptransfer guardeight myarea#1252<br /> mptransfer guardten $n<br /> <br /></pre>
+<pre> mptransfer $n myarea#10049<br /> mptransfer $n<br /> mptransfer guardeight #1252<br /> mptransfer guardten $n<br /> <br /></pre>
 <p>SPECIAL NOTES: You need
 to be careful with this command. First
 of all, you should never transfer a character variable that is a mob.

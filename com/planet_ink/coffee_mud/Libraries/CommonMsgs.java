@@ -988,14 +988,14 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		String weight=null;
 		if((mob!=null)&&(mobInt<10))
 		{
-			final double l=Math.floor(CMath.div(item.phyStats().level(),divider));
+			final double l=Math.floor(CMath.div(item.phyStats().weight(),divider));
 			weight=(int)Math.round(CMath.mul(l,divider))+"-"+(int)Math.round(CMath.mul(l,divider)+(divider-1.0));
 		}
 		else
 		if((mob!=null)&&(mobInt<18))
 		{
 			divider=divider/2.0;
-			final double l=Math.floor(CMath.div(item.phyStats().level(),divider));
+			final double l=Math.floor(CMath.div(item.phyStats().weight(),divider));
 			weight=(int)Math.round(CMath.mul(l,divider))+"-"+(int)Math.round(CMath.mul(l,divider)+(divider-1.0));
 		}
 		else

@@ -370,6 +370,8 @@ public class InstanceArea extends StdAbility
 				}
 			}
 
+			final double[] vars = new double[] {instanceLevel, instanceLevel, instanceLevel, instanceLevel, instanceLevel,
+												CMProps.getIntVar(CMProps.Int.EXPRATE)+1, topPlayerFacVal} ;
 			final String enables = instVars.get(InstVar.ENABLE.toString());
 			this.enableList=null;
 			if(enables!=null)
@@ -386,14 +388,45 @@ public class InstanceArea extends StdAbility
 					{
 						p.remove();
 						final String parms=P.second;
-						final int x=parms.indexOf('/');
+						int parenDepth = 0;
+						int slashMark=-1;
+						for(int i=1;i<parms.length()-1;i++)
+						{
+							if((parms.charAt(i)=='/')&&(parenDepth == 0))
+							{
+								slashMark=i;
+								break;
+							}
+							else
+							if(parms.charAt(i)=='(')
+								parenDepth++;
+							else
+							if((parms.charAt(i)==')')&&(parenDepth>0))
+								parenDepth--;
+						}
 						final Pair<Integer,Integer> newLimit = new Pair<Integer,Integer>(defaultPerLevel,defaultNumSkills);
-						if(x<0)
-							newLimit.first=Integer.valueOf(CMath.s_int(parms.trim()));
+						final String numPerStr;
+						String totalStr="";
+						if(slashMark<0)
+							numPerStr=parms.trim();
 						else
 						{
-							newLimit.first=Integer.valueOf(CMath.s_int(parms.substring(0,x).trim()));
-							newLimit.second=Integer.valueOf(CMath.s_int(parms.substring(x+1).trim()));
+							numPerStr=parms.substring(0,slashMark).trim();
+							totalStr=parms.substring(slashMark+1).trim();
+						}
+						if(numPerStr.length()>0)
+						{
+							if(CMath.isInteger(numPerStr))
+								newLimit.first=Integer.valueOf(CMath.s_int(numPerStr));
+							else
+								newLimit.first=Integer.valueOf(CMath.parseIntExpression(numPerStr,vars));
+						}
+						if(totalStr.length()>0)
+						{
+							if(CMath.isInteger(totalStr))
+								newLimit.second=Integer.valueOf(CMath.s_int(totalStr));
+							else
+								newLimit.second=Integer.valueOf(CMath.parseIntExpression(totalStr,vars));
 						}
 						for(final Iterator<Triad<String,String,Pair<Integer,Integer>>> k = enableMidList.iterator();k.hasNext();)
 						{
@@ -828,18 +861,18 @@ public class InstanceArea extends StdAbility
 					final double[] vars = new double[] {instanceLevel, I.phyStats().level(), instanceLevel,
 														stats[Area.Stats.MIN_LEVEL.ordinal()], stats[Area.Stats.MAX_LEVEL.ordinal()],
 														CMProps.getIntVar(CMProps.Int.EXPRATE)+1, topPlayerFacVal} ;
-					final int newILevel = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0));
-					final int newIPLevel;
+					final int newILevel = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0))+eliteLevel;
+					final int newFILevel;
 					if(this.iLevelFormula != null)
-						newIPLevel = (int)CMath.round(CMath.parseMathExpression(this.iLevelFormula, vars, 0.0));
+						newFILevel = (int)CMath.round(CMath.parseMathExpression(this.iLevelFormula, vars, 0.0));
 					else
-						newIPLevel = newILevel;
+						newFILevel = newILevel;
 					CMLib.itemBuilder().itemFix(I, newILevel, null);
-					I.basePhyStats().setLevel(newIPLevel);
-					I.phyStats().setLevel(newIPLevel);
-					CMLib.itemBuilder().balanceItemByLevel(I);
 					I.basePhyStats().setLevel(newILevel);
 					I.phyStats().setLevel(newILevel);
+					CMLib.itemBuilder().balanceItemByLevel(I);
+					I.basePhyStats().setLevel(newFILevel);
+					I.phyStats().setLevel(newFILevel);
 					if((I instanceof Weapon)
 					&&(this.reqWeapons!=null)
 					&&(this.reqWeapons.contains("MAGICAL")))
@@ -943,20 +976,20 @@ public class InstanceArea extends StdAbility
 							final double[] ivars = new double[] {instanceLevel, mI.phyStats().level(), instanceLevel,
 																 stats[Area.Stats.MIN_LEVEL.ordinal()], stats[Area.Stats.MAX_LEVEL.ordinal()],
 																 CMProps.getIntVar(CMProps.Int.EXPRATE)+1, topPlayerFacVal} ;
-							final int newILevel = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, ivars, 0.0));
-							final int newIPLevel;
+							final int newILevel = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, ivars, 0.0))+eliteLevel;
+							final int newFILevel;
 							if(this.iLevelFormula != null)
-								newIPLevel = (int)CMath.round(CMath.parseMathExpression(this.iLevelFormula, ivars, 0.0));
+								newFILevel = (int)CMath.round(CMath.parseMathExpression(this.iLevelFormula, vars, 0.0));
 							else
-								newIPLevel = newILevel;
-							mI.basePhyStats().setLevel(newIPLevel);
-							mI.phyStats().setLevel(newIPLevel);
-							CMLib.itemBuilder().balanceItemByLevel(mI);
+								newFILevel = newILevel;
 							mI.basePhyStats().setLevel(newILevel);
 							mI.phyStats().setLevel(newILevel);
+							CMLib.itemBuilder().balanceItemByLevel(mI);
+							mI.basePhyStats().setLevel(newFILevel);
+							mI.phyStats().setLevel(newFILevel);
 							if((mI instanceof Weapon)
-							&&(this.reqWeapons!=null)
-							&&(this.reqWeapons.contains("MAGICAL")))
+							&&(reqWeapons!=null)
+							&&(reqWeapons.contains("MAGICAL")))
 							{
 								mI.basePhyStats().setDisposition(mI.basePhyStats().disposition()|PhyStats.IS_BONUS);
 								mI.phyStats().setDisposition(mI.phyStats().disposition()|PhyStats.IS_BONUS);
@@ -1435,7 +1468,7 @@ public class InstanceArea extends StdAbility
 		{
 			final Area parentA = ((Room)msg.target()).getArea();
 			final Room srcStartRoom =msg.source().getStartRoom();
-			if(((srcStartRoom==null)||(srcStartRoom.getArea()!=parentA)))
+			if(((srcStartRoom==null)||(srcStartRoom.getArea()!=parentA)||(msg.source().isPlayer())))
 			{
 				MOB leaderM = (msg.source().amFollowing()!=null)?msg.source().amUltimatelyFollowing():msg.source();
 				final Set<MOB> grp = this.getAppropriateGroup(leaderM);
@@ -1588,9 +1621,9 @@ public class InstanceArea extends StdAbility
 						else
 							able.startTickDown(msg.source(), instA, this.totalTickDown);
 						able.leaderMob=new WeakReference<MOB>(leaderM);
-						able.setMiscText(text());
 						if(created)
 							able.topPlayerFacVal = topPlayerFactionValue;
+						able.setMiscText(text());
 					}
 					Room R=instA.getRoom(convertToMyArea(instA, CMLib.map().getExtendedRoomID((Room)msg.target())));
 					int tries=1000;
