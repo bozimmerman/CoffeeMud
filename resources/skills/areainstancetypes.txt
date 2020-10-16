@@ -49,13 +49,38 @@ InstanceArea types definitions
 #           Use a FactionID of "*" to activate coffeemud.ini reaction faction
 # PLAYFACTIONS: Space delimited list of FactionIDs(AMOUNT) to give entering players
 # LIKE: Name/ID of another instance to make this one like (exceptions optional)
+#       When multiple entries of the same type exist, always matches FIRST.
 # DURATION: number of ticks before the instance times out
 # DESCRIPTION: arbitrary description
 # LIMIT: comma delimited [number]/[period] on limits to leaders of groups entering
 # PROMOTIONS: Comma delimited List of promotion names with % chance in ()
 # AREAMATCH: comma delimited list of area names to match, limiting instance creation
+# LEADERREQ: a zapper mask that the leader of a group must match to select between
+#            multiple types of the exact same Type ID.  Serves no other purpose.
 #
 # * In normal areas, add tattoo NOAINST <type name> to prevent a mob from 
 #   spawning in an instance.
 
 "Triumph" category="Main" PLAYFACTIONS="trimph.ini" prefix="" leveladj="@x3 + ((((1+@x5-@x4)-(1+@x5-@x2))/(1+@x5-@x4))*(1+@x6)) > 1" ELITE="1+(((@x7 / 25)-0.49999999)>0)" LIMIT="1/DAY"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="Spell_Lightning electrocuting number(1/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="burning number(1/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="acidizing number(1/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="freezing number(1/10)" behave="CombatAbilities
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="healing number(1/10)" behave="CombatAbilities
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="creation number(1/10)" behave="CombatAbilities
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="vexing number(1/10)" behave="CombatAbilities
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="plant_growth number(1/10)" behave="CombatAbilities
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="evangelism number(1/10)" behave="CombatAbilities
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="preserving number(1/10)" behave="CombatAbilities
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="abjuration number(1/10)" behave="CombatAbilities
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="trapping number(1/10)" behave="CombatAbilities
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="breeding number(1/10)" behave="CombatAbilities
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="combat_lore number(1/10)" behave="CombatAbilities
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="evasive number(1/10)" behave="CombatAbilities
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="criminal number(1/10)" behave="CombatAbilities
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="illusion number(1/10)" behave="CombatAbilities
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="transmutation number(1/10)" behave="CombatAbilities
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="cursing number(1/10)" behave="CombatAbilities
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="stealing number(1/10)" behave="CombatAbilities
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="martial_lore number(1/10)" behave="CombatAbilities
+

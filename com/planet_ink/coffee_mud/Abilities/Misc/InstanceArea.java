@@ -79,6 +79,7 @@ public class InstanceArea extends StdAbility
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
+	protected WeakReference<MOB>		leaderMob		= null;
 	protected volatile long				lastCasting		= 0;
 	protected WeakReference<Room>		oldRoom			= null;
 	protected Set<Area>					targetAreas		= null;
@@ -163,7 +164,8 @@ public class InstanceArea extends StdAbility
 		HPADJ,
 		DAMAGEADJ,
 		LIMIT,
-		AREAMATCH
+		AREAMATCH,
+		LEADERREQ
 	}
 
 	/**
@@ -219,127 +221,6 @@ public class InstanceArea extends StdAbility
 		this.recoverTick=-1;
 		recoverRate		= 0;
 		fatigueRate		= 0;
-	}
-
-	protected String addOrEditInstanceType(final String instTypeID, final String rule)
-	{
-		final Map<String,Map<String,String>> map = getAllInstanceTypesMap();
-		final Map<String,String> instParms = CMParms.parseEQParms(rule);
-		for(final String key : instParms.keySet())
-		{
-			if((CMath.s_valueOf(InstVar.class, key)==null)
-			&&(CMLib.factions().getFaction(key)==null)
-			&&(CMLib.factions().getFactionByName(key)==null))
-				return "ERROR: Unknown instance var: "+key;
-		}
-		instParms.put(InstVar.ID.toString(), instTypeID);
-		if(!map.containsKey(instTypeID.trim().toUpperCase()))
-		{
-			String previ="";
-			for(String i="";!i.equals(".9");i=("."+(Math.round(CMath.s_double(i)*10)+1)))
-			{
-				final CMFile F=new CMFile(Resources.makeFileResourceName("skills/areainstancetypes.txt"+i), null);
-				if(!F.exists())
-					break;
-				previ=i;
-			}
-			final CMFile F=new CMFile(Resources.makeFileResourceName("skills/areainstancetypes.txt"+previ), null);
-			final StringBuffer old=F.text();
-			if((!old.toString().endsWith("\n"))
-			&&(!old.toString().endsWith("\r")))
-				old.append("\r\n");
-			old.append("\"").append(instTypeID).append("\" ").append(rule).append("\r\n");
-			F.saveText(old.toString());
-			map.put(instTypeID.toUpperCase().trim(), instParms);
-			return null;
-		}
-		else
-		{
-			final Map<String,String> oldInstance = map.get(instTypeID.trim().toUpperCase());
-			final StringBuilder changes = new StringBuilder("");
-			for(final String oldKey : oldInstance.keySet())
-			{
-				if(!instParms.containsKey(oldKey))
-					changes.append("REMOVED: ").append(oldKey).append("\n\r");
-				else
-				{
-					final String oldVal = oldInstance.get(oldKey);
-					final String newVal = instParms.get(oldKey);
-					if(!oldVal.equals(newVal))
-					{
-						changes.append("CHANGED: ").append(oldKey).append(": '").append(oldVal)
-								.append("' TO '").append(newVal).append("'").append("\n\r");
-					}
-				}
-			}
-			for(final String newKey : instParms.keySet())
-			{
-				if(!oldInstance.containsKey(newKey))
-					changes.append("ADDED: ").append(newKey).append("\n");
-			}
-			if(changes.length()==0)
-				return "";
-			for(String i="";!i.equals(".9");i=("."+(Math.round(CMath.s_double(i)*10)+1)))
-			{
-				if(alterInstanceLine(instTypeID, Resources.makeFileResourceName("skills/areainstancetypes.txt"+i), rule))
-				{
-					map.put(instTypeID.toUpperCase().trim(), instParms);
-					return changes.toString();
-				}
-			}
-			return "ERROR: Not Found!";
-		}
-	}
-
-	protected boolean alterInstanceLine(final String instTypeID, final String fileName, final String rule)
-	{
-		final CMFile F=new CMFile(fileName,null);
-		if(!F.exists())
-			return false;
-		final List<String> lines = Resources.getFileLineVector(F.text());
-		for(int i=0;i<lines.size();i++)
-		{
-			final String line=lines.get(i).trim();
-			String instname=null;
-			if(line.startsWith("\""))
-			{
-				final int x=line.indexOf("\"",1);
-				if(x>1)
-					instname=line.substring(1,x);
-			}
-			if((instname != null)
-			&&(instname.equalsIgnoreCase(instTypeID)))
-			{
-				if(rule == null)
-					lines.remove(i);
-				else
-					lines.set(i,"\""+instTypeID+"\" "+rule);
-				final StringBuilder newFile = new StringBuilder("");
-				for(final String fline : lines)
-					newFile.append(fline).append("\r\n");
-				Resources.removeResource("SKILL_AREA_INSTANCE_TYPES");
-				Resources.removeResource(fileName);
-				F.saveText(newFile.toString());
-				return true;
-			}
-		}
-		return false;
-	}
-
-	protected boolean deleteInstance(final String instTypeID)
-	{
-		final Map<String,Map<String,String>> map = getAllInstanceTypesMap();
-		if(!map.containsKey(instTypeID.trim().toUpperCase()))
-			return false;
-		for(String i="";!i.equals(".9");i=("."+(Math.round(CMath.s_double(i)*10)+1)))
-		{
-			if(alterInstanceLine(instTypeID, Resources.makeFileResourceName("skills/areainstancetypes.txt"+i), null))
-			{
-				map.remove(instTypeID.trim().toUpperCase());
-				return true;
-			}
-		}
-		return false;
 	}
 
 	@Override
@@ -1557,14 +1438,14 @@ public class InstanceArea extends StdAbility
 			final Room srcStartRoom =msg.source().getStartRoom();
 			if(((srcStartRoom==null)||(srcStartRoom.getArea()!=parentA)))
 			{
-				final Set<MOB> grp = this.getAppropriateGroup(msg.source());
+				MOB leaderM = (msg.source().amFollowing()!=null)?msg.source().amUltimatelyFollowing():msg.source();
+				final Set<MOB> grp = this.getAppropriateGroup(leaderM);
 				Area instA = findExistingInstance(msg.source(), grp, parentA);
 				boolean created = false;
 				int topPlayerFactionValue = 0;
 				if(instA == null)
 				{
 					created = true;
-					final MOB leaderM = (msg.source().amFollowing()!=null)?msg.source().amUltimatelyFollowing():msg.source();
 					if((this.limits!=null)
 					&&(this.limits.size()>0)
 					&&(leaderM.isPlayer()))
@@ -1647,7 +1528,10 @@ public class InstanceArea extends StdAbility
 										if(created)
 										{
 											if(fdata.value() > topPlayerFactionValue)
+											{
 												topPlayerFactionValue=fdata.value();
+												leaderM=M;
+											}
 											fdata.resetEventTimers(null);
 										}
 									}
@@ -1699,6 +1583,7 @@ public class InstanceArea extends StdAbility
 							instA.addNonUninvokableEffect(able);
 						else
 							able.startTickDown(msg.source(), instA, this.totalTickDown);
+						able.leaderMob=new WeakReference<MOB>(leaderM);
 						able.setMiscText(text());
 						if(created)
 							able.topPlayerFacVal = topPlayerFactionValue;
@@ -1728,7 +1613,7 @@ public class InstanceArea extends StdAbility
 
 	protected List<String> getAllInstanceKeys()
 	{
-		final Map<String,Map<String,String>> map = getAllInstanceTypesMap();
+		final Map<String,Map<String,String>[]> map = getAllInstanceTypesMap();
 		final List<String> ids=new ArrayList<String>(map.size());
 		for(final String key : map.keySet())
 			ids.add(key);
@@ -1737,11 +1622,11 @@ public class InstanceArea extends StdAbility
 
 	protected String listOfInstanceIDs()
 	{
-		final Map<String,Map<String,String>> map = getAllInstanceTypesMap();
+		final Map<String,Map<String,String>[]> map = getAllInstanceTypesMap();
 		final StringBuilder str=new StringBuilder();
 		for(final String key : map.keySet())
 		{
-			final Map<String,String> entry=map.get(key);
+			final Map<String,String> entry=map.get(key)[0];
 			str.append(entry.get(InstVar.ID.toString())).append(", ");
 		}
 		if(str.length()<2)
@@ -1749,13 +1634,13 @@ public class InstanceArea extends StdAbility
 		return str.toString();
 	}
 
-	protected static Map<String,Map<String,String>> getAllInstanceTypesMap()
+	protected static Map<String,Map<String,String>[]> getAllInstanceTypesMap()
 	{
 		@SuppressWarnings("unchecked")
-		Map<String,Map<String,String>> map = (Map<String,Map<String,String>>)Resources.getResource("SKILL_AREA_INSTANCE_TYPES");
+		Map<String,Map<String,String>[]> map = (Map<String,Map<String,String>[]>)Resources.getResource("SKILL_AREA_INSTANCE_TYPES");
 		if(map == null)
 		{
-			map = new TreeMap<String,Map<String,String>>();
+			map = new TreeMap<String,Map<String,String>[]>();
 			final List<String> lines = new ArrayList<String>();
 			for(String i="";!i.equals(".9");i=("."+(Math.round(CMath.s_double(i)*10)+1)))
 			{
@@ -1788,22 +1673,36 @@ public class InstanceArea extends StdAbility
 							Log.errOut("InstanceArea","Unknown instance var: "+key);
 					}
 					instParms.put(InstVar.ID.toString(), instname);
-					map.put(instname.toUpperCase(), instParms);
+					if(map.containsKey(instname.toUpperCase()))
+					{
+						final Map<String,String>[] oldMap=map.get(instname.toUpperCase());
+						final Map<String,String>[] newerMap =Arrays.copyOf(oldMap, oldMap.length+1);
+						newerMap[newerMap.length-1]=instParms;
+						map.put(instname.toUpperCase(), newerMap);
+					}
+					else
+					{
+						@SuppressWarnings("unchecked")
+						final Map<String, String>[] newMap = new Map[] { instParms };
+						map.put(instname.toUpperCase(), newMap);
+					}
 				}
 			}
 			// do the "LIKE" matching, and build factions
 			for(final String key : map.keySet())
 			{
-				final Map<String,String> parms=map.get(key);
-				if(parms.containsKey(InstVar.LIKE.toString()))
+				for(final Map<String,String> parms : map.get(key))
 				{
-					final Map<String,String> otherMap = map.get(parms.get(InstVar.LIKE.toString()).trim().toUpperCase());
-					if(otherMap != null)
+					if(parms.containsKey(InstVar.LIKE.toString()))
 					{
-						for(final String var : otherMap.keySet())
+						final Map<String,String> otherMap = map.get(parms.get(InstVar.LIKE.toString()).trim().toUpperCase())[0];
+						if(otherMap != null)
 						{
-							if(!parms.containsKey(var))
-								parms.put(var, otherMap.get(var));
+							for(final String var : otherMap.keySet())
+							{
+								if(!parms.containsKey(var))
+									parms.put(var, otherMap.get(var));
+							}
 						}
 					}
 				}
@@ -1815,24 +1714,72 @@ public class InstanceArea extends StdAbility
 
 	protected Map<String,String> getInstVars(String instTypeID)
 	{
-		final Map<String,Map<String,String>> map = getAllInstanceTypesMap();
+		final Map<String,Map<String,String>[]> mapSet = getAllInstanceTypesMap();
 		instTypeID=instTypeID.trim().toUpperCase();
-		if(map.containsKey(instTypeID))
-			return map.get(instTypeID);
-		for(final String key : map.keySet())
+		Map<String, String>[] maps=null;
+		if(mapSet.containsKey(instTypeID))
+			maps =mapSet.get(instTypeID);
+		else
 		{
-			if(key.startsWith(instTypeID))
-				return map.get(key);
+			for(final String key : mapSet.keySet())
+			{
+				if(key.startsWith(instTypeID))
+				{
+					maps=mapSet.get(key);
+					break;
+				}
+			}
+			if(maps == null)
+			{
+				for(final String key : mapSet.keySet())
+				{
+					if(key.indexOf(instTypeID)>=0)
+					{
+						maps=mapSet.get(key);
+						break;
+					}
+				}
+			}
+			if(maps == null)
+			{
+				for(final String key : mapSet.keySet())
+				{
+					if(key.endsWith(instTypeID))
+					{
+						maps=mapSet.get(key);
+						break;
+					}
+				}
+			}
 		}
-		for(final String key : map.keySet())
+		if(maps != null)
 		{
-			if(key.indexOf(instTypeID)>=0)
-				return map.get(key);
-		}
-		for(final String key : map.keySet())
-		{
-			if(key.endsWith(instTypeID))
-				return map.get(key);
+			final List<Map<String, String>> choices = new ArrayList<Map<String,String>>();
+			if(this.leaderMob != null)
+			{
+				final MOB leaderM = this.leaderMob.get();
+				if(leaderM != null)
+				{
+					for(final Map<String,String> map : maps)
+					{
+						final String leaderReq = map.get(InstVar.LEADERREQ.toString());
+						if(leaderReq != null)
+						{
+							if(CMLib.masking().maskCheck(leaderReq, leaderM, false))
+								choices.add(map);
+						}
+						else
+							choices.add(map);
+					}
+				}
+				else
+					choices.addAll(Arrays.asList(maps));
+			}
+			else
+				choices.addAll(Arrays.asList(maps));
+			if(choices.size()==0)
+				return maps[0];
+			return choices.get(CMLib.dice().roll(1, choices.size(), -1));
 		}
 		return null;
 	}
