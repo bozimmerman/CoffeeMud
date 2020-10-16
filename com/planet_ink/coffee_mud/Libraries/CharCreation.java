@@ -815,21 +815,23 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				final MOB M=S.mob();
 				if((M!=null)
 				&&(S!=session)
-				&&(M==pickedMOB))
+				&&((M==pickedMOB)||(M.soulMate()==pickedMOB)))
 				{
-					final Room oldRoom=M.location();
+					final Room oldRoom=pickedMOB.location();
 					if(oldRoom!=null)
 					{
-						while(oldRoom.isInhabitant(M))
-							oldRoom.delInhabitant(M);
+						while(oldRoom.isInhabitant(pickedMOB))
+							oldRoom.delInhabitant(pickedMOB);
 					}
-					session.setMob(M);
-					M.setSession(session);
+					session.setMob(pickedMOB);
+					pickedMOB.setSession(session);
 					S.setMob(null);
+					if(M!=pickedMOB)
+						M.setSession(null);
 					S.stopSession(false,false,false);
-					Log.sysOut("Session swap for "+M.Name()+".");
-					reloadTerminal(M);
-					M.bringToLife(oldRoom,false);
+					Log.sysOut("Session swap for "+pickedMOB.Name()+".");
+					reloadTerminal(pickedMOB);
+					pickedMOB.bringToLife(oldRoom,false);
 					return LoginResult.NORMAL_LOGIN;
 				}
 			}
