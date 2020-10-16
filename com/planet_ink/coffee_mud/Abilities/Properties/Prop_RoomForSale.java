@@ -461,21 +461,23 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			for(int i=0;i<R.numItems();i++)
 			{
 				final Item I=R.getItem(i);
-				if((I!=null)
-				&&(I.expirationDate()!=0)
-				&&((I.isSavable())||(I.Name().equalsIgnoreCase("id")))
-				&&((!(I instanceof DeadBody))||(((DeadBody)I).isPlayerCorpse())))
+				if(I!=null)
 				{
-					I.setExpirationDate(0);
-					updateItems=true;
-				}
+					if((I.expirationDate()!=0)
+					&&((I.isSavable())||(I.Name().equalsIgnoreCase("id")))
+					&&((!(I instanceof DeadBody))||(((DeadBody)I).isPlayerCorpse())))
+					{
+						I.setExpirationDate(0);
+						updateItems=true;
+					}
 
-				if((I.phyStats().rejuv()!=Integer.MAX_VALUE)
-				&&(I.phyStats().rejuv()!=0))
-				{
-					I.basePhyStats().setRejuv(PhyStats.NO_REJUV);
-					I.recoverPhyStats();
-					updateItems=true;
+					if((I.phyStats().rejuv()!=Integer.MAX_VALUE)
+					&&(I.phyStats().rejuv()!=0))
+					{
+						I.basePhyStats().setRejuv(PhyStats.NO_REJUV);
+						I.recoverPhyStats();
+						updateItems=true;
+					}
 				}
 			}
 			if(!updateItems)
