@@ -1735,7 +1735,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				for(final Enumeration<Area> e=A.getParents();e.hasMoreElements();)
 					allParents.add(e.nextElement());
 				for(final Area a : allParents)
+				{
 					A.removeParent(a);
+					a.removeChild(A);
+					alsoUpdateAreas.add(a);
+				}
 			}
 			else
 			if(newArea.length()>0)
@@ -1800,7 +1804,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				for(final Enumeration<Area> e=A.getChildren();e.hasMoreElements();)
 					allChildren.add(e.nextElement());
 				for(final Area a : allChildren)
+				{
 					A.removeChild(a);
+					a.removeParent(A);
+					alsoUpdateAreas.add(a);
+				}
 			}
 			else
 			if(newArea.length()>0)
