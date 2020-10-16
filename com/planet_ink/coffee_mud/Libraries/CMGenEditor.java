@@ -1729,7 +1729,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if((showFlag!=showNumber)&&(showFlag>-999))
 				return;
 			newArea=mob.session().prompt(L("Enter an area name to add or remove\n\r:"),"");
-			if(newArea.equalsIgnoreCase("*clear*"))
+			if(newArea.equalsIgnoreCase("*clear*")
+			||((newArea.equalsIgnoreCase("all"))&&(CMLib.map().getArea("map")==null)))
 			{
 				final List<Area> allParents=new LinkedList<Area>();
 				for(final Enumeration<Area> e=A.getParents();e.hasMoreElements();)
@@ -1798,7 +1799,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if((showFlag!=showNumber)&&(showFlag>-999))
 				return;
 			newArea=mob.session().prompt(L("Enter an area name to add or remove\n\r:"),"");
-			if(newArea.equalsIgnoreCase("*clear*"))
+			if((newArea.equalsIgnoreCase("*clear*"))
+			||((newArea.equalsIgnoreCase("all"))&&(CMLib.map().getArea("map")==null)))
 			{
 				final List<Area> allChildren=new LinkedList<Area>();
 				for(final Enumeration<Area> e=A.getChildren();e.hasMoreElements();)
