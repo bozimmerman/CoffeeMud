@@ -124,7 +124,6 @@ public class DefaultFaction implements Faction, MsgListener
 	protected CList<String>   					choices			 = new SVector<String>();
 	protected CList<Faction.FReactionItem>		reactions		 = new SVector<Faction.FReactionItem>();
 	protected CMap<String,CList<FReactionItem>>	reactionHash	 = new SHashtable<String,CList<Faction.FReactionItem>>();
-	//TODO: implement timed cap on points per day/week/whatever
 
 	@Override
 	public Enumeration<Faction.FReactionItem> reactions()
@@ -1639,42 +1638,56 @@ public class DefaultFaction implements Faction, MsgListener
 		if(event.getBonusRoleplayXP()!=0)
 			CMLib.leveler().postRPExperience(source, target, "", event.getBonusRoleplayXP(), true);
 
-		final String resetTimerEventID = event.getTriggerParm("RESTIME");
+		final String resetTimerEventID = event.getFlagValue("RESTIME");
 		if(resetTimerEventID.length()>0)
 		{
-			//TODO: figure out flawless victories (events conditional on another event NOT happening)
-			//TODO: also, you have ENDINSTANCE now to play with.
-			final boolean reset;
-			final Faction.FactionChangeEvent[] events;
-			if(resetTimerEventID.startsWith("-"))
+			for(String resEventID : CMParms.parseCommas(resetTimerEventID, true))
 			{
-				reset=false;
-				events = getChangeEvents(resetTimerEventID.substring(1));
-			}
-			else
-			{
-				events = getChangeEvents(resetTimerEventID);
-				reset=true;
-			}
-			if(events != null)
-			{
-				final Faction.FData sdata = source.fetchFactionData(factionID());
-				final Faction.FData tdata = target.fetchFactionData(factionID());
-				for(final Faction.FactionChangeEvent event2 : events)
+				final Integer which;
+				final int x=resEventID.indexOf('.');
+				if(x>0)
 				{
-					if(sdata != null)
+					which=Integer.valueOf(CMath.s_int(resEventID.substring(x+1)));
+					resEventID=resEventID.substring(0,x);
+				}
+				else
+					which=null;
+				final boolean reset;
+				Faction.FactionChangeEvent[] events;
+				if(resetTimerEventID.startsWith("-"))
+				{
+					reset=false;
+					events = getChangeEvents(resEventID.substring(1));
+				}
+				else
+				{
+					events = getChangeEvents(resEventID);
+					reset=true;
+				}
+				if(events != null)
+				{
+					if((which != null)
+					&&(events.length>=which.intValue())
+					&&(which.intValue()>0))
+						events=new Faction.FactionChangeEvent[] { events[which.intValue()-1] };
+					final Faction.FData sdata = source.fetchFactionData(factionID());
+					final Faction.FData tdata = target.fetchFactionData(factionID());
+					for(final Faction.FactionChangeEvent event2 : events)
 					{
-						if(reset)
-							sdata.resetEventTimers(event2.eventID());
-						else
-							sdata.setNextChangeTimers(event2, Long.MAX_VALUE);
-					}
-					if(tdata != null)
-					{
-						if(reset)
-							tdata.resetEventTimers(event2.eventID());
-						else
-							tdata.setNextChangeTimers(event2, Long.MAX_VALUE);
+						if(sdata != null)
+						{
+							if(reset)
+								sdata.resetEventTimers(event2.eventID());
+							else
+								sdata.setNextChangeTimers(event2, Long.MAX_VALUE);
+						}
+						if(tdata != null)
+						{
+							if(reset)
+								tdata.resetEventTimers(event2.eventID());
+							else
+								tdata.setNextChangeTimers(event2, Long.MAX_VALUE);
+						}
 					}
 				}
 			}
@@ -1753,7 +1766,7 @@ public class DefaultFaction implements Faction, MsgListener
 		if(factionAdj==0)
 			return;
 
-		final String announceMsg = event.getTriggerParm("ANNOUCE");
+		final String announceMsg = event.getFlagValue("ANNOUCE");
 		final String seenMsg = announceMsg.length()>0 ? announceMsg : null;
 		CMMsg facMsg=CMClass.getMsg(source,target,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FACTIONCHANGE,seenMsg,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,ID);
 		facMsg.setValue(factionAdj);
