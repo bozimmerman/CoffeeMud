@@ -729,12 +729,6 @@ public class InstanceArea extends StdAbility
 				stats=CMLib.map().getRandomArea().getAreaIStats();
 			room.toggleMobility(false);
 			CMLib.threads().suspendResumeRecurse(room, false, true);
-			for(int i=0;i<Directions.NUM_DIRECTIONS();i++)
-			{
-				final Room R=room.rawDoors()[i];
-				if((R!=null)&&(R.getArea()!=instArea))
-					room.rawDoors()[i]=null;
-			}
 			int eliteLevel=0;
 			if(instVars.containsKey(InstVar.ELITE.toString()))
 			{
@@ -829,7 +823,7 @@ public class InstanceArea extends StdAbility
 				if(I instanceof Exit)
 					I.setReadableText("");
 				else
-				if((invoker!=null)&&((I instanceof Weapon)||(I instanceof Armor)))
+				if((I instanceof Weapon)||(I instanceof Armor))
 				{
 					final double[] vars = new double[] {instanceLevel, I.phyStats().level(), instanceLevel,
 														stats[Area.Stats.MIN_LEVEL.ordinal()], stats[Area.Stats.MAX_LEVEL.ordinal()],
@@ -862,7 +856,6 @@ public class InstanceArea extends StdAbility
 			{
 				final MOB M=m.nextElement();
 				if((M!=null)
-				&&(invoker!=null)
 				&&(isInstanceMob(M))
 				&&(M.getStartRoom().getArea()==instArea))
 				{
@@ -945,7 +938,7 @@ public class InstanceArea extends StdAbility
 					for(final Enumeration<Item> mi=M.items();mi.hasMoreElements();)
 					{
 						final Item mI=mi.nextElement();
-						if((mI!=null)&&(invoker!=null))
+						if(mI!=null)
 						{
 							final double[] ivars = new double[] {instanceLevel, mI.phyStats().level(), instanceLevel,
 																 stats[Area.Stats.MIN_LEVEL.ordinal()], stats[Area.Stats.MAX_LEVEL.ordinal()],
@@ -1309,6 +1302,12 @@ public class InstanceArea extends StdAbility
 			final List<AreaInstanceChild> areaInstChildren = instanceChildren.get(targetArea);
 			if(areaInstChildren == null)
 				return null;
+			for(int i=areaInstChildren.size()-1;i>=0;i--)
+			{
+				final Area A=areaInstChildren.get(i).A;
+				if((A==null)||(A.amDestroyed()))
+					areaInstChildren.remove(i);
+			}
 			int myDex=-1;
 			for(int i=0;i<areaInstChildren.size();i++)
 			{
@@ -1467,7 +1466,8 @@ public class InstanceArea extends StdAbility
 									bunch.second[0]=now+limit.second.longValue();
 								}
 								else
-								if(bunch.first[0]>=limit.first.intValue())
+								if((bunch.first[0]>=limit.first.intValue())
+								&&(!CMSecurity.isAllowedEverywhere(msg.source(),CMSecurity.SecFlag.CMDAREAS)))
 								{
 									msg.source().tell(L("You are not allowed to re-enter this special place right now."));
 									return false;
@@ -1581,6 +1581,7 @@ public class InstanceArea extends StdAbility
 					if(able == null)
 					{
 						able = (InstanceArea)this.copyOf();
+						able.setInvoker(msg.source());
 						if(this.totalTickDown <= 0)
 							instA.addNonUninvokableEffect(able);
 						else
