@@ -1451,7 +1451,7 @@ public class InstanceArea extends StdAbility
 					&&(leaderM.isPlayer()))
 					{
 						final PlayerStats pStats=leaderM.playerStats();
-						final CharClass stdC=CMClass.getCharClass("StdClasClass");
+						final CharClass stdC=CMClass.getCharClass("StdCharClass");
 						final Map<String,Object> classMap = pStats.getClassVariableMap(stdC);
 						final long now=System.currentTimeMillis();
 						for(final Pair<Integer,Long> limit : this.limits)
@@ -1483,6 +1483,8 @@ public class InstanceArea extends StdAbility
 					instA = CMClass.getAreaType("SubThinInstance");
 					instA.setName(newInstanceName);
 					instA.addBlurbFlag("AREAINSTANCE {"+instTypeID+"}");
+					for(final Enumeration<String> e=parentA.getProperRoomnumbers().getRoomIDs();e.hasMoreElements();)
+						instA.addProperRoomnumber(this.convertToMyArea(instA, e.nextElement()));
 					CMLib.map().addArea(instA);
 					instA.setAreaState(Area.State.ACTIVE); // starts ticking
 					List<AreaInstanceChild> childList = null;
