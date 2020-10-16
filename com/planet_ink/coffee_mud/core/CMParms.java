@@ -2067,6 +2067,7 @@ public class CMParms
 		final StringBuilder id=new StringBuilder("");
 		final StringBuilder parms=new StringBuilder("");
 		final List<Pair<String,String>> pairList = new PairVector<String,String>();
+		int depth=0;
 		for(int i=0;i<list.length();i++)
 		{
 			switch(state)
@@ -2098,11 +2099,22 @@ public class CMParms
 			case 2:
 				if(list.charAt(i)==')')
 				{
-					if(id.length()>0)
-						pairList.add(new Pair<String,String>(upKey?id.toString().toUpperCase():id.toString(),parms.toString().trim()));
-					id.setLength(0);
-					parms.setLength(0);
-					state=0;
+					if(depth==0)
+					{
+						if(id.length()>0)
+							pairList.add(new Pair<String,String>(upKey?id.toString().toUpperCase():id.toString(),parms.toString().trim()));
+						id.setLength(0);
+						parms.setLength(0);
+						state=0;
+					}
+					else
+						depth--;
+				}
+				else
+				if(list.charAt(i)=='(')
+				{
+					parms.append(list.charAt(i));
+					depth++;
 				}
 				else
 					parms.append(list.charAt(i));
