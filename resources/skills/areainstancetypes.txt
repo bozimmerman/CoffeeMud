@@ -14,7 +14,7 @@ InstanceArea types definitions
 #           @x3 = the instance traveling players level
 #           @x4-@x5 = base area min level/max level, @x6 = exprate
 #           @x7 = if playerfactions set, the best value
-# ILEVELADJ: replaces LEVELADJ for items, if existing
+# ILEVELADJ: like leveladj, but sets item final level. 
 # MOBRESIST: instance mob resistance arguments, see Prop_Resistance
 # SETSTAT: instance mob stat settings, see Prop_StatTrainer
 # BEHAVAFFID: space delimited list of behavior id = replacement behavior id
@@ -61,7 +61,7 @@ InstanceArea types definitions
 # * In normal areas, add tattoo NOAINST <type name> to prevent a mob from 
 #   spawning in an instance.
 
-"Triumph" category="Main" PLAYFACTIONS="triumph.ini" prefix="" leveladj="@x3 + ((((1+@x5-@x4)-(1+@x5-@x2))/(1+@x5-@x4))*(1+@x6)) > 1" ELITE="1+(((@x7 / 25)-0.49999999)>0)" LIMIT="1/DAY"
+"Triumph" category="Main" PLAYFACTIONS="triumph.ini" prefix="" duration=900 ileveladj="@x1" leveladj="@x3 + ((((1+@x5-@x4)-(1+@x5-@x2))/(1+@x5-@x4))*(1+@x6)) > 1" ELITE="1+(((@x7 / 25)-0.49999999)>0)" LIMIT="1/DAY"
 "Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="Spell_Lightning electrocuting number(1/10)" behave="CombatAbilities"
 "Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="burning number(1/10)" behave="CombatAbilities"
 "Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="acidizing number(1/10)" behave="CombatAbilities"

@@ -811,11 +811,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		if(thisName.length()==0)
 			return null;
-		if((imHere!=null)
-		&&(imHere.roomID().equalsIgnoreCase(thisName)))
-			return imHere;
-		if((imHere!=null)&&(thisName.startsWith("#"))&&(CMath.isLong(thisName.substring(1))))
-			return CMLib.map().getRoom(imHere.getArea().Name()+thisName);
+		if(imHere!=null)
+		{
+			if(imHere.roomID().equalsIgnoreCase(thisName))
+				return imHere;
+			if((thisName.startsWith("#"))&&(CMath.isLong(thisName.substring(1))))
+				return CMLib.map().getRoom(imHere.getArea().Name()+thisName);
+			if(Character.isDigit(thisName.charAt(0))&&(CMath.isLong(thisName)))
+				return CMLib.map().getRoom(imHere.getArea().Name()+"#"+thisName);
+		}
 		final Room room=CMLib.map().getRoom(thisName);
 		if((room!=null)&&(room.roomID().equalsIgnoreCase(thisName)))
 		{
