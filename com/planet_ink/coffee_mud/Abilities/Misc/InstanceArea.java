@@ -390,7 +390,7 @@ public class InstanceArea extends StdAbility
 						final String parms=P.second;
 						int parenDepth = 0;
 						int slashMark=-1;
-						for(int i=1;i<parms.length()-1;i++)
+						for(int i=0;i<parms.length()-1;i++)
 						{
 							if((parms.charAt(i)=='/')&&(parenDepth == 0))
 							{

@@ -2108,7 +2108,10 @@ public class CMParms
 						state=0;
 					}
 					else
+					{
+						parms.append(list.charAt(i));
 						depth--;
+					}
 				}
 				else
 				if(list.charAt(i)=='(')
