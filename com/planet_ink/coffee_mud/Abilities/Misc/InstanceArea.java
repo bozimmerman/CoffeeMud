@@ -1482,7 +1482,6 @@ public class InstanceArea extends StdAbility
 					final String newInstanceName = instIDNum.addAndGet(1)+"_"+parentA.Name();
 					instA = CMClass.getAreaType("SubThinInstance");
 					instA.setName(newInstanceName);
-					instA.addBlurbFlag("AREAINSTANCE {"+instTypeID+"}");
 					for(final Enumeration<String> e=parentA.getProperRoomnumbers().getRoomIDs();e.hasMoreElements();)
 						instA.addProperRoomnumber(this.convertToMyArea(instA, e.nextElement()));
 					CMLib.map().addArea(instA);
@@ -1504,6 +1503,8 @@ public class InstanceArea extends StdAbility
 											:p.first);
 									Faction F=null;
 									if(CMLib.factions().isFactionID(factionName))
+										F=CMLib.factions().getFaction(factionName);
+									if(F==null)
 										F=CMLib.factions().getFaction(factionName);
 									if(F==null)
 										F=CMLib.factions().getFactionByName(factionName);
@@ -1607,7 +1608,15 @@ public class InstanceArea extends StdAbility
 						}
 					}
 					if(R!=null)
+					{
 						msg.setTarget(R);
+						if(created)
+						{
+							instA.okMessage(myHost, msg);
+							able.setMiscText(text());
+							instA.addBlurbFlag("AREAINSTANCE {"+instTypeID+"}");
+						}
+					}
 				}
 			}
 		}

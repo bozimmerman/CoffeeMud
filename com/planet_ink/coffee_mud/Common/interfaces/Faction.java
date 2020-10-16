@@ -1283,7 +1283,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		/** the code words for the various evaluation flags to decide if this event applies and other things */
 		public static final String[] FLAG_DESCS={"OUTSIDER","SELFOK","JUST100"};
 		/** the code words for the various flags to set miscellaneous change event values, such as xp grants */
-		public static final String[] FLAG_KEYVALS={"XP","RPXP"};
+		public static final String[] FLAG_KEYVALS={"XP","RPXP", "RESTIME", "ANNOUNCE"};
 		/** some non-ability-related event trigger ids */
 		public static enum MiscTrigger
 		{

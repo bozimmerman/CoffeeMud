@@ -1206,12 +1206,25 @@ public class DefaultFaction implements Faction, MsgListener
 					final Room R=(Room)msg.target();
 					if(!msg.source().playerStats().hasVisited(R))
 					{
+						final Area A=R.getArea();
 						for (final FactionChangeEvent event : events)
 						{
 							if(event.applies(msg.source(),msg.source()))
 							{
-								if(this.checkApplyEventWait(event, msg.source()))
-									executeChange(msg.source(),msg.source(),event);
+								final int pct = CMath.s_int(event.getTriggerParm("PCT"));
+								if(msg.source().isPlayer())
+								{
+									if(pct==0)
+									{
+										if(msg.source().playerStats().totalVisitedRooms(msg.source(), A)!=1)
+											continue;
+									}
+									else
+									if(msg.source().playerStats().percentVisited(msg.source(), A) < pct)
+										continue;
+									if(this.checkApplyEventWait(event, msg.source()))
+										executeChange(msg.source(),msg.source(),event);
+								}
 							}
 						}
 					}
@@ -1248,35 +1261,71 @@ public class DefaultFaction implements Faction, MsgListener
 					{
 						events=getChangeEvents("AREAASS");
 						if((events!=null)
-						&&(killedM.phyStats().level()==R.getArea().getAreaIStats()[Area.Stats.MAX_LEVEL.ordinal()]))
+						&&(killedM!=null)
+						&&(killedM.phyStats().level()==R.getArea().getAreaIStats()[Area.Stats.MAX_LEVEL.ordinal()])
+						&&(killingBlowM!=killedM)
+						&&(killedM.isMonster())
+						&&(killedM.getStartRoom()!=null)
+						&&(killedM.location()!=null)
+						&&(killedM.getStartRoom().getArea()==killingBlowM.location().getArea()))
 						{
+							final Area A=R.getArea();
 							for (final FactionChangeEvent event : events)
 							{
-								if(event.applies(killingBlowM,killedM))
+								final CharClass combatCharClass=CMLib.combat().getCombatDominantClass(killingBlowM,killedM);
+								final Set<MOB> combatBeneficiaries=CMLib.combat().getCombatBeneficiaries(killingBlowM,killedM,combatCharClass);
+								final int pct = CMath.s_int(event.getTriggerParm("PCT"));
+								for (final MOB mob : combatBeneficiaries)
 								{
-									final CharClass combatCharClass=CMLib.combat().getCombatDominantClass(killingBlowM,killedM);
-									final Set<MOB> combatBeneficiaries=CMLib.combat().getCombatBeneficiaries(killingBlowM,killedM,combatCharClass);
-									for (final MOB mob : combatBeneficiaries)
+									if(mob.isPlayer())
 									{
-										if(checkApplyEventWait(event, mob))
-											executeChange(mob,killedM,event);
+										if(event.applies(mob,killedM))
+										{
+											final double population = A.getAreaIStats()[Area.Stats.MAX_LEVEL_MOBS.ordinal()];
+											final Faction.FData data = mob.fetchFactionData(factionID());
+											final int count = data.getCounter(""+event)+1;
+											data.setCounter(""+event, count);
+											final int myPct = (int)Math.round(100.0*CMath.div(count, population));
+											if(myPct < pct)
+												continue;
+											if(checkApplyEventWait(event, mob))
+												executeChange(mob,killedM,event);
+										}
 									}
 								}
 							}
 						}
 						events=getChangeEvents("AREAKILL");
-						if(events!=null)
+						if((events!=null)
+						&&(killedM!=null)
+						&&(killingBlowM!=killedM)
+						&&(killedM.isMonster())
+						&&(killedM.getStartRoom()!=null)
+						&&(killedM.location()!=null)
+						&&(killedM.getStartRoom().getArea()==killedM.location().getArea()))
 						{
+							final Area A=R.getArea();
 							for (final FactionChangeEvent event : events)
 							{
-								if(event.applies(killingBlowM,killedM))
+								final int pct = CMath.s_int(event.getTriggerParm("PCT"));
+								final CharClass combatCharClass=CMLib.combat().getCombatDominantClass(killingBlowM,killedM);
+								final Set<MOB> combatBeneficiaries=CMLib.combat().getCombatBeneficiaries(killingBlowM,killedM,combatCharClass);
+								for (final MOB mob : combatBeneficiaries)
 								{
-									final CharClass combatCharClass=CMLib.combat().getCombatDominantClass(killingBlowM,killedM);
-									final Set<MOB> combatBeneficiaries=CMLib.combat().getCombatBeneficiaries(killingBlowM,killedM,combatCharClass);
-									for (final MOB mob : combatBeneficiaries)
+									if(mob.isPlayer())
 									{
-										if(checkApplyEventWait(event, mob))
-											executeChange(mob,killedM,event);
+										if(event.applies(mob,killedM))
+										{
+											final Faction.FData data = mob.fetchFactionData(factionID());
+											final double population = A.getAreaIStats()[Area.Stats.POPULATION.ordinal()];
+											final int count = data.getCounter(""+event)+1;
+											data.setCounter(""+event, count);
+											final int myPct = (int)Math.round(100.0*CMath.div(count, population));
+											if(myPct < pct)
+												continue;
+											if(checkApplyEventWait(event, mob))
+												executeChange(mob,killedM,event);
+										}
 									}
 								}
 							}
@@ -1766,7 +1815,7 @@ public class DefaultFaction implements Faction, MsgListener
 		if(factionAdj==0)
 			return;
 
-		final String announceMsg = event.getFlagValue("ANNOUCE");
+		final String announceMsg = event.getFlagValue("ANNOUNCE");
 		final String seenMsg = announceMsg.length()>0 ? announceMsg : null;
 		CMMsg facMsg=CMClass.getMsg(source,target,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FACTIONCHANGE,seenMsg,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,ID);
 		facMsg.setValue(factionAdj);
@@ -2327,58 +2376,6 @@ public class DefaultFaction implements Faction, MsgListener
 						data = target.fetchFactionData(F.factionID());
 						if((data != null)&&(now > data.getEventTime(eventTriggerID)))
 							return false;
-					}
-				}
-				if((miscEventTrigger != null)
-				&&(savedTriggerParms.containsKey("PCT"))
-				&&(target!=null)
-				&&(source!=target)
-				&&(source.isPlayer())
-				&&(target.isMonster())
-				&&(target.getStartRoom()!=null)
-				&&(target.location()!=null)
-				&&(target.getStartRoom().getArea()==target.location().getArea()))
-				{
-					final Area A=target.getStartRoom().getArea();
-					final int pct = CMath.s_int(savedTriggerParms.get("PCT"));
-					switch(miscEventTrigger)
-					{
-					case AREAKILL:
-					{
-						final Faction.FData data = source.fetchFactionData(F.factionID());
-						final double population = A.getAreaIStats()[Area.Stats.POPULATION.ordinal()];
-						final int count = data.getCounter(miscEventTrigger.name())+1;
-						data.setCounter(miscEventTrigger.name(), count);
-						final int myPct = (int)Math.round(100.0*CMath.div(count, population));
-						if(myPct < pct)
-							return false;
-						break;
-					}
-					case AREAASS:
-					{
-						if(target.phyStats().level()<A.getAreaIStats()[Area.Stats.MAX_LEVEL.ordinal()])
-							return false;
-						final double population = A.getAreaIStats()[Area.Stats.MAX_LEVEL_MOBS.ordinal()];
-						final Faction.FData data = source.fetchFactionData(F.factionID());
-						final int count = data.getCounter(miscEventTrigger.name())+1;
-						data.setCounter(miscEventTrigger.name(), count);
-						final int myPct = (int)Math.round(100.0*CMath.div(count, population));
-						if(myPct < pct)
-							return false;
-						break;
-					}
-					case AREAEXPLORE:
-						if(pct==0)
-						{
-							if(source.playerStats().totalVisitedRooms(source, A)!=1)
-								return false;
-						}
-						else
-						if(source.playerStats().percentVisited(source, A) < pct)
-							return false;
-						break;
-					default:
-						break;
 					}
 				}
 			}
