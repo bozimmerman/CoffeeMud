@@ -61,26 +61,91 @@ InstanceArea types definitions
 # * In normal areas, add tattoo NOAINST <type name> to prevent a mob from 
 #   spawning in an instance.
 
-"Triumph" category="Main" PLAYFACTIONS="triumph.ini" prefix="" duration=900 ileveladj="@x1" leveladj="@x3 + ((((1+@x5-@x4)-(1+@x5-@x2))/(1+@x5-@x4))*(1+@x6)) > 1" ELITE="1+(((@x7 / 25)-0.49999999)>0)" LIMIT="1/DAY"
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="Spell_Lightning electrocuting number((@x7/100)/10)" behave="CombatAbilities"
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="burning number((@x7/100)/10)" behave="CombatAbilities"
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="acidizing number((@x7/100)/10)" behave="CombatAbilities"
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="freezing number((@x7/100)/10)" behave="CombatAbilities
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="healing number((@x7/100)/10)" behave="CombatAbilities
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="creation number((@x7/100)/10)" behave="CombatAbilities
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="vexing number((@x7/100)/10)" behave="CombatAbilities
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="plant_growth number((@x7/100)/10)" behave="CombatAbilities
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="evangelism number((@x7/100)/10)" behave="CombatAbilities
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="preserving number((@x7/100)/10)" behave="CombatAbilities
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="abjuration number((@x7/100)/10)" behave="CombatAbilities
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="trapping number((@x7/100)/10)" behave="CombatAbilities
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="breeding number((@x7/100)/10)" behave="CombatAbilities
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="combat_lore number((@x7/100)/10)" behave="CombatAbilities
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="evasive number((@x7/100)/10)" behave="CombatAbilities
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="criminal number((@x7/100)/10)" behave="CombatAbilities
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="illusion number((@x7/100)/10)" behave="CombatAbilities
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="transmutation number((@x7/100)/10)" behave="CombatAbilities
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="cursing number((@x7/100)/10)" behave="CombatAbilities
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="stealing number((@x7/100)/10)" behave="CombatAbilities
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 +TRIUMPH2 +TRIUMPH3 +TRIUMPH4" enable="martial_lore number((@x7/100)/10)" behave="CombatAbilities
+"Triumph" category="Main" PLAYFACTIONS="triumph.ini" prefix="" LEADERREQ="-FACTION +TRIUMPH0" duration=900 ileveladj="@x1" leveladj="@x3 + ((((1+@x5-@x4)-(1+@x5-@x2))/(1+@x5-@x4))*(1+@x6)) > 1" ELITE="1+(((@x7 / 25)-0.49999999)>0)" LIMIT="1/DAY"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1" enable="Spell_Lightning electrocuting number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1" enable="burning number((@x7/100)/10)" behave="CombatAbilities""
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1" enable="acidizing number((@x7/100)/10)" behave="CombatAbilities""
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1" enable="freezing number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1" enable="healing number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1" enable="creation number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1" enable="vexing number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1" enable="plant_growth number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1" enable="evangelism number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1" enable="preserving number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1" enable="abjuration number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1" enable="trapping number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1" enable="breeding number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1" enable="combat_lore number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1" enable="evasive number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1" enable="criminal number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1" enable="illusion number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1" enable="transmutation number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1" enable="cursing number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1" enable="stealing number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1" enable="martial_lore number((@x7/100)/10)" behave="CombatAbilities"
 
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2" enable="Spell_Lightning electrocuting number((@x7/100)/10) burning number((@x7/100)/10)" behave="CombatAbilities""
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2" enable="burning number((@x7/100)/10) acidizing number((@x7/100)/10)" behave="CombatAbilities""
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2" enable="acidizing number((@x7/100)/10) freezing number((@x7/100)/10)" behave="CombatAbilities""
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2" enable="freezing number((@x7/100)/10) healing number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2" enable="healing number((@x7/100)/10) creation number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2" enable="creation number((@x7/100)/10) vexing number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2" enable="vexing number((@x7/100)/10) plant_growth number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2" enable="plant_growth number((@x7/100)/10) evangelism number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2" enable="evangelism number((@x7/100)/10) preserving number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2" enable="preserving number((@x7/100)/10) abjuration number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2" enable="abjuration number((@x7/100)/10) trapping number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2" enable="trapping number((@x7/100)/10) breeding number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2" enable="breeding number((@x7/100)/10) combat_lore number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2" enable="combat_lore number((@x7/100)/10) evasive number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2" enable="evasive number((@x7/100)/10) criminal number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2" enable="criminal number((@x7/100)/10) illusion number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2" enable="illusion number((@x7/100)/10) transmutation number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2" enable="transmutation number((@x7/100)/10) cursing number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2" enable="cursing number((@x7/100)/10) stealing number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2" enable="stealing number((@x7/100)/10) martial_lore number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2" enable="martial_lore number((@x7/100)/10) electrocuting number((@x7/100)/10)" behave="CombatAbilities"
+
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3" enable="Spell_Lightning electrocuting number((@x7/100)/10) burning number((@x7/100)/10) acidizing number((@x7/100)/10)" behave="CombatAbilities""
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3" enable="burning number((@x7/100)/10) acidizing number((@x7/100)/10) freezing number((@x7/100)/10)" behave="CombatAbilities""
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3" enable="acidizing number((@x7/100)/10) freezing number((@x7/100)/10) healing number((@x7/100)/10)" behave="CombatAbilities""
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3" enable="freezing number((@x7/100)/10) healing number((@x7/100)/10) creation number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3" enable="healing number((@x7/100)/10) creation number((@x7/100)/10) vexing number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3" enable="creation number((@x7/100)/10) vexing number((@x7/100)/10) plant_growth number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3" enable="vexing number((@x7/100)/10) plant_growth number((@x7/100)/10) evangelism number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3" enable="plant_growth number((@x7/100)/10) evangelism number((@x7/100)/10) preserving number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3" enable="evangelism number((@x7/100)/10) preserving number((@x7/100)/10) abjuration number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3" enable="preserving number((@x7/100)/10) abjuration number((@x7/100)/10) trapping number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3" enable="abjuration number((@x7/100)/10) trapping number((@x7/100)/10) breeding number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3" enable="trapping number((@x7/100)/10) breeding number((@x7/100)/10) combat_lore number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3" enable="breeding number((@x7/100)/10) combat_lore number((@x7/100)/10) evasive number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3" enable="combat_lore number((@x7/100)/10) evasive number((@x7/100)/10) criminal number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3" enable="evasive number((@x7/100)/10) criminal number((@x7/100)/10) illusion number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3" enable="criminal number((@x7/100)/10) illusion number((@x7/100)/10) transmutation number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3" enable="illusion number((@x7/100)/10) transmutation number((@x7/100)/10) cursing number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3" enable="transmutation number((@x7/100)/10) cursing number((@x7/100)/10) stealing number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3" enable="cursing number((@x7/100)/10) stealing number((@x7/100)/10) martial_lore number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3" enable="stealing number((@x7/100)/10) martial_lore number((@x7/100)/10) electrocuting number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3" enable="martial_lore number((@x7/100)/10) electrocuting number((@x7/100)/10) burning number((@x7/100)/10)" behave="CombatAbilities"
+
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4" enable="Spell_Lightning electrocuting number((@x7/100)/10) burning number((@x7/100)/10) acidizing number((@x7/100)/10) freezing number((@x7/100)/10)" behave="CombatAbilities""
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4" enable="burning number((@x7/100)/10) acidizing number((@x7/100)/10) freezing number((@x7/100)/10) healing number((@x7/100)/10)" behave="CombatAbilities""
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4" enable="acidizing number((@x7/100)/10) freezing number((@x7/100)/10) healing number((@x7/100)/10) creation number((@x7/100)/10)" behave="CombatAbilities""
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4" enable="freezing number((@x7/100)/10) healing number((@x7/100)/10) creation number((@x7/100)/10) vexing number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4" enable="healing number((@x7/100)/10) creation number((@x7/100)/10) vexing number((@x7/100)/10) plant_growth number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4" enable="creation number((@x7/100)/10) vexing number((@x7/100)/10) plant_growth number((@x7/100)/10) evangelism number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4" enable="vexing number((@x7/100)/10) plant_growth number((@x7/100)/10) evangelism number((@x7/100)/10) preserving number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4" enable="plant_growth number((@x7/100)/10) evangelism number((@x7/100)/10) preserving number((@x7/100)/10) abjuration number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4" enable="evangelism number((@x7/100)/10) preserving number((@x7/100)/10) abjuration number((@x7/100)/10) trapping number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4" enable="preserving number((@x7/100)/10) abjuration number((@x7/100)/10) trapping number((@x7/100)/10) breeding number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4" enable="abjuration number((@x7/100)/10) trapping number((@x7/100)/10) breeding number((@x7/100)/10) combat_lore number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4" enable="trapping number((@x7/100)/10) breeding number((@x7/100)/10) combat_lore number((@x7/100)/10) evasive number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4" enable="breeding number((@x7/100)/10) combat_lore number((@x7/100)/10) evasive number((@x7/100)/10) criminal number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4" enable="combat_lore number((@x7/100)/10) evasive number((@x7/100)/10) criminal number((@x7/100)/10) illusion number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4" enable="evasive number((@x7/100)/10) criminal number((@x7/100)/10) illusion number((@x7/100)/10) transmutation number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4" enable="criminal number((@x7/100)/10) illusion number((@x7/100)/10) transmutation number((@x7/100)/10) cursing number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4" enable="illusion number((@x7/100)/10) transmutation number((@x7/100)/10) cursing number((@x7/100)/10) stealing number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4" enable="transmutation number((@x7/100)/10) cursing number((@x7/100)/10) stealing number((@x7/100)/10) martial_lore number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4" enable="cursing number((@x7/100)/10) stealing number((@x7/100)/10) martial_lore number((@x7/100)/10) electrocuting number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4" enable="stealing number((@x7/100)/10) martial_lore number((@x7/100)/10) electrocuting number((@x7/100)/10) burning number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4" enable="martial_lore number((@x7/100)/10) electrocuting number((@x7/100)/10) burning number((@x7/100)/10) acidizing number((@x7/100)/10)" behave="CombatAbilities"
