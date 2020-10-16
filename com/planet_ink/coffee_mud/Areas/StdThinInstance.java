@@ -679,7 +679,8 @@ public class StdThinInstance extends StdThinArea implements SubArea
 			return false;
 		if(!this.doesManageChildAreas())
 			return true;
-		if(CMath.bset(flags(),Area.FLAG_INSTANCE_PARENT))
+		if(CMath.bset(flags(),Area.FLAG_INSTANCE_PARENT)
+		&&(!CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD)))
 			setAreaState(Area.State.PASSIVE);
 		if((msg.sourceMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target() instanceof Room)
