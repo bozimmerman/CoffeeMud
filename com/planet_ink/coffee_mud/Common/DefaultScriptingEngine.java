@@ -836,7 +836,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return room;
 		}
 
-		List<Room> rooms=new Vector<Room>(1);
+		List<Room> rooms=new ArrayList<Room>(1);
 		if((imHere!=null)&&(imHere.getArea()!=null))
 			rooms=CMLib.map().findAreaRoomsLiberally(null, imHere.getArea(), thisName, "RIEPM",100);
 		if(rooms.size()==0)
