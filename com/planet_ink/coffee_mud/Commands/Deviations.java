@@ -149,7 +149,9 @@ public class Deviations extends StdCommand
 			for(int m=0;m<R.numInhabitants();m++)
 			{
 				final MOB M=R.fetchInhabitant(m);
-				if(M!=null)
+				if((M!=null)
+				&&(!M.isPlayer())
+				&&(M.getStartRoom()!=null))
 				{
 					for(int i=0;i<M.numItems();i++)
 					{
