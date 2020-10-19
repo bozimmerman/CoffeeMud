@@ -815,6 +815,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				final MOB M=S.mob();
 				if((M!=null)
 				&&(S!=session)
+				&&(pickedMOB != null)
 				&&((M==pickedMOB)||(M.soulMate()==pickedMOB)))
 				{
 					final Room oldRoom=pickedMOB.location();
