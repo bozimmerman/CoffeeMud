@@ -1346,10 +1346,13 @@ public class InstanceArea extends StdAbility
 						if(F==theF)
 						{
 							final AreaInstanceChild child = findExistingChild((Area)affected, msg.source());
-							final String key=msg.source().Name()+"/"+msg.othersMessage();
-							if(!child.data.containsKey(key))
-								child.data.put(key, new int[] {0});
-							((int[])child.data.get(key))[0] += msg.value();
+							if(child!=null)
+							{
+								final String key=msg.source().Name()+"/FACTION:"+msg.othersMessage();
+								if(!child.data.containsKey(key))
+									child.data.put(key, new int[] {0});
+								((int[])child.data.get(key))[0] += msg.value();
+							}
 						}
 					}
 				}
@@ -1395,7 +1398,8 @@ public class InstanceArea extends StdAbility
 	{
 		synchronized(instanceChildren)
 		{
-			final List<AreaInstanceChild> areaInstChildren = instanceChildren.get(targetArea);
+			final Area pA = ((SubArea)targetArea).getSuperArea();
+			final List<AreaInstanceChild> areaInstChildren = instanceChildren.get(pA);
 			if(areaInstChildren == null)
 				return null;
 			for(int i=areaInstChildren.size()-1;i>=0;i--)
@@ -1651,14 +1655,17 @@ public class InstanceArea extends StdAbility
 											}
 										}
 										else
-										if(created)
 										{
-											if(fdata.value() > topPlayerFactionValue)
+											if(created)
 											{
-												topPlayerFactionValue=fdata.value();
-												leaderM=M;
+												if(fdata.value() > topPlayerFactionValue)
+												{
+													topPlayerFactionValue=fdata.value();
+													leaderM=M;
+												}
+												fdata.resetEventTimers(null);
+												fdata.setCounter(null, 0);
 											}
-											fdata.resetEventTimers(null);
 										}
 									}
 								}
@@ -2043,11 +2050,16 @@ public class InstanceArea extends StdAbility
 				{
 					msg.setSource(M);
 					msg.setValue(0);
-					if(child != null)
+					if((child != null)
+					&&(this.pFactionList!=null)
+					&&(this.pFactionList.size()>0))
 					{
-						final String key=msg.source().Name()+"/"+msg.othersMessage();
-						if(child.data.containsKey(key))
-							msg.setValue(((int[])child.data.get(key))[0]);
+						final String subkey=msg.source().Name()+"/FACTION:";
+						for(final String key : child.data.keySet())
+						{
+							if(key.startsWith(subkey))
+								msg.setValue(msg.value()+((int[])child.data.get(key))[0]);
+						}
 					}
 					M.executeMsg(M, msg);
 				}

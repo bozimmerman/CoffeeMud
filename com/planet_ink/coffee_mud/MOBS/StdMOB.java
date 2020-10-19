@@ -3340,6 +3340,8 @@ public class StdMOB implements MOB
 						else
 							adjustFaction(msg.othersMessage(), msg.value());
 					}
+					if(msg.sourceMessage() != null)
+						tell(this,msg.target(),msg.tool(),msg.sourceMessage());
 					break;
 				case CMMsg.TYP_DEATH:
 					CMLib.get(mySession)._combat().handleDeath(msg);

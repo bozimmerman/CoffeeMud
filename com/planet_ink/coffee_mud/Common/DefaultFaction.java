@@ -2979,6 +2979,9 @@ public class DefaultFaction implements Faction, MsgListener
 		@Override
 		public void setCounter(final String key, final int newValue)
 		{
+			if(key == null)
+				counters.clear();
+			else
 			if(counters.containsKey(key))
 				counters.get(key)[0]=newValue;
 			else
