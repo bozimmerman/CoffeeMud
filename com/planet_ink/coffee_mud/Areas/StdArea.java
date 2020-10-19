@@ -111,6 +111,9 @@ public class StdArea implements Area
 		public final Area A;
 		/** the time the instance was created */
 		public final long creationTime;
+		/** Any extraneous data the system might store */
+		public final Map<String,Object> data=new Hashtable<String,Object>();
+
 		public AreaInstanceChild(final Area A, final List<WeakReference<MOB>> mobs)
 		{
 			this.A=A;

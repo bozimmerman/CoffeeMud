@@ -40,6 +40,13 @@ public class XHashtable<K, V> extends Hashtable<K, V>
 			putAll(V);
 	}
 
+	public XHashtable(final K A, final V B)
+	{
+		super();
+		if (A != null)
+			put(A,B);
+	}
+
 	public synchronized void removeAll(final Enumeration<K> E)
 	{
 		if (E != null)

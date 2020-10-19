@@ -188,6 +188,12 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					final LinkedList<Room> propRooms = new LinkedList<Room>();
 					for(final Enumeration<Room> r=childA.getProperMap();r.hasMoreElements();)
 						propRooms.add(r.nextElement());
+					for(final WeakReference<MOB> w : child.mobs)
+					{
+						final MOB M=w.get();
+						if(M!=null)
+							M.executeMsg(mob,CMClass.getMsg(M,childA,null,CMMsg.MSG_EXPIRE,null));
+					}
 					for(final MOB M : getAreaPlayerMOBs(child))
 					{
 						if(M!=null)
@@ -313,6 +319,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					{
 						final StdAutoGenInstance parentA=(StdAutoGenInstance)A;
 						AreaInstanceChild rec = null;
+						final List<MOB> mobsToNotify=new ArrayList<MOB>();
 						synchronized(parentA.instanceChildren)
 						{
 							for(int i=parentA.instanceChildren.size()-1;i>=0;i--)
@@ -320,6 +327,12 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 								if(parentA.instanceChildren.get(i).A==this)
 								{
 									rec = parentA.instanceChildren.get(i);
+									for(final WeakReference<MOB> wm : rec.mobs)
+									{
+										final MOB M=wm.get();
+										if(M!=null)
+											mobsToNotify.add(M);
+									}
 									break;
 								}
 							}
@@ -334,6 +347,13 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 								parentA.instanceChildren.remove(rec);
 							}
 							final MOB mob=CMClass.sampleMOB();
+							final CMMsg xmsg=CMClass.getMsg(mob,this,null,CMMsg.MSG_EXPIRE,null);
+							xmsg.setTarget(this);
+							for(final MOB M : mobsToNotify)
+							{
+								xmsg.setSource(M);
+								M.executeMsg(M, xmsg);
+							}
 							final LinkedList<Room> propRooms = new LinkedList<Room>();
 							for(final Enumeration<Room> r=getProperMap();r.hasMoreElements();)
 								propRooms.add(r.nextElement());

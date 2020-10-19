@@ -409,7 +409,16 @@ public class StdThinInstance extends StdThinArea implements SubArea
 		{
 			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_EXPIRE,null);
 			msg.setTarget(childA);
-			childA.executeMsg(mob,msg);
+			for(final WeakReference<MOB> m : child.mobs)
+			{
+				final MOB M=m.get();
+				if(M!=null)
+				{
+					msg.setSource(M);
+					M.executeMsg(M, msg);
+				}
+			}
+			msg.setSource(mob);
 			final LinkedList<Room> propRooms = new LinkedList<Room>();
 			for(final Enumeration<Room> r=childA.getFilledProperMap();r.hasMoreElements();)
 				propRooms.add(r.nextElement());

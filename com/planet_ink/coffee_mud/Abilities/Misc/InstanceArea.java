@@ -81,7 +81,6 @@ public class InstanceArea extends StdAbility
 	}
 
 	protected WeakReference<MOB>		leaderMob		= null;
-	protected volatile int				leaderFacChg	= 0;
 	protected volatile long				lastCasting		= 0;
 	protected WeakReference<Room>		oldRoom			= null;
 	protected Set<Area>					targetAreas		= null;
@@ -223,7 +222,6 @@ public class InstanceArea extends StdAbility
 		this.recoverTick=-1;
 		recoverRate		= 0;
 		fatigueRate		= 0;
-		leaderFacChg	= 0;
 		// don't clear leaderMob
 	}
 
@@ -264,11 +262,11 @@ public class InstanceArea extends StdAbility
 				else
 					newText = instParms.get(InstVar.ID.toString());
 				this.instVars=instParms;
-				this.instTypeID=newText;
+				this.instTypeID=newText.toUpperCase();
 			}
 			else
 			{
-				this.instTypeID=newText;
+				this.instTypeID=newText.toUpperCase();
 				this.instVars=getInstVars(newText);
 				if(this.instVars==null)
 				{
@@ -280,7 +278,8 @@ public class InstanceArea extends StdAbility
 			}
 			this.targetAreas=null;
 
-
+			if(instVars.containsKey(InstVar.ID.toString()))
+				this.instTypeID=instVars.get(InstVar.ID.toString());
 			this.roomsDone=new WeakArrayList<Room>();
 			this.colorPrefix=instVars.get(InstVar.PREFIX.toString());
 			this.totalTickDown=CMath.s_int(instVars.get(InstVar.DURATION.toString()));
@@ -1294,42 +1293,53 @@ public class InstanceArea extends StdAbility
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if((msg.targetMinor()==CMMsg.TYP_NEWROOM)
-		&&(affected instanceof Area)
+		if((affected instanceof Area)
 		&&(CMath.bset(((Area)affected).flags(), Area.FLAG_INSTANCE_CHILD)))
 		{
-			if((msg.target() instanceof Room)
-			&&(!roomDone((Room)msg.target()))
-			&&(((Room)msg.target()).getArea()==affected))
+			if(msg.targetMinor()==CMMsg.TYP_NEWROOM)
 			{
-				doneRoom((Room)msg.target());
-				fixRoom((Room)msg.target());
+				if((msg.target() instanceof Room)
+				&&(!roomDone((Room)msg.target()))
+				&&(((Room)msg.target()).getArea()==affected))
+				{
+					doneRoom((Room)msg.target());
+					fixRoom((Room)msg.target());
+				}
 			}
-		}
-		else
-		if((msg.source()==this.leaderMob)
-		&&(msg.sourceMinor()== CMMsg.TYP_FACTIONCHANGE)
-		&&(msg.othersMessage()!=null)
-		&&(msg.value()!=0)
-		&&(msg.value()<Integer.MAX_VALUE)
-		&&(CMLib.factions().getFaction(msg.othersMessage())!=null)
-		&&(this.pFactionList!=null)
-		&&(this.pFactionList.size()>0))
-		{
-			for(final Pair<String,String> p : this.pFactionList)
+			else
+			if((msg.sourceMinor()== CMMsg.TYP_FACTIONCHANGE)
+			&&(msg.source().isPlayer())
+			&&(msg.othersMessage()!=null)
+			&&(msg.value()!=0)
+			&&(msg.value()<Integer.MAX_VALUE)
+			&&(this.pFactionList!=null)
+			&&(this.pFactionList.size()>0))
 			{
-				final String factionName = (p.first.equals("*")
-						?("AINST_"+this.instTypeID.toUpperCase().trim())
-						:p.first);
-				Faction F=null;
-				if(CMLib.factions().isFactionID(factionName))
-					F=CMLib.factions().getFaction(factionName);
-				if(F==null)
-					F=CMLib.factions().getFaction(factionName);
-				if(F==null)
-					F=CMLib.factions().getFactionByName(factionName);
-				if(F==CMLib.factions().getFaction(msg.othersMessage()))
-					this.leaderFacChg+= msg.value();
+				final Faction theF=CMLib.factions().getFaction(msg.othersMessage());
+				if(theF!=null)
+				{
+					for(final Pair<String,String> p : this.pFactionList)
+					{
+						final String factionName = (p.first.equals("*")
+								?("AINST_"+this.instTypeID.toUpperCase().trim())
+								:p.first);
+						Faction F=null;
+						if(CMLib.factions().isFactionID(factionName))
+							F=CMLib.factions().getFaction(factionName);
+						if(F==null)
+							F=CMLib.factions().getFaction(factionName);
+						if(F==null)
+							F=CMLib.factions().getFactionByName(factionName);
+						if(F==theF)
+						{
+							final AreaInstanceChild child = findExistingChild((Area)affected, msg.source());
+							final String key=msg.source().Name()+"/"+msg.othersMessage();
+							if(!child.data.containsKey(key))
+								child.data.put(key, new int[] {0});
+							((int[])child.data.get(key))[0] += msg.value();
+						}
+					}
+				}
 			}
 		}
 		super.executeMsg(myHost, msg);
@@ -1366,6 +1376,32 @@ public class InstanceArea extends StdAbility
 			}
 		}
 		return grp;
+	}
+
+	private AreaInstanceChild findExistingChild(final Area targetArea, final MOB mob)
+	{
+		synchronized(instanceChildren)
+		{
+			final List<AreaInstanceChild> areaInstChildren = instanceChildren.get(targetArea);
+			if(areaInstChildren == null)
+				return null;
+			for(int i=areaInstChildren.size()-1;i>=0;i--)
+			{
+				final Area A=areaInstChildren.get(i).A;
+				if((A==null)||(A.amDestroyed()))
+					areaInstChildren.remove(i);
+			}
+			for(final AreaInstanceChild child : areaInstChildren)
+			{
+				final List<WeakReference<MOB>> V=child.mobs;
+				for (final WeakReference<MOB> weakReference : V)
+				{
+					if(mob == weakReference.get())
+						return child;
+				}
+			}
+		}
+		return null;
 	}
 
 	private Area findExistingInstance(final MOB mob, final Set<MOB> grp, final Area targetArea)
@@ -1876,6 +1912,7 @@ public class InstanceArea extends StdAbility
 		&&(CMath.bset(instA.flags(), Area.FLAG_INSTANCE_CHILD)))
 		{
 			final List<MOB> mobsToNotify=new ArrayList<MOB>();
+			AreaInstanceChild child=null;
 			if(instA instanceof SubArea)
 			{
 				final Area pA = ((SubArea)instA).getSuperArea();
@@ -1894,6 +1931,7 @@ public class InstanceArea extends StdAbility
 									final AreaInstanceChild C = c.next();
 									if(C.A == instA)
 									{
+										child=C;
 										for(final WeakReference<MOB> wm : C.mobs)
 										{
 											final MOB M=wm.get();
@@ -1981,15 +2019,24 @@ public class InstanceArea extends StdAbility
 			final MOB mob=CMClass.getFactoryMOB();
 			try
 			{
-				final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_EXPIRE,null);
 				final LinkedList<Room> propRooms = new LinkedList<Room>();
 				for(final Enumeration<Room> r=instA.getFilledProperMap();r.hasMoreElements();)
 					propRooms.add(r.nextElement());
-				msg.setTarget(instA);
-				msg.setValue(this.leaderFacChg);
+				final CMMsg msg=CMClass.getMsg(mob,instA,null,CMMsg.MSG_EXPIRE,null);
 				for(final MOB M : mobsToNotify)
+				{
+					msg.setSource(M);
+					msg.setValue(0);
+					if(child != null)
+					{
+						final String key=msg.source().Name()+"/"+msg.othersMessage();
+						if(child.data.containsKey(key))
+							msg.setValue(((int[])child.data.get(key))[0]);
+					}
 					M.executeMsg(M, msg);
+				}
 				msg.setValue(0);
+				msg.setSource(mob);
 				// sends everyone home
 				for(final Iterator<Room> r=propRooms.iterator();r.hasNext();)
 				{

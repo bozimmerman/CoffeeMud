@@ -1780,6 +1780,7 @@ public class CMParms
 		String parmName=null;
 		int lastPossibleStart=-1;
 		boolean lastWasWhitespace=false;
+		char lastC=' ';
 		final StringBuilder str=new StringBuilder(parms);
 		for(int x=0;x<=str.length();x++)
 		{
@@ -1817,7 +1818,7 @@ public class CMParms
 					state=2;
 				}
 				else
-				if(delimiterCheck.isDelimiter(c))
+				if(delimiterCheck.isDelimiter(c)&&(lastC!='\\'))
 				{
 					if((!Character.isWhitespace(c))&&(x<str.length()))
 						str.setCharAt(x,' '); // has to be trimmable
@@ -1904,6 +1905,7 @@ public class CMParms
 				}
 				break;
 			}
+			lastC=c;
 		}
 		return h;
 	}

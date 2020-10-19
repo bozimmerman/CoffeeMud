@@ -1598,6 +1598,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 			if(x>=0)
 				parentArea = CMLib.map().getArea(Name().substring(x+1));
 
+			final CMMsg xmsg=CMClass.getMsg(null,planeA,null,CMMsg.MSG_EXPIRE,null);
 			for(final Enumeration<Room> r=planeA.getFilledProperMap();r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
@@ -1611,6 +1612,8 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 						if((M!=null)
 						&&(M.isPlayer()))
 						{
+							xmsg.setSource(M);
+							M.executeMsg(M, xmsg);
 							Room oldRoom = (this.oldRoom!=null) ? CMLib.map().getRoom(this.oldRoom.get()) : null;
 							if((oldRoom==null)
 							||(oldRoom.amDestroyed())
@@ -1660,10 +1663,10 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 			final MOB mob=CMClass.getFactoryMOB();
 			try
 			{
-				final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_EXPIRE,null);
 				final LinkedList<Room> propRooms = new LinkedList<Room>();
 				for(final Enumeration<Room> r=planeA.getFilledProperMap();r.hasMoreElements();)
 					propRooms.add(r.nextElement());
+				final CMMsg msg=CMClass.getMsg(mob,planeA,null,CMMsg.MSG_EXPIRE,null);
 				// sends everyone home
 				for(final Iterator<Room> r=propRooms.iterator();r.hasNext();)
 				{

@@ -61,8 +61,6 @@ InstanceArea types definitions
 # * In normal areas, add tattoo NOAINST <type name> to prevent a mob from 
 #   spawning in an instance.
 
-#TODO: make the leaderreq so that selections only happen on certain mudmonths
-
 "Triumph" category="Main" PLAYFACTIONS="triumph.ini" prefix="" LEADERREQ="-FACTION +TRIUMPH0" duration=900 ileveladj="@x1" leveladj="@x3 + ((((1+@x5-@x4)-(1+@x5-@x2))/(1+@x5-@x4))*(1+@x6)) > 1" ELITE="1+(((@x7 / 25)-0.49999999)>0)" LIMIT="1/DAY"
 
 "Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 -DAY +1" enable="Spell_Lightning electrocuting number((@x7/100)/10)" behave="CombatAbilities"
@@ -87,9 +85,9 @@ InstanceArea types definitions
 "Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 -DAY +20" enable="stealing number((@x7/100)/10)" behave="CombatAbilities"
 "Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 -DAY +20" enable="martial_lore number((@x7/100)/10)" behave="CombatAbilities"
 
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2 -DAY +1" enable="Spell_Lightning electrocuting number((@x7/100)/10) burning number((@x7/100)/10)" behave="CombatAbilities""
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2 -DAY +2" enable="burning number((@x7/100)/10) acidizing number((@x7/100)/10)" behave="CombatAbilities""
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2 -DAY +3" enable="acidizing number((@x7/100)/10) freezing number((@x7/100)/10)" behave="CombatAbilities""
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2 -DAY +1" enable="Spell_Lightning electrocuting number((@x7/100)/10) burning number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2 -DAY +2" enable="burning number((@x7/100)/10) acidizing number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2 -DAY +3" enable="acidizing number((@x7/100)/10) freezing number((@x7/100)/10)" behave="CombatAbilities"
 "Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2 -DAY +4" enable="freezing number((@x7/100)/10) healing number((@x7/100)/10)" behave="CombatAbilities"
 "Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2 -DAY +5" enable="healing number((@x7/100)/10) creation number((@x7/100)/10)" behave="CombatAbilities"
 "Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2 -DAY +6" enable="creation number((@x7/100)/10) vexing number((@x7/100)/10)" behave="CombatAbilities"
@@ -109,9 +107,9 @@ InstanceArea types definitions
 "Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2 -DAY +20" enable="stealing number((@x7/100)/10) martial_lore number((@x7/100)/10)" behave="CombatAbilities"
 "Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH2 -DAY +20" enable="martial_lore number((@x7/100)/10) electrocuting number((@x7/100)/10)" behave="CombatAbilities"
 
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3 -DAY +1" enable="Spell_Lightning electrocuting number((@x7/100)/10) burning number((@x7/100)/10) acidizing number((@x7/100)/10)" behave="CombatAbilities""
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3 -DAY +2" enable="burning number((@x7/100)/10) acidizing number((@x7/100)/10) freezing number((@x7/100)/10)" behave="CombatAbilities""
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3 -DAY +3" enable="acidizing number((@x7/100)/10) freezing number((@x7/100)/10) healing number((@x7/100)/10)" behave="CombatAbilities""
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3 -DAY +1" enable="Spell_Lightning electrocuting number((@x7/100)/10) burning number((@x7/100)/10) acidizing number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3 -DAY +2" enable="burning number((@x7/100)/10) acidizing number((@x7/100)/10) freezing number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3 -DAY +3" enable="acidizing number((@x7/100)/10) freezing number((@x7/100)/10) healing number((@x7/100)/10)" behave="CombatAbilities"
 "Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3 -DAY +4" enable="freezing number((@x7/100)/10) healing number((@x7/100)/10) creation number((@x7/100)/10)" behave="CombatAbilities"
 "Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3 -DAY +5" enable="healing number((@x7/100)/10) creation number((@x7/100)/10) vexing number((@x7/100)/10)" behave="CombatAbilities"
 "Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3 -DAY +6" enable="creation number((@x7/100)/10) vexing number((@x7/100)/10) plant_growth number((@x7/100)/10)" behave="CombatAbilities"
@@ -131,9 +129,9 @@ InstanceArea types definitions
 "Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3 -DAY +20" enable="stealing number((@x7/100)/10) martial_lore number((@x7/100)/10) electrocuting number((@x7/100)/10)" behave="CombatAbilities"
 "Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH3 -DAY +20" enable="martial_lore number((@x7/100)/10) electrocuting number((@x7/100)/10) burning number((@x7/100)/10)" behave="CombatAbilities"
 
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4 -DAY +1" enable="Spell_Lightning electrocuting number((@x7/100)/10) burning number((@x7/100)/10) acidizing number((@x7/100)/10) freezing number((@x7/100)/10)" behave="CombatAbilities""
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4 -DAY +2" enable="burning number((@x7/100)/10) acidizing number((@x7/100)/10) freezing number((@x7/100)/10) healing number((@x7/100)/10)" behave="CombatAbilities""
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4 -DAY +3" enable="acidizing number((@x7/100)/10) freezing number((@x7/100)/10) healing number((@x7/100)/10) creation number((@x7/100)/10)" behave="CombatAbilities""
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4 -DAY +1" enable="Spell_Lightning electrocuting number((@x7/100)/10) burning number((@x7/100)/10) acidizing number((@x7/100)/10) freezing number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4 -DAY +2" enable="burning number((@x7/100)/10) acidizing number((@x7/100)/10) freezing number((@x7/100)/10) healing number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4 -DAY +3" enable="acidizing number((@x7/100)/10) freezing number((@x7/100)/10) healing number((@x7/100)/10) creation number((@x7/100)/10)" behave="CombatAbilities"
 "Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4 -DAY +4" enable="freezing number((@x7/100)/10) healing number((@x7/100)/10) creation number((@x7/100)/10) vexing number((@x7/100)/10)" behave="CombatAbilities"
 "Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4 -DAY +5" enable="healing number((@x7/100)/10) creation number((@x7/100)/10) vexing number((@x7/100)/10) plant_growth number((@x7/100)/10)" behave="CombatAbilities"
 "Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH4 -DAY +6" enable="creation number((@x7/100)/10) vexing number((@x7/100)/10) plant_growth number((@x7/100)/10) evangelism number((@x7/100)/10)" behave="CombatAbilities"

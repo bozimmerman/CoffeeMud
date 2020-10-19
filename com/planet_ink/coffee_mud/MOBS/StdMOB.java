@@ -29,6 +29,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Event;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
 
 /*
@@ -3422,6 +3423,14 @@ public class StdMOB implements MOB
 									A.invoke(this, this, true, 0);
 							}
 						}
+					}
+					break;
+				case CMMsg.TYP_EXPIRE:
+					if(msg.target() instanceof Area)
+					{
+						if(!isMonster())
+							CMLib.achievements().possiblyBumpAchievement(this, Event.INSTANCEEXPIRE, 1, new Object[] {(Area)msg.target(), Integer.valueOf(msg.value())});
+						break;
 					}
 					break;
 				default:

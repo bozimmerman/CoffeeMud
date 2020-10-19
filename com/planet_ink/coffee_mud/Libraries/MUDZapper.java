@@ -3592,8 +3592,45 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.add(new CompiledZapperMaskEntryImpl(entryType,parms.toArray(new Object[0])));
 					}
 					break;
-				case _AREA: // -Area
 				case _AREABLURB: // -Areablurb
+					{
+						buildRoomFlag=true;
+						final ArrayList<Object> parms=new ArrayList<Object>();
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+							{
+								v=v2-1;
+								break;
+							}
+							else
+							if(str2.startsWith("+"))
+							{
+								String rawParm=str2.substring(1).trim();
+								final int x=rawParm.indexOf(' ');
+								final String parmVal;
+								if(x>1)
+								{
+									parmVal=rawParm.substring(x+1);
+									rawParm=rawParm.substring(0,x);
+								}
+								else
+									parmVal="";
+								if(rawParm.startsWith("*"))
+									parms.add(new Triad<Character,String,String>(Character.valueOf('s'),rawParm.substring(1).toUpperCase(),parmVal));
+								else
+								if(rawParm.endsWith("*"))
+									parms.add(new Triad<Character,String,String>(Character.valueOf('e'),rawParm.substring(0,rawParm.length()-1).toUpperCase(),parmVal));
+								else
+									parms.add(new Triad<Character,String,String>(Character.valueOf(' '),rawParm.toUpperCase(),parmVal));
+							}
+							v=V.size();
+						}
+						buf.add(new CompiledZapperMaskEntryImpl(entryType,parms.toArray(new Object[0])));
+					}
+					break;
+				case _AREA: // -Area
 					buildRoomFlag=true;
 				//$FALL-THROUGH$
 				case _TATTOO: // -Tattoos
@@ -3772,8 +3809,45 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.add(new CompiledZapperMaskEntryImpl(entryType,parms.toArray(new Object[0])));
 					}
 					break;
-				case AREA: // +Area
 				case AREABLURB: // +Areablurb
+					{
+						buildRoomFlag=true;
+						final ArrayList<Object> parms=new ArrayList<Object>();
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+							{
+								v=v2-1;
+								break;
+							}
+							else
+							if(str2.startsWith("-"))
+							{
+								String rawParm=str2.substring(1).trim();
+								final int x=rawParm.indexOf(' ');
+								final String parmVal;
+								if(x>1)
+								{
+									parmVal=rawParm.substring(x+1);
+									rawParm=rawParm.substring(0,x);
+								}
+								else
+									parmVal="";
+								if(rawParm.startsWith("*"))
+									parms.add(new Triad<Character,String,String>(Character.valueOf('s'),rawParm.substring(1).toUpperCase(),parmVal));
+								else
+								if(rawParm.endsWith("*"))
+									parms.add(new Triad<Character,String,String>(Character.valueOf('e'),rawParm.substring(0,rawParm.length()-1).toUpperCase(),parmVal));
+								else
+									parms.add(new Triad<Character,String,String>(Character.valueOf(' '),rawParm.toUpperCase(),parmVal));
+							}
+							v=V.size();
+						}
+						buf.add(new CompiledZapperMaskEntryImpl(entryType,parms.toArray(new Object[0])));
+					}
+					break;
+				case AREA: // +Area
 					buildRoomFlag=true;
 				//$FALL-THROUGH$
 				case TATTOO: // +Tattoos
@@ -6279,31 +6353,32 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							final Area A=room.getArea();
 							for(final Enumeration<String> b = A.areaBlurbFlags(); b.hasMoreElements();)
 							{
-								final String areaBlurb = b.nextElement().toLowerCase();
+								final String areaBlurb = b.nextElement();
 								for(final Object o : entry.parms())
 								{
-									if(((String)o).startsWith("*"))
+									final Triad<Character,String,String> t =(Triad<Character,String,String>)o;
+									switch(t.first.charValue())
 									{
-										if(areaBlurb.toLowerCase().endsWith(((String)o).substring(1).toLowerCase()))
-										{
+									case 's':
+										if(areaBlurb.endsWith(t.second))
 											found = true;
-											break;
-										}
-									}
-									else
-									if(((String)o).endsWith("*"))
-									{
-										if(areaBlurb.toLowerCase().startsWith(((String)o).substring(0,((String)o).length()-1).toLowerCase()))
-										{
-											found = true;
-											break;
-										}
-									}
-									else
-									if(areaBlurb.equalsIgnoreCase((String)o))
-									{
-										found = true;
 										break;
+									case 'e':
+										if(areaBlurb.startsWith(t.second))
+											found = true;
+										break;
+									case ' ':
+										if(areaBlurb.equals(t.second))
+											found = true;
+										break;
+									}
+									if(found)
+									{
+										if((t.third.length()>0)
+										&&(!A.getBlurbFlag(areaBlurb).equalsIgnoreCase(t.third)))
+											found=false;
+										else
+											break;
 									}
 								}
 							}
@@ -6321,21 +6396,35 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							{
 								for(final Enumeration<String> b = A.areaBlurbFlags(); b.hasMoreElements();)
 								{
-									final String areaBlurb = b.nextElement().toLowerCase();
-									if(((String)o).startsWith("*"))
+									final String areaBlurb = b.nextElement();
+									final Triad<Character,String,String> t =(Triad<Character,String,String>)o;
+									switch(t.first.charValue())
 									{
-										if(areaBlurb.toLowerCase().endsWith(((String)o).substring(1).toLowerCase()))
-											return false;
+									case 's':
+										if(areaBlurb.endsWith(t.second))
+										{
+											if((t.third.length()==0)
+											||(A.getBlurbFlag(areaBlurb).equalsIgnoreCase(t.third)))
+												return false;
+										}
+										break;
+									case 'e':
+										if(areaBlurb.startsWith(t.second))
+										{
+											if((t.third.length()==0)
+											||(A.getBlurbFlag(areaBlurb).equalsIgnoreCase(t.third)))
+												return false;
+										}
+										break;
+									case ' ':
+										if(areaBlurb.equals(t.second))
+										{
+											if((t.third.length()==0)
+											||(A.getBlurbFlag(areaBlurb).equalsIgnoreCase(t.third)))
+												return false;
+										}
+										break;
 									}
-									else
-									if(((String)o).endsWith("*"))
-									{
-										if(areaBlurb.toLowerCase().startsWith(((String)o).substring(0,((String)o).length()-1).toLowerCase()))
-											return false;
-									}
-									else
-									if(areaBlurb.equalsIgnoreCase((String)o))
-										return false;
 								}
 							}
 						}

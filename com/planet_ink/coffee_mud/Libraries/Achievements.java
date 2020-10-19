@@ -789,9 +789,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				private int num = -1;
-				private MaskingLibrary.CompiledZMask npcMask = null;
-				private MaskingLibrary.CompiledZMask playerMask = null;
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask npcMask = null;
+				private CompiledZMask playerMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -945,8 +945,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		case JUSTBE:
 			A=new Achievement()
 			{
-				private MaskingLibrary.CompiledZMask playerMask = null;
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask playerMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -1090,7 +1090,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private String	statName= "";
 				private int 	value	= 0;
 				private int		abelo	= 0;
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -1236,7 +1236,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private String	factionID	= "";
 				private int 	value		= 0;
 				private int		abelo		= 0;
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -1395,7 +1395,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private int 			number		= 0;
 				private int 			value		= 0;
 				private int				abelo		= 0;
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -1559,7 +1559,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				private String	areaID	= "";
 				private int	 	pct		= 0;
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -1725,7 +1725,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				private int 				num 		= 0;
 				private final Set<String>	abilityIDs 	= new TreeSet<String>();
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -1926,7 +1926,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				private int 				num 		= 0;
 				private final Set<String>	abilityIDs 	= new TreeSet<String>();
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -2121,7 +2121,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				private int 				num 		= 0;
 				private final Set<String>	socialIDs 	= new TreeSet<String>();
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -2317,7 +2317,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				private int 				num 		= 0;
 				private final Set<String>	commandIDs 	= new TreeSet<String>();
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -2494,9 +2494,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				private int num = -1;
-				private MaskingLibrary.CompiledZMask mask = null;
+				private CompiledZMask mask = null;
 				private java.util.regex.Pattern questPattern = null;
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -2677,7 +2677,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				final Set<String> achievementList = new TreeSet<String>();
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -2837,7 +2837,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				final Set<String> roomIDs = new TreeSet<String>();
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -3001,8 +3001,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				private int num = -1;
 				private CharClass charClass = null;
-				private MaskingLibrary.CompiledZMask playerMask = null;
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask playerMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -3166,8 +3166,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				private int num = -1;
-				private MaskingLibrary.CompiledZMask playerMask = null;
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask playerMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -3309,9 +3309,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		case GOTITEM:
 			A=new Achievement()
 			{
-				private MaskingLibrary.CompiledZMask playerMask = null;
-				private MaskingLibrary.CompiledZMask itemMask = null;
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask playerMask = null;
+				private CompiledZMask itemMask = null;
+				private CompiledZMask seenMask = null;
 				private int num = 1;
 
 				@Override
@@ -3480,8 +3480,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				private int seconds = 0;
-				private MaskingLibrary.CompiledZMask seenMask = null;
-				private MaskingLibrary.CompiledZMask playerMask = null;
+				private CompiledZMask seenMask = null;
+				private CompiledZMask playerMask = null;
 
 				@Override
 				public Event getEvent()
@@ -3625,9 +3625,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				private int num = -1;
-				private MaskingLibrary.CompiledZMask npcMask = null;
-				private MaskingLibrary.CompiledZMask playerMask = null;
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask npcMask = null;
+				private CompiledZMask playerMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -3780,9 +3780,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				private int num = -1;
-				private MaskingLibrary.CompiledZMask npcMask = null;
-				private MaskingLibrary.CompiledZMask playerMask = null;
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask npcMask = null;
+				private CompiledZMask playerMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -3935,9 +3935,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				private int num = -1;
-				private MaskingLibrary.CompiledZMask npcMask = null;
-				private MaskingLibrary.CompiledZMask playerMask = null;
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask npcMask = null;
+				private CompiledZMask playerMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -4088,8 +4088,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		case PLAYERBORN:
 			A=new Achievement()
 			{
-				private MaskingLibrary.CompiledZMask playerMask = null;
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask playerMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -4231,9 +4231,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				private int num = -1;
-				private MaskingLibrary.CompiledZMask npcMask = null;
-				private MaskingLibrary.CompiledZMask playerMask = null;
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask npcMask = null;
+				private CompiledZMask playerMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -4385,8 +4385,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				private int num = -1;
-				private MaskingLibrary.CompiledZMask playerMask = null;
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask playerMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -4560,9 +4560,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				private int num = -1;
-				private MaskingLibrary.CompiledZMask npcMask = null;
-				private MaskingLibrary.CompiledZMask playerMask = null;
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask npcMask = null;
+				private CompiledZMask playerMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -4729,8 +4729,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				private int num = -1;
-				private MaskingLibrary.CompiledZMask playerMask = null;
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask playerMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -4904,8 +4904,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				private int num = -1;
-				private MaskingLibrary.CompiledZMask areaMask = null;
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask areaMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -5070,9 +5070,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				private int num = -1;
-				private MaskingLibrary.CompiledZMask shipMask = null;
-				private MaskingLibrary.CompiledZMask playerMask = null;
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask shipMask = null;
+				private CompiledZMask playerMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -5224,8 +5224,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				private int num = -1;
-				private MaskingLibrary.CompiledZMask areaMask = null;
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask areaMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -5389,11 +5389,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		case AREAVISIT:
 			A=new Achievement()
 			{
-				private int num = -1;
-				private long minTime = 10L * 60L * 1000L;
-				private MaskingLibrary.CompiledZMask areaMask = null;
-				private MaskingLibrary.CompiledZMask playerMask = null;
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private int				num			= -1;
+				private long			minTime		= 10L * 60L * 1000L;
+				private CompiledZMask	areaMask	= null;
+				private CompiledZMask	playerMask	= null;
+				private CompiledZMask	seenMask	= null;
 
 				@Override
 				public Event getEvent()
@@ -5563,12 +5563,209 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 			};
 			break;
+		case INSTANCEEXPIRE:
+			A=new Achievement()
+			{
+				private int				num				= -1;
+				private long			minTime			= 10L * 60L * 1000L;
+				private CompiledZMask	areaMask		= null;
+				private CompiledZMask	playerMask		= null;
+				private CompiledZMask	seenMask		= null;
+				private String			valExpression	= null;
+
+				@Override
+				public Event getEvent()
+				{
+					return eventType;
+				}
+
+				@Override
+				public Agent getAgent()
+				{
+					return agent;
+				}
+
+				@Override
+				public boolean canBeSeenBy(final MOB mob)
+				{
+					return ((seenMask==null)||(CMLib.masking().maskCheck(seenMask, mob, true)));
+				}
+
+				@Override
+				public boolean canApplyTo(final Agent agent)
+				{
+					return true;
+				}
+
+				@Override
+				public String getTattoo()
+				{
+					return tattoo;
+				}
+
+				@Override
+				public int getTargetCount()
+				{
+					return num;
+
+				}
+
+				@Override
+				public boolean isTargetFloor()
+				{
+					return true;
+				}
+
+				@Override
+				public String getDisplayStr()
+				{
+					return displayStr;
+				}
+
+				@Override
+				public Award[] getRewards()
+				{
+					return rewardList;
+				}
+
+				@Override
+				public String getRawParmVal(final String str)
+				{
+					return CMParms.getParmStr(params,str,"");
+				}
+
+				@Override
+				public Tracker getTracker(final int oldCount)
+				{
+					final Achievement me=this;
+					return new Tracker()
+					{
+						private volatile int count = oldCount;
+						private volatile long recentVisit = 0;
+
+						@Override
+						public Achievement getAchievement()
+						{
+							return me;
+						}
+
+						@Override
+						public boolean isAchieved(final Tattooable tracked)
+						{
+							return (num>=0)
+									&& (getCount(tracked) >= num);
+						}
+
+						@Override
+						public int getCount(final Tattooable tracked)
+						{
+							return count;
+						}
+
+						@Override
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
+						{
+							Area A=null;
+							Integer val=null;
+							for(final Object o : parms)
+							{
+								if(o instanceof Clan)
+								{
+									if((tracked instanceof Clan)
+									&&(tracked != o))
+										return false;
+								}
+								else
+								if(o instanceof Room)
+									A=CMLib.map().getRoom((Room)o).getArea();
+								else
+								if(o instanceof Area)
+									A=(Area)o;
+								else
+								if(o instanceof Integer)
+									val=(Integer)o;
+							}
+							try
+							{
+								if(((areaMask==null)||(A==null)||(CMLib.masking().maskCheck(areaMask, A, true)))
+								&&((playerMask==null)||(CMLib.masking().maskCheck(playerMask, mob, true)))
+								&&((valExpression==null)
+									||(valExpression.length()==0)
+									||((val!=null)&&(CMStrings.parseStringExpression(valExpression, new XHashtable<String,Object>("VALUE",val.toString()), true))))
+								&&((recentVisit==0)||(System.currentTimeMillis()>recentVisit)))
+								{
+									recentVisit=System.currentTimeMillis() + minTime;
+									count+=bumpNum;
+									if(count < 0)
+										count = 0;
+								}
+							}
+							catch (final Exception e)
+							{
+								Log.errOut(e);
+							}
+							return true;
+						}
+
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(final Exception e)
+							{
+								return this;
+							}
+						}
+					};
+				}
+
+				@Override
+				public boolean isSavableTracker()
+				{
+					return true;
+				}
+
+				@Override
+				public String parseParms(final String parms)
+				{
+					this.seenMask=null;
+					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
+					if(seenMask.trim().length()>0)
+						this.seenMask = CMLib.masking().getPreCompiledMask(seenMask);
+
+					final String minTimeStr=CMParms.getParmStr(parms, "TIME_MINS", "");
+					if(CMath.isInteger(minTimeStr))
+						this.minTime = CMath.s_int(minTimeStr) * 60 * 1000;
+					final String numStr=CMParms.getParmStr(parms, "NUM", "");
+					if(!CMath.isInteger(numStr))
+						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+					num=CMath.s_int(numStr);
+					final String areaMaskStr = CMStrings.deEscape(CMParms.getParmStr(parms, "AREAMASK", ""));
+					this.areaMask = null;
+					if(areaMaskStr.trim().length()==0)
+						return "Error: Missing or invalid AREAMASK parameter: "+numStr+"!";
+					this.areaMask = CMLib.masking().getPreCompiledMask(areaMaskStr);
+					final String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "PLAYERMASK", ""));
+					this.playerMask = null;
+					if(zapperMask.trim().length()>0)
+						this.playerMask = CMLib.masking().getPreCompiledMask(zapperMask);
+					final String valExpStr = CMStrings.deEscape(CMParms.getParmStr(parms, "VALUEEXP", ""));
+					this.valExpression = null;
+					if(valExpStr.trim().length()>0)
+						this.valExpression=valExpStr;
+					return "";
+				}
+			};
+			break;
 		case CLANDECLARE:
 			A=new Achievement()
 			{
 				private int num = -1;
 				private final Set<String> relationList = new TreeSet<String>();
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -5739,8 +5936,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				private int num = -1;
-				private MaskingLibrary.CompiledZMask areaMask = null;
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask areaMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
@@ -5906,7 +6103,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				private int num = -1;
-				private MaskingLibrary.CompiledZMask seenMask = null;
+				private CompiledZMask seenMask = null;
 
 				@Override
 				public Event getEvent()
