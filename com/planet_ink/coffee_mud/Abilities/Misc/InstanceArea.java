@@ -1235,7 +1235,10 @@ public class InstanceArea extends StdAbility
 			final Area instArea = (Area)affected;
 			// never let children go passive, as it will cause the area to be
 			// unloaded without this affect necessarily never finding out.
-			instArea.setAreaState(State.ACTIVE);
+			if((this.totalTickDown > 0)
+			&&(this.tickDown>0)
+			&&(instArea.getAreaState()==State.PASSIVE))
+				instArea.setAreaState(State.ACTIVE);
 			if(((this.recoverRate>0)||(this.fatigueRate>0))
 			&&(--this.recoverTick <= 0))
 			{
