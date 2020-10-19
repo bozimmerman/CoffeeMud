@@ -3733,7 +3733,10 @@ public class ListCmd extends StdCommand
 		for(final Enumeration<Clan> c=CMLib.clans().clans();c.hasMoreElements();)
 		{
 			final Clan C=c.nextElement();
-			buf.append(CMStrings.padRight(C.clanID(),clen)+": "+CMStrings.limit(C.getMemberList().size()+" members",SCREEN_LEN-clen-2)+"\n\r");
+			buf.append(CMStrings.padRight(C.clanID(),clen)
+				+CMStrings.limit(": Level "+C.getClanLevel()
+						+", Status: "+C.getStatus()
+						+", Members: "+C.getMemberList().size()+"",SCREEN_LEN-clen-2)+"\n\r");
 		}
 		return buf.toString();
 	}
