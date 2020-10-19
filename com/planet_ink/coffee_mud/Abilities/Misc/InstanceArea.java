@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.StdArea.AreaInstanceChild;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.Area.State;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
@@ -80,6 +81,7 @@ public class InstanceArea extends StdAbility
 	}
 
 	protected WeakReference<MOB>		leaderMob		= null;
+	protected volatile int				leaderFacChg	= 0;
 	protected volatile long				lastCasting		= 0;
 	protected WeakReference<Room>		oldRoom			= null;
 	protected Set<Area>					targetAreas		= null;
@@ -221,6 +223,8 @@ public class InstanceArea extends StdAbility
 		this.recoverTick=-1;
 		recoverRate		= 0;
 		fatigueRate		= 0;
+		leaderFacChg	= 0;
+		// don't clear leaderMob
 	}
 
 	@Override
@@ -364,7 +368,7 @@ public class InstanceArea extends StdAbility
 						continue;
 					final String multiplier=lstr.substring(x+1).trim();
 					final Long timeMultiplier = Long.valueOf(CMLib.english().getMillisMultiplierByName(multiplier));
-					if(timeMultiplier<0)
+					if(timeMultiplier.longValue()<0)
 						continue;
 					this.limits.add(new Pair<Integer,Long>(amt,timeMultiplier));
 				}
@@ -776,7 +780,7 @@ public class InstanceArea extends StdAbility
 					eliteLevel=CMath.parseIntExpression(eliteStr, vars);
 				}
 			}
-			if(instVars.containsKey(InstVar.ATMOSPHERE.toString()))
+			if(instVars.containsKey(InstVar.ATMOSPHERE.toString())&&(instArea!=null))
 				room.setAtmosphere(instArea.getAtmosphere());
 			doInstanceRoomColoring(room);
 			if(this.reffectList!=null)
@@ -1229,6 +1233,9 @@ public class InstanceArea extends StdAbility
 		&&(CMath.bset(((Area)this.affected).flags(), Area.FLAG_INSTANCE_CHILD)))
 		{
 			final Area instArea = (Area)affected;
+			// never let children go passive, as it will cause the area to be
+			// unloaded without this affect necessarily never finding out.
+			instArea.setAreaState(State.ACTIVE);
 			if(((this.recoverRate>0)||(this.fatigueRate>0))
 			&&(--this.recoverTick <= 0))
 			{
@@ -1289,6 +1296,32 @@ public class InstanceArea extends StdAbility
 			{
 				doneRoom((Room)msg.target());
 				fixRoom((Room)msg.target());
+			}
+		}
+		else
+		if((msg.source()==this.leaderMob)
+		&&(msg.sourceMinor()== CMMsg.TYP_FACTIONCHANGE)
+		&&(msg.othersMessage()!=null)
+		&&(msg.value()!=0)
+		&&(msg.value()<Integer.MAX_VALUE)
+		&&(CMLib.factions().getFaction(msg.othersMessage())!=null)
+		&&(this.pFactionList!=null)
+		&&(this.pFactionList.size()>0))
+		{
+			for(final Pair<String,String> p : this.pFactionList)
+			{
+				final String factionName = (p.first.equals("*")
+						?("AINST_"+this.instTypeID.toUpperCase().trim())
+						:p.first);
+				Faction F=null;
+				if(CMLib.factions().isFactionID(factionName))
+					F=CMLib.factions().getFaction(factionName);
+				if(F==null)
+					F=CMLib.factions().getFaction(factionName);
+				if(F==null)
+					F=CMLib.factions().getFactionByName(factionName);
+				if(F==CMLib.factions().getFaction(msg.othersMessage()))
+					this.leaderFacChg+= msg.value();
 			}
 		}
 		super.executeMsg(myHost, msg);
@@ -1834,6 +1867,7 @@ public class InstanceArea extends StdAbility
 		if((instA != null)
 		&&(CMath.bset(instA.flags(), Area.FLAG_INSTANCE_CHILD)))
 		{
+			final List<MOB> mobsToNotify=new ArrayList<MOB>();
 			if(instA instanceof SubArea)
 			{
 				final Area pA = ((SubArea)instA).getSuperArea();
@@ -1852,6 +1886,12 @@ public class InstanceArea extends StdAbility
 									final AreaInstanceChild C = c.next();
 									if(C.A == instA)
 									{
+										for(final WeakReference<MOB> wm : C.mobs)
+										{
+											final MOB M=wm.get();
+											if(M!=null)
+												mobsToNotify.add(M);
+										}
 										c.remove();
 										break;
 									}
@@ -1937,6 +1977,11 @@ public class InstanceArea extends StdAbility
 				final LinkedList<Room> propRooms = new LinkedList<Room>();
 				for(final Enumeration<Room> r=instA.getFilledProperMap();r.hasMoreElements();)
 					propRooms.add(r.nextElement());
+				msg.setTarget(instA);
+				msg.setValue(this.leaderFacChg);
+				for(final MOB M : mobsToNotify)
+					M.executeMsg(M, msg);
+				msg.setValue(0);
 				// sends everyone home
 				for(final Iterator<Room> r=propRooms.iterator();r.hasNext();)
 				{
@@ -2058,40 +2103,7 @@ public class InstanceArea extends StdAbility
 			final Area instArea = ((affected instanceof Area) && (CMath.bset(((Area)affected).flags(), Area.FLAG_INSTANCE_CHILD)))
 					 ?(Area)affected:null;
 			if(instArea != null)
-			{
-				if(this.tickDown<=1)
-				{
-					final List<MOB> sendTo=new ArrayList<MOB>();
-					synchronized(instanceChildren)
-					{
-						for(final List<AreaInstanceChild> childList : instanceChildren.values())
-						{
-							for(final AreaInstanceChild childA : childList)
-							{
-								if(childA.A == instArea)
-								{
-									for(final WeakReference<MOB> rM : childA.mobs)
-									{
-										final MOB M=rM.get();
-										if(M != null)
-											sendTo.add(M);
-									}
-								}
-							}
-						}
-					}
-					for(final MOB M : sendTo)
-					{
-						final CMMsg msg=CMClass.getMsg(M,null,affected,CMMsg.MASK_ALWAYS|CMMsg.TYP_ENDINSTANCE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
-						if(M.location()!=null)
-						{
-							if(M.location().okMessage(M,msg))
-								M.location().send(M,msg);
-						}
-					}
-				}
 				destroyInstance(instArea);
-			}
 		}
 		super.unInvoke();
 	}

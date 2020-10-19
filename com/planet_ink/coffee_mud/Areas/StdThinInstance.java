@@ -408,6 +408,8 @@ public class StdThinInstance extends StdThinArea implements SubArea
 		try
 		{
 			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_EXPIRE,null);
+			msg.setTarget(childA);
+			childA.executeMsg(mob,msg);
 			final LinkedList<Room> propRooms = new LinkedList<Room>();
 			for(final Enumeration<Room> r=childA.getFilledProperMap();r.hasMoreElements();)
 				propRooms.add(r.nextElement());
