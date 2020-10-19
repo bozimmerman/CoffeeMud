@@ -1231,6 +1231,19 @@ public class InstanceArea extends StdAbility
 		&&(this.affected instanceof Area)
 		&&(CMath.bset(((Area)this.affected).flags(), Area.FLAG_INSTANCE_CHILD)))
 		{
+			if((canBeUninvoked())
+			&&(tickID==Tickable.TICKID_AREA)
+			&&(tickDown!=Integer.MAX_VALUE))
+			{
+				if(tickDown<0)
+					return !unInvoked;
+				if((--tickDown)<=0)
+				{
+					tickDown=-1;
+					unInvoke();
+					return false;
+				}
+			}
 			final Area instArea = (Area)affected;
 			// never let children go passive, as it will cause the area to be
 			// unloaded without this affect necessarily never finding out.
@@ -1696,7 +1709,10 @@ public class InstanceArea extends StdAbility
 						if(this.totalTickDown <= 0)
 							instA.addNonUninvokableEffect(able);
 						else
+						{
+							able.canBeUninvoked=true;
 							able.startTickDown(msg.source(), instA, this.totalTickDown);
+						}
 						able.leaderMob=new WeakReference<MOB>(leaderM);
 						if(created)
 							able.topPlayerFacVal = topPlayerFactionValue;
