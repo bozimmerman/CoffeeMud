@@ -1792,11 +1792,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		{
 			for(final String curr : CMLib.beanCounter().getAllCurrencies())
 			{
-				final MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(curr);
+				final MoneyLibrary.MoneyDefinition def=CMLib.beanCounter().getCurrencySet(curr);
 				moneyStr=moneyStr.toUpperCase();
 				String s=null;
-				if(DV!=null)
+				if(def!=null)
 				{
+					final MoneyLibrary.MoneyDenomination[] DV=def.denominations();
 					for (final MoneyDenomination element : DV)
 					{
 						s=element.name().toUpperCase();
@@ -1814,11 +1815,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		else
 		{
-			final MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(currency);
+			final MoneyLibrary.MoneyDefinition def=CMLib.beanCounter().getCurrencySet(currency);
 			moneyStr=moneyStr.toUpperCase();
 			String s=null;
-			if(DV!=null)
+			if(def!=null)
 			{
+				final MoneyLibrary.MoneyDenomination[] DV=def.denominations();
 				for (final MoneyDenomination element : DV)
 				{
 					s=element.name().toUpperCase();

@@ -143,12 +143,12 @@ public class StdArea implements Area
 	@Override
 	public void setCurrency(final String newCurrency)
 	{
-		if (currency.length() > 0)
+		if ((currency != null) && (currency.length() > 0))
 		{
 			CMLib.beanCounter().unloadCurrencySet(currency);
 			currency = newCurrency;
 			for (final Enumeration<Area> e = CMLib.map().areas(); e.hasMoreElements();)
-				CMLib.beanCounter().getCurrencySet(e.nextElement().getCurrency());
+				CMLib.beanCounter().getCurrencySet(e.nextElement().getFinalCurrency());
 		}
 		else
 		{
@@ -157,8 +157,27 @@ public class StdArea implements Area
 		}
 	}
 
+	protected String finalCurrency(final Area A)
+	{
+		if(A.getRawCurrency().length()>0)
+			return A.getRawCurrency();
+		for (final Enumeration<Area> i = A.getParents(); i.hasMoreElements();)
+		{
+			final String s = finalCurrency(i.nextElement());
+			if (s.length()>0)
+				return s;
+		}
+		return "";
+	}
+
 	@Override
-	public String getCurrency()
+	public String getFinalCurrency()
+	{
+		return finalCurrency(this);
+	}
+
+	@Override
+	public String getRawCurrency()
 	{
 		return currency;
 	}
@@ -757,7 +776,7 @@ public class StdArea implements Area
 	}
 
 	@Override
-	public String finalPrejudiceFactors()
+	public String getFinalPrejudiceFactors()
 	{
 		final String s = finalPrejudiceFactors(this);
 		if (s.length() > 0)
@@ -767,8 +786,8 @@ public class StdArea implements Area
 
 	protected String finalPrejudiceFactors(final Area A)
 	{
-		if (A.prejudiceFactors().length() > 0)
-			return A.prejudiceFactors();
+		if (A.getRawPrejudiceFactors().length() > 0)
+			return A.getRawPrejudiceFactors();
 		for (final Enumeration<Area> i = A.getParents(); i.hasMoreElements();)
 		{
 			final String s = finalPrejudiceFactors(i.nextElement());
@@ -779,7 +798,7 @@ public class StdArea implements Area
 	}
 
 	@Override
-	public String prejudiceFactors()
+	public String getRawPrejudiceFactors()
 	{
 		return prejudiceFactors;
 	}
@@ -791,7 +810,7 @@ public class StdArea implements Area
 	}
 
 	@Override
-	public String[] finalItemPricingAdjustments()
+	public String[] getFinalItemPricingAdjustments()
 	{
 		final String[] s = finalItemPricingAdjustments(this);
 		if (s.length > 0)
@@ -801,8 +820,8 @@ public class StdArea implements Area
 
 	protected String[] finalItemPricingAdjustments(final Area A)
 	{
-		if (A.itemPricingAdjustments().length > 0)
-			return A.itemPricingAdjustments();
+		if (A.getRawItemPricingAdjustments().length > 0)
+			return A.getRawItemPricingAdjustments();
 		for (final Enumeration<Area> i = A.getParents(); i.hasMoreElements();)
 		{
 			final String[] s = finalItemPricingAdjustments(i.nextElement());
@@ -813,7 +832,7 @@ public class StdArea implements Area
 	}
 
 	@Override
-	public String[] itemPricingAdjustments()
+	public String[] getRawItemPricingAdjustments()
 	{
 		return itemPricingAdjustments;
 	}
@@ -825,7 +844,7 @@ public class StdArea implements Area
 	}
 
 	@Override
-	public String finalIgnoreMask()
+	public String getFinalIgnoreMask()
 	{
 		final String s = finalIgnoreMask(this);
 		if (s.length() > 0)
@@ -835,8 +854,8 @@ public class StdArea implements Area
 
 	protected String finalIgnoreMask(final Area A)
 	{
-		if (A.ignoreMask().length() > 0)
-			return A.ignoreMask();
+		if (A.getRawIgnoreMask().length() > 0)
+			return A.getRawIgnoreMask();
 		for (final Enumeration<Area> i = A.getParents(); i.hasMoreElements();)
 		{
 			final String s = finalIgnoreMask(i.nextElement());
@@ -847,7 +866,7 @@ public class StdArea implements Area
 	}
 
 	@Override
-	public String ignoreMask()
+	public String getRawIgnoreMask()
 	{
 		return ignoreMask;
 	}
@@ -859,7 +878,7 @@ public class StdArea implements Area
 	}
 
 	@Override
-	public Pair<Long, TimePeriod> finalBudget()
+	public Pair<Long, TimePeriod> getFinalBudget()
 	{
 		final Pair<Long, TimePeriod> budget = finalAreaBudget(this);
 		if (budget != null)
@@ -869,8 +888,8 @@ public class StdArea implements Area
 
 	protected Pair<Long, TimePeriod> finalAreaBudget(final Area A)
 	{
-		if (A.budget().length() > 0)
-			return CMLib.coffeeShops().parseBudget(A.budget());
+		if (A.getRawBbudget().length() > 0)
+			return CMLib.coffeeShops().parseBudget(A.getRawBbudget());
 		for (final Enumeration<Area> i = A.getParents(); i.hasMoreElements();)
 		{
 			final Pair<Long, TimePeriod> budget = finalAreaBudget(i.nextElement());
@@ -881,7 +900,7 @@ public class StdArea implements Area
 	}
 
 	@Override
-	public String budget()
+	public String getRawBbudget()
 	{
 		return budget;
 	}
@@ -893,7 +912,7 @@ public class StdArea implements Area
 	}
 
 	@Override
-	public double[] finalDevalueRate()
+	public double[] getFinalDevalueRate()
 	{
 		final double[] rate = finalAreaDevalueRate(this);
 		if (rate != null)
@@ -904,8 +923,8 @@ public class StdArea implements Area
 
 	protected double[] finalAreaDevalueRate(final Area A)
 	{
-		if (A.devalueRate().length() > 0)
-			return CMLib.coffeeShops().parseDevalueRate(A.devalueRate());
+		if (A.getRawDevalueRate().length() > 0)
+			return CMLib.coffeeShops().parseDevalueRate(A.getRawDevalueRate());
 		for (final Enumeration<Area> i = A.getParents(); i.hasMoreElements();)
 		{
 			final double[] rate = finalAreaDevalueRate(i.nextElement());
@@ -916,7 +935,7 @@ public class StdArea implements Area
 	}
 
 	@Override
-	public String devalueRate()
+	public String getRawDevalueRate()
 	{
 		return (devalueRate == null) ? "" : (devalueRate[0] + " " + devalueRate[1]);
 	}
@@ -928,7 +947,7 @@ public class StdArea implements Area
 	}
 
 	@Override
-	public int invResetRate()
+	public int getRawInvResetRate()
 	{
 		return invResetRate;
 	}
@@ -940,7 +959,7 @@ public class StdArea implements Area
 	}
 
 	@Override
-	public int finalInvResetRate()
+	public int getFinalInvResetRate()
 	{
 		final int x = finalInvResetRate(this);
 		if (x != 0)
@@ -950,8 +969,8 @@ public class StdArea implements Area
 
 	protected int finalInvResetRate(final Area A)
 	{
-		if (A.invResetRate() != 0)
-			return A.invResetRate();
+		if (A.getRawInvResetRate() != 0)
+			return A.getRawInvResetRate();
 		for (final Enumeration<Area> i = A.getParents(); i.hasMoreElements();)
 		{
 			final int x = finalInvResetRate(i.nextElement());
@@ -2612,17 +2631,17 @@ public class StdArea implements Area
 		case 5:
 			return "" + CMLib.xml().getXMLList(blurbFlags.toStringVector(" "));
 		case 6:
-			return prejudiceFactors();
+			return getRawPrejudiceFactors();
 		case 7:
-			return budget();
+			return getRawBbudget();
 		case 8:
-			return devalueRate();
+			return getRawDevalueRate();
 		case 9:
-			return "" + invResetRate();
+			return "" + getRawInvResetRate();
 		case 10:
-			return ignoreMask();
+			return getRawIgnoreMask();
 		case 11:
-			return CMParms.toListString(itemPricingAdjustments());
+			return CMParms.toListString(getRawItemPricingAdjustments());
 		case 12:
 			return "" + getAtmosphereCode();
 		case 13:

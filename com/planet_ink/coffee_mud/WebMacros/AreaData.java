@@ -373,16 +373,16 @@ public class AreaData extends StdWebMacro
 				if(parms.containsKey("CURRENCIES"))
 				{
 					str.append("<OPTION VALUE=\"\"");
-					if(A.getCurrency().length()==0)
+					if((A.getRawCurrency()!=null)&&(A.getRawCurrency().length()==0))
 						str.append(" SELECTED");
-					str.append(L(">Default Currency"));
+					str.append(L(">Default"));
 					for(int i=1;i<CMLib.beanCounter().getAllCurrencies().size();i++)
 					{
 						final String s=CMLib.beanCounter().getAllCurrencies().get(i);
 						if(s.length()>0)
 						{
 							str.append("<OPTION VALUE=\""+s+"\"");
-							if(s.equalsIgnoreCase(A.getCurrency()))
+							if(s.equalsIgnoreCase(A.getRawCurrency()))
 								str.append(" SELECTED");
 							str.append(">"+s);
 						}
@@ -392,42 +392,43 @@ public class AreaData extends StdWebMacro
 				{
 					String currency=httpReq.getUrlParameter("CURRENCY");
 					if((currency==null)||(currency.length()==0))
-						currency=A.getCurrency();
-					str.append(currency);
+						currency=A.getRawCurrency();
+					if(currency != null)
+						str.append(currency);
 				}
 				if(parms.containsKey("SHOPPREJ"))
 				{
 					String val=httpReq.getUrlParameter("SHOPPREJ");
 					if((val==null)||(val.length()==0))
-						val=A.prejudiceFactors();
+						val=A.getRawPrejudiceFactors();
 					str.append(val);
 				}
 				if(parms.containsKey("BUDGET"))
 				{
 					String val=httpReq.getUrlParameter("BUDGET");
 					if((val==null)||(val.length()==0))
-						val=A.budget();
+						val=A.getRawBbudget();
 					str.append(val);
 				}
 				if(parms.containsKey("DEVALRATE"))
 				{
 					String val=httpReq.getUrlParameter("DEVALRATE");
 					if((val==null)||(val.length()==0))
-						val=A.devalueRate();
+						val=A.getRawDevalueRate();
 					str.append(val);
 				}
 				if(parms.containsKey("INVRESETRATE"))
 				{
 					String val=httpReq.getUrlParameter("INVRESETRATE");
 					if((val==null)||(val.length()==0))
-						val=A.invResetRate()+"";
+						val=A.getRawInvResetRate()+"";
 					str.append(val);
 				}
 				if(parms.containsKey("IGNOREMASK"))
 				{
 					String val=httpReq.getUrlParameter("IGNOREMASK");
 					if((val==null)||(val.length()==0))
-						val=A.ignoreMask();
+						val=A.getRawIgnoreMask();
 					str.append(val);
 				}
 				if(parms.containsKey("PRICEFACTORS"))

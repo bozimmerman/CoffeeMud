@@ -70,7 +70,7 @@ public class GenAuctioneer extends StdAuctioneer
 	}
 
 	@Override
-	public String prejudiceFactors()
+	public String getRawPrejudiceFactors()
 	{
 		return PrejudiceFactors;
 	}
@@ -82,7 +82,7 @@ public class GenAuctioneer extends StdAuctioneer
 	}
 
 	@Override
-	public String ignoreMask()
+	public String getRawIgnoreMask()
 	{
 		return IgnoreMask;
 	}
@@ -130,7 +130,7 @@ public class GenAuctioneer extends StdAuctioneer
 		case 0:
 			return "" + getWhatIsSoldMask();
 		case 1:
-			return prejudiceFactors();
+			return getRawPrejudiceFactors();
 		case 2:
 			return auctionHouse();
 		case 3:
@@ -144,9 +144,9 @@ public class GenAuctioneer extends StdAuctioneer
 		case 7:
 			return "" + minTimedAuctionDays();
 		case 8:
-			return ignoreMask();
+			return getRawIgnoreMask();
 		case 9:
-			return CMParms.toListString(itemPricingAdjustments());
+			return CMParms.toListString(getRawItemPricingAdjustments());
 		case 10:
 			return this.getWhatIsSoldZappermask();
 		case 11:

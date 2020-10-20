@@ -43,9 +43,9 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		return "BeanCounter";
 	}
 
-	public static Map<String,MoneyDenomination[]> defaultCurrencies=new Hashtable<String,MoneyDenomination[]>();
+	public static Map<String,MoneyDefinition> defaultCurrencies=new Hashtable<String,MoneyDefinition>();
 
-	public Map<String, MoneyDenomination[]>	currencies						= new Hashtable<String, MoneyDenomination[]>();
+	public Map<String, MoneyDefinition	>	currencies						= new Hashtable<String, MoneyDefinition>();
 	public List<String>						allCurrencyNames				= new Vector<String>();
 	public Map<String, List<String>>		allCurrencyDenominationNames	= new Hashtable<String, List<String>>();
 
@@ -81,6 +81,38 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		}
 	}
 
+	private class MoneyDefinitionImpl implements MoneyDefinition
+	{
+		private final String ID;
+		private final boolean canTrade;
+		private final MoneyDenomination[] denominations;
+
+		@Override
+		public String ID()
+		{
+			return ID;
+		}
+
+		@Override
+		public boolean canTrade()
+		{
+			return canTrade;
+		}
+
+		@Override
+		public MoneyDenomination[] denominations()
+		{
+			return denominations;
+		}
+
+		protected MoneyDefinitionImpl(final String ID, final MoneyDenomination[] denominations,final boolean canTrade)
+		{
+			this.ID=ID;
+			this.denominations=denominations;
+			this.canTrade=canTrade;
+		}
+	}
+
 	@Override
 	public void unloadCurrencySet(final String currency)
 	{
@@ -97,12 +129,12 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	}
 
 	@Override
-	public MoneyDenomination[] createCurrencySet(final String currency)
+	public MoneyDefinition createCurrencySet(final String currency)
 	{
 		return createCurrencySet(currencies,currency);
 	}
 
-	protected MoneyDenomination[] createCurrencySet(final Map<String,MoneyDenomination[]> currencies, String currency)
+	protected MoneyDefinition createCurrencySet(final Map<String,MoneyDefinition> currencies, String currency)
 	{
 		int x=currency.indexOf('=');
 		if(x<0)
@@ -116,13 +148,18 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		String s=null;
 		String num=null;
 		double d=0.0;
+		boolean canTrade=true;
 		final Vector<String> currencyNames=new Vector<String>();
 		for(int v=0;v<CV.size();v++)
 		{
 			s=CV.get(v);
 			x=s.indexOf(' ');
 			if(x<0)
+			{
+				if(s.equalsIgnoreCase("notrade"))
+					canTrade=false;
 				continue;
+			}
 			num=s.substring(0,x).trim();
 			if(CMath.isDouble(num))
 				d=CMath.s_double(num);
@@ -162,30 +199,34 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 					currencyNames.add(shortName);
 			}
 		}
-		final MoneyDenomination[] DVs=new MoneyDenominationImpl[DV.size()];
+		final MoneyDenomination[] newDenomVs=new MoneyDenominationImpl[DV.size()];
 		for(int i=0;i<DV.size();i++)
-			DVs[i]=DV.elementAt(i);
-		currencies.put(code,DVs);
+			newDenomVs[i]=DV.elementAt(i);
+		final MoneyDefinition def=new MoneyDefinitionImpl(code,newDenomVs,canTrade);
+		currencies.put(code,def);
 		allCurrencyNames.add(code);
 		allCurrencyDenominationNames.put(code,currencyNames);
-		return DVs;
+		return def;
 	}
 
 	@Override
 	public int getDenominationIndex(final String currency, final double value)
 	{
-		final MoneyDenomination[] DV=getCurrencySet(currency);
+		final MoneyDefinition DV=getCurrencySet(currency);
 		if(DV!=null)
-		for(int d=0;d<DV.length;d++)
 		{
-			if(value==DV[d].value())
-				return d;
+			final MoneyDenomination[] V=DV.denominations();
+			for(int d=0;d<V.length;d++)
+			{
+				if(value==V[d].value())
+					return d;
+			}
 		}
 		return -1;
 	}
 
 	@Override
-	public MoneyDenomination[] getCurrencySet(final String currency)
+	public MoneyDefinition getCurrencySet(final String currency)
 	{
 		if(currency==null)
 			return null;
@@ -230,10 +271,10 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public double lowestAbbreviatedDenomination(final String currency)
 	{
-		final MoneyDenomination[] DV=getCurrencySet(currency);
+		final MoneyDefinition DV=getCurrencySet(currency);
 		if(DV!=null)
 		{
-			for (final MoneyDenomination element : DV)
+			for (final MoneyDenomination element : DV.denominations())
 			{
 				if(element.abbr().length()>0)
 					return element.value();
@@ -246,7 +287,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public double lowestAbbreviatedDenomination(final String currency, final double absoluteAmount)
 	{
-		final MoneyDenomination[] DV=getCurrencySet(currency);
+		final MoneyDefinition DV=getCurrencySet(currency);
 		if(DV!=null)
 		{
 			final double absoluteLowest=lowestAbbreviatedDenomination(currency);
@@ -254,11 +295,12 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			double diff=0.0;
 			double denom=0.0;
 			long num=0;
-			for(int i=DV.length-1;i>=0;i--)
+			final MoneyDenomination[] V=DV.denominations();
+			for(int i=V.length-1;i>=0;i--)
 			{
-				if(DV[i].abbr().length()>0)
+				if(V[i].abbr().length()>0)
 				{
-					denom=DV[i].value();
+					denom=V[i].value();
 					if(denom<absoluteAmount)
 					{
 						num=Math.round(Math.floor(absoluteAmount/denom));
@@ -312,10 +354,11 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public String getDenominationShortCode(final String currency, final double denomination)
 	{
-		final MoneyDenomination[] DV=getCurrencySet(currency);
+		final MoneyDefinition DV=getCurrencySet(currency);
 		if(DV==null)
 			return "";
-		for (final MoneyDenomination element : DV)
+		final MoneyDenomination[] V=DV.denominations();
+		for (final MoneyDenomination element : V)
 		{
 			if(element.value()==denomination)
 				return element.abbr();
@@ -326,10 +369,10 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public double getLowestDenomination(final String currency)
 	{
-		final MoneyDenomination[] DV=getCurrencySet(currency);
-		if((DV==null)||(DV.length==0))
+		final MoneyDefinition DV=getCurrencySet(currency);
+		if((DV==null)||(DV.denominations().length==0))
 			return 1.0;
-		return DV[0].value();
+		return DV.denominations()[0].value();
 	}
 
 	@Override
@@ -354,14 +397,15 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public double getBestDenomination(final String currency, final double absoluteValue)
 	{
-		final MoneyDenomination[] DV=getCurrencySet(currency);
+		final MoneyDefinition DV=getCurrencySet(currency);
 		double denom=0.0;
 		if(DV!=null)
 		{
+			final MoneyDenomination[] V=DV.denominations();
 			final double low=getLowestDenomination(currency);
-			for(int d=DV.length-1;d>=0;d--)
+			for(int d=V.length-1;d>=0;d--)
 			{
-				denom=DV[d].value();
+				denom=V[d].value();
 				if((denom<=absoluteValue)
 				&&(absoluteValue-(Math.floor(absoluteValue/denom)*denom)<low))
 					return denom;
@@ -373,13 +417,14 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public double getBestDenomination(final String currency, final int numberOfCoins, final double absoluteValue)
 	{
-		final MoneyDenomination[] DV=getCurrencySet(currency);
+		final MoneyDefinition DV=getCurrencySet(currency);
 		double bestDenom=0.0;
 		if(DV!=null)
 		{
-			for(int d=DV.length-1;d>=0;d--)
+			final MoneyDenomination[] V=DV.denominations();
+			for(int d=V.length-1;d>=0;d--)
 			{
-				final double denom=DV[d].value();
+				final double denom=V[d].value();
 				if(((denom*(numberOfCoins))<=absoluteValue)
 				&&(denom>bestDenom))
 					bestDenom=denom;
@@ -391,19 +436,22 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public double[] getBestDenominations(final String currency, double absoluteValue)
 	{
-		final MoneyDenomination[] DV=getCurrencySet(currency);
+		final MoneyDefinition def=getCurrencySet(currency);
 		final Vector<Double> V=new Vector<Double>();
-		if(DV!=null)
-		for(int d=DV.length-1;d>=0;d--)
+		if(def!=null)
 		{
-			final double denom=DV[d].value();
-			if(denom<=absoluteValue)
+			final MoneyDenomination[] DV=def.denominations();
+			for(int d=DV.length-1;d>=0;d--)
 			{
-				final long number=Math.round(Math.floor(absoluteValue/denom));
-				if(number>0)
+				final double denom=DV[d].value();
+				if(denom<=absoluteValue)
 				{
-					V.addElement(Double.valueOf(denom));
-					absoluteValue-=CMath.mul(denom,number);
+					final long number=Math.round(Math.floor(absoluteValue/denom));
+					if(number>0)
+					{
+						V.addElement(Double.valueOf(denom));
+						absoluteValue-=CMath.mul(denom,number);
+					}
 				}
 			}
 		}
@@ -431,26 +479,29 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public String getDenominationName(final String currency, final double denomination)
 	{
-		MoneyDenomination[] DV=getCurrencySet(currency);
-		if((DV==null)||(DV.length==0))
-			DV=getCurrencySet("");
-		if((DV==null)||(DV.length==0))
+		MoneyDefinition def=getCurrencySet(currency);
+		if((def==null)||(def.denominations().length==0))
+			def=getCurrencySet("");
+		if((def==null)||(def.denominations().length==0))
 			return "unknown!";
 		int closestX=getDenominationIndex(currency, denomination);
 		if(closestX<0)
-		for(int i=0;i<DV.length;i++)
 		{
-			if(DV[i].value()<=denomination)
+			final MoneyDenomination[] DV=def.denominations();
+			for(int i=0;i<DV.length;i++)
 			{
-				if((DV[i].value()==denomination)
-				||(closestX<0)
-				||((denomination-DV[i].value())<(denomination-DV[closestX].value())))
-					closestX=i;
+				if(DV[i].value()<=denomination)
+				{
+					if((DV[i].value()==denomination)
+					||(closestX<0)
+					||((denomination-DV[i].value())<(denomination-DV[closestX].value())))
+						closestX=i;
+				}
 			}
 		}
 		if(closestX<0)
 			return "unknown";
-		return DV[closestX].name();
+		return def.denominations()[closestX].name();
 	}
 
 	@Override
@@ -1287,40 +1338,39 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	}
 
 	@Override
-	public String getCurrency(final Environmental E)
+	public String getCurrency(Environmental E)
 	{
+		if(E instanceof ShopKeeper)
+		{
+			final String s=((ShopKeeper)E).getRawCurrency();
+			if(s.length()>0)
+			{
+				final int x=s.indexOf('=');
+				if(x<0)
+					return s.toUpperCase().trim();
+				return s.substring(0,x).toUpperCase().trim();
+			}
+		}
 		if(E instanceof MOB)
 		{
 			if(((MOB)E).getStartRoom()!=null)
-				return getCurrency(((MOB)E).getStartRoom());
+				E=(((MOB)E).getStartRoom());
 			else
 			if(((MOB)E).location()!=null)
-				return getCurrency(((MOB)E).location());
+				E=(((MOB)E).location());
 		}
-		else
 		if(E instanceof Room)
-			return getCurrency(((Room)E).getArea());
-		else
-		if(E instanceof Coins)
-			return ((Coins)E).getCurrency();
-		else
+			E=((Room)E).getArea();
 		if(E instanceof Area)
 		{
-			String s=((Area)E).getCurrency();
-			if(s.length()==0)
-			{
-				for(final Enumeration<Area> p=((Area)E).getParents();p.hasMoreElements();)
-				{
-					s=getCurrency(p.nextElement());
-					if(s.length()>0)
-						break;
-				}
-			}
+			final String s=((Area)E).getFinalCurrency();
 			final int x=s.indexOf('=');
 			if(x<0)
 				return s.toUpperCase().trim();
 			return s.substring(0,x).toUpperCase().trim();
 		}
+		if(E instanceof Coins)
+			return ((Coins)E).getCurrency();
 		return "";
 	}
 

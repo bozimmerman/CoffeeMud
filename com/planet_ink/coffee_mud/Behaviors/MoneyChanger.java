@@ -129,6 +129,9 @@ public class MoneyChanger extends StdBehavior
 
 	protected boolean doIExchangeThisCurrency(final Environmental affecting, final String currency)
 	{
+		final MoneyLibrary.MoneyDefinition def=CMLib.beanCounter().getCurrencySet(currency);
+		if((def != null)&&(!def.canTrade()))
+			return false;
 		final Map<String,Double> rates=getRatesFor(affecting, currency);
 		return ((rates.size()==0)||(rates.containsKey(currency.toUpperCase())));
 	}
@@ -224,6 +227,12 @@ public class MoneyChanger extends StdBehavior
 			if(!doIExchangeThisCurrency(host,((Coins)msg.tool()).getCurrency()))
 			{
 				CMLib.commands().postSay(observer,source,L("I'm sorry, I don't accept that kind of currency."),true,false);
+				return false;
+			}
+			final MoneyLibrary.MoneyDefinition targetCurrencyDef=CMLib.beanCounter().getCurrencySet(CMLib.beanCounter().getCurrency(observer));
+			if((targetCurrencyDef != null)&&(!targetCurrencyDef.canTrade()))
+			{
+				CMLib.commands().postSay(observer,source,L("I'm sorry, I can't convert into @x1.",CMStrings.capitalizeAndLower(targetCurrencyDef.ID())),true,false);
 				return false;
 			}
 			double value=((Coins)msg.tool()).getTotalValue();

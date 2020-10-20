@@ -70,7 +70,7 @@ public class GenLibrarian extends StdLibrarian
 	}
 
 	@Override
-	public String prejudiceFactors()
+	public String getRawPrejudiceFactors()
 	{
 		return prejudiceFactors;
 	}
@@ -82,7 +82,7 @@ public class GenLibrarian extends StdLibrarian
 	}
 
 	@Override
-	public String ignoreMask()
+	public String getRawIgnoreMask()
 	{
 		return ignoreMask;
 	}
@@ -130,7 +130,7 @@ public class GenLibrarian extends StdLibrarian
 		case 0:
 			return "" + getWhatIsSoldMask();
 		case 1:
-			return prejudiceFactors();
+			return getRawPrejudiceFactors();
 		case 2:
 			return libraryChain();
 		case 3:
@@ -150,9 +150,9 @@ public class GenLibrarian extends StdLibrarian
 		case 10:
 			return this.contributorMask();
 		case 11:
-			return ignoreMask();
+			return getRawIgnoreMask();
 		case 12:
-			return CMParms.toListString(itemPricingAdjustments());
+			return CMParms.toListString(getRawItemPricingAdjustments());
 		case 13:
 			return this.getWhatIsSoldZappermask();
 		case 14:

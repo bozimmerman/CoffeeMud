@@ -501,7 +501,7 @@ public class Skill_HireCrewmember extends StdSkill
 
 			final int medLevel = minLevel + (int)Math.round(CMath.ceiling(CMath.div(range, 2.0)));
 			final double amt = medLevel * 10.0;
-			final String currency=R.getArea().getCurrency();
+			final String currency=R.getArea().getFinalCurrency();
 			moneyStr = CMLib.beanCounter().abbreviatedPrice(currency, amt);
 			if(CMLib.beanCounter().getTotalAbsoluteValue(mob, currency) < amt)
 			{

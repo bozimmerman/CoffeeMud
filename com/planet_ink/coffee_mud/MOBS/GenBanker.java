@@ -72,7 +72,7 @@ public class GenBanker extends StdBanker
 	}
 
 	@Override
-	public String prejudiceFactors()
+	public String getRawPrejudiceFactors()
 	{
 		return prejudiceFactors;
 	}
@@ -84,7 +84,7 @@ public class GenBanker extends StdBanker
 	}
 
 	@Override
-	public String ignoreMask()
+	public String getRawIgnoreMask()
 	{
 		return ignoreMask;
 	}
@@ -127,7 +127,7 @@ public class GenBanker extends StdBanker
 		case 0:
 			return "" + getWhatIsSoldMask();
 		case 1:
-			return prejudiceFactors();
+			return getRawPrejudiceFactors();
 		case 2:
 			return bankChain();
 		case 3:
@@ -135,11 +135,11 @@ public class GenBanker extends StdBanker
 		case 4:
 			return "" + getItemInterest();
 		case 5:
-			return ignoreMask();
+			return getRawIgnoreMask();
 		case 6:
 			return "" + getLoanInterest();
 		case 7:
-			return CMParms.toListString(itemPricingAdjustments());
+			return CMParms.toListString(getRawItemPricingAdjustments());
 		case 8:
 			return this.getWhatIsSoldZappermask();
 		case 9:

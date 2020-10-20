@@ -722,7 +722,7 @@ public class MobData extends StdWebMacro
 			int num=1;
 			if(!httpReq.isUrlParameter("IPRIC"+num))
 			{
-				final String[] prics=E.itemPricingAdjustments();
+				final String[] prics=E.getRawItemPricingAdjustments();
 				for (final String pric : prics)
 				{
 					final int x=pric.indexOf(' ');
@@ -1582,7 +1582,7 @@ public class MobData extends StdWebMacro
 					break;
 				case SHOPPREJ: // prejudice factors
 					if((firstTime)&&(M instanceof ShopKeeper))
-						old=((ShopKeeper)M).prejudiceFactors();
+						old=((ShopKeeper)M).getRawPrejudiceFactors();
 					str.append(old);
 					break;
 				case ISDEITY: // is deity
@@ -1656,17 +1656,17 @@ public class MobData extends StdWebMacro
 					break;
 				case BUDGET: // budget
 					if((firstTime)&&(M instanceof ShopKeeper))
-						old=((ShopKeeper)M).budget();
+						old=((ShopKeeper)M).getRawBbudget();
 					str.append(old);
 					break;
 				case DEVALRATE: // devaluation rate
 					if((firstTime)&&(M instanceof ShopKeeper))
-						old=((ShopKeeper)M).devalueRate();
+						old=((ShopKeeper)M).getRawDevalueRate();
 					str.append(old);
 					break;
 				case INVRESETRATE: // inventory reset rate
 					if((firstTime)&&(M instanceof ShopKeeper))
-						old=""+((ShopKeeper)M).invResetRate();
+						old=""+((ShopKeeper)M).getRawInvResetRate();
 					str.append(old);
 					break;
 				case IMAGE: // image
@@ -1759,7 +1759,7 @@ public class MobData extends StdWebMacro
 					break;
 				case IGNOREMASK: // ignore mask
 					if((firstTime)&&(M instanceof ShopKeeper))
-						old=((ShopKeeper)M).ignoreMask();
+						old=((ShopKeeper)M).getRawIgnoreMask();
 					str.append(old);
 					break;
 				case LOANINT: // loan interest
@@ -1916,6 +1916,34 @@ public class MobData extends StdWebMacro
 						if(liquid.intValue()==CMath.s_int(old))
 							str.append(" SELECTED");
 						str.append(">"+RawMaterial.CODES.NAME(liquid.intValue()));
+					}
+					break;
+				case CURRENCY: // currency
+					{
+						if((firstTime)&&(M instanceof Economics))
+							old=((Economics)M).getRawCurrency();
+						if(old != null)
+							str.append(old);
+						break;
+					}
+				case CURRENCIES: // currencies drop-down
+					if(M instanceof Economics)
+					{
+						str.append("<OPTION VALUE=\"\"");
+						if((((Economics)M).getRawCurrency()!=null)&&(((Economics)M).getRawCurrency().length()==0))
+							str.append(" SELECTED");
+						str.append(L(">Default"));
+						for(int i=1;i<CMLib.beanCounter().getAllCurrencies().size();i++)
+						{
+							final String s=CMLib.beanCounter().getAllCurrencies().get(i);
+							if(s.length()>0)
+							{
+								str.append("<OPTION VALUE=\""+s+"\"");
+								if(s.equalsIgnoreCase(((Economics)M).getRawCurrency()))
+									str.append(" SELECTED");
+								str.append(">"+s);
+							}
+						}
 					}
 					break;
 				}

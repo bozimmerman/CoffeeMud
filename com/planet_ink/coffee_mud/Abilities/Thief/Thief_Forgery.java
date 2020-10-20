@@ -157,8 +157,8 @@ public class Thief_Forgery extends ThiefSkill
 		}
 		if(newName.length()==0)
 		{
-			final MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(CMLib.beanCounter().getCurrency(mob));
-			for (final MoneyDenomination element : DV)
+			final MoneyLibrary.MoneyDefinition DV=CMLib.beanCounter().getCurrencySet(CMLib.beanCounter().getCurrency(mob));
+			for (final MoneyDenomination element : DV.denominations())
 			{
 				final Item note=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(mob), element.value());
 				if((note!=null)&&(CMLib.english().containsString(note.name(),forgeWhat)))

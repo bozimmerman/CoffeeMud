@@ -157,13 +157,30 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	@Override
 	public void setCurrency(final String newCurrency)
 	{
-		currency = newCurrency;
+		if ((currency != null) && (currency.length() > 0))
+		{
+			CMLib.beanCounter().unloadCurrencySet(currency);
+			currency = newCurrency;
+		}
+		else
+		{
+			currency = newCurrency;
+			CMLib.beanCounter().getCurrencySet(currency);
+		}
 	}
 
 	@Override
-	public String getCurrency()
+	public String getRawCurrency()
 	{
 		return currency;
+	}
+
+	@Override
+	public String getFinalCurrency()
+	{
+		if(currency.length()>0)
+			return currency;
+		return "";
 	}
 
 	@Override
@@ -1916,7 +1933,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public String prejudiceFactors()
+	public String getRawPrejudiceFactors()
 	{
 		return "";
 	}
@@ -1929,7 +1946,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	public final static String[]	empty	= new String[0];
 
 	@Override
-	public String[] itemPricingAdjustments()
+	public String[] getRawItemPricingAdjustments()
 	{
 		return empty;
 	}
@@ -1940,7 +1957,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public String ignoreMask()
+	public String getRawIgnoreMask()
 	{
 		return "";
 	}
@@ -1951,7 +1968,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public String budget()
+	public String getRawBbudget()
 	{
 		return "";
 	}
@@ -1962,7 +1979,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public String devalueRate()
+	public String getRawDevalueRate()
 	{
 		return "";
 	}
@@ -1973,7 +1990,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public int invResetRate()
+	public int getRawInvResetRate()
 	{
 		return 0;
 	}
@@ -1984,37 +2001,37 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public int finalInvResetRate()
+	public int getFinalInvResetRate()
 	{
 		return 0;
 	}
 
 	@Override
-	public String finalPrejudiceFactors()
+	public String getFinalPrejudiceFactors()
 	{
 		return "";
 	}
 
 	@Override
-	public String finalIgnoreMask()
+	public String getFinalIgnoreMask()
 	{
 		return "";
 	}
 
 	@Override
-	public String[] finalItemPricingAdjustments()
+	public String[] getFinalItemPricingAdjustments()
 	{
 		return empty;
 	}
 
 	@Override
-	public Pair<Long, TimePeriod> finalBudget()
+	public Pair<Long, TimePeriod> getFinalBudget()
 	{
 		return null;
 	}
 
 	@Override
-	public double[] finalDevalueRate()
+	public double[] getFinalDevalueRate()
 	{
 		return null;
 	}

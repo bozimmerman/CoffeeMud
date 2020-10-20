@@ -663,9 +663,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			return val;
 		}
 
-		double prejudiceFactor=prejudiceFactor(buyerCustM,shopKeeper.finalPrejudiceFactors(),false);
+		double prejudiceFactor=prejudiceFactor(buyerCustM,shopKeeper.getFinalPrejudiceFactors(),false);
 		final Room loc=CMLib.map().roomLocation(shopKeeper);
-		prejudiceFactor*=itemPriceFactor(product,loc,shopKeeper.finalItemPricingAdjustments(),false);
+		prejudiceFactor*=itemPriceFactor(product,loc,shopKeeper.getFinalItemPricingAdjustments(),false);
 		val.absoluteGoldPrice=CMath.mul(prejudiceFactor,val.absoluteGoldPrice);
 
 		// the price is 200% at 0 charisma, and 100% at 35
@@ -854,7 +854,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		num += (int)Math.round(Math.floor(number/2.0));
 		if(num<=0)
 			return 0.0;
-		final double[] rates=shop.finalDevalueRate();
+		final double[] rates=shop.getFinalDevalueRate();
 		if(rates == null)
 			return 0.0;
 		double rate=(product instanceof RawMaterial)?rates[1]:rates[0];
@@ -873,7 +873,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		final double number = this.getProductCount(product);
 		if(number <= 1.0)
 			return false;
-		final double[] rates=shop.finalDevalueRate();
+		final double[] rates=shop.getFinalDevalueRate();
 		if(rates == null)
 			return false;
 		final double rate=(product instanceof RawMaterial)?rates[1]:rates[0];
@@ -948,9 +948,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				return val;
 			}
 
-			double prejudiceFactor=prejudiceFactor(sellerCustM,shopKeeper.finalPrejudiceFactors(),true);
+			double prejudiceFactor=prejudiceFactor(sellerCustM,shopKeeper.getFinalPrejudiceFactors(),true);
 			final Room loc=CMLib.map().roomLocation(shopKeeper);
-			prejudiceFactor*=itemPriceFactor(product,loc,shopKeeper.finalItemPricingAdjustments(),true);
+			prejudiceFactor*=itemPriceFactor(product,loc,shopKeeper.getFinalItemPricingAdjustments(),true);
 			val.absoluteGoldPrice=CMath.mul(prejudiceFactor,val.absoluteGoldPrice);
 
 			double buyPrice=val.absoluteGoldPrice;
@@ -1024,7 +1024,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					medianLevel=shopRoom.getArea().getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
 				if(medianLevel>0)
 				{
-					final String range=CMParms.getParmStr(shop.finalPrejudiceFactors(),"RANGE","0");
+					final String range=CMParms.getParmStr(shop.getFinalPrejudiceFactors(),"RANGE","0");
 					int rangeI=0;
 					if((range.endsWith("%"))&&(CMath.isInteger(range.substring(0,range.length()-1))))
 					{

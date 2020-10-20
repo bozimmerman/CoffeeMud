@@ -1040,7 +1040,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 			case CMMsg.TYP_GIVE:
 			case CMMsg.TYP_DEPOSIT:
 				{
-					if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
+					if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),getFinalIgnoreMask(),this))
 						return false;
 					if(msg.tool()==null)
 						return false;
@@ -1095,7 +1095,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				return super.okMessage(myHost, msg);
 			case CMMsg.TYP_WITHDRAW:
 				{
-					if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
+					if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),getFinalIgnoreMask(),this))
 						return false;
 					String withdrawerName=getBankClientName(msg.source(),Clan.Function.WITHDRAW,true);
 					if(withdrawerName==null)
@@ -1191,7 +1191,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				return super.okMessage(myHost,msg);
 			case CMMsg.TYP_BORROW:
 			{
-				if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
+				if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),getFinalIgnoreMask(),this))
 					return false;
 				if(!(msg.tool() instanceof Coins))
 				{
@@ -1246,7 +1246,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 			}
 			case CMMsg.TYP_LIST:
 			{
-				if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
+				if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),getFinalIgnoreMask(),this))
 					return false;
 				final String listerName=getBankClientName(msg.source(),Clan.Function.DEPOSIT_LIST,true);
 				if(listerName==null)

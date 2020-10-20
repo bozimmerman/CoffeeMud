@@ -1709,6 +1709,8 @@ won't
 gobble up your system resources. They are bad for popular areas though,
 
 
+
+
 and for areas with lots of special features. Things like the legal
 system and conquest system don't work well with them, since an officer
 may not know where to find the local judge when someone is arrested (if
@@ -1964,7 +1966,9 @@ coins, and golden notes, whole notes, and Archon notes. You can change
 this system by defining your own, however. The way you do this is by
 entering a name for your currency, followed by an equal sign, and then
 a series of relative values and currency names, all separated by
-semicolons. Let's look at an example:</p>
+semicolons. An entry may also include the flag NOTRADE to mark the
+entire currency as unable to be exchanged with or for another currency.
+&nbsp;Let's look at an example:</p>
 <pre>US=1.0 penny(s);10.0 dime(s);25.0 quarter(s);100.0 dollar(s)<br></pre>
 <p>In the currency we have defined
 here, we have four different
@@ -4875,7 +4879,9 @@ item costs 1 experience point, while a price of -9876 would mean that
 the item costs 8876 experience points.</p>
 </td>
 </tr>
-<tr>
+<tr><td><span style="font-style: italic;">Currency</span></td><td>See the section above
+called "What Areas are Worth" for more
+information on this field and its syntax.</td></tr><tr>
 <td><em>Prejudice
 Factors</em></td>
 <td>See the section above

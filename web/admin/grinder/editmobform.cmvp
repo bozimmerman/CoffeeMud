@@ -516,6 +516,15 @@
 		</TD>
 	</TR>
 	
+	<TR>
+		<TD><FONT COLOR="#66FFFF"><B>Currency:</B></FONT></TD>
+	    <TD COLSPAN=2>
+	    <INPUT TYPE=TEXT NAME=CURRENCY SIZE=80 MAXLENGTH=255 VALUE="@MobData?CURRENCY@"><BR>
+		<SELECT NAME=CURRENCIES ONCLICK="document.AREAEDIT.CURRENCY.value=this.options[this.selectedIndex].value">
+		@MobData?CURRENCIES@
+		</SELECT>
+		</TD>
+	</TR>
 	@if?!MobData?ISAUCTION&@
 		@if?!MobData?ISLIBRARIAN@
 			<TR>

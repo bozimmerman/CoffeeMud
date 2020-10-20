@@ -787,7 +787,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 			case CMMsg.TYP_GIVE:
 			case CMMsg.TYP_DEPOSIT:
 				{
-					if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), finalIgnoreMask(), this))
+					if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), getFinalIgnoreMask(), this))
 						return false;
 					if (msg.tool() == null)
 						return false;
@@ -827,7 +827,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 			case CMMsg.TYP_WITHDRAW:
 			case CMMsg.TYP_BORROW:
 				{
-					if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), finalIgnoreMask(), this))
+					if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), getFinalIgnoreMask(), this))
 						return false;
 					if ((msg.tool() == null) || (!(msg.tool() instanceof Item)) || (msg.tool() instanceof Coins))
 					{
@@ -881,7 +881,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 				return false;
 			case CMMsg.TYP_LIST:
 			{
-				if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), finalIgnoreMask(), this))
+				if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), getFinalIgnoreMask(), this))
 					return false;
 				return true;
 			}

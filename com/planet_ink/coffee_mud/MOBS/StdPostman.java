@@ -1045,7 +1045,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 			case CMMsg.TYP_GIVE:
 			case CMMsg.TYP_DEPOSIT:
 				{
-					if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
+					if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),getFinalIgnoreMask(),this))
 						return false;
 					if(msg.tool()==null)
 						return false;
@@ -1074,7 +1074,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 				return super.okMessage(myHost, msg);
 			case CMMsg.TYP_WITHDRAW:
 				{
-					if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
+					if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),getFinalIgnoreMask(),this))
 						return false;
 					final String senderName=getSenderName(msg.source(),Clan.Function.WITHDRAW,true);
 					if(senderName==null)
@@ -1112,7 +1112,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 				return super.okMessage(myHost,msg);
 			case CMMsg.TYP_LIST:
 			{
-				if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
+				if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),getFinalIgnoreMask(),this))
 					return false;
 				final String senderName=getSenderName(msg.source(),Clan.Function.DEPOSIT_LIST,true);
 				if(senderName==null)

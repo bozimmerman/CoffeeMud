@@ -70,7 +70,7 @@ public class GenPostman extends StdPostman
 	}
 
 	@Override
-	public String prejudiceFactors()
+	public String getRawPrejudiceFactors()
 	{
 		return prejudiceFactors;
 	}
@@ -82,7 +82,7 @@ public class GenPostman extends StdPostman
 	}
 
 	@Override
-	public String ignoreMask()
+	public String getRawIgnoreMask()
 	{
 		return ignoreMask;
 	}
@@ -129,7 +129,7 @@ public class GenPostman extends StdPostman
 		case 0:
 			return "" + getWhatIsSoldMask();
 		case 1:
-			return prejudiceFactors();
+			return getRawPrejudiceFactors();
 		case 2:
 			return postalChain();
 		case 3:
@@ -143,9 +143,9 @@ public class GenPostman extends StdPostman
 		case 7:
 			return "" + maxMudMonthsHeld();
 		case 8:
-			return ignoreMask();
+			return getRawIgnoreMask();
 		case 9:
-			return CMParms.toListString(itemPricingAdjustments());
+			return CMParms.toListString(getRawItemPricingAdjustments());
 		case 10:
 			return this.getWhatIsSoldZappermask();
 		case 11:

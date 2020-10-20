@@ -116,6 +116,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	private String[]		pricingAdjustments	= new String[0];
 	private String			itemZapperMask		= "";
 	private final String	contributorMask		= "";
+	private String			currency			= "";
 	private int				minOverdueDays		= 12;
 	private int				maxOverdueDays		= 48;
 	private int				maxBorrowed			= 2;
@@ -227,7 +228,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	}
 
 	@Override
-	public String budget()
+	public String getRawBbudget()
 	{
 		return budget == null ? "" : (budget.first + " " + budget.second.name());
 	}
@@ -239,7 +240,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	}
 
 	@Override
-	public String devalueRate()
+	public String getRawDevalueRate()
 	{
 		return devalueRate == null ? "" : (devalueRate[0] + " "+devalueRate[1]);
 	}
@@ -251,9 +252,39 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	}
 
 	@Override
-	public int invResetRate()
+	public int getRawInvResetRate()
 	{
 		return 0;
+	}
+
+
+	@Override
+	public String getFinalCurrency()
+	{
+		if(currency.length()>0)
+			return currency;
+		return CMLib.beanCounter().getCurrency(affected);
+	}
+
+	@Override
+	public String getRawCurrency()
+	{
+		return currency;
+	}
+
+	@Override
+	public void setCurrency(final String newCurrency)
+	{
+		if ((currency != null) && (currency.length() > 0))
+		{
+			CMLib.beanCounter().unloadCurrencySet(currency);
+			currency = newCurrency;
+		}
+		else
+		{
+			currency = newCurrency;
+			CMLib.beanCounter().getCurrencySet(currency);
+		}
 	}
 
 	@Override
@@ -354,7 +385,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	}
 
 	@Override
-	public String prejudiceFactors()
+	public String getRawPrejudiceFactors()
 	{
 		return prejudice;
 	}
@@ -366,7 +397,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	}
 
 	@Override
-	public String ignoreMask()
+	public String getRawIgnoreMask()
 	{
 		return ignore;
 	}
@@ -378,7 +409,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	}
 
 	@Override
-	public String[] itemPricingAdjustments()
+	public String[] getRawItemPricingAdjustments()
 	{
 		return pricingAdjustments;
 	}
@@ -531,52 +562,52 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	}
 
 	@Override
-	public int finalInvResetRate()
+	public int getFinalInvResetRate()
 	{
-		if((invResetRate()!=0)||((affected instanceof MOB)&&(!((MOB)affected).isMonster())))
-			return invResetRate();
-		return getStartArea().finalInvResetRate();
+		if((getRawInvResetRate()!=0)||((affected instanceof MOB)&&(!((MOB)affected).isMonster())))
+			return getRawInvResetRate();
+		return getStartArea().getFinalInvResetRate();
 	}
 
 	@Override
-	public String finalPrejudiceFactors()
+	public String getFinalPrejudiceFactors()
 	{
-		if((prejudiceFactors().length()>0)||((affected instanceof MOB)&&(!((MOB)affected).isMonster())))
-			return prejudiceFactors();
-		return getStartArea().finalPrejudiceFactors();
+		if((getRawPrejudiceFactors().length()>0)||((affected instanceof MOB)&&(!((MOB)affected).isMonster())))
+			return getRawPrejudiceFactors();
+		return getStartArea().getFinalPrejudiceFactors();
 	}
 
 	@Override
-	public String finalIgnoreMask()
+	public String getFinalIgnoreMask()
 	{
-		if((ignoreMask().length()>0)||((affected instanceof MOB)&&(!((MOB)affected).isMonster())))
-			return ignoreMask();
-		return getStartArea().finalIgnoreMask();
+		if((getRawIgnoreMask().length()>0)||((affected instanceof MOB)&&(!((MOB)affected).isMonster())))
+			return getRawIgnoreMask();
+		return getStartArea().getFinalIgnoreMask();
 	}
 
 	@Override
-	public String[] finalItemPricingAdjustments()
+	public String[] getFinalItemPricingAdjustments()
 	{
-		if(((itemPricingAdjustments()!=null)&&(itemPricingAdjustments().length>0))
+		if(((getRawItemPricingAdjustments()!=null)&&(getRawItemPricingAdjustments().length>0))
 		||((affected instanceof MOB)&&(!((MOB)affected).isMonster())))
-			return itemPricingAdjustments();
-		return getStartArea().finalItemPricingAdjustments();
+			return getRawItemPricingAdjustments();
+		return getStartArea().getFinalItemPricingAdjustments();
 	}
 
 	@Override
-	public Pair<Long, TimePeriod> finalBudget()
+	public Pair<Long, TimePeriod> getFinalBudget()
 	{
 		if((budget != null)||((affected instanceof MOB)&&(!((MOB)affected).isMonster())))
 			return budget;
-		return getStartArea().finalBudget();
+		return getStartArea().getFinalBudget();
 	}
 
 	@Override
-	public double[] finalDevalueRate()
+	public double[] getFinalDevalueRate()
 	{
 		if ((devalueRate != null)||((affected instanceof MOB)&&(!((MOB)affected).isMonster())))
 			return devalueRate;
-		return getStartArea().finalDevalueRate();
+		return getStartArea().getFinalDevalueRate();
 	}
 
 	protected void updateCheckedOutRecords()
@@ -733,10 +764,10 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 		}
 		staticMOB.setStartRoom(room);
 		staticMOB.setLocation(room);
-		if(finalBudget() != null)
+		if(getFinalBudget() != null)
 		{
-			if( CMLib.beanCounter().getTotalAbsoluteNativeValue( staticMOB ) < finalBudget().first.longValue() )
-				staticMOB.setMoney(finalBudget().first.intValue());
+			if( CMLib.beanCounter().getTotalAbsoluteNativeValue( staticMOB ) < getFinalBudget().first.longValue() )
+				staticMOB.setMoney(getFinalBudget().first.intValue());
 		}
 		return staticMOB;
 	}
@@ -808,7 +839,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 				//$FALL-THROUGH$
 			case CMMsg.TYP_DEPOSIT:
 				{
-					if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), finalIgnoreMask(), merchantM))
+					if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), getFinalIgnoreMask(), merchantM))
 						return false;
 					if (msg.tool() == null)
 						return false;
@@ -848,7 +879,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 			case CMMsg.TYP_WITHDRAW:
 			case CMMsg.TYP_BORROW:
 				{
-					if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), finalIgnoreMask(), merchantM))
+					if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), getFinalIgnoreMask(), merchantM))
 						return false;
 					if ((msg.tool() == null) || (!(msg.tool() instanceof Item)) || (msg.tool() instanceof Coins))
 					{
@@ -902,7 +933,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 				return false;
 			case CMMsg.TYP_LIST:
 			{
-				if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), finalIgnoreMask(), merchantM))
+				if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), getFinalIgnoreMask(), merchantM))
 					return false;
 				return true;
 			}

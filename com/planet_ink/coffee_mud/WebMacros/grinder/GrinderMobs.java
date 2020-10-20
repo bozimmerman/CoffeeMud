@@ -60,7 +60,8 @@ public class GrinderMobs
 		LIBRDAYCHG,LIBROVERPCT,LIBDAYPCT,LIBMINDAYS,
 		LIBMAXDAYS,LIBMAXBORROW,ISLIBRARIAN,LIBCMASK,
 		STATESTR,STATESUBJSTR,RIDERSTR,MOUNTSTR,DISMOUNTSTR,
-		ISDRINK, LIQUIDHELD, QUENCHED, LIQUIDTYPES, SIVIEWTYPES
+		ISDRINK, LIQUIDHELD, QUENCHED, LIQUIDTYPES, SIVIEWTYPES,
+		CURRENCIES, CURRENCY
 		;
 
 		public boolean isGenField;
@@ -610,6 +611,11 @@ public class GrinderMobs
 				case SHOPPREJ: // shopkeeper prejudices
 					if(M instanceof ShopKeeper)
 						((ShopKeeper)M).setPrejudiceFactors(old);
+					break;
+				case CURRENCIES:
+				case CURRENCY:
+					if(M instanceof Economics)
+						((Economics)M).setCurrency(old);
 					break;
 				case ISDEITY: // is deity
 					break;

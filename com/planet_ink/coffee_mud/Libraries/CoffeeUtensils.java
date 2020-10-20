@@ -1975,7 +1975,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							c+=2;
 							break;
 						case 'c':
-							buf.append(A.getCurrency().length()==0?"Default":A.getCurrency());
+							buf.append(A.getFinalCurrency().length()==0?"Default":A.getFinalCurrency());
 							c+=2;
 							break;
 						case 'a':

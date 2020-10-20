@@ -32,8 +32,8 @@ import java.util.*;
 public interface MoneyLibrary extends CMLibrary
 {
 	public void unloadCurrencySet(String currency);
-	public MoneyDenomination[] createCurrencySet(String currency);
-	public MoneyDenomination[] getCurrencySet(String currency);
+	public MoneyDefinition createCurrencySet(String currency);
+	public MoneyDefinition getCurrencySet(String currency);
 	public List<String> getAllCurrencies();
 	public List<String> getDenominationNameSet(String currency);
 	public double lowestAbbreviatedDenomination(String currency);
@@ -112,6 +112,13 @@ public interface MoneyLibrary extends CMLibrary
 	public void delAllDebt(String name, String owedTo);
 	public void dropMoney(Room R, Container container, String currency, double absoluteValue);
 	public void removeMoney(Room R, Container container, String currency, double absoluteValue);
+
+	public static interface MoneyDefinition
+	{
+		public String ID();
+		public boolean canTrade();
+		public MoneyDenomination[] denominations();
+	}
 
 	public static interface MoneyDenomination
 	{

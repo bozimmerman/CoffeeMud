@@ -1005,12 +1005,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genCurrency(final MOB mob, final Area A, final int showNumber, final int showFlag)
+	protected void genCurrency(final MOB mob, final Economics A, final int showNumber, final int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
-		final String currencyName=A.getCurrency().length()==0?"Default":A.getCurrency();
+		final String currencyName=((A.getRawCurrency()==null)||(A.getRawCurrency().length()==0))?"Default":A.getRawCurrency();
 		if(mob.session()!=null)
 			mob.session().colorOnlyPrintln(L("@x1. Currency: '@x2'.",""+showNumber,currencyName));
 		if((showFlag!=showNumber)&&(showFlag>-999))
@@ -3103,7 +3103,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			gocontinue=false;
 			String newDenom=mob.session().prompt(L("Enter denomination (?):"),""+I.getDenomination()).trim().toUpperCase();
-			final MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(I.getCurrency());
+			final MoneyLibrary.MoneyDefinition def=CMLib.beanCounter().getCurrencySet(I.getCurrency());
 			if((newDenom.length()>0)
 			&&(!CMath.isDouble(newDenom))
 			&&(!newDenom.equalsIgnoreCase("?")))
@@ -3120,11 +3120,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 			if((newDenom.equalsIgnoreCase("?"))
 			||(!CMath.isDouble(newDenom))
-			||((DV!=null)&&(CMLib.beanCounter().getDenominationIndex(I.getCurrency(), CMath.s_double(newDenom))<0)))
+			||((def!=null)&&(CMLib.beanCounter().getDenominationIndex(I.getCurrency(), CMath.s_double(newDenom))<0)))
 			{
 				StringBuilder allDenoms=new StringBuilder("");
-				if(DV!=null)
+				if(def!=null)
 				{
+					final MoneyLibrary.MoneyDenomination[] DV=def.denominations();
 					for (final MoneyDenomination element : DV)
 						allDenoms.append(element.value()+"("+element.name()+"), ");
 				}
@@ -4775,7 +4776,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genEconomicsPrejudice(final MOB mob, final Economics E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setPrejudiceFactors(prompt(mob, E.prejudiceFactors(), showNumber, showFlag, "Prejudice", true, false));
+		E.setPrejudiceFactors(prompt(mob, E.getRawPrejudiceFactors(), showNumber, showFlag, "Prejudice", true, false));
 	}
 
 	protected void genEconomicsPriceFactors(final MOB mob, final Economics E, final int showNumber, final int showFlag)
@@ -4784,7 +4785,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
 		final String header=L("@x1. Item Pricing Factors: ",""+showNumber);
-		String[] prics=E.itemPricingAdjustments();
+		String[] prics=E.getRawItemPricingAdjustments();
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
 			if(prics.length<1)
@@ -4902,22 +4903,22 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genEconomicsBudget(final MOB mob, final Economics E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setBudget(prompt(mob, E.budget(), showNumber, showFlag, "Budget", true, false));
+		E.setBudget(prompt(mob, E.getRawBbudget(), showNumber, showFlag, "Budget", true, false));
 	}
 
 	protected void genEconomicsDevaluationRate(final MOB mob, final Economics E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setDevalueRate(prompt(mob, E.devalueRate(), showNumber, showFlag, "Devaluation rate(s)", true, false));
+		E.setDevalueRate(prompt(mob, E.getRawDevalueRate(), showNumber, showFlag, "Devaluation rate(s)", true, false));
 	}
 
 	protected void genEconomicsInventoryReset(final MOB mob, final Economics E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setInvResetRate(prompt(mob, E.invResetRate(), showNumber, showFlag, "Inventory reset rate [ticks]"));
+		E.setInvResetRate(prompt(mob, E.getRawInvResetRate(), showNumber, showFlag, "Inventory reset rate [ticks]"));
 	}
 
 	protected void genEconomicsIgnoreMask(final MOB mob, final Economics E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setIgnoreMask(prompt(mob, E.ignoreMask(), showNumber, showFlag, "Ignore Mask", true, false));
+		E.setIgnoreMask(prompt(mob, E.getRawIgnoreMask(), showNumber, showFlag, "Ignore Mask", true, false));
 	}
 
 	protected void genItemXML(final MOB mob, final ItemCollection me, final String key, final int showNumber, final int showFlag, final String desc)
@@ -11093,6 +11094,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				genEconomicsPrejudice(mob,me,++showNumber,showFlag);
 				genEconomicsInventoryReset(mob,me,++showNumber,showFlag);
 			}
+			genCurrency(mob,me,++showNumber,showFlag);
 			genEconomicsIgnoreMask(mob,me,++showNumber,showFlag);
 			if(me instanceof Banker)
 			{

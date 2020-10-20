@@ -61,7 +61,7 @@ public class GenShopkeeper extends StdShopKeeper
 	}
 
 	@Override
-	public String prejudiceFactors()
+	public String getRawPrejudiceFactors()
 	{
 		return prejudiceFactors;
 	}
@@ -73,7 +73,7 @@ public class GenShopkeeper extends StdShopKeeper
 	}
 
 	@Override
-	public String ignoreMask()
+	public String getRawIgnoreMask()
 	{
 		return ignoreMask;
 	}
@@ -115,17 +115,17 @@ public class GenShopkeeper extends StdShopKeeper
 		case 0:
 			return "" + getWhatIsSoldMask();
 		case 1:
-			return prejudiceFactors();
+			return getRawPrejudiceFactors();
 		case 2:
-			return budget();
+			return getRawBbudget();
 		case 3:
-			return devalueRate();
+			return getRawDevalueRate();
 		case 4:
-			return "" + invResetRate();
+			return "" + getRawInvResetRate();
 		case 5:
-			return ignoreMask();
+			return getRawIgnoreMask();
 		case 6:
-			return CMParms.toListString(itemPricingAdjustments());
+			return CMParms.toListString(getRawItemPricingAdjustments());
 		case 7:
 			return this.getWhatIsSoldZappermask();
 		case 8:

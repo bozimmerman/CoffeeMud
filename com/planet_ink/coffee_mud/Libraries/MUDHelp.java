@@ -423,11 +423,12 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					help.append("default");
 				else
 					help.append(CMStrings.capitalizeAndLower(currency));
-				final MoneyLibrary.MoneyDenomination denoms[]=CMLib.beanCounter().getCurrencySet(currency);
-				if(denoms == null)
+				final MoneyLibrary.MoneyDefinition def=CMLib.beanCounter().getCurrencySet(currency);
+				if(def == null)
 					Log.errOut("Help","Unknown currency: "+currency);
 				else
 				{
+					final MoneyLibrary.MoneyDenomination denoms[]=def.denominations();
 					for (final MoneyDenomination denom : denoms)
 					{
 						if(denom.abbr().length()>0)

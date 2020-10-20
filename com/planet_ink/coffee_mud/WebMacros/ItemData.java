@@ -993,13 +993,17 @@ public class ItemData extends StdWebMacro
 						String currency=(I instanceof Coins)?currency=((Coins)I).getCurrency():"";
 						if((firstTime)&&(I instanceof Coins))
 							old=""+((Coins)I).getDenomination();
-						final MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(currency);
-						for (final MoneyDenomination element : DV)
+						final MoneyLibrary.MoneyDefinition def=CMLib.beanCounter().getCurrencySet(currency);
+						if(def != null)
 						{
-							str.append("<OPTION VALUE=\""+element.value()+"\"");
-							if(element.value()==CMath.s_double(old))
-								str.append(" SELECTED");
-							str.append(">"+element.name());
+							final MoneyLibrary.MoneyDenomination[] DV=def.denominations();
+							for (final MoneyDenomination element : DV)
+							{
+								str.append("<OPTION VALUE=\""+element.value()+"\"");
+								if(element.value()==CMath.s_double(old))
+									str.append(" SELECTED");
+								str.append(">"+element.name());
+							}
 						}
 						break;
 					}

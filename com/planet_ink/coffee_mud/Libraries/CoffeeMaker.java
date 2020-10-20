@@ -289,7 +289,6 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			str.append(getExtraEnvPropertiesStr(E));
 			str.append(getGenScripts((Area)E,false));
 			str.append(xml.convertXMLtoTag("AUTHOR",myArea.getAuthorID()));
-			str.append(xml.convertXMLtoTag("CURRENCY",myArea.getCurrency()));
 			if(myArea instanceof BoardableShip)
 				str.append(xml.convertXMLtoTag("DISP",xml.parseOutAngleBrackets(myArea.displayText())));
 			final List<String> V=new ArrayList<String>();
@@ -2770,7 +2769,6 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(E instanceof BoardableShip)
 				((Area)E).setDisplayText(CMLib.xml().getValFromPieces(V,"DISP"));
 			((Area)E).setAuthorID(CMLib.xml().getValFromPieces(V,"AUTHOR"));
-			((Area)E).setCurrency(CMLib.xml().getValFromPieces(V,"CURRENCY"));
 			((Area)E).setAtmosphere(CMLib.xml().getIntFromPieces(V,"AATMO",((Area)E).getAtmosphereCode()));
 			final List<XMLLibrary.XMLTag> VP=CMLib.xml().getContentsFromPieces(V,"PARENTS");
 			if(VP!=null)
@@ -4648,12 +4646,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 		if(E instanceof Economics)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("PREJFC",((Economics)E).prejudiceFactors()));
-			text.append(CMLib.xml().convertXMLtoTag("IGNMSK",((Economics)E).ignoreMask()));
-			text.append(CMLib.xml().convertXMLtoTag("BUDGET",((Economics)E).budget()));
-			text.append(CMLib.xml().convertXMLtoTag("DEVALR",((Economics)E).devalueRate()));
-			text.append(CMLib.xml().convertXMLtoTag("INVRER",((Economics)E).invResetRate()));
-			final String[] prics=((Economics)E).itemPricingAdjustments();
+			text.append(CMLib.xml().convertXMLtoTag("PREJFC",((Economics)E).getRawPrejudiceFactors()));
+			text.append(CMLib.xml().convertXMLtoTag("IGNMSK",((Economics)E).getRawIgnoreMask()));
+			text.append(CMLib.xml().convertXMLtoTag("BUDGET",((Economics)E).getRawBbudget()));
+			text.append(CMLib.xml().convertXMLtoTag("DEVALR",((Economics)E).getRawDevalueRate()));
+			text.append(CMLib.xml().convertXMLtoTag("INVRER",((Economics)E).getRawInvResetRate()));
+			text.append(CMLib.xml().convertXMLtoTag("CURRENCY",((Economics)E).getRawCurrency()==null?"":((Economics)E).getRawCurrency()));
+			final String[] prics=((Economics)E).getRawItemPricingAdjustments();
 			if(prics.length==0)
 				text.append("<IPRICS />");
 			else
@@ -5007,6 +5006,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			((Economics)E).setBudget(CMLib.xml().getValFromPieces(buf,"BUDGET"));
 			((Economics)E).setDevalueRate(CMLib.xml().getValFromPieces(buf,"DEVALR"));
 			((Economics)E).setInvResetRate(CMLib.xml().getIntFromPieces(buf,"INVRER"));
+			((Economics)E).setCurrency(CMLib.xml().getValFromPieces(buf,"CURRENCY"));
 			final List<XMLLibrary.XMLTag> iV=CMLib.xml().getContentsFromPieces(buf,"IPRICS");
 			if(iV!=null)
 			{

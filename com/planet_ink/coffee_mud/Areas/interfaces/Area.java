@@ -137,24 +137,6 @@ public interface Area extends Economics, PhysicalAgent, Places
 	public String getAuthorID();
 
 	/**
-	 * Sets the default currency for this area, which will be referenced by
-	 * shopkeepers, bankers, and other mobs.  See Archon's Guide for the proper
-	 * format for this string, as it can be anything from a full current
-	 * definition, to a reference to an existing one.
-	 * @return a currency name/definition
-	 */
-	public String getCurrency();
-
-	/**
-	 * Returns the default currency for this area, which will be referenced by
-	 * shopkeepers, bankers, and other mobs.  See Archon's Guide for the proper
-	 * format for this string, as it can be anything from a full current
-	 * definition, to a reference to an existing one.
-	 * @param currency  a currency name/definition
-	 */
-	public void setCurrency(String currency);
-
-	/**
 	 * A blurb flag is a run-time modifiable set of strings that can be added
 	 * to an area in order to display them in the HELP entry for an area.
 	 * @return the number of such strings defined

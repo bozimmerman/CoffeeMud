@@ -49,6 +49,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	protected int			maxTimedAuctionDays	= -1;
 	protected int			minTimedAuctionDays	= -1;
 	public AuctionData		lastMsgData			= null;
+	protected String		currency			= null;
 	protected Set<ViewType>	viewTypes			= new XHashSet<ViewType>(ViewType.BASIC);
 
 	protected static final Map<String,Long> lastCheckTimes=new Hashtable<String,Long>();
@@ -363,7 +364,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 			case CMMsg.TYP_BID:
 				if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 				{
-					if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
+					if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),getFinalIgnoreMask(),this))
 						return false;
 					if((msg.targetMinor()==CMMsg.TYP_BUY)&&(msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
 						return false;
@@ -449,7 +450,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 			case CMMsg.TYP_BUY:
 				if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 				{
-					if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
+					if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),getFinalIgnoreMask(),this))
 						return false;
 					if((msg.targetMinor()==CMMsg.TYP_BUY)&&(msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
 						return false;
@@ -527,7 +528,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 			case CMMsg.TYP_VALUE:
 				if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 				{
-					if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
+					if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),getFinalIgnoreMask(),this))
 						return false;
 					return super.okMessage(myHost, msg);
 				}
@@ -535,7 +536,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 			case CMMsg.TYP_VIEW:
 				if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 				{
-					if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
+					if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),getFinalIgnoreMask(),this))
 						return false;
 					return super.okMessage(myHost, msg);
 				}
@@ -783,15 +784,15 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	}
 
 	@Override
-	public String finalPrejudiceFactors()
+	public String getFinalPrejudiceFactors()
 	{
-		if (prejudiceFactors().length() > 0)
-			return prejudiceFactors();
-		return getStartArea().finalPrejudiceFactors();
+		if (getRawPrejudiceFactors().length() > 0)
+			return getRawPrejudiceFactors();
+		return getStartArea().getFinalPrejudiceFactors();
 	}
 
 	@Override
-	public String prejudiceFactors()
+	public String getRawPrejudiceFactors()
 	{
 		return CMStrings.bytesToStr(miscText);
 	}
@@ -803,15 +804,15 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	}
 
 	@Override
-	public String finalIgnoreMask()
+	public String getFinalIgnoreMask()
 	{
-		if (ignoreMask().length() > 0)
-			return ignoreMask();
-		return getStartArea().finalIgnoreMask();
+		if (getRawIgnoreMask().length() > 0)
+			return getRawIgnoreMask();
+		return getStartArea().getFinalIgnoreMask();
 	}
 
 	@Override
-	public String ignoreMask()
+	public String getRawIgnoreMask()
 	{
 		return "";
 	}
@@ -822,15 +823,15 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	}
 
 	@Override
-	public String[] finalItemPricingAdjustments()
+	public String[] getFinalItemPricingAdjustments()
 	{
-		if ((itemPricingAdjustments() != null) && (itemPricingAdjustments().length > 0))
-			return itemPricingAdjustments();
-		return getStartArea().finalItemPricingAdjustments();
+		if ((getRawItemPricingAdjustments() != null) && (getRawItemPricingAdjustments().length > 0))
+			return getRawItemPricingAdjustments();
+		return getStartArea().getFinalItemPricingAdjustments();
 	}
 
 	@Override
-	public String[] itemPricingAdjustments()
+	public String[] getRawItemPricingAdjustments()
 	{
 		return new String[0];
 	}
@@ -841,13 +842,42 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	}
 
 	@Override
-	public Pair<Long, TimePeriod> finalBudget()
+	public String getFinalCurrency()
 	{
-		return getStartArea().finalBudget();
+		if(currency.length()>0)
+			return currency;
+		return CMLib.beanCounter().getCurrency(this);
 	}
 
 	@Override
-	public String budget()
+	public String getRawCurrency()
+	{
+		return currency;
+	}
+
+	@Override
+	public void setCurrency(final String newCurrency)
+	{
+		if ((currency != null) && (currency.length() > 0))
+		{
+			CMLib.beanCounter().unloadCurrencySet(currency);
+			currency = newCurrency;
+		}
+		else
+		{
+			currency = newCurrency;
+			CMLib.beanCounter().getCurrencySet(currency);
+		}
+	}
+
+	@Override
+	public Pair<Long, TimePeriod> getFinalBudget()
+	{
+		return getStartArea().getFinalBudget();
+	}
+
+	@Override
+	public String getRawBbudget()
 	{
 		return "";
 	}
@@ -858,13 +888,13 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	}
 
 	@Override
-	public double[] finalDevalueRate()
+	public double[] getFinalDevalueRate()
 	{
-		return getStartArea().finalDevalueRate();
+		return getStartArea().getFinalDevalueRate();
 	}
 
 	@Override
-	public String devalueRate()
+	public String getRawDevalueRate()
 	{
 		return "";
 	}
@@ -887,15 +917,15 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	}
 
 	@Override
-	public int finalInvResetRate()
+	public int getFinalInvResetRate()
 	{
-		if(invResetRate()!=0)
-			return invResetRate();
-		return getStartArea().finalInvResetRate();
+		if(getRawInvResetRate()!=0)
+			return getRawInvResetRate();
+		return getStartArea().getFinalInvResetRate();
 	}
 
 	@Override
-	public int invResetRate()
+	public int getRawInvResetRate()
 	{
 		return 0;
 	}
