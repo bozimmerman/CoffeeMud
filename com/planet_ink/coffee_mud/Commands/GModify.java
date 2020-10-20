@@ -362,9 +362,9 @@ public class GModify extends StdCommand
 		Log.sysOut("GMODIFY",msg);
 	}
 
-	private static Environmental tryModfy(final MOB mob, final Room room, Environmental E, final DVector changes, final DVector onfields, final boolean noisy)
+	private static Environmental tryModfy(final MOB mob, final Session sess, final Room room, Environmental E, final DVector changes, final DVector onfields, final boolean noisy)
 	{
-		if((mob.session()==null)||(mob.session().isStopped()))
+		if((sess==null)||(sess.isStopped()))
 			return null;
 		try
 		{
@@ -372,7 +372,7 @@ public class GModify extends StdCommand
 		}
 		catch (final Exception e)
 		{
-			mob.session().stopSession(false, false, false);
+			sess.stopSession(false, false, false);
 			return null;
 		}
 		boolean didAnything=false;
@@ -942,6 +942,8 @@ public class GModify extends StdCommand
 		if(noisy)
 			gmodifydebugtell(mob,"Change fields="+CMParms.toListString(changes.getDimensionList(1)));
 		Log.sysOut("GModify",mob.Name()+" "+whole+".");
+		final Session sess=mob.session();
+
 		for(int r=0;r<placesToDo.size();r++)
 		{
 			Room R=(Room)placesToDo.get(r);
@@ -952,7 +954,7 @@ public class GModify extends StdCommand
 			synchronized(("SYNC"+R.roomID()).intern())
 			{
 				R=CMLib.map().getRoom(R);
-				if((mob.session()==null)||(mob.session().isStopped())||(R==null)||(R.getArea()==null))
+				if((sess==null)||(sess.isStopped())||(R==null)||(R.getArea()==null))
 					return false;
 				final Area A=R.getArea();
 				final Area.State oldFlag=A.getAreaState();
@@ -972,7 +974,7 @@ public class GModify extends StdCommand
 				boolean savemobs=false;
 				boolean saveitems=false;
 				boolean saveroom=false;
-				final Room possNewRoom=(Room)tryModfy(mob,R,R,changes,onfields,noisy);
+				final Room possNewRoom=(Room)tryModfy(mob,sess,R,R,changes,onfields,noisy);
 				if(possNewRoom!=null)
 				{
 					R=possNewRoom;
@@ -983,7 +985,7 @@ public class GModify extends StdCommand
 					final Item I=R.getItem(i);
 					if(I==null)
 						continue;
-					final Item newI=(Item)tryModfy(mob,R,I,changes,onfields,noisy);
+					final Item newI=(Item)tryModfy(mob,sess,R,I,changes,onfields,noisy);
 					if(newI!=null)
 					{
 						saveitems=true;
@@ -998,7 +1000,7 @@ public class GModify extends StdCommand
 					MOB M=R.fetchInhabitant(m);
 					if((M!=null)&&(M.isSavable()))
 					{
-						final MOB newM=(MOB)tryModfy(mob,R,M,changes,onfields,noisy);
+						final MOB newM=(MOB)tryModfy(mob,sess,R,M,changes,onfields,noisy);
 						if(newM!=null)
 						{
 							savemobs=true;
@@ -1015,7 +1017,7 @@ public class GModify extends StdCommand
 								final Item I=M.getItem(i);
 								if(I==null)
 									continue;
-								final Item newI=(Item)tryModfy(mob,R,I,changes,onfields,noisy);
+								final Item newI=(Item)tryModfy(mob,sess,R,I,changes,onfields,noisy);
 								if(newI!=null)
 								{
 									savemobs=true;
@@ -1036,7 +1038,7 @@ public class GModify extends StdCommand
 									final Environmental E2=P.product;
 									if((E2 instanceof Item)||(E2 instanceof MOB))
 									{
-										final Environmental E3=tryModfy(mob,R,E2,changes,onfields,noisy);
+										final Environmental E3=tryModfy(mob,sess,R,E2,changes,onfields,noisy);
 										if(E3!=null)
 										{
 											savemobs=true;
@@ -1060,8 +1062,8 @@ public class GModify extends StdCommand
 					CMLib.database().DBUpdateItems(R);
 				if(savemobs)
 					CMLib.database().DBUpdateMOBs(R);
-				if((mob.session()!=null)&&(changes.size()>0))
-					mob.session().rawPrint(".");
+				if((sess!=null)&&(changes.size()>0))
+					sess.rawPrint(".");
 				A.setAreaState(oldFlag);
 				if(changes.size()==0)
 					R.destroy();
@@ -1078,8 +1080,8 @@ public class GModify extends StdCommand
 			}
 		}
 
-		if(mob.session()!=null)
-			mob.session().rawPrintln(L("!\n\rDone!"));
+		if(sess!=null)
+			sess.rawPrintln(L("!\n\rDone!"));
 		for(int i=0;i<placesToDo.size();i++)
 		{
 			final Room R=(Room)placesToDo.get(i);
