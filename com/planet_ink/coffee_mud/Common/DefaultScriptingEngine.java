@@ -2046,7 +2046,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			final MOB M=(MOB)E;
 			for(final int i : CharStats.CODES.ALLCODES())
 			{
-				if(CharStats.CODES.NAME(i).equalsIgnoreCase(arg2)||CharStats.CODES.DESC(i).equalsIgnoreCase(arg2))
+				if(CharStats.CODES.NAME(i).equals(uarg2)||CharStats.CODES.DESC(i).equals(uarg2))
 				{
 					val=""+M.charStats().getStat(CharStats.CODES.NAME(i)); //yes, this is right
 					found=true;
@@ -2055,7 +2055,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			if(!found)
 			{
-				final int dex=CMParms.indexOfIgnoreCase(M.curState().getStatCodes(), arg2);
+				final int dex=CMParms.indexOf(M.curState().getStatCodes(), uarg2);
 				if(dex>=0)
 				{
 					val=M.curState().getStat(M.curState().getStatCodes()[dex]);
@@ -2064,7 +2064,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			if(!found)
 			{
-				final int dex=CMParms.indexOfIgnoreCase(M.phyStats().getStatCodes(), arg2);
+				final int dex=CMParms.indexOf(M.phyStats().getStatCodes(), uarg2);
 				if(dex>=0)
 				{
 					val=M.phyStats().getStat(M.phyStats().getStatCodes()[dex]);
@@ -2073,7 +2073,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			if((!found)&&(M.playerStats()!=null))
 			{
-				final int dex=CMParms.indexOfIgnoreCase(M.playerStats().getStatCodes(), arg2);
+				final int dex=CMParms.indexOf(M.playerStats().getStatCodes(), uarg2);
 				if(dex>=0)
 				{
 					val=M.playerStats().getStat(M.playerStats().getStatCodes()[dex]);
@@ -2082,7 +2082,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			if((!found)&&(uarg2.startsWith("BASE")))
 			{
-				final int dex=CMParms.indexOfIgnoreCase(M.baseState().getStatCodes(), arg2.substring(4));
+				final int dex=CMParms.indexOf(M.baseState().getStatCodes(), uarg2.substring(4));
 				if(dex>=0)
 				{
 					val=M.baseState().getStat(M.baseState().getStatCodes()[dex]);
@@ -2091,7 +2091,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			if((!found)&&(uarg2.startsWith("MAX")))
 			{
-				final int dex=CMParms.indexOfIgnoreCase(M.maxState().getStatCodes(), arg2.substring(3));
+				final int dex=CMParms.indexOf(M.maxState().getStatCodes(), uarg2.substring(3));
 				if(dex>=0)
 				{
 					val=M.maxState().getStat(M.maxState().getStatCodes()[dex]);
@@ -2169,7 +2169,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				if(!found)
 				{
-					final int dex=CMParms.indexOfIgnoreCase(M.curState().getStatCodes(), arg2);
+					final int dex=CMParms.indexOf(M.curState().getStatCodes(), arg2);
 					if(dex>=0)
 					{
 						val=M.curState().getStat(M.curState().getStatCodes()[dex]);
@@ -2178,7 +2178,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				if(!found)
 				{
-					final int dex=CMParms.indexOfIgnoreCase(M.phyStats().getStatCodes(), arg2);
+					final int dex=CMParms.indexOf(M.phyStats().getStatCodes(), arg2);
 					if(dex>=0)
 					{
 						val=M.phyStats().getStat(M.phyStats().getStatCodes()[dex]);
@@ -2187,7 +2187,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				if((!found)&&(M.playerStats()!=null))
 				{
-					final int dex=CMParms.indexOfIgnoreCase(M.playerStats().getStatCodes(), arg2);
+					final int dex=CMParms.indexOf(M.playerStats().getStatCodes(), arg2);
 					if(dex>=0)
 					{
 						val=M.playerStats().getStat(M.playerStats().getStatCodes()[dex]);
@@ -2197,7 +2197,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((!found)&&(arg2.startsWith("BASE")))
 				{
 					final String arg4=arg2.substring(4);
-					final int dex=CMParms.indexOfIgnoreCase(M.baseState().getStatCodes(), arg4);
+					final int dex=CMParms.indexOf(M.baseState().getStatCodes(), arg4);
 					if(dex>=0)
 					{
 						val=M.baseState().getStat(M.baseState().getStatCodes()[dex]);
@@ -2219,7 +2219,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((!found)&&(arg2.startsWith("MAX")))
 				{
 					final String arg4=arg2.substring(3);
-					final int dex=CMParms.indexOfIgnoreCase(M.maxState().getStatCodes(), arg4);
+					final int dex=CMParms.indexOf(M.maxState().getStatCodes(), arg4);
 					if(dex>=0)
 					{
 						val=M.maxState().getStat(M.maxState().getStatCodes()[dex]);
@@ -2246,8 +2246,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if((!found)
 		&&(E instanceof Physical))
 		{
-			if(CMLib.coffeeMaker().isAnyGenStat((Physical)E, arg2.toUpperCase().trim()))
-				return CMLib.coffeeMaker().getAnyGenStat((Physical)E, arg2.toUpperCase().trim());
+			if(CMLib.coffeeMaker().isAnyGenStat((Physical)E, arg2))
+				return CMLib.coffeeMaker().getAnyGenStat((Physical)E, arg2);
 			if((!found)&&(arg2.startsWith("BASE")))
 			{
 				final String arg4=arg2.substring(4);
@@ -9248,7 +9248,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return null;
 				}
 				final Physical newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				final String arg2=tt[2];
+				final String arg2=tt[2].toUpperCase().trim();
 				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
 				if(newTarget!=null)
 				{
@@ -9257,7 +9257,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					boolean found=false;
 					for(int i=0;i<newTarget.getStatCodes().length;i++)
 					{
-						if(newTarget.getStatCodes()[i].equalsIgnoreCase(arg2))
+						if(newTarget.getStatCodes()[i].equals(arg2))
 						{
 							if(arg3.equals("++"))
 								arg3=""+(CMath.s_int(newTarget.getStat(newTarget.getStatCodes()[i]))+1);
@@ -9273,7 +9273,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final MOB M=(MOB)newTarget;
 						for(final int i : CharStats.CODES.ALLCODES())
 						{
-							if(CharStats.CODES.NAME(i).equalsIgnoreCase(arg2)||CharStats.CODES.DESC(i).equalsIgnoreCase(arg2))
+							if(CharStats.CODES.NAME(i).equals(arg2)||CharStats.CODES.DESC(i).equals(arg2))
 							{
 								if(arg3.equals("++"))
 									arg3=""+(M.baseCharStats().getStat(i)+1);
@@ -9289,7 +9289,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 						if(!found)
 						{
-							final int dex=CMParms.indexOfIgnoreCase(M.curState().getStatCodes(), arg2);
+							final int dex=CMParms.indexOf(M.curState().getStatCodes(), arg2);
 							if(dex>=0)
 							{
 								if(arg3.equals("++"))
@@ -9302,7 +9302,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 						if(!found)
 						{
-							final int dex=CMParms.indexOfIgnoreCase(M.basePhyStats().getStatCodes(), arg2);
+							final int dex=CMParms.indexOf(M.basePhyStats().getStatCodes(), arg2);
 							if(dex>=0)
 							{
 								if(arg3.equals("++"))
@@ -9315,7 +9315,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 						if((!found)&&(M.playerStats()!=null))
 						{
-							final int dex=CMParms.indexOfIgnoreCase(M.playerStats().getStatCodes(), arg2);
+							final int dex=CMParms.indexOf(M.playerStats().getStatCodes(), arg2);
 							if(dex>=0)
 							{
 								if(arg3.equals("++"))
@@ -9326,9 +9326,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								found=true;
 							}
 						}
-						if((!found)&&(arg2.toUpperCase().startsWith("BASE")))
+						if((!found)&&(arg2.startsWith("BASE")))
 						{
-							final int dex=CMParms.indexOfIgnoreCase(M.baseState().getStatCodes(), arg2.substring(4));
+							final int dex=CMParms.indexOf(M.baseState().getStatCodes(), arg2.substring(4));
 							if(dex>=0)
 							{
 								if(arg3.equals("++"))
@@ -9339,9 +9339,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								found=true;
 							}
 						}
-						if((!found)&&(arg2.toUpperCase().startsWith("MAX")))
+						if((!found)&&(arg2.startsWith("MAX")))
 						{
-							final int dex=CMParms.indexOfIgnoreCase(M.curState().getStatCodes(), arg2.substring(3));
+							final int dex=CMParms.indexOf(M.curState().getStatCodes(), arg2.substring(3));
 							if(dex>=0)
 							{
 								if(arg3.equals("++"))
@@ -9352,7 +9352,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								found=true;
 							}
 						}
-						if((!found)&&(arg2.toUpperCase().equals("STINK")))
+						if((!found)&&(arg2.equals("STINK")))
 						{
 							found=true;
 							if(M.playerStats()!=null)
@@ -9360,10 +9360,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 
 						if((!found)
-						&&(CMath.s_valueOf(GenericBuilder.GenMOBBonusFakeStats.class,arg2.toUpperCase())!=null))
+						&&(CMath.s_valueOf(GenericBuilder.GenMOBBonusFakeStats.class,arg2)!=null))
 						{
 							found=true;
-							CMLib.coffeeMaker().setAnyGenStat(M, arg2.toUpperCase(), arg3);
+							CMLib.coffeeMaker().setAnyGenStat(M, arg2, arg3);
 						}
 					}
 
@@ -9371,18 +9371,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					&&(newTarget instanceof Item))
 					{
 						if((!found)
-						&&(CMath.s_valueOf(GenericBuilder.GenItemBonusFakeStats.class,arg2.toUpperCase())!=null))
+						&&(CMath.s_valueOf(GenericBuilder.GenItemBonusFakeStats.class,arg2)!=null))
 						{
 							found=true;
-							CMLib.coffeeMaker().setAnyGenStat(newTarget, arg2.toUpperCase(), arg3);
+							CMLib.coffeeMaker().setAnyGenStat(newTarget, arg2, arg3);
 						}
 					}
 
 					if((!found)
-					&&(CMath.s_valueOf(GenericBuilder.GenPhysBonusFakeStats.class,arg2.toUpperCase())!=null))
+					&&(CMath.s_valueOf(GenericBuilder.GenPhysBonusFakeStats.class,arg2)!=null))
 					{
 						found=true;
-						CMLib.coffeeMaker().setAnyGenStat(newTarget, arg2.toUpperCase(), arg3);
+						CMLib.coffeeMaker().setAnyGenStat(newTarget, arg2, arg3);
 					}
 
 					if(!found)
@@ -9396,7 +9396,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(newTarget instanceof MOB)
 					{
 						((MOB)newTarget).recoverMaxState();
-						if(arg2.equalsIgnoreCase("LEVEL"))
+						if(arg2.equals("LEVEL"))
 						{
 							CMLib.leveler().fillOutMOB(((MOB)newTarget),((MOB)newTarget).basePhyStats().level());
 							((MOB)newTarget).recoverMaxState();
@@ -9512,7 +9512,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return null;
 				}
 				final Physical newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				final String arg2=tt[2];
+				final String arg2=tt[2].toUpperCase().trim();
 				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
 				if(newTarget!=null)
 				{
@@ -9521,7 +9521,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					boolean found=false;
 					for(int i=0;i<newTarget.getStatCodes().length;i++)
 					{
-						if(newTarget.getStatCodes()[i].equalsIgnoreCase(arg2))
+						if(newTarget.getStatCodes()[i].equals(arg2))
 						{
 							if(arg3.equals("++"))
 								arg3=""+(CMath.s_int(newTarget.getStat(newTarget.getStatCodes()[i]))+1);
@@ -9536,7 +9536,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						if(newTarget instanceof MOB)
 						{
-							final GenericBuilder.GenMOBCode element = (GenericBuilder.GenMOBCode)CMath.s_valueOf(GenericBuilder.GenMOBCode.class,arg2.toUpperCase().trim());
+							final GenericBuilder.GenMOBCode element = (GenericBuilder.GenMOBCode)CMath.s_valueOf(GenericBuilder.GenMOBCode.class,arg2);
 							if(element != null)
 							{
 								if(arg3.equals("++"))
@@ -9551,7 +9551,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								final MOB M=(MOB)newTarget;
 								for(final int i : CharStats.CODES.ALLCODES())
 								{
-									if(CharStats.CODES.NAME(i).equalsIgnoreCase(arg2)||CharStats.CODES.DESC(i).equalsIgnoreCase(arg2))
+									if(CharStats.CODES.NAME(i).equals(arg2)||CharStats.CODES.DESC(i).equals(arg2))
 									{
 										if(arg3.equals("++"))
 											arg3=""+(M.baseCharStats().getStat(i)+1);
@@ -9562,7 +9562,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 										else
 											M.baseCharStats().setStat(i,CMath.s_int(arg3.trim()));
 										M.recoverCharStats();
-										if(arg2.equalsIgnoreCase("RACE"))
+										if(arg2.equals("RACE"))
 											M.charStats().getMyRace().startRacing(M,false);
 										found=true;
 										break;
@@ -9570,7 +9570,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								}
 								if(!found)
 								{
-									final int dex=CMParms.indexOfIgnoreCase(M.curState().getStatCodes(), arg2);
+									final int dex=CMParms.indexOf(M.curState().getStatCodes(), arg2);
 									if(dex>=0)
 									{
 										if(arg3.equals("++"))
@@ -9583,7 +9583,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								}
 								if(!found)
 								{
-									final int dex=CMParms.indexOfIgnoreCase(M.basePhyStats().getStatCodes(), arg2);
+									final int dex=CMParms.indexOf(M.basePhyStats().getStatCodes(), arg2);
 									if(dex>=0)
 									{
 										if(arg3.equals("++"))
@@ -9596,7 +9596,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								}
 								if((!found)&&(M.playerStats()!=null))
 								{
-									final int dex=CMParms.indexOfIgnoreCase(M.playerStats().getStatCodes(), arg2);
+									final int dex=CMParms.indexOf(M.playerStats().getStatCodes(), arg2);
 									if(dex>=0)
 									{
 										if(arg3.equals("++"))
@@ -9607,10 +9607,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 										found=true;
 									}
 								}
-								if((!found)&&(arg2.toUpperCase().startsWith("BASE")))
+								if((!found)&&(arg2.startsWith("BASE")))
 								{
 									final String arg4=arg2.substring(4);
-									final int dex=CMParms.indexOfIgnoreCase(M.baseState().getStatCodes(), arg4);
+									final int dex=CMParms.indexOf(M.baseState().getStatCodes(), arg4);
 									if(dex>=0)
 									{
 										if(arg3.equals("++"))
@@ -9621,10 +9621,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 										found=true;
 									}
 								}
-								if((!found)&&(arg2.toUpperCase().startsWith("MAX")))
+								if((!found)&&(arg2.startsWith("MAX")))
 								{
 									final String arg4=arg2.substring(3);
-									final int dex=CMParms.indexOfIgnoreCase(M.maxState().getStatCodes(), arg4);
+									final int dex=CMParms.indexOf(M.maxState().getStatCodes(), arg4);
 									if(dex>=0)
 									{
 										if(arg3.equals("++"))
@@ -9635,7 +9635,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 										found=true;
 									}
 								}
-								if((!found)&&(arg2.toUpperCase().equals("STINK")))
+								if((!found)&&(arg2.equals("STINK")))
 								{
 									found=true;
 									if(M.playerStats()!=null)
@@ -9648,7 +9648,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(newTarget instanceof Item)
 					{
 
-						final GenericBuilder.GenItemCode element = (GenericBuilder.GenItemCode)CMath.s_valueOf(GenericBuilder.GenItemCode.class,arg2.toUpperCase().trim());
+						final GenericBuilder.GenItemCode element = (GenericBuilder.GenItemCode)CMath.s_valueOf(GenericBuilder.GenItemCode.class,arg2);
 						if(element != null)
 						{
 							if(arg3.equals("++"))
@@ -9662,9 +9662,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if((!found)
 					&&(newTarget instanceof Physical))
 					{
-						if(CMLib.coffeeMaker().isAnyGenStat(newTarget, arg2.toUpperCase()))
+						if(CMLib.coffeeMaker().isAnyGenStat(newTarget, arg2))
 						{
-							CMLib.coffeeMaker().setAnyGenStat(newTarget, arg2.toUpperCase(), arg3);
+							CMLib.coffeeMaker().setAnyGenStat(newTarget, arg2, arg3);
 							found=true;
 						}
 					}
@@ -9679,7 +9679,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(newTarget instanceof MOB)
 					{
 						((MOB)newTarget).recoverMaxState();
-						if(arg2.equalsIgnoreCase("LEVEL"))
+						if(arg2.equals("LEVEL"))
 						{
 							CMLib.leveler().fillOutMOB(((MOB)newTarget),((MOB)newTarget).basePhyStats().level());
 							((MOB)newTarget).recoverMaxState();
