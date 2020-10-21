@@ -3201,6 +3201,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		else
 		if(stat.startsWith("BASE ")||stat.startsWith("BASE_"))
 			return stat.substring(5);
+		else
+		if((stat.startsWith("MAX ")||stat.startsWith("MAX_"))
+		&&(CMParms.contains(CharState.STAT_DESCS,stat.substring(4).toUpperCase().trim())))
+			return stat.substring(4);
 		return stat;
 	}
 
@@ -3259,6 +3263,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(P.isStat(stat))
 			return P.getStat(stat);
 		final boolean current=stat.startsWith("CURRENT ")||stat.startsWith("CURRENT_");
+		final boolean max=stat.startsWith("MAX ")||stat.startsWith("MAX_");
 		stat = getFinalStatName(stat);
 		if(P.basePhyStats().isStat(stat))
 			return (current)?P.phyStats().getStat(stat):P.basePhyStats().getStat(stat);
@@ -3331,7 +3336,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					return current?((MOB)P).charStats().getStat(stat):((MOB)P).baseCharStats().getStat(stat);
 			}
 			if(((MOB)P).baseState().isStat(stat))
-				return current?((MOB)P).curState().getStat(stat):((MOB)P).baseState().getStat(stat);
+				return current?((MOB)P).curState().getStat(stat):max?((MOB)P).maxState().getStat(stat):((MOB)P).baseState().getStat(stat);
 			if((((MOB)P).playerStats()!=null)
 			&&(((MOB)P).playerStats().isStat(stat)))
 				return ((MOB)P).playerStats().getStat(stat);
@@ -3570,6 +3575,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			return;
 		}
 		final boolean current=stat.startsWith("CURRENT ")||stat.startsWith("CURRENT_");
+		final boolean max=stat.startsWith("MAX ")||stat.startsWith("MAX_");
 		stat = getFinalStatName(stat);
 		if(P.basePhyStats().isStat(stat))
 		{
@@ -3638,6 +3644,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			{
 				if(current)
 					((MOB)P).curState().setStat(stat, value);
+				else
+				if(max)
+					((MOB)P).maxState().setStat(stat, value);
 				else
 					((MOB)P).baseState().setStat(stat, value);
 				return;

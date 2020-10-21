@@ -2055,50 +2055,47 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			if(!found)
 			{
-				for(int i=0;i<M.curState().getStatCodes().length;i++)
+				final int dex=CMParms.indexOfIgnoreCase(M.curState().getStatCodes(), arg2);
+				if(dex>=0)
 				{
-					if(M.curState().getStatCodes()[i].equalsIgnoreCase(arg2))
-					{
-						val=M.curState().getStat(M.curState().getStatCodes()[i]);
-						found=true;
-						break;
-					}
+					val=M.curState().getStat(M.curState().getStatCodes()[dex]);
+					found=true;
 				}
 			}
 			if(!found)
 			{
-				for(int i=0;i<M.phyStats().getStatCodes().length;i++)
+				final int dex=CMParms.indexOfIgnoreCase(M.phyStats().getStatCodes(), arg2);
+				if(dex>=0)
 				{
-					if(M.phyStats().getStatCodes()[i].equalsIgnoreCase(arg2))
-					{
-						val=M.phyStats().getStat(M.phyStats().getStatCodes()[i]);
-						found=true;
-						break;
-					}
+					val=M.phyStats().getStat(M.phyStats().getStatCodes()[dex]);
+					found=true;
 				}
 			}
 			if((!found)&&(M.playerStats()!=null))
 			{
-				for(int i=0;i<M.playerStats().getStatCodes().length;i++)
+				final int dex=CMParms.indexOfIgnoreCase(M.playerStats().getStatCodes(), arg2);
+				if(dex>=0)
 				{
-					if(M.playerStats().getStatCodes()[i].equalsIgnoreCase(arg2))
-					{
-						val=M.playerStats().getStat(M.playerStats().getStatCodes()[i]);
-						found=true;
-						break;
-					}
+					val=M.playerStats().getStat(M.playerStats().getStatCodes()[dex]);
+					found=true;
 				}
 			}
 			if((!found)&&(uarg2.startsWith("BASE")))
 			{
-				for(int i=0;i<M.baseState().getStatCodes().length;i++)
+				final int dex=CMParms.indexOfIgnoreCase(M.baseState().getStatCodes(), arg2.substring(4));
+				if(dex>=0)
 				{
-					if(M.baseState().getStatCodes()[i].equalsIgnoreCase(arg2.substring(4)))
-					{
-						val=M.baseState().getStat(M.baseState().getStatCodes()[i]);
-						found=true;
-						break;
-					}
+					val=M.baseState().getStat(M.baseState().getStatCodes()[dex]);
+					found=true;
+				}
+			}
+			if((!found)&&(uarg2.startsWith("MAX")))
+			{
+				final int dex=CMParms.indexOfIgnoreCase(M.maxState().getStatCodes(), arg2.substring(3));
+				if(dex>=0)
+				{
+					val=M.maxState().getStat(M.maxState().getStatCodes()[dex]);
+					found=true;
 				}
 			}
 			if((!found)&&(uarg2.equals("STINK")))
@@ -2172,51 +2169,39 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				if(!found)
 				{
-					for(int i=0;i<M.curState().getStatCodes().length;i++)
+					final int dex=CMParms.indexOfIgnoreCase(M.curState().getStatCodes(), arg2);
+					if(dex>=0)
 					{
-						if(M.curState().getStatCodes()[i].equals(arg2))
-						{
-							val=M.curState().getStat(M.curState().getStatCodes()[i]);
-							found=true;
-							break;
-						}
+						val=M.curState().getStat(M.curState().getStatCodes()[dex]);
+						found=true;
 					}
 				}
 				if(!found)
 				{
-					for(int i=0;i<M.phyStats().getStatCodes().length;i++)
+					final int dex=CMParms.indexOfIgnoreCase(M.phyStats().getStatCodes(), arg2);
+					if(dex>=0)
 					{
-						if(M.phyStats().getStatCodes()[i].equals(arg2))
-						{
-							val=M.phyStats().getStat(M.phyStats().getStatCodes()[i]);
-							found=true;
-							break;
-						}
+						val=M.phyStats().getStat(M.phyStats().getStatCodes()[dex]);
+						found=true;
 					}
 				}
 				if((!found)&&(M.playerStats()!=null))
 				{
-					for(int i=0;i<M.playerStats().getStatCodes().length;i++)
+					final int dex=CMParms.indexOfIgnoreCase(M.playerStats().getStatCodes(), arg2);
+					if(dex>=0)
 					{
-						if(M.playerStats().getStatCodes()[i].equals(arg2))
-						{
-							val=M.playerStats().getStat(M.playerStats().getStatCodes()[i]);
-							found=true;
-							break;
-						}
+						val=M.playerStats().getStat(M.playerStats().getStatCodes()[dex]);
+						found=true;
 					}
 				}
 				if((!found)&&(arg2.startsWith("BASE")))
 				{
 					final String arg4=arg2.substring(4);
-					for(int i=0;i<M.baseState().getStatCodes().length;i++)
+					final int dex=CMParms.indexOfIgnoreCase(M.baseState().getStatCodes(), arg4);
+					if(dex>=0)
 					{
-						if(M.baseState().getStatCodes()[i].equals(arg4))
-						{
-							val=M.baseState().getStat(M.baseState().getStatCodes()[i]);
-							found=true;
-							break;
-						}
+						val=M.baseState().getStat(M.baseState().getStatCodes()[dex]);
+						found=true;
 					}
 					if(!found)
 					{
@@ -2229,6 +2214,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								break;
 							}
 						}
+					}
+				}
+				if((!found)&&(arg2.startsWith("MAX")))
+				{
+					final String arg4=arg2.substring(3);
+					final int dex=CMParms.indexOfIgnoreCase(M.maxState().getStatCodes(), arg4);
+					if(dex>=0)
+					{
+						val=M.maxState().getStat(M.maxState().getStatCodes()[dex]);
+						found=true;
 					}
 				}
 				if((!found)&&(arg2.equals("STINK")))
@@ -9294,66 +9289,67 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 						if(!found)
 						{
-							for(int i=0;i<M.curState().getStatCodes().length;i++)
+							final int dex=CMParms.indexOfIgnoreCase(M.curState().getStatCodes(), arg2);
+							if(dex>=0)
 							{
-								if(M.curState().getStatCodes()[i].equalsIgnoreCase(arg2))
-								{
-									if(arg3.equals("++"))
-										arg3=""+(CMath.s_int(M.curState().getStat(M.curState().getStatCodes()[i]))+1);
-									if(arg3.equals("--"))
-										arg3=""+(CMath.s_int(M.curState().getStat(M.curState().getStatCodes()[i]))-1);
-									M.curState().setStat(arg2,arg3);
-									found=true;
-									break;
-								}
+								if(arg3.equals("++"))
+									arg3=""+(CMath.s_int(M.curState().getStat(M.curState().getStatCodes()[dex]))+1);
+								if(arg3.equals("--"))
+									arg3=""+(CMath.s_int(M.curState().getStat(M.curState().getStatCodes()[dex]))-1);
+								M.curState().setStat(arg2,arg3);
+								found=true;
 							}
 						}
 						if(!found)
 						{
-							for(int i=0;i<M.basePhyStats().getStatCodes().length;i++)
+							final int dex=CMParms.indexOfIgnoreCase(M.basePhyStats().getStatCodes(), arg2);
+							if(dex>=0)
 							{
-								if(M.basePhyStats().getStatCodes()[i].equalsIgnoreCase(arg2))
-								{
-									if(arg3.equals("++"))
-										arg3=""+(CMath.s_int(M.basePhyStats().getStat(M.basePhyStats().getStatCodes()[i]))+1);
-									if(arg3.equals("--"))
-										arg3=""+(CMath.s_int(M.basePhyStats().getStat(M.basePhyStats().getStatCodes()[i]))-1);
-									M.basePhyStats().setStat(arg2,arg3);
-									found=true;
-									break;
-								}
+								if(arg3.equals("++"))
+									arg3=""+(CMath.s_int(M.basePhyStats().getStat(M.basePhyStats().getStatCodes()[dex]))+1);
+								if(arg3.equals("--"))
+									arg3=""+(CMath.s_int(M.basePhyStats().getStat(M.basePhyStats().getStatCodes()[dex]))-1);
+								M.basePhyStats().setStat(arg2,arg3);
+								found=true;
 							}
 						}
 						if((!found)&&(M.playerStats()!=null))
 						{
-							for(int i=0;i<M.playerStats().getStatCodes().length;i++)
+							final int dex=CMParms.indexOfIgnoreCase(M.playerStats().getStatCodes(), arg2);
+							if(dex>=0)
 							{
-								if(M.playerStats().getStatCodes()[i].equalsIgnoreCase(arg2))
-								{
-									if(arg3.equals("++"))
-										arg3=""+(CMath.s_int(M.playerStats().getStat(M.playerStats().getStatCodes()[i]))+1);
-									if(arg3.equals("--"))
-										arg3=""+(CMath.s_int(M.playerStats().getStat(M.playerStats().getStatCodes()[i]))-1);
-									M.playerStats().setStat(arg2,arg3);
-									found=true;
-									break;
-								}
+								if(arg3.equals("++"))
+									arg3=""+(CMath.s_int(M.playerStats().getStat(M.playerStats().getStatCodes()[dex]))+1);
+								if(arg3.equals("--"))
+									arg3=""+(CMath.s_int(M.playerStats().getStat(M.playerStats().getStatCodes()[dex]))-1);
+								M.playerStats().setStat(arg2,arg3);
+								found=true;
 							}
 						}
 						if((!found)&&(arg2.toUpperCase().startsWith("BASE")))
 						{
-							for(int i=0;i<M.baseState().getStatCodes().length;i++)
+							final int dex=CMParms.indexOfIgnoreCase(M.baseState().getStatCodes(), arg2.substring(4));
+							if(dex>=0)
 							{
-								if(M.baseState().getStatCodes()[i].equalsIgnoreCase(arg2.substring(4)))
-								{
-									if(arg3.equals("++"))
-										arg3=""+(CMath.s_int(M.baseState().getStat(M.baseState().getStatCodes()[i]))+1);
-									if(arg3.equals("--"))
-										arg3=""+(CMath.s_int(M.baseState().getStat(M.baseState().getStatCodes()[i]))-1);
-									M.baseState().setStat(arg2.substring(4),arg3);
-									found=true;
-									break;
-								}
+								if(arg3.equals("++"))
+									arg3=""+(CMath.s_int(M.baseState().getStat(M.baseState().getStatCodes()[dex]))+1);
+								if(arg3.equals("--"))
+									arg3=""+(CMath.s_int(M.baseState().getStat(M.baseState().getStatCodes()[dex]))-1);
+								M.baseState().setStat(arg2.substring(4),arg3);
+								found=true;
+							}
+						}
+						if((!found)&&(arg2.toUpperCase().startsWith("MAX")))
+						{
+							final int dex=CMParms.indexOfIgnoreCase(M.curState().getStatCodes(), arg2.substring(3));
+							if(dex>=0)
+							{
+								if(arg3.equals("++"))
+									arg3=""+(CMath.s_int(M.maxState().getStat(M.maxState().getStatCodes()[dex]))+1);
+								if(arg3.equals("--"))
+									arg3=""+(CMath.s_int(M.maxState().getStat(M.maxState().getStatCodes()[dex]))-1);
+								M.maxState().setStat(arg2.substring(3),arg3);
+								found=true;
 							}
 						}
 						if((!found)&&(arg2.toUpperCase().equals("STINK")))
@@ -9574,67 +9570,69 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								}
 								if(!found)
 								{
-									for(int i=0;i<M.curState().getStatCodes().length;i++)
+									final int dex=CMParms.indexOfIgnoreCase(M.curState().getStatCodes(), arg2);
+									if(dex>=0)
 									{
-										if(M.curState().getStatCodes()[i].equalsIgnoreCase(arg2))
-										{
-											if(arg3.equals("++"))
-												arg3=""+(CMath.s_int(M.curState().getStat(M.curState().getStatCodes()[i]))+1);
-											if(arg3.equals("--"))
-												arg3=""+(CMath.s_int(M.curState().getStat(M.curState().getStatCodes()[i]))-1);
-											M.curState().setStat(arg2,arg3);
-											found=true;
-											break;
-										}
+										if(arg3.equals("++"))
+											arg3=""+(CMath.s_int(M.curState().getStat(M.curState().getStatCodes()[dex]))+1);
+										if(arg3.equals("--"))
+											arg3=""+(CMath.s_int(M.curState().getStat(M.curState().getStatCodes()[dex]))-1);
+										M.curState().setStat(arg2,arg3);
+										found=true;
 									}
 								}
 								if(!found)
 								{
-									for(int i=0;i<M.basePhyStats().getStatCodes().length;i++)
+									final int dex=CMParms.indexOfIgnoreCase(M.basePhyStats().getStatCodes(), arg2);
+									if(dex>=0)
 									{
-										if(M.basePhyStats().getStatCodes()[i].equalsIgnoreCase(arg2))
-										{
-											if(arg3.equals("++"))
-												arg3=""+(CMath.s_int(M.basePhyStats().getStat(M.basePhyStats().getStatCodes()[i]))+1);
-											if(arg3.equals("--"))
-												arg3=""+(CMath.s_int(M.basePhyStats().getStat(M.basePhyStats().getStatCodes()[i]))-1);
-											M.basePhyStats().setStat(arg2,arg3);
-											found=true;
-											break;
-										}
+										if(arg3.equals("++"))
+											arg3=""+(CMath.s_int(M.basePhyStats().getStat(M.basePhyStats().getStatCodes()[dex]))+1);
+										if(arg3.equals("--"))
+											arg3=""+(CMath.s_int(M.basePhyStats().getStat(M.basePhyStats().getStatCodes()[dex]))-1);
+										M.basePhyStats().setStat(arg2,arg3);
+										found=true;
 									}
 								}
 								if((!found)&&(M.playerStats()!=null))
 								{
-									for(int i=0;i<M.playerStats().getStatCodes().length;i++)
+									final int dex=CMParms.indexOfIgnoreCase(M.playerStats().getStatCodes(), arg2);
+									if(dex>=0)
 									{
-										if(M.playerStats().getStatCodes()[i].equalsIgnoreCase(arg2))
-										{
-											if(arg3.equals("++"))
-												arg3=""+(CMath.s_int(M.playerStats().getStat(M.playerStats().getStatCodes()[i]))+1);
-											if(arg3.equals("--"))
-												arg3=""+(CMath.s_int(M.playerStats().getStat(M.playerStats().getStatCodes()[i]))-1);
-											M.playerStats().setStat(arg2,arg3);
-											found=true;
-											break;
-										}
+										if(arg3.equals("++"))
+											arg3=""+(CMath.s_int(M.playerStats().getStat(M.playerStats().getStatCodes()[dex]))+1);
+										if(arg3.equals("--"))
+											arg3=""+(CMath.s_int(M.playerStats().getStat(M.playerStats().getStatCodes()[dex]))-1);
+										M.playerStats().setStat(arg2,arg3);
+										found=true;
 									}
 								}
 								if((!found)&&(arg2.toUpperCase().startsWith("BASE")))
 								{
 									final String arg4=arg2.substring(4);
-									for(int i=0;i<M.baseState().getStatCodes().length;i++)
+									final int dex=CMParms.indexOfIgnoreCase(M.baseState().getStatCodes(), arg4);
+									if(dex>=0)
 									{
-										if(M.baseState().getStatCodes()[i].equalsIgnoreCase(arg4))
-										{
-											if(arg3.equals("++"))
-												arg3=""+(CMath.s_int(M.baseState().getStat(M.baseState().getStatCodes()[i]))+1);
-											if(arg3.equals("--"))
-												arg3=""+(CMath.s_int(M.baseState().getStat(M.baseState().getStatCodes()[i]))-1);
-											M.baseState().setStat(arg4,arg3);
-											found=true;
-											break;
-										}
+										if(arg3.equals("++"))
+											arg3=""+(CMath.s_int(M.baseState().getStat(M.baseState().getStatCodes()[dex]))+1);
+										if(arg3.equals("--"))
+											arg3=""+(CMath.s_int(M.baseState().getStat(M.baseState().getStatCodes()[dex]))-1);
+										M.baseState().setStat(arg4,arg3);
+										found=true;
+									}
+								}
+								if((!found)&&(arg2.toUpperCase().startsWith("MAX")))
+								{
+									final String arg4=arg2.substring(3);
+									final int dex=CMParms.indexOfIgnoreCase(M.maxState().getStatCodes(), arg4);
+									if(dex>=0)
+									{
+										if(arg3.equals("++"))
+											arg3=""+(CMath.s_int(M.baseState().getStat(M.maxState().getStatCodes()[dex]))+1);
+										if(arg3.equals("--"))
+											arg3=""+(CMath.s_int(M.baseState().getStat(M.maxState().getStatCodes()[dex]))-1);
+										M.maxState().setStat(arg4,arg3);
+										found=true;
 									}
 								}
 								if((!found)&&(arg2.toUpperCase().equals("STINK")))
