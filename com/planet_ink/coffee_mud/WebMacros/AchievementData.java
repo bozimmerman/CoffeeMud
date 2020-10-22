@@ -126,6 +126,10 @@ public class AchievementData extends StdWebMacro
 			if((newRewards != null)&&(newRewards.length()>0))
 				row+="REWARDS=\""+CMStrings.escape(newRewards)+"\" ";
 
+			final String newDuration=httpReq.getUrlParameter("DURATION");
+			if((newDuration != null)&&(newDuration.length()>0)&&(CMath.s_int(newDuration)>0))
+				row+="DURATION="+CMath.s_int(newDuration)+" ";
+
 			final String newVisiMask=httpReq.getUrlParameter("VISIBLEMASK");
 			if((newVisiMask != null)&&(newVisiMask.length()>0))
 				row+="VISIBLEMASK=\""+CMStrings.escape(newVisiMask)+"\" ";
@@ -283,6 +287,14 @@ public class AchievementData extends StdWebMacro
 			String value=httpReq.getUrlParameter("COUNT");
 			if((value==null)&&(A!=null))
 				value=""+A.getTargetCount();
+			if(value!=null)
+				str.append(CMStrings.replaceAll(value,"\"","&quot;")+", ");
+		}
+		if(parms.containsKey("DURATION"))
+		{
+			String value=httpReq.getUrlParameter("DURATION");
+			if((value==null)&&(A!=null))
+				value=""+A.getDuration();
 			if(value!=null)
 				str.append(CMStrings.replaceAll(value,"\"","&quot;")+", ");
 		}

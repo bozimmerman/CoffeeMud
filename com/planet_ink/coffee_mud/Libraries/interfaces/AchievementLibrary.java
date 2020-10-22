@@ -55,7 +55,7 @@ public interface AchievementLibrary extends CMLibrary
 	/**
 	 * The list of arguments/parameters common to all achievement event types
 	 */
-	public final String[] BASE_ACHIEVEMENT_PARAMETERS = new String[] { "EVENT", "DISPLAY", "TITLE", "REWARDS", "VISIBLEMASK" };
+	public final String[] BASE_ACHIEVEMENT_PARAMETERS = new String[] { "EVENT", "DISPLAY", "TITLE", "REWARDS", "VISIBLEMASK", "DURATION" };
 
 	/**
 	 * Events define the type of achievement, describing specific arguments that
@@ -268,7 +268,7 @@ public interface AchievementLibrary extends CMLibrary
 
 		/**
 		 * For achievements that are repeatable,
-		 * this is the duration of the tattoo.  These 
+		 * this is the duration of the tattoo.  These
 		 * should not be used for Account achievements!
 		 * 0 is indefinite/forever
 		 * @return the duration, in ticks, of the achievement

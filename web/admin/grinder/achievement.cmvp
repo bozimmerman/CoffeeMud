@@ -119,6 +119,16 @@
         </TD>
     </TR>
     <TR>
+        <TD WIDTH=25%>
+            <FONT COLOR=YELLOW>Duration: </FONT>
+            <FONT COLOR=WHITE SIZE=-1></FONT>
+        </TD>
+        <TD>
+            <INPUT TYPE=TEXT SIZE=20 NAME=DURATION VALUE="@AchievementData?DURATION@">
+            <BR><FONT COLOR=WHITE SIZE=-1>@AchievementData?HELP&FIELD=DURATION@</FONT>
+        </TD>
+    </TR>
+    <TR>
         <TD>
             <FONT COLOR=YELLOW>Title Award: </FONT>
             <FONT COLOR=WHITE SIZE=-1></FONT>

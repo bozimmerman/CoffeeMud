@@ -94,6 +94,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		final String tattoo=row.substring(0,x).toUpperCase().trim();
 		if(tattoo.length()==0)
 			return "Error: Blank achievement tattoo: "+tattoo+"!";
+		if(tattoo.equalsIgnoreCase("ach_instexpdo"))
+			System.out.println("STOP!");
 		if(Character.isDigit(tattoo.charAt(0)))
 			return "Error: Invalid achievement tattoo: "+tattoo+"!";
 		final String params=row.substring(x+1).trim();
@@ -104,6 +106,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		final String displayStr=CMStrings.deEscape(CMParms.getParmStr(params, "DISPLAY", ""));
 		final String titleStr=CMStrings.deEscape(CMParms.getParmStr(params, "TITLE", ""));
 		final String rewardStr=CMStrings.deEscape(CMParms.getParmStr(params, "REWARDS", ""));
+		final int duration=CMParms.getParmInt(params, "DURATION", 0);
 		final String[] awardSet = CMParms.parse(rewardStr).toArray(new String[0]);
 		final List<Award> awardsList = new ArrayList<Award>();
 		if(titleStr.length()>0)
@@ -792,7 +795,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private CompiledZMask npcMask = null;
 				private CompiledZMask playerMask = null;
 				private CompiledZMask seenMask = null;
-				private int			  duration = 0;
 
 				@Override
 				public Event getEvent()
@@ -927,11 +929,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -958,7 +955,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				private CompiledZMask playerMask = null;
 				private CompiledZMask seenMask = null;
-				private int			  duration = 0;
 
 				@Override
 				public Event getEvent()
@@ -1089,11 +1085,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -1114,7 +1105,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private int 	value	= 0;
 				private int		abelo	= 0;
 				private CompiledZMask seenMask = null;
-				private int		duration = 0;
 
 				@Override
 				public Event getEvent()
@@ -1238,11 +1228,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -1272,7 +1257,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private int 	value		= 0;
 				private int		abelo		= 0;
 				private CompiledZMask seenMask = null;
-				private int		 duration = 0;
 
 				@Override
 				public Event getEvent()
@@ -1407,11 +1391,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -1443,7 +1422,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private int 			value		= 0;
 				private int				abelo		= 0;
 				private CompiledZMask   seenMask = null;
-				private int		 		duration = 0;
 
 				@Override
 				public Event getEvent()
@@ -1577,11 +1555,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -1618,7 +1591,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				private String	areaID	= "";
 				private int	 	pct		= 0;
-				private int	 	duration= 0;
 				private CompiledZMask seenMask = null;
 
 				@Override
@@ -1764,11 +1736,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -1797,7 +1764,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private int 				num 		= 0;
 				private final Set<String>	abilityIDs 	= new TreeSet<String>();
 				private CompiledZMask seenMask = null;
-				private int	 	duration= 0;
 
 				@Override
 				public Event getEvent()
@@ -1941,11 +1907,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -2010,7 +1971,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private int 				num 		= 0;
 				private final Set<String>	abilityIDs 	= new TreeSet<String>();
 				private CompiledZMask seenMask = null;
-				private int	 	duration= 0;
 
 				@Override
 				public Event getEvent()
@@ -2154,11 +2114,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -2217,7 +2172,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private int 				num 		= 0;
 				private final Set<String>	socialIDs 	= new TreeSet<String>();
 				private CompiledZMask seenMask = null;
-				private int	 	duration= 0;
 
 				@Override
 				public Event getEvent()
@@ -2361,11 +2315,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -2425,7 +2374,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private int 				num 		= 0;
 				private final Set<String>	commandIDs 	= new TreeSet<String>();
 				private CompiledZMask seenMask = null;
-				private int	 	duration= 0;
 
 				@Override
 				public Event getEvent()
@@ -2567,11 +2515,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -2616,7 +2559,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private CompiledZMask mask = null;
 				private java.util.regex.Pattern questPattern = null;
 				private CompiledZMask seenMask = null;
-				private int	 	duration= 0;
 
 				@Override
 				public Event getEvent()
@@ -2766,11 +2708,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -2809,7 +2746,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				final Set<String> achievementList = new TreeSet<String>();
 				private CompiledZMask seenMask = null;
-				private int	 	duration= 0;
 
 				@Override
 				public Event getEvent()
@@ -2950,11 +2886,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -2981,7 +2912,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				final Set<String> roomIDs = new TreeSet<String>();
 				private CompiledZMask seenMask = null;
-				private int	 	duration= 0;
 
 				@Override
 				public Event getEvent()
@@ -3113,11 +3043,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -3158,7 +3083,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private CharClass charClass = null;
 				private CompiledZMask playerMask = null;
 				private CompiledZMask seenMask = null;
-				private int			  duration = 0;
 
 				@Override
 				public Event getEvent()
@@ -3300,11 +3224,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -3335,7 +3254,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private int num = -1;
 				private CompiledZMask playerMask = null;
 				private CompiledZMask seenMask = null;
-				private int			  duration = 0;
 
 				@Override
 				public Event getEvent()
@@ -3464,11 +3382,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -3491,7 +3404,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private CompiledZMask playerMask = null;
 				private CompiledZMask itemMask = null;
 				private CompiledZMask seenMask = null;
-				private int			  duration = 0;
 				private int 		  num = 1;
 
 				@Override
@@ -3637,11 +3549,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -3673,7 +3580,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private int seconds = 0;
 				private CompiledZMask seenMask = null;
 				private CompiledZMask playerMask = null;
-				private int			  duration = 0;
 
 				@Override
 				public Event getEvent()
@@ -3802,11 +3708,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -3830,7 +3731,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private CompiledZMask npcMask = null;
 				private CompiledZMask playerMask = null;
 				private CompiledZMask seenMask = null;
-				private int			  duration = 0;
 
 				@Override
 				public Event getEvent()
@@ -3962,11 +3862,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -3996,7 +3891,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private CompiledZMask npcMask = null;
 				private CompiledZMask playerMask = null;
 				private CompiledZMask seenMask = null;
-				private int			  duration = 0;
 
 				@Override
 				public Event getEvent()
@@ -4128,11 +4022,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -4162,7 +4051,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private CompiledZMask npcMask = null;
 				private CompiledZMask playerMask = null;
 				private CompiledZMask seenMask = null;
-				private int			  duration = 0;
 
 				@Override
 				public Event getEvent()
@@ -4294,11 +4182,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -4325,7 +4208,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				private CompiledZMask playerMask = null;
 				private CompiledZMask seenMask = null;
-				private int			  duration = 0;
 
 				@Override
 				public Event getEvent()
@@ -4454,11 +4336,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -4480,7 +4357,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private CompiledZMask npcMask = null;
 				private CompiledZMask playerMask = null;
 				private CompiledZMask seenMask = null;
-				private int			  duration = 0;
 
 				@Override
 				public Event getEvent()
@@ -4612,11 +4488,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -4644,7 +4515,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private int num = -1;
 				private CompiledZMask playerMask = null;
 				private CompiledZMask seenMask = null;
-				private int			  duration = 0;
 
 				@Override
 				public Event getEvent()
@@ -4802,11 +4672,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -4831,7 +4696,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private CompiledZMask npcMask = null;
 				private CompiledZMask playerMask = null;
 				private CompiledZMask seenMask = null;
-				private int			  duration = 0;
 
 				@Override
 				public Event getEvent()
@@ -4978,11 +4842,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -5010,7 +4869,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private int num = -1;
 				private CompiledZMask playerMask = null;
 				private CompiledZMask seenMask = null;
-				private int			  duration = 0;
 
 				@Override
 				public Event getEvent()
@@ -5168,11 +5026,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -5196,7 +5049,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private int num = -1;
 				private CompiledZMask areaMask = null;
 				private CompiledZMask seenMask = null;
-				private int	 	duration= 0;
 
 				@Override
 				public Event getEvent()
@@ -5345,11 +5197,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -5374,7 +5221,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private CompiledZMask shipMask = null;
 				private CompiledZMask playerMask = null;
 				private CompiledZMask seenMask = null;
-				private int			  duration = 0;
 
 				@Override
 				public Event getEvent()
@@ -5506,11 +5352,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -5538,7 +5379,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private int num = -1;
 				private CompiledZMask areaMask = null;
 				private CompiledZMask seenMask = null;
-				private int	 	duration= 0;
 
 				@Override
 				public Event getEvent()
@@ -5687,11 +5527,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -5717,7 +5552,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private CompiledZMask	areaMask	= null;
 				private CompiledZMask	playerMask	= null;
 				private CompiledZMask	seenMask	= null;
-				private int	 	duration= 0;
 
 				@Override
 				public Event getEvent()
@@ -5867,11 +5701,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -5906,7 +5735,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private CompiledZMask	playerMask		= null;
 				private CompiledZMask	seenMask		= null;
 				private String			valExpression	= null;
-				private int				duration		= 0;
 
 				@Override
 				public Event getEvent()
@@ -6071,11 +5899,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -6111,7 +5934,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private int num = -1;
 				private final Set<String> relationList = new TreeSet<String>();
 				private CompiledZMask seenMask = null;
-				private int	 	duration= 0;
 
 				@Override
 				public Event getEvent()
@@ -6259,11 +6081,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -6294,7 +6111,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private int num = -1;
 				private CompiledZMask areaMask = null;
 				private CompiledZMask seenMask = null;
-				private int	 	duration= 0;
 
 				@Override
 				public Event getEvent()
@@ -6444,11 +6260,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -6471,7 +6282,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				private int num = -1;
 				private CompiledZMask seenMask = null;
-				private int	 	duration= 0;
 
 				@Override
 				public Event getEvent()
@@ -6606,11 +6416,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String durationStr=CMParms.getParmStr(parms, "DURATION", "");
-					if((durationStr.length()>0)&&(!CMath.isInteger(durationStr)))
-						return "Error: Invalid DURATION parameter: "+durationStr+"!";
-					else
-						this.duration=CMath.s_int(durationStr);
 					this.seenMask=null;
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
@@ -7456,7 +7261,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		return awardMessage.toString();
 	}
 
-	protected boolean giveAwards(final Achievement A, final Achievable able, 
+	protected boolean giveAwards(final Achievement A, final Achievable able,
 								 final Tattooable holder, final MOB mob, final AchievementLoadFlag flag)
 	{
 		if(holder.findTattoo(A.getTattoo())==null)
@@ -7748,6 +7553,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		parmTree.put("EVENT", A.getEvent().name());
 		parmTree.put("DISPLAY", A.getDisplayStr());
 		parmTree.put("TITLE", "");
+		parmTree.put("DURATION", (A.getDuration()==0)?"":(""+A.getDuration()));
 		for(final Award award : A.getRewards())
 		{
 			if(award.getType() == AwardType.TITLE)
@@ -7803,6 +7609,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 
 				help=getAchievementsHelpFromMap(helpMap,null,"DISPLAY");
 				parmTree.put("DISPLAY",CMLib.genEd().prompt(mob, parmTree.get("DISPLAY"), ++showNumber, showFlag, L("Display Desc"), false, false, help, null, null));
+
+				help=getAchievementsHelpFromMap(helpMap,null,"DURATION");
+				parmTree.put("DURATION",CMLib.genEd().prompt(mob, parmTree.get("DURATION"), ++showNumber, showFlag, L("Duration"), false, false, help, null, null));
 
 				help=getAchievementsHelpFromMap(helpMap,null,"TITLE");
 				parmTree.put("TITLE",CMLib.genEd().prompt(mob, parmTree.get("TITLE"), ++showNumber, showFlag, L("Title Award"), true, false, help, null, null));
