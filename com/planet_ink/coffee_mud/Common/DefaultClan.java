@@ -1921,6 +1921,15 @@ public class DefaultClan implements Clan
 			this.overrideMinClanMembers=null;
 		}
 
+		for (final Tattoo tattoo : tattoos)
+		{
+			if ((tattoo != null) && (tattoo.getTickDown() > 0))
+			{
+				if (tattoo.tickDown() <= 0)
+					delTattoo(tattoo);
+			}
+		}
+
 		try
 		{
 			if((tickUp % CMProps.getTicksPerMudHour())==0)

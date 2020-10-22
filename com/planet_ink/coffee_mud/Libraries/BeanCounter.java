@@ -243,6 +243,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 				createCurrencySet(defaultCurrencies,copperStandard);
 				createCurrencySet(defaultCurrencies,creditStandard);
 				createCurrencySet(defaultCurrencies,dollarStandard);
+				createCurrencySet(defaultCurrencies,victoryStandard);
 			}
 			if(defaultCurrencies.containsKey(code))
 				return defaultCurrencies.get(code);

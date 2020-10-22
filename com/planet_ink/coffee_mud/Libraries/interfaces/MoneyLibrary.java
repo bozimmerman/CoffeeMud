@@ -137,6 +137,8 @@ public interface MoneyLibrary extends CMLibrary
 		"CREDIT=1 credit(s) (c);1000 megacredit(s) (mc);1000000 gigacredit(s) (gc)";
 	public static final String dollarStandard=
 		"DOLLAR=1 cent(c) (c);100 dollar($) (mc);100000 grand (k$)";
+	public static final String victoryStandard=
+			"VICTORY=1 victorypoint(!) (v)";
 
 	public static interface DebtItem
 	{

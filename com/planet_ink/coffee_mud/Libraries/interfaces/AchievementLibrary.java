@@ -265,6 +265,15 @@ public interface AchievementLibrary extends CMLibrary
 		 * @return the value of the parameter
 		 */
 		public String getRawParmVal(String str);
+
+		/**
+		 * For achievements that are repeatable,
+		 * this is the duration of the tattoo.  These 
+		 * should not be used for Account achievements!
+		 * 0 is indefinite/forever
+		 * @return the duration, in ticks, of the achievement
+		 */
+		public int getDuration();
 	}
 
 	/**
