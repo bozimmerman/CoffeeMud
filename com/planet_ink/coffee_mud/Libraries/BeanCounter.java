@@ -386,11 +386,22 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public String getDenominationName(final String currency, final double denomination, final long number)
 	{
 		final String s=getDenominationName(currency,denomination);
-		if(s.toUpperCase().endsWith("(S)"))
+		if(s.endsWith(")"))
 		{
-			if(number>1)
-				return number+" "+s.substring(0,s.length()-3)+s.charAt(s.length()-2);
-			return number+" "+s.substring(0,s.length()-3);
+			final String us=s.toUpperCase();
+			if(us.endsWith("(S)"))
+			{
+				if(number>1)
+					return number+" "+s.substring(0,s.length()-3)+s.charAt(s.length()-2);
+				return number+" "+s.substring(0,s.length()-3);
+			}
+			else
+			if(us.endsWith("(YS)"))
+			{
+				if(number>1)
+					return number+" "+s.substring(0,s.length()-4)+CMStrings.sameCase("ies", s.charAt(s.length()-3));
+				return number+" "+s.substring(0,s.length()-3);
+			}
 		}
 		return number+" "+s;
 	}

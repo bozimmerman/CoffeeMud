@@ -1776,8 +1776,25 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			for(int v2=0;v2<V2.size();v2++)
 			{
 				String s=V2.get(v2);
-				if(s.toLowerCase().endsWith("(s)"))
-					s=s.substring(0,s.length()-3)+"s";
+				if(s.endsWith(")"))
+				{
+					final String ls=s.toLowerCase();
+					if(ls.endsWith("(s)"))
+					{
+						s=s.substring(0,s.length()-3);
+						if(containsString(s,moneyStr))
+							return V.get(v);
+						s=s+"s";
+					}
+					else
+					if(ls.endsWith("(ys)"))
+					{
+						s=s.substring(0,s.length()-4);
+						if(containsString(s+"y",moneyStr))
+							return V.get(v);
+						s=s+"ies";
+					}
+				}
 				if(containsString(s,moneyStr))
 					return V.get(v);
 			}
@@ -1801,8 +1818,19 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					for (final MoneyDenomination element : DV)
 					{
 						s=element.name().toUpperCase();
-						if(s.endsWith("(S)"))
-							s=s.substring(0,s.length()-3)+"S";
+						if(s.endsWith(")"))
+						{
+							if(s.endsWith("(S)"))
+								s=s.substring(0,s.length()-3)+"S";
+							else
+							if(s.endsWith("(YS)"))
+							{
+								s=s.substring(0,s.length()-4);
+								if(containsString(s+"y",moneyStr))
+									return element.value();
+								s=s+"ies";
+							}
+						}
 						if(containsString(s,moneyStr))
 							return element.value();
 						else
@@ -1824,8 +1852,19 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				for (final MoneyDenomination element : DV)
 				{
 					s=element.name().toUpperCase();
-					if(s.endsWith("(S)"))
-						s=s.substring(0,s.length()-3)+"S";
+					if(s.endsWith(")"))
+					{
+						if(s.endsWith("(S)"))
+							s=s.substring(0,s.length()-3)+"S";
+						else
+						if(s.endsWith("(YS)"))
+						{
+							s=s.substring(0,s.length()-4);
+							if(containsString(s+"y",moneyStr))
+								return element.value();
+							s=s+"ies";
+						}
+					}
 					if(containsString(s,moneyStr))
 						return element.value();
 					else

@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.SecFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -153,7 +154,7 @@ public class Drop extends StdCommand
 				return false;
 			final String currency=((Coins)dropThis).getCurrency();
 			final MoneyLibrary.MoneyDefinition def = CMLib.beanCounter().getCurrencySet(currency);
-			if((def != null)&&(!def.canTrade()))
+			if((def != null)&&(!def.canTrade())&&(!CMSecurity.isAllowed(mob, mob.location(), SecFlag.CMDITEMS)))
 			{
 				if(!allFlag)
 				{
