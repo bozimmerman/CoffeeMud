@@ -969,6 +969,8 @@ public interface Ability extends Environmental
 	public static final long FLAG_ELECTRICBASED=34359738368L;
 	/** constant mask for the flags() method designating that this ability is a non-enchantment @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
 	public static final long FLAG_NONENCHANTMENT=68719476736L;
+	/** constant mask for the flags() method designating that this ability is a non-disenchantable @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	public static final long FLAG_NODISENCHANT=137438953472L;
 
 	/** array of string describtions for the FLAG_* constants, indexed by their values */
 	public static final String[] FLAG_DESCS=
@@ -1009,7 +1011,8 @@ public interface Ability extends Environmental
 		"LAW",
 		"CHAOS",
 		"ELECTROCUTING",
-		"NONENCHANTMENT"
+		"NONENCHANTMENT",
+		"NODISENCHANT"
 	};
 
 	/** constant for the abstractQuality and other methods.  Means that this skill would not make the target happy. see {@link com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abstractQuality()}*/

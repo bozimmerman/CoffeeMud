@@ -110,7 +110,7 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_ZAPPER;
+		return Ability.FLAG_ZAPPER|Ability.FLAG_NODISENCHANT;
 	}
 
 	@Override

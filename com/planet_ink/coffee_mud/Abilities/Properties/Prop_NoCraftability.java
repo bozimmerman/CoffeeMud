@@ -61,6 +61,6 @@ public class Prop_NoCraftability extends Property
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_UNCRAFTABLE;
+		return Ability.FLAG_UNCRAFTABLE|Ability.FLAG_NODISENCHANT;
 	}
 }

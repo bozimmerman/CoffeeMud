@@ -68,6 +68,12 @@ public class ExtraData extends ThinAbility
 		return Ability.ACODE_PROPERTY;
 	}
 
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NODISENCHANT;
+	}
+
 	protected Map<String,String> data = new Hashtable<String,String>();
 
 	@Override

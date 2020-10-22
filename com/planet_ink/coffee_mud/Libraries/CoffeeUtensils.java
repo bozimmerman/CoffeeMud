@@ -460,7 +460,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		{
 			final Ability A=a.nextElement();
 			if((A!=null)
-			&&(!A.ID().equals("ExtraData")))
+			&&(!CMath.bset(A.flags(), Ability.FLAG_NODISENCHANT)))
 				affects.add(A);
 		}
 		for(final Ability A : affects)
