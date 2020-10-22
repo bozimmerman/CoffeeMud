@@ -285,6 +285,10 @@ public class SipletInterface extends StdWebMacro
 								p.lastTouched=System.currentTimeMillis();
 								p.siplet.readURLData();
 								data = p.siplet.getURLData();
+								if(data.length()>512)
+								{
+									//System.out.println("hi:"+data.length());
+								}
 								final String jscript = p.siplet.getJScriptCommands();
 								success=p.siplet.isConnectedToURL();
 								p.response=Boolean.toString(success)+';'+data+token+';'+jscript+token+';';
@@ -317,6 +321,10 @@ public class SipletInterface extends StdWebMacro
 
 							p.siplet.readURLData();
 							final String data = p.siplet.getURLData();
+							if(data.length()>1024)
+							{
+								//System.out.println("hi:"+data.length());
+							}
 							final String jscript = p.siplet.getJScriptCommands();
 							final boolean success=p.siplet.isConnectedToURL();
 							if((!noTouch)||(data.length()>0)||(jscript.length()>0)||(!success))

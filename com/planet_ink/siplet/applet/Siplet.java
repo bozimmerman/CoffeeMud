@@ -351,6 +351,7 @@ public class Siplet
 				while(connected
 				&&(!sock.isClosed())
 				&&(sock.isConnected())
+				&&((buf.length()<1024)||(buf.charAt(buf.length()-1)=='\r')||(buf.charAt(buf.length()-1)=='\n'))
 				&&(System.currentTimeMillis()-last)<250)
 				{
 					if(in[0].ready())
