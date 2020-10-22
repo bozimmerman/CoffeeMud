@@ -1330,7 +1330,7 @@ public class DefaultPlayerStats implements PlayerStats
 		&&(R.getArea()!=null)
 		&&(!hasVisited(R)))
 		{
-			if(R.getArea() instanceof AutoGenArea)
+			if((R.getArea() instanceof SubArea)||(R.getArea() instanceof AutoGenArea))
 				tempRoomSet().add(CMLib.map().getExtendedRoomID(R));
 			else
 				roomSet().add(CMLib.map().getExtendedRoomID(R));

@@ -1212,19 +1212,16 @@ public class DefaultFaction implements Faction, MsgListener
 							if(event.applies(msg.source(),msg.source()))
 							{
 								final int pct = CMath.s_int(event.getTriggerParm("PCT"));
-								if(msg.source().isPlayer())
+								if(pct==0)
 								{
-									if(pct==0)
-									{
-										if(msg.source().playerStats().totalVisitedRooms(msg.source(), A)!=1)
-											continue;
-									}
-									else
-									if(msg.source().playerStats().percentVisited(msg.source(), A) < pct)
+									if(msg.source().playerStats().totalVisitedRooms(msg.source(), A)>0)
 										continue;
-									if(this.checkApplyEventWait(event, msg.source()))
-										executeChange(msg.source(),msg.source(),event);
 								}
+								else
+								if(msg.source().playerStats().percentVisited(msg.source(), A) < pct)
+									continue;
+								if(this.checkApplyEventWait(event, msg.source()))
+									executeChange(msg.source(),msg.source(),event);
 							}
 						}
 					}
@@ -1812,7 +1809,7 @@ public class DefaultFaction implements Faction, MsgListener
 			factionAdj=(int)Math.round(CMath.mul(factionAdj,findFactor(source,(factionAdj>=0))));
 		}
 
-		if(factionAdj==0)
+		if((factionAdj==0)&&(event.factor()!=0.0))
 			return;
 
 		final String announceMsg = event.getFlagValue("ANNOUNCE");
