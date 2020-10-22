@@ -477,13 +477,13 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 					{
 						final Ability A=(Ability)lowestObject;
 						final int prevLevel=CMath.s_int(A.getStat("STAT-LEVEL"));
-						A.setStat("TONEDOWN-MISC", "110%");
+						A.setStat("TONEUP-MISC", "110%");
 						if(CMath.s_int(A.getStat("STAT-LEVEL"))==prevLevel)
 						{
-							A.setStat("TONEDOWN-MISC", "110%");
+							A.setStat("TONEUP-MISC", "110%");
 							if(CMath.s_int(A.getStat("STAT-LEVEL"))==prevLevel)
 							{
-								A.setStat("TONEDOWN-MISC", "150%");
+								A.setStat("TONEUP-MISC", "150%");
 								if(CMath.s_int(A.getStat("STAT-LEVEL"))==prevLevel)
 									illegalThings.add(lowestObject);
 							}

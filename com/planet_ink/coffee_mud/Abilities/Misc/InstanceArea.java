@@ -907,10 +907,15 @@ public class InstanceArea extends StdAbility
 						newFILevel = (int)CMath.round(CMath.parseMathExpression(this.iLevelFormula, vars, 0.0));
 					else
 						newFILevel = newILevel;
-					CMLib.itemBuilder().itemFix(I, newILevel, false, null);
-					CMLib.itemBuilder().balanceItemByLevel(I);
 					I.basePhyStats().setLevel(newFILevel);
 					I.phyStats().setLevel(newFILevel);
+					CMLib.itemBuilder().balanceItemByLevel(I);
+					I.basePhyStats().setLevel(newILevel);
+					I.phyStats().setLevel(newILevel);
+					CMLib.itemBuilder().itemFix(I, newILevel, false, null);
+					I.basePhyStats().setLevel(newFILevel);
+					I.phyStats().setLevel(newFILevel);
+					CMLib.itemBuilder().balanceItemByLevel(I);
 					if((I instanceof Weapon)
 					&&(this.reqWeapons!=null)
 					&&(this.reqWeapons.contains("MAGICAL")))
