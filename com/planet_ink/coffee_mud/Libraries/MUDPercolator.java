@@ -6895,7 +6895,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							effectiveLevel = 1;
 						I.basePhyStats().setLevel(effectiveLevel);
 						I.phyStats().setLevel(effectiveLevel);
-						CMLib.itemBuilder().itemFix(I, effectiveLevel, null);
+						CMLib.itemBuilder().itemFix(I, effectiveLevel, false, null);
 						I.basePhyStats().setLevel(newILevel);
 						I.phyStats().setLevel(newILevel);
 						I.text();
@@ -6944,7 +6944,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 									effectiveLevel = 1;
 								mI.basePhyStats().setLevel(effectiveLevel);
 								mI.phyStats().setLevel(effectiveLevel);
-								CMLib.itemBuilder().itemFix(mI, effectiveLevel, null);
+								CMLib.itemBuilder().itemFix(mI, effectiveLevel, false, null);
 								mI.basePhyStats().setLevel(newILevel);
 								mI.phyStats().setLevel(newILevel);
 								mI.text();
@@ -6976,7 +6976,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 											effectiveLevel = 1;
 										I2.basePhyStats().setLevel(effectiveLevel);
 										I2.phyStats().setLevel(effectiveLevel);
-										CMLib.itemBuilder().itemFix(I2, effectiveLevel, null);
+										CMLib.itemBuilder().itemFix(I2, effectiveLevel, false, null);
 										newLevel = effectiveLevel;
 									}
 									P2.basePhyStats().setLevel(newLevel);

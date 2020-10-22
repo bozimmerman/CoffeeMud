@@ -42,7 +42,7 @@ public interface ItemBalanceLibrary extends CMLibrary
 	public boolean toneDownValue(Item I);
 	public int timsBaseLevel(Item I);
 	public void balanceItemByLevel(Item I);
-	public boolean itemFix(Item I, int lvlOr0, StringBuffer changes);
+	public boolean itemFix(Item I, int lvlOr0, boolean preferMagic, StringBuffer changes);
 	public List<Ability> getTimsAdjResCast(Item I);
 	public Item enchant(Item I, int pct);
 	public Map<String, String> timsItemAdjustments(Item I,

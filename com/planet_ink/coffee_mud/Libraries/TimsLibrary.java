@@ -278,7 +278,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public boolean itemFix(final Item I, final int lvlOr0, final StringBuffer changes)
+	public boolean itemFix(final Item I, final int lvlOr0, final boolean preferMagic, final StringBuffer changes)
 	{
 		final Item oldI = (changes!=null)?(Item)I.copyOf():null;
 
@@ -345,7 +345,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 					for(final Object o : levelsMap.keySet())
 					{
 						if((highestObject==null)
-						||(levelsMap.get(o).intValue() > levelsMap.get(highestObject).intValue()))
+						||((levelsMap.get(o).intValue() > levelsMap.get(highestObject).intValue())
+							&&(!preferMagic)||(highestObject instanceof Ability)))
 						{
 							if(!illegalThings.contains(o))
 								highestObject=o;
@@ -406,6 +407,92 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 					{
 						Log.errOut(ID(),"What is "+highestObject+"??");
 						illegalThings.add(highestObject);
+					}
+					levelsMap=getItemLevels(I,props);
+					TLVL=totalLevels(levelsMap);
+				}
+				//Log.sysOut("Reset",I.name()+"("+I.basePhyStats().level()+") "+FTLVL+"->"+TLVL+", "+I.basePhyStats().armor()+"/"+I.basePhyStats().attackAdjustment()+"/"+I.basePhyStats().damage()+"/"+((adjA!=null)?adjA.text():"null"));
+				fixRejuvItem(I);
+				if(CMLib.flags().isCataloged(I))
+					CMLib.catalog().updateCatalog(I);
+				reportChangesDestroyOldI(oldI,I,changes,OTLVL,TLVL);
+				return true;
+			}
+			else
+			if(TLVL<Math.round(CMath.mul(lvl,0.9)))
+			{
+				//int FTLVL=TLVL;
+				final Set<Object> illegalThings=new HashSet<Object>();
+				//Log.sysOut("Reset",I.name()+"("+I.basePhyStats().level()+") "+TLVL+", "+I.basePhyStats().armor()+"/"+I.basePhyStats().attackAdjustment()+"/"+I.basePhyStats().damage()+"/"+((adjA!=null)?adjA.text():"null"));
+				while((TLVL<Math.round(CMath.mul(lvl,0.9)))
+				&&(illegalThings.size()<levelsMap.size()))
+				{
+					Object lowestObject=null;
+					for(final Object o : levelsMap.keySet())
+					{
+						if((lowestObject==null)
+						||((levelsMap.get(o).intValue() < levelsMap.get(lowestObject).intValue())
+							&&((!preferMagic)||(lowestObject instanceof Ability))))
+						{
+							if(!illegalThings.contains(o))
+								lowestObject=o;
+						}
+					}
+					if(lowestObject==null)
+						break;
+					if(lowestObject instanceof Weapon)
+					{
+						final Ability adjA=getBaseAdjusterAbility(props);
+						final String s=(adjA!=null)?adjA.text():"";
+						final int oldAtt=I.basePhyStats().attackAdjustment();
+						final int oldDam=I.basePhyStats().damage();
+						toneUpWeapon((Weapon)I,adjA);
+						if((I.basePhyStats().attackAdjustment()==oldAtt)
+						&&(I.basePhyStats().damage()==oldDam)
+						&&((adjA==null)||(adjA.text().equals(s))))
+							illegalThings.add(lowestObject);
+					}
+					else
+					if(lowestObject instanceof Item)
+					{
+						final Ability adjA=getBaseAdjusterAbility(props);
+						final String s=(adjA!=null)?adjA.text():"";
+						final int oldArm=I.basePhyStats().armor();
+						toneUpArmor((Armor)I,adjA);
+						if((I.basePhyStats().armor()==oldArm)
+						&&((adjA==null)||(adjA.text().equals(s))))
+							illegalThings.add(lowestObject);
+					}
+					else
+					if((lowestObject instanceof String)
+					&&(((String)lowestObject).equalsIgnoreCase("ABILITY")))
+					{
+						if(I.basePhyStats().ability()>0)
+							I.basePhyStats().setAbility(I.basePhyStats().ability()-1);
+						else
+							illegalThings.add("ABILITY");
+					}
+					else
+					if(lowestObject instanceof Ability)
+					{
+						final Ability A=(Ability)lowestObject;
+						final int prevLevel=CMath.s_int(A.getStat("STAT-LEVEL"));
+						A.setStat("TONEDOWN-MISC", "110%");
+						if(CMath.s_int(A.getStat("STAT-LEVEL"))==prevLevel)
+						{
+							A.setStat("TONEDOWN-MISC", "110%");
+							if(CMath.s_int(A.getStat("STAT-LEVEL"))==prevLevel)
+							{
+								A.setStat("TONEDOWN-MISC", "150%");
+								if(CMath.s_int(A.getStat("STAT-LEVEL"))==prevLevel)
+									illegalThings.add(lowestObject);
+							}
+						}
+					}
+					else
+					{
+						Log.errOut(ID(),"What is "+lowestObject+"??");
+						illegalThings.add(lowestObject);
 					}
 					levelsMap=getItemLevels(I,props);
 					TLVL=totalLevels(levelsMap);
@@ -850,6 +937,49 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		else
 		if(fixit&&(A.basePhyStats().armor()>1))
 			A.basePhyStats().setArmor(A.basePhyStats().armor()-1);
+		A.recoverPhyStats();
+	}
+
+	public void toneUpWeapon(final Weapon W, final Ability adjA)
+	{
+		if(adjA!=null)
+		{
+			final String oldTxt=adjA.text();
+			adjA.setStat("TONEDOWN-WEAPON", "110%");
+			if(!adjA.text().equals(oldTxt))
+			{
+				W.recoverPhyStats();
+				return;
+			}
+		}
+		if(W.basePhyStats().damage()>=10)
+			W.basePhyStats().setDamage((int)Math.round(CMath.mul(W.basePhyStats().damage(),1.1)));
+		else
+		if(W.basePhyStats().damage()>1)
+			W.basePhyStats().setDamage(W.basePhyStats().damage()+1);
+		if(W.basePhyStats().attackAdjustment()>=10)
+			W.basePhyStats().setAttackAdjustment((int)Math.round(CMath.mul(W.basePhyStats().attackAdjustment(),1.1)));
+		else
+		if(W.basePhyStats().attackAdjustment()>1)
+			W.basePhyStats().setAttackAdjustment(W.basePhyStats().attackAdjustment()+1);
+		W.recoverPhyStats();
+	}
+
+	public void toneUpArmor(final Armor A, final Ability adjA)
+	{
+		boolean fixit=true;
+		if(adjA!=null)
+		{
+			final String oldTxt=adjA.text();
+			adjA.setStat("TONEDOWN-ARMOR", "110%");
+			if(!adjA.text().equals(oldTxt))
+				fixit=false;
+		}
+		if(fixit&&(A.basePhyStats().armor()>=10))
+			A.basePhyStats().setArmor((int)Math.round(CMath.mul(A.basePhyStats().armor(),1.1)));
+		else
+		if(fixit&&(A.basePhyStats().armor()>1))
+			A.basePhyStats().setArmor(A.basePhyStats().armor()+1);
 		A.recoverPhyStats();
 	}
 

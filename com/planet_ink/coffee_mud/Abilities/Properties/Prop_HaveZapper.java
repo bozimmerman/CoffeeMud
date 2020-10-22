@@ -288,6 +288,33 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect
 				setMiscText(s);
 				*/
 			}
+			else
+			if(code.equalsIgnoreCase("TONEUP"))
+			{
+				setStat("TONEUP-MISC",val);
+			}
+			else
+			if((code.equalsIgnoreCase("TONEUP-ARMOR"))
+			||(code.equalsIgnoreCase("TONEUP-WEAPON"))
+			||(code.equalsIgnoreCase("TONEUP-MISC")))
+			{
+				/*
+				final double pct=CMath.s_pct(val);
+				final String s=text();
+				int plusminus=s.indexOf('+');
+				int minus=s.indexOf('-');
+				if((minus>=0)&&((plusminus<0)||(minus<plusminus)))
+					plusminus=minus;
+				while(plusminus>=0)
+				{
+					minus=s.indexOf('-',plusminus+1);
+					plusminus=s.indexOf('+',plusminus+1);
+					if((minus>=0)&&((plusminus<0)||(minus<plusminus)))
+						plusminus=minus;
+				}
+				setMiscText(s);
+				*/
+			}
 		}
 		else
 			super.setStat(code, val);

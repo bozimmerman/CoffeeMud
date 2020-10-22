@@ -1000,7 +1000,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 				{
 					final double[] vars=new double[] {planarLevel, I.phyStats().level(), invoker.phyStats().level() } ;
 					final int newILevel = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0));
-					CMLib.itemBuilder().itemFix(I, newILevel, null);
+					CMLib.itemBuilder().itemFix(I, newILevel, false, null);
 					I.basePhyStats().setLevel(newILevel);
 					I.phyStats().setLevel(newILevel);
 					CMLib.itemBuilder().balanceItemByLevel(I);

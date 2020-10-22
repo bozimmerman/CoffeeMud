@@ -506,7 +506,7 @@ public class Spell_Wish extends Spell
 							if(levelProblem>0)
 							{
 								experienceRequired+=50*levelProblem;
-								CMLib.itemBuilder().itemFix((Item)foundThang, mob.phyStats().level(), new StringBuffer(""));
+								CMLib.itemBuilder().itemFix((Item)foundThang, mob.phyStats().level(), false, new StringBuffer(""));
 							}
 							wishDrain(mob,(baseLoss+experienceRequired),false);
 							lastCastTime = System.currentTimeMillis();

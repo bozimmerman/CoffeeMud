@@ -93,6 +93,7 @@ public class InstanceArea extends StdAbility
 	protected List<String>				categories		= null;
 	protected PairList<String, String>	behavList		= null;
 	protected PairList<String, String>	reffectList		= null;
+	protected PairList<String, String>	ieffectList		= null;
 	protected PairList<String, String>	factionList		= null;
 	protected PairList<String, String>	pFactionList	= null;
 	protected PairList<Integer, Long>	limits 			= null;
@@ -166,7 +167,9 @@ public class InstanceArea extends StdAbility
 		DAMAGEADJ,
 		LIMIT,
 		AREAMATCH,
-		LEADERREQ
+		LEADERREQ,
+		IADJUST,
+		IEFFECT
 	}
 
 	/**
@@ -212,6 +215,7 @@ public class InstanceArea extends StdAbility
 		this.behavList=null;
 		this.enableList=null;
 		this.reffectList=null;
+		this.ieffectList=null;
 		this.factionList=null;
 		this.pFactionList=null;
 		this.limits=null;
@@ -332,6 +336,10 @@ public class InstanceArea extends StdAbility
 			final String reffects = instVars.get(InstVar.REFFECT.toString());
 			if(reffects!=null)
 				this.reffectList=new PairVector<String,String>(CMParms.parseSpaceParenList(reffects));
+			this.ieffectList = null;
+			final String ieffects = instVars.get(InstVar.IEFFECT.toString());
+			if(ieffects!=null)
+				this.ieffectList=new PairVector<String,String>(CMParms.parseSpaceParenList(ieffects));
 			this.factionList = null;
 			final String factions = instVars.get(InstVar.FACTIONS.toString());
 			if(factions!=null)
@@ -861,6 +869,35 @@ public class InstanceArea extends StdAbility
 				else
 				if((I instanceof Weapon)||(I instanceof Armor))
 				{
+					final String adjust = instVars.get(InstVar.IADJUST.toString());
+					if(adjust != null)
+						reEffect(I,"Prop_WearAdjuster",adjust);
+					if(this.ieffectList!=null)
+					{
+						for(final Pair<String,String> p : this.ieffectList)
+						{
+							if(I.fetchBehavior(p.first)==null)
+							{
+								final Behavior B=CMClass.getBehavior(p.first);
+								if(B==null)
+								{
+									final Ability A=CMClass.getAbility(p.first);
+									if(A==null)
+										Log.errOut("InstanceArea","Unknown behavior : "+p.first);
+									else
+									{
+										A.setMiscText(p.second);
+										I.addNonUninvokableEffect(A);
+									}
+								}
+								else
+								{
+									B.setParms(p.second);
+									I.addBehavior(B);
+								}
+							}
+						}
+					}
 					final double[] vars = new double[] {instanceLevel, I.phyStats().level(), instanceLevel,
 														stats[Area.Stats.MIN_LEVEL.ordinal()], stats[Area.Stats.MAX_LEVEL.ordinal()],
 														CMProps.getIntVar(CMProps.Int.EXPRATE)+1, topPlayerFacVal} ;
@@ -870,9 +907,7 @@ public class InstanceArea extends StdAbility
 						newFILevel = (int)CMath.round(CMath.parseMathExpression(this.iLevelFormula, vars, 0.0));
 					else
 						newFILevel = newILevel;
-					CMLib.itemBuilder().itemFix(I, newILevel, null);
-					I.basePhyStats().setLevel(newILevel);
-					I.phyStats().setLevel(newILevel);
+					CMLib.itemBuilder().itemFix(I, newILevel, false, null);
 					CMLib.itemBuilder().balanceItemByLevel(I);
 					I.basePhyStats().setLevel(newFILevel);
 					I.phyStats().setLevel(newFILevel);

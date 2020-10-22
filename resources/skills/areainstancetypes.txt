@@ -38,6 +38,8 @@ InstanceArea types definitions
 # FATIGUERATE: multiplier to extra hunger/thirst
 # REFFECT: space delimited AbilityID/BehaviorID(arg) list for rooms
 # AEFFECT: space delimited AbilityID/BehaviorID(arg) list for instance area
+# IEFFECT: space delimited AbilityID/BehaviorID(arg) list for armor/weapons
+# IADJUST: wear adjuster arguments, see Prop_WearAdjuster for armor/weapons
 # SPECFLAGS: space delim flags: NOINFRAVISION, BADMUNDANEARMOR, ALLBREATHE
 # MIXRACE: RaceID of race to make every instance mob a mix of
 # ELITE: elite level 1+, increases hit points, attack, damage, saves (see LEVELADJ)
@@ -61,9 +63,9 @@ InstanceArea types definitions
 # * In normal areas, add tattoo NOAINST <type name> to prevent a mob from 
 #   spawning in an instance.
 
-"Triumph" category="Main" PLAYFACTIONS="triumph.ini" prefix="" LEADERREQ="-FACTION +TRIUMPH0" duration=900 ileveladj="@x1" leveladj="@x3 + ((((1+@x5-@x4)-(1+@x5-@x2))/(1+@x5-@x4))*(1+@x6)) > 1" ELITE="1+(((@x7 / 25)-0.49999999)>0)" LIMIT="1/DAY"
+"Triumph" category="Main" PLAYFACTIONS="triumph.ini" prefix="" LEADERREQ="-FACTION +TRIUMPH0" duration=900 ileveladj="@x1" leveladj="@x3 + ((((1+@x5-@x4)-(1+@x5-@x2))/(1+@x5-@x4))*(1+@x6)) > 1" ELITE="1+(((@x7 / 25)-0.49999999)>0)" LIMIT="1/DAY" IEFFECT="Prop_NoCraftability Prop_ItemBinder"
 
-"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 -DAY +1" enable="Spell_Lightning electrocuting number((@x7/100)/10)" behave="CombatAbilities"
+"Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 -DAY +1" enable="Spell_Lightning electrocuting number((@x7/100)/10)" behave="CombatAbilities" iadjust="
 "Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 -DAY +2" enable="burning number((@x7/100)/10)" behave="CombatAbilities""
 "Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 -DAY +3" enable="acidizing number((@x7/100)/10)" behave="CombatAbilities""
 "Triumph" LIKE="Triumph" LEADERREQ="-FACTION +TRIUMPH1 -DAY +4" enable="freezing number((@x7/100)/10)" behave="CombatAbilities"

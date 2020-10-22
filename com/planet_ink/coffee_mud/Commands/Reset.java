@@ -2069,7 +2069,7 @@ public class Reset extends StdCommand
 						final Item[] items=CMLib.catalog().getCatalogItems();
 						for (final Item I : items)
 						{
-							if(CMLib.itemBuilder().itemFix(I,-1,recordedChanges))
+							if(CMLib.itemBuilder().itemFix(I,-1,false, recordedChanges))
 							{
 								mob.tell(L("Catalog item @x1 done.",I.Name()));
 								CMLib.catalog().updateCatalog(I);
@@ -2137,7 +2137,7 @@ public class Reset extends StdCommand
 						for(int i=0;i<R.numItems();i++)
 						{
 							final Item I=R.getItem(i);
-							if(CMLib.itemBuilder().itemFix(I,-1,recordedChanges))
+							if(CMLib.itemBuilder().itemFix(I,-1,false, recordedChanges))
 								changedItems=true;
 						}
 						for(int m=0;m<R.numInhabitants();m++)
@@ -2154,7 +2154,7 @@ public class Reset extends StdCommand
 								if((I.basePhyStats().level()>M.basePhyStats().level())
 								||((I.basePhyStats().level()>91)&&((I.basePhyStats().level() + (I.basePhyStats().level()/10))<M.basePhyStats().level())))
 									lvl=M.basePhyStats().level();
-								if(CMLib.itemBuilder().itemFix(I,lvl,recordedChanges))
+								if(CMLib.itemBuilder().itemFix(I,lvl,false, recordedChanges))
 									changedMOBS=true;
 							}
 							final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
@@ -2167,7 +2167,7 @@ public class Reset extends StdCommand
 									{
 										final Item I=(Item)E;
 										boolean didSomething=false;
-										didSomething=CMLib.itemBuilder().itemFix(I,-1,recordedChanges);
+										didSomething=CMLib.itemBuilder().itemFix(I,-1,false, recordedChanges);
 										changedMOBS=changedMOBS||didSomething;
 										if(didSomething)
 										{
