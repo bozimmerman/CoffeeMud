@@ -94,8 +94,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		final String tattoo=row.substring(0,x).toUpperCase().trim();
 		if(tattoo.length()==0)
 			return "Error: Blank achievement tattoo: "+tattoo+"!";
-		if(tattoo.equalsIgnoreCase("ach_instexpdo"))
-			System.out.println("STOP!");
 		if(Character.isDigit(tattoo.charAt(0)))
 			return "Error: Invalid achievement tattoo: "+tattoo+"!";
 		final String params=row.substring(x+1).trim();
