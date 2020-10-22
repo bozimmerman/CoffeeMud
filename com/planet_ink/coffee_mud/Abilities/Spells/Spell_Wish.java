@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.LegalLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TimeManager;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -345,14 +346,17 @@ public class Spell_Wish extends Spell
 			&&(CMath.s_int(goldCheck.get(0))>0)
 			&&(CMLib.english().matchAnyCurrencySet(CMParms.combine(goldCheck,1))!=null))
 			{
+				final String currency=CMLib.english().matchAnyCurrencySet(CMParms.combine(goldCheck,1));
+				final MoneyLibrary.MoneyDefinition def=CMLib.beanCounter().getCurrencySet(currency);
+				final double xpMultiplier = def.canTrade()?10.0:10000.0;
 				final Coins newItem=(Coins)CMClass.getItem("StdCoins");
-				newItem.setCurrency(CMLib.english().matchAnyCurrencySet(CMParms.combine(goldCheck,1)));
+				newItem.setCurrency(currency);
 				newItem.setDenomination(CMLib.english().matchAnyDenomination(newItem.getCurrency(),CMParms.combine(goldCheck,1)));
 				final long goldCoins=CMath.s_long(goldCheck.get(0));
 				newItem.setNumberOfCoins(goldCoins);
 				if(!isLegalTarget(mob, newItem, false, myWish))
 					return false;
-				int experienceRequired=Math.max((int)Math.round(CMath.div(newItem.getTotalValue(),10.0)),0);
+				int experienceRequired=Math.max((int)Math.round(CMath.div(newItem.getTotalValue(),xpMultiplier)),0);
 				while((experienceRequired > mob.getExperience())
 				&& (experienceRequired > 0)
 				&& (newItem.getNumberOfCoins() > 1))
@@ -363,7 +367,7 @@ public class Spell_Wish extends Spell
 					if(numCoinsToLose<1)
 						numCoinsToLose=1;
 					newItem.setNumberOfCoins(newItem.getNumberOfCoins()-numCoinsToLose);
-					experienceRequired=Math.max((int)Math.round(CMath.div(newItem.getTotalValue(),10.0)),0);
+					experienceRequired=Math.max((int)Math.round(CMath.div(newItem.getTotalValue(),xpMultiplier)),0);
 				}
 				newItem.setContainer(null);
 				newItem.wearAt(0);
