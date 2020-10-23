@@ -1360,6 +1360,32 @@ public class InstanceArea extends StdAbility
 				}
 			}
 			else
+			if((msg.targetMinor()==CMMsg.TYP_EXPIRE)
+			&&(msg.target() == affected)
+			&&(affected instanceof SubArea))
+			{
+				final Area parentA=((SubArea)affected).getSuperArea();
+				final AreaInstanceChild child = findExistingChild((Area)affected);
+				if((child != null)
+				&&(parentA!=null))
+				{
+					for(final WeakReference<MOB> m : child.mobs)
+					{
+						final MOB M=m.get();
+						if(M!=null)
+						{
+							final InstanceArea eA=(InstanceArea)M.fetchEffect(ID());
+							if((eA!=null)
+							&&(eA.canBeUninvoked())
+							&&(eA.targetAreas!=null)
+							&&(eA.targetAreas.contains(affected)||eA.targetAreas.contains(parentA)))
+								M.delEffect(eA);
+						}
+					}
+				}
+
+			}
+			else
 			if((msg.sourceMinor()== CMMsg.TYP_FACTIONCHANGE)
 			&&(msg.source().isPlayer())
 			&&(msg.othersMessage()!=null)
@@ -1456,6 +1482,29 @@ public class InstanceArea extends StdAbility
 					if(mob == weakReference.get())
 						return child;
 				}
+			}
+		}
+		return null;
+	}
+
+	private AreaInstanceChild findExistingChild(final Area targetArea)
+	{
+		synchronized(instanceChildren)
+		{
+			final Area pA = ((SubArea)targetArea).getSuperArea();
+			final List<AreaInstanceChild> areaInstChildren = instanceChildren.get(pA);
+			if(areaInstChildren == null)
+				return null;
+			for(int i=areaInstChildren.size()-1;i>=0;i--)
+			{
+				final Area A=areaInstChildren.get(i).A;
+				if((A==null)||(A.amDestroyed()))
+					areaInstChildren.remove(i);
+			}
+			for(final AreaInstanceChild child : areaInstChildren)
+			{
+				if(child.A==targetArea)
+					return child;
 			}
 		}
 		return null;
