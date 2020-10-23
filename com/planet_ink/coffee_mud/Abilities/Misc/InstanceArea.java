@@ -1724,6 +1724,20 @@ public class InstanceArea extends StdAbility
 					{
 						if(M.phyStats().level()>topLevel)
 							topLevel=M.phyStats().level();
+						if((affected instanceof MOB)
+						&&(M!=affected))
+						{
+							InstanceArea A=(InstanceArea)M.fetchEffect(ID());
+							if(A==null)
+							{
+								A=(InstanceArea)copyOf();
+								A.setMiscText(text());
+								A.startTickDown((MOB)affected, M, this.tickDown<=0?999:this.tickDown);
+							}
+							else
+							if(!A.targetAreas.contains((((Room)msg.target()).getArea())))
+								A.targetAreas.add(((Room)msg.target()).getArea());
+						}
 						if(M.isPlayer())
 						{
 							if(this.pFactionList!=null)
