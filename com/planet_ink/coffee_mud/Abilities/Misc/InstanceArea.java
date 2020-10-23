@@ -2237,6 +2237,17 @@ public class InstanceArea extends StdAbility
 		oldRoom = null;
 		clearVars();
 
+		if((commands.size()>2)
+		&&(CMath.isInteger(commands.get(0)))
+		&&(givenTarget != null))
+		{
+			final int durationTicks=CMath.s_int(commands.get(0));
+			final InstanceArea A=(InstanceArea)CMClass.getAbility(ID());
+			A.setMiscText(CMParms.combineQuoted(commands, 1));
+			A.startTickDown(mob, givenTarget, durationTicks);
+			return true;
+		}
+
 		if(commands.size()<1)
 		{
 			mob.tell(L("Transform to what?"));
