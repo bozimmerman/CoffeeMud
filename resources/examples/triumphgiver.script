@@ -1,0 +1,36 @@
+ONCE_PROG 100
+	MPCALLFUNC CHOOSE_AREA
+~
+
+FUNCTION_PROG CHOOSE_AREA
+	switch $%RAND0NUM(4)%
+	case 0
+		MPSETVAR $i CHOSEN_AREA Thalos
+	case 1
+		MPSETVAR $i CHOSEN_AREA Silverdale
+	case 2
+		MPSETVAR $i CHOSEN_AREA Mahn-Tor
+	case 3
+		MPSETVAR $i CHOSEN_AREA Chapel
+	endswitch
+~
+
+TIME_PROG 0
+	MPCALLFUNC CHOOSE_AREA
+~
+
+GREET_PROG 100
+	if LEVEL($n >= 91) and ISPC($n)
+		sayto "$n" "Attention soldier! $<$i CHOSEN_AREA> has been getting too dangerous for adventurers, and needs your attention.  Say 'i accept' to take on this duty." 
+	endif
+
+~
+
+SPEECH_PROG p i accept
+	if LEVEL($n >= 91) and ISPC($n)
+		sayto "$n" "Fan-tastic! Off you go, soldier.  Make your country proud!"
+		## OK! So, the first 899 is the duration of the effect on the player, and the 900 at the end is the duration of the instance
+		## So, I did this so that the player needs to keep coming back to get re-affected
+		MPCASTEXT InstanceArea $n 899 LIKE=Triumph AREAMATCH="$<$i CHOSEN_AREA>" DURATION=900
+	endif
+~
