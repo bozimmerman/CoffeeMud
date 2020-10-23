@@ -57,6 +57,22 @@ public class InstanceArea extends StdAbility
 	}
 
 	@Override
+	public String displayText()
+	{
+		if((this.targetAreas!=null)&&(this.targetAreas.size()>0))
+		{
+			final StringBuilder str=new StringBuilder("");
+			for(final Area A : this.targetAreas)
+				str.append(A.name()).append(", ");
+			if(this.targetAreas.size()>1)
+				return "(Instances: " + str.substring(0,str.length()-2) + ")";
+			else
+				return "(" + str.substring(0,str.length()-2) + ")";
+		}
+		return "";
+	}
+
+	@Override
 	protected int canTargetCode()
 	{
 		return 0;
