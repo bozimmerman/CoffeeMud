@@ -198,7 +198,7 @@ public class Arcanist extends Thief
 	@Override
 	public String getOtherBonusDesc()
 	{
-		return L("Magic resistance, 1%/level.  Huge discounts when buying potions after 5th level.  Ability to memorize spells learned through SpellCraft. "
+		return L("Magic resistance, 1%/level.  Huge discounts when buying arcane potions after 5th level.  Ability to memorize spells learned through SpellCraft. "
 				+ "Can see wand charges at level 30.");
 	}
 
@@ -217,9 +217,19 @@ public class Arcanist extends Thief
 				||(msg.sourceMinor()==CMMsg.TYP_LIST))
 			&&(msg.tool() instanceof Potion))
 			{
-				mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_BONUS);
-				mob.recoverPhyStats();
-				mob.recoverCharStats();
+				final Potion P=(Potion)msg.tool();
+				boolean hasSpell=true;
+				for(final Ability A : P.getSpells())
+				{
+					if((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_SPELL)
+						hasSpell=false;
+				}
+				if(hasSpell)
+				{
+					mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_BONUS);
+					mob.recoverPhyStats();
+					mob.recoverCharStats();
+				}
 			}
 			else
 			if((mob.basePhyStats().disposition()&PhyStats.IS_BONUS)==PhyStats.IS_BONUS)
@@ -366,7 +376,8 @@ public class Arcanist extends Thief
 						clearAbilityFromSpellcraftList(mob,A);
 				}
 				else
-				if(msg.tool() instanceof Ability)
+				if((msg.tool() instanceof Ability)
+				&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
 				{
 					final Ability A=mob.fetchAbility(msg.tool().ID());
 					if((A!=null)&&(!A.isSavable())
