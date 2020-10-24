@@ -680,6 +680,34 @@ public class Factions extends StdLibrary implements FactionManager
 						}
 					}
 				}
+				else
+				if(autoType.equals("DEITY"))
+				{
+					final Deity D=(mob instanceof Deity)?(Deity)mob:mob.getMyDeity();
+					if(D!=null)
+					{
+						final String nameCode = D.Name().toUpperCase().trim().replace(' ', '_');
+						F=getFaction("DEITY_"+nameCode);
+						if(F==null)
+							F=makeReactionFaction("DEITY_",D.ID(),D.Name(),nameCode,"examples/deityreaction.ini");
+						if(mob==D)
+						{
+							for(final Enumeration<Deity> d= CMLib.map().deities(); d.hasMoreElements();)
+							{
+								final Deity D2=d.nextElement();
+								if(D2!=D)
+								{
+									final String nameCode2 = D2.Name().toUpperCase().trim().replace(' ', '_');
+									final Faction F2=getFaction("DEITY_"+nameCode2);
+									if(F2!=null)
+										Fs.add(F2);
+								}
+							}
+						}
+						if(F!=null)
+							Fs.add(F);
+					}
+				}
 			}
 			if(Fs.size()==0)
 				return null;
