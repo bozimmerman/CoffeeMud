@@ -1205,6 +1205,8 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_ENDQUEST=138;
 	/** MINOR_MASK minor action code type, denoting causing winning a quest */
 	public static final int TYP_WINQUEST=139;
+	/** MINOR_MASK minor action code type, denoting an act between a player and a deity */
+	public static final int TYP_HOLYEVENT=140;
 
 	/** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -1235,7 +1237,7 @@ public interface CMMsg extends CMCommon
 		"COMMANDFAIL","METACOMMAND", "ITEMGENERATED", "ATTACKMISS", "WEATHER","ITEMSGENERATED",
 		"WROTE", "REWRITE", "WASREAD", "PREMOVE", "THINK", "STARTUP", "RPXPCHANGE",
 		"COMMANDREJECT","RECIPELEARNED", "GRAVITY", "LEGALSTATE", "NEWROOM","CAUSESINK",
-		"ENDQUEST","WINQUEST"
+		"ENDQUEST","WINQUEST","HOLYEVENT"
 	};
 
 	/** Index string descriptions of all the MAJOR_MASK code MAKS_s */
@@ -1573,6 +1575,8 @@ public interface CMMsg extends CMCommon
 	public static final int MSG_NEWROOM=MASK_CNTRLMSG|TYP_NEWROOM;
 	/** combined MAJOR and MINOR codes for useful event message type for a sinking ship */
 	public static final int MSG_CAUSESINK=MASK_SOUND|MASK_ALWAYS|TYP_CAUSESINK;
+	/** combined MAJOR and MINOR codes for useful event message type for a sinking ship */
+	public static final int MSG_HOLYEVENT=MASK_ALWAYS|TYP_HOLYEVENT;
 
 	/**
 	 * An enum to use for an external message check from inside

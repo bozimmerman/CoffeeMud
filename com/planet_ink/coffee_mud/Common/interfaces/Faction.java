@@ -519,6 +519,17 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	public FactionChangeEvent[] findAbilityChangeEvents(Ability key);
 
 	/**
+	 * Returns a FactionChangeEvent that applies when the given message type is seen
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changeEventKeys()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#executeChange(MOB, MOB, com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALL_CHANGE_EVENT_TYPES()
+	 * @param msg the CMMsg object whose source code matters
+	 * @return the FactionChangeEvents that apply, or null.
+	 */
+	public FactionChangeEvent[] findMsgChangeEvents(final CMMsg msg);
+
+	/**
 	 * Returns a FactionChangeEvent that applies when the given Social is used
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changeEventKeys()
@@ -1289,8 +1300,8 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		{
 			MURDER,  TIME,  ADDOUTSIDER, KILL, BRIBE, TALK,
 			MUDCHAT, ARRESTED, SOCIAL, SINK, SUNK, AREAKILL,
-			AREAASS,  AREAEXPLORE, DYING
-		};
+			AREAASS,  AREAEXPLORE, DYING, CMMSG
+		}
 	}
 
 	/**
