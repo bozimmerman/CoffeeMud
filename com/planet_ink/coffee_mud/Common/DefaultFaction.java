@@ -491,32 +491,47 @@ public class DefaultFaction implements Faction, MsgListener
 		final boolean debug = false;
 
 		ID = fID;
-		final CMProps alignProp = new CMProps(new ByteArrayInputStream(CMStrings.strToBytes(file.toString())));
-		if(alignProp.isEmpty())
+		final CMProps facProps = new CMProps();
+		for(final String line : Resources.getFileLineVector(file))
+		{
+			final String s=line.trim();
+			if(s.startsWith("#")||(s.length()==0))
+				continue;
+			final int x=s.indexOf('=');
+			if(x<0)
+			{
+				Log.errOut("Unknown line '"+s+"' in faction "+fID);
+				continue;
+			}
+			final String key=s.substring(0,x);
+			final String val=s.substring(x+1);
+			facProps.put(key, val);
+		}
+		if(facProps.isEmpty())
 			return;
-		name=alignProp.getStr("NAME");
+		name=facProps.getStr("NAME");
 		upName=name.toUpperCase();
-		choiceIntro=alignProp.getStr("CHOICEINTRO");
-		minimum=alignProp.getInt("MINIMUM");
-		maximum=alignProp.getInt("MAXIMUM");
+		choiceIntro=facProps.getStr("CHOICEINTRO");
+		minimum=facProps.getInt("MINIMUM");
+		maximum=facProps.getInt("MAXIMUM");
 		if(maximum<minimum)
 		{
 			minimum=maximum;
-			maximum=alignProp.getInt("MINIMUM");
+			maximum=facProps.getInt("MINIMUM");
 		}
 		recalc();
-		experienceFlag=alignProp.getStr("EXPERIENCE").toUpperCase().trim();
+		experienceFlag=facProps.getStr("EXPERIENCE").toUpperCase().trim();
 		if(experienceFlag.length()==0)
 			experienceFlag="NONE";
-		rateModifier=alignProp.getDouble("RATEMODIFIER");
-		showInScore=alignProp.getBoolean("SCOREDISPLAY");
-		showInFacCommand=alignProp.getBoolean("SHOWINFACTIONSCMD");
-		showInSpecialReport=alignProp.getBoolean("SPECIALREPORTED");
-		showInEditor=alignProp.getBoolean("EDITALONE");
-		defaults=new SVector<String>(CMParms.parseSemicolons(alignProp.getStr("DEFAULT"),true));
-		autoDefaults =new SVector<String>(CMParms.parseSemicolons(alignProp.getStr("AUTODEFAULTS"),true));
-		choices =new SVector<String>(CMParms.parseSemicolons(alignProp.getStr("AUTOCHOICES"),true));
-		useLightReactions=alignProp.getBoolean("USELIGHTREACTIONS");
+		rateModifier=facProps.getDouble("RATEMODIFIER");
+		showInScore=facProps.getBoolean("SCOREDISPLAY");
+		showInFacCommand=facProps.getBoolean("SHOWINFACTIONSCMD");
+		showInSpecialReport=facProps.getBoolean("SPECIALREPORTED");
+		showInEditor=facProps.getBoolean("EDITALONE");
+		defaults=new SVector<String>(CMParms.parseSemicolons(facProps.getStr("DEFAULT"),true));
+		autoDefaults =new SVector<String>(CMParms.parseSemicolons(facProps.getStr("AUTODEFAULTS"),true));
+		choices =new SVector<String>(CMParms.parseSemicolons(facProps.getStr("AUTOCHOICES"),true));
+		useLightReactions=facProps.getBoolean("USELIGHTREACTIONS");
 		ranges=new SHashtable<String,FRange>();
 		changes=new SHashtable<String,FactionChangeEvent[]>();
 		factors=new SVector<FZapFactor>();
@@ -526,14 +541,14 @@ public class DefaultFaction implements Faction, MsgListener
 		abilityUseMisses=new STreeSet<String>();
 		reactions=new SVector<FReactionItem>();
 		reactionHash=new SHashtable<String,CList<FReactionItem>>();
-		for(final Enumeration<Object> e=alignProp.keys();e.hasMoreElements();)
+		for(final Enumeration<Object> e=facProps.keys();e.hasMoreElements();)
 		{
 			if(debug)
 				Log.sysOut("FACTIONS","Starting Key Loop");
 			final String key = (String) e.nextElement();
 			if(debug)
 				Log.sysOut("FACTIONS","  Key Found     :"+key);
-			final String words = (String) alignProp.get(key);
+			final String words = (String) facProps.get(key);
 			if(debug)
 				Log.sysOut("FACTIONS","  Words Found   :"+words);
 			if(key.startsWith("RANGE"))
@@ -907,13 +922,13 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 		return msgTypeCache;
 	}
-	
+
 	@Override
 	public FactionChangeEvent[] findMsgChangeEvents(final CMMsg msg)
 	{
 		if(msgChangeCache.size()==0)
 		{
-			final Map<String,Integer> msgTypeCache=getCMMsgTypeMap(); 
+			final Map<String,Integer> msgTypeCache=getCMMsgTypeMap();
 			final Map<Integer,List<FactionChangeEvent>> msgClassMap=new HashMap<Integer,List<FactionChangeEvent>>();
 			for (final Enumeration<FactionChangeEvent[]> e=changes.elements();e.hasMoreElements();)
 			{
@@ -922,7 +937,7 @@ public class DefaultFaction implements Faction, MsgListener
 				{
 					if(msgTypeCache.containsKey(C.eventID()))
 					{
-						Integer code=msgTypeCache.get(C.eventID());
+						final Integer code=msgTypeCache.get(C.eventID());
 						if(!msgClassMap.containsKey(code))
 							msgClassMap.put(code, new ArrayList<FactionChangeEvent>());
 						msgClassMap.get(code).add(C);
@@ -937,7 +952,7 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 		return msgChangeCache.get(Integer.valueOf(msg.sourceMinor()));
 	}
-	
+
 	@Override
 	public FactionChangeEvent[] findAbilityChangeEvents(final Ability key)
 	{
