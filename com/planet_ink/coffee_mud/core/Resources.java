@@ -369,27 +369,28 @@ public class Resources
 		final Vector<String> V=new Vector<String>();
 		if(buf==null)
 			return V;
-		final StringBuffer str=new StringBuffer("");
+		int lastStart=0;
 		for(int i=0;i<buf.length();i++)
 		{
-			if(((buf.charAt(i)=='\n')&&(i<buf.length()-1)&&(buf.charAt(i+1)=='\r'))
-			||((buf.charAt(i)=='\r')&&(i<buf.length()-1)&&(buf.charAt(i+1)=='\n')))
+			final char c=buf.charAt(i);
+			if(c=='\n')
 			{
-				i++;
-				V.addElement(str.toString());
-				str.setLength(0);
+				V.addElement(buf.substring(lastStart,i));
+				if((i<buf.length()-1)&&(buf.charAt(i+1)=='\r'))
+					i++;
+				lastStart=i+1;
 			}
 			else
-			if((buf.charAt(i)=='\r')||(buf.charAt(i)=='\n'))
+			if(c=='\r')
 			{
-				V.addElement(str.toString());
-				str.setLength(0);
+				V.addElement(buf.substring(lastStart,i));
+				if((i<buf.length()-1)&&(buf.charAt(i+1)=='\n'))
+					i++;
+				lastStart=i+1;
 			}
-			else
-				str.append(buf.charAt(i));
 		}
-		if(str.length()>0)
-			V.addElement(str.toString());
+		if(lastStart<buf.length())
+			V.addElement(buf.substring(lastStart));
 		V.trimToSize();
 		return V;
 	}
