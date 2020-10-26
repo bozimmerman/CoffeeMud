@@ -454,7 +454,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		if(mob!=null)
 		{
-			final List<DVector> scripts=getScripts();
+			final List<DVector> scripts=getScripts(hostObj);
 			if(!mob.amDead())
 			{
 				lastKnownLocation=mob.location();
@@ -494,7 +494,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	public List<String> externalFiles()
 	{
 		final Vector<String> xmlfiles=new Vector<String>();
-		parseLoads(getScript(), 0, xmlfiles, null);
+		parseLoads(null, getScript(), 0, xmlfiles, null);
 		return xmlfiles;
 	}
 
@@ -588,7 +588,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			if(var.equals("COFFEEMUD_SYSTEM_INTERNAL_NONFILENAME_SCRIPT"))
 			{
 				final StringBuffer str=new StringBuffer("");
-				parseLoads(getScript(),0,null,str);
+				parseLoads(null,getScript(),0,null,str);
 				return str.toString();
 			}
 			String val=null;
@@ -635,12 +635,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return val;
 	}
 
-	private StringBuffer getResourceFileData(final String named, final boolean showErrors)
+	private StringBuffer getResourceFileData(final Environmental scripted, final String named, final boolean showErrors)
 	{
 		final Quest Q=getQuest("*");
 		if(Q!=null)
 			return Q.getResourceFileData(named, showErrors);
-		return new CMFile(Resources.makeFileResourceName(named),null,CMFile.FLAG_LOGERRORS).text();
+		final CMFile F = new CMFile(Resources.makeFileResourceName(named),null,CMFile.FLAG_LOGERRORS);
+		if((!F.exists())||(!F.canRead()))
+		{
+			this.logError(scripted, "LOAD", "NOREAD", F.getAbsolutePath());
+			return new StringBuffer();
+		}
+		return F.text();
 	}
 
 	@Override
@@ -694,7 +700,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return CMLib.flags().canFreelyBehaveNormal(affecting);
 	}
 
-	protected String parseLoads(final String text, final int depth, final Vector<String> filenames, final StringBuffer nonFilenameScript)
+	protected String parseLoads(final Environmental E, final String text, final int depth, final List<String> filenames, final StringBuffer nonFilenameScript)
 	{
 		final StringBuffer results=new StringBuffer("");
 		String parse=text;
@@ -727,15 +733,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final String filename=parse.substring(y+5,z).trim();
 					parse=parse.substring(z+1);
 					if((filenames!=null)&&(!filenames.contains(filename)))
-						filenames.addElement(filename);
-					results.append(parseLoads(getResourceFileData(filename, true).toString(),depth+1,filenames,null));
+						filenames.add(filename);
+					results.append(parseLoads(E,getResourceFileData(E,filename, true).toString(),depth+1,filenames,null));
 				}
 				else
 				{
 					final String filename=parse.substring(y+5).trim();
 					if((filenames!=null)&&(!filenames.contains(filename)))
-						filenames.addElement(filename);
-					results.append(parseLoads(getResourceFileData(filename, true).toString(),depth+1,filenames,null));
+						filenames.add(filename);
+					results.append(parseLoads(E,getResourceFileData(E,filename, true).toString(),depth+1,filenames,null));
 					break;
 				}
 			}
@@ -775,7 +781,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 	}
 
-	protected List<DVector> parseScripts(String text)
+	protected List<DVector> parseScripts(final Environmental E, String text)
 	{
 		buildHashes();
 		while((text.length()>0)
@@ -788,7 +794,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			staticSet=true;
 			text=text.substring(7);
 		}
-		text=parseLoads(text,0,null,null);
+		text=parseLoads(E,text,0,null,null);
 		if(staticSet)
 		{
 			text=CMStrings.replaceAll(text,"'","`");
@@ -881,6 +887,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			if(R!=null)
 				R.showHappens(CMMsg.MSG_OK_VISUAL,L("Scripting Error: @x1/@x2/@x3/@x4/@x5/@x6",scripted.name(),CMLib.map().getExtendedRoomID(R),cmdName,errType,errMsg,scriptFiles));
 		}
+		else
+		if((cmdName!=null)&&(cmdName.equalsIgnoreCase("LOAD")))
+			Log.errOut("Scripting","*/*/*/"+cmdName+"/"+errType+"/"+errMsg);
 		else
 			Log.errOut("Scripting","*/*/"+CMParms.toListString(externalFiles())+"/"+cmdName+"/"+errType+"/"+errMsg);
 
@@ -985,7 +994,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		List<MOB> monsters=(List<MOB>)Resources.getResource("RANDOMMONSTERS-"+filename);
 		if(monsters!=null)
 			return monsters;
-		final StringBuffer buf=getResourceFileData(filename, true);
+		final StringBuffer buf=getResourceFileData(scripted,filename, true);
 		String thangName="null";
 		final Room R=CMLib.map().roomLocation(scripted);
 		if(R!=null)
@@ -1043,7 +1052,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		List<MOB> monsters=(List<MOB>)Resources.getResource("RANDOMGENMONSTERS-"+filename+"."+tagName+"-"+rest);
 		if(monsters!=null)
 			return monsters;
-		final StringBuffer buf=getResourceFileData(filename, true);
+		final StringBuffer buf=getResourceFileData(scripted,filename, true);
 		String thangName="null";
 		final Room R=CMLib.map().roomLocation(scripted);
 		if(R!=null)
@@ -1124,7 +1133,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		List<Item> items=(List<Item>)Resources.getResource("RANDOMITEMS-"+filename);
 		if(items!=null)
 			return items;
-		final StringBuffer buf=getResourceFileData(filename, true);
+		final StringBuffer buf=getResourceFileData(scripted,filename, true);
 		String thangName="null";
 		final Room R=CMLib.map().roomLocation(scripted);
 		if(R!=null)
@@ -1182,7 +1191,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		List<Item> items=(List<Item>)Resources.getResource("RANDOMGENITEMS-"+filename+"."+tagName+"-"+rest);
 		if(items!=null)
 			return items;
-		final StringBuffer buf=getResourceFileData(filename, true);
+		final StringBuffer buf=getResourceFileData(scripted,filename, true);
 		String thangName="null";
 		final Room R=CMLib.map().roomLocation(scripted);
 		if(R!=null)
@@ -3628,7 +3637,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 					String found=null;
 					boolean validFunc=false;
-					final List<DVector> scripts=getScripts();
+					final List<DVector> scripts=getScripts(scripted);
 					String trigger=null;
 					String[] ttrigger=null;
 					for(int v=0;v<scripts.size();v++)
@@ -6583,7 +6592,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(funcParms,0));
 				String found=null;
 				boolean validFunc=false;
-				final List<DVector> scripts=getScripts();
+				final List<DVector> scripts=getScripts(scripted);
 				String trigger=null;
 				String[] ttrigger=null;
 				for(int v=0;v<scripts.size();v++)
@@ -8274,12 +8283,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return (MOB)tmp[SPECIAL_RANDANYONE];
 	}
 
-	protected DVector findFunc(String named)
+	protected DVector findFunc(final Environmental scripted, String named)
 	{
 		if(named==null)
 			return null;
 		named=named.toUpperCase();
-		final List<DVector> scripts=getScripts();
+		final List<DVector> scripts=getScripts(scripted);
 		for(int v=0;v<scripts.size();v++)
 		{
 			final DVector script2=scripts.get(v);
@@ -8309,14 +8318,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	@Override
 	public boolean isFunc(final String named)
 	{
-		return findFunc(named) != null;
+		return findFunc(null, named) != null;
 	}
 
 	@Override
 	public String callFunc(final String named, final String parms, final PhysicalAgent scripted, final MOB source, final Environmental target,
 						   final MOB monster, final Item primaryItem, final Item secondaryItem, final String msg, final Object[] tmp)
 	{
-		final DVector script2 = findFunc(named);
+		final DVector script2 = findFunc(scripted,named);
 		if(script2 != null)
 		{
 			return execute(scripted, source, target, monster, primaryItem, secondaryItem, script2,
@@ -12307,7 +12316,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					final String named=tt[1];
 					final String parms=tt[2].trim();
-					final DVector script2 = findFunc(named);
+					final DVector script2 = findFunc(scripted,named);
 					if(script2 != null)
 					{
 						script.setElementAt(si, 3, script2);
@@ -12661,7 +12670,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		super.finalize();
 	}
 
-	protected List<DVector> getScripts()
+	protected List<DVector> getScripts(final Environmental Scripted)
 	{
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.SCRIPTABLE)||CMSecurity.isDisabled(CMSecurity.DisFlag.SCRIPTING))
 			return empty;
@@ -12671,7 +12680,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		{
 			String scr=getScript();
 			scr=CMStrings.replaceAll(scr,"`","'");
-			scripts=parseScripts(scr);
+			scripts=parseScripts(Scripted,scr);
 			Resources.submitResource(getScriptResourceKey(),scripts);
 		}
 		return scripts;
@@ -12721,7 +12730,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 			final PhysicalAgent affecting = (PhysicalAgent)host;
 
-			final List<DVector> scripts=getScripts();
+			final List<DVector> scripts=getScripts(host);
 			DVector script=null;
 			boolean tryIt=false;
 			String trigger=null;
@@ -13039,7 +13048,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			if((defaultItem!=null)&&(defaultItem.owner() instanceof MOB))
 				eventMob=(MOB)defaultItem.owner();
 
-			final List<DVector> scripts=getScripts();
+			final List<DVector> scripts=getScripts(host);
 
 			if(msg.amITarget(eventMob)
 			&&(!msg.amISource(monster))
@@ -14254,7 +14263,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 		final PhysicalAgent affecting=(ticking instanceof PhysicalAgent)?((PhysicalAgent)ticking):null;
 
-		final List<DVector> scripts=getScripts();
+		final List<DVector> scripts=getScripts(affecting);
 
 		if(!runInPassiveAreas)
 		{

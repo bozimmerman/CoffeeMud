@@ -91,13 +91,15 @@ public class FactionList extends StdCommand
 
 		final XVector<String> list=new XVector<String>(factions);
 		list.sort();
+		final int prowessCode = CMProps.getIntVar(CMProps.Int.COMBATPROWESS);
+		final boolean useFactionWords=CMProps.Int.Prowesses.FACTION_RANGE.is(prowessCode);
 		for (final String name : list)
 		{
 			final Faction F=CMLib.factions().getFaction(name);
 			if((F!=null)&&(F.showInFactionsCommand()))
 			{
 				none=false;
-				msg.append(formatFactionLine(name,mob.fetchFaction(name)));
+				msg.append(formatFactionLine(name,mob.fetchFaction(name),useFactionWords));
 			}
 		}
 		if(!mob.isMonster())
@@ -108,7 +110,7 @@ public class FactionList extends StdCommand
 		return false;
 	}
 
-	public String formatFactionLine(final String name,final int faction)
+	public String formatFactionLine(final String name, final int faction, final boolean showWords)
 	{
 		final StringBuffer line=new StringBuffer();
 		line.append("  "+CMStrings.padRight(CMStrings.capitalizeAndLower(CMLib.factions().getName(name).toLowerCase()),21)+" ");
@@ -116,7 +118,12 @@ public class FactionList extends StdCommand
 		if(FR==null)
 			line.append(CMStrings.padRight(""+faction,17)+" ");
 		else
-			line.append(CMStrings.padRight(FR.name(),17)+" ");
+		{
+			if(showWords)
+				line.append(CMStrings.padRight(FR.name(),17)+" ");
+			else
+				line.append(CMStrings.padRight(FR.name()+" ("+faction+")",17)+" ");
+		}
 		line.append("[");
 		line.append(CMStrings.padRight(calcRangeBar(name,faction),25));
 		line.append("]\n\r");
@@ -129,24 +136,13 @@ public class FactionList extends StdCommand
 		final Faction F=CMLib.factions().getFaction(factionID);
 		if(F==null)
 			return bar.toString();
-		double numLower=0;
-		double numTotal=0;
-		double pctThisFaction = 0;
-		for(final Enumeration<Faction.FRange> r=F.ranges(); r.hasMoreElements();)
-		{
-			final Faction.FRange range=r.nextElement();
-			if(range.low() > faction)
-				numLower+=1.0;
-			numTotal+=1.0;
-		}
-		final Faction.FRange FR=F.fetchRange(faction);
-		if((FR!=null)&&(FR.high() > FR.low()))
-			pctThisFaction = (faction - FR.low()) / (FR.high() - FR.low());
-		final double fillBit=(25.0 / numTotal);
-		final double fill = (fillBit * (numTotal - numLower)) + (fillBit * pctThisFaction);
-		for(int i=0;i<fill;i++)
-			bar.append("*");
-		return bar.toString();
+		final double totalRange = F.maximum() - F.minimum();
+		if(totalRange == 0)
+			return "";
+		final double absFaction = faction-F.minimum();
+		final double pct = absFaction/totalRange;
+		final int numStars = (int)Math.round(pct * 25.0);
+		return CMStrings.repeat('*', numStars);
 	}
 
 	@Override

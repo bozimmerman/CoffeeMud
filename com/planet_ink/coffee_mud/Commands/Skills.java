@@ -228,8 +228,10 @@ public class Skills extends StdCommand
 		final int prowessCode = CMProps.getIntVar(CMProps.Int.COMBATPROWESS);
 		final boolean useWords=CMProps.Int.Prowesses.SKILL_PROFICIENCY.is(prowessCode);
 		final int COL_LEN1=CMLib.lister().fixColWidth(3.0,viewerM);
-		final int COL_LEN2=useWords? CMLib.lister().fixColWidth(19.0,viewerM) : CMLib.lister().fixColWidth(18.0,viewerM);
-		final int COL_LEN3=useWords? CMLib.lister().fixColWidth(17.0,viewerM) : CMLib.lister().fixColWidth(18.0,viewerM);
+		final int COL_LEN2=CMLib.lister().fixColWidth(31.0,viewerM);
+		final int COL_LEN3=CMLib.lister().fixColWidth(31.0,viewerM);
+		//final int COL_LEN2=useWords? CMLib.lister().fixColWidth(19.0,viewerM) : CMLib.lister().fixColWidth(18.0,viewerM);
+		//final int COL_LEN3=useWords? CMLib.lister().fixColWidth(17.0,viewerM) : CMLib.lister().fixColWidth(18.0,viewerM);
 		int highestLevel=0;
 		final int lowestLevel=ableM.phyStats().level()+1;
 		final StringBuilder msg=new StringBuilder("");
@@ -247,7 +249,7 @@ public class Skills extends StdCommand
 		}
 		if((maxLevel>=0)&&(maxLevel<highestLevel))
 			highestLevel=maxLevel;
-		final int MAX_COLS=useWords?2:3;
+		final int MAX_COLS=2;//useWords?2:3;
 		final List<Ability> sortedAllAbilities = new XVector<Ability>(ableM.allAbilities());
 		Collections.sort(sortedAllAbilities,nameComparator);
 		for(int l=0;l<=highestLevel;l++)
