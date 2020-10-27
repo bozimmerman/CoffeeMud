@@ -54,6 +54,7 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect
 
 	private boolean noFollow=false;
 	private boolean noSneak=false;
+	private boolean actual=false;
 	private String maskS="";
 	private String message="";
 
@@ -93,6 +94,12 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect
 				noSneak=true;
 			}
 			else
+			if(s.toUpperCase().startsWith("ACTUAL"))
+			{
+				maskS=CMStrings.replaceFirst(maskS, s, "");
+				actual=true;
+			}
+			else
 			if((s.toUpperCase().startsWith("MESSAGE"))
 			&&(s.substring(7).trim().startsWith("=")))
 			{
@@ -117,7 +124,7 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect
 			return true;
 		if(CMLib.flags().isSneaking(mob)&&(!noSneak))
 			return true;
-		return CMLib.masking().maskCheck(maskS,mob,false);
+		return CMLib.masking().maskCheck(maskS,mob,actual);
 	}
 
 	@Override
