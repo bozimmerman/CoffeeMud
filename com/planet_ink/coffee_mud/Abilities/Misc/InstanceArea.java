@@ -1687,7 +1687,13 @@ public class InstanceArea extends StdAbility
 						final long now=System.currentTimeMillis();
 						for(final Pair<Integer,Long> limit : this.limits)
 						{
-							final String limitKey=this.instTypeID+"/"+limit.hashCode();
+							long catHash = 0;
+							if(this.categories != null)
+							{
+								for(final String cat : this.categories)
+									catHash ^= cat.hashCode();
+							}
+							final String limitKey=this.instTypeID+"/"+limit.hashCode()+"/"+catHash;
 							if(classMap.containsKey(limitKey))
 							{
 								@SuppressWarnings("unchecked")
