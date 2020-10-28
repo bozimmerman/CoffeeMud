@@ -151,9 +151,9 @@ public class Thief_MaskFaith extends ThiefSkill
 
 			final String mmsg;
 			if(unmask)
-				mmsg = L("<S-NAME> unmasks(s) <S-YOUPOSS> religeous beliefs.");
+				mmsg = L("<S-NAME> unmask(s) <S-YOUPOSS> religeous beliefs.");
 			else
-				mmsg = L("<S-NAME> masks(s) <S-YOUPOSS> religeous beliefs.");
+				mmsg = L("<S-NAME> mask(s) <S-YOUPOSS> religeous beliefs.");
 			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),mmsg);
 			if(mob.location().okMessage(mob,msg))
 			{
