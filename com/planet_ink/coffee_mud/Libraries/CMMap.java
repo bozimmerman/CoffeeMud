@@ -69,7 +69,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public static MOB   		deityStandIn		= null;
 	public long 				lastVReset  		= 0;
 	public CMNSortSVec<Area>	areasList   		= new CMNSortSVec<Area>();
-	public List<Deity>  		deitiesList 		= new SVector<Deity>();
+	public CMNSortSVec<Deity>	deitiesList 		= new CMNSortSVec<Deity>();
 	public List<BoardableShip>	shipList 			= new SVector<BoardableShip>();
 	public List<PostOffice> 	postOfficeList  	= new SVector<PostOffice>();
 	public List<Auctioneer> 	auctionHouseList	= new SVector<Auctioneer>();
@@ -1876,12 +1876,9 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public Deity getDeity(final String calledThis)
 	{
-		for (final Deity D : deitiesList)
-		{
-			if (D.Name().equalsIgnoreCase(calledThis))
-				return D;
-		}
-		return null;
+		if((calledThis==null)||(calledThis.length()==0))
+			return null;
+		return deitiesList.find(calledThis);
 	}
 
 	@Override
