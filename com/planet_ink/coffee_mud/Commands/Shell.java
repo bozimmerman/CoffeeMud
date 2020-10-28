@@ -320,78 +320,94 @@ public class Shell extends StdCommand
 			final int COL3_LEN=CMLib.lister().fixColWidth(opts.longDir?10.0:10.0, mob);
 			final int COL4_LEN=CMLib.lister().fixColWidth(opts.longDir?20.0:20.0, mob);
 			int col=0;
-			if(opts.longDir)
-				msg.append("\n\r^y .\n\r^y ..\n\r");
-			else
-				msg.append("\n\r^y"+CMStrings.padRight(" .",COL1_LEN))
-					.append(CMStrings.padRight("  ..",COL1_LEN))
-					.append("\n\r");
+			final List<String> hiearchy=new ArrayList<String>();
 			for (final CMFile dir : dirs)
 			{
-				final CMFile entry=dir;
-				if(entry.isDirectory())
-				{
-					if(entry.isLocalFile()&&(!entry.canVFSEquiv()))
-						msg.append(" ");
-					else
-					if((entry.isLocalFile()&&(entry.canVFSEquiv()))
-					||((entry.isVFSFile())&&(entry.canLocalEquiv())))
-						msg.append("^R+");
-					else
-						msg.append("^r-");
-					msg.append("^y"+CMStrings.padRight(entry.getName(),COL1_LEN));
-					if(opts.longDir)
-					{
-						msg.append("^w"+CMStrings.padRight(""+entry.length(),COL2_LEN));
-						msg.append("^w"+CMStrings.padRight(entry.author(),COL3_LEN));
-						msg.append("^w"+CMStrings.padRight(CMLib.time().date2String(entry.lastModified()),COL4_LEN));
-						msg.append("\n\r");
-					}
-					else
-					{
-						if(++col>=2)
-						{
-							col=0;
-							msg.append("\n\r");
-						}
-					}
-				}
+				final String parentPath = dir.getParentFile().getAbsolutePath();
+				if(!hiearchy.contains(parentPath))
+					hiearchy.add(parentPath);
 			}
-			for (final CMFile dir : dirs)
+			for(final String hDirPath : hiearchy)
 			{
 				if(killOnSession && ((mob.session()==null)||(mob.session().isStopped())))
 					break;
-				final CMFile entry=dir;
-				if(!entry.isDirectory())
+				if(hiearchy.size()>0)
+					msg.append("\n\r^H"+hDirPath).append("^?");
+				if(opts.longDir)
+					msg.append("\n\r^y .\n\r^y ..\n\r");
+				else
+					msg.append("\n\r^y"+CMStrings.padRight(" .",COL1_LEN))
+						.append(CMStrings.padRight("  ..",COL1_LEN))
+						.append("\n\r");
+				for (final CMFile dir : dirs)
 				{
-					if(entry.isLocalFile()&&(!entry.canVFSEquiv()))
-						msg.append(" ");
-					else
-					if((entry.isLocalFile()&&(entry.canVFSEquiv()))
-					||((entry.isVFSFile())&&(entry.canLocalEquiv())))
-						msg.append("^R+");
-					else
-						msg.append("^r-");
-					msg.append("^w"+CMStrings.padRight(entry.getName(),COL1_LEN));
-					if(opts.longDir)
+					final CMFile entry=dir;
+					if(entry.isDirectory()
+					&&(entry.getParentFile().getAbsolutePath().equals(hDirPath)))
 					{
-						msg.append("^w"+CMStrings.padRight(""+entry.length(),COL2_LEN));
-						msg.append("^w"+CMStrings.padRight(entry.author(),COL3_LEN));
-						msg.append("^w"+CMStrings.padRight(CMLib.time().date2String(entry.lastModified()),COL4_LEN));
-						msg.append("\n\r");
-					}
-					else
-					{
-						if(++col>=2)
+						if(entry.isLocalFile()&&(!entry.canVFSEquiv()))
+							msg.append(" ");
+						else
+						if((entry.isLocalFile()&&(entry.canVFSEquiv()))
+						||((entry.isVFSFile())&&(entry.canLocalEquiv())))
+							msg.append("^R+");
+						else
+							msg.append("^r-");
+						msg.append("^y"+CMStrings.padRight(entry.getName(),COL1_LEN));
+						if(opts.longDir)
 						{
-							col=0;
+							msg.append("^w"+CMStrings.padRight(""+entry.length(),COL2_LEN));
+							msg.append("^w"+CMStrings.padRight(entry.author(),COL3_LEN));
+							msg.append("^w"+CMStrings.padRight(CMLib.time().date2String(entry.lastModified()),COL4_LEN));
 							msg.append("\n\r");
+						}
+						else
+						{
+							if(++col>=2)
+							{
+								col=0;
+								msg.append("\n\r");
+							}
 						}
 					}
 				}
+				for (final CMFile dir : dirs)
+				{
+					if(killOnSession && ((mob.session()==null)||(mob.session().isStopped())))
+						break;
+					final CMFile entry=dir;
+					if((!entry.isDirectory())
+					&&(entry.getParentFile().getAbsolutePath().equals(hDirPath)))
+					{
+						if(entry.isLocalFile()&&(!entry.canVFSEquiv()))
+							msg.append(" ");
+						else
+						if((entry.isLocalFile()&&(entry.canVFSEquiv()))
+						||((entry.isVFSFile())&&(entry.canLocalEquiv())))
+							msg.append("^R+");
+						else
+							msg.append("^r-");
+						msg.append("^w"+CMStrings.padRight(entry.getName(),COL1_LEN));
+						if(opts.longDir)
+						{
+							msg.append("^w"+CMStrings.padRight(""+entry.length(),COL2_LEN));
+							msg.append("^w"+CMStrings.padRight(entry.author(),COL3_LEN));
+							msg.append("^w"+CMStrings.padRight(CMLib.time().date2String(entry.lastModified()),COL4_LEN));
+							msg.append("\n\r");
+						}
+						else
+						{
+							if(++col>=2)
+							{
+								col=0;
+								msg.append("\n\r");
+							}
+						}
+					}
+				}
+				if(!msg.toString().endsWith("\n\r"))
+					msg.append("\n\r");
 			}
-			if(!msg.toString().endsWith("\n\r"))
-				msg.append("\n\r");
 			if(mob.session()!=null)
 				mob.session().colorOnlyPrintln(msg.toString());
 			break;
