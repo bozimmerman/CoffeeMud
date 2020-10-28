@@ -126,7 +126,7 @@ public class Thief_MaskFaith extends ThiefSkill
 		if(deityToConvertToM==null)
 		{
 			if(deityName.equalsIgnoreCase("none"))
-				deityName="None";
+				deityName="NONE";
 			else
 			if(deityName.equalsIgnoreCase("stop"))
 				deityName="";
@@ -136,28 +136,35 @@ public class Thief_MaskFaith extends ThiefSkill
 				return false;
 			}
 		}
+		else
+			deityName=deityToConvertToM.Name();
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,mob,null,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),L("<S-NAME> turn(s) <S-YOUPOSS> beliefs on their head."));
+			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),L("<S-NAME> turn(s) <S-YOUPOSS> beliefs on their head."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Ability mA=target.fetchEffect(ID());
-				if(mA==null)
-					mA=beneficialAffect(mob,target,asLevel,0);
-				else
-				if(deityName.length()==0)
+				if((mA!=null)
+					&&(deityName.equalsIgnoreCase(target.baseCharStats().getWorshipCharID())
+						||((deityName.equals("NONE"))&&(target.baseCharStats().getWorshipCharID().length()==0))
+						||(deityName.length()==0)))
 				{
 					mA.unInvoke();
 					target.delEffect(mA);
 				}
-				mA.setMiscText(deityName);
-				mA.makeLongLasting();
-				mob.recoverCharStats();
+				else
+				{
+					if(mA==null)
+						mA=beneficialAffect(mob,target,asLevel,0);
+					mA.setMiscText(deityName);
+					mA.makeLongLasting();
+					mob.recoverCharStats();
+				}
 			}
 		}
 		else
