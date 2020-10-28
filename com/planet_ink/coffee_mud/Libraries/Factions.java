@@ -683,7 +683,7 @@ public class Factions extends StdLibrary implements FactionManager
 				else
 				if(autoType.equals("DEITY"))
 				{
-					final Deity D=(mob instanceof Deity)?(Deity)mob:mob.getMyDeity();
+					final Deity D=(mob instanceof Deity)?(Deity)mob:mob.baseCharStats().getMyDeity();
 					if(D!=null)
 					{
 						final String nameCode = D.Name().toUpperCase().trim().replace(' ', '_');

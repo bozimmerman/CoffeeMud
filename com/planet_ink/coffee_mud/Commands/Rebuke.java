@@ -56,8 +56,8 @@ public class Rebuke extends StdCommand
 		}
 		final String str=CMParms.combine(commands,1);
 		MOB target=mob.location().fetchInhabitant(str);
-		if((target==null)&&(mob.getWorshipCharID().length()>0)
-		&&(CMLib.english().containsString(mob.getWorshipCharID(),str)))
+		if((target==null)&&(mob.charStats().getWorshipCharID().length()>0)
+		&&(CMLib.english().containsString(mob.charStats().getWorshipCharID(),str)))
 			target=CMLib.map().getDeity(str);
 		if((target==null)&&(mob.getLiegeID().length()>0)
 		&&(CMLib.english().containsString(mob.getLiegeID(),str)))

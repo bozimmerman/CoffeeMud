@@ -83,6 +83,7 @@ public class Prayer_ReligiousDoubt extends Prayer
 				affectableStats.setStat(CharStats.STAT_FAITH,affectableStats.getStat(CharStats.STAT_FAITH)-100);
 			else
 				affectableStats.setStat(CharStats.STAT_FAITH,affectableStats.getStat(CharStats.STAT_FAITH)+100);
+			affectableStats.setWorshipCharID("");
 		}
 	}
 

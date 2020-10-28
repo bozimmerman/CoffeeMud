@@ -139,7 +139,7 @@ public class GrinderPlayers extends GrinderMobs
 				break;
 			case DEITYNAME:
 				if (CMLib.map().getDeity(old) != null)
-					M.setWorshipCharID(old);
+					M.baseCharStats().setWorshipCharID(old);
 				break;
 			case LIEGE:
 				if (CMLib.players().getPlayerAllHosts(old) != null)
@@ -487,7 +487,7 @@ public class GrinderPlayers extends GrinderMobs
 		{
 			final String old=httpReq.getUrlParameter("DEITY");
 			if((old!=null)&&(CMLib.map().getDeity(old)!=null))
-				M.setWorshipCharID(CMLib.map().getDeity(old).Name());
+				M.baseCharStats().setWorshipCharID(CMLib.map().getDeity(old).Name());
 		}
 		if(httpReq.isUrlParameter("FLAG"))
 		{

@@ -85,7 +85,7 @@ public class Prayer_Faithless extends Prayer
 					return Ability.QUALITY_INDIFFERENT;
 				if(CMLib.flags().isAnimalIntelligence(((MOB)target))||CMLib.flags().isGolem(target))
 					return Ability.QUALITY_INDIFFERENT;
-				if(((MOB)target).getWorshipCharID().length()==0)
+				if(((MOB)target).charStats().getWorshipCharID().length()==0)
 					return Ability.QUALITY_INDIFFERENT;
 			}
 		}
@@ -118,8 +118,8 @@ public class Prayer_Faithless extends Prayer
 			levelDiff=0;
 		final boolean success=proficiencyCheck(mob,-(levelDiff*25),auto);
 		Deity D=null;
-		if(target.getWorshipCharID().length()>0)
-			D=CMLib.map().getDeity(target.getWorshipCharID());
+		if(target.charStats().getWorshipCharID().length()>0)
+			D=CMLib.map().getDeity(target.charStats().getWorshipCharID());
 		int type=verbalCastCode(mob,target,auto);
 		int mal=CMMsg.MASK_MALICIOUS;
 		if(auto)

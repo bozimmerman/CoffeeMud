@@ -92,7 +92,7 @@ public interface LegalLibrary extends CMLibrary
 	public boolean canAttackThisProperty(MOB mob, PrivateProperty record);
 	public List<LandTitle> getAllUniqueLandTitles(Enumeration<Room> e, String owner, boolean includeRentals);
 	public Ability getClericInfusion(Physical room);
-	public Deity getClericInfused(Room room);
+	public String getClericInfused(Room room);
 
 	public boolean isLegalOfficerHere(MOB mob);
 	public boolean isLegalJudgeHere(MOB mob);

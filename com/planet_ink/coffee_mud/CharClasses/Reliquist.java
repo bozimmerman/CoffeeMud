@@ -100,6 +100,7 @@ public class Reliquist extends Thief
 	{
 		super.initializeClass();
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Whip",50,true);
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Polearm",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Staff",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Flailed",false);
@@ -108,11 +109,41 @@ public class Reliquist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",50,true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"ThievesCant",50,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"ThievesCant",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_ReadPrayer",0,true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_Hide",false);
-
+		//Q=Qualify G=GAIN A=Gain if alignment is the same as the prayer
+		//2	Repurpose Scroll (Q), Hide (Q), Mask Faith (G)
+		//3	Relics (G), Graverobbing (Q)
+		//4	Sneak (Q), Prayer_ClarifyScroll (G), Mark (G), Prayer_DepleteScroll (A), Prayer_EmpowerScroll (A), Prayer_AttuneScroll (A)
+		//5	Carpentry(G), Revoke (Q), Detect traps (Q), Whiplash (Q)
+		//6	Pick Locks (Q), Shield Bash (Q), Store Prayer (A), Tongues (A), Fluency (A)
+		//7	Prayercraft (G), Prayer_SenseDevotion(Q), Unearth Clues (Q)
+		//8	Hammerring(Q), Decipher Script (Q), Sense Magic (G), Empower Shield (G)
+		//9	Borrow Boon (G), Remove Traps (Q), Read Languages (G)
+		//10	Cure Light Wounds (A), Recharge Relic (A), Cause Light Wounds (A)
+		//11	Trip (G),  Lore(Q), Lesser Warding Glyph (Q), Deflect Prayer (Q)
+		//12	ScrollScribe(Q), Staff Making (Q), Sow Discord (G)
+		//13	RevealText(Q), Skill_Map (Q), Deplete Relic (A), Empower Relic (A), Attune Relic(A)
+		//14	TransferBane(A), Prayer_DivineTransferrence (A), TransferBoon(A)
+		//15	Enchant Relic(Q), Power Grab (Q), Research Item (G), Whipsmack (Q)
+		//16	Improved Warding Glyph (Q), Prayer_SenseParish(Q)
+		//17	Second Attack (Q), Disguise Faith (G), Create Digsite (Q)
+		//18	Skill_FalseService (G), Suppression (Q)
+		//19	Detection(Q), Empower Holy Weapon (Q), Empower Unholy Weapon (Q), Empower Sacred Weapon (Q), Reflect Prayer (Q)
+		//20	Heroic Leap(Q), Sin Mark(G), Imbue Shield (Q), Defile Shield (Q)
+		//21	Alchemy(G), Prayer_Seekersprayer(A), Share Boon (A), Steal Boon (A), Empower Just Weapon (Q), Empower Modest Weapon (Q), Empower Foul Weapon (Q)
+		//22	AutoHammerring (Q), Greater Warding Glyph (Q), Find Sacred Item (Q)
+		//23	Skill_BefoulShrine(Q), Empower Holy Armor (Q), Empower Unholy Armor (Q), Empower Sacred Armor (Q)
+		//24	Divine Feud(G), Prayer_ProtectRelic(Q), Whipstrip (Q)
+		//25	Imbue Unholy Weapon (Q), Imbue Sacred Weapon (Q), Imbue Holy Weapon (Q), Imbue Just Weapon (Q), Imbue Modest Weapon (Q), Imbue Foul Weapon (Q)
+		//26
+		//27
+		//28
+		//29
+		//30	Divine Quest (G)
+		//35	Divine Pilgrimage (Q)
 	}
 
 	@Override
@@ -152,9 +183,9 @@ public class Reliquist extends Thief
 			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 			&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL))
 			{
-				if(msg.source().getMyDeity()==null)
+				if(msg.source().baseCharStats().getMyDeity()==null)
 				{
-					msg.source().tell(L("You lack the faith to do that."));
+					msg.source().tell(L("You lack the true faith to do that."));
 					return false;
 				}
 			}
@@ -275,7 +306,7 @@ public class Reliquist extends Thief
 				{
 					if((msg.tool().text().length()>0)
 					&&(msg.target() instanceof MOB)
-					&&(msg.source().getMyDeity()!=null))
+					&&(msg.source().baseCharStats().getMyDeity()!=null))
 					{
 						Ability A=((MOB)msg.target()).fetchAbility(msg.tool().text());
 						if(A==null)

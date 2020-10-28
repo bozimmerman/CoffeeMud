@@ -385,18 +385,20 @@ public class StdDeity extends StdMOB implements Deity
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_SERVE:
-			if(msg.source().getMyDeity()==this)
+			if((msg.source().baseCharStats().getMyDeity()==this)
+			||(msg.source().charStats().getMyDeity()==this))
 			{
 				msg.source().tell(L("You already worship @x1.",name()));
 				if(msg.source().isMonster())
-					CMLib.commands().postSay(msg.source(),null,L("I already worship @x1.",msg.source().getMyDeity().name()));
+					CMLib.commands().postSay(msg.source(),null,L("I already worship @x1.",msg.source().charStats().getWorshipCharID()));
 				return false;
 			}
-			if(msg.source().getMyDeity()!=null)
+			if((msg.source().baseCharStats().getWorshipCharID().length()>0)
+			||(msg.source().charStats().getWorshipCharID().length()>0))
 			{
-				msg.source().tell(L("You already worship @x1.",msg.source().getMyDeity().name()));
+				msg.source().tell(L("You already worship @x1.",msg.source().charStats().getWorshipCharID()));
 				if(msg.source().isMonster())
-					CMLib.commands().postSay(msg.source(),null,L("I already worship @x1.",msg.source().getMyDeity().name()));
+					CMLib.commands().postSay(msg.source(),null,L("I already worship @x1.",msg.source().charStats().getWorshipCharID()));
 				return false;
 			}
 			if(msg.source().charStats().getCurrentClass().baseClass().equalsIgnoreCase("Cleric"))
@@ -419,7 +421,8 @@ public class StdDeity extends StdMOB implements Deity
 			}
 			break;
 		case CMMsg.TYP_REBUKE:
-			if(!msg.source().getWorshipCharID().equals(Name()))
+			if((!msg.source().charStats().getWorshipCharID().equals(Name()))
+			&&(!msg.source().baseCharStats().getWorshipCharID().equals(Name())))
 			{
 				msg.source().tell(L("You do not worship @x1.",name()));
 				return false;
@@ -573,7 +576,7 @@ public class StdDeity extends StdMOB implements Deity
 			&&(numBlessings()>0)
 			&&(R!=null))
 			{
-				final CMMsg eventMsg=CMClass.getMsg(this, mob, null, 
+				final CMMsg eventMsg=CMClass.getMsg(this, mob, null,
 						CMMsg.MSG_HOLYEVENT, null, CMMsg.MSG_HOLYEVENT, null, CMMsg.NO_EFFECT, "BLESSING");
 				R.send(this, eventMsg);
 				R.show(this,mob,CMMsg.MSG_OK_VISUAL,L("You feel the presence of <S-NAME> in <T-NAME>."));
@@ -632,7 +635,7 @@ public class StdDeity extends StdMOB implements Deity
 			if((numCurses()>0)
 			&&(R!=null))
 			{
-				final CMMsg eventMsg=CMClass.getMsg(this, mob, null, 
+				final CMMsg eventMsg=CMClass.getMsg(this, mob, null,
 						CMMsg.MSG_HOLYEVENT, null, CMMsg.MSG_HOLYEVENT, null, CMMsg.NO_EFFECT, "CURSING");
 				R.send(this, eventMsg);
 				R.show(this,mob,CMMsg.MSG_OK_VISUAL,L("You feel the wrath of <S-NAME> in <T-NAME>."));
@@ -886,7 +889,7 @@ public class StdDeity extends StdMOB implements Deity
 					if(msg.source().location()!=null)
 					{
 						if(DT.parm1.equalsIgnoreCase("holy")||DT.parm1.equalsIgnoreCase("unholy")||DT.parm1.equalsIgnoreCase("balance"))
-							yup=CMLib.law().getClericInfused(msg.source().location())==this;
+							yup=Name().equalsIgnoreCase(CMLib.law().getClericInfused(msg.source().location()));
 						else
 						if(msg.source().location().roomID().equalsIgnoreCase(DT.parm1))
 							yup=true;
@@ -977,12 +980,20 @@ public class StdDeity extends StdMOB implements Deity
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_SERVE:
-				msg.source().setWorshipCharID(name());
+				{
+					msg.source().baseCharStats().setWorshipCharID(name());
+					msg.source().recoverCharStats();
+				}
 				break;
 			case CMMsg.TYP_REBUKE:
-				if(msg.source().getWorshipCharID().equals(Name()))
+				if(msg.source().baseCharStats().getWorshipCharID().equals(Name())
+				||msg.source().charStats().getWorshipCharID().equals(Name()))
 				{
-					msg.source().setWorshipCharID("");
+					if(msg.source().baseCharStats().getWorshipCharID().equals(Name()))
+					{
+						msg.source().baseCharStats().setWorshipCharID("");
+						msg.source().recoverCharStats();
+					}
 					removeBlessings(msg.source());
 					if(msg.source().charStats().getCurrentClass().baseClass().equals("Cleric"))
 					{
@@ -1004,7 +1015,7 @@ public class StdDeity extends StdMOB implements Deity
 			}
 		}
 		else
-		if(msg.source().getWorshipCharID().equals(name()))
+		if(msg.source().baseCharStats().getWorshipCharID().equals(name()))
 		{
 			if(numBlessings()>0)
 			{
@@ -1095,7 +1106,7 @@ public class StdDeity extends StdMOB implements Deity
 
 			if((msg.source().charStats().getCurrentClass().baseClass().equals("Cleric")
 				||(CMSecurity.isASysOp(msg.source())))
-			&&(CMLib.law().getClericInfused(msg.source().location())==this))
+			&&(Name().equalsIgnoreCase(CMLib.law().getClericInfused(msg.source().location()))))
 			{
 				final List<DeityTrigger> V=serviceTriggers;
 				if((V!=null)&&(V.size()>0))
@@ -1157,24 +1168,26 @@ public class StdDeity extends StdMOB implements Deity
 		for(int v=0;v<V.size();v++)
 		{
 			R=V.get(v);
-			if(CMLib.law().getClericInfused(R)!=this)
-			for(int m=0;m<R.numInhabitants();m++)
+			if(!Name().equalsIgnoreCase(CMLib.law().getClericInfused(R)))
 			{
-				M=R.fetchInhabitant(m);
-				if(M==null)
-					continue;
-				if(M.getWorshipCharID().equals(Name()))
+				for(int m=0;m<R.numInhabitants();m++)
 				{
-					if(!M.isMonster())
-						M.tell(L("Services for @x1 are now starting at @x2.",Name(),room.displayText(null)));
-					else
-					if(!CMLib.flags().isATrackingMonster(M))
+					M=R.fetchInhabitant(m);
+					if(M==null)
+						continue;
+					if(M.charStats().getWorshipCharID().equals(Name()))
 					{
-						final Ability TRACKA=CMClass.getAbility("Skill_Track");
-						if(TRACKA!=null)
+						if(!M.isMonster())
+							M.tell(L("Services for @x1 are now starting at @x2.",Name(),room.displayText(null)));
+						else
+						if(!CMLib.flags().isATrackingMonster(M))
 						{
-							TRACKA.invoke(M,CMParms.parse("\""+CMLib.map().getExtendedRoomID(room)+"\""),room,true,0);
-							parishaners.add(M);
+							final Ability TRACKA=CMClass.getAbility("Skill_Track");
+							if(TRACKA!=null)
+							{
+								TRACKA.invoke(M,CMParms.parse("\""+CMLib.map().getExtendedRoomID(room)+"\""),room,true,0);
+								parishaners.add(M);
+							}
 						}
 					}
 				}
@@ -1249,7 +1262,7 @@ public class StdDeity extends StdMOB implements Deity
 		}
 		if(service == null)
 			return false;
-		final CMMsg eventMsg=CMClass.getMsg(this, null, null, 
+		final CMMsg eventMsg=CMClass.getMsg(this, null, null,
 				CMMsg.MSG_HOLYEVENT, null, CMMsg.MSG_HOLYEVENT, null, CMMsg.NO_EFFECT, "SERVICE");
 		eventMsg.setValue(service.parishaners.size());
 		service.serviceCompleted = true;
@@ -1259,7 +1272,7 @@ public class StdDeity extends StdMOB implements Deity
 			if(M==null)
 				continue;
 			eventMsg.setTarget(M);
-			if(M.getWorshipCharID().equals(Name()))
+			if(M.charStats().getWorshipCharID().equals(Name()))
 			{
 				if((!M.isMonster())&&(M!=mob))
 					CMLib.leveler().postExperience(M,null,null,50,false);
@@ -1292,7 +1305,7 @@ public class StdDeity extends StdMOB implements Deity
 			M=room.fetchInhabitant(m);
 			if(M==null)
 				continue;
-			if(M.getWorshipCharID().equals(Name()))
+			if(M.charStats().getWorshipCharID().equals(Name()))
 			{
 				final Ability A=M.fetchEffect("Skill_Convert");
 				if(A!=null)
@@ -1333,7 +1346,7 @@ public class StdDeity extends StdMOB implements Deity
 				&&((System.currentTimeMillis()-lastBlackmark)<120000))
 					continue;
 				if((!M.isMonster())
-				&&(M.getWorshipCharID().equals(name()))
+				&&(M.charStats().getWorshipCharID().equals(name()))
 				&&(CMLib.flags().isInTheGame(M,true)))
 				{
 					final Room R=M.location();
@@ -1345,7 +1358,7 @@ public class StdDeity extends StdMOB implements Deity
 						{
 							if((blacklist==M)&&((++blackmarks)>30))
 							{
-								final CMMsg eventMsg=CMClass.getMsg(this, M, null, 
+								final CMMsg eventMsg=CMClass.getMsg(this, M, null,
 										CMMsg.MSG_HOLYEVENT, null, CMMsg.MSG_HOLYEVENT, null, CMMsg.NO_EFFECT, "REBUKE");
 								R.send(this, eventMsg);
 								final CMMsg msg=CMClass.getMsg(M,this,null,CMMsg.MSG_REBUKE,L("<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!"));
@@ -1362,7 +1375,7 @@ public class StdDeity extends StdMOB implements Deity
 								blacklist=M;
 								blackmarks++;
 								lastBlackmark=System.currentTimeMillis();
-								final CMMsg eventMsg=CMClass.getMsg(this, M, null, 
+								final CMMsg eventMsg=CMClass.getMsg(this, M, null,
 										CMMsg.MSG_HOLYEVENT, null, CMMsg.MSG_HOLYEVENT, null, CMMsg.NO_EFFECT, "DISAPPOINTED");
 								eventMsg.setValue(blackmarks);
 								R.send(this, eventMsg);
@@ -1383,7 +1396,7 @@ public class StdDeity extends StdMOB implements Deity
 					{
 						if((blacklist==M)&&((++blackmarks)>30))
 						{
-							final CMMsg eventMsg=CMClass.getMsg(this, M, null, 
+							final CMMsg eventMsg=CMClass.getMsg(this, M, null,
 									CMMsg.MSG_HOLYEVENT, null, CMMsg.MSG_HOLYEVENT, null, CMMsg.NO_EFFECT, "REBUKE");
 							R.send(this, eventMsg);
 							final CMMsg msg=CMClass.getMsg(M,this,null,CMMsg.MSG_REBUKE,L("<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!"));
@@ -1396,7 +1409,7 @@ public class StdDeity extends StdMOB implements Deity
 								blackmarks=0;
 							blacklist=M;
 							blackmarks++;
-							final CMMsg eventMsg=CMClass.getMsg(this, M, null, 
+							final CMMsg eventMsg=CMClass.getMsg(this, M, null,
 									CMMsg.MSG_HOLYEVENT, null, CMMsg.MSG_HOLYEVENT, null, CMMsg.NO_EFFECT, "DISAPPOINTED");
 							eventMsg.setValue(blackmarks);
 							R.send(this, eventMsg);

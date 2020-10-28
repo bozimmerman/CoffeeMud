@@ -670,8 +670,9 @@ public class Age extends StdAbility
 								newMan.setClan(p.first.clanID(),p.first.getAutoPosition());
 						}
 					}
-					if((M.getWorshipCharID().length()>0)&&(newMan.getWorshipCharID().length()==0))
-						newMan.setWorshipCharID(M.getWorshipCharID());
+					if((M.baseCharStats().getWorshipCharID().length()>0)
+					&&(newMan.baseCharStats().getWorshipCharID().length()==0))
+						newMan.baseCharStats().setWorshipCharID(M.baseCharStats().getWorshipCharID());
 					for(final Enumeration<Ability> a=M.abilities();a.hasMoreElements();)
 					{
 						final Ability L=a.nextElement();
@@ -714,7 +715,7 @@ public class Age extends StdAbility
 				newMan.setStartRoom(babe.getStartRoom());
 				newMan.setTrains(babe.getTrains());
 				newMan.setWimpHitPoint(babe.getWimpHitPoint());
-				newMan.setWorshipCharID(babe.getWorshipCharID());
+				newMan.baseCharStats().setWorshipCharID(babe.baseCharStats().getWorshipCharID());
 				if(liege!=null)
 				{
 					newMan.playerStats().setPassword(liege.playerStats().getPasswordStr());

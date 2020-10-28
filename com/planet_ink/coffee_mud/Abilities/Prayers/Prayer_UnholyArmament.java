@@ -121,8 +121,8 @@ public class Prayer_UnholyArmament extends Prayer
 			pos=checkOrder[i];
 			if(pos<0)
 			{
-				if(mob.getWorshipCharID().length()>0)
-					mob.tell(L("@x1 can see that you are already completely armed.",mob.getWorshipCharID()));
+				if(mob.charStats().getWorshipCharID().length()>0)
+					mob.tell(L("@x1 can see that you are already completely armed.",mob.charStats().getWorshipCharID()));
 				else
 					mob.tell(L("The gods can see that you are already armed."));
 				return false;
@@ -265,8 +265,8 @@ public class Prayer_UnholyArmament extends Prayer
 
 		if(I==null)
 		{
-			if(mob.getWorshipCharID().length()>0)
-				mob.tell(L("@x1 can see that you are already completely armed.",mob.getWorshipCharID()));
+			if(mob.charStats().getWorshipCharID().length()>0)
+				mob.tell(L("@x1 can see that you are already completely armed.",mob.charStats().getWorshipCharID()));
 			else
 				mob.tell(L("The gods can see that you are already armed."));
 			return false;

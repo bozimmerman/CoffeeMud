@@ -96,8 +96,6 @@ public class Skill_Convert extends StdSkill
 		return "";
 	}
 
-	protected String	priorFaith	= "";
-
 	@Override
 	public void unInvoke()
 	{
@@ -112,16 +110,18 @@ public class Skill_Convert extends StdSkill
 		{
 			if(text().length()>0)
 				mob.tell(L("You start to have doubts about @x1.",text()));
-			mob.setWorshipCharID(priorFaith);
 		}
 	}
 
+
 	@Override
-	public boolean tick(final Tickable ticking, final int tickID)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
-		if((text().length()>0)&&(affected instanceof MOB)&&(!text().equals(((MOB)affected).getWorshipCharID())))
-			((MOB)affected).setWorshipCharID(text());
-		return super.tick(ticking,tickID);
+		super.affectCharStats(affected,affectableStats);
+		if((text().length()>0)
+		&&(affected instanceof MOB)
+		&&(!text().equals(affectableStats.getWorshipCharID())))
+			affectableStats.setWorshipCharID(text());
 	}
 
 	@Override
@@ -137,10 +137,12 @@ public class Skill_Convert extends StdSkill
 		}
 
 		MOB target=mob;
-		Deity D=CMLib.map().getDeity(CMParms.combine(commands,0));
-		if(D==null)
+		Deity deityToConvertToM=CMLib.map().getDeity(CMParms.combine(commands,0));
+		if(deityToConvertToM==null)
 		{
-			D=mob.getMyDeity();
+			deityToConvertToM=mob.charStats().getMyDeity();
+			if(deityToConvertToM==null)
+				deityToConvertToM=mob.baseCharStats().getMyDeity();
 			target=getTarget(mob,commands,givenTarget,false,true);
 			if(target==null)
 			{
@@ -149,7 +151,7 @@ public class Skill_Convert extends StdSkill
 					CMLib.commands().postSay(mob,target,L("I've never heard of '@x1'.",CMParms.combine(commands,0)),false,false);
 				return false;
 			}
-			if(D==null)
+			if(deityToConvertToM==null)
 			{
 				mob.tell(L("A faithless one cannot convert @x1.",target.name(mob)));
 				if(mob.isMonster())
@@ -165,11 +167,12 @@ public class Skill_Convert extends StdSkill
 				CMLib.commands().postSay(mob,target,L("I can not convert you."),false,false);
 			return false;
 		}
-		if(target.getMyDeity()==D)
+		if((target.baseCharStats().getMyDeity()==deityToConvertToM)
+		||(target.charStats().getMyDeity()==deityToConvertToM))
 		{
-			mob.tell(L("@x1 already worships @x2.",target.name(mob),D.name()));
+			mob.tell(L("@x1 already worships @x2.",target.name(mob),deityToConvertToM.name()));
 			if(mob.isMonster())
-				CMLib.commands().postSay(mob,target,L("You already worship @x1.",D.Name()),false,false);
+				CMLib.commands().postSay(mob,target,L("You already worship @x1.",deityToConvertToM.Name()),false,false);
 			return false;
 		}
 		if(!auto)
@@ -196,13 +199,32 @@ public class Skill_Convert extends StdSkill
 		//	targetMadeSave=false;
 		if((!target.isMonster())
 		&&(success)
-		&&(targetMadeSave)
-		&&(target.getMyDeity()!=null))
+		&&(targetMadeSave))
 		{
-			mob.tell(L("@x1 is worshipping @x2.  @x3 must REBUKE @x4 first.",target.name(mob),target.getMyDeity().name(),target.charStats().HeShe(),target.getMyDeity().charStats().himher()));
-			if(mob.isMonster())
-				CMLib.commands().postSay(mob,target,L("You already worship @x1.",target.getMyDeity().Name()),false,false);
-			return false;
+			if(target.charStats().getMyDeity()!=null)
+			{
+				mob.tell(L("@x1 is worshipping @x2.  @x3 must REBUKE @x4 first.",
+						target.name(mob),
+						target.charStats().getWorshipCharID(),
+						target.charStats().HeShe(),
+						target.baseCharStats().getMyDeity().charStats().himher()));
+				if(mob.isMonster())
+					CMLib.commands().postSay(mob,target,L("You already worship @x1.",target.charStats().getWorshipCharID()),false,false);
+				return false;
+			}
+			else
+			if(target.baseCharStats().getMyDeity()!=null)
+			{
+				mob.tell(L("@x1 is worshipping @x2.  @x3 must REBUKE @x4 first.",
+						target.name(mob),
+						L(" a deity"),
+						target.charStats().HeShe(),
+						L("him")));
+				if(mob.isMonster())
+					CMLib.commands().postSay(mob,target,L("You already worship a deity."),false,false);
+				return false;
+			}
+
 		}
 		if((success)
 		&&(targetMadeSave)
@@ -216,16 +238,15 @@ public class Skill_Convert extends StdSkill
 				try
 				{
 					final Session tsess = target.session();
-					final Deity tD=D;
+					final Deity tD=deityToConvertToM;
 					final MOB t=target;
 					final Ability A=this;
 					tsess.prompt(new InputCallback(InputCallback.Type.CONFIRM, "N", 30000L)
 					{
-
-						final Session session = tsess;
-						final Deity D=tD;
-						final MOB target=t;
-						final Ability me=A;
+						final Session	session	= tsess;
+						final Deity		D		= tD;
+						final MOB		target	= t;
+						final Ability	me		= A;
 
 						@Override
 						public void showPrompt()
@@ -264,10 +285,11 @@ public class Skill_Convert extends StdSkill
 		if((success)
 		&&((!targetMadeSave)||(target==mob)))
 		{
-			Room dRoom=D.location();
+			Room dRoom=deityToConvertToM.location();
 			if(dRoom==mob.location())
 				dRoom=null;
-			if(target.getMyDeity()!=null)
+			final Deity rebukeDeityM=target.baseCharStats().getMyDeity() != null ? target.baseCharStats().getMyDeity() : target.charStats().getMyDeity();
+			if(rebukeDeityM!=null)
 			{
 				final Ability A=target.fetchEffect(ID());
 				if(A!=null)
@@ -275,7 +297,7 @@ public class Skill_Convert extends StdSkill
 					A.unInvoke();
 					target.delEffect(A);
 				}
-				final CMMsg msg2=CMClass.getMsg(target,D,this,CMMsg.MSG_REBUKE,null);
+				final CMMsg msg2=CMClass.getMsg(target,target.baseCharStats().getMyDeity(),this,CMMsg.MSG_REBUKE,null);
 				if((mob.location().okMessage(mob,msg2))&&((dRoom==null)||(dRoom.okMessage(mob,msg2))))
 				{
 					mob.location().send(target,msg2);
@@ -283,8 +305,8 @@ public class Skill_Convert extends StdSkill
 						dRoom.send(target,msg2);
 				}
 			}
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,auto?L("<T-NAME> <T-IS-ARE> converted!"):L("<S-NAME> convert(s) <T-NAMESELF> to the worship of @x1.",D.name()));
-			final CMMsg msg2=CMClass.getMsg(target,D,this,CMMsg.MSG_SERVE,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,auto?L("<T-NAME> <T-IS-ARE> converted!"):L("<S-NAME> convert(s) <T-NAMESELF> to the worship of @x1.",deityToConvertToM.name()));
+			final CMMsg msg2=CMClass.getMsg(target,deityToConvertToM,this,target.isMonster()?CMMsg.MSG_OK_ACTION:CMMsg.MSG_SERVE,null);
 			if((mob.location().okMessage(mob,msg))
 			&&(mob.location().okMessage(mob,msg2))
 			&&((dRoom==null)||(dRoom.okMessage(mob,msg2))))
@@ -302,12 +324,7 @@ public class Skill_Convert extends StdSkill
 						CMLib.leveler().postExperience(mob,null,null,200,false);
 				}
 				if(target.isMonster())
-				{
 					beneficialAffect(mob,target,asLevel,(int)(TimeManager.MILI_HOUR/CMProps.getTickMillis()));
-					final Skill_Convert A=(Skill_Convert)target.fetchEffect(ID());
-					if(A!=null)
-						A.priorFaith=target.getWorshipCharID();
-				}
 			}
 		}
 		else

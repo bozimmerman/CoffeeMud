@@ -1292,7 +1292,7 @@ public class DefaultClan implements Clan
 				{
 					if(tag.equalsIgnoreCase("WORSHIPCHARID"))
 					{
-						value=M.getWorshipCharID();
+						value=M.charStats().getWorshipCharID();
 						if(value.length()==0)
 							value="ANY";
 					}

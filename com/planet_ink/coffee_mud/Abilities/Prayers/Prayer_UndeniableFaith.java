@@ -97,38 +97,11 @@ public class Prayer_UndeniableFaith extends Prayer
 	}
 
 	@Override
-	public boolean tick(final Tickable ticking, final int tickID)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
-		if(!super.tick(ticking,tickID))
-			return false;
-		if(!(affected instanceof MOB))
-			return true;
-		final MOB M=(MOB)affected;
-		if(M.location()!=null)
-		{
-			if((!M.getWorshipCharID().equals(godName))
-			&&(godName.length()>0))
-			{
-				final Deity D=CMLib.map().getDeity(godName);
-				if(M.getWorshipCharID().length()>0)
-				{
-					final Deity D2=CMLib.map().getDeity(M.getWorshipCharID());
-					if(D2!=null)
-					{
-						final CMMsg msg2=CMClass.getMsg(M,D2,this,CMMsg.MSG_REBUKE,null);
-						if(M.location().okMessage(M,msg2))
-							M.location().send(M,msg2);
-					}
-				}
-				final CMMsg msg2=CMClass.getMsg(M,D,this,CMMsg.MSG_SERVE,null);
-				if(M.location().okMessage(M,msg2))
-				{
-					M.location().send(M,msg2);
-					M.setWorshipCharID(godName);
-				}
-			}
-		}
-		return true;
+		super.affectCharStats(affected,affectableStats);
+		if(godName.length()>0)
+			affectableStats.setWorshipCharID(godName);
 	}
 
 	@Override
@@ -152,19 +125,19 @@ public class Prayer_UndeniableFaith extends Prayer
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
-		if((mob.getWorshipCharID().length()==0)
-		||(CMLib.map().getDeity(mob.getWorshipCharID())==null))
+		if((mob.charStats().getWorshipCharID().length()==0)
+		||(mob.charStats().getMyDeity()==null))
 		{
 			if(!auto)
 				mob.tell(L("You must worship a god to use this prayer."));
 			return false;
 		}
-		final Deity D=CMLib.map().getDeity(mob.getWorshipCharID());
-		if((target.getWorshipCharID().length()>0)
-		&&(CMLib.map().getDeity(target.getWorshipCharID())!=null))
+		final Deity D=mob.charStats().getMyDeity();
+		if((target.charStats().getWorshipCharID().length()>0)
+		&&(target.charStats().getMyDeity()!=null))
 		{
 			if(!auto)
-				mob.tell(L("@x1 worships @x2, and may not be converted with this prayer.",target.name(mob),target.getWorshipCharID()));
+				mob.tell(L("@x1 worships @x2, and may not be converted with this prayer.",target.name(mob),target.charStats().getWorshipCharID()));
 			return false;
 		}
 		if((CMLib.flags().isAnimalIntelligence(target)||CMLib.flags().isGolem(target)||(D==null)))
@@ -216,10 +189,9 @@ public class Prayer_UndeniableFaith extends Prayer
 				if((msg.value()<=0)&&(msg3.value()<=0))
 				{
 					target.location().send(target,msg2);
-					target.setWorshipCharID(godName);
 					if(mob!=target)
 						CMLib.leveler().postExperience(mob,target,null,25,false);
-					godName=mob.getWorshipCharID();
+					godName=mob.charStats().getWorshipCharID();
 					beneficialAffect(mob,target,asLevel,CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH));
 					convertStack.addElement(target,Long.valueOf(System.currentTimeMillis()));
 				}

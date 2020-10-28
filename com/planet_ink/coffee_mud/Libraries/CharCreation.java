@@ -4080,7 +4080,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		charClass=charClass.replace(' ','_');
 		String realrace=mob.baseCharStats().getMyRace().ID().toUpperCase();
 		realrace=realrace.replace(' ','_');
-		String deity=mob.getWorshipCharID().toUpperCase();
+		String deity=mob.baseCharStats().getWorshipCharID().toUpperCase();
 		deity=deity.replace(' ','_');
 		final String align=CMLib.flags().getAlignmentName(mob);
 
@@ -4145,7 +4145,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		race=race.replace(' ','_');
 		String realrace=mob.baseCharStats().getMyRace().ID().toUpperCase();
 		realrace=realrace.replace(' ','_');
-		String deity=mob.getWorshipCharID().toUpperCase();
+		String deity=mob.baseCharStats().getWorshipCharID().toUpperCase();
 		deity=deity.replace(' ','_');
 		final String align=CMLib.flags().getAlignmentName(mob);
 
@@ -4228,7 +4228,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		race=race.replace(' ','_');
 		String realrace=mob.baseCharStats().getMyRace().ID().toUpperCase();
 		realrace=realrace.replace(' ','_');
-		String deity=mob.getWorshipCharID().toUpperCase();
+		String deity=mob.baseCharStats().getWorshipCharID().toUpperCase();
 		deity=deity.replace(' ','_');
 		final String align=CMLib.flags().getAlignmentName(mob);
 

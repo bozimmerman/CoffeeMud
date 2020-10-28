@@ -88,10 +88,14 @@ public class FaithHelper extends StdBehavior
 							break;
 						}
 					}
-					((MOB)forMe).setWorshipCharID(CMParms.combine(V));
+					((MOB)forMe).baseCharStats().setWorshipCharID(CMParms.combine(V));
+					((MOB)forMe).charStats().setWorshipCharID(CMParms.combine(V));
 				}
 				else
-					((MOB)forMe).setWorshipCharID(parms);
+				{
+					((MOB)forMe).baseCharStats().setWorshipCharID(parms);
+					((MOB)forMe).charStats().setWorshipCharID(parms);
+				}
 			}
 		}
 	}
@@ -113,14 +117,14 @@ public class FaithHelper extends StdBehavior
 		&&(!observer.isInCombat())
 		&&(target!=observer)
 		&&(source!=target)
-		&&(observer.getWorshipCharID().length()>0)
+		&&(observer.charStats().getWorshipCharID().length()>0)
 		&&(CMLib.flags().canBeSeenBy(source,observer))
 		&&(CMLib.flags().canBeSeenBy(target,observer))
 		&&((!(msg.tool() instanceof DiseaseAffect))||(((DiseaseAffect)msg.tool()).isMalicious()))
 		&&(!BrotherHelper.isBrother(source,observer,false)))
 		{
 			final Room R=source.location();
-			if(observer.getWorshipCharID().equalsIgnoreCase(target.getWorshipCharID())
+			if(observer.charStats().getWorshipCharID().equalsIgnoreCase(target.charStats().getWorshipCharID())
 			&&(R!=null))
 			{
 				int numInFray=0;
@@ -136,9 +140,9 @@ public class FaithHelper extends StdBehavior
 				if(((num==0)||(numInFray<num)))
 				{
 					String reason=(this.msg!=null)?this.msg:"THAT`S MY FRIEND!! CHARGE!!";
-					if((observer.getWorshipCharID().equals(target.getWorshipCharID()))
-					&&(!observer.getWorshipCharID().equals(source.getWorshipCharID())))
-						reason=(this.msg!=null)?this.msg:"BELIEVERS OF "+observer.getWorshipCharID().toUpperCase()+" UNITE! CHARGE!";
+					if((observer.charStats().getWorshipCharID().equals(target.charStats().getWorshipCharID()))
+					&&(!observer.charStats().getWorshipCharID().equals(source.charStats().getWorshipCharID())))
+						reason=(this.msg!=null)?this.msg:"BELIEVERS OF "+observer.charStats().getWorshipCharID().toUpperCase()+" UNITE! CHARGE!";
 					Aggressive.startFight(observer,source,true,false,reason);
 				}
 			}

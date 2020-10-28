@@ -69,8 +69,8 @@ public class Prayer_Avatar extends Prayer
 	@Override
 	public String displayText()
 	{
-		if ((invoker() != null) && (invoker().getWorshipCharID().length() > 0))
-			return "(You are the AVATAR of " + invoker().getWorshipCharID() + ")";
+		if ((invoker() != null) && (invoker().charStats().getWorshipCharID().length() > 0))
+			return "(You are the AVATAR of " + invoker().charStats().getWorshipCharID() + ")";
 		return "(You are the AVATAR of the gods)";
 	}
 
@@ -118,8 +118,9 @@ public class Prayer_Avatar extends Prayer
 		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
-			if(mob.getMyDeity()!=null)
-				affectedStats.setName(L("@x1, the Avatar of @x2",mob.name(),mob.getMyDeity().name()));
+			final String deityName=mob.charStats().getWorshipCharID();
+			if(deityName.length()>0)
+				affectedStats.setName(L("@x1, the Avatar of @x2",mob.name(),deityName));
 			else
 				affectedStats.setName(L("@x1, the Avatar",mob.name()));
 		}
@@ -189,7 +190,7 @@ public class Prayer_Avatar extends Prayer
 					}
 					if(dir>=0)
 					{
-						final String godName=mob.getWorshipCharID().length()==0?"Your god":mob.getWorshipCharID();
+						final String godName=mob.charStats().getWorshipCharID().length()==0?"Your god":mob.charStats().getWorshipCharID();
 						mob.tell(L("@x1 directs you @x2.",godName,CMLib.directions().getInDirectionName(dir)));
 						CMLib.tracking().walk(mob,dir,false,false);
 					}

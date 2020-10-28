@@ -92,8 +92,8 @@ public class Prayer_PlanarTravel extends StdPlanarAbility
 
 	protected String prayWord(final MOB mob)
 	{
-		if(mob.getMyDeity()!=null)
-			return "pray(s) to "+mob.getMyDeity().name();
+		if(mob.charStats().getWorshipCharID().length()>0)
+			return "pray(s) to "+mob.charStats().getWorshipCharID();
 		return "pray(s)";
 	}
 

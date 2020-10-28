@@ -81,6 +81,7 @@ public class DefaultCharStats implements CharStats
 	protected String		genderName			= null;
 	protected String		displayClassName	= null;
 	protected String		displayClassLevel	= null;
+	protected String		worshipCharID		= "";
 	protected short[]		bodyAlterations		= null;
 	protected long			unwearableBitmap	= 0;
 	protected int[]			breathables			= null;
@@ -135,6 +136,7 @@ public class DefaultCharStats implements CharStats
 		arriveStr = null;
 		leaveStr = null;
 		profAdj = null;
+		worshipCharID = "";
 		proficiencies = emptyFiltererArray;
 		setMyRace(CMClass.getRace("StdRace"));
 		setCurrentClass(CMClass.getCharClass("StdCharClass"));
@@ -195,6 +197,7 @@ public class DefaultCharStats implements CharStats
 			for(int i=0;i<stats.length;i++)
 				((DefaultCharStats)intoStats).stats[i]=stats[i];
 			((DefaultCharStats)intoStats).unwearableBitmap=unwearableBitmap|myRace.forbiddenWornBits();
+			((DefaultCharStats)intoStats).worshipCharID=worshipCharID;
 		}
 		else
 		{
@@ -211,6 +214,7 @@ public class DefaultCharStats implements CharStats
 			intoStats.setWearableRestrictionsBitmap(unwearableBitmap|getMyRace().forbiddenWornBits());
 			intoStats.setBreathables(breathables);
 			intoStats.setItemProficiencies(proficiencies);
+			intoStats.setWorshipCharID(worshipCharID);
 		}
 	}
 
@@ -303,6 +307,26 @@ public class DefaultCharStats implements CharStats
 		if(leaveStr==null)
 			return myRace.leaveStr();
 		return leaveStr;
+	}
+
+	@Override
+	public String getWorshipCharID()
+	{
+		return worshipCharID;
+	}
+
+	@Override
+	public void setWorshipCharID(final String newVal)
+	{
+		worshipCharID = (newVal == null)?"":newVal;
+	}
+
+	@Override
+	public Deity getMyDeity()
+	{
+		if (worshipCharID.length() == 0)
+			return null;
+		return CMLib.map().getDeity(worshipCharID);
 	}
 
 	@Override

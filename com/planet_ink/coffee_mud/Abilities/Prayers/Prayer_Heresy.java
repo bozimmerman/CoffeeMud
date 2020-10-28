@@ -110,8 +110,8 @@ public class Prayer_Heresy extends Prayer
 				if(msg.value()<=0)
 				{
 					MOB D=null;
-					if(mob.getWorshipCharID().length()>0)
-						D=CMLib.map().getDeity(mob.getWorshipCharID());
+					if(mob.charStats().getWorshipCharID().length()>0)
+						D=CMLib.map().getDeity(mob.charStats().getWorshipCharID());
 					String crime="heresy against <T-NAME>";
 					String desc=null;
 					if(D==null)

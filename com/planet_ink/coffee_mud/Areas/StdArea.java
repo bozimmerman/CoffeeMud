@@ -546,7 +546,8 @@ public class StdArea implements Area
 	@Override
 	public void setAreaState(final State newState)
 	{
-		if ((newState == State.ACTIVE) && (!CMLib.threads().isTicking(this, Tickable.TICKID_AREA)))
+		if ((newState == State.ACTIVE)
+		&& (!CMLib.threads().isTicking(this, Tickable.TICKID_AREA)))
 		{
 			CMLib.threads().startTickDown(this, Tickable.TICKID_AREA, 1);
 			if (!CMLib.threads().isTicking(this, Tickable.TICKID_AREA))
@@ -660,7 +661,9 @@ public class StdArea implements Area
 		}
 		for (int i = lowest; i <= highest + 1000; i++)
 		{
-			if ((!set.contains(i)) && (CMLib.map().getRoom(Name() + "#" + i) == null) && (getRoom(Name() + "#" + i) == null))
+			if ((!set.contains(i))
+			&& (CMLib.map().getRoom(Name() + "#" + i) == null)
+			&& (getRoom(Name() + "#" + i) == null))
 				return Name() + "#" + i;
 		}
 		return Name() + "#" + (int) Math.round(Math.random() * Integer.MAX_VALUE);
@@ -1085,13 +1088,18 @@ public class StdArea implements Area
 		if (!msg.source().isMonster())
 		{
 			lastPlayerTime = System.currentTimeMillis();
-			if ((flag == State.PASSIVE) && ((msg.sourceMinor() == CMMsg.TYP_ENTER) || (msg.sourceMinor() == CMMsg.TYP_LEAVE) || (msg.sourceMinor() == CMMsg.TYP_FLEE)))
+			if ((flag == State.PASSIVE)
+			&& ((msg.sourceMinor() == CMMsg.TYP_ENTER) || (msg.sourceMinor() == CMMsg.TYP_LEAVE) || (msg.sourceMinor() == CMMsg.TYP_FLEE)))
 				flag = State.ACTIVE;
 		}
 
-		if ((flag == State.FROZEN) || (flag == State.STOPPED) || (!CMLib.flags().allowsMovement(this)))
+		if ((flag == State.FROZEN)
+		|| (flag == State.STOPPED)
+		|| (!CMLib.flags().allowsMovement(this)))
 		{
-			if ((msg.sourceMinor() == CMMsg.TYP_ENTER) || (msg.sourceMinor() == CMMsg.TYP_LEAVE) || (msg.sourceMinor() == CMMsg.TYP_FLEE))
+			if ((msg.sourceMinor() == CMMsg.TYP_ENTER)
+			|| (msg.sourceMinor() == CMMsg.TYP_LEAVE)
+			|| (msg.sourceMinor() == CMMsg.TYP_FLEE))
 				return false;
 		}
 		if (parents != null)
@@ -1105,12 +1113,16 @@ public class StdArea implements Area
 
 		if ((getThemeCode() > 0) && (!CMath.bset(getThemeCode(), Area.THEME_FANTASY)))
 		{
-			if ((CMath.bset(msg.sourceMajor(), CMMsg.MASK_MAGIC)) || (CMath.bset(msg.targetMajor(), CMMsg.MASK_MAGIC)) || (CMath.bset(msg.othersMajor(), CMMsg.MASK_MAGIC)))
+			if ((CMath.bset(msg.sourceMajor(), CMMsg.MASK_MAGIC))
+			|| (CMath.bset(msg.targetMajor(), CMMsg.MASK_MAGIC))
+			|| (CMath.bset(msg.othersMajor(), CMMsg.MASK_MAGIC)))
 			{
 				Room room = null;
-				if ((msg.target() instanceof MOB) && (((MOB) msg.target()).location() != null))
+				if ((msg.target() instanceof MOB)
+				&& (((MOB) msg.target()).location() != null))
 					room = ((MOB) msg.target()).location();
-				else if (msg.source().location() != null)
+				else
+				if (msg.source().location() != null)
 					room = msg.source().location();
 				if (room != null)
 				{
@@ -1123,7 +1135,8 @@ public class StdArea implements Area
 				return false;
 			}
 		}
-		else if ((getTheme() > 0) && (!CMath.bset(getTheme(), Area.THEME_TECHNOLOGY)))
+		else
+		if ((getTheme() > 0) && (!CMath.bset(getTheme(), Area.THEME_TECHNOLOGY)))
 		{
 			switch (msg.sourceMinor())
 			{
@@ -1155,7 +1168,8 @@ public class StdArea implements Area
 					Room room = null;
 					if ((msg.target() instanceof MOB) && (((MOB) msg.target()).location() != null))
 						room = ((MOB) msg.target()).location();
-					else if (msg.source().location() != null)
+					else
+					if (msg.source().location() != null)
 						room = msg.source().location();
 					if (room != null)
 						room.showHappens(CMMsg.MSG_OK_VISUAL, L("Technology doesn't seem to work here."));
@@ -1274,8 +1288,11 @@ public class StdArea implements Area
 		{
 			final Climate C = getClimateObj();
 			if (((C == null)
-					|| (((C.weatherType((Room) affected) == Climate.WEATHER_BLIZZARD) || (C.weatherType((Room) affected) == Climate.WEATHER_DUSTSTORM)) && (!CMSecurity.isDisabled(CMSecurity.DisFlag.DARKWEATHER)))
-					|| ((getTimeObj().getTODCode() == TimeClock.TimeOfDay.NIGHT) && (!CMSecurity.isDisabled(CMSecurity.DisFlag.DARKNIGHTS)))) && ((disposition & PhyStats.IS_LIGHTSOURCE) == 0))
+				|| (((C.weatherType((Room) affected) == Climate.WEATHER_BLIZZARD) || (C.weatherType((Room) affected) == Climate.WEATHER_DUSTSTORM))
+					&& (!CMSecurity.isDisabled(CMSecurity.DisFlag.DARKWEATHER)))
+				|| ((getTimeObj().getTODCode() == TimeClock.TimeOfDay.NIGHT)
+					&& (!CMSecurity.isDisabled(CMSecurity.DisFlag.DARKNIGHTS))))
+			&& ((disposition & PhyStats.IS_LIGHTSOURCE) == 0))
 				disposition = disposition | PhyStats.IS_DARK;
 		}
 		if (disposition > 0)
@@ -2112,13 +2129,15 @@ public class StdArea implements Area
 					delMetroRoom(R);
 				}
 			}
-			else if (properRooms.get(R.roomID()) == R)
+			else
+			if (properRooms.get(R.roomID()) == R)
 			{
 				properRooms.remove(R.roomID());
 				delMetroRoom(R);
 				delProperRoomnumber(R.roomID());
 			}
-			else if (properRooms.containsValue(R))
+			else
+			if (properRooms.containsValue(R))
 			{
 				for (final Map.Entry<String, Room> entry : properRooms.entrySet())
 				{
@@ -2143,10 +2162,9 @@ public class StdArea implements Area
 			return null;
 		synchronized (properRooms)
 		{
-			if ((!roomID.startsWith(Name())) && (roomID.toUpperCase().startsWith(Name().toUpperCase() + "#")))
-				roomID = Name() + roomID.substring(Name().length()); // for case
-																		// sensitive
-																		// situations
+			if ((!roomID.startsWith(Name()))
+			&& (roomID.toUpperCase().startsWith(Name().toUpperCase() + "#")))
+				roomID = Name() + roomID.substring(Name().length()); // for case sensitive situations
 			return properRooms.get(roomID);
 		}
 	}
@@ -2190,7 +2208,9 @@ public class StdArea implements Area
 		if (isProperlyEmpty())
 			return null;
 		String roomID = getProperRoomnumbers().random();
-		if ((roomID != null) && (!roomID.startsWith(Name())) && (roomID.startsWith(Name().toUpperCase())))
+		if ((roomID != null)
+		&& (!roomID.startsWith(Name()))
+		&& (roomID.startsWith(Name().toUpperCase())))
 			roomID = Name() + roomID.substring(Name().length());
 		// looping back through CMMap is unnecc because the roomID comes
 		// directly from getProperRoomnumbers()
@@ -2216,7 +2236,8 @@ public class StdArea implements Area
 						if (StdArea.lastComplainer != this)
 						{
 							StdArea.lastComplainer = this;
-							Log.errOut("StdArea", "Last Resort random-find due to failure on " + roomID + ", so I just picked room: " + R.roomID() + " (" + this.amDestroyed + ")");
+							Log.errOut("StdArea", "Last Resort random-find due to failure on " + roomID
+									+ ", so I just picked room: " + R.roomID() + " (" + this.amDestroyed + ")");
 						}
 					}
 					else
@@ -2226,7 +2247,8 @@ public class StdArea implements Area
 				{
 					if (this.numberOfProperIDedRooms() == 0)
 						return null;
-					Log.errOut("StdArea", "Wow, proper room size = 0, but numrooms=" + this.numberOfProperIDedRooms() + "! (" + this.amDestroyed + ")");
+					Log.errOut("StdArea", "Wow, proper room size = 0, but numrooms=" + this.numberOfProperIDedRooms() +
+								"! (" + this.amDestroyed + ")");
 				}
 			}
 		}
@@ -2254,7 +2276,9 @@ public class StdArea implements Area
 		if (metroRoomIDSet != null)
 		{
 			String roomID = metroRoomIDSet.random();
-			if ((roomID != null) && (!roomID.startsWith(Name())) && (roomID.startsWith(Name().toUpperCase())))
+			if ((roomID != null)
+			&& (!roomID.startsWith(Name()))
+			&& (roomID.startsWith(Name().toUpperCase())))
 				roomID = Name() + roomID.substring(Name().length());
 			final Room R = CMLib.map().getRoom(roomID);
 			if (R instanceof GridLocale)
@@ -2316,7 +2340,8 @@ public class StdArea implements Area
 								V.add(R3);
 						}
 					}
-					else if (!V.contains(R2))
+					else
+					if (!V.contains(R2))
 						V.add(R2);
 				}
 			}
@@ -2680,7 +2705,8 @@ public class StdArea implements Area
 		{
 			if (val.startsWith("+"))
 				addBlurbFlag(val.substring(1));
-			else if (val.startsWith("-"))
+			else
+			if (val.startsWith("-"))
 				delBlurbFlag(val.substring(1));
 			else
 			{

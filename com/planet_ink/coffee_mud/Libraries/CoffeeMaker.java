@@ -3434,7 +3434,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					break;
 				}
 				case DEITY:
-					return ((MOB)P).getWorshipCharID();
+					return ((MOB)P).baseCharStats().getWorshipCharID();
 				case MATTRIB:
 				{
 					String val="";
@@ -3723,7 +3723,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					break;
 				}
 				case DEITY:
-					((MOB)P).setWorshipCharID(value);
+					((MOB)P).baseCharStats().setWorshipCharID(value);
+					((MOB)P).recoverCharStats();
 					break;
 				case FACTIONAMT:
 					break;
@@ -4406,7 +4407,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		str.append(CMLib.xml().convertXMLtoTag("MOVE",mob.baseState().getMovement()));
 		str.append(CMLib.xml().convertXMLtoTag("EXP",mob.getExperience()));
 		str.append(CMLib.xml().convertXMLtoTag("EXLV",mob.getExpNextLevel()));
-		str.append(CMLib.xml().convertXMLtoTag("WORS",mob.getWorshipCharID()));
+		str.append(CMLib.xml().convertXMLtoTag("WORS",mob.baseCharStats().getWorshipCharID()));
 		str.append(CMLib.xml().convertXMLtoTag("PRAC",mob.getPractices()));
 		str.append(CMLib.xml().convertXMLtoTag("TRAI",mob.getTrains()));
 		str.append(CMLib.xml().convertXMLtoTag("AGEH",mob.getAgeMinutes()));
@@ -4505,7 +4506,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				CMLib.factions().setAlignmentOldRange(mob,CMath.s_int(alignStr));
 			mob.setExperience(mblk.getIntFromPieces("EXP"));
 			//mob.setExpNextLevel(CMLib.xml().getIntFromPieces(mblk.contents,"EXLV"));
-			mob.setWorshipCharID(mblk.getValFromPieces("WORS"));
+			mob.baseCharStats().setWorshipCharID(mblk.getValFromPieces("WORS"));
 			mob.setPractices(mblk.getIntFromPieces("PRAC"));
 			mob.setTrains(mblk.getIntFromPieces("TRAI"));
 			mob.setAgeMinutes(mblk.getIntFromPieces("AGEH"));

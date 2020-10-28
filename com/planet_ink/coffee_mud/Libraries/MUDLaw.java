@@ -623,12 +623,12 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public Deity getClericInfused(final Room room)
+	public String getClericInfused(final Room room)
 	{
 		final Ability A=getClericInfusion(room);
 		if(A==null)
 			return null;
-		return CMLib.map().getDeity(A.text());
+		return A.text();
 	}
 
 	@Override

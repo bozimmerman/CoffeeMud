@@ -109,7 +109,7 @@ public class Prayer_DivineFavor extends Prayer
 		&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 			unInvoke();
 		if((msg.source()==affected)
-		&&(msg.source().getWorshipCharID().length()>0)
+		&&(msg.source().charStats().getWorshipCharID().length()>0)
 		&&((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
 			||(msg.sourceMinor()==CMMsg.TYP_RPXPCHANGE))
 		)
@@ -131,10 +131,10 @@ public class Prayer_DivineFavor extends Prayer
 		&&(((MOB)affected).isInCombat())
 		&&(!struckDownToday)
 		&&(CMLib.dice().roll(1,1000,0)==1)
-		&&(((MOB)affected).getWorshipCharID().length()>0)
-		&&(!((MOB)affected).getVictim().getWorshipCharID().equals(((MOB)affected).getWorshipCharID())))
+		&&(((MOB)affected).charStats().getWorshipCharID().length()>0)
+		&&(!((MOB)affected).getVictim().charStats().getWorshipCharID().equals(((MOB)affected).charStats().getWorshipCharID())))
 		{
-			final MOB deityM=CMLib.map().getDeity(((MOB)affected).getWorshipCharID());
+			final MOB deityM=((MOB)affected).charStats().getMyDeity();
 			if(deityM!=null)
 			{
 				struckDownToday=true;

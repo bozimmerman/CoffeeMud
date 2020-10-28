@@ -197,7 +197,7 @@ public class PlayerData extends StdWebMacro
 			str.append(CMLib.beanCounter().getMoney(M) + ", ");
 			break;
 		case DEITYNAME:
-			str.append(M.getWorshipCharID() + ", ");
+			str.append(M.baseCharStats().getWorshipCharID() + ", ");
 			break;
 		case LIEGE:
 			str.append(M.getLiegeID() + ", ");
@@ -563,7 +563,7 @@ public class PlayerData extends StdWebMacro
 			{
 				String old=httpReq.getUrlParameter("DEITY");
 				if(firstTime)
-					old=M.getWorshipCharID();
+					old=M.baseCharStats().getWorshipCharID();
 				str.append("<OPTION "+((old.length()==0)?"SELECTED":"")+" VALUE=\"\">Godless");
 				for(final Enumeration<Deity> e=CMLib.map().deities();e.hasMoreElements();)
 				{

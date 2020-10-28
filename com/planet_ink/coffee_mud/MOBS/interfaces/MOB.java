@@ -87,13 +87,13 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the name with a title, or not
 	 */
 	public String titledName();
-	
+
 	/**
 	 * If this player is using a title, this method returns
 	 * the players Name() with the title.  If not using a
-	 * title, this method returns name(), respecting the 
+	 * title, this method returns name(), respecting the
 	 * introduction system.
-	 * 
+	 *
 	 * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#Name()
 	 * @see com.planet_ink.coffee_mud.core.interfaces.Tickable#name()
 	 * @param viewer the person viewing
@@ -678,39 +678,6 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return true if they are married to liege, false if just a leige
 	 */
 	public boolean isMarriedToLiege();
-
-	/**
-	 * Returns the name of the Deity mob that this player/mob worships.
-	 * Empty string means they are an atheist. :) The name here should
-	 * always be the same as a Deity type mob in the game in order for
-	 * the religion system to work correctly.  For Clerics, this field
-	 * has particular importance.
-	 * @see MOB#setWorshipCharID(String)
-	 * @see MOB#getMyDeity()
-	 * @return the name of the Deity mob that this player/mob worships.
-	 */
-	public String getWorshipCharID();
-
-	/**
-	 * Sets the name of the Deity mob that this player/mob worships.
-	 * Empty string means they are an atheist. :) The name here should
-	 * always be the same as a Deity type mob in the game in order for
-	 * the religion system to work correctly.  For Clerics, this field
-	 * has particular importance.
-	 * @see MOB#setWorshipCharID(String)
-	 * @see MOB#getMyDeity()
-	 * @param newVal the name of the Deity mob that this player/mob worships.
-	 */
-	public void setWorshipCharID(String newVal);
-
-	/**
-	 * Returns the Deity object of the mob that this player/mob worships.
-	 * A null return means they are an atheist.  Very important for Clerics.
-	 * @see MOB#getWorshipCharID()
-	 * @see MOB#setWorshipCharID(String)
-	 * @return the Deity object of the mob that this player/mob worships
-	 */
-	public Deity getMyDeity();
 
 	/**
 	 * Returns the number of hit points below which this mob will

@@ -1232,23 +1232,24 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if((showFlag<=0)||(showFlag==showNumber))
 		{
-			mob.tell(L("@x1. Deity (ID): '@x2'.",""+showNumber,M.getWorshipCharID()));
+			mob.tell(L("@x1. Deity (ID): '@x2'.",""+showNumber,M.baseCharStats().getWorshipCharID()));
 			if((showFlag==showNumber)||(showFlag<=-999))
 			{
 				final String newName=mob.session().prompt(L("Enter a new one (null)\n\r:"),"");
 				if(newName.equalsIgnoreCase("null"))
-					M.setWorshipCharID("");
+					M.baseCharStats().setWorshipCharID("");
 				else
 				if(newName.length()>0)
 				{
 					if(CMLib.map().getDeity(newName)==null)
 						mob.tell(L("That deity does not exist."));
 					else
-						M.setWorshipCharID(CMLib.map().getDeity(newName).Name());
+						M.baseCharStats().setWorshipCharID(CMLib.map().getDeity(newName).Name());
 				}
 				else
 					mob.tell(L("(no change)"));
 			}
+			mob.recoverCharStats();
 		}
 	}
 

@@ -119,8 +119,9 @@ public class Skill_LightPlacebo extends BardSkill
 
 	protected String prayWord(final MOB mob)
 	{
-		if(mob.getMyDeity()!=null)
-			return "pray(s) to "+mob.getMyDeity().name();
+		final String deityName=mob.charStats().getWorshipCharID();
+		if(deityName.length()>0)
+			return "pray(s) to "+deityName;
 		return "pray(s)";
 	}
 

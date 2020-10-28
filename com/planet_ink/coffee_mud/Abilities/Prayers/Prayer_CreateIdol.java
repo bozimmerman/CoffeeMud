@@ -141,7 +141,7 @@ public class Prayer_CreateIdol extends Prayer
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		if((mob.getWorshipCharID().length()==0)||(CMLib.map().getDeity(mob.getWorshipCharID())==null))
+		if((mob.charStats().getWorshipCharID().length()==0)||(CMLib.map().getDeity(mob.charStats().getWorshipCharID())==null))
 		{
 			mob.tell(L("You must worship a god to use this prayer."));
 			return false;
@@ -185,7 +185,7 @@ public class Prayer_CreateIdol extends Prayer
 				mob.location().send(mob,msg);
 				final Item newItem=CMClass.getBasicItem("GenItem");
 				newItem.setBaseValue(1);
-				final String name=CMLib.english().startWithAorAn(RawMaterial.CODES.NAME(material).toLowerCase()+" idol of "+mob.getWorshipCharID());
+				final String name=CMLib.english().startWithAorAn(RawMaterial.CODES.NAME(material).toLowerCase()+" idol of "+mob.charStats().getWorshipCharID());
 				newItem.setName(name);
 				newItem.setDisplayText(L("@x1 sits here.",name));
 				newItem.basePhyStats().setDisposition(PhyStats.IS_EVIL);

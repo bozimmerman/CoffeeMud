@@ -5906,12 +5906,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case _DEITY: // -deity
 					{
-						if(mob.getWorshipCharID().length()==0)
+						final String worshipCharID=(actual?mob.charStats():mob.baseCharStats()).getWorshipCharID();
+						if(worshipCharID.length()==0)
 							return false;
 						boolean found=false;
 						for(final Object o : entry.parms())
 						{
-							if(mob.getWorshipCharID().equalsIgnoreCase((String)o)||((String)o).equals("ANY"))
+							if(worshipCharID.equalsIgnoreCase((String)o)||((String)o).equals("ANY"))
 							{
 								found = true;
 								break;
@@ -5923,11 +5924,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case DEITY: // +deity
 					{
-						if(mob.getWorshipCharID().length()>0)
+						final String worshipCharID=(actual?mob.charStats():mob.baseCharStats()).getWorshipCharID();
+						if(worshipCharID.length()>0)
 						{
 							for(final Object o : entry.parms())
 							{
-								if(mob.getWorshipCharID().equalsIgnoreCase((String)o))
+								if(worshipCharID.equalsIgnoreCase((String)o))
 									return false;
 							}
 						}

@@ -110,7 +110,7 @@ public class MOBloader
 					CMLib.factions().setAlignmentOldRange(mob,align);
 				mob.setExperience(CMath.s_int(DBConnections.getRes(R,"CMEXPE")));
 				//mob.setExpNextLevel(CMath.s_int(DBConnections.getRes(R,"CMEXLV")));
-				mob.setWorshipCharID(DBConnections.getRes(R,"CMWORS"));
+				stats.setWorshipCharID(DBConnections.getRes(R,"CMWORS"));
 				mob.setPractices(CMath.s_int(DBConnections.getRes(R,"CMPRAC")));
 				mob.setTrains(CMath.s_int(DBConnections.getRes(R,"CMTRAI")));
 				mob.setAgeMinutes(CMath.s_long(DBConnections.getRes(R,"CMAGEH")));
@@ -1232,7 +1232,7 @@ public class MOBloader
 				+", CMALIG=-1"
 				+", CMEXPE="+mob.getExperience()
 				+", CMEXLV="+mob.getExpNextLevel()
-				+", CMWORS='"+mob.getWorshipCharID()+"'"
+				+", CMWORS='"+mob.baseCharStats().getWorshipCharID()+"'"
 				+", CMPRAC="+mob.getPractices()
 				+", CMTRAI="+mob.getTrains()
 				+", CMAGEH="+mob.getAgeMinutes()

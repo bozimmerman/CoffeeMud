@@ -107,7 +107,7 @@ public class Prayer_Revival extends Prayer
 				final MOB M=R.fetchInhabitant(i);
 				if(M!=null)
 				{
-					if(mob.getWorshipCharID().equals(M.getWorshipCharID()))
+					if(mob.charStats().getWorshipCharID().equals(M.charStats().getWorshipCharID()))
 					{
 						if(M.fetchEffect(ID())!=null)
 						{
@@ -120,58 +120,61 @@ public class Prayer_Revival extends Prayer
 						inhabs.add(M);
 				}
 			}
-			final Deity D=CMLib.map().getDeity(mob.getWorshipCharID());
-			if((D!=null)&&(CMLib.dice().rollPercentage()<50))
-			switch(CMLib.dice().roll(1,13,0))
+			final Deity D=mob.charStats().getMyDeity();
+			if((D!=null)
+			&&(CMLib.dice().rollPercentage()<50))
 			{
-				case 1:
-					CMLib.commands().postSay(mob, null, L("@x1 is great! Shout @x2 praises!", D.name(), CMStrings.capitalizeAndLower(D.charStats().hisher())), false, false);
-					break;
-				case 2:
-					CMLib.commands().postSay(mob, null, L("Can I hear an AMEN?!"), false, false);
-					break;
-				case 3:
-					CMLib.commands().postSay(mob, null, L("Praise @x1!", D.name()), false, false);
-					break;
-				case 4:
-					CMLib.commands().postSay(mob, null, L("Halleluyah! @x1 is great!", D.name()), false, false);
-					break;
-				case 5:
-					CMLib.commands().postSay(mob, null, L("Let's hear it for @x1!", D.name()), false, false);
-					break;
-				case 6:
-					CMLib.commands().postSay(mob, null, L("Exalt the name of @x1!", D.name()), false, false);
-					break;
-				case 7:
-					if (clerics.size() > 1)
-					{
-						final MOB M = clerics.get(CMLib.dice().roll(1, clerics.size(), -1));
-						if (M != mob)
-							CMLib.commands().postSay(mob, null, L("Preach it @x1!", M.name(mob)), false, false);
+				switch(CMLib.dice().roll(1,13,0))
+				{
+					case 1:
+						CMLib.commands().postSay(mob, null, L("@x1 is great! Shout @x2 praises!", D.name(), CMStrings.capitalizeAndLower(D.charStats().hisher())), false, false);
+						break;
+					case 2:
+						CMLib.commands().postSay(mob, null, L("Can I hear an AMEN?!"), false, false);
+						break;
+					case 3:
+						CMLib.commands().postSay(mob, null, L("Praise @x1!", D.name()), false, false);
+						break;
+					case 4:
+						CMLib.commands().postSay(mob, null, L("Halleluyah! @x1 is great!", D.name()), false, false);
+						break;
+					case 5:
+						CMLib.commands().postSay(mob, null, L("Let's hear it for @x1!", D.name()), false, false);
+						break;
+					case 6:
+						CMLib.commands().postSay(mob, null, L("Exalt the name of @x1!", D.name()), false, false);
+						break;
+					case 7:
+						if (clerics.size() > 1)
+						{
+							final MOB M = clerics.get(CMLib.dice().roll(1, clerics.size(), -1));
+							if (M != mob)
+								CMLib.commands().postSay(mob, null, L("Preach it @x1!", M.name(mob)), false, false);
+							else
+								CMLib.commands().postSay(mob, null, L("I LOVE @x1!", D.name()), false, false);
+						}
 						else
 							CMLib.commands().postSay(mob, null, L("I LOVE @x1!", D.name()), false, false);
-					}
-					else
-						CMLib.commands().postSay(mob, null, L("I LOVE @x1!", D.name()), false, false);
-					break;
-				case 8:
-					CMLib.commands().postSay(mob, null, L("Holy is the name of @x1!", D.name()), false, false);
-					break;
-				case 9:
-					CMLib.commands().postSay(mob, null, L("Do you BELIEVE?!? I BELIEVE!!!"), false, false);
-					break;
-				case 10:
-					CMLib.commands().postSay(mob, null, L("Halleluyah!"), false, false);
-					break;
-				case 11:
-					mob.enqueCommand(CMParms.parse("EMOTE do(es) a spirit-filled dance!"), MUDCmdProcessor.METAFLAG_FORCED, 0);
-					break;
-				case 12:
-					mob.enqueCommand(CMParms.parse("EMOTE wave(s) <S-HIS-HER> hands in the air!"), MUDCmdProcessor.METAFLAG_FORCED, 0);
-					break;
-				case 13:
-					mob.enqueCommand(CMParms.parse("EMOTE catch(es) the spirit of " + D.name() + "!"), MUDCmdProcessor.METAFLAG_FORCED, 0);
-					break;
+						break;
+					case 8:
+						CMLib.commands().postSay(mob, null, L("Holy is the name of @x1!", D.name()), false, false);
+						break;
+					case 9:
+						CMLib.commands().postSay(mob, null, L("Do you BELIEVE?!? I BELIEVE!!!"), false, false);
+						break;
+					case 10:
+						CMLib.commands().postSay(mob, null, L("Halleluyah!"), false, false);
+						break;
+					case 11:
+						mob.enqueCommand(CMParms.parse("EMOTE do(es) a spirit-filled dance!"), MUDCmdProcessor.METAFLAG_FORCED, 0);
+						break;
+					case 12:
+						mob.enqueCommand(CMParms.parse("EMOTE wave(s) <S-HIS-HER> hands in the air!"), MUDCmdProcessor.METAFLAG_FORCED, 0);
+						break;
+					case 13:
+						mob.enqueCommand(CMParms.parse("EMOTE catch(es) the spirit of " + D.name() + "!"), MUDCmdProcessor.METAFLAG_FORCED, 0);
+						break;
+				}
 			}
 			if((clerics.size()>2)&&(inhabs.size()>0))
 			{
@@ -182,20 +185,20 @@ public class Prayer_Revival extends Prayer
 				{
 					final MOB vic1=mob.getVictim();
 					final MOB vic2=M.getVictim();
-					if(M.getWorshipCharID().length()>0)
+					if(M.charStats().getWorshipCharID().length()>0)
 					{
 						final Ability A=CMClass.getAbility("Prayer_Faithless");
 						if(A!=null)
 							A.invoke(mob,M,true,0);
 					}
-					if(M.getWorshipCharID().length()==0)
+					if(M.charStats().getWorshipCharID().length()==0)
 					{
 						final Ability A=CMClass.getAbility("Prayer_UndeniableFaith");
 						if(A!=null)
 						{
 							if(A.invoke(mob,M,true,0))
 							{
-								if(M.getWorshipCharID().equals(mob.getWorshipCharID()))
+								if(M.charStats().getWorshipCharID().equals(mob.charStats().getWorshipCharID()))
 								{
 									for(int c=0;c<clerics.size();c++)
 									{
@@ -221,8 +224,8 @@ public class Prayer_Revival extends Prayer
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		if((target.getWorshipCharID().length()==0)
-		||(CMLib.map().getDeity(target.getWorshipCharID())==null))
+		if((target.charStats().getWorshipCharID().length()==0)
+		||(CMLib.map().getDeity(target.charStats().getWorshipCharID())==null))
 		{
 			target.tell(L("You must worship a god to use this prayer."));
 			return false;

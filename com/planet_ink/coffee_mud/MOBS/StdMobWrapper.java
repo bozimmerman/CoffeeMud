@@ -966,7 +966,7 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	{
 		return (mob == null) ? "" : mob.titledName();
 	}
-	
+
 	@Override
 	public String titledName(final MOB viewer)
 	{
@@ -1288,23 +1288,6 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	public boolean isMarriedToLiege()
 	{
 		return (mob == null) ? false : mob.isMarriedToLiege();
-	}
-
-	@Override
-	public String getWorshipCharID()
-	{
-		return (mob == null) ? "" : mob.getWorshipCharID();
-	}
-
-	@Override
-	public void setWorshipCharID(final String newVal)
-	{
-	}
-
-	@Override
-	public Deity getMyDeity()
-	{
-		return (mob == null) ? null : mob.getMyDeity();
 	}
 
 	@Override

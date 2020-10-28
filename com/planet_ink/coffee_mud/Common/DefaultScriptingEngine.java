@@ -5586,7 +5586,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						returnable=false;
 					else
 					{
-						final String sex=((MOB)E).getWorshipCharID();
+						final String sex=((MOB)E).charStats().getWorshipCharID();
 						if(arg2.equals("=="))
 							returnable=sex.equalsIgnoreCase(arg3);
 						else
@@ -7960,7 +7960,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&(E instanceof MOB))
 				{
-					final String sex=((MOB)E).getWorshipCharID();
+					final String sex=((MOB)E).charStats().getWorshipCharID();
 					results.append(sex);
 				}
 				break;

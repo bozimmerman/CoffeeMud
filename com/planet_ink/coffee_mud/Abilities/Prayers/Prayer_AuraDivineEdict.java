@@ -187,7 +187,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 			final MOB M=R.fetchInhabitant(i);
 			if((M!=null)&&(M.isInCombat()))
 			{
-				M.tell(L("@x1 DEMANDS NO FIGHTING!",invoker().getWorshipCharID().toUpperCase()));
+				M.tell(L("@x1 DEMANDS NO FIGHTING!",invoker().charStats().getWorshipCharID().toUpperCase()));
 				M.makePeace(true);
 			}
 		}
@@ -230,8 +230,8 @@ public class Prayer_AuraDivineEdict extends Prayer
 			{
 				mob.location().send(mob,msg);
 				godName="THE GODS";
-				if(mob.getWorshipCharID().length()>0)
-					godName=mob.getWorshipCharID().toUpperCase();
+				if(mob.charStats().getWorshipCharID().length()>0)
+					godName=mob.charStats().getWorshipCharID().toUpperCase();
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}

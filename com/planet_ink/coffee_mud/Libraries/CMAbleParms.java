@@ -4180,7 +4180,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						final int r=RawMaterial.CODES.FIND_IgnoreCase(str);
 						if(r==0)
 							str="";
-						else if(r>0) str=RawMaterial.CODES.NAME(r);
+						else
+						if(r>0)
+							str=RawMaterial.CODES.NAME(r);
 						if(str.equals(orig))
 							return orig;
 						if(str.length()==0)

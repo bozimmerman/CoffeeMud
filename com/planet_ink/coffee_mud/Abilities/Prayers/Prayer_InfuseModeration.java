@@ -132,7 +132,7 @@ public class Prayer_InfuseModeration extends Prayer
 		if(((msg.targetMajor() & CMMsg.MASK_MALICIOUS)==CMMsg.MASK_MALICIOUS)
 		&&(msg.target() instanceof MOB))
 		{
-			if(msg.source().getWorshipCharID().equalsIgnoreCase(((MOB)msg.target()).getWorshipCharID()))
+			if(msg.source().charStats().getWorshipCharID().equalsIgnoreCase(((MOB)msg.target()).charStats().getWorshipCharID()))
 			{
 				msg.source().tell(L("Not right now -- you're in a service."));
 				msg.source().makePeace(true);
@@ -160,23 +160,23 @@ public class Prayer_InfuseModeration extends Prayer
 		if(target==null)
 			return false;
 
-		Deity D=null;
+		String deityName=null;
 		if(CMLib.law().getClericInfusion(target)!=null)
 		{
 
 			if(target instanceof Room)
-				D=CMLib.law().getClericInfused((Room)target);
-			if(D!=null)
-				mob.tell(L("There is already an infused aura of @x1 around @x2.",D.Name(),target.name(mob)));
+				deityName=CMLib.law().getClericInfused((Room)target);
+			if(deityName!=null)
+				mob.tell(L("There is already an infused aura of @x1 around @x2.",deityName,target.name(mob)));
 			else
 				mob.tell(L("There is already an infused aura around @x1.",target.name(mob)));
 			return false;
 		}
 
-		D=mob.getMyDeity();
+		deityName=mob.baseCharStats().getWorshipCharID();
 		if(target instanceof Room)
 		{
-			if(D==null)
+			if(deityName.length()==0)
 			{
 				mob.tell(L("The faithless may not infuse moderation in a room."));
 				return false;
@@ -186,9 +186,9 @@ public class Prayer_InfuseModeration extends Prayer
 			for(final Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
 			{
 				R=e.nextElement();
-				if(CMLib.law().getClericInfused((Room)target)==D)
+				if(deityName.equalsIgnoreCase(CMLib.law().getClericInfused((Room)target)))
 				{
-					mob.tell(L("There is already a moderate place of @x1 in this area at @x2.",D.Name(),R.displayText(mob)));
+					mob.tell(L("There is already a moderate place of @x1 in this area at @x2.",deityName,R.displayText(mob)));
 					return false;
 				}
 			}
@@ -204,8 +204,8 @@ public class Prayer_InfuseModeration extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(D!=null)
-					setMiscText(D.Name());
+				if((deityName!=null)&&(deityName.length()>0))
+					setMiscText(deityName);
 				if((target instanceof Room)
 				&&(CMLib.law().doesOwnThisLand(mob,((Room)target))))
 				{

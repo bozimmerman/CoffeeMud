@@ -305,8 +305,11 @@ public class Conquerable extends Arrest
 					if(M.getClanRole(holdingClan)!=null)
 					{
 						M.setClan(holdingClan,-1);
-						if((worship!=null)&&(M.getWorshipCharID().equals(worship)))
-							M.setWorshipCharID("");
+						if((worship!=null)&&(M.baseCharStats().getWorshipCharID().equals(worship)))
+						{
+							M.baseCharStats().setWorshipCharID("");
+							M.recoverCharStats();
+						}
 					}
 					I.setRawWornCode(0);
 					I.setContainer(null);
@@ -330,8 +333,11 @@ public class Conquerable extends Arrest
 					&&(M.getClanRole(holdingClan)!=null))
 					{
 						M.setClan(holdingClan,-1);
-						if((worship!=null)&&(M.getWorshipCharID().equals(worship)))
-							M.setWorshipCharID("");
+						if((worship!=null)&&(M.charStats().getWorshipCharID().equals(worship)))
+						{
+							M.baseCharStats().setWorshipCharID("");
+							M.recoverCharStats();
+						}
 					}
 				}
 			}
@@ -766,8 +772,8 @@ public class Conquerable extends Arrest
 		if(C.isWorshipConquest())
 		{
 			final MOB M=C.getResponsibleMember();
-			if((M!=null)&&(M.getWorshipCharID().length()>0))
-				return M.getWorshipCharID();
+			if((M!=null)&&(M.charStats().getWorshipCharID().length()>0))
+				return M.charStats().getWorshipCharID();
 		}
 		return null;
 	}
@@ -792,8 +798,12 @@ public class Conquerable extends Arrest
 					if((C!=null)&&(M.getClanRole(C.clanID())==null))
 					{
 						M.setClan(C.clanID(),C.getAutoPosition());
-						if(worship!=null)
-							M.setWorshipCharID(worship);
+						if((worship!=null)
+						&&(!M.baseCharStats().getWorshipCharID().equals(worship)))
+						{
+							M.baseCharStats().setWorshipCharID(worship);
+							M.recoverCharStats();
+						}
 					}
 					totalControlPoints+=M.phyStats().level();
 				}
@@ -1006,8 +1016,12 @@ public class Conquerable extends Arrest
 						&&(CMLib.clans().findConquerableClan(M)==null))
 						{
 							M.setClan(holdingClan,C.getAutoPosition());
-							if(worship!=null)
-								M.setWorshipCharID(worship);
+							if((worship!=null)
+							&&(!M.baseCharStats().getWorshipCharID().equals(worship)))
+							{
+								M.baseCharStats().setWorshipCharID(worship);
+								M.recoverCharStats();
+							}
 						}
 					}
 				}
@@ -1316,7 +1330,7 @@ public class Conquerable extends Arrest
 							{
 								int level=msg.source().phyStats().level();
 								if(killerClan.isWorshipConquest()
-								&&(killer.getWorshipCharID().equals(msg.source().getWorshipCharID())))
+								&&(killer.charStats().getWorshipCharID().equals(msg.source().charStats().getWorshipCharID())))
 									level=(level>1)?level/2:level;
 								if(debugging)
 									Log.debugOut("Conquest",killerClan.getName()+" gain "+level+" points by killing "+msg.source().name());
@@ -1331,7 +1345,7 @@ public class Conquerable extends Arrest
 									final Clan C=killerFollowerClan;
 									int level=msg.source().phyStats().level();
 									if(C.isWorshipConquest()
-									&&(killer.amFollowing().getWorshipCharID().equals(msg.source().getWorshipCharID())))
+									&&(killer.amFollowing().charStats().getWorshipCharID().equals(msg.source().charStats().getWorshipCharID())))
 										level=(level>1)?level/2:level;
 									if(debugging)
 										Log.debugOut("Conquest",killerFollowerClan.getName()+" gain "+level+" points by killing "+msg.source().name());
@@ -1387,8 +1401,12 @@ public class Conquerable extends Arrest
 				if(C!=null)
 					msg.source().setClan(C.clanID(),C.getGovernment().getAcceptPos());
 				final String worship=getManadatoryWorshipID();
-				if(worship!=null)
-					msg.source().setWorshipCharID(worship);
+				if((worship!=null)
+				&&(!msg.source().baseCharStats().getWorshipCharID().equals(worship)))
+				{
+					msg.source().baseCharStats().setWorshipCharID(worship);
+					msg.source().recoverCharStats();
+				}
 			}
 
 			if(msg.tool() instanceof ClanItem)

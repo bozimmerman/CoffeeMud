@@ -112,10 +112,10 @@ public class Prayer_AuraIntolerance extends Prayer
 		if((msg.source()==affected)
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.target() instanceof MOB)
-		&&(msg.source().getWorshipCharID().length()>0)
-		&&(!((MOB)msg.target()).getWorshipCharID().equals(msg.source().getWorshipCharID())))
+		&&(msg.source().charStats().getWorshipCharID().length()>0)
+		&&(!((MOB)msg.target()).charStats().getWorshipCharID().equals(msg.source().charStats().getWorshipCharID())))
 		{
-			if(((MOB)msg.target()).getWorshipCharID().length()>0)
+			if(((MOB)msg.target()).charStats().getWorshipCharID().length()>0)
 				msg.setValue(msg.value()*2);
 			else
 				msg.setValue(msg.value()+(msg.value()/2));
@@ -138,13 +138,15 @@ public class Prayer_AuraIntolerance extends Prayer
 			final MOB M=R.fetchInhabitant(i);
 			if((M!=null)
 			&&(M!=((MOB)affected))
-			&&((M.getWorshipCharID().length()==0)
-				||(((MOB)affected).getWorshipCharID().length()>0)&&(!M.getWorshipCharID().equals(((MOB)affected).getWorshipCharID()))))
+			&&((M.charStats().getWorshipCharID().length()==0)
+				||(((MOB)affected).charStats().getWorshipCharID().length()>0)&&(!M.charStats().getWorshipCharID().equals(((MOB)affected).charStats().getWorshipCharID()))))
 			{
-				if(M.getWorshipCharID().length()>0)
-					CMLib.combat().postDamage(((MOB)affected),M,this,3,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,L("The intolerant aura around <S-NAME> <DAMAGES> <T-NAMESELF>!"));
+				if(M.charStats().getWorshipCharID().length()>0)
+					CMLib.combat().postDamage(((MOB)affected),M,this,3,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,
+							L("The intolerant aura around <S-NAME> <DAMAGES> <T-NAMESELF>!"));
 				else
-					CMLib.combat().postDamage(((MOB)affected),M,this,1,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,L("The intolerant aura around <S-NAME> <DAMAGES> <T-NAMESELF>!"));
+					CMLib.combat().postDamage(((MOB)affected),M,this,1,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,
+							L("The intolerant aura around <S-NAME> <DAMAGES> <T-NAMESELF>!"));
 				CMLib.combat().postRevengeAttack(M, invoker);
 			}
 		}
@@ -156,8 +158,8 @@ public class Prayer_AuraIntolerance extends Prayer
 	{
 		if(mob!=null)
 		{
-			if(((mob.getWorshipCharID().length()==0)
-			||(CMLib.map().getDeity(mob.getWorshipCharID())==null)))
+			if(((mob.charStats().getWorshipCharID().length()==0)
+			||(CMLib.map().getDeity(mob.charStats().getWorshipCharID())==null)))
 				return Ability.QUALITY_INDIFFERENT;
 		}
 		return super.castingQuality(mob,target);
@@ -175,8 +177,8 @@ public class Prayer_AuraIntolerance extends Prayer
 			mob.tell(target,null,null,L("The aura of intolerance is already with <S-NAME>."));
 			return false;
 		}
-		if((!auto)&&((mob.getWorshipCharID().length()==0)
-					 ||(CMLib.map().getDeity(mob.getWorshipCharID())==null)))
+		if((!auto)&&((mob.charStats().getWorshipCharID().length()==0)
+					 ||(CMLib.map().getDeity(mob.charStats().getWorshipCharID())==null)))
 		{
 			mob.tell(L("You must worship a god to be intolerant."));
 			return false;

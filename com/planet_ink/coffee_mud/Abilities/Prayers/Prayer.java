@@ -89,50 +89,50 @@ public class Prayer extends StdAbility
 
 	protected String prayWord(final MOB mob)
 	{
-		if(mob.getMyDeity()!=null)
-			return "pray(s) to "+mob.getMyDeity().name();
+		if(mob.charStats().getWorshipCharID().length()>0)
+			return "pray(s) to "+mob.charStats().getWorshipCharID();
 		return "pray(s)";
 	}
 
 	protected String prayForWord(final MOB mob)
 	{
-		if(mob.getMyDeity()!=null)
-			return "pray(s) for "+mob.getMyDeity().name();
+		if(mob.charStats().getWorshipCharID().length()>0)
+			return "pray(s) for "+mob.charStats().getWorshipCharID();
 		return "pray(s)";
 	}
 
 	protected String inTheNameOf(final MOB mob)
 	{
-		if(mob.getMyDeity()!=null)
-			return " in the name of "+mob.getMyDeity().name();
+		if(mob.charStats().getWorshipCharID().length()>0)
+			return " in the name of "+mob.charStats().getWorshipCharID();
 		return "";
 	}
 
 	protected String againstTheGods(final MOB mob)
 	{
-		if(mob.getMyDeity()!=null)
-			return " against "+mob.getMyDeity().name();
+		if(mob.charStats().getWorshipCharID().length()>0)
+			return " against "+mob.charStats().getWorshipCharID();
 		return " against the gods";
 	}
 
 	protected String hisHerDiety(final MOB mob)
 	{
-		if(mob.getMyDeity()!=null)
-			return mob.getMyDeity().name();
+		if(mob.charStats().getWorshipCharID().length()>0)
+			return mob.charStats().getWorshipCharID();
 		return "<S-HIS-HER> god";
 	}
 
 	protected String ofDiety(final MOB mob)
 	{
-		if(mob.getMyDeity()!=null)
-			return " of "+mob.getMyDeity().name();
+		if(mob.charStats().getWorshipCharID().length()>0)
+			return " of "+mob.charStats().getWorshipCharID();
 		return "";
 	}
 
 	protected String prayingWord(final MOB mob)
 	{
-		if(mob.getMyDeity()!=null)
-			return "praying to "+mob.getMyDeity().name();
+		if(mob.charStats().getWorshipCharID().length()>0)
+			return "praying to "+mob.charStats().getWorshipCharID();
 		return "praying";
 	}
 

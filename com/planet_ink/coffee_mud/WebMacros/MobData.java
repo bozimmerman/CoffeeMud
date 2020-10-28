@@ -1831,7 +1831,7 @@ public class MobData extends StdWebMacro
 				case DEITYID: // deityid
 				{
 					if(firstTime)
-						old=M.getWorshipCharID();
+						old=M.baseCharStats().getWorshipCharID();
 					for(final Enumeration<Deity> d=CMLib.map().deities();d.hasMoreElements();)
 					{
 						final Deity D=d.nextElement();

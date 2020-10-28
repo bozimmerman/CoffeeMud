@@ -98,8 +98,8 @@ public class Prayer_Conviction extends Prayer
 			return;
 
 		final MOB mob=(MOB)affected;
-		if((mob.getWorshipCharID().length()>0)
-		&&(mob.getWorshipCharID().equals(invoker().getWorshipCharID())))
+		if((mob.charStats().getWorshipCharID().length()>0)
+		&&(mob.charStats().getWorshipCharID().equals(invoker().charStats().getWorshipCharID())))
 		{
 			int xlvl=super.getXLEVELLevel(invoker());
 			if(xlvl>7)
@@ -129,11 +129,11 @@ public class Prayer_Conviction extends Prayer
 	{
 		if(mob!=null)
 		{
-			if(mob.getWorshipCharID().length()==0)
+			if(mob.charStats().getWorshipCharID().length()==0)
 				return Ability.QUALITY_INDIFFERENT;
 			if(target instanceof MOB)
 			{
-				if(!((MOB)target).getWorshipCharID().equals(mob.getWorshipCharID()))
+				if(!((MOB)target).charStats().getWorshipCharID().equals(mob.charStats().getWorshipCharID()))
 					return Ability.QUALITY_INDIFFERENT;
 				return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
 			}
@@ -147,12 +147,12 @@ public class Prayer_Conviction extends Prayer
 		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
-		if(mob.getWorshipCharID().length()==0)
+		if(mob.charStats().getWorshipCharID().length()==0)
 		{
 			mob.tell(L("You must worship a god for this prayer to work."));
 			return false;
 		}
-		if(!target.getWorshipCharID().equals(mob.getWorshipCharID()))
+		if(!target.charStats().getWorshipCharID().equals(mob.charStats().getWorshipCharID()))
 		{
 			mob.tell(L("@x1 must worship your god for this prayer to work.",target.name(mob)));
 			return false;

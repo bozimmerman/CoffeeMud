@@ -267,8 +267,8 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 				if((msg.value()<=0)&&(msg2.value()<=0)&&(msg3.value()<=0))
 				{
 					invoker=mob;
-					if(mob.getWorshipCharID().length()>0)
-						godName=mob.getWorshipCharID();
+					if(mob.charStats().getWorshipCharID().length()>0)
+						godName=mob.charStats().getWorshipCharID();
 					maliciousAffect(mob,target,asLevel,0,-1);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> look(s) seriously ill!"));
 				}

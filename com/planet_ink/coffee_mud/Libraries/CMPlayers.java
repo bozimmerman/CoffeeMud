@@ -198,7 +198,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			@Override
 			public String worship()
 			{
-				return M.getWorshipCharID();
+				return M.baseCharStats().getWorshipCharID();
 			}
 		};
 	}
@@ -651,8 +651,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		for(final Enumeration<MOB> p=CMLib.players().players();p.hasMoreElements();)
 		{
 			final MOB playerM=p.nextElement();
-			if(playerM.getWorshipCharID().equalsIgnoreCase(oldName))
-				playerM.setWorshipCharID(newName);
+			if(playerM.baseCharStats().getWorshipCharID().equalsIgnoreCase(oldName))
+				playerM.baseCharStats().setWorshipCharID(newName);
 			if(playerM.getLiegeID().equalsIgnoreCase(oldName))
 				playerM.setLiegeID(newName);
 		}

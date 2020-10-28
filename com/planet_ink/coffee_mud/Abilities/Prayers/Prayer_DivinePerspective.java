@@ -128,13 +128,13 @@ public class Prayer_DivinePerspective extends Prayer
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		if((mob.getWorshipCharID().length()==0)
-		||(CMLib.map().getDeity(mob.getWorshipCharID())==null))
+		if((mob.charStats().getWorshipCharID().length()==0)
+		||(CMLib.map().getDeity(mob.charStats().getWorshipCharID())==null))
 		{
 			mob.tell(L("You must worship a god to use this prayer."));
 			return false;
 		}
-		final Deity target=CMLib.map().getDeity(mob.getWorshipCharID());
+		final Deity target=mob.charStats().getMyDeity();
 		final Room newRoom=target.location();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
