@@ -89,50 +89,50 @@ public class Prayer extends StdAbility
 
 	protected String prayWord(final MOB mob)
 	{
-		if(mob.charStats().getWorshipCharID().length()>0)
-			return "pray(s) to "+mob.charStats().getWorshipCharID();
+		if(mob.charStats().deityName().length()>0)
+			return "pray(s) to "+mob.charStats().deityName();
 		return "pray(s)";
 	}
 
 	protected String prayForWord(final MOB mob)
 	{
-		if(mob.charStats().getWorshipCharID().length()>0)
-			return "pray(s) for "+mob.charStats().getWorshipCharID();
+		if(mob.charStats().deityName().length()>0)
+			return "pray(s) for "+mob.charStats().deityName();
 		return "pray(s)";
 	}
 
 	protected String inTheNameOf(final MOB mob)
 	{
-		if(mob.charStats().getWorshipCharID().length()>0)
-			return " in the name of "+mob.charStats().getWorshipCharID();
+		if(mob.charStats().deityName().length()>0)
+			return " in the name of "+mob.charStats().deityName();
 		return "";
 	}
 
 	protected String againstTheGods(final MOB mob)
 	{
-		if(mob.charStats().getWorshipCharID().length()>0)
-			return " against "+mob.charStats().getWorshipCharID();
+		if(mob.charStats().deityName().length()>0)
+			return " against "+mob.charStats().deityName();
 		return " against the gods";
 	}
 
 	protected String hisHerDiety(final MOB mob)
 	{
-		if(mob.charStats().getWorshipCharID().length()>0)
-			return mob.charStats().getWorshipCharID();
+		if(mob.charStats().deityName().length()>0)
+			return mob.charStats().deityName();
 		return "<S-HIS-HER> god";
 	}
 
 	protected String ofDiety(final MOB mob)
 	{
-		if(mob.charStats().getWorshipCharID().length()>0)
-			return " of "+mob.charStats().getWorshipCharID();
+		if(mob.charStats().deityName().length()>0)
+			return " of "+mob.charStats().deityName();
 		return "";
 	}
 
 	protected String prayingWord(final MOB mob)
 	{
-		if(mob.charStats().getWorshipCharID().length()>0)
-			return "praying to "+mob.charStats().getWorshipCharID();
+		if(mob.charStats().deityName().length()>0)
+			return "praying to "+mob.charStats().deityName();
 		return "praying";
 	}
 

@@ -451,6 +451,8 @@ public interface CharStats extends CMCommon, Modifiable
 	 * has particular importance.
 	 * @see MOB#setWorshipCharID(String)
 	 * @see MOB#getMyDeity()
+	 * @see MOB#setDeityName(String)
+	 * @see MOB#deityName()
 	 * @return the name of the Deity mob that this player/mob worships.
 	 */
 	public String getWorshipCharID();
@@ -463,6 +465,7 @@ public interface CharStats extends CMCommon, Modifiable
 	 * has particular importance.
 	 * @see MOB#setWorshipCharID(String)
 	 * @see MOB#getMyDeity()
+	 * @see MOB#deityName()
 	 * @param newVal the name of the Deity mob that this player/mob worships.
 	 */
 	public void setWorshipCharID(String newVal);
@@ -472,9 +475,23 @@ public interface CharStats extends CMCommon, Modifiable
 	 * A null return means they are an atheist.  Very important for Clerics.
 	 * @see MOB#getWorshipCharID()
 	 * @see MOB#setWorshipCharID(String)
+	 * @see MOB#deityName()
 	 * @return the Deity object of the mob that this player/mob worships
 	 */
 	public Deity getMyDeity();
+
+	/**
+	 * Returns the displayable name of this mobs current deity.  If this method
+	 * is called on the mobs charStats() object, as opposed to baseCharStats(), it
+	 * may return something different than charStats().getMyDeity().name().  For this
+	 * reason, you should ONLY use this method when you want to display the mobs
+	 * current deity.
+	 * @see MOB#getWorshipCharID()
+	 * @see MOB#setWorshipCharID(String)
+	 * @see MOB#getMyDeity()
+	 * @return the name of this mobs current deity, or empty string.
+	 */
+	public String deityName();
 
 	/**
 	 * Returns the term seen when a character arrives into a room
@@ -525,6 +542,15 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @param newRaceName the name of the mobs apparent race
 	 */
 	public void setRaceName(String newRaceName);
+
+	/**
+	 * Changes the apparent deity of ths mob by setting a new name.  A value of null will
+	 * reset this setting, allowing the mobs TRUE deity to be displayed through the
+	 * deityName method instead of the string set through this one.
+	 * @see #deityName()
+	 * @param newDeityName the name of the mobs apparent deity
+	 */
+	public void setDeityName(String newDeityName);
 
 	/**
 	 * Changes the terms seen when a character arrives into a room

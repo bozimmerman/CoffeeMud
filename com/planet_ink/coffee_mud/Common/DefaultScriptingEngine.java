@@ -7960,8 +7960,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&(E instanceof MOB))
 				{
-					final String sex=((MOB)E).charStats().getWorshipCharID();
-					results.append(sex);
+					final String name=((MOB)E).charStats().getWorshipCharID();
+					results.append(name);
 				}
 				break;
 			}

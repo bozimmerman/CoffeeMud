@@ -169,8 +169,8 @@ public class Score extends Affect
 			else
 				msg.append(L(" who serves ^H@x1^?",mob.getLiegeID()));
 		}
-		if(mob.charStats().getWorshipCharID().length()>0)
-			msg.append(L(" worshipping ^H@x1^?",mob.charStats().getWorshipCharID()));
+		if(mob.charStats().deityName().length()>0)
+			msg.append(L(" worshipping ^H@x1^?",mob.charStats().deityName()));
 		msg.append(".\n\r");
 		if(mob.clans().iterator().hasNext())
 		{

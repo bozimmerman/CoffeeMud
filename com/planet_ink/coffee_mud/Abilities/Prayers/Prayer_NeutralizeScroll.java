@@ -15,11 +15,10 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import java.io.IOException;
 import java.util.*;
 
 /*
-   Copyright 2014-2020 Bo Zimmerman
+   Copyright 2004-2020 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_SenseFaithful extends Prayer
+public class Prayer_NeutralizeScroll extends Prayer
 {
 	@Override
 	public String ID()
 	{
-		return "Prayer_SenseFaithful";
+		return "Prayer_NeutralizeScroll";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Sense Faithful");
+	private final static String localizedName = CMLib.lang().L("Neutralize Scroll");
 
 	@Override
 	public String name()
@@ -52,19 +51,19 @@ public class Prayer_SenseFaithful extends Prayer
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;
-	}
-
-	@Override
-	public int abstractQuality()
-	{
-		return Ability.QUALITY_INDIFFERENT;
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;
 	}
 
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_HOLY;
+		return Ability.FLAG_NEUTRAL;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
 	}
 
 	@Override
@@ -76,15 +75,30 @@ public class Prayer_SenseFaithful extends Prayer
 	@Override
 	protected int canTargetCode()
 	{
-		return 0;
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	public int castingQuality(final MOB mob, final Physical target)
+	{
+		return Ability.QUALITY_INDIFFERENT;
 	}
 
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		if((mob.charStats().getWorshipCharID()==null)||(mob.charStats().getWorshipCharID().length()==0))
+		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell(L("You don't worship a deity, so this magic means nothing."));
+			mob.tell(L("Neutralize what?."));
+			return false;
+		}
+		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
+		if(target==null)
+			return false;
+
+		if(!(target instanceof Scroll)&&(!target.isReadable()))
+		{
+			mob.tell(L("You can't neutralize that."));
 			return false;
 		}
 
@@ -92,41 +106,20 @@ public class Prayer_SenseFaithful extends Prayer
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-		if(success)
+		if((target!=null)&&(success))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),L("^S<S-NAME> @x1 for knowledge of the faithful^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) neutralized."):L("^S<S-NAME> @x1, sweeping <S-HIS-HER> hands over <T-NAMESELF>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final String deityName=mob.charStats().getWorshipCharID();
-				final Command C=CMClass.getCommand("Who");
-				if(C!=null)
-				{
-					try
-					{
-						if(mob.session()!=null)
-						{
-							mob.session().print(
-								C.executeInternal(mob, 0, Boolean.FALSE, new Filterer<MOB>()
-								{
-									@Override
-									public boolean passesFilter(final MOB obj)
-									{
-										return (obj!=null) && (obj.charStats().deityName().equals(deityName));
-									}
-
-								}, "Faithful"
-							).toString());
-						}
-					}
-					catch (final IOException e)
-					{
-					}
-				}
+				if(target instanceof Scroll)
+					((Scroll)target).setSpellList("");
+				else
+					target.setReadableText("");
 			}
+			else
+				beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, but @x1 does not heed.",hisHerDiety(mob)));
 		}
-		else
-			beneficialWordsFizzle(mob,null,auto?"":L("<S-NAME> @x1 for knowledge of the faithful, but nothing happens.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

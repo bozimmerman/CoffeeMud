@@ -33,15 +33,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_MaskFaith extends ThiefSkill
+public class Thief_FalseFaith extends ThiefSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Thief_MaskFaith";
+		return "Thief_FalseFaith";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Mask Faith");
+	private final static String localizedName = CMLib.lang().L("False Faith");
 
 	@Override
 	public String name()
@@ -49,12 +49,21 @@ public class Thief_MaskFaith extends ThiefSkill
 		return localizedName;
 	}
 
-	private final static String localizedDisplay = CMLib.lang().L("(Masked Faith)");
+	private final static String localizedStaticDisplay1 = CMLib.lang().L("(False Atheism)");
+	private final static String localizedStaticDisplay2 = "(False @x1-ism)";
 
 	@Override
 	public String displayText()
 	{
-		return localizedDisplay;
+		if(text().length()>0)
+		{
+			if(text().equals("NONE"))
+				return localizedStaticDisplay1;
+			else
+				return L(localizedStaticDisplay2,text());
+		}
+		else
+			return "";
 	}
 
 	@Override
@@ -76,7 +85,7 @@ public class Thief_MaskFaith extends ThiefSkill
 		return Ability.QUALITY_OK_SELF;
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"MASKFAITH","MFAITH"});
+	private static final String[] triggerStrings =I(new String[] {"FALSEFAITH","FFAITH"});
 	@Override
 	public String[] triggerStrings()
 	{
@@ -96,9 +105,9 @@ public class Thief_MaskFaith extends ThiefSkill
 		if(text().length()>0)
 		{
 			if(text().equals("NONE"))
-				affectableStats.setDeityName("");
+				affectableStats.setWorshipCharID("");
 			else
-				affectableStats.setDeityName(text());
+				affectableStats.setWorshipCharID(text());
 		}
 	}
 
@@ -106,14 +115,13 @@ public class Thief_MaskFaith extends ThiefSkill
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;
-		String deityName = CMParms.combine(commands,0);
-		/*
 		if(commands.size()==0)
 		{
-			mob.tell(L("You must specify either a deity to mask yourself in, STOP to remove your mask, or NONE to mask as an atheist."));
+			mob.tell(L("You must specify either a deity to falsely believef in, STOP to remove your falsity, or NONE to pretend to be an atheist."));
 			return false;
 		}
 
+		String deityName = CMParms.combine(commands,0);
 		final Deity deityToConvertToM=CMLib.map().getDeity(deityName);
 		if(deityToConvertToM==null)
 		{
@@ -130,35 +138,21 @@ public class Thief_MaskFaith extends ThiefSkill
 		}
 		else
 			deityName=deityToConvertToM.Name();
-		*/
-		if(deityName.equalsIgnoreCase("stop"))
-			deityName="";
-		else
-			deityName="Some god or goddess";
-
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			Ability mA=target.fetchEffect(ID());
-			final boolean unmask=
-				((mA!=null)
-				&&(deityName.equalsIgnoreCase(target.baseCharStats().getWorshipCharID())
-						||((deityName.equals("NONE"))&&(target.baseCharStats().getWorshipCharID().length()==0))
-						||(deityName.length()==0)));
-
-			final String mmsg;
-			if(unmask)
-				mmsg = L("<S-NAME> unmasks(s) <S-YOUPOSS> religeous beliefs.");
-			else
-				mmsg = L("<S-NAME> masks(s) <S-YOUPOSS> religeous beliefs.");
-			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),mmsg);
+			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),L("<S-NAME> turn(s) <S-YOUPOSS> beliefs on their head."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(unmask)
+				Ability mA=target.fetchEffect(ID());
+				if((mA!=null)
+					&&(deityName.equalsIgnoreCase(target.baseCharStats().getWorshipCharID())
+						||((deityName.equals("NONE"))&&(target.baseCharStats().getWorshipCharID().length()==0))
+						||(deityName.length()==0)))
 				{
 					mA.unInvoke();
 					target.delEffect(mA);

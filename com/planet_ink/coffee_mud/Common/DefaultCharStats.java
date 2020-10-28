@@ -82,6 +82,7 @@ public class DefaultCharStats implements CharStats
 	protected String		displayClassName	= null;
 	protected String		displayClassLevel	= null;
 	protected String		worshipCharID		= "";
+	protected String		deityName			= null;
 	protected short[]		bodyAlterations		= null;
 	protected long			unwearableBitmap	= 0;
 	protected int[]			breathables			= null;
@@ -127,6 +128,7 @@ public class DefaultCharStats implements CharStats
 		myLevels = null;
 		//myRace; // never null
 		raceName = null;
+		deityName = null;
 		genderName = null;
 		displayClassName = null;
 		displayClassLevel = null;
@@ -176,6 +178,7 @@ public class DefaultCharStats implements CharStats
 			if(myRace!=null)
 				((DefaultCharStats)intoStats).myRace=myRace;
 			((DefaultCharStats)intoStats).raceName=raceName;
+			((DefaultCharStats)intoStats).deityName=deityName;
 			((DefaultCharStats)intoStats).genderName=genderName;
 			((DefaultCharStats)intoStats).displayClassName=displayClassName;
 			((DefaultCharStats)intoStats).displayClassLevel=displayClassLevel;
@@ -205,7 +208,7 @@ public class DefaultCharStats implements CharStats
 			intoStats.setMyLevels(getMyLevelsStr());
 			intoStats.setMyRace(getMyRace());
 			intoStats.setRaceName(raceName);
-			intoStats.setRaceName(raceName);
+			intoStats.setDeityName(deityName);
 			intoStats.setGenderName(genderName);
 			intoStats.setArriveLeaveStr(arriveStr,leaveStr);
 			intoStats.setDisplayClassName(displayClassName);
@@ -319,6 +322,20 @@ public class DefaultCharStats implements CharStats
 	public void setWorshipCharID(final String newVal)
 	{
 		worshipCharID = (newVal == null)?"":newVal;
+	}
+
+	@Override
+	public void setDeityName(final String newDeityName)
+	{
+		deityName=newDeityName;
+	}
+
+	@Override
+	public String deityName()
+	{
+		if(deityName!=null)
+			return deityName;
+		return getWorshipCharID();
 	}
 
 	@Override

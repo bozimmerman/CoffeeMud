@@ -112,9 +112,12 @@ public class Reliquist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"ThievesCant",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_ReadPrayer",0,true);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_Hide",false);
 		//Q=Qualify G=GAIN A=Gain if alignment is the same as the prayer
-		//2	Repurpose Scroll (Q), Hide (Q), Mask Faith (G)
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_Hide",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_MaskFaith",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_NeutralizeScroll",false);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_RelicUse",true);
 		//3	Relics (G), Graverobbing (Q)
 		//4	Sneak (Q), Prayer_ClarifyScroll (G), Mark (G), Prayer_DepleteScroll (A), Prayer_EmpowerScroll (A), Prayer_AttuneScroll (A)
 		//5	Carpentry(G), Revoke (Q), Detect traps (Q), Whiplash (Q)
