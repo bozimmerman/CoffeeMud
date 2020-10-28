@@ -231,12 +231,21 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	{
 		if(ps.containsKey(parm))
 		{
-			final String senStr=ps.get(parm).toUpperCase();
+			String senStr=ps.get(parm).toUpperCase();
 			if((senStr.startsWith("+")||senStr.startsWith("-"))
 			&&(CMath.isNumber(senStr.substring(1))))
 				addIfPlussed(ps,parameters[0],parm,parmCode,addTo,errors);
 			else
 			{
+				int multiply=1;
+				if(senStr.startsWith("+"))
+					senStr=senStr.substring(1);
+				else
+				if(senStr.startsWith("-"))
+				{
+					multiply=-1;
+					senStr=senStr.substring(1);
+				}
 				boolean found=false;
 				for(int chc=0;chc<parmCodeStr.length;chc++)
 				{
@@ -244,7 +253,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 					{
 						found=true;
 						addTo.add(Integer.valueOf(parmCode));
-						addTo.add(Integer.valueOf(chc));
+						addTo.add(Integer.valueOf(multiply*chc));
 						break;
 					}
 				}
@@ -430,8 +439,15 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 					phyStats.setDamage((int)Math.round(CMath.mul(phyStats.damage(), CMath.div(((Integer) changes[c + 1]).intValue(),100))));
 					break;
 				case PhyStats.STAT_DISPOSITION:
-					phyStats.setDisposition(phyStats.disposition() | ((Integer) changes[c + 1]).intValue());
+				{
+					final int val=((Integer) changes[c + 1]).intValue();
+					if(val > 0)
+						phyStats.setDisposition(phyStats.disposition() | val);
+					else
+					if(val < 0)
+						phyStats.setDisposition(phyStats.disposition() & ~(-val));
 					break;
+				}
 				case PhyStats.STAT_LEVEL:
 				{
 					phyStats.setLevel(phyStats.level() + ((Integer) changes[c + 1]).intValue());
@@ -443,7 +459,14 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 					phyStats.setRejuv(phyStats.rejuv() + ((Integer) changes[c + 1]).intValue());
 					break;
 				case PhyStats.STAT_SENSES:
-					phyStats.setSensesMask(phyStats.sensesMask() | ((Integer) changes[c + 1]).intValue());
+					{
+						final int val=((Integer) changes[c + 1]).intValue();
+						if(val > 0)
+							phyStats.setSensesMask(phyStats.sensesMask() | val);
+						else
+						if(val < 0)
+							phyStats.setSensesMask(phyStats.sensesMask() & ~(-val));
+					}
 					break;
 				case PhyStats.STAT_WEIGHT:
 					phyStats.setWeight((int)Math.round(CMath.mul(phyStats.weight(), CMath.div(((Integer) changes[c + 1]).intValue(),100))));
@@ -476,7 +499,14 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 					phyStats.setDamage(phyStats.damage() + ((Integer) changes[c + 1]).intValue());
 					break;
 				case PhyStats.STAT_DISPOSITION:
-					phyStats.setDisposition(phyStats.disposition() | ((Integer) changes[c + 1]).intValue());
+					{
+						final int val=((Integer) changes[c + 1]).intValue();
+						if(val > 0)
+							phyStats.setDisposition(phyStats.disposition() | val);
+						else
+						if(val < 0)
+							phyStats.setDisposition(phyStats.disposition() & ~(-val));
+					}
 					break;
 				case PhyStats.STAT_LEVEL:
 				{
@@ -489,7 +519,14 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 					phyStats.setRejuv(phyStats.rejuv() + ((Integer) changes[c + 1]).intValue());
 					break;
 				case PhyStats.STAT_SENSES:
-					phyStats.setSensesMask(phyStats.sensesMask() | ((Integer) changes[c + 1]).intValue());
+					{
+						final int val=((Integer) changes[c + 1]).intValue();
+						if(val > 0)
+							phyStats.setSensesMask(phyStats.sensesMask() | val);
+						else
+						if(val < 0)
+							phyStats.setSensesMask(phyStats.sensesMask() & ~(-val));
+					}
 					break;
 				case PhyStats.STAT_WEIGHT:
 					phyStats.setWeight(phyStats.weight() + ((Integer) changes[c + 1]).intValue());
