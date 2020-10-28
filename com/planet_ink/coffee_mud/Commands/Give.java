@@ -114,16 +114,6 @@ public class Give extends StdCommand
 			}
 			if(((Coins)giveThis).getNumberOfCoins()<CMLib.english().parseNumPossibleGold(mob,thingToGive))
 				return false;
-			final String currency=((Coins)giveThis).getCurrency();
-			final MoneyLibrary.MoneyDefinition def = CMLib.beanCounter().getCurrencySet(currency);
-			if((def != null)&&(!def.canTrade())&&(!CMSecurity.isAllowed(mob, mob.location(), SecFlag.CMDITEMS)))
-			{
-				if(!allFlag)
-				{
-					mob.tell(L("You can not trade @x1.",giveThis.name(mob)));
-					return false;
-				}
-			}
 			if(CMLib.flags().canBeSeenBy(giveThis,mob))
 				itemsV.add(giveThis);
 		}

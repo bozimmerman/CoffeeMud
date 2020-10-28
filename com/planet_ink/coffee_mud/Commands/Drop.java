@@ -152,17 +152,6 @@ public class Drop extends StdCommand
 		{
 			if(((Coins)dropThis).getNumberOfCoins()<CMLib.english().parseNumPossibleGold(mob,whatToDrop+addendumStr))
 				return false;
-			final String currency=((Coins)dropThis).getCurrency();
-			final MoneyLibrary.MoneyDefinition def = CMLib.beanCounter().getCurrencySet(currency);
-			if((def != null)&&(!def.canTrade())&&(!CMSecurity.isAllowed(mob, mob.location(), SecFlag.CMDITEMS)))
-			{
-				if(!allFlag)
-				{
-					mob.tell(L("You can not drop @x1.",dropThis.name(mob)));
-					return false;
-				}
-			}
-			else
 			if(CMLib.flags().canBeSeenBy(dropThis,mob))
 				items.add(dropThis);
 		}

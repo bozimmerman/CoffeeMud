@@ -45,8 +45,9 @@ public class StdCoins extends StdItem implements Coins
 	{
 		return phyStats().ability();
 	}
-	double denomination=1.0;
-	String currency="";
+	
+	protected double denomination=1.0;
+	protected String currency="";
 
 	public StdCoins()
 	{
@@ -162,6 +163,52 @@ public class StdCoins extends StdItem implements Coins
 			setDenomination(1.0);
 			setCurrency("");
 		}
+	}
+
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost, msg))
+			return false;
+		if((msg.targetMinor()==CMMsg.TYP_DROP)
+		&&((msg.target()==this)
+			||((container()!=null)
+				&&(msg.target() instanceof Container)
+				&&((msg.target()==container())||(msg.target()==this.ultimateContainer(container()))))))
+		{
+			MoneyLibrary.MoneyDefinition def=CMLib.beanCounter().getCurrencySet(currency);
+			if(((def != null) && (!def.canTrade()))
+			&&(!CMSecurity.isAllowed(msg.source(), msg.source().location(), CMSecurity.SecFlag.CMDPLAYERS)))
+			{
+				msg.source().tell(L("You can't seem to let go of @x1.",name()));
+				return false;
+			}
+		}
+		else
+		if((msg.targetMinor()==CMMsg.TYP_PUT)
+		&&(msg.tool()==this))
+		{
+			MoneyLibrary.MoneyDefinition def=CMLib.beanCounter().getCurrencySet(currency);
+			if(((def != null) && (!def.canTrade()))
+			&&(!CMSecurity.isAllowed(msg.source(), msg.source().location(), CMSecurity.SecFlag.CMDPLAYERS)))
+			{
+				msg.source().tell(L("You can't seem to do that with @x1.",name()));
+				return false;
+			}
+		}
+		else
+		if((msg.targetMinor()==CMMsg.TYP_DEPOSIT)
+		&&(msg.tool()==this))
+		{
+			MoneyLibrary.MoneyDefinition def=CMLib.beanCounter().getCurrencySet(currency);
+			if(((def != null) && (!def.canTrade()))
+			&&(!CMSecurity.isAllowed(msg.source(), msg.source().location(), CMSecurity.SecFlag.CMDPLAYERS)))
+			{
+				msg.source().tell(L("You can't seem to do that with @x1.",name()));
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
