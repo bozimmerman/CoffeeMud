@@ -278,12 +278,17 @@ public class WandArchon extends StdWand implements ArchonOnly
 							else
 							{
 								final Ability A=CMClass.getAbility(map.abilityID());
-								A.setSavable(true);
-								A.setProficiency(100);
-								A.setMiscText(map.defaultParm());
-								target.addAbility(A);
-								A.autoInvocation(target, false);
-								didSomething = true;
+								if(A!=null)
+								{
+									A.setSavable(true);
+									A.setProficiency(100);
+									A.setMiscText(map.defaultParm());
+									target.addAbility(A);
+									A.autoInvocation(target, false);
+									didSomething = true;
+								}
+								else
+									mob.tell("Unknown ability: "+map.abilityID());
 							}
 						}
 						if(didSomething)

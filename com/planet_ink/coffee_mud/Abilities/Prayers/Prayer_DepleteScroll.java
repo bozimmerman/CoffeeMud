@@ -149,7 +149,9 @@ public class Prayer_DepleteScroll extends Prayer
 							{
 								if(((Scroll)target).usesRemaining()>0)
 									((Scroll)target).setUsesRemaining(((Scroll)target).usesRemaining()-1);
-								mob.executeMsg(mob, CMClass.getMsg(M,null,A,CMMsg.TYP_CAST_SPELL,L("You feel @x1 release <O-NAME>",target.Name()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+								M.addAbility((Ability)A.copyOf());
+								final CMMsg cmsg=CMClass.getMsg(M,null,A,CMMsg.TYP_CAST_SPELL,L("You feel @x1 release <O-NAME>",target.Name()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+								R.send(mob, cmsg);
 							}
 						}
 						finally

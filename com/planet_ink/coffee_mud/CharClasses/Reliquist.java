@@ -105,7 +105,7 @@ public class Reliquist extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Polearm",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Staff",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Flailed",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_FlailedWeapon",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Hammer",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
@@ -135,13 +135,13 @@ public class Reliquist extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Thief_Pick",0,false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Bash",0,false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_StorePrayer",false); // special A
-		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_Tongues",false); // special A
-		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_Fluency",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_StorePrayer",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_Tongues",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_Fluency",false); // special A
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Prayercraft",0,true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_SenseDevotion",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_UnearthClues",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_SenseDevotion",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_UnearthClues",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Fighter_HammerRing",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_DecipherScript",false);
@@ -163,7 +163,7 @@ public class Reliquist extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"ScrollScribing",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"StaffMaking",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_SowDiscord",true);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_SowDiscord",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_RevealText",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_Map",false);
@@ -184,11 +184,11 @@ public class Reliquist extends Thief
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_SenseParish",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Attack2",0,false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_DisguiseFaith",0,true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_Digsite",0,false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_FalseFaith",0,true);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_Digsite",0,false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_FalseService",0,true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_Suppression",0,false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_FalseService",0,true);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_Suppression",0,false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Detection",0,false);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_EmpHolyWeapon",false); // special A
@@ -196,10 +196,10 @@ public class Reliquist extends Thief
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_EmpSacredWeapon",false); // special A
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_ReflectPrayer",false); // special A
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_HeroicSave",0,false); // heroic leap in the doc
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_HeroicSave",0,false); // heroic leap in the doc
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_ImbueShield",false); // special A
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_DefileShield",false); // special A
-		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_SinMark",0,true);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_SinMark",0,true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Alchemy",0,true);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_SeekersPrayer",false); // special A
@@ -209,16 +209,16 @@ public class Reliquist extends Thief
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_EmpModestWeapon",false); // special A
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_EmpFoulWeapon",false); // special A
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Fighter_AutoHammerRing",0,false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Fighter_AutoHammerRing",0,false);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_GreaterWardGlph",false);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_FindSacredItem",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Skill_BefoulShrine",0,false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Skill_BefoulShrine",0,false);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_EmpHolyArmor",false); // special A
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_EmpUnholyArmor",false); // special A
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_EmpSacredArmor",false); // special A
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_DivineFeud",0,true);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_DivineFeud",0,true);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_ProtectRelic",false);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_Whipstrip",0,false);
 
