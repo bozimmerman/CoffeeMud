@@ -58,7 +58,9 @@ public class Read extends StdCommand
 		if(thisThang instanceof Item)
 		{
 			final Item thisItem=(Item)thisThang;
-			if((CMLib.flags().isGettable(thisItem))&&(!mob.isMine(thisItem)))
+			if((CMLib.flags().isGettable(thisItem))
+			&&(!CMath.bset(thisItem.phyStats().sensesMask(), PhyStats.SENSE_ALWAYSCOMPRESSED))
+			&&(!mob.isMine(thisItem)))
 			{
 				mob.tell(L("You don't seem to be carrying that."));
 				return false;
