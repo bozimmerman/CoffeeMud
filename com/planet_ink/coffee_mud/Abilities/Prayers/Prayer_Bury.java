@@ -96,10 +96,14 @@ public class Prayer_Bury extends Prayer
 			return false;
 		}
 		Item hole=mob.location().findItem("HoleInTheGround");
-		if((hole!=null)&&(!hole.text().equalsIgnoreCase(mob.Name())))
+		if(hole!=null)
 		{
-			mob.tell(L("This prayer will not work on this previously used burial ground."));
-			return false;
+			final Ability A=hole.fetchEffect("Thief_BuriedTreasure");
+			if(A!=null)
+			{
+				mob.tell(L("This prayer will not work on this previously used burial ground."));
+				return false;
+			}
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -113,7 +117,8 @@ public class Prayer_Bury extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(CMLib.flags().isNeutral(mob))
+				if(CMLib.flags().isNeutral(mob)
+				&&(target.fetchEffect(ID())==null))
 				{
 					double exp=5.0;
 					final int levelLimit=CMProps.getIntVar(CMProps.Int.EXPRATE);
@@ -132,9 +137,9 @@ public class Prayer_Bury extends Prayer
 				hole.basePhyStats().setDisposition(hole.basePhyStats().disposition()|PhyStats.IS_HIDDEN);
 				hole.recoverPhyStats();
 				if(!mob.location().isContent(target))
-					mob.location().moveItemTo(hole, Expire.Player_Drop);
-				else
-					target.setContainer((Container)hole);
+					mob.location().moveItemTo(target, Expire.Player_Drop);
+				target.setContainer((Container)hole);
+				target.addNonUninvokableEffect((Ability)this.copyOf());
 				CMLib.flags().setGettable(target,false);
 				mob.location().recoverRoomStats();
 			}
