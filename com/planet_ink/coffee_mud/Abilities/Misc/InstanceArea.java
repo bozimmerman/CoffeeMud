@@ -1399,7 +1399,6 @@ public class InstanceArea extends StdAbility
 						}
 					}
 				}
-
 			}
 			else
 			if((msg.sourceMinor()== CMMsg.TYP_FACTIONCHANGE)
