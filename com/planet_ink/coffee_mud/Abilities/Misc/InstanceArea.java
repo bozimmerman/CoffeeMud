@@ -1729,20 +1729,6 @@ public class InstanceArea extends StdAbility
 					{
 						if(M.phyStats().level()>topLevel)
 							topLevel=M.phyStats().level();
-						if((affected instanceof MOB)
-						&&(M!=affected))
-						{
-							InstanceArea A=(InstanceArea)M.fetchEffect(ID());
-							if(A==null)
-							{
-								A=(InstanceArea)copyOf();
-								A.setMiscText(text());
-								A.startTickDown((MOB)affected, M, this.tickDown<=0?999:this.tickDown);
-							}
-							else
-							if(!A.targetAreas.contains((((Room)msg.target()).getArea())))
-								A.targetAreas.add(((Room)msg.target()).getArea());
-						}
 						if(M.isPlayer())
 						{
 							if(this.pFactionList!=null)
@@ -1807,7 +1793,9 @@ public class InstanceArea extends StdAbility
 						}
 						final List<WeakReference<MOB>> newMobList = new ArrayList<WeakReference<MOB>>(grp.size());
 						for(final MOB mob : grp)
+						{
 							newMobList.add(new WeakReference<MOB>(mob));
+						}
 						final AreaInstanceChild aChild = new AreaInstanceChild(instA, newMobList);
 						childList.add(aChild);
 					}
@@ -1832,6 +1820,24 @@ public class InstanceArea extends StdAbility
 				if((instA instanceof SubArea)
 				&&(CMath.bset(instA.flags(), Area.FLAG_INSTANCE_CHILD)))
 				{
+					for(final MOB M : grp)
+					{
+						if((M!=affected)
+						&&(M!=msg.source()))
+						{
+							final MOB src=(affected instanceof MOB)?(MOB)affected:msg.source();
+							InstanceArea A=(InstanceArea)M.fetchEffect(ID());
+							if(A==null)
+							{
+								A=(InstanceArea)copyOf();
+								A.setMiscText(text());
+								A.startTickDown(src, M, this.tickDown<=0?999:this.tickDown);
+							}
+							else
+							if(!A.targetAreas.contains((((Room)msg.target()).getArea())))
+								A.targetAreas.add(((Room)msg.target()).getArea());
+						}
+					}
 					InstanceArea able = (InstanceArea)instA.fetchEffect(ID());
 					if(able == null)
 					{
