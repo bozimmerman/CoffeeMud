@@ -256,24 +256,32 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		int baseValue=200;
 		final List<Ability> theSpells=new Vector<Ability>();
 		final String names=getSpellList();
-		final List<String> parsedSpells=CMParms.parseSemicolons(names, true);
-		for(String thisOne : parsedSpells)
+		if(names.length()>0)
 		{
-			thisOne=thisOne.trim();
-			String parms="";
-			final int x=thisOne.indexOf('(');
-			if((x>0)&&(thisOne.endsWith(")")))
+			final List<String> parsedSpells=CMParms.parseSemicolons(names, true);
+			if(parsedSpells.size()==0)
+				this.setSpellList("");
+			else
 			{
-				parms=thisOne.substring(x+1,thisOne.length()-1);
-				thisOne=thisOne.substring(0,x).trim();
-			}
-			Ability A=CMClass.getAbility(thisOne);
-			if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON))
-			{
-				A=(Ability)A.copyOf();
-				A.setMiscText(parms);
-				baseValue+=(100*CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
-				theSpells.add(A);
+				for(String thisOne : parsedSpells)
+				{
+					thisOne=thisOne.trim();
+					String parms="";
+					final int x=thisOne.indexOf('(');
+					if((x>0)&&(thisOne.endsWith(")")))
+					{
+						parms=thisOne.substring(x+1,thisOne.length()-1);
+						thisOne=thisOne.substring(0,x).trim();
+					}
+					Ability A=CMClass.getAbility(thisOne);
+					if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON))
+					{
+						A=(Ability)A.copyOf();
+						A.setMiscText(parms);
+						baseValue+=(100*CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
+						theSpells.add(A);
+					}
+				}
 			}
 		}
 		setBaseValue(baseValue);

@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Vector;
 
@@ -15,6 +16,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -115,10 +117,15 @@ public class Reliquist extends Thief
 		//Q=Qualify G=GAIN A=Gain if alignment is the same as the prayer
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_Hide",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_MaskFaith",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_NeutralizeScroll",false);
+		// need a replacement for repurpose scroll
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_RelicUse",true);
-		//3	Relics (G), Graverobbing (Q)
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_Graverobbing",false);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Thief_Sneak",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ClarifyPrayer",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Thief_Mark",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_DepleteScroll",false); // special A
 		//4	Sneak (Q), Prayer_ClarifyScroll (G), Mark (G), Prayer_DepleteScroll (A), Prayer_EmpowerScroll (A), Prayer_AttuneScroll (A)
 		//5	Carpentry(G), Revoke (Q), Detect traps (Q), Whiplash (Q)
 		//6	Pick Locks (Q), Shield Bash (Q), Store Prayer (A), Tongues (A), Fluency (A)
@@ -172,6 +179,19 @@ public class Reliquist extends Thief
 		return outfitChoices;
 	}
 
+	protected int holyQuality(final Ability A)
+	{
+		if(CMath.bset(A.flags(),Ability.FLAG_HOLY))
+		{
+			if(!CMath.bset(A.flags(),Ability.FLAG_UNHOLY))
+				return 1000;
+		}
+		else
+		if(CMath.bset(A.flags(),Ability.FLAG_UNHOLY))
+			return 0;
+		return 500;
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -184,13 +204,49 @@ public class Reliquist extends Thief
 		{
 			if((msg.tool() instanceof Ability)
 			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
-			&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL))
+			&&(!mob.isMonster())
+			&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
+			&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
+			&&(mob.isMine(msg.tool()))
+			&&(isQualifyingAuthority(mob,(Ability)msg.tool())))
 			{
 				if(msg.source().baseCharStats().getMyDeity()==null)
 				{
 					msg.source().tell(L("You lack the true faith to do that."));
 					return false;
 				}
+				final Ability A=(Ability)msg.tool();
+				if(A.appropriateToMyFactions(mob))
+					return true;
+
+				final int hq=holyQuality(A);
+				int basis=0;
+				if(hq==0)
+					basis=CMLib.factions().getAlignPurity(mob.fetchFaction(CMLib.factions().getAlignmentID()),Faction.Align.EVIL);
+				else
+				if(hq==1000)
+					basis=CMLib.factions().getAlignPurity(mob.fetchFaction(CMLib.factions().getAlignmentID()),Faction.Align.GOOD);
+				else
+				{
+					basis=CMLib.factions().getAlignPurity(mob.fetchFaction(CMLib.factions().getAlignmentID()),Faction.Align.NEUTRAL);
+					basis-=10;
+				}
+				if(CMLib.dice().rollPercentage()>basis)
+					return true;
+
+				if(hq==0)
+					mob.tell(L("The evil nature of @x1 disrupts your prayer.",A.name()));
+				else
+				if(hq==1000)
+					mob.tell(L("The goodness of @x1 disrupts your prayer.",A.name()));
+				else
+				if(CMLib.flags().isGood(mob))
+					mob.tell(L("The anti-good nature of @x1 disrupts your thought.",A.name()));
+				else
+				if(CMLib.flags().isEvil(mob))
+					mob.tell(L("The anti-evil nature of @x1 disrupts your thought.",A.name()));
+				return false;
+
 			}
 			if(mob.charStats().getClassLevel(this)>4)
 			{
@@ -274,6 +330,58 @@ public class Reliquist extends Thief
 					enabledA.setMiscText(CMParms.toListString(ables));
 					mob.delAbility(A);
 				}
+			}
+		}
+	}
+
+	@Override
+	public void grantAbilities(final MOB mob, final boolean isBorrowedClass)
+	{
+		super.grantAbilities(mob,isBorrowedClass);
+
+		if(mob.playerStats()==null)
+		{
+			final List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
+												mob.charStats().getClassLevel(ID()),
+												false,
+												false);
+			for(final AbilityMapper.AbilityMapping able : V)
+			{
+				final Ability A=CMClass.getAbility(able.abilityID());
+				if((A!=null)
+				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID()))
+				&&(!CMLib.ableMapper().getAllQualified(ID(),true,A.ID())))
+					giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
+			}
+			return;
+		}
+
+		if(!ID().equals("Reliquist"))
+			return;
+
+		for(int a=0;a<mob.numAbilities();a++)
+		{
+			final Ability A=mob.fetchAbility(a);
+			if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())>0)
+			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+			&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())==mob.baseCharStats().getClassLevel(this))
+			&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
+				return;
+		}
+		// now only give one, for current level, respecting alignment!
+		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
+			if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())>0)
+			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+			&&(A.appropriateToMyFactions(mob))
+			&&(CMLib.ableMapper().getSecretSkill(ID(),true,A.ID())==SecretFlag.PUBLIC)
+			&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())==mob.baseCharStats().getClassLevel(this))
+			&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
+			{
+				giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
+				break; // one is enough
 			}
 		}
 	}

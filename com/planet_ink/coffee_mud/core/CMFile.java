@@ -1859,12 +1859,18 @@ public class CMFile extends File
 				&&(skipDirs != null)
 				&&(skipDirs.contains(element.getVFSPathAndName())))
 					continue;
-				final CMFile[] CF2=getFileList(element.getVFSPathAndName()+"/"+fixedName,user,true,expandDirs,skipDirs);
+				final CMFile[] CF2;
+				if((demandLocal || demandVFS))
+					CF2=getFileList((demandLocal?"//":"::")+element.getVFSPathAndName()+"/"+fixedName,user,true,expandDirs,skipDirs);
+				else
+					CF2=getFileList(element.getVFSPathAndName()+"/"+fixedName,user,true,expandDirs,skipDirs);
 				for (final CMFile element2 : CF2)
 					set.add(element2);
 			}
 			final String name=element.getName().toUpperCase();
-			if(CMStrings.filenameMatcher(name,fixedName))
+			if(CMStrings.filenameMatcher(name,fixedName)
+			&&((!demandLocal)||(element.isLocalFile()))
+			&&((!demandVFS)||(element.isVFSFile())))
 				set.add(element);
 		}
 		if(set.size()==1)
