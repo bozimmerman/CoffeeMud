@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_ReadPrayer extends Prayer
+public class Prayer_ReadPrayer extends Prayer implements Scroll.ScrollUsage
 {
 
 	@Override
@@ -62,6 +62,13 @@ public class Prayer_ReadPrayer extends Prayer
 	{
 		return CAN_ITEMS;
 	}
+
+	@Override
+	public int getReadMagicType()
+	{
+		return Ability.ACODE_PRAYER;
+	}
+
 
 	@Override
 	public long flags()
