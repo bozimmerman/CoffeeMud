@@ -117,43 +117,121 @@ public class Reliquist extends Thief
 		//Q=Qualify G=GAIN A=Gain if alignment is the same as the prayer
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_Hide",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_MaskFaith",true);
-		// need a replacement for repurpose scroll
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_RelicUse",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_Graverobbing",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Thief_Sneak",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ClarifyPrayer",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ClarifyPrayer",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Thief_Mark",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_DepleteScroll",false); // special A
-		//4	Sneak (Q), Prayer_ClarifyScroll (G), Mark (G), Prayer_DepleteScroll (A), Prayer_EmpowerScroll (A), Prayer_AttuneScroll (A)
-		//5	Carpentry(G), Revoke (Q), Detect traps (Q), Whiplash (Q)
-		//6	Pick Locks (Q), Shield Bash (Q), Store Prayer (A), Tongues (A), Fluency (A)
-		//7	Prayercraft (G), Prayer_SenseDevotion(Q), Unearth Clues (Q)
-		//8	Hammerring(Q), Decipher Script (Q), Sense Magic (G), Empower Shield (G)
-		//9	Borrow Boon (G), Remove Traps (Q), Read Languages (G)
-		//10	Cure Light Wounds (A), Recharge Relic (A), Cause Light Wounds (A)
-		//11	Trip (G),  Lore(Q), Lesser Warding Glyph (Q), Deflect Prayer (Q)
-		//12	ScrollScribe(Q), Staff Making (Q), Sow Discord (G)
-		//13	RevealText(Q), Skill_Map (Q), Deplete Relic (A), Empower Relic (A), Attune Relic(A)
-		//14	TransferBane(A), Prayer_DivineTransferrence (A), TransferBoon(A)
-		//15	Enchant Relic(Q), Power Grab (Q), Research Item (G), Whipsmack (Q)
-		//16	Improved Warding Glyph (Q), Prayer_SenseParish(Q)
-		//17	Second Attack (Q), Disguise Faith (G), Create Digsite (Q)
-		//18	Skill_FalseService (G), Suppression (Q)
-		//19	Detection(Q), Empower Holy Weapon (Q), Empower Unholy Weapon (Q), Empower Sacred Weapon (Q), Reflect Prayer (Q)
-		//20	Heroic Leap(Q), Sin Mark(G), Imbue Shield (Q), Defile Shield (Q)
-		//21	Alchemy(G), Prayer_Seekersprayer(A), Share Boon (A), Steal Boon (A), Empower Just Weapon (Q), Empower Modest Weapon (Q), Empower Foul Weapon (Q)
-		//22	AutoHammerring (Q), Greater Warding Glyph (Q), Find Sacred Item (Q)
-		//23	Skill_BefoulShrine(Q), Empower Holy Armor (Q), Empower Unholy Armor (Q), Empower Sacred Armor (Q)
-		//24	Divine Feud(G), Prayer_ProtectRelic(Q), Whipstrip (Q)
-		//25	Imbue Unholy Weapon (Q), Imbue Sacred Weapon (Q), Imbue Holy Weapon (Q), Imbue Just Weapon (Q), Imbue Modest Weapon (Q), Imbue Foul Weapon (Q)
-		//26
-		//27
-		//28
-		//29
-		//30	Divine Quest (G)
-		//35	Divine Pilgrimage (Q)
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_EmpowerScroll",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_AttuneScroll",false); // special A
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Carpentry",0,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_Revoke",0,false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_DetectTraps",0,false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_Whiplash",0,false);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Thief_Pick",0,false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Bash",0,false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_StorePrayer",false); // special A
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_Tongues",false); // special A
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_Fluency",false); // special A
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Prayercraft",0,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_SenseDevotion",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_UnearthClues",false);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Fighter_HammerRing",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_DecipherScript",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_SenseMagic",true);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_EmpowerShield",true);
+
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Thief_BorrowBoon",true); // i don't like this being a skill
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Thief_RemoveTraps",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_ReadLangs",true);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_CureLight",false); // special A
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_RechargeRelic",false); // special A
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_CauseLight",false); // special A
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_Trip",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Thief_Lore",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_LessWardGlph",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_DeflectPrayer",false);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"ScrollScribing",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"StaffMaking",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_SowDiscord",true);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_RevealText",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_Map",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_DepleteRelic",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_EmpowerRelic",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_AttuneRelic",false); // special A
+
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_TransferBane",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_DivineTransfer",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_TransferBoon",false); // special A
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_EnchantRelic",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_PowerGrab",0,false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_ResearchItem",0,true);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Whipsmack",0,false);
+
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_ImpWardGlph",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_SenseParish",false);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Attack2",0,false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_DisguiseFaith",0,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_Digsite",0,false);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_FalseService",0,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_Suppression",0,false);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Detection",0,false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_EmpHolyWeapon",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_EmpUnholyWeapon",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_EmpSacredWeapon",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_ReflectPrayer",false); // special A
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_HeroicSave",0,false); // heroic leap in the doc
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_ImbueShield",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_DefileShield",false); // special A
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_SinMark",0,true);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Alchemy",0,true);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_SeekersPrayer",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_ShareBoon",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_StealBoon",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_EmpJustWeapon",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_EmpModestWeapon",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_EmpFoulWeapon",false); // special A
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Fighter_AutoHammerRing",0,false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_GreaterWardGlph",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_FindSacredItem",false);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Skill_BefoulShrine",0,false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_EmpHolyArmor",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_EmpUnholyArmor",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_EmpSacredArmor",false); // special A
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_DivineFeud",0,true);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_ProtectRelic",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_Whipstrip",0,false);
+
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueHolyWeapon",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueUnholyWeapon",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueSacredWeapon",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueJustWeapon",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueModestWeapon",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueFoulWeapon",false); // special A
+
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_DivineQuest",true);
+
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Prayer_DivinePilgrimage",false);
 	}
 
 	@Override
