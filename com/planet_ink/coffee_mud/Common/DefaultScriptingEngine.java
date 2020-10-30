@@ -11065,12 +11065,34 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final Physical newContainer=getArgumentItem(tt[2],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 						if(newContainer!=null)
 						{
-							if((newTarget instanceof Item)
-							&&(newContainer instanceof Container))
-								((Item)newTarget).setContainer((Container)newContainer);
-							if((newTarget instanceof Rider)
-							&&(newContainer instanceof Rideable))
-								((Rider)newTarget).setRiding((Rideable)newContainer);
+							if(newTarget instanceof Item)
+							{
+								if(newContainer instanceof Container)
+								{
+									if(((Container) newContainer).owner() != ((Item)newTarget).owner())
+									{
+										if(((Container) newContainer).owner() instanceof Room)
+											((Room)((Container) newContainer).owner()).moveItemTo((Item)newTarget);
+										else
+										if(((Container) newContainer).owner() instanceof MOB)
+											((MOB)((Container) newContainer).owner()).moveItemTo((Item)newTarget);
+
+									}
+									((Item)newTarget).setContainer((Container)newContainer);
+								}
+								else
+								if(newContainer instanceof Room)
+									((Room) newContainer).moveItemTo((Item)newTarget);
+								else
+								if(newContainer instanceof MOB)
+									((MOB) newContainer).moveItemTo((Item)newTarget);
+							}
+							else
+							if(newTarget instanceof Rider)
+							{
+								if(newContainer instanceof Rideable)
+									((Rider)newTarget).setRiding((Rideable)newContainer);
+							}
 						}
 					}
 					newTarget.recoverPhyStats();
