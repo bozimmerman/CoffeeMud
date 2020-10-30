@@ -78,6 +78,11 @@ public class Shutdown extends StdCommand implements Tickable
 	{
 		if(mob.isMonster())
 			return false;
+		if(CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+		{
+			mob.tell(L("A shutdown is already in progress."));
+			return false;
+		}
 		boolean noPrompt=false;
 		String externalCommand=null;
 		boolean keepItDown=true;
@@ -160,6 +165,12 @@ public class Shutdown extends StdCommand implements Tickable
 		if((!keepItDown)&&(commands.size()>1))
 			externalCommand=CMParms.combine(commands,1);
 
+		if(this.shuttingDownMob != null)
+		{
+			mob.tell(L("@x1 has already scheduled a shutdown, or one is imminent.  Use SHUTDOWN CANCEL first."));
+			return false;
+		}
+		
 		if(!startCountDown)
 		{
 			if((!noPrompt)
