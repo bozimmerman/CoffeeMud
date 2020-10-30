@@ -716,8 +716,9 @@ public class GenAbility extends StdAbility
 								CMLib.combat().postHealing(mob,finalTargetMOB,me,-dmg,CMMsg.MASK_ALWAYS|((OTH.intValue()<=0)?finalCastCode:OTH.intValue()),null);
 							}
 							if(CMLib.flags().isInTheGame(mob,true)
-							&&(finalTarget != null)
-							&&((!(finalTarget instanceof MOB))||CMLib.flags().isInTheGame((MOB)finalTarget,true)))
+							&&((canTargetCode()==0)
+								||((finalTarget != null)
+								&&((!(finalTarget instanceof MOB))||CMLib.flags().isInTheGame((MOB)finalTarget,true)))))
 							{
 								final ScriptingEngine S=getScripter();
 								if((success[0])&&(S!=null))
