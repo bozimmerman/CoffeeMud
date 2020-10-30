@@ -6522,28 +6522,34 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		mob.tell(L("@x1. Body Parts: @x2.",""+showNumber,parts.toString()));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
-		String newName=mob.session().prompt(L("Enter a body part\n\r:"),"");
-		if(newName.length()>0)
+		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
-			final Integer partNum=Race.BODYPARTHASH.get(newName.toUpperCase().trim());
-			if(partNum==null)
+			String newName=mob.session().prompt(L("Enter a body part\n\r:"),"");
+			if(newName.length()>0)
 			{
-				final StringBuilder str=new StringBuilder(L("That body part is invalid.  Valid parts include: "));
-				for (final String element : Race.BODYPARTSTR)
-					str.append(element+", ");
-				mob.tell(str.toString().substring(0,str.length()-2)+".");
+				final Integer partNum=Race.BODYPARTHASH.get(newName.toUpperCase().trim());
+				if(partNum==null)
+				{
+					final StringBuilder str=new StringBuilder(L("That body part is invalid.  Valid parts include: "));
+					for (final String element : Race.BODYPARTSTR)
+						str.append(element+", ");
+					mob.tell(str.toString().substring(0,str.length()-2)+".");
+				}
+				else
+				{
+					newName=mob.session().prompt(L("Enter new number (@x1), 0=none\n\r:",""+E.bodyMask()[partNum.intValue()]),""+E.bodyMask()[partNum.intValue()]);
+					if(newName.length()>0)
+						E.bodyMask()[partNum.intValue()]=CMath.s_int(newName);
+					else
+						mob.tell(L("(no change)"));
+				}
 			}
 			else
 			{
-				newName=mob.session().prompt(L("Enter new number (@x1), 0=none\n\r:",""+E.bodyMask()[partNum.intValue()]),""+E.bodyMask()[partNum.intValue()]);
-				if(newName.length()>0)
-					E.bodyMask()[partNum.intValue()]=CMath.s_int(newName);
-				else
-					mob.tell(L("(no change)"));
+				mob.tell(L("(no change)"));
+				break;
 			}
 		}
-		else
-			mob.tell(L("(no change)"));
 	}
 
 	protected void genPStats(final MOB mob, final Race R, final int showNumber, final int showFlag)
@@ -7627,7 +7633,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						mob.tell(L("That is neither an existing ability name, nor a valid one to add.  Use ? for a list."));
 					}
 					else
-					if(A.isAutoInvoked())
+					if(A.isAutoInvoked() && (!(A instanceof Language)))
 						mob.tell(L("'@x1' cannot be named, as it is autoinvoked.",A.name()));
 					else
 					if((A.triggerStrings()==null)||(A.triggerStrings().length==0))
