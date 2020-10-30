@@ -105,7 +105,7 @@ public class Thief_Graverobbing extends ThiefSkill
 			target=R;
 		else
 		{
-			target=super.getAnyTarget(mob, mob.location(), true, commands, givenTarget, Wearable.FILTER_UNWORNONLY, true);
+			target=super.getAnyTarget(mob, R, true, commands, givenTarget, Wearable.FILTER_UNWORNONLY, true);
 			if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 			{
 				if(CMLib.english().containsString(R.displayText(), what)
@@ -113,8 +113,15 @@ public class Thief_Graverobbing extends ThiefSkill
 					target=R;
 				else
 				{
-					mob.tell(L("You don't see '@x1' at this place.",what));
-					return false;
+					
+					final Item graveI=R.findItem("HoleInTheGround");
+					if(graveI!=null)
+						target=super.getTarget(mob, R, givenTarget, graveI, commands, Wearable.FILTER_UNWORNONLY, true);
+					if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
+					{
+						mob.tell(L("You don't see '@x1' at this place.",what));
+						return false;
+					}
 				}
 			}
 		}
