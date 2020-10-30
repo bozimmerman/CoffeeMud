@@ -1150,6 +1150,7 @@ public class StdItem implements Item
 		case CMMsg.TYP_DEATH:
 		case CMMsg.TYP_NOISE:
 		case CMMsg.TYP_EMOTE:
+		case CMMsg.TYP_WEATHER:
 		case CMMsg.TYP_SNIFF:
 			return true;
 		case CMMsg.TYP_SIT:

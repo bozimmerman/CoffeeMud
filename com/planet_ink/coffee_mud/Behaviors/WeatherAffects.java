@@ -276,7 +276,7 @@ public class WeatherAffects extends PuddleMaker
 					}
 					if(what!=null)
 					{
-						if(R.show(msg.source(),null,CMMsg.MSG_WEATHER,L("^W<S-NAME> make(s) no progress in the "+what+".^?")))
+						if(R.show(msg.source(),riding,CMMsg.MSG_WEATHER,L("^W<S-NAME> make(s) no progress in the "+what+".^?")))
 						{
 							if(riding instanceof BoardableShip)
 							{
