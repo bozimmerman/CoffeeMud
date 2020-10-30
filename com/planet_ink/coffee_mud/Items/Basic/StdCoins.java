@@ -173,10 +173,7 @@ public class StdCoins extends StdItem implements Coins
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_DROP:
-			if((msg.target()==this)
-			||((container()!=null)
-				&&(msg.target() instanceof Container)
-				&&((msg.target()==container())||(msg.target()==this.ultimateContainer(container())))))
+			if(msg.target()==this)
 			{
 				MoneyLibrary.MoneyDefinition def=CMLib.beanCounter().getCurrencySet(currency);
 				if(((def != null) && (!def.canTrade()))
@@ -188,20 +185,6 @@ public class StdCoins extends StdItem implements Coins
 			}
 			break;
 		case CMMsg.TYP_GIVE:
-			if((msg.tool()==this)
-			||((container()!=null)
-				&&(msg.tool() instanceof Container)
-				&&((msg.tool()==container())||(msg.tool()==this.ultimateContainer(container())))))
-			{
-				MoneyLibrary.MoneyDefinition def=CMLib.beanCounter().getCurrencySet(currency);
-				if(((def != null) && (!def.canTrade()))
-				&&(!CMSecurity.isAllowed(msg.source(), msg.source().location(), CMSecurity.SecFlag.CMDPLAYERS)))
-				{
-					msg.source().tell(L("You can't seem to let go of @x1.",name()));
-					return false;
-				}
-			}
-			break;
 		case CMMsg.TYP_PUT:
 		case CMMsg.TYP_DEPOSIT:
 			if(msg.tool()==this)
