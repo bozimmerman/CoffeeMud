@@ -145,3 +145,4 @@ sacrificial % altar	88	200	150	26750	GenRideable	TABLE	1000
 decorative % bench	89	30	40	1050	GenChair	CHAIR	4	
 reinforced skull helmet	90	75	8	170	GenArmor	HEAD	15	Prop_Doppleganger;ASMATERIAL=IRON MIN=90 MAX=90
 reinforced skull-handled % sword	91	170	22	9126	GenWeapon	SWORD	74	Prop_Doppleganger;ASMATERIAL=IRON MIN=91 MAX=91
+cleaned bones	1	5	1	1	GenResource			

@@ -18,7 +18,7 @@ powdered %	14	15	1	1	GenResource
 % mug	15	20	3	7	GenEmptyDrink		5	1	
 % fireplace	16	60	250	2400	GenRideable		50	0	Burning
 large % flower pot	17	20	40	110	GenEmptyDrink		50	65537	
-% plaque	18	10	10	10	GenItem				
+% plaque	18	10	10	10	GenReadable				
 % paver	18	30	10	50	GenItem				
 % end table	19	60	40	450	GenRideable	TABLE	20	0	
 % eye	20	20	1	4	GenLimb				
@@ -105,3 +105,4 @@ humongous % statue	81	5000	20000	82000000	GenItem	STATUE			Spell_Enlarge
 huge % ice box	85	150	2500	321000	GenContainer	LID	5000	131072	*Prop_IceBox;
 canopy % bed	86	70	800	48000	GenBed	BED	4	0	
 % storage barrel	90	45	80	3200	GenContainer	LID	500	0	
+% tablet	6	20	4	5	GenReadable				
