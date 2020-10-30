@@ -678,9 +678,42 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return ct;
 	}
 
-	public boolean multipleQuals(final List<String> V, final int v, final String startsWith)
+	protected boolean multipleQuals(final List<String> V, final int v, final String startsWith)
 	{
 		return countQuals(V,v,startsWith)>1;
+	}
+
+
+	protected int appendCommaList(final StringBuilder buf, final List<String> V, final int v, final String startChar)
+	{
+		for(int v2=v+1;v2<V.size();v2++)
+		{
+			final String str2=V.get(v2);
+			if(zapCodes.containsKey(str2))
+				return v2-1;
+			if(str2.startsWith(startChar))
+				buf.append(CMath.s_int(str2.substring(1).trim())+", ");
+		}
+		if(buf.toString().endsWith(", "))
+			buf.delete(buf.length()-2, buf.length());
+		buf.append(".  ");
+		return v;
+	}
+
+	protected int appendCommaList(final StringBuilder buf, final List<String> V, final int v)
+	{
+		for(int v2=v+1;v2<V.size();v2++)
+		{
+			final String str2=V.get(v2);
+			if(zapCodes.containsKey(str2))
+				return v2-1;
+			if(str2.startsWith("+")||str2.startsWith("-"))
+				buf.append(CMath.s_int(str2.substring(1).trim())+", ");
+		}
+		if(buf.toString().endsWith(", "))
+			buf.delete(buf.length()-2, buf.length());
+		buf.append(".  ");
+		return v;
 	}
 
 	@Override
@@ -688,7 +721,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	{
 		if(text.trim().length()==0)
 			return L("Anyone");
-		StringBuilder buf=new StringBuilder("");
+		final StringBuilder buf=new StringBuilder("");
 		final Map<String,ZapperKey> zapCodes=getMaskCodes();
 		final List<String> V=CMParms.parse(text.toUpperCase());
 		int val=-1;
@@ -719,7 +752,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -741,7 +774,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -759,7 +792,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -786,7 +819,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -803,7 +836,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						for(final String s : cats)
 							buf.append(s+", ");
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -820,7 +853,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						for(final String s : cats)
 							buf.append(s+", ");
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -834,7 +867,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if(fromHereStartsWith(V,'-',v+1,Faction.Align.NEUTRAL.toString().substring(0,3)))
 							buf.append(L(Faction.Align.NEUTRAL.toString().toLowerCase()+", "));
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -848,7 +881,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if(fromHereStartsWith(V,'+',v+1,Faction.Align.NEUTRAL.toString().substring(0,3)))
 							buf.append(L(Faction.Align.NEUTRAL.toString().toLowerCase()+", "));
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -862,7 +895,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if(fromHereStartsWith(V,'-',v+1,"NEUTER"))
 							buf.append(L("Neuter"));
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -876,7 +909,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if(fromHereStartsWith(V,'+',v+1,"NEUTER"))
 							buf.append(L("Neuter"));
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -901,161 +934,61 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _CLASSTYPE: // -classtype
 					{
 						buf.append(L((skipFirstWord?"The":"Requires")+" the following type"+(multipleQuals(V,v,"+")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("+"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"+");
 					}
 					break;
 				case CLASSTYPE: // +classtype
 					{
 						buf.append(L("Disallows the following type"+(multipleQuals(V,v,"-")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"-");
 					}
 					break;
 				case _TATTOO: // -Tattoos
 					{
 						buf.append(L((skipFirstWord?"The":"Requires")+" the following tattoo"+(multipleQuals(V,v,"+")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("+"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"+");
 					}
 					break;
 				case TATTOO: // +Tattoos
 					{
 						buf.append(L("Disallows the following tattoo"+(multipleQuals(V,v,"-")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"-");
 					}
 					break;
 				case _WEAPONAMMO: // -WeaponAmmo
 					{
 						buf.append(L((skipFirstWord?"The":"Requires")+" weapons that use: "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("+"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"+");
 					}
 					break;
 				case WEAPONAMMO: // +weaponsmmo
 					{
 						buf.append(L("Disallows weapons that use : "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"-");
 					}
 					break;
 				case LOCATION: // +location
 					{
 						buf.append(L((skipFirstWord?"":"Disallows")+" being at places like : "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"-");
 					}
 					break;
 				case _LOCATION: // -location
 					{
 						buf.append(L((skipFirstWord?"":"Requires")+" being at places like : "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("+"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"+");
 					}
 					break;
 				case _MOOD: // -Mood
 					{
 						buf.append(L((skipFirstWord?"The":"Requires")+" the following mood"+(multipleQuals(V,v,"+")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("+"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"+");
 					}
 					break;
 				case MOOD: // +Mood
 					{
 						buf.append(L("Disallows the following mood"+(multipleQuals(V,v,"-")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"-");
 					}
 					break;
 				case _ACCCHIEVE: // -accchieves
@@ -1076,7 +1009,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -1098,40 +1031,20 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
 				case _SECURITY: // -Security
 					{
 						buf.append(L((skipFirstWord?"The":"Requires")+" following security flag"+(multipleQuals(V,v,"+")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("+"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"+");
 					}
 					break;
 				case SECURITY: // +security
 					{
 						buf.append(L("Disallows the following security flag"+(multipleQuals(V,v,"-")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"-");
 					}
 					break;
 				case _EXPERTISE: // -expertises
@@ -1150,7 +1063,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -1170,7 +1083,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -1201,7 +1114,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -1235,7 +1148,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -1269,7 +1182,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -1300,40 +1213,20 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
 				case _CLAN: // -Clan
 					{
 						buf.append(L((skipFirstWord?"M":"Requires m")+"embership in the following clan"+(multipleQuals(V,v,"+")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("+"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"+");
 					}
 					break;
 				case CLAN: // +Clan
 					{
 						buf.append(L("Disallows the following clan"+(multipleQuals(V,v,"-")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"-");
 					}
 					break;
 				case _MATERIAL: // -Material
@@ -1352,7 +1245,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -1372,7 +1265,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -1392,7 +1285,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -1412,7 +1305,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -1432,7 +1325,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -1452,72 +1345,32 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
 				case HOUR: // +HOUR
 					{
 						buf.append(L("Disallowed during the following time"+(multipleQuals(V,v,"-")?"s":"")+" of the day: "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("-"))
-								buf.append(CMath.s_int(str2.substring(1).trim())+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"-");
 					}
 					break;
 				case _HOUR: // -HOUR
 					{
 						buf.append(L((skipFirstWord?"Only ":"Allowed only ")+"during the following time"+(multipleQuals(V,v,"+")?"s":"")+" of the day: "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("+"))
-								buf.append(CMath.s_int(str2.substring(1).trim())+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"+");
 					}
 					break;
 				case PORT: // +PORT
 					{
 						buf.append(L("Disallowed from the following ports: "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("-"))
-								buf.append(CMath.s_int(str2.substring(1).trim())+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"-");
 					}
 					break;
 				case _PORT: // -PORT
 					{
 						buf.append(L((skipFirstWord?"Only ":"Allowed only ")+"from the following ports: "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("+"))
-								buf.append(CMath.s_int(str2.substring(1).trim())+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"+");
 					}
 					break;
 				case SEASON: // +season
@@ -1545,7 +1398,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -1574,7 +1427,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -1603,7 +1456,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -1632,75 +1485,82 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
 				case MONTH: // +month
 					{
 						buf.append(L("Disallowed during the following month"+(multipleQuals(V,v,"-")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("-"))
-								buf.append(CMath.s_int(str2.substring(1).trim())+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"-");
 					}
 					break;
 				case _MONTH: // -month
 					{
 						buf.append(L((skipFirstWord?"Only ":"Allowed only ")+"during the following month"+(multipleQuals(V,v,"+")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("+"))
-								buf.append(CMath.s_int(str2.substring(1).trim())+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"+");
+					}
+					break;
+				case WEEK: // +week
+					{
+						buf.append(L("Disallowed during the following week"+(multipleQuals(V,v,"-")?"s":"")+": "));
+						v=appendCommaList(buf,V,v,"-");
+					}
+					break;
+				case _WEEK: // -week
+					{
+						buf.append(L((skipFirstWord?"Only ":"Allowed only ")+"during the following week"+(multipleQuals(V,v,"+")?"s":"")+": "));
+						v=appendCommaList(buf,V,v,"+");
+					}
+					break;
+				case WEEKOFYEAR: // +weekofyear
+					{
+						buf.append(L("Disallowed during the following week"+(multipleQuals(V,v,"-")?"s":"")+" of the year: "));
+						v=appendCommaList(buf,V,v,"-");
+					}
+					break;
+				case _WEEKOFYEAR: // -weekofyear
+					{
+						buf.append(L((skipFirstWord?"Only ":"Allowed only ")+"during the following week"+(multipleQuals(V,v,"+")?"s":"")+" of the year: "));
+						v=appendCommaList(buf,V,v,"+");
+					}
+					break;
+				case YEAR: // +year
+					{
+						buf.append(L("Disallowed during the following year"+(multipleQuals(V,v,"-")?"s":"")+": "));
+						v=appendCommaList(buf,V,v,"-");
+					}
+					break;
+				case _YEAR: // -year
+					{
+						buf.append(L((skipFirstWord?"Only ":"Allowed only ")+"during the following year"+(multipleQuals(V,v,"+")?"s":"")+": "));
+						v=appendCommaList(buf,V,v,"+");
 					}
 					break;
 				case DAY: // +day
 					{
 						buf.append(L("Disallowed during the following day"+(multipleQuals(V,v,"-")?"s":"")+" of the month: "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("-"))
-								buf.append(CMath.s_int(str2.substring(1).trim())+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"-");
 					}
 					break;
 				case _DAY: // -day
 					{
 						buf.append(L((skipFirstWord?"Only ":"Allowed only ")+"on the following day"+(multipleQuals(V,v,"+")?"s":"")+" of the month: "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("+"))
-								buf.append(CMath.s_int(str2.substring(1).trim())+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"+");
 					}
 					break;
-
+				case DAYOFYEAR: // +dayofyear
+					{
+						buf.append(L("Disallowed during the following day"+(multipleQuals(V,v,"-")?"s":"")+" of the year: "));
+						v=appendCommaList(buf,V,v,"-");
+					}
+					break;
+				case _DAYOFYEAR: // -dayofyear
+					{
+						buf.append(L((skipFirstWord?"Only ":"Allowed only ")+"on the following day"+(multipleQuals(V,v,"+")?"s":"")+" of the year: "));
+						v=appendCommaList(buf,V,v,"+");
+					}
+					break;
 				case QUALLVL: // +quallvl
 					if((v+1)<V.size())
 					{
@@ -1759,7 +1619,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -1779,7 +1639,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -1799,7 +1659,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -1819,136 +1679,56 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
 				case _JAVACLASS: // -JavaClass
 					{
 						buf.append(L((skipFirstWord?"B":"Requires b")+"eing of the following type"+(multipleQuals(V,v,"+")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("+"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"+");
 					}
 					break;
 				case JAVACLASS: // +JavaClass
 					{
 						buf.append(L("Disallows being of the following type"+(multipleQuals(V,v,"-")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"-");
 					}
 					break;
 				case _DEITY: // -Deity
 					{
 						buf.append(L((skipFirstWord?"W":"Requires w")+"orshipping the following deity"+(multipleQuals(V,v,"+")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("+"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"+");
 					}
 					break;
 				case DEITY: // +Deity
 					{
 						buf.append(L("Disallows the worshippers of: "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"-");
 					}
 					break;
 				case NAME: // +Names
 					{
 						buf.append(L("Disallows the following mob/player name"+(multipleQuals(V,v,"-")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"-");
 					}
 					break;
 				case _NAME: // -Names
 					{
 						buf.append(L((skipFirstWord?"The":"Requires")+" following name"+(multipleQuals(V,v,"+")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("+"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"+");
 					}
 					break;
 				case ACCOUNT: // +Account
 					{
 						buf.append(L("Disallows the following player account"+(multipleQuals(V,v,"-")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"-");
 					}
 					break;
 				case _ACCOUNT: // -Account
 					{
 						buf.append(L((skipFirstWord?"The":"Requires")+" following player account"+(multipleQuals(V,v,"+")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("+"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"+");
 					}
 					break;
 				case _QUESTWIN: // -Questwin
@@ -1972,7 +1752,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -1997,7 +1777,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -2010,33 +1790,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case RACE: // +races
 					{
 						buf.append(L("Disallows the following race"+(multipleQuals(V,v,"-")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"-");
 					}
 					break;
 				case RACECAT: // +racecats
 					{
 						buf.append(L("Disallows the following racial category"+(multipleQuals(V,v,"-")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"-");
 					}
 					break;
 				case _ANYCLASSLEVEL: // -anyclasslevel
@@ -2134,7 +1894,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(C.name+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -2147,7 +1907,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(C.name+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -2302,67 +2062,27 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case AREA: // +Area
 					{
 						buf.append(L("Disallows the following area"+(multipleQuals(V,v,"-")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"-");
 					}
 					break;
 				case _AREA: // -Area
 					{
 						buf.append(L((skipFirstWord?"The":"Requires the")+" following area"+(multipleQuals(V,v,"+")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("+"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"+");
 					}
 					break;
 				case AREABLURB: // +Areablurb
 					{
 						buf.append(L("Disallows the following area blurb"+(multipleQuals(V,v,"-")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"-");
 					}
 					break;
 				case _AREABLURB: // -Areablurb
 					{
 						buf.append(L((skipFirstWord?"The":"Requires the")+" following area blurb"+(multipleQuals(V,v,"+")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("+"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"+");
 					}
-				break;
+					break;
 				case ISHOME: // +isHome
 					buf.append(L("Disallows those who are not in their home area.  "));
 					break;
@@ -2378,194 +2098,73 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case HOME: // +Home
 					{
 						buf.append(L("Disallows those whose home is the following area"+(multipleQuals(V,v,"-")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"-");
 					}
 					break;
 				case PLANE: // +Plane
 					{
 						buf.append(L("Disallows those whose are on the following plane"+(multipleQuals(V,v,"-")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"-");
 					}
 					break;
 				case _HOME: // -Home
 					{
 						buf.append(L((skipFirstWord?"From the":"Requires being from the")+" following area"+(multipleQuals(V,v,"+")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("+"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"+");
 					}
 					break;
-
 				case _PLANE: // -Plane
 					{
 						buf.append(L((skipFirstWord?"On the":"Requires being on the")+" following plane"+(multipleQuals(V,v,"+")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("+"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"+");
 					}
 					break;
 				case _IFSTAT:
 					{
 						buf.append(L("Allows only those with "+(multipleQuals(V,v,"-")?"one of the following values":"the following value")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("+"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"+");
 					}
 					break;
 				case IFSTAT:
 					{
 						buf.append(L("Disallows those with "+(multipleQuals(V,v,"-")?"one of the following values":"the following value")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"-");
 					}
 					break;
 				case SUBNAME:
 					{
 						buf.append(L("Disallows those with the following partial name"+(multipleQuals(V,v,"-")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"-");
 					}
 					break;
 				case _SUBNAME:
 					{
 						buf.append(L("Allows only those with the following partial name"+(multipleQuals(V,v,"-")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("+"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"+");
 					}
 					break;
 				case ITEM: // +Item
 					{
 						buf.append(L("Disallows those with the following item"+(multipleQuals(V,v,"-")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"-");
 					}
 					break;
 				case WORN:
 					{
 						buf.append(L((skipFirstWord?"The":"Requires the")+" following worn item"+(multipleQuals(V,v,"-")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v,"-");
 					}
 					break;
 				case _ITEM:
 					{
 						buf.append(L((skipFirstWord?"H":"Requires h")+"aving the following item"+(multipleQuals(V,v,"+")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if((str2.startsWith("+"))||(str2.startsWith("-")))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v);
 					}
 					break;
 				case _WORN: // -Worn
 					{
 						buf.append(L((skipFirstWord?"W":"Requires w")+"earing the following item"+(multipleQuals(V,v,"+")?"s":"")+": "));
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=V.get(v2);
-							if(zapCodes.containsKey(str2))
-								break;
-							if((str2.startsWith("+"))||(str2.startsWith("-")))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
+						v=appendCommaList(buf,V,v);
 					}
 					break;
 				case EFFECT: // +Effects
@@ -2586,7 +2185,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -2608,7 +2207,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -2632,9 +2231,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						if(buf.toString().endsWith("; "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -2658,9 +2257,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						if(buf.toString().endsWith("; "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -2683,9 +2282,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(str2.substring(1).toUpperCase().trim()).append(" ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						if(buf.toString().endsWith("; "))
-							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
 					break;
@@ -2800,6 +2399,32 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		if(buf.length()==0)
 			buf.append(L("Anyone."));
 		return buf.toString();
+	}
+
+	protected final boolean isDateMatch(final Object o, final int num)
+	{
+		if(o instanceof Integer)
+		{
+			if(num==((Integer)o).intValue())
+				return true;
+		}
+		else
+		if(o instanceof Pair)
+		{
+			@SuppressWarnings("unchecked")
+			final Pair<Integer,Integer> p=(Pair<Integer,Integer>)o;
+			if((int)Math.round(CMath.floor(CMath.div(num,p.second.intValue())))==p.first.intValue())
+				return true;
+		}
+		else
+		if(o instanceof Triad)
+		{
+			@SuppressWarnings("unchecked")
+			final Triad<Integer,Integer,String> p=(Triad<Integer,Integer,String>)o;
+			if((num % p.second.intValue())==p.first.intValue())
+				return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -4119,12 +3744,6 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case PORT: // +PORT
 				case _PORT: // -PORT
-				case HOUR: // +HOUR
-				case _HOUR: // -HOUR
-				case MONTH: // +MONTH
-				case _MONTH: // -MONTH
-				case DAY: // +DAY
-				case _DAY: // -DAY
 					{
 						final ArrayList<Object> parms=new ArrayList<Object>();
 						buildRoomFlag=true;
@@ -4139,6 +3758,73 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							else
 							if((str2.startsWith("-"))||(str2.startsWith("+")))
 								parms.add(Integer.valueOf(CMath.s_int(str2.substring(1).trim())));
+							v=V.size();
+						}
+						buf.add(new CompiledZapperMaskEntryImpl(entryType,parms.toArray(new Object[0])));
+					}
+					break;
+				case HOUR: // +HOUR
+				case _HOUR: // -HOUR
+				case MONTH: // +MONTH
+				case _MONTH: // -MONTH
+				case WEEK: // +WEEK
+				case _WEEK: // -WEEK
+				case WEEKOFYEAR: // +WEEKOFYEAR
+				case _WEEKOFYEAR: // -WEEKOFYEAR
+				case YEAR: // +YEAR
+				case _YEAR: // -YEAR
+				case DAY: // +DAY
+				case _DAY: // -DAY
+				case DAYOFYEAR: // +DAYOFYEAR
+				case _DAYOFYEAR: // -DAY
+					{
+						final ArrayList<Object> parms=new ArrayList<Object>();
+						buildRoomFlag=true;
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+							{
+								v=v2-1;
+								break;
+							}
+							else
+							if((str2.startsWith("-"))||(str2.startsWith("+")))
+							{
+								final String lstr2=str2.toLowerCase();
+								final int x=lstr2.indexOf(' ');
+								if(x>0)
+								{
+									final String lstr3=lstr2.substring(1,x).trim();
+									final String nstr=lstr2.substring(x+1).trim();
+									if(lstr3.endsWith("st")  || lstr3.endsWith("nd")
+									|| lstr3.endsWith("rd") || lstr3.endsWith("th"))
+									{
+										final String str3=lstr3.substring(0,lstr3.length()-2);
+										final int amt=CMath.s_int(str3.trim());
+										if(amt > 0)
+										{
+											parms.add(new Pair<Integer,Integer>(
+													Integer.valueOf(amt-1), // because 0 is the first X
+													Integer.valueOf(CMath.s_int(nstr.trim()))));
+										}
+									}
+									else
+									if(nstr.startsWith("of"))
+									{
+										final int amt=CMath.s_int(nstr.substring(2).trim());
+										if(amt > 0)
+										{
+											parms.add(new Triad<Integer,Integer,String>(
+													Integer.valueOf(CMath.s_int(lstr3)),
+													Integer.valueOf(amt-1), // // because 0 is the first in every X
+													null));
+										}
+									}
+								}
+								else
+									parms.add(Integer.valueOf(CMath.s_int(str2.substring(1).trim())));
+							}
 							v=V.size();
 						}
 						buf.add(new CompiledZapperMaskEntryImpl(entryType,parms.toArray(new Object[0])));
@@ -5706,9 +5392,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					{
 						if(room!=null)
 						{
+							final int num = room.getArea().getTimeObj().getHourOfDay();
 							for(final Object o : entry.parms())
 							{
-								if(room.getArea().getTimeObj().getHourOfDay()==((Integer)o).intValue())
+								if(isDateMatch(o,num))
 									return false;
 							}
 						}
@@ -5719,9 +5406,74 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						boolean found=false;
 						if(room!=null)
 						{
+							final int num = room.getArea().getTimeObj().getHourOfDay();
 							for(final Object o : entry.parms())
 							{
-								if(room.getArea().getTimeObj().getHourOfDay()==((Integer)o).intValue())
+								if(isDateMatch(o,num))
+								{
+									found = true;
+									break;
+								}
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
+				case YEAR: // +YEAR
+					{
+						if(room!=null)
+						{
+							final int num = room.getArea().getTimeObj().getYear();
+							for(final Object o : entry.parms())
+							{
+								if(isDateMatch(o,num))
+									return false;
+							}
+						}
+					}
+					break;
+				case _YEAR: // -YEAR
+					{
+						boolean found=false;
+						if(room!=null)
+						{
+							final int num = room.getArea().getTimeObj().getYear();
+							for(final Object o : entry.parms())
+							{
+								if(isDateMatch(o,num))
+								{
+									found = true;
+									break;
+								}
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
+				case WEEK: // +WEEK
+					{
+						if(room!=null)
+						{
+							final int num = room.getArea().getTimeObj().getWeekOfMonth();
+							for(final Object o : entry.parms())
+							{
+								if(isDateMatch(o,num))
+									return false;
+							}
+						}
+					}
+					break;
+				case _WEEK: // -WEEK
+					{
+						boolean found=false;
+						if(room!=null)
+						{
+							final int num = room.getArea().getTimeObj().getWeekOfMonth();
+							for(final Object o : entry.parms())
+							{
+								if(isDateMatch(o,num))
 								{
 									found = true;
 									break;
@@ -5736,9 +5488,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					{
 						if(room!=null)
 						{
+							final int num = room.getArea().getTimeObj().getSeasonCode().ordinal();
 							for(final Object o : entry.parms())
 							{
-								if(room.getArea().getTimeObj().getSeasonCode().ordinal()==((Integer)o).intValue())
+								if(isDateMatch(o,num))
 									return false;
 							}
 						}
@@ -5749,9 +5502,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						boolean found=false;
 						if(room!=null)
 						{
+							final int num = room.getArea().getTimeObj().getSeasonCode().ordinal();
 							for(final Object o : entry.parms())
 							{
-								if(room.getArea().getTimeObj().getSeasonCode().ordinal()==((Integer)o).intValue())
+								if(isDateMatch(o,num))
 								{
 									found = true;
 									break;
@@ -5796,9 +5550,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					{
 						if(room!=null)
 						{
+							final int num = room.getArea().getTimeObj().getMonth();
 							for(final Object o : entry.parms())
 							{
-								if(room.getArea().getTimeObj().getMonth()==((Integer)o).intValue())
+								if(isDateMatch(o,num))
 									return false;
 							}
 						}
@@ -5809,9 +5564,74 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						boolean found=false;
 						if(room!=null)
 						{
+							final int num = room.getArea().getTimeObj().getMonth();
 							for(final Object o : entry.parms())
 							{
-								if(room.getArea().getTimeObj().getMonth()==((Integer)o).intValue())
+								if(isDateMatch(o,num))
+								{
+									found = true;
+									break;
+								}
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
+				case DAYOFYEAR: // +dayofyear
+					{
+						if(room!=null)
+						{
+							final int num = room.getArea().getTimeObj().getDayOfYear();
+							for(final Object o : entry.parms())
+							{
+								if(isDateMatch(o,num))
+									return false;
+							}
+						}
+					}
+					break;
+				case _DAYOFYEAR: // -dayofyear
+					{
+						boolean found=false;
+						if(room!=null)
+						{
+							final int num = room.getArea().getTimeObj().getDayOfYear();
+							for(final Object o : entry.parms())
+							{
+								if(isDateMatch(o,num))
+								{
+									found = true;
+									break;
+								}
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
+				case WEEKOFYEAR: // +weekofyear
+					{
+						if(room!=null)
+						{
+							final int num = room.getArea().getTimeObj().getWeekOfYear();
+							for(final Object o : entry.parms())
+							{
+								if(isDateMatch(o,num))
+									return false;
+							}
+						}
+					}
+					break;
+				case _WEEKOFYEAR: // -weekofyear
+					{
+						boolean found=false;
+						if(room!=null)
+						{
+							final int num = room.getArea().getTimeObj().getWeekOfYear();
+							for(final Object o : entry.parms())
+							{
+								if(isDateMatch(o,num))
 								{
 									found = true;
 									break;
@@ -5826,9 +5646,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					{
 						if(room!=null)
 						{
+							final int num = room.getArea().getTimeObj().getDayOfMonth();
 							for(final Object o : entry.parms())
 							{
-								if(room.getArea().getTimeObj().getDayOfMonth()==((Integer)o).intValue())
+								if(isDateMatch(o,num))
 									return false;
 							}
 						}
@@ -5839,9 +5660,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						boolean found=false;
 						if(room!=null)
 						{
+							final int num = room.getArea().getTimeObj().getDayOfMonth();
 							for(final Object o : entry.parms())
 							{
-								if(room.getArea().getTimeObj().getDayOfMonth()==((Integer)o).intValue())
+								if(isDateMatch(o,num))
 								{
 									found = true;
 									break;
@@ -7170,8 +6992,16 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _WEATHER: // -weather
 				case MONTH: // +month
 				case _MONTH: // -month
+				case WEEK: // +week
+				case _WEEK: // -week
+				case WEEKOFYEAR: // +weekofyear
+				case _WEEKOFYEAR: // -weekofyear
+				case YEAR: // +year
+				case _YEAR: // -year
 				case DAY: // +day
 				case _DAY: // -day
+				case DAYOFYEAR: // +dayofyear
+				case _DAYOFYEAR: // -dayofyear
 				case QUALLVL: // +quallvl
 				case _QUALLVL: // -quallvl
 				case RESOURCE: // +resource

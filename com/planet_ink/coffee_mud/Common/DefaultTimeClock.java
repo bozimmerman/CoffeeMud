@@ -90,6 +90,11 @@ public class DefaultTimeClock implements TimeClock
 	protected int		time			= 0;
 	protected int		hoursInDay		= 6;
 
+	protected int		weekOfMonth		= 0; // these are derived
+	protected int		weekOfYear		= 0; // these are derived
+	protected int		dayOfYear		= 1; // these are derived
+	protected int		daysInYear		= 8 * 20; // these are derived
+
 	protected String[] monthsInYear={
 		 "the 1st month","the 2nd month","the 3rd month","the 4th month",
 		 "the 5th month","the 6th month","the 7th month","the 8th month"
@@ -121,6 +126,8 @@ public class DefaultTimeClock implements TimeClock
 	public void setDaysInMonth(final int d)
 	{
 		daysInMonth = d;
+		if((d>0)&&(this.monthsInYear.length>0))
+			daysInYear = this.monthsInYear.length * d;
 	}
 
 	@Override
@@ -138,7 +145,36 @@ public class DefaultTimeClock implements TimeClock
 	@Override
 	public void setMonthsInYear(final String[] months)
 	{
-		monthsInYear = months;
+		if(months != null)
+		{
+			monthsInYear = months;
+			if((getDaysInMonth()>0)&&(months.length>0))
+				daysInYear = months.length * getDaysInMonth();
+		}
+	}
+
+	@Override
+	public int getWeekOfMonth()
+	{
+		return weekOfMonth;
+	}
+
+	@Override
+	public int getWeekOfYear()
+	{
+		return weekOfYear;
+	}
+
+	@Override
+	public int getDayOfYear()
+	{
+		return dayOfYear;
+	}
+
+	@Override
+	public int getDaysInYear()
+	{
+		return daysInYear;
 	}
 
 	@Override
@@ -184,6 +220,7 @@ public class DefaultTimeClock implements TimeClock
 	public void setDaysInWeek(final String[] days)
 	{
 		weekNames = days;
+		setDayOfMonth(getDayOfMonth());; // causes derived fields to be recalculated
 	}
 
 	@Override
@@ -400,6 +437,15 @@ public class DefaultTimeClock implements TimeClock
 	public void setDayOfMonth(final int d)
 	{
 		day = d;
+		if(getMonth()>0)
+		{
+			dayOfYear = ((getMonth()-1) * getDaysInMonth()) + d;
+			if(getDaysInWeek()>0)
+			{
+				weekOfMonth = (int)Math.round(CMath.floor(CMath.div(day,getDaysInWeek())));
+				weekOfYear = (int)Math.round(CMath.floor(CMath.div(dayOfYear,getDaysInWeek())));
+			}
+		}
 	}
 
 	@Override
@@ -713,6 +759,9 @@ public class DefaultTimeClock implements TimeClock
 			num -= hoursInDay;
 		}
 		time = (int)num;
+		setYear(year); // for any derived fields
+		setMonth(month); // for any derived fields
+		setDayOfMonth(day); // for any derived fields
 	}
 
 	@Override
@@ -766,21 +815,22 @@ public class DefaultTimeClock implements TimeClock
 			setDayOfMonth(CMLib.xml().getIntFromPieces(V,"DAY"));
 			setMonth(CMLib.xml().getIntFromPieces(V,"MONTH"));
 			setYear(CMLib.xml().getIntFromPieces(V,"YEAR"));
-			if(this!=CMLib.time().globalClock())
+			final TimeClock globalClock=CMLib.time().globalClock();
+			if(this!=globalClock)
 			{
 				if((CMLib.xml().getValFromPieces(V,"HOURS").length()==0)
 				||(CMLib.xml().getValFromPieces(V,"DAYS").length()==0)
 				||(CMLib.xml().getValFromPieces(V,"MONTHS").length()==0))
 				{
-					setHoursInDay(CMLib.time().globalClock().getHoursInDay());
-					setDaysInMonth(CMLib.time().globalClock().getDaysInMonth());
-					setMonthsInYear(CMLib.time().globalClock().getMonthNames());
-					setDawnToDusk(CMLib.time().globalClock().getDawnToDusk()[TimeOfDay.DAWN.ordinal()],
-								  CMLib.time().globalClock().getDawnToDusk()[TimeOfDay.DAY.ordinal()],
-								  CMLib.time().globalClock().getDawnToDusk()[TimeOfDay.DUSK.ordinal()],
-								  CMLib.time().globalClock().getDawnToDusk()[TimeOfDay.NIGHT.ordinal()]);
-					setDaysInWeek(CMLib.time().globalClock().getWeekNames());
-					setYearNames(CMLib.time().globalClock().getYearNames());
+					setHoursInDay(globalClock.getHoursInDay());
+					setDaysInMonth(globalClock.getDaysInMonth());
+					setMonthsInYear(globalClock.getMonthNames());
+					setDawnToDusk(globalClock.getDawnToDusk()[TimeOfDay.DAWN.ordinal()],
+								  globalClock.getDawnToDusk()[TimeOfDay.DAY.ordinal()],
+								  globalClock.getDawnToDusk()[TimeOfDay.DUSK.ordinal()],
+								  globalClock.getDawnToDusk()[TimeOfDay.NIGHT.ordinal()]);
+					setDaysInWeek(globalClock.getWeekNames());
+					setYearNames(globalClock.getYearNames());
 				}
 				else
 				{

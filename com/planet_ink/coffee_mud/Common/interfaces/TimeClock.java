@@ -337,6 +337,38 @@ public interface TimeClock extends Tickable, CMCommon
 	public int getDaysInWeek();
 
 	/**
+	 * Gets the current week of the month.
+	 *
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getDaysInWeek()
+	 *
+	 * @return the week of month, 0-x
+	 */
+	public int getWeekOfMonth();
+
+	/**
+	 * Gets the current week of the year.
+	 *
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getDaysInWeek()
+	 *
+	 * @return the week of year, 0-x
+	 */
+	public int getWeekOfYear();
+
+	/**
+	 * Gets the current days of the year.
+	 *
+	 * @return the day of year, 1-x
+	 */
+	public int getDayOfYear();
+
+	/**
+	 * Gets the current days of the year.
+	 *
+	 * @return the day of year, 1-x
+	 */
+	public int getDaysInYear();
+
+	/**
 	 * Sets the number of days in each week by naming each of them in a string array
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getDaysInWeek()

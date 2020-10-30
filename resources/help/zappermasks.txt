@@ -85,8 +85,9 @@
 +SENSES "-CANSEEDARK" etc.. (Do not <WORD> those with -senses)
 -ABILITY X (<WORD> those with magical ability less than X)
 +ABILITY X (<WORD> those with magical ability greater than X)
--HOUR/-MONTH/-DAY +X (<WORD> always, unless the hour/month/day is X)
-+HOUR/+MONTH/+DAY -X (<WORD> those only when the hour/month/day is X)
+-HOUR/-MONTH/-DAY(OFYEAR) +X (<WORD> always, unless the hr/mn/day is X)
++HOUR/+MONTH/+DAY(OFYEAR) -X (<WORD> those only when the hr/mn/day is X)
+     /+-WEEK(OFYEAR)/+-YEAR  ( ... also supports "Xnd Y" and "X of Y"
 -SEASON +FALL (<WORD> those only when season is FALL)
 +SEASON -SPRING (<WORD> those whenever the season is SPRING)
 -WEATHER +DROUGHT (<WORD> those only when weather is DROUGHT)
