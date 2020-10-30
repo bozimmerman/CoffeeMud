@@ -1674,6 +1674,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					seller.delItem(I);
 					if(!mobFor.isMine(I))
 						mobFor.addItem(I);
+					mobFor.recoverCharStats();
+					mobFor.recoverPhyStats();
+					mobFor.recoverMaxState();
 				}
 			}
 			if(seller.isMonster())
