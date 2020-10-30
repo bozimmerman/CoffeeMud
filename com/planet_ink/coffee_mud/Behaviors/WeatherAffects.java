@@ -276,8 +276,10 @@ public class WeatherAffects extends PuddleMaker
 					}
 					if(what!=null)
 					{
-						if(R.show(msg.source(),riding,CMMsg.MSG_WEATHER,L("^W<S-NAME> make(s) no progress in the "+what+".^?")))
+						final CMMsg wmsg=CMClass.getMsg(msg.source(),riding,CMMsg.MSG_WEATHER,L("^W<S-NAME> make(s) no progress in the "+what+".^?"));
+						if(R.okMessage(msg.source(), wmsg))
 						{
+							R.send(msg.source(), wmsg);
 							if(riding instanceof BoardableShip)
 							{
 								final Area shipArea=((BoardableShip)riding).getShipArea();
