@@ -64,7 +64,7 @@ public class Prop_SafePet extends Property
 	}
 
 	protected boolean	disabled		= false;
-	protected String	displayMessage	= "Awww, leave <T-NAME> alone.";
+	protected String	displayMessage	= "You may not attack <T-NAME>.";
 
 	@Override
 	public String accountForYourself()
