@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_DepleteScroll extends Prayer
+public class Prayer_AttuneScroll extends Prayer
 {
 	@Override
 	public String ID()
 	{
-		return "Prayer_DepleteScroll";
+		return "Prayer_AttuneScroll";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Deplete Scroll");
+	private final static String localizedName = CMLib.lang().L("Attune Scroll");
 
 	@Override
 	public String name()
@@ -57,7 +57,7 @@ public class Prayer_DepleteScroll extends Prayer
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_UNHOLY;
+		return Ability.FLAG_HOLY;
 	}
 
 	@Override
@@ -89,44 +89,41 @@ public class Prayer_DepleteScroll extends Prayer
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell(L("Deplete what?"));
+			mob.tell(L("Attune to what?"));
 			return false;
 		}
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null)
 			return false;
 
-		if(!(target instanceof Scroll)&&(!target.isReadable()))
+		if(!(target instanceof Scroll))
 		{
-			mob.tell(L("You can't deplete that."));
+			mob.tell(L("You can't attune to that."));
 			return false;
 		}
 
-		if((target instanceof Scroll) && (((Scroll)target).getSpells().size()==0))
+		if(((Scroll)target).getSpells().size()==0)
 		{
-			mob.tell(L("That already looks nicely depleted."));
-			return false;
-		}
-		else
-		if((!(target instanceof Scroll)) && (target.readableText().length()==0))
-		{
-			mob.tell(L("That already looks nicely depleted."));
+			mob.tell(L("That lacks any divine magic to attune to."));
 			return false;
 		}
 
-		if(target instanceof Scroll)
+		boolean isDivine=false;
+		for(final Ability A : ((Scroll)target).getSpells())
 		{
-			boolean isDivine=false;
-			for(final Ability A : ((Scroll)target).getSpells())
-			{
-				if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
-					isDivine=false;
-			}
-			if(!isDivine)
-			{
-				mob.tell(L("That does not appear to be a divine scroll."));
-				return false;
-			}
+			if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+				isDivine=false;
+		}
+		if(!isDivine)
+		{
+			mob.tell(L("That does not appear to be a divine scroll."));
+			return false;
+		}
+
+		if(target.usesRemaining()<=0)
+		{
+			mob.tell(L("That is too depleted to be attuned to."));
+			return false;
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -138,58 +135,49 @@ public class Prayer_DepleteScroll extends Prayer
 			final Room R=mob.location();
 			if(R==null)
 				return false;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) depleted."):L("^S<S-NAME> wickedly @x1, sweeping <S-HIS-HER> hands over <T-NAMESELF>.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) attuned to."):L("^S<S-NAME> @x1, sweeping <S-HIS-HER> hands over <T-NAMESELF>.^?",prayWord(mob)));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				if((target instanceof Scroll)
-				&&(((Scroll)target).usesRemaining()>0))
+				final List<Ability> spells=((Scroll)target).getSpells();
+				final List<Ability> mySpells = new ArrayList<Ability>();
+				for(final Ability A : spells)
 				{
-					final List<Ability> spells=((Scroll)target).getSpells();
-					final List<Ability> mySpells = new ArrayList<Ability>();
-					for(final Ability A : spells)
-					{
-						if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
-						&&(A.appropriateToMyFactions(mob)))
-							mySpells.add(A);
-					}
-					if(mySpells.size()>0)
-					{
-						MOB M=null;
-						try
-						{
-							M=CMClass.getFactoryMOB(target.Name(), mob.phyStats().level(), R);
-							R.addInhabitant(M);
-							for(final Ability A : mySpells)
-							{
-								if(((Scroll)target).usesRemaining()>0)
-									((Scroll)target).setUsesRemaining(((Scroll)target).usesRemaining()-1);
-								M.addAbility((Ability)A.copyOf());
-								final CMMsg cmsg=CMClass.getMsg(M,null,A,CMMsg.TYP_CAST_SPELL,L("You feel @x1 release <O-NAME>",target.Name()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
-								R.send(mob, cmsg);
-							}
-						}
-						finally
-						{
-							if(M!=null)
-							{
-								R.delInhabitant(M);
-								while(R.isInhabitant(M))
-									R.delInhabitant(M);
-								M.destroy();
-							}
-						}
-					}
-
-					((Scroll)target).setSpellList("");
-					CMLib.leveler().postExperience(mob, null, "", 25+(5*super.getXLEVELLevel(mob)), false);
+					if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+					&&(A.appropriateToMyFactions(mob)))
+						mySpells.add(A);
 				}
-				else
-					target.setReadableText("");
-
+				if(mySpells.size()>0)
+				{
+					MOB M=null;
+					try
+					{
+						M=CMClass.getFactoryMOB(target.Name(), mob.phyStats().level(), R);
+						R.addInhabitant(M);
+						for(final Ability A : mySpells)
+						{
+							if(((Scroll)target).usesRemaining()>0)
+								((Scroll)target).setUsesRemaining(((Scroll)target).usesRemaining()-1);
+							M.addAbility((Ability)A.copyOf());
+							final CMMsg cmsg=CMClass.getMsg(M,null,A,CMMsg.TYP_CAST_SPELL,L("You feel @x1 release <O-NAME>",target.Name()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+							R.send(mob, cmsg);
+						}
+					}
+					finally
+					{
+						if(M!=null)
+						{
+							R.delInhabitant(M);
+							while(R.isInhabitant(M))
+								R.delInhabitant(M);
+							M.destroy();
+						}
+					}
+				}
+				target.setUsesRemaining(target.usesRemaining()-1);
 			}
 			else
-				beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> wickedly sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, but @x1 does not heed.",hisHerDiety(mob)));
+				beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, but @x1 does not heed.",hisHerDiety(mob)));
 		}
 
 		// return whether it worked
