@@ -6798,7 +6798,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					if(denomination != 0.0)
 					{
 						final double money=CMath.mul(aaward.getAmount(),  denomination);
-						CMLib.beanCounter().giveSomeoneMoney(mob, money);
+						CMLib.beanCounter().giveSomeoneMoney(mob, currency, money);
 						awardMessage.append(L("^HYou are awarded @x1!\n\r^?",CMLib.beanCounter().getDenominationName(currency, denomination, aaward.getAmount())));
 					}
 				}
