@@ -881,7 +881,28 @@ public class InstanceArea extends StdAbility
 				}
 				else
 				if(I instanceof Exit)
-					I.setReadableText("");
+				{
+					final List<String> V=CMParms.parseSemicolons(I.readableText(),true);
+					final StringBuilder finalAdj = new StringBuilder("");
+					for(final String roomID : V)
+					{
+						final Room R=CMLib.map().getRoom(roomID);
+						if(R==null)
+							continue;
+						if(R.getArea() == instArea)
+							finalAdj.append((finalAdj.length()==0)?"":";").append(roomID);
+						else
+						if((R.getArea()==parentArea) && (parentArea != null))
+						{
+							final String newRoomID=convertToMyArea(instArea, roomID);
+							finalAdj.append((finalAdj.length()==0)?"":";").append(newRoomID);
+						}
+						else
+						if(R.getArea()!=null)
+							finalAdj.append((finalAdj.length()==0)?"":";").append(roomID);
+					}
+					I.setReadableText(finalAdj.toString());
+				}
 				else
 				if((I instanceof Weapon)||(I instanceof Armor))
 				{
