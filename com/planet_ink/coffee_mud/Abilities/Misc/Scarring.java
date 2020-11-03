@@ -151,6 +151,12 @@ public class Scarring extends StdAbility implements LimbDamage, HealthCondition
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
+		final int num=this.affectedLimbNameSet().size();
+		final int oldCha=affectableStats.getStat(CharStats.STAT_CHARISMA);
+		if(num>=oldCha)
+			affectableStats.setStat(CharStats.STAT_CHARISMA, 1);
+		else
+			affectableStats.setStat(CharStats.STAT_CHARISMA, oldCha-num);
 	}
 
 	@Override
@@ -279,60 +285,33 @@ public class Scarring extends StdAbility implements LimbDamage, HealthCondition
 			return new MapKeyList<String, Tattoo>(scarredLimbs);
 		synchronized(this)
 		{
-			final List<String> scarredLimbsList=CMParms.parseSemicolons(text(),true);
+			final List<String> scarredLimbsList=CMParms.parseSemicolons(text().toLowerCase(),true);
 			scarredParts=new int[Race.BODY_PARTS];
 			boolean right=false;
 			boolean left=false;
 			Integer code=null;
 			for(int v=0;v<scarredLimbsList.size();v++)
 			{
-				final String s=scarredLimbsList.get(v).toUpperCase();
-				left=s.startsWith("LEFT ");
-				right=s.startsWith("RIGHT ");
+				final String s=scarredLimbsList.get(v);
+				left=s.startsWith("left ");
+				right=s.startsWith("right ");
 				final String subS=s.substring(right?6:left?5:0).trim();
 				for(int c=0;c<Race.BODY_PARTS;c++)
 				{
-					if(this.getProperPartName(c).equalsIgnoreCase(subS))
+					if(getProperPartName(c).equalsIgnoreCase(subS)
+					||Race.BODYPARTSTR[c].equalsIgnoreCase(subS))
 					{
 						code=Integer.valueOf(c);
 						scarredParts[c]--;
 						final long wearLoc = Race.BODY_WEARVECTOR[code.intValue()];
 						final Tattoo T=(Tattoo)CMClass.getCommon("Defaulttattoo");
-						T.set(Wearable.CODES.NAME(wearLoc)+": "+L("a scarred "+scarredLimbsList.get(v).toLowerCase()));
-						scarredLimbs.put(s, T);
+						T.set(Wearable.CODES.NAME(wearLoc)+": "+L("a scarred "+(left?"left ":(right?"right ":""))+getProperPartName(c).toLowerCase()));
+						scarredLimbs.put(s, T); // preserve left/right
 					}
 				}
 			}
 		}
 		return new MapKeyList<String, Tattoo>(scarredLimbs);
-	}
-
-	public List<String> completeScarredLimbNameSet(final Environmental E)
-	{
-		final Vector<String> V=new Vector<String>();
-		if(!(E instanceof MOB))
-			return V;
-		final MOB M=(MOB)E;
-		final int[] limbs=M.charStats().getMyRace().bodyMask();
-		for(int i=0;i<limbs.length;i++)
-		{
-			if(limbs[i]>0)
-			{
-				final String partName=getProperPartName(i);
-				if(limbs[i]==1)
-					V.addElement(partName);
-				else
-				if(limbs[i]==2)
-				{
-					V.addElement("left "+partName);
-					V.addElement("right "+partName);
-				}
-				else
-				for(int ii=0;ii<limbs[i];ii++)
-					V.addElement(partName);
-			}
-		}
-		return V;
 	}
 
 	@Override
@@ -380,7 +359,7 @@ public class Scarring extends StdAbility implements LimbDamage, HealthCondition
 			limbs[i]=M.charStats().getBodyPart(i);
 			if(limbs[i]>0)
 			{
-				final String partName=getProperPartName(i);
+				final String partName=Race.BODYPARTSTR[i].toLowerCase();
 				if(scarredParts[i]>0)
 				{
 					if(limbs[i]-scarredParts[i]==1)
@@ -522,24 +501,15 @@ public class Scarring extends StdAbility implements LimbDamage, HealthCondition
 				warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),target);
 			if((warrants.size()==0)&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ABOVELAW)))
 			{
-				mob.tell(L("You are not authorized by law to break anything on @x1 at this time.",target.Name()));
+				mob.tell(L("You are not authorized by law to scar anything on @x1 at this time.",target.Name()));
 				return false;
 			}
 			final Item w=mob.fetchWieldedItem();
 			if(!CMSecurity.isASysOp(mob))
 			{
-				Weapon ww=null;
 				if((w==null)||(!(w instanceof Weapon)))
 				{
-					mob.tell(L("You cannot break anything without a weapon!"));
-					return false;
-				}
-				ww=(Weapon)w;
-				if((ww.weaponDamageType()==Weapon.TYPE_PIERCING)
-				&&(ww.weaponDamageType()!=Weapon.TYPE_SLASHING)
-				&&(ww.weaponDamageType()!=Weapon.TYPE_BASHING))
-				{
-					mob.tell(L("You cannot break a limb with a @x1!",ww.name()));
+					mob.tell(L("You cannot scar anything without a weapon!"));
 					return false;
 				}
 				if(mob.isInCombat()&&(mob.rangeToTarget()>0))
@@ -549,7 +519,7 @@ public class Scarring extends StdAbility implements LimbDamage, HealthCondition
 				}
 				if(!CMLib.flags().isBoundOrHeld(target))
 				{
-					mob.tell(L("@x1 must be bound before you can break @x2 limbs.",target.charStats().HeShe(),target.charStats().hisher()));
+					mob.tell(L("@x1 must be bound before you can scar @x2 limbs.",target.charStats().HeShe(),target.charStats().hisher()));
 					return false;
 				}
 			}
@@ -609,7 +579,7 @@ public class Scarring extends StdAbility implements LimbDamage, HealthCondition
 
 			final String scarredName = scarredStr;
 
-			final String str=auto?"":L("^F^<FIGHT^><S-NAME> break(s) <T-YOUPOSS> @x1!^</FIGHT^>^?",scarredName);
+			final String str=auto?"":L("^F^<FIGHT^><S-NAME> scar(s) <T-YOUPOSS> @x1!^</FIGHT^>^?",scarredName);
 			final int mask=(CMSecurity.isASysOp(mob)?CMMsg.MASK_MOVE:CMMsg.MSK_MALICIOUS_MOVE);
 			final CMMsg msg=CMClass.getMsg(mob,target,this,mask|CMMsg.TYP_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),str);
 			CMLib.color().fixSourceFightColor(msg);
@@ -639,7 +609,7 @@ public class Scarring extends StdAbility implements LimbDamage, HealthCondition
 				success=false;
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to break one of <T-YOUPOSS> limbs, but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to scar one of <T-YOUPOSS> limbs, but fail(s)."));
 		return success;
 	}
 }

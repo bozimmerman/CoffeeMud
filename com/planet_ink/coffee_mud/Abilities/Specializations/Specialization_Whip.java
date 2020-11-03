@@ -57,6 +57,7 @@ public class Specialization_Whip extends Specialization_Weapon
 	protected boolean isWeaponMatch(final Weapon W)
 	{
 		if((W.weaponClassification()==Weapon.CLASS_FLAILED)
+		&&((W.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LEATHER)
 		&&(W.name().toLowerCase().indexOf("whip")>0))
 			return true;
 		return false;

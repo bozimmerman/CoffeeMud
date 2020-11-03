@@ -132,7 +132,7 @@ public class Reliquist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Carpentry",0,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_Revoke",0,false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_DetectTraps",0,false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_Whiplash",0,false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_Whiplash",0,false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Thief_Pick",0,false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Bash",0,false);

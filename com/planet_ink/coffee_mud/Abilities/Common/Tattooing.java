@@ -228,7 +228,8 @@ public class Tattooing extends CommonSkill
 			if(T.getTattooName().startsWith(wornName.toUpperCase()+":"))
 			{
 				numTattsDone++;
-				if(T.getTattooName().substring(wornName.length()+1).toUpperCase().startsWith("A TATTOO OF"))
+				if(T.getTattooName().substring(wornName.length()+1).toUpperCase().startsWith("A TATTOO OF")
+				||T.getTattooName().substring(wornName.length()+1).toUpperCase().startsWith("A SCARRED"))
 					tatToRemove=T;
 			}
 		}
