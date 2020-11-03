@@ -116,9 +116,9 @@ public class Scarring extends StdAbility implements LimbDamage, HealthCondition
 		{
 			final List<String> keys;
 			final Map<String, Tattoo> m;
+			keys = affectedLimbNameSet();
 			synchronized(this)
 			{
-				keys = affectedLimbNameSet();
 				m=this.scarredLimbs;
 			}
 			if((keys.size()>0)
@@ -289,14 +289,18 @@ public class Scarring extends StdAbility implements LimbDamage, HealthCondition
 				final String s=scarredLimbsList.get(v).toUpperCase();
 				left=s.startsWith("LEFT ");
 				right=s.startsWith("RIGHT ");
-				code=Race.BODYPARTHASH.get(s.substring(right?6:left?5:0).trim());
-				if(code!=null)
+				final String subS=s.substring(right?6:left?5:0).trim();
+				for(int c=0;c<Race.BODY_PARTS;c++)
 				{
-					scarredParts[code.intValue()]--;
-					final long wearLoc = Race.BODY_WEARVECTOR[code.intValue()];
-					final Tattoo T=(Tattoo)CMClass.getCommon("Defaulttattoo");
-					T.set(Wearable.CODES.NAME(wearLoc)+": "+L("a scarred "+scarredLimbsList.get(v).toLowerCase()));
-					scarredLimbs.put(s, T);
+					if(this.getProperPartName(c).equalsIgnoreCase(subS))
+					{
+						code=Integer.valueOf(c);
+						scarredParts[c]--;
+						final long wearLoc = Race.BODY_WEARVECTOR[code.intValue()];
+						final Tattoo T=(Tattoo)CMClass.getCommon("Defaulttattoo");
+						T.set(Wearable.CODES.NAME(wearLoc)+": "+L("a scarred "+scarredLimbsList.get(v).toLowerCase()));
+						scarredLimbs.put(s, T);
+					}
 				}
 			}
 		}
@@ -431,9 +435,9 @@ public class Scarring extends StdAbility implements LimbDamage, HealthCondition
 
 		List<String> theRest;
 		final Map<String,Tattoo> scarredLimbs;
+		theRest = affectedLimbNameSet();
 		synchronized(this)
 		{
-			theRest = affectedLimbNameSet();
 			scarredLimbs=this.scarredLimbs;
 		}
 		if((scarredLimbs != null)
@@ -606,7 +610,8 @@ public class Scarring extends StdAbility implements LimbDamage, HealthCondition
 			final String scarredName = scarredStr;
 
 			final String str=auto?"":L("^F^<FIGHT^><S-NAME> break(s) <T-YOUPOSS> @x1!^</FIGHT^>^?",scarredName);
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),str);
+			final int mask=(CMSecurity.isASysOp(mob)?CMMsg.MASK_MOVE:CMMsg.MSK_MALICIOUS_MOVE);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,mask|CMMsg.TYP_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),str);
 			CMLib.color().fixSourceFightColor(msg);
 			if(target.location().okMessage(target,msg))
 			{

@@ -24,7 +24,12 @@ public class MapKeyList<K, L> extends XVector<K>
 
 	public MapKeyList(final Map<K, L> map)
 	{
-		super(map.keySet());
+		super((map==null)?0:map.size(),true);
+		if (map != null)
+		{
+			for (final K o : map.keySet())
+				super.add(o);
+		}
 		this.m=map;
 	}
 	@Override
