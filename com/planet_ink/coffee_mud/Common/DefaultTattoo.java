@@ -66,6 +66,15 @@ public class DefaultTattoo implements Tattoo
 	}
 
 	/**
+	 * @param tickDown the tickDown
+	 */
+	@Override
+	public final void setTickDown(final int tickDown)
+	{
+		this.tickDown = tickDown;
+	}
+
+	/**
 	 * @return the tickDown
 	 */
 	@Override

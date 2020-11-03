@@ -48,6 +48,12 @@ public interface Tattoo extends Cloneable, CMObject, CMCommon
 	public int getTickDown();
 
 	/**
+	 * Sets the current tick down, or resets it
+	 * @param tickDown the number of ticks
+	 */
+	public void setTickDown(final int tickDown);
+
+	/**
 	 * Reduces the tick down by one and returns the new value
 	 * @return the new tick down
 	 */

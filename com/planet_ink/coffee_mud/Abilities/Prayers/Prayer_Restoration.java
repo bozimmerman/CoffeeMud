@@ -87,6 +87,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 			(item.fetchEffect("Amputation")!=null)
 		||(item.fetchEffect("Injury")!=null)
 		||(item.fetchEffect("BrokenLimbs")!=null)
+		||(item.fetchEffect("Scarring")!=null)
 		||(item.fetchEffect("Fighter_AtemiStrike")!=null)
 		||(item.fetchEffect("Undead_EnergyDrain")!=null)
 		||(item.fetchEffect("Undead_WeakEnergyDrain")!=null)
@@ -172,6 +173,13 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 					target.recoverCharStats();
 					target.recoverPhyStats();
 					target.recoverMaxState();
+				}
+				A = target.fetchEffect("Scarring");
+				if (A != null)
+				{
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> scars clear up!"));
+					A.unInvoke();
+					target.delEffect(A);
 				}
 
 				A=target.fetchEffect("BrokenLimbs");

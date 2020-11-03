@@ -335,6 +335,12 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 						brok.unInvoke();
 						target.delEffect(brok);
 					}
+					final Ability scarA = target.fetchEffect("Scarring");
+					if (scarA != null)
+					{
+						scarA.unInvoke();
+						target.delEffect(scarA);
+					}
 
 					target.recoverMaxState();
 					target.resetToMaxState();
