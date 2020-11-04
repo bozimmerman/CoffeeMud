@@ -164,7 +164,7 @@ public class Prayer_Fluency extends Prayer
 	public void unInvoke()
 	{
 		final MOB mob=(MOB)affected;
-		if(canBeUninvoked())
+		if(canBeUninvoked() && (mob!=null))
 			mob.tell(L("Your fluency fades."));
 		super.unInvoke();
 	}

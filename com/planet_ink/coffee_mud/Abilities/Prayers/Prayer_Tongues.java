@@ -158,7 +158,7 @@ public class Prayer_Tongues extends Prayer
 	public void unInvoke()
 	{
 		final MOB mob=(MOB)affected;
-		if(canBeUninvoked())
+		if(canBeUninvoked() && (mob!=null))
 			mob.tell(L("The tongues curse is lifted."));
 		super.unInvoke();
 	}
