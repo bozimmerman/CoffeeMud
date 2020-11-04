@@ -69,7 +69,6 @@ public class Prayer_ReadPrayer extends Prayer implements Scroll.ScrollUsage
 		return Ability.ACODE_PRAYER;
 	}
 
-
 	@Override
 	public long flags()
 	{
@@ -87,7 +86,6 @@ public class Prayer_ReadPrayer extends Prayer implements Scroll.ScrollUsage
 	{
 		return Ability.QUALITY_INDIFFERENT;
 	}
-
 
 	@Override
 	public boolean appropriateToMyFactions(final MOB mob)

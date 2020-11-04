@@ -116,6 +116,7 @@ public class Thief_Whiplash extends ThiefSkill
 		&&(msg.amITarget(target))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.tool()==mob.fetchWieldedItem())
+		&&(msg.tool()!=null)
 		&&(msg.value()>0))
 		{
 			if((gone!=null)&&(gone.length()>0))
@@ -127,9 +128,11 @@ public class Thief_Whiplash extends ThiefSkill
 					if(scarredA!=null)
 						target.addNonUninvokableEffect(scarredA);
 				}
-				mob.location().show(mob, msg.target(), CMMsg.MSG_OK_VISUAL, L("<S-YOUPOSS> attack scar(s) <T-NAME>"));
+				mob.location().show(mob, msg.target(), CMMsg.MSG_OK_VISUAL, L("<S-YOUPOSS> attack scar(s) <T-NAME>."));
 				scarredA.damageLimb(gone);
 			}
+			else
+				mob.location().show(mob, msg.target(), CMMsg.MSG_OK_VISUAL, L("<S-YOUPOSS> @x1 attack goes CRACK!",msg.tool().name()));
 			unInvoke();
 		}
 		return super.okMessage(myHost,msg);
@@ -299,7 +302,7 @@ public class Thief_Whiplash extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,L("^F^<FIGHT^><S-NAME> aim(s) a whiplash at <T-NAME>!^</FIGHT^>^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,L("^F^<FIGHT^><S-NAME> wind(s) up to whiplash <T-NAME>!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{

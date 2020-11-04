@@ -127,11 +127,14 @@ public class Scarring extends StdAbility implements LimbDamage, HealthCondition
 				for(final String key : keys)
 				{
 					final Tattoo T=m.get(key);
-					final Tattoo mT = mob.findTattoo(T.name());
-					if(mT != null)
-						mT.setTickDown(tempDuration);
-					else
-						mob.addTattoo(T.name() ,tempDuration);
+					if(T!=null)
+					{
+						final Tattoo mT = mob.findTattoo(T.name());
+						if(mT != null)
+							mT.setTickDown(tempDuration);
+						else
+							mob.addTattoo(T.name() ,tempDuration);
+					}
 				}
 			}
 		}
