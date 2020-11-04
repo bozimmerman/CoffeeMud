@@ -137,8 +137,8 @@ public class Reliquist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Thief_Pick",0,false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Bash",0,false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_StorePrayer",false); // special A
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_Tongues",false); // special A
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_Fluency",false); // special A
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_Tongues",false); // special A
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_Fluency",false); // special A
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Prayercraft",0,true);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_SenseDevotion",false);
@@ -242,6 +242,8 @@ public class Reliquist extends Thief
 		affectableStats.setStat(CharStats.STAT_SAVE_MAGIC, affectableStats.getStat(CharStats.STAT_SAVE_MAGIC) + affectableStats.getClassLevel(this));
 		if(CMath.bset(affected.basePhyStats().disposition(),PhyStats.IS_BONUS))
 			affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+30);
+		if(affectableStats.getCurrentClass()==this)
+			affectableStats.setStat(CharStats.STAT_SAVE_TRAPS,affectableStats.getStat(CharStats.STAT_SAVE_TRAPS)+5+affectableStats.getClassLevel(this));
 	}
 
 	@Override

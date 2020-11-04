@@ -19,7 +19,7 @@
  18. Achievements now support expiration/duration.
  19. More new faction change events: all coffeemud message (CMMsg) types.
  20. New Thief Skills: Mask Faith, False Faith, Graverobbing, Repurpose Text, Whiplash
- 21. New Prayers: Deplete Scroll, Attune Scroll, Empower Scroll
+ 21. New Prayers: Deplete Scroll, Attune Scroll, Empower Scroll, Tongues, Fluency
  22. Zappermasks now support +-WEEK, +-DAYOFYEAR, +-YEAR, +-WEEKOFYEAR, and X or Y or Xnd Y syntax
  23. New injury system: Scarring
 # Build 5.9.10 Release 6/16/2020
