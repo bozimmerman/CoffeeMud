@@ -84,6 +84,12 @@ public class Reliquist extends Thief
 	}
 
 	@Override
+	public int maxLanguages()
+	{
+		return CMProps.getIntVar(CMProps.Int.MAXLANGUAGES) * 5;
+	}
+
+	@Override
 	public String getOtherBonusDesc()
 	{
 		return L("Magic resistance, 1%/level.  Huge discounts when buying holy potions after 5th level.  Ability to memorize spells learned through PrayerCraft. "
@@ -141,13 +147,13 @@ public class Reliquist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_Fluency",false); // special A
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Prayercraft",0,true);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_SenseDevotion",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_SenseDevotion",false);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_UnearthClues",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Fighter_HammerRing",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_DecipherScript",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_SenseMagic",true);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_EmpowerShield",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_EmpowerShield",true);
 
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Thief_BorrowBoon",true); // i don't like this being a skill
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Thief_RemoveTraps",false);
