@@ -148,7 +148,7 @@ public class Reliquist extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Prayercraft",0,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_SenseDevotion",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_UnearthClues",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_UnearthDemography",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Fighter_HammerRing",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_DecipherScript",false);
