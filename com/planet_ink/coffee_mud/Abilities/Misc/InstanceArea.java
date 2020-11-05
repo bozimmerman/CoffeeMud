@@ -140,6 +140,7 @@ public class InstanceArea extends StdAbility
 	protected static enum InstVar
 	{
 		ID,
+		DISPLAY,
 		ALIGNMENT,
 		PREFIX,
 		LEVELADJ,
@@ -2340,6 +2341,42 @@ public class InstanceArea extends StdAbility
 				destroyInstance(instArea);
 		}
 		super.unInvoke();
+	}
+
+	protected String findDisplayNameFor(final String playerName, final String instanceID)
+	{
+		final MOB M=CMLib.players().getPlayerAllHosts(playerName);
+		if(M != null)
+		{
+			final InstanceArea A=(InstanceArea)copyOf();
+			A.setAffectedOne(null);
+			A.leaderMob=new WeakReference<MOB>(M);
+			A.setMiscText("LIKE=\""+instanceID+"\"");
+			final Map<String,String> vars = A.getInstVars(instanceID);
+			if((vars != null) && (vars.containsKey(InstVar.DISPLAY.toString())))
+				return vars.get(InstVar.DISPLAY.toString());
+		}
+		return "";
+	}
+
+	@Override
+	public String getStat(final String code)
+	{
+		if(code == null)
+			return "";
+		final int x=code.indexOf(' ');
+		if(x<0)
+			return super.getStat(code);
+		final String specialStat = code.substring(0,x).toUpperCase().trim();
+		final List<String> restStatV=CMParms.parse(code.substring(x+1).trim());
+		if(specialStat.equals("SELECT-DISPLAYFOR")
+		&&(restStatV.size()==2))
+			return findDisplayNameFor(restStatV.get(0), restStatV.get(1));
+		else
+		if((specialStat.equals("DISPLAYFOR"))
+		&&(restStatV.size()==1))
+			return findDisplayNameFor(restStatV.get(0), this.instTypeID);
+		return super.getStat(code);
 	}
 
 	@Override

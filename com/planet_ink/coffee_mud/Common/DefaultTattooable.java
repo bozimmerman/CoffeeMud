@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-public class DefaultTattooable implements Tattooable
+public class DefaultTattooable implements Tattooable, CMCommon
 {
 	@Override
 	public String ID()
