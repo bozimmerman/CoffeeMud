@@ -3089,17 +3089,11 @@ mpacctattoo $n '50 smurfkiller'<br />
 <p>Usage:</p>
 <pre>mpaffect [spell name] [target] [parameters]<br /></pre>
 <p>This command will put the
-target under the affect of the given
-spell, chant, prayer, song, skill, or CoffeeMud property. This is not
-the same as someone casting the given spell on the target. Instead,
-this command causes the target simply to come under the affect (as if
-the whole casting process were skipped). This means that not all spells
-will work with this command. Fireball, for instance, since it has no
-effect after casting, would do nothing under this command. The
+target under the affect of the given Ability (spell, chant, prayer, song, skill, or CoffeeMud property). &nbsp; Properties will be applied normally, while non-properties will be auto-cast. &nbsp;The spell name can be prefixed with <span style="font-weight: bold;">property:</span> to force even non-Properties to be applied without auto-casting or any invokation at all. &nbsp; The
 parameters given apply specifically to CoffeeMud properties, and are
 unnecessary for most spells, chants, etc.</p>
 <p>EXAMPLES:</p>
-<pre>mpaffect Invisibility $n<br />mpaffect Prop_PracticeDummy $n KILLABLE<br /></pre>
+<pre>mpaffect Invisibility $n<br />mpaffect property:Invisibility $n<br />mpaffect Prop_PracticeDummy $n KILLABLE<br /></pre>
 <h3><a name="mpalarm">mpalarm</a></h3>
 <p>Usage:</p>
 <pre>mpalarm [ticks] [command]<br /></pre>

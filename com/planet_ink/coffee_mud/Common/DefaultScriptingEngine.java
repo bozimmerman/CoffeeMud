@@ -10772,8 +10772,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final Physical newTarget=getArgumentItem(tt[2],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				final String m2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
 				Ability A=null;
+				boolean alwaysAffect=false;
 				if(cast!=null)
+				{
 					A=findAbility(cast);
+					if((A==null)&&(cast.toLowerCase().startsWith("property:")))
+					{
+						A=findAbility(cast.substring(9));
+						alwaysAffect=true;
+					}
+				}
 				if((A==null)||(cast==null)||(cast.length()==0))
 					logError(scripted,"MPAFFECT","RunTime",cast+" is not a valid ability name.");
 				else
@@ -10782,8 +10790,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
 						Log.sysOut("Scripting",newTarget.Name()+" was MPAFFECTED by "+A.Name());
 					A.setMiscText(m2);
-					if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)
+					if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY) || (alwaysAffect))
+					{
+						if(alwaysAffect)
+							A.setInvoker(monster);
 						newTarget.addNonUninvokableEffect(A);
+					}
 					else
 					{
 						if((monster != scripted)
