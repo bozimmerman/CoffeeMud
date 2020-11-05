@@ -88,6 +88,19 @@ public interface DatabaseEngine extends CMLibrary
 	}
 
 	/**
+	 * Flags for reading room content
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static enum ReadRoomDisableFlag
+	{
+		STATUS,
+		LIVE,
+		MOBS,
+		ITEMS
+	}
+
+	/**
 	 * Returns the database status, formatted for html.
 	 * @return the database status, formatted for html.
 	 */
@@ -171,6 +184,28 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param makeLive true to bring the mobs to life, false to leave them dead.
 	 */
 	public void DBReadContent(String roomID, Room thisRoom, boolean makeLive);
+
+	/**
+	 * Table category: DBMAP
+	 * This method is used to load the content (mobs only) of the
+	 * given room id into the given room object, without activating
+	 * the contents to live use.  startItemRejuv() is not called also.
+	 *
+	 * @param roomID the id of the room to load
+	 * @param thisRoom the room object to load the content into (required!)
+	 */
+	public void DBReadMobContent(final String roomID, final Room thisRoom);
+
+	/**
+	 * Table category: DBMAP
+	 * This method is used to load the content (items only) of the
+	 * given room id into the given room object, without activating
+	 * the contents to live use.  startItemRejuv() is not called also.
+	 *
+	 * @param roomID the id of the room to load
+	 * @param thisRoom the room object to load the content into (required!)
+	 */
+	public void DBReadItemContent(final String roomID, final Room thisRoom);
 
 	/**
 	 * Table category: DBMAP

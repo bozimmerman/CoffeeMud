@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.ReadRoomDisableFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.RoomContent;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -48,6 +49,10 @@ public class RoomLoader
 	}
 
 	private final static String zeroes="000000000000";
+
+	private final static Set<ReadRoomDisableFlag> noStatusReadRoomFlags=new XHashSet<ReadRoomDisableFlag>(ReadRoomDisableFlag.STATUS);
+	private final static Set<ReadRoomDisableFlag> noLiveReadRoomFlags=new XHashSet<ReadRoomDisableFlag>(ReadRoomDisableFlag.LIVE);
+	private final static Set<ReadRoomDisableFlag> allEnabledReadRoomFlags=new XHashSet<ReadRoomDisableFlag>();
 
 	protected static class StuffClass
 	{
@@ -151,7 +156,7 @@ public class RoomLoader
 
 		DBReadRoomExits(null,rooms,false,unloadedRooms);
 
-		DBReadContent(null,null,rooms,unloadedRooms,false,true);
+		DBReadContent(null,null,rooms,unloadedRooms,noStatusReadRoomFlags);
 
 		for(final Map.Entry<String,Room> entry : rooms.entrySet())
 		{
@@ -699,7 +704,8 @@ public class RoomLoader
 
 		DBReadRoomExits(null,rooms,set==null,unloadedRooms);
 
-		DBReadContent(null,null,rooms,unloadedRooms,set==null,true);
+		final Set<ReadRoomDisableFlag> flags=(set == null) ? RoomLoader.allEnabledReadRoomFlags : RoomLoader.noStatusReadRoomFlags;
+		DBReadContent(null,null,rooms,unloadedRooms,flags);
 
 		if(set==null)
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Finalizing room data");
@@ -957,13 +963,13 @@ public class RoomLoader
 
 	public void DBReadCatalogs()
 	{
-		DBReadContent("CATALOG_MOBS",null,null,null,true,false);
-		DBReadContent("CATALOG_ITEMS",null,null,null,true,false);
+		DBReadContent("CATALOG_MOBS",null,null,null,noLiveReadRoomFlags);
+		DBReadContent("CATALOG_ITEMS",null,null,null,noLiveReadRoomFlags);
 	}
 
 	public void DBReadSpace()
 	{
-		DBReadContent("SPACE",null,null,null,true,false);
+		DBReadContent("SPACE",null,null,null,noLiveReadRoomFlags);
 	}
 
 	public int[] DBCountRoomMobsItems(final String roomID)
@@ -1041,11 +1047,16 @@ public class RoomLoader
 		return false;
 	}
 
-	public void DBReadContent(final String thisRoomID, final Room thisRoom, Map<String, Room> rooms, final RoomnumberSet unloadedRooms, final boolean setStatus, final boolean makeLive)
+	public void DBReadContent(final String thisRoomID, final Room thisRoom, Map<String, Room> rooms, final RoomnumberSet unloadedRooms, final Set<ReadRoomDisableFlag> disableFlags)
 	{
 		final boolean debug=Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMPOP));
 		if(debug||(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS))))
 			Log.debugOut("RoomLoader","Reading content of "+((thisRoomID!=null)?thisRoomID:"ALL"));
+
+		final boolean setStatus = (disableFlags == null) || (!disableFlags.contains(ReadRoomDisableFlag.STATUS));
+		final boolean makeLive = (disableFlags == null) || (!disableFlags.contains(ReadRoomDisableFlag.LIVE));
+		final boolean readMobs = (disableFlags == null) || (!disableFlags.contains(ReadRoomDisableFlag.MOBS));
+		final boolean readItems = (disableFlags == null) || (!disableFlags.contains(ReadRoomDisableFlag.ITEMS));
 
 		final StuffClass stuff=new StuffClass();
 		Hashtable<String,PhysicalAgent> itemNums=null;
@@ -1057,170 +1068,66 @@ public class RoomLoader
 		final boolean space=((thisRoomID!=null)&&(thisRoomID.equals("SPACE")));
 
 		DBConnection D=null;
-		// now grab the items
-		try
+
+		if(readItems)
 		{
-			D=DB.DBFetch();
-			if(setStatus)
-				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Counting Items");
-			final ResultSet R=D.query("SELECT * FROM CMROIT"+((thisRoomID==null)?"":" WHERE CMROID='"+thisRoomID+"'"));
-			if(setStatus)
-				recordCount=DB.getRecordCount(D,R);
-			updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
-			while(R.next())
+			// now grab the items
+			try
 			{
-				currentRecordPos=R.getRow();
-				final String roomID=DBConnections.getRes(R,"CMROID");
-				if((unloadedRooms!=null)&&(unloadedRooms.contains(roomID)))
-					continue;
-				if((!catalog)&&(roomID.startsWith("CATALOG_")))
-					continue;
-				if((!space)&&(roomID.startsWith("SPACE")))
-					continue;
-				itemNums=stuff.itemNums.get("NUMSFOR"+roomID.toUpperCase());
-				if(itemNums==null)
+				D=DB.DBFetch();
+				if(setStatus)
+					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Counting Items");
+				final ResultSet R=D.query("SELECT * FROM CMROIT"+((thisRoomID==null)?"":" WHERE CMROID='"+thisRoomID+"'"));
+				if(setStatus)
+					recordCount=DB.getRecordCount(D,R);
+				updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
+				while(R.next())
 				{
-					itemNums=new Hashtable<String,PhysicalAgent>();
-					stuff.itemNums.put("NUMSFOR"+roomID.toUpperCase(),itemNums);
-				}
-				itemLocs=stuff.itemLocs.get("LOCSFOR"+roomID.toUpperCase());
-				if(itemLocs==null)
-				{
-					itemLocs=new Hashtable<Item,String>();
-					stuff.itemLocs.put("LOCSFOR"+roomID.toUpperCase(),itemLocs);
-				}
-				final String itemNum=DBConnections.getRes(R,"CMITNM");
-				final String itemID=DBConnections.getRes(R,"CMITID");
-				final Item newItem=CMClass.getItem(itemID);
-				if(newItem==null)
-					Log.errOut("Room","Couldn't find item '"+itemID+"' for room "+roomID);
-				else
-				{
-					newItem.setDatabaseID(itemNum);
-					itemNums.put(itemNum,newItem);
-					final Room room=(rooms!=null)?rooms.get(roomID):thisRoom;
-					newItem.setOwner(room); // temporary measure to make sure item behavior thread group is properly assigned
-					final String loc=DBConnections.getResQuietly(R,"CMITLO");
-					if(loc.length()>0)
+					currentRecordPos=R.getRow();
+					final String roomID=DBConnections.getRes(R,"CMROID");
+					if((unloadedRooms!=null)&&(unloadedRooms.contains(roomID)))
+						continue;
+					if((!catalog)&&(roomID.startsWith("CATALOG_")))
+						continue;
+					if((!space)&&(roomID.startsWith("SPACE")))
+						continue;
+					itemNums=stuff.itemNums.get("NUMSFOR"+roomID.toUpperCase());
+					if(itemNums==null)
 					{
-						final PhysicalAgent container=itemNums.get(loc);
-						if(container instanceof Container)
-							newItem.setContainer((Container)container);
-						else
-							itemLocs.put(newItem,loc);
+						itemNums=new Hashtable<String,PhysicalAgent>();
+						stuff.itemNums.put("NUMSFOR"+roomID.toUpperCase(),itemNums);
 					}
-					try
+					itemLocs=stuff.itemLocs.get("LOCSFOR"+roomID.toUpperCase());
+					if(itemLocs==null)
 					{
-						if(catalog)
+						itemLocs=new Hashtable<Item,String>();
+						stuff.itemLocs.put("LOCSFOR"+roomID.toUpperCase(),itemLocs);
+					}
+					final String itemNum=DBConnections.getRes(R,"CMITNM");
+					final String itemID=DBConnections.getRes(R,"CMITID");
+					final Item newItem=CMClass.getItem(itemID);
+					if(newItem==null)
+						Log.errOut("Room","Couldn't find item '"+itemID+"' for room "+roomID);
+					else
+					{
+						newItem.setDatabaseID(itemNum);
+						itemNums.put(itemNum,newItem);
+						final Room room=(rooms!=null)?rooms.get(roomID):thisRoom;
+						newItem.setOwner(room); // temporary measure to make sure item behavior thread group is properly assigned
+						final String loc=DBConnections.getResQuietly(R,"CMITLO");
+						if(loc.length()>0)
 						{
-							String text=DBConnections.getResQuietly(R,"CMITTX");
-							final int x=text.lastIndexOf("<CATALOGDATA");
-							if((x>0)&&(text.indexOf("</CATALOGDATA>",x)>0))
-							{
-								cataData=stuff.cataData.get("CATADATAFOR"+roomID.toUpperCase());
-								if(cataData==null)
-								{
-									cataData=new Hashtable<String,String>();
-									stuff.cataData.put("CATADATAFOR"+roomID.toUpperCase(),cataData);
-								}
-								cataData.put(itemNum,text.substring(x));
-								text=text.substring(0,x);
-							}
-							newItem.setMiscText(text);
+							final PhysicalAgent container=itemNums.get(loc);
+							if(container instanceof Container)
+								newItem.setContainer((Container)container);
+							else
+								itemLocs.put(newItem,loc);
 						}
-						else
-							newItem.setMiscText(DBConnections.getResQuietly(R,"CMITTX"));
-						if(newItem instanceof SpaceObject)
+						try
 						{
-							CMLib.map().addObjectToSpace((SpaceObject)newItem, ((SpaceObject) newItem).coordinates());
-						}
-						newItem.basePhyStats().setRejuv((int)DBConnections.getLongRes(R,"CMITRE"));
-						newItem.setUsesRemaining((int)DBConnections.getLongRes(R,"CMITUR"));
-						newItem.basePhyStats().setLevel((int)DBConnections.getLongRes(R,"CMITLV"));
-						newItem.basePhyStats().setAbility((int)DBConnections.getLongRes(R,"CMITAB"));
-						newItem.basePhyStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
-						newItem.recoverPhyStats();
-					}
-					catch (final Exception e)
-					{
-						Log.errOut("RoomLoader", e);
-						itemNums.remove(itemNum);
-					}
-				}
-				if(((currentRecordPos%updateBreak)==0)&&(setStatus))
-					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Loading Items ("+currentRecordPos+" of "+recordCount+")");
-			}
-		}
-		catch(final SQLException sqle)
-		{
-			Log.errOut("Room",sqle);
-		}
-		finally
-		{
-			DB.DBDone(D);
-		}
-
-		// now grab the inhabitants
-		try
-		{
-			D=DB.DBFetch();
-			if(setStatus)
-				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Counting MOBS");
-			final ResultSet R=D.query("SELECT * FROM CMROCH"+((thisRoomID==null)?"":" WHERE CMROID='"+thisRoomID+"'"));
-			if(setStatus)
-				recordCount=DB.getRecordCount(D,R);
-			updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
-			while(R.next())
-			{
-				currentRecordPos=R.getRow();
-				final String roomID=DBConnections.getRes(R,"CMROID");
-				if((unloadedRooms!=null)&&(unloadedRooms.contains(roomID)))
-					continue;
-				if((!catalog)&&(roomID.startsWith("CATALOG_")))
-					continue;
-				if((!space) && roomID.equals("SPACE"))
-					continue;
-				final String NUMID=DBConnections.getRes(R,"CMCHNM");
-				final String MOBID=DBConnections.getRes(R,"CMCHID");
-
-				itemNums=stuff.itemNums.get("NUMSFOR"+roomID.toUpperCase());
-				if(itemNums==null)
-				{
-					itemNums=new Hashtable<String,PhysicalAgent>();
-					stuff.itemNums.put("NUMSFOR"+roomID.toUpperCase(),itemNums);
-				}
-				mobRides=stuff.mobRides.get("RIDESFOR"+roomID.toUpperCase());
-				if(mobRides==null)
-				{
-					mobRides=new Hashtable<MOB, String>();
-					stuff.mobRides.put("RIDESFOR"+roomID.toUpperCase(),mobRides);
-				}
-
-				final MOB newMOB=CMClass.getMOB(MOBID);
-				if(newMOB==null)
-					Log.errOut("Room","Couldn't find MOB '"+MOBID+"' in room " + roomID);
-				else
-				{
-					final Room room=(rooms!=null)?rooms.get(roomID):thisRoom;
-					newMOB.setLocation(room); // temporary measure to make sure thread group is properly assigned
-					newMOB.setDatabaseID(NUMID);
-					itemNums.put(NUMID,newMOB);
-					if(thisRoom!=null)
-					{
-						newMOB.setStartRoom(thisRoom);
-						newMOB.setLocation(thisRoom);
-					}
-					try
-					{
-						if((CMProps.getBoolVar(CMProps.Bool.MOBNOCACHE))
-						&&(!catalog)
-						&&(NUMID.indexOf(MOBID+"@")>=0))
-							newMOB.setMiscText("%DBID>"+roomID+NUMID.substring(NUMID.indexOf('@')));
-						else
-						{
-							String text=DBConnections.getResQuietly(R,"CMCHTX");
 							if(catalog)
 							{
+								String text=DBConnections.getResQuietly(R,"CMITTX");
 								final int x=text.lastIndexOf("<CATALOGDATA");
 								if((x>0)&&(text.indexOf("</CATALOGDATA>",x)>0))
 								{
@@ -1230,44 +1137,155 @@ public class RoomLoader
 										cataData=new Hashtable<String,String>();
 										stuff.cataData.put("CATADATAFOR"+roomID.toUpperCase(),cataData);
 									}
-									cataData.put(NUMID,text.substring(x));
+									cataData.put(itemNum,text.substring(x));
 									text=text.substring(0,x);
 								}
+								newItem.setMiscText(text);
 							}
-							newMOB.setMiscText(text);
+							else
+								newItem.setMiscText(DBConnections.getResQuietly(R,"CMITTX"));
+							if(newItem instanceof SpaceObject)
+							{
+								CMLib.map().addObjectToSpace((SpaceObject)newItem, ((SpaceObject) newItem).coordinates());
+							}
+							newItem.basePhyStats().setRejuv((int)DBConnections.getLongRes(R,"CMITRE"));
+							newItem.setUsesRemaining((int)DBConnections.getLongRes(R,"CMITUR"));
+							newItem.basePhyStats().setLevel((int)DBConnections.getLongRes(R,"CMITLV"));
+							newItem.basePhyStats().setAbility((int)DBConnections.getLongRes(R,"CMITAB"));
+							newItem.basePhyStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
+							newItem.recoverPhyStats();
 						}
-						newMOB.basePhyStats().setLevel(((int)DBConnections.getLongRes(R,"CMCHLV")));
-						newMOB.basePhyStats().setAbility((int)DBConnections.getLongRes(R,"CMCHAB"));
-						newMOB.basePhyStats().setRejuv((int)DBConnections.getLongRes(R,"CMCHRE"));
-						final String ride=DBConnections.getRes(R,"CMCHRI");
-						if((ride!=null)&&(ride.length()>0))
-							mobRides.put(newMOB,ride);
-						if(newMOB instanceof SpaceObject)
+						catch (final Exception e)
 						{
-							CMLib.map().addObjectToSpace((SpaceObject)newMOB, ((SpaceObject) newMOB).coordinates());
+							Log.errOut("RoomLoader", e);
+							itemNums.remove(itemNum);
 						}
-						newMOB.recoverCharStats();
-						newMOB.recoverPhyStats();
-						newMOB.recoverMaxState();
-						newMOB.resetToMaxState();
 					}
-					catch (final Exception e)
-					{
-						Log.errOut("RoomLoader", e);
-						itemNums.remove(NUMID);
-					}
+					if(((currentRecordPos%updateBreak)==0)&&(setStatus))
+						CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Loading Items ("+currentRecordPos+" of "+recordCount+")");
 				}
-				if(((currentRecordPos%updateBreak)==0)&&(setStatus))
-					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Loading MOBs ("+currentRecordPos+" of "+recordCount+")");
+			}
+			catch(final SQLException sqle)
+			{
+				Log.errOut("Room",sqle);
+			}
+			finally
+			{
+				DB.DBDone(D);
 			}
 		}
-		catch(final SQLException sqle)
+
+		if(readMobs)
 		{
-			Log.errOut("Room",sqle);
-		}
-		finally
-		{
-			DB.DBDone(D);
+			// now grab the inhabitants
+			try
+			{
+				D=DB.DBFetch();
+				if(setStatus)
+					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Counting MOBS");
+				final ResultSet R=D.query("SELECT * FROM CMROCH"+((thisRoomID==null)?"":" WHERE CMROID='"+thisRoomID+"'"));
+				if(setStatus)
+					recordCount=DB.getRecordCount(D,R);
+				updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
+				while(R.next())
+				{
+					currentRecordPos=R.getRow();
+					final String roomID=DBConnections.getRes(R,"CMROID");
+					if((unloadedRooms!=null)&&(unloadedRooms.contains(roomID)))
+						continue;
+					if((!catalog)&&(roomID.startsWith("CATALOG_")))
+						continue;
+					if((!space) && roomID.equals("SPACE"))
+						continue;
+					final String NUMID=DBConnections.getRes(R,"CMCHNM");
+					final String MOBID=DBConnections.getRes(R,"CMCHID");
+
+					itemNums=stuff.itemNums.get("NUMSFOR"+roomID.toUpperCase());
+					if(itemNums==null)
+					{
+						itemNums=new Hashtable<String,PhysicalAgent>();
+						stuff.itemNums.put("NUMSFOR"+roomID.toUpperCase(),itemNums);
+					}
+					mobRides=stuff.mobRides.get("RIDESFOR"+roomID.toUpperCase());
+					if(mobRides==null)
+					{
+						mobRides=new Hashtable<MOB, String>();
+						stuff.mobRides.put("RIDESFOR"+roomID.toUpperCase(),mobRides);
+					}
+
+					final MOB newMOB=CMClass.getMOB(MOBID);
+					if(newMOB==null)
+						Log.errOut("Room","Couldn't find MOB '"+MOBID+"' in room " + roomID);
+					else
+					{
+						final Room room=(rooms!=null)?rooms.get(roomID):thisRoom;
+						newMOB.setLocation(room); // temporary measure to make sure thread group is properly assigned
+						newMOB.setDatabaseID(NUMID);
+						itemNums.put(NUMID,newMOB);
+						if(thisRoom!=null)
+						{
+							newMOB.setStartRoom(thisRoom);
+							newMOB.setLocation(thisRoom);
+						}
+						try
+						{
+							if((CMProps.getBoolVar(CMProps.Bool.MOBNOCACHE))
+							&&(!catalog)
+							&&(NUMID.indexOf(MOBID+"@")>=0))
+								newMOB.setMiscText("%DBID>"+roomID+NUMID.substring(NUMID.indexOf('@')));
+							else
+							{
+								String text=DBConnections.getResQuietly(R,"CMCHTX");
+								if(catalog)
+								{
+									final int x=text.lastIndexOf("<CATALOGDATA");
+									if((x>0)&&(text.indexOf("</CATALOGDATA>",x)>0))
+									{
+										cataData=stuff.cataData.get("CATADATAFOR"+roomID.toUpperCase());
+										if(cataData==null)
+										{
+											cataData=new Hashtable<String,String>();
+											stuff.cataData.put("CATADATAFOR"+roomID.toUpperCase(),cataData);
+										}
+										cataData.put(NUMID,text.substring(x));
+										text=text.substring(0,x);
+									}
+								}
+								newMOB.setMiscText(text);
+							}
+							newMOB.basePhyStats().setLevel(((int)DBConnections.getLongRes(R,"CMCHLV")));
+							newMOB.basePhyStats().setAbility((int)DBConnections.getLongRes(R,"CMCHAB"));
+							newMOB.basePhyStats().setRejuv((int)DBConnections.getLongRes(R,"CMCHRE"));
+							final String ride=DBConnections.getRes(R,"CMCHRI");
+							if((ride!=null)&&(ride.length()>0))
+								mobRides.put(newMOB,ride);
+							if(newMOB instanceof SpaceObject)
+							{
+								CMLib.map().addObjectToSpace((SpaceObject)newMOB, ((SpaceObject) newMOB).coordinates());
+							}
+							newMOB.recoverCharStats();
+							newMOB.recoverPhyStats();
+							newMOB.recoverMaxState();
+							newMOB.resetToMaxState();
+						}
+						catch (final Exception e)
+						{
+							Log.errOut("RoomLoader", e);
+							itemNums.remove(NUMID);
+						}
+					}
+					if(((currentRecordPos%updateBreak)==0)&&(setStatus))
+						CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Loading MOBs ("+currentRecordPos+" of "+recordCount+")");
+				}
+			}
+			catch(final SQLException sqle)
+			{
+				Log.errOut("Room",sqle);
+			}
+			finally
+			{
+				DB.DBDone(D);
+			}
 		}
 		if(thisRoom!=null)
 		{

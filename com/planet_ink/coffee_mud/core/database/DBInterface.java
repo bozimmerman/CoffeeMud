@@ -26,6 +26,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.AckRecord;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.AckStats;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.ReadRoomDisableFlag;
 /*
    Copyright 2004-2020 Bo Zimmerman
 
@@ -418,10 +419,33 @@ public class DBInterface implements DatabaseEngine
 		RoomLoader.DBReadSpace();
 	}
 
+	private final static Set<ReadRoomDisableFlag> dbReadContentMakeLiveFlags=new XHashSet<ReadRoomDisableFlag>(ReadRoomDisableFlag.STATUS);
+	private final static Set<ReadRoomDisableFlag> dbReadContentMakeDeadFlags=new XHashSet<ReadRoomDisableFlag>(
+			new ReadRoomDisableFlag[] { ReadRoomDisableFlag.STATUS, ReadRoomDisableFlag.LIVE }
+	);
+	private final static Set<ReadRoomDisableFlag> dbReadContentMobFlags=new XHashSet<ReadRoomDisableFlag>(
+			new ReadRoomDisableFlag[] { ReadRoomDisableFlag.STATUS, ReadRoomDisableFlag.LIVE, ReadRoomDisableFlag.ITEMS }
+	);
+	private final static Set<ReadRoomDisableFlag> dbReadContentItemFlags=new XHashSet<ReadRoomDisableFlag>(
+			new ReadRoomDisableFlag[] { ReadRoomDisableFlag.STATUS, ReadRoomDisableFlag.LIVE, ReadRoomDisableFlag.MOBS }
+	);
+
 	@Override
 	public void DBReadContent(final String roomID, final Room thisRoom, final boolean makeLive)
 	{
-		RoomLoader.DBReadContent(roomID, thisRoom, null, null, false, makeLive);
+		RoomLoader.DBReadContent(roomID, thisRoom, null, null,  makeLive?dbReadContentMakeLiveFlags:dbReadContentMakeDeadFlags);
+	}
+
+	@Override
+	public void DBReadMobContent(final String roomID, final Room thisRoom)
+	{
+		RoomLoader.DBReadContent(roomID, thisRoom, null, null,  dbReadContentMobFlags);
+	}
+
+	@Override
+	public void DBReadItemContent(final String roomID, final Room thisRoom)
+	{
+		RoomLoader.DBReadContent(roomID, thisRoom, null, null,  dbReadContentItemFlags);
 	}
 
 	@Override
