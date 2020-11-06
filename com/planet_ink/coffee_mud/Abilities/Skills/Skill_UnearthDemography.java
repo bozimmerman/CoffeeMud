@@ -486,10 +486,47 @@ public class Skill_UnearthDemography extends StdAbility
 				if(!this.knownAreaInfo.containsKey(workA.Name()))
 					this.knownAreaInfo.put(workA.Name(), new TreeMap<String,Map<DemogField,String>>());
 				final Map<String,Map<DemogField,String>> myInfo = this.knownAreaInfo.get(workA.Name());
-				final List<String> raceNames = new XArrayList<String>(this.unearthedableKnowledge.keySet());
+				List<String> raceNames = new XArrayList<String>(this.unearthedableKnowledge.keySet());
 				if(raceNames.size()>0)
 				{
-					final String raceName = raceNames.get(CMLib.dice().roll(1, raceNames.size(), -1));
+					final double points = (1 + (adjustedLevel(invoker(),0) / 10)) + super.getXLEVELLevel(invoker());
+					final double maxPoints = 10 + CMath.div(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL),10.0);
+					String raceName;
+					if(points >= myInfo.size())
+					{
+						Collections.sort(raceNames, new Comparator<String>()
+						{
+							@Override
+							public int compare(final String o1, final String o2)
+							{
+								final int l1=CMath.s_int(unearthedableKnowledge.get(o1).get(DemogField.COUNT));
+								final int l2=CMath.s_int(unearthedableKnowledge.get(o1).get(DemogField.COUNT));
+								if(l1>l2)
+									return -1;
+								else
+								if(l1<l2)
+									return 1;
+								return 0;
+							}
+						});
+						raceName=null;
+						for(final String r : raceNames)
+						{
+							if(!myInfo.containsKey(r) || (myInfo.get(r).size()==0))
+							{
+								raceName=r;
+								break;
+							}
+						}
+						if(raceName == null)
+							raceName = raceNames.get(CMLib.dice().roll(1, raceNames.size(), -1));
+					}
+					else
+					{
+						raceNames = new XArrayList<String>(myInfo.keySet());
+						raceName = raceNames.get(CMLib.dice().roll(1, raceNames.size(), -1));
+					}
+
 					if(!unearthedableKnowledge.containsKey(raceName))
 						unearthedableKnowledge.put(raceName, new TreeMap<DemogField,String>());
 					final Map<DemogField,String> theFields = unearthedableKnowledge.get(raceName);
@@ -500,7 +537,7 @@ public class Skill_UnearthDemography extends StdAbility
 					final DemogField field = DemogField.values()[fieldOrdinal];
 					if(myFields.containsKey(field))
 						return "";
-					final int max=(int)Math.round(CMath.mul(DemogField.values().length, CMath.div(super.getXLEVELLevel(invoker()),10.0)))+1;
+					final int max=(int)Math.round(CMath.mul(DemogField.values().length, CMath.div(points,maxPoints)))+1;
 					if((myFields.size()>0)&&(myFields.size()>=max))
 						return "";
 					if(theFields.containsKey(field))
