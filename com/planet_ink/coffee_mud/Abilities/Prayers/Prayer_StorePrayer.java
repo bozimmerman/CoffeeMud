@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_StorePrayer extends Prayer
+public class Prayer_StorePrayer extends Prayer implements AbilityContainer
 {
 
 	@Override
@@ -53,18 +53,6 @@ public class Prayer_StorePrayer extends Prayer
 	{
 		if((affected!=null)&&(CMLib.flags().isInTheGame(affected,true)))
 		{
-			if(prayerName.length()==0)
-			{
-				prayerName="unknown";
-				final int x=text().indexOf('/');
-				Ability A=null;
-				if(x>0)
-				{
-					A=CMClass.getAbility(text().substring(0,x));
-					if(A!=null)
-						prayerName=A.name();
-				}
-			}
 			return "Store Prayer: "+prayerName;
 		}
 		return Name();
@@ -100,8 +88,65 @@ public class Prayer_StorePrayer extends Prayer
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
-	public String	prayerName		= "";
-	protected int	overridemana	= -1;
+	protected String prayerName		= "";
+	protected int	 overridemana	= -1;
+
+	protected String getPrayerName()
+	{
+		if(prayerName.length()==0)
+		{
+			prayerName="unknown";
+			final Ability A=fetchAbility(0);
+			if(A!=null)
+				prayerName=A.name();
+		}
+		return prayerName;
+	}
+
+	protected String getPrayerID()
+	{
+		final int x=text().indexOf('/');
+		if(x>0)
+			return text().substring(0,x);
+		return "";
+	}
+
+	protected int getCharges()
+	{
+		String argText=text();
+		int x=argText.indexOf('/');
+		if(x>0)
+		{
+			argText=argText.substring(x+1);
+			x=argText.indexOf('/');
+			if(x>0)
+				return CMath.s_int(argText.substring(0,x));
+			else
+				return CMath.s_int(argText);
+		}
+		return 0;
+	}
+
+	protected void setCharges(final int newCharges)
+	{
+		final String abilityID=getPrayerID();
+		final String deity = getDeity();
+		setMiscText(abilityID+"/"+newCharges+"/"+deity);
+	}
+
+	protected String getDeity()
+	{
+		String argText=text();
+		int x=argText.indexOf('/');
+		if(x>0)
+		{
+			argText=argText.substring(x+1);
+			x=argText.indexOf('/');
+			if(x>0)
+				return argText.substring(x+1);
+		}
+		return "";
+	}
 
 	public String getSpeakableName(String name)
 	{
@@ -127,7 +172,7 @@ public class Prayer_StorePrayer extends Prayer
 			if((mob.location()!=null))
 				target=afftarget;
 			final String name=getSpeakableName(me.name());
-			int x=message.toUpperCase().indexOf(name);
+			final int x=message.toUpperCase().indexOf(name);
 			if(x>=0)
 			{
 				message=message.substring(x+name.length());
@@ -135,24 +180,9 @@ public class Prayer_StorePrayer extends Prayer
 				if(y>=0)
 					message=message.substring(0,y);
 				message=message.trim();
-				int charges=0;
-				Ability A=null;
-				String argText=text();
-				x=argText.indexOf('/');
-				String deity="";
-				if(x>0)
-				{
-					A=CMClass.getAbility(argText.substring(0,x));
-					argText=argText.substring(x+1);
-					x=argText.indexOf('/');
-					if(x>0)
-					{
-						deity=argText.substring(x+1);
-						charges=CMath.s_int(argText.substring(0,x));
-					}
-					else
-						charges=CMath.s_int(argText);
-				}
+				final int charges=getCharges();
+				Ability A=fetchAbility(0);
+				final String deity=getDeity();
 				if(A==null)
 					mob.tell(L("Something seems wrong with @x1.",me.name()));
 				else
@@ -168,7 +198,7 @@ public class Prayer_StorePrayer extends Prayer
 				}
 				else
 				{
-					setMiscText(A.ID()+"/"+(charges-1)+"/"+deity);
+					setCharges(charges-1);
 					A=(Ability)A.newInstance();
 					final Vector<String> V=new Vector<String>();
 					if(target!=null)
@@ -224,6 +254,99 @@ public class Prayer_StorePrayer extends Prayer
 			break;
 		}
 		super.executeMsg(myHost,msg);
+	}
+
+	@Override
+	public void addAbility(final Ability to)
+	{
+		if(to != null)
+			setMiscText(to.ID()+"/"+getCharges()+"/"+getDeity());
+	}
+
+	@Override
+	public void delAbility(final Ability to)
+	{
+		final Ability hasA=fetchAbility(0);
+		if((hasA!=null)&&(to!=null)&&(hasA.ID().equals(to.ID())))
+		{
+			final Physical affected=this.affected;
+			if(affected != null)
+			{
+				unInvoke();
+				affected.delEffect(this);
+			}
+		}
+	}
+
+	@Override
+	public int numAbilities()
+	{
+		if(fetchAbility(0)!=null)
+			return 1;
+		return 0;
+	}
+
+	@Override
+	public Ability fetchAbility(final int index)
+	{
+		if(index != 0)
+			return null;
+		final String name=getPrayerID();
+		if((name==null)||(name.length()==0))
+			return null;
+		final Ability A=CMClass.getAbility(name);
+		if(A==null)
+			return null;
+		return A;
+	}
+
+	@Override
+	public Ability fetchAbility(final String ID)
+	{
+		final Ability A=fetchAbility(0);
+		if(A==null)
+			return null;
+		if(A.ID().equalsIgnoreCase(ID))
+			return A;
+		return null;
+	}
+
+	@Override
+	public Ability fetchRandomAbility()
+	{
+		final Ability A=fetchAbility(0);
+		if(A==null)
+			return null;
+		return A;
+	}
+
+	@Override
+	public Enumeration<Ability> abilities()
+	{
+		final Ability A=fetchAbility(0);
+		if(A==null)
+			return new XVector<Ability>().elements();
+		return new XVector<Ability>(A).elements();
+	}
+
+	@Override
+	public void delAllAbilities()
+	{
+		delAbility(fetchAbility(0));
+	}
+
+	@Override
+	public int numAllAbilities()
+	{
+		if(fetchAbility(0)!=null)
+			return 1;
+		return 0;
+	}
+
+	@Override
+	public Enumeration<Ability> allAbilities()
+	{
+		return abilities();
 	}
 
 	@Override

@@ -155,9 +155,9 @@ public class Reliquist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_SenseMagic",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_EmpowerShield",true);
 
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Thief_BorrowBoon",true); // i don't like this being a skill
-		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Thief_RemoveTraps",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_ReadLangs",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Thief_BorrowBoon",true);
+ 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Thief_RemoveTraps",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_ReadLanguage",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_CureLight",false); // special A
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_RechargeRelic",false); // special A

@@ -1555,13 +1555,17 @@ public class ItemData extends StdWebMacro
 			str.append("<TR><TD WIDTH=50%>");
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=RSPELL"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select an Effect");
-			for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+			if(P instanceof Physical)
 			{
-				final Ability A=a.nextElement();
-				if(((!A.canAffect(P))||(alreadyHave.contains(A.ID().toLowerCase())))
-				||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON))
-					continue;
-				str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.ID());
+				final Physical pP = (Physical)P;
+				for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+				{
+					final Ability A=a.nextElement();
+					if(((!A.canAffect(pP))||(alreadyHave.contains(A.ID().toLowerCase())))
+					||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON))
+						continue;
+					str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.ID());
+				}
 			}
 			str.append("</SELECT>");
 			str.append("</TD><TD WIDTH=50%>");

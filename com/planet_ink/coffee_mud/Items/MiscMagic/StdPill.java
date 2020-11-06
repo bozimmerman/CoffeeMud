@@ -127,7 +127,8 @@ public class StdPill extends StdFood implements Pill
 				theSpells.addElement(A);
 			}
 		}
-		me.recoverPhyStats();
+		if(me instanceof Physical)
+			((Physical)me).recoverPhyStats();
 		return theSpells;
 	}
 

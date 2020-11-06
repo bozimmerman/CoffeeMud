@@ -176,8 +176,10 @@ public class StdPotion extends StdDrink implements Potion
 				theSpells.addElement(A);
 			}
 		}
-		me.setBaseValue(baseValue);
-		me.recoverPhyStats();
+		if(me instanceof Item)
+			((Item)me).setBaseValue(baseValue);
+		if(me instanceof Physical)
+			((Physical)me).recoverPhyStats();
 		return theSpells;
 	}
 

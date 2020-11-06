@@ -37,7 +37,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * way, such as a scroll, staff, wand, pills, potions, etc.
  * @author Bo Zimmerman
  */
-public interface SpellHolder extends Item
+public interface SpellHolder
 {
 	/**
 	 * Returns the list of ability objects that this item contains.

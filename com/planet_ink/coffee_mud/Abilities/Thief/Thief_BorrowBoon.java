@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2020 Bo Zimmerman
+   Copyright 2020-2020 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Steal extends ThiefSkill
+public class Thief_BorrowBoon extends ThiefSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Thief_Steal";
+		return "Thief_BorrowBoon";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Steal");
+	private final static String localizedName = CMLib.lang().L("Borrow Boon");
 
 	@Override
 	public String name()
@@ -72,7 +72,7 @@ public class Thief_Steal extends ThiefSkill
 		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"STEAL"});
+	private static final String[] triggerStrings =I(new String[] {"BORROWBOON","BSTEAL"});
 	@Override
 	public String[] triggerStrings()
 	{
@@ -120,6 +120,38 @@ public class Thief_Steal extends ThiefSkill
 		return times+1;
 	}
 
+	protected Ability findBoon(final MOB mob)
+	{
+		if(mob==null)
+			return null;
+		boolean tryAgain=false;
+		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
+			if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+			{
+				if((A.castingQuality(mob, mob)==Ability.QUALITY_BENEFICIAL_SELF)
+				||(A.castingQuality(mob, mob)==Ability.QUALITY_BENEFICIAL_OTHERS))
+					return A;
+				tryAgain=true;
+			}
+		}
+		if(tryAgain)
+		{
+			for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+			{
+				final Ability A=a.nextElement();
+				if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+				{
+					if((A.abstractQuality()==Ability.QUALITY_BENEFICIAL_SELF)
+					||(A.abstractQuality()==Ability.QUALITY_BENEFICIAL_OTHERS))
+						return A;
+				}
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public int castingQuality(final MOB mob, final Physical target)
 	{
@@ -140,22 +172,77 @@ public class Thief_Steal extends ThiefSkill
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		String itemToSteal="all";
+		final Item catalystI;
 		if(!auto)
 		{
-			if(commands.size()<2)
+			catalystI = mob.fetchHeldItem();
+			if(catalystI==null)
 			{
-				mob.tell(L("Steal what from whom?"));
+				mob.tell(L("You must be holding a suitable holy item to attempt this."));
 				return false;
 			}
-			itemToSteal=commands.get(0);
+			if(catalystI instanceof Wand)
+			{
+				if((((Wand)catalystI).getSpell()==null)
+				||(((Wand)catalystI).usesRemaining()<=0)
+				||((((Wand)catalystI).getSpell().classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PRAYER))
+				{
+					mob.tell(L("@x1 does not appear to be a suitable holy item to drawn from for boon borrowing.",catalystI.name(mob)));
+					return false;
+				}
+			}
+			else
+			if(catalystI instanceof SpellHolder)
+			{
+				boolean hasPrayer=false;
+				for(final Ability A : ((SpellHolder)catalystI).getSpells())
+				{
+					if((A!=null)
+					&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER))
+						hasPrayer=true;
+				}
+				if((!hasPrayer)
+				||(((catalystI instanceof Scroll)&&(catalystI.usesRemaining()<=0))))
+				{
+					mob.tell(L("@x1 does not appear to be a suitable holy item to drawn from for boon borrowing.",catalystI.name(mob)));
+					return false;
+				}
+			}
+			else
+			{
+				boolean hasPrayer=false;
+				for(final Enumeration<Ability> a=catalystI.effects();a.hasMoreElements();)
+				{
+					final Ability eA=a.nextElement();
+					if(eA instanceof AbilityContainer)
+					{
+						for(final Enumeration<Ability> aa = ((AbilityContainer)eA).abilities(); aa.hasMoreElements();)
+						{
+							final Ability A=aa.nextElement();
+							if((A!=null)
+							&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER))
+								hasPrayer=true;
+						}
+					}
+				}
+				if(!hasPrayer)
+				{
+					mob.tell(L("@x1 does not appear to be a suitable holy item to drawn from for boon borrowing.",catalystI.name(mob)));
+					return false;
+				}
+			}
+		}
+		else
+		{
+			catalystI=CMClass.getBasicItem("GenItem");
+			catalystI.setName("the universe");
 		}
 
 		MOB target=null;
 		if((givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		else
-			target=mob.location().fetchInhabitant(CMParms.combine(commands,1));
+			target=mob.location().fetchInhabitant(CMParms.combine(commands));
 		if((target==null)||(target.amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell(L("You don't see '@x1' here.",CMParms.combine(commands,1)));
@@ -170,23 +257,18 @@ public class Thief_Steal extends ThiefSkill
 
 		if((!target.mayIFight(mob))||(levelDiff>15))
 		{
-			mob.tell(L("You cannot steal from @x1.",target.charStats().himher()));
+			mob.tell(L("You cannot borrow from @x1.",target.charStats().himher()));
 			return false;
 		}
 		if(target==mob)
 		{
-			mob.tell(L("You cannot steal from yourself."));
+			mob.tell(L("You cannot borrow from yourself."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final Item stolen=target.fetchItem(null,Wearable.FILTER_UNWORNONLY,itemToSteal);
-		if(stolen instanceof Coins)
-		{
-			mob.tell(L("You'll need to try and SWIPE that."));
-			return false;
-		}
+		final Ability stolen=findBoon(target);
 
 		// higher is good for the player, lower is good for the npc
 		// leveldiff is + when npc has advantage, and - when player does.
@@ -223,14 +305,14 @@ public class Thief_Steal extends ThiefSkill
 				if((target.isMonster())&&(mob.getVictim()==null))
 					mob.setVictim(target);
 				final CMMsg msg=CMClass.getMsg(mob,target,this,
-						CMMsg.MSG_NOISYMOVEMENT,auto?"":L("You fumble the attempt to steal; <T-NAME> spots you!"),
-						CMMsg.MSG_NOISYMOVEMENT,auto?"":L("<S-NAME> tries to steal from you and fails!"),
-						CMMsg.MSG_NOISYMOVEMENT,auto?"":L("<S-NAME> tries to steal from <T-NAME> and fails!"));
+						CMMsg.MSG_NOISYMOVEMENT,auto?"":L("You fumble the attempt to 'borrow'; <T-NAME> spots you!"),
+						CMMsg.MSG_NOISYMOVEMENT,auto?"":L("<S-NAME> tries to 'borrow' from you and fails!"),
+						CMMsg.MSG_NOISYMOVEMENT,auto?"":L("<S-NAME> tries to 'borrow' from <T-NAME> and fails!"));
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
 			else
-				mob.tell(auto?"":L("You fumble the attempt to steal."));
+				mob.tell(auto?"":L("You fumble the attempt to 'borrow' a boon."));
 		}
 		else
 		{
@@ -238,12 +320,12 @@ public class Thief_Steal extends ThiefSkill
 			int code=CMMsg.MSG_THIEF_ACT;
 			if(!auto)
 			{
-				if((stolen!=null)&&(stolen.amWearingAt(Wearable.IN_INVENTORY)))
-					str=L("<S-NAME> steal(s) @x1 from <T-NAMESELF>.",stolen.name());
+				if(stolen!=null)
+					str=L("<S-NAME> 'borrow(s)' @x1 from <T-NAMESELF> using the power of @x2.",stolen.name(),catalystI.name());
 				else
 				{
 					code=CMMsg.MSG_QUIETMOVEMENT;
-					str=L("<S-NAME> attempt(s) to steal from <T-HIM-HER>, but it doesn't appear @x1 has that in <T-HIS-HER> inventory!",target.charStats().heshe());
+					str=L("<S-NAME> attempt(s) to 'borrow' from <T-HIM-HER>, but comes up empty!",target.charStats().heshe());
 				}
 			}
 
@@ -258,7 +340,7 @@ public class Thief_Steal extends ThiefSkill
 				hisCode=hisCode|((target.mayIFight(mob))?CMMsg.MASK_MALICIOUS:0);
 			}
 
-			CMMsg msg=CMClass.getMsg(mob,target,this,code,str,hisCode,hisStr,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,code,str,hisCode,hisStr,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -272,37 +354,32 @@ public class Thief_Steal extends ThiefSkill
 				}
 				else
 				if(((hisStr==null)||mob.isMonster())
-				&&(!alreadyFighting)
-				&&((stolen==null)||(CMLib.dice().rollPercentage()>stolen.phyStats().level())))
+				&&(!alreadyFighting))
 				{
 					if(target.getVictim()==mob)
 						target.makePeace(true);
 					if(mob.getVictim()==target)
 						mob.makePeace(true);
 				}
-				msg=CMClass.getMsg(target,stolen,null,CMMsg.MSG_DROP,CMMsg.MSG_DROP,CMMsg.MSG_NOISE,null);
-				if(target.location().okMessage(target,msg))
+				final long expires=stolen.expirationDate();
+				final Ability newEffA = (Ability)stolen.copyOf();
+				newEffA.startTickDown(mob, mob, super.getBeneficialTickdownTime(mob, mob, 0, asLevel));
+				if((newEffA.canBeUninvoked())
+				&&(expires < (CMProps.getTickMillis() * 1000)))
+					newEffA.setExpirationDate(expires);
+				stolen.unInvoke();
+				if(CMLib.dice().rollPercentage() < 12-super.getXLEVELLevel(mob))
 				{
-					target.location().send(mob,msg);
-					msg=CMClass.getMsg(mob,stolen,null,CMMsg.MSG_GET,CMMsg.MSG_GET,CMMsg.MSG_NOISE,null);
-					if(mob.location().okMessage(mob,msg))
-					{
-						mob.location().send(mob,msg);
-						if(stolen!=null)
-						{
-							Ability propertyProp=stolen.fetchEffect("Prop_PrivateProperty");
-							if(propertyProp==null)
-							{
-								propertyProp=CMClass.getAbility("Prop_PrivateProperty");
-								propertyProp.setMiscText("owner=\""+mob.Name()+"\" expiresec=60");
-								stolen.addNonUninvokableEffect(propertyProp);
-							}
-						}
-					}
+					if((catalystI instanceof Wand)
+					&&(((Wand)catalystI).usesRemaining()>0))
+						((Wand)catalystI).setUsesRemaining(((Wand)catalystI).usesRemaining()-1);
+					else
+					if((catalystI instanceof Scroll)
+					&&(((Scroll)catalystI).usesRemaining()>0))
+						((Scroll)catalystI).setUsesRemaining(((Scroll)catalystI).usesRemaining()-1);
 				}
 			}
 		}
 		return success;
 	}
-
 }

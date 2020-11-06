@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Spell_StoreSpell extends Spell
+public class Spell_StoreSpell extends Spell implements AbilityContainer
 {
 
 	@Override
@@ -56,14 +56,9 @@ public class Spell_StoreSpell extends Spell
 			if(spellName.length()==0)
 			{
 				spellName="unknown";
-				final int x=text().indexOf('/');
-				Ability A=null;
-				if(x>0)
-				{
-					A=CMClass.getAbility(text().substring(0,x));
-					if(A!=null)
-						spellName=A.name();
-				}
+				final Ability A=fetchAbility(0);
+				if(A!=null)
+					spellName=A.name();
 			}
 			return "Store Spell: "+spellName;
 		}
@@ -97,6 +92,52 @@ public class Spell_StoreSpell extends Spell
 	public String	spellName		= "";
 	protected int	overridemana	= -1;
 
+	protected String geSpellName()
+	{
+		if(spellName.length()==0)
+		{
+			spellName="unknown";
+			final String spellID=getSpellID();
+			if(spellID.length()>0)
+			{
+				final Ability A=CMClass.getAbility(getSpellID());
+				if(A!=null)
+					spellName=A.name();
+			}
+		}
+		return spellName;
+	}
+
+	protected String getSpellID()
+	{
+		final int x=text().indexOf('/');
+		if(x>0)
+			return text().substring(0,x);
+		return "";
+	}
+
+	protected int getCharges()
+	{
+		String argText=text();
+		int x=argText.indexOf('/');
+		if(x>0)
+		{
+			argText=argText.substring(x+1);
+			x=argText.indexOf('/');
+			if(x>0)
+				return CMath.s_int(argText.substring(0,x));
+			else
+				return CMath.s_int(argText);
+		}
+		return 0;
+	}
+
+	protected void setCharges(final int newCharges)
+	{
+		final String abilityID=getSpellID();
+		setMiscText(abilityID+"/"+newCharges);
+	}
+
 	public String getSpeakableName(String name)
 	{
 		name=CMStrings.removeColors(name.toUpperCase());
@@ -121,7 +162,7 @@ public class Spell_StoreSpell extends Spell
 			if((mob.location()!=null))
 				target=afftarget;
 			final String name=getSpeakableName(me.name());
-			int x=message.toUpperCase().indexOf(name);
+			final int x=message.toUpperCase().indexOf(name);
 			if(x>=0)
 			{
 				message=message.substring(x+name.length());
@@ -129,14 +170,8 @@ public class Spell_StoreSpell extends Spell
 				if(y>=0)
 					message=message.substring(0,y);
 				message=message.trim();
-				x=text().indexOf('/');
-				int charges=0;
-				Ability A=null;
-				if(x>0)
-				{
-					charges=CMath.s_int(text().substring(x+1));
-					A=CMClass.getAbility(text().substring(0,x));
-				}
+				final int charges=getCharges();
+				Ability A=fetchAbility(0);
 				if(A==null)
 					mob.tell(L("Something seems wrong with @x1.",me.name()));
 				else
@@ -147,7 +182,7 @@ public class Spell_StoreSpell extends Spell
 				}
 				else
 				{
-					setMiscText(A.ID()+"/"+(charges-1));
+					setCharges(charges-1);
 					A=(Ability)A.newInstance();
 					final Vector<String> V=new Vector<String>();
 					if(target!=null)
@@ -201,6 +236,99 @@ public class Spell_StoreSpell extends Spell
 			break;
 		}
 		super.executeMsg(myHost,msg);
+	}
+
+	@Override
+	public void addAbility(final Ability to)
+	{
+		if(to != null)
+			setMiscText(to.ID()+"/"+getCharges());
+	}
+
+	@Override
+	public void delAbility(final Ability to)
+	{
+		final Ability hasA=fetchAbility(0);
+		if((hasA!=null)&&(to!=null)&&(hasA.ID().equals(to.ID())))
+		{
+			final Physical affected=this.affected;
+			if(affected != null)
+			{
+				unInvoke();
+				affected.delEffect(this);
+			}
+		}
+	}
+
+	@Override
+	public int numAbilities()
+	{
+		if(fetchAbility(0)!=null)
+			return 1;
+		return 0;
+	}
+
+	@Override
+	public Ability fetchAbility(final int index)
+	{
+		if(index != 0)
+			return null;
+		final String name=getSpellID();
+		if((name==null)||(name.length()==0))
+			return null;
+		final Ability A=CMClass.getAbility(name);
+		if(A==null)
+			return null;
+		return A;
+	}
+
+	@Override
+	public Ability fetchAbility(final String ID)
+	{
+		final Ability A=fetchAbility(0);
+		if(A==null)
+			return null;
+		if(A.ID().equalsIgnoreCase(ID))
+			return A;
+		return null;
+	}
+
+	@Override
+	public Ability fetchRandomAbility()
+	{
+		final Ability A=fetchAbility(0);
+		if(A==null)
+			return null;
+		return A;
+	}
+
+	@Override
+	public Enumeration<Ability> abilities()
+	{
+		final Ability A=fetchAbility(0);
+		if(A==null)
+			return new XVector<Ability>().elements();
+		return new XVector<Ability>(A).elements();
+	}
+
+	@Override
+	public void delAllAbilities()
+	{
+		delAbility(fetchAbility(0));
+	}
+
+	@Override
+	public int numAllAbilities()
+	{
+		if(fetchAbility(0)!=null)
+			return 1;
+		return 0;
+	}
+
+	@Override
+	public Enumeration<Ability> allAbilities()
+	{
+		return abilities();
 	}
 
 	@Override
