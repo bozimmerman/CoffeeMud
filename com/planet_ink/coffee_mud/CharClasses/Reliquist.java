@@ -165,7 +165,7 @@ public class Reliquist extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_Trip",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Thief_Lore",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_LessWardGlph",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_LesserWardingGlph",false);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_DeflectPrayer",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"ScrollScribing",false);

@@ -3089,7 +3089,10 @@ mpacctattoo $n '50 smurfkiller'<br />
 <p>Usage:</p>
 <pre>mpaffect [spell name] [target] [parameters]<br /></pre>
 <p>This command will put the
-target under the affect of the given Ability (spell, chant, prayer, song, skill, or CoffeeMud property). &nbsp; Properties will be applied normally, while non-properties will be auto-cast. &nbsp;The spell name can be prefixed with <span style="font-weight: bold;">property:</span> to force even non-Properties to be applied without auto-casting or any invokation at all. &nbsp; The
+target under the affect of the given Ability (spell, chant, prayer,
+song, skill, or CoffeeMud property). &nbsp; Properties will be applied
+normally, while non-properties will be auto-cast. &nbsp;The spell name
+can be prefixed with <span style="font-weight: bold;">property:</span> to force even non-Properties to be applied without auto-casting or any invokation at all. &nbsp; The
 parameters given apply specifically to CoffeeMud properties, and are
 unnecessary for most spells, chants, etc.</p>
 <p>EXAMPLES:</p>
@@ -3118,9 +3121,13 @@ command is used to change one of the
 internal object variables, such as $n, $i, $t, $o, $p, $d, $0..$9, to
 point to a different object. This can then affect subsequent commands
 that refer to them. While $0..$9 may be set to any value, the standard
-$n..$d variables must be set to an object of the same kind.</p>
+$n..$d variables must be set to an object of the same kind.
+&nbsp;MPARGSET will try very hard to resolve the given value as an
+object, instead of a string. &nbsp;However, you can also put
+double-quotes "" around the value to force it to be evaluated only as a
+string.</p>
 <p>EXAMPLES:</p>
-<pre>mpargset $o $p<br />mpargset $0 $n<br />mpargset $1 $0<br />mpargset $0 'my value'<br /></pre>
+<pre>mpargset $o $p<br />mpargset $0 $n<br />mpargset $1 $0<br />mpargset $0 "my value"<br /></pre>
 <h3><a name="mpasound">mpasound</a></h3>
 <p>Usage:</p>
 <pre>mpasound [text string]<br /></pre>

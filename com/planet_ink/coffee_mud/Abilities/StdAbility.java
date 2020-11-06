@@ -1115,6 +1115,7 @@ public class StdAbility implements Ability
 			if(location!=null)
 				target=location.fetchFromMOBRoomFavorsItems(mob,container,targetName,filter);
 			else
+			if(mob != null)
 				target=mob.fetchItem(container, filter, targetName);
 		}
 		if(target!=null)
