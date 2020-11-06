@@ -9432,16 +9432,23 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					logError(scripted,"MPARGSET","Syntax","Mangled argument var: "+arg1+" for "+scripted.Name());
 					break;
 				}
-				Object O=getArgumentMOB(arg2,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if(O==null)
-					O=getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if((O==null)
-				&&((arg2.length()!=2)
-					||(arg2.charAt(1)=='g')
-					||(!arg2.startsWith("$"))
-					||((!Character.isDigit(arg2.charAt(1)))
-						&&(!Character.isLetter(arg2.charAt(1))))))
-					O=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg2);
+
+				Object O=null;
+				if(arg2.startsWith("\"") && arg2.endsWith("\"")&&(arg2.length()>1))
+					O=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg2.substring(1,arg2.length()-1));
+				else
+				{
+					O=getArgumentMOB(arg2,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if(O==null)
+						O=getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					if((O==null)
+					&&((arg2.length()!=2)
+						||(arg2.charAt(1)=='g')
+						||(!arg2.startsWith("$"))
+						||((!Character.isDigit(arg2.charAt(1)))
+							&&(!Character.isLetter(arg2.charAt(1))))))
+						O=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg2);
+				}
 				final char c=arg1.charAt(1);
 				if(Character.isDigit(c))
 				{
