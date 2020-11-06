@@ -442,7 +442,6 @@ public class Skill_UnearthDemography extends StdAbility
 		if((affected instanceof MOB) && slowDown && (!((MOB)affected).isInCombat()))
 		{
 			affectableStats.setSpeed(affectableStats.speed()/2.0);
-System.out.println(affected.Name()+"/"+(affectableStats.speed()));
 		}
 	}
 
