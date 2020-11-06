@@ -329,7 +329,7 @@ public class Skill_UnearthDemography extends StdAbility
 								}
 								rmap.put(DemogField.BEHAVIOR, bestBehav);
 								final double pct=CMath.div(data.first[DemogField.COUNT.ordinal()], (double)totalMobs);
-								rmap.put(DemogField.PCT_COUNT, CMath.toPct(pct));
+								rmap.put(DemogField.PCT_COUNT, CMath.toWholePct(pct));
 							}
 						}
 						allAreaInfo.put(workA.Name(), unearthedableKnowledge);
@@ -424,9 +424,9 @@ public class Skill_UnearthDemography extends StdAbility
 						final String discovery=this.getNewTidbit();
 						final MOB mob=(MOB)affected;
 						if((discovery!=null)&&(discovery.length()>0))
-							mob.tell(L("You have failed to unearth any new clues about this area."));
-						else
 							mob.tell(discovery);
+						else
+							mob.tell(L("You have failed to unearth any new clues about this area."));
 					}
 				}
 			}
@@ -440,12 +440,15 @@ public class Skill_UnearthDemography extends StdAbility
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if((affected instanceof MOB) && slowDown && (!((MOB)affected).isInCombat()))
+		{
 			affectableStats.setSpeed(affectableStats.speed()/2.0);
+System.out.println(affected.Name()+"/"+(affectableStats.speed()));
+		}
 	}
 
 	protected String translateField(final String raceName, final DemogField field, final String value)
 	{
-		return L("The @x1 in this area are @x2.",raceName,translateField(field,value));
+		return L("The @x1 in this area are @x2.",CMLib.english().makePlural(raceName),translateField(field,value).toLowerCase());
 	}
 
 	protected String translateField(final DemogField field, final String value)
@@ -465,9 +468,9 @@ public class Skill_UnearthDemography extends StdAbility
 		case INCLINATION:
 			return L("Mostly @x1",value);
 		case MAX_LEVEL:
-			return L("Of as high at level as @x1",value);
+			return L("Can be as high as level @x1",value);
 		case MIN_LEVEL:
-			return L("Of as low a level as @x1",value);
+			return L("Can be as weak as level @x1",value);
 		case PCT_COUNT:
 			return L("@x1 of all creatures",value);
 		default:
