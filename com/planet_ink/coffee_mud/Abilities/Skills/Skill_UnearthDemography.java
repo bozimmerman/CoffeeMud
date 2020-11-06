@@ -264,9 +264,9 @@ public class Skill_UnearthDemography extends StdAbility
 		if(tickID!=Tickable.TICKID_MOB)
 			return true;
 		final long now=System.currentTimeMillis();
+		final Physical affected=this.affected;
 		if((slowDown) && (now > slowExpire))
 		{
-			final Physical affected=this.affected;
 			slowDown=false;
 			if(affected != null)
 				affected.recoverPhyStats();
@@ -276,6 +276,13 @@ public class Skill_UnearthDemography extends StdAbility
 			final Area workA = workingArea.get();
 			if(workA != null)
 			{
+				if((affected instanceof MOB)
+				&&(((MOB)affected).location()!=null)
+				&&(((MOB)affected).location().getArea()!=workA))
+				{
+					unInvoke();
+					return false;
+				}
 				unearthedableKnowledge = Skill_UnearthDemography.allAreaInfo.get(workA.Name());
 				if(unearthedableKnowledge == null)
 				{
@@ -418,7 +425,6 @@ public class Skill_UnearthDemography extends StdAbility
 				if((now > nextTidbit) && (nextTidbit > 0))
 				{
 					nextTidbit = Long.MAX_VALUE;
-					final Physical affected = this.affected;
 					if(affected instanceof MOB)
 					{
 						final String discovery=this.getNewTidbit();
