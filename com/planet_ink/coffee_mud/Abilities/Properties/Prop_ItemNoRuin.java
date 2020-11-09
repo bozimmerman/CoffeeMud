@@ -55,7 +55,7 @@ public class Prop_ItemNoRuin extends Property
 	@Override
 	public String accountForYourself()
 	{
-		return "A Prize";
+		return "";
 	}
 
 	@Override
