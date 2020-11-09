@@ -2750,40 +2750,54 @@ public class ListCmd extends StdCommand
 	}
 
 	@SuppressWarnings("rawtypes")
-	public String getValue(final Object o)
+	public String getValue(final Object o, final String indention)
 	{
-		final StringBuilder str=new StringBuilder("");
+		final StringBuilder str=new StringBuilder();
 		if(o instanceof List)
 		{
-			str.append("[");
-			final List<String> l=new ArrayList<String>();
+			str.append("[\n\r");
 			for(final Object o1 : ((List)o))
-				l.add(getValue(o1));
-			str.append(CMParms.toListString(l));
-			str.append("]");
+				str.append(indention).append(getValue(o1,indention+"   "));
+			if(str.charAt(str.length()-1)!='\r')
+				str.append("\n\r");
+			str.append(indention).append("]");
 		}
 		else
 		if(o instanceof Map)
 		{
-			str.append("{");
+			str.append("{\n\r");
 			for(final Object o1 : ((Map)o).keySet())
 			{
-				str.append("\"").append(getValue(o1)).append("\": ")
-					.append(getValue(((Map)o).get(o1))).append(", ");
+				str.append(indention).append("\"").append(getValue(o1,"").trim()).append("\": ")
+					.append(getValue(((Map)o).get(o1),indention+"   "));
+				if(str.charAt(str.length()-1)!='\r')
+					str.append("\n\r");
 			}
-			if(str.toString().endsWith(", "))
-				str.delete(str.length()-2, str.length());
-			str.append("}");
+			str.append(indention).append("}");
+		}
+		else
+		if(o instanceof Resources)
+		{
+			str.append("{\n\r");
+			for(final Iterator<String> o1 = ((Resources)o)._findResourceKeys("");o1.hasNext();)
+			{
+				final String key=o1.next();
+				str.append("\"").append(key.trim()).append("\": ")
+					.append(getValue(((Resources)o)._getResource(key),indention+"   "));
+				if(str.charAt(str.length()-1)!='\r')
+					str.append("\n\r");
+			}
+			str.append(indention).append("}");
 		}
 		else
 		if(o instanceof Set)
 		{
-			str.append("[");
-			final List<String> l=new ArrayList<String>();
+			str.append("[\n\r");
 			for(final Object o1 : ((Set)o))
-				l.add(getValue(o1));
-			str.append(CMParms.toListString(l));
-			str.append("]");
+				str.append(indention).append(getValue(o1,indention+"   "));
+			if(str.charAt(str.length()-1)!='\r')
+				str.append("\n\r");
+			str.append(indention).append("]");
 		}
 		else
 		if(o instanceof String[])
@@ -2791,6 +2805,7 @@ public class ListCmd extends StdCommand
 		else
 		if(o instanceof boolean[])
 			str.append(CMParms.toListString((boolean[])o));
+		else
 		if(o instanceof byte[])
 			str.append(CMParms.toListString((byte[])o));
 		else
@@ -2808,7 +2823,7 @@ public class ListCmd extends StdCommand
 		else
 		if(o!=null)
 			str.append(o.toString());
-		return str.toString();
+		return str.toString()+"\n\r";
 	}
 
 	public String listResources(final MOB mob, final String parm)
@@ -2820,7 +2835,7 @@ public class ListCmd extends StdCommand
 		if(!keyIter.hasNext())
 		{
 			final Object o=Resources.getResource(key);
-			return "^x"+key+"^?\n\r" + getValue(o);
+			return "^x"+key+"^?\n\r" + getValue(o,"");
 		}
 		final Enumeration<String> keys=new IteratorEnumeration<String>(Resources.findResourceKeys(parm));
 		return CMLib.lister().reallyList2Cols(mob,keys).toString();

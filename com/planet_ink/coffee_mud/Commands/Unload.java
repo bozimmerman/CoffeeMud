@@ -49,6 +49,7 @@ public class Unload extends StdCommand
 
 	final String[]	ARCHON_LIST	= { "CLASS", "HELP", "USER", "AREA", "FACTION", "ALL", "FILE", "RESOURCE", "INIFILE", "ACHIEVEMENTS", "[FILENAME]", "VFS" };
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
@@ -385,21 +386,84 @@ public class Unload extends StdCommand
 			else
 			if(commands.get(1).equalsIgnoreCase("RESOURCE"))
 			{
-				final String which=CMParms.combine(commands,2);
-				final Iterator<String> k=Resources.findResourceKeys(which);
+				String which=CMParms.combine(commands,2);
+				Iterator<String> k=Resources.findResourceKeys(which);
+				final List<String> subKeys = new ArrayList<String>();
 				if(!k.hasNext())
 				{
 					if(which.toLowerCase().startsWith("title"))
+					{
 						CMLib.titles().reloadAutoTitles();
+						return false;
+					}
 					else
-						mob.tell(L("Unknown resource '@x1'.  Use LIST RESOURCES.",which));
-					return false;
+					{
+						int x=which.indexOf('@');
+						while(x>0)
+						{
+							final String w=which.substring(0,x);
+							subKeys.add(w);
+							which=which.substring(x+1);
+							x=which.indexOf('@');
+						}
+						k=Resources.findResourceKeys(which);
+						if(!k.hasNext())
+						{
+							mob.tell(L("Unknown resource '@x1'.  Use LIST RESOURCES.",which));
+							return false;
+						}
+					}
 				}
 				for(;k.hasNext();)
 				{
 					final String key=k.next();
-					Resources.removeResource(key);
-					mob.tell(L("Resource '@x1' unloaded.",key));
+					boolean success=true;
+					if(subKeys.size()==0)
+						Resources.removeResource(key);
+					else
+					{
+						Object o = Resources.getResource(key);
+						for(int i=subKeys.size()-1;i>=0;i--)
+						{
+							if(i==0)
+							{
+								if(o instanceof Map)
+									((Map)o).remove(subKeys.get(i));
+								else
+								if(o instanceof List)
+									((List)o).remove(subKeys.get(i));
+								else
+								if(o instanceof Set)
+									((Set)o).remove(subKeys.get(i));
+								else
+								if(o instanceof Resources)
+									((Resources)o)._removeResource(subKeys.get(i));
+								else
+								{
+									mob.tell(L("Can't remove "+subKeys.get(i)+" from "+o.toString()));
+									success=false;
+								}
+							}
+							else
+							if(o instanceof Map)
+								o=((Map)o).get(subKeys.get(i));
+							else
+							if(o instanceof Resources)
+								o=((Resources)o)._getResource(subKeys.get(i));
+							else
+							{
+								mob.tell(L("Can't remove "+subKeys.get(i)+" from "+o.toString()));
+								success=false;
+							}
+						}
+					}
+					if(success)
+					{
+						if(subKeys.size()>0)
+							mob.tell(L("Resource '@x1' unloaded.",CMParms.toListString(subKeys)+"@"+key));
+						else
+							mob.tell(L("Resource '@x1' unloaded.",key));
+					}
 				}
 				if(which.toLowerCase().startsWith("title"))
 					CMLib.titles().reloadAutoTitles();
