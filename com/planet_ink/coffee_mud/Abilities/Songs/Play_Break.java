@@ -79,7 +79,7 @@ public class Play_Break extends Play
 		for(int a=0;a<mob.numEffects();a++) // personal affects
 		{
 			final Ability A=mob.fetchEffect(a);
-			if((A!=null)&&(A instanceof Play))
+			if((A instanceof Play))
 				foundOne=true;
 		}
 		if(!foundOne)

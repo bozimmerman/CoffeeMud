@@ -191,7 +191,7 @@ public class Druid_PackCall extends StdAbility
 		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A!=null)&&(A instanceof Druid_ShapeShift))
+			if((A instanceof Druid_ShapeShift))
 				D=(Druid_ShapeShift)A;
 		}
 		if(D==null)

@@ -247,7 +247,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		for(int a=0;a<myThang.numEffects();a++)
 		{
 			final Ability A=myThang.fetchEffect(a);
-			if((A!=null)&&(A instanceof Trap))
+			if((A instanceof Trap))
 				A.unInvoke();
 		}
 
@@ -263,7 +263,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		for(final Enumeration<Ability> a=myThang.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A!=null)&&(A instanceof  Trap))
+			if((A instanceof  Trap))
 				return (Trap)A;
 		}
 		return null;

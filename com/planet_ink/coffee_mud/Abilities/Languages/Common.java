@@ -79,7 +79,7 @@ public class Common extends StdLanguage
 		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A!=null)&&(A instanceof Language))
+			if((A instanceof Language))
 			{
 				if(((Language)A).beingSpoken(ID()))
 				{

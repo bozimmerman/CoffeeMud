@@ -182,7 +182,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		for(final Enumeration<Ability> a=area.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A!=null)&&(A instanceof LandTitle))
+			if((A instanceof LandTitle))
 				return (LandTitle)A;
 		}
 		return null;
@@ -198,7 +198,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		for(final Enumeration<Ability> a=area.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A!=null)&&(A instanceof PrivateProperty))
+			if((A instanceof PrivateProperty))
 				return (PrivateProperty)A;
 		}
 		return null;
@@ -215,7 +215,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		for(final Enumeration<Ability> a=room.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A!=null)&&(A instanceof LandTitle))
+			if((A instanceof LandTitle))
 				return (LandTitle)A;
 		}
 		return null;
@@ -234,7 +234,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		for(final Enumeration<Ability> a=room.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A!=null)&&(A instanceof PrivateProperty))
+			if((A instanceof PrivateProperty))
 				return (PrivateProperty)A;
 		}
 		return null;

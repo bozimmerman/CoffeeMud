@@ -100,7 +100,7 @@ public class Chant_Homeopathy extends Chant
 				for(int t=0;t<target.numEffects();t++) // personal effects
 				{
 					final Ability A=target.fetchEffect(t);
-					if((A!=null)&&(A instanceof DiseaseAffect))
+					if((A instanceof DiseaseAffect))
 						D=A;
 				}
 				final int roll=CMLib.dice().rollPercentage();

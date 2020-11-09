@@ -67,6 +67,40 @@ public class SignLanguage extends StdLanguage
 	}
 
 	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if((affected instanceof MOB)
+		&&(beingSpoken(ID()))
+		&&(msg.source()==affected)
+		&&(msg.sourceMessage()!=null)
+		&&(msg.tool()==null)
+		&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+		   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
+		   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))))
+		{
+
+			if(!super.okMessage(myHost, msg))
+				return false;
+			if(msg.tool()==this)
+			{
+				final int mask=(Integer.MAX_VALUE-CMMsg.MASK_SOUND)-CMMsg.MASK_MOUTH;
+				msg.modify(msg.source(),
+						   msg.target(),
+						   msg.tool(),
+						   msg.sourceCode() & mask,
+						   msg.sourceMessage(),
+						   msg.targetCode() & mask,
+						   msg.targetMessage(),
+						   msg.othersCode() & mask,
+						   msg.othersMessage());
+			}
+			return true;
+		}
+		else
+			return super.okMessage(myHost, msg);
+	}
+
+	@Override
 	protected boolean processSourceMessage(final CMMsg msg, final String str, final int numToMess)
 	{
 		if(msg.sourceMessage()==null)

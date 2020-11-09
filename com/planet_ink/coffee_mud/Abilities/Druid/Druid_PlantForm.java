@@ -242,7 +242,7 @@ public class Druid_PlantForm extends StdAbility
 		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A!=null)&&(A instanceof Druid_PlantForm))
+			if((A instanceof Druid_PlantForm))
 				return true;
 		}
 		return false;
@@ -254,7 +254,7 @@ public class Druid_PlantForm extends StdAbility
 		for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A!=null)&&(A instanceof Druid_PlantForm))
+			if((A instanceof Druid_PlantForm))
 			{
 				A.unInvoke();
 				return true;

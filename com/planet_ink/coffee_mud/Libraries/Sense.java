@@ -750,7 +750,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A!=null)&&(A instanceof Trap))
+			if((A instanceof Trap))
 				return true;
 		}
 		return false;

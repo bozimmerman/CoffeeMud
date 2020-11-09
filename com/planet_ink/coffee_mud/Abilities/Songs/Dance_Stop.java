@@ -79,7 +79,7 @@ public class Dance_Stop extends Dance
 		for(int a=0;a<mob.numEffects();a++) // personal affects
 		{
 			final Ability A=mob.fetchEffect(a);
-			if((A!=null)&&(A instanceof Dance))
+			if((A instanceof Dance))
 				foundOne=true;
 		}
 		unDanceAll(mob,null,false,true);

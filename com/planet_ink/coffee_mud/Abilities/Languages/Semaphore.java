@@ -70,6 +70,16 @@ public class Semaphore extends StdLanguage
 				return false;
 			if((msg.tool()==this)&&(R!=null))
 			{
+				final int mask=(Integer.MAX_VALUE-CMMsg.MASK_SOUND)-CMMsg.MASK_MOUTH;
+				msg.modify(msg.source(),
+						   msg.target(),
+						   msg.tool(),
+						   msg.sourceCode() & mask,
+						   msg.sourceMessage(),
+						   msg.targetCode() & mask,
+						   msg.targetMessage(),
+						   msg.othersCode() & mask,
+						   msg.othersMessage());
 				if((R.getArea() instanceof BoardableShip)
 				&&((R.domainType()&Room.INDOORS)==0))
 				{
@@ -312,7 +322,7 @@ public class Semaphore extends StdLanguage
 			for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
-				if((A!=null)&&(A instanceof Language))
+				if((A instanceof Language))
 				{
 					if(A.ID().equals(ID()))
 						isCurrentlySpeaking = ((Language)A).beingSpoken(ID());

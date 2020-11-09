@@ -1005,7 +1005,7 @@ public class StdRace implements Race
 		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A!=null)&&(A instanceof DiseaseAffect))
+			if((A instanceof DiseaseAffect))
 			{
 				if((CMath.bset(((DiseaseAffect)A).spreadBitmap(),DiseaseAffect.SPREAD_CONSUMPTION))
 				||(CMath.bset(((DiseaseAffect)A).spreadBitmap(),DiseaseAffect.SPREAD_CONTACT)))

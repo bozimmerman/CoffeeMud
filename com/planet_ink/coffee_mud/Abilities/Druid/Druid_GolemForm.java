@@ -252,7 +252,7 @@ public class Druid_GolemForm extends StdAbility
 		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A!=null)&&(A instanceof Druid_GolemForm))
+			if((A instanceof Druid_GolemForm))
 				return true;
 		}
 		return false;
@@ -279,7 +279,7 @@ public class Druid_GolemForm extends StdAbility
 		for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A!=null)&&(A instanceof Druid_GolemForm))
+			if((A instanceof Druid_GolemForm))
 			{
 				A.unInvoke();
 				return true;

@@ -166,7 +166,7 @@ public class Scavenge extends StdAbility
 				for(int i=0;i<body.numEffects();i++)
 				{
 					final Ability A=body.fetchEffect(i);
-					if((A!=null)&&(A instanceof DiseaseAffect))
+					if((A instanceof DiseaseAffect))
 					{
 						if((CMath.bset(((DiseaseAffect)A).spreadBitmap(),DiseaseAffect.SPREAD_CONSUMPTION))
 						||(CMath.bset(((DiseaseAffect)A).spreadBitmap(),DiseaseAffect.SPREAD_CONTACT)))

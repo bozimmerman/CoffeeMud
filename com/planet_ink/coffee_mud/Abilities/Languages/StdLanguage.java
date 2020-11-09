@@ -640,7 +640,7 @@ public class StdLanguage extends StdAbility implements Language
 			for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
-				if((A!=null)&&(A instanceof Language))
+				if((A instanceof Language))
 				{
 					if(mob.isMonster())
 						A.setProficiency(100);
