@@ -14374,9 +14374,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 		}
 
-		if((noTrigger.size()>0)&&(noTrigger.containsKey(Integer.valueOf(-52))))
-			noTrigger.remove(Integer.valueOf(-52));
-
 		int triggerCode=-1;
 		String trigger="";
 		String[] t=null;
@@ -14696,6 +14693,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					que.remove(SB);
 				}
 			}
+			if((noTrigger.size()>0)&&(noTrigger.containsKey(Integer.valueOf(-52))))
+				noTrigger.remove(Integer.valueOf(-52));
 		}
 		catch (final Exception e)
 		{
