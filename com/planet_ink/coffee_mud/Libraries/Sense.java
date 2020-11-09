@@ -1964,6 +1964,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			&&(!CMath.bset(A.flags(), Ability.FLAG_NONENCHANTMENT)))
 				return true;
 		}
+		if((I instanceof Weapon)||(I instanceof Armor))
+			return this.isABonusItems(I);
 		return false;
 	}
 

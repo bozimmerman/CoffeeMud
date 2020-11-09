@@ -142,7 +142,8 @@ public class Prayer extends StdAbility
 		&&(!mob.isMonster())
 		&&(!A.disregardsArmorCheck(mob))
 		&&(mob.isMine(A))
-		&&(!A.appropriateToMyFactions(mob)))
+		&&(!A.appropriateToMyFactions(mob))
+		&&(A.flags()!=0))
 		{
 			int hq=500;
 			if(CMath.bset(A.flags(),Ability.FLAG_HOLY))

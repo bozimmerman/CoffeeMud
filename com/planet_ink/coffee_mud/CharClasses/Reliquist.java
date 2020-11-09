@@ -165,12 +165,12 @@ public class Reliquist extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_Trip",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Thief_Lore",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_LesserWardingGlph",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_DeflectPrayer",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_LesserWardingGlyph",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_DeflectPrayer",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"ScrollScribing",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"StaffMaking",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_SowDiscord",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_ReligiousDoubt",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_RevealText",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_Map",false);
@@ -217,7 +217,7 @@ public class Reliquist extends Thief
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_EmpFoulWeapon",false); // special A
 
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Fighter_AutoHammerRing",0,false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_GreaterWardGlph",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_GreaterWardingGlyph",false);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_FindSacredItem",false);
 
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Skill_BefoulShrine",0,false);
@@ -543,7 +543,12 @@ public class Reliquist extends Thief
 				}
 				else
 				if((msg.sourceMinor()!=CMMsg.TYP_PREINVOKE)
-				&&(msg.tool().ID().equals("Spell_EnchantRelic")))
+				&&(msg.tool().ID().equals("Prayer_EnchantRelic")
+					||msg.tool().ID().equals("Prayer_StorePrayer")
+					||msg.tool().ID().equals("Prayer_ImbueShield")
+					||msg.tool().ID().equals("Prayer_DefileShield")
+					||msg.tool().ID().equals("Prayer_DivineTransference")
+					||msg.tool().ID().equals("Prayer_DivineQuest")))
 				{
 					final Ability A=mob.fetchAbility(msg.tool().text());
 					if((A!=null)&&(!A.isSavable()))

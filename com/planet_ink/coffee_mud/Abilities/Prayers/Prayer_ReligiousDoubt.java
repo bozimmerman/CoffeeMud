@@ -108,16 +108,27 @@ public class Prayer_ReligiousDoubt extends Prayer
 			return false;
 		if(otherSide)
 			return true;
-		if(msg.target()==affected)
+		final Physical affected=this.affected;
+		if((msg.target()==affected)
+		&&(affected instanceof MOB))
 		{
-			if(!(affected instanceof MOB))
-				return true;
+			final MOB mob=(MOB)affected;
 			if((msg.source()!=msg.target())
 			&&(msg.tool() instanceof Ability)
 			&&(msg.tool().ID().equalsIgnoreCase("Skill_Convert"))
 			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			{
-				msg.source().tell((MOB)msg.target(),null,null,L("<S-NAME> is not interested in hearing your religious beliefs."));
+				msg.source().tell(mob,null,null,L("<S-NAME> is not interested in hearing your religious beliefs."));
+				return false;
+			}
+			if((msg.source() instanceof Deity)
+			&&(mob.baseCharStats().getMyDeity()==msg.source())
+			&&(!CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
+			&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
+			&&(msg.tool() instanceof Ability)
+			&&(invoker!=null))
+			{
+				mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,L("The shadow of doubt around <S-NAME> inhibits @x1 from <T-NAME>!",msg.tool().name()));
 				return false;
 			}
 		}
@@ -131,6 +142,15 @@ public class Prayer_ReligiousDoubt extends Prayer
 		if(target==null)
 			return false;
 
+		if((target.isPlayer())
+		&&(mob.isPlayer())
+		&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target))
+		&&(!mob.mayIFight(target)))
+		{
+			mob.tell(mob,target,null,L("You are not permitted to sow doubt in <T-NAMESELF>."));
+			return false;
+		}
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -143,10 +163,15 @@ public class Prayer_ReligiousDoubt extends Prayer
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> questioning <S-HIS-HER> faith, but does not seem convinced yet."));
 				beneficialAffect(mob,target,asLevel,(int)(DOUBT_TIME/CMProps.getTickMillis()));
+				if(target != mob)
+				{
+					if(mob.fetchFaction(CMLib.factions().getInclinationID())!=Integer.MAX_VALUE)
+						CMLib.factions().postFactionChange(mob,this, CMLib.factions().getInclinationID(), -25);
+				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for <T-NAMESELF>, but the magic fades.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for <T-NAMESELF>, but the doubt fades.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

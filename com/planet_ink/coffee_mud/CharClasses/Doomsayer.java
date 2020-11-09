@@ -175,6 +175,7 @@ public class Doomsayer extends Cleric
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
 			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Hellfire",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_CurseLuck",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_ReligiousDoubt",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassParalyze",false,CMParms.parseSemicolons("Prayer_Curse",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassBlindness",false,CMParms.parseSemicolons("Prayer_Blindness",true));

@@ -179,6 +179,7 @@ public class Templar extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_Tithe",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_Enervate",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_Drain",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_DeflectPrayer",false);
 
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
 			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Hellfire",false);
