@@ -205,21 +205,26 @@ public class Skill_Convert extends StdSkill
 			if((target.charStats().deityName().length()>0)
 			||(target.baseCharStats().getMyDeity()!=null))
 			{
-				final boolean canConvertDeity=!CMParms.getParmBool(CMProps.getVar(Str.DEITYPOLICY), "NOCONVERT", false);
-				if(!canConvertDeity)
+				final String requiredMask = CMParms.getParmStr(CMProps.getVar(Str.DEITYPOLICY), "REQUIREDMASK", "").trim();
+				if((requiredMask.length()==0)
+				||(CMLib.masking().maskCheck(requiredMask, mob, true)))
 				{
-					mob.tell(L("You are not able to convert @x1.",target.name(mob)));
-					return false;
-				}
-				final boolean canRebukeDeity=!CMParms.getParmBool(CMProps.getVar(Str.DEITYPOLICY), "NOREBUKE", false);
-				if((!canRebukeDeity) // we must auto-rebuke
-				&&(target.baseCharStats().getMyDeity()!=null))
-				{
-					CMMsg msg=null;
-					final Deity deity=target.baseCharStats().getMyDeity();
-					msg=CMClass.getMsg(target,deity,null,CMMsg.MSG_REBUKE,L("<S-NAME> rebuke(s) @x1.",deity.Name()));
-					if(target.location().okMessage(mob,msg))
-						target.location().send(mob,msg);
+					final boolean canConvertDeity=!CMParms.getParmBool(CMProps.getVar(Str.DEITYPOLICY), "NOCONVERT", false);
+					if(!canConvertDeity)
+					{
+						mob.tell(L("You are not able to convert @x1.",target.name(mob)));
+						return false;
+					}
+					final boolean canRebukeDeity=!CMParms.getParmBool(CMProps.getVar(Str.DEITYPOLICY), "NOREBUKE", false);
+					if((!canRebukeDeity) // we must auto-rebuke
+					&&(target.baseCharStats().getMyDeity()!=null))
+					{
+						CMMsg msg=null;
+						final Deity deity=target.baseCharStats().getMyDeity();
+						msg=CMClass.getMsg(target,deity,null,CMMsg.MSG_REBUKE,L("<S-NAME> rebuke(s) @x1.",deity.Name()));
+						if(target.location().okMessage(mob,msg))
+							target.location().send(mob,msg);
+					}
 				}
 			}
 			if(target.charStats().deityName().length()>0)

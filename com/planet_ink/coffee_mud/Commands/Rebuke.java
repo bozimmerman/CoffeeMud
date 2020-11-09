@@ -71,12 +71,17 @@ public class Rebuke extends StdCommand
 			mob.tell(L("You don't see anybody called '@x1' or you aren't serving '@x2'.",CMParms.combine(commands,1),CMParms.combine(commands,1)));
 			return false;
 		}
-		
-		final boolean allowedForDeity=!CMParms.getParmBool(CMProps.getVar(Str.DEITYPOLICY), "NOREBUKE", false);
-		if((!allowedForDeity)&&(target instanceof Deity))
+
+		final String requiredMask = CMParms.getParmStr(CMProps.getVar(Str.DEITYPOLICY), "REQUIREDMASK", "").trim();
+		if((requiredMask.length()==0)
+		||(CMLib.masking().maskCheck(requiredMask, mob, true)))
 		{
-			mob.tell(L("You are not permitted to rebuke a deity."));
-			return false;
+			final boolean allowedForDeity=!CMParms.getParmBool(CMProps.getVar(Str.DEITYPOLICY), "NOREBUKE", false);
+			if((!allowedForDeity)&&(target instanceof Deity))
+			{
+				mob.tell(L("You are not permitted to rebuke a deity."));
+				return false;
+			}
 		}
 
 		CMMsg msg=null;
