@@ -11154,6 +11154,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					noTrigger.remove(Integer.valueOf(triggerCode));
 					noTrigger.put(Integer.valueOf(triggerCode),Long.valueOf(System.currentTimeMillis()+CMath.s_long(time.trim())));
+					for(int q=que.size()-1;q>=0;q--)
+					{
+						ScriptableResponse SB=null;
+						try
+						{
+							SB=que.get(q);
+						}
+						catch(final ArrayIndexOutOfBoundsException x)
+						{
+							continue;
+						}
+						if(SB.triggerCode == triggerCode)
+							que.remove(q);
+					}
 				}
 				break;
 			}
@@ -12527,7 +12541,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final DVector vscript=new DVector(3);
 				vscript.addElement("FUNCTION_PROG ALARM_"+time+Math.random(),null,null);
 				vscript.addElement(parms,null,null);
-				prequeResponse(scripted,source,target,monster,primaryItem,secondaryItem,vscript,CMath.s_int(time.trim()),msg);
+				prequeResponse(-1,scripted,source,target,monster,primaryItem,secondaryItem,vscript,CMath.s_int(time.trim()),msg);
 				break;
 			}
 			case 37: // mpenable
@@ -13151,7 +13165,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final int prcnt=this.getTriggerPercent(t[1], msg.source());
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
-								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null, t);
+								enqueResponse(triggerCode,affecting,msg.source(),monster,monster,defaultItem,null,script,1,null, t);
 								return;
 							}
 						}
@@ -13188,7 +13202,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 										}
 									}
 								}
-								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null, t);
+								enqueResponse(triggerCode,affecting,msg.source(),monster,monster,defaultItem,null,script,1,null, t);
 								return;
 							}
 						}
@@ -13208,7 +13222,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final int prcnt=this.getTriggerPercent(t[1], msg.source());
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
-								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null, t);
+								enqueResponse(triggerCode,affecting,msg.source(),monster,monster,defaultItem,null,script,1,null, t);
 								return;
 							}
 						}
@@ -13229,7 +13243,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
 								noTrigger.put(Integer.valueOf(-52),Long.valueOf(System.currentTimeMillis()+CMProps.getTickMillis()));
-								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null, t);
+								enqueResponse(triggerCode,affecting,msg.source(),monster,monster,defaultItem,null,script,1,null, t);
 								return;
 							}
 						}
@@ -13268,7 +13282,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							str=CMStrings.replaceAll(str,"\n\r"," ");
 							if((t[1].length()==0)||(t[1].equals("ALL")))
 							{
-								enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str, t);
+								enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str, t);
 								return;
 							}
 							else
@@ -13276,7 +13290,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							{
 								if(match(str.trim(),t[2]))
 								{
-									enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str, t);
+									enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str, t);
 									return;
 								}
 							}
@@ -13286,7 +13300,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								final int x=str.indexOf(" "+t[i]+" ");
 								if(x>=0)
 								{
-									enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str.substring(x).trim(), t);
+									enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str.substring(x).trim(), t);
 									return;
 								}
 							}
@@ -13323,7 +13337,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							str=CMStrings.replaceAll(str,"\n\r"," ");
 							if((t[1].length()==0)||(t[1].equals("ALL")))
 							{
-								enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str, t);
+								enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str, t);
 								return;
 							}
 							else
@@ -13331,7 +13345,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							{
 								if(match(str.trim(),t[2]))
 								{
-									enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str, t);
+									enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str, t);
 									return;
 								}
 							}
@@ -13341,7 +13355,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								final int x=str.indexOf(" "+t[i]+" ");
 								if(x>=0)
 								{
-									enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str.substring(x).trim(), t);
+									enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str.substring(x).trim(), t);
 									return;
 								}
 							}
@@ -13365,7 +13379,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(lastMsg==msg)
 								break;
 							lastMsg=msg;
-							enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,check, t);
+							enqueResponse(triggerCode,affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,check, t);
 							return;
 						}
 					}
@@ -13386,7 +13400,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(lastMsg==msg)
 								break;
 							lastMsg=msg;
-							enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.tool(),defaultItem,script,1,check, t);
+							enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,(Item)msg.tool(),defaultItem,script,1,check, t);
 							return;
 						}
 					}
@@ -13408,7 +13422,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(lastMsg==msg)
 								break;
 							lastMsg=msg;
-							enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,check, t);
+							enqueResponse(triggerCode,affecting,msg.source(),monster,monster,defaultItem,null,script,1,check, t);
 							return;
 						}
 					}
@@ -13429,7 +13443,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(lastMsg==msg)
 								break;
 							lastMsg=msg;
-							enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,check, t);
+							enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,check, t);
 							return;
 						}
 					}
@@ -13442,7 +13456,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final String check=standardTriggerCheck(script,t,msg.target(),affecting,msg.source(),msg.target(),monster,defaultItem,null,t);
 						if(check!=null)
 						{
-							enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,check, t);
+							enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,check, t);
 							return;
 						}
 					}
@@ -13563,12 +13577,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									if(Tool==null)
 										Tool=defaultItem;
 									if(msg.target() instanceof MOB)
-										enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str, t);
+										enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str, t);
 									else
 									if(msg.target() instanceof Item)
-										enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str, t);
+										enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str, t);
 									else
-										enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str, t);
+										enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str, t);
 									return;
 								}
 							}
@@ -13583,7 +13597,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final String check=standardTriggerCheck(script,t,msg.target(),affecting,msg.source(),msg.target(),monster,defaultItem,defaultItem,t);
 						if(check!=null)
 						{
-							enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,defaultItem,script,1,check, t);
+							enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,defaultItem,defaultItem,script,1,check, t);
 							return;
 						}
 					}
@@ -13608,7 +13622,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(lastMsg==msg)
 								break;
 							lastMsg=msg;
-							enqueResponse(affecting,msg.source(),msg.target(),monster,checkInE,defaultItem,script,1,check, t);
+							enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,checkInE,defaultItem,script,1,check, t);
 							return;
 						}
 					}
@@ -13632,7 +13646,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(msg.target() instanceof Coins)
 								execute(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,check,newObjs());
 							else
-								enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check, t);
+								enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check, t);
 							return;
 						}
 					}
@@ -13650,7 +13664,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final String check=standardTriggerCheck(script,t,msg.target(),affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,t);
 						if(check!=null)
 						{
-							enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check, t);
+							enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check, t);
 							return;
 						}
 					}
@@ -13683,7 +13697,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final String check=standardTriggerCheck(script,t,msg.target(),affecting,msg.source(),msg.target(),monster,I,defaultItem,t);
 						if(check!=null)
 						{
-							enqueResponse(affecting,msg.source(),msg.target(),monster,I,defaultItem,script,1,check, t);
+							enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,I,defaultItem,script,1,check, t);
 							return;
 						}
 					}
@@ -13703,7 +13717,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							&&(affecting instanceof Food))
 								execute(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,check,newObjs());
 							else
-								enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check, t);
+								enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check, t);
 							return;
 						}
 					}
@@ -13728,7 +13742,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
 								execute(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,check,newObjs());
 							else
-								enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)msg.tool(),script,1,check, t);
+								enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)msg.tool(),script,1,check, t);
 							return;
 						}
 					}
@@ -13753,7 +13767,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
 								execute(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,check,newObjs());
 							else
-								enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)msg.tool(),script,1,check, t);
+								enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)msg.tool(),script,1,check, t);
 							return;
 						}
 					}
@@ -13774,7 +13788,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							&&(product.owner() instanceof Room))
 								execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,check,newObjs());
 							else
-								enqueResponse(affecting,msg.source(),monster,monster,product,product,script,1,check, t);
+								enqueResponse(triggerCode,affecting,msg.source(),monster,monster,product,product,script,1,check, t);
 							return;
 						}
 					}
@@ -13794,7 +13808,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							&&(product.owner() instanceof Room))
 								execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null,newObjs());
 							else
-								enqueResponse(affecting,msg.source(),monster,monster,product,product,script,1,check, t);
+								enqueResponse(triggerCode,affecting,msg.source(),monster,monster,product,product,script,1,check, t);
 							return;
 						}
 					}
@@ -13811,7 +13825,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final String check=standardTriggerCheck(script,t,msg.target(),affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,t);
 						if(check!=null)
 						{
-							enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,check, t);
+							enqueResponse(triggerCode,affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,check, t);
 							return;
 						}
 					}
@@ -13841,7 +13855,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							||(t[1].equals("ALL"))
 							||(t[1].equals("ANY")))
 							{
-								enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,null, t);
+								enqueResponse(triggerCode,affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,null, t);
 								return;
 							}
 						}
@@ -13877,7 +13891,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 										break;
 									}
 								}
-								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,roomID, t);
+								enqueResponse(triggerCode,affecting,msg.source(),monster,monster,defaultItem,null,script,1,roomID, t);
 								return;
 							}
 						}
@@ -13911,7 +13925,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 										break;
 									}
 								}
-								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,roomID, t);
+								enqueResponse(triggerCode,affecting,msg.source(),monster,monster,defaultItem,null,script,1,roomID, t);
 								return;
 							}
 						}
@@ -13979,7 +13993,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final int prcnt=this.getTriggerPercent(t[1], msg.source());
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
-								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null, t);
+								enqueResponse(triggerCode,affecting,msg.source(),monster,monster,defaultItem,null,script,1,null, t);
 								return;
 							}
 						}
@@ -14021,7 +14035,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final int prcnt=this.getTriggerPercent(t[1], msg.source());
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
-								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null, t);
+								enqueResponse(triggerCode,affecting,msg.source(),monster,monster,defaultItem,null,script,1,null, t);
 								return;
 							}
 						}
@@ -14084,12 +14098,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(Tool==null)
 								Tool=defaultItem;
 							if(msg.target() instanceof MOB)
-								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str, t);
+								enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str, t);
 							else
 							if(msg.target() instanceof Item)
-								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str, t);
+								enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str, t);
 							else
-								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str, t);
+								enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str, t);
 							return;
 						}
 					}
@@ -14106,12 +14120,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						{
 							final Item Tool=defaultItem;
 							if(msg.target() instanceof MOB)
-								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,msg.tool().Name(), t);
+								enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,msg.tool().Name(), t);
 							else
 							if(msg.target() instanceof Item)
-								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,msg.tool().Name(), t);
+								enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,msg.tool().Name(), t);
 							else
-								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,msg.tool().Name(), t);
+								enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,msg.tool().Name(), t);
 							return;
 						}
 					}
@@ -14187,12 +14201,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								if(Tool==null)
 									Tool=defaultItem;
 								if(msg.target() instanceof MOB)
-									enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str, t);
+									enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str, t);
 								else
 								if(msg.target() instanceof Item)
-									enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str, t);
+									enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str, t);
 								else
-									enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str, t);
+									enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str, t);
 								return;
 							}
 						}
@@ -14238,12 +14252,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(Tool==null)
 								Tool=defaultItem;
 							if(msg.target() instanceof MOB)
-								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str, t);
+								enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str, t);
 							else
 							if(msg.target() instanceof Item)
-								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str, t);
+								enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str, t);
 							else
-								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str, t);
+								enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str, t);
 							return;
 						}
 					}
@@ -14626,7 +14640,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
 	}
 
-	public void enqueResponse(final PhysicalAgent host,
+	public void enqueResponse(final int triggerCode,
+							  final PhysicalAgent host,
 							  final MOB source,
 							  final Environmental target,
 							  final MOB monster,
@@ -14647,10 +14662,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if(noDelay)
 			execute(host,source,target,monster,primaryItem,secondaryItem,script,msg,newObjs());
 		else
-			que.add(new ScriptableResponse(host,source,target,monster,primaryItem,secondaryItem,script,ticks,msg));
+			que.add(new ScriptableResponse(triggerCode,host,source,target,monster,primaryItem,secondaryItem,script,ticks,msg));
 	}
 
-	public void prequeResponse(final PhysicalAgent host,
+	public void prequeResponse(final int triggerCode,
+							   final PhysicalAgent host,
 							   final MOB source,
 							   final Environmental target,
 							   final MOB monster,
@@ -14667,7 +14683,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			this.logError(monster, "UNK", "SYS", "Attempt to pre que more than 25 events.");
 			que.clear();
 		}
-		que.add(0,new ScriptableResponse(host,source,target,monster,primaryItem,secondaryItem,script,ticks,msg));
+		que.add(0,new ScriptableResponse(triggerCode,host,source,target,monster,primaryItem,secondaryItem,script,ticks,msg));
 	}
 
 	@Override

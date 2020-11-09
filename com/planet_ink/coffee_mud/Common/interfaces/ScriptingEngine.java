@@ -373,6 +373,9 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	 */
 	public static class ScriptableResponse
 	{
+		/** The trigger code being executed */
+		public int triggerCode = 0;
+		/** The number of ticks to delay before triggering */
 		private int tickDelay=0;
 		/** (host) the object being scripted */
 		public PhysicalAgent h=null;
@@ -393,6 +396,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 
 		/**
 		 * Create an event response object
+		 * @param triggerCode the triggerCode for the event
 		 * @param host the object being scripted
 		 * @param source the source of the event
 		 * @param target the target of the event
@@ -403,7 +407,8 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		 * @param ticks how many ticks to wait before executing the script
 		 * @param msg a string associated with this event
 		 */
-		public ScriptableResponse(final PhysicalAgent host,
+		public ScriptableResponse(final int triggerCode,
+								  final PhysicalAgent host,
 								  final MOB source,
 								  final Environmental target,
 								  final MOB monster,
@@ -413,6 +418,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 								  final int ticks,
 								  final String msg)
 		{
+			this.triggerCode = triggerCode;
 			h=host;
 			s=source;
 			t=target;
