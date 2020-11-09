@@ -13060,6 +13060,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 	}
 
+	protected int getTriggerPercent(final String t1, final Physical P)
+	{
+		if(t1.length()==0)
+			return 100;
+		if(Character.isDigit(t1.charAt(0)))
+			return CMath.s_int(t1);
+		else
+		if(t1.equalsIgnoreCase("ALL")||t1.equalsIgnoreCase("P ALL"))
+			return 101;
+		else
+		if(t1.startsWith("P ")||t1.startsWith("p "))
+			return CMLib.masking().maskCheck(t1.substring(2), P, true)?101:0;
+		else
+			return CMLib.masking().maskCheck(t1, P, false)?101:0;
+	}
+
 	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
@@ -13123,7 +13139,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							t=parseBits(script,0,"CR");
 						if(t!=null)
 						{
-							final int prcnt=CMath.s_int(t[1]);
+							final int prcnt=this.getTriggerPercent(t[1], msg.source());
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
 								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null, t);
@@ -13142,7 +13158,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							t=parseBits(script,0,"CR");
 						if(t!=null)
 						{
-							final int prcnt=CMath.s_int(t[1]);
+							final int prcnt=this.getTriggerPercent(t[1], eventMob);
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
 								if((host instanceof Item)
@@ -13180,7 +13196,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							t=parseBits(script,0,"CR");
 						if(t!=null)
 						{
-							final int prcnt=CMath.s_int(t[1]);
+							final int prcnt=this.getTriggerPercent(t[1], msg.source());
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
 								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null, t);
@@ -13813,7 +13829,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							t=parseBits(script,0,"CR");
 						if(t!=null)
 						{
-							final int prcnt=CMath.s_int(t[1]);
+							final int prcnt=this.getTriggerPercent(t[1], msg.source());
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
 								final List<ScriptableResponse> V=new XVector<ScriptableResponse>(que);
@@ -13847,7 +13863,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							t=parseBits(script,0,"CR");
 						if(t!=null)
 						{
-							final int prcnt=CMath.s_int(t[1]);
+							final int prcnt=this.getTriggerPercent(t[1], msg.source());
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
 								final List<ScriptableResponse> V=new XVector<ScriptableResponse>(que);
@@ -13930,7 +13946,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							t=parseBits(script,0,"CR");
 						if(t!=null)
 						{
-							final int prcnt=CMath.s_int(t[1]);
+							final int prcnt=this.getTriggerPercent(t[1], msg.source());
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
 								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null, t);
@@ -13954,7 +13970,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							t=parseBits(script,0,"CR");
 						if(t!=null)
 						{
-							final int prcnt=CMath.s_int(t[1]);
+							final int prcnt=this.getTriggerPercent(t[1], msg.source());
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
 								execute(affecting,msg.source(),monster,monster,defaultItem,null,script,null,t);
@@ -13972,7 +13988,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							t=parseBits(script,0,"CR");
 						if(t!=null)
 						{
-							final int prcnt=CMath.s_int(t[1]);
+							final int prcnt=this.getTriggerPercent(t[1], msg.source());
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
 								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null, t);
@@ -14409,7 +14425,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						t=parseBits(script,0,"CR");
 					if(t!=null)
 					{
-						final int prcnt=CMath.s_int(t[1]);
+						final int prcnt=this.getTriggerPercent(t[1], mob);
 						if(CMLib.dice().rollPercentage()<prcnt)
 							execute(affecting,mob.getVictim(),mob,mob,defaultItem,null,script,null,newObjs());
 					}
@@ -14424,7 +14440,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						t=parseBits(script,0,"CR");
 					if(t!=null)
 					{
-						final int prcnt=CMath.s_int(t[1]);
+						final int prcnt=this.getTriggerPercent(t[1], (((Item)ticking).owner()));
 						if(CMLib.dice().rollPercentage()<prcnt)
 						{
 							final MOB M=(MOB)((Item)ticking).owner();

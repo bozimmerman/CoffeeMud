@@ -368,13 +368,13 @@ from the nicely written MOBPROG
 Tutorial at: <a href="http://www.pandapub.com/tutorial/MobprogTutorial.htm">http://www.pandapub.com/tutorial/MobprogTutorial.htm</a>.</p>
 <h3><a name="all_greet_prog">all_greet_prog</a></h3>
 <p>Usage:</p>
-<pre>all_greet_prog [integer percentage]<br /></pre>
+<pre>all_greet_prog [integer percentage or zapper mask]<br /></pre>
 <p>This type of mobprog
-checks a percentage chance every time
+checks a percentage chance, or a zapper mask, every time
 someone enters the room that the script mob, item, exit, or room is
 currently in. If the random
 number generated between 1 and 100 is equal to or below the percentage
-of the all_greet_prog, the prog is triggered.&nbsp; Note that
+of the all_greet_prog, or the zapper masks matches the creature being greeted, the prog is triggered.&nbsp; Note that
 all_greet_progs
 are triggered by both players and mobs, even sneaking ones, and a mob
 in a maze can
@@ -389,7 +389,9 @@ enters the room where the mob currently is.</p>
 <pre>all_greet_prog 100<br /></pre>
 <p>This prog will be
 triggered 100% of the time when someone
-enters the room where the mob currently is. This means every time.</p>
+enters the room where the mob currently is. This means every time.
+</p><pre>all_greet_prog -RACE +Elf<br /></pre>
+This prog will be triggered 100% of the time whenever an elf enters the room where the mob currently is.
 <p>SPECIAL NOTES: You'll
 probably want to do a large number of if
 checks in all_greet_progs, specifically in the difference between mobs
@@ -451,15 +453,15 @@ of your act_prog trigger. Variables and Codes are not used in
 act_progs, so do not try to use them; it won't work.</p>
 <h3><a name="arrive_prog">arrive_prog</a></h3>
 <p>Usage:</p>
-<pre>arrive_prog [integer percentage]<br /></pre>
+<pre>arrive_prog [integer percentage or zapper mask]<br /></pre>
 <p>This type of mobprog
-checks a percentage chance every time
+checks a percentage chance, or a zapper mask, every time
 the scripted mob or item owner enters a new room, or when they enter
 the game.
 If the random
 number generated between 1 and 100 is equal to or below the percentage
 of the <span style="font-weight: bold;">arrive</span>_prog,
-the prog is triggered. This type of mobprog has all
+or the mask matches the scripted mob, the prog is triggered. This type of mobprog has all
 sorts
 of uses, ranging from giving in-zone quest information to people
 the mob stumbles upon, creating aggressive progs, etc.</p>
@@ -897,15 +899,15 @@ red
 juicy and a drop_prog p apple red poisoned.</p>
 <h3><a name="entry_prog">entry_prog</a></h3>
 <p>Usage:</p>
-<pre>entry_prog [integer percentage]<br /></pre>
+<pre>entry_prog [integer percentage or zapper mask]<br /></pre>
 <p>This
 type of prog checks
-a percentage chance every time the
+a percentage chance, or a zapper mask, every time the
 scripted mob moves into a new room, or if a scripted item owner mob
 enters a new room, or a scripted room or exit is entered . If the
 random number generated is equal to
 or below the percentage of the entry_prog when a mob steps into a new
-room, then the prog is triggered. This prog has a variety of uses, for
+room, or the mask matches the scripted mob, then the prog is triggered. This prog has a variety of uses, for
 instance, you can use it in conjunction with the inroom function to
 make sure a mob stays in the same room or never oversteps a boundary,
 or to have the mob attack players as it enters the room. There are many
@@ -995,12 +997,12 @@ only in the same script, but regarding the very same message codes if
 you like. However, only the first one that triggers will count.</p>
 <h3><a name="exit_prog">exit_prog</a></h3>
 <p>Usage:</p>
-<pre>exit_prog [integer percentage]<br /></pre>
+<pre>exit_prog [integer percentage or zapper mask]<br /></pre>
 <p>This type of prog checks
-a percentage chance every time a mob
+a percentage chance, or a zapper mask, every time a mob
 moves out of a the room the scripted mob is in. If the random number
 generated is equal to or below the percentage of the exit_prog when the
-mob steps out of the room, then the prog is triggered. This prog has a
+mob steps out of the room, or the zapper masks matches the creature exiting, then the prog is triggered. This prog has a
 variety of uses, for instance, you can use it in conjunction with the
 inroom function to make sure other mobs stay in the same room or never
 oversteps a boundary, or to have the mob attack remaining players when
@@ -1011,14 +1013,16 @@ one leaves. There are many possibilities.</p>
 the time when a mob leaves the room.</p>
 <pre>exit_prog 100<br /></pre>
 <p>This will trigger 100%,
-or every time, a mob leaves the room.</p>
+or every time, a mob leaves the room.
+</p><pre>exit_prog -RACE +Elf<br /></pre>
+This will trigger whenever an elf leave the room.
 <h3><a name="fight_prog">fight_prog</a></h3>
 <p>Usage:</p>
-<pre>fight_prog [integer percentage]<br /></pre>
+<pre>fight_prog [integer percentage or zapper mask]<br /></pre>
 <p>This type of mobprog
-checks a percentage chance every round of
+checks a percentage chance, or a zapper mask, every round of
 combat that the mob is in. If the random number generated between 1 and
-100 is equal to or less than the percentage of the fight_prog, then it
+100 is equal to or less than the percentage of the fight_prog, or the zapper mask matches the mob, then it
 will be triggered. This type of mobprog is generally used to have the
 mob do certain things in combat, for instance, cast spells or use
 skills. Sometimes it is used to ensure a mob doesn't fight at all, or
@@ -1180,13 +1184,13 @@ is also not a bad idea to have a giving_prog all to have the mob drop
 items other than the ones it will accept in other giving_progs.</p>
 <h3><a name="greet_prog">greet_prog</a></h3>
 <p>Usage:</p>
-<pre>greet_prog [integer percentage]<br /></pre>
+<pre>greet_prog [integer percentage or zapper mask]<br /></pre>
 <p>This type of mobprog
-checks a percentage chance every time
+checks a percentage chance, or a zapper mask, every time
 someone enters the room that the scripted mob, item, room, or exit is
 currently in. If the random
 number generated between 1 and 100 is equal to or below the percentage
-of the greet_prog, the prog is triggered. Note that greet_progs are
+of the greet_prog or the zapper masks matches the creature being greeted, the prog is triggered. Note that greet_progs are
 triggered by both non-sneaking players and mobs, and a mob in a maze
 can actually
 sometimes end up triggering itself! This type of mobprog has all sorts
@@ -1200,7 +1204,9 @@ enters the room where the mob currently is.</p>
 <pre>greet_prog 100<br /></pre>
 <p>This prog will be
 triggered 100% of the time when someone
-enters the room where the mob currently is. This means every time.</p>
+enters the room where the mob currently is. This means every time.
+</p><pre>greet_prog -race +elf<br /></pre>
+This prog will be triggered whenever an elf enters the room.
 <p>SPECIAL NOTES: You'll
 probably want to do a large number of if
 checks in greet_progs, specifically in the difference between mobs and
@@ -1280,7 +1286,7 @@ have multiple kill_progs on the same
 mob.</p>
 <h3><a name="level_prog">level_prog</a></h3>
 <p>Usage:</p>
-<pre>level_prog [integer percentage]<br /></pre>
+<pre>level_prog [integer percentage or zapper mask]<br /></pre>
 <p>This type of mobprog
 checks a percentage chance every time a
 player gains a level anywhere in the game. If the random number
@@ -1340,11 +1346,11 @@ keyword lists but some of the same keywords - for example a lock_prog p
 door gate and a lock_prog p door to the gate</p>
 <h3><a name="login_prog">login_prog</a></h3>
 <p>Usage:</p>
-<pre>login_prog [integer percentage]<br /></pre>
+<pre>login_prog [integer percentage or zapper mask]<br /></pre>
 <p>This type of mobprog
-checks a percentage chance every time
+checks a percentage chance, or a zapper mask, every time
 someone enters the game. If the random number generated between 1 and
-100 is equal to or below the percentage of the login_prog, the prog is
+100 is equal to or below the percentage of the login_prog, or the zapper mask matches the mob logging in, the prog is
 triggered.</p>
 <p>EXAMPLES:</p>
 <pre>login_prog 25<br /></pre>
@@ -1354,7 +1360,10 @@ enters the game.</p>
 <pre>login_prog 100<br /></pre>
 <p>This prog will be
 triggered 100% of the time when someone
-enters the game. This means every time.</p>
+enters the game. This means every time.
+</p><pre>login_prog -race +elf<br /></pre>
+<p>This prog will be
+triggered whenever an elf logs in.</p>
 <p>SPECIAL NOTES: This
 program will trigger every time a player
 enters the game, regardless of whether they are in the same room, or
@@ -1362,11 +1371,11 @@ even whether the scripted monster can see or detect the player. The
 exception to this is cloaked admins, which will not trigger</p>
 <h3><a name="logoff_prog">logoff_prog</a></h3>
 <p>Usage:</p>
-<pre>logoff_prog [integer percentage]<br /></pre>
+<pre>logoff_prog [integer percentage or zapper mask]<br /></pre>
 <p>This type of mobprog
-checks a percentage chance every time
+checks a percentage chance, or a zapper mask, every time
 someone leaves the game. If the random number generated between 1 and
-100 is equal to or below the percentage of the logoff_prog, the prog is
+100 is equal to or below the percentage of the logoff_prog, or the zapper mask matches the mob logging out, the prog is
 triggered.</p>
 <p>EXAMPLES:</p>
 <pre>logoff_prog 25<br /></pre>
@@ -1376,7 +1385,10 @@ leaves the game.</p>
 <pre>logoff_prog 100<br /></pre>
 <p>This prog will be
 triggered 100% of the time when someone
-leaves the game. This means every time.</p>
+leaves the game. This means every time.
+</p><pre>logoff_prog -race +elf<br /></pre>
+<p>This prog will be
+triggered whenever an elf logs out.</p>
 <p>SPECIAL NOTES: This
 program will trigger every time a player
 leaves the game, regardless of whether they are in the same room, or
