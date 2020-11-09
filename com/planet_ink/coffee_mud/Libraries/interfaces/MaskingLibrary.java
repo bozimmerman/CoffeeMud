@@ -189,6 +189,8 @@ public interface MaskingLibrary extends CMLibrary
 		GROUPSIZE,
 		_IF,
 		IF,
+		_OR,
+		OR,
 		_MOOD("-MOODS"),
 		MOOD("+MOODS"),
 		_ACCCHIEVE("-ACCCHIEVES"),
@@ -251,6 +253,6 @@ public interface MaskingLibrary extends CMLibrary
 	{
 		public boolean[] flags();
 		public boolean empty();
-		public CompiledZMaskEntry[] entries();
+		public CompiledZMaskEntry[][] entries();
 	}
 }

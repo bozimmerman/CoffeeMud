@@ -240,7 +240,8 @@ public class CMProps extends Properties
 		CLANTROPMONTHLYLVLS,
 		CLANTROPMONTHLYCP,
 		CLANTROPMONTHLYMB,
-		MANACOMPOUND_RULES
+		MANACOMPOUND_RULES,
+		DEITYPOLICY
 	}
 
 	/**
@@ -2235,6 +2236,7 @@ public class CMProps extends Properties
 		setUpLowVar(Str.I3ROUTERS,getStr("I3ROUTERS"));
 		setVar(Str.AUTOREACTION,getStr("AUTOREACTION"));
 		setVar(Str.WIZLISTMASK,getStr("WIZLISTMASK"));
+		setUpLowVar(Str.DEITYPOLICY,getStr("DEITYPOLICY"));
 		setUpLowVar(Str.DEFAULTPARENTAREA,getStr("DEFAULTPARENTAREA"));
 		setUpLowVar(Str.CLANWEBSITES,getStr("CLANWEBSITES"));
 		setVar(Str.CHANNELBACKLOG,getStr("CHANNELBACKLOG"));

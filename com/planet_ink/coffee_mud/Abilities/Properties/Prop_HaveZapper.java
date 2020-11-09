@@ -187,58 +187,61 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect
 			&&(mask.entries()!=null)
 			&&(mask.entries().length>0))
 			{
-				for(final CompiledZMaskEntry entry : this.mask.entries())
+				for(final CompiledZMaskEntry[] entries : this.mask.entries())
 				{
-					switch(entry.maskType())
+					for(final CompiledZMaskEntry entry : entries)
 					{
-					case _PLAYER:
-					case _NPC:
-						level -=5;
-						break;
-					case _ALIGNMENT:
-						level -= (9-entry.parms().length);
-						break;
-					case ALIGNMENT:
-						level -= entry.parms().length;
-						break;
-					case _RACECAT:
-					case _RACE:
-						level -=9;
-						break;
-					case RACECAT:
-					case RACE:
-						level -= entry.parms().length;
-						break;
-					case _BASECLASS:
-						level -= (9-entry.parms().length);
-						break;
-					case BASECLASS:
-						level -= entry.parms().length;
-						break;
-					case _ANYCLASS:
-					case _ANYCLASSLEVEL:
-					case _CLASS:
-						level -= 9;
-						break;
-					case ANYCLASS:
-					case ANYCLASSLEVEL:
-					case CLASS:
-						level -= entry.parms().length;
-						break;
-					case _GENDER:
-						level -= (9-(entry.parms().length*3));
-						break;
-					case GENDER:
-						level -= (entry.parms().length*3);
-						break;
-					case TATTOO:
-					case _TATTOO:
-					case _FACTION:
-					case FACTION:
-						level -= 9;
-						break;
-					default:
-						break;
+						switch(entry.maskType())
+						{
+						case _PLAYER:
+						case _NPC:
+							level -=5;
+							break;
+						case _ALIGNMENT:
+							level -= (9-entry.parms().length);
+							break;
+						case ALIGNMENT:
+							level -= entry.parms().length;
+							break;
+						case _RACECAT:
+						case _RACE:
+							level -=9;
+							break;
+						case RACECAT:
+						case RACE:
+							level -= entry.parms().length;
+							break;
+						case _BASECLASS:
+							level -= (9-entry.parms().length);
+							break;
+						case BASECLASS:
+							level -= entry.parms().length;
+							break;
+						case _ANYCLASS:
+						case _ANYCLASSLEVEL:
+						case _CLASS:
+							level -= 9;
+							break;
+						case ANYCLASS:
+						case ANYCLASSLEVEL:
+						case CLASS:
+							level -= entry.parms().length;
+							break;
+						case _GENDER:
+							level -= (9-(entry.parms().length*3));
+							break;
+						case GENDER:
+							level -= (entry.parms().length*3);
+							break;
+						case TATTOO:
+						case _TATTOO:
+						case _FACTION:
+						case FACTION:
+							level -= 9;
+							break;
+						default:
+							break;
+						}
 					}
 				}
 			}

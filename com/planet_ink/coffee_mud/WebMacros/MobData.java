@@ -1294,7 +1294,7 @@ public class MobData extends StdWebMacro
 							{
 								final String cnam=(String)element;
 								str.append("<OPTION VALUE=\""+cnam+"\"");
-								if(old.equals(cnam))
+								if(cnam.equals(old))
 									str.append(" SELECTED");
 								str.append(">"+cnam);
 							}
@@ -1948,7 +1948,7 @@ public class MobData extends StdWebMacro
 					break;
 				}
 				if(firstTime)
-					httpReq.addFakeUrlParameter(parmName,old.equals("checked")?"on":old);
+					httpReq.addFakeUrlParameter(parmName,"checked".equals(old)?"on":old);
 			}
 		}
 		str.append(ExitData.dispositions(M,firstTime,httpReq,parms));

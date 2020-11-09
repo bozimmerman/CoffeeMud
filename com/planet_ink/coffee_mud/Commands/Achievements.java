@@ -167,8 +167,7 @@ public class Achievements extends StdCommand
 			{
 				whoM=CMLib.players().getLoadPlayer(lastParm);
 				parms.remove(parms.size()-1);
-				if((whoM!=null)
-				&&(whoM.isAttributeSet(Attrib.PRIVACY))
+				if((whoM.isAttributeSet(Attrib.PRIVACY))
 				&&(whoM!=mob)
 				&&(!whoM.getGroupMembers(new HashSet<MOB>()).contains(mob))
 				&&(!CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDPLAYERS))

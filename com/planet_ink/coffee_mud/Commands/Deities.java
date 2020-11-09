@@ -45,18 +45,28 @@ public class Deities extends StdCommand
 		return access;
 	}
 
-	private final static Class<?>[][] internalParameters=new Class<?>[][]{{Deity.class}};
+	private final static Class<?>[][] internalParameters=new Class<?>[][]{{Deity.class},{Deity.class,Boolean.class}};
 
-	public String getDeityInformation(final MOB mob, final Deity D)
+	public String getDeityInformation(final MOB mob, final Deity D, final boolean nameOnly)
 	{
 		final StringBuffer msg = new StringBuffer("");
-		msg.append("\n\r^x"+D.name()+"^.^?");
-		if(D.hasFaction(CMLib.factions().getAlignmentID()))
+		msg.append("^x"+D.name()+"^.^?");
+		if(D.hasFaction(CMLib.factions().getAlignmentID())||D.hasFaction(CMLib.factions().getInclinationID()))
 		{
-			final int faction=D.fetchFaction(CMLib.factions().getAlignmentID());
-			msg.append("^N ("+CMLib.factions().getRange(CMLib.factions().getAlignmentID(), faction)+")");
+			msg.append("^N (");
+			int faction=D.fetchFaction(CMLib.factions().getAlignmentID());
+			Faction.FRange range1=CMLib.factions().getRange(CMLib.factions().getAlignmentID(), faction);
+			if(range1!=null)
+				msg.append(range1.name());
+			faction=D.fetchFaction(CMLib.factions().getInclinationID());
+			Faction.FRange range2=CMLib.factions().getRange(CMLib.factions().getInclinationID(), faction);
+			if(range2!=null)
+				msg.append((range1!=null)?"/":"").append(range2.name());
+			msg.append(")");
 		}
 		msg.append("\n\r");
+		if(nameOnly)
+			return msg.toString();
 		msg.append(D.description()+"\n\r\n\r");
 		if((mob==null)||(CMSecurity.isASysOp(mob)))
 		{
@@ -116,7 +126,11 @@ public class Deities extends StdCommand
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE.toString();
-		return this.getDeityInformation(mob, (Deity)args[0]);
+		if((args.length==2)
+		&&(args[1] instanceof Boolean)
+		&&(((Boolean)args[1]).booleanValue()))
+			return this.getDeityInformation(mob, (Deity)args[0], true);
+		return this.getDeityInformation(mob, (Deity)args[0], false);
 	}
 
 	@Override
@@ -135,7 +149,7 @@ public class Deities extends StdCommand
 		{
 			final Deity D=d.nextElement();
 			if((str.length()>0)&&(CMLib.english().containsString(D.name(),str)))
-				msg.append(this.getDeityInformation(mob, D));
+				msg.append("\n\r"+this.getDeityInformation(mob, D, false));
 			else
 			if(str.length()==0)
 			{

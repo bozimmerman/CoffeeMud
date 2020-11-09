@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -68,6 +69,13 @@ public class Rebuke extends StdCommand
 		if(target==null)
 		{
 			mob.tell(L("You don't see anybody called '@x1' or you aren't serving '@x2'.",CMParms.combine(commands,1),CMParms.combine(commands,1)));
+			return false;
+		}
+		
+		final boolean allowedForDeity=!CMParms.getParmBool(CMProps.getVar(Str.DEITYPOLICY), "NOREBUKE", false);
+		if((!allowedForDeity)&&(target instanceof Deity))
+		{
+			mob.tell(L("You are not permitted to rebuke a deity."));
 			return false;
 		}
 

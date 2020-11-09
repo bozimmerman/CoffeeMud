@@ -131,7 +131,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	{
 		private final boolean[] flags;
 		private final boolean empty;
-		private final CompiledZMaskEntry[] entries;
+		private final CompiledZMaskEntry[][] entries;
 
 		@Override
 		public boolean[] flags()
@@ -146,19 +146,19 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		}
 
 		@Override
-		public CompiledZMaskEntry[] entries()
+		public CompiledZMaskEntry[][] entries()
 		{
 			return entries;
 		}
 
-		public CompiledZapperMaskImpl(final boolean[] flags, final CompiledZMaskEntry[] entries)
+		public CompiledZapperMaskImpl(final boolean[] flags, final CompiledZMaskEntry[][] entries)
 		{
 			this.flags = flags;
 			this.entries = entries;
 			this.empty = false;
 		}
 
-		public CompiledZapperMaskImpl(final boolean[] flags, final CompiledZMaskEntry[] entries, final boolean empty)
+		public CompiledZapperMaskImpl(final boolean[] flags, final CompiledZMaskEntry[][] entries, final boolean empty)
 		{
 			this.flags = flags;
 			this.entries = entries;
@@ -276,7 +276,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	@Override
 	public CompiledZMask createEmptyMask()
 	{
-		return new CompiledZapperMaskImpl(new boolean[2], new CompiledZMaskEntry[0], true);
+		return new CompiledZapperMaskImpl(new boolean[2], new CompiledZMaskEntry[0][0], true);
 	}
 
 	@Override
@@ -1066,6 +1066,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
 					}
+					break;
+				case _OR: // -or
+					buf.append(L("-OR other than the following:  "));
+					break;
+				case OR: // -or
+					buf.append(L("-OR-  "));
 					break;
 				case EXPERTISE: // +expertises
 					{
@@ -2611,108 +2617,111 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	{
 		int level=minMinLevel;
 		final CompiledZMask cset=getPreCompiledMask(text);
-		for(final CompiledZMaskEntry entry : cset.entries())
+		for(final CompiledZMaskEntry[] entries : cset.entries())
 		{
-			switch(entry.maskType())
+			for(final CompiledZMaskEntry entry : entries)
 			{
-			case _LEVEL: // -level
+				switch(entry.maskType())
 				{
-					for(int v=0;v<entry.parms().length-1;v+=2)
+				case _LEVEL: // -level
 					{
-						switch((ZapperKey)entry.parms()[v])
+						for(int v=0;v<entry.parms().length-1;v+=2)
 						{
-						case LVLGR: // +lvlgr
-							level=((Integer)entry.parms()[v+1]).intValue()+1;
-							break;
-						case LVLGE: // +lvlge
-							level=((Integer)entry.parms()[v+1]).intValue();
-							break;
-						case LVLLT: // +lvlt
-							level=minMinLevel;
-							break;
-						case LVLLE: // +lvlle
-							level=minMinLevel;
-							break;
-						case LVLEQ: // +lvleq
-							level=((Integer)entry.parms()[v+1]).intValue();
-							break;
-						default:
-							break;
+							switch((ZapperKey)entry.parms()[v])
+							{
+							case LVLGR: // +lvlgr
+								level=((Integer)entry.parms()[v+1]).intValue()+1;
+								break;
+							case LVLGE: // +lvlge
+								level=((Integer)entry.parms()[v+1]).intValue();
+								break;
+							case LVLLT: // +lvlt
+								level=minMinLevel;
+								break;
+							case LVLLE: // +lvlle
+								level=minMinLevel;
+								break;
+							case LVLEQ: // +lvleq
+								level=((Integer)entry.parms()[v+1]).intValue();
+								break;
+							default:
+								break;
+							}
 						}
 					}
-				}
-				break;
-			case _CLASSLEVEL: // -classlevel
-				{
-					for(int v=0;v<entry.parms().length-1;v+=2)
+					break;
+				case _CLASSLEVEL: // -classlevel
 					{
-						switch((ZapperKey)entry.parms()[v])
+						for(int v=0;v<entry.parms().length-1;v+=2)
 						{
-						case LVLGR: // +lvlgr
-							level=((Integer)entry.parms()[v+1]).intValue()+1;
-							break;
-						case LVLGE: // +lvlge
-							level=((Integer)entry.parms()[v+1]).intValue();
-							break;
-						case LVLLT: // +lvlt
-							level=minMinLevel;
-							break;
-						case LVLLE: // +lvlle
-							level=minMinLevel;
-							break;
-						case LVLEQ: // +lvleq
-							level=((Integer)entry.parms()[v+1]).intValue();
-							break;
-						default:
-							break;
+							switch((ZapperKey)entry.parms()[v])
+							{
+							case LVLGR: // +lvlgr
+								level=((Integer)entry.parms()[v+1]).intValue()+1;
+								break;
+							case LVLGE: // +lvlge
+								level=((Integer)entry.parms()[v+1]).intValue();
+								break;
+							case LVLLT: // +lvlt
+								level=minMinLevel;
+								break;
+							case LVLLE: // +lvlle
+								level=minMinLevel;
+								break;
+							case LVLEQ: // +lvleq
+								level=((Integer)entry.parms()[v+1]).intValue();
+								break;
+							default:
+								break;
+							}
 						}
 					}
-				}
-				break;
-			case _MAXCLASSLEVEL: // -maxclasslevel
-				{
-					for(int v=0;v<entry.parms().length-1;v+=2)
+					break;
+				case _MAXCLASSLEVEL: // -maxclasslevel
 					{
-						switch((ZapperKey)entry.parms()[v])
+						for(int v=0;v<entry.parms().length-1;v+=2)
 						{
-						case LVLGR: // +lvlgr
-							level=((Integer)entry.parms()[v+1]).intValue()+1;
-							break;
-						case LVLGE: // +lvlge
-							level=((Integer)entry.parms()[v+1]).intValue();
-							break;
-						case LVLLT: // +lvlt
-							level=minMinLevel;
-							break;
-						case LVLLE: // +lvlle
-							level=minMinLevel;
-							break;
-						case LVLEQ: // +lvleq
-							level=((Integer)entry.parms()[v+1]).intValue();
-							break;
-						default:
-							break;
+							switch((ZapperKey)entry.parms()[v])
+							{
+							case LVLGR: // +lvlgr
+								level=((Integer)entry.parms()[v+1]).intValue()+1;
+								break;
+							case LVLGE: // +lvlge
+								level=((Integer)entry.parms()[v+1]).intValue();
+								break;
+							case LVLLT: // +lvlt
+								level=minMinLevel;
+								break;
+							case LVLLE: // +lvlle
+								level=minMinLevel;
+								break;
+							case LVLEQ: // +lvleq
+								level=((Integer)entry.parms()[v+1]).intValue();
+								break;
+							default:
+								break;
+							}
 						}
 					}
+					break;
+				case LVLGR: // +lvlgr
+					level=minMinLevel;
+					break;
+				case LVLGE: // +lvlge
+					level=minMinLevel;
+					break;
+				case LVLLT: // +lvlt
+					level=((Integer)entry.parms()[0]).intValue();
+					break;
+				case LVLLE: // +lvlle
+					level=((Integer)entry.parms()[0]).intValue()+1;
+					break;
+				case LVLEQ: // +lvleq
+					level=minMinLevel;
+					break;
+				default:
+					break;
 				}
-				break;
-			case LVLGR: // +lvlgr
-				level=minMinLevel;
-				break;
-			case LVLGE: // +lvlge
-				level=minMinLevel;
-				break;
-			case LVLLT: // +lvlt
-				level=((Integer)entry.parms()[0]).intValue();
-				break;
-			case LVLLE: // +lvlle
-				level=((Integer)entry.parms()[0]).intValue()+1;
-				break;
-			case LVLEQ: // +lvleq
-				level=minMinLevel;
-				break;
-			default:
-				break;
 			}
 		}
 		return level;
@@ -2721,9 +2730,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	@Override
 	public CompiledZMask maskCompile(final String text)
 	{
-		final ArrayList<CompiledZMaskEntry> buf=new ArrayList<CompiledZMaskEntry>();
+		final ArrayList<ArrayList<CompiledZMaskEntry>> bufs=new ArrayList<ArrayList<CompiledZMaskEntry>>();
 		if((text==null)||(text.trim().length()==0))
-			return new CompiledZapperMaskImpl(new boolean[]{false,false},buf.toArray(new CompiledZMaskEntry[0]));
+			return new CompiledZapperMaskImpl(new boolean[]{false,false},bufs.toArray(new CompiledZMaskEntry[0][0]));
+		ArrayList<CompiledZMaskEntry> buf=new ArrayList<CompiledZMaskEntry>();
+		bufs.add(buf);
 		final Map<String,ZapperKey> zapCodes=getMaskCodes();
 		final List<String> V=CMParms.parse(text.toUpperCase());
 		List<String> lV=null;
@@ -3865,6 +3876,16 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					buf.add(new CompiledZapperMaskEntryImpl(entryType,new Object[0]));
 					break;
 				}
+				case OR: // +or
+				case _OR: // -or
+				{
+					buf=new ArrayList<CompiledZMaskEntry>(1);
+					buf.add(new CompiledZapperMaskEntryImpl(entryType,new Object[0]));
+					bufs.add(buf);
+					buf=new ArrayList<CompiledZMaskEntry>();
+					bufs.add(buf);
+					break;
+				}
 				case _IFSTAT:
 				case IFSTAT:
 					{
@@ -4257,7 +4278,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				}
 			}
 		}
-		return new CompiledZapperMaskImpl(new boolean[]{buildItemFlag,buildRoomFlag},buf.toArray(new CompiledZMaskEntry[0]));
+		final CompiledZMaskEntry[][] entrieses = new CompiledZMaskEntry[bufs.size()][];
+		for(int i=0;i<bufs.size();i++)
+			entrieses[i]=bufs.get(i).toArray(new CompiledZMaskEntry[0]);
+		return new CompiledZapperMaskImpl(new boolean[]{buildItemFlag,buildRoomFlag},entrieses);
 	}
 
 	protected Room outdoorRoom(final Area A)
@@ -4288,8 +4312,6 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return maskCheck(getPreCompiledMask(text), E, actual);
 	}
 
-	@SuppressWarnings("unchecked")
-
 	@Override
 	public boolean maskCheck(final CompiledZMask cset, final Environmental E, final boolean actual)
 	{
@@ -4298,7 +4320,6 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		if((cset==null)||(cset.entries().length<1))
 			return true;
 		getMaskCodes();
-		CharStats base=null;
 		final MOB mob=(E instanceof MOB)?(MOB)E:nonCrashingMOB();
 		final boolean[] flags=cset.flags();
 		final Item item=flags[0]?((E instanceof Item)?(Item)E:nonCrashingItem(mob)):null;
@@ -4311,12 +4332,48 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			final int[] areaStats = ((Area)E).getAreaIStats();
 			mob.addFaction(CMLib.factions().getAlignmentID(), areaStats[Area.Stats.MED_ALIGNMENT.ordinal()]);
 		}
-		for(final CompiledZMaskEntry entry : cset.entries())
+		if(cset.entries().length<3)
+			return maskCheckSubEntries(cset.entries()[0],E,actual,mob,flags,item,room,P);
+		else
+		{
+			boolean lastValue = false;
+			boolean lastConnectorNot = false;
+			for(int i=0;i<cset.entries().length;i+=2)
+			{
+				boolean subResult =  maskCheckSubEntries(cset.entries()[i],E,actual,mob,flags,item,room,P);
+				if(lastConnectorNot)
+					subResult = !subResult;
+				lastValue = lastValue || subResult;
+				if(i==cset.entries().length-1)
+					return lastValue;
+				CompiledZMaskEntry entry = cset.entries()[i+1][0];
+				if(entry.maskType()==MaskingLibrary.ZapperKey._OR)
+					lastConnectorNot=true;
+				else
+				if(entry.maskType()==MaskingLibrary.ZapperKey.OR)
+					lastConnectorNot=false;
+				else
+					Log.errOut("Badly compiled zappermask @ "+E.Name()+"@"+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(E)));
+			}
+			return lastValue;
+		}
+	}
+	
+	protected boolean maskCheckSubEntries(final CompiledZMaskEntry[] set, final Environmental E, final boolean actual,
+										  final MOB mob, final boolean[] flags, final Item item, final Room room,
+										  final Physical P)
+	{
+		CharStats base=null;
+		for(final CompiledZMaskEntry entry : set)
 		{
 			try
 			{
 				switch(entry.maskType())
 				{
+				case OR: //+or
+				case _OR: //-or
+					Log.errOut("Badly compiled zappermask @ "+E.Name()+"@"+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(E)));
+					break;
 				case SYSOP: // +sysop
 					if(CMSecurity.isASysOp(mob))
 						return true;
@@ -5164,8 +5221,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								else
 								if(o instanceof Pair)
 								{
-									if(clanID.equalsIgnoreCase(((Pair<String,String>)o).first)
-									||((((Pair<String,String>)o).first).equals("*") && (clanID.length()>0)))
+									@SuppressWarnings("unchecked")
+									final Pair<String,String> oP=((Pair<String,String>)o);
+									if(clanID.equalsIgnoreCase(oP.first)
+									||((oP.first).equals("*") && (clanID.length()>0)))
 									{
 										found=true;
 										break;
@@ -5193,17 +5252,19 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 									else
 									if(o instanceof Pair)
 									{
-										if(c.first.clanID().equalsIgnoreCase(((Pair<String,String>)o).first)
-										||((((Pair<String,String>)o).first).equals("*") && (clanID.length()>0)))
+										@SuppressWarnings("unchecked")
+										final Pair<String,String> oP=((Pair<String,String>)o);
+										if(c.first.clanID().equalsIgnoreCase(oP.first)
+										||((oP.first).equals("*") && (clanID.length()>0)))
 										{
-											if((((Pair<String,String>)o).second).equals("*"))
+											if((oP.second).equals("*"))
 											{
 												found=true;
 												break;
 											}
 											else
 											{
-												final ClanPosition cP=c.first.getGovernment().getPosition(((Pair<String,String>)o).second);
+												final ClanPosition cP=c.first.getGovernment().getPosition(oP.second);
 												if((cP==null)||(cP.getRoleID()==c.second.intValue()))
 												{
 													found=true;
@@ -5234,8 +5295,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							else
 							if(o instanceof Pair)
 							{
-								if(clanID.equalsIgnoreCase(((Pair<String,String>)o).first)
-								||((((Pair<String,String>)o).first).equals("*") && (clanID.length()>0)))
+								@SuppressWarnings("unchecked")
+								final Pair<String,String> oP=((Pair<String,String>)o);
+								if(clanID.equalsIgnoreCase(oP.first)
+								||((oP.first).equals("*") && (clanID.length()>0)))
 									return false;
 							}
 						}
@@ -5257,14 +5320,16 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								else
 								if(o instanceof Pair)
 								{
-									if(clanID.equalsIgnoreCase(((Pair<String,String>)o).first)
-									||((((Pair<String,String>)o).first).equals("*") && (clanID.length()>0)))
+									@SuppressWarnings("unchecked")
+									final Pair<String,String> oP=((Pair<String,String>)o);
+									if(clanID.equalsIgnoreCase(oP.first)
+									||((oP.first).equals("*") && (clanID.length()>0)))
 									{
-										if((((Pair<String,String>)o).second).equals("*"))
+										if((oP.second).equals("*"))
 											return false;
 										else
 										{
-											final ClanPosition cP=c.first.getGovernment().getPosition(((Pair<String,String>)o).second);
+											final ClanPosition cP=c.first.getGovernment().getPosition(oP.second);
 											if((cP!=null)&&(cP.getRoleID()==c.second.intValue()))
 												return false;
 										}
@@ -6180,6 +6245,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								final String areaBlurb = b.nextElement();
 								for(final Object o : entry.parms())
 								{
+									@SuppressWarnings("unchecked")
 									final Triad<Character,String,String> t =(Triad<Character,String,String>)o;
 									switch(t.first.charValue())
 									{
@@ -6221,6 +6287,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								for(final Enumeration<String> b = A.areaBlurbFlags(); b.hasMoreElements();)
 								{
 									final String areaBlurb = b.nextElement();
+									@SuppressWarnings("unchecked")
 									final Triad<Character,String,String> t =(Triad<Character,String,String>)o;
 									switch(t.first.charValue())
 									{
@@ -6597,6 +6664,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return maskCheck(getPreCompiledMask(text), E);
 	}
 
+	
+	
 	@Override
 	public boolean maskCheck(final CompiledZMask cset, final PlayerLibrary.ThinPlayer E)
 	{
@@ -6605,13 +6674,46 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		if((cset==null)||(cset.empty())||(cset.entries().length<1))
 			return true;
 		getMaskCodes();
+		if(cset.entries().length<3)
+			return maskCheckSubEntries(cset.entries()[0],E);
+		else
+		{
+			boolean lastValue = false;
+			boolean lastConnectorNot = false;
+			for(int i=0;i<cset.entries().length;i+=2)
+			{
+				boolean subResult =  maskCheckSubEntries(cset.entries()[i],E);
+				if(lastConnectorNot)
+					subResult = !subResult;
+				lastValue = lastValue || subResult;
+				if(i==cset.entries().length-1)
+					return lastValue;
+				CompiledZMaskEntry entry = cset.entries()[i+1][0];
+				if(entry.maskType()==MaskingLibrary.ZapperKey._OR)
+					lastConnectorNot=true;
+				else
+				if(entry.maskType()==MaskingLibrary.ZapperKey.OR)
+					lastConnectorNot=false;
+				else
+					Log.errOut("Badly compiled zappermask @ "+E.name());
+			}
+			return lastValue;
+		}
+	}
+	
+	protected boolean maskCheckSubEntries(final CompiledZMaskEntry set[], final PlayerLibrary.ThinPlayer E)
+	{
 		//boolean[] flags=(boolean[])cset.firstElement();
-		for(final CompiledZMaskEntry entry : cset.entries())
+		for(final CompiledZMaskEntry entry : set)
 		{
 			try
 			{
 				switch(entry.maskType())
 				{
+				case OR: //+or
+				case _OR: //-or
+					Log.errOut("Badly compiled zappermask @ "+E.name());
+					break;
 				case SYSOP: // +sysop
 					if(CMSecurity.isASysOp(E))
 						return true;

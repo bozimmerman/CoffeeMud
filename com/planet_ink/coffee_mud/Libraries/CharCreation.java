@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.exceptions.BadEmailAddressException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMProps.Int;
+import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AchievementLoadFlag;
@@ -55,14 +56,17 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return "CharCreation";
 	}
 
-	public Map<String, String>				startRooms			= new Hashtable<String, String>();
-	public PairList<CompiledZMask, String>	startRoomMasks		= new PairVector<CompiledZMask, String>();
-	public Map<String, String>				deathRooms			= new Hashtable<String, String>();
-	public PairList<CompiledZMask, String>	deathRoomMasks		= new PairVector<CompiledZMask, String>();
-	public Map<String, String>				bodyRooms			= new Hashtable<String, String>();
-	public PairList<CompiledZMask, String>	bodyRoomMasks		= new PairVector<CompiledZMask, String>();
-	public Pair<String, Integer>[]			randomNameVowels	= null;
-	public Pair<String, Integer>[]			randomNameConsonants= null;
+	protected Map<String, String>				startRooms			= new Hashtable<String, String>();
+	protected PairList<CompiledZMask, String>	startRoomMasks		= new PairVector<CompiledZMask, String>();
+	protected Map<String, String>				deathRooms			= new Hashtable<String, String>();
+	protected PairList<CompiledZMask, String>	deathRoomMasks		= new PairVector<CompiledZMask, String>();
+	protected Map<String, String>				bodyRooms			= new Hashtable<String, String>();
+	protected PairList<CompiledZMask, String>	bodyRoomMasks		= new PairVector<CompiledZMask, String>();
+	protected Pair<String, Integer>[]			randomNameVowels	= null;
+	protected Pair<String, Integer>[]			randomNameConsonants= null;
+	protected CompiledZMask						requiresDeityMask	= null;
+	protected CompiledZMask						deitiesMask			= null;
+	protected boolean							propertiesReLoaded	= true;
 
 	protected final String RECONFIRMSTR="\n\r^WTry entering ^HY^W or ^HN^W: ";
 
@@ -130,8 +134,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		CHARCR_CLASSPICKED,
 		CHARCR_CLASSCONFIRM,
 		CHARCR_FACTIONNEXT,
-		CHARCR_FACTIONDONE,
 		CHARCR_FACTIONPICK,
+		CHARCR_FACTIONDONE,
+		CHARCR_DEITYSTART,
+		CHARCR_DEITYPICKED,
+		CHARCR_DEITYCONFIRM,
+		CHARCR_DEITYDONE,
 		CHARCR_FINISH
 	}
 
@@ -400,6 +408,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 
 		return !CMSecurity.isBanned(login);
+	}
+
+	@Override
+	public void propertiesLoaded()
+	{
+		super.propertiesLoaded();
+		propertiesReLoaded=true;
 	}
 
 	@Override
@@ -702,6 +717,28 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			else
 			{
 				list.append(color+C.name()+"^N, ");
+			}
+		}
+		return list.toString();
+	}
+
+	protected String buildQualifyingDeityList(final MOB mob, final List<Deity> deities, final String finalConnector)
+	{
+		final StringBuilder list = new StringBuilder("^N");
+		for(final Iterator<Deity> i=deities.iterator(); i.hasNext(); )
+		{
+			final Deity D = i.next();
+			if(!i.hasNext())
+			{
+				if (list.length()>0)
+				{
+					list.append(finalConnector+" ");
+				}
+				list.append(D.name());
+			}
+			else
+			{
+				list.append(D.name()+", ");
 			}
 		}
 		return list.toString();
@@ -1071,6 +1108,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			return charcrFactionPick(loginObj, session);
 		case CHARCR_FACTIONDONE:
 			return charcrFactionDone(loginObj, session);
+		case CHARCR_DEITYSTART:
+			return charcrDeityStart(loginObj, session);
+		case CHARCR_DEITYPICKED:
+			return charcrDeityPicked(loginObj, session);
+		case CHARCR_DEITYCONFIRM:
+			return charcrDeityConfirm(loginObj, session);
+		case CHARCR_DEITYDONE:
+			return charcrDeityDone(loginObj, session);
 		case CHARCR_FINISH:
 			return charcrFinish(loginObj, session);
 		default:
@@ -3556,7 +3601,168 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			if((num>0)&&(denomination>0.0)&&(currency!=null))
 				CMLib.beanCounter().giveSomeoneMoney(mob, currency, denomination * num);
 		}
+		
+		if(this.propertiesReLoaded)
+		{
+			final String requiresDeityMask = CMParms.getParmStr(CMProps.getVar(Str.DEITYPOLICY), "REQUIREDMASK", "");
+			final String deitiesMask = CMParms.getParmStr(CMProps.getVar(Str.DEITYPOLICY), "DEITYMASK", "");
+			this.requiresDeityMask = null;
+			this.deitiesMask = null;
+			if(requiresDeityMask.trim().length()>0)
+				this.requiresDeityMask = CMLib.masking().maskCompile(requiresDeityMask);
+			if(deitiesMask.trim().length()>0)
+				this.deitiesMask = CMLib.masking().maskCompile(deitiesMask);
+			propertiesReLoaded=false;
+		}
 
+		if((this.requiresDeityMask != null)
+		&&(CMLib.masking().maskCheck(this.requiresDeityMask, mob, true))
+		&&(this.deityQualifies(mob, loginObj.theme).size()>0))
+		{
+			loginObj.state=LoginState.CHARCR_DEITYSTART;
+			return null;
+		}
+		else
+			return charcrStartFinish(loginObj, session);
+	}
+
+	protected List<Deity> deityQualifies(final MOB mob, final int theme)
+	{
+		final List<Deity> list=new Vector<Deity>();
+		for(final Enumeration<Deity> d=CMLib.map().deities();d.hasMoreElements();)
+		{
+			final Deity D=d.nextElement();
+			final Room R=CMLib.map().roomLocation(D);
+			final Area A=(R!=null)?R.getArea():null;
+			if((D!=null)
+			&&(A!=null)
+			&&((theme<0)||(CMath.bset(A.getTheme(),theme)))
+			&&(CMProps.isTheme(A.getTheme()))
+			&&((this.deitiesMask == null)||(CMLib.masking().maskCheck(this.deitiesMask, mob, true))))
+			{
+				final String mask=(mob.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Cleric")
+								  ?D.getClericRequirements():D.getWorshipRequirements());
+				if((mask==null)||(mask.length()==0)||(CMLib.masking().maskCheck(mask, mob, true)))
+					list.add(D);
+			}
+		}
+		return list;
+	}
+	
+	protected LoginResult charcrDeityStart(final LoginSessionImpl loginObj, final Session session)
+	{
+		final MOB mob=loginObj.mob;
+		final CMFile file = new CMFile(Resources.buildResourcePath("text")+"deities.txt",null,CMFile.FLAG_LOGERRORS);
+		if(file.exists() && file.canRead())
+			session.println(null,null,null,"\n\r"+file.text().toString());
+		else
+		{
+			final Command C=CMClass.getCommand("Deities");
+			final StringBuilder str =new StringBuilder("");
+			for(final Deity D : this.deityQualifies(mob, loginObj.theme))
+			{
+				try
+				{
+					str.append(C.executeInternal(mob, 0, D, Boolean.TRUE));
+				}
+				catch (IOException e)
+				{
+				}
+			}
+			mob.tell(str.toString()+"\n\r");
+		}
+		mob.baseCharStats().setWorshipCharID("");
+		final List<Deity> qualDeitiesV=deityQualifies(mob,loginObj.theme);
+		final String listOfDeities = buildQualifyingDeityList(mob, qualDeitiesV, "or");
+		session.println(L("\n\r^!Please choose from the following deities to serve:"));
+		session.print("^N[" + listOfDeities + "^N]");
+		session.promptPrint("\n\r: ");
+		loginObj.state=LoginState.CHARCR_DEITYPICKED;
+		return LoginResult.INPUT_REQUIRED;
+	}
+
+	protected LoginResult charcrDeityPicked(final LoginSessionImpl loginObj, final Session session)
+	{
+		final MOB mob=loginObj.mob;
+		String deityStr=loginObj.lastInput.trim();
+		Deity newDeity = null;
+		for(final Deity D : this.deityQualifies(mob, loginObj.theme))
+		{
+			if(D.name().equalsIgnoreCase(deityStr))
+				newDeity=D;
+		}
+		if(newDeity == null)
+		{
+			if(!deityStr.equalsIgnoreCase("?"))
+				session.println(L("'@x1' is not a valid deity.",deityStr));
+			loginObj.state=LoginState.CHARCR_DEITYSTART;
+			return null;
+		}
+		
+		
+		final StringBuilder str=CMLib.help().getHelpText(newDeity.Name(),mob,false,false);
+		if(str!=null)
+			session.println("\n\r^N"+str.toString()+"\n\r");
+		session.promptPrint(L("^NIs ^H@x1^N correct (Y/n)?",newDeity.name()));
+		loginObj.savedInput=newDeity.Name();
+		loginObj.state=LoginState.CHARCR_DEITYCONFIRM;
+		return LoginResult.INPUT_REQUIRED;
+	}
+
+	protected LoginResult charcrDeityConfirm(final LoginSessionImpl loginObj, final Session session)
+	{
+		if(loginObj.lastInput.toUpperCase().trim().startsWith("N"))
+			loginObj.state=LoginState.CHARCR_DEITYSTART;
+		else
+		if(loginObj.lastInput.toUpperCase().trim().startsWith("Y"))
+			loginObj.state=LoginState.CHARCR_DEITYDONE;
+		else
+		{
+			session.promptPrint(L("^NIs ^H@x1^N correct (Y/n)?",loginObj.savedInput));
+			return LoginResult.INPUT_REQUIRED;
+		}
+		return null;
+	}
+
+	protected LoginResult charcrDeityDone(final LoginSessionImpl loginObj, final Session session)
+	{
+		final MOB mob=loginObj.mob;
+		mob.baseCharStats().setWorshipCharID("");
+		mob.baseCharStats().setDeityName(null);
+		mob.recoverCharStats();
+		if((loginObj.savedInput==null)||(loginObj.savedInput.length()==0))
+		{
+			loginObj.state=LoginState.CHARCR_DEITYSTART;
+			return null;
+		}
+		final Deity deityM=CMLib.map().getDeity(loginObj.savedInput);
+		if(deityM==null)
+		{
+			loginObj.state=LoginState.CHARCR_DEITYSTART;
+			return null;
+		}
+		final Room R=deityM.location();
+		final CMMsg msg=CMClass.getMsg(mob,deityM,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_SERVE,null);
+		if(((R==null)&&(deityM.okMessage(mob, msg)))
+		||((R!=null)&&(R.okMessage(mob,msg))))
+		{
+			if(R==null)
+				deityM.executeMsg(mob, msg);
+			else
+				R.executeMsg(mob, msg);
+		}
+		if(mob.baseCharStats().getWorshipCharID().length()==0)
+			mob.baseCharStats().setWorshipCharID(loginObj.savedInput);
+		mob.recoverCharStats();
+		mob.recoverPhyStats();
+		mob.recoverMaxState();
+		mob.resetToMaxState();
+		
+		return charcrStartFinish(loginObj, session);
+	}
+
+	protected LoginResult charcrStartFinish(final LoginSessionImpl loginObj, final Session session)
+	{
 		StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"newchardone.txt",null,CMFile.FLAG_LOGERRORS).text();
 		try
 		{
@@ -3569,7 +3775,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		loginObj.state=LoginState.CHARCR_FINISH;
 		return LoginResult.INPUT_REQUIRED;
 	}
-
+	
 	protected LoginResult charcrFinish(final LoginSessionImpl loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;

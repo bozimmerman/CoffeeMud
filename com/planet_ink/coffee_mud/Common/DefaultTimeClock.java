@@ -220,7 +220,7 @@ public class DefaultTimeClock implements TimeClock
 	public void setDaysInWeek(final String[] days)
 	{
 		weekNames = days;
-		setDayOfMonth(getDayOfMonth());; // causes derived fields to be recalculated
+		setDayOfMonth(getDayOfMonth()); // causes derived fields to be recalculated
 	}
 
 	@Override

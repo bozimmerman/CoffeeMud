@@ -105,8 +105,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		if(R!=null)
 		{
 			final Area A=R.getArea();
-			if((A!=null)
-			&&(A==this.lastArea)
+			if((A==this.lastArea)
 			&&(A.getProperRoomnumbers().getLastChangedMs() == this.lastRoomsTimestamp))
 				roomsV.addAll(this.lastRoomsV);
 			else

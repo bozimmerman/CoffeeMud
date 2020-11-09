@@ -39,7 +39,7 @@ public class MapKeyList<K, L> extends XVector<K>
 	}
 
 	@Override
-	public boolean add(final K e)
+	public synchronized boolean add(final K e)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
@@ -53,19 +53,19 @@ public class MapKeyList<K, L> extends XVector<K>
 	}
 
 	@Override
-	public boolean addAll(final Collection<? extends K> c)
+	public synchronized boolean addAll(final Collection<? extends K> c)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
 
 	@Override
-	public boolean addAll(final int index, final Collection<? extends K> c)
+	public synchronized boolean addAll(final int index, final Collection<? extends K> c)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
 
 	@Override
-	public boolean removeAll(final Collection<?> c)
+	public synchronized boolean removeAll(final Collection<?> c)
 	{
 		if(c==null)
 			return false;
@@ -75,7 +75,7 @@ public class MapKeyList<K, L> extends XVector<K>
 	}
 
 	@Override
-	public boolean retainAll(final Collection<?> c)
+	public synchronized boolean retainAll(final Collection<?> c)
 	{
 		if(c==null)
 			return false;
@@ -98,7 +98,7 @@ public class MapKeyList<K, L> extends XVector<K>
 	}
 
 	@Override
-	public K set(final int index, final K element)
+	public synchronized K set(final int index, final K element)
 	{
 		if((index<0)||(index>=size()))
 			throw new IndexOutOfBoundsException();
@@ -119,7 +119,7 @@ public class MapKeyList<K, L> extends XVector<K>
 	}
 
 	@Override
-	public K remove(final int index)
+	public synchronized K remove(final int index)
 	{
 		final K key = super.remove(index);
 		if(key != null)
@@ -140,7 +140,7 @@ public class MapKeyList<K, L> extends XVector<K>
 	}
 
 	@Override
-	public List<K> subList(final int fromIndex, final int toIndex)
+	public synchronized List<K> subList(final int fromIndex, final int toIndex)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}

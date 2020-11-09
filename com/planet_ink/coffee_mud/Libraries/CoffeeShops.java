@@ -166,6 +166,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			E=((CagedAnimal)E).unCageMe();
 			if((E!=null)&&(ct != null) && (ct.length()>0) && (!CMLib.flags().isInTheGame(E, true)))
 				destroyMe = (MOB)E;
+			else
+				return L("It is dead.");
 		}
 		final int lieHash = E.name().hashCode();
 		int level = 1;

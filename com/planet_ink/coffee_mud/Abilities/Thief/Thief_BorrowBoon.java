@@ -361,22 +361,26 @@ public class Thief_BorrowBoon extends ThiefSkill
 					if(mob.getVictim()==target)
 						mob.makePeace(true);
 				}
-				final long expires=stolen.expirationDate();
-				final Ability newEffA = (Ability)stolen.copyOf();
-				newEffA.startTickDown(mob, mob, super.getBeneficialTickdownTime(mob, mob, 0, asLevel));
-				if((newEffA.canBeUninvoked())
-				&&(expires < (CMProps.getTickMillis() * 1000)))
-					newEffA.setExpirationDate(expires);
-				stolen.unInvoke();
-				if(CMLib.dice().rollPercentage() < 12-super.getXLEVELLevel(mob))
+				if(stolen != null)
 				{
-					if((catalystI instanceof Wand)
-					&&(((Wand)catalystI).usesRemaining()>0))
-						((Wand)catalystI).setUsesRemaining(((Wand)catalystI).usesRemaining()-1);
-					else
-					if((catalystI instanceof Scroll)
-					&&(((Scroll)catalystI).usesRemaining()>0))
-						((Scroll)catalystI).setUsesRemaining(((Scroll)catalystI).usesRemaining()-1);
+					final long expires=stolen.expirationDate();
+					
+					final Ability newEffA = (Ability)stolen.copyOf();
+					newEffA.startTickDown(mob, mob, super.getBeneficialTickdownTime(mob, mob, 0, asLevel));
+					if((newEffA.canBeUninvoked())
+					&&(expires < (CMProps.getTickMillis() * 1000)))
+						newEffA.setExpirationDate(expires);
+					stolen.unInvoke();
+					if(CMLib.dice().rollPercentage() < 12-super.getXLEVELLevel(mob))
+					{
+						if((catalystI instanceof Wand)
+						&&(((Wand)catalystI).usesRemaining()>0))
+							((Wand)catalystI).setUsesRemaining(((Wand)catalystI).usesRemaining()-1);
+						else
+						if((catalystI instanceof Scroll)
+						&&(((Scroll)catalystI).usesRemaining()>0))
+							((Scroll)catalystI).setUsesRemaining(((Scroll)catalystI).usesRemaining()-1);
+					}
 				}
 			}
 		}

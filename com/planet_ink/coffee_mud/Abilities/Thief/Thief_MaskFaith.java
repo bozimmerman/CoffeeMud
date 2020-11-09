@@ -160,15 +160,21 @@ public class Thief_MaskFaith extends ThiefSkill
 				mob.location().send(mob,msg);
 				if(unmask)
 				{
-					mA.unInvoke();
-					target.delEffect(mA);
+					if(mA!=null)
+					{
+						mA.unInvoke();
+						target.delEffect(mA);
+					}
 				}
 				else
 				{
 					if(mA==null)
 						mA=beneficialAffect(mob,target,asLevel,0);
-					mA.setMiscText(deityName);
-					mA.makeLongLasting();
+					if(mA!=null)
+					{
+						mA.setMiscText(deityName);
+						mA.makeLongLasting();
+					}
 					mob.recoverCharStats();
 				}
 			}

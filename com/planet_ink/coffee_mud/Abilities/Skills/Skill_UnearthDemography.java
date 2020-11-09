@@ -119,6 +119,7 @@ public class Skill_UnearthDemography extends StdAbility
 
 	protected final Map<String,Map<String,Map<DemogField,String>>> knownAreaInfo = new TreeMap<String,Map<String,Map<DemogField,String>>>();
 
+	@Override
 	public void setMiscText(final String text)
 	{
 		super.setMiscText(text);
@@ -364,7 +365,7 @@ public class Skill_UnearthDemography extends StdAbility
 								{
 									final MOB M=m.nextElement();
 									final Race raceR=(M!=null)?M.baseCharStats().getMyRace():null;
-									if(raceR!=null)
+									if((M!=null)&&(raceR!=null))
 									{
 										if(!workCounters.containsKey(raceR.name()))
 										{

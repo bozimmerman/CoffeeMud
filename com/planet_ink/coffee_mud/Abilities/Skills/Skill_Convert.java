@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -201,7 +202,27 @@ public class Skill_Convert extends StdSkill
 		&&(success)
 		&&(targetMadeSave))
 		{
-			if(target.charStats().getMyDeity()!=null)
+			if((target.charStats().deityName().length()>0)
+			||(target.baseCharStats().getMyDeity()!=null))
+			{
+				final boolean canConvertDeity=!CMParms.getParmBool(CMProps.getVar(Str.DEITYPOLICY), "NOCONVERT", false);
+				if(!canConvertDeity)
+				{
+					mob.tell(L("You are not able to convert @x1.",target.name(mob)));
+					return false;
+				}
+				final boolean canRebukeDeity=!CMParms.getParmBool(CMProps.getVar(Str.DEITYPOLICY), "NOREBUKE", false);
+				if((!canRebukeDeity) // we must auto-rebuke
+				&&(target.baseCharStats().getMyDeity()!=null))
+				{
+					CMMsg msg=null;
+					final Deity deity=target.baseCharStats().getMyDeity();
+					msg=CMClass.getMsg(target,deity,null,CMMsg.MSG_REBUKE,L("<S-NAME> rebuke(s) @x1.",deity.Name()));
+					if(target.location().okMessage(mob,msg))
+						target.location().send(mob,msg);
+				}
+			}
+			if(target.charStats().deityName().length()>0)
 			{
 				mob.tell(L("@x1 is worshipping @x2.  @x3 must REBUKE @x4 first.",
 						target.name(mob),
