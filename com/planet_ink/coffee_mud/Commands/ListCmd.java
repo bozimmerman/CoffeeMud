@@ -2749,7 +2749,68 @@ public class ListCmd extends StdCommand
 		return str.toString();
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings("rawtypes")
+	public String getValue(final Object o)
+	{
+		final StringBuilder str=new StringBuilder("");
+		if(o instanceof List)
+		{
+			str.append("[");
+			final List<String> l=new ArrayList<String>();
+			for(final Object o1 : ((List)o))
+				l.add(getValue(o1));
+			str.append(CMParms.toListString(l));
+			str.append("]");
+		}
+		else
+		if(o instanceof Map)
+		{
+			str.append("{");
+			for(final Object o1 : ((Map)o).keySet())
+			{
+				str.append("\"").append(getValue(o1)).append("\": ")
+					.append(getValue(((Map)o).get(o1))).append(", ");
+			}
+			if(str.toString().endsWith(", "))
+				str.delete(str.length()-2, str.length());
+			str.append("}");
+		}
+		else
+		if(o instanceof Set)
+		{
+			str.append("[");
+			final List<String> l=new ArrayList<String>();
+			for(final Object o1 : ((Set)o))
+				l.add(getValue(o1));
+			str.append(CMParms.toListString(l));
+			str.append("]");
+		}
+		else
+		if(o instanceof String[])
+			str.append(CMParms.toListString((String[])o));
+		else
+		if(o instanceof boolean[])
+			str.append(CMParms.toListString((boolean[])o));
+		if(o instanceof byte[])
+			str.append(CMParms.toListString((byte[])o));
+		else
+		if(o instanceof char[])
+			str.append(CMParms.toListString((char[])o));
+		else
+		if(o instanceof double[])
+			str.append(CMParms.toListString((double[])o));
+		else
+		if(o instanceof int[])
+			str.append(CMParms.toListString((int[])o));
+		else
+		if(o instanceof long[])
+			str.append(CMParms.toListString((long[])o));
+		else
+		if(o!=null)
+			str.append(o.toString());
+		return str.toString();
+	}
+
 	public String listResources(final MOB mob, final String parm)
 	{
 		final Iterator<String> keyIter=Resources.findResourceKeys(parm);
@@ -2758,40 +2819,8 @@ public class ListCmd extends StdCommand
 		final String key = keyIter.next();
 		if(!keyIter.hasNext())
 		{
-			final StringBuilder str=new StringBuilder("^x"+key+"^?\n\r");
 			final Object o=Resources.getResource(key);
-			if(o instanceof List)
-				str.append(CMParms.toListString((List)o));
-			else
-			if(o instanceof Map)
-				str.append(CMParms.toKeyValueSlashListString((Map)o));
-			else
-			if(o instanceof Set)
-				str.append(CMParms.toListString((Set)o));
-			else
-			if(o instanceof String[])
-				str.append(CMParms.toListString((String[])o));
-			else
-			if(o instanceof boolean[])
-				str.append(CMParms.toListString((boolean[])o));
-			if(o instanceof byte[])
-				str.append(CMParms.toListString((byte[])o));
-			else
-			if(o instanceof char[])
-				str.append(CMParms.toListString((char[])o));
-			else
-			if(o instanceof double[])
-				str.append(CMParms.toListString((double[])o));
-			else
-			if(o instanceof int[])
-				str.append(CMParms.toListString((int[])o));
-			else
-			if(o instanceof long[])
-				str.append(CMParms.toListString((long[])o));
-			else
-			if(o!=null)
-				str.append(o.toString());
-			return str.toString();
+			return "^x"+key+"^?\n\r" + getValue(o);
 		}
 		final Enumeration<String> keys=new IteratorEnumeration<String>(Resources.findResourceKeys(parm));
 		return CMLib.lister().reallyList2Cols(mob,keys).toString();

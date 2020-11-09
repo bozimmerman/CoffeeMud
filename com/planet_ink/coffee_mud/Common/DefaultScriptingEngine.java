@@ -106,7 +106,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		super();
 		//CMClass.bumpCounter(this,CMClass.CMObjectType.COMMON);//removed for mem & perf
 		debugBadScripts=CMSecurity.isDebugging(CMSecurity.DbgFlag.BADSCRIPTS);
-		resources = Resources.instance();
+		Resources.instance();
+		resources = globalResources();
 	}
 
 	@Override
@@ -140,7 +141,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if((newScope==null)||(newScope.trim().length()==0)||newScope.equalsIgnoreCase("GLOBAL"))
 		{
 			scope="";
-			resources=Resources.instance();
+			resources = globalResources();
 		}
 		else
 			scope=newScope.toUpperCase().trim();
@@ -559,6 +560,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return getVar(getVarHost(E,rawHost,source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp),var);
 	}
 
+	protected Resources globalResources()
+	{
+		if(!Resources.isResource("VARSCOPE-*GLOBAL*"))
+			Resources.submitResource("VARSCOPE-*GLOBAL*", Resources.newResources());
+		return (Resources)Resources.getResource("VARSCOPE-*GLOBAL*");
+	}
+
 	@Override
 	public String getVar(final String host, final String var)
 	{
@@ -575,9 +583,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					return varVal;
 			}
 		}
-		if(resources == Resources.instance())
+		final Resources globalResources = globalResources();
+		if(resources == globalResources)
 			return "";
-		return getVar(Resources.instance(),host,var,"");
+		return getVar(globalResources,host,var,"");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -13205,6 +13214,27 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 					}
 					break;
+				case 52: // group_greet_prog
+					if((msg.targetMinor()==CMMsg.TYP_ENTER)&&canTrigger(52)&&canTrigger(-52)
+					&&(msg.amITarget(lastKnownLocation))
+					&&(!msg.amISource(eventMob))
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster))
+					&&((!(affecting instanceof MOB)) ||CMLib.flags().canActAtAll(monster)))
+					{
+						if(t==null)
+							t=parseBits(script,0,"CR");
+						if(t!=null)
+						{
+							final int prcnt=this.getTriggerPercent(t[1], msg.source());
+							if(CMLib.dice().rollPercentage()<prcnt)
+							{
+								noTrigger.put(Integer.valueOf(-52),Long.valueOf(System.currentTimeMillis()+CMProps.getTickMillis()));
+								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null, t);
+								return;
+							}
+						}
+					}
+					break;
 				case 47: // speak_prog
 					if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)||(msg.targetMinor()==CMMsg.TYP_SPEAK))&&canTrigger(47)
 					&&(msg.amISource(monster)||(!(affecting instanceof MOB)))
@@ -14343,6 +14373,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 			}
 		}
+
+		if((noTrigger.size()>0)&&(noTrigger.containsKey(Integer.valueOf(-52))))
+			noTrigger.remove(Integer.valueOf(-52));
 
 		int triggerCode=-1;
 		String trigger="";

@@ -42,7 +42,7 @@
 <li><a href="#fight_prog">fight_prog</a></li>
 <li><a href="#function_prog">function_prog</a></li>
 <li><a href="#get_prog">get_prog</a></li>
-<li><a href="#give_prog">give_prog</a></li><li><a href="#giving_prog">giving_prog</a></li>
+<li><a href="#give_prog">give_prog</a></li><li><a href="#giving_prog">giving_prog</a></li><li><a href="#group_greet_prog">group_greet_prog</a></li>
 <li><a href="#greet_prog">greet_prog</a></li>
 <li><a href="#hitprcnt_prog">hitprcnt_prog</a></li>
 <li><a href="#imask_prog">imask_prog</a></li>
@@ -1211,6 +1211,39 @@ This prog will be triggered whenever an elf enters the room.
 probably want to do a large number of if
 checks in greet_progs, specifically in the difference between mobs and
 player characters. Note that greet_progs will trigger except if a
+person is sneaking. Also, the mob must have detect invisibility to see
+invisible people, infravision to see people in the dark, and will not
+see people if blinded. Lastly, make sure you check out arrive_prog,
+which
+is a useful counterpart to greet_prog</p><h3><a name="group_greet_prog">group_greet_prog</a></h3>
+<p>Usage:</p>
+<pre>group_greet_prog [integer percentage or zapper mask]<br /></pre>
+<p>This type of mobprog
+checks a percentage chance, or a zapper mask, when someone enters the
+room that the scripted mob, item, room, or exit is
+currently in. If the random
+number generated between 1 and 100 is equal to or below the percentage
+of the greet_prog or the zapper masks matches the creature being
+greeted, the prog is triggered. However, this trigger is unique amongst
+the greets that its guarenteed to never trigger more than once per
+tick. &nbsp;Note that group_greet_progs are
+triggered by both non-sneaking players and mobs, and a mob in a maze
+can actually
+sometimes end up triggering itself! This type of mobprog has all sorts
+of uses, ranging from giving in-zone quest information to people
+entering the room, creating aggressive progs, etc.</p>
+<p>EXAMPLES:</p>
+<pre>group_greet_prog 25<br /></pre>
+<p>This prog will be
+triggered 25% of the time when someone
+enters the room where the mob currently is.</p>
+<pre>group_greet_prog 100<br /></pre>
+<p>This prog will be
+triggered 100% of the time when someone
+enters the room where the mob currently is. This means every time.
+</p><pre>group_greet_prog -race +elf<br /></pre>
+This prog will be triggered whenever an elf enters the room.
+<p>SPECIAL NOTES: Group_greet_progs will trigger except if a
 person is sneaking. Also, the mob must have detect invisibility to see
 invisible people, infravision to see people in the dark, and will not
 see people if blinded. Lastly, make sure you check out arrive_prog,
