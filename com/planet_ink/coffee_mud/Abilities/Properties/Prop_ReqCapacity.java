@@ -342,7 +342,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 			{
 			case CMMsg.TYP_ENTER:
 				if((msg.target() instanceof Room)
-				&&(peopleCap<Integer.MAX_VALUE)
+				&&((peopleCap<Integer.MAX_VALUE)||(playerCap<Integer.MAX_VALUE))
 				&&((!indoorOnly)||((((Room)msg.target()).domainType()&Room.INDOORS)==Room.INDOORS))
 				&&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 				{
