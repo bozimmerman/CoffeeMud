@@ -178,9 +178,9 @@ public class Reliquist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_EmpowerRelic",false); // special A
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_AttuneRelic",false); // special A
 
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_TransferBane",false); // special A
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_DivineTransfer",false); // special A
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_TransferBoon",false); // special A
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_TransferBane",false); // special A
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_ReleasePrayer",false); // special A
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_TransferBoon",false); // special A
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_EnchantRelic",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_PowerGrab",0,false);
@@ -547,7 +547,7 @@ public class Reliquist extends Thief
 					||msg.tool().ID().equals("Prayer_StorePrayer")
 					||msg.tool().ID().equals("Prayer_ImbueShield")
 					||msg.tool().ID().equals("Prayer_DefileShield")
-					||msg.tool().ID().equals("Prayer_DivineTransference")
+					||msg.tool().ID().equals("Prayer_ReleasePrayer")
 					||msg.tool().ID().equals("Prayer_DivineQuest")))
 				{
 					final Ability A=mob.fetchAbility(msg.tool().text());

@@ -501,6 +501,8 @@ public class StdAbility implements Ability
 	{
 		if(time>System.currentTimeMillis())
 			tickDown=(int)((time-System.currentTimeMillis())/CMProps.getTickMillis());
+		else
+			tickDown=(int)Math.round(CMath.div(time,CMProps.getTickMillis()));
 	}
 
 	@Override

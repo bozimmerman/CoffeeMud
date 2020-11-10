@@ -70,6 +70,7 @@
 +IF <CONDITION> (never <WORD> anyone who meets Scriptable cond)
 -IFSTAT +STAT=VALUE +STAT=VALUE (<WORD>, unless a stat value is true)
 +IF -STAT=VALUE -STAT=VALUE (<WORD> those with a stat value)
++OR/-OR to separate conditions.  -OR negates the following condition(s)
 -VALUE X (<WORD> those with value or money less than X)
 +VALUE X (<WORD> those with value or money greater than X)
 -WEIGHT X (<WORD> those weighing less than X)
