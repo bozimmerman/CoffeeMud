@@ -2929,9 +2929,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			I.setUsesRemaining(prompt(mob,I.usesRemaining(),showNumber,showFlag,"Uses Remaining"));
 	}
 
-	protected void genMaxUses(final MOB mob, final Wand W, final int showNumber, final int showFlag) throws IOException
+	protected void genMaxCharges(final MOB mob, final Wand W, final int showNumber, final int showFlag) throws IOException
 	{
-		W.setMaxUses(prompt(mob,W.maxUses(),showNumber,showFlag,"Maximum Uses"));
+		W.setMaxCharges(prompt(mob,W.getMaxCharges(),showNumber,showFlag,"Maximum Uses"));
 	}
 
 	protected void genCondition(final MOB mob, final Item I, final int showNumber, final int showFlag) throws IOException
@@ -9705,7 +9705,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genUses(mob,me,++showNumber,showFlag);
 			if(me instanceof Wand)
 			{
-				genMaxUses(mob,(Wand)me,++showNumber,showFlag);
+				genMaxCharges(mob,(Wand)me,++showNumber,showFlag);
 				promptStatChoices(mob,me,null,++showNumber,showFlag,"Enchant Type","ENCHTYPE", CMParms.toStringArraySingle(Wand.WandUsage.WAND_OPTIONS, 1));
 			}
 			genValue(mob,me,++showNumber,showFlag);
@@ -10204,7 +10204,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				genIsReadable(mob,me,++showNumber,showFlag);
 				genReadableTextMisc(mob,me,++showNumber,showFlag);
 				genUses(mob,me,++showNumber,showFlag);
-				genMaxUses(mob,(Wand)me,++showNumber,showFlag);
+				genMaxCharges(mob,(Wand)me,++showNumber,showFlag);
 				promptStatChoices(mob,me,null,++showNumber,showFlag,"Enchant Type","ENCHTYPE", CMParms.toStringArraySingle(Wand.WandUsage.WAND_OPTIONS, 1));
 				if(me instanceof Light)
 					genBurnout(mob,(Light)me,++showNumber,showFlag);
@@ -10375,7 +10375,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				promptStatChoices(mob,me,null,++showNumber,showFlag,"Enchant Type","ENCHTYPE", CMParms.toStringArraySingle(Wand.WandUsage.WAND_OPTIONS, 1));
 				this.genReadableTextMisc(mob, me, ++showNumber, showFlag);
-				this.genMaxUses(mob, (Wand)me, ++showNumber, showFlag);
+				this.genMaxCharges(mob, (Wand)me, ++showNumber, showFlag);
 			}
 			genValue(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);

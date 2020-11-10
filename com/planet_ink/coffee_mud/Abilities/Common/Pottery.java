@@ -495,7 +495,7 @@ public class Pottery extends EnhancedCraftingSkill implements ItemCraftor
 		if((buildingI instanceof Wand)
 		&&(foundRecipe.get(RCP_CAPACITY).trim().length()>0))
 		{
-			((Wand)buildingI).setMaxUses(capacity);
+			((Wand)buildingI).setMaxCharges(capacity);
 		}
 		if(bundling)
 			buildingI.setBaseValue(lostValue);

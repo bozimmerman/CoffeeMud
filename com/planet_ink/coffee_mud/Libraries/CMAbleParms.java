@@ -3563,7 +3563,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				{
 					if(!(I instanceof Wand))
 						return "";
-					return ""+((Wand)I).maxUses();
+					return ""+((Wand)I).getMaxCharges();
 				}
 			},
 			new AbilityParmEditorImpl("WAND_TYPE","MagicT",ParmType.CHOICES)

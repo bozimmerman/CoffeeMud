@@ -642,7 +642,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			if(buildingI instanceof Wand)
 			{
 				if(foundRecipe.get(RCP_CAPACITY).trim().length()>0)
-					((Wand)buildingI).setMaxUses(capacity);
+					((Wand)buildingI).setMaxCharges(capacity);
 			}
 			else
 			if(buildingI instanceof Weapon)

@@ -81,17 +81,43 @@ public class GenMagicInstrument extends GenItem implements MusicalInstrument, Mi
 	}
 
 	@Override
+	public int getCharges()
+	{
+		return usesRemaining();
+	}
+
+	@Override
+	public void setCharges(final int newCharges)
+	{
+		this.setUsesRemaining(newCharges);
+	}
+
+	@Override
+	public int getMaxCharges()
+	{
+		return maxUses;
+	}
+
+	@Override
+	public void setMaxCharges(final int num)
+	{
+		maxUses = num;
+		if(num > getCharges() && (num > 0))
+			setCharges(num);
+	}
+
+	@Override
 	public String secretIdentity()
 	{
 		String id=super.secretIdentity();
 		final Ability A=getSpell();
 		final String uses;
-		if(this.usesRemaining() < 999999)
+		if(this.getCharges() < 999999)
 		{
-			if(this.maxUses() < 999999)
-				uses=""+usesRemaining()+"/"+maxUses();
+			if(this.getMaxCharges() < 999999)
+				uses=""+getCharges()+"/"+getMaxCharges();
 			else
-				uses = ""+usesRemaining();
+				uses = ""+getCharges();
 		}
 		else
 			uses="unlimited";
@@ -115,20 +141,6 @@ public class GenMagicInstrument extends GenItem implements MusicalInstrument, Mi
 		if((spellList==null)||(spellList.length()==0))
 			return null;
 		return CMClass.getAbility(spellList);
-	}
-
-	@Override
-	public int maxUses()
-	{
-		return maxUses;
-	}
-
-	@Override
-	public void setMaxUses(final int newMaxUses)
-	{
-		maxUses = newMaxUses;
-		if(newMaxUses > super.usesRemaining() && (newMaxUses > 0))
-			super.setUsesRemaining(newMaxUses);
 	}
 
 	@Override
@@ -313,7 +325,7 @@ public class GenMagicInstrument extends GenItem implements MusicalInstrument, Mi
 		case 2:
 			return this.getInstrumentTypeName();
 		case 3:
-			return ""+maxUses();
+			return ""+getMaxCharges();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -345,7 +357,7 @@ public class GenMagicInstrument extends GenItem implements MusicalInstrument, Mi
 		case 3:
 		{
 			if(CMath.isMathExpression(val))
-				this.setMaxUses(CMath.parseIntExpression(val));
+				this.setMaxCharges(CMath.parseIntExpression(val));
 			break;
 		}
 		default:

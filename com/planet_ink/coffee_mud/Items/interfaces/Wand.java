@@ -38,7 +38,7 @@ import java.util.*;
  * @author Bo Zimmerman
  *
  */
-public interface Wand extends MiscMagic
+public interface Wand extends MiscMagic, Dischargeable
 {
 	/**
 	 * A type of ability, via interface, that allows a Wand to actually
@@ -106,22 +106,6 @@ public interface Wand extends MiscMagic
 	 * @return the magic word that invokes this wand
 	 */
 	public String magicWord();
-
-	/**
-	 * Gets the number of times this wand can be invoked before
-	 * being drained and empty useless stick.
-	 * @see Wand#setMaxUses(int)
-	 * @return the number of times this wand can be invoked
-	 */
-	public int maxUses();
-
-	/**
-	 * Sets the number of times this wand can be invoked before
-	 * being drained and empty useless stick.
-	 * @see Wand#maxUses()
-	 * @param maxUses the number of times this wand can be invoked
-	 */
-	public void setMaxUses(int maxUses);
 
 	/**
 	 * Returns the type of magic that can be enchanted onto

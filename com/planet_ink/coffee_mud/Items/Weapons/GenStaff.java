@@ -73,17 +73,29 @@ public class GenStaff extends GenWeapon implements Wand
 	protected int maxUses=Integer.MAX_VALUE;
 
 	@Override
-	public int maxUses()
+	public int getCharges()
+	{
+		return usesRemaining();
+	}
+
+	@Override
+	public void setCharges(final int newCharges)
+	{
+		this.setUsesRemaining(newCharges);
+	}
+
+	@Override
+	public int getMaxCharges()
 	{
 		return maxUses;
 	}
 
 	@Override
-	public void setMaxUses(final int newMaxUses)
+	public void setMaxCharges(final int num)
 	{
-		maxUses = newMaxUses;
-		if(newMaxUses > super.usesRemaining() && (newMaxUses > 0))
-			super.setUsesRemaining(newMaxUses);
+		maxUses = num;
+		if(num > getCharges() && (num > 0))
+			setCharges(num);
 	}
 
 	@Override
@@ -159,12 +171,12 @@ public class GenStaff extends GenWeapon implements Wand
 		String id=super.secretIdentity();
 		final Ability A=getSpell();
 		final String uses;
-		if(this.usesRemaining() < 999999)
+		if(this.getCharges() < 999999)
 		{
-			if(this.maxUses() < 999999)
-				uses=""+usesRemaining()+"/"+maxUses();
+			if(this.getMaxCharges() < 999999)
+				uses=""+getCharges()+"/"+getMaxCharges();
 			else
-				uses = ""+usesRemaining();
+				uses = ""+getCharges();
 		}
 		else
 			uses="unlimited";
@@ -248,7 +260,7 @@ public class GenStaff extends GenWeapon implements Wand
 			return (A!=null) ? A.ID() : "";
 		}
 		case 2:
-			return ""+maxUses();
+			return ""+getMaxCharges();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -278,7 +290,7 @@ public class GenStaff extends GenWeapon implements Wand
 		case 2:
 		{
 			if(CMath.isMathExpression(val))
-				this.setMaxUses(CMath.parseIntExpression(val));
+				this.setMaxCharges(CMath.parseIntExpression(val));
 			break;
 		}
 		default:

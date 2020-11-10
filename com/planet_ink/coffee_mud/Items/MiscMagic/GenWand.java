@@ -107,13 +107,13 @@ public class GenWand extends StdWand
 	}
 
 	@Override
-	public int maxUses()
+	public int getMaxCharges()
 	{
 		return maxUses;
 	}
 
 	@Override
-	public void setMaxUses(final int newMaxUses)
+	public void setMaxCharges(final int newMaxUses)
 	{
 		maxUses = newMaxUses;
 		if(newMaxUses > super.usesRemaining() && (newMaxUses > 0))
@@ -165,7 +165,7 @@ public class GenWand extends StdWand
 			return (A!=null) ? A.ID() : "";
 		}
 		case 2:
-			return ""+maxUses();
+			return ""+getMaxCharges();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -192,7 +192,7 @@ public class GenWand extends StdWand
 		case 2:
 		{
 			if(CMath.isMathExpression(val))
-				this.setMaxUses(CMath.parseIntExpression(val));
+				this.setMaxCharges(CMath.parseIntExpression(val));
 			break;
 		}
 		default:

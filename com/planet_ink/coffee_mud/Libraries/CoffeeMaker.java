@@ -654,7 +654,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 		if(E instanceof Wand)
 		{
-			text.append(xml.convertXMLtoTag("MAXUSE",((Wand)E).maxUses()));
+			text.append(xml.convertXMLtoTag("MAXUSE",((Wand)E).getMaxCharges()));
 			if((((Wand)E).getEnchantType()<0)||(((Wand)E).getEnchantType()>=Ability.ACODE_DESCS_.length))
 				text.append(xml.convertXMLtoTag("ENCHTYPE", "ANY"));
 			else
@@ -4035,7 +4035,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			final String bo=xml.getValFromPieces(buf,"MAXUSE");
 			if((bo!=null)&&(bo.length()>0))
-				((Wand)E).setMaxUses(CMath.s_int(bo));
+				((Wand)E).setMaxCharges(CMath.s_int(bo));
 			final String tim=xml.getValFromPieces(buf, "ENCHTYPE");
 			if((tim!=null)&&(tim.length()>0))
 				((Wand)E).setEnchantType(CMParms.indexOf(Ability.ACODE_DESCS_, tim.toUpperCase().trim()));

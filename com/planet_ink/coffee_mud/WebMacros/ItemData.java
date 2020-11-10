@@ -1175,7 +1175,7 @@ public class ItemData extends StdWebMacro
 						break;
 					case MAXUSES: // max uses
 						if((firstTime)&&(I instanceof Wand))
-							old=""+((Wand)I).maxUses();
+							old=""+((Wand)I).getMaxCharges();
 						str.append(old);
 						break;
 					case ISELECTRONIC: // iselectronic

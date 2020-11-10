@@ -133,7 +133,7 @@ public class Song_RechargeInstrument extends Song
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(((Wand)target).usesRemaining() >= ((Wand)target).maxUses())
+				if(((Wand)target).getCharges() >= ((Wand)target).getMaxCharges())
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glow(s) brightly then disintigrates!"));
 					target.destroy();
@@ -141,14 +141,14 @@ public class Song_RechargeInstrument extends Song
 				else
 				{
 					boolean willBreak = false;
-					if((((Wand)target).usesRemaining()+RECHARGE_AMT) > ((Wand)target).maxUses())
+					if((((Wand)target).getCharges()+RECHARGE_AMT) > ((Wand)target).getMaxCharges())
 					{
 						willBreak = true;
-						((Wand)target).setUsesRemaining(((Wand)target).maxUses());
+						((Wand)target).setCharges(((Wand)target).getMaxCharges());
 					}
 					else
 					{
-						((Wand)target).setUsesRemaining(((Wand)target).usesRemaining()+RECHARGE_AMT);
+						((Wand)target).setCharges(((Wand)target).getCharges()+RECHARGE_AMT);
 					}
 					if(!(willBreak))
 					{

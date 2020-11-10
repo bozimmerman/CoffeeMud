@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_DepleteScroll extends Prayer
+public class Prayer_DepleteRelic extends Prayer
 {
 	@Override
 	public String ID()
 	{
-		return "Prayer_DepleteScroll";
+		return "Prayer_DepleteRelic";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Deplete Scroll");
+	private final static String localizedName = CMLib.lang().L("Deplete Relic");
 
 	@Override
 	public String name()
@@ -96,37 +96,16 @@ public class Prayer_DepleteScroll extends Prayer
 		if(target==null)
 			return false;
 
-		if(!(target instanceof Scroll)&&(!target.isReadable()))
+		if(!Prayer.isARelic(target))
 		{
-			mob.tell(L("You can't deplete that."));
+			mob.tell(L("@x1 is not a relic, and can not be depleted this way.",target.name(mob)));
 			return false;
 		}
 
-		if((target instanceof Scroll) && (((Scroll)target).getSpells().size()==0))
+		if(Prayer.getRelicCharges(target)<=0)
 		{
 			mob.tell(L("That already looks nicely depleted."));
 			return false;
-		}
-		else
-		if((!(target instanceof Scroll)) && (target.readableText().length()==0))
-		{
-			mob.tell(L("That already looks nicely depleted."));
-			return false;
-		}
-
-		if(target instanceof Scroll)
-		{
-			boolean isDivine=false;
-			for(final Ability A : ((Scroll)target).getSpells())
-			{
-				if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
-					isDivine=false;
-			}
-			if(!isDivine)
-			{
-				mob.tell(L("That does not appear to be a divine scroll."));
-				return false;
-			}
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -142,50 +121,36 @@ public class Prayer_DepleteScroll extends Prayer
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				if((target instanceof Scroll)
-				&&(((Scroll)target).usesRemaining()>0))
+				final List<Ability> spells=super.getRelicPrayers(target);
+				final List<Ability> mySpells = spells;
+				if(mySpells.size()>0)
 				{
-					final List<Ability> spells=((Scroll)target).getSpells();
-					final List<Ability> mySpells = new ArrayList<Ability>();
-					for(final Ability A : spells)
+					MOB M=null;
+					try
 					{
-						if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
-						&&(A.appropriateToMyFactions(mob)))
-							mySpells.add(A);
-					}
-					if(mySpells.size()>0)
-					{
-						MOB M=null;
-						try
+						M=CMClass.getFactoryMOB(target.Name(), mob.phyStats().level(), R);
+						R.addInhabitant(M);
+						for(final Ability A : mySpells)
 						{
-							M=CMClass.getFactoryMOB(target.Name(), mob.phyStats().level(), R);
-							R.addInhabitant(M);
-							for(final Ability A : mySpells)
-							{
-								if(((Scroll)target).usesRemaining()>0)
-									((Scroll)target).setUsesRemaining(((Scroll)target).usesRemaining()-1);
-								M.addAbility((Ability)A.copyOf());
-								final CMMsg cmsg=CMClass.getMsg(M,null,A,CMMsg.TYP_CAST_SPELL,L("You feel @x1 release <O-NAME>",target.Name()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
-								R.send(mob, cmsg);
-							}
+							M.addAbility((Ability)A.copyOf());
+							final CMMsg cmsg=CMClass.getMsg(M,null,A,CMMsg.TYP_CAST_SPELL,L("You feel @x1 release <O-NAME>",target.Name()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+							R.send(mob, cmsg);
 						}
-						finally
+					}
+					finally
+					{
+						if(M!=null)
 						{
-							if(M!=null)
-							{
+							R.delInhabitant(M);
+							while(R.isInhabitant(M))
 								R.delInhabitant(M);
-								while(R.isInhabitant(M))
-									R.delInhabitant(M);
-								M.destroy();
-							}
+							M.destroy();
 						}
 					}
-
-					((Scroll)target).setSpellList("");
-					CMLib.leveler().postExperience(mob, null, "", 25+(5*super.getXLEVELLevel(mob)), false);
 				}
-				else
-					target.setReadableText("");
+				Prayer.setRelicCharges(target, 0);
+				Prayer.clearRelicMagic(target);
+				CMLib.leveler().postExperience(mob, null, "", 25+(5*super.getXLEVELLevel(mob)), false);
 			}
 			else
 				beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> wickedly sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, but @x1 does not heed.",hisHerDiety(mob)));

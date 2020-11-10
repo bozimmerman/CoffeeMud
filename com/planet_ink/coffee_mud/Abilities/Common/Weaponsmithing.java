@@ -539,7 +539,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			if(buildingI instanceof Wand)
 			{
 				if(foundRecipe.get(RCP_HANDS).trim().length()>0)
-					((Wand)buildingI).setMaxUses(CMath.s_int(foundRecipe.get(RCP_HANDS).trim()));
+					((Wand)buildingI).setMaxCharges(CMath.s_int(foundRecipe.get(RCP_HANDS).trim()));
 			}
 			else
 			if(CMath.s_int(foundRecipe.get(RCP_HANDS))==2)

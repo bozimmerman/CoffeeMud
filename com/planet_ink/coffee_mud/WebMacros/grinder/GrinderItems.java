@@ -686,7 +686,7 @@ public class GrinderItems
 					break;
 				case MAXUSES: // max uses
 					if(I instanceof Wand)
-						((Wand)I).setMaxUses(CMath.s_int(old));
+						((Wand)I).setMaxCharges(CMath.s_int(old));
 					break;
 				case OPENTICKS: // open ticks
 					if((I instanceof CloseableLockable)&&(old.length()>0))

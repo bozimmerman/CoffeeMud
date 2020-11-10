@@ -72,13 +72,13 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 	}
 
 	@Override
-	public int maxUses()
+	public int getMaxCharges()
 	{
 		return Integer.MAX_VALUE;
 	}
 
 	@Override
-	public void setMaxUses(final int newMaxUses)
+	public void setMaxCharges(final int newMaxUses)
 	{
 	}
 

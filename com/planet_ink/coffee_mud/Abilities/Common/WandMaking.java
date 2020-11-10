@@ -539,7 +539,7 @@ public class WandMaking extends EnhancedCraftingSkill implements ItemCraftor
 			addSpellsOrBehaviors(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
 			if((buildingI instanceof Wand)
 			&&(foundRecipe.get(RCP_MAXUSES).trim().length()>0))
-				((Wand)buildingI).setMaxUses(maxuses);
+				((Wand)buildingI).setMaxCharges(maxuses);
 			if((buildingI instanceof Wand)
 			&&(foundRecipe.size()>RCP_WAND_TYPE))
 				((Wand)buildingI).setEnchantType(CMParms.indexOf(Ability.ACODE_DESCS_,foundRecipe.get(RCP_WAND_TYPE)));

@@ -242,8 +242,8 @@ public class Spell_Clone extends Spell
 			else
 			if(I instanceof Wand)
 			{
-				((Wand)I).setMaxUses(0);
-				((Wand)I).setUsesRemaining(0);
+				((Wand)I).setMaxCharges(0);
+				((Wand)I).setCharges(0);
 				((Wand)I).setSpell(null);
 			}
 			I.delEffect(I.fetchEffect("Prop_HaveZapper"));

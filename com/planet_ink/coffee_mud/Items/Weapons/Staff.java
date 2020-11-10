@@ -67,13 +67,25 @@ public class Staff extends StdWeapon implements Wand
 	}
 
 	@Override
-	public int maxUses()
+	public int getCharges()
+	{
+		return usesRemaining();
+	}
+
+	@Override
+	public void setCharges(final int newCharges)
+	{
+		this.setUsesRemaining(newCharges);
+	}
+
+	@Override
+	public int getMaxCharges()
 	{
 		return Integer.MAX_VALUE;
 	}
 
 	@Override
-	public void setMaxUses(final int newMaxUses)
+	public void setMaxCharges(final int num)
 	{
 	}
 
@@ -121,12 +133,12 @@ public class Staff extends StdWeapon implements Wand
 		String id=super.secretIdentity();
 		final Ability A=getSpell();
 		final String uses;
-		if(this.usesRemaining() < 999999)
+		if(this.getCharges() < 999999)
 		{
-			if(this.maxUses() < 999999)
-				uses=""+usesRemaining()+"/"+maxUses();
+			if(this.getMaxCharges() < 999999)
+				uses=""+getCharges()+"/"+getMaxCharges();
 			else
-				uses = ""+usesRemaining();
+				uses = ""+getCharges();
 		}
 		else
 			uses="unlimited";

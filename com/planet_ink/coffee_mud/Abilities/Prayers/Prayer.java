@@ -136,6 +136,105 @@ public class Prayer extends StdAbility
 		return "praying";
 	}
 
+	protected static List<Ability> getRelicPrayers(final Physical P)
+	{
+		final List<Ability> prayV=new Vector<Ability>();
+		if(P instanceof Wand)
+		{
+			final Ability A=((Wand)P).getSpell();
+			if(A instanceof Prayer)
+				prayV.add(A);
+		}
+		else
+		if((P instanceof Item)
+		&&(!(P instanceof Weapon))
+		&&(!(P instanceof Armor))
+		&&(!(P instanceof Scroll)))
+		{
+			for(final Enumeration<Ability> a= ((Item)P).effects(); a.hasMoreElements();)
+			{
+				final Ability A=a.nextElement();
+				if((A instanceof AbilityContainer)
+				&&(A instanceof Dischargeable))
+				{
+					final AbilityContainer aCont = (AbilityContainer)A;
+					for(final Enumeration<Ability> suba = aCont.abilities();suba.hasMoreElements();)
+					{
+						final Ability subA=suba.nextElement();
+						if(subA instanceof Prayer)
+							prayV.add(subA);
+					}
+				}
+			}
+		}
+		return prayV;
+	}
+
+	protected static Dischargeable getDischargeableRelic(final Physical P)
+	{
+		if(P instanceof Wand)
+			return (Wand)P;
+		else
+		if((P instanceof Item)
+		&&(!(P instanceof Weapon))
+		&&(!(P instanceof Armor))
+		&&(!(P instanceof Scroll)))
+		{
+			for(final Enumeration<Ability> a= ((Item)P).effects(); a.hasMoreElements();)
+			{
+				final Ability A=a.nextElement();
+				if((A instanceof AbilityContainer)
+				&&(A instanceof Dischargeable))
+				{
+					return (Dischargeable)A;
+				}
+			}
+		}
+		return null;
+	}
+
+	protected static void setRelicCharges(final Physical P, final int num)
+	{
+		if(Prayer.isARelic(P))
+		{
+			final Dischargeable D=getDischargeableRelic(P);
+			if(D != null)
+				D.setCharges(num);
+		}
+	}
+
+	protected static void clearRelicMagic(final Physical P)
+	{
+		if(Prayer.isARelic(P))
+		{
+			final Dischargeable D=getDischargeableRelic(P);
+			if(D != null)
+			{
+				if(D instanceof Ability)
+					P.delEffect((Ability)D);
+				else
+				if(D instanceof Wand)
+					((Wand)D).setSpell(null);
+			}
+		}
+	}
+
+	protected static int getRelicCharges(final Physical P)
+	{
+		if(Prayer.isARelic(P))
+		{
+			final Dischargeable D=getDischargeableRelic(P);
+			if(D != null)
+				return D.getCharges();
+		}
+		return -1;
+	}
+
+	protected static boolean isARelic(final Physical P)
+	{
+		return getRelicPrayers(P).size()>0;
+	}
+
 	protected static boolean prayerAlignmentCheck(final StdAbility A, final MOB mob, final boolean auto)
 	{
 		if((!auto)

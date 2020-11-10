@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_StorePrayer extends Prayer implements AbilityContainer
+public class Prayer_StorePrayer extends Prayer implements AbilityContainer, Dischargeable
 {
 
 	@Override
@@ -111,7 +111,8 @@ public class Prayer_StorePrayer extends Prayer implements AbilityContainer
 		return "";
 	}
 
-	protected int getCharges()
+	@Override
+	public int getCharges()
 	{
 		String argText=text();
 		int x=argText.indexOf('/');
@@ -127,12 +128,23 @@ public class Prayer_StorePrayer extends Prayer implements AbilityContainer
 		return 0;
 	}
 
-	protected void setCharges(final int newCharges)
+	@Override
+	public void setCharges(final int newCharges)
 	{
+		final Physical affected=this.affected;
+		final int oldCharges=getCharges();
 		final String abilityID=getPrayerID();
 		final String deity = getDeity();
 		setMiscText(abilityID+"/"+newCharges+"/"+deity);
+		if((oldCharges > 0) && (newCharges<=0) && (affected != null))
+			affected.delEffect(this);
 	}
+
+	@Override
+	public int getMaxCharges() { return Integer.MAX_VALUE; }
+
+	@Override
+	public void setMaxCharges(final int num) {  }
 
 	protected String getDeity()
 	{
@@ -205,7 +217,9 @@ public class Prayer_StorePrayer extends Prayer implements AbilityContainer
 						V.addElement(target.name());
 					V.addElement(message);
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly.",me.name()));
-					A.invoke(mob, V, target, true,0);
+					A.invoke(mob, V, target, true, me.phyStats().level());
+					if(getCharges()<=0)
+						mob.tell(L("@x1 seems spent.",me.name()));
 				}
 			}
 		}

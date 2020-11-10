@@ -147,7 +147,8 @@ public class Prayer_AttuneScroll extends Prayer
 					&&(A.appropriateToMyFactions(mob)))
 						mySpells.add(A);
 				}
-				if(mySpells.size()>0)
+				if((mySpells.size()>0)
+				&&(target.usesRemaining()>0))
 				{
 					MOB M=null;
 					try
@@ -156,8 +157,6 @@ public class Prayer_AttuneScroll extends Prayer
 						R.addInhabitant(M);
 						for(final Ability A : mySpells)
 						{
-							if(((Scroll)target).usesRemaining()>0)
-								((Scroll)target).setUsesRemaining(((Scroll)target).usesRemaining()-1);
 							M.addAbility((Ability)A.copyOf());
 							final CMMsg cmsg=CMClass.getMsg(M,null,A,CMMsg.TYP_CAST_SPELL,L("You feel @x1 release <O-NAME>",target.Name()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 							R.send(mob, cmsg);
@@ -174,7 +173,8 @@ public class Prayer_AttuneScroll extends Prayer
 						}
 					}
 				}
-				target.setUsesRemaining(target.usesRemaining()-1);
+				if(target.usesRemaining()>0)
+					target.setUsesRemaining(target.usesRemaining()-1);
 			}
 			else
 				beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, but @x1 does not heed.",hisHerDiety(mob)));

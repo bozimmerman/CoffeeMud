@@ -189,7 +189,7 @@ public class Spell_StoreSpell extends Spell implements AbilityContainer
 						V.addElement(target.name());
 					V.addElement(message);
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly.",me.name()));
-					A.invoke(mob, V, target, true,0);
+					A.invoke(mob, V, target, true, me.phyStats().level());
 				}
 			}
 		}
