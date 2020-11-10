@@ -153,13 +153,6 @@ public class Thief_Whiplash extends ThiefSkill
 				mob.tell(L("You need a leather flailed weapon to perform a whiplash!"));
 			return false;
 		}
-		final Weapon wp=(Weapon)w;
-		if((wp.weaponDamageType()!=Weapon.TYPE_SLASHING)&&(wp.weaponDamageType()!=Weapon.TYPE_PIERCING))
-		{
-			if(!quiet)
-				mob.tell(L("You cannot whiplash someone with @x1!",wp.name()));
-			return false;
-		}
 		return true;
 	}
 
