@@ -125,6 +125,7 @@ public class Skill_ResearchItem extends StdSkill
 	protected String what = "";
 	protected int ticksToRemain = 0;
 	protected int numBooksInRoom = 1;
+	protected int numRoomsToDo = 0;
 
 	@Override
 	public void setMiscText(final String newMiscText)
@@ -178,6 +179,7 @@ public class Skill_ResearchItem extends StdSkill
 			||(!CMLib.flags().canBeSeenBy(R, mob))
 			||(!CMLib.flags().isAliveAwakeMobileUnbound(mob,true)))
 			{
+				this.itemsFound.clear();
 				mob.tell(L("You stop researching."));
 				unInvoke();
 				return false;
@@ -199,7 +201,6 @@ public class Skill_ResearchItem extends StdSkill
 					return false;
 				}
 			}
-
 			if(areas.size()==0)
 			{
 				Area A=null;
@@ -231,6 +232,7 @@ public class Skill_ResearchItem extends StdSkill
 				final int range=75 + (2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
 				checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
 				checkIter=checkSet.iterator();
+				numRoomsToDo=(checkSet.size()/(tickDown-1))+1;
 				return true;
 			}
 			else
@@ -242,7 +244,8 @@ public class Skill_ResearchItem extends StdSkill
 				Environmental item=null;
 				Room room=null;
 				ShopKeeper SK=null;
-				final int numRoomsToDo=(checkSet.size()/(tickDown-1))+1;
+				if(tickDown<3)
+					numRoomsToDo=checkSet.size();
 				for (int r=0;(r<numRoomsToDo) && checkIter.hasNext();r++)
 				{
 					room=CMLib.map().getRoom(checkIter.next());
@@ -292,9 +295,9 @@ public class Skill_ResearchItem extends StdSkill
 						break;
 					while(itemsFound.size()>maxFound)
 						itemsFound.remove(CMLib.dice().roll(1,itemsFound.size(),-1));
-					if(!checkIter.hasNext()) // set the final time remaning
-						tickDown += ticksToRemain;
 				}
+				if((!checkIter.hasNext())||(tickDown==2)) // set the final time remaning
+					tickDown += ticksToRemain;
 			}
 		}
 		return true;
