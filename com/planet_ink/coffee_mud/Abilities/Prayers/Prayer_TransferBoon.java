@@ -78,7 +78,7 @@ public class Prayer_TransferBoon extends Prayer
 		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A instanceof Prayer)
+			if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 			&&(A.canBeUninvoked())
 			&&((A.castingQuality(mob,target)==Ability.QUALITY_BENEFICIAL_OTHERS)
 				||(A.castingQuality(mob,target)==Ability.QUALITY_BENEFICIAL_SELF)))

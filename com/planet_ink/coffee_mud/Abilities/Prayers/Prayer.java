@@ -142,7 +142,7 @@ public class Prayer extends StdAbility
 		if(P instanceof Wand)
 		{
 			final Ability A=((Wand)P).getSpell();
-			if(A instanceof Prayer)
+			if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER))
 				prayV.add(A);
 		}
 		else

@@ -87,7 +87,7 @@ public class Prayer_ReleasePrayer extends Prayer
 		for(final Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A instanceof Prayer)
+			if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 			&&(!A.isSavable())
 			&&((whichA.length()==0)||(CMLib.english().containsString(A.Name(), whichA))))
 				mySpells.add(A);

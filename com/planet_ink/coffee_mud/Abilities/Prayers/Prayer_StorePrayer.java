@@ -402,7 +402,7 @@ public class Prayer_StorePrayer extends Prayer implements AbilityContainer, Disc
 		{
 			final Ability A=a.nextElement();
 			if((A!=null)
-			&&(A instanceof Prayer)
+			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 			&&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
 			&&(A.name().toUpperCase().startsWith(spellName.toUpperCase()))
 			&&(!A.ID().equals(this.ID())))
