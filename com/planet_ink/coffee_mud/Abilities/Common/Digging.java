@@ -152,10 +152,10 @@ public class Digging extends GatheringSkill
 					msg.setValue(amount);
 					if(mob.location().okMessage(mob, msg))
 					{
-						String s="s";
-						if((msg.value()==1)||(foundShortName.endsWith("s")))
-							s="";
-						msg.modify(L("<S-NAME> manage(s) to dig out @x1 @x2@x3.",""+msg.value(),foundShortName,s));
+						if(msg.value()<2)
+							msg.modify(L("<S-NAME> manage(s) to dig out @x1.",found.name()));
+						else
+							msg.modify(L("<S-NAME> manage(s) to dig out @x1 pounds of @x2.",""+msg.value(),foundShortName));
 						mob.location().send(mob, msg);
 						for(int i=0;i<msg.value();i++)
 						{
