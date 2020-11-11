@@ -187,7 +187,7 @@ public class Reliquist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_ResearchItem",0,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Whipsmack",0,false);
 
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_ImpWardGlyph",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_ImprovedWardGlyph",false);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_SenseParish",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Attack2",0,false);
@@ -198,9 +198,9 @@ public class Reliquist extends Thief
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_Suppression",0,false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Detection",0,false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_EmpHolyWeapon",false); // special A
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_EmpUnholyWeapon",false); // special A
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_EmpSacredWeapon",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_EmpowerHolyWeapon",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_EmpowerUnholyWeapon",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_EmpowerSacredWeapon",false); // special A
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_ReflectPrayer",false); // special A
 
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_HeroicSave",0,false); // heroic leap in the doc
@@ -212,18 +212,18 @@ public class Reliquist extends Thief
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_SeekersPrayer",false); // special A
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_ShareBoon",false); // special A
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_StealBoon",false); // special A
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_EmpJustWeapon",false); // special A
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_EmpModestWeapon",false); // special A
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_EmpFoulWeapon",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_EmpowerJustWeapon",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_EmpowerModestWeapon",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_EmpowerFoulWeapon",false); // special A
 
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Fighter_AutoHammerRing",0,false);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_GreaterWardingGlyph",false);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_FindSacredItem",false);
 
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Skill_BefoulShrine",0,false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_EmpHolyArmor",false); // special A
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_EmpUnholyArmor",false); // special A
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_EmpSacredArmor",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_EmpowerHolyArmor",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_EmpowerUnholyArmor",false); // special A
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_EmpowerSacredArmor",false); // special A
 
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_DivineFeud",0,true);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_ProtectRelic",false);
@@ -544,10 +544,12 @@ public class Reliquist extends Thief
 				else
 				if((msg.sourceMinor()!=CMMsg.TYP_PREINVOKE)
 				&&(msg.tool().ID().equals("Prayer_EnchantRelic")
+					||msg.tool().ID().equals("Prayer_LesserWardingGlyph")
+					||msg.tool().ID().equals("Prayer_GreaterWardingGlyph")
 					||msg.tool().ID().equals("Prayer_StorePrayer")
 					||msg.tool().ID().equals("Prayer_ImbueShield")
 					||msg.tool().ID().equals("Prayer_DefileShield")
-					||msg.tool().ID().equals("Prayer_ReleasePrayer")
+					//||msg.tool().ID().equals("Prayer_ReleasePrayer") // not necc because the spell is fake cast
 					||msg.tool().ID().equals("Prayer_DivineQuest")))
 				{
 					final Ability A=mob.fetchAbility(msg.tool().text());

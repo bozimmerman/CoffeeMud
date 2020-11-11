@@ -451,7 +451,7 @@ public class Prayer_StorePrayer extends Prayer implements AbilityContainer, Disc
 
 		if(success)
 		{
-			setMiscText(wandThis.ID());
+			setMiscText(wandThis.ID()); // for informational purposes
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
 					L("^S<S-NAME> @x1 while moving <S-HIS-HER> hands around <T-NAMESELF>.^?", prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))

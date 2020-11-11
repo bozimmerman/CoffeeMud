@@ -180,7 +180,7 @@ public class Prayer_EnchantRelic extends Prayer
 
 		if(success)
 		{
-			setMiscText(wandThis.ID());
+			setMiscText(wandThis.ID()); // for informational purposes
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> appear(s) enchanted!":"^S<S-NAME> enchant(s) <T-NAMESELF>"+inTheNameOf(mob)+".^?"));
 			if(mob.location().okMessage(mob,msg))
 			{

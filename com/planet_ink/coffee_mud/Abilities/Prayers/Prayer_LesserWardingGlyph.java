@@ -371,7 +371,7 @@ public class Prayer_LesserWardingGlyph extends Prayer implements Trap
 		if(success)
 		{
 
-			setMiscText(shooter.ID());
+			setMiscText(shooter.ID()); // for informational purposes
 			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), auto?"":L("^S<S-NAME> @x1 over <T-NAME> for a divine ward.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
