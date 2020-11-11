@@ -393,16 +393,20 @@ public class CraftingSkill extends GatheringSkill
 			setMsgXPValue(mob,msg);
 			if(mob.location().okMessage(mob,msg))
 			{
-				R.addItem(buildingI,ItemPossessor.Expire.Player_Drop);
-				R.recoverRoomStats();
-				mob.location().send(mob,msg);
-				if(!R.isContent(buildingI))
+				final Item builtI=(Item)msg.target();
+				if(builtI!=null)
 				{
-					commonTell(mob,L("You have won the common-skill-failure LOTTERY! Congratulations!"));
-					CMLib.leveler().postExperience(mob, null, null,50,false);
+					R.addItem(builtI,ItemPossessor.Expire.Player_Drop);
+					R.recoverRoomStats();
+					mob.location().send(mob,msg);
+					if(!R.isContent(builtI))
+					{
+						commonTell(mob,L("You have won the common-skill-failure LOTTERY! Congratulations!"));
+						CMLib.leveler().postExperience(mob, null, null,50,false);
+					}
+					else
+						return true;
 				}
-				else
-					return true;
 			}
 		}
 		return false;
