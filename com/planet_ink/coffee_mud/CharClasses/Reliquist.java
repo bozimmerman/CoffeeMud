@@ -187,8 +187,8 @@ public class Reliquist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_ResearchItem",0,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Whipsmack",0,false);
 
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_ImprovedWardGlyph",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_SenseParish",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_ImprovedWardingGlyph",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_SenseParish",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Attack2",0,false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_FalseFaith",0,true);
@@ -545,6 +545,7 @@ public class Reliquist extends Thief
 				if((msg.sourceMinor()!=CMMsg.TYP_PREINVOKE)
 				&&(msg.tool().ID().equals("Prayer_EnchantRelic")
 					||msg.tool().ID().equals("Prayer_LesserWardingGlyph")
+					||msg.tool().ID().equals("Prayer_ImprovedWardingGlyph")
 					||msg.tool().ID().equals("Prayer_GreaterWardingGlyph")
 					||msg.tool().ID().equals("Prayer_StorePrayer")
 					||msg.tool().ID().equals("Prayer_ImbueShield")

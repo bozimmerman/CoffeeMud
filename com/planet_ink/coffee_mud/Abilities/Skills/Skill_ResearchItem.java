@@ -118,9 +118,7 @@ public class Skill_ResearchItem extends StdSkill
 	}
 
 	protected final List<String> itemsFound=new Vector<String>();
-	protected final HashSet<Area> areas=new HashSet<Area>();
 	protected Room theRoom = null;
-	protected List<Room> checkSet=null;
 	protected Iterator<Room> checkIter=null;
 	protected String what = "";
 	protected int ticksToRemain = 0;
@@ -131,9 +129,7 @@ public class Skill_ResearchItem extends StdSkill
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
-		areas.clear();
 		itemsFound.clear();
-		checkSet = null;
 		numBooksInRoom = 1;
 		what = newMiscText;
 		ticksToRemain = 0;
@@ -201,8 +197,9 @@ public class Skill_ResearchItem extends StdSkill
 					return false;
 				}
 			}
-			if(areas.size()==0)
+			if(checkIter==null)
 			{
+				final HashSet<Area> areas=new HashSet<Area>();
 				Area A=null;
 				final HashSet<Area> areasTried=new HashSet<Area>();
 				int numAreas = 0;
@@ -223,14 +220,9 @@ public class Skill_ResearchItem extends StdSkill
 							numAreas--;
 					}
 				}
-				return true;
-			}
-			else
-			if((checkSet == null)||(checkIter==null))
-			{
 				final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
 				final int range=75 + (2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
-				checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
+				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
 				checkIter=checkSet.iterator();
 				numRoomsToDo=(checkSet.size()/(tickDown-1))+1;
 				return true;
@@ -245,7 +237,7 @@ public class Skill_ResearchItem extends StdSkill
 				Room room=null;
 				ShopKeeper SK=null;
 				if(tickDown<3)
-					numRoomsToDo=checkSet.size();
+					numRoomsToDo=Integer.MAX_VALUE;
 				for (int r=0;(r<numRoomsToDo) && checkIter.hasNext();r++)
 				{
 					room=CMLib.map().getRoom(checkIter.next());

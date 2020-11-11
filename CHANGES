@@ -30,6 +30,7 @@
  29. Scriptable has new GROUP_GREET_PROG for greetings that trigger at most once per tick.
  30. New Prayers: Deplete Relic, Attune Relic, Empower Relic, Transfer Bane, Release Prayer, Transfer Boon
  31. New Skills: Whiplash, Research Item
+ 32. New Prayers: Improved Warning Glyph, Sense Parish
 # Build 5.9.10 Release 6/16/2020
   1. Wands/etc have enchant type as a restriction, WandMaking/StaffMaking/Rodsmithing support.
   2. New PLAYERDEATH option: RETAIN -- to allow player mobs to keep their items on death.

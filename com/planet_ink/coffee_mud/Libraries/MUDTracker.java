@@ -19,6 +19,7 @@ import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.RFilter;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.RFilters;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlags;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrailFlag;
@@ -575,6 +576,87 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				return;
 			depth++;
 		}
+	}
+
+	public Enumeration<Room> getRadiantRoomsEnum(final Room room, final RFilters filters, final Room radiateTo, final int maxDepth, final Set<Room> ignoreRooms)
+	{
+		if(room==null)
+			return new EmptyEnumeration<Room>();
+
+		final Set<Room> Hs=new HashSet<Room>(1000);
+		final LinkedList<Room> Rs = new LinkedList<Room>();
+		Rs.add(room);
+		if(ignoreRooms != null)
+			Hs.addAll(ignoreRooms);
+		for(int r=0;r<Rs.size();r++)
+			Hs.add(Rs.get(r));
+		return new Enumeration<Room>()
+		{
+			final LinkedList<Room> rooms=Rs;
+			final Set<Room> H=Hs;
+			final WorldMap map=CMLib.map();
+			final boolean noFilter = filters==null;
+			final RFilters filter = filters;
+
+			int depth=0;
+			Room R1=null;
+			Room R=null;
+			Exit E=null;
+			int min=0;
+			int r=0;
+			int d=0;
+			boolean finished=false;
+
+			@Override
+			public boolean hasMoreElements()
+			{
+				return rooms.size()>0;
+			}
+			@Override
+			public Room nextElement()
+			{
+				if((!finished)
+				&&(rooms.size()>0)
+				&&(depth<maxDepth)
+				&&(min==0))
+				{
+					final int newMin=rooms.size();
+					for(r=min;r<rooms.size();r++)
+					{
+						R1=rooms.get(r);
+						for(d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+						{
+							R=R1.getRoomInDir(d);
+							E=R1.getExitInDir(d);
+							if((R!=null)&&(E!=null))
+							{
+								R=map.getRoom(R);
+								if((R!=null)
+								&&(!H.contains(R))
+								&&((noFilter)||(!filter.isFilteredOut(R1, R, E, d))))
+								{
+									rooms.add(R);
+									H.add(R);
+									if(R==radiateTo) // R can't be null here, so if they are equal, time to go!
+									{
+										finished=true;
+										break;
+									}
+								}
+							}
+						}
+					}
+					min=newMin;
+					if(min==rooms.size())
+						finished=true;
+					depth++;
+				}
+				if(!hasMoreElements())
+					throw new java.util.NoSuchElementException();
+				min--; // super important!
+				return rooms.removeFirst();
+			}
+		};
 	}
 
 	protected boolean getRadiantRoomsToTarget(final Room room, final List<Room> rooms, TrackingFlags flags, final RFilter radiateTo, final int maxDepth)
