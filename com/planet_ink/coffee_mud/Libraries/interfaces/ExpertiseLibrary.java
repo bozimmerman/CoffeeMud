@@ -34,7 +34,7 @@ import java.util.*;
 */
 
 /**
- * 
+ *
  * @author Bo Zimmerman
  *
  */
@@ -66,7 +66,7 @@ public interface ExpertiseLibrary extends CMLibrary
 	public boolean postTeach(MOB teacher, MOB student, CMObject teachObj);
 	public Iterator<String> filterUniqueExpertiseIDList(Iterator<String> i);
 	public int getHighestListableStageBySkill(final MOB mob, String ableID, ExpertiseLibrary.Flag flag);
-	
+
 	public enum Flag
 	{
 		X1,
@@ -82,10 +82,29 @@ public interface ExpertiseLibrary extends CMLibrary
 		LOWFREECOST
 	}
 
+	/**
+	 * Class definiing a single level of a particular expertise, along
+	 * with all requirements to gain it.
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public interface ExpertiseDefinition extends CMObject
 	{
+		/**
+		 * Gets the base (non-leveled) name of this expertise, for
+		 * association with its other-leveled brethren.
+		 * @see ExpertiseLibrary.ExpertiseDefinition#setBaseName(String)
+		 * @return the base name of this expertise type
+		 */
 		public String getBaseName();
 
+		/**
+		 * Sets the base (non-leveled) name of this expertise, for
+		 * association with its other-leveled brethren.
+		 * @see ExpertiseLibrary.ExpertiseDefinition#getBaseName()
+		 * @param baseName the base name of this expertise type
+		 */
 		public void setBaseName(String baseName);
 
 		public void setName(String name);
@@ -121,6 +140,7 @@ public interface ExpertiseLibrary extends CMLibrary
 		public boolean meetsCostRequirements(MOB mob);
 
 		public void spendCostRequirements(MOB mob);
+
 	}
 
 	/** Enumeration of the types of costs of gaining this ability */
@@ -139,8 +159,21 @@ public interface ExpertiseLibrary extends CMLibrary
 	 */
 	public interface SkillCostDefinition
 	{
+		/**
+		 * Returns the type of resources defining the cost
+		 * of a skill.
+		 * @see ExpertiseLibrary.CostType
+		 * @return the type of cost
+		 */
 		public CostType type();
 
+		/**
+		 * A math formula definition the amount of the cost
+		 * type required, where at-x1 is the qualifying level
+		 * and at-x2 is the player level
+		 *
+		 * @return the amount formula
+		 */
 		public String costDefinition();
 	}
 
@@ -159,6 +192,12 @@ public interface ExpertiseLibrary extends CMLibrary
 		 */
 		public String costType(final MOB mob);
 
+		/**
+		 * Returns a simple description of the amount
+		 * and type of cost required for the skill.
+		 * @param mob the creature, for evaluating currency
+		 * @return a description of the required amount
+		 */
 		public String requirements(final MOB mob);
 
 		/**
