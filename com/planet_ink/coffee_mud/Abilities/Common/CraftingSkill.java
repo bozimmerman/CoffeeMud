@@ -1052,6 +1052,53 @@ public class CraftingSkill extends GatheringSkill
 		return allItems;
 	}
 
+	public ItemKeyPair craftAnyItemNearLevel(final int minlevel, final int maxlevel)
+	{
+		int bestDiff=Integer.MAX_VALUE;
+		final List<List<String>> choices=new ArrayList<List<String>>();
+		final List<List<String>> recipes=fetchRecipes();
+
+		for(int r=0;r<recipes.size();r++)
+		{
+			final int ilevel=CMath.s_int(recipes.get(r).get(RCP_LEVEL));
+			if(ilevel>0)
+			{
+				final int diff=(ilevel>maxlevel)?CMath.abs(ilevel-maxlevel):(ilevel<minlevel)?CMath.abs(ilevel-minlevel):0;
+				if(diff == bestDiff)
+					choices.add(recipes.get(r));
+				else
+				{
+					choices.clear();
+					bestDiff=diff;
+					choices.add(recipes.get(r));
+				}
+			}
+		}
+		if(choices.size()==0)
+			return null;
+		final List<String> recipe=recipes.get(CMLib.dice().roll(1, recipes.size(), -1));
+		final String name=replacePercent(recipe.get(RCP_FINALNAME),"").trim();
+		return craftItem(name);
+	}
+
+	public int[] getCraftableLevelRange()
+	{
+		final int[] range=new int[] {Integer.MAX_VALUE,0};
+		final List<List<String>> recipes=fetchRecipes();
+		for(int r=0;r<recipes.size();r++)
+		{
+			final int level=CMath.s_int(recipes.get(r).get(RCP_LEVEL));
+			if(level>0)
+			{
+				if(level<range[0])
+					range[0]=level;
+				if(level>range[1])
+					range[1]=level;
+			}
+		}
+		return range;
+	}
+
 	public List<List<String>> matchingRecipeNames(final String recipeName, final boolean beLoose)
 	{
 		return matchingRecipeNames(fetchRecipes(),recipeName,beLoose);

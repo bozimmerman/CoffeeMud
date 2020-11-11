@@ -769,11 +769,14 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 			}
 		}
 		final int duration=getDuration(mob,mob.basePhyStats().level());
+		final Item oldFound=found;
 		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),L((String)V(ID, V_MSG1)));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			found=(Item)msg.target();
+			if((found != oldFound)&&(found!=null))
+				foundShortName=CMLib.english().removeArticleLead(found.Name());
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;

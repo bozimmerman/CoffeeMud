@@ -433,10 +433,13 @@ public class Composting extends GatheringSkill
 		verb=L("composting @x1",foundShortName);
 		displayText=L("You are composting @x1",foundShortName);
 		room=mob.location();
+		final Item oldFound=found;
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			found=(Item)msg.target();
+			if((found != oldFound)&&(found!=null))
+				foundShortName=CMLib.english().removeArticleLead(found.Name());
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;

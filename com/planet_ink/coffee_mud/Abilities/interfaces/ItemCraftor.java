@@ -46,12 +46,29 @@ public interface ItemCraftor extends CraftorAbility
 	/**
 	 * Crafts a random item of a type supported by this class of
 	 * the given resource code.
-	 * Returns a vector containing the finished Item.  A second element is
+	 * Returns a pair containing the finished Item.  A second element is
 	 * rare, but will occur when a key is required and also generated.
 	 * @param material the rawmaterial code to make the item out of
-	 * @return a vector of Item(s)
+	 * @return an item pair
 	 */
 	public ItemKeyPair craftAnyItem(int material);
+
+	/**
+	 * Crafts a random item of a type supported by this class of
+	 * a random resource code but within the given level range.
+	 * Returns a item pair containing the finished Item.  A second element is
+	 * rare, but will occur when a key is required and also generated.
+	 * @param minlevel the min level to try to match
+	 * @param maxlevel the max level to try to match
+	 * @return an item pair
+	 */
+	public ItemKeyPair craftAnyItemNearLevel(int minlevel, int maxlevel);
+
+	/**
+	 * Returns the level range of the items craftable by this skill.
+	 * @return the level range of the items craftable by this skill.
+	 */
+	public int[] getCraftableLevelRange();
 
 	/**
 	 * Crafts every item of a type supported by this class of

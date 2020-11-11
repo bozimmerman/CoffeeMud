@@ -216,11 +216,14 @@ public class Digging extends GatheringSkill
 		}
 
 		final int duration=getDuration(mob,1);
+		final Item oldFound=found;
 		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),L("<S-NAME> start(s) digging for gems."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			found=(Item)msg.target();
+			if((found != oldFound)&&(found!=null))
+				foundShortName=CMLib.english().removeArticleLead(found.Name());
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;

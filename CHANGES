@@ -23,7 +23,7 @@
  22. Zappermasks now support +-WEEK, +-DAYOFYEAR, +-YEAR, +-WEEKOFYEAR, and X or Y or Xnd Y syntax
  23. New injury system: Scarring
  24. New Prayers: Empower Shield, Read Language, Store Prayer, Lesser Warding Glyph, Deflect Prayer
- 25. New Thief skills: Borrow Boon, Unearth Demography
+ 25. New Thief skills: Borrow Boon, Unearth Demography, Digsite
  26. Zappermasks now support +-OR to introduce separate conditions
  27. Deities can now be picked at char creation, see DEITYPOLICY in ini file or M.G. control panel
  28. Many GREET style Scriptable triggers now support zapper masks instead of pct chance

@@ -23,20 +23,44 @@ import java.util.*;
  * and removes by copying the underlying vector whenever those
  * operations are done.
  */
-public class XTreeSet<T> extends HashSet<T>
+public class XTreeSet<T> extends TreeSet<T>
 {
 	private static final long serialVersionUID = 6587178785122563992L;
 
+	public static final Comparator<Object> comparator = new Comparator<Object>()
+	{
+		@Override
+		public int compare(final Object o1, final Object o2)
+		{
+			if(o1 == null)
+			{
+				if(o2 == null)
+					return 0;
+				return -1;
+			}
+			else
+			if(o2 == null)
+				return 1;
+			if((o1 instanceof String)
+			&&(o2 instanceof String))
+				return ((String)o1).compareTo((String)o2);
+			final int hc1 = o1.hashCode();
+			final int hc2 = o2.hashCode();
+			return (hc1==hc2)?0:(hc1>hc2)?1:-1;
+		}
+
+	};
+
 	public XTreeSet(final List<T> V)
 	{
-		super();
+		super(comparator);
 		if(V!=null)
 			addAll(V);
 	}
 
 	public XTreeSet(final T[] E)
 	{
-		super();
+		super(comparator);
 		if(E!=null)
 			for(final T o : E)
 				add(o);
@@ -44,19 +68,19 @@ public class XTreeSet<T> extends HashSet<T>
 
 	public XTreeSet(final T E)
 	{
-		super();
+		super(comparator);
 		if(E!=null)
 			add(E);
 	}
 
 	public XTreeSet()
 	{
-		super();
+		super(comparator);
 	}
 
 	public XTreeSet(final Set<T> E)
 	{
-		super();
+		super(comparator);
 		if(E!=null)
 		{
 			for(final T o : E)
@@ -66,7 +90,7 @@ public class XTreeSet<T> extends HashSet<T>
 
 	public XTreeSet(final Enumeration<T> E)
 	{
-		super();
+		super(comparator);
 		if(E!=null)
 		{
 			for(;E.hasMoreElements();)
@@ -76,7 +100,7 @@ public class XTreeSet<T> extends HashSet<T>
 
 	public XTreeSet(final Iterator<T> E)
 	{
-		super();
+		super(comparator);
 		if(E!=null)
 		{
 			for(;E.hasNext();)
@@ -137,21 +161,21 @@ public class XTreeSet<T> extends HashSet<T>
 				remove(o);
 		}
 	}
-	
-	public boolean containsAny(Collection<T> C)
+
+	public boolean containsAny(final Collection<T> C)
 	{
 		for(final T c : C)
 			if(contains(c))
 				return true;
 		return false;
 	}
-	
-	public boolean containsAny(Enumeration<T> c)
+
+	public boolean containsAny(final Enumeration<T> c)
 	{
 		for(;c.hasMoreElements();)
 			if(contains(c.nextElement()))
 				return true;
 		return false;
 	}
-	
+
 }
