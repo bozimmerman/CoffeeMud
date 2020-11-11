@@ -126,10 +126,10 @@ public class Trawling extends GatheringSkill
 					msg.setValue(yield);
 					if(mob.location().okMessage(mob, msg))
 					{
-						String s="s";
-						if(msg.value()==1)
-							s="";
-						msg.modify(L("<S-NAME> manage(s) to catch @x1 pound@x2 of @x3 in <S-HIS-HER> trawling nets.",""+msg.value(),s,foundShortName));
+						if(msg.value()<2)
+							msg.modify(L("<S-NAME> manage(s) to catch @x1 in <S-HIS-HER> trawling nets..",found.name()));
+						else
+							msg.modify(L("<S-NAME> manage(s) to catch @x1 pounds of @x2 in <S-HIS-HER> trawling nets..",""+msg.value(),foundShortName));
 						mob.location().send(mob, msg);
 						for(int i=0;i<msg.value();i++)
 						{

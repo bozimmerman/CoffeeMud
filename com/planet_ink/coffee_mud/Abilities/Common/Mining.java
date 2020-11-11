@@ -145,10 +145,10 @@ public class Mining extends GatheringSkill
 					msg.setValue(amount);
 					if(mob.location().okMessage(mob, msg))
 					{
-						String s="s";
 						if(msg.value()==1)
-							s="";
-						msg.modify(L("<S-NAME> manage(s) to mine @x1 pound@x2 of @x3.",""+msg.value(),s,foundShortName));
+							msg.modify(L("<S-NAME> manage(s) to mine @x1.",found.name()));
+						else
+							msg.modify(L("<S-NAME> manage(s) to mine @x1 pounds of @x2.",""+msg.value(),foundShortName));
 						mob.location().send(mob, msg);
 						for(int i=0;i<msg.value();i++)
 						{

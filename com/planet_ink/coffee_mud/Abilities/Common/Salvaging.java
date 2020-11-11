@@ -102,10 +102,11 @@ public class Salvaging extends CommonSkill
 		msg.setValue(amount);
 		if(mob.location().okMessage(mob, msg))
 		{
-			String s="s";
-			if(msg.value()==1)
-				s="";
-			msg.modify(L("<S-NAME> manage(s) to salvage @x1 pound@x2 of @x3.",""+msg.value(),s,RawMaterial.CODES.NAME(found.material()).toLowerCase()));
+			final String foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
+			if(msg.value()<2)
+				msg.modify(L("<S-NAME> manage(s) to salvage @x1.",found.name()));
+			else
+				msg.modify(L("<S-NAME> manage(s) to salvage @x1 pounds of @x2.",""+msg.value(),foundShortName));
 			mob.location().send(mob, msg);
 			for(int i=0;i<msg.value();i++)
 			{

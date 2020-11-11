@@ -118,10 +118,10 @@ public class Scrapping extends CommonSkill
 						msg.setValue(amount);
 						if(mob.location().okMessage(mob, msg))
 						{
-							String s="s";
-							if(msg.value()==1)
-								s="";
-							msg.modify(L("<S-NAME> manage(s) to scrap @x1 pound@x2 of @x3.",""+msg.value(),s,foundShortName));
+							if(msg.value()<2)
+								msg.modify(L("<S-NAME> manage(s) to scrap @x1.",found.name()));
+							else
+								msg.modify(L("<S-NAME> manage(s) to scrap @x1 pounds of @x2.",""+msg.value(),foundShortName));
 							mob.location().send(mob, msg);
 							if(found.material() != RawMaterial.RESOURCE_NOTHING)
 							{

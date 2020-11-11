@@ -140,20 +140,16 @@ public class Foraging extends GatheringSkill
 							   (CMLib.dice().roll(1,10,0)*(baseYield()+abilityCode())):
 							   (CMLib.dice().roll(1,3,0)*(baseYield()+abilityCode()));
 					amount=super.adjustYieldBasedOnRoomSpam(amount, mob.location());
-					final Item oldFound=found;
 					final CMMsg msg=CMClass.getMsg(mob,found,this,getCompletedActivityMessageType(),null);
 					msg.setValue(amount);
 					if(mob.location().okMessage(mob, msg))
 					{
 						found=(Item)msg.target();
 						// rely on changers to mangle the text
-						if(oldFound==found)
-						{
-							String s="s";
-							if(msg.value()==1)
-								s="";
-							msg.modify(L("<S-NAME> manage(s) to gather @x1 pound@x2 of @x3.",""+msg.value(),s,foundShortName));
-						}
+						if(msg.value()<2)
+							msg.modify(L("<S-NAME> manage(s) to gather up @x1.",found.name()));
+						else
+							msg.modify(L("<S-NAME> manage(s) to gather @x1 pounds of @x2.",""+msg.value(),foundShortName));
 						mob.location().send(mob, msg);
 						for(int i=0;i<msg.value();i++)
 						{
