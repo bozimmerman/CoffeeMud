@@ -220,7 +220,7 @@ public class Surveying extends CommonSkill
 								if(nextRoomNumber.startsWith(area.Name()+"#"))
 									nextRoomNumber=nextRoomNumber.substring(area.Name().length());
 								msgBuilder.append(CMStrings.padRight(L("^HExit "+Directions.instance().getDirectionName(d)),10))
-										.append(": ^N").append(nextR.displayText());
+										.append(": ^N").append(nextR.displayText(null));
 								if(expertise > 0)
 									msgBuilder.append(" (").append(nextRoomNumber).append(")");
 								if(expertise > 6)

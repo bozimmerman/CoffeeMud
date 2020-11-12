@@ -366,6 +366,14 @@ public class Cleric extends StdCharClass
 	}
 
 	@Override
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
+	{
+		super.affectCharStats(affected, affectableStats);
+		if(affected.charStats().getCurrentClass()==this) // once per class/subclass please.
+			affectableStats.setStat(CharStats.STAT_FAITH, affectableStats.getStat(CharStats.STAT_FAITH)+100);
+	}
+
+	@Override
 	public int availabilityCode()
 	{
 		return Area.THEME_FANTASY;

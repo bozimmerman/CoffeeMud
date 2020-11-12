@@ -108,6 +108,8 @@ public class Prayer_InfuseBalance extends Prayer
 			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_GOOD);
 		if(CMath.bset(affectableStats.disposition(),PhyStats.IS_EVIL))
 			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_EVIL);
+		affectableStats.addAmbiance("#GOOD");
+		affectableStats.addAmbiance("#EVIL");
 	}
 
 	@Override

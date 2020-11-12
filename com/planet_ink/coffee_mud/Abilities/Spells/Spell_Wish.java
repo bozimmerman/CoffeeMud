@@ -123,7 +123,7 @@ public class Spell_Wish extends Spell
 			final CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,null);
 			if(!thisRoom.okMessage(mob,leaveMsg)||!newRoom.okMessage(mob,enterMsg))
 				factor=40.0;
-			mob.location().show((MOB)target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> teleport(s) to @x1.",newRoom.displayText()));
+			mob.location().show((MOB)target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> teleport(s) to @x1.",newRoom.displayText(null)));
 			((Room)enterMsg.target()).bringMobHere((MOB)target,false);
 			if(((Room)enterMsg.target()).isInhabitant((MOB)target))
 				((Room)enterMsg.target()).show((MOB)target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> appear(s) out of nowhere."));
@@ -132,7 +132,7 @@ public class Spell_Wish extends Spell
 		if(target instanceof Item)
 		{
 			final Item item=(Item)target;
-			mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> is teleported to @x1!",newRoom.displayText()));
+			mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> is teleported to @x1!",newRoom.displayText(null)));
 			item.unWear();
 			item.setContainer(null);
 			item.removeFromOwnerContainer();

@@ -107,6 +107,7 @@ public class Prayer_InfuseHoliness extends Prayer
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOOD);
 		if(CMath.bset(affectableStats.disposition(),PhyStats.IS_EVIL))
 			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_EVIL);
+		affectableStats.addAmbiance("#GOOD");
 	}
 
 	@Override

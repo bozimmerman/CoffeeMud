@@ -59,7 +59,7 @@ public class Prayer_ReligiousDoubt extends Prayer
 	@Override
 	public String displayText()
 	{
-		if(otherSide)
+		if(hasThoughtItOver)
 			return "";
 		return "(Religious Doubt)";
 	}
@@ -71,7 +71,7 @@ public class Prayer_ReligiousDoubt extends Prayer
 	}
 
 	protected int tickUp=0;
-	protected boolean otherSide=false;
+	protected boolean hasThoughtItOver=false;
 
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
@@ -79,10 +79,10 @@ public class Prayer_ReligiousDoubt extends Prayer
 		super.affectCharStats(affected,affectableStats);
 		if(super.canBeUninvoked())
 		{
-			if(!otherSide)
-				affectableStats.setStat(CharStats.STAT_FAITH,affectableStats.getStat(CharStats.STAT_FAITH)-100);
+			if(hasThoughtItOver)
+				affectableStats.setStat(CharStats.STAT_SAVE_DOUBT,affectableStats.getStat(CharStats.STAT_SAVE_DOUBT)+100);
 			else
-				affectableStats.setStat(CharStats.STAT_FAITH,affectableStats.getStat(CharStats.STAT_FAITH)+100);
+				affectableStats.setStat(CharStats.STAT_SAVE_DOUBT,affectableStats.getStat(CharStats.STAT_SAVE_DOUBT)-100);
 			affectableStats.setWorshipCharID("");
 		}
 	}
@@ -93,9 +93,9 @@ public class Prayer_ReligiousDoubt extends Prayer
 		if((tickID==Tickable.TICKID_MOB)
 		&&(super.canBeUninvoked()))
 		{
-			final boolean oldOther=otherSide;
-			otherSide=(++tickUp)>tickDown;
-			if((oldOther!=otherSide)&&(affected instanceof MOB))
+			final boolean oldOther=hasThoughtItOver;
+			hasThoughtItOver=(++tickUp)>tickDown;
+			if((oldOther!=hasThoughtItOver)&&(affected instanceof MOB))
 				((MOB)affected).recoverCharStats();
 		}
 		return super.tick(ticking,tickID);
@@ -106,7 +106,7 @@ public class Prayer_ReligiousDoubt extends Prayer
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if(otherSide)
+		if(hasThoughtItOver)
 			return true;
 		final Physical affected=this.affected;
 		if((msg.target()==affected)

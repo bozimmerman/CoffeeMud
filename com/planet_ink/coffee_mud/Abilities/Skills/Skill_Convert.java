@@ -195,7 +195,9 @@ public class Skill_Convert extends StdSkill
 		}
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-		boolean targetMadeSave=(givenTarget == target) || CMLib.dice().roll(1,100,0)>(target.charStats().getSave(CharStats.STAT_FAITH));
+		// when faith < 100, they have so much faith they can't be converted?
+		// when faith >= 100, the have so much doubt they CAN be converted.
+		boolean targetMadeSave=(givenTarget == target) || CMLib.dice().roll(1,100,0)>(target.charStats().getSave(CharStats.STAT_SAVE_DOUBT));
 		//if(CMSecurity.isASysOp(mob))
 		//	targetMadeSave=false;
 		if((!target.isMonster())

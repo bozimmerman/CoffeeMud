@@ -820,7 +820,7 @@ public class DefaultCharStats implements CharStats
 		case STAT_SAVE_POISON:
 			return getStat(STAT_SAVE_POISON)+getStat(STAT_CONSTITUTION);
 		case STAT_SAVE_UNDEAD:
-			return getStat(STAT_SAVE_UNDEAD)+getStat(STAT_WISDOM)+getStat(STAT_FAITH);
+			return getStat(STAT_SAVE_UNDEAD)+getStat(STAT_WISDOM)+getStat(STAT_SAVE_DOUBT);
 		case STAT_SAVE_DISEASE:
 			return getStat(STAT_SAVE_DISEASE)+getStat(STAT_CONSTITUTION);
 		case STAT_SAVE_MAGIC:
@@ -831,8 +831,8 @@ public class DefaultCharStats implements CharStats
 			return getStat(STAT_SAVE_OVERLOOKING);
 		case STAT_SAVE_DETECTION:
 			return getStat(STAT_SAVE_DETECTION);
-		case STAT_FAITH:
-			return getStat(STAT_FAITH);
+		case STAT_SAVE_DOUBT:
+			return getStat(STAT_SAVE_DOUBT);
 		case STAT_SAVE_BLUNT:
 			return getStat(STAT_SAVE_BLUNT);
 		case STAT_SAVE_PIERCE:
@@ -1142,7 +1142,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public int getCode(final String abilityName)
+	public int getStatCode(final String abilityName)
 	{
 		final String[] DESCS = CODES.DESCS();
 		for(final int i : CharStats.CODES.ALLCODES())

@@ -470,6 +470,18 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			target.delEffect(A);
 			doneSomething=true;
 		}
+		final int oldDisposition=target.basePhyStats().disposition();
+		if(oldDisposition > 0)
+		{
+			target.basePhyStats().setDisposition(target.basePhyStats().disposition() &
+					~(PhyStats.IS_INVISIBLE| PhyStats.IS_BONUS| PhyStats.IS_EVIL| PhyStats.IS_GOOD| PhyStats.IS_HIDDEN));
+			if(oldDisposition != target.basePhyStats().disposition())
+			{
+				target.recoverPhyStats();
+				doneSomething=true;
+			}
+		}
+
 		if(target.amDestroyed())
 			return 0;
 		if(doneSomething)

@@ -98,7 +98,7 @@ public class Train extends StdCommand
 			thingsToTrainFor.append(CharStats.CODES.DESC(i)+", ");
 
 		int trainsRequired=1;
-		int abilityCode=mob.baseCharStats().getCode(abilityName);
+		int abilityCode=mob.baseCharStats().getStatCode(abilityName);
 		int curStat=-1;
 		if((abilityCode>=0)&&(CharStats.CODES.isBASE(abilityCode)))
 		{

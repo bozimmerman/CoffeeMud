@@ -107,6 +107,7 @@ public class Prayer_InfuseUnholiness extends Prayer
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_EVIL);
 		if(CMath.bset(affectableStats.disposition(),PhyStats.IS_GOOD))
 			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_GOOD);
+		affectableStats.addAmbiance("#EVIL");
 	}
 
 	@Override

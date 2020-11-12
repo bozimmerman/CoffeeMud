@@ -104,8 +104,8 @@ public interface CharStats extends CMCommon, Modifiable
 	public static final int STAT_SAVE_DETECTION=29;
 	/** stat constant for save vs overlooking hidden things */
 	public static final int STAT_SAVE_OVERLOOKING=30;
-	/** stat constant for amount of faith? */
-	public static final int STAT_FAITH=31;
+	/** stat constant for amount of doubt? */
+	public static final int STAT_SAVE_DOUBT=31;
 	/** stat constant for additions/subtractions from base weight */
 	public static final int STAT_WEIGHTADJ=32;
 	/** stat constant for  save vs bludgeoning*/
@@ -130,8 +130,10 @@ public interface CharStats extends CMCommon, Modifiable
 	public static final int STAT_CRIT_DAMAGE_PCT_WEAPON=42;
 	/** stat constant for  bonus damage % to critical hits with magic */
 	public static final int STAT_CRIT_DAMAGE_PCT_MAGIC=43;
+	/** stat constant for amount of faith? */
+	public static final int STAT_FAITH=44;
 	/** constant for total number of stat codes */
-	public final static int DEFAULT_NUM_STATS=44;
+	public final static int DEFAULT_NUM_STATS=45;
 
 	/**
 	 * Copies the internal data of this object into another of kind.
@@ -210,10 +212,10 @@ public interface CharStats extends CMCommon, Modifiable
 	 * string list in the CharStats interface to return the STAT_ constant which
 	 * the given string represents.
 	 * @see CharStats
-	 * @param abilityName name of which constant to determine the STAT_ constant for
+	 * @param statName name of which constant to determine the STAT_ constant for
 	 * @return the STAT_ constant value from CharStats interface
 	 */
-	public int getCode(String abilityName);
+	public int getStatCode(String statName);
 
 	/**
 	 * Uses the saving throw stats stored here the mob, modified by basic attributes,
@@ -867,7 +869,8 @@ public interface CharStats extends CMCommon, Modifiable
 		"cRW",
 		"cRM",
 		"cDW",
-		"cDM"
+		"cDM",
+		"F"
 	};
 
 	/** string array of descriptions of each stat code, ordered by numeric value */
@@ -916,7 +919,8 @@ public interface CharStats extends CMCommon, Modifiable
 		"CRIT WEAPON CHANCE PCT",
 		"CRIT MAGIC CHANCE PCT",
 		"CRIT WEAPON DAMAGE PCT",
-		"CRIT MAGIC DAMAGE PCT"
+		"CRIT MAGIC DAMAGE PCT",
+		"FAITH"
 	};
 
 	/** string array of descriptions of each stat code, ordered by numeric value */
@@ -953,7 +957,7 @@ public interface CharStats extends CMCommon, Modifiable
 		"AGE",
 		"DETECTION",
 		"OVERLOOKING",
-		"CONVERSION",
+		"DOUBT",
 		"WEIGHTADJ",
 		"SAVEBLUNT",
 		"SAVEPIERCE",
@@ -965,7 +969,8 @@ public interface CharStats extends CMCommon, Modifiable
 		"CRITPCTWEAPONS",
 		"CRITPCTMAGIC",
 		"CRITDMGWEAPONS",
-		"CRITDMGMAGIC"
+		"CRITDMGMAGIC",
+		"FAITH"
 	};
 
 	/** string array of attributable descriptions of each stat code, ordered by numeric value */
@@ -1015,6 +1020,7 @@ public interface CharStats extends CMCommon, Modifiable
 		"BONUS TO MAGIC CRIT CHANCE",
 		"BONUS TO WEAPON CRIT DAMAGE",
 		"BONUS TO MAGIC CRIT DAMAGE",
+		"FAITHFUL"
 	};
 
 	/** an appropriate CMMsg MSG type to correspond to the given saving throw, indexed as STAT_SAVE_ constant */
@@ -1052,7 +1058,7 @@ public interface CharStats extends CMCommon, Modifiable
 		-1, // age
 		-1, // save conceilment
 		-1, // save overlooking
-		-1, // save conversion
+		-1, // doubt
 		-1, // weight adjustment
 		-1, // save blunt
 		-1, // save pierce
@@ -1065,6 +1071,7 @@ public interface CharStats extends CMCommon, Modifiable
 		-1, // bonus magic crit chance
 		-1, // bonus weapon crit damage
 		-1, // bonus magic crit damage
+		-1, // faith
 	};
 
 	/**
@@ -1113,9 +1120,13 @@ public interface CharStats extends CMCommon, Modifiable
 				addMaxStat(baseStatCodes[baseCtr++],DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
 			addAllStat(DEFAULT_STAT_ABBR[STAT_AGE],DEFAULT_STAT_DESCS[STAT_AGE],DEFAULT_STAT_NAMES[STAT_AGE],
 						DEFAULT_STAT_DESC_ATTS[STAT_AGE],DEFAULT_STAT_MSG_MAP[STAT_AGE],false);
-			for(int i=STAT_SAVE_DETECTION;i<STAT_FAITH;i++)
+			for(int i=STAT_SAVE_DETECTION;i<=STAT_SAVE_DOUBT;i++)
 				addSavingThrow(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
-			for(int i=STAT_FAITH;i<DEFAULT_NUM_STATS;i++)
+			for(int i=STAT_WEIGHTADJ;i<=STAT_WEIGHTADJ;i++)
+				addAllStat(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i],false);
+			for(int i=STAT_SAVE_BLUNT;i<=STAT_SAVE_CHANTS;i++)
+				addSavingThrow(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
+			for(int i=STAT_CRIT_CHANCE_PCT_WEAPON;i<DEFAULT_NUM_STATS;i++)
 				addAllStat(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i],false);
 			for(int i=0;i<addExtra.length+repExtra.length;i++)
 			{

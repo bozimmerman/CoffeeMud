@@ -194,8 +194,9 @@ public class Reliquist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_FalseFaith",0,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_Digsite",0,false);
 
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_FalseService",0,true);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_Suppression",0,false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_FalseService",0,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_Disenchant",0,false);
+		//add something else here to compensate for disenchant not being suppression
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Detection",0,false);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_EmpowerHolyWeapon",false); // special A

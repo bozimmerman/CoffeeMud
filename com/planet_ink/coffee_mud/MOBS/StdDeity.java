@@ -75,6 +75,10 @@ public class StdDeity extends StdMOB implements Deity
 	protected List<WorshipService>	services			= new SVector<WorshipService>();
 	protected List<MOB>				waitingFor			= new SLinkedList<MOB>();
 
+	protected Set<Integer>			neverTriggers		= new XHashSet<Integer>(new Integer[] {
+		Integer.valueOf(CMMsg.TYP_ENTER),Integer.valueOf(CMMsg.TYP_LEAVE),Integer.valueOf(CMMsg.TYP_LOOK)
+	});
+
 	public StdDeity()
 	{
 		super();
@@ -199,7 +203,7 @@ public class StdDeity extends StdMOB implements Deity
 	public void setServiceRitual(String ritual)
 	{
 		if((ritual==null)||(ritual.length()==0))
-			ritual="SAY Bless us "+name()+"&wait 10&wait 10&SAY May "+name()+" bless you all&ALLSAY Amen.&SAY Go in peace";
+			ritual="SAY Bless us "+name()+"&wait 20&ALLSAY Amen.&SAY Go in peace";
 		serviceRitual=ritual;
 		parseTriggers(serviceTriggers,ritual);
 	}
@@ -580,8 +584,8 @@ public class StdDeity extends StdMOB implements Deity
 						CMMsg.MSG_HOLYEVENT, null, CMMsg.MSG_HOLYEVENT, null, CMMsg.NO_EFFECT, "BLESSING");
 				R.send(this, eventMsg);
 				R.show(this,mob,CMMsg.MSG_OK_VISUAL,L("You feel the presence of <S-NAME> in <T-NAME>."));
-				if((mob.charStats().getCurrentClass().baseClass().equals("Cleric"))
-				||(CMSecurity.isASysOp(mob)))
+				if((mob.charStats().getStat(CharStats.STAT_FAITH)>=100)
+				||(mob.isPlayer() && mob.isAttributeSet(Attrib.SYSOPMSGS)))
 				{
 					for(int b=0;b<numBlessings();b++)
 					{
@@ -639,8 +643,8 @@ public class StdDeity extends StdMOB implements Deity
 						CMMsg.MSG_HOLYEVENT, null, CMMsg.MSG_HOLYEVENT, null, CMMsg.NO_EFFECT, "CURSING");
 				R.send(this, eventMsg);
 				R.show(this,mob,CMMsg.MSG_OK_VISUAL,L("You feel the wrath of <S-NAME> in <T-NAME>."));
-				if(mob.charStats().getCurrentClass().baseClass().equals("Cleric")
-				||(CMSecurity.isASysOp(mob)))
+				if((mob.charStats().getStat(CharStats.STAT_FAITH)>=100)
+				||(mob.isPlayer() && mob.isAttributeSet(Attrib.SYSOPMSGS)))
 				{
 					for(int b=0;b<numCurses();b++)
 					{
@@ -727,13 +731,149 @@ public class StdDeity extends StdMOB implements Deity
 		return false;
 	}
 
-	public boolean triggerCheck(final CMMsg msg, final List<DeityTrigger> V, final Map<String, boolean[]> trigParts, final Map<String, Long> trigTimes)
+	public CMMsg generateNextTrigger(final MOB mob, final List<DeityTrigger> svcTriggsV, final Map<String, boolean[]> trigParts, final Map<String, Long> trigTimes)
+	{
+		final boolean[] checks=trigParts.get(mob.Name());
+		for(int v=0;v<svcTriggsV.size();v++)
+		{
+			if((checks!=null)&&(checks.length>=v)&&(checks[v]))
+				continue;
+			final DeityTrigger DT=svcTriggsV.get(v);
+			switch(DT.triggerCode)
+			{
+			case SAY:
+				return CMClass.getMsg(mob, DT.triggerCode.getCMMsgCode(), L("<S-NAME> say(s) '@x1'",DT.parm1));
+			case TIME:
+				return null;
+			case RANDOM:
+				return null;
+			case YOUSAY:
+				return null;
+			case ALLSAY:
+				return null;
+			case OTHERSAY:
+				return null;
+			case WAIT:
+				return null;
+			case CHECK:
+				if(checks != null)
+					checks[v]=true;
+				return null;
+			case PUTTHING:
+			{
+				final Item I=CMClass.getBasicItem("GenItem");
+				final Item cI=CMClass.getBasicItem("GenContainer");
+				I.setName(DT.parm1);
+				cI.setName(DT.parm2);
+				return CMClass.getMsg(mob, cI, I, DT.triggerCode.getCMMsgCode(), L("<S-NAME> put(s) <O-NAME> into <T-NAME>."));
+			}
+			case BURNTHING:
+			{
+				final Item I=CMClass.getBasicItem("GenItem");
+				if(DT.parm1.equals("0"))
+					I.setName(L("Something"));
+				else
+					I.setName(DT.parm1);
+				return CMClass.getMsg(mob, I, null, DT.triggerCode.getCMMsgCode(), L("<S-NAME> burn(s) <T-NAME>."));
+			}
+			case READING:
+			{
+				final Item I=CMClass.getBasicItem("GenItem");
+				if(DT.parm1.equals("0"))
+					I.setName(L("Something"));
+				else
+					I.setName(DT.parm1);
+				return CMClass.getMsg(mob, I, null, DT.triggerCode.getCMMsgCode(), L("<S-NAME> read(s) <T-NAME>."));
+			}
+			case DRINK:
+			{
+				final Item I=CMClass.getBasicItem("GenItem");
+				if(DT.parm1.equals("0"))
+					I.setName(L("Something"));
+				else
+					I.setName(DT.parm1);
+				return CMClass.getMsg(mob, I, null, DT.triggerCode.getCMMsgCode(), L("<S-NAME> drink(s) <T-NAME>."));
+			}
+			case EAT:
+			{
+				final Item I=CMClass.getBasicItem("GenItem");
+				if(DT.parm1.equals("0"))
+					I.setName(L("Something"));
+				else
+					I.setName(DT.parm1);
+				return CMClass.getMsg(mob, I, null, DT.triggerCode.getCMMsgCode(), L("<S-NAME> eat(s) <T-NAME>."));
+			}
+			case INROOM:
+				if(checks != null)
+					checks[v]=true;
+				return null;
+			case RIDING:
+				if(checks != null)
+					checks[v]=true;
+				return null;
+			case CAST:
+			{
+				final Ability A=CMClass.getAbility(DT.parm1);
+				if(A!=null)
+					return CMClass.getMsg(mob, null, A, DT.triggerCode.getCMMsgCode(), L("<S-NAME> do(es) '@x1'",A.name()));
+				return null;
+			}
+			case EMOTE:
+				return CMClass.getMsg(mob, null, null, DT.triggerCode.getCMMsgCode(), L("<S-NAME> do(es) '@x1'",DT.parm1));
+			case PUTVALUE:
+			{
+				final Item cI=CMClass.getBasicItem("GenContainer");
+				if(DT.parm2.equals("0"))
+					cI.setName(L("Something"));
+				else
+					cI.setName(DT.parm2);
+				final Item I=CMClass.getBasicItem("GenItem");
+				I.setName(L("valuables"));
+				I.setBaseValue(CMath.s_int(DT.parm1));
+				return CMClass.getMsg(mob, cI, I, DT.triggerCode.getCMMsgCode(), L("<S-NAME> put(s) <O-NAME> in <T-NAME>."));
+			}
+			case PUTMATERIAL:
+			case BURNMATERIAL:
+			{
+				final Item cI=CMClass.getBasicItem("GenContainer");
+				if(DT.parm2.equals("0"))
+					cI.setName(L("Something"));
+				else
+					cI.setName(DT.parm2);
+				final Item I=CMLib.materials().makeItemResource(CMath.s_int(DT.parm1));
+				return CMClass.getMsg(mob, cI, I, DT.triggerCode.getCMMsgCode(), L("<S-NAME> put(s) <O-NAME> in <T-NAME>."));
+			}
+			case BURNVALUE:
+			{
+				final Item I=CMClass.getBasicItem("GenItem");
+				I.setName(L("valuables"));
+				I.setBaseValue(CMath.s_int(DT.parm1));
+				return CMClass.getMsg(mob, I, null, DT.triggerCode.getCMMsgCode(), L("<S-NAME> burn(s) <T-NAME>."));
+			}
+			case SITTING:
+				if(!CMLib.flags().isSitting(mob))
+					return CMClass.getMsg(mob, CMMsg.MSG_SIT, L("<S-NAME> sit(s)."));
+				return null;
+			case STANDING:
+				if(!CMLib.flags().isStanding(mob))
+					return CMClass.getMsg(mob, CMMsg.MSG_STAND, L("<S-NAME> stand(s)."));
+				return null;
+			case SLEEPING:
+				if(!CMLib.flags().isSleeping(mob))
+					return CMClass.getMsg(mob, CMMsg.MSG_STAND, L("<S-NAME> sleep(s)."));
+				return null;
+			}
+		}
+		return null;
+	}
+
+	public boolean triggerCheck(final CMMsg msg, final List<DeityTrigger> trigsV, final Map<String, boolean[]> trigParts, final Map<String, Long> trigTimes)
 	{
 		boolean recheck=false;
-		for(int v=0;v<V.size();v++)
+		for(int v=0;v<trigsV.size();v++)
 		{
 			boolean yup=false;
-			final DeityTrigger DT=V.get(v);
+			final DeityTrigger DT=trigsV.get(v);
 			if((msg.sourceMinor()==DT.triggerCode.getCMMsgCode())
 			||(DT.triggerCode.getCMMsgCode()==-999))
 			{
@@ -842,7 +982,8 @@ public class StdDeity extends StdMOB implements Deity
 							}
 							if(proceed)
 							{
-								if(System.currentTimeMillis()>(trigTimes.get(msg.source().Name()).longValue()+(CMath.s_int(DT.parm1)*CMProps.getTickMillis())))
+								final long waitDuration=CMath.s_long(DT.parm1)*CMProps.getTickMillis();
+								if(System.currentTimeMillis()>(trigTimes.get(msg.source().Name()).longValue()+waitDuration))
 								{
 									yup=true;
 									synchronized(waitingFor)
@@ -955,9 +1096,9 @@ public class StdDeity extends StdMOB implements Deity
 					recheck=true;
 					trigTimes.remove(msg.source().Name());
 					trigTimes.put(msg.source().Name(),Long.valueOf(System.currentTimeMillis()));
-					if((checks==null)||(checks.length!=V.size()))
+					if((checks==null)||(checks.length!=trigsV.size()))
 					{
-						checks=new boolean[V.size()];
+						checks=new boolean[trigsV.size()];
 						trigParts.put(msg.source().Name(),checks);
 					}
 				}
@@ -995,7 +1136,7 @@ public class StdDeity extends StdMOB implements Deity
 						msg.source().recoverCharStats();
 					}
 					removeBlessings(msg.source());
-					if(msg.source().charStats().getCurrentClass().baseClass().equals("Cleric"))
+					if(msg.source().charStats().getStat(CharStats.STAT_FAITH)>=100)
 					{
 						removePowers(msg.source());
 						msg.source().tell(L("You feel the wrath of @x1!",name()));
@@ -1012,29 +1153,53 @@ public class StdDeity extends StdMOB implements Deity
 						doubtA.startTickDown(this, msg.source(), (int)CMProps.getTicksPerDay());
 				}
 				break;
+			case CMMsg.TYP_HOLYEVENT:
+				if(msg.targetMajor(CMMsg.MASK_ALWAYS))
+				{
+					if("SERVICE".equalsIgnoreCase(msg.othersMessage()))
+					{
+						final List<DeityTrigger> svcTriggsV=serviceTriggers;
+						if((svcTriggsV!=null)&&(svcTriggsV.size()>0))
+						{
+							final CMMsg msg2=this.generateNextTrigger(msg.source(), svcTriggsV, trigServiceParts, trigServiceTimes);
+							if(msg2 != null)
+								msg.addTrailerMsg(msg2);
+						}
+					}
+					else
+					if("SERVICE-CANCEL".equalsIgnoreCase(msg.othersMessage()))
+					{
+						final WorshipService service=findService(msg.source(),null);
+						this.cancelService(service);
+					}
+					break;
+				}
 			}
 		}
 		else
-		if(msg.source().baseCharStats().getWorshipCharID().equals(name()))
+		if((!neverTriggers.contains(Integer.valueOf(msg.sourceMinor())))
+		&&((name().equals(msg.source().baseCharStats().getWorshipCharID()))
+			||((msg.source().charStats().getStat(CharStats.STAT_FAITH)>=1000)
+				&&(Name().equals(msg.source().charStats().getWorshipCharID())))))
 		{
 			if(numBlessings()>0)
 			{
-				List<DeityTrigger> V=worshipTriggers;
-				if(msg.source().charStats().getCurrentClass().baseClass().equals("Cleric"))
-					V=clericTriggers;
-				if((V!=null)&&(V.size()>0))
+				List<DeityTrigger> triggsV=worshipTriggers;
+				if(msg.source().charStats().getStat(CharStats.STAT_FAITH)>=100)
+					triggsV=clericTriggers;
+				if((triggsV!=null)&&(triggsV.size()>0))
 				{
-					final boolean recheck=triggerCheck(msg,V,trigBlessingParts,trigBlessingTimes);
+					final boolean recheck=triggerCheck(msg,triggsV,trigBlessingParts,trigBlessingTimes);
 
 					if((recheck)&&(!norecurse)&&(!alreadyBlessed(msg.source())))
 					{
 						final boolean[] checks=trigBlessingParts.get(msg.source().Name());
-						if((checks!=null)&&(checks.length==V.size())&&(checks.length>0))
+						if((checks!=null)&&(checks.length==triggsV.size())&&(checks.length>0))
 						{
 							boolean rollingTruth=checks[0];
-							for(int v=1;v<V.size();v++)
+							for(int v=1;v<triggsV.size();v++)
 							{
-								final DeityTrigger DT=V.get(v);
+								final DeityTrigger DT=triggsV.get(v);
 								if(DT.previousConnect==RitualConnector.AND)
 									rollingTruth=rollingTruth&&checks[v];
 								else
@@ -1048,21 +1213,21 @@ public class StdDeity extends StdMOB implements Deity
 			}
 			if(numCurses()>0)
 			{
-				List<DeityTrigger> V=worshipCurseTriggers;
-				if(msg.source().charStats().getCurrentClass().baseClass().equals("Cleric"))
-					V=clericCurseTriggers;
-				if((V!=null)&&(V.size()>0))
+				List<DeityTrigger> triggsV=worshipCurseTriggers;
+				if(msg.source().charStats().getStat(CharStats.STAT_FAITH)>=100)
+					triggsV=clericCurseTriggers;
+				if((triggsV!=null)&&(triggsV.size()>0))
 				{
-					final boolean recheck=triggerCheck(msg,V,trigCurseParts,trigCurseTimes);
+					final boolean recheck=triggerCheck(msg,triggsV,trigCurseParts,trigCurseTimes);
 					if((recheck)&&(!norecurse))
 					{
 						final boolean[] checks=trigCurseParts.get(msg.source().Name());
-						if((checks!=null)&&(checks.length==V.size())&&(checks.length>0))
+						if((checks!=null)&&(checks.length==triggsV.size())&&(checks.length>0))
 						{
 							boolean rollingTruth=checks[0];
-							for(int v=1;v<V.size();v++)
+							for(int v=1;v<triggsV.size();v++)
 							{
-								final DeityTrigger DT=V.get(v);
+								final DeityTrigger DT=triggsV.get(v);
 								if(DT.previousConnect==RitualConnector.AND)
 									rollingTruth=rollingTruth&&checks[v];
 								else
@@ -1075,23 +1240,23 @@ public class StdDeity extends StdMOB implements Deity
 				}
 			}
 			if((numPowers()>0)
-			&&(msg.source().charStats().getCurrentClass().baseClass().equals("Cleric")
-				||(CMSecurity.isASysOp(msg.source()))))
+			&&((msg.source().charStats().getStat(CharStats.STAT_FAITH)>=100)
+				||(msg.source().isPlayer() && msg.source().isAttributeSet(Attrib.SYSOPMSGS))))
 			{
-				final List<DeityTrigger> V=clericPowerTriggers;
-				if((V!=null)&&(V.size()>0))
+				final List<DeityTrigger> triggsV=clericPowerTriggers;
+				if((triggsV!=null)&&(triggsV.size()>0))
 				{
-					final boolean recheck=triggerCheck(msg,V,trigPowerParts,trigPowerTimes);
+					final boolean recheck=triggerCheck(msg,triggsV,trigPowerParts,trigPowerTimes);
 
 					if((recheck)&&(!norecurse)&&(!alreadyPowered(msg.source())))
 					{
 						final boolean[] checks=trigPowerParts.get(msg.source().Name());
-						if((checks!=null)&&(checks.length==V.size())&&(checks.length>0))
+						if((checks!=null)&&(checks.length==triggsV.size())&&(checks.length>0))
 						{
 							boolean rollingTruth=checks[0];
-							for(int v=1;v<V.size();v++)
+							for(int v=1;v<triggsV.size();v++)
 							{
-								final DeityTrigger DT=V.get(v);
+								final DeityTrigger DT=triggsV.get(v);
 								if(DT.previousConnect==RitualConnector.AND)
 									rollingTruth=rollingTruth&&checks[v];
 								else
@@ -1104,24 +1269,25 @@ public class StdDeity extends StdMOB implements Deity
 				}
 			}
 
-			if((msg.source().charStats().getCurrentClass().baseClass().equals("Cleric")
-				||(CMSecurity.isASysOp(msg.source())))
-			&&(Name().equalsIgnoreCase(CMLib.law().getClericInfused(msg.source().location()))))
+			if(((msg.source().charStats().getStat(CharStats.STAT_FAITH)>=100)
+				||(msg.source().isPlayer() && msg.source().isAttributeSet(Attrib.SYSOPMSGS)))
+			&&((Name().equalsIgnoreCase(CMLib.law().getClericInfused(msg.source().location())))
+				||((msg.source().charStats().getStat(CharStats.STAT_FAITH)>=1000)
+					&&(Name().equals(msg.source().charStats().getWorshipCharID())))))
 			{
-				final List<DeityTrigger> V=serviceTriggers;
-				if((V!=null)&&(V.size()>0))
+				final List<DeityTrigger> trigsV=serviceTriggers;
+				if((trigsV!=null)&&(trigsV.size()>0))
 				{
-					final boolean recheck=triggerCheck(msg,V,trigServiceParts,trigServiceTimes);
-
+					final boolean recheck=triggerCheck(msg,trigsV,trigServiceParts,trigServiceTimes);
 					if((recheck)&&(!norecurse)&&(!alreadyServiced(msg.source(),msg.source().location())))
 					{
 						final boolean[] checks=trigServiceParts.get(msg.source().Name());
-						if((checks!=null)&&(checks.length==V.size())&&(checks.length>0))
+						if((checks!=null)&&(checks.length==trigsV.size())&&(checks.length>0))
 						{
 							boolean rollingTruth=checks[0];
-							for(int v=1;v<V.size();v++)
+							for(int v=1;v<trigsV.size();v++)
 							{
-								final DeityTrigger DT=V.get(v);
+								final DeityTrigger DT=trigsV.get(v);
 								if(rollingTruth)
 									startServiceIfNecessary(msg.source(),msg.source().location());
 								if(DT.previousConnect==RitualConnector.AND)
@@ -1173,14 +1339,16 @@ public class StdDeity extends StdMOB implements Deity
 				for(int m=0;m<R.numInhabitants();m++)
 				{
 					M=R.fetchInhabitant(m);
-					if(M==null)
+					if((M==null)||(M==mob))
 						continue;
 					if(M.charStats().getWorshipCharID().equals(Name()))
 					{
 						if(!M.isMonster())
 							M.tell(L("Services for @x1 are now starting at @x2.",Name(),room.displayText(null)));
 						else
-						if(!CMLib.flags().isATrackingMonster(M))
+						if((!CMLib.flags().isATrackingMonster(M))
+						&&(!M.isInCombat())
+						&&(CMLib.flags().isAliveAwakeMobileUnbound(M, true)))
 						{
 							final Ability TRACKA=CMClass.getAbility("Skill_Track");
 							if(TRACKA!=null)
@@ -1237,13 +1405,9 @@ public class StdDeity extends StdMOB implements Deity
 		return false;
 	}
 
-	public boolean finishService(final MOB mob, final Room room)
+	public WorshipService findService(final MOB mob, final Room room)
 	{
-		if((mob==null)||(room==null))
-			return false;
-		MOB M=null;
-		int totalLevels=0;
-		WorshipService service = null;
+		WorshipService service=null;
 		synchronized(services)
 		{
 			for(final WorshipService s : services)
@@ -1253,13 +1417,34 @@ public class StdDeity extends StdMOB implements Deity
 			}
 			if(service == null)
 			{
-				for(final WorshipService s : services)
+				if(room != null)
 				{
-					if(s.room==room)
-						service = s;
+					for(final WorshipService s : services)
+					{
+						if(s.room==room)
+							service = s;
+					}
+				}
+				else
+				{
+					for(final WorshipService s : services)
+					{
+						if(s.cleric==mob)
+							service = s;
+					}
 				}
 			}
 		}
+		return service;
+	}
+
+	public boolean finishService(final MOB mob, final Room room)
+	{
+		if((mob==null)||(room==null))
+			return false;
+		MOB M=null;
+		int totalLevels=0;
+		final WorshipService service = findService(mob,room);
 		if(service == null)
 			return false;
 		final CMMsg eventMsg=CMClass.getMsg(this, null, null,
@@ -1272,7 +1457,7 @@ public class StdDeity extends StdMOB implements Deity
 			if(M==null)
 				continue;
 			eventMsg.setTarget(M);
-			if(M.charStats().getWorshipCharID().equals(Name()))
+			if(M.charStats().getWorshipCharID().equals(mob.baseCharStats().getWorshipCharID()))
 			{
 				if((!M.isMonster())&&(M!=mob))
 					CMLib.leveler().postExperience(M,null,null,50,false);
@@ -1283,7 +1468,7 @@ public class StdDeity extends StdMOB implements Deity
 				if(A!=null)
 					A.makeLongLasting();
 			}
-			room.executeMsg(this, eventMsg);
+			room.send(this, eventMsg);
 		}
 		undoService(service.parishaners);
 		final int exp=(int)Math.round(CMath.div(totalLevels,mob.phyStats().level())*10.0);
@@ -1352,7 +1537,7 @@ public class StdDeity extends StdMOB implements Deity
 					final Room R=M.location();
 					if(R==null)
 						continue;
-					if(M.charStats().getCurrentClass().baseClass().equalsIgnoreCase("Cleric"))
+					if(M.charStats().getStat(CharStats.STAT_FAITH)>=100)
 					{
 						if(!CMLib.masking().maskCheck(getClericRequirements(),M,true))
 						{

@@ -293,7 +293,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			}
 			for(final int c : CharStats.CODES.SAVING_THROWS())
 				tempV.add("save"+CMStrings.limit(CharStats.CODES.NAME(c).toLowerCase(),3));
-			for(int c = CharStats.STAT_FAITH; c<CharStats.CODES.TOTAL();c++)
+			for(int c = CharStats.STAT_SAVE_DOUBT; c<CharStats.CODES.TOTAL();c++)
 				tempV.add(CharStats.CODES.NAME(c).toLowerCase());
 			allParms = tempV.toArray(new String[tempV.size()]);
 		}
@@ -363,7 +363,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		final int[] CMMSGMAP=CharStats.CODES.CMMSGMAP();
 		for(final int c : CharStats.CODES.SAVING_THROWS())
 			addIfPlussed(ps,parameters[0],"save"+CMStrings.limit(CharStats.CODES.NAME(c).toLowerCase(),3),c,charStatsV,errors);
-		for(int c = CharStats.STAT_FAITH; c<CharStats.CODES.TOTAL();c++)
+		for(int c = CharStats.STAT_SAVE_DOUBT; c<CharStats.CODES.TOTAL();c++)
 			addIfPlussed(ps,parameters[0],CharStats.CODES.NAME(c).toLowerCase(),c,charStatsV,errors);
 
 		final ArrayList<Object> charStateV=new ArrayList<Object>();
