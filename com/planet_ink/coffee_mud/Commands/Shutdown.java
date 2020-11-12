@@ -87,6 +87,7 @@ public class Shutdown extends StdCommand implements Tickable
 		String externalCommand=null;
 		boolean keepItDown=true;
 		boolean startCountDown=false;
+		MOB newShutdownMob=this.shuttingDownMob;
 		for(int i=commands.size()-1;i>=1;i--)
 		{
 			final String s=commands.get(i);
@@ -140,7 +141,7 @@ public class Shutdown extends StdCommand implements Tickable
 					return false;
 				shuttingDownCompletes=System.currentTimeMillis()+(wait * timeMultiplier)-1;
 				shuttingDownNextAnnounce=System.currentTimeMillis() + ((wait * timeMultiplier)/2)-100;
-				shuttingDownMob=mob;
+				newShutdownMob=mob;
 				startCountDown=true;
 			}
 			else
@@ -158,19 +159,19 @@ public class Shutdown extends StdCommand implements Tickable
 					return false;
 				shuttingDownCompletes=C.getTimeInMillis();
 				shuttingDownNextAnnounce=System.currentTimeMillis() + ((C.getTimeInMillis()-System.currentTimeMillis())/2)-100;
-				shuttingDownMob=mob;
+				newShutdownMob=mob;
 				startCountDown=true;
 			}
 		}
 		if((!keepItDown)&&(commands.size()>1))
 			externalCommand=CMParms.combine(commands,1);
 
-		if(this.shuttingDownMob != null)
+		if(shuttingDownMob != null)
 		{
-			mob.tell(L("@x1 has already scheduled a shutdown, or one is imminent.  Use SHUTDOWN CANCEL first."));
+			mob.tell(L("@x1 has already scheduled a shutdown, or one is imminent.  Use SHUTDOWN CANCEL first.",shuttingDownMob.name()));
 			return false;
 		}
-		
+		shuttingDownMob=newShutdownMob;
 		if(!startCountDown)
 		{
 			if((!noPrompt)
