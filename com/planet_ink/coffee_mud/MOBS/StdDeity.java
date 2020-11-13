@@ -1360,17 +1360,16 @@ public class StdDeity extends StdMOB implements Deity
 		}
 		Room R=null;
 		MOB M=null;
-		final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
-		final List<Room> V=CMLib.tracking().getRadiantRooms(room,flags,5+(mob.phyStats().level()/5));
-		for(int v=0;v<V.size();v++)
+		final int maxMobs = 10+mob.phyStats().level()/2;
+		for(final Enumeration<Room> r=CMLib.tracking().getRadiantRoomsEnum(room, null, null, 5+(mob.phyStats().level()/5), null);r.hasMoreElements();)
 		{
-			R=V.get(v);
+			R=r.nextElement();
 			if(!Name().equalsIgnoreCase(CMLib.law().getClericInfused(R)))
 			{
 				for(int m=0;m<R.numInhabitants();m++)
 				{
 					M=R.fetchInhabitant(m);
-					if((M==null)||(M==mob))
+					if((M==null)||(M==mob)||(CMLib.flags().isAnimalIntelligence(M)))
 						continue;
 					if(M.charStats().getWorshipCharID().equals(Name()))
 					{
@@ -1386,10 +1385,14 @@ public class StdDeity extends StdMOB implements Deity
 							{
 								TRACKA.invoke(M,CMParms.parse("\""+CMLib.map().getExtendedRoomID(room)+"\""),room,true,0);
 								parishaners.add(M);
+								if(parishaners.size()>maxMobs)
+									break;
 							}
 						}
 					}
 				}
+				if(parishaners.size()>maxMobs)
+					break;
 			}
 		}
 	}
