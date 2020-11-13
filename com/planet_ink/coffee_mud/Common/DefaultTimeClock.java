@@ -534,27 +534,27 @@ public class DefaultTimeClock implements TimeClock
 		}
 		final StringBuffer buf=new StringBuffer("");
 		if(years>0)
-			buf.append(years+" years");
+			buf.append(years+L((years==1)?" year":" years"));
 		if(months>0)
 		{
 			if(buf.length()>0)
 				buf.append(", ");
-			buf.append(months+" months");
+			buf.append(months+L((months==1)?" month":" months"));
 		}
 		if(days>0)
 		{
 			if(buf.length()>0)
 				buf.append(", ");
-			buf.append(days+" days");
+			buf.append(days+L((days==1)?" day":" days"));
 		}
 		if(hours>0)
 		{
 			if(buf.length()>0)
 				buf.append(", ");
-			buf.append(hours+" hours");
+			buf.append(hours+L((hours==1)?" hour":" hours"));
 		}
 		if(buf.length()==0)
-			return "under an hour";
+			return L("under an hour");
 		return buf.toString();
 	}
 
