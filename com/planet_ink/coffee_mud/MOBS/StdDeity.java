@@ -1360,7 +1360,7 @@ public class StdDeity extends StdMOB implements Deity
 		}
 		Room R=null;
 		MOB M=null;
-		final int maxMobs = 10+mob.phyStats().level()/2;
+		final int maxMobs = 5+(mob.phyStats().level()/2);
 		for(final Enumeration<Room> r=CMLib.tracking().getRadiantRoomsEnum(room, null, null, 5+(mob.phyStats().level()/5), null);r.hasMoreElements();)
 		{
 			R=r.nextElement();
