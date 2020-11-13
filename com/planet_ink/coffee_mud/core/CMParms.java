@@ -1526,10 +1526,30 @@ public class CMParms
 						&&((str.charAt(chkX)=='=')||(str.charAt(chkX)=='+')||(str.charAt(chkX)=='-')))
 						{
 							chkX++;
+							if((chkX<str.length()-1)&&(str.charAt(chkX)=='\"'))
+							{
+								int x1=chkX+1;
+								while((x1<str.length())&&(str.charAt(x1)!='\"'))
+								{
+									if(str.charAt(x1)=='\\')
+										x1++;
+									x1++;
+								}
+								if((x1<str.length())&&(str.charAt(x1)=='\"'))
+								{
+									lastParm=element;
+									final String val=CMStrings.replaceAll(cleanArgVal(str.substring(chkX+1,x1).trim(),lastEQChar,errors), "\\", "");
+									h.put(lastParm,val);
+									lastParm=null;
+									x=x1;
+									break;
+								}
+							}
 							if((lastParm!=null)&&(lastEQ>0))
 							{
 								final String val=cleanArgVal(str.substring(lastEQ,x).trim(),lastEQChar,errors);
 								h.put(lastParm,val);
+								break;
 							}
 							lastParm=element;
 							x=chkX;
