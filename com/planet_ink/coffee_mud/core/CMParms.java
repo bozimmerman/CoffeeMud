@@ -1484,93 +1484,103 @@ public class CMParms
 	public final static Map<String,String> parseLooseParms(final String str, final String[] parmList, final List<String> errors)
 	{
 		final Hashtable<String,String> h=new Hashtable<String,String>();
-		int lastEQ=-1;
-		String lastParm=null;
-		char lastEQChar='=';
+		if((str==null)||(str.length()==0))
+			return h;
 		Character C;
-		Character lastC=Character.valueOf(' ');
-		final Map<Character,String[]> chkMap=new HashMap<Character,String[]>();
+		final Map<Character,List<String>> chkMap=new HashMap<Character,List<String>>();
+		final Map<String,String> uMap=new TreeMap<String,String>();
 		for (final String element : parmList)
 		{
 			C=Character.valueOf(Character.toUpperCase(element.charAt(0)));
+			final List<String> elems;
 			if(!chkMap.containsKey(C))
-				chkMap.put(C, new String[] {element});
-			else
 			{
-				final String[] newList = Arrays.copyOf(chkMap.get(C), chkMap.get(C).length+1);
-				newList[newList.length-1]=element;
-				chkMap.put(C, newList);
+				elems=new LinkedList<String>();
+				chkMap.put(C, elems);
 			}
+			else
+				elems=chkMap.get(C);
+			elems.add(element.toUpperCase());
+			uMap.put(element.toUpperCase(), element);
 		}
-		for(int x=0;x<str.length();x++)
+		String lastParm=null;
+		int lastEQ=-1;
+		char lastEQChar='=';
+		for(int x=1;x<str.length();x++)
 		{
-			C=Character.valueOf(Character.toUpperCase(str.charAt(x)));
-			if(Character.isLetter(C.charValue())
-			&&(!Character.isLetterOrDigit(lastC.charValue()))
-			&&(chkMap.containsKey(C))
-			&&(!badLastCs.contains(C)))
+			if("+-=".indexOf(str.charAt(x))>=0)
 			{
-				final int remain=str.length()-x;
+				int startParm=x-1;
+				while((startParm>0)&&Character.isWhitespace(str.charAt(startParm)))
+					startParm--;
+				while((startParm>0)&&Character.isLetterOrDigit(str.charAt(startParm)))
+					startParm--;
+				
+				String possParm=str.substring(startParm,x).toUpperCase().trim();
+				C=Character.valueOf(possParm.charAt(0));
+				if((!Character.isLetter(C.charValue()))
+				||(!chkMap.containsKey(C))
+				||(badLastCs.contains(C)))
+					continue;
+				
 				boolean found=false;
 				for (final String element : chkMap.get(C))
 				{
-					if((remain >= element.length())
-					&&(str.substring(x,x+element.length()).equalsIgnoreCase(element)))
+					if(possParm.equals(element))
 					{
+						possParm=element;
 						found=true;
-						int chkX=x+element.length();
-						while((chkX<str.length())
-						&&(Character.isWhitespace(str.charAt(chkX))||Character.isLetter(str.charAt(chkX))))
-							chkX++;
-						if((chkX<str.length())
-						&&((str.charAt(chkX)=='=')||(str.charAt(chkX)=='+')||(str.charAt(chkX)=='-')))
+						break;
+					}
+				}
+				if(!found)
+				{
+					for (final String element : chkMap.get(C))
+					{
+						if(element.startsWith(possParm))
 						{
-							chkX++;
-							if((chkX<str.length()-1)&&(str.charAt(chkX)=='\"'))
-							{
-								int x1=chkX+1;
-								while((x1<str.length())&&(str.charAt(x1)!='\"'))
-								{
-									if(str.charAt(x1)=='\\')
-										x1++;
-									x1++;
-								}
-								if((x1<str.length())&&(str.charAt(x1)=='\"'))
-								{
-									lastParm=element;
-									final String val=CMStrings.replaceAll(cleanArgVal(str.substring(chkX+1,x1).trim(),lastEQChar,errors), "\\", "");
-									h.put(lastParm,val);
-									lastParm=null;
-									x=x1;
-									break;
-								}
-							}
-							if((lastParm!=null)&&(lastEQ>0))
-							{
-								final String val=cleanArgVal(str.substring(lastEQ,x).trim(),lastEQChar,errors);
-								h.put(lastParm,val);
-								break;
-							}
-							lastParm=element;
-							x=chkX;
-							lastEQChar=str.charAt(chkX-1);
-							if(lastEQChar=='=')
-								lastEQ=chkX;
-							else
-								lastEQ=chkX-1;
+							possParm=element;
+							found=true;
 							break;
 						}
 					}
 				}
-				if((!found)&&(errors != null))
+				if(!found)
+				{
+					for (final String element : chkMap.get(C))
+					{
+						if(possParm.startsWith(element))
+						{
+							possParm=element;
+							found=true;
+							break;
+						}
+					}
+				}
+				if(found)
+				{
+					if((lastParm!=null)&&(lastEQ>0))
+					{
+						final String midBit=str.substring(lastEQ+1,startParm).trim();
+						final String val=cleanArgVal(midBit,lastEQChar,errors);
+						h.put(uMap.get(lastParm),val);
+					}
+					lastParm=possParm;
+					lastEQChar=str.charAt(x);
+					if(lastEQChar=='=')
+						lastEQ=x;
+					else
+						lastEQ=x-1;
+				}
+				else
+				if(errors != null)
 					errors.add("Illegal parameter starts at: "+str.substring(x));
 			}
-			lastC=C;
 		}
 		if((lastParm!=null)&&(lastEQ>0))
 		{
-			final String val=cleanArgVal(str.substring(lastEQ).trim(),lastEQChar,errors);
-			h.put(lastParm,val);
+			final String val=cleanArgVal(str.substring(lastEQ+1).trim(),lastEQChar,errors);
+			h.put(uMap.get(lastParm),val);
 		}
 		return h;
 	}
