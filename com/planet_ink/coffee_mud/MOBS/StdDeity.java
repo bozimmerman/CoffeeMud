@@ -742,10 +742,14 @@ public class StdDeity extends StdMOB implements Deity
 			switch(DT.triggerCode)
 			{
 			case SAY:
-				return CMClass.getMsg(mob, DT.triggerCode.getCMMsgCode(), L("<S-NAME> say(s) '@x1'",DT.parm1));
+				return CMClass.getMsg(mob, DT.triggerCode.getCMMsgCode(), L("^T<S-NAME> say(s) '@x1'.^N",DT.parm1));
 			case TIME:
+				if(checks != null)
+					checks[v]=true;
 				return null;
 			case RANDOM:
+				if(checks != null)
+					checks[v]=true;
 				return null;
 			case YOUSAY:
 				return null;
@@ -944,6 +948,7 @@ public class StdDeity extends StdMOB implements Deity
 								final MOB M=R.fetchInhabitant(m);
 								if(M!=null)
 								{
+									yup=true;
 									norecurse=true;
 									CMLib.commands().postSay(M,null,CMStrings.capitalizeAndLower(DT.parm1));
 									norecurse=false;
@@ -970,6 +975,7 @@ public class StdDeity extends StdMOB implements Deity
 								final MOB M=R.fetchInhabitant(m);
 								if((M!=null)&&(M!=msg.source()))
 								{
+									yup=true;
 									norecurse=true;
 									CMLib.commands().postSay(M,null,CMStrings.capitalizeAndLower(DT.parm1));
 									norecurse=false;
@@ -1470,6 +1476,10 @@ public class StdDeity extends StdMOB implements Deity
 		final WorshipService service = findService(mob,room);
 		if(service == null)
 			return false;
+		if(service.parishaners.size()==0)
+		{
+			return this.cancelService(service);
+		}
 		final CMMsg eventMsg=CMClass.getMsg(this, null, null,
 				CMMsg.MSG_HOLYEVENT, null, CMMsg.MSG_HOLYEVENT, null, CMMsg.NO_EFFECT, "SERVICE");
 		eventMsg.setValue(service.parishaners.size());

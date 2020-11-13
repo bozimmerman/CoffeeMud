@@ -305,7 +305,7 @@ public class Thief_FalseService extends ThiefSkill
 					if(svA!=null)
 					{
 						svA.room=mob.location();
-						svA.setTimeOfNextCast(mob);
+						setTimeOfNextCast(mob);
 					}
 					mob.recoverCharStats();
 				}
