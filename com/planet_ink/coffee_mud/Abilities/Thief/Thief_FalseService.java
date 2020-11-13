@@ -102,10 +102,11 @@ public class Thief_FalseService extends ThiefSkill
 		if((msg.sourceMinor()==CMMsg.TYP_HOLYEVENT)
 		&&(msg.source() instanceof Deity)
 		&&(msg.othersMessage()!=null)
-		&&(msg.othersMessage().equalsIgnoreCase("SERVICE"))
-		&&(msg.target()==affected))
+		&&(msg.target()==affected)
+		&&(msg.othersMessage().equalsIgnoreCase("SERVICE")||msg.othersMessage().equalsIgnoreCase("SERVICE-CANCEL")))
 		{
-			if(msg.value()>0)
+			if((msg.value()>0)
+			&&(msg.othersMessage().equalsIgnoreCase("SERVICE")))
 			{
 				final MOB mob=(MOB)affected;
 				CMLib.leveler().postExperience(mob,null,null,250+((50 + (10+super.getXLEVELLevel(mob)))*msg.value()),false);

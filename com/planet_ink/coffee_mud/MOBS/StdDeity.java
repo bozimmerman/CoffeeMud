@@ -754,7 +754,26 @@ public class StdDeity extends StdMOB implements Deity
 			case OTHERSAY:
 				return null;
 			case WAIT:
+			{
+				if((checks!=null)
+				&&(checks[v-1])
+				&&(trigTimes.get(mob.Name())!=null))
+				{
+					boolean proceed=true;
+					for(int t=v+1;t<checks.length;t++)
+					{
+						if(checks[t])
+							proceed=false;
+					}
+					if(proceed)
+					{
+						final long waitDuration=CMath.s_long(DT.parm1)*CMProps.getTickMillis();
+						if(System.currentTimeMillis()>(trigTimes.get(mob.Name()).longValue()+waitDuration))
+							return CMClass.getMsg(mob, CMMsg.MSG_OK_ACTION, null); // force the wait to be evaluated
+					}
+				}
 				return null;
+			}
 			case CHECK:
 				if(checks != null)
 					checks[v]=true;
@@ -1179,6 +1198,7 @@ public class StdDeity extends StdMOB implements Deity
 		}
 		else
 		if((!neverTriggers.contains(Integer.valueOf(msg.sourceMinor())))
+		&&(msg.source()==myHost) // since deities might see a message through many many eyes
 		&&((name().equals(msg.source().baseCharStats().getWorshipCharID()))
 			||((msg.source().charStats().getStat(CharStats.STAT_FAITH)>=1000)
 				&&(Name().equals(msg.source().charStats().getWorshipCharID())))))
@@ -1500,9 +1520,19 @@ public class StdDeity extends StdMOB implements Deity
 					A.unInvoke();
 			}
 		}
-		room.showHappens(CMMsg.MASK_ALWAYS, L("The service conducted by @x1 has been cancelled.",mob.Name()));
+		final CMMsg msg=CMClass.getMsg(this,mob,null,
+				CMMsg.MSG_HOLYEVENT, L("The service conducted by @x1 has been cancelled.",mob.Name()),
+				CMMsg.MSG_HOLYEVENT,null,
+				CMMsg.MSG_HOLYEVENT,"SERVICE-CANCEL");
+		final CMMsg msg2=CMClass.getMsg(this,null,null,
+				CMMsg.NO_EFFECT, null,CMMsg.NO_EFFECT,null,CMMsg.MSG_OK_ACTION,L("The service conducted by @x1 has been cancelled.",mob.Name()));
+		if(room.okMessage(this, msg)&&room.okMessage(this, msg2))
+		{
+			room.send(this, msg);
+			room.send(this, msg2);
+		}
 		if(mob.location()!=room)
-			mob.tell(L("Your service has been cancelled."));
+			mob.executeMsg(this, msg);
 		undoService(service.parishaners);
 		synchronized(services)
 		{
