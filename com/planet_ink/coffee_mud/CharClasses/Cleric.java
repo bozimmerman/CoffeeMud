@@ -370,7 +370,7 @@ public class Cleric extends StdCharClass
 	{
 		super.affectCharStats(affected, affectableStats);
 		if(affected.charStats().getCurrentClass()==this) // once per class/subclass please.
-			affectableStats.setStat(CharStats.STAT_FAITH, affectableStats.getStat(CharStats.STAT_FAITH)+100);
+			affectableStats.setStat(CharStats.STAT_FAITH, affectableStats.getStat(CharStats.STAT_FAITH)+150);
 	}
 
 	@Override
