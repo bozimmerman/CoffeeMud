@@ -93,26 +93,6 @@ public class Thief_FalseService extends ThiefSkill
 		return USAGE_MOVEMENT|USAGE_MANA;
 	}
 
-	protected long timeToNextCast = 0;
-
-	@Override
-	protected int getTicksBetweenCasts()
-	{
-		return (int)(CMProps.getTicksPerMudHour() * 5);
-	}
-
-	@Override
-	protected long getTimeOfNextCast()
-	{
-		return timeToNextCast;
-	}
-
-	@Override
-	protected void setTimeOfNextCast(final long absoluteTime)
-	{
-		timeToNextCast=absoluteTime;
-	}
-
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -156,7 +136,10 @@ public class Thief_FalseService extends ThiefSkill
 							||(M.charStats().getWorshipCharID().equals(trueDeity)))
 							{
 								if(F!=null)
-									CMLib.factions().postFactionChange(M,this, F.factionID(), 25);
+								{
+									if(CMLib.factions().postFactionChange(M,this, F.factionID(), 25))
+										M.tell(L("You receive @x1 faction with @x2.",""+25,F.name()));
+								}
 							}
 						}
 						if(totalGold > 0)
@@ -172,6 +155,8 @@ public class Thief_FalseService extends ThiefSkill
 		}
 	}
 
+	protected long timeToNextCast = 0;
+
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
@@ -183,6 +168,24 @@ public class Thief_FalseService extends ThiefSkill
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
+	}
+
+	@Override
+	protected int getTicksBetweenCasts()
+	{
+		return (int)(CMProps.getTicksPerMudHour() * 5);
+	}
+
+	@Override
+	protected long getTimeOfNextCast()
+	{
+		return timeToNextCast;
+	}
+
+	@Override
+	protected void setTimeOfNextCast(final long absoluteTime)
+	{
+		timeToNextCast=absoluteTime;
 	}
 
 	protected Room room = null;

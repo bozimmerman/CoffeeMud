@@ -203,7 +203,7 @@ public class StdDeity extends StdMOB implements Deity
 	public void setServiceRitual(String ritual)
 	{
 		if((ritual==null)||(ritual.length()==0))
-			ritual="SAY Bless us "+name()+"&wait 20&ALLSAY Amen.&SAY Go in peace";
+			ritual="SAY Bless us "+name()+"&wait 10&wait 10&ALLSAY Amen.&SAY Go in peace";
 		serviceRitual=ritual;
 		parseTriggers(serviceTriggers,ritual);
 	}
@@ -997,7 +997,7 @@ public class StdDeity extends StdMOB implements Deity
 									{
 										waitingFor.add(msg.source());
 									}
-									return false;
+									return recheck;
 								}
 							}
 						}
@@ -1154,7 +1154,8 @@ public class StdDeity extends StdMOB implements Deity
 				}
 				break;
 			case CMMsg.TYP_HOLYEVENT:
-				if(msg.targetMajor(CMMsg.MASK_ALWAYS))
+				if((msg.targetMajor(CMMsg.MASK_ALWAYS))
+				&&(msg.source()==myHost))
 				{
 					if("SERVICE".equalsIgnoreCase(msg.othersMessage()))
 					{
@@ -1279,7 +1280,9 @@ public class StdDeity extends StdMOB implements Deity
 				if((trigsV!=null)&&(trigsV.size()>0))
 				{
 					final boolean recheck=triggerCheck(msg,trigsV,trigServiceParts,trigServiceTimes);
-					if((recheck)&&(!norecurse)&&(!alreadyServiced(msg.source(),msg.source().location())))
+					if((recheck)
+					&&(!norecurse)
+					&&(!alreadyServiced(msg.source(),msg.source().location())))
 					{
 						final boolean[] checks=trigServiceParts.get(msg.source().Name());
 						if((checks!=null)&&(checks.length==trigsV.size())&&(checks.length>0))
