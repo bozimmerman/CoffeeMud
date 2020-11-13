@@ -621,7 +621,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				&&(min==0))
 				{
 					final int newMin=rooms.size();
-					for(r=min;r<rooms.size();r++)
+					for(r=min;r<newMin;r++)
 					{
 						R1=rooms.get(r);
 						for(d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
