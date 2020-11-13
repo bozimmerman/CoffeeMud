@@ -1598,7 +1598,8 @@ public class StdAbility implements Ability
 			&&(getTimeOfNextCast()>0)
 			&&(System.currentTimeMillis()<getTimeOfNextCast())
 			&&(room!=null)
-			&&(room.getArea()!=null))
+			&&(room.getArea()!=null)
+			&&(!CMSecurity.isAllowed(mob, room, CMSecurity.SecFlag.ALLSKILLS)))
 			{
 				final TimeClock C=room.getArea().getTimeObj();
 				if(C!=null)
