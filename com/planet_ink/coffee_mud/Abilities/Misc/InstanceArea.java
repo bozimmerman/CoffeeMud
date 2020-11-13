@@ -1856,8 +1856,12 @@ public class InstanceArea extends StdAbility
 								A.startTickDown(src, M, this.tickDown<=0?999:this.tickDown);
 							}
 							else
-							if(!A.targetAreas.contains((((Room)msg.target()).getArea())))
-								A.targetAreas.add(((Room)msg.target()).getArea());
+							{
+								if(A.targetAreas==null)
+									A.targetAreas=new HashSet<Area>();
+								if(!A.targetAreas.contains((((Room)msg.target()).getArea())))
+									A.targetAreas.add(((Room)msg.target()).getArea());
+							}
 						}
 					}
 					InstanceArea able = (InstanceArea)instA.fetchEffect(ID());
