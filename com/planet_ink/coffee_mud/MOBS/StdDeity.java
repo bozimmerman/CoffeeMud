@@ -586,7 +586,7 @@ public class StdDeity extends StdMOB implements Deity
 						CMMsg.MSG_HOLYEVENT, null, CMMsg.MSG_HOLYEVENT, null, CMMsg.NO_EFFECT, "BLESSING");
 				R.send(this, eventMsg);
 				R.show(this,mob,CMMsg.MSG_OK_VISUAL,L("You feel the presence of <S-NAME> in <T-NAME>."));
-				if((mob.charStats().getStat(CharStats.STAT_FAITH)>=150)
+				if((mob.charStats().getStat(CharStats.STAT_FAITH)>=100)
 				||(mob.isPlayer() && mob.isAttributeSet(Attrib.SYSOPMSGS)))
 				{
 					for(int b=0;b<numBlessings();b++)
@@ -645,7 +645,7 @@ public class StdDeity extends StdMOB implements Deity
 						CMMsg.MSG_HOLYEVENT, null, CMMsg.MSG_HOLYEVENT, null, CMMsg.NO_EFFECT, "CURSING");
 				R.send(this, eventMsg);
 				R.show(this,mob,CMMsg.MSG_OK_VISUAL,L("You feel the wrath of <S-NAME> in <T-NAME>."));
-				if((mob.charStats().getStat(CharStats.STAT_FAITH)>=150)
+				if((mob.charStats().getStat(CharStats.STAT_FAITH)>=100)
 				||(mob.isPlayer() && mob.isAttributeSet(Attrib.SYSOPMSGS)))
 				{
 					for(int b=0;b<numCurses();b++)
@@ -1163,7 +1163,7 @@ public class StdDeity extends StdMOB implements Deity
 						msg.source().recoverCharStats();
 					}
 					removeBlessings(msg.source());
-					if(msg.source().charStats().getStat(CharStats.STAT_FAITH)>=150)
+					if(msg.source().charStats().getStat(CharStats.STAT_FAITH)>=100)
 					{
 						removePowers(msg.source());
 						msg.source().tell(L("You feel the wrath of @x1!",name()));
@@ -1214,7 +1214,7 @@ public class StdDeity extends StdMOB implements Deity
 			if(numBlessings()>0)
 			{
 				List<DeityTrigger> triggsV=worshipTriggers;
-				if(msg.source().charStats().getStat(CharStats.STAT_FAITH)>=150)
+				if(msg.source().charStats().getStat(CharStats.STAT_FAITH)>=100)
 					triggsV=clericTriggers;
 				if((triggsV!=null)&&(triggsV.size()>0))
 				{
@@ -1243,7 +1243,7 @@ public class StdDeity extends StdMOB implements Deity
 			if(numCurses()>0)
 			{
 				List<DeityTrigger> triggsV=worshipCurseTriggers;
-				if(msg.source().charStats().getStat(CharStats.STAT_FAITH)>=150)
+				if(msg.source().charStats().getStat(CharStats.STAT_FAITH)>=100)
 					triggsV=clericCurseTriggers;
 				if((triggsV!=null)&&(triggsV.size()>0))
 				{
@@ -1269,7 +1269,7 @@ public class StdDeity extends StdMOB implements Deity
 				}
 			}
 			if((numPowers()>0)
-			&&((msg.source().charStats().getStat(CharStats.STAT_FAITH)>=150)
+			&&((msg.source().charStats().getStat(CharStats.STAT_FAITH)>=100)
 				||(msg.source().isPlayer() && msg.source().isAttributeSet(Attrib.SYSOPMSGS))))
 			{
 				final List<DeityTrigger> triggsV=clericPowerTriggers;
@@ -1298,7 +1298,7 @@ public class StdDeity extends StdMOB implements Deity
 				}
 			}
 
-			if(((msg.source().charStats().getStat(CharStats.STAT_FAITH)>=150)
+			if(((msg.source().charStats().getStat(CharStats.STAT_FAITH)>=100)
 				||(msg.source().isPlayer() && msg.source().isAttributeSet(Attrib.SYSOPMSGS)))
 			&&((Name().equalsIgnoreCase(CMLib.law().getClericInfused(msg.source().location())))
 				||((msg.source().charStats().getStat(CharStats.STAT_FAITH)>=1000)
@@ -1582,7 +1582,7 @@ public class StdDeity extends StdMOB implements Deity
 					final Room R=M.location();
 					if(R==null)
 						continue;
-					if(M.charStats().getStat(CharStats.STAT_FAITH)>=150)
+					if(M.charStats().getStat(CharStats.STAT_FAITH)>=100)
 					{
 						if(!CMLib.masking().maskCheck(getClericRequirements(),M,true))
 						{
