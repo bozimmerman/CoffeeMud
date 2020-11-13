@@ -157,12 +157,14 @@ public class Thief_FalseService extends ThiefSkill
 	}
 
 	protected long timeToNextCast = 0;
+	protected volatile boolean activated = false;
 
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.STAT_FAITH, affectableStats.getStat(CharStats.STAT_FAITH)+1000);
+		if(activated)
+			affectableStats.setStat(CharStats.STAT_FAITH, affectableStats.getStat(CharStats.STAT_FAITH)+1000);
 	}
 
 	@Override
@@ -228,9 +230,19 @@ public class Thief_FalseService extends ThiefSkill
 			}
 			else
 			{
-				final CMMsg msg2=CMClass.getMsg(mob,mob.charStats().getMyDeity(),this,CMMsg.MSG_HOLYEVENT,null,CMMsg.MSG_HOLYEVENT,null,CMMsg.NO_EFFECT,"SERVICE");
-				if(R.okMessage(mob,msg2))
-					R.send(mob,msg2);
+				try
+				{
+					activated=true;
+					mob.recoverCharStats();
+					final CMMsg msg2=CMClass.getMsg(mob,mob.charStats().getMyDeity(),this,CMMsg.MSG_HOLYEVENT,null,CMMsg.MSG_HOLYEVENT,null,CMMsg.NO_EFFECT,"SERVICE");
+					if(R.okMessage(mob,msg2))
+						R.send(mob,msg2);
+				}
+				finally
+				{
+					activated=false;
+					mob.recoverCharStats();
+				}
 			}
 		}
 		return true;
