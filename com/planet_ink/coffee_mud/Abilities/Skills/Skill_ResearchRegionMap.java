@@ -153,7 +153,7 @@ public class Skill_ResearchRegionMap extends StdSkill
 		return flags;
 	}
 
-	protected Area[][] insertAreaColumn(final Area[][] areaDrawing, final int x, final boolean dup)
+	protected Area[][] insertAreaColumn(final Area[][] areaDrawing, final int x, final int dupAllButDex)
 	{
 		final int height=areaDrawing[0].length;
 		final Area[][] newArea=new Area[areaDrawing.length+1][height];
@@ -161,14 +161,17 @@ public class Skill_ResearchRegionMap extends StdSkill
 			newArea[i]=areaDrawing[i];
 		for(int i=x;i<areaDrawing.length;i++)
 			newArea[i+1]=areaDrawing[i];
-		if(dup)
+		if(dupAllButDex >= 0)
+		{
 			newArea[x]=Arrays.copyOf(newArea[x+1], newArea[x+1].length);
+			newArea[x][dupAllButDex]=null;
+		}
 		else
 			newArea[x]=new Area[newArea[x+1].length];
 		return newArea;
 	}
 
-	protected Area[][] insertAreaRow(final Area[][] areaDrawing, final int y, final boolean dup)
+	protected Area[][] insertAreaRow(final Area[][] areaDrawing, final int y, final int dupAllButDex)
 	{
 		final int oldHeight=areaDrawing.length;
 		final Area[][] newArea=areaDrawing;
@@ -181,7 +184,7 @@ public class Skill_ResearchRegionMap extends StdSkill
 				newCol[i]=oldCol[i];
 			for(int i=y;i<oldCol.length;i++)
 				newCol[i+1]=oldCol[i];
-			if(dup)
+			if((dupAllButDex >= 0) && (dupAllButDex != x))
 				newCol[y]=newCol[y+1];
 		}
 		return newArea;
@@ -428,24 +431,24 @@ public class Skill_ResearchRegionMap extends StdSkill
 								final int[] nextDir=Directions.adjustXYByDirections(x, y, dir.intValue());
 								if(nextDir[0]<0)
 								{
-									areaDrawing=this.insertAreaColumn(areaDrawing, 0,false);
+									areaDrawing=this.insertAreaColumn(areaDrawing, 0,-1);
 									nextDir[0]=0;
 								}
 								else
 								if(nextDir[0]>=areaDrawing.length)
 								{
-									areaDrawing=this.insertAreaColumn(areaDrawing, areaDrawing.length,false);
+									areaDrawing=this.insertAreaColumn(areaDrawing, areaDrawing.length,-1);
 									nextDir[0]=areaDrawing.length-1;
 								}
 								if(nextDir[1]<0)
 								{
-									areaDrawing=this.insertAreaRow(areaDrawing, 0,false);
+									areaDrawing=this.insertAreaRow(areaDrawing, 0,-1);
 									nextDir[1]=0;
 								}
 								else
 								if(nextDir[1]>=areaDrawing[x].length)
 								{
-									areaDrawing=this.insertAreaRow(areaDrawing, areaDrawing[x].length,false);
+									areaDrawing=this.insertAreaRow(areaDrawing, areaDrawing[x].length,-1);
 									nextDir[1]=areaDrawing[x].length-1;
 								}
 								if(areaDrawing[nextDir[0]][nextDir[1]]==null)
@@ -454,15 +457,13 @@ public class Skill_ResearchRegionMap extends StdSkill
 								{
 									if((dir.intValue()==Directions.NORTH)
 									||(dir.intValue()==Directions.NORTHEAST)||(dir.intValue()==Directions.NORTHWEST))
-									{
-
-									}
+										areaDrawing=this.insertAreaRow(areaDrawing, nextDir[1],nextDir[0]);
 									if((dir.intValue()!=Directions.EAST)&&(dir.intValue()!=Directions.WEST))
 									{
-										areaDrawing=this.insertAreaRow(areaDrawing, nextDir[1],true);
+										areaDrawing=this.insertAreaRow(areaDrawing, nextDir[1],nextDir[0]);
 									}
 									if((dir.intValue()!=Directions.NORTH)&&(dir.intValue()!=Directions.SOUTH))
-										areaDrawing=this.insertAreaColumn(areaDrawing, nextDir[0],true);
+										areaDrawing=this.insertAreaColumn(areaDrawing, nextDir[0],nextDir[1]);
 
 								}
 								break;
