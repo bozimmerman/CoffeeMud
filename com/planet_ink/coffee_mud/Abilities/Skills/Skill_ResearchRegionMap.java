@@ -572,7 +572,7 @@ public class Skill_ResearchRegionMap extends StdSkill
 		final Area A=CMLib.map().findArea(areaName);
 		if((A==null)||(!CMLib.flags().canAccess(mob, A)))
 		{
-			mob.tell(L("You don't know of a place called '@x1'",A.name()));
+			mob.tell(L("You don't know of a place called '@x1'",areaName));
 			return false;
 		}
 		if((A==mob.location().getArea())

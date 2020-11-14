@@ -99,6 +99,7 @@ public class Prayer_SenseParish extends Prayer
 		if(D==null)
 		{
 			mob.tell(L("You don't know any deity called '@x1'.",deityName));
+			return false;
 		}
 		deityName=D.Name();
 
