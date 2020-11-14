@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2020-2020 Bo Zimmerman
+   Copyright 2019-2020 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,16 +32,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_EmpowerShield extends Prayer
+public class Prayer_AmplifyUnholyWeapon extends Prayer
 {
 
 	@Override
 	public String ID()
 	{
-		return "Prayer_EmpowerShield";
+		return "Prayer_AmplifyUnholyWeapon";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Empower Shield");
+	private final static String localizedName = CMLib.lang().L("Amplify Unholy Weapon");
 
 	@Override
 	public String name()
@@ -58,19 +58,19 @@ public class Prayer_EmpowerShield extends Prayer
 	@Override
 	protected int canAffectCode()
 	{
-		return 0;
+		return CAN_ITEMS;
 	}
 
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;
 	}
 
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_NEUTRAL;
+		return Ability.FLAG_NOORDERING|Ability.FLAG_UNHOLY;
 	}
 
 	@Override
@@ -85,6 +85,26 @@ public class Prayer_EmpowerShield extends Prayer
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
+	protected int level = 23;
+
+	public void setMiscText(final String text)
+	{
+		super.setMiscText(text);
+		if(text.length()>0)
+			level=CMParms.getParmInt(text, "LEVEL", 23);
+	}
+
+	@Override
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+	{
+		if(affected instanceof Item)
+		{
+			int bonus = level;
+			if(bonus<0) bonus=1;
+			affectableStats.setDamage(affectableStats.damage()+bonus);
+		}
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -92,45 +112,25 @@ public class Prayer_EmpowerShield extends Prayer
 		if(target==null)
 			return false;
 
-		if(!(target instanceof Shield))
+		if(!(target instanceof Weapon))
 		{
-			mob.tell(mob,target,null,L("You can't empower <T-NAME>!"));
+			mob.tell(mob,target,null,L("You can't amplify <T-NAME>!"));
 			return false;
 		}
-
-		if(target.phyStats().ability()>4)
+		final Ability unholyA=target.fetchEffect("Prayer_UnholyArmament");
+		if((unholyA==null)||(unholyA.text().length()==0))
 		{
-			mob.tell(L("@x1 cannot be empowered further.",target.name(mob)));
+			mob.tell(L("That's not a true unholy weapon."));
 			return false;
 		}
-
-		final Ability zappA=target.fetchEffect("Prop_WearZapper");
-		if(zappA!=null)
+		if(!unholyA.text().equalsIgnoreCase(mob.Name()))
 		{
-			final String zappaTxt=zappA.text().toUpperCase().trim();
-			if((zappaTxt.indexOf("-EVIL")>=0)&&(CMLib.flags().isEvil(mob)))
-			{
-				mob.tell(L("You can not empower that repulsive shield."));
-				return false;
-			}
-			if((zappaTxt.indexOf("-GOOD")>=0)&&(CMLib.flags().isGood(mob)))
-			{
-				mob.tell(L("You can not empower that repulsive shield."));
-				return false;
-			}
-			if((zappaTxt.indexOf("-NEUTRAL")>=0)&&(CMLib.flags().isNeutral(mob)))
-			{
-				mob.tell(L("You can not empower that repulsive shield."));
-				return false;
-			}
+			mob.tell(L("That's not YOUR unholy weapon."));
+			return false;
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
-		int experienceToLose=getXPCOSTAdjustment(mob,50);
-		experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
-		mob.tell(L("The effort causes you to lose @x1 experience.",""+experienceToLose));
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
@@ -141,41 +141,8 @@ public class Prayer_EmpowerShield extends Prayer
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glows!"));
-				target.basePhyStats().setAbility(target.basePhyStats().ability()+1);
-				target.basePhyStats().setLevel(target.basePhyStats().level()+3);
-				target.basePhyStats().setDisposition(target.basePhyStats().disposition()|PhyStats.IS_BONUS);
-				if(zappA==null)
-				{
-					final Ability A=CMClass.getAbility("Prop_WearZapper");
-					if(CMLib.flags().isGood(mob))
-					{
-						A.setMiscText("-EVIL -NEUTRAL");
-						target.addNonUninvokableEffect(A);
-					}
-					else
-					if(CMLib.flags().isEvil(mob))
-					{
-						A.setMiscText("-GOOD -NEUTRAL");
-						target.addNonUninvokableEffect(A);
-					}
-					else
-					if(CMLib.flags().isNeutral(mob))
-					{
-						A.setMiscText("-GOOD -EVIL");
-						target.addNonUninvokableEffect(A);
-					}
-				}
-				else
-				{
-					if(CMLib.flags().isGood(mob) && ((zappA.text().indexOf("-NEUTRAL")<0)||(zappA.text().indexOf("-EVIL")<0)))
-						zappA.setMiscText(zappA.text()+" -EVIL -NEUTRAL");
-					else
-					if(CMLib.flags().isEvil(mob) && ((zappA.text().indexOf("-GOOD")<0)||(zappA.text().indexOf("-NEUTRAL")<0)))
-						zappA.setMiscText(zappA.text()+" -GOOD -NEUTRAL");
-					else
-					if(CMLib.flags().isNeutral(mob) && ((zappA.text().indexOf("-GOOD")<0)||(zappA.text().indexOf("-EVIL")<0)))
-						zappA.setMiscText(zappA.text()+" -GOOD -EVIL");
-				}
+				setMiscText("LEVEL="+((adjustedLevel(mob,0)/4)+super.getXLEVELLevel(mob)));
+				target.addNonUninvokableEffect((Ability)this.copyOf());
 				target.recoverPhyStats();
 				mob.recoverPhyStats();
 			}

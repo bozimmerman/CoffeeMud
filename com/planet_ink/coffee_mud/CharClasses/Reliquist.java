@@ -181,6 +181,7 @@ public class Reliquist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_TransferBane",false); // special A
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_ReleasePrayer",false); // special A
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_TransferBoon",false); // special A
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Skill_ResearchRegionMap",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_EnchantRelic",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_PowerGrab",0,false);
@@ -189,6 +190,7 @@ public class Reliquist extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_ImprovedWardingGlyph",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_SenseParish",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_BlendIn",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Attack2",0,false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_FalseFaith",0,true);
@@ -196,13 +198,13 @@ public class Reliquist extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_FalseService",0,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_Disenchant",0,false);
-		//add something else here to compensate for disenchant not being suppression
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_SenseDigs",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Detection",0,false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_EmpowerHolyWeapon",false); // special A
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_EmpowerUnholyWeapon",false); // special A
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_EmpowerSacredWeapon",false); // special A
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_ReflectPrayer",false); // special A
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_EmpowerHolyWeapon",false); // special A
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_EmpowerUnholyWeapon",false); // special A
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_EmpowerSacredWeapon",false); // special A
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_ReflectPrayer",false); // special A
 
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_HeroicSave",0,false); // heroic leap in the doc
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_ImbueShield",false); // special A

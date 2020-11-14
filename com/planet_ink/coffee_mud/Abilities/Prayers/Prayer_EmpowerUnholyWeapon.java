@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2019-2020 Bo Zimmerman
+   Copyright 2020-2020 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -58,19 +58,19 @@ public class Prayer_EmpowerUnholyWeapon extends Prayer
 	@Override
 	protected int canAffectCode()
 	{
-		return CAN_ITEMS;
+		return 0;
 	}
 
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;
 	}
 
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_NOORDERING|Ability.FLAG_UNHOLY;
+		return Ability.FLAG_UNHOLY;
 	}
 
 	@Override
@@ -85,26 +85,6 @@ public class Prayer_EmpowerUnholyWeapon extends Prayer
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
-	protected int level = 23;
-
-	public void setMiscText(final String text)
-	{
-		super.setMiscText(text);
-		if(text.length()>0)
-			level=CMParms.getParmInt(text, "LEVEL", 23);
-	}
-
-	@Override
-	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
-	{
-		if(affected instanceof Item)
-		{
-			int bonus = level;
-			if(bonus<0) bonus=1;
-			affectableStats.setDamage(affectableStats.damage()+bonus);
-		}
-	}
-
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -117,20 +97,35 @@ public class Prayer_EmpowerUnholyWeapon extends Prayer
 			mob.tell(mob,target,null,L("You can't empower <T-NAME>!"));
 			return false;
 		}
-		final Ability unholyA=target.fetchEffect("Prayer_UnholyArmament");
-		if((unholyA==null)||(unholyA.text().length()==0))
+
+		if(target.phyStats().ability()>4)
 		{
-			mob.tell(L("That's not a true unholy weapon."));
+			mob.tell(L("@x1 cannot be empowered further.",target.name(mob)));
 			return false;
 		}
-		if(!unholyA.text().equalsIgnoreCase(mob.Name()))
+
+		final Ability zappA=target.fetchEffect("Prop_WearZapper");
+		if(zappA!=null)
 		{
-			mob.tell(L("That's not YOUR unholy weapon."));
+			final String zappaTxt=zappA.text().toUpperCase().trim();
+			if(zappaTxt.indexOf("-EVIL")>=0)
+			{
+				mob.tell(L("You can not empower that repulsive weapon."));
+				return false;
+			}
+		}
+		if(CMLib.flags().isGood(target))
+		{
+			mob.tell(L("You can not empower that repulsive weapon."));
 			return false;
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
+
+		int experienceToLose=getXPCOSTAdjustment(mob,50);
+		experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
+		mob.tell(L("The effort causes you to lose @x1 experience.",""+experienceToLose));
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
@@ -141,8 +136,19 @@ public class Prayer_EmpowerUnholyWeapon extends Prayer
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glows!"));
-				setMiscText("LEVEL="+((adjustedLevel(mob,0)/4)+super.getXLEVELLevel(mob)));
-				target.addNonUninvokableEffect((Ability)this.copyOf());
+				target.basePhyStats().setAbility(target.basePhyStats().ability()+1);
+				target.basePhyStats().setLevel(target.basePhyStats().level()+3);
+				target.basePhyStats().setDisposition(target.basePhyStats().disposition() & ~PhyStats.IS_GOOD);
+				target.basePhyStats().setDisposition(target.basePhyStats().disposition()|PhyStats.IS_BONUS|PhyStats.IS_EVIL);
+				if(zappA==null)
+				{
+					final Ability A=CMClass.getAbility("Prop_WearZapper");
+					A.setMiscText("-GOOD -NEUTRAL");
+					target.addNonUninvokableEffect(A);
+				}
+				else
+				if((zappA.text().indexOf("-NEUTRAL")<0)||(zappA.text().indexOf("-GOOD")<0))
+					zappA.setMiscText(zappA.text()+" -GOOD -NEUTRAL");
 				target.recoverPhyStats();
 				mob.recoverPhyStats();
 			}

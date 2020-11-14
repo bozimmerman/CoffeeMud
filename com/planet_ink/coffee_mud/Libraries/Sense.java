@@ -590,7 +590,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(P==null)
 			return false;
 		if ((P.phyStats().disposition()&PhyStats.IS_EVIL)==PhyStats.IS_EVIL)
-			return true;
+			return ((P.phyStats().disposition()&PhyStats.IS_GOOD)==0);
 		else
 		if(P instanceof FactionMember)
 			return isReallyEvil((FactionMember)P);
@@ -689,7 +689,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(P==null)
 			return false;
 		if ((P.phyStats().disposition()&PhyStats.IS_GOOD)==PhyStats.IS_GOOD)
-			return true;
+			return ((P.phyStats().disposition()&PhyStats.IS_EVIL)==0);
 		else
 		if(P instanceof FactionMember)
 			return isReallyGood((FactionMember)P);
@@ -872,8 +872,14 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		if(P==null)
 			return false;
-		if(((P.phyStats().disposition()&PhyStats.IS_GOOD)==PhyStats.IS_GOOD)
-		|| ((P.phyStats().disposition()&PhyStats.IS_EVIL)==PhyStats.IS_EVIL))
+		if((P.phyStats().disposition()&PhyStats.IS_GOOD)==PhyStats.IS_GOOD)
+		{
+			if((P.phyStats().disposition()&PhyStats.IS_EVIL)==PhyStats.IS_EVIL)
+				return true;
+			return false;
+		}
+		else
+		if((P.phyStats().disposition()&PhyStats.IS_EVIL)==PhyStats.IS_EVIL)
 			return false;
 		else
 		if(P instanceof FactionMember)
@@ -2476,7 +2482,12 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(isClimbing(mob))
 			str.append("climbing, ");
 		if((mob.phyStats().disposition()&PhyStats.IS_EVIL)>0)
-			str.append("evil, ");
+		{
+			if((mob.phyStats().disposition()&PhyStats.IS_GOOD)>0)
+				str.append("sacred, ");
+			else
+				str.append("evil, ");
+		}
 		if(isFalling(mob))
 			str.append("falling, ");
 		if(isBound(mob))
@@ -2484,7 +2495,10 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(isFlying(mob))
 			str.append("flies, ");
 		if((mob.phyStats().disposition()&PhyStats.IS_GOOD)>0)
-			str.append("good, ");
+		{
+			if((mob.phyStats().disposition()&PhyStats.IS_EVIL)==0)
+				str.append("good, ");
+		}
 		if(isHidden(mob))
 			str.append("hidden, ");
 		if(isInDark(mob))

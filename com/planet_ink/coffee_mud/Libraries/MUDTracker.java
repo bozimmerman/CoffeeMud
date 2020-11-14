@@ -659,7 +659,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		};
 	}
 
-	protected boolean getRadiantRoomsToTarget(final Room room, final List<Room> rooms, TrackingFlags flags, final RFilter radiateTo, final int maxDepth)
+	@Override
+	public boolean getRadiantRoomsToTarget(final Room room, final List<Room> rooms, TrackingFlags flags, final RFilter radiateTo, final int maxDepth)
 	{
 		if(flags == null)
 			flags = EMPTY_FLAGS;

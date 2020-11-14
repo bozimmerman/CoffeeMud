@@ -32,16 +32,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_EmpowerShield extends Prayer
+public class Prayer_EmpowerSacredWeapon extends Prayer
 {
 
 	@Override
 	public String ID()
 	{
-		return "Prayer_EmpowerShield";
+		return "Prayer_EmpowerSacredWeapon";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Empower Shield");
+	private final static String localizedName = CMLib.lang().L("Empower Sacred Weapon");
 
 	@Override
 	public String name()
@@ -92,7 +92,7 @@ public class Prayer_EmpowerShield extends Prayer
 		if(target==null)
 			return false;
 
-		if(!(target instanceof Shield))
+		if(!(target instanceof Weapon))
 		{
 			mob.tell(mob,target,null,L("You can't empower <T-NAME>!"));
 			return false;
@@ -108,19 +108,9 @@ public class Prayer_EmpowerShield extends Prayer
 		if(zappA!=null)
 		{
 			final String zappaTxt=zappA.text().toUpperCase().trim();
-			if((zappaTxt.indexOf("-EVIL")>=0)&&(CMLib.flags().isEvil(mob)))
+			if(zappaTxt.indexOf("-NEUTRAL")>=0)
 			{
-				mob.tell(L("You can not empower that repulsive shield."));
-				return false;
-			}
-			if((zappaTxt.indexOf("-GOOD")>=0)&&(CMLib.flags().isGood(mob)))
-			{
-				mob.tell(L("You can not empower that repulsive shield."));
-				return false;
-			}
-			if((zappaTxt.indexOf("-NEUTRAL")>=0)&&(CMLib.flags().isNeutral(mob)))
-			{
-				mob.tell(L("You can not empower that repulsive shield."));
+				mob.tell(L("You can not empower that repulsive weapon."));
 				return false;
 			}
 		}
@@ -143,39 +133,17 @@ public class Prayer_EmpowerShield extends Prayer
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glows!"));
 				target.basePhyStats().setAbility(target.basePhyStats().ability()+1);
 				target.basePhyStats().setLevel(target.basePhyStats().level()+3);
+				target.basePhyStats().setDisposition(target.basePhyStats().disposition() & ~(PhyStats.IS_EVIL|PhyStats.IS_GOOD));
 				target.basePhyStats().setDisposition(target.basePhyStats().disposition()|PhyStats.IS_BONUS);
 				if(zappA==null)
 				{
 					final Ability A=CMClass.getAbility("Prop_WearZapper");
-					if(CMLib.flags().isGood(mob))
-					{
-						A.setMiscText("-EVIL -NEUTRAL");
-						target.addNonUninvokableEffect(A);
-					}
-					else
-					if(CMLib.flags().isEvil(mob))
-					{
-						A.setMiscText("-GOOD -NEUTRAL");
-						target.addNonUninvokableEffect(A);
-					}
-					else
-					if(CMLib.flags().isNeutral(mob))
-					{
-						A.setMiscText("-GOOD -EVIL");
-						target.addNonUninvokableEffect(A);
-					}
+					A.setMiscText("-GOOD -EVIL");
+					target.addNonUninvokableEffect(A);
 				}
 				else
-				{
-					if(CMLib.flags().isGood(mob) && ((zappA.text().indexOf("-NEUTRAL")<0)||(zappA.text().indexOf("-EVIL")<0)))
-						zappA.setMiscText(zappA.text()+" -EVIL -NEUTRAL");
-					else
-					if(CMLib.flags().isEvil(mob) && ((zappA.text().indexOf("-GOOD")<0)||(zappA.text().indexOf("-NEUTRAL")<0)))
-						zappA.setMiscText(zappA.text()+" -GOOD -NEUTRAL");
-					else
-					if(CMLib.flags().isNeutral(mob) && ((zappA.text().indexOf("-GOOD")<0)||(zappA.text().indexOf("-EVIL")<0)))
-						zappA.setMiscText(zappA.text()+" -GOOD -EVIL");
-				}
+				if((zappA.text().indexOf("-GOOD")<0)||(zappA.text().indexOf("-EVIL")<0))
+					zappA.setMiscText(zappA.text()+" -GOOD -EVIL");
 				target.recoverPhyStats();
 				mob.recoverPhyStats();
 			}

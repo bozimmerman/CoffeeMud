@@ -23,14 +23,15 @@
  22. Zappermasks now support +-WEEK, +-DAYOFYEAR, +-YEAR, +-WEEKOFYEAR, and X or Y or Xnd Y syntax
  23. New injury system: Scarring
  24. New Prayers: Empower Shield, Read Language, Store Prayer, Lesser Warding Glyph, Deflect Prayer
- 25. New Thief skills: Borrow Boon, Unearth Demography, Digsite
+ 25. New Thief skills: Borrow Boon, Unearth Demography, Digsite, False Service, Blend In, Sense Digs
  26. Zappermasks now support +-OR to introduce separate conditions
  27. Deities can now be picked at char creation, see DEITYPOLICY in ini file or M.G. control panel
  28. Many GREET style Scriptable triggers now support zapper masks instead of pct chance
  29. Scriptable has new GROUP_GREET_PROG for greetings that trigger at most once per tick.
  30. New Prayers: Deplete Relic, Attune Relic, Empower Relic, Transfer Bane, Release Prayer, Transfer Boon
  31. New Skills: Whiplash, Research Item
- 32. New Prayers: Improved Warning Glyph, Sense Parish
+ 32. New Prayers: Improved Warning Glyph, Sense Parish, Reflect Prayer, Amplify Unholy Weapon
+ 33. New Prayers: Empower Holy Weapon, Empower Sacred Weapon
 # Build 5.9.10 Release 6/16/2020
   1. Wands/etc have enchant type as a restriction, WandMaking/StaffMaking/Rodsmithing support.
   2. New PLAYERDEATH option: RETAIN -- to allow player mobs to keep their items on death.
