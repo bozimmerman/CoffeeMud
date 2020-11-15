@@ -234,7 +234,7 @@ public class VFShell
 						if(ids.length()>1)
 							ids.append(",");
 						ids.append("'"+roomID+"'");
-						if(ids.length()>16384)
+						if(ids.length()>65536)
 						{
 							ids.append(")");
 							final String[] updates1 = new String[]{
