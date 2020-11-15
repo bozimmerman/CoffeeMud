@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2020 Bo Zimmerman
+   Copyright 2020-2020 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_AvoidTraps extends ThiefSkill
+public class Thief_HeroicReflexes extends ThiefSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Thief_AvoidTraps";
+		return "Thief_HeroicReflexes";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Avoid Traps");
+	private final static String localizedName = CMLib.lang().L("Heroic Reflexes");
 
 	@Override
 	public String name()
@@ -87,26 +87,59 @@ public class Thief_AvoidTraps extends ThiefSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DETRAP;
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ACROBATIC;
 	}
 
+	private volatile boolean activated = false;
+	
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.STAT_SAVE_TRAPS,affectableStats.getStat(CharStats.STAT_SAVE_TRAPS)+(proficiency()/2)+(getXLEVELLevel(affected)*5));
+		if(activated)
+			affectableStats.setStat(CharStats.STAT_SAVE_TRAPS,affectableStats.getStat(CharStats.STAT_SAVE_TRAPS)
+																+(proficiency()/5)
+																+(adjustedLevel(affected,0)/5)
+																+(super.getXLEVELLevel(affected)));
 	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.tool() instanceof Trap)
-		&&(msg.target()==affected)
 		&&(msg.source()!=affected)
-		&&(msg.target() instanceof MOB)
-		&&(CMLib.dice().rollPercentage()>90)
-		)
-			helpProficiency((MOB)msg.target(), 0);
+		&&(msg.target()!=affected)
+		&&(msg.target() instanceof MOB))
+		{
+			final Physical affected = this.affected;
+			if((affected instanceof MOB)
+			&&(((MOB)affected).getGroupMembers(new HashSet<MOB>()).contains(msg.target())))
+			{
+				final MOB mob=(MOB)affected;
+				final Room R=mob.location();
+				helpProficiency(mob, 0);
+				if((msg.othersMessage()!=null)
+				&&(msg.othersMessage().length()>0)
+				&&(R!=null)
+				&&(CMLib.flags().isAliveAwakeMobileUnbound(mob, true)))
+				{
+					R.send((MOB)msg.target(), msg);
+					R.show(mob, msg.target(), CMMsg.MSG_OK_ACTION, L("<S-NAME> leap(s) in front of <T-NAME>!"));
+					final Trap T=(Trap)msg.tool();
+					try
+					{
+						activated=true;
+						mob.recoverCharStats();
+						T.spring(mob);
+					}
+					finally
+					{
+						activated=false;
+					}
+					return false;
+				}
+			}
+		}
 		return super.okMessage(myHost,msg);
 	}
 }
