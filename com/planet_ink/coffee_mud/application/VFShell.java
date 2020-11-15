@@ -228,27 +228,36 @@ public class VFShell
 								break;
 						}
 					}
-					final List<String> updates = new java.util.ArrayList<String>(1000);
+					StringBuilder ids=new StringBuilder("(");
 					for(final String roomID : finalRoomIDs)
 					{
-						final String[] updates1 = new String[]{
-							"DELETE FROM CMROIT WHERE CMROID='"+roomID+"';",
-							"DELETE FROM CMROCH WHERE CMROID='"+roomID+"';", 
-							"DELETE FROM CMROEX WHERE CMROID='"+roomID+"' OR CMNRID='"+roomID+"';",
-							"DELETE FROM CMROOM WHERE CMROID='"+roomID+"';"
-						};
-						updates.addAll(Arrays.asList(updates1));
-						if(updates.size()>1000)
+						if(ids.length()>1)
+							ids.append(",");
+						ids.append("'"+roomID+"'");
+						if(ids.length()>1000)
 						{
-							currentDBconnector.update(updates.toArray(new String[updates.size()]));
-							updates.clear();
+							ids.append(")");
+							final String[] updates1 = new String[]{
+								"DELETE FROM CMROIT WHERE CMROID in "+ids.toString()+";",
+								"DELETE FROM CMROCH WHERE CMROID in "+ids.toString()+";", 
+								"DELETE FROM CMROEX WHERE CMROID in "+ids.toString()+" OR  in "+ids.toString()+";",
+								"DELETE FROM CMROOM WHERE CMROID in "+ids.toString()+";"
+							};
+							currentDBconnector.update(updates1);
+							ids=new StringBuilder("(");
 						}
 						System.out.println("Finished "+roomID+".");
 					}
-					if(updates.size()>0)
+					if(ids.length()>1)
 					{
-						currentDBconnector.update(updates.toArray(new String[updates.size()]));
-						updates.clear();
+						ids.append(")");
+						final String[] updates1 = new String[]{
+							"DELETE FROM CMROIT WHERE CMROID in "+ids.toString()+";",
+							"DELETE FROM CMROCH WHERE CMROID in "+ids.toString()+";", 
+							"DELETE FROM CMROEX WHERE CMROID in "+ids.toString()+" OR  in "+ids.toString()+";",
+							"DELETE FROM CMROOM WHERE CMROID in "+ids.toString()+";"
+						};
+						currentDBconnector.update(updates1);
 					}
 				}
 				catch(final Exception e)
