@@ -186,6 +186,7 @@ public class VFShell
 								int num=CMath.s_int(rid.substring(x+1));
 								if(num>0)
 								{
+									System.out.println("Found "+num+"/"+rid+".");
 									allRoomIDs.put(Integer.valueOf(num), new String[]{rid,R.getString("CMDESC1")});
 									if(num>max)
 										max=num;
@@ -206,6 +207,7 @@ public class VFShell
 							{
 								try
 								{
+									System.out.println("Scan "+data[0]+".");
 									db=currentDBconnector.DBFetch();
 									if(db!=null)
 									{
