@@ -240,7 +240,7 @@ public class VFShell
 							final String[] updates1 = new String[]{
 								"DELETE FROM CMROIT WHERE CMROID in "+ids.toString()+";",
 								"DELETE FROM CMROCH WHERE CMROID in "+ids.toString()+";", 
-								"DELETE FROM CMROEX WHERE CMROID in "+ids.toString()+" OR  in "+ids.toString()+";",
+								"DELETE FROM CMROEX WHERE CMROID in "+ids.toString()+" OR CMNRID in "+ids.toString()+";",
 								"DELETE FROM CMROOM WHERE CMROID in "+ids.toString()+";"
 							};
 							currentDBconnector.update(updates1);
