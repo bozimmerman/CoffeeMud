@@ -31,7 +31,7 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class LimitedTreeMap<K> extends TreeMap<String,K>
+public class LimitedTreeMap<L,K> extends TreeMap<L,K>
 {
 	private static final long serialVersionUID = 5949532522375107316L;
 
@@ -39,27 +39,30 @@ public class LimitedTreeMap<K> extends TreeMap<String,K>
 	private final int max;
 	private long nextCheck = 0;
 	private final boolean caseLess;
-	private final OrderedMap<String,long[]> expirations;
+	private final OrderedMap<L,long[]> expirations;
 
 	public LimitedTreeMap(final long expireMs, final int max, final boolean caseInsensitive)
 	{
-		super(caseInsensitive?new Comparator<String>()
+		super(new Comparator<L>()
 		{
+			private final boolean caseLess=caseInsensitive;
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			@Override
-			public int compare(final String arg0, final String arg1)
+			public int compare(final L arg0, final L arg1)
 			{
-				return arg0.compareToIgnoreCase(arg1);
-			}
-		}:new Comparator<String>()
-		{
-			@Override
-			public int compare(final String arg0, final String arg1)
-			{
-				return arg0.compareTo(arg1);
+				if((arg0 instanceof String)&&(arg1 instanceof String)&&(caseLess))
+					return ((String)arg0).compareToIgnoreCase((String)arg1);
+				if(arg0 instanceof Comparable)
+					return ((Comparable)arg0).compareTo(arg1);
+				if(arg0==null)
+					return (arg1==null)?0:-1;
+				if(arg1==null)
+					return 1;
+				return (arg0.hashCode()==arg1.hashCode())?0:(arg0.hashCode()<arg1.hashCode())?-1:1;
 			}
 		});
 		this.caseLess=caseInsensitive;
-		expirations=new OrderedMap<String,long[]>();
+		expirations=new OrderedMap<L,long[]>();
 		this.expireMs=expireMs;
 		this.max=max;
 	}
@@ -69,10 +72,12 @@ public class LimitedTreeMap<K> extends TreeMap<String,K>
 		this(60000,100,false);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-    public K put(String key, final K value)
+    public K put(L key, final K value)
 	{
-		key = caseLess?key.toLowerCase():key;
+		if(key instanceof String)
+			key = caseLess?(L)((String)key).toLowerCase():key;
 		check();
 		synchronized(expirations)
 		{
@@ -83,10 +88,10 @@ public class LimitedTreeMap<K> extends TreeMap<String,K>
     }
 
 	@Override
-    public void putAll(final Map<? extends String, ? extends K> map)
+    public void putAll(final Map<? extends L, ? extends K> map)
 	{
 		// this long put ensures the case insensitivity
-		for(final Map.Entry<? extends String, ? extends K> e : map.entrySet())
+		for(final Map.Entry<? extends L, ? extends K> e : map.entrySet())
 			this.put(e.getKey(),e.getValue());
     }
 
@@ -101,9 +106,9 @@ public class LimitedTreeMap<K> extends TreeMap<String,K>
 			{
 				synchronized(expirations)
 				{
-					for(final Iterator<Pair<String,long[]>> v = expirations.pairIterator();v.hasNext();)
+					for(final Iterator<Pair<L,long[]>> v = expirations.pairIterator();v.hasNext();)
 					{
-						final Pair<String,long[]> p=v.next();
+						final Pair<L,long[]> p=v.next();
 						if(p.second[0] >= then)
 							break;
 						v.remove();
@@ -124,11 +129,11 @@ public class LimitedTreeMap<K> extends TreeMap<String,K>
 		check();
 		synchronized(expirations)
 		{
+			@SuppressWarnings("unchecked")
+			final L l=(L)key;
 	    	final boolean c=super.containsKey(key);
-	    	if((c)&&(key instanceof String))
-	    	{
-	    		expirations.put((String)key, new long[] {System.currentTimeMillis()});
-    		}
+	    	if(c)
+	    		expirations.put(l, new long[] {System.currentTimeMillis()});
 	    	return c;
     	}
     }
@@ -142,9 +147,11 @@ public class LimitedTreeMap<K> extends TreeMap<String,K>
 		synchronized(expirations)
 		{
 	    	final K obj=super.get(key);
-	    	if(super.containsKey(key)&&(key instanceof String))
+	    	if(super.containsKey(key))
 	    	{
-	    		expirations.put((String)key, new long[] {System.currentTimeMillis()});
+				@SuppressWarnings("unchecked")
+				final L l=(L)key;
+	    		expirations.put(l, new long[] {System.currentTimeMillis()});
     		}
 	    	return obj;
     	}

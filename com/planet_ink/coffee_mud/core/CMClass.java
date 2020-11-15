@@ -54,7 +54,7 @@ public class CMClass extends ClassLoader
 	protected static boolean						debugging		= false;
 	protected static volatile long					lastUpdateTime	= System.currentTimeMillis();
 	protected static final Map<String, Class<?>>	classes			= new Hashtable<String, Class<?>>();
-	protected static final LimitedTreeMap<Ability>	ableFinder		= new LimitedTreeMap<Ability>(300000,100,true);
+	protected static final Map<String,Ability>		ableFinder		= new LimitedTreeMap<String,Ability>(300000,100,true);
 
 	private static CMClass[] clss=new CMClass[256];
 	/**

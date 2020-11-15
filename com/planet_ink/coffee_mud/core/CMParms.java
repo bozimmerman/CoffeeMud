@@ -45,7 +45,14 @@ public class CMParms
 	}
 
 	public static boolean[] PUNCTUATION_TABLE=null;
-	private final static Set<Character> badLastCs=new XHashSet<Character>(new Character[] {Character.valueOf('+'),Character.valueOf('-'),Character.valueOf('=')});
+	private final static Set<Character> badLastCs=new XHashSet<Character>(new Character[] 
+	{
+		Character.valueOf('+'),
+		Character.valueOf('-'),
+		Character.valueOf('=')
+	});
+	private final static Map<String[],Triad<Map<Character,List<String>>,Map<String,String>,Map<String,Map<String,String>>>> parsedLooses = 
+			new LimitedTreeMap<String[],Triad<Map<Character,List<String>>,Map<String,String>,Map<String,Map<String,String>>>>(30000,500,false);
 
 	/**
 	 * Example delimeter checker for spaces
@@ -1483,25 +1490,42 @@ public class CMParms
 	 */
 	public final static Map<String,String> parseLooseParms(final String str, final String[] parmList, final List<String> errors)
 	{
-		final Hashtable<String,String> h=new Hashtable<String,String>();
+		Hashtable<String,String> h=new Hashtable<String,String>();
 		if((str==null)||(str.length()==0))
 			return h;
 		Character C;
-		final Map<Character,List<String>> chkMap=new HashMap<Character,List<String>>();
-		final Map<String,String> uMap=new TreeMap<String,String>();
-		for (final String element : parmList)
+		final Map<Character,List<String>> chkMap;
+		final Map<String,String> uMap;
+		Triad<Map<Character,List<String>>,Map<String,String>,Map<String,Map<String,String>>> cache;
+		if(parsedLooses.containsKey(parmList))
 		{
-			C=Character.valueOf(Character.toUpperCase(element.charAt(0)));
-			final List<String> elems;
-			if(!chkMap.containsKey(C))
+			cache=parsedLooses.get(parmList);
+			if(cache.third.containsKey(str))
+				return cache.third.get(str);
+			chkMap=cache.first;
+			uMap=cache.second;
+		}
+		else
+		{
+			chkMap=new HashMap<Character,List<String>>();
+			uMap=new TreeMap<String,String>();
+			LimitedTreeMap<String,Map<String,String>> subCache=new LimitedTreeMap<String,Map<String,String>>(30000,500,false);
+			cache=new Triad<Map<Character,List<String>>,Map<String,String>,Map<String,Map<String,String>>>(chkMap,uMap,subCache);
+			parsedLooses.put(parmList, cache);
+			for (final String element : parmList)
 			{
-				elems=new LinkedList<String>();
-				chkMap.put(C, elems);
+				C=Character.valueOf(Character.toUpperCase(element.charAt(0)));
+				final List<String> elems;
+				if(!chkMap.containsKey(C))
+				{
+					elems=new LinkedList<String>();
+					chkMap.put(C, elems);
+				}
+				else
+					elems=chkMap.get(C);
+				elems.add(element.toUpperCase());
+				uMap.put(element.toUpperCase(), element);
 			}
-			else
-				elems=chkMap.get(C);
-			elems.add(element.toUpperCase());
-			uMap.put(element.toUpperCase(), element);
 		}
 		String lastParm=null;
 		int lastEQ=-1;
@@ -1513,7 +1537,9 @@ public class CMParms
 				int startParm=x-1;
 				while((startParm>0)&&Character.isWhitespace(str.charAt(startParm)))
 					startParm--;
-				while((startParm>0)&&Character.isLetterOrDigit(str.charAt(startParm)))
+				if((startParm>0)&&(!Character.isLetterOrDigit(str.charAt(startParm))))
+					continue;
+				while((startParm>0)&&Character.isLetterOrDigit(str.charAt(startParm-1)))
 					startParm--;
 				
 				String possParm=str.substring(startParm,x).toUpperCase().trim();
@@ -1523,14 +1549,17 @@ public class CMParms
 				||(badLastCs.contains(C)))
 					continue;
 				
-				boolean found=false;
-				for (final String element : chkMap.get(C))
+				boolean found=uMap.containsKey(possParm);
+				if(!found)
 				{
-					if(possParm.equals(element))
+					for (final String element : chkMap.get(C))
 					{
-						possParm=element;
-						found=true;
-						break;
+						if(possParm.equals(element))
+						{
+							possParm=element;
+							found=true;
+							break;
+						}
 					}
 				}
 				if(!found)
@@ -1582,6 +1611,9 @@ public class CMParms
 			final String val=cleanArgVal(str.substring(lastEQ+1).trim(),lastEQChar,errors);
 			h.put(uMap.get(lastParm),val);
 		}
+		@SuppressWarnings("unchecked")
+		final Map<String,String> hCopy=(Map<String,String>)h.clone();
+		cache.third.put(str, hCopy);
 		return h;
 	}
 
