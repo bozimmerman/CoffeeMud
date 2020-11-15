@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.sql.ResultSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -32,6 +33,7 @@ import com.planet_ink.coffee_mud.core.CMParms;
 import com.planet_ink.coffee_mud.core.CMProps;
 import com.planet_ink.coffee_mud.core.CMSecurity;
 import com.planet_ink.coffee_mud.core.CMStrings;
+import com.planet_ink.coffee_mud.core.CMath;
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.Resources;
 import com.planet_ink.coffee_mud.core.database.DBConnection;
@@ -158,6 +160,89 @@ public class VFShell
 					if(F.exists())
 						Log.sysOut(Thread.currentThread().getName(),"Test file found .. hmm.. that was unexpected.");
 
+				}
+				catch(final Exception e)
+				{
+					Log.errOut(e);
+					Log.errOut("Database error! Panic shutdown!");
+					System.exit(-1);
+				}
+				
+				try
+				{
+					System.out.println("Fixing the Vassendar problem...");
+					final Map<Integer,String[]> allRoomIDs=new java.util.TreeMap<Integer,String[]>();
+					int max=0;
+					DBConnection db=currentDBconnector.DBFetch();
+					if(db!=null)
+					{
+						java.sql.ResultSet R=db.query("SELECT CMROID,CMDESC1 from CMROOM where CMAREA='Homes of Vassendar'");
+						while(R.next())
+						{
+							String rid=R.getString("CMROID");
+							int x=rid.indexOf('#');
+							if(x>0)
+							{
+								int num=CMath.s_int(rid.substring(x+1));
+								if(num>0)
+								{
+									allRoomIDs.put(Integer.valueOf(num), new String[]{rid,R.getString("CMDESC1")});
+									if(num>max)
+										max=num;
+								}
+							}
+						}
+						R.close();
+						currentDBconnector.DBDone(db);
+					}
+					final List<String> finalRoomIDs = new java.util.LinkedList<String>();
+					for(int i=max;i>=0;i--)
+					{
+						Integer I=Integer.valueOf(max);
+						if(allRoomIDs.containsKey(I))
+						{
+							String[] data=allRoomIDs.get(I);
+							if(data[1].trim().equalsIgnoreCase("An empty room"))
+							{
+								try
+								{
+									db=currentDBconnector.DBFetch();
+									if(db!=null)
+									{
+										java.sql.ResultSet R=db.query("SELECT COUNT(*) from CMROIT where CMROID='"+data[0]+"'");
+										if(R.next() && (!R.next()))
+											finalRoomIDs.add(data[0]);
+										else
+											break;
+									}
+								}
+								finally
+								{
+									currentDBconnector.DBDone(db);
+								}
+							}
+							else
+								break;
+						}
+					}
+					for(final String roomID : finalRoomIDs)
+					{
+						try
+						{
+							db=currentDBconnector.DBFetch();
+							if(db!=null)
+							{
+								db.update("DELETE FROM CMROIT WHERE CMROID='"+roomID+"'", 0);
+								db.update("DELETE FROM CMROEX WHERE CMROID='"+roomID+"' OR CMNRID='"+roomID+"'", 0);
+								db.update("DELETE FROM CMROOM WHERE CMROID='"+roomID+"'", 0);
+							}
+						}
+						finally
+						{
+							currentDBconnector.DBDone(db);
+						}
+						System.out.println("Finished "+roomID+".");
+					}
 				}
 				catch(final Exception e)
 				{
