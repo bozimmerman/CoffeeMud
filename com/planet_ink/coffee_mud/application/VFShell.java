@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.sql.ResultSet;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -229,13 +230,16 @@ public class VFShell
 					}
 					for(final String roomID : finalRoomIDs)
 					{
-						final String[] updates = new String[]{
+						final List<String> updates = new java.util.ArrayList<String>(1000);
+						final String[] updates1 = new String[]{
 							"DELETE FROM CMROIT WHERE CMROID='"+roomID+"';",
 							"DELETE FROM CMROCH WHERE CMROID='"+roomID+"';", 
 							"DELETE FROM CMROEX WHERE CMROID='"+roomID+"' OR CMNRID='"+roomID+"';",
 							"DELETE FROM CMROOM WHERE CMROID='"+roomID+"';"
 						};
-						currentDBconnector.update(updates);
+						updates.addAll(Arrays.asList(updates1));
+						if(updates.size()>1000)
+							currentDBconnector.update(updates.toArray(new String[updates.size()]));
 						System.out.println("Finished "+roomID+".");
 					}
 				}
