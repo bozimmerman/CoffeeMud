@@ -199,7 +199,7 @@ public class VFShell
 					final List<String> finalRoomIDs = new java.util.LinkedList<String>();
 					for(int i=max;i>=0;i--)
 					{
-						Integer I=Integer.valueOf(max);
+						Integer I=Integer.valueOf(i);
 						if(allRoomIDs.containsKey(I))
 						{
 							String[] data=allRoomIDs.get(I);
