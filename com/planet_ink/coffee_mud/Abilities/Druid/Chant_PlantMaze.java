@@ -194,7 +194,7 @@ public class Chant_PlantMaze extends Chant
 				desc.append("<P>");
 				desc.append(L("A light growth of tall @x1 surrounds you on all sides.  You can hear the sound of a running brook, but can't tell which direction its coming from.",s));
 				desc.append("<P>");
-				desc.append(L("The @x1 around you are tall, dark and old, their leaves seeming to reach towards you.  In the distance, a wolfs howl can be heard.",s));
+				desc.append(L("The @x1 around you are tall, dark and old, their leaves seeming to reach towards you.  In the distance, a wolf`s howl can be heard.",s));
 				desc.append("<P>");
 				desc.append(L("The path seems to end at the base of a copse of tall @x1.",s));
 				desc.append("<P>");

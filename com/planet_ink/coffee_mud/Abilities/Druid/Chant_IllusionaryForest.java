@@ -159,7 +159,7 @@ public class Chant_IllusionaryForest extends Chant
 			break;
 		case 5:
 			newRoom.setDisplayText(L("Dark Forest"));
-			newRoom.setDescription(L("The trees around you are dark and old, their branches seeming to reach towards you.  In the distance, a wolfs howl can be heard."));
+			newRoom.setDescription(L("The trees around you are dark and old, their branches seeming to reach towards you.  In the distance, a wolf`s howl can be heard."));
 			break;
 		case 6:
 			newRoom.setDisplayText(L("End of the path"));
