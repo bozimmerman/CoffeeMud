@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TimeManager;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.RFilter;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -126,6 +127,8 @@ public class Skill_ResearchRegionMap extends StdSkill
 	protected int ticksToRemain = 0;
 	protected int numBooksInRoom = 1;
 	protected final Room[] targetRoom=new Room[1];
+	
+	protected final LimitedTreeSet<String> recent=new LimitedTreeSet<String>(TimeManager.MILI_HOUR,50,false);
 
 	@Override
 	public void setMiscText(final String newMiscText)
@@ -294,6 +297,18 @@ public class Skill_ResearchRegionMap extends StdSkill
 				final int range=75 + (2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
 				this.finalMapI=null;
 				final Area targetA=CMLib.map().findArea(what);
+				final Room startRoom=mob.location();
+				final Area startArea=(startRoom==null)?null:startRoom.getArea();
+				if((targetA==null)
+				||(startRoom==null)
+				||(startArea==null)
+				||(startRoom!=this.theRoom)
+				||(recent.contains(startArea.Name()+"->"+targetA.Name())))
+				{
+					checkSet=new ArrayList<Room>();
+					return true;
+				}
+				recent.add(startArea.Name()+"->"+targetA.Name());
 				this.checkSet=new Vector<Room>(range*10);
 				targetRoom[0]=null;
 				if(!CMLib.tracking().getRadiantRoomsToTarget(mob.location(), checkSet, getTrackingFlags(), new RFilter() {
@@ -323,7 +338,7 @@ public class Skill_ResearchRegionMap extends StdSkill
 					final OrderedMap<Area,Map<Area,int[]>> connections = new OrderedMap<Area,Map<Area,int[]>>();
 					for(final List<Integer> trail : trails)
 					{
-						Room curRoom=theRoom;
+						Room curRoom=startRoom;
 						for(final Integer dir : trail)
 						{
 							final Room nextR=curRoom.getRoomInDir(dir.intValue());
@@ -373,7 +388,7 @@ public class Skill_ResearchRegionMap extends StdSkill
 						coords.add(quad);
 						for(final List<Integer> trail : trails)
 						{
-							Room curRoom=theRoom;
+							Room curRoom=startRoom;
 							boolean started=(curRoom.getArea()==sA);
 							for(final Integer dir : trail)
 							{
@@ -444,7 +459,7 @@ public class Skill_ResearchRegionMap extends StdSkill
 					}
 					coords.clear();
 					Area[][] areaDrawing = new Area[1][1];
-					areaDrawing[0][0]=theRoom.getArea();
+					areaDrawing[0][0]=startRoom.getArea();
 
 					for(final Triad<Area,Area,Integer> ta : finalDirs)
 					{

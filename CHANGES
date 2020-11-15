@@ -29,7 +29,7 @@
  28. Many GREET style Scriptable triggers now support zapper masks instead of pct chance
  29. Scriptable has new GROUP_GREET_PROG for greetings that trigger at most once per tick.
  30. New Prayers: Deplete Relic, Attune Relic, Empower Relic, Transfer Bane, Release Prayer, Transfer Boon
- 31. New Skills: Whiplash, Research Item
+ 31. New Skills: Whiplash, Research Item, Research Region Map
  32. New Prayers: Improved Warning Glyph, Sense Parish, Reflect Prayer, Amplify Unholy Weapon
  33. New Prayers: Empower Holy Weapon, Empower Sacred Weapon
 # Build 5.9.10 Release 6/16/2020
