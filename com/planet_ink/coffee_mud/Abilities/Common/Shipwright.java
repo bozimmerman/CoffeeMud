@@ -69,6 +69,12 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 	}
 
 	@Override
+	public CraftorType getCraftorType()
+	{
+		return CraftorType.LargeConstructions;
+	}
+
+	@Override
 	public String parametersFormat()
 	{
 		return "";

@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.CraftorType;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -57,6 +58,12 @@ public class Boatwright extends CraftingSkill implements ItemCraftor, MendingSki
 	public String[] triggerStrings()
 	{
 		return triggerStrings;
+	}
+
+	@Override
+	public CraftorType getCraftorType()
+	{
+		return CraftorType.LargeConstructions;
 	}
 
 	@Override

@@ -150,7 +150,14 @@ public class Thief_Digsite extends ThiefSkill
 						{
 							final Ability A1=e.nextElement();
 							if(A1 instanceof ItemCraftor)
-								craftingSkills.add((ItemCraftor)A1.copyOf());
+							{
+								final ItemCraftor A2=(ItemCraftor)A1.copyOf();
+								if((A2.getCraftorType()==ItemCraftor.CraftorType.General)
+								||(A2.getCraftorType()==ItemCraftor.CraftorType.Magic)
+								||(A2.getCraftorType()==ItemCraftor.CraftorType.Weapons)
+								||(A2.getCraftorType()==ItemCraftor.CraftorType.Armor))
+									craftingSkills.add(A2);
+							}
 						}
 						if(craftingSkills.size()==0)
 							return true;

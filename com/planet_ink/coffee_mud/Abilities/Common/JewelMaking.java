@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftParms;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.CraftorType;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -65,6 +66,12 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 	public String supportedResourceString()
 	{
 		return "GLASS|PRECIOUS|SAND";
+	}
+
+	@Override
+	public CraftorType getCraftorType()
+	{
+		return CraftorType.Armor;
 	}
 
 	@Override

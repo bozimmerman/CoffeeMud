@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.EnhancedExpertise;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.CraftorType;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -71,6 +72,12 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	public boolean supportsDeconstruction()
 	{
 		return true;
+	}
+
+	@Override
+	public CraftorType getCraftorType()
+	{
+		return CraftorType.General;
 	}
 
 	@Override

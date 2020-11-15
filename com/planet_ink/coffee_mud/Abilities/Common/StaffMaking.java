@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftParms;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.CraftorType;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -53,6 +54,12 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	private static final String[]	triggerStrings	= I(new String[] { "STAFFMAKE", "STAFFMAKING" });
+
+	@Override
+	public CraftorType getCraftorType()
+	{
+		return CraftorType.Weapons;
+	}
 
 	@Override
 	public String[] triggerStrings()

@@ -43,6 +43,27 @@ import java.util.*;
  */
 public interface ItemCraftor extends CraftorAbility
 {
+	public enum CraftorType
+	{
+		Weapons,
+		Armor,
+		General,
+		Consumables,
+		LargeConstructions,
+		Resources,
+		ClanItems,
+		Magic
+	}
+
+	
+	/**
+	 * Returns the general craftor type of this skills, to let 
+	 * outside subsystems know what they might expect.
+	 * @see ItemCraftor.CraftorType
+	 * @return the craftor type
+	 */
+	public CraftorType getCraftorType();
+	
 	/**
 	 * Crafts a random item of a type supported by this class of
 	 * the given resource code.
