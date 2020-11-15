@@ -229,21 +229,13 @@ public class VFShell
 					}
 					for(final String roomID : finalRoomIDs)
 					{
-						try
-						{
-							db=currentDBconnector.DBFetch();
-							if(db!=null)
-							{
-								db.update("DELETE FROM CMROIT WHERE CMROID='"+roomID+"'", 0);
-								db.update("DELETE FROM CMROCH WHERE CMROID='"+roomID+"'", 0);
-								db.update("DELETE FROM CMROEX WHERE CMROID='"+roomID+"' OR CMNRID='"+roomID+"'", 0);
-								db.update("DELETE FROM CMROOM WHERE CMROID='"+roomID+"'", 0);
-							}
-						}
-						finally
-						{
-							currentDBconnector.DBDone(db);
-						}
+						final String[] updates = new String[]{
+							"DELETE FROM CMROIT WHERE CMROID='"+roomID+"';",
+							"DELETE FROM CMROCH WHERE CMROID='"+roomID+"';", 
+							"DELETE FROM CMROEX WHERE CMROID='"+roomID+"' OR CMNRID='"+roomID+"';",
+							"DELETE FROM CMROOM WHERE CMROID='"+roomID+"';"
+						};
+						currentDBconnector.update(updates);
 						System.out.println("Finished "+roomID+".");
 					}
 				}
