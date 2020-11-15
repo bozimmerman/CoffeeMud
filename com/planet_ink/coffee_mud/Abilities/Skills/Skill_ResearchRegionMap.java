@@ -564,7 +564,7 @@ public class Skill_ResearchRegionMap extends StdSkill
 					this.finalMapI.setReadableText("\n\r"+map.toString());
 					this.finalMapI.recoverPhyStats();
 					this.finalMapI.text();
-					this.tickDown += (10*connections.size());
+					this.tickDown += (5*connections.size());
 					connections.clear();
 				}
 				return true;
