@@ -228,9 +228,9 @@ public class VFShell
 								break;
 						}
 					}
+					final List<String> updates = new java.util.ArrayList<String>(1000);
 					for(final String roomID : finalRoomIDs)
 					{
-						final List<String> updates = new java.util.ArrayList<String>(1000);
 						final String[] updates1 = new String[]{
 							"DELETE FROM CMROIT WHERE CMROID='"+roomID+"';",
 							"DELETE FROM CMROCH WHERE CMROID='"+roomID+"';", 
@@ -239,8 +239,16 @@ public class VFShell
 						};
 						updates.addAll(Arrays.asList(updates1));
 						if(updates.size()>1000)
+						{
 							currentDBconnector.update(updates.toArray(new String[updates.size()]));
+							updates.clear();
+						}
 						System.out.println("Finished "+roomID+".");
+					}
+					if(updates.size()>0)
+					{
+						currentDBconnector.update(updates.toArray(new String[updates.size()]));
+						updates.clear();
 					}
 				}
 				catch(final Exception e)
