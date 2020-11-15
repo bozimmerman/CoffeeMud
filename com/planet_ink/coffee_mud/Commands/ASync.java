@@ -65,6 +65,7 @@ public class ASync extends StdCommand
 		{
 			final List<String> command=new XVector<String>(CMParms.toStringArray(commands));
 			final MOB M=mob;
+			@Override
 			public void run()
 			{
 				try
@@ -76,6 +77,12 @@ public class ASync extends StdCommand
 					Log.errOut(e);
 					M.tell(e.getMessage());
 				}
+			}
+			
+			@Override
+			public String toString()
+			{
+				return "ASync: "+((M==null)?"null":M.Name())+": "+CMParms.combineQuoted(commands,0);
 			}
 		});
 		return false;
