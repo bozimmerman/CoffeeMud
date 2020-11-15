@@ -233,6 +233,7 @@ public class VFShell
 							if(db!=null)
 							{
 								db.update("DELETE FROM CMROIT WHERE CMROID='"+roomID+"'", 0);
+								db.update("DELETE FROM CMROCH WHERE CMROID='"+roomID+"'", 0);
 								db.update("DELETE FROM CMROEX WHERE CMROID='"+roomID+"' OR CMNRID='"+roomID+"'", 0);
 								db.update("DELETE FROM CMROOM WHERE CMROID='"+roomID+"'", 0);
 							}
