@@ -167,13 +167,13 @@ public class Skill_ResearchRegionMap extends StdSkill
 			newArea[x][dupAllButDex]=null;
 		}
 		else
-			newArea[x]=new Area[newArea[x+1].length];
+			newArea[x]=new Area[newArea[0].length];
 		return newArea;
 	}
 
 	protected Area[][] insertAreaRow(final Area[][] areaDrawing, final int y, final int dupAllButDex)
 	{
-		final int oldHeight=areaDrawing.length;
+		final int oldHeight=areaDrawing[0].length;
 		final Area[][] newArea=areaDrawing;
 		for(int x=0;x<areaDrawing.length;x++)
 		{
@@ -190,6 +190,26 @@ public class Skill_ResearchRegionMap extends StdSkill
 		return newArea;
 	}
 
+	protected char pickMapChar(final char c1, final char c2, final Area A1, final Area A2, final Map<Area,Map<Area,int[]>> connections)
+	{
+		if(A1==A2)
+			return ' ';
+		if((A2!=null)
+		&&( ((connections.containsKey(A1))&&(connections.get(A1).containsKey(A2)))
+			||((connections.containsKey(A2))&&(connections.get(A2).containsKey(A1)))))
+			return c2;
+		return c1;
+	}
+	
+	protected char[] pickMapChars(final char c1, final char c2, final Area A1, final Area A2, final Map<Area,Map<Area,int[]>> connections)
+	{
+		char c=pickMapChar(c1,c2,A1,A2,connections);
+		if(c==' ')
+			return new char[]{c,c};
+		else
+			return new char[]{c1,c};
+	}
+	
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -281,7 +301,7 @@ public class Skill_ResearchRegionMap extends StdSkill
 					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
 					{
 						if((R!=null)
-						&&(R.roomID().length()==0)
+						&&(R.roomID().length()>0)
 						&&(R.getArea()==targetA)
 						&&(CMLib.flags().canAccess(mob, R)))
 						{
@@ -300,7 +320,7 @@ public class Skill_ResearchRegionMap extends StdSkill
 				{
 					final List<List<Integer>> trails = CMLib.tracking().findAllTrails(mob.location(), targetRoom[0], this.checkSet);
 					this.checkSet.clear(); // don't need it any longer
-					final Map<Area,Map<Area,int[]>> connections = new HashMap<Area,Map<Area,int[]>>();
+					final OrderedMap<Area,Map<Area,int[]>> connections = new OrderedMap<Area,Map<Area,int[]>>();
 					for(final List<Integer> trail : trails)
 					{
 						Room curRoom=theRoom;
@@ -313,24 +333,26 @@ public class Skill_ResearchRegionMap extends StdSkill
 							{
 								if(nextR.getArea()!=curRoom.getArea())
 								{
-									if(!connections.containsKey(nextR.getArea()))
-										connections.put(nextR.getArea(), new HashMap<Area,int[]>());
-									if(!connections.get(nextR.getArea()).containsKey(curRoom.getArea()))
-										connections.get(nextR.getArea()).put(curRoom.getArea(),new int[] {1});
+									if(!connections.containsKey(curRoom.getArea()))
+										connections.put(curRoom.getArea(), new HashMap<Area,int[]>());
+									
+									if(!connections.get(curRoom.getArea()).containsKey(nextR.getArea()))
+										connections.get(curRoom.getArea()).put(nextR.getArea(),new int[] {1});
 									else
-										connections.get(nextR.getArea()).get(curRoom.getArea())[0]++;
+										connections.get(curRoom.getArea()).get(nextR.getArea())[0]++;
 								}
 								curRoom=nextR;
 							}
 						}
 					}
 					final List<Quad<Area,Area,long[],long[]>> coords=new ArrayList<Quad<Area,Area,long[],long[]>>();
-					for(final Area fA : connections.keySet())
+					for(final Iterator<Area> sa = connections.keyIterator();sa.hasNext();)
 					{
-						final Map<Area,int[]> connectAs=connections.get(fA);
-						final Area sA;
+						final Area sA=sa.next();
+						final Map<Area,int[]> connectAs=connections.get(sA);
+						final Area fA;
 						if(connectAs.size()<2)
-							sA=connectAs.keySet().iterator().next();
+							fA=connectAs.keySet().iterator().next();
 						else
 						{
 							Area bestA=null;
@@ -343,16 +365,16 @@ public class Skill_ResearchRegionMap extends StdSkill
 									highestCount=connectAs.get(bA)[0];
 								}
 							}
-							sA=bestA;
+							fA=bestA;
 						}
-						if(sA==null)
+						if(fA==null)
 							continue;
 						final Quad<Area,Area,long[],long[]> quad=new Quad<Area,Area,long[],long[]>(sA,fA,new long[1],new long[1]);
 						coords.add(quad);
 						for(final List<Integer> trail : trails)
 						{
-							boolean started=false;
 							Room curRoom=theRoom;
+							boolean started=(curRoom.getArea()==sA);
 							for(final Integer dir : trail)
 							{
 								final Room nextR=curRoom.getRoomInDir(dir.intValue());
@@ -360,28 +382,35 @@ public class Skill_ResearchRegionMap extends StdSkill
 									Log.errOut("Regional Map fail!");
 								else
 								{
-									if(nextR.getArea()==sA)
-										started=true;
-									else
 									if(started)
 									{
 										final int[] delta = Directions.adjustXYByDirections(0,0,dir.intValue());
+										if((curRoom.domainType()&Room.INDOORS)==0)
+										{
+											delta[0]*=2;
+											delta[1]*=2;
+										}
 										quad.third[0]+=delta[0];
 										quad.fourth[0]+=delta[1];
 										if(nextR.getArea()==fA)
 											break;
 									}
+									else
+									if(nextR.getArea()==sA)
+										started=true;
 									curRoom=nextR;
 								}
 							}
 						}
 					}
-					connections.clear();
+					//connections.clear(); -- needed below
+					int trailSize=trails.size();
+					trails.clear();
 					final List<Triad<Area,Area,Integer>> finalDirs = new ArrayList<Triad<Area,Area,Integer>>();
 					for(final Quad<Area,Area,long[],long[]> quad : coords)
 					{
-						final int fXMove = (int)Math.round(CMath.div((double)quad.third[0],trails.size()));
-						final int fYMove = (int)Math.round(CMath.div((double)quad.fourth[0],trails.size()));
+						final int fXMove = (int)Math.round(CMath.div((double)quad.third[0],trailSize));
+						final int fYMove = (int)Math.round(CMath.div((double)quad.fourth[0],trailSize));
 						final int finalDir;
 						if(fYMove == 0)
 							finalDir = (fXMove<0)?Directions.WEST:Directions.EAST;
@@ -394,16 +423,16 @@ public class Skill_ResearchRegionMap extends StdSkill
 							final double afYMove=Math.abs(fYMove);
 							//final int thirdSide=(int)Math.round(Math.sqrt((fXMove*fXMove)+(fYMove*fYMove)));
 							final double atan = Math.atan(CMath.div(afXMove,afYMove));
-							if((fXMove>0)&&(fYMove>0))
+							if((fXMove>0)&&(fYMove<0))
 								finalDir=(atan<.392)?Directions.NORTH:((atan>1.18)?Directions.EAST:Directions.NORTHEAST);
 							else
-							if((fXMove<0)&&(fYMove>0))
+							if((fXMove<0)&&(fYMove<0))
 								finalDir=(atan<.392)?Directions.NORTH:((atan>1.18)?Directions.WEST:Directions.NORTHWEST);
 							else
-							if((fXMove<0)&&(fYMove<0))
+							if((fXMove<0)&&(fYMove>0))
 								finalDir=(atan<.392)?Directions.SOUTH:((atan>1.18)?Directions.WEST:Directions.SOUTHWEST);
 							else
-							if((fXMove>0)&&(fYMove<0))
+							if((fXMove>0)&&(fYMove>0))
 								finalDir=(atan<.392)?Directions.SOUTH:((atan>1.18)?Directions.EAST:Directions.SOUTHEAST);
 							else
 							{
@@ -455,16 +484,19 @@ public class Skill_ResearchRegionMap extends StdSkill
 									areaDrawing[nextDir[0]][nextDir[1]]=tA;
 								else
 								{
-									if((dir.intValue()==Directions.NORTH)
-									||(dir.intValue()==Directions.NORTHEAST)||(dir.intValue()==Directions.NORTHWEST))
+									if(((dir.intValue()==Directions.NORTH)||(dir.intValue()==Directions.NORTHEAST)||(dir.intValue()==Directions.NORTHWEST))
+									&&(areaDrawing[nextDir[0]][nextDir[1]]==null))
 										areaDrawing=this.insertAreaRow(areaDrawing, nextDir[1],nextDir[0]);
-									if((dir.intValue()!=Directions.EAST)&&(dir.intValue()!=Directions.WEST))
-									{
+									if(((dir.intValue()==Directions.SOUTH)||(dir.intValue()==Directions.SOUTHEAST)||(dir.intValue()==Directions.SOUTHWEST))
+									&&(areaDrawing[nextDir[0]][nextDir[1]]==null))
 										areaDrawing=this.insertAreaRow(areaDrawing, nextDir[1],nextDir[0]);
-									}
-									if((dir.intValue()!=Directions.NORTH)&&(dir.intValue()!=Directions.SOUTH))
+									if(((dir.intValue()==Directions.WEST)||(dir.intValue()==Directions.NORTHWEST)||(dir.intValue()==Directions.SOUTHWEST))
+									&&(areaDrawing[nextDir[0]][nextDir[1]]==null))
 										areaDrawing=this.insertAreaColumn(areaDrawing, nextDir[0],nextDir[1]);
-
+									if(((dir.intValue()==Directions.EAST)||(dir.intValue()==Directions.NORTHEAST)||(dir.intValue()==Directions.SOUTHEAST))
+									&&(areaDrawing[nextDir[0]][nextDir[1]]==null))
+										areaDrawing=this.insertAreaColumn(areaDrawing, nextDir[0],nextDir[1]);
+									areaDrawing[nextDir[0]][nextDir[1]]=tA;
 								}
 								break;
 							}
@@ -476,6 +508,64 @@ public class Skill_ResearchRegionMap extends StdSkill
 							}
 						}
 					}
+					finalDirs.clear();
+					StringBuilder map=new StringBuilder("");
+					for(int y=0;y<areaDrawing[0].length;y++)
+					{
+						StringBuilder phatRows[] = new StringBuilder[5];
+						for(int i=0;i<phatRows.length;i++)
+							phatRows[i]=new StringBuilder("");
+						for(int x=0;x<areaDrawing.length;x++)
+						{
+							if(areaDrawing[x][y]==null)
+							{
+								phatRows[0].append("          ");
+								phatRows[1].append("          ");
+								phatRows[2].append("          ");
+								phatRows[3].append("          ");
+								phatRows[4].append("          ");
+							}
+							else
+							{
+								final Area A1=areaDrawing[x][y];
+								Area A2;
+								A2=(x>0)?areaDrawing[x-1][y]:null;
+								char leftChar[]=pickMapChars('!','-',A1,A2,connections);
+								A2=(x<areaDrawing.length-1)?areaDrawing[x+1][y]:null;
+								char rightChar[]=pickMapChars('!','-',A1,A2,connections);
+								A2=(y>0)?areaDrawing[x][y-1]:null;
+								char topChar[]=pickMapChars('-','!',A1,A2,connections);
+								A2=(y<areaDrawing[0].length-1)?areaDrawing[x][y+1]:null;
+								char botChar[]=pickMapChars('-','!',A1,A2,connections);
+								
+								A2=((y>0)&&(x>0))?areaDrawing[x-1][y-1]:null;
+								char diagCharTL=pickMapChar('+','\\',A1,A2,connections);
+								A2=((y>0)&&(x<areaDrawing.length-1))?areaDrawing[x+1][y-1]:null;
+								char diagCharTR=pickMapChar('+','/',A1,A2,connections);
+								A2=((x>0)&&(y<areaDrawing[0].length-1))?areaDrawing[x-1][y+1]:null;
+								char diagCharBL=pickMapChar('+','/',A1,A2,connections);
+								A2=((x<areaDrawing.length-1)&&(y<areaDrawing[0].length-1))?areaDrawing[x+1][y+1]:null;
+								char diagCharBR=pickMapChar('+','\\',A1,A2,connections);
+								String areaName=CMStrings.limit(CMStrings.padRight(A1.name(), 24),24);
+								phatRows[0].append(diagCharTL+CMStrings.repeat(topChar[0], 3)+topChar[1]+topChar[1]+CMStrings.repeat(topChar[0], 3)+diagCharTR);
+								phatRows[1].append(leftChar[0]+areaName.substring(0,8)+rightChar[0]);
+								phatRows[2].append(leftChar[1]+areaName.substring(8,16)+rightChar[1]);
+								phatRows[3].append(leftChar[0]+areaName.substring(16,24)+rightChar[0]);
+								phatRows[4].append(diagCharBL+CMStrings.repeat(botChar[0], 3)+botChar[1]+botChar[1]+CMStrings.repeat(botChar[0], 3)+diagCharBR);
+							}
+						}
+						for(StringBuilder str : phatRows)
+							map.append(str).append("\n\r");
+					}
+					this.finalMapI=CMClass.getBasicItem("GenReadable");
+					this.finalMapI.setName(L("A region map from @x1 to @x2",this.theRoom.getArea().Name(),what));
+					this.finalMapI.setDisplayText(L("A rolled up map lies here to @x1 lies here.",what));
+					this.finalMapI.setReadable(true);
+					this.finalMapI.setReadableText("\n\r"+map.toString());
+					this.finalMapI.recoverPhyStats();
+					this.finalMapI.text();
+					this.tickDown += (10*connections.size());
+					connections.clear();
 				}
 				return true;
 			}
@@ -537,7 +627,7 @@ public class Skill_ResearchRegionMap extends StdSkill
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		final String areaName=CMParms.combine(commands);
+		String areaName=CMParms.combine(commands);
 		if(areaName.trim().length()==0)
 		{
 			mob.tell(L("Research which area?"));
@@ -582,6 +672,7 @@ public class Skill_ResearchRegionMap extends StdSkill
 			mob.tell(L("That would be a pretty silly map to research from here."));
 			return false;
 		}
+		areaName=A.Name();
 
 		if(!super.invoke(mob, commands, givenTarget, auto, asLevel))
 			return false;

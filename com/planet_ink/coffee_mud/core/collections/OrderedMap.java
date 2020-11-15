@@ -45,6 +45,16 @@ public class OrderedMap<K,J> implements Map<K,J>,  Iterable<J>
 
 	};
 
+	private final Converter<Pair<K,J>,K> keyConverter = new Converter<Pair<K,J>,K>()
+	{
+		@Override
+		public K convert(final Pair<K, J> obj)
+		{
+			return obj.first;
+		}
+
+	};
+
 	private final Converter<Pair<K,J>,Map.Entry<K,J>> entryConverter = new Converter<Pair<K,J>,Map.Entry<K,J>>()
 	{
 		@Override
@@ -62,6 +72,14 @@ public class OrderedMap<K,J> implements Map<K,J>,  Iterable<J>
 		if(size()==0)
 			return empty;
 		return new ConvertingIterator<Pair<K,J>,J>(coll.iterator(), converter);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Iterator<K> keyIterator()
+	{
+		if(size()==0)
+			return empty;
+		return new ConvertingIterator<Pair<K,J>,K>(coll.iterator(), keyConverter);
 	}
 
 	@SuppressWarnings("unchecked")

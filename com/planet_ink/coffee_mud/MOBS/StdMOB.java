@@ -4228,7 +4228,16 @@ public class StdMOB implements MOB
 				{
 					final Item I = contents.get(a);
 					if (I != null)
-						applier.apply(I);
+					{
+						try
+						{
+							applier.apply(I);
+						}
+						catch(Exception e)
+						{
+							Log.errOut(e);
+						}
+					}
 				}
 			}
 			catch (final java.lang.IndexOutOfBoundsException x)
@@ -4886,7 +4895,16 @@ public class StdMOB implements MOB
 			try
 			{
 				for (int a = 0; a < affects.size(); a++)
-					applier.apply(affects.get(a));
+				{
+					try
+					{
+						applier.apply(affects.get(a));
+					}
+					catch(Exception e)
+					{
+						Log.errOut(e);
+					}
+				}
 			}
 			catch (final java.lang.IndexOutOfBoundsException x)
 			{
@@ -4898,7 +4916,16 @@ public class StdMOB implements MOB
 			if (!racialEffects.isEmpty())
 			{
 				for (final Ability A : racialEffects)
-					applier.apply(A);
+				{
+					try
+					{
+						applier.apply(A);
+					}
+					catch(Exception e)
+					{
+						Log.errOut(e);
+					}
+				}
 			}
 		}
 		catch (final java.lang.IndexOutOfBoundsException x)
@@ -4909,7 +4936,16 @@ public class StdMOB implements MOB
 			if (!clans.isEmpty())
 			{
 				for (final Ability A : clanEffects())
-					applier.apply(A);
+				{
+					try
+					{
+						applier.apply(A);
+					}
+					catch(Exception e)
+					{
+						Log.errOut(e);
+					}
+				}
 			}
 		}
 		catch (final java.lang.IndexOutOfBoundsException x)
@@ -5058,7 +5094,16 @@ public class StdMOB implements MOB
 			try
 			{
 				for (int a = 0; a < behaviors.size(); a++)
-					applier.apply(behaviors.get(a));
+				{
+					try
+					{
+						applier.apply(behaviors.get(a));
+					}
+					catch(Exception e)
+					{
+						Log.errOut(e);
+					}
+				}
 			}
 			catch (final java.lang.IndexOutOfBoundsException x)
 			{
