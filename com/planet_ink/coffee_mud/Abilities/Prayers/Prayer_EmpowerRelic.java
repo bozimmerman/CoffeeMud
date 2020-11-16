@@ -120,7 +120,9 @@ public class Prayer_EmpowerRelic extends Prayer
 			final Room R=mob.location();
 			if(R==null)
 				return false;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) empowered."):L("^S<S-NAME> powerfully @x1, sweeping <S-HIS-HER> hands over <T-NAMESELF>.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					auto?L("<T-NAME> become(s) empowered."):
+						L("^S<S-NAME> powerfully @x1, sweeping <S-HIS-HER> hands over <T-NAMESELF>.^?",prayWord(mob)));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);

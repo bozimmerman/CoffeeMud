@@ -170,7 +170,8 @@ public class Prayer_Absorption extends Prayer
 
 		if((success)&&(absorbed!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 for some of <T-YOUPOSS> knowledge!^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":
+				L("^S<S-NAME> "+prayWord(mob)+" for some of <T-YOUPOSS> knowledge!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

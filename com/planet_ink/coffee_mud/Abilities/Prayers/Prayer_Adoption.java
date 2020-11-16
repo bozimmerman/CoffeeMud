@@ -296,7 +296,8 @@ public class Prayer_Adoption extends Prayer
 		}
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> @x1 to bless the adoption of @x3 by @x2.^?",prayForWord(mob),parent.name(),child.name()));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),
+					auto?"":L("^S<S-NAME> @x1 to bless the adoption of @x3 by @x2.^?",prayForWord(mob),parent.name(),child.name()));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);

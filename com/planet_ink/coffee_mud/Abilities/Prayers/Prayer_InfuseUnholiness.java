@@ -213,7 +213,8 @@ public class Prayer_InfuseUnholiness extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("An unholy aura appears around <T-NAME>."):L("^S<S-NAME> @x1 to infuse an unholy aura around <T-NAMESELF>.^?",prayForWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					auto?L("An unholy aura appears around <T-NAME>."):L("^S<S-NAME> @x1 to infuse an unholy aura around <T-NAMESELF>.^?",prayForWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

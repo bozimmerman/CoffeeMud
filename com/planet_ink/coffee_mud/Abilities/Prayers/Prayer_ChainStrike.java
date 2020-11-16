@@ -89,7 +89,9 @@ public class Prayer_ChainStrike extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"A thunderous crack of electricity erupts!":"^S<S-NAME> "+prayForWord(mob)+" to send down a thunderous crack of electricity.^?")+CMLib.protocol().msp("lightning.wav",40)))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),
+					L(auto?"A thunderous crack of electricity erupts!":
+						"^S<S-NAME> @x1 to send down a thunderous crack of electricity.^?",prayForWord(mob))+CMLib.protocol().msp("lightning.wav",40)))
 			{
 				while(damage>0)
 				{

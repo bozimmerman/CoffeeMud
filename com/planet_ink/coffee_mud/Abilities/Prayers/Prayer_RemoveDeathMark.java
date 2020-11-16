@@ -131,7 +131,9 @@ public class Prayer_RemoveDeathMark extends Prayer implements MendingSkill
 
 		if((success)&&(remove.size()>0))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("^SA glow surrounds <T-NAME>.^?"):L("^S<S-NAME> call(s) on @x1 for <T-NAME> to be released from a death mark.^?",hisHerDiety(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					auto?L("^SA glow surrounds <T-NAME>.^?"):
+						L("^S<S-NAME> call(s) on @x1 for <T-NAME> to be released from a death mark.^?",hisHerDiety(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

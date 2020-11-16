@@ -125,7 +125,9 @@ public class Prayer_Nullification extends Prayer
 			final MOB target=R.fetchInhabitant(i);
 			if((target!=null)&&(success))
 			{
-				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) nullified."):L("^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>.^?"));
+				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+						auto?L("<T-NAME> become(s) nullified."):
+							L("^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>.^?"));
 				if(R.okMessage(mob,msg))
 				{
 					R.send(mob,msg);

@@ -210,7 +210,8 @@ public class Prayer_InfuseDiscipline extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("A lawful aura appears around <T-NAME>."):L("^S<S-NAME> @x1 to infuse a lawful aura around <T-NAMESELF>.^?",prayForWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					auto?L("A lawful aura appears around <T-NAME>."):L("^S<S-NAME> @x1 to infuse a lawful aura around <T-NAMESELF>.^?",prayForWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

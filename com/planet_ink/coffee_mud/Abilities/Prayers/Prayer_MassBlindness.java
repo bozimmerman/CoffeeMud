@@ -140,7 +140,8 @@ public class Prayer_MassBlindness extends Prayer
 				final MOB target=(MOB)element;
 				if(auto||(target.charStats().getBodyPart(Race.BODY_EYE)>0))
 				{
-					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":L("^S<S-NAME> @x1 an unholy blindness upon <T-NAMESELF>.^?",prayForWord(mob)));
+					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,
+							auto?"":L("^S<S-NAME> @x1 an unholy blindness upon <T-NAMESELF>.^?",prayForWord(mob)));
 					if((target!=mob)&&(mob.location().okMessage(mob,msg)))
 					{
 						mob.location().send(mob,msg);

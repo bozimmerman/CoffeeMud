@@ -375,7 +375,8 @@ public class Prayer_Monolith extends Prayer
 			}
 			if(I!=null)
 			{
-				final CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("@x1 appears!",I.name()):L("^S<S-NAME> @x1 to construct @x2!^?",prayForWord(mob),I.name()));
+				final CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+						auto?L("@x1 appears!",I.name()):L("^S<S-NAME> @x1 to construct @x2!^?",prayForWord(mob),I.name()));
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);

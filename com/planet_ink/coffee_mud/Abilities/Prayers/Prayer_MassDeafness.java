@@ -131,7 +131,8 @@ public class Prayer_MassDeafness extends Prayer
 			for (final Object element : h)
 			{
 				final MOB target=(MOB)element;
-				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":L("^S<S-NAME> @x1 an unholy deafness upon <T-NAMESELF>.^?",prayForWord(mob)));
+				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,
+						auto?"":L("^S<S-NAME> @x1 an unholy deafness upon <T-NAMESELF>.^?",prayForWord(mob)));
 				if((target!=mob)&&(mob.location().okMessage(mob,msg)))
 				{
 					mob.location().send(mob,msg);

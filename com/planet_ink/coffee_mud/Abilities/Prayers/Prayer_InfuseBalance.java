@@ -204,7 +204,8 @@ public class Prayer_InfuseBalance extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("A holy balanced aura appears around <T-NAME>."):L("^S<S-NAME> @x1 to infuse a holy balanced aura around <T-NAMESELF>.^?",prayForWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					auto?L("A holy balanced aura appears around <T-NAME>."):L("^S<S-NAME> @x1 to infuse a holy balanced aura around <T-NAMESELF>.^?",prayForWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

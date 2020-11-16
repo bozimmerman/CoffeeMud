@@ -87,53 +87,57 @@ public class Prayer extends StdAbility
 		return Ability.ACODE_PRAYER;
 	}
 
+	/** These should be pre-localized, because of the damn deity names */
 	protected String prayWord(final MOB mob)
 	{
 		if(mob.charStats().deityName().length()>0)
-			return "pray(s) to "+mob.charStats().deityName();
-		return "pray(s)";
+			return L("pray(s) to @x1",mob.charStats().deityName());
+		return L("pray(s)");
 	}
 
+	/** These should be pre-localized, because of the damn deity names */
 	protected String prayForWord(final MOB mob)
 	{
 		if(mob.charStats().deityName().length()>0)
-			return "pray(s) for "+mob.charStats().deityName();
-		return "pray(s)";
+			return L("pray(s) for @x1",mob.charStats().deityName());
+		return L("pray(s)");
 	}
 
+	/** These should be pre-localized, because of the damn deity names */
 	protected String inTheNameOf(final MOB mob)
 	{
 		if(mob.charStats().deityName().length()>0)
-			return " in the name of "+mob.charStats().deityName();
+			return L(" in the name of @x1",mob.charStats().deityName());
 		return "";
 	}
 
+	/** These should be pre-localized, because of the damn deity names */
 	protected String againstTheGods(final MOB mob)
 	{
 		if(mob.charStats().deityName().length()>0)
-			return " against "+mob.charStats().deityName();
-		return " against the gods";
+			return L(" against @x1",mob.charStats().deityName());
+		return L(" against the gods");
 	}
 
 	protected String hisHerDiety(final MOB mob)
 	{
 		if(mob.charStats().deityName().length()>0)
 			return mob.charStats().deityName();
-		return "<S-HIS-HER> god";
+		return L("<S-HIS-HER> god");
 	}
 
 	protected String ofDiety(final MOB mob)
 	{
 		if(mob.charStats().deityName().length()>0)
-			return " of "+mob.charStats().deityName();
+			return L(" of @x1",mob.charStats().deityName());
 		return "";
 	}
 
 	protected String prayingWord(final MOB mob)
 	{
 		if(mob.charStats().deityName().length()>0)
-			return "praying to "+mob.charStats().deityName();
-		return "praying";
+			return L("praying to @x1",mob.charStats().deityName());
+		return L("praying");
 	}
 
 	protected static List<Ability> getRelicPrayers(final Physical P)

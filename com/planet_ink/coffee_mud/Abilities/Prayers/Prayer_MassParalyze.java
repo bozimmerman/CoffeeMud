@@ -117,7 +117,8 @@ public class Prayer_MassParalyze extends Prayer
 			for (final Object element : h)
 			{
 				final MOB target=(MOB)element;
-				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":L("^S<S-NAME> @x1 an unholy paralysis upon <T-NAMESELF>.^?",prayForWord(mob)));
+				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,
+						auto?"":L("^S<S-NAME> @x1 an unholy paralysis upon <T-NAMESELF>.^?",prayForWord(mob)));
 				final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.TYP_PARALYZE|(auto?CMMsg.MASK_ALWAYS:0),null);
 				if((target!=mob)&&(mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 				{

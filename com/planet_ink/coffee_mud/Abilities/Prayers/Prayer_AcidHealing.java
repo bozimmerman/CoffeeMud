@@ -144,7 +144,7 @@ public class Prayer_AcidHealing extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 for acidic healing.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> "+prayWord(mob)+" for acidic healing.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -153,7 +153,7 @@ public class Prayer_AcidHealing extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for acidic healing, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> "+prayWord(mob)+" for acidic healing, but <S-HIS-HER> plea is not answered."));
 
 		// return whether it worked
 		return success;
