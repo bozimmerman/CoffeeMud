@@ -80,6 +80,35 @@ public class Prayer_ImbueShield extends Prayer
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
+	protected void doImbue(final MOB mob, final Item targetI, final Ability imbuePrayerA)
+	{
+		mob.location().show(mob,targetI,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glow(s) divinely!"));
+		targetI.basePhyStats().setDisposition(targetI.basePhyStats().disposition()|PhyStats.IS_BONUS);
+		targetI.basePhyStats().setLevel(targetI.basePhyStats().level()+(CMLib.ableMapper().lowestQualifyingLevel(imbuePrayerA.ID())/2));
+		final Ability A=CMClass.getAbility("Prop_WearSpellCast");
+		A.setMiscText("LAYERED;"+imbuePrayerA.ID()+";");
+		targetI.addNonUninvokableEffect(A);
+		targetI.recoverPhyStats();
+	}
+
+	protected boolean isOkPrayer(final Ability imbuePrayerA)
+	{
+		if((imbuePrayerA.ID().equals("Spell_Stoneskin"))
+		||(imbuePrayerA.ID().equals("Spell_MirrorImage"))
+		||(CMath.bset(imbuePrayerA.flags(), FLAG_SUMMONING))
+		||(imbuePrayerA.abstractQuality()==Ability.QUALITY_MALICIOUS)
+		||((!imbuePrayerA.canAffect(CAN_MOBS))&&(!imbuePrayerA.canTarget(CAN_MOBS))))
+			return false;
+		return true;
+	}
+
+	protected int getXPCost(final Ability imbuePrayerA)
+	{
+		int experienceToLose=1000;
+		experienceToLose+=(100*CMLib.ableMapper().lowestQualifyingLevel(imbuePrayerA.ID()));
+		return experienceToLose;
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -127,7 +156,7 @@ public class Prayer_ImbueShield extends Prayer
 			mob.tell(L("@x1 cannot be imbued until it has been empowered.",target.name(mob)));
 			return false;
 		}
-		
+
 		commands.remove(commands.size()-1);
 		final Item targetI=(Item)target;
 
@@ -152,11 +181,7 @@ public class Prayer_ImbueShield extends Prayer
 			return false;
 		}
 
-		if((imbuePrayerA.ID().equals("Spell_Stoneskin"))
-		||(imbuePrayerA.ID().equals("Spell_MirrorImage"))
-		||(CMath.bset(imbuePrayerA.flags(), FLAG_SUMMONING))
-		||(imbuePrayerA.abstractQuality()==Ability.QUALITY_MALICIOUS)
-		||((!imbuePrayerA.canAffect(CAN_MOBS))&&(!imbuePrayerA.canTarget(CAN_MOBS))))
+		if(!isOkPrayer(imbuePrayerA))
 		{
 			mob.tell(L("That prayer cannot be used to imbue anything."));
 			return false;
@@ -175,14 +200,15 @@ public class Prayer_ImbueShield extends Prayer
 			mob.tell(L("You can't imbue '@x1'.",targetI.name()));
 			return false;
 		}
+		targetI.phyStats().setDisposition(targetI.phyStats().disposition()&~(PhyStats.IS_BONUS));
 		if(CMLib.flags().isEnchanted(targetI))
 		{
-			mob.tell(L("@x1 already appears to be sufficiently magical."));
+			mob.tell(L("@x1 already appears to be sufficiently magical.",targetI.name(mob)));
 			return false;
 		}
+		targetI.recoverPhyStats();
 
-		int experienceToLose=1000;
-		experienceToLose+=(100*CMLib.ableMapper().lowestQualifyingLevel(imbuePrayerA.ID()));
+		int experienceToLose=getXPCost(imbuePrayerA);
 		if((mob.getExperience()-experienceToLose)<0)
 		{
 			mob.tell(L("You don't have enough experience to use this magic."));
@@ -200,17 +226,11 @@ public class Prayer_ImbueShield extends Prayer
 			experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 			mob.tell(L("You lose @x1 experience points for the effort.",""+experienceToLose));
 			setMiscText(imbuePrayerA.ID());
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("<S-NAME> @x1 while holding <T-NAMESELF> tightly.",super.prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> @x1 while holding <T-NAMESELF> tightly.^?",super.prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glow(s) divinely!"));
-				targetI.basePhyStats().setDisposition(target.basePhyStats().disposition()|PhyStats.IS_BONUS);
-				targetI.basePhyStats().setLevel(targetI.basePhyStats().level()+(CMLib.ableMapper().lowestQualifyingLevel(imbuePrayerA.ID())/2));
-				final Ability A=CMClass.getAbility("Prop_WearSpellCast");
-				A.setMiscText("LAYERED;"+imbuePrayerA.ID()+";");
-				targetI.addNonUninvokableEffect(A);
-				targetI.recoverPhyStats();
+				doImbue(mob,targetI,imbuePrayerA);
 			}
 
 		}
