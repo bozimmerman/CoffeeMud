@@ -1200,6 +1200,19 @@ public class StdDeity extends StdMOB implements Deity
 						final WorshipService service=findService(msg.source(),null);
 						this.cancelService(service);
 					}
+					else
+					if("CURSING".equalsIgnoreCase(msg.othersMessage()))
+					{
+						msg.addTrailerRunnable(new Runnable()
+						{
+							final MOB M=msg.source();
+							@Override
+							public void run()
+							{
+								bestowCurses(M);
+							}
+						});
+					}
 					break;
 				}
 			}
