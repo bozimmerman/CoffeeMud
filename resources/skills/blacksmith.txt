@@ -73,7 +73,7 @@ small % bench	39	20	10	130	GenChair	CHAIR	2
 % storage drum	41	10	10	61	GenEmptyDrink	LIQUID	250	
 % statue	41	120	450	37500	GenItem	STATUE		
 % potion rack	42	30	20	405	GenContainer	DRINKABLES	100	Prop_NoPurge
-% sarcophogus	42	40	200	5450	GenBed	BED	500	Prop_NoPurge
+plan % sarcophagus	42	40	200	5450	GenBed	BED	500	Prop_NoPurge
 % stool	43	20	5	66	GenChair	CHAIR	1	
 % tub	43	60	100	4150	GenTub	CHAIR	2000	
 % brazier	43	40	125	2500	GenFixture			Spell_ContinualLight
