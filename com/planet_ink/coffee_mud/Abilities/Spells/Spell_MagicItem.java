@@ -104,38 +104,38 @@ public class Spell_MagicItem extends Spell
 		final Item wand=(Item)target;
 
 		final String spellName=CMParms.combine(commands,0).trim();
-		Spell wandThis=null;
+		Ability enchantSpellA=null;
 		final Vector<Ability> ables=new Vector<Ability>();
 		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
 			if((A!=null)
-			&&(A instanceof Spell)
+			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 			&&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
 			&&(!A.ID().equals(this.ID())))
 				ables.addElement(A);
 		}
-		wandThis = (Spell)CMLib.english().fetchEnvironmental(ables,spellName,true);
-		if(wandThis==null)
-			wandThis = (Spell)CMLib.english().fetchEnvironmental(ables,spellName,false);
-		if(wandThis==null)
+		enchantSpellA = (Ability)CMLib.english().fetchEnvironmental(ables,spellName,true);
+		if(enchantSpellA==null)
+			enchantSpellA = (Ability)CMLib.english().fetchEnvironmental(ables,spellName,false);
+		if(enchantSpellA==null)
 		{
 			mob.tell(L("You don't know how to enchant anything with '@x1'.",spellName));
 			return false;
 		}
 
-		if((wandThis.ID().equals("Spell_Stoneskin"))
-		||(wandThis.ID().equals("Spell_MirrorImage"))
-		||(CMath.bset(wandThis.flags(), FLAG_SUMMONING))
-		||(wandThis.canAffect(CAN_ROOMS)))
+		if((enchantSpellA.ID().equals("Spell_Stoneskin"))
+		||(enchantSpellA.ID().equals("Spell_MirrorImage"))
+		||(CMath.bset(enchantSpellA.flags(), FLAG_SUMMONING))
+		||(enchantSpellA.canAffect(CAN_ROOMS)))
 		{
 			mob.tell(L("That spell cannot be used to enchant anything."));
 			return false;
 		}
 
-		if((CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())>24)
-		||(((StdAbility)wandThis).usageCost(null,true)[0]>45)
-		||(CMath.bset(wandThis.flags(), Ability.FLAG_CLANMAGIC)))
+		if((CMLib.ableMapper().lowestQualifyingLevel(enchantSpellA.ID())>24)
+		||(((StdAbility)enchantSpellA).usageCost(null,true)[0]>45)
+		||(CMath.bset(enchantSpellA.flags(), Ability.FLAG_CLANMAGIC)))
 		{
 			mob.tell(L("That spell is too powerful to enchant into anything."));
 			return false;
@@ -148,7 +148,7 @@ public class Spell_MagicItem extends Spell
 		}
 
 		int experienceToLose=1000;
-		experienceToLose+=(100*CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID()));
+		experienceToLose+=(100*CMLib.ableMapper().lowestQualifyingLevel(enchantSpellA.ID()));
 		if((mob.getExperience()-experienceToLose)<0)
 		{
 			mob.tell(L("You don't have enough experience to cast this spell."));
@@ -165,26 +165,26 @@ public class Spell_MagicItem extends Spell
 			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 			experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 			mob.tell(L("You lose @x1 experience points for the effort.",""+experienceToLose));
-			setMiscText(wandThis.ID());
+			setMiscText(enchantSpellA.ID());
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glow(s) brightly!"));
 				wand.basePhyStats().setDisposition(target.basePhyStats().disposition()|PhyStats.IS_BONUS);
-				wand.basePhyStats().setLevel(wand.basePhyStats().level()+(CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())/2));
+				wand.basePhyStats().setLevel(wand.basePhyStats().level()+(CMLib.ableMapper().lowestQualifyingLevel(enchantSpellA.ID())/2));
 				//Vector<String> V=CMParms.parseCommas(CMLib.utensils().wornList(wand.rawProperLocationBitmap()),true);
 				if(wand instanceof Armor)
 				{
 					final Ability A=CMClass.getAbility("Prop_WearSpellCast");
-					A.setMiscText("LAYERED;"+wandThis.ID()+";");
+					A.setMiscText("LAYERED;"+enchantSpellA.ID()+";");
 					wand.addNonUninvokableEffect(A);
 				}
 				else
 				if(wand instanceof Weapon)
 				{
 					final Ability A=CMClass.getAbility("Prop_FightSpellCast");
-					A.setMiscText("25%;MAXTICKS=12;"+wandThis.ID()+";");
+					A.setMiscText("25%;MAXTICKS=12;"+enchantSpellA.ID()+";");
 					wand.addNonUninvokableEffect(A);
 				}
 				else
@@ -192,20 +192,20 @@ public class Spell_MagicItem extends Spell
 				||(wand instanceof Drink))
 				{
 					final Ability A=CMClass.getAbility("Prop_UseSpellCast2");
-					A.setMiscText(wandThis.ID()+";");
+					A.setMiscText(enchantSpellA.ID()+";");
 					wand.addNonUninvokableEffect(A);
 				}
 				else
 				if(wand.fitsOn(Wearable.WORN_HELD)||wand.fitsOn(Wearable.WORN_WIELD))
 				{
 					final Ability A=CMClass.getAbility("Prop_WearSpellCast");
-					A.setMiscText("LAYERED;"+wandThis.ID()+";");
+					A.setMiscText("LAYERED;"+enchantSpellA.ID()+";");
 					wand.addNonUninvokableEffect(A);
 				}
 				else
 				{
 					final Ability A=CMClass.getAbility("Prop_WearSpellCast");
-					A.setMiscText("LAYERED;"+wandThis.ID()+";");
+					A.setMiscText("LAYERED;"+enchantSpellA.ID()+";");
 					wand.addNonUninvokableEffect(A);
 				}
 				wand.recoverPhyStats();

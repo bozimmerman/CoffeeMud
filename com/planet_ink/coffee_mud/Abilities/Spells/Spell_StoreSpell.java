@@ -356,31 +356,31 @@ public class Spell_StoreSpell extends Spell implements AbilityContainer
 		commands.remove(commands.size()-1);
 
 		final String spellName=CMParms.combine(commands,0).trim();
-		Spell wandThis=null;
+		Ability storeSpellA=null;
 		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
 			if((A!=null)
-			&&(A instanceof Spell)
+			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 			&&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
 			&&(A.name().toUpperCase().startsWith(spellName.toUpperCase()))
 			&&(!A.ID().equals(this.ID())))
-				wandThis=(Spell)A;
+				storeSpellA=A;
 		}
-		if(wandThis==null)
+		if(storeSpellA==null)
 		{
 			mob.tell(L("You don't know how to enchant anything with '@x1'.",spellName));
 			return false;
 		}
-		if((CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())>24)
-		||(((StdAbility)wandThis).usageCost(null,true)[0]>45)
-		||(CMath.bset(wandThis.flags(), Ability.FLAG_CLANMAGIC)))
+		if((CMLib.ableMapper().lowestQualifyingLevel(storeSpellA.ID())>24)
+		||(((StdAbility)storeSpellA).usageCost(null,true)[0]>45)
+		||(CMath.bset(storeSpellA.flags(), Ability.FLAG_CLANMAGIC)))
 		{
 			mob.tell(L("That spell is too powerful to store."));
 			return false;
 		}
 		Ability A=item.fetchEffect(ID());
-		if((A!=null)&&(A.text().length()>0)&&(!A.text().startsWith(wandThis.ID()+"/")))
+		if((A!=null)&&(A.text().length()>0)&&(!A.text().startsWith(storeSpellA.ID()+"/")))
 		{
 			mob.tell(L("'@x1' already has a different spell stored in it.",item.name()));
 			return false;
@@ -389,14 +389,14 @@ public class Spell_StoreSpell extends Spell implements AbilityContainer
 		if(A==null)
 		{
 			A=(Ability)copyOf();
-			A.setMiscText(wandThis.ID()+"/0");
+			A.setMiscText(storeSpellA.ID()+"/0");
 		}
 		int charges=0;
 		final int x=A.text().indexOf('/');
 		if(x>=0)
 			charges=CMath.s_int(A.text().substring(x+1));
 		overridemana=-1;
-		int mana=usageCost(mob,true)[0]+wandThis.usageCost(mob,true)[0];
+		int mana=usageCost(mob,true)[0]+storeSpellA.usageCost(mob,true)[0];
 		if(mana>mob.maxState().getMana())
 			mana=mob.maxState().getMana();
 		overridemana=mana;
@@ -410,7 +410,7 @@ public class Spell_StoreSpell extends Spell implements AbilityContainer
 
 		if(success)
 		{
-			setMiscText(wandThis.ID());
+			setMiscText(storeSpellA.ID());
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -420,7 +420,7 @@ public class Spell_StoreSpell extends Spell implements AbilityContainer
 					A.setInvoker(mob);
 					target.addNonUninvokableEffect(A);
 				}
-				A.setMiscText(wandThis.ID()+"/"+(charges+1));
+				A.setMiscText(storeSpellA.ID()+"/"+(charges+1));
 				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glow(s) softly."));
 			}
 
