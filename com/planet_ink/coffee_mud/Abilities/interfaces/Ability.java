@@ -150,7 +150,7 @@ public interface Ability extends Environmental
 	public void setAffectedOne(Physical P);
 
 	/**
-	 * Returns whether this skills triggerStrings should be
+	 * Returns whether this skill`s triggerStrings should be
 	 * places in the master list of commands, unlike
 	 * properties or other hidden skills.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#triggerStrings()

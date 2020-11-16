@@ -103,7 +103,7 @@ public interface CMFlagLibrary extends CMLibrary
 	 * Returns whether the given mob has the ability to see
 	 * chaos in people/things.
 	 * @param P the thing to check
-	 * @return whether the this can see chaos in people/things
+	 * @return whether the given can see chaos in people/things
 	 */
 	public boolean canSeeChaos(Physical P);
 
@@ -111,7 +111,7 @@ public interface CMFlagLibrary extends CMLibrary
 	 * Returns whether the given mob has the ability to see
 	 * law in people/things.
 	 * @param P the thing to check
-	 * @return whether the this can see law in people/things
+	 * @return whether the given can see law in people/things
 	 */
 	public boolean canSeeLaw(Physical P);
 

@@ -453,7 +453,7 @@ public class PokerDealer extends StdBehavior
 				}
 				else
 				{
-					// we enforce table stakes, so make the this player is not
+					// we enforce table stakes, so make this player is not
 					// betting the other players out of the game.
 					final double totalDown=amountToCall+theMoneyDropped.getTotalValue();
 					for(int p=0;p<pot.size();p++)

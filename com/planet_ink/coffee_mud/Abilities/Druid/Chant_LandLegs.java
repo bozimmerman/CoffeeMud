@@ -59,7 +59,19 @@ public class Chant_LandLegs extends Chant
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_BENEFICIAL_SELF;
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public int castingQuality(final MOB mob, final Physical target)
+	{
+		if(mob!=null)
+		{
+			if(!CMLib.flags().canBreatheHere(mob, mob.location())
+			&&(!CMLib.flags().isUnderWateryRoom(mob.location())))
+				return Ability.QUALITY_BENEFICIAL_SELF;
+		}
+		return super.castingQuality(mob,target);
 	}
 
 	@Override
