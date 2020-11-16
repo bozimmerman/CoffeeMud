@@ -202,15 +202,26 @@ public class VFShell
 						currentDBconnector.DBDone(db);
 					}
 					StringBuilder ids1=new StringBuilder("(");
-					for(final String s : allBadIds1)
-						ids1.append("'"+s+"',");
-					ids1.delete(ids1.length()-1, ids1.length());
-					ids1.append(")");
 					StringBuilder ids2=new StringBuilder("(");
-					for(final String s : allBadIds2)
-						ids2.append("'"+s+"',");
-					ids2.delete(ids1.length()-1, ids1.length());
-					ids2.append(")");
+					db=currentDBconnector.DBFetch();
+					if(db!=null)
+					{
+						for(final String s : allBadIds1)
+						{
+							if(!db.query("SELECT CMROID FROM CMROOM WHERE CMROID='"+s+"';").next())
+								ids1.append("'"+s+"',");
+						}
+						ids1.delete(ids1.length()-1, ids1.length());
+						ids1.append(")");
+						for(final String s : allBadIds2)
+						{
+							if(!db.query("SELECT CMROID FROM CMROOM WHERE CMROID='"+s+"';").next())
+								ids2.append("'"+s+"',");
+						}
+						ids2.delete(ids1.length()-1, ids1.length());
+						ids2.append(")");
+						currentDBconnector.DBDone(db);
+					}
 					currentDBconnector.update("DELETE FROM CMROEX WHERE CMROID in "+ids1.toString()+" OR CMNRID in "+ids2.toString()+";");
 				}
 				catch(final Exception e)
