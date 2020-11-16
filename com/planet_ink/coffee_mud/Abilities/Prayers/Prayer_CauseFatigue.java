@@ -80,7 +80,8 @@ public class Prayer_CauseFatigue extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|verbalCastCode(mob,target,auto),L(auto?"A light fatigue overcomes <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+" for light fatigue to overcome <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|verbalCastCode(mob,target,auto),
+					L(auto?"A light fatigue overcomes <T-NAME>.":"^S<S-NAME> @x1 for light fatigue to overcome <T-NAMESELF>!^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

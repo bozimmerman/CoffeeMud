@@ -171,7 +171,9 @@ public class Prayer_Demonshield extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),((auto?"":"^S<S-NAME> "+prayWord(mob)+".  ")+L("A field of unholy flames erupt(s) around <T-NAME>!^?"))+CMLib.protocol().msp("fireball.wav",10));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					(L(auto?"":"^S<S-NAME> @x1.  ",prayWord(mob))+L("A field of unholy flames erupt(s) around <T-NAME>!^?"))
+					+CMLib.protocol().msp("fireball.wav",10));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

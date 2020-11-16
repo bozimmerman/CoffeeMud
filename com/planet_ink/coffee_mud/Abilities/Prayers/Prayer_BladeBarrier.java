@@ -170,7 +170,8 @@ public class Prayer_BladeBarrier extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"":"^S<S-NAME> "+prayWord(mob)+" for divine protection!  ")+startStr());
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					L(auto?"":"^S<S-NAME> @x1 for divine protection!  ",prayWord(mob))+startStr());
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

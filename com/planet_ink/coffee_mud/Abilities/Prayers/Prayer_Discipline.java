@@ -82,7 +82,8 @@ public class Prayer_Discipline extends Prayer
 			msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,L("<T-NAME> do(es) not seem to like <S-NAME> messing with <T-HIS-HER> head."));
 		if(success&&(CMLib.factions().getFaction(CMLib.factions().getInclinationID())!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> feel(s) more lawful.":"^S<S-NAME> "+prayWord(mob)+" to discipline <T-YOUPOSS> mind!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					L(auto?"<T-NAME> feel(s) more lawful.":"^S<S-NAME> @x1 to discipline <T-YOUPOSS> mind!^?",prayWord(mob)));
 			if((mob.location().okMessage(mob,msg))
 			&&((msg2==null)||(mob.location().okMessage(mob,msg2))))
 			{

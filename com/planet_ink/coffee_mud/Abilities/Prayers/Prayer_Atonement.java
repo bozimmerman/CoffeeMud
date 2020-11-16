@@ -83,7 +83,8 @@ public class Prayer_Atonement extends Prayer
 
 		if(success&&(CMLib.factions().getFaction(CMLib.factions().getAlignmentID())!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> feel(s) more good.":"^S<S-NAME> "+prayWord(mob)+" to atone <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					L(auto?"<T-NAME> feel(s) more good.":"^S<S-NAME> @x1 to atone <T-NAMESELF>!^?",prayWord(mob)));
 			if((mob.location().okMessage(mob,msg))
 			&&((msg2==null)||(mob.location().okMessage(mob,msg2))))
 			{

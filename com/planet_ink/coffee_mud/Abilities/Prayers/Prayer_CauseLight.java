@@ -95,7 +95,9 @@ public class Prayer_CauseLight extends Prayer
 		if(success)
 		{
 			final int malicious = CMLib.flags().isUndead(target) ? 0 : CMMsg.MASK_MALICIOUS;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,malicious|verbalCastCode(mob,target,auto),L(auto?"A light painful burst assaults <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+" for a light burst of pain at <T-NAMESELF>!^?")+CMLib.protocol().msp("ouch.wav",40));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,malicious|verbalCastCode(mob,target,auto),
+					L(auto?"A light painful burst assaults <T-NAME>.":"^S<S-NAME> @x1 for a light burst of pain at <T-NAMESELF>!^?",prayWord(mob))
+					+CMLib.protocol().msp("ouch.wav",40));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|malicious|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),null);
 			final Room R=target.location();
 			if((R!=null)&&(R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))

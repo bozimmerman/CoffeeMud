@@ -176,7 +176,8 @@ public class Prayer_Tremor extends Prayer
 		if(success)
 		{
 
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"":"^S<S-NAME> "+prayWord(mob)+" thunderously.^?")+CMLib.protocol().msp("earthquake.wav",40)))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),
+					L(auto?"":"^S<S-NAME> @x1 thunderously.^?",prayWord(mob))+CMLib.protocol().msp("earthquake.wav",40)))
 			{
 				for (final Object element : h)
 				{

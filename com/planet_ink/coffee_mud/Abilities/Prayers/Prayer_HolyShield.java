@@ -138,7 +138,9 @@ public class Prayer_HolyShield extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> become(s) protected by the holy shield.":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to be protected by the holy shield.^?")+CMLib.protocol().msp("bless.wav",10));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					L(auto?"<T-NAME> become(s) protected by the holy shield.":
+						"^S<S-NAME> @x1 for <T-NAMESELF> to be protected by the holy shield.^?",prayWord(mob))+CMLib.protocol().msp("bless.wav",10));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

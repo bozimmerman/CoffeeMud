@@ -83,7 +83,8 @@ public class Prayer_MoralBalance extends Prayer
 
 		if((success)&&(CMLib.factions().getFaction(CMLib.factions().getAlignmentID())!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> feel(s) completely different about the world.":"^S<S-NAME> "+prayWord(mob)+" to bring balance to <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					L(auto?"<T-NAME> feel(s) completely different about the world.":"^S<S-NAME> @x1 to bring balance to <T-NAMESELF>!^?",prayWord(mob)));
 			if((mob.location().okMessage(mob,msg))
 			&&((msg2==null)||(mob.location().okMessage(mob,msg2))))
 			{

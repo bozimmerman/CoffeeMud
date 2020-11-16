@@ -96,7 +96,9 @@ public class Prayer_Harm extends Prayer
 		{
 			final Room R=target.location();
 			final int malicious = CMLib.flags().isUndead(target) ? 0 : CMMsg.MASK_MALICIOUS;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,malicious|verbalCastCode(mob,target,auto),L(auto?"<T-NAME> cringe(s) in pain.":"^S<S-NAME> "+prayWord(mob)+" to deliver tremendous pain at <T-NAMESELF>!^?")+CMLib.protocol().msp("spelldam2.wav",40));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,malicious|verbalCastCode(mob,target,auto),
+					L(auto?"<T-NAME> cringe(s) in pain.":"^S<S-NAME> @x1 to deliver tremendous pain at <T-NAMESELF>!^?",prayWord(mob))
+					+CMLib.protocol().msp("spelldam2.wav",40));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|malicious|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((R.okMessage(mob,msg))
 			&&((R.okMessage(mob,msg2))))
