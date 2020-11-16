@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 import com.planet_ink.coffee_mud.Commands.Shell;
@@ -172,93 +173,45 @@ public class VFShell
 				try
 				{
 					System.out.println("Fixing the Vassendar problem...");
-					final Map<Integer,String[]> allRoomIDs=new java.util.TreeMap<Integer,String[]>();
-					int max=0;
+					final Set<String> allBadIds1=new java.util.TreeSet<String>();
+					final Set<String> allBadIds2=new java.util.TreeSet<String>();
 					DBConnection db=currentDBconnector.DBFetch();
 					if(db!=null)
 					{
-						java.sql.ResultSet R=db.query("SELECT CMROID,CMDESC1 from CMROOM where CMAREA='Homes of Vassendar'");
+						java.sql.ResultSet R=db.query("SELECT CMROID,CMNRID from CMROEX where CMROID like 'Homes of Vassendar%' or CMNRID like 'Homes of Vassendar%'");
 						while(R.next())
 						{
-							String rid=R.getString("CMROID");
-							int x=rid.indexOf('#');
+							String rid1=R.getString("CMROID");
+							int x=rid1.indexOf('#');
 							if(x>0)
 							{
-								int num=CMath.s_int(rid.substring(x+1));
-								if(num>0)
-								{
-									System.out.println("Found "+num+"/"+rid+".");
-									allRoomIDs.put(Integer.valueOf(num), new String[]{rid,R.getString("CMDESC1")});
-									if(num>max)
-										max=num;
-								}
+								int num=CMath.s_int(rid1.substring(x+1));
+								if((num>204)&&(!allBadIds1.contains(rid1)))
+									allBadIds1.add(rid1);
+							}
+							String rid2=R.getString("CMNRID");
+							x=rid2.indexOf('#');
+							if(x>0)
+							{
+								int num=CMath.s_int(rid2.substring(x+1));
+								if((num>204)&&(!allBadIds2.contains(rid2)))
+									allBadIds2.add(rid2);
 							}
 						}
 						R.close();
 						currentDBconnector.DBDone(db);
 					}
-					final List<String> finalRoomIDs = new java.util.LinkedList<String>();
-					for(int i=max;i>=0;i--)
-					{
-						Integer I=Integer.valueOf(i);
-						if(allRoomIDs.containsKey(I))
-						{
-							String[] data=allRoomIDs.get(I);
-							if(data[1].trim().equalsIgnoreCase("An empty room"))
-							{
-								try
-								{
-									System.out.println("Scan "+data[0]+".");
-									db=currentDBconnector.DBFetch();
-									if(db!=null)
-									{
-										java.sql.ResultSet R=db.query("SELECT COUNT(*) from CMROIT where CMROID='"+data[0]+"'");
-										if(R.next() && (!R.next()))
-											finalRoomIDs.add(data[0]);
-										else
-											break;
-									}
-								}
-								finally
-								{
-									currentDBconnector.DBDone(db);
-								}
-							}
-							else
-								break;
-						}
-					}
-					StringBuilder ids=new StringBuilder("(");
-					for(final String roomID : finalRoomIDs)
-					{
-						if(ids.length()>1)
-							ids.append(",");
-						ids.append("'"+roomID+"'");
-						if(ids.length()>65536)
-						{
-							ids.append(")");
-							final String[] updates1 = new String[]{
-								"DELETE FROM CMROIT WHERE CMROID in "+ids.toString()+";",
-								"DELETE FROM CMROCH WHERE CMROID in "+ids.toString()+";", 
-								"DELETE FROM CMROEX WHERE CMROID in "+ids.toString()+" OR CMNRID in "+ids.toString()+";",
-								"DELETE FROM CMROOM WHERE CMROID in "+ids.toString()+";"
-							};
-							currentDBconnector.update(updates1);
-							ids=new StringBuilder("(");
-						}
-						System.out.println("Finished "+roomID+".");
-					}
-					if(ids.length()>1)
-					{
-						ids.append(")");
-						final String[] updates1 = new String[]{
-							"DELETE FROM CMROIT WHERE CMROID in "+ids.toString()+";",
-							"DELETE FROM CMROCH WHERE CMROID in "+ids.toString()+";", 
-							"DELETE FROM CMROEX WHERE CMROID in "+ids.toString()+" OR  in "+ids.toString()+";",
-							"DELETE FROM CMROOM WHERE CMROID in "+ids.toString()+";"
-						};
-						currentDBconnector.update(updates1);
-					}
+					StringBuilder ids1=new StringBuilder("(");
+					for(final String s : allBadIds1)
+						ids1.append("'"+s+"',");
+					ids1.delete(ids1.length()-1, ids1.length());
+					ids1.append(")");
+					StringBuilder ids2=new StringBuilder("(");
+					for(final String s : allBadIds2)
+						ids2.append("'"+s+"',");
+					ids2.delete(ids1.length()-1, ids1.length());
+					ids2.append(")");
+					currentDBconnector.update("DELETE FROM CMROEX WHERE CMROID in "+ids1.toString()+" OR CMNRID in "+ids2.toString()+"'");
 				}
 				catch(final Exception e)
 				{
