@@ -70,9 +70,10 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 	protected void fillCluster(final Room R, final List<Room> roomsV, final Set<Room> visitedS, final boolean[] foundEntrance)
 	{
 		roomsV.add(R);
+		final WorldMap map=CMLib.map();
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			final Room R2=R.getRoomInDir(d);
+			final Room R2=map.getRoom(R.getRoomInDir(d));
 			if((R2!=null)
 			&&(R2.roomID().length()>0)
 			&&(!visitedS.contains(R2)))
