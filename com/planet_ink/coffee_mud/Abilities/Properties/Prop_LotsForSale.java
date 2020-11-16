@@ -292,7 +292,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 	{
 		int numberOfPeers = -1;//getConnectedPropertyRooms().size();
 		final boolean doGrid=super.gridLayout();
-		long roomLimit = Long.MAX_VALUE;
+		long roomLimit = 300; // default limit
 		final Set<Room> updateExits=new HashSet<Room>();
 		Prop_ReqCapacity cap = null;
 		boolean didAnything = false;
