@@ -207,7 +207,7 @@ public class Reliquist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_ReflectPrayer",false); // special A
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_HeroicReflexes",0,false); // heroic leap in the doc
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_ImbueShield",false); // special A
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_ImbueShield",false); // special A
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_DefileShield",false); // special A
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_CondemnMark",0,true);
 

@@ -65,7 +65,7 @@ public class Prayer_ImbueShield extends Prayer
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_NOORDERING;
+		return Ability.FLAG_NOORDERING|Ability.FLAG_NEUTRAL;
 	}
 
 	@Override
@@ -99,7 +99,35 @@ public class Prayer_ImbueShield extends Prayer
 			mob.tell(mob,target,null,L("You can't imbue <T-NAME>."));
 			return false;
 		}
+		final Ability zappA=target.fetchEffect("Prop_WearZapper");
+		if(zappA!=null)
+		{
+			final String zappaTxt=zappA.text().toUpperCase().trim();
+			if((zappaTxt.indexOf("-EVIL")<0)
+			&&(zappaTxt.indexOf("-GOOD")<0)
+			&&(zappaTxt.indexOf("-NEUTRAL")<0))
+			{
+				mob.tell(L("@x1 cannot be imbued until it has been empowered.",target.name(mob)));
+				return false;
+			}
+			if(!CMLib.masking().maskCheck(zappaTxt, mob, true))
+			{
+				mob.tell(L("You can't seem to focus on @x1.",target.name(mob)));
+				return false;
+			}
+		}
+		else
+		{
+			mob.tell(L("@x1 cannot be imbued until it has been empowered.",target.name(mob)));
+			return false;
+		}
 
+		if(target.phyStats().ability()==0)
+		{
+			mob.tell(L("@x1 cannot be imbued until it has been empowered.",target.name(mob)));
+			return false;
+		}
+		
 		commands.remove(commands.size()-1);
 		final Item targetI=(Item)target;
 
@@ -127,13 +155,14 @@ public class Prayer_ImbueShield extends Prayer
 		if((imbuePrayerA.ID().equals("Spell_Stoneskin"))
 		||(imbuePrayerA.ID().equals("Spell_MirrorImage"))
 		||(CMath.bset(imbuePrayerA.flags(), FLAG_SUMMONING))
-		||(imbuePrayerA.canAffect(CAN_ROOMS)))
+		||(imbuePrayerA.abstractQuality()==Ability.QUALITY_MALICIOUS)
+		||((!imbuePrayerA.canAffect(CAN_MOBS))&&(!imbuePrayerA.canTarget(CAN_MOBS))))
 		{
 			mob.tell(L("That prayer cannot be used to imbue anything."));
 			return false;
 		}
 
-		if((CMLib.ableMapper().lowestQualifyingLevel(imbuePrayerA.ID())>24)
+		if((CMLib.ableMapper().lowestQualifyingLevel(imbuePrayerA.ID())>15)
 		||(((StdAbility)imbuePrayerA).usageCost(null,true)[0]>45)
 		||(CMath.bset(imbuePrayerA.flags(), Ability.FLAG_CLANMAGIC)))
 		{
@@ -141,9 +170,14 @@ public class Prayer_ImbueShield extends Prayer
 			return false;
 		}
 
-		if((targetI.numEffects()>0)||(!targetI.isGeneric()))
+		if(!targetI.isGeneric())
 		{
 			mob.tell(L("You can't imbue '@x1'.",targetI.name()));
+			return false;
+		}
+		if(CMLib.flags().isEnchanted(targetI))
+		{
+			mob.tell(L("@x1 already appears to be sufficiently magical."));
 			return false;
 		}
 
@@ -166,52 +200,16 @@ public class Prayer_ImbueShield extends Prayer
 			experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 			mob.tell(L("You lose @x1 experience points for the effort.",""+experienceToLose));
 			setMiscText(imbuePrayerA.ID());
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("<S-NAME> @x1 while holding <T-NAMESELF> tightly, and looking very frustrated.",super.prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("<S-NAME> @x1 while holding <T-NAMESELF> tightly.",super.prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glow(s) brightly!"));
+				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glow(s) divinely!"));
 				targetI.basePhyStats().setDisposition(target.basePhyStats().disposition()|PhyStats.IS_BONUS);
 				targetI.basePhyStats().setLevel(targetI.basePhyStats().level()+(CMLib.ableMapper().lowestQualifyingLevel(imbuePrayerA.ID())/2));
-				//Vector<String> V=CMParms.parseCommas(CMLib.utensils().wornList(wand.rawProperLocationBitmap()),true);
-				/*
-				if(wand instanceof Armor)
-				{
-					final Ability A=CMClass.getAbility("Prop_WearSpellCast");
-					A.setMiscText("LAYERED;"+imbuePrayerA.ID()+";");
-					wand.addNonUninvokableEffect(A);
-				}
-				else
-				if(wand instanceof Weapon)
-				{
-					final Ability A=CMClass.getAbility("Prop_FightSpellCast");
-					A.setMiscText("25%;MAXTICKS=12;"+imbuePrayerA.ID()+";");
-					wand.addNonUninvokableEffect(A);
-				}
-				else
-				if((wand instanceof Food)
-				||(wand instanceof Drink))
-				{
-					final Ability A=CMClass.getAbility("Prop_UseSpellCast2");
-					A.setMiscText(imbuePrayerA.ID()+";");
-					wand.addNonUninvokableEffect(A);
-				}
-				else
-				*/
-				if(targetI.fitsOn(Wearable.WORN_HELD)||targetI.fitsOn(Wearable.WORN_WIELD))
-				{
-					final Ability A=CMClass.getAbility("Prop_WearSpellCast");
-					A.setMiscText("LAYERED;"+imbuePrayerA.ID()+";");
-					targetI.addNonUninvokableEffect(A);
-				}
-				/*
-				else
-				{
-					final Ability A=CMClass.getAbility("Prop_WearSpellCast");
-					A.setMiscText("LAYERED;"+imbuePrayerA.ID()+";");
-					wand.addNonUninvokableEffect(A);
-				}
-				*/
+				final Ability A=CMClass.getAbility("Prop_WearSpellCast");
+				A.setMiscText("LAYERED;"+imbuePrayerA.ID()+";");
+				targetI.addNonUninvokableEffect(A);
 				targetI.recoverPhyStats();
 			}
 

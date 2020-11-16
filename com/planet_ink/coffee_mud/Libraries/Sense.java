@@ -1963,12 +1963,27 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		for(int i=0;i<I.numEffects();i++)
 		{
 			final Ability A=I.fetchEffect(i);
-			if((A!=null)
-			&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PROPERTY)
-			&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_DISEASE)
-			&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_POISON)
-			&&(!CMath.bset(A.flags(), Ability.FLAG_NONENCHANTMENT)))
-				return true;
+			if(A!=null)
+			{
+				if(((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PROPERTY)
+				&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_DISEASE)
+				&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_POISON)
+				&&(!CMath.bset(A.flags(), Ability.FLAG_NONENCHANTMENT)))
+					return true;
+				if(A instanceof AbilityContainer)
+				{
+					for(Enumeration<Ability> a=((AbilityContainer)A).abilities();a.hasMoreElements();)
+					{
+						final Ability A1=a.nextElement();
+						if((A1!=null)
+						&&((A1.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PROPERTY)
+						&&((A1.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_DISEASE)
+						&&((A1.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_POISON)
+						&&(!CMath.bset(A1.flags(), Ability.FLAG_NONENCHANTMENT)))
+							return true;
+					}
+				}
+			}
 		}
 		if((I instanceof Weapon)||(I instanceof Armor))
 			return this.isABonusItems(I);
