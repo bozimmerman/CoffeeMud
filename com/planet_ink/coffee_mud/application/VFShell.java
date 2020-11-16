@@ -170,67 +170,6 @@ public class VFShell
 					System.exit(-1);
 				}
 				
-				try
-				{
-					System.out.println("Fixing the Vassendar problem...");
-					final Set<String> allBadIds1=new java.util.TreeSet<String>();
-					final Set<String> allBadIds2=new java.util.TreeSet<String>();
-					DBConnection db=currentDBconnector.DBFetch();
-					if(db!=null)
-					{
-						java.sql.ResultSet R=db.query("SELECT CMROID,CMNRID from CMROEX where CMROID like 'Homes of Vassendar%' or CMNRID like 'Homes of Vassendar%'");
-						while(R.next())
-						{
-							String rid1=R.getString("CMROID");
-							int x=rid1.indexOf('#');
-							if(x>0)
-							{
-								int num=CMath.s_int(rid1.substring(x+1));
-								if((num>204)&&(!allBadIds1.contains(rid1)))
-									allBadIds1.add(rid1);
-							}
-							String rid2=R.getString("CMNRID");
-							x=rid2.indexOf('#');
-							if(x>0)
-							{
-								int num=CMath.s_int(rid2.substring(x+1));
-								if((num>204)&&(!allBadIds2.contains(rid2)))
-									allBadIds2.add(rid2);
-							}
-						}
-						R.close();
-						currentDBconnector.DBDone(db);
-					}
-					StringBuilder ids1=new StringBuilder("(");
-					StringBuilder ids2=new StringBuilder("(");
-					db=currentDBconnector.DBFetch();
-					if(db!=null)
-					{
-						for(final String s : allBadIds1)
-						{
-							if(!db.query("SELECT CMROID FROM CMROOM WHERE CMROID='"+s+"';").next())
-								ids1.append("'"+s+"',");
-						}
-						ids1.delete(ids1.length()-1, ids1.length());
-						ids1.append(")");
-						for(final String s : allBadIds2)
-						{
-							if(!db.query("SELECT CMROID FROM CMROOM WHERE CMROID='"+s+"';").next())
-								ids2.append("'"+s+"',");
-						}
-						ids2.delete(ids1.length()-1, ids1.length());
-						ids2.append(")");
-						currentDBconnector.DBDone(db);
-					}
-					currentDBconnector.update("DELETE FROM CMROEX WHERE CMROID in "+ids1.toString()+" OR CMNRID in "+ids2.toString()+";");
-				}
-				catch(final Exception e)
-				{
-					Log.errOut(e);
-					Log.errOut("Database error! Panic shutdown!");
-					System.exit(-1);
-				}
-
 				CMClass.initialize();
 				Resources.initialize();
 				CMSecurity.instance();
