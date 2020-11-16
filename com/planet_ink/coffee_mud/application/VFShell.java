@@ -211,7 +211,7 @@ public class VFShell
 						ids2.append("'"+s+"',");
 					ids2.delete(ids1.length()-1, ids1.length());
 					ids2.append(")");
-					currentDBconnector.update("DELETE FROM CMROEX WHERE CMROID in "+ids1.toString()+" OR CMNRID in "+ids2.toString()+"'");
+					currentDBconnector.update("DELETE FROM CMROEX WHERE CMROID in "+ids1.toString()+" OR CMNRID in "+ids2.toString()+";");
 				}
 				catch(final Exception e)
 				{
