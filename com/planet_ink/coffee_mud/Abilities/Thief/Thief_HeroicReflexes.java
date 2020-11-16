@@ -91,6 +91,7 @@ public class Thief_HeroicReflexes extends ThiefSkill
 	}
 
 	private volatile boolean activated = false;
+	protected volatile long nextTrigger = 0;
 	
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
@@ -113,7 +114,8 @@ public class Thief_HeroicReflexes extends ThiefSkill
 		{
 			final Physical affected = this.affected;
 			if((affected instanceof MOB)
-			&&(((MOB)affected).getGroupMembers(new HashSet<MOB>()).contains(msg.target())))
+			&&(((MOB)affected).getGroupMembers(new HashSet<MOB>()).contains(msg.target()))
+			&&(System.currentTimeMillis() > nextTrigger))
 			{
 				final MOB mob=(MOB)affected;
 				final Room R=mob.location();
@@ -124,7 +126,7 @@ public class Thief_HeroicReflexes extends ThiefSkill
 				&&(CMLib.flags().isAliveAwakeMobileUnbound(mob, true)))
 				{
 					R.send((MOB)msg.target(), msg);
-					R.show(mob, msg.target(), CMMsg.MSG_OK_ACTION, L("<S-NAME> leap(s) in front of <T-NAME>!"));
+					R.show(mob, msg.target(), CMMsg.MSG_OK_ACTION, L("^S<S-NAME> leap(s) in front of <T-NAME>!^N"));
 					final Trap T=(Trap)msg.tool();
 					try
 					{
@@ -135,6 +137,7 @@ public class Thief_HeroicReflexes extends ThiefSkill
 					finally
 					{
 						activated=false;
+						nextTrigger=System.currentTimeMillis() + (CMProps.getTickMillis() * (15-super.getXLEVELLevel(mob)));
 					}
 					return false;
 				}
