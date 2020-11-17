@@ -156,7 +156,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				for(final ChannelMsg msg : channel.queue())
 				{
 					if((--skipNum < 0)&&(msgs.size() < numToReturn))
-						msgs.addLast(msg);
+						msgs.addFirst(msg);
 				}
 			}
 

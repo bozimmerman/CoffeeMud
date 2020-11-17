@@ -795,7 +795,7 @@ public class DefaultMessage implements CMMsg
 			return null;
 		if(subParts[0].equals("StdMOB") || subParts[0].equals("StdRideable"))
 		{
-			final MOB M=CMLib.players().getLoadPlayer(subParts[1]);
+			final MOB M=CMLib.players().getLoadPlayer(subParts[1]); // this is bad. :(
 			if(M != null)
 				return M;
 		}

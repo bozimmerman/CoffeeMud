@@ -61,7 +61,7 @@ public class Channel extends StdCommand
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;
-		int index = getArgumentSetIndex(internalParameters, args);
+		final int index = getArgumentSetIndex(internalParameters, args);
 		if(index == 0)
 		{
 			final boolean systemMsg=((Boolean)args[0]).booleanValue();
@@ -71,6 +71,33 @@ public class Channel extends StdCommand
 			return Boolean.TRUE;
 		}
 		return Boolean.FALSE;
+	}
+
+	public boolean showBacklogMsg(final MOB mob, final long now, final int channelInt, final boolean areareq, final ChannelsLibrary.ChannelMsg msg)
+	{
+		final CMMsg modMsg = (CMMsg)msg.msg().copyOf();
+		long elapsedTime=now-msg.sentTimeMillis();
+		elapsedTime=Math.round(elapsedTime/1000L)*1000L;
+		if(elapsedTime<0)
+		{
+			Log.errOut("Channel","Wierd elapsed time: now="+now+", then="+msg.sentTimeMillis());
+			elapsedTime=0;
+		}
+
+		final String timeAgo = "^.^N ("+CMLib.time().date2SmartEllapsedTime(elapsedTime,false)+" ago)";
+		if((modMsg.sourceMessage()!=null)&&(modMsg.sourceMessage().length()>0))
+			modMsg.setSourceMessage(modMsg.sourceMessage()+timeAgo);
+		if((modMsg.targetMessage()!=null)&&(modMsg.targetMessage().length()>0))
+			modMsg.setTargetMessage(modMsg.targetMessage()+timeAgo);
+		if((modMsg.othersMessage()!=null)&&(modMsg.othersMessage().length()>0))
+			modMsg.setOthersMessage(modMsg.othersMessage()+timeAgo);
+		if(CMath.bset(modMsg.sourceCode(),CMMsg.MASK_CHANNEL))
+			modMsg.setSourceCode(CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt));
+		if(CMath.bset(modMsg.targetCode(),CMMsg.MASK_CHANNEL))
+			modMsg.setTargetCode(CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt));
+		if(CMath.bset(modMsg.othersCode(),CMMsg.MASK_CHANNEL))
+			modMsg.setOthersCode(CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt));
+		return CMLib.channels().sendChannelCMMsgTo(mob.session(),areareq,channelInt,modMsg,modMsg.source());
 	}
 
 	public boolean channel(final MOB mob, final List<String> commands, final boolean systemMsg)
@@ -172,62 +199,64 @@ public class Channel extends StdCommand
 		&&(commands.get(0).equalsIgnoreCase("last"))
 		&&(CMath.isNumber(commands.get(commands.size()-1))))
 		{
+			final long now=System.currentTimeMillis();
+			final boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
 			int num=CMath.s_int(commands.get(commands.size()-1));
-			int lastNum=num;
-			final List<ChannelsLibrary.ChannelMsg> que=CMLib.channels().getChannelQue(channelInt, 0, num);
-			boolean showedAny=false;
-			while(que.size()>0)
+			if((num>100)
+			&&(!CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.JOURNALS)))
+				num=100;
+			final ChannelsLibrary clib=CMLib.channels();
+			int count=0;
+			int page=-1;
+			int lastIndex=-1;
+			int lastPage=0;
+			boolean skippedSome=true;
+			final int pageSize=50;
+			while((count < num)&&((skippedSome)||((page*pageSize) < (num*100))))
 			{
-				final boolean allDone=num>que.size();
-				if(allDone)
-					num=que.size();
-				final boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
-				long elapsedTime=0;
-				final long now=System.currentTimeMillis();
-				final LinkedList<ChannelsLibrary.ChannelMsg> showThese=new LinkedList<ChannelsLibrary.ChannelMsg>();
-				for (final ChannelMsg channelMsg : que)
+				page++;
+				skippedSome=false;
+				final List<ChannelsLibrary.ChannelMsg> que=CMLib.channels().getChannelQue(channelInt, (page*pageSize), pageSize);
+				lastIndex=0;
+				for(int i=que.size()-1;i>=0;i--)
 				{
-					showThese.add(channelMsg);
-					if(showThese.size()>num)
-						showThese.removeFirst();
-				}
-				int numSkipped = 0;
-				que.clear();
-				for(final ChannelsLibrary.ChannelMsg msg : showThese)
-				{
-					final CMMsg modMsg = (CMMsg)msg.msg().copyOf();
-					elapsedTime=now-msg.sentTimeMillis();
-					elapsedTime=Math.round(elapsedTime/1000L)*1000L;
-					if(elapsedTime<0)
+					final ChannelsLibrary.ChannelMsg m = que.get(i);
+					if(clib.mayReadThisChannel(m.msg().source(), areareq, mob, channelInt,true))
 					{
-						Log.errOut("Channel","Wierd elapsed time: now="+now+", then="+msg.sentTimeMillis());
-						elapsedTime=0;
+						lastPage=page;
+						count++;
+						if(count>=num)
+						{
+							lastIndex=i;
+							break;
+						}
 					}
-
-					final String timeAgo = "^.^N ("+CMLib.time().date2SmartEllapsedTime(elapsedTime,false)+" ago)";
-					if((modMsg.sourceMessage()!=null)&&(modMsg.sourceMessage().length()>0))
-						modMsg.setSourceMessage(modMsg.sourceMessage()+timeAgo);
-					if((modMsg.targetMessage()!=null)&&(modMsg.targetMessage().length()>0))
-						modMsg.setTargetMessage(modMsg.targetMessage()+timeAgo);
-					if((modMsg.othersMessage()!=null)&&(modMsg.othersMessage().length()>0))
-						modMsg.setOthersMessage(modMsg.othersMessage()+timeAgo);
-					if(CMath.bset(modMsg.sourceCode(),CMMsg.MASK_CHANNEL))
-						modMsg.setSourceCode(CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt));
-					if(CMath.bset(modMsg.targetCode(),CMMsg.MASK_CHANNEL))
-						modMsg.setTargetCode(CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt));
-					if(CMath.bset(modMsg.othersCode(),CMMsg.MASK_CHANNEL))
-						modMsg.setOthersCode(CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt));
-					final boolean showedThis = CMLib.channels().sendChannelCMMsgTo(mob.session(),areareq,channelInt,modMsg,modMsg.source());
-					if(!showedThis)
-						numSkipped++;
-					showedAny=showedAny || showedThis;
+					else
+						skippedSome=true;
 				}
-				if((!allDone) && (numSkipped > 0))
+			}
+			page=lastPage;
+			boolean showedAny=false;
+			List<ChannelsLibrary.ChannelMsg> q=CMLib.channels().getChannelQue(channelInt, (page*pageSize), pageSize);
+			if(lastIndex<0)
+				lastIndex=0;
+			for(int i=lastIndex;i<q.size();i++)
+			{
+				final ChannelsLibrary.ChannelMsg m=q.get(i);
+				if(clib.mayReadThisChannel(m.msg().source(), areareq, mob, channelInt))
+					showedAny=this.showBacklogMsg(mob,now,channelInt,areareq,m)||showedAny;
+			}
+			page--;
+			while(page >=0)
+			{
+				q=CMLib.channels().getChannelQue(channelInt, (page*pageSize), pageSize);
+				for(int i=0;i<q.size();i++)
 				{
-					num = numSkipped;
-					que.addAll(CMLib.channels().getChannelQue(channelInt, lastNum, num));
-					lastNum += num;
+					final ChannelsLibrary.ChannelMsg m=q.get(i);
+					if(clib.mayReadThisChannel(m.msg().source(), areareq, mob, channelInt,true))
+						showedAny=this.showBacklogMsg(mob,now,channelInt,areareq,m)||showedAny;
 				}
+				page--;
 			}
 			if(!showedAny)
 			{
