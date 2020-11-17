@@ -692,7 +692,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			if(zapCodes.containsKey(str2))
 				return v2-1;
 			if(str2.startsWith(startChar))
-				buf.append(CMath.s_int(str2.substring(1).trim())+", ");
+				buf.append(str2.substring(1).trim()+", ");
 		}
 		if(buf.toString().endsWith(", "))
 			buf.delete(buf.length()-2, buf.length());
@@ -4346,7 +4346,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				lastValue = lastValue || subResult;
 				if(i==cset.entries().length-1)
 					return lastValue;
-				CompiledZMaskEntry entry = cset.entries()[i+1][0];
+				final CompiledZMaskEntry entry = cset.entries()[i+1][0];
 				if(entry.maskType()==MaskingLibrary.ZapperKey._OR)
 					lastConnectorNot=true;
 				else
@@ -4358,7 +4358,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			return lastValue;
 		}
 	}
-	
+
 	protected boolean maskCheckSubEntries(final CompiledZMaskEntry[] set, final Environmental E, final boolean actual,
 										  final MOB mob, final boolean[] flags, final Item item, final Room room,
 										  final Physical P)
@@ -6664,8 +6664,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return maskCheck(getPreCompiledMask(text), E);
 	}
 
-	
-	
+
+
 	@Override
 	public boolean maskCheck(final CompiledZMask cset, final PlayerLibrary.ThinPlayer E)
 	{
@@ -6688,7 +6688,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				lastValue = lastValue || subResult;
 				if(i==cset.entries().length-1)
 					return lastValue;
-				CompiledZMaskEntry entry = cset.entries()[i+1][0];
+				final CompiledZMaskEntry entry = cset.entries()[i+1][0];
 				if(entry.maskType()==MaskingLibrary.ZapperKey._OR)
 					lastConnectorNot=true;
 				else
@@ -6700,7 +6700,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			return lastValue;
 		}
 	}
-	
+
 	protected boolean maskCheckSubEntries(final CompiledZMaskEntry set[], final PlayerLibrary.ThinPlayer E)
 	{
 		//boolean[] flags=(boolean[])cset.firstElement();
