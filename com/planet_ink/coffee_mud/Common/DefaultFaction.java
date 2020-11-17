@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Faction.FRange;
 import com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent.MiscTrigger;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.EnglishParsing;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -1928,6 +1929,16 @@ public class DefaultFaction implements Faction, MsgListener
 
 		final String announceMsg = event.getFlagValue("ANNOUNCE");
 		final String seenMsg = announceMsg.length()>0 ? announceMsg : null;
+		if(seenMsg != null)
+		{
+			final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.FACTIONANNOUNCEMENTS, source);
+			if(channels.size()>0)
+			{
+				final String msgStr = source.Name()+" ("+name()+"): "+seenMsg;
+				for(int i=0;i<channels.size();i++)
+					CMLib.commands().postChannel(channels.get(i),source.clans(),msgStr,true);
+			}
+		}
 		CMMsg facMsg=CMClass.getMsg(source,target,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FACTIONCHANGE,seenMsg,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,ID);
 		facMsg.setValue(factionAdj);
 		final Room R=source.location();

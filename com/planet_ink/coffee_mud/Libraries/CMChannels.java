@@ -429,10 +429,9 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				if((mob==null)
 				||(!mob.isAttributeSet(Attrib.PRIVACY)))
 					channels.add(chan.name().toUpperCase());
-				else
+				else // mob is not null, and privacy is turned on, so readability is the key -- what they don't know can't hurt them.
 				if(!CMLib.masking().maskCheck(chan.mask(),mob,true))
 					channels.add(chan.name().toUpperCase());
-
 			}
 		}
 		return channels;
