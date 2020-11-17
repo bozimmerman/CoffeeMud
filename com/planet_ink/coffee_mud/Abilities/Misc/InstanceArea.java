@@ -343,6 +343,9 @@ public class InstanceArea extends StdAbility
 					if(!A.okMessage(myHost, msg))
 						return false;
 				}
+				if((managed.size()==0)
+				&&(affected!=null))
+					affected.delEffect(this);
 			}
 			return true;
 		}
