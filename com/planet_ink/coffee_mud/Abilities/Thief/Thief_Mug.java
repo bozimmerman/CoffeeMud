@@ -72,6 +72,12 @@ public class Thief_Mug extends ThiefSkill
 		return Ability.QUALITY_MALICIOUS;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_STEALING;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"MUG"});
 	@Override
 	public String[] triggerStrings()

@@ -588,7 +588,7 @@ public interface CMFlagLibrary extends CMLibrary
 
 	/**
 	 * Returns whether the given item, mob, room, whatever is
-	 * lawfully aligned, assuming you are using the law/chaos axis.
+	 * lawfully inclined, assuming you are using the law/chaos axis.
 	 * @param P the room, mob, or item to check
 	 * @return true if it is lawfullness
 	 */
@@ -596,11 +596,19 @@ public interface CMFlagLibrary extends CMLibrary
 
 	/**
 	 * Returns whether the given item, mob, room, whatever is
-	 * chaotically aligned, assuming you are using the law/chaos axis.
+	 * chaotically inclined, assuming you are using the law/chaos axis.
 	 * @param P the room, mob, or item to check
 	 * @return true if it is chaoticness
 	 */
 	public boolean isChaotic(final Physical P);
+
+	/**
+	 * Returns whether the given item, mob, room, whatever is
+	 * moderately inclined, assuming you are using the law/chaos axis.
+	 * @param P the room, mob, or item to check
+	 * @return true if it is chaoticness
+	 */
+	public boolean isModerate(final Physical P);
 
 	/**
 	 * Returns whether the given object has a trap set on it.

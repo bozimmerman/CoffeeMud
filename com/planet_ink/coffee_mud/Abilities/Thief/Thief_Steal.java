@@ -85,6 +85,12 @@ public class Thief_Steal extends ThiefSkill
 		return USAGE_MOVEMENT|USAGE_MANA;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_STEALING;
+	}
+
 	public int code=0;
 
 	@Override

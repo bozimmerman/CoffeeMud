@@ -81,6 +81,12 @@ public class Thief_Racketeer extends ThiefSkill
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_STEALING;
+	}
+
+	@Override
 	public boolean disregardsArmorCheck(final MOB mob)
 	{
 		return true;

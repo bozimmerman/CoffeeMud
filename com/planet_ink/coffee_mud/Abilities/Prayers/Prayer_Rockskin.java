@@ -147,7 +147,7 @@ public class Prayer_Rockskin extends Prayer
 		{
 			invoker=mob;
 
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 wave(s) <S-HIS-HER> hands around <T-NAMESELF>.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 and wave(s) <S-HIS-HER> hands around <T-NAMESELF>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -157,7 +157,7 @@ public class Prayer_Rockskin extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1, but fail(s) miserably.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1, but <S-HIS-HER> fail(s) miserably.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

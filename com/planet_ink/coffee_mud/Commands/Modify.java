@@ -2389,10 +2389,15 @@ public class Modify extends StdCommand
 				if((!thang.isGeneric())&&(((MOB)thang).isMonster()))
 				{
 					final MOB copyMOB=(MOB)thang.copyOf();
+					if(thang instanceof Deity)
+						CMLib.map().registerWorldObjectLoaded(((Deity) thang).location().getArea(), ((Deity) thang).location(), thang);
 					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>."));
 					CMLib.genEd().modifyStdMob(mob,(MOB)thang,-1);
 					if(!copyMOB.sameAs(thang))
 						Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getDescriptiveExtendedRoomID(((MOB)thang).location())+".");
+					copyMOB.destroy();
+					if(thang instanceof Deity)
+						CMLib.map().registerWorldObjectLoaded(((Deity) thang).location().getArea(), ((Deity) thang).location(), thang);
 				}
 				else
 				if(!((MOB)thang).isMonster())
@@ -2404,11 +2409,15 @@ public class Modify extends StdCommand
 				else
 				{
 					final MOB copyMOB=(MOB)thang.copyOf();
+					if(thang instanceof Deity)
+						CMLib.map().registerWorldObjectLoaded(((Deity) thang).location().getArea(), ((Deity) thang).location(), thang);
 					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>."));
 					CMLib.genEd().genMiscSet(mob,thang,-1);
 					if(!copyMOB.sameAs(thang))
 						Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getDescriptiveExtendedRoomID(((MOB)thang).location())+".");
 					copyMOB.destroy();
+					if(thang instanceof Deity)
+						CMLib.map().registerWorldObjectLoaded(((Deity) thang).location().getArea(), ((Deity) thang).location(), thang);
 				}
 				((MOB)thang).recoverPhyStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 shake(s) under the transforming power.",thang.name()));

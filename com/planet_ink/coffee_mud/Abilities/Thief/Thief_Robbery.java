@@ -78,6 +78,12 @@ public class Thief_Robbery extends ThiefSkill
 		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_STEALING;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"ROBBERY","ROB"});
 	@Override
 	public String[] triggerStrings()

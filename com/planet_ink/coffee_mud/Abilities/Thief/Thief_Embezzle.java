@@ -72,6 +72,12 @@ public class Thief_Embezzle extends ThiefSkill
 		return Ability.QUALITY_MALICIOUS;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_STEALING;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"EMBEZZLE"});
 	@Override
 	public String[] triggerStrings()

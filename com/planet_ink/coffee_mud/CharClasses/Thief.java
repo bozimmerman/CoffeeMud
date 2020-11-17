@@ -301,15 +301,9 @@ public class Thief extends StdCharClass
 			&&(msg.targetMessage()==null)
 			&&(msg.tool() instanceof Ability)
 			&&(myChar.charStats().getCurrentClass()==this)
-			&&(msg.tool().ID().equals("Thief_Steal")
-				||msg.tool().ID().equals("Thief_Robbery")
-				||msg.tool().ID().equals("Thief_Embezzle")
-				||msg.tool().ID().equals("Thief_Mug")
-				||msg.tool().ID().equals("Thief_Plunder")
-				||(msg.tool().ID().equals("Thief_Pick")&&(msg.value()==1))
+			&&((msg.tool().ID().equals("Thief_Pick")&&(msg.value()==1))
 				||(msg.tool().ID().equals("Thief_RemoveTraps")&&(msg.value()==1))
-				||msg.tool().ID().equals("Thief_Racketeer")
-				||msg.tool().ID().equals("Thief_Swipe")))
+				||(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_STEALING))))
 			{
 				final int xp=CMLib.flags().isAliveAwakeMobileUnbound((MOB)msg.target(), true)?10:5;
 				CMLib.leveler().postExperience(myChar,(MOB)msg.target()," for a successful "+msg.tool().name(),xp,false);

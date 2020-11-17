@@ -81,6 +81,12 @@ public class Thief_Plunder extends ThiefSkill
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_STEALING;
+	}
+
+	@Override
 	public int classificationCode()
 	{
 		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_STEALING;

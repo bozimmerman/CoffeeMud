@@ -31,8 +31,9 @@
  30. New Prayers: Deplete Relic, Attune Relic, Empower Relic, Transfer Bane, Release Prayer, Transfer Boon
  31. New Skills: Whiplash, Research Item, Research Region Map
  32. New Prayers: Improved Warning Glyph, Sense Parish, Reflect Prayer, Amplify Unholy Weapon
- 33. New Prayers: Empower Holy Weapon, Empower Sacred Weapon, Imbue Shield
- 34. New Thief skills: Heroic Reflexes, Condemn Mark
+ 33. New Prayers: Empower Holy Weapon, Empower Sacred Weapon, Imbue Shield, Share Boon, Empower Just Weapon
+ 34. New Thief skills: Heroic Reflexes, Condemn Mark, Steal Boon
+ 35. New Prayers: Empower Unjust Weapon, Empower Modest Weapon
 # Build 5.9.10 Release 6/16/2020
   1. Wands/etc have enchant type as a restriction, WandMaking/StaffMaking/Rodsmithing support.
   2. New PLAYERDEATH option: RETAIN -- to allow player mobs to keep their items on death.

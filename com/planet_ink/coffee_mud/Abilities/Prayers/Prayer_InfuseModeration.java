@@ -106,6 +106,7 @@ public class Prayer_InfuseModeration extends Prayer
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.delAmbiance("#LAW");
 		affectableStats.delAmbiance("#CHAOS");
+		affectableStats.addAmbiance("#MODERATE");
 	}
 
 	@Override

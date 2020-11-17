@@ -106,6 +106,12 @@ public class Thief_Swipe extends ThiefSkill
 		return true;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_STEALING;
+	}
+
 	private final PairVector<MOB,Integer> lastOnes=new PairVector<MOB,Integer>();
 	protected int timesPicked(final MOB target)
 	{

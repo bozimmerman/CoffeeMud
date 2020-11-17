@@ -745,6 +745,30 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
+	public boolean isModerate(final Physical P)
+	{
+		if((P != null) && (P.phyStats().isAmbiance("#MODERATE")))
+			return true;
+		if(P instanceof FactionMember)
+		{
+			Faction F=null;
+			Faction.FRange FR=null;
+			final FactionMember M=(FactionMember)P;
+			for(final Enumeration<String> e=M.factions();e.hasMoreElements();)
+			{
+				F=CMLib.factions().getFaction(e.nextElement());
+				if(F!=null)
+				{
+					FR=CMLib.factions().getRange(F.factionID(),M.fetchFaction(F.factionID()));
+					if((FR!=null)&&(FR.alignEquiv()==Faction.Align.MODERATE))
+						return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	@Override
 	public boolean isTrapped(final Physical P)
 	{
 		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
@@ -1972,7 +1996,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 					return true;
 				if(A instanceof AbilityContainer)
 				{
-					for(Enumeration<Ability> a=((AbilityContainer)A).abilities();a.hasMoreElements();)
+					for(final Enumeration<Ability> a=((AbilityContainer)A).abilities();a.hasMoreElements();)
 					{
 						final Ability A1=a.nextElement();
 						if((A1!=null)

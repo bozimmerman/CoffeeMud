@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_BorrowBoon extends ThiefSkill
+public class Thief_StealBoon extends ThiefSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Thief_BorrowBoon";
+		return "Thief_StealBoon";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Borrow Boon");
+	private final static String localizedName = CMLib.lang().L("Steal Boon");
 
 	@Override
 	public String name()
@@ -67,18 +67,18 @@ public class Thief_BorrowBoon extends ThiefSkill
 	}
 
 	@Override
-	public int classificationCode()
-	{
-		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;
-	}
-
-	@Override
 	public long flags()
 	{
 		return super.flags() | Ability.FLAG_STEALING;
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"BORROWBOON","BBORROW"});
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;
+	}
+
+	private static final String[] triggerStrings =I(new String[] {"STEALBOON","BSTEAL"});
 	@Override
 	public String[] triggerStrings()
 	{
@@ -126,10 +126,8 @@ public class Thief_BorrowBoon extends ThiefSkill
 		return times+1;
 	}
 
-	protected Ability findBoon(final MOB mob)
+	protected List<Ability> findBoons(final MOB mob)
 	{
-		if(mob==null)
-			return null;
 		final List<Ability> choices = new ArrayList<Ability>();
 		for(final Enumeration<Ability> m=mob.effects();m.hasMoreElements();)
 		{
@@ -168,9 +166,30 @@ public class Thief_BorrowBoon extends ThiefSkill
 					choices.add(A);
 			}
 		}
+		return choices;
+	}
+
+	protected Ability findBoon(final MOB mob)
+	{
+		if(mob==null)
+			return null;
+		final List<Ability> choices = findBoons(mob);
 		if(choices.size()==0)
 			return null;
 		return choices.get(CMLib.dice().roll(1, choices.size(), -1));
+	}
+
+	protected Ability findBoon(final MOB mob, final String boonName)
+	{
+		if(mob==null)
+			return null;
+		final List<Ability> choices = findBoons(mob);
+		if(choices.size()==0)
+			return null;
+		Ability A=(Ability)CMLib.english().fetchEnvironmental(choices, boonName, false);
+		if(A==null)
+			A=(Ability)CMLib.english().fetchEnvironmental(choices, boonName, false);
+		return A;
 	}
 
 	protected Item fetchCatalyst(final MOB mob, final boolean quiet)
@@ -275,11 +294,36 @@ public class Thief_BorrowBoon extends ThiefSkill
 			catalystI.setName("the universe");
 		}
 
+		if(commands.size()<2)
+		{
+			if(mob.isMonster())
+			{
+				final MOB target=(givenTarget instanceof MOB)?((MOB)givenTarget):null;
+				if(target == null)
+					return false;
+				final Ability A=findBoon(target);
+				if(A==null)
+					return false;
+				if(commands.size()==1)
+					commands.add(0,A.Name());
+				else
+				{
+					commands.add(A.Name());
+					commands.add(target.Name());
+				}
+			}
+			else
+			{
+				mob.tell(L("Steal which boon from whom?"));
+				return false;
+			}
+		}
+		final String boonName=commands.get(0);
 		MOB target=null;
 		if((givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		else
-			target=mob.location().fetchInhabitant(CMParms.combine(commands));
+			target=mob.location().fetchInhabitant(CMParms.combine(commands,1));
 		if((target==null)||(target.amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell(L("You don't see '@x1' here.",CMParms.combine(commands,1)));
@@ -294,18 +338,26 @@ public class Thief_BorrowBoon extends ThiefSkill
 
 		if((!target.mayIFight(mob))||(levelDiff>15))
 		{
-			mob.tell(L("You cannot borrow from @x1.",target.charStats().himher()));
+			mob.tell(L("You cannot steal from @x1.",target.charStats().himher()));
 			return false;
 		}
 		if(target==mob)
 		{
-			mob.tell(L("You cannot borrow from yourself."));
+			mob.tell(L("You cannot stealing from yourself."));
 			return false;
 		}
+		final Ability stolenA=findBoon(target,boonName);
+		/*
+		if(stolenA==null)
+		{
+			mob.tell(L("@x1 has no boon you can steal called '@x2'",target.name(mob),boonName));
+			return false;
+		}
+		*/
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final Ability borrowedA=findBoon(target);
 
 		// higher is good for the player, lower is good for the npc
 		// leveldiff is + when npc has advantage, and - when player does.
@@ -342,14 +394,14 @@ public class Thief_BorrowBoon extends ThiefSkill
 				if((target.isMonster())&&(mob.getVictim()==null))
 					mob.setVictim(target);
 				final CMMsg msg=CMClass.getMsg(mob,target,this,
-						CMMsg.MSG_NOISYMOVEMENT,auto?"":L("You fumble the attempt to 'borrow'; <T-NAME> spots you!"),
-						CMMsg.MSG_NOISYMOVEMENT,auto?"":L("<S-NAME> tries to 'borrow' from you and fails!"),
-						CMMsg.MSG_NOISYMOVEMENT,auto?"":L("<S-NAME> tries to 'borrow' from <T-NAME> and fails!"));
+						CMMsg.MSG_NOISYMOVEMENT,auto?"":L("You fumble the attempt to 'steal'; <T-NAME> spots you!"),
+						CMMsg.MSG_NOISYMOVEMENT,auto?"":L("<S-NAME> tries to 'steal' from you and fails!"),
+						CMMsg.MSG_NOISYMOVEMENT,auto?"":L("<S-NAME> tries to 'steal' from <T-NAME> and fails!"));
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
 			else
-				mob.tell(auto?"":L("You fumble the attempt to 'borrow' a boon."));
+				mob.tell(auto?"":L("You fumble the attempt to 'steal' a boon."));
 		}
 		else
 		{
@@ -357,12 +409,12 @@ public class Thief_BorrowBoon extends ThiefSkill
 			int code=CMMsg.MSG_THIEF_ACT;
 			if(!auto)
 			{
-				if(borrowedA!=null)
-					str=L("<S-NAME> 'borrow(s)' @x1 from <T-NAMESELF> using the power of @x2.",borrowedA.name(),catalystI.name());
+				if(stolenA!=null)
+					str=L("<S-NAME> 'steal(s)' @x1 from <T-NAMESELF> using the power of @x2.",stolenA.name(),catalystI.name());
 				else
 				{
 					code=CMMsg.MSG_QUIETMOVEMENT;
-					str=L("<S-NAME> attempt(s) to 'borrow' from <T-HIM-HER>, but comes up empty!",target.charStats().heshe());
+					str=L("<S-NAME> attempt(s) to 'steal' from <T-HIM-HER>, but comes up empty!",target.charStats().heshe());
 				}
 			}
 
@@ -398,16 +450,16 @@ public class Thief_BorrowBoon extends ThiefSkill
 					if(mob.getVictim()==target)
 						mob.makePeace(true);
 				}
-				if(borrowedA != null)
+				if(stolenA != null)
 				{
-					final long expires=borrowedA.expirationDate();
+					final long expires=stolenA.expirationDate();
 
-					final Ability newEffA = (Ability)borrowedA.copyOf();
+					final Ability newEffA = (Ability)stolenA.copyOf();
 					newEffA.startTickDown(mob, mob, super.getBeneficialTickdownTime(mob, mob, 0, asLevel));
 					if((newEffA.canBeUninvoked())
 					&&(expires < (CMProps.getTickMillis() * 1000)))
 						newEffA.setExpirationDate(expires);
-					//stolen.unInvoke();
+					stolenA.unInvoke();
 					if(CMLib.dice().rollPercentage() < 12-super.getXLEVELLevel(mob))
 					{
 						if((catalystI instanceof Wand)
