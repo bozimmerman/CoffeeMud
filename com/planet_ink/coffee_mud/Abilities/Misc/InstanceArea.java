@@ -246,12 +246,12 @@ public class InstanceArea extends StdAbility
 		fatigueRate		= 0;
 		// don't clear leaderMob
 	}
-	
+
 	protected static class InstanceAreaManager extends ThinAbility
 	{
 		public static final String getID()
 		{
-			return "InstanceAreaManager"; 
+			return "InstanceAreaManager";
 		}
 
 		@Override
@@ -265,15 +265,15 @@ public class InstanceArea extends StdAbility
 		{
 			return "Instances Area Manager";
 		}
-		
+
 		protected final Set<InstanceArea> managed=new HashSet<InstanceArea>();
-		
+
 		public InstanceAreaManager()
 		{
 			super();
 			this.savable=false;
 		}
-		
+
 		public void manage(final InstanceArea A)
 		{
 			if(A==null)
@@ -289,7 +289,7 @@ public class InstanceArea extends StdAbility
 				}
 			}
 		}
-		
+
 		public void unmanage(final InstanceArea A)
 		{
 			if(A==null)
@@ -309,7 +309,7 @@ public class InstanceArea extends StdAbility
 					affected.delEffect(this);
 			}
 		}
-		
+
 		@Override
 		public boolean okMessage(final Environmental myHost, final CMMsg msg)
 		{
@@ -327,7 +327,16 @@ public class InstanceArea extends StdAbility
 				final List<InstanceArea> l = new LinkedList<InstanceArea>();
 				synchronized(managed)
 				{
-					l.addAll(managed);
+					for(final Iterator<InstanceArea> i=managed.iterator();i.hasNext();)
+					{
+						final InstanceArea A=i.next();
+						if((A.amDestroyed())
+						||(A.affecting()==null)
+						||(A.affecting().amDestroyed()))
+							i.remove();
+						else
+							l.add(A);
+					}
 				}
 				for(final InstanceArea A : l)
 				{
