@@ -2687,7 +2687,8 @@ public class StdRoom implements Room
 				found=fetchFromRoomFavorItems(goodLocation, thingName);
 			else
 				found=fetchFromRoomFavorMOBs(goodLocation, thingName);
-			if((found!=null)&&(CMLib.flags().canBeSeenBy(found,mob)))
+			if((found!=null)
+			&&(CMLib.flags().canBeSeenBy(found,mob)))
 				return found;
 			while((found!=null)&&(!CMLib.flags().canBeSeenBy(found,mob)))
 			{

@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.core.exceptions.CoffeeMudException;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
+import com.planet_ink.coffee_mud.Abilities.ThinAbility;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.StdArea.AreaInstanceChild;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -244,6 +245,98 @@ public class InstanceArea extends StdAbility
 		recoverRate		= 0;
 		fatigueRate		= 0;
 		// don't clear leaderMob
+	}
+	
+	protected static class InstanceAreaManager extends ThinAbility
+	{
+		public static final String getID()
+		{
+			return "InstanceAreaManager"; 
+		}
+
+		@Override
+		public String ID()
+		{
+			return getID();
+		}
+
+		@Override
+		public String name()
+		{
+			return "Instances Area Manager";
+		}
+		
+		protected final Set<InstanceArea> managed=new HashSet<InstanceArea>();
+		
+		public InstanceAreaManager()
+		{
+			super();
+			this.savable=false;
+		}
+		
+		public void manage(final InstanceArea A)
+		{
+			if(A==null)
+				return;
+			if(!managed.contains(A))
+			{
+				synchronized(managed)
+				{
+					if(!managed.contains(A))
+					{
+						managed.add(A);
+					}
+				}
+			}
+		}
+		
+		public void unmanage(final InstanceArea A)
+		{
+			if(A==null)
+				return;
+			if(managed.contains(A))
+			{
+				final Physical affected=this.affected;
+				synchronized(managed)
+				{
+					if(managed.contains(A))
+					{
+						managed.remove(A);
+					}
+				}
+				if((managed.size()==0)
+				&&(affected!=null))
+					affected.delEffect(this);
+			}
+		}
+		
+		@Override
+		public boolean okMessage(final Environmental myHost, final CMMsg msg)
+		{
+			if(!super.okMessage(myHost, msg))
+				return false;
+			if((msg.sourceMinor()==CMMsg.TYP_ENTER)
+			&&(msg.target() instanceof Room)
+			&&(((Room)msg.target()).getArea()==affected))
+			{
+				if(managed.size()==0)
+				{
+					unInvoke();
+					return true;
+				}
+				final List<InstanceArea> l = new LinkedList<InstanceArea>();
+				synchronized(managed)
+				{
+					l.addAll(managed);
+				}
+				for(final InstanceArea A : l)
+				{
+					if(!A.okMessage(myHost, msg))
+						return false;
+				}
+			}
+			return true;
+		}
 	}
 
 	@Override
@@ -1403,24 +1496,9 @@ public class InstanceArea extends StdAbility
 			&&(affected instanceof SubArea))
 			{
 				final Area parentA=((SubArea)affected).getSuperArea();
-				final AreaInstanceChild child = findExistingChild((Area)affected);
-				if((child != null)
-				&&(parentA!=null))
-				{
-					for(final WeakReference<MOB> m : child.mobs)
-					{
-						final MOB M=m.get();
-						if(M!=null)
-						{
-							final InstanceArea eA=(InstanceArea)M.fetchEffect(ID());
-							if((eA!=null)
-							&&(eA.canBeUninvoked())
-							&&(eA.targetAreas!=null)
-							&&(eA.targetAreas.contains(affected)||eA.targetAreas.contains(parentA)))
-								M.delEffect(eA);
-						}
-					}
-				}
+				final InstanceAreaManager mgr=(InstanceAreaManager)parentA.fetchEffect(InstanceAreaManager.getID());
+				if(mgr != null)
+					mgr.unmanage(this);
 			}
 			else
 			if((msg.sourceMinor()== CMMsg.TYP_FACTIONCHANGE)
@@ -1519,29 +1597,6 @@ public class InstanceArea extends StdAbility
 					if(mob == weakReference.get())
 						return child;
 				}
-			}
-		}
-		return null;
-	}
-
-	private AreaInstanceChild findExistingChild(final Area targetArea)
-	{
-		synchronized(instanceChildren)
-		{
-			final Area pA = ((SubArea)targetArea).getSuperArea();
-			final List<AreaInstanceChild> areaInstChildren = instanceChildren.get(pA);
-			if(areaInstChildren == null)
-				return null;
-			for(int i=areaInstChildren.size()-1;i>=0;i--)
-			{
-				final Area A=areaInstChildren.get(i).A;
-				if((A==null)||(A.amDestroyed()))
-					areaInstChildren.remove(i);
-			}
-			for(final AreaInstanceChild child : areaInstChildren)
-			{
-				if(child.A==targetArea)
-					return child;
 			}
 		}
 		return null;
@@ -1838,32 +1893,20 @@ public class InstanceArea extends StdAbility
 						statData[Area.Stats.AVG_LEVEL.ordinal()] = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0));
 						Resources.submitResource("STATS_"+instA.Name().toUpperCase(), statData);
 					}
+					if(!(affected instanceof Area))
+					{
+						InstanceAreaManager mgr=(InstanceAreaManager)parentA.fetchEffect(InstanceAreaManager.getID());
+						if(mgr == null)
+						{
+							mgr=new InstanceAreaManager();
+							parentA.addEffect(mgr);
+						}
+						mgr.manage(this);
+					}
 				}
 				if((instA instanceof SubArea)
 				&&(CMath.bset(instA.flags(), Area.FLAG_INSTANCE_CHILD)))
 				{
-					for(final MOB M : grp)
-					{
-						if((M!=affected)
-						&&(M!=msg.source()))
-						{
-							final MOB src=(affected instanceof MOB)?(MOB)affected:msg.source();
-							InstanceArea A=(InstanceArea)M.fetchEffect(ID());
-							if(A==null)
-							{
-								A=(InstanceArea)copyOf();
-								A.setMiscText(text());
-								A.startTickDown(src, M, this.tickDown<=0?999:this.tickDown);
-							}
-							else
-							{
-								if(A.targetAreas==null)
-									A.targetAreas=new HashSet<Area>();
-								if(!A.targetAreas.contains((((Room)msg.target()).getArea())))
-									A.targetAreas.add(((Room)msg.target()).getArea());
-							}
-						}
-					}
 					InstanceArea able = (InstanceArea)instA.fetchEffect(ID());
 					if(able == null)
 					{
@@ -2094,13 +2137,13 @@ public class InstanceArea extends StdAbility
 			AreaInstanceChild child=null;
 			if(instA instanceof SubArea)
 			{
-				final Area pA = ((SubArea)instA).getSuperArea();
+				final Area parentA = ((SubArea)instA).getSuperArea();
 				synchronized(instanceChildren)
 				{
 					for(final Iterator<Area> a = instanceChildren.keySet().iterator(); a.hasNext();)
 					{
 						final Area A=a.next();
-						if(A==pA)
+						if(A==parentA)
 						{
 							final List<AreaInstanceChild> l = instanceChildren.get(A);
 							synchronized(l) // just for multi-cpu issues
@@ -2128,67 +2171,62 @@ public class InstanceArea extends StdAbility
 						}
 					}
 				}
-			}
-			Area parentArea = null;
-			int x=instA.Name().indexOf('_');
-			if(x<0)
-				x=instA.Name().indexOf(' ');
-			if(x>=0)
-				parentArea = CMLib.map().getArea(Name().substring(x+1));
-
-			for(final Enumeration<Room> r=instA.getFilledProperMap();r.hasMoreElements();)
-			{
-				final Room R=r.nextElement();
-				if(R!=null)
+				final InstanceAreaManager mgr=(InstanceAreaManager)parentA.fetchEffect(InstanceAreaManager.getID());
+				if(mgr != null)
+					mgr.unmanage(this);
+				for(final Enumeration<Room> r=instA.getFilledProperMap();r.hasMoreElements();)
 				{
-					if(R.numInhabitants()>0)
-						R.showHappens(CMMsg.MSG_OK_ACTION, L("This instance is fading away..."));
-					for(final Enumeration<MOB> i=R.inhabitants();i.hasMoreElements();)
+					final Room R=r.nextElement();
+					if(R!=null)
 					{
-						final MOB M=i.nextElement();
-						if((M!=null)
-						&&(M.isPlayer()))
+						if(R.numInhabitants()>0)
+							R.showHappens(CMMsg.MSG_OK_ACTION, L("This instance is fading away..."));
+						for(final Enumeration<MOB> i=R.inhabitants();i.hasMoreElements();)
 						{
-							Room oldRoom = (this.oldRoom!=null) ? CMLib.map().getRoom(this.oldRoom.get()) : null;
-							if((oldRoom==null)
-							||(oldRoom.amDestroyed())
-							||(oldRoom.getArea()==null)
-							||(!oldRoom.getArea().isRoom(oldRoom)))
-								oldRoom=M.getStartRoom();
-							for(int i1=0; (i1<50) && (oldRoom != R) && (R.isInhabitant(M) || M.location()==R);i1++)
+							final MOB M=i.nextElement();
+							if((M!=null)
+							&&(M.isPlayer()))
 							{
-								oldRoom.bringMobHere(M, true);
-								CMLib.commands().postLook(M,true);
-								R.delInhabitant(M);
+								Room oldRoom = (this.oldRoom!=null) ? CMLib.map().getRoom(this.oldRoom.get()) : null;
+								if((oldRoom==null)
+								||(oldRoom.amDestroyed())
+								||(oldRoom.getArea()==null)
+								||(!oldRoom.getArea().isRoom(oldRoom)))
+									oldRoom=M.getStartRoom();
+								for(int i1=0; (i1<50) && (oldRoom != R) && (R.isInhabitant(M) || M.location()==R);i1++)
+								{
+									oldRoom.bringMobHere(M, true);
+									CMLib.commands().postLook(M,true);
+									R.delInhabitant(M);
+								}
 							}
 						}
-					}
-					for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
-					{
-						final Item I=i.nextElement();
-						if((I instanceof DeadBody)
-						&&(((DeadBody)I).isPlayerCorpse()))
+						for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 						{
-							if((parentArea != null)
-							&&(R.roomID().length()>0)
-							&&(R.roomID().indexOf(parentArea.Name()+"#")>=0)
-							&&(parentArea.getRoom(parentArea.Name()+R.roomID().substring(R.roomID().lastIndexOf('#'))))!=null)
+							final Item I=i.nextElement();
+							if((I instanceof DeadBody)
+							&&(((DeadBody)I).isPlayerCorpse()))
 							{
-								final Room sendR=parentArea.getRoom(parentArea.Name()+R.roomID().substring(R.roomID().lastIndexOf('#')));
-								sendR.moveItemTo(I);
-							}
-							else
-							{
-								MOB M=((DeadBody)I).getSavedMOB();
-								if(M==null)
-									M=CMLib.players().getPlayerAllHosts(((DeadBody)I).getMobName());
-								if(M!=null)
+								if((R.roomID().length()>0)
+								&&(R.roomID().indexOf(parentA.Name()+"#")>=0)
+								&&(parentA.getRoom(parentA.Name()+R.roomID().substring(R.roomID().lastIndexOf('#'))))!=null)
 								{
-									if(M.location()!=null)
-										M.location().moveItemTo(I);
-									else
-									if(M.getStartRoom()!=null)
-										M.getStartRoom().moveItemTo(I);
+									final Room sendR=parentA.getRoom(parentA.Name()+R.roomID().substring(R.roomID().lastIndexOf('#')));
+									sendR.moveItemTo(I);
+								}
+								else
+								{
+									MOB M=((DeadBody)I).getSavedMOB();
+									if(M==null)
+										M=CMLib.players().getPlayerAllHosts(((DeadBody)I).getMobName());
+									if(M!=null)
+									{
+										if(M.location()!=null)
+											M.location().moveItemTo(I);
+										else
+										if(M.getStartRoom()!=null)
+											M.getStartRoom().moveItemTo(I);
+									}
 								}
 							}
 						}
