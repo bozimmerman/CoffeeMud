@@ -119,7 +119,7 @@ public interface LandTitle extends PrivateProperty
 	public int backTaxes();
 
 	/**
-	 * If this title allows expansion construction, this this will return the new
+	 * If this title allows expansion construction, this will return the new
 	 * title to assign to the newly constructed rooms.
 	 * @see LandTitle#allowsExpansionConstruction()
 	 * @return the new title to assigne to a new room.

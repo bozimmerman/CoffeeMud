@@ -940,7 +940,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @param ID the charclass, race, or clan ID()
 	 * @param checkAll true to check the All Qualifies list, or false not to
 	 * @param abilityID the ability ID() to check
-	 * @return the max proficiency for someone with this this mapped Ability, usually 100
+	 * @return the max proficiency for someone with this mapped Ability, usually 100
 	 */
 	public int getMaxProficiency(String ID, boolean checkAll, String abilityID);
 
@@ -952,7 +952,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @see AbilityMapper#getMaxProficiency(String, boolean, String)
 	 * @see Ability#proficiency()
 	 * @param abilityID the ability ID() to check
-	 * @return the max proficiency for everyone with this this mapped Ability, usually 100
+	 * @return the max proficiency for everyone with this mapped Ability, usually 100
 	 */
 	public int getMaxProficiency(String abilityID);
 
@@ -967,7 +967,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @param mob the mob whose charclass, race, or clan ID() applies
 	 * @param checkAll true to check the All Qualifies list, or false not to
 	 * @param abilityID the ability ID() to check
-	 * @return the max proficiency for the mob with this this mapped Ability, usually 100
+	 * @return the max proficiency for the mob with this mapped Ability, usually 100
 	 */
 	public int getMaxProficiency(MOB mob, boolean checkAll, String abilityID);
 
