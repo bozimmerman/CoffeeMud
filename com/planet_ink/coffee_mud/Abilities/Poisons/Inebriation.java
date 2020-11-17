@@ -57,7 +57,7 @@ public class Inebriation extends Poison_Alcohol
 	}
 
 	@Override
-	protected int alchoholContribution()
+	protected int alcoholContribution()
 	{
 		return 6;
 	}

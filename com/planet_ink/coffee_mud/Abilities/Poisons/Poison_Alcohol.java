@@ -124,7 +124,7 @@ public class Poison_Alcohol extends Poison
 
 	protected boolean disableHappiness = false;
 
-	protected int alchoholContribution()
+	protected int alcoholContribution()
 	{
 		return 1;
 	}
@@ -186,7 +186,7 @@ public class Poison_Alcohol extends Poison
 		final boolean caughtIt=super.catchIt(mob,target);
 		if(!(affected instanceof Drink))
 			return caughtIt;
-		if(CMLib.dice().roll(1,1000,0)>(alchoholContribution()*alchoholContribution()*alchoholContribution()))
+		if(CMLib.dice().roll(1,1000,0)>(alcoholContribution()*alcoholContribution()*alcoholContribution()))
 			return caughtIt;
 		if((target!=null)&&(target instanceof MOB)&&(target.fetchEffect(ID())==null))
 		{
@@ -383,7 +383,7 @@ public class Poison_Alcohol extends Poison
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		int largest=alchoholContribution();
+		int largest=alcoholContribution();
 		if((givenTarget instanceof MOB)&&(auto))
 		{
 			final Vector<Ability> found=new Vector<Ability>();
@@ -401,7 +401,7 @@ public class Poison_Alcohol extends Poison
 						remove.addElement(A);
 				}
 			}
-			largest+=alchoholContribution();
+			largest+=alcoholContribution();
 			if(found.size()>0)
 			{
 				final CMMsg msg=CMClass.getMsg(mob,givenTarget,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_POISON|CMMsg.MASK_ALWAYS,POISON_CAST());

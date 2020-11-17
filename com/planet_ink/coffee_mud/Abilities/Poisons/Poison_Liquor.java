@@ -63,7 +63,7 @@ public class Poison_Liquor extends Poison_Alcohol
 	}
 
 	@Override
-	protected int alchoholContribution()
+	protected int alcoholContribution()
 	{
 		return 2;
 	}
