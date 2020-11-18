@@ -53,10 +53,16 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect, Deity.
 		return Ability.CAN_ITEMS;
 	}
 
-	protected boolean	actual	= false;
-	protected boolean	contents= false;
-	protected int		percent	= 100;
-	protected String	msgStr	= "";
+	protected final static String[] lawAmbi=new String[] {"#LAW"};
+	protected final static String[] chaosAmbi=new String[] {"#CHAOS"};
+
+	protected boolean	actual		= false;
+	protected boolean	contents	= false;
+	protected int		percent		= 100;
+	protected String	msgStr		= "";
+	protected String	deityName	= "";
+	protected int		bonus		= 0;
+	protected String[]	bonusAmbi	= null;
 
 	protected MaskingLibrary.CompiledZMask mask=null;
 
@@ -65,26 +71,7 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect, Deity.
 	{
 		if(mask==null)
 			return "";
-		MaskingLibrary.ZapperKey key=MaskingLibrary.ZapperKey._DEITY;
-		for(final CompiledZMaskEntry[] entries : mask.entries())
-		{
-			for(final CompiledZMaskEntry entry : entries)
-			{
-				if(entry.maskType()==MaskingLibrary.ZapperKey._OR)
-					key=(key==MaskingLibrary.ZapperKey._DEITY)?MaskingLibrary.ZapperKey.DEITY:MaskingLibrary.ZapperKey._DEITY;
-				else
-				if(entry.maskType()==key)
-				{
-					for(final Object o : entry.parms())
-					{
-						if((o instanceof String)
-						&&(!"ANY".equalsIgnoreCase((String)o)))
-							return (String)o;
-					}
-				}
-			}
-		}
-		return "";
+		return deityName;
 	}
 
 	@Override
@@ -169,14 +156,96 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect, Deity.
 			}
 			percent=tot;
 		}
+		deityName="";
 		msgStr=CMParms.getParmStr(text,"MESSAGE",defaultMessage());
-		mask=CMLib.masking().getPreCompiledMask(text);
+		mask=null;
+		bonus=0;
+		bonusAmbi=null;
+		if(msgStr.trim().length()>0)
+			mask=CMLib.masking().getPreCompiledMask(text);
+		if(mask != null)
+		{
+			MaskingLibrary.ZapperKey key=MaskingLibrary.ZapperKey._DEITY;
+			for(final CompiledZMaskEntry[] entries : mask.entries())
+			{
+				for(final CompiledZMaskEntry entry : entries)
+				{
+					switch(entry.maskType())
+					{
+					case _OR:
+						key=(key==MaskingLibrary.ZapperKey._DEITY)?MaskingLibrary.ZapperKey.DEITY:MaskingLibrary.ZapperKey._DEITY;
+						break;
+					case _DEITY:
+					case DEITY:
+						if(entry.maskType()==key)
+						{
+							for(final Object o : entry.parms())
+							{
+								if((o instanceof String)
+								&&(!"ANY".equalsIgnoreCase((String)o)))
+									deityName=(String)o;
+							}
+						}
+						break;
+					case FACTION:
+					case _FACTION:
+						if((entry.maskType()==MaskingLibrary.ZapperKey._FACTION)
+						||((entry.maskType()==MaskingLibrary.ZapperKey.FACTION)
+							&&(key==MaskingLibrary.ZapperKey.DEITY)))
+						{
+							if(CMParms.contains(entry.parms(),"EVIL"))
+								bonus=PhyStats.IS_EVIL;
+							else
+							if(CMParms.contains(entry.parms(),"GOOD"))
+								bonus=PhyStats.IS_GOOD;
+							if(CMParms.contains(entry.parms(),"LAW"))
+								bonusAmbi=lawAmbi;
+							else
+							if(CMParms.contains(entry.parms(),"CHAOS"))
+								bonusAmbi=chaosAmbi;
+						}
+						else
+						if((entry.maskType()==MaskingLibrary.ZapperKey.FACTION)
+						||((entry.maskType()==MaskingLibrary.ZapperKey._FACTION)
+							&&(key==MaskingLibrary.ZapperKey.DEITY)))
+						{
+							if(CMParms.contains(entry.parms(),"EVIL"))
+								bonus=PhyStats.IS_GOOD;
+							else
+							if(CMParms.contains(entry.parms(),"GOOD"))
+								bonus=PhyStats.IS_EVIL;
+							if(CMParms.contains(entry.parms(),"LAW"))
+								bonusAmbi=chaosAmbi;
+							else
+							if(CMParms.contains(entry.parms(),"CHAOS"))
+								bonusAmbi=lawAmbi;
+						}
+						break;
+					default:
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	@Override
 	public String accountForYourself()
 	{
 		return "Ownership restricted as follows: "+CMLib.masking().maskDesc(text());
+	}
+
+	@Override
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected,affectableStats);
+		if(bonus != 0)
+			affectableStats.setDisposition(affectableStats.disposition()|bonus);
+		if(bonusAmbi != null)
+		{
+			for(final String str : bonusAmbi)
+				affectableStats.addAmbiance(str);
+		}
 	}
 
 	@Override

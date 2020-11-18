@@ -841,6 +841,10 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				return Faction.Align.GOOD.toString();
 			if((((Physical)E).phyStats().disposition()&PhyStats.IS_EVIL)==PhyStats.IS_EVIL)
 				return Faction.Align.EVIL.toString();
+			if(((Physical)E).phyStats().isAmbiance("#GOOD"))
+				return Faction.Align.GOOD.toString();
+			if(((Physical)E).phyStats().isAmbiance("#EVIL"))
+				return Faction.Align.EVIL.toString();
 		}
 		if(E instanceof MOB)
 		{

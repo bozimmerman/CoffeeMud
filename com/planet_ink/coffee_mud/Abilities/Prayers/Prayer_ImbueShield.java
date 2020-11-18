@@ -82,7 +82,7 @@ public class Prayer_ImbueShield extends Prayer
 
 	protected void doImbue(final MOB mob, final Item targetI, final Ability imbuePrayerA)
 	{
-		mob.location().show(mob,targetI,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glow(s) divinely!"));
+		mob.location().show(mob,targetI,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glow(s) with a sacred light!"));
 		targetI.basePhyStats().setDisposition(targetI.basePhyStats().disposition()|PhyStats.IS_BONUS);
 		targetI.basePhyStats().setLevel(targetI.basePhyStats().level()+(CMLib.ableMapper().lowestQualifyingLevel(imbuePrayerA.ID())/2));
 		final Ability A=CMClass.getAbility("Prop_WearSpellCast");
@@ -109,6 +109,16 @@ public class Prayer_ImbueShield extends Prayer
 		return experienceToLose;
 	}
 
+	protected boolean isAppropriateItem(final Physical target)
+	{
+		return (target instanceof Shield);
+	}
+
+	protected boolean checkAlignment(final MOB mob, final Physical target, final boolean quiet)
+	{
+		return true;
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -123,33 +133,43 @@ public class Prayer_ImbueShield extends Prayer
 			mob.tell(L("You don't see '@x1' here.",(commands.get(commands.size()-1))));
 			return false;
 		}
-		if(!(target instanceof Shield))
+		final String deityName=mob.charStats().getWorshipCharID();
+		if(deityName.length()==0)
 		{
-			mob.tell(mob,target,null,L("You can't imbue <T-NAME>."));
+			mob.tell(L("You must worship a deity to begin the empowering."));
 			return false;
 		}
-		final Ability zappA=target.fetchEffect("Prop_WearZapper");
-		if(zappA!=null)
+
+		if(!this.isAppropriateItem(target))
 		{
-			final String zappaTxt=zappA.text().toUpperCase().trim();
-			if((zappaTxt.indexOf("-EVIL")<0)
-			&&(zappaTxt.indexOf("-GOOD")<0)
-			&&(zappaTxt.indexOf("-NEUTRAL")<0))
-			{
-				mob.tell(L("@x1 cannot be imbued until it has been empowered.",target.name(mob)));
-				return false;
-			}
-			if(!CMLib.masking().maskCheck(zappaTxt, mob, true))
+			mob.tell(mob,target,null,L("You can't imbue <T-NAME> with this prayer!"));
+			return false;
+		}
+		if(!Prayer.checkInfusionMismatch(mob, target))
+		{
+			mob.tell(L("You can not imbue that repulsive thing."));
+			return false;
+		}
+
+		if(!Prayer.checkRequiredInfusion(mob, target))
+		{
+			mob.tell(L("@x1 cannot be imbued until it has been empowered by your deity.",target.name(mob)));
+			return false;
+		}
+
+		final Deity.DeityWorshipper zappA=CMLib.law().getClericInfusion(target);
+		if(zappA instanceof Ability)
+		{
+			if((CMath.bset(((Ability)zappA).flags(),Ability.FLAG_ZAPPER))
+			&&(!CMLib.masking().maskCheck(((Ability) zappA).text(), mob, true)))
 			{
 				mob.tell(L("You can't seem to focus on @x1.",target.name(mob)));
 				return false;
 			}
 		}
-		else
-		{
-			mob.tell(L("@x1 cannot be imbued until it has been empowered.",target.name(mob)));
+
+		if(!checkAlignment(mob,target,false))
 			return false;
-		}
 
 		if(target.phyStats().ability()==0)
 		{
@@ -186,6 +206,15 @@ public class Prayer_ImbueShield extends Prayer
 			mob.tell(L("That prayer cannot be used to imbue anything."));
 			return false;
 		}
+		final long flagMask=Ability.FLAG_NEUTRAL|Ability.FLAG_MODERATE;
+		if((imbuePrayerA.flags()&flagMask) != (flags()&flagMask))
+		{
+			if(!(target instanceof Shield))
+			{
+				mob.tell(L("@x1 can not be imbued using the @x2 prayer.",imbuePrayerA.Name(),Name()));
+				return false;
+			}
+		}
 
 		if((CMLib.ableMapper().lowestQualifyingLevel(imbuePrayerA.ID())>15)
 		||(((StdAbility)imbuePrayerA).usageCost(null,true)[0]>45)
@@ -194,7 +223,6 @@ public class Prayer_ImbueShield extends Prayer
 			mob.tell(L("That prayer is too powerful to imbue into anything."));
 			return false;
 		}
-
 		if(!targetI.isGeneric())
 		{
 			mob.tell(L("You can't imbue '@x1'.",targetI.name()));
@@ -214,6 +242,7 @@ public class Prayer_ImbueShield extends Prayer
 			mob.tell(L("You don't have enough experience to use this magic."));
 			return false;
 		}
+
 		// lose all the mana!
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

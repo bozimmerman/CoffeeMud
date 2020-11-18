@@ -238,12 +238,18 @@ public class Reliquist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_ProtectSacredItem",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_Whipstrip",0,false);
 
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueHolyWeapon",false); // special A
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueUnholyWeapon",false); // special A
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueSacredWeapon",false); // special A
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueJustWeapon",false); // special A
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueModestWeapon",false); // special A
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueFoulWeapon",false); // special A
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueHolyWeapon",false); // special A
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueUnholyWeapon",false); // special A
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.NEUTRAL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueSacredWeapon",false); // special A
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueJustWeapon",false); // special A
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.MODERATE))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueModestWeapon",false); // special A
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueFoulWeapon",false); // special A
 
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_DivineQuest",true);
 

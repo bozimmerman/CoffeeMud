@@ -120,20 +120,10 @@ public class Prayer_EmpowerUnholyArmor extends Prayer
 			return false;
 		}
 
-		final Ability zappA=target.fetchEffect("Prop_WearZapper");
-		if(zappA!=null)
+		if(Prayer.checkInfusionMismatch(mob, target))
 		{
-			final String zappaTxt=zappA.text().toUpperCase().trim();
-			if(zappaTxt.indexOf("-EVIL")>=0)
-			{
-				mob.tell(L("You can not empower that repulsive weapon."));
-				return false;
-			}
-			if((zappaTxt.indexOf("-DEITY")>=0) && (zappaTxt.indexOf("\"+"+deityName.toUpperCase()+"\"")<0))
-			{
-				mob.tell(L("You can not empower that repulsive weapon."));
-				return false;
-			}
+			mob.tell(L("You can not empower that repulsive weapon."));
+			return false;
 		}
 		if(CMLib.flags().isGood(target))
 		{
@@ -161,6 +151,7 @@ public class Prayer_EmpowerUnholyArmor extends Prayer
 				target.basePhyStats().setLevel(target.basePhyStats().level()+3);
 				target.basePhyStats().setDisposition(target.basePhyStats().disposition() & ~PhyStats.IS_GOOD);
 				target.basePhyStats().setDisposition(target.basePhyStats().disposition()|PhyStats.IS_BONUS|PhyStats.IS_EVIL);
+				final Ability zappA=target.fetchEffect("Prop_WearZapper");
 				if(zappA==null)
 				{
 					final Ability A=CMClass.getAbility("Prop_WearZapper");
