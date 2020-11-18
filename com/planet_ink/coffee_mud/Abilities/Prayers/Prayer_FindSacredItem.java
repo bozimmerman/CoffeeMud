@@ -106,13 +106,8 @@ public class Prayer_FindSacredItem extends Prayer
 		final Item I=getHere(mob,R,what,auto);
 		if(I==null)
 			return false;
-		final Ability A=I.fetchEffect("Prop_WearZapper");
-		if(A==null)
-			return false;
-		final String txt=A.text().toUpperCase().trim();
-		if((txt.indexOf("-DEITY")>0)&&(txt.indexOf(deityName.toUpperCase())>0))
-			return true;
-		return false;
+		final String infusion=CMLib.law().getClericInfused(I);
+		return (infusion!=null)&&(infusion.equalsIgnoreCase(deityName));
 	}
 
 	protected TrackingLibrary.TrackingFlags getTrackingFlags()

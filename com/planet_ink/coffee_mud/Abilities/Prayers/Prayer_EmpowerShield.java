@@ -124,6 +124,12 @@ public class Prayer_EmpowerShield extends Prayer
 				return false;
 			}
 		}
+		
+		if(!Prayer.checkInfusion(mob, target))
+		{
+			mob.tell(L("You can not empower that repulsive shield."));
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -149,33 +155,34 @@ public class Prayer_EmpowerShield extends Prayer
 					final Ability A=CMClass.getAbility("Prop_WearZapper");
 					if(CMLib.flags().isGood(mob))
 					{
-						A.setMiscText("-EVIL -NEUTRAL");
+						A.setMiscText("+FACTION -EVIL -NEUTRAL");
 						target.addNonUninvokableEffect(A);
 					}
 					else
 					if(CMLib.flags().isEvil(mob))
 					{
-						A.setMiscText("-GOOD -NEUTRAL");
+						A.setMiscText("+FACTION -GOOD -NEUTRAL");
 						target.addNonUninvokableEffect(A);
 					}
 					else
 					if(CMLib.flags().isNeutral(mob))
 					{
-						A.setMiscText("-GOOD -EVIL");
+						A.setMiscText("+FACTION -GOOD -EVIL");
 						target.addNonUninvokableEffect(A);
 					}
 				}
 				else
 				{
 					if(CMLib.flags().isGood(mob) && ((zappA.text().indexOf("-NEUTRAL")<0)||(zappA.text().indexOf("-EVIL")<0)))
-						zappA.setMiscText(zappA.text()+" -EVIL -NEUTRAL");
+						zappA.setMiscText(zappA.text()+" +FACTION -EVIL -NEUTRAL");
 					else
 					if(CMLib.flags().isEvil(mob) && ((zappA.text().indexOf("-GOOD")<0)||(zappA.text().indexOf("-NEUTRAL")<0)))
-						zappA.setMiscText(zappA.text()+" -GOOD -NEUTRAL");
+						zappA.setMiscText(zappA.text()+" +FACTION -GOOD -NEUTRAL");
 					else
 					if(CMLib.flags().isNeutral(mob) && ((zappA.text().indexOf("-GOOD")<0)||(zappA.text().indexOf("-EVIL")<0)))
-						zappA.setMiscText(zappA.text()+" -GOOD -EVIL");
+						zappA.setMiscText(zappA.text()+" +FACTION -GOOD -EVIL");
 				}
+				Prayer.infusePhysicalByAlignment(mob, target);
 				target.recoverPhyStats();
 				mob.recoverPhyStats();
 			}

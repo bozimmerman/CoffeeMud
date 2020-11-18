@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Faction.Align;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -172,6 +173,79 @@ public class Prayer extends StdAbility
 			}
 		}
 		return prayV;
+	}
+
+	protected static boolean checkInfusion(final MOB mob, final Physical target)
+	{
+		final String deityName=CMLib.law().getClericInfused(target);
+		if((deityName!=null)
+		&&(deityName.length()>0)
+		&&(mob.baseCharStats().getWorshipCharID().length()>0)
+		&&(!deityName.equalsIgnoreCase(mob.baseCharStats().getWorshipCharID())))
+			return false;
+		return true;
+	}
+	
+	protected static void infusePhysicalByAlignment(final MOB mob, final Physical target)
+	{
+		final String deityName=CMLib.law().getClericInfused(target);
+		if(CMLib.factions().isAlignmentLoaded(Align.GOOD))
+		{
+			final String infuserID;
+			if(CMLib.flags().isGood(mob))
+				infuserID="Prayer_InfuseHoliness";
+			else
+			if(CMLib.flags().isEvil(mob))
+				infuserID="Prayer_InfuseUnholiness";
+			else
+			if(CMLib.flags().isNeutral(mob))
+				infuserID="Prayer_InfuseBalance";
+			else
+				infuserID=null;
+			if((deityName==null)
+			&&(infuserID!=null)
+			&&(mob.baseCharStats().getWorshipCharID().length()>0))
+			{
+				final Ability dA=CMClass.getAbility(infuserID);
+				dA.setMiscText(mob.baseCharStats().getWorshipCharID());
+				target.addNonUninvokableEffect(dA);
+			}
+		}
+		if(CMLib.factions().isAlignmentLoaded(Align.LAWFUL))
+		{
+			final String infuserID;
+			if(CMLib.flags().isGood(mob))
+				infuserID="Prayer_InfuseDiscipline";
+			else
+			if(CMLib.flags().isEvil(mob))
+				infuserID="Prayer_InfuseImpunity";
+			else
+			if(CMLib.flags().isNeutral(mob))
+				infuserID="Prayer_InfuseModeration";
+			else
+				infuserID=null;
+			if((deityName==null)
+			&&(infuserID!=null)
+			&&(mob.baseCharStats().getWorshipCharID().length()>0))
+			{
+				final Ability dA=CMClass.getAbility(infuserID);
+				dA.setMiscText(mob.baseCharStats().getWorshipCharID());
+				target.addNonUninvokableEffect(dA);
+			}
+		}
+	}
+	
+	protected static void clearInfusions(final Physical P)
+	{
+		if(P==null)
+			return;
+		Ability A=CMLib.law().getClericInfusion(P);
+		while(A!=null)
+		{
+			A.unInvoke();
+			P.delEffect(A);
+			A=CMLib.law().getClericInfusion(P);
+		}
 	}
 
 	protected static Dischargeable getDischargeableRelic(final Physical P)

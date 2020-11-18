@@ -155,13 +155,13 @@ public class Prayer_EmpowerUnholyWeapon extends Prayer
 				if(zappA==null)
 				{
 					final Ability A=CMClass.getAbility("Prop_WearZapper");
-					A.setMiscText("-GOOD -NEUTRAL -DEITY \"+"+deityName.toUpperCase().trim()+"\"");
+					A.setMiscText("+FACTION -GOOD -NEUTRAL -DEITY \"+"+deityName.toUpperCase().trim()+"\"");
 					target.addNonUninvokableEffect(A);
 				}
 				else
 				{
 					if((zappA.text().indexOf("-NEUTRAL")<0)||(zappA.text().indexOf("-GOOD")<0))
-						zappA.setMiscText(zappA.text()+" -GOOD -NEUTRAL");
+						zappA.setMiscText(zappA.text()+" +FACTION -GOOD -NEUTRAL");
 					if((zappA.text().indexOf("-DEITY")<0)||(zappA.text().indexOf("\"+"+deityName.toUpperCase().trim()+"\"")<0))
 						zappA.setMiscText(zappA.text()+" -DEITY \"+"+deityName.toUpperCase().trim()+"\"");
 				}

@@ -609,26 +609,58 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public Ability getClericInfusion(final Physical room)
+	public Ability getClericInfusion(final Physical P)
 	{
-		if(room==null)
+		if(P==null)
 			return null;
-		for(final Enumeration<Ability> a=room.effects();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A!=null)&&(A.ID().startsWith("Prayer_Infuse")))
-				return A;
+			if(A!=null)
+			{
+				if(A.ID().startsWith("Prayer_Infuse"))
+					return A;
+				if(((A.ID().equals("Prop_WearZapper"))&&((P instanceof Weapon)||(P instanceof Armor)))
+				||((A.ID().equals("Prop_ReqEntry"))&&((P instanceof Room)||(P instanceof Exit)))
+				||((A.ID().equals("Prop_HaveZapper"))&&((P instanceof Item))))
+				{
+					if(A.text().toUpperCase().indexOf("-DEITY")>=0)
+						return A;
+				}
+			}
 		}
 		return null;
 	}
 
 	@Override
-	public String getClericInfused(final Room room)
+	public String getClericInfused(final Physical P)
 	{
-		final Ability A=getClericInfusion(room);
+		final Ability A=getClericInfusion(P);
 		if(A==null)
 			return null;
-		return A.text();
+		if(A.ID().startsWith("Prayer_Infuse"))
+			return A.text();
+		int x=A.text().toUpperCase().indexOf("-DEITY");
+		if(x>=0)
+		{
+			String txt = A.text().substring(x+6).trim();
+			if(txt.startsWith("\"+"))
+			{
+				x=txt.indexOf('\"',2);
+				if(x>1)
+					return txt.substring(2,x).trim();
+				return txt.substring(1).trim();
+			}
+			else
+			if(txt.startsWith("+"))
+			{
+				x=txt.indexOf(' ');
+				if(x>1)
+					return txt.substring(1,x).trim();
+				return txt.substring(1).trim();
+			}
+		}
+		return null;
 	}
 
 	@Override

@@ -150,6 +150,7 @@ public class Prayer_DepleteRelic extends Prayer
 				}
 				Prayer.setRelicCharges(target, 0);
 				Prayer.clearRelicMagic(target);
+				Prayer.clearInfusions(target);
 				CMLib.leveler().postExperience(mob, null, "", 25+(5*super.getXLEVELLevel(mob)), false);
 			}
 			else

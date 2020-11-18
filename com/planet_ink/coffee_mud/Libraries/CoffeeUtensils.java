@@ -481,6 +481,13 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				doneSomething=true;
 			}
 		}
+		target.basePhyStats().delAmbiance("#MODERATE");
+		target.basePhyStats().delAmbiance("#LAW");
+		target.basePhyStats().delAmbiance("#CHAOS");
+		target.basePhyStats().delAmbiance("#GOOD");
+		target.basePhyStats().delAmbiance("#EVIL");
+		target.basePhyStats().delAmbiance("#NEUTRAL");
+		target.recoverPhyStats();
 
 		if(target.amDestroyed())
 			return 0;

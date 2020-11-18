@@ -107,6 +107,11 @@ public class Prayer_EmpowerRelic extends Prayer
 			mob.tell(L("That is too depleted to be empowered."));
 			return false;
 		}
+		if(!Prayer.checkInfusion(mob, target))
+		{
+			mob.tell(L("You can not empower that repulsive relic."));
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -130,6 +135,7 @@ public class Prayer_EmpowerRelic extends Prayer
 				target.recoverPhyStats();
 				if(Prayer.getRelicCharges(target)>0)
 					Prayer.setRelicCharges(target, Prayer.getRelicCharges(target)-1);
+				Prayer.infusePhysicalByAlignment(mob,target);
 			}
 			else
 				beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> powerfully sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, but @x1 does not heed.",hisHerDiety(mob)));

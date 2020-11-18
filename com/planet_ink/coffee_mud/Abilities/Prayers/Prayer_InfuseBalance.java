@@ -125,7 +125,6 @@ public class Prayer_InfuseBalance extends Prayer
 		}
 
 		super.unInvoke();
-
 	}
 
 	@Override
@@ -169,7 +168,7 @@ public class Prayer_InfuseBalance extends Prayer
 		{
 
 			if(target instanceof Room)
-				deityName=CMLib.law().getClericInfused((Room)target);
+				deityName=CMLib.law().getClericInfused(target);
 			if(deityName!=null)
 				mob.tell(L("There is already an infused aura of @x1 around @x2.",deityName,target.name(mob)));
 			else
@@ -190,7 +189,7 @@ public class Prayer_InfuseBalance extends Prayer
 			for(final Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
 			{
 				R=e.nextElement();
-				if(deityName.equalsIgnoreCase(CMLib.law().getClericInfused((Room)target)))
+				if(deityName.equalsIgnoreCase(CMLib.law().getClericInfused(target)))
 				{
 					mob.tell(L("There is already a balanced place of @x1 in this area at @x2.",deityName,R.displayText(mob)));
 					return false;

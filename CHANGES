@@ -29,7 +29,7 @@
  28. Many GREET style Scriptable triggers now support zapper masks instead of pct chance
  29. Scriptable has new GROUP_GREET_PROG for greetings that trigger at most once per tick.
  30. New Prayers: Deplete Relic, Attune Relic, Empower Relic, Transfer Bane, Release Prayer, Transfer Boon
- 31. New Skills: Whiplash, Research Item, Research Region Map, AutoHammerRing
+ 31. New Skills: Whiplash, Research Item, Research Region Map, AutoHammerRing, Befoul Shrine
  32. New Prayers: Improved Warning Glyph, Sense Parish, Reflect Prayer, Amplify Unholy Weapon
  33. New Prayers: Empower Holy Weapon, Empower Sacred Weapon, Imbue Shield, Share Boon, Empower Just Weapon
  34. New Thief skills: Heroic Reflexes, Condemn Mark, Steal Boon

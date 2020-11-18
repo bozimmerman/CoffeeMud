@@ -1360,6 +1360,13 @@ public class StdDeity extends StdMOB implements Deity
 				if(w.room==room)
 					return;
 			}
+			final CMMsg msg=CMClass.getMsg(this,mob,null,
+					CMMsg.MSG_HOLYEVENT, L("<T-NAME> begin(s) to hold services for @x1 here.",mob.Name()),
+					CMMsg.MSG_HOLYEVENT,null,
+					CMMsg.MSG_HOLYEVENT,"SERVICE-BEGIN");
+			if(!room.okMessage(this, msg))
+				return;
+			room.send(this, msg);
 			final WorshipService service = new WorshipService();
 			service.room=room;
 			service.parishaners = parishaners;

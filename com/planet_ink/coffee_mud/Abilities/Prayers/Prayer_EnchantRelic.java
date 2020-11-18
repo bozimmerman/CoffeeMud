@@ -162,6 +162,12 @@ public class Prayer_EnchantRelic extends Prayer
 			return false;
 		}
 
+		if(!Prayer.checkInfusion(mob, target))
+		{
+			mob.tell(L("You can not enchant that repulsive relic."));
+			return false;
+		}
+
 		int experienceToLose=10*CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID());
 		if((mob.getExperience()-experienceToLose)<0)
 		{
@@ -194,6 +200,7 @@ public class Prayer_EnchantRelic extends Prayer
 				wand.setUsesRemaining(wand.usesRemaining()+5);
 				wand.text();
 				wand.recoverPhyStats();
+				Prayer.infusePhysicalByAlignment(mob,target);
 			}
 
 		}
