@@ -32,16 +32,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_EmpowerShield extends Prayer
+public class Prayer_EmpowerHolyArmor extends Prayer
 {
 
 	@Override
 	public String ID()
 	{
-		return "Prayer_EmpowerShield";
+		return "Prayer_EmpowerHolyArmor";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Empower Shield");
+	private final static String localizedName = CMLib.lang().L("Empower Holy Armor");
 
 	@Override
 	public String name()
@@ -70,7 +70,7 @@ public class Prayer_EmpowerShield extends Prayer
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_NEUTRAL;
+		return Ability.FLAG_HOLY;
 	}
 
 	@Override
@@ -92,9 +92,18 @@ public class Prayer_EmpowerShield extends Prayer
 		if(target==null)
 			return false;
 
-		if(!(target instanceof Shield))
+		final long okLocs = Wearable.WORN_FEET|Wearable.WORN_LEGS|Wearable.WORN_WAIST|Wearable.WORN_TORSO|Wearable.WORN_ARMS
+				|Wearable.WORN_LEFT_WRIST|Wearable.WORN_RIGHT_WRIST|Wearable.WORN_HANDS|Wearable.WORN_HEAD;
+		if(!(target instanceof Armor))
 		{
 			mob.tell(mob,target,null,L("You can't empower <T-NAME> with this prayer!"));
+			return false;
+		}
+		if((target instanceof Shield)
+		||((((Armor)target).rawProperLocationBitmap()&~(okLocs|Wearable.WORN_HELD))==0)
+		||((((Armor)target).rawProperLocationBitmap()&~okLocs)!=((Armor)target).rawProperLocationBitmap()))
+		{
+			mob.tell(mob,target,null,L("You can't empower something worn like <T-NAME> with this prayer!"));
 			return false;
 		}
 
@@ -104,30 +113,31 @@ public class Prayer_EmpowerShield extends Prayer
 			return false;
 		}
 
+		final String deityName=mob.charStats().getWorshipCharID();
+		if(deityName.length()==0)
+		{
+			mob.tell(L("You must worship a deity to begin the empowering."));
+			return false;
+		}
+
 		final Ability zappA=target.fetchEffect("Prop_WearZapper");
 		if(zappA!=null)
 		{
 			final String zappaTxt=zappA.text().toUpperCase().trim();
-			if((zappaTxt.indexOf("-EVIL")>=0)&&(CMLib.flags().isEvil(mob)))
+			if(zappaTxt.indexOf("-GOOD")>=0)
 			{
-				mob.tell(L("You can not empower that repulsive shield."));
+				mob.tell(L("You can not empower that repulsive weapon."));
 				return false;
 			}
-			if((zappaTxt.indexOf("-GOOD")>=0)&&(CMLib.flags().isGood(mob)))
+			if((zappaTxt.indexOf("-DEITY")>=0) && (zappaTxt.indexOf("\"+"+deityName.toUpperCase()+"\"")<0))
 			{
-				mob.tell(L("You can not empower that repulsive shield."));
-				return false;
-			}
-			if((zappaTxt.indexOf("-NEUTRAL")>=0)&&(CMLib.flags().isNeutral(mob)))
-			{
-				mob.tell(L("You can not empower that repulsive shield."));
+				mob.tell(L("You can not empower that repulsive weapon."));
 				return false;
 			}
 		}
-		
-		if(!Prayer.checkInfusion(mob, target))
+		if(CMLib.flags().isEvil(target))
 		{
-			mob.tell(L("You can not empower that repulsive shield."));
+			mob.tell(L("You can not empower that repulsive weapon."));
 			return false;
 		}
 
@@ -149,41 +159,23 @@ public class Prayer_EmpowerShield extends Prayer
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glows!"));
 				target.basePhyStats().setAbility(target.basePhyStats().ability()+1);
 				target.basePhyStats().setLevel(target.basePhyStats().level()+3);
-				target.basePhyStats().setDisposition(target.basePhyStats().disposition()|PhyStats.IS_BONUS);
+				target.basePhyStats().setDisposition(target.basePhyStats().disposition() & ~PhyStats.IS_EVIL);
+				target.basePhyStats().setDisposition(target.basePhyStats().disposition()|PhyStats.IS_BONUS|PhyStats.IS_GOOD);
 				if(zappA==null)
 				{
 					final Ability A=CMClass.getAbility("Prop_WearZapper");
-					if(CMLib.flags().isGood(mob))
-					{
-						A.setMiscText("+FACTION -EVIL -NEUTRAL");
-						target.addNonUninvokableEffect(A);
-					}
-					else
-					if(CMLib.flags().isEvil(mob))
-					{
-						A.setMiscText("+FACTION -GOOD -NEUTRAL");
-						target.addNonUninvokableEffect(A);
-					}
-					else
-					if(CMLib.flags().isNeutral(mob))
-					{
-						A.setMiscText("+FACTION -GOOD -EVIL");
-						target.addNonUninvokableEffect(A);
-					}
+					A.setMiscText("+FACTION -EVIL -NEUTRAL -DEITY \"+"+deityName.toUpperCase().trim()+"\"");
+					target.addNonUninvokableEffect(A);
 				}
 				else
 				{
-					if(CMLib.flags().isGood(mob) && ((zappA.text().indexOf("-NEUTRAL")<0)||(zappA.text().indexOf("-EVIL")<0)))
+					if((zappA.text().indexOf("-NEUTRAL")<0)||(zappA.text().indexOf("-EVIL")<0))
 						zappA.setMiscText(zappA.text()+" +FACTION -EVIL -NEUTRAL");
-					else
-					if(CMLib.flags().isEvil(mob) && ((zappA.text().indexOf("-GOOD")<0)||(zappA.text().indexOf("-NEUTRAL")<0)))
-						zappA.setMiscText(zappA.text()+" +FACTION -GOOD -NEUTRAL");
-					else
-					if(CMLib.flags().isNeutral(mob) && ((zappA.text().indexOf("-GOOD")<0)||(zappA.text().indexOf("-EVIL")<0)))
-						zappA.setMiscText(zappA.text()+" +FACTION -GOOD -EVIL");
+					if((zappA.text().indexOf("-DEITY")<0)||(zappA.text().indexOf("\"+"+deityName.toUpperCase().trim()+"\"")<0))
+						zappA.setMiscText(zappA.text()+" -DEITY \"+"+deityName.toUpperCase().trim()+"\"");
 				}
-				Prayer.infusePhysicalByAlignment(mob, target);
 				target.recoverPhyStats();
+				target.text();
 				mob.recoverPhyStats();
 			}
 		}

@@ -94,7 +94,7 @@ public class Prayer_EmpowerSacredWeapon extends Prayer
 
 		if(!(target instanceof Weapon))
 		{
-			mob.tell(mob,target,null,L("You can't empower <T-NAME>!"));
+			mob.tell(mob,target,null,L("You can't empower <T-NAME> with this prayer!"));
 			return false;
 		}
 
