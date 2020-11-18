@@ -245,6 +245,18 @@ public class Skill_BefoulShrine extends StdSkill
 								+ (adjustedLevel(mob,asLevel)/10)+super.getXLEVELLevel(mob);
 				cleans=0;
 				this.maliciousAffect(mob, target, asLevel, duration,-1);
+				final Deity D=CMLib.map().getDeity(deityName);
+				if(D!=null)
+				{
+					final String nameCode = D.Name().toUpperCase().trim().replace(' ', '_');
+					final Faction F=CMLib.factions().getFaction("DEITY_"+nameCode);
+					if(F!=null)
+					{
+						int amt = -25 - (super.getXLEVELLevel(mob));
+						if(CMLib.factions().postFactionChange(mob,this, F.factionID(), amt))
+							mob.tell(L("You lose @x1 faction with @x2.",""+(-amt),F.name()));
+					}
+				}
 			}
 		}
 		else
