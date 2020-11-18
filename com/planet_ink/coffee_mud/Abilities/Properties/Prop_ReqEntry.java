@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMaskEntry;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -32,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prop_ReqEntry extends Property implements TriggeredAffect
+public class Prop_ReqEntry extends Property implements TriggeredAffect, Deity.DeityWorshipper
 {
 	@Override
 	public String ID()
@@ -55,7 +56,8 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect
 	private boolean noFollow=false;
 	private boolean noSneak=false;
 	private boolean actual=false;
-	private String maskS="";
+	private String maskS = "";
+	private MaskingLibrary.CompiledZMask mask=null;
 	private String message="";
 
 	@Override
@@ -75,6 +77,7 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect
 	{
 		noFollow=false;
 		noSneak=false;
+		mask=null;
 		maskS=txt;
 		message="";
 		final Vector<String> parms=CMParms.parse(txt);
@@ -107,6 +110,8 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect
 				maskS=CMStrings.replaceFirst(maskS, s, "");
 			}
 		}
+		if(maskS.trim().length()>0)
+			mask=CMLib.masking().getPreCompiledMask(maskS.trim());
 		super.setMiscText(txt);
 	}
 
@@ -114,6 +119,57 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect
 	public String accountForYourself()
 	{
 		return "Entry restricted as follows: "+CMLib.masking().maskDesc(maskS);
+	}
+
+	@Override
+	public String getWorshipCharID()
+	{
+		if(mask==null)
+			return "";
+		MaskingLibrary.ZapperKey key=MaskingLibrary.ZapperKey._DEITY;
+		for(final CompiledZMaskEntry[] entries : mask.entries())
+		{
+			for(final CompiledZMaskEntry entry : entries)
+			{
+				if(entry.maskType()==MaskingLibrary.ZapperKey._OR)
+					key=(key==MaskingLibrary.ZapperKey._DEITY)?MaskingLibrary.ZapperKey.DEITY:MaskingLibrary.ZapperKey._DEITY;
+				else
+				if(entry.maskType()==key)
+				{
+					for(final Object o : entry.parms())
+					{
+						if((o instanceof String)
+						&&(!"ANY".equalsIgnoreCase((String)o)))
+							return (String)o;
+					}
+				}
+			}
+		}
+		return "";
+	}
+
+	@Override
+	public void setWorshipCharID(final String newVal)
+	{
+	}
+
+	@Override
+	public void setDeityName(final String newDeityName)
+	{
+	}
+
+	@Override
+	public String deityName()
+	{
+		return getWorshipCharID();
+	}
+
+	@Override
+	public Deity getMyDeity()
+	{
+		if (getWorshipCharID().length() == 0)
+			return null;
+		return CMLib.map().getDeity(getWorshipCharID());
 	}
 
 	public boolean passesMuster(final MOB mob)
@@ -124,7 +180,9 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect
 			return true;
 		if(CMLib.flags().isSneaking(mob)&&(!noSneak))
 			return true;
-		return CMLib.masking().maskCheck(maskS,mob,actual);
+		if(mask==null)
+			return true;
+		return CMLib.masking().maskCheck(mask,mob,actual);
 	}
 
 	@Override

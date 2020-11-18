@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_InfuseBalance extends Prayer
+public class Prayer_InfuseBalance extends Prayer implements Deity.DeityWorshipper
 {
 	@Override
 	public String ID()
@@ -98,6 +98,42 @@ public class Prayer_InfuseBalance extends Prayer
 	public void setAbilityCode(final int newCode)
 	{
 		serviceRunning=newCode;
+	}
+
+	protected volatile String deityName=null;
+
+	@Override
+	public String getWorshipCharID()
+	{
+		return text();
+	}
+
+	@Override
+	public void setWorshipCharID(final String newVal)
+	{
+		setMiscText((newVal == null)?"":newVal);
+	}
+
+	@Override
+	public void setDeityName(final String newDeityName)
+	{
+		deityName=newDeityName;
+	}
+
+	@Override
+	public String deityName()
+	{
+		if(deityName!=null)
+			return deityName;
+		return getWorshipCharID();
+	}
+
+	@Override
+	public Deity getMyDeity()
+	{
+		if (text().length() == 0)
+			return null;
+		return CMLib.map().getDeity(text());
 	}
 
 	@Override

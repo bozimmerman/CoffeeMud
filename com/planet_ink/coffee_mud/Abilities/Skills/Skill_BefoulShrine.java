@@ -113,9 +113,9 @@ public class Skill_BefoulShrine extends StdSkill
 	{
 		code = newCode;
 	}
-	
+
 	protected volatile int cleans=0;
-	
+
 	@Override
 	public void setMiscText(final String newMiscText)
 	{
@@ -157,7 +157,7 @@ public class Skill_BefoulShrine extends StdSkill
 		}
 		if((msg.tool() instanceof Ability)
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
-		&&(msg.tool().ID().startsWith("Prayer_Infuse"))
+		&&(msg.tool() instanceof Deity.DeityWorshipper)
 		&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL))
 		{
 			((Room)msg.target()).showHappens(CMMsg.MSG_OK_VISUAL, L("This place is far too befouled to accept another infusion, and must be cleaned and purified first."));
@@ -184,7 +184,7 @@ public class Skill_BefoulShrine extends StdSkill
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -222,7 +222,7 @@ public class Skill_BefoulShrine extends StdSkill
 		{
 			mob.tell(L("This place doesn't seem like much of a shrine."));
 			return false;
-			
+
 		}
 		if(deityName.equalsIgnoreCase(mob.baseCharStats().deityName()))
 		{
@@ -252,7 +252,7 @@ public class Skill_BefoulShrine extends StdSkill
 					final Faction F=CMLib.factions().getFaction("DEITY_"+nameCode);
 					if(F!=null)
 					{
-						int amt = -25 - (super.getXLEVELLevel(mob));
+						final int amt = -25 - (super.getXLEVELLevel(mob));
 						if(CMLib.factions().postFactionChange(mob,this, F.factionID(), amt))
 							mob.tell(L("You lose @x1 faction with @x2.",""+(-amt),F.name()));
 					}

@@ -916,7 +916,7 @@ public class Conquerable extends Arrest
 		{
 			if((msg.target() instanceof Room)
 			&&(msg.tool() instanceof Ability)
-			&&(msg.tool().ID().startsWith("Prayer_Infuse"))
+			&&(msg.tool() instanceof Deity.DeityWorshipper) // one of the infusing skills
 			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			{
 

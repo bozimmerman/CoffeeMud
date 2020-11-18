@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.Deity.DeityWorshipper;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
@@ -609,7 +610,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public Ability getClericInfusion(final Physical P)
+	public DeityWorshipper getClericInfusion(final Physical P)
 	{
 		if(P==null)
 			return null;
@@ -618,15 +619,9 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			final Ability A=a.nextElement();
 			if(A!=null)
 			{
-				if(A.ID().startsWith("Prayer_Infuse"))
-					return A;
-				if(((A.ID().equals("Prop_WearZapper"))&&((P instanceof Weapon)||(P instanceof Armor)))
-				||((A.ID().equals("Prop_ReqEntry"))&&((P instanceof Room)||(P instanceof Exit)))
-				||((A.ID().equals("Prop_HaveZapper"))&&((P instanceof Item))))
-				{
-					if(A.text().toUpperCase().indexOf("-DEITY")>=0)
-						return A;
-				}
+				if((A instanceof Deity.DeityWorshipper)
+				&&(((Deity.DeityWorshipper)A).getWorshipCharID().length()>0))
+					return (Deity.DeityWorshipper)A;
 			}
 		}
 		return null;
@@ -635,32 +630,10 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	@Override
 	public String getClericInfused(final Physical P)
 	{
-		final Ability A=getClericInfusion(P);
+		final Deity.DeityWorshipper A=getClericInfusion(P);
 		if(A==null)
 			return null;
-		if(A.ID().startsWith("Prayer_Infuse"))
-			return A.text();
-		int x=A.text().toUpperCase().indexOf("-DEITY");
-		if(x>=0)
-		{
-			String txt = A.text().substring(x+6).trim();
-			if(txt.startsWith("\"+"))
-			{
-				x=txt.indexOf('\"',2);
-				if(x>1)
-					return txt.substring(2,x).trim();
-				return txt.substring(1).trim();
-			}
-			else
-			if(txt.startsWith("+"))
-			{
-				x=txt.indexOf(' ');
-				if(x>1)
-					return txt.substring(1,x).trim();
-				return txt.substring(1).trim();
-			}
-		}
-		return null;
+		return A.getWorshipCharID();
 	}
 
 	@Override

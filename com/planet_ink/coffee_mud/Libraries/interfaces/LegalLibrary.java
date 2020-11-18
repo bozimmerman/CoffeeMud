@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.Deity.DeityWorshipper;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -91,7 +92,7 @@ public interface LegalLibrary extends CMLibrary
 	public MOB getPropertyOwner(PrivateProperty record);
 	public boolean canAttackThisProperty(MOB mob, PrivateProperty record);
 	public List<LandTitle> getAllUniqueLandTitles(Enumeration<Room> e, String owner, boolean includeRentals);
-	public Ability getClericInfusion(Physical P);
+	public DeityWorshipper getClericInfusion(Physical P);
 	public String getClericInfused(Physical P);
 
 	public boolean isLegalOfficerHere(MOB mob);

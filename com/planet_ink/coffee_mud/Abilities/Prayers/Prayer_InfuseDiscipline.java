@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_InfuseDiscipline extends Prayer
+public class Prayer_InfuseDiscipline extends Prayer implements Deity.DeityWorshipper
 {
 	@Override
 	public String ID()
@@ -123,6 +123,42 @@ public class Prayer_InfuseDiscipline extends Prayer
 
 	}
 
+	protected volatile String deityName=null;
+
+	@Override
+	public String getWorshipCharID()
+	{
+		return text();
+	}
+
+	@Override
+	public void setWorshipCharID(final String newVal)
+	{
+		setMiscText((newVal == null)?"":newVal);
+	}
+
+	@Override
+	public void setDeityName(final String newDeityName)
+	{
+		deityName=newDeityName;
+	}
+
+	@Override
+	public String deityName()
+	{
+		if(deityName!=null)
+			return deityName;
+		return getWorshipCharID();
+	}
+
+	@Override
+	public Deity getMyDeity()
+	{
+		if (text().length() == 0)
+			return null;
+		return CMLib.map().getDeity(text());
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -175,7 +211,7 @@ public class Prayer_InfuseDiscipline extends Prayer
 		{
 
 			if(target instanceof Room)
-				deityName=CMLib.law().getClericInfused((Room)target);
+				deityName=CMLib.law().getClericInfused(target);
 			if(deityName!=null)
 				mob.tell(L("There is already an infused aura of @x1 around @x2.",deityName,target.name(mob)));
 			else
@@ -196,7 +232,7 @@ public class Prayer_InfuseDiscipline extends Prayer
 			for(final Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
 			{
 				R=e.nextElement();
-				if(deityName.equalsIgnoreCase(CMLib.law().getClericInfused((Room)target)))
+				if(deityName.equalsIgnoreCase(CMLib.law().getClericInfused(target)))
 				{
 					mob.tell(L("There is already a lawful place of @x1 in this area at @x2.",deityName,R.displayText(mob)));
 					return false;

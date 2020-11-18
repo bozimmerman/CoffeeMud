@@ -185,7 +185,7 @@ public class Prayer extends StdAbility
 			return false;
 		return true;
 	}
-	
+
 	protected static void infusePhysicalByAlignment(final MOB mob, final Physical target)
 	{
 		final String deityName=CMLib.law().getClericInfused(target);
@@ -234,16 +234,16 @@ public class Prayer extends StdAbility
 			}
 		}
 	}
-	
+
 	protected static void clearInfusions(final Physical P)
 	{
 		if(P==null)
 			return;
-		Ability A=CMLib.law().getClericInfusion(P);
-		while(A!=null)
+		Deity.DeityWorshipper A=CMLib.law().getClericInfusion(P);
+		while((A!=null)&&(A instanceof Ability)) // yes, I know, but this feels right
 		{
-			A.unInvoke();
-			P.delEffect(A);
+			((Ability)A).unInvoke();
+			P.delEffect(((Ability)A));
 			A=CMLib.law().getClericInfusion(P);
 		}
 	}

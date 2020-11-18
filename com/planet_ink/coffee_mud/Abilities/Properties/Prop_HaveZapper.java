@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prop_HaveZapper extends Property implements TriggeredAffect
+public class Prop_HaveZapper extends Property implements TriggeredAffect, Deity.DeityWorshipper
 {
 	@Override
 	public String ID()
@@ -59,6 +59,57 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect
 	protected String	msgStr	= "";
 
 	protected MaskingLibrary.CompiledZMask mask=null;
+
+	@Override
+	public String getWorshipCharID()
+	{
+		if(mask==null)
+			return "";
+		MaskingLibrary.ZapperKey key=MaskingLibrary.ZapperKey._DEITY;
+		for(final CompiledZMaskEntry[] entries : mask.entries())
+		{
+			for(final CompiledZMaskEntry entry : entries)
+			{
+				if(entry.maskType()==MaskingLibrary.ZapperKey._OR)
+					key=(key==MaskingLibrary.ZapperKey._DEITY)?MaskingLibrary.ZapperKey.DEITY:MaskingLibrary.ZapperKey._DEITY;
+				else
+				if(entry.maskType()==key)
+				{
+					for(final Object o : entry.parms())
+					{
+						if((o instanceof String)
+						&&(!"ANY".equalsIgnoreCase((String)o)))
+							return (String)o;
+					}
+				}
+			}
+		}
+		return "";
+	}
+
+	@Override
+	public void setWorshipCharID(final String newVal)
+	{
+	}
+
+	@Override
+	public void setDeityName(final String newDeityName)
+	{
+	}
+
+	@Override
+	public String deityName()
+	{
+		return getWorshipCharID();
+	}
+
+	@Override
+	public Deity getMyDeity()
+	{
+		if (getWorshipCharID().length() == 0)
+			return null;
+		return CMLib.map().getDeity(getWorshipCharID());
+	}
 
 	protected String defaultMessage()
 	{

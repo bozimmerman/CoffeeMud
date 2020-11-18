@@ -45,6 +45,75 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public interface Deity extends MOB
 {
 	/**
+	 * Helper interface for the deity to identify worshippers and
+	 * other things associated with a specific deity.
+	 *
+	 * @author BZ
+	 *
+	 */
+	public static interface DeityWorshipper extends CMObject
+	{
+		/**
+		 * Returns the name of the Deity mob that this player/mob worships.
+		 * Empty string means they are an atheist. :) The name here should
+		 * always be the same as a Deity type mob in the game in order for
+		 * the religion system to work correctly.  For Clerics, this field
+		 * has particular importance.
+		 * @see DeityWorshipper#setWorshipCharID(String)
+		 * @see DeityWorshipper#getMyDeity()
+		 * @see DeityWorshipper#setDeityName(String)
+		 * @see DeityWorshipper#deityName()
+		 * @return the name of the Deity mob that this player/mob worships.
+		 */
+		public String getWorshipCharID();
+
+		/**
+		 * Sets the name of the Deity mob that this player/mob worships.
+		 * Empty string means they are an atheist. :) The name here should
+		 * always be the same as a Deity type mob in the game in order for
+		 * the religion system to work correctly.  For Clerics, this field
+		 * has particular importance.
+		 * @see DeityWorshipper#setWorshipCharID(String)
+		 * @see DeityWorshipper#getMyDeity()
+		 * @see DeityWorshipper#deityName()
+		 * @param newVal the name of the Deity mob that this player/mob worships.
+		 */
+		public void setWorshipCharID(String newVal);
+
+		/**
+		 * Returns the Deity object of the mob that this player/mob worships.
+		 * A null return means they are an atheist.  Very important for Clerics.
+		 * @see DeityWorshipper#getWorshipCharID()
+		 * @see DeityWorshipper#setWorshipCharID(String)
+		 * @see DeityWorshipper#deityName()
+		 * @return the Deity object of the mob that this player/mob worships
+		 */
+		public Deity getMyDeity();
+
+		/**
+		 * Returns the displayable name of this mobs current deity.  If this method
+		 * is called on the mobs charStats() object, as opposed to baseCharStats(), it
+		 * may return something different than charStats().getMyDeity().name().  For this
+		 * reason, you should ONLY use this method when you want to display the mobs
+		 * current deity.
+		 * @see DeityWorshipper#getWorshipCharID()
+		 * @see DeityWorshipper#setWorshipCharID(String)
+		 * @see DeityWorshipper#getMyDeity()
+		 * @return the name of this mobs current deity, or empty string.
+		 */
+		public String deityName();
+
+		/**
+		 * Changes the apparent deity of ths mob by setting a new name.  A value of null will
+		 * reset this setting, allowing the mobs TRUE deity to be displayed through the
+		 * deityName method instead of the string set through this one.
+		 * @see #deityName()
+		 * @param newDeityName the name of the mobs apparent deity
+		 */
+		public void setDeityName(String newDeityName);
+	}
+
+	/**
 	 * The definition of the key words in the ritual definitions.
 	 * Most of these require a parameter of one sort or another,
 	 * depending on the deity class.  The command phrases
