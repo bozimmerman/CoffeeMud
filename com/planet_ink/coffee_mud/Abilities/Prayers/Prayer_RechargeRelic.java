@@ -72,7 +72,7 @@ public class Prayer_RechargeRelic extends Prayer
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;
+		return Ability.FLAG_NEUTRAL;
 	}
 
 	@Override

@@ -107,7 +107,7 @@ public class Prayer_EmpowerRelic extends Prayer
 			mob.tell(L("That is too depleted to be empowered."));
 			return false;
 		}
-		if(!Prayer.checkInfusion(mob, target))
+		if(!Prayer.checkInfusionMismatch(mob, target))
 		{
 			mob.tell(L("You can not empower that repulsive relic."));
 			return false;

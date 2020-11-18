@@ -73,6 +73,12 @@ public class GenStaff extends GenWeapon implements Wand
 	protected int maxUses=Integer.MAX_VALUE;
 
 	@Override
+	public boolean subjectToWearAndTear()
+	{
+		return false; // can't give uses remaining double-duty.
+	}
+
+	@Override
 	public int getCharges()
 	{
 		return usesRemaining();

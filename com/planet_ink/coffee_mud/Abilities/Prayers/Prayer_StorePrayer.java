@@ -79,7 +79,7 @@ public class Prayer_StorePrayer extends Prayer implements AbilityContainer, Disc
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;
+		return Ability.FLAG_NEUTRAL;
 	}
 
 	@Override

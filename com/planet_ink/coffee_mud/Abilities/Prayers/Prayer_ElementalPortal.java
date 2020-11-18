@@ -60,7 +60,7 @@ public class Prayer_ElementalPortal extends Prayer_MalignedPortal
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;
+		return Ability.FLAG_NEUTRAL;
 	}
 
 	@Override

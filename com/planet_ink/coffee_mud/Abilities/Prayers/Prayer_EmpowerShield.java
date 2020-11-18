@@ -125,7 +125,7 @@ public class Prayer_EmpowerShield extends Prayer
 			}
 		}
 		
-		if(!Prayer.checkInfusion(mob, target))
+		if(!Prayer.checkInfusionMismatch(mob, target))
 		{
 			mob.tell(L("You can not empower that repulsive shield."));
 			return false;

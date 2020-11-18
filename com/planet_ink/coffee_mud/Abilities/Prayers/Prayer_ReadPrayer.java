@@ -72,7 +72,7 @@ public class Prayer_ReadPrayer extends Prayer implements Scroll.ScrollUsage
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;
+		return Ability.FLAG_NEUTRAL;
 	}
 
 	@Override

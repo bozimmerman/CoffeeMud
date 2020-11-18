@@ -175,13 +175,25 @@ public class Prayer extends StdAbility
 		return prayV;
 	}
 
-	protected static boolean checkInfusion(final MOB mob, final Physical target)
+	protected static boolean checkInfusionMismatch(final MOB mob, final Physical target)
 	{
 		final String deityName=CMLib.law().getClericInfused(target);
 		if((deityName!=null)
 		&&(deityName.length()>0)
 		&&(mob.baseCharStats().getWorshipCharID().length()>0)
 		&&(!deityName.equalsIgnoreCase(mob.baseCharStats().getWorshipCharID())))
+			return false;
+		return true;
+	}
+
+	protected static boolean checkRequiredInfusion(final MOB mob, final Physical target)
+	{
+		if(mob.baseCharStats().getWorshipCharID().length()==0)
+			return false;
+		final String deityName=CMLib.law().getClericInfused(target);
+		if((deityName==null)||(deityName.length()==0))
+			return false;
+		if(!deityName.equalsIgnoreCase(mob.baseCharStats().getWorshipCharID()))
 			return false;
 		return true;
 	}

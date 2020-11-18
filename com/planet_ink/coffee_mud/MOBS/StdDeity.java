@@ -1374,9 +1374,9 @@ public class StdDeity extends StdMOB implements Deity
 			service.cleric = mob;
 			service.serviceCompleted = false;
 			services.add(service);
-			final Ability A=CMLib.law().getClericInfusion(room);
-			if(A!=null)
-				A.setAbilityCode(1);
+			final Deity.DeityWorshipper A=CMLib.law().getClericInfusion(room);
+			if(A instanceof Ability)
+				((Ability)A).setAbilityCode(1);
 		}
 		Room R=null;
 		MOB M=null;
@@ -1445,9 +1445,9 @@ public class StdDeity extends StdMOB implements Deity
 				{
 					undoService(service.parishaners);
 					services.remove(d);
-					final Ability A=CMLib.law().getClericInfusion(service.room);
-					if(A!=null)
-						A.setAbilityCode(0);
+					final Deity.DeityWorshipper A=CMLib.law().getClericInfusion(service.room);
+					if(A instanceof Ability)
+						((Ability)A).setAbilityCode(0);
 				}
 				else
 				if((service.room != null)
@@ -1561,7 +1561,8 @@ public class StdDeity extends StdMOB implements Deity
 				CMMsg.MSG_HOLYEVENT,"SERVICE-CANCEL");
 		final CMMsg msg2=CMClass.getMsg(this,null,null,
 				CMMsg.NO_EFFECT, null,CMMsg.NO_EFFECT,null,CMMsg.MSG_OK_ACTION,L("The service conducted by @x1 has been cancelled.",mob.Name()));
-		if(room.okMessage(this, msg)&&room.okMessage(this, msg2))
+		if(room.okMessage(this, msg)
+		&&room.okMessage(this, msg2))
 		{
 			room.send(this, msg);
 			room.send(this, msg2);
@@ -1572,9 +1573,9 @@ public class StdDeity extends StdMOB implements Deity
 		synchronized(services)
 		{
 			services.remove(service);
-			final Ability A=CMLib.law().getClericInfusion(service.room);
-			if(A!=null)
-				A.setAbilityCode(0);
+			final Deity.DeityWorshipper A=CMLib.law().getClericInfusion(service.room);
+			if(A instanceof Ability)
+				((Ability)A).setAbilityCode(0);
 		}
 		trigServiceParts.remove(mob.Name());
 		trigServiceTimes.remove(mob.Name());

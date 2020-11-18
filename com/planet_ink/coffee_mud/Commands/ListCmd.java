@@ -4794,7 +4794,7 @@ public class ListCmd extends StdCommand
 				if((A.classificationCode()&Ability.ALL_ACODES)==(Ability.ACODE_DISEASE))
 					templateName="DiseaseTemplate";
 				String alignment = "";
-				if(CMath.bset(A.flags(), Ability.FLAG_HOLY|Ability.FLAG_UNHOLY))
+				if(CMath.bset(A.flags(), Ability.FLAG_NEUTRAL))
 					alignment="Neutral";
 				else
 				if(CMath.bset(A.flags(), Ability.FLAG_HOLY))

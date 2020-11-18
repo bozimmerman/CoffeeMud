@@ -33,16 +33,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_EnchantRelic extends Prayer
+public class Prayer_ProtectSacredItem extends Prayer
 {
-
 	@Override
 	public String ID()
 	{
-		return "Prayer_EnchantRelic";
+		return "Prayer_ProtectSacredItem";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Enchant Relic");
+	private final static String localizedName = CMLib.lang().L("Protect Sacred Item");
 
 	@Override
 	public String name()
@@ -57,9 +56,15 @@ public class Prayer_EnchantRelic extends Prayer
 	}
 
 	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;
 	}
 
 	@Override
@@ -88,12 +93,52 @@ public class Prayer_EnchantRelic extends Prayer
 		return true;
 	}
 
+	protected int maintainCondition=100;
+
+	@Override
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected, affectableStats);
+		if(!(affected instanceof Item))
+			return;
+		if(((Item)affected).subjectToWearAndTear())
+			((Item)affected).setUsesRemaining(maintainCondition);
+	}
+
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(!(affected instanceof Item))
+			return true;
+		if(((Item)affected).subjectToWearAndTear())
+			((Item)affected).setUsesRemaining(maintainCondition);
+		return true;
+	}
+
+	@Override
+	public boolean okMessage(final Environmental host, final CMMsg msg)
+	{
+		if(!super.okMessage(host,msg))
+			return false;
+		if((msg.target()==affected)
+		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS)
+		   ||((msg.tool() instanceof Ability)&&(((Ability)msg.tool()).abstractQuality()==Ability.QUALITY_MALICIOUS)))
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
+		{
+			msg.source().tell(L("@x1 is unbreakable!",affected.name()));
+			return false;
+		}
+		return true;
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(L("Enchant which prayer onto what?"));
+			mob.tell(L("Protect what?"));
 			return false;
 		}
 		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,commands.get(commands.size()-1),Wearable.FILTER_UNWORNONLY);
@@ -104,71 +149,24 @@ public class Prayer_EnchantRelic extends Prayer
 		}
 		if(!(target instanceof Wand))
 		{
-			mob.tell(mob,target,null,L("You can't enchant <T-NAME>."));
-			return false;
-		}
-		if((((Wand)target).getEnchantType()!=-1)
-		&&(((Wand)target).getEnchantType()!=Ability.ACODE_PRAYER))
-		{
-			mob.tell(mob,target,null,L("You can't enchant <T-NAME> with this prayer."));
+			mob.tell(mob,target,null,L("You can't protect <T-NAME>."));
 			return false;
 		}
 
 		commands.remove(commands.size()-1);
-		final Wand wand=(Wand)target;
-
-		final String spellName=CMParms.combine(commands,0).trim();
-		Ability wandThis=null;
-		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			if((A!=null)
-			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
-			&&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
-			&&(A.name().equalsIgnoreCase(spellName))
-			&&(!A.ID().equals(this.ID())))
-				wandThis=A;
-		}
-		if(wandThis==null)
-		{
-			for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
-			{
-				final Ability A=a.nextElement();
-				if((A!=null)
-				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
-				&&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
-				&&(CMLib.english().containsString(A.name(),spellName))
-				&&(!A.ID().equals(this.ID())))
-					wandThis=A;
-			}
-		}
-		if(wandThis==null)
-		{
-			mob.tell(L("You don't know how to enchant anything with '@x1'.",spellName));
-			return false;
-		}
-
-		if((CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())>24)
-		||(((StdAbility)wandThis).usageCost(null,true)[0]>45)
-		||(CMath.bset(wandThis.flags(), Ability.FLAG_CLANMAGIC)))
-		{
-			mob.tell(L("That is too powerful to enchant into anything."));
-			return false;
-		}
-
-		if(wand.getSpell()!=null)
-		{
-			mob.tell(L("A prayer has already been enchanted into '@x1'.",wand.name()));
-			return false;
-		}
 
 		if(!Prayer.checkInfusionMismatch(mob, target))
 		{
-			mob.tell(L("You can not enchant that repulsive relic."));
+			mob.tell(L("You can not protect that repulsive relic."));
+			return false;
+		}
+		if(!Prayer.checkRequiredInfusion(mob, target))
+		{
+			mob.tell(L("You can only protect things empowered or imbued with your deities favor."));
 			return false;
 		}
 
-		int experienceToLose=10*CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID());
+		int experienceToLose=500;
 		if((mob.getExperience()-experienceToLose)<0)
 		{
 			mob.tell(L("You don't have enough experience to pray for that."));
@@ -186,26 +184,18 @@ public class Prayer_EnchantRelic extends Prayer
 
 		if(success)
 		{
-			setMiscText(wandThis.ID()); // for informational purposes
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> appear(s) enchanted!":"^S<S-NAME> enchant(s) <T-NAMESELF>"+inTheNameOf(mob)+".^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					L(auto?"<T-NAME> appear(s) protected!":"^S<S-NAME> protect(s) <T-NAMESELF>"+inTheNameOf(mob)+".^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				wand.setSpell((Ability)wandThis.copyOf());
-				if((wand.usesRemaining()==Integer.MAX_VALUE)||(wand.usesRemaining()<0))
-					wand.setUsesRemaining(0);
-				final int newLevel=wandThis.adjustedLevel(mob, asLevel);
-				if(newLevel > wand.basePhyStats().level())
-					wand.basePhyStats().setLevel(newLevel);
-				wand.setUsesRemaining(wand.usesRemaining()+5);
-				wand.text();
-				wand.recoverPhyStats();
 				Prayer.infusePhysicalByAlignment(mob,target);
+				final Prayer_ProtectSacredItem A=(Prayer_ProtectSacredItem)this.copyOf();
+				target.addNonUninvokableEffect(A);
 			}
-
 		}
 		else
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for enchantments, but nothing happens.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 to protect <T-NAME>, but nothing happens.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

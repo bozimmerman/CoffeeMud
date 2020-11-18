@@ -66,7 +66,7 @@ public class Prayer_ReadLanguage extends Prayer
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;
+		return Ability.FLAG_NEUTRAL;
 	}
 
 	@Override
