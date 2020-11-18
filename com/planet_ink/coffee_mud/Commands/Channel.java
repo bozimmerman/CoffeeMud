@@ -233,6 +233,7 @@ public class Channel extends StdCommand
 					}
 					else
 						skippedSome=true;
+					CMLib.s_sleep(10);
 				}
 			}
 			page=lastPage;
