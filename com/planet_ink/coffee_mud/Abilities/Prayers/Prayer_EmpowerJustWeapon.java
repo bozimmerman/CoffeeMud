@@ -104,11 +104,23 @@ public class Prayer_EmpowerJustWeapon extends Prayer
 			return false;
 		}
 
+		final String deityName=mob.charStats().getWorshipCharID();
+		if(deityName.length()==0)
+		{
+			mob.tell(L("You must worship a deity to begin the empowering."));
+			return false;
+		}
+
 		final Ability zappA=target.fetchEffect("Prop_WearZapper");
 		if(zappA!=null)
 		{
 			final String zappaTxt=zappA.text().toUpperCase().trim();
 			if(zappaTxt.indexOf("-LAWFUL")>=0)
+			{
+				mob.tell(L("You can not empower that repulsive weapon."));
+				return false;
+			}
+			if((zappaTxt.indexOf("-DEITY")>=0) && (zappaTxt.indexOf("\"+"+deityName.toUpperCase()+"\"")<0))
 			{
 				mob.tell(L("You can not empower that repulsive weapon."));
 				return false;
@@ -145,13 +157,18 @@ public class Prayer_EmpowerJustWeapon extends Prayer
 				if(zappA==null)
 				{
 					final Ability A=CMClass.getAbility("Prop_WearZapper");
-					A.setMiscText("+FACTION -CHAOS -MODERATE");
+					A.setMiscText("+FACTION -CHAOS -MODERATE -DEITY \"+"+deityName.toUpperCase().trim()+"\"");
 					target.addNonUninvokableEffect(A);
 				}
 				else
-				if((zappA.text().indexOf("-MODERATE")<0)||(zappA.text().indexOf("-CHAOS")<0))
-					zappA.setMiscText(zappA.text()+" +FACTION -CHAOS -MODERATE");
+				{
+					if((zappA.text().indexOf("-MODERATE")<0)||(zappA.text().indexOf("-CHAOS")<0))
+						zappA.setMiscText(zappA.text()+" +FACTION -CHAOS -MODERATE");
+					if((zappA.text().indexOf("-DEITY")<0)||(zappA.text().indexOf("\"+"+deityName.toUpperCase().trim()+"\"")<0))
+						zappA.setMiscText(zappA.text()+" -DEITY \"+"+deityName.toUpperCase().trim()+"\"");
+				}
 				target.recoverPhyStats();
+				target.text();
 				mob.recoverPhyStats();
 			}
 		}

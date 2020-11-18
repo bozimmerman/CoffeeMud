@@ -89,7 +89,7 @@ public class Prayer_LesserWardingGlyph extends Prayer implements Trap
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_HOLY | Ability.FLAG_UNHOLY;
+		return Ability.FLAG_NEUTRAL;
 	}
 
 	public MOB theInvoker()
@@ -286,14 +286,16 @@ public class Prayer_LesserWardingGlyph extends Prayer implements Trap
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		super.executeMsg(myHost,msg);
+		super.executeMsg(myHost, msg);
 		if(sprung)
 			return;
 
 		if((msg.amITarget(affected))
 		&&(!msg.amISource(invoker())))
 		{
-			if(msg.targetMinor()==CMMsg.TYP_LEAVE)
+			if((msg.targetMinor()==CMMsg.TYP_OPEN)
+			||(msg.targetMinor()==CMMsg.TYP_UNLOCK)
+			||(msg.targetMinor()==CMMsg.TYP_GET))
 				spring(msg.source());
 		}
 	}

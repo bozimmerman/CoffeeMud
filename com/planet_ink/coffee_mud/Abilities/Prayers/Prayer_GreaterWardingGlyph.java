@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2020 Bo Zimmerman
+   Copyright 2020-2020 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,16 +32,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_ImprovedWardingGlyph extends Prayer implements Trap
+public class Prayer_GreaterWardingGlyph extends Prayer implements Trap
 {
 
 	@Override
 	public String ID()
 	{
-		return "Prayer_ImprovedWardingGlyph";
+		return "Prayer_GreaterWardingGlyph";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Improved Warding Glyph");
+	private final static String	localizedName	= CMLib.lang().L("Greater Warding Glyph");
 
 	@Override
 	public String name()
@@ -49,7 +49,7 @@ public class Prayer_ImprovedWardingGlyph extends Prayer implements Trap
 		return localizedName;
 	}
 
-	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Improved Warding Glyph)");
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Greater Warding Glyph)");
 
 	@Override
 	public String displayText()
@@ -60,13 +60,13 @@ public class Prayer_ImprovedWardingGlyph extends Prayer implements Trap
 	@Override
 	protected int canAffectCode()
 	{
-		return CAN_EXITS;
+		return CAN_ROOMS;
 	}
 
 	@Override
 	protected int canTargetCode()
 	{
-		return CAN_EXITS;
+		return 0;
 	}
 
 	@Override
@@ -183,29 +183,6 @@ public class Prayer_ImprovedWardingGlyph extends Prayer implements Trap
 		return sprung;
 	}
 
-	@Override
-	public boolean okMessage(final Environmental myHost, final CMMsg msg)
-	{
-		if(sprung)
-			return super.okMessage(myHost,msg);
-		if(!super.okMessage(myHost,msg))
-			return false;
-
-		if((msg.amITarget(affected))
-		&&(!msg.amISource(invoker())))
-		{
-			if((msg.targetMinor()==CMMsg.TYP_OPEN)
-			||(msg.targetMinor()==CMMsg.TYP_UNLOCK)
-			||(msg.targetMinor()==CMMsg.TYP_GET))
-			{
-				spring(msg.source());
-				if(sprung)
-					return false;
-			}
-		}
-		return super.okMessage(myHost,msg);
-	}
-
 	public boolean isLocalExempt(final MOB target)
 	{
 		if(target==null)
@@ -293,8 +270,19 @@ public class Prayer_ImprovedWardingGlyph extends Prayer implements Trap
 		if((msg.amITarget(affected))
 		&&(!msg.amISource(invoker())))
 		{
-			if(msg.targetMinor()==CMMsg.TYP_LEAVE)
-				spring(msg.source());
+			if(msg.targetMinor()==CMMsg.TYP_ENTER)
+			{
+				msg.addTrailerRunnable(new Runnable()
+				{
+					final MOB targetM=msg.source();
+					
+					@Override
+					public void run()
+					{
+						spring(targetM);
+					}
+				});
+			}
 		}
 	}
 
@@ -327,27 +315,14 @@ public class Prayer_ImprovedWardingGlyph extends Prayer implements Trap
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		if(commands.size()<2)
+		if(commands.size()<1)
 		{
-			mob.tell(L("You must specify which door to target, what divine prayer to set, and any necessary parameters."));
+			mob.tell(L("You must specify what divine prayer to set, and any necessary parameters."));
 			return false;
 		}
-		final String itemName=commands.get(0);
-		@SuppressWarnings("unchecked")
-		final Physical target = super.getAnyTarget(mob, new XVector<String>(itemName), givenTarget, Filterer.ANYTHING);
-		if(target == null)
+		final Physical target=(givenTarget !=null)?givenTarget:mob.location();
+		if(target==null)
 			return false;
-		if(!(target instanceof Exit))
-		{
-			mob.tell(L("@x1 is not an appropriate target for this glyph.",target.name(mob)));
-			return false;
-		}
-		if(!((Exit)target).hasADoor())
-		{
-			mob.tell(L("@x1 is not an appropriate door for this glyph.",target.name(mob)));
-			return false;
-		}
-
 		commands.add(0,"PRAY");
 		shooter=CMLib.english().getSkillToInvoke(mob,commands);
 		parameters=commands;

@@ -75,7 +75,7 @@ public class Spell_WardArea extends Spell implements Trap
 		return Ability.QUALITY_MALICIOUS;
 	}
 
-	private Ability			shooter		= null;
+	private Ability			shooterA		= null;
 	protected List<String>	parameters	= null;
 
 	@Override
@@ -242,7 +242,7 @@ public class Spell_WardArea extends Spell implements Trap
 			return;
 		if(!(affected instanceof Room))
 			return;
-		if((shooter==null)||(parameters==null))
+		if((shooterA==null)||(parameters==null))
 			return;
 		if((invoker()!=null)&&(mob!=null)&&(!invoker().mayIFight(mob)))
 			return;
@@ -266,7 +266,7 @@ public class Spell_WardArea extends Spell implements Trap
 			newCaster.setLocation((Room)affected);
 			try
 			{
-				shooter.invoke(newCaster,parameters,mob,true,0);
+				shooterA.invoke(newCaster,parameters,mob,true,0);
 			}
 			catch (final Exception e)
 			{
@@ -301,7 +301,7 @@ public class Spell_WardArea extends Spell implements Trap
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			shooter=null;
+			shooterA=null;
 			parameters=null;
 		}
 	}
@@ -329,18 +329,18 @@ public class Spell_WardArea extends Spell implements Trap
 			return false;
 		}
 		commands.add(0,"CAST");
-		shooter=CMLib.english().getSkillToInvoke(mob,commands);
+		shooterA=CMLib.english().getSkillToInvoke(mob,commands);
 		parameters=commands;
-		if((shooter==null)||((shooter.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_SPELL))
+		if((shooterA==null)||((shooterA.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_SPELL))
 		{
 			parameters=null;
-			shooter=null;
+			shooterA=null;
 			mob.tell(L("You don't know any arcane spell by that name."));
 			return false;
 		}
-		shooter = (Ability)shooter.copyOf();
+		shooterA = (Ability)shooterA.copyOf();
 
-		if(shooter.enchantQuality()==Ability.QUALITY_MALICIOUS)
+		if(shooterA.enchantQuality()==Ability.QUALITY_MALICIOUS)
 		{
 			for(int m=0;m<mob.location().numInhabitants();m++)
 			{
@@ -368,7 +368,7 @@ public class Spell_WardArea extends Spell implements Trap
 		if(success)
 		{
 
-			setMiscText(shooter.ID());
+			setMiscText(shooterA.ID());
 			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), auto?"":L("^S<S-NAME> set(s) a magical trap.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -381,7 +381,7 @@ public class Spell_WardArea extends Spell implements Trap
 				}
 				else
 					beneficialAffect(mob,mob.location(),asLevel,9999);
-				shooter=null;
+				shooterA=null;
 				parameters=null;
 			}
 		}

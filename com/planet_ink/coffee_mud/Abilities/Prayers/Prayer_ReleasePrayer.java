@@ -63,7 +63,7 @@ public class Prayer_ReleasePrayer extends Prayer
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_HOLY | Ability.FLAG_UNHOLY;
+		return Ability.FLAG_NEUTRAL;
 	}
 
 	@Override

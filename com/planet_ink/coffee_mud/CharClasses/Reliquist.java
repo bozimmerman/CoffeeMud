@@ -225,9 +225,9 @@ public class Reliquist extends Thief
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
 			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_EmpowerFoulWeapon",false); // special A
 
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Fighter_AutoHammerRing",0,false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_GreaterWardingGlyph",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_FindSacredItem",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Fighter_AutoHammerRing",0,false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_GreaterWardingGlyph",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_FindSacredItem",false);
 
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Skill_BefoulShrine",0,false);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_EmpowerHolyArmor",false); // special A
