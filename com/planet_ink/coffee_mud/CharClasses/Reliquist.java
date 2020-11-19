@@ -203,11 +203,11 @@ public class Reliquist extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Detection",0,false);
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_EmpowerHolyWeapon",false,"+ABLES -Prayer_EmpowerUnholyWeapon -Prayer_EmpowerSacredWeapon"); // special A
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_EmpowerHolyWeapon",false,"+SKILLS -Prayer_EmpowerUnholyWeapon -Prayer_EmpowerSacredWeapon"); // special A
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_EmpowerUnholyWeapon",false,"+ABLES -Prayer_EmpowerHolyWeapon -Prayer_EmpowerSacredWeapon"); // special A
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_EmpowerUnholyWeapon",false,"+SKILLS -Prayer_EmpowerHolyWeapon -Prayer_EmpowerSacredWeapon"); // special A
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.NEUTRAL))
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_EmpowerSacredWeapon",false,"+ABLES -Prayer_EmpowerUnholyWeapon -Prayer_EmpowerHolyWeapon"); // special A
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_EmpowerSacredWeapon",false,"+SKILLS -Prayer_EmpowerUnholyWeapon -Prayer_EmpowerHolyWeapon"); // special A
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_ReflectPrayer",false); // special A
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_HeroicReflexes",0,false); // heroic leap in the doc
@@ -220,37 +220,37 @@ public class Reliquist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_ShareBoon",false); // special A
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_StealBoon",false, CMParms.parse("Thief_BorrowBoon"));
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
-			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_EmpowerJustWeapon",false,"+ABLES -Prayer_EmpowerModestWeapon -Prayer_EmpowerFoulWeapon"); // special A
+			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_EmpowerJustWeapon",false,"+SKILLS -Prayer_EmpowerModestWeapon -Prayer_EmpowerFoulWeapon"); // special A
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.MODERATE))
-			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_EmpowerModestWeapon",false,"+ABLES -Prayer_EmpowerJustWeapon -Prayer_EmpowerFoulWeapon"); // special A
+			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_EmpowerModestWeapon",false,"+SKILLS -Prayer_EmpowerJustWeapon -Prayer_EmpowerFoulWeapon"); // special A
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
-			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_EmpowerFoulWeapon",false,"+ABLES -Prayer_EmpowerJustWeapon -Prayer_EmpowerModestWeapon"); // special A
+			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_EmpowerFoulWeapon",false,"+SKILLS -Prayer_EmpowerJustWeapon -Prayer_EmpowerModestWeapon"); // special A
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Fighter_AutoHammerRing",0,false, CMParms.parse("Fighter_HammerRing"));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_GreaterWardingGlyph",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_FindSacredItem",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Skill_BefoulShrine",0,false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_EmpowerHolyArmor",false,"+ABLES -Prayer_EmpowerUnholyArmor -Prayer_EmpowerSacredArmor"); // special A
-		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_EmpowerUnholyArmor",false,"+ABLES -Prayer_EmpowerHolyArmor -Prayer_EmpowerSacredArmor"); // special A
-		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_EmpowerSacredArmor",false,"+ABLES -Prayer_EmpowerHolyArmor -Prayer_EmpowerUnholyArmor"); // special A
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_EmpowerHolyArmor",false,"+SKILLS -Prayer_EmpowerUnholyArmor -Prayer_EmpowerSacredArmor"); // special A
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_EmpowerUnholyArmor",false,"+SKILLS -Prayer_EmpowerHolyArmor -Prayer_EmpowerSacredArmor"); // special A
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_EmpowerSacredArmor",false,"+SKILLS -Prayer_EmpowerHolyArmor -Prayer_EmpowerUnholyArmor"); // special A
 
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_DivineFeud",0,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_ProtectSacredItem",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_WhipStrip",0,false);
 
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueHolyWeapon",false,"+ABLES -Prayer_ImbueUnholyWeapon -Prayer_ImbueSacredWeapon"); // special A
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueHolyWeapon",false,"+SKILLS -Prayer_ImbueUnholyWeapon -Prayer_ImbueSacredWeapon"); // special A
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueUnholyWeapon",false,"+ABLES -Prayer_ImbueHolyWeapon -Prayer_ImbueSacredWeapon"); // special A
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueUnholyWeapon",false,"+SKILLS -Prayer_ImbueHolyWeapon -Prayer_ImbueSacredWeapon"); // special A
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.NEUTRAL))
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueSacredWeapon",false,"+ABLES -Prayer_ImbueHolyWeapon -Prayer_ImbueUnholyWeapon"); // special A
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueSacredWeapon",false,"+SKILLS -Prayer_ImbueHolyWeapon -Prayer_ImbueUnholyWeapon"); // special A
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueJustWeapon",false,"+ABLES -Prayer_ImbueModestWeapon -Prayer_ImbueFoulWeapon"); // special A
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueJustWeapon",false,"+SKILLS -Prayer_ImbueModestWeapon -Prayer_ImbueFoulWeapon"); // special A
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.MODERATE))
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueModestWeapon",false,"+ABLES -Prayer_ImbueFoulWeapon -Prayer_ImbueJustWeapon"); // special A
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueModestWeapon",false,"+SKILLS -Prayer_ImbueFoulWeapon -Prayer_ImbueJustWeapon"); // special A
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueFoulWeapon",false,"+ABLES -Prayer_ImbueModestWeapon -Prayer_ImbueJustWeapon"); // special A
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueFoulWeapon",false,"+SKILLS -Prayer_ImbueModestWeapon -Prayer_ImbueJustWeapon"); // special A
 
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_DivineQuest",true);
 
