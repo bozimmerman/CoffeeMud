@@ -99,23 +99,28 @@ public class Prayer_SenseDevotion extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(target.charStats().getWorshipCharID().length()==0)
+				if(msg.value()==0)
 				{
-					if(target.charStats().deityName().length()>0)
-						mob.tell(mob,target,null,L("<T-HE-SHE> seem(s) to worship @x1.",target.charStats().deityName()));
+					if(target.charStats().getWorshipCharID().length()==0)
+					{
+						if(target.charStats().deityName().length()>0)
+							mob.tell(mob,target,null,L("<T-HE-SHE> seem(s) to worship @x1.",target.charStats().deityName()));
+						else
+							mob.tell(mob,target,null,L("<T-HE-SHE> lack(s) faith."));
+					}
 					else
-						mob.tell(mob,target,null,L("<T-HE-SHE> lack(s) faith."));
+					{
+						if(target.charStats().deityName().length()==0)
+							mob.tell(mob,target,null,L("<T-HE-SHE> seem(s) to lack faith."));
+						else
+						if(!target.charStats().deityName().equalsIgnoreCase(target.charStats().getWorshipCharID()))
+							mob.tell(mob,target,null,L("<T-HE-SHE> seem(s) to worship @x1.",target.charStats().deityName()));
+						else
+							mob.tell(mob,target,null,L("<T-HE-SHE> worship(s) @x1.",target.charStats().deityName()));
+					}
 				}
 				else
-				{
-					if(target.charStats().deityName().length()==0)
-						mob.tell(mob,target,null,L("<T-HE-SHE> seem(s) to lack faith."));
-					else
-					if(!target.charStats().deityName().equalsIgnoreCase(target.charStats().getWorshipCharID()))
-						mob.tell(mob,target,null,L("<T-HE-SHE> seem(s) to worship @x1.",target.charStats().deityName()));
-					else
-						mob.tell(mob,target,null,L("<T-HE-SHE> worship(s) @x1.",target.charStats().deityName()));
-				}
+					beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> @x1 and peer(s) at <T-NAMESELF>, but then blink(s).",prayWord(mob)));
 			}
 		}
 		else

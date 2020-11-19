@@ -73,6 +73,12 @@ public class Prayer_EmpowerRelic extends Prayer
 	}
 
 	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_ALL;
+	}
+
+	@Override
 	protected int canTargetCode()
 	{
 		return Ability.CAN_ITEMS;
@@ -112,6 +118,14 @@ public class Prayer_EmpowerRelic extends Prayer
 			mob.tell(L("You can not empower that repulsive relic."));
 			return false;
 		}
+		if(((CMLib.flags().isLawful(target))&&(CMLib.flags().isChaotic(mob)))
+		||((CMLib.flags().isChaotic(target))&&(CMLib.flags().isLawful(mob)))
+		||((CMLib.flags().isGood(target))&&(CMLib.flags().isEvil(mob)))
+		||((CMLib.flags().isEvil(target))&&(CMLib.flags().isGood(mob))))
+		{
+			mob.tell(L("You can not empower that repulsive thing."));
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -135,6 +149,7 @@ public class Prayer_EmpowerRelic extends Prayer
 				target.recoverPhyStats();
 				if(Prayer.getRelicCharges(target)>0)
 					Prayer.setRelicCharges(target, Prayer.getRelicCharges(target)-1);
+				Prayer.infuseMobAlignment(mob, target);
 				Prayer.infusePhysicalByAlignment(mob,target);
 			}
 			else

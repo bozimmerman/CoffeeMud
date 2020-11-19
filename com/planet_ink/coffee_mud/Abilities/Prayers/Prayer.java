@@ -247,6 +247,43 @@ public class Prayer extends StdAbility
 		}
 	}
 
+	protected static void infuseMobAlignment(final MOB mob, final Physical target)
+	{
+		final Ability zappA=target.fetchEffect("Prop_WearZapper");
+		if(zappA==null)
+		{
+			final Ability A=CMClass.getAbility("Prop_WearZapper");
+			if(CMLib.flags().isGood(mob))
+			{
+				A.setMiscText("+FACTION -EVIL -NEUTRAL");
+				target.addNonUninvokableEffect(A);
+			}
+			else
+			if(CMLib.flags().isEvil(mob))
+			{
+				A.setMiscText("+FACTION -GOOD -NEUTRAL");
+				target.addNonUninvokableEffect(A);
+			}
+			else
+			if(CMLib.flags().isNeutral(mob))
+			{
+				A.setMiscText("+FACTION -GOOD -EVIL");
+				target.addNonUninvokableEffect(A);
+			}
+		}
+		else
+		{
+			if(CMLib.flags().isGood(mob) && ((zappA.text().indexOf("-NEUTRAL")<0)||(zappA.text().indexOf("-EVIL")<0)))
+				zappA.setMiscText(zappA.text()+" +FACTION -EVIL -NEUTRAL");
+			else
+			if(CMLib.flags().isEvil(mob) && ((zappA.text().indexOf("-GOOD")<0)||(zappA.text().indexOf("-NEUTRAL")<0)))
+				zappA.setMiscText(zappA.text()+" +FACTION -GOOD -NEUTRAL");
+			else
+			if(CMLib.flags().isNeutral(mob) && ((zappA.text().indexOf("-GOOD")<0)||(zappA.text().indexOf("-EVIL")<0)))
+				zappA.setMiscText(zappA.text()+" +FACTION -GOOD -EVIL");
+		}
+	}
+
 	protected static void clearInfusions(final Physical P)
 	{
 		if(P==null)

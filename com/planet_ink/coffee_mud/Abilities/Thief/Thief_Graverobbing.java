@@ -113,7 +113,7 @@ public class Thief_Graverobbing extends ThiefSkill
 					target=R;
 				else
 				{
-					
+
 					final Item graveI=R.findItem("HoleInTheGround");
 					if(graveI!=null)
 						target=super.getTarget(mob, R, givenTarget, graveI, commands, Wearable.FILTER_UNWORNONLY, true);
@@ -170,7 +170,10 @@ public class Thief_Graverobbing extends ThiefSkill
 			C.recoverPhyStats();
 			R.addItem(C, Expire.Monster_EQ);
 			CMLib.commands().postGet(mob, cI, C, false);
-			this.beneficialAffect(mob, target, asLevel, Integer.MAX_VALUE/4);
+			if(target instanceof Room)
+				this.beneficialAffect(mob, target, asLevel, (int)CMProps.getTicksPerDay());
+			else
+				this.beneficialAffect(mob, target, asLevel, Integer.MAX_VALUE/4);
 		}
 		return success;
 	}

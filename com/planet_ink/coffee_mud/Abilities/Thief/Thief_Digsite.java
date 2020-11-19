@@ -75,6 +75,12 @@ public class Thief_Digsite extends ThiefSkill
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_PCT + 50;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"DIGSITE"});
 	@Override
 	public int classificationCode()
@@ -86,6 +92,12 @@ public class Thief_Digsite extends ThiefSkill
 	public boolean disregardsArmorCheck(final MOB mob)
 	{
 		return true;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
 	}
 
 	@Override

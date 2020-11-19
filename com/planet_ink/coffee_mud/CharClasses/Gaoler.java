@@ -146,6 +146,7 @@ public class Gaoler extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Searching",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Blacksmithing",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_Nippletwist",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_Whipsmack",0,false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Carpentry",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Tattooing",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_PrisonAssignment",false);
@@ -160,6 +161,7 @@ public class Gaoler extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_PrisonerTransfer",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_TarAndFeather",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_Flay",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_Whiplash",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Torturesmithing",false,CMParms.parseSemicolons("Carpentry,Blacksmithing(75)",true),"+INT 14");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Leeching",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_CollectBounty",true);

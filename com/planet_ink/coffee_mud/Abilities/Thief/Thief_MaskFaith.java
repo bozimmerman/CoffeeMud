@@ -90,6 +90,14 @@ public class Thief_MaskFaith extends ThiefSkill
 	}
 
 	@Override
+	public int abilityCode()
+	{
+		if(invoker()==null)
+			return 0;
+		return super.getXLEVELLevel(invoker());
+	}
+
+	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -100,6 +108,28 @@ public class Thief_MaskFaith extends ThiefSkill
 			else
 				affectableStats.setDeityName(text());
 		}
+	}
+
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost,msg))
+			return false;
+		if((msg.target()==affected)
+		&&(msg.tool() instanceof Ability)
+		&&(affected instanceof MOB)
+		&&(((Ability)msg.tool()).ID().equals("Prayer_SenseDevotion")))
+		{
+			final MOB mob=(MOB)affected;
+			final int levelDiff=msg.source().phyStats().level()-(mob.phyStats().level()+(3*getXLEVELLevel(mob)));
+			if((levelDiff<0)
+			&&(CMLib.dice().rollPercentage()>(10*(-levelDiff))))
+			{
+				msg.source().tell(mob,null,null,L("<S-YOUPOSS> faith seem(s) illusive."));
+				msg.setValue(1);
+			}
+		}
+		return true;
 	}
 
 	@Override

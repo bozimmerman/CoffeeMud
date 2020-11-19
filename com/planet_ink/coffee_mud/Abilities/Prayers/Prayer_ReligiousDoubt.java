@@ -70,6 +70,12 @@ public class Prayer_ReligiousDoubt extends Prayer
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
+	@Override
+	public long flags()
+	{
+		return 0; // no, part of its skillness is being unaligned
+	}
+
 	protected int tickUp=0;
 	protected boolean hasThoughtItOver=false;
 

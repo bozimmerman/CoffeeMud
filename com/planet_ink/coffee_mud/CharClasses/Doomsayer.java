@@ -161,6 +161,7 @@ public class Doomsayer extends Cleric
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Anger",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_DailyBread",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_SenseParish",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_Blindness",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
@@ -171,6 +172,7 @@ public class Doomsayer extends Cleric
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_DoomAura",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_ProtectElements",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_MassTongues",false);
 
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
 			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Hellfire",true);

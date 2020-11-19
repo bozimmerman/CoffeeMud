@@ -122,7 +122,7 @@ public class Spell_ClarifyScroll extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("The words on <T-NAME> become more definite!"));
-				((Scroll)target).setUsesRemaining(((Scroll)target).usesRemaining()+1);
+				((Scroll)target).setUsesRemaining(((Scroll)target).usesRemaining()+5+super.getXLEVELLevel(mob));
 			}
 
 		}

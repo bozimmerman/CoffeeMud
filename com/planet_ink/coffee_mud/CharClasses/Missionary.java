@@ -127,6 +127,7 @@ public class Missionary extends Cleric
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
 			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_HuntChaos",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_ElectricStrike",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_SenseDevotion",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_ProtParalyzation",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_Revival",false);
@@ -151,6 +152,7 @@ public class Missionary extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_RemoveCurse",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Etherealness",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_SenseParish",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_Blindsight",true);

@@ -133,6 +133,7 @@ public class Purist extends Cleric
 			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_HuntEvil",false);
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
 			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_ProtChaos",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_SenseDevotion",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_Freedom",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_ProtParalyzation",true);

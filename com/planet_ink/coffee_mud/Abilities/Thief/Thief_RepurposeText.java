@@ -92,11 +92,6 @@ public class Thief_RepurposeText extends ThiefSkill
 			mob.tell(L("You don't see '@x1' here.",(commands.get(0))));
 			return false;
 		}
-		if(target instanceof Scroll)
-		{
-			mob.tell(L("@x1 is already a prepared scroll.",target.name(mob)));
-			return false;
-		}
 		if(((target.material()!=RawMaterial.RESOURCE_PAPER)
 		   &&(target.material()!=RawMaterial.RESOURCE_SILK)
 		   &&(target.material()!=RawMaterial.RESOURCE_HIDE)
@@ -122,19 +117,24 @@ public class Thief_RepurposeText extends ThiefSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			final Item newScroll=CMClass.getItem("GenScroll");
-			newScroll.setUsesRemaining(1);
-			newScroll.setName(L("a scroll"));
-			newScroll.setDisplayText(L("a scroll is lying here"));
-			if((target instanceof Book)
-			&&(((Book)target).getMaxPages()>1))
-				newScroll.setUsesRemaining(((Book)target).getMaxPages());
-			newScroll.setUsesRemaining(newScroll.usesRemaining()+(super.getXLEVELLevel(mob)/2));
-			newScroll.setContainer(target.container());
-			newScroll.basePhyStats().setWeight(target.basePhyStats().weight());
-			newScroll.recoverPhyStats();
-			mob.addItem(newScroll);
-			target.destroy();
+			if(target instanceof Scroll)
+				((Scroll)target).setSpellList("");
+			else
+			{
+				final Item newScroll=CMClass.getItem("GenScroll");
+				newScroll.setUsesRemaining(1);
+				newScroll.setName(L("a scroll"));
+				newScroll.setDisplayText(L("a scroll is lying here"));
+				if((target instanceof Book)
+				&&(((Book)target).getMaxPages()>1))
+					newScroll.setUsesRemaining(((Book)target).getMaxPages());
+				newScroll.setUsesRemaining(newScroll.usesRemaining()+(super.getXLEVELLevel(mob)/2));
+				newScroll.setContainer(target.container());
+				newScroll.basePhyStats().setWeight(target.basePhyStats().weight());
+				newScroll.recoverPhyStats();
+				mob.addItem(newScroll);
+				target.destroy();
+			}
 			mob.recoverCharStats();
 			mob.recoverPhyStats();
 			mob.recoverMaxState();

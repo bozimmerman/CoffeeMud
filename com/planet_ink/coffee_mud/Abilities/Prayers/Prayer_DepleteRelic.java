@@ -67,6 +67,12 @@ public class Prayer_DepleteRelic extends Prayer
 	}
 
 	@Override
+	protected int overrideMana()
+	{
+		return 100;
+	}
+
+	@Override
 	protected int canAffectCode()
 	{
 		return 0;

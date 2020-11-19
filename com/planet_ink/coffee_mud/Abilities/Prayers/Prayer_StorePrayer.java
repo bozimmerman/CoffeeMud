@@ -155,6 +155,9 @@ public class Prayer_StorePrayer extends Prayer implements AbilityContainer, Disc
 
 	public String getSpeakableName(String name)
 	{
+		final String deityName=getDeity();
+		if(deityName.length()>0)
+			name=deityName;
 		name=CMStrings.removeColors(name.toUpperCase());
 		if(name.startsWith("A "))
 			name=name.substring(2).trim();

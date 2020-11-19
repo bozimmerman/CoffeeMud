@@ -66,17 +66,17 @@ public class Thief_CondemnMark extends ThiefSkill
 		return Ability.QUALITY_MALICIOUS;
 	}
 
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT|USAGE_MANA;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"CONDEMNMARK"});
 	@Override
 	public String[] triggerStrings()
 	{
 		return triggerStrings;
-	}
-
-	@Override
-	protected int overrideMana()
-	{
-		return 50;
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class Thief_CondemnMark extends ThiefSkill
 	}
 
 	final LimitedTreeSet<MOB> recentCondemnations = new LimitedTreeSet<MOB>(60000L*60,100,true);
-	
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -112,26 +112,26 @@ public class Thief_CondemnMark extends ThiefSkill
 			mob.tell(L("You need to have marked someone before you can condemn him or her."));
 			return false;
 		}
-		
+
 		if(recentCondemnations.contains(target))
 		{
 			mob.tell(L("Accusing this mark again so soon strains credibility."));
 			return false;
 		}
 
-		Deity deityM=target.charStats().getMyDeity();
+		final Deity deityM=target.charStats().getMyDeity();
 		if(deityM==null)
 		{
 			mob.tell(L("@x1 lack(s) a deity to condemn before.",target.name(mob)));
 			return false;
 		}
-		
+
 		if(getMarkTicks(mob)<(30-(adjustedLevel(mob,asLevel)/5)-super.getXLEVELLevel(mob)))
 		{
 			mob.tell(L("You must observe this mark longer to determine their sins."));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

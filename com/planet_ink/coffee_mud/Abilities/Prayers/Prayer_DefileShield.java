@@ -48,6 +48,11 @@ public class Prayer_DefileShield extends Prayer_ImbueShield
 		return localizedName;
 	}
 
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_ALL;
+	}
 
 	@Override
 	public long flags()

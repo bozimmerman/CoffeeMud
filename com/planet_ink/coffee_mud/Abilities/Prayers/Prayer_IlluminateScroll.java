@@ -32,16 +32,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_ClarifyPrayer extends Prayer
+public class Prayer_IlluminateScroll extends Prayer
 {
 
 	@Override
 	public String ID()
 	{
-		return "Prayer_ClarifyPrayer";
+		return "Prayer_IlluminateScroll";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Clarify Prayer");
+	private final static String localizedName = CMLib.lang().L("Illuminate Scroll");
 
 	@Override
 	public String name()
@@ -136,7 +136,7 @@ public class Prayer_ClarifyPrayer extends Prayer
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("The divine markings on <T-NAME> become more definite!"));
-				((Scroll)target).setUsesRemaining(((Scroll)target).usesRemaining()+1);
+				((Scroll)target).setUsesRemaining(((Scroll)target).usesRemaining()+5+super.getXLEVELLevel(mob));
 			}
 
 		}

@@ -51,7 +51,7 @@ public class Prayer_AttuneScroll extends Prayer
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;
 	}
 
 	@Override

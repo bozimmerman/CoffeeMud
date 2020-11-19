@@ -51,13 +51,19 @@ public class Prayer_AttuneRelic extends Prayer
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;
 	}
 
 	@Override
 	public long flags()
 	{
 		return Ability.FLAG_HOLY;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return 100;
 	}
 
 	@Override

@@ -104,27 +104,15 @@ public class Prayer_EmpowerShield extends Prayer
 			return false;
 		}
 
-		final Ability zappA=target.fetchEffect("Prop_WearZapper");
-		if(zappA!=null)
+		if(((CMLib.flags().isLawful(target))&&(CMLib.flags().isChaotic(mob)))
+		||((CMLib.flags().isChaotic(target))&&(CMLib.flags().isLawful(mob)))
+		||((CMLib.flags().isGood(target))&&(CMLib.flags().isEvil(mob)))
+		||((CMLib.flags().isEvil(target))&&(CMLib.flags().isGood(mob))))
 		{
-			final String zappaTxt=zappA.text().toUpperCase().trim();
-			if((zappaTxt.indexOf("-EVIL")>=0)&&(CMLib.flags().isEvil(mob)))
-			{
-				mob.tell(L("You can not empower that repulsive shield."));
-				return false;
-			}
-			if((zappaTxt.indexOf("-GOOD")>=0)&&(CMLib.flags().isGood(mob)))
-			{
-				mob.tell(L("You can not empower that repulsive shield."));
-				return false;
-			}
-			if((zappaTxt.indexOf("-NEUTRAL")>=0)&&(CMLib.flags().isNeutral(mob)))
-			{
-				mob.tell(L("You can not empower that repulsive shield."));
-				return false;
-			}
+			mob.tell(L("You can not empower that repulsive shield."));
+			return false;
 		}
-		
+
 		if(!Prayer.checkInfusionMismatch(mob, target))
 		{
 			mob.tell(L("You can not empower that repulsive shield."));
@@ -150,38 +138,7 @@ public class Prayer_EmpowerShield extends Prayer
 				target.basePhyStats().setAbility(target.basePhyStats().ability()+1);
 				target.basePhyStats().setLevel(target.basePhyStats().level()+3);
 				target.basePhyStats().setDisposition(target.basePhyStats().disposition()|PhyStats.IS_BONUS);
-				if(zappA==null)
-				{
-					final Ability A=CMClass.getAbility("Prop_WearZapper");
-					if(CMLib.flags().isGood(mob))
-					{
-						A.setMiscText("+FACTION -EVIL -NEUTRAL");
-						target.addNonUninvokableEffect(A);
-					}
-					else
-					if(CMLib.flags().isEvil(mob))
-					{
-						A.setMiscText("+FACTION -GOOD -NEUTRAL");
-						target.addNonUninvokableEffect(A);
-					}
-					else
-					if(CMLib.flags().isNeutral(mob))
-					{
-						A.setMiscText("+FACTION -GOOD -EVIL");
-						target.addNonUninvokableEffect(A);
-					}
-				}
-				else
-				{
-					if(CMLib.flags().isGood(mob) && ((zappA.text().indexOf("-NEUTRAL")<0)||(zappA.text().indexOf("-EVIL")<0)))
-						zappA.setMiscText(zappA.text()+" +FACTION -EVIL -NEUTRAL");
-					else
-					if(CMLib.flags().isEvil(mob) && ((zappA.text().indexOf("-GOOD")<0)||(zappA.text().indexOf("-NEUTRAL")<0)))
-						zappA.setMiscText(zappA.text()+" +FACTION -GOOD -NEUTRAL");
-					else
-					if(CMLib.flags().isNeutral(mob) && ((zappA.text().indexOf("-GOOD")<0)||(zappA.text().indexOf("-EVIL")<0)))
-						zappA.setMiscText(zappA.text()+" +FACTION -GOOD -EVIL");
-				}
+				Prayer.infuseMobAlignment(mob, target);
 				Prayer.infusePhysicalByAlignment(mob, target);
 				target.recoverPhyStats();
 				mob.recoverPhyStats();
