@@ -134,8 +134,7 @@ public class Prayer_StorePrayer extends Prayer implements AbilityContainer, Disc
 		final Physical affected=this.affected;
 		final int oldCharges=getCharges();
 		final String abilityID=getPrayerID();
-		final String deity = getDeity();
-		setMiscText(abilityID+"/"+newCharges+"/"+deity);
+		setMiscText(abilityID+"/"+newCharges);
 		if((oldCharges > 0) && (newCharges<=0) && (affected != null))
 			affected.delEffect(this);
 	}
@@ -148,16 +147,10 @@ public class Prayer_StorePrayer extends Prayer implements AbilityContainer, Disc
 
 	protected String getDeity()
 	{
-		String argText=text();
-		int x=argText.indexOf('/');
-		if(x>0)
-		{
-			argText=argText.substring(x+1);
-			x=argText.indexOf('/');
-			if(x>0)
-				return argText.substring(x+1);
-		}
-		return "";
+		final String deityName=CMLib.law().getClericInfused(affected);
+		if(deityName==null)
+			return "";
+		return deityName;
 	}
 
 	public String getSpeakableName(String name)
@@ -274,7 +267,7 @@ public class Prayer_StorePrayer extends Prayer implements AbilityContainer, Disc
 	public void addAbility(final Ability to)
 	{
 		if(to != null)
-			setMiscText(to.ID()+"/"+getCharges()+"/"+getDeity());
+			setMiscText(to.ID()+"/"+getCharges());
 	}
 
 	@Override
@@ -394,6 +387,12 @@ public class Prayer_StorePrayer extends Prayer implements AbilityContainer, Disc
 			return false;
 		}
 
+		if(Prayer.checkInfusionMismatch(mob, target))
+		{
+			mob.tell(L("You can store no prayer in that repulsive item."));
+			return false;
+		}
+
 		commands.remove(commands.size()-1);
 
 		final String spellName=CMParms.combine(commands,0).trim();
@@ -462,10 +461,10 @@ public class Prayer_StorePrayer extends Prayer implements AbilityContainer, Disc
 					A.setInvoker(mob);
 					target.addNonUninvokableEffect(A);
 				}
-				A.setMiscText(wandThis.ID()+"/"+(charges+1)+"/"+mob.charStats().getWorshipCharID());
+				A.setMiscText(wandThis.ID()+"/"+(charges+1));
 				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glow(s) divinely."));
+				Prayer.infusePhysicalByAlignment(mob, target);
 			}
-
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("^S<S-NAME> @x1 while moving <S-HIS-HER> hands around <T-NAMESELF>, but nothing happens.^?", prayWord(mob)));
