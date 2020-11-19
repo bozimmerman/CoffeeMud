@@ -64,12 +64,12 @@ public class As extends StdCommand
 			return false;
 		}
 		final Session useSession=mob.session();
-		MOB targetM;
 		final String asGroupName;
 		final char asThreadId;
+		final List<MOB> finalTargets=new LinkedList<MOB>();
 		if(cmd.equalsIgnoreCase("port"))
 		{
-			targetM=mob;
+			finalTargets.add(mob);
 			if((commands.size()<2)||(!CMath.isInteger(commands.get(0))))
 			{
 				mob.tell(L("@x1 is not valid syntax.",commands.get(0)));
@@ -100,137 +100,186 @@ public class As extends StdCommand
 			}
 		}
 		else
+		if(cmd.equalsIgnoreCase("PLAYERS")
+		&&CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ORDER))
 		{
-			targetM=CMLib.players().getLoadPlayer(cmd);
+			for(final Iterator<Session> s=CMLib.sessions().sessions();s.hasNext();)
+			{
+				final Session S=s.next();
+				if((S==null)||(S.isStopped()))
+					continue;
+				final MOB smob=S.mob();
+				if((smob!=null)
+				&&(smob!=mob)
+				&&(smob.isPlayer())
+				&&(smob.soulMate()==null)
+				&&(CMLib.flags().isInTheGame(smob, true)))
+					finalTargets.add(smob);
+			}
+			if(finalTargets.size()==0)
+			{
+				mob.tell(L("There is no one available online to AS right now."));
+				return false;
+			}
 			asThreadId=(char)-1;
 			asGroupName=null;
 		}
-		if(targetM==null)
-			targetM=mob.location().fetchInhabitant(cmd);
-		if(targetM==null)
+		else
+		{
+			final MOB targetM=CMLib.players().getLoadPlayer(cmd);
+			asThreadId=(char)-1;
+			asGroupName=null;
+			if(targetM!=null)
+				finalTargets.add(targetM);
+		}
+		if(finalTargets.size()==0)
+		{
+			final MOB targetM=mob.location().fetchInhabitant(cmd);
+			if(targetM!=null)
+				finalTargets.add(targetM);
+		}
+		if(finalTargets.size()==0)
 		{
 			try
 			{
 				final List<MOB> targets=CMLib.map().findInhabitantsFavorExact(CMLib.map().rooms(), mob, cmd, false, 50);
 				if(targets.size()>0)
-					targetM=targets.get(CMLib.dice().roll(1,targets.size(),-1));
+				{
+					final MOB targetM=targets.get(CMLib.dice().roll(1,targets.size(),-1));
+					if(targetM!=null)
+						finalTargets.add(targetM);
+				}
 			}
 			catch (final NoSuchElementException e)
 			{
 			}
 		}
-		if(targetM==null)
+		if(finalTargets.size()>0)
+		{
+			for(final Iterator<MOB> tm = finalTargets.iterator();tm.hasNext();)
+			{
+				final MOB targetM=tm.next();
+				if(targetM.soulMate()!=null)
+				{
+					mob.tell(L("@x1 is being possessed at the moment.",targetM.Name()));
+					tm.remove();
+				}
+				else
+				if((CMSecurity.isASysOp(targetM))&&(!CMSecurity.isASysOp(mob)))
+				{
+					mob.tell(L("You aren't powerful enough to do that to @x1.",targetM.Name()));
+					tm.remove();
+				}
+				if(!targetM.isMonster())
+				{
+					if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ORDER))
+					{
+						mob.tell(L("You can't do things as players like @x1 if you can't order them.",targetM.Name()));
+						tm.remove();
+					}
+				}
+			}
+			if(finalTargets.size()==0)
+				return false;
+		}
+		else
 		{
 			mob.tell(L("You don't know of anyone by that name."));
 			return false;
 		}
-		if(targetM.soulMate()!=null)
+		for(final MOB targetM : finalTargets)
 		{
-			mob.tell(L("@x1 is being possessed at the moment.",targetM.Name()));
-			return false;
-		}
-		if((CMSecurity.isASysOp(targetM))&&(!CMSecurity.isASysOp(mob)))
-		{
-			mob.tell(L("You aren't powerful enough to do that."));
-			return false;
-		}
-		if(!targetM.isMonster())
-		{
-			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ORDER))
+			if(finalTargets.size()>1)
+				mob.tell(L("^XAs @x1...",targetM.Name()));
+			if((targetM==mob)
+			&&(asGroupName==null))
 			{
-				mob.tell(L("You can't do things as players if you can't order them."));
-				return false;
+				if(commands.get(0).equalsIgnoreCase("here")
+				   ||commands.get(0).equalsIgnoreCase("."))
+				{
+					commands.remove(0);
+				}
+				targetM.doCommand(new XVector<String>(CMParms.toStringArray(commands)),metaFlags|MUDCmdProcessor.METAFLAG_AS);
+				continue;
 			}
-		}
-		if((targetM==mob)
-		&&(asGroupName==null))
-		{
-			if(commands.get(0).equalsIgnoreCase("here")
-			   ||commands.get(0).equalsIgnoreCase("."))
+			final MOB finalTargetM=targetM;
+			final Runnable run = new Runnable()
 			{
-				commands.remove(0);
-			}
-			targetM.doCommand(new XVector<String>(CMParms.toStringArray(commands)),metaFlags|MUDCmdProcessor.METAFLAG_AS);
-			return false;
-		}
-		final MOB finalTargetM=targetM;
-		final Runnable run = new Runnable()
-		{
-			final MOB M=finalTargetM;
-			final String grp=asGroupName;
-			final Session mySession=useSession;
+				final MOB M=finalTargetM;
+				final String grp=asGroupName;
+				final Session mySession=useSession;
 
-			@Override
-			public void run()
-			{
-				final Room oldRoom=M.location();
-				boolean inside=(oldRoom!=null)?oldRoom.isInhabitant(M):false;
-				final boolean dead=M.amDead();
-				final Session hisSession=M.session();
-				final String myGroup=useSession.getGroupName();
-				if(grp != null)
-					mySession.setGroupName(grp);
-				synchronized(mySession)
+				@Override
+				public void run()
 				{
-					//int myBitmap=mob.getBitmap();
-					//int oldBitmap=M.getBitmap();
-					M.setSession(mySession);
-					mySession.setMob(M);
-					M.setSoulMate(mob);
-					//mySession.initTelnetMode(oldBitmap);
-					if(commands.get(0).equalsIgnoreCase("here")
-					   ||commands.get(0).equalsIgnoreCase("."))
-					{
-						if((M.location()!=mob.location())&&(!mob.location().isInhabitant(M)))
-							mob.location().bringMobHere(M,false);
-						commands.remove(0);
-					}
-					if(dead)
-						M.bringToLife();
-					if((M.location()==null)&&(oldRoom==null)&&(mob.location()!=null))
-					{
-						inside=false;
-						mob.location().bringMobHere(M,false);
-					}
-				}
-				CMLib.s_sleep(100);
-				try
-				{
-					M.doCommand(new XVector<String>(CMParms.toStringArray(commands)),metaFlags|MUDCmdProcessor.METAFLAG_AS);
-				}
-				finally
-				{
+					final Room oldRoom=M.location();
+					boolean inside=(oldRoom!=null)?oldRoom.isInhabitant(M):false;
+					final boolean dead=M.amDead();
+					final Session hisSession=M.session();
+					final String myGroup=useSession.getGroupName();
+					if(grp != null)
+						mySession.setGroupName(grp);
 					synchronized(mySession)
 					{
-						if(grp != null)
-							mySession.setGroupName(myGroup);
-						if(M.playerStats()!=null)
-							M.playerStats().setLastUpdated(0);
-						if((oldRoom!=null)&&(inside)&&(!oldRoom.isInhabitant(M)))
-							oldRoom.bringMobHere(M,false);
-						else
-						if((oldRoom==null)||(!inside))
+						//int myBitmap=mob.getBitmap();
+						//int oldBitmap=M.getBitmap();
+						M.setSession(mySession);
+						mySession.setMob(M);
+						M.setSoulMate(mob);
+						//mySession.initTelnetMode(oldBitmap);
+						if(commands.get(0).equalsIgnoreCase("here")
+						   ||commands.get(0).equalsIgnoreCase("."))
 						{
-							if(M.location()!=null)
-								M.location().delInhabitant(M);
-							M.setLocation(oldRoom);
+							if((M.location()!=mob.location())&&(!mob.location().isInhabitant(M)))
+								mob.location().bringMobHere(M,false);
+							commands.remove(0);
 						}
-						M.setSoulMate(null);
-						M.setSession(hisSession);
-						mySession.setMob(mob);
+						if(dead)
+							M.bringToLife();
+						if((M.location()==null)&&(oldRoom==null)&&(mob.location()!=null))
+						{
+							inside=false;
+							mob.location().bringMobHere(M,false);
+						}
 					}
 					CMLib.s_sleep(100);
-					//mySession.initTelnetMode(myBitmap);
-					if(dead)
-						M.removeFromGame(true,true);
+					try
+					{
+						M.doCommand(new XVector<String>(CMParms.toStringArray(commands)),metaFlags|MUDCmdProcessor.METAFLAG_AS);
+					}
+					finally
+					{
+						synchronized(mySession)
+						{
+							if(grp != null)
+								mySession.setGroupName(myGroup);
+							if(M.playerStats()!=null)
+								M.playerStats().setLastUpdated(0);
+							if((oldRoom!=null)&&(inside)&&(!oldRoom.isInhabitant(M)))
+								oldRoom.bringMobHere(M,false);
+							else
+							if((oldRoom==null)||(!inside))
+							{
+								if(M.location()!=null)
+									M.location().delInhabitant(M);
+								M.setLocation(oldRoom);
+							}
+							M.setSoulMate(null);
+							M.setSession(hisSession);
+							mySession.setMob(mob);
+						}
+						CMLib.s_sleep(100);
+						//mySession.initTelnetMode(myBitmap);
+						if(dead)
+							M.removeFromGame(true,true);
+					}
 				}
-			}
-
-		};
-		if(asThreadId != (char)-1)
-			CMLib.threads().executeRunnable(asThreadId, run);
-		else
-			run.run();
+			};
+			if(asThreadId != (char)-1)
+				CMLib.threads().executeRunnable(asThreadId, run);
+			else
+				run.run();
+		}
 		return false;
 	}
 

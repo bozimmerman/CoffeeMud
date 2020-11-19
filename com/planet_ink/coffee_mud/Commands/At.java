@@ -57,28 +57,66 @@ public class At extends StdCommand
 		}
 		final String cmd=commands.get(0);
 		commands.remove(0);
-		Room room=CMLib.map().getRoom(cmd.toString());
-		if(room == null)
-			room=CMLib.map().findWorldRoomLiberally(mob,cmd,"APMIR",100,120000);
-		if(room==null)
+		final Set<Room> finalRooms = new HashSet<Room>();
+		{
+			if(cmd.equalsIgnoreCase("PLAYERS"))
+			{
+				for(final Iterator<Session> s=CMLib.sessions().sessions();s.hasNext();)
+				{
+					final Session S=s.next();
+					if((S==null)||(S.isStopped()))
+						continue;
+					final MOB smob=S.mob();
+					if((smob!=null)
+					&&(smob!=mob)
+					&&(smob.isPlayer())
+					&&(CMLib.flags().isInTheGame(smob, true)))
+					{
+						final Room room=smob.location();
+						if((room != null)&&(!finalRooms.contains(room)))
+							finalRooms.add(room);
+					}
+				}
+				if((finalRooms.size()==1)
+				&&(mob.location()==finalRooms.iterator().next()))
+				{
+					mob.tell(L("Looks like you are already everywhere you want to be."));
+					return false;
+				}
+			}
+			else
+			{
+				Room room=CMLib.map().getRoom(cmd.toString());
+				if(room == null)
+					room=CMLib.map().findWorldRoomLiberally(mob,cmd,"APMIR",100,120000);
+				if(room != null)
+					finalRooms.add(room);
+			}
+		}
+		if(finalRooms.size()==0)
 		{
 			if(CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.AT))
-				mob.tell(L("At where? Try a Room ID, player name, area name, or room text!"));
+				mob.tell(L("At where? Try a Room ID, player name, area name, players, or room text!"));
 			else
 				mob.tell(L("You aren't powerful enough to do that."));
 			return false;
 		}
-		if(!CMSecurity.isAllowed(mob,room,CMSecurity.SecFlag.AT))
+		for(final Room room : finalRooms)
 		{
-			mob.tell(L("You aren't powerful enough to do that there."));
-			return false;
+			if(!CMSecurity.isAllowed(mob,room,CMSecurity.SecFlag.AT))
+			{
+				mob.tell(L("You aren't powerful enough to do that at @x1.",CMLib.map().getApproximateExtendedRoomID(room)));
+				continue;
+			}
+			if(finalRooms.size()>1)
+				mob.tell(L("^XAt @x1...",CMLib.map().getApproximateExtendedRoomID(room)));
+			final Room R=mob.location();
+			if(R!=room)
+				room.bringMobHere(mob,false);
+			mob.doCommand(new XVector<String>(CMParms.toStringArray(commands)),metaFlags);
+			if(mob.location()!=R)
+				R.bringMobHere(mob,false);
 		}
-		final Room R=mob.location();
-		if(R!=room)
-			room.bringMobHere(mob,false);
-		mob.doCommand(new XVector<String>(CMParms.toStringArray(commands)),metaFlags);
-		if(mob.location()!=R)
-			R.bringMobHere(mob,false);
 		return false;
 	}
 
