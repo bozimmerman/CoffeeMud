@@ -88,7 +88,7 @@ public class Prop_LocationBound extends Property
 					if(roomID.equalsIgnoreCase("ABSOLUTE"))
 						this.absolute=true;
 					else
-					if(roomID.startsWith("TIMEOUT="))
+					if(roomID.toUpperCase().startsWith("TIMEOUT="))
 						this.timesOutAfterMillis=(CMath.s_long(roomID.substring(8).trim())*1000L);
 					else
 					if(roomID.equalsIgnoreCase("AREA"))
