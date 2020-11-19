@@ -1,7 +1,7 @@
 #!QUESTMAKER_START_SCRIPT Normal Travel #4
 #The player travels at the behest of one existing mob in your world
 #to another existing mob somewhere else in your world and deliver a
-verbal message to them.  A reward is optionally given upon arrival.
+#verbal message to them.  A reward is optionally given upon arrival.
 #
 #!QUESTMAKER_PAGE Quest Name/Criteria
 #Enter the unique name and player criteria for your new quest.

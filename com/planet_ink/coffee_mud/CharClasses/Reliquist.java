@@ -255,6 +255,7 @@ public class Reliquist extends Thief
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_DivineQuest",true);
 
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Prayer_DivinePilgrimage",false);
+				// notes: maybe capture2, capture4, collect2, collect3, escort 2, killer 2,
 	}
 
 	@Override
