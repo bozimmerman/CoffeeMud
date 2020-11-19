@@ -65,7 +65,7 @@ public class Prayer_ImbueFoulWeapon extends Prayer_ImbueShield
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_NOORDERING|Ability.FLAG_LAW;
+		return Ability.FLAG_NOORDERING|Ability.FLAG_CHAOS;
 	}
 
 	@Override
