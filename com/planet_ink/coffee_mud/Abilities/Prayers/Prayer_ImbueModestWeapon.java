@@ -69,6 +69,12 @@ public class Prayer_ImbueModestWeapon extends Prayer_ImbueShield
 	}
 
 	@Override
+	protected int maxPrayerLevel()
+	{
+		return 20;
+	}
+
+	@Override
 	protected void doImbue(final MOB mob, final Item targetI, final Ability imbuePrayerA)
 	{
 		mob.location().show(mob,targetI,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glow(s) modestly bright!"));

@@ -51,7 +51,7 @@ public class Prayer_TransferBoon extends Prayer
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_MALICIOUS;
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
 	}
 
 	@Override
@@ -94,8 +94,8 @@ public class Prayer_TransferBoon extends Prayer
 		{
 			if(!(target instanceof MOB))
 				return Ability.QUALITY_INDIFFERENT;
-			final List<Ability> cursesV=getBoons(mob, (MOB)target);
-			if(cursesV.size()==0)
+			final List<Ability> boonsV=getBoons(mob, (MOB)target);
+			if(boonsV.size()==0)
 				return Ability.QUALITY_INDIFFERENT;
 		}
 		return super.castingQuality(mob,target);

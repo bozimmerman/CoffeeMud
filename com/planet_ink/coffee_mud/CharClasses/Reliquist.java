@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Vector;
@@ -225,7 +226,7 @@ public class Reliquist extends Thief
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
 			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_EmpowerFoulWeapon",false); // special A
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Fighter_AutoHammerRing",0,false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Fighter_AutoHammerRing",0,false, CMParms.parse("Fighter_HammerRing"));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_GreaterWardingGlyph",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_FindSacredItem",false);
 
@@ -564,6 +565,12 @@ public class Reliquist extends Thief
 					||msg.tool().ID().equals("Prayer_GreaterWardingGlyph")
 					||msg.tool().ID().equals("Prayer_StorePrayer")
 					||msg.tool().ID().equals("Prayer_ImbueShield")
+					||msg.tool().ID().equals("Prayer_ImbueHolyWeapon")
+					||msg.tool().ID().equals("Prayer_ImbueUnholyWeapon")
+					||msg.tool().ID().equals("Prayer_ImbueSacredWeapon")
+					||msg.tool().ID().equals("Prayer_ImbueJustWeapon")
+					||msg.tool().ID().equals("Prayer_ImbueFoulWeapon")
+					||msg.tool().ID().equals("Prayer_ImbueModestWeapon")
 					||msg.tool().ID().equals("Prayer_DefileShield")
 					//||msg.tool().ID().equals("Prayer_ReleasePrayer") // not necc because the spell is fake cast
 					||msg.tool().ID().equals("Prayer_DivineQuest")))

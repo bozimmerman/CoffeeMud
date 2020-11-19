@@ -119,6 +119,11 @@ public class Prayer_ImbueShield extends Prayer
 		return true;
 	}
 
+	protected int maxPrayerLevel()
+	{
+		return 15;
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -216,7 +221,7 @@ public class Prayer_ImbueShield extends Prayer
 			}
 		}
 
-		if((CMLib.ableMapper().lowestQualifyingLevel(imbuePrayerA.ID())>15)
+		if((CMLib.ableMapper().lowestQualifyingLevel(imbuePrayerA.ID())>maxPrayerLevel())
 		||(((StdAbility)imbuePrayerA).usageCost(null,true)[0]>45)
 		||(CMath.bset(imbuePrayerA.flags(), Ability.FLAG_CLANMAGIC)))
 		{
@@ -254,7 +259,7 @@ public class Prayer_ImbueShield extends Prayer
 			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 			experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 			mob.tell(L("You lose @x1 experience points for the effort.",""+experienceToLose));
-			setMiscText(imbuePrayerA.ID());
+			setMiscText(imbuePrayerA.ID()); // important for reliquist discharge
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> @x1 while holding <T-NAMESELF> tightly.^?",super.prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{

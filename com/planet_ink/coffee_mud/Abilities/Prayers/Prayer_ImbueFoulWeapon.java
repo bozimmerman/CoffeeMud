@@ -98,6 +98,12 @@ public class Prayer_ImbueFoulWeapon extends Prayer_ImbueShield
 	}
 
 	@Override
+	protected int maxPrayerLevel()
+	{
+		return 20;
+	}
+
+	@Override
 	protected boolean checkAlignment(final MOB mob, final Physical target, final boolean quiet)
 	{
 		if(CMLib.flags().isLawful(target))
