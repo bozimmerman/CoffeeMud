@@ -276,7 +276,9 @@ public class AbilityData extends StdWebMacro
 					{
 						final CharClass C=c.nextElement();
 						if(((CMProps.isTheme(C.availabilityCode()))||showAll)
-						&&((!CMath.bset(C.availabilityCode(), Area.THEME_SKILLONLYMASK))||includeSkillOnly||showAll)
+						&&((!CMath.bset(C.availabilityCode(), Area.THEME_SKILLONLYMASK))
+								||CMSecurity.isCharClassEnabled(C.ID())||includeSkillOnly||showAll)
+						&&(!CMSecurity.isCharClassDisabled(C.ID()))
 						&&(CMLib.ableMapper().getQualifyingLevel(C.ID(), true, A.ID())>=0))
 						{
 							if((clast==null)||((clast.length()>0)&&(clast.equals(lastID))&&(!C.ID().equals(lastID))))

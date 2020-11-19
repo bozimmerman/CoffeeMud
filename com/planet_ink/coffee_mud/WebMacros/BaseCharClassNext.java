@@ -60,7 +60,9 @@ public class BaseCharClassNext extends StdWebMacro
 		{
 			final CharClass C=c.nextElement();
 			if(((CMProps.isTheme(C.availabilityCode()))||showAll)
-			&&((!CMath.bset(C.availabilityCode(), Area.THEME_SKILLONLYMASK))||includeSkillOnly||showAll))
+			&&(!CMSecurity.isCharClassDisabled(C.ID()))
+			&&((!CMath.bset(C.availabilityCode(), Area.THEME_SKILLONLYMASK))
+					||CMSecurity.isCharClassEnabled(C.ID())||includeSkillOnly||showAll))
 			{
 				if(!baseClasses.contains(C.baseClass()))
 					baseClasses.add(C.baseClass());

@@ -63,7 +63,9 @@ public class RaceClassNext extends StdWebMacro
 		{
 			final CharClass C=c.nextElement();
 			if(((CMProps.isTheme(C.availabilityCode()))||showAll)
-			&&((!CMath.bset(C.availabilityCode(), Area.THEME_SKILLONLYMASK))||includeSkillOnly||showAll)
+			&&((!CMath.bset(C.availabilityCode(), Area.THEME_SKILLONLYMASK))
+					||CMSecurity.isCharClassEnabled(C.ID())||includeSkillOnly||showAll)
+			&&(!CMSecurity.isCharClassDisabled(C.ID()))
 			&&(C.isAllowedRace(R)))
 			{
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!C.ID().equals(lastID))))

@@ -110,7 +110,8 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 				final CharClass C=c.nextElement();
 				if(C.baseClass().equals(getBaseClassID())
 				&&(C.availabilityCode()!=0)
-				&&((C.availabilityCode()&Area.THEME_SKILLONLYMASK)==0))
+				&&(!CMSecurity.isCharClassDisabled(C.ID()))
+				&&(((C.availabilityCode()&Area.THEME_SKILLONLYMASK)==0)||(CMSecurity.isCharClassEnabled(C.ID()))))
 					classes.add(C);
 			}
 			final List<String[]> nearFinal = new ArrayList<String[]>();

@@ -1286,7 +1286,8 @@ public class RaceData extends StdWebMacro
 						final CharClass C=c.nextElement();
 						if((C!=null)
 						&&(CMProps.isTheme(C.availabilityCode()))
-						&&(!CMath.bset(C.availabilityCode(), Area.THEME_SKILLONLYMASK))
+						&&((!CMath.bset(C.availabilityCode(), Area.THEME_SKILLONLYMASK))||CMSecurity.isCharClassEnabled(C.ID()))
+						&&(!CMSecurity.isCharClassDisabled(C.ID()))
 						&&(C.isAllowedRace(R)))
 							str.append(C.name()+", ");
 					}
