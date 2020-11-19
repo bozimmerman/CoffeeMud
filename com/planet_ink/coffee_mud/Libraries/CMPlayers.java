@@ -477,14 +477,14 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public boolean isLoadedPlayer(final String mobName)
+	public boolean isLoadedPlayer(String mobName)
 	{
-		if(name==null)
+		if(mobName==null)
 			return false;
-		name=CMStrings.capitalizeAndLower(name);
+		mobName=CMStrings.capitalizeAndLower(mobName);
 		for(final MOB M: playersList)
 		{
-			if(M.Name().equals(name))
+			if(M.Name().equals(mobName))
 				return true;
 		}
 		return false;

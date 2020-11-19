@@ -104,19 +104,29 @@ public class GModify extends StdCommand
 			else
 			if(E instanceof FactionMember)
 			{
-				for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+				for(final Enumeration<String> fs=((FactionMember)E).factions();fs.hasMoreElements();)
 				{
-					final Faction F=f.nextElement();
-					if(stat.equalsIgnoreCase(F.factionID())
-					&&((FactionMember)E).hasFaction(F.factionID()))
-						return ""+((FactionMember)E).fetchFaction(F.factionID());
+					final String factionID=fs.nextElement();
+					if(stat.equalsIgnoreCase(factionID))
+						return ""+((FactionMember)E).fetchFaction(factionID);
 				}
 			}
-			else
 			if(!E.isStat(stat))
 			{
 				if((E instanceof Physical) && ((Physical)E).basePhyStats().isStat(stat))
 					return ((Physical)E).basePhyStats().getStat(stat);
+				if((E instanceof MOB)
+				&&(((MOB)E).isPlayer()))
+				{
+					if(stat.equalsIgnoreCase("CHARCLASS"))
+						return ((MOB)E).baseCharStats().getCurrentClass().ID();
+					if(((MOB)E).baseCharStats().isStat(stat))
+						return ((MOB)E).baseCharStats().getStat(stat);
+					if(((MOB)E).baseState().isStat(stat))
+						return ((MOB)E).baseState().getStat(stat);
+					if(CMLib.coffeeMaker().getGenMobCodeNum(stat)>=0)
+						return CMLib.coffeeMaker().getGenMobStat((MOB)E,stat);
+				}
 			}
 			return E.getStat(stat);
 		}
@@ -325,14 +335,14 @@ public class GModify extends StdCommand
 				boolean found=false;
 				if(E instanceof FactionMember)
 				{
-					for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+					for(final Enumeration<String> fs=((FactionMember)E).factions();fs.hasMoreElements();)
 					{
-						final Faction F=f.nextElement();
-						if(stat.equalsIgnoreCase(F.factionID())
+						final String factionID=fs.nextElement();
+						if(stat.equalsIgnoreCase(factionID)
 						&&(E instanceof FactionMember)
 						&&(CMath.isInteger(value)))
 						{
-							((FactionMember)E).addFaction(F.factionID(), CMath.s_int(value));
+							((FactionMember)E).addFaction(factionID, CMath.s_int(value));
 							found=true;
 							break;
 						}
@@ -346,6 +356,30 @@ public class GModify extends StdCommand
 						{
 							((Physical)E).basePhyStats().setStat(stat, value);
 							return E;
+						}
+						if((E instanceof MOB)
+						&&(((MOB)E).isPlayer()))
+						{
+							if(CMLib.coffeeMaker().getGenMobCodeNum(stat)>=0)
+							{
+								CMLib.coffeeMaker().setGenMobStat((MOB)E,stat,value);
+								return E;
+							}
+							if(stat.equalsIgnoreCase("CHARCLASS"))
+							{
+								((MOB)E).baseCharStats().setCurrentClass(CMClass.getCharClass(value));
+								return E;
+							}
+							if(((MOB)E).baseCharStats().isStat(stat))
+							{
+								((MOB)E).baseCharStats().setStat(stat,value);
+								return E;
+							}
+							if(((MOB)E).baseState().isStat(stat))
+							{
+								((MOB)E).baseState().setStat(stat,value);
+								return E;
+							}
 						}
 					}
 					E.setStat(stat,value);
@@ -556,6 +590,12 @@ public class GModify extends StdCommand
 							CMLib.map().obliterateMapRoom((Room)E);
 						}
 						else
+						if((E instanceof MOB)&&(((MOB)E).isPlayer()))
+						{
+							Log.sysOut("GMODIFY",E.Name()+" in "+room.roomID()+" was DESTROYED by "+mob.Name()+"!");
+							CMLib.players().obliteratePlayer((MOB)E, true, true);
+						}
+						else
 						{
 							Log.sysOut("GMODIFY",E.Name()+" in "+room.roomID()+" was DESTROYED by "+mob.Name()+"!");
 							E.destroy();
@@ -629,6 +669,64 @@ public class GModify extends StdCommand
 		}
 	}
 
+	protected String getAllFieldsMsg(final Set<String> allKnownFields)
+	{
+		final StringBuffer allFieldsMsg=new StringBuffer("");
+		addEnumeratedStatCodes(CMClass.mobTypes(),allKnownFields,allFieldsMsg);
+		addEnumeratedStatCodes(CMClass.basicItems(),allKnownFields,allFieldsMsg);
+		addEnumeratedStatCodes(CMClass.weapons(),allKnownFields,allFieldsMsg);
+		addEnumeratedStatCodes(CMClass.armor(),allKnownFields,allFieldsMsg);
+		addEnumeratedStatCodes(CMClass.clanItems(),allKnownFields,allFieldsMsg);
+		addEnumeratedStatCodes(CMClass.miscMagic(),allKnownFields,allFieldsMsg);
+		addEnumeratedStatCodes(CMClass.tech(),allKnownFields,allFieldsMsg);
+		addEnumeratedStatCodes(CMClass.locales(),allKnownFields,allFieldsMsg);
+		for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+		{
+			final Faction F=f.nextElement();
+			if(F.isPreLoaded())
+			{
+				allFieldsMsg.append(F.factionID().toUpperCase()).append(" ");
+				allKnownFields.add(F.factionID().toUpperCase());
+			}
+		}
+		final PhyStats phy = (PhyStats)CMClass.getCommon("DefaultPhyStats");
+		for(final String stat : phy.getStatCodes())
+		{
+			if(!allKnownFields.contains(stat))
+			{
+				allKnownFields.add(stat);
+				allFieldsMsg.append(stat).append(" ");
+			}
+		}
+		allFieldsMsg.append("CLASSTYPE REJUV DESTROY ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT "
+				+ "DELFACTION RESOURCE MATERIALTYPE REBALANCE");
+		allKnownFields.addAll(Arrays.asList(new String[]{"CLASSTYPE","REJUV","RESOURCE","MATERIALTYPE","GENDER","DESTROY",
+				"ADDABILITY","DELABILITY","ADDBEHAVIOR","DELBEHAVIOR","ADDAFFECT","DELAFFECT","DELFACTION","REBALANCE"}));
+		allFieldsMsg.append(" (** Players Only: ");
+		final CharStats chy = (CharStats)CMClass.getCommon("DefaultCharStats");
+		allKnownFields.add("CHARCLASS");
+		allFieldsMsg.append("CHARCLASS").append(" ");
+		for(final String stat : chy.getStatCodes())
+		{
+			if(!allKnownFields.contains(stat))
+			{
+				allKnownFields.add(stat);
+				allFieldsMsg.append(stat).append(" ");
+			}
+		}
+		final CharState che = (CharState)CMClass.getCommon("DefaultCharState");
+		for(final String stat : che.getStatCodes())
+		{
+			if(!allKnownFields.contains(stat))
+			{
+				allKnownFields.add(stat);
+				allFieldsMsg.append(stat).append(" ");
+			}
+		}
+		allFieldsMsg.append(")");
+		return allFieldsMsg.toString();
+	}
+
 	@Override
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
@@ -650,35 +748,11 @@ public class GModify extends StdCommand
 		if((commands.size()>0)&&
 			commands.get(0).equalsIgnoreCase("?"))
 		{
-			final StringBuffer allFieldsMsg=new StringBuffer("");
-			final Set<String> allKnownFields=new TreeSet<String>();
-			addEnumeratedStatCodes(CMClass.mobTypes(),allKnownFields,allFieldsMsg);
-			addEnumeratedStatCodes(CMClass.basicItems(),allKnownFields,allFieldsMsg);
-			addEnumeratedStatCodes(CMClass.weapons(),allKnownFields,allFieldsMsg);
-			addEnumeratedStatCodes(CMClass.armor(),allKnownFields,allFieldsMsg);
-			addEnumeratedStatCodes(CMClass.clanItems(),allKnownFields,allFieldsMsg);
-			addEnumeratedStatCodes(CMClass.miscMagic(),allKnownFields,allFieldsMsg);
-			addEnumeratedStatCodes(CMClass.tech(),allKnownFields,allFieldsMsg);
-			for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
-			{
-				final Faction F=f.nextElement();
-				if(F.isPreLoaded())
-					allFieldsMsg.append(F.factionID()).append(" ");
-			}
-			allFieldsMsg.append("CLASSTYPE ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT REJUV GENDER DESTROY RESOURCE MATERIALTYPE DELFACTION REBALANCE ");
-			final PhyStats phy = (PhyStats)CMClass.getCommon("DefaultPhyStats");
-			for(final String stat : phy.getStatCodes())
-			{
-				if(!allKnownFields.contains(stat))
-				{
-					allKnownFields.add(stat);
-					allFieldsMsg.append(stat).append(" ");
-				}
-			}
-			mob.tell(L("Valid field names are @x1",allFieldsMsg.toString()));
+			mob.tell(L("Valid field names are @x1",this.getAllFieldsMsg(new HashSet<String>()).toString()));
 			return false;
 		}
 
+		boolean doPlayersOnly=false;
 		if((commands.size()>0)&&
 			commands.get(0).equalsIgnoreCase("room"))
 		{
@@ -715,35 +789,29 @@ public class GModify extends StdCommand
 			placesToDo=new Vector<Places>();
 		}
 		else
+		if((commands.size()>0)&&
+			commands.get(0).equalsIgnoreCase("players"))
+		{
+			if((!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.GMODIFY))
+			||(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDPLAYERS)))
+			{
+				mob.tell(L("You are not allowed to do that."));
+				return false;
+			}
+			commands.remove(0);
+			placesToDo=new Vector<Places>();
+			doPlayersOnly=true;
+		}
+		else
 			placesToDo.add(mob.location());
 		final DVector changes=new DVector(5);
 		final DVector onfields=new DVector(5);
 		DVector use=null;
-		final Set<String> allKnownFields=new HashSet<String>();
-		final StringBuffer allFieldsMsg=new StringBuffer("");
-		addEnumeratedStatCodes(CMClass.mobTypes(),allKnownFields,allFieldsMsg);
-		addEnumeratedStatCodes(CMClass.basicItems(),allKnownFields,allFieldsMsg);
-		addEnumeratedStatCodes(CMClass.weapons(),allKnownFields,allFieldsMsg);
-		addEnumeratedStatCodes(CMClass.armor(),allKnownFields,allFieldsMsg);
-		addEnumeratedStatCodes(CMClass.clanItems(),allKnownFields,allFieldsMsg);
-		addEnumeratedStatCodes(CMClass.miscMagic(),allKnownFields,allFieldsMsg);
-		addEnumeratedStatCodes(CMClass.tech(),allKnownFields,allFieldsMsg);
-		addEnumeratedStatCodes(CMClass.locales(),allKnownFields,allFieldsMsg);
-		for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
-		{
-			final Faction F=f.nextElement();
-			if(F.isPreLoaded())
-			{
-				allFieldsMsg.append(F.factionID().toUpperCase()).append(" ");
-				allKnownFields.add(F.factionID().toUpperCase());
-			}
-		}
-		allFieldsMsg.append("CLASSTYPE REJUV DESTROY ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT DELFACTION ");
-		allKnownFields.addAll(Arrays.asList(new String[]{"CLASSTYPE","REJUV","RESOURCE","MATERIALTYPE","GENDER","DESTROY",
-				"ADDABILITY","DELABILITY","ADDBEHAVIOR","DELBEHAVIOR","ADDAFFECT","DELAFFECT","DELFACTION","REBALANCE"}));
 
 		use=onfields;
 		final Vector<String> newSet=new Vector<String>();
+		final HashSet<String> allKnownFields=new HashSet<String>();
+		final String fieldsMsg = this.getAllFieldsMsg(allKnownFields);
 		StringBuffer s=new StringBuffer("");
 		for(int i=0;i<commands.size();i++)
 		{
@@ -882,7 +950,7 @@ public class GModify extends StdCommand
 					use.add(key,equator,val,code,P);
 				else
 				{
-					mob.tell(L("'@x1' is an unknown field name.  Valid fields include: @x2",key,allFieldsMsg.toString()));
+					mob.tell(L("'@x1' is an unknown field name.  Valid fields include: @x2",key,fieldsMsg.toString()));
 					return false;
 				}
 			}
@@ -892,13 +960,72 @@ public class GModify extends StdCommand
 			mob.tell(L("You must specify either WHEN, or CHANGES parameters for valid matches to be made."));
 			return false;
 		}
-		if(placesToDo.size()==0)
-		for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+
+		/**
+		 * GMODIFY just for players...
+		 */
+		if(doPlayersOnly)
 		{
-			final Area A=a.nextElement();
-			if(A.getCompleteMap().hasMoreElements()
-			&&CMSecurity.isAllowed(mob,(A.getCompleteMap().nextElement()),CMSecurity.SecFlag.GMODIFY))
-				placesToDo.add(A);
+			final Session sess=mob.session();
+			if(sess!=null)
+			{
+				if(changes.size()==0)
+					sess.safeRawPrintln(L("Searching..."));
+				else
+					sess.safeRawPrint(L("Searching, modifying and saving..."));
+			}
+			final java.util.List<PlayerLibrary.ThinPlayer> allUsers=CMLib.database().getExtendedUserList();
+			final PlayerLibrary plib=CMLib.players();
+			for(final PlayerLibrary.ThinPlayer tP : allUsers)
+			{
+				if((sess==null)||(sess.isStopped()))
+					return false;
+				final boolean wasLoaded=plib.isLoadedPlayer(tP.name());
+				final MOB M=plib.getLoadPlayer(tP.name());
+				if(M!=null)
+				{
+					final Room room=(M.location()==null)?mob.location():M.location();
+					final boolean changed = tryModfy(mob, sess, room, M, changes, onfields, noisy) != null;
+					if(!M.amDestroyed())
+					{
+						if(!wasLoaded)
+						{
+							if(changed)
+							{
+								M.delAllEffects(true);
+								CMLib.database().DBUpdatePlayer(M);
+							}
+							final PlayerStats pStats = M.playerStats();
+							if(pStats != null)
+								pStats.getExtItems().delAllItems(true);
+							CMLib.players().delPlayer(M);
+							M.destroy();
+						}
+						else
+						if(changed)
+							CMLib.database().DBUpdatePlayer(M);
+					}
+					if((sess!=null)&&(changes.size()>0))
+						sess.rawPrint(".");
+				}
+			}
+			if(sess!=null)
+				sess.rawPrintln(L("!\n\rDone!"));
+			return true;
+		}
+
+		/**
+		 * Normal GMODIFY for map is below
+		 */
+		if(placesToDo.size()==0)
+		{
+			for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+			{
+				final Area A=a.nextElement();
+				if(A.getCompleteMap().hasMoreElements()
+				&&CMSecurity.isAllowed(mob,(A.getCompleteMap().nextElement()),CMSecurity.SecFlag.GMODIFY))
+					placesToDo.add(A);
+			}
 		}
 		if(placesToDo.size()==0)
 		{
