@@ -279,7 +279,7 @@ public class Chicken extends StdRace
 			return L("^g@x1^g has a few feathers out of place.^N",mob.name(viewer));
 		else
 		if(pct<.99)
-			return L("^g@x1^g has a some ruffled feathers.^N",mob.name(viewer));
+			return L("^g@x1^g has some ruffled feathers.^N",mob.name(viewer));
 		else
 			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
