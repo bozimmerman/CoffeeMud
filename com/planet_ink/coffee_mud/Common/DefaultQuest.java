@@ -201,8 +201,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					return false;
 			}
 		}
-		final ScriptingEngine acceptEng = this.ensureEngine();
-		if(acceptEng != null)
+		final ScriptingEngine acceptEngine = this.ensureEngine();
+		if(acceptEngine != null)
 		{
 			final Behavable B = this.checkAcceptHost;
 			if(!(B instanceof Environmental))
@@ -211,7 +211,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				return true;
 			final PhysicalAgent P=(B instanceof PhysicalAgent)?(PhysicalAgent)B:mob;
 			final MOB M=(B instanceof MOB)?(MOB)B:mob;
-			String eval = acceptEng.callFunc("CAN_ACCEPT", mob.Name(), P, mob, (Environmental) B, M, null, null, mob.Name(), objs);
+			String eval = acceptEngine.callFunc("CAN_ACCEPT", mob.Name(), P, mob, (Environmental) B, M, null, null, mob.Name(), objs);
 			if(eval == null)
 				return false;
 			eval=eval.toLowerCase();
@@ -542,14 +542,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 
 	private void questifyScriptableBehavs(final PhysicalAgent E)
 	{
-		if(E==null)
+		if((E==null)
+		||((E instanceof MOB)&&(((MOB)E).isPlayer())))
 			return;
 		Behavior B=null;
 		for(final Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
 		{
 			B=e.nextElement();
 			if(B instanceof ScriptingEngine)
-				((ScriptingEngine)B).registerDefaultQuest(this.name());
+				((ScriptingEngine)B).registerDefaultQuest(name());
 		}
 		if((E instanceof Item)
 		&&((((Item)E).numBehaviors()>0)||(((Item)E).numScripts()>0))
@@ -1297,6 +1298,81 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 													choices=sortSelect(M2,mobName,choices,choices0,choices1,choices2,choices3);
 											}
 										}
+									}
+								}
+							}
+							catch (final NoSuchElementException e)
+							{
+							}
+
+							this.filterOutThoseInUse(choices, p.toString(), q, isQuiet, reselect);
+						}
+						if((choices!=null)&&(choices.size()>0))
+						{
+							q.mobGroup=choices;
+							if(reselect)
+								q.reselectable.addAll(choices);
+						}
+						else
+						{
+							if(optional)
+								continue;
+							errorOccurred(q,isQuiet,"Quest '"+name()+"', !mobgroup '"+mobName+":"+maskStr+"'.");
+							break;
+						}
+						q.envObject=q.mobGroup;
+					}
+					else
+					if(cmd.equals("PCMOBGROUP"))
+					{
+						q.mobGroup=null;
+						boolean reselect=false;
+						if((p.size()>2)&&(p.elementAt(2).equalsIgnoreCase("reselect")))
+						{
+							p.removeElementAt(2);
+							reselect=true;
+						}
+						if(p.size()<3)
+							continue;
+						List<MOB> choices=null;
+						String mobName=CMParms.combine(p,2).toUpperCase();
+						final String maskStr=CMLib.quests().breakOutMaskString(s,p);
+						final MaskingLibrary.CompiledZMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
+						if(mask!=null)
+							mobName=CMParms.combine(p,2).toUpperCase();
+						try
+						{
+							choices=(List<MOB>)getObjectIfSpecified(p,args,2,1);
+						}
+						catch(final CMException ex)
+						{
+							if(mobName.length()==0)
+								mobName="ANY";
+							final boolean addAll=mobName.equalsIgnoreCase("all");
+							final List<MOB> choices0=new Vector<MOB>();
+							final List<MOB> choices1=new Vector<MOB>();
+							final List<MOB> choices2=new Vector<MOB>();
+							final List<MOB> choices3=new Vector<MOB>();
+							try
+							{
+								for(final Iterator<Session> si=CMLib.sessions().sessions();si.hasNext();)
+								{
+									final Session S=si.next();
+									final MOB M2=S.mob();
+									if((!S.isStopped())
+									&&(M2!=null)
+									&&(CMLib.flags().isInTheGame(M2, true))
+									&&((q.roomGroup==null)||(q.roomGroup.contains(M2.location())))
+									&&((q.area==null)||(q.area==M2.location().getArea()))
+									&&(CMLib.masking().maskCheck(mask,M2,true)))
+									{
+										if(addAll)
+										{
+											choices = choices0;
+											choices.add(M2);
+										}
+										else
+											choices=sortSelect(M2,mobName,choices,choices0,choices1,choices2,choices3);
 									}
 								}
 							}
@@ -3719,9 +3795,22 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							{
 								final ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
 								S.setSavable(savable);
-								S.registerDefaultQuest(name());
+								S.registerDefaultQuest(this);
 								S.setVarScope(scope);
 								S.setScript(val);
+								if((E2 instanceof MOB)
+								&&(((MOB)E2).isPlayer())
+								&&(S.isFunc("DO_ACCEPT"))
+								&&(S.isFunc("CAN_ACCEPT")))
+								{
+									final MOB M2=(MOB)E2;
+									String eval = S.callFunc("CAN_ACCEPT", M2.Name(), M2, M2, M2, M2, null, null, M2.Name(), objs);
+									if(eval == null)
+										continue; // failed, so don't do it
+									eval=eval.toLowerCase();
+									if(eval.equals("cancel") || (eval.length()==0))
+										continue; // failed, so don't do it
+								}
 								((PhysicalAgent)E2).addScript(S);
 								runtimeRegisterObject(((PhysicalAgent)E2));
 								if((E2 instanceof Item)
@@ -4106,23 +4195,27 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							final ScriptingEngine B=(ScriptingEngine)M.fetchBehavior("Scriptable");
 							if(B!=null)
 								B.endQuest(M,M,name());
-							final Room R=M.getStartRoom();
-							if((R==null)||(CMath.bset(M.basePhyStats().disposition(),PhyStats.IS_UNSAVABLE)))
+							if(!M.isPlayer())
 							{
-								M.setFollowing(null);
-								CMLib.tracking().wanderAway(M,true,false);
-								if(M.location()!=null)
-									M.location().delInhabitant(M);
-								M.setLocation(null);
-								M.destroy();
-							}
-							else
-							if((!M.amDead())
-							&&(!M.amDestroyed())
-							&&((M.location()!=R)||(!R.isInhabitant(M))))
-							{
-								M.setFollowing(null);
-								CMLib.tracking().wanderAway(M,false,true);
+								final Room R=M.getStartRoom();
+								if((R==null)
+								||(CMath.bset(M.basePhyStats().disposition(),PhyStats.IS_UNSAVABLE)))
+								{
+									M.setFollowing(null);
+									CMLib.tracking().wanderAway(M,true,false);
+									if(M.location()!=null)
+										M.location().delInhabitant(M);
+									M.setLocation(null);
+									M.destroy();
+								}
+								else
+								if((!M.amDead())
+								&&(!M.amDestroyed())
+								&&((M.location()!=R)||(!R.isInhabitant(M))))
+								{
+									M.setFollowing(null);
+									CMLib.tracking().wanderAway(M,false,true);
+								}
 							}
 						}
 					}

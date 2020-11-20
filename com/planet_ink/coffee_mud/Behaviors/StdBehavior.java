@@ -122,7 +122,7 @@ public class StdBehavior implements Behavior
 	}
 
 	@Override
-	public void registerDefaultQuest(final String questName)
+	public void registerDefaultQuest(final Object questName)
 	{
 	}
 

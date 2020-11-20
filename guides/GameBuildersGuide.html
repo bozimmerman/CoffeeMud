@@ -3073,7 +3073,25 @@ as the RESELECT flag was also used in the previous SET MOB or SET
 MOBTYPE command.&nbsp; &nbsp;Mobs designated this way are
 available in
 Scripts using the QUESTMOB function.</p>
-<p><span style="color: rgb(51, 102, 102);">SET</span>
+<p><span style="color: rgb(51, 102, 102);">SET
+PCMOBGROUP</span> <span style="color: rgb(102, 51, 102);">(RESELECT)
+([MOB NAME])</span>
+- will designate a set of players with the given name. If the name ends
+with MASK=..., then a mask as described by the help entry for
+ZAPPERMASKS will apply in addition to the name
+mask entered before the MASK= string. Use a name of ALL to select all
+appropriate players.&nbsp;The&nbsp;players chosen will be selected from those
+in
+the designated ROOMGROUP (if one is designated), AREA (if one is
+designated) or the world. The&nbsp;players must exist somewhere in the map for
+this command to work. Normally a player will not be placed in the mobgroup
+if the player has been previously set. The
+RESELECT flag is an optional first flag which, if specified, designates
+that&nbsp;players may be placed in the mobgroup even if previously set, so long
+as the RESELECT flag was also used in the previous applicable SET command.&nbsp; &nbsp;Playes designated this way are
+available in
+Scripts using the QUESTMOB function.</p>
+<span style="color: rgb(51, 102, 102);"></span><p><span style="color: rgb(51, 102, 102);">SET</span>
 <span style="color: rgb(51, 102, 102);">MOBGROUP</span>
 <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - serves the same purpose as the above command of the same name, but

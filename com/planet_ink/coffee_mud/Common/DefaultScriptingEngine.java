@@ -94,6 +94,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	protected Environmental			lastLoaded		 = null;
 	protected String				myScript		 = "";
 	protected String				defaultQuestName = "";
+	protected Quest					questCacheObj	 = null;
 	protected String				scriptKey		 = null;
 	protected boolean				runInPassiveAreas= true;
 	protected boolean				debugBadScripts	 = false;
@@ -132,6 +133,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		if(defaultQuestName.length()==0)
 			return null;
+		if((questCacheObj!=null)
+		&&(questCacheObj.name().equals(defaultQuestName)))
+			return questCacheObj;
+		this.questCacheObj=null;
 		return CMLib.quests().fetchQuest(defaultQuestName);
 	}
 
@@ -230,6 +235,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		&&(named.equals("*")||named.equalsIgnoreCase(defaultQuestName)))
 			return defaultQuest();
 
+		if((questCacheObj!=null)
+		&&(questCacheObj.name().equals(named))
+		&&(questCacheObj.running()))
+			return questCacheObj;
+
 		Quest Q=null;
 		for(int i=0;i<CMLib.quests().numQuests();i++)
 		{
@@ -249,6 +259,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 			}
 		}
+		if((questCacheObj!=null)
+		&&(questCacheObj.name().equals(named)))
+			return questCacheObj;
 		return CMLib.quests().fetchQuest(named);
 	}
 
@@ -262,15 +275,33 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	}
 
 	@Override
-	public void registerDefaultQuest(final String qName)
+	public void registerDefaultQuest(final Object quest)
 	{
+		final String qName;
+		if(quest instanceof String)
+			qName=(String)quest;
+		else
+		if(quest instanceof CMObject)
+			qName=((Quest)quest).name();
+		else
+			return;
+
+		if(quest instanceof Quest)
+			this.questCacheObj=(Quest)quest;
+
 		if((qName==null)||(qName.trim().length()==0))
+		{
+			questCacheObj=null;
 			defaultQuestName="";
+		}
 		else
 		{
 			defaultQuestName=qName.trim();
 			if(cachedRef==this)
 				bumpUpCache(defaultQuestName);
+			if((questCacheObj!=null)
+			&&(!defaultQuestName.equalsIgnoreCase(questCacheObj.name())))
+				questCacheObj=null;
 		}
 	}
 
@@ -3785,7 +3816,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									{
 										if(prevE != null)
 										{
-											final Quest Q=CMLib.quests().fetchQuest(prevE.defaultQuestName());
+											final Quest Q=getQuest(prevE.defaultQuestName());
 											if(Q != null)
 												returnable=Q.wasWinner(arg1);
 										}
@@ -6784,9 +6815,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					for(final Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
 					{
 						final ScriptingEngine SE=e.nextElement();
-						if((SE!=null)&&(SE.defaultQuestName()!=null)&&(SE.defaultQuestName().length()>0))
+						if((SE!=null)
+						&&(SE.defaultQuestName()!=null)
+						&&(SE.defaultQuestName().length()>0))
 						{
-							final Quest Q=CMLib.quests().fetchQuest(SE.defaultQuestName());
+							final Quest Q=getQuest(SE.defaultQuestName());
 							if(Q!=null)
 								results.append(Q.name()+" ");
 							else
@@ -6799,9 +6832,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(B instanceof ScriptingEngine)
 						{
 							final ScriptingEngine SE=(ScriptingEngine)B;
-							if((SE.defaultQuestName()!=null)&&(SE.defaultQuestName().length()>0))
+							if((SE.defaultQuestName()!=null)
+							&&(SE.defaultQuestName().length()>0))
 							{
-								final Quest Q=CMLib.quests().fetchQuest(SE.defaultQuestName());
+								final Quest Q=getQuest(SE.defaultQuestName());
 								if(Q!=null)
 									results.append(Q.name()+" ");
 								else
@@ -10972,6 +11006,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					S.setSavable(savable);
 					S.setVarScope(scope);
 					S.setScript(m2);
+					if((this.questCacheObj!=null)
+					&&(defaultQuest()==this.questCacheObj))
+						S.registerDefaultQuest(defaultQuest());
+					else
 					if((defaultQuestName()!=null)&&(defaultQuestName().length()>0))
 						S.registerDefaultQuest(defaultQuestName());
 					newTarget.addScript(S);

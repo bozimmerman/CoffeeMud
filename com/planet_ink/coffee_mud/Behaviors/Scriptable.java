@@ -70,7 +70,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public void registerDefaultQuest(final String questName)
+	public void registerDefaultQuest(final Object questName)
 	{
 		engine().registerDefaultQuest(questName);
 	}

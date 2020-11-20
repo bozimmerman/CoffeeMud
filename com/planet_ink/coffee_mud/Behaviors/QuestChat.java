@@ -44,9 +44,13 @@ public class QuestChat extends MudChat
 	private String							myQuestName	= null;
 
 	@Override
-	public void registerDefaultQuest(final String questName)
+	public void registerDefaultQuest(final Object questName)
 	{
-		myQuestName = questName;
+		if(questName instanceof String)
+			myQuestName = (String)questName;
+		else
+		if(questName instanceof CMObject)
+			myQuestName = ((CMObject)questName).name();
 	}
 
 	@Override

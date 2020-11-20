@@ -71,7 +71,7 @@ public interface Behavior extends Tickable, MsgListener, Contingent, Modifiable
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
 	 * @param questName the Quest name
 	 */
-	public void registerDefaultQuest(String questName);
+	public void registerDefaultQuest(Object questName);
 
 	/**
 	 * Returns the raw parameter string for this behavior.

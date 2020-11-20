@@ -249,16 +249,16 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 
 	/**
 	 * If this script is associated with a particular quest, this
-	 * method is called to register that quest name.
+	 * method is called to register that quest name or object.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#defaultQuestName()
 	 * @param questName the quest associated with this script
 	 */
-	public void registerDefaultQuest(String questName);
+	public void registerDefaultQuest(Object questName);
 
 	/**
 	 * If this script is associated with a particular quest, this
 	 * method is called to return that quest name.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#registerDefaultQuest(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#registerDefaultQuest(Object)
 	 * @return the quest associated with this script, if any
 	 */
 	public String defaultQuestName();

@@ -1,0 +1,244 @@
+#!QUESTMAKER_START_SCRIPT Auto Capture #1
+#The player needs one or more other existing mobs captured. 
+#A reward is granted upon completion of the task.
+#
+#!QUESTMAKER_PAGE Quest Name/Criteria
+#Enter the unique name and player criteria for your new quest.
+#
+#Quest ID:
+#Enter a unique name/id for your quest:
+#$QUEST_ID=$UNIQUE_QUEST_NAME=auto_capture_1
+#
+#Quest Name:
+#Enter a friendly displayable name for your quest:
+#$QUEST_NAME=$STRING=Auto Capture #1
+#
+#Quest-Player Criterium:
+#A Zapper Mask to describe what kinds of players will receive this quest.  
+#You can use this to set #race, level, or other requirements.
+#$QUEST_CRITERIA=$ZAPPERMASK
+#
+#Instructions: 
+#Specify some the instructions and justification for the quest is accepted.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=You need to capture some folks.  They are somewhere around somewhere.  You might have to get rough with them.
+#
+#!QUESTMAKER_PAGE Specify the Captureable Mob or Mobs
+#The Capturables are the mob or mobs which must be defeated.
+#
+#Captureable mobs: 
+#Specify below the mobs that the player must capture to get credit for this quest.
+#
+#Capturables mob names: 
+#Specify the mobs who will act as the capturable mob or mobs.  
+#See help on ZAPPERMASK for information on zapper mask syntax.
+#$CAPTURABLES_MASK=$ZAPPERMASK
+#
+#Num Capturables:
+#Specify how many of the capturable mobs must be captured.  Make sure there are 
+#enough of them in your world to make this goal reachable!
+#$NUM_CAPTURABLES=($EXPRESSION)=1
+#
+#Capturables response: 
+#You may optionally specify some additional bit of speech the capturables 
+#mobs will say to the players when they enter the room with them. 
+#$CAPTURABLES_RESPONSE=($STRING)=So, you've come for me.  Come and get me.
+#
+#!QUESTMAKER_PAGE Capturables Behavior
+#Select some details about the capturable mobs
+#
+#Capturables follow: 
+#Set this to PEACEFUL if the capturable mobs will follow the player who discovers
+#them, and VIOLENT if the capturable mobs must be defeated in combat first.
+#$CAPTURABLES_FOLLOW=$CHOOSE=VIOLENT,PEACEFUL
+#
+#Capturables attack:
+#Will the mobs attack if they spot the player?  Keep in mind this is above and
+#beyond any aggressive behaviors they may have, and will neither modify or 
+#supress their natural aggressive behaviors.  Obviously attacking makes no
+#sense if they surrender peacefully, but requiring a violent capture doesn't
+#necessarily mean the mobs start the fight either.
+#$CAPTURABLES_ATTACK=$CHOOSE=NO-USE-DEFAULT_BEHAVIOR,YES-ATTACK-ON-SIGHT
+#
+#Capturables surrender: 
+#You may optionally specify some additional bit of speech the capturables 
+#mobs will say to the players when they are defeated in combat.
+#$CAPTURABLES_SURRENDER=($STRING)=I surrender
+#
+#!QUESTMAKER_PAGE Quest Completion
+#Select some rewards for capturing the mobs:
+#
+#Reward items: 
+#Specify zero or more items to choose from as a reward 
+#$REWARD_ITEMS=$ITEMXML_ZEROORMORE
+#
+#Quest Point?
+#$QUEST_POINT=$CHOOSE=YES,NO
+#Amount of money (an amount, or leave blank):
+#$GOLD=($EXPRESSION)
+#Amount of experience points, blank for none, or a number% for percent of exp to next level:
+#$EXP=($STRING)=10%
+#
+#Player Faction to give to or take from:
+#$FACTION=($FACTION)
+#If you selected a faction above, enter a new numeric amount, 
+#or enter +value to add, or --value to subtract:
+#$NUMFACTION=($STRING)
+#
+#Select whether a player may complete this quest multiple times,
+#or 'prev' to require a previous quest, if multiple found.
+#$MULTIPLE=$CHOOSE=YES,NO,PREV
+#
+#$CATEGORY=($HIDDEN)=
+#
+#!QUESTMAKER_END_SCRIPT Auto Capture #1
+
+set name $QUEST_ID
+set display $QUEST_NAME
+set author $#AUTHOR
+set questtype auto_capture1
+set category $CATEGORY
+set instructions $QUEST_INSTRUCTIONSSTRING
+
+set wait 1
+set interval 1
+quiet
+
+set pcmobgroup reselect any mask=$QUEST_CRITERIA
+set script LOAD=$QUEST_ID_playertrack.script
+
+set duration 0
+
+<?xml version="1.0"?>
+<FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_playertrack.script</NAME>
+<DATA>
+FUNCTION_PROG CAN_ACCEPT
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
+		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			if !QUESTSCRIPTED($n *)
+				RETURN TRUE
+			endif
+		endif
+	endif
+	RETURN CANCEL
+~
+
+FUNCTION_PROG DO_ACCEPT
+	mpqset * STATISTICS ACCEPTED
+	mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+~
+
+ONCE_PROG 100
+	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
+	if var($i $QUEST_ID_CAPTURED = '')
+		mpsetvar $i $QUEST_ID_CAPTURED 0
+	endif
+	if var($i $QUEST_ID_RETURNED = '')
+		mpsetvar $i $QUEST_ID_RETURNED 0
+	endif
+	IF !isquestmobalive(1 '$QUEST_ID')
+		MPENDQUEST '$QUEST_ID'
+	ENDIF
+	mpsetvar $i PROGRESS Found: $<$i $QUEST_ID_CAPTURED>, Returned: $<$i $QUEST_ID_RETURNED>/$NUM_CAPTURABLES
+	IF QVAR(* DURATION != '0')
+	    if QVAR(* REMAINING == '')
+	        MPENDQUEST $i
+	    else
+			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+		endif
+	ENDIF
+~
+
+RAND_PROG 25
+	IF !isquestmobalive(1 '$QUEST_ID')
+		MPENDQUEST '$QUEST_ID'
+	else
+		IF QVAR(* DURATION != '0')
+			if QVAR(* REMAINING == '')
+				MPENDQUEST $i
+			else
+				mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+			endif
+		ENDIF
+	ENDIF
+~
+
+QUEST_TIME_PROG * -1
+	MPECHOAT $i The quest "$QUEST_NAME" has ended.
+~
+
+QUEST_TIME_PROG * 1
+	MPECHOAT $i The quest "$QUEST_NAME" has 1 minute remaining.
+~
+
+GREET_PROG 100
+	if ISLIKE($n $CAPTURABLES_MASK) AND !ISFOLLOW('$n') AND CANSEE($n $i)
+		if EVAL('$CAPTURABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
+			mpforce $n kill $i
+		else
+			if EVAL('$CAPTURABLES_FOLLOW' == 'PEACEFUL')
+				mpforce $n sayto "$i" $CAPTURABLES_SURRENDER
+				mpforce $n mpstop all
+				mpforce $n follow "$i"
+			endif
+		endif
+	endif
+~
+
+FUNCTION_PROG CHECK_DONE
+	mpsetvar $i $QUEST_ID_RETURNED '0'
+	for $0 = '$%NUMMOBSROOM(*)%' to 1
+		mpargset $1 '$%ROOMMOB($0)%'
+		if ISLIKE($1 $CAPTURABLES_MASK) AND ISNPC('$1') AND ISFOLLOW('$1')
+			mpsetvar $i $QUEST_ID_RETURNED ++
+			mpsetvar $i PROGRESS Found $<$i $QUEST_ID_CAPTURED>, Returned $<$i $QUEST_ID_RETURNED>/$NUM_CAPTURABLES
+			mpechoat $i You've brought in $<$i $QUEST_ID_RETURNED>/$NUM_CAPTURABLES
+			mpforce $1 follow self
+			mppurge $1
+		endif
+	next
+	if var($i $QUEST_ID_RETURNED >= $NUM_CAPTURABLES)
+		if EVAL('$EXP' != '')
+			mpexp $i $EXP
+		endif
+		if EVAL('$FACTION' != '')
+			mpfaction $i $FACTION +$NUMFACTION
+		endif
+		if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($i *)
+			mpforce $i mpoload QuestPoint
+			mpechoat $i You receive a quest point.
+		endif
+		if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+			mpforce $i mpoload $GOLD
+			mpechoat $i You receive $b.
+		endif
+		mpforce $i mpoload fromfile $QUEST_ID_rewarditems.xml any
+		if EVAL('$b' != '')
+			mpechoat $i Your receive $b.
+		endif
+		mpquestwin $i *
+		mpechoat $i $QUEST_WINSPEECH_TEXT
+		mpendquest $i
+		IF EVAL('$MULTIPLE' == 'PREV')
+			mptransfer $n $n
+		ENDIF
+		mpqset * STATISTICS SUCCESS
+	ENDIF
+~
+
+CNCLMSG_PROG STO=DEATH ALL
+	if ISNPC($n) AND ISLIKE($n $CAPTURABLES_MASK) AND !ISFOLLOW($n)
+		mpargset $9 '$%ISFIGHT($n)%'
+		if EVAL($9 == $i)
+			mpgset $n HITS 1
+			mpforce $n mpstop all
+			mpstop all
+			mpforce $n sayto "$i" $CAPTURABLES_SURRENDER
+			mpforce $n follow "$i"
+			mpsetvar $i $QUEST_ID_CAPTURED ++
+			mpsetvar $i PROGRESS Found $<$i $QUEST_ID_CAPTURED>, Returned $<$i $QUEST_ID_RETURNED>/$NUM_CAPTURABLES
+			RETURN CANCEL
+		endif
+	endif
+~
+</DATA></FILE>
