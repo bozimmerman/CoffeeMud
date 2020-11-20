@@ -133,6 +133,7 @@ public class FaithHelper extends StdBehavior
 		final MOB observer=(MOB)affecting;
 		final MOB target=(MOB)msg.target();
 		if((source!=observer)
+		&&(num != 1)
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(!observer.isInCombat())
 		&&(target!=observer)
