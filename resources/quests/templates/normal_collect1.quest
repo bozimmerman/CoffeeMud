@@ -158,6 +158,22 @@ set duration 0
 <FILE><NAME>$QUEST_ID_items.xml</NAME><DATA><ITEMS>$COLLECTABLES_ITEMS</ITEMS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
+FUNCTION_PROG CAN_ACCEPT
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
+		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			if !QUESTSCRIPTED($n *)
+				RETURN TRUE
+			endif
+		endif
+	endif
+	RETURN CANCEL
+~
+
+FUNCTION_PROG DO_ACCEPT
+	mpqset * STATISTICS ACCEPTED
+	mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+~
+
 ONCE_PROG 100
 	MPQSET * INSTRUCTIONS $i in $a wants you to '$QUEST_INSTRUCTIONSSTRING'
 	if EVAL('$QUEST_ANNOUNCECHANNEL' != '')
@@ -216,22 +232,6 @@ GIVE_PROG all
 		sayto "$n" What's this?
 		give "$o" "$n"
 	endif
-~
-
-FUNCTION_PROG CAN_ACCEPT
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
-		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			if !QUESTSCRIPTED($n *)
-				RETURN TRUE
-			endif
-		endif
-	endif
-	RETURN CANCEL
-~
-
-FUNCTION_PROG DO_ACCEPT
-	mpqset * STATISTICS ACCEPTED
-	mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
 ~
 
 SPEECH_PROG p i accept $QUEST_NAME
