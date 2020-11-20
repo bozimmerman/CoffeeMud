@@ -39,7 +39,7 @@ public class Prayer_ImbueUnholyWeapon extends Prayer_ImbueShield
 	@Override
 	public String ID()
 	{
-		return "Prayer_ImbueUnolyWeapon";
+		return "Prayer_ImbueUnholyWeapon";
 	}
 
 	private final static String	localizedName	= CMLib.lang().L("Imbue Unholy Weapon");
