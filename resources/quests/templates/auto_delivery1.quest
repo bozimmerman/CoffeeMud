@@ -1,0 +1,262 @@
+#!QUESTMAKER_START_SCRIPT Auto Delivery #1
+#The player is given a custom item by an existing mob in your world
+#to deliver to one or more existing mobs somewhere else in your world.  A reward
+#is optionally given upon delivery.
+#
+#!QUESTMAKER_PAGE Quest Name/Duration
+#Enter the unique name, criteria, and starting time/duration for your new quest.
+#Times are entered as a simple number or math expression to denote a
+#time in default ticks (4 second period), or you may follow the expression 
+#with the word seconds, minutes, hours, days, mudhours, muddays, mudweeks,
+#mudmonths, or mudyears.  Time expressions may include numbers, math 
+#symbols, or the ? operator to generate random numbers.  Example:
+#"5 + 3?10 minutes" would generate a frequency of 8-15 minutes.#
+#
+#Quest ID:
+#Enter a unique name/id for your quest:
+#$QUEST_ID=$UNIQUE_QUEST_NAME=auto_collect_1
+#
+#Quest Name:
+#Enter a friendly displayable name for your quest:
+#$QUEST_NAME=$STRING=Auto Collect #1
+#
+#Quest Frequency:
+#This is the time between quest starts.
+#$FREQUENCY=$TIMEEXPRESSION=90 minutes
+#
+#Quest Duration:
+#This is how long your quest remains running, and how long a player 
+#accepting the quest has to complete the quest and report back in.
+#$DURATION=$TIMEEXPRESSION=90 minutes
+#
+#!QUESTMAKER_PAGE Specify the Quest Criteria and Instructions
+#The criteria for players and instructions they need.
+#
+#Quest-Player Criterium:
+#A Zapper Mask to describe what kinds of players will receive this quest.  
+#You can use this to set #race, level, or other requirements.
+#$QUEST_CRITERIA=$ZAPPERMASK
+#
+#Instructions: 
+#Specify some the instructions and justification for the quest.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=Find ${2 *} at that one place and give him $[1 *].  Be careful!
+#
+#Success:
+#This is what the player sees when the player completes the quest.
+#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Delivery complete!
+#
+#!QUESTMAKER_PAGE Specify the Deliveree Mobs
+#The Deliveree Mob is the mob the player must find and deliver the item to.
+#
+#Deliverees: 
+#Specify below the deliveree mobs who will have the items delivered.
+#
+#Deliveree mob names: 
+#Specify the mobs who will act as the capturable mob or mobs.  
+#See help on ZAPPERMASK for information on zapper mask syntax.
+#$DELIVEREE_MASK=$ZAPPERMASK
+#
+#Number of deliverings
+#specify the number of the deliverable items must be delivered to mobs
+#matching the deliveree.  The announcer will give the player the correct
+#number of items to deliver.
+#$DELIVEREE_COUNT=($STRING)=1
+#
+#Deliveree response: 
+#You may optionally specify some additional bit of speech the deliveree 
+#mob will say to the players after they arrive.
+#$DELIVEREE_ANNOUNCE=($LONG_STRING)=Are you here to deliver $[1 *]? If so, give it to me!
+#
+#Delivery response: 
+#You may optionally specify some additional bit of speech the deliveree 
+#mob will say to the players after they have handed over the item/items.
+#$DELIVERY_RESPONSE=($LONG_STRING)=Thanks!
+#
+#!QUESTMAKER_PAGE Deliverable item
+#Create the item which the deliverer mob will give to the player to 
+#be taken and given to the deliveree mob.  
+#
+#Deliverable Item: 
+#You may select from the available items below or create a 
+#new item just for this quest.
+#$DELIVERABLE_ITEM=$ITEMXML
+#
+#!QUESTMAKER_PAGE Quest Completion
+#Select some rewards for completing the deliveries:
+#
+#Reward items: 
+#Specify zero or more items to choose from as a reward 
+#$REWARD_ITEMS=$ITEMXML_ZEROORMORE
+#
+#Quest Point?
+#$QUEST_POINT=$CHOOSE=YES,NO
+#Amount of money (an amount, or leave blank):
+#$GOLD=($EXPRESSION)
+#Amount of experience points, blank for none, or a number% for percent of exp to next level:
+#$EXP=($STRING)=10%
+#
+#Player Faction to give to or take from:
+#$FACTION=($FACTION)
+#If you selected a faction above, enter a new numeric amount, 
+#or enter +value to add, or --value to subtract:
+#$NUMFACTION=($STRING)
+#
+#Select whether a player may complete this quest multiple times,
+#or 'prev' to require a previous quest, if multiple found.
+#$MULTIPLE=$CHOOSE=YES,NO,PREV
+#
+#$CATEGORY=($HIDDEN)=
+#
+#!QUESTMAKER_END_SCRIPT Auto Delivery #1
+
+set name $QUEST_ID
+set display $QUEST_NAME
+set author $#AUTHOR
+set questtype auto_delivery1
+set category $CATEGORY
+set instructions $QUEST_INSTRUCTIONSSTRING
+
+set wait $FREQUENCY
+set interval 1
+quiet
+
+set room
+set area
+set pcmobgroup reselect any mask=$QUEST_CRITERIA
+set script LOAD=$QUEST_ID_playertrack.script
+
+set area
+set room
+set mobgroup
+set mob
+import items $QUEST_ID_item.xml
+set itemgroup loadeditems
+set item itemgroup
+
+set duration $DURATION
+
+<?xml version="1.0"?>
+<FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_item.xml</NAME><DATA><ITEMS>$DELIVERABLE_ITEM</ITEMS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_playertrack.script</NAME>
+<DATA>
+ONCE_PROG 100
+	MPQSET * INSTRUCTIONS $i in $a wants you to '$QUEST_INSTRUCTIONSSTRING'
+	if EVAL('$QUEST_ANNOUNCECHANNEL' != '')
+		$QUEST_ANNOUNCECHANNEL $QUEST_NOTIFYSTRING -- Come see me for more information.
+	endif
+~
+
+FUNCTION_PROG CHECK_DONE
+	if EVAL('$<$n $QUEST_ID_DELIVERED>.LENGTH#' >= $DELIVEREE_COUNT)
+		if EVAL('$EXP' != '')
+			mpexp $i $EXP
+		endif
+		if EVAL('$FACTION' != '')
+			mpfaction $i $FACTION +$NUMFACTION
+		endif
+		if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
+			mpforce $i mpoload QuestPoint
+			mpechoat $i You receive a quest point.
+		endif
+		if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+			mpforce $i mpoload $GOLD
+			mpechoat $i You receive $b.
+		endif
+		mpforce $i mpoload fromfile $QUEST_ID_rewarditems.xml any
+		if EVAL('$b' != '')
+			mpechoat $i You receive $b.
+		endif
+		mpquestwin $i *
+		mpecho $QUEST_WINSPEECH_TEXT
+		mpendquest $i
+		mpqset * STATISTICS SUCCESS
+		IF EVAL('$MULTIPLE' == 'PREV')
+			mptransfer $i $i
+		ENDIF
+	endif
+~
+
+FUNCTION_PROG CAN_ACCEPT
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
+		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			if !QUESTSCRIPTED($n *)
+				RETURN TRUE
+			endif
+		endif
+	endif
+	RETURN CANCEL
+~
+
+FUNCTION_PROG DO_ACCEPT
+	mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+	mpqset * STATISTICS ACCEPTED
+	for $0 = 0 to< $DELIVEREE_COUNT
+		if !HAS($n '$[1 *]')
+			mpat $n mpforce $n mpoload fromfile $QUEST_ID_item.xml '$[1 *]'
+			MPQSET * QUESTOBJ $b
+			mpat $n mpechoat $n You receive $[1 *].
+		endif
+	next
+~
+
+ONCE_PROG 100
+	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
+	IF !isquestmobalive(1 '$QUEST_ID')
+		MPENDQUEST '$QUEST_ID'
+	ENDIF
+~
+
+GREET_PROG 100
+	if ISLIKE($n '$DELIVEREE_MASK') AND CANSEE($n $i) AND !STRCONTAINS('$<$i $QUEST_ID_DELIVERED>' $@n)
+		mpforce $n sayto $i $DELIVEREE_ANNOUNCE
+	endif
+~
+
+ENTRY_PROG 100
+	if INROOM($i == $g)
+		for $0 = 1 to '$%NUMMOBSROOM(*)%'
+			mpargset $1 $%ROOMMOB($0)% 
+			if ISLIKE($1 '$DELIVEREE_MASK') AND CANSEE($1 $i) AND !STRCONTAINS('$<$i $QUEST_ID_DELIVERED>' $@1)
+				mpforce $1 sayto "$i" $DELIVEREE_ANNOUNCE
+			endif
+		next
+	endif
+~
+	
+GIVING_PROG p '$[1 *]'
+	if EVAL($o == '$[1 *]') AND ISLIKE($t '$DELIVEREE_MASK') AND !STRCONTAINS('$<$i $QUEST_ID_DELIVERED>' $@t)
+		mpsetvar $i $QUEST_ID_DELIVERED ' $<$i $QUEST_ID_DELIVERED>  "$@t" '
+		mpforce $t mpjunk $o
+		mpforce $t sayto "$i" $DELIVERY_RESPONSE
+		if EVAL($DELIVEREE_COUNT > 1)
+			mpechoat $i That's $<$i $QUEST_ID_DELIVERED>.LENGTH# / $DELIVEREE_COUNT
+			mpsetvar $i PROGRESS Delivered $<$i $QUEST_ID_DELIVERED>.LENGTH# / $DELIVEREE_COUNT
+		endif
+		MPCALLFUNC CHECK_DONE
+	else
+		mpforce $t sayto "$i" What's this?
+		mpforce $t give "$o" "$i"
+	endif
+~
+
+RAND_PROG 25
+	IF QVAR(* DURATION != '0')
+		if QVAR(* REMAINING == '')
+			MPENDQUEST $i
+		else
+			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+		endif
+	ENDIF
+~
+
+QUEST_TIME_PROG * -1
+	MPECHOAT $i The quest "$QUEST_NAME" has ended.
+~
+
+QUEST_TIME_PROG * 1
+	MPECHOAT $i The quest "$QUEST_NAME" has 1 minute remaining.
+~
+
+
+</DATA></FILE>

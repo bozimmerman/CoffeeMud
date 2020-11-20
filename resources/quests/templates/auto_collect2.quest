@@ -42,7 +42,7 @@
 #$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=You need to collect some things.  They are somewhere around somewhere.
 #
 #Success:
-#This is what the announcement says when the player captures all the capturable mobs.
+#This is what the player sees when the player completes the quest.
 #$QUEST_WINSPEECH_TEXT=($LONG_STRING)=They have all been found! Congratulations $i!
 #
 #!QUESTMAKER_PAGE Specify the Holders

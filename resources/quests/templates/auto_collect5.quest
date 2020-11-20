@@ -1,6 +1,6 @@
 #!QUESTMAKER_START_SCRIPT Auto  Collect #5
-#An existing mob in your world needs some amount of local currency brought to him/her. 
-#A reward is given upon completion of the task and returning the items to the announcer.
+#The player needs some amount of local currency brought to him/her. 
+#A reward is given upon completion of the task.
 #
 #!QUESTMAKER_PAGE Quest Name/Criteria
 #Enter the unique name and player criteria for your new quest.
