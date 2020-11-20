@@ -277,6 +277,7 @@ GREET_PROG 100
 				if !STRIN('$<$i $QUEST_ID_ROOMLIST>' $g)
 					mpsetvar $i $QUEST_ID_ROOMLIST $<$i $QUEST_ID_ROOMLIST> "$g"
 				endif
+				mpsetvar $i $QUEST_ID_CAPTURED YES
 			endif
 		endif
 	endif

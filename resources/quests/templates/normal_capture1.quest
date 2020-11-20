@@ -257,6 +257,7 @@ GREET_PROG 100
 				mpforce $n sayto "$i" $CAPTURABLES_SURRENDER
 				mpforce $n mpstop all
 				mpforce $n follow "$i"
+				mpsetvar $i $QUEST_ID_CAPTURED ++
 			endif
 		endif
 	endif
