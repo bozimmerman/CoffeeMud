@@ -1,5 +1,5 @@
 #!QUESTMAKER_START_SCRIPT Auto Delivery #1
-#The player is given a custom item by an existing mob in your world
+#The player is given a custom item 
 #to deliver to one or more existing mobs somewhere else in your world.  A reward
 #is optionally given upon delivery.
 #
