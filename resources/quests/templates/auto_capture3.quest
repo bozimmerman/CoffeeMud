@@ -1,6 +1,6 @@
-#!QUESTMAKER_START_SCRIPT Auto Capture #1
-#The player needs one or more other existing mobs captured. 
-#A reward is granted upon completion of the task.
+#!QUESTMAKER_START_SCRIPT Auto Capture #3
+#The player needs another single existing mob captured. 
+#A reward is given upon completion of the task.
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
 #Enter the unique name, criteria, and starting time/duration for your new quest.
@@ -13,11 +13,11 @@
 #
 #Quest ID:
 #Enter a unique name/id for your quest:
-#$QUEST_ID=$UNIQUE_QUEST_NAME=auto_capture_1
+#$QUEST_ID=$UNIQUE_QUEST_NAME=auto_capture_3
 #
 #Quest Name:
 #Enter a friendly displayable name for your quest:
-#$QUEST_NAME=$STRING=Auto Capture #1
+#$QUEST_NAME=$STRING=Auto Capture #3
 #
 #Quest Frequency:
 #This is the time between quest starts.
@@ -35,7 +35,7 @@
 #A Zapper Mask to describe what kinds of players will receive this quest.  
 #You can use this to set #race, level, or other requirements.
 #$QUEST_CRITERIA=$ZAPPERMASK
-#
+
 #Instructions: 
 #Specify some the instructions and justification for the quest.
 #$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=You need to capture some folks.  They are somewhere around somewhere.  You might have to get rough with them.
@@ -44,50 +44,45 @@
 #This is what the announcement says when the player captures all the capturable mobs.
 #$QUEST_WINSPEECH_TEXT=($LONG_STRING)=They have all been captured! Congratulations $i! They are all taken away...
 #
-#!QUESTMAKER_PAGE Specify the Captureable Mob or Mobs
-#The Capturables are the mob or mobs which must be defeated.
+#!QUESTMAKER_PAGE Specify the Captureable Mob
+#The Capturable is the mob which must be defeated.
 #
-#Captureable mobs: 
-#Specify below the mobs that the player must capture to get credit for this quest.
+#Captureable mob: 
+#Specify below the mob that the player must capture to get credit for this quest.
 #
-#Capturables mob names: 
-#Specify the mobs who will act as the capturable mob or mobs.  
+#Capturables mob name: 
+#Specify the mob who will act as the capturable mob.  
 #See help on ZAPPERMASK for information on zapper mask syntax.
 #$CAPTURABLES_MASK=$ZAPPERMASK
 #
-#Num Capturables:
-#Specify how many of the capturable mobs must be captured.  Make sure there are 
-#enough of them in your world to make this goal reachable!
-#$NUM_CAPTURABLES=($EXPRESSION)=1
-#
 #Capturables response: 
-#You may optionally specify some additional bit of speech the capturables 
-#mobs will say to the players when they enter the room with them. 
+#You may optionally specify some additional bit of speech the capturable 
+#mob will say to the players when they enter the room with them. 
 #$CAPTURABLES_RESPONSE=($STRING)=So, you've come for me.  Come and get me.
 #
 #!QUESTMAKER_PAGE Capturables Behavior
-#Select some details about the capturable mobs
+#Select some details about the capturable mob
 #
 #Capturables follow: 
-#Set this to PEACEFUL if the capturable mobs will follow the player who discovers
-#them, and VIOLENT if the capturable mobs must be defeated in combat first.
+#Set this to PEACEFUL if the capturable mob will follow the player who discovers
+#them, and VIOLENT if the capturable mob must be defeated in combat first.
 #$CAPTURABLES_FOLLOW=$CHOOSE=VIOLENT,PEACEFUL
 #
 #Capturables attack:
-#Will the mobs attack if they spot the player?  Keep in mind this is above and
+#Will the mob attack if they spot the player?  Keep in mind this is above and
 #beyond any aggressive behaviors they may have, and will neither modify or 
 #supress their natural aggressive behaviors.  Obviously attacking makes no
 #sense if they surrender peacefully, but requiring a violent capture doesn't
-#necessarily mean the mobs start the fight either.
+#necessarily mean the mob start the fight either.
 #$CAPTURABLES_ATTACK=$CHOOSE=NO-USE-DEFAULT_BEHAVIOR,YES-ATTACK-ON-SIGHT
 #
 #Capturables surrender: 
 #You may optionally specify some additional bit of speech the capturables 
-#mobs will say to the players when they are defeated in combat.
+#mob will say to the players when they are defeated in combat.
 #$CAPTURABLES_SURRENDER=($STRING)=I surrender
 #
 #!QUESTMAKER_PAGE Quest Completion
-#Select some rewards for capturing the mobs:
+#Select some rewards for capturing the mob:
 #
 #Reward items: 
 #Specify zero or more items to choose from as a reward 
@@ -112,12 +107,12 @@
 #
 #$CATEGORY=($HIDDEN)=
 #
-#!QUESTMAKER_END_SCRIPT Auto Capture #1
+#!QUESTMAKER_END_SCRIPT Auto Capture #3
 
 set name $QUEST_ID
 set display $QUEST_NAME
 set author $#AUTHOR
-set questtype auto_capture1
+set questtype auto_capture3
 set category $CATEGORY
 set instructions $QUEST_INSTRUCTIONSSTRING
 
@@ -155,9 +150,9 @@ FUNCTION_PROG DO_ACCEPT
 ONCE_PROG 100
 	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
 	if var($i $QUEST_ID_CAPTURED = '')
-		mpsetvar $i $QUEST_ID_CAPTURED 0
+		mpsetvar $i $QUEST_ID_CAPTURED NO
 	endif
-	mpsetvar $i PROGRESS Captured: $<$i $QUEST_ID_CAPTURED>/$NUM_CAPTURABLES
+	mpsetvar $i PROGRESS Found: $<$i $QUEST_ID_CAPTURED>
 	IF QVAR(* DURATION != '0')
 	    if QVAR(* REMAINING == '')
 	        MPENDQUEST $i
@@ -194,10 +189,10 @@ GREET_PROG 100
 			if EVAL('$CAPTURABLES_FOLLOW' == 'PEACEFUL')
 				mpforce $n sayto "$i" $CAPTURABLES_SURRENDER
 				mpforce $n mpstop all
-				mpforce $n follow $i
-				mpsetvar $i $QUEST_ID_CAPTURED ++
-				mpsetvar $i PROGRESS Captured $<$i $QUEST_ID_CAPTURED>/$NUM_CAPTURABLES
-				mpechoat $i You've captured $<$i $QUEST_ID_CAPTURED>/$NUM_CAPTURABLES
+				mpforce $n follow "$i"
+				mpsetvar $i $QUEST_ID_CAPTURED YES
+				mpsetvar $i PROGRESS Captured: $<$i $QUEST_ID_CAPTURED>
+				mpechoat $i You've captured $n
 				MPCALLFUNC CHECK_DONE
 			endif
 		endif
@@ -205,7 +200,7 @@ GREET_PROG 100
 ~
 
 FUNCTION_PROG CHECK_DONE
-	if var($i $QUEST_ID_CAPTURED >= $NUM_CAPTURABLES)
+	if var($i $QUEST_ID_CAPTURED != '') AND var($i $QUEST_ID_CAPTURED != 'NO')
 		for $0 = '$%NUMMOBSROOM(*)%' to 1
 			mpargset $1 '$%ROOMMOB($0)%'
 			if ISLIKE($1 $CAPTURABLES_MASK) AND ISNPC('$1') AND ISFOLLOW('$1')
@@ -229,15 +224,15 @@ FUNCTION_PROG CHECK_DONE
 		endif
 		mpforce $i mpoload fromfile $QUEST_ID_rewarditems.xml any
 		if EVAL('$b' != '')
-			mpechoat $i Your receive $b.
+			mpechoat $i You receive $b.
 		endif
 		mpquestwin $i *
 		mpecho $QUEST_WINSPEECH_TEXT
 		mpendquest $i
+		mpqset * STATISTICS SUCCESS
 		IF EVAL('$MULTIPLE' == 'PREV')
 			mptransfer $i $i
 		ENDIF
-		mpqset * STATISTICS SUCCESS
 	ENDIF
 ~
 
@@ -250,9 +245,9 @@ CNCLMSG_PROG STO=DEATH ALL
 			mpstop all
 			mpforce $n sayto "$i" $CAPTURABLES_SURRENDER
 			mpforce $n follow "$i"
-			mpsetvar $i $QUEST_ID_CAPTURED ++
-			mpsetvar $i PROGRESS Captured $<$i $QUEST_ID_CAPTURED>/$NUM_CAPTURABLES
-			mpechoat $i You've captured $<$i $QUEST_ID_CAPTURED>/$NUM_CAPTURABLES
+			mpsetvar $i $QUEST_ID_CAPTURED YES
+			mpsetvar $i PROGRESS Captured: $<$i $QUEST_ID_CAPTURED>
+			mpechoat $i You've captured $n
 			MPCALLFUNC CHECK_DONE
 			RETURN CANCEL
 		endif

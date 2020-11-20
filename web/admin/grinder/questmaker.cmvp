@@ -108,6 +108,7 @@
 				<OPTION VAlUE="" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=@SELECTED@endif@>All
 				<OPTION VAlUE="Normal*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=Normal*@SELECTED@endif@>All Normal Types
 				<OPTION VAlUE="Competitive*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=Competitive*@SELECTED@endif@>All Competitive Types
+				<OPTION VAlUE="Auto" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=Auto*@SELECTED@endif@>All Auto Types
 				<OPTION VAlUE="*Capture*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=*Capture*@SELECTED@endif@>All Capture
 				<OPTION VAlUE="*Collect*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=*Collect*@SELECTED@endif@>All Collect
 				<OPTION VAlUE="*Dispel*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=*Dispel*@SELECTED@endif@>All Dispel

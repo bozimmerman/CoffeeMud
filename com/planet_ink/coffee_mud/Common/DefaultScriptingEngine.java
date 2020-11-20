@@ -7476,11 +7476,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				int ct=0;
 				if(lastKnownLocation!=null)
-				for(int i=0;i<lastKnownLocation.numItems();i++)
 				{
-					final Item I=lastKnownLocation.getItem(i);
-					if((I!=null)&&(I.container()==null))
-						ct++;
+					for(int i=0;i<lastKnownLocation.numItems();i++)
+					{
+						final Item I=lastKnownLocation.getItem(i);
+						if((I!=null)&&(I.container()==null))
+							ct++;
+					}
 				}
 				results.append(""+ct);
 				break;

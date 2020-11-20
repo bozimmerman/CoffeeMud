@@ -1,4 +1,4 @@
-#!QUESTMAKER_START_SCRIPT Normal Collect #5
+#!QUESTMAKER_START_SCRIPT Auto  Collect #5
 #An existing mob in your world needs some amount of local currency brought to him/her. 
 #A reward is given upon completion of the task and returning the items to the announcer.
 #
@@ -7,11 +7,11 @@
 #
 #Quest ID:
 #Enter a unique name/id for your quest:
-#$QUEST_ID=$UNIQUE_QUEST_NAME=normal_collect_5
+#$QUEST_ID=$UNIQUE_QUEST_NAME=auto_collect_5
 #
 #Quest Name:
 #Enter a friendly displayable name for your quest:
-#$QUEST_NAME=$STRING=Normal Collect #5
+#$QUEST_NAME=$STRING=Auto  Collect #5
 #
 #Quest-Player Criterium:
 #You may leave this entry blank, or enter a Zapper Mask to describe what
@@ -101,91 +101,76 @@
 #
 #$CATEGORY=($HIDDEN)=
 #
-#!QUESTMAKER_END_SCRIPT Normal Collect #5
+#!QUESTMAKER_END_SCRIPT Auto  Collect #5
 
 set name $QUEST_ID
 set display $QUEST_NAME
 set author $#AUTHOR
-set questtype normal_collect5
+set questtype auto_collect5
 set category $CATEGORY
 set instructions $QUEST_INSTRUCTIONSSTRING
 
-set wait 1
+set wait $FREQUENCY
 set interval 1
 quiet
 
-set area $ANNOUNCER_AREA
-set room $ANNOUNCER_ROOM
-set mobgroup
-set mob reselect $ANNOUNCER_NAME
-give stat keyplayer true
-give script LOAD=$QUEST_ID_announcer.script
+set room
+set area
+set pcmobgroup reselect any mask=$QUEST_CRITERIA
+set script LOAD=$QUEST_ID_playertrack.script
 
-set duration 0
+set duration $DURATION
 
 <?xml version="1.0"?>
 <FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
-ONCE_PROG 100
-	MPQSET * INSTRUCTIONS $i in $a wants you to '$QUEST_INSTRUCTIONSSTRING'
-	if EVAL('$QUEST_ANNOUNCECHANNEL' != '')
-		$QUEST_ANNOUNCECHANNEL $QUEST_NOTIFYSTRING -- Come see me for more information.
-	endif
-~
 
-ALL_GREET_PROG 100
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) AND !QUESTSCRIPTED($n *)
-		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			sayto "$n" $QUEST_NOTIFYSTRING -- just say '^yi accept^?' or '^yi accept $QUEST_NAME^?' to take on this quest.
-		endif
-	endif
-~
-
-BRIBE_PROG 1
-	IF QUESTSCRIPTED($n *) AND ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
-		mpsetvar $n $QUEST_ID_COLLECTED +$%GOLDAMT($o)%
-		mpjunk $o
+FUNCTION_PROG CHECK_DONE
+	IF QUESTSCRIPTED($i *) AND ISLIKE($i '$QUEST_CRITERIA') and ISPC($i) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($i previous) )
 		if var($n $QUEST_ID_COLLECTED >= $NUM_COLLECTABLES)
 			if EVAL('$EXP' != '')
-				mpexp $n $EXP
+				mpexp $i $EXP
 			endif
 			if EVAL('$FACTION' != '')
-				mpfaction $n $FACTION +$NUMFACTION
+				mpfaction $i $FACTION +$NUMFACTION
 			endif
 			if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
-				mpoload QuestPoint
-				give "a quest point" "$n"
+				mpforce $i mpoload QuestPoint
+				mpechoat $i You receive a quest point.
 			endif
-			mpoload fromfile $QUEST_ID_rewarditems.xml any
+			if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+				mpforce $i mpoload $GOLD
+				mpechoat $i You receive $b.
+			endif
+			mpforce $i mpoload fromfile $QUEST_ID_rewarditems.xml any
 			if EVAL('$b' != '')
-				give "$b" "$n"
+				mpechoat $i You receive $b.
 			endif
-			mpquestwin $n *
-			sayto $n $QUEST_WINSPEECH_TEXT
-			mpendquest $n
+			mpquestwin $i *
+			mpecho $QUEST_WINSPEECH_TEXT
+			mpendquest $i
 			mpqset * STATISTICS SUCCESS
 			IF EVAL('$MULTIPLE' == 'PREV')
-				mptransfer $n $n
+				mptransfer $i $i
 			ENDIF
 		else
-			sayto "$n" That's $<$n $QUEST_ID_COLLECTED>/$NUM_COLLECTABLES.
-			mpsetvar $i PROGRESS Given: $<$i $QUEST_ID_COLLECTED>/$NUM_COLLECTABLES
+			mpechoat "$i" That's $<$i $QUEST_ID_COLLECTED>/$NUM_COLLECTABLES.
+			mpsetvar $i PROGRESS Collected: $<$i $QUEST_ID_COLLECTED>/$NUM_COLLECTABLES
 		endif
-	else
-		sayto "$n" What's this?
-		give "$o" "$n"
 	endif
 ~
 
-GIVE_PROG all
-	IF QUESTSCRIPTED($n *) AND ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
-		if !ISLIKE($o '-JAVACLASS +Coins +GenCoins +StdCoins') or EVAL('$%GSTAT($o CURRENCY)%' != '$%GSTAT($i CURRENCY)%')
-			sayto "$n" $WRONG_COLLECTABLE_SAY
-			give "$o" "$n"
-		endif
+EXECMSG_PROG GET ALL
+	if EVAL($n == $i) and ISLIKE($o '-JAVACLASS +Coins +GenCoins +StdCoins') and EVAL('$%GSTAT($o CURRENCY)%' == '$%GSTAT($i CURRENCY)%')
+		if EVAL('$<$i $QUEST_ID_COLLECTED>' < $NUM_COLLECTABLES)
+			MPSETVAR $i $QUEST_ID_COLLECTED +$%GOLDAMT($o)%
+			mpjunk $o
+			MPCALLFUNC CHECK_DONE
+		endif	
 	endif
 ~
+
 FUNCTION_PROG CAN_ACCEPT
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
@@ -202,21 +187,6 @@ FUNCTION_PROG DO_ACCEPT
 	mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
 ~
 
-SPEECH_PROG p i accept $QUEST_NAME
-	if CALLFUNC(CAN_ACCEPT)
-		sayto "$n" $QUEST_INSTRUCTIONSSTRING
-		MPCALLFUNC DO_ACCEPT
-	endif
-~
-SPEECH_PROG p i accept
-	if CALLFUNC(CAN_ACCEPT)
-		sayto "$n" $QUEST_INSTRUCTIONSSTRING
-		MPCALLFUNC DO_ACCEPT
-	endif
-~
-</DATA></FILE>
-<FILE><NAME>$QUEST_ID_playertrack.script</NAME>
-<DATA>
 ONCE_PROG 100
 	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
 	IF !isquestmobalive(1 '$QUEST_ID')
@@ -225,20 +195,16 @@ ONCE_PROG 100
 	if var($i $QUEST_ID_COLLECTED = '')
 		mpsetvar $i $QUEST_ID_COLLECTED 0
 	endif
-	mpsetvar $i PROGRESS Given: $<$i $QUEST_ID_COLLECTED>/$NUM_COLLECTABLES
+	mpsetvar $i PROGRESS Collected: $<$i $QUEST_ID_COLLECTED>/$NUM_COLLECTABLES
 ~
 
 RAND_PROG 25
-	IF !isquestmobalive(1 '$QUEST_ID')
-		MPENDQUEST '$QUEST_ID'
-	else
-		IF QVAR(* DURATION != '0')
-			if QVAR(* REMAINING == '')
-				MPENDQUEST $i
-			else
-				mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
-			endif
-		ENDIF
+	IF QVAR(* DURATION != '0')
+		if QVAR(* REMAINING == '')
+			MPENDQUEST $i
+		else
+			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+		endif
 	ENDIF
 ~
 

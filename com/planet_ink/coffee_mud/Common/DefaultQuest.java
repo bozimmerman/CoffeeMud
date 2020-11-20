@@ -3810,16 +3810,20 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 									eval=eval.toLowerCase();
 									if(eval.equals("cancel") || (eval.length()==0))
 										continue; // failed, so don't do it
+									S.callFunc("DO_ACCEPT", M2.Name(), M2, M2, M2, M2, null, null, M2.Name(), objs);
 								}
-								((PhysicalAgent)E2).addScript(S);
-								runtimeRegisterObject(((PhysicalAgent)E2));
-								if((E2 instanceof Item)
-								&&((((Item)E2).owner()==null)
-									||(!((Item)E2).owner().isContent((Item)E2))))
-									CMLib.threads().deleteTick(E2, Tickable.TICKID_ITEM_BEHAVIOR); //OMG WHY?!?!/????!!
-								synchronized(questState)
+								else
 								{
-									questState.addons.add(new XVector<Object>(E2,S),Integer.valueOf(questState.preserveState));
+									((PhysicalAgent)E2).addScript(S);
+									runtimeRegisterObject(((PhysicalAgent)E2));
+									if((E2 instanceof Item)
+									&&((((Item)E2).owner()==null)
+										||(!((Item)E2).owner().isContent((Item)E2))))
+										CMLib.threads().deleteTick(E2, Tickable.TICKID_ITEM_BEHAVIOR); //OMG WHY?!?!/????!!
+									synchronized(questState)
+									{
+										questState.addons.add(new XVector<Object>(E2,S),Integer.valueOf(questState.preserveState));
+									}
 								}
 							}
 						}

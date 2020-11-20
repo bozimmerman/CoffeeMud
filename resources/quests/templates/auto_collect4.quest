@@ -1,0 +1,216 @@
+#!QUESTMAKER_START_SCRIPT Auto Collect #4
+#The player needs one or more items which you will create gathered up. 
+#The items will have to be obtained from your existing world, or generated with common skills.
+#A reward is given upon completion of the task.
+#
+#!QUESTMAKER_PAGE Quest Name/Duration
+#Enter the unique name, criteria, and starting time/duration for your new quest.
+#Times are entered as a simple number or math expression to denote a
+#time in default ticks (4 second period), or you may follow the expression 
+#with the word seconds, minutes, hours, days, mudhours, muddays, mudweeks,
+#mudmonths, or mudyears.  Time expressions may include numbers, math 
+#symbols, or the ? operator to generate random numbers.  Example:
+#"5 + 3?10 minutes" would generate a frequency of 8-15 minutes.#
+#
+#Quest ID:
+#Enter a unique name/id for your quest:
+#$QUEST_ID=$UNIQUE_QUEST_NAME=auto_collect_4
+#
+#Quest Name:
+#Enter a friendly displayable name for your quest:
+#$QUEST_NAME=$STRING=Auto Collect #4
+#
+#Quest Frequency:
+#This is the time between quest starts.
+#$FREQUENCY=$TIMEEXPRESSION=90 minutes
+#
+#Quest Duration:
+#This is how long your quest remains running, and how long a player 
+#accepting the quest has to complete the quest and report back in.
+#$DURATION=$TIMEEXPRESSION=90 minutes
+#
+#!QUESTMAKER_PAGE Specify the Quest Criteria and Instructions
+#The criteria for players and instructions they need.
+#
+#Quest-Player Criterium:
+#A Zapper Mask to describe what kinds of players will receive this quest.  
+#You can use this to set #race, level, or other requirements.
+#$QUEST_CRITERIA=$ZAPPERMASK
+#
+#Instructions: 
+#Specify some the instructions and justification for the quest.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=You need to collect some things from some folk.  You might have to get rough with them.
+#
+#Success:
+#This is what the announcement says when the player captures all the capturable mobs.
+#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=They have all been captured! Congratulations $i! They are all taken away...
+#
+#!QUESTMAKER_PAGE Specify the Collectables
+#The Collectables are the items that must be found or created and given to announcer.
+#
+#Collectables items: 
+#Describe the items that the player must give to the announcer.  This is described as a zapper mask.
+#If you want to specify items with particular names, use -NAME "+the named item" and similar masks.
+#$COLLECTABLE_ITEMS=$ZAPPERMASK=-JAVACLASS +GenResource -MATERIAL +WOODEN -WEIGHT 1 +WEIGHT 1
+#
+#Num Collectables:
+#Specify how many of the items must be given to the announcer to complete the quest.
+#$NUM_COLLECTABLES=($EXPRESSION)=1
+#
+#Wrong Collectable speech
+#Specify what the announcer says to players who HAVE accepted the quest, but give the announcer
+#something other than what is described by your mask.
+#$WRONG_COLLECTABLE_SAY=$STRING=This is not what I asked for.
+#
+#!QUESTMAKER_PAGE Quest Completion
+#Select some rewards for bringing back the items.
+#
+#Reward items: 
+#Specify zero or more items to choose from as a reward 
+#$REWARD_ITEMS=$ITEMXML_ZEROORMORE
+#
+#Quest Point?
+#$QUEST_POINT=$CHOOSE=YES,NO
+#Amount of money (an amount, or leave blank):
+#$GOLD=($EXPRESSION)
+#Amount of experience points, blank for none, or a number% for percent of exp to next level:
+#$EXP=($STRING)=10%
+#
+#Player Faction to give to or take from:
+#$FACTION=($FACTION)
+#If you selected a faction above, enter a new numeric amount, 
+#or enter +value to add, or --value to subtract:
+#$NUMFACTION=($STRING)
+#
+#Select whether a player may complete this quest multiple times,
+#or 'prev' to require a previous quest, if multiple found.
+#$MULTIPLE=$CHOOSE=YES,NO,PREV
+#
+#$CATEGORY=($HIDDEN)=
+#
+#!QUESTMAKER_END_SCRIPT Auto Collect #4
+
+set name $QUEST_ID
+set display $QUEST_NAME
+set author $#AUTHOR
+set questtype auto_collect4
+set category $CATEGORY
+set instructions $QUEST_INSTRUCTIONSSTRING
+
+set wait $FREQUENCY
+set interval 1
+quiet
+
+set room
+set area
+set pcmobgroup reselect any mask=$QUEST_CRITERIA
+set script LOAD=$QUEST_ID_playertrack.script
+
+set duration $DURATION
+
+<?xml version="1.0"?>
+<FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_items.xml</NAME><DATA><ITEMS>$COLLECTABLES_ITEMS</ITEMS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_playertrack.script</NAME>
+<DATA>
+FUNCTION_PROG CHECK_DONE
+	IF QUESTSCRIPTED($i *) AND ISLIKE($i '$QUEST_CRITERIA') and ISPC($i) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($i previous) )
+		mpsetvar $i $QUEST_ID_GOT 0
+		for $0 = 1 to '$%NUMITEMSMOB($i)%
+			MPARGSET $1 $%MOBITEM($i $0)%
+			if questobj($1 *)
+				mpsetvar $i $QUEST_ID_GOT ++
+			endif
+		next
+		if var($n $QUEST_ID_GOT >= $NUM_COLLECTABLES)
+			if EVAL('$EXP' != '')
+				mpexp $i $EXP
+			endif
+			if EVAL('$FACTION' != '')
+				mpfaction $i $FACTION +$NUMFACTION
+			endif
+			if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
+				mpforce $i mpoload QuestPoint
+				mpechoat $i You receive a quest point.
+			endif
+			if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+				mpforce $i mpoload $GOLD
+				mpechoat $i You receive $b.
+			endif
+			mpforce $i mpoload fromfile $QUEST_ID_rewarditems.xml any
+			if EVAL('$b' != '')
+				mpechoat $i You receive $b.
+			endif
+			mpquestwin $i *
+			mpecho $QUEST_WINSPEECH_TEXT
+			mpendquest $i
+			mpqset * STATISTICS SUCCESS
+			IF EVAL('$MULTIPLE' == 'PREV')
+				mptransfer $i $i
+			ENDIF
+		else
+			mpechoat "$i" That's $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES.
+			mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES
+		endif
+	endif
+~
+
+FUNCTION_PROG CAN_ACCEPT
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
+		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			if !QUESTSCRIPTED($n *)
+				RETURN TRUE
+			endif
+		endif
+	endif
+	RETURN CANCEL
+~
+
+FUNCTION_PROG DO_ACCEPT
+	mpqset * STATISTICS ACCEPTED
+	mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+~
+
+ONCE_PROG 100
+	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
+	if var($i $QUEST_ID_GOT = '')
+		mpsetvar $i $QUEST_ID_GOT 0
+	endif
+	mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES
+	mpechoat $i $QUEST_INSTRUCTIONSSTRING
+~
+
+RAND_PROG 25
+	IF QVAR(* DURATION != '0')
+		if QVAR(* REMAINING == '')
+			MPENDQUEST $i
+		else
+			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+		endif
+	ENDIF
+~
+
+QUEST_TIME_PROG * -1
+	MPECHOAT $i The quest "$QUEST_NAME" has ended.
+~
+
+QUEST_TIME_PROG * 1
+	MPECHOAT $i The quest "$QUEST_NAME" has 1 minute remaining.
+~
+
+EXECMSG_PROG GET ALL
+	if ISLIKE($t '$COLLECTABLE_ITEMS') and EVAL($n == $i) AND EVAL('$<$n $QUEST_ID_GOT>' < $NUM_COLLECTABLES)
+		MPSETVAR $n $QUEST_ID_GOT +$%ITEMCOUNT($t)%
+		mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES
+		MPCALLFUNC CHECK_DONE
+	endif	
+~
+
+EXECMSG_PROG DROP ALL
+	if ISLIKE($t '$COLLECTABLE_ITEMS') and QUESTSCRIPTED($n *) and EVAL($n == $i) AND EVAL('$<$n $QUEST_ID_GOT>' > 0) 
+		MPSETVAR $n $QUEST_ID_GOT -$%ITEMCOUNT($t)%
+		mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES
+	endif	
+~
+
+</DATA></FILE>
