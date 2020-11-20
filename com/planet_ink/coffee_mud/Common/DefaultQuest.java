@@ -550,7 +550,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		{
 			B=e.nextElement();
 			if(B instanceof ScriptingEngine)
-				((ScriptingEngine)B).registerDefaultQuest(name());
+				((ScriptingEngine)B).registerDefaultQuest(this);
 		}
 		if((E instanceof Item)
 		&&((((Item)E).numBehaviors()>0)||(((Item)E).numScripts()>0))
