@@ -129,7 +129,7 @@
 #
 #$CATEGORY=($HIDDEN)=
 #
-#!QUESTMAKER_END_SCRIPT Normal Killer #1
+#!QUESTMAKER_END_SCRIPT Normal Killer #2
 
 set name $QUEST_ID
 set display $QUEST_NAME

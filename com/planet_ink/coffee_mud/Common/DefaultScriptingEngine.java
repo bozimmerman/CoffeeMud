@@ -13667,6 +13667,27 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 					}
 					break;
+				case 54: // getting_prog
+					if((msg.targetMinor()==CMMsg.TYP_GET)&&canTrigger(20)
+					&&(msg.amISource(monster))
+					&&(msg.target() instanceof Item)
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						Item checkInE=(Item)msg.target();
+						if((msg.tool() instanceof Item)
+						&&(((Item)msg.tool()).container()==msg.target()))
+							checkInE=(Item)msg.tool();
+						final String check=standardTriggerCheck(script,t,checkInE,affecting,msg.source(),msg.target(),monster,checkInE,defaultItem,t);
+						if(check!=null)
+						{
+							if(lastMsg==msg)
+								break;
+							lastMsg=msg;
+							enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,checkInE,defaultItem,script,1,check, t);
+							return;
+						}
+					}
+					break;
 				case 22: // drop_prog
 					if((msg.targetMinor()==CMMsg.TYP_DROP)&&canTrigger(22)
 					&&((msg.amITarget(affecting))
@@ -13674,6 +13695,26 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						||(affecting instanceof Area)
 						||(affecting instanceof MOB))
 					&&(!msg.amISource(monster))
+					&&(msg.target() instanceof Item)
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						final String check=standardTriggerCheck(script,t,msg.target(),affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,t);
+						if(check!=null)
+						{
+							if(lastMsg==msg)
+								break;
+							lastMsg=msg;
+							if(msg.target() instanceof Coins)
+								execute(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,check,newObjs());
+							else
+								enqueResponse(triggerCode,affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check, t);
+							return;
+						}
+					}
+					break;
+				case 53: // dropping_prog
+					if((msg.targetMinor()==CMMsg.TYP_DROP)&&canTrigger(22)
+					&&(msg.amISource(monster))
 					&&(msg.target() instanceof Item)
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{

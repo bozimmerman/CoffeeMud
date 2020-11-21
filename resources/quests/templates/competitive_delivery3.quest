@@ -13,11 +13,11 @@
 #
 #Quest ID:
 #Enter a unique name/id for your quest:
-#$QUEST_ID=$UNIQUE_QUEST_NAME=competitive_delivery_1
+#$QUEST_ID=$UNIQUE_QUEST_NAME=competitive_delivery_3
 #
 #Quest Name:
 #Enter a friendly displayable name for your quest:
-#$QUEST_NAME=$STRING=Competitive Delivery #1
+#$QUEST_NAME=$STRING=Competitive Delivery #3
 #
 #Quest Frequency:
 #This is the time between quest starts.

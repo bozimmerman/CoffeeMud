@@ -1,7 +1,6 @@
-#!QUESTMAKER_START_SCRIPT Auto Collect #4
-#The player needs one or more items which you will create gathered up. 
-#The items will have to be obtained from your existing world, or generated with common skills.
-#A reward is given upon completion of the task.
+#!QUESTMAKER_START_SCRIPT Auto Delivery #4
+#The player must  pay one or more existing mobs somewhere else in your 
+#world.  A reward is optionally given after payment.
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
 #Enter the unique name, criteria, and starting time/duration for your new quest.
@@ -14,11 +13,11 @@
 #
 #Quest ID:
 #Enter a unique name/id for your quest:
-#$QUEST_ID=$UNIQUE_QUEST_NAME=auto_collect_4
+#$QUEST_ID=$UNIQUE_QUEST_NAME=auto_delivery_4
 #
 #Quest Name:
 #Enter a friendly displayable name for your quest:
-#$QUEST_NAME=$STRING=Auto Collect #4
+#$QUEST_NAME=$STRING=Auto Delivery #4
 #
 #Quest Frequency:
 #This is the time between quest starts.
@@ -39,31 +38,40 @@
 #
 #Instructions: 
 #Specify some the instructions and justification for the quest.
-#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=You need to collect some things from some folk.  You might have to get rough with them.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=Find ${2 *} at that one place and give him $[1 *].  Be careful!
 #
 #Success:
 #This is what the player sees when the player completes the quest.
-#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=They have all been captured! Congratulations $i! They are all taken away...
+#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Delivery complete!
 #
-#!QUESTMAKER_PAGE Specify the Collectables
-#The Collectables are the items that must be found or created and given to announcer.
+#!QUESTMAKER_PAGE Specify the Deliveree Mobs
+#The Deliveree Mob is the mob the player must find and deliver the item to.
 #
-#Collectables items: 
-#Describe the items that the player must give to the announcer.  This is described as a zapper mask.
-#If you want to specify items with particular names, use -NAME "+the named item" and similar masks.
-#$COLLECTABLE_ITEMS=$ZAPPERMASK=-JAVACLASS +GenResource -MATERIAL +WOODEN -WEIGHT 1 +WEIGHT 1
+#Deliverees: 
+#Specify below the deliveree mobs who will have the items delivered.
 #
-#Num Collectables:
-#Specify how many of the items must be given to the announcer to complete the quest.
-#$NUM_COLLECTABLES=($EXPRESSION)=1
+#Deliveree mob names: 
+#Specify the mobs who will act as the capturable mob or mobs.  
+#See help on ZAPPERMASK for information on zapper mask syntax.
+#$DELIVEREE_MASK=$ZAPPERMASK
 #
-#Wrong Collectable speech
-#Specify what the announcer says to players who HAVE accepted the quest, but give the announcer
-#something other than what is described by your mask.
-#$WRONG_COLLECTABLE_SAY=$STRING=This is not what I asked for.
+#Amount of money: 
+#The total amount of money required to complete the quest.  This will be in
+the deliveree mobs local currency.
+#$DELIVEREE_COUNT=($EXPRESSION)=100
+#
+#Deliveree response: 
+#You may optionally specify some additional bit of speech the deliveree 
+#mob will say to the players after they arrive.
+#$DELIVEREE_ANNOUNCE=($LONG_STRING)=Are you here to pay me? If so, here I am!
+#
+#Delivery response: 
+#You may optionally specify some additional bit of speech the deliveree 
+#mob will say to the players after they have handed over the item/items.
+#$DELIVERY_RESPONSE=($LONG_STRING)=Thanks!
 #
 #!QUESTMAKER_PAGE Quest Completion
-#Select some rewards for bringing back the items.
+#Select some rewards for completing the deliveries:
 #
 #Reward items: 
 #Specify zero or more items to choose from as a reward 
@@ -71,8 +79,6 @@
 #
 #Quest Point?
 #$QUEST_POINT=$CHOOSE=YES,NO
-#Amount of money (an amount, or leave blank):
-#$GOLD=($EXPRESSION)
 #Amount of experience points, blank for none, or a number% for percent of exp to next level:
 #$EXP=($STRING)=10%
 #
@@ -88,12 +94,12 @@
 #
 #$CATEGORY=($HIDDEN)=
 #
-#!QUESTMAKER_END_SCRIPT Auto Collect #4
+#!QUESTMAKER_END_SCRIPT Auto Delivery #4
 
 set name $QUEST_ID
 set display $QUEST_NAME
 set author $#AUTHOR
-set questtype auto_collect4
+set questtype auto_delivery4
 set category $CATEGORY
 set instructions $QUEST_INSTRUCTIONSSTRING
 
@@ -106,23 +112,21 @@ set area
 set pcmobgroup reselect any mask=$QUEST_CRITERIA
 set script LOAD=$QUEST_ID_playertrack.script
 
+set area
+set room
+set mobgroup
+set mob
+
 set duration $DURATION
 
 <?xml version="1.0"?>
 <FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
-<FILE><NAME>$QUEST_ID_items.xml</NAME><DATA><ITEMS>$COLLECTABLES_ITEMS</ITEMS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_playertrack.script</NAME>
 <DATA>
+
 FUNCTION_PROG CHECK_DONE
 	IF QUESTSCRIPTED($i *) AND ISLIKE($i '$QUEST_CRITERIA') and ISPC($i) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($i previous) )
-		mpsetvar $i $QUEST_ID_GOT 0
-		for $0 = 1 to '$%NUMITEMSMOB($i)%
-			MPARGSET $1 $%MOBITEM($i $0)%
-			if questobj($1 *)
-				mpsetvar $i $QUEST_ID_GOT ++
-			endif
-		next
-		if var($n $QUEST_ID_GOT >= $NUM_COLLECTABLES)
+		if EVAL('$<$i $QUEST_ID_DELIVERED>' >= $DELIVEREE_COUNT)
 			if EVAL('$EXP' != '')
 				mpexp $i $EXP
 			endif
@@ -148,9 +152,6 @@ FUNCTION_PROG CHECK_DONE
 			IF EVAL('$MULTIPLE' == 'PREV')
 				mptransfer $i $i
 			ENDIF
-		else
-			mpechoat "$i" That's $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES.
-			mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES
 		endif
 	endif
 ~
@@ -173,9 +174,10 @@ FUNCTION_PROG DO_ACCEPT
 
 ONCE_PROG 100
 	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
-	if var($i $QUEST_ID_GOT = '')
-		mpsetvar $i $QUEST_ID_GOT 0
+	if var($i $QUEST_ID_DELIVERED = '')
+		mpsetvar $i $QUEST_ID_DELIVERED 0
 	endif
+	mpsetvar $i PROGRESS Delivered: $<$i $QUEST_ID_DELIVERED>/$DELIVEREE_COUNT
 	IF QVAR(* DURATION != '0')
 	    if QVAR(* REMAINING == '')
 	        MPENDQUEST $i
@@ -183,8 +185,38 @@ ONCE_PROG 100
 			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
 		endif
 	ENDIF
-	mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES
-	mpat $i mpechoat $i $QUEST_INSTRUCTIONSSTRING
+	mpechoat $i $QUEST_INSTRUCTIONSSTRING
+~
+
+GREET_PROG 100
+	if ISLIKE($n '$DELIVEREE_MASK') AND CANSEE($n $i) AND !STRCONTAINS('$<$i $QUEST_ID_DELIVERED>' $@n)
+		mpforce $n sayto $i $DELIVEREE_ANNOUNCE
+	endif
+~
+
+ENTRY_PROG 100
+	if INROOM($i == $g)
+		for $0 = 1 to '$%NUMMOBSROOM(*)%'
+			mpargset $1 $%ROOMMOB($0)% 
+			if ISLIKE($1 '$DELIVEREE_MASK') AND CANSEE($1 $i) AND !STRCONTAINS('$<$i $QUEST_ID_DELIVERED>' $@1)
+				mpforce $1 sayto "$i" $DELIVEREE_ANNOUNCE
+			endif
+		next
+	endif
+~
+	
+GIVING_PROG all
+	if ISLIKE($o '-JAVACLASS +GenCoins +StdCoins') AND ISLIKE($t '$DELIVEREE_MASK') AND EVAL('$%GSTAT($o CURRENCY)%' == '$%GSTAT($t CURRENCY)%')
+		mpsetvar $i $QUEST_ID_DELIVERED +$%GOLDAMT($o)%
+		mpforce $t mpjunk $o
+		mpforce $t sayto "$i" $DELIVERY_RESPONSE
+		mpechoat $i That's $<$i $QUEST_ID_DELIVERED> / $DELIVEREE_COUNT
+		mpsetvar $i PROGRESS Paid $<$i $QUEST_ID_DELIVERED> / $DELIVEREE_COUNT
+		mpcallfunc CHECK_DONE
+	else
+		mpforce $t sayto "$i" What's this?
+		mpforce $t give "$o" "$i"
+	endif
 ~
 
 RAND_PROG 25
@@ -205,19 +237,5 @@ QUEST_TIME_PROG * 1
 	MPECHOAT $i The quest "$QUEST_NAME" has 1 minute remaining.
 ~
 
-EXECMSG_PROG GET ALL
-	if ISLIKE($t '$COLLECTABLE_ITEMS') and EVAL($n == $i) AND EVAL('$<$n $QUEST_ID_GOT>' < $NUM_COLLECTABLES)
-		MPSETVAR $n $QUEST_ID_GOT +$%ITEMCOUNT($t)%
-		mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES
-		MPCALLFUNC CHECK_DONE
-	endif	
-~
-
-EXECMSG_PROG DROP ALL
-	if ISLIKE($t '$COLLECTABLE_ITEMS') and QUESTSCRIPTED($n *) and EVAL($n == $i) AND EVAL('$<$n $QUEST_ID_GOT>' > 0) 
-		MPSETVAR $n $QUEST_ID_GOT -$%ITEMCOUNT($t)%
-		mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES
-	endif	
-~
 
 </DATA></FILE>

@@ -35,13 +35,13 @@
 <li><a href="#day_prog">day_prog</a></li>
 <li><a href="#death_prog">death_prog</a></li>
 <li><a href="#delay_prog">delay_prog</a></li>
-<li><a href="#drop_prog">drop_prog</a></li>
+<li><a href="#drop_prog">drop_prog</a></li><li><a href="#dropping_prog">dropping_prog</a></li>
 <li><a href="#entry_prog">entry_prog</a></li>
 <li><a href="#execmsg_prog">execmsg_prog</a></li>
 <li><a href="#exit_prog">exit_prog</a></li>
 <li><a href="#fight_prog">fight_prog</a></li>
 <li><a href="#function_prog">function_prog</a></li>
-<li><a href="#get_prog">get_prog</a></li>
+<li><a href="#get_prog">get_prog</a></li><li><a href="#getting_prog">getting_prog</a></li>
 <li><a href="#give_prog">give_prog</a></li><li><a href="#giving_prog">giving_prog</a></li><li><a href="#group_greet_prog">group_greet_prog</a></li>
 <li><a href="#greet_prog">greet_prog</a></li>
 <li><a href="#hitprcnt_prog">hitprcnt_prog</a></li>
@@ -874,7 +874,9 @@ there is not, then any object with any of the keywords in the list in
 it will trigger it. If a drop_prog all is used, then the drop_prog will
 trigger from any object at all being dropped. This type of prog is
 usually used for in-zone quests and special mob behavior, and has a
-variety of uses.</p>
+variety of uses.
+&nbsp;Unlike droppng_prog, when running on an npc or player, this
+triggers only when the npc or player witnesses the drop action.</p>
 <p>EXAMPLES:</p>
 <pre>drop_prog orange apple banana<br /></pre>
 <p>This will trigger if the
@@ -896,7 +898,11 @@ Generally it is best not to have drop_progs with the same keywords in
 them, unless they are a drop_prog p with different keyword lists but
 some of the same keywords &#8211; for example a drop_prog p apple
 red
-juicy and a drop_prog p apple red poisoned.</p>
+juicy and a drop_prog p apple red poisoned..
+</p><h3><a name="dropping_prog">dropping_prog</a></h3>
+<p>Usage:</p>
+<pre>dropping_prog [keyword list]<br />dropping_prog p [keyword list]<br />dropping_prog all<br /></pre>
+This is the same as drop_prog except it triggers only when the scripted npc or player does the dropping. 
 <h3><a name="entry_prog">entry_prog</a></h3>
 <p>Usage:</p>
 <pre>entry_prog [integer percentage or zapper mask]<br /></pre>
@@ -1056,7 +1062,7 @@ when called by MPCALLFUNC.</p>
 <pre>get_prog [keyword list]<br />get_prog p [keyword list]<br />get_prog all<br /></pre>
 <p>This
 type of mobprog is
-triggered by getting an object. If the
+triggered by someone getting an object. If the
 object picked up matches the keywords of the get_prog, the prog is
 triggered. If there is a &#8216;p' placed before the keyword list,
 the
@@ -1066,10 +1072,12 @@ it will trigger it. If a get_prog all is used, then the get_prog will
 trigger from any object at all being picked up. &nbsp; When running
 on
 a container item, the get_prog matches the item being retrieved from
-the container, not the container itself.</p>
+the container, not the container itself. &nbsp;Unlike getting_prog,
+when running on an npc or player, this triggers only when the npc or
+player witnesses the get action.</p>
 <p>This type of prog is
 usually used for in-zone quests and special mob behavior, and has a
-variety of uses.</p>
+variety of uses. &nbsp;</p>
 <p>EXAMPLES:</p>
 <pre>get_prog orange apple banana<br /></pre>
 <p>This will trigger if the
@@ -1091,8 +1099,9 @@ Generally it is best not to have get_progs with the same keywords in
 them, unless they are a get_prog p with different keyword lists but
 some of the same keywords &#8211; for example a get_prog p apple
 red
-juicy and a get_prog p apple red poisoned.</p>
-<h3><a name="give_prog">give_prog</a></h3>
+juicy and a get_prog p apple red poisoned.</p><h3><a name="getting_prog">getting_prog</a></h3>
+<p>Usage:</p>
+<pre>getting_prog [keyword list]<br />getting_prog p [keyword list]<br />getting_prog all</pre>As get_prog, but only triggers when the scripted mob or player does the getting.<h3><a name="give_prog">give_prog</a></h3>
 <p>Usage:</p>
 <pre>give_prog [keyword list]<br />give_prog p [keyword list]<br />give_prog all<br /></pre>
 <p>This type of mobprog is

@@ -8,11 +8,11 @@
 #
 #Quest ID:
 #Enter a unique name/id for your quest:
-#$QUEST_ID=$UNIQUE_QUEST_NAME=normal_delivery_1
+#$QUEST_ID=$UNIQUE_QUEST_NAME=normal_delivery_4
 #
 #Quest Name:
 #Enter a friendly displayable name for your quest:
-#$QUEST_NAME=$STRING=Normal Delivery #1
+#$QUEST_NAME=$STRING=Normal Delivery #4
 #
 #Quest-Player Criterium:
 #You may leave this entry blank, or enter a Zapper Mask to describe what

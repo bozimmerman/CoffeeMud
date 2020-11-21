@@ -166,7 +166,7 @@
 #
 #$CATEGORY=($HIDDEN)=
 #
-#!QUESTMAKER_END_SCRIPT Competitive Capture #1
+#!QUESTMAKER_END_SCRIPT Competitive Capture #3
 
 set name $QUEST_ID
 set display $QUEST_NAME

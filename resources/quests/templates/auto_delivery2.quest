@@ -1,0 +1,268 @@
+#!QUESTMAKER_START_SCRIPT Auto Delivery #2
+#The player delivers a custom-Item 
+#to an existing container in your world, such as a pit or mailbox, or
+#a room where the item needs to be dropped.
+#
+#!QUESTMAKER_PAGE Quest Name/Duration
+#Enter the unique name, criteria, and starting time/duration for your new quest.
+#Times are entered as a simple number or math expression to denote a
+#time in default ticks (4 second period), or you may follow the expression 
+#with the word seconds, minutes, hours, days, mudhours, muddays, mudweeks,
+#mudmonths, or mudyears.  Time expressions may include numbers, math 
+#symbols, or the ? operator to generate random numbers.  Example:
+#"5 + 3?10 minutes" would generate a frequency of 8-15 minutes.#
+#
+#Quest ID:
+#Enter a unique name/id for your quest:
+#$QUEST_ID=$UNIQUE_QUEST_NAME=auto_delivery_2
+#
+#Quest Name:
+#Enter a friendly displayable name for your quest:
+#$QUEST_NAME=$STRING=Auto Delivery #2
+#
+#Quest Frequency:
+#This is the time between quest starts.
+#$FREQUENCY=$TIMEEXPRESSION=90 minutes
+#
+#Quest Duration:
+#This is how long your quest remains running, and how long a player 
+#accepting the quest has to complete the quest and report back in.
+#$DURATION=$TIMEEXPRESSION=90 minutes
+#
+#!QUESTMAKER_PAGE Specify the Quest Criteria and Instructions
+#The criteria for players and instructions they need.
+#
+#Quest-Player Criterium:
+#A Zapper Mask to describe what kinds of players will receive this quest.  
+#You can use this to set #race, level, or other requirements.
+#$QUEST_CRITERIA=$ZAPPERMASK
+#
+#Instructions: 
+#Specify some the instructions and justification for the quest.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=Go to that place and drop $[1 *].  Be careful!
+#
+#Success:
+#This is what the player sees when the player completes the quest.
+#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Delivery complete!
+#
+#!QUESTMAKER_PAGE Specify the Destination
+#The destination is either a room or a container item.
+#
+#Destination Area/Room: 
+#Specify below the name of the area and room to take the item to.
+#You may leave area blank to force the quest manager to find them somewhere in 
+#the world, but this will hurt the performance of your mud, so use with care.  
+#Use double-quotes around multi-word area/rooms.
+#
+#Destination Area:
+#$DESTINATION_AREA=($AREA)
+#Destination Room:
+#$DESTINATION_ROOM=$ROOMID
+#
+#Destination Container:
+#Specify below the name of the container item from the above room where
+#the item must be deposited to complete the quest.  If you just want 
+#the player to drop the item in the room, leave this field blank.
+#$DESTINATION_CONTAINER=($NAME)
+#
+#Destination response: 
+#You may optionally specify some additional bit of text said to
+#the players after the item is placed. 
+#$DELIVER_RESPONSE=($LONG_STRING)=Your task is complete.
+#
+#!QUESTMAKER_PAGE Deliverable item
+#Create the item which the player must take to the destination.
+#
+#Deliverable Item: 
+#You may select from the available items below or create a 
+#new item just for this quest.
+#$DELIVERABLE_ITEM=$ITEMXML
+#
+#!QUESTMAKER_PAGE Quest Completion
+#Select some rewards for completing the delivery:
+#
+#Quest Point?
+#$QUEST_POINT=$CHOOSE=YES,NO
+#Amount of money (an amount, or leave blank):
+#$GOLD=($EXPRESSION)
+#Amount of experience points, blank for none, or a number% for percent of exp to next level:
+#$EXP=($STRING)=10%
+#
+#Player Faction to give to or take from:
+#$FACTION=($FACTION)
+#If you selected a faction above, enter a new numeric amount, 
+#or enter +value to add, or --value to subtract:
+#$NUMFACTION=($STRING)
+#
+#Select whether a player may complete this quest multiple times,
+#or 'prev' to require a previous quest, if multiple found.
+#$MULTIPLE=$CHOOSE=YES,NO,PREV
+#
+#$CATEGORY=($HIDDEN)=
+#
+#!QUESTMAKER_END_SCRIPT Auto Delivery #2
+
+set name $QUEST_ID
+set display $QUEST_NAME
+set author $#AUTHOR
+set questtype auto_delivery2
+set category $CATEGORY
+set instructions $QUEST_INSTRUCTIONSSTRING
+
+set wait $FREQUENCY
+set interval 1
+quiet
+
+set minplayers 1
+set playermask $QUEST_CRITERIA
+
+set room
+set area
+set pcmobgroup reselect any mask=$QUEST_CRITERIA
+set script LOAD=$QUEST_ID_playertrack.script
+
+set area
+set room
+set mobgroup
+set mob
+set item
+import items $QUEST_ID_item.xml
+set itemgroup loadeditems
+set item itemgroup
+give affect Property
+
+set area $DESTINATION_AREA
+set room $DESTINATION_ROOM
+set itemgroup
+set item reselect $DESTINATION_CONTAINER
+give stat keyplayer true
+give affect Property
+
+set duration $DURATION
+
+<?xml version="1.0"?>
+<FILE><NAME>$QUEST_ID_item.xml</NAME><DATA><ITEMS>$DELIVERABLE_ITEM</ITEMS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_playertrack.script</NAME>
+<DATA>
+FUNCTION_PROG CAN_ACCEPT
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
+		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			if !QUESTSCRIPTED($n *)
+				RETURN TRUE
+			endif
+		endif
+	endif
+	RETURN CANCEL
+~
+
+FUNCTION_PROG DO_ACCEPT
+	mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+	mpqset * STATISTICS ACCEPTED
+	if !HAS($n '$[1 *]')
+		mpat $n mpforce $n mpoload fromfile $QUEST_ID_item.xml '$[1 *]'
+		MPQSET * QUESTOBJ $b
+		mpat $n mpechoat $n You receive $[1 *].
+	endif
+~
+
+PUTTING_PROG p '$[1 *]'
+	if EVAL($p == '$[1 *]') AND EVAL($o == '$[2 *]') AND EVAL('$[2 *]' != '')
+		if ISLIKE($n '$QUEST_CRITERIA') AND EVAL('$[1 *]' != '') and ISPC($n)
+			if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+				if EVAL($p == '$[1 *]')
+					if EVAL('$EXP' != '')
+						mpexp $i $EXP
+					endif
+					if EVAL('$FACTION' != '')
+						mpfaction $i $FACTION +$NUMFACTION
+					endif
+					if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
+						mpforce $i mpoload QuestPoint
+						mpechoat $i You receive a quest point.
+					endif
+					if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+						mpforce $i mpoload $GOLD
+						mpechoat $i You receive $b.
+					endif
+					mpforce $i mpoload fromfile $QUEST_ID_rewarditems.xml any
+					if EVAL('$b' != '')
+						mpechoat $i You receive $b.
+					endif
+					mpquestwin $i *
+					mpecho $QUEST_WINSPEECH_TEXT
+					mpendquest $i
+					mpqset * STATISTICS SUCCESS
+					IF EVAL('$MULTIPLE' == 'PREV')
+						mptransfer $i $i
+					ENDIF
+				endif
+			endif
+		endif
+	endif
+~
+
+DROPPING_PROG p '$[1 *]'
+	if EVAL('$[2 *]' != '') 
+		RETURN
+	ENDIF
+	if ISLIKE($n '$QUEST_CRITERIA') AND EVAL('$[1 *]' != '') and ISPC($n)
+		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			if EVAL($o == '$[1 *]')
+				if EVAL('$EXP' != '')
+					mpexp $n 10%
+				endif
+				if EVAL('$FACTION' != '')
+					mpfaction $n $FACTION +$NUMFACTION
+				endif
+				if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
+					mpoloadroom QuestPoint
+					mpforce $n GET "a quest point"
+				endif
+				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+					mpoload $GOLD
+					mpforce $n GET $GOLD
+				endif
+				mpquestwin $n *
+				mpecho $DELIVER_RESPONSE
+				mpendquest $n
+				mpqset * STATISTICS SUCCESS
+				IF EVAL('$MULTIPLE' == 'PREV')
+					mptransfer $n $n
+				ENDIF
+			endif
+		endif
+	endif
+~
+
+ONCE_PROG 100
+	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
+	IF QVAR(* DURATION != '0')
+	    if QVAR(* REMAINING == '')
+	        MPENDQUEST $i
+	    else
+			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+		endif
+	ENDIF
+	mpechoat $i $QUEST_INSTRUCTIONSSTRING
+~
+
+RAND_PROG 25
+	IF QVAR(* DURATION != '0')
+		if QVAR(* REMAINING == '')
+			MPENDQUEST $i
+		else
+			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+		endif
+	ENDIF
+~
+
+QUEST_TIME_PROG * 1
+	MPECHOAT $i The quest "$QUEST_NAME" has 1 minute remaining.
+~
+
+QUEST_TIME_PROG * -1
+	MPECHOAT $i The quest "$QUEST_NAME" has ended.
+~
+
+
+</DATA></FILE>

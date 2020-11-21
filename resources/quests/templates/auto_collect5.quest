@@ -189,13 +189,18 @@ FUNCTION_PROG DO_ACCEPT
 
 ONCE_PROG 100
 	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
-	IF !isquestmobalive(1 '$QUEST_ID')
-		MPENDQUEST '$QUEST_ID'
-	ENDIF
 	if var($i $QUEST_ID_COLLECTED = '')
 		mpsetvar $i $QUEST_ID_COLLECTED 0
 	endif
+	IF QVAR(* DURATION != '0')
+	    if QVAR(* REMAINING == '')
+	        MPENDQUEST $i
+	    else
+			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+		endif
+	ENDIF
 	mpsetvar $i PROGRESS Collected: $<$i $QUEST_ID_COLLECTED>/$NUM_COLLECTABLES
+	mpat $i mpechoat $i $QUEST_INSTRUCTIONSSTRING
 ~
 
 RAND_PROG 25

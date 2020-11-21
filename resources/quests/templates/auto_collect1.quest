@@ -199,8 +199,15 @@ ONCE_PROG 100
 	if var($i $QUEST_ID_GOT = '')
 		mpsetvar $i $QUEST_ID_GOT 0
 	endif
+	IF QVAR(* DURATION != '0')
+	    if QVAR(* REMAINING == '')
+	        MPENDQUEST $i
+	    else
+			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+		endif
+	ENDIF
 	mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES
-	mpechoat $i $QUEST_INSTRUCTIONSSTRING
+	mpat $i mpechoat $i $QUEST_INSTRUCTIONSSTRING
 ~
 
 RAND_PROG 25
