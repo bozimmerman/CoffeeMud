@@ -65,6 +65,33 @@ public class QuestMaker extends StdWebMacro
 			pageList=CMLib.quests().getQuestTemplate(mob, fileToGet);
 			httpReq.getRequestObjects().put("QM_PAGE_LIST",pageList);
 			String filter=httpReq.getUrlParameter("QUEST_TEMPLATE_FILTER");
+			pageList.sortBy(new Comparator<Object[]>() {
+				@Override
+				public int compare(final Object[] o1, final Object[] o2)
+				{
+					final String s1=((String)o1[2]).toLowerCase();
+					final String s2=((String)o2[2]).toLowerCase();
+					if(s1.startsWith("normal_"))
+					{
+						if(!s2.startsWith("normal_"))
+							return -1;
+					}
+					else
+					if(s2.startsWith("normal_"))
+						return 1;
+					else
+					if(s1.startsWith("competitive_"))
+					{
+						if(!s2.startsWith("competitive_"))
+							return -1;
+					}
+					else
+					if(s2.startsWith("competitive_"))
+						return 1;
+					return s1.compareTo(s2);
+				}
+
+			});
 			if((filter != null) && (filter.length()>0))
 			{
 				pageList=pageList.copyOf();

@@ -36,7 +36,7 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 {
 	public static final long 	serialVersionUID=43353454350L;
 	protected int 				dimensions=1;
-	private SVector<Object[]> 	stuff;
+	private final SVector<Object[]> 	stuff;
 	private final static int 	MAX_SIZE=9;
 
 	public final static DVector empty = new DVector(1);
@@ -130,25 +130,46 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 		dim--;
 		if(stuff!=null)
 		{
-			final TreeSet<Object> sorted=new TreeSet<Object>();
-			Object O=null;
-			for (final Object[] name : stuff)
-			{
-				O=(name)[dim];
-				if(!sorted.contains(O))
-					sorted.add(O);
-			}
-			final SVector<Object[]> newStuff = new SVector<Object[]>(stuff.size());
-			for(final Iterator<Object> i=sorted.iterator();i.hasNext();)
-			{
-				O=i.next();
-				for (final Object[] Os : stuff)
+			final int d=dim;
+			final List<Object[]> subStuff=new ArrayList<Object[]>(stuff.size());
+			subStuff.addAll(stuff);
+			Collections.sort(subStuff,new Comparator<Object[]>(){
+				@SuppressWarnings({ "unchecked", "rawtypes" })
+				@Override
+				public int compare(final Object[] o1, final Object[] o2)
 				{
-					if(O==Os[dim])
-						newStuff.addElement(Os);
+					final Object oo1=o1[d];
+					final Object oo2=o2[d];
+					if(oo1 == oo2)
+						return 0;
+					if(oo1==null)
+					{
+						if(oo2==null)
+							return 0;
+						return -1;
+					}
+					else
+					if(oo2==null)
+						return 1;
+					if(oo1 instanceof Comparable)
+						return ((Comparable)oo1).compareTo(oo2);
+					return Integer.valueOf(oo1.hashCode()).compareTo(Integer.valueOf(oo2.hashCode()));
 				}
-			}
-			stuff=newStuff;
+			});
+			stuff.clear();
+			stuff.addAll(subStuff);
+		}
+	}
+
+	public synchronized void sortBy(final Comparator<Object[]> comparator)
+	{
+		if(stuff!=null)
+		{
+			final List<Object[]> subStuff=new ArrayList<Object[]>(stuff.size());
+			subStuff.addAll(stuff);
+			Collections.sort(subStuff,comparator);
+			stuff.clear();
+			stuff.addAll(subStuff);
 		}
 	}
 
