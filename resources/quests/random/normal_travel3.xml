@@ -31,6 +31,7 @@ settable vars:
 	gold_amount_awarded
 	quest_point_awarded(YES,NO)
 	reward_items()
+	target_min_arealevel(#), target_max_arealevel(#)
 	quest_multiple(YES, NO, or PREV)
 -->
 
@@ -155,8 +156,17 @@ settable vars:
 		<OBJECT pickweight=1 condition="$area_name = '' and '${SELECT: name FROM area}' = '' and $multiarea = 'YES'">
 			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from $mql_viable_questgivers) &gt; 0
 		</OBJECT>
-		<OBJECT pickweight=1 condition="$area_name = '' and '${SELECT: name FROM area}' = '' and $multiarea != 'YES'">
+		<OBJECT pickweight=1 condition="$area_name = '' and $target_min_arealevel = '' and '${SELECT: name FROM area}' = '' and $multiarea != 'YES'">
 			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from $mql_viable_questgivers) &gt; 0
+				AND (SELECT: count\. from area\rooms WHERE exits\count &gt; 0 and display\count = 1 and 
+					( (shops\count &gt; 0 
+					    and ((SELECT: COUNT\. from room\shops WHERE CLASS="GenLibrarian") &gt; 0 
+					          or  (SELECT: COUNT\. from room\shops\shopitems WHERE CLASS="GenBook") &gt; 0)) 
+					  or "library" in display or "library" in description or "bookshelf" in description or "bookcase" in description or "books" in description)) &gt; 0
+		</OBJECT>
+		<OBJECT pickweight=1 condition="$area_name = '' and $target_min_arealevel != '' and '${SELECT: name FROM area}' = '' and $multiarea != 'YES'">
+			SELECT: ANY\. FROM areas WHERE MED_LEVEL &gt;= $target_min_arealevel and MED_LEVEL &lt;= $target_max_arealevel 
+				and (SELECT: count\. from $mql_viable_questgivers) &gt; 0
 				AND (SELECT: count\. from area\rooms WHERE exits\count &gt; 0 and display\count = 1 and 
 					( (shops\count &gt; 0 
 					    and ((SELECT: COUNT\. from room\shops WHERE CLASS="GenLibrarian") &gt; 0 
@@ -219,11 +229,19 @@ settable vars:
 	<OBJECT ID="target_area" SELECT="Pick-1" DEFINE="target_area">
 		<OBJECT pickweight=55555 condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
 		<OBJECT pickweight=100 condition="$targetarea_name = '' and $multiarea != 'YES'">SELECT: any\. from $source_area</OBJECT>
-		<OBJECT pickweight=1 condition="$targetarea_name = '' and $multiarea = 'YES'">SELECT: any\. from $target_areas_guess</OBJECT>
+		<OBJECT pickweight=1 condition="$targetarea_name = '' and $multiarea = 'YES'">
+			SELECT: any\. from $target_areas_guess
+		</OBJECT>
 	</OBJECT>
 
-	<OBJECT ID="target_areas_guess" define="target_areas_guess">
-		SELECT: . FROM areas WHERE (SELECT: count\. from area\rooms WHERE exits\count &gt; 0 and display\count = 1 and ((shops\count &gt; 0 and ((SELECT: COUNT\. from room\shops WHERE CLASS="GenLibrarian") &gt; 0 or  (SELECT: COUNT\. from room\shops\shopitems WHERE CLASS="GenBook") &gt; 0)) or "library" in display or "library" in description or "bookshelf" in description or "bookcase" in description or "books" in description) &gt; 0
+	<OBJECT ID="target_areas_guess" define="target_areas_guess" SELECT="Pick-1">
+		<OBJECT pickweight=1 condition="$target_min_arealevel = ''">
+			SELECT: . FROM areas WHERE (SELECT: count\. from area\rooms WHERE exits\count &gt; 0 and display\count = 1 and ((shops\count &gt; 0 and ((SELECT: COUNT\. from room\shops WHERE CLASS="GenLibrarian") &gt; 0 or  (SELECT: COUNT\. from room\shops\shopitems WHERE CLASS="GenBook") &gt; 0)) or "library" in display or "library" in description or "bookshelf" in description or "bookcase" in description or "books" in description) &gt; 0
+		</OBJECT>
+		<OBJECT pickweight=1 condition="$target_min_arealevel != ''">
+			SELECT: . FROM areas WHERE MED_LEVEL &gt;= $target_min_arealevel and MED_LEVEL &lt;= $target_max_arealevel 
+				and (SELECT: count\. from area\rooms WHERE exits\count &gt; 0 and display\count = 1 and ((shops\count &gt; 0 and ((SELECT: COUNT\. from room\shops WHERE CLASS="GenLibrarian") &gt; 0 or  (SELECT: COUNT\. from room\shops\shopitems WHERE CLASS="GenBook") &gt; 0)) or "library" in display or "library" in description or "bookshelf" in description or "bookcase" in description or "books" in description) &gt; 0
+		</OBJECT>
 	</OBJECT>
 
 	<STRING ID="target_area_name" SELECT="any-1" DEFINE="target_area_name">

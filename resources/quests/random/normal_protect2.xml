@@ -33,6 +33,7 @@ settable vars:
 	quest_point_awarded(YES,NO)
 	announcechannel()
 	reward_items()
+	target_min_arealevel(#), target_max_arealevel(#)
 	quest_multiple(YES, NO, or PREV)
 -->
 
@@ -235,8 +236,12 @@ settable vars:
 		<OBJECT pickweight=1 condition="$area_name = '' and '${SELECT: name FROM area}' = '' and $multiarea = 'YES'">
 			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from $mql_viable_questgivers) &gt; 0
 		</OBJECT>
-		<OBJECT pickweight=1 condition="$area_name = '' and '${SELECT: name FROM area}' = '' and $multiarea != 'YES'">
+		<OBJECT pickweight=1 condition="$area_name = '' and $target_min_arealevel = '' and '${SELECT: name FROM area}' = '' and $multiarea != 'YES'">
 			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from $mql_viable_questgivers) &gt; 1
+		</OBJECT>
+		<OBJECT pickweight=1 condition="$area_name = '' and $target_min_arealevel != '' and '${SELECT: name FROM area}' = '' and $multiarea != 'YES'">
+			SELECT: ANY\. FROM areas WHERE MED_LEVEL &gt;= $target_min_arealevel and MED_LEVEL &lt;= $target_max_arealevel 
+				and (SELECT: count\. from $mql_viable_questgivers) &gt; 1
 		</OBJECT>
 	</OBJECT>
 
@@ -382,11 +387,19 @@ settable vars:
 	<OBJECT ID="target_area" SELECT="Pick-1" DEFINE="target_area">
 		<OBJECT pickweight=55555 condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
 		<OBJECT pickweight=100 condition="$targetarea_name = '' and $multiarea != 'YES'">SELECT: any\. from $source_area</OBJECT>
-		<OBJECT pickweight=1 condition="$targetarea_name = '' and $multiarea = 'YES' and $num_targets = 1">
+		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel = '' and $multiarea = 'YES' and $num_targets = 1">
 			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from $mql_viable_questtarget) &gt; 0
 		</OBJECT>
-		<OBJECT pickweight=1 condition="$targetarea_name = '' and $multiarea = 'YES' and $num_targets &gt; 1">
+		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel = '' and $multiarea = 'YES' and $num_targets &gt; 1">
 			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from $mql_viable_questtargets) &gt; 0
+		</OBJECT>
+		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel != '' and $multiarea = 'YES' and $num_targets = 1">
+			SELECT: ANY\. FROM areas WHERE MED_LEVEL &gt;= $target_min_arealevel and MED_LEVEL &lt;= $target_max_arealevel 
+				and (SELECT: count\. from $mql_viable_questtarget) &gt; 0
+		</OBJECT>
+		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel != '' and $multiarea = 'YES' and $num_targets &gt; 1">
+			SELECT: ANY\. FROM areas WHERE MED_LEVEL &gt;= $target_min_arealevel and MED_LEVEL &lt;= $target_max_arealevel 
+				and (SELECT: count\. from $mql_viable_questtargets) &gt; 0
 		</OBJECT>
 	</OBJECT>
 

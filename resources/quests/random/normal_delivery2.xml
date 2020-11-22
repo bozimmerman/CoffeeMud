@@ -31,6 +31,7 @@ settable vars:
 	gold_amount_awarded
 	quest_point_awarded(YES,NO)
 	reward_items()
+	target_min_arealevel(#), target_max_arealevel(#)
 	quest_multiple(YES, NO, or PREV)
 -->
 
@@ -202,8 +203,13 @@ settable vars:
 		<OBJECT pickweight=1 condition="$area_name = '' and '${SELECT: name FROM area}' = '' and $multiarea = 'YES'">
 			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from $mql_viable_questgivers) &gt; 0
 		</OBJECT>
-		<OBJECT pickweight=1 condition="$area_name = '' and '${SELECT: name FROM area}' = '' and $multiarea != 'YES'">
+		<OBJECT pickweight=1 condition="$area_name = '' and $target_min_arealevel = '' and '${SELECT: name FROM area}' = '' and $multiarea != 'YES'">
 			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from $mql_viable_questgivers) &gt; 0
+				AND (SELECT:count\. from area\rooms WHERE exits\count &gt; 0  AND display\count = 1) &gt; 0
+		</OBJECT>
+		<OBJECT pickweight=1 condition="$area_name = '' and $target_min_arealevel != '' and '${SELECT: name FROM area}' = '' and $multiarea != 'YES'">
+			SELECT: ANY\. FROM areas WHERE MED_LEVEL &gt;= $target_min_arealevel and MED_LEVEL &lt;= $target_max_arealevel 
+				and (SELECT: count\. from $mql_viable_questgivers) &gt; 0
 				AND (SELECT:count\. from area\rooms WHERE exits\count &gt; 0  AND display\count = 1) &gt; 0
 		</OBJECT>
 	</OBJECT>
@@ -275,14 +281,22 @@ settable vars:
 		</OBJECT>
 	</OBJECT>
 
-	<STRING ID="number_of_areas_with_container_rooms" define="number_of_areas_with_container_rooms">${select: count\. from $target_area_container_guess}</STRING>
+	<STRING ID="number_of_areas_with_container_rooms" define="number_of_areas_with_container_rooms">
+		${select: count\. from $target_area_container_guess}
+	</STRING>
 
 	<OBJECT ID="target_area_container_guess" define="target_area_container_guess">
 		SELECT: . FROM $target_areas_guess WHERE (SELECT: count\. from $target_container_room_guess) &gt; 0
 	</OBJECT>
 
-	<OBJECT ID="target_areas_guess" define="target_areas_guess">
-		SELECT: . FROM areas WHERE (SELECT: count\. from area\rooms WHERE exits\count &gt; 0  AND display\count = 1) &gt; 0
+	<OBJECT ID="target_areas_guess" define="target_areas_guess"  SELECT="Pick-1">
+		<OBJECT CONDITION="$target_min_arealevel = ''" PICKWEIGHT=1>
+			SELECT: . FROM areas WHERE (SELECT: count\. from area\rooms WHERE exits\count &gt; 0  AND display\count = 1) &gt; 0
+		</OBJECT>
+		<OBJECT CONDITION="$target_min_arealevel != ''" PICKWEIGHT=1>
+			SELECT: . FROM areas WHERE MED_LEVEL &gt;= $target_min_arealevel and MED_LEVEL &lt;= $target_max_arealevel 
+				and (SELECT: count\. from area\rooms WHERE exits\count &gt; 0  AND display\count = 1) &gt; 0
+		</OBJECT>
 	</OBJECT>
 
 	<OBJECT ID="target_container_guess">
