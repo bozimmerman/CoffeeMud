@@ -229,7 +229,8 @@ public class WandArchon extends StdWand implements ArchonOnly
 						return;
 					message=message.substring(5).trim();
 					message=message.substring(0,message.length()-2).trim();
-					if((message.length()>0)&&(!message.equalsIgnoreCase("ALL")))
+					if((message.length()>0)
+					&&(!message.equalsIgnoreCase("ALL")))
 					{
 						Ability A=CMClass.getAbility(message);
 						if(A==null)
@@ -276,6 +277,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 								}
 							}
 							else
+							if(message.length()>0)
 							{
 								final Ability A=CMClass.getAbility(map.abilityID());
 								if(A!=null)
