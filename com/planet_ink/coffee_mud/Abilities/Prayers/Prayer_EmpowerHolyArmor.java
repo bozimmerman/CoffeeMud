@@ -120,7 +120,7 @@ public class Prayer_EmpowerHolyArmor extends Prayer
 			return false;
 		}
 
-		if(Prayer.checkInfusionMismatch(mob, target))
+		if(!Prayer.checkInfusionMismatch(mob, target))
 		{
 			mob.tell(L("You can not empower that repulsive armor."));
 			return false;

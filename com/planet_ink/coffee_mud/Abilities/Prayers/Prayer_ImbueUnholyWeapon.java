@@ -75,6 +75,18 @@ public class Prayer_ImbueUnholyWeapon extends Prayer_ImbueShield
 	}
 
 	@Override
+	protected boolean isOkPrayer(final Ability imbuePrayerA)
+	{
+		if((imbuePrayerA.ID().equals("Spell_Stoneskin"))
+		||(imbuePrayerA.ID().equals("Spell_MirrorImage"))
+		||(CMath.bset(imbuePrayerA.flags(), FLAG_SUMMONING))
+		||(imbuePrayerA.abstractQuality()!=Ability.QUALITY_MALICIOUS)
+		||(!imbuePrayerA.canTarget(CAN_MOBS)))
+			return false;
+		return true;
+	}
+	
+	@Override
 	protected void doImbue(final MOB mob, final Item targetI, final Ability imbuePrayerA)
 	{
 		mob.location().show(mob,targetI,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glow(s) wickedly!"));

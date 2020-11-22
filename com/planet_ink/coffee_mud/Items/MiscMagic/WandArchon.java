@@ -247,9 +247,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 							{
 								target.fetchAbility(A.ID()).setProficiency(100);
 								if(target.fetchEffect(A.ID())!=null)
-								{
 									target.fetchEffect(A.ID()).setProficiency(100);
-								}
 							}
 							else
 							{
@@ -275,6 +273,8 @@ public class WandArchon extends StdWand implements ArchonOnly
 									A.setProficiency(100);
 									didSomething = true;
 								}
+								if(target.fetchEffect(A.ID())!=null)
+									target.fetchEffect(A.ID()).setProficiency(100);
 							}
 							else
 							if(message.length()>0)

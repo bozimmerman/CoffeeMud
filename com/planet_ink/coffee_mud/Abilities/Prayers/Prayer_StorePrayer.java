@@ -390,7 +390,7 @@ public class Prayer_StorePrayer extends Prayer implements AbilityContainer, Disc
 			return false;
 		}
 
-		if(Prayer.checkInfusionMismatch(mob, target))
+		if(!Prayer.checkInfusionMismatch(mob, target))
 		{
 			mob.tell(L("You can store no prayer in that repulsive item."));
 			return false;

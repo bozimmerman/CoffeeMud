@@ -90,6 +90,18 @@ public class Prayer_ImbueModestWeapon extends Prayer_ImbueShield
 	}
 
 	@Override
+	protected boolean isOkPrayer(final Ability imbuePrayerA)
+	{
+		if((imbuePrayerA.ID().equals("Spell_Stoneskin"))
+		||(imbuePrayerA.ID().equals("Spell_MirrorImage"))
+		||(CMath.bset(imbuePrayerA.flags(), FLAG_SUMMONING))
+		||(imbuePrayerA.abstractQuality()!=Ability.QUALITY_MALICIOUS)
+		||(!imbuePrayerA.canTarget(CAN_MOBS)))
+			return false;
+		return true;
+	}
+	
+	@Override
 	protected int getXPCost(final Ability imbuePrayerA)
 	{
 		int experienceToLose=1000;
