@@ -1,0 +1,269 @@
+#!QUESTMAKER_START_SCRIPT Auto Travel #3
+#The player must travel to a particular location on your 
+# map and then use a skill that generates a message.
+#
+#!QUESTMAKER_PAGE Quest Name/Duration
+#Enter the unique name and starting time/duration for your new quest.
+#Times are entered as a simple number or math expression to denote a
+#time in default ticks (4 second period), or you may follow the expression 
+#with the word seconds, minutes, hours, days, mudhours, muddays, mudweeks,
+#mudmonths, or mudyears.  Time expressions may include numbers, math 
+#symbols, or the ? operator to generate random numbers.  Example:
+#"5 + 3?10 minutes" would generate a frequency of 8-15 minutes.#
+#
+#Quest ID:
+#Enter a unique name/id for your quest:
+#$QUEST_ID=$UNIQUE_QUEST_NAME=auto_travel_3
+#
+#Quest Name:
+#Enter a friendly displayable name for your quest:
+#$QUEST_NAME=$STRING=Auto Travel #3
+#
+#Quest Frequency:
+#This is the time between quest starts.
+#$FREQUENCY=$TIMEEXPRESSION=90 minutes
+#
+#Quest Duration:
+#A Zapper Mask to describe what kinds of players will receive this quest.  
+#You can use this to set #race, level, or other requirements.
+#$DURATION=$TIMEEXPRESSION=90 minutes
+#
+#!QUESTMAKER_PAGE Specify the Quest Criteria and Instructions
+#The criteria for players and instructions they need.
+#
+#Quest-Player Criterium:
+#A Zapper Mask to describe what kinds of players will receive this quest.  
+#You can use this to set race, level, or other requirements.
+#$QUEST_CRITERIA=$ZAPPERMASK
+#
+#Instructions: 
+#Specify some the instructions and justification for the quest.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=Go to that one place.
+#
+#Success:
+#This is what the player sees when the player completes the quest.
+#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Congratulations! You did it!
+#
+#!QUESTMAKER_PAGE Travel destination
+#Here's where you specify the destination that the player 
+#must arrive at to complete the quest, and what they must do.
+#
+#Travel Destination: 
+#Specify below the name of the area and room to which the player must travel.
+#You may leave the area blank
+#to force the quest manager to find the room somewhere in the world, but this
+#will hurt the performance of your mud, so use with care.
+#Use double-quotes around multi-word areas and room ids/names.
+#  
+#Destination Area:
+#$DESTINATION_AREA=($AREA)
+#Destination Room ID:
+#$DESTINATION_ROOM=$ROOMID
+#
+#Destination Skill:
+#The ability ID of a skill which must be used in the destination room, or empty for none.
+#$DESTINATION_SKILL_ID=($ABILITY)=
+#
+#Force Skill:
+#Whether the Destination Skill is forcibly used by the player when they enter the room,
+#even if they don't actually HAVE the skill.
+#$DESTINATION_FORCE=CHOOSE=NO,YES
+#
+#Destination Message:
+#A message seen by the player in the destination room.  This must be a message which everyone
+#can see.  Use empty for no required message.
+#$DESTINATION_MSG=($STRING)=
+#
+#!QUESTMAKER_PAGE Quest Completion
+#Select some rewards for completing the quest:
+#
+#Reward items: 
+#Specify zero or more items to choose from as a reward 
+#$REWARD_ITEMS=$ITEMXML_ZEROORMORE
+#
+#Quest Point?
+#$QUEST_POINT=$CHOOSE=YES,NO
+#Amount of money (an amount, or leave blank):
+#$GOLD=($EXPRESSION)
+#Amount of experience points, blank for none, or a number% for percent of exp to next level:
+#$EXP=($STRING)=10%
+#
+#Player Faction to give to or take from:
+#$FACTION=($FACTION)
+#If you selected a faction above, enter a new numeric amount, 
+#or enter +value to add, or --value to subtract:
+#$NUMFACTION=($STRING)
+#
+#Select whether a player may complete this quest multiple times,
+#or 'prev' to require a previous quest, if multiple found.
+#$MULTIPLE=$CHOOSE=YES,NO,PREV
+#
+#Travel response Type: 
+#Specify what sort of emote occurs after the player successfully travels
+#to the designated room.
+#$TRAVEL_RESPONSE_TYPE=$CHOOSE=MPECHOAT $N,MPECHO,QUESTCHAT,SAY,YELL
+#Travel response Text: 
+#Specify what is emoted in the same room after the player successfully travels 
+#to the designated room.  You may leave this blank if you like.
+#$TRAVEL_RESPONSE=($LONG_STRING)=Your journey is complete.
+#
+#$DESTINATION_SKILL_XML=($HIDDEN)=
+#
+#$CATEGORY=($HIDDEN)=
+#
+#!QUESTMAKER_END_SCRIPT Auto Travel #3
+
+set name $QUEST_ID
+set display $QUEST_NAME
+set author $#AUTHOR
+set questtype auto_travel3
+set category $CATEGORY
+set instructions $QUEST_INSTRUCTIONSSTRING
+
+set wait $FREQUENCY
+set interval 1
+set duration $DURATION
+quiet
+
+set room
+set area
+set pcmobgroup reselect any mask=$QUEST_CRITERIA
+set script LOAD=$QUEST_ID_playertrack.script
+
+set mobgroup
+set mob
+set area $DESTINATION_AREA
+set room $DESTINATION_ROOM
+set wherehappened ROOM
+
+optional
+import abilities $QUEST_ID_destinationskill.xml
+set abilitygroup loadedabilities
+set ability ANY
+
+<?xml version="1.0"?>
+<FILE><NAME>$QUEST_ID_destinationskill.xml</NAME><DATA>$DESTINATION_SKILL_XML</DATA></FILE>
+<FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_playertrack.script</NAME>
+<DATA>
+FUNCTION_PROG CAN_ACCEPT
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
+		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			if !QUESTSCRIPTED($n *)
+				RETURN TRUE
+			endif
+		endif
+	endif
+	RETURN CANCEL
+~
+
+FUNCTION_PROG DO_ACCEPT
+	mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+	mpqset * STATISTICS ACCEPTED
+~
+
+ONCE_PROG 100
+	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
+	if var($i MYROOM = '')
+		mpsetvar $i MYROOM '$%QVAR(* WHEREHAPPENED_ROOMID)%'
+	endif
+	IF QVAR(* DURATION != '0')
+	    if QVAR(* REMAINING == '')
+	        MPENDQUEST $i
+	    else
+			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+		endif
+	ENDIF
+	mpat $i mpechoat $i $QUEST_INSTRUCTIONSSTRING
+~
+
+RAND_PROG 25
+	IF QVAR(* DURATION != '0')
+		if QVAR(* REMAINING == '')
+			MPENDQUEST $i
+		else
+			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+		endif
+	ENDIF
+~
+
+QUEST_TIME_PROG * -1
+	MPECHOAT $i The quest "$QUEST_NAME" has ended.
+~
+
+QUEST_TIME_PROG * 1
+	MPECHOAT $i The quest "$QUEST_NAME" has 1 minute remaining.
+~
+
+ENTRY_PROG 100
+	if EVAL($n == $i) AND INROOM($i == '$<$i MYROOM>')
+		MPCALLFUNC SUCCESS
+		IF VAR($i $QUEST_ID_REWARDED == '') AND EVAL('$DESTINATION_FORCE' == 'YES') AND EVAL('$DESTINATION_SKILL_ID' != '')
+			MPCAST $DESTINATION_SKILL_ID
+		ENDIF
+	endif
+~
+
+CASTING_PROG $DESTINATION_SKILL_ID
+	if EVAL($n == $i) AND EVAL('$DESTINATION_SKILL_ID' != '') AND INROOM($i == '$<$i MYROOM>')
+		MPSETVAR $i $QUEST_ID_USEDSKILL YES
+		MPCALLFUNC SUCCESS
+	ENDIF
+~
+
+IMASK_PROG '$DESTINATION_MSG'
+	if EVAL('$DESTINATION_MSG' != '') AND INROOM($i == '$<$i MYROOM>')
+		MPSETVAR $i $QUEST_ID_SAWMSG YES
+		MPCALLFUNC SUCCESS
+	ENDIF
+~
+
+ACT_PROG '$DESTINATION_MSG'
+	if EVAL('$DESTINATION_MSG' != '') AND INROOM($i == '$<$i MYROOM>')
+		MPSETVAR $i $QUEST_ID_SAWMSG YES
+		MPCALLFUNC SUCCESS
+	ENDIF
+~
+
+FUNCTION_PROG SUCCESS
+	if INROOM($i == '$<$i MYROOM>') AND VAR($i $QUEST_ID_REWARDED == '')
+		IF EVAL('$DESTINATION_SKILL_ID' != '') AND VAR($i $QUEST_ID_USEDSKILL != 'YES')
+			RETURN
+		ENDIF
+		IF EVAL('$DESTINATION_MSG' != '') AND VAR($i $QUEST_ID_SAWMSG != 'YES')
+			RETURN
+		ENDIF
+		mpsetvar $i $QUEST_ID_REWARDED 'REWARDED'
+		if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($i *)
+			# do nothing
+		else
+			if EVAL('$EXP' != '')
+				mpexp $i $EXP
+			endif
+			if EVAL('$FACTION' != '')
+				mpfaction $i $FACTION +$NUMFACTION
+			endif
+			if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($i *)
+				mpoloadroom QuestPoint
+				mpforce $i GET "a quest point"
+			endif
+			if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+				mpoloadroom $GOLD
+				mpforce $i GET $GOLD
+			endif
+			mpoloadroom fromfile $QUEST_ID_rewarditems.xml any
+			if EVAL('$b' != '')
+				mpforce $i GET "$b"
+			endif
+			mpquestwin $i *
+			$TRAVEL_RESPONSE_TYPE $TRAVEL_RESPONSE
+			mpecho $QUEST_WINSPEECH_TEXT
+			mpendquest $i
+			mpqset * STATISTICS SUCCESS
+			IF EVAL('$MULTIPLE' == 'PREV')
+				mptransfer $i $i
+			ENDIF
+		endif
+	endif
+~
+</DATA></FILE>

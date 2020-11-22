@@ -1,0 +1,360 @@
+#!QUESTMAKER_START_SCRIPT Auto Dispel #1
+#The player must dispel or otherwise remove a spell, disease, poison, or
+#other affect from 1 or more affected mobs on your map.
+#
+#!QUESTMAKER_PAGE Quest Name/Duration
+#Enter the unique name and starting time/duration for your new quest.
+#Times are entered as a simple number or math expression to denote a
+#time in default ticks (4 second period), or you may follow the expression 
+#with the word seconds, minutes, hours, days, mudhours, muddays, mudweeks,
+#mudmonths, or mudyears.  Time expressions may include numbers, math 
+#symbols, or the ? operator to generate random numbers.  Example:
+#"5 + 3?10 minutes" would generate a frequency of 8-15 minutes.#
+#
+#Quest ID:
+#Enter a unique name/id for your quest:
+#$QUEST_ID=$UNIQUE_QUEST_NAME=auto_dispel_1
+#
+#Quest Name:
+#Enter a friendly displayable name for your quest:
+#$QUEST_NAME=$STRING=Auto Dispel #1
+#
+#Quest Frequency:
+#This is the time between quest starts.
+#$FREQUENCY=$TIMEEXPRESSION=90 minutes
+#
+#Quest Duration:
+#This is how long your quest remains running, and how long a player 
+#accepting the quest has to complete the quest and report back in.
+#$DURATION=$TIMEEXPRESSION=90 minutes
+#
+#!QUESTMAKER_PAGE Specify the Quest Criteria and Instructions
+#The criteria for players and instructions they need.
+#
+#Quest-Player Criterium:
+#A Zapper Mask to describe what kinds of players will receive this quest.  
+#You can use this to set race, level, or other requirements.
+#$QUEST_CRITERIA=$ZAPPERMASK
+#
+#Instructions: 
+#Specify some the instructions and justification for the quest.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=I need you to rescue or cure some folks.  They are somewhere around somewhere.  Just help them.
+#
+#Success:
+#This is what the player sees when the player completes the quest.
+#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=They have all been cured! Congratulations $i!
+#
+#!QUESTMAKER_PAGE Specify the Helpable Mob or Mobs
+#The Helpables are the mob or mobs which must be defeated.
+#
+#Helpables Area: 
+#Specify below the name of the area that your helpable mobs will be located
+#in You may leave it blank to include the whole world.
+#$HELPABLES_AREA=($AREA)
+#
+#Helpable mobs: 
+#Specify below the mobs that the player must help to get credit for this quest.
+#Also, the area in which they will be found and helped.
+#
+#Helpable mob names: 
+#Specify the mobs who will act as the helpable mob or mobs.  
+#See help on ZAPPERMASK for information on zapper mask syntax.
+#$HELPABLES_MASK=$ZAPPERMASK
+#
+#Num Helpable:
+#Specify how many of the helpable mobs must be helped.  Make sure there are 
+#enough of them in your world to make this goal reachable!
+#$NUM_HELPABLES=($EXPRESSION)=1
+#
+#Helpable response: 
+#You may optionally specify some additional bit of speech the helpables 
+#mobs will say to the players when they enter the room with them. 
+#$HELPABLES_RESPONSE=($STRING)=Help!  Cure me or Rescue me or something!
+#
+#!QUESTMAKER_PAGE The Disease or Problem
+#Specify what the helpables need help from or with, and possibly what the
+#players can use to help or cure them.
+#
+#Temporary Effects
+#Leave blank, or the name of a disease or other effect to put the 
+#helpables under when a quest player enters the room with them.
+#$TEMPORARY_EFFECTS=($MEFFECT)=
+#Leave blank, or any arguments for the above effect ability or
+#property.
+#$TEMPORARY_EFFECT_ARGS=($STRING)=
+#
+#Temporary Ambiance
+#Leave blank, or an ambiance, which is a string displayed next to the
+#helpable mobs name when seen in the room.  Like "(helpable)"
+#$TEMPORARY_AMBIANCE=($STRING)=
+#
+#!QUESTMAKER_PAGE The Cure or the Help
+#Specify possible cures.  Everything is optional on this page,
+#since natural cures work in the right circumstances.  
+#This is for when no naturally dispellable effect was specified above.
+#
+#Strange Custom Dispel Ability
+#Leave blank, or a skill which, when invoked, will remove the effect
+#from the helpable, thus curing them.  When left blank, natural game
+#removing methods will still work fine, such as cure disease for a 
+#disease and so forth.
+#$HELPABLE_ABILITY=($ABILITY)=
+#
+#Helpable Items
+#Specify zero or more items that will appear either in rooms or on
+#nearby non-helpable mobs.  This item should be designed to cure
+#the temporary effect above.
+#$HELPABLE_ITEMS=($ITEMXML_ZEROORMORE)
+#
+#Helpable Drop Loc
+#If a helpable item was specified, does it appear in rooms, or 
+#on mobs from the area?
+#$HELPABLE_DROP_LOC=$CHOOSE=MOB,ROOM
+#
+#Helpable Drop Chance
+#If a helpable item was specified, the chance it will appear on
+#any given specified mob or room.
+#$HELPABLE_DROP_CHANCE=($EXPRESSION)=10
+#
+#!QUESTMAKER_PAGE Quest Completion
+#Select some rewards for helping the mobs:
+#
+#Reward items: 
+#Specify zero or more items to choose from as a reward 
+#$REWARD_ITEMS=$ITEMXML_ZEROORMORE
+#
+#Quest Point?
+#$QUEST_POINT=$CHOOSE=YES,NO
+#Amount of money (an amount, or leave blank):
+#$GOLD=($EXPRESSION)
+#Amount of experience points, blank for none, or a number% for percent of exp to next level:
+#$EXP=($STRING)=10%
+#
+#Player Faction to give to or take from:
+#$FACTION=($FACTION)
+#If you selected a faction above, enter a new numeric amount, 
+#or enter +value to add, or --value to subtract:
+#$NUMFACTION=($STRING)
+#
+#Select whether a player may complete this quest multiple times,
+#or 'prev' to require a previous quest, if multiple found.
+#$MULTIPLE=$CHOOSE=YES,NO,PREV
+#
+#$CATEGORY=($HIDDEN)=
+#
+#!QUESTMAKER_END_SCRIPT Auto Dispel #1
+
+set name $QUEST_ID
+set display $QUEST_NAME
+set author $#AUTHOR
+set questtype auto_dispel1
+set category $CATEGORY
+set instructions $QUEST_INSTRUCTIONSSTRING
+
+set wait $FREQUENCY
+set interval 1
+quiet
+
+set room
+set area
+set pcmobgroup reselect any mask=$QUEST_CRITERIA
+set script LOAD=$QUEST_ID_playertrack.script
+
+set mob
+
+set duration $DURATION
+
+<?xml version="1.0"?>
+<FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_helperitems.xml</NAME><DATA><ITEMS>$HELPABLE_ITEMS</ITEMS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_playertrack.script</NAME>
+<DATA>
+FUNCTION_PROG CAN_ACCEPT
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
+		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			if !QUESTSCRIPTED($n *)
+				RETURN TRUE
+			endif
+		endif
+	endif
+	RETURN CANCEL
+~
+
+FUNCTION_PROG DO_ACCEPT
+	mpqset * STATISTICS ACCEPTED
+	mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+~
+
+FUNCTION_PROG CHECK_DONE
+	if var($n $QUEST_ID_HELPED >= $NUM_HELPABLES)
+		if EVAL('$EXP' != '')
+			mpexp $i $EXP
+		endif
+		if EVAL('$FACTION' != '')
+			mpfaction $i $FACTION +$NUMFACTION
+		endif
+		if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($i *)
+			mpforce $i mpoload QuestPoint
+			mpechoat $i You receive a quest point.
+		endif
+		if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+			mpforce $i mpoload $GOLD
+			mpechoat $i You receive $b.
+		endif
+		mpforce $i mpoload fromfile $QUEST_ID_rewarditems.xml any
+		if EVAL('$b' != '')
+			mpechoat $i Your receive $b.
+		endif
+		mpquestwin $i *
+		mpecho $QUEST_WINSPEECH_TEXT
+		mpendquest $i
+		IF EVAL('$MULTIPLE' == 'PREV')
+			mptransfer $i $i
+		ENDIF
+		mpqset * STATISTICS SUCCESS
+	endif
+~
+
+ONCE_PROG 100
+	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
+	mpat $i mpechoat $i $QUEST_INSTRUCTIONSSTRING
+	if var($i $QUEST_ID_HELPED = '')
+		mpsetvar $i $QUEST_ID_HELPED 0
+	endif
+	IF QVAR(* DURATION != '0')
+	    if QVAR(* REMAINING == '')
+	        MPENDQUEST $i
+	    else
+			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+		endif
+	ENDIF
+	mpsetvar $i PROGRESS Helped $<$i $QUEST_ID_HELPED>/$NUM_HELPABLES
+~
+
+RAND_PROG 25
+	IF QVAR(* DURATION != '0')
+		if QVAR(* REMAINING == '')
+			MPENDQUEST $i
+		else
+			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+		endif
+	ENDIF
+~
+
+QUEST_TIME_PROG * -1
+	MPECHOAT $i The quest "$QUEST_NAME" has ended.
+~
+
+QUEST_TIME_PROG * 1
+	MPECHOAT $i The quest "$QUEST_NAME" has 1 minute remaining.
+~
+
+FUNCTION_PROG DISTRIBUTE_DISEASE
+	for $0 = 1 to '$%NUMMOBSROOM(*)%
+		MPARGSET $1 $%ROOMMOB($0)%
+		if ISNPC($1) AND ISLIKE($1 $HELPABLES_MASK) AND !ISFOLLOW($1) AND !AFFECTED($1 'TemporaryAffects')
+			if !STRIN('$<$i $QUEST_ID_ALREADYCURED>' $@1)
+				IF EVAL('$HELPABLES_RESPONSE' != '')
+					mpforce $1 MPALARM 1 say $HELPABLES_RESPONSE
+				endif
+				MPCASTEXT TemporaryAffects $1 +BINDTO $i
+				IF EVAL('$TEMPORARY_EFFECTS' != '')
+					MPCASTEXT TemporaryAffects $1 +$TEMPORARY_EFFECTS 999 $TEMPORARY_EFFECT_ARGS
+				ENDIF
+				IF EVAL('$TEMPORARY_AMBIANCE' != '')
+					MPCASTEXT TemporaryAffects $1 +AMBIANCE 999 $TEMPORARY_AMBIANCE
+				ENDIF
+			endif
+		endif
+	next
+~
+
+CNCLMSG_PROG ENTER ALL
+	if EVAL($n == $i)
+		if EVAL($b != '')
+			 if !HAS($i $b)
+				MPJUNK $b
+				MPARGSET $b ''
+			endif
+		endif
+		if VAR($i $QUEST_ID_HELPED < $NUM_HELPABLES) AND (QUESTAREA('$%INAREA($i)%' *) OR EVAL('$HELPABLES_AREA' == '') OR INAREA($i == '$HELPABLES_AREA'))
+			if EVAL($n == $i) AND EVAL('$HELPABLE_DROP_LOC' == 'ROOM') AND EVAL('$HELPABLE_DROP_CHANCE' != '') AND rand($HELPABLE_DROP_CHANCE)
+				MPAT $t mpoloadroom fromfile $QUEST_ID_helperitems.xml any
+				MPGSET $b REJUV 0
+				MPQSET * QUESTOBJ $b
+			endif
+			MPAT $t MPCALLFUNC DISTRIBUTE_DISEASE
+		endif
+	else
+		if INROOM($i == $t) AND ISNPC($n) AND ISLIKE($n $HELPABLES_MASK) AND !ISFOLLOW($n) AND !AFFECTED($n 'TemporaryAffects')
+			if !STRIN('$<$i $QUEST_ID_ALREADYCURED>' $@n)
+				IF EVAL('$HELPABLES_RESPONSE' != '')
+					mpforce $n MPALARM 1 say $HELPABLES_RESPONSE
+				endif
+				MPCASTEXT TemporaryAffects $n +BINDTO $i
+				IF EVAL('$TEMPORARY_EFFECTS' != '')
+					MPCASTEXT TemporaryAffects $n +$TEMPORARY_EFFECTS 999 $TEMPORARY_EFFECT_ARGS
+				ENDIF
+				IF EVAL('$TEMPORARY_AMBIANCE' != '')
+					MPCASTEXT TemporaryAffects $n +AMBIANCE 999 $TEMPORARY_AMBIANCE
+				ENDIF
+			endif
+		endif
+	endif
+~
+
+FUNCTION_PROG CHECK_DISPEL
+	# $g has the name of the mob to check
+	MPARGSET $3 $%ROOMMOB($g)%
+	IF EVAL('$3' != '') AND !AFFECTED($3 'TemporaryAffects')
+		IF !STRIN('$<$i $QUEST_ID_ALREADYCURED>' $@3)
+			# kaplah!
+			if var($i $QUEST_ID_HELPED < $NUM_HELPABLES)
+				MPSETVAR $i $QUEST_ID_ALREADYCURED $<$i $QUEST_ID_ALREADYCURED>  $@3
+				MPSETVAR $i $QUEST_ID_HELPED ++
+				mpsetvar $i PROGRESS Helped $<$i $QUEST_ID_HELPED>/$NUM_HELPABLES
+				mpechoat $i  Helped $<$i $QUEST_ID_HELPED>/$NUM_HELPABLES
+				mpcallfunc CHECK_DONE
+			endif
+		ENDIF
+	ENDIF
+~
+
+CASTING_PROG P $HELPABLE_ABILITY
+	IF EVAL('$HELPABLE_ABILITY' != '') AND EVAL($t != '') AND EVAL($t != $i) AND ISLIKE($t $HELPABLES_MASK)
+		IF AFFECTED($t 'TemporaryAffects') OR !STRIN('$<$i $QUEST_ID_ALREADYCURED>' $@t)
+			mpunaffect $t TemporaryAffects
+			MPCALLFUNC CHECK_DISPEL $%roommob($t)%
+		ENDIF
+	ENDIF
+~ 
+
+GIVING_PROG potion
+    if GSTAT($o CLASS == 'GenPotion') AND EVAL($t != '') AND EVAL($t != $i) AND AFFECTED($t 'TemporaryAffects') AND ISLIKE($t $HELPABLES_MASK)
+    	MPFORCE MPALARM 1 $t DRINK $o
+		MPALARM 2 MPCALLFUNC CHECK_DISPEL $%roommob($t)%
+    endif 
+~
+
+FUNCTION_PROG LOAD_BODY
+	mpoloadroom fromfile $QUEST_ID_helperitems.xml any into the body of $n
+	MPGSET $b REJUV 0
+	MPQSET * QUESTOBJ $b
+~
+
+CNCLMSG_PROG STO=DEATH ALL
+	if ISNPC($n) AND (QUESTAREA('$%INAREA($i)%' *) OR EVAL('$HELPABLES_AREA' == '') OR INAREA($i == '$HELPABLES_AREA'))
+		if ISLIKE($n '$HELPABLES_MASK')
+			if !ISFIGHT($n)
+				# DONT LET THEM DIE!
+				RETURN CANCEL
+			endif
+		else
+			if EVAL('$HELPABLE_DROP_LOC' == 'MOB') AND EVAL('$HELPABLE_DROP_CHANCE' != '') AND rand($HELPABLE_DROP_CHANCE)
+				# mpoload fromfile $QUEST_ID_helperitems.xml any
+				mpalarm 1 MPCALLFUNC LOAD_BODY
+			endif
+		endif
+	endif
+~
+</DATA></FILE>

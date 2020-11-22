@@ -1,7 +1,5 @@
-#!QUESTMAKER_START_SCRIPT Auto Collect #4
-#The player needs one or more items which you will create gathered up. 
-#The items will have to be obtained from your existing world, or generated with common skills.
-#A reward is given upon completion of the task.
+#!QUESTMAKER_START_SCRIPT Auto Travel #1
+#The player must travel to some location on your map.
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
 #Enter the unique name and starting time/duration for your new quest.
@@ -14,19 +12,19 @@
 #
 #Quest ID:
 #Enter a unique name/id for your quest:
-#$QUEST_ID=$UNIQUE_QUEST_NAME=auto_collect_4
+#$QUEST_ID=$UNIQUE_QUEST_NAME=auto_travel_1
 #
 #Quest Name:
 #Enter a friendly displayable name for your quest:
-#$QUEST_NAME=$STRING=Auto Collect #4
+#$QUEST_NAME=$STRING=Auto Travel #1
 #
 #Quest Frequency:
 #This is the time between quest starts.
 #$FREQUENCY=$TIMEEXPRESSION=90 minutes
 #
 #Quest Duration:
-#This is how long your quest remains running, and how long a player 
-#accepting the quest has to complete the quest and report back in.
+#A Zapper Mask to describe what kinds of players will receive this quest.  
+#You can use this to set #race, level, or other requirements.
 #$DURATION=$TIMEEXPRESSION=90 minutes
 #
 #!QUESTMAKER_PAGE Specify the Quest Criteria and Instructions
@@ -39,26 +37,30 @@
 #
 #Instructions: 
 #Specify some the instructions and justification for the quest.
-#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=You need to collect some things from some folk.  You might have to get rough with them.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=Go to that one place.
 #
 #Success:
 #This is what the player sees when the player completes the quest.
-#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=They have all been collected! Congratulations $i!
+#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Congratulations! You made it!
 #
-#!QUESTMAKER_PAGE Specify the Collectables
-#The Collectables are the items that must be found or created.
+#!QUESTMAKER_PAGE Travel destination
+#Here's where you specify the destination that the player 
+#must arrive at to complete the quest.
 #
-#Collectables items: 
-#Describe the items that the player must collect.  This is described as a zapper mask.
-#If you want to specify items with particular names, use -NAME "+the named item" and similar masks.
-#$COLLECTABLE_ITEMS=$ZAPPERMASK=-JAVACLASS +GenResource -MATERIAL +WOODEN -WEIGHT 1 +WEIGHT 1
-#
-#Num Collectables:
-#Specify how many of the items must be collected to complete the quest.
-#$NUM_COLLECTABLES=($EXPRESSION)=1
+#Travel Destination: 
+#Specify below the name of the area and room to which the player must travel.
+#You may leave the area blank
+#to force the quest manager to find the room somewhere in the world, but this
+#will hurt the performance of your mud, so use with care.
+#Use double-quotes around multi-word areas and room ids/names.
+#  
+#Destination Area:
+#$DESTINATION_AREA=($AREA)
+#Destination Room ID:
+#$DESTINATION_ROOM=$ROOMID
 #
 #!QUESTMAKER_PAGE Quest Completion
-#Select some rewards for bringing back the items.
+#Select some rewards for completing the quest:
 #
 #Reward items: 
 #Specify zero or more items to choose from as a reward 
@@ -81,19 +83,29 @@
 #or 'prev' to require a previous quest, if multiple found.
 #$MULTIPLE=$CHOOSE=YES,NO,PREV
 #
+#Travel response Type: 
+#Specify what sort of emote occurs after the player successfully travels
+#to the designated room.
+#$TRAVEL_RESPONSE_TYPE=$CHOOSE=MPECHOAT $N,MPECHO,QUESTCHAT,SAY,YELL
+#Travel response Text: 
+#Specify what is emoted in the same room after the player successfully travels 
+#to the designated room.  You may leave this blank if you like.
+#$TRAVEL_RESPONSE=($LONG_STRING)=Your journey is complete.
+#
 #$CATEGORY=($HIDDEN)=
 #
-#!QUESTMAKER_END_SCRIPT Auto Collect #4
+#!QUESTMAKER_END_SCRIPT Auto Travel #1
 
 set name $QUEST_ID
 set display $QUEST_NAME
 set author $#AUTHOR
-set questtype auto_collect4
+set questtype auto_travel1
 set category $CATEGORY
 set instructions $QUEST_INSTRUCTIONSSTRING
 
 set wait $FREQUENCY
 set interval 1
+set duration $DURATION
 quiet
 
 set room
@@ -101,52 +113,16 @@ set area
 set pcmobgroup reselect any mask=$QUEST_CRITERIA
 set script LOAD=$QUEST_ID_playertrack.script
 
-set duration $DURATION
+set mobgroup
+set mob
+set area $DESTINATION_AREA
+set room $DESTINATION_ROOM
+set wherehappened ROOM
 
 <?xml version="1.0"?>
 <FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
-<FILE><NAME>$QUEST_ID_items.xml</NAME><DATA><ITEMS>$COLLECTABLES_ITEMS</ITEMS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_playertrack.script</NAME>
 <DATA>
-FUNCTION_PROG CHECK_DONE
-	mpsetvar $i $QUEST_ID_GOT 0
-	for $0 = 1 to '$%NUMITEMSMOB($i)%
-		MPARGSET $1 $%MOBITEM($i $0)%
-		if questobj($1 *)
-			mpsetvar $i $QUEST_ID_GOT ++
-		endif
-	next
-	if var($n $QUEST_ID_GOT >= $NUM_COLLECTABLES)
-		if EVAL('$EXP' != '')
-			mpexp $i $EXP
-		endif
-		if EVAL('$FACTION' != '')
-			mpfaction $i $FACTION +$NUMFACTION
-		endif
-		if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
-			mpforce $i mpoload QuestPoint
-			mpechoat $i You receive a quest point.
-		endif
-		if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
-			mpforce $i mpoload $GOLD
-			mpechoat $i You receive $b.
-		endif
-		mpforce $i mpoload fromfile $QUEST_ID_rewarditems.xml any
-		if EVAL('$b' != '')
-			mpechoat $i You receive $b.
-		endif
-		mpquestwin $i *
-		mpecho $QUEST_WINSPEECH_TEXT
-		mpendquest $i
-		mpqset * STATISTICS SUCCESS
-		IF EVAL('$MULTIPLE' == 'PREV')
-			mptransfer $i $i
-		ENDIF
-	else
-		mpechoat "$i" That's $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES.
-		mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES
-	endif
-~
 
 FUNCTION_PROG CAN_ACCEPT
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
@@ -160,14 +136,14 @@ FUNCTION_PROG CAN_ACCEPT
 ~
 
 FUNCTION_PROG DO_ACCEPT
-	mpqset * STATISTICS ACCEPTED
 	mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+	mpqset * STATISTICS ACCEPTED
 ~
 
 ONCE_PROG 100
 	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
-	if var($i $QUEST_ID_GOT = '')
-		mpsetvar $i $QUEST_ID_GOT 0
+	if var($i MYROOM = '')
+		mpsetvar $i MYROOM '$%QVAR(* WHEREHAPPENED_ROOMID)%'
 	endif
 	IF QVAR(* DURATION != '0')
 	    if QVAR(* REMAINING == '')
@@ -176,7 +152,6 @@ ONCE_PROG 100
 			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
 		endif
 	ENDIF
-	mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES
 	mpat $i mpechoat $i $QUEST_INSTRUCTIONSSTRING
 ~
 
@@ -198,19 +173,39 @@ QUEST_TIME_PROG * 1
 	MPECHOAT $i The quest "$QUEST_NAME" has 1 minute remaining.
 ~
 
-EXECMSG_PROG GET ALL
-	if ISLIKE($t '$COLLECTABLE_ITEMS') and EVAL($n == $i) AND EVAL('$<$n $QUEST_ID_GOT>' < $NUM_COLLECTABLES)
-		MPSETVAR $n $QUEST_ID_GOT +$%ITEMCOUNT($t)%
-		mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES
-		MPCALLFUNC CHECK_DONE
-	endif	
+ENTRY_PROG 100
+	if EVAL($n == $i) AND INROOM($i == '$<$i MYROOM>') AND VAR($i $QUEST_ID_REWARDED == '')
+		mpsetvar $n $QUEST_ID_REWARDED 'REWARDED'
+		if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($i *)
+			# do nothing
+		else
+			if EVAL('$EXP' != '')
+				mpexp $i $EXP
+			endif
+			if EVAL('$FACTION' != '')
+				mpfaction $i $FACTION +$NUMFACTION
+			endif
+			if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($i *)
+				mpoloadroom QuestPoint
+				mpforce $i GET "a quest point"
+			endif
+			if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+				mpoloadroom $GOLD
+				mpforce $i GET $GOLD
+			endif
+			mpoloadroom fromfile $QUEST_ID_rewarditems.xml any
+			if EVAL('$b' != '')
+				mpforce $i GET "$b"
+			endif
+			mpquestwin $i *
+			$TRAVEL_RESPONSE_TYPE $TRAVEL_RESPONSE
+			mpecho $QUEST_WINSPEECH_TEXT
+			mpendquest $i
+			mpqset * STATISTICS SUCCESS
+			IF EVAL('$MULTIPLE' == 'PREV')
+				mptransfer $n $n
+			ENDIF
+		endif
+	endif
 ~
-
-EXECMSG_PROG DROP ALL
-	if ISLIKE($t '$COLLECTABLE_ITEMS') and QUESTSCRIPTED($n *) and EVAL($n == $i) AND EVAL('$<$n $QUEST_ID_GOT>' > 0) 
-		MPSETVAR $n $QUEST_ID_GOT -$%ITEMCOUNT($t)%
-		mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES
-	endif	
-~
-
 </DATA></FILE>

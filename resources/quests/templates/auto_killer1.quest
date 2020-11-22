@@ -1,6 +1,5 @@
-#!QUESTMAKER_START_SCRIPT Auto Collect #4
-#The player needs one or more items which you will create gathered up. 
-#The items will have to be obtained from your existing world, or generated with common skills.
+#!QUESTMAKER_START_SCRIPT Auto Killer #1
+#The player needs one or more other existing mobs killed. 
 #A reward is given upon completion of the task.
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
@@ -14,19 +13,19 @@
 #
 #Quest ID:
 #Enter a unique name/id for your quest:
-#$QUEST_ID=$UNIQUE_QUEST_NAME=auto_collect_4
+#$QUEST_ID=$UNIQUE_QUEST_NAME=auto_killer_1
 #
 #Quest Name:
 #Enter a friendly displayable name for your quest:
-#$QUEST_NAME=$STRING=Auto Collect #4
+#$QUEST_NAME=$STRING=Auto Killer #1
 #
 #Quest Frequency:
 #This is the time between quest starts.
 #$FREQUENCY=$TIMEEXPRESSION=90 minutes
 #
 #Quest Duration:
-#This is how long your quest remains running, and how long a player 
-#accepting the quest has to complete the quest and report back in.
+#A Zapper Mask to describe what kinds of players will receive this quest.  
+#You can use this to set #race, level, or other requirements.
 #$DURATION=$TIMEEXPRESSION=90 minutes
 #
 #!QUESTMAKER_PAGE Specify the Quest Criteria and Instructions
@@ -39,26 +38,41 @@
 #
 #Instructions: 
 #Specify some the instructions and justification for the quest.
-#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=You need to collect some things from some folk.  You might have to get rough with them.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=I need you to kill some folks.  They are somewhere around somewhere.  Just beat them senseless.
 #
 #Success:
 #This is what the player sees when the player completes the quest.
-#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=They have all been collected! Congratulations $i!
+#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Congratulations! They're dead!
 #
-#!QUESTMAKER_PAGE Specify the Collectables
-#The Collectables are the items that must be found or created.
+#!QUESTMAKER_PAGE Specify the Killable Mob or Mobs
+#The Killables are the mob or mobs which must be defeated.
 #
-#Collectables items: 
-#Describe the items that the player must collect.  This is described as a zapper mask.
-#If you want to specify items with particular names, use -NAME "+the named item" and similar masks.
-#$COLLECTABLE_ITEMS=$ZAPPERMASK=-JAVACLASS +GenResource -MATERIAL +WOODEN -WEIGHT 1 +WEIGHT 1
+#Killable mobs: 
+#Specify below the mobs that the player must kill to get credit for this quest.
 #
-#Num Collectables:
-#Specify how many of the items must be collected to complete the quest.
-#$NUM_COLLECTABLES=($EXPRESSION)=1
+#Killables mob names: 
+#Specify the mobs who will act as the killable mob or mobs.  
+#See help on ZAPPERMASK for information on zapper mask syntax.
+#$KILLABLES_MASK=$ZAPPERMASK
+#
+#Killables attack:
+#Will the mobs attack if they spot the player?  Keep in mind this is above and
+#beyond any aggressive behaviors they may have, and will neither modify or 
+#supress their natural aggressive behaviors.
+#$KILLABLES_ATTACK=$CHOOSE=NO-USE-DEFAULT_BEHAVIOR,YES-ATTACK-ON-SIGHT
+#
+#Num Killables:
+#Specify how many of the killable mobs must be killed.  Make sure there are 
+#enough of them in your world to make this goal reachable!
+#$NUM_KILLABLES=($EXPRESSION)=1
+#
+#Killables response: 
+#You may optionally specify some additional bit of speech the killables 
+#mobs will say to the players when they enter the room with them. 
+#$KILLABLES_RESPONSE=($STRING)=So, you've come for me.  Come and get me.
 #
 #!QUESTMAKER_PAGE Quest Completion
-#Select some rewards for bringing back the items.
+#Select some rewards for killing the mobs:
 #
 #Reward items: 
 #Specify zero or more items to choose from as a reward 
@@ -83,12 +97,12 @@
 #
 #$CATEGORY=($HIDDEN)=
 #
-#!QUESTMAKER_END_SCRIPT Auto Collect #4
+#!QUESTMAKER_END_SCRIPT Auto Killer #1
 
 set name $QUEST_ID
 set display $QUEST_NAME
 set author $#AUTHOR
-set questtype auto_collect4
+set questtype auto_killer1
 set category $CATEGORY
 set instructions $QUEST_INSTRUCTIONSSTRING
 
@@ -100,23 +114,46 @@ set room
 set area
 set pcmobgroup reselect any mask=$QUEST_CRITERIA
 set script LOAD=$QUEST_ID_playertrack.script
-
 set duration $DURATION
 
 <?xml version="1.0"?>
 <FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
-<FILE><NAME>$QUEST_ID_items.xml</NAME><DATA><ITEMS>$COLLECTABLES_ITEMS</ITEMS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_playertrack.script</NAME>
 <DATA>
-FUNCTION_PROG CHECK_DONE
-	mpsetvar $i $QUEST_ID_GOT 0
-	for $0 = 1 to '$%NUMITEMSMOB($i)%
-		MPARGSET $1 $%MOBITEM($i $0)%
-		if questobj($1 *)
-			mpsetvar $i $QUEST_ID_GOT ++
+FUNCTION_PROG CAN_ACCEPT
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
+		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			if !QUESTSCRIPTED($n *)
+				RETURN TRUE
+			endif
 		endif
-	next
-	if var($n $QUEST_ID_GOT >= $NUM_COLLECTABLES)
+	endif
+	RETURN CANCEL
+~
+
+FUNCTION_PROG DO_ACCEPT
+	mpqset * STATISTICS ACCEPTED
+	mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+~
+
+ONCE_PROG 100
+	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
+	mpat $i mpechoat $i $QUEST_INSTRUCTIONSSTRING
+	if var($i $QUEST_ID_KILLED = '')
+		mpsetvar $i $QUEST_ID_KILLED 0
+	endif
+	IF QVAR(* DURATION != '0')
+	    if QVAR(* REMAINING == '')
+	        MPENDQUEST $i
+	    else
+			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+		endif
+	ENDIF
+	mpsetvar $i PROGRESS Killed $<$i $QUEST_ID_KILLED>/$NUM_KILLABLES
+~
+
+FUNCTION_PROG CHECK_DONE
+	if var($n $QUEST_ID_KILLED >= $NUM_KILLABLES)
 		if EVAL('$EXP' != '')
 			mpexp $i $EXP
 		endif
@@ -142,42 +179,7 @@ FUNCTION_PROG CHECK_DONE
 		IF EVAL('$MULTIPLE' == 'PREV')
 			mptransfer $i $i
 		ENDIF
-	else
-		mpechoat "$i" That's $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES.
-		mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES
 	endif
-~
-
-FUNCTION_PROG CAN_ACCEPT
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
-		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			if !QUESTSCRIPTED($n *)
-				RETURN TRUE
-			endif
-		endif
-	endif
-	RETURN CANCEL
-~
-
-FUNCTION_PROG DO_ACCEPT
-	mpqset * STATISTICS ACCEPTED
-	mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
-~
-
-ONCE_PROG 100
-	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
-	if var($i $QUEST_ID_GOT = '')
-		mpsetvar $i $QUEST_ID_GOT 0
-	endif
-	IF QVAR(* DURATION != '0')
-	    if QVAR(* REMAINING == '')
-	        MPENDQUEST $i
-	    else
-			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
-		endif
-	ENDIF
-	mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES
-	mpat $i mpechoat $i $QUEST_INSTRUCTIONSSTRING
 ~
 
 RAND_PROG 25
@@ -198,19 +200,36 @@ QUEST_TIME_PROG * 1
 	MPECHOAT $i The quest "$QUEST_NAME" has 1 minute remaining.
 ~
 
-EXECMSG_PROG GET ALL
-	if ISLIKE($t '$COLLECTABLE_ITEMS') and EVAL($n == $i) AND EVAL('$<$n $QUEST_ID_GOT>' < $NUM_COLLECTABLES)
-		MPSETVAR $n $QUEST_ID_GOT +$%ITEMCOUNT($t)%
-		mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES
-		MPCALLFUNC CHECK_DONE
-	endif	
+GREET_PROG 100
+	if EVAL('$KILLABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
+		if ISLIKE($n $KILLABLES_MASK)
+			mpforce $n kill $i
+		endif
+	endif
 ~
 
-EXECMSG_PROG DROP ALL
-	if ISLIKE($t '$COLLECTABLE_ITEMS') and QUESTSCRIPTED($n *) and EVAL($n == $i) AND EVAL('$<$n $QUEST_ID_GOT>' > 0) 
-		MPSETVAR $n $QUEST_ID_GOT -$%ITEMCOUNT($t)%
-		mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES
-	endif	
+ENTRY_PROG 100
+	if INROOM($i == $g)
+		for $0 = 1 to '$%NUMMOBSROOM(*)%'
+			if ISLIKE('$%ROOMMOB($0)%' $KILLABLES_MASK)
+				mpforce '$%ROOMMOB($0)%' sayto "$i" $KILLABLES_RESPONSE
+				if EVAL('$KILLABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
+					mpforce '$%ROOMMOB($0)%' kill $i
+				endif
+			endif
+		next
+	endif
 ~
-
+	
+EXECMSG_PROG STO=DEATH ALL
+	if ISNPC($n) AND ISLIKE($n $KILLABLES_MASK)
+		mpsetvar $i $QUEST_ID_KILLED ++;
+		if EVAL($NUM_KILLABLES > 1)
+			mpechoat $i Killed $<$i $QUEST_ID_KILLED>/$NUM_KILLABLES
+		else
+		endif
+		mpsetvar $i PROGRESS Killed $<$i $QUEST_ID_KILLED>/$NUM_KILLABLES
+		mpcallfunc CHECK_DONE
+	endif
+~
 </DATA></FILE>

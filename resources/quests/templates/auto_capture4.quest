@@ -3,7 +3,7 @@
 #A reward is given upon completion of the task.
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
-#Enter the unique name, criteria, and starting time/duration for your new quest.
+#Enter the unique name and starting time/duration for your new quest.
 #Times are entered as a simple number or math expression to denote a
 #time in default ticks (4 second period), or you may follow the expression 
 #with the word seconds, minutes, hours, days, mudhours, muddays, mudweeks,
@@ -33,7 +33,7 @@
 #
 #Quest-Player Criterium:
 #A Zapper Mask to describe what kinds of players will receive this quest.  
-#You can use this to set #race, level, or other requirements.
+#You can use this to set race, level, or other requirements.
 #$QUEST_CRITERIA=$ZAPPERMASK
 #
 #Instructions: 

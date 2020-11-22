@@ -1,7 +1,6 @@
-#!QUESTMAKER_START_SCRIPT Auto Delivery #3
-#The player is given a custom item 
-#to deliver to one or more mobs you will create, somewhere else in your world.  A reward
-#is optionally given upon delivery.
+#!QUESTMAKER_START_SCRIPT Auto Killer #2
+#The player needs one or more mobs which you will create killed. 
+#A reward is given upon completion of the task.
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
 #Enter the unique name and starting time/duration for your new quest.
@@ -14,19 +13,19 @@
 #
 #Quest ID:
 #Enter a unique name/id for your quest:
-#$QUEST_ID=$UNIQUE_QUEST_NAME=auto_delivery_3
+#$QUEST_ID=$UNIQUE_QUEST_NAME=auto_killer_2
 #
 #Quest Name:
 #Enter a friendly displayable name for your quest:
-#$QUEST_NAME=$STRING=Auto Delivery #3
+#$QUEST_NAME=$STRING=Auto Killer #2
 #
 #Quest Frequency:
 #This is the time between quest starts.
 #$FREQUENCY=$TIMEEXPRESSION=90 minutes
 #
 #Quest Duration:
-#This is how long your quest remains running, and how long a player 
-#accepting the quest has to complete the quest and report back in.
+#A Zapper Mask to describe what kinds of players will receive this quest.  
+#You can use this to set #race, level, or other requirements.
 #$DURATION=$TIMEEXPRESSION=90 minutes
 #
 #!QUESTMAKER_PAGE Specify the Quest Criteria and Instructions
@@ -39,64 +38,52 @@
 #
 #Instructions: 
 #Specify some the instructions and justification for the quest.
-#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=Find ${2 *} at that one place and give him $[1 *].  Be careful!
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=I need you to kill some folks.  They are somewhere around somewhere.  Just beat them senseless.
 #
 #Success:
 #This is what the player sees when the player completes the quest.
-#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Delivery complete!
+#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Congratulations! They're dead!
 #
-#!QUESTMAKER_PAGE Specify the Deliveree
-#The Deliveree is the mob to which the item will be delivered. 
+#!QUESTMAKER_PAGE Specify the Killable Mob or Mobs
+#The Killables are the mob or mobs which must be defeated.
 #
-#Deliveree mobs: 
-#Specify the names of the mob who will act as the deliveree mobs.  
-#Use double-quotes around multi-word names.
+#Killables Rooms: 
+#Specify the rooms that your mobs will possibly be found in.
+#Use double-quotes around multi-word areas and room ids/names.
+#Use the keyword ANY to specify a single random area or room, or
+#the keyword ALL to specify ALL areas or rooms.
+#
+#Killables Area:
+#$KILLABLES_AREAS=($AREA)
+#Killables Rooms:
+#$KILLABLES_ROOMS=($ROOMID)
 
-#Specify below the name of the area that your deliveree mob or mobs will be created
-#in and/or the rooms in which the mob or mobs will be created.  You may leave both blank
-#to force the quest manager to create the mobs randomly throughout the world if you like.
-#Use double-quotes around multi-word areas and room ids/names.  
+#Killable mobs: 
+#Specify below the mobs that the player must kill to get credit for this quest.
+#$KILLABLES_MOBS=$MOBXML_ONEORMORE
 #
-#Deliveree Area:
-#$DELIVEREE_AREA=($AREA)
-#Deliveree Room(s):
-#$DELIVEREE_ROOM=($ROOMID)
+#Killables attack:
+#Will the mobs attack if they spot the player?  Keep in mind this is above and
+#beyond any aggressive behaviors they may have, and will neither modify or 
+#supress their natural aggressive behaviors.
+#$KILLABLES_ATTACK=$CHOOSE=NO-USE-DEFAULT_BEHAVIOR,YES-ATTACK-ON-SIGHT
 #
-#Deliveree mobs: 
-#Specify the mobs who will act as the deliveree mob or mobs.  You might want to mix things
-#up by making them mobile.
-#$DELIVEREE_MOBS=$MOBXML_ONEORMORE
+#Num Killables:
+#Specify how many of the killable mobs must be killed.  Make sure there are 
+#enough of them in your world to make this goal reachable!
+#$NUM_KILLABLES=($EXPRESSION)=1
 #
-#Captureables chance:
+#Killables chance:
 #Specify the percent chance that a mob will be found in a particular room.
-#$DELIVEREE_CHANCE=($EXPRESSION)=10
+#$KILLABLES_CHANCE=($EXPRESSION)=10
 #
-#Deliveree response: 
-#You may optionally specify some additional bit of speech the deliveree 
-#mob will say to the players after they arrive.
-#$DELIVEREE_ANNOUNCE=($LONG_STRING)=Are you here to deliver $[1 *]? If so, give it to me!
-#
-#!QUESTMAKER_PAGE Deliverable item
-#Create the item which the player must take and give to the deliveree mob.  
-#
-#Deliverable Item: 
-#You may select from the available items below or create a 
-#new item just for this quest.
-#$DELIVERABLE_ITEM=$ITEMXML
-#
-#Num Deliverees:
-#specify the number of the deliverable items must be delivered to mobs
-#matching the deliveree.  The quest will give the player the correct
-#number of items to deliver.
-#$DELIVEREE_COUNT=($EXPRESSION)=1
-#
-#Delivery response: 
-#You may optionally specify some additional bit of speech the deliveree 
-#mob will say to the players after they have handed over the item/items.
-#$DELIVERY_RESPONSE=($LONG_STRING)=Thanks!
+#Killables response: 
+#You may optionally specify some additional bit of speech the killables 
+#mobs will say to the players when they enter the room with them. 
+#$KILLABLES_RESPONSE=($STRING)=So, you've come for me.  Come and get me.
 #
 #!QUESTMAKER_PAGE Quest Completion
-#Select some rewards for completing the deliveries:
+#Select some rewards for killing the mobs:
 #
 #Reward items: 
 #Specify zero or more items to choose from as a reward 
@@ -121,12 +108,12 @@
 #
 #$CATEGORY=($HIDDEN)=
 #
-#!QUESTMAKER_END_SCRIPT Auto Delivery #3
+#!QUESTMAKER_END_SCRIPT Auto Killer #2
 
 set name $QUEST_ID
 set display $QUEST_NAME
 set author $#AUTHOR
-set questtype auto_delivery3
+set questtype auto_killer2
 set category $CATEGORY
 set instructions $QUEST_INSTRUCTIONSSTRING
 
@@ -139,32 +126,39 @@ set area
 set pcmobgroup reselect any mask=$QUEST_CRITERIA
 set script LOAD=$QUEST_ID_playertrack.script
 
-set area
 set room
-set mobgroup
-set mob
-import items $QUEST_ID_item.xml
-set itemgroup loadeditems
-set item itemgroup
-
-set room
-set area $DELIVEREE_AREA
-set roomgroup $DELIVEREE_ROOM
+set area $KILLABLES_AREAS
+set roomgroup $KILLABLES_ROOMS
 
 set duration $DURATION
 
 <?xml version="1.0"?>
 <FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
-<FILE><NAME>$QUEST_ID_item.xml</NAME><DATA><ITEMS>$DELIVERABLE_ITEM</ITEMS></DATA></FILE>
-<FILE><NAME>$QUEST_ID_mobs.xml</NAME><DATA><MOBS>$DELIVEREE_MOBS</MOBS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_mobs.xml</NAME><DATA><MOBS>$KILLABLES_MOBS</MOBS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_playertrack.script</NAME>
 <DATA>
+FUNCTION_PROG CAN_ACCEPT
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
+		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			if !QUESTSCRIPTED($n *)
+				RETURN TRUE
+			endif
+		endif
+	endif
+	RETURN CANCEL
+~
+
+FUNCTION_PROG DO_ACCEPT
+	mpqset * STATISTICS ACCEPTED
+	mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+~
+
 ONCE_PROG 100
 	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
-	if var($i $QUEST_ID_DELIVERED = '')
-		mpsetvar $i $QUEST_ID_DELIVERED 0
+	mpat $i mpechoat $i $QUEST_INSTRUCTIONSSTRING
+	if var($i $QUEST_ID_KILLED = '')
+		mpsetvar $i $QUEST_ID_KILLED 0
 	endif
-	mpsetvar $i PROGRESS Delivered: $<$i $QUEST_ID_DELIVERED>/$DELIVEREE_COUNT
 	IF QVAR(* DURATION != '0')
 	    if QVAR(* REMAINING == '')
 	        MPENDQUEST $i
@@ -172,11 +166,11 @@ ONCE_PROG 100
 			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
 		endif
 	ENDIF
-	mpechoat $i $QUEST_INSTRUCTIONSSTRING
+	mpsetvar $i PROGRESS Killed $<$i $QUEST_ID_KILLED>/$NUM_KILLABLES
 ~
 
 FUNCTION_PROG CHECK_DONE
-	if VAR($i $QUEST_ID_DELIVERED >= $DELIVEREE_COUNT)
+	if var($n $QUEST_ID_KILLED >= $NUM_KILLABLES)
 		if EVAL('$EXP' != '')
 			mpexp $i $EXP
 		endif
@@ -205,28 +199,6 @@ FUNCTION_PROG CHECK_DONE
 	endif
 ~
 
-FUNCTION_PROG CAN_ACCEPT
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
-		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			if !QUESTSCRIPTED($n *)
-				RETURN TRUE
-			endif
-		endif
-	endif
-	RETURN CANCEL
-~
-
-FUNCTION_PROG DO_ACCEPT
-	mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
-	mpqset * STATISTICS ACCEPTED
-	for $0 = 0 to< $DELIVEREE_COUNT
-		if !HAS($n '$[1 *]')
-			mpat $n mpforce $n mpoload fromfile $QUEST_ID_item.xml '$[1 *]'
-			MPQSET * QUESTOBJ $b
-			mpat $n mpechoat $n You receive $[1 *].
-		endif
-	next
-~
 
 RAND_PROG 25
 	IF QVAR(* DURATION != '0')
@@ -247,13 +219,13 @@ QUEST_TIME_PROG * 1
 ~
 
 GREET_PROG 100
-	if QUESTMOB($n *) AND CANSEE($n $i) AND EVAL('${1 *}' != $n)
-		mpforce $n sayto $i $DELIVEREE_ANNOUNCE
+	if QUESTMOB($n *) AND !ISFOLLOW('$n') AND CANSEE($n $i) AND EVAL('${1 *}' != $n)
+		if EVAL('$KILLABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
+			mpforce $n kill $i
 	endif
 ~
-
 FUNCTION_PROG DEL_LAST_MOB
-	IF QUESTMOB('$<$i $QUEST_ID_LASTMOB>' *)
+	IF !ISFOLLOW('$<$i $QUEST_ID_LASTMOB>') AND QUESTMOB('$<$i $QUEST_ID_LASTMOB>' *)
 		mppurge room '$<$i $QUEST_ID_LASTMOB>'
 	ENDIF
 ~
@@ -266,11 +238,11 @@ CNCLMSG_PROG ENTER ALL
 			mpsetvar $i $QUEST_ID_LASTMOB
 			mpsetvar $i $QUEST_ID_LASTROOM
 		endif
-		if EVAL($g != '') AND VAR($i $QUEST_ID_DELIVERED < $DELIVEREE_COUNT)
-			if QUESTROOM($g *)  or ( EVAL('$CAPTUREABLES_ROOMS' == 'ALL') AND QUESTAREA('$%INAREA($t)%' *))
+		if EVAL($g != '')
+			if QUESTROOM($g *)  or ( EVAL('$KILLABLES_ROOMS' == 'ALL') AND QUESTAREA('$%INAREA($t)%' *) )
 				if !STRIN('$<$i $QUEST_ID_ROOMLIST>' $g)
 					if !STRIN('$<$i $QUEST_ID_FOUNDROOMS>' $g)
-						if rand($DELIVEREE_CHANCE) 
+						if rand($KILLABLES_CHANCE) 
 							mpsetvar $i $QUEST_ID_FOUNDROOMS $<$i $QUEST_ID_FOUNDROOMS> "$g"
 						else
 							mpsetvar $i $QUEST_ID_ROOMLIST $<$i $QUEST_ID_ROOMLIST> "$g"
@@ -289,30 +261,32 @@ CNCLMSG_PROG ENTER ALL
 	endif
 ~
 
-GIVING_PROG p '$[1 *]'
-	if EVAL($o == '$[1 *]') AND QUESTMOB($t *)
-		mpargset $g $%INROOM($t)%
-		mpforce $t mpjunk $o
-		mpforce $t sayto "$i" $DELIVERY_RESPONSE
-		mpsetvar $i $QUEST_ID_DELIVERED ++
-		mpsetvar $i $QUEST_ID_ROOMLIST $<$i $QUEST_ID_ROOMLIST> "$g"
-		if EVAL($DELIVEREE_COUNT > 1)
-			mpechoat $i That' $<$i $QUEST_ID_DELIVERED> / $DELIVEREE_COUNT
-		endif
-		mpsetvar $i PROGRESS Delivered: $<$i $QUEST_ID_DELIVERED>/$DELIVEREE_COUNT
-		MPCALLFUNC CHECK_DONE
-	else
-		mpforce $t sayto "$i" What's this?
-		mpforce $t give "$o" "$i"
+ENTRY_PROG 100
+	if INROOM($i == $g)
+		for $0 = 1 to '$%NUMMOBSROOM(*)%'
+			mpargset $1 '$%ROOMMOB($0)%'
+			if QUESTMOB($1 *) AND !ISFOLLOW($1) AND EVAL('${1 *}' != $1)
+				mpforce $1 sayto "$i" $KILLABLES_RESPONSE
+				if EVAL('$CAPTURABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
+					mpforce $1 kill $i
+				endif
+			endif
+		next
 	endif
 ~
-
-ENTRY_PROG 100
-	for $0 = 1 to '$%NUMMOBSROOM(*)%'
-		mpargset $1 '$%ROOMMOB($0)%'
-		if QUESTMOB($1 *) AND EVAL('${1 *}' != $1)
-			mpforce $1 sayto "$i" $DELIVEREE_ANNOUNCE
+	
+EXECMSG_PROG STO=DEATH ALL
+	if QUESTMOB($n *) AND !ISFOLLOW($n) AND EVAL('${1 *}' != $n)
+		mpsetvar $i $QUEST_ID_KILLED ++;
+		if EVAL($NUM_KILLABLES > 1)
+			mpechoat $i Killed $<$i $QUEST_ID_KILLED>/$NUM_KILLABLES
 		endif
-	next
+		mpsetvar $i PROGRESS Killed $<$i $QUEST_ID_KILLED>/$NUM_KILLABLES
+		mpargset $g $%INROOM($i)%
+		if !STRIN('$<$i $QUEST_ID_ROOMLIST>' $g)
+			mpsetvar $i $QUEST_ID_ROOMLIST $<$i $QUEST_ID_ROOMLIST> "$g"
+		endif
+		mpcallfunc CHECK_DONE
+	endif
 ~
 </DATA></FILE>
