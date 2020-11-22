@@ -21,6 +21,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 /*
    Copyright 2001-2020 Bo Zimmerman
 
@@ -66,14 +67,14 @@ public class StdRoom implements Room
 	protected boolean			amDestroyed			= false;
 	protected boolean			skyedYet			= false;
 	protected volatile short	combatTurnMobIndex	= 0;
-	protected final short[]		roomRecoverMarker	= new short[1];
 
-	protected SVector<Ability>			affects		= null;
-	protected SVector<Behavior>			behaviors	= null;
-	protected SVector<ScriptingEngine>	scripts		= null;
-	protected SVector<MOB>				inhabitants	= new SVector<MOB>(1);
-	protected SVector<Item>				contents	= new SVector<Item>(1);
-	protected Room						me			= this;
+	protected final AtomicInteger		roomRecoverMarker	= new AtomicInteger();
+	protected SVector<Ability>			affects				= null;
+	protected SVector<Behavior>			behaviors			= null;
+	protected SVector<ScriptingEngine>	scripts				= null;
+	protected SVector<MOB>				inhabitants			= new SVector<MOB>(1);
+	protected SVector<Item>				contents			= new SVector<Item>(1);
+	protected Room						me					= this;
 
 	@SuppressWarnings("rawtypes")
 	protected ApplyAffectPhyStats affectPhyStats 	= new ApplyAffectPhyStats<Physical>(this);
@@ -1292,24 +1293,17 @@ public class StdRoom implements Room
 	@Override
 	public void recoverRoomStats()
 	{
-		synchronized(roomRecoverMarker)
+		try
 		{
-			roomRecoverMarker[0]++;
-			if(roomRecoverMarker[0]!=1)
-			{
+			if(roomRecoverMarker.addAndGet(1)!=1)
 				return;
-			}
-			try
-			{
+			reallyRecoverRoomStats();
+			if(roomRecoverMarker.addAndGet(-1)>0)
 				reallyRecoverRoomStats();
-				roomRecoverMarker[0]--;
-				if(roomRecoverMarker[0]>0)
-					reallyRecoverRoomStats();
-			}
-			finally
-			{
-				roomRecoverMarker[0]=0;
-			}
+		}
+		finally
+		{
+			roomRecoverMarker.set(0);
 		}
 	}
 
