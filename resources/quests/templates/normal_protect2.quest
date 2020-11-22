@@ -49,6 +49,21 @@
 #be started.
 #$ANNOUNCER_NAME=$NAME
 #
+#!QUESTMAKER_PAGE Announcer greetings/instructions
+#Here's where you specify any special text said by the announcer regarding
+#your quest
+#
+#Announcer greeting: 
+#Specify what the announcer says to people when they enter the room about their
+#quest.
+#$QUEST_NOTIFYSTRING=$LONG_STRING=I need someone to go protect someone.
+#
+#Announcer instructions: 
+#Specify what the announcer says to people who have accepted the quest.  This 
+#should give some details about what is to be done.  You can leave this blank
+#if you like.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=Go protect someone from someone else.
+#
 #!QUESTMAKER_PAGE Protected mob and location
 #Here's where you specify the mob to be protected, and where they should be.
 #
@@ -81,21 +96,6 @@
 #Protection success:
 #Select what the protected mob will say when a player defeats all attackers.
 #$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Thanks!
-#
-#!QUESTMAKER_PAGE Announcer greetings/instructions
-#Here's where you specify any special text said by the announcer regarding
-#your quest
-#
-#Announcer greeting: 
-#Specify what the announcer says to people when they enter the room about their
-#quest.
-#$QUEST_NOTIFYSTRING=$LONG_STRING=I need someone to go protect someone.
-#
-#Announcer instructions: 
-#Specify what the announcer says to people who have accepted the quest.  This 
-#should give some details about what is to be done.  You can leave this blank
-#if you like.
-#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=Go protect someone from someone else.
 #
 #!QUESTMAKER_PAGE Quest Dangers
 #You may optionally have mobs that appear during the quest in the same room as the

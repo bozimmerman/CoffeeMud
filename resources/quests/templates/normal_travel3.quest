@@ -48,6 +48,21 @@
 #be started.
 #$ANNOUNCER_NAME=$NAME
 #
+#!QUESTMAKER_PAGE Announcer greetings/instructions
+#Here's where you specify any special text said by the announcer regarding
+#your quest
+#
+#Announcer greeting: 
+#Specify what the announcer says to people when they enter the room about their
+#quest.
+#$QUEST_NOTIFYSTRING=$LONG_STRING=I need someone to go somewhere.
+#
+#Announcer instructions: 
+#Specify what the announcer says to people who have accepted the quest.  This 
+#should give some details about what is to be done.  You can leave this blank
+#if you like.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=Go to that one place.
+#
 #!QUESTMAKER_PAGE Travel destination
 #Here's where you specify the destination that the player 
 #must arrive at to complete the quest, and what they must do.
@@ -77,21 +92,6 @@
 #A message seen by the player in the destination room.  This must be a message which everyone
 #can see.  Use empty for no required message.
 #$DESTINATION_MSG=($STRING)=
-#
-#!QUESTMAKER_PAGE Announcer greetings/instructions
-#Here's where you specify any special text said by the announcer regarding
-#your quest
-#
-#Announcer greeting: 
-#Specify what the announcer says to people when they enter the room about their
-#quest.
-#$QUEST_NOTIFYSTRING=$LONG_STRING=I need someone to go somewhere.
-#
-#Announcer instructions: 
-#Specify what the announcer says to people who have accepted the quest.  This 
-#should give some details about what is to be done.  You can leave this blank
-#if you like.
-#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=Go to that one place.
 #
 #!QUESTMAKER_PAGE Quest Completion
 #Select some rewards for completing the quest:
