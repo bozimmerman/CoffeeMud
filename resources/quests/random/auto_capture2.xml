@@ -80,7 +80,7 @@ settable vars:
 		<STRING>Assistance required with some ${p:target_name}i n ${C:target_area_name}!</STRING>
 		<STRING>${c:reason_verb} ${p:target_name} in ${C:target_area_name} for goodness sake!</STRING>
 		<STRING>${c:reason_verb} ${p:target_name} in ${C:target_area_name}, quickly!</STRING>
-		<STRING>You want ${p:target_name} $reason_verbedin ${C:target_area_name}!</STRING>
+		<STRING>You want ${p:target_name} $reason_verbed in ${C:target_area_name}!</STRING>
 	</STRING>
 
 	<STRING ID="quest_instructionstring" SELECT="ALL">
@@ -464,7 +464,7 @@ settable vars:
 	</STRING>
 
 	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
-		<STRING>${SELECT:mean\level FROM $target_area\npcs WHERE name = $target_name}</STRING>
+		<STRING>${SELECT:MED_LEVEL FROM $target_area}</STRING>
 	</STRING>
 	
 	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>

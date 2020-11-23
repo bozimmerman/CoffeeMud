@@ -528,7 +528,7 @@ settable vars:
 	</STRING>
 
 	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
-		<STRING>${SELECT:mean\level FROM $target_area\npcs WHERE name = $target_name}</STRING>
+		<STRING>${SELECT:MED_LEVEL FROM $target_area}</STRING>
 	</STRING>
 	
 	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>
