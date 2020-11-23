@@ -248,7 +248,7 @@ QUEST_TIME_PROG * 1
 ~
 
 GREET_PROG 100
-	if QUESTMOB($n *) AND CANSEE($n $i) AND EVAL('${1 *}' != $n)
+	if QUESTMOB($n *) AND CANSEE($n $i)
 		mpforce $n sayto $i $DELIVEREE_ANNOUNCE
 	endif
 ~
@@ -311,7 +311,7 @@ GIVING_PROG p '$[1 *]'
 ENTRY_PROG 100
 	for $0 = 1 to '$%NUMMOBSROOM(*)%'
 		mpargset $1 '$%ROOMMOB($0)%'
-		if QUESTMOB($1 *) AND EVAL('${1 *}' != $1)
+		if QUESTMOB($1 *)
 			mpforce $1 sayto "$i" $DELIVEREE_ANNOUNCE
 		endif
 	next

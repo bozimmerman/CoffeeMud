@@ -220,7 +220,7 @@ QUEST_TIME_PROG * 1
 ~
 
 GREET_PROG 100
-	if QUESTMOB($n *) AND !ISFOLLOW('$n') AND CANSEE($n $i) AND EVAL('${1 *}' != $n)
+	if QUESTMOB($n *) AND !ISFOLLOW('$n') AND CANSEE($n $i)
 		if EVAL('$KILLABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
 			mpforce $n kill $i
 	endif
@@ -266,7 +266,7 @@ ENTRY_PROG 100
 	if INROOM($i == $g)
 		for $0 = 1 to '$%NUMMOBSROOM(*)%'
 			mpargset $1 '$%ROOMMOB($0)%'
-			if QUESTMOB($1 *) AND !ISFOLLOW($1) AND EVAL('${1 *}' != $1)
+			if QUESTMOB($1 *) AND !ISFOLLOW($1)
 				mpforce $1 sayto "$i" $KILLABLES_RESPONSE
 				if EVAL('$CAPTURABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
 					mpforce $1 kill $i
@@ -277,7 +277,7 @@ ENTRY_PROG 100
 ~
 	
 EXECMSG_PROG STO=DEATH ALL
-	if QUESTMOB($n *) AND !ISFOLLOW($n) AND EVAL('${1 *}' != $n)
+	if QUESTMOB($n *) AND !ISFOLLOW($n)
 		mpsetvar $i $QUEST_ID_KILLED ++;
 		if EVAL($NUM_KILLABLES > 1)
 			mpechoat $i Killed $<$i $QUEST_ID_KILLED>/$NUM_KILLABLES
