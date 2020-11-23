@@ -203,7 +203,7 @@ QUEST_TIME_PROG * 1
 ~
 
 GREET_PROG 100
-	if QUESTMOB($n *) AND !ISFOLLOW('$n') AND CANSEE($n $i)
+	if QUESTMOB($n *) AND !ISFOLLOW('$n') AND CANSEE($n $i) AND ISNPC($n)
 		if EVAL('$CAPTURABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
 			mpforce $n kill $i
 		else
@@ -228,7 +228,7 @@ ENTRY_PROG 100
 	if INROOM($i == $g)
 		for $0 = 1 to '$%NUMMOBSROOM(*)%'
 			mpargset $1 '$%ROOMMOB($0)%'
-			if QUESTMOB($1 *) AND !ISFOLLOW($1)
+			if QUESTMOB($1 *) AND !ISFOLLOW($1) AND ISNPC($1)
 				if EVAL('$CAPTURABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
 					mpforce $1 sayto "$i" $CAPTURABLES_RESPONSE
 					mpforce $1 kill $i
@@ -256,7 +256,7 @@ ENTRY_PROG 100
 FUNCTION_PROG DEL_LAST_MOB
 	for $0 = '$%NUMMOBSROOM(*)%' to 1
 		mpargset $1 '$%ROOMMOB($0)%'
-		if QUESTMOB($1 *) AND !ISFOLLOW('$1') AND EVAL('$<$i $QUEST_ID_LASTMOB>' == $1)
+		if QUESTMOB($1 *) AND !ISFOLLOW('$1') AND EVAL('$<$i $QUEST_ID_LASTMOB>' == $1) AND ISNPC($1)
 			mppurge room $1
 		ENDIF
 	next
@@ -333,7 +333,7 @@ FUNCTION_PROG CHECK_DONE
 ~
 
 CNCLMSG_PROG STO=DEATH ALL
-	if QUESTMOB($n *) AND !ISFOLLOW($n)
+	if QUESTMOB($n *) AND !ISFOLLOW($n) AND ISNPC($n)
 		mpargset $9 '$%ISFIGHT($n)%'
 		if EVAL($9 == $i)
 			mpgset $n HITS 1

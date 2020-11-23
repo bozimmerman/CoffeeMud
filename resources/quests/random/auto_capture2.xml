@@ -477,6 +477,7 @@ settable vars:
 
 	<STRING ID="target_faction_amt" SELECT="first" DEFINE="target_faction_amt">
 		<STRING CONDITION="$target_faction!=''">-${SELECT:factionamt from $target}</STRING>
+		<STRING CONDITION="$target_faction=''">0</STRING>
 	</STRING>
 	
 	<STRING ID="target_is_aggressive" SELECT="first" DEFINE="target_is_aggressive">

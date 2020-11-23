@@ -248,13 +248,13 @@ QUEST_TIME_PROG * 1
 ~
 
 GREET_PROG 100
-	if QUESTMOB($n *) AND CANSEE($n $i)
+	if QUESTMOB($n *) AND CANSEE($n $i) AND ISNPC($n)
 		mpforce $n sayto $i $DELIVEREE_ANNOUNCE
 	endif
 ~
 
 FUNCTION_PROG DEL_LAST_MOB
-	IF QUESTMOB('$<$i $QUEST_ID_LASTMOB>' *)
+	IF QUESTMOB('$<$i $QUEST_ID_LASTMOB>' *) AND ISNPC('$<$i $QUEST_ID_LASTMOB>')
 		mppurge room '$<$i $QUEST_ID_LASTMOB>'
 	ENDIF
 ~
@@ -291,7 +291,7 @@ CNCLMSG_PROG ENTER ALL
 ~
 
 GIVING_PROG p '$[1 *]'
-	if EVAL($o == '$[1 *]') AND QUESTMOB($t *)
+	if EVAL($o == '$[1 *]') AND QUESTMOB($t *) AND ISNPC($t)
 		mpargset $g $%INROOM($t)%
 		mpforce $t mpjunk $o
 		mpforce $t sayto "$i" $DELIVERY_RESPONSE
@@ -311,7 +311,7 @@ GIVING_PROG p '$[1 *]'
 ENTRY_PROG 100
 	for $0 = 1 to '$%NUMMOBSROOM(*)%'
 		mpargset $1 '$%ROOMMOB($0)%'
-		if QUESTMOB($1 *)
+		if QUESTMOB($1 *) AND ISNPC($1)
 			mpforce $1 sayto "$i" $DELIVEREE_ANNOUNCE
 		endif
 	next
