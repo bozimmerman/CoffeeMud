@@ -1293,10 +1293,10 @@ public class StdRoom implements Room
 	@Override
 	public void recoverRoomStats()
 	{
+		if(roomRecoverMarker.addAndGet(1)!=1)
+			return;
 		try
 		{
-			if(roomRecoverMarker.addAndGet(1)!=1)
-				return;
 			reallyRecoverRoomStats();
 			if(roomRecoverMarker.addAndGet(-1)>0)
 				reallyRecoverRoomStats();
