@@ -117,7 +117,7 @@ quiet
 set room
 set area
 set pcmobgroup reselect any mask=$QUEST_CRITERIA
-set script LOAD=$QUEST_ID_playertrack.script
+give script LOAD=$QUEST_ID_playertrack.script
 
 set area $DESTINATION_AREA
 set room $DESTINATION_ROOM
@@ -153,6 +153,7 @@ ONCE_PROG 100
 	IF QVAR(* DURATION != '0')
 	    if QVAR(* REMAINING == '')
 	        MPENDQUEST $i
+	        RETURN
 	    else
 			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
 		endif

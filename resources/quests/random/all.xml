@@ -19,38 +19,67 @@ See guides/RandomAreas.html for information about documents of this type.
 -->
 
 <string id="quest_template" define="quest_template" select="any-1">
-	<string condition="$template=''"                                                     ></string>
-	<string condition="$template!='' and $template!='random'"                            >$template</string>
-	<string condition="$template='random' and $avoidscans!='YES'"                        >normal_capture1</string>
-	<string condition="$template='random'"                                               >normal_capture2</string>
-	<string condition="$template='random' and $avoidscans!='YES'"                        >normal_capture3</string>
-	<string condition="$template='random'"                                               >normal_capture4</string>
-	<string condition="$template='random' and $avoidscans!='YES'"                        >normal_collect1</string>
-	<string condition="$template='random'"                                               >normal_collect2</string>
-	<string condition="$template='random'"                                               >normal_collect3</string>
-	<string condition="$template='random'"                                               >normal_collect4</string>
-	<string condition="$template='random'"                                               >normal_collect5</string>
-	<string condition="$template='random' and $avoidscans!='YES'"                        >normal_escort1</string>
-	<string condition="$template='random'"                                               >normal_escort2</string>
-	<string condition="$template='random' and $avoidscans!='YES'"                        >normal_delivery1</string>
-	<string condition="$template='random' and $avoidscans!='YES'"                        >normal_delivery2</string>
-	<string condition="$template='random'"                                               >normal_delivery3</string>
-	<string condition="$template='random'"                                               >normal_delivery4</string>
-	<string condition="$template='random' and $avoidscans!='YES'"                        >normal_dispel1</string>
-	<string condition="$template='random' and $avoidscans!='YES'"                        >normal_killer1</string>
-	<string condition="$template='random'"                                               >normal_killer2</string>
-	<string condition="$template='random'"                                               >normal_mystery1</string>
-	<string condition="$template='random'"                                               >normal_mystery2</string>
-	<string condition="$template='random'"                                               >normal_protect1</string>
-	<string condition="$template='random' and $avoidscans!='YES'"                        >normal_protect2</string>
-	<string condition="$template='random' and $avoidscans!='YES'"                        >normal_travel1</string>
-	<string condition="$template='random' and $avoidscans!='YES'"                        >normal_travel2</string>
-	<string condition="$template='random' and $avoidscans!='YES'"                        >normal_travel4</string>
+	<string condition="$template=''"                                                            ></string>
+	<string condition="$template!='' and $template!='random'"                                   >$template</string>
+	
+	<string condition="$template='random' and $avoidscans!='YES' and $auto_template!='true'">normal_capture1</string>
+	<string condition="$template='random' and $auto_template!='true'"                       >normal_capture2</string>
+	<string condition="$template='random' and $avoidscans!='YES' and $auto_template!='true'">normal_capture3</string>
+	<string condition="$template='random' and $auto_template!='true'"                       >normal_capture4</string>
+	<string condition="$template='random' and $avoidscans!='YES' and $auto_template!='true'">normal_collect1</string>
+	<string condition="$template='random' and $auto_template!='true'"                       >normal_collect2</string>
+	<string condition="$template='random' and $auto_template!='true'"                       >normal_collect3</string>
+	<string condition="$template='random' and $auto_template!='true'"                       >normal_collect4</string>
+	<string condition="$template='random' and $auto_template!='true'"                       >normal_collect5</string>
+	<string condition="$template='random' and $avoidscans!='YES' and $auto_template!='true'">normal_escort1</string>
+	<string condition="$template='random' and $auto_template!='true'"                       >normal_escort2</string>
+	<string condition="$template='random' and $avoidscans!='YES' and $auto_template!='true'">normal_delivery1</string>
+	<string condition="$template='random' and $avoidscans!='YES' and $auto_template!='true'">normal_delivery2</string>
+	<string condition="$template='random' and $auto_template!='true'"                       >normal_delivery3</string>
+	<string condition="$template='random' and $auto_template!='true'"                       >normal_delivery4</string>
+	<string condition="$template='random' and $avoidscans!='YES' and $auto_template!='true'">normal_dispel1</string>
+	<string condition="$template='random' and $avoidscans!='YES' and $auto_template!='true'">normal_killer1</string>
+	<string condition="$template='random' and $auto_template!='true'"                       >normal_killer2</string>
+	<string condition="$template='random' and $auto_template!='true'"                       >normal_mystery1</string>
+	<string condition="$template='random' and $auto_template!='true'"                       >normal_mystery2</string>
+	<string condition="$template='random' and $auto_template!='true'"                       >normal_protect1</string>
+	<string condition="$template='random' and $avoidscans!='YES' and $auto_template!='true'">normal_protect2</string>
+	<string condition="$template='random' and $avoidscans!='YES' and $auto_template!='true'">normal_travel1</string>
+	<string condition="$template='random' and $avoidscans!='YES' and $auto_template!='true'">normal_travel2</string>
+	<!-- 
+	<string condition="$template='random' and $avoidscans!='YES' and $auto_template!='true'">normal_travel3</string>
+	 -->
+	<string condition="$template='random' and $avoidscans!='YES' and $auto_template!='true'">normal_travel4</string>
+	<string condition="$template='random' and $avoidscans!='YES' and $auto_template='true'" >auto_capture1</string>
+	<!-- 
+	<string condition="$template='random' and $auto_template='true'"                        >auto_capture2</string>
+	<string condition="$template='random' and $avoidscans!='YES' and $auto_template='true'" >auto_capture3</string>
+	<string condition="$template='random' and $auto_template='true'"                        >auto_capture4</string>
+	<string condition="$template='random' and $avoidscans!='YES' and $auto_template='true'" >auto_collect1</string>
+	<string condition="$template='random' and $auto_template='true'"                        >auto_collect2</string>
+	<string condition="$template='random' and $auto_template='true'"                        >auto_collect3</string>
+	<string condition="$template='random' and $auto_template='true'"                        >auto_collect4</string>
+	<string condition="$template='random' and $auto_template='true'"                        >auto_collect5</string>
+	<string condition="$template='random' and $avoidscans!='YES' and $auto_template='true'" >auto_escort1</string>
+	<string condition="$template='random' and $auto_template='true'"                        >auto_escort2</string>
+	<string condition="$template='random' and $avoidscans!='YES' and $auto_template='true'" >auto_delivery1</string>
+	<string condition="$template='random' and $avoidscans!='YES' and $auto_template='true'" >auto_delivery2</string>
+	<string condition="$template='random' and $auto_template='true'"                        >auto_delivery3</string>
+	<string condition="$template='random' and $auto_template='true'"                        >auto_delivery4</string>
+	<string condition="$template='random' and $avoidscans!='YES' and $auto_template='true'" >auto_dispel1</string>
+	<string condition="$template='random' and $avoidscans!='YES' and $auto_template='true'" >auto_killer1</string>
+	<string condition="$template='random' and $auto_template='true'"                        >auto_killer2</string>
+	<string condition="$template='random' and $auto_template='true'"                        >auto_protect1</string>
+	<string condition="$template='random' and $avoidscans!='YES' and $auto_template='true'" >auto_travel1</string>
+	<string condition="$template='random' and $avoidscans!='YES' and $auto_template='true'" >auto_travel2</string>
+	<string condition="$template='random' and $avoidscans!='YES' and $auto_template='true'" >auto_travel3</string>
+	<string condition="$template='random' and $avoidscans!='YES' and $auto_template='true'" >auto_travel4</string>
+	 -->
 </string>
 
 <STRING ID="avoidscans" define="avoidscans">NO</STRING>
 
-<QUEST ID="all_quests" SELECT="Any-1" requires="template=$">
+<QUEST ID="all_quests" requires="template=$" SELECT="Any-1">
 	<QUEST load="/resources/quests/random/normal_capture1.xml" CONDITION="$quest_template='normal_capture1'"/>
 	<QUEST load="/resources/quests/random/normal_capture2.xml" CONDITION="$quest_template='normal_capture2'"/>
 	<QUEST load="/resources/quests/random/normal_capture3.xml" CONDITION="$quest_template='normal_capture3'"/>
@@ -77,4 +106,33 @@ See guides/RandomAreas.html for information about documents of this type.
 	<QUEST load="/resources/quests/random/normal_travel2.xml" CONDITION="$quest_template='normal_travel2'"/>
 	<QUEST load="/resources/quests/random/normal_travel3.xml" CONDITION="$quest_template='normal_travel3'"/>
 	<QUEST load="/resources/quests/random/normal_travel4.xml" CONDITION="$quest_template='normal_travel4'"/>
+	<QUEST load="/resources/quests/random/auto_capture1.xml" CONDITION="$quest_template='auto_capture1'"/>
+	<QUEST load="/resources/quests/random/auto_capture2.xml" CONDITION="$quest_template='auto_capture2'"/>
+	<QUEST load="/resources/quests/random/auto_capture3.xml" CONDITION="$quest_template='auto_capture3'"/>
+	<QUEST load="/resources/quests/random/auto_capture4.xml" CONDITION="$quest_template='auto_capture4'"/>
+	<QUEST load="/resources/quests/random/auto_collect1.xml" CONDITION="$quest_template='auto_collect1'"/>
+	<QUEST load="/resources/quests/random/auto_collect2.xml" CONDITION="$quest_template='auto_collect2'"/>
+	<QUEST load="/resources/quests/random/auto_collect3.xml" CONDITION="$quest_template='auto_collect3'"/>
+	<QUEST load="/resources/quests/random/auto_collect4.xml" CONDITION="$quest_template='auto_collect4'"/>
+	<QUEST load="/resources/quests/random/auto_collect5.xml" CONDITION="$quest_template='auto_collect5'"/>
+	<QUEST load="/resources/quests/random/auto_delivery1.xml" CONDITION="$quest_template='auto_delivery1'"/>
+	<QUEST load="/resources/quests/random/auto_delivery2.xml" CONDITION="$quest_template='auto_delivery2'"/>
+	<QUEST load="/resources/quests/random/auto_delivery3.xml" CONDITION="$quest_template='auto_delivery3'"/>
+	<QUEST load="/resources/quests/random/auto_delivery4.xml" CONDITION="$quest_template='auto_delivery4'"/>
+	<QUEST load="/resources/quests/random/auto_dispel1.xml" CONDITION="$quest_template='auto_dispel1'"/>
+	<QUEST load="/resources/quests/random/auto_escort1.xml" CONDITION="$quest_template='auto_escort1'"/>
+	<QUEST load="/resources/quests/random/auto_escort2.xml" CONDITION="$quest_template='auto_escort2'"/>
+	<QUEST load="/resources/quests/random/auto_killer1.xml" CONDITION="$quest_template='auto_killer1'"/>
+	<QUEST load="/resources/quests/random/auto_killer2.xml" CONDITION="$quest_template='auto_killer2'"/>
+	<QUEST load="/resources/quests/random/auto_mystery1.xml" CONDITION="$quest_template='auto_mystery1'"/>
+	<QUEST load="/resources/quests/random/auto_mystery2.xml" CONDITION="$quest_template='auto_mystery2'"/>
+	<QUEST load="/resources/quests/random/auto_protect1.xml" CONDITION="$quest_template='auto_protect1'"/>
+	<QUEST load="/resources/quests/random/auto_protect2.xml" CONDITION="$quest_template='auto_protect2'"/>
+	<QUEST load="/resources/quests/random/auto_travel1.xml" CONDITION="$quest_template='auto_travel1'"/>
+	<QUEST load="/resources/quests/random/auto_travel2.xml" CONDITION="$quest_template='auto_travel2'"/>
+	<QUEST load="/resources/quests/random/auto_travel3.xml" CONDITION="$quest_template='auto_travel3'"/>
+	<QUEST load="/resources/quests/random/auto_travel4.xml" CONDITION="$quest_template='auto_travel4'"/>
+</QUEST>
+
+<QUEST ID="all_auto_quests" predefine="auto_template=true" requires="template=$" insert="all_quests">
 </QUEST>

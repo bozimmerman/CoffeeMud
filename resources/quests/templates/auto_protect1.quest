@@ -135,7 +135,7 @@ quiet
 set room
 set area
 set pcmobgroup reselect any mask=$QUEST_CRITERIA
-set script LOAD=$QUEST_ID_playertrack.script
+give script LOAD=$QUEST_ID_playertrack.script
 set duration $DURATION
 
 set mobgroup
@@ -175,7 +175,6 @@ FUNCTION_PROG DO_ACCEPT
 ONCE_PROG 100
 	mpsetvar $i QUEST_MYROOM '$%QVAR(* WHEREHAPPENED)%'
 	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
-	mpat $i mpechoat $i $QUEST_INSTRUCTIONSSTRING
 	if var($i $QUEST_ID_MYROOM == '')
 		mpsetvar $i $QUEST_ID_MYROOM '$%QVAR(* WHEREHAPPENED_ROOMID)%'
 	endif
@@ -185,10 +184,12 @@ ONCE_PROG 100
 	IF QVAR(* DURATION != '0')
 	    if QVAR(* REMAINING == '')
 	        MPENDQUEST $i
+	        RETURN
 	    else
 			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
 		endif
 	ENDIF
+	mpat $i mpechoat $i $QUEST_INSTRUCTIONSSTRING
 	mpsetvar $i PROGRESS Defeated $<$i $QUEST_ID_DEFEATED>/$ATTACKER_SIZE
 	mpargset $g '$%INROOM($i)%'
 	if VAR($i $QUEST_ID_MYROOM != '') AND EVAL($g != '')
@@ -272,7 +273,7 @@ CNCLMSG_PROG ENTER ALL
 ~
 
 DELAY_PROG 3 3
-	IF VAR($i $QUEST_ID_PROTMOB != '') AND VAR($i $QUEST_ID_DEFEATED >= $ATTACKER_SIZE)
+	IF VAR($i $QUEST_ID_PROTMOB != '') AND VAR($i $QUEST_ID_DEFEATED >= $ATTACKER_SIZE) and QUESTSCRIPTED($i *)
 		IF INROOM($d == '$<$i $QUEST_ID_PROTMOB>')
 			mpargset $8 '$<$i $QUEST_ID_PROTMOB>'
 			if EVAL('$EXP' != '')

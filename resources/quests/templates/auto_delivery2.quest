@@ -119,7 +119,7 @@ set playermask $QUEST_CRITERIA
 set room
 set area
 set pcmobgroup reselect any mask=$QUEST_CRITERIA
-set script LOAD=$QUEST_ID_playertrack.script
+give script LOAD=$QUEST_ID_playertrack.script
 
 set area
 set room
@@ -167,7 +167,7 @@ FUNCTION_PROG DO_ACCEPT
 
 PUTTING_PROG p '$[1 *]'
 	if EVAL($p == '$[1 *]') AND EVAL($o == '$[2 *]') AND EVAL('$[2 *]' != '')
-		if ISLIKE($n '$QUEST_CRITERIA') AND EVAL('$[1 *]' != '') and ISPC($n)
+		if ISLIKE($n '$QUEST_CRITERIA') AND EVAL('$[1 *]' != '') and ISPC($n) and QUESTSCRIPTED($i *)
 			if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 				if EVAL($p == '$[1 *]')
 					if EVAL('$EXP' != '')
@@ -239,6 +239,7 @@ ONCE_PROG 100
 	IF QVAR(* DURATION != '0')
 	    if QVAR(* REMAINING == '')
 	        MPENDQUEST $i
+	        RETURN
 	    else
 			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
 		endif

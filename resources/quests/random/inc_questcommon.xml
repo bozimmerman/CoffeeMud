@@ -176,7 +176,7 @@ ${SELECT:any\name from (SELECT: . from $item_junk)}
 <STRING ID="verb_capture" define="verb_capture" SELECT="Any-1">
 	<STRING define="verb_captured=captured">capture</STRING>
 	<STRING define="verb_captured=caught">catch</STRING>
-	<STRING define="verb_captured=kidnap">kidnapped</STRING>
+	<STRING define="verb_captured=kidnapped">kidnap</STRING>
 	<STRING define="verb_captured=brought">bring</STRING>
 </STRING>
 

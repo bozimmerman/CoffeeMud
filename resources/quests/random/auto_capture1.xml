@@ -1,0 +1,501 @@
+<?xml version="1.0"?>
+<!-- ----------------------------------------------------------------------------
+Copyright 2019-2020 Bo Zimmerman
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+--------------------------------------------------------------------------------
+
+See guides/RandomAreas.html for information about documents of this type.
+
+template: auto_capture1
+settable vars: 
+    template(auto_capture1)
+    category(whatevs)
+    area_name(area name)
+    targetarea_name(area name)
+    targetname(mobs name)
+    num_targets(num mobs to capture)
+	aggression(YES,NO)
+	xp_amount_awarded
+	gold_amount_awarded
+	quest_point_awarded(YES,NO)
+	reward_items()
+	target_min_arealevel(#), target_max_arealevel(#)
+	quest_multiple(YES, NO, or PREV)
+-->
+
+<QUEST ID="auto_capture1" QUEST_TEMPLATE_ID="auto_capture1">
+	<QUEST_ID DEFINE="quest_id">${h:quest_template}_R$[100000000?999999999]</QUEST_ID>
+	<QUEST_CRITERIA>+NAMES</QUEST_CRITERIA>
+	<FREQUENCY>1</FREQUENCY>
+	<DURATION>90 minutes</DURATION>
+	<CATEGORY>$quest_category</CATEGORY>
+	<CAPTURABLES_MASK>-HOME "+$target_area_name" -NAMES "+$target_name"</CAPTURABLES_MASK>
+	<NUM_CAPTURABLES>$num_targets</NUM_CAPTURABLES>
+	<CAPTURABLES_ATTACK>$will_attack_code</CAPTURABLES_ATTACK>
+	<CAPTURABLES_FOLLOW>$will_react_peacefully</CAPTURABLES_FOLLOW>
+	<QUEST_POINT>$quest_point_awarded</QUEST_POINT>
+	<GOLD>$gold_amount_awarded</GOLD>
+	<EXP>$xp_amount_awarded</EXP>
+	<MULTIPLE>$quest_multiple</MULTIPLE>
+	<NEXT_QUEST>$next_quest_id</NEXT_QUEST>
+	<FACTION>$target_faction</FACTION>
+	<NUMFACTION>$[$target_faction_amt / 500]</NUMFACTION>
+	<QUEST_NAME SELECT="Any-1">
+		<QUEST_NAME>You need $num_targets ${p:target_name} in $target_area_name $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>You want $num_targets ${p:target_name}in $target_area_name $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>${C:reason_verb} $num_targets ${p:target_name} in $target_area_name</QUEST_NAME>
+	</QUEST_NAME>
+	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
+	<QUEST_WINSPEECH_TEXT>${j:1:quest_winspeech}</QUEST_WINSPEECH_TEXT>
+	<CAPTURABLES_RESPONSE>${j:1:quest_fightspeech}</CAPTURABLES_RESPONSE>
+	<CAPTURABLES_SURRENDER>${j:1:quest_surrenderspeech}</CAPTURABLES_SURRENDER>
+	<REWARD_ITEMS>${SELECT: ANY\. FROM $dungeon_treasure_items}</REWARD_ITEMS>
+
+	<STRING load="/resources/quests/random/inc_questcommon.xml" />
+
+	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">
+		<STRING>You need ${p:target_name} in $target_area_name $reason_verbed!</STRING>
+		<STRING>You must $reason_verb ${p:target_name} in $target_area_name!</STRING>
+		<STRING>${c:reason_verb} ${p:target_name} in $target_area_name for keeps!</STRING>
+		<STRING>${c:reason_verb} ${p:target_name}, quickly! They are in $target_area_name!</STRING>
+		<STRING>You want ${p:target_name} $reason_verbed in $target_area_name!</STRING>
+	</STRING>
+
+	<STRING ID="quest_instructionstring" SELECT="ALL">
+		<STRING ACTION="PREPEND">$reason_desc</STRING>
+		<STRING ACTION="APPEND">$reason_short</STRING>
+		<STRING SELECT="Any-1" CONDITION="'YES' in $target_is_aggressive">
+			<STRING>Just $hurt_them_phrase and they'll be along.</STRING>
+			<STRING>You might have to $hurt_them_phrase, so be ready.</STRING>
+			<STRING>If you $hurt_them_phrase, they'll follow you back here.</STRING>
+			<STRING>If you $hurt_them_phrase, they'll be no problem.</STRING>
+			<STRING>Be ready to $hurt_them_phrase.</STRING>
+			<STRING>If they seem reluctant, $hurt_them_phrase.</STRING>
+			<STRING>To encourage them, just $hurt_them_phrase.</STRING>
+			<STRING>Just $hurt_them_phrase and lead them here.</STRING>
+			<STRING>Only $hurt_them_phrase if they resist.</STRING>
+			<STRING>${C:hurt_them_phrase}, before they do you.</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="quest_winspeech" PREDEFINE="reason=$reason">$quest_winspeech</STRING>
+	<STRING ID="quest_fightspeech" PREDEFINE="reason=$reason">$quest_fightspeech</STRING>
+	<STRING ID="quest_surrenderspeech" PREDEFINE="reason=$reason">$quest_surrenderspeech</STRING>
+	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">$reason_verbed</STRING>
+	<STRING ID="reason_verb" PREDEFINE="reason=$reason">$reason_verb</STRING>
+	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
+	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
+		<STRING CONDITION="$target_int &gt; 5">$reason_theyoweme</STRING>
+		<STRING>$reason_partytime</STRING>
+		<STRING CONDITION="$target_int &gt; 5">$reason_iowethem</STRING>
+		<STRING>$reason_ilostthem</STRING>
+		<STRING>$reason_welosteachother</STRING>
+		<STRING>$reason_theylostme</STRING>
+		<STRING>$reason_gencapture</STRING>
+		<STRING CONDITION="$target_int &gt; 5">$reason_giveinstr</STRING>
+		<STRING CONDITION="$target_int &gt; 5">$reason_planning</STRING>
+		<STRING CONDITION="$target_int &gt; 5">$reason_receiveinstr</STRING>
+		<STRING CONDITION="$target_int &gt; 5">$reason_idoforthem</STRING>
+		<STRING CONDITION="$target_int &gt; 5">$reason_wedotogether</STRING>
+		<STRING CONDITION="$target_int &gt; 5">$reason_theydoforme</STRING>
+		<STRING>$reason_idotothem</STRING>
+		<STRING>$reason_wedotoeachother</STRING>
+	</STRING>
+
+	<STRING id="quest_generic_winner_speeches" SELECT="Any-1">
+		<STRING>They are all $reason_verbed! That's all of them!</STRING>
+		<STRING>${c:reason_verbed} at last!</STRING>
+		<STRING>You have completed the $reason_verb task.</STRING>
+	</STRING>
+
+	<STRING id="quest_generic_surrender_speeches" SELECT="Any-1">
+		<STRING>I'm $reason_verbed!</STRING>
+		<STRING>I am being $reason_verbed!</STRING>
+		<STRING>I guess I'm $reason_verbed !</STRING>
+	</STRING>
+	
+	<STRING ID="reason_theyoweme" SELECT="All">
+		<STRING define="reason_verbed">$verb_captured</STRING>
+		<STRING define="reason_verb">$verb_capture</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>I aint payin!</STRING>
+			<STRING>You aint getting nothin from me.</STRING>
+			<STRING>I don't owe you anything!</STRING>
+			<STRING>Leave me alone, I don't owe you anything!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>${C:target_name} owes you money, but You are not sure which one.</STRING>
+			<STRING>The ${C:P:target_name} owes you some money.</STRING>
+			<STRING>The ${C:P:target_name} owes you big time, but haven't made good.</STRING>
+			<STRING>You're owed some money.</STRING>
+			<STRING>You've given much to the ${P:target_name}, and they owe you.</STRING>
+		</STRING>
+	</STRING>
+	
+	<STRING ID="reason_partytime" SELECT="All">
+		<STRING define="reason_verbed">$verb_gathered</STRING>
+		<STRING define="reason_verb">$verb_gather</STRING>
+		<STRING define="quest_winspeech" SELECT="Any-1" >
+			<STRING>Yay! Let the party BEGIN!</STRING>"
+			<STRING>TIME TO CELEBRATE!</STRING>"
+			<STRING>Let the celebration begin!</STRING>"
+			<STRING>We can finally begin the festivities!</STRING>"
+		</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>That aint happening!</STRING>
+			<STRING>You??? Uh, NO!</STRING>
+			<STRING>I would rather $hurt_verb you than be caught by you.</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>You're throwing a party and the ${p:target_name} are invited! But they aren't here yet.</STRING>
+			<STRING>It's your birthday, and all you're missing are the party goers.</STRING>
+			<STRING>It is officially ${C:target_area_name} Day, and the ceremony must begin.</STRING>
+			<STRING>It's your birthday, and the ${p:target_name} are late.</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_iowethem" SELECT="All">
+		<STRING define="reason_verbed">$verb_gathered</STRING>
+		<STRING define="reason_verb">$verb_gather</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>Tell you I aint falling for that trap!</STRING>
+			<STRING>You are trying to fool us both.</STRING>
+			<STRING>I ain't going near you!</STRING>
+			<STRING>Leave me alone!</STRING>
+			<STRING>I don't want anything from You!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>You wish to reward $target_name for reasons.</STRING>
+			<STRING>You owe ${p:target_name} for their assistance to you.</STRING>
+			<STRING>You owe ${p:target_name}, and need them collected.</STRING>
+			<STRING>The ${p:target_name} all forgot their paychecks this week.</STRING>
+			<STRING>You swore to protect the ${p:target_name}, and they need your help.</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_ilostthem" SELECT="All">
+		<STRING define="reason_verbed">$verb_found</STRING>
+		<STRING define="reason_verb">$verb_find</STRING>
+		<STRING define="quest_winspeech" SELECT="Any-1">
+			<STRING>You found them!</STRING>
+		</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>I'm hiding! Go away!</STRING>
+			<STRING>What makes you think I needed finding?</STRING>
+			<STRING>I'm not lost, leave me alone!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>You lost the ${p:target_name} and you need to find them and bring them here.</STRING>
+			<STRING>You seem to have misplaced the ${p:target_name} and they need your help.</STRING>
+			<STRING>You can't find any ${p:target_name} and they need your help.</STRING>
+			<STRING>You must protect the ${p:target_name} from danger, and they need your help.</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_welosteachother" SELECT="All">
+		<STRING define="reason_verbed">$verb_found</STRING>
+		<STRING define="reason_verb">$verb_find</STRING>
+		<STRING define="quest_winspeech" SELECT="Any-1">
+			<STRING>You found them!</STRING>
+			<STRING>They thank you for your assistance.</STRING>
+			<STRING>They thank you so much for finding them!</STRING>
+		</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>I'm hiding! Go away!</STRING>
+			<STRING>What makes you think I needed finding?</STRING>
+			<STRING>I'm hiding from you, leave me alone!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>Your ${p:target_name} have gotten lost and you must be reunited.</STRING>
+			<STRING>Your ${p:target_name} have lost each other and you.</STRING>
+			<STRING>The ${p:target_name} and you can't find each other.</STRING>
+			<STRING CONDITION="$target_int &gt; 3">The ${p:target_name} are witnesses to a crime that you must question.</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_theylostme" SELECT="All">
+		<STRING define="reason_verbed">$verb_found</STRING>
+		<STRING define="reason_verb">$verb_find</STRING>
+		<STRING define="quest_winspeech" SELECT="Any-1">
+			<STRING>You found them!</STRING>
+			<STRING>They thank you so much for finding them!</STRING>
+		</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>I'm hiding! Go away!</STRING>
+			<STRING>What makes you think I needed finding?</STRING>
+			<STRING>I'm hiding from you, leave me alone!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>Your ${p:target_name} have lost track of you, and you need to find them.</STRING>
+			<STRING>The ${p:target_name} are lost and need finding.</STRING>
+			<STRING>The ${p:target_name} are lost and afraid and you can't find them!</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_gencapture" SELECT="All">
+		<STRING define="reason_verbed">$verb_captured</STRING>
+		<STRING define="reason_verb">$verb_capture</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>I'm hiding! Go away!</STRING>
+			<STRING>You can't take me!</STRING>
+			<STRING>I won't be taken, leave me alone!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>You need several ${p:target_name} captured.</STRING>
+			<STRING>You need the ${p:target_name} brought to you.</STRING>
+			<STRING>You need the ${p:target_name} brought to account for their crimes.</STRING>
+			<STRING>The ${p:target_name} need capturing.</STRING>
+			<STRING>You are collecting ${p:target_name}, and they need your assistance.</STRING>
+			<STRING>Let's hunt some ${p:target_name}!</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_giveinstr" SELECT="All">
+		<STRING define="reason_verbed">$verb_gathered</STRING>
+		<STRING define="reason_verb">$verb_gather</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>I'll never join you!</STRING>
+			<STRING>You can't take me!</STRING>
+			<STRING>I won't go back to you, leave me alone!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>You want to explain some things to ${p:target_name}.</STRING>
+			<STRING>It is time for ${p:target_name} ${p:any_instrument_name} lessons.</STRING>
+			<STRING>The ${p:target_name} are late for class.</STRING>
+			<STRING>The ${p:target_name} are late for their lessons.</STRING>
+			<STRING>You have much to teach the ${p:target_name} about being more $adj_personality_positive.</STRING>
+			<STRING>You have much to teach the ${p:target_name} about being less $adj_personality_negative.</STRING>
+			<STRING>You have much to teach the ${p:target_name} about being less $adj_personality_positive.</STRING>
+			<STRING>You have much to teach the ${p:target_name} about being more $adj_personality_negative.</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_planning" SELECT="All">
+		<STRING define="reason_verbed">$verb_gathered</STRING>
+		<STRING define="reason_verb">$verb_gather</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>I'll never join you!</STRING>
+			<STRING>You can't make me go back!</STRING>
+			<STRING>I'm won't go to you! Never!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>It's time for your committee meeting, and the ${p:target_name} are late!</STRING>
+			<STRING>You have a $adj_useful plan to take over $target_area_name and it involves the ${p:target_name}!</STRING>
+			<STRING>You have a $adj_useful plan regarding the future of $target_area_name and you need ${p:target_name}!</STRING>
+			<STRING>The ${p:target_name} need to be reminded to bring $any_instrument_name to the meeting today!</STRING>
+			<STRING>The ${p:target_name} are late for your study of $any_item_junk_name!</STRING>
+			<STRING>The ${p:target_name} are late for your daily discussion of $target_area_name lore and history.</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_receiveinstr" SELECT="All">
+		<STRING define="reason_verbed">$verb_gathered</STRING>
+		<STRING define="reason_verb">$verb_gather</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>I'll never talk to you!</STRING>
+			<STRING>You can't make me do it!</STRING>
+			<STRING>I'm won't go to you! Ever!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>The ${p:target_name} are supposed to be here to explain some things to you.</STRING>
+			<STRING>It's time for my lessons with ${p:target_name}.</STRING>
+			<STRING>The ${p:target_name} are supposed to teach you about $target_area_name today.</STRING>
+			<STRING>The ${p:target_name} are supposed to teach you about $any_item_junk_name today.</STRING>
+			<STRING>The ${p:target_name} are supposed to tell you about their jobs today.</STRING>
+			<STRING>The ${p:target_name} promised to teach you how to play $any_instrument_name.</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_idoforthem" SELECT="All">
+		<STRING define="reason_verbed">$verb_gathered</STRING>
+		<STRING define="reason_verb">$verb_gather</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>I'll never get near you again!</STRING>
+			<STRING>You can't make me!</STRING>
+			<STRING>I'm won't go near you!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>The ${p:target_name} need your help to groom them.</STRING>
+			<STRING>You wish to give the ${p:target_name} a gift.</STRING>
+			<STRING>You wish to play my $any_instrument_name for the ${p:target_name}.</STRING>
+			<STRING>You want to help out the ${p:target_name}.</STRING>
+			<STRING>You need to see if $any_item_junk_name fits the ${p:target_name}.</STRING>
+			<STRING CONDITION="$target_int &lt; 5">It's feeding time for the ${p:target_name}.</STRING>
+			<STRING CONDITION="$target_int &gt; 4">You've prepared a thank-you meal for ${p:target_name}.</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_wedotogether" SELECT="All">
+		<STRING define="reason_verbed">$verb_gathered</STRING>
+		<STRING define="reason_verb">$verb_gather</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>Never again with you!</STRING>
+			<STRING>You can't make me do it!</STRING>
+			<STRING>I'm not doing that with you!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>The ${p:target_name} and you are playing ${p:any_instrument_name} in the $target_area_name orchestra today.</STRING>
+			<STRING>You need the ${p:target_name} help with an important project.</STRING>
+			<STRING>You want the ${p:target_name} to help make ${p:any_item_junk_name} for $target_area_name.</STRING>
+			<STRING>The ${p:target_name} and you are parading around $target_area with your ${p:any_instrument_name} today.</STRING>
+			<STRING>You fear an invasion of $target_area_name and need ${p:target_name} gathered to help with defense.</STRING>
+			<STRING>A fire has broken out in $target_area_name and you need ${p:target_name} here immediately to put it out!</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_theydoforme" SELECT="All">
+		<STRING define="reason_verbed">$verb_gathered</STRING>
+		<STRING define="reason_verb">$verb_gather</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>I'll never help you!</STRING>
+			<STRING>You can't make me help you!</STRING>
+			<STRING>I'm not helping you!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>The ${p:target_name} must serve you.</STRING>
+			<STRING>The ${p:target_name} all must report to you.</STRING>
+			<STRING>You want the ${p:target_name} to come play $any_instrument_name for you.</STRING>
+			<STRING>The ${p:target_name} need to come help you use a $any_item_junk_name.</STRING>
+			<STRING>You need several ${p:target_name} for an important job.</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_idotothem" SELECT="All">
+		<STRING define="reason_verbed">$verb_captured</STRING>
+		<STRING define="reason_verb">$verb_capture</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>Oh no! Not you!</STRING>
+			<STRING>Please?! You can't take me to you!</STRING>
+			<STRING>I'll die before going to you!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>You must $hurt_verb the ${p:target_name}, and do it in secret.</STRING>
+			<STRING CONDITION="$target_int &lt; 4">You are giving away ${p:target_name} to all the children of $target_area_name.</STRING>
+			<STRING>You need to draw out the souls of ${p:target_name} for your magic.</STRING>
+			<STRING>The ${p:target_name} are not here, so you can't $hurt_verb them.</STRING>
+			<STRING>The ${p:target_name} make you $adj_feeling_bad, and you must make them $adj_feeling_bad.</STRING>
+			<STRING>The ${p:target_name} are going to feel the business end of ${any_item_junk_name} for what they've done.</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_wedotoeachother" SELECT="All">
+		<STRING define="reason_verbed">$verb_captured</STRING>
+		<STRING define="reason_verb">$verb_capture</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>Oh no! Not you again!</STRING>
+			<STRING>Please?! You can't make me go to you!</STRING>
+			<STRING>I'd rather die than go to you!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING CONDITION="$target_int &lt; 4">You are starting a ${p:target_name} farm.</STRING>
+			<STRING>The ${p:target_name} and you are scheduled to $hurt_verb each other today.</STRING>
+			<STRING>The ${p:target_name} have insulted your honor, and only a ritual $hurt_verb will satisfy it.</STRING>
+			<STRING>You feel like engaging in a $adj_feeling_good ${p:target_name} ${hurt_verb}ing.</STRING>
+		</STRING>
+	</STRING>
+	
+	<STRING ID="item_level" define="item_level">$target_level</STRING>
+
+	<STRING ID="aggression" DEFINE="aggression" SELECT="Pick-1">
+		<STRING PICKWEIGHT=50>NO</STRING>
+		<STRING PICKWEIGHT="$target_level">YES</STRING>
+	</STRING>
+	
+	<STRING ID="will_attack_code" DEFINE="will_attack_code" SELECT="Any-1">
+		<STRING CONDITION="$aggression='NO'">NO-USE-DEFAULT_BEHAVIOR</STRING>
+		<STRING CONDITION="$aggression='YES'">YES-ATTACK-ON-SIGHT</STRING>
+	</STRING>
+	
+	<STRING ID="will_react_peacefully" DEFINE="will_react_peacefully" SELECT="Any-1">
+		<STRING CONDITION="$aggression='NO'">PEACEFUL</STRING>
+		<STRING CONDITION="$aggression='YES'">VIOLENT</STRING>
+	</STRING>
+	
+	<STRING ID="quest_point_awarded" DEFINE="quest_point_awarded" SELECT="Pick-1">
+		<STRING PICKWEIGHT=2>NO</STRING>
+		<STRING PICKWEIGHT=1>YES</STRING>
+	</STRING>
+
+	<STRING ID="gold_amount_awarded" DEFINE="gold_amount_awarded" SELECT="any-1">
+		<STRING>$[$target_level*2]</STRING>
+	</STRING>
+
+	<STRING ID="xp_amount_awarded" DEFINE="xp_amount_awarded" SELECT="any-1">
+		<STRING>$[100 + $target_level*3]</STRING>
+	</STRING>
+
+	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
+		<STRING>${SELECT:mean\level FROM $target_area\npcs WHERE name = $target_name}</STRING>
+	</STRING>
+	
+	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>
+		<STRING>$target_level</STRING>
+	</STRING>
+	
+	<STRING ID="target_faction" SELECT="any-1" DEFINE="target_faction">
+		<STRING>${SELECT:factionid from $target}</STRING>
+	</STRING>
+
+	<STRING ID="target_faction_amt" SELECT="first" DEFINE="target_faction_amt">
+		<STRING CONDITION="$target_faction!=''">-${SELECT:factionamt from $target}</STRING>
+		<STRING>0</STRING>
+	</STRING>
+
+	<STRING ID="target_is_aggressive" SELECT="first" DEFINE="target_is_aggressive">
+		<STRING CONDITION="$aggression = 'YES'">YES</STRING>
+		<STRING>${SELECT: 'YES' from $target where 'Aggressive' in objattrib}</STRING>
+	</STRING>
+
+	<OBJECT ID="target" DEFINE="target" SELECT="any-1">
+		<OBJECT CONDITION="$targetname!=''"">SELECT: ANY\. FROM $target_area\mobs WHERE name=$targetname</OBJECT>
+		<OBJECT CONDITION="$targetname=''">SELECT: ANY\. FROM $target_area\mobs WHERE name\count &gt; $num_targets AND  . LIKE '+ISHOME'</OBJECT>
+	</OBJECT>
+
+	<STRING ID="target_name" SELECT="any-1" DEFINE="target_name">
+		<STRING>${SELECT:name from $target}</STRING>
+	</STRING>
+
+	<STRING ID="target_int" SELECT="any-1" DEFINE="target_int">
+		<STRING>${SELECT:current_intelligence from $target}</STRING>
+	</STRING>
+	
+	<OBJECT ID="target_area" SELECT="Pick-1" DEFINE="target_area">
+		<OBJECT pickweight=55555 condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
+		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel = ''">
+			SELECT: ANY\. FROM areas WHERE (SELECT:count\. from area\npcs WHERE name\count &gt; $num_targets AND  . LIKE '+ISHOME') &gt; 0
+		</OBJECT>
+		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel != ''">
+			SELECT: ANY\. FROM areas WHERE MED_LEVEL &gt;= $target_min_arealevel and MED_LEVEL &lt;= $target_max_arealevel and (SELECT:count\. from area\npcs WHERE name\count &gt; $num_targets AND  . LIKE '+ISHOME') &gt; 0
+		</OBJECT>
+	</OBJECT>
+
+	<STRING ID="target_area_name" SELECT="any-1" DEFINE="target_area_name">
+		<STRING>${SELECT:name from $target_area}</STRING>
+	</STRING>	
+</QUEST>
+
+

@@ -117,7 +117,7 @@ quiet
 set room
 set area
 set pcmobgroup reselect any mask=$QUEST_CRITERIA
-set script LOAD=$QUEST_ID_playertrack.script
+give script LOAD=$QUEST_ID_playertrack.script
 
 set mobgroup
 set mob
@@ -160,7 +160,7 @@ FUNCTION_PROG CHECK_DONE
 			mpsetvar $i $QUEST_ID_GOT ++
 		endif
 	next
-	if var($n $QUEST_ID_GOT >= $NUM_COLLECTABLES)
+	if var($n $QUEST_ID_GOT >= $NUM_COLLECTABLES) and QUESTSCRIPTED($i *)
 		if EVAL('$EXP' != '')
 			mpexp $i $EXP
 		endif
@@ -200,6 +200,7 @@ ONCE_PROG 100
 	IF QVAR(* DURATION != '0')
 	    if QVAR(* REMAINING == '')
 	        MPENDQUEST $i
+	        RETURN
 	    else
 			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
 		endif

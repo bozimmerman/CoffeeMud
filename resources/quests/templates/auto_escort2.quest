@@ -131,7 +131,7 @@ quiet
 set room
 set area
 set pcmobgroup reselect any mask=$QUEST_CRITERIA
-set script LOAD=$QUEST_ID_playertrack.script
+give script LOAD=$QUEST_ID_playertrack.script
 
 <?xml version="1.0"?>
 <FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
@@ -176,6 +176,7 @@ ONCE_PROG 100
 	IF QVAR(* DURATION != '0')
 	    if QVAR(* REMAINING == '')
 	        MPENDQUEST $i
+	        RETURN
 	    else
 			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
 		endif
@@ -239,7 +240,7 @@ CNCLMSG_PROG ENTER ALL
 ~
 
 ENTRY_PROG 100
-	if EVAL($n == $i) AND INAREA($i == '$ESCORT_DESTINATION') AND VAR($i $QUEST_ID_REWARDED == '')
+	if EVAL($n == $i) AND INAREA($i == '$ESCORT_DESTINATION') AND VAR($i $QUEST_ID_REWARDED == '') and QUESTSCRIPTED($i *)
 		if VAR($i  $QUEST_ID_ESCORTEE != '') AND INROOM($i == '$<$i $QUEST_ID_ESCORTEE>') 
 			mpforce '$<$i $QUEST_ID_ESCORTEE>' sayto $i $ESCORTED_RESPONSE
 			mpsetvar $n $QUEST_ID_REWARDED 'REWARDED'

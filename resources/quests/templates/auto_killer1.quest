@@ -113,7 +113,7 @@ quiet
 set room
 set area
 set pcmobgroup reselect any mask=$QUEST_CRITERIA
-set script LOAD=$QUEST_ID_playertrack.script
+give script LOAD=$QUEST_ID_playertrack.script
 set duration $DURATION
 
 <?xml version="1.0"?>
@@ -138,22 +138,23 @@ FUNCTION_PROG DO_ACCEPT
 
 ONCE_PROG 100
 	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
-	mpat $i mpechoat $i $QUEST_INSTRUCTIONSSTRING
 	if var($i $QUEST_ID_KILLED = '')
 		mpsetvar $i $QUEST_ID_KILLED 0
 	endif
 	IF QVAR(* DURATION != '0')
 	    if QVAR(* REMAINING == '')
 	        MPENDQUEST $i
+	        RETURN
 	    else
 			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
 		endif
 	ENDIF
+	mpat $i mpechoat $i $QUEST_INSTRUCTIONSSTRING
 	mpsetvar $i PROGRESS Killed $<$i $QUEST_ID_KILLED>/$NUM_KILLABLES
 ~
 
 FUNCTION_PROG CHECK_DONE
-	if var($n $QUEST_ID_KILLED >= $NUM_KILLABLES)
+	if var($n $QUEST_ID_KILLED >= $NUM_KILLABLES) and QUESTSCRIPTED($i *)
 		if EVAL('$EXP' != '')
 			mpexp $i $EXP
 		endif

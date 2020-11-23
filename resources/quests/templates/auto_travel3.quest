@@ -128,7 +128,7 @@ quiet
 set room
 set area
 set pcmobgroup reselect any mask=$QUEST_CRITERIA
-set script LOAD=$QUEST_ID_playertrack.script
+give script LOAD=$QUEST_ID_playertrack.script
 
 set mobgroup
 set mob
@@ -170,6 +170,7 @@ ONCE_PROG 100
 	IF QVAR(* DURATION != '0')
 	    if QVAR(* REMAINING == '')
 	        MPENDQUEST $i
+	        RETURN
 	    else
 			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
 		endif
@@ -226,7 +227,7 @@ ACT_PROG '$DESTINATION_MSG'
 ~
 
 FUNCTION_PROG SUCCESS
-	if INROOM($i == '$<$i MYROOM>') AND VAR($i $QUEST_ID_REWARDED == '')
+	if INROOM($i == '$<$i MYROOM>') AND VAR($i $QUEST_ID_REWARDED == '') and QUESTSCRIPTED($i *)
 		IF EVAL('$DESTINATION_SKILL_ID' != '') AND VAR($i $QUEST_ID_USEDSKILL != 'YES')
 			RETURN
 		ENDIF

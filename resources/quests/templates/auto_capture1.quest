@@ -128,7 +128,7 @@ quiet
 set room
 set area
 set pcmobgroup reselect any mask=$QUEST_CRITERIA
-set script LOAD=$QUEST_ID_playertrack.script
+give script LOAD=$QUEST_ID_playertrack.script
 
 set duration $DURATION
 
@@ -161,6 +161,7 @@ ONCE_PROG 100
 	IF QVAR(* DURATION != '0')
 	    if QVAR(* REMAINING == '')
 	        MPENDQUEST $i
+	        RETURN
 	    else
 			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
 		endif
@@ -204,10 +205,33 @@ GREET_PROG 100
 	endif
 ~
 
+ENTRY_PROG 100
+	if INROOM($i == $g)
+		for $0 = 1 to '$%NUMMOBSROOM(*)%'
+			if ISLIKE('$%ROOMMOB($0)%' $CAPTURABLES_MASK) AND !ISFOLLOW('$%ROOMMOB($0)%')
+				mpforce '$%ROOMMOB($0)%' sayto "$i" $CAPTURABLES_RESPONSE
+				if EVAL('$CAPTURABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
+					mpforce '$%ROOMMOB($0)%' kill $i
+				else
+					if EVAL('$CAPTURABLES_FOLLOW' == 'PEACEFUL')
+						mpforce '$%ROOMMOB($0)%' sayto "$i" $CAPTURABLES_SURRENDER
+						mpforce '$%ROOMMOB($0)%' mpstop all
+						mpforce '$%ROOMMOB($0)%' follow "$i"
+						mpsetvar $i $QUEST_ID_CAPTURED ++
+						mpsetvar $i PROGRESS Captured $<$i $QUEST_ID_CAPTURED>/$NUM_CAPTURABLES
+						MPCALLFUNC CHECK_DONE
+					endif
+				endif
+			endif
+		next
+	endif
+~
+
+
 FUNCTION_PROG CHECK_DONE
-	if var($i $QUEST_ID_CAPTURED >= $NUM_CAPTURABLES)
-		for $0 = '$%NUMMOBSROOM(*)%' to 1
-			mpargset $1 '$%ROOMMOB($0)%'
+	if var($i $QUEST_ID_CAPTURED >= $NUM_CAPTURABLES) and QUESTSCRIPTED($i *)
+		for $9 = '$%NUMMOBSROOM(*)%' to 1
+			mpargset $1 '$%ROOMMOB($9)%'
 			if ISLIKE($1 $CAPTURABLES_MASK) AND ISNPC('$1') AND ISFOLLOW('$1')
 				mpforce $1 follow self
 				mppurge $1
@@ -229,7 +253,7 @@ FUNCTION_PROG CHECK_DONE
 		endif
 		mpforce $i mpoload fromfile $QUEST_ID_rewarditems.xml any
 		if EVAL('$b' != '')
-			mpechoat $i Your receive $b.
+			mpechoat $i You receive $b.
 		endif
 		mpquestwin $i *
 		mpecho $QUEST_WINSPEECH_TEXT

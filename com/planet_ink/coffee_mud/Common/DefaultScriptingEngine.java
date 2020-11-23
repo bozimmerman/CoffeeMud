@@ -81,7 +81,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	protected Room					lastKnownLocation= null;
 	protected Room					homeKnownLocation= null;
 	protected Tickable				altStatusTickable= null;
-	protected List<DVector>			oncesDone		 = new Vector<DVector>();
+	protected List<Integer>			oncesDone		 = new Vector<Integer>();
 	protected Map<Integer,Integer>	delayTargetTimes = new Hashtable<Integer,Integer>();
 	protected Map<Integer,int[]>	delayProgCounters= new Hashtable<Integer,int[]>();
 	protected Map<Integer,Integer>	lastTimeProgsDone= new Hashtable<Integer,Integer>();
@@ -503,7 +503,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					trigger=((String)script.elementAt(0,1)).toUpperCase().trim();
 					tt=(String[])script.elementAt(0,2);
 					if((getTriggerCode(trigger,tt)==13) //questtimeprog quest_time_prog
-					&&(!oncesDone.contains(script)))
+					&&(!oncesDone.contains(Integer.valueOf(v))))
 					{
 						if(tt==null)
 							tt=parseBits(script,0,"CCC");
@@ -511,7 +511,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						&&((tt[1].equals(quest)||(tt[1].equals("*"))))
 						&&(CMath.s_int(tt[2])<0))
 						{
-							oncesDone.add(script);
+							oncesDone.add(Integer.valueOf(v));
 							execute(hostObj,mob,mob,mob,null,null,script,null,newObjs());
 							return true;
 						}
@@ -702,7 +702,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		lastKnownLocation= null;
 		homeKnownLocation=null;
 		altStatusTickable= null;
-		oncesDone = new Vector<DVector>();
+		oncesDone = new Vector<Integer>();
 		delayTargetTimes = new Hashtable<Integer,Integer>();
 		delayProgCounters= new Hashtable<Integer,int[]>();
 		lastTimeProgsDone= new Hashtable<Integer,Integer>();
@@ -10131,6 +10131,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final String currency=CMLib.english().parseNumPossibleGoldCurrency(scripted,name);
 						final double denom=CMLib.english().parseNumPossibleGoldDenomination(scripted,currency,name);
 						final Coins C=CMLib.beanCounter().makeCurrency(currency,denom,coins);
+						lastLoaded=(Item)C.copyOf();
 						if(addHere instanceof MOB)
 							((MOB)addHere).addItem(C);
 						else
@@ -14610,11 +14611,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				break;
 			case 6: // once_prog
-				if(!oncesDone.contains(script)&&canTrigger(6))
+				if(!oncesDone.contains(Integer.valueOf(thisScriptIndex))&&canTrigger(6))
 				{
 					if(t==null)
 						t=parseBits(script,0,"C");
-					oncesDone.add(script);
+					oncesDone.add(Integer.valueOf(thisScriptIndex));
 					execute(affecting,mob,mob,mob,defaultItem,null,script,null,newObjs());
 				}
 				break;
@@ -14678,7 +14679,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				break;
 			case 13: // quest_time_prog
-				if(!oncesDone.contains(script)&&canTrigger(13))
+				if(!oncesDone.contains(Integer.valueOf(thisScriptIndex))&&canTrigger(13))
 				{
 					if(t==null)
 						t=parseBits(script,0,"CCC");
@@ -14693,7 +14694,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final int time=CMath.s_int(t[2]);
 							if(time>=Q.minsRemaining())
 							{
-								oncesDone.add(script);
+								oncesDone.add(Integer.valueOf(thisScriptIndex));
 								execute(affecting,mob,mob,mob,defaultItem,null,script,null,newObjs());
 							}
 						}

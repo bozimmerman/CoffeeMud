@@ -158,7 +158,7 @@ quiet
 set room
 set area
 set pcmobgroup reselect any mask=$QUEST_CRITERIA
-set script LOAD=$QUEST_ID_playertrack.script
+give script LOAD=$QUEST_ID_playertrack.script
 
 set mob
 
@@ -186,7 +186,7 @@ FUNCTION_PROG DO_ACCEPT
 ~
 
 FUNCTION_PROG CHECK_DONE
-	if var($n $QUEST_ID_HELPED >= $NUM_HELPABLES)
+	if var($n $QUEST_ID_HELPED >= $NUM_HELPABLES) and QUESTSCRIPTED($i *)
 		if EVAL('$EXP' != '')
 			mpexp $i $EXP
 		endif
@@ -203,7 +203,7 @@ FUNCTION_PROG CHECK_DONE
 		endif
 		mpforce $i mpoload fromfile $QUEST_ID_rewarditems.xml any
 		if EVAL('$b' != '')
-			mpechoat $i Your receive $b.
+			mpechoat $i You receive $b.
 		endif
 		mpquestwin $i *
 		mpecho $QUEST_WINSPEECH_TEXT
@@ -217,17 +217,18 @@ FUNCTION_PROG CHECK_DONE
 
 ONCE_PROG 100
 	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
-	mpat $i mpechoat $i $QUEST_INSTRUCTIONSSTRING
 	if var($i $QUEST_ID_HELPED = '')
 		mpsetvar $i $QUEST_ID_HELPED 0
 	endif
 	IF QVAR(* DURATION != '0')
 	    if QVAR(* REMAINING == '')
 	        MPENDQUEST $i
+	        RETURN
 	    else
 			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
 		endif
 	ENDIF
+	mpat $i mpechoat $i $QUEST_INSTRUCTIONSSTRING
 	mpsetvar $i PROGRESS Helped $<$i $QUEST_ID_HELPED>/$NUM_HELPABLES
 ~
 

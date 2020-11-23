@@ -135,7 +135,7 @@ quiet
 set room
 set area
 set pcmobgroup reselect any mask=$QUEST_CRITERIA
-set script LOAD=$QUEST_ID_playertrack.script
+give script LOAD=$QUEST_ID_playertrack.script
 
 set room
 set area $CAPTUREABLES_AREAS
@@ -173,6 +173,7 @@ ONCE_PROG 100
 	IF QVAR(* DURATION != '0')
 	    if QVAR(* REMAINING == '')
 	        MPENDQUEST $i
+	        RETURN
 	    else
 			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
 		endif
@@ -223,6 +224,33 @@ GREET_PROG 100
 	endif
 ~
 
+ENTRY_PROG 100
+	if INROOM($i == $g)
+		for $0 = 1 to '$%NUMMOBSROOM(*)%'
+			mpargset $1 '$%ROOMMOB($0)%'
+			if QUESTMOB($1 *) AND !ISFOLLOW($1) AND EVAL('${1 *}' != $1)
+				mpforce $1 sayto "$i" $CAPTURABLES_RESPONSE
+				if EVAL('$CAPTURABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
+					mpforce $1 kill $i
+				else
+					if EVAL('$CAPTURABLES_FOLLOW' == 'PEACEFUL')
+						mpforce $1 sayto "$i" $CAPTURABLES_SURRENDER
+						mpforce $1 mpstop all
+						mpforce $1 follow "$i"
+						mpsetvar $i $QUEST_ID_CAPTURED YES
+						mpargset $g $%INROOM($i)%
+						if !STRIN('$<$i $QUEST_ID_ROOMLIST>' $g)
+							mpsetvar $i $QUEST_ID_ROOMLIST $<$i $QUEST_ID_ROOMLIST> "$g"
+						endif
+						mpsetvar $i PROGRESS Captured $<$i $QUEST_ID_CAPTURED>
+						mpechoat $i You've captured $n
+						MPCALLFUNC CHECK_DONE
+					endif
+				endif
+			endif
+		next
+	endif
+~
 FUNCTION_PROG DEL_LAST_MOB
 	for $0 = '$%NUMMOBSROOM(*)%' to 1
 		mpargset $1 '$%ROOMMOB($0)%'
@@ -266,9 +294,9 @@ CNCLMSG_PROG ENTER ALL
 ~
 
 FUNCTION_PROG CHECK_DONE
-	if var($i $QUEST_ID_RETURNED != '') AND var($i $QUEST_ID_RETURNED != 'NO')
-		for $0 = '$%NUMMOBSROOM(*)%' to 1
-			mpargset $1 '$%ROOMMOB($0)%'
+	if var($i $QUEST_ID_RETURNED != '') AND var($i $QUEST_ID_RETURNED != 'NO') and QUESTSCRIPTED($i *)
+		for $9 = '$%NUMMOBSROOM(*)%' to 1
+			mpargset $1 '$%ROOMMOB($9)%'
 			if ISLIKE($1 $CAPTURABLES_MASK) AND ISNPC('$1') AND ISFOLLOW('$1')
 				mpforce $1 follow self
 				mppurge $1

@@ -122,7 +122,7 @@ quiet
 set room
 set area
 set pcmobgroup reselect any mask=$QUEST_CRITERIA
-set script LOAD=$QUEST_ID_playertrack.script
+give script LOAD=$QUEST_ID_playertrack.script
 
 set area
 set room
@@ -140,21 +140,22 @@ set duration $DURATION
 <FILE><NAME>$QUEST_ID_playertrack.script</NAME>
 <DATA>
 ONCE_PROG 100
-	mpat $i mpechoat $i $QUEST_INSTRUCTIONSSTRING
 	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
 	IF QVAR(* DURATION != '0')
 	    if QVAR(* REMAINING == '')
 	        MPENDQUEST $i
+	        RETURN
 	    else
 			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
 		endif
 	ENDIF
 	mpsetvar $i $QUEST_ID_DELIVERED ''
+	mpat $i mpechoat $i $QUEST_INSTRUCTIONSSTRING
 	mpsetvar $i PROGRESS Delivered $<$i $QUEST_ID_DELIVERED>.LENGTH# / $DELIVEREE_COUNT
 ~
 
 FUNCTION_PROG CHECK_DONE
-	if EVAL('$<$i $QUEST_ID_DELIVERED>.LENGTH#' >= $DELIVEREE_COUNT)
+	if EVAL('$<$i $QUEST_ID_DELIVERED>.LENGTH#' >= $DELIVEREE_COUNT) and QUESTSCRIPTED($i *)
 		if EVAL('$EXP' != '')
 			mpexp $i $EXP
 		endif

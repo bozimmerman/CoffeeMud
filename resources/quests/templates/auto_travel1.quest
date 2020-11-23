@@ -111,7 +111,7 @@ quiet
 set room
 set area
 set pcmobgroup reselect any mask=$QUEST_CRITERIA
-set script LOAD=$QUEST_ID_playertrack.script
+give script LOAD=$QUEST_ID_playertrack.script
 
 set mobgroup
 set mob
@@ -148,6 +148,7 @@ ONCE_PROG 100
 	IF QVAR(* DURATION != '0')
 	    if QVAR(* REMAINING == '')
 	        MPENDQUEST $i
+	        RETURN
 	    else
 			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
 		endif
@@ -174,7 +175,7 @@ QUEST_TIME_PROG * 1
 ~
 
 ENTRY_PROG 100
-	if EVAL($n == $i) AND INROOM($i == '$<$i MYROOM>') AND VAR($i $QUEST_ID_REWARDED == '')
+	if EVAL($n == $i) AND INROOM($i == '$<$i MYROOM>') AND VAR($i $QUEST_ID_REWARDED == '') and QUESTSCRIPTED($i *)
 		mpsetvar $n $QUEST_ID_REWARDED 'REWARDED'
 		if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($i *)
 			# do nothing
