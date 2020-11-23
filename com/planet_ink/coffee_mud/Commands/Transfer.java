@@ -203,18 +203,6 @@ public class Transfer extends At
 			}
 			if(V.size()==0)
 			{
-				final Item I=mob.findItem(null, searchName);
-				if(I!=null)
-					V.add(I);
-			}
-			if((V.size()==0)&&(!cmd.toString().equalsIgnoreCase("here")))
-			{
-				final Item I=mob.location().findItem(null, searchName);
-				if(I!=null)
-					V.add(I);
-			}
-			if(V.size()==0)
-			{
 				for(final Enumeration<Room> r=mob.location().getArea().getProperMap();r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();
