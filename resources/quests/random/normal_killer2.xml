@@ -235,7 +235,7 @@ settable vars:
 		<OBJECT pickweight=1 condition="$area_name = '' and '${SELECT: name FROM area}' = '' and $multiarea = 'YES'">
 			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from $mql_viable_questgivers) &gt; 0
 		</OBJECT>
-		<OBJECT pickweight=1 condition="$area_name = '' and $$target_min_arealevel='' and '${SELECT: name FROM area}' = '' and $multiarea != 'YES'">
+		<OBJECT pickweight=1 condition="$area_name = '' and $target_min_arealevel='' and '${SELECT: name FROM area}' = '' and $multiarea != 'YES'">
 			SELECT: ANY\. FROM areas WHERE VISITABLE_ROOMS &gt; 10 and (SELECT: count\. from $mql_viable_questgivers) &gt; 0
 		</OBJECT>
 	</OBJECT>
