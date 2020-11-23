@@ -84,6 +84,16 @@ public class CM1Server extends Thread
 		return true;
 	}
 
+	public int getPort()
+	{
+		return port;
+	}
+
+	public String name()
+	{
+		return name;
+	}
+
 	@Override
 	public void run()
 	{

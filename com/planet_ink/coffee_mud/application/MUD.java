@@ -2254,6 +2254,26 @@ public class MUD extends Thread implements MudHost
 		if(V.size()==0)
 			throw new CMException("Unknown command!");
 		final String word=V.get(0);
+		if(word.equalsIgnoreCase("GET")&&(V.size()>1))
+		{
+			final String what=V.get(1);
+			if(what.equalsIgnoreCase("CM1SERVER")&&(V.size()>2))
+			{
+				final String what2=V.get(2);
+				if(cm1Servers.size()==0)
+					return "Failure";
+				final CM1Server svr=cm1Servers.get(0);
+				if(what2.equalsIgnoreCase("PORT"))
+					return ""+svr.getPort();
+				else
+				if(what2.equalsIgnoreCase("NAME"))
+					return ""+svr.getName();
+				return "Failure";
+			}
+			else
+				return "Failure";
+		}
+		else
 		if(word.equalsIgnoreCase("TICK")&&(V.size()>1))
 		{
 			final String what=V.get(1);

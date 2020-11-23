@@ -2212,7 +2212,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				str.append(i+") "+CMStrings.replaceAll(recipes[i-1],"\t",",")).append("\n");
 			if(recipes.length<E.getTotalRecipePages())
 				str.append(L("(@x1) ADD NEW RECIPE",""+(recipes.length+1))).append("\n");
-			mob.tell(str.toString());
+			if(mob.session()!=null)
+				mob.session().rawPrint(str.toString());
 			final String newName=mob.session().prompt(L("Enter a number to add/edit/remove\n\r:"),"");
 			final int x=CMath.s_int(newName);
 			if((x<=0)||(x>E.getTotalRecipePages()))
@@ -5940,7 +5941,24 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					mob.tell(header);
 				}
 			}
-			codeVal=CMath.s_int(mob.session().prompt(L("Select an option number above to TOGGLE\n\r: ")));
+			String codeStr=mob.session().prompt(L("Select an option number above to TOGGLE\n\r: "));
+			codeVal=CMath.s_int(codeStr);
+			if((codeVal == 0)&&(codeStr.trim().length()>0))
+			{
+				codeStr=codeStr.trim().toLowerCase();
+				for(int l=0;l<codes.total();l++)
+				{
+					final long wornCode=codes.get(l);
+					if(codes.name(wornCode).length()>0)
+					{
+						if(codes.name(wornCode).toLowerCase().startsWith(codeStr))
+						{
+							codeVal=l+2;
+							break;
+						}
+					}
+				}
+			}
 			if((codeVal>0)&&(codeVal<codes.total()+2))
 			{
 				if(codeVal==1)

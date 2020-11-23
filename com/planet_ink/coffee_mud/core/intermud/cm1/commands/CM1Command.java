@@ -76,6 +76,30 @@ public abstract class CM1Command implements Runnable, Cloneable
 		}
 	}
 
+	public boolean isAuthorized(final MOB user, final PhysicalAgent target)
+	{
+		if (target instanceof MOB)
+		{
+			if (CMLib.players().playerExists(target.Name()))
+				return CMSecurity.isAllowed(user, user.location(), CMSecurity.SecFlag.CMDPLAYERS);
+			return CMSecurity.isAllowed(user, user.location(), CMSecurity.SecFlag.CMDMOBS);
+		}
+		else
+		if (target instanceof Item)
+			return CMSecurity.isAllowed(user, user.location(), CMSecurity.SecFlag.CMDITEMS);
+		else
+		if (target instanceof Room)
+			return CMSecurity.isAllowed(user, user.location(), CMSecurity.SecFlag.CMDROOMS);
+		else
+		if (target instanceof Exit)
+			return CMSecurity.isAllowed(user, user.location(), CMSecurity.SecFlag.CMDEXITS);
+		else
+		if (target instanceof Area)
+			return CMSecurity.isAllowed(user, user.location(), CMSecurity.SecFlag.CMDAREAS);
+		else
+			return false;
+	}
+
 	public PhysicalAgent getTarget(final String parameters)
 	{
 		if (parameters.equalsIgnoreCase("USER"))
@@ -96,7 +120,9 @@ public abstract class CM1Command implements Runnable, Cloneable
 					R = A.getRandomMetroRoom();
 			}
 			if (who.length() == 0)
-				P = R;
+				return R;
+			else
+				P=R;
 		}
 		else
 		{

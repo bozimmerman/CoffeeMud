@@ -893,6 +893,7 @@ public class InstanceArea extends StdAbility
 				stats=instArea.getAreaIStats();
 			else
 				stats=CMLib.map().getRandomArea().getAreaIStats();
+System.out.println("Room "+room.roomID()+": "+room); //BZ:DELME
 			room.toggleMobility(false);
 			CMLib.threads().suspendResumeRecurse(room, false, true);
 			int eliteLevel=0;

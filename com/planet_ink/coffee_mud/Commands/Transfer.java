@@ -15,6 +15,11 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.Reader;
 import java.util.*;
 
 /*
@@ -340,6 +345,115 @@ public class Transfer extends At
 		else
 		if(cmd.toString().equalsIgnoreCase("here")||cmd.toString().equalsIgnoreCase("."))
 			room=mob.location();
+		else
+		if(cmd.toString().indexOf('@')>0)
+		{
+			final String foreignThing=cmd.toString().substring(0,cmd.toString().lastIndexOf('@'));
+			String server=cmd.toString().substring(cmd.toString().lastIndexOf('@')+1);
+			int port;
+			try
+			{
+				port = CMath.s_int(CMLib.host().executeCommand("GET CM1SERVER PORT"));
+			}
+			catch (final Exception e)
+			{
+				Log.errOut(e);
+				return false;
+			}
+			final int ddex=server.indexOf('$');
+			final int ddex2=(ddex<0)?-1:server.indexOf('$',ddex+1);
+			if((ddex<0)||(ddex2<0))
+			{
+				mob.tell(L("Server format:  @user$pass$server:port"));
+				return false;
+			}
+			final String user=server.substring(0,ddex);
+			final String pass=server.substring(ddex+1,ddex2);
+			server=server.substring(ddex2+1);
+			if(port<=0)
+				port=27733;
+			final int pdex=server.lastIndexOf(':');
+			if(pdex>0)
+			{
+				port=CMath.s_int(server.substring(pdex+1));
+				server=server.substring(0,pdex);
+			}
+			if(pdex>0)
+			{
+				port=CMath.s_int(server.substring(pdex+1));
+				server=server.substring(0,pdex);
+			}
+			final java.net.Socket sock=new java.net.Socket(server,port);
+			final PrintWriter writer=new PrintWriter(new OutputStreamWriter(sock.getOutputStream()));
+			final BufferedReader reader=new BufferedReader(new InputStreamReader(sock.getInputStream()));
+			while(reader.ready())
+				mob.tell(reader.readLine());
+			writer.write("LOGIN "+user+" "+pass+"\n\r");
+			writer.flush();
+			CMLib.s_sleep(500);
+			while(reader.ready())
+				mob.tell(reader.readLine());
+			writer.write("TARGET "+foreignThing);
+			writer.flush();
+			CMLib.s_sleep(1000);
+			while(reader.ready())
+				mob.tell(reader.readLine());
+
+			writer.flush();
+			sock.close();
+
+			for(int i=0;i<V.size();i++)
+			{
+				if(V.get(i) instanceof Item)
+				{
+					final Item I=(Item)V.get(i);
+					final Room itemRoom=CMLib.map().roomLocation(I);
+					if((itemRoom!=null)
+					&&((!room.isContent(I))||(inventoryFlag))
+					&&(CMSecurity.isAllowed(mob, itemRoom, CMSecurity.SecFlag.TRANSFER))
+					&&(CMSecurity.isAllowed(mob, room, CMSecurity.SecFlag.TRANSFER)))
+					{
+						if(inventoryFlag)
+							mob.moveItemTo(I,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
+						else
+						{
+							room.moveItemTo(I,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
+							if(I instanceof SpaceObject)
+								((SpaceObject)I).setSpeed(0);
+							if(I instanceof SpaceShip)
+								((SpaceShip)I).dockHere(room);
+						}
+					}
+				}
+				else
+				if(V.get(i) instanceof MOB)
+				{
+					final MOB M=(MOB)V.get(i);
+					final Room mobRoom=CMLib.map().roomLocation(M);
+					if((mobRoom!=null)
+					&&(!room.isInhabitant(M))
+					&&(CMSecurity.isAllowed(mob, mobRoom, CMSecurity.SecFlag.TRANSFER))
+					&&(CMSecurity.isAllowed(mob, room, CMSecurity.SecFlag.TRANSFER)))
+					{
+						if(M.isPlayer() && (!CMLib.flags().isInTheGame(M, true)))
+							M.setLocation(room);
+						else
+						{
+							if((mob.playerStats().getTranPoofOut().length()>0)&&(mob.location()!=null))
+								M.location().show(M,M.location(),CMMsg.MSG_LEAVE|CMMsg.MASK_ALWAYS,mob.playerStats().getTranPoofOut());
+							room.bringMobHere(M,true);
+						}
+						if(mob.playerStats().getTranPoofIn().length()>0)
+							M.location().show(M,M.location(),CMMsg.MSG_ENTER|CMMsg.MASK_ALWAYS,mob.playerStats().getTranPoofIn());
+						if(!M.isMonster() && (room.isInhabitant(M)))
+							CMLib.commands().postLook(M,true);
+					}
+				}
+			}
+			if(mob.playerStats().getTranPoofOut().length()==0)
+				mob.tell(L("Done."));
+			return true;
+		}
 		else
 		if(CMLib.map().getRoom(cmd.toString())!=null)
 			room=CMLib.map().getRoom(cmd.toString());
