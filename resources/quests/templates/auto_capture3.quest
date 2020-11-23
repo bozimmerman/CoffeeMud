@@ -204,8 +204,8 @@ ENTRY_PROG 100
 	if INROOM($i == $g)
 		for $0 = 1 to '$%NUMMOBSROOM(*)%'
 			if ISLIKE('$%ROOMMOB($0)%' $CAPTURABLES_MASK) AND !ISFOLLOW('$%ROOMMOB($0)%')
-				mpforce '$%ROOMMOB($0)%' sayto "$i" $CAPTURABLES_RESPONSE
 				if EVAL('$CAPTURABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
+					mpforce '$%ROOMMOB($0)%' sayto "$i" $CAPTURABLES_RESPONSE
 					mpforce '$%ROOMMOB($0)%' kill $i
 				else
 					if EVAL('$CAPTURABLES_FOLLOW' == 'PEACEFUL')
@@ -214,8 +214,10 @@ ENTRY_PROG 100
 						mpforce '$%ROOMMOB($0)%' follow "$i"
 						mpsetvar $i $QUEST_ID_CAPTURED YES
 						mpsetvar $i PROGRESS Captured: $<$i $QUEST_ID_CAPTURED>
-						mpechoat $i You've captured $n
+						mpechoat $i You've captured $%ROOMMOB($0)%
 						MPCALLFUNC CHECK_DONE
+					else
+						mpforce '$%ROOMMOB($0)%' sayto "$i" $CAPTURABLES_RESPONSE
 					endif
 				endif
 			endif

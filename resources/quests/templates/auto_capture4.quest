@@ -229,8 +229,8 @@ ENTRY_PROG 100
 		for $0 = 1 to '$%NUMMOBSROOM(*)%'
 			mpargset $1 '$%ROOMMOB($0)%'
 			if QUESTMOB($1 *) AND !ISFOLLOW($1)
-				mpforce $1 sayto "$i" $CAPTURABLES_RESPONSE
 				if EVAL('$CAPTURABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
+					mpforce $1 sayto "$i" $CAPTURABLES_RESPONSE
 					mpforce $1 kill $i
 				else
 					if EVAL('$CAPTURABLES_FOLLOW' == 'PEACEFUL')
@@ -243,8 +243,10 @@ ENTRY_PROG 100
 							mpsetvar $i $QUEST_ID_ROOMLIST $<$i $QUEST_ID_ROOMLIST> "$g"
 						endif
 						mpsetvar $i PROGRESS Captured $<$i $QUEST_ID_CAPTURED>
-						mpechoat $i You've captured $n
+						mpechoat $i You've captured $1
 						MPCALLFUNC CHECK_DONE
+					else
+						mpforce $1 sayto "$i" $CAPTURABLES_RESPONSE
 					endif
 				endif
 			endif
