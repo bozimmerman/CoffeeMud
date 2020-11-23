@@ -363,7 +363,7 @@ settable vars:
 			<STRING>The ${p:target_name} and you are playing ${p:any_instrument_name} in the $target_area_name orchestra today.</STRING>
 			<STRING>You need the ${p:target_name} help with an important project.</STRING>
 			<STRING>You want the ${p:target_name} to help make ${p:any_item_junk_name} for $target_area_name.</STRING>
-			<STRING>The ${p:target_name} and you are parading around $target_area with your ${p:any_instrument_name} today.</STRING>
+			<STRING>The ${p:target_name} and you are parading around $target_area_name with your ${p:any_instrument_name} today.</STRING>
 			<STRING>You fear an invasion of $target_area_name and need ${p:target_name} gathered to help with defense.</STRING>
 			<STRING>A fire has broken out in $target_area_name and you need ${p:target_name} together immediately to put it out!</STRING>
 		</STRING>
