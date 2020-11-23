@@ -205,7 +205,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<ABILITY condition="$mob_level &gt;=  90" class="Spell_ResistSlashing" parms="" />
 				</ABILITY>
 			</MOB>
-			<ITEM class="GenFood" weight="100" NOURISHMENT="10000" bite="500" id="dragon_egg" name="a $adj_scary_feeling dragon egg" display="$item_name is here" material="EGGS" />
+			<ITEM class="GenFood" weight="100" NOURISHMENT="10000" bite="500" id="dragon_egg" name="(a(n)) $adj_scary_feeling dragon egg" display="$item_name is here" material="EGGS" />
 			<ITEM select="2?5" insert="dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg" />
 			<EXIT class="Open" />
 			<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />

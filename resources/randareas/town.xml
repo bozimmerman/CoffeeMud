@@ -865,11 +865,11 @@ See guides/RandomAreas.html for information about documents of this type.
 					<WEAPONTYPE>SLASHING</WEAPONTYPE>
 				</ITEM>
 				<SHOPINVENTORY>
-					<MOB class="GenHorse" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
-					<MOB class="GenHorse" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
-					<MOB class="GenHorse" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
-					<MOB class="GenHorse" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
-					<MOB class="GenHorse" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
+					<MOB class="GenHorse" name="(a(n)) $adj_mammal_color horse" display="$mob_name is here" number=20/>
+					<MOB class="GenHorse" name="(a(n)) $adj_mammal_color horse" display="$mob_name is here" number=20/>
+					<MOB class="GenHorse" name="(a(n)) $adj_mammal_color horse" display="$mob_name is here" number=20/>
+					<MOB class="GenHorse" name="(a(n)) $adj_mammal_color horse" display="$mob_name is here" number=20/>
+					<MOB class="GenHorse" name="(a(n)) $adj_mammal_color horse" display="$mob_name is here" number=20/>
 				</SHOPINVENTORY>
 			</MOB>
 		</ROOM>
@@ -1066,7 +1066,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<BEHAVIOR class="Fighterness" parms="" />
 				</BEHAVIOR>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
-					<NAME select="any-1"><NAME>a ${l:__chieftype}`s uniform</NAME></NAME>
+					<NAME select="any-1"><NAME>(a(n)) ${l:__chieftype}`s uniform</NAME></NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
@@ -1469,13 +1469,13 @@ See guides/RandomAreas.html for information about documents of this type.
 			<BEHAVIOR class="Mobile" parms="" />
 		</BEHAVIOR>
 		<ITEM class="GenArmor" LEVEL="$mob_level">
-			<NAME select="any-1"><NAME>a ${l:__officertype}`s uniform</NAME></NAME>
+			<NAME select="any-1"><NAME>(a(n)) ${l:__officertype}`s uniform</NAME></NAME>
 			<DISPLAY>$item_name has been left here</DISPLAY>
 			<MATERIAL>COTTON</MATERIAL>
 			<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 		</ITEM>
 		<ITEM class="GenWeapon" LEVEL="$mob_level">
-			<NAME>a ${l:__officertype} night stick</NAME>
+			<NAME>(a(n)) ${l:__officertype} night stick</NAME>
 			<DISPLAY>$item_name has been left here</DISPLAY>
 			<MATERIAL>WOOD</MATERIAL>
 			<WEAPONCLASS>BLUNT</WEAPONCLASS>

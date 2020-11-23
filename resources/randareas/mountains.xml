@@ -119,7 +119,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		</MOB>
 		<MOB condition="1?2=1" select="any-1" insert="mountain_mobs" />
 		<ITEM condition="1?4=1" select="any-1">
-			<ITEM class="GenContainer" name="A $adj_wooden_ragged chest" display="$item_name is here" HASLID="true" HASLOCK="$trueorfalse">
+			<ITEM class="GenContainer" name="(a(n)) $adj_wooden_ragged chest" display="$item_name is here" HASLID="true" HASLOCK="$trueorfalse">
 				<CONTENT>
 					<ITEM select="any-5" insert="dungeon_treasure_items" />
 				</CONTENT>

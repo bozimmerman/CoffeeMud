@@ -650,7 +650,7 @@ See guides/RandomAreas.html for information about documents of this type.
 	<ITEM select="all" insert="dungeon_junk" />
 	<ITEM select="all">
 		<ITEM class="GenItem" name="some $adj_metal_broken handcuffs scraps" display="$item_name were discarded here" material="IRON" level="$level_range" />
-		<ITEM class="GenWeapon" name="a $adj_wooden_broken night stick" display="$item_name is lying here" material="WOOD" level="$level_range" attack="-10" damage="1"/>
+		<ITEM class="GenWeapon" name="(a(n)) $adj_wooden_broken night stick" display="$item_name is lying here" material="WOOD" level="$level_range" attack="-10" damage="1"/>
 		<ITEM class="GenResource" name="the bones of a dead prisoner" display="$item_name rest here" material="BONE" level="$level_range" weight="10" />
 		<ITEM class="GenItem" name="some prayer beads" display="a string of prayer beads lie here" material="BONE" level="$level_range" weight=1 />
 		<ITEM class="GenItem" name="a melted wax clob" display="$item_name lies here" material="WAX" level="$level_range" weight=1 />

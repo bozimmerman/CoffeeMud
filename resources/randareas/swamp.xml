@@ -93,8 +93,8 @@ See guides/RandomAreas.html for information about documents of this type.
 		<DESCRIPTION>$swamp_interior_desc</DESCRIPTION>
 		<STRING id="swamp_interior_desc" select="all">
 			<STRING select="any-1" action="PREPEND">
-				<STRING>A $adj_densedark_word patch of foliage in ${l:room_title}. </STRING>
-				<STRING>A  $adj_densedark_word corner of ${l:room_title}. </STRING>
+				<STRING>(A(n)) $adj_densedark_word patch of foliage in ${l:room_title}. </STRING>
+				<STRING>(A(n)) $adj_densedark_word corner of ${l:room_title}. </STRING>
 				<STRING>The ${swamp_nouns} surrounds you. </STRING>
 				<STRING>The ${swamp_nouns} is all around you. </STRING>
 			</STRING>
@@ -117,7 +117,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		<MOB condition="($NOFANTASY != 'true') and ($__defined_swamp_dragon&lt;1)" define="__defined_swamp_dragon+=1" like="swamp_dragon_mob" />
 		<MOB condition="1?2=1" select="any-1" insert="swamp_mobs" />
 		<ITEM condition="1?4=1" select="any-1">
-			<ITEM class="GenContainer" name="A $adj_wooden_ragged chest" display="$item_name is here" HASLID="true" HASLOCK="$trueorfalse">
+			<ITEM class="GenContainer" name="(a(n)) $adj_wooden_ragged chest" display="$item_name is here" HASLID="true" HASLOCK="$trueorfalse">
 				<CONTENT>
 					<ITEM select="any-5" insert="dungeon_treasure_items" />
 				</CONTENT>

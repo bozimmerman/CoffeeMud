@@ -853,7 +853,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			<BEHAVIOR class="CombatAbilities" parms="" />
 		</BEHAVIOR>
 		<ITEM select="all">
-			<ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname storekey" name="a ${l:mob_race} key" material="iron" validate="1?10=1 or (1?2=1 and $__storekey&lt;2)" define="__storekey+=1">
+			<ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname storekey" name="(a(n)) ${l:mob_race} key" material="iron" validate="1?10=1 or (1?2=1 and $__storekey&lt;2)" define="__storekey+=1">
 				<AFFECT class="Prop_ItemNoRuin"/>
 			</ITEM>
 			<ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname labkey"  name="a wierd ${l:mob_race} key" material="copper" validate="1?20=1 or (1?2=1 and $__labkey&lt;1)" define="__labkey+=1">
