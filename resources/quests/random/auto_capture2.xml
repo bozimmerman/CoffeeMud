@@ -17,9 +17,9 @@ limitations under the License.
 
 See guides/RandomAreas.html for information about documents of this type.
 
-template: auto_capture1
+template: auto_capture2
 settable vars: 
-    template(auto_capture1)
+    template(auto_capture2)
     category(whatevs)
     area_name(area name)
     targetarea_name(area name)
@@ -34,13 +34,16 @@ settable vars:
 	quest_multiple(YES, NO, or PREV)
 -->
 
-<QUEST ID="auto_capture1" QUEST_TEMPLATE_ID="auto_capture1">
+<QUEST ID="auto_capture2" QUEST_TEMPLATE_ID="auto_capture2">
 	<QUEST_ID DEFINE="quest_id">${h:quest_template}_R$[100000000?999999999]</QUEST_ID>
 	<QUEST_CRITERIA>$player_criteria</QUEST_CRITERIA>
 	<FREQUENCY>1</FREQUENCY>
 	<DURATION>90 minutes</DURATION>
 	<CATEGORY>$quest_category</CATEGORY>
-	<CAPTURABLES_MASK>-HOME "+$target_area_name" -NAMES "+$target_name"</CAPTURABLES_MASK>
+	<CAPTUREABLES_AREAS>"$target_area_name"</CAPTUREABLES_AREAS>
+	<CAPTUREABLES_ROOMS>ALL</CAPTUREABLES_ROOMS>
+	<CAPTUREABLES_MOBS>${SELECT: ANY\. from $target}</CAPTUREABLES_MOBS>
+	<CAPTUREABLES_CHANCE>$[($num_targets / $target_area_size * 100) * 2]</CAPTUREABLES_CHANCE>
 	<NUM_CAPTURABLES>$num_targets</NUM_CAPTURABLES>
 	<CAPTURABLES_ATTACK>$will_attack_code</CAPTURABLES_ATTACK>
 	<CAPTURABLES_FOLLOW>$will_react_peacefully</CAPTURABLES_FOLLOW>
@@ -52,9 +55,11 @@ settable vars:
 	<FACTION>$target_faction</FACTION>
 	<NUMFACTION>$[$target_faction_amt / 500]</NUMFACTION>
 	<QUEST_NAME SELECT="Any-1">
-		<QUEST_NAME>You need $num_targets ${p:target_name} in $target_area_name $reason_verbed</QUEST_NAME>
-		<QUEST_NAME>You want $num_targets ${p:target_name}in $target_area_name $reason_verbed</QUEST_NAME>
-		<QUEST_NAME>${C:reason_verb} $num_targets ${p:target_name} in $target_area_name</QUEST_NAME>
+		<QUEST_NAME>You need $num_targets ${p:target_name} $reason_verbed in ${C:target_area_name}</QUEST_NAME>
+		<QUEST_NAME>You want $num_targets ${p:target_name} $reason_verbed in ${C:target_area_name}</QUEST_NAME>
+		<QUEST_NAME>You've been asked for $num_targets ${p:target_name} to be $reason_verbed in ${C:target_area_name}</QUEST_NAME>
+		<QUEST_NAME>You must ${reason_verb} $num_targets ${p:target_name} in ${C:target_area_name}</QUEST_NAME>
+		<QUEST_NAME>${C:reason_verb} $num_targets ${p:target_name} in ${C:target_area_name}</QUEST_NAME>
 	</QUEST_NAME>
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
 	<QUEST_WINSPEECH_TEXT>${j:1:quest_winspeech}</QUEST_WINSPEECH_TEXT>
@@ -70,11 +75,12 @@ settable vars:
 	</STRING>
 
 	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">
-		<STRING>You need ${p:target_name} in $target_area_name $reason_verbed!</STRING>
-		<STRING>You must $reason_verb ${p:target_name} in $target_area_name!</STRING>
-		<STRING>${c:reason_verb} ${p:target_name} in $target_area_name for keeps!</STRING>
-		<STRING>${c:reason_verb} ${p:target_name}, quickly! They are in $target_area_name!</STRING>
-		<STRING>You want ${p:target_name} $reason_verbed in $target_area_name!</STRING>
+		<STRING>You need ${p:target_name} in ${C:target_area_name} $reason_verbed!</STRING>
+		<STRING>You must $reason_verb ${p:target_name} in ${C:target_area_name}!</STRING>
+		<STRING>Assistance required with some ${p:target_name}i n ${C:target_area_name}!</STRING>
+		<STRING>${c:reason_verb} ${p:target_name} in ${C:target_area_name} for goodness sake!</STRING>
+		<STRING>${c:reason_verb} ${p:target_name} in ${C:target_area_name}, quickly!</STRING>
+		<STRING>You want ${p:target_name} $reason_verbedin ${C:target_area_name}!</STRING>
 	</STRING>
 
 	<STRING ID="quest_instructionstring" SELECT="ALL">
@@ -83,7 +89,7 @@ settable vars:
 		<STRING SELECT="Any-1" CONDITION="'YES' in $target_is_aggressive">
 			<STRING>Just $hurt_them_phrase and they'll be along.</STRING>
 			<STRING>You might have to $hurt_them_phrase, so be ready.</STRING>
-			<STRING>If you $hurt_them_phrase, they'll follow.</STRING>
+			<STRING>If you $hurt_them_phrase, they'll follow you.</STRING>
 			<STRING>If you $hurt_them_phrase, they'll be no problem.</STRING>
 			<STRING>Be ready to $hurt_them_phrase.</STRING>
 			<STRING>If they seem reluctant, $hurt_them_phrase.</STRING>
@@ -111,7 +117,7 @@ settable vars:
 		<STRING CONDITION="$target_int &gt; 5">$reason_giveinstr</STRING>
 		<STRING CONDITION="$target_int &gt; 5">$reason_planning</STRING>
 		<STRING CONDITION="$target_int &gt; 5">$reason_receiveinstr</STRING>
-		<STRING CONDITION="$target_int &gt; 5">$reason_idoforthem</STRING>
+		<STRING CONDITION="$target_int &gt; 5 and $source_align &gt; 5000">$reason_idoforthem</STRING>
 		<STRING CONDITION="$target_int &gt; 5">$reason_wedotogether</STRING>
 		<STRING CONDITION="$target_int &gt; 5">$reason_theydoforme</STRING>
 		<STRING>$reason_idotothem</STRING>
@@ -121,13 +127,14 @@ settable vars:
 	<STRING id="quest_generic_winner_speeches" SELECT="Any-1">
 		<STRING>They are all $reason_verbed! That's all of them!</STRING>
 		<STRING>${c:reason_verbed} at last!</STRING>
+		<STRING>The $reason_verb task is completed.</STRING>
 		<STRING>You have completed the $reason_verb task.</STRING>
 	</STRING>
 
 	<STRING id="quest_generic_surrender_speeches" SELECT="Any-1">
 		<STRING>I'm $reason_verbed!</STRING>
 		<STRING>I am being $reason_verbed!</STRING>
-		<STRING>I guess I'm $reason_verbed !</STRING>
+		<STRING>I guess I'm $reason_verbed!</STRING>
 	</STRING>
 	
 	<STRING ID="reason_theyoweme" SELECT="All">
@@ -142,9 +149,9 @@ settable vars:
 		</STRING>
 		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>${C:target_name} owes you money, but You are not sure which one.</STRING>
-			<STRING>The ${C:P:target_name} owes you some money.</STRING>
-			<STRING>The ${C:P:target_name} owes you big time, but haven't made good.</STRING>
+			<STRING>${C:target_name} owes you money, but I'm not sure which one.</STRING>
+			<STRING>The ${C:P:target_name} owe you some money.</STRING>
+			<STRING>The ${C:P:target_name} owe you big time, but haven't made good.</STRING>
 			<STRING>You're owed some money.</STRING>
 			<STRING>You've given much to the ${P:target_name}, and they owe you.</STRING>
 		</STRING>
@@ -162,14 +169,14 @@ settable vars:
 		<STRING define="quest_fightspeech" SELECT="Any-1">
 			<STRING>That aint happening!</STRING>
 			<STRING>You??? Uh, NO!</STRING>
-			<STRING>I would rather $hurt_verb you than be caught by you.</STRING>
+			<STRING>I would rather $hurt_verb you than party with you.</STRING>
 		</STRING>
 		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>You're throwing a party and the ${p:target_name} are invited! But they aren't together yet.</STRING>
-			<STRING>Today you are celebrating, and all you're missing are the party goers.</STRING>
-			<STRING>It is officially ${C:target_area_name} Day, and the ceremony must begin.</STRING>
-			<STRING>It's your favorite holiday, and the ${p:target_name} are late for the party.</STRING>
+			<STRING>It's time to celebrate, and all you're missing are the party goers.</STRING>
+			<STRING>It is officially ${C:target_area_name} Day, and the ceremony must be held.</STRING>
+			<STRING>It's time for the party, and the ${p:target_name} are late.</STRING>
 		</STRING>
 	</STRING>
 	<STRING ID="reason_iowethem" SELECT="All">
@@ -177,7 +184,7 @@ settable vars:
 		<STRING define="reason_verb">$verb_gather</STRING>
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="quest_fightspeech" SELECT="Any-1">
-			<STRING>Tell you I aint falling for that trap!</STRING>
+			<STRING>I aint falling for that trap!</STRING>
 			<STRING>You are trying to fool us both.</STRING>
 			<STRING>I ain't going near you!</STRING>
 			<STRING>Leave me alone!</STRING>
@@ -187,7 +194,7 @@ settable vars:
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>You wish to reward $target_name for reasons.</STRING>
 			<STRING>You owe ${p:target_name} for their assistance to you.</STRING>
-			<STRING>You owe ${p:target_name}, and need them collected.</STRING>
+			<STRING>You owe ${p:target_name}, and need them together.</STRING>
 			<STRING>The ${p:target_name} all forgot their paychecks this week.</STRING>
 			<STRING>You swore to protect the ${p:target_name}, and they need your help.</STRING>
 		</STRING>
@@ -196,7 +203,9 @@ settable vars:
 		<STRING define="reason_verbed">$verb_found</STRING>
 		<STRING define="reason_verb">$verb_find</STRING>
 		<STRING define="quest_winspeech" SELECT="Any-1">
-			<STRING>You found them!</STRING>
+			<STRING>You found them! Yay!</STRING>
+			<STRING>They thank you for your assistance.</STRING>
+			<STRING>They thank you so much for finding them!</STRING>
 		</STRING>
 		<STRING define="quest_fightspeech" SELECT="Any-1">
 			<STRING>I'm hiding! Go away!</STRING>
@@ -205,7 +214,7 @@ settable vars:
 		</STRING>
 		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>You lost the ${p:target_name} and you need to find them and bring them together.</STRING>
+			<STRING>You lost your ${p:target_name} and need you to find them and bring them together.</STRING>
 			<STRING>You seem to have misplaced the ${p:target_name} and they need your help.</STRING>
 			<STRING>You can't find any ${p:target_name} and they need your help.</STRING>
 			<STRING>You must protect the ${p:target_name} from danger, and they need your help.</STRING>
@@ -215,7 +224,7 @@ settable vars:
 		<STRING define="reason_verbed">$verb_found</STRING>
 		<STRING define="reason_verb">$verb_find</STRING>
 		<STRING define="quest_winspeech" SELECT="Any-1">
-			<STRING>You found them!</STRING>
+			<STRING>You found them! Thanks!</STRING>
 			<STRING>They thank you for your assistance.</STRING>
 			<STRING>They thank you so much for finding them!</STRING>
 		</STRING>
@@ -226,7 +235,7 @@ settable vars:
 		</STRING>
 		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>Your ${p:target_name} have gotten lost and you must be reunited.</STRING>
+			<STRING>Your ${p:target_name} have gotten lost and must be reunited.</STRING>
 			<STRING>Your ${p:target_name} have lost each other and you.</STRING>
 			<STRING>The ${p:target_name} and you can't find each other.</STRING>
 			<STRING CONDITION="$target_int &gt; 3">The ${p:target_name} are witnesses to a crime that you must question.</STRING>
@@ -236,7 +245,8 @@ settable vars:
 		<STRING define="reason_verbed">$verb_found</STRING>
 		<STRING define="reason_verb">$verb_find</STRING>
 		<STRING define="quest_winspeech" SELECT="Any-1">
-			<STRING>You found them!</STRING>
+			<STRING>You found them! Yay!</STRING>
+			<STRING>They thank you for your assistance.</STRING>
 			<STRING>They thank you so much for finding them!</STRING>
 		</STRING>
 		<STRING define="quest_fightspeech" SELECT="Any-1">
@@ -263,10 +273,10 @@ settable vars:
 		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>You need several ${p:target_name} captured.</STRING>
-			<STRING>You need the ${p:target_name} brought to you.</STRING>
+			<STRING>You need the ${p:target_name} brought together.</STRING>
 			<STRING>You need the ${p:target_name} brought to account for their crimes.</STRING>
 			<STRING>The ${p:target_name} need capturing.</STRING>
-			<STRING>You are collecting ${p:target_name}, and they need your assistance.</STRING>
+			<STRING>You are collecting ${p:target_name}, and need to get started.</STRING>
 			<STRING>Let's hunt some ${p:target_name}!</STRING>
 		</STRING>
 	</STRING>
@@ -277,14 +287,14 @@ settable vars:
 		<STRING define="quest_fightspeech" SELECT="Any-1">
 			<STRING>I'll never join you!</STRING>
 			<STRING>You can't take me!</STRING>
-			<STRING>I won't go back to you, leave me alone!</STRING>
+			<STRING>You won't go back to you, leave me alone!</STRING>
 		</STRING>
 		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>You want to explain some things to ${p:target_name}.</STRING>
 			<STRING>It is time for ${p:target_name} ${p:any_instrument_name} lessons.</STRING>
 			<STRING>The ${p:target_name} are late for class.</STRING>
-			<STRING>The ${p:target_name} are late for their lessons.</STRING>
+			<STRING>The ${p:target_name} are late for your lessons.</STRING>
 			<STRING>You have much to teach the ${p:target_name} about being more $adj_personality_positive.</STRING>
 			<STRING>You have much to teach the ${p:target_name} about being less $adj_personality_negative.</STRING>
 			<STRING>You have much to teach the ${p:target_name} about being less $adj_personality_positive.</STRING>
@@ -303,11 +313,11 @@ settable vars:
 		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>It's time for your committee meeting, and the ${p:target_name} are late!</STRING>
-			<STRING>You have a $adj_useful plan to take over $target_area_name and it involves the ${p:target_name}!</STRING>
+			<STRING>You have a $adj_useful plans to take over $target_area_name and it involves the ${p:target_name}!</STRING>
 			<STRING>You have a $adj_useful plan regarding the future of $target_area_name and you need ${p:target_name}!</STRING>
 			<STRING>The ${p:target_name} need to be reminded to bring $any_instrument_name to the meeting today!</STRING>
-			<STRING>The ${p:target_name} are late for your study of $any_item_junk_name!</STRING>
-			<STRING>The ${p:target_name} are late for your daily discussion of $target_area_name lore and history.</STRING>
+			<STRING>The ${p:target_name} are late for our study of $any_item_junk_name!</STRING>
+			<STRING>The ${p:target_name} are late for our daily discussion of $target_area_name lore and history.</STRING>
 		</STRING>
 	</STRING>
 	<STRING ID="reason_receiveinstr" SELECT="All">
@@ -321,8 +331,8 @@ settable vars:
 		</STRING>
 		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>The ${p:target_name} are supposed to be together to explain some things to you.</STRING>
-			<STRING>It's time for my lessons with ${p:target_name}.</STRING>
+			<STRING>The ${p:target_name} are supposed to explain some things to you.</STRING>
+			<STRING>It's time for your lessons with ${p:target_name}.</STRING>
 			<STRING>The ${p:target_name} are supposed to teach you about $target_area_name today.</STRING>
 			<STRING>The ${p:target_name} are supposed to teach you about $any_item_junk_name today.</STRING>
 			<STRING>The ${p:target_name} are supposed to tell you about their jobs today.</STRING>
@@ -342,11 +352,11 @@ settable vars:
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>The ${p:target_name} need your help to groom them.</STRING>
 			<STRING>You wish to give the ${p:target_name} a gift.</STRING>
-			<STRING>You wish to play my $any_instrument_name for the ${p:target_name}.</STRING>
+			<STRING>You wish to learn to play your $any_instrument_name with the ${p:target_name}.</STRING>
 			<STRING>You want to help out the ${p:target_name}.</STRING>
 			<STRING>You need to see if $any_item_junk_name fits the ${p:target_name}.</STRING>
 			<STRING CONDITION="$target_int &lt; 5">It's feeding time for the ${p:target_name}.</STRING>
-			<STRING CONDITION="$target_int &gt; 4">You've prepared a thank-you meal for ${p:target_name}.</STRING>
+			<STRING CONDITION="$target_int &gt; 4">I've prepared a thank-you meal for ${p:target_name}.</STRING>
 		</STRING>
 	</STRING>
 	<STRING ID="reason_wedotogether" SELECT="All">
@@ -360,12 +370,12 @@ settable vars:
 		</STRING>
 		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>The ${p:target_name} and you are playing ${p:any_instrument_name} in the $target_area_name orchestra today.</STRING>
+			<STRING>The ${p:target_name} and you are playing ${p:any_instrument_name} in the $source_area orchestra today.</STRING>
 			<STRING>You need the ${p:target_name} help with an important project.</STRING>
-			<STRING>You want the ${p:target_name} to help make ${p:any_item_junk_name} for $target_area_name.</STRING>
-			<STRING>The ${p:target_name} and you are parading around $target_area with your ${p:any_instrument_name} today.</STRING>
-			<STRING>You fear an invasion of $target_area_name and need ${p:target_name} gathered to help with defense.</STRING>
-			<STRING>A fire has broken out in $target_area_name and you need ${p:target_name} together immediately to put it out!</STRING>
+			<STRING>You want the ${p:target_name} brought together to help make ${p:any_item_junk_name} for $source_area.</STRING>
+			<STRING>The ${p:target_name} and you are parading around $source_area with your ${p:any_instrument_name} today.</STRING>
+			<STRING>You fear an invasion of $target_area_name and need ${p:target_name} brought together help with defense.</STRING>
+			<STRING>A fire has broken out in $target_area_name and we need ${p:target_name} together immediately to put it out!</STRING>
 		</STRING>
 	</STRING>
 	<STRING ID="reason_theydoforme" SELECT="All">
@@ -379,10 +389,10 @@ settable vars:
 		</STRING>
 		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>The ${p:target_name} must serve you.</STRING>
+			<STRING>The ${p:target_name} must come together at once to serve you.</STRING>
 			<STRING>The ${p:target_name} all must report to you.</STRING>
 			<STRING>You want the ${p:target_name} to come play $any_instrument_name for you.</STRING>
-			<STRING>The ${p:target_name} need to come help you use a $any_item_junk_name.</STRING>
+			<STRING>The ${p:target_name} need to come help you use your $any_item_junk_name.</STRING>
 			<STRING>You need several ${p:target_name} for an important job.</STRING>
 		</STRING>
 	</STRING>
@@ -398,8 +408,8 @@ settable vars:
 		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>You must $hurt_verb the ${p:target_name}, and do it in secret.</STRING>
+			<STRING>You are really hungry for ${p:target_name}.</STRING>
 			<STRING CONDITION="$target_int &lt; 4">You are giving away ${p:target_name} to all the children of $target_area_name.</STRING>
-			<STRING>You need to draw out the souls of ${p:target_name} for your magic.</STRING>
 			<STRING>The ${p:target_name} are not together, so you can't $hurt_verb them.</STRING>
 			<STRING>The ${p:target_name} make you $adj_feeling_bad, and you must make them $adj_feeling_bad.</STRING>
 			<STRING>The ${p:target_name} are going to feel the business end of ${any_item_junk_name} for what they've done.</STRING>
@@ -416,15 +426,15 @@ settable vars:
 		</STRING>
 		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING CONDITION="$target_int &lt; 4">You are starting a ${p:target_name} farm.</STRING>
+			<STRING CONDITION="$target_int &lt; 4">You am starting a ${p:target_name} farm.</STRING>
 			<STRING>The ${p:target_name} and you are scheduled to $hurt_verb each other today.</STRING>
 			<STRING>The ${p:target_name} have insulted your honor, and only a ritual $hurt_verb will satisfy it.</STRING>
 			<STRING>You feel like engaging in a $adj_feeling_good ${p:target_name} ${hurt_verb}ing.</STRING>
 		</STRING>
 	</STRING>
-	
-	<STRING ID="item_level" define="item_level">$target_level</STRING>
 
+	<STRING ID="item_level" define="item_level">$target_level</STRING>
+	
 	<STRING ID="aggression" DEFINE="aggression" SELECT="Pick-1">
 		<STRING PICKWEIGHT=50>NO</STRING>
 		<STRING PICKWEIGHT="$target_level">YES</STRING>
@@ -467,17 +477,79 @@ settable vars:
 
 	<STRING ID="target_faction_amt" SELECT="first" DEFINE="target_faction_amt">
 		<STRING CONDITION="$target_faction!=''">-${SELECT:factionamt from $target}</STRING>
-		<STRING>0</STRING>
 	</STRING>
-
+	
 	<STRING ID="target_is_aggressive" SELECT="first" DEFINE="target_is_aggressive">
 		<STRING CONDITION="$aggression = 'YES'">YES</STRING>
 		<STRING>${SELECT: 'YES' from $target where 'Aggressive' in objattrib}</STRING>
 	</STRING>
 
-	<OBJECT ID="target" DEFINE="target" SELECT="any-1">
-		<OBJECT CONDITION="$targetname!=''"">SELECT: ANY\. FROM $target_area\mobs WHERE name=$targetname</OBJECT>
-		<OBJECT CONDITION="$targetname=''">SELECT: ANY\. FROM $target_area\mobs WHERE name\count &gt; $num_targets AND  . LIKE '+ISHOME'</OBJECT>
+	<STRING load="/resources/randareas/desert.xml" />
+	<STRING load="/resources/randareas/forest.xml" />
+	<STRING load="/resources/randareas/jungle.xml" />
+	<STRING load="/resources/randareas/lair.xml" />
+	<STRING load="/resources/randareas/rats.xml" />
+	<STRING load="/resources/randareas/plains.xml" />
+	<STRING load="/resources/randareas/mountains.xml" />
+	<STRING load="/resources/randareas/swamp.xml" />
+	
+	<OBJECT ID="target" DEFINE="target" SELECT="pick-1">
+		<OBJECT CONDITION="$targetname!=''"" pickweight=10>
+			<MOB class="GenMob" level="$level_range" race="Unique" gender="$anygender">
+				<NAME>$targetname</NAME>
+				<DISPLAY>$mob_name is here.</DISPLAY>
+				<ALIGNMENT>$[-10000?10000]</ALIGNMENT>
+				<BEHAVIOR select="Any-1">
+					<BEHAVIOR class="Bardness" parms="Bard" />
+					<BEHAVIOR class="Bardness" parms="Dancer" />
+					<BEHAVIOR class="Bardness" parms="Jester" />
+					<BEHAVIOR class="Bardness" parms="Minstrel" />
+					<BEHAVIOR class="Clericness" parms="Cleric" />
+					<BEHAVIOR class="Clericness" parms="Doomsayer" />
+					<BEHAVIOR class="Clericness" parms="Healer" />
+					<BEHAVIOR class="Clericness" parms="Missionary" />
+					<BEHAVIOR class="Clericness" parms="Necromancer" />
+					<BEHAVIOR class="Clericness" parms="Oracle" />
+					<BEHAVIOR class="Clericness" parms="Purist" />
+					<BEHAVIOR class="Clericness" parms="Shaman" />
+					<BEHAVIOR class="Clericness" parms="Templar" />
+					<BEHAVIOR class="Druidness" parms="Beastmaster" />
+					<BEHAVIOR class="Druidness" parms="Delver" />
+					<BEHAVIOR class="Druidness" parms="Druid" />
+					<BEHAVIOR class="Druidness" parms="Mer" />
+					<BEHAVIOR class="Druidness" parms="Skywatcher" />
+					<BEHAVIOR class="Fighterness" parms="Barbarian" />
+					<BEHAVIOR class="Fighterness" parms="Fighter" />
+					<BEHAVIOR class="Fighterness" parms="Ranger" />
+					<BEHAVIOR class="Mageness" parms="Abjurer" />
+					<BEHAVIOR class="Mageness" parms="Alterer" />
+					<BEHAVIOR class="Mageness" parms="Conjurer" />
+					<BEHAVIOR class="Mageness" parms="Diviner" />
+					<BEHAVIOR class="Mageness" parms="Enchanter" />
+					<BEHAVIOR class="Mageness" parms="Evoker" />
+					<BEHAVIOR class="Mageness" parms="Illusionist" />
+					<BEHAVIOR class="Mageness" parms="Mage" />
+					<BEHAVIOR class="Mageness" parms="Transmuter" />
+					<BEHAVIOR class="Thiefness" parms="Arcanist" />
+					<BEHAVIOR class="Thiefness" parms="Assassin" />
+					<BEHAVIOR class="Thiefness" parms="Burglar" />
+					<BEHAVIOR class="Thiefness" parms="Pirate" />
+					<BEHAVIOR class="Thiefness" parms="Thief" />
+					<BEHAVIOR class="Thiefness" parms="Trapper" />
+				</BEHAVIOR>
+			</MOB>
+		</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=9>SELECT: ANY\. FROM $lair_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=9>SELECT: ANY\. FROM $rats_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $desert_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $forest_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $jungle_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $mountain_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $plains_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $swamp_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $lair_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $lair_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $lair_mobs</OBJECT>
 	</OBJECT>
 
 	<STRING ID="target_name" SELECT="any-1" DEFINE="target_name">
@@ -488,16 +560,23 @@ settable vars:
 		<STRING>${SELECT:current_intelligence from $target}</STRING>
 	</STRING>
 	
+	<STRING ID="aggrochance">0</STRING>
+	
 	<OBJECT ID="target_area" SELECT="Pick-1" DEFINE="target_area">
 		<OBJECT pickweight=55555 condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
-		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel = ''">
-			SELECT: ANY\. FROM areas WHERE (SELECT:count\. from area\npcs WHERE name\count &gt; $num_targets AND  . LIKE '+ISHOME') &gt; 0
+		<OBJECT pickweight=100 condition="$targetarea_name = '' and $multiarea != 'YES'">SELECT: any\. from $source_area</OBJECT>
+		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel = '' and $multiarea = 'YES'">
+			SELECT: ANY\. FROM areas WHERE VISITABLE_ROOMS &gt; 10
 		</OBJECT>
-		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel != ''">
-			SELECT: ANY\. FROM areas WHERE MED_LEVEL &gt;= $target_min_arealevel and MED_LEVEL &lt;= $target_max_arealevel and (SELECT:count\. from area\npcs WHERE name\count &gt; $num_targets AND  . LIKE '+ISHOME') &gt; 0
+		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel != '' and $multiarea = 'YES'">
+			SELECT: ANY\. FROM areas WHERE MED_LEVEL &gt;= $target_min_arealevel and MED_LEVEL &lt;= $target_max_arealevel and VISITABLE_ROOMS &gt; 10
 		</OBJECT>
 	</OBJECT>
 
+	<STRING ID="target_area_size" SELECT="any-1" DEFINE="target_area_size">
+		<STRING>${SELECT:VISITABLE_ROOMS from $target_area}</STRING>
+	</STRING>	
+	
 	<STRING ID="target_area_name" SELECT="any-1" DEFINE="target_area_name">
 		<STRING>${SELECT:name from $target_area}</STRING>
 	</STRING>	

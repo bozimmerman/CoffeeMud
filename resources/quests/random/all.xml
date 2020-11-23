@@ -51,8 +51,8 @@ See guides/RandomAreas.html for information about documents of this type.
 	 -->
 	<string condition="$template='random' and $avoidscans!='YES' and $auto_template!='true'">normal_travel4</string>
 	<string condition="$template='random' and $avoidscans!='YES' and $auto_template='true'" >auto_capture1</string>
-	<!-- 
 	<string condition="$template='random' and $auto_template='true'"                        >auto_capture2</string>
+	<!-- 
 	<string condition="$template='random' and $avoidscans!='YES' and $auto_template='true'" >auto_capture3</string>
 	<string condition="$template='random' and $auto_template='true'"                        >auto_capture4</string>
 	<string condition="$template='random' and $avoidscans!='YES' and $auto_template='true'" >auto_collect1</string>
