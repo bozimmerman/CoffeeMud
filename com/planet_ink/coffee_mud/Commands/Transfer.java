@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -49,6 +50,20 @@ public class Transfer extends At
 	public String[] getAccessWords()
 	{
 		return access;
+	}
+
+	private String getComResponse(final PrintWriter writer, final BufferedReader reader) throws IOException
+	{
+		writer.flush();
+		final long timeout=System.currentTimeMillis()+(30*1000);
+		while((!reader.ready())&&(System.currentTimeMillis()<timeout))
+			CMLib.s_sleep(1000);
+		if(System.currentTimeMillis()>timeout)
+			throw new IOException("Communication failure");
+		String s="";
+		while(reader.ready())
+			s=reader.readLine();
+		return s;
 	}
 
 	@Override
@@ -185,6 +200,18 @@ public class Transfer extends At
 				final MOB M=mob.location().fetchInhabitant(searchName);
 				if(M!=null)
 					V.add(M);
+			}
+			if(V.size()==0)
+			{
+				final Item I=mob.findItem(null, searchName);
+				if(I!=null)
+					V.add(I);
+			}
+			if((V.size()==0)&&(!cmd.toString().equalsIgnoreCase("here")))
+			{
+				final Item I=mob.location().findItem(null, searchName);
+				if(I!=null)
+					V.add(I);
 			}
 			if(V.size()==0)
 			{
@@ -384,75 +411,70 @@ public class Transfer extends At
 				server=server.substring(0,pdex);
 			}
 			final java.net.Socket sock=new java.net.Socket(server,port);
-			final PrintWriter writer=new PrintWriter(new OutputStreamWriter(sock.getOutputStream()));
-			final BufferedReader reader=new BufferedReader(new InputStreamReader(sock.getInputStream()));
-			while(reader.ready())
-				mob.tell(reader.readLine());
-			writer.write("LOGIN "+user+" "+pass+"\n\r");
-			writer.flush();
-			CMLib.s_sleep(500);
-			while(reader.ready())
-				mob.tell(reader.readLine());
-			writer.write("TARGET "+foreignThing);
-			writer.flush();
-			CMLib.s_sleep(1000);
-			while(reader.ready())
-				mob.tell(reader.readLine());
-
-			writer.flush();
-			sock.close();
-
-			for(int i=0;i<V.size();i++)
+			try
 			{
-				if(V.get(i) instanceof Item)
-				{
-					final Item I=(Item)V.get(i);
-					final Room itemRoom=CMLib.map().roomLocation(I);
-					if((itemRoom!=null)
-					&&((!room.isContent(I))||(inventoryFlag))
-					&&(CMSecurity.isAllowed(mob, itemRoom, CMSecurity.SecFlag.TRANSFER))
-					&&(CMSecurity.isAllowed(mob, room, CMSecurity.SecFlag.TRANSFER)))
-					{
-						if(inventoryFlag)
-							mob.moveItemTo(I,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
-						else
-						{
-							room.moveItemTo(I,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
-							if(I instanceof SpaceObject)
-								((SpaceObject)I).setSpeed(0);
-							if(I instanceof SpaceShip)
-								((SpaceShip)I).dockHere(room);
-						}
-					}
-				}
+				final PrintWriter writer=new PrintWriter(new OutputStreamWriter(sock.getOutputStream()));
+				final BufferedReader reader=new BufferedReader(new InputStreamReader(sock.getInputStream()));
+				mob.tell(getComResponse(writer,reader));
+				writer.write("LOGIN "+user+" "+pass+"\n\r");
+				mob.tell(getComResponse(writer,reader));
+				writer.write("TARGET "+foreignThing+"\n\r");
+				mob.tell(getComResponse(writer,reader));
+				writer.write("BLOCK\n\r");
+				final String s=getComResponse(writer,reader);
+				mob.tell(s);
+				String blockEnd;
+				if(s.startsWith("[OK ")&&(s.endsWith("]")))
+					blockEnd=s.substring(4,s.length()-1);
 				else
-				if(V.get(i) instanceof MOB)
 				{
-					final MOB M=(MOB)V.get(i);
-					final Room mobRoom=CMLib.map().roomLocation(M);
-					if((mobRoom!=null)
-					&&(!room.isInhabitant(M))
-					&&(CMSecurity.isAllowed(mob, mobRoom, CMSecurity.SecFlag.TRANSFER))
-					&&(CMSecurity.isAllowed(mob, room, CMSecurity.SecFlag.TRANSFER)))
+					mob.tell(L("Communication failure."));
+					return false;
+				}
+				for(int i=0;i<V.size();i++)
+				{
+					if(V.get(i) instanceof Item)
 					{
-						if(M.isPlayer() && (!CMLib.flags().isInTheGame(M, true)))
-							M.setLocation(room);
-						else
+						final Item I=(Item)V.get(i);
+						final Room itemRoom=CMLib.map().roomLocation(I);
+						if((itemRoom!=null)
+						&&(CMSecurity.isAllowed(mob, itemRoom, CMSecurity.SecFlag.TRANSFER))
+						&&(CMSecurity.isAllowed(mob, room, CMSecurity.SecFlag.TRANSFER)))
 						{
-							if((mob.playerStats().getTranPoofOut().length()>0)&&(mob.location()!=null))
-								M.location().show(M,M.location(),CMMsg.MSG_LEAVE|CMMsg.MASK_ALWAYS,mob.playerStats().getTranPoofOut());
-							room.bringMobHere(M,true);
+							final StringBuffer itemXML=CMLib.coffeeMaker().getItemXML(I);
+							writer.write("IMPORT <ITEMS>"+itemXML+"</ITEMS>"+blockEnd);
+							mob.tell(getComResponse(writer,reader));
 						}
-						if(mob.playerStats().getTranPoofIn().length()>0)
-							M.location().show(M,M.location(),CMMsg.MSG_ENTER|CMMsg.MASK_ALWAYS,mob.playerStats().getTranPoofIn());
-						if(!M.isMonster() && (room.isInhabitant(M)))
-							CMLib.commands().postLook(M,true);
+					}
+					else
+					if(V.get(i) instanceof MOB)
+					{
+						final MOB M=(MOB)V.get(i);
+						final Room mobRoom=CMLib.map().roomLocation(M);
+						if((mobRoom!=null)
+						&&(CMSecurity.isAllowed(mob, mobRoom, CMSecurity.SecFlag.TRANSFER))
+						&&(CMSecurity.isAllowed(mob, room, CMSecurity.SecFlag.TRANSFER)))
+						{
+							final StringBuffer mobXML=CMLib.coffeeMaker().getMobXML(M);
+							writer.write("IMPORT <MOBS>"+mobXML+"<MOBS>"+blockEnd);
+							mob.tell(getComResponse(writer,reader));
+						}
 					}
 				}
+				if(mob.playerStats().getTranPoofOut().length()==0)
+					mob.tell(L("Done."));
+				writer.write("QUIT "+blockEnd);
+				CMLib.s_sleep(500);
+				return true;
 			}
-			if(mob.playerStats().getTranPoofOut().length()==0)
-				mob.tell(L("Done."));
-			return true;
+			catch(final IOException e)
+			{
+				mob.tell(e.getMessage());
+			}
+			finally
+			{
+				sock.close();
+			}
 		}
 		else
 		if(CMLib.map().getRoom(cmd.toString())!=null)

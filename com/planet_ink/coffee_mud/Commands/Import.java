@@ -5161,6 +5161,9 @@ public class Import extends StdCommand
 		final List<Object> errorList = commands;
 		commands = new XVector<Object>(commands);
 		errorList.clear();
+		Physical reqTarget=null;
+		if((commands.size()>0)&&(commands.get(commands.size()-1) instanceof Physical))
+			reqTarget=(Physical)commands.remove(commands.size()-1);
 
 		String areaType=null;
 		commands.remove(0);
@@ -5751,16 +5754,19 @@ public class Import extends StdCommand
 						session.rawPrintln("!");
 					if(error.length()>0)
 						return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,errorList);
-					if(mob.location()==null)
+					Room R=mob.location();
+					if(reqTarget instanceof Room)
+						R=(Room)reqTarget;
+					if(R==null)
 						return returnAnError(session,"You must be in a room to import mobs.",compileErrors,errorList);
 					for(int m=0;m<mobs.size();m++)
 					{
 						final MOB M=mobs.get(m);
-						M.setStartRoom(mob.location());
-						M.setLocation(mob.location());
-						M.bringToLife(mob.location(),true);
+						M.setStartRoom(R);
+						M.setLocation(R);
+						M.bringToLife(R,true);
 					}
-					mob.location().recoverRoomStats();
+					R.recoverRoomStats();
 					Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
 					if(session!=null)
 						session.println(L("MOB(s) successfully imported!"));
@@ -5934,14 +5940,27 @@ public class Import extends StdCommand
 						session.rawPrintln("!");
 					if(error.length()>0)
 						return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,errorList);
-					if(mob.location()==null)
+					Room R=mob.location();
+					if(reqTarget instanceof Room)
+						R=(Room)reqTarget;
+					else
+					if(reqTarget !=null)
+						R=CMLib.map().roomLocation(reqTarget);
+					if(R==null)
 						return returnAnError(session,"You must be in a room to import items.",compileErrors,errorList);
 					for(int i=0;i<items.size();i++)
 					{
 						final Item I=items.get(i);
-						mob.location().addItem(I,ItemPossessor.Expire.Player_Drop);
+						if(reqTarget instanceof MOB)
+							((MOB)reqTarget).addItem(I);
+						else
+						{
+							R.addItem(I,ItemPossessor.Expire.Player_Drop);
+							if(reqTarget instanceof Container)
+								I.setContainer((Container)reqTarget);
+						}
 					}
-					mob.location().recoverRoomStats();
+					R.recoverRoomStats();
 					Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
 					if(session!=null)
 						session.println(L("Item(s) successfully imported!"));

@@ -748,6 +748,20 @@ public class CMStrings
 	}
 
 	/**
+	 * Flattens a string by converting all carriage returns and linefeeds into spaces.
+	 * @param str the string to flatten
+	 * @return the flat string
+	 */
+	public final static String flatten(String str)
+	{
+		if(str==null)
+			return null;
+		str=replaceAll(str,"\n\r"," ");
+		str=replaceAll(str,"\r\n"," ");
+		return str.replace('\r', ' ').replace('\n', ' ');
+	}
+
+	/**
 	 * This methods replaces any double-escapes to single escape characters, and any
 	 * escaped double-quotes to double-quotes
 	 * @param str the string to de-escape

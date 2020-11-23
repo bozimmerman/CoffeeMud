@@ -40,19 +40,20 @@ import java.util.concurrent.atomic.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class ObjectCmd extends CM1Command
+public class Import extends CM1Command
 {
 	@Override
 	public String getCommandWord()
 	{
-		return "OBJECT";
+		return "IMPORT";
 	}
 
-	public ObjectCmd(final RequestHandler req, final String parameters)
+	public Import(final RequestHandler req, final String parameters)
 	{
 		super(req, parameters);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void run()
 	{
@@ -75,8 +76,29 @@ public class ObjectCmd extends CM1Command
 				req.sendMsg("[FAIL NO XML]");
 				return;
 			}
-			final String startXML=xml.substring(0,10).toUpperCase();
-
+			Vector<Object> V=new Vector<Object>();
+			V.addAll(CMParms.parse("IMPORT NODELETE NOPROMPT"));
+			V.add(new StringBuffer(xml));
+			V.add(req.getTarget());
+			final Command C=CMClass.getCommand("Import");
+			try
+			{
+				V = (Vector<Object>)C.executeInternal(req.getUser(), 0, V.toArray(new Object[0]));
+				final StringBuilder errors=new StringBuilder("");
+				for(final Object O : V)
+				{
+					if(O instanceof String)
+						errors.append((String)O).append("---");
+				}
+				if(errors.length()>0)
+					req.sendMsg("[FAIL "+CMStrings.flatten(errors.toString().toUpperCase().replace('[', '.').replace(']', '.')+"]"));
+				else
+					req.sendMsg("[OK]");
+			}
+			catch (final Exception e)
+			{
+				req.sendMsg("[FAIL "+CMStrings.flatten(""+e.getMessage().toUpperCase().replace('[', '.').replace(']', '.')+"]"));
+			}
 		}
 		catch(final java.io.IOException ioe)
 		{
@@ -96,31 +118,6 @@ public class ObjectCmd extends CM1Command
 	@Override
 	public String getHelp(final MOB user, final PhysicalAgent target, final String rest)
 	{
-		final String word=CMLib.english().getFirstWord(rest==null?"":rest).toUpperCase().trim();
-		if (word.equals("READ"))
-			return "USAGE: "+getCommandWord()+" READ \"<FILENAME>\": returns contents of the file or directory as a block.";
-		else
-		if (word.equals("DELETE"))
-			return "USAGE: "+getCommandWord()+" DELETE \"<FILENAME>\": deletes the file or directory (if empty).";
-		else
-		if (word.equals("WRITE"))
-			return "USAGE: "+getCommandWord()+" WRITE \"<FILENAME>\" <CONTENT>: creates or overwrites file.";
-		else
-		if (word.equals("READB64"))
-			return "USAGE: "+getCommandWord()+" READB64 \"<FILENAME>\": returns contents of the file as a block of b64 encoded data.";
-		else
-		if (word.equals("WRITEB64"))
-			return "USAGE: "+getCommandWord()+" WRITEB64 \"<FILENAME>\" <CONTENT>: creates or overwrites file with b64 encoded data.";
-		else
-		if (word.equals("LENGTH"))
-			return "USAGE: "+getCommandWord()+" LENGTH \"<FILENAME>\": returns length of the file.";
-		else
-		if (word.equals("AUTHOR"))
-			return "USAGE: "+getCommandWord()+" AUTHOR \"<FILENAME>\": returns author of the file.";
-		else
-		if (word.equals("LASTMODIFIED"))
-			return "USAGE: "+getCommandWord()+" LASTMODIFIED \"<FILENAME>\": returns last modified date/time of the file.";
-		else
-			return "USAGE: "+getCommandWord()+" READ, READB64, WRITE, WRITEB64, LENGTH, AUTHOR, LASTMODIFIED";
+		return "USAGE: "+getCommandWord()+" <XML>";
 	}
 }

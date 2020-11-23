@@ -129,6 +129,9 @@ public abstract class CM1Command implements Runnable, Cloneable
 			final MOB M = CMLib.players().getLoadPlayer(who);
 			if (M != null)
 				return M;
+			final Room R=CMLib.map().getRoom(who);
+			if(R!=null)
+				return R;
 		}
 		final Room R = CMLib.map().roomLocation(P);
 		if (R == null)
