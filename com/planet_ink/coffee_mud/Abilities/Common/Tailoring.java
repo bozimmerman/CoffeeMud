@@ -205,8 +205,6 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 			return false;
 		if(!masterCraftCheck(I))
 			return (isANativeItem(I.Name()));
-		if(I.baseGoldValue()>I.basePhyStats().level())
-			return (isANativeItem(I.Name()));
 		if(I instanceof Rideable)
 		{
 			final Rideable R=(Rideable)I;
