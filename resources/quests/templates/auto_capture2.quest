@@ -173,9 +173,6 @@ ONCE_PROG 100
 	if var($i $QUEST_ID_CAPTURED = '')
 		mpsetvar $i $QUEST_ID_CAPTURED 0
 	endif
-	if var($i $QUEST_ID_RETURNED = '')
-		mpsetvar $i $QUEST_ID_RETURNED 0
-	endif
 	mpsetvar $i PROGRESS Found: $<$i $QUEST_ID_CAPTURED>/$NUM_CAPTURABLES
 	IF QVAR(* DURATION != '0')
 		if QVAR(* REMAINING == '')
@@ -293,7 +290,7 @@ ENTRY_PROG 100
 ~
 
 FUNCTION_PROG CHECK_DONE
-	if var($i $QUEST_ID_RETURNED >= $NUM_CAPTURABLES) and QUESTSCRIPTED($i *)
+	if var($i $QUEST_ID_CAPTURED >= $NUM_CAPTURABLES) and QUESTSCRIPTED($i *)
 		for $9 = '$%NUMMOBSROOM(*)%' to 1
 			mpargset $1 '$%ROOMMOB($9)%'
 			if ISLIKE($1 $CAPTURABLES_MASK) AND ISNPC('$1') AND ISFOLLOW('$1')

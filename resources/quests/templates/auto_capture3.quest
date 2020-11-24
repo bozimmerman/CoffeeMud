@@ -193,7 +193,7 @@ GREET_PROG 100
 				mpforce $n follow "$i"
 				mpsetvar $i $QUEST_ID_CAPTURED YES
 				mpsetvar $i PROGRESS Captured: $<$i $QUEST_ID_CAPTURED>
-				mpechoat $i You've captured $n
+				mpechoat $i You've captured $<$i $QUEST_ID_CAPTURED>/$NUM_CAPTURABLES
 				MPCALLFUNC CHECK_DONE
 			endif
 		endif
@@ -214,7 +214,7 @@ ENTRY_PROG 100
 						mpforce '$%ROOMMOB($0)%' follow "$i"
 						mpsetvar $i $QUEST_ID_CAPTURED YES
 						mpsetvar $i PROGRESS Captured: $<$i $QUEST_ID_CAPTURED>
-						mpechoat $i You've captured $%ROOMMOB($0)%
+						mpechoat $i You've captured $<$i $QUEST_ID_CAPTURED>/$NUM_CAPTURABLES
 						MPCALLFUNC CHECK_DONE
 					else
 						mpforce '$%ROOMMOB($0)%' sayto "$i" $CAPTURABLES_RESPONSE
@@ -273,7 +273,7 @@ CNCLMSG_PROG STO=DEATH ALL
 			mpforce $n follow "$i"
 			mpsetvar $i $QUEST_ID_CAPTURED YES
 			mpsetvar $i PROGRESS Captured: $<$i $QUEST_ID_CAPTURED>
-			mpechoat $i You've captured $n
+			mpechoat $i You've captured $<$i $QUEST_ID_CAPTURED>/$NUM_CAPTURABLES
 			MPCALLFUNC CHECK_DONE
 			RETURN CANCEL
 		endif

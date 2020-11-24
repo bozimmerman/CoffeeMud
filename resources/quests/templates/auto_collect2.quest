@@ -293,7 +293,7 @@ EXECMSG_PROG GET ALL
 	if questobj($t *) and QUESTSCRIPTED($n *) and EVAL($n == $i)
 		MPSETVAR $n $QUEST_ID_GOT +$%ITEMCOUNT($t)%
 		mpechoat $n Picked up: $<$n $QUEST_ID_GOT>/$NUM_COLLECTABLES.
-		mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES, Returned: $<$i $QUEST_ID_RETURNED>/$NUM_COLLECTABLES
+		mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES
 		mpargset $g $%INROOM($i)%
 		if !STRIN('$<$i $QUEST_ID_ROOMLIST>' $g)
 			mpsetvar $i $QUEST_ID_ROOMLIST $<$i $QUEST_ID_ROOMLIST> "$g"

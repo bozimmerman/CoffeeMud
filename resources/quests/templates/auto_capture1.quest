@@ -219,6 +219,7 @@ ENTRY_PROG 100
 						mpforce '$%ROOMMOB($0)%' follow "$i"
 						mpsetvar $i $QUEST_ID_CAPTURED ++
 						mpsetvar $i PROGRESS Captured $<$i $QUEST_ID_CAPTURED>/$NUM_CAPTURABLES
+						mpechoat $i You've captured $<$i $QUEST_ID_CAPTURED>/$NUM_CAPTURABLES
 						MPCALLFUNC CHECK_DONE
 					else
 						mpforce '$%ROOMMOB($0)%' sayto "$i" $CAPTURABLES_RESPONSE
