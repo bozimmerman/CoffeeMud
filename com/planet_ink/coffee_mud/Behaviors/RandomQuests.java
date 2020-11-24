@@ -208,7 +208,6 @@ public class RandomQuests extends ActiveTicker
 						Q.setScript(s,true);
 						if((Q.name().trim().length()==0)||(Q.duration()<0))
 						{
-							System.out.println(s);
 							throw new CMException("Unable to create your quest.  Please consult the log.");
 						}
 						final Quest badQ=CMLib.quests().fetchQuest(name);

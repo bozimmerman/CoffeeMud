@@ -118,7 +118,7 @@ ${SELECT:any\name from (SELECT: . from $item_junk)}
 	<ITEM class="GenItem" name="a clump of ${l:item_material}" display="$item_name lies here" material="$any_cheap_cloth" level="$item_level" weight=1 />
 	<ITEM class="GenWeapon" name="a sharpened ${l:item_material} stick" display="$item_name is sitting here" material="$any_wood" level="$item_level"  damage="1" weight=1/>
 	<ITEM class="GenItem" name="a jagged stone" display="$item_name lies here" material="STONE" level="$item_level" weight=1 />
-	<ITEM class="GenItem" name="a $adj_colored_color pebble" display="$item_name lies here" material="STONE" level="$item_level" weight=1 />
+	<ITEM class="GenItem" name="(a(n)) $adj_colored_color pebble" display="$item_name lies here" material="STONE" level="$item_level" weight=1 />
 	<ITEM class="GenItem" name="(a(n)) ${l:item_material} puzzle piece" display="$item_name lies here" material="$any_wood" level="$item_level" weight=1 />
 	<ITEM class="GenPlayingCard" name="a playing card" ability="0?62" />
 	<ITEM class="GenKey" name="a worn ${l:item_material} key" display="$item_name lies here" material="$any_cheap_metal" level="$item_level" weight=1 READABLETEXT="opensnothing"/>

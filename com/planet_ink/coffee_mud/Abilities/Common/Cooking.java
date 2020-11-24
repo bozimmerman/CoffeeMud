@@ -1171,8 +1171,6 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 					break;
 				}
 			}
-			if(Vr.get(0).indexOf("ruit brand")>=0)
-				System.out.println("hi");
 			if(found)
 				closeRecipes.add(Vr);
 			if((missingIngredientsFromOldContents(Vr,true).size()==0)

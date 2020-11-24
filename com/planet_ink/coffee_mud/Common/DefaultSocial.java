@@ -301,8 +301,6 @@ public class DefaultSocial implements Social
 	@Override
 	public boolean meetsCriteriaToUse(final MOB mob)
 	{
-		if(mob.Name().equals("Assy"))
-			System.out.println("!");
 		return (this.zMask == null) || (mob==null) || CMLib.masking().maskCheck(zMask, mob, false);
 	}
 

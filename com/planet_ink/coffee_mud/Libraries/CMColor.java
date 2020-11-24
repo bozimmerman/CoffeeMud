@@ -749,7 +749,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			}
 			if(namesUsed.contains(c.getName1()))
 			{
-				System.out.println("Re-used: "+c.getName1());
+				//System.out.println("Re-used: "+c.getName1());
 				continue;
 			}
 			final String misc = (c.getCmChars().indexOf('#')>0)?"ANSI256=TRUE":"";

@@ -279,7 +279,6 @@ public class Undead extends StdRace
 									&&(src.getVictim()==null))
 									{
 										me.setVictim(null);
-										System.out.println("Setting "+mob.name()+" follower to "+follower);
 										me.setFollowing(follower);
 									}
 								}
@@ -345,7 +344,6 @@ public class Undead extends StdRace
 									&&(src.getVictim()==null))
 									{
 										me.setVictim(null);
-										System.out.println("Setting "+mob.name()+" follower to "+follower);
 										me.setFollowing(follower);
 									}
 								}
