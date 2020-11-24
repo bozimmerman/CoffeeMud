@@ -2062,6 +2062,32 @@ public class MOBloader
 		return thinPlayer;
 	}
 
+	public String DBLeigeSearch(String login)
+	{
+		DBConnection D=null;
+		try
+		{
+			// why in the hell is this a memory scan?
+			// case insensitivity from databases configured almost
+			// certainly by amateurs is the answer. That, and fakedb
+			// doesn't understand 'LIKE'
+			D=DB.DBFetch();
+			login=CMStrings.capitalizeAndLower(DB.injectionClean(login));
+			final ResultSet R=D.query("SELECT CMLEIG FROM CMCHAR WHERE CMUSERID='"+login+"'");
+			if(R!=null) while(R.next())
+				return DB.getRes(R, "CMLEIG");
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("MOB",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return null;
+	}
+
 	public Pair<String, Boolean> DBFetchEmailData(String name)
 	{
 		for(final Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)

@@ -45,6 +45,7 @@ public interface PlayerLibrary extends CMLibrary
 	public List<String> getPlayerListsAllHosts();
 	public boolean isLoadedPlayer(final MOB M);
 	public boolean isLoadedPlayer(final String mobName);
+	public String getLiegeOfUserAllHosts(final String userName);
 	public MOB findPlayerOnline(final String srchStr, final boolean exactOnly);
 	public PlayerAccount getLoadAccount(String calledThis);
 	public PlayerAccount getLoadAccountByEmail(String email);
@@ -70,6 +71,7 @@ public interface PlayerLibrary extends CMLibrary
 	public Enumeration<ThinPlayer> thinPlayers(String sort, Map<String, Object> cache);
 	public int getCharThinSortCode(String codeName, boolean loose);
 	public String getThinSortValue(ThinPlayer player, int code);
+	public String getSortValue(MOB player, int code);
 	public Set<MOB> getPlayersHere(Room room);
 	public void changePlayersLocation(MOB mob, Room room);
 	public Pair<Long,int[]>[] parsePrideStats(final String[] nextPeriods, final String[] prideStats);

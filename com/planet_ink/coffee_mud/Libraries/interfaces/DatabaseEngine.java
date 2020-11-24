@@ -957,6 +957,15 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERS
+	 * Returns the leige for the given player
+	 *
+	 * @param Login the player for whom the leige is needed
+	 * @return the name of the leige, or "", or null
+	 */
+	public String DBLeigeSearch(final String Login);
+
+	/**
+	 * Table category: DBPLAYERS
 	 * Attempts to return a list of all characters who are
 	 * listed as vassals of the character with the given exact
 	 * name.  Vassals are characters that are SERVEing another

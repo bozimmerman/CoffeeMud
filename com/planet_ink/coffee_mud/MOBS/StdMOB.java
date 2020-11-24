@@ -951,15 +951,13 @@ public class StdMOB implements MOB
 			return false;
 		if (getLiegeID().equals(Name()))
 			return false;
-		final MOB M = CMLib.players().getLoadPlayer(getLiegeID());
-		if (M == null)
+		if(!CMLib.players().playerExistsAllHosts(getLiegeID()))
 		{
 			setLiegeID("");
 			return false;
 		}
-		if (M.getLiegeID().equals(Name()))
-			return true;
-		return false;
+		final String otherLiegeID=CMLib.players().getLiegeOfUserAllHosts(getLiegeID());
+		return ((otherLiegeID!=null)&&(otherLiegeID.equalsIgnoreCase(Name())));
 	}
 
 	@Override

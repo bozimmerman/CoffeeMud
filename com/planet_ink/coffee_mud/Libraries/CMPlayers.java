@@ -449,6 +449,39 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
+	public String getLiegeOfUserAllHosts(String userName)
+	{
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+			return "";
+		if((userName==null)
+		||(userName.trim().length()==0))
+			return "";
+		userName=CMStrings.capitalizeAndLower(userName);
+		final MOB M=getPlayerAllHosts(userName);
+		if(M!=null)
+			return M.getLiegeID();
+		else
+		if(playerExistsAllHosts(userName))
+		{
+			final String tryLeige=CMLib.database().DBLeigeSearch(userName);
+			if(tryLeige!=null)
+				return tryLeige;
+			for(final PlayerLibrary pLib : getOtherPlayerLibAllHosts())
+			{
+				final DatabaseEngine db = (DatabaseEngine)CMLib.library(CMLib.getLibraryThreadID(Library.PLAYERS, pLib), Library.DATABASE);
+				if(db != CMLib.database())
+				{
+					final String tryLeige2=db.DBLeigeSearch(userName);
+					if(tryLeige2!=null)
+						return tryLeige2;
+
+				}
+			}
+		}
+		return "";
+	}
+
+	@Override
 	public boolean accountExists(String name)
 	{
 		if(name==null)
@@ -971,6 +1004,37 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			}
 		}
 		return playersList.size();
+	}
+
+	@Override
+	public String getSortValue(final MOB player, final int code)
+	{
+		switch(code)
+		{
+		case 0:
+			return player.Name();
+		case 1:
+			return player.baseCharStats().getCurrentClass().name();
+		case 2:
+			return player.baseCharStats().getMyRace().name();
+		case 3:
+			return Integer.toString(player.basePhyStats().level());
+		case 4:
+			return Integer.toString(player.baseCharStats().getStat(CharStats.STAT_AGE));
+		case 5:
+			if(!player.isPlayer())
+				return "";
+			return Long.toString(player.playerStats().getLastDateTime());
+		case 6:
+			if(!player.isPlayer())
+				return "";
+			return player.playerStats().getEmail();
+		case 7:
+			if(!player.isPlayer())
+				return "";
+			return player.playerStats().getLastIP();
+		}
+		return player.Name();
 	}
 
 	@Override

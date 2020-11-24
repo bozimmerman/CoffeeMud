@@ -1531,6 +1531,16 @@ public class ListCmd extends StdCommand
 	{
 		if(commands.size()==0)
 			return;
+		if(commands.size()>1)
+		{
+			final String first=commands.get(1);
+			if(first.equalsIgnoreCase("LOADED"))
+			{
+				commands.remove(1);
+				listLoadedUsers(viewerS,mob,commands);
+				return;
+			}
+		}
 		commands.remove(0);
 		int sortBy=-1;
 		if(commands.size()>0)
@@ -1633,6 +1643,118 @@ public class ListCmd extends StdCommand
 				break;
 			}
 			head.append("] "+CMStrings.padRight("^<LSTUSER^>"+U.name()+"^</LSTUSER^>",COL_LEN7));
+			head.append("\n\r");
+		}
+		mob.tell(head.toString());
+	}
+
+	public void listLoadedUsers(final Session viewerS, final MOB mob, final List<String> commands)
+	{
+		if(commands.size()==0)
+			return;
+		commands.remove(0);
+		int sortBy=-1;
+		if(commands.size()>0)
+		{
+			final String rest=CMParms.combine(commands,0).toUpperCase();
+			sortBy = CMLib.players().getCharThinSortCode(rest,true);
+			if(sortBy<0)
+			{
+				mob.tell(L("Unrecognized sort criteria: @x1",rest));
+				return;
+			}
+		}
+		final int COL_LEN1=CMLib.lister().fixColWidth(8.0,viewerS);
+		final int COL_LEN2=CMLib.lister().fixColWidth(10.0,viewerS);
+		final int COL_LEN3=CMLib.lister().fixColWidth(4.0,viewerS);
+		final int COL_LEN4=CMLib.lister().fixColWidth(5.0,viewerS);
+		final int COL_LEN5=CMLib.lister().fixColWidth(23.0,viewerS);
+		final int COL_LEN6=CMLib.lister().fixColWidth(18.0,viewerS);
+		final int COL_LEN7=CMLib.lister().fixColWidth(15.0,viewerS);
+		final StringBuilder head=new StringBuilder("");
+		head.append("[");
+		head.append(CMStrings.padRight(L("Race"),COL_LEN1)+" ");
+		head.append(CMStrings.padRight(L("Class"),COL_LEN2)+" ");
+		head.append(CMStrings.padRight(L("Lvl"),COL_LEN3)+" ");
+		head.append(CMStrings.padRight(L("Hours"),COL_LEN4)+" ");
+		switch(sortBy)
+		{
+		case 6:
+			head.append(CMStrings.padRight(L("E-Mail"), COL_LEN5) + " ");
+			break;
+		case 7:
+			head.append(CMStrings.padRight(L("IP Address"), COL_LEN5) + " ");
+			break;
+		default:
+			head.append(CMStrings.padRight(L("Last"), COL_LEN6) + " ");
+			break;
+		}
+
+		head.append("] Character name\n\r");
+
+		java.util.List<MOB> allUsers=new XVector<MOB>(CMLib.players().players());
+		final java.util.List<MOB> oldSet=allUsers;
+		final int showBy=sortBy;
+		final PlayerLibrary lib=CMLib.players();
+		while((oldSet.size()>0)&&(sortBy>=0)&&(sortBy<=7))
+		{
+			if(oldSet==allUsers)
+				allUsers=new ArrayList<MOB>();
+			if((sortBy<3)||(sortBy>4))
+			{
+				MOB selected=oldSet.get(0);
+				for(int u=1;u<oldSet.size();u++)
+				{
+					final MOB U=oldSet.get(u);
+					if(lib.getSortValue(selected,sortBy).compareTo(lib.getSortValue(U,sortBy))>0)
+						selected=U;
+				}
+				if(selected!=null)
+				{
+					oldSet.remove(selected);
+					allUsers.add(selected);
+				}
+			}
+			else
+			{
+				MOB selected=oldSet.get(0);
+				for(int u=1;u<oldSet.size();u++)
+				{
+					final MOB U=oldSet.get(u);
+					if(CMath.s_long(lib.getSortValue(selected,sortBy))>CMath.s_long(lib.getSortValue(U,sortBy)))
+						selected=U;
+				}
+				if(selected!=null)
+				{
+					oldSet.remove(selected);
+					allUsers.add(selected);
+				}
+			}
+		}
+
+		for(int u=0;u<allUsers.size();u++)
+		{
+			final MOB U=allUsers.get(u);
+
+			head.append("[");
+			head.append(CMStrings.padRight(lib.getSortValue(U,2),COL_LEN1)+" ");
+			head.append(CMStrings.padRight(lib.getSortValue(U,1),COL_LEN2)+" ");
+			head.append(CMStrings.padRight(lib.getSortValue(U,3),COL_LEN3)+" ");
+			final long age=Math.round(CMath.div(CMath.s_long(""+lib.getSortValue(U,4)),60.0));
+			head.append(CMStrings.padRight(""+age,COL_LEN4)+" ");
+			switch(showBy)
+			{
+			case 6:
+				head.append(CMStrings.padRight(lib.getSortValue(U,showBy), COL_LEN5) + " ");
+				break;
+			case 7:
+				head.append(CMStrings.padRight(lib.getSortValue(U,showBy), COL_LEN5) + " ");
+				break;
+			default:
+				head.append(CMStrings.padRight(CMLib.time().date2String(CMath.s_long(lib.getSortValue(U,5))), COL_LEN6) + " ");
+				break;
+			}
+			head.append("] "+CMStrings.padRight("^<LSTUSER^>"+U.Name()+"^</LSTUSER^>",COL_LEN7));
 			head.append("\n\r");
 		}
 		mob.tell(head.toString());

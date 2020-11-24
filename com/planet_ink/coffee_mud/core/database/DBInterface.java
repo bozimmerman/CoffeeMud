@@ -821,6 +821,12 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public String DBLeigeSearch(final String Login)
+	{
+		return MOBloader.DBLeigeSearch(Login);
+	}
+
+	@Override
 	public PlayerStats DBLoadPlayerStats(final String name)
 	{
 		return MOBloader.DBLoadPlayerStats(name);
