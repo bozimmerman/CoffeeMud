@@ -317,14 +317,18 @@ public class InstanceArea extends StdAbility
 				return false;
 			if((msg.sourceMinor()==CMMsg.TYP_ENTER)
 			&&(msg.target() instanceof Room)
-			&&(((Room)msg.target()).getArea()==affected))
+			&&(((Room)msg.target()).getArea()==affected)
+			&&(affected instanceof Area)
+			&&(msg.source().location().getArea()!=affected))
 			{
-				if(managed.size()==0)
+				final Area pA=(Area)affected;
+				if((managed.size()==0)
+				||(CMath.bset(pA.flags(), Area.FLAG_INSTANCE_CHILD)))
 				{
 					unInvoke();
 					return true;
 				}
-				final List<InstanceArea> l = new LinkedList<InstanceArea>();
+				InstanceArea iA=null;
 				synchronized(managed)
 				{
 					for(final Iterator<InstanceArea> i=managed.iterator();i.hasNext();)
@@ -335,17 +339,23 @@ public class InstanceArea extends StdAbility
 						||(A.affecting().amDestroyed()))
 							i.remove();
 						else
-							l.add(A);
+							iA=A;
 					}
 				}
-				for(final InstanceArea A : l)
+				if(iA!=null)
 				{
-					if(!A.okMessage(myHost, msg))
-						return false;
+					final MOB leaderM = (msg.source().amFollowing()!=null)?msg.source().amUltimatelyFollowing():msg.source();
+					final Set<MOB> grp = getAppropriateGroup(leaderM);
+					final Area instA = findExistingInstance(msg.source(), grp, pA);
+					if(instA!=null)
+					{
+						if(!iA.okMessage(myHost, msg))
+							return false;
+					}
 				}
 				if((managed.size()==0)
-				&&(affected!=null))
-					affected.delEffect(this);
+				&&(pA!=null))
+					pA.delEffect(this);
 			}
 			return true;
 		}
@@ -1554,7 +1564,7 @@ public class InstanceArea extends StdAbility
 		super.executeMsg(myHost, msg);
 	}
 
-	private Set<MOB> getAppropriateGroup(final MOB mob)
+	private static Set<MOB> getAppropriateGroup(final MOB mob)
 	{
 		final Set<MOB> grp = mob.getGroupMembers(new HashSet<MOB>());
 		if(mob.isMonster()
@@ -1587,7 +1597,7 @@ public class InstanceArea extends StdAbility
 		return grp;
 	}
 
-	private AreaInstanceChild findExistingChild(final Area targetArea, final MOB mob)
+	private static AreaInstanceChild findExistingChild(final Area targetArea, final MOB mob)
 	{
 		synchronized(instanceChildren)
 		{
@@ -1614,7 +1624,7 @@ public class InstanceArea extends StdAbility
 		return null;
 	}
 
-	private Area findExistingInstance(final MOB mob, final Set<MOB> grp, final Area targetArea)
+	private static Area findExistingInstance(final MOB mob, final Set<MOB> grp, final Area targetArea)
 	{
 
 		synchronized(instanceChildren)
@@ -1758,7 +1768,7 @@ public class InstanceArea extends StdAbility
 			if(((srcStartRoom==null)||(srcStartRoom.getArea()!=parentA)||(msg.source().isPlayer())))
 			{
 				MOB leaderM = (msg.source().amFollowing()!=null)?msg.source().amUltimatelyFollowing():msg.source();
-				final Set<MOB> grp = this.getAppropriateGroup(leaderM);
+				final Set<MOB> grp = getAppropriateGroup(leaderM);
 				Area instA = findExistingInstance(msg.source(), grp, parentA);
 				boolean created = false;
 				int topPlayerFactionValue = 0;
