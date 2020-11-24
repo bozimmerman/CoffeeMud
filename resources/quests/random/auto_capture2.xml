@@ -77,7 +77,7 @@ settable vars:
 	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">
 		<STRING>You need ${p:target_name} in ${C:target_area_name} $reason_verbed!</STRING>
 		<STRING>You must $reason_verb ${p:target_name} in ${C:target_area_name}!</STRING>
-		<STRING>Assistance required with some ${p:target_name}i n ${C:target_area_name}!</STRING>
+		<STRING>Assistance required with some ${p:target_name} in ${C:target_area_name}!</STRING>
 		<STRING>${c:reason_verb} ${p:target_name} in ${C:target_area_name} for goodness sake!</STRING>
 		<STRING>${c:reason_verb} ${p:target_name} in ${C:target_area_name}, quickly!</STRING>
 		<STRING>You want ${p:target_name} $reason_verbed in ${C:target_area_name}!</STRING>
