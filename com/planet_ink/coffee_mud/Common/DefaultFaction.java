@@ -1280,8 +1280,10 @@ public class DefaultFaction implements Faction, MsgListener
 										continue;
 								}
 								else
-								if(msg.source().playerStats().percentVisited(msg.source(), A) < pct)
-									continue;
+								{
+									if(msg.source().playerStats().percentVisited(msg.source(),A) < pct)
+										continue;
+								}
 								if(this.checkApplyEventWait(event, msg.source()))
 									executeChange(msg.source(),msg.source(),event);
 							}
@@ -2500,16 +2502,22 @@ public class DefaultFaction implements Faction, MsgListener
 			{
 				if(withinTicks > 0)
 				{
-					final long now=System.currentTimeMillis() - withinTicks * CMProps.getTickMillis();
+					final long now=System.currentTimeMillis() - (withinTicks * CMProps.getTickMillis());
 					Faction.FData data;
 					data = source.fetchFactionData(F.factionID());
-					if((data != null)&&(now > data.getEventTime(eventTriggerID)))
-						return false;
+					if(data != null)
+					{
+						if(now > data.getEventTime(eventTriggerID))
+							return false;
+					}
 					if(source != target)
 					{
 						data = target.fetchFactionData(F.factionID());
-						if((data != null)&&(now > data.getEventTime(eventTriggerID)))
-							return false;
+						if(data != null)
+						{
+							if(now > data.getEventTime(eventTriggerID))
+								return false;
+						}
 					}
 				}
 			}
