@@ -908,6 +908,8 @@ public class InstanceArea extends StdAbility
 			else
 				stats=CMLib.map().getRandomArea().getAreaIStats();
 			room.toggleMobility(false);
+			room.clearSky();
+			room.giveASky(0);
 			CMLib.threads().suspendResumeRecurse(room, false, true);
 			int eliteLevel=0;
 			if(instVars.containsKey(InstVar.ELITE.toString()))
