@@ -1571,39 +1571,42 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 		return catalogFileRoot;
 	}
-	
+
 	@Override
 	public String makeValidNewBuilderTemplateID(final String ID)
 	{
 		if((ID==null)||(ID.trim().length()==0)||(ID.indexOf(' ')>=0))
 			return null;
-		int x=ID.indexOf('_');
+		final int x=ID.indexOf('_');
 		if(x<0)
 			return ID.toUpperCase().trim();
 		if(x==0)
 			return null;
-		String possPlayer = ID.substring(0,x);
+		final String possPlayer = ID.substring(0,x);
 		if(CMLib.players().playerExists(possPlayer)||CMLib.players().accountExists(possPlayer))
 			return null;
 		return ID.toUpperCase().trim();
 	}
-	
-	public Map<String,PlayerData> getBuilderTemplates(final String playerName)
+
+	public Map<String,PlayerData> getBuilderTemplates(final String playerName, final boolean extend)
 	{
 		final Map<String, PlayerData> allMyTemplates=new Hashtable<String, PlayerData>();
 		if((playerName==null)
 		||(playerName.length()==0))
 			return allMyTemplates;
-		List<PlayerData> pDat = CMLib.database().DBReadPlayerData(playerName, templatePersonalSection);
-		List<PlayerData> sDat = CMLib.database().DBReadPlayerSectionData(templateSharedSection);
+		final List<PlayerData> pDat = CMLib.database().DBReadPlayerData(playerName, templatePersonalSection);
+		final List<PlayerData> sDat = CMLib.database().DBReadPlayerSectionData(templateSharedSection);
 		for(final PlayerData PD : pDat)
 			allMyTemplates.put(PD.key().substring(commonBuilderTemplateKey.length()+1+PD.who().length()+1).toUpperCase().trim(), PD);
 		for(final PlayerData PD : sDat)
 		{
 			if(PD.who().equalsIgnoreCase(playerName))
+			{
 				allMyTemplates.put(PD.key().substring(commonBuilderTemplateKey.length()+1+PD.who().length()+1).toUpperCase().trim().trim(), PD);
-			else
-				allMyTemplates.put(PD.key().substring(commonBuilderTemplateKey.length()+1).toUpperCase().trim(), PD);
+				if(!extend)
+					continue;
+			}
+			allMyTemplates.put(PD.key().substring(commonBuilderTemplateKey.length()+1).toUpperCase().trim(), PD);
 		}
 		return allMyTemplates;
 	}
@@ -1611,8 +1614,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	@Override
 	public List<Triad<String, String, String>> getBuilderTemplateList(final String playerName)
 	{
-		List<Triad<String, String, String>> list = new Vector<Triad<String, String, String>>();
-		final Map<String, PlayerData> PDs=getBuilderTemplates(playerName);
+		final List<Triad<String, String, String>> list = new Vector<Triad<String, String, String>>();
+		final Map<String, PlayerData> PDs=getBuilderTemplates(playerName,false);
 		if((PDs!=null)&&(PDs.size()>0))
 		{
 			for(final String ID : PDs.keySet())
@@ -1635,18 +1638,18 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 		return list;
 	}
-	
+
 	@Override
 	public Environmental getBuilderTemplateObject(final String playerName, final String ID)
 	{
 		if((ID==null)||(ID.length()==0))
 			return null;
-		final PlayerData PD=getBuilderTemplates(playerName).get(ID.toUpperCase().trim());
+		final PlayerData PD=getBuilderTemplates(playerName,true).get(ID.toUpperCase().trim());
 		if(PD==null)
 			return null;
 		return CMLib.coffeeMaker().getUnknownFromXML(PD.xml());
 	}
-	
+
 	@Override
 	public boolean addNewBuilderTemplateObject(final String playerName, final String ID, final Environmental E)
 	{
@@ -1656,7 +1659,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		CMLib.database().DBCreatePlayerData(playerName, templatePersonalSection, commonBuilderTemplateKey+"_"+playerName.toUpperCase().trim()+"_"+ID.toUpperCase().trim(), xml.toString());
 		return true;
 	}
-	
+
 	@Override
 	public boolean deleteBuilderTemplateObject(final String playerName, final String ID)
 	{
@@ -1664,13 +1667,13 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		CMLib.database().DBDeletePlayerData(playerName, templateSharedSection, commonBuilderTemplateKey+"_"+playerName.toUpperCase().trim()+"_"+ID.toUpperCase().trim());
 		return true;
 	}
-	
+
 	@Override
 	public boolean toggleBuilderTemplateObject(final String playerName, final String ID)
 	{
 		if((ID==null)||(ID.length()==0))
 			return false;
-		final PlayerData PD=getBuilderTemplates(playerName).get(ID.toUpperCase().trim());
+		final PlayerData PD=getBuilderTemplates(playerName,false).get(ID.toUpperCase().trim());
 		if(PD==null)
 			return false;
 		if(!PD.who().equalsIgnoreCase(playerName))
