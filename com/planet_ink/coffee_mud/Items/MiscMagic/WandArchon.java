@@ -42,7 +42,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 		return "WandArchon";
 	}
 
-	protected final static String[]	MAGIC_WORDS	= { "LEVEL", "RESTORE", "REFRESH", "BLAST", "BURN", "GAIN" };
+	protected final static String[]	MAGIC_WORDS	= { "LEVEL", "RESTORE", "REFRESH", "BLAST", "BURN", "GAIN", "REWIND" };
 
 	public WandArchon()
 	{
@@ -57,7 +57,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
 		recoverPhyStats();
 		secretWord="REFRESH";
-		secretIdentity="The Wand of the Archons! Commands: REFRESH, BLAST, LEVEL X UP, LEVEL X DOWN, BURN, GAIN X/All UP.";
+		secretIdentity="The Wand of the Archons! Commands: REFRESH, REWIND, BLAST, LEVEL X UP, LEVEL X DOWN, BURN, GAIN X/All UP.";
 	}
 
 	@Override
@@ -396,6 +396,29 @@ public class WandArchon extends StdWand implements ArchonOnly
 					target.recoverMaxState();
 					target.resetToMaxState();
 					target.tell(L("You feel refreshed!"));
+					return;
+				}
+				else
+				if(message.equals("REWIND"))
+				{
+					if(!safetyCheck(mob,message))
+						return;
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly at <T-NAME>.",this.name()));
+					boolean didsomething=false;
+					for(final Enumeration<Ability> a=target.abilities();a.hasMoreElements();)
+					{
+						final Ability A=a.nextElement();
+						if((A!=null)
+						&&(CMath.s_long(A.getStat("NEXTCAST"))>0))
+						{
+							A.setStat("NEXTCAST", "0");
+							didsomething=true;
+						}
+					}
+					if(didsomething)
+						target.tell(L("You feel refreshed!"));
+					else
+						mob.tell(L("Nothing happened."));
 					return;
 				}
 				else

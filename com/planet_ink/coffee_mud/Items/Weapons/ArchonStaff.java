@@ -44,7 +44,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 	}
 
 	private static Wand theWand=(Wand)CMClass.getMiscMagic("StdWand");
-	protected final static String[] MAGIC_WORDS={"LEVEL","RESTORE","REFRESH","BLAST","BURN","GAIN"};
+	protected final static String[] MAGIC_WORDS={"LEVEL","RESTORE","REFRESH","BLAST","BURN","GAIN","REWIND"};
 
 	public ArchonStaff()
 	{
@@ -68,7 +68,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 		weaponClassification=Weapon.CLASS_STAFF;
 		if(theWand==null)
 			theWand=(Wand)CMClass.getMiscMagic("StdWand");
-		secretWord="REFRESH, RESTORE, BLAST, LEVEL X UP, LEVEL X DOWN, BURN, GAIN X UP";
+		secretWord="REFRESH, RESTORE, REWIND, BLAST, LEVEL X UP, LEVEL X DOWN, BURN, GAIN X UP";
 	}
 
 	@Override
@@ -86,14 +86,14 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 	public void setSpell(final Ability theSpell)
 	{
 		super.setSpell(theSpell);
-		secretWord="REFRESH, RESTORE, BLAST, LEVEL X UP, LEVEL X DOWN, BURN, GAIN X UP";
+		secretWord="REFRESH, RESTORE, REWIND, BLAST, LEVEL X UP, LEVEL X DOWN, BURN, GAIN X UP";
 	}
 
 	@Override
 	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
-		secretWord="REFRESH, RESTORE, BLAST, LEVEL X UP, LEVEL X DOWN, BURN, GAIN X UP";
+		secretWord="REFRESH, RESTORE, REWIND, BLAST, LEVEL X UP, LEVEL X DOWN, BURN, GAIN X UP";
 	}
 
 	public boolean safetyCheck(final MOB mob, final String message)
@@ -345,6 +345,29 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 					target.recoverMaxState();
 					target.resetToMaxState();
 					target.tell(L("You feel refreshed!"));
+					return;
+				}
+				else
+				if(message.equals("REWIND"))
+				{
+					if(!safetyCheck(mob,message))
+						return;
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly at <T-NAME>.",this.name()));
+					boolean didsomething=false;
+					for(final Enumeration<Ability> a=target.abilities();a.hasMoreElements();)
+					{
+						final Ability A=a.nextElement();
+						if((A!=null)
+						&&(CMath.s_long(A.getStat("NEXTCAST"))>0))
+						{
+							A.setStat("NEXTCAST", "0");
+							didsomething=true;
+						}
+					}
+					if(didsomething)
+						target.tell(L("You feel refreshed!"));
+					else
+						mob.tell(L("Nothing happened."));
 					return;
 				}
 				else

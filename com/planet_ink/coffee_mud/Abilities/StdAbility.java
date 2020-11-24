@@ -2449,7 +2449,7 @@ public class StdAbility implements Ability
 	}
 
 	private static final String[]	CODES			= { "CLASS", "TEXT" };
-	private static final String[]	INTERNAL_CODES	= { "TICKDOWN","LEVEL","ISANAUTOEFFECT","NAME" };
+	private static final String[]	INTERNAL_CODES	= { "TICKDOWN","LEVEL","ISANAUTOEFFECT","NAME","NEXTCAST" };
 
 	@Override
 	public String[] getStatCodes()
@@ -2503,6 +2503,8 @@ public class StdAbility implements Ability
 				return Boolean.toString(isAnAutoEffect);
 			case 3:
 				return name();
+			case 4:
+				return ""+this.getTimeOfNextCast();
 			default:
 				break;
 			}
@@ -2533,6 +2535,10 @@ public class StdAbility implements Ability
 				isAnAutoEffect = CMath.s_bool(val);
 				break;
 			case 3:
+				break;
+			case 4:
+				if(CMath.isLong(val))
+					setTimeOfNextCast(CMath.s_long(val));
 				break;
 			default:
 				break;
