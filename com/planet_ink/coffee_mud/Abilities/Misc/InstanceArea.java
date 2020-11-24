@@ -266,7 +266,7 @@ public class InstanceArea extends StdAbility
 			return "Instances Area Manager";
 		}
 
-		protected final Set<InstanceArea> managed=new HashSet<InstanceArea>();
+		protected final Map<InstanceArea,AreaInstanceChild> managed=new HashMap<InstanceArea,AreaInstanceChild>();
 
 		public InstanceAreaManager()
 		{
@@ -274,17 +274,17 @@ public class InstanceArea extends StdAbility
 			this.savable=false;
 		}
 
-		public void manage(final InstanceArea A)
+		public void manage(final InstanceArea A, final AreaInstanceChild c)
 		{
 			if(A==null)
 				return;
-			if(!managed.contains(A))
+			if(!managed.containsKey(A))
 			{
 				synchronized(managed)
 				{
-					if(!managed.contains(A))
+					if(!managed.containsKey(A))
 					{
-						managed.add(A);
+						managed.put(A,c);
 					}
 				}
 			}
@@ -294,12 +294,12 @@ public class InstanceArea extends StdAbility
 		{
 			if(A==null)
 				return;
-			if(managed.contains(A))
+			if(managed.containsKey(A))
 			{
 				final Physical affected=this.affected;
 				synchronized(managed)
 				{
-					if(managed.contains(A))
+					if(managed.containsKey(A))
 					{
 						managed.remove(A);
 					}
@@ -329,9 +329,11 @@ public class InstanceArea extends StdAbility
 					return true;
 				}
 				InstanceArea iA=null;
+				final MOB leaderM = (msg.source().amFollowing()!=null)?msg.source().amUltimatelyFollowing():msg.source();
+				final Set<MOB> grp = getAppropriateGroup(leaderM);
 				synchronized(managed)
 				{
-					for(final Iterator<InstanceArea> i=managed.iterator();i.hasNext();)
+					for(final Iterator<InstanceArea> i=managed.keySet().iterator();i.hasNext();)
 					{
 						final InstanceArea A=i.next();
 						if((A.amDestroyed())
@@ -339,20 +341,22 @@ public class InstanceArea extends StdAbility
 						||(A.affecting().amDestroyed()))
 							i.remove();
 						else
-							iA=A;
+						{
+							final AreaInstanceChild c=managed.get(A);
+							final List<WeakReference<MOB>> V=c.mobs;
+							for (final WeakReference<MOB> weakReference : V)
+							{
+								final MOB M=weakReference.get();
+								if((M!=null)
+								&&((msg.source() == M)||((grp!=null)&&(grp.contains(M)))))
+									iA=A;
+							}
+						}
 					}
 				}
-				if(iA!=null)
-				{
-					final MOB leaderM = (msg.source().amFollowing()!=null)?msg.source().amUltimatelyFollowing():msg.source();
-					final Set<MOB> grp = getAppropriateGroup(leaderM);
-					final Area instA = findExistingInstance(msg.source(), grp, pA);
-					if(instA!=null)
-					{
-						if(!iA.okMessage(myHost, msg))
-							return false;
-					}
-				}
+				if((iA!=null)
+				&&(!iA.okMessage(myHost, msg)))
+					return false;
 				if((managed.size()==0)
 				&&(pA!=null))
 					pA.delEffect(this);
@@ -1882,6 +1886,7 @@ public class InstanceArea extends StdAbility
 						}
 					}
 					instA.setPlayerLevel(topLevel);
+					final AreaInstanceChild aChild;
 					synchronized(instanceChildren)
 					{
 						childList = instanceChildren.get(parentA);
@@ -1895,7 +1900,7 @@ public class InstanceArea extends StdAbility
 						{
 							newMobList.add(new WeakReference<MOB>(mob));
 						}
-						final AreaInstanceChild aChild = new AreaInstanceChild(instA, newMobList);
+						aChild = new AreaInstanceChild(instA, newMobList);
 						childList.add(aChild);
 					}
 					int[] statData=(int[])Resources.getResource("STATS_"+instA.Name().toUpperCase());
@@ -1923,7 +1928,7 @@ public class InstanceArea extends StdAbility
 							mgr=new InstanceAreaManager();
 							parentA.addEffect(mgr);
 						}
-						mgr.manage(this);
+						mgr.manage(this,aChild);
 					}
 				}
 				if((instA instanceof SubArea)

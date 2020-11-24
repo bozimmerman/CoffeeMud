@@ -4233,7 +4233,7 @@ public class StdMOB implements MOB
 						{
 							applier.apply(I);
 						}
-						catch(Exception e)
+						catch(final Exception e)
 						{
 							Log.errOut(e);
 						}
@@ -4900,7 +4900,7 @@ public class StdMOB implements MOB
 					{
 						applier.apply(affects.get(a));
 					}
-					catch(Exception e)
+					catch(final Exception e)
 					{
 						Log.errOut(e);
 					}
@@ -4921,7 +4921,7 @@ public class StdMOB implements MOB
 					{
 						applier.apply(A);
 					}
-					catch(Exception e)
+					catch(final Exception e)
 					{
 						Log.errOut(e);
 					}
@@ -4941,7 +4941,7 @@ public class StdMOB implements MOB
 					{
 						applier.apply(A);
 					}
-					catch(Exception e)
+					catch(final Exception e)
 					{
 						Log.errOut(e);
 					}
@@ -5099,7 +5099,7 @@ public class StdMOB implements MOB
 					{
 						applier.apply(behaviors.get(a));
 					}
-					catch(Exception e)
+					catch(final Exception e)
 					{
 						Log.errOut(e);
 					}
