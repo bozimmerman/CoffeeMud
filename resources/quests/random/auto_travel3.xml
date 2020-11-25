@@ -1,0 +1,197 @@
+<?xml version="1.0"?>
+<!-- ----------------------------------------------------------------------------
+Copyright 2020-2020 Bo Zimmerman
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+--------------------------------------------------------------------------------
+
+See guides/RandomAreas.html for information about documents of this type.
+
+template: auto_travel3
+settable vars: 
+    template(auto_travel3)
+    category(whatevs)
+    area_name(area name)
+    targetarea_name(area name)
+    targetname(container name)
+    itemname(name of an item)
+	xp_amount_awarded
+	gold_amount_awarded
+	quest_point_awarded(YES,NO)
+	reward_items()
+	target_min_arealevel(#), target_max_arealevel(#)
+	quest_multiple(YES, NO, or PREV)
+-->
+
+<QUEST ID="auto_travel3" QUEST_TEMPLATE_ID="auto_travel3">
+	<QUEST_ID DEFINE="quest_id">${h:quest_template}_R$[100000000?999999999]</QUEST_ID>
+	<QUEST_CRITERIA  SELECT="Pick-1">
+		<QUEST_CRITERIA CONDITION="$target_min_arealevel = ''">+SYSOP +LEVELS -&lt;$[$target_level - $level_span] -&gt;$[$target_level + $level_span]</QUEST_CRITERIA>
+		<QUEST_CRITERIA CONDITION="$target_min_arealevel != ''">+LEVEL -&lt;$target_min_arealevel -&gt;$target_max_arealevel </QUEST_CRITERIA>
+	</QUEST_CRITERIA>
+	<FREQUENCY>1</FREQUENCY>
+	<DURATION>90 minutes</DURATION></QUEST_CRITERIA>
+	<CATEGORY>$quest_category</CATEGORY>
+	<DESTINATION_AREA>"$target_area_name"</DESTINATION_AREA>
+	<DESTINATION_ROOM>"$target_room_id"</DESTINATION_ROOM>
+	<DESTINATION_MSG>$target_required_msg</DESTINATION_MSG>
+	<DESTINATION_FORCE>$quest_skill_force</DESTINATION_FORCE>
+	<DESTINATION_SKILL_ID>$quest_skill_id</DESTINATION_SKILL_ID>
+	<DESTINATION_SKILL_XML>$quest_skill_xml</DESTINATION_SKILL_XML>
+	<QUEST_POINT>$quest_point_awarded</QUEST_POINT>
+	<GOLD>$gold_amount_awarded</GOLD>
+	<EXP>$xp_amount_awarded</EXP>
+	<MULTIPLE>$quest_multiple</MULTIPLE>
+	<NEXT_QUEST>$next_quest_id</NEXT_QUEST>
+	<FACTION>$target_faction</FACTION>
+	<NUMFACTION>-$[$target_faction_amt / 500]</NUMFACTION>
+	<QUEST_NAME SELECT="Any-1">
+		<QUEST_NAME>You need you to $reason_verb at $target_name in ${C:target_area_name}</QUEST_NAME>
+		<QUEST_NAME>You want you to $reason_verb at $target_name in ${C:target_area_name}</QUEST_NAME>
+		<QUEST_NAME>${C:source_name} asks you to $reason_verb at $target_name in ${C:target_area_name}</QUEST_NAME>
+		<QUEST_NAME>Do ${reason_verb} at $target_name in ${C:target_area_name}</QUEST_NAME>
+	</QUEST_NAME>
+	<QUEST_NOTIFYSSTRING>${j:1:quest_notifystring}</QUEST_NOTIFYSSTRING>
+	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
+	<TRAVEL_RESPONSE_TYPE>MPECHOAT $$n</TRAVEL_RESPONSE_TYPE>
+	<TRAVEL_RESPONSE>${j:1:quest_traveled}</TRAVEL_RESPONSE>
+	<REWARD_ITEMS>${SELECT: ANY\. FROM $dungeon_treasure_items}</REWARD_ITEMS>
+
+	<STRING load="/resources/quests/random/inc_questcommon.xml" />
+
+
+	<STRING ID="target_required_msg">You successfully complete your $reason_verbing.</STRING>
+	<STRING ID="quest_skill_force">YES</STRING>
+	<STRING ID="quest_skill_id">TempSkill_${c:reason_verbing}</STRING>
+	<STRING ID="quest_skill_xml">
+		&lt;ABILITY ID="" TYPE="GenGatheringSkill" &gt;
+			&lt;CLASS&gt;TempSkill_${c:reason_verbing}&lt;/CLASS&gt;
+			&lt;NAME&gt;${c:reason_verbing}&lt;/NAME&gt;
+			&lt;HELP&gt;&lt;/HELP&gt;
+			&lt;TRIGSTR&gt;${u:reason_verb}&lt;/TRIGSTR&gt;
+			&lt;MATLIST&gt;&lt;/MATLIST&gt;
+			&lt;VERB&gt;${reason_verbing}&lt;/VERB&gt;
+			&lt;SOUND&gt;&lt;/SOUND&gt;
+			&lt;CANSIT&gt;true&lt;/CANSIT&gt;
+			&lt;CANBUNDLE&gt;false&lt;/CANBUNDLE&gt;
+			&lt;ROOMMASK&gt;-LOCATION +ROOMID($target_room_id)&lt;/ROOMMASK&gt;
+			&lt;PLAYMASK&gt;&lt;/PLAYMASK&gt;
+			&lt;YIELDFORMULA&gt;(1?5)+3&lt;/YIELDFORMULA&gt;
+			&lt;MSGSTART&gt;&lt;S-NAME&gt; start(s) $reason_verbing.&lt;/MSGSTART&gt;
+			&lt;MSGFOUND&gt;&lt;S-NAME&gt; make(s) a discovery!&lt;/MSGFOUND&gt;
+			&lt;MSGNOTFOUND&gt;You find no useful information here.&lt;/MSGNOTFOUND&gt;
+			&lt;MSGCOMPLETE&gt;&lt;S-NAME&gt; successfully complete(s) &lt;S-HIS-HER&gt; $reason_verbing.&lt;/MSGCOMPLETE&gt;
+			&lt;ITEMXML&gt;&lt;/ITEMXML&gt;
+			&lt;ISCOSMETIC&gt;true&lt;/ISCOSMETIC&gt;
+			&lt;MINDUR&gt;12&lt;/MINDUR&gt;
+			&lt;BASEDUR&gt;60&lt;/BASEDUR&gt;
+			&lt;FINDTICK&gt;6&lt;/FINDTICK&gt;
+		&lt;/ABILITY&gt;
+	</STRING>
+	
+	
+	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">
+		<STRING>You need you at $target_name for some important $reason_verb!</STRING>
+		<STRING>${c:verb_travel} to ${target_name} and engage in $reason_verbing there!</STRING>
+		<STRING>${c:verb_travel} to ${target_name} for $reason_verbing !</STRING>
+		<STRING>You want you at ${target_name} for $reason_verbing!</STRING>
+	</STRING>
+
+	<STRING ID="quest_instructionstring" SELECT="ALL">
+		<STRING ACTION="PREPEND">$reason_desc</STRING>
+		<STRING ACTION="APPEND">$reason_short</STRING>
+	</STRING>
+
+	<STRING ID="quest_traveled" PREDEFINE="reason=$reason">
+		<STRING condition="$quest_traveled_msg != ''">$quest_traveled_msg</STRING>
+		<STRING condition="$quest_traveled_msg = ''">${c:reason_verb} complete.</STRING>
+	</STRING>
+	<STRING ID="reason_verbing" PREDEFINE="reason_verb=$reason_verb"  DEFINE="reason_verbing">$verb_researching</STRING>
+	<STRING ID="reason_verbed" PREDEFINE="reason_verb=$reason_verb"  DEFINE="reason_verbed">$verb_researched</STRING>
+	<STRING ID="reason_verb" DEFINE="reason_verb">$verb_research</STRING>
+	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
+	<STRING ID="reason" DEFINE="reason">
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>You have some $reason_verbing to get done.</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="quest_point_awarded" DEFINE="quest_point_awarded" SELECT="Pick-1">
+		<STRING PICKWEIGHT=2>NO</STRING>
+		<STRING PICKWEIGHT=1>YES</STRING>
+	</STRING>
+
+	<STRING ID="gold_amount_awarded" DEFINE="gold_amount_awarded" SELECT="any-1">
+		<STRING>$[$target_level*2]</STRING>
+	</STRING>
+
+	<STRING ID="xp_amount_awarded" DEFINE="xp_amount_awarded" SELECT="any-1">
+		<STRING>$[100 + $target_level*3]</STRING>
+	</STRING>
+
+
+	
+
+
+	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
+		<STRING>${SELECT:MED_LEVEL from $target_area}</STRING>
+	</STRING>
+	
+	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>
+		<STRING>$target_level</STRING>
+	</STRING>
+	
+	<STRING ID="target_faction" SELECT="any-1" DEFINE="target_faction">
+		<STRING>${SELECT:factionid from $target}</STRING>
+	</STRING>
+
+	<STRING ID="target_faction_amt" SELECT="first" DEFINE="target_faction_amt">
+		<STRING CONDITION="$target_faction!=''">${SELECT:factionamt from $target}</STRING>
+		<STRING CONDITION="$target_faction=''">0</STRING>
+	</STRING>
+
+	<OBJECT ID="target" DEFINE="target">SELECT: ANY\. from $target_room</OBJECT>
+
+	<STRING ID="target_name" SELECT="any-1" DEFINE="target_name">${SELECT:display from $target}</STRING>
+
+	
+	<OBJECT ID="target_area" SELECT="Pick-1" DEFINE="target_area">
+		<OBJECT pickweight=55555 condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
+		<OBJECT pickweight=1 condition="$targetarea_name = ''">
+			SELECT: any\. from $target_areas_guess
+		</OBJECT>
+	</OBJECT>
+
+	<OBJECT ID="target_areas_guess" define="target_areas_guess" SELECT="Pick-1">
+		<OBJECT pickweight=1 condition="$target_min_arealevel = ''">
+			SELECT: . FROM areas WHERE (SELECT: count\. from area\rooms WHERE exits\count &gt; 0 and display\count = 1 and ((shops\count &gt; 0 and ((SELECT: COUNT\. from room\shops WHERE CLASS="GenLibrarian") &gt; 0 or  (SELECT: COUNT\. from room\shops\shopitems WHERE CLASS="GenBook") &gt; 0)) or "library" in display or "library" in description or "bookshelf" in description or "bookcase" in description or "books" in description) &gt; 0
+		</OBJECT>
+		<OBJECT pickweight=1 condition="$target_min_arealevel != ''">
+			SELECT: . FROM areas WHERE MED_LEVEL &gt;= $target_min_arealevel and MED_LEVEL &lt;= $target_max_arealevel 
+				and (SELECT: count\. from area\rooms WHERE exits\count &gt; 0 and display\count = 1 and ((shops\count &gt; 0 and ((SELECT: COUNT\. from room\shops WHERE CLASS="GenLibrarian") &gt; 0 or  (SELECT: COUNT\. from room\shops\shopitems WHERE CLASS="GenBook") &gt; 0)) or "library" in display or "library" in description or "bookshelf" in description or "bookcase" in description or "books" in description) &gt; 0
+		</OBJECT>
+	</OBJECT>
+
+	<STRING ID="target_area_name" SELECT="any-1" DEFINE="target_area_name">
+		<STRING>${SELECT:name from $target_area}</STRING>
+	</STRING>	
+	
+	<OBJECT ID="target_rooms" define="target_rooms">
+		SELECT: . FROM $target_area\rooms where exits\count &gt; 0 and display\count = 1 and ((shops\count &gt; 0 and ((SELECT: COUNT\. from room\shops WHERE CLASS="GenLibrarian") &gt; 0 or  (SELECT: COUNT\. from room\shops\shopitems WHERE CLASS="GenBook") &gt; 0)) or "library" in display or "library" in description or "bookshelf" in description or "bookcase" in description or "books" in description
+	</OBJECT>
+
+	<OBJECT ID="target_room" DEFINE="target_room">SELECT: any\. FROM $target_rooms</OBJECT>
+	
+	<STRING ID="target_room_id" DEFINE="target_room_id">${SELECT: roomid from $target_room}</STRING>
+	
+</QUEST>

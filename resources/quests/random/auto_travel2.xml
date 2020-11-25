@@ -1,0 +1,261 @@
+<?xml version="1.0"?>
+<!-- ----------------------------------------------------------------------------
+Copyright 2020-2020 Bo Zimmerman
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+--------------------------------------------------------------------------------
+
+See guides/RandomAreas.html for information about documents of this type.
+
+template: auto_travel2
+settable vars: 
+    template(auto_travel2)
+    category(whatevs)
+    area_name(area name)
+    targetarea_name(area name)
+    targetname(mobs name)
+    itemname(name of an item)
+	xp_amount_awarded
+	gold_amount_awarded
+	quest_point_awarded(YES,NO)
+	reward_items()
+	target_min_arealevel(#), target_max_arealevel(#)
+	quest_multiple(YES, NO, or PREV)
+-->
+
+<QUEST ID="auto_travel2" QUEST_TEMPLATE_ID="auto_travel2">
+	<QUEST_ID DEFINE="quest_id">${h:quest_template}_R$[100000000?999999999]</QUEST_ID>
+	<QUEST_CRITERIA  SELECT="Pick-1">
+		<QUEST_CRITERIA CONDITION="$target_min_arealevel = ''">+SYSOP +LEVELS -&lt;$[$target_level - $level_span] -&gt;$[$target_level + $level_span]</QUEST_CRITERIA>
+		<QUEST_CRITERIA CONDITION="$target_min_arealevel != ''">+LEVEL -&lt;$target_min_arealevel -&gt;$target_max_arealevel </QUEST_CRITERIA>
+	</QUEST_CRITERIA>
+	<FREQUENCY>1</FREQUENCY>
+	<DURATION>90 minutes</DURATION></QUEST_CRITERIA>
+	<CATEGORY>$quest_category</CATEGORY>
+	<DESTINATION_AREA>"$target_area_name"</DESTINATION_AREA>
+	<DESTINATION_ROOM>"$target_room_id"</DESTINATION_ROOM>
+	<DESTINATION_NAME>"$target_name"</DESTINATION_NAME>
+	<QUEST_POINT>$quest_point_awarded</QUEST_POINT>
+	<GOLD>$gold_amount_awarded</GOLD>
+	<EXP>$xp_amount_awarded</EXP>
+	<MULTIPLE>$quest_multiple</MULTIPLE>
+	<NEXT_QUEST>$next_quest_id</NEXT_QUEST>
+	<FACTION>$target_faction</FACTION>
+	<NUMFACTION>-$[$target_faction_amt / 500]</NUMFACTION>
+	<QUEST_NAME SELECT="Any-1">
+		<QUEST_NAME>You need you to $reason_verb $target_name in ${C:target_area_name}</QUEST_NAME>
+		<QUEST_NAME>You want you to $reason_verb $target_name in ${C:target_area_name}</QUEST_NAME>
+		<QUEST_NAME>${C:source_name} asks for you to $reason_verb $target_name in ${C:target_area_name}</QUEST_NAME>
+		<QUEST_NAME>${C:reason_verb} $target_name in ${C:target_area_name}</QUEST_NAME>
+	</QUEST_NAME>
+	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
+	<DESTINATION_RESPONSE>${j:1:quest_traveled}</DESTINATION_RESPONSE>
+	<REWARD_ITEMS>${SELECT: ANY\. FROM $dungeon_treasure_items}</REWARD_ITEMS>
+
+	<STRING load="/resources/quests/random/inc_questcommon.xml" />
+
+
+	
+	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">
+		<STRING>You need ${target_name} in ${C:target_area_name} $reason_verbed!</STRING>
+		<STRING>You must $reason_verb ${target_name} in ${C:target_area_name}!</STRING>
+		<STRING>Assistance required traveling ${target_name}!</STRING>
+		<STRING>${c:reason_verb} ${target_name} in ${C:target_area_name} for keeps!</STRING>
+		<STRING>${c:reason_verb} ${target_name} in ${C:target_area_name}, quickly!</STRING>
+		<STRING>You want ${target_name} in ${C:target_area_name} $reason_verbed!</STRING>
+	</STRING>
+
+	<STRING ID="quest_instructionstring" SELECT="ALL">
+		<STRING ACTION="PREPEND">$reason_desc</STRING>
+		<STRING ACTION="APPEND">$reason_short</STRING>
+		<STRING SELECT="Any-1" CONDITION="'YES' in $target_is_aggressive">
+			<STRING>You might have to $hurt_them_phrase, so be ready.</STRING>
+			<STRING>If you $hurt_them_phrase, it'll be no problem.</STRING>
+			<STRING>Be ready to $hurt_them_phrase.</STRING>
+			<STRING>If they seem reluctant, $hurt_them_phrase.</STRING>
+			<STRING>Only $hurt_them_phrase if they resist.</STRING>
+			<STRING>${C:hurt_them_phrase}, before they do you.</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="quest_traveled" PREDEFINE="reason=$reason">$quest_traveled</STRING>
+	<STRING ID="quest_hellospeech" PREDEFINE="reason=$reason">$quest_hellospeech</STRING>
+	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">$verb_visited</STRING>
+	<STRING ID="reason_verb" PREDEFINE="reason=$reason">$verb_visit</STRING>
+	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
+	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
+		<STRING CONDITION="$target_int &gt; 5">$reason_theyoweme</STRING>
+		<STRING>$reason_partytime</STRING>
+		<STRING CONDITION="$target_int &gt; 5">$reason_iowethem</STRING>
+		<STRING CONDITION="$source_align &gt; 0">$reason_ilostthem</STRING>
+		<STRING>$reason_gentravel</STRING>
+	</STRING>
+
+	<STRING id="quest_generic_hello_speeches" SELECT="Any-1">
+		<STRING>$$n, are you looking for me?</STRING>
+		<STRING>Hello $$n?</STRING>
+	</STRING>
+
+	<STRING id="quest_generic_traveled_speeches" SELECT="Any-1">
+		<STRING>How wonderful! Thank you $$n!!</STRING>
+		<STRING>${c:reason_verbed} at last! Thank you $$n!</STRING>
+		<STRING>Good work!</STRING>
+		<STRING>Thank you $$n, that will be all.</STRING>
+	</STRING>
+
+	<STRING ID="reason_theyoweme" SELECT="All">
+		<STRING define="quest_traveled">$quest_generic_traveled_speeches</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>${C:target_name} promised to meet you.</STRING>
+			<STRING>${C:target_name} promised to receive visitors for you.</STRING>
+		</STRING>
+	</STRING>
+	
+	<STRING ID="reason_partytime" SELECT="All">
+		<STRING define="quest_traveled" SELECT="Any-1" >
+			<STRING>Yay! I'm on the way!!</STRING>"
+			<STRING>I'll be right there!!</STRING>"
+			<STRING>I've been needing a good party, thanks!</STRING>"
+		</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>${c:target_name} is invited to my party.</STRING>
+			<STRING>Today you are celebrating today and ${target_name}s invited.</STRING>
+			<STRING>It is officially ${C:source_area_name} Day, and I'm inviting $target_name.</STRING>
+			<STRING>It was ${target_name}s birthday last week, and I'm throwing a party.</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="reason_iowethem" SELECT="All">
+		<STRING define="quest_traveled">$quest_generic_traveled_speeches</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>I promised $target_name I'd send you as soon as possible.</STRING>
+			<STRING>You owe ${target_name} for their assistance to you.</STRING>
+			<STRING>You owe ${target_name} for saving my life.</STRING>
+			<STRING>You swore to protect ${target_name}!</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="reason_ilostthem" SELECT="All">
+		<STRING define="quest_traveled">$quest_generic_traveled_speeches</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>${c:target_name} is lost, so I need your help.</STRING>
+			<STRING>${c:target_name} left here for somewhere else.</STRING>
+			<STRING>${c:target_name} can't find you.</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="reason_gentravel" SELECT="All">
+		<STRING define="quest_traveled">$quest_generic_traveled_speeches</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>You need you to travel to $target_name.</STRING>
+			<STRING>You need to meet with ${target_name}.</STRING>
+			<STRING>${c:target_name} requires a visiti from you.</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="aggression" DEFINE="aggression" SELECT="Pick-1">
+		<STRING PICKWEIGHT=50>NO</STRING>
+		<STRING PICKWEIGHT="$target_level">YES</STRING>
+	</STRING>
+	
+	<STRING ID="quest_point_awarded" DEFINE="quest_point_awarded" SELECT="Pick-1">
+		<STRING PICKWEIGHT=2>NO</STRING>
+		<STRING PICKWEIGHT=1>YES</STRING>
+	</STRING>
+
+	<STRING ID="gold_amount_awarded" DEFINE="gold_amount_awarded" SELECT="any-1">
+		<STRING>$[$target_level*2]</STRING>
+	</STRING>
+
+	<STRING ID="xp_amount_awarded" DEFINE="xp_amount_awarded" SELECT="any-1">
+		<STRING>$[100 + $target_level*3]</STRING>
+	</STRING>
+
+
+
+
+
+	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
+		<STRING>${SELECT:MED_LEVEL from $target_area}</STRING>
+	</STRING>
+	
+	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>
+		<STRING>$target_level</STRING>
+	</STRING>
+	
+
+
+
+
+
+
+	<STRING ID="target_is_aggressive" SELECT="first" DEFINE="target_is_aggressive">
+		<STRING CONDITION="$aggression = 'YES'">YES</STRING>
+		<STRING>${SELECT: 'YES' from $target where 'Aggressive' in objattrib}</STRING>
+	</STRING>
+
+	<OBJECT ID="target" DEFINE="target" SELECT="any-1">
+		<OBJECT CONDITION="$targetname!=''"">SELECT: ANY\. FROM $target_area\mobs WHERE name=$targetname</OBJECT>
+		<OBJECT CONDITION="$targetname=''">
+			SELECT: ANY\. FROM $target_area\npcs 
+				WHERE name\count=1 
+				and current_intelligence>5 
+				and "QuestBound" notin affbehav 
+				and name != $source_name
+				and (SELECT: count\. FROM mob\room\exits) > 0 
+				and 'ROOMUNEXPLORABLE' notin (SELECT: current_sensesstr FROM mob\room)
+		</OBJECT>
+	</OBJECT>
+
+	<STRING ID="target_name" SELECT="any-1" DEFINE="target_name">
+		<STRING>${SELECT:name from $target}</STRING>
+	</STRING>
+
+	<STRING ID="target_int" SELECT="any-1" DEFINE="target_int">
+		<STRING>${SELECT:current_intelligence from $target}</STRING>
+	</STRING>
+	
+	<STRING ID="target_faction" SELECT="any-1" DEFINE="target_faction">
+		<STRING>${SELECT:factionid from $target}</STRING>
+	</STRING>
+
+	<STRING ID="target_faction_amt" SELECT="first" DEFINE="target_faction_amt">
+		<STRING CONDITION="$target_faction!=''">${SELECT:factionamt from $target}</STRING>
+		<STRING CONDITION="$target_faction=''">0</STRING>
+	</STRING>
+	
+	<OBJECT ID="target_area" SELECT="Pick-1" DEFINE="target_area">
+		<OBJECT pickweight=55555 condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
+		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel = ''">
+			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from $mql_viable_questgivers) &gt; 1
+		</OBJECT>
+		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel != ''">
+			SELECT: ANY\. FROM areas WHERE MED_LEVEL &gt;= $target_min_arealevel and MED_LEVEL &lt;= $target_max_arealevel 
+				and (SELECT: count\. from $mql_viable_questgivers) &gt; 1
+		</OBJECT>
+	</OBJECT>
+
+	<STRING ID="target_room_id" DEFINE="target_room_id">${SELECT: roomid from $target\room}</STRING>
+	
+	<STRING ID="target_area_name" SELECT="any-1" DEFINE="target_area_name">
+		<STRING>${SELECT:name from $target_area}</STRING>
+	</STRING>	
+	
+</QUEST>
+
+

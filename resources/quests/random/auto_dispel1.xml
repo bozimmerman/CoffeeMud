@@ -1,0 +1,451 @@
+<?xml version="1.0"?>
+<!-- ----------------------------------------------------------------------------
+Copyright 2020-2020 Bo Zimmerman
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+--------------------------------------------------------------------------------
+
+See guides/RandomAreas.html for information about documents of this type.
+
+template: auto_dispel1
+settable vars: 
+    template(auto_dispel1)
+    sub_template(bound, diseased, hurt, cursed, badspelled, crippled, bleeding, polymorphed)
+    category(whatevs)
+    area_name(area name)
+    targetarea_name(area name)
+    do_drop_item(YES or NO)
+    quest_drop_loc(ROOM or MOB)
+    quest_drop_chance(number)
+    targetname(mobs name)
+    num_targets(num mobs to help)
+	xp_amount_awarded
+	gold_amount_awarded
+	quest_point_awarded(YES,NO)
+	reward_items()
+	target_min_arealevel(#), target_max_arealevel(#)
+	quest_multiple(YES, NO, or PREV)
+-->
+
+<QUEST ID="auto_dispel1" QUEST_TEMPLATE_ID="auto_dispel1">
+	<QUEST_ID DEFINE="quest_id">${h:quest_template}_R$[100000000?999999999]</QUEST_ID>
+	<QUEST_NAME SELECT="Any-1">
+		<QUEST_NAME>You need $num_targets ${p:target_name} $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>You want $num_targets ${p:target_name} $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>${C:source_name} in ${C:target_area_name} asks for $num_targets ${p:target_name} to be $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>${C:reason_verb} $num_targets ${p:target_name} in ${C:target_area_name}</QUEST_NAME>
+	</QUEST_NAME>
+	<QUEST_CRITERIA  SELECT="Pick-1">
+		<QUEST_CRITERIA CONDITION="$target_min_arealevel = ''">+SYSOP +LEVELS -&lt;$[$target_level - $level_span] -&gt;$[$target_level + $level_span]</QUEST_CRITERIA>
+		<QUEST_CRITERIA CONDITION="$target_min_arealevel != ''">+LEVEL -&lt;$target_min_arealevel -&gt;$target_max_arealevel </QUEST_CRITERIA>
+	</QUEST_CRITERIA>
+	<FREQUENCY>1</FREQUENCY>
+	<DURATION>90 minutes</DURATION></QUEST_CRITERIA>
+	<CATEGORY>$quest_category</CATEGORY>
+	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
+	<QUEST_WINSPEECH_TEXT>${j:1:quest_winspeech}</QUEST_WINSPEECH_TEXT>
+	<HELPABLES_AREA>$target_area_name</HELPABLES_AREA>
+	<HELPABLES_MASK>-HOME "+$target_area_name" -NAMES "+$target_name"</HELPABLES_MASK>
+	<NUM_HELPABLES>$num_targets</NUM_HELPABLES>
+	<HELPABLES_RESPONSE>${j:1:quest_helpspeech}</HELPABLES_RESPONSE>
+	<TEMPORARY_EFFECTS>$quest_affect_id</TEMPORARY_EFFECTS>
+	<TEMPORARY_EFFECT_ARGS>$quest_affect_args</TEMPORARY_EFFECT_ARGS>
+	<TEMPORARY_AMBIANCE>$quest_ambiance</TEMPORARY_AMBIANCE>
+	<HELPABLE_ABILITY>$quest_help_ability_id</HELPABLE_ABILITY>
+	<HELPABLE_ITEMS>${SELECT: ANY\. from $quest_drop_item}</HELPABLE_ITEMS>
+	<HELPABLE_DROP_LOC>$quest_drop_loc</HELPABLE_DROP_LOC>
+	<HELPABLE_DROP_CHANCE>$quest_drop_chance</HELPABLE_DROP_CHANCE>
+	<QUEST_POINT>$quest_point_awarded</QUEST_POINT>
+	<GOLD>$gold_amount_awarded</GOLD>
+	<EXP>$xp_amount_awarded</EXP>
+	<MULTIPLE>$quest_multiple</MULTIPLE>
+	<NEXT_QUEST>$next_quest_id</NEXT_QUEST>
+	<FACTION>$target_faction</FACTION>
+	<NUMFACTION>-$[$target_faction_amt / 500]</NUMFACTION>
+	<REWARD_ITEMS>${SELECT: ANY\. FROM $dungeon_treasure_items}</REWARD_ITEMS>
+
+	<STRING ID="quest_drop_item_name" define="quest_drop_item_name" SELECT="ANY-1">
+		<STRING CONDITION="$do_drop_item = 'YES'">${SELECT: NAME from $quest_drop_item}</STRING>
+		<STRING CONDITION="$do_drop_item != 'YES'"></STRING>
+	</STRING>
+
+	<STRING ID="quest_help_ability_name" define="quest_help_ability_name" SELECT="ANY-1" predefine="reason=$reason">${SELECT: NAME from ABILITIES where CLASS='$quest_help_ability_id'}</STRING>
+
+	<STRING ID="quest_pct_chance">$[1?100]</STRING>
+
+	<OBJECT ID="quest_drop_item" define="quest_drop_item" SELECT="Any-1" predefine="reason=$reason">
+		<ITEM CONDITION="$quest_affect_id = 'Thief_Bind'" class="GenPotion" name="An unbinding tool" display="An unbinding tool lies here" material="IRON" level="1">
+			<AFFECT class="Prop_Hidden" CONDITION="$quest_drop_loc = 'ROOM' and $quest_pct_chance > 50"/>
+			<BEHAVIOR class="Decay" parms="NOTRIGGER REMAIN=300" />
+			<AFFECT class="Prop_HaveEnabler" parms="Unbinding" />
+			<DESCRIPTION>Grants you the Unbinding skill.</DESCRIPTION>
+		</ITEM>
+		<ITEM CONDITION="$quest_affect_id != 'Thief_Bind'" class="GenPotion" name="a potion of $quest_help_ability_name" display="a potion of $quest_help_ability_name lies here" material="GLASS" level="1">
+			<READABLETEXT>$quest_help_ability_id</READABLETEXT>
+			<AFFECT class="Prop_Hidden" CONDITION="$quest_drop_loc = 'ROOM' and $quest_pct_chance > 50"/>
+			<BEHAVIOR class="Decay" parms="NOTRIGGER REMAIN=300" />
+			<DESCRIPTION>Drink me, Give me, or Pour me onto someone.</DESCRIPTION>
+		</ITEM>
+	</OBJECT>
+
+	<STRING load="/resources/quests/random/inc_questcommon.xml" />
+
+
+
+	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">
+		<STRING>You need ${p:target_name} $reason_verbed!</STRING>
+		<STRING>You must $reason_verb ${p:target_name}!</STRING>
+		<STRING>Assistance required with some ${p:target_name}!</STRING>
+		<STRING>${c:reason_verb} ${p:target_name} for me!</STRING>
+		<STRING>${c:reason_verb} ${p:target_name}, quickly!</STRING>
+		<STRING>You want ${p:target_name} $reason_verbed!</STRING>
+	</STRING>
+
+	<STRING ID="quest_instructionstring" SELECT="ALL">
+		<STRING ACTION="PREPEND">$reason_desc</STRING>
+		<STRING ACTION="APPEND">$reason_short</STRING>
+		<STRING ACTION="APPEND" CONDITION="$do_drop_item = 'YES' AND $quest_drop_loc = 'ROOM'">
+			If you need help, ${p:quest_drop_item_name} are hidden near them.
+		</STRING>
+		<STRING ACTION="APPEND" CONDITION="$do_drop_item = 'YES' AND $quest_drop_loc != 'ROOM'">
+			If you need help, ${p:quest_drop_item_name} are being carried nearby.
+		</STRING>
+	</STRING>
+
+	<STRING ID="do_drop_item" define="do_drop_item" SELECT="PICK-1">
+		<STRING PICKWEIGHT=50>YES</STRING>
+		<STRING PICKWEIGHT=20>NO</STRING>
+	</STRING>
+
+	<STRING ID="quest_drop_loc" define="quest_drop_loc" SELECT="PICK-1">
+		<STRING PICKWEIGHT=50>ROOM</STRING>
+		<STRING PICKWEIGHT=50>MOB</STRING>
+	</STRING>
+
+	<STRING ID="quest_drop_chance" define="quest_drop_chance" SELECT="ANY-1">
+		<STRING CONDITION="$do_drop_item = 'YES'">$[10?20]</STRING>
+		<STRING CONDITION="$do_drop_item != 'YES'"></STRING>
+	</STRING>
+
+	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">$reason_verbed</STRING>
+	<STRING ID="reason_verb" PREDEFINE="reason=$reason">$reason_verb</STRING>
+	<STRING ID="reason_done" PREDEFINE="reason=$reason">$reason_done</STRING>
+	<STRING ID="quest_winspeech" PREDEFINE="reason=$reason">$quest_winspeech</STRING>
+	<STRING ID="quest_helpspeech" PREDEFINE="reason=$reason">$quest_helpspeech</STRING>
+	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
+	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
+		<STRING CONDITION="$sub_template=='' or $sub_template=='bound'">$reason_bound</STRING>
+		<STRING CONDITION="$sub_template=='' or $sub_template=='diseased'">$reason_diseased</STRING>
+		<STRING CONDITION="$sub_template=='' or $sub_template=='hurt'">$reason_hurt</STRING>
+		<STRING CONDITION="$sub_template=='' or $sub_template=='cursed'">$reason_cursed</STRING>
+		<STRING CONDITION="$sub_template=='' or $sub_template=='badspelled'">$reason_badspelled</STRING>
+		<STRING CONDITION="$sub_template=='' or $sub_template=='crippled'">$reason_crippled</STRING>
+		<STRING CONDITION="$sub_template=='' or $sub_template=='bleeding'">$reason_bleeding</STRING>
+		<STRING CONDITION="$sub_template=='' or $sub_template=='polymorphed'">$reason_polymorphed</STRING>
+	</STRING>
+
+
+	<STRING id="quest_generic_winner_speeches" SELECT="Any-1">
+		<STRING>They are all $reason_verbed! That's all of them, thanks!</STRING>
+		<STRING>${c:reason_verbed} at last!</STRING>
+		<STRING>Thanks for the $reason_verb.</STRING>
+		<STRING>You have completed the $reason_verb task, that will be all.</STRING>
+	</STRING>
+
+	<STRING id="quest_generic_help_speeches" SELECT="Any-1">
+		<STRING>You must!</STRING>
+		<STRING></STRING>
+		<STRING>${c:reason_verb} me, please!</STRING>
+		<STRING>${c:reason_verb} me!</STRING>
+	</STRING>
+
+	<STRING ID="reason_bound" SELECT="All">
+		<STRING define="reason_verb">$verb_unbind</STRING>
+		<STRING define="reason_verbed">$verb_unbound</STRING>
+		<STRING define="reason_done">$verb_bound</STRING>
+		<STRING define="quest_affect_id">Thief_Bind</STRING>
+		<STRING define="quest_affect_args">FORCESIT=true ALLOWBREAK=false</STRING>
+		<STRING define="quest_ambiance">($verb_bound)</STRING>
+		<STRING define="quest_help_ability_id">Unbinding</STRING>
+		<STRING define="quest_winspeech">
+			<STRING>They are all $verb_unbound!</STRING>
+			<STRING>${c:verb_unbound} at last!</STRING>
+			<STRING>Thanks for ${verb_unbind}ing them.</STRING>
+			<STRING>You have completed the task, that will be all.</STRING>
+		</STRING>
+		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>The ${p:target_name} have been $reason_done by their enemies!  This is outrageous!</STRING>
+			<STRING>The time has come for the ${p:target_name} to be released.</STRING>
+			<STRING>The ${p:target_name} were robbed and $reason_done by bandits.  Please help them!</STRING>
+			<STRING>The ${p:target_name} are ${reason_done}, and I want them $verb_unbound.</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="quest_disease_id" DEFINE="quest_disease_id" SELECT="ANY-1">
+		<STRING>Disease_Aids</STRING><STRING>Disease_Alzheimers</STRING><STRING>Disease_Anemia</STRING><STRING>Disease_Anosmia</STRING><STRING>Disease_Anthrax</STRING>
+		<STRING>Disease_Arthritis</STRING><STRING>Disease_Asthma</STRING><STRING>Disease_Blahs</STRING><STRING>Disease_Blindness</STRING><STRING>Disease_Cancer</STRING>
+		<STRING>Disease_Carrier</STRING><STRING>Disease_Chlamydia</STRING><STRING>Disease_Cold</STRING><STRING>Disease_Deafness</STRING><STRING>Disease_Depression</STRING>
+		<STRING>Disease_Diabetes</STRING><STRING>Disease_Diarrhea</STRING><STRING>Disease_Eczema</STRING><STRING>Disease_Fever</STRING><STRING>Disease_FilthFever</STRING>
+		<STRING>Disease_Flu</STRING><STRING>Disease_FootFungus</STRING><STRING>Disease_FrostBite</STRING><STRING>Disease_Gangrene</STRING><STRING>Disease_Giggles</STRING>
+		<STRING>Disease_Gonorrhea</STRING><STRING>Disease_HeatExhaustion</STRING><STRING>Disease_Infection</STRING><STRING>Disease_Lepresy</STRING><STRING>Disease_Lockjaw</STRING>
+		<STRING>Disease_Lyme</STRING><STRING>Disease_Malaria</STRING><STRING>Disease_Migraines</STRING><STRING>Disease_Nausea</STRING><STRING>Disease_Plague</STRING>
+		<STRING>Disease_Pneumonia</STRING><STRING>Disease_PoisonIvy</STRING><STRING>Disease_SARS</STRING><STRING>Disease_Scabies</STRING><STRING>Disease_Scurvy</STRING>
+		<STRING>Disease_Smiles</STRING><STRING>Disease_Syphilisv</STRING><STRING>Disease_Tetnus</STRING><STRING>Disease_Tinnitus</STRING><STRING>Disease_Tourettes</STRING>
+		<STRING>Disease_Vertigo</STRING><STRING>Disease_Yawning</STRING><STRING>Disease_Zika</STRING>
+	</STRING>
+
+	<STRING ID="reason_diseased" SELECT="All">
+		<STRING define="reason_verb">cure</STRING>
+		<STRING define="reason_verbed">cured</STRING>
+		<STRING define="reason_done">${l:SELECT: NAME from ABILITIES where CLASS='$quest_disease_id'}</STRING>
+		<STRING define="quest_affect_id">$quest_disease_id</STRING>
+		<STRING define="quest_affect_args"></STRING>
+		<STRING define="quest_ambiance">(${SELECT: NAME from ABILITIES where CLASS='$quest_disease_id'})</STRING>
+		<STRING define="quest_help_ability_id">Prayer_CureDisease</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>The ${p:target_name} have been given $reason_done by their enemies!  This is outrageous!</STRING>
+			<STRING>A horrible plague of $reason_done has swept amongst the ${p:target_name}.</STRING>
+			<STRING>${c:reason_done} has afflicted the ${p:target_name}.  Please help them!</STRING>
+			<STRING>The ${p:target_name} are undone by the ${reason_done}, and I want them $verb_unbound.</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="quest_nontarget_race_name" define="quest_nontarget_race_name">${SELECT: ANY\NAME FROM $target_area\MOBS\RACES WHERE CLASS!='$target_race_id'}</STRING>
+		
+	<STRING ID="reason_hurt" SELECT="All">
+		<STRING define="reason_verb">$verb_unhurt</STRING>
+		<STRING define="reason_verbed">$verb_unhurted</STRING>
+		<STRING define="reason_done">$verb_hurted</STRING>
+		<STRING define="quest_affect_id">Fighter_Pin</STRING>
+		<STRING define="quest_affect_args"></STRING>
+		<STRING define="quest_ambiance">($reason_done)</STRING>
+		<STRING define="quest_help_ability_id">Prayer_Heal</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>The ${p:target_name} have been $reason_done by their enemies the $quest_nontarget_race_name!</STRING>
+			<STRING>The ${p:target_name} were attacked and $reason_done by $quest_nontarget_race_name enemies.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} were $reason_done by $quest_nontarget_race_name bandits.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} are ${reason_done}, and I want them $reason_verbed.</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING id="adj_badding" select="any-1" define="adj_badding" insert="adj_nasty_values,adj_crazy,adj_smelly,adj_filthy">
+		<STRING>stinging</STRING><STRING>scouring</STRING><STRING>scratchy</STRING><STRING>burning</STRING><STRING>loose</STRING>
+		<STRING>disturbed</STRING><STRING>desolate</STRING><STRING>bleak</STRING><STRING>stark</STRING><STRING>barren</STRING>
+		<STRING>sterile</STRING><STRING>harsh</STRING><STRING>broken</STRING><STRING>bumpy</STRING>
+		<STRING>$quest_nontarget_race_name</STRING><STRING>$quest_nontarget_race_name</STRING><STRING>$quest_nontarget_race_name</STRING><STRING>$quest_nontarget_race_name</STRING>
+		<STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING>
+	</STRING>
+
+	<STRING ID="reason_cursed" SELECT="All">
+		<STRING define="reason_verb">$verb_unhurt</STRING>
+		<STRING define="reason_verbed">$verb_unhurted</STRING>
+		<STRING define="reason_done">cursed</STRING>
+		<STRING define="quest_affect_id">Prayer_Curse</STRING>
+		<STRING define="quest_affect_args"></STRING>
+		<STRING define="quest_ambiance">($adj_badding curse)</STRING>
+		<STRING define="quest_help_ability_id">Prayer_RemoveCurse</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>The ${p:target_name} have been $reason_done by their enemies the $quest_nontarget_race_name!</STRING>
+			<STRING>The ${p:target_name} were attacked and $reason_done by $quest_nontarget_race_name enemies.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} were $reason_done by $quest_nontarget_race_name magicians.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} are ${reason_done}, and I want them $reason_verbed.</STRING>
+			<STRING>The ${p:target_name} have been given $reason_done by their enemies!  This is outrageous!</STRING>
+			<STRING>A horrible $adj_badding has swept amongst the ${p:target_name}.</STRING>
+			<STRING>${c:adj_badding} curse has afflicted the ${p:target_name}.  Please help them!</STRING>
+			<STRING>The ${p:target_name} are undone by the ${adj_badding} curse, and I want them $verb_unbound.</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="quest_badspell_id" DEFINE="quest_badspell_id" SELECT="ANY-1">
+		<STRING>Chant_Rockfeet</STRING><STRING>Chant_RustCurse</STRING><STRING>Chant_Tangle</STRING><STRING>Prayer_Blindness</STRING>
+		<STRING>Prayer_Deafness</STRING><STRING>Prayer_CurseLuck</STRING><STRING>Prayer_CurseMind</STRING><STRING>Prayer_FleshRock</STRING>
+		<STRING>Prayer_Maladiction</STRING><STRING>Prayer_Paralyze</STRING><STRING>Prayer_Silence</STRING><STRING>Prayer_TaintOfEvil</STRING>
+		<STRING>Spell_Blademouth</STRING><STRING>Spell_Blindness</STRING><STRING>Spell_Brainwash</STRING><STRING>Spell_CauseStink</STRING>
+		<STRING>Spell_Charm</STRING><STRING>Spell_Choke</STRING><STRING>Spell_Clog</STRING><STRING>Spell_Confusion</STRING>
+		<STRING>Spell_Deafness</STRING><STRING>Spell_Delirium</STRING><STRING>Spell_Enthrall</STRING><STRING>Spell_Feeblemind</STRING>
+		<STRING>Spell_FeelTheVoid</STRING><STRING>Spell_FlamingEnsharement</STRING><STRING>Spell_FleshStone</STRING><STRING>Spell_Frailty</STRING>
+		<STRING>Spell_Hold</STRING><STRING>Spell_IllusoryDisease</STRING><STRING>Spell_Irritation</STRING><STRING>Spell_LedFoot</STRING>
+		<STRING>Spell_Mute</STRING><STRING>Spell_Nightmare</STRING><STRING>Spell_Repulsion</STRING><STRING>Spell_Sleep</STRING>
+		<STRING>Spell_RogueLimb</STRING><STRING>Spell_Slow</STRING><STRING>Spell_Torture</STRING><STRING>Spell_Ugliness</STRING>
+		<STRING>Spell_Weaken</STRING>
+	</STRING>
+
+	<STRING ID="reason_badspelled" SELECT="All">
+		<STRING define="reason_verb">$verb_unhurt</STRING>
+		<STRING define="reason_verbed">$verb_unhurted</STRING>
+		<STRING define="reason_done">inflicted with ${l:SELECT: NAME from ABILITIES where CLASS='$quest_badspell_id'}</STRING>
+		<STRING define="quest_affect_id">$quest_badspell_id</STRING>
+		<STRING define="quest_affect_args"></STRING>
+		<STRING define="quest_ambiance">(${SELECT: NAME from ABILITIES where CLASS='$quest_badspell_id'})</STRING>
+		<STRING define="quest_help_ability_id">Spell_DispelMagic</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>The ${p:target_name} have been $reason_done by their enemies the $quest_nontarget_race_name!</STRING>
+			<STRING>The ${p:target_name} were attacked and $reason_done by $quest_nontarget_race_name enemies.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} were $reason_done by $quest_nontarget_race_name magicians.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} are ${reason_done}, and I want them $reason_verbed.</STRING>
+			<STRING>The ${p:target_name} have been $reason_done by their enemies!  This is outrageous!</STRING>
+			<STRING>A horrible magical plague has swept amongst the ${p:target_name}, which has them $reason_done.</STRING>
+			<STRING>The ${p:target_name} are undone by being ${reason_done}, and I want them $reason_verbed.</STRING>
+		</STRING>
+	</STRING>
+	
+	<STRING ID="reason_crippled" SELECT="All">
+		<STRING id="broken_limb" define="broken_limb" SELECT="ANY-1">
+			<STRING>left arm</STRING>
+			<STRING>right arm</STRING>
+			<STRING>left leg</STRING>
+			<STRING>right leg</STRING>
+		</STRING>
+		<STRING define="reason_verb">$verb_unhurt</STRING>
+		<STRING define="reason_verbed">$verb_unhurted</STRING>
+		<STRING define="reason_done">crippled</STRING>
+		<STRING define="quest_affect_id">BrokenLimbs</STRING>
+		<STRING define="quest_affect_args">$broken_limb</STRING>
+		<STRING define="quest_ambiance">(broken $broken_limb)</STRING>
+		<STRING define="quest_help_ability_id">Prayer_Heal</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>The ${p:target_name} have been $reason_done by their enemies the $quest_nontarget_race_name!</STRING>
+			<STRING>The ${p:target_name} were attacked and $reason_done by $quest_nontarget_race_name enemies.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} were $reason_done by $quest_nontarget_race_name bandits.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} were $reason_done by $quest_nontarget_race_name invaders.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} are ${reason_done}, and I want them $reason_verbed.</STRING>
+		</STRING>
+	</STRING>
+	
+	<STRING ID="reason_bleeding" SELECT="All">
+		<STRING define="reason_verb">$verb_unhurt</STRING>
+		<STRING define="reason_verbed">$verb_unhurted</STRING>
+		<STRING define="reason_done">$verb_hurted</STRING>
+		<STRING define="quest_affect_id">Bleeding</STRING>
+		<STRING define="quest_affect_args"></STRING>
+		<STRING define="quest_ambiance">(bleeding)</STRING>
+		<STRING define="quest_help_ability_id">Prayer_Heal</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>The ${p:target_name} have been $reason_done by their enemies the $quest_nontarget_race_name!</STRING>
+			<STRING>The ${p:target_name} were attacked and $reason_done by $quest_nontarget_race_name enemies.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} were $reason_done by $quest_nontarget_race_name bandits.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} were $reason_done by $quest_nontarget_race_name invaders.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} are ${reason_done}, and I want them $reason_verbed.</STRING>
+		</STRING>
+	</STRING>
+	
+	<STRING ID="reason_polymorphed" SELECT="All">
+		<STRING ID="quest_race_id" define="quest_race_id">${SELECT: ANY\CLASS FROM RACES}</STRING>
+		<STRING ID="quest_race_name" define="quest_race_id">${SELECT: NAME FROM RACES WHERE CLASS='$quest_race_id'}</STRING>
+		<STRING define="reason_verb">$verb_restore</STRING>
+		<STRING define="reason_verbed">$verb_restored</STRING>
+		<STRING define="reason_done">$verb_transformed into $quest_race_name</STRING>
+		<STRING define="quest_affect_id">Spell_Polymorph</STRING>
+		<STRING define="quest_affect_args">$quest_race_id</STRING>
+		<STRING define="quest_ambiance">${quest_race_name}</STRING>
+		<STRING define="quest_help_ability_id">Spell_DispelMagic</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>The ${p:target_name} have been $reason_done by their enemies the $quest_nontarget_race_name!</STRING>
+			<STRING>The ${p:target_name} were attacked and $reason_done by $quest_nontarget_race_name enemies.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} were $reason_done by $quest_nontarget_race_name magicians.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} are ${reason_done}, and I want them $reason_verbed.</STRING>
+			<STRING>The ${p:target_name} have been $reason_done by their enemies!  This is outrageous!</STRING>
+			<STRING>A horrible magical plague has swept amongst the ${p:target_name}, which has them $reason_done.</STRING>
+			<STRING>The ${p:target_name} are undone by being ${reason_done}, and I want them $reason_verbed.</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="quest_point_awarded" DEFINE="quest_point_awarded" SELECT="Pick-1">
+		<STRING PICKWEIGHT=2>NO</STRING>
+		<STRING PICKWEIGHT=1>YES</STRING>
+	</STRING>
+
+	<STRING ID="gold_amount_awarded" DEFINE="gold_amount_awarded" SELECT="any-1">
+		<STRING>$[$target_level*2]</STRING>
+	</STRING>
+
+	<STRING ID="xp_amount_awarded" DEFINE="xp_amount_awarded" SELECT="any-1">
+		<STRING>$[100 + $target_level*3]</STRING>
+	</STRING>
+
+
+	
+
+
+	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
+		<STRING>${SELECT:mean\level FROM $target_area\npcs WHERE name = $target_name}</STRING>
+	</STRING>
+	
+	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>
+		<STRING>$target_level</STRING>
+	</STRING>
+	
+
+
+
+
+
+
+	<OBJECT ID="target" DEFINE="target" SELECT="any-1">
+		<OBJECT CONDITION="$targetname!=''">SELECT: ANY\. FROM $target_area\mobs WHERE name=$targetname</OBJECT>
+		<OBJECT CONDITION="$targetname=''">SELECT: ANY\. FROM $target_area\mobs WHERE name\count &gt; $num_targets and . LIKE '+ISHOME'</OBJECT>
+	</OBJECT>
+
+	<STRING ID="target_name" SELECT="any-1" DEFINE="target_name">
+		<STRING>${SELECT:name from $target}</STRING>
+	</STRING>
+
+	<STRING ID="target_int" SELECT="any-1" DEFINE="target_int">
+		<STRING>${SELECT:current_intelligence from $target}</STRING>
+	</STRING>
+	
+	<STRING ID="target_race_id" SELECT="any-1" DEFINE="target_race_id">
+		<STRING>${SELECT:RACE from $target}</STRING>
+	</STRING>
+	
+	<STRING ID="target_faction" SELECT="any-1" DEFINE="target_faction">
+		<STRING>${SELECT:factionid from $target}</STRING>
+	</STRING>
+
+	<STRING ID="target_faction_amt" SELECT="first" DEFINE="target_faction_amt">
+		<STRING CONDITION="$target_faction!=''">${SELECT:factionamt from $target}</STRING>
+		<STRING CONDITION="$target_faction=''">0</STRING>
+	</STRING>
+	
+	<OBJECT ID="target_area" SELECT="Pick-1" DEFINE="target_area">
+		<OBJECT pickweight=55555 condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
+		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel = ''">
+			SELECT: ANY\. FROM areas WHERE (SELECT:count\. from area\npcs WHERE name\count &gt; $num_targets  and . LIKE '+ISHOME') &gt; 0
+		</OBJECT>
+		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel != ''">
+			SELECT: ANY\. FROM areas WHERE MED_LEVEL &gt;= $target_min_arealevel and MED_LEVEL &lt;= $target_max_arealevel 
+				and (SELECT:count\. from area\npcs WHERE name\count &gt; $num_targets  and . LIKE '+ISHOME') &gt; 0
+		</OBJECT>
+	</OBJECT>
+
+	<STRING ID="target_area_name" SELECT="any-1" DEFINE="target_area_name">
+		<STRING>${SELECT:name from $target_area}</STRING>
+	</STRING>	
+</QUEST>
+
+

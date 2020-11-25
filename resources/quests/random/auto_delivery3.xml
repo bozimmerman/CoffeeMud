@@ -1,0 +1,421 @@
+<?xml version="1.0"?>
+<!-- ----------------------------------------------------------------------------
+Copyright 2020-2020 Bo Zimmerman
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+--------------------------------------------------------------------------------
+
+See guides/RandomAreas.html for information about documents of this type.
+
+template: auto_delivery3
+settable vars: 
+    template(auto_delivery3)
+    category(whatevs)
+    area_name(area name)
+    targetarea_name(area name)
+    targetname(mobs name)
+    num_targets(num mobs to deliver to)
+    itemname(name of an item)
+	xp_amount_awarded
+	gold_amount_awarded
+	quest_point_awarded(YES,NO)
+	reward_items()
+	target_min_arealevel(#), target_max_arealevel(#)
+	quest_multiple(YES, NO, or PREV)
+-->
+
+<QUEST ID="auto_delivery3" QUEST_TEMPLATE_ID="auto_delivery3">
+	<QUEST_ID DEFINE="quest_id">${h:quest_template}_R$[100000000?999999999]</QUEST_ID>
+	<QUEST_CRITERIA  SELECT="Pick-1">
+		<QUEST_CRITERIA CONDITION="$target_min_arealevel = ''">+SYSOP +LEVELS -&lt;$[$target_level - $level_span] -&gt;$[$target_level + $level_span]</QUEST_CRITERIA>
+		<QUEST_CRITERIA CONDITION="$target_min_arealevel != ''">+LEVEL -&lt;$target_min_arealevel -&gt;$target_max_arealevel </QUEST_CRITERIA>
+	</QUEST_CRITERIA>
+	<FREQUENCY>1</FREQUENCY>
+	<DURATION>90 minutes</DURATION></QUEST_CRITERIA>
+	<CATEGORY>$quest_category</CATEGORY>
+	<DELIVERABLE_ITEM>${SELECT: ANY\. from $target_item}</DELIVERABLE_ITEM>
+	<DELIVEREE_AREA>"$target_area_name"</DELIVEREE_AREA>
+	<DELIVEREE_ROOM>ALL</DELIVEREE_ROOM>
+	<DELIVEREE_MOBS>${SELECT: ANY\. from $target}</DELIVEREE_MOBS>
+	<DELIVEREE_CHANCE>$[($num_targets / $target_area_size * 100) * 2]</DELIVEREE_CHANCE>
+	<QUEST_POINT>$quest_point_awarded</QUEST_POINT>
+	<GOLD>$gold_amount_awarded</GOLD>
+	<EXP>$xp_amount_awarded</EXP>
+	<MULTIPLE>$quest_multiple</MULTIPLE>
+	<NEXT_QUEST>$next_quest_id</NEXT_QUEST>
+	<FACTION>$target_faction</FACTION>
+	<NUMFACTION>-$[$target_faction_amt / 500]</NUMFACTION>
+	<DELIVEREE_COUNT>$num_targets</DELIVEREE_COUNT>
+	<QUEST_NAME SELECT="Any-1">
+		<QUEST_NAME>You need ${target_item_name} $reason_verbed to $c_target_name in ${C:target_area_name}</QUEST_NAME>
+		<QUEST_NAME>You want ${target_item_name} $reason_verbed to $c_target_name in ${C:target_area_name}</QUEST_NAME>
+		<QUEST_NAME>${C:source_name} asks for ${target_item_name} to be $reason_verbed to $c_target_name in ${C:target_area_name}</QUEST_NAME>
+		<QUEST_NAME>${C:reason_verb} ${target_item_name} to $c_target_name in ${C:target_area_name}</QUEST_NAME>
+	</QUEST_NAME>
+	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
+	<DELIVERY_RESPONSE>${j:1:quest_delivered}</DELIVERY_RESPONSE>
+	<DELIVEREE_ANNOUNCE>${j:1:quest_hellospeech}</DELIVEREE_ANNOUNCE>
+	<REWARD_ITEMS>${SELECT: ANY\. FROM $dungeon_treasure_items}</REWARD_ITEMS>
+
+	<STRING load="/resources/quests/random/inc_questcommon.xml" />
+
+
+	
+	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">
+		<STRING>You need ${target_item_name} $reason_verbed!</STRING>
+		<STRING>You must $reason_verb ${p:target_item_name}!</STRING>
+		<STRING>Assistance required delivering ${p:target_item_name}!</STRING>
+		<STRING>${c:reason_verb} ${p:target_item_name} for me!</STRING>
+		<STRING>${c:reason_verb} ${p:target_item_name}, quickly!</STRING>
+		<STRING>You want ${target_item_name} $reason_verbed!</STRING>
+	</STRING>
+
+	<STRING ID="quest_instructionstring" SELECT="ALL">
+		<STRING ACTION="PREPEND">$reason_desc</STRING>
+		<STRING ACTION="APPEND">$reason_short</STRING>
+		<STRING SELECT="Any-1" CONDITION="'YES' in $target_is_aggressive">
+			<STRING>You might have to $hurt_them_phrase, so be ready.</STRING>
+			<STRING>If you $hurt_them_phrase, it'll be no problem.</STRING>
+			<STRING>Be ready to $hurt_them_phrase.</STRING>
+			<STRING>If they seem reluctant, $hurt_them_phrase.</STRING>
+			<STRING>Only $hurt_them_phrase if they resist.</STRING>
+			<STRING>${C:hurt_them_phrase}, before they do you.</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="quest_delivered" PREDEFINE="reason=$reason">$quest_delivered</STRING>
+	<STRING ID="quest_hellospeech" PREDEFINE="reason=$reason">$quest_hellospeech</STRING>
+	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">delivered</STRING>
+	<STRING ID="reason_verb" PREDEFINE="reason=$reason">deliver</STRING>
+	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
+	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
+		<STRING CONDITION="$target_int &gt; 5">$reason_theyoweme</STRING>
+		<STRING CONDITION="$num_targets=1">$reason_partytime</STRING>
+		<STRING CONDITION="$target_int &gt; 5">$reason_iowethem</STRING>
+		<STRING CONDITION="$source_align &gt; 0">$reason_ilostthem</STRING>
+		<STRING>$reason_gendeliver</STRING>
+		<STRING CONDITION="$target_int &gt; 5 and $source_align &gt; 5000">$reason_idoforthem</STRING>
+		<STRING CONDITION="$target_int &gt; 5">$reason_wedotogether</STRING>
+		<STRING>$reason_idotothem</STRING>
+		<STRING>$reason_wedotoeachother</STRING>
+	</STRING>
+
+	<STRING id="quest_generic_hello_speeches" SELECT="Any-1">
+		<STRING>$$n, are you looking for me?</STRING>
+		<STRING>Hello $$n, have you got something for me?</STRING>
+	</STRING>
+
+	<STRING id="quest_generic_delivered_speeches" SELECT="Any-1">
+		<STRING>How wonderful! Thank you $$n!!</STRING>
+		<STRING>${c:reason_verbed} at last! Thank you $$n!</STRING>
+		<STRING>Good work!</STRING>
+		<STRING>Thank you $$n, that will be all.</STRING>
+	</STRING>
+	
+	<STRING ID="c_target_name" define="c_target_name" SELECT="Any-1">
+		<STRING condition="$num_targets=1">${c:target_name}</STRING>
+		<STRING condition="$num_targets>1">$num_targets ${p:target_name}</STRING>
+	</STRING>
+
+	<STRING ID="p_target_name" define="p_target_name" SELECT="Any-1">
+		<STRING condition="$num_targets=1">${c:target_name}</STRING>
+		<STRING condition="$num_targets>1">${p:target_name}</STRING>
+	</STRING>
+
+	<STRING ID="reason_theyoweme" SELECT="All">
+		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>$p_target_name promised to repair $target_item_name for you.</STRING>
+			<STRING>$p_target_name promised to store $target_item_name for you.</STRING>
+			<STRING>$p_target_name promised to give a good home to $target_item_name.</STRING>
+			<STRING>$p_target_name promised to clean $target_item_name for you.</STRING>
+		</STRING>
+	</STRING>
+	
+	<STRING ID="reason_partytime" SELECT="All">
+		<STRING define="quest_delivered" SELECT="Any-1" >
+			<STRING>Yay! ${c:target_item_name} has been delivered! Let the party BEGIN!</STRING>"
+			<STRING>I've been needing $target_item_name, thanks!</STRING>"
+			<STRING>${c:target_item_name} is my favorite thing!</STRING>"
+			<STRING>We can finally begin the festivities now that ${c:target_item_name} is here!</STRING>"
+		</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>${c:target_name} invited me to a party, but I can't go.</STRING>
+			<STRING>It's ${target_name}s birthday today.</STRING>
+			<STRING>It is officially ${C:source_area_name} Day, and I'm giving $target_name $target_item_name.</STRING>
+			<STRING>It was ${target_name}s birthday last week, and I'm late with a present.</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="reason_iowethem" SELECT="All">
+		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>You wish to reward $p_target_name with $target_item_name for reasons.</STRING>
+			<STRING>You owe ${p_target_name} $target_item_name for their assistance to you.</STRING>
+			<STRING>You owe ${p_target_name} $target_item_name for saving my life.</STRING>
+			<STRING>${c:p_target_name} forgot to pick up $target_item_name this week.</STRING>
+			<STRING>You swore to protect ${p_target_name}, and so $target_item_name must be delivered immediately!</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_ilostthem" SELECT="All">
+		<STRING define="quest_delivered" SELECT="Any-1">
+			<STRING>You found $target_item_name!</STRING>
+			<STRING>${target_item_name} has been found!</STRING>
+			<STRING>Congratulations for finding $target_item_name!</STRING>
+		</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>${c:p_target_name} lost $target_item_name and so I need your help.</STRING>
+			<STRING>${c:p_target_name} left ${target_item_name}.</STRING>
+			<STRING>${c:p_target_name} can't find ${target_item_name} and I found it.</STRING>
+			<STRING>${c:target_item_name} was dropped by $p_target_name, and needs returned.</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="reason_gendeliver" SELECT="All">
+		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>You need $target_item_name delivered to $p_target_name.</STRING>
+			<STRING>You need ${p_target_name} to be given $target_item_name.</STRING>
+			<STRING>You need ${p_target_name} be have $target_item_name brought to them.</STRING>
+			<STRING>${c:target_item_name} needs to be delivered to $p_target_name.</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="reason_idoforthem" SELECT="All">
+		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>You wish to give ${p_target_name} a gift of $target_item_name.</STRING>
+			<STRING>I think ${p_target_name} really wants $target_item_name.</STRING>
+			<STRING>You want to help out ${p_target_name} with $target_item_name.</STRING>
+			<STRING>You need to see if ${p_target_name} likes $target_item_name.</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="reason_wedotogether" SELECT="All">
+		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>${c:p_target_name} and you are experimenting with $target_item_name today.</STRING>
+			<STRING>You need ${p_target_name} to also have $target_item_name so we can compare experiences.</STRING>
+			<STRING>You want ${p_target_name} to reproduce $target_item_name for $target_area_name.</STRING>
+			<STRING>${c:p_target_name} and you are parading around $target_area_name with our $target_item_name today.</STRING>
+			<STRING>I fear an invasion of $target_area_name and need ${p_target_name} brought $target_item_name to help with defense.</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="reason_idotothem" SELECT="All">
+		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>You must $hurt_verb ${p_target_name}, and do it in secret.</STRING>
+			<STRING>${c:p_target_name} insulted me and must be notified.</STRING>
+			<STRING>You are giving away ${target_item_name} to all the children of $target_area_name.</STRING>
+			<STRING >${c:p_target_name} needs $target_item_name for our magicical experiment.</STRING>
+			<STRING>${c:p_target_name} deserves $target_item_name for what happened.</STRING>
+			<STRING>${c:p_target_name} made me $adj_feeling_bad, and you must make them $adj_feeling_bad by delivering $target_item_name.</STRING>
+			<STRING>${c:p_target_name} is going to take this $target_item_name for what they've done.</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="reason_wedotoeachother" SELECT="All">
+		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>You are starting a ${target_item_name} factory with ${p_target_name} help.</STRING>
+			<STRING>${c:p_target_name} and you are scheduled to study $target_item_name today.</STRING>
+			<STRING>${c:p_target_name} has insulted your honor, and only a ritual delivery of $target_item_name will satisfy it.</STRING>
+			<STRING>You feel like decorating $target_item_name with ${p_target_name}.</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="aggression" DEFINE="aggression" SELECT="Pick-1">
+		<STRING PICKWEIGHT=50>NO</STRING>
+		<STRING PICKWEIGHT="$target_level">YES</STRING>
+	</STRING>
+	
+	<STRING ID="quest_point_awarded" DEFINE="quest_point_awarded" SELECT="Pick-1">
+		<STRING PICKWEIGHT=2>NO</STRING>
+		<STRING PICKWEIGHT=1>YES</STRING>
+	</STRING>
+
+	<STRING ID="gold_amount_awarded" DEFINE="gold_amount_awarded" SELECT="any-1">
+		<STRING>$[$target_level*2]</STRING>
+	</STRING>
+
+	<STRING ID="xp_amount_awarded" DEFINE="xp_amount_awarded" SELECT="any-1">
+		<STRING>$[100 + $target_level*3]</STRING>
+	</STRING>
+
+
+
+
+
+	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
+		<STRING>${SELECT:MED_LEVEL from $target_area}</STRING>
+	</STRING>
+	
+	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>
+		<STRING>$target_level</STRING>
+	</STRING>
+	
+
+
+
+
+
+
+	<STRING ID="target_is_aggressive" SELECT="first" DEFINE="target_is_aggressive">
+		<STRING>${SELECT: 'YES' from $target where 'Aggressive' in objattrib}</STRING>
+	</STRING>
+
+	
+	<STRING load="/resources/randareas/desert.xml" />
+	<STRING load="/resources/randareas/forest.xml" />
+	<STRING load="/resources/randareas/jungle.xml" />
+	<STRING load="/resources/randareas/lair.xml" />
+	<STRING load="/resources/randareas/rats.xml" />
+	<STRING load="/resources/randareas/plains.xml" />
+	<STRING load="/resources/randareas/mountains.xml" />
+	<STRING load="/resources/randareas/swamp.xml" />
+	
+	<OBJECT ID="target" DEFINE="target" SELECT="pick-1">
+		<OBJECT CONDITION="$targetname!=''"" pickweight=10>
+			<MOB class="GenMob" level="$level_range" race="Unique" gender="$anygender">
+				<NAME>$targetname</NAME>
+				<DISPLAY>$mob_name is.</DISPLAY>
+				<ALIGNMENT>$[-10000?10000]</ALIGNMENT>
+				<BEHAVIOR select="Any-1">
+					<BEHAVIOR class="Bardness" parms="Bard" />
+					<BEHAVIOR class="Bardness" parms="Dancer" />
+					<BEHAVIOR class="Bardness" parms="Jester" />
+					<BEHAVIOR class="Bardness" parms="Minstrel" />
+					<BEHAVIOR class="Clericness" parms="Cleric" />
+					<BEHAVIOR class="Clericness" parms="Doomsayer" />
+					<BEHAVIOR class="Clericness" parms="Healer" />
+					<BEHAVIOR class="Clericness" parms="Missionary" />
+					<BEHAVIOR class="Clericness" parms="Necromancer" />
+					<BEHAVIOR class="Clericness" parms="Oracle" />
+					<BEHAVIOR class="Clericness" parms="Purist" />
+					<BEHAVIOR class="Clericness" parms="Shaman" />
+					<BEHAVIOR class="Clericness" parms="Templar" />
+					<BEHAVIOR class="Druidness" parms="Beastmaster" />
+					<BEHAVIOR class="Druidness" parms="Delver" />
+					<BEHAVIOR class="Druidness" parms="Druid" />
+					<BEHAVIOR class="Druidness" parms="Mer" />
+					<BEHAVIOR class="Druidness" parms="Skywatcher" />
+					<BEHAVIOR class="Fighterness" parms="Barbarian" />
+					<BEHAVIOR class="Fighterness" parms="Fighter" />
+					<BEHAVIOR class="Fighterness" parms="Ranger" />
+					<BEHAVIOR class="Mageness" parms="Abjurer" />
+					<BEHAVIOR class="Mageness" parms="Alterer" />
+					<BEHAVIOR class="Mageness" parms="Conjurer" />
+					<BEHAVIOR class="Mageness" parms="Diviner" />
+					<BEHAVIOR class="Mageness" parms="Enchanter" />
+					<BEHAVIOR class="Mageness" parms="Evoker" />
+					<BEHAVIOR class="Mageness" parms="Illusionist" />
+					<BEHAVIOR class="Mageness" parms="Mage" />
+					<BEHAVIOR class="Mageness" parms="Transmuter" />
+					<BEHAVIOR class="Thiefness" parms="Arcanist" />
+					<BEHAVIOR class="Thiefness" parms="Assassin" />
+					<BEHAVIOR class="Thiefness" parms="Burglar" />
+					<BEHAVIOR class="Thiefness" parms="Pirate" />
+					<BEHAVIOR class="Thiefness" parms="Thief" />
+					<BEHAVIOR class="Thiefness" parms="Trapper" />
+				</BEHAVIOR>
+				<BEHAVIOR CONDITION="$aggression = 'YES'">Aggressive</BEHAVIOR>
+			</MOB>
+		</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=9>SELECT: ANY\. FROM $lair_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=9>SELECT: ANY\. FROM $rats_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $desert_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $forest_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $jungle_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $mountain_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $plains_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $swamp_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $lair_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $lair_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $lair_mobs</OBJECT>
+	</OBJECT>
+
+	<STRING ID="target_name" SELECT="any-1" DEFINE="target_name">
+		<STRING>${SELECT:name from $target}</STRING>
+	</STRING>
+
+	<STRING ID="target_int" SELECT="any-1" DEFINE="target_int">
+		<STRING>${SELECT:current_intelligence from $target}</STRING>
+	</STRING>
+	
+	<STRING ID="target_faction" SELECT="any-1" DEFINE="target_faction">
+		<STRING>${SELECT:factionid from $target}</STRING>
+	</STRING>
+
+	<STRING ID="target_faction_amt" SELECT="first" DEFINE="target_faction_amt">
+		<STRING CONDITION="$target_faction!=''">${SELECT:factionamt from $target}</STRING>
+		<STRING CONDITION="$target_faction=''">0</STRING>
+	</STRING>
+	
+	<OBJECT ID="target_area" SELECT="Pick-1" DEFINE="target_area">
+		<OBJECT pickweight=55555 condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
+		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel = '' and $num_targets = 1">
+			SELECT: ANY\. FROM areas WHERE VISITABLE_ROOMS &gt; 2
+		</OBJECT>
+		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel = '' and $num_targets &gt; 1">
+			SELECT: ANY\. FROM areas WHERE VISITABLE_ROOMS &gt; $num_targets
+		</OBJECT>
+		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel != '' and $num_targets = 1">
+			SELECT: ANY\. FROM areas WHERE MED_LEVEL &gt;= $target_min_arealevel and MED_LEVEL &lt;= $target_max_arealevel 
+				and VISITABLE_ROOMS &gt; 2
+		</OBJECT>
+		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel != '' and $num_targets &gt; 1">
+			SELECT: ANY\. FROM areas WHERE MED_LEVEL &gt;= $target_min_arealevel and MED_LEVEL &lt;= $target_max_arealevel 
+				and VISITABLE_ROOMS &gt; $num_targets
+		</OBJECT>
+	</OBJECT>
+
+	<STRING ID="target_room_id" DEFINE="target_room_id">${SELECT: roomid from $target\room}</STRING>
+	
+	<STRING ID="target_area_size" SELECT="any-1" DEFINE="target_area_size">
+		<STRING>${SELECT:VISITABLE_ROOMS from $target_area}</STRING>
+	</STRING>	
+	
+	<STRING ID="target_area_name" SELECT="any-1" DEFINE="target_area_name">
+		<STRING>${SELECT:name from $target_area}</STRING>
+	</STRING>	
+	
+	<STRING ID="item_level" define="item_level">$target_level</STRING>
+	<STRING ID="target_item_name" define="target_item_name">${SELECT: NAME from $target_item}</STRING>
+	<OBJECT ID="target_item" define="target_item" SELECT="Any-1">
+		<OBJECT condition="$itemname=''">SELECT: ANY\. FROM $item_junk</OBJECT>
+		<OBJECT condition="$itemname!=''">
+			<ITEM class="GenItem" name="$itemname" display="$itemname lies here" material="PAPER" level="$level_range" />
+		</OBJECT>
+	</OBJECT>
+	
+	<STRING ID="multi_target" define="multi_target" select="Pick-1">
+		<STRING pickweight=2>no</STRING>
+		<STRING pickweight=1>yes</STRING>
+	</STRING>
+
+	<STRING ID="num_targets" SELECT="any-1" DEFINE="num_targets" MERGE=overwrite>
+		<STRING condition="$multi_target!='yes'">1</STRING>
+		<STRING condition="$multi_target='yes'">$[3?8]</STRING>
+	</STRING>
+
+</QUEST>

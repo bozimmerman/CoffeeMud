@@ -1,0 +1,314 @@
+<?xml version="1.0"?>
+<!-- ----------------------------------------------------------------------------
+Copyright 2020-2020 Bo Zimmerman
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+--------------------------------------------------------------------------------
+
+See guides/RandomAreas.html for information about documents of this type.
+
+template: auto_collect4
+vars: 
+    template(quest_template)
+    category(whatevs)
+    area_name(area name)
+    sourcename(mob name)
+    targetskill(ANY or a skill ID)
+    targetresource(Any or name of a raw resource)
+    targetmaterial(Any or name of a raw material)
+    itemname(an item name)
+    num_targets(num items to collect)
+	xp_amount_awarded
+	gold_amount_awarded
+	quest_point_awarded(YES,NO)
+	reward_items()
+	target_min_arealevel(#), target_max_arealevel(#)
+	quest_multiple(YES, NO, or PREV)
+-->
+
+<QUEST ID="auto_collect4" QUEST_TEMPLATE_ID="auto_collect4">
+	<QUEST_ID DEFINE="quest_id">${h:quest_template}_R$[100000000?999999999]</QUEST_ID>
+	<QUEST_CRITERIA></QUEST_CRITERIA>
+	<CATEGORY>$quest_category</CATEGORY>
+	<COLLECTABLE_ITEMS>-NAME "+$target_item_name"</COLLECTABLE_ITEMS>
+	<NUM_COLLECTABLES>$num_targets</NUM_COLLECTABLES>
+	<QUEST_POINT>$quest_point_awarded</QUEST_POINT>
+	<GOLD>$gold_amount_awarded</GOLD>
+	<EXP>$xp_amount_awarded</EXP>
+	<MULTIPLE>$quest_multiple</MULTIPLE>
+	<NEXT_QUEST>$next_quest_id</NEXT_QUEST>
+	<FACTION>$target_faction</FACTION>
+	<NUMFACTION>-$[$target_faction_amt / 500]</NUMFACTION>
+	<QUEST_NAME SELECT="Any-1">
+		<QUEST_NAME>You need $num_targets ${p:target_item_name} $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>You want $num_targets ${p:target_item_name} $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>${C:source_name} in ${C:target_area_name} asks for $num_targets ${p:target_item_name} to be $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>${C:reason_verb} $num_targets ${p:target_item_name} in ${C:target_area_name}</QUEST_NAME>
+	</QUEST_NAME>
+	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
+	<QUEST_WINSPEECH_TEXT>${j:1:quest_winspeech}</QUEST_WINSPEECH_TEXT>
+	<WRONG_COLLECTABLE_SAY>This is not what I asked for.</WRONG_COLLECTABLE_SAY>
+	<REWARD_ITEMS>${SELECT: ANY\. FROM $dungeon_treasure_items}</REWARD_ITEMS>
+
+	<STRING load="/resources/quests/random/inc_questcommon.xml" />
+
+	<STRING ID="target_item_name" define="target_item_name">${SELECT: NAME from $target_item}</STRING>
+	
+	<OBJECT ID="target_item" define="target_item" SELECT="Any-1">
+		<OBJECT condition="$itemname='' and $targetresource='Any' and $targetmaterial='Any'">SELECT: ANY\. from $all_target_items where weight < 200</OBJECT>
+		<OBJECT condition="$itemname='' and $targetresource!='Any'">SELECT: ANY\. from $all_target_items where weight < 200 and resourcename='$targetresource'</OBJECT>
+		<OBJECT condition="$itemname='' and $targetmaterial!='Any'">SELECT: ANY\. from $all_target_items where weight < 200 and materialname='$targetmaterial'</OBJECT>
+		<OBJECT condition="$itemname!=''">
+			<ITEM class="GenItem" name="$itemname" display="$itemname lies here" material="PAPER" level="$level_range" />
+		</OBJECT>
+	</OBJECT>
+	
+	<STRING ID="targetskill">Any</STRING>
+	<STRING ID="targetresource">Any</STRING>
+	<STRING ID="targetmaterial">Any</STRING>
+	
+	<ITEM ID="all_target_items" select="all">
+		<ITEM class="metacraft:all-alchemy &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='Alchemy'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-apothecary &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='apothecary'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-Armorsmithing &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='Armorsmithing'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-baking &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='baking'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-Blacksmithing &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='Blacksmithing'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-Boatwright &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='Boatwright'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-CageBuilding &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='CageBuilding'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-cobbling &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='cobbling'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-cooking &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='cooking'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-distilling &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='distilling'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-fletching &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='fletching'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-foodprep &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='foodprep'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-gaelfood &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='gaelfood'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-glassblowing &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='glassblowing'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-herbalism &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='herbalism'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-instrumentmaking &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='instrumentmaking'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-jewelmaking &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='jewelmaking'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-LeatherWorking &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='LeatherWorking'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-LegandaryWeaponsmithing &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='LegandaryWeaponsmithing'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-MasterArmorsmithing &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='MasterArmorsmithing'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-MasterBaking &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='MasterBaking'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-MasterCooking &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='MasterCooking'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-MasterDistilling &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='MasterDistilling'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-MasterFoodPrep &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='MasterFoodPrep'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-MasterLeatherWorking &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='MasterLeatherWorking'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-MasterTailoring &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='MasterTailoring'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-MasterWeaponsmithing &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='MasterWeaponsmithing'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-papermaking &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='papermaking'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-pottery &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='pottery'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-rodsmithing &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='rodsmithing'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-scrollscribing &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='scrollscribing'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-sculpting &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='sculpting'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-smelting &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='smelting'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-staffmaking &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='staffmaking'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-Tailoring &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='Tailoring'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-Tanning &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='Tanning'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-Textiling &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='Textiling'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-torturesmithing &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='torturesmithing'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-WandMaking &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='WandMaking'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-Wainwrighting &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='Wainwrighting'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-Weaponsmithing &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='Weaponsmithing'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-Weaving &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='Weaving'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="cloth" CONDITION="$targetskill='any' or $targetskill='Textiling'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="cloth" CONDITION="$targetskill='any' or $targetskill='Textiling'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="cloth" CONDITION="$targetskill='any' or $targetskill='Textiling'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="leather" CONDITION="$targetskill='any' or $targetskill='Butchering'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="leather" CONDITION="$targetskill='any' or $targetskill='Butchering'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="leather" CONDITION="$targetskill='any' or $targetskill='Butchering'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="Metal" CONDITION="$targetskill='any' or $targetskill='Mining'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="Metal" CONDITION="$targetskill='any' or $targetskill='Mining'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="Mithril" CONDITION="$targetskill='any' or $targetskill='Mining'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="Rock" CONDITION="$targetskill='any' or $targetskill='Mining'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="Rock" CONDITION="$targetskill='any' or $targetskill='Mining'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="Rock" CONDITION="$targetskill='any' or $targetskill='Mining'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="Wood" CONDITION="$targetskill='any' or $targetskill='Chopping'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="Wood" CONDITION="$targetskill='any' or $targetskill='Chopping'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="Wood" CONDITION="$targetskill='any' or $targetskill='Chopping'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="Vegetation" CONDITION="$targetskill='any' or $targetskill='Foraging'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="Vegetation" CONDITION="$targetskill='any' or $targetskill='Foraging'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="Vegetation" CONDITION="$targetskill='any' or $targetskill='Foraging'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="Flesh" CONDITION="$targetskill='any' or $targetskill='Butchering'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="Flesh" CONDITION="$targetskill='any' or $targetskill='Butchering'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="Flesh" CONDITION="$targetskill='any' or $targetskill='Butchering'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="Fish" CONDITION="$targetskill='any' or $targetskill='Fishing'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="Liquid" CONDITION="$targetskill='any' or $targetskill='Drilling'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="Liquid" CONDITION="$targetskill='any' or $targetskill='Drilling'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="Liquid" CONDITION="$targetskill='any' or $targetskill='Drilling'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="Precious" CONDITION="$targetskill='any' or $targetskill='GemDigging'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="Precious" CONDITION="$targetskill='any' or $targetskill='GemDigging'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="Precious" CONDITION="$targetskill='any' or $targetskill='GemDigging'" DEFINE="q_craft=0"/>
+	</ITEM>
+
+	<STRING ID="reason_verbed" define="reason_verbed" SELECT="Any-1" CONDITION="$target_item_name != ''">
+		<STRING CONDITION="$q_craft!=0">$verb_made</STRING>
+		<STRING CONDITION="$q_craft=0">$verb_collected</STRING>
+	</STRING>
+	<STRING ID="reason_verb" define="reason_verb" CONDITION="$target_item_name != ''">
+		<STRING CONDITION="$q_craft!=0">$verb_make</STRING>
+		<STRING CONDITION="$q_craft=0">$verb_collect</STRING>
+	</STRING>
+	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
+	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
+		<STRING>$reason_ilostthem</STRING>
+		<STRING>$reason_welosteachother</STRING>
+		<STRING>$reason_gencollect</STRING>
+		<STRING>$reason_idoforthem</STRING>
+		<STRING>$reason_wedotoeachother</STRING>
+	</STRING>
+
+
+	
+	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">
+		<STRING>You need ${p:target_item_name} $reason_verbed!</STRING>
+		<STRING>You must $reason_verb ${p:target_item_name}!</STRING>
+		<STRING>Assistance required with some ${p:target_item_name}!</STRING>
+		<STRING>${c:reason_verb} ${p:target_item_name} for me!</STRING>
+		<STRING>${c:reason_verb} ${p:target_item_name}, quickly!</STRING>
+		<STRING>You want ${p:target_item_name} $reason_verbed! </STRING>
+	</STRING>
+
+	<STRING ID="quest_instructionstring" SELECT="ALL">
+		<STRING ACTION="PREPEND">$reason_desc</STRING>
+		<STRING ACTION="APPEND">$reason_short</STRING>
+		<STRING SELECT="Any-1" ACTION="APPEND">
+			<STRING>Please make them or find someone who can.</STRING>
+			<STRING>I'm sure any good craftsman can provide them.</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="quest_winspeech" PREDEFINE="reason=$reason">$quest_winspeech</STRING>
+
+	<STRING id="quest_generic_winner_speeches" SELECT="Any-1">
+		<STRING>They are all $reason_verbed! That's all of them, thanks!</STRING>
+		<STRING>${c:reason_verbed} at last!</STRING>
+		<STRING>Thanks for having them $reason_verbed.</STRING>
+		<STRING>Thank you adventurer, you have ${reason_verbed}, and that will be all.</STRING>
+	</STRING>
+
+	<STRING ID="reason_partytime" SELECT="All">
+		<STRING define="quest_winspeech" SELECT="Any-1" >
+			<STRING>Yay! Let the party BEGIN!</STRING>"
+			<STRING>TIME TO CELEBRATE!</STRING>"
+			<STRING>Let the celebration begin!</STRING>"
+			<STRING>We can finally begin the festivities!</STRING>"
+		</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>You're throwing a party and you need lots of ${p:target_item_name}.</STRING>
+			<STRING>Today you are celebrating, and ${p:target_item_name} are my favorite gifts.</STRING>
+			<STRING>It's my $noun_anyrelation`s birthday, and you need several ${p:target_item_name} for my my gift.</STRING>
+			<STRING>It is officially ${C:source_area_name} Day, and the ceremony requires several ${p:target_item_name}.</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="reason_ilostthem" SELECT="All">
+		<STRING define="quest_winspeech" SELECT="Any-1">
+			<STRING>You found them!</STRING>
+			<STRING>I'm so relieved!</STRING>
+			<STRING>Congratulations for finding them!</STRING>
+		</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>You lost all my ${p:target_item_name} and need replacements.</STRING>
+			<STRING>My $noun_anyrelation has lost my ${p:target_item_name}.</STRING>
+			<STRING>You seem to have misplaced all my ${p:target_item_name} and you needr help.</STRING>
+			<STRING>You can't find my $noun_anyrelation`s ${p:target_item_name}.</STRING>
+		</STRING>
+	</STRING>
+	
+	<STRING ID="reason_welosteachother" SELECT="All">
+		<STRING define="quest_winspeech" SELECT="Any-1">
+			<STRING>You $verb_made them!</STRING>
+			<STRING>You are thanked for your assistance.</STRING>
+			<STRING>Congratulations for getting these!</STRING>
+		</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>${C:p:target_item_name} are important to my experiments..</STRING>
+			<STRING>${C:p:target_item_name} are important to my $noun_anyrelation`s experiments.</STRING>
+			<STRING>You need ${p:target_item_name} for my $noun_anyrelation`s project.</STRING>
+			<STRING>You need ${p:target_item_name} for my important project.</STRING>
+			<STRING>${C:p:target_item_name} are key to my work.</STRING>
+		</STRING>
+	</STRING>
+	
+	<STRING ID="reason_gencollect" SELECT="All">
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>You need several ${p:target_item_name} $verb_made and brought to you.</STRING>
+			<STRING>You need ${p:target_item_name} $verb_made for you.</STRING>
+			<STRING>I am collecting ${p:target_item_name}.</STRING>
+			<STRING>My $noun_anyrelation is collecting ${p:target_item_name}, and we need your assistance.</STRING>
+		</STRING>
+	</STRING>
+	
+	<STRING ID="reason_idoforthem" SELECT="All">
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>I lack the ${p:target_item_name} that my $noun_anyrelation requires.</STRING>
+			<STRING>You wish to give ${p:target_item_name} to my $noun_anyrelation.</STRING>
+			<STRING>My $noun_anyrelation requires ${p:target_item_name}.</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="reason_wedotoeachother" SELECT="All">
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING >You need ${p:target_item_name} for my magical experiments.</STRING>
+			<STRING>${c:reason_verb} ${p:target_item_name} for you.</STRING>
+			<STRING>Bring me ${p:target_item_name}.</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="quest_point_awarded" DEFINE="quest_point_awarded" SELECT="Pick-1">
+		<STRING PICKWEIGHT=2>NO</STRING>
+		<STRING PICKWEIGHT=1>YES</STRING>
+	</STRING>
+	
+	<STRING ID="gold_amount_awarded" DEFINE="gold_amount_awarded" SELECT="any-1">
+		<STRING>$[$target_level*2]</STRING>
+	</STRING>
+	
+	<STRING ID="xp_amount_awarded" DEFINE="xp_amount_awarded" SELECT="any-1">
+		<STRING>$[100 + $target_level*3]</STRING>
+	</STRING>
+	
+	<STRING ID="target_faction" SELECT="any-1" DEFINE="target_faction">
+		<STRING>${SELECT:factionid from $target}</STRING>
+	</STRING>
+
+	<STRING ID="target_faction_amt" SELECT="first" DEFINE="target_faction_amt">
+		<STRING CONDITION="$target_faction!=''">${SELECT:factionamt from $target}</STRING>
+		<STRING CONDITION="$target_faction=''">0</STRING>
+	</STRING>
+	
+	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
+		<STRING>${SELECT:MED_LEVEL from $source_area}</STRING>
+	</STRING>
+	
+	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>
+		<STRING>$target_level</STRING>
+	</STRING>
+	
+
+
+
+	<STRING ID="source_level" SELECT="any-1" DEFINE="source_level">
+		<STRING>${SELECT:level from $source}</STRING>
+	</STRING>
+
+
+
+
+
+</QUEST>
+
+
