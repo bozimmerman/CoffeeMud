@@ -379,7 +379,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 				if(CMSecurity.isDebugging(DbgFlag.MUDPERCOLATOR))
 					Log.debugOut("MUDPercolator", "Loading '"+localid+"' from file "+from);
-				final CMFile file = new CMFile(load,null,CMFile.FLAG_LOGERRORS|CMFile.FLAG_FORCEALLOW);
+				final CMFile file = new CMFile(from,null,CMFile.FLAG_LOGERRORS|CMFile.FLAG_FORCEALLOW);
 				if(file.exists() && file.canRead())
 				{
 					final List<XMLTag> addPieces=CMLib.xml().parseAllXML(file.text());
