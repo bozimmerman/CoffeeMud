@@ -4051,6 +4051,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					else
 					{
 						int num=0;
+						if(E instanceof Armor)
+							num=((Item)E).numberOfItems();
+						else
 						if(E instanceof Container)
 						{
 							num++;
@@ -7152,6 +7155,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(E!=null)
 				{
 					int num=0;
+					if(E instanceof Armor)
+						num=((Item)E).numberOfItems();
+					else
 					if(E instanceof Container)
 					{
 						num++;

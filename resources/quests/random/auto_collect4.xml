@@ -172,8 +172,6 @@ vars:
 		<STRING>$reason_wedotoeachother</STRING>
 	</STRING>
 
-
-	
 	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">
 		<STRING>You need ${p:target_item_name} $reason_verbed!</STRING>
 		<STRING>You must $reason_verb ${p:target_item_name}!</STRING>
@@ -219,7 +217,7 @@ vars:
 	<STRING ID="reason_ilostthem" SELECT="All">
 		<STRING define="quest_winspeech" SELECT="Any-1">
 			<STRING>You found them!</STRING>
-			<STRING>I'm so relieved!</STRING>
+			<STRING>You're so relieved!</STRING>
 			<STRING>Congratulations for finding them!</STRING>
 		</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
@@ -301,7 +299,7 @@ vars:
 	</STRING>
 	
 	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>
-		<STRING>$target_level</STRING>
+		<STRING>$[$target_level + 6]</STRING>
 	</STRING>
 </QUEST>
 

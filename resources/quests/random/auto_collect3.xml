@@ -179,7 +179,7 @@ vars:
 		<STRING define="reason_verb">$verb_return</STRING>
 		<STRING define="quest_winspeech" SELECT="Any-1">
 			<STRING>You found them!</STRING>
-			<STRING>I'm so relieved!</STRING>
+			<STRING>You're so relieved!</STRING>
 			<STRING>Congratulations for finding them!</STRING>
 		</STRING>
 		<STRING define="quest_fightspeech">$quest_generic_fight_speeches</STRING>

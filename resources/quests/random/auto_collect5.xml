@@ -121,7 +121,7 @@ vars:
 	<STRING ID="reason_ilostthem" SELECT="All">
 		<STRING define="quest_winspeech" SELECT="Any-1">
 			<STRING>You did it!</STRING>
-			<STRING>I'm so relieved!</STRING>
+			<STRING>You're so relieved!</STRING>
 			<STRING>Congratulations for finding it!</STRING>
 		</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">

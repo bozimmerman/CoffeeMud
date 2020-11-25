@@ -110,10 +110,10 @@ set duration $DURATION
 <DATA>
 FUNCTION_PROG CHECK_DONE
 	mpsetvar $i $QUEST_ID_GOT 0
-	for $0 = 1 to '$%NUMITEMSMOB($i)%
+	for $0 = 1 to $%NUMITEMSMOB($i)%
 		MPARGSET $1 $%MOBITEM($i $0)%
-		if questobj($1 *)
-			mpsetvar $i $QUEST_ID_GOT ++
+		if ISLIKE($1 '$COLLECTABLE_ITEMS')
+			mpsetvar $i $QUEST_ID_GOT +$%ITEMCOUNT($1)%
 		endif
 	next
 	if var($n $QUEST_ID_GOT >= $NUM_COLLECTABLES) and QUESTSCRIPTED($i *)
@@ -201,7 +201,7 @@ QUEST_TIME_PROG * 1
 
 EXECMSG_PROG GET ALL
 	if ISLIKE($t '$COLLECTABLE_ITEMS') and EVAL($n == $i) AND EVAL('$<$n $QUEST_ID_GOT>' < $NUM_COLLECTABLES)
-		MPSETVAR $n $QUEST_ID_GOT +$%ITEMCOUNT($t)%
+		MPSETVAR $i $QUEST_ID_GOT +$%ITEMCOUNT($t)%
 		mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES
 		MPCALLFUNC CHECK_DONE
 	endif	

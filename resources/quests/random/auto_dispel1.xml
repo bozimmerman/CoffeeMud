@@ -180,7 +180,7 @@ settable vars:
 		<STRING define="quest_winspeech">
 			<STRING>They are all $verb_unbound!</STRING>
 			<STRING>${c:verb_unbound} at last!</STRING>
-			<STRING>Thanks for ${verb_unbind}ing them.</STRING>
+			<STRING>You are thanked for ${verb_unbind}ing them.</STRING>
 			<STRING>You have completed the task, that will be all.</STRING>
 		</STRING>
 		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>

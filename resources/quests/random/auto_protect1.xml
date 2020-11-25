@@ -103,8 +103,8 @@ settable vars:
 	<STRING id="quest_generic_winner_speeches" SELECT="Any-1">
 		<STRING>I feel safe now!</STRING>
 		<STRING>I feel ${c:reason_verbed} now!</STRING>
-		<STRING>Thanks for the help!</STRING>
-		<STRING>Thank you adventurer for choosing to $reason_verb me!</STRING>
+		<STRING>You are thanked for the help!</STRING>
+		<STRING>Thank you adventurer for choosing to $reason_verb!</STRING>
 	</STRING>
 
 	<STRING ID="reason_theyoweme" SELECT="All">

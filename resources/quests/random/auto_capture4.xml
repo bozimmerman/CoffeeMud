@@ -204,7 +204,7 @@ settable vars:
 		<STRING define="reason_verb">$verb_find</STRING>
 		<STRING define="quest_winspeech" SELECT="Any-1">
 			<STRING>You found ${target_himher}!</STRING>
-			<STRING>I'm so relieved!</STRING>
+			<STRING>You're so relieved!</STRING>
 			<STRING>Congratulations for finding ${target_himher}!</STRING>
 		</STRING>
 		<STRING define="quest_fightspeech" SELECT="Any-1">

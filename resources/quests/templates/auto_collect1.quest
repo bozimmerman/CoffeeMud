@@ -154,10 +154,10 @@ FUNCTION_PROG DO_ACCEPT
 
 FUNCTION_PROG CHECK_DONE
 	mpsetvar $i $QUEST_ID_GOT 0
-	for $0 = 1 to '$%NUMITEMSMOB($i)%
+	for $0 = 1 to $%NUMITEMSMOB($i)%
 		MPARGSET $1 $%MOBITEM($i $0)%
 		if questobj($1 *)
-			mpsetvar $i $QUEST_ID_GOT ++
+			mpsetvar $i $QUEST_ID_GOT +$%ITEMCOUNT($1)%
 		endif
 	next
 	if var($n $QUEST_ID_GOT >= $NUM_COLLECTABLES) and QUESTSCRIPTED($i *)
