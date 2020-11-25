@@ -69,8 +69,6 @@ settable vars:
 	<REWARD_ITEMS>${SELECT: ANY\. FROM $dungeon_treasure_items}</REWARD_ITEMS>
 
 	<STRING load="/resources/quests/random/inc_questcommon.xml" />
-
-
 	
 	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">
 		<STRING>${c:target_name} in $target_area_name needs to be $reason_verbed!</STRING>
@@ -209,11 +207,7 @@ settable vars:
 	<STRING ID="xp_amount_awarded" DEFINE="xp_amount_awarded" SELECT="any-1">
 		<STRING>$[100 + $target_level*3]</STRING>
 	</STRING>
-
-
 	
-
-
 	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
 		<STRING>${SELECT:mean\level FROM $target_area\npcs WHERE name = $target_name}</STRING>
 	</STRING>
@@ -222,12 +216,6 @@ settable vars:
 		<STRING>$target_level</STRING>
 	</STRING>
 	
-
-
-
-
-
-
 	<STRING ID="target_is_aggressive" SELECT="first" DEFINE="target_is_aggressive">
 		<STRING CONDITION="$aggression = 'YES'">YES</STRING>
 		<STRING>${SELECT: 'YES' from $target where 'Aggressive' in objattrib}</STRING>
@@ -252,7 +240,6 @@ settable vars:
 			<ALIGNMENT>$[-10000?10000]</ALIGNMENT>
 		</MOB>
 	</OBJECT>
-
 	
 	<STRING ID="attacker_name" SELECT="any-1" DEFINE="attacker_name">
 		<STRING>${SELECT:name from $attacker}</STRING>

@@ -72,7 +72,7 @@ settable vars:
 		<STRING>You need ${target_item_name} $reason_verbed to $c_target_name in ${C:target_area_name}!</STRING>
 		<STRING>You must $reason_verb ${target_item_name} to $c_target_name in ${C:target_area_name}!</STRING>
 		<STRING>Assistance required paying  $c_target_name in ${C:target_area_name} ${target_item_name}!</STRING>
-		<STRING>${c:reason_verb} ${target_item_name} to $c_target_name in ${C:target_area_name} for me!</STRING>
+		<STRING>${c:reason_verb} ${target_item_name} to $c_target_name in ${C:target_area_name} for goodness sake!</STRING>
 		<STRING>${c:reason_verb} ${target_item_name} to $c_target_name in ${C:target_area_name}, quickly!</STRING>
 		<STRING>You want ${target_item_name} $reason_verbed to $c_target_name in ${C:target_area_name}!</STRING>
 	</STRING>
@@ -133,8 +133,8 @@ settable vars:
 	<STRING ID="reason_partytime" SELECT="All">
 		<STRING define="quest_paid" SELECT="Any-1" >
 			<STRING>Yay! ${c:target_item_name} has been delivered! Let the party planning BEGIN!</STRING>"
-			<STRING>I've been needing $target_item_name, thanks!</STRING>"
-			<STRING>${c:target_item_name} is my favorite thing!</STRING>"
+			<STRING>I've been needing $target_item_name!</STRING>"
+			<STRING>${c:target_item_name} is your favorite thing!</STRING>"
 			<STRING>We can finally begin planning the festivities now that ${c:target_item_name} is here!</STRING>"
 		</STRING>
 		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
@@ -152,7 +152,7 @@ settable vars:
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>You wish to reward $p_target_name with $target_item_name for reasons.</STRING>
 			<STRING>You owe ${p_target_name} $target_item_name for their assistance to you.</STRING>
-			<STRING>You owe ${p_target_name} $target_item_name for saving my life.</STRING>
+			<STRING>You owe ${p_target_name} $target_item_name for saving your life.</STRING>
 			<STRING>${c:p_target_name} forgot to pick up $target_item_name this week.</STRING>
 			<STRING>You swore to pay ${p_target_name}, and so $target_item_name must be delivered immediately!</STRING>
 		</STRING>

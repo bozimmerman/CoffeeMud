@@ -394,7 +394,7 @@ settable vars:
 			<STRING>${c:target_name} must come here at once to serve you.</STRING>
 			<STRING>${c:target_name} must report to you.</STRING>
 			<STRING>You want ${c:target_name} to come play $any_instrument_name for you.</STRING>
-			<STRING>${c:target_name} needs to come help you use my $any_item_junk_name.</STRING>
+			<STRING>${c:target_name} needs to come help you use your $any_item_junk_name.</STRING>
 			<STRING>You need ${target_name} for an important job.</STRING>
 		</STRING>
 	</STRING>
@@ -412,7 +412,7 @@ settable vars:
 			<STRING>You must $hurt_verb ${c:target_name}, and do it in secret.</STRING>
 			<STRING>You are really hungry for ${target_name}.</STRING>
 			<STRING CONDITION="$target_int &lt; 4">You are giving away ${target_name} to all the children of $target_area_name.</STRING>
-			<STRING >You need to draw out the souls of ${target_name} for my magic.</STRING>
+			<STRING >You need to draw out the souls of ${target_name} for your magic.</STRING>
 			<STRING>${c:target_name} is not here, so you can't $hurt_verb ${target_himher}.</STRING>
 			<STRING>${c:target_name} made me $adj_feeling_bad, and you must make ${target_himher} $adj_feeling_bad.</STRING>
 			<STRING>${c:target_name} is going to feel the business end of ${any_item_junk_name} for what ${target_heshe}'s done.</STRING>

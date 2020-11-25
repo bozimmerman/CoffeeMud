@@ -70,9 +70,7 @@ vars:
 
 	<STRING load="/resources/quests/random/inc_questcommon.xml" />
 
-	<STRING ID="item_level" define="item_level">
-		<STRING>${SELECT:level from $source}</STRING>
-	</STRING>
+	<STRING ID="item_level" define="item_level">$target_level</STRING>
 	<STRING ID="target_item_name" define="target_item_name">${SELECT: NAME from $target_item}</STRING>
 	<OBJECT ID="target_item" define="target_item" SELECT="Any-1">
 		<OBJECT condition="$target_int &gt; 2">SELECT: ANY\. FROM $item_junk WHERE level &lt;= $target_level </OBJECT>
@@ -95,14 +93,12 @@ vars:
 		<STRING>$reason_idotothem</STRING>
 		<STRING>$reason_wedotoeachother</STRING>
 	</STRING>
-
-
 	
 	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">
 		<STRING>You need ${p:target_item_name} $reason_verbed!</STRING>
 		<STRING>You must $reason_verb ${p:target_item_name}!</STRING>
 		<STRING>Assistance required with some ${p:target_item_name}!</STRING>
-		<STRING>${c:reason_verb} ${p:target_item_name} for me!</STRING>
+		<STRING>${c:reason_verb} ${p:target_item_name} for goodness sake!</STRING>
 		<STRING>${c:reason_verb} ${p:target_item_name}, quickly!</STRING>
 		<STRING>You want ${p:target_item_name} $reason_verbed! </STRING>
 	</STRING>
@@ -129,10 +125,10 @@ vars:
 
 
 	<STRING id="quest_generic_winner_speeches" SELECT="Any-1">
-		<STRING>They are all $reason_verbed! That's all of them, thanks!</STRING>
+		<STRING>They are all $reason_verbed! That's all of them!</STRING>
 		<STRING>${c:reason_verbed} at last!</STRING>
-		<STRING>Thanks for having them $reason_verbed.</STRING>
-		<STRING>Thank you adventurer, you have ${reason_verbed}, and that will be all.</STRING>
+		<STRING>You have completely $reason_verbed them.</STRING>
+		<STRING>You have ${reason_verbed}, and that will be all.</STRING>
 	</STRING>
 
 	<STRING ID="reason_theyoweme" SELECT="All">
@@ -146,10 +142,10 @@ vars:
 			<STRING>Leave me alone, I don't you anything!</STRING>
 		</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>The ${p:target_name} owe me ${p:target_item_name} for my hard work!</STRING>
+			<STRING>The ${p:target_name} owe me ${p:target_item_name} for your hard work!</STRING>
 			<STRING>The ${P:target_name} owe me some ${p:target_item_name}.</STRING>
-			<STRING>The ${P:target_name} owe my $noun_anyrelation some ${p:target_item_name}, but haven't made good.</STRING>
-			<STRING>My $noun_anyrelation is owed some ${p:target_item_name} by the ${p:target_name}.</STRING>
+			<STRING>The ${P:target_name} owe your $noun_anyrelation some ${p:target_item_name}, but haven't made good.</STRING>
+			<STRING>Your $noun_anyrelation is owed some ${p:target_item_name} by the ${p:target_name}.</STRING>
 			<STRING>You've given much to the ${p:target_name}, and they owe me ${p:target_item_name}.</STRING>
 		</STRING>
 	</STRING>
@@ -166,11 +162,11 @@ vars:
 		<STRING define="quest_fightspeech">$quest_generic_fight_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>You're throwing a party and the ${p:target_name} are providing ${target_item_name}.</STRING>
-			<STRING>Today you are celebrating, and ${p:target_item_name} from ${p:target_name} are my gifts.</STRING>
-			<STRING>It's my $noun_anyrelation`s birthday, and ${p:target_item_name} from ${p:target_name} are my gifts.</STRING>
+			<STRING>Today you are celebrating, and ${p:target_item_name} from ${p:target_name} are your gifts.</STRING>
+			<STRING>It's your $noun_anyrelation`s birthday, and ${p:target_item_name} from ${p:target_name} are your gifts.</STRING>
 			<STRING>It is officially ${C:target_area_name} Day, and the ceremony requires several ${p:target_item_name} from $target_name.</STRING>
 			<STRING>Today you are celebrating, and the ${p:target_name} are late bringing me ${p:target_item_name}.</STRING>
-			<STRING>It's my $noun_anyrelation`s birthday, and the ${p:target_name} are late bringing the ${p:target_item_name}.</STRING>
+			<STRING>It's your $noun_anyrelation`s birthday, and the ${p:target_name} are late bringing the ${p:target_item_name}.</STRING>
 		</STRING>
 	</STRING>
 
@@ -184,11 +180,11 @@ vars:
 		</STRING>
 		<STRING define="quest_fightspeech">$quest_generic_fight_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>You lost my ${p:target_item_name} and need you to find them.  I'm pretty sure the ${p:target_name} have them</STRING>
-			<STRING>My $noun_anyrelation has lost some ${p:target_item_name} and you need to find them.  I'm pretty sure the ${p:target_name} have them</STRING>
+			<STRING>You lost your ${p:target_item_name} and need you to find them.  I'm pretty sure the ${p:target_name} have them</STRING>
+			<STRING>Your $noun_anyrelation has lost some ${p:target_item_name} and you need to find them.  I'm pretty sure the ${p:target_name} have them</STRING>
 			<STRING>You seem to have misplaced the ${p:target_item_name} on the future corpses of ${p:target_name}.</STRING>
-			<STRING>You can't find my ${p:target_item_name} because ${p:target_name} has them.</STRING>
-			<STRING>You can't find my $noun_anyrelation`s ${p:target_item_name} because ${p:target_name} has them.</STRING>
+			<STRING>You can't find your ${p:target_item_name} because ${p:target_name} has them.</STRING>
+			<STRING>You can't find your $noun_anyrelation`s ${p:target_item_name} because ${p:target_name} has them.</STRING>
 			<STRING>You must protect the ${p:target_item_name} from their current holders, the ${p:target_name}.</STRING>
 		</STRING>
 	</STRING>
@@ -203,11 +199,11 @@ vars:
 		</STRING>
 		<STRING define="quest_fightspeech">$quest_generic_fight_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>${C:p:target_item_name} are important to my experiments.  Please get $verb_collected from $target_name.</STRING>
-			<STRING>${C:p:target_item_name} are important to my $noun_anyrelation`s experiments.  Please $verb_collected them from $target_name.</STRING>
-			<STRING>You need ${p:target_item_name} for my $noun_anyrelation`s project.  You'll find that ${p:target_name} have plenty.</STRING>
-			<STRING>You need ${p:target_item_name} for my important project.  You'll find that ${p:target_name} have plenty.</STRING>
-			<STRING>${C:p:target_item_name} are key to my work, but the ${p:target_name} have them all.</STRING>
+			<STRING>${C:p:target_item_name} are important to your experiments.  Please get $verb_collected from $target_name.</STRING>
+			<STRING>${C:p:target_item_name} are important to your $noun_anyrelation`s experiments.  Please $verb_collected them from $target_name.</STRING>
+			<STRING>You need ${p:target_item_name} for your $noun_anyrelation`s project.  You'll find that ${p:target_name} have plenty.</STRING>
+			<STRING>You need ${p:target_item_name} for your important project.  You'll find that ${p:target_name} have plenty.</STRING>
+			<STRING>${C:p:target_item_name} are key to your work, but the ${p:target_name} have them all.</STRING>
 			<STRING>The ${p:target_item_name} are being held by the ${p:target_name} for me, and you must have them back.</STRING>
 		</STRING>
 	</STRING>
@@ -222,8 +218,8 @@ vars:
 			<STRING>You need ${p:target_item_name} $verb_collected for me.  You can get them from ${p:target_name}.</STRING>
 			<STRING>I am collecting ${p:target_item_name}.</STRING>
 			<STRING>${c:p:target_name} are a great source of ${p:target_item_name}, and you need lots of them $verb_collected!</STRING>
-			<STRING>My $noun_anyrelation is collecting ${p:target_item_name}, and we need your assistance.</STRING>
-			<STRING>${c:p:target_name} are a great source of ${p:target_item_name}, and my $noun_anyrelation needs lots of them $verb_collected!</STRING>
+			<STRING>Your $noun_anyrelation is collecting ${p:target_item_name}, and we need your assistance.</STRING>
+			<STRING>${c:p:target_name} are a great source of ${p:target_item_name}, and your $noun_anyrelation needs lots of them $verb_collected!</STRING>
 		</STRING>
 	</STRING>
 	
@@ -233,9 +229,9 @@ vars:
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="quest_fightspeech">$quest_generic_fight_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>The ${p:target_name} have the ${p:target_item_name} that my $noun_anyrelation requires.</STRING>
-			<STRING>You wish to give ${p:target_item_name} to my $noun_anyrelation, and ${p:target_name} has them.</STRING>
-			<STRING>My $noun_anyrelation requires ${p:target_item_name}.</STRING>
+			<STRING>The ${p:target_name} have the ${p:target_item_name} that your $noun_anyrelation requires.</STRING>
+			<STRING>You wish to give ${p:target_item_name} to your $noun_anyrelation, and ${p:target_name} has them.</STRING>
+			<STRING>Your $noun_anyrelation requires ${p:target_item_name}.</STRING>
 			<STRING>The ${p:target_name} have too many ${p:target_item_name}.</STRING>
 		</STRING>
 	</STRING>
@@ -259,9 +255,9 @@ vars:
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="quest_fightspeech">$quest_generic_fight_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING >You need the ${p:target_item_name} of ${p:target_name} for my magical experiments.</STRING>
+			<STRING >You need the ${p:target_item_name} of ${p:target_name} for your magical experiments.</STRING>
 			<STRING>${c:reason_verb} ${p:target_item_name} from ${p:target_name} for you.</STRING>
-			<STRING>The ${p:target_name} have all my ${p:target_item_name}, the $adj_nasty bastards.</STRING>
+			<STRING>The ${p:target_name} have all your ${p:target_item_name}, the $adj_nasty bastards.</STRING>
 			<STRING>The ${p:target_name} are a menace.  ${c:hurt_verb} them, and bring me their ${p:target_item_name}.</STRING>
 			<STRING>You feel like witnessing a $adj_feeling_good ${p:target_name} ${hurt_verb}ing.  Go do it and bring me their ${p:target_item_name}.</STRING>
 		</STRING>
@@ -279,21 +275,11 @@ vars:
 	<STRING ID="xp_amount_awarded" DEFINE="xp_amount_awarded" SELECT="any-1">
 		<STRING>$[100 + $target_level*3]</STRING>
 	</STRING>
-	
-	
-	
-	
+
 	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
 		<STRING>${SELECT:mean\level FROM $target_area\npcs WHERE name=$target_name}</STRING>
 	</STRING>
 		
-
-
-
-
-
-
-
 	<STRING ID="target_is_aggressive" SELECT="first" DEFINE="target_is_aggressive">
 		<STRING>${SELECT: 'YES' from $target where 'Aggressive' in objattrib}</STRING>
 	</STRING>

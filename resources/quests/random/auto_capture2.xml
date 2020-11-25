@@ -222,7 +222,7 @@ settable vars:
 		<STRING define="reason_verbed">$verb_found</STRING>
 		<STRING define="reason_verb">$verb_find</STRING>
 		<STRING define="quest_winspeech" SELECT="Any-1">
-			<STRING>You found them! Thanks!</STRING>
+			<STRING>You found them! </STRING>
 			<STRING>They thank you for your assistance.</STRING>
 			<STRING>They thank you so much for finding them!</STRING>
 		</STRING>

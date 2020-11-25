@@ -397,7 +397,7 @@ settable vars:
 			<STRING>${c:target_name} must come here at once to serve you.</STRING>
 			<STRING>${c:target_name} must report to you.</STRING>
 			<STRING>You want ${target_name} to come play $any_instrument_name for you.</STRING>
-			<STRING>${c:target_name} needs to come help you use my $any_item_junk_name.</STRING>
+			<STRING>${c:target_name} needs to come help you use your $any_item_junk_name.</STRING>
 			<STRING>You need ${target_name} for an important job.</STRING>
 		</STRING>
 	</STRING>

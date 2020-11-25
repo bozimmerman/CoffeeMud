@@ -71,7 +71,7 @@ settable vars:
 		<STRING>You need ${target_item_name} $reason_verbed!</STRING>
 		<STRING>You must $reason_verb ${p:target_item_name}!</STRING>
 		<STRING>Assistance required delivering ${p:target_item_name}!</STRING>
-		<STRING>${c:reason_verb} ${p:target_item_name} for me!</STRING>
+		<STRING>${c:reason_verb} ${p:target_item_name} for goodness sake!</STRING>
 		<STRING>${c:reason_verb} ${p:target_item_name}, quickly!</STRING>
 		<STRING>You want ${target_item_name} $reason_verbed!</STRING>
 	</STRING>
@@ -153,7 +153,7 @@ settable vars:
 	<STRING ID="reason_wedotogether" SELECT="All">
 		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>You need to fill my order to a customers in $target_area_name.</STRING>
+			<STRING>You need to fill your order to a customers in $target_area_name.</STRING>
 			<STRING>You want to see what happens when $target_item_name is put elsewhere.</STRING>
 		</STRING>
 	</STRING>

@@ -75,7 +75,7 @@ settable vars:
 		<STRING>You need ${p:target_name} $reason_verbed!</STRING>
 		<STRING>You must $reason_verb ${p:target_name}!</STRING>
 		<STRING>Assistance required with some ${p:target_name}!</STRING>
-		<STRING>${c:reason_verb} ${p:target_name} for me!</STRING>
+		<STRING>${c:reason_verb} ${p:target_name} for goodness sake!</STRING>
 		<STRING>${c:reason_verb} ${p:target_name}, quickly!</STRING>
 		<STRING>You want ${p:target_name} $reason_verbed!</STRING>
 	</STRING>
@@ -100,9 +100,9 @@ settable vars:
 
 
 	<STRING id="quest_generic_winner_speeches" SELECT="Any-1">
-		<STRING>They are all $reason_verbed! That's all of them, thanks!</STRING>
+		<STRING>They are all $reason_verbed! That's all of them!</STRING>
 		<STRING>${c:reason_verbed} at last!</STRING>
-		<STRING>Thanks for the $reason_verb.</STRING>
+		<STRING>Congratulations for the $reason_verb.</STRING>
 		<STRING>You have completed the $reason_verb task, that will be all.</STRING>
 	</STRING>
 
@@ -165,7 +165,7 @@ settable vars:
 			<STRING>You must $hurt_verb the ${p:target_name}.</STRING>
 			<STRING>You are really hungry for ${p:target_name}.</STRING>
 			<STRING CONDITION="$target_int &lt; 4">We need the ${p:target_name} cleared away from $target_area_name.</STRING>
-			<STRING >You need to draw out the souls of ${p:target_name} for my magic.</STRING>
+			<STRING >You need to draw out the souls of ${p:target_name} for your magic.</STRING>
 			<STRING>The ${p:target_name} make me $adj_feeling_bad, and you must make them $adj_feeling_bad.</STRING>
 			<STRING>The ${p:target_name} are too many, and must be be thinned out.</STRING>
 		</STRING>

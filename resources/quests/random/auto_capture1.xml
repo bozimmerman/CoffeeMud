@@ -320,7 +320,7 @@ settable vars:
 		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>The ${p:target_name} are supposed to be together to explain some things to you.</STRING>
-			<STRING>It's time for my lessons with ${p:target_name}.</STRING>
+			<STRING>It's time for your lessons with ${p:target_name}.</STRING>
 			<STRING>The ${p:target_name} are supposed to teach you about $target_area_name today.</STRING>
 			<STRING>The ${p:target_name} are supposed to teach you about $any_item_junk_name today.</STRING>
 			<STRING>The ${p:target_name} are supposed to tell you about their jobs today.</STRING>
@@ -340,7 +340,7 @@ settable vars:
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>The ${p:target_name} need your help to groom them.</STRING>
 			<STRING>You wish to give the ${p:target_name} a gift.</STRING>
-			<STRING>You wish to play my $any_instrument_name for the ${p:target_name}.</STRING>
+			<STRING>You wish to play your $any_instrument_name for the ${p:target_name}.</STRING>
 			<STRING>You want to help out the ${p:target_name}.</STRING>
 			<STRING>You need to see if $any_item_junk_name fits the ${p:target_name}.</STRING>
 			<STRING CONDITION="$target_int &lt; 5">It's feeding time for the ${p:target_name}.</STRING>

@@ -183,9 +183,6 @@ FUNCTION_PROG CHECK_DONE
 		IF EVAL('$MULTIPLE' == 'PREV')
 			mptransfer $i $i
 		ENDIF
-	else
-		mpechoat "$i" That's $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES.
-		mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES
 	endif
 ~
 
@@ -320,6 +317,7 @@ EXECMSG_PROG GET ALL
 		if !STRIN('$<$i $QUEST_ID_ROOMLIST>' $g)
 			mpsetvar $i $QUEST_ID_ROOMLIST $<$i $QUEST_ID_ROOMLIST> "$g"
 		endif
+		mpechoat $i Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES
 		MPCALLFUNC CHECK_DONE
 	endif
 	

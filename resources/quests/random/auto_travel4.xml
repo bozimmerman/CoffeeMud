@@ -137,7 +137,7 @@ settable vars:
 		</STRING>
 		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>${c:target_name} is invited to my party.</STRING>
+			<STRING>${c:target_name} is invited to your party.</STRING>
 			<STRING>Today you are celebrating today and ${target_name}s invited.</STRING>
 			<STRING>It is officially ${C:target_area_name} Day, and I'm inviting $target_name.</STRING>
 			<STRING>It was ${target_name}s birthday last week, and I'm throwing a party.</STRING>
@@ -151,7 +151,7 @@ settable vars:
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>I promised $target_name I'd send you as soon as possible.</STRING>
 			<STRING>You owe ${target_name} for their assistance to you.</STRING>
-			<STRING>You owe ${target_name} for saving my life.</STRING>
+			<STRING>You owe ${target_name} for saving your life.</STRING>
 			<STRING>You swore to protect ${target_name}!</STRING>
 		</STRING>
 	</STRING>

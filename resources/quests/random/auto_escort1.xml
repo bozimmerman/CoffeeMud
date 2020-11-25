@@ -80,7 +80,7 @@ settable vars:
 	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">
 		<STRING>You need to ${reason_verb} $target_name to ${l:target_room_name} in ${target_area_name}!</STRING>
 		<STRING>${c:reason_verb} $target_name to ${l:target_room_name} in ${target_area_name}!</STRING>
-		<STRING>${c:reason_verb} $target_name to ${l:target_room_name} in ${target_area_name} for me!</STRING>
+		<STRING>${c:reason_verb} $target_name to ${l:target_room_name} in ${target_area_name} for goodness sake!</STRING>
 		<STRING>${c:reason_verb} $target_name to ${l:target_room_name} in ${target_area_name}, quickly!</STRING>
 		<STRING>You want to ${reason_verb} $target_name to ${l:target_room_name} in ${target_area_name}!</STRING>
 	</STRING>
