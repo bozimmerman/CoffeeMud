@@ -69,12 +69,12 @@ settable vars:
 
 	
 	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">
-		<STRING>You need ${p:target_name} $reason_verbed!</STRING>
-		<STRING>You must $reason_verb ${p:target_name}!</STRING>
-		<STRING>Assistance required with some ${p:target_name}!</STRING>
-		<STRING>${c:reason_verb} ${p:target_name} for goodness sake!</STRING>
-		<STRING>${c:reason_verb} ${p:target_name}, quickly!</STRING>
-		<STRING>You want ${p:target_name} $reason_verbed!</STRING>
+		<STRING>You need $num_targets ${p:target_name} $reason_verbed!</STRING>
+		<STRING>You must $reason_verb $num_targets ${p:target_name}!</STRING>
+		<STRING>Assistance required with $num_targets ${p:target_name}!</STRING>
+		<STRING>${c:reason_verb} $num_targets ${p:target_name} for goodness sake!</STRING>
+		<STRING>${c:reason_verb} $num_targets ${p:target_name}, quickly!</STRING>
+		<STRING>You want $num_targets ${p:target_name} $reason_verbed!</STRING>
 	</STRING>
 
 	<STRING ID="quest_instructionstring" SELECT="ALL">

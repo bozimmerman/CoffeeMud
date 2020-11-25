@@ -173,12 +173,12 @@ vars:
 	</STRING>
 
 	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">
-		<STRING>You need ${p:target_item_name} $reason_verbed!</STRING>
-		<STRING>You must $reason_verb ${p:target_item_name}!</STRING>
-		<STRING>Assistance required with some ${p:target_item_name}!</STRING>
-		<STRING>${c:reason_verb} ${p:target_item_name} for goodness sake!</STRING>
-		<STRING>${c:reason_verb} ${p:target_item_name}, quickly!</STRING>
-		<STRING>You want ${p:target_item_name} $reason_verbed! </STRING>
+		<STRING>You need $num_targets ${p:target_item_name} $reason_verbed!</STRING>
+		<STRING>You must $reason_verb $num_targets ${p:target_item_name}!</STRING>
+		<STRING>Assistance required with $num_targets ${p:target_item_name}!</STRING>
+		<STRING>${c:reason_verb} $num_targets ${p:target_item_name} for goodness sake!</STRING>
+		<STRING>${c:reason_verb} $num_targets ${p:target_item_name}, quickly!</STRING>
+		<STRING>You want $num_targets ${p:target_item_name} $reason_verbed! </STRING>
 	</STRING>
 
 	<STRING ID="quest_instructionstring" SELECT="ALL">
@@ -293,9 +293,8 @@ vars:
 	</STRING>
 	
 	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
-		<QUEST_CRITERIA CONDITION="$target_min_arealevel = ''">$[1?50]</QUEST_CRITERIA>
-		<QUEST_CRITERIA CONDITION="$target_min_arealevel != ''">$[${target_min_arealevel} + (1?(${target_max_arealevel}-${target_min_arealevel}))</QUEST_CRITERIA>
-		<STRING></STRING>
+		<STRING CONDITION="$target_min_arealevel = ''">$[1?50]</STRING>
+		<STRING CONDITION="$target_min_arealevel != ''">$[${target_min_arealevel} + (1?(${target_max_arealevel}-${target_min_arealevel}))</STRING>
 	</STRING>
 	
 	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>

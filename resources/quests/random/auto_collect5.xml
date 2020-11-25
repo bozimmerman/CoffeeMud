@@ -51,10 +51,10 @@ vars:
 	<FACTION>$target_faction</FACTION>
 	<NUMFACTION>-$[$target_faction_amt / 500]</NUMFACTION>
 	<QUEST_NAME SELECT="Any-1">
-		<QUEST_NAME>You need $num_targets ${target_item_name} in ${C:target_area_name} $reason_verbed</QUEST_NAME>
-		<QUEST_NAME>You want $num_targets ${target_item_name} in ${C:target_area_name} $reason_verbed</QUEST_NAME>
-		<QUEST_NAME>You must $reason_verb $num_targets ${target_item_name} in ${C:target_area_name}</QUEST_NAME>
-		<QUEST_NAME>${C:reason_verb} $num_targets ${target_item_name} in ${C:target_area_name}</QUEST_NAME>
+		<QUEST_NAME>You need $num_targets ${target_item_name} $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>You want $num_targets ${target_item_name} $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>You must $reason_verb $num_targets ${target_item_name}</QUEST_NAME>
+		<QUEST_NAME>${C:reason_verb} $num_targets ${target_item_name}</QUEST_NAME>
 	</QUEST_NAME>
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
 	<QUEST_WINSPEECH_TEXT>${j:1:quest_winspeech}</QUEST_WINSPEECH_TEXT>
@@ -81,12 +81,12 @@ vars:
 
 	
 	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">
-		<STRING>You need ${target_item_name} $reason_verbed!</STRING>
-		<STRING>You must get $reason_verb ${target_item_name}!</STRING>
-		<STRING>Assistance required with some ${target_item_name}!</STRING>
-		<STRING>${c:reason_verb} ${target_item_name} to me!</STRING>
-		<STRING>${c:reason_verb} ${target_item_name}, quickly!</STRING>
-		<STRING>You want ${target_item_name} $reason_verbed! </STRING>
+		<STRING>You need $num_targets ${target_item_name} $reason_verbed!</STRING>
+		<STRING>You must get $reason_verb $num_targets ${target_item_name}!</STRING>
+		<STRING>Assistance required with some $num_targets ${target_item_name}!</STRING>
+		<STRING>${c:reason_verb} $num_targets ${target_item_name} to me!</STRING>
+		<STRING>${c:reason_verb} $num_targets ${target_item_name}, quickly!</STRING>
+		<STRING>You want $num_targets ${target_item_name} $reason_verbed! </STRING>
 	</STRING>
 
 	<STRING ID="quest_instructionstring" SELECT="ALL">
@@ -97,10 +97,10 @@ vars:
 	<STRING ID="quest_winspeech" PREDEFINE="reason=$reason">$quest_winspeech</STRING>
 
 	<STRING id="quest_generic_winner_speeches" SELECT="Any-1">
-		<STRING>${c:reason_verbed! That's all I need!</STRING>
+		<STRING>${c:reason_verbed! That's all you need!</STRING>
 		<STRING>${c:reason_verbed} at last!</STRING>
 		<STRING>Congratulations for having $reason_verbed.</STRING>
-		<STRING>Congratulations adventurer, you have ${reason_verbed} me, and that will be all.</STRING>
+		<STRING>Congratulations adventurer, you have ${reason_verbed}, and that will be all.</STRING>
 	</STRING>
 
 	<STRING ID="reason_partytime" SELECT="All">
@@ -114,7 +114,7 @@ vars:
 			<STRING>You're throwing a party and you need lots of ${target_item_name}.</STRING>
 			<STRING>Today you are celebrating, and ${target_item_name} are your favorite gifts.</STRING>
 			<STRING>It's your $noun_anyrelation`s birthday, and you need several ${target_item_name} for your gift.</STRING>
-			<STRING>It is officially ${C:target_area_name} Day, and the ceremony requires several ${target_item_name}.</STRING>
+			<STRING>It is officially Celebration Day, and the ceremony requires several ${target_item_name}.</STRING>
 		</STRING>
 	</STRING>
 
@@ -125,9 +125,9 @@ vars:
 			<STRING>Congratulations for finding it!</STRING>
 		</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>You lost all your ${target_item_name} and need help.</STRING>
-			<STRING>Your $noun_anyrelation has lost your ${target_item_name}.</STRING>
-			<STRING>You seem to have misplaced all your ${target_item_name} and you needr help.</STRING>
+			<STRING>You lost all your ${target_item_name} and need more.</STRING>
+			<STRING>Your $noun_anyrelation has lost their ${target_item_name}.</STRING>
+			<STRING>You seem to have misplaced all your ${target_item_name}.</STRING>
 			<STRING>You can't find your $noun_anyrelation`s ${target_item_name}.</STRING>
 		</STRING>
 	</STRING>
@@ -150,9 +150,9 @@ vars:
 	<STRING ID="reason_gencollect" SELECT="All">
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>You need  ${target_item_name} $verb_donated and brought to you.</STRING>
+			<STRING>You need  ${target_item_name} $verb_donated.</STRING>
 			<STRING>You need ${target_item_name} $verb_donated to you.</STRING>
-			<STRING>I am collecting ${target_item_name}.</STRING>
+			<STRING>You arecollecting ${target_item_name}.</STRING>
 			<STRING>Your $noun_anyrelation is collecting ${target_item_name}, and we need your assistance.</STRING>
 		</STRING>
 	</STRING>
@@ -160,7 +160,7 @@ vars:
 	<STRING ID="reason_idoforthem" SELECT="All">
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>I lack the ${target_item_name} that your $noun_anyrelation requires.</STRING>
+			<STRING>You lack the ${target_item_name} that your $noun_anyrelation requires.</STRING>
 			<STRING>You wish to give ${target_item_name} to your $noun_anyrelation.</STRING>
 			<STRING>Your $noun_anyrelation requires ${target_item_name}.</STRING>
 		</STRING>
@@ -170,8 +170,8 @@ vars:
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING >You need ${target_item_name} for supplies for your magical experiments.</STRING>
-			<STRING>${c:reason_verb} ${target_item_name} to you.</STRING>
-			<STRING>Bring me ${target_item_name}.</STRING>
+			<STRING>${c:reason_verb} ${target_item_name} to yourself.</STRING>
+			<STRING>Gather yourself ${target_item_name}.</STRING>
 		</STRING>
 	</STRING>
 
@@ -195,9 +195,26 @@ vars:
 	<STRING ID="target_item_name" define="target_item_name">${SELECT: DENOMINATION_NAME from $target_area}</STRING>
 
 	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
-		<STRING>${SELECT:MED_LEVEL from $target_area}</STRING>
+		<STRING CONDITION="$target_min_arealevel = ''">${SELECT:MED_LEVEL from $target_area}</STRING>
+		<STRING CONDITION="$target_min_arealevel != ''">$[${target_min_arealevel} + (1?(${target_max_arealevel}-${target_min_arealevel}))</STRING>
 	</STRING>
 	
+	<OBJECT ID="target_area" SELECT="Pick-1" DEFINE="target_area">
+		<OBJECT pickweight=55555 condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
+		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel = ''">SELECT: ANY\. FROM areas</OBJECT>
+		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel != ''">
+			SELECT: ANY\. FROM areas WHERE MED_LEVEL &gt;= $target_min_arealevel and MED_LEVEL &lt;= $target_max_arealevel 
+		</OBJECT>
+	</OBJECT>
+	
+	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
+		<STRING CONDITION="$target_min_arealevel = ''">$[1?50]</STRING>
+		<STRING CONDITION="$target_min_arealevel != ''">$[${target_min_arealevel} + (1?(${target_max_arealevel}-${target_min_arealevel}))</STRING>
+	</STRING>
+	
+	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>
+		<STRING>$[$target_level + 6]</STRING>
+	</STRING>
 </QUEST>
 
 

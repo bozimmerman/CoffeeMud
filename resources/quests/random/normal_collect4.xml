@@ -187,12 +187,12 @@ vars:
 	</STRING>
 	
 	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">
-		<STRING>I need ${p:target_item_name} $reason_verbed!</STRING>
-		<STRING>Help me $reason_verb ${p:target_item_name}!</STRING>
-		<STRING>Assistance required with some ${p:target_item_name}!</STRING>
-		<STRING>${c:reason_verb} ${p:target_item_name} for me!</STRING>
-		<STRING>${c:reason_verb} ${p:target_item_name}, quickly!</STRING>
-		<STRING>I want ${p:target_item_name} $reason_verbed! </STRING>
+		<STRING>I need $num_targets ${p:target_item_name} $reason_verbed!</STRING>
+		<STRING>Help me $reason_verb $num_targets ${p:target_item_name}!</STRING>
+		<STRING>Assistance required with $num_targets ${p:target_item_name}!</STRING>
+		<STRING>${c:reason_verb} $num_targets ${p:target_item_name} for me!</STRING>
+		<STRING>${c:reason_verb} $num_targets ${p:target_item_name}, quickly!</STRING>
+		<STRING>I want $num_targets ${p:target_item_name} $reason_verbed! </STRING>
 	</STRING>
 
 	<STRING ID="quest_instructionstring" SELECT="ALL">

@@ -133,12 +133,20 @@ FUNCTION_PROG CHECK_DONE
 ~
 
 EXECMSG_PROG GET ALL
-	if EVAL($n == $i) and ISLIKE($o '-JAVACLASS +Coins +GenCoins +StdCoins') and EVAL('$%GSTAT($o CURRENCY)%' == '$%GSTAT($i CURRENCY)%')
-		if EVAL('$<$i $QUEST_ID_COLLECTED>' < $NUM_COLLECTABLES)
-			MPSETVAR $i $QUEST_ID_COLLECTED +$%GOLDAMT($o)%
-			mpjunk $o
-			MPCALLFUNC CHECK_DONE
-		endif	
+	if EVAL($n == $i)
+		if ISLIKE($o '-JAVACLASS +Coins +GenCoins +StdCoins') and EVAL('$%GSTAT($o CURRENCY)%' == '$%GSTAT($i CURRENCY)%')
+			if EVAL('$<$i $QUEST_ID_COLLECTED>' < $NUM_COLLECTABLES)
+				MPSETVAR $i $QUEST_ID_COLLECTED +$%GOLDAMT($o)%
+				MPCALLFUNC CHECK_DONE
+			endif	
+		else
+			if ISLIKE($p '-JAVACLASS +Coins +GenCoins +StdCoins') and EVAL('$%GSTAT($p CURRENCY)%' == '$%GSTAT($i CURRENCY)%')
+				if EVAL('$<$i $QUEST_ID_COLLECTED>' < $NUM_COLLECTABLES)
+					MPSETVAR $i $QUEST_ID_COLLECTED +$%GOLDAMT($p)%
+					MPCALLFUNC CHECK_DONE
+				endif	
+			endif
+		endif
 	endif
 ~
 
