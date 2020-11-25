@@ -184,7 +184,7 @@ ${SELECT:any\name from (SELECT: . from $item_junk)}
 <STRING ID="verb_gather" define="verb_gather" SELECT="Any-1">
 	<STRING define="verb_gathered=gathered">gather</STRING>
 	<STRING define="verb_gathered=led">lead</STRING>
-	<STRING define="verb_gathered=escorted">escort</STRING>
+	<STRING define="verb_gathered=collected">collect</STRING>
 </STRING>
 
 <STRING ID="verb_found" predefine="verb_find=$verb_find">$verb_found</STRING>

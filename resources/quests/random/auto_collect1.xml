@@ -186,7 +186,7 @@ vars:
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>You lost my ${p:target_item_name} and need you to find them.  I'm pretty sure the ${p:target_name} have them</STRING>
 			<STRING>My $noun_anyrelation has lost some ${p:target_item_name} and you need to find them.  I'm pretty sure the ${p:target_name} have them</STRING>
-			<STRING>You seem to have misplaced the ${p:target_item_name} on the future corpses of ${p:target_name} and need your help.</STRING>
+			<STRING>You seem to have misplaced the ${p:target_item_name} on the future corpses of ${p:target_name}.</STRING>
 			<STRING>You can't find my ${p:target_item_name} because ${p:target_name} has them.</STRING>
 			<STRING>You can't find my $noun_anyrelation`s ${p:target_item_name} because ${p:target_name} has them.</STRING>
 			<STRING>You must protect the ${p:target_item_name} from their current holders, the ${p:target_name}.</STRING>

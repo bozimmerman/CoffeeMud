@@ -6880,7 +6880,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final Quest Q=getQuest(questName);
 				if(Q==null)
 				{
-					logError(scripted,"QUESTOBJ","Unknown","Quest: "+questName);
+					logError(scripted,"QUESTROOM","Unknown","Quest: "+questName);
 					break;
 				}
 				final StringBuffer list=new StringBuffer("");

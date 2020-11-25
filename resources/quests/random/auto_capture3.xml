@@ -212,8 +212,8 @@ settable vars:
 		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>You lost ${target_name} and need you to find ${target_himher} and bring ${target_himher}.</STRING>
-			<STRING>You seem to have misplaced  ${target_name} and need your help.</STRING>
-			<STRING>You can't find ${target_name} and need your help.</STRING>
+			<STRING>You seem to have misplaced  ${target_name}.</STRING>
+			<STRING>You can't find ${target_name}.</STRING>
 			<STRING>You must protect ${target_name} from danger.</STRING>
 		</STRING>
 	</STRING>

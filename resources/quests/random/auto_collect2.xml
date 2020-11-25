@@ -48,7 +48,7 @@ vars:
 	<HOLDER_AREAS>"$target_area_name"</HOLDER_AREAS>
 	<HOLDER_ROOMS>ALL</HOLDER_ROOMS>
 	<COLLECTABLES_ITEMS>${SELECT: ANY\. from $target_item}</COLLECTABLES_ITEMS>
-	<COLLECTABLES_CHANCE>$[($num_targets / $target_area_size * 100) * 2]</COLLECTABLES_CHANCE>
+	<COLLECTABLES_CHANCE>$[1+($num_targets / $target_area_size * 100) * 2]</COLLECTABLES_CHANCE>
 	<NUM_COLLECTABLES>$num_targets</NUM_COLLECTABLES>
 	<LOCALS_RESPONSE>${j:1:quest_fightspeech}</LOCALS_RESPONSE>
 	<QUEST_POINT>$quest_point_awarded</QUEST_POINT>
@@ -160,7 +160,7 @@ vars:
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>You lost my ${p:target_item_name} and need you to find them in $target_area_name.</STRING>
 			<STRING>My $noun_anyrelation has lost some ${p:target_item_name} in $target_area_name and you need to find them.</STRING>
-			<STRING>You seem to have misplaced the ${p:target_item_name} around $target_area_name and need your help.</STRING>
+			<STRING>You seem to have misplaced the ${p:target_item_name} around $target_area_name.</STRING>
 			<STRING>You can't find my $noun_anyrelation`s ${p:target_item_name} in $target_area_name.</STRING>
 		</STRING>
 	</STRING>

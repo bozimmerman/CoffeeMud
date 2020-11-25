@@ -93,7 +93,7 @@
 +SEASON -SPRING (<WORD> those whenever the season is SPRING)
 -WEATHER +DROUGHT (<WORD> those only when weather is DROUGHT)
 +WEATHER -BLIZZARD (<WORD> those whenever the weather is BLIZZARD)
--QUESTWIN "+MY QUEST" (<WORD> those who have not my MY QUEST)
+-QUESTWIN "+MY QUEST" (<WORD> those who have not won MY QUEST)
 +QUESTWIN "-MY QUEST" (<WORD> those who have won MY QUEST)
 -EFFECTS +Sleep "+Wood Chopping" (<WORD> all except those with effects)
 +EFFECTS -Sleep "-Wood Chopping" (<WORD> only those with listed effect)

@@ -5679,6 +5679,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								from.addAll(l);
 							}
 							else
+							if(o == null)
+								throw new MQLException("Unknown from clause object '"+f+"' in "+mql);
+							else
 								from.add(o);
 						}
 					}
@@ -6675,9 +6678,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			}
 			else
 			if(V.var.toUpperCase().startsWith("SELECT:"))
-			{
 				val=doMQLSelectString(E,ignoreStats,defPrefix,CMLib.xml().restoreAngleBrackets(V.var),piece, defined);
-			}
 			else
 			if(V.var.toUpperCase().startsWith("STAT:") && (E!=null))
 			{

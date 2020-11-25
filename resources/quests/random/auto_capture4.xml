@@ -45,7 +45,7 @@ settable vars:
 	<CAPTUREABLES_AREAS>"$target_area_name"</CAPTUREABLES_AREAS>
 	<CAPTUREABLES_ROOMS>ALL</CAPTUREABLES_ROOMS>
 	<CAPTUREABLES_MOBS>${SELECT: ANY\. from $target}</CAPTUREABLES_MOBS>
-	<CAPTUREABLES_CHANCE>$[(1 / $target_area_size * 100) * 3]</CAPTUREABLES_CHANCE>
+	<CAPTUREABLES_CHANCE>$[1+(1 / $target_area_size * 100) * 3]</CAPTUREABLES_CHANCE>
 	<CAPTURABLES_ATTACK>$will_attack_code</CAPTURABLES_ATTACK>
 	<CAPTURABLES_FOLLOW>$will_react_peacefully</CAPTURABLES_FOLLOW>
 	<QUEST_POINT>$quest_point_awarded</QUEST_POINT>
@@ -68,8 +68,6 @@ settable vars:
 	<REWARD_ITEMS>${SELECT: ANY\. FROM $dungeon_treasure_items}</REWARD_ITEMS>
 
 	<STRING load="/resources/quests/random/inc_questcommon.xml" />
-
-
 	
 	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">
 		<STRING>You need ${target_name} in ${C:target_area_name} $reason_verbed!</STRING>
@@ -217,8 +215,8 @@ settable vars:
 		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>You lost ${target_name} and need you to find ${target_himher} and bring ${target_himher}.</STRING>
-			<STRING>You seem to have misplaced ${c:target_name} and need your help.</STRING>
-			<STRING>You can't find ${target_name} and need your help.</STRING>
+			<STRING>You seem to have misplaced ${c:target_name}.</STRING>
+			<STRING>You can't find ${target_name}.</STRING>
 			<STRING>You must protect ${c:target_name} from danger.</STRING>
 		</STRING>
 	</STRING>
@@ -360,7 +358,7 @@ settable vars:
 			<STRING>You want to help out ${c:target_name}.</STRING>
 			<STRING>You need to see if $any_item_junk_name fits ${c:target_name}.</STRING>
 			<STRING CONDITION="$target_int &lt; 5">It's feeding time for ${c:target_name}.</STRING>
-			<STRING CONDITION="$target_int &gt; 4"You've prepared a thank-you meal for ${target_name}.</STRING>
+			<STRING CONDITION="$target_int &gt; 4">You've prepared a thank-you meal for ${target_name}.</STRING>
 		</STRING>
 	</STRING>
 	<STRING ID="reason_wedotogether" SELECT="All">
@@ -468,10 +466,6 @@ settable vars:
 		<STRING>$[100 + $target_level*3]</STRING>
 	</STRING>
 
-
-	
-
-
 	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
 		<STRING>${SELECT:med_level FROM $target_area}</STRING>
 	</STRING>
@@ -480,12 +474,6 @@ settable vars:
 		<STRING>$target_level</STRING>
 	</STRING>
 	
-
-
-
-
-
-
 	<STRING ID="target_is_aggressive" SELECT="first" DEFINE="target_is_aggressive">
 		<STRING CONDITION="$aggression = 'YES'">YES</STRING>
 		<STRING>${SELECT: 'YES' from $target where 'Aggressive' in objattrib}</STRING>
