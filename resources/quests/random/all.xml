@@ -49,11 +49,13 @@ See guides/RandomAreas.html for information about documents of this type.
 	<!-- 
 	<string condition="$template='random' and $avoidscans!='YES' and $auto_template!='true'">normal_travel3</string>
 	 -->
+	<!-- 
 	<string condition="$template='random' and $avoidscans!='YES' and $auto_template!='true'">normal_travel4</string>
 	<string condition="$template='random' and $avoidscans!='YES' and $auto_template='true'" >auto_capture1</string>
 	<string condition="$template='random' and $auto_template='true'"                        >auto_capture2</string>
-	<!-- 
+	 -->
 	<string condition="$template='random' and $avoidscans!='YES' and $auto_template='true'" >auto_capture3</string>
+	<!-- 
 	<string condition="$template='random' and $auto_template='true'"                        >auto_capture4</string>
 	<string condition="$template='random' and $avoidscans!='YES' and $auto_template='true'" >auto_collect1</string>
 	<string condition="$template='random' and $auto_template='true'"                        >auto_collect2</string>
@@ -134,5 +136,6 @@ See guides/RandomAreas.html for information about documents of this type.
 	<QUEST load="/resources/quests/random/auto_travel4.xml" CONDITION="$quest_template='auto_travel4'"/>
 </QUEST>
 
-<QUEST ID="all_auto_quests" predefine="auto_template=true" requires="template=$" insert="all_quests">
+<QUEST ID="all_auto_quests" requires="template=$" >
+	<QUEST predefine="auto_template=true,quest_template=$quest_template" insert="all_quests" />
 </QUEST>

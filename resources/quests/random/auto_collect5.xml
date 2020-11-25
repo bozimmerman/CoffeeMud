@@ -46,9 +46,9 @@ vars:
 	<FACTION>$target_faction</FACTION>
 	<NUMFACTION>-$[$target_faction_amt / 500]</NUMFACTION>
 	<QUEST_NAME SELECT="Any-1">
-		<QUEST_NAME>You need $num_targets ${target_item_name} $reason_verbed</QUEST_NAME>
-		<QUEST_NAME>You want $num_targets ${target_item_name} $reason_verbed</QUEST_NAME>
-		<QUEST_NAME>${C:source_name} in ${C:target_area_name} asks for $num_targets ${target_item_name} to be $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>You need $num_targets ${target_item_name} in ${C:target_area_name} $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>You want $num_targets ${target_item_name} in ${C:target_area_name} $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>You must $reason_verb $num_targets ${target_item_name} in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} $num_targets ${target_item_name} in ${C:target_area_name}</QUEST_NAME>
 	</QUEST_NAME>
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
@@ -108,8 +108,8 @@ vars:
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>You're throwing a party and you need lots of ${target_item_name}.</STRING>
 			<STRING>Today you are celebrating, and ${target_item_name} are my favorite gifts.</STRING>
-			<STRING>It's my $noun_anyrelation`s birthday, and you need several ${target_item_name} for my my gift.</STRING>
-			<STRING>It is officially ${C:source_area_name} Day, and the ceremony requires several ${target_item_name}.</STRING>
+			<STRING>It's my $noun_anyrelation`s birthday, and you need several ${target_item_name} for my gift.</STRING>
+			<STRING>It is officially ${C:target_area_name} Day, and the ceremony requires several ${target_item_name}.</STRING>
 		</STRING>
 	</STRING>
 
@@ -188,10 +188,10 @@ vars:
 		<STRING CONDITION="$target_faction=''">0</STRING>
 	</STRING>
 	
-	<STRING ID="target_item_name" define="target_item_name">${SELECT: DENOMINATION_NAME from $source_area}</STRING>
+	<STRING ID="target_item_name" define="target_item_name">${SELECT: DENOMINATION_NAME from $target_area}</STRING>
 
 	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
-		<STRING>${SELECT:MED_LEVEL from $source_area}</STRING>
+		<STRING>${SELECT:MED_LEVEL from $target_area}</STRING>
 	</STRING>
 	
 	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>

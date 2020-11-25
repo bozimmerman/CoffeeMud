@@ -40,9 +40,9 @@ settable vars:
 <QUEST ID="auto_dispel1" QUEST_TEMPLATE_ID="auto_dispel1">
 	<QUEST_ID DEFINE="quest_id">${h:quest_template}_R$[100000000?999999999]</QUEST_ID>
 	<QUEST_NAME SELECT="Any-1">
-		<QUEST_NAME>You need $num_targets ${p:target_name} $reason_verbed</QUEST_NAME>
-		<QUEST_NAME>You want $num_targets ${p:target_name} $reason_verbed</QUEST_NAME>
-		<QUEST_NAME>${C:source_name} in ${C:target_area_name} asks for $num_targets ${p:target_name} to be $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>You need $num_targets ${p:target_name} in ${C:target_area_name} $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>You want $num_targets ${p:target_name} in ${C:target_area_name} $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>You must $reason_verb $num_targets ${p:target_name} in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} $num_targets ${p:target_name} in ${C:target_area_name}</QUEST_NAME>
 	</QUEST_NAME>
 	<QUEST_CRITERIA  SELECT="Pick-1">
@@ -50,7 +50,7 @@ settable vars:
 		<QUEST_CRITERIA CONDITION="$target_min_arealevel != ''">+LEVEL -&lt;$target_min_arealevel -&gt;$target_max_arealevel </QUEST_CRITERIA>
 	</QUEST_CRITERIA>
 	<FREQUENCY>1</FREQUENCY>
-	<DURATION>90 minutes</DURATION></QUEST_CRITERIA>
+	<DURATION>90 minutes</DURATION>
 	<CATEGORY>$quest_category</CATEGORY>
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
 	<QUEST_WINSPEECH_TEXT>${j:1:quest_winspeech}</QUEST_WINSPEECH_TEXT>

@@ -40,7 +40,7 @@ settable vars:
 		<QUEST_CRITERIA CONDITION="$target_min_arealevel != ''">+LEVEL -&lt;$target_min_arealevel -&gt;$target_max_arealevel </QUEST_CRITERIA>
 	</QUEST_CRITERIA>
 	<FREQUENCY>1</FREQUENCY>
-	<DURATION>90 minutes</DURATION></QUEST_CRITERIA>
+	<DURATION>90 minutes</DURATION>
 	<CATEGORY>$quest_category</CATEGORY>
 	<DESTINATION_AREA>"$target_area_name"</DESTINATION_AREA>
 	<DESTINATION_ROOM>"$target_room_id"</DESTINATION_ROOM>
@@ -53,9 +53,9 @@ settable vars:
 	<FACTION>$target_faction</FACTION>
 	<NUMFACTION>-$[$target_faction_amt / 500]</NUMFACTION>
 	<QUEST_NAME SELECT="Any-1">
-		<QUEST_NAME>You need you to $reason_verb $target_name in ${C:target_area_name}</QUEST_NAME>
-		<QUEST_NAME>You want you to $reason_verb $target_name in ${C:target_area_name}</QUEST_NAME>
-		<QUEST_NAME>${C:source_name} asks for you to $reason_verb $target_name in ${C:target_area_name}</QUEST_NAME>
+		<QUEST_NAME>You need to $reason_verb $target_name in ${C:target_area_name}</QUEST_NAME>
+		<QUEST_NAME>You want to $reason_verb $target_name in ${C:target_area_name}</QUEST_NAME>
+		<QUEST_NAME>You must $reason_verb $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} $target_name in ${C:target_area_name}</QUEST_NAME>
 	</QUEST_NAME>
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
@@ -92,7 +92,7 @@ settable vars:
 		<STRING CONDITION="$target_int &gt; 5">$reason_theyoweme</STRING>
 		<STRING>$reason_partytime</STRING>
 		<STRING CONDITION="$target_int &gt; 5">$reason_iowethem</STRING>
-		<STRING CONDITION="$source_align &gt; 0">$reason_ilostthem</STRING>
+		<STRING>$reason_ilostthem</STRING>
 		<STRING>$reason_gentravel</STRING>
 	</STRING>
 
@@ -109,10 +109,9 @@ settable vars:
 	</STRING>
 
 	<STRING id="quest_generic_traveled_message" SELECT="Any-1" >
-		<STRING>I have been sent by $source_name</STRING>
-		<STRING>I am here on behalf of $source_name</STRING>
-		<STRING>I have been asked by $source_name to meet you</STRING>
-		<STRING>You sent me to you</STRING>
+		<STRING>I have been sent to find you</STRING>
+		<STRING>I am here to find you</STRING>
+		<STRING>I have found you</STRING>
 	</STRING>
 	
 	<STRING ID="reason_theyoweme" SELECT="All">
@@ -133,14 +132,14 @@ settable vars:
 		</STRING>
 		<STRING define="quest_message" SELECT="Any-1" >
 			<STRING>You are invited to the party</STRING>
-			<STRING>Party at ${c:source_name}</STRING>
+			<STRING>Party at your place</STRING>
 			<STRING>You has invited you to the party</STRING>
 		</STRING>
 		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>${c:target_name} is invited to my party.</STRING>
 			<STRING>Today you are celebrating today and ${target_name}s invited.</STRING>
-			<STRING>It is officially ${C:source_area_name} Day, and I'm inviting $target_name.</STRING>
+			<STRING>It is officially ${C:target_area_name} Day, and I'm inviting $target_name.</STRING>
 			<STRING>It was ${target_name}s birthday last week, and I'm throwing a party.</STRING>
 		</STRING>
 	</STRING>
@@ -173,7 +172,7 @@ settable vars:
 		<STRING define="quest_message">$quest_generic_traveled_message</STRING>
 		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>You need you to travel to $target_name.</STRING>
+			<STRING>You need to travel to $target_name.</STRING>
 			<STRING>You need to meet with ${target_name}.</STRING>
 			<STRING>${c:target_name} requires a visiti from you.</STRING>
 		</STRING>
@@ -220,7 +219,6 @@ settable vars:
 				and current_intelligence>5 
 				and "QuestBound" notin affbehav 
 				and 'Aggressive' notin objattrib
-				and name != $source_name
 				and (SELECT: count\. FROM mob\room\exits) > 0 
 				and 'ROOMUNEXPLORABLE' notin (SELECT: current_sensesstr FROM mob\room)
 		</OBJECT>

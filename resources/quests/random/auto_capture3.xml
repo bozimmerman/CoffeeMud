@@ -140,13 +140,13 @@ settable vars:
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="quest_fightspeech" SELECT="Any-1">
 			<STRING>I aint payin!</STRING>
-			<STRING>You aint getting nothin from you.</STRING>
+			<STRING>You aint getting nothin from me.</STRING>
 			<STRING>I won't you anything!</STRING>
 			<STRING>Leave me alone, I didn't do anything!</STRING>
 		</STRING>
 		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>${C:target_name} owes you money, but you're not sure which one.</STRING>
+			<STRING>${C:target_name} owes you money.</STRING>
 			<STRING>${c:target_name} owes you some money.</STRING>
 			<STRING>${c:target_name} owes you big time, but haven't made good.</STRING>
 			<STRING>You're owed some money.</STRING>
@@ -172,7 +172,7 @@ settable vars:
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>You're throwing a party and ${target_name} is invited! But is not here yet.</STRING>
 			<STRING>Today you are celebrating, and all you're missing is the party goers.</STRING>
-			<STRING>It is officially ${C:source_area_name} Day, and the ceremony will be soon.</STRING>
+			<STRING>It is officially ${C:target_area_name} Day, and the ceremony will be soon.</STRING>
 			<STRING>Today you are celebrating, and ${target_name} is late.</STRING>
 		</STRING>
 	</STRING>
@@ -186,7 +186,7 @@ settable vars:
 			<STRING>You are trying to fool us both.</STRING>
 			<STRING>I ain't going near you!</STRING>
 			<STRING>Leave me alone!</STRING>
-			<STRING>I don't want anything from ${c:source_name}!</STRING>
+			<STRING>I don't want anything from you!</STRING>
 		</STRING>
 		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">

@@ -223,7 +223,7 @@ vars:
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>I'm throwing a party and I need lots of ${p:target_item_name}.</STRING>
 			<STRING>It's my birthday, and ${p:target_item_name} are my favorite gifts.</STRING>
-			<STRING>It's my $noun_anyrelation`s birthday, and I need several ${p:target_item_name} for my my gift.</STRING>
+			<STRING>It's my $noun_anyrelation`s birthday, and I need several ${p:target_item_name} for my gift.</STRING>
 			<STRING>It is officially ${C:source_area_name} Day, and the ceremony requires several ${p:target_item_name}.</STRING>
 		</STRING>
 	</STRING>

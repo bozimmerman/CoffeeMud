@@ -40,7 +40,7 @@ settable vars:
 		<QUEST_CRITERIA CONDITION="$target_min_arealevel != ''">+LEVEL -&lt;$target_min_arealevel -&gt;$target_max_arealevel </QUEST_CRITERIA>
 	</QUEST_CRITERIA>
 	<FREQUENCY>1</FREQUENCY>
-	<DURATION>90 minutes</DURATION></QUEST_CRITERIA>
+	<DURATION>90 minutes</DURATION>
 	<CATEGORY>$quest_category</CATEGORY>
 	<DESTINATION_AREA>"$target_area_name"</DESTINATION_AREA>
 	<DESTINATION_ROOM>"$target_room_id"</DESTINATION_ROOM>
@@ -56,9 +56,9 @@ settable vars:
 	<FACTION>$target_faction</FACTION>
 	<NUMFACTION>-$[$target_faction_amt / 500]</NUMFACTION>
 	<QUEST_NAME SELECT="Any-1">
-		<QUEST_NAME>You need you to $reason_verb at $target_name in ${C:target_area_name}</QUEST_NAME>
-		<QUEST_NAME>You want you to $reason_verb at $target_name in ${C:target_area_name}</QUEST_NAME>
-		<QUEST_NAME>${C:source_name} asks you to $reason_verb at $target_name in ${C:target_area_name}</QUEST_NAME>
+		<QUEST_NAME>You need to $reason_verb at $target_name in ${C:target_area_name}</QUEST_NAME>
+		<QUEST_NAME>You want to $reason_verb at $target_name in ${C:target_area_name}</QUEST_NAME>
+		<QUEST_NAME>You must $reason_verb at $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>Do ${reason_verb} at $target_name in ${C:target_area_name}</QUEST_NAME>
 	</QUEST_NAME>
 	<QUEST_NOTIFYSSTRING>${j:1:quest_notifystring}</QUEST_NOTIFYSSTRING>

@@ -40,11 +40,8 @@ settable vars:
 		<QUEST_CRITERIA CONDITION="$target_min_arealevel != ''">+LEVEL -&lt;$target_min_arealevel -&gt;$target_max_arealevel </QUEST_CRITERIA>
 	</QUEST_CRITERIA>
 	<FREQUENCY>1</FREQUENCY>
-	<DURATION>90 minutes</DURATION></QUEST_CRITERIA>
+	<DURATION>90 minutes</DURATION>
 	<CATEGORY>$quest_category</CATEGORY>
-	<DELIVERER_AREA>"$target_area_name"</DELIVERER_AREA>
-	<DELIVERER_ROOM>"$source_room_id"</DELIVERER_ROOM>
-	<DELIVERER_NAME>"$source_name"</DELIVERER_NAME>
 	<DESTINATION_AREA>"$target_area_name"</DESTINATION_AREA>
 	<DESTINATION_ROOM>"$target_room_id"</DESTINATION_ROOM>
 	<DESTINATION_CONTAINER>$target_container_quoted_name</DESTINATION_CONTAINER>
@@ -59,7 +56,6 @@ settable vars:
 	<QUEST_NAME SELECT="Any-1">
 		<QUEST_NAME>You need ${target_item_name} $reason_verbed to $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>You want ${target_item_name} $reason_verbed to $target_name in ${C:target_area_name}</QUEST_NAME>
-		<QUEST_NAME>${C:source_name} asks for ${target_item_name} to be $reason_verbed to $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} ${target_item_name} to $target_name in ${C:target_area_name}</QUEST_NAME>
 	</QUEST_NAME>
 	<QUEST_NOTIFYSSTRING>${j:1:quest_notifystring}</QUEST_NOTIFYSSTRING>
@@ -98,10 +94,10 @@ settable vars:
 		<STRING>$reason_iowethem</STRING>
 		<STRING>$reason_ilostthem</STRING>
 		<STRING>$reason_gendeliver</STRING>
-		<STRING CONDITION="$source_align &gt; 500">$reason_idoforthem</STRING>
+		<STRING>$reason_idoforthem</STRING>
 		<STRING>$reason_wedotogether</STRING>
-		<STRING CONDITION="$source_align &lt; -500">$reason_idotothem</STRING>
-		<STRING CONDITION="$source_align &lt; -500">$reason_wedotoeachother</STRING>
+		<STRING>$reason_idotothem</STRING>
+		<STRING>$reason_wedotoeachother</STRING>
 	</STRING>
 
 	<STRING id="quest_generic_delivered_speeches" SELECT="Any-1">
@@ -121,8 +117,8 @@ settable vars:
 	<STRING ID="reason_partytime" SELECT="All">
 		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>It is officially ${C:source_area_name} Day, and I'm donating $target_item_name.</STRING>
-			<STRING>It is officially ${C:source_area_name} Day, and I'm giving a gift of $target_item_name.</STRING>
+			<STRING>It is officially ${C:target_area_name} Day, and I'm donating $target_item_name.</STRING>
+			<STRING>It is officially ${C:target_area_name} Day, and I'm giving a gift of $target_item_name.</STRING>
 		</STRING>
 	</STRING>
 

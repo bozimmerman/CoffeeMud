@@ -41,7 +41,7 @@ settable vars:
 		<QUEST_CRITERIA CONDITION="$target_min_arealevel != ''">+LEVEL -&lt;$target_min_arealevel -&gt;$target_max_arealevel </QUEST_CRITERIA>
 	</QUEST_CRITERIA>
 	<FREQUENCY>1</FREQUENCY>
-	<DURATION>90 minutes</DURATION></QUEST_CRITERIA>
+	<DURATION>90 minutes</DURATION>
 	<CATEGORY>$quest_category</CATEGORY>
 	<DELIVEREE_MASK>-HOME "+$target_area_name" -NAME "+$target_name"</DELIVEREE_MASK>
 	<DELIVERABLE_ITEM>${SELECT: ANY\. from $target_item}</DELIVERABLE_ITEM>
@@ -56,7 +56,6 @@ settable vars:
 	<QUEST_NAME SELECT="Any-1">
 		<QUEST_NAME>You need ${target_item_name} $reason_verbed to $c_target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>You want ${target_item_name} $reason_verbed to $c_target_name in ${C:target_area_name}</QUEST_NAME>
-		<QUEST_NAME>${C:source_name} asks for ${target_item_name} to be $reason_verbed to $c_target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} ${target_item_name} to $c_target_name in ${C:target_area_name}</QUEST_NAME>
 	</QUEST_NAME>
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
@@ -99,9 +98,9 @@ settable vars:
 		<STRING CONDITION="$target_int &gt; 5">$reason_theyoweme</STRING>
 		<STRING CONDITION="$num_targets=1">$reason_partytime</STRING>
 		<STRING CONDITION="$target_int &gt; 5">$reason_iowethem</STRING>
-		<STRING CONDITION="$source_align &gt; 0">$reason_ilostthem</STRING>
+		<STRING>$reason_ilostthem</STRING>
 		<STRING>$reason_gendeliver</STRING>
-		<STRING CONDITION="$target_int &gt; 5 and $source_align &gt; 5000">$reason_idoforthem</STRING>
+		<STRING CONDITION="$target_int &gt; 5">$reason_idoforthem</STRING>
 		<STRING CONDITION="$target_int &gt; 5">$reason_wedotogether</STRING>
 		<STRING>$reason_idotothem</STRING>
 		<STRING>$reason_wedotoeachother</STRING>
@@ -151,7 +150,7 @@ settable vars:
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>${c:target_name} invited me to a party, but I can't go.</STRING>
 			<STRING>It's ${target_name}s birthday today.</STRING>
-			<STRING>It is officially ${C:source_area_name} Day, and I'm giving $target_name $target_item_name.</STRING>
+			<STRING>It is officially ${C:target_area_name} Day, and I'm giving $target_name $target_item_name.</STRING>
 			<STRING>It was ${target_name}s birthday last week, and I'm late with a present.</STRING>
 		</STRING>
 	</STRING>
@@ -296,7 +295,6 @@ settable vars:
 		SELECT: . FROM area\npcs 
 			WHERE name\count &gt;= $num_targets 
 			and current_intelligence>2 
-			and name != $source_name
 			and "Aggressive" notin objattrib  
 			and "QuestBound" notin affbehav 
 			and (SELECT: count\. FROM mob\room\exits) &gt; 0 
@@ -307,7 +305,6 @@ settable vars:
 		SELECT: . FROM area\npcs 
 			WHERE name\count=1 
 			and current_intelligence>2 
-			and name != $source_name
 			and "Aggressive" notin objattrib  
 			and "QuestBound" notin affbehav 
 			and (SELECT: count\. FROM mob\room\exits) &gt; 0 
@@ -320,7 +317,6 @@ settable vars:
 			SELECT: ANY\. FROM $target_area\npcs 
 				WHERE name\count=1 
 				and current_intelligence>2 
-				and name != $source_name
 				and "Aggressive" notin objattrib  
 				and "QuestBound" notin affbehav 
 				and (SELECT: count\. FROM mob\room\exits) &gt; 0 
@@ -330,7 +326,6 @@ settable vars:
 			SELECT: ANY\. FROM $target_area\npcs 
 				WHERE name\count &gt;= $num_targets 
 				and current_intelligence>2 
-				and name != $source_name
 				and "Aggressive" notin objattrib  
 				and "QuestBound" notin affbehav 
 				and (SELECT: count\. FROM mob\room\exits) &gt; 0 

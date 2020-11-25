@@ -40,7 +40,7 @@ settable vars:
 		<QUEST_CRITERIA CONDITION="$target_min_arealevel != ''">+LEVEL -&lt;$target_min_arealevel -&gt;$target_max_arealevel </QUEST_CRITERIA>
 	</QUEST_CRITERIA>
 	<FREQUENCY>1</FREQUENCY>
-	<DURATION>90 minutes</DURATION></QUEST_CRITERIA>
+	<DURATION>90 minutes</DURATION>
 	<CATEGORY>$quest_category</CATEGORY>
 	<CAPTUREABLES_AREAS>"$target_area_name"</CAPTUREABLES_AREAS>
 	<CAPTUREABLES_ROOMS>ALL</CAPTUREABLES_ROOMS>
@@ -114,7 +114,7 @@ settable vars:
 		<STRING CONDITION="$target_int &gt; 5">$reason_giveinstr</STRING>
 		<STRING CONDITION="$target_int &gt; 5">$reason_planning</STRING>
 		<STRING CONDITION="$target_int &gt; 5">$reason_receiveinstr</STRING>
-		<STRING CONDITION="$target_int &gt; 5 and $source_align &gt; 5000">$reason_idoforthem</STRING>
+		<STRING CONDITION="$target_int &gt; 5">$reason_idoforthem</STRING>
 		<STRING CONDITION="$target_int &gt; 5">$reason_wedotogether</STRING>
 		<STRING CONDITION="$target_int &gt; 5">$reason_theydoforme</STRING>
 		<STRING>$reason_idotothem</STRING>
@@ -131,8 +131,8 @@ settable vars:
 
 	<STRING id="quest_generic_surrender_speeches" SELECT="Any-1">
 		<STRING>I'm $reason_verbed! Lead the way to you.</STRING>
-		<STRING>I am being $reason_verbed! Take me to ${c:source_name}.</STRING>
-		<STRING>I guess I'm $reason_verbed ! Are we going to ${c:source_name} now?</STRING>
+		<STRING>I am being $reason_verbed!.</STRING>
+		<STRING>I guess I'm $reason_verbed !</STRING>
 	</STRING>
 	
 	<STRING ID="reason_theyoweme" SELECT="All">
@@ -147,7 +147,7 @@ settable vars:
 		</STRING>
 		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>${C:target_name} owes you money, but you're not where ${target_heshe} is.</STRING>
+			<STRING>${C:target_name} owes you money, but you're not sure where ${target_heshe} is.</STRING>
 			<STRING>${C:target_name} owes you some money.</STRING>
 			<STRING>${C:target_name} owes you big time, but has't made good.</STRING>
 			<STRING>You're owed some money.</STRING>
@@ -171,13 +171,13 @@ settable vars:
 		<STRING define="quest_fightspeech" SELECT="Any-1">
 			<STRING>That aint happening!</STRING>
 			<STRING>You??? Uh, NO!</STRING>
-			<STRING>I would rather $hurt_verb you than see $source_name.</STRING>
+			<STRING>I would rather $hurt_verb you than see you.</STRING>
 		</STRING>
 		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>You're throwing a party and ${c:target_name} is invited! But ${target_heshe} isn't here yet.</STRING>
 			<STRING>Today you are celebrating, and all you're missing is the party goers.</STRING>
-			<STRING>It is officially ${C:source_area_name} Day, and the ceremony will be soon.</STRING>
+			<STRING>It is officially ${C:target_area_name} Day, and the ceremony will be soon.</STRING>
 			<STRING>Today you are celebrating, and ${c:target_name} is late.</STRING>
 		</STRING>
 	</STRING>
@@ -190,7 +190,7 @@ settable vars:
 			<STRING>You is trying to fool us both.</STRING>
 			<STRING>I ain't going near you!</STRING>
 			<STRING>Leave me alone!</STRING>
-			<STRING>I don't want anything from ${c:source_name}!</STRING>
+			<STRING>I don't want anything from you!</STRING>
 		</STRING>
 		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
@@ -317,7 +317,7 @@ settable vars:
 		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>It's time for your committee meeting, and ${c:target_name} is late!</STRING>
-			<STRING condition="$source_align &lt; -5000">You have a $adj_useful plan to take over $target_area_name and it involves ${c:target_name}!</STRING>
+			<STRING>You have a $adj_useful plan to take over $target_area_name and it involves ${c:target_name}!</STRING>
 			<STRING>You have a $adj_useful plan regarding the future of $target_area_name and you need ${target_name}!</STRING>
 			<STRING>${c:target_name} needs to be reminded to bring $any_instrument_name to the meeting today!</STRING>
 			<STRING>${c:target_name} is late for your study of $any_item_junk_name!</STRING>

@@ -41,7 +41,7 @@ settable vars:
 		<QUEST_CRITERIA CONDITION="$target_min_arealevel != ''">+LEVEL -&lt;$target_min_arealevel -&gt;$target_max_arealevel </QUEST_CRITERIA>
 	</QUEST_CRITERIA>
 	<FREQUENCY>1</FREQUENCY>
-	<DURATION>90 minutes</DURATION></QUEST_CRITERIA>
+	<DURATION>90 minutes</DURATION>
 	<CATEGORY>$quest_category</CATEGORY>
 	<PROTECTED_AREA>"$target_area_name"</PROTECTED_AREA>
 	<PROTECTED_ROOM>ALL</PROTECTED_ROOM>
@@ -60,7 +60,7 @@ settable vars:
 	<QUEST_NAME SELECT="Any-1">
 		<QUEST_NAME>You need ${target_name} in ${C:target_area_name} $reason_verbed</QUEST_NAME>
 		<QUEST_NAME>You want ${target_name} in ${C:target_area_name} $reason_verbed</QUEST_NAME>
-		<QUEST_NAME>${C:source_name} in ${C:target_area_name} asks ${target_name} to be $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>You must ${C:reason_verb} ${target_name} in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} ${target_name} in ${C:target_area_name}</QUEST_NAME>
 	</QUEST_NAME>
 	<ATTACKER_SCREAM>${j:1:quest_fightspeech}</ATTACKER_SCREAM>
@@ -84,7 +84,7 @@ settable vars:
 	<STRING ID="quest_instructionstring" SELECT="ALL">
 		<STRING ACTION="PREPEND">$reason_desc</STRING>
 		<STRING ACTION="APPEND">$reason_short</STRING>
-		<STRING ACTION="APPEND" CONDITION="$target_name != $source_name">Find $target_name at $$<$$i QUEST_MYROOM>.</STRING>
+		<STRING ACTION="APPEND">Find $target_name at $$<$$i QUEST_MYROOM>.</STRING>
 	</STRING>
 
 	<STRING ID="reason_verbed">$verb_protected</STRING>

@@ -41,7 +41,7 @@ settable vars:
 		<QUEST_CRITERIA CONDITION="$target_min_arealevel != ''">+LEVEL -&lt;$target_min_arealevel -&gt;$target_max_arealevel </QUEST_CRITERIA>
 	</QUEST_CRITERIA>
 	<FREQUENCY>1</FREQUENCY>
-	<DURATION>90 minutes</DURATION></QUEST_CRITERIA>
+	<DURATION>90 minutes</DURATION>
 	<CATEGORY>$quest_category</CATEGORY>
 	<KILLABLES_MASK>-HOME "+$target_area_name" -NAMES "+$target_name"</KILLABLES_MASK>
 	<NUM_KILLABLES>$num_targets</NUM_KILLABLES>
@@ -56,7 +56,7 @@ settable vars:
 	<QUEST_NAME SELECT="Any-1">
 		<QUEST_NAME>You need $num_targets ${p:target_name} $reason_verbed</QUEST_NAME>
 		<QUEST_NAME>You want $num_targets ${p:target_name} $reason_verbed</QUEST_NAME>
-		<QUEST_NAME>${C:source_name} in ${C:target_area_name} asks for $num_targets ${p:target_name} to be $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>You must $reason_verb $num_targets ${p:target_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} $num_targets ${p:target_name} in ${C:target_area_name}</QUEST_NAME>
 	</QUEST_NAME>
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
@@ -127,7 +127,7 @@ settable vars:
 			<STRING>You is trying to fool us both.</STRING>
 			<STRING>I ain't going near you!</STRING>
 			<STRING>Leave me alone!</STRING>
-			<STRING>I don't want anything from ${c:source_name}!</STRING>
+			<STRING>I don't want anything from you!</STRING>
 		</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>You wish to pay back $target_name for reasons.</STRING>

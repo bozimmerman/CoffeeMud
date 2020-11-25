@@ -50,9 +50,9 @@ vars:
 	<FACTION>$target_faction</FACTION>
 	<NUMFACTION>-$[$target_faction_amt / 500]</NUMFACTION>
 	<QUEST_NAME SELECT="Any-1">
-		<QUEST_NAME>You need $num_targets ${p:target_item_name} $reason_verbed</QUEST_NAME>
-		<QUEST_NAME>You want $num_targets ${p:target_item_name} $reason_verbed</QUEST_NAME>
-		<QUEST_NAME>${C:source_name} in ${C:target_area_name} asks for $num_targets ${p:target_item_name} to be $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>You need $num_targets ${p:target_item_name} in ${C:target_area_name} $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>You want $num_targets ${p:target_item_name} in ${C:target_area_name} $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>You must $reason_verb $num_targets ${p:target_item_name} in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} $num_targets ${p:target_item_name} in ${C:target_area_name}</QUEST_NAME>
 	</QUEST_NAME>
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
@@ -78,48 +78,48 @@ vars:
 	<STRING ID="targetmaterial">Any</STRING>
 	
 	<ITEM ID="all_target_items" select="all">
-		<ITEM class="metacraft:all-alchemy &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='Alchemy'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-apothecary &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='apothecary'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-Armorsmithing &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='Armorsmithing'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-baking &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='baking'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-Blacksmithing &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='Blacksmithing'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-Boatwright &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='Boatwright'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-CageBuilding &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='CageBuilding'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-cobbling &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='cobbling'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-cooking &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='cooking'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-distilling &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='distilling'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-fletching &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='fletching'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-foodprep &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='foodprep'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-gaelfood &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='gaelfood'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-glassblowing &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='glassblowing'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-herbalism &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='herbalism'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-instrumentmaking &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='instrumentmaking'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-jewelmaking &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='jewelmaking'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-LeatherWorking &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='LeatherWorking'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-LegandaryWeaponsmithing &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='LegandaryWeaponsmithing'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-MasterArmorsmithing &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='MasterArmorsmithing'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-MasterBaking &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='MasterBaking'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-MasterCooking &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='MasterCooking'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-MasterDistilling &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='MasterDistilling'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-MasterFoodPrep &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='MasterFoodPrep'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-MasterLeatherWorking &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='MasterLeatherWorking'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-MasterTailoring &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='MasterTailoring'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-MasterWeaponsmithing &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='MasterWeaponsmithing'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-papermaking &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='papermaking'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-pottery &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='pottery'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-rodsmithing &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='rodsmithing'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-scrollscribing &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='scrollscribing'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-sculpting &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='sculpting'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-smelting &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='smelting'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-staffmaking &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='staffmaking'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-Tailoring &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='Tailoring'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-Tanning &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='Tanning'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-Textiling &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='Textiling'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-torturesmithing &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='torturesmithing'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-WandMaking &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='WandMaking'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-Wainwrighting &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='Wainwrighting'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-Weaponsmithing &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='Weaponsmithing'" DEFINE="q_craft=1"/>
-		<ITEM class="metacraft:all-Weaving &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='Weaving'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-alchemy &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='Alchemy'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-apothecary &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='apothecary'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-Armorsmithing &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='Armorsmithing'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-baking &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='baking'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-Blacksmithing &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='Blacksmithing'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-Boatwright &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='Boatwright'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-CageBuilding &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='CageBuilding'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-cobbling &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='cobbling'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-cooking &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='cooking'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-distilling &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='distilling'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-fletching &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='fletching'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-foodprep &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='foodprep'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-gaelfood &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='gaelfood'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-glassblowing &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='glassblowing'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-herbalism &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='herbalism'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-instrumentmaking &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='instrumentmaking'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-jewelmaking &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='jewelmaking'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-LeatherWorking &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='LeatherWorking'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-LegandaryWeaponsmithing &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='LegandaryWeaponsmithing'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-MasterArmorsmithing &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='MasterArmorsmithing'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-MasterBaking &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='MasterBaking'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-MasterCooking &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='MasterCooking'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-MasterDistilling &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='MasterDistilling'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-MasterFoodPrep &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='MasterFoodPrep'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-MasterLeatherWorking &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='MasterLeatherWorking'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-MasterTailoring &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='MasterTailoring'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-MasterWeaponsmithing &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='MasterWeaponsmithing'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-papermaking &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='papermaking'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-pottery &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='pottery'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-rodsmithing &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='rodsmithing'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-scrollscribing &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='scrollscribing'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-sculpting &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='sculpting'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-smelting &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='smelting'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-staffmaking &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='staffmaking'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-Tailoring &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='Tailoring'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-Tanning &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='Tanning'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-Textiling &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='Textiling'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-torturesmithing &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='torturesmithing'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-WandMaking &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='WandMaking'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-Wainwrighting &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='Wainwrighting'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-Weaponsmithing &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='Weaponsmithing'" DEFINE="q_craft=1"/>
+		<ITEM class="metacraft:all-Weaving &lt; $target_level" CONDITION="$targetskill='any' or $targetskill='Weaving'" DEFINE="q_craft=0"/>
 		<ITEM class="metacraft:all-farmables" MATERIAL="cloth" CONDITION="$targetskill='any' or $targetskill='Textiling'" DEFINE="q_craft=0"/>
 		<ITEM class="metacraft:all-farmables" MATERIAL="cloth" CONDITION="$targetskill='any' or $targetskill='Textiling'" DEFINE="q_craft=0"/>
 		<ITEM class="metacraft:all-farmables" MATERIAL="cloth" CONDITION="$targetskill='any' or $targetskill='Textiling'" DEFINE="q_craft=0"/>
@@ -206,8 +206,8 @@ vars:
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>You're throwing a party and you need lots of ${p:target_item_name}.</STRING>
 			<STRING>Today you are celebrating, and ${p:target_item_name} are my favorite gifts.</STRING>
-			<STRING>It's my $noun_anyrelation`s birthday, and you need several ${p:target_item_name} for my my gift.</STRING>
-			<STRING>It is officially ${C:source_area_name} Day, and the ceremony requires several ${p:target_item_name}.</STRING>
+			<STRING>It's my $noun_anyrelation`s birthday, and you need several ${p:target_item_name} for my gift.</STRING>
+			<STRING>It is officially ${C:target_area_name} Day, and the ceremony requires several ${p:target_item_name}.</STRING>
 		</STRING>
 	</STRING>
 
@@ -291,22 +291,13 @@ vars:
 	</STRING>
 	
 	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
-		<STRING>${SELECT:MED_LEVEL from $source_area}</STRING>
+		<STRING>${SELECT:MED_LEVEL from $target_area}</STRING>
 	</STRING>
 	
 	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>
 		<STRING>$target_level</STRING>
 	</STRING>
 	
-
-
-
-	<STRING ID="source_level" SELECT="any-1" DEFINE="source_level">
-		<STRING>${SELECT:level from $source}</STRING>
-	</STRING>
-
-
-
 
 
 </QUEST>

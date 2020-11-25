@@ -41,7 +41,7 @@ settable vars:
 		<QUEST_CRITERIA CONDITION="$target_min_arealevel != ''">+LEVEL -&lt;$target_min_arealevel -&gt;$target_max_arealevel </QUEST_CRITERIA>
 	</QUEST_CRITERIA>
 	<FREQUENCY>1</FREQUENCY>
-	<DURATION>90 minutes</DURATION></QUEST_CRITERIA>
+	<DURATION>90 minutes</DURATION>
 	<CATEGORY>$quest_category</CATEGORY>
 	<DESTINATION_AREA>"$target_area_name"</DESTINATION_AREA>
 	<DESTINATION_ROOM>"$target_room_id"</DESTINATION_ROOM>
@@ -59,9 +59,9 @@ settable vars:
 	<FACTION>$target_faction</FACTION>
 	<NUMFACTION>-$[$target_faction_amt / 500]</NUMFACTION>
 	<QUEST_NAME SELECT="Any-1">
-		<QUEST_NAME>You need you to $reason_verb $target_name to ${C:target_room_name}</QUEST_NAME>
-		<QUEST_NAME>You want you to $reason_verb $target_name to ${C:target_room_name}</QUEST_NAME>
-		<QUEST_NAME>${C:source_name} asks you to $reason_verb $target_name to ${C:target_room_name}</QUEST_NAME>
+		<QUEST_NAME>You need to $reason_verb $target_name to ${C:target_room_name}</QUEST_NAME>
+		<QUEST_NAME>You want to $reason_verb $target_name to ${C:target_room_name}</QUEST_NAME>
+		<QUEST_NAME>You must $reason_verb $target_name to ${C:target_room_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} $target_name to ${C:target_room_name}</QUEST_NAME>
 	</QUEST_NAME>
 	<ATTACKER_SCREAM SELECT="Any-1">
@@ -78,11 +78,11 @@ settable vars:
 
 	
 	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">
-		<STRING>You need you to ${reason_verb} $target_name to ${l:target_room_name} in ${target_area_name}!</STRING>
+		<STRING>You need to ${reason_verb} $target_name to ${l:target_room_name} in ${target_area_name}!</STRING>
 		<STRING>${c:reason_verb} $target_name to ${l:target_room_name} in ${target_area_name}!</STRING>
 		<STRING>${c:reason_verb} $target_name to ${l:target_room_name} in ${target_area_name} for me!</STRING>
 		<STRING>${c:reason_verb} $target_name to ${l:target_room_name} in ${target_area_name}, quickly!</STRING>
-		<STRING>You want you to ${reason_verb} $target_name to ${l:target_room_name} in ${target_area_name}!</STRING>
+		<STRING>You want to ${reason_verb} $target_name to ${l:target_room_name} in ${target_area_name}!</STRING>
 	</STRING>
 
 	<STRING ID="quest_instructionstring" SELECT="ALL">
@@ -105,10 +105,10 @@ settable vars:
 		<STRING>$reason_iowethem</STRING>
 		<STRING>$reason_ilostthem</STRING>
 		<STRING>$reason_genescort</STRING>
-		<STRING CONDITION="$source_align &gt; 500">$reason_idoforthem</STRING>
+		<STRING>$reason_idoforthem</STRING>
 		<STRING>$reason_wedotogether</STRING>
-		<STRING CONDITION="$source_align &lt; -500">$reason_idotothem</STRING>
-		<STRING CONDITION="$source_align &lt; -500">$reason_wedotoeachother</STRING>
+		<STRING>$reason_idotothem</STRING>
+		<STRING>$reason_wedotoeachother</STRING>
 	</STRING>
 
 	<STRING id="quest_arrivalstring" SELECT="Any-1">
@@ -128,7 +128,7 @@ settable vars:
 	<STRING ID="reason_partytime" SELECT="All">
 		<STRING define="quest_traveled">$quest_arrivalstring</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>It is officially ${C:source_area_name} Day, and I'm sending ${c:target_name} on a trip!</STRING>
+			<STRING>It is officially ${C:target_area_name} Day, and I'm sending ${c:target_name} on a trip!</STRING>
 		</STRING>
 	</STRING>
 
@@ -205,16 +205,6 @@ settable vars:
 		<STRING>$target_level</STRING>
 	</STRING>
 	
-
-
-	<STRING ID="source_race" SELECT="any-1" DEFINE="source_race">
-		<STRING>${SELECT:race from $source}</STRING>
-	</STRING>
-
-
-
-
-
 	<STRING ID="target_room_name" SELECT="any-1" DEFINE="target_room_name">${SELECT:display from $target_room}</STRING>
 
 	<STRING ID="aggression" DEFINE="aggression" SELECT="Pick-1">
@@ -237,13 +227,12 @@ settable vars:
 	<STRING load="/resources/randareas/swamp.xml" />
 	
 	<OBJECT ID="target" DEFINE="target">
-		<MOB class="GenMob" level="$level_range" race="$source_race" gender="$anygender">
+		<MOB class="GenMob" level="$level_range" race="$any_humanoid_race" gender="$anygender">
 			<NAME>
 				<NAME CONDITION="$targetname!=''">$targetname</NAME>
 				<NAME CONDITION="$targetname=''">$fantasy_name</NAME>
 			</NAME>
-			<DISPLAY>$mob_name is.</DISPLAY>
-			<ALIGNMENT>$source_align</ALIGNMENT>
+			<DISPLAY>$mob_name is here.</DISPLAY>
 		</MOB>
 	</OBJECT>
 	

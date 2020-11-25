@@ -44,7 +44,7 @@ vars:
 		<QUEST_CRITERIA CONDITION="$target_min_arealevel != ''">+LEVEL -&lt;$target_min_arealevel -&gt;$target_max_arealevel </QUEST_CRITERIA>
 	</QUEST_CRITERIA>
 	<FREQUENCY>1</FREQUENCY>
-	<DURATION>90 minutes</DURATION></QUEST_CRITERIA>
+	<DURATION>90 minutes</DURATION>
 	<CATEGORY>$quest_category</CATEGORY>
 	<HOLDERS_MASK>-HOME "+$target_area_name" -NAMES "+$target_name"</HOLDERS_MASK>
 	<HOLDERS_RESPONSE>${j:1:quest_fightspeech}</HOLDERS_RESPONSE>
@@ -59,9 +59,9 @@ vars:
 	<FACTION>$target_faction</FACTION>
 	<NUMFACTION>-$[$target_faction_amt / 500]</NUMFACTION>
 	<QUEST_NAME SELECT="Any-1">
-		<QUEST_NAME>You need $num_targets ${p:target_item_name} $reason_verbed</QUEST_NAME>
-		<QUEST_NAME>You want $num_targets ${p:target_item_name} $reason_verbed</QUEST_NAME>
-		<QUEST_NAME>${C:source_name} in ${C:target_area_name} asks for $num_targets ${p:target_item_name} to be $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>You need $num_targets ${p:target_item_name} in ${C:target_area_name} $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>You want $num_targets ${p:target_item_name} in ${C:target_area_name} $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>You must $reason_verb $num_targets ${p:target_item_name} in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} $num_targets ${p:target_item_name} in ${C:target_area_name}</QUEST_NAME>
 	</QUEST_NAME>
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
@@ -70,16 +70,12 @@ vars:
 
 	<STRING load="/resources/quests/random/inc_questcommon.xml" />
 
-	<STRING ID="source_level" SELECT="any-1" DEFINE="source_level">
-		<STRING>${SELECT:level from $source}</STRING>
-	</STRING>
-
 	<STRING ID="item_level" define="item_level">
 		<STRING>${SELECT:level from $source}</STRING>
 	</STRING>
 	<STRING ID="target_item_name" define="target_item_name">${SELECT: NAME from $target_item}</STRING>
 	<OBJECT ID="target_item" define="target_item" SELECT="Any-1">
-		<OBJECT condition="$target_int &gt; 2">SELECT: ANY\. FROM $item_junk WHERE level &lt;= $source_level </OBJECT>
+		<OBJECT condition="$target_int &gt; 2">SELECT: ANY\. FROM $item_junk WHERE level &lt;= $target_level </OBJECT>
 		<OBJECT condition="$target_int &lt;= 2">SELECT: ANY\. from $target\resources</OBJECT>
 	</OBJECT>
 
@@ -95,7 +91,7 @@ vars:
 		<STRING>$reason_ilostthem</STRING>
 		<STRING>$reason_welosteachother</STRING>
 		<STRING>$reason_gencollect</STRING>
-		<STRING CONDITION="$target_int &gt; 2 and $source_align &gt; 5000">$reason_idoforthem</STRING>
+		<STRING CONDITION="$target_int &gt; 2">$reason_idoforthem</STRING>
 		<STRING>$reason_idotothem</STRING>
 		<STRING>$reason_wedotoeachother</STRING>
 	</STRING>
@@ -115,8 +111,8 @@ vars:
 		<STRING ACTION="PREPEND">$reason_desc</STRING>
 		<STRING ACTION="APPEND">$reason_short</STRING>
 		<STRING SELECT="Any-1" ACTION="APPEND">
-			<STRING condition="$source_align &lt; 0">You'll need to $hurt_them_phrase, of course.</STRING>
-			<STRING condition="$source_align &gt; 0">You'll need to $hurt_them_phrase, I'm afraid.</STRING>
+			<STRING>You'll need to $hurt_them_phrase, of course.</STRING>
+			<STRING>You'll need to $hurt_them_phrase, I'm afraid.</STRING>
 			<STRING>Just $hurt_them_phrase and take it from their corpses.</STRING>
 			<STRING>${C:hurt_them_phrase}, before they do you.</STRING>
 			<STRING>The ${p:target_item_name} can be found on their corpses.</STRING>
@@ -172,7 +168,7 @@ vars:
 			<STRING>You're throwing a party and the ${p:target_name} are providing ${target_item_name}.</STRING>
 			<STRING>Today you are celebrating, and ${p:target_item_name} from ${p:target_name} are my gifts.</STRING>
 			<STRING>It's my $noun_anyrelation`s birthday, and ${p:target_item_name} from ${p:target_name} are my gifts.</STRING>
-			<STRING>It is officially ${C:source_area_name} Day, and the ceremony requires several ${p:target_item_name} from $target_name.</STRING>
+			<STRING>It is officially ${C:target_area_name} Day, and the ceremony requires several ${p:target_item_name} from $target_name.</STRING>
 			<STRING>Today you are celebrating, and the ${p:target_name} are late bringing me ${p:target_item_name}.</STRING>
 			<STRING>It's my $noun_anyrelation`s birthday, and the ${p:target_name} are late bringing the ${p:target_item_name}.</STRING>
 		</STRING>

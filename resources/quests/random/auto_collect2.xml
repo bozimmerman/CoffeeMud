@@ -43,7 +43,7 @@ vars:
 		<QUEST_CRITERIA CONDITION="$target_min_arealevel != ''">+LEVEL -&lt;$target_min_arealevel -&gt;$target_max_arealevel </QUEST_CRITERIA>
 	</QUEST_CRITERIA>
 	<FREQUENCY>1</FREQUENCY>
-	<DURATION>90 minutes</DURATION></QUEST_CRITERIA>
+	<DURATION>90 minutes</DURATION>
 	<CATEGORY>$quest_category</CATEGORY>
 	<HOLDER_AREAS>"$target_area_name"</HOLDER_AREAS>
 	<HOLDER_ROOMS>ALL</HOLDER_ROOMS>
@@ -59,9 +59,9 @@ vars:
 	<FACTION>$target_faction</FACTION>
 	<NUMFACTION>-$[$target_faction_amt / 500]</NUMFACTION>
 	<QUEST_NAME SELECT="Any-1">
-		<QUEST_NAME>You need $num_targets ${p:target_item_name} $reason_verbed</QUEST_NAME>
-		<QUEST_NAME>You want $num_targets ${p:target_item_name} $reason_verbed</QUEST_NAME>
-		<QUEST_NAME>${C:source_name} in ${C:target_area_name} asks for $num_targets ${p:target_item_name} to be $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>You need $num_targets ${p:target_item_name} in ${C:target_area_name} $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>You want $num_targets ${p:target_item_name} in ${C:target_area_name} $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>You must $reason_verb $num_targets ${p:target_item_name} in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} $num_targets ${p:target_item_name} in ${C:target_area_name}</QUEST_NAME>
 	</QUEST_NAME>
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
@@ -70,15 +70,11 @@ vars:
 
 	<STRING load="/resources/quests/random/inc_questcommon.xml" />
 
-	<STRING ID="source_level" SELECT="any-1" DEFINE="source_level">
-		<STRING>${SELECT:level from $source}</STRING>
-	</STRING>
-
 	<STRING ID="item_level" define="item_level">
 		<STRING>${SELECT:level from $source}</STRING>
 	</STRING>
 	<STRING ID="target_item_name" define="target_item_name">${SELECT: NAME from $target_item}</STRING>
-	<OBJECT ID="target_item" define="target_item" SELECT="Any-1">SELECT: ANY\. FROM $item_junk WHERE level &lt;= $source_level</OBJECT>
+	<OBJECT ID="target_item" define="target_item" SELECT="Any-1">SELECT: ANY\. FROM $item_junk WHERE level &lt;= $target_level</OBJECT>
 
 	<STRING ID="quest_fightspeech" PREDEFINE="reason=$reason" SELECT="Any">
 		<STRING CONDITION="$aggression='YES'">$quest_fightspeech</STRING>
@@ -123,7 +119,7 @@ vars:
 		<STRING>Hey! Leave $target_item_name where it is!</STRING>
 		<STRING>Don't touch $target_item_name !!</STRING>
 		<STRING>You is not getting $target_item_name!</STRING>
-		<STRING>I would rather $hurt_verb you than let $source_name get $target_item_name.</STRING>
+		<STRING>I would rather $hurt_verb you than let you get $target_item_name.</STRING>
 	</STRING>
 
 
@@ -147,8 +143,8 @@ vars:
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>You're throwing a party and you need lots of ${p:target_item_name}.</STRING>
 			<STRING>Today you are celebrating, and ${p:target_item_name} are my favorite gifts.</STRING>
-			<STRING>It's my $noun_anyrelation`s birthday, and you need several ${p:target_item_name} for my my gift.</STRING>
-			<STRING>It is officially ${C:source_area_name} Day, and the ceremony requires several ${p:target_item_name}.</STRING>
+			<STRING>It's my $noun_anyrelation`s birthday, and you need several ${p:target_item_name} for my gift.</STRING>
+			<STRING>It is officially ${C:target_area_name} Day, and the ceremony requires several ${p:target_item_name}.</STRING>
 		</STRING>
 	</STRING>
 
