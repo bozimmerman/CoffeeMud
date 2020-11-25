@@ -299,6 +299,10 @@ vars:
 		<QUEST_CRITERIA CONDITION="$target_min_arealevel != ''">$[${target_min_arealevel} + (1?(${target_max_arealevel}-${target_min_arealevel}))</QUEST_CRITERIA>
 		<STRING></STRING>
 	</STRING>
+	
+	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>
+		<STRING>$target_level</STRING>
+	</STRING>
 </QUEST>
 
 
