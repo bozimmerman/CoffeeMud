@@ -1024,7 +1024,6 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 					highestLevelPC = M.phyStats().level();
 			}
 		}
-		final int vicLevel=victim.phyStats().level();
 		final int killerLevel=mob.phyStats().level();
 		final Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
 		CharClass charClass=null;
@@ -1042,6 +1041,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 		if(victim!=null)
 		{
+			final int vicLevel=victim.phyStats().level();
 			final double levelLimit=CMProps.getIntVar(CMProps.Int.EXPRATE);
 			final double levelDiff=vicLevel-killerLevel;
 
