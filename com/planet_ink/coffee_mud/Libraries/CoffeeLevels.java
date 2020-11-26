@@ -1016,11 +1016,16 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			for(int m=0;m<R.numInhabitants();m++)
 			{
 				final MOB M=R.fetchInhabitant(m);
-				if((M!=null)&&(M!=mob)&&(M!=victim)&&(!M.isMonster())&&(M.phyStats().level()>highestLevelPC))
+				if((M!=null)
+				&&(M!=mob)
+				&&(M!=victim)
+				&&(M.isPlayer())
+				&&(M.phyStats().level()>highestLevelPC))
 					highestLevelPC = M.phyStats().level();
 			}
-
 		}
+		final int vicLevel=victim.phyStats().level();
+		final int killerLevel=mob.phyStats().level();
 		final Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
 		CharClass charClass=null;
 		Race charRace=null;
@@ -1038,19 +1043,28 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		if(victim!=null)
 		{
 			final double levelLimit=CMProps.getIntVar(CMProps.Int.EXPRATE);
-			final double levelDiff=victim.phyStats().level()-mob.phyStats().level();
+			final double levelDiff=vicLevel-killerLevel;
 
 			if(levelDiff<(-levelLimit) )
 				amount=0;
 			else
-			if((levelLimit>0)
-			&&(((highestLevelPC - mob.phyStats().level())<=levelLimit))
-				||(levelDiff<0))
+			if(levelLimit>0)
 			{
-				double levelFactor=levelDiff / levelLimit;
-				if( levelFactor > levelLimit )
-					levelFactor = levelLimit;
-				amount+=(int)Math.round(levelFactor *  amount);
+				final int highVicDiff=highestLevelPC - vicLevel;
+				final int highPartyDiff=highestLevelPC - killerLevel;
+				if(highVicDiff>levelLimit)
+					amount=(int)Math.round(CMath.mul(amount,CMath.div(levelLimit*levelLimit,highVicDiff*highVicDiff)));
+				if(highPartyDiff>levelLimit)
+					amount=(int)Math.round(CMath.mul(amount,CMath.div(levelLimit*levelLimit,highPartyDiff*highPartyDiff)));
+				else
+				if((highPartyDiff<=levelLimit)
+				||(levelDiff<0))
+				{
+					double levelFactor=levelDiff / levelLimit;
+					if( levelFactor > levelLimit )
+						levelFactor = levelLimit;
+					amount+=(int)Math.round(levelFactor *  amount);
+				}
 			}
 		}
 
