@@ -2839,18 +2839,25 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	{
 		int totalLevels=0;
 		int totalSquaredLevels=0;
+		int highestLevel=0;
 
 		for (final MOB mob : dividers)
 		{
-			totalSquaredLevels += (mob.phyStats().level()*mob.phyStats().level());
-			totalLevels += mob.phyStats().level();
+			final int lvl=mob.phyStats().level();
+			totalSquaredLevels += (lvl*lvl);
+			totalLevels += lvl;
+			if(lvl>highestLevel)
+				highestLevel=lvl;
 		}
 
+		final int killedLevel=(killed==null)?highestLevel:killed.phyStats().level();
 		final double[] totalVars={
 			dividers.size(),
 			totalSquaredLevels,
 			totalLevels,
-			killers.size()
+			killers.size(),
+			highestLevel,
+			killedLevel
 		};
 		final double expAmount = CMath.parseMathExpression(this.totalCombatExperienceFormula, totalVars, 0.0);
 
@@ -2860,7 +2867,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			totalSquaredLevels,
 			0.0,
 			totalLevels,
-			killers.size()
+			killers.size(),
+			highestLevel,
+			killedLevel
 		};
 		for (final MOB mob : killers)
 		{
