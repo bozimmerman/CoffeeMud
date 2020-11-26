@@ -161,7 +161,7 @@ FUNCTION_PROG DO_ACCEPT
 ~
 
 PUTTING_PROG p '$[1 *]'
-	if EVAL($p == '$[1 *]') AND EVAL($o == '$[2 *]') AND EVAL('$[2 *]' != '')
+	if EVAL($p == '$[1 *]') AND EVAL($o == '$[2 *]') AND EVAL('$[2 *]' != '') AND EVAL('$[2 *]' != '$[1 *]') AND QUESTROOM($n *)
 		if ISLIKE($n '$QUEST_CRITERIA') AND EVAL('$[1 *]' != '') and ISPC($n) and QUESTSCRIPTED($i *)
 			if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 				if EVAL($p == '$[1 *]')
@@ -197,25 +197,29 @@ PUTTING_PROG p '$[1 *]'
 ~
 
 DROPPING_PROG p '$[1 *]'
-	if EVAL('$[2 *]' != '') 
+	if EVAL('$[2 *]' != '') and EVAL('$[2 *]' != '$[1 *]') 
 		RETURN
 	ENDIF
-	if ISLIKE($n '$QUEST_CRITERIA') AND EVAL('$[1 *]' != '') and ISPC($n)
+	if ISLIKE($n '$QUEST_CRITERIA') AND EVAL('$[1 *]' != '') and ISPC($n) and QUESTSCRIPTED($n *) AND QUESTROOM($n *)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if EVAL($o == '$[1 *]')
 				if EVAL('$EXP' != '')
-					mpexp $n 10%
+					mpexp $i $EXP
 				endif
 				if EVAL('$FACTION' != '')
-					mpfaction $n $FACTION +$NUMFACTION
+					mpfaction $i $FACTION +$NUMFACTION
 				endif
 				if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
-					mpoloadroom QuestPoint
-					mpforce $n GET "a quest point"
+					mpforce $i mpoload QuestPoint
+					mpechoat $i You receive a quest point.
 				endif
 				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
-					mpoload $GOLD
-					mpforce $n GET $GOLD
+					mpforce $i mpoload $GOLD
+					mpechoat $i You receive $b.
+				endif
+				mpforce $i mpoload fromfile $QUEST_ID_rewarditems.xml any
+				if EVAL('$b' != '')
+					mpechoat $i You receive $b.
 				endif
 				mpquestwin $n *
 				mpecho $DELIVER_RESPONSE

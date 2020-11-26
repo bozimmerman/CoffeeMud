@@ -267,10 +267,6 @@ settable vars:
 		<STRING>$[100 + $target_level*3]</STRING>
 	</STRING>
 
-
-
-
-
 	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
 		<STRING>${SELECT:MED_LEVEL from $target_area}</STRING>
 	</STRING>
@@ -279,16 +275,9 @@ settable vars:
 		<STRING>$target_level</STRING>
 	</STRING>
 	
-
-
-
-
-
-
 	<STRING ID="target_is_aggressive" SELECT="first" DEFINE="target_is_aggressive">
 		<STRING>${SELECT: 'YES' from $target where 'Aggressive' in objattrib}</STRING>
 	</STRING>
-
 	
 	<STRING load="/resources/randareas/desert.xml" />
 	<STRING load="/resources/randareas/forest.xml" />
@@ -303,7 +292,7 @@ settable vars:
 		<OBJECT CONDITION="$targetname!=''"" pickweight=10>
 			<MOB class="GenMob" level="$level_range" race="Unique" gender="$anygender">
 				<NAME>$targetname</NAME>
-				<DISPLAY>$mob_name is.</DISPLAY>
+				<DISPLAY>$mob_name is here.</DISPLAY>
 				<ALIGNMENT>$[-10000?10000]</ALIGNMENT>
 				<BEHAVIOR select="Any-1">
 					<BEHAVIOR class="Bardness" parms="Bard" />
@@ -405,7 +394,7 @@ settable vars:
 	</STRING>	
 	
 	<STRING ID="item_level" define="item_level">$target_level</STRING>
-	<STRING ID="target_item_name" define="target_item_name">${SELECT: NAME from $target_item}</STRING>
+	<STRING ID="target_item_name" define="target_item_name">${SELECT: NAME from (SELECT: FIRST\. from $target_item)}</STRING>
 	<OBJECT ID="target_item" define="target_item" SELECT="Any-1">
 		<OBJECT condition="$itemname=''">SELECT: ANY\. FROM $item_junk</OBJECT>
 		<OBJECT condition="$itemname!=''">

@@ -3909,7 +3909,34 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(Q==null)
 						returnable=false;
 					else
+					if((arg1.indexOf('#')>=0)||(CMath.isNumber(arg1))||(!tt[t+0].startsWith("$"))
 						returnable=(Q.getQuestRoomIndex(arg1)>=0);
+					else
+					{
+						final Room lastLastKnownLocation=lastKnownLocation;
+						lastKnownLocation=null;
+						Object O;
+						try
+						{
+							O=getArgumentMOB(tt[t+0],source,monster,target,primaryItem,secondaryItem,msg,tmp);
+							if(O==null)
+								O=getArgumentItem(tt[t+0],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+						}
+						finally
+						{
+							lastKnownLocation=lastLastKnownLocation;
+						}
+						if(!(O instanceof Environmental))
+							returnable=(Q.getQuestRoomIndex(arg1)>=0);
+						else
+						{
+							final Room R=CMLib.map().roomLocation((Environmental)O);
+							if(R!=null)
+								returnable=(Q.getQuestRoomIndex(CMLib.map().getExtendedRoomID(R))>=0);
+							else
+								returnable=(Q.getQuestRoomIndex(arg1)>=0);
+						}
+					}
 					break;
 				}
 				case 114: // questarea

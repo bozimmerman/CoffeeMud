@@ -79,7 +79,7 @@ vars:
 	<STRING ID="item_level" define="item_level">
 		<STRING>${SELECT:level from $source}</STRING>
 	</STRING>
-	<STRING ID="target_item_name" define="target_item_name">${SELECT: NAME from $target_item}</STRING>
+	<STRING ID="target_item_name" define="target_item_name">${SELECT: NAME from (SELECT: FIRST\. from $target_item)}</STRING>
 	<OBJECT ID="target_item" define="target_item" SELECT="Any-1">
 		<OBJECT condition="$target_int &gt; 2">SELECT: ANY\. FROM $item_junk WHERE level &lt;= $source_level </OBJECT>
 		<OBJECT condition="$target_int &lt;= 2">SELECT: ANY\. from $target\resources</OBJECT>

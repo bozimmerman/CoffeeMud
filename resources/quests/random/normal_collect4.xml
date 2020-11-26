@@ -68,7 +68,7 @@ vars:
 
 	<STRING load="/resources/quests/random/inc_questcommon.xml" />
 
-	<STRING ID="target_item_name" define="target_item_name">${SELECT: NAME from $target_item}</STRING>
+	<STRING ID="target_item_name" define="target_item_name">${SELECT: NAME from (SELECT: FIRST\. from $target_item)}</STRING>
 	
 	<OBJECT ID="target_item" define="target_item" SELECT="Any-1">
 		<OBJECT condition="$itemname='' and $targetresource='Any' and $targetmaterial='Any'">SELECT: ANY\. from $all_target_items where weight < 200</OBJECT>

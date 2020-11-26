@@ -6433,6 +6433,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						results.clear();
 						results.add(first);
 					}
+					else
+						throw new MQLException("Empty RESULTS for FIRST "+clause.mql);
 					break;
 				}
 				case ANY:

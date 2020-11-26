@@ -436,7 +436,7 @@ settable vars:
 	</STRING>	
 	
 	<STRING ID="item_level" define="item_level">$target_level</STRING>
-	<STRING ID="target_item_name" define="target_item_name">${SELECT: NAME from $target_item}</STRING>
+	<STRING ID="target_item_name" define="target_item_name">${SELECT: NAME from (SELECT: FIRST\. from $target_item)}</STRING>
 	<OBJECT ID="target_item" define="target_item" SELECT="Any-1">
 		<OBJECT condition="$itemname=''">SELECT: ANY\. FROM $item_junk</OBJECT>
 		<OBJECT condition="$itemname!=''">

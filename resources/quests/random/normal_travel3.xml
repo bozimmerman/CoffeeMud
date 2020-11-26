@@ -228,7 +228,7 @@ settable vars:
 		<STRING>${SELECT:alignment from $source}</STRING>
 	</STRING>
 
-	<OBJECT ID="target" DEFINE="target">SELECT: ANY\. from $target_room</OBJECT>
+	<OBJECT ID="target" DEFINE="target">SELECT: FIRST\. from $target_room</OBJECT>
 
 	<STRING ID="target_name" SELECT="any-1" DEFINE="target_name">${SELECT:display from $target}</STRING>
 

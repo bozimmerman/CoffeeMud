@@ -57,6 +57,7 @@ settable vars:
 		<QUEST_NAME>You must $reason_verb to $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} to $target_name in ${C:target_area_name}</QUEST_NAME>
 	</QUEST_NAME>
+	<QUEST_WINSPEECH_TEXT>${j:1:quest_winspeech}</QUEST_WINSPEECH_TEXT>
 	<QUEST_NOTIFYSSTRING>${j:1:quest_notifystring}</QUEST_NOTIFYSSTRING>
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
 	<TRAVEL_RESPONSE_TYPE>MPECHOAT $$n</TRAVEL_RESPONSE_TYPE>
@@ -65,7 +66,12 @@ settable vars:
 
 	<STRING load="/resources/quests/random/inc_questcommon.xml" />
 
-
+	<STRING id="quest_winspeech" SELECT="Any-1">
+		<STRING>You have $reason_verbed!</STRING>
+		<STRING>${c:reason_verbed} at last!</STRING>
+		<STRING>Congratulations!</STRING>
+		<STRING>You have completed the $reason_verb task, that will be all.</STRING>
+	</STRING>
 	
 	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">
 		<STRING>You need you at $target_name!</STRING>
@@ -181,10 +187,6 @@ settable vars:
 		<STRING>$[100 + $target_level*3]</STRING>
 	</STRING>
 
-
-	
-
-
 	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
 		<STRING>${SELECT:MED_LEVEL from $target_area}</STRING>
 	</STRING>
@@ -194,11 +196,11 @@ settable vars:
 	</STRING>
 	
 	<STRING ID="target_faction" SELECT="any-1" DEFINE="target_faction">
-		<STRING>${SELECT:factionid from $target}</STRING>
+		<STRING>${SELECT:factionid from (select: ANY\. from $target_area\npcs where factionid != '')}</STRING>
 	</STRING>
 
 	<STRING ID="target_faction_amt" SELECT="first" DEFINE="target_faction_amt">
-		<STRING CONDITION="$target_faction!=''">${SELECT:factionamt from $target}</STRING>
+		<STRING CONDITION="$target_faction!=''">${SELECT:factionamt from (select: ANY\. from $target_area\npcs where factionid != '')}</STRING>
 		<STRING CONDITION="$target_faction=''">0</STRING>
 	</STRING>
 

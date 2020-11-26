@@ -49,7 +49,6 @@ See guides/RandomAreas.html for information about documents of this type.
 	<!-- 
 	<string condition="$template='random' and $avoidscans!='YES' and $auto_template!='true'">normal_travel3</string>
 	 -->
-	<!-- 
 	<string condition="$template='random' and $avoidscans!='YES' and $auto_template!='true'">normal_travel4</string>
 	<string condition="$template='random' and $avoidscans!='YES' and $auto_template='true'" >auto_capture1</string>
 	<string condition="$template='random' and $auto_template='true'"                        >auto_capture2</string>
@@ -60,11 +59,7 @@ See guides/RandomAreas.html for information about documents of this type.
 	<string condition="$template='random' and $auto_template='true'"                        >auto_collect3</string>
 	<string condition="$template='random' and $auto_template='true'"                        >auto_collect4</string>
 	<string condition="$template='random' and $auto_template='true'"                        >auto_collect5</string>
-	<string condition="$template='random' and $avoidscans!='YES' and $auto_template='true'" >auto_escort1</string>
-	<string condition="$template='random' and $auto_template='true'"                        >auto_escort2</string>
-	 -->
 	<string condition="$template='random' and $avoidscans!='YES' and $auto_template='true'" >auto_delivery1</string>
-	<!-- 
 	<string condition="$template='random' and $avoidscans!='YES' and $auto_template='true'" >auto_delivery2</string>
 	<string condition="$template='random' and $auto_template='true'"                        >auto_delivery3</string>
 	<string condition="$template='random' and $auto_template='true'"                        >auto_delivery4</string>
@@ -72,6 +67,8 @@ See guides/RandomAreas.html for information about documents of this type.
 	<string condition="$template='random' and $avoidscans!='YES' and $auto_template='true'" >auto_killer1</string>
 	<string condition="$template='random' and $auto_template='true'"                        >auto_killer2</string>
 	<string condition="$template='random' and $auto_template='true'"                        >auto_protect1</string>
+	<string condition="$template='random' and $avoidscans!='YES' and $auto_template='true'" >auto_escort1</string>
+	<string condition="$template='random' and $auto_template='true'"                        >auto_escort2</string>
 	<string condition="$template='random' and $avoidscans!='YES' and $auto_template='true'" >auto_travel1</string>
 	<string condition="$template='random' and $avoidscans!='YES' and $auto_template='true'" >auto_travel2</string>
 	<string condition="$template='random' and $avoidscans!='YES' and $auto_template='true'" >auto_travel3</string>

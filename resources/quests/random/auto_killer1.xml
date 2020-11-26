@@ -52,7 +52,7 @@ settable vars:
 	<MULTIPLE>$quest_multiple</MULTIPLE>
 	<NEXT_QUEST>$next_quest_id</NEXT_QUEST>
 	<FACTION>$target_faction</FACTION>
-	<NUMFACTION>-$[$target_faction_amt / 500]</NUMFACTION>
+	<NUMFACTION>$[$target_faction_amt / -500]</NUMFACTION>
 	<QUEST_NAME SELECT="Any-1">
 		<QUEST_NAME>You need $num_targets ${p:target_name} $reason_verbed</QUEST_NAME>
 		<QUEST_NAME>You want $num_targets ${p:target_name} $reason_verbed</QUEST_NAME>

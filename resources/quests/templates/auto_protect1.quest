@@ -294,10 +294,10 @@ DELAY_PROG 3 3
 			if EVAL('$b' != '')
 				mpforce $8 give "$b" "$i"
 			endif
+			mpforce $8 sayto $i $QUEST_WINSPEECH_TEXT
 			mpat '$<$i $QUEST_ID_MYROOM>' MPCALLFUNC DEL_LAST_MOB
 			mpat '$<$i $QUEST_ID_MYROOM>' MPCALLFUNC DEL_PROT_MOB
 			mpquestwin $i *
-			mpforce $8 sayto $i $QUEST_WINSPEECH_TEXT
 			mpendquest $i
 			mpqset * STATISTICS SUCCESS
 			IF EVAL('$MULTIPLE' == 'PREV')

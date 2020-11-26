@@ -190,11 +190,7 @@ settable vars:
 	<STRING ID="xp_amount_awarded" DEFINE="xp_amount_awarded" SELECT="any-1">
 		<STRING>$[100 + $target_level*3]</STRING>
 	</STRING>
-
-
 	
-
-
 	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
 		<STRING>${SELECT:MED_LEVEL from $target_area}</STRING>
 	</STRING>
@@ -204,11 +200,11 @@ settable vars:
 	</STRING>
 	
 	<STRING ID="target_faction" SELECT="any-1" DEFINE="target_faction">
-		<STRING>${SELECT:factionid from $target}</STRING>
+		<STRING>${SELECT:factionid from (select: ANY\. from $target_area\npcs where factionid != '')}</STRING>
 	</STRING>
 
 	<STRING ID="target_faction_amt" SELECT="first" DEFINE="target_faction_amt">
-		<STRING CONDITION="$target_faction!=''">${SELECT:factionamt from $target}</STRING>
+		<STRING CONDITION="$target_faction!=''">${SELECT:factionamt from (select: ANY\. from $target_area\npcs where factionid != '')}</STRING>
 		<STRING CONDITION="$target_faction=''">0</STRING>
 	</STRING>
 
@@ -218,7 +214,6 @@ settable vars:
 		<STRING CONDITION="$target_container_name = ''">${SELECT:display from $target}</STRING>
 		<STRING CONDITION="$target_container_name != ''">$target_container_name at ${SELECT:display from $target}</STRING>
 	</STRING>
-
 	
 	<OBJECT ID="target_area" SELECT="Pick-1" DEFINE="target_area">
 		<OBJECT pickweight=55555 condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
@@ -290,7 +285,7 @@ settable vars:
 		<STRING></STRING>
 	</STRING>
 	
-	<STRING ID="target_item_name" define="target_item_name">${SELECT: NAME from $target_item}</STRING>
+	<STRING ID="target_item_name" define="target_item_name">${SELECT: NAME from (SELECT: FIRST\. from $target_item)}</STRING>
 	
 	<STRING ID="item_level" define="item_level">$target_level</STRING>
 	<OBJECT ID="target_item" define="target_item" SELECT="Any-1">

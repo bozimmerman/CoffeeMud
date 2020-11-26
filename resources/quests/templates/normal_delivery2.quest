@@ -240,8 +240,8 @@ GIVE_PROG p '$[1 *]'
 <DATA>
 
 PUT_PROG p '$[1 *]'
-	if EVAL($p == '$[1 *]') AND EVAL($o == '$[2 *]') AND EVAL('$[2 *]' != '')
-		if ISLIKE($n '$QUEST_CRITERIA') AND EVAL('$[1 *]' != '') and ISPC($n)
+	if EVAL($p == '$[1 *]') AND EVAL($o == '$[2 *]') AND EVAL('$[2 *]' != '') AND EVAL('$[2 *]' != '$[1 *]')
+		if ISLIKE($n '$QUEST_CRITERIA') AND EVAL('$[1 *]' != '') and ISPC($n) and QUESTSCRIPTED($n *)
 			if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 				if EVAL($p == '$[1 *]')
 					if EVAL('$EXP' != '')
@@ -272,10 +272,10 @@ PUT_PROG p '$[1 *]'
 ~
 
 DROP_PROG p '$[1 *]'
-	if EVAL('$[2 *]' != '') 
+	if EVAL('$[2 *]' != '') AND EVAL('$[2 *]' != '$[1 *]')
 		RETURN
 	ENDIF
-	if ISLIKE($n '$QUEST_CRITERIA') AND EVAL('$[1 *]' != '') and ISPC($n)
+	if ISLIKE($n '$QUEST_CRITERIA') AND EVAL('$[1 *]' != '') and ISPC($n) and QUESTSCRIPTED($n *)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if EVAL($o == '$[1 *]')
 				if EVAL('$EXP' != '')

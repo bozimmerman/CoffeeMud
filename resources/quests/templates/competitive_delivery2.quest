@@ -275,7 +275,7 @@ GIVE_PROG all
 <DATA>
 
 PUT_PROG all
-	if EVAL($p == '$[1 *]') AND EVAL($o == '$[2 *]') AND EVAL('$[2 *]' != '')
+	if EVAL($p == '$[1 *]') AND EVAL($o == '$[2 *]') AND EVAL('$[2 *]' != '') AND EVAL('$[2 *]' != '$[1 *]')
 		if ISLIKE($n '$QUEST_CRITERIA') AND EVAL('$[1 *]' != '') and ISPC($n)
 			if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 				if EVAL($p == '$[1 *]')
@@ -315,7 +315,7 @@ PUT_PROG all
 ~
 
 DROP_PROG all
-	if EVAL('$[2 *]' != '') 
+	if EVAL('$[2 *]' != '') AND EVAL('$[2 *]' != '$[1 *]')
 		RETURN
 	ENDIF
 	if ISLIKE($n '$QUEST_CRITERIA') AND EVAL('$[1 *]' != '') and ISPC($n)

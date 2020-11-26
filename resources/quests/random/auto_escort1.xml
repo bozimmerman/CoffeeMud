@@ -244,7 +244,7 @@ settable vars:
 		<OBJECT CONDITION="$attackername!=''" pickweight=10>
 			<MOB class="GenMob" level="$level_range" race="Unique" gender="$anygender">
 				<NAME>$attackername</NAME>
-				<DISPLAY>$mob_name is.</DISPLAY>
+				<DISPLAY>$mob_name is here.</DISPLAY>
 				<ALIGNMENT>$[-10000?10000]</ALIGNMENT>
 				<BEHAVIOR select="Any-1">
 					<BEHAVIOR class="Bardness" parms="Bard" />

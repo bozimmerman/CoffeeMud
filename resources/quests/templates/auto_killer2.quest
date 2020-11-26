@@ -171,7 +171,7 @@ ONCE_PROG 100
 ~
 
 FUNCTION_PROG CHECK_DONE
-	if var($n $QUEST_ID_KILLED >= $NUM_KILLABLES) and QUESTSCRIPTED($i *)
+	if var($i $QUEST_ID_KILLED >= $NUM_KILLABLES) and QUESTSCRIPTED($i *)
 		if EVAL('$EXP' != '')
 			mpexp $i $EXP
 		endif

@@ -54,7 +54,7 @@ settable vars:
 	<MULTIPLE>$quest_multiple</MULTIPLE>
 	<NEXT_QUEST>$next_quest_id</NEXT_QUEST>
 	<FACTION>$target_faction</FACTION>
-	<NUMFACTION>-$[$target_faction_amt / 500]</NUMFACTION>
+	<NUMFACTION>$[$target_faction_amt / -500]</NUMFACTION>
 	<QUEST_NAME SELECT="Any-1">
 		<QUEST_NAME>You need ${target_name} in ${C:target_area_name} $reason_verbed</QUEST_NAME>
 		<QUEST_NAME>You want ${target_name} in ${C:target_area_name} $reason_verbed</QUEST_NAME>
@@ -492,7 +492,7 @@ settable vars:
 		<OBJECT CONDITION="$targetname!=''"" pickweight=10>
 			<MOB class="GenMob" level="$level_range" race="Unique" gender="$anygender">
 				<NAME>$targetname</NAME>
-				<DISPLAY>$mob_name is.</DISPLAY>
+				<DISPLAY>$mob_name is here.</DISPLAY>
 				<ALIGNMENT>$[-10000?10000]</ALIGNMENT>
 				<BEHAVIOR select="Any-1">
 					<BEHAVIOR class="Bardness" parms="Bard" />

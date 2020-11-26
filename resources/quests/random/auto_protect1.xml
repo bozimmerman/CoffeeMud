@@ -48,7 +48,7 @@ settable vars:
 	<PROTECTED_MOB>${SELECT: ANY\. from $target}</PROTECTED_MOB>
 	<QUEST_PROTECTME_TEXT>Protect me $$r! They're coming for me!</QUEST_PROTECTME_TEXT>
 	<ATTACKER_MOB>${SELECT: ANY\. from $attacker}</ATTACKER_MOB>
-	<ATTACKER_PCT_CHANCE>$[5+($target_level/2)]</ATTACKER_PCT_CHANCE>
+	<ATTACKER_PCT_CHANCE>$[10+($target_level/2)]</ATTACKER_PCT_CHANCE>
 	<ATTACKER_SIZE>$num_targets</ATTACKER_SIZE>
 	<QUEST_POINT>$quest_point_awarded</QUEST_POINT>
 	<GOLD>$gold_amount_awarded</GOLD>
@@ -236,7 +236,7 @@ settable vars:
 				<NAME CONDITION="$targetname != ''">$targetname</NAME>
 				<NAME CONDITION="$targetname = ''">$fantasy_name</NAME>
 			</NAME>
-			<DISPLAY>$mob_name is.</DISPLAY>
+			<DISPLAY>$mob_name is still alive.</DISPLAY>
 			<ALIGNMENT>$[-10000?10000]</ALIGNMENT>
 		</MOB>
 	</OBJECT>
