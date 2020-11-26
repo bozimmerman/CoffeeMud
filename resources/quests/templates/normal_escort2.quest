@@ -201,7 +201,7 @@ SPEECH_PROG p i accept $QUEST_NAME
 			mpqset * STATISTICS ACCEPTED
 			mpforce $b sayto "$n" $QUEST_INSTRUCTIONSSTRING
 			mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
-			mpsetvar $n $QUEST_ID_ESCORT $b
+			mpsetvar $n $QUEST_ID_ESCORTEE $b
 			mpechoat $n $b follows you.
 		else
 			mpforce $b sayto "$n" You can't help me.

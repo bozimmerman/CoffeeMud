@@ -160,7 +160,7 @@ FUNCTION_PROG DO_ACCEPT
 		mpqset * STATISTICS ACCEPTED
 		mpforce $b sayto "$n" $QUEST_INSTRUCTIONSSTRING
 		mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
-		mpsetvar $n $QUEST_ID_ESCORT $b
+		mpsetvar $n $QUEST_ID_ESCORTEE $b
 		mpechoat $n $b follows you.
 	else
 		mpechoat "$n" You can't help $b.
@@ -202,6 +202,7 @@ RAND_PROG 25
 
 QUEST_TIME_PROG * -1
 	MPECHOAT $i The quest "$QUEST_NAME" has ended.
+	mppurge $<$i $QUEST_ID_ESCORTEE>
 ~
 
 QUEST_TIME_PROG * 1

@@ -50,7 +50,7 @@ settable vars:
 	<MULTIPLE>$quest_multiple</MULTIPLE>
 	<NEXT_QUEST>$next_quest_id</NEXT_QUEST>
 	<FACTION>$target_faction</FACTION>
-	<NUMFACTION>-$[$target_faction_amt / 500]</NUMFACTION>
+	<NUMFACTION>$[$target_faction_amt / 500]</NUMFACTION>
 	<QUEST_NAME SELECT="Any-1">
 		<QUEST_NAME>You need to $reason_verb to $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>You want to $reason_verb to $target_name in ${C:target_area_name}</QUEST_NAME>

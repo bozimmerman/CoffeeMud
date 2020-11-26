@@ -54,13 +54,14 @@ settable vars:
 	<MULTIPLE>$quest_multiple</MULTIPLE>
 	<NEXT_QUEST>$next_quest_id</NEXT_QUEST>
 	<FACTION>$target_faction</FACTION>
-	<NUMFACTION>-$[$target_faction_amt / 500]</NUMFACTION>
+	<NUMFACTION>$[$target_faction_amt / 500]</NUMFACTION>
 	<DELIVEREE_COUNT>$num_targets</DELIVEREE_COUNT>
 	<QUEST_NAME SELECT="Any-1">
 		<QUEST_NAME>You need ${target_item_name} $reason_verbed to $c_target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>You want ${target_item_name} $reason_verbed to $c_target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} ${target_item_name} to $c_target_name in ${C:target_area_name}</QUEST_NAME>
 	</QUEST_NAME>
+	<QUEST_WINSPEECH_TEXT>${j:1:quest_winspeech}</QUEST_WINSPEECH_TEXT>
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
 	<DELIVERY_RESPONSE>${j:1:quest_delivered}</DELIVERY_RESPONSE>
 	<DELIVEREE_ANNOUNCE>${j:1:quest_hellospeech}</DELIVEREE_ANNOUNCE>
@@ -68,7 +69,12 @@ settable vars:
 
 	<STRING load="/resources/quests/random/inc_questcommon.xml" />
 
-
+	<STRING id="quest_winspeech" SELECT="Any-1">
+		<STRING>You have $reason_verbed!</STRING>
+		<STRING>${c:reason_verbed} at last!</STRING>
+		<STRING>Congratulations!</STRING>
+		<STRING>You have completed the $reason_verb task, that will be all.</STRING>
+	</STRING>
 	
 	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">
 		<STRING>You need ${target_item_name} $reason_verbed!</STRING>

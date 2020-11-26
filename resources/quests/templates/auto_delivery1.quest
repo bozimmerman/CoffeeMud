@@ -152,6 +152,13 @@ ONCE_PROG 100
 	mpsetvar $i $QUEST_ID_DELIVERED ''
 	mpat $i mpechoat $i $QUEST_INSTRUCTIONSSTRING
 	mpsetvar $i PROGRESS Delivered $<$i $QUEST_ID_DELIVERED>.LENGTH# / $DELIVEREE_COUNT
+	if !HAS($n '$[1 *]')
+		for $0 = 0 to< $DELIVEREE_COUNT
+			mpat $n mpforce $n mpoload fromfile $QUEST_ID_item.xml '$[1 *]'
+			MPQSET * QUESTOBJ $b
+			mpat $n mpechoat $n You receive $[1 *].
+		next
+	endif
 ~
 
 FUNCTION_PROG CHECK_DONE
@@ -198,13 +205,6 @@ FUNCTION_PROG CAN_ACCEPT
 FUNCTION_PROG DO_ACCEPT
 	mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
 	mpqset * STATISTICS ACCEPTED
-	for $0 = 0 to< $DELIVEREE_COUNT
-		if !HAS($n '$[1 *]')
-			mpat $n mpforce $n mpoload fromfile $QUEST_ID_item.xml '$[1 *]'
-			MPQSET * QUESTOBJ $b
-			mpat $n mpechoat $n You receive $[1 *].
-		endif
-	next
 ~
 
 GREET_PROG 100

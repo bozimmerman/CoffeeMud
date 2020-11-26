@@ -62,6 +62,7 @@ settable vars:
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
 	<DESTINATION_MESSAGE>${j:1:quest_message}</DESTINATION_MESSAGE>
 	<DESTINATION_RESPONSE>${j:1:quest_traveled}</DESTINATION_RESPONSE>
+	<QUEST_WINSPEECH_TEXT>${j:1:quest_winspeech}</QUEST_WINSPEECH_TEXT>
 	<REWARD_ITEMS>${SELECT: ANY\. FROM $dungeon_treasure_items}</REWARD_ITEMS>
 
 	<STRING load="/resources/quests/random/inc_questcommon.xml" />
@@ -70,6 +71,13 @@ settable vars:
 		<STRING ACTION="PREPEND">$reason_short  $quest_notifyaddendum</STRING>
 	</STRING>
 	
+	<STRING id="quest_winspeech" SELECT="Any-1">
+		<STRING>You have $reason_verbed!</STRING>
+		<STRING>${c:reason_verbed} at last!</STRING>
+		<STRING>Congratulations!</STRING>
+		<STRING>You have completed the $reason_verb task, that will be all.</STRING>
+	</STRING>
+
 	<STRING ID="quest_notifyaddendum" SELECT="Pick-1">
 		<STRING PICKWEIGHT=1>Are you game?</STRING>
 		<STRING PICKWEIGHT=1>Are you ready?</STRING>

@@ -56,7 +56,7 @@ settable vars:
 	<MULTIPLE>$quest_multiple</MULTIPLE>
 	<NEXT_QUEST>$next_quest_id</NEXT_QUEST>
 	<FACTION>$target_faction</FACTION>
-	<NUMFACTION>-$[$target_faction_amt / 500]</NUMFACTION>
+	<NUMFACTION>$[$target_faction_amt / 500]</NUMFACTION>
 	<QUEST_NAME SELECT="Any-1">
 		<QUEST_NAME>You need to $reason_verb $target_name to ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>You want to $reason_verb $target_name to ${C:target_area_name}</QUEST_NAME>
@@ -67,14 +67,13 @@ settable vars:
 		<ATTACKER_SCREAM CONDITION="'$aggression' != 'NO'">${j:1:quest_attackerscream}</ATTACKER_SCREAM>
 		<ATTACKER_SCREAM CONDITION="'$aggression' = 'NO'"></ATTACKER_SCREAM>
 	</ATTACKER_SCREAM>
+	<QUEST_WINSPEECH_TEXT>${j:1:quest_winspeech}</QUEST_WINSPEECH_TEXT>
 	<QUEST_NOTIFYSSTRING>${j:1:quest_notifystring}</QUEST_NOTIFYSSTRING>
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
 	<ESCORTED_RESPONSE>${j:1:quest_arrivalstring}</ESCORTED_RESPONSE>
 	<REWARD_ITEMS>${SELECT: ANY\. FROM $dungeon_treasure_items}</REWARD_ITEMS>
 
 	<STRING load="/resources/quests/random/inc_questcommon.xml" />
-
-
 	
 	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">
 		<STRING>You need to ${reason_verb} $target_name to $target_area_name!</STRING>
@@ -120,62 +119,62 @@ settable vars:
 	<STRING ID="reason_theyoweme" SELECT="All">
 		<STRING define="quest_traveled">$quest_arrivalstring</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>${c:target_name} wants to know more about the world.</STRING>
+			<STRING>I want to know more about the world.</STRING>
 		</STRING>
 	</STRING>
 	
 	<STRING ID="reason_partytime" SELECT="All">
 		<STRING define="quest_traveled">$quest_arrivalstring</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>It is officially ${C:target_area_name} Day, and I'm sending ${c:target_name} on a trip!</STRING>
+			<STRING>It is officially ${C:target_area_name} Day, and I'm going on a trip!</STRING>
 		</STRING>
 	</STRING>
 
 	<STRING ID="reason_iowethem" SELECT="All">
 		<STRING define="quest_traveled">$quest_arrivalstring</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>${c:target_name} is needed at $target_area_name.</STRING>
+			<STRING>I am needed at $target_area_name.</STRING>
 		</STRING>
 	</STRING>
 	<STRING ID="reason_ilostthem" SELECT="All">
 		<STRING define="quest_traveled">$quest_arrivalstring</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>${c:target_name} can't figure out how to get to $target_area_name and we need your help.</STRING>
+			<STRING>I can't figure out how to get to $target_area_name and need your help.</STRING>
 		</STRING>
 	</STRING>
 
 	<STRING ID="reason_genescort" SELECT="All">
 		<STRING define="quest_traveled">$quest_arrivalstring</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>${c:target_name} needs to travel to $target_area_name.</STRING>
+			<STRING>I need to travel to $target_area_name.</STRING>
 		</STRING>
 	</STRING>
 
 	<STRING ID="reason_idoforthem" SELECT="All">
 		<STRING define="quest_traveled">$quest_arrivalstring</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>You want ${c:target_name} to know that ${target_area_name} is safe.</STRING>
+			<STRING>I want to know that ${target_area_name} is safe.</STRING>
 		</STRING>
 	</STRING>
 
 	<STRING ID="reason_wedotogether" SELECT="All">
 		<STRING define="quest_traveled">$quest_arrivalstring</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>${c:target_name} wants to see what happens at $target_area_name.</STRING>
+			<STRING>I want to see what happens at $target_area_name.</STRING>
 		</STRING>
 	</STRING>
 
 	<STRING ID="reason_idotothem" SELECT="All">
 		<STRING define="quest_traveled">$quest_arrivalstring</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>${c:target_name} wants to invade $target_area_name .</STRING>
+			<STRING>I want to invade $target_area_name .</STRING>
 		</STRING>
 	</STRING>
 
 	<STRING ID="reason_wedotoeachother" SELECT="All">
 		<STRING define="quest_traveled">$quest_arrivalstring</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>${c:target_name} is studying $target_area_name, and needs more first hand knowledge of $target_name.</STRING>
+			<STRING>I am studying $target_area_name, and needs more first hand knowledge of $target_room_name.</STRING>
 		</STRING>
 	</STRING>
 
@@ -191,10 +190,13 @@ settable vars:
 	<STRING ID="xp_amount_awarded" DEFINE="xp_amount_awarded" SELECT="any-1">
 		<STRING>$[100 + $target_level*3]</STRING>
 	</STRING>
-
-
 	
-
+	<STRING id="quest_winspeech" SELECT="Any-1">
+		<STRING>${c:target_name} is $reason_verbed!</STRING>
+		<STRING>${c:reason_verbed} at last!</STRING>
+		<STRING>Good work!</STRING>
+		<STRING>You have completed the $reason_verb task, that will be all.</STRING>
+	</STRING>
 
 	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
 		<STRING>${SELECT:MED_LEVEL from $target_area}</STRING>

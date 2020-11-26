@@ -245,13 +245,13 @@ FUNCTION_PROG CAN_ACCEPT
 
 FUNCTION_PROG DO_ACCEPT
 	if EVAL($DELIVEREE_COUNT > 1)
-		for $0 = 0 to< $DELIVEREE_COUNT
-			if !has($i '$[1 *]')
+		if !has($i '$[1 *]')
+			for $0 = 0 to< $DELIVEREE_COUNT
 				mpat $n mpforce $n mpoload '$[1 *]'
 				MPQSET * QUESTOBJ $b
 				mpat $n mpechoat $n You receive $b.
-			endif
-		next 
+			next 
+		endif
 	else
 		mpat $n mpforce $n mpoload '$[1 *]'
 		MPQSET * QUESTOBJ $b
