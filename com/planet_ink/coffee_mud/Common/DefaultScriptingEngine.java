@@ -3909,7 +3909,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(Q==null)
 						returnable=false;
 					else
-					if((arg1.indexOf('#')>=0)||(CMath.isNumber(arg1))||(!tt[t+0].startsWith("$"))
+					if((arg1.indexOf('#')>=0)||(CMath.isNumber(arg1))||(!tt[t+0].startsWith("$")))
 						returnable=(Q.getQuestRoomIndex(arg1)>=0);
 					else
 					{
