@@ -1179,13 +1179,10 @@ public class StdDeity extends StdMOB implements Deity
 						final Room startRoom = msg.source().getStartRoom();
 						final Area startArea = (startRoom!=null)?startRoom.getArea():null;
 						if((startArea != null)
-						&&(!CMath.bset(startArea.flags(), Area.FLAG_INSTANCE_CHILD)))
-						{
-							if(!areaPiety.containsKey(startArea.Name()))
-								areaPiety.put(startArea.Name(), new int[1]);
-							if(areaPiety.get(startArea.Name())[0]>0)
-								areaPiety.get(startArea.Name())[0]--;
-						}
+						&&(!CMath.bset(startArea.flags(), Area.FLAG_INSTANCE_CHILD))
+						&&(areaPiety.containsKey(startArea.Name()))
+						&&(areaPiety.get(startArea.Name())[0]>0))
+							areaPiety.get(startArea.Name())[0]--;
 					}
 					removeBlessings(msg.source());
 					if(msg.source().charStats().getStat(CharStats.STAT_FAITH)>=100)
@@ -1260,6 +1257,22 @@ public class StdDeity extends StdMOB implements Deity
 				||((msg.source().charStats().getStat(CharStats.STAT_FAITH)>=1000)
 					&&(Name().equals(msg.source().charStats().getWorshipCharID())))))
 			{
+				if((msg.sourceMinor()==CMMsg.TYP_DEATH)
+				&&(msg.source().isMonster())
+				&&(msg.source().baseCharStats().getWorshipCharID().equals(Name()))
+				&&(msg.source().basePhyStats().rejuv()>0)
+				&&(msg.source().basePhyStats().rejuv() != PhyStats.NO_REJUV)
+				&&(msg.source().getStartRoom()!=null))
+				{
+					final Room startRoom = msg.source().getStartRoom();
+					final Area startArea = (startRoom!=null)?startRoom.getArea():null;
+					if((startArea != null)
+					&&(!CMath.bset(startArea.flags(), Area.FLAG_INSTANCE_CHILD))
+					&&(areaPiety.containsKey(startArea.Name()))
+					&&(areaPiety.get(startArea.Name())[0]>0))
+						areaPiety.get(startArea.Name())[0]--;
+				}
+				
 				if(numBlessings()>0)
 				{
 					List<DeityTrigger> triggsV=worshipTriggers;
@@ -2385,7 +2398,7 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		return powers.size();
 	}
-
+	
 	@Override
 	public Ability fetchPower(final int index)
 	{
@@ -2430,5 +2443,13 @@ public class StdDeity extends StdMOB implements Deity
 		if(numPowers()>0)
 			return L("Special powers of @x1 are placed upon @x2 clerics whenever the cleric does the following: @x3.",name(),charStats().hisher(),getTriggerDesc(clericPowerTriggers));
 		return "";
+	}
+	
+	@Override
+	public int getAreaPiety(final String areaName)
+	{
+		if(areaPiety.containsKey(areaName))
+			return areaPiety.get(areaName)[0];
+		return 0;
 	}
 }

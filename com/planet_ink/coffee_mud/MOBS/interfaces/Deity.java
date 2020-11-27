@@ -846,4 +846,11 @@ public interface Deity extends MOB
 	 */
 	public String getClericPowerupDesc();
 
+	/**
+	 * Returns the number of registered followers of this deity
+	 * deity in the given area name.
+	 * @param areaName the area to get the piety of
+	 * @return the piety of the area
+	 */
+	public int getAreaPiety(final String areaName);
 }
