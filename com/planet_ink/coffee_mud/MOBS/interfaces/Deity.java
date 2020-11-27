@@ -114,6 +114,25 @@ public interface Deity extends MOB
 	}
 
 	/**
+	 * Enum for different categories of holy events that can occur.
+	 * These are encoded in the othersMessage of a CMMSg.TYP_HOLYEVENT type
+	 * message, usually with the deity itself as the target.
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public enum HolyEvent
+	{
+		SERVICE_BEGIN,	/* sent when service beginning detected */
+		SERVICE,		/* sent when service has successfully ended */
+		SERVICE_CANCEL,	/* sent when a service is being cancelled */
+		CURSING,		/* sent when a deity sends a curse */
+		BLESSING,		/* sent when a deity sends a blessing */
+		AWARENESS,		/* sent when a census of a specific worshipper is happening */
+		REBUKE,			/* sent when a deity rebukes a worshipper */
+		DISAPPOINTED	/* sent when a deity is disappointed in a worshipper */
+	}
+	
+	/**
 	 * The definition of the key words in the ritual definitions.
 	 * Most of these require a parameter of one sort or another,
 	 * depending on the deity class.  The command phrases

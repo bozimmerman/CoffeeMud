@@ -150,7 +150,7 @@ public class Skill_BefoulShrine extends StdSkill
 		&&(msg.othersMessage()!=null)
 		&&(msg.target()==affected)
 		&&(msg.target() instanceof Room)
-		&&(msg.othersMessage().equalsIgnoreCase("SERVICE-BEGIN")))
+		&&(msg.othersMessage().equalsIgnoreCase(Deity.HolyEvent.SERVICE_BEGIN.toString())))
 		{
 			((Room)msg.target()).showHappens(CMMsg.MSG_OK_VISUAL, L("This place is far too befouled to be suitable for a religious service, and must be cleaned and purified first."));
 			return false;

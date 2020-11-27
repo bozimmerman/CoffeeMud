@@ -151,7 +151,9 @@ public class Thief_CondemnMark extends ThiefSkill
 		{
 			mob.location().send(mob,msg);
 			final CMMsg eventMsg=CMClass.getMsg(target, deityM, null,
-					CMMsg.MSG_HOLYEVENT, null, CMMsg.MSG_HOLYEVENT, null, CMMsg.NO_EFFECT, "CURSING");
+					CMMsg.MSG_HOLYEVENT, null, 
+					CMMsg.MSG_HOLYEVENT, null, 
+					CMMsg.NO_EFFECT, Deity.HolyEvent.CURSING.toString());
 			mob.location().send(target, eventMsg);
 		}
 		return success;

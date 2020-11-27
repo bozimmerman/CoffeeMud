@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.Deity.HolyEvent;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -103,10 +104,11 @@ public class Thief_FalseService extends ThiefSkill
 		&&(msg.source() instanceof Deity)
 		&&(msg.othersMessage()!=null)
 		&&(msg.target()==affected)
-		&&(msg.othersMessage().equalsIgnoreCase("SERVICE")||msg.othersMessage().equalsIgnoreCase("SERVICE-CANCEL")))
+		&&(msg.othersMessage().equalsIgnoreCase(HolyEvent.SERVICE.toString())
+			||msg.othersMessage().equalsIgnoreCase(HolyEvent.SERVICE_CANCEL.toString())))
 		{
 			if((msg.value()>0)
-			&&(msg.othersMessage().equalsIgnoreCase("SERVICE")))
+			&&(msg.othersMessage().equalsIgnoreCase(HolyEvent.SERVICE.toString())))
 			{
 				final MOB mob=(MOB)affected;
 				CMLib.leveler().postExperience(mob,null,null,250+((50 + (10+super.getXLEVELLevel(mob)))*msg.value()),false);
@@ -223,7 +225,10 @@ public class Thief_FalseService extends ThiefSkill
 			||(!CMLib.flags().isInTheGame(mob,true))
 			||(mob.charStats().getMyDeity()==null))
 			{
-				final CMMsg msg2=CMClass.getMsg(mob,mob.charStats().getMyDeity(),this,CMMsg.MSG_HOLYEVENT,null,CMMsg.MSG_HOLYEVENT,null,CMMsg.NO_EFFECT,"SERVICE-CANCEL");
+				final CMMsg msg2=CMClass.getMsg(mob,mob.charStats().getMyDeity(),this,
+						CMMsg.MSG_HOLYEVENT,null,
+						CMMsg.MSG_HOLYEVENT,null,
+						CMMsg.NO_EFFECT, HolyEvent.SERVICE_CANCEL.toString());
 				if(R.okMessage(mob,msg2))
 					R.send(mob,msg2);
 				unInvoke();
@@ -234,7 +239,10 @@ public class Thief_FalseService extends ThiefSkill
 				{
 					activated=true;
 					mob.recoverCharStats();
-					final CMMsg msg2=CMClass.getMsg(mob,mob.charStats().getMyDeity(),this,CMMsg.MSG_HOLYEVENT,null,CMMsg.MSG_HOLYEVENT,null,CMMsg.NO_EFFECT,"SERVICE");
+					final CMMsg msg2=CMClass.getMsg(mob,mob.charStats().getMyDeity(),this,
+							CMMsg.MSG_HOLYEVENT,null,
+							CMMsg.MSG_HOLYEVENT,null,
+							CMMsg.NO_EFFECT, HolyEvent.SERVICE_CANCEL.toString());
 					if(R.okMessage(mob,msg2))
 						R.send(mob,msg2);
 				}
@@ -310,7 +318,10 @@ public class Thief_FalseService extends ThiefSkill
 			if(room.okMessage(mob,msg))
 			{
 				room.send(mob,msg);
-				final CMMsg msg2=CMClass.getMsg(mob,mob.charStats().getMyDeity(),this,CMMsg.MSG_HOLYEVENT,null,CMMsg.MSG_HOLYEVENT,null,CMMsg.NO_EFFECT,"SERVICE");
+				final CMMsg msg2=CMClass.getMsg(mob,mob.charStats().getMyDeity(),this,
+						CMMsg.MSG_HOLYEVENT,null,
+						CMMsg.MSG_HOLYEVENT,null,
+						CMMsg.NO_EFFECT, HolyEvent.SERVICE.toString());
 				if(room.okMessage(mob,msg2))
 				{
 					final Thief_FalseService svA=(Thief_FalseService)beneficialAffect(mob,mob,Integer.MAX_VALUE/2,asLevel);

@@ -305,7 +305,8 @@ public class Conquerable extends Arrest
 					if(M.getClanRole(holdingClan)!=null)
 					{
 						M.setClan(holdingClan,-1);
-						if((worship!=null)&&(M.baseCharStats().getWorshipCharID().equals(worship)))
+						if((worship!=null)
+						&&(M.baseCharStats().getWorshipCharID().equals(worship)))
 						{
 							M.baseCharStats().setWorshipCharID("");
 							M.recoverCharStats();
@@ -333,7 +334,8 @@ public class Conquerable extends Arrest
 					&&(M.getClanRole(holdingClan)!=null))
 					{
 						M.setClan(holdingClan,-1);
-						if((worship!=null)&&(M.charStats().getWorshipCharID().equals(worship)))
+						if((worship!=null)
+						&&(M.charStats().getWorshipCharID().equals(worship)))
 						{
 							M.baseCharStats().setWorshipCharID("");
 							M.recoverCharStats();
