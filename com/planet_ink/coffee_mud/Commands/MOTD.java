@@ -16,6 +16,8 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.CommandJournalFlags;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrCallback;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrResolution;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -86,13 +88,14 @@ public class MOTD extends StdCommand
 		final String parm=CMParms.combine(commands,1).toUpperCase();
 		oldOk = "PREVIOUS".startsWith(parm) || parm.equals("OLD");
 		final PlayerStats pStats = mob.playerStats();
+		final CMFile motdFile = new CMFile(Resources.buildResourcePath("text")+"motd.txt",mob);
 		if((pStats!=null)
 		&&(parm.equals("AGAIN")||parm.equals("NEW")||oldOk))
 		{
 			final StringBuffer buf=new StringBuffer("");
 			try
 			{
-				String msg = new CMFile(Resources.buildResourcePath("text")+"motd.txt",null).text().toString();
+				String msg = motdFile.text().toString();
 				if(msg.length()>0)
 				{
 					if(msg.startsWith("<cmvp>"))
@@ -404,8 +407,51 @@ public class MOTD extends StdCommand
 			}
 		}
 		else
+		if((parm.equals("SET")||parm.equals("NEW"))
+		&&(motdFile.canWrite()))
 		{
-			mob.tell(L("'@x1' is not a valid parameter.  Try ON, OFF, PREVIOUS, or AGAIN.",parm));
+			final CMFile file=motdFile;
+			if((!file.canWrite())
+			||(file.isDirectory()))
+			{
+				mob.tell(L("^xError: You are not authorized to create/modify that file.^N"));
+				return false;
+			}
+			StringBuffer buf=file.textUnformatted();
+			final String CR=Resources.getEOLineMarker(buf);
+			final List<String> vbuf=Resources.getFileLineVector(buf);
+			buf=null;
+			mob.tell(L("@x1 has been loaded.\n\r\n\r",file.getName()));
+			final String messageTitle="File: "+file.getVFSPathAndName();
+			CMLib.journals().makeMessageASync(mob, messageTitle, vbuf, false, new MsgMkrCallback()
+			{
+				@Override
+				public void callBack(final MOB mob, final Session sess, final MsgMkrResolution resolution)
+				{
+					if(resolution==JournalsLibrary.MsgMkrResolution.SAVEFILE)
+					{
+						final StringBuffer text=new StringBuffer("");
+						for(int i=0;i<vbuf.size();i++)
+							text.append((vbuf.get(i))+CR);
+						if(file.saveText(text))
+						{
+							for(final Iterator<String> i=Resources.findResourceKeys(file.getName());i.hasNext();)
+								Resources.removeResource(i.next());
+							mob.tell(L("MOTD saved."));
+						}
+						else
+							mob.tell(L("^XError: could not save the file!^N^."));
+					}
+				}
+			});
+			return false;
+		}
+		else
+		{
+			if(motdFile.canWrite())
+				mob.tell(L("'@x1' is not a valid parameter.  Try ON, OFF, PREVIOUS, AGAIN, or SET.",parm));
+			else
+				mob.tell(L("'@x1' is not a valid parameter.  Try ON, OFF, PREVIOUS, or AGAIN.",parm));
 		}
 		return false;
 	}

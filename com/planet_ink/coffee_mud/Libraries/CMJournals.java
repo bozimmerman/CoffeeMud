@@ -52,6 +52,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	protected final SHashtable<String,ForumJournal>	 	forumJournals		= new SHashtable<String,ForumJournal>();
 	protected final SHashtable<String,List<ForumJournal>>clanForums			= new SHashtable<String,List<ForumJournal>>();
 
+	protected volatile int lastMotdDate = -1;
+
 	protected final static List<ForumJournal> emptyForums = new ReadOnlyVector<ForumJournal>(0);
 
 	@SuppressWarnings("unchecked")
@@ -761,6 +763,14 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			{
 				isDebugging=CMSecurity.isDebugging(DbgFlag.JOURNALTHREAD);
 				tickStatus=Tickable.STATUS_ALIVE;
+				if((this.lastMotdDate > -1)
+				&&(Calendar.getInstance().get(Calendar.DAY_OF_MONTH)!=this.lastMotdDate))
+				{
+					final CMFile motdFile = new CMFile(Resources.buildResourcePath("text")+"motd.txt",null);
+					if(motdFile.exists())
+						motdFile.deleteAll();
+				}
+				this.lastMotdDate=Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 				expirationJournalSweep();
 				setThreadStatus(serviceClient,"sleeping");
 			}
