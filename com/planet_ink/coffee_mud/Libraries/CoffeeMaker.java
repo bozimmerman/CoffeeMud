@@ -3531,6 +3531,29 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			final Area.Stats areaStat=(Area.Stats)CMath.s_valueOf(Area.Stats.class, stat);
 			if(areaStat != null)
 				return ""+A.getAreaIStats()[areaStat.ordinal()];
+			final GenMOBBonusFakeStats fakeMStat = (GenMOBBonusFakeStats)CMath.s_valueOf(GenMOBBonusFakeStats.class, stat);
+			if(fakeMStat!=null)
+			{
+				if(fakeMStat == GenMOBBonusFakeStats.DEITY)
+				{
+					final int pop=A.getAreaIStats()[Area.Stats.POPULATION.ordinal()];
+					final int popThresh=(int)Math.round(CMath.mul((double)pop,.20));
+					final PairList<Deity,Integer> list=new PairArrayList<Deity,Integer>();
+					for(final Enumeration<Deity> d=CMLib.map().deities();d.hasMoreElements();)
+					{
+						final Deity D=d.nextElement();
+						final int piety=D.getAreaPiety(A.Name());
+						if((piety>0)&&(piety>popThresh))
+							list.add(D, Integer.valueOf(piety));
+					}
+					if(list.size()>0)
+					{
+						Collections.sort(list,new Pair.SecondComparator<Deity, Integer>());
+						final Pair<Deity,Integer> winner=list.get(0);
+						return winner.first.Name();
+					}
+				}
+			}
 		}
 		return "";
 	}
