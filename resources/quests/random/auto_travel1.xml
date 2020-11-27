@@ -170,7 +170,7 @@ settable vars:
 	<STRING ID="reason_wedotoeachother" SELECT="All">
 		<STRING define="quest_traveled">$quest_generic_traveled_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>I am studying $target_area_name, and need more first hand knowledge of $target_name.</STRING>
+			<STRING>You are studying $target_area_name, and need more first hand knowledge of $target_name.</STRING>
 		</STRING>
 	</STRING>
 

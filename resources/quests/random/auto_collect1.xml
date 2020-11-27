@@ -216,7 +216,7 @@ vars:
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>You need several ${p:target_item_name} $verb_collected and brought to you.</STRING>
 			<STRING>You need ${p:target_item_name} $verb_collected for me.  You can get them from ${p:target_name}.</STRING>
-			<STRING>I am collecting ${p:target_item_name}.</STRING>
+			<STRING>You are collecting ${p:target_item_name}.</STRING>
 			<STRING>${c:p:target_name} are a great source of ${p:target_item_name}, and you need lots of them $verb_collected!</STRING>
 			<STRING>Your $noun_anyrelation is collecting ${p:target_item_name}, and we need your assistance.</STRING>
 			<STRING>${c:p:target_name} are a great source of ${p:target_item_name}, and your $noun_anyrelation needs lots of them $verb_collected!</STRING>
@@ -243,9 +243,9 @@ vars:
 		<STRING define="quest_fightspeech">$quest_generic_fight_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>The ${p:target_name} must be $hurt_verbed.  Do it and $reason_verbed their ${p:target_item_name} as proof.</STRING>
-			<STRING>I am hungry for ${p:target_name}.  Bring me some of their ${p:target_item_name}.</STRING>
-			<STRING CONDITION="$target_int &lt; 4">I am making a special $target_area_name stew! Bring me the ${p:target_item_name} of ${p:target_name}.</STRING>
-			<STRING>The ${p:target_name} have ${p:target_item_name} and I do not.</STRING>
+			<STRING>You are hungry for ${p:target_name}.  Get yourself some of their ${p:target_item_name}.</STRING>
+			<STRING CONDITION="$target_int &lt; 4">You are making a special $target_area_name stew! Bring me the ${p:target_item_name} of ${p:target_name}.</STRING>
+			<STRING>The ${p:target_name} have ${p:target_item_name} and you do not.</STRING>
 		</STRING>
 	</STRING>
 	

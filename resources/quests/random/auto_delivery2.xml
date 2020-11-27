@@ -174,7 +174,7 @@ settable vars:
 	<STRING ID="reason_wedotoeachother" SELECT="All">
 		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>I am studying $target_area_name, and need $target_item_name delivered today.</STRING>
+			<STRING>You are studying $target_area_name, and need $target_item_name delivered today.</STRING>
 		</STRING>
 	</STRING>
 

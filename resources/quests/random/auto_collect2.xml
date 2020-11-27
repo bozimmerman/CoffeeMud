@@ -190,7 +190,7 @@ vars:
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>You need several ${p:target_item_name} $verb_collected and brought to you.</STRING>
 			<STRING>You need ${p:target_item_name} $verb_collected for me.  You can get them from $target_area_name.</STRING>
-			<STRING>I am collecting ${p:target_item_name}.</STRING>
+			<STRING>You are collecting ${p:target_item_name}.</STRING>
 			<STRING>${c:target_area_name} is a great source of ${p:target_item_name}, and you need lots of them $verb_collected!</STRING>
 			<STRING>Your $noun_anyrelation is collecting ${p:target_item_name}, and we need your assistance.</STRING>
 			<STRING>${c:target_area_name} is a great source of ${p:target_item_name}, and your $noun_anyrelation needs lots of them $verb_collected!</STRING>

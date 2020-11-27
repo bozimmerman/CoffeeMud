@@ -277,7 +277,7 @@ settable vars:
 			<STRING>You need ${c:target_name} brought to you.</STRING>
 			<STRING>You need ${c:target_name} brought to account for ${target_hisher} crimes.</STRING>
 			<STRING>${c:target_name} needs capturing.</STRING>
-			<STRING>I am collecting ${target_name}.</STRING>
+			<STRING>You are collecting ${target_name}.</STRING>
 			<STRING>Let's hunt ${target_name}!</STRING>
 		</STRING>
 	</STRING>
