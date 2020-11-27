@@ -39,7 +39,7 @@
  38. New Prayers: Imbue Foul Weapon, Imbue Modest Weapon
  39. The AS and AT commands now support PLAYERS to do things as or at all the players online.
  40. GMODIFY now has PLAYERS option to alter/scan all players.  Dang, this command is dangerous.
- 50. MOTD command can now be used to set motd.txt file, which is also now deleted every day.
+ 41. MOTD command can now be used to set motd.txt file, which is also now deleted every day.
  
 # Build 5.9.10 Release 6/16/2020
   1. Wands/etc have enchant type as a restriction, WandMaking/StaffMaking/Rodsmithing support.
