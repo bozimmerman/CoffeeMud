@@ -104,7 +104,7 @@ public class RandomQuests extends ActiveTicker
 				varMap.put(key.toUpperCase(), parms.get(key));
 		}
 		if(!varMap.containsKey("TEMPLATE"))
-			varMap.put("TEMPLATE", "random");
+			varMap.put("TEMPLATE", "normal");
 		varMap.put("EXPIRATION", expireTime);
 	}
 

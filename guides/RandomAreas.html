@@ -1,12 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
-  
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
   <meta name="generator" content="HTML Tidy, see www.w3.org" />
-  
-
-  
-  
-  <title>Scripting in CoffeeMud 5.9</title><link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head>
+  <title>Scripting in CoffeeMud 5.9</title>
+  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
+<!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog -->
+</head>
 <body>
 <center>
 <table style="width: 90%;" border="1" cellpadding="10" cellspacing="0">
@@ -38,11 +37,12 @@ Tags</a>
             <li><a href="#contenttag">Content</a></li>
             <li><a href="exittag">Exit</a></li>
             <li><a href="#racetag">Race</a></li>
-            <li><a href="#factiontag">Faction</a></li><li><a href="#questtag">Quest</a></li><li><a href="#objecttag">Object</a></li>
+            <li><a href="#factiontag">Faction</a></li>
+            <li><a href="#questtag">Quest</a></li>
+            <li><a href="#objecttag">Object</a></li>
           </ul>
         </li>
-        <li> <a href="#mql">Notes on MQL</a>
-        </li>
+        <li> <a href="#mql">Notes on MQL</a> </li>
       </ul>
       </td>
       <td style="text-align: left;">
@@ -79,7 +79,8 @@ and potentially the context in which each alternative applies or
 doesn't apply, and then makes selections and instantiates&nbsp;real
 mud objects based on those selections. &nbsp;The input to the
 engine is a very specifically built XML file, and the output is actual
-mud objects (mobs, items, areas, rooms, or all the above) in your game.<span style="font-weight: bold;"></span></p>
+mud objects (mobs, items, areas, rooms, or all the above) in your game.<span
+ style="font-weight: bold;" /></p>
       <h2><a name="structure">Overview of
 XML Tags</a></h2>
 The random generator works by
@@ -144,7 +145,8 @@ Tags are always evaluated recursively, from first to last.
 &nbsp;Any tag may contain zero or more of the following
 meta-attributes:<br />
 &nbsp;&nbsp;<br />
-      <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+      <table style="text-align: left; width: 100%;" border="1"
+ cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td>id</td>
@@ -156,7 +158,12 @@ or to the "insert"&nbsp;or "like" attributes.</td>
             <td>the xml inside the file named is inserted into
 the tag</td>
           </tr>
-          <tr><td>from</td><td>similar to from, except only the tag in the file with the same id is merged with the tag</td></tr><tr>
+          <tr>
+            <td>from</td>
+            <td>similar to from, except only the tag in the file with
+the same id is merged with the tag</td>
+          </tr>
+          <tr>
             <td>content_load</td>
             <td>the text inside the file names is returned as the
 value of the tag. &nbsp;Variables in the content are handled.</td>
@@ -248,7 +255,12 @@ variables defined using this command will persist only for one room.</li>
             <td>identical to "define", but always evaluated when
 encountered.</td>
           </tr>
-          <tr><td>tagdefine</td><td>identical to "predefine", but the value will be the post-processed (SELECT, INSERT, etc) tag itself</td></tr><tr>
+          <tr>
+            <td>tagdefine</td>
+            <td>identical to "predefine", but the value will be the
+post-processed (SELECT, INSERT, etc) tag itself</td>
+          </tr>
+          <tr>
             <td>select</td>
             <td>used mostly by container tags, this attribute
 allows you to specify how multiple choices are resolved by this
@@ -294,7 +306,9 @@ included in the same xml document.&nbsp; It permits some of the tag
 parameters, and all of the content tags, to be merged together into a
 single referenced tag. &nbsp;In this circumstance, child tags of
 parent tags which are being merged may optionally include "merge=false"
-to prevent duplicates from being formed. &nbsp;<br /><br />Merge
+to prevent duplicates from being formed. &nbsp;<br />
+            <br />
+Merge
 can also be set to "over" to cause one tag with an ID to always
 overwrite another with the same id. If more than one tag is set to
 merge="over", a number can be added after the word "over" to give
@@ -359,7 +373,9 @@ preceeded by:<br />
         <li>"u:" to force to
 all-uppercase</li>
         <li>"l:" to force all-lowercase</li>
-        <li>"p:" to force plural</li><li>"j:" to force javascript and mobprog-safe</li><li>"1:" to encourage&nbsp;to one line (remove tabs and cr/lf)</li>
+        <li>"p:" to force plural</li>
+        <li>"j:" to force javascript and mobprog-safe</li>
+        <li>"1:" to encourage&nbsp;to one line (remove tabs and cr/lf)</li>
         <li>"c:" to force to be capitalized (first letter upper,
 rest lower).</li>
         <li>"_:" to remove punctuation and replace spaces with
@@ -413,7 +429,8 @@ the&nbsp;content is built from the file in
 resources/randareas/example.xml, though the builder&nbsp;may
 specify his or her own xml file path as one of the many
 arguments.&nbsp; The arguments,&nbsp;briefly, are:<br />
-      <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+      <table style="text-align: left; width: 100%;" border="1"
+ cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td>OBJ TYPE</td>
@@ -513,7 +530,10 @@ on MATH EXPRESSION for more information on this.&nbsp; In addition
 to
 required variables, you&nbsp;may also use the space to enter one or
 more
-"override" values for existing defined things. &nbsp;One special variable is <span style="font-style: italic;">passivemins</span> which can be set to the number of minutes an instance will remain passive before being deleted, with a default of 30 minutes.
+"override" values for existing defined things. &nbsp;One special
+variable is <span style="font-style: italic;">passivemins</span> which
+can be set to the number of minutes an instance will remain passive
+before being deleted, with a default of 30 minutes.
       <h2><a name="glossary">Glossary of XML Tags</a></h2>
       <p><a name="areatag"><span style="font-weight: bold;">AREA tags</span></a>:
       <br />
@@ -720,7 +740,9 @@ be made
 from,
 though it may also be the word catalog in order to select an item from
 your catalog, in which
-case "name" also becomes a required detail.&nbsp; <br /><br />This value may also
+case "name" also becomes a required detail.&nbsp; <br />
+          <br />
+This value may also
 start
 with the string
 "metacraft:", in which case the remainder of the "class" value becomes
@@ -734,7 +756,8 @@ followed by a math expression &nbsp;evaluating to an upper level
 limit
 for the item to craft, "&gt;"
 for a lower limit, or "=" followed by a the base class ID to to filter
-in. &nbsp;If the ID of the common skill is "resources" or "farmables", then raw resource items will be generated instead.</li>
+in. &nbsp;If the ID of the common skill is "resources" or "farmables",
+then raw resource items will be generated instead.</li>
       </ul>
       <p>Optional Objects: <br />
       </p>
@@ -908,7 +931,11 @@ Required details:&nbsp;</p>
       <a name="questtag"><span style="font-weight: bold;">QUEST tags</span></a>:
       <br />
 Optional parameter:&nbsp;</p>
-      <ul><li>"QUEST_TEMPLATE_ID"</li></ul><dl><dd>The
+      <ul>
+        <li>"QUEST_TEMPLATE_ID"</li>
+      </ul>
+      <dl>
+        <dd>The
 QUEST tag is supremely unique in that it does not represent an object
 in your world, or a property of some object in your world, but instead
 represents a relationship between players and your world by giving them
@@ -917,17 +944,23 @@ complete&nbsp;Quest Script document/string, which is then submitted to
 CoffeeMud's Quest Manager for execution, monitoring, and cleanup.
 &nbsp;I won't go into the complete details of what goes into a Quest
 Script here, however. &nbsp;Instead, you should check the Game
-Builder's Guide for a complete breakdown of a Quest Script.</dd><dd></dd><dd>Quest
+Builder's Guide for a complete breakdown of a Quest Script.</dd>
+        <dd></dd>
+        <dd>Quest
 Scripts can be built from the ground up by assembling a String
 consisting of each line of the quest script, separated by %0D
-characters.<br /><br />Scripts can also be built, however, by utilizing
+characters.<br />
+          <br />
+Scripts can also be built, however, by utilizing
 one of the existing Quest Maker templates. &nbsp;These are the
 templates found in the <span style="font-family: monospace;">/resources/quests/templates</span>
 directory. &nbsp; They are partially built Quest Scripts which, when
 run through the Quest Maker Wizard, can be filled out manually by a
 builder. &nbsp;However, those templates can also be run through the
 Random Generator to generate randomly what the builder would normally
-have to type in manually. &nbsp;<br /><br />To create a quest script by
+have to type in manually. &nbsp;<br />
+          <br />
+To create a quest script by
 running a Template through the random generator, you would specify the
 full path or ordinary name (e.g. normal_capture1) of the Template in a
 tag parameter on the QUEST tag called QUEST_TEMPLATE_ID. &nbsp; When
@@ -935,24 +968,39 @@ this is done, the quest script and its variables are extracted from the
 template. &nbsp;The variables in the template then become required
 details for the QUEST tag. &nbsp;When those details are resolved into
 STRINGs, the values are substituted into the template's quest script
-and then returned by the tag.<br /><br />To discover the required details for a particular template, you should open up that template <span style="font-family: monospace;">*.quest</span>
+and then returned by the tag.<br />
+          <br />
+To discover the required details for a particular template, you should
+open up that template <span style="font-family: monospace;">*.quest</span>
 file and scan down the top part of the file whose lines begin with #.
 &nbsp;When you see a line that begins with #$, you know you are looking
 at a variable definition whose variable name is a required detail for
-the QUEST tag using that template.</dd><dd></dd><dd>To save you some
+the QUEST tag using that template.</dd>
+        <dd></dd>
+        <dd>To save you some
 time, numerous existing quest templates have already had associated
 snippets of Random Generator XML written to demonstrate the above.
-&nbsp;These are found in the <span style="font-family: monospace;">/resources/quests/random</span> directory, and can be indirectly accessed from the same <span style="font-family: monospace;">/resources/randareas/example.xml</span>
+&nbsp;These are found in the <span style="font-family: monospace;">/resources/quests/random</span>
+directory, and can be indirectly accessed from the same <span
+ style="font-family: monospace;">/resources/randareas/example.xml</span>
 that is used to generate random areas, rooms, mobs, etc. &nbsp;This
 means that you can use the GENERATE command to generate a random quest
-of any type anywhere in your entire world by entering:<br /><br /><span style="font-family: monospace;">generate quest all_quests template=random "expiration=20 minutes"</span><br /><br />The
+of any type anywhere in your entire world by entering:<br />
+          <br />
+          <span style="font-family: monospace;">generate quest
+all_quests template=normal "expiration=20 minutes"</span><br />
+          <br />
+The
 "template" variable specifies that you want any available quest
 template. &nbsp;The "expiration" variable definition ensures that the
 quest is not saved to your database, and will in fact be destroyed
 after running for 20 minutes. &nbsp;If you leave it off, or replace it
 with a "duration" definition (see the Game Builders Guide), then the
 quest will be writte to the database and become a persistant feature of
-your world.<br /><br />If you look through the examples in <span style="font-family: monospace;">/resources/quests/random</span>
+your world.<br />
+          <br />
+If you look through the examples in <span
+ style="font-family: monospace;">/resources/quests/random</span>
 , you will see much that is similar to Random Area documents. Strings
 and other selections are being chosen from, conditions are set for some
 values over others, etc. &nbsp;However, since many of the quest
@@ -961,17 +1009,25 @@ even set of mobs in your world be selected as subjects for the quest,
 the Random Generator engine had to be extended to support not only the
 creation of new mobs, items, rooms, and areas, but the selection of
 existing ones inside the world. &nbsp;To do this, see the next section
-on the OBJECT tag.</dd></dl><a name="objecttag"><span style="font-weight: bold;">OBJECT tags</span></a>:
-      <br /><dl><dd>This
+on the OBJECT tag.</dd>
+      </dl>
+      <a name="objecttag"><span style="font-weight: bold;">OBJECT tags</span></a>:
+      <br />
+      <dl>
+        <dd>This
 tag type is unique in the sense that it can contain any MOB, ITEM,
 AREA, ROOM, or other main object types, intermingled. &nbsp;It is also
 unique in that it need not resolve to the creation of any new object at
 all, but can instead be used to select from an existing object in your
-already existing world.<br /><br />To do the later, the OBJECT tag
+already existing world.<br />
+          <br />
+To do the later, the OBJECT tag
 value mnust begin with SELECT: and be followed by an MQL query string.
 &nbsp;When this is done, the OBJECT tag will take on the properties of
 whatever was selected by the query. &nbsp;See the next section on MQL
-for how these queries work.</dd></dl><h2><a name="mql">Notes on MQL</a></h2>
+for how these queries work.</dd>
+      </dl>
+      <h2><a name="mql">Notes on MQL</a></h2>
       <p>MQL Stands for MUD Query Language. &nbsp;It's purpose is to
 allow
 the Archon, or a random quest xml document, to select existing objects
@@ -995,7 +1051,8 @@ in the FROM clause may be included in the final results.</p>
 the following:<br />
       </p>
       <ul>
-        <li>A CMFS file path to a CMARE file, such as :<span style="font-family: monospace;">:/resources/map/plains.cmare</span></li>
+        <li>A CMFS file path to a CMARE file, such as :<span
+ style="font-family: monospace;">:/resources/map/plains.cmare</span></li>
         <li><span style="font-family: monospace;">AREAS</span> to use
 the set of all world areas</li>
         <li><span style="font-family: monospace;">ROOMS</span> to use
@@ -1004,14 +1061,17 @@ the set of all existing world rooms</li>
 the set of all existing world mobs</li>
         <li><span style="font-family: monospace;">ITEMS</span> to use
 the set of all existing world items</li>
-        <li>In case where a qualifying object is implied, <span style="font-family: monospace;">AREA</span> can be used to refer to
+        <li>In case where a qualifying object is implied, <span
+ style="font-family: monospace;">AREA</span> can be used to refer to
 that specific area.</li>
-        <li>Another SELECT: statement in parenthesis, such as: <span style="font-family: monospace;">SELECT: name from (SELECT * from AREA)</span></li>
+        <li>Another SELECT: statement in parenthesis, such as: <span
+ style="font-family: monospace;">SELECT: name from (SELECT * from AREA)</span></li>
       </ul>
 The
 FROM clause can also include narrowing suffixes. &nbsp;A narrowing
 suffix comes after the&nbsp;simple term, and is separated from it by a
-backslash \. &nbsp; For example, if your from clause looks like <span style="font-family: monospace;">SELECT * FROM AREAS\ROOM</span>
+backslash \. &nbsp; For example, if your from clause looks like <span
+ style="font-family: monospace;">SELECT * FROM AREAS\ROOM</span>
 &nbsp;, then the ROOM portion is the narrowing suffix of the AREAS
 term. &nbsp;You can also continue adding more narrowing suffixes as
 needed. &nbsp;For example: <span style="font-family: monospace;">SELECT
@@ -1027,19 +1087,35 @@ The following are useful narrowing terms:<br />
 the unique set of areas in which the prior term is located</li>
         <li><span style="font-family: monospace;">ROOMS</span> to use
 the unique set of rooms in which the prior term is located, or which
-the prior term contains</li><li><span style="font-family: monospace;">EXITS</span> to use the unique set of exits in which the prior term is located, or which the prior term contains</li>
-        <li><span style="font-family: monospace;">MOBS&nbsp;</span>to use mobs in a room or area, or nearby mobs for others</li><li><span style="font-family: monospace;">MOB</span> to
-use the set of all mob&nbsp;contained in the prior term, or ensure the simple Mob result of a query</li>
+the prior term contains</li>
+        <li><span style="font-family: monospace;">EXITS</span> to use
+the unique set of exits in which the prior term is located, or which
+the prior term contains</li>
+        <li><span style="font-family: monospace;">MOBS&nbsp;</span>to
+use mobs in a room or area, or nearby mobs for others</li>
+        <li><span style="font-family: monospace;">MOB</span> to
+use the set of all mob&nbsp;contained in the prior term, or ensure the
+simple Mob result of a query</li>
         <li><span style="font-family: monospace;">ITEMS</span> to
-use all items in a roow or area, or nearby items for others</li><li><span style="font-family: monospace;">ITEM</span> to
-use the set of all items contained in the prior term, or ensure the simple Item result of a query</li>
+use all items in a roow or area, or nearby items for others</li>
+        <li><span style="font-family: monospace;">ITEM</span> to
+use the set of all items contained in the prior term, or ensure the
+simple Item result of a query</li>
         <li><span style="font-family: monospace;">OWNER</span> to use
-the set of all item owners of the prior term, if it was items</li><li><span style="font-family: monospace;">FACTIONS</span> to use a set of all mob factions, where ID is the faction id, and VALUE is the numeric value</li>
+the set of all item owners of the prior term, if it was items</li>
+        <li><span style="font-family: monospace;">FACTIONS</span> to
+use a set of all mob factions, where ID is the faction id, and VALUE is
+the numeric value</li>
         <li><span style="font-family: monospace;">PLAYERS, PLAYER</span>
-to use the set of all players contained in the prior term</li><li><span style="font-family: monospace;">RESOURCES</span> to use the racial or material components of a mob or item</li>
+to use the set of all players contained in the prior term</li>
+        <li><span style="font-family: monospace;">RESOURCES</span> to
+use the racial or material components of a mob or item</li>
         <li><span style="font-family: monospace;">NPCS&nbsp;</span>to
-use the set of all non-player mobs in a room or area, or nearby npcs for others</li><li><span style="font-family: monospace;">NPC</span> to
-use the set of all non-player mobs contained in the prior term, or ensure the simple Mob result of a query<br />
+use the set of all non-player mobs in a room or area, or nearby npcs
+for others</li>
+        <li><span style="font-family: monospace;">NPC</span> to
+use the set of all non-player mobs contained in the prior term, or
+ensure the simple Mob result of a query<br />
         </li>
         <li><span style="font-family: monospace;">EQUIPMENT</span> to
 use the set of all &nbsp;worn items of the prior term</li>
@@ -1048,7 +1124,8 @@ use the set of all &nbsp;abilities of the prior term</li>
         <li><span style="font-family: monospace;">PROPERTIES</span> to
 use the set of all &nbsp;uninvokable effects of the prior term</li>
         <li><span style="font-family: monospace;">EFFECTS</span> to
-use the set of all &nbsp;permanent or temporary effects on the prior term</li>
+use the set of all &nbsp;permanent or temporary effects on the prior
+term</li>
         <li><span style="font-family: monospace;">BEHAVIORS</span> to
 use the set of all &nbsp;behaviors of the prior term</li>
       </ul>
@@ -1070,12 +1147,17 @@ in an empty string "".<br />
       <br />
 To summarize, valid property terms include:<br />
       <ul>
-        <li>A valid property of an object from the FROM set, e.g <span style="font-family: monospace;">NAME</span>, <span style="font-family: monospace;">CLASS</span>, etc..<br />
+        <li>A valid property of an object from the FROM set, e.g <span
+ style="font-family: monospace;">NAME</span>, <span
+ style="font-family: monospace;">CLASS</span>, etc..<br />
         </li>
-        <li>A string or numeric literal, e.g. <span style="font-family: monospace;">"Bob The Builder"</span>, <span style="font-family: monospace;">12.34</span>, etc..</li>
+        <li>A string or numeric literal, e.g. <span
+ style="font-family: monospace;">"Bob The Builder"</span>, <span
+ style="font-family: monospace;">12.34</span>, etc..</li>
         <li>An asterisk * or a period . to refer to the FROM set object
 itself.</li>
-        <li>Another MQL statement, e.g.<span style="font-family: monospace;"> (SELECT: * FROM areas\mobs)</span></li>
+        <li>Another MQL statement, e.g.<span
+ style="font-family: monospace;"> (SELECT: * FROM areas\mobs)</span></li>
         <li>An XML tag id, e.g. <span style="font-family: monospace;">$tagname</span></li>
       </ul>
 An example of a legal property might
@@ -1087,7 +1169,8 @@ of world object, or objects imported from cmare files. &nbsp;<br />
       <br />
 As
 mentioned previously, SELECT: clause properties can be separated by
-commas in order to select more than one. &nbsp;For example: <span style="font-family: monospace;">SELECT: class, name FROM areas\mobs</span>
+commas in order to select more than one. &nbsp;For example: <span
+ style="font-family: monospace;">SELECT: class, name FROM areas\mobs</span>
 would show the class id and name of every mob in your game. &nbsp;<br />
       <br />
 SELECT:
@@ -1109,7 +1192,8 @@ FROM clauses, these narrowing terms are separated by backslashes \.
 COUNT. &nbsp;The purpose of the COUNT term is to report the number of
 times the value of the previous terms appears in the rest of the FROM:
 clause. &nbsp;For example, suppose you wanted to know the number of
-times each mob name is used, to do that, you might enter <span style="font-family: monospace;">SELECT: name, name\count FROM
+times each mob name is used, to do that, you might enter <span
+ style="font-family: monospace;">SELECT: name, name\count FROM
 areas\mobs</span><br />
       <br />
 Lastly,
@@ -1128,7 +1212,8 @@ the result set</li>
         <li>UNIQUE to include only one row where the property is of any
 given value</li>
       </ul>
-For example, to quickly count the mobs in your game, you might enter <span style="font-family: monospace;">SELECT: COUNT\* from AREAS\MOBS</span><br />
+For example, to quickly count the mobs in your game, you might enter <span
+ style="font-family: monospace;">SELECT: COUNT\* from AREAS\MOBS</span><br />
       <br />
 The
 WHERE clause contains one or more conditions, which you can further
@@ -1147,7 +1232,8 @@ aggregating prefixes. &nbsp;Narrowing suffixes, however, are permitted.
 is checking whether the NAME property of an item in the FROM clause is
 equal to the string literal "BOB". &nbsp;If it is, when that condition
 is true. &nbsp;Putting it together then, to show the mobs in your game
-whose names are EXACTLY "BOB", you might do <span style="font-family: monospace;">SELECT: * FROM areas\mobs WHERE
+whose names are EXACTLY "BOB", you might do <span
+ style="font-family: monospace;">SELECT: * FROM areas\mobs WHERE
 name="BOB"</span>. This works because NAME is a property of every mob
 in the AREAS\MOBS from set, and can be compared with the word "BOB".<br />
       <br />
@@ -1163,9 +1249,13 @@ name="JOE" would expand the number of possible results by one name.
       <br />
       </td>
     </tr>
-  <tr><td align="left" valign="top" width="20%"></td><td style="text-align: left;"></td></tr></tbody>
+    <tr>
+      <td align="left" valign="top" width="20%"></td>
+      <td style="text-align: left;"></td>
+    </tr>
+  </tbody>
 </table>
 <br />
 </center>
-
-</body></html>
+</body>
+</html>
