@@ -57,7 +57,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
 		recoverPhyStats();
 		secretWord="REFRESH";
-		secretIdentity="The Wand of the Archons! Commands: REFRESH, REWIND, BLAST, LEVEL X UP, LEVEL X DOWN, BURN, GAIN X/All UP.";
+		secretIdentity="The Wand of the Archons! Commands: REFRESH, REWIND, RESTORE, BLAST, LEVEL X UP, LEVEL X DOWN, BURN, GAIN X/All UP.";
 	}
 
 	@Override
