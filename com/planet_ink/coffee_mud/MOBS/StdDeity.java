@@ -1157,6 +1157,15 @@ public class StdDeity extends StdMOB implements Deity
 				{
 					msg.source().baseCharStats().setWorshipCharID(name());
 					msg.source().recoverCharStats();
+					final Room startRoom = msg.source().getStartRoom();
+					final Area startArea = (startRoom!=null)?startRoom.getArea():null;
+					if((startArea != null)
+					&&(!CMath.bset(startArea.flags(), Area.FLAG_INSTANCE_CHILD)))
+					{
+						if(!areaPiety.containsKey(startArea.Name()))
+							areaPiety.put(startArea.Name(), new int[1]);
+						areaPiety.get(startArea.Name())[0]++;
+					}
 				}
 				break;
 			case CMMsg.TYP_REBUKE:
@@ -1167,6 +1176,16 @@ public class StdDeity extends StdMOB implements Deity
 					{
 						msg.source().baseCharStats().setWorshipCharID("");
 						msg.source().recoverCharStats();
+						final Room startRoom = msg.source().getStartRoom();
+						final Area startArea = (startRoom!=null)?startRoom.getArea():null;
+						if((startArea != null)
+						&&(!CMath.bset(startArea.flags(), Area.FLAG_INSTANCE_CHILD)))
+						{
+							if(!areaPiety.containsKey(startArea.Name()))
+								areaPiety.put(startArea.Name(), new int[1]);
+							if(areaPiety.get(startArea.Name())[0]>0)
+								areaPiety.get(startArea.Name())[0]--;
+						}
 					}
 					removeBlessings(msg.source());
 					if(msg.source().charStats().getStat(CharStats.STAT_FAITH)>=100)
@@ -1224,18 +1243,6 @@ public class StdDeity extends StdMOB implements Deity
 								bestowCurses(M);
 							}
 						});
-						break;
-					}
-					case AWARENESS:
-					{
-						final Room startRoom = msg.source().getStartRoom();
-						final Area startArea = (startRoom!=null)?startRoom.getArea():null;
-						if(startArea != null)
-						{
-							if(!this.areaPiety.containsKey(startArea.Name()))
-								this.areaPiety.put(startArea.Name(), new int[1]);
-							this.areaPiety.get(startArea.Name())[0]++;
-						}
 						break;
 					}
 					default:

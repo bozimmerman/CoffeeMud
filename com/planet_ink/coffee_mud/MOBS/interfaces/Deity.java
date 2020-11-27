@@ -127,7 +127,6 @@ public interface Deity extends MOB
 		SERVICE_CANCEL,	/* sent when a service is being cancelled */
 		CURSING,		/* sent when a deity sends a curse */
 		BLESSING,		/* sent when a deity sends a blessing */
-		AWARENESS,		/* sent when a census of a specific worshipper is happening */
 		REBUKE,			/* sent when a deity rebukes a worshipper */
 		DISAPPOINTED	/* sent when a deity is disappointed in a worshipper */
 	}

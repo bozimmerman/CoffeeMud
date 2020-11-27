@@ -104,14 +104,17 @@ public class Skill_Convert extends StdSkill
 		if(!(affected instanceof MOB))
 			return;
 		final MOB mob=(MOB)affected;
-
-		super.unInvoke();
-
 		if(canBeUninvoked())
 		{
 			if(text().length()>0)
+			{
 				mob.tell(L("You start to have doubts about @x1.",text()));
+				if(mob.baseCharStats().getWorshipCharID().length()==0)
+					CMLib.utensils().msgDeity(mob, text(), CMMsg.MASK_ALWAYS|CMMsg.MSG_REBUKE, null);
+			}
 		}
+
+		super.unInvoke();
 	}
 
 
@@ -353,6 +356,7 @@ public class Skill_Convert extends StdSkill
 				}
 				if(target.isMonster())
 					beneficialAffect(mob,target,asLevel,(int)(TimeManager.MILI_HOUR/CMProps.getTickMillis()));
+						
 			}
 		}
 		else

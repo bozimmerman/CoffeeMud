@@ -374,6 +374,19 @@ public interface CMMiscUtils extends CMLibrary
 	 * @return a list of constituant races, or empty.
 	 */
 	public List<Race> getConstituantRaces(final String raceID);
+	
+	/**
+	 * Send a quick CMMsg to a deity directly.  Usually an internal
+	 * serve or rebuke message.
+	 * 
+	 * @param mob the sender
+	 * @param deityName the name of the deity
+	 * @param msgType the type of message
+	 * @param msgStr the message string
+	 * @return the CMMsg generated
+	 */
+	public CMMsg msgDeity(final MOB mob, final String deityName, final int msgType, final String msgStr);
+	
 
 	/**
 	 * Returns a list of worn equipment at the top layer, where it can be

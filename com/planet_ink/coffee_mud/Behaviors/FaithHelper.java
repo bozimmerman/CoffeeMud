@@ -93,18 +93,9 @@ public class FaithHelper extends StdBehavior
 					}
 				}
 				deityName=CMParms.combine(V);
-				if(forMe instanceof MOB)
-				{
-					((MOB)forMe).baseCharStats().setWorshipCharID(deityName);
-					((MOB)forMe).charStats().setWorshipCharID(deityName);
-				}
 			}
-			else
 			if(forMe instanceof MOB)
-			{
-				((MOB)forMe).baseCharStats().setWorshipCharID(parms);
-				((MOB)forMe).charStats().setWorshipCharID(parms);
-			}
+				CMLib.utensils().msgDeity((MOB)forMe, deityName, CMMsg.MASK_ALWAYS|CMMsg.MSG_SERVE, null);
 		}
 	}
 
@@ -118,10 +109,7 @@ public class FaithHelper extends StdBehavior
 			&&(msg.source().isMonster())
 			&&(!msg.source().isPlayer())
 			&&(deityName.length()>0))
-			{
-				msg.source().baseCharStats().setWorshipCharID(deityName);
-				msg.source().charStats().setWorshipCharID(deityName);
-			}
+				CMLib.utensils().msgDeity(msg.source(), deityName, CMMsg.MASK_ALWAYS|CMMsg.MSG_SERVE, null);
 			return;
 		}
 		else

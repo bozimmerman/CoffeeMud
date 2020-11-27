@@ -2109,6 +2109,21 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
+	public CMMsg msgDeity(final MOB mob, final String deityName, final int msgType, final String msgStr)
+	{
+		if((mob==null)
+		||(deityName==null)
+		||(deityName.length()==0))
+			return null;
+		final Deity D=CMLib.map().getDeity(deityName);
+		if(D==null)
+			return null;
+		final CMMsg msg=CMClass.getMsg(mob, msgType, msgStr);
+		D.executeMsg(mob, msg);
+		return msg;
+	}
+	
+	@Override
 	public List<Race> getConstituantRaces(final String raceID)
 	{
 		final Vector<Race> racesToBaseFrom=new Vector<Race>();

@@ -307,10 +307,7 @@ public class Conquerable extends Arrest
 						M.setClan(holdingClan,-1);
 						if((worship!=null)
 						&&(M.baseCharStats().getWorshipCharID().equals(worship)))
-						{
-							M.baseCharStats().setWorshipCharID("");
-							M.recoverCharStats();
-						}
+							CMLib.utensils().msgDeity(M, worship, CMMsg.MASK_ALWAYS|CMMsg.MSG_REBUKE, null);
 					}
 					I.setRawWornCode(0);
 					I.setContainer(null);
@@ -336,10 +333,7 @@ public class Conquerable extends Arrest
 						M.setClan(holdingClan,-1);
 						if((worship!=null)
 						&&(M.charStats().getWorshipCharID().equals(worship)))
-						{
-							M.baseCharStats().setWorshipCharID("");
-							M.recoverCharStats();
-						}
+							CMLib.utensils().msgDeity(M, worship, CMMsg.MASK_ALWAYS|CMMsg.MSG_REBUKE, null);
 					}
 				}
 			}
@@ -802,10 +796,7 @@ public class Conquerable extends Arrest
 						M.setClan(C.clanID(),C.getAutoPosition());
 						if((worship!=null)
 						&&(!M.baseCharStats().getWorshipCharID().equals(worship)))
-						{
-							M.baseCharStats().setWorshipCharID(worship);
-							M.recoverCharStats();
-						}
+							CMLib.utensils().msgDeity(M, worship, CMMsg.MASK_ALWAYS|CMMsg.MSG_SERVE, null);
 					}
 					totalControlPoints+=M.phyStats().level();
 				}
@@ -1020,10 +1011,7 @@ public class Conquerable extends Arrest
 							M.setClan(holdingClan,C.getAutoPosition());
 							if((worship!=null)
 							&&(!M.baseCharStats().getWorshipCharID().equals(worship)))
-							{
-								M.baseCharStats().setWorshipCharID(worship);
-								M.recoverCharStats();
-							}
+								CMLib.utensils().msgDeity(M, worship, CMMsg.MASK_ALWAYS|CMMsg.MSG_SERVE, null);
 						}
 					}
 				}
@@ -1405,10 +1393,7 @@ public class Conquerable extends Arrest
 				final String worship=getManadatoryWorshipID();
 				if((worship!=null)
 				&&(!msg.source().baseCharStats().getWorshipCharID().equals(worship)))
-				{
-					msg.source().baseCharStats().setWorshipCharID(worship);
-					msg.source().recoverCharStats();
-				}
+					CMLib.utensils().msgDeity(msg.source(), worship, CMMsg.MASK_ALWAYS|CMMsg.MSG_SERVE, null);
 			}
 
 			if(msg.tool() instanceof ClanItem)
