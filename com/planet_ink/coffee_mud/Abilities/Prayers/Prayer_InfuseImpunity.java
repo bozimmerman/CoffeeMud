@@ -100,13 +100,6 @@ public class Prayer_InfuseImpunity extends Prayer implements Deity.DeityWorshipp
 		serviceRunning=newCode;
 	}
 
-	@Override
-	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
-	{
-		super.affectPhyStats(affected,affectableStats);
-		affectableStats.addAmbiance("#CHAOS");
-	}
-
 	protected volatile String deityName=null;
 
 	@Override
@@ -141,6 +134,13 @@ public class Prayer_InfuseImpunity extends Prayer implements Deity.DeityWorshipp
 		if (text().length() == 0)
 			return null;
 		return CMLib.map().getDeity(text());
+	}
+
+	@Override
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.addAmbiance("#CHAOS");
 	}
 
 	@Override

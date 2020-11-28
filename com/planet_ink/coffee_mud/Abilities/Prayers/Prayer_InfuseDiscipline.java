@@ -100,29 +100,6 @@ public class Prayer_InfuseDiscipline extends Prayer implements Deity.DeityWorshi
 		serviceRunning=newCode;
 	}
 
-	@Override
-	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
-	{
-		super.affectPhyStats(affected,affectableStats);
-		affectableStats.addAmbiance("#LAW");
-	}
-
-	@Override
-	public void unInvoke()
-	{
-		// undo the affects of this spell
-		if((affected==null))
-			return;
-		if(canBeUninvoked())
-		{
-			if(affected instanceof MOB)
-				((MOB)affected).tell(L("Your infused discipline fades."));
-		}
-
-		super.unInvoke();
-
-	}
-
 	protected volatile String deityName=null;
 
 	@Override
@@ -157,6 +134,29 @@ public class Prayer_InfuseDiscipline extends Prayer implements Deity.DeityWorshi
 		if (text().length() == 0)
 			return null;
 		return CMLib.map().getDeity(text());
+	}
+
+	@Override
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.addAmbiance("#LAW");
+	}
+
+	@Override
+	public void unInvoke()
+	{
+		// undo the affects of this spell
+		if((affected==null))
+			return;
+		if(canBeUninvoked())
+		{
+			if(affected instanceof MOB)
+				((MOB)affected).tell(L("Your infused discipline fades."));
+		}
+
+		super.unInvoke();
+
 	}
 
 	@Override

@@ -100,56 +100,6 @@ public class Prayer_InfuseHoliness extends Prayer implements Deity.DeityWorshipp
 		serviceRunning=newCode;
 	}
 
-	@Override
-	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
-	{
-		super.affectPhyStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOOD);
-		if(CMath.bset(affectableStats.disposition(),PhyStats.IS_EVIL))
-			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_EVIL);
-		affectableStats.addAmbiance("#GOOD");
-	}
-
-	@Override
-	public void unInvoke()
-	{
-		// undo the affects of this spell
-		if((affected==null))
-			return;
-		if(canBeUninvoked())
-		{
-			if(affected instanceof MOB)
-				((MOB)affected).tell(L("Your infused holiness fades."));
-		}
-
-		super.unInvoke();
-
-	}
-
-	@Override
-	public boolean okMessage(final Environmental myHost, final CMMsg msg)
-	{
-		if(serviceRunning==0)
-			return super.okMessage(myHost, msg);
-		if(((msg.targetMajor() & CMMsg.MASK_MALICIOUS)==CMMsg.MASK_MALICIOUS)
-		&&(msg.target() instanceof MOB))
-		{
-			if(msg.source().charStats().getWorshipCharID().equalsIgnoreCase(((MOB)msg.target()).charStats().getWorshipCharID()))
-			{
-				msg.source().tell(L("Not right now -- you're in a service."));
-				msg.source().makePeace(true);
-				((MOB)msg.target()).makePeace(true);
-				return false;
-			}
-		}
-		if((msg.sourceMinor() == CMMsg.TYP_LEAVE)&&(msg.source().isMonster()))
-		{
-			msg.source().tell(L("Not right now -- you're in a service."));
-			return false;
-		}
-		return super.okMessage(myHost, msg);
-	}
-
 	protected volatile String deityName=null;
 
 	@Override
@@ -184,6 +134,55 @@ public class Prayer_InfuseHoliness extends Prayer implements Deity.DeityWorshipp
 		if (text().length() == 0)
 			return null;
 		return CMLib.map().getDeity(text());
+	}
+
+	@Override
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOOD);
+		if(CMath.bset(affectableStats.disposition(),PhyStats.IS_EVIL))
+			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_EVIL);
+		affectableStats.addAmbiance("#GOOD");
+	}
+
+	@Override
+	public void unInvoke()
+	{
+		// undo the affects of this spell
+		if((affected==null))
+			return;
+		if(canBeUninvoked())
+		{
+			if(affected instanceof MOB)
+				((MOB)affected).tell(L("Your infused holiness fades."));
+		}
+		super.unInvoke();
+
+	}
+
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(serviceRunning==0)
+			return super.okMessage(myHost, msg);
+		if(((msg.targetMajor() & CMMsg.MASK_MALICIOUS)==CMMsg.MASK_MALICIOUS)
+		&&(msg.target() instanceof MOB))
+		{
+			if(msg.source().charStats().getWorshipCharID().equalsIgnoreCase(((MOB)msg.target()).charStats().getWorshipCharID()))
+			{
+				msg.source().tell(L("Not right now -- you're in a service."));
+				msg.source().makePeace(true);
+				((MOB)msg.target()).makePeace(true);
+				return false;
+			}
+		}
+		if((msg.sourceMinor() == CMMsg.TYP_LEAVE)&&(msg.source().isMonster()))
+		{
+			msg.source().tell(L("Not right now -- you're in a service."));
+			return false;
+		}
+		return super.okMessage(myHost, msg);
 	}
 
 	@Override
