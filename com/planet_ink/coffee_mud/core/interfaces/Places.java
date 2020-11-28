@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.core.interfaces;
 
+import java.util.Comparator;
+
 import com.planet_ink.coffee_mud.Abilities.interfaces.Ability;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior;
 import com.planet_ink.coffee_mud.Common.interfaces.PhyStats;
@@ -109,4 +111,25 @@ public interface Places extends PhysicalAgent
 	public final static int NUM_CLIMATES=7;
 	/**	Bitmap climate flag meaning that the area has all weather modifiers.  @see com.planet_ink.coffee_mud.core.interfaces.Places#climateType() */
 	public final static int ALL_CLIMATE_MASK=63;
+	
+	/**
+	 * A hash code comparator for places, in case such a thing is needed.
+	 */
+	public final static Comparator<Places> placeComparator = new Comparator<Places>()
+	{
+		@Override
+		public int compare(Places o1, Places o2)
+		{
+			if(o1==null)
+			{
+				if(o2==null)
+					return 0;
+				return -1;
+			}
+			else
+			if(o2==null)
+				return 1;
+			return Integer.valueOf(o1.hashCode()).compareTo(Integer.valueOf(o2.hashCode()));
+		}
+	};
 }

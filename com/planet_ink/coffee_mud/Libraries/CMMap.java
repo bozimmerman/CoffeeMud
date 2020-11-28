@@ -75,6 +75,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public List<Auctioneer> 	auctionHouseList	= new SVector<Auctioneer>();
 	public List<Banker> 		bankList			= new SVector<Banker>();
 	public List<Librarian> 		libraryList			= new SVector<Librarian>();
+	public Set<Places>			holyPlaces			= new TreeSet<Places>(Places.placeComparator);
 	public RTree<SpaceObject>	space				= new RTree<SpaceObject>();
 
 	protected Map<String,Object>SCRIPT_HOST_SEMAPHORES	= new Hashtable<String,Object>();
@@ -2239,6 +2240,49 @@ public class CMMap extends StdLibrary implements WorldMap
 					H.add(B.libraryChain());
 		}
 		return H.iterator();
+	}
+
+	@Override
+	public void registerHolyPlace(final Places newOne)
+	{
+		if(newOne != null)
+		{
+			synchronized(holyPlaces)
+			{
+				if (!holyPlaces.contains(newOne))
+					holyPlaces.add(newOne);
+			}
+		}
+	}
+
+	@Override
+	public void deregisterHolyPlace(final Places newOne)
+	{
+		if(newOne != null)
+		{
+			synchronized(holyPlaces)
+			{
+				holyPlaces.remove(newOne);
+			}
+		}
+	}
+
+	@Override
+	public Enumeration<Places> holyPlaces()
+	{
+		final ArrayList<Places> placesCopy=new ArrayList<Places>(holyPlaces.size());
+		synchronized(holyPlaces)
+		{
+			for(final Iterator<Places> i=holyPlaces.iterator();i.hasNext();)
+			{
+				final Places place = i.next();
+				if(place.amDestroyed())
+					i.remove();
+				else
+					placesCopy.add(place);
+			}
+		}
+		return new IteratorEnumeration<Places>(placesCopy.iterator());
 	}
 
 	@Override

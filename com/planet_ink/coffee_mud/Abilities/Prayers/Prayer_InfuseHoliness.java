@@ -137,6 +137,29 @@ public class Prayer_InfuseHoliness extends Prayer implements Deity.DeityWorshipp
 	}
 
 	@Override
+	public void finalize() throws Throwable
+	{
+		final Physical affected=this.affected;
+		if(affected instanceof Places)
+		{
+			CMLib.map().deregisterHolyPlace((Places)affected);
+			this.affected=null;
+		}
+		super.finalize();
+	}
+
+	@Override
+	public void setAffectedOne(final Physical affected)
+	{
+		if((affected == null)&&(this.affected instanceof Places))
+			CMLib.map().deregisterHolyPlace((Places)this.affected);
+		else
+		if(affected instanceof Places)
+			CMLib.map().registerHolyPlace((Places)affected);
+		super.setAffectedOne(affected);
+	}
+	
+	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
