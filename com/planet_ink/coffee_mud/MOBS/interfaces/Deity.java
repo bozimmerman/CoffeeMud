@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.MOBS.interfaces;
+import java.util.Enumeration;
+
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -853,4 +855,27 @@ public interface Deity extends MOB
 	 * @return the piety of the area
 	 */
 	public int getAreaPiety(final String areaName);
+
+	/**
+	 * Register a particular room as infused to this deity.
+	 * @see Deity#deregisterHolyPlace(Places)
+	 * @see Deity#holyPlaces()
+	 * @param newOne the new holy place
+	 */
+	public void registerHolyPlace(final Places newOne);
+	/**
+	 * De-register a particular room that was probably infused
+	 * to this deity.
+	 * @see Deity#registerHolyPlace(Places)
+	 * @param oldOne the old holy place for this deity
+	 */
+	public void deregisterHolyPlace(final Places newOne);
+	
+	/**
+	 * Enumerate the holy places for this deity.
+	 * @see Deity#registerHolyPlace(Places)
+	 * @see Deity#deregisterHolyPlace(Places)
+	 * @return the holy places for this deity.
+	 */
+	public Enumeration<Places> holyPlaces();
 }

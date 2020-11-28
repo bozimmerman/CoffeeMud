@@ -21,8 +21,6 @@ template: auto_collect5
 vars: 
     template(quest_template)
     category(whatevs)
-    area_name(area name)
-    sourcename(mob name)
     targetskill(ANY or a skill ID)
     targetresource(Any or name of a raw resource)
     targetmaterial(Any or name of a raw material)
@@ -78,8 +76,6 @@ vars:
 		<STRING>$reason_wedotoeachother</STRING>
 	</STRING>
 
-
-	
 	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">
 		<STRING>You need $num_targets ${target_item_name} $reason_verbed!</STRING>
 		<STRING>You must get $reason_verb $num_targets ${target_item_name}!</STRING>
@@ -216,5 +212,4 @@ vars:
 		<STRING>$[$target_level + 6]</STRING>
 	</STRING>
 </QUEST>
-
 

@@ -21,7 +21,6 @@ template: auto_delivery3
 settable vars: 
     template(auto_delivery3)
     category(whatevs)
-    area_name(area name)
     targetarea_name(area name)
     targetname(mobs name)
     num_targets(num mobs to deliver to)

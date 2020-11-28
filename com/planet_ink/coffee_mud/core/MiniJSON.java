@@ -350,6 +350,17 @@ public class MiniJSON
 				newObj.put(key, jsonDeepCopy(this.get(key)));
 			return newObj;
 		}
+		
+		public void putString(final String key, final String value)
+		{
+			if(value == null)
+				this.put(key, NULL);
+			else
+			{
+				final String fixedValue=MiniJSON.toJSONString(value);
+				this.put(key, fixedValue);
+			}
+		}
 	}
 
 	/**

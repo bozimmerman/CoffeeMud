@@ -21,7 +21,6 @@ template: auto_delivery5
 settable vars: 
     template(auto_delivery4)
     category(whatevs)
-    area_name(area name)
     targetarea_name(area name)
     targetname(mobs name)
     num_targets(num money to deliver)
@@ -250,10 +249,6 @@ settable vars:
 		<STRING>$[100 + $target_level*3]</STRING>
 	</STRING>
 
-
-
-
-
 	<STRING ID="item_level" define="item_level">$target_level</STRING>
 	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
 		<STRING>${SELECT:MED_LEVEL from $target_area}</STRING>
@@ -263,12 +258,6 @@ settable vars:
 		<STRING>$target_level</STRING>
 	</STRING>
 	
-
-
-
-
-
-
 	<OBJECT ID="mql_viable_any_questtargets">
 		SELECT: . FROM area\npcs 
 			WHERE name\count = 1
@@ -349,5 +338,4 @@ settable vars:
 	<STRING ID="target_item_name" define="target_item_name">${SELECT: DENOMINATION_NAME from $target_area}</STRING>
 	
 </QUEST>
-
 

@@ -21,7 +21,6 @@ template: auto_delivery1
 settable vars: 
     template(auto_delivery1)
     category(whatevs)
-    area_name(area name)
     targetarea_name(area name)
     targetname(mobs name)
     num_targets(num mobs to deliver to)
@@ -264,10 +263,6 @@ settable vars:
 		<STRING>$[100 + $target_level*3]</STRING>
 	</STRING>
 
-
-
-
-
 	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
 		<STRING>${SELECT:MED_LEVEL from $target_area}</STRING>
 	</STRING>
@@ -276,12 +271,6 @@ settable vars:
 		<STRING>$target_level</STRING>
 	</STRING>
 	
-
-
-
-
-
-
 	<STRING ID="target_is_aggressive" SELECT="first" DEFINE="target_is_aggressive">
 		<STRING CONDITION="$aggression = 'YES'">YES</STRING>
 		<STRING>${SELECT: 'YES' from $target where 'Aggressive' in objattrib}</STRING>
@@ -400,5 +389,4 @@ settable vars:
 	</STRING>
 
 </QUEST>
-
 

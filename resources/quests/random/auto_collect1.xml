@@ -21,8 +21,6 @@ template: auto_collect1
 vars: 
     template(auto_collect1)
     category(whatevs)
-    area_name(area name)
-    sourcename(mob name)
     targetarea_name(area name)
     targetname(mobs name)
     target_item_name(item name)
@@ -122,7 +120,6 @@ vars:
 		<STRING>You is not getting my $target_item_name!</STRING>
 		<STRING>I would rather $hurt_verb you than give $target_item_name to you.</STRING>
 	</STRING>
-
 
 	<STRING id="quest_generic_winner_speeches" SELECT="Any-1">
 		<STRING>They are all $reason_verbed! That's all of them!</STRING>
@@ -330,5 +327,4 @@ vars:
 		<STRING PICKWEIGHT="$target_level">YES</STRING>
 	</STRING>
 </QUEST>
-
 

@@ -21,7 +21,6 @@ template: auto_travel3
 settable vars: 
     template(auto_travel3)
     category(whatevs)
-    area_name(area name)
     targetarea_name(area name)
     targetname(container name)
     itemname(name of an item)

@@ -21,7 +21,6 @@ template: auto_escort1
 settable vars: 
     template(auto_escort1)
     category(whatevs)
-    area_name(area name)
     targetarea_name(area name)
     attacker_pct_chance(0-100)
     targetname(mob name)

@@ -21,7 +21,6 @@ template: auto_capture4
 settable vars: 
     template(auto_capture4)
     category(whatevs)
-    area_name(area name)
     targetarea_name(area name)
     targetname(mobs name)
 	aggression(YES,NO)
@@ -118,7 +117,6 @@ settable vars:
 		<STRING>$reason_idotothem</STRING>
 		<STRING>$reason_wedotoeachother</STRING>
 	</STRING>
-
 
 	<STRING id="quest_generic_winner_speeches" SELECT="Any-1">
 		<STRING>${c:target_heshe} is $reason_verbed!</STRING>
@@ -611,5 +609,4 @@ settable vars:
 		<STRING>${SELECT:name from $target_area}</STRING>
 	</STRING>	
 </QUEST>
-
 

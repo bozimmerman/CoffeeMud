@@ -152,9 +152,6 @@ public interface WorldMap extends CMLibrary
 	public Enumeration<BoardableShip> ships();
 	public int numShips();
 	public Room getSafeRoomToMovePropertyTo(Room room, PrivateProperty I);
-	public void registerHolyPlace(final Places newOne);
-	public void deregisterHolyPlace(final Places newOne);
-	public Enumeration<Places> holyPlaces();
 
 	/* ***********************************************************************/
 	/* *							 SPACE METHODS 								*/

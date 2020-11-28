@@ -142,21 +142,42 @@ public class Prayer_InfuseImpunity extends Prayer implements Deity.DeityWorshipp
 		final Physical affected=this.affected;
 		if(affected instanceof Places)
 		{
-			CMLib.map().deregisterHolyPlace((Places)affected);
+			final Deity D=getMyDeity();
+			if(D!=null)
+				D.deregisterHolyPlace((Places)affected);
 			this.affected=null;
 		}
 		super.finalize();
 	}
 
+	protected void alterHolyPlaceRegistration(final Physical affected)
+	{
+		if(text().length()>0)
+		{
+			final Deity D=getMyDeity();
+			if(D!=null)
+			{
+				if((affected == null)&&(this.affected instanceof Places))
+					D.deregisterHolyPlace((Places)this.affected);
+				else
+				if(affected instanceof Places)
+					D.registerHolyPlace((Places)affected);
+			}
+		}
+	}
+	
 	@Override
 	public void setAffectedOne(final Physical affected)
 	{
-		if((affected == null)&&(this.affected instanceof Places))
-			CMLib.map().deregisterHolyPlace((Places)this.affected);
-		else
-		if(affected instanceof Places)
-			CMLib.map().registerHolyPlace((Places)affected);
+		alterHolyPlaceRegistration(affected);
 		super.setAffectedOne(affected);
+	}
+	
+	@Override
+	public void setMiscText(final String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		alterHolyPlaceRegistration(this.affected);
 	}
 	
 	@Override

@@ -22,7 +22,6 @@ vars:
     template(auto_collect2)
     category(whatevs)
     area_name(area name)
-    sourcename(mob name)
     targetarea_name(area name)
     target_item_name(item name)
     collectibles_chance(number0-100)
@@ -89,8 +88,6 @@ vars:
 		<STRING>$reason_wedotoeachother</STRING>
 	</STRING>
 
-
-	
 	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">
 		<STRING>You need $num_targets ${p:target_item_name} $reason_verbed!</STRING>
 		<STRING>You must $reason_verb $num_targets ${p:target_item_name}!</STRING>
@@ -119,7 +116,6 @@ vars:
 		<STRING>You is not getting $target_item_name!</STRING>
 		<STRING>I would rather $hurt_verb you than let you get $target_item_name.</STRING>
 	</STRING>
-
 
 	<STRING id="quest_generic_winner_speeches" SELECT="Any-1">
 		<STRING>They are all $reason_verbed! That's all of them!</STRING>
@@ -278,5 +274,4 @@ vars:
 	
 	
 </QUEST>
-
 
