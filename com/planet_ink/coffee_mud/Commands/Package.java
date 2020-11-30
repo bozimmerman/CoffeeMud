@@ -97,7 +97,7 @@ public class Package extends StdCommand
 			}
 			addendumStr="."+(++addendum);
 		}
-		while((allFlag)&&(addendum<=maxToGet))
+		while((allFlag)&&(itemsV.size()<maxToGet))
 			;
 
 		if(itemsV.size()==0)
