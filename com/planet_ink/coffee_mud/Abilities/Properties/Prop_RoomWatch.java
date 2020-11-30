@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.Beggar;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
@@ -55,6 +56,15 @@ public class Prop_RoomWatch extends Property
 	protected String prefix=null;
 
 	@Override
+	public CMObject copyOf()
+	{
+		final Prop_RoomWatch obj=(Prop_RoomWatch)super.copyOf();
+		obj.newRooms=null;
+		return obj;
+	}
+
+
+	@Override
 	public String accountForYourself()
 	{
 		return "Different View of "+text();
@@ -78,7 +88,7 @@ public class Prop_RoomWatch extends Property
 			newRooms=new Vector<Room>();
 			for(int v=0;v<V.size();v++)
 			{
-				final String roomID=V.get(v);
+				String roomID=V.get(v);
 				final int x=roomID.indexOf('=');
 				if(x>0)
 				{
@@ -88,6 +98,12 @@ public class Prop_RoomWatch extends Property
 						prefix=CMStrings.trimQuotes(roomID.substring(x+1).trim());
 						continue;
 					}
+				}
+				if(roomID.startsWith("#") && (CMLib.map().getRoom(roomID)==null))
+				{
+					final Room R=CMLib.map().roomLocation(affected);
+					if((R!=null)&&(R.getArea()!=null))
+						roomID=R.getArea().Name()+roomID;
 				}
 				final Room R=CMLib.map().getRoom(roomID);
 				if(R!=null)
