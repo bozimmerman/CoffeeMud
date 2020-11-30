@@ -81,7 +81,7 @@ public class StdDeity extends StdMOB implements Deity
 		Integer.valueOf(CMMsg.TYP_LEAVE),
 		Integer.valueOf(CMMsg.TYP_LOOK)
 	});
-	
+
 	protected final Map<String,int[]> areaPiety	= new TreeMap<String,int[]>();
 
 	public StdDeity()
@@ -394,39 +394,41 @@ public class StdDeity extends StdMOB implements Deity
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_SERVE:
-			if((msg.source().baseCharStats().getMyDeity()==this)
-			||(msg.source().charStats().getMyDeity()==this))
 			{
-				msg.source().tell(L("You already worship @x1.",name()));
-				if(msg.source().isMonster())
-					CMLib.commands().postSay(msg.source(),null,L("I already worship @x1.",msg.source().charStats().getWorshipCharID()));
-				return false;
-			}
-			if((msg.source().baseCharStats().getWorshipCharID().length()>0)
-			||(msg.source().charStats().getWorshipCharID().length()>0))
-			{
-				msg.source().tell(L("You already worship @x1.",msg.source().charStats().getWorshipCharID()));
-				if(msg.source().isMonster())
-					CMLib.commands().postSay(msg.source(),null,L("I already worship @x1.",msg.source().charStats().getWorshipCharID()));
-				return false;
-			}
-			if(msg.source().charStats().getCurrentClass().baseClass().equalsIgnoreCase("Cleric"))
-			{
-				if(!CMLib.masking().maskCheck(getClericRequirements(),msg.source(),true))
+				if((msg.source().baseCharStats().getMyDeity()==this)
+				||(msg.source().charStats().getMyDeity()==this))
 				{
-					msg.source().tell(L("You are unworthy of serving @x1.",name()));
+					msg.source().tell(L("You already worship @x1.",name()));
 					if(msg.source().isMonster())
-						CMLib.commands().postSay(msg.source(),null,L("I am unworthy of serving @x1.",name()));
+						CMLib.commands().postSay(msg.source(),null,L("I already worship @x1.",msg.source().charStats().getWorshipCharID()));
 					return false;
 				}
-			}
-			else
-			if(!CMLib.masking().maskCheck(getWorshipRequirements(),msg.source(),true))
-			{
-				msg.source().tell(L("You are unworthy of @x1.",name()));
-				if(msg.source().isMonster())
-					CMLib.commands().postSay(msg.source(),null,L("I am unworthy of @x1.",name()));
-				return false;
+				if((msg.source().baseCharStats().getWorshipCharID().length()>0)
+				||(msg.source().charStats().getWorshipCharID().length()>0))
+				{
+					msg.source().tell(L("You already worship @x1.",msg.source().charStats().getWorshipCharID()));
+					if(msg.source().isMonster())
+						CMLib.commands().postSay(msg.source(),null,L("I already worship @x1.",msg.source().charStats().getWorshipCharID()));
+					return false;
+				}
+				if(msg.source().charStats().getCurrentClass().baseClass().equalsIgnoreCase("Cleric"))
+				{
+					if(!CMLib.masking().maskCheck(getClericRequirements(),msg.source(),true))
+					{
+						msg.source().tell(L("You are unworthy of serving @x1.",name()));
+						if(msg.source().isMonster())
+							CMLib.commands().postSay(msg.source(),null,L("I am unworthy of serving @x1.",name()));
+						return false;
+					}
+				}
+				else
+				if(!CMLib.masking().maskCheck(getWorshipRequirements(),msg.source(),true))
+				{
+					msg.source().tell(L("You are unworthy of @x1.",name()));
+					if(msg.source().isMonster())
+						CMLib.commands().postSay(msg.source(),null,L("I am unworthy of @x1.",name()));
+					return false;
+				}
 			}
 			break;
 		case CMMsg.TYP_REBUKE:
@@ -586,8 +588,8 @@ public class StdDeity extends StdMOB implements Deity
 			&&(R!=null))
 			{
 				final CMMsg eventMsg=CMClass.getMsg(this, mob, null,
-						CMMsg.MSG_HOLYEVENT, null, 
-						CMMsg.MSG_HOLYEVENT, null, 
+						CMMsg.MSG_HOLYEVENT, null,
+						CMMsg.MSG_HOLYEVENT, null,
 						CMMsg.NO_EFFECT, HolyEvent.BLESSING.toString());
 				R.send(this, eventMsg);
 				R.show(this,mob,CMMsg.MSG_OK_VISUAL,L("You feel the presence of <S-NAME> in <T-NAME>."));
@@ -647,8 +649,8 @@ public class StdDeity extends StdMOB implements Deity
 			&&(R!=null))
 			{
 				final CMMsg eventMsg=CMClass.getMsg(this, mob, null,
-						CMMsg.MSG_HOLYEVENT, null, 
-						CMMsg.MSG_HOLYEVENT, null, 
+						CMMsg.MSG_HOLYEVENT, null,
+						CMMsg.MSG_HOLYEVENT, null,
 						CMMsg.NO_EFFECT, HolyEvent.CURSING.toString());
 				R.send(this, eventMsg);
 				R.show(this,mob,CMMsg.MSG_OK_VISUAL,L("You feel the wrath of <S-NAME> in <T-NAME>."));
@@ -1208,7 +1210,7 @@ public class StdDeity extends StdMOB implements Deity
 				&&(msg.source()==myHost)
 				&&(msg.othersMessage()!=null))
 				{
-					Deity.HolyEvent event=(Deity.HolyEvent)CMath.s_valueOf(Deity.HolyEvent.class, msg.othersMessage().toUpperCase().trim());
+					final Deity.HolyEvent event=(Deity.HolyEvent)CMath.s_valueOf(Deity.HolyEvent.class, msg.othersMessage().toUpperCase().trim());
 					if(event == null)
 						break;
 					switch(event)
@@ -1273,7 +1275,7 @@ public class StdDeity extends StdMOB implements Deity
 					&&(areaPiety.get(startArea.Name())[0]>0))
 						areaPiety.get(startArea.Name())[0]--;
 				}
-				
+
 				if(numBlessings()>0)
 				{
 					List<DeityTrigger> triggsV=worshipTriggers;
@@ -1282,7 +1284,7 @@ public class StdDeity extends StdMOB implements Deity
 					if((triggsV!=null)&&(triggsV.size()>0))
 					{
 						final boolean recheck=triggerCheck(msg,triggsV,trigBlessingParts,trigBlessingTimes);
-	
+
 						if((recheck)&&(!norecurse)&&(!alreadyBlessed(msg.source())))
 						{
 							final boolean[] checks=trigBlessingParts.get(msg.source().Name());
@@ -1339,7 +1341,7 @@ public class StdDeity extends StdMOB implements Deity
 					if((triggsV!=null)&&(triggsV.size()>0))
 					{
 						final boolean recheck=triggerCheck(msg,triggsV,trigPowerParts,trigPowerTimes);
-	
+
 						if((recheck)&&(!norecurse)&&(!alreadyPowered(msg.source())))
 						{
 							final boolean[] checks=trigPowerParts.get(msg.source().Name());
@@ -1360,7 +1362,7 @@ public class StdDeity extends StdMOB implements Deity
 						}
 					}
 				}
-	
+
 				if(((msg.source().charStats().getStat(CharStats.STAT_FAITH)>=100)
 					||(msg.source().isPlayer() && msg.source().isAttributeSet(Attrib.SYSOPMSGS)))
 				&&((Name().equalsIgnoreCase(CMLib.law().getClericInfused(msg.source().location())))
@@ -1600,8 +1602,8 @@ public class StdDeity extends StdMOB implements Deity
 			return this.cancelService(service);
 		}
 		final CMMsg eventMsg=CMClass.getMsg(this, null, null,
-				CMMsg.MSG_HOLYEVENT, null, 
-				CMMsg.MSG_HOLYEVENT, null, 
+				CMMsg.MSG_HOLYEVENT, null,
+				CMMsg.MSG_HOLYEVENT, null,
 				CMMsg.NO_EFFECT, HolyEvent.SERVICE.toString());
 		eventMsg.setValue(service.parishaners.size());
 		service.serviceCompleted = true;
@@ -1709,8 +1711,8 @@ public class StdDeity extends StdMOB implements Deity
 							if((blacklist==M)&&((++blackmarks)>30))
 							{
 								final CMMsg eventMsg=CMClass.getMsg(this, M, null,
-										CMMsg.MSG_HOLYEVENT, null, 
-										CMMsg.MSG_HOLYEVENT, null, 
+										CMMsg.MSG_HOLYEVENT, null,
+										CMMsg.MSG_HOLYEVENT, null,
 										CMMsg.NO_EFFECT, HolyEvent.REBUKE.toString());
 								R.send(this, eventMsg);
 								final CMMsg msg=CMClass.getMsg(M,this,null,CMMsg.MSG_REBUKE,L("<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!"));
@@ -1728,8 +1730,8 @@ public class StdDeity extends StdMOB implements Deity
 								blackmarks++;
 								lastBlackmark=System.currentTimeMillis();
 								final CMMsg eventMsg=CMClass.getMsg(this, M, null,
-										CMMsg.MSG_HOLYEVENT, null, 
-										CMMsg.MSG_HOLYEVENT, null, 
+										CMMsg.MSG_HOLYEVENT, null,
+										CMMsg.MSG_HOLYEVENT, null,
 										CMMsg.NO_EFFECT, HolyEvent.DISAPPOINTED.toString());
 								eventMsg.setValue(blackmarks);
 								R.send(this, eventMsg);
@@ -1751,8 +1753,8 @@ public class StdDeity extends StdMOB implements Deity
 						if((blacklist==M)&&((++blackmarks)>30))
 						{
 							final CMMsg eventMsg=CMClass.getMsg(this, M, null,
-									CMMsg.MSG_HOLYEVENT, null, 
-									CMMsg.MSG_HOLYEVENT, null, 
+									CMMsg.MSG_HOLYEVENT, null,
+									CMMsg.MSG_HOLYEVENT, null,
 									CMMsg.NO_EFFECT, HolyEvent.REBUKE.toString());
 							R.send(this, eventMsg);
 							final CMMsg msg=CMClass.getMsg(M,this,null,CMMsg.MSG_REBUKE,L("<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!"));
@@ -1766,8 +1768,8 @@ public class StdDeity extends StdMOB implements Deity
 							blacklist=M;
 							blackmarks++;
 							final CMMsg eventMsg=CMClass.getMsg(this, M, null,
-									CMMsg.MSG_HOLYEVENT, null, 
-									CMMsg.MSG_HOLYEVENT, null, 
+									CMMsg.MSG_HOLYEVENT, null,
+									CMMsg.MSG_HOLYEVENT, null,
 									CMMsg.NO_EFFECT, HolyEvent.DISAPPOINTED.toString());
 							eventMsg.setValue(blackmarks);
 							R.send(this, eventMsg);
@@ -2442,7 +2444,7 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		return powers.size();
 	}
-	
+
 	@Override
 	public Ability fetchPower(final int index)
 	{
@@ -2488,7 +2490,7 @@ public class StdDeity extends StdMOB implements Deity
 			return L("Special powers of @x1 are placed upon @x2 clerics whenever the cleric does the following: @x3.",name(),charStats().hisher(),getTriggerDesc(clericPowerTriggers));
 		return "";
 	}
-	
+
 	@Override
 	public int getAreaPiety(final String areaName)
 	{
