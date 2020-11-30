@@ -2036,6 +2036,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 			this.recentVisits.put(planeCodeString, new long[] {System.currentTimeMillis(),0});
 		final String newPlaneName = planeIDNum.addAndGet(1)+"_"+cloneArea.Name();
 		Area planeArea = CMClass.getAreaType("SubThinInstance");
+		planeArea.setTimeObj((TimeClock)cloneArea.getTimeObj().copyOf());
 		planeArea.setName(newPlaneName);
 		planeArea.addBlurbFlag("PLANEOFEXISTENCE {"+planeName+"}");
 		CMLib.map().addArea(planeArea);

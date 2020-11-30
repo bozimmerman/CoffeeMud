@@ -664,6 +664,7 @@ public class StdThinInstance extends StdThinArea implements SubArea
 	protected Area createRedirectArea(final List<MOB> mobs)
 	{
 		final StdThinInstance newA=(StdThinInstance)this.copyOf();
+		newA.setTimeObj((TimeClock)getTimeObj().copyOf());
 		newA.properRooms=new STreeMap<String, Room>(new Area.RoomIDComparator());
 		newA.parentArea=null;
 		newA.properRoomIDSet = null;

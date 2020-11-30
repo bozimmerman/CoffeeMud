@@ -1824,6 +1824,7 @@ public class InstanceArea extends StdAbility
 					final String newInstanceName = instIDNum.addAndGet(1)+"_"+parentA.Name();
 					instA = CMClass.getAreaType("SubThinInstance");
 					instA.setName(newInstanceName);
+					instA.setTimeObj((TimeClock)parentA.getTimeObj().copyOf());
 					for(final Enumeration<String> e=parentA.getProperRoomnumbers().getRoomIDs();e.hasMoreElements();)
 						instA.addProperRoomnumber(this.convertToMyArea(instA, e.nextElement()));
 					CMLib.map().addArea(instA);
