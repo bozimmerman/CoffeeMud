@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Behaviors;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -156,6 +157,7 @@ public class RandomQuests extends ActiveTicker
 			this.ticking=ticking;
 		}
 
+		@Override
 		public void run()
 		{
 			try
@@ -232,7 +234,10 @@ public class RandomQuests extends ActiveTicker
 					{
 						if(i==maxAttempts-1)
 						{
-							Log.errOut("RandomQuests",cme);
+							if(Log.debugChannelOn() && CMSecurity.isDebugging(DbgFlag.MUDPERCOLATOR))
+								Log.debugOut("RandomQuests",cme);
+							else
+								Log.errOut("RandomQuests",cme.getMessage());
 							Log.errOut(L("Failed to finish creating a quest for @x1",ticking.name()));
 							disable.set(true);
 							return;
