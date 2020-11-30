@@ -83,6 +83,8 @@ public class Skill_Convert extends StdSkill
 		return Ability.ACODE_SKILL | Ability.DOMAIN_EVANGELISM;
 	}
 
+	public static final long DOUBT_TIME=TimeManager.MILI_HOUR;
+
 	protected static PairVector<MOB, Long>	convertStack	= new PairVector<MOB, Long>();
 
 	@Override
@@ -163,8 +165,7 @@ public class Skill_Convert extends StdSkill
 				return false;
 			}
 		}
-		if((CMLib.flags().isAnimalIntelligence(target))
-		||((target.isMonster())&&(target.phyStats().level()>mob.phyStats().level())))
+		if(CMLib.flags().isAnimalIntelligence(target))
 		{
 			mob.tell(L("You can't convert @x1.",target.name(mob)));
 			if(mob.isMonster())
@@ -197,7 +198,15 @@ public class Skill_Convert extends StdSkill
 			}
 		}
 
-		final boolean success=proficiencyCheck(mob,0,auto);
+		int levelDiff=0;
+		if((target.isMonster())&&(target.phyStats().level()>mob.phyStats().level()))
+		{
+			levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
+			if(levelDiff<0)
+				levelDiff=0;
+		}
+
+		final boolean success=proficiencyCheck(mob,-(levelDiff*15),auto);
 		// when faith < 100, they have so much faith they can't be converted?
 		// when faith >= 100, the have so much doubt they CAN be converted.
 		boolean targetMadeSave=(givenTarget == target) || CMLib.dice().roll(1,100,0)>(target.charStats().getSave(CharStats.STAT_SAVE_DOUBT));
@@ -356,7 +365,7 @@ public class Skill_Convert extends StdSkill
 				}
 				if(target.isMonster())
 					beneficialAffect(mob,target,asLevel,(int)(TimeManager.MILI_HOUR/CMProps.getTickMillis()));
-						
+
 			}
 		}
 		else
@@ -365,7 +374,14 @@ public class Skill_Convert extends StdSkill
 			{
 				final Ability A=CMClass.getAbility("Prayer_ReligiousDoubt");
 				if(A!=null)
+				{
 					A.invoke(mob,target,true,asLevel);
+					final Ability effA=target.fetchEffect("Prayer_ReligiousDoubt");
+					if((effA!=null)
+					&&(effA.canBeUninvoked())
+					&&(effA.expirationDate()>0))
+						effA.setExpirationDate((int)(DOUBT_TIME/CMProps.getTickMillis()));
+				}
 			}
 			else
 				beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to convert <T-NAMESELF>, but <S-IS-ARE> unconvincing."));

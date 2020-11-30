@@ -115,6 +115,7 @@ public class Mood extends StdAbility
 		/*9 */{"EXCITED","","^Wexcited","excitedly"},
 		/*10*/{"SCARED","","^yscared","scaredly"},
 		/*11*/{"LONELY","","^Clonely","lonely"},
+		/*12*/{"REFLECTIVE","","^Creflective","reflective"},
 	};
 
 	public final static String[] uglyPhrases=
@@ -883,9 +884,62 @@ public class Mood extends StdAbility
 						}
 						break;
 					}
+					case 12: // reflective
+					{
+						switch(CMLib.dice().roll(1,6,0))
+						{
+						case 1:
+							break;
+						case 2:
+							changeAllSays(msg, "reflect(s)");
+							break;
+						case 3:
+							break;
+						case 4:
+							changeAllSays(msg, "contemplate(s)");
+							break;
+						case 5:
+							changeAllSays(msg, "ponder(s)");
+							break;
+						default:
+							break;
+						}
+						break;
+					}
 					default:
 						break;
 					}
+					final StringBuilder s=new StringBuilder(str);
+					int state=0;
+					for(int i=0;i<s.length();i++)
+					{
+						if(Character.isLetter(s.charAt(i)))
+						{
+							if(state==2)
+								s.setCharAt(i, Character.toUpperCase(s.charAt(i)));
+							state=1;
+						}
+						else
+						if(Character.isWhitespace(s.charAt(i))
+						&&(state==1))
+						{
+							state=0;
+							switch(CMLib.dice().roll(1, 3, 0))
+							{
+							case 0:
+								break;
+							case 1:
+								s.insert(i, "...");
+								break;
+							case 2:
+								s.insert(i, ". ");
+								state=2;
+								break;
+							}
+
+						}
+					}
+					str=s.toString();
 					if(!oldStr.equals(str))
 					{
 						msg.modify(msg.source(),

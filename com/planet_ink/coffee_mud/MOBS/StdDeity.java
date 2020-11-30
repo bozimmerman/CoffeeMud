@@ -443,7 +443,7 @@ public class StdDeity extends StdMOB implements Deity
 		return true;
 	}
 
-	public synchronized void bestowBlessing(final MOB mob, final Ability blesingA)
+	public synchronized void bestowBlessing(final MOB mob, final Ability blessingA)
 	{
 		final Room prevRoom;
 		synchronized(this)
@@ -455,45 +455,66 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			targetRoom=mob.location();
 		}
-		targetRoom.bringMobHere(this,false);
-		if(blesingA!=null)
+		try
 		{
-			final Vector<String> V=new Vector<String>();
-			if(blesingA.canTarget(Ability.CAN_MOBS))
+			final String infusedStr=CMLib.law().getClericInfused(targetRoom);
+			targetRoom.bringMobHere(this,false);
+			if(blessingA!=null)
 			{
-				V.addElement(mob.name()+"$");
-				blesingA.invoke(this,V,mob,true,mob.phyStats().level());
+				final Vector<String> V=new Vector<String>();
+				final Ability blessedA;
+				if(blessingA.canTarget(Ability.CAN_MOBS))
+				{
+					V.addElement(mob.name()+"$");
+					blessingA.invoke(this,V,mob,true,mob.phyStats().level());
+					blessedA=mob.fetchEffect(blessingA.ID());
+				}
+				else
+				if(blessingA.canTarget(Ability.CAN_ITEMS))
+				{
+					Item I=mob.fetchWieldedItem();
+					if(I==null)
+						I=mob.fetchHeldItem();
+					if(I==null)
+						I=mob.fetchItem(null,Wearable.FILTER_WORNONLY,"all");
+					if(I==null)
+						I=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,"all");
+					if(I==null)
+						return;
+					V.addElement("$"+I.name()+"$");
+					addItem(I);
+					blessingA.invoke(this,V,I,true,mob.phyStats().level());
+					delItem(I);
+					if(!mob.isMine(I))
+						mob.addItem(I);
+					blessedA=I.fetchEffect(blessingA.ID());
+				}
+				else
+				{
+					blessingA.invoke(this,mob,true,mob.phyStats().level());
+					blessedA=mob.fetchEffect(blessingA.ID());
+				}
+				if((blessedA!=null)
+				&&(blessedA.invoker()==this)
+				&&(blessedA.affecting()!=null)
+				&&(blessedA.affecting().fetchEffect(blessedA.ID())!=null)
+				&&(infusedStr!=null)
+				&&(Name().equalsIgnoreCase(infusedStr))
+				&&(blessedA.expirationDate() > 0))
+					blessedA.setExpirationDate(Math.round(CMath.mul((double)blessedA.expirationDate(), 1.5)));
 			}
-			else
-			if(blesingA.canTarget(Ability.CAN_ITEMS))
-			{
-				Item I=mob.fetchWieldedItem();
-				if(I==null)
-					I=mob.fetchHeldItem();
-				if(I==null)
-					I=mob.fetchItem(null,Wearable.FILTER_WORNONLY,"all");
-				if(I==null)
-					I=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,"all");
-				if(I==null)
-					return;
-				V.addElement("$"+I.name()+"$");
-				addItem(I);
-				blesingA.invoke(this,V,I,true,mob.phyStats().level());
-				delItem(I);
-				if(!mob.isMine(I))
-					mob.addItem(I);
-			}
-			else
-				blesingA.invoke(this,mob,true,mob.phyStats().level());
 		}
-		prevRoom.bringMobHere(this,false);
-		if((prevRoom != location())
-		||(!prevRoom.isInhabitant(this))
-		||(targetRoom.isInhabitant(this)))
+		finally
 		{
-			this.setLocation(prevRoom);
-			prevRoom.addInhabitant(this);
-			targetRoom.delInhabitant(this);
+			prevRoom.bringMobHere(this,false);
+			if((prevRoom != location())
+			||(!prevRoom.isInhabitant(this))
+			||(targetRoom.isInhabitant(this)))
+			{
+				this.setLocation(prevRoom);
+				prevRoom.addInhabitant(this);
+				targetRoom.delInhabitant(this);
+			}
 		}
 		if(targetRoom!=prevRoom)
 		{

@@ -34,8 +34,6 @@ import java.util.*;
 */
 public class Prayer_ReligiousDoubt extends Prayer
 {
-	public static final long DOUBT_TIME=TimeManager.MILI_HOUR;
-
 	@Override
 	public String ID()
 	{
@@ -78,6 +76,19 @@ public class Prayer_ReligiousDoubt extends Prayer
 
 	protected int tickUp=0;
 	protected boolean hasThoughtItOver=false;
+	protected Ability moodA=null;
+
+	public Ability getMood()
+	{
+		if((moodA==null)
+		&&(this.affected!=null))
+		{
+			moodA=CMClass.getAbility("Mood");
+			moodA.setAffectedOne(this.affected);
+			moodA.setMiscText("REFLECTIVE");
+		}
+		return moodA;
+	}
 
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
@@ -100,9 +111,12 @@ public class Prayer_ReligiousDoubt extends Prayer
 		&&(super.canBeUninvoked()))
 		{
 			final boolean oldOther=hasThoughtItOver;
-			hasThoughtItOver=(++tickUp)>tickDown;
+			hasThoughtItOver=(++tickUp)>=(tickDown/2);
 			if((oldOther!=hasThoughtItOver)&&(affected instanceof MOB))
 				((MOB)affected).recoverCharStats();
+			final Ability moodA=this.getMood();
+			if(moodA!=null)
+				moodA.tick(ticking, tickID);
 		}
 		return super.tick(ticking,tickID);
 	}
@@ -138,7 +152,19 @@ public class Prayer_ReligiousDoubt extends Prayer
 				return false;
 			}
 		}
+		final Ability moodA=this.getMood();
+		if((moodA!=null)&&(!moodA.okMessage(myHost, msg)))
+			return false;
 		return true;
+	}
+
+	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+		final Ability moodA=this.getMood();
+		if(moodA!=null)
+			moodA.executeMsg(myHost, msg);
 	}
 
 	@Override
@@ -160,7 +186,11 @@ public class Prayer_ReligiousDoubt extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final boolean success=proficiencyCheck(mob,0,auto);
+		int levelDiff=0;
+		levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
+		if(levelDiff<0)
+			levelDiff=0;
+		final boolean success=proficiencyCheck(mob,-(levelDiff*15),auto);
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 for <T-NAMESELF>.^?",prayWord(mob)));
@@ -168,7 +198,7 @@ public class Prayer_ReligiousDoubt extends Prayer
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> questioning <S-HIS-HER> faith, but does not seem convinced yet."));
-				beneficialAffect(mob,target,asLevel,(int)(DOUBT_TIME/CMProps.getTickMillis()));
+				beneficialAffect(mob,target,asLevel,0);
 				if(target != mob)
 				{
 					if(mob.fetchFaction(CMLib.factions().getInclinationID())!=Integer.MAX_VALUE)
@@ -177,7 +207,10 @@ public class Prayer_ReligiousDoubt extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for <T-NAMESELF>, but the doubt fades.",prayWord(mob)));
+		if(auto)
+			return beneficialWordsFizzle(mob,target,L("<T-NAME> <T-IS-ARE> unconvinced about doubting <T-HIS-HER> beliefs."));
+		else
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for <T-NAMESELF>, but <T-HIS-HER> doubt fades.",prayWord(mob)));
 
 		// return whether it worked
 		return success;
