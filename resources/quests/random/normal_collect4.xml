@@ -26,7 +26,7 @@ vars:
     targetskill(ANY or a skill ID)
     targetresource(Any or name of a raw resource)
     targetmaterial(Any or name of a raw material)
-    itemname(an item name)
+    itemname(name of an item), item_level(#), item_material($)
     num_targets(num items to collect)
 	xp_amount_awarded
 	gold_amount_awarded
@@ -75,7 +75,16 @@ vars:
 		<OBJECT condition="$itemname='' and $targetresource!='Any'">SELECT: ANY\. from $all_target_items where weight < 200 and resourcename='$targetresource'</OBJECT>
 		<OBJECT condition="$itemname='' and $targetmaterial!='Any'">SELECT: ANY\. from $all_target_items where weight < 200 and materialname='$targetmaterial'</OBJECT>
 		<OBJECT condition="$itemname!=''">
-			<ITEM class="GenItem" name="$itemname" display="$itemname lies here" material="PAPER" level="$level_range" />
+			<ITEM class="GenItem" name="$itemname" display="$itemname lies here">
+				<MATERIAL SELECT="Pick-1">
+					<MATERIAL PICKWEIGHT=99 CONDITION="$item_material=''">$any_Item_material</MATERIAL>
+					<MATERIAL PICKWEIGHT=1 CONDITION="$item_material!=''">$item_material</MATERIAL>
+				</MATERIAL>
+				<LEVEL SELECT="Pick-1">
+					<LEVEL PICKWEIGHT=99 CONDITION="$item_level=''">$level_range</LEVEL>
+					<LEVEL PICKWEIGHT=1 CONDITION="$item_level!=''">$item_level</LEVEL>
+				</LEVEL>
+			</ITEM>
 		</OBJECT>
 	</OBJECT>
 	

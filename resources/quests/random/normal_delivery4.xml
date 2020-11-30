@@ -350,7 +350,7 @@ settable vars:
 	</OBJECT>
 	
 	<OBJECT ID="target" DEFINE="target" SELECT="any-1">
-		<OBJECT CONDITION="$targetname!=''"">SELECT: ANY\. FROM $target_area\mobs WHERE name=$targetname</OBJECT>
+		<OBJECT CONDITION="$targetname!=''">SELECT: ANY\. FROM $target_area\mobs WHERE name=$targetname</OBJECT>
 		<OBJECT CONDITION="$targetname=''">
 			SELECT: ANY\. FROM $target_area\npcs 
 				WHERE name\count=1 

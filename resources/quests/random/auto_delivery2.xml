@@ -23,7 +23,7 @@ settable vars:
     category(whatevs)
     targetarea_name(area name)
     targetname(container name)
-    itemname(name of an item)
+    itemname(name of an item), item_level(#), item_material($)
 	xp_amount_awarded
 	gold_amount_awarded
 	quest_point_awarded(YES,NO)
@@ -290,7 +290,16 @@ settable vars:
 	<OBJECT ID="target_item" define="target_item" SELECT="Any-1">
 		<OBJECT condition="$itemname=''">SELECT: ANY\. FROM $item_junk</OBJECT>
 		<OBJECT condition="$itemname!=''">
-			<ITEM class="GenItem" name="$itemname" display="$itemname lies here" material="PAPER" level="$level_range" />
+			<ITEM class="GenItem" name="$itemname" display="$itemname lies here">
+				<MATERIAL SELECT="Pick-1">
+					<MATERIAL PICKWEIGHT=99 CONDITION="$item_material=''">$any_Item_material</MATERIAL>
+					<MATERIAL PICKWEIGHT=1 CONDITION="$item_material!=''">$item_material</MATERIAL>
+				</MATERIAL>
+				<LEVEL SELECT="Pick-1">
+					<LEVEL PICKWEIGHT=99 CONDITION="$item_level=''">$level_range</LEVEL>
+					<LEVEL PICKWEIGHT=1 CONDITION="$item_level!=''">$item_level</LEVEL>
+				</LEVEL>
+			</ITEM>
 		</OBJECT>
 	</OBJECT>
 

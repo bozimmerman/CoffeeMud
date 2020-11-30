@@ -225,7 +225,7 @@ public class Quests extends StdLibrary implements QuestManager
 		{
 			final String step=steps.get(s);
 			V=Resources.getFileLineVector(new StringBuffer(step));
-			final List<List<String>> cmds=CMLib.quests().parseQuestCommandLines(V,"SET",0);
+			final List<List<String>> cmds=parseQuestCommandLines(V,"SET",0);
 			List<String> areaLine=null;
 			List<String> nameLine=null;
 			for(int v=0;v<cmds.size();v++)
@@ -309,7 +309,7 @@ public class Quests extends StdLibrary implements QuestManager
 			steps=(List<String>)resp;
 		else
 			return "Unknown error.";
-		if(CMLib.quests().fetchQuest(named)!=null)
+		if(fetchQuest(named)!=null)
 			return "A quest called '"+named+"' already exists.  Better to pick a new name.";
 		Vector<String> lineV=null;
 		String line=null;
@@ -1746,9 +1746,9 @@ public class Quests extends StdLibrary implements QuestManager
 				continue;
 			if(SE.defaultQuestName().length()>1)
 			{
-				Quest Q=CMLib.quests().fetchQuest(SE.defaultQuestName());
+				Quest Q=fetchQuest(SE.defaultQuestName());
 				if(Q==null)
-					Q=CMLib.quests().findQuest(SE.defaultQuestName());
+					Q=findQuest(SE.defaultQuestName());
 				if(Q==null)
 				{
 					SE.endQuest(player, player, SE.defaultQuestName());
@@ -1756,7 +1756,6 @@ public class Quests extends StdLibrary implements QuestManager
 				}
 				else
 					qVec.add(Q);
-
 			}
 		}
 		return qVec;
@@ -1881,8 +1880,8 @@ public class Quests extends StdLibrary implements QuestManager
 						{
 							final String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
 							final StringBuffer label=new StringBuffer(((lastLabel==null)?"":lastLabel)+"\n\rChoices: ");
-							for(int q=0;q<CMLib.quests().numQuests();q++)
-								label.append("\""+CMLib.quests().fetchQuest(q).name()+"\" ");
+							for(int q=0;q<numQuests();q++)
+								label.append("\""+fetchQuest(q).name()+"\" ");
 							final GenericEditor.CMEval evaler = getQuestCommandEval(inputCommand);
 							final String s=CMLib.genEd().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,label.toString(),
 															evaler, null);
@@ -2108,8 +2107,8 @@ public class Quests extends StdLibrary implements QuestManager
 					mob.tell(L("You must specify a VALID quest string.  This one contained errors.  Try AHELP QUESTS."));
 					return null;
 				}
-				CMLib.quests().addQuest(Q);
-				CMLib.quests().save();
+				addQuest(Q);
+				save();
 				return Q;
 			}
 			return null;
@@ -2182,7 +2181,7 @@ public class Quests extends StdLibrary implements QuestManager
 							throw new CMException("Quest names may only contain letters, digits, or _ -- no spaces or special characters.");
 					}
 
-					if (CMLib.quests().fetchQuest(((String) str).trim()) != null)
+					if (fetchQuest(((String) str).trim()) != null)
 						throw new CMException("A quest of that name already exists.  Enter another.");
 					return ((String) str).trim();
 				}
@@ -2551,7 +2550,7 @@ public class Quests extends StdLibrary implements QuestManager
 							return "";
 						throw new CMException("You must enter a quest name!");
 					}
-					final Quest Q = CMLib.quests().fetchQuest(((String) str).trim());
+					final Quest Q = fetchQuest(((String) str).trim());
 					if (Q == null)
 						throw new CMException("A quest of the name '" + ((String) str).trim() + "' does not exist.  Enter another.");
 					return Q.name();

@@ -571,7 +571,7 @@ settable vars:
 	</STRING>
 
 	<OBJECT ID="target" DEFINE="target" SELECT="any-1">
-		<OBJECT CONDITION="$targetname!=''"">SELECT: ANY\. FROM $target_area\mobs WHERE name=$targetname</OBJECT>
+		<OBJECT CONDITION="$targetname!=''">SELECT: ANY\. FROM $target_area\mobs WHERE name=$targetname</OBJECT>
 		<OBJECT CONDITION="$targetname=''">SELECT: ANY\. FROM $target_area\mobs WHERE name\count &gt; $num_targets AND  . LIKE '-HOME "+$target_area_name"'</OBJECT>
 	</OBJECT>
 

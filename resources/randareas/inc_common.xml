@@ -357,22 +357,29 @@ ${SELECT:any\name from (SELECT: . from $dungeon_junk)}
 <string id="any_plural_digit" select="any-1"><string>2</string><string>3</string><string>4</string><string>5</string><string>6</string><string>7</string><string>8</string><string>9</string></string>
 <string id="any_digit" insert="any_plural_digit" select="any-1"><string>0</string><string>1</string></string>
 
-<STRING id="any_cheap_metal" select="any-1"><string>iron</string><string>lead</string><string>bronze</string><string>tin</string><string>brass</string></STRING>
-<STRING id="any_rich_metal" select="any-1"><string>silver</string><string>gold</string><string>copper</string><string>white_gold</string></STRING>
-<STRING id="any_metal" insert="any_cheap_metal,any_rich_metal" select="any-1"><string>zinc</string><string>steel</string><string>chromium</string><string>dragonscales</string></STRING>
-<STRING id="any_mithril" insert="any_metal" select="any-1"><string>mithril</string><string>adamantite</string><string>atlantite</string></STRING>
-<STRING id="any_wood" select="any-1" insert="most_wood_values">
-	<string>wood</string><string>reed</string><string>bamboo</string>
-</STRING>
+<STRING id="all_cheap_metal" select="all"><string>iron</string><string>lead</string><string>bronze</string><string>tin</string><string>brass</string></STRING>
+<STRING id="any_cheap_metal" insert="all_cheap_metal" select="any-1" />
+<STRING id="all_rich_metal" select="all"><string>silver</string><string>gold</string><string>copper</string><string>white_gold</string></STRING>
+<STRING id="any_rich_metal" insert="all_rich_metal" select="any-1" />
+<STRING id="all_metal" insert="all_cheap_metal,all_rich_metal" select="all"><string>zinc</string><string>steel</string><string>chromium</string><string>dragonscales</string></STRING>
+<STRING id="any_metal" insert="all_metal" select="any-1" />
+<STRING id="all_mithril" select="all"><string>mithril</string><string>adamantite</string><string>atlantite</string></STRING>
+<STRING id="any_mithril" insert="any_metal,all_mithril" select="any-1" />
 <STRING id="most_wood_values" select="all">
 	<string>pine</string><string>balsa</string><string>oak</string><string>maple</string><string>redwood</string><string>hickory</string><string>ironwood</string>
 	<string>yew</string><string>teak</string><string>cedar</string><string>elm</string><string>cherrywood</string><string>beechwood</string><string>willow</string><string>sycamore</string>
 	<string>spruce</string><string>mesquite</string>
 </STRING>
+<STRING id="all_wood" select="all" insert="most_wood_values"><string>wood</string><string>reed</string><string>bamboo</string></STRING>
+<STRING id="any_wood" select="any-1" insert="all_wood" />
 <STRING id="any_tree" select="any-1" insert="most_wood_values" />
-<STRING id="any_cheap_cloth" select="any-1"><string>hide</string><string>wool</string><string>cotton</string><string>hemp</string></STRING>
-<STRING id="any_rich_cloth" select="any-1"><string>spidersteel</string><string>silk</string><string>feathers</string><string>fur</string></STRING>
-<STRING id="any_cloth" insert="any_cheap_cloth,any_rich_cloth" select="any-1"></STRING>
+<STRING id="all_cheap_cloth" select="all"><string>hide</string><string>wool</string><string>cotton</string><string>hemp</string></STRING>
+<STRING id="any_cheap_cloth" insert="all_cheap_cloth" select="any-1" />
+<STRING id="all_rich_cloth" select="all"><string>spidersteel</string><string>silk</string><string>feathers</string><string>fur</string></STRING>
+<STRING id="any_rich_cloth" insert="all_rich_cloth" select="any-1" />
+<STRING id="all_cloth" insert="all_cheap_cloth,all_rich_cloth" select="all"></STRING>
+<STRING id="any_cloth" insert="all_cloth" select="any-1"></STRING>
+<STRING id="any_Item_material" insert="all_cloth,all_wood,all_metal,all_mithril" select="any-1" />
 
 <STRING id="trueorfalse" SELECT="any-1"><STRING>true</STRING><STRING>false</STRING></STRING>
 

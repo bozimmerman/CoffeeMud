@@ -26,6 +26,7 @@ settable vars:
     targetarea_name(area name)
     multiarea(yes or NO)
     targetname(mobs name)
+    attackername(mobs name)
     num_targets(num mobs to kill)
 	aggression(YES,NO)
 	xp_amount_awarded
@@ -324,17 +325,62 @@ settable vars:
 	<OBJECT ID="attacker" DEFINE="attacker">SELECT: ANY\. FROM $attackers</OBJECT>
 
 	<OBJECT ID="attackers" DEFINE="attackers" SELECT="pick-1">
-		<OBJECT PICKWEIGHT=9>SELECT: ANY\. FROM $lair_mobs</OBJECT>
-		<OBJECT PICKWEIGHT=9>SELECT: ANY\. FROM $rats_mobs</OBJECT>
-		<OBJECT PICKWEIGHT=1>SELECT: ANY\. FROM $desert_mobs</OBJECT>
-		<OBJECT PICKWEIGHT=1>SELECT: ANY\. FROM $forest_mobs</OBJECT>
-		<OBJECT PICKWEIGHT=1>SELECT: ANY\. FROM $jungle_mobs</OBJECT>
-		<OBJECT PICKWEIGHT=1>SELECT: ANY\. FROM $mountain_mobs</OBJECT>
-		<OBJECT PICKWEIGHT=1>SELECT: ANY\. FROM $plains_mobs</OBJECT>
-		<OBJECT PICKWEIGHT=1>SELECT: ANY\. FROM $swamp_mobs</OBJECT>
-		<OBJECT PICKWEIGHT=1>SELECT: ANY\. FROM $lair_mobs</OBJECT>
-		<OBJECT PICKWEIGHT=1>SELECT: ANY\. FROM $lair_mobs</OBJECT>
-		<OBJECT PICKWEIGHT=1>SELECT: ANY\. FROM $lair_mobs</OBJECT>
+		<OBJECT CONDITION="$attackername!=''" pickweight=10>
+			<MOB class="GenMob" level="$level_range" race="Unique" gender="$anygender">
+				<NAME>$attackername</NAME>
+				<DISPLAY>$mob_name is here.</DISPLAY>
+				<ALIGNMENT>$[-10000?10000]</ALIGNMENT>
+				<BEHAVIOR select="Any-1">
+					<BEHAVIOR class="Bardness" parms="Bard" />
+					<BEHAVIOR class="Bardness" parms="Dancer" />
+					<BEHAVIOR class="Bardness" parms="Jester" />
+					<BEHAVIOR class="Bardness" parms="Minstrel" />
+					<BEHAVIOR class="Clericness" parms="Cleric" />
+					<BEHAVIOR class="Clericness" parms="Doomsayer" />
+					<BEHAVIOR class="Clericness" parms="Healer" />
+					<BEHAVIOR class="Clericness" parms="Missionary" />
+					<BEHAVIOR class="Clericness" parms="Necromancer" />
+					<BEHAVIOR class="Clericness" parms="Oracle" />
+					<BEHAVIOR class="Clericness" parms="Purist" />
+					<BEHAVIOR class="Clericness" parms="Shaman" />
+					<BEHAVIOR class="Clericness" parms="Templar" />
+					<BEHAVIOR class="Druidness" parms="Beastmaster" />
+					<BEHAVIOR class="Druidness" parms="Delver" />
+					<BEHAVIOR class="Druidness" parms="Druid" />
+					<BEHAVIOR class="Druidness" parms="Mer" />
+					<BEHAVIOR class="Druidness" parms="Skywatcher" />
+					<BEHAVIOR class="Fighterness" parms="Barbarian" />
+					<BEHAVIOR class="Fighterness" parms="Fighter" />
+					<BEHAVIOR class="Fighterness" parms="Ranger" />
+					<BEHAVIOR class="Mageness" parms="Abjurer" />
+					<BEHAVIOR class="Mageness" parms="Alterer" />
+					<BEHAVIOR class="Mageness" parms="Conjurer" />
+					<BEHAVIOR class="Mageness" parms="Diviner" />
+					<BEHAVIOR class="Mageness" parms="Enchanter" />
+					<BEHAVIOR class="Mageness" parms="Evoker" />
+					<BEHAVIOR class="Mageness" parms="Illusionist" />
+					<BEHAVIOR class="Mageness" parms="Mage" />
+					<BEHAVIOR class="Mageness" parms="Transmuter" />
+					<BEHAVIOR class="Thiefness" parms="Arcanist" />
+					<BEHAVIOR class="Thiefness" parms="Assassin" />
+					<BEHAVIOR class="Thiefness" parms="Burglar" />
+					<BEHAVIOR class="Thiefness" parms="Pirate" />
+					<BEHAVIOR class="Thiefness" parms="Thief" />
+					<BEHAVIOR class="Thiefness" parms="Trapper" />
+				</BEHAVIOR>
+			</MOB>
+		</OBJECT>
+		<OBJECT CONDITION="$attackername=''" PICKWEIGHT=9>SELECT: ANY\. FROM $lair_mobs</OBJECT>
+		<OBJECT CONDITION="$attackername=''" PICKWEIGHT=9>SELECT: ANY\. FROM $rats_mobs</OBJECT>
+		<OBJECT CONDITION="$attackername=''" PICKWEIGHT=1>SELECT: ANY\. FROM $desert_mobs</OBJECT>
+		<OBJECT CONDITION="$attackername=''" PICKWEIGHT=1>SELECT: ANY\. FROM $forest_mobs</OBJECT>
+		<OBJECT CONDITION="$attackername=''" PICKWEIGHT=1>SELECT: ANY\. FROM $jungle_mobs</OBJECT>
+		<OBJECT CONDITION="$attackername=''" PICKWEIGHT=1>SELECT: ANY\. FROM $mountain_mobs</OBJECT>
+		<OBJECT CONDITION="$attackername=''" PICKWEIGHT=1>SELECT: ANY\. FROM $plains_mobs</OBJECT>
+		<OBJECT CONDITION="$attackername=''" PICKWEIGHT=1>SELECT: ANY\. FROM $swamp_mobs</OBJECT>
+		<OBJECT CONDITION="$attackername=''" PICKWEIGHT=1>SELECT: ANY\. FROM $lair_mobs</OBJECT>
+		<OBJECT CONDITION="$attackername=''" PICKWEIGHT=1>SELECT: ANY\. FROM $lair_mobs</OBJECT>
+		<OBJECT CONDITION="$attackername=''" PICKWEIGHT=1>SELECT: ANY\. FROM $lair_mobs</OBJECT>
 	</OBJECT>
 	
 	<STRING ID="target_name" SELECT="any-1" DEFINE="target_name">

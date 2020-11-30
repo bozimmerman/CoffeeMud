@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.MiniJSON.MJSONException;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.Songs.Skill_Disguise;
@@ -152,14 +153,286 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 		}
 		return deityAreas;
 	}
+	
+	protected Quest quest1 = null;
+	protected Quest quest2 = null;
+	protected MiniJSON.JSONObject data=null;
+	
+	@Override
+	public void unInvoke()
+	{
+		if((quest1 != null)
+		&&(quest1.running()
+			||(CMLib.quests().fetchQuest(quest1.name())==quest1)))
+		{
+			quest1.stopQuest();
+			quest1.enterDormantState();
+			CMLib.quests().delQuest(quest1);
+			if(affected instanceof MOB)
+				((MOB)affected).tell("You have failed to start a divine feud.");
+		}
+		else
+		if((quest2 != null)
+		&&(quest2.running()
+			||(CMLib.quests().fetchQuest(quest2.name())==quest2)))
+		{
+			if((affected instanceof MOB)
+			&&(quest2.wasWinner(affected.Name())))
+				((MOB)affected).tell("You have successfully started a divine feud.");
+			else
+				((MOB)affected).tell("You have failed to start a divine feud.");
+			quest2.stopQuest();
+			quest2.enterDormantState();
+			CMLib.quests().delQuest(quest2);
+		}
+		else
+			((MOB)affected).tell("You have failed to start a divine feud.");
+		super.unInvoke();
+	}
+	
+	protected boolean tickUninvoke()
+	{
+		unInvoke();
+		return false;
+	}
+	
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		final Physical affected=this.affected;
+		if(!(affected instanceof MOB))
+			return tickUninvoke();
+		final MOB mob=(MOB)affected;
+		if(quest1 !=  null)
+		{
+			if(!quest1.wasWinner(mob.Name()))
+			{
+				if(!quest1.running())
+					return tickUninvoke();
+				// not won, but still running, so keep going...
+				return true;
+			}
+			quest1.stopQuest();
+			quest1.enterDormantState();
+			CMLib.quests().delQuest(quest1);
+			quest1=null;
+			try
+			{
+				final Map<String,Object> definedIDs = new Hashtable<String,Object>();
+				final Area deity1Area=CMLib.map().getArea(data.getCheckedString("area2"));
+				if(deity1Area==null)
+					return tickUninvoke();
+				definedIDs.put("TARGETAREA_NAME", data.getCheckedString("area2"));
+				definedIDs.put("target_level".toUpperCase(), ""+mob.phyStats().level());
+				final Deity deity1M=CMLib.map().getDeity(data.getCheckedString("deity1"));
+				if(deity1M==null)
+					return tickUninvoke();
+				final Deity deity2M=CMLib.map().getDeity(data.getCheckedString("deity2"));
+				if(deity2M==null)
+					return tickUninvoke();
+				final String name1Code = deity1M.Name().toUpperCase().trim().replace(' ', '_');
+				final Faction deity1F=CMLib.factions().getFaction("DEITY_"+name1Code);
+				if(deity1F!=null)
+				{
+					definedIDs.put("target_faction".toUpperCase(), deity1F.factionID());
+					definedIDs.put("target_faction_amt".toUpperCase(), "-1000");
+				}
+				else
+				{
+					definedIDs.put("target_faction".toUpperCase(), "");
+					definedIDs.put("target_faction_amt".toUpperCase(), "0");
+				}
+				definedIDs.put("AGGRESSION", "YES");
+				definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
+				definedIDs.put("target_int".toUpperCase(), "10");
+				final String template1=data.getCheckedString("template1");
+				if(deity1M.getAreaPiety(deity1Area.Name())>5)
+				{
+					if(template1.indexOf("capture")>0)
+					{
+						definedIDs.put("TEMPLATE", "auto_escort11");
+						definedIDs.put("targetname".toUpperCase(), data.getCheckedString("target1name"));
+						definedIDs.put("attackername".toUpperCase(), L("a highwayman"));
+						definedIDs.put("quest_instructionstring".toUpperCase(),
+								L("To frame @x1 for the kidnappings, you must escort your prisoner to a @x1 stronghold. ${reason_desc}.",deity1M.Name()));
+					}
+					else
+					if(template1.indexOf("collect")>0)
+					{
+						definedIDs.put("TEMPLATE", "auto_delivery1");
+						definedIDs.put("target_name".toUpperCase(), L("a follower of @x1",deity2M.Name()));
+						definedIDs.put("DELIVEREE_MASK","-HOME \"+"+deity1Area.Name()+"\" -DEITY \"+"+deity1M.Name()+"\"");
+						definedIDs.put("quest_instructionstring".toUpperCase(),
+								L("To frame @x1 for the thefts, you must now deliver the incriminating items to followers of @x1. ${reason_desc}.",deity1M.Name()));
+						
+						definedIDs.put("itemname".toUpperCase(), data.getCheckedString("item1name"));
+						definedIDs.put("item_level".toUpperCase(), "1");
+						definedIDs.put("item_material".toUpperCase(), "GOLD");
+						if(definedIDs.containsKey("target_faction_amt".toUpperCase())
+						&&(!definedIDs.get("target_faction_amt".toUpperCase()).equals("0")))
+							definedIDs.put("target_faction_amt".toUpperCase(),""+(-CMath.s_int(definedIDs.get("target_faction_amt".toUpperCase()).toString())));
+					}
+					else
+					if(template1.indexOf("delivery")>0)
+					{
+						definedIDs.put("TEMPLATE", "auto_protect1");
+						definedIDs.put("targetname".toUpperCase(), L("a maker of @x1 holy symbols",deity1M.Name()));
+						definedIDs.put("attackername".toUpperCase(), L("a follower of @x1",deity2M.Name()));
+						definedIDs.put("quest_instructionstring".toUpperCase(),
+								L("Now defend your act by defending the maker of such symbols from outraged followers of @x1. ${reason_desc}.",deity2M.Name()));
+						if(definedIDs.containsKey("target_faction_amt".toUpperCase())
+						&&(!definedIDs.get("target_faction_amt".toUpperCase()).equals("0")))
+							definedIDs.put("target_faction_amt".toUpperCase(),""+(-CMath.s_int(definedIDs.get("target_faction_amt".toUpperCase()).toString())));
+					}
+					else
+					if(template1.indexOf("killer")>0)
+					{
+						definedIDs.put("TEMPLATE", "auto_delivery4");
+						definedIDs.put("target_name".toUpperCase(), L("a follower of @x1",deity1M.Name()));
+						definedIDs.put("DELIVEREE_MASK","-HOME \"+"+deity1Area.Name()+"\" -DEITY \"+"+deity1M.Name()+"\"");
+						definedIDs.put("quest_instructionstring".toUpperCase(),
+								L("Now complete your framing of @x1 by seeming to delivery your previous victim`s money to  @x1`s followers. ${reason_desc}.",deity1M.Name()));
+						definedIDs.put("AGGRESSION", "NO");
+						definedIDs.put("target_is_aggressive".toUpperCase(), "NO");
+					}
+					else
+						return tickUninvoke();
+					definedIDs.put("NUM_TARGETS", ""+(int)Math.round(CMath.mul((double)deity1M.getAreaPiety(deity1Area.Name()),0.25)));
+				}
+				else
+				{
+					if(template1.indexOf("capture")>0)
+					{
+						definedIDs.put("TEMPLATE", "auto_escort11");
+						definedIDs.put("targetname".toUpperCase(), data.getCheckedString("target1name"));
+						definedIDs.put("attackername".toUpperCase(), L("a highwayman"));
+						definedIDs.put("quest_instructionstring".toUpperCase(),
+								L("To frame @x1 for the kidnappings, you must escort your prisoner to a @x1 stronghold. ${reason_desc}.",deity1M.Name()));
+					}
+					else
+					if(template1.indexOf("collect")>0)
+					{
+						definedIDs.put("TEMPLATE", "auto_delivery3");
+						definedIDs.put("targetname".toUpperCase(), L("a follower of @x1",deity2M.Name()));
+						definedIDs.put("quest_instructionstring".toUpperCase(),
+								L("Your final step to creating the feud is to deliver the stolen items to @x1`s followers. ${reason_desc}.",deity1M.Name()));
+						definedIDs.put("itemname".toUpperCase(), data.getCheckedString("item1name"));
+						definedIDs.put("item_level".toUpperCase(), "1");
+						definedIDs.put("item_material".toUpperCase(), "GOLD");
+						if(definedIDs.containsKey("target_faction_amt".toUpperCase())
+						&&(!definedIDs.get("target_faction_amt".toUpperCase()).equals("0")))
+							definedIDs.put("target_faction_amt".toUpperCase(),""+(-CMath.s_int(definedIDs.get("target_faction_amt".toUpperCase()).toString())));
+					}
+					else
+					if(template1.indexOf("delivery")>0)
+					{
+						definedIDs.put("TEMPLATE", "auto_delivery3");
+						definedIDs.put("targetname".toUpperCase(), L("a follower of @x1",deity2M.Name()));
+						definedIDs.put("quest_instructionstring".toUpperCase(),
+								L("Your final step to creating the feud is to stage the same incriminating items with @x1`s followers. ${reason_desc}.",deity1M.Name()));
+						definedIDs.put("itemname".toUpperCase(), L("a symbol of @x1",deity1M.Name()));
+						definedIDs.put("item_level".toUpperCase(), "1");
+						definedIDs.put("item_material".toUpperCase(), "GOLD");
+						if(definedIDs.containsKey("target_faction_amt".toUpperCase())
+						&&(!definedIDs.get("target_faction_amt".toUpperCase()).equals("0")))
+							definedIDs.put("target_faction_amt".toUpperCase(),""+(-CMath.s_int(definedIDs.get("target_faction_amt".toUpperCase()).toString())));
+					}
+					else
+					if(template1.indexOf("killer")>0)
+					{
+						definedIDs.put("TEMPLATE", "auto_delivery2");
+						definedIDs.put("itemname".toUpperCase(), L("the head of a follower of @x1",deity1M.Name()));
+						definedIDs.put("quest_instructionstring".toUpperCase(),
+								L("Your final step to creating the feud is to scatter the heads @x1`s followers around followers of @x2. ${reason_desc}.",deity2M.Name(),deity1M.Name()));
+						definedIDs.put("AGGRESSION", "NO");
+						definedIDs.put("target_is_aggressive".toUpperCase(), "NO");
+					}
+					else
+						return tickUninvoke();
+				}
+				final Quest q2=deviseAndStartQuest(mob, definedIDs);
+				if(q2 == null)
+					return tickUninvoke();
+				this.quest2=q2;
+			}
+			catch(MiniJSON.MJSONException x)
+			{
+				Log.errOut(x);
+				return tickUninvoke();
+			}
+		}
+		else
+		if(quest2 != null)
+		{
+			try
+			{
+				if(!quest2.wasWinner(mob.Name()))
+				{
+					if(!quest2.running())
+						return tickUninvoke();
+					// not won, but still running, so keep going...
+					return true;
+				}
+				quest2.stopQuest();
+				quest2.enterDormantState();
+				CMLib.quests().delQuest(quest2);
+				int playerXP=(int)Math.round(CMath.mul((double)mob.getExpNextLevel(),0.20+(0.03 * super.getXLEVELLevel(mob))));
+				CMLib.leveler().postExperience(mob, null, "", playerXP, false);
+				int deityFactionChange=100+(10*super.getXLEVELLevel(mob));
+				final Deity deity1M=CMLib.map().getDeity(data.getCheckedString("deity1"));
+				if(deity1M==null)
+					return tickUninvoke();
+				final Deity deity2M=CMLib.map().getDeity(data.getCheckedString("deity2"));
+				if(deity2M==null)
+					return tickUninvoke();
+				final String name1Code = deity1M.Name().toUpperCase().trim().replace(' ', '_');
+				final Faction deity1F=CMLib.factions().getFaction("DEITY_"+name1Code);
+				if(deity1F!=null)
+					CMLib.factions().postFactionChange(deity2M, this, deity1F.factionID(), -deityFactionChange);
+			}
+			catch(MiniJSON.MJSONException x)
+			{
+				Log.errOut(x);
+				return tickUninvoke();
+			}
+		}
+		else
+			return tickUninvoke();
+		return true;
+	}
+	
+	@Override
+	public void setMiscText(final String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		if((newMiscText.length()>0)
+		&&(newMiscText.startsWith("{")))
+		{
+			try
+			{
+				data=new MiniJSON().parseObject(newMiscText);
+				quest2=null;
+				quest1=CMLib.quests().fetchQuest(data.getCheckedString("quest1"));
+			}
+			catch (MJSONException e)
+			{
+				Log.errOut(e);
+			}
+		}
+	}
 
 	public Quest deviseAndStartQuest(final MOB affected, final Map<String,Object> definedIDs)
 	{
+		Map<String,Object> origDefined=new XHashtable<String,Object>(definedIDs);
 		int maxAttempts=5;
 		while((--maxAttempts)>=0)
 		{
 			try
 			{
+				definedIDs.clear();
+				definedIDs.putAll(origDefined);
 				final StringBuffer xml = Resources.getFileResource("randareas/example.xml", true);
 				if((xml==null)||(xml.length()==0))
 				{
@@ -169,6 +442,8 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 				final List<XMLLibrary.XMLTag> xmlRoot = CMLib.xml().parseAllXML(xml);
 				if(!definedIDs.containsKey("QUEST_CRITERIA"))
 					definedIDs.put("QUEST_CRITERIA", "-NAME \""+affected.Name()+"\" -NPC");
+				definedIDs.put("DURATION", ""+CMProps.getTicksPerHour());
+				definedIDs.put("EXPIRATION", ""+CMProps.getTicksPerHour());
 				Map<String,Object> preDefined=new XHashtable<String,Object>(definedIDs);
 				CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs, preDefined.keySet());
 				final String idName = "ALL_QUESTS";
@@ -201,12 +476,18 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 				if((Q.name().trim().length()==0)||(Q.duration()<0))
 					throw new CMException("Unable to create your quest.  Please consult the log.");
 				//mob.tell("Generated quest '"+Q.name()+"'");
-				//Log.sysOut("Generate",mob.Name()+" created quest '"+Q.name()+"'");
-				Q.autostartup();
+				final Quest badQ=CMLib.quests().fetchQuest(Q.name());
+				if(badQ!=null)
+					throw new CMException("Unable to create your quest.  One of that name already exists!");
+				Log.sysOut("Generate",affected.Name()+" created quest '"+Q.name()+"' via "+ID());
+				CMLib.quests().addQuest(Q);
 				if(!Q.running())
 				{
 					if(!Q.startQuest())
+					{
+						CMLib.quests().delQuest(Q);
 						throw new CMException("Unable to start the quest.  Something went wrong.  Perhaps the problem was logged?");
+					}
 				}
 				Q.setCopy(true);
 				return Q;
@@ -311,26 +592,120 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 				obj.putString("deity2", deity2M.Name());
 				obj.putString("area1", deity1Area.Name());
 				obj.putString("area2", deity2Area.Name());
-				final String[] templateChoices;
 				final Map<String,Object> definedIDs = new Hashtable<String,Object>();
 				definedIDs.put("TARGETAREA_NAME", deity2Area.Name());
-				if(deity2M.getAreaPiety(deity2Area.Name())>5)
+				definedIDs.put("target_level".toUpperCase(), ""+mob.phyStats().level());
+				final String name2Code = deity2M.Name().toUpperCase().trim().replace(' ', '_');
+				final Faction deity2F=CMLib.factions().getFaction("DEITY_"+name2Code);
+				if(deity2F!=null)
 				{
-					templateChoices=new String[] {"auto_capture1", "auto_collect2", "auto_delivery1", "auto_killer1"};
-					definedIDs.put("NUM_TARGETS", ""+(int)Math.round(CMath.mul((double)deity2M.getAreaPiety(deity2Area.Name()),0.25)));
-					
-					// choose from quest set 1 related to doing 25% of the pious
+					definedIDs.put("target_faction".toUpperCase(), deity2F.factionID());
+					definedIDs.put("target_faction_amt".toUpperCase(), "1000");
 				}
 				else
 				{
-					// choose from the quest sets related just to random mobs in the area
+					definedIDs.put("target_faction".toUpperCase(), "");
+					definedIDs.put("target_faction_amt".toUpperCase(), "0");
 				}
-				Thief_InciteDivineFeud dA=(Thief_InciteDivineFeud)beneficialAffect(mob,mob,asLevel,Integer.MAX_VALUE/10);
-				if(dA!=null)
+				definedIDs.put("AGGRESSION", "YES");
+				definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
+				definedIDs.put("target_int".toUpperCase(), "10");
+				if(deity2M.getAreaPiety(deity2Area.Name())>5)
 				{
-					dA.makeLongLasting();
-					dA.setMiscText(obj.toString());
+					switch(CMLib.dice().roll(1, 4, 0))
+					{
+					case 1:
+						definedIDs.put("TEMPLATE", "auto_capture1");
+						definedIDs.put("target_name".toUpperCase(), L("a follower of @x1",deity2M.Name()));
+						definedIDs.put("CAPTURABLES_MASK","-HOME \"+"+deity2Area.Name()+"\" -DEITY \"+"+deity2M.Name()+"\"");
+						definedIDs.put("quest_instructionstring".toUpperCase(),
+								L("Your first step to creating the feud is to kidnap a few of @x1`s followers. ${reason_desc}.",deity2M.Name()));
+						break;
+					case 2:
+						definedIDs.put("TEMPLATE", "auto_collect1");
+						definedIDs.put("target_name".toUpperCase(), L("a follower of @x1",deity2M.Name()));
+						definedIDs.put("HOLDERS_MASK","-HOME \"+"+deity2Area.Name()+"\" -DEITY \"+"+deity2M.Name()+"\"");
+						definedIDs.put("quest_instructionstring".toUpperCase(),
+								L("Your first step to creating the feud is to steal some special gifts from @x1 to @x2 followers. ${reason_desc}.",deity2M.Name(),deity2M.charStats().hisher()));
+						break;
+					case 3:
+						definedIDs.put("TEMPLATE", "auto_delivery1");
+						definedIDs.put("target_name".toUpperCase(), L("a follower of @x1",deity2M.Name()));
+						definedIDs.put("DELIVEREE_MASK","-HOME \"+"+deity2Area.Name()+"\" -DEITY \"+"+deity2M.Name()+"\"");
+						definedIDs.put("quest_instructionstring".toUpperCase(),
+								L("Your first step to creating the feud is to deliver incriminating items of @x1 to @x2`s followers. ${reason_desc}.",deity1M.Name(),deity2M.Name()));
+						
+						definedIDs.put("itemname".toUpperCase(), L("a symbol of @x1",deity1M.Name()));
+						definedIDs.put("item_level".toUpperCase(), "1");
+						definedIDs.put("item_material".toUpperCase(), "GOLD");
+						if(definedIDs.containsKey("target_faction_amt".toUpperCase())
+						&&(!definedIDs.get("target_faction_amt".toUpperCase()).equals("0")))
+							definedIDs.put("target_faction_amt".toUpperCase(),""+(-CMath.s_int(definedIDs.get("target_faction_amt".toUpperCase()).toString())));
+						break;
+					case 4:
+						definedIDs.put("TEMPLATE", "auto_killer1");
+						definedIDs.put("target_name".toUpperCase(), L("a follower of @x1",deity2M.Name()));
+						definedIDs.put("KILLABLES_MASK","-HOME \"+"+deity2Area.Name()+"\" -DEITY \"+"+deity2M.Name()+"\"");
+						definedIDs.put("quest_instructionstring".toUpperCase(),
+								L("Your first step to creating the feud is to kill off a few of @x1`s followers. ${reason_desc}.",deity2M.Name()));
+						definedIDs.put("AGGRESSION", "NO");
+						definedIDs.put("target_is_aggressive".toUpperCase(), "NO");
+						break;
+					}
+					definedIDs.put("NUM_TARGETS", ""+(int)Math.round(CMath.mul((double)deity2M.getAreaPiety(deity2Area.Name()),0.25)));
 				}
+				else
+				{
+					switch(CMLib.dice().roll(1, 4, 0))
+					{
+					case 1:
+						definedIDs.put("TEMPLATE", "auto_capture2");
+						definedIDs.put("targetname".toUpperCase(), L("a follower of @x1",deity2M.Name()));
+						definedIDs.put("quest_instructionstring".toUpperCase(),
+								L("Your first step to creating the feud is to kidnap a few of @x1`s followers. ${reason_desc}.",deity2M.Name()));
+						break;
+					case 2:
+						definedIDs.put("TEMPLATE", "auto_collect3");
+						definedIDs.put("targetname".toUpperCase(), L("a follower of @x1",deity2M.Name()));
+						definedIDs.put("quest_instructionstring".toUpperCase(),
+								L("Your first step to creating the feud is to steal some special gifts from @x1 to @x2 followers. ${reason_desc}.",deity2M.Name(),deity2M.charStats().hisher()));
+						break;
+					case 3:
+						definedIDs.put("TEMPLATE", "auto_delivery3");
+						definedIDs.put("targetname".toUpperCase(), L("a follower of @x1",deity2M.Name()));
+						definedIDs.put("quest_instructionstring".toUpperCase(),
+								L("Your first step to creating the feud is to deliver incriminating items of @x1 to @x2`s followers. ${reason_desc}.",deity1M.Name(),deity2M.Name()));
+						definedIDs.put("itemname".toUpperCase(), L("a symbol of @x1",deity1M.Name()));
+						definedIDs.put("item_level".toUpperCase(), "1");
+						definedIDs.put("item_material".toUpperCase(), "GOLD");
+						if(definedIDs.containsKey("target_faction_amt".toUpperCase())
+						&&(!definedIDs.get("target_faction_amt".toUpperCase()).equals("0")))
+							definedIDs.put("target_faction_amt".toUpperCase(),""+(-CMath.s_int(definedIDs.get("target_faction_amt".toUpperCase()).toString())));
+						break;
+					case 4:
+						definedIDs.put("TEMPLATE", "auto_killer2");
+						definedIDs.put("targetname".toUpperCase(), L("a follower of @x1",deity2M.Name()));
+						definedIDs.put("quest_instructionstring".toUpperCase(),
+								L("Your first step to creating the feud is to kill off a few of @x1`s followers. ${reason_desc}.",deity2M.Name()));
+						definedIDs.put("AGGRESSION", "NO");
+						definedIDs.put("target_is_aggressive".toUpperCase(), "NO");
+						break;
+					}
+				}
+				obj.putString("template1", definedIDs.get("TEMPLATE").toString());
+				final Quest q1=deviseAndStartQuest(mob, definedIDs);
+				if(q1 == null)
+				{
+					mob.tell(L("<S-NAME> attempt(s) to plot a feud between @x1 and @x2, but become(s) exhausted before figuring out a plot.",deity1M.Name(),deity2M.Name()));
+					return false;
+				}
+				obj.putString("quest1", q1.name());
+				if(definedIDs.containsKey("target_item_name".toUpperCase()))
+					obj.putString("item1name", definedIDs.get("target_item_name".toUpperCase()).toString());
+				obj.putString("target1name", definedIDs.get("target_name".toUpperCase()).toString());
+				Thief_InciteDivineFeud dA=(Thief_InciteDivineFeud)beneficialAffect(mob,mob,asLevel,(int)(CMProps.getTicksPerHour()*2));
+				if(dA!=null)
+					dA.setMiscText(obj.toString());
 			}
 		}
 		else

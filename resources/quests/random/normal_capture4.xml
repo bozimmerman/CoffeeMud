@@ -573,7 +573,7 @@ settable vars:
 	<STRING load="/resources/randareas/swamp.xml" />
 	
 	<OBJECT ID="target" DEFINE="target" SELECT="pick-1">
-		<OBJECT CONDITION="$targetname!=''"" pickweight=10>
+		<OBJECT CONDITION="$targetname!=''" pickweight=10>
 			<MOB class="GenMob" level="$level_range" race="Unique" gender="$anygender">
 				<NAME>$targetname</NAME>
 				<DISPLAY>$mob_name is here.</DISPLAY>
