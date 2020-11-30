@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -103,6 +104,15 @@ public class Spell_Duplicate extends Spell
 		{
 			mob.tell(L("That item can not be duplicated."));
 			return false;
+		}
+		if(target instanceof Coins)
+		{
+			final MoneyLibrary.MoneyDefinition def=CMLib.beanCounter().getCurrencySet(((Coins)target).getCurrency());
+			if((def != null)&&(!def.canTrade()))
+			{
+				mob.tell(L("That item can not be duplicated."));
+				return false;
+			}
 		}
 
 		int value=0;
