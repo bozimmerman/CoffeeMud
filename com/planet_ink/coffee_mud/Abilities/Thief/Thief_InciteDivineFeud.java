@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.MiniJSON.MJSONException;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
@@ -494,7 +495,10 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 			}
 			catch(final CMException cme)
 			{
-				Log.debugOut(cme); //TODO:BZ:DELME
+				if(Log.debugChannelOn() && CMSecurity.isDebugging(DbgFlag.MUDPERCOLATOR))
+					Log.debugOut(cme);
+				else
+					Log.errOut(cme.getMessage());
 			}
 		}
 		Log.errOut(L("Failed to finish creating a quest for @x1",affected.name()));
