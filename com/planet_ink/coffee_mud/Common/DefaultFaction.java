@@ -1618,7 +1618,7 @@ public class DefaultFaction implements Faction, MsgListener
 					{
 						if(s.equalsIgnoreCase("me") && (msg.target()!=myHost))
 							continue;
-						if(!elib.containsString(msg.target().Name(), s))
+						if((msg.target()==null)||(!elib.containsString(msg.target().Name(), s)))
 							continue;
 					}
 					s=C.getTriggerParm("OTH");
@@ -1626,7 +1626,7 @@ public class DefaultFaction implements Faction, MsgListener
 					{
 						if(s.equalsIgnoreCase("me") && (msg.tool()!=myHost))
 							continue;
-						if(!elib.containsString(msg.tool().Name(), s))
+						if((msg.tool()==null)||(!elib.containsString(msg.tool().Name(), s)))
 							continue;
 					}
 					if(checkApplyEventWait(C, msg.source()))
