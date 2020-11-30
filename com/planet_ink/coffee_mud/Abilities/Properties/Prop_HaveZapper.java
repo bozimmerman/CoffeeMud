@@ -258,7 +258,8 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect, Deity.
 		if(mob.location()==null)
 			return true;
 
-		if(msg.amITarget(affected))
+		if(msg.amITarget(affected)
+		||((msg.tool()==affected)&&(msg.target() instanceof Container)))
 		{
 			switch(msg.targetMinor())
 			{
@@ -271,7 +272,7 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect, Deity.
 			case CMMsg.TYP_GET:
 				if((!CMLib.masking().maskCheck(mask,mob,actual))
 				&&(CMLib.dice().rollPercentage()<=percent)
-				&&((!(affected instanceof Container)||(!(msg.tool() instanceof Item))))
+				&&((!(affected instanceof Container))||(!(msg.tool() instanceof Item)))
 				)
 				{
 					mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,msgStr);
