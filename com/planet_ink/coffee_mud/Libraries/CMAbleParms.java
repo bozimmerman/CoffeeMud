@@ -1069,7 +1069,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public String convertFromItem(final ItemCraftor A, final Item I)
 				{
-					final String oldName=I.Name();
+					final String oldName=CMStrings.removeColors(I.Name());
 					if(I.material()==RawMaterial.RESOURCE_GLASS)
 						return CMLib.english().removeArticleLead(oldName);
 

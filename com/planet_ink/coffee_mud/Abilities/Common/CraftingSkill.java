@@ -1951,7 +1951,8 @@ public class CraftingSkill extends GatheringSkill
 			if(x >= 0)
 			{
 				final String name=this.replacePercent(codeLines.substring(0,x),"").trim();
-				if(buildingI.Name().indexOf(name)>=0)
+				if((buildingI.Name().indexOf(name)>=0)
+				||(CMStrings.removeColors(buildingI.Name()).indexOf(CMStrings.removeColors(name))>=0))
 				{
 					commonTell(mob,L("You appear to already have that recipe written down here."));
 					return false;
