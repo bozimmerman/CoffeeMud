@@ -281,6 +281,19 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	public void setShowInScore(boolean truefalse);
 
 	/**
+	 * Returns true if this faction is inheritable by children.
+	 * @return true if its inheritable, false otherwise
+	 */
+	public boolean isInheritable();
+
+	/**
+	 * Sets whether this faction is inheritable by children.
+	 * @param truefalse true if its inheritable, false otherwise
+	 */
+	public void setInherited(final boolean truefalse);
+
+
+	/**
 	 * Returns whether this factions value is shown in certain special admins commands.
 	 * @return true if displayed in special admin commands, false otherwise
 	 */
@@ -1863,10 +1876,13 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	public final static int TAG_REACTION_=19;
 	/** index constant for tag names in {@link Faction#TAG_NAMES} denoting the SCOREDISPLAY tag */
 	public final static int TAG_USELIGHTREACTIONS=20;
+	/** index constant for tag names in {@link Faction#TAG_NAMES} denoting the INHERITABLE tag */
+	public final static int TAG_INHERITABLE=21;
 	/** list of valid tag names for internal faction data, retrieved by {@link Faction#getTagValue(String)} */
 	public final static String[] TAG_NAMES={"NAME","MINIMUM","MAXIMUM","SCOREDISPLAY",
 											"SPECIALREPORTED","EDITALONE","DEFAULT","AUTODEFAULTS",
 											"AUTOCHOICES","CHOICEINTRO","RATEMODIFIER","EXPERIENCE",
 											"RANGE*","CHANGE*","ABILITY*","FACTOR*","RELATION*",
-											"SHOWINFACTIONSCMD","AFFBEHAV*","REACTION*","USELIGHTREACTIONS"};
+											"SHOWINFACTIONSCMD","AFFBEHAV*","REACTION*","USELIGHTREACTIONS",
+											"INHERITABLE"};
 }

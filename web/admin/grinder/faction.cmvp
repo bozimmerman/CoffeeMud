@@ -157,6 +157,7 @@
                 <BR><INPUT TYPE=CHECKBOX NAME=SHOWINFACTIONS @FactionData?SHOWINFACTIONS@>Show In Factions
                 <BR><INPUT TYPE=CHECKBOX NAME=SHOWINEDITOR @FactionData?SHOWINEDITOR@>Show In MOB Editor
                 <BR><INPUT TYPE=CHECKBOX NAME=SHOWINREPORTS @FactionData?SHOWINREPORTS@>Show In Reports
+                <BR><INPUT TYPE=CHECKBOX NAME=INHERITED @FactionData?INHERITED@>Is Inherited
                 </FONT>
             </TD>
         </TR>

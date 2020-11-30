@@ -128,6 +128,13 @@ public class FactionData extends StdWebMacro
 						old=F.showInEditor()?"on":"";
 					str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
 				}
+				if(parms.containsKey("INHERITED"))
+				{
+					String old=httpReq.getUrlParameter("INHERITED");
+					if(old==null)
+						old=F.isInheritable()?"on":"";
+					str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
+				}
 				if(parms.containsKey("SHOWINREPORTS"))
 				{
 					String old=httpReq.getUrlParameter("SHOWINREPORTS");

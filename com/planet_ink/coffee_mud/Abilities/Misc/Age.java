@@ -499,7 +499,19 @@ public class Age extends StdAbility
 					babe.baseCharStats().setStat(CharStats.STAT_STRENGTH,6);
 					babe.baseCharStats().setStat(CharStats.STAT_WISDOM,6);
 					if(following!=null)
+					{
 						babe.copyFactions(following);
+						final List<String> removeTheseV=new ArrayList<String>();
+						for(final Enumeration<String> fid=babe.factions();fid.hasMoreElements();)
+						{
+							final String factionID=fid.nextElement();
+							final Faction F=CMLib.factions().getFaction(factionID);
+							if((F!=null)&&(!F.isInheritable()))
+								removeTheseV.add(factionID);
+						}
+						for(final String fid : removeTheseV)
+							babe.removeFaction(fid);
+					}
 					babe.basePhyStats().setHeight(babe.basePhyStats().height()*5);
 					babe.basePhyStats().setWeight(babe.basePhyStats().weight()*5);
 					babe.baseState().setHitPoints(4);

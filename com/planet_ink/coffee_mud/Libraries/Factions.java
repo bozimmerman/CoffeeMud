@@ -1109,6 +1109,9 @@ public class Factions extends StdLibrary implements FactionManager
 			// show in editor
 			me.setShowInEditor(CMLib.genEd().prompt(mob,me.showInEditor(),++showNumber,showFlag,L("Show in MOB Editor")));
 
+			// isinherited
+			me.setInherited(CMLib.genEd().prompt(mob,me.isInheritable(),++showNumber,showFlag,L("Is inherited by children")));
+
 			// auto defaults
 			boolean error=true;
 			me.setAutoDefaults(CMParms.parseSemicolons(CMLib.genEd().prompt(mob,CMParms.toSemicolonListString(me.autoDefaults()),++showNumber,showFlag,L("Optional automatic assigned values with zapper masks (semicolon delimited).\n\r    ")),true));

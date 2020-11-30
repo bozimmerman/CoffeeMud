@@ -66,6 +66,9 @@ public class GrinderFactions
 		old=httpReq.getUrlParameter("SHOWINFACTIONS");
 		F.setShowInFactionsCommand((old!=null)&&(old.equalsIgnoreCase("on")));
 
+		old=httpReq.getUrlParameter("INHERITED");
+		F.setInherited((old!=null)&&(old.equalsIgnoreCase("on")));
+
 		old=httpReq.getUrlParameter("SHOWINEDITOR");
 		F.setShowInEditor((old!=null)&&(old.equalsIgnoreCase("on")));
 

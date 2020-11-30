@@ -107,6 +107,7 @@ public class DefaultFaction implements Faction, MsgListener
 	protected boolean    showInSpecialReport= false;
 	protected boolean    showInEditor		= false;
 	protected boolean    showInFacCommand	= true;
+	protected boolean    isInherited		= true;
 	protected boolean    destroyed			= false;
 
 	protected CList<String>   					defaults		 = new SVector<String>();
@@ -173,6 +174,12 @@ public class DefaultFaction implements Faction, MsgListener
 	public String choiceIntro()
 	{
 		return choiceIntro;
+	}
+
+	@Override
+	public boolean isInheritable()
+	{
+		return this.isInherited;
 	}
 
 	@Override
@@ -360,6 +367,12 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
+	public void setInherited(final boolean truefalse)
+	{
+		this.isInherited=truefalse;
+	}
+
+	@Override
 	public void setShowInSpecialReported(final boolean truefalse)
 	{
 		showInSpecialReport = truefalse;
@@ -529,6 +542,11 @@ public class DefaultFaction implements Faction, MsgListener
 		showInFacCommand=facProps.getBoolean("SHOWINFACTIONSCMD");
 		showInSpecialReport=facProps.getBoolean("SPECIALREPORTED");
 		showInEditor=facProps.getBoolean("EDITALONE");
+		final String s=facProps.getStr("INHERITED");
+		if(s.trim().length()==0)
+			isInherited=true;
+		else
+			isInherited=facProps.getBoolean("INHERITED");
 		defaults=new SVector<String>(CMParms.parseSemicolons(facProps.getStr("DEFAULT"),true));
 		autoDefaults =new SVector<String>(CMParms.parseSemicolons(facProps.getStr("AUTODEFAULTS"),true));
 		choices =new SVector<String>(CMParms.parseSemicolons(facProps.getStr("AUTOCHOICES"),true));
@@ -665,6 +683,8 @@ public class DefaultFaction implements Faction, MsgListener
 			return "" + rateModifier;
 		case TAG_EXPERIENCE:
 			return "" + experienceFlag;
+		case TAG_INHERITABLE:
+			return Boolean.toString(isInherited).toUpperCase();
 		case TAG_RANGE_:
 		{
 			if((numCall<0)||(numCall>=ranges.size()))
