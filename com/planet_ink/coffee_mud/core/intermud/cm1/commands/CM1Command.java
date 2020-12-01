@@ -82,14 +82,14 @@ public abstract class CM1Command implements Runnable, Cloneable
 		{
 			if (CMLib.players().playerExists(target.Name()))
 				return CMSecurity.isAllowed(user, user.location(), CMSecurity.SecFlag.CMDPLAYERS);
-			return CMSecurity.isAllowed(user, user.location(), CMSecurity.SecFlag.CMDMOBS);
+			return CMSecurity.isAllowed(user, CMLib.map().roomLocation(target), CMSecurity.SecFlag.CMDMOBS);
 		}
 		else
 		if (target instanceof Item)
-			return CMSecurity.isAllowed(user, user.location(), CMSecurity.SecFlag.CMDITEMS);
+			return CMSecurity.isAllowed(user, CMLib.map().roomLocation(target), CMSecurity.SecFlag.CMDITEMS);
 		else
 		if (target instanceof Room)
-			return CMSecurity.isAllowed(user, user.location(), CMSecurity.SecFlag.CMDROOMS);
+			return CMSecurity.isAllowed(user, (Room)target, CMSecurity.SecFlag.CMDROOMS);
 		else
 		if (target instanceof Exit)
 			return CMSecurity.isAllowed(user, user.location(), CMSecurity.SecFlag.CMDEXITS);
