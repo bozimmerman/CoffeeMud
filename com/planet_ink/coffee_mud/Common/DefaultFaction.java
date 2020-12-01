@@ -88,7 +88,7 @@ public class DefaultFaction implements Faction, MsgListener
 		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
 	}
 
-	protected String	 ID					= "";
+	protected String	 _factionID			= "";
 	protected String	 name				= "";
 	protected String	 upName				= "";
 	protected String	 choiceIntro		= "";
@@ -149,7 +149,7 @@ public class DefaultFaction implements Faction, MsgListener
 	@Override
 	public String factionID()
 	{
-		return ID;
+		return _factionID;
 	}
 
 	@Override
@@ -333,7 +333,7 @@ public class DefaultFaction implements Faction, MsgListener
 	@Override
 	public void setFactionID(final String newStr)
 	{
-		ID = newStr;
+		_factionID = newStr;
 	}
 
 	@Override
@@ -485,7 +485,7 @@ public class DefaultFaction implements Faction, MsgListener
 	@Override
 	public void initializeFaction(final String aname)
 	{
-		ID=aname;
+		_factionID=aname;
 		name=aname;
 		upName=aname.toUpperCase();
 		minimum=0;
@@ -504,7 +504,7 @@ public class DefaultFaction implements Faction, MsgListener
 	{
 		final boolean debug = false;
 
-		ID = fID;
+		_factionID = fID;
 		final CMProps facProps = new CMProps();
 		for(final String line : Resources.getFileLineVector(file))
 		{
@@ -1195,7 +1195,7 @@ public class DefaultFaction implements Faction, MsgListener
 	@Override
 	public boolean hasFaction(final MOB mob)
 	{
-		return (mob.fetchFaction(ID)!=Integer.MAX_VALUE);
+		return (mob.fetchFaction(_factionID)!=Integer.MAX_VALUE);
 	}
 
 	protected FAbilityUsage getAbilityUsage(final Ability A)
@@ -1239,7 +1239,7 @@ public class DefaultFaction implements Faction, MsgListener
 		final FAbilityUsage usage = this.getAbilityUsage(A);
 		if(usage == null)
 			return true;
-		final int faction=mob.fetchFaction(ID);
+		final int faction=mob.fetchFaction(_factionID);
 		if((faction < usage.low()) || (faction > usage.high()))
 			return false;
 		return true;
@@ -1750,21 +1750,21 @@ public class DefaultFaction implements Faction, MsgListener
 			final MOB vic=(MOB)msg.target();
 
 			if(experienceFlag.equals("HIGHER"))
-				msg.setValue( (int)Math.round(((msg.value())*.75) +( ((msg.value())*.25) * CMath.div(Math.abs(killer.fetchFaction(ID)-minimum),(maximum - minimum)))));
+				msg.setValue( (int)Math.round(((msg.value())*.75) +( ((msg.value())*.25) * CMath.div(Math.abs(killer.fetchFaction(_factionID)-minimum),(maximum - minimum)))));
 			else
 			if(experienceFlag.equals("LOWER"))
-				msg.setValue( (int)Math.round(((msg.value())*.75) +( ((msg.value())*.25) * CMath.div(Math.abs(maximum-killer.fetchFaction(ID)),(maximum - minimum)))));
+				msg.setValue( (int)Math.round(((msg.value())*.75) +( ((msg.value())*.25) * CMath.div(Math.abs(maximum-killer.fetchFaction(_factionID)),(maximum - minimum)))));
 			else
-			if(vic.fetchFaction(ID)!=Integer.MAX_VALUE)
+			if(vic.fetchFaction(_factionID)!=Integer.MAX_VALUE)
 			{
 				if(experienceFlag.equals("EXTREME"))
-					msg.setValue( (int)Math.round(((msg.value())*.75) +( ((msg.value())*.25) * CMath.div(Math.abs(vic.fetchFaction(ID) - killer.fetchFaction(ID)),(maximum - minimum)))));
+					msg.setValue( (int)Math.round(((msg.value())*.75) +( ((msg.value())*.25) * CMath.div(Math.abs(vic.fetchFaction(_factionID) - killer.fetchFaction(_factionID)),(maximum - minimum)))));
 				else
 				if(experienceFlag.equals("FOLLOWHIGHER"))
-					msg.setValue( (int)Math.round(((msg.value())*.75) +( ((msg.value())*.25) * CMath.div(Math.abs(vic.fetchFaction(ID)-minimum),(maximum - minimum)))));
+					msg.setValue( (int)Math.round(((msg.value())*.75) +( ((msg.value())*.25) * CMath.div(Math.abs(vic.fetchFaction(_factionID)-minimum),(maximum - minimum)))));
 				else
 				if(experienceFlag.equals("FOLLOWLOWER"))
-					msg.setValue( (int)Math.round(((msg.value())*.75) +( ((msg.value())*.25) * CMath.div(Math.abs(maximum-vic.fetchFaction(ID)),(maximum - minimum)))));
+					msg.setValue( (int)Math.round(((msg.value())*.75) +( ((msg.value())*.25) * CMath.div(Math.abs(maximum-vic.fetchFaction(_factionID)),(maximum - minimum)))));
 				if(msg.value()<=0)
 					msg.setValue(0);
 			}
@@ -1775,7 +1775,7 @@ public class DefaultFaction implements Faction, MsgListener
 	@Override
 	public void executeChange(final MOB source, MOB target, final FactionChangeEvent event)
 	{
-		final int sourceFaction= source.fetchFaction(ID);
+		final int sourceFaction= source.fetchFaction(_factionID);
 		int targetFaction = sourceFaction * -1;
 		if((source==target)
 		&&(!event.selfTargetOK())
@@ -1785,7 +1785,7 @@ public class DefaultFaction implements Faction, MsgListener
 		if(target!=null)
 		{
 			if(hasFaction(target))
-				targetFaction=target.fetchFaction(ID);
+				targetFaction=target.fetchFaction(_factionID);
 			else
 			if(!event.outsiderTargetOK())
 				return;
@@ -1927,7 +1927,7 @@ public class DefaultFaction implements Faction, MsgListener
 		case FactionChangeEvent.CHANGE_DIRECTION_ADD:
 			factionAdj=findDefault(source);
 			if(!hasFaction(source))
-				source.addFaction(ID,0);
+				source.addFaction(_factionID,0);
 			else
 				factionAdj=0;
 			break;
@@ -1961,7 +1961,7 @@ public class DefaultFaction implements Faction, MsgListener
 					CMLib.commands().postChannel(channels.get(i),source.clans(),msgStr,true);
 			}
 		}
-		CMMsg facMsg=CMClass.getMsg(source,target,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FACTIONCHANGE,seenMsg,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,ID);
+		CMMsg facMsg=CMClass.getMsg(source,target,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FACTIONCHANGE,seenMsg,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,_factionID);
 		facMsg.setValue(factionAdj);
 		final Room R=source.location();
 		if(R!=null)
@@ -1990,9 +1990,9 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 		else
 		if((factionAdj==Integer.MAX_VALUE)||(factionAdj==Integer.MIN_VALUE))
-			source.removeFaction(ID);
+			source.removeFaction(_factionID);
 		else
-			source.adjustFaction(ID,factionAdj);
+			source.adjustFaction(_factionID,factionAdj);
 	}
 
 	@Override
