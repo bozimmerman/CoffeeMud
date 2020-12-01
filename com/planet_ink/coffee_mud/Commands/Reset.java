@@ -1010,30 +1010,21 @@ public class Reset extends StdCommand
 		{
 			final Area A=mob.location().getArea();
 			boolean somethingDone=false;
-			int number=0;
-			for(final Enumeration<Room> e=A.getCompleteMap();e.hasMoreElements();)
-			{
-				final Room R=e.nextElement();
-				if((R.roomID().length()>0)&&(CMLib.map().getRoom(A.Name()+"#"+(number++))!=null))
-				{
-					mob.tell(L("Can't renumber rooms -- a number is too low."));
-					somethingDone=true;
-					break;
-				}
-			}
 			Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
-			number=0;
-			if(!somethingDone)
+			int number=0;
+			while(CMLib.map().getRoom(A.Name()+"#"+number)!=null)
+				number++;
 			for(final Enumeration<Room> e=A.getCompleteMap();e.hasMoreElements();)
 			{
 				Room R=e.nextElement();
 				synchronized(("SYNC"+R.roomID()).intern())
 				{
 					R=CMLib.map().getRoom(R);
-					if(R.roomID().length()>0)
+					if((R.roomID().length()>0)
+					&&(!R.roomID().toLowerCase().startsWith(A.Name().toLowerCase()+"#")))
 					{
 						final String oldID=R.roomID();
-						R.setRoomID(A.Name()+"#"+(number++));
+						R.setRoomID(A.Name()+"#"+number);
 						CMLib.database().DBReCreate(R,oldID);
 						try
 						{
@@ -1059,6 +1050,8 @@ public class Reset extends StdCommand
 							R.getArea().fillInAreaRoom(R);
 						somethingDone=true;
 						mob.tell(L("Room @x1 changed to @x2.",oldID,R.roomID()));
+						while(CMLib.map().getRoom(A.Name()+"#"+number)!=null)
+							number++;
 					}
 				}
 			}
