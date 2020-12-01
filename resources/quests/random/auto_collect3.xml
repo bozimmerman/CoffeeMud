@@ -49,7 +49,7 @@ vars:
 	<HOLDERS_MOBS>${SELECT: . FROM $target}</HOLDERS_MOBS>
 	<HOLDERS_RESPONSE>${j:1:quest_fightspeech}</HOLDERS_RESPONSE>
 	<COLLECTABLES_ITEMS>${SELECT: . from $target_item}</COLLECTABLES_ITEMS>
-	<COLLECTABLES_CHANCE>$[3+($num_targets / $target_area_size * 100) * 2]</COLLECTABLES_CHANCE>
+	<COLLECTABLES_CHANCE>$[(5+($num_targets / $target_area_size * 100)) * 2]</COLLECTABLES_CHANCE>
 	<NUM_COLLECTABLES>$num_targets</NUM_COLLECTABLES>
 	<QUEST_POINT>$quest_point_awarded</QUEST_POINT>
 	<GOLD>$gold_amount_awarded</GOLD>

@@ -47,7 +47,7 @@ vars:
 	<HOLDER_AREAS>"$target_area_name"</HOLDER_AREAS>
 	<HOLDER_ROOMS>ALL</HOLDER_ROOMS>
 	<COLLECTABLES_ITEMS>${SELECT: ANY\. from $target_item}</COLLECTABLES_ITEMS>
-	<COLLECTABLES_CHANCE>$[3+($num_targets / $target_area_size * 100) * 2]</COLLECTABLES_CHANCE>
+	<COLLECTABLES_CHANCE>$[(5+($num_targets / $target_area_size * 100)) * 2]</COLLECTABLES_CHANCE>
 	<NUM_COLLECTABLES>$num_targets</NUM_COLLECTABLES>
 	<LOCALS_RESPONSE>${j:1:quest_fightspeech}</LOCALS_RESPONSE>
 	<QUEST_POINT>$quest_point_awarded</QUEST_POINT>
