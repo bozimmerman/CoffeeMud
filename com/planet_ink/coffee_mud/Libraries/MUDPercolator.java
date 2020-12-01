@@ -3168,6 +3168,16 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				finalValues.addAll(objs);
 			}
 			else
+			if(valPiece.tag().equals("OBJECT"))
+			{
+				final Object O=this.findObject(E, ignoreStats, defPrefix, tagName, valPiece, defined);
+				final List<Object> l=new ArrayList<Object>();
+				if(O!=null)
+					l.add(O);
+				value=l;
+				finalValues.addAll(l);
+			}
+			else
 			{
 				try
 				{

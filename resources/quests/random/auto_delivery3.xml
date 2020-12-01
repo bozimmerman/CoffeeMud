@@ -46,7 +46,7 @@ settable vars:
 	<DELIVEREE_AREA>"$target_area_name"</DELIVEREE_AREA>
 	<DELIVEREE_ROOM>ALL</DELIVEREE_ROOM>
 	<DELIVEREE_MOBS>${SELECT: ANY\. from $target}</DELIVEREE_MOBS>
-	<DELIVEREE_CHANCE>$[1+($num_targets / $target_area_size * 100) * 2]</DELIVEREE_CHANCE>
+	<DELIVEREE_CHANCE>$[3+($num_targets / $target_area_size * 100) * 2]</DELIVEREE_CHANCE>
 	<QUEST_POINT>$quest_point_awarded</QUEST_POINT>
 	<GOLD>$gold_amount_awarded</GOLD>
 	<EXP>$xp_amount_awarded</EXP>
@@ -331,7 +331,7 @@ settable vars:
 					<BEHAVIOR class="Thiefness" parms="Thief" />
 					<BEHAVIOR class="Thiefness" parms="Trapper" />
 				</BEHAVIOR>
-				<BEHAVIOR CONDITION="$aggression = 'YES'">Aggressive</BEHAVIOR>
+				<BEHAVIOR CONDITION="$aggression = 'YES'" CLASS=Aggressive PARMS="" />
 			</MOB>
 		</OBJECT>
 		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=9>SELECT: ANY\. FROM $lair_mobs</OBJECT>
