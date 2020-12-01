@@ -43,7 +43,7 @@ public class Monkey extends StdMOB
 	public Monkey()
 	{
 		super();
-		username="a monkey";
+		_name="a monkey";
 		setDescription("The monkey is brown with a big pink butt.");
 		setDisplayText("A silly monkey lops around here.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

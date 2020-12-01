@@ -45,7 +45,7 @@ public class Squirrel extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a squirrel";
+		_name="a squirrel";
 		setDescription("It\\`s small, cute, and quick with a big expressive tail.");
 		setDisplayText("A squirrel darts around.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

@@ -48,7 +48,7 @@ public class GenAuctioneer extends StdAuctioneer
 	public GenAuctioneer()
 	{
 		super();
-		username="a generic auctioneer";
+		_name="a generic auctioneer";
 		setDescription("He talks so fast, you have no idea what he`s saying.");
 		setDisplayText("A generic auctioneer stands here.");
 	}

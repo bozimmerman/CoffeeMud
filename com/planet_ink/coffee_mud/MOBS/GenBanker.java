@@ -49,7 +49,7 @@ public class GenBanker extends StdBanker
 	public GenBanker()
 	{
 		super();
-		username="a generic banker";
+		_name="a generic banker";
 		setDescription("He looks like he wants your money.");
 		setDisplayText("A generic banker stands here.");
 		basePhyStats().setAbility(CMProps.getMobHPBase()); // his only off-default

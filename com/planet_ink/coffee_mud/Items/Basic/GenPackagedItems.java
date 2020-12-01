@@ -111,7 +111,7 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 		|| (!CMLib.utensils().disInvokeEffects(I))
 		|| (I.amDestroyed()))
 			return false;
-		name = CMLib.english().removeArticleLead(I.Name());
+		_name = CMLib.english().removeArticleLead(I.Name());
 		displayText = "";
 		if(I.description().trim().length()==0)
 			setDescription(L("The contents of the stack appears as follows: ") + I.name());

@@ -43,7 +43,7 @@ public class Crocodile extends StdMOB
 	public Crocodile()
 	{
 		super();
-		username="a crocodile";
+		_name="a crocodile";
 		setDescription("A long green lizard with long ferocious rows of teeth.");
 		setDisplayText("A crocodile is waiting patiently for prey.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

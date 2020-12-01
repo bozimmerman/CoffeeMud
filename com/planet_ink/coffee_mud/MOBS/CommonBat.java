@@ -45,7 +45,7 @@ public class CommonBat extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a common bat";
+		_name="a common bat";
 		setDescription("It seemingly has the body of a rat with wings.");
 		setDisplayText("A bat flies nearby.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

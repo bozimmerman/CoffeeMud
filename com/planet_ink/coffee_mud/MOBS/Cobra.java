@@ -43,7 +43,7 @@ public class Cobra extends StdMOB
 	public Cobra()
 	{
 		super();
-		username="a cobra";
+		_name="a cobra";
 		setDescription("A fearsome creature with long fangs and a menacing head.");
 		setDisplayText("A cobra is hissing at you.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

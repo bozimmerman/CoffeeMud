@@ -45,7 +45,7 @@ public class Hawk extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a hawk";
+		_name="a hawk";
 		setDescription("a hunting bird with a narrow face, shark beak, and nasty talons.");
 		setDisplayText("An hawk soars overhead.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

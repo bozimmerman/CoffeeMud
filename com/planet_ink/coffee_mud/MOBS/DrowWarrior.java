@@ -59,7 +59,7 @@ public class DrowWarrior extends DrowElf
 		magicResistance = 50 + basePhyStats().level() * 2;
 
 		// ===== set the basics
-		username="a Drow male";
+		_name="a Drow male";
 		setDescription("a Drow warrior");
 		setDisplayText("A Drow warrior considers you carefully.");
 

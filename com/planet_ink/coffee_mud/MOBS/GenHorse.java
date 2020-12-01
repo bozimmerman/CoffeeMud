@@ -43,7 +43,7 @@ public class GenHorse extends GenRideable
 	public GenHorse()
 	{
 		super();
-		username="a horse";
+		_name="a horse";
 		setDisplayText("A horse stands here.");
 	}
 }

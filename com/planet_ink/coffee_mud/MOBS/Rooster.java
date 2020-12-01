@@ -43,7 +43,7 @@ public class Rooster extends StdMOB
 	public Rooster()
 	{
 		super();
-		username="a rooster";
+		_name="a rooster";
 		setDescription("a short winged bird");
 		setDisplayText("A rooster is here, not flying.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

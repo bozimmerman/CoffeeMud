@@ -45,7 +45,7 @@ public class Worm extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a worm";
+		_name="a worm";
 		setDescription("A long squirmy slithering thing.");
 		setDisplayText("A worm is squirming around.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

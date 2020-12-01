@@ -42,7 +42,7 @@ public class GenScale extends GenRideable
 
 	public GenScale()
 	{
-		this.name="a scale";
+		this._name="a scale";
 		this.displayText="a scale sits here";
 		this.description="It has a fulcrum and an arm under which hang two large plates, upon which things may be placed, or upon which people may sit.";
 		super.containType = Container.CONTAIN_ANYTHING;

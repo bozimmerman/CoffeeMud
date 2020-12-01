@@ -43,7 +43,7 @@ public class Alligator extends StdMOB
 	public Alligator()
 	{
 		super();
-		username="a alligator";
+		_name="a alligator";
 		setDescription("It\\`s a large lizard-like creature with tough skin and a large toothy mouth.");
 		setDisplayText("An alligator is here.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

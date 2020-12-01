@@ -45,7 +45,7 @@ public class LargeBat extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a large bat";
+		_name="a large bat";
 		setDescription("It looks like a bat, just larger.");
 		setDisplayText("A large bat flies nearby.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

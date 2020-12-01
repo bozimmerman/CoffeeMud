@@ -54,7 +54,7 @@ public class DrowWizard extends DrowElf
 		magicResistance = 50 + basePhyStats().level() * 2;
 
 		// ===== set the basics
-		username="a Drow male";
+		_name="a Drow male";
 		setDescription("a Drow wizard");
 		setDisplayText("A Drow wizard turns your blood cold.");
 

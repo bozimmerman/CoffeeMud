@@ -48,7 +48,7 @@ public class GenLibrarian extends StdLibrarian
 	public GenLibrarian()
 	{
 		super();
-		username="a generic librarian";
+		_name="a generic librarian";
 		setDescription("She dares you to make a sound.");
 		setDisplayText("A generic librarian stands here.");
 	}

@@ -87,7 +87,7 @@ public class StdDeity extends StdMOB implements Deity
 	public StdDeity()
 	{
 		super();
-		username="a Mighty Deity";
+		_name="a Mighty Deity";
 		setDescription("He is Mighty.");
 		setDisplayText("A Mighty Deity stands here!");
 		basePhyStats().setWeight(700);

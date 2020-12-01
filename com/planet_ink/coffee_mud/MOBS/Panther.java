@@ -45,7 +45,7 @@ public class Panther extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a panther";
+		_name="a panther";
 		setDescription("A powerful cat with a deep chest and muscular limbs, covered in midnight black fur.");
 		setDisplayText("A panther slowly stalks prey.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

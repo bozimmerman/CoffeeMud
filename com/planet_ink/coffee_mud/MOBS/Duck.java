@@ -45,7 +45,7 @@ public class Duck extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a duck";
+		_name="a duck";
 		setDescription("It\\`s a small duck with orange webbed feet and a wagging tail.");
 		setDisplayText("A duck waddles here.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

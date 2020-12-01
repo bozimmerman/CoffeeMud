@@ -45,7 +45,7 @@ public class Tiger extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a tiger";
+		_name="a tiger";
 		setDescription("Tigers have reddish-orange fur and dark vertical stripes.");
 		setDisplayText("A tiger prowls here.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

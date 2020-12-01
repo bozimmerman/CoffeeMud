@@ -45,7 +45,7 @@ public class FlyingInsect extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a flying insect";
+		_name="a flying insect";
 		setDescription("The small flying bug is too tiny to tell whether it bites or stings.");
 		setDisplayText("A flying insect flits around.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

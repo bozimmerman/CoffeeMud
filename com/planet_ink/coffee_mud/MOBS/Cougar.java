@@ -45,7 +45,7 @@ public class Cougar extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a cougar";
+		_name="a cougar";
 		setDescription("Cougar are sleek powerful cats with long deadly claws.");
 		setDisplayText("A cougar prowls you.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

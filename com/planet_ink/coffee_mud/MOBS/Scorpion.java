@@ -45,7 +45,7 @@ public class Scorpion extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a Scorpion";
+		_name="a Scorpion";
 		setDescription("The scorpion has a black carapace, legs and pincers. The segmented tail has a vicious stinger on the end.");
 		setDisplayText("A scorpion hunts for prey.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

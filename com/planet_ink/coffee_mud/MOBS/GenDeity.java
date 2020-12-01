@@ -44,7 +44,7 @@ public class GenDeity extends StdDeity
 	public GenDeity()
 	{
 		super();
-		username="a generic deity";
+		_name="a generic deity";
 		setDescription("He is a run-of-the-mill deity.");
 		setDisplayText("A generic deity stands here.");
 		basePhyStats().setAbility(CMProps.getMobHPBase()); // his only off-default

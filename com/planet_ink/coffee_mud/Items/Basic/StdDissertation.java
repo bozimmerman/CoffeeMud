@@ -219,7 +219,7 @@ public class StdDissertation extends StdItem implements Scroll
 					if((thisOne!=null)&&(useTheScroll(thisOne,mob)))
 					{
 						final Ability learnThisAbility=(Ability)thisOne.copyOf();
-						final String name = this.name;
+						final String name = this._name;
 						final Item item = this;
 						final Runnable learnIt = new Runnable()
 						{

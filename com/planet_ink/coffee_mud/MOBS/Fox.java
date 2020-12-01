@@ -45,7 +45,7 @@ public class Fox extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a fox";
+		_name="a fox";
 		setDescription("It`s got a red coat and a tail.  Never has there been a more majestic animal.");
 		setDisplayText("A fox growls.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

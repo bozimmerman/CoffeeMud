@@ -43,7 +43,7 @@ public class Walrus extends StdMOB
 	public Walrus()
 	{
 		super();
-		username="a walrus";
+		_name="a walrus";
 		setDescription("It\\`s a huge swimming mammal with a fish tail.");
 		setDisplayText("A walrus is here.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

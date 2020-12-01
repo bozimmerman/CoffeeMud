@@ -43,7 +43,7 @@ public class Citizen extends StdMOB
 	public Citizen()
 	{
 		super();
-		username="a citizen";
+		_name="a citizen";
 		setDescription("");
 		baseCharStats().setStat(CharStats.STAT_GENDER,(CMLib.dice().rollPercentage()>50)?'M':'F');
 		setDisplayText("A citizen goes about "+baseCharStats().hisher()+" business.");

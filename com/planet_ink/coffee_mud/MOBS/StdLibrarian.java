@@ -61,7 +61,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 	public StdLibrarian()
 	{
 		super();
-		username = "a librarian";
+		_name = "a librarian";
 		setDescription("She\\`s just waiting for you to say something so she can shush you!");
 		setDisplayText("The librarian is ready to help.");
 		CMLib.factions().setAlignment(this, Faction.Align.GOOD);

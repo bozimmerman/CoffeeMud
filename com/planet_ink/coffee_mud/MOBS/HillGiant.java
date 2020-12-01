@@ -43,7 +43,7 @@ public class HillGiant extends StdMOB
 	public HillGiant()
 	{
 		super();
-		username="a Hill Giant";
+		_name="a Hill Giant";
 		setDescription("A tall humanoid standing about 16 feet tall and very smelly.");
 		setDisplayText("A Hill Giant glares at you.");
 		CMLib.factions().setAlignment(this,Faction.Align.EVIL);

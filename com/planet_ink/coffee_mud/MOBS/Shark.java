@@ -43,7 +43,7 @@ public class Shark extends StdMOB
 	public Shark()
 	{
 		super();
-		username="a shark";
+		_name="a shark";
 		setDescription("It\\`s a large predatorial fish with a sharp teeth.");
 		setDisplayText("A shark is here.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

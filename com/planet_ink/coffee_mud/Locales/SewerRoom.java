@@ -43,7 +43,7 @@ public class SewerRoom extends StdRoom
 	public SewerRoom()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		_roomID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="the sewers";
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_DARK);
 		basePhyStats.setWeight(2);

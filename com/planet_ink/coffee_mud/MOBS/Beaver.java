@@ -45,7 +45,7 @@ public class Beaver extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a beaver";
+		_name="a beaver";
 		setDescription("It\\`s a small rodent with a large tail and sharp teeth.");
 		setDisplayText("A beaver is hard at work.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

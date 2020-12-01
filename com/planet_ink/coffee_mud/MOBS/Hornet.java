@@ -44,7 +44,7 @@ public class Hornet extends StdMOB
 	{
 		super();
 
-		username="a hornet";
+		_name="a hornet";
 		setDescription("It\\`s a small mean flying insect with a nasty stinger on its butt.");
 		setDisplayText("A hornet flits around here.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

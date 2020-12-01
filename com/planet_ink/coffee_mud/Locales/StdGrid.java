@@ -54,7 +54,7 @@ public class StdGrid extends StdRoom implements GridLocale
 	public StdGrid()
 	{
 		super();
-		myID=getClass().getName().substring(getClass().getName().lastIndexOf('.')+1);
+		_roomID=getClass().getName().substring(getClass().getName().lastIndexOf('.')+1);
 	}
 
 	@Override

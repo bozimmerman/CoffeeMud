@@ -43,7 +43,7 @@ public class WhiteBear extends BrownBear
 	public WhiteBear()
 	{
 		super();
-		username="a White Bear";
+		_name="a White Bear";
 		setDescription("A bear, large and husky with white fur.");
 		setDisplayText("A white bear hunts here.");
 	}

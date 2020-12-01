@@ -43,7 +43,7 @@ public class Bugbear extends StdMOB
 	public Bugbear()
 	{
 		super();
-		username="a Bugbear";
+		_name="a Bugbear";
 		setDescription("a 7 foot tall, hairy, yellow-brown, muscular creature with sharp teeth and recessed eyes.");
 		setDisplayText("A large Bugbear stands here.");
 		CMLib.factions().setAlignment(this,Faction.Align.EVIL);

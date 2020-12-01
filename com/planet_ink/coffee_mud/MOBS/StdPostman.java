@@ -56,7 +56,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	public StdPostman()
 	{
 		super();
-		username="a postman";
+		_name="a postman";
 		setDescription("He\\`s making a speedy delivery!");
 		setDisplayText("The local postman is waiting to serve you.");
 		CMLib.factions().setAlignment(this,Faction.Align.GOOD);

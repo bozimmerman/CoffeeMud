@@ -43,7 +43,7 @@ public class Dolphin extends StdMOB
 	public Dolphin()
 	{
 		super();
-		username="a dolphin";
+		_name="a dolphin";
 		setDescription("It\\`s a large sleek fish with a long nose.");
 		setDisplayText("A dolphin is here.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

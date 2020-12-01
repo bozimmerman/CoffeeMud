@@ -57,7 +57,7 @@ public class StdMOB implements MOB
 		return "StdMOB";
 	}
 
-	public String										username			= "";
+	public String										_name				= "";
 
 	protected CharStats									baseCharStats		= (CharStats) CMClass.getCommon("DefaultCharStats");
 	protected CharStats									charStats			= (CharStats) CMClass.getCommon("DefaultCharStats");
@@ -496,13 +496,13 @@ public class StdMOB implements MOB
 	@Override
 	public String Name()
 	{
-		return username;
+		return _name;
 	}
 
 	@Override
 	public void setName(final String newName)
 	{
-		username = newName;
+		_name = newName;
 	}
 
 	@Override
@@ -510,7 +510,7 @@ public class StdMOB implements MOB
 	{
 		if (phyStats().newName() != null)
 			return phyStats().newName();
-		return username;
+		return _name;
 	}
 
 	@Override

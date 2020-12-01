@@ -44,7 +44,7 @@ public class StdRoom implements Room
 		return "StdRoom";
 	}
 
-	protected String			myID				= "";
+	protected String			_roomID				= "";
 	protected String			name				= "the room";
 	protected String			displayText			= L("Standard Room");
 	protected String			rawImageName		= null;
@@ -118,7 +118,7 @@ public class StdRoom implements Room
 	@Override
 	public String roomID()
 	{
-		return myID	;
+		return _roomID	;
 	}
 
 	@Override
@@ -452,9 +452,9 @@ public class StdRoom implements Room
 	@Override
 	public void setRoomID(final String newID)
 	{
-		if((myID!=null)&&(!myID.equals(newID)))
+		if((_roomID!=null)&&(!_roomID.equals(newID)))
 		{
-			myID=newID;
+			_roomID=newID;
 			if(myArea!=null)
 			{
 				// force the re-sort
@@ -463,7 +463,7 @@ public class StdRoom implements Room
 			}
 		}
 		else
-			myID=newID;
+			_roomID=newID;
 	}
 
 	@Override

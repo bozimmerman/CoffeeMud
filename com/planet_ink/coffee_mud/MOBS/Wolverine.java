@@ -45,7 +45,7 @@ public class Wolverine extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a wolverine";
+		_name="a wolverine";
 		setDescription("A powerful muscular carnivore with brown fur and mean eyes.");
 		setDisplayText("A wolverine growls at you.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

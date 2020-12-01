@@ -46,7 +46,7 @@ public class UmberHulk extends StdMOB
 	{
 		super();
 
-		username="an Umber Hulk";
+		_name="an Umber Hulk";
 		setDescription("An 8 foot tall, 5 foot wide mass of meanness just waiting to eat....");
 		setDisplayText("A huge Umber Hulk eyes you.");
 		CMLib.factions().setAlignment(this,Faction.Align.EVIL);

@@ -43,7 +43,7 @@ public class Frog extends StdMOB
 	public Frog()
 	{
 		super();
-		username="a frog";
+		_name="a frog";
 		setDescription("A small little amphibian with long legs and big eyes.");
 		setDisplayText("A frog is hopping around.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

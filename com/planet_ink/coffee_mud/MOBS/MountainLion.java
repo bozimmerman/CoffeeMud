@@ -45,7 +45,7 @@ public class MountainLion extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a lion";
+		_name="a lion";
 		setDescription("Mountain Lions have sleek tan fur and watchful eyes.");
 		setDisplayText("A mountain lion watches you.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

@@ -52,7 +52,7 @@ public class Doppleganger extends StdMOB
 	protected void revert()
 	{
 		final Random randomizer = new Random(System.currentTimeMillis());
-		username="a doppleganger";
+		_name="a doppleganger";
 		setDescription("A formless biped creature, with wicked black eyes.");
 		setDisplayText("A formless biped stands here.");
 		setBasePhyStats((PhyStats)CMClass.getCommon("DefaultPhyStats"));
@@ -126,7 +126,7 @@ public class Doppleganger extends StdMOB
 			{
 				location().show(this,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> take(s) on a new form!"));
 				mimicing=msg.source();
-				username=mimicing.Name();
+				_name=mimicing.Name();
 				setDisplayText(mimicing.displayText());
 				setDescription(mimicing.description());
 				setBasePhyStats((PhyStats)mimicing.basePhyStats().copyOf());

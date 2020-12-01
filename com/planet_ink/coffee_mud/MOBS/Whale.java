@@ -43,7 +43,7 @@ public class Whale extends StdMOB
 	public Whale()
 	{
 		super();
-		username="a whale";
+		_name="a whale";
 		setDescription("It\\`s the biggest damn fish you've ever seen!");
 		setDisplayText("A whale is here.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

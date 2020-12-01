@@ -45,7 +45,7 @@ public class WildEagle extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="an eagle";
+		_name="an eagle";
 		setDescription("a majestic and very patriotic bird.");
 		setDisplayText("An eagle gracefully glides upon the wind currents.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

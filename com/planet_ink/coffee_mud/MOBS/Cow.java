@@ -45,7 +45,7 @@ public class Cow extends StdMOB implements Drink
 	public Cow()
 	{
 		super();
-		username="a cow";
+		_name="a cow";
 		setDescription("A large lumbering beast that looks too slow to get out of your way.");
 		setDisplayText("A fat happy cow wanders around here.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

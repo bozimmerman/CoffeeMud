@@ -43,7 +43,7 @@ public class Doe extends Deer
 	public Doe()
 	{
 		super();
-		username="a doe";
+		_name="a doe";
 		setDescription("A nervous, but beautifully graceful creation.");
 		setDisplayText("A doe looks up as you happen along.");
 		baseCharStats().setStat(CharStats.STAT_GENDER,'F');

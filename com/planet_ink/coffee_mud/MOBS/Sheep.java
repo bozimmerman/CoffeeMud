@@ -43,7 +43,7 @@ public class Sheep extends StdMOB
 	public Sheep()
 	{
 		super();
-		username="a sheep";
+		_name="a sheep";
 		setDescription("It looks warm in that big fluffy coat of wool, but is nervous that you are so close.");
 		setDisplayText("A sheep has wandered away from the herd.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

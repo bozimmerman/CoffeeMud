@@ -51,7 +51,7 @@ public class GenCow extends GenRideable implements Drink
 	public GenCow()
 	{
 		super();
-		username="a cow";
+		_name="a cow";
 		setDescription("A large lumbering beast that looks too slow to get out of your way.");
 		setDisplayText("A fat happy cow wanders around here.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

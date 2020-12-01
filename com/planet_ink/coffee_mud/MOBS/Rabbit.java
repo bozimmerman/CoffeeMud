@@ -45,7 +45,7 @@ public class Rabbit extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a rabbit";
+		_name="a rabbit";
 		setDescription("It\\`s small, cute, and fluffy with a cute cotton-ball tail.");
 		setDisplayText("A rabbit hops by.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

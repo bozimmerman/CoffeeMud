@@ -45,7 +45,7 @@ public class Turtle extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a turtle";
+		_name="a turtle";
 		setDescription("It\\`s a slow moving turtle with a big green shell.");
 		setDisplayText("A turtle seems to be moving here.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

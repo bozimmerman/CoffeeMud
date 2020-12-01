@@ -43,7 +43,7 @@ public class Snake extends StdMOB
 	public Snake()
 	{
 		super();
-		username="a snake";
+		_name="a snake";
 		setDescription("It\\`s all scaley and slithery.");
 		setDisplayText("A snake slithers around here.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

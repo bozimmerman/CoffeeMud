@@ -45,7 +45,7 @@ public class Wolf extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a wolf";
+		_name="a wolf";
 		setDescription("A powerful wolf with grey fur and amber eyes.");
 		setDisplayText("A wolf growls and stares at you.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

@@ -46,7 +46,7 @@ public class GenRideableUndead extends GenRideable
 	public GenRideableUndead()
 	{
 		super();
-		username="a generic undead being";
+		_name="a generic undead being";
 		setDescription("He looks dead to me.");
 		setDisplayText("A generic undead mob stands here.");
 		CMLib.factions().setAlignment(this,Faction.Align.EVIL);

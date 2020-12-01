@@ -43,7 +43,7 @@ public class Swordfish extends StdMOB
 	public Swordfish()
 	{
 		super();
-		username="a swordfish";
+		_name="a swordfish";
 		setDescription("It\\`s a shark with a long piercing nose.");
 		setDisplayText("A swordfish is here.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

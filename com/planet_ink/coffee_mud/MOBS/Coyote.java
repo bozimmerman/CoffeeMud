@@ -45,7 +45,7 @@ public class Coyote extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a coyote";
+		_name="a coyote";
 		setDescription("It\\`s short haired with four legs, sharp eyes, and sharper teeth.");
 		setDisplayText("A coyote is stalking its prey.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

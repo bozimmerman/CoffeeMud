@@ -43,7 +43,7 @@ public class Goat extends StdMOB
 	public Goat()
 	{
 		super();
-		username="a goat";
+		_name="a goat";
 		setDescription("Nimble and lively, it has short hair and dangeous looking hooves and horns.");
 		setDisplayText("A goat makes his way nimbly.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

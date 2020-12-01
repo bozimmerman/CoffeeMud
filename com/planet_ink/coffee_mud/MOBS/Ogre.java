@@ -44,7 +44,7 @@ public class Ogre extends StdMOB
 	{
 
 		super();
-		username="an Ogre";
+		_name="an Ogre";
 		setDescription("Nine foot tall and with skin that is a covered in bumps and dead yellow in color..");
 		setDisplayText("An ogre stares at you while he clenches his fists.");
 		CMLib.factions().setAlignment(this,Faction.Align.EVIL);

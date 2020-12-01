@@ -45,7 +45,7 @@ public class Horse extends StdRideable
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a horse";
+		_name="a horse";
 		setDescription("It\\`s a beautiful brown steed.");
 		setDisplayText("A horse stands here.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

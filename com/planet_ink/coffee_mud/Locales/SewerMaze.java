@@ -43,7 +43,7 @@ public class SewerMaze extends StdMaze
 	public SewerMaze()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		_roomID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_DARK);
 		basePhyStats.setWeight(2);
 		recoverPhyStats();

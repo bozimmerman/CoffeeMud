@@ -45,7 +45,7 @@ public class Centaur extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a centaur";
+		_name="a centaur";
 		setDescription("A creature whose upper body is that of a man, and lower body that of a horse.");
 		setDisplayText("A centaur gallops around...");
 		CMLib.factions().setAlignment(this,Faction.Align.GOOD);

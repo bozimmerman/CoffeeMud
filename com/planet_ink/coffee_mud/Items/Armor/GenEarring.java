@@ -246,7 +246,7 @@ public class GenEarring extends GenThinArmor implements BodyToken
 				}
 			}
 			if((wearLocDesc != null) && (wearLocDesc.length()>0))
-				phyStats().setName(name + wearLocDesc);
+				phyStats().setName(_name + wearLocDesc);
 		}
 		else
 			this.wearLocDesc = null;

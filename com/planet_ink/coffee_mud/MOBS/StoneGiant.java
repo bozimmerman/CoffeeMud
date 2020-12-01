@@ -45,7 +45,7 @@ public class StoneGiant extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a Stone Giant";
+		_name="a Stone Giant";
 		setDescription("A tall humanoid standing about 18 feet tall with gray, hairless flesh.");
 		setDisplayText("A Stone Giant glares at you.");
 		CMLib.factions().setAlignment(this,Faction.Align.EVIL);

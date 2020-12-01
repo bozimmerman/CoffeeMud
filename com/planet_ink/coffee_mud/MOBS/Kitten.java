@@ -45,7 +45,7 @@ public class Kitten extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a kitten";
+		_name="a kitten";
 		setDescription("It\\`s small, cute, and furry with four legs, and a long fluffy tail.");
 		setDisplayText("A kitten watches you.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

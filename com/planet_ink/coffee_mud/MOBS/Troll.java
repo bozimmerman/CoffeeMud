@@ -45,7 +45,7 @@ public class Troll extends StdMOB
 	public Troll()
 	{
 		super();
-		username="a troll";
+		_name="a troll";
 		setDescription("Nine foot tall and reeking of rotten meat..");
 		setDisplayText("A mean looking troll glares at you.");
 		CMLib.factions().setAlignment(this,Faction.Align.EVIL);

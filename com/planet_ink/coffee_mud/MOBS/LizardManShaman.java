@@ -45,7 +45,7 @@ public class LizardManShaman extends LizardMan
 	public LizardManShaman()
 	{
 		super();
-		username="a Lizard Man";
+		_name="a Lizard Man";
 		setDescription("a 6 foot tall reptilian humanoid.");
 		setDisplayText("A mean looking Lizard Man stands here.");
 		CMLib.factions().setAlignment(this,Faction.Align.EVIL);

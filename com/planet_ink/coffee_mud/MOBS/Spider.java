@@ -45,7 +45,7 @@ public class Spider extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a spider";
+		_name="a spider";
 		setDescription("The spider has a carapace, 8 legs and a maw.");
 		setDisplayText("A spider spins a web.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

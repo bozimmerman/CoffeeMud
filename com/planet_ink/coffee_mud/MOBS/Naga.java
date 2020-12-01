@@ -45,7 +45,7 @@ public class Naga extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a naga";
+		_name="a naga";
 		setDisplayText("A naga is here");
 		setDescription("A sharp-featured humanoid head crowns the powerful, sinuous body of this snake-like monstrosity."
 					+ "  Two slender arms extend from the body of the Naga just below the head.");

@@ -51,7 +51,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	protected String		currency		= "";
 	private long			expirationDate  = 0;
 	protected boolean   	amDestroyed 	= false;
-	protected String		name			= "a sailing ship";
+	protected String		_name			= "a sailing ship";
 	protected Room			savedDock   	= null;
 	protected String		displayText 	= "";
 	protected String		description 	= "";
@@ -295,20 +295,20 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	{
 		if(phyStats().newName()!=null)
 			return phyStats().newName();
-		return name;
+		return _name;
 	}
 
 	@Override
 	public void setName(final String newName)
 	{
-		name=newName;
+		_name=newName;
 		CMLib.map().renamedArea(this);
 	}
 
 	@Override
 	public String Name()
 	{
-		return name;
+		return _name;
 	}
 
 	@Override

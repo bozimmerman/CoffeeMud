@@ -43,7 +43,7 @@ public class Lizard extends StdMOB
 	public Lizard()
 	{
 		super();
-		username="a lizard";
+		_name="a lizard";
 		setDescription("A small unobtrusive reptile with rough green skin.");
 		setDisplayText("A lizard scurries by.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

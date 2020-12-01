@@ -45,7 +45,7 @@ public class Penguin extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a penguin";
+		_name="a penguin";
 		setDescription("It\\`s a short flightless bird with webbed feet and a short wagging tail.");
 		setDisplayText("A penguin waddles here.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

@@ -263,7 +263,7 @@ public class StdTitle extends StdItem implements LandTitle
 
 	public void updateTitleName()
 	{
-		if(!name.startsWith("the title to"))
+		if(!_name.startsWith("the title to"))
 		{
 			final List<Room> V=getAllTitledRooms();
 			if((V.size()<2)

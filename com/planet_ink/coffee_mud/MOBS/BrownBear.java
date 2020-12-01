@@ -45,7 +45,7 @@ public class BrownBear extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a Brown Bear";
+		_name="a Brown Bear";
 		setDescription("A bear, large and husky with brown fur.");
 		setDisplayText("A brown bear hunts here.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

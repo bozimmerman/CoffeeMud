@@ -45,7 +45,7 @@ public class StdArea implements Area
 		return "StdArea";
 	}
 
-	protected String	name				= "the area";
+	protected String	_name				= "the area";
 	protected String	description			= "";
 	protected String	miscText			= "";
 	protected String	archPath			= "";
@@ -406,7 +406,7 @@ public class StdArea implements Area
 	{
 		if (phyStats().newName() != null)
 			return phyStats().newName();
-		return name;
+		return _name;
 	}
 
 	@Override
@@ -437,7 +437,7 @@ public class StdArea implements Area
 	{
 		if (newName != null)
 		{
-			name = newName.replace('\'', '`');
+			_name = newName.replace('\'', '`');
 			CMLib.map().renamedArea(this);
 		}
 	}
@@ -445,7 +445,7 @@ public class StdArea implements Area
 	@Override
 	public String Name()
 	{
-		return name;
+		return _name;
 	}
 
 	@Override

@@ -45,7 +45,7 @@ public class Falcon extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a falcon";
+		_name="a falcon";
 		setDescription("a small hunting bird.");
 		setDisplayText("A falcon flies nearby.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

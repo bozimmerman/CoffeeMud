@@ -45,7 +45,7 @@ public class Lion extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a lion";
+		_name="a lion";
 		setDescription("Lions have reddish-orange fur and great furry manes.");
 		setDisplayText("A lion watches you.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

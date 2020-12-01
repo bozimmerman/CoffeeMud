@@ -43,7 +43,7 @@ public class GardenSnake extends StdMOB
 	public GardenSnake()
 	{
 		super();
-		username="a garden snake";
+		_name="a garden snake";
 		setDescription("A harmless little green string.");
 		setDisplayText("A little garden snake slithers around looking for bugs.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

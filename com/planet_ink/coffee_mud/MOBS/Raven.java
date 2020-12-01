@@ -45,7 +45,7 @@ public class Raven extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a raven";
+		_name="a raven";
 		setDescription("It\\`s a small black bird with a long yellow beak.");
 		setDisplayText("A raven flutters nearby.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

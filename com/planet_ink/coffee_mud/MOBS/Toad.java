@@ -43,7 +43,7 @@ public class Toad extends StdMOB
 	public Toad()
 	{
 		super();
-		username="a toad";
+		_name="a toad";
 		setDescription("A stubby little dry amphibian with short legs.");
 		setDisplayText("A toad is squatting here.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

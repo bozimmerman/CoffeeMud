@@ -64,7 +64,7 @@ public class StdPlayingCard extends StdItem implements MiscMagic, PlayingCard
 	public StdPlayingCard()
 	{
 		super();
-		name="A card";
+		_name="A card";
 		displayText=L("A card lies here.");
 		secretIdentity="";
 		basePhyStats().setWeight(0);
@@ -273,13 +273,13 @@ public class StdPlayingCard extends StdItem implements MiscMagic, PlayingCard
 			final String cardStr=getCardValueShortDescription(phyStats().ability());
 			if((suitStr.length()==0)||(cardStr.length()==0))
 			{
-				name="A mangled card";
+				_name="A mangled card";
 				displayText=L("A mangled playing card lies here.");
 			}
 			else
 			{
-				name="the "+cardStr+" of "+suitStr;
-				displayText=L("a playing card, @x1, lies here",name);
+				_name="the "+cardStr+" of "+suitStr;
+				displayText=L("a playing card, @x1, lies here",_name);
 			}
 			//CMLib.flags().setGettable(this,false);
 		}

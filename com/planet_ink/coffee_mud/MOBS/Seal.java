@@ -43,7 +43,7 @@ public class Seal extends StdMOB
 	public Seal()
 	{
 		super();
-		username="a seal";
+		_name="a seal";
 		setDescription("It\\`s a large swimming mammal with a fish tail.");
 		setDisplayText("A seal is here.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

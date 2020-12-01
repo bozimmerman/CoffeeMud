@@ -77,7 +77,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 	public StdDeckOfCards()
 	{
 		super();
-		name="A deck of cards";
+		_name="A deck of cards";
 		displayText=L("A deck of cards has been left here.");
 		secretIdentity="A magical deck of cards.  Say \"Shuffle\" to me.";
 		recoverPhyStats();

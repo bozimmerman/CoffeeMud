@@ -43,7 +43,7 @@ public class Rat extends StdMOB
 	public Rat()
 	{
 		super();
-		username="a rat";
+		_name="a rat";
 		setDescription("A small furry rodent with a long, leathery tail.");
 		setDisplayText("A rat is here nibbling on something.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

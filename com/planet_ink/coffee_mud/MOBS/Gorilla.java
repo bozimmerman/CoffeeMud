@@ -43,7 +43,7 @@ public class Gorilla extends StdMOB
 	public Gorilla()
 	{
 		super();
-		username="a gorilla";
+		_name="a gorilla";
 		setDescription("The gorilla is big, muscular, and territorial..");
 		setDisplayText("A gorilla sits here watching you.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

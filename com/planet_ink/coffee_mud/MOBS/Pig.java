@@ -43,7 +43,7 @@ public class Pig extends StdMOB
 	public Pig()
 	{
 		super();
-		username="a pig";
+		_name="a pig";
 		setDescription("A large pink hairless animal with hooved feet.");
 		setDisplayText("A pig snorts at you.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

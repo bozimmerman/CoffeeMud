@@ -43,7 +43,7 @@ public class Parakeet extends StdMOB
 	public Parakeet()
 	{
 		super();
-		username="a parakeet";
+		_name="a parakeet";
 		setDescription("a small colorful bird.");
 		setDisplayText("A parakeet flies nearby.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

@@ -44,7 +44,7 @@ public class Chimp extends StdMOB
 	{
 		super();
 
-		username="a chimp";
+		_name="a chimp";
 		setDescription("The chimp is reddish brown with a big pink butt.");
 		setDisplayText("A chimp sits here watching you.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

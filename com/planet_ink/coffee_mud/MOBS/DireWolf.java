@@ -45,7 +45,7 @@ public class DireWolf extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a dire wolf";
+		_name="a dire wolf";
 		setDescription("An over-sized powerful wolf with grey fur and red eyes.");
 		setDisplayText("A dire wolf growls and walks toward you.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

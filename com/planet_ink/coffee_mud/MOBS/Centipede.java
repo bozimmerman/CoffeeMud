@@ -45,7 +45,7 @@ public class Centipede extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a centipede";
+		_name="a centipede";
 		setDescription("The centipede is a long worm-like insect with a deadly maw and numerous legs.");
 		setDisplayText("A centipede crawls around you.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

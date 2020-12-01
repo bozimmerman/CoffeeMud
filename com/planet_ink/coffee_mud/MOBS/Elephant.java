@@ -43,7 +43,7 @@ public class Elephant extends StdMOB
 	public Elephant()
 	{
 		super();
-		username="an elephant";
+		_name="an elephant";
 		setDescription("A large chubby animals with leathery skin, large ears, and a long prehensile nose.");
 		setDisplayText("An elephant is heading somewhere.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

@@ -43,7 +43,7 @@ public class BrownSnake extends StdMOB
 	public BrownSnake()
 	{
 		super();
-		username="a brown snake";
+		_name="a brown snake";
 		setDescription("A fearsome creature with long fangs and deadly venom.");
 		setDisplayText("A brown snake is not pleased to see you");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);

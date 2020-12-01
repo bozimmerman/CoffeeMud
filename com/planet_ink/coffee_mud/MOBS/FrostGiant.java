@@ -43,7 +43,7 @@ public class FrostGiant extends StdMOB
 	public FrostGiant()
 	{
 		super();
-		username="a frost giant";
+		_name="a frost giant";
 		setDescription("A tall blueish humanoid standing about 16 feet tall and very smelly.");
 		setDisplayText("A frost giant looks down at you.");
 		CMLib.factions().setAlignment(this,Faction.Align.EVIL);

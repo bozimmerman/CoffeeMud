@@ -41,7 +41,7 @@ public class StdItem implements Item
 		return "StdItem";
 	}
 
-	protected String	name				= "an ordinary item";
+	protected String	_name				= "an ordinary item";
 	protected String	displayText			= L("a nondescript item sits here doing nothing.");
 	protected Object	description			= null;
 	protected int		myUses				= Integer.MAX_VALUE;
@@ -110,13 +110,13 @@ public class StdItem implements Item
 	@Override
 	public String Name()
 	{
-		return name;
+		return _name;
 	}
 
 	@Override
 	public void setName(final String newName)
 	{
-		name = newName;
+		_name = newName;
 	}
 
 	@Override

@@ -50,7 +50,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	public StdBanker()
 	{
 		super();
-		username="a banker";
+		_name="a banker";
 		setDescription("He\\`s pleased to be of assistance.");
 		setDisplayText("A banker is waiting to serve you.");
 		CMLib.factions().setAlignment(this,Faction.Align.GOOD);

@@ -44,7 +44,7 @@ public class Skeleton extends Undead
 	{
 
 		super();
-		username="a skeleton";
+		_name="a skeleton";
 		setDescription("A walking pile of bones...");
 		setDisplayText("a skeleton rattles as it walks.");
 		setMoney(0);

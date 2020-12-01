@@ -277,6 +277,13 @@ public class RequestHandler implements CMRunnable
 			catch (final IOException ioe)
 			{
 				Log.errOut("CM1Hndlr", runnableName + ": " + ioe.getMessage());
+				try
+				{
+					chan.close();
+				}
+				catch (final IOException e)
+				{
+				}
 			}
 			catch (final Exception e)
 			{

@@ -43,7 +43,7 @@ public class Orc extends StdMOB
 	public Orc()
 	{
 		super();
-		username="an Orc";
+		_name="an Orc";
 		setDescription("He\\`s dirty, cranky, and very mean.");
 		setDisplayText("An angry Orc marches around.");
 		CMLib.factions().setAlignment(this,Faction.Align.EVIL);
