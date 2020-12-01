@@ -1692,6 +1692,24 @@ public class InstanceArea extends StdAbility
 		return null;
 	}
 
+	public boolean isApplicableKickoffFor(final MOB mob, final Set<MOB> mobGrp, final Room targetRoom)
+	{
+		final Physical affected=this.affected;
+		if(affected instanceof Room)
+			return targetRoom==affected;
+		if(affected instanceof Area)
+			return targetRoom.getArea()==affected;
+		if(affected instanceof MOB)
+			return (mob==affected)||mobGrp.contains(affected);
+		if(affected instanceof Rideable)
+			return ((Rideable)affected).amRiding(mob)
+				||((mob.amFollowing()!=null)&&((Rideable)affected).amRiding(mob.amUltimatelyFollowing()));
+		if(affected instanceof Item)
+			return (((Item)affected).owner()==mob)
+					||((mob.amFollowing()!=null)&&(((Item)affected).owner()==mob.amUltimatelyFollowing()));
+		return false;
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -1767,7 +1785,7 @@ public class InstanceArea extends StdAbility
 		&&((((Room)msg.target()).getArea()==affected)
 			||(targetAreas.contains((((Room)msg.target()).getArea()))))
 		&&((!CMSecurity.isAllowed(msg.source(),(Room)msg.target(),CMSecurity.SecFlag.CMDAREAS))
-				||(!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS))))
+			||(!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS))))
 		{
 			final Area parentA = ((Room)msg.target()).getArea();
 			final Room srcStartRoom =msg.source().getStartRoom();
@@ -1780,6 +1798,9 @@ public class InstanceArea extends StdAbility
 				int topPlayerFactionValue = 0;
 				if(instA == null)
 				{
+					// cancel if this is incidental
+					if(!isApplicableKickoffFor(msg.source(),grp,(Room)msg.target()))
+						return true;
 					created = true;
 					if((this.limits!=null)
 					&&(this.limits.size()>0)
