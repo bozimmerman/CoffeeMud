@@ -258,7 +258,7 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 						definedIDs.put("targetname".toUpperCase(), data.getCheckedString("target1name"));
 						definedIDs.put("attackername".toUpperCase(), L("a highwayman"));
 						definedIDs.put("quest_instructionstring".toUpperCase(),
-								L("To frame @x1 for the kidnappings, you must escort your prisoner to a @x1 stronghold. ${reason_short}.",deity1M.Name()));
+								L("To frame @x1 for the kidnappings, you must escort your prisoner to a @x1 stronghold in @x2. ${reason_short}.",deity1M.Name(),deity1Area.Name()));
 					}
 					else
 					if(template1.indexOf("collect")>0)
@@ -267,7 +267,7 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 						definedIDs.put("target_name".toUpperCase(), L("a follower of @x1",deity1M.Name()));
 						definedIDs.put("DELIVEREE_MASK","-HOME \"+"+deity1Area.Name()+"\" -DEITY \"+"+deity1M.Name()+"\"");
 						definedIDs.put("quest_instructionstring".toUpperCase(),
-								L("To frame @x1 for the thefts, you must now deliver the incriminating items to followers of @x1. ${reason_short}.",deity1M.Name()));
+								L("To frame @x1 for the thefts, you must now deliver the incriminating items to followers of @x1 in @x2. ${reason_short}.",deity1M.Name(),deity1Area.Name()));
 
 						definedIDs.put("itemname".toUpperCase(), data.getCheckedString("item1name"));
 						definedIDs.put("item_level".toUpperCase(), "1");
@@ -283,7 +283,7 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 						definedIDs.put("targetname".toUpperCase(), L("a maker of @x1 holy symbols",deity1M.Name()));
 						definedIDs.put("attackername".toUpperCase(), L("a follower of @x1",deity2M.Name()));
 						definedIDs.put("quest_instructionstring".toUpperCase(),
-								L("Now defend your act by defending the maker of such symbols from outraged followers of @x1. ${reason_short}.",deity2M.Name()));
+								L("Now defend your act by defending the maker of such symbols from outraged followers of @x1 in @x2. ${reason_short}.",deity2M.Name(),deity1Area.Name()));
 						if(definedIDs.containsKey("target_faction_amt".toUpperCase())
 						&&(!definedIDs.get("target_faction_amt".toUpperCase()).equals("0")))
 							definedIDs.put("target_faction_amt".toUpperCase(),""+(-CMath.s_int(definedIDs.get("target_faction_amt".toUpperCase()).toString())));
@@ -295,7 +295,7 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 						definedIDs.put("target_name".toUpperCase(), L("a follower of @x1",deity1M.Name()));
 						definedIDs.put("DELIVEREE_MASK","-HOME \"+"+deity1Area.Name()+"\" -DEITY \"+"+deity1M.Name()+"\"");
 						definedIDs.put("quest_instructionstring".toUpperCase(),
-								L("Now complete your framing of @x1 by seeming to delivery your previous victim`s money to  @x1`s followers. ${reason_short}.",deity1M.Name()));
+								L("Now complete your framing of @x1 by seeming to delivery your previous victim`s money to  @x1`s followers in @x2. ${reason_short}.",deity1M.Name(),deity1Area.Name()));
 						definedIDs.put("AGGRESSION", "NO");
 						definedIDs.put("target_is_aggressive".toUpperCase(), "NO");
 					}
@@ -310,6 +310,7 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 						definedIDs.put("TEMPLATE", "auto_escort11");
 						definedIDs.put("targetname".toUpperCase(), data.getCheckedString("target1name"));
 						definedIDs.put("attackername".toUpperCase(), L("a highwayman"));
+						definedIDs.put("MULTI_TARGET", "YES");
 						definedIDs.put("quest_instructionstring".toUpperCase(),
 								L("To frame @x1 for the kidnappings, you must escort your prisoner to a @x1 stronghold. ${reason_short}.",deity1M.Name()));
 					}
@@ -323,6 +324,7 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 						definedIDs.put("itemname".toUpperCase(), data.getCheckedString("item1name"));
 						definedIDs.put("item_level".toUpperCase(), "1");
 						definedIDs.put("item_material".toUpperCase(), "GOLD");
+						definedIDs.put("MULTI_TARGET", "YES");
 						if(definedIDs.containsKey("target_faction_amt".toUpperCase())
 						&&(!definedIDs.get("target_faction_amt".toUpperCase()).equals("0")))
 							definedIDs.put("target_faction_amt".toUpperCase(),""+(-CMath.s_int(definedIDs.get("target_faction_amt".toUpperCase()).toString())));
@@ -337,6 +339,7 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 						definedIDs.put("itemname".toUpperCase(), L("a symbol of @x1",deity1M.Name()));
 						definedIDs.put("item_level".toUpperCase(), "1");
 						definedIDs.put("item_material".toUpperCase(), "GOLD");
+						definedIDs.put("MULTI_TARGET", "YES");
 						if(definedIDs.containsKey("target_faction_amt".toUpperCase())
 						&&(!definedIDs.get("target_faction_amt".toUpperCase()).equals("0")))
 							definedIDs.put("target_faction_amt".toUpperCase(),""+(-CMath.s_int(definedIDs.get("target_faction_amt".toUpperCase()).toString())));
@@ -344,11 +347,13 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 					else
 					if(template1.indexOf("killer")>0)
 					{
-						definedIDs.put("TEMPLATE", "auto_delivery2");
+						definedIDs.put("TEMPLATE", "auto_delivery3");
+						definedIDs.put("targetname".toUpperCase(), L("a follower of @x1",deity1M.Name()));
 						definedIDs.put("itemname".toUpperCase(), L("the head of a follower of @x1",deity2M.Name()));
 						definedIDs.put("quest_instructionstring".toUpperCase(),
 								L("Your final step to creating the feud is to scatter the heads of @x1`s followers around followers of @x2. ${reason_short}.",deity2M.Name(),deity1M.Name()));
 						definedIDs.put("AGGRESSION", "NO");
+						definedIDs.put("MULTI_TARGET", "YES");
 						definedIDs.put("target_is_aggressive".toUpperCase(), "NO");
 					}
 					else
@@ -624,21 +629,21 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 						definedIDs.put("target_name".toUpperCase(), L("a follower of @x1",deity2M.Name()));
 						definedIDs.put("CAPTURABLES_MASK","-HOME \"+"+deity2Area.Name()+"\" -DEITY \"+"+deity2M.Name()+"\"");
 						definedIDs.put("quest_instructionstring".toUpperCase(),
-								L("Your first step to creating the feud is to kidnap a few of @x1`s followers. ${reason_short}.",deity2M.Name()));
+								L("Your first step to creating the feud is to kidnap a few of @x1`s followers in @x2. ${reason_short}.",deity2M.Name(),deity2Area.Name()));
 						break;
 					case 2:
 						definedIDs.put("TEMPLATE", "auto_collect1");
 						definedIDs.put("target_name".toUpperCase(), L("a follower of @x1",deity2M.Name()));
 						definedIDs.put("HOLDERS_MASK","-HOME \"+"+deity2Area.Name()+"\" -DEITY \"+"+deity2M.Name()+"\"");
 						definedIDs.put("quest_instructionstring".toUpperCase(),
-								L("Your first step to creating the feud is to steal some special gifts from @x1 to @x2 followers. ${reason_short}.",deity2M.Name(),deity2M.charStats().hisher()));
+								L("Your first step to creating the feud is to steal some special gifts from @x1 to @x2 followers in @x3. ${reason_short}.",deity2M.Name(),deity2M.charStats().hisher(),deity2Area.Name()));
 						break;
 					case 3:
 						definedIDs.put("TEMPLATE", "auto_delivery1");
 						definedIDs.put("target_name".toUpperCase(), L("a follower of @x1",deity2M.Name()));
 						definedIDs.put("DELIVEREE_MASK","-HOME \"+"+deity2Area.Name()+"\" -DEITY \"+"+deity2M.Name()+"\"");
 						definedIDs.put("quest_instructionstring".toUpperCase(),
-								L("Your first step to creating the feud is to deliver incriminating items of @x1 to @x2`s followers. ${reason_short}.",deity1M.Name(),deity2M.Name()));
+								L("Your first step to creating the feud is to deliver incriminating items of @x1 to @x2`s followers in @x3. ${reason_short}.",deity1M.Name(),deity2M.Name(),deity2Area.Name()));
 
 						definedIDs.put("itemname".toUpperCase(), L("a symbol of @x1",deity1M.Name()));
 						definedIDs.put("item_level".toUpperCase(), "1");
@@ -652,7 +657,7 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 						definedIDs.put("target_name".toUpperCase(), L("a follower of @x1",deity2M.Name()));
 						definedIDs.put("KILLABLES_MASK","-HOME \"+"+deity2Area.Name()+"\" -DEITY \"+"+deity2M.Name()+"\"");
 						definedIDs.put("quest_instructionstring".toUpperCase(),
-								L("Your first step to creating the feud is to kill off a few of @x1`s followers. ${reason_short}.",deity2M.Name()));
+								L("Your first step to creating the feud is to kill off a few of @x1`s followers in @x2. ${reason_short}.",deity2M.Name(),deity2Area.Name()));
 						definedIDs.put("AGGRESSION", "NO");
 						definedIDs.put("target_is_aggressive".toUpperCase(), "NO");
 						break;
@@ -666,20 +671,23 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 					case 1:
 						definedIDs.put("TEMPLATE", "auto_capture2");
 						definedIDs.put("targetname".toUpperCase(), L("a follower of @x1",deity2M.Name()));
+						definedIDs.put("MULTI_TARGET", "YES");
 						definedIDs.put("quest_instructionstring".toUpperCase(),
-								L("Your first step to creating the feud is to kidnap a few of @x1`s followers. ${reason_short}.",deity2M.Name()));
+								L("Your first step to creating the feud is to kidnap a few of @x1`s followers in @x2. ${reason_short}.",deity2M.Name(),deity2Area.Name()));
 						break;
 					case 2:
 						definedIDs.put("TEMPLATE", "auto_collect3");
 						definedIDs.put("targetname".toUpperCase(), L("a follower of @x1",deity2M.Name()));
+						definedIDs.put("MULTI_TARGET", "YES");
 						definedIDs.put("quest_instructionstring".toUpperCase(),
-								L("Your first step to creating the feud is to steal some special gifts from @x1 to @x2 followers. ${reason_short}.",deity2M.Name(),deity2M.charStats().hisher()));
+								L("Your first step to creating the feud is to steal some special gifts from @x1 to @x2 followers in @x3. ${reason_short}.",deity2M.Name(),deity2M.charStats().hisher(),deity2Area.Name()));
 						break;
 					case 3:
 						definedIDs.put("TEMPLATE", "auto_delivery3");
 						definedIDs.put("targetname".toUpperCase(), L("a follower of @x1",deity2M.Name()));
+						definedIDs.put("MULTI_TARGET", "YES");
 						definedIDs.put("quest_instructionstring".toUpperCase(),
-								L("Your first step to creating the feud is to deliver incriminating items of @x1 to @x2`s followers. ${reason_short}.",deity1M.Name(),deity2M.Name()));
+								L("Your first step to creating the feud is to deliver incriminating items of @x1 to @x2`s followers in @x3. ${reason_short}.",deity1M.Name(),deity2M.Name(),deity2Area.Name()));
 						definedIDs.put("itemname".toUpperCase(), L("a symbol of @x1",deity1M.Name()));
 						definedIDs.put("item_level".toUpperCase(), "1");
 						definedIDs.put("item_material".toUpperCase(), "GOLD");
@@ -690,8 +698,9 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 					case 4:
 						definedIDs.put("TEMPLATE", "auto_killer2");
 						definedIDs.put("targetname".toUpperCase(), L("a follower of @x1",deity2M.Name()));
+						definedIDs.put("MULTI_TARGET", "YES");
 						definedIDs.put("quest_instructionstring".toUpperCase(),
-								L("Your first step to creating the feud is to kill off a few of @x1`s followers. ${reason_short}.",deity2M.Name()));
+								L("Your first step to creating the feud is to kill off a few of @x1`s followers in @x2. ${reason_short}.",deity2M.Name(),deity2Area.Name()));
 						definedIDs.put("AGGRESSION", "NO");
 						definedIDs.put("target_is_aggressive".toUpperCase(), "NO");
 						break;

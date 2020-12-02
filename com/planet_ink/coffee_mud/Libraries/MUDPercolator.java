@@ -3028,6 +3028,16 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				{
 					final String id=(piece.getParmValue("ID")!=null)?piece.getParmValue("ID"):"null";
 					Log.errOut("Stack overflow trying to filter "+valPiece.value()+" on "+piece.tag()+" id '"+id+"'");
+					try
+					{
+						value=strFilter(E,ignoreStats,defPrefix,valPiece.value(),valPiece, defined);
+					}
+					catch(final java.lang.StackOverflowError e2)
+					{
+						final String id2=(piece.getParmValue("ID")!=null)?piece.getParmValue("ID"):"null";
+						Log.errOut("Stack overflow trying to filter "+valPiece.value()+" on "+piece.tag()+" id '"+id2+"'");
+						throw new CMException("Ended because of a stack overflow.  See the log.");
+					}
 					throw new CMException("Ended because of a stack overflow.  See the log.");
 				}
 			}
@@ -3112,7 +3122,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(done.contains(subTag.tag()))
 				continue;
 			done.add(subTag.tag());
-			choices.addAll(getAllChoices(E,ignoreStats,defPrefix,subTag.tag(), piece, defined,true));
+			choices.addAll(getAllChoices(E,ignoreStats,defPrefix,subTag.tag(), subTag, defined,true));
 		}
 		if(choices.size()==0)
 			choices.addAll(getAllChoices(E,ignoreStats,defPrefix,tagName, piece, defined,true));
