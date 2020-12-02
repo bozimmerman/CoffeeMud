@@ -397,7 +397,15 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 				final String name1Code = deity1M.Name().toUpperCase().trim().replace(' ', '_');
 				final Faction deity1F=CMLib.factions().getFaction("DEITY_"+name1Code);
 				if(deity1F!=null)
+				{
 					CMLib.factions().postFactionChange(deity2M, this, deity1F.factionID(), -deityFactionChange);
+					if(deity2M.isSavable()
+					&& (deity2M.getStartRoom()!=null)
+					&& (deity2M.getStartRoom().roomID().length()>0)
+					&& (deity2M.databaseID().length()>0)
+					&& (!CMath.bset(deity2M.getStartRoom().getArea().flags(), Area.FLAG_INSTANCE_CHILD)))
+						CMLib.database().DBUpdateMOB(deity2M.getStartRoom().roomID(), deity2M);
+				}
 			}
 			catch(final MiniJSON.MJSONException x)
 			{
