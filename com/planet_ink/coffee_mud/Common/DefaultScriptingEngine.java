@@ -7,11 +7,13 @@ import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.Area.State;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat;
+import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.SubScript;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -109,6 +111,70 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		debugBadScripts=CMSecurity.isDebugging(CMSecurity.DbgFlag.BADSCRIPTS);
 		Resources.instance();
 		resources = globalResources();
+	}
+
+	private static class SubScriptImpl extends SubScript
+	{
+		private static final long serialVersionUID = 9212002543627348955L;
+
+		public SubScriptImpl()
+		{
+			super();
+		}
+
+		private Integer triggerCode = null;
+
+		@Override
+		public int getTriggerCode()
+		{
+			if(triggerCode != null)
+				return triggerCode.intValue();
+			if(size()==0)
+				return 0;
+			final Triad<String,String[],Object> t=get(0);
+			final String trigger=t.first;
+			final String[] ttrigger=t.second;
+			if((ttrigger!=null)&&(ttrigger.length>0))
+				triggerCode=progH.get(ttrigger[0]);
+			else
+			{
+				final int x=trigger.indexOf(' ');
+				if(x<0)
+				{
+					final String utrigger=trigger.toUpperCase().trim();
+					t.first=utrigger.trim();
+					triggerCode=progH.get(utrigger);
+				}
+				else
+				{
+					final String utrigger=trigger.substring(0,x).toUpperCase().trim();
+					t.first=(utrigger+t.first.substring(x)).trim();
+					triggerCode=progH.get(utrigger);
+				}
+			}
+			if(triggerCode==null)
+				triggerCode=Integer.valueOf(0);
+			return triggerCode.intValue();
+		}
+
+		@Override
+		public String getTriggerLine()
+		{
+			if(triggerCode == null)
+				getTriggerCode();
+			if(size()>0)
+				return get(0).first;
+			return "";
+		}
+
+		@Override
+		public String[] getTriggerArgs()
+		{
+			if(size()>0)
+				return get(0).second;
+			return null;
+		}
+
 	}
 
 	@Override
@@ -345,11 +411,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	/*
 	 * c=clean bit, r=pastbitclean, p=pastbit, s=remaining clean bits, t=trigger
 	 */
-	protected String[] parseBits(final DVector script, final int row, final String instructions)
+	protected String[] parseBits(final SubScript script, final int row, final String instructions)
 	{
-		final String line=(String)script.elementAt(row,1);
+		final String line=script.get(row).first;
 		final String[] newLine=parseBits(line,instructions);
-		script.setElementAt(row,2,newLine);
+		script.get(row).second=newLine;
 		return newLine;
 	}
 
@@ -486,23 +552,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		if(mob!=null)
 		{
-			final List<DVector> scripts=getScripts(hostObj);
+			final List<SubScript> scripts=getScripts(hostObj);
 			if(!mob.amDead())
 			{
 				lastKnownLocation=mob.location();
 				if(homeKnownLocation==null)
 					homeKnownLocation=lastKnownLocation;
 			}
-			String trigger="";
 			String[] tt=null;
 			for(int v=0;v<scripts.size();v++)
 			{
-				final DVector script=scripts.get(v);
+				final SubScript script=scripts.get(v);
 				if(script.size()>0)
 				{
-					trigger=((String)script.elementAt(0,1)).toUpperCase().trim();
-					tt=(String[])script.elementAt(0,2);
-					if((getTriggerCode(trigger,tt)==13) //questtimeprog quest_time_prog
+					if((script.getTriggerCode()==13) //questtimeprog quest_time_prog
 					&&(!oncesDone.contains(Integer.valueOf(v))))
 					{
 						if(tt==null)
@@ -821,7 +884,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 	}
 
-	protected List<DVector> parseScripts(final Environmental E, String text)
+	protected List<SubScript> parseScripts(final Environmental E, String text)
 	{
 		buildHashes();
 		while((text.length()>0)
@@ -842,12 +905,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			reset();
 		}
 		final List<List<String>> V = CMParms.parseDoubleDelimited(text,'~',';');
-		final Vector<DVector> V2=new Vector<DVector>(3);
+		final Vector<SubScript> V2=new Vector<SubScript>(3);
 		for(final List<String> ls : V)
 		{
-			final DVector DV=new DVector(3);
+			final SubScript DV=new SubScriptImpl();
 			for(final String s : ls)
-				DV.addElement(s,null,null);
+				DV.add(new ScriptLn(s,null,null));
 			V2.add(DV);
 		}
 		return V2;
@@ -3677,17 +3740,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 					String found=null;
 					boolean validFunc=false;
-					final List<DVector> scripts=getScripts(scripted);
+					final List<SubScript> scripts=getScripts(scripted);
 					String trigger=null;
 					String[] ttrigger=null;
 					for(int v=0;v<scripts.size();v++)
 					{
-						final DVector script2=scripts.get(v);
+						final SubScript script2=scripts.get(v);
 						if(script2.size()<1)
 							continue;
-						trigger=((String)script2.elementAt(0,1)).toUpperCase().trim();
-						ttrigger=(String[])script2.elementAt(0,2);
-						if(getTriggerCode(trigger,ttrigger)==17)
+						trigger=script2.getTriggerLine();
+						ttrigger=script2.getTriggerArgs();
+						if(script2.getTriggerCode()==17)
 						{
 							final String fnamed=
 								(ttrigger!=null)
@@ -6662,17 +6725,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(funcParms,0));
 				String found=null;
 				boolean validFunc=false;
-				final List<DVector> scripts=getScripts(scripted);
+				final List<SubScript> scripts=getScripts(scripted);
 				String trigger=null;
-				String[] ttrigger=null;
 				for(int v=0;v<scripts.size();v++)
 				{
-					final DVector script2=scripts.get(v);
+					final SubScript script2=scripts.get(v);
 					if(script2.size()<1)
 						continue;
-					trigger=((String)script2.elementAt(0,1)).toUpperCase().trim();
-					ttrigger=(String[])script2.elementAt(0,2);
-					if(getTriggerCode(trigger,ttrigger)==17)
+					trigger=script2.getTriggerLine();
+					if(script2.getTriggerCode()==17)
 					{
 						final String fnamed=CMParms.getCleanBit(trigger,1);
 						if(fnamed.equalsIgnoreCase(arg1))
@@ -8361,21 +8422,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return (MOB)tmp[SPECIAL_RANDANYONE];
 	}
 
-	protected DVector findFunc(final Environmental scripted, String named)
+	protected SubScript findFunc(final Environmental scripted, String named)
 	{
 		if(named==null)
 			return null;
 		named=named.toUpperCase();
-		final List<DVector> scripts=getScripts(scripted);
+		final List<SubScript> scripts=getScripts(scripted);
 		for(int v=0;v<scripts.size();v++)
 		{
-			final DVector script2=scripts.get(v);
+			final SubScript script2=scripts.get(v);
 			if(script2.size()<1)
 				continue;
-			final String trigger=((String)script2.elementAt(0,1)).toUpperCase().trim();
-			final String[] ttrigger=(String[])script2.elementAt(0,2);
-			if(getTriggerCode(trigger,ttrigger)==17) // function_prog
+			if(script2.getTriggerCode()==17) // function_prog
 			{
+				final String trigger=script2.getTriggerLine();
 				final String fnamed=CMParms.getCleanBit(trigger,1);
 				if(fnamed.equals(named))
 					return script2;
@@ -8383,10 +8443,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 		for(int v=0;v<scripts.size();v++)
 		{
-			final DVector script2=scripts.get(v);
+			final SubScript script2=scripts.get(v);
 			if(script2.size()<1)
 				continue;
-			final String trigger=((String)script2.elementAt(0,1)).toUpperCase().trim();
+			//TODO: what if it's FUNCTION_PROG BLAH_PROG somethingsomething?  is that even legal?
+			final String trigger=script2.getTriggerLine();
 			if(trigger.equals(named)||trigger.equals(named+"_PROG"))
 				return script2;
 		}
@@ -8403,7 +8464,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	public String callFunc(final String named, final String parms, final PhysicalAgent scripted, final MOB source, final Environmental target,
 						   final MOB monster, final Item primaryItem, final Item secondaryItem, final String msg, final Object[] tmp)
 	{
-		final DVector script2 = findFunc(scripted,named);
+		final SubScript script2 = findFunc(scripted,named);
 		if(script2 != null)
 		{
 			return execute(scripted, source, target, monster, primaryItem, secondaryItem, script2,
@@ -8419,7 +8480,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						  final MOB monster,
 						  final Item primaryItem,
 						  final Item secondaryItem,
-						  final DVector script,
+						  final SubScript script,
 						  final String msg,
 						  final Object[] tmp)
 	{
@@ -8432,7 +8493,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						  MOB monster,
 						  Item primaryItem,
 						  Item secondaryItem,
-						  final DVector script,
+						  final SubScript script,
 						  String msg,
 						  final Object[] tmp,
 						  final int startLine)
@@ -8442,12 +8503,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		String[] tt=null;
 		String cmd=null;
 		final boolean traceDebugging=CMSecurity.isDebugging(CMSecurity.DbgFlag.SCRIPTTRACE);
-		if(traceDebugging && startLine == 1 && script.size()>0 && script.get(0, 1).toString().trim().length()>0)
-			Log.debugOut(CMStrings.padRight(scripted.Name(), 15)+": * EXECUTE: "+script.get(0, 1).toString());
+		if(traceDebugging && startLine == 1 && script.size()>0 && script.getTriggerLine().length()>0)
+			Log.debugOut(CMStrings.padRight(scripted.Name(), 15)+": * EXECUTE: "+script.getTriggerLine());
 		for(int si=startLine;si<script.size();si++)
 		{
-			s=((String)script.elementAt(si,1)).trim();
-			tt=(String[])script.elementAt(si,2);
+			s=script.get(si).first;
+			tt=script.get(si).second;
 			if(tt!=null)
 				cmd=tt[0];
 			else
@@ -8478,8 +8539,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final StringBuffer jscript=new StringBuffer("");
 				while((++si)<script.size())
 				{
-					s=((String)script.elementAt(si,1)).trim();
-					tt=(String[])script.elementAt(si,2);
+					s=script.get(si).first;
+					tt=script.get(si).second;
 					if(tt!=null)
 						cmd=tt[0];
 					else
@@ -8529,8 +8590,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						tt[0]="IF";
 						for(int i=0;i<ttParms.length;i++)
 							tt[i+1]=ttParms[i];
-						script.setElementAt(si,2,tt);
-						script.setElementAt(si, 3, new Triad<DVector,DVector,Integer>(null,null,null));
+						script.get(si).second=tt;
+						script.get(si).third=new Triad<SubScript,SubScript,Integer>(null,null,null);
 					}
 					catch(final Exception e)
 					{
@@ -8545,17 +8606,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(EVAL[0]!=tt)
 				{
 					tt=EVAL[0];
-					script.setElementAt(si,2,tt);
+					script.get(si).second=tt;
 				}
 				boolean foundendif=false;
 				@SuppressWarnings({ "unchecked", "rawtypes" })
-				Triad<DVector,DVector,Integer> parsedBlocks = (Triad)script.elementAt(si, 3);
-				DVector subScript;
+				Triad<SubScript,SubScript,Integer> parsedBlocks = (Triad)script.get(si).third;
+				SubScript subScript;
 				if(parsedBlocks==null)
 				{
 					Log.errOut("Null parsed blocks in "+s);
-					parsedBlocks = new Triad<DVector,DVector,Integer>(null,null,null);
-					script.setElementAt(si, 3, parsedBlocks);
+					parsedBlocks = new Triad<SubScript,SubScript,Integer>(null,null,null);
+					script.get(si).third=parsedBlocks;
 					subScript=null;
 				}
 				else
@@ -8578,8 +8639,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				while((si<script.size())
 				&&(!foundendif))
 				{
-					s=((String)script.elementAt(si,1)).trim();
-					tt=(String[])script.elementAt(si,2);
+					s=script.get(si).first;
+					tt=script.get(si).second;
 					if(tt!=null)
 						cmd=tt[0];
 					else
@@ -8635,23 +8696,23 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						{
 							if(parsedBlocks.first==null)
 							{
-								parsedBlocks.first=new DVector(3);
-								parsedBlocks.first.addElement("",null,null);
+								parsedBlocks.first=new SubScriptImpl();
+								parsedBlocks.first.add(new ScriptLn("",null,null));
 							}
 							if(condition)
 								subScript=parsedBlocks.first;
-							parsedBlocks.first.addSharedElements(script.elementsAt(si));
+							parsedBlocks.first.add(script.get(si));
 						}
 						else
 						{
 							if(parsedBlocks.second==null)
 							{
-								parsedBlocks.second=new DVector(3);
-								parsedBlocks.second.addElement("",null,null);
+								parsedBlocks.second=new SubScriptImpl();
+								parsedBlocks.second.add(new ScriptLn("",null,null));
 							}
 							if(!condition)
 								subScript=parsedBlocks.second;
-							parsedBlocks.second.addSharedElements(script.elementsAt(si));
+							parsedBlocks.second.add(script.get(si));
 						}
 					}
 					si++;
@@ -8701,14 +8762,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					tt=parseBits(script,si,"Cr");
 					if(tt==null)
 						return null;
-					if(script.elementAt(si, 3)==null)
-						script.setElementAt(si, 3, new Hashtable<String,Integer>());
+					if(script.get(si).third==null)
+						script.get(si).third=new Hashtable<String,Integer>();
 				}
 				@SuppressWarnings("unchecked")
-				final Map<String,Integer> skipSwitchMap=(Map<String,Integer>)script.elementAt(si, 3);
+				final Map<String,Integer> skipSwitchMap=(Map<String,Integer>)script.get(si).third;
 				final String var=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]).trim();
-				final DVector subScript=new DVector(3);
-				subScript.addElement("",null,null);
+				final SubScript subScript=new SubScriptImpl();
+				subScript.add(new ScriptLn("",null,null));
 				int depth=0;
 				boolean foundEndSwitch=false;
 				boolean ignoreUntilEndScript=false;
@@ -8748,8 +8809,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				while((si<script.size())
 				&&(!foundEndSwitch))
 				{
-					s=((String)script.elementAt(si,1)).trim();
-					tt=(String[])script.elementAt(si,2);
+					s=script.get(si).first;
+					tt=script.get(si).second;
 					if(tt!=null)
 						cmd=tt[0];
 					else
@@ -8838,14 +8899,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					else
 					{
 						if(inCase)
-							subScript.addSharedElements(script.elementsAt(si));
+							subScript.add(script.get(si));
 						if(cmd.equals("SWITCH"))
 						{
 							if(tt==null)
 							{
 								tt=parseBits(script,si,"Cr");
-								if(script.elementAt(si, 3)==null)
-									script.setElementAt(si, 3, new Hashtable<String,Integer>());
+								if(script.get(si).third==null)
+									script.get(si).third=new Hashtable<String,Integer>();
 							}
 							depth++;
 						}
@@ -8934,16 +8995,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					tickStatus=Tickable.STATUS_END;
 					return null;
 				}
-				final DVector subScript=new DVector(3);
-				subScript.addElement("",null,null);
+				final SubScript subScript=new SubScriptImpl();
+				subScript.add(new ScriptLn("",null,null));
 				int depth=0;
 				boolean foundnext=false;
 				boolean ignoreUntilEndScript=false;
 				si++;
 				while(si<script.size())
 				{
-					s=((String)script.elementAt(si,1)).trim();
-					tt=(String[])script.elementAt(si,2);
+					s=script.get(si).first;
+					tt=script.get(si).second;
 					if(tt!=null)
 						cmd=tt[0];
 					else
@@ -8988,7 +9049,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								tt=parseBits(script,si,"C");
 							depth--;
 						}
-						subScript.addSharedElements(script.elementsAt(si));
+						subScript.add(script.get(si));
 					}
 					si++;
 				}
@@ -11555,9 +11616,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(goHere!=null)
 						{
 							goHere.bringMobHere(monster,true);
-							final DVector subScript=new DVector(3);
-							subScript.addElement("",null,null);
-							subScript.addElement(doWhat,null,null);
+							final SubScript subScript=new SubScriptImpl();
+							subScript.add(new ScriptLn("",null,null));
+							subScript.add(new ScriptLn(doWhat,null,null));
 							lastKnownLocation=goHere;
 							execute(scripted,source,target,monster,primaryItem,secondaryItem,subScript,msg,tmp);
 							lastKnownLocation=lastPlace;
@@ -11778,9 +11839,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String force=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]).trim();
 				if(newTarget!=null)
 				{
-					final DVector vscript=new DVector(3);
-					vscript.addElement("FUNCTION_PROG MPFORCE_"+System.currentTimeMillis()+Math.random(),null,null);
-					vscript.addElement(force,null,null);
+					final SubScript vscript=new SubScriptImpl();
+					vscript.add(new ScriptLn("FUNCTION_PROG MPFORCE_"+System.currentTimeMillis()+Math.random(),null,null));
+					vscript.add(new ScriptLn(force,null,null));
 					// this can not be permanently parsed because it is variable
 					execute(newTarget, source, target, getMakeMOB(newTarget), primaryItem, secondaryItem, vscript, msg, tmp);
 				}
@@ -12444,9 +12505,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(tt==null)
 						return null;
 				}
-				if(script.elementAt(si, 3) != null)
+				if(script.get(si).third instanceof SubScript)
 				{
-					execute(scripted, source, target, monster, primaryItem, secondaryItem, (DVector)script.elementAt(si, 3),
+					execute(scripted, source, target, monster, primaryItem, secondaryItem, (SubScript)script.get(si).third,
 							varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2].trim()),
 							tmp);
 				}
@@ -12454,10 +12515,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					final String named=tt[1];
 					final String parms=tt[2].trim();
-					final DVector script2 = findFunc(scripted,named);
+					final SubScript script2 = findFunc(scripted,named);
 					if(script2 != null)
 					{
-						script.setElementAt(si, 3, script2);
+						script.get(si).third=script2;
 						execute(scripted, source, target, monster, primaryItem, secondaryItem, script2,
 								varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,parms),
 								tmp);
@@ -12508,7 +12569,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						V.add(")");
 						V.add(DO);
 						tt=CMParms.toStringArray(V);
-						script.setElementAt(si,2,tt);
+						script.get(si).second=tt;
 					}
 					catch(final Exception e)
 					{
@@ -12551,18 +12612,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 				}
 				final String[][] EVALO={EVAL};
-				final DVector vscript=new DVector(3);
-				vscript.addElement("FUNCTION_PROG MPWHILE_"+Math.random(),null,null);
-				vscript.addElement(DO,DOT,null);
+				final SubScript vscript=new SubScriptImpl();
+				vscript.add(new ScriptLn("FUNCTION_PROG MPWHILE_"+Math.random(),null,null));
+				vscript.add(new ScriptLn(DO,DOT,null));
 				final long time=System.currentTimeMillis();
 				while((eval(scripted,source,target,monster,primaryItem,secondaryItem,msg,tmp,EVALO,0))
 				&&((System.currentTimeMillis()-time)<4000)
 				&&(!scripted.amDestroyed()))
 					execute(scripted,source,target,monster,primaryItem,secondaryItem,vscript,msg,tmp);
-				if(vscript.elementAt(1,2)!=DOT)
+				if(vscript.get(1).second!=DOT)
 				{
 					final int oldDotLen=(DOT==null)?1:DOT.length;
-					final String[] newDOT=(String[])vscript.elementAt(1,2);
+					final String[] newDOT=vscript.get(1).second;
 					final String[] newTT=new String[tt.length-oldDotLen+newDOT.length];
 					int end=0;
 					for(end=0;end<tt.length-oldDotLen;end++)
@@ -12570,20 +12631,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					for(int y=0;y<newDOT.length;y++)
 						newTT[end+y]=newDOT[y];
 					tt=newTT;
-					script.setElementAt(si,2,tt);
+					script.get(si).second=tt;
 				}
 				if(EVALO[0]!=EVAL)
 				{
-					final Vector<String> lazyV=new Vector<String>();
-					lazyV.addElement("MPWHILE");
-					lazyV.addElement("(");
+					final List<String> lazyV=new ArrayList<String>();
+					lazyV.add("MPWHILE");
+					lazyV.add("(");
 					final String[] newEVAL=EVALO[0];
 					for (final String element : newEVAL)
-						lazyV.addElement(element);
+						lazyV.add(element);
 					for(int i=evalEnd;i<tt.length;i++)
-						lazyV.addElement(tt[i]);
+						lazyV.add(tt[i]);
 					tt=CMParms.toStringArray(lazyV);
-					script.setElementAt(si,2,tt);
+					script.get(si).second=tt;
 				}
 				if((System.currentTimeMillis()-time)>=4000)
 				{
@@ -12612,9 +12673,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					logError(scripted,"MPALARM","Syntax","No command!");
 					break;
 				}
-				final DVector vscript=new DVector(3);
-				vscript.addElement("FUNCTION_PROG ALARM_"+time+Math.random(),null,null);
-				vscript.addElement(parms,null,null);
+				final SubScript vscript=new SubScriptImpl();
+				vscript.add(new ScriptLn("FUNCTION_PROG ALARM_"+time+Math.random(),null,null));
+				vscript.add(new ScriptLn(parms,null,null));
 				prequeResponse(-1,scripted,source,target,monster,primaryItem,secondaryItem,vscript,CMath.s_int(time.trim()),msg);
 				break;
 			}
@@ -12709,7 +12770,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return null;
 	}
 
-	protected static final Vector<DVector> empty=new ReadOnlyVector<DVector>();
+	protected static final Vector<SubScript> empty=new ReadOnlyVector<SubScript>();
 
 	@Override
 	public String getScriptResourceKey()
@@ -12808,17 +12869,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		super.finalize();
 	}
 
-	protected List<DVector> getScripts(final Environmental Scripted)
+	protected List<SubScript> getScripts(final Environmental scriptedE)
 	{
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.SCRIPTABLE)||CMSecurity.isDisabled(CMSecurity.DisFlag.SCRIPTING))
 			return empty;
 		@SuppressWarnings("unchecked")
-		List<DVector> scripts=(List<DVector>)Resources.getResource(getScriptResourceKey());
+		List<SubScript> scripts=(List<SubScript>)Resources.getResource(getScriptResourceKey());
 		if(scripts==null)
 		{
 			String scr=getScript();
 			scr=CMStrings.replaceAll(scr,"`","'");
-			scripts=parseScripts(Scripted,scr);
+			scripts=parseScripts(scriptedE,scr);
 			Resources.submitResource(getScriptResourceKey(),scripts);
 		}
 		return scripts;
@@ -12868,10 +12929,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 			final PhysicalAgent affecting = (PhysicalAgent)host;
 
-			final List<DVector> scripts=getScripts(host);
-			DVector script=null;
+			final List<SubScript> scripts=getScripts(host);
+			SubScript script=null;
 			boolean tryIt=false;
-			String trigger=null;
 			String[] t=null;
 			int triggerCode=0;
 			String str=null;
@@ -12882,9 +12942,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(script.size()<1)
 					continue;
 
-				trigger=((String)script.elementAt(0,1)).toUpperCase().trim();
-				t=(String[])script.elementAt(0,2);
-				triggerCode=getTriggerCode(trigger,t);
+				t=script.getTriggerArgs();
+				triggerCode=script.getTriggerCode();
 				switch(triggerCode)
 				{
 				case 51: // cmdfail_prog
@@ -13102,7 +13161,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return true;
 	}
 
-	protected String standardTriggerCheck(final DVector script, String[] t, final Environmental E,
+	protected String standardTriggerCheck(final SubScript script, String[] t, final Environmental E,
 			final PhysicalAgent scripted, final MOB source, final Environmental target, final MOB monster, final Item primaryItem, final Item secondaryItem, final Object[] tmp)
 	{
 		if(E==null)
@@ -13114,10 +13173,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			dollarChecks=new boolean[t.length];
 			for(int i=1;i<t.length;i++)
 				dollarChecks[i] = t[i].indexOf('$')>=0;
-			script.setElementAt(0, 3, dollarChecks);
+			script.get(0).third=dollarChecks;
 		}
 		else
-			dollarChecks=(boolean[])script.elementAt(0, 3);
+			dollarChecks=(boolean[])script.get(0).third;
 		final String NAME=E.Name().toUpperCase();
 		final String ID=E.ID().toUpperCase();
 		if((t[1].length()==0)
@@ -13202,15 +13261,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			if((defaultItem!=null)&&(defaultItem.owner() instanceof MOB))
 				eventMob=(MOB)defaultItem.owner();
 
-			final List<DVector> scripts=getScripts(host);
+			final List<SubScript> scripts=getScripts(host);
 
 			if(msg.amITarget(eventMob)
 			&&(!msg.amISource(monster))
 			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&(msg.source()!=monster))
 				lastToHurtMe=msg.source();
-			DVector script=null;
-			String trigger=null;
+			SubScript script=null;
 			String[] t=null;
 			for(int v=0;v<scripts.size();v++)
 			{
@@ -13218,9 +13276,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(script.size()<1)
 					continue;
 
-				trigger=((String)script.elementAt(0,1)).toUpperCase().trim();
-				t=(String[])script.elementAt(0,2);
-				final int triggerCode=getTriggerCode(trigger,t);
+				t=script.getTriggerArgs();
+				final int triggerCode=script.getTriggerCode();
 				int targetMinorTrigger=-1;
 				switch(triggerCode)
 				{
@@ -14386,24 +14443,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 	}
 
-	protected int getTriggerCode(final String trigger, final String[] ttrigger)
-	{
-		final Integer I;
-		if((ttrigger!=null)&&(ttrigger.length>0))
-			I=progH.get(ttrigger[0]);
-		else
-		{
-			final int x=trigger.indexOf(' ');
-			if(x<0)
-				I=progH.get(trigger.toUpperCase().trim());
-			else
-				I=progH.get(trigger.substring(0,x).toUpperCase().trim());
-		}
-		if(I==null)
-			return 0;
-		return I.intValue();
-	}
-
 	@Override
 	public MOB getMakeMOB(final Tickable ticking)
 	{
@@ -14479,7 +14518,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 		final PhysicalAgent affecting=(ticking instanceof PhysicalAgent)?((PhysicalAgent)ticking):null;
 
-		final List<DVector> scripts=getScripts(affecting);
+		final List<SubScript> scripts=getScripts(affecting);
 
 		if(!runInPassiveAreas)
 		{
@@ -14504,16 +14543,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 
 		int triggerCode=-1;
-		String trigger="";
 		String[] t=null;
 		for(int thisScriptIndex=0;thisScriptIndex<scripts.size();thisScriptIndex++)
 		{
-			final DVector script=scripts.get(thisScriptIndex);
+			final SubScript script=scripts.get(thisScriptIndex);
 			if(script.size()<2)
 				continue;
-			trigger=((String)script.elementAt(0,1)).toUpperCase().trim();
-			t=(String[])script.elementAt(0,2);
-			triggerCode=getTriggerCode(trigger,t);
+			t=script.getTriggerArgs();
+			triggerCode=script.getTriggerCode();
 			tickStatus=Tickable.STATUS_SCRIPT+triggerCode;
 			switch(triggerCode)
 			{
@@ -14522,7 +14559,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					if(t==null)
 						t=parseBits(script,0,"CR");
-					if(t!=null)
+					if((t!=null)
+					&&((t[1].length()>1)
+						||((lastKnownLocation!=null)&&(lastKnownLocation.getArea().getAreaState()==State.ACTIVE))))
 					{
 						final int prcnt=CMath.s_int(t[1]);
 						if(CMLib.dice().rollPercentage()<prcnt)
@@ -14762,7 +14801,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							  final MOB monster,
 							  final Item primaryItem,
 							  final Item secondaryItem,
-							  final DVector script,
+							  final SubScript script,
 							  final int ticks,
 							  final String msg,
 							  final String[] triggerStr)
@@ -14787,7 +14826,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							   final MOB monster,
 							   final Item primaryItem,
 							   final Item secondaryItem,
-							   final DVector script,
+							   final SubScript script,
 							   final int ticks,
 							   final String msg)
 	{
@@ -14944,9 +14983,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								else
 									strb.append(" ").append("'"+String.valueOf(args[i])+"'");
 							}
-							final DVector DV=new DVector(2);
-							DV.addElement("JS_PROG",null);
-							DV.addElement(strb.toString(),null);
+							final SubScript DV=new SubScriptImpl();
+							DV.add(new ScriptLn("JS_PROG",null,null));
+							DV.add(new ScriptLn(strb.toString(),null,null));
 							return c.execute(h,s,t,m,pi,si,DV,message,objs);
 						}
 						if(name.endsWith("$"))
@@ -15075,7 +15114,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return super.get(name, start);
 		}
 
-		public void executeEvent(final DVector script, final int lineNum)
+		public void executeEvent(final SubScript script, final int lineNum)
 		{
 			c.execute(h, s, t, m, pi, si, script, message, objs, lineNum);
 		}

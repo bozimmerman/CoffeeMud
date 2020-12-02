@@ -174,7 +174,7 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 	@Override
 	public String execute(final PhysicalAgent scripted, final MOB source,
 						  final Environmental target, final MOB monster, final Item primaryItem,
-						  final Item secondaryItem, final DVector script, final String msg, final Object[] tmp)
+						  final Item secondaryItem, final SubScript script, final String msg, final Object[] tmp)
 	{
 		return (sampleB==null)?"":sampleB.execute(scripted, source, target, monster, primaryItem, secondaryItem, script, msg, tmp);
 	}

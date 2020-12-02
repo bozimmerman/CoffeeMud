@@ -9,6 +9,8 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.ScriptLn;
+import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.SubScript;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -232,9 +234,30 @@ public class JConsole extends StdCommand
 									strb.append(" ").append(String.valueOf(args[i]));
 								else
 									strb.append(" ").append("'"+String.valueOf(args[i])+"'");
-							final DVector DV=new DVector(2);
-							DV.add("JS_PROG",null);
-							DV.add(strb.toString(),null);
+							final SubScript DV=new SubScript()
+							{
+								private static final long serialVersionUID = -8744471025411719363L;
+								@Override
+								public int getTriggerCode()
+								{
+									return 0;
+								}
+
+								@Override
+								public String[] getTriggerArgs()
+								{
+									return (size()>0)?get(0).second:null;
+								}
+
+								@Override
+								public String getTriggerLine()
+								{
+									return (size()>0)?get(0).first:"";
+								}
+
+							};
+							DV.add(new ScriptLn("JS_PROG",null,null));
+							DV.add(new ScriptLn(strb.toString(),null,null));
 							return c.execute(mob,mob,null,mob,null,null,DV,"",objs);
 						}
 						if(name.endsWith("$"))

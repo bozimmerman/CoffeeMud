@@ -48,8 +48,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 {
 	/**
 	 * Executes a script in response to an event
-	 * The scripts are formatted as a 2 dimensional DVector
-	 * with the first row being the trigger information.  Each
+	 * The scripts are formatted as a SubScript class.  Each
 	 * row consists of the String command, and a parsed String[]
 	 * array as dimension 2.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.ScriptableResponse
@@ -59,7 +58,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	 * @param monster a mob representation of the scripted object
 	 * @param primaryItem an item involved in the event
 	 * @param secondaryItem a second item involved in the event
-	 * @param script 2 dimensional DVector, the script to execute
+	 * @param script the script to execute
 	 * @param msg a string message associated with the event
 	 * @param tmp miscellaneous local variables
 	 * @return N/A
@@ -70,7 +69,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 						  MOB monster,
 						  Item primaryItem,
 						  Item secondaryItem,
-						  DVector script,
+						  SubScript script,
 						  String msg,
 						  Object[] tmp);
 
@@ -390,7 +389,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		/** (second item) a second item associated with this event */
 		public Item si=null;
 		/** (script) the actual script to execute for this event */
-		public DVector scr;
+		public SubScript scr;
 		/** a string associated with this event */
 		public String message=null;
 
@@ -414,7 +413,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 								  final MOB monster,
 								  final Item primaryItem,
 								  final Item secondaryItem,
-								  final DVector script,
+								  final SubScript script,
 								  final int ticks,
 								  final String msg)
 		{
@@ -439,6 +438,59 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		{
 			return ((--tickDelay) <= 0);
 		}
+	}
+
+	/**
+	 * Wrapper class for a standard parsed line of script,
+	 * which includes the full line of text, the parsed line,
+	 * and an optional helper object of any sort
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static class ScriptLn extends Triad<String,String[],Object>
+	{
+
+		public ScriptLn(final String frst, final String[] scnd, final Object thrd)
+		{
+			super(frst.trim(), scnd, thrd);
+		}
+
+	}
+
+	/**
+	 * Wrapper class for a subscript, which consists of a trigger
+	 * and its requisite code.
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static abstract class SubScript extends ArrayList<ScriptLn>
+	{
+		private static final long serialVersionUID = 6156845948200028480L;
+
+		/**
+		 * Returns the trigger code for this entire script
+		 *
+		 * @return the trigger code
+		 */
+		public abstract int getTriggerCode();
+
+		/**
+		 * Returns the trigger args for this entire script
+		 *
+		 * @return the trigger args
+		 */
+		public abstract String[] getTriggerArgs();
+
+		/**
+		 * Returns the trigger line for this entire script
+		 * The trigger word itself should be normalized
+		 * to uppercase.
+		 *
+		 * @return the trigger line
+		 */
+		public abstract String getTriggerLine();
 	}
 
 	/** The number of local variables associated with an execution of a script */
