@@ -65,7 +65,7 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 	@Override
 	protected int canAffectCode()
 	{
-		return CAN_MOBS;
+		return 0;
 	}
 
 	@Override

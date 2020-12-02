@@ -3112,7 +3112,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(done.contains(subTag.tag()))
 				continue;
 			done.add(subTag.tag());
-			choices.addAll(getAllChoices(E,ignoreStats,defPrefix,subTag.tag(), subTag, defined,true));
+			choices.addAll(getAllChoices(E,ignoreStats,defPrefix,subTag.tag(), subTag, defined,false));
 		}
 		if(choices.size()==0)
 			choices.addAll(getAllChoices(E,ignoreStats,defPrefix,tagName, piece, defined,true));
@@ -3326,7 +3326,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(condition == null)
 				return true;
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
-					Log.debugOut("MudPercolator","START-TEST "+piece.tag()+": "+condition);
+				Log.debugOut("MudPercolator","START-TEST "+piece.tag()+": "+condition);
 			final List<Varidentifier> ids=parseVariables(condition);
 			for(final Varidentifier id : ids)
 			{
@@ -5908,7 +5908,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							}
 						}
 						if(val == null)
-							throw new MQLException("Unknown variable '$"+str+"' in str '"+str+"' in '"+mql+"'",new CMException("$"+str));
+						{
+							Log.errOut("***********************************************************************");//TODO:BZ:DELME
+							throw new MQLException("Unknown variable '$"+key+"' in str '"+str+"' in '"+mql+"'",new CMException("$"+str));
+						}
 						finalO=val;
 					}
 					break;

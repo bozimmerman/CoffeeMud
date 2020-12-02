@@ -141,7 +141,7 @@ public class Prayer_ImbueShield extends Prayer
 		final String deityName=mob.charStats().getWorshipCharID();
 		if(deityName.length()==0)
 		{
-			mob.tell(L("You must worship a deity to begin the empowering."));
+			mob.tell(L("You must worship a deity to begin the imbueing."));
 			return false;
 		}
 
