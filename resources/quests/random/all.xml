@@ -22,57 +22,57 @@ See guides/RandomAreas.html for information about documents of this type.
 	<string condition="$template=''"                                                    ></string>
 	<string condition="$template!='' and $template!='random' and $template!='normal' and $template!='auto'">$template</string>
 	
-	<string condition="$template='random' or $template='normal') and $avoidscans!='YES'">normal_capture1</string>
-	<string condition="$template='random' or $template='normal')"                       >normal_capture2</string>
-	<string condition="$template='random' or $template='normal') and $avoidscans!='YES'">normal_capture3</string>
-	<string condition="$template='random' or $template='normal')"                       >normal_capture4</string>
-	<string condition="$template='random' or $template='normal') and $avoidscans!='YES'">normal_collect1</string>
-	<string condition="$template='random' or $template='normal')"                       >normal_collect2</string>
-	<string condition="$template='random' or $template='normal')"                       >normal_collect3</string>
-	<string condition="$template='random' or $template='normal')"                       >normal_collect4</string>
-	<string condition="$template='random' or $template='normal')"                       >normal_collect5</string>
-	<string condition="$template='random' or $template='normal') and $avoidscans!='YES'">normal_escort1</string>
-	<string condition="$template='random' or $template='normal')"                       >normal_escort2</string>
-	<string condition="$template='random' or $template='normal') and $avoidscans!='YES'">normal_delivery1</string>
-	<string condition="$template='random' or $template='normal') and $avoidscans!='YES'">normal_delivery2</string>
-	<string condition="$template='random' or $template='normal')"                       >normal_delivery3</string>
-	<string condition="$template='random' or $template='normal')"                       >normal_delivery4</string>
-	<string condition="$template='random' or $template='normal') and $avoidscans!='YES'">normal_dispel1</string>
-	<string condition="$template='random' or $template='normal') and $avoidscans!='YES'">normal_killer1</string>
-	<string condition="$template='random' or $template='normal')"                       >normal_killer2</string>
-	<string condition="$template='random' or $template='normal')"                       >normal_mystery1</string>
-	<string condition="$template='random' or $template='normal')"                       >normal_mystery2</string>
-	<string condition="$template='random' or $template='normal')"                       >normal_protect1</string>
-	<string condition="$template='random' or $template='normal') and $avoidscans!='YES'">normal_protect2</string>
-	<string condition="$template='random' or $template='normal') and $avoidscans!='YES'">normal_travel1</string>
-	<string condition="$template='random' or $template='normal') and $avoidscans!='YES'">normal_travel2</string>
+	<string condition="($template='random' or $template='normal') and $avoidscans!='YES'">normal_capture1</string>
+	<string condition="($template='random' or $template='normal')"                       >normal_capture2</string>
+	<string condition="($template='random' or $template='normal') and $avoidscans!='YES'">normal_capture3</string>
+	<string condition="($template='random' or $template='normal')"                       >normal_capture4</string>
+	<string condition="($template='random' or $template='normal') and $avoidscans!='YES'">normal_collect1</string>
+	<string condition="($template='random' or $template='normal')"                       >normal_collect2</string>
+	<string condition="($template='random' or $template='normal')"                       >normal_collect3</string>
+	<string condition="($template='random' or $template='normal')"                       >normal_collect4</string>
+	<string condition="($template='random' or $template='normal')"                       >normal_collect5</string>
+	<string condition="($template='random' or $template='normal') and $avoidscans!='YES'">normal_escort1</string>
+	<string condition="($template='random' or $template='normal')"                       >normal_escort2</string>
+	<string condition="($template='random' or $template='normal') and $avoidscans!='YES'">normal_delivery1</string>
+	<string condition="($template='random' or $template='normal') and $avoidscans!='YES'">normal_delivery2</string>
+	<string condition="($template='random' or $template='normal')"                       >normal_delivery3</string>
+	<string condition="($template='random' or $template='normal')"                       >normal_delivery4</string>
+	<string condition="($template='random' or $template='normal') and $avoidscans!='YES'">normal_dispel1</string>
+	<string condition="($template='random' or $template='normal') and $avoidscans!='YES'">normal_killer1</string>
+	<string condition="($template='random' or $template='normal')"                       >normal_killer2</string>
+	<string condition="($template='random' or $template='normal')"                       >normal_mystery1</string>
+	<string condition="($template='random' or $template='normal')"                       >normal_mystery2</string>
+	<string condition="($template='random' or $template='normal')"                       >normal_protect1</string>
+	<string condition="($template='random' or $template='normal') and $avoidscans!='YES'">normal_protect2</string>
+	<string condition="($template='random' or $template='normal') and $avoidscans!='YES'">normal_travel1</string>
+	<string condition="($template='random' or $template='normal') and $avoidscans!='YES'">normal_travel2</string>
 	<!-- 
-	<string condition="$template='random' or $template='normal') and $avoidscans!='YES'">normal_travel3</string>
+	<string condition="($template='random' or $template='normal') and $avoidscans!='YES'">normal_travel3</string>
 	 -->
-	<string condition="$template='random' or $template='normal') and $avoidscans!='YES'">normal_travel4</string>
-	<string condition="$template='random' or $template='auto') and $avoidscans!='YES'"  >auto_capture1</string>
-	<string condition="$template='random' or $template='auto')"                         >auto_capture2</string>
-	<string condition="$template='random' or $template='auto') and $avoidscans!='YES'"  >auto_capture3</string>
-	<string condition="$template='random' or $template='auto')"                         >auto_capture4</string>
-	<string condition="$template='random' or $template='auto') and $avoidscans!='YES'"  >auto_collect1</string>
-	<string condition="$template='random' or $template='auto')"                         >auto_collect2</string>
-	<string condition="$template='random' or $template='auto')"                         >auto_collect3</string>
-	<string condition="$template='random' or $template='auto')"                         >auto_collect4</string>
-	<string condition="$template='random' or $template='auto')"                         >auto_collect5</string>
-	<string condition="$template='random' or $template='auto') and $avoidscans!='YES'"  >auto_delivery1</string>
-	<string condition="$template='random' or $template='auto') and $avoidscans!='YES'"  >auto_delivery2</string>
-	<string condition="$template='random' or $template='auto')"                         >auto_delivery3</string>
-	<string condition="$template='random' or $template='auto')"                         >auto_delivery4</string>
-	<string condition="$template='random' or $template='auto') and $avoidscans!='YES'"  >auto_dispel1</string>
-	<string condition="$template='random' or $template='auto') and $avoidscans!='YES'"  >auto_killer1</string>
-	<string condition="$template='random' or $template='auto')"                         >auto_killer2</string>
-	<string condition="$template='random' or $template='auto')"                         >auto_protect1</string>
-	<string condition="$template='random' or $template='auto') and $avoidscans!='YES'"  >auto_escort1</string>
-	<string condition="$template='random' or $template='auto')"                         >auto_escort2</string>
-	<string condition="$template='random' or $template='auto') and $avoidscans!='YES'"  >auto_travel1</string>
-	<string condition="$template='random' or $template='auto') and $avoidscans!='YES'"  >auto_travel2</string>
-	<string condition="$template='random' or $template='auto') and $avoidscans!='YES'"  >auto_travel3</string>
-	<string condition="$template='random' or $template='auto') and $avoidscans!='YES'"  >auto_travel4</string>
+	<string condition="($template='random' or $template='normal') and $avoidscans!='YES'">normal_travel4</string>
+	<string condition="($template='random' or $template='auto') and $avoidscans!='YES'"  >auto_capture1</string>
+	<string condition="($template='random' or $template='auto')"                         >auto_capture2</string>
+	<string condition="($template='random' or $template='auto') and $avoidscans!='YES'"  >auto_capture3</string>
+	<string condition="($template='random' or $template='auto')"                         >auto_capture4</string>
+	<string condition="($template='random' or $template='auto') and $avoidscans!='YES'"  >auto_collect1</string>
+	<string condition="($template='random' or $template='auto')"                         >auto_collect2</string>
+	<string condition="($template='random' or $template='auto')"                         >auto_collect3</string>
+	<string condition="($template='random' or $template='auto')"                         >auto_collect4</string>
+	<string condition="($template='random' or $template='auto')"                         >auto_collect5</string>
+	<string condition="($template='random' or $template='auto') and $avoidscans!='YES'"  >auto_delivery1</string>
+	<string condition="($template='random' or $template='auto') and $avoidscans!='YES'"  >auto_delivery2</string>
+	<string condition="($template='random' or $template='auto')"                         >auto_delivery3</string>
+	<string condition="($template='random' or $template='auto')"                         >auto_delivery4</string>
+	<string condition="($template='random' or $template='auto') and $avoidscans!='YES'"  >auto_dispel1</string>
+	<string condition="($template='random' or $template='auto') and $avoidscans!='YES'"  >auto_killer1</string>
+	<string condition="($template='random' or $template='auto')"                         >auto_killer2</string>
+	<string condition="($template='random' or $template='auto')"                         >auto_protect1</string>
+	<string condition="($template='random' or $template='auto') and $avoidscans!='YES'"  >auto_escort1</string>
+	<string condition="($template='random' or $template='auto')"                         >auto_escort2</string>
+	<string condition="($template='random' or $template='auto') and $avoidscans!='YES'"  >auto_travel1</string>
+	<string condition="($template='random' or $template='auto') and $avoidscans!='YES'"  >auto_travel2</string>
+	<string condition="($template='random' or $template='auto') and $avoidscans!='YES'"  >auto_travel3</string>
+	<string condition="($template='random' or $template='auto') and $avoidscans!='YES'"  >auto_travel4</string>
 </string>
 
 <STRING ID="avoidscans" define="avoidscans">NO</STRING>
