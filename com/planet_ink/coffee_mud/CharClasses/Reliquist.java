@@ -125,7 +125,7 @@ public class Reliquist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_Hide",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_MaskFaith",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_RepurposeText",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_ItemIntegrity",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_ProtectItem",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_RelicUse",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_Graverobbing",false);
@@ -241,7 +241,7 @@ public class Reliquist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_InciteDivineFeud",0,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_ProtectSacredItem",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_WhipStrip",0,false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_EternalItem",false, new XVector<String>("Prayer_ItemIntegrity"));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_EternalItem",false, new XVector<String>("Prayer_ProtectItem"));
 
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
 			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueHolyWeapon",false,"+SKILLS -Prayer_ImbueUnholyWeapon -Prayer_ImbueSacredWeapon"); // special A
@@ -264,21 +264,6 @@ public class Reliquist extends Thief
 Other Engine changes:
 Praying for your daily buffs on Holy Grounds should result in a 50% increase in duration of the buff.
 Prayers cast by a cleric of the appropriate deity on holy grounds should result in a 50% increase in duration of the buff.
-ACH_MASTER Reliquist =EVENT="CLASSLEVELSGAINED" DISPLAY="Gain 30 levels in Reliquist " TITLE="*, Master Reliquist " REWARDS="" PLAYERMASK="" NUM=30 CLASS=" Reliquist "
-ACH_ RELIQUIST 2=EVENT="CLASSLEVELSGAINED" NUM=60 PLAYERMASK="" CLASS=" Reliquist " DISPLAY="60 levels as a Reliquist "
-ACH_ RELIQUIST 3=EVENT="CLASSLEVELSGAINED" NUM=90 PLAYERMASK="" CLASS=" Reliquist " TITLE="*, Legendary Reliquist " DISPLAY="90 levels as a Reliquist "
-ACCT_ACH_TRIED Reliquist =EVENT="CLASSLEVELSGAINED" DISPLAY="Try out the Reliquist for 15 levels" TITLE="" REWARDS="" PLAYERMASK="" NUM=15 CLASS=" Reliquist "
-ACCT_REM_ Reliquist 1=EVENT="REMORT" NUM=1 DISPLAY=" Reliquist Past Life I" TITLE="" REWARDS="1 DAMAGE" PLAYERMASK="-ANYCLASSLEVEL + Reliquist +>29"
-ACCT_REM_ Reliquist 2=EVENT="REMORT" NUM=2 DISPLAY=" Reliquist Past Life II" TITLE="" REWARDS="3 FLAILEDSTRIKE1" PLAYERMASK="-ANYCLASSLEVEL + Reliquist +>29"
-ACCT_REM_ Reliquist 3=EVENT="REMORT" NUM=3 DISPLAY=" Reliquist Past Life III" TITLE="" REWARDS="5 Prayer_IndestrctibleItem" PLAYERMASK="-ANYCLASSLEVEL + Reliquist +>29"
-ACCT_REM_ Reliquist 4=EVENT="REMORT" NUM=4 DISPLAY=" Reliquist Past Life IV" TITLE="" REWARDS="7 HAMMERBASH1" PLAYERMASK="-ANYCLASSLEVEL + Reliquist +>29"
-ACCT_REM_ Reliquist 5=EVENT="REMORT" NUM=5 DISPLAY=" Reliquist Past Life V" TITLE="" REWARDS="9 Skill_Whiplash" PLAYERMASK="-ANYCLASSLEVEL + Reliquist +>29"
-ACCT_REM_ Reliquist 6=EVENT="REMORT" NUM=6 DISPLAY=" Reliquist Past Life VI" TITLE="" REWARDS="11 CNTRCRAFT1" PLAYERMASK="-ANYCLASSLEVEL + Reliquist +>29"
-ACCT_REM_ Reliquist 7=EVENT="REMORT" NUM=1 DISPLAY=" Reliquist Savant Past Life I" TITLE="*, Abjurer Savant" REWARDS="1 DAMAGE" PLAYERMASK="-ANYCLASSLEVEL + Reliquist +>59"
-ACCT_REM_ Reliquist 8=EVENT="REMORT" NUM=2 DISPLAY=" Reliquist Savant Past Life II" TITLE="" REWARDS="1 DEXTERITY" PLAYERMASK="-ANYCLASSLEVEL + Reliquist +>59"
-ACCT_REM_ Reliquist 9=EVENT="REMORT" NUM=1 DISPLAY="Prodigal Reliquist Past Life I" TITLE="" REWARDS="5 TRAPS" PLAYERMASK="-ANYCLASSLEVEL + Reliquist +>89"
-ACCT_REM_ Reliquist 10=EVENT="REMORT" NUM=2 DISPLAY="Prodigal Reliquist Past Life II" TITLE="Prodigal Abjurer *" REWARDS="1 MAXDEXTERITY" PLAYERMASK="-ANYCLASSLEVEL + Reliquist +>89"
-ACCT_RET_RELIQUIST=EVENT="RETIRE" DISPLAY="You've retired a Reliquist" TITLE="" REWARDS="" NUM=1 PLAYERMASK="-CLASS +Reliquist"
 */
 
 	}

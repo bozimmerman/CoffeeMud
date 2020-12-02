@@ -394,9 +394,9 @@ settable vars:
 	
 	<STRING ID="item_level" define="item_level">$target_level</STRING>
 	<STRING ID="target_item_name" define="target_item_name">${SELECT: NAME from (SELECT: FIRST\. from $target_item)}</STRING>
-	<OBJECT ID="target_item" define="target_item" SELECT="Any-1">
-		<OBJECT condition="$itemname=''">SELECT: ANY\. FROM $item_junk</OBJECT>
-		<OBJECT condition="$itemname!=''">
+	<OBJECT ID="target_item" define="target_item" SELECT="Pick-1">
+		<OBJECT pickweight=99 condition="$itemname=''">SELECT: ANY\. FROM $item_junk</OBJECT>
+		<OBJECT pickweight=1 condition="$itemname!=''">
 			<ITEM class="GenItem" name="$itemname" display="$itemname lies here">
 				<MATERIAL SELECT="Pick-1">
 					<MATERIAL PICKWEIGHT=99 CONDITION="$item_material=''">$any_Item_material</MATERIAL>

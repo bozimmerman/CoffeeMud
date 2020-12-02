@@ -101,6 +101,11 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 		return timeToNextCast;
 	}
 
+	protected int getTicksBetweenCasts()
+	{
+		return (int)CMProps.getTicksPerDay();
+	}
+
 	@Override
 	protected void setTimeOfNextCast(final long absoluteTime)
 	{
@@ -406,6 +411,17 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 					&& (!CMath.bset(deity2M.getStartRoom().getArea().flags(), Area.FLAG_INSTANCE_CHILD)))
 						CMLib.database().DBUpdateMOB(deity2M.getStartRoom().roomID(), deity2M);
 				}
+				mob.tell("You have successfully started a divine feud.");
+				final MOB invokerM=invoker();
+				if(invokerM!=null)
+				{
+					final Thief_InciteDivineFeud realA=(Thief_InciteDivineFeud)invokerM.fetchAbility(ID());
+					if(realA!=null)
+						realA.setTimeOfNextCast(invokerM);
+				}
+				mob.delEffect(this);
+				this.setAffectedOne(null);
+				return tickUninvoke();
 			}
 			catch(final MiniJSON.MJSONException x)
 			{

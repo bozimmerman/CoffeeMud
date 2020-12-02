@@ -106,9 +106,9 @@ settable vars:
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="quest_fightspeech" SELECT="Any-1">
 			<STRING>I aint payin!</STRING>
-			<STRING>You aint getting nothin from you.</STRING>
+			<STRING>You aint getting nothin from </.</STRING>
 			<STRING>I don't you anything!</STRING>
-			<STRING>Leave me alone, I don't you anything!</STRING>
+			<STRING>Leave me alone, I don't owe you anything!</STRING>
 		</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>${C:target_name} owes you money, but you're not sure which one.</STRING>

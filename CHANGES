@@ -32,11 +32,11 @@
  31. New Skills: Whiplash, Research Item, Research Region Map, AutoHammerRing, Befoul Shrine
  32. New Prayers: Improved Warning Glyph, Sense Parish, Reflect Prayer, Amplify Unholy Weapon
  33. New Prayers: Empower Holy Weapon, Empower Sacred Weapon, Imbue Shield, Share Boon, Empower Just Weapon
- 34. New Thief skills: Heroic Reflexes, Condemn Mark, Steal Boon, Whip Strip
+ 34. New Thief skills: Heroic Reflexes, Condemn Mark, Steal Boon, Whip Strip, Incite Divine Feud
  35. New Prayers: Empower Unjust Weapon, Empower Modest Weapon, Greater Warding Glyph, Find Sacred Item
  36. New Prayers: Empower Holy Weapon, Empower Unholy Weapon, Empower Sacred Weapon, Protect Sacred Item
  37. New Prayers: Imbue Holy Weapon, Imbue Unholy Weapon, Umbue Sacred Weapon, Imbue Just Weapon
- 38. New Prayers: Imbue Foul Weapon, Imbue Modest Weapon
+ 38. New Prayers: Imbue Foul Weapon, Imbue Modest Weapon, Protect Item
  39. The AS and AT commands now support PLAYERS to do things as or at all the players online.
  40. GMODIFY now has PLAYERS option to alter/scan all players.  Dang, this command is dangerous.
  41. MOTD command can now be used to set motd.txt file, which is also now deleted every day.
