@@ -79,7 +79,7 @@ See guides/RandomAreas.html for information about documents of this type.
 
 <QUEST ID="all_quests" requires="template=$" SELECT="Any-1">
 	<QUEST load="/resources/quests/random/normal_capture1.xml" CONDITION="$quest_template='normal_capture1'"/>
-	<QUEST load="/resources/quests/random/$template='random' or $template='normal')" CONDITION="$quest_template='normal_capture2'"/>
+	<QUEST load="/resources/quests/random/normal_capture2.xml" CONDITION="$quest_template='normal_capture2'"/>
 	<QUEST load="/resources/quests/random/normal_capture3.xml" CONDITION="$quest_template='normal_capture3'"/>
 	<QUEST load="/resources/quests/random/normal_capture4.xml" CONDITION="$quest_template='normal_capture4'"/>
 	<QUEST load="/resources/quests/random/normal_collect1.xml" CONDITION="$quest_template='normal_collect1'"/>
