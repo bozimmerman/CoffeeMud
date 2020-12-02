@@ -116,7 +116,7 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 	protected List<Area> findDeityAreas(final Deity D)
 	{
 		final List<Area> deityAreas = new ArrayList<Area>();
-		for(final Enumeration<Places> p=D.holyPlaces();p.hasMoreElements();)
+		for(final Enumeration<Places> p=CMLib.map().holyPlaces(D.Name());p.hasMoreElements();)
 		{
 			final Places P=p.nextElement();
 			final String deityName=CMLib.law().getClericInfused(P);
@@ -137,7 +137,7 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 			for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				final Area A=a.nextElement();
-				final int piety = D.getAreaPiety(A.Name());
+				final int piety = A.getPiety(D.Name());
 				if(piety > 5)
 					deityAreas.add(A);
 			}
@@ -250,7 +250,7 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 				definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
 				definedIDs.put("target_int".toUpperCase(), "10");
 				final String template1=data.getCheckedString("template1");
-				if(deity1M.getAreaPiety(deity1Area.Name())>5)
+				if(deity1Area.getPiety(deity1M.Name())>5)
 				{
 					if(template1.indexOf("capture")>0)
 					{
@@ -301,7 +301,7 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 					}
 					else
 						return tickUninvoke();
-					definedIDs.put("NUM_TARGETS", ""+(int)Math.round(CMath.mul((double)deity1M.getAreaPiety(deity1Area.Name()),0.25)));
+					definedIDs.put("NUM_TARGETS", ""+(int)Math.round(CMath.mul((double)deity1Area.getPiety(deity1M.Name()),0.25)));
 				}
 				else
 				{
@@ -615,7 +615,7 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 				definedIDs.put("AGGRESSION", "YES");
 				definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
 				definedIDs.put("target_int".toUpperCase(), "10");
-				if(deity2M.getAreaPiety(deity2Area.Name())>5)
+				if(deity2Area.getPiety(deity2M.Name())>5)
 				{
 					switch(CMLib.dice().roll(1, 4, 0))
 					{
@@ -657,7 +657,7 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 						definedIDs.put("target_is_aggressive".toUpperCase(), "NO");
 						break;
 					}
-					definedIDs.put("NUM_TARGETS", ""+(int)Math.round(CMath.mul((double)deity2M.getAreaPiety(deity2Area.Name()),0.25)));
+					definedIDs.put("NUM_TARGETS", ""+(int)Math.round(CMath.mul((double)deity2Area.getPiety(deity2M.Name()),0.25)));
 				}
 				else
 				{

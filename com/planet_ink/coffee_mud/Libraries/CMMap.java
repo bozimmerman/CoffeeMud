@@ -56,28 +56,28 @@ public class CMMap extends StdLibrary implements WorldMap
 		return "CMMap";
 	}
 
-	public final double			ZERO_ALMOST			= 0.000001;
-	public final BigDecimal 	ZERO				= BigDecimal.valueOf(0.0);
-	public final BigDecimal 	ALMOST_ZERO			= BigDecimal.valueOf(ZERO_ALMOST);
-	public final BigDecimal 	ONE 				= BigDecimal.valueOf(1L);
-	public final BigDecimal 	TWO 				= BigDecimal.valueOf(2L);
-	public final BigDecimal 	ONE_THOUSAND		= BigDecimal.valueOf(1000);
-	public final double			PI_ALMOST			= Math.PI-ZERO_ALMOST;
-	public final double			PI_TIMES_2			= Math.PI*2.0;
-	public final double			PI_BY_2				= Math.PI/2.0;
-	public final int			QUADRANT_WIDTH  	= 10;
-	public static MOB   		deityStandIn		= null;
-	public long 				lastVReset  		= 0;
-	public CMNSortSVec<Area>	areasList   		= new CMNSortSVec<Area>();
-	public CMNSortSVec<Deity>	deitiesList 		= new CMNSortSVec<Deity>();
-	public List<BoardableShip>	shipList 			= new SVector<BoardableShip>();
-	public List<PostOffice> 	postOfficeList  	= new SVector<PostOffice>();
-	public List<Auctioneer> 	auctionHouseList	= new SVector<Auctioneer>();
-	public List<Banker> 		bankList			= new SVector<Banker>();
-	public List<Librarian> 		libraryList			= new SVector<Librarian>();
-	public RTree<SpaceObject>	space				= new RTree<SpaceObject>();
-
-	protected Map<String,Object>SCRIPT_HOST_SEMAPHORES	= new Hashtable<String,Object>();
+	protected final double				ZERO_ALMOST				= 0.000001;
+	protected final BigDecimal			ZERO					= BigDecimal.valueOf(0.0);
+	protected final BigDecimal			ALMOST_ZERO				= BigDecimal.valueOf(ZERO_ALMOST);
+	protected final BigDecimal			ONE						= BigDecimal.valueOf(1L);
+	protected final BigDecimal			TWO						= BigDecimal.valueOf(2L);
+	protected final BigDecimal			ONE_THOUSAND			= BigDecimal.valueOf(1000);
+	protected final double				PI_ALMOST				= Math.PI - ZERO_ALMOST;
+	protected final double				PI_TIMES_2				= Math.PI * 2.0;
+	protected final double				PI_BY_2					= Math.PI / 2.0;
+	protected final int					QUADRANT_WIDTH			= 10;
+	protected static MOB				deityStandIn			= null;
+	protected long						lastVReset				= 0;
+	protected CMNSortSVec<Area>			areasList				= new CMNSortSVec<Area>();
+	protected CMNSortSVec<Deity>		deitiesList				= new CMNSortSVec<Deity>();
+	protected List<BoardableShip>		shipList				= new SVector<BoardableShip>();
+	protected List<PostOffice>			postOfficeList			= new SVector<PostOffice>();
+	protected List<Auctioneer>			auctionHouseList		= new SVector<Auctioneer>();
+	protected List<Banker>				bankList				= new SVector<Banker>();
+	protected List<Librarian>			libraryList				= new SVector<Librarian>();
+	protected Map<String, Set<Places>>	holyPlaces				= new SHashtable<String, Set<Places>>();
+	protected RTree<SpaceObject>		space					= new RTree<SpaceObject>();
+	protected Map<String, Object>		SCRIPT_HOST_SEMAPHORES	= new Hashtable<String, Object>();
 
 	protected static final Comparator<Area>	areaComparator = new Comparator<Area>()
 	{
@@ -2178,6 +2178,56 @@ public class CMMap extends StdLibrary implements WorldMap
 					H.add(B.bankChain());
 		}
 		return H.iterator();
+	}
+
+	protected Set<Places> getHolyPlaces(final String deityName)
+	{
+		if(deityName==null)
+			return new TreeSet<Places>();
+		final String udName=deityName.toUpperCase().trim();
+		if(!holyPlaces.containsKey(udName))
+			holyPlaces.put(udName, new TreeSet<Places>(Places.placeComparator));
+		return holyPlaces.get(udName);
+	}
+
+	@Override
+	public void registerHolyPlace(final String deityName, final Places newOne)
+	{
+		if(newOne != null)
+		{
+			final Set<Places> holyPlaces = getHolyPlaces(deityName);
+			if (!holyPlaces.contains(newOne))
+				holyPlaces.add(newOne);
+		}
+	}
+
+	@Override
+	public void deregisterHolyPlace(final String deityName, final Places newOne)
+	{
+		if(newOne != null)
+		{
+			final Set<Places> holyPlaces = getHolyPlaces(deityName);
+			holyPlaces.remove(newOne);
+		}
+	}
+
+	@Override
+	public Enumeration<Places> holyPlaces(final String deityName)
+	{
+		final Set<Places> holyPlaces = getHolyPlaces(deityName);
+		final ArrayList<Places> placesCopy=new ArrayList<Places>(holyPlaces.size());
+		synchronized(holyPlaces)
+		{
+			for(final Iterator<Places> i=holyPlaces.iterator();i.hasNext();)
+			{
+				final Places place = i.next();
+				if(place.amDestroyed())
+					i.remove();
+				else
+					placesCopy.add(place);
+			}
+		}
+		return new IteratorEnumeration<Places>(placesCopy.iterator());
 	}
 
 	@Override

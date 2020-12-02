@@ -4351,7 +4351,8 @@ public class ListCmd extends StdCommand
 		DESCRIPTION("Desc", 50),
 		ROOMS("Rooms", 6),
 		STATE("State", 10),
-		HIDDEN("Hiddn", 6)
+		HIDDEN("Hiddn", 6),
+		PIETY("Piety",50)
 		;
 
 		public String	shortName;
@@ -4379,6 +4380,17 @@ public class ListCmd extends StdCommand
 				return A.getAuthorID();
 			case DESCRIPTION:
 				return A.description().replace('\n', ' ').replace('\r', ' ');
+			case PIETY:
+				{
+					final StringBuilder piety=new StringBuilder("");
+					for(final Enumeration<Deity> d=CMLib.map().deities();d.hasMoreElements();)
+					{
+						final Deity D=d.nextElement();
+						if(A.getPiety(D.Name())>0)
+							piety.append(D.Name()+"("+A.getPiety(D.Name())+") ");
+					}
+					return piety.toString();
+				}
 			default:
 				return "";
 			}

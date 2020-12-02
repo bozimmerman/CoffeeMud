@@ -2217,4 +2217,10 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 			return ((PrivateProperty)getShipItem()).getTitleID();
 		return null;
 	}
+
+	@Override
+	public int getPiety(final String deityName)
+	{
+		return 0;
+	}
 }

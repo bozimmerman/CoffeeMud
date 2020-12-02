@@ -140,13 +140,9 @@ public class Prayer_InfuseHoliness extends Prayer implements Deity.DeityWorshipp
 	public void finalize() throws Throwable
 	{
 		final Physical affected=this.affected;
-		if(affected instanceof Places)
-		{
-			final Deity D=getMyDeity();
-			if(D!=null)
-				D.deregisterHolyPlace((Places)affected);
-			this.affected=null;
-		}
+		if((affected instanceof Places)&&(text().length()>0))
+			CMLib.map().deregisterHolyPlace(text(),(Places)affected);
+		this.affected=null;
 		super.finalize();
 	}
 
@@ -154,32 +150,28 @@ public class Prayer_InfuseHoliness extends Prayer implements Deity.DeityWorshipp
 	{
 		if(text().length()>0)
 		{
-			final Deity D=getMyDeity();
-			if(D!=null)
-			{
-				if((affected == null)&&(this.affected instanceof Places))
-					D.deregisterHolyPlace((Places)this.affected);
-				else
-				if(affected instanceof Places)
-					D.registerHolyPlace((Places)affected);
-			}
+			if((affected == null)&&(this.affected instanceof Places))
+				CMLib.map().deregisterHolyPlace(text(),(Places)this.affected);
+			else
+			if(affected instanceof Places)
+				CMLib.map().registerHolyPlace(text(),(Places)affected);
 		}
 	}
-	
+
 	@Override
 	public void setAffectedOne(final Physical affected)
 	{
 		alterHolyPlaceRegistration(affected);
 		super.setAffectedOne(affected);
 	}
-	
+
 	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		alterHolyPlaceRegistration(this.affected);
 	}
-	
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{

@@ -89,11 +89,11 @@ public interface CMMiscUtils extends CMLibrary
 	 * This would include anything it is mounted to, or that
 	 * is mounted to it.  A discount is given for pulling
 	 * a wagon.
-	 * @param P the item to get the pull weight of. 
+	 * @param P the item to get the pull weight of.
 	 * @return the calculated pull weight.
 	 */
 	public int getPullWeight(final Physical P);
-	
+
 	/**
 	 * This strange method takes a list of space-delimited expressions of the
 	 * form [CONDITION]number number number number, etc. E.G.: &gt;1 3 2 5 3 2.
@@ -374,19 +374,6 @@ public interface CMMiscUtils extends CMLibrary
 	 * @return a list of constituant races, or empty.
 	 */
 	public List<Race> getConstituantRaces(final String raceID);
-	
-	/**
-	 * Send a quick CMMsg to a deity directly.  Usually an internal
-	 * serve or rebuke message.
-	 * 
-	 * @param mob the sender
-	 * @param deityName the name of the deity
-	 * @param msgType the type of message
-	 * @param msgStr the message string
-	 * @return the CMMsg generated
-	 */
-	public CMMsg msgDeity(final MOB mob, final String deityName, final int msgType, final String msgStr);
-	
 
 	/**
 	 * Returns a list of worn equipment at the top layer, where it can be

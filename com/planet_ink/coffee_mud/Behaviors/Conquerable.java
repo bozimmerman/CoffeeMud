@@ -307,7 +307,10 @@ public class Conquerable extends Arrest
 						M.setClan(holdingClan,-1);
 						if((worship!=null)
 						&&(M.baseCharStats().getWorshipCharID().equals(worship)))
-							CMLib.utensils().msgDeity(M, worship, CMMsg.MASK_ALWAYS|CMMsg.MSG_REBUKE, null);
+						{
+							M.baseCharStats().setWorshipCharID("");
+							M.charStats().setWorshipCharID("");
+						}
 					}
 					I.setRawWornCode(0);
 					I.setContainer(null);
@@ -318,6 +321,8 @@ public class Conquerable extends Arrest
 
 		if(myArea!=null)
 		{
+			if(worship!=null)
+				Resources.removeResource("PIETY_"+myArea.Name().toUpperCase());
 			for(final Enumeration<Room> e=myArea.getMetroMap();e.hasMoreElements();)
 			{
 				final Room R=e.nextElement();
@@ -333,7 +338,10 @@ public class Conquerable extends Arrest
 						M.setClan(holdingClan,-1);
 						if((worship!=null)
 						&&(M.charStats().getWorshipCharID().equals(worship)))
-							CMLib.utensils().msgDeity(M, worship, CMMsg.MASK_ALWAYS|CMMsg.MSG_REBUKE, null);
+						{
+							M.baseCharStats().setWorshipCharID("");
+							M.charStats().setWorshipCharID("");
+						}
 					}
 				}
 			}
@@ -796,7 +804,10 @@ public class Conquerable extends Arrest
 						M.setClan(C.clanID(),C.getAutoPosition());
 						if((worship!=null)
 						&&(!M.baseCharStats().getWorshipCharID().equals(worship)))
-							CMLib.utensils().msgDeity(M, worship, CMMsg.MASK_ALWAYS|CMMsg.MSG_SERVE, null);
+						{
+							M.baseCharStats().setWorshipCharID(worship);
+							M.charStats().setWorshipCharID(worship);
+						}
 					}
 					totalControlPoints+=M.phyStats().level();
 				}
@@ -1011,7 +1022,10 @@ public class Conquerable extends Arrest
 							M.setClan(holdingClan,C.getAutoPosition());
 							if((worship!=null)
 							&&(!M.baseCharStats().getWorshipCharID().equals(worship)))
-								CMLib.utensils().msgDeity(M, worship, CMMsg.MASK_ALWAYS|CMMsg.MSG_SERVE, null);
+							{
+								M.baseCharStats().setWorshipCharID(worship);
+								M.charStats().setWorshipCharID(worship);
+							}
 						}
 					}
 				}
@@ -1021,6 +1035,8 @@ public class Conquerable extends Arrest
 				C.bumpTrophyData(Clan.Trophy.MonthlyConquests, 1);
 				CMLib.achievements().possiblyBumpAchievement(C.getResponsibleMember(), AchievementLibrary.Event.CONQUEREDAREAS, 1, C, myArea);
 			}
+			if(worship!=null)
+				Resources.removeResource("PIETY_"+myArea.Name().toUpperCase());
 
 			final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS, null);
 			for(int i=0;i<channels.size();i++)
@@ -1393,7 +1409,10 @@ public class Conquerable extends Arrest
 				final String worship=getManadatoryWorshipID();
 				if((worship!=null)
 				&&(!msg.source().baseCharStats().getWorshipCharID().equals(worship)))
-					CMLib.utensils().msgDeity(msg.source(), worship, CMMsg.MASK_ALWAYS|CMMsg.MSG_SERVE, null);
+				{
+					msg.source().baseCharStats().setWorshipCharID(worship);
+					msg.source().charStats().setWorshipCharID(worship);
+				}
 			}
 
 			if(msg.tool() instanceof ClanItem)

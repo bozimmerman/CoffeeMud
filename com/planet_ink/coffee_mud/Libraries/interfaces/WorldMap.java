@@ -145,6 +145,33 @@ public interface WorldMap extends CMLibrary
 	public Librarian getLibrary(String chain, String areaNameOrBranch);
 	public Enumeration<Librarian> libraries();
 	public Iterator<String> libraryChains(Area AreaOrNull);
+
+	/**
+	 * Register a particular room as infused to the given deity.
+	 * @see WorldMap#deregisterHolyPlace(Places)
+	 * @see WorldMap#holyPlaces()
+	 * @param deityName the deity to register
+	 * @param newOne the new holy place
+	 */
+	public void registerHolyPlace(final String deityName, final Places newOne);
+	/**
+	 * De-register a particular room that was probably infused
+	 * to the given deity.
+	 * @see WorldMap#registerHolyPlace(Places)
+	 * @param deityName the deity to de-register
+	 * @param oldOne the old holy place for this deity
+	 */
+	public void deregisterHolyPlace(final String deityName, final Places newOne);
+
+	/**
+	 * Enumerate the holy places for the given deity.
+	 * @see WorldMap#registerHolyPlace(Places)
+	 * @see WorldMap#deregisterHolyPlace(Places)
+	 * @param deityName the deity to list for
+	 * @return the holy places for the deity.
+	 */
+	public Enumeration<Places> holyPlaces(final String deityName);
+
 	public Auctioneer getAuctionHouse(String chain, String areaNameOrBranch);
 	public Enumeration<Auctioneer> auctionHouses();
 	public BoardableShip getShip(String calledThis);

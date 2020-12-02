@@ -93,6 +93,8 @@ public class StdArea implements Area
 	protected final static String[]	empty					= new String[0];
 	protected static volatile Area	lastComplainer			= null;
 
+	protected final static Map<String,int[]>	emptyPiety	= new TreeMap<String,int[]>();
+
 	@Override
 	public void initializeClass()
 	{
@@ -1628,55 +1630,84 @@ public class StdArea implements Area
 
 	protected void buildAreaIMobStats(final int[] statData, final long[] totalAlignments, final Faction theFaction, final List<Integer> alignRanges, final List<Integer> levelRanges, final MOB mob)
 	{
-		if ((mob != null) && (mob.isMonster()) && (!CMLib.flags().isUnattackable(mob)))
+		if ((mob != null) && mob.isMonster())
 		{
-			final int lvl = mob.basePhyStats().level();
-			levelRanges.add(Integer.valueOf(lvl));
-			if ((theFaction != null) && (mob.fetchFaction(theFaction.factionID()) != Integer.MAX_VALUE))
+			if (!CMLib.flags().isUnattackable(mob))
 			{
-				alignRanges.add(Integer.valueOf(mob.fetchFaction(theFaction.factionID())));
-				totalAlignments[0] += mob.fetchFaction(theFaction.factionID());
-			}
-			statData[Area.Stats.POPULATION.ordinal()]++;
-			statData[Area.Stats.TOTAL_LEVELS.ordinal()] += lvl;
-			if (!CMLib.flags().isAnimalIntelligence(mob))
-			{
-				statData[Area.Stats.TOTAL_INTELLIGENT_LEVELS.ordinal()] += lvl;
-				statData[Area.Stats.INTELLIGENT_MOBS.ordinal()]++;
-			}
-			else
-			{
-				statData[Area.Stats.ANIMALS.ordinal()]++;
-			}
-			if (lvl < statData[Area.Stats.MIN_LEVEL.ordinal()])
-				statData[Area.Stats.MIN_LEVEL.ordinal()] = lvl;
-			if (lvl >= statData[Area.Stats.MAX_LEVEL.ordinal()])
-			{
-				if (lvl > statData[Area.Stats.MAX_LEVEL.ordinal()])
+				final int lvl = mob.basePhyStats().level();
+				levelRanges.add(Integer.valueOf(lvl));
+				if ((theFaction != null) && (mob.fetchFaction(theFaction.factionID()) != Integer.MAX_VALUE))
 				{
-					statData[Area.Stats.MAX_LEVEL.ordinal()] = lvl;
-					statData[Area.Stats.MAX_LEVEL_MOBS.ordinal()] = 0;
+					alignRanges.add(Integer.valueOf(mob.fetchFaction(theFaction.factionID())));
+					totalAlignments[0] += mob.fetchFaction(theFaction.factionID());
 				}
-				statData[Area.Stats.MAX_LEVEL_MOBS.ordinal()]++;
+				statData[Area.Stats.POPULATION.ordinal()]++;
+				statData[Area.Stats.TOTAL_LEVELS.ordinal()] += lvl;
+				if (!CMLib.flags().isAnimalIntelligence(mob))
+				{
+					statData[Area.Stats.TOTAL_INTELLIGENT_LEVELS.ordinal()] += lvl;
+					statData[Area.Stats.INTELLIGENT_MOBS.ordinal()]++;
+				}
+				else
+				{
+					statData[Area.Stats.ANIMALS.ordinal()]++;
+				}
+				if (lvl < statData[Area.Stats.MIN_LEVEL.ordinal()])
+					statData[Area.Stats.MIN_LEVEL.ordinal()] = lvl;
+				if (lvl >= statData[Area.Stats.MAX_LEVEL.ordinal()])
+				{
+					if (lvl > statData[Area.Stats.MAX_LEVEL.ordinal()])
+					{
+						statData[Area.Stats.MAX_LEVEL.ordinal()] = lvl;
+						statData[Area.Stats.MAX_LEVEL_MOBS.ordinal()] = 0;
+					}
+					statData[Area.Stats.MAX_LEVEL_MOBS.ordinal()]++;
+				}
+				/*
+				 * if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD)) {
+				 * if(CMLib.flags().isGood(mob))
+				 * statData[Area.Stats.GOOD_MOBS.ordinal()]++; else
+				 * if(CMLib.flags().isEvil(mob))
+				 * statData[Area.Stats.EVIL_MOBS.ordinal()]++; }
+				 * if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL)) {
+				 * if(CMLib.flags().isLawful(mob))
+				 * statData[Area.Stats.LAWFUL_MOBS.ordinal()]++; else
+				 * if(CMLib.flags().isChaotic(mob))
+				 * statData[Area.Stats.CHAOTIC_MOBS.ordinal()]++; }
+				 * if(mob.fetchEffect("Prop_ShortEffects")!=null)
+				 * statData[Area.Stats.BOSS_MOBS.ordinal()]++;
+				 * if(" Humanoid Elf Dwarf Halfling HalfElf ".indexOf(" "+mob.
+				 * charStats().getMyRace().racialCategory()+" ")>=0)
+				 * statData[Area.Stats.HUMANOIDS.ordinal()]++;
+				 */
 			}
-			/*
-			 * if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD)) {
-			 * if(CMLib.flags().isGood(mob))
-			 * statData[Area.Stats.GOOD_MOBS.ordinal()]++; else
-			 * if(CMLib.flags().isEvil(mob))
-			 * statData[Area.Stats.EVIL_MOBS.ordinal()]++; }
-			 * if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL)) {
-			 * if(CMLib.flags().isLawful(mob))
-			 * statData[Area.Stats.LAWFUL_MOBS.ordinal()]++; else
-			 * if(CMLib.flags().isChaotic(mob))
-			 * statData[Area.Stats.CHAOTIC_MOBS.ordinal()]++; }
-			 * if(mob.fetchEffect("Prop_ShortEffects")!=null)
-			 * statData[Area.Stats.BOSS_MOBS.ordinal()]++;
-			 * if(" Humanoid Elf Dwarf Halfling HalfElf ".indexOf(" "+mob.
-			 * charStats().getMyRace().racialCategory()+" ")>=0)
-			 * statData[Area.Stats.HUMANOIDS.ordinal()]++;
-			 */
 		}
+	}
+
+	protected Map<String,int[]> buildAreaPiety()
+	{
+		getAreaIStats();
+		final Map<String,int[]> piety= new SHashtable<String,int[]>();
+		for (final Enumeration<Room> r = getProperMap(); r.hasMoreElements();)
+		{
+			final Room R = r.nextElement();
+			for (int i = 0; i < R.numInhabitants(); i++)
+			{
+				final MOB mob=R.fetchInhabitant(i);
+				if ((mob != null)
+				&& mob.isMonster())
+				{
+					final String deityName=mob.charStats().getWorshipCharID().toUpperCase();
+					if(deityName.length()>0)
+					{
+						if(!piety.containsKey(deityName))
+							piety.put(deityName, new int[1]);
+						piety.get(deityName)[0]++;
+					}
+				}
+			}
+		}
+		return piety;
 	}
 
 	protected int[] buildAreaIStats()
@@ -1700,6 +1731,7 @@ public class StdArea implements Area
 		statData[Area.Stats.TOTAL_LEVELS.ordinal()] = 0;
 		statData[Area.Stats.TOTAL_INTELLIGENT_LEVELS.ordinal()] = 0;
 		statData[Area.Stats.VISITABLE_ROOMS.ordinal()] = getProperRoomnumbers().roomCountAllAreas();
+		Resources.removeResource("PIETY_"+Name().toUpperCase());
 		final long[] totalAlignments = new long[] { 0 };
 		for (final Enumeration<Room> r = getProperMap(); r.hasMoreElements();)
 		{
@@ -2374,6 +2406,34 @@ public class StdArea implements Area
 	public Enumeration<String> subOps()
 	{
 		return subOps.elements();
+	}
+
+	protected Map<String,int[]> getPiety()
+	{
+		if (!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+			return emptyPiety;
+		@SuppressWarnings("unchecked")
+		Map<String,int[]> piety=(Map<String,int[]>)Resources.getResource("PIETY_"+Name().toUpperCase());
+		if(piety == null)
+		{
+			piety = buildAreaPiety();
+			Resources.submitResource("PIETY_"+Name().toUpperCase(), piety);
+		}
+		return piety;
+	}
+
+	@Override
+	public int getPiety(final String deityName)
+	{
+		if((deityName!=null)
+		&&(deityName.length()>0))
+		{
+			final Map<String,int[]> piety=getPiety();
+			final int[] pietyNum=piety.get(deityName.toUpperCase());
+			if(pietyNum != null)
+				return pietyNum[0];
+		}
+		return 0;
 	}
 
 	public SLinkedList<Area> loadAreas(final Collection<String> loadableSet)

@@ -132,7 +132,7 @@ public interface Deity extends MOB
 		REBUKE,			/* sent when a deity rebukes a worshipper */
 		DISAPPOINTED	/* sent when a deity is disappointed in a worshipper */
 	}
-	
+
 	/**
 	 * The definition of the key words in the ritual definitions.
 	 * Most of these require a parameter of one sort or another,
@@ -847,35 +847,4 @@ public interface Deity extends MOB
 	 * @return a description of the power up ritual for clerics
 	 */
 	public String getClericPowerupDesc();
-
-	/**
-	 * Returns the number of registered followers of this deity
-	 * deity in the given area name.
-	 * @param areaName the area to get the piety of
-	 * @return the piety of the area
-	 */
-	public int getAreaPiety(final String areaName);
-
-	/**
-	 * Register a particular room as infused to this deity.
-	 * @see Deity#deregisterHolyPlace(Places)
-	 * @see Deity#holyPlaces()
-	 * @param newOne the new holy place
-	 */
-	public void registerHolyPlace(final Places newOne);
-	/**
-	 * De-register a particular room that was probably infused
-	 * to this deity.
-	 * @see Deity#registerHolyPlace(Places)
-	 * @param oldOne the old holy place for this deity
-	 */
-	public void deregisterHolyPlace(final Places newOne);
-	
-	/**
-	 * Enumerate the holy places for this deity.
-	 * @see Deity#registerHolyPlace(Places)
-	 * @see Deity#deregisterHolyPlace(Places)
-	 * @return the holy places for this deity.
-	 */
-	public Enumeration<Places> holyPlaces();
 }

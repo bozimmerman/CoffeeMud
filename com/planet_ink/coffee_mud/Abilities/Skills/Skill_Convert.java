@@ -111,8 +111,15 @@ public class Skill_Convert extends StdSkill
 			if(text().length()>0)
 			{
 				mob.tell(L("You start to have doubts about @x1.",text()));
-				if(mob.baseCharStats().getWorshipCharID().length()==0)
-					CMLib.utensils().msgDeity(mob, text(), CMMsg.MASK_ALWAYS|CMMsg.MSG_REBUKE, null);
+				if(mob.isMonster())
+				{
+					mob.baseCharStats().setWorshipCharID("");
+					mob.charStats().setWorshipCharID("");
+					final Room startRoom=mob.getStartRoom();
+					final Area startArea=(startRoom==null)?null:startRoom.getArea();
+					if(startArea!=null)
+						Resources.removeResource("PIETY_"+startArea.Name().toUpperCase());
+				}
 			}
 		}
 
@@ -364,7 +371,13 @@ public class Skill_Convert extends StdSkill
 						CMLib.leveler().postExperience(mob,null,null,200,false);
 				}
 				if(target.isMonster())
+				{
 					beneficialAffect(mob,target,asLevel,(int)(TimeManager.MILI_HOUR/CMProps.getTickMillis()));
+					final Room startRoom=target.getStartRoom();
+					final Area startArea=(startRoom==null)?null:startRoom.getArea();
+					if(startArea!=null)
+						Resources.removeResource("PIETY_"+startArea.Name().toUpperCase());
+				}
 
 			}
 		}

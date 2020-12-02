@@ -74,15 +74,12 @@ public class StdDeity extends StdMOB implements Deity
 	protected Map<String, Long>		trigServiceTimes	= new SHashtable<String, Long>();
 	protected List<WorshipService>	services			= new SVector<WorshipService>();
 	protected List<MOB>				waitingFor			= new SLinkedList<MOB>();
-	protected Set<Places>			holyPlaces			= new TreeSet<Places>(Places.placeComparator);
 
 	protected Set<Integer>			neverTriggers		= new XHashSet<Integer>(new Integer[] {
 		Integer.valueOf(CMMsg.TYP_ENTER),
 		Integer.valueOf(CMMsg.TYP_LEAVE),
 		Integer.valueOf(CMMsg.TYP_LOOK)
 	});
-
-	protected final Map<String,int[]> areaPiety	= new TreeMap<String,int[]>();
 
 	public StdDeity()
 	{
@@ -1181,15 +1178,6 @@ public class StdDeity extends StdMOB implements Deity
 				{
 					msg.source().baseCharStats().setWorshipCharID(name());
 					msg.source().recoverCharStats();
-					final Room startRoom = msg.source().getStartRoom();
-					final Area startArea = (startRoom!=null)?startRoom.getArea():null;
-					if((startArea != null)
-					&&(!CMath.bset(startArea.flags(), Area.FLAG_INSTANCE_CHILD)))
-					{
-						if(!areaPiety.containsKey(startArea.Name()))
-							areaPiety.put(startArea.Name(), new int[1]);
-						areaPiety.get(startArea.Name())[0]++;
-					}
 				}
 				break;
 			case CMMsg.TYP_REBUKE:
@@ -1200,13 +1188,6 @@ public class StdDeity extends StdMOB implements Deity
 					{
 						msg.source().baseCharStats().setWorshipCharID("");
 						msg.source().recoverCharStats();
-						final Room startRoom = msg.source().getStartRoom();
-						final Area startArea = (startRoom!=null)?startRoom.getArea():null;
-						if((startArea != null)
-						&&(!CMath.bset(startArea.flags(), Area.FLAG_INSTANCE_CHILD))
-						&&(areaPiety.containsKey(startArea.Name()))
-						&&(areaPiety.get(startArea.Name())[0]>0))
-							areaPiety.get(startArea.Name())[0]--;
 					}
 					removeBlessings(msg.source());
 					if(msg.source().charStats().getStat(CharStats.STAT_FAITH)>=100)
@@ -1281,22 +1262,6 @@ public class StdDeity extends StdMOB implements Deity
 				||((msg.source().charStats().getStat(CharStats.STAT_FAITH)>=1000)
 					&&(Name().equals(msg.source().charStats().getWorshipCharID())))))
 			{
-				if((msg.sourceMinor()==CMMsg.TYP_DEATH)
-				&&(msg.source().isMonster())
-				&&(msg.source().baseCharStats().getWorshipCharID().equals(Name()))
-				&&(msg.source().basePhyStats().rejuv()>0)
-				&&(msg.source().basePhyStats().rejuv() != PhyStats.NO_REJUV)
-				&&(msg.source().getStartRoom()!=null))
-				{
-					final Room startRoom = msg.source().getStartRoom();
-					final Area startArea = (startRoom!=null)?startRoom.getArea():null;
-					if((startArea != null)
-					&&(!CMath.bset(startArea.flags(), Area.FLAG_INSTANCE_CHILD))
-					&&(areaPiety.containsKey(startArea.Name()))
-					&&(areaPiety.get(startArea.Name())[0]>0))
-						areaPiety.get(startArea.Name())[0]--;
-				}
-
 				if(numBlessings()>0)
 				{
 					List<DeityTrigger> triggsV=worshipTriggers;
@@ -1420,49 +1385,6 @@ public class StdDeity extends StdMOB implements Deity
 				}
 			}
 		}
-	}
-
-	@Override
-	public void registerHolyPlace(final Places newOne)
-	{
-		if(newOne != null)
-		{
-			synchronized(holyPlaces)
-			{
-				if (!holyPlaces.contains(newOne))
-					holyPlaces.add(newOne);
-			}
-		}
-	}
-
-	@Override
-	public void deregisterHolyPlace(final Places newOne)
-	{
-		if(newOne != null)
-		{
-			synchronized(holyPlaces)
-			{
-				holyPlaces.remove(newOne);
-			}
-		}
-	}
-
-	@Override
-	public Enumeration<Places> holyPlaces()
-	{
-		final ArrayList<Places> placesCopy=new ArrayList<Places>(holyPlaces.size());
-		synchronized(holyPlaces)
-		{
-			for(final Iterator<Places> i=holyPlaces.iterator();i.hasNext();)
-			{
-				final Places place = i.next();
-				if(place.amDestroyed())
-					i.remove();
-				else
-					placesCopy.add(place);
-			}
-		}
-		return new IteratorEnumeration<Places>(placesCopy.iterator());
 	}
 
 	protected void startServiceIfNecessary(final MOB mob, final Room room)
@@ -2512,11 +2434,4 @@ public class StdDeity extends StdMOB implements Deity
 		return "";
 	}
 
-	@Override
-	public int getAreaPiety(final String areaName)
-	{
-		if(areaPiety.containsKey(areaName))
-			return areaPiety.get(areaName)[0];
-		return 0;
-	}
 }

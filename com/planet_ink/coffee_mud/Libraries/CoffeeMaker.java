@@ -3548,7 +3548,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					for(final Enumeration<Deity> d=CMLib.map().deities();d.hasMoreElements();)
 					{
 						final Deity D=d.nextElement();
-						final int piety=D.getAreaPiety(A.Name());
+						final int piety=A.getPiety(D.Name());
 						if((piety>0)&&(piety>popThresh))
 							list.add(D, Integer.valueOf(piety));
 					}

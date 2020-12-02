@@ -496,6 +496,14 @@ public interface Area extends Economics, PhysicalAgent, Places
 	public int[] getAreaIStats();
 
 	/**
+	 * Returns the number of registered followers of the given
+	 * deity are in the given area name.
+	 * @param deityName the deity to get the piety of
+	 * @return the piety of the area for that deity
+	 */
+	public int getPiety(final String deityName);
+
+	/**
 	 * Returns a fake player-level, to be used instead of median or average
 	 * actual mob level, for cases where you want an area to reflect its
 	 * higher level mobs over low level trash.  Returns 0 if none is applied

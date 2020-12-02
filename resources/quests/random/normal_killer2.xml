@@ -48,7 +48,7 @@ settable vars:
 	<KILLABLES_AREAS>"$target_area_name"</KILLABLES_AREAS>
 	<KILLABLES_ROOMS>ALL</KILLABLES_ROOMS>
 	<KILLABLES_MOBS>${SELECT: ANY\. from $target}</KILLABLES_MOBS>
-	<KILLABLES_CHANCE>$[3+($num_targets / $target_area_size * 100) * 2]</KILLABLES_CHANCE>
+	<KILLABLES_CHANCE>$[(5+($num_targets / $target_area_size * 100)) * 2]</KILLABLES_CHANCE>
 	<NUM_KILLABLES>$num_targets</NUM_KILLABLES>
 	<KILLABLES_ATTACK>$will_attack_code</KILLABLES_ATTACK>
 	<QUEST_POINT>$quest_point_awarded</QUEST_POINT>
