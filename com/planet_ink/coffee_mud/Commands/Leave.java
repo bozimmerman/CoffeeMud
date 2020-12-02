@@ -52,10 +52,55 @@ public class Leave extends StdCommand
 		final String cmdWord = commands.size()> 0 ? commands.get(0): "";
 		final Vector<String> origCmds=new XVector<String>(commands);
 		commands.remove(0);
-		if(mob.riding()==null)
+		final Rideable riding=mob.riding();
+		if(riding==null)
 		{
-			if(cmdWord.startsWith("L"))
+			if(cmdWord.toUpperCase().startsWith("L"))
 			{
+				if(commands.size()>0)
+				{
+					final List<String> subCommands=new XVector<String>(commands);
+					final CMObject O = CMLib.english().findCommand(mob, commands);
+					if((O instanceof Command)
+					&&(CMLib.directions().getDirectionCode(((Command)O).name())>=0))
+						return ((Command)O).execute(mob, subCommands, metaFlags);
+				}
+				else
+				{
+					final Room R=mob.location();
+					if(R!=null)
+					{
+						int dirToGo=-1;
+						for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+						{
+							final Room nR=R.getRoomInDir(d);
+							final Exit nE=R.getExitInDir(d);
+							if((nR!=null)
+							&&(nE!=null)
+							&&(CMLib.flags().canBeSeenBy(nE, mob))
+							&&(nE.isOpen())
+							&&((nR.getGridParent() == null) || (nR.getGridParent().roomID().length() > 0)))
+							{
+								if(dirToGo<0)
+									dirToGo=d;
+								else
+								{
+									dirToGo=-1;
+									break;
+								}
+							}
+						}
+						if(dirToGo>=0)
+						{
+							final Command C=CMClass.getCommand(CMLib.directions().getDirectionName(dirToGo));
+							if(C!=null)
+							{
+								commands.add(C.getAccessWords()[0]);
+								return C.execute(mob, commands, metaFlags);
+							}
+						}
+					}
+				}
 				CMLib.commands().postCommandFail(mob,origCmds,L("Which way? Try EXITS."));
 				return false;
 			}
@@ -68,7 +113,7 @@ public class Leave extends StdCommand
 		final Room R=mob.location();
 		if(R!=null)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,mob.riding(),null,CMMsg.MSG_DISMOUNT,L("<S-NAME> @x1 <T-NAMESELF>.",mob.riding().dismountString(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,riding,null,CMMsg.MSG_DISMOUNT,L("<S-NAME> @x1 <T-NAMESELF>.",riding.dismountString(mob)));
 			if(R.okMessage(mob,msg))
 				R.send(mob,msg);
 		}
