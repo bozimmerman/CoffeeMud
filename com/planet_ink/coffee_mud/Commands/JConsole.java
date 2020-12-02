@@ -255,6 +255,12 @@ public class JConsole extends StdCommand
 									return (size()>0)?get(0).first:"";
 								}
 
+								@Override
+								public String[] getTriggerBits()
+								{
+									return CMParms.getCleanBits(getTriggerLine());
+								}
+
 							};
 							DV.add(new ScriptLn("JS_PROG",null,null));
 							DV.add(new ScriptLn(strb.toString(),null,null));

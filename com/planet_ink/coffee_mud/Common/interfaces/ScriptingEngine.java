@@ -491,6 +491,12 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		 * @return the trigger line
 		 */
 		public abstract String getTriggerLine();
+
+		/**
+		 * The cleaned bits of the trigger, uppercased.
+		 * @return the cleaned bits of the trigger, uppercased.
+		 */
+		public abstract String[] getTriggerBits();
 	}
 
 	/** The number of local variables associated with an execution of a script */

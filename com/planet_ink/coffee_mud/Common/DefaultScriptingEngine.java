@@ -123,6 +123,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 
 		private Integer triggerCode = null;
+		private String	triggerLine = null;
+		private String[]triggerBits = null;
 
 		@Override
 		public int getTriggerCode()
@@ -160,11 +162,27 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		@Override
 		public String getTriggerLine()
 		{
+			if(triggerLine != null)
+				return triggerLine;
 			if(triggerCode == null)
 				getTriggerCode();
-			if(size()>0)
-				return get(0).first;
-			return "";
+			if(triggerLine == null)
+			{
+				if(size()>0)
+					triggerLine = get(0).first.toUpperCase().trim();
+				else
+					triggerLine="";
+			}
+			return triggerLine;
+		}
+
+		@Override
+		public String[] getTriggerBits()
+		{
+			if(triggerBits != null)
+				return triggerBits;
+			triggerBits=CMParms.getCleanBits(getTriggerLine());
+			return triggerBits;
 		}
 
 		@Override
@@ -3739,47 +3757,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 					String found=null;
-					boolean validFunc=false;
-					final List<SubScript> scripts=getScripts(scripted);
-					String trigger=null;
-					String[] ttrigger=null;
-					for(int v=0;v<scripts.size();v++)
+					final SubScript foundScript = findFunc(scripted, arg1);
+					if(foundScript != null)
 					{
-						final SubScript script2=scripts.get(v);
-						if(script2.size()<1)
-							continue;
-						trigger=script2.getTriggerLine();
-						ttrigger=script2.getTriggerArgs();
-						if(script2.getTriggerCode()==17)
-						{
-							final String fnamed=
-								(ttrigger!=null)
-								?ttrigger[1]
-								:CMParms.getCleanBit(trigger,1);
-							if(fnamed.equalsIgnoreCase(arg1))
-							{
-								validFunc=true;
-								found=
-								execute(scripted,
-										source,
-										target,
-										monster,
-										primaryItem,
-										secondaryItem,
-										script2,
-										varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg2),
-										tmp);
-								if(found==null)
-									found="";
-								break;
-							}
-						}
-					}
-					if(!validFunc)
-						logError(scripted,"CALLFUNC","Unknown","Function: "+arg1);
-					else
-					if(found!=null)
-					{
+						final String varg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg2);
+						found= execute(scripted, source, target, monster, primaryItem, secondaryItem, foundScript, varg2,tmp);
+						if(found==null)
+							found="";
 						final String resp=found.trim().toLowerCase();
 						if(resp.equals("cancel"))
 							returnable=false;
@@ -3787,7 +3771,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							returnable=resp.length()!=0;
 					}
 					else
-						returnable=false;
+					{
+						logError(scripted,"CALLFUNC","Unknown","Function: "+arg1);
+						returnable = false;
+					}
 					break;
 				}
 				case 14: // affected
@@ -6723,42 +6710,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(funcParms,0));
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(funcParms,0));
-				String found=null;
-				boolean validFunc=false;
-				final List<SubScript> scripts=getScripts(scripted);
-				String trigger=null;
-				for(int v=0;v<scripts.size();v++)
+				final SubScript foundFunc = this.findFunc(scripted, arg1);
+				if(foundFunc != null)
 				{
-					final SubScript script2=scripts.get(v);
-					if(script2.size()<1)
-						continue;
-					trigger=script2.getTriggerLine();
-					if(script2.getTriggerCode()==17)
-					{
-						final String fnamed=CMParms.getCleanBit(trigger,1);
-						if(fnamed.equalsIgnoreCase(arg1))
-						{
-							validFunc=true;
-							found=
-							execute(scripted,
-									source,
-									target,
-									monster,
-									primaryItem,
-									secondaryItem,
-									script2,
-									varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg2),
-									tmp);
-							if(found==null)
-								found="";
-							break;
-						}
-					}
-				}
-				if(!validFunc)
-					logError(scripted,"CALLFUNC","Unknown","Function: "+arg1);
-				else
+					final String varg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg2);
+					String found= execute(scripted, source, target, monster, primaryItem, secondaryItem, foundFunc, varg2, tmp);
+					if(found==null)
+						found="";
 					results.append(found);
+				}
+				else
+					logError(scripted,"CALLFUNC","Unknown","Function: "+arg1);
 				break;
 			}
 			case 61: // strin
@@ -8431,25 +8393,27 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		for(int v=0;v<scripts.size();v++)
 		{
 			final SubScript script2=scripts.get(v);
-			if(script2.size()<1)
-				continue;
 			if(script2.getTriggerCode()==17) // function_prog
 			{
-				final String trigger=script2.getTriggerLine();
-				final String fnamed=CMParms.getCleanBit(trigger,1);
-				if(fnamed.equals(named))
+				final String[] triggerBits=script2.getTriggerBits();
+				if((triggerBits.length>1)
+				&&(triggerBits[1].equals(named)))
 					return script2;
 			}
 		}
+		final String namedProg=named+"_PROG";
 		for(int v=0;v<scripts.size();v++)
 		{
 			final SubScript script2=scripts.get(v);
-			if(script2.size()<1)
-				continue;
-			//TODO: what if it's FUNCTION_PROG BLAH_PROG somethingsomething?  is that even legal?
-			final String trigger=script2.getTriggerLine();
-			if(trigger.equals(named)||trigger.equals(named+"_PROG"))
-				return script2;
+			if(script2.getTriggerCode()!=17) // function_prog
+			{
+				final String[] trigger=script2.getTriggerBits();
+				if(trigger.length>0)
+				{
+					if(trigger[0].equals(named)||trigger[0].equals(namedProg))
+						return script2;
+				}
+			}
 		}
 		return null;
 	}

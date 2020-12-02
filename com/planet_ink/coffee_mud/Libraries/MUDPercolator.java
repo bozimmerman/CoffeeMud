@@ -3028,16 +3028,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				{
 					final String id=(piece.getParmValue("ID")!=null)?piece.getParmValue("ID"):"null";
 					Log.errOut("Stack overflow trying to filter "+valPiece.value()+" on "+piece.tag()+" id '"+id+"'");
-					try
-					{
-						value=strFilter(E,ignoreStats,defPrefix,valPiece.value(),valPiece, defined);
-					}
-					catch(final java.lang.StackOverflowError e2)
-					{
-						final String id2=(piece.getParmValue("ID")!=null)?piece.getParmValue("ID"):"null";
-						Log.errOut("Stack overflow trying to filter "+valPiece.value()+" on "+piece.tag()+" id '"+id2+"'");
-						throw new CMException("Ended because of a stack overflow.  See the log.");
-					}
 					throw new CMException("Ended because of a stack overflow.  See the log.");
 				}
 			}

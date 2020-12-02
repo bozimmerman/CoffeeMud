@@ -45,13 +45,13 @@ public class CMParms
 	}
 
 	public static boolean[] PUNCTUATION_TABLE=null;
-	private final static Set<Character> badLastCs=new XHashSet<Character>(new Character[] 
+	private final static Set<Character> badLastCs=new XHashSet<Character>(new Character[]
 	{
 		Character.valueOf('+'),
 		Character.valueOf('-'),
 		Character.valueOf('=')
 	});
-	private final static Map<String[],Triad<Map<Character,List<String>>,Map<String,String>,Map<String,Map<String,String>>>> parsedLooses = 
+	private final static Map<String[],Triad<Map<Character,List<String>>,Map<String,String>,Map<String,Map<String,String>>>> parsedLooses =
 			new LimitedTreeMap<String[],Triad<Map<Character,List<String>>,Map<String,String>,Map<String,Map<String,String>>>>(30000,500,false);
 
 	/**
@@ -1059,6 +1059,64 @@ public class CMParms
 		}
 	}
 
+
+	/**
+	 * Return an entire line of MOBPROG bits
+	 * @param s string to parse
+	 * @return the cleaned bits
+	 */
+	public final static String[] getCleanBits(final String s)
+	{
+		int start=-1;
+		char q=' ';
+		final char[] cs=s.toCharArray();
+		final List<String> bits=new ArrayList<String>();
+		for(int c=0;c<cs.length;c++)
+			switch(start)
+			{
+			case -1:
+				switch(cs[c])
+				{
+				case ' ':
+				case '\t':
+				case '\n':
+				case '\r':
+					break;
+				case '\'':
+				case '`':
+					q=cs[c];
+					start=c;
+					break;
+				default:
+					q=' ';
+					start=c;
+					break;
+				}
+				break;
+			default:
+				if((cs[c]==q)||(q==' ' && cs[c]=='\t'))
+				{
+					if((q!=' ')
+					&&(c<cs.length-1)
+					&&(!Character.isWhitespace(cs[c+1])))
+						break;
+					if(q==' ')
+						bits.add(new String(cs,start,c-start));
+					else
+						bits.add(new String(cs,start,c-start+1));
+					start=-1;
+				}
+				break;
+			}
+		if(start>=0)
+		{
+			final String finalBit=new String(cs,start,cs.length-start);
+			if(finalBit.trim().length()>0)
+				bits.add(finalBit.trim());
+		}
+		return bits.toArray(new String[0]);
+	}
+
 	private static boolean[] PUNCTUATION_TABLE()
 	{
 		if(PUNCTUATION_TABLE==null)
@@ -1490,7 +1548,7 @@ public class CMParms
 	 */
 	public final static Map<String,String> parseLooseParms(final String str, final String[] parmList, final List<String> errors)
 	{
-		Hashtable<String,String> h=new Hashtable<String,String>();
+		final Hashtable<String,String> h=new Hashtable<String,String>();
 		if((str==null)||(str.length()==0))
 			return h;
 		Character C;
@@ -1509,7 +1567,7 @@ public class CMParms
 		{
 			chkMap=new HashMap<Character,List<String>>();
 			uMap=new TreeMap<String,String>();
-			LimitedTreeMap<String,Map<String,String>> subCache=new LimitedTreeMap<String,Map<String,String>>(30000,500,false);
+			final LimitedTreeMap<String,Map<String,String>> subCache=new LimitedTreeMap<String,Map<String,String>>(30000,500,false);
 			cache=new Triad<Map<Character,List<String>>,Map<String,String>,Map<String,Map<String,String>>>(chkMap,uMap,subCache);
 			parsedLooses.put(parmList, cache);
 			for (final String element : parmList)
@@ -1541,14 +1599,14 @@ public class CMParms
 					continue;
 				while((startParm>0)&&Character.isLetterOrDigit(str.charAt(startParm-1)))
 					startParm--;
-				
+
 				String possParm=str.substring(startParm,x).toUpperCase().trim();
 				C=Character.valueOf(possParm.charAt(0));
 				if((!Character.isLetter(C.charValue()))
 				||(!chkMap.containsKey(C))
 				||(badLastCs.contains(C)))
 					continue;
-				
+
 				boolean found=uMap.containsKey(possParm);
 				if(!found)
 				{
