@@ -4386,8 +4386,22 @@ public class ListCmd extends StdCommand
 					for(final Enumeration<Deity> d=CMLib.map().deities();d.hasMoreElements();)
 					{
 						final Deity D=d.nextElement();
-						if(A.getPiety(D.Name())>0)
-							piety.append(D.Name()+"("+A.getPiety(D.Name())+") ");
+						int holyMarkers = 0;
+						for(final Enumeration<Places> p=CMLib.map().holyPlaces(D.Name());p.hasMoreElements();)
+						{
+							final Places P=p.nextElement();
+							if((A==P)||((P instanceof Room)&&(((Room)P).getArea()==A)))
+								holyMarkers++;
+						}
+						final int pietyNum=A.getPiety(D.Name());
+						if((holyMarkers>0)&&(pietyNum>0))
+							piety.append(D.Name()+"("+pietyNum+"+"+holyMarkers+") ");
+						else
+						if(pietyNum>0)
+							piety.append(D.Name()+"("+pietyNum+") ");
+						else
+						if(holyMarkers>0)
+							piety.append(D.Name()+"(+"+holyMarkers+") ");
 					}
 					return piety.toString();
 				}
