@@ -3076,19 +3076,10 @@ Scripts using the QUESTMOB function.</p>
 <p><span style="color: rgb(51, 102, 102);">SET
 PCMOBGROUP</span> <span style="color: rgb(102, 51, 102);">(RESELECT)
 ([MOB NAME])</span>
-- will designate a set of players with the given name. If the name ends
-with MASK=..., then a mask as described by the help entry for
-ZAPPERMASKS will apply in addition to the name
-mask entered before the MASK= string. Use a name of ALL to select all
-appropriate players.&nbsp;The&nbsp;players chosen will be selected from those
-in
-the designated ROOMGROUP (if one is designated), AREA (if one is
-designated) or the world. The&nbsp;players must exist somewhere in the map for
-this command to work. Normally a player will not be placed in the mobgroup
-if the player has been previously set. The
-RESELECT flag is an optional first flag which, if specified, designates
-that&nbsp;players may be placed in the mobgroup even if previously set, so long
-as the RESELECT flag was also used in the previous applicable SET command.&nbsp; &nbsp;Playes designated this way are
+-&nbsp;serves the same purpose as the above command of the similar&nbsp;name, but
+the argument is an object specifier which is allowed to be applied to players. See Object Specifiers below this
+command listing. If the object resolves to a group of objects, a random
+one from the group will be chosen.&nbsp; &nbsp;Players designated this way are
 available in
 Scripts using the QUESTMOB function.</p>
 <span style="color: rgb(51, 102, 102);"></span><p><span style="color: rgb(51, 102, 102);">SET</span>
@@ -3127,8 +3118,14 @@ MOB</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - serves the same purpose as the above command of the same name, but
 the argument is an object specifier. See Object Specifiers below this
 command listing. If the object resolves to a group of objects, a random
-one from the group will be chosen.</p>
+one from the group will be chosen. &nbsp;This can not be applied to players.</p>
 <p><span style="color: rgb(51, 102, 102);">SET
+PCMOB</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+- serves the same purpose as the above command of the similar&nbsp;name, but
+the argument is an object specifier which is allowed to be applied to players. See Object Specifiers below this
+command listing. If the object resolves to a group of objects, a random
+one from the group will be chosen.</p>
+<span style="color: rgb(51, 102, 102);"></span><p><span style="color: rgb(51, 102, 102);">SET
 MOBTYPE</span> <span style="color: rgb(102, 51, 102);">(RESELECT)
 ([CLASS])</span>
 - will set the current mob to one with the given class name. Ths mob
@@ -3329,7 +3326,18 @@ SET MOBTYPE commands). This mob will be made into a follower of the mob
 most recently designated using the SET MOB, SET MOBTYPE, or LOAD MOB
 command. This command does not change the current mob designation, nor
 does it change the location of either mob.</p>
-<p><span style="color: rgb(51, 102, 102);">TAKE
+<p><span style="color: rgb(51, 102, 102);">GIVE SCRIPT</span>&nbsp;<span style="color: rgb(102, 51, 102);">(SAVABLE/GLOBAL/INDIVIDUAL/PLAYEROK) [SCRIPT]</span>
+- This command will give
+the currently designated mob, item, room, area, or mobgroup (designated
+using the set or load commands), itemgroup, or roomgroup the mobprog script. &nbsp;The
+script can be a semi-colon delimited script or a LOAD= command, as per
+the Scriptable command. &nbsp;The arguments before the script can be
+used to set the variable scope (GLOBAL/INDIVIDUAL), or whether the
+script persists when the object is saved (SAVABLE), or whether players
+should be treated normally (PLAYEROK). &nbsp;Without PLAYEROK, this
+command will attempt to call CAN_ACCEPT and DO_ACCEPT mobprog functions
+on the script instead.</p>
+<span style="color: rgb(51, 102, 102);"></span><p><span style="color: rgb(51, 102, 102);">TAKE
 BEHAVIOR</span> <span style="color: rgb(102, 51, 102);">[BEHAVIOR
 ID]</span>-
 The behavior ID must be a valid behavior class name. This command will

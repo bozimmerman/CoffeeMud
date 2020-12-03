@@ -2056,6 +2056,104 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						}
 					}
 					else
+					if(cmd.equals("PCMOB"))
+					{
+						boolean reselect=false;
+						if((p.size()>2)&&(p.elementAt(2).equalsIgnoreCase("reselect")))
+						{
+							p.removeElementAt(2);
+							reselect=true;
+						}
+						if(p.size()<3)
+						{
+							q.mob=null;
+							continue;
+						}
+						String mobName=CMParms.combine(p,2).toUpperCase();
+						final String maskStr=CMLib.quests().breakOutMaskString(s,p);
+						final MaskingLibrary.CompiledZMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
+						if(mask!=null)
+							mobName=CMParms.combine(p,2).toUpperCase();
+						try
+						{
+							q.mob=(MOB)getObjectIfSpecified(p,args,2,0);
+						}
+						catch(final CMException ex)
+						{
+							q.mob=null;
+							List<MOB> choices=null;
+							final List<MOB> choices0=new Vector<MOB>();
+							final List<MOB> choices1=new Vector<MOB>();
+							final List<MOB> choices2=new Vector<MOB>();
+							final List<MOB> choices3=new Vector<MOB>();
+							if(mobName.length()==0)
+								mobName="ANY";
+							if(q.mobGroup!=null)
+							{
+								for(final MOB M2 : q.mobGroup)
+								{
+									if((M2!=null)&&(M2.isPlayer()))
+									{
+										if(!CMLib.masking().maskCheck(mask,M2,true))
+											continue;
+										choices=sortSelect(M2,mobName,choices,choices0,choices1,choices2,choices3);
+									}
+								}
+							}
+							else
+							{
+								try
+								{
+									for(final Enumeration<Room> e=getAppropriateRoomSet(q);e.hasMoreElements();)
+									{
+										final Room R2=e.nextElement();
+										if(R2!=null)
+										{
+											for(int i=0;i<R2.numInhabitants();i++)
+											{
+												final MOB M2=R2.fetchInhabitant(i);
+												if((M2!=null)&&(M2.isPlayer()))
+												{
+													if(!CMLib.masking().maskCheck(mask,M2,true))
+														continue;
+													choices=sortSelect(M2,mobName,choices,choices0,choices1,choices2,choices3);
+												}
+											}
+										}
+									}
+								}
+								catch(final NoSuchElementException e)
+								{
+								}
+							}
+							this.filterOutThoseInUse(choices, p.toString(), q, isQuiet, reselect);
+							if((choices!=null)&&(choices.size()>0))
+								q.mob=choices.get(CMLib.dice().roll(1,choices.size(),-1));
+						}
+						if(q.mob==null)
+						{
+							if(optional)
+								continue;
+							errorOccurred(q,isQuiet,"Quest '"+name()+"', !mob '"+mobName+"'.");
+							break;
+						}
+						if(reselect)
+							q.reselectable.add(q.mob);
+						questifyScriptableBehavs(q.mob);  // just wierd
+						if(q.room!=null)
+							q.room.bringMobHere(q.mob,false);
+						else
+							q.room=q.mob.location();
+						if(q.room!=null)
+						{
+							q.area=q.room.getArea();
+							q.envObject=q.mob;
+							runtimeRegisterObject(q.mob);
+							q.room.recoverRoomStats();
+							q.room.showHappens(CMMsg.MSG_OK_ACTION,null);
+						}
+					}
+					else
 					if(cmd.equals("ITEM"))
 					{
 						boolean reselect=false;
@@ -3748,6 +3846,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						}
 						boolean proceed=true;
 						boolean savable=false;
+						boolean playerok=false;
 						String word=null;
 						String scope=CMStrings.replaceAll(name()," ","_").toUpperCase().trim();
 						while(proceed&&(p.size()>2))
@@ -3769,6 +3868,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							if(word.equalsIgnoreCase("INDIVIDUAL")||word.equals("*"))
 							{
 								scope="*";
+								proceed=true;
+							}
+							else
+							if(word.equalsIgnoreCase("PLAYEROK"))
+							{
+								playerok=true;
 								proceed=true;
 							}
 							if(proceed)
@@ -3800,6 +3905,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 								S.setScript(val);
 								if((E2 instanceof MOB)
 								&&(((MOB)E2).isPlayer())
+								&&(!playerok)
 								&&(S.isFunc("DO_ACCEPT"))
 								&&(S.isFunc("CAN_ACCEPT")))
 								{

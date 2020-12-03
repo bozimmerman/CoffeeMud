@@ -119,7 +119,7 @@ public class Prayer_SacredImbuingQuest extends Prayer
 		super.unInvoke();
 	}
 
-	protected final LimitedTreeSet<String> lastUsed = new LimitedTreeSet<String>(TimeManager.MILI_DAY, 100, true);
+	protected final static LimitedTreeSet<String> lastUsed = new LimitedTreeSet<String>(TimeManager.MILI_DAY, 1000, true);
 
 
 	protected Quest quest1 = null;
@@ -185,9 +185,9 @@ public class Prayer_SacredImbuingQuest extends Prayer
 					{
 						int experienceToLose=1000;
 						experienceToLose+=(100*CMLib.ableMapper().lowestQualifyingLevel(targetAbility.ID()));
-						experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
+						experienceToLose=getXPCOSTAdjustment(invokerM,experienceToLose);
 						experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
-						invokerM.tell(L("You lose @x1 experience points for the success of the sacred imbuing quest.",""+experienceToLose));
+						mob.tell(L("You lose @x1 experience points for the success of the sacred imbuing quest.",""+experienceToLose));
 						lastUsed.add(mob.Name());
 					}
 				}
@@ -295,6 +295,7 @@ public class Prayer_SacredImbuingQuest extends Prayer
 					definedIDs.put("QUEST_CRITERIA", "-NAME \"+"+targetM.Name()+"\" -NPC");
 				definedIDs.put("DURATION", ""+CMProps.getTicksPerHour());
 				definedIDs.put("EXPIRATION", ""+CMProps.getTicksPerHour());
+				definedIDs.put("MULTIAREA", "YES");
 				final Map<String,Object> preDefined=new XHashtable<String,Object>(definedIDs);
 				CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs, preDefined.keySet());
 				final String idName = "ALL_QUESTS";
@@ -314,7 +315,7 @@ public class Prayer_SacredImbuingQuest extends Prayer
 					Log.errOut(L("Required ids for @x1 were missing: @x2: for @x3",idName,cme.getMessage(),targetM.name()));
 					return null;
 				}
-				final String s=CMLib.percolator().buildQuestScript(piece, definedIDs, mob);
+				String s=CMLib.percolator().buildQuestScript(piece, definedIDs, mob);
 				if(s.length()==0)
 					throw new CMException("Failed to create any sort of quest at all! WTF!!");
 				CMLib.percolator().postProcess(definedIDs);
@@ -322,6 +323,8 @@ public class Prayer_SacredImbuingQuest extends Prayer
 				||(!(definedIDs.get("QUEST_ID") instanceof String)))
 					throw new CMException("Unable to create your quest because a quest_id was not generated");
 				final Quest Q=(Quest)CMClass.getCommon("DefaultQuest");
+				s=CMStrings.replaceFirst(s, "set mob reselect", "set pcmob reselect");
+				s=CMStrings.replaceFirst(s, "give script LOAD=", "give script PLAYEROK LOAD=");
 				Q.setScript(s,true);
 				if((Q.name().trim().length()==0)||(Q.duration()<0))
 					throw new CMException("Unable to create your quest.  Please consult the log.");
@@ -340,6 +343,8 @@ public class Prayer_SacredImbuingQuest extends Prayer
 					}
 				}
 				Q.setCopy(true);
+				final CMMsg msg=CMClass.getMsg(targetM, mob.location(),null, CMMsg.MSG_ENTER, null);
+				mob.location().send(targetM, msg);
 				return Q;
 			}
 			catch(final CMException cme)
