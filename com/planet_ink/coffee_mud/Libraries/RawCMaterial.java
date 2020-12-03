@@ -1268,13 +1268,11 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	public List<Item> getAllFarmables(final int materialType)
 	{
 		final Integer mat=Integer.valueOf(materialType);
-		/*
 		synchronized(farmablesCache)
 		{
 			if(farmablesCache.containsKey(mat))
 				return farmablesCache.get(mat);
 		}
-		*/
 		final List<Item> coll = new ArrayList<Item>();
 		final Collection<Integer> useThese;
 		if(materialType > 0)
