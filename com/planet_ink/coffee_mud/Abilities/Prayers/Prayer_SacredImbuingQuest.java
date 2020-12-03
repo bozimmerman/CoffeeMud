@@ -39,16 +39,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_SacredImbueingQuest extends Prayer
+public class Prayer_SacredImbuingQuest extends Prayer
 {
 
 	@Override
 	public String ID()
 	{
-		return "Prayer_SacredImbueingQuest";
+		return "Prayer_SacredImbuingQuest";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Sacred Imbueing Quest");
+	private final static String	localizedName	= CMLib.lang().L("Sacred Imbuing Quest");
 
 	@Override
 	public String name()
@@ -66,6 +66,12 @@ public class Prayer_SacredImbueingQuest extends Prayer
 	protected int canTargetCode()
 	{
 		return 0;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_ALL;
 	}
 
 	@Override
@@ -97,11 +103,11 @@ public class Prayer_SacredImbueingQuest extends Prayer
 			quest1.enterDormantState();
 			CMLib.quests().delQuest(quest1);
 			if(affected instanceof MOB)
-				((MOB)affected).tell("You have failed the sacred imbueing quest.");
+				((MOB)affected).tell("You have failed the sacred imbuing quest.");
 		}
 		else
 		if(affected instanceof MOB)
-			((MOB)affected).tell("You have failed the sacred imbueing quest.");
+			((MOB)affected).tell("You have failed the sacred imbuing quest.");
 		super.unInvoke();
 	}
 
@@ -162,17 +168,24 @@ public class Prayer_SacredImbueingQuest extends Prayer
 				quest1.stopQuest();
 				quest1.enterDormantState();
 				CMLib.quests().delQuest(quest1);
-				mob.tell("You have successfully completed the sacred imbueing quest.");
+				mob.tell("You have successfully completed the sacred imbuing quest.");
 				final MOB invokerM=invoker();
 				if(invokerM!=null)
 				{
-					final Prayer_SacredImbueingQuest realA=(Prayer_SacredImbueingQuest)invokerM.fetchAbility(ID());
+					final Prayer_SacredImbuingQuest realA=(Prayer_SacredImbuingQuest)invokerM.fetchAbility(ID());
 					if(realA!=null)
+					{
+						int experienceToLose=1000;
+						experienceToLose+=(100*CMLib.ableMapper().lowestQualifyingLevel(targetAbility.ID()));
+						experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
+						experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
+						invokerM.tell(L("You lose @x1 experience points for the success of the sacred imbuing quest.",""+experienceToLose));
 						lastUsed.add(mob.Name());
+					}
 				}
+				this.completeImbuing(mob,targetItem,targetAbility);
 				mob.delEffect(this);
 				this.setAffectedOne(null);
-				this.completeImbueing(mob,targetItem,targetAbility);
 				return tickUninvoke();
 			}
 			else
@@ -185,7 +198,7 @@ public class Prayer_SacredImbueingQuest extends Prayer
 		}
 	}
 
-	public void completeImbueing(final MOB mob, final Item targetI, final Ability imbuePrayerA)
+	public void completeImbuing(final MOB mob, final Item targetI, final Ability imbuePrayerA)
 	{
 		mob.location().show(mob,targetI,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glow(s) with a sacred light!"));
 		targetI.basePhyStats().setDisposition(targetI.basePhyStats().disposition()|PhyStats.IS_BONUS);
@@ -409,7 +422,12 @@ public class Prayer_SacredImbueingQuest extends Prayer
 		final String deityName=mob.charStats().getWorshipCharID();
 		if(deityName.length()==0)
 		{
-			mob.tell(L("You must worship a deity to begin the imbueing.",targetM.Name()));
+			mob.tell(L("You must worship a deity to begin the imbuing.",targetM.Name()));
+			return false;
+		}
+		if(!targetM.charStats().getWorshipCharID().equals(deityName))
+		{
+			mob.tell(L("@x1 must worship also worship @x2 to begin the imbuing.",targetM.Name(),deityName));
 			return false;
 		}
 
@@ -489,10 +507,11 @@ public class Prayer_SacredImbueingQuest extends Prayer
 			return false;
 		}
 
-		int experienceToLose=50;//getXPCost(imbuePrayerA);
+		int experienceToLose=1000;
+		experienceToLose+=(100*CMLib.ableMapper().lowestQualifyingLevel(imbuePrayerA.ID()));
 		if((mob.getExperience()-experienceToLose)<0)
 		{
-			mob.tell(L("You don't have enough experience to use this magic."));
+			mob.tell(L("You don't have enough experience to use this prayer."));
 			return false;
 		}
 
@@ -530,7 +549,7 @@ public class Prayer_SacredImbueingQuest extends Prayer
 				obj.putString("quest1", q1.name());
 				obj.putString("itemname", targetI.Name());
 				obj.putString("itemid", ""+targetI);
-				final Prayer_SacredImbueingQuest dA=(Prayer_SacredImbueingQuest)beneficialAffect(mob,mob,asLevel,(int)(CMProps.getTicksPerHour()*2));
+				final Prayer_SacredImbuingQuest dA=(Prayer_SacredImbuingQuest)beneficialAffect(mob,mob,asLevel,(int)(CMProps.getTicksPerHour()*2));
 				if(dA!=null)
 					dA.setMiscText(obj.toString());
 			}

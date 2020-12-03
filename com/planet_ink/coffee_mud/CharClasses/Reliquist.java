@@ -256,7 +256,7 @@ public class Reliquist extends Thief
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
 			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueFoulWeapon",false,"+SKILLS -Prayer_ImbueModestWeapon -Prayer_ImbueJustWeapon"); // special A
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_SacredImbueingQuest",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_SacredImbuingQuest",true);
 
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Prayer_DivinePilgrimage",false);
 
@@ -584,7 +584,7 @@ Prayers cast by a cleric of the appropriate deity on holy grounds should result 
 					||msg.tool().ID().equals("Prayer_ImbueModestWeapon")
 					||msg.tool().ID().equals("Prayer_DefileShield")
 					//||msg.tool().ID().equals("Prayer_ReleasePrayer") // not necc because the spell is fake cast
-					||msg.tool().ID().equals("Prayer_SacredImbueingQuest")))
+					||msg.tool().ID().equals("Prayer_SacredImbuingQuest")))
 				{
 					final Ability A=mob.fetchAbility(msg.tool().text());
 					if((A!=null)&&(!A.isSavable()))

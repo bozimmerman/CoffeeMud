@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.core.exceptions.MQLException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -3028,6 +3029,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				{
 					final String id=(piece.getParmValue("ID")!=null)?piece.getParmValue("ID"):"null";
 					Log.errOut("Stack overflow trying to filter "+valPiece.value()+" on "+piece.tag()+" id '"+id+"'");
+					try {
+						value=strFilter(E,ignoreStats,defPrefix,valPiece.value(),valPiece, defined);
+					} catch(final java.lang.StackOverflowError e2) {}
 					throw new CMException("Ended because of a stack overflow.  See the log.");
 				}
 			}
@@ -3076,7 +3080,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	protected Object findObject(final Modifiable E, final List<String> ignoreStats, final String defPrefix, String tagName, XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
 	{
 		tagName=tagName.toUpperCase().trim();
-
+		if((piece!=null)&&(piece.value().trim().startsWith("<ITEM ID=\"all_target_items\" SELECT=\"all\">")))
+			System.out.println("hi");
 		if(defPrefix != null)
 		{
 			final Object asPreviouslyDefined = defined.get((defPrefix+tagName).toUpperCase());
@@ -3106,92 +3111,106 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(asDefined == null)
 			processDefined=piece;
 		final List<XMLLibrary.XMLTag> choices =new ArrayList<XMLLibrary.XMLTag>();
+
+		// so, this looks at sub-tags JUST to see what type they are.  If they are something interesting,
+		// then choices are grabbed, on THIS xml piece, with that tag id.
 		final Set<String> done=new HashSet<String>();
 		for(final XMLLibrary.XMLTag subTag : piece.contents())
 		{
 			if(done.contains(subTag.tag()))
 				continue;
 			done.add(subTag.tag());
-			choices.addAll(getAllChoices(E,ignoreStats,defPrefix,subTag.tag(), subTag, defined,false));
+			choices.addAll(getAllChoices(E,ignoreStats,defPrefix,subTag.tag(), piece, defined,true));
 		}
 		if(choices.size()==0)
 			choices.addAll(getAllChoices(E,ignoreStats,defPrefix,tagName, piece, defined,true));
 		if(choices.size()==0)
+		{
+			if(piece.tag().equals("ITEM")||piece.tag().equals("MOB")||piece.tag().equals("ABILITY"))
+				choices.addAll(getAllChoices(E,ignoreStats,defPrefix,piece.tag(), piece, defined,true));
+		}
+		if(choices.size()==0)
 			throw new CMDataException("Unable to find tag '"+tagName+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 		final List<Object> finalValues = new ArrayList<Object>();
 
-		for(int c=0;c<choices.size();c++)
+		try
 		{
-			final XMLTag valPiece = choices.get(c);
-			if(valPiece.parms().containsKey("VALIDATE") && !testCondition(E,null,null,CMLib.xml().restoreAngleBrackets(valPiece.getParmValue("VALIDATE")),valPiece, defined))
-				continue;
+			for(int c=0;c<choices.size();c++)
+			{
+				final XMLTag valPiece = choices.get(c);
+				if(valPiece.parms().containsKey("VALIDATE") && !testCondition(E,null,null,CMLib.xml().restoreAngleBrackets(valPiece.getParmValue("VALIDATE")),valPiece, defined))
+					continue;
 
-			final String valueStr=valPiece.value().toUpperCase().trim();
-			final Object value;
-			if(valueStr.startsWith("SELECT:"))
-			{
-				final List<Map<String,Object>> sel=this.doMQLSelectObjs(E, ignoreStats, defPrefix, CMLib.xml().restoreAngleBrackets(valueStr), valPiece, defined);
-				value=sel;
-				finalValues.addAll(sel);
-			}
-			else
-			if(valPiece.tag().equals("MOB"))
-			{
-				final List<MOB> objs = this.findMobs(E, valPiece, defined, null);
-				for(final MOB M : objs)
+				final String valueStr=valPiece.value().toUpperCase().trim();
+				final Object value;
+				if(valueStr.startsWith("SELECT:"))
 				{
-					CMLib.threads().deleteAllTicks(M);
-					M.setSavable(false);
-					M.setDatabaseID("DELETE");
+					final List<Map<String,Object>> sel=this.doMQLSelectObjs(E, ignoreStats, defPrefix, CMLib.xml().restoreAngleBrackets(valueStr), valPiece, defined);
+					value=sel;
+					finalValues.addAll(sel);
 				}
-				value=objs;
-				finalValues.addAll(objs);
-			}
-			else
-			if(valPiece.tag().equals("ITEM"))
-			{
-				final List<Item> objs = this.findItems(E, valPiece, defined, null);
-				for(final Item I : objs)
+				else
+				if(valPiece.tag().equals("MOB"))
 				{
-					CMLib.threads().deleteAllTicks(I);
-					I.setSavable(false);
-					I.setDatabaseID("DELETE");
-				}
-				value=objs;
-				finalValues.addAll(objs);
-			}
-			else
-			if(valPiece.tag().equals("ABILITY"))
-			{
-				final List<Ability> objs = this.findAbilities(E, valPiece, defined, null);
-				value=objs;
-				finalValues.addAll(objs);
-			}
-			else
-			if(valPiece.tag().equals("OBJECT"))
-			{
-				final Object O=this.findObject(E, ignoreStats, defPrefix, tagName, valPiece, defined);
-				final List<Object> l=new ArrayList<Object>();
-				if(O!=null)
-					l.add(O);
-				value=l;
-				finalValues.addAll(l);
-			}
-			else
-			{
-				try
-				{
-					final List<Object> objs = parseMQLFrom(new String[] {valueStr}, valueStr, E, ignoreStats, defPrefix, valPiece, defined, false);
+					final List<MOB> objs = this.findMobs(E, valPiece, defined, null);
+					for(final MOB M : objs)
+					{
+						CMLib.threads().deleteAllTicks(M);
+						M.setSavable(false);
+						M.setDatabaseID("DELETE");
+					}
 					value=objs;
 					finalValues.addAll(objs);
 				}
-				catch(final CMException e)
+				else
+				if(valPiece.tag().equals("ITEM"))
 				{
-					throw new CMException("Unable to produce '"+tagName+"' on piece '"+piece.tag()+"', Data: "+CMStrings.limit(piece.value(),100)+":"+e.getMessage());
+					final List<Item> objs = this.findItems(E, valPiece, defined, null);
+					for(final Item I : objs)
+					{
+						CMLib.threads().deleteAllTicks(I);
+						I.setSavable(false);
+						I.setDatabaseID("DELETE");
+					}
+					value=objs;
+					finalValues.addAll(objs);
 				}
+				else
+				if(valPiece.tag().equals("ABILITY"))
+				{
+					final List<Ability> objs = this.findAbilities(E, valPiece, defined, null);
+					value=objs;
+					finalValues.addAll(objs);
+				}
+				else
+				if(valPiece.tag().equals("OBJECT"))
+				{
+					final Object O=this.findObject(E, ignoreStats, defPrefix, tagName, valPiece, defined);
+					final List<Object> l=new ArrayList<Object>();
+					if(O!=null)
+						l.add(O);
+					value=l;
+					finalValues.addAll(l);
+				}
+				else
+				{
+					try
+					{
+						final List<Object> objs = parseMQLFrom(new String[] {valueStr}, valueStr, E, ignoreStats, defPrefix, valPiece, defined, false);
+						value=objs;
+						finalValues.addAll(objs);
+					}
+					catch(final CMException e)
+					{
+						throw new CMException("Unable to produce '"+tagName+"' on piece '"+piece.tag()+"', Data: "+CMStrings.limit(piece.value(),100)+":"+e.getMessage());
+					}
+				}
+				if(processDefined!=valPiece)
+					defineReward(E,ignoreStats,defPrefix,valPiece.getParmValue("DEFINE"),valPiece,value,defined,true);
 			}
-			if(processDefined!=valPiece)
-				defineReward(E,ignoreStats,defPrefix,valPiece.getParmValue("DEFINE"),valPiece,value,defined,true);
+		}
+		finally
+		{
 		}
 		if(processDefined!=null)
 			defineReward(E,ignoreStats,defPrefix,piece.getParmValue("DEFINE"),processDefined,finalValues.size()==1?finalValues.get(0):finalValues,defined,true);
@@ -5908,10 +5927,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							}
 						}
 						if(val == null)
-						{
-							Log.errOut("***********************************************************************");//TODO:BZ:DELME
 							throw new MQLException("Unknown variable '$"+key+"' in str '"+str+"' in '"+mql+"'",new CMException("$"+str));
-						}
 						finalO=val;
 					}
 					break;
@@ -6359,6 +6375,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 															  throws MQLException,PostProcessException
 	{
 		final List<Map<String,Object>> results=new ArrayList<Map<String,Object>>();
+if(mql.equals("SELECT: ANY\\. FROM $ALL_TARGET_ITEMS WHERE WEIGHT < 200"))
+System.out.println("<hi"+"/"+CMath.s_int(defined.get("SOURCE_LEVEL").toString()));//TODO:BZ:DELME
 		// first estalish the from object6
 		if(clause.froms.size()==0)
 			throw new MQLException("No FROM clause in "+clause.mql);
@@ -6373,12 +6391,15 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		boolean aggregate=false;
 		for(int i=0;i<clause.what.size();i++)
 		{
-			if(clause.what.get(i).aggregator != null)
+			final MQLClause.WhatBit W=clause.what.get(i);
+			if(W.aggregator != null)
 			{
 				aggregate=true;
 				break;
 			}
 		}
+if(mql.equals("SELECT: ANY\\. FROM $ALL_TARGET_ITEMS WHERE WEIGHT < 200"))
+System.out.println("!hi:"+froms.size()+"/"+CMath.s_int(defined.get("SOURCE_LEVEL").toString()));//TODO:BZ:DELME
 		final Map<String,Object> cache=new HashMap<String,Object>();
 		for(final Object o : froms)
 		{
@@ -6419,6 +6440,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				results.add(m);
 			}
 		}
+if(mql.equals("SELECT: ANY\\. FROM $ALL_TARGET_ITEMS WHERE WEIGHT < 200"))
+	System.out.println("+hi:"+results.size()+"/"+CMath.s_int(defined.get("SOURCE_LEVEL").toString()));//TODO:BZ:DELME
 		if(aggregate)
 		{
 			for(final MQLClause.WhatBit W : clause.what)
@@ -6517,6 +6540,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 			}
 		}
+if(mql.equals("SELECT: ANY\\. FROM $ALL_TARGET_ITEMS WHERE WEIGHT < 200"))
+	System.out.println("-hi:"+results.size()+"/"+CMath.s_int(defined.get("SOURCE_LEVEL").toString())+">");//TODO:BZ:DELME
 		return results;
 	}
 

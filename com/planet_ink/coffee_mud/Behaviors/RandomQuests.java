@@ -228,6 +228,7 @@ public class RandomQuests extends ActiveTicker
 						}
 						Q.setCopy(true);
 						myQuests.add(new WeakReference<Quest>(Q));
+System.out.println("Generated "+Q.name()); //TODO:BZ:DELME
 						break;
 					}
 					catch(final CMException cme)
@@ -242,6 +243,8 @@ public class RandomQuests extends ActiveTicker
 							disable.set(true);
 							return;
 						}
+						else
+							Log.errOut("RandomQuests",cme);
 					}
 				}
 			}
