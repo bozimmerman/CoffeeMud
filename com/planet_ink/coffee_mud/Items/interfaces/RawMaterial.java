@@ -1449,6 +1449,7 @@ public interface RawMaterial extends Item
 		{
 			if (mat <= RESOURCE_MASK)
 				mat = mat << 8;
+			mat = mat & MATERIAL_MASK;
 			final List<Integer> rscs = new Vector<Integer>();
 			for (final int rsc : c().allCodes)
 			{

@@ -228,7 +228,7 @@ public class RandomQuests extends ActiveTicker
 						}
 						Q.setCopy(true);
 						myQuests.add(new WeakReference<Quest>(Q));
-System.out.println("Generated "+Q.name()); //TODO:BZ:DELME
+						Log.debugOut("RandonQuests generated "+Q.name()+" for "+ticking.name());
 						break;
 					}
 					catch(final CMException cme)
@@ -244,7 +244,7 @@ System.out.println("Generated "+Q.name()); //TODO:BZ:DELME
 							return;
 						}
 						else
-							Log.errOut("RandomQuests",cme);
+							Log.debugOut("RandomQuests",ticking.name()+": "+cme.getMessage());
 					}
 				}
 			}
