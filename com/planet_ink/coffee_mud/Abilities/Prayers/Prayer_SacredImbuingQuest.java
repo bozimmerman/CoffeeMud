@@ -393,7 +393,7 @@ public class Prayer_SacredImbuingQuest extends Prayer
 		final List<String> skillName=new XVector<String>(commands.get(0));
 		final List<String> itemName=new XVector<String>(commands);
 		itemName.remove(0);
-		itemName.remove(commands.size()-1);
+		itemName.remove(itemName.size()-1);
 		final MOB targetM=this.getTarget(mob, mobCommands, null);
 		if(targetM==null)
 			return false;
@@ -412,10 +412,10 @@ public class Prayer_SacredImbuingQuest extends Prayer
 			mob.tell(L("@x1 must wait a bit before being ready again for such a task.",targetM.Name()));
 			return false;
 		}
-		final Item targetI=this.getTarget(targetM, null, givenTarget, mobCommands, Wearable.FILTER_WORNONLY);
+		final Item targetI=this.getTarget(targetM, null, givenTarget, itemName, Wearable.FILTER_WORNONLY);
 		if(targetI==null)
 		{
-			mob.tell(L("Remember that the targeted item must be worn by @x1",targetM.Name()));
+			mob.tell(L("Unable to find worn item @x1 on @x2.",CMParms.combine(itemName, 0),targetM.Name()));
 			return false;
 		}
 
@@ -455,12 +455,6 @@ public class Prayer_SacredImbuingQuest extends Prayer
 
 		if(!checkAlignment(mob,targetI,false))
 			return false;
-
-		if(targetI.phyStats().ability()==0)
-		{
-			mob.tell(L("@x1 cannot be imbued until it has been empowered.",targetI.name(mob)));
-			return false;
-		}
 
 		final String prayerName=CMParms.combine(skillName,0).trim();
 		Ability imbuePrayerA=null;
@@ -534,7 +528,7 @@ public class Prayer_SacredImbuingQuest extends Prayer
 				definedIDs.put("target_level".toUpperCase(), ""+targetM.phyStats().level());
 				definedIDs.put("AGGRESSION", "YES");
 				definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
-				definedIDs.put("TEMPLATE", "random");
+				definedIDs.put("TEMPLATE", "normal");
 				final Quest q1=deviseAndStartQuest(mob, targetM, definedIDs);
 				if(q1 == null)
 				{
@@ -549,7 +543,7 @@ public class Prayer_SacredImbuingQuest extends Prayer
 				obj.putString("quest1", q1.name());
 				obj.putString("itemname", targetI.Name());
 				obj.putString("itemid", ""+targetI);
-				final Prayer_SacredImbuingQuest dA=(Prayer_SacredImbuingQuest)beneficialAffect(mob,mob,asLevel,(int)(CMProps.getTicksPerHour()*2));
+				final Prayer_SacredImbuingQuest dA=(Prayer_SacredImbuingQuest)beneficialAffect(mob,targetM,asLevel,(int)(CMProps.getTicksPerHour()*2));
 				if(dA!=null)
 					dA.setMiscText(obj.toString());
 			}
