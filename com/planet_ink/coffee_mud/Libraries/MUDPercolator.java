@@ -583,7 +583,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					Log.debugOut("MUDPercolator","EXIT:NEW:"+((E==null)?"null":E.ID())+":DIR="+CMLib.directions().getDirectionChar(dir).toUpperCase()+":ROOM="+R.getStat("DISPLAY"));
 			}
 			else
-			if((CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))&&defined.containsKey("ROOMLINK_"+CMLib.directions().getDirectionChar(dir).toUpperCase()))
+			if((CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
+			&&defined.containsKey("ROOMLINK_"+CMLib.directions().getDirectionChar(dir).toUpperCase()))
 				Log.debugOut("MUDPercolator","EXIT:OLD:"+((E==null)?"null":E.ID())+":DIR="+CMLib.directions().getDirectionChar(dir).toUpperCase()+":ROOM="+R.getStat("DISPLAY"));
 			R.setRawExit(dir, E);
 			R.startItemRejuv();
@@ -1069,15 +1070,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 		{
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
-				Log.debugOut("MUDPercolator",A.Name()+": type: "+node.type().toString());
+			Log.debugOut("MUDPercolator",A.Name()+": type: "+node.type().toString());
 			final StringBuffer defs=new StringBuffer("");
 			for (final String key : groupDefined.keySet())
-			{
 				defs.append(key+"="+CMStrings.limit(groupDefined.get(key).toString(),10)+",");
-			}
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
-				Log.debugOut("MUDPercolator","DEFS: "+defs.toString());
+			Log.debugOut("MUDPercolator","DEFS: "+defs.toString());
 		}
 		final Room R=findRoom(A,piece, groupDefined, exits, direction);
 		if(R==null)
@@ -3080,8 +3077,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	protected Object findObject(final Modifiable E, final List<String> ignoreStats, final String defPrefix, String tagName, XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
 	{
 		tagName=tagName.toUpperCase().trim();
-		if((piece!=null)&&(piece.value().trim().startsWith("<ITEM ID=\"all_target_items\" SELECT=\"all\">")))
-			System.out.println("hi");
 		if(defPrefix != null)
 		{
 			final Object asPreviouslyDefined = defined.get((defPrefix+tagName).toUpperCase());
@@ -6375,8 +6370,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 															  throws MQLException,PostProcessException
 	{
 		final List<Map<String,Object>> results=new ArrayList<Map<String,Object>>();
-if(mql.equals("SELECT: ANY\\. FROM $ALL_TARGET_ITEMS WHERE WEIGHT < 200"))
-System.out.println("<hi"+"/"+CMath.s_int(defined.get("SOURCE_LEVEL").toString()));//TODO:BZ:DELME
 		// first estalish the from object6
 		if(clause.froms.size()==0)
 			throw new MQLException("No FROM clause in "+clause.mql);
@@ -6398,8 +6391,6 @@ System.out.println("<hi"+"/"+CMath.s_int(defined.get("SOURCE_LEVEL").toString())
 				break;
 			}
 		}
-if(mql.equals("SELECT: ANY\\. FROM $ALL_TARGET_ITEMS WHERE WEIGHT < 200"))
-System.out.println("!hi:"+froms.size()+"/"+CMath.s_int(defined.get("SOURCE_LEVEL").toString()));//TODO:BZ:DELME
 		final Map<String,Object> cache=new HashMap<String,Object>();
 		for(final Object o : froms)
 		{
@@ -6440,8 +6431,6 @@ System.out.println("!hi:"+froms.size()+"/"+CMath.s_int(defined.get("SOURCE_LEVEL
 				results.add(m);
 			}
 		}
-if(mql.equals("SELECT: ANY\\. FROM $ALL_TARGET_ITEMS WHERE WEIGHT < 200"))
-	System.out.println("+hi:"+results.size()+"/"+CMath.s_int(defined.get("SOURCE_LEVEL").toString()));//TODO:BZ:DELME
 		if(aggregate)
 		{
 			for(final MQLClause.WhatBit W : clause.what)
@@ -6540,8 +6529,6 @@ if(mql.equals("SELECT: ANY\\. FROM $ALL_TARGET_ITEMS WHERE WEIGHT < 200"))
 				}
 			}
 		}
-if(mql.equals("SELECT: ANY\\. FROM $ALL_TARGET_ITEMS WHERE WEIGHT < 200"))
-	System.out.println("-hi:"+results.size()+"/"+CMath.s_int(defined.get("SOURCE_LEVEL").toString())+">");//TODO:BZ:DELME
 		return results;
 	}
 
