@@ -74,6 +74,14 @@ public class Prayer_SacredImbuingQuest extends Prayer
 		return Ability.COST_ALL;
 	}
 
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Sanctify Room)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
 	@Override
 	public int classificationCode()
 	{
@@ -367,7 +375,7 @@ public class Prayer_SacredImbuingQuest extends Prayer
 
 	protected boolean isAppropriateItem(final Physical target)
 	{
-		return (target instanceof Shield);
+		return (target instanceof Item) && (((Item)target).amBeingWornProperly());
 	}
 
 	protected boolean checkAlignment(final MOB mob, final Physical target, final boolean quiet)
@@ -532,7 +540,7 @@ public class Prayer_SacredImbuingQuest extends Prayer
 				final Quest q1=deviseAndStartQuest(mob, targetM, definedIDs);
 				if(q1 == null)
 				{
-					experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
+					experienceToLose=getXPCOSTAdjustment(mob,50);
 					experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 					mob.tell(L("You lose @x1 experience points for the failure.",""+experienceToLose));
 					beneficialWordsFizzle(mob,targetI,L("<S-NAME> fail(s) entirely.",super.prayWord(mob),targetM.Name()));
@@ -550,7 +558,7 @@ public class Prayer_SacredImbuingQuest extends Prayer
 		}
 		else
 		{
-			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
+			experienceToLose=getXPCOSTAdjustment(mob,50);
 			experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 			mob.tell(L("You lose @x1 experience points for the failure.",""+experienceToLose));
 			beneficialWordsFizzle(mob,targetI,L("<S-NAME> @x1 while pointing at <T-NAMESELF> on @x1, and looking very frustrated.",super.prayWord(mob),targetM.Name()));
