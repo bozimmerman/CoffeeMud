@@ -427,21 +427,24 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 					else
 					{
 						final Triad<String,Double,Long> bidAmts=CMLib.english().parseMoneyStringSDL(mob,bidStr,data.getCurrency());
-						final String myCurrency=bidAmts.first;
-						final double myDenomination=bidAmts.second.doubleValue();
-						final long myCoins=bidAmts.third.longValue();
-						final double bid=CMath.mul(myCoins,myDenomination);
-						if(!myCurrency.equals(data.getCurrency()))
+						if(bidAmts!=null)
 						{
-							final String currencyName=CMLib.beanCounter().getDenominationName(data.getCurrency());
-							CMLib.commands().postSay(this,mob,L("This auction is being handled in @x1.",currencyName),true,false);
-							return false;
-						}
-						if(CMLib.beanCounter().getTotalAbsoluteValue(mob,data.getCurrency())<bid)
-						{
-							final String currencyName=CMLib.beanCounter().getDenominationName(data.getCurrency());
-							CMLib.commands().postSay(this,mob,L("You don't have enough @x1 on hand to cover your bid.",currencyName),true,false);
-							return false;
+							final String myCurrency=bidAmts.first;
+							final double myDenomination=bidAmts.second.doubleValue();
+							final long myCoins=bidAmts.third.longValue();
+							final double bid=CMath.mul(myCoins,myDenomination);
+							if(!myCurrency.equals(data.getCurrency()))
+							{
+								final String currencyName=CMLib.beanCounter().getDenominationName(data.getCurrency());
+								CMLib.commands().postSay(this,mob,L("This auction is being handled in @x1.",currencyName),true,false);
+								return false;
+							}
+							if(CMLib.beanCounter().getTotalAbsoluteValue(mob,data.getCurrency())<bid)
+							{
+								final String currencyName=CMLib.beanCounter().getDenominationName(data.getCurrency());
+								CMLib.commands().postSay(this,mob,L("You don't have enough @x1 on hand to cover your bid.",currencyName),true,false);
+								return false;
+							}
 						}
 					}
 					return super.okMessage(myHost, msg);
