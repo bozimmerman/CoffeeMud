@@ -36,7 +36,7 @@
  35. New Prayers: Empower Unjust Weapon, Empower Modest Weapon, Greater Warding Glyph, Find Sacred Item
  36. New Prayers: Empower Holy Weapon, Empower Unholy Weapon, Empower Sacred Weapon, Protect Sacred Item
  37. New Prayers: Imbue Holy Weapon, Imbue Unholy Weapon, Umbue Sacred Weapon, Imbue Just Weapon
- 38. New Prayers: Imbue Foul Weapon, Imbue Modest Weapon, Protect Item
+ 38. New Prayers: Imbue Foul Weapon, Imbue Modest Weapon, Protect Item, Sacred Imbuing Quest
  39. The AS and AT commands now support PLAYERS to do things as or at all the players online.
  40. GMODIFY now has PLAYERS option to alter/scan all players.  Dang, this command is dangerous.
  41. MOTD command can now be used to set motd.txt file, which is also now deleted every day.
