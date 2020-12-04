@@ -109,7 +109,7 @@ vars:
 	<STRING ID="quest_winspeech" PREDEFINE="reason=$reason">$quest_winspeech</STRING>
 
 	<STRING id="quest_generic_winner_speeches" SELECT="Any-1">
-		<STRING>${c:reason_verbed! That's all I need, thanks!</STRING>
+		<STRING>${c:reason_verbed}! That's all I need, thanks!</STRING>
 		<STRING>${c:reason_verbed} at last! Thank you for your assistance.</STRING>
 		<STRING>Thanks for having $reason_verbed, I'll take it from here.</STRING>
 		<STRING>Thank you adventurer, you have ${reason_verbed} me, and that will be all.</STRING>
