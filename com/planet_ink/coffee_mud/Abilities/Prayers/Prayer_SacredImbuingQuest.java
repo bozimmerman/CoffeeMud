@@ -531,7 +531,7 @@ public class Prayer_SacredImbuingQuest extends Prayer
 		if(success)
 		{
 			setMiscText(imbuePrayerA.ID()); // important for reliquist discharge
-			final CMMsg msg=CMClass.getMsg(mob,targetI,this,verbalCastCode(mob,targetI,auto),L("^S<S-NAME> @x1 while pointing at <T-NAMESELF> on @x1.^?",super.prayWord(mob),targetM.name()));
+			final CMMsg msg=CMClass.getMsg(mob,targetI,this,verbalCastCode(mob,targetI,auto),L("^S<S-NAME> @x1 while pointing at <T-NAMESELF> on @x2.^?",super.prayWord(mob),targetM.name()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
