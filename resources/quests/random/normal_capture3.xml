@@ -84,12 +84,12 @@ settable vars:
 	</STRING>
 	
 	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">
-		<STRING>I need ${target_name} $reason_verbed!</STRING>
-		<STRING>Help me $reason_verb ${target_name}!</STRING>
-		<STRING>Assistance required with ${target_name}!</STRING>
-		<STRING>${c:reason_verb} ${target_name} for me!</STRING>
-		<STRING>${c:reason_verb} ${target_name}, quickly!</STRING>
-		<STRING>I want ${target_name} $reason_verbed!</STRING>
+		<STRING>I need ${target_name} in $target_area_name $reason_verbed!</STRING>
+		<STRING>Help me $reason_verb ${target_name} in $target_area_name!</STRING>
+		<STRING>Assistance required with ${target_name} in $target_area_name!</STRING>
+		<STRING>${c:reason_verb} ${target_name} in $target_area_name for me!</STRING>
+		<STRING>${c:reason_verb} ${target_name} in $target_area_name, quickly!</STRING>
+		<STRING>I want ${target_name} in $target_area_name $reason_verbed!</STRING>
 	</STRING>
 
 	<STRING ID="hurt_him_phrase" SELECT="Any-1">
