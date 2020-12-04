@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2020 Bo Zimmerman
+   Copyright 2003-2020 Sky
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -196,6 +196,7 @@ public class MovingRoom extends ActiveTicker
 
 	protected String fixOutputString(String incoming, final Room busstopRoom)
 	{
+		incoming = " " + incoming;
 		int i = incoming.indexOf("$disproom");
 		while(i>0)
 		{
@@ -209,7 +210,7 @@ public class MovingRoom extends ActiveTicker
 			boolean revDirName=false;
 			if (((pos==0)||(pos==listOfRooms.size()-1))&&(currentStatus==1))
 				revDirName=true;
-			List<String> V=new Vector<String>();
+			List<String> V;
 			if (!revDirName)
 			{
 				if (isReversed)
@@ -230,7 +231,7 @@ public class MovingRoom extends ActiveTicker
 		i = incoming.indexOf("$outopendir");
 		while(i>0)
 		{
-			List<String> V=new Vector<String>();
+			List<String> V;
 			if (isReversed)
 				V=messageInfo.get(CODE_REVERSEBLOCK);
 			else
@@ -239,9 +240,9 @@ public class MovingRoom extends ActiveTicker
 			i = incoming.indexOf("$outopendir");
 		}
 		i = incoming.indexOf("$inopendir");
-		while(incoming.indexOf("$inopendir")>0)
+		while(i>0)
 		{
-			List<String> V=new Vector<String>();
+			List<String> V;
 			if (isReversed)
 				V=messageInfo.get(CODE_REVERSEBLOCK);
 			else
@@ -249,20 +250,22 @@ public class MovingRoom extends ActiveTicker
 			incoming=incoming.substring(1,i)+V.get(1).toString()+incoming.substring(i+10);
 			i = incoming.indexOf("$inopendir");
 		}
-		return incoming;
+		return incoming.trim();
 	}
 
 	protected void removeStubs(final Room busstopRoom1,final Room busstopRoom2)
 	{
 		if (!stubs.isEmpty())
-		for(int s=0;s<stubs.size();s++)
 		{
-			int i=busstopRoom1.description().indexOf(stubs.get(s).toString());
-			if (i>0)
-				busstopRoom1.setDescription(busstopRoom1.description().substring(0,i).trim());
-			i=busstopRoom2.description().indexOf(stubs.get(s).toString());
-			if (i>0)
-				busstopRoom2.setDescription(busstopRoom2.description().substring(0,i).trim());
+			for(int s=0;s<stubs.size();s++)
+			{
+				int i=busstopRoom1.description().indexOf(stubs.get(s).toString());
+				if (i>0)
+					busstopRoom1.setDescription(busstopRoom1.description().substring(0,i).trim());
+				i=busstopRoom2.description().indexOf(stubs.get(s).toString());
+				if (i>0)
+					busstopRoom2.setDescription(busstopRoom2.description().substring(0,i).trim());
+			}
 		}
 	}
 
