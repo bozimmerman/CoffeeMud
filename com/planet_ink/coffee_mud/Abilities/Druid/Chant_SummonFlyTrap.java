@@ -212,6 +212,9 @@ public class Chant_SummonFlyTrap extends Chant
 	{
 		final MOB newMOB=CMClass.getMOB("GenMOB");
 		int level=adjustedLevel(caster,0);
+		final int altLevel = (caster.phyStats().level()-5)+(super.getXLEVELLevel(caster)/2);
+		if(altLevel > level)
+			level = altLevel;
 		if(level<1)
 			level=1;
 		newMOB.basePhyStats().setLevel(level);

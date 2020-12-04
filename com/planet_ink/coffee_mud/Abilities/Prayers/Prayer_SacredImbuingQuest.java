@@ -567,7 +567,7 @@ public class Prayer_SacredImbuingQuest extends Prayer
 			experienceToLose=getXPCOSTAdjustment(mob,50);
 			experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 			mob.tell(L("You lose @x1 experience points for the failure.",""+experienceToLose));
-			beneficialWordsFizzle(mob,targetI,L("<S-NAME> @x1 while pointing at <T-NAMESELF> on @x1, and looking very frustrated.",super.prayWord(mob),targetM.Name()));
+			beneficialWordsFizzle(mob,targetI,L("<S-NAME> @x1 while pointing at <T-NAMESELF> on @x2, and looking very frustrated.",super.prayWord(mob),targetM.Name()));
 		}
 		// return whether it worked
 		return success;

@@ -180,7 +180,7 @@ public class Chant_SummonElemental extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final MOB target = determineMonster(mob, mob.phyStats().level()+(2*getXLEVELLevel(mob)));
+				final MOB target = determineMonster(mob, asLevel);
 				beneficialAffect(mob,target,asLevel,0);
 				if(target.isInCombat())
 					target.makePeace(true);
@@ -196,10 +196,14 @@ public class Chant_SummonElemental extends Chant
 		return success;
 	}
 
-	public MOB determineMonster(final MOB caster, final int level)
+	public MOB determineMonster(final MOB caster, final int asLevel)
 	{
 		final MOB newMOB=CMClass.getMOB("GenMOB");
-		newMOB.basePhyStats().setLevel(adjustedLevel(caster,0));
+		int level=adjustedLevel(caster,asLevel);
+		final int altLevel = (caster.phyStats().level()-5)+(super.getXLEVELLevel(caster)/2);
+		if(altLevel > level)
+			level = altLevel;
+		newMOB.basePhyStats().setLevel(level);
 		switch(CMLib.dice().roll(1,4,0))
 		{
 		case 1:

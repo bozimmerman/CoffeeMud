@@ -165,7 +165,7 @@ public class Prayer_SummonElemental extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final MOB myMonster = determineMonster(mob, mob.phyStats().level()+(2*getXLEVELLevel(mob)));
+				final MOB myMonster = determineMonster(mob, asLevel);
 				invoker=mob;
 				beneficialAffect(mob,myMonster,asLevel,0);
 			}
@@ -179,11 +179,15 @@ public class Prayer_SummonElemental extends Prayer
 
 	protected final static String types[]={"EARTH","FIRE","AIR","WATER"};
 
-	public MOB determineMonster(final MOB caster, final int level)
+	public MOB determineMonster(final MOB caster, final int asLevel)
 	{
 		final MOB newMOB=CMClass.getMOB("GenRideable");
 		final Rideable ride=(Rideable)newMOB;
 		newMOB.basePhyStats().setAbility(13);
+		int level=adjustedLevel(caster,asLevel);
+		final int altLevel = (caster.phyStats().level()-5)+(super.getXLEVELLevel(caster)/2);
+		if(altLevel > level)
+			level = altLevel;
 		if(level>5)
 			newMOB.basePhyStats().setLevel(level-5);
 		else

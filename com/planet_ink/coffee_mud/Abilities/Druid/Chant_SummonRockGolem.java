@@ -192,7 +192,7 @@ public class Chant_SummonRockGolem extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final MOB target = determineMonster(mob, mob.phyStats().level()+(2*getXLEVELLevel(mob)));
+				final MOB target = determineMonster(mob, asLevel);
 				beneficialAffect(mob,target,0,asLevel);
 			}
 		}
@@ -203,10 +203,14 @@ public class Chant_SummonRockGolem extends Chant
 		return success;
 	}
 
-	public MOB determineMonster(final MOB caster, final int level)
+	public MOB determineMonster(final MOB caster, final int asLevel)
 	{
 		final MOB newMOB=CMClass.getMOB("GenMOB");
-		newMOB.basePhyStats().setLevel(adjustedLevel(caster,0));
+		int level=adjustedLevel(caster,asLevel);
+		final int altLevel = (caster.phyStats().level()-5)+(super.getXLEVELLevel(caster)/2);
+		if(altLevel > level)
+			level = altLevel;
+		newMOB.basePhyStats().setLevel(level);
 		newMOB.setName(L("an golem of stone"));
 		newMOB.setDisplayText(L("an stone golem lumbers around here."));
 		newMOB.setDescription(L("A large beast, made of rock and stone, with a hard stare."));
