@@ -158,6 +158,90 @@ public class WillQualify  extends Skills
 		return msg;
 	}
 
+	public boolean perfectMatch(final String[] WORDS, final String str, final String bothStr, final List<String> commands, final Set<Object> useTypes, final int bitShift)
+	{
+		int x=CMParms.indexOf(WORDS,str);
+		if(x<0)
+			x=CMParms.indexOf(WORDS,str.replace(' ','_'));
+		if(x>=0)
+		{
+			commands.remove(0);
+			useTypes.add(Integer.valueOf(x<<bitShift));
+			return true;
+		}
+		else
+		{
+			x=CMParms.indexOf(WORDS,bothStr);
+			if(x<0)
+				x=CMParms.indexOf(WORDS,bothStr.replace(' ','_'));
+			if(x>=0)
+			{
+
+				commands.remove(0);
+				commands.remove(0);
+				useTypes.add(Integer.valueOf(x<<bitShift));
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean softMatch(final String[] WORDS, final String str, final String bothStr, final List<String> commands, final Set<Object> useTypes, final int bitShift)
+	{
+		if(!str.equals(bothStr))
+		{
+			for(int x=0;x<WORDS.length;x++)
+			{
+				final String w=WORDS[x];
+				if(w.startsWith(bothStr)||w.startsWith(bothStr.replace(' ','_')))
+				{
+
+					commands.remove(0);
+					commands.remove(0);
+					useTypes.add(Integer.valueOf(x<<bitShift));
+					return true;
+				}
+			}
+		}
+		for(int x=0;x<WORDS.length;x++)
+		{
+			final String w=WORDS[x];
+			if(w.startsWith(str)||w.startsWith(str.replace(' ','_')))
+			{
+
+				commands.remove(0);
+				useTypes.add(Integer.valueOf(x<<bitShift));
+				return true;
+			}
+		}
+		if(!str.equals(bothStr))
+		{
+			for(int x=0;x<WORDS.length;x++)
+			{
+				final String w=WORDS[x];
+				if(bothStr.startsWith(w)||bothStr.replace(' ','_').startsWith(w))
+				{
+					commands.remove(0);
+					commands.remove(0);
+					useTypes.add(Integer.valueOf(x<<bitShift));
+					return true;
+				}
+			}
+		}
+		for(int x=0;x<WORDS.length;x++)
+		{
+			final String w=WORDS[x];
+			if(str.startsWith(w)||str.replace(' ','_').startsWith(w))
+			{
+
+				commands.remove(0);
+				useTypes.add(Integer.valueOf(x<<bitShift));
+				return true;
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 					throws java.io.IOException
@@ -206,53 +290,10 @@ public class WillQualify  extends Skills
 			}
 			else
 				useTypes = types;
-			int x=CMParms.indexOf(Ability.ACODE_DESCS,str);
-			if(x<0)
-				x=CMParms.indexOf(Ability.ACODE_DESCS,str.replace(' ','_'));
-			if(x>=0)
-			{
-				commands.remove(0);
-				useTypes.add(Integer.valueOf(x));
+			if(perfectMatch(Ability.ACODE_DESCS,str,bothStr,commands,useTypes,0))
 				continue;
-			}
-			else
-			{
-				x=CMParms.indexOf(Ability.ACODE_DESCS,bothStr);
-				if(x<0)
-					x=CMParms.indexOf(Ability.ACODE_DESCS,bothStr.replace(' ','_'));
-				if(x>=0)
-				{
-
-					commands.remove(0);
-					commands.remove(0);
-					useTypes.add(Integer.valueOf(x));
-					continue;
-				}
-			}
-
-			x=CMParms.indexOf(Ability.DOMAIN_DESCS,str);
-			if(x<0)
-				x=CMParms.indexOf(Ability.DOMAIN_DESCS,str.replace(' ','_'));
-			if(x>=0)
-			{
-				commands.remove(0);
-				useTypes.add(Integer.valueOf(x<<5));
+			if(perfectMatch(Ability.DOMAIN_DESCS,str,bothStr,commands,useTypes,5))
 				continue;
-			}
-			else
-			{
-				x=CMParms.indexOf(Ability.DOMAIN_DESCS,bothStr);
-				if(x<0)
-					x=CMParms.indexOf(Ability.DOMAIN_DESCS,bothStr.replace(' ','_'));
-				if(x>=0)
-				{
-					commands.remove(0);
-					commands.remove(0);
-					useTypes.add(Integer.valueOf(x<<5));
-					continue;
-				}
-			}
-
 			if((CMLib.expertises().findDefinition(str,false)!=null)
 			||str.equalsIgnoreCase("EXPERTISE")
 			||str.equalsIgnoreCase("EXPERTISES"))
@@ -269,7 +310,14 @@ public class WillQualify  extends Skills
 				useTypes.add(bothStr.toUpperCase().trim());
 				continue;
 			}
-			mob.tell(L("'@x1' is not a valid skill type, domain, expertise, or character class.",str));
+			if(softMatch(Ability.ACODE_DESCS,str,bothStr,commands,useTypes,0))
+				continue;
+			if(softMatch(Ability.DOMAIN_DESCS,str,bothStr,commands,useTypes,5))
+				continue;
+			final List<String> allOptions=new XVector<String>(Ability.ACODE_DESCS);
+			allOptions.addAll(Arrays.asList(Ability.DOMAIN_DESCS));
+			allOptions.add("EXPERTISES");
+			mob.tell(L("'@x1' is not a valid skill type, domain, expertise, or character class.  Try one of: @x2",str,CMParms.toListString(allOptions)));
 			mob.tell(willQualErr);
 			return false;
 		}
