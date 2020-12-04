@@ -191,7 +191,7 @@ public class Chant_AstralProjection extends Chant
 			target.makePeace(true);
 			peaceAt(target);
 			final MOB spirit=CMClass.getMOB("StdMOB");
-			spirit.setName(L("The Spirit of @x1",target.Name()));
+			spirit.setName(L("astral @x1",target.Name()));
 			spirit.baseCharStats().setMyRace(CMClass.getRace("Spirit"));
 			spirit.setPlayerStats(target.playerStats());
 			spirit.setLocation(target.location());
