@@ -10,7 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -148,12 +148,6 @@ public class Skill_ResearchItem extends StdSkill
 			return false;
 		if(tickID==Tickable.TICKID_MOB)
 		{
-			if(tickDown<=0)
-			{
-				tickDown=-1;
-				unInvoke();
-				return false;
-			}
 			final Physical affected=this.affected;
 			if(!(affected instanceof MOB))
 				return true;
@@ -246,27 +240,35 @@ public class Skill_ResearchItem extends StdSkill
 				ShopKeeper SK=null;
 				if(tickDown<3)
 					numRoomsToDo=Integer.MAX_VALUE;
+				final CMFlagLibrary flags=CMLib.flags();
+				final LegalLibrary law=CMLib.law();
+				final WorldMap map=CMLib.map();
 				for (int r=0;(r<numRoomsToDo) && checkIter.hasNext();r++)
 				{
-					room=CMLib.map().getRoom(checkIter.next());
-					if(!CMLib.flags().canAccess(mob,room))
+					room=map.getRoom(checkIter.next());
+					if((!flags.canAccess(mob,room))
+					||(!law.doesHavePriviledgesHere(mob, room)))
 						continue;
 
 					item=room.findItem(null,what);
 					if((item!=null)
-					&&(CMLib.flags().canBeLocated((Item)item)))
+					&&(flags.canBeLocated((Item)item)))
 					{
 						final String str=L("@x1 is in a place called '@x2' in @x3.",item.name(),room.displayText(mob),room.getArea().name());
 						itemsFound.add(str);
 						if(item instanceof Physical)
+						{
 							ticksToRemain += (2*((Physical)item).phyStats().level())-adjustedLevel(mob,0)-numBooksInRoom;
+							if(ticksToRemain<0)
+								ticksToRemain=0;
+						}
 					}
 					for(int i=0;i<room.numInhabitants();i++)
 					{
 						inhab=room.fetchInhabitant(i);
 						if(inhab==null)
 							break;
-						if(((!CMLib.flags().isCloaked(inhab))
+						if(((!flags.isCloaked(inhab))
 						||((CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CLOAK)||CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.WIZINV))
 							&&(mob.phyStats().level()>=inhab.phyStats().level()))))
 						{
@@ -275,14 +277,18 @@ public class Skill_ResearchItem extends StdSkill
 							if((item==null)&&(SK!=null))
 								item=SK.getShop().getStock(what,mob);
 							if((item instanceof Item)
-							&&(CMLib.flags().canBeLocated((Item)item)))
+							&&(flags.canBeLocated((Item)item)))
 							{
 								final CMMsg msg2=CMClass.getMsg(mob,inhab,this,verbalCastCode(mob,null,false),null);
 								if(room.okMessage(mob,msg2))
 								{
 									room.send(mob,msg2);
 									if(item instanceof Physical)
+									{
 										ticksToRemain += (2*((Physical)item).phyStats().level())-adjustedLevel(mob,0)-numBooksInRoom;
+										if(ticksToRemain <0)
+											ticksToRemain=0;
+									}
 									final String str=L("@x1@x2 is being carried by @x3 in a place called '@x4' in @x5."
 											,item.name(),"",inhab.name(),room.displayText(mob),room.getArea().name());
 									itemsFound.add(str);
