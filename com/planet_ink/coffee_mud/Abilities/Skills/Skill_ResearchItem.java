@@ -223,7 +223,7 @@ public class Skill_ResearchItem extends StdSkill
 					}
 				}
 				final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
-				final int range=75 + (2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
+				final int range=25 + (2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
 				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
 				checkIter=checkSet.iterator();
 				numRoomsToDo=(checkSet.size()/(tickDown-1))+1;
@@ -247,7 +247,7 @@ public class Skill_ResearchItem extends StdSkill
 				{
 					room=map.getRoom(checkIter.next());
 					if((!flags.canAccess(mob,room))
-					||(!law.doesHavePriviledgesHere(mob, room)))
+					||((law.isLandOwnable(room))&&(!law.doesHavePriviledgesHere(mob, room))))
 						continue;
 
 					item=room.findItem(null,what);

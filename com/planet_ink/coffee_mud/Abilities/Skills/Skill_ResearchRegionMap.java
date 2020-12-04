@@ -127,7 +127,7 @@ public class Skill_ResearchRegionMap extends StdSkill
 	protected int ticksToRemain = 0;
 	protected int numBooksInRoom = 1;
 	protected final Room[] targetRoom=new Room[1];
-	
+
 	protected final LimitedTreeSet<String> recent=new LimitedTreeSet<String>(TimeManager.MILI_HOUR,50,false);
 
 	@Override
@@ -203,16 +203,16 @@ public class Skill_ResearchRegionMap extends StdSkill
 			return c2;
 		return c1;
 	}
-	
+
 	protected char[] pickMapChars(final char c1, final char c2, final Area A1, final Area A2, final Map<Area,Map<Area,int[]>> connections)
 	{
-		char c=pickMapChar(c1,c2,A1,A2,connections);
+		final char c=pickMapChar(c1,c2,A1,A2,connections);
 		if(c==' ')
 			return new char[]{c,c};
 		else
 			return new char[]{c1,c};
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -294,7 +294,7 @@ public class Skill_ResearchRegionMap extends StdSkill
 							numAreas--;
 					}
 				}
-				final int range=75 + (2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
+				final int range=25 + (2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
 				this.finalMapI=null;
 				final Area targetA=CMLib.map().findArea(what);
 				final Room startRoom=mob.location();
@@ -350,7 +350,7 @@ public class Skill_ResearchRegionMap extends StdSkill
 								{
 									if(!connections.containsKey(curRoom.getArea()))
 										connections.put(curRoom.getArea(), new HashMap<Area,int[]>());
-									
+
 									if(!connections.get(curRoom.getArea()).containsKey(nextR.getArea()))
 										connections.get(curRoom.getArea()).put(nextR.getArea(),new int[] {1});
 									else
@@ -419,7 +419,7 @@ public class Skill_ResearchRegionMap extends StdSkill
 						}
 					}
 					//connections.clear(); -- needed below
-					int trailSize=trails.size();
+					final int trailSize=trails.size();
 					trails.clear();
 					final List<Triad<Area,Area,Integer>> finalDirs = new ArrayList<Triad<Area,Area,Integer>>();
 					for(final Quad<Area,Area,long[],long[]> quad : coords)
@@ -524,10 +524,10 @@ public class Skill_ResearchRegionMap extends StdSkill
 						}
 					}
 					finalDirs.clear();
-					StringBuilder map=new StringBuilder("");
+					final StringBuilder map=new StringBuilder("");
 					for(int y=0;y<areaDrawing[0].length;y++)
 					{
-						StringBuilder phatRows[] = new StringBuilder[5];
+						final StringBuilder phatRows[] = new StringBuilder[5];
 						for(int i=0;i<phatRows.length;i++)
 							phatRows[i]=new StringBuilder("");
 						for(int x=0;x<areaDrawing.length;x++)
@@ -545,23 +545,23 @@ public class Skill_ResearchRegionMap extends StdSkill
 								final Area A1=areaDrawing[x][y];
 								Area A2;
 								A2=(x>0)?areaDrawing[x-1][y]:null;
-								char leftChar[]=pickMapChars('!','-',A1,A2,connections);
+								final char leftChar[]=pickMapChars('!','-',A1,A2,connections);
 								A2=(x<areaDrawing.length-1)?areaDrawing[x+1][y]:null;
-								char rightChar[]=pickMapChars('!','-',A1,A2,connections);
+								final char rightChar[]=pickMapChars('!','-',A1,A2,connections);
 								A2=(y>0)?areaDrawing[x][y-1]:null;
-								char topChar[]=pickMapChars('-','!',A1,A2,connections);
+								final char topChar[]=pickMapChars('-','!',A1,A2,connections);
 								A2=(y<areaDrawing[0].length-1)?areaDrawing[x][y+1]:null;
-								char botChar[]=pickMapChars('-','!',A1,A2,connections);
-								
+								final char botChar[]=pickMapChars('-','!',A1,A2,connections);
+
 								A2=((y>0)&&(x>0))?areaDrawing[x-1][y-1]:null;
-								char diagCharTL=pickMapChar('+','\\',A1,A2,connections);
+								final char diagCharTL=pickMapChar('+','\\',A1,A2,connections);
 								A2=((y>0)&&(x<areaDrawing.length-1))?areaDrawing[x+1][y-1]:null;
-								char diagCharTR=pickMapChar('+','/',A1,A2,connections);
+								final char diagCharTR=pickMapChar('+','/',A1,A2,connections);
 								A2=((x>0)&&(y<areaDrawing[0].length-1))?areaDrawing[x-1][y+1]:null;
-								char diagCharBL=pickMapChar('+','/',A1,A2,connections);
+								final char diagCharBL=pickMapChar('+','/',A1,A2,connections);
 								A2=((x<areaDrawing.length-1)&&(y<areaDrawing[0].length-1))?areaDrawing[x+1][y+1]:null;
-								char diagCharBR=pickMapChar('+','\\',A1,A2,connections);
-								String areaName=CMStrings.limit(CMStrings.padRight(A1.name(), 24),24);
+								final char diagCharBR=pickMapChar('+','\\',A1,A2,connections);
+								final String areaName=CMStrings.limit(CMStrings.padRight(A1.name(), 24),24);
 								phatRows[0].append(diagCharTL+CMStrings.repeat(topChar[0], 3)+topChar[1]+topChar[1]+CMStrings.repeat(topChar[0], 3)+diagCharTR);
 								phatRows[1].append(leftChar[0]+areaName.substring(0,8)+rightChar[0]);
 								phatRows[2].append(leftChar[1]+areaName.substring(8,16)+rightChar[1]);
@@ -569,7 +569,7 @@ public class Skill_ResearchRegionMap extends StdSkill
 								phatRows[4].append(diagCharBL+CMStrings.repeat(botChar[0], 3)+botChar[1]+botChar[1]+CMStrings.repeat(botChar[0], 3)+diagCharBR);
 							}
 						}
-						for(StringBuilder str : phatRows)
+						for(final StringBuilder str : phatRows)
 							map.append(str).append("\n\r");
 					}
 					this.finalMapI=CMClass.getBasicItem("GenReadable");
