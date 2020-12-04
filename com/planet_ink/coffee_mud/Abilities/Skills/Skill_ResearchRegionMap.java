@@ -294,7 +294,7 @@ public class Skill_ResearchRegionMap extends StdSkill
 							numAreas--;
 					}
 				}
-				final int range=25 + (2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
+				final int range=45 + (2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
 				this.finalMapI=null;
 				final Area targetA=CMLib.map().findArea(what);
 				final Room startRoom=mob.location();
