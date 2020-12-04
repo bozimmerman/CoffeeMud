@@ -100,7 +100,7 @@ settable vars:
 	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">delivered</STRING>
 	<STRING ID="reason_verb" PREDEFINE="reason=$reason">deliver</STRING>
 	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
-	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
+	<STRING ID="reason" DEFINE="reason" SELECT="Pick-1">
 		<STRING>$reason_theyoweme</STRING>
 		<STRING>$reason_partytime</STRING>
 		<STRING>$reason_iowethem</STRING>
@@ -110,6 +110,7 @@ settable vars:
 		<STRING>$reason_wedotogether</STRING>
 		<STRING CONDITION="$source_align &lt; -500">$reason_idotothem</STRING>
 		<STRING CONDITION="$source_align &lt; -500">$reason_wedotoeachother</STRING>
+		<STRING PICKWEIGHT=99 CONDITION="$deityname!=''">$reason_deitydo</STRING>
 	</STRING>
 
 	<STRING id="quest_generic_delivered_speeches" SELECT="Any-1">
@@ -184,6 +185,13 @@ settable vars:
 		</STRING>
 	</STRING>
 
+	<STRING ID="reason_deitydo" SELECT="All" REQUIRES="deityname=$">
+		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>${c:deityname} requires that $target_item_name be delivered to $target_area_name today.</STRING>
+		</STRING>
+	</STRING>
+	
 	<STRING ID="quest_point_awarded" DEFINE="quest_point_awarded" SELECT="Pick-1">
 		<STRING PICKWEIGHT=2>NO</STRING>
 		<STRING PICKWEIGHT=1>YES</STRING>

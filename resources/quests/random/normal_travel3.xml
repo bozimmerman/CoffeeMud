@@ -141,7 +141,8 @@ settable vars:
 	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
 	<STRING ID="reason" DEFINE="reason">
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>You have some $reason_verbing to get done.</STRING>
+			<STRING CONDITION="$deityname=''">You have some $reason_verbing to get done.</STRING>
+			<STRING CONDITION="$deityname!=''">You have some $reason_verbing to get done for ${c:deityname}.</STRING>
 		</STRING>
 	</STRING>
 

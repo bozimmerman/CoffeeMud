@@ -106,7 +106,7 @@ settable vars:
 	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">$verb_traveled</STRING>
 	<STRING ID="reason_verb" PREDEFINE="reason=$reason">$verb_travel</STRING>
 	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
-	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
+	<STRING ID="reason" DEFINE="reason" SELECT="Pick-1">
 		<STRING>$reason_theyoweme</STRING>
 		<STRING>$reason_partytime</STRING>
 		<STRING>$reason_iowethem</STRING>
@@ -116,6 +116,7 @@ settable vars:
 		<STRING>$reason_wedotogether</STRING>
 		<STRING CONDITION="$source_align &lt; -500">$reason_idotothem</STRING>
 		<STRING CONDITION="$source_align &lt; -500">$reason_wedotoeachother</STRING>
+		<STRING PICKWEIGHT=99 CONDITION="$deityname!=''">$reason_deitydo</STRING>
 	</STRING>
 
 	<STRING id="quest_generic_traveled_speeches" SELECT="Any-1">
@@ -170,6 +171,12 @@ settable vars:
 		<STRING define="quest_traveled">$quest_generic_traveled_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>I want to see what happens when you go to $target_name.</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_deitydo" SELECT="All" REQUIRES="deityname=$">
+		<STRING define="quest_traveled">$quest_generic_traveled_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>${c:deityname} requires that you go to $target_name.</STRING>
 		</STRING>
 	</STRING>
 

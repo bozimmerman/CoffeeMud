@@ -65,13 +65,16 @@ settable vars:
 	<STRING ID="quest_motive_list" PREDEFINE="reason=$reason">$quest_motive_list</STRING>
 	<STRING ID="quest_name"  PREDEFINE="reason=$reason">$quest_name</STRING>
 	<STRING ID="quest_notifystring"  PREDEFINE="reason=$reason">$quest_notifystring</STRING>
-	<STRING ID="quest_instructionstring"  PREDEFINE="reason=$reason">$quest_instructionstring</STRING>
+	<STRING ID="quest_instructionstring"  PREDEFINE="reason=$reason" SELECT="ALL">
+		<STRING ACTION="PREPEND">$quest_instructionstring</STRING>
+		<STRING ACTION="APPEND" CONDITION="$deityname!=''">This you must do for the glory of ${c:deityname}.</STRING>
+	</STRING>
 	<STRING ID="quest_completedstring" PREDEFINE="reason=$reason">$quest_completedstring</STRING>
 	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
-		<STRING>$reason_murder</STRING>
-		<STRING>$reason_robbed</STRING>
-		<STRING>$reason_magic</STRING>
-		<STRING>$reason_genmystery</STRING>
+		<STRING CONDITION="$sub_template=='' or $sub_template=='murder'">$reason_murder</STRING>
+		<STRING CONDITION="$sub_template=='' or $sub_template=='robbed'">$reason_robbed</STRING>
+		<STRING CONDITION="$sub_template=='' or $sub_template=='magic'">$reason_magic</STRING>
+		<STRING CONDITION="$sub_template=='' or $sub_template=='genmystery'">$reason_genmystery</STRING>
 	</STRING>
 
 	<STRING ID="reason_murder" SELECT="All">

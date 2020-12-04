@@ -542,6 +542,7 @@ public class Prayer_SacredImbuingQuest extends Prayer
 				definedIDs.put("AGGRESSION", "YES");
 				definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
 				definedIDs.put("TEMPLATE", "normal");
+				definedIDs.put("DEITYNAME", deityName);
 				final Quest q1=deviseAndStartQuest(mob, targetM, definedIDs);
 				if(q1 == null)
 				{

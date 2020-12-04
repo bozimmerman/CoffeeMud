@@ -118,7 +118,7 @@ settable vars:
 	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">$reason_verbed</STRING>
 	<STRING ID="reason_verb" PREDEFINE="reason=$reason">$reason_verb</STRING>
 	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
-	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
+	<STRING ID="reason" DEFINE="reason" SELECT="Pick-1">
 		<STRING CONDITION="$target_int &gt; 5">$reason_theyoweme</STRING>
 		<STRING>$reason_partytime</STRING>
 		<STRING CONDITION="$target_int &gt; 5">$reason_iowethem</STRING>
@@ -134,6 +134,7 @@ settable vars:
 		<STRING CONDITION="$target_int &gt; 5">$reason_theydoforme</STRING>
 		<STRING CONDITION="$source_align &lt; -5000">$reason_idotothem</STRING>
 		<STRING CONDITION="$source_align &lt; -5000">$reason_wedotoeachother</STRING>
+		<STRING PICKWEIGHT=99 CONDITION="$deityname!=''">$reason_deitydo</STRING>
 	</STRING>
 
 	<STRING id="quest_generic_loser_speeches" SELECT="Any-1">
@@ -470,6 +471,24 @@ settable vars:
 			<STRING>The ${p:target_name} and I are scheduled to $hurt_verb each other today.</STRING>
 			<STRING>The ${p:target_name} have insulted my honor, and only a ritual $hurt_verb will satisfy it.</STRING>
 			<STRING>I feel like engaging in a $adj_feeling_good ${p:target_name} ${hurt_verb}ing.</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_deitydo" SELECT="All" REQUIRES="deityname=$">
+		<STRING define="reason_verbed">$verb_captured</STRING>
+		<STRING define="reason_verb">$verb_capture</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_losespeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>Oh no! Not another servant of $deityname!</STRING>
+			<STRING>Please?! You can't make me serve $deityname!</STRING>
+			<STRING>I'd rather die than serve $deityname!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>${c:deityname} is collecting ${p:target_name}.  Do not ask why.</STRING>
+			<STRING>${c:deityname} requires that ${p:target_name} be $verb_captured, for some divine purpose.</STRING>
+			<STRING>The ${p:target_name} have insulted ${c:deityname}`s honor, and only a ritual $hurt_verb will satisfy it.</STRING>
+			<STRING>${c:deityname} feels like engaging in a $adj_feeling_good ${p:target_name} ${hurt_verb}ing.</STRING>
 		</STRING>
 	</STRING>
 	

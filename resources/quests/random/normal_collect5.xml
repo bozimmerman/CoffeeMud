@@ -71,12 +71,13 @@ vars:
 	<STRING ID="reason_verbed" define="reason_verbed">$verb_donated</STRING>
 	<STRING ID="reason_verb" define="reason_verb">$verb_donate</STRING>
 	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
-	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
+	<STRING ID="reason" DEFINE="reason" SELECT="Pick-1">
 		<STRING>$reason_ilostthem</STRING>
 		<STRING>$reason_welosteachother</STRING>
 		<STRING>$reason_gencollect</STRING>
 		<STRING>$reason_idoforthem</STRING>
 		<STRING>$reason_wedotoeachother</STRING>
+		<STRING PICKWEIGHT=99 CONDITION="$deityname!=''">$reason_deitydo</STRING>
 	</STRING>
 
 	<STRING ID="quest_notifystring" define="quest_notifystring" SELECT="ALL">
@@ -183,6 +184,18 @@ vars:
 			<STRING CONDITION="$source_class='Mage' or $source_class='Necromancer'">I need ${target_item_name} for supplies for my magical experiments.</STRING>
 			<STRING>${c:reason_verb} ${target_item_name} to me.</STRING>
 			<STRING>Bring me ${target_item_name}.</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_deitydo" SELECT="All" REQUIRES="deityname=$">
+		<STRING define="reason_verbed">$verb_stolen</STRING>
+		<STRING define="reason_verb">$verb_steal</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_fightspeech">$quest_generic_fight_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>${c:deityname} needs me to have ${p:target_item_name} for some magical experiments.</STRING>
+			<STRING>${c:reason_verb} ${p:target_item_name} for ${c:deityname}.</STRING>
+			<STRING>${c:deityname} has proclaimed that I need ${p:target_item_name}.</STRING>
+			<STRING>Bring me ${p:target_item_name} for ${c:deityname}.</STRING>
 		</STRING>
 	</STRING>
 

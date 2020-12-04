@@ -110,7 +110,7 @@ settable vars:
 	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">delivered</STRING>
 	<STRING ID="reason_verb" PREDEFINE="reason=$reason">deliver</STRING>
 	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
-	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
+	<STRING ID="reason" DEFINE="reason" SELECT="Pick-1">
 		<STRING CONDITION="$target_int &gt; 5">$reason_theyoweme</STRING>
 		<STRING CONDITION="$num_targets=1">$reason_partytime</STRING>
 		<STRING CONDITION="$target_int &gt; 5">$reason_iowethem</STRING>
@@ -120,6 +120,7 @@ settable vars:
 		<STRING CONDITION="$target_int &gt; 5">$reason_wedotogether</STRING>
 		<STRING CONDITION="$source_align &lt; -5000">$reason_idotothem</STRING>
 		<STRING CONDITION="$source_align &lt; -5000">$reason_wedotoeachother</STRING>
+		<STRING PICKWEIGHT=99 CONDITION="$deityname!=''">$reason_deitydo</STRING>
 	</STRING>
 
 	<STRING id="quest_generic_hello_speeches" SELECT="Any-1">
@@ -253,6 +254,17 @@ settable vars:
 			<STRING>${c:p_target_name} and I are scheduled to study $target_item_name today.</STRING>
 			<STRING>${c:p_target_name} has insulted my honor, and only a ritual delivery of $target_item_name will satisfy it.</STRING>
 			<STRING>I feel like decorating $target_item_name with ${p_target_name}.</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_deitydo" SELECT="All" REQUIRES="deityname=$">
+		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>${c:deityname} requires that I start a ${target_item_name} factory with ${p_target_name} help.</STRING>
+			<STRING>${c:deityname} requires that ${c:p_target_name} and I study $target_item_name today.</STRING>
+			<STRING>${c:p_target_name} has insulted ${c:deityname}'s honor, and only a ritual delivery of $target_item_name will satisfy it.</STRING>
+			<STRING>${c:deityname} wants $target_item_name delivered to ${p_target_name}.</STRING>
+			<STRING>${c:deityname} wants $target_item_name delivered to ${p_target_name}.</STRING>
 		</STRING>
 	</STRING>
 

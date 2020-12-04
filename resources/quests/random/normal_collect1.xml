@@ -92,7 +92,7 @@ vars:
 	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">$reason_verbed</STRING>
 	<STRING ID="reason_verb" PREDEFINE="reason=$reason">$reason_verb</STRING>
 	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
-	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
+	<STRING ID="reason" DEFINE="reason" SELECT="Pick-1">
 		<STRING CONDITION="$target_int &gt; 2">$reason_theyoweme</STRING>
 		<STRING CONDITION="$source_align &gt; 5000">$reason_ilostthem</STRING>
 		<STRING CONDITION="$source_align &gt; 5000">$reason_welosteachother</STRING>
@@ -100,6 +100,7 @@ vars:
 		<STRING CONDITION="$target_int &gt; 2 and $source_align &gt; 5000">$reason_idoforthem</STRING>
 		<STRING CONDITION="$source_align &lt; -5000">$reason_idotothem</STRING>
 		<STRING CONDITION="$source_align &lt; -5000">$reason_wedotoeachother</STRING>
+		<STRING PICKWEIGHT=99 CONDITION="$deityname!=''">$reason_deitydo</STRING>
 	</STRING>
 
 	<STRING ID="quest_notifystring" define="quest_notifystring" SELECT="ALL">
@@ -287,6 +288,19 @@ vars:
 			<STRING>The ${p:target_name} have all my ${p:target_item_name}, the $adj_nasty bastards.</STRING>
 			<STRING>The ${p:target_name} are a menace.  ${c:hurt_verb} them, and bring me their ${p:target_item_name}.</STRING>
 			<STRING>I feel like witnessing a $adj_feeling_good ${p:target_name} ${hurt_verb}ing.  Go do it and bring me their ${p:target_item_name}.</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_deitydo" SELECT="All" REQUIRES="deityname=$">
+		<STRING define="reason_verbed">$verb_stolen</STRING>
+		<STRING define="reason_verb">$verb_steal</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_fightspeech">$quest_generic_fight_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>${c:deityname} needs the ${p:target_item_name} of ${p:target_name} for some magical experiments.</STRING>
+			<STRING>${c:reason_verb} ${p:target_item_name} from ${p:target_name} for ${c:deityname}.</STRING>
+			<STRING>${c:deityname} has proclaimed that ${p:target_name} have too many ${p:target_item_name}, the $adj_nasty bastards.</STRING>
+			<STRING>The ${p:target_name} are a menace to ${c:deityname}.  ${c:hurt_verb} them, and bring me their ${p:target_item_name}.</STRING>
+			<STRING>${c:deityname} feels like witnessing a $adj_feeling_good ${p:target_name} ${hurt_verb}ing.  Go do it and bring me their ${p:target_item_name}.</STRING>
 		</STRING>
 	</STRING>
 

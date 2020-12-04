@@ -113,12 +113,13 @@ settable vars:
 	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">$verb_visited</STRING>
 	<STRING ID="reason_verb" PREDEFINE="reason=$reason">$verb_visit</STRING>
 	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
-	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
+	<STRING ID="reason" DEFINE="reason" SELECT="Pick-1">
 		<STRING CONDITION="$target_int &gt; 5">$reason_theyoweme</STRING>
 		<STRING>$reason_partytime</STRING>
 		<STRING CONDITION="$target_int &gt; 5">$reason_iowethem</STRING>
 		<STRING CONDITION="$source_align &gt; 0">$reason_ilostthem</STRING>
 		<STRING>$reason_gentravel</STRING>
+		<STRING PICKWEIGHT=99 CONDITION="$deityname!=''">$reason_deitydo</STRING>
 	</STRING>
 
 	<STRING id="quest_generic_hello_speeches" SELECT="Any-1">
@@ -185,6 +186,13 @@ settable vars:
 			<STRING>I need you to travel to $target_name.</STRING>
 			<STRING>You need to meet with ${target_name}.</STRING>
 			<STRING>${c:target_name} requires a visiti from you.</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="reason_deitydo" SELECT="All" REQUIRES="deityname=$">
+		<STRING define="quest_traveled">$quest_generic_traveled_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>${c:deityname} requires that you go to $target_name.</STRING>
 		</STRING>
 	</STRING>
 

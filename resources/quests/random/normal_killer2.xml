@@ -104,12 +104,13 @@ settable vars:
 	<STRING ID="quest_winspeech" PREDEFINE="reason=$reason">$quest_winspeech</STRING>
 	<STRING ID="quest_fightspeech" PREDEFINE="reason=$reason">$quest_fightspeech</STRING>
 	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
-	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
+	<STRING ID="reason" DEFINE="reason" SELECT="Pick-1">
 		<STRING CONDITION="$target_int &gt; 5">$reason_theyoweme</STRING>
 		<STRING CONDITION="$target_int &gt; 5">$reason_iowethem</STRING>
 		<STRING>$reason_genkiller</STRING>
 		<STRING CONDITION="$source_align &lt; -5000">$reason_idotothem</STRING>
 		<STRING CONDITION="$source_align &lt; -5000">$reason_wedotoeachother</STRING>
+		<STRING PICKWEIGHT=99 CONDITION="$deityname!=''">$reason_deitydo</STRING>
 	</STRING>
 
 	<STRING id="quest_generic_loser_speeches" SELECT="Any-1">
@@ -203,6 +204,21 @@ settable vars:
 			<STRING>The ${p:target_name} have insulted my honor, and only a ritual $hurt_verb will satisfy it.</STRING>
 			<STRING>I feel like engaging in a $adj_feeling_good ${p:target_name} ${hurt_verb}ing.</STRING>
 			<STRING>The ${p:target_name} are plotting against me!</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="reason_deitydo" SELECT="All" REQUIRES="deityname=$">
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>Oh no! Not a warrior of $deityname again!</STRING>
+			<STRING>Please?! You can't make me die for $deityname!</STRING>
+			<STRING>I'd rather kill you than submit to $deityname!</STRING>
+		</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>The ${p:target_name} are trying to kill followers of ${c:deityname}, and must be stopped.</STRING>
+			<STRING>The ${p:target_name} have insulted ${c:deityname}`s honor, and only a ritual $hurt_verb will satisfy it.</STRING>
+			<STRING>${c:deityname} requires that you engage in a $adj_feeling_good ${p:target_name} ${hurt_verb}ing.</STRING>
+			<STRING>The ${p:target_name} are plotting against ${c:deityname}!</STRING>
 		</STRING>
 	</STRING>
 

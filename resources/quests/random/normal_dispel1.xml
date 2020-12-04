@@ -105,6 +105,7 @@ settable vars:
 
 	<STRING ID="quest_notifystring" define="quest_notifystring" SELECT="ALL">
 		<STRING ACTION="PREPEND">$reason_short  $quest_notifyaddendum</STRING>
+		<STRING ACTION="APPEND" CONDITION="$deityname!=''">Do this in the name of ${c:deityname}.</STRING>
 	</STRING>
 
 	<STRING ID="quest_notifyaddendum" SELECT="Pick-1">
