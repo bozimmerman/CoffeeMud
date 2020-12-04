@@ -134,6 +134,8 @@ public class Skill_ResearchItem extends StdSkill
 		what = newMiscText;
 		ticksToRemain = 0;
 		theRoom=null;
+		numRoomsToDo=0;
+		checkIter=null;
 		final Physical affected = this.affected;
 		if(affected instanceof MOB)
 			numBooksInLibrary((MOB)affected); // sets the appropriate variables
@@ -146,6 +148,12 @@ public class Skill_ResearchItem extends StdSkill
 			return false;
 		if(tickID==Tickable.TICKID_MOB)
 		{
+			if(tickDown<=0)
+			{
+				tickDown=-1;
+				unInvoke();
+				return false;
+			}
 			final Physical affected=this.affected;
 			if(!(affected instanceof MOB))
 				return true;
