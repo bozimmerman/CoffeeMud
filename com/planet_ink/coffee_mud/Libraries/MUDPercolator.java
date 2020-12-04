@@ -64,6 +64,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		AREAS,
 		AREA,
 		ROOMS,
+		ANYROOMS,
 		ROOM,
 		EXITS,
 		PLAYERS,
@@ -129,6 +130,24 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				&& CMLib.coffeeShops().getShopKeeper(obj) != null;
 		}
 
+	};
+
+	private static final Filterer<Room> noPropertyFilter = new Filterer<Room>()
+	{
+		@Override
+		public boolean passesFilter(final Room obj)
+		{
+			if(obj == null)
+				return false;
+			if(obj.numEffects()==0)
+				return true;
+			for(int i=0;i<obj.numEffects();i++)
+			{
+				if(obj.fetchEffect(i) instanceof LandTitle)
+					return false;
+			}
+			return true;
+		}
 	};
 
 	private static final Converter<Session, MOB> sessionToMobConvereter= new Converter<Session, MOB>()
@@ -4746,13 +4765,19 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						break;
 					}
 					//$FALL-THROUGH$
+				case ANYROOMS:
 				case ROOMS:
 					{
 						if((from.size()==0)
 						&&(E instanceof Area))
 							from.add(E);
 						if(from.size()==0)
-							from.addAll(new XVector<Room>(CMLib.map().rooms()));
+						{
+							if(set==MQLSpecialFromSet.ANYROOMS)
+								from.addAll(new XVector<Room>(CMLib.map().rooms()));
+							else
+								from.addAll(new XVector<Room>(new FilteredEnumeration<Room>(CMLib.map().rooms(),noPropertyFilter)));
+						}
 						else
 						{
 							final List<Object> oldFrom=flattenMQLObjectList(from);
@@ -4762,7 +4787,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								final Room R;
 								if(o instanceof Area)
 								{
-									from.addAll(new XVector<Room>(((Area)o).getProperMap()));
+									from.addAll(new XVector<Room>(new FilteredEnumeration<Room>(((Area)o).getProperMap(),noPropertyFilter)));
 									continue;
 								}
 								if (o instanceof Environmental)
