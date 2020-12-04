@@ -251,11 +251,11 @@ vars:
 	<OBJECT ID="target_area" SELECT="Pick-1" DEFINE="target_area">
 		<OBJECT pickweight=55555 condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
 		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel = ''">
-			SELECT: ANY\. FROM areas WHERE (SELECT:count\. from area\rooms) &gt; $num_targets
+			SELECT: ANY\. FROM areas WHERE (SELECT:count\. from AREA\NPROOMS) &gt; $num_targets
 		</OBJECT>
 		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel != ''">
 			SELECT: ANY\. FROM areas WHERE MED_LEVEL &gt;= $target_min_arealevel and MED_LEVEL &lt;= $target_max_arealevel 
-				and (SELECT:count\. from area\rooms) &gt; $num_targets
+				and (SELECT:count\. from AREA\NPROOMS) &gt; $num_targets
 		</OBJECT>
 	</OBJECT>
 

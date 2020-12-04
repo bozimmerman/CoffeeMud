@@ -328,7 +328,7 @@ vars:
 		</OBJECT>
 		<OBJECT pickweight=1 condition="$area_name = '' and $target_min_arealevel = '' and '${SELECT: name FROM area}' = '' and $multiarea != 'YES'">
 			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from $mql_givable_questgivers) &gt; 0
-				AND (SELECT:count\. from area\rooms) &gt; $num_targets
+				AND (SELECT:count\. from AREA\NPROOMS) &gt; $num_targets
 		</OBJECT>
 		<OBJECT pickweight=1 condition="$area_name = '' and $target_min_arealevel != '' and '${SELECT: name FROM area}' = '' and $multiarea = 'YES'">
 			SELECT: ANY\. FROM areas WHERE MED_LEVEL &gt;= $target_min_arealevel and MED_LEVEL &lt;= $target_max_arealevel 
@@ -337,7 +337,7 @@ vars:
 		<OBJECT pickweight=1 condition="$area_name = '' and $target_min_arealevel != '' and '${SELECT: name FROM area}' = '' and $multiarea != 'YES'">
 			SELECT: ANY\. FROM areas WHERE MED_LEVEL &gt;= $target_min_arealevel and MED_LEVEL &lt;= $target_max_arealevel 
 				and (SELECT: count\. from $mql_givable_questgivers) &gt; 0
-				AND (SELECT:count\. from area\rooms) &gt; $num_targets
+				AND (SELECT:count\. from AREA\NPROOMS) &gt; $num_targets
 		</OBJECT>
 	</OBJECT>
 	

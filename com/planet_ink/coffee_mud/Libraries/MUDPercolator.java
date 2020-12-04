@@ -63,8 +63,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	{
 		AREAS,
 		AREA,
+		NPROOMS,
 		ROOMS,
-		ANYROOMS,
 		ROOM,
 		EXITS,
 		PLAYERS,
@@ -4765,7 +4765,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						break;
 					}
 					//$FALL-THROUGH$
-				case ANYROOMS:
+				case NPROOMS:
 				case ROOMS:
 					{
 						if((from.size()==0)
@@ -4773,10 +4773,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							from.add(E);
 						if(from.size()==0)
 						{
-							if(set==MQLSpecialFromSet.ANYROOMS)
-								from.addAll(new XVector<Room>(CMLib.map().rooms()));
-							else
+							if(set==MQLSpecialFromSet.NPROOMS)
 								from.addAll(new XVector<Room>(new FilteredEnumeration<Room>(CMLib.map().rooms(),noPropertyFilter)));
+							else
+								from.addAll(new XVector<Room>(CMLib.map().rooms()));
 						}
 						else
 						{
@@ -4787,7 +4787,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								final Room R;
 								if(o instanceof Area)
 								{
-									from.addAll(new XVector<Room>(new FilteredEnumeration<Room>(((Area)o).getProperMap(),noPropertyFilter)));
+									if(set==MQLSpecialFromSet.NPROOMS)
+										from.addAll(new XVector<Room>(new FilteredEnumeration<Room>(((Area)o).getProperMap(),noPropertyFilter)));
+									else
+										from.addAll(new XVector<Room>(((Area)o).getProperMap()));
 									continue;
 								}
 								if (o instanceof Environmental)
