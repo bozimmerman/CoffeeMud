@@ -74,7 +74,7 @@ public class Prayer_SacredImbuingQuest extends Prayer
 		return Ability.COST_ALL;
 	}
 
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Sanctify Room)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Sacred Imbuing Quest)");
 
 	@Override
 	public String displayText()

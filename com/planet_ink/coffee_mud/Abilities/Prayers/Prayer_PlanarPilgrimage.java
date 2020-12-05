@@ -40,16 +40,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_DivinePilgrimage extends Prayer
+public class Prayer_PlanarPilgrimage extends Prayer
 {
 
 	@Override
 	public String ID()
 	{
-		return "Prayer_DivinePilgrimage";
+		return "Prayer_PlanarPilgrimage";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Divine Pilgrimmage");
+	private final static String	localizedName	= CMLib.lang().L("Planar Pilgrimmage");
 
 	@Override
 	public String name()
@@ -75,7 +75,7 @@ public class Prayer_DivinePilgrimage extends Prayer
 		return Ability.COST_ALL;
 	}
 
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Sanctify Room)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Planar Pilgrimage)");
 
 	@Override
 	public String displayText()
@@ -86,7 +86,7 @@ public class Prayer_DivinePilgrimage extends Prayer
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_PRAYER | Ability.DOMAIN_BLESSING;
+		return Ability.ACODE_PRAYER | Ability.DOMAIN_INFLUENTIAL;
 	}
 
 	@Override
@@ -112,11 +112,11 @@ public class Prayer_DivinePilgrimage extends Prayer
 			quest1.enterDormantState();
 			CMLib.quests().delQuest(quest1);
 			if(affected instanceof MOB)
-				((MOB)affected).tell("You have failed the divine pilgrimage.");
+				((MOB)affected).tell("You have failed the planar pilgrimage.");
 		}
 		else
 		if(affected instanceof MOB)
-			((MOB)affected).tell("You have failed the divine pilgrimage.");
+			((MOB)affected).tell("You have failed the planar pilgrimage.");
 		super.unInvoke();
 	}
 
@@ -164,11 +164,11 @@ public class Prayer_DivinePilgrimage extends Prayer
 			quest1.stopQuest();
 			quest1.enterDormantState();
 			CMLib.quests().delQuest(quest1);
-			mob.tell("You have successfully completed the divine pilgrimage.");
+			mob.tell("You have successfully completed the planar pilgrimage.");
 			final MOB invokerM=invoker();
 			if(invokerM!=null)
 			{
-				final Prayer_DivinePilgrimage realA=(Prayer_DivinePilgrimage)invokerM.fetchAbility(ID());
+				final Prayer_PlanarPilgrimage realA=(Prayer_PlanarPilgrimage)invokerM.fetchAbility(ID());
 				if(realA!=null)
 					lastUsed.add(mob.Name());
 			}
@@ -292,6 +292,20 @@ public class Prayer_DivinePilgrimage extends Prayer
 		return 15;
 	}
 
+	private enum QuestTemplate
+	{
+		PEACEFUL_CAPTURE,
+		COLLECT_GROUND,
+		COLLECT_MOBS,
+		COLLECT_RESOURCES,
+		DELIVERY,
+		DISPEL,
+		ESCORT,
+		KILL_ELITE,
+		KILL_OFFICER,
+		TRAVEL
+	}
+	
 	/*
 SKILL	Divine Pilgrimage
 Domain	Influencial
@@ -355,16 +369,20 @@ Expertise should allow the Reliquist to use this ability 1 extra time per mudmon
 		final String deityName=mob.charStats().getWorshipCharID();
 		if((deityName.length()==0)||(mob.charStats().getMyDeity()==null))
 		{
-			mob.tell(L("You must worship a deity to begin the divine pilgrimage.",targetM.Name()));
+			mob.tell(L("You must worship a deity to begin the planar pilgrimage.",targetM.Name()));
 			return false;
 		}
 		if(!targetM.charStats().getWorshipCharID().equals(deityName))
 		{
-			mob.tell(L("@x1 must worship also worship @x2 to begin the divine pilgrimage.",targetM.Name(),deityName));
+			mob.tell(L("@x1 must worship also worship @x2 to begin the planar pilgrimage.",targetM.Name(),deityName));
 			return false;
 		}
 
 		String winningPlane="";
+		List<String> similarPlanes=new ArrayList<String>();
+		List<String> dissimilarPlanes=new ArrayList<String>();
+		
+		QuestTemplate templateCode=null;
 		final Deity deityM=mob.charStats().getMyDeity();
 		final PlanarAbility planarA=(PlanarAbility)CMClass.getAbility("StdPlanarAbility");
 		for(final String planeID : planarA.getAllPlaneKeys())
@@ -378,6 +396,7 @@ Expertise should allow the Reliquist to use this ability 1 extra time per mudmon
 				{
 					final String rangeName = F.fetchRangeName(CMath.s_int(alignNumStr));
 					winningPlane="";//TODO: just to prevent final -- delme
+					templateCode=null;
 				}
 			}
 			for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
@@ -392,6 +411,7 @@ Expertise should allow the Reliquist to use this ability 1 extra time per mudmon
 					continue;
 				final String rangeName = F.fetchRangeName(CMath.s_int(facNumStr));
 				winningPlane="";//TODO: just to prevent final -- delme
+				templateCode=null;
 			}
 		}
 
@@ -402,13 +422,13 @@ Expertise should allow the Reliquist to use this ability 1 extra time per mudmon
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,targetM,this,verbalCastCode(mob,targetM,auto),L("^S<S-NAME> @x1 to grant <T-NAME> a divine pilgrimmage.^?",super.prayWord(mob),targetM.name()));
+			final CMMsg msg=CMClass.getMsg(mob,targetM,this,verbalCastCode(mob,targetM,auto),L("^S<S-NAME> @x1 to grant <T-NAME> a planar pilgrimmage.^?",super.prayWord(mob),targetM.name()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final Ability effA=beneficialAffect(mob,targetM,asLevel,(int)(CMProps.getTicksPerHour()*2));
 				if(effA!=null)
-					effA.setMiscText("PLANE=\""+winningPlane+"\" DEITY=\""+deityName+"\"");
+					effA.setMiscText("PLANE=\""+winningPlane+"\" DEITY=\""+deityName+"\" TEMPLATECODE=\""+templateCode+"\"");
 			}
 		}
 		else
