@@ -258,7 +258,8 @@ public class Reliquist extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_SacredImbuingQuest",true);
 
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Prayer_DivinePilgrimage",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Prayer_DivinePilgrimage", 0, "", false,
+				 SecretFlag.MASKED, null, "+PLANE \"-Prime Material\"");
 
 		/**
 Other Engine changes:
