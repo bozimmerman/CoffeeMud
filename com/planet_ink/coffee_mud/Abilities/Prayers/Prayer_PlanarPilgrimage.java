@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Faction.Align;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
@@ -379,39 +380,56 @@ Expertise should allow the Reliquist to use this ability 1 extra time per mudmon
 		}
 
 		String winningPlane="";
-		List<String> similarPlanes=new ArrayList<String>();
-		List<String> dissimilarPlanes=new ArrayList<String>();
+		List<String> alignSamePlanes=new ArrayList<String>();
+		List<String> alignSimilarPlanes=new ArrayList<String>();
+		List<String> inclinSamePlanes=new ArrayList<String>();
+		List<String> inclinSimilarPlanes=new ArrayList<String>();
+		List<String> alignOpposedPlanes=new ArrayList<String>();
+		List<String> alignDissimilarPlanes=new ArrayList<String>();
+		List<String> inclinOppsedPlanes=new ArrayList<String>();
+		List<String> inclinDissimilarPlanes=new ArrayList<String>();
 		
 		QuestTemplate templateCode=null;
 		final Deity deityM=mob.charStats().getMyDeity();
 		final PlanarAbility planarA=(PlanarAbility)CMClass.getAbility("StdPlanarAbility");
-		for(final String planeID : planarA.getAllPlaneKeys())
+		final int alignNum=targetM.fetchFaction(CMLib.factions().getAlignmentID());
+		final Faction alignF=CMLib.factions().getFaction(CMLib.factions().getAlignmentID());
+		Faction.FRange myAlignRange=null;
+		if((alignF!=null)&&(alignNum != Integer.MAX_VALUE))
+			myAlignRange=alignF.fetchRange(alignNum);
+		Align equiv=null;
+		if(myAlignRange!=null)
+			equiv=myAlignRange.alignEquiv();
+		if(equiv != null)
 		{
-			final Map<String,String> planeVars = planarA.getPlanarVars(planeID);
-			final String alignNumStr = planeVars.get(PlanarVar.ALIGNMENT.toString());
-			if((alignNumStr != null)&&(CMath.isInteger(alignNumStr)))
+			Faction.FRange planeRange = null;
+			for(final String planeID : planarA.getAllPlaneKeys())
 			{
-				final Faction F=CMLib.factions().getFaction(CMLib.factions().getAlignmentID());
-				if(F!=null)
+				final Map<String,String> planeVars = planarA.getPlanarVars(planeID);
+				final String alignNumStr = planeVars.get(PlanarVar.ALIGNMENT.toString());
+				if((alignNumStr != null)&&(CMath.isInteger(alignNumStr)))
+					planeRange=alignF.fetchRange(CMath.s_int(alignNumStr));
+				else
 				{
-					final String rangeName = F.fetchRangeName(CMath.s_int(alignNumStr));
-					winningPlane="";//TODO: just to prevent final -- delme
-					templateCode=null;
+					for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+					{
+						final Faction F=f.nextElement();
+						String facNumStr = planeVars.get(F.factionID());
+						if((facNumStr == null)||(!CMath.isInteger(facNumStr)))
+							facNumStr = planeVars.get(F.name().toUpperCase());
+						if((facNumStr == null)||(!CMath.isInteger(facNumStr)))
+							continue;
+						planeRange=F.fetchRange(CMath.s_int(facNumStr));
+					}
 				}
-			}
-			for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
-			{
-				final Faction F=f.nextElement();
-				String facNumStr = planeVars.get(F.factionID());
-				if((facNumStr == null)||(!CMath.isInteger(facNumStr)))
-					facNumStr = planeVars.get(F.name().toUpperCase());
-				if((facNumStr == null)||(!CMath.isInteger(facNumStr)))
-					continue;
-				if(F.factionID().equals(CMLib.factions().getAlignmentID()))
-					continue;
-				final String rangeName = F.fetchRangeName(CMath.s_int(facNumStr));
-				winningPlane="";//TODO: just to prevent final -- delme
-				templateCode=null;
+				if((planeRange != null)
+				&&(planeRange.alignEquiv()!=null))
+				{
+					if(planeRange == myAlignRange)
+						alignSamePlanes.add(planeID);
+					if(planeRange.alignEquiv()==equiv)
+						alignSimilarPlanes.add(planeID);
+				}
 			}
 		}
 
