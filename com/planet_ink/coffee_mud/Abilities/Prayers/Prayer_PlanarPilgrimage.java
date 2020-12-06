@@ -293,18 +293,32 @@ public class Prayer_PlanarPilgrimage extends Prayer
 		return 15;
 	}
 
+	private enum QuestReq
+	{
+		SAME, SIMILAR, DISSIMILAR, OPPOSED,
+		OUTER, INNER
+	}
+	
 	private enum QuestTemplate
 	{
-		PEACEFUL_CAPTURE,
-		COLLECT_GROUND,
-		COLLECT_MOBS,
-		COLLECT_RESOURCES,
-		DELIVERY,
-		DISPEL,
-		ESCORT,
-		KILL_ELITE,
-		KILL_OFFICER,
+		PEACEFUL_CAPTURE(QuestReq.SIMILAR),
+		DEFEAT_CAPTURE(QuestReq.DISSIMILAR),
+		COLLECT_GROUND(QuestReq.OUTER),
+		COLLECT_MOBS(QuestReq.OUTER,QuestReq.DISSIMILAR),
+		COLLECT_RESOURCES(QuestReq.INNER),
+		DELIVERY(QuestReq.INNER),
+		DISPEL(QuestReq.OUTER,QuestReq.SIMILAR),
+		ESCORT(QuestReq.SIMILAR),
+		KILL_ELITE(QuestReq.OUTER,QuestReq.DISSIMILAR),
+		KILL_OFFICER(QuestReq.OUTER,QuestReq.DISSIMILAR),
 		TRAVEL
+		;
+		
+		public final QuestReq[] req;
+		private QuestTemplate(QuestReq... req)
+		{
+			this.req=req;
+		}
 	}
 	
 	/*
@@ -320,10 +334,20 @@ Range	Touch or Not applicable
 Commands	PILGRIMAGE
 Usage	PILGRAMAGE [TARGET NAME]
 Example	Pilgrimage Garath
-Description	A Reliquist may assign a pilgrimage to another follower of their deity or themselves, once per MUDMONTH.  A Reliquist may only assign 1 pilgrimage per 10 levels of Reliquest class, but each target may only participate in 1 pilgramage per mudmoth.  The target will gain a quest to travel to a particular area and plane of existence, and perform a specific task while there.  Upon completion of the task, the target should return to the Reliquist to receive a powerful blessing from the deity as a reward, as well as a significant improvement in their relationship with their deity.
-Builder’s Notes	This ability should generate a quest with the Reliquist as the questgiver and rewardgiver.  If the Reliquist cannot accept and/or turn in quests with himself, then remove the ability for the Reliquist to target himself with this ability (and the words in blue above).  The quests assigned will be non-competitive quests, and the planes assigned will be based on the randomly selected quest, the deity, and the target’s alignment/inclination:
+Description	A Reliquist may assign a pilgrimage to another follower of their deity or themselves, once per MUDMONTH.  
+A Reliquist may only assign 1 pilgrimage per 10 levels of Reliquest class, but each target may only participate in 1 
+pilgramage per mudmoth.  The target will gain a quest to travel to a particular area and plane of existence, and 
+perform a specific task while there.  Upon completion of the task, the target should return to the Reliquist to 
+receive a powerful blessing from the deity as a reward, as well as a significant improvement in their relationship 
+with their deity.
+Builder’s Notes	This ability should generate a quest with the Reliquist as the questgiver and rewardgiver.  
+If the Reliquist cannot accept and/or turn in quests with himself, then remove the ability for the Reliquist 
+to target himself with this ability (and the words in blue above).  The quests assigned will be non-competitive 
+quests, and the planes assigned will be based on the randomly selected quest, the deity, and the target’s 
+alignment/inclination:
 Definitions:
-•	Same=Within the same alignment/inclination range (PURE GOOD is not the same as GOOD, PURE EVIL is not the same as EVIL, but SOMEWHATGOOD/NEUTRAL/SOMEWHAT evil are all the SAME as Neutral)
+•	Same=Within the same alignment/inclination range (PURE GOOD is not the same as GOOD, PURE EVIL is
+ not the same as EVIL, but SOMEWHATGOOD/NEUTRAL/SOMEWHAT evil are all the SAME as Neutral)
 •	Similar=within the same alignment/inclination grouping (PURE GOOD or GOOD)/(SOMEWHATGOOD or NEUTRAL or SOMEWHATEVIL)/(EVIL or PUREEVIL) or inclination.
 •	Dissimilar=not within the same alignment/inclination grouping (so if the player has a GOOD alignment, the plane would need to be Neutral, Evil or Pure Evil to be dissimilar.
 •	Opposed=Opposite alignment/inclination.  PURE GOOD opposes PURE EVIL, GOOD opposes EVIL, Neutral (and sub-cats) opposes itself.  PURE LAW opposes PURE CHAOS, LAW opposes CHAOS, Moderate (and sub-cats) opposes itself.
@@ -379,28 +403,41 @@ Expertise should allow the Reliquist to use this ability 1 extra time per mudmon
 			return false;
 		}
 
-		String winningPlane="";
 		List<String> alignSamePlanes=new ArrayList<String>();
 		List<String> alignSimilarPlanes=new ArrayList<String>();
-		List<String> inclinSamePlanes=new ArrayList<String>();
-		List<String> inclinSimilarPlanes=new ArrayList<String>();
 		List<String> alignOpposedPlanes=new ArrayList<String>();
 		List<String> alignDissimilarPlanes=new ArrayList<String>();
-		List<String> inclinOppsedPlanes=new ArrayList<String>();
-		List<String> inclinDissimilarPlanes=new ArrayList<String>();
 		
-		QuestTemplate templateCode=null;
 		final Deity deityM=mob.charStats().getMyDeity();
 		final PlanarAbility planarA=(PlanarAbility)CMClass.getAbility("StdPlanarAbility");
-		final int alignNum=targetM.fetchFaction(CMLib.factions().getAlignmentID());
 		final Faction alignF=CMLib.factions().getFaction(CMLib.factions().getAlignmentID());
+		final Faction incliF=CMLib.factions().getFaction(CMLib.factions().getInclinationID());
+		
+		final int deityAlignNum=deityM.fetchFaction(CMLib.factions().getAlignmentID());
+		Faction.FRange deityAlignRange=null;
+		if((alignF!=null)&&(deityAlignNum != Integer.MAX_VALUE))
+			deityAlignRange=alignF.fetchRange(deityAlignNum);
+		Align deityAlignEquiv=null;
+		if(deityAlignRange!=null)
+			deityAlignEquiv=deityAlignRange.alignEquiv();
+		final int deityIncliNum=deityM.fetchFaction(CMLib.factions().getInclinationID());
+		Faction.FRange deityIncliRange=null;
+		if((incliF!=null)&&(deityIncliNum != Integer.MAX_VALUE))
+			deityIncliRange=incliF.fetchRange(deityIncliNum);
+		Align deityIncliEquiv=null;
+		if(deityIncliRange!=null)
+			deityIncliEquiv=deityIncliRange.alignEquiv();
+		
+		final int alignNum=targetM.fetchFaction(CMLib.factions().getAlignmentID());
 		Faction.FRange myAlignRange=null;
 		if((alignF!=null)&&(alignNum != Integer.MAX_VALUE))
 			myAlignRange=alignF.fetchRange(alignNum);
-		Align equiv=null;
+		Align myAlignEquiv=null;
 		if(myAlignRange!=null)
-			equiv=myAlignRange.alignEquiv();
-		if(equiv != null)
+			myAlignEquiv=myAlignRange.alignEquiv();
+		if((myAlignEquiv != null)
+		&&(myAlignRange!=null)
+		&&(alignF!=null))
 		{
 			Faction.FRange planeRange = null;
 			for(final String planeID : planarA.getAllPlaneKeys())
@@ -420,19 +457,198 @@ Expertise should allow the Reliquist to use this ability 1 extra time per mudmon
 						if((facNumStr == null)||(!CMath.isInteger(facNumStr)))
 							continue;
 						planeRange=F.fetchRange(CMath.s_int(facNumStr));
+						if((planeRange!=null)
+						&&((planeRange.alignEquiv()==Align.GOOD)
+							||(planeRange.alignEquiv()==Align.EVIL)
+							||(planeRange.alignEquiv()==Align.NEUTRAL)))
+							break;
 					}
 				}
 				if((planeRange != null)
 				&&(planeRange.alignEquiv()!=null))
 				{
-					if(planeRange == myAlignRange)
+					if((planeRange == myAlignRange)
+					&&(myAlignRange==deityAlignRange))
 						alignSamePlanes.add(planeID);
-					if(planeRange.alignEquiv()==equiv)
+					if((planeRange.alignEquiv()==myAlignEquiv)
+					&&(planeRange.alignEquiv()==deityAlignEquiv))
 						alignSimilarPlanes.add(planeID);
+					else
+					if(deityAlignRange!=null)
+					{
+						if((CMath.absDiff(planeRange.med(), deityAlignRange.med())<10)
+						&&(CMath.absDiff(planeRange.med(), myAlignRange.med())<10))
+							alignOpposedPlanes.add(planeID);
+						else
+						if((planeRange.alignEquiv()!=myAlignEquiv)
+						&&(planeRange.alignEquiv()!=deityAlignEquiv))
+							alignDissimilarPlanes.add(planeID);
+					}
 				}
 			}
 		}
 
+		final int incliNum=targetM.fetchFaction(CMLib.factions().getInclinationID());
+		Faction.FRange myIncliRange=null;
+		if((incliF!=null)&&(incliNum != Integer.MAX_VALUE))
+			myIncliRange=incliF.fetchRange(incliNum);
+		Align myIncliEquiv=null;
+		if(myIncliRange!=null)
+			myIncliEquiv=myIncliRange.alignEquiv();
+		if((myIncliEquiv != null)
+		&&(myIncliRange!=null)
+		&&(incliF!=null))
+		{
+			Faction.FRange planeRange = null;
+			for(final String planeID : planarA.getAllPlaneKeys())
+			{
+				final Map<String,String> planeVars = planarA.getPlanarVars(planeID);
+				for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+				{
+					final Faction F=f.nextElement();
+					String facNumStr = planeVars.get(F.factionID());
+					if((facNumStr == null)||(!CMath.isInteger(facNumStr)))
+						facNumStr = planeVars.get(F.name().toUpperCase());
+					if((facNumStr == null)||(!CMath.isInteger(facNumStr)))
+						continue;
+					planeRange=F.fetchRange(CMath.s_int(facNumStr));
+					if((planeRange!=null)
+					&&((planeRange.alignEquiv()==Align.LAWFUL)
+						||(planeRange.alignEquiv()==Align.CHAOTIC)
+						||(planeRange.alignEquiv()==Align.MODERATE)))
+						break;
+				}
+				if((planeRange != null)
+				&&(planeRange.alignEquiv()!=null))
+				{
+					if((planeRange == myIncliRange)
+					&&(myIncliRange==deityIncliRange))
+					{
+						alignOpposedPlanes.remove(planeID);
+						alignDissimilarPlanes.remove(planeID);
+					}
+					if((planeRange.alignEquiv()==myIncliEquiv)
+					&&(planeRange.alignEquiv()==deityIncliEquiv))
+					{
+						alignSamePlanes.remove(planeID);
+						alignOpposedPlanes.remove(planeID);
+						alignDissimilarPlanes.remove(planeID);
+					}
+					else
+					if(deityIncliRange!=null)
+					{
+						if((CMath.absDiff(planeRange.med(), deityIncliRange.med())<10)
+						&&(CMath.absDiff(planeRange.med(), myIncliRange.med())<10))
+						{
+							alignSamePlanes.remove(planeID);
+							alignSimilarPlanes.remove(planeID);
+							alignDissimilarPlanes.remove(planeID);
+						}
+						else
+						if((planeRange.alignEquiv()!=myIncliEquiv)
+						&&(planeRange.alignEquiv()!=deityIncliEquiv))
+						{
+							alignSamePlanes.remove(planeID);
+							alignSimilarPlanes.remove(planeID);
+							alignOpposedPlanes.remove(planeID);
+						}
+					}
+				}
+			}
+		}
+
+		PairList<String,QuestTemplate> finalChoices = new PairArrayList<String,QuestTemplate>();
+		// plane/template choice
+		for(final String planeID : planarA.getAllPlaneKeys())
+		{
+			final Map<String,String> planeVars = planarA.getPlanarVars(planeID);
+			for(final QuestTemplate T : QuestTemplate.values())
+			{
+				int times=0;
+				if(T.req.length==0)
+				{
+					finalChoices.add(planeID,T);
+					continue;
+				}
+				for(final QuestReq req : T.req)
+				{
+					boolean pass=false;
+					switch(req)
+					{
+					case DISSIMILAR:
+						if(alignOpposedPlanes.contains(planeID)
+						||alignDissimilarPlanes.contains(planeID))
+						{
+							pass=true;
+							times+=3;
+						}
+						break;
+					case INNER:
+					{
+						final String catStr=planeVars.get(PlanarVar.CATEGORY.toString());
+						if((catStr != null)
+						&&CMParms.parseCommas(catStr.toUpperCase(), true).contains("INNER"))
+						{
+							pass=true;
+							times+=2;
+						}
+						break;
+					}
+					case OPPOSED:
+						if(alignOpposedPlanes.contains(planeID))
+						{
+							pass=true;
+							times+=4;
+						}
+						break;
+					case OUTER:
+					{
+						final String catStr=planeVars.get(PlanarVar.CATEGORY.toString());
+						if((catStr != null)
+						&&CMParms.parseCommas(catStr.toUpperCase(), true).contains("OUTER"))
+						{
+							pass=true;
+							times+=2;
+						}
+						break;
+					}
+					case SAME:
+						if(alignSamePlanes.contains(planeID))
+						{
+							pass=true;
+							times+=4;
+						}
+						break;
+					case SIMILAR:
+						if(alignSamePlanes.contains(planeID)
+						||alignSimilarPlanes.contains(planeID))
+						{
+							pass=true;
+							times+=3;
+						}
+						break;
+					default:
+						break;
+					}
+					if(!pass)
+					{
+						times=0;
+						break;
+					}
+				}
+				for(int i=0;i<times;i++)
+					finalChoices.add(planeID,T);
+			}
+		}
+		
+		if(finalChoices.size()==0)
+		{
+			mob.tell(L("The planes of existence to not, actually, exist."));
+			return false;
+		}
+		
+		final Pair<String,QuestTemplate> winner=finalChoices.get(CMLib.dice().roll(1, finalChoices.size(), -1));
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -446,7 +662,7 @@ Expertise should allow the Reliquist to use this ability 1 extra time per mudmon
 				mob.location().send(mob,msg);
 				final Ability effA=beneficialAffect(mob,targetM,asLevel,(int)(CMProps.getTicksPerHour()*2));
 				if(effA!=null)
-					effA.setMiscText("PLANE=\""+winningPlane+"\" DEITY=\""+deityName+"\" TEMPLATECODE=\""+templateCode+"\"");
+					effA.setMiscText("PLANE=\""+winner.first+"\" DEITY=\""+deityName+"\" TEMPLATECODE=\""+winner.second.name()+"\"");
 			}
 		}
 		else
