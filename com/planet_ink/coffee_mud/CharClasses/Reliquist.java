@@ -202,7 +202,7 @@ public class Reliquist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_Disenchant",0,false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_SenseDigs",false);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_AlchemicalVenom",false); // also: Arcanist (18Q), Assassin (24Q), Trapper (24Q), Thief (18Q)
-		// also Scroll Titling for Arcanist and others
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),18,"ScrollTitling",false); // also:  for Arcanist and others
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Detection",0,false);
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))

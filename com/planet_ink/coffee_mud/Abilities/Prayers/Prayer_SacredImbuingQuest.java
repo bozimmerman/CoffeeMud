@@ -572,4 +572,12 @@ public class Prayer_SacredImbuingQuest extends Prayer
 		// return whether it worked
 		return success;
 	}
+
+	@Override
+	public void setStat(final String code, final String val)
+	{
+		if(code.equalsIgnoreCase("NEXTCAST"))
+			lastUsed.clear();
+		super.setStat(code, val);
+	}
 }
