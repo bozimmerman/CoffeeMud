@@ -239,9 +239,9 @@ public class Reliquist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_EmpowerSacredArmor",false,"+SKILLS -Prayer_EmpowerHolyArmor -Prayer_EmpowerUnholyArmor"); // special A
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_InciteDivineFeud",0,true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_ProtectSacredItem",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_ProtectSacredItem",false, new XVector<String>("Prayer_ProtectItem"));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_WhipStrip",0,false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_EternalItem",false, new XVector<String>("Prayer_ProtectItem"));
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_EternalItem",false, new XVector<String>("Prayer_ProtectItem"));
 
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
 			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueHolyWeapon",false,"+SKILLS -Prayer_ImbueUnholyWeapon -Prayer_ImbueSacredWeapon"); // special A

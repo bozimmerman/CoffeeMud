@@ -61,13 +61,13 @@ public class Prayer_PlanarPilgrimage extends Prayer
 	@Override
 	protected int canAffectCode()
 	{
-		return 0;
+		return CAN_MOBS;
 	}
 
 	@Override
 	protected int canTargetCode()
 	{
-		return 0;
+		return CAN_MOBS;
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class Prayer_PlanarPilgrimage extends Prayer
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_INDIFFERENT;
+		return Ability.QUALITY_OK_OTHERS;
 	}
 
 	@Override
@@ -123,8 +123,10 @@ public class Prayer_PlanarPilgrimage extends Prayer
 
 	protected final static LimitedTreeSet<String> lastUsed = new LimitedTreeSet<String>(TimeManager.MILI_DAY, 1000, true);
 
-
 	protected Quest quest1 = null;
+	protected String planeName = null;
+	protected String deityName = null;
+	protected QuestTemplate template = null;
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
@@ -137,13 +139,18 @@ public class Prayer_PlanarPilgrimage extends Prayer
 		final MOB mob=(MOB)affected;
 		if(quest1 == null)
 		{
+			if((planeName == null)||(deityName==null))
+				return tickUninvoke();
+			final Area A=CMLib.map().areaLocation(mob);
+			if((A==null)||(!planeName.equalsIgnoreCase(CMLib.flags().getPlaneOfExistence(A))))
+				return true;
 			final Map<String,Object> definedIDs = new Hashtable<String,Object>();
 			definedIDs.put("AREA_NAME", mob.location().getArea().Name());
 			definedIDs.put("target_level".toUpperCase(), ""+mob.phyStats().level());
 			//definedIDs.put("AGGRESSION", "YES");
 			//definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
 			definedIDs.put("TEMPLATE", "normal");
-			definedIDs.put("DEITYNAME", mob.charStats().getWorshipCharID());
+			definedIDs.put("DEITYNAME", deityName);
 			final Quest q1=deviseAndStartQuest(mob, mob, definedIDs);
 			if(q1 == null)
 			{
@@ -189,6 +196,13 @@ public class Prayer_PlanarPilgrimage extends Prayer
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
+		if(newMiscText.length()>0)
+		{
+			planeName = CMParms.getParmStr(newMiscText, "PLANE", this.planeName);
+			deityName = CMParms.getParmStr(newMiscText, "DEITY", this.deityName);
+			final String code = CMParms.getParmStr(newMiscText, "PLANE", (this.template == null) ? null : this.template.name());
+			template = (QuestTemplate)CMath.s_valueOf(QuestTemplate.class, code);
+		}
 	}
 
 	public Quest deviseAndStartQuest(final MOB mob, final MOB targetM, final Map<String,Object> definedIDs)
@@ -210,59 +224,118 @@ public class Prayer_PlanarPilgrimage extends Prayer
 				final List<XMLLibrary.XMLTag> xmlRoot = CMLib.xml().parseAllXML(xml);
 				if(!definedIDs.containsKey("QUEST_CRITERIA"))
 					definedIDs.put("QUEST_CRITERIA", "-NAME \"+"+targetM.Name()+"\" -NPC");
-				definedIDs.put("DURATION", ""+CMProps.getTicksPerHour());
-				definedIDs.put("EXPIRATION", ""+CMProps.getTicksPerHour());
-				definedIDs.put("MULTIAREA", "YES");
-				final Map<String,Object> preDefined=new XHashtable<String,Object>(definedIDs);
-				CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs, preDefined.keySet());
-				final String idName = "ALL_QUESTS";
-				if((!(definedIDs.get(idName) instanceof XMLTag))
-				||(!((XMLTag)definedIDs.get(idName)).tag().equalsIgnoreCase("quest")))
+				definedIDs.put("DURATION", ""+tickDown);
+				definedIDs.put("EXPIRATION", ""+tickDown);
+				if(mob != targetM)
 				{
-					Log.errOut(L("The quest id '@x1' has not been defined in the data file for @x2.",idName,targetM.name()));
-					return null;
-				}
-				final XMLTag piece=(XMLTag)definedIDs.get(idName);
-				try
-				{
-					CMLib.percolator().checkRequirements(piece, definedIDs);
-				}
-				catch(final CMException cme)
-				{
-					Log.errOut(L("Required ids for @x1 were missing: @x2: for @x3",idName,cme.getMessage(),targetM.name()));
-					return null;
-				}
-				String s=CMLib.percolator().buildQuestScript(piece, definedIDs, mob);
-				if(s.length()==0)
-					throw new CMException("Failed to create any sort of quest at all! WTF!!");
-				CMLib.percolator().postProcess(definedIDs);
-				if((!definedIDs.containsKey("QUEST_ID"))
-				||(!(definedIDs.get("QUEST_ID") instanceof String)))
-					throw new CMException("Unable to create your quest because a quest_id was not generated");
-				final Quest Q=(Quest)CMClass.getCommon("DefaultQuest");
-				s=CMStrings.replaceFirst(s, "set mob reselect", "set pcmob reselect");
-				s=CMStrings.replaceFirst(s, "give script LOAD=", "give script PLAYEROK LOAD=");
-				Q.setScript(s,true);
-				if((Q.name().trim().length()==0)||(Q.duration()<0))
-					throw new CMException("Unable to create your quest.  Please consult the log.");
-				//mob.tell("Generated quest '"+Q.name()+"'");
-				final Quest badQ=CMLib.quests().fetchQuest(Q.name());
-				if(badQ!=null)
-					throw new CMException("Unable to create your quest.  One of that name already exists!");
-				Log.sysOut("Generate",targetM.Name()+" created quest '"+Q.name()+"' via "+ID());
-				CMLib.quests().addQuest(Q);
-				if(!Q.running())
-				{
-					if(!Q.startQuest())
+					definedIDs.put("MULTIAREA", "YES");
+					final Map<String,Object> preDefined=new XHashtable<String,Object>(definedIDs);
+					CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs, preDefined.keySet());
+					final String idName = "ALL_QUESTS";
+					if((!(definedIDs.get(idName) instanceof XMLTag))
+					||(!((XMLTag)definedIDs.get(idName)).tag().equalsIgnoreCase("quest")))
 					{
-						CMLib.quests().delQuest(Q);
-						throw new CMException("Unable to start the quest.  Something went wrong.  Perhaps the problem was logged?");
+						Log.errOut(L("The quest id '@x1' has not been defined in the data file for @x2.",idName,targetM.name()));
+						return null;
 					}
+					final XMLTag piece=(XMLTag)definedIDs.get(idName);
+					try
+					{
+						CMLib.percolator().checkRequirements(piece, definedIDs);
+					}
+					catch(final CMException cme)
+					{
+						Log.errOut(L("Required ids for @x1 were missing: @x2: for @x3",idName,cme.getMessage(),targetM.name()));
+						return null;
+					}
+					String s=CMLib.percolator().buildQuestScript(piece, definedIDs, mob);
+					if(s.length()==0)
+						throw new CMException("Failed to create any sort of quest at all! WTF!!");
+					CMLib.percolator().postProcess(definedIDs);
+					if((!definedIDs.containsKey("QUEST_ID"))
+					||(!(definedIDs.get("QUEST_ID") instanceof String)))
+						throw new CMException("Unable to create your quest because a quest_id was not generated");
+					final Quest Q=(Quest)CMClass.getCommon("DefaultQuest");
+					s=CMStrings.replaceFirst(s, "set mob reselect", "set pcmob reselect");
+					s=CMStrings.replaceFirst(s, "give script LOAD=", "give script PLAYEROK LOAD=");
+					Q.setScript(s,true);
+					if((Q.name().trim().length()==0)||(Q.duration()<0))
+						throw new CMException("Unable to create your quest.  Please consult the log.");
+					//mob.tell("Generated quest '"+Q.name()+"'");
+					final Quest badQ=CMLib.quests().fetchQuest(Q.name());
+					if(badQ!=null)
+						throw new CMException("Unable to create your quest.  One of that name already exists!");
+					Log.sysOut("Generate",targetM.Name()+" created quest '"+Q.name()+"' via "+ID());
+					CMLib.quests().addQuest(Q);
+					if(!Q.running())
+					{
+						if(!Q.startQuest())
+						{
+							CMLib.quests().delQuest(Q);
+							throw new CMException("Unable to start the quest.  Something went wrong.  Perhaps the problem was logged?");
+						}
+					}
+					Q.setCopy(true);
+					//TOOD: BZ: this will NOT do, as the mob is no longer present .. so call DO_ACCEPT and show
+					// instructions is changed
+					final CMMsg msg=CMClass.getMsg(targetM, mob.location(),null, CMMsg.MSG_ENTER, null);
+					mob.location().send(targetM, msg);
+					return Q;
 				}
-				Q.setCopy(true);
-				final CMMsg msg=CMClass.getMsg(targetM, mob.location(),null, CMMsg.MSG_ENTER, null);
-				mob.location().send(targetM, msg);
-				return Q;
+				else
+				{
+					if(!definedIDs.containsKey("QUEST_CRITERIA"))
+						definedIDs.put("QUEST_CRITERIA", "-NAME \"+"+affected.Name()+"\" -NPC");
+					definedIDs.put("DURATION", ""+CMProps.getTicksPerHour());
+					definedIDs.put("EXPIRATION", ""+CMProps.getTicksPerHour());
+					final Map<String,Object> preDefined=new XHashtable<String,Object>(definedIDs);
+					CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs, preDefined.keySet());
+					final String idName = "ALL_QUESTS";
+					if((!(definedIDs.get(idName) instanceof XMLTag))
+					||(!((XMLTag)definedIDs.get(idName)).tag().equalsIgnoreCase("quest")))
+					{
+						Log.errOut(L("The quest id '@x1' has not been defined in the data file for @x2.",idName,affected.name()));
+						return null;
+					}
+					final XMLTag piece=(XMLTag)definedIDs.get(idName);
+					try
+					{
+						CMLib.percolator().checkRequirements(piece, definedIDs);
+					}
+					catch(final CMException cme)
+					{
+						Log.errOut(L("Required ids for @x1 were missing: @x2: for @x3",idName,cme.getMessage(),affected.name()));
+						return null;
+					}
+					final Modifiable obj = null;
+					final String s=CMLib.percolator().buildQuestScript(piece, definedIDs, obj);
+					if(s.length()==0)
+						throw new CMException("Failed to create any sort of quest at all! WTF!!");
+					CMLib.percolator().postProcess(definedIDs);
+					if((!definedIDs.containsKey("QUEST_ID"))
+					||(!(definedIDs.get("QUEST_ID") instanceof String)))
+						throw new CMException("Unable to create your quest because a quest_id was not generated");
+					final Quest Q=(Quest)CMClass.getCommon("DefaultQuest");
+					Q.setScript(s,true);
+					if((Q.name().trim().length()==0)||(Q.duration()<0))
+						throw new CMException("Unable to create your quest.  Please consult the log.");
+					//mob.tell("Generated quest '"+Q.name()+"'");
+					final Quest badQ=CMLib.quests().fetchQuest(Q.name());
+					if(badQ!=null)
+						throw new CMException("Unable to create your quest.  One of that name already exists!");
+					Log.sysOut("Generate",affected.Name()+" created quest '"+Q.name()+"' via "+ID());
+					CMLib.quests().addQuest(Q);
+					if(!Q.running())
+					{
+						if(!Q.startQuest())
+						{
+							CMLib.quests().delQuest(Q);
+							throw new CMException("Unable to start the quest.  Something went wrong.  Perhaps the problem was logged?");
+						}
+					}
+					Q.setCopy(true);
+					return Q;
+				}
 			}
 			catch(final CMException cme)
 			{
@@ -281,16 +354,6 @@ public class Prayer_PlanarPilgrimage extends Prayer
 		int experienceToLose=1000;
 		experienceToLose+=(100*CMLib.ableMapper().lowestQualifyingLevel(imbuePrayerA.ID()));
 		return experienceToLose;
-	}
-
-	protected boolean checkAlignment(final MOB mob, final Physical target, final boolean quiet)
-	{
-		return true;
-	}
-
-	protected int maxPrayerLevel()
-	{
-		return 15;
 	}
 
 	private enum QuestReq
@@ -346,11 +409,6 @@ to target himself with this ability (and the words in blue above).  The quests a
 quests, and the planes assigned will be based on the randomly selected quest, the deity, and the target’s 
 alignment/inclination:
 Definitions:
-•	Same=Within the same alignment/inclination range (PURE GOOD is not the same as GOOD, PURE EVIL is
- not the same as EVIL, but SOMEWHATGOOD/NEUTRAL/SOMEWHAT evil are all the SAME as Neutral)
-•	Similar=within the same alignment/inclination grouping (PURE GOOD or GOOD)/(SOMEWHATGOOD or NEUTRAL or SOMEWHATEVIL)/(EVIL or PUREEVIL) or inclination.
-•	Dissimilar=not within the same alignment/inclination grouping (so if the player has a GOOD alignment, the plane would need to be Neutral, Evil or Pure Evil to be dissimilar.
-•	Opposed=Opposite alignment/inclination.  PURE GOOD opposes PURE EVIL, GOOD opposes EVIL, Neutral (and sub-cats) opposes itself.  PURE LAW opposes PURE CHAOS, LAW opposes CHAOS, Moderate (and sub-cats) opposes itself.
 Quest types:
 1.	PEACEFUL CAPTURE-Based off Capture1, must travel to a plane of same or similar alignment to deity and alignment and the same or similar inclination of the target and meet with said creature, who will follow the target back to the Reliquist to turn in the quest.
 2.	DEFEAT CAPTURE-Based off Capture1, must travel to a plane of dissimilar alignment to both the deity and the target, and dissimilar inclination to the target.  Defeat the mob in combat to subdue it and then return to the Reliquist to turn in the quest.
@@ -363,7 +421,6 @@ Quest types:
 9.	KILL SOLDIERS-Based off of Killer1, must travel to an outer plane of dissimilar alignment as deity and target, and dissimilar inclination as target and kill 2?10 inhabitants of that area.
 10.	KILLER OFFICERS- Based off of Killer1, must travel to an outer plane of dissimilar alignment as deity and target, and dissimilar inclination as target and kill an elite inhabitant of that area.
 11.	TRAVEL-Based off of Travel1, must travel to any random plane, random room from selected area, and then return to Reliquist for reward.
-If a deity’s alignment is dissimilar to the target’s alignment, then any quest that requires similar or same deity/target alignments should be excluded from the process (1,6,7,8)
 Reward for completing quest is 1000 faction with deity, and a buff, FAVORED OF (DEITY NAME) which provides +2 to all stats and +10 hp per level of target, +5 mana per level of target, +5 movement per level of target for the next MUDMONTH.
 Expertise should allow the Reliquist to use this ability 1 extra time per mudmonth, but not on the same target.  (I image some sort of tattoo or affect which will preclude a player from participating in subsequent pilgrimages that mudmonth.  Ideally, this would be linked directly to the specific mudmonth, not to time…but a timed tattoo would be fine, too).
 	 */
@@ -656,7 +713,7 @@ Expertise should allow the Reliquist to use this ability 1 extra time per mudmon
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,targetM,this,verbalCastCode(mob,targetM,auto),L("^S<S-NAME> @x1 to grant <T-NAME> a planar pilgrimmage.^?",super.prayWord(mob),targetM.name()));
+			final CMMsg msg=CMClass.getMsg(mob,targetM,this,verbalCastCode(mob,targetM,auto),L("^S<S-NAME> @x1 to grant <T-NAMESELF> a planar pilgrimmage.^?",super.prayWord(mob),targetM.name()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -33,15 +33,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_ProtectItem extends Prayer
+public class Prayer_EternalItem extends Prayer
 {
 	@Override
 	public String ID()
 	{
-		return "Prayer_ProtectItem";
+		return "Prayer_EternalItem";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Protect Item");
+	private final static String localizedName = CMLib.lang().L("Eternal Item");
 
 	@Override
 	public String name()
@@ -87,8 +87,6 @@ public class Prayer_ProtectItem extends Prayer
 		return true;
 	}
 
-	protected int maintainCondition=-1;
-
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
@@ -96,14 +94,8 @@ public class Prayer_ProtectItem extends Prayer
 		if(!(affected instanceof Item))
 			return;
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ITEMNORUIN);
-		final Item I=(Item)affected;
-		if(I.subjectToWearAndTear())
-		{
-			
-			if(I.usesRemaining()>maintainCondition)
-				maintainCondition=I.usesRemaining();
-			I.setUsesRemaining(maintainCondition);
-		}
+		if(((Item)affected).subjectToWearAndTear())
+			((Item)affected).setUsesRemaining(100);
 	}
 
 	@Override
@@ -113,13 +105,8 @@ public class Prayer_ProtectItem extends Prayer
 			return false;
 		if(!(affected instanceof Item))
 			return true;
-		final Item I=(Item)affected;
-		if(I.subjectToWearAndTear())
-		{
-			if(I.usesRemaining()>maintainCondition)
-				maintainCondition=I.usesRemaining();
-			I.setUsesRemaining(maintainCondition);
-		}
+		if(((Item)affected).subjectToWearAndTear())
+			((Item)affected).setUsesRemaining(100);
 		return true;
 	}
 
@@ -133,18 +120,30 @@ public class Prayer_ProtectItem extends Prayer
 		   ||((msg.tool() instanceof Ability)&&(((Ability)msg.tool()).abstractQuality()==Ability.QUALITY_MALICIOUS)))
 		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 		{
-			msg.source().tell(L("@x1 is unbreakable!",affected.name()));
+			msg.source().tell(L("@x1 is eternally protected!",affected.name()));
 			return false;
 		}
 		return true;
 	}
 
+/**
+Description	This prayer will make a holy item of the Reliquist’s deity protected from damage and destruction. This prayer is very draining on the caster, however, 
+causing the caster to lose 100 maximum mana points.  The caster must also be at full mana to cast.
+Builder’s Notes	The target item must already have a zapper mask restricting item use to the caster’s deity, 
+and any alignment restrictions on the item must allow for the caster’s alignment.
+The item maintains its current level.
+The item gains “of (deity’s name)” to its name (if it doesn’t already have the name of the deity in its name).
+Protects against combat damage, rust, spell damage, disintegrate, weapon break and any other ability that would damage
+ or destroy an object.  This will also protect the item from ruin (grants prop_itemnoruin).
+This prayer cannot be cast upon a GenSailingShip.
+ */
+	
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(L("Protect what?"));
+			mob.tell(L("Protect what eternally?"));
 			return false;
 		}
 		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,commands.get(commands.size()-1),Wearable.FILTER_UNWORNONLY);
@@ -155,7 +154,7 @@ public class Prayer_ProtectItem extends Prayer
 		}
 		if(!(target instanceof Wand))
 		{
-			mob.tell(mob,target,null,L("You can't protect <T-NAME>."));
+			mob.tell(mob,target,null,L("You can't protect <T-NAME> eternally."));
 			return false;
 		}
 
@@ -170,16 +169,14 @@ public class Prayer_ProtectItem extends Prayer
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
-					L(auto?"<T-NAME> appear(s) protected!":"^S<S-NAME> protect(s) <T-NAMESELF>"+inTheNameOf(mob)+".^?"));
+					L(auto?"<T-NAME> appear(s) protected eternally!":"^S<S-NAME> eternally protect(s) <T-NAMESELF>"+inTheNameOf(mob)+".^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final int duration=(int)((CMProps.getTicksPerMudHour()*6*(1+super.getXLEVELLevel(mob))) + (CMProps.getTicksPerMudHour()*adjustedLevel(mob,asLevel)));
-				this.beneficialAffect(mob, target, asLevel, duration);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 to protect <T-NAME>, but nothing happens.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 to protect <T-NAME> eternally, but nothing happens, immediately.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

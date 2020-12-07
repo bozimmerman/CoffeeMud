@@ -101,8 +101,13 @@ public class Prayer_ProtectSacredItem extends Prayer
 		super.affectPhyStats(affected, affectableStats);
 		if(!(affected instanceof Item))
 			return;
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ITEMNORUIN);
 		if(((Item)affected).subjectToWearAndTear())
+		{
+			if(((Item)affected).usesRemaining()>maintainCondition)
+				maintainCondition=((Item)affected).usesRemaining();
 			((Item)affected).setUsesRemaining(maintainCondition);
+		}
 	}
 
 	@Override
@@ -113,7 +118,11 @@ public class Prayer_ProtectSacredItem extends Prayer
 		if(!(affected instanceof Item))
 			return true;
 		if(((Item)affected).subjectToWearAndTear())
+		{
+			if(((Item)affected).usesRemaining()>maintainCondition)
+				maintainCondition=((Item)affected).usesRemaining();
 			((Item)affected).setUsesRemaining(maintainCondition);
+		}
 		return true;
 	}
 
@@ -145,11 +154,6 @@ public class Prayer_ProtectSacredItem extends Prayer
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell(L("You don't see '@x1' here.",(commands.get(commands.size()-1))));
-			return false;
-		}
-		if(!(target instanceof Wand))
-		{
-			mob.tell(mob,target,null,L("You can't protect <T-NAME>."));
 			return false;
 		}
 
