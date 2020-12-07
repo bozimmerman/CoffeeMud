@@ -12326,9 +12326,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return null;
 				}
 				final String qName=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1].trim());
-				final Quest Q=getQuest(qName);
+				final Quest Q;
+				final int x=qName.lastIndexOf(" +");
+				int skipNum=1;
+				if((x>0)
+				&&(CMath.isInteger(qName.substring(x+2).trim())))
+				{
+					Q=getQuest(qName.substring(0,x).trim());
+					skipNum=CMath.s_int(qName.substring(x+2).trim());
+				}
+				else
+					Q=getQuest(qName);
 				if(Q!=null)
-					Q.stepQuest();
+				{
+					for(int i=0;i<skipNum;i++)
+						Q.stepQuest();
+				}
 				else
 					logError(scripted,"MPSTEPQUEST","Unknown","Quest: "+s);
 				break;
