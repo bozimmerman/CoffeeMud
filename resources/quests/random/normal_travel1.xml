@@ -297,8 +297,11 @@ settable vars:
 		<STRING>${SELECT:name from $target_area}</STRING>
 	</STRING>	
 	
-	<OBJECT ID="target_rooms" define="target_rooms">
-		SELECT: . FROM $target_AREA\NPROOMS WHERE exits\count &gt; 0  AND display\count = 1
+	<OBJECT ID="target_rooms" define="target_rooms" SELECT="Pick-1">
+		<OBJECT PICKWEIGHT=99 CONDITION="$targetroomid=''">
+			SELECT: . FROM $target_area\NPROOMS WHERE exits\count &gt; 0  AND display\count = 1
+		</OBJECT>
+		<OBJECT PICKWEIGHT=1 CONDITION="$targetroomid!=''">SELECT: . FROM $target_area\ROOMS WHERE roomid='$targetroomid'</OBJECT>
 	</OBJECT>
 
 	<OBJECT ID="target_room" DEFINE="target_room">SELECT: any\. FROM $target_rooms</OBJECT>

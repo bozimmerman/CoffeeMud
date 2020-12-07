@@ -293,7 +293,7 @@ FUNCTION_PROG CHECK_DONE
 	if var($i $QUEST_ID_CAPTURED >= $NUM_CAPTURABLES) and QUESTSCRIPTED($i *)
 		for $9 = '$%NUMMOBSROOM(*)%' to 1
 			mpargset $1 '$%ROOMMOB($9)%'
-			if ISLIKE($1 $CAPTURABLES_MASK) AND ISNPC('$1') AND ISFOLLOW('$1')
+			if QUESTMOB($1 *) AND ISNPC('$1') AND ISFOLLOW('$1')
 				mpforce $1 follow self
 				mppurge $1
 			endif

@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
+import com.planet_ink.coffee_mud.Abilities.ThinAbility;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
@@ -193,9 +194,62 @@ public class Prayer_PlanarPilgrimage extends Prayer
 				final Prayer_PlanarPilgrimage realA=(Prayer_PlanarPilgrimage)invokerM.fetchAbility(ID());
 				if(realA!=null)
 					lastUsed.add(mob.Name());
+				// final award
+				final Ability awardA=new StdAbility()
+				{
+					final String dName = deityName;
+					@Override
+					public String ID()
+					{
+						return "FavoredOf"+CMStrings.capitalizeAllFirstLettersAndLower(dName).replace(' ','_');
+					}
+
+					@Override
+					public String name()
+					{
+						return "Favored of "+dName;
+					}
+
+					@Override
+					public String Name()
+					{
+						return name();
+					}
+
+					@Override
+					public String displayText()
+					{
+						return "(Favored of "+dName+")";
+					}
+
+					@Override
+					public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+					{
+					}
+
+					@Override
+					public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
+					{
+						for(final int stat : CharStats.CODES.BASECODES())
+							affectableStats.setStat(stat, affectableStats.getStat(stat)+2);
+					}
+
+					@Override
+					public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
+					{
+						affectableMaxState.setHitPoints(affectableMaxState.getHitPoints()+(10*affectedMob.phyStats().level()));
+						affectableMaxState.setMana(affectableMaxState.getMana()+(5*affectedMob.phyStats().level()));
+						affectableMaxState.setMovement(affectableMaxState.getMovement()+(5*affectedMob.phyStats().level()));
+					}
+				};
+				awardA.startTickDown(invokerM, mob, (int)CMProps.getTicksPerDay());
 			}
 			mob.delEffect(this);
 			this.setAffectedOne(null);
+			mob.recoverCharStats();
+			mob.recoverMaxState();
+			mob.recoverPhyStats();
+
 			return tickUninvoke();
 		}
 	}
@@ -219,6 +273,41 @@ public class Prayer_PlanarPilgrimage extends Prayer
 		}
 	}
 
+	protected Integer findMaxMat(final Area parentArea)
+	{
+		final int[] acceptableMaterials = new int[] {
+				RawMaterial.MATERIAL_METAL, RawMaterial.MATERIAL_WOODEN, RawMaterial.MATERIAL_VEGETATION,
+				RawMaterial.MATERIAL_ROCK, RawMaterial.MATERIAL_LIQUID
+		};
+		final Map<Integer,int[]> materialCounts=new TreeMap<Integer,int[]>();
+		for(final Enumeration<Room> e=parentArea.getFilledProperMap();e.hasMoreElements();)
+		{
+			final Room R=e.nextElement();
+			if((R!=null)
+			&&(R.myResource()>0))
+			{
+				final Integer material = Integer.valueOf(R.myResource()&RawMaterial.MATERIAL_MASK);
+				if(CMParms.contains(acceptableMaterials, material.intValue()))
+				{
+					if(!materialCounts.containsKey(material))
+						materialCounts.put(material, new int[1]);
+					materialCounts.get(material)[0]++;
+				}
+			}
+		}
+		int materialCount=0;
+		Integer mat = null;
+		for(final Integer key : materialCounts.keySet())
+		{
+			if(materialCounts.get(key)[0]>materialCount)
+			{
+				materialCount=materialCounts.get(key)[0];
+				mat=key;
+			}
+		}
+		return mat;
+	}
+
 	public Quest deviseAndStartQuest(final MOB mob, final MOB targetM, final Map<String,Object> definedIDs, final QuestTemplate template)
 	{
 		final Map<String,Object> origDefined=new XHashtable<String,Object>(definedIDs);
@@ -235,15 +324,32 @@ public class Prayer_PlanarPilgrimage extends Prayer
 					Log.errOut("Unable to generate a quest for "+targetM.name()+" because file not found: randareas/example.xml");
 					return null;
 				}
+				final Area planeArea=CMLib.map().areaLocation(targetM);
+				final Area parentArea=(planeArea instanceof SubArea)?((SubArea)planeArea).getSuperArea():null;
+				if((planeArea==null)||(parentArea==null))
+				{
+					Log.errOut("Unable to generate a quest for "+targetM.name()+" because no parent area");
+					return null;
+				}
 				final List<XMLLibrary.XMLTag> xmlRoot = CMLib.xml().parseAllXML(xml);
 				if(!definedIDs.containsKey("QUEST_CRITERIA"))
 					definedIDs.put("QUEST_CRITERIA", "-NAME \"+"+targetM.Name()+"\" -NPC");
 				definedIDs.put("DURATION", ""+tickDown);
 				definedIDs.put("EXPIRATION", ""+tickDown);
-				definedIDs.put("TARGETAREA_NAME", CMLib.map().areaLocation(targetM).Name());
-				//definedIDs.put("target_level".toUpperCase(), ""+mob.phyStats().level());
-				//definedIDs.put("AGGRESSION", "YES");
-				//definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
+				definedIDs.put("TARGETAREA_NAME", planeArea.Name());
+				definedIDs.put("TARGET_AREA_NAME", this.planeName);
+				final String name1Code = deityName.toUpperCase().trim().replace(' ', '_');
+				final Faction deity1F=CMLib.factions().getFaction("DEITY_"+name1Code);
+				if(deity1F!=null)
+				{
+					definedIDs.put("NUMFACTION", "1000");
+					definedIDs.put("FACTION", deity1F.factionID());
+				}
+				else
+				{
+					definedIDs.put("NUMFACTION", "");
+					definedIDs.put("FACTION", "");
+				}
 				if(mob != targetM)
 				{
 					definedIDs.put("DEITYNAME", deityName);
@@ -252,81 +358,172 @@ public class Prayer_PlanarPilgrimage extends Prayer
 					definedIDs.put("AREA_NAME", CMLib.map().areaLocation(mob).Name());
 					switch(template)
 					{
-					case COLLECT_GROUND:
+					case COLLECT_GROUND: //done
+						definedIDs.put("TEMPLATE", "normal_collect2");
+						definedIDs.put("itemname".toUpperCase(), L("a fragment of @x1",deityName));
+						definedIDs.put("item_level".toUpperCase(), "1");
+						definedIDs.put("item_material".toUpperCase(), "ENERGY");
 						/*
-						3.	COLLECT FROM GROUND-Based on Collect1, must travel to any randomly selected outer plane and gather items.  
-						Items should be called “fragment of [deity name]”, a genitem  that represents a part of a soul faithful to the deity 
+						3.	COLLECT FROM GROUND-Based on Collect1, must travel to any randomly selected outer plane and gather items.
+						Items should be called “fragment of [deity name]”, a genitem  that represents a part of a soul faithful to the deity
 						sent to that plane after their death.
 						 */
-						definedIDs.put("TEMPLATE", "normal_collect2");
 						break;
-					case COLLECT_MOBS:
+					case COLLECT_MOBS: //done
+						definedIDs.put("TEMPLATE", "normal_collect1");
+						definedIDs.put("HOLDERS_MASK","-HOME \"+"+planeArea.Name()+"\" -PLAYER");
+						definedIDs.put("target_name".toUpperCase(), L("a denizen of @x1",planeName));
+						definedIDs.put("itemname".toUpperCase(), L("a fragment of @x1",deityName));
+						definedIDs.put("item_level".toUpperCase(), "1");
+						definedIDs.put("item_material".toUpperCase(), "ENERGY");
+						// ------ problem because it requires scanning the area to select mobs to collect from
 						/*
-						4.	COLLECT FROM MOBS-Based off of Collect2, must travel to an outer plane of dissimilar alignment to both the deity and 
+						4.	COLLECT FROM MOBS-Based off of Collect2, must travel to an outer plane of dissimilar alignment to both the deity and
 						target, and dissimilar inclination to target.
 						 */
-						definedIDs.put("TEMPLATE", "normal_capture2");
+						definedIDs.put("AGGRESSION", "YES");
+						definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
 						break;
-					case COLLECT_RESOURCES:
+					case COLLECT_RESOURCES: // done
+					{
+						definedIDs.put("TEMPLATE", "normal_collect4");
+						final Integer mat=findMaxMat(parentArea);
+						if(mat==null)
+						{
+							Log.errOut("Unable to generate a quest for "+targetM.name()+" because no material found");
+							return null;
+						}
+						switch(mat.intValue())
+						{
+						case RawMaterial.MATERIAL_METAL:
+							definedIDs.put("TARGETSKILL", "Mining"); break;
+						case RawMaterial.MATERIAL_WOODEN:
+							definedIDs.put("TARGETSKILL", "Chopping"); break;
+						case RawMaterial.MATERIAL_VEGETATION:
+							definedIDs.put("TARGETSKILL", "Foraging"); break;
+						case RawMaterial.MATERIAL_ROCK:
+							definedIDs.put("TARGETSKILL", "Mining"); break;
+						case RawMaterial.MATERIAL_LIQUID:
+							definedIDs.put("TARGETSKILL", "Drilling"); break;
+						}
 						/*
-						5.	COLLECT RESOURCES-Based off of Collect4, must travel to an inner plane and gather specified resources there (resource 
-						should be selected after the plane is selected, and should be among the available resource in the area and gatherable by an 
+						5.	COLLECT RESOURCES-Based off of Collect4, must travel to an inner plane and gather specified resources there (resource
+						should be selected after the plane is selected, and should be among the available resource in the area and gatherable by an
 						available skill the target has).
 						 */
 						break;
-					case DEFEAT_CAPTURE:
+					}
+					case DEFEAT_CAPTURE: // done
+						definedIDs.put("TEMPLATE", "normal_capture1");
+						definedIDs.put("target_name".toUpperCase(), L("a denizen of @x1",planeName));
+						definedIDs.put("CAPTURABLES_MASK","-HOME \"+"+planeArea.Name()+"\" -PLAYER");
+						definedIDs.put("AGGRESSION", "YES");
+						definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
 						/*
-						2.	DEFEAT CAPTURE-Based off Capture1, must travel to a plane of dissimilar alignment to both the deity and the target, and 
+						2.	DEFEAT CAPTURE-Based off Capture1, must travel to a plane of dissimilar alignment to both the deity and the target, and
 						dissimilar inclination to the target.  Defeat the mob in combat to subdue it and then return to the Reliquist to turn in the quest.
 						 */
 						break;
-					case DELIVERY:
+					case DELIVERY: // done
+						definedIDs.put("TEMPLATE", "normal_delivery1");
+						definedIDs.put("target_name".toUpperCase(), L("a missionary of @x1",deityName));
+						definedIDs.put("DELIVEREE_MASK","-NAME \"+"+L("a missionary of @x1",deityName)+"\"");
+						definedIDs.put("itemname".toUpperCase(), L("a divine decree of @x1",deityName));
+						definedIDs.put("item_level".toUpperCase(), "1");
+						definedIDs.put("item_material".toUpperCase(), "PAPER");
 						/*
-						6.	DELIVERY-Based off of Delivery1, must travel to an outer plane of same or similar alignment to deity and alignment and 
-						the same or similar inclination of the target and delivery a GenReadable called “Divine Decree” to the target (remember, the 
+						6.	DELIVERY-Based off of Delivery1, must travel to an outer plane of same or similar alignment to deity and alignment and
+						the same or similar inclination of the target and delivery a GenReadable called “Divine Decree” to the target (remember, the
 						target will be a mob modified by planar descriptions, so we need to make sure one of them exists).
 						 */
 						break;
-					case DISPEL:
+					case DISPEL: // done
+						definedIDs.put("TEMPLATE", "normal_dispel1");
+						definedIDs.put("target_name".toUpperCase(), L("a denizen of @x1",deityName));
+						definedIDs.put("HELPABLES_MASK","-HOME \"+"+planeArea.Name()+"\" -PLAYER");
 						/*
-						7.	DISPEL1-Based off of Dispel1, must travel to a plane of same or similar alignment to deity and alignment and the same or 
+						7.	DISPEL1-Based off of Dispel1, must travel to a plane of same or similar alignment to deity and alignment and the same or
 						similar inclination of the target and remove a spell, disease, poison or affect from 1 or more affected mobs.
 						 */
 						break;
-					case ESCORT:
+					case ESCORT: // done
+						definedIDs.put("TEMPLATE", "normal_escort2");
+						definedIDs.put("target_name".toUpperCase(), L("a missionary of @x1",deityName));
+						definedIDs.put("attackername".toUpperCase(), L("an enemy of @x1",deityName));
+						definedIDs.put("ATTACKER_PCT_CHANCE", "10");
+						definedIDs.put("AGGRESSION", "YES");
+						definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
 						/*
-						8.	ESCORT1-Based off of Escort1, must travel to an outer plane of same alignment as deity and target, and same inclination 
-						as target with a mob generated from the specified area/plane.  Groups of 2 enemy mobs from the same area opposed plane will 
+						8.	ESCORT1-Based off of Escort1, must travel to an outer plane of same alignment as deity and target, and same inclination
+						as target with a mob generated from the specified area/plane.  Groups of 2 enemy mobs from the same area opposed plane will
 						attack the escort along the way, spawning every 15-60 ticks.  If the escort dies, the quest is failed.
 						 */
 						break;
-					case KILL_ELITE:
+					case KILL_ELITE: // done
+						definedIDs.put("TEMPLATE", "normal_killer1");
+						definedIDs.put("AGGRESSION", "YES");
+						definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
+						definedIDs.put("num_targets".toUpperCase(), "1");
+						definedIDs.put("KILLABLES_MASK","-HOME \"+"+planeArea.Name()+"\" -PLAYER -EFFECTS +Prop_ShortEffects");
+						definedIDs.put("target_name".toUpperCase(), L("an elite denizen of @x1",planeName));
 						/*
-						9.	KILL SOLDIERS-Based off of Killer1, must travel to an outer plane of dissimilar alignment as deity and target, and 
-						dissimilar inclination as target and kill 2?10 inhabitants of that area.
-						 */
-						break;
-					case KILL_OFFICER:
-						/*
-						10.	KILLER OFFICERS- Based off of Killer1, must travel to an outer plane of dissimilar alignment as deity and target, and 
+						10.	KILLER OFFICERS- Based off of Killer1, must travel to an outer plane of dissimilar alignment as deity and target, and
 						dissimilar inclination as target and kill an elite inhabitant of that area.
 						 */
 						break;
-					case PEACEFUL_CAPTURE:
+					case KILL_OFFICER: // done
+						definedIDs.put("TEMPLATE", "normal_killer1");
+						definedIDs.put("AGGRESSION", "YES");
+						definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
+						definedIDs.put("KILLABLES_MASK","-HOME \"+"+planeArea.Name()+"\" -PLAYER");
+						definedIDs.put("target_name".toUpperCase(), L("a denizen of @x1",planeName));
 						/*
-						1.	PEACEFUL CAPTURE-Based off Capture1, must travel to a plane of same or similar alignment to deity and alignment and 
-						the same or similar inclination of the target and meet with said creature, who will follow the target back to the 
+						9.	KILL SOLDIERS-Based off of Killer1, must travel to an outer plane of dissimilar alignment as deity and target, and
+						dissimilar inclination as target and kill 2?10 inhabitants of that area.
+						 */
+						break;
+					case PEACEFUL_CAPTURE:
+						definedIDs.put("TEMPLATE", "normal_capture2");
+						definedIDs.put("target_name".toUpperCase(), L("a missionary of @x1",deityName));
+						definedIDs.put("CAPTURABLES_MASK","-HOME \"+"+planeArea.Name()+"\" -NAME \"+"+L("a missionary of @x1",deityName)+"\"");
+						definedIDs.put("AGGRESSION", "NO");
+						definedIDs.put("NUM_TARGETS", "1");
+						definedIDs.put("target_is_aggressive".toUpperCase(), "NO");
+						/*
+						1.	PEACEFUL CAPTURE-Based off Capture1, must travel to a plane of same or similar alignment to deity and alignment and
+						the same or similar inclination of the target and meet with said creature, who will follow the target back to the
 						Reliquist to turn in the quest.
 						 */
 						break;
-					case TRAVEL:
+					case TRAVEL: //DONE
+					{
+						final List<Room> choices=new ArrayList<Room>();
+						for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+						{
+							final Room R1=targetM.location().getRoomInDir(d);
+							final Exit E1=targetM.location().getExitInDir(d);
+							if((R1!=null)&&(E1!=null)&&(R1.roomID().length()>0)&&(R1.getArea()==planeArea))
+								choices.add(R1);
+						}
+						if(choices.size()==0)
+						{
+							Log.errOut("Unable to generate a quest for "+targetM.name()+" because no exits found");
+							return null;
+						}
+						final Room targetR=choices.get(CMLib.dice().roll(1, choices.size(), -1));
+						final String choiceID=targetR.roomID();
+						definedIDs.put("TEMPLATE", "normal_capture2");
+						definedIDs.put("TARGET_ROOM_ID", choiceID);
+						definedIDs.put("TARGETROOMID", choiceID);
+						definedIDs.put("TARGET_NAME", targetR.displayText(targetM));
 						/*
 						11.	TRAVEL-Based off of Travel1, must travel to any random plane, random room from selected area, and then return to Reliquist for reward.
 						 */
 						break;
+					}
 					default:
 						break;
-					
+
 					}
 					final Map<String,Object> preDefined=new XHashtable<String,Object>(definedIDs);
 					CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs, preDefined.keySet());
@@ -375,91 +572,215 @@ public class Prayer_PlanarPilgrimage extends Prayer
 						}
 					}
 					Q.setCopy(true);
-					//TOOD: BZ: this will NOT do, as the mob is no longer present .. so call DO_ACCEPT and show
-					// instructions is changed
-					final CMMsg msg=CMClass.getMsg(targetM, mob.location(),null, CMMsg.MSG_ENTER, null);
-					mob.location().send(targetM, msg);
+					final StringBuilder entry=new StringBuilder("");
+					entry.append(CMStrings.padRight(L("Quest"), 10)).append(": ").append(Q.displayName()).append("\n\r");
+					final MOB questGiverM=Q.getQuestMob(1);
+					if(questGiverM!=null)
+					{
+						final Room questGiverR=questGiverM.location();
+						entry.append(CMStrings.padRight(L("Giver"), 10)).append(": ").append(questGiverM.name())
+								.append(L(" at")).append(": ").append(questGiverR.displayText(mob)).append("\n\r");
+						if(questGiverR.getArea()!=null)
+							entry.append(CMStrings.padRight(L("   In"), 10)).append(": ").append(questGiverR.getArea().name(mob)).append("\n\r");
+					}
+					if(Q.instructions().length()>0)
+						entry.append(CMStrings.padRight(L("Descrip."), 10)).append(": ").append(Q.instructions()).append("\n\r");
+					targetM.tell(entry.toString());
+					Q.acceptQuest(targetM);
 					return Q;
 				}
 				else
 				{
 					switch(template)
 					{
-					case COLLECT_GROUND:
+					case COLLECT_GROUND: //done
+						definedIDs.put("TEMPLATE", "auto_collect2");
+						definedIDs.put("itemname".toUpperCase(), L("a fragment of @x1",deityName));
+						definedIDs.put("item_level".toUpperCase(), "1");
+						definedIDs.put("item_material".toUpperCase(), "ENERGY");
+						definedIDs.put("quest_instructionstring".toUpperCase(),
+								L("@x1 wants you to collect the lost fragments of @x1 from @x2. ${reason_short}.",deityName,planeName));
 						/*
-						3.	COLLECT FROM GROUND-Based on Collect1, must travel to any randomly selected outer plane and gather items.  
-						Items should be called “fragment of [deity name]”, a genitem  that represents a part of a soul faithful to the deity 
+						3.	COLLECT FROM GROUND-Based on Collect1, must travel to any randomly selected outer plane and gather items.
+						Items should be called “fragment of [deity name]”, a genitem  that represents a part of a soul faithful to the deity
 						sent to that plane after their death.
 						 */
-						definedIDs.put("TEMPLATE", "normal_collect2");
 						break;
-					case COLLECT_MOBS:
+					case COLLECT_MOBS: //done
+						definedIDs.put("TEMPLATE", "auto_collect1");
+						definedIDs.put("HOLDERS_MASK","-HOME \"+"+planeArea.Name()+"\" -PLAYER");
+						definedIDs.put("target_name".toUpperCase(), L("a denizen of @x1",planeName));
+						definedIDs.put("itemname".toUpperCase(), L("a fragment of @x1",deityName));
+						definedIDs.put("item_level".toUpperCase(), "1");
+						definedIDs.put("item_material".toUpperCase(), "ENERGY");
+						definedIDs.put("quest_instructionstring".toUpperCase(),
+								L("@x1 wants you to collect the lost fragments of @x1 from denizens of @x2. ${reason_short}.",deityName,planeName));
+						// ------ problem because it requires scanning the area to select mobs to collect from
 						/*
-						4.	COLLECT FROM MOBS-Based off of Collect2, must travel to an outer plane of dissimilar alignment to both the deity and 
+						4.	COLLECT FROM MOBS-Based off of Collect2, must travel to an outer plane of dissimilar alignment to both the deity and
 						target, and dissimilar inclination to target.
 						 */
-						definedIDs.put("TEMPLATE", "normal_capture2");
+						definedIDs.put("AGGRESSION", "YES");
+						definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
 						break;
-					case COLLECT_RESOURCES:
+					case COLLECT_RESOURCES: // done
+					{
+						definedIDs.put("TEMPLATE", "auto_collect4");
+						definedIDs.put("quest_instructionstring".toUpperCase(),
+								L("@x1 wants you to gather valuable resources from @x2. ${reason_short}.",deityName,planeName));
+						final Integer mat=findMaxMat(parentArea);
+						if(mat==null)
+						{
+							Log.errOut("Unable to generate a quest for "+targetM.name()+" because no material found");
+							return null;
+						}
+						switch(mat.intValue())
+						{
+						case RawMaterial.MATERIAL_METAL:
+							definedIDs.put("TARGETSKILL", "Mining"); break;
+						case RawMaterial.MATERIAL_WOODEN:
+							definedIDs.put("TARGETSKILL", "Chopping"); break;
+						case RawMaterial.MATERIAL_VEGETATION:
+							definedIDs.put("TARGETSKILL", "Foraging"); break;
+						case RawMaterial.MATERIAL_ROCK:
+							definedIDs.put("TARGETSKILL", "Mining"); break;
+						case RawMaterial.MATERIAL_LIQUID:
+							definedIDs.put("TARGETSKILL", "Drilling"); break;
+						}
 						/*
-						5.	COLLECT RESOURCES-Based off of Collect4, must travel to an inner plane and gather specified resources there (resource 
-						should be selected after the plane is selected, and should be among the available resource in the area and gatherable by an 
+						5.	COLLECT RESOURCES-Based off of Collect4, must travel to an inner plane and gather specified resources there (resource
+						should be selected after the plane is selected, and should be among the available resource in the area and gatherable by an
 						available skill the target has).
 						 */
 						break;
-					case DEFEAT_CAPTURE:
+					}
+					case DEFEAT_CAPTURE: // done
+						definedIDs.put("TEMPLATE", "auto_capture1");
+						definedIDs.put("target_name".toUpperCase(), L("a denizen of @x1",planeName));
+						definedIDs.put("CAPTURABLES_MASK","-HOME \"+"+planeArea.Name()+"\" -PLAYER");
+						definedIDs.put("AGGRESSION", "YES");
+						definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
+						definedIDs.put("quest_instructionstring".toUpperCase(),
+								L("@x1 wants you to capture denizens of @x2 for interrogation. ${reason_short}.",deityName,planeName));
 						/*
-						2.	DEFEAT CAPTURE-Based off Capture1, must travel to a plane of dissimilar alignment to both the deity and the target, and 
+						2.	DEFEAT CAPTURE-Based off Capture1, must travel to a plane of dissimilar alignment to both the deity and the target, and
 						dissimilar inclination to the target.  Defeat the mob in combat to subdue it and then return to the Reliquist to turn in the quest.
 						 */
 						break;
-					case DELIVERY:
+					case DELIVERY: // done
+						definedIDs.put("TEMPLATE", "auto_delivery1");
+						definedIDs.put("target_name".toUpperCase(), L("a missionary of @x1",deityName));
+						definedIDs.put("DELIVEREE_MASK","-NAME \"+"+L("a missionary of @x1",deityName)+"\"");
+						definedIDs.put("itemname".toUpperCase(), L("a divine decree of @x1",deityName));
+						definedIDs.put("item_level".toUpperCase(), "1");
+						definedIDs.put("item_material".toUpperCase(), "PAPER");
+						definedIDs.put("quest_instructionstring".toUpperCase(),
+								L("@x1 wants you to deliver a divine decree to the missionary sent to @x2. ${reason_short}.",deityName,planeName));
 						/*
-						6.	DELIVERY-Based off of Delivery1, must travel to an outer plane of same or similar alignment to deity and alignment and 
-						the same or similar inclination of the target and delivery a GenReadable called “Divine Decree” to the target (remember, the 
+						6.	DELIVERY-Based off of Delivery1, must travel to an outer plane of same or similar alignment to deity and alignment and
+						the same or similar inclination of the target and delivery a GenReadable called “Divine Decree” to the target (remember, the
 						target will be a mob modified by planar descriptions, so we need to make sure one of them exists).
 						 */
 						break;
-					case DISPEL:
+					case DISPEL: // done
+						definedIDs.put("TEMPLATE", "auto_dispel1");
+						definedIDs.put("target_name".toUpperCase(), L("a denizen of @x1",deityName));
+						definedIDs.put("HELPABLES_MASK","-HOME \"+"+planeArea.Name()+"\" -PLAYER");
+						definedIDs.put("quest_instructionstring".toUpperCase(),
+								L("@x1 wants you to aid the pious denizens of @x2. ${reason_short}.",deityName,planeName));
 						/*
-						7.	DISPEL1-Based off of Dispel1, must travel to a plane of same or similar alignment to deity and alignment and the same or 
+						7.	DISPEL1-Based off of Dispel1, must travel to a plane of same or similar alignment to deity and alignment and the same or
 						similar inclination of the target and remove a spell, disease, poison or affect from 1 or more affected mobs.
 						 */
 						break;
-					case ESCORT:
+					case ESCORT: // done
+						definedIDs.put("TEMPLATE", "auto_escort2");
+						definedIDs.put("target_name".toUpperCase(), L("a missionary of @x1",deityName));
+						definedIDs.put("attackername".toUpperCase(), L("an enemy of @x1",deityName));
+						definedIDs.put("ATTACKER_PCT_CHANCE", "10");
+						definedIDs.put("AGGRESSION", "YES");
+						definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
+						definedIDs.put("quest_instructionstring".toUpperCase(),
+								L("@x1 wants you to escort the new missionary to @x2. ${reason_short}.",deityName,planeName));
 						/*
-						8.	ESCORT1-Based off of Escort1, must travel to an outer plane of same alignment as deity and target, and same inclination 
-						as target with a mob generated from the specified area/plane.  Groups of 2 enemy mobs from the same area opposed plane will 
+						8.	ESCORT1-Based off of Escort1, must travel to an outer plane of same alignment as deity and target, and same inclination
+						as target with a mob generated from the specified area/plane.  Groups of 2 enemy mobs from the same area opposed plane will
 						attack the escort along the way, spawning every 15-60 ticks.  If the escort dies, the quest is failed.
 						 */
 						break;
-					case KILL_ELITE:
+					case KILL_ELITE: // done
+						definedIDs.put("TEMPLATE", "auto_killer1");
+						definedIDs.put("AGGRESSION", "YES");
+						definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
+						definedIDs.put("num_targets".toUpperCase(), "1");
+						definedIDs.put("KILLABLES_MASK","-HOME \"+"+planeArea.Name()+"\" -PLAYER -EFFECTS +Prop_ShortEffects");
+						definedIDs.put("target_name".toUpperCase(), L("an elite denizen of @x1",planeName));
+						definedIDs.put("quest_instructionstring".toUpperCase(),
+								L("@x1 wants you to destroy a powerful enemy in @x2. ${reason_short}.",deityName,planeName));
 						/*
-						9.	KILL SOLDIERS-Based off of Killer1, must travel to an outer plane of dissimilar alignment as deity and target, and 
-						dissimilar inclination as target and kill 2?10 inhabitants of that area.
-						 */
-						break;
-					case KILL_OFFICER:
-						/*
-						10.	KILLER OFFICERS- Based off of Killer1, must travel to an outer plane of dissimilar alignment as deity and target, and 
+						10.	KILLER OFFICERS- Based off of Killer1, must travel to an outer plane of dissimilar alignment as deity and target, and
 						dissimilar inclination as target and kill an elite inhabitant of that area.
 						 */
 						break;
-					case PEACEFUL_CAPTURE:
+					case KILL_OFFICER: // done
+						definedIDs.put("TEMPLATE", "auto_killer1");
+						definedIDs.put("AGGRESSION", "YES");
+						definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
+						definedIDs.put("KILLABLES_MASK","-HOME \"+"+planeArea.Name()+"\" -PLAYER");
+						definedIDs.put("target_name".toUpperCase(), L("a denizen of @x1",planeName));
+						definedIDs.put("quest_instructionstring".toUpperCase(),
+								L("@x1 wants you to thin the ranks of enemies in @x2. ${reason_short}.",deityName,planeName));
 						/*
-						1.	PEACEFUL CAPTURE-Based off Capture1, must travel to a plane of same or similar alignment to deity and alignment and 
-						the same or similar inclination of the target and meet with said creature, who will follow the target back to the 
+						9.	KILL SOLDIERS-Based off of Killer1, must travel to an outer plane of dissimilar alignment as deity and target, and
+						dissimilar inclination as target and kill 2?10 inhabitants of that area.
+						 */
+						break;
+					case PEACEFUL_CAPTURE:
+						definedIDs.put("TEMPLATE", "auto_capture2");
+						definedIDs.put("target_name".toUpperCase(), L("a missionary of @x1",deityName));
+						definedIDs.put("CAPTURABLES_MASK","-HOME \"+"+planeArea.Name()+"\" -NAME \"+"+L("a missionary of @x1",deityName)+"\"");
+						definedIDs.put("AGGRESSION", "NO");
+						definedIDs.put("NUM_TARGETS", "1");
+						definedIDs.put("target_is_aggressive".toUpperCase(), "NO");
+						definedIDs.put("quest_instructionstring".toUpperCase(),
+								L("@x1 wants you to find and collect the missionary to @x2 and return them. ${reason_short}.",deityName,planeName));
+						/*
+						1.	PEACEFUL CAPTURE-Based off Capture1, must travel to a plane of same or similar alignment to deity and alignment and
+						the same or similar inclination of the target and meet with said creature, who will follow the target back to the
 						Reliquist to turn in the quest.
 						 */
 						break;
-					case TRAVEL:
+					case TRAVEL: //DONE
+					{
+						final List<Room> choices=new ArrayList<Room>();
+						for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+						{
+							final Room R1=targetM.location().getRoomInDir(d);
+							final Exit E1=targetM.location().getExitInDir(d);
+							if((R1!=null)&&(E1!=null)&&(R1.roomID().length()>0)&&(R1.getArea()==planeArea))
+								choices.add(R1);
+						}
+						if(choices.size()==0)
+						{
+							Log.errOut("Unable to generate a quest for "+targetM.name()+" because no exits found");
+							return null;
+						}
+						final Room targetR=choices.get(CMLib.dice().roll(1, choices.size(), -1));
+						final String choiceID=targetR.roomID();
+						definedIDs.put("TEMPLATE", "auto_capture2");
+						definedIDs.put("TARGET_ROOM_ID", choiceID);
+						definedIDs.put("TARGETROOMID", choiceID);
+						definedIDs.put("TARGET_NAME", targetR.displayText(targetM));
+						definedIDs.put("quest_instructionstring".toUpperCase(),
+								L("@x1 wants you to travel to @x2 and make your presence known. ${reason_short}.",deityName,planeName));
 						/*
 						11.	TRAVEL-Based off of Travel1, must travel to any random plane, random room from selected area, and then return to Reliquist for reward.
 						 */
 						break;
+					}
 					default:
 						break;
-					
+
 					}
 					final Map<String,Object> preDefined=new XHashtable<String,Object>(definedIDs);
 					CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs, preDefined.keySet());
@@ -534,7 +855,7 @@ public class Prayer_PlanarPilgrimage extends Prayer
 		SAME, SIMILAR, DISSIMILAR, OPPOSED,
 		OUTER, INNER
 	}
-	
+
 	private enum QuestTemplate
 	{
 		PEACEFUL_CAPTURE(QuestReq.SIMILAR),
@@ -549,43 +870,13 @@ public class Prayer_PlanarPilgrimage extends Prayer
 		KILL_OFFICER(QuestReq.OUTER,QuestReq.DISSIMILAR),
 		TRAVEL
 		;
-		
+
 		public final QuestReq[] req;
-		private QuestTemplate(QuestReq... req)
+		private QuestTemplate(final QuestReq... req)
 		{
 			this.req=req;
 		}
 	}
-	
-	/*
-SKILL	Divine Pilgrimage
-Domain	Influencial
-Available	Reliquist (35 Q)
-Requires	Not learned on Prime Material Plane.
-Allows:	Influencing
-Use Cost	Max Mana
-Quality	Sometimes Beneficial
-Targets	MOBS
-Range	Touch or Not applicable
-Commands	PILGRIMAGE
-Usage	PILGRAMAGE [TARGET NAME]
-Example	Pilgrimage Garath
-Description	A Reliquist may assign a pilgrimage to another follower of their deity or themselves, once per MUDMONTH.  
-A Reliquist may only assign 1 pilgrimage per 10 levels of Reliquest class, but each target may only participate in 1 
-pilgramage per mudmoth.  The target will gain a quest to travel to a particular area and plane of existence, and 
-perform a specific task while there.  Upon completion of the task, the target should return to the Reliquist to 
-receive a powerful blessing from the deity as a reward, as well as a significant improvement in their relationship 
-with their deity.
-Builder’s Notes	This ability should generate a quest with the Reliquist as the questgiver and rewardgiver.  
-If the Reliquist cannot accept and/or turn in quests with himself, then remove the ability for the Reliquist 
-to target himself with this ability (and the words in blue above).  The quests assigned will be non-competitive 
-quests, and the planes assigned will be based on the randomly selected quest, the deity, and the target’s 
-alignment/inclination:
-Definitions:
-Quest types:
-Reward for completing quest is 1000 faction with deity, and a buff, FAVORED OF (DEITY NAME) which provides +2 to all stats and +10 hp per level of target, +5 mana per level of target, +5 movement per level of target for the next MUDMONTH.
-Expertise should allow the Reliquist to use this ability 1 extra time per mudmonth, but not on the same target.  (I image some sort of tattoo or affect which will preclude a player from participating in subsequent pilgrimages that mudmonth.  Ideally, this would be linked directly to the specific mudmonth, not to time…but a timed tattoo would be fine, too).
-	 */
 
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
@@ -622,16 +913,16 @@ Expertise should allow the Reliquist to use this ability 1 extra time per mudmon
 			return false;
 		}
 
-		List<String> alignSamePlanes=new ArrayList<String>();
-		List<String> alignSimilarPlanes=new ArrayList<String>();
-		List<String> alignOpposedPlanes=new ArrayList<String>();
-		List<String> alignDissimilarPlanes=new ArrayList<String>();
-		
+		final List<String> alignSamePlanes=new ArrayList<String>();
+		final List<String> alignSimilarPlanes=new ArrayList<String>();
+		final List<String> alignOpposedPlanes=new ArrayList<String>();
+		final List<String> alignDissimilarPlanes=new ArrayList<String>();
+
 		final Deity deityM=mob.charStats().getMyDeity();
 		final PlanarAbility planarA=(PlanarAbility)CMClass.getAbility("StdPlanarAbility");
 		final Faction alignF=CMLib.factions().getFaction(CMLib.factions().getAlignmentID());
 		final Faction incliF=CMLib.factions().getFaction(CMLib.factions().getInclinationID());
-		
+
 		final int deityAlignNum=deityM.fetchFaction(CMLib.factions().getAlignmentID());
 		Faction.FRange deityAlignRange=null;
 		if((alignF!=null)&&(deityAlignNum != Integer.MAX_VALUE))
@@ -646,7 +937,7 @@ Expertise should allow the Reliquist to use this ability 1 extra time per mudmon
 		Align deityIncliEquiv=null;
 		if(deityIncliRange!=null)
 			deityIncliEquiv=deityIncliRange.alignEquiv();
-		
+
 		final int alignNum=targetM.fetchFaction(CMLib.factions().getAlignmentID());
 		Faction.FRange myAlignRange=null;
 		if((alignF!=null)&&(alignNum != Integer.MAX_VALUE))
@@ -776,7 +1067,7 @@ Expertise should allow the Reliquist to use this ability 1 extra time per mudmon
 			}
 		}
 
-		PairList<String,QuestTemplate> finalChoices = new PairArrayList<String,QuestTemplate>();
+		final PairList<String,QuestTemplate> finalChoices = new PairArrayList<String,QuestTemplate>();
 		// plane/template choice
 		for(final String planeID : planarA.getAllPlaneKeys())
 		{
@@ -859,15 +1150,15 @@ Expertise should allow the Reliquist to use this ability 1 extra time per mudmon
 					finalChoices.add(planeID,T);
 			}
 		}
-		
+
 		if(finalChoices.size()==0)
 		{
 			mob.tell(L("The planes of existence to not, actually, exist."));
 			return false;
 		}
-		
+
 		final Pair<String,QuestTemplate> winner=finalChoices.get(CMLib.dice().roll(1, finalChoices.size(), -1));
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
