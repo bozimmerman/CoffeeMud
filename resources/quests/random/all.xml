@@ -21,7 +21,7 @@ See guides/RandomAreas.html for information about documents of this type.
 <string id="quest_template" define="quest_template" select="any-1">
 	<string condition="$template=''"                                                    ></string>
 	<string condition="$template!='' and $template!='random' and $template!='normal' and $template!='auto'">$template</string>
-	
+
 	<string condition="($template='random' or $template='normal') and $avoidscans!='YES'">normal_capture1</string>
 	<string condition="($template='random' or $template='normal')"                       >normal_capture2</string>
 	<string condition="($template='random' or $template='normal') and $avoidscans!='YES'">normal_capture3</string>

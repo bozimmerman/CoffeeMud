@@ -720,6 +720,36 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 						planeArea.addBehavior((Behavior)O);
 				}
 			}
+			if(CMath.bset(planeArea.flags(), Area.FLAG_INSTANCE_CHILD)
+			&&(invoker()!=null))
+			{
+				Area parentArea = null;
+				int x=planeArea.Name().indexOf('_');
+				if(x<0)
+					x=planeArea.Name().indexOf(' ');
+				if(x>=0)
+					parentArea = CMLib.map().getArea(Name().substring(x+1));
+				if(parentArea != null)
+				{
+					int[] statData=(int[])Resources.getResource("STATS_"+planeArea.Name().toUpperCase());
+					if(statData == null) // and it damn well better be null
+					{
+						final int[] oldParentStats = parentArea.getAreaIStats();
+						statData = Arrays.copyOf(oldParentStats, oldParentStats.length);
+						final double[] vars = new double[] {planarLevel, statData[Area.Stats.MIN_LEVEL.ordinal()], invoker().phyStats().level(),
+								statData[Area.Stats.MIN_LEVEL.ordinal()], statData[Area.Stats.MAX_LEVEL.ordinal()],
+								CMProps.getIntVar(CMProps.Int.EXPRATE)+1, 0} ;
+						statData[Area.Stats.MIN_LEVEL.ordinal()] = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0));
+						vars[1] = statData[Area.Stats.MAX_LEVEL.ordinal()];
+						statData[Area.Stats.MAX_LEVEL.ordinal()] = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0));
+						vars[1] = statData[Area.Stats.MED_LEVEL.ordinal()];
+						statData[Area.Stats.MED_LEVEL.ordinal()] = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0));
+						vars[1] = statData[Area.Stats.AVG_LEVEL.ordinal()];
+						statData[Area.Stats.AVG_LEVEL.ordinal()] = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0));
+						Resources.submitResource("STATS_"+planeArea.Name().toUpperCase(), statData);
+					}
+				}
+			}
 		}
 	}
 
@@ -2046,8 +2076,8 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 		if(newRoomID==null)
 			newRoomID=cloneRoomID;
 		target.setRoomID(newRoomID);
-		target.setDisplayText("Between The Planes of Existence");
-		target.setDescription("You are a floating consciousness between the planes of existence...");
+		target.setDisplayText(L("Between The Planes of Existence"));
+		target.setDescription(L("You are a floating consciousness between the planes of existence..."));
 		target.setArea(planeArea);
 
 		//CMLib.map().delArea(this.planeArea);

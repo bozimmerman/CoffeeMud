@@ -128,6 +128,26 @@ public class Prayer_PlanarPilgrimage extends Prayer
 	protected String deityName = null;
 	protected QuestTemplate template = null;
 
+	protected volatile long timeToNextCast=0;
+
+	@Override
+	protected long getTimeOfNextCast()
+	{
+		return timeToNextCast;
+	}
+
+	@Override
+	protected int getTicksBetweenCasts()
+	{
+		return (int)CMProps.getTicksPerDay();
+	}
+
+	@Override
+	protected void setTimeOfNextCast(final long absoluteTime)
+	{
+		timeToNextCast=absoluteTime;
+	}
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -139,19 +159,13 @@ public class Prayer_PlanarPilgrimage extends Prayer
 		final MOB mob=(MOB)affected;
 		if(quest1 == null)
 		{
-			if((planeName == null)||(deityName==null))
+			if((planeName == null)||(deityName==null)||(template==null))
 				return tickUninvoke();
 			final Area A=CMLib.map().areaLocation(mob);
 			if((A==null)||(!planeName.equalsIgnoreCase(CMLib.flags().getPlaneOfExistence(A))))
 				return true;
 			final Map<String,Object> definedIDs = new Hashtable<String,Object>();
-			definedIDs.put("AREA_NAME", mob.location().getArea().Name());
-			definedIDs.put("target_level".toUpperCase(), ""+mob.phyStats().level());
-			//definedIDs.put("AGGRESSION", "YES");
-			//definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
-			definedIDs.put("TEMPLATE", "normal");
-			definedIDs.put("DEITYNAME", deityName);
-			final Quest q1=deviseAndStartQuest(mob, mob, definedIDs);
+			final Quest q1=deviseAndStartQuest(mob, mob, definedIDs,this.template);
 			if(q1 == null)
 			{
 				mob.tell(L("The pilgrimage has failed entirely"));
@@ -205,7 +219,7 @@ public class Prayer_PlanarPilgrimage extends Prayer
 		}
 	}
 
-	public Quest deviseAndStartQuest(final MOB mob, final MOB targetM, final Map<String,Object> definedIDs)
+	public Quest deviseAndStartQuest(final MOB mob, final MOB targetM, final Map<String,Object> definedIDs, final QuestTemplate template)
 	{
 		final Map<String,Object> origDefined=new XHashtable<String,Object>(definedIDs);
 		int maxAttempts=5;
@@ -226,9 +240,94 @@ public class Prayer_PlanarPilgrimage extends Prayer
 					definedIDs.put("QUEST_CRITERIA", "-NAME \"+"+targetM.Name()+"\" -NPC");
 				definedIDs.put("DURATION", ""+tickDown);
 				definedIDs.put("EXPIRATION", ""+tickDown);
+				definedIDs.put("TARGETAREA_NAME", CMLib.map().areaLocation(targetM).Name());
+				//definedIDs.put("target_level".toUpperCase(), ""+mob.phyStats().level());
+				//definedIDs.put("AGGRESSION", "YES");
+				//definedIDs.put("target_is_aggressive".toUpperCase(), "YES");
 				if(mob != targetM)
 				{
+					definedIDs.put("DEITYNAME", deityName);
 					definedIDs.put("MULTIAREA", "YES");
+					definedIDs.put("SOURCE_NAME", mob.Name());
+					definedIDs.put("AREA_NAME", CMLib.map().areaLocation(mob).Name());
+					switch(template)
+					{
+					case COLLECT_GROUND:
+						/*
+						3.	COLLECT FROM GROUND-Based on Collect1, must travel to any randomly selected outer plane and gather items.  
+						Items should be called “fragment of [deity name]”, a genitem  that represents a part of a soul faithful to the deity 
+						sent to that plane after their death.
+						 */
+						definedIDs.put("TEMPLATE", "normal_collect2");
+						break;
+					case COLLECT_MOBS:
+						/*
+						4.	COLLECT FROM MOBS-Based off of Collect2, must travel to an outer plane of dissimilar alignment to both the deity and 
+						target, and dissimilar inclination to target.
+						 */
+						definedIDs.put("TEMPLATE", "normal_capture2");
+						break;
+					case COLLECT_RESOURCES:
+						/*
+						5.	COLLECT RESOURCES-Based off of Collect4, must travel to an inner plane and gather specified resources there (resource 
+						should be selected after the plane is selected, and should be among the available resource in the area and gatherable by an 
+						available skill the target has).
+						 */
+						break;
+					case DEFEAT_CAPTURE:
+						/*
+						2.	DEFEAT CAPTURE-Based off Capture1, must travel to a plane of dissimilar alignment to both the deity and the target, and 
+						dissimilar inclination to the target.  Defeat the mob in combat to subdue it and then return to the Reliquist to turn in the quest.
+						 */
+						break;
+					case DELIVERY:
+						/*
+						6.	DELIVERY-Based off of Delivery1, must travel to an outer plane of same or similar alignment to deity and alignment and 
+						the same or similar inclination of the target and delivery a GenReadable called “Divine Decree” to the target (remember, the 
+						target will be a mob modified by planar descriptions, so we need to make sure one of them exists).
+						 */
+						break;
+					case DISPEL:
+						/*
+						7.	DISPEL1-Based off of Dispel1, must travel to a plane of same or similar alignment to deity and alignment and the same or 
+						similar inclination of the target and remove a spell, disease, poison or affect from 1 or more affected mobs.
+						 */
+						break;
+					case ESCORT:
+						/*
+						8.	ESCORT1-Based off of Escort1, must travel to an outer plane of same alignment as deity and target, and same inclination 
+						as target with a mob generated from the specified area/plane.  Groups of 2 enemy mobs from the same area opposed plane will 
+						attack the escort along the way, spawning every 15-60 ticks.  If the escort dies, the quest is failed.
+						 */
+						break;
+					case KILL_ELITE:
+						/*
+						9.	KILL SOLDIERS-Based off of Killer1, must travel to an outer plane of dissimilar alignment as deity and target, and 
+						dissimilar inclination as target and kill 2?10 inhabitants of that area.
+						 */
+						break;
+					case KILL_OFFICER:
+						/*
+						10.	KILLER OFFICERS- Based off of Killer1, must travel to an outer plane of dissimilar alignment as deity and target, and 
+						dissimilar inclination as target and kill an elite inhabitant of that area.
+						 */
+						break;
+					case PEACEFUL_CAPTURE:
+						/*
+						1.	PEACEFUL CAPTURE-Based off Capture1, must travel to a plane of same or similar alignment to deity and alignment and 
+						the same or similar inclination of the target and meet with said creature, who will follow the target back to the 
+						Reliquist to turn in the quest.
+						 */
+						break;
+					case TRAVEL:
+						/*
+						11.	TRAVEL-Based off of Travel1, must travel to any random plane, random room from selected area, and then return to Reliquist for reward.
+						 */
+						break;
+					default:
+						break;
+					
+					}
 					final Map<String,Object> preDefined=new XHashtable<String,Object>(definedIDs);
 					CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs, preDefined.keySet());
 					final String idName = "ALL_QUESTS";
@@ -284,10 +383,84 @@ public class Prayer_PlanarPilgrimage extends Prayer
 				}
 				else
 				{
-					if(!definedIDs.containsKey("QUEST_CRITERIA"))
-						definedIDs.put("QUEST_CRITERIA", "-NAME \"+"+affected.Name()+"\" -NPC");
-					definedIDs.put("DURATION", ""+CMProps.getTicksPerHour());
-					definedIDs.put("EXPIRATION", ""+CMProps.getTicksPerHour());
+					switch(template)
+					{
+					case COLLECT_GROUND:
+						/*
+						3.	COLLECT FROM GROUND-Based on Collect1, must travel to any randomly selected outer plane and gather items.  
+						Items should be called “fragment of [deity name]”, a genitem  that represents a part of a soul faithful to the deity 
+						sent to that plane after their death.
+						 */
+						definedIDs.put("TEMPLATE", "normal_collect2");
+						break;
+					case COLLECT_MOBS:
+						/*
+						4.	COLLECT FROM MOBS-Based off of Collect2, must travel to an outer plane of dissimilar alignment to both the deity and 
+						target, and dissimilar inclination to target.
+						 */
+						definedIDs.put("TEMPLATE", "normal_capture2");
+						break;
+					case COLLECT_RESOURCES:
+						/*
+						5.	COLLECT RESOURCES-Based off of Collect4, must travel to an inner plane and gather specified resources there (resource 
+						should be selected after the plane is selected, and should be among the available resource in the area and gatherable by an 
+						available skill the target has).
+						 */
+						break;
+					case DEFEAT_CAPTURE:
+						/*
+						2.	DEFEAT CAPTURE-Based off Capture1, must travel to a plane of dissimilar alignment to both the deity and the target, and 
+						dissimilar inclination to the target.  Defeat the mob in combat to subdue it and then return to the Reliquist to turn in the quest.
+						 */
+						break;
+					case DELIVERY:
+						/*
+						6.	DELIVERY-Based off of Delivery1, must travel to an outer plane of same or similar alignment to deity and alignment and 
+						the same or similar inclination of the target and delivery a GenReadable called “Divine Decree” to the target (remember, the 
+						target will be a mob modified by planar descriptions, so we need to make sure one of them exists).
+						 */
+						break;
+					case DISPEL:
+						/*
+						7.	DISPEL1-Based off of Dispel1, must travel to a plane of same or similar alignment to deity and alignment and the same or 
+						similar inclination of the target and remove a spell, disease, poison or affect from 1 or more affected mobs.
+						 */
+						break;
+					case ESCORT:
+						/*
+						8.	ESCORT1-Based off of Escort1, must travel to an outer plane of same alignment as deity and target, and same inclination 
+						as target with a mob generated from the specified area/plane.  Groups of 2 enemy mobs from the same area opposed plane will 
+						attack the escort along the way, spawning every 15-60 ticks.  If the escort dies, the quest is failed.
+						 */
+						break;
+					case KILL_ELITE:
+						/*
+						9.	KILL SOLDIERS-Based off of Killer1, must travel to an outer plane of dissimilar alignment as deity and target, and 
+						dissimilar inclination as target and kill 2?10 inhabitants of that area.
+						 */
+						break;
+					case KILL_OFFICER:
+						/*
+						10.	KILLER OFFICERS- Based off of Killer1, must travel to an outer plane of dissimilar alignment as deity and target, and 
+						dissimilar inclination as target and kill an elite inhabitant of that area.
+						 */
+						break;
+					case PEACEFUL_CAPTURE:
+						/*
+						1.	PEACEFUL CAPTURE-Based off Capture1, must travel to a plane of same or similar alignment to deity and alignment and 
+						the same or similar inclination of the target and meet with said creature, who will follow the target back to the 
+						Reliquist to turn in the quest.
+						 */
+						break;
+					case TRAVEL:
+						/*
+						11.	TRAVEL-Based off of Travel1, must travel to any random plane, random room from selected area, and then return to Reliquist for reward.
+						 */
+						break;
+					default:
+						break;
+					
+					}
 					final Map<String,Object> preDefined=new XHashtable<String,Object>(definedIDs);
 					CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs, preDefined.keySet());
 					final String idName = "ALL_QUESTS";
@@ -410,17 +583,6 @@ quests, and the planes assigned will be based on the randomly selected quest, th
 alignment/inclination:
 Definitions:
 Quest types:
-1.	PEACEFUL CAPTURE-Based off Capture1, must travel to a plane of same or similar alignment to deity and alignment and the same or similar inclination of the target and meet with said creature, who will follow the target back to the Reliquist to turn in the quest.
-2.	DEFEAT CAPTURE-Based off Capture1, must travel to a plane of dissimilar alignment to both the deity and the target, and dissimilar inclination to the target.  Defeat the mob in combat to subdue it and then return to the Reliquist to turn in the quest.
-3.	COLLECT FROM GROUND-Based on Collect1, must travel to any randomly selected outer plane and gather items.  Items should be called “fragment of [deity name]”, a genitem  that represents a part of a soul faithful to the deity sent to that plane after their death.
-4.	COLLECT FROM MOBS-Based off of Collect2, must travel to an outer plane of dissimilar alignment to both the deity and target, and dissimilar inclination to target.
-5.	COLLECT RESOURCES-Based off of Collect4, must travel to an inner plane and gather specified resources there (resource should be selected after the plane is selected, and should be among the available resource in the area and gatherable by an available skill the target has).
-6.	DELIVERY-Based off of Delivery1, must travel to an outer plane of same or similar alignment to deity and alignment and the same or similar inclination of the target and delivery a GenReadable called “Divine Decree” to the target (remember, the target will be a mob modified by planar descriptions, so we need to make sure one of them exists).
-7.	DISPEL1-Based off of Dispel1, must travel to a plane of same or similar alignment to deity and alignment and the same or similar inclination of the target and remove a spell, disease, poison or affect from 1 or more affected mobs.
-8.	ESCORT1-Based off of Escort1, must travel to an outer plane of same alignment as deity and target, and same inclination as target with a mob generated from the specified area/plane.  Groups of 2 enemy mobs from the same area opposed plane will attack the escort along the way, spawning every 15-60 ticks.  If the escort dies, the quest is failed.
-9.	KILL SOLDIERS-Based off of Killer1, must travel to an outer plane of dissimilar alignment as deity and target, and dissimilar inclination as target and kill 2?10 inhabitants of that area.
-10.	KILLER OFFICERS- Based off of Killer1, must travel to an outer plane of dissimilar alignment as deity and target, and dissimilar inclination as target and kill an elite inhabitant of that area.
-11.	TRAVEL-Based off of Travel1, must travel to any random plane, random room from selected area, and then return to Reliquist for reward.
 Reward for completing quest is 1000 faction with deity, and a buff, FAVORED OF (DEITY NAME) which provides +2 to all stats and +10 hp per level of target, +5 mana per level of target, +5 movement per level of target for the next MUDMONTH.
 Expertise should allow the Reliquist to use this ability 1 extra time per mudmonth, but not on the same target.  (I image some sort of tattoo or affect which will preclude a player from participating in subsequent pilgrimages that mudmonth.  Ideally, this would be linked directly to the specific mudmonth, not to time…but a timed tattoo would be fine, too).
 	 */
@@ -719,7 +881,10 @@ Expertise should allow the Reliquist to use this ability 1 extra time per mudmon
 				mob.location().send(mob,msg);
 				final Ability effA=beneficialAffect(mob,targetM,asLevel,(int)(CMProps.getTicksPerHour()*2));
 				if(effA!=null)
+				{
 					effA.setMiscText("PLANE=\""+winner.first+"\" DEITY=\""+deityName+"\" TEMPLATECODE=\""+winner.second.name()+"\"");
+					setTimeOfNextCast(mob);
+				}
 			}
 		}
 		else
