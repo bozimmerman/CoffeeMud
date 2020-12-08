@@ -224,6 +224,34 @@ public class Prayer_InfuseUnholiness extends Prayer implements Deity.DeityWorshi
 	}
 
 	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+		if((affected instanceof Room)
+		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
+		&&(msg.target() instanceof MOB)
+		&&(msg.tool() instanceof Ability)
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+		&&(text().length()>0)
+		&&(msg.source().Name().equalsIgnoreCase(text())||msg.source().charStats().getWorshipCharID().equalsIgnoreCase(text()))
+		&&(((MOB)msg.target()).fetchEffect(msg.tool().ID())==null))
+		{
+			CMLib.threads().scheduleRunnable(new Runnable()
+			{
+				private final Ability able = (Ability)msg.tool();
+				private final MOB mob=(MOB)msg.target();
+				@Override
+				public void run()
+				{
+					final Ability A=mob.fetchEffect(able.ID());
+					if(A!=null)
+						A.setExpirationDate(System.currentTimeMillis() + A.expirationDate() + Math.round(CMath.mul(A.expirationDate(), 0.5)));
+				}
+			}, 1000);
+		}
+	}
+
+	@Override
 	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
