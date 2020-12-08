@@ -4138,6 +4138,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								num+=I.numberOfItems();
 						}
 						else
+						if(E instanceof RawMaterial)
+							num=((Item)E).phyStats().weight();
+						else
 						if(E instanceof Item)
 							num=((Item)E).numberOfItems();
 						else
@@ -7214,6 +7217,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						for(final Item I : ((Container)E).getContents())
 							num+=I.numberOfItems();
 					}
+					else
+					if(E instanceof RawMaterial)
+						num=((Item)E).phyStats().weight();
 					else
 					if(E instanceof Item)
 						num=((Item)E).numberOfItems();
