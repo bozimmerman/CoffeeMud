@@ -43,7 +43,12 @@ vars:
 	<FREQUENCY>1</FREQUENCY>
 	<DURATION>90 minutes</DURATION>
 	<CATEGORY>$quest_category</CATEGORY>
-	<COLLECTABLE_ITEMS>-NAME "+$target_item_name"</COLLECTABLE_ITEMS>
+	<COLLECTABLE_ITEMS SELECT="Pick-1">
+		<COLLECTABLE_ITEMS PICKWEIGHT=1 CONDITION="'${SELECT: CLASS FROM $target_item}' != 'GenResource' and '${SELECT: CLASS FROM $target_item}' != 'GenFoodResource' and '${SELECT: CLASS FROM $target_item}' != 'GenLiquidResource'">-NAME "+$target_item_name"</COLLECTABLE_ITEMS>
+		<COLLECTABLE_ITEMS PICKWEIGHT=9999 CONDITION="'${SELECT: CLASS FROM $target_item}' = 'GenResource'">-JAVACLASS +GenResource -RESOURCES "+${SELECT: RESOURCENAME FROM $target_item}"</COLLECTABLE_ITEMS>
+		<COLLECTABLE_ITEMS PICKWEIGHT=9999 CONDITION="'${SELECT: CLASS FROM $target_item}' = 'GenFoodResource'">-JAVACLASS +GenFoodResource -RESOURCES "+${SELECT: RESOURCENAME FROM $target_item}"</COLLECTABLE_ITEMS>
+		<COLLECTABLE_ITEMS PICKWEIGHT=9999 CONDITION="'${SELECT: CLASS FROM $target_item}' = 'GenLiquidResource'">-JAVACLASS +GenLiquidResource -RESOURCES "+${SELECT: RESOURCENAME FROM $target_item}"</COLLECTABLE_ITEMS>
+	</COLLECTABLE_ITEMS>
 	<NUM_COLLECTABLES>$num_targets</NUM_COLLECTABLES>
 	<QUEST_POINT>$quest_point_awarded</QUEST_POINT>
 	<GOLD>$gold_amount_awarded</GOLD>
@@ -198,6 +203,12 @@ vars:
 	</STRING>
 
 	<STRING ID="quest_winspeech" PREDEFINE="reason=$reason">$quest_winspeech</STRING>
+
+	<STRING id="quest_generic_fight_speeches" SELECT="Any-1">
+		<STRING>${c:target_item_name} is mine!</STRING>
+		<STRING>You are not getting my $target_item_name!</STRING>
+		<STRING>I would rather $hurt_verb you than give $target_item_name to you.</STRING>
+	</STRING>
 
 	<STRING id="quest_generic_winner_speeches" SELECT="Any-1">
 		<STRING>They are all $reason_verbed! That's all of them!</STRING>

@@ -99,6 +99,12 @@ vars:
 		<STRING>Congratulations adventurer, you have ${reason_verbed}, and that will be all.</STRING>
 	</STRING>
 
+	<STRING id="quest_generic_fight_speeches" SELECT="Any-1">
+		<STRING>${c:target_item_name} is mine!</STRING>
+		<STRING>You are not getting my $target_item_name!</STRING>
+		<STRING>I would rather $hurt_verb you than give $target_item_name to you.</STRING>
+	</STRING>
+
 	<STRING ID="reason_partytime" SELECT="All">
 		<STRING define="quest_winspeech" SELECT="Any-1" >
 			<STRING>Yay! Let the party BEGIN!</STRING>"

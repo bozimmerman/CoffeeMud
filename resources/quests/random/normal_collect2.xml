@@ -25,7 +25,7 @@ vars:
     sourcename(mob name)
     targetarea_name(area name)
     multiarea(yes or NO)
-    target_item_name(item name)
+    itemname(name of an item), item_level(#), item_material($)
     collectibles_chance(number0-100)
 	aggression(YES,NO)
     num_targets(num items to collect)
@@ -80,7 +80,21 @@ vars:
 		<STRING>${SELECT:level from $source}</STRING>
 	</STRING>
 	<STRING ID="target_item_name" define="target_item_name">${SELECT: NAME from (SELECT: FIRST\. from $target_item)}</STRING>
-	<OBJECT ID="target_item" define="target_item" SELECT="Any-1">SELECT: ANY\. FROM $item_junk WHERE level &lt;= $source_level</OBJECT>
+	<OBJECT ID="target_item" define="target_item" SELECT="Any-1">
+		<OBJECT condition="$itemname=''">SELECT: ANY\. FROM $item_junk WHERE level &lt;= $source_level</OBJECT>
+		<OBJECT condition="$itemname!=''">
+			<ITEM class="GenItem" name="$itemname" display="$itemname lies here">
+				<MATERIAL SELECT="Pick-1">
+					<MATERIAL PICKWEIGHT=99 CONDITION="$item_material=''">$any_Item_material</MATERIAL>
+					<MATERIAL PICKWEIGHT=1 CONDITION="$item_material!=''">$item_material</MATERIAL>
+				</MATERIAL>
+				<LEVEL SELECT="Pick-1">
+					<LEVEL PICKWEIGHT=99 CONDITION="$item_level=''">$level_range</LEVEL>
+					<LEVEL PICKWEIGHT=1 CONDITION="$item_level!=''">$item_level</LEVEL>
+				</LEVEL>
+			</ITEM>
+		</OBJECT>
+	</OBJECT>
 
 	<STRING ID="quest_fightspeech" PREDEFINE="reason=$reason" SELECT="Any">
 		<STRING CONDITION="$aggression='YES'">$quest_fightspeech</STRING>
@@ -256,7 +270,7 @@ vars:
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>${c:deityname} needs the ${p:target_item_name} of $target_area_name for some magical experiments.</STRING>
 			<STRING>${c:reason_verb} ${p:target_item_name} from $target_area_name for ${c:deityname}.</STRING>
-			<STRING>${c:deityname} has proclaimed that target_area_name has too many ${p:target_item_name}.</STRING>
+			<STRING>${c:deityname} has proclaimed that $target_area_name has too many ${p:target_item_name}.</STRING>
 			<STRING>Bring me ${p:target_item_name} for ${c:deityname}.</STRING>
 			<STRING>${c:deityname} feels like witnessing a $adj_feeling_good $target_area_name ${hurt_verb}ing.  Go do it and bring me their ${p:target_item_name}.</STRING>
 		</STRING>

@@ -186,14 +186,14 @@ settable vars:
 	<STRING ID="reason_wedotoeachother" SELECT="All">
 		<STRING define="quest_traveled">$quest_arrivalstring</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>${c:target_name} is studying $target_area_name, and needs more first hand knowledge of $target_room_name.</STRING>
+			<STRING>${c:target_name} is studying $target_area_name, and needs more first hand knowledge of the area.</STRING>
 		</STRING>
 	</STRING>
 
 	<STRING ID="reason_deitydo" SELECT="All" REQUIRES="deityname=$">
 		<STRING define="quest_traveled">$quest_arrivalstring</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>${c:deityname} requires that ${c:target_name} be taken to $target_room_name in $target_area_name.</STRING>
+			<STRING>${c:deityname} requires that ${c:target_name} be taken to $target_area_name.</STRING>
 		</STRING>
 	</STRING>
 	

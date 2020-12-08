@@ -133,7 +133,8 @@ public class WandArchon extends StdWand implements ArchonOnly
 		if((!mob.isMonster())
 		&&(message.length()>0)
 		&&(mob.session().getPreviousCMD()!=null)
-		&&(CMParms.combine(mob.session().getPreviousCMD(),0).toUpperCase().indexOf(message)<0))
+		&&(CMParms.combine(mob.session().getPreviousCMD(),0).toUpperCase().indexOf(message)<0)
+		&&((!mob.isPlayer())||(mob.isMonster())||(mob.playerStats().getAlias(mob.session().getPreviousCMD().get(0))==null)))
 		{
 			mob.tell(L("The wand fizzles in an irritating way."));
 			return false;

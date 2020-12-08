@@ -23,7 +23,7 @@ vars:
     category(whatevs)
     targetarea_name(area name)
     targetname(mobs name)
-    target_item_name(item name)
+    itemname(name of an item), item_level(#), item_material($)
     collectibles_chance(number0-100)
 	aggression(YES,NO)
     num_targets(num items to collect)
@@ -71,8 +71,20 @@ vars:
 	<STRING ID="item_level" define="item_level">$target_level</STRING>
 	<STRING ID="target_item_name" define="target_item_name">${SELECT: NAME from (SELECT: FIRST\. from $target_item)}</STRING>
 	<OBJECT ID="target_item" define="target_item" SELECT="Any-1">
-		<OBJECT condition="$target_int &gt; 2">SELECT: ANY\. FROM $item_junk WHERE level &lt;= $target_level </OBJECT>
-		<OBJECT condition="$target_int &lt;= 2">SELECT: ANY\. from $target\resources</OBJECT>
+		<OBJECT condition="$target_int &gt; 2 and $itemname=''">SELECT: ANY\. FROM $item_junk WHERE level &lt;= $target_level </OBJECT>
+		<OBJECT condition="$target_int &lt;= 2 and $itemname=''">SELECT: ANY\. from $target\resources</OBJECT>
+		<OBJECT condition="$itemname!=''">
+			<ITEM class="GenItem" name="$itemname" display="$itemname lies here">
+				<MATERIAL SELECT="Pick-1">
+					<MATERIAL PICKWEIGHT=99 CONDITION="$item_material=''">$any_Item_material</MATERIAL>
+					<MATERIAL PICKWEIGHT=1 CONDITION="$item_material!=''">$item_material</MATERIAL>
+				</MATERIAL>
+				<LEVEL SELECT="Pick-1">
+					<LEVEL PICKWEIGHT=99 CONDITION="$item_level=''">$level_range</LEVEL>
+					<LEVEL PICKWEIGHT=1 CONDITION="$item_level!=''">$item_level</LEVEL>
+				</LEVEL>
+			</ITEM>
+		</OBJECT>
 	</OBJECT>
 
 	<STRING ID="quest_fightspeech" PREDEFINE="reason=$reason" SELECT="Any">
@@ -117,7 +129,7 @@ vars:
 
 	<STRING id="quest_generic_fight_speeches" SELECT="Any-1">
 		<STRING>${c:target_item_name} is mine!</STRING>
-		<STRING>You is not getting my $target_item_name!</STRING>
+		<STRING>You are not getting my $target_item_name!</STRING>
 		<STRING>I would rather $hurt_verb you than give $target_item_name to you.</STRING>
 	</STRING>
 
