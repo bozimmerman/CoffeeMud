@@ -203,6 +203,7 @@ public class Reliquist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_SenseDigs",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_UsePotion",false);
 		// scroll titling is a meta-skill, which I greatly dislike -- IOW, there's no RP explanation for it.
+		// I'd rather fix this some other way...
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),18,"ScrollTitling",false); // also:  for Arcanist and others
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Detection",0,false);
