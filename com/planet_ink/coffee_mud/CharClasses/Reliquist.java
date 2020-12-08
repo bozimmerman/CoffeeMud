@@ -201,7 +201,8 @@ public class Reliquist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_FalseService",0,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_Disenchant",0,false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_SenseDigs",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_AlchemicalVenom",false); // also: Arcanist (18Q), Assassin (24Q), Trapper (24Q), Thief (18Q)
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_UsePotion",false);
+		// scroll titling is a meta-skill, which I greatly dislike -- IOW, there's no RP explanation for it.
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),18,"ScrollTitling",false); // also:  for Arcanist and others
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Detection",0,false);
@@ -260,13 +261,6 @@ public class Reliquist extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Prayer_PlanarPilgrimage", 0, "", false,
 				 SecretFlag.MASKED, null, "+PLANE \"-Prime Material\"");
-
-		/**
-Other Engine changes:
-Praying for your daily buffs on Holy Grounds should result in a 50% increase in duration of the buff.
-Prayers cast by a cleric of the appropriate deity on holy grounds should result in a 50% increase in duration of the buff.
-*/
-
 	}
 
 	@Override
