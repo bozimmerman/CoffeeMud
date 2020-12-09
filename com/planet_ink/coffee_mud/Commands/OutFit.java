@@ -166,7 +166,7 @@ public class OutFit extends StdCommand
 				 continue;
 			Item armorI=findArmorWinner(mob,useSkills,wornCode,material,positionsFound,armorCache);
 			if((armorI==null)&&(useSkills!=clothSkills))
-				armorI=findArmorWinner(mob,useSkills,wornCode,material,positionsFound,armorCache);
+				armorI=findArmorWinner(mob,useSkills,wornCode,RawMaterial.RESOURCE_COTTON,positionsFound,armorCache);
 			if(armorI!=null)
 			{
 				if(armorI.rawLogicalAnd())
