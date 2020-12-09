@@ -152,7 +152,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		for(int i=0;i<items.size();i++)
 		{
 			Item I=items.get(i);
-			if(mob.findItem("$"+I.name()+"$")==null)
+			if((mob.findItem("$"+I.name()+"$")==null)
+			||((!I.rawLogicalAnd())&&(mob.findItems("$"+I.name()+"$").size()<2)))
 			{
 				I=(Item)I.copyOf();
 				I.text();

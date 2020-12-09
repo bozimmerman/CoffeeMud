@@ -87,7 +87,8 @@ public class OutFit extends StdCommand
 			for(final ItemKeyPair p : set)
 			{
 				if(((((Armor)p.item).rawProperLocationBitmap()&wornCode)>0)
-				&&((positionsFound&(((Armor)p.item).rawProperLocationBitmap()))!=((Armor)p.item).rawProperLocationBitmap()))
+				&&((!p.item.rawLogicalAnd())
+					|| ((positionsFound&((Armor)p.item).rawProperLocationBitmap())==0)))
 				{
 					final int ilvl=p.item.phyStats().level();
 					if((ilvl<=mlvl)
@@ -164,16 +165,19 @@ public class OutFit extends StdCommand
 			|| (wornCode == Wearable.WORN_FLOATING_NEARBY)
 			|| (wornCode == Wearable.WORN_MOUTH))
 				 continue;
-			Item armorI=findArmorWinner(mob,useSkills,wornCode,material,positionsFound,armorCache);
-			if((armorI==null)&&(useSkills!=clothSkills))
-				armorI=findArmorWinner(mob,useSkills,wornCode,RawMaterial.RESOURCE_COTTON,positionsFound,armorCache);
-			if(armorI!=null)
+			if((positionsFound&wornCode)==0)
 			{
-				if(armorI.rawLogicalAnd())
-					positionsFound |= armorI.rawProperLocationBitmap();
-				else
-					positionsFound |= wornCode;
-				finalArmors.add(armorI);
+				Item armorI=findArmorWinner(mob,useSkills,wornCode,material,positionsFound,armorCache);
+				if((armorI==null)&&(useSkills!=clothSkills))
+					armorI=findArmorWinner(mob,useSkills,wornCode,RawMaterial.RESOURCE_COTTON,positionsFound,armorCache);
+				if(armorI!=null)
+				{
+					if(armorI.rawLogicalAnd())
+						positionsFound |= armorI.rawProperLocationBitmap();
+					else
+						positionsFound |= wornCode;
+					finalArmors.add(armorI);
+				}
 			}
 		}
 		for(final String key : armorCache.keySet())
