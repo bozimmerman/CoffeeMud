@@ -57,7 +57,7 @@ public class Reliquist extends Thief
 	@Override
 	public int availabilityCode()
 	{
-		return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;
+		return Area.THEME_FANTASY;
 	}
 
 	@Override
