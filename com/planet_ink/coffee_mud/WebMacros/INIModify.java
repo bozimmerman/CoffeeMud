@@ -52,7 +52,7 @@ public class INIModify extends StdWebMacro
 		final StringBuffer buf=new StringBuffer("");
 		for(int p=0;p<page.size();p++)
 			buf.append((page.get(p))+"\r\n");
-		new CMFile(CMProps.getVar(CMProps.Str.INIPATH),null,CMFile.FLAG_FORCEALLOW).saveText(buf);
+		new CMFile("//"+CMProps.getVar(CMProps.Str.INIPATH),null,CMFile.FLAG_FORCEALLOW).saveText(buf);
 	}
 
 	public boolean modified(final Set<String> H, final String s)
