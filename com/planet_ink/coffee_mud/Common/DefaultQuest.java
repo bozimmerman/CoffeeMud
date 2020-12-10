@@ -4279,7 +4279,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					PO=e.nextElement();
 					final PhysicalAgent P=PO.obj;
 					// always end quest between steps
-					if(P instanceof MOB)
+					if((P instanceof MOB)
+					&&(PO.preserveState!=Integer.MIN_VALUE))
 					{
 						final MOB M=(MOB)P;
 						final ScriptingEngine B=(ScriptingEngine)M.fetchBehavior("Scriptable");
