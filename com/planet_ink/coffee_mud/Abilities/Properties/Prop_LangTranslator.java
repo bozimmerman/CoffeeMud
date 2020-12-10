@@ -74,6 +74,12 @@ public class Prop_LangTranslator extends Property implements Language
 	}
 
 	@Override
+	public boolean isANaturalLanguage()
+	{
+		return true;
+	}
+
+	@Override
 	public void setMiscText(final String text)
 	{
 		super.setMiscText(text);

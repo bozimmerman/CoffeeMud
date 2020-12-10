@@ -102,6 +102,7 @@ public class Prayer_Fluency extends Prayer
 		&&(lastLang != null))
 			L=lastLang;
 		if((L!=null)
+		&&(L.isANaturalLanguage())
 		&&(!L.ID().equalsIgnoreCase("Common")))
 		{
 			if(langs.containsKey(L.ID()))
@@ -153,6 +154,7 @@ public class Prayer_Fluency extends Prayer
 		&&(msg.targetMinor()==CMMsg.TYP_SPEAK)
 		&&(msg.target() instanceof MOB)
 		&&(msg.tool() instanceof Language)
+		&&(((Language)msg.tool()).isANaturalLanguage())
 		&&(!CMLib.flags().isAnimalIntelligence(msg.source())))
 		{
 			lastLang=(Language)msg.tool();

@@ -141,6 +141,12 @@ public class StdLanguage extends StdAbility implements Language
 	}
 
 	@Override
+	public boolean isANaturalLanguage()
+	{
+		return true;
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		if(newMiscText.length()>0)

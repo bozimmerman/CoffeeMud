@@ -105,6 +105,12 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 		return false;
 	}
 
+	@Override
+	public boolean isANaturalLanguage()
+	{
+		return true;
+	}
+
 	protected boolean canSpeakWithThis(final MOB mob)
 	{
 		if(CMLib.flags().isAnimalIntelligence(mob))
@@ -174,7 +180,8 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 			for(Ability A : r.racialAbilities(M))
 			{
 				if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
-				&&(A instanceof Language))
+				&&(A instanceof Language)
+				&&(!((Language)A).isANaturalLanguage()))
 				{
 					final Ability effectA=M.fetchEffect(A.ID());
 					if(effectA==null)
@@ -293,7 +300,10 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 				else
 				if(msg.amISource(mob)
 				&&(msg.target() instanceof MOB)
-				&&((msg.tool()==null) || (!(msg.tool() instanceof Language)) ||(((MOB)msg.target()).charStats().getMyRace().racialAbilities((MOB)msg.target()).find(msg.tool().ID())==null)))
+				&&((msg.tool()==null)
+					|| (!(msg.tool() instanceof Language))
+					|| (((Language)msg.tool()).isANaturalLanguage())
+					||(((MOB)msg.target()).charStats().getMyRace().racialAbilities((MOB)msg.target()).find(msg.tool().ID())==null)))
 				{
 					Language lA=this.getAnimalSpeak((MOB)msg.target());
 					if((lA!=null)&&(canSpeakWithThis((MOB)msg.target(),lA)))
@@ -343,6 +353,7 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 					&&(canSpeakWithThis((MOB)msg.target()))
 					&&((msg.tool()==null)
 						|| (!(msg.tool() instanceof Language))
+						|| (((Language)msg.tool()).isANaturalLanguage())
 						||(((MOB)msg.target()).charStats().getMyRace().racialAbilities((MOB)msg.target()).find(msg.tool().ID())==null)))
 					{
 						Language lA=this.getAnimalSpeak((MOB)msg.target());

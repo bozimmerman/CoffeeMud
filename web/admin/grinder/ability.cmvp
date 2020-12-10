@@ -158,39 +158,43 @@
                     <TD><INPUT TYPE=TEXT SIZE=60 NAME=@RequestParameter?WORDLISTNUM@ VALUE="@RequestParameter?@@RequestParameter?WORDLISTNUM@@ @"></TD>
                 </TR>
             @back@
-                <TR>
-                    <TD><FONT COLOR=YELLOW>@RequestParameter?WLCOUNTER@ letter words<BR><FONT SIZE=-1>(comma delimited)</FONT>: </FONT></TD>
-                    <TD><INPUT TYPE=TEXT SIZE=60 NAME=@RequestParameter?WORDLISTNEXT@ VALUE=""></TD>
-                </TR>
-                <TR>
-                    <TD></TD>
-                    <TD>
-                        <A HREF="JavaScript:ReShow();"><FONT COLOR=WHITE SIZE=-1>Add more word lists</FONT></A>
-                        <INPUT TYPE=HIDDEN NAME=CLASSIFICATION_ACODE VALUE=7>
-                    </TD>
-                </TR>
-	            <TR>
-                <TD><FONT COLOR=YELLOW>Word replacements: </FONT></TD><TD>
-                @AbilityData?HASHWORDS&RESET@
-                @loop@
-                    @AbilityData?HASHWORDS&NEXT@
-                    <INPUT TYPE=TEXT SIZE=10 NAME=@RequestParameter?HASHWORDNUM@ VALUE="@RequestParameter?@@RequestParameter?HASHWORDNUM@@ @">
-                    <FONT SIZE=-1 COLOR=WHITE>is translated to</FONT>
-                    <INPUT TYPE=TEXT SIZE=20 NAME=@RequestParameter?HASHWORDDEFNUM@ VALUE="@RequestParameter?@@RequestParameter?HASHWORDDEFNUM@@ @">
-                    <BR>
-                @back@
-                <INPUT TYPE=TEXT SIZE=10 NAME=@RequestParameter?HASHWORDNEXT@ VALUE="">
-                <FONT SIZE=-1 COLOR=WHITE>is translated to</FONT>
-                <INPUT TYPE=TEXT SIZE=10 NAME=@RequestParameter?HASHWORDDEFNEXT@ VALUE="">
-                </TD></TR>
-                <TR>
-                    <TD></TD>
-                    <TD><A HREF="JavaScript:ReShow();"><FONT COLOR=WHITE SIZE=-1>Add another word replacement</FONT></A></TD>
-                </TR>
-		        <TR>
-		            <TD><FONT COLOR=YELLOW>Translate Langs:</FONT></TD>
-		            <TD>@AbilityData?INTERPRETS@</TD>
-		        </TR>
+               <TR>
+                   <TD><FONT COLOR=YELLOW>@RequestParameter?WLCOUNTER@ letter words<BR><FONT SIZE=-1>(comma delimited)</FONT>: </FONT></TD>
+                   <TD><INPUT TYPE=TEXT SIZE=60 NAME=@RequestParameter?WORDLISTNEXT@ VALUE=""></TD>
+               </TR>
+               <TR>
+                   <TD></TD>
+                   <TD>
+                       <A HREF="JavaScript:ReShow();"><FONT COLOR=WHITE SIZE=-1>Add more word lists</FONT></A>
+                       <INPUT TYPE=HIDDEN NAME=CLASSIFICATION_ACODE VALUE=7>
+                   </TD>
+               </TR>
+            <TR>
+               <TD><FONT COLOR=YELLOW>Word replacements: </FONT></TD><TD>
+               @AbilityData?HASHWORDS&RESET@
+               @loop@
+                   @AbilityData?HASHWORDS&NEXT@
+                   <INPUT TYPE=TEXT SIZE=10 NAME=@RequestParameter?HASHWORDNUM@ VALUE="@RequestParameter?@@RequestParameter?HASHWORDNUM@@ @">
+                   <FONT SIZE=-1 COLOR=WHITE>is translated to</FONT>
+                   <INPUT TYPE=TEXT SIZE=20 NAME=@RequestParameter?HASHWORDDEFNUM@ VALUE="@RequestParameter?@@RequestParameter?HASHWORDDEFNUM@@ @">
+                   <BR>
+               @back@
+               <INPUT TYPE=TEXT SIZE=10 NAME=@RequestParameter?HASHWORDNEXT@ VALUE="">
+               <FONT SIZE=-1 COLOR=WHITE>is translated to</FONT>
+               <INPUT TYPE=TEXT SIZE=10 NAME=@RequestParameter?HASHWORDDEFNEXT@ VALUE="">
+               </TD></TR>
+               <TR>
+                   <TD></TD>
+                   <TD><A HREF="JavaScript:ReShow();"><FONT COLOR=WHITE SIZE=-1>Add another word replacement</FONT></A></TD>
+               </TR>
+	        <TR>
+	            <TD><FONT COLOR=YELLOW>Translate Langs:</FONT></TD>
+	            <TD>@AbilityData?INTERPRETS@</TD>
+	        </TR>
+	        <TR>
+	            <TD><FONT COLOR=YELLOW>Is Natural:</FONT></TD>
+	            <TD><INPUT TYPE=CHECKBOX NAME=NATURALLANG @AbilityData?NATURALLANG@></TD>
+	        </TR>
         @else@
         @if?AbilityData?ISCRAFTSKILL@
             <TR>

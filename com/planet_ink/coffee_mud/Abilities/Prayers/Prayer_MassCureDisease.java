@@ -134,6 +134,8 @@ public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 				for (final Room room : checkSet)
 				{
 					final Room R=CMLib.map().getRoom(room);
+					if(R==null)
+						continue;
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						final MOB target=R.fetchInhabitant(m);

@@ -248,6 +248,8 @@ public class GrinderAbilities
 		A.setStat("POSTCASTABILITY",CMParms.toSemicolonListString(V));
 		if(A instanceof Language)
 		{
+			old=httpReq.getUrlParameter("NATURALLANG");
+			A.setStat("NATURALLANG",(old==null)?"false":Boolean.toString(old.equalsIgnoreCase("on")));
 			((Language)A).translationLists(A.ID()).clear();
 			if(httpReq.isUrlParameter("WORDLIST1"))
 			{

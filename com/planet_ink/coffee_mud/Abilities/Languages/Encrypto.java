@@ -101,6 +101,12 @@ public class Encrypto extends StdLanguage
 	}
 
 	@Override
+	public boolean isANaturalLanguage()
+	{
+		return false;
+	}
+
+	@Override
 	public void setMiscText(String newMiscText)
 	{
 		if(newMiscText.length()>0)

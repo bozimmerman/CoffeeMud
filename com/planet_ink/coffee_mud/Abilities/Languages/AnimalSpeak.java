@@ -61,6 +61,12 @@ public class AnimalSpeak extends StdLanguage
 		}
 	}
 
+	@Override
+	public boolean isANaturalLanguage()
+	{
+		return false;
+	}
+
 	private final static String[] animalSounds={
 		"hiss","grunt","roar","quak","snort","growl","screech","growl","groan","moan","roar","hum","buzz","drone","click","chirrup","chirp",
 		"twitter","tweet","sing","whistle","boom","whistle","chirp","squeal","screech","shriek","squeak","hoot","bleat","grunt","chirp",

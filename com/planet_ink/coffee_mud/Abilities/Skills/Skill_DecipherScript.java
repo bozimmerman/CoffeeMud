@@ -94,11 +94,11 @@ public class Skill_DecipherScript extends StdSkill
 		return 0;
 	}
 
-	protected Item decryptI=null;
-	protected ItemPossessor possessorI=null;
-	protected boolean success=false;
-	protected String page="";
-	protected int tickUp=0;
+	protected Item			decryptI	= null;
+	protected ItemPossessor	possessorI	= null;
+	protected boolean		success		= false;
+	protected String		page		= "";
+	protected int			tickUp		= 0;
 
 	protected boolean confirmSuccess()
 	{

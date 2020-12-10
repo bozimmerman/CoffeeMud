@@ -296,6 +296,13 @@ public class AbilityData extends StdWebMacro
 				}
 				if(A instanceof Language)
 				{
+					if(parms.containsKey("NATURALLANG"))
+					{
+						String old=httpReq.getUrlParameter("NATURALLANG");
+						if(old==null)
+							old=CMath.s_bool(A.getStat("NATURALLANG"))?"on":"";
+						str.append(old.equalsIgnoreCase("on")?"CHECKED, ":", ");
+					}
 					if(parms.containsKey("WORDLISTS"))
 					{
 						List<String[]> wordLists=((Language)A).translationLists(A.ID());

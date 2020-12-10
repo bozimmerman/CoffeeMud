@@ -61,7 +61,8 @@ public class GenLanguage extends StdLanguage
 	private static final int V_HSETS=2;//H<S,S>
 	private static final int V_HELP=3;//S
 	private static final int V_INTS=4;//L<S>
-	private static final int NUM_VS=5;//S
+	private static final int V_NAT=5;//L<B>
+	private static final int NUM_VS=6;//S
 
 	private static final Object[] makeEmpty()
 	{
@@ -71,6 +72,7 @@ public class GenLanguage extends StdLanguage
 		O[V_HSETS]=new Hashtable<String,String>();
 		O[V_HELP]="<ABILITY>This language is not yet documented.";
 		O[V_INTS]=new HashSet<String>();
+		O[V_NAT]=Boolean.TRUE;
 		return O;
 	}
 
@@ -122,6 +124,12 @@ public class GenLanguage extends StdLanguage
 	}
 
 	@Override
+	public boolean isANaturalLanguage()
+	{
+		return ((Boolean)V(ID,V_NAT)).booleanValue();
+	}
+
+	@Override
 	public CMObject newInstance()
 	{
 		try
@@ -161,7 +169,8 @@ public class GenLanguage extends StdLanguage
 										 "WORDS",//2S
 										 "HASHEDWORDS",//2S
 										 "HELP",//27I
-										 "INTERPRETS" // S
+										 "INTERPRETS", // S
+										 "NATURALLANG" // B
 										};
 
 	@Override
@@ -226,6 +235,8 @@ public class GenLanguage extends StdLanguage
 			return (String) V(ID, V_HELP);
 		case 6:
 			return CMParms.combineWith((Set<String>)V(ID,V_INTS), ',');
+		case 7:
+			return V(ID,V_NAT).toString();
 		default:
 			if (code.equalsIgnoreCase("javaclass"))
 				return "GenLanguage";
@@ -306,6 +317,14 @@ public class GenLanguage extends StdLanguage
 			if(!ints.contains(ID()))
 				ints.add(ID());
 			SV(ID, V_INTS, ints);
+			break;
+		}
+		case 7:
+		{
+			if(!CMath.isBool(val))
+				SV(ID, V_NAT, Boolean.TRUE);
+			else
+				SV(ID, V_NAT, Boolean.valueOf(CMath.s_bool(val)));
 			break;
 		}
 		default:

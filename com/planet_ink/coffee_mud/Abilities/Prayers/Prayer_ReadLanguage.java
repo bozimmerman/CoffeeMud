@@ -128,7 +128,8 @@ public class Prayer_ReadLanguage extends Prayer
 			for(final Enumeration<Ability> a= target.effects();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
-				if(A instanceof Language)
+				if((A instanceof Language)
+				&&(((Language)A).isANaturalLanguage()))
 					langA=(Language)A;
 			}
 			Language myA=null;

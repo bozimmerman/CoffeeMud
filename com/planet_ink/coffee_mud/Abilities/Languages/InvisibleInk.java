@@ -48,6 +48,11 @@ public class InvisibleInk extends StdLanguage
 		return localizedName;
 	}
 
+	@Override
+	public boolean isANaturalLanguage()
+	{
+		return false;
+	}
 
 	@Override
 	public String translate(final String language, final String word)

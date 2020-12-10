@@ -109,4 +109,13 @@ public interface Language extends Ability
 	 * @return the translated word
 	 */
 	public String translate(String language, String word);
+
+	/**
+	 * Returns whether this language can be translated by normal replacement
+	 * means, and is a natural language of a sentient creature.  This would
+	 * differentiate it from Language class things like encryption,
+	 * invisible ink, or animal noises.
+	 * @return whether this is a natural sentient language
+	 */
+	public boolean isANaturalLanguage();
 }
