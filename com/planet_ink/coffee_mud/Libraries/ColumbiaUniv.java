@@ -567,7 +567,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				switch(costType)
 				{
 				case XP:
-					CMLib.leveler().postExperience(student, null, "", value.intValue(), true);
+					CMLib.leveler().postExperience(student, null, "", -value.intValue(), true);
 					break;
 				case GOLD:
 					CMLib.beanCounter().subtractMoney(student, value.doubleValue());
