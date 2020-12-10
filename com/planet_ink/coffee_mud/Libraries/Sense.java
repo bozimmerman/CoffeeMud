@@ -1490,7 +1490,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			final MOB monster=(MOB)affecting;
 			if((!canActAtAll(monster))
 			||(monster.isInCombat())
-			||(monster.amFollowing()!=null)
+			||((monster.amFollowing()!=null)&&(!monster.isPlayer()))
 			||(monster.curState().getHitPoints()<(monster.maxState().getHitPoints()/2)))
 				return false;
 			return true;
