@@ -617,7 +617,16 @@ public class Skill_UnearthDemography extends StdAbility
 			}
 			if(!knownAreaInfo.containsKey(theA.Name()))
 			{
-				mob.tell(L("You do not yet have any information about @x1.  Use UNEARTH START to start investigating.",theA.Name()));
+				final Ability oldA=mob.fetchEffect(ID());
+				if(oldA!=null)
+				{
+					mob.tell(L("You do not yet have any information about @x1.  "
+							+ "Use UNEARTH START to start investigating.",theA.Name()));
+				}
+				else
+				{
+					mob.tell(L("You do not yet have any information about @x1.  Keep looking!",theA.Name()));
+				}
 				return false;
 			}
 			else
