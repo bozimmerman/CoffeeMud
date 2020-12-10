@@ -99,7 +99,7 @@ public class Prayer_ProtectItem extends Prayer
 		final Item I=(Item)affected;
 		if(I.subjectToWearAndTear())
 		{
-			
+
 			if(I.usesRemaining()>maintainCondition)
 				maintainCondition=I.usesRemaining();
 			I.setUsesRemaining(maintainCondition);
@@ -142,25 +142,18 @@ public class Prayer_ProtectItem extends Prayer
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		if(commands.size()<2)
+		if(commands.size()<1)
 		{
 			mob.tell(L("Protect what?"));
 			return false;
 		}
-		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,commands.get(commands.size()-1),Wearable.FILTER_UNWORNONLY);
+		final String what=CMParms.combine(commands);
+		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,what,Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(L("You don't see '@x1' here.",(commands.get(commands.size()-1))));
+			mob.tell(L("You don't see '@x1' here.",what));
 			return false;
 		}
-		if(!(target instanceof Wand))
-		{
-			mob.tell(mob,target,null,L("You can't protect <T-NAME>."));
-			return false;
-		}
-
-		commands.remove(commands.size()-1);
-
 		// lose all the mana!
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
