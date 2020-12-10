@@ -236,7 +236,7 @@ public class Prayer_StorePrayer extends Prayer implements AbilityContainer, Disc
 			break;
 		case CMMsg.TYP_SPEAK:
 			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
-			&&(msg.targetMessage()!=null)
+			&&(msg.sourceMessage()!=null)
 			&&(affected != null))
 			{
 				boolean alreadyWanding=false;
@@ -252,7 +252,7 @@ public class Prayer_StorePrayer extends Prayer implements AbilityContainer, Disc
 				if(!alreadyWanding)
 				{
 					final String name=getSpeakableName(affected.name());
-					final int x=msg.targetMessage().toUpperCase().indexOf(name);
+					final int x=msg.sourceMessage().toUpperCase().indexOf(name);
 					if(x>=0)
 					{
 						msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,CMStrings.getSayFromMessage(msg.sourceMessage()),CMMsg.NO_EFFECT,null));
