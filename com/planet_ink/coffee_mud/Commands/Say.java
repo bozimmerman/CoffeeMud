@@ -288,8 +288,12 @@ public class Say extends StdCommand
 				if((hisL==null)
 				&&(myL!=null)
 				&&(mob.fetchAbility("Common")!=null)
-				&&(langTarget.fetchEffect(myL.ID())==null))
+				&&((!(langTarget instanceof MOB))
+					||(langTarget.fetchEffect(myL.ID())==null)
+					||(!(((MOB)langTarget).isPlayer()))))
+				{
 					langSwap=new Language[]{null,myL};
+				}
 				else
 				if((hisL!=null)
 				&&((myL==null)||(!hisL.ID().equals(myL.ID()))))
