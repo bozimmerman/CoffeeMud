@@ -118,6 +118,7 @@ public class Chant_AnimalSpy extends Chant
 				return;
 
 			if((msg.amISource(spy))
+			&&(affected==spy)
 			&&((msg.sourceMinor()==CMMsg.TYP_LOOK)||(msg.sourceMinor()==CMMsg.TYP_EXAMINE))
 			&&(msg.target()!=null)
 			&&((invoker.location()!=spy.location())||(!(msg.target() instanceof Room))))
@@ -129,6 +130,7 @@ public class Chant_AnimalSpy extends Chant
 			else
 			if((!msg.amISource(invoker))
 			&&(invoker.location()!=spy.location())
+			&&(affected==spy)
 			&&(msg.source().location()==spy.location())
 			&&(msg.othersCode()!=CMMsg.NO_EFFECT)
 			&&(msg.othersMessage()!=null)
@@ -140,6 +142,7 @@ public class Chant_AnimalSpy extends Chant
 			else
 			if(msg.amISource(invoker)
 			&&(!disable)
+			&&(affected==invoker)
 			&&(msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			&&(msg.sourceMessage()!=null)
 			&&((msg.sourceMajor()&CMMsg.MASK_MAGIC)==0))
