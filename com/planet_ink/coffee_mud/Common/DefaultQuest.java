@@ -4277,6 +4277,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				for(e=new ReverseEnumeration<PreservedQuestObject>(questState.worldObjects);e.hasMoreElements();)
 				{
 					PO=e.nextElement();
+					final PhysicalAgent P=PO.obj;
+					// always end quest between steps
+					if(P instanceof MOB)
+					{
+						final MOB M=(MOB)P;
+						final ScriptingEngine B=(ScriptingEngine)M.fetchBehavior("Scriptable");
+						if(B!=null)
+							B.endQuest(M,M,name());
+					}
 					if(PO.preserveState>0)
 					{
 						PO.preserveState--;
@@ -4286,7 +4295,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					if(PO.preserveState == Integer.MIN_VALUE)
 						continue;
 					PO.preserveState=Integer.MIN_VALUE;
-					final PhysicalAgent P=PO.obj;
 					if(P != null)
 					{
 						final Ability A=P.fetchEffect("QuestBound");
@@ -4302,9 +4310,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						if(P instanceof MOB)
 						{
 							final MOB M=(MOB)P;
-							final ScriptingEngine B=(ScriptingEngine)M.fetchBehavior("Scriptable");
-							if(B!=null)
-								B.endQuest(M,M,name());
 							if(!M.isPlayer())
 							{
 								final Room R=M.getStartRoom();
