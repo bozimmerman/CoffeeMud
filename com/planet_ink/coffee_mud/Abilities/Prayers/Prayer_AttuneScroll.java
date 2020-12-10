@@ -112,7 +112,7 @@ public class Prayer_AttuneScroll extends Prayer
 		for(final Ability A : ((Scroll)target).getSpells())
 		{
 			if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
-				isDivine=false;
+				isDivine=true;
 		}
 		if(!isDivine)
 		{

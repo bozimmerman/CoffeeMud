@@ -66,7 +66,6 @@ public class OutFit extends StdCommand
 	{
 		final int mlvl=mob.phyStats().level();
 		Item winnerW=null;
-		int closestDiff=Integer.MAX_VALUE;
 		int bestArmor=Integer.MIN_VALUE;
 		for(final String skillID : useSkills)
 		{
@@ -96,7 +95,6 @@ public class OutFit extends StdCommand
 					{
 						winnerW=p.item;
 						bestArmor=p.item.phyStats().armor()-(mlvl-ilvl);
-						closestDiff=mlvl-ilvl;
 					}
 				}
 			}
