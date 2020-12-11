@@ -131,8 +131,8 @@ public class Prayer_EternalItem extends Prayer
 	causing the caster to lose 100 maximum mana points.  The caster must also be at full mana to cast.
 	Builders Notes	The target item must already have a zapper mask restricting item use to the casters deity, 
 	and any alignment restrictions on the item must allow for the casters alignment.
-	The item maintains its current level.
-	The item gains of (deitys name) to its name (if it doesn’t already have the name of the deity in its name).
+//	The item maintains its current level.
+	The item gains of (deitys name) to its name (if it doesnt already have the name of the deity in its name).
 	Protects against combat damage, rust, spell damage, disintegrate, weapon break and any other ability that would damage
 	 or destroy an object.  This will also protect the item from ruin (grants prop_itemnoruin).
 	This prayer cannot be cast upon a GenSailingShip.
