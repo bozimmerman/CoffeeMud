@@ -98,8 +98,8 @@ public class Reliquist extends Thief
 	@Override
 	public String getOtherBonusDesc()
 	{
-		return L("Magic resistance, 1%/level.  Huge discounts when buying holy potions after 5th level.  Ability to memorize spells learned through PrayerCraft. "
-				+ "Can see scroll charges at level 30.");
+		return L("Magic resistance, 1%/level.  Huge discounts when buying holy potions after 5th level.  Ability to memorize prayers learned through PrayerCraft. "
+				+ "Can see prayer scroll charges at level 30.");
 	}
 
 	public Reliquist()
