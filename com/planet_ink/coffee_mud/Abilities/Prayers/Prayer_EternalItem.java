@@ -126,18 +126,17 @@ public class Prayer_EternalItem extends Prayer
 		return true;
 	}
 
-/**
-Description	This prayer will make a holy item of the Reliquist’s deity protected from damage and destruction. This prayer is very draining on the caster, however, 
-causing the caster to lose 100 maximum mana points.  The caster must also be at full mana to cast.
-Builder’s Notes	The target item must already have a zapper mask restricting item use to the caster’s deity, 
-and any alignment restrictions on the item must allow for the caster’s alignment.
-The item maintains its current level.
-The item gains “of (deity’s name)” to its name (if it doesn’t already have the name of the deity in its name).
-Protects against combat damage, rust, spell damage, disintegrate, weapon break and any other ability that would damage
- or destroy an object.  This will also protect the item from ruin (grants prop_itemnoruin).
-This prayer cannot be cast upon a GenSailingShip.
- */
-	
+	/**
+	Description	This prayer will make a holy item of the Reliquists deity protected from damage and destruction. This prayer is very draining on the caster, however, 
+	causing the caster to lose 100 maximum mana points.  The caster must also be at full mana to cast.
+	Builder’s Notes	The target item must already have a zapper mask restricting item use to the casters deity, 
+	and any alignment restrictions on the item must allow for the caster’s alignment.
+	The item maintains its current level.
+	The item gains of (deity’s name) to its name (if it doesn’t already have the name of the deity in its name).
+	Protects against combat damage, rust, spell damage, disintegrate, weapon break and any other ability that would damage
+	 or destroy an object.  This will also protect the item from ruin (grants prop_itemnoruin).
+	This prayer cannot be cast upon a GenSailingShip.
+	 */
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
