@@ -66,10 +66,15 @@ public class Reliquist extends Thief
 		return CharClass.WEAPONS_ANY;
 	}
 
+	private final String[] raceRequiredList=new String[]{
+		"Human","Elf","Humanoid","Aarakocran","Merfolk","Fairy-kin",
+		"Goblinoid","Dwarf","Gnome",
+	};
+
 	@Override
 	public String[] getRequiredRaceList()
 	{
-		return super.getRequiredRaceList();
+		return raceRequiredList;
 	}
 
 	private final Pair<String, Integer>[] minimumStatRequirements = new Pair[]
