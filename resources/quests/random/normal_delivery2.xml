@@ -80,12 +80,12 @@ settable vars:
 	</STRING>
 	
 	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">
-		<STRING>I need ${target_item_name} to $c_target_name in ${C:target_area_name} $reason_verbed!</STRING>
-		<STRING>Help me $reason_verb ${p:target_item_name} to $c_target_name in ${C:target_area_name}!</STRING>
-		<STRING>Assistance required delivering ${p:target_item_name} to $c_target_name in ${C:target_area_name}!</STRING>
-		<STRING>${c:reason_verb} ${p:target_item_name} to $c_target_name in ${C:target_area_name} for me!</STRING>
-		<STRING>${c:reason_verb} ${p:target_item_name} to $c_target_name in ${C:target_area_name}, quickly!</STRING>
-		<STRING>I want ${target_item_name} $reason_verbed to $c_target_name in ${C:target_area_name}!</STRING>
+		<STRING>I need ${target_item_name} to $target_name in ${C:target_area_name} $reason_verbed!</STRING>
+		<STRING>Help me $reason_verb ${p:target_item_name} to $target_name in ${C:target_area_name}!</STRING>
+		<STRING>Assistance required delivering ${p:target_item_name} to $target_name in ${C:target_area_name}!</STRING>
+		<STRING>${c:reason_verb} ${p:target_item_name} to $target_name in ${C:target_area_name} for me!</STRING>
+		<STRING>${c:reason_verb} ${p:target_item_name} to $target_name in ${C:target_area_name}, quickly!</STRING>
+		<STRING>I want ${target_item_name} $reason_verbed to $target_name in ${C:target_area_name}!</STRING>
 	</STRING>
 
 	<STRING ID="quest_instructionstring" SELECT="ALL">
