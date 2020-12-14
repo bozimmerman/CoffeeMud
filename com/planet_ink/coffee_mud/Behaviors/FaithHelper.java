@@ -58,6 +58,7 @@ public class FaithHelper extends StdBehavior
 			return "worshipper protecting";
 	}
 
+	@Override
 	protected int canImproveCode()
 	{
 		return Behavior.CAN_MOBS|Behavior.CAN_AREAS|Behavior.CAN_ROOMS;
@@ -119,8 +120,8 @@ public class FaithHelper extends StdBehavior
 			&&(deityName.length()>0)
 			&&(msg.source().baseCharStats().getWorshipCharID().length()==0))
 			{
-				msg.source().baseCharStats().setWorshipCharID(deityName);;
-				msg.source().charStats().setWorshipCharID(deityName);;
+				msg.source().baseCharStats().setWorshipCharID(deityName);
+				msg.source().charStats().setWorshipCharID(deityName);
 			}
 			return;
 		}

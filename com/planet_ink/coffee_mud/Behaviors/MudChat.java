@@ -2,10 +2,12 @@ package com.planet_ink.coffee_mud.Behaviors;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.core.exceptions.ScriptParseException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.ChattyBehavior.ChatExpConn;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
@@ -232,7 +234,8 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				case '*':
 					if((str.length()==1)||("([{<".indexOf(str.charAt(1))<0))
 						break;
-					c=str.charAt(1);
+					str=str.substring(1);
+					c=str.charAt(0);
 				//$FALL-THROUGH$
 				case '(':
 				case '[':
@@ -241,16 +244,20 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 					if(currentChatEntry!=null)
 						currentChatEntry.responses = currentChatEntryResponses.toArray(new ChattyTestResponse[0]);
 					currentChatEntryResponses.clear();
-					currentChatEntry=new ChattyEntry(str);
-					if(currentChatEntry.expression.length()>0)
+					try
 					{
-						if(c=='<')
+						ChatExpression expression = parseExpression(str);
+						currentChatEntry=new ChattyEntry(expression,c=='*');
+						if(expression.type==ChatMatchType.RANDOM)
 							tickyChatEntries.add(currentChatEntry);
 						else
 							currentChatEntries.add(currentChatEntry);
 					}
-					else
+					catch (CMException e)
+					{
+						Log.debugOut("MudChat",e.getMessage());
 						currentChatEntry=null;
+					}
 					break;
 				case '>':
 					if(currentChatEntry!=null)
@@ -514,104 +521,291 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		}
 	}
 
-	protected boolean match(final MOB speaker, String expression, final String message, final String[] rest)
+	protected boolean isExpressionStart(final String possExpression)
 	{
-		final int l=expression.length();
-		if(l==0)
-			return true;
-		if((expression.charAt(0)=='(')
-		&&(expression.charAt(l-1)==')'))
-			expression=expression.substring(1,expression.length()-1).trim();
+		if(possExpression==null)
+			return false;
+		String pexp=possExpression.trim();
+		if(pexp.startsWith("*"))
+			pexp=pexp.substring(1).trim();
+		if(pexp.length()==0)
+			return false;
+		return "([<{".indexOf(pexp.charAt(0))>=0;
+	}
 
-		int end=0;
-		for (; ((end < expression.length()) && (("(&|~").indexOf(expression.charAt(end)) < 0)); end++)
-		{/* loop */
-		}
-		String check=null;
-		if(end<expression.length())
+	protected static Pair<ChatMatchType, Character> getTypeAndCloser(final char openChar)
+	{
+		switch(openChar)
 		{
-			check=expression.substring(0,end).trim();
-			expression=expression.substring(end).trim();
+		case '(':
+			return new Pair<ChatMatchType, Character>(ChatMatchType.SAY, Character.valueOf(')'));
+		case '[':
+			return new Pair<ChatMatchType, Character>(ChatMatchType.TEMOTE, Character.valueOf(']'));
+		case '{':
+			return new Pair<ChatMatchType, Character>(ChatMatchType.EMOTE, Character.valueOf('}'));
+		case '<':
+			return new Pair<ChatMatchType, Character>(ChatMatchType.RANDOM, Character.valueOf('>'));
 		}
-		else
+		return null;
+	}
+
+	private enum MatchState
+	{
+		INSIDE_PAREN,
+		INSIDE_EXP,
+		POST_CONN,
+		POST_PAREN
+	}
+
+	
+	protected static ChatExpression parseExpression(String expression) throws CMException
+	{
+		if(expression == null)
+			return null;
+		expression=expression.trim();
+		if(expression.length()==0)
+			return null;
+		final ChatExpression top = new ChatExpression();
+		char openChar=expression.charAt(0);
+		Pair<ChatMatchType,Character> mtype = getTypeAndCloser(openChar);
+		if(mtype==null)
+			return null;
+		top.type=mtype.first;
+		char closeStack=mtype.second.charValue();
+		final Stack<ChatExpression> stack=new Stack<ChatExpression>();
+		stack.push(top);
+		StringBuilder str=new StringBuilder("");
+		ChatMatch match=new ChatMatch();
+		MatchState state=MatchState.INSIDE_PAREN;
+		for(int i=1;i<=expression.length();i++)
 		{
-			check=expression.trim();
-			expression="";
-		}
-		boolean response=true;
-		if(check.startsWith("="))
-		{
-			response=check.substring(1).trim().equalsIgnoreCase(message.trim());
-			if(response)
-				rest[0]="";
-		}
-		else
-		if(check.startsWith("^"))
-		{
-			response=message.trim().startsWith(check.substring(1).trim());
-			if(response)
-				rest[0]=message.substring(check.substring(1).trim().length());
-		}
-		else
-		if(check.startsWith("/"))
-		{
-			int expEnd=0;
-			while((++expEnd)<check.length())
+			final char c=(i==expression.length())?'\0':expression.charAt(i);
+			switch(c)
 			{
-				if(check.charAt(expEnd)=='/')
+			case ')': case ']': case '}': case '>':
+				if(c != closeStack)
+				{
+					if(state==MatchState.POST_PAREN)
+						throw new CMException("Parse error at "+i+": "+c+" not expected w/o connector.");
+					state=MatchState.INSIDE_EXP;
+					str.append(c);
 					break;
-			}
-			response=CMLib.masking().maskCheck(check.substring(1,expEnd).trim(),speaker,false);
-		}
-		else
-		if(check.length()>0)
-		{
-			final int x=message.toUpperCase().indexOf(check.toUpperCase().trim());
-			response=(x>=0);
-			if(response)
-				rest[0]=message.substring(x+check.length());
-		}
-		else
-		{
-			response=true;
-			rest[0]=message;
-		}
-
-		if(expression.length()>0)
-		{
-			if(expression.startsWith("("))
+				}
+			//$FALL-THROUGH$
+			case '\0':
+			case '&': case '|': case '~':
 			{
-				int expEnd=0;
-				int parenCount=1;
-				while(((++expEnd)<expression.length())&&(parenCount>0))
+				ChatExpression cur=stack.peek();
+				match.str=str.toString().toUpperCase();
+				match=new ChatMatch();
+				Pair<Object,ChatExpConn> pair=new Pair<Object,ChatExpConn>(match,ChatExpConn.END);
+				cur.exp.add(pair);
+				str.setLength(0);
+				switch(c)
 				{
-					if(expression.charAt(expEnd)=='(')
-						parenCount++;
-					else
-					if(expression.charAt(expEnd)==')')
+				case '&':
+					pair.second=ChatExpConn.AND;
+					state=MatchState.POST_CONN;
+					break;
+				case '|': 
+					pair.second=ChatExpConn.OR;
+					state=MatchState.POST_CONN;
+					break;
+				case '~':
+					pair.second=ChatExpConn.ANDNOT;
+					state=MatchState.POST_CONN;
+					break;
+				default:
+					state=MatchState.POST_PAREN;
+					if(stack.size()>0)
+						stack.pop();
+					break;
+				}
+				break;
+			}
+			case '(': case '[': case '{': case '<':
+				if(c==openChar)
+				{
+					if((state==MatchState.INSIDE_PAREN)
+					||(state==MatchState.POST_CONN))
 					{
-						parenCount--;
-						if(parenCount<=0)
-							break;
+						mtype=getTypeAndCloser(c);
+						ChatExpression next=new ChatExpression();
+						next.type=mtype.first;
+						stack.push(next);
+						str.setLength(0);
 					}
+					else
+					if(state==MatchState.INSIDE_EXP)
+						str.append(c);
+					else
+						throw new CMException("Parse error at "+i+": "+c+" not expected w/o connector.");
 				}
-				if(expEnd<expression.length()&&(parenCount<=0))
+				else
 				{
-					return response && match(speaker,expression.substring(1,expEnd).trim(),message,rest);
+					if(state==MatchState.POST_PAREN)
+						throw new CMException("Parse error at "+i+": "+c+" not expected w/o connector.");
+					state=MatchState.INSIDE_EXP;
+					str.append(c);
 				}
-				return response;
+				break;
+			case '^':
+			case '/':
+			case '=':
+				if((state==MatchState.INSIDE_PAREN)
+				||(state==MatchState.POST_CONN))
+				{
+					state=MatchState.INSIDE_EXP;
+					switch(c)
+					{
+					case '^': 
+						match.flag=ChatMatchFlag.TOP; 
+						break;
+					case '=': 
+						match.flag=ChatMatchFlag.EXACT; 
+						break;
+					case '/': 
+						match.flag=ChatMatchFlag.ZAPPER; 
+						break;
+					}
+					str.setLength(0);
+				}
+				else
+				if(state==MatchState.INSIDE_EXP)
+					str.append(c);
+				else
+					throw new CMException("Parse error at "+i+": "+c+" not expected w/o connector.");
+				break;
+			default:
+				if(!Character.isWhitespace(c))
+				{
+					if(state==MatchState.POST_PAREN)
+						throw new CMException("Parse error at "+i+": "+c+" not expected w/o connector.");
+					state=MatchState.INSIDE_EXP;
+				}
+				str.append(c);
+				break;
+			}
+		}
+		return top;
+	}
+	
+	protected boolean match(final MOB speaker, ChatMatch match, final String message, final String[] rest)
+	{
+		switch(match.flag)
+		{
+		case EXACT:
+		{
+			final int x=message.indexOf(match.str);
+			if((x==0)
+			||((match.str.startsWith(" ")&&(message.equals(match.str.substring(1))))))
+			{
+				rest[0]="";
+				return true;
+			}
+			return false;
+		}
+		case INSTR:
+		{
+			final int x=message.indexOf(match.str);
+			if(x<0)
+				return false;
+			rest[0]=message.substring(x+match.str.length());
+			return true;
+		}
+		case TOP:
+		{
+			final int x=message.indexOf(match.str);
+			if((x==0)
+			||((match.str.startsWith(" ")&&(x==1))))
+			{
+				rest[0]=message.substring(match.str.length());
+			}
+			return false;
+		}
+		case ZAPPER:
+			return CMLib.masking().maskCheck(match.str,speaker,false);
+		}
+		return false;
+	}
+	
+	protected boolean match(final MOB speaker, ChatExpression expression, final int val)
+	{
+		boolean rollingTruth=true;
+		ChatExpConn conn=ChatExpConn.AND;
+		for(final Pair<Object,ChatExpConn> p : expression.exp)
+		{
+			boolean thisTruth;
+			if(p.first instanceof ChatExpression)
+				thisTruth=match(speaker,(ChatExpression)p.first,val);
+			else
+			if(p.first instanceof ChatMatch)
+			{
+				final ChatMatch cm=(ChatMatch)p.first;
+				if(cm.flag==ChatMatchFlag.ZAPPER)
+					thisTruth=match(speaker,(ChatMatch)p.first,"",new String[1]);
+				else
+					thisTruth=CMath.s_int(cm.str.trim())<=val;
 			}
 			else
-			if(expression.startsWith("&"))
-				return response&&match(speaker,expression.substring(1).trim(),message,rest);
-			else
-			if(expression.startsWith("|"))
-				return response||match(speaker,expression.substring(1).trim(),message,rest);
-			else
-			if(expression.startsWith("~"))
-				return response&&(!match(speaker,expression.substring(1).trim(),message,rest));
+				continue;
+			switch(conn)
+			{
+			case AND:
+				rollingTruth = rollingTruth && thisTruth;
+				if(!rollingTruth)
+					return false;
+				break;
+			case ANDNOT:
+				rollingTruth = rollingTruth && !thisTruth;
+				if(!rollingTruth)
+					return false;
+				break;
+			case END:
+				return rollingTruth;
+			case OR:
+				rollingTruth = rollingTruth || thisTruth;
+				break;
+			}
 		}
-		return response;
+		return rollingTruth;
+	}
+
+	
+	protected boolean match(final MOB speaker, ChatExpression expression, final String upperMsgNoPunc, final String[] rest)
+	{
+		boolean rollingTruth=true;
+		ChatExpConn conn=ChatExpConn.AND;
+		for(final Pair<Object,ChatExpConn> p : expression.exp)
+		{
+			boolean thisTruth;
+			if(p.first instanceof ChatExpression)
+				thisTruth=match(speaker,(ChatExpression)p.first,upperMsgNoPunc,rest);
+			else
+			if(p.first instanceof ChatMatch)
+				thisTruth=match(speaker,(ChatMatch)p.first,upperMsgNoPunc,rest);
+			else
+				continue;
+			switch(conn)
+			{
+			case AND:
+				rollingTruth = rollingTruth && thisTruth;
+				if(!rollingTruth)
+					return false;
+				break;
+			case ANDNOT:
+				rollingTruth = rollingTruth && !thisTruth;
+				if(!rollingTruth)
+					return false;
+				break;
+			case END:
+				return rollingTruth;
+			case OR:
+				rollingTruth = rollingTruth || thisTruth;
+				break;
+			}
+		}
+		return rollingTruth;
 	}
 
 	@Override
@@ -653,23 +847,14 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			&&(msg.targetMessage()!=null)
 			&&((str=CMStrings.getSayFromMessage(msg.sourceMessage()))!=null))
 			{
-				str=" "+CMLib.english().stripPunctuation(str)+" ";
+				str=CMLib.english().stripEnglishPunctuation(str).toUpperCase()+" ";
 				for(final ChattyEntry entry : myChatGroup.entries)
 				{
-					final String expression=entry.expression;
-					if(entry.combatEntry)
+					final ChatExpression expression=entry.expression;
+					if((expression.type==ChatMatchType.SAY)
+					&&(entry.combatEntry==combat))
 					{
-						if(!combat)
-							continue;
-					}
-					else
-					if(combat)
-						continue;
-
-					if((expression.charAt(0)=='(')
-					&&(expression.charAt(expression.length()-1)==')'))
-					{
-						if(match(mob,expression.substring(1,expression.length()-1),str,rest))
+						if(match(mob,expression,str,rest))
 						{
 							myResponses=new ArrayList<ChattyTestResponse>();
 							myResponses.addAll(Arrays.asList(entry.responses));
@@ -693,34 +878,28 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			&&(myChatGroup!=null))
 			{
 				str=null;
-				char c1='[';
-				char c2=']';
-				if((msg.amITarget(monster)&&(msg.targetMessage()!=null)))
-					str=" "+msg.targetMessage()+" ";
+				ChatMatchType matchType = ChatMatchType.EMOTE;
+				if((msg.amITarget(monster)
+				&&(msg.targetMessage()!=null)))
+				{
+					str=CMLib.english().stripEnglishPunctuation(msg.targetMessage().toUpperCase())+" ";
+					matchType = ChatMatchType.TEMOTE;
+				}
 				else
 				if(msg.othersMessage()!=null)
 				{
-					c1='{';
-					c2='}';
-					str=" "+msg.othersMessage()+" ";
+					matchType = ChatMatchType.EMOTE;
+					str=CMLib.english().stripEnglishPunctuation(msg.othersMessage().toUpperCase()+" ");
 				}
 				if(str!=null)
 				{
 					for(final ChattyEntry entry : myChatGroup.entries)
 					{
-						final String expression=entry.expression;
-						if(entry.combatEntry)
+						final ChatExpression expression=entry.expression;
+						if((expression.type==matchType)
+						&&(entry.combatEntry==combat))
 						{
-							if(!combat)
-								continue;
-						}
-						else
-						if(combat)
-							continue;
-						if((expression.charAt(0)==c1)
-						&&(expression.charAt(expression.length()-1)==c2))
-						{
-							if(match(mob,expression.substring(1,expression.length()-1),str,rest))
+							if(match(mob,expression,str,rest))
 							{
 								myResponses=new ArrayList<ChattyTestResponse>();
 								myResponses.addAll(Arrays.asList(entry.responses));
@@ -765,23 +944,13 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				ArrayList<ChattyTestResponse> myResponses=null;
 				for(final ChattyEntry entry : myChatGroup.tickies)
 				{
-					if(entry.combatEntry)
+					if((entry.combatEntry==combat)
+					&&(this.match((MOB)ticking, entry.expression, CMLib.dice().rollPercentage())))
 					{
-						if(!combat)
-							continue;
+						if(myResponses==null)
+							myResponses=new ArrayList<ChattyTestResponse>();
+						myResponses.addAll(Arrays.asList(entry.responses));
 					}
-					else
-					if(combat)
-						continue;
-					if(entry.expression.length()>2)
-					{
-						final int val=CMath.s_int(entry.expression.substring(1,entry.expression.length()-1).trim());
-						if((val==0)||(CMLib.dice().rollPercentage()>val))
-							continue;
-					}
-					if(myResponses==null)
-						myResponses=new ArrayList<ChattyTestResponse>();
-					myResponses.addAll(Arrays.asList(entry.responses));
 				}
 				if(myResponses!=null)
 				{

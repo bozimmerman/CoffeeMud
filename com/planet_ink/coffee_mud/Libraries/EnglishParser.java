@@ -56,6 +56,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		"underneath", "unlike", "until", "up", "upon", "versus", "via", "with", "within", "without"
 	};
 	public static boolean[]	PUNCTUATION_TABLE	= null;
+	public static boolean[] NARROW_PUNCTUATION_TABLE = null;
 	public final static String[]	ARTICLES	= { "a", "an", "all of", "some one", "a pair of", "a pile of", "one of", "all", "the", "some", "each" };
 	public final static char[]		ALL_CHRS	= "ALL".toCharArray();
 	public final static String[]	fwords		= { "calf", "half", "knife", "life", "wife", "elf", "self", "shelf", "leaf", "sheaf", "thief", "loaf", "wolf" };
@@ -999,12 +1000,84 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return PUNCTUATION_TABLE;
 	}
 
+	private boolean[] NARROW_PUNCTUATION_TABLE()
+	{
+		if(NARROW_PUNCTUATION_TABLE==null)
+		{
+			final boolean[] PUNCTUATION_TEMP_TABLE=new boolean[255];
+			for(int c=0;c<255;c++)
+				switch(c)
+				{
+				case '`':
+				case '!':
+				case ';':
+				case ':':
+				case '\'':
+				case '\"':
+				case ',':
+				case '.':
+				case '?':
+					PUNCTUATION_TEMP_TABLE[c]=true;
+					break;
+				default:
+					PUNCTUATION_TEMP_TABLE[c]=false;
+				}
+			NARROW_PUNCTUATION_TABLE=PUNCTUATION_TEMP_TABLE;
+		}
+		return NARROW_PUNCTUATION_TABLE;
+	}
+
 	@Override
 	public boolean isPunctuation(final byte b)
 	{
 		if((b<0)||(b>255))
 			return false;
 		return PUNCTUATION_TABLE[b];
+	}
+
+	@Override
+	public boolean isEnglishPunctuation(final byte b)
+	{
+		if((b<0)||(b>255))
+			return false;
+		return NARROW_PUNCTUATION_TABLE[b];
+	}
+
+	@Override
+	public boolean hasEnglishPunctuation(final String str)
+	{
+		if((str==null)||(str.length()==0))
+			return false;
+		boolean puncFound=false;
+		NARROW_PUNCTUATION_TABLE();
+		for(int x=0;x<str.length();x++)
+		{
+			if(isEnglishPunctuation((byte)str.charAt(x)))
+			{
+				puncFound=true;
+				break;
+			}
+		}
+		return puncFound;
+	}
+
+	@Override
+	public String stripEnglishPunctuation(final String str)
+	{
+		if(!hasEnglishPunctuation(str))
+			return str;
+		final char[] strc=str.toCharArray();
+		final char[] str2=new char[strc.length];
+		int s=0;
+		for(int x=0;x<strc.length;x++)
+		{
+			if(!isEnglishPunctuation((byte)strc[x]))
+			{
+				str2[s]=strc[x];
+				s++;
+			}
+		}
+		return new String(str2,0,s);
 	}
 
 	@Override

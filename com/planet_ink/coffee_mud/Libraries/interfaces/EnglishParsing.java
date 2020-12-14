@@ -89,8 +89,8 @@ public interface EnglishParsing extends CMLibrary
 	public boolean startsWithAnArticle(String s);
 
 	/**
-	 * Returns the given string with punctuation
-	 * removed. Must not be colored.
+	 * Returns the given string with extended
+	 * punctuation removed. Must not be colored.
 	 *
 	 * @param str the string to check
 	 * @return the string, with punctuation removed
@@ -109,7 +109,7 @@ public interface EnglishParsing extends CMLibrary
 
 	/**
 	 * Returns true if the given byte is
-	 * any normal punctuation character. Such as
+	 * any extended punctuation character. Such as
 	 * +-,;:.?! etc.. Must not be colored.
 	 *
 	 * @param b the byte to check
@@ -119,13 +119,42 @@ public interface EnglishParsing extends CMLibrary
 
 	/**
 	 * Returns true if the given string contains
-	 * any normal punctuation characters. Such as
+	 * any extended punctuation characters. Such as
 	 * +-,;:.?! etc.. Must not be colored.
 	 *
 	 * @param str the string to check
 	 * @return true if punctuation found, false otherwise
 	 */
 	public boolean hasPunctuation(String str);
+	
+	/**
+	 * Returns true if the given byte is
+	 * any normal punctuation character. Such as
+	 * ,;:.?! etc.. Must not be colored.
+	 *
+	 * @param b the byte to check
+	 * @return true if punctuation, false otherwise
+	 */
+	public boolean isEnglishPunctuation(final byte b);
+	
+	/**
+	 * Returns true if the given string contains
+	 * any normal punctuation characters. Such as
+	 * ,;:.?! etc.. Must not be colored.
+	 *
+	 * @param str the string to check
+	 * @return true if punctuation found, false otherwise
+	 */
+	public boolean hasEnglishPunctuation(final String str);
+	
+	/**
+	 * Returns the given string with normal punctuation
+	 * removed. Must not be colored.
+	 *
+	 * @param str the string to check
+	 * @return the string, with punctuation removed
+	 */
+	public String stripEnglishPunctuation(final String str);
 
 	/**
 	 * Attempts to pluralize a given word.

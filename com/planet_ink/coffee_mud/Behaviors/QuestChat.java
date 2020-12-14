@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.ChattyBehavior.ChatMatch;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
@@ -54,55 +55,44 @@ public class QuestChat extends MudChat
 	}
 
 	@Override
-	protected boolean match(final MOB speaker, String expression, final String message, final String[] rest)
+	protected boolean match(final MOB speaker, ChatMatch match, final String message, final String[] rest)
 	{
-		if(expression.indexOf("::")>=0)
+		int codeDex=match.str.lastIndexOf("::");
+		if((codeDex>0)
+		&&(codeDex<match.str.length()-2))
 		{
-			int x=expression.length()-1;
-			char c=' ';
-			boolean coded=false;
-			while(x>=0)
+			final String codeStr=match.str.substring(codeDex+2).trim();
+			String newExp=match.str.substring(0,codeDex);
+			List<String> V=alreadySaid.get(speaker.Name().toUpperCase());
+			if(V==null)
 			{
-				c=expression.charAt(x);
-				if((c==':')&&(x>0)&&(expression.charAt(x-1)==':'))
-				{
-					if(coded)
-					{
-						final String codeStr=expression.substring(x+2).toUpperCase().trim();
-						expression=expression.substring(0,x-1).trim();
-						List<String> V=alreadySaid.get(speaker.Name().toUpperCase());
-						if(V==null)
-						{
-							V=new Vector<String>();
-							alreadySaid.put(speaker.Name().toUpperCase(),V);
-						}
-						else
-						if(V.contains(codeStr))
-							return false;
-						if(super.match(speaker,expression,message,rest))
-						{
-							V.add(codeStr);
-							if((myQuestName!=null)&&(myQuestName.length()>0))
-							{
-								final Quest myQuest=CMLib.quests().fetchQuest(myQuestName);
-								if(myQuest!=null)
-								{
-									String stat=myQuest.getStat("CHAT:"+speaker.Name().toUpperCase());
-									if(stat.length()>0)
-										stat+=" ";
-									myQuest.setStat("CHAT:"+speaker.Name().toUpperCase(),stat+codeStr);
-								}
-							}
-							return true;
-						}
-						return false;
-					}
-					break;
-				}
-				coded=true;
-				x--;
+				V=new Vector<String>();
+				alreadySaid.put(speaker.Name().toUpperCase(),V);
 			}
+			else
+			if(V.contains(codeStr))
+				return false;
+			final ChatMatch newMatch=new ChatMatch();
+			newMatch.flag=match.flag;
+			newMatch.str=newExp;
+			if(super.match(speaker,newMatch,message,rest))
+			{
+				V.add(codeStr);
+				if((myQuestName!=null)&&(myQuestName.length()>0))
+				{
+					final Quest myQuest=CMLib.quests().fetchQuest(myQuestName);
+					if(myQuest!=null)
+					{
+						String stat=myQuest.getStat("CHAT:"+speaker.Name().toUpperCase());
+						if(stat.length()>0)
+							stat+=" ";
+						myQuest.setStat("CHAT:"+speaker.Name().toUpperCase(),stat+codeStr);
+					}
+				}
+				return true;
+			}
+			return false;
 		}
-		return super.match(speaker,expression,message,rest);
+		return super.match(speaker,match,message,rest);
 	}
 }

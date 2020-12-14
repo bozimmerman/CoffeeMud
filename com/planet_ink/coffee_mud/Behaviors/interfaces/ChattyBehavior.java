@@ -53,14 +53,83 @@ public interface ChattyBehavior extends Behavior
 	public MOB getLastRespondedTo();
 
 	/**
+	 * Enum for different match types
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public enum ChatMatchType
+	{
+		SAY,
+		EMOTE,
+		TEMOTE,
+		RANDOM
+	}
+
+	/**
+	 * Enum for connectors between matches/expressions
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static enum ChatExpConn
+	{
+		END,
+		AND,
+		OR,
+		ANDNOT
+	}
+
+	/**
+	 * Flag for how to compare a match string with the user string
+	 * 
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static enum ChatMatchFlag
+	{
+		EXACT,
+		TOP,
+		ZAPPER,
+		INSTR
+	}
+	
+	/**
+	 * A specific string match, with modifiers
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static class ChatMatch
+	{
+		public ChatMatch()
+		{
+		}
+		public ChatMatchFlag flag = ChatMatchFlag.INSTR;
+		public String str="";
+	}
+	
+	/**
+	 * A match expression, composed of one or more matches and expressions
+	 * 
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static class ChatExpression
+	{
+		public ChatExpression()
+		{
+		}
+		public ChatMatchType	type	= null;
+		public List<Pair<Object,ChatExpConn>> exp = new LinkedList<Pair<Object,ChatExpConn>>();
+	}
+	
+	/**
 	 * A response object representing something the chatty-one will
 	 * definitely be saying soon.
 	 * @author Bo Zimmerman
 	 */
 	public static class ChattyResponse
 	{
-		public int			delay;
-		public List<String>	parsedCommand;
+		public int				delay;
+		public List<String>		parsedCommand;
 
 		public ChattyResponse(final List<String> cmd, final int responseDelay)
 		{
@@ -93,17 +162,13 @@ public interface ChattyBehavior extends Behavior
 	 */
 	public static class ChattyEntry
 	{
-		public String				expression;
+		public ChatExpression		expression;
 		public ChattyTestResponse[]	responses;
 		public boolean				combatEntry	= false;
 
-		public ChattyEntry(String expression)
+		public ChattyEntry(ChatExpression expression, boolean combat)
 		{
-			if (expression.startsWith("*"))
-			{
-				combatEntry = true;
-				expression = expression.substring(1);
-			}
+			combatEntry = combat;
 			this.expression = expression;
 		}
 	}

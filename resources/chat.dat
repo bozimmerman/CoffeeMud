@@ -14,7 +14,7 @@
 #        ^       match start  This anchors the match to the beginning of the 
 #                             input string.
 #        =       exact match  This must match the input string entirely.
-#        /       beginning and end of a coffeemud specific zappermask
+#        /       beginning of a coffeemud specific zappermask
 #  pass 1 scan operators:
 #        (       beginning of a 'say' expression
 #        [       beginning of a non-say expression targeted
