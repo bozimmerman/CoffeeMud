@@ -7,7 +7,6 @@ import com.planet_ink.coffee_mud.core.exceptions.ScriptParseException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
-import com.planet_ink.coffee_mud.Behaviors.interfaces.ChattyBehavior.ChatExpConn;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
@@ -70,6 +69,160 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 
 	protected final static int	RESPONSE_DELAY		= 2;
 	protected final static int	TALK_WAIT_DELAY		= 8;
+
+	/**
+	 * Enum for different match types
+	 * @author Bo Zimmerman
+	 *
+	 */
+	protected enum ChatMatchType
+	{
+		SAY,
+		EMOTE,
+		TEMOTE,
+		RANDOM
+	}
+
+	/**
+	 * Enum for connectors between matches/expressions
+	 * @author Bo Zimmerman
+	 *
+	 */
+	protected static enum ChatExpConn
+	{
+		END,
+		AND,
+		OR,
+		ANDNOT
+	}
+
+	/**
+	 * Flag for how to compare a match string with the user string
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	protected static enum ChatMatchFlag
+	{
+		EXACT,
+		TOP,
+		ZAPPER,
+		INSTR
+	}
+
+	/**
+	 * A specific string match, with modifiers
+	 * @author Bo Zimmerman
+	 *
+	 */
+	protected static class ChatMatch
+	{
+		public ChatMatch()
+		{
+		}
+		public ChatMatchFlag flag = ChatMatchFlag.INSTR;
+		public String str=null;
+	}
+
+	/**
+	 * A match expression, composed of one or more matches and expressions
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	protected static class ChatExpression
+	{
+		public ChatExpression()
+		{
+		}
+		public ChatMatchType	type	= null;
+		public List<Pair<Object,ChatExpConn>> exp = new LinkedList<Pair<Object,ChatExpConn>>();
+	}
+
+	/**
+	 * A response object representing something the chatty-one will
+	 * definitely be saying soon.
+	 * @author Bo Zimmerman
+	 */
+	protected static class ChattyResponse
+	{
+		public int				delay;
+		public List<String>		parsedCommand;
+
+		public ChattyResponse(final List<String> cmd, final int responseDelay)
+		{
+			parsedCommand = cmd;
+			delay = responseDelay;
+		}
+	}
+
+	/**
+	 * A test response is a possible response to an environmental event, such as
+	 * someone speaking or acting.  It is only one possible response to one possible
+	 * event, and is weighed against its neighbors for whether it is chosen.
+	 * @author Bo Zimmerman
+	 */
+	protected static class ChattyTestResponse
+	{
+		public String[] responses;
+		public int weight;
+		public ChattyTestResponse(final String resp)
+		{
+			weight=CMath.s_int(""+resp.charAt(0));
+			responses=CMParms.parseSquiggleDelimited(resp.substring(1),true).toArray(new String[0]);
+		}
+	}
+
+	/**
+	 * A chatty entry embodies a test for a particular environmental event, such as
+	 * someone speaking or acting, and all possible responses to that event.
+	 * @author Bo Zimmerman
+	 */
+	protected static class ChattyEntry
+	{
+		public ChatExpression		expression;
+		public ChattyTestResponse[]	responses;
+		public boolean				combatEntry	= false;
+
+		public ChattyEntry(final ChatExpression expression, final boolean combat)
+		{
+			combatEntry = combat;
+			this.expression = expression;
+		}
+	}
+
+	/**
+	 * A chatty group is a collection of particular environmental event tests, and
+	 * their possible responses.  It completely embodies a particular "chat behavior"
+	 * for a particular kind of chatty mob.
+	 * @author Bo Zimmerman
+	 */
+	protected static class ChattyGroup implements Cloneable
+	{
+		public String[]							groupNames;
+		public MaskingLibrary.CompiledZMask[]	groupMasks;
+		public ChattyEntry[]					entries	= null;
+		public ChattyEntry[]					tickies	= null;
+
+		public ChattyGroup(final String[] names, final MaskingLibrary.CompiledZMask[] masks)
+		{
+			groupNames = names;
+			groupMasks = masks;
+		}
+
+		@Override
+		public ChattyGroup clone()
+		{
+			try
+			{
+				return (ChattyGroup) super.clone();
+			}
+			catch (final Exception e)
+			{
+				return this;
+			}
+		}
+	}
 
 	@Override
 	public String accountForYourself()

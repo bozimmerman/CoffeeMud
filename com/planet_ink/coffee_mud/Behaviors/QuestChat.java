@@ -5,7 +5,6 @@ import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
-import com.planet_ink.coffee_mud.Behaviors.interfaces.ChattyBehavior.ChatMatch;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
@@ -55,14 +54,14 @@ public class QuestChat extends MudChat
 	}
 
 	@Override
-	protected boolean match(final MOB speaker, ChatMatch match, final String message, final String[] rest)
+	protected boolean match(final MOB speaker, final ChatMatch match, final String message, final String[] rest)
 	{
-		int codeDex=match.str.lastIndexOf("::");
+		final int codeDex=match.str.lastIndexOf("::");
 		if((codeDex>0)
 		&&(codeDex<match.str.length()-2))
 		{
 			final String codeStr=match.str.substring(codeDex+2).trim();
-			String newExp=match.str.substring(0,codeDex);
+			final String newExp=match.str.substring(0,codeDex);
 			List<String> V=alreadySaid.get(speaker.Name().toUpperCase());
 			if(V==null)
 			{
