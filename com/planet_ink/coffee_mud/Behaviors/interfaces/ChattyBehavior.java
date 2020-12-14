@@ -80,7 +80,7 @@ public interface ChattyBehavior extends Behavior
 
 	/**
 	 * Flag for how to compare a match string with the user string
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 *
 	 */
@@ -91,7 +91,7 @@ public interface ChattyBehavior extends Behavior
 		ZAPPER,
 		INSTR
 	}
-	
+
 	/**
 	 * A specific string match, with modifiers
 	 * @author Bo Zimmerman
@@ -103,12 +103,12 @@ public interface ChattyBehavior extends Behavior
 		{
 		}
 		public ChatMatchFlag flag = ChatMatchFlag.INSTR;
-		public String str="";
+		public String str=null;
 	}
-	
+
 	/**
 	 * A match expression, composed of one or more matches and expressions
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 *
 	 */
@@ -120,7 +120,7 @@ public interface ChattyBehavior extends Behavior
 		public ChatMatchType	type	= null;
 		public List<Pair<Object,ChatExpConn>> exp = new LinkedList<Pair<Object,ChatExpConn>>();
 	}
-	
+
 	/**
 	 * A response object representing something the chatty-one will
 	 * definitely be saying soon.
@@ -166,7 +166,7 @@ public interface ChattyBehavior extends Behavior
 		public ChattyTestResponse[]	responses;
 		public boolean				combatEntry	= false;
 
-		public ChattyEntry(ChatExpression expression, boolean combat)
+		public ChattyEntry(final ChatExpression expression, final boolean combat)
 		{
 			combatEntry = combat;
 			this.expression = expression;
@@ -181,10 +181,10 @@ public interface ChattyBehavior extends Behavior
 	 */
 	public static class ChattyGroup implements Cloneable
 	{
-		public String[]								groupNames;
+		public String[]							groupNames;
 		public MaskingLibrary.CompiledZMask[]	groupMasks;
-		public ChattyEntry[]						entries	= null;
-		public ChattyEntry[]						tickies	= null;
+		public ChattyEntry[]					entries	= null;
+		public ChattyEntry[]					tickies	= null;
 
 		public ChattyGroup(final String[] names, final MaskingLibrary.CompiledZMask[] masks)
 		{

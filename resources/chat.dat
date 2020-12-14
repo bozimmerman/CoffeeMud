@@ -336,13 +336,13 @@
 
 (please murder)
 9That would be bad to kill $r
-3!murder $r
-2How much $$ will you give me?
+1!murder $r
+5How much $$ will you give me?
 
 (please kill)
 8Killing $r is a sin.
 1!kill $r
-2NO! I wont kill $r
+5NO! I wont kill $r
 
 # equals  = means exact match not a substring match
 # The exact operator has some limitations. It must be by a left paren.
