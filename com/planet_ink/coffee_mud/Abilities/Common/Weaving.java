@@ -543,7 +543,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			else
 				itemName=determineFinalName(foundRecipe.get(RCP_FINALNAME),buildingI.material(),deadMats,deadComps);
 			if(bundling)
-				itemName="a "+woodRequired+"# "+itemName;
+				itemName=CMLib.english().startWithAorAn(woodRequired+"# "+itemName);
 			else
 			if(itemName.endsWith("s"))
 				itemName="some "+itemName;

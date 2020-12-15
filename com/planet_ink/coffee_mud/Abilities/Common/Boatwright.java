@@ -467,7 +467,7 @@ public class Boatwright extends CraftingSkill implements ItemCraftor, MendingSki
 			buildingI.setMaterial(super.getBuildingMaterial(woodRequired, data, compData));
 			String itemName=determineFinalName(foundRecipe.get(RCP_FINALNAME),buildingI.material(),deadMats,deadComps);
 			if(misctype.equalsIgnoreCase("BUNDLE"))
-				itemName="a "+woodRequired+"# "+itemName;
+				itemName=CMLib.english().startWithAorAn(woodRequired+"# "+itemName);
 			else
 				itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);

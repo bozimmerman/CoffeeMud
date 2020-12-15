@@ -493,7 +493,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			buildingI.setMaterial(super.getBuildingMaterial(woodRequired, data, compData));
 			String itemName=determineFinalName(foundRecipe.get(RCP_FINALNAME),buildingI.material(),deadMats,deadComps);
 			if(bundling)
-				itemName="a "+woodRequired+"# "+itemName;
+				itemName=CMLib.english().startWithAorAn(woodRequired+"# "+itemName);
 			else
 				itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);

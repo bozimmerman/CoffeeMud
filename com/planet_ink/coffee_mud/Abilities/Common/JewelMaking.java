@@ -701,7 +701,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			else
 				itemName=determineFinalName(foundRecipe.get(RCP_FINALNAME),buildingI.material(),deadMats,deadComps);
 			if(bundling)
-				itemName="a "+woodRequired+"# "+itemName;
+				itemName=CMLib.english().startWithAorAn(woodRequired+"# "+itemName);
 			else
 			if(!CMLib.english().startsWithAnArticle(itemName))
 				itemName=CMLib.english().startWithAorAn(itemName);

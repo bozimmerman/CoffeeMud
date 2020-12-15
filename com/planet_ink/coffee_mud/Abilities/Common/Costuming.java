@@ -560,7 +560,7 @@ public class Costuming extends CraftingSkill implements ItemCraftor, MendingSkil
 			buildingI.setMaterial(getBuildingMaterial(woodRequired,data,compData));
 			String itemName=determineFinalName(foundRecipe.get(RCP_FINALNAME),buildingI.material(),deadMats,deadComps);
 			if(bundling)
-				itemName="a "+woodRequired+"# "+itemName;
+				itemName=CMLib.english().startWithAorAn(woodRequired+"# "+itemName);
 			buildingI.setName(itemName);
 			startStr=L("<S-NAME> start(s) making @x1.",buildingI.name());
 			displayText=L("You are making @x1",buildingI.name());

@@ -308,6 +308,16 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				}
 				break;
 			}
+			case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '9':
+			case '8':
+			{
+				final int x=str.indexOf(' ',i);
+				if(x<=0)
+					return "";
+				if(str.charAt(x-1)=='#')
+					return (str.charAt(i)=='8')?"an":"a";
+				return "";
+			}
 			case 'a':
 			case 'e':
 			case 'i':

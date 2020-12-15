@@ -391,7 +391,7 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 			buildingI.setMaterial(resourceType);
 			String itemName=determineFinalName(foundRecipe.get(RCP_FINALNAME),buildingI.material(),deadMats,deadComps);
 			if(bundling)
-				itemName="a "+woodRequired+"# "+itemName;
+				itemName=CMLib.english().startWithAorAn(woodRequired+"# "+itemName);
 			else
 			if(itemName.endsWith("s"))
 				itemName="some "+itemName;
