@@ -59,7 +59,7 @@ public class Prayer_DeflectPrayer extends Prayer
 	@Override
 	protected int canAffectCode()
 	{
-		return CAN_ITEMS;
+		return CAN_MOBS;
 	}
 
 	@Override
