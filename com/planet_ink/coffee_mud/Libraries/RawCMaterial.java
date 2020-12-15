@@ -873,9 +873,9 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		else
 		{
 			if(I instanceof Drink)
-				I.setName(L("a @x1# pool of @x2",""+I.basePhyStats().weight(), name));
+				I.setName(L(CMLib.english().startWithAorAn("@x1# pool of @x2"),""+I.basePhyStats().weight(), name));
 			else
-				I.setName(L("a @x1# @x2 bundle",""+I.basePhyStats().weight(), name));
+				I.setName(L(CMLib.english().startWithAorAn("@x1# @x2 bundle"),""+I.basePhyStats().weight(), name));
 			I.setDisplayText(L("@x1 is here.",I.name()));
 		}
 	}
