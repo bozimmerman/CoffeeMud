@@ -1009,22 +1009,9 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	@Override
 	public int adjustedExperience(final MOB mob, final MOB victim, int amount)
 	{
-		int highestLevelPC = 0;
-		final Room R=mob.location();
-		if(R!=null)
-		{
-			for(int m=0;m<R.numInhabitants();m++)
-			{
-				final MOB M=R.fetchInhabitant(m);
-				if((M!=null)
-				&&(M!=mob)
-				&&(M!=victim)
-				&&(M.isPlayer())
-				&&(M.phyStats().level()>highestLevelPC))
-					highestLevelPC = M.phyStats().level();
-			}
-		}
 		final int killerLevel=mob.phyStats().level();
+		int highestLevelPC = killerLevel;
+		final Room R=mob.location();
 		final Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
 		CharClass charClass=null;
 		Race charRace=null;
@@ -1041,6 +1028,20 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 		if(victim!=null)
 		{
+			if((R!=null)
+			&&(!CMLib.flags().isAShip(victim)))
+			{
+				for(int m=0;m<R.numInhabitants();m++)
+				{
+					final MOB M=R.fetchInhabitant(m);
+					if((M!=null)
+					&&(M!=mob)
+					&&(M!=victim)
+					&&(M.isPlayer())
+					&&(M.phyStats().level()>highestLevelPC))
+						highestLevelPC = M.phyStats().level();
+				}
+			}
 			final int vicLevel=victim.phyStats().level();
 			final double levelLimit=CMProps.getIntVar(CMProps.Int.EXPRATE);
 			final double levelDiff=vicLevel-killerLevel;

@@ -732,6 +732,15 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isClimbing(Physical P);
 
 	/**
+	 * Returns whether the given thing is a ship,
+	 * or a mob representing a ship, or similar.
+	 *
+	 * @param P the thing to check
+	 * @return true if its a ship
+	 */
+	public boolean isAShip(final Physical P);
+
+	/**
 	 * Returns whether the given room, area, exit, whatever is
 	 * crawlable (not necc. crawling).
 	 * @param P the room, area, exit, whatever to check

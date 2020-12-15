@@ -263,6 +263,22 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				&& ((((Physical) E).basePhyStats().disposition() & PhyStats.IS_CATALOGED) == PhyStats.IS_CATALOGED);
 	}
 
+	@Override
+	public boolean isAShip(final Physical P)
+	{
+		if(P instanceof BoardableShip)
+			return true;
+		if(P instanceof Rider)
+		{
+			final Rider rider=(Rider)P;
+			final Rideable ride=rider.riding();
+			if((ride instanceof BoardableShip)
+			&&(((BoardableShip)ride).Name().equals(rider.Name())))
+				return true;
+		}
+		return false;
+	}
+
 	private Room roomLocation(final Environmental E)
 	{
 		if(E==null)
