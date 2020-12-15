@@ -86,6 +86,34 @@ public class Thief_Graverobbing extends ThiefSkill
 		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL;
 	}
 
+	static final String[] gravyWords= new String[] { "grave",  "graves", "graveyard", "crypt", "tomb", "coffin"};
+
+	public boolean isGravyRoom(final Room R)
+	{
+		for(final String wd : gravyWords)
+		{
+			if(CMLib.english().containsString(R.displayText(), wd))
+				return true;
+		}
+		final String roomID=CMLib.map().getExtendedRoomID(R);
+		if(roomID.length()>0)
+		{
+			for(final Enumeration<Clan> c=CMLib.clans().clans();c.hasMoreElements();)
+			{
+				final Clan C=c.nextElement();
+				final String morgueID=C.getMorgue();
+				if(morgueID.equalsIgnoreCase(roomID))
+					return true;
+			}
+			for(final Enumeration<String> i = CMLib.login().getBodyRoomIDs();i.hasMoreElements();)
+			{
+				final String id=i.nextElement();
+				if(roomID.equalsIgnoreCase(id))
+					return true;
+			}
+		}
+		return false;
+	}
 
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
@@ -126,13 +154,12 @@ public class Thief_Graverobbing extends ThiefSkill
 			}
 		}
 		if((target instanceof Room)
-		&&(!CMLib.english().containsString(R.displayText(), "grave"))
-		&&(!CMLib.english().containsString(R.displayText(), "graveyard"))
-		&&(!CMLib.english().containsString(R.displayText(), "crypt")))
+		&&(!isGravyRoom((Room)target)))
 		{
 			mob.tell(L("This place doesn't look much like a graveyard.",what));
 			return false;
 		}
+
 		if((target instanceof DeadBody)
 		&&(((DeadBody)target).isPlayerCorpse()))
 		{
