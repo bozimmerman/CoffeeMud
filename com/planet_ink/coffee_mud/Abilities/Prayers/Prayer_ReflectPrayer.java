@@ -65,7 +65,7 @@ public class Prayer_ReflectPrayer extends Prayer
 	@Override
 	protected int canTargetCode()
 	{
-		return CAN_MOBS;
+		return CAN_ITEMS;
 	}
 
 	protected long timeToNextCast = 0;
@@ -132,6 +132,19 @@ public class Prayer_ReflectPrayer extends Prayer
 			return true;
 
 		final MOB mob=(MOB)affected;
+
+		if(shield == null)
+		{
+			final Item I=mob.fetchHeldItem();
+			if(I instanceof Shield)
+				shield=(Shield)I;
+			else
+			{
+				unInvoke();
+				return true;
+			}
+		}
+
 		if((msg.amITarget(mob))
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)

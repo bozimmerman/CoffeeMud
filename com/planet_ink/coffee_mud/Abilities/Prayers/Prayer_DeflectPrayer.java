@@ -130,8 +130,20 @@ public class Prayer_DeflectPrayer extends Prayer
 
 		if(!(affected instanceof MOB))
 			return true;
-
 		final MOB mob=(MOB)affected;
+
+		if(shield == null)
+		{
+			final Item I=mob.fetchHeldItem();
+			if(I instanceof Shield)
+				shield=(Shield)I;
+			else
+			{
+				unInvoke();
+				return true;
+			}
+		}
+
 		if((msg.amITarget(mob))
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
