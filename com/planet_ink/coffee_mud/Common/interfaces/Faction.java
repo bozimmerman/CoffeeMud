@@ -624,7 +624,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	public String ALL_CHANGE_EVENT_TYPES();
 
 	/**
-	 * Returns an enumeration of Object arrays referring to the a factor to multiply
+	 * Returns an enumeration of Object arrays referring to a factor to multiply
 	 * times the base amount (100) of faction change (up or down) for particular
 	 * mobs who match a given Zapper mask.  Each Object array consists of a factor
 	 * to apply on faction gains, a factor to apply on factor drops, and the zapper

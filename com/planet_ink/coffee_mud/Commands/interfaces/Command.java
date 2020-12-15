@@ -85,7 +85,7 @@ public interface Command extends CMObject
 	public double checkedActionsCost(final MOB mob, final List<String> cmds);
 
 	/**
-	 * Whether the a group leader or charmer can order their followers
+	 * Whether a group leader or charmer can order their followers
 	 * to do this command.
 	 * @return whether this command can be ordered.
 	 */

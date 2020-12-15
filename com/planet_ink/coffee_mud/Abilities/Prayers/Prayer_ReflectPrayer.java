@@ -222,7 +222,7 @@ public class Prayer_ReflectPrayer extends Prayer
 				mob.tell(L("You aren't holding a shield to hide behind."));
 				return false;
 			}
-			mob.tell(L("@x1 is enchanted and can not be bolstered by faith alone."));
+			mob.tell(L("@x1 is enchanted and can not be bolstered by faith alone.",shield.name(mob)));
 			return false;
 		}
 

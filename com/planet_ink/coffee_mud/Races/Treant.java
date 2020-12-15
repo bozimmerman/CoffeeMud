@@ -145,13 +145,13 @@ public class Treant extends StdRace
 	@Override
 	public String arriveStr()
 	{
-		return "shuffle in";
+		return "shuffles in";
 	}
 
 	@Override
 	public String leaveStr()
 	{
-		return "shuffle";
+		return "shuffles";
 	}
 
 	@Override

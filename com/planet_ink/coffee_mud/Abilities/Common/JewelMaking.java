@@ -296,7 +296,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 		||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
-				commonTell(mob,L("That's not an jewelworked item."));
+				commonTell(mob,L("That's not a jewelworked item."));
 			return false;
 		}
 		return true;

@@ -127,12 +127,12 @@ public class Spell_ReverseGravity extends Spell
 						}
 						else
 						if(CMLib.flags().isWateryRoom(room))
-							room.showHappens(CMMsg.MSG_OK_VISUAL, inhab, L("<S-NAME> manage(s) to keep a grip on the water around <S-HIM-HER>"));
+							room.showHappens(CMMsg.MSG_OK_VISUAL, inhab, L("<S-NAME> manage(s) to keep a grip on the water around <S-HIM-HER>."));
 						else
 						if(CMLib.flags().isAiryRoom(room))
-							room.showHappens(CMMsg.MSG_OK_VISUAL, inhab, L("<S-NAME> manage(s) to keep a grip on the air around <S-HIM-HER>"));
+							room.showHappens(CMMsg.MSG_OK_VISUAL, inhab, L("<S-NAME> manage(s) to keep a grip on the air around <S-HIM-HER>."));
 						else
-							room.showHappens(CMMsg.MSG_OK_VISUAL, inhab, L("<S-NAME> manage(s) to keep a grip on the ground below <S-HIM-HER>"));
+							room.showHappens(CMMsg.MSG_OK_VISUAL, inhab, L("<S-NAME> manage(s) to keep a grip on the ground below <S-HIM-HER>."));
 					}
 				}
 				for(int i=0;i<room.numItems();i++)

@@ -1457,7 +1457,9 @@ public class DefaultFaction implements Faction, MsgListener
 		case CMMsg.TYP_GIVE:
 			if((msg.source()==myHost)
 			&&(msg.tool() instanceof Coins)
-			&&(msg.target() instanceof MOB))
+			&&(msg.target() instanceof MOB)
+			&&(!(msg.target() instanceof ShopKeeper))
+			)
 			{
 				events=getChangeEvents(MiscTrigger.BRIBE.toString());
 				if(events!=null)
