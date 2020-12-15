@@ -381,7 +381,7 @@ public class AutoPlayTester
 	{
 		if(args.length<4)
 		{
-			System.out.println("AutoPlayTester");
+			System.out.println("AutoPlayTester (** Not Sufficiently Implemented**)");
 			System.out.println("AutoPlayTester [host] [port] [character name] [script path]");
 			System.exit(-1);
 		}
