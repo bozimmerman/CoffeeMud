@@ -1745,8 +1745,15 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Can not face @x1 due to lack of coordinate information.",targetObj.Name()));
 					return;
 				}
+				final double[] facing=ship.facing();
 				final double[] dirTo = CMLib.map().getDirection(spaceObject, targetObj);
-				final double deltaTo = CMLib.map().getAngleDelta(ship.facing(), dirTo);
+				double fdist1=(facing[0]>dirTo[0])?facing[0]-dirTo[0]:dirTo[0]-facing[0];
+				final double fdist2=(facing[1]>dirTo[1])?facing[1]-dirTo[1]:dirTo[1]-facing[1];
+				if(fdist1>Math.PI/2.0)
+					fdist1=Math.PI-fdist1;
+				final double deltaTo=fdist1+fdist2;
+
+				//final double deltaTo = CMLib.map().getAngleDelta(ship.facing(), dirTo);
 				if(deltaTo < 0.01)
 					super.addScreenMessage(L("Already facing @x1.",targetObj.Name()));
 				else
