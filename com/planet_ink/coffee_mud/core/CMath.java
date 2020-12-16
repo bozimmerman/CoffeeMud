@@ -952,6 +952,22 @@ public class CMath
 	}
 
 	/**
+	 * Returns the pct of difference between the two
+	 * given numbers, given the range.  EG, if your
+	 * range is 10, then the diff between 4 and 5 is 10%.
+	 * The percentages are returned as 0-1
+	 * @param d1 the first number
+	 * @param d2 the second number
+	 * @param range the range of the numbers from 0-range
+	 * @return a pct value from 0-1
+	 */
+	public final static double pctDiff(final double d1, final double d2, final double range)
+	{
+		final double diff=(d1>d2)?d1-d2:d2-d1;
+		return diff/range;
+	}
+
+	/**
 	 * Returns true if the bitnumberth bit (0...) is set
 	 * in the given number
 	 * @param number the given number

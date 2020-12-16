@@ -352,6 +352,12 @@ public interface CharCreationLibrary extends CMLibrary
 	public Room getDefaultBodyRoom(MOB mob);
 
 	/**
+	 * Returns an enumeration of all possible body room ids
+	 * @return an enumeration of all possible body room ids
+	 */
+	public Enumeration<String> getBodyRoomIDs();
+
+	/**
 	 * Based on the rules of the system, this method returns the number of
 	 * bonus stat points available to players to allocate, if the system
 	 * lets them do such a thing.

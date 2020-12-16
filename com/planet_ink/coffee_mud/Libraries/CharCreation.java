@@ -3601,7 +3601,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			if((num>0)&&(denomination>0.0)&&(currency!=null))
 				CMLib.beanCounter().giveSomeoneMoney(mob, currency, denomination * num);
 		}
-		
+
 		if(this.propertiesReLoaded)
 		{
 			final String requiresDeityMask = CMParms.getParmStr(CMProps.getVar(Str.DEITYPOLICY), "REQUIREDMASK", "");
@@ -3648,7 +3648,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		return list;
 	}
-	
+
 	protected LoginResult charcrDeityStart(final LoginSessionImpl loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
@@ -3665,7 +3665,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				{
 					str.append(C.executeInternal(mob, 0, D, Boolean.TRUE));
 				}
-				catch (IOException e)
+				catch (final IOException e)
 				{
 				}
 			}
@@ -3684,7 +3684,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult charcrDeityPicked(final LoginSessionImpl loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
-		String deityStr=loginObj.lastInput.trim();
+		final String deityStr=loginObj.lastInput.trim();
 		Deity newDeity = null;
 		for(final Deity D : this.deityQualifies(mob, loginObj.theme))
 		{
@@ -3698,8 +3698,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			loginObj.state=LoginState.CHARCR_DEITYSTART;
 			return null;
 		}
-		
-		
+
+
 		final StringBuilder str=CMLib.help().getHelpText(newDeity.Name(),mob,false,false);
 		if(str!=null)
 			session.println("\n\r^N"+str.toString()+"\n\r");
@@ -3757,7 +3757,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		mob.recoverPhyStats();
 		mob.recoverMaxState();
 		mob.resetToMaxState();
-		
+
 		return charcrStartFinish(loginObj, session);
 	}
 
@@ -3775,7 +3775,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		loginObj.state=LoginState.CHARCR_FINISH;
 		return LoginResult.INPUT_REQUIRED;
 	}
-	
+
 	protected LoginResult charcrFinish(final LoginSessionImpl loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
@@ -4412,6 +4412,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if((room==null)&&(CMLib.map().numRooms()>0))
 			room=CMLib.map().rooms().nextElement();
 		return room;
+	}
+
+	@Override
+	public Enumeration<String> getBodyRoomIDs()
+	{
+		return new MultiEnumeration<String>(new IteratorEnumeration<String>(bodyRooms.values().iterator()))
+				.addEnumeration(new IteratorEnumeration<String>(bodyRoomMasks.secondIterator()));
 	}
 
 	@Override

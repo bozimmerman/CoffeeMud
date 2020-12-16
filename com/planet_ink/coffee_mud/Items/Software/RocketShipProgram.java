@@ -300,6 +300,16 @@ public class RocketShipProgram extends GenShipProgram
 		return (ShipWarComponent)findComponentByName(getEngines(), "SHIELD", name);
 	}
 
+	protected ShipEngine findEngineByPort(final TechComponent.ShipDir portdir)
+	{
+		for(final ShipEngine E : getEngines())
+		{
+			if(CMParms.contains(E.getAvailPorts(), portdir))
+				return E;
+		}
+		return null;
+	}
+
 	@Override
 	public boolean isCommandString(final String word, final boolean isActive)
 	{
@@ -1749,19 +1759,79 @@ public class RocketShipProgram extends GenShipProgram
 				final double[] dirTo = CMLib.map().getDirection(spaceObject, targetObj);
 				double fdist1=(facing[0]>dirTo[0])?facing[0]-dirTo[0]:dirTo[0]-facing[0];
 				final double fdist2=(facing[1]>dirTo[1])?facing[1]-dirTo[1]:dirTo[1]-facing[1];
-				if(fdist1>Math.PI/2.0)
-					fdist1=Math.PI-fdist1;
+				if(fdist1>Math.PI)
+					fdist1=(Math.PI*2)-fdist1;
 				final double deltaTo=fdist1+fdist2;
-
 				//final double deltaTo = CMLib.map().getAngleDelta(ship.facing(), dirTo);
-				if(deltaTo < 0.01)
+				if(deltaTo < 0.02)
 					super.addScreenMessage(L("Already facing @x1.",targetObj.Name()));
 				else
 				{
-					//final String code=TechCommand.THRUST.makeCommand(portDir,Double.valueOf(amount));
-					//msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
-
-					super.addScreenMessage(L("Now facing @x1.",targetObj.Name()));
+					TechComponent.ShipDir portDir;
+					if(facing[0]>dirTo[0])
+					{
+						if(fdist1 == facing[0]-dirTo[0])
+							portDir=TechComponent.ShipDir.PORT;
+						else
+							portDir=TechComponent.ShipDir.STARBOARD;
+					}
+					else
+					{
+						if(fdist1 == dirTo[0]-facing[0])
+							portDir=TechComponent.ShipDir.STARBOARD;
+						else
+							portDir=TechComponent.ShipDir.PORT;
+					}
+					final ShipEngine engineE=findEngineByPort(portDir);
+					if(engineE==null)
+					{
+						super.addScreenMessage(L("Error: Malfunctioning finding maneuvering engine."));
+						return;
+					}
+					double[] oldFacing=Arrays.copyOf(ship.facing(),ship.facing().length);
+					String code=TechCommand.THRUST.makeCommand(portDir,Double.valueOf(Math.toDegrees(fdist1)));
+					msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+					if(sendMessage(mob, engineE, msg, message))
+					{
+						if(oldFacing[0]==ship.facing()[0])
+						{
+							super.addScreenMessage(L("Error: Malfunctioning firing @x1 engines.",portDir.name()));
+							return;
+						}
+						else
+						if(CMath.pctDiff(dirTo[0],ship.facing()[0],Math.PI*2.0)<.05)
+						{}
+						else
+						{
+							super.addScreenMessage(L("Error: Fired @x1 engines, but only got to within @x2 percent",
+									portDir.name(),""+Math.round(CMath.pctDiff(dirTo[0],ship.facing()[0],Math.PI*2.0)*100.0)));
+							return;
+						}
+						if(facing[1]>dirTo[1])
+							portDir=TechComponent.ShipDir.VENTRAL;
+						else
+							portDir=TechComponent.ShipDir.DORSEL;
+						code=TechCommand.THRUST.makeCommand(portDir,Double.valueOf(Math.toDegrees(fdist2)));
+						oldFacing=Arrays.copyOf(ship.facing(),ship.facing().length);
+						msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+						if(sendMessage(mob, engineE, msg, message))
+						{
+							if(oldFacing[1]==ship.facing()[1])
+							{
+								super.addScreenMessage(L("Error: Malfunctioning firing @x1 engines.",portDir.name()));
+								return;
+							}
+							else
+							if(CMath.pctDiff(dirTo[1],ship.facing()[1],Math.PI)<.05)
+								super.addScreenMessage(L("Now facing @x1.",targetObj.Name()));
+							else
+							{
+								super.addScreenMessage(L("Error: Fired @x1 engines, but only got to within @x2 percent",
+										portDir.name(),""+Math.round(CMath.pctDiff(dirTo[1],ship.facing()[1],Math.PI)*100.0)));
+								return;
+							}
+						}
+					}
 				}
 				return;
 			}
@@ -1803,7 +1873,85 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Can not moon @x1 due to lack of coordinate information.",targetObj.Name()));
 					return;
 				}
-				super.addScreenMessage(L("Now facing away from @x1.",targetObj.Name()));
+				final double[] facing=ship.facing();
+				final double[] notDirTo=CMLib.map().getDirection(spaceObject, targetObj);
+				final double[] dirTo = CMLib.map().getOppositeDir(notDirTo);
+				double fdist1=(facing[0]>dirTo[0])?facing[0]-dirTo[0]:dirTo[0]-facing[0];
+				final double fdist2=(facing[1]>dirTo[1])?facing[1]-dirTo[1]:dirTo[1]-facing[1];
+				if(fdist1>Math.PI)
+					fdist1=(Math.PI*2)-fdist1;
+				final double deltaTo=fdist1+fdist2;
+				//final double deltaTo = CMLib.map().getAngleDelta(ship.facing(), dirTo);
+				if(deltaTo < 0.02)
+					super.addScreenMessage(L("Already mooning @x1.",targetObj.Name()));
+				else
+				{
+					TechComponent.ShipDir portDir;
+					if(facing[0]>dirTo[0])
+					{
+						if(fdist1 == facing[0]-dirTo[0])
+							portDir=TechComponent.ShipDir.PORT;
+						else
+							portDir=TechComponent.ShipDir.STARBOARD;
+					}
+					else
+					{
+						if(fdist1 == dirTo[0]-facing[0])
+							portDir=TechComponent.ShipDir.STARBOARD;
+						else
+							portDir=TechComponent.ShipDir.PORT;
+					}
+					final ShipEngine engineE=findEngineByPort(portDir);
+					if(engineE==null)
+					{
+						super.addScreenMessage(L("Error: Malfunctioning finding maneuvering engine."));
+						return;
+					}
+					double[] oldFacing=Arrays.copyOf(ship.facing(),ship.facing().length);
+					String code=TechCommand.THRUST.makeCommand(portDir,Double.valueOf(Math.toDegrees(fdist1)));
+					msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+					if(sendMessage(mob, engineE, msg, message))
+					{
+						if(oldFacing[0]==ship.facing()[0])
+						{
+							super.addScreenMessage(L("Error: Malfunctioning firing @x1 engines.",portDir.name()));
+							return;
+						}
+						else
+						if(CMath.pctDiff(dirTo[0],ship.facing()[0],Math.PI*2.0)<.05)
+						{}
+						else
+						{
+							super.addScreenMessage(L("Error: Fired @x1 engines, but only got to within @x2 percent",
+									portDir.name(),""+Math.round(CMath.pctDiff(dirTo[0],ship.facing()[0],Math.PI*2.0)*100.0)));
+							return;
+						}
+						if(facing[1]>dirTo[1])
+							portDir=TechComponent.ShipDir.VENTRAL;
+						else
+							portDir=TechComponent.ShipDir.DORSEL;
+						code=TechCommand.THRUST.makeCommand(portDir,Double.valueOf(Math.toDegrees(fdist2)));
+						oldFacing=Arrays.copyOf(ship.facing(),ship.facing().length);
+						msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+						if(sendMessage(mob, engineE, msg, message))
+						{
+							if(oldFacing[1]==ship.facing()[1])
+							{
+								super.addScreenMessage(L("Error: Malfunctioning firing @x1 engines.",portDir.name()));
+								return;
+							}
+							else
+							if(CMath.pctDiff(dirTo[1],ship.facing()[1],Math.PI)<.05)
+								super.addScreenMessage(L("Now mooning @x1.",targetObj.Name()));
+							else
+							{
+								super.addScreenMessage(L("Error: Fired @x1 engines, but only got to within @x2 percent",
+										portDir.name(),""+Math.round(CMath.pctDiff(dirTo[1],ship.facing()[1],Math.PI)*100.0)));
+								return;
+							}
+						}
+					}
+				}
 				return;
 			}
 			else
