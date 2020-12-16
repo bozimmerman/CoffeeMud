@@ -123,6 +123,39 @@ public class Prayer_ReflectPrayer extends Prayer
 	}
 
 	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if(!(affected instanceof MOB))
+		{
+			unInvoke();
+			return false;
+		}
+		final MOB mob=(MOB)affected;
+		if(shield == null)
+		{
+			final Item I=mob.fetchHeldItem();
+			if(I instanceof Shield)
+				shield=(Shield)I;
+			else
+			{
+				unInvoke();
+				return true;
+			}
+		}
+		if((shield==null)
+		||(shield.amDestroyed())
+		||(!shield.amBeingWornProperly())
+		||(mob.fetchHeldItem()!=shield))
+		{
+			unInvoke();
+			return false;
+		}
+		return true;
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
