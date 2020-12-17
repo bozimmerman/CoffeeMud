@@ -810,6 +810,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 					str.append(c);
 					break;
 				}
+				//$FALL-THROUGH$
 			case '(':
 				if((state==MatchState.INSIDE_PAREN)
 				||(state==MatchState.POST_CONN))
