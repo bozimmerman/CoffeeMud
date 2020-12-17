@@ -125,6 +125,16 @@ public class QuestData extends StdWebMacro
 						script=F.text();
 					script=new StringBuffer(script.toString().replaceAll("\n\r","\n"));
 				}
+				else
+				{
+					for(int i=0;i<script.length();i++)
+					{
+						if((script.charAt(i)==';')
+						&&((i==0)||(script.charAt(i-1)!='\\')))
+							script.setCharAt(i,'\n');
+					}
+					//script=new StringBuffer(CMStrings.replaceAll(script.toString(),"\\;",";"));
+				}
 				script=new StringBuffer(CMStrings.replaceAll(script.toString(),"&","&amp;"));
 				String postFix="";
 				final int limit=script.toString().toUpperCase().indexOf("<?XML");
@@ -133,13 +143,6 @@ public class QuestData extends StdWebMacro
 					postFix=script.toString().substring(limit);
 					script=new StringBuffer(script.toString().substring(0,limit));
 				}
-				for(int i=0;i<script.length();i++)
-				{
-					if((script.charAt(i)==';')
-					&&((i==0)||(script.charAt(i-1)!='\\')))
-						script.setCharAt(i,'\n');
-				}
-				script=new StringBuffer(CMStrings.replaceAll(script.toString(),"\\;",";"));
 				return clearWebMacros(script+postFix);
  			}
 		}

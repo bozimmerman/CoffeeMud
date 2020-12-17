@@ -298,6 +298,15 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	public boolean stepQuest();
 
 	/**
+	 * This is a utility method that will stop the current running
+	 * quest step, if necessary, and clean it up.  Then it will start
+	 * the script executing from the given step number 1...n
+	 * @param stepNum the step number 1...n
+	 * @return true if the step was started, false otherwise
+	 */
+	public boolean setQuestStep(int stepNum);
+
+	/**
 	 * A dormant state is the state where a quest is no longer running, but
 	 * is not, or has not yet, been scheduled to wait for another run time.
 	 * This may result in a quest being deleted if it was a spawned temporary
@@ -797,7 +806,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	public static enum QOBJS
 	{
 		LOADEDMOBS, LOADEDITEMS, LOADEDABILITIES, AREA, ROOM, MOBGROUP, ITEMGROUP, ROOMGROUP,
-		ABILITYGROUP, ITEM, ENVOBJ, STUFF, MOB, ABILITY
+		ABILITYGROUP, ITEM, ENVOBJ, STUFF, MOB, ABILITY, STEPNUM
 	}
 
 	/** The list of basic mystery quest objects defined in an iterative fashion during quest script execution */

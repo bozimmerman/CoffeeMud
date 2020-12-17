@@ -4265,7 +4265,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		stepEllapsedTimes.remove(script());
 	}
 
-	public void cleanQuestStep()
+	protected void cleanQuestStep(final int preserveSkip)
 	{
 		stoppingQuest=true;
 		if(questState.worldObjects.size()>0)
@@ -4287,6 +4287,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						if(B!=null)
 							B.endQuest(M,M,name());
 					}
+					if((PO.preserveState>0)&&(preserveSkip!=0))
+						PO.preserveState-=preserveSkip; // might actually bump it to keep things unchanged
 					if(PO.preserveState>0)
 					{
 						PO.preserveState--;
@@ -4489,9 +4491,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	@Override
 	public boolean stepQuest()
 	{
-		if((questState==null)||(stoppingQuest))
+		if((questState!=null)&&(stoppingQuest))
 			return false;
-		cleanQuestStep();
+		cleanQuestStep(0);
 		ticksRemaining=-1;
 		setDuration(-1);
 
@@ -4499,6 +4501,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		final List<Object> script=parseLoadScripts(script(),new Vector<Object>(),args,true);
 		try
 		{
+			questState.stepNumber++;
 			setVars(script,questState.lastLine);
 			parseQuestScript(script,args,questState.lastLine);
 		}
@@ -4531,6 +4534,126 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 		stopQuestInternal();
 		return false;
+	}
+
+	protected int getLineNumberForStep(final int stepNum)
+	{
+		if(stepNum <= 1)
+			return 0;
+		final List<Object> args=new Vector<Object>();
+		final List<Object> oscript=parseLoadScripts(script(),new Vector<Object>(),args,true);
+		final List<String> script=parseFinalQuestScript(oscript);
+		int currentStepNumber=1;
+		for(int v=0;v<script.size();v++)
+		{
+			final String s=modifyStringFromArgs(script.get(v),args);
+			final Vector<String> p=CMParms.parse(s);
+			if(p.size()>0)
+			{
+				final String cmd=p.elementAt(0).toUpperCase();
+				if(cmd.equals("STEP"))
+				{
+					if((++currentStepNumber)==stepNum)
+						return v+1;
+				}
+			}
+		}
+		return -1;
+	}
+
+	// this will cause a quest to begin parsing at the given "step".
+	// this will clear out unpreserved objects from previous
+	// step and resume quest script processing.
+	// if this is the LAST step, stopQuestInternal() is automatically called
+	@Override
+	public boolean setQuestStep(final int stepNum)
+	{
+		if(stepNum <=0)
+			return false;
+		if(questState==null)
+			return false;
+		final DefaultQuest qSave=this;
+		final Runnable setQuestStepRunnable;
+		setQuestStepRunnable= new Runnable()
+		{
+			private final int targetStepNum=stepNum;
+			private final DefaultQuest Q=qSave;
+			@Override
+			public void run()
+			{
+				boolean stoppingQuest;
+				synchronized(Q)
+				{
+					stoppingQuest=Q.stoppingQuest; // does this really ensure cpu cache thwarting?
+				}
+				if(stoppingQuest)
+				{
+					Log.errOut("DefaultQuest","OMG Still stopping "+name()+" when I want to set the "+targetStepNum+" step.");
+					CMLib.threads().scheduleRunnable(this, 1000);
+					return;
+				}
+				final int newLine=getLineNumberForStep(targetStepNum);
+				if(newLine < 0) // was an illegal target step
+				{
+					Log.errOut("DefaultQuest","Quest "+name()+" illegally tried to target the "+targetStepNum+" step.");
+					return;
+				}
+				ticksRemaining=-1;
+				setDuration(-1);
+				final int curStep=questState.stepNumber;
+				if(targetStepNum<curStep)
+					cleanQuestStep(Integer.MAX_VALUE/4);
+				else
+					cleanQuestStep(targetStepNum-curStep-1);
+				final List<Object> args=new Vector<Object>();
+				final List<Object> script=parseLoadScripts(script(),new Vector<Object>(),args,true);
+				try
+				{
+					questState.stepNumber=stepNum;
+					questState.lastLine=newLine;
+					setVars(script,questState.lastLine);
+					parseQuestScript(script,args,questState.lastLine);
+				}
+				catch(final Exception t)
+				{
+					questState.error=true;
+					Log.errOut("DefaultQuest",t);
+				}
+				if(questState.error)
+				{
+					if(!questState.beQuiet)
+						Log.errOut("Quest","One or more errors in '"+name()+"', quest not started");
+				}
+				else
+				if(!questState.done)
+				{
+					// valid DONE state, when stepping over the end
+				}
+				else
+				if(duration()<0)
+				{
+					Log.errOut("Quest","No duration, quest '"+name()+"' not started.");
+					questState.error=true;
+				}
+
+				if((!questState.error)&&(questState.done)&&(duration()>=0))
+				{
+					enterRunningState();
+					return;
+				}
+				stopQuestInternal();
+			}
+		};
+		if(stoppingQuest)
+		{
+			CMLib.threads().scheduleRunnable(setQuestStepRunnable, 500);
+			return true;
+		}
+		else
+		{
+			setQuestStepRunnable.run();
+			return !questState.error;
+		}
 	}
 
 	@Override
@@ -4567,7 +4690,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				p.second=Integer.valueOf(0);
 			questState.autoStepAfterDuration=false;
 		}
-		cleanQuestStep();
+		cleanQuestStep(0);
 		stoppingQuest=true;
 		if(!isCopy())
 			setScript(script(),true); // causes wait times/name to reload
@@ -6048,6 +6171,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		public boolean		autoStepAfterDuration	= false;
 		public int			preserveState			= 0;
 		public int			lastLine				= 0;
+		public int			stepNumber				= 1;
 		public int			startLine;
 		// contains a set of vectors, vectors are formatted as such:
 		// key 1=vector, below.  key 2=preserveState
@@ -6097,6 +6221,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			else
 			switch(q)
 			{
+			case STEPNUM:
+				O = (""+stepNumber);
+				break;
 			case LOADEDMOBS:
 				O = loadedMobs;
 				break;

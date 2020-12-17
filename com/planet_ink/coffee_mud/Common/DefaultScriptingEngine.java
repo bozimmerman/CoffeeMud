@@ -12331,25 +12331,40 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(tt==null)
 						return null;
 				}
-				final String qName=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1].trim());
+				String qName=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1].trim());
 				final Quest Q;
 				final int x=qName.lastIndexOf(" +");
+				final int y=qName.lastIndexOf(" =");
 				int skipNum=1;
+				int setNum=-1;
 				if((x>0)
 				&&(CMath.isInteger(qName.substring(x+2).trim())))
 				{
-					Q=getQuest(qName.substring(0,x).trim());
 					skipNum=CMath.s_int(qName.substring(x+2).trim());
+					qName=qName.substring(0,x).trim();
 				}
 				else
-					Q=getQuest(qName);
+				if((y>0)
+				&&(CMath.isInteger(qName.substring(y+2).trim())))
+				{
+					setNum=CMath.s_int(qName.substring(y+2).trim());
+					qName=qName.substring(0,y).trim();
+				}
+				Q=getQuest(qName);
 				if(Q!=null)
 				{
-					for(int i=0;i<skipNum;i++)
-						Q.stepQuest();
+					if(setNum>0)
+					{
+						Q.setQuestStep(setNum);
+					}
+					else
+					{
+						for(int i=0;i<skipNum;i++)
+							Q.stepQuest();
+					}
 				}
 				else
-					logError(scripted,"MPSTEPQUEST","Unknown","Quest: "+s);
+					logError(scripted,"MPSTEPQUEST","Unknown","Quest: "+qName);
 				break;
 			}
 			case 23: //MPSTARTQUEST
