@@ -325,9 +325,10 @@ public class Reliquist extends Thief
 			&&(mob.isMine(msg.tool()))
 			&&(isQualifyingAuthority(mob,(Ability)msg.tool())))
 			{
-				if(msg.source().baseCharStats().getMyDeity()==null)
+				if((msg.source().baseCharStats().getMyDeity()==null)
+				&&(CMLib.map().deities().hasMoreElements()))
 				{
-					msg.source().tell(L("You lack the true faith to do that."));
+					msg.source().tell(L("You lack the true faith to do that.  Convert to the worship of a deity first."));
 					return false;
 				}
 				final Ability A=(Ability)msg.tool();
