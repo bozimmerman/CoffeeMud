@@ -439,6 +439,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					cube=cube.expand(O.direction(),(long)speed);
 					map.moveSpaceObject(O);
 				}
+				// why are we doing all this for an object that's not even moving?!  Because gravity?
+				//TODO: passify stellar objects that never show up on each others gravitational map, for a period of time
 				boolean inAirFlag = false;
 				final List<SpaceObject> cOs=map.getSpaceObjectsWithin(O, 0, Math.max(4*SpaceObject.Distance.LightSecond.dm,Math.round(speed)));
 				final long oMass = O.getMass();
@@ -462,7 +464,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 						&&((speed>0)||(cO.speed()>0))
 						&&((oMass < SpaceObject.MOONLET_MASS)||(cO.getMass() < SpaceObject.MOONLET_MASS)))
 						{
-							if(cO instanceof BoardableShip)
+							if(cO instanceof BoardableShip) //TODO: BZ: Comment out me
 							{
 								System.out.println(O.name()+"->"+cO.Name()+": speed="+speed+", dir="+((CMath.div((double)Math.round(O.direction()[0]*100.0),100)))+","+((CMath.div((double)Math.round(O.direction()[1]*100.0),100))));
 								System.out.println("Moved from:   ("+CMParms.toListString(startCoords)+"  to  "+CMParms.toListString(O.coordinates())+")");

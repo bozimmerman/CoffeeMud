@@ -57,6 +57,7 @@ public class DefaultSession implements Session
 	protected static final int		PINGTIMEOUT  	= 30000;
 	protected static final int		MSDPPINGINTERVAL= 1000;
 	protected static final char[]	PINGCHARS		= {0};
+	protected static final String	TIMEOUT_MSG		= "Timed Out.";
 
 	protected final Set<Integer>		telnetSupportSet= new HashSet<Integer>();
 	protected final Set<String>			mxpSupportSet	= new HashSet<String>();
@@ -70,8 +71,6 @@ public class DefaultSession implements Session
 	protected final boolean		 		mcpDisabled		= CMSecurity.isDisabled(DisFlag.MCP);
 	protected final Map<String,float[]>	mcpSupported	= new TreeMap<String,float[]>();
 	protected final AtomicBoolean 		sockObj 		= new AtomicBoolean(false);
-
-	private static final String		TIMEOUT_MSG		= "Timed Out.";
 
 	private volatile Thread  runThread 			 = null;
 	private volatile Thread	 writeThread 		 = null;
@@ -1387,7 +1386,7 @@ public class DefaultSession implements Session
 		if(msg==null)
 			return;
 		onlyPrint((needPrompt?"":(lastWasPrompt.get()?"\n\r":""))+msg,false);
-		needPrompt=true;
+		flagTextDisplayed();
 	}
 
 	@Override
@@ -1396,7 +1395,7 @@ public class DefaultSession implements Session
 		if(msg==null)
 			return;
 		onlyPrint((needPrompt?"":(lastWasPrompt.get()?"\n\r":""))+CMLib.coffeeFilter().mxpSafetyFilter(msg, this),false);
-		needPrompt=true;
+		flagTextDisplayed();
 	}
 
 	@Override
@@ -1482,7 +1481,7 @@ public class DefaultSession implements Session
 	{
 		if(msg!=null)
 			onlyPrint(applyFilters(mob,mob,null,msg,true)+"\n\r",false);
-		needPrompt=true;
+		flagTextDisplayed();
 	}
 
 	@Override
@@ -1490,7 +1489,7 @@ public class DefaultSession implements Session
 	{
 		if(msg!=null)
 			onlyPrint(applyFilters(mob,mob,null,msg,true),false);
-		needPrompt=true;
+		flagTextDisplayed();
 	}
 
 	@Override
@@ -1504,7 +1503,7 @@ public class DefaultSession implements Session
 	{
 		if(msg!=null)
 			onlyPrint(CMLib.coffeeFilter().colorOnlyFilter(msg,this)+"\n\r",noCache);
-		needPrompt=true;
+		flagTextDisplayed();
 	}
 
 	@Override
@@ -1518,6 +1517,14 @@ public class DefaultSession implements Session
 	{
 		if(msg!=null)
 			onlyPrint(CMLib.coffeeFilter().colorOnlyFilter(msg,this),noCache);
+		flagTextDisplayed();
+	}
+
+	protected void flagTextDisplayed()
+	{
+		final MOB mob=this.mob;
+		if((mob != null)&&(mob.isAttributeSet(Attrib.NOREPROMPT)))
+			return;
 		needPrompt=true;
 	}
 
@@ -2330,6 +2337,9 @@ public class DefaultSession implements Session
 			snoopSupportPrint(str+"\n\r",true);
 			if(debugStrInput)
 				Log.sysOut("INPUT: "+(mob==null?"":mob.Name())+": '"+inStr.toString()+"'");
+			final MOB mob=this.mob;
+			if((mob != null)&&(mob.isAttributeSet(Attrib.NOREPROMPT)))
+				needPrompt=true;
 			return str;
 		}
 		finally
@@ -2399,6 +2409,9 @@ public class DefaultSession implements Session
 		snoopSupportPrint(str+"\n\r",true);
 		if(debugStrInput)
 			Log.sysOut("INPUT: "+(mob==null?"":mob.Name())+": '"+inStr.toString()+"'");
+		final MOB mob=this.mob;
+		if((mob != null)&&(mob.isAttributeSet(Attrib.NOREPROMPT)))
+			needPrompt=true;
 		return str;
 	}
 

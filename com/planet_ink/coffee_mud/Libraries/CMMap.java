@@ -56,15 +56,16 @@ public class CMMap extends StdLibrary implements WorldMap
 		return "CMMap";
 	}
 
-	protected final double				ZERO_ALMOST				= 0.000001;
-	protected final BigDecimal			ZERO					= BigDecimal.valueOf(0.0);
-	protected final BigDecimal			ALMOST_ZERO				= BigDecimal.valueOf(ZERO_ALMOST);
-	protected final BigDecimal			ONE						= BigDecimal.valueOf(1L);
-	protected final BigDecimal			TWO						= BigDecimal.valueOf(2L);
-	protected final BigDecimal			ONE_THOUSAND			= BigDecimal.valueOf(1000);
-	protected final double				PI_ALMOST				= Math.PI - ZERO_ALMOST;
-	protected final double				PI_TIMES_2				= Math.PI * 2.0;
-	protected final double				PI_BY_2					= Math.PI / 2.0;
+	protected static final double		ZERO_ALMOST				= 0.000001;
+	protected static final BigDecimal	ZERO					= BigDecimal.valueOf(0.0);
+	protected static final BigDecimal	ALMOST_ZERO				= BigDecimal.valueOf(ZERO_ALMOST);
+	protected static final BigDecimal	ONE						= BigDecimal.valueOf(1L);
+	protected static final BigDecimal	TWO						= BigDecimal.valueOf(2L);
+	protected static final BigDecimal	TEN						= BigDecimal.valueOf(10L);
+	protected static final BigDecimal	ONE_THOUSAND			= BigDecimal.valueOf(1000);
+	protected static final double		PI_ALMOST				= Math.PI - ZERO_ALMOST;
+	protected static final double		PI_TIMES_2				= Math.PI * 2.0;
+	protected static final double		PI_BY_2					= Math.PI / 2.0;
 	protected final int					QUADRANT_WIDTH			= 10;
 	protected static MOB				deityStandIn			= null;
 	protected long						lastVReset				= 0;
@@ -297,7 +298,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-    public Enumeration<Area> areasPlusShips()
+	public Enumeration<Area> areasPlusShips()
 	{
 		final MultiEnumeration<Area> m=new MultiEnumeration<Area>(new IteratorEnumeration<Area>(areasList.iterator()));
 		m.addEnumeration(shipAreaEnumerator(null));
@@ -4409,6 +4410,25 @@ public class CMMap extends StdLibrary implements WorldMap
 		};
 	}
 
+	public static BigDecimal bigSqrt(final BigDecimal A)
+	{
+		if(A.doubleValue()<0)
+			return ZERO;
+		final int SCALE=0;
+		BigDecimal x0 = new BigDecimal("0");
+		BigDecimal x1 = new BigDecimal(Math.sqrt(A.doubleValue()));
+		int times=0;
+		while ((!x0.equals(x1))&&(++times<20))
+		{
+			x0 = x1;
+			x1 = A.divide(x0, SCALE, RoundingMode.UP);
+			x1 = x1.add(x0);
+			x1 = x1.divide(TWO, SCALE, RoundingMode.UP);
+		}
+		return x1;
+	}
+
+	/*
 	@Override
 	public double getMinDistanceFrom(final long[] prevPos, final long[] curPosition, final long[] objPos)
 	{
@@ -4428,23 +4448,63 @@ public class CMMap extends StdLibrary implements WorldMap
 			//Log.debugOut("1:prevDistance="+prevDistance.longValue()+", baseDistance="+baseDistance.longValue()+", currentDistance="+currentDistance.longValue());
 			return Math.min(prevDistance.doubleValue(), currentDistance.doubleValue());
 		}
-		//Log.debugOut("prevDistance="+prevDistance.longValue()+", baseDistance="+baseDistance.longValue()+", currentDistance="+currentDistance.longValue());
+		final BigDecimal[] ab=new BigDecimal[] { BigDecimal.valueOf(prevPos[0]), BigDecimal.valueOf(prevPos[1]), BigDecimal.valueOf(prevPos[2]) };
+		ab[0]=ab[0].subtract(BigDecimal.valueOf(curPosition[0]));
+		ab[1]=ab[1].subtract(BigDecimal.valueOf(curPosition[1]));
+		ab[2]=ab[2].subtract(BigDecimal.valueOf(curPosition[2]));
+		final BigDecimal[] ac=new BigDecimal[] { BigDecimal.valueOf(objPos[0]), BigDecimal.valueOf(objPos[1]), BigDecimal.valueOf(objPos[2]) };
+		ac[0]=ac[0].subtract(BigDecimal.valueOf(prevPos[0]));
+		ac[1]=ac[1].subtract(BigDecimal.valueOf(prevPos[1]));
+		ac[2]=ac[2].subtract(BigDecimal.valueOf(prevPos[2]));
+		final BigDecimal[] abac=new BigDecimal[] {
+			ab[1].multiply(ac[2]).subtract(ab[2].multiply(ac[1])),
+			ab[2].multiply(ac[0]).subtract(ab[0].multiply(ac[2])),
+			ab[0].multiply(ac[1]).subtract(ab[1].multiply(ac[0]))
+		};
+		final BigDecimal abacMagnitude = bigSqrt(abac[0].pow(2).add(abac[1].pow(2)).add(abac[2].pow(2)));
+		final BigDecimal abMagnitude = bigSqrt(ab[0].pow(2).add(ab[1].pow(2)).add(ab[2].pow(2)));
+		return abacMagnitude.divide(abMagnitude,RoundingMode.HALF_UP).doubleValue();
+
+	}
+	*/
+
+	@Override
+	public double getMinDistanceFrom(final long[] prevPos, final long[] curPosition, final long[] objPos)
+	{
+		final BigDecimal currentDistance=getBigDistanceFrom(curPosition, objPos);
+		if(Arrays.equals(prevPos, curPosition))
+			return currentDistance.doubleValue();
+		final BigDecimal prevDistance=getBigDistanceFrom(prevPos, objPos);
+		final BigDecimal baseDistance=getBigDistanceFrom(prevPos, curPosition);
+		if(baseDistance.compareTo(currentDistance.add(prevDistance))>=0)
+		{
+			//Log.debugOut("0:prevDistance="+prevDistance.longValue()+", baseDistance="+baseDistance.longValue()+", currentDistance="+currentDistance.longValue());
+			return 0;
+		}
+		if(prevDistance.subtract(baseDistance).equals(currentDistance)
+		||currentDistance.subtract(baseDistance).equals(prevDistance))
+		{
+			//Log.debugOut("1:prevDistance="+prevDistance.longValue()+", baseDistance="+baseDistance.longValue()+", currentDistance="+currentDistance.longValue());
+			return Math.min(prevDistance.doubleValue(), currentDistance.doubleValue());
+		}
+		//Log.debugOut("2:prevDistance="+prevDistance.longValue()+", baseDistance="+baseDistance.longValue()+", currentDistance="+currentDistance.longValue());
 
 		final BigDecimal semiPerimeter=currentDistance.add(prevDistance).add(baseDistance).divide(TWO, RoundingMode.HALF_UP);
 		final BigDecimal partOfTriangle=semiPerimeter.multiply(semiPerimeter.subtract(currentDistance))
 													.multiply(semiPerimeter.subtract(baseDistance))
 													.multiply(semiPerimeter.subtract(prevDistance));
 
-		final BigDecimal areaOfTriangle=BigDecimal.valueOf(Math.floor(Math.sqrt((partOfTriangle.abs()).doubleValue())));
-		//Log.debugOut("semiPerimeter="+semiPerimeter.longValue()+", areaOfTriangle="+areaOfTriangle.doubleValue());
-		if(areaOfTriangle.equals(ZERO))
+		final BigDecimal areaOfTriangle=bigSqrt(partOfTriangle);
+		//Log.debugOut("3:semiPerimeter="+semiPerimeter.longValue()+", areaOfTriangle="+areaOfTriangle.doubleValue());
+		if(areaOfTriangle.doubleValue()==0.0)
 		{
+			//Log.debugOut("3.5:semiPerimeter="+semiPerimeter.longValue()+", areaOfTriangle="+areaOfTriangle.doubleValue());
 			if (semiPerimeter.subtract(baseDistance).abs().doubleValue() <= 1)
 				return 0;
 			else
 				return Math.min(prevDistance.doubleValue(), currentDistance.doubleValue());
 		}
-		//Log.debugOut("getMinDistanceFrom="+TWO.multiply(areaOfTriangle).divide(baseDistance, RoundingMode.HALF_UP).doubleValue());
+		//Log.debugOut("4:getMinDistanceFrom="+TWO.multiply(areaOfTriangle).divide(baseDistance, RoundingMode.HALF_UP).doubleValue());
 		if((baseDistance.multiply(ONE_THOUSAND).compareTo(currentDistance)<0)
 		&&(baseDistance.multiply(ONE_THOUSAND).compareTo(prevDistance)<0))
 			return Math.min(prevDistance.doubleValue(), currentDistance.doubleValue());

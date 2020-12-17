@@ -223,13 +223,22 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 								reportError(this, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control syntax failure.",me.name(mob)));
 							else
 							{
-								targetDirection[0] = ((Double)parms[0]).doubleValue();
-								targetDirection[1] = ((Double)parms[1]).doubleValue();
 								if(ship instanceof SpaceShip)
 								{
-									final ShipDir dir = CMLib.map().getDirectionFromDir(((SpaceShip)ship).facing(), ((SpaceShip)ship).roll(), targetDirection);
+									final double[] proposedDirection=new double[] {((Double)parms[0]).doubleValue(),((Double)parms[1]).doubleValue()};
+									final ShipDir dir = CMLib.map().getDirectionFromDir(((SpaceShip)ship).facing(), ((SpaceShip)ship).roll(), proposedDirection);
 									if(!CMParms.contains(getCurrentBattleCoveredDirections(), dir))
-										reportError(this, controlI, mob, lang.L("@x1 is not facing a covered direction.",me.name(mob)), lang.L("Failure: @x1: weapon is not facing correctly.",me.name(mob)));
+										reportError(this, controlI, mob, null, lang.L("Failure: @x1: weapon is not facing correctly for that target direction.",me.name(mob)));
+									else
+									{
+										targetDirection[0] = ((Double)parms[0]).doubleValue();
+										targetDirection[1] = ((Double)parms[1]).doubleValue();
+									}
+								}
+								else
+								{
+									targetDirection[0] = ((Double)parms[0]).doubleValue();
+									targetDirection[1] = ((Double)parms[1]).doubleValue();
 								}
 							}
 						}
@@ -248,7 +257,10 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 								{
 									final ShipDir dir = CMLib.map().getDirectionFromDir(((SpaceShip)ship).facing(), ((SpaceShip)ship).roll(), targetDirection);
 									if(!CMParms.contains(getCurrentBattleCoveredDirections(), dir))
-										reportError(this, controlI, mob, lang.L("@x1 is not facing a covered direction.",me.name(mob)), lang.L("Failure: @x1: weapon is not facing correctly.",me.name(mob)));
+									{
+										reportError(this, controlI, mob, null, lang.L("Failure: @x1: weapon is not targeted correctly for its field of fire.",me.name(mob)));
+										return;
+									}
 								}
 								final SpaceObject weaponO=(SpaceObject)CMClass.getTech("StdSpaceTechWeapon");
 								int damageMsgType = CMMsg.TYP_ELECTRIC;

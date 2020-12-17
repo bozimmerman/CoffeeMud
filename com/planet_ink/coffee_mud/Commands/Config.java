@@ -85,7 +85,7 @@ public class Config extends StdCommand
 						mob.tell(L("No help!"));
 					else
 					{
-						Properties P=new Properties();
+						final Properties P=new Properties();
 						P.load(new ByteArrayInputStream(rawHelp.toString().getBytes()));
 						for(final MOB.Attrib a : MOB.Attrib.values())
 						{
@@ -245,6 +245,8 @@ public class Config extends StdCommand
 					break;
 				case NOBATTLESPAM:
 					break;
+				case NOREPROMPT:
+					break;
 				case NOFOLLOW:
 					break;
 				case NOTEACH:
@@ -302,7 +304,7 @@ public class Config extends StdCommand
 				&&(a.getName().compareTo("LINEWRAP")>0))
 				{
 					final String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):"Disabled";
-					StringBuilder m=new StringBuilder("^W"+CMStrings.padRight(L("LINEWRAP"),maxAttribLen)+"^N: ^w"+wrap);
+					final StringBuilder m=new StringBuilder("^W"+CMStrings.padRight(L("LINEWRAP"),maxAttribLen)+"^N: ^w"+wrap);
 					if((mob.session()!=null)&&(mob.playerStats().getWrap() != mob.session().getWrap()))
 						m.append(" ("+mob.session().getWrap()+")");
 					if(++col==2)
@@ -320,7 +322,7 @@ public class Config extends StdCommand
 				&&(a.getName().compareTo("PAGEBREAK")>0))
 				{
 					final String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"^rDisabled";
-					StringBuilder m=new StringBuilder("^W"+CMStrings.padRight(L("PAGEBREAK"),maxAttribLen)+"^N: ^w"+pageBreak);
+					final StringBuilder m=new StringBuilder("^W"+CMStrings.padRight(L("PAGEBREAK"),maxAttribLen)+"^N: ^w"+pageBreak);
 					if(++col==2)
 					{
 						msg.append(m.toString());
@@ -332,8 +334,8 @@ public class Config extends StdCommand
 					xtrasDone.add("PAGEBREAK");
 				}
 			}
-			
-			
+
+
 			final StringBuilder m=new StringBuilder("");
 			m.append("^W"+CMStrings.padRight(a.getName(),maxAttribLen)+"^N: ");
 			boolean set=mob.isAttributeSet(a);
