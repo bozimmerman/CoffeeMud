@@ -65,10 +65,9 @@ public class RocketShipProgram extends GenShipProgram
 	protected volatile SpaceObject			currentTarget		= null;
 	protected volatile SpaceObject			programPlanet		= null;
 	protected volatile List<ShipEngine>		programEngines		= null;
-	protected final	   List<SpaceObject>	sensorReport		= new LinkedList<SpaceObject>();
 
-	protected final PairSLinkedList<Long, List<SpaceObject>>	sensorReports		= new PairSLinkedList<Long, List<SpaceObject>>();
-	protected volatile Map<ShipEngine, Double[]>				primeInjects		= new Hashtable<ShipEngine, Double[]>();
+	protected final	   Map<Technical, Set<SpaceObject>>	sensorReports	= new SHashtable<Technical, Set<SpaceObject>>();
+	protected volatile Map<ShipEngine, Double[]>		primeInjects	= new Hashtable<ShipEngine, Double[]>();
 
 	protected enum RocketStateMachine
 	{
@@ -336,14 +335,29 @@ public class RocketShipProgram extends GenShipProgram
 		return findEngineByName(uword)!=null;
 	}
 
-	public List<SpaceObject> takeSensorReport(final TechComponent sensor)
+	protected Set<SpaceObject> getLocalSensorReport(final TechComponent sensor)
 	{
-		final List<SpaceObject> localSensorReport;
-		synchronized(sensorReport)
+		if(sensor==null)
+			return new TreeSet<SpaceObject>(XTreeSet.comparator);
+		final Set<SpaceObject> localSensorReport;
+		synchronized(sensorReports)
 		{
-			sensorReport.clear();
+			if(sensorReports.containsKey(sensor))
+				localSensorReport=sensorReports.get(sensor);
+			else
+			{
+				localSensorReport=new TreeSet<SpaceObject>(XTreeSet.comparator);
+				sensorReports.put(sensor, localSensorReport);
+			}
 		}
-		final String code=Technical.TechCommand.SENSE.makeCommand();
+		return localSensorReport;
+	}
+
+	protected Collection<SpaceObject> takeNewSensorReport(final TechComponent sensor)
+	{
+		final Set<SpaceObject> localSensorReport=getLocalSensorReport(sensor);
+		localSensorReport.clear();
+		final String code=Technical.TechCommand.SENSE.makeCommand(sensor,Boolean.TRUE);
 		final MOB mob=CMClass.getFactoryMOB();
 		try
 		{
@@ -360,14 +374,6 @@ public class RocketShipProgram extends GenShipProgram
 		finally
 		{
 			mob.destroy();
-		}
-		localSensorReport = new XVector<SpaceObject>(sensorReport.iterator());
-		synchronized(sensorReport)
-		{
-			sensorReport.clear();
-			while(this.sensorReports.size()>10)
-				this.sensorReports.removeLast();
-			this.sensorReports.addFirst(new Pair<Long,List<SpaceObject>>(Long.valueOf(System.currentTimeMillis()),localSensorReport));
 		}
 		return localSensorReport;
 	}
@@ -460,7 +466,7 @@ public class RocketShipProgram extends GenShipProgram
 				str.append("^.^N\n\r");
 				if(sensor.activated())
 				{
-					final List<SpaceObject> localSensorReport=takeSensorReport(sensor);
+					final Collection<SpaceObject> localSensorReport=takeNewSensorReport(sensor);
 					if(localSensorReport.size()==0)
 						str.append("^R").append(L("No Report"));
 					else
@@ -1602,7 +1608,7 @@ public class RocketShipProgram extends GenShipProgram
 				}
 				final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
 				for(final TechComponent sensor : sensors)
-					allObjects.addAll(takeSensorReport(sensor));
+					allObjects.addAll(takeNewSensorReport(sensor));
 				Collections.sort(allObjects, new DistanceSorter(spaceObject));
 				SpaceObject landingPlanet = null;
 				for(final SpaceObject O : allObjects)
@@ -1698,7 +1704,7 @@ public class RocketShipProgram extends GenShipProgram
 				final String targetStr=CMParms.combine(parsed, 1);
 				final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
 				for(final TechComponent sensor : sensors)
-					allObjects.addAll(takeSensorReport(sensor));
+					allObjects.addAll(takeNewSensorReport(sensor));
 				Collections.sort(allObjects, new DistanceSorter(spaceObject));
 				SpaceObject targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, false);
 				if(targetObj == null)
@@ -1740,7 +1746,7 @@ public class RocketShipProgram extends GenShipProgram
 				final String targetStr=CMParms.combine(parsed, 1);
 				final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
 				for(final TechComponent sensor : sensors)
-					allObjects.addAll(takeSensorReport(sensor));
+					allObjects.addAll(takeNewSensorReport(sensor));
 				Collections.sort(allObjects, new DistanceSorter(spaceObject));
 				SpaceObject targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, false);
 				if(targetObj == null)
@@ -1858,7 +1864,7 @@ public class RocketShipProgram extends GenShipProgram
 				final String targetStr=CMParms.combine(parsed, 1);
 				final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
 				for(final TechComponent sensor : sensors)
-					allObjects.addAll(takeSensorReport(sensor));
+					allObjects.addAll(takeNewSensorReport(sensor));
 				Collections.sort(allObjects, new DistanceSorter(spaceObject));
 				SpaceObject targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, false);
 				if(targetObj == null)
@@ -1972,7 +1978,7 @@ public class RocketShipProgram extends GenShipProgram
 				}
 				final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
 				for(final TechComponent sensor : sensors)
-					allObjects.addAll(takeSensorReport(sensor));
+					allObjects.addAll(takeNewSensorReport(sensor));
 				Collections.sort(allObjects, new DistanceSorter(spaceObject));
 				final SpaceObject targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, currentTarget.ID(), true);
 				if(targetObj == null)
@@ -2218,9 +2224,23 @@ public class RocketShipProgram extends GenShipProgram
 					final String[] parts=msg.targetMessage().split(" ");
 					final TechCommand command=TechCommand.findCommand(parts);
 					if((command == TechCommand.SENSE)
-					&& (msg.tool() instanceof SpaceObject)) // this is a sensor report
+					&& (msg.tool() instanceof TechComponent)) // this is probably a sensor report
 					{
-						this.sensorReport.add((SpaceObject)msg.tool());
+						final TechComponent sensorSystem = (TechComponent)msg.tool();
+						final Object[] parms=command.confirmAndTranslate(parts);
+						if((parms!=null)&&(parms.length>1))
+						{
+							final Boolean tf=(parms[1] instanceof Boolean)?(Boolean)parms[1]:Boolean.TRUE;
+							if(parms[0] instanceof SpaceObject)
+							{
+								final SpaceObject spaceObj = (SpaceObject)parms[0];
+								final Set<SpaceObject> sensorReport=getLocalSensorReport(sensorSystem);
+								if(tf.booleanValue())
+									sensorReport.add(spaceObj);
+								else
+									sensorReport.remove(spaceObj);
+							}
+						}
 						return;
 					}
 				}
@@ -2268,7 +2288,6 @@ public class RocketShipProgram extends GenShipProgram
 			this.components = null;
 			this.engines = null;
 			this.sensors = null;
-			this.sensorReport.clear();
 			this.sensorReports.clear();
 		}
 		super.executeMsg(host,msg);

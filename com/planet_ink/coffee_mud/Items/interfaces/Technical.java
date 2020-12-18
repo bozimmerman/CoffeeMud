@@ -149,7 +149,7 @@ public interface Technical extends Item
 		ACCELERATED(TechComponent.ShipDir.class, Double.class),
 		ACCELERATION(TechComponent.ShipDir.class, Double.class, Boolean.class),
 		COMPONENTFAILURE(Technical.TechType.class, String[].class),
-		SENSE(),
+		SENSE(Environmental.class, Boolean.class),
 		AIRREFRESH(Double.class, Integer.class),
 		POWERSET(Long.class),
 		WEAPONTARGETSET(Double.class,Double.class),

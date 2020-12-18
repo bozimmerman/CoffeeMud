@@ -6,7 +6,6 @@ TECH
    *. test ship phaser, laser systems against shield types - murder motel
    *. make ship torpedo launchers and torpedo containers-- see tech doc
    *. make ship impulse and warp engines -- see tech doc
-   *. make more ship sensors, giant window for seeing in front, targeted scaling windows for st view screens
    *. make tractor beam system -- esp important for pirates!
    *. make communication system
    *. When it's time to make the Real Software, good categories in tech docs
@@ -37,7 +36,6 @@ NON-TECH (Long Term)
    *. Wants and Needs engine - similar to slavery system
    *. Port Siplet to C++ and shove it inside a Chromium window.
    *. Start on Spell Research?
-   *. RandomQuests based off the Percolator engine -- a way to randomly generate different quests.
    *. OLC for players?  Play with PennMush more. Port 4201
    *. Finish Player Simulator -- the Perpetual Project
    *. MudFTP/DawnFTP support - lets you edit room descriptions etc. in your favourite text editor, or just for fun

@@ -49,6 +49,8 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 		return Technical.TechType.SHIP_SENSOR;
 	}
 
+	protected Set<Environmental> lastSensedObjects = new TreeSet<Environmental>(XTreeSet.comparator);
+
 	private static final Filterer<SpaceObject> acceptEverythingFilter = new Filterer<SpaceObject>()
 	{
 		@Override
@@ -437,6 +439,7 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 					}
 				}
 			}
+			final Set<Environmental> newSensedObjects = new TreeSet<Environmental>(XTreeSet.comparator);
 			if(found.size() > 0)
 			{
 				final Filterer<SpaceObject> filter = this.getSensedObjectFilter();
@@ -445,9 +448,15 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 				{
 					if(filter.passesFilter(obj))
 					{
+						newSensedObjects.add(obj);
+						synchronized(lastSensedObjects)
+						{
+							if(!lastSensedObjects.contains(obj))
+								lastSensedObjects.add(obj);
+						}
 						final Environmental sensedObject = converter.convert(obj);
-						final String code=Technical.TechCommand.SENSE.makeCommand();
-						final CMMsg msg=CMClass.getMsg(mob, controlI, sensedObject, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+						final String code=Technical.TechCommand.SENSE.makeCommand(sensedObject,Boolean.TRUE);
+						final CMMsg msg=CMClass.getMsg(mob, controlI, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 						if(controlI.owner() instanceof Room)
 						{
 							if(((Room)controlI.owner()).okMessage(mob, msg))
@@ -457,6 +466,32 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 						if(controlI.okMessage(mob, msg))
 							controlI.executeMsg(mob, msg);
 					}
+				}
+				final Set<Environmental> prevSensedObjects = new TreeSet<Environmental>(XTreeSet.comparator);
+				synchronized(lastSensedObjects)
+				{
+					for(final Iterator<Environmental> i=lastSensedObjects.iterator();i.hasNext();)
+					{
+						final Environmental nobj = i.next();
+						if(!newSensedObjects.contains(nobj))
+						{
+							i.remove();
+							prevSensedObjects.add(nobj);
+						}
+					}
+				}
+				for(final Environmental sensedObject : prevSensedObjects)
+				{
+					final String code=Technical.TechCommand.SENSE.makeCommand(sensedObject,Boolean.FALSE);
+					final CMMsg msg=CMClass.getMsg(mob, controlI, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+					if(controlI.owner() instanceof Room)
+					{
+						if(((Room)controlI.owner()).okMessage(mob, msg))
+							((Room)controlI.owner()).send(mob, msg);
+					}
+					else
+					if(controlI.okMessage(mob, msg))
+						controlI.executeMsg(mob, msg);
 				}
 			}
 		}
@@ -485,10 +520,12 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 						reportError(this, controlI, mob, lang.L("@x1 does not respond.",me.name(mob)), lang.L("Failure: @x1: control failure.",me.name(mob)));
 					else
 					{
+						/*
 						final Object[] parms=command.confirmAndTranslate(parts);
 						if(parms==null)
 							reportError(this, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control syntax failure.",me.name(mob)));
 						else
+						*/
 						if(command == TechCommand.SENSE)
 						{
 							if(doSensing(mob, controlI))
