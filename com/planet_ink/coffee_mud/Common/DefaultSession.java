@@ -1523,7 +1523,7 @@ public class DefaultSession implements Session
 	protected void flagTextDisplayed()
 	{
 		final MOB mob=this.mob;
-		if((mob != null)&&(mob.isAttributeSet(Attrib.NOREPROMPT)))
+		if((mob != null)&&(mob.isAttributeSet(Attrib.NOREPROMPT))&&(!mob.isInCombat()))
 			return;
 		needPrompt=true;
 	}
