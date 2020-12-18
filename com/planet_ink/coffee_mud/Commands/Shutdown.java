@@ -101,7 +101,7 @@ public class Shutdown extends StdCommand implements Tickable
 			if(s.equalsIgnoreCase("FOR"))
 			{
 				reason=" "+CMParms.combine(commands,i);
-				while(commands.size()>=i)
+				while(commands.size()>i)
 					commands.remove(i);
 			}
 			else
