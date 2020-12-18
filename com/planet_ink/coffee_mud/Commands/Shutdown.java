@@ -158,10 +158,11 @@ public class Shutdown extends StdCommand implements Tickable
 			{
 				noPrompt=true;
 				commands.remove(i);
-				final Calendar C=CMLib.time().string2TimeFuture(CMParms.combine(commands,i));
+				final String atWhat=commands.remove(i);
+				final Calendar C=CMLib.time().string2TimeFuture(atWhat);
 				if(C==null)
 				{
-					mob.session().println(L("'@x1' is not a valid time.",CMParms.combine(commands,i)));
+					mob.session().println(L("'@x1' is not a valid time.",atWhat));
 					return false;
 				}
 				if((!mob.session().confirm(L("Shutdown @x1 at @x2 (y/N)?",CMProps.getVar(CMProps.Str.MUDNAME),CMLib.time().date2String(C)),"N")))
