@@ -228,7 +228,7 @@ public class RandomQuests extends ActiveTicker
 						}
 						Q.setCopy(true);
 						myQuests.add(new WeakReference<Quest>(Q));
-						Log.debugOut("RandonQuests generated "+Q.name()+" for "+ticking.name());
+						Log.debugOut("RandomQuests generated "+Q.name()+" for "+ticking.name());
 						break;
 					}
 					catch(final CMException cme)
