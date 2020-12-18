@@ -455,8 +455,8 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 								lastSensedObjects.add(obj);
 						}
 						final Environmental sensedObject = converter.convert(obj);
-						final String code=Technical.TechCommand.SENSE.makeCommand(sensedObject,Boolean.TRUE);
-						final CMMsg msg=CMClass.getMsg(mob, controlI, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+						final String code=Technical.TechCommand.SENSE.makeCommand(this,Boolean.TRUE);
+						final CMMsg msg=CMClass.getMsg(mob, controlI, sensedObject, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 						if(controlI.owner() instanceof Room)
 						{
 							if(((Room)controlI.owner()).okMessage(mob, msg))
@@ -482,8 +482,8 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 				}
 				for(final Environmental sensedObject : prevSensedObjects)
 				{
-					final String code=Technical.TechCommand.SENSE.makeCommand(sensedObject,Boolean.FALSE);
-					final CMMsg msg=CMClass.getMsg(mob, controlI, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+					final String code=Technical.TechCommand.SENSE.makeCommand(this,Boolean.FALSE);
+					final CMMsg msg=CMClass.getMsg(mob, controlI, sensedObject, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 					if(controlI.owner() instanceof Room)
 					{
 						if(((Room)controlI.owner()).okMessage(mob, msg))

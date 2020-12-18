@@ -69,6 +69,8 @@ public class RocketShipProgram extends GenShipProgram
 	protected final	   Map<Technical, Set<SpaceObject>>	sensorReports	= new SHashtable<Technical, Set<SpaceObject>>();
 	protected volatile Map<ShipEngine, Double[]>		primeInjects	= new Hashtable<ShipEngine, Double[]>();
 
+	protected final static PrioritizingLimitedMap<String,TechComponent> cachedComponents = new PrioritizingLimitedMap<String,TechComponent>(1000,60000,600000,0);
+
 	protected enum RocketStateMachine
 	{
 		LAUNCHSEARCH,
@@ -277,6 +279,23 @@ public class RocketShipProgram extends GenShipProgram
 		if(E==null)
 			E=(TechComponent)CMLib.english().fetchEnvironmental(list, name, false);
 		return E;
+	}
+
+	protected TechComponent findComponentByID(final List<? extends TechComponent> list, final String id)
+	{
+		if(list.size()==0)
+			return null;
+		if(cachedComponents.containsKey(id))
+			return cachedComponents.get(id);
+		for(final TechComponent C : list)
+		{
+			if((""+C).equalsIgnoreCase(id))
+			{
+				cachedComponents.put(id, C);
+				return C;
+			}
+		}
+		return null;
 	}
 
 	protected ShipEngine findEngineByName(final String name)
@@ -2224,22 +2243,19 @@ public class RocketShipProgram extends GenShipProgram
 					final String[] parts=msg.targetMessage().split(" ");
 					final TechCommand command=TechCommand.findCommand(parts);
 					if((command == TechCommand.SENSE)
-					&& (msg.tool() instanceof TechComponent)) // this is probably a sensor report
+					&& (msg.tool() instanceof SpaceObject)) // this is probably a sensor report
 					{
-						final TechComponent sensorSystem = (TechComponent)msg.tool();
 						final Object[] parms=command.confirmAndTranslate(parts);
 						if((parms!=null)&&(parms.length>1))
 						{
+							final TechComponent sensorSystem = findComponentByID(getShipSensors(), parts[1]);
 							final Boolean tf=(parms[1] instanceof Boolean)?(Boolean)parms[1]:Boolean.TRUE;
-							if(parms[0] instanceof SpaceObject)
-							{
-								final SpaceObject spaceObj = (SpaceObject)parms[0];
-								final Set<SpaceObject> sensorReport=getLocalSensorReport(sensorSystem);
-								if(tf.booleanValue())
-									sensorReport.add(spaceObj);
-								else
-									sensorReport.remove(spaceObj);
-							}
+							final Set<SpaceObject> sensorReport=getLocalSensorReport(sensorSystem);
+							final SpaceObject spaceObj = (SpaceObject)msg.tool();
+							if(tf.booleanValue())
+								sensorReport.add(spaceObj);
+							else
+								sensorReport.remove(spaceObj);
 						}
 						return;
 					}
