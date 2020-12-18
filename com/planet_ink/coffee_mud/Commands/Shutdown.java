@@ -192,7 +192,7 @@ public class Shutdown extends StdCommand implements Tickable
 		}
 		this.externalCommand=externalCommand;
 		this.keepItDown=keepItDown;
-		this.reason=reason;
+		this.reason=(reason==null)?"":reason;
 
 		if(startCountDown)
 		{
