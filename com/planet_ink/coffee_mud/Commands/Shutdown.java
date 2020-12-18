@@ -51,6 +51,7 @@ public class Shutdown extends StdCommand implements Tickable
 	protected MOB		shuttingDownMob				= null;
 	protected long		shuttingDownNextAnnounce	= 0;
 	protected long		shuttingDownCompletes		= 0;
+	protected String	reason						= "";
 	protected boolean	keepItDown					= true;
 	protected String	externalCommand				= null;
 
@@ -62,7 +63,7 @@ public class Shutdown extends StdCommand implements Tickable
 			tm = " now";
 		else
 			tm=" in "+tm;
-		return L("\n\r\n\r^Z@x1 will be @x2@x3^.^?\n\r",CMProps.getVar(CMProps.Str.MUDNAME),(keepItDown?"shutting down":"restarting"),tm);
+		return L("\n\r\n\r^Z@x1 will be @x2@x3@x4^.^?\n\r",CMProps.getVar(CMProps.Str.MUDNAME),(keepItDown?"shutting down":"restarting"),tm,reason);
 	}
 
 	protected void showDisplayableShutdownTimeRemaining()
@@ -86,6 +87,7 @@ public class Shutdown extends StdCommand implements Tickable
 		boolean noPrompt=false;
 		String externalCommand=null;
 		boolean keepItDown=true;
+		String reason=null;
 		boolean startCountDown=false;
 		MOB newShutdownMob=this.shuttingDownMob;
 		for(int i=commands.size()-1;i>=1;i--)
@@ -94,6 +96,13 @@ public class Shutdown extends StdCommand implements Tickable
 			if(s.equalsIgnoreCase("CHECK"))
 			{
 
+			}
+			else
+			if(s.equalsIgnoreCase("FOR"))
+			{
+				reason=" "+CMParms.combine(commands,i);
+				while(commands.size()>=i)
+					commands.remove(i);
 			}
 			else
 			if(s.equalsIgnoreCase("RESTART"))
@@ -182,6 +191,7 @@ public class Shutdown extends StdCommand implements Tickable
 		}
 		this.externalCommand=externalCommand;
 		this.keepItDown=keepItDown;
+		this.reason=reason;
 
 		if(startCountDown)
 		{
