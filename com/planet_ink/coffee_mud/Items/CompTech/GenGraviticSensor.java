@@ -55,12 +55,12 @@ public class GenGraviticSensor extends GenElecCompSensor
 	}
 
 	@Override
-	protected Converter<SpaceObject, Environmental> getSensedObjectConverter()
+	protected Converter<Environmental, Environmental> getSensedObjectConverter()
 	{
-		return new Converter<SpaceObject, Environmental>()
+		return new Converter<Environmental, Environmental>()
 		{
 			@Override
-			public Environmental convert(final SpaceObject obj)
+			public Environmental convert(final Environmental obj)
 			{
 				return new SpaceObject()
 				{
@@ -304,13 +304,18 @@ public class GenGraviticSensor extends GenElecCompSensor
 					@Override
 					public BoundedCube getBounds()
 					{
-						return obj.getBounds();
+						if(obj instanceof SpaceObject)
+							return ((SpaceObject)obj).getBounds();
+						return smallCube;
 					}
 
 					@Override
 					public long[] coordinates()
 					{
-						return Arrays.copyOf(obj.coordinates(), obj.coordinates().length);
+						final SpaceObject sobj =CMLib.map().getSpaceObject(obj, false);
+						if(sobj!=null)
+							return Arrays.copyOf(sobj.coordinates(), sobj.coordinates().length);
+						return emptyCoords;
 					}
 
 					@Override
@@ -321,7 +326,10 @@ public class GenGraviticSensor extends GenElecCompSensor
 					@Override
 					public long radius()
 					{
-						return obj.radius();
+						final SpaceObject sobj =CMLib.map().getSpaceObject(obj, false);
+						if(sobj!=null)
+							return sobj.radius();
+						return 1;
 					}
 
 					@Override
@@ -365,7 +373,10 @@ public class GenGraviticSensor extends GenElecCompSensor
 					@Override
 					public SpaceObject knownSource()
 					{
-						return obj;
+						final SpaceObject sobj=CMLib.map().getSpaceObject(obj, false);
+						if(sobj!=null)
+							return sobj;
+						return null;
 					}
 
 					@Override
@@ -376,7 +387,10 @@ public class GenGraviticSensor extends GenElecCompSensor
 					@Override
 					public long getMass()
 					{
-						return obj.getMass();
+						final SpaceObject sobj=CMLib.map().getSpaceObject(obj, false);
+						if(sobj!=null)
+							return sobj.getMass();
+						return 1;
 					}
 				};
 			}
@@ -395,21 +409,24 @@ public class GenGraviticSensor extends GenElecCompSensor
 	}
 
 	@Override
-	protected Filterer<SpaceObject> getSensedObjectFilter()
+	protected Filterer<Environmental> getSensedObjectFilter()
 	{
-		return new Filterer<SpaceObject>()
+		return new Filterer<Environmental>()
 		{
 			final SpaceObject spaceMe = CMLib.map().getSpaceObject(me, true);
 
 			@Override
-			public boolean passesFilter(final SpaceObject obj)
+			public boolean passesFilter(final Environmental obj)
 			{
 				if((spaceMe == null)||(me == obj)||(spaceMe == obj))
 					return false;
-				final long distance = CMLib.map().getDistanceFrom(spaceMe.coordinates(), obj.coordinates());
-				final long adjustedMax = Math.round(obj.getMass() * (1.0 - CMath.div(distance, getSensorMaxRange())));
+				if(!(obj instanceof SpaceObject))
+					return false;
+				final SpaceObject sobj = (SpaceObject)obj;
+				final long distance = CMLib.map().getDistanceFrom(spaceMe.coordinates(), sobj.coordinates());
+				final long adjustedMax = Math.round(sobj.getMass() * (1.0 - CMath.div(distance, getSensorMaxRange())));
 				// tiny objects are not detected, nor ships at great distance, nor things inside us
-				return (adjustedMax > 100) && (distance > obj.radius() + spaceMe.radius());
+				return (adjustedMax > 100) && (distance > sobj.radius() + spaceMe.radius());
 			}
 		};
 	}

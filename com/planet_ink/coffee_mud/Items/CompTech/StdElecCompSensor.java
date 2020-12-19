@@ -49,26 +49,29 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 		return Technical.TechType.SHIP_SENSOR;
 	}
 
+	protected final static long[] emptyCoords = new long[] {0,0,0};
+	protected final static double[] emptyDirection = new double[] {0,0};
+	protected final static BoundedCube smallCube = new BoundedCube(1,1,1,1,1,1);
 	protected Set<Environmental> lastSensedObjects = new TreeSet<Environmental>(XTreeSet.comparator);
 
-	private static final Filterer<SpaceObject> acceptEverythingFilter = new Filterer<SpaceObject>()
+	private static final Filterer<Environmental> acceptEverythingFilter = new Filterer<Environmental>()
 	{
 		@Override
-		public boolean passesFilter(final SpaceObject obj)
+		public boolean passesFilter(final Environmental obj)
 		{
 			return true;
 		}
 	};
 
-	private static final Converter<SpaceObject, Environmental> directConverter = new Converter<SpaceObject, Environmental>()
+	private static final Converter<Environmental, Environmental> directConverter = new Converter<Environmental, Environmental>()
 	{
 		@Override
-		public Environmental convert(final SpaceObject obj)
+		public Environmental convert(final Environmental obj)
 		{
-			final SpaceObject me=obj;
+			final Environmental me=obj;
 			return new SpaceObject()
 			{
-				final SpaceObject obj = me;
+				final Environmental obj = me;
 
 				@Override
 				public String ID()
@@ -309,13 +312,19 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 				@Override
 				public BoundedCube getBounds()
 				{
-					return obj.getBounds();
+					final SpaceObject sobj=CMLib.map().getSpaceObject(obj, false);
+					if(sobj!=null)
+						return sobj.getBounds();
+					return smallCube;
 				}
 
 				@Override
 				public long[] coordinates()
 				{
-					return Arrays.copyOf(obj.coordinates(), obj.coordinates().length);
+					final SpaceObject sobj=CMLib.map().getSpaceObject(obj, false);
+					if(sobj!=null)
+						return Arrays.copyOf(sobj.coordinates(), sobj.coordinates().length);
+					return Arrays.copyOf(emptyCoords, emptyCoords.length);
 				}
 
 				@Override
@@ -326,7 +335,10 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 				@Override
 				public long radius()
 				{
-					return obj.radius();
+					final SpaceObject sobj=CMLib.map().getSpaceObject(obj, false);
+					if(sobj!=null)
+						return sobj.radius();
+					return 1;
 				}
 
 				@Override
@@ -337,7 +349,10 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 				@Override
 				public double[] direction()
 				{
-					return obj.direction();
+					final SpaceObject sobj=CMLib.map().getSpaceObject(obj, false);
+					if(sobj!=null)
+						return sobj.direction();
+					return emptyDirection;
 				}
 
 				@Override
@@ -348,7 +363,10 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 				@Override
 				public double speed()
 				{
-					return obj.speed();
+					final SpaceObject sobj=CMLib.map().getSpaceObject(obj, false);
+					if(sobj!=null)
+						return sobj.speed();
+					return 0;
 				}
 
 				@Override
@@ -359,7 +377,10 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 				@Override
 				public SpaceObject knownTarget()
 				{
-					return obj.knownTarget();
+					final SpaceObject sobj=CMLib.map().getSpaceObject(obj, false);
+					if(sobj!=null)
+						return sobj.knownTarget();
+					return null;
 				}
 
 				@Override
@@ -370,7 +391,10 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 				@Override
 				public SpaceObject knownSource()
 				{
-					return obj.knownSource();
+					final SpaceObject sobj=CMLib.map().getSpaceObject(obj, false);
+					if(sobj!=null)
+						return sobj.knownSource();
+					return null;
 				}
 
 				@Override
@@ -381,7 +405,10 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 				@Override
 				public long getMass()
 				{
-					return obj.getMass();
+					final SpaceObject sobj=CMLib.map().getSpaceObject(obj, false);
+					if(sobj!=null)
+						return sobj.getMass();
+					return 1;
 				}
 			};
 		}
@@ -401,7 +428,7 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 	 * @see com.planet_ink.coffee_mud.core.collections.Filterer
 	 * @return a Filterer to pick out which objects this sensor can actually pick up.
 	 */
-	protected Filterer<SpaceObject> getSensedObjectFilter()
+	protected Filterer<Environmental> getSensedObjectFilter()
 	{
 		return acceptEverythingFilter;
 	}
@@ -412,18 +439,20 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 	 * @see com.planet_ink.coffee_mud.core.collections.Converter
 	 * @return  to convert from the actual sensed object, to a CMObject
 	 */
-	protected Converter<SpaceObject, Environmental> getSensedObjectConverter()
+	protected Converter<Environmental, Environmental> getSensedObjectConverter()
 	{
 		return directConverter;
 	}
 
-	protected boolean doSensing(final MOB mob, final Software controlI)
+	protected static final List<? extends Environmental> empty=new ReadOnlyVector<Environmental>();
+
+	protected List<? extends Environmental> getAllSensibleObjects()
 	{
 		final SpaceObject O=CMLib.map().getSpaceObject(this, true);
 		if((O!=null)&&(this.powerRemaining() > this.powerNeeds()))
 		{
 			final long maxRange = Math.round(getSensorMaxRange() * this.getComputedEfficiency());
-			final List<SpaceObject> found = CMLib.map().getSpaceObjectsWithin(O, O.radius()+1, maxRange);
+			final List<? extends Environmental> found = CMLib.map().getSpaceObjectsWithin(O, O.radius()+1, maxRange);
 			found.remove(O);
 			if(found.size() > 1)
 			{
@@ -439,61 +468,75 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 					}
 				}
 			}
+			return found;
+		}
+		return empty;
+	}
+
+	protected List<? extends Environmental> getSensedObjects()
+	{
+		final List<? extends Environmental> found= getAllSensibleObjects();
+		if(found.size() > 0)
+		{
 			final Set<Environmental> newSensedObjects = new TreeSet<Environmental>(XTreeSet.comparator);
-			if(found.size() > 0)
+			final Filterer<Environmental> filter = this.getSensedObjectFilter();
+			for(final Environmental obj : found)
 			{
-				final Filterer<SpaceObject> filter = this.getSensedObjectFilter();
-				final Converter<SpaceObject, Environmental> converter = this.getSensedObjectConverter();
-				for(final SpaceObject obj : found)
+				if(filter.passesFilter(obj))
+					newSensedObjects.add(obj);
+			}
+		}
+		return found;
+	}
+
+	protected boolean doSensing(final MOB mob, final Software controlI)
+	{
+		final List<? extends Environmental> found= getSensedObjects();
+		final Converter<Environmental, Environmental> converter = this.getSensedObjectConverter();
+		for(final Environmental obj : found)
+		{
+			synchronized(lastSensedObjects)
+			{
+				if(!lastSensedObjects.contains(obj))
+					lastSensedObjects.add(obj);
+			}
+			final Environmental sensedObject = converter.convert(obj);
+			final String code=Technical.TechCommand.SENSE.makeCommand(this,Boolean.TRUE);
+			final CMMsg msg=CMClass.getMsg(mob, controlI, sensedObject, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+			if(controlI.owner() instanceof Room)
+			{
+				if(((Room)controlI.owner()).okMessage(mob, msg))
+					((Room)controlI.owner()).send(mob, msg);
+			}
+			else
+			if(controlI.okMessage(mob, msg))
+				controlI.executeMsg(mob, msg);
+		}
+		final Set<Environmental> prevSensedObjects = new TreeSet<Environmental>(XTreeSet.comparator);
+		synchronized(lastSensedObjects)
+		{
+			for(final Iterator<Environmental> i=lastSensedObjects.iterator();i.hasNext();)
+			{
+				final Environmental nobj = i.next();
+				if(!found.contains(nobj))
 				{
-					if(filter.passesFilter(obj))
-					{
-						newSensedObjects.add(obj);
-						synchronized(lastSensedObjects)
-						{
-							if(!lastSensedObjects.contains(obj))
-								lastSensedObjects.add(obj);
-						}
-						final Environmental sensedObject = converter.convert(obj);
-						final String code=Technical.TechCommand.SENSE.makeCommand(this,Boolean.TRUE);
-						final CMMsg msg=CMClass.getMsg(mob, controlI, sensedObject, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
-						if(controlI.owner() instanceof Room)
-						{
-							if(((Room)controlI.owner()).okMessage(mob, msg))
-								((Room)controlI.owner()).send(mob, msg);
-						}
-						else
-						if(controlI.okMessage(mob, msg))
-							controlI.executeMsg(mob, msg);
-					}
-				}
-				final Set<Environmental> prevSensedObjects = new TreeSet<Environmental>(XTreeSet.comparator);
-				synchronized(lastSensedObjects)
-				{
-					for(final Iterator<Environmental> i=lastSensedObjects.iterator();i.hasNext();)
-					{
-						final Environmental nobj = i.next();
-						if(!newSensedObjects.contains(nobj))
-						{
-							i.remove();
-							prevSensedObjects.add(nobj);
-						}
-					}
-				}
-				for(final Environmental sensedObject : prevSensedObjects)
-				{
-					final String code=Technical.TechCommand.SENSE.makeCommand(this,Boolean.FALSE);
-					final CMMsg msg=CMClass.getMsg(mob, controlI, sensedObject, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
-					if(controlI.owner() instanceof Room)
-					{
-						if(((Room)controlI.owner()).okMessage(mob, msg))
-							((Room)controlI.owner()).send(mob, msg);
-					}
-					else
-					if(controlI.okMessage(mob, msg))
-						controlI.executeMsg(mob, msg);
+					i.remove();
+					prevSensedObjects.add(nobj);
 				}
 			}
+		}
+		for(final Environmental sensedObject : prevSensedObjects)
+		{
+			final String code=Technical.TechCommand.SENSE.makeCommand(this,Boolean.FALSE);
+			final CMMsg msg=CMClass.getMsg(mob, controlI, sensedObject, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+			if(controlI.owner() instanceof Room)
+			{
+				if(((Room)controlI.owner()).okMessage(mob, msg))
+					((Room)controlI.owner()).send(mob, msg);
+			}
+			else
+			if(controlI.okMessage(mob, msg))
+				controlI.executeMsg(mob, msg);
 		}
 		return true;
 	}
