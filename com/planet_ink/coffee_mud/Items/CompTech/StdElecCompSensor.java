@@ -478,12 +478,12 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 		final List<? extends Environmental> found= getAllSensibleObjects();
 		if(found.size() > 0)
 		{
-			final Set<Environmental> newSensedObjects = new TreeSet<Environmental>(XTreeSet.comparator);
 			final Filterer<Environmental> filter = this.getSensedObjectFilter();
-			for(final Environmental obj : found)
+			for(final Iterator<? extends Environmental> o = found.iterator();o.hasNext();)
 			{
-				if(filter.passesFilter(obj))
-					newSensedObjects.add(obj);
+				final Environmental obj=o.next();
+				if(!filter.passesFilter(obj))
+					o.remove();
 			}
 		}
 		return found;

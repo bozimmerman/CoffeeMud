@@ -116,6 +116,11 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 			return ((TechComponent)this.container()).isInstalled();
 		return false;
 	}
+	
+	protected boolean requiresPower()
+	{
+		return true;
+	}
 
 	protected static final boolean isThisPanelActivated(final ElecPanel E)
 	{
@@ -232,12 +237,12 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 				setInstalledFactor((float)CMath.div(msg.value(),100.0));
 				break;
 			case CMMsg.TYP_ACTIVATE: // sometimes one triggers many acts in other places, but you don't want many msgs.
-				if((msg.source().location() != null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+				if((msg.source().location() != null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))&&(requiresPower()))
 					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, L("<S-NAME> activate(s) <T-NAME>."));
 				this.activate(true);
 				break;
 			case CMMsg.TYP_DEACTIVATE:
-				if((msg.source().location() != null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+				if((msg.source().location() != null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))&&(requiresPower()))
 					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, L("<S-NAME> deactivate(s) <T-NAME>."));
 				this.activate(false);
 				break;
@@ -259,7 +264,7 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 				break;
 			case CMMsg.TYP_LOOK:
 				super.executeMsg(host, msg);
-				if(CMLib.flags().canBeSeenBy(this, msg.source()))
+				if(CMLib.flags().canBeSeenBy(this, msg.source())&&(this.requiresPower()))
 					msg.source().tell(L("@x1 is currently @x2",name(),(activated()?"connected.\n\r":"deactivated/disconnected.\n\r")));
 				return;
 			case CMMsg.TYP_REPAIR:

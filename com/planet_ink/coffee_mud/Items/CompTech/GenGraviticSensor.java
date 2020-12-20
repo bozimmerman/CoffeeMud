@@ -110,13 +110,13 @@ public class GenGraviticSensor extends GenElecCompSensor
 					@Override
 					public String image()
 					{
-						return null;
+						return "";
 					}
 
 					@Override
 					public String rawImage()
 					{
-						return null;
+						return "";
 					}
 
 					@Override

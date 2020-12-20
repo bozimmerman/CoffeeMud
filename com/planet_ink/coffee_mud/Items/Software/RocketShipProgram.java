@@ -477,6 +477,8 @@ public class RocketShipProgram extends GenShipProgram
 			int sensorNumber=1;
 			for(final TechComponent sensor : sensors)
 			{
+				if(sensor.powerCapacity()==0) // its just a window
+					continue;
 				str.append("^H").append(CMStrings.padRight(L("SENSOR@x1",""+sensorNumber),9));
 				str.append(CMStrings.padRight(sensor.activated()?L("^gA"):L("^rI"),2));
 				str.append("^H").append(CMStrings.padRight(L("Pow."),5));
@@ -487,7 +489,7 @@ public class RocketShipProgram extends GenShipProgram
 				{
 					final Collection<SpaceObject> localSensorReport=takeNewSensorReport(sensor);
 					if(localSensorReport.size()==0)
-						str.append("^R").append(L("No Report"));
+						str.append("^R").append(L("No Report^.^N\n\r"));
 					else
 					for(final Object o : localSensorReport)
 					{
@@ -513,7 +515,6 @@ public class RocketShipProgram extends GenShipProgram
 						str.append("^.^N\n\r");
 					}
 				}
-				str.append("^.^N\n\r");
 				sensorNumber++;
 			}
 		}
