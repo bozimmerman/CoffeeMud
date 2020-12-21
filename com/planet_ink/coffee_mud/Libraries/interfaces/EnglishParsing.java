@@ -338,6 +338,17 @@ public interface EnglishParsing extends CMLibrary
 	public boolean containsString(final String toSrchStr, final String srchForStr);
 
 	/**
+	 * Returns whether the given string contains any of the srchForStr substrings.
+	 * The searches are case insensitive, and color	 * insensitive, and respects 
+	 * special syntax like '$' to ensure complete hits.
+	 * 
+	 * @param toSrchStr the string to search inside of
+	 * @param srchForStrs the strings to search for
+	 * @return true if any matches are found.
+	 */
+	public boolean containsOneOfString(final String toSrchStr, final List<String> srchForStrs);
+
+	/**
 	 * Returns the context number of the given context-specific name.
 	 *
 	 * @param srchStr the context-specific name

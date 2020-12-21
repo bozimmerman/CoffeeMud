@@ -1189,18 +1189,41 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
+	public boolean containsOneOfString(final String toSrchStr, final List<String> srchForStrs)
+	{
+		if((toSrchStr==null)||(srchForStrs==null))
+			return false;
+		if((toSrchStr.length()==0)&&(srchForStrs.size()>0))
+			return false;
+		final char[] toSrchC=toSrchStr.toCharArray();
+		for(int c=0;c<toSrchC.length;c++)
+			toSrchC[c]=Character.toUpperCase(toSrchC[c]);
+		for(final String strr : srchForStrs)
+		{
+			if(unsafeContainsString(toSrchC,strr))
+				return true;
+		}
+		return false;
+	}
+	
+	@Override
 	public boolean containsString(final String toSrchStr, final String srchForStr)
 	{
 		if((toSrchStr==null)||(srchForStr==null))
 			return false;
 		if((toSrchStr.length()==0)&&(srchForStr.length()>0))
 			return false;
-		char[] srchC=srchForStr.toCharArray();
 		final char[] toSrchC=toSrchStr.toCharArray();
-		for(int c=0;c<srchC.length;c++)
-			srchC[c]=Character.toUpperCase(srchC[c]);
 		for(int c=0;c<toSrchC.length;c++)
 			toSrchC[c]=Character.toUpperCase(toSrchC[c]);
+		return unsafeContainsString(toSrchC,srchForStr);
+	}
+		
+	protected final boolean unsafeContainsString(final char[] toSrchC, final String srchForStr)
+	{
+		char[] srchC=srchForStr.toCharArray();
+		for(int c=0;c<srchC.length;c++)
+			srchC[c]=Character.toUpperCase(srchC[c]);
 		if(java.util.Arrays.equals(srchC,ALL_CHRS))
 			return true;
 		if(java.util.Arrays.equals(srchC,toSrchC))
