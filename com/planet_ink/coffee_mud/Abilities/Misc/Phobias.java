@@ -277,17 +277,20 @@ public class Phobias extends StdAbility implements HealthCondition
 			return;
 		if((mob.fetchEffect("Cowering")!=null)||(mob.fetchEffect("Fighter_Whomp")!=null))
 			return;
-		final Command C=CMClass.getCommand("Mood");
-		if(C!=null)
+		if(this.oldMood==null)
 		{
-			try
+			final Command C=CMClass.getCommand("Mood");
+			if(C!=null)
 			{
-				final Ability moodA=mob.fetchEffect("Mood");
-				this.oldMood=(moodA!=null)?moodA.text():"NORMAL";
-				C.execute(mob, new XVector<String>("MOOD","SCARED"), 0);
-			}
-			catch (final IOException e)
-			{
+				try
+				{
+					final Ability moodA=mob.fetchEffect("Mood");
+					this.oldMood=(moodA!=null)?moodA.text():"NORMAL";
+					C.execute(mob, new XVector<String>("MOOD","SCARED"), 0);
+				}
+				catch (final IOException e)
+				{
+				}
 			}
 		}
 		if(CMLib.dice().rollPercentage()<30)
