@@ -86,6 +86,7 @@ public class Phobias extends StdAbility implements HealthCondition
 	protected List<String>		objectPhobias	= new LinkedList<String>();
 	protected Set<String>		racePhobias		= new HashSet<String>();
 	protected int				phobicCheckDown	= 0;
+	protected volatile String	oldMood			= null;
 
 	protected static int numRaces = 0;
 	protected final static Map<String,String>	raceCatMap	= new Hashtable<String,String>();
@@ -119,6 +120,20 @@ public class Phobias extends StdAbility implements HealthCondition
 		return "Afraid of "+CMLib.english().toEnglishStringList(list)+".";
 	}
 
+	public boolean isScared()
+	{
+		final Physical P=affected;
+		if(P instanceof MOB)
+		{
+			final Ability moodA=P.fetchEffect("Mood");
+			if(moodA==null)
+				return false;
+			if(moodA.text().equalsIgnoreCase("SCARED"))
+				return true;
+		}
+		return false;
+	}
+
 	@Override
 	public void setMiscText(final String newText)
 	{
@@ -149,6 +164,7 @@ public class Phobias extends StdAbility implements HealthCondition
 		&&(affected instanceof MOB))
 		{
 			phobicCheckDown=0;
+			boolean didSomething=false;
 			final MOB mob=(MOB)affected;
 			if((CMLib.flags().isAliveAwakeMobile(mob,true))
 			&&(CMLib.flags().isInTheGame(mob,true)))
@@ -167,6 +183,7 @@ public class Phobias extends StdAbility implements HealthCondition
 						&&(CMLib.dice().rollPercentage()<50))
 						{
 							reactToPhobia(mob,M);
+							didSomething=true;
 							break;
 						}
 					}
@@ -185,7 +202,29 @@ public class Phobias extends StdAbility implements HealthCondition
 						&&(CMLib.dice().rollPercentage()<50))
 						{
 							reactToPhobia(mob,I);
+							didSomething=true;
 							break;
+						}
+					}
+				}
+			}
+			if((!didSomething)&&(this.oldMood!=null))
+			{
+				final Ability moodA=affected.fetchEffect("Mood");
+				if((moodA!=null)&&(moodA.text().equalsIgnoreCase("SCARED")))
+				{
+					final Command C=CMClass.getCommand("Mood");
+					if(C!=null)
+					{
+						try
+						{
+							if(oldMood.length()==0)
+								oldMood="NORMAL";
+							C.execute(mob, new XVector<String>("MOOD",oldMood), 0);
+							oldMood=null;
+						}
+						catch (final IOException e)
+						{
 						}
 					}
 				}
@@ -238,6 +277,19 @@ public class Phobias extends StdAbility implements HealthCondition
 			return;
 		if((mob.fetchEffect("Cowering")!=null)||(mob.fetchEffect("Fighter_Whomp")!=null))
 			return;
+		final Command C=CMClass.getCommand("Mood");
+		if(C!=null)
+		{
+			try
+			{
+				final Ability moodA=mob.fetchEffect("Mood");
+				this.oldMood=(moodA!=null)?moodA.text():"NORMAL";
+				C.execute(mob, new XVector<String>("MOOD","SCARED"), 0);
+			}
+			catch (final IOException e)
+			{
+			}
+		}
 		if(CMLib.dice().rollPercentage()<30)
 		{
 			final Ability cowerA=CMClass.getAbility("Cowering");
