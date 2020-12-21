@@ -852,6 +852,8 @@ public class Mood extends StdAbility
 						default:
 							break;
 						}
+						if((str.length()>0)&&(!Character.isWhitespace(str.charAt(0)))&&(CMLib.dice().rollPercentage()>50))
+							str=str.charAt(0)+"-"+str.charAt(0)+"-"+str.charAt(0)+"-"+str;
 						break;
 					}
 					case 11: // lonely
