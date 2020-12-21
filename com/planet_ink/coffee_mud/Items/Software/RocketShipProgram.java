@@ -344,6 +344,7 @@ public class RocketShipProgram extends GenShipProgram
 		||uword.equals("TARGET")
 		||uword.equals("FACE")
 		||uword.equals("MOON")
+		||uword.equals("SENSE")
 		||uword.equals("FIRE")
 		||(uword.startsWith("WEAPON")&&(CMath.isInteger(uword.substring(6))))
 		||(uword.startsWith("ENGINE")&&(CMath.isInteger(uword.substring(6))))
@@ -1291,6 +1292,7 @@ public class RocketShipProgram extends GenShipProgram
 						+ "TARGET [NAME]          : target a sensor object\n\r"
 						+ "FACE [NAME]            : face a sensor object\n\r"
 						+ "MOON [NAME]            : moon a sensor object\n\r"
+						+ "SENSE [SENSOR] [DIR]   : aim/use a sensor\n\r"
 						+ "FIRE [WEAPON]          : fire weapon at target\n\r"
 						+ "STOP   : negate all velocity\n\r"
 						+ "LAND   : land your ship on the nearest planet. \n\r"
@@ -2099,6 +2101,33 @@ public class RocketShipProgram extends GenShipProgram
 
 				code=TechCommand.POWERSET.makeCommand(Long.valueOf(Math.round(pct * 100.0)));
 				msg=CMClass.getMsg(mob, weapon, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+			}
+			else
+			if(uword.startsWith("SENSE"))
+			{
+				final TechComponent sensor = this.findSensorByName(uword);
+				if(sensor == null)
+				{
+					super.addScreenMessage(L("Error: Unknown sensor name or command word '"+uword+"'.   Try HELP."));
+					return;
+				}
+				if(parsed.size()==1)
+				{
+					super.addScreenMessage(L("Error: No direction given."));
+					return;
+				}
+				final String dirStr=parsed.get(1);
+				final ShipDir dir=(ShipDir)CMath.s_valueOf(ShipDir.class, dirStr.toUpperCase().trim());
+				if(dir==null)
+				{
+					super.addScreenMessage(L("Error: Invalid direction given."));
+					return;
+				}
+				E=sensor;
+				String code;
+
+				code=TechCommand.DIRSET.makeCommand(dir);
+				msg=CMClass.getMsg(mob, sensor, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 			}
 			else
 			if(!uword.equalsIgnoreCase("HELP"))

@@ -12,7 +12,9 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.ShipDirComponent.ShipDir;
+import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
+import com.planet_ink.coffee_mud.Libraries.interfaces.LanguageLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -59,6 +61,21 @@ public class GenShipViewScreen extends GenElecCompSensor implements ShipDirCompo
 	protected long getSensorMaxRange()
 	{
 		return SpaceObject.Distance.Parsec.dm;
+	}
+
+	protected volatile ShipDir[] facingDirs = null;
+
+	protected ShipDir[] getFacingDirs()
+	{
+		if(facingDirs == null)
+		{
+			if(allPossDirs.length==0)
+				return new ShipDir[0];
+			if(CMParms.contains(allPossDirs, ShipDir.FORWARD) && (numPermitDirs==1))
+				facingDirs = new ShipDir[] { ShipDir.FORWARD };
+			facingDirs = Arrays.copyOf(allPossDirs, numPermitDirs);
+		}
+		return facingDirs;
 	}
 
 	@Override
@@ -516,7 +533,7 @@ public class GenShipViewScreen extends GenElecCompSensor implements ShipDirCompo
 					final SpaceObject sobj = (SpaceObject)obj;
 					final double[] proposedDirection=CMLib.map().getDirection(ship, sobj);
 					final ShipDir dir = CMLib.map().getDirectionFromDir(ship.facing(), ship.roll(), proposedDirection);
-					if (CMParms.contains(me.getPermittedDirections(), dir))
+					if (CMParms.contains(me.getFacingDirs(), dir))
 					{
 						final double distanceDm = CMLib.map().getDistanceFrom(spaceMe.coordinates(), sobj.coordinates());
 						final double objSize = sobj.radius();
@@ -533,38 +550,73 @@ public class GenShipViewScreen extends GenElecCompSensor implements ShipDirCompo
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if((msg.target()==this)
-		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
+		if(msg.target()==this)
 		{
-			if(!activated())
-				setDescription(L("The screen is deactivated."));
-			else
+			if((msg.targetMinor()==CMMsg.TYP_LOOK)
+			||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 			{
-				if(!isInSpace())
-				{
-					final Room R=getLookAtRoom();
-					final CMMsg msg2=CMClass.getMsg(msg.source(), R, msg.tool(), msg.targetCode(), null);
-					CMLib.commands().handleBeingLookedAt(msg2);
-					return;
-				}
-				final Converter<Environmental, Environmental> converter = this.getSensedObjectConverter();
-				final List<Environmental> finalList = new LinkedList<Environmental>();
-				final List<? extends Environmental> found= getSensedObjects();
-				for(final Environmental E : found)
-				{
-					final Environmental E2=converter.convert(E);
-					if(E2!=null)
-						finalList.add(E2);
-				}
-				if(finalList.size()==0)
-					setDescription(L("You see the the blackness of space."));
+				if(!activated())
+					setDescription(L("The screen is deactivated."));
 				else
 				{
-					final StringBuilder desc=new StringBuilder(L("^WYou see: %0D"));
-					desc.append(
-						CMLib.lister().lister(msg.source(), finalList, true, null, null, msg.targetMinor()==CMMsg.TYP_EXAMINE, false)
-					);
-					setDescription(desc.toString());
+					if(!isInSpace())
+					{
+						final Room R=getLookAtRoom();
+						final CMMsg msg2=CMClass.getMsg(msg.source(), R, msg.tool(), msg.targetCode(), null);
+						CMLib.commands().handleBeingLookedAt(msg2);
+						return;
+					}
+					final Converter<Environmental, Environmental> converter = this.getSensedObjectConverter();
+					final List<Environmental> finalList = new LinkedList<Environmental>();
+					final List<? extends Environmental> found= getSensedObjects();
+					for(final Environmental E : found)
+					{
+						final Environmental E2=converter.convert(E);
+						if(E2!=null)
+							finalList.add(E2);
+					}
+					if(finalList.size()==0)
+						setDescription(L("You see the the blackness of space."));
+					else
+					{
+						final StringBuilder desc=new StringBuilder(L("^WYou see: %0D"));
+						desc.append(
+							CMLib.lister().lister(msg.source(), finalList, true, null, null, msg.targetMinor()==CMMsg.TYP_EXAMINE, false)
+						);
+						setDescription(desc.toString());
+					}
+				}
+			}
+			else
+			if((msg.targetMinor() == CMMsg.TYP_ACTIVATE)&&(this.requiresPower()))
+			{
+				super.executeMsg(myHost, msg);
+				final LanguageLibrary lang=CMLib.lang();
+				final Software controlI=(msg.tool() instanceof Software)?((Software)msg.tool()):null;
+				final MOB mob=msg.source();
+				if(msg.targetMessage()!=null)
+				{
+					final String[] parts=msg.targetMessage().split(" ");
+					final TechCommand command=TechCommand.findCommand(parts);
+					if(command==null)
+						reportError(this, controlI, mob, lang.L("@x1 does not respond.",me.name(mob)), lang.L("Failure: @x1: control failure.",me.name(mob)));
+					else
+					{
+						final Object[] parms=command.confirmAndTranslate(parts);
+						if(parms==null)
+							reportError(this, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control syntax failure.",me.name(mob)));
+						else
+						if((command == TechCommand.DIRSET)
+						&&(parms.length>0)
+						&&(parms[0] instanceof ShipDir))
+						{
+							final ShipDir dir = (ShipDir)parms[0];
+							if(!CMParms.contains(getPermittedDirections(), dir))
+								reportError(this, controlI, mob, null, lang.L("Failure: @x1: screen does not support that direction.",me.name(mob)));
+							else
+								facingDirs = new ShipDir[] { dir };
+						}
+					}
 				}
 			}
 		}
@@ -645,5 +697,5 @@ public class GenShipViewScreen extends GenElecCompSensor implements ShipDirCompo
 		}
 		return true;
 	}
-	
+
 }

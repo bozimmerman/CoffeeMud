@@ -89,6 +89,12 @@ public class GenShipWindow extends GenShipViewScreen
 	}
 
 	@Override
+	protected ShipDir[] getFacingDirs()
+	{
+		return this.getPermittedDirections();
+	}
+
+	@Override
 	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenShipWindow))

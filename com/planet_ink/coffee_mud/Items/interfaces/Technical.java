@@ -152,6 +152,7 @@ public interface Technical extends Item
 		SENSE(TechComponent.class, Boolean.class),
 		AIRREFRESH(Double.class, Integer.class),
 		POWERSET(Long.class),
+		DIRSET(ShipDirComponent.ShipDir.class),
 		WEAPONTARGETSET(Double.class,Double.class),
 		WEAPONFIRE(),
 		SHIELDSET(ShipDir.class,Integer.class),
