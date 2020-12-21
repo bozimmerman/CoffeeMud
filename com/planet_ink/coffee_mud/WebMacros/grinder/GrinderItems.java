@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipDir;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipDirComponent.ShipDir;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -72,10 +72,10 @@ public class GrinderItems
 		MAXTHRUST,SPECIMPULSE,FUELEFFICIENCY,INSTALLFACTOR,
 		PANELTYPE,GENAMTPERTICK,CONSUMEDMATS,AREAXML,RECIPESKILLHELP,
 		MINTHRUST,ISCONSTTHRUST,AVAILPORTS,CONTENTSACCESS,BLENDEDVIEW,
-		ISSHIPWARCOMP,SWARNUMPORTS,SWARPORTS,SWARMTYPES,
+		ISSHIPWARCOMP,SDIRNUMPORTS,SDIRPORTS,SWARMTYPES,
 		RECHARGERATE,OPENTICKS,ISCLOAK,ISBOOK,MAXPAGES,MAXCHARSPAGE,
 		STATESTR,STATESUBJSTR,RIDERSTR,ISRESOURCE,RSCSUBTYPE,
-		ISLIMB,RACEID,ENCHTYPE,ISAMMOWEAPON
+		ISLIMB,RACEID,ENCHTYPE,ISAMMOWEAPON,ISSHIPDIRCOMP
 		;
 		public boolean isGenField;
 		private ItemDataField(final boolean isGeneric)
@@ -777,6 +777,7 @@ public class GrinderItems
 				case ISFUELCONSUMER:
 				case ISPOWERGENERATION:
 				case ISSHIPWARCOMP:
+				case ISSHIPDIRCOMP:
 				case ISCLOAK:
 					break;
 				case MANUFACTURER:
@@ -795,13 +796,13 @@ public class GrinderItems
 					if(I instanceof Electronics)
 						((Electronics)I).activate(old.equalsIgnoreCase("on"));
 					break;
-				case SWARNUMPORTS:
-					if(I instanceof ShipWarComponent)
-						((ShipWarComponent)I).setPermittedNumDirections(CMath.s_int(old));
+				case SDIRNUMPORTS:
+					if(I instanceof ShipDirComponent)
+						((ShipDirComponent)I).setPermittedNumDirections(CMath.s_int(old));
 					break;
-				case SWARPORTS:
-					if(I instanceof ShipWarComponent)
-						((ShipWarComponent)I).setPermittedDirections(CMParms.parseEnumList(TechComponent.ShipDir.class,old.toUpperCase(),',').toArray(new TechComponent.ShipDir[0]));
+				case SDIRPORTS:
+					if(I instanceof ShipDirComponent)
+						((ShipDirComponent)I).setPermittedDirections(CMParms.parseEnumList(ShipDirComponent.ShipDir.class,old.toUpperCase(),',').toArray(new ShipDirComponent.ShipDir[0]));
 					break;
 				case SWARMTYPES:
 					if(I instanceof ShipWarComponent)
@@ -839,7 +840,7 @@ public class GrinderItems
 					break;
 				case AVAILPORTS:
 					if(I instanceof ShipEngine)
-						((ShipEngine)I).setAvailPorts(CMParms.parseEnumList(TechComponent.ShipDir.class,old.toUpperCase(),',').toArray(new TechComponent.ShipDir[0]));
+						((ShipEngine)I).setAvailPorts(CMParms.parseEnumList(ShipDirComponent.ShipDir.class,old.toUpperCase(),',').toArray(new ShipDirComponent.ShipDir[0]));
 					break;
 				case SPECIMPULSE:
 					if(I instanceof ShipEngine)

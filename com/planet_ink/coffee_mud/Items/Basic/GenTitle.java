@@ -101,8 +101,7 @@ public class GenTitle extends StdTitle
 
 	private final static String[] MYCODES={"OWNER","PRICE"};
 
-	@Override
-	protected int getCodeNum(final String code)
+	private int getInternalCodeNum(final String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
 		{
@@ -117,7 +116,7 @@ public class GenTitle extends StdTitle
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
-		switch(getCodeNum(code))
+		switch(getInternalCodeNum(code))
 		{
 		case 0:
 			return this.getOwnerName();
@@ -133,7 +132,7 @@ public class GenTitle extends StdTitle
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
-		switch(getCodeNum(code))
+		switch(getInternalCodeNum(code))
 		{
 		case 0:
 			this.setOwnerName(val);

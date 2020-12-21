@@ -108,12 +108,6 @@ public class GenBow extends StdBow
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 	}
 
-	@Override
-	protected int getCodeNum(final String code)
-	{
-		return GenWeapon.getGenWeaponCodeNum(code);
-	}
-
 	private static String[] codes=null;
 
 	@Override

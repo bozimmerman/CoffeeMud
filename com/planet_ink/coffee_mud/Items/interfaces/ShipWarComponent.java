@@ -10,7 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipDir;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipDirComponent.ShipDir;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -39,7 +39,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author Bo Zimmerman
  *
  */
-public interface ShipWarComponent extends TechComponent
+public interface ShipWarComponent extends ShipDirComponent
 {
 	/**
 	 * These are all the ordinary recognized damage message
@@ -61,56 +61,6 @@ public interface ShipWarComponent extends TechComponent
 		CMMsg.TYP_UNDEAD,
 		CMMsg.TYP_WATER
 	};
-
-	/**
-	 * Sets the total set of ship directions that this shield
-	 * can ever cover or weapons fire at.  Some shields or guns
-	 * may only be mounted on* the front, rear, or other areas
-	 * of the ship.  This tells the system the complete set of
-	 * coverage by the shield or weapon, even if it is
-	 * incapable of covering them all at once.
-	 * @see ShipWarComponent#getPermittedDirections()
-	 * @param newPossDirs the total set of ship directions
-	 */
-	public void setPermittedDirections(ShipDir[] newPossDirs);
-
-	/**
-	 * Gets the total set of ship directions that this shield
-	 * can ever cover or weapons fire at.  Some shields or guns
-	 * may only be mounted on* the front, rear, or other areas
-	 * of the ship.  This tells the system the complete set of
-	 * coverage by the shield or weapon, even if it is
-	 * incapable of covering them all at once.
-	 * see also #setPermittedDirections(ShipDir[])
-	 * @return the total set of ship directions
-	 */
-	public ShipDir[] getPermittedDirections();
-
-	/**
-	 * Sets the total number of quarters or sections of the
-	 * ship that can be covered by this shield or shot by
-	 * a gun at any one time. The sections are always contiguous,
-	 * centered on a particular section, and moving outward
-	 * as per the ShipDir list order.
-	 * @see ShipDir
-	 * @see ShipWarComponent#getPermittedDirections()
-	 * @see #setPermittedNumDirections(int)
-	 * @param numDirs the total number of sections covered
-	 */
-	public void setPermittedNumDirections(int numDirs);
-
-	/**
-	 * Gets the total number of quarters or sections of the
-	 * ship that can be covered by this shield or shot by
-	 * a gun at any one time. The sections are always contiguous,
-	 * centered on a particular section, and moving outward
-	 * as per the ShipDir list order.
-	 * @see ShipDir
-	 * @see ShipWarComponent#getPermittedDirections()
-	 * @see ShipWarComponent#setPermittedNumDirections(int)
-	 * @return the total number of sections covered
-	 */
-	public int getPermittedNumDirections();
 
 	/**
 	 * Sets the set of CMMsg message types that can be blocked

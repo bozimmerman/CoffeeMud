@@ -2195,7 +2195,7 @@ public class StdItem implements Item
 	@Override
 	public String getStat(final String code)
 	{
-		switch(getCodeNum(code))
+		switch(getInternalCodeNum(code))
 		{
 		case 0:
 			return ID();
@@ -2214,7 +2214,7 @@ public class StdItem implements Item
 	@Override
 	public void setStat(final String code, final String val)
 	{
-		switch(getCodeNum(code))
+		switch(getInternalCodeNum(code))
 		{
 		case 0:
 			return;
@@ -2262,7 +2262,7 @@ public class StdItem implements Item
 		return CMParms.indexOf(getStatCodes(), code.toUpperCase().trim()) >= 0;
 	}
 
-	protected int getCodeNum(final String code)
+	private int getInternalCodeNum(final String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 		{

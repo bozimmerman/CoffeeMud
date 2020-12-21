@@ -13,7 +13,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipDir;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipDirComponent.ShipDir;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -318,7 +318,7 @@ public class RocketShipProgram extends GenShipProgram
 		return (ShipWarComponent)findComponentByName(getEngines(), "SHIELD", name);
 	}
 
-	protected ShipEngine findEngineByPort(final TechComponent.ShipDir portdir)
+	protected ShipEngine findEngineByPort(final ShipDirComponent.ShipDir portdir)
 	{
 		for(final ShipEngine E : getEngines())
 		{
@@ -719,7 +719,7 @@ public class RocketShipProgram extends GenShipProgram
 				||((thrustInject.doubleValue()>0.0)&&(engineE.getThrust()==0.0)))
 				{
 					final CMMsg msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
-					final String code=TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(thrustInject.doubleValue()));
+					final String code=TechCommand.THRUST.makeCommand(ShipDirComponent.ShipDir.AFT,Double.valueOf(thrustInject.doubleValue()));
 					msg.setTargetMessage(code);
 					this.trySendMsgToItem(mob, engineE, msg);
 					this.lastInject=thrustInject;
@@ -1091,10 +1091,10 @@ public class RocketShipProgram extends GenShipProgram
 				Log.debugOut(ship.Name()+" maneuvering to go from "+ship.facing()[0]+","+ship.facing()[1]+"  to  "+newFacing[0]+","+newFacing[1]);
 			for(final ShipEngine engineE : engines)
 			{
-				if((CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.STARBOARD))
-				&&(CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.PORT))
-				&&(CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.DORSEL))
-				&&(CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.VENTRAL)))
+				if((CMParms.contains(engineE.getAvailPorts(),ShipDirComponent.ShipDir.STARBOARD))
+				&&(CMParms.contains(engineE.getAvailPorts(),ShipDirComponent.ShipDir.PORT))
+				&&(CMParms.contains(engineE.getAvailPorts(),ShipDirComponent.ShipDir.DORSEL))
+				&&(CMParms.contains(engineE.getAvailPorts(),ShipDirComponent.ShipDir.VENTRAL)))
 				{
 					msg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
 					this.lastAngle = null;
@@ -1111,7 +1111,7 @@ public class RocketShipProgram extends GenShipProgram
 					{
 						if(Math.abs(angleDelta[0]) > 0.00001)
 						{
-							final TechComponent.ShipDir dir = angleDelta[0] < 0 ? ShipDir.PORT : ShipDir.STARBOARD;
+							final ShipDirComponent.ShipDir dir = angleDelta[0] < 0 ? ShipDir.PORT : ShipDir.STARBOARD;
 							final Double thrust = Double.valueOf(Math.abs(angleDelta[0]) / angleAchievedPerPt);
 							if(isDebugging)
 							{
@@ -1137,7 +1137,7 @@ public class RocketShipProgram extends GenShipProgram
 					{
 						if(Math.abs(angleDelta[1]) > 0.00001)
 						{
-							final TechComponent.ShipDir dir = angleDelta[1] < 0 ? ShipDir.VENTRAL : ShipDir.DORSEL;
+							final ShipDirComponent.ShipDir dir = angleDelta[1] < 0 ? ShipDir.VENTRAL : ShipDir.DORSEL;
 							final Double thrust = Double.valueOf(Math.abs(angleDelta[1]) / angleAchievedPerPt);
 							if(isDebugging)
 							{
@@ -1179,7 +1179,7 @@ public class RocketShipProgram extends GenShipProgram
 		{
 			for(final ShipEngine engineE : engines)
 			{
-				if((CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.AFT))
+				if((CMParms.contains(engineE.getAvailPorts(),ShipDirComponent.ShipDir.AFT))
 				&&(engineE.getMaxThrust()>SpaceObject.ACCELERATION_G)
 				&&(engineE.getMinThrust()<SpaceObject.ACCELERATION_PASSOUT))
 				{
@@ -1198,7 +1198,7 @@ public class RocketShipProgram extends GenShipProgram
 					while(--tries>0)
 					{
 						this.lastAcceleration =null;
-						final String code=TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT, Double.valueOf(lastTryAmt));
+						final String code=TechCommand.THRUST.makeCommand(ShipDirComponent.ShipDir.AFT, Double.valueOf(lastTryAmt));
 						msg.setTargetMessage(code);
 						this.trySendMsgToItem(M, engineE, msg);
 						final Double thisLastAccel=this.lastAcceleration ;
@@ -1432,7 +1432,7 @@ public class RocketShipProgram extends GenShipProgram
 					String code = null;
 					E=findEngineByName(rest);
 					if(E!=null)
-						code=TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(.0000001));
+						code=TechCommand.THRUST.makeCommand(ShipDirComponent.ShipDir.AFT,Double.valueOf(.0000001));
 					else
 						E=findSensorByName(rest);
 					if(E==null)
@@ -1793,20 +1793,20 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Already facing @x1.",targetObj.Name()));
 				else
 				{
-					TechComponent.ShipDir portDir;
+					ShipDirComponent.ShipDir portDir;
 					if(facing[0]>dirTo[0])
 					{
 						if(fdist1 == facing[0]-dirTo[0])
-							portDir=TechComponent.ShipDir.PORT;
+							portDir=ShipDirComponent.ShipDir.PORT;
 						else
-							portDir=TechComponent.ShipDir.STARBOARD;
+							portDir=ShipDirComponent.ShipDir.STARBOARD;
 					}
 					else
 					{
 						if(fdist1 == dirTo[0]-facing[0])
-							portDir=TechComponent.ShipDir.STARBOARD;
+							portDir=ShipDirComponent.ShipDir.STARBOARD;
 						else
-							portDir=TechComponent.ShipDir.PORT;
+							portDir=ShipDirComponent.ShipDir.PORT;
 					}
 					final ShipEngine engineE=findEngineByPort(portDir);
 					if(engineE==null)
@@ -1834,9 +1834,9 @@ public class RocketShipProgram extends GenShipProgram
 							return;
 						}
 						if(facing[1]>dirTo[1])
-							portDir=TechComponent.ShipDir.VENTRAL;
+							portDir=ShipDirComponent.ShipDir.VENTRAL;
 						else
-							portDir=TechComponent.ShipDir.DORSEL;
+							portDir=ShipDirComponent.ShipDir.DORSEL;
 						code=TechCommand.THRUST.makeCommand(portDir,Double.valueOf(Math.toDegrees(fdist2)));
 						oldFacing=Arrays.copyOf(ship.facing(),ship.facing().length);
 						msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
@@ -1912,20 +1912,20 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Already mooning @x1.",targetObj.Name()));
 				else
 				{
-					TechComponent.ShipDir portDir;
+					ShipDirComponent.ShipDir portDir;
 					if(facing[0]>dirTo[0])
 					{
 						if(fdist1 == facing[0]-dirTo[0])
-							portDir=TechComponent.ShipDir.PORT;
+							portDir=ShipDirComponent.ShipDir.PORT;
 						else
-							portDir=TechComponent.ShipDir.STARBOARD;
+							portDir=ShipDirComponent.ShipDir.STARBOARD;
 					}
 					else
 					{
 						if(fdist1 == dirTo[0]-facing[0])
-							portDir=TechComponent.ShipDir.STARBOARD;
+							portDir=ShipDirComponent.ShipDir.STARBOARD;
 						else
-							portDir=TechComponent.ShipDir.PORT;
+							portDir=ShipDirComponent.ShipDir.PORT;
 					}
 					final ShipEngine engineE=findEngineByPort(portDir);
 					if(engineE==null)
@@ -1953,9 +1953,9 @@ public class RocketShipProgram extends GenShipProgram
 							return;
 						}
 						if(facing[1]>dirTo[1])
-							portDir=TechComponent.ShipDir.VENTRAL;
+							portDir=ShipDirComponent.ShipDir.VENTRAL;
 						else
-							portDir=TechComponent.ShipDir.DORSEL;
+							portDir=ShipDirComponent.ShipDir.DORSEL;
 						code=TechCommand.THRUST.makeCommand(portDir,Double.valueOf(Math.toDegrees(fdist2)));
 						oldFacing=Arrays.copyOf(ship.facing(),ship.facing().length);
 						msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
@@ -2028,11 +2028,11 @@ public class RocketShipProgram extends GenShipProgram
 				{
 					for(final TechComponent T : getShipWeapons())
 					{
-						if(T instanceof ShipWarComponent)
+						if(T instanceof ShipDirComponent)
 						{
 
 							final ShipDir dir = CMLib.map().getDirectionFromDir(ship.facing(), ship.roll(), targetDirection);
-							if(CMParms.contains(CMLib.tech().getCurrentBattleCoveredDirections((ShipWarComponent)T), dir))
+							if(CMParms.contains(CMLib.tech().getCurrentBattleCoveredDirections((ShipDirComponent)T), dir))
 							{
 								finalWeaponToFire = T;
 								break;
@@ -2111,7 +2111,7 @@ public class RocketShipProgram extends GenShipProgram
 				}
 				E=engineE;
 				double amount=0;
-				TechComponent.ShipDir portDir=TechComponent.ShipDir.AFT;
+				ShipDirComponent.ShipDir portDir=ShipDirComponent.ShipDir.AFT;
 				if(parsed.size()>3)
 				{
 					super.addScreenMessage(L("Error: Too many parameters."));
@@ -2130,7 +2130,7 @@ public class RocketShipProgram extends GenShipProgram
 				amount=CMath.s_double(parsed.get(parsed.size()-1));
 				if(parsed.size()==3)
 				{
-					portDir=(TechComponent.ShipDir)CMath.s_valueOf(TechComponent.ShipDir.class, parsed.get(1).toUpperCase().trim());
+					portDir=(ShipDirComponent.ShipDir)CMath.s_valueOf(ShipDirComponent.ShipDir.class, parsed.get(1).toUpperCase().trim());
 					if(portDir!=null)
 					{
 						if(!CMParms.contains(engineE.getAvailPorts(), portDir))
@@ -2140,20 +2140,20 @@ public class RocketShipProgram extends GenShipProgram
 						}
 					}
 					else
-					if("aft".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), TechComponent.ShipDir.AFT))
-						portDir=TechComponent.ShipDir.AFT;
+					if("aft".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), ShipDirComponent.ShipDir.AFT))
+						portDir=ShipDirComponent.ShipDir.AFT;
 					else
-					if("port".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), TechComponent.ShipDir.PORT))
-						portDir=TechComponent.ShipDir.PORT;
+					if("port".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), ShipDirComponent.ShipDir.PORT))
+						portDir=ShipDirComponent.ShipDir.PORT;
 					else
-					if("starboard".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), TechComponent.ShipDir.STARBOARD))
-						portDir=TechComponent.ShipDir.STARBOARD;
+					if("starboard".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), ShipDirComponent.ShipDir.STARBOARD))
+						portDir=ShipDirComponent.ShipDir.STARBOARD;
 					else
-					if("ventral".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), TechComponent.ShipDir.VENTRAL))
-						portDir=TechComponent.ShipDir.VENTRAL;
+					if("ventral".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), ShipDirComponent.ShipDir.VENTRAL))
+						portDir=ShipDirComponent.ShipDir.VENTRAL;
 					else
-					if("dorsel".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), TechComponent.ShipDir.DORSEL))
-						portDir=TechComponent.ShipDir.DORSEL;
+					if("dorsel".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), ShipDirComponent.ShipDir.DORSEL))
+						portDir=ShipDirComponent.ShipDir.DORSEL;
 					else
 					{
 						super.addScreenMessage(L("Error: '@x1' is not a valid direction for that engine.  Try: @x2.",parsed.get(1),CMParms.toListString(engineE.getAvailPorts())));

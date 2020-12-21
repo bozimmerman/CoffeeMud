@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipDir;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipDirComponent.ShipDir;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -627,10 +627,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			text.append(xml.convertXMLtoTag("SSCONST",""+((ShipEngine)E).isConstantThruster()));
 			text.append(xml.convertXMLtoTag("SSAPORTS",CMParms.toListString(((ShipEngine)E).getAvailPorts())));
 		}
+		if(E instanceof ShipDirComponent)
+		{
+			text.append(xml.convertXMLtoTag("SSPDIRS",""+((ShipDirComponent)E).getPermittedNumDirections()));
+			text.append(xml.convertXMLtoTag("SSAPORTS",""+CMParms.toListString(((ShipDirComponent)E).getPermittedDirections())));
+		}
 		if(E instanceof ShipWarComponent)
 		{
-			text.append(xml.convertXMLtoTag("SSPDIRS",""+((ShipWarComponent)E).getPermittedNumDirections()));
-			text.append(xml.convertXMLtoTag("SSAPORTS",""+CMParms.toListString(((ShipWarComponent)E).getPermittedDirections())));
 			text.append(xml.convertXMLtoTag("SSMTYPES",""+CMParms.toListString(((ShipWarComponent)E).getDamageMsgTypes())));
 		}
 		if(E instanceof PowerGenerator)
@@ -4002,14 +4005,17 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			((ShipEngine)E).setConstantThruster(xml.getBoolFromPieces(buf,"SSCONST",true));
 			final String portsStr = xml.getValFromPieces(buf, "SSAPORTS", "");
 			if(portsStr.length()==0)
-				((ShipEngine)E).setAvailPorts(TechComponent.ShipDir.values());
+				((ShipEngine)E).setAvailPorts(ShipDirComponent.ShipDir.values());
 			else
-				((ShipEngine)E).setAvailPorts(CMParms.parseEnumList(TechComponent.ShipDir.class, portsStr, ',').toArray(new TechComponent.ShipDir[0]));
+				((ShipEngine)E).setAvailPorts(CMParms.parseEnumList(ShipDirComponent.ShipDir.class, portsStr, ',').toArray(new ShipDirComponent.ShipDir[0]));
+		}
+		if(E instanceof ShipDirComponent)
+		{
+			((ShipDirComponent)E).setPermittedNumDirections(xml.getIntFromPieces(buf,"SSPDIRS"));
+			((ShipDirComponent)E).setPermittedDirections(CMParms.parseEnumList(ShipDirComponent.ShipDir.class, xml.getValFromPieces(buf,"SSAPORTS"), ',').toArray(new ShipDirComponent.ShipDir[0]));
 		}
 		if(E instanceof ShipWarComponent)
 		{
-			((ShipWarComponent)E).setPermittedNumDirections(xml.getIntFromPieces(buf,"SSPDIRS"));
-			((ShipWarComponent)E).setPermittedDirections(CMParms.parseEnumList(TechComponent.ShipDir.class, xml.getValFromPieces(buf,"SSAPORTS"), ',').toArray(new TechComponent.ShipDir[0]));
 			((ShipWarComponent)E).setDamageMsgTypes(CMParms.parseIntList(xml.getValFromPieces(buf,"SSMTYPES"),','));
 		}
 		if(E instanceof PowerGenerator)

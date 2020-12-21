@@ -69,14 +69,14 @@ public class GenShipShieldGenerator extends StdShipShieldGenerator
 	}
 
 	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","INSTFACT",
-										   "SWARNUMPORTS","SWARPORTS","SWARMTYPES","RECHRATE"};
+										   "SDIRNUMPORTS","SDIRPORTS","SWARMTYPES","RECHRATE"};
 
 	@Override
 	public String getStat(final String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
-		switch(getCodeNum(code))
+		switch(getInternalCodeNum(code))
 		{
 		case 0:
 			return "" + powerCapacity();
@@ -116,7 +116,7 @@ public class GenShipShieldGenerator extends StdShipShieldGenerator
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
 		else
-		switch(getCodeNum(code))
+		switch(getInternalCodeNum(code))
 		{
 		case 0:
 			setPowerCapacity(CMath.s_parseLongExpression(val));
@@ -137,7 +137,7 @@ public class GenShipShieldGenerator extends StdShipShieldGenerator
 			setPermittedNumDirections(CMath.s_int(val));
 			break;
 		case 6:
-			this.setPermittedDirections(CMParms.parseEnumList(TechComponent.ShipDir.class, val, ',').toArray(new TechComponent.ShipDir[0]));
+			this.setPermittedDirections(CMParms.parseEnumList(ShipDirComponent.ShipDir.class, val, ',').toArray(new ShipDirComponent.ShipDir[0]));
 			break;
 		case 7:
 		{
@@ -161,8 +161,7 @@ public class GenShipShieldGenerator extends StdShipShieldGenerator
 		}
 	}
 
-	@Override
-	protected int getCodeNum(final String code)
+	private int getInternalCodeNum(final String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
 		{

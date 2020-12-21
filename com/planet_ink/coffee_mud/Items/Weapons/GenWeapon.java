@@ -176,12 +176,6 @@ public class GenWeapon extends StdWeapon
 	}
 
 	@Override
-	protected int getCodeNum(final String code)
-	{
-		return GenWeapon.getGenWeaponCodeNum(code);
-	}
-
-	@Override
 	public String[] getStatCodes()
 	{
 		if(codes!=null)

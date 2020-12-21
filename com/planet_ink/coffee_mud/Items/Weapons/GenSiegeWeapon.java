@@ -109,7 +109,7 @@ public class GenSiegeWeapon extends StdSiegeWeapon
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		if(GenWeapon.getGenWeaponCodeNum(code)>=0)
 			return GenWeapon.getGenWeaponStat(this,code);
-		switch(getCodeNum(code))
+		switch(getInternalCodeNum(code))
 		{
 		case 0:
 			return "" + hasALock();
@@ -155,7 +155,7 @@ public class GenSiegeWeapon extends StdSiegeWeapon
 		if(GenWeapon.getGenWeaponCodeNum(code)>=0)
 			GenWeapon.setGenWeaponStat(this,code,val);
 		else
-		switch(getCodeNum(code))
+		switch(getInternalCodeNum(code))
 		{
 		case 0:
 			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), CMath.s_bool(val), false, CMath.s_bool(val) && defaultsLocked());
@@ -208,8 +208,7 @@ public class GenSiegeWeapon extends StdSiegeWeapon
 		}
 	}
 
-	@Override
-	protected int getCodeNum(final String code)
+	private int getInternalCodeNum(final String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
 		{

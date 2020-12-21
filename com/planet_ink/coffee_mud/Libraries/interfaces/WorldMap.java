@@ -196,7 +196,7 @@ public interface WorldMap extends CMLibrary
 	public double getMinDistanceFrom(final long[] prevPos, final long[] curPosition, final long[] objPos);
 	public double[] getDirection(SpaceObject fromObj, SpaceObject toObj);
 	public double[] getDirection(final long[] fromCoords, final long[] toCoords);
-	public TechComponent.ShipDir getDirectionFromDir(double[] facing, double roll, double[] direction);
+	public ShipDirComponent.ShipDir getDirectionFromDir(double[] facing, double roll, double[] direction);
 	public double[] getOppositeDir(final double[] dir);
 	public long[] getLocation(long[] oldLocation, double[] direction, long distance);
 	public void moveSpaceObject(SpaceObject O);

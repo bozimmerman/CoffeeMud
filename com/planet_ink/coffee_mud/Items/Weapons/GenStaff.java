@@ -254,7 +254,7 @@ public class GenStaff extends GenWeapon implements Wand
 			return super.getStat(code);
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
-		switch(getCodeNum(code))
+		switch(getInternalCodeNum(code))
 		{
 		case 0:
 			if((getEnchantType()<0)||(getEnchantType()>=Ability.ACODE_DESCS_.length))
@@ -281,7 +281,7 @@ public class GenStaff extends GenWeapon implements Wand
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			super.setStat(code, val);
 		else
-		switch(getCodeNum(code))
+		switch(getInternalCodeNum(code))
 		{
 		case 0:
 			setEnchantType(CMParms.indexOf(Ability.ACODE_DESCS_, val.toUpperCase().trim()));
@@ -305,8 +305,7 @@ public class GenStaff extends GenWeapon implements Wand
 		}
 	}
 
-	@Override
-	protected int getCodeNum(final String code)
+	private int getInternalCodeNum(final String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
 		{

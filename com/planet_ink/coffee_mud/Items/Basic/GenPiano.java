@@ -193,13 +193,13 @@ public class GenPiano extends GenRideable implements MusicalInstrument
 	@Override
 	public String getStat(final String code)
 	{
-		if(super.getCodeNum(code)>=0)
-			return super.getStat(code);
-		switch(getCodeNum(code))
+		switch(getInternalCodeNum(code))
 		{
 		case 0:
 			return this.getInstrumentTypeName();
 		default:
+			if(super.isStat(code))
+				return super.getStat(code);
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
@@ -207,10 +207,7 @@ public class GenPiano extends GenRideable implements MusicalInstrument
 	@Override
 	public void setStat(final String code, final String val)
 	{
-		if(super.getCodeNum(code)>=0)
-			super.setStat(code, val);
-		else
-		switch(getCodeNum(code))
+		switch(getInternalCodeNum(code))
 		{
 		case 0:
 		{
@@ -218,20 +215,22 @@ public class GenPiano extends GenRideable implements MusicalInstrument
 			break;
 		}
 		default:
-			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+			if(super.isStat(code))
+				super.setStat(code, val);
+			else
+				CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
 		}
 	}
 
-	@Override
-	protected int getCodeNum(final String code)
+	private int getInternalCodeNum(final String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
 		{
 			if(code.equalsIgnoreCase(MYCODES[i]))
 				return i;
 		}
-		return super.getCodeNum(code);
+		return -1;
 	}
 
 	private static String[]	codes	= null;

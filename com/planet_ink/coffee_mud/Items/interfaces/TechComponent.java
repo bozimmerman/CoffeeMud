@@ -13,7 +13,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipDir;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipDirComponent.ShipDir;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -81,39 +81,4 @@ public interface TechComponent extends Electronics
 	 * @return amtPer the amount of capacity per tick
 	 */
 	public float getRechargeRate();
-
-	/**
-	 * The ThrustPort enum is for the different thrust ports, denoting
-	 * the port, by its direction location.
-	 * @author Bo Zimmerman
-	 */
-	public enum ShipDir
-	{
-		AFT,
-		PORT,
-		VENTRAL,
-		DORSEL,
-		STARBOARD,
-		FORWARD
-		;
-		public final ShipDir opposite()
-		{
-			switch(this)
-			{
-			case AFT:
-				return FORWARD;
-			case PORT:
-				return STARBOARD;
-			case VENTRAL:
-				return DORSEL;
-			case DORSEL:
-				return VENTRAL;
-			case STARBOARD:
-				return PORT;
-			case FORWARD:
-				return AFT;
-			}
-			return this;
-		}
-	}
 }

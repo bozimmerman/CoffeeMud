@@ -509,7 +509,7 @@ public class Elvish extends StdLanguage
 		hashwords.put("SUPERIOR","orohalla");
 		hashwords.put("SURGE","solto");
 		hashwords.put("SURVIVE","vor");
-		hashwords.put("SWARD","paswa");
+		hashwords.put("SWORD","paswa");
 		hashwords.put("SYMPATHY","ófelmë");
 		hashwords.put("TABLE","paluhta");
 		hashwords.put("TALL","ancassëa");

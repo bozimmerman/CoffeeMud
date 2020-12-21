@@ -386,7 +386,7 @@ public class StdDissertation extends StdItem implements Scroll
 	@Override
 	public String getStat(final String code)
 	{
-		switch(getCodeNum(code))
+		switch(getInternalCodeNum(code))
 		{
 		case 0:
 			return ID();
@@ -403,7 +403,7 @@ public class StdDissertation extends StdItem implements Scroll
 	@Override
 	public void setStat(final String code, final String val)
 	{
-		switch(getCodeNum(code))
+		switch(getInternalCodeNum(code))
 		{
 		case 0:
 			return;
@@ -425,8 +425,7 @@ public class StdDissertation extends StdItem implements Scroll
 		return CODES;
 	}
 
-	@Override
-	protected int getCodeNum(final String code)
+	private int getInternalCodeNum(final String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 		{

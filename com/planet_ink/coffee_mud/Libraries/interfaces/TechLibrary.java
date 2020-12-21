@@ -11,7 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipDir;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipDirComponent.ShipDir;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -220,6 +220,6 @@ public interface TechLibrary extends CMLibrary
 	 * @param comp the war component
 	 * @return the directions being covered
 	 */
-	public ShipDir[] getCurrentBattleCoveredDirections(final ShipWarComponent comp);
+	public ShipDir[] getCurrentBattleCoveredDirections(final ShipDirComponent comp);
 
 }

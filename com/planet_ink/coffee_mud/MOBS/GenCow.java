@@ -235,9 +235,6 @@ public class GenCow extends GenRideable implements Drink
 	@Override
 	public String getStat(final String code)
 	{
-		if(super.isStat(code))
-			return super.getStat(code);
-		else
 		switch(getCodeNum(code))
 		{
 		case 0:
@@ -247,16 +244,16 @@ public class GenCow extends GenRideable implements Drink
 		case 2:
 			return "" + liquidType();
 		default:
-			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+			if(super.isStat(code))
+				return super.getStat(code);
+			else
+				return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
 
 	@Override
 	public void setStat(final String code, final String val)
 	{
-		if(super.isStat(code))
-			super.setStat(code, val);
-		else
 		switch(getCodeNum(code))
 		{
 		case 0:
@@ -273,7 +270,10 @@ public class GenCow extends GenRideable implements Drink
 			break;
 		}
 		default:
-			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+			if(super.isStat(code))
+				super.setStat(code, val);
+			else
+				CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
 		}
 	}

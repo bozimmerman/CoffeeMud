@@ -89,7 +89,7 @@ public class GenSpaceTech extends StdSpaceTech
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
-		switch(getCodeNum(code))
+		switch(getInternalCodeNum(code))
 		{
 		case 0:
 			return "" + techLevel();
@@ -112,7 +112,7 @@ public class GenSpaceTech extends StdSpaceTech
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
 		else
-		switch(getCodeNum(code))
+		switch(getInternalCodeNum(code))
 		{
 		case 0:
 			setTechLevel(CMath.s_parseIntExpression(val));
@@ -138,8 +138,7 @@ public class GenSpaceTech extends StdSpaceTech
 		}
 	}
 
-	@Override
-	protected int getCodeNum(final String code)
+	private int getInternalCodeNum(final String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
 		{

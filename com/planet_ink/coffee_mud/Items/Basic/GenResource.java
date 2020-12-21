@@ -97,27 +97,24 @@ public class GenResource extends GenItem implements RawMaterial
 	@Override
 	public String getStat(final String code)
 	{
-		if(super.isStat(code))
-			return super.getStat(code);
-		else
-		switch(getCodeNum(code))
+		switch(getInternalCodeNum(code))
 		{
 		case 0:
 			return this.domainSource();
 		case 1:
 			return this.getSubType();
 		default:
-			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+			if(super.isStat(code))
+				return super.getStat(code);
+			else
+				return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
 
 	@Override
 	public void setStat(final String code, final String val)
 	{
-		if(super.isStat(code))
-			super.setStat(code, val);
-		else
-		switch(getCodeNum(code))
+		switch(getInternalCodeNum(code))
 		{
 		case 0:
 			setDomainSource(val);
@@ -126,13 +123,15 @@ public class GenResource extends GenItem implements RawMaterial
 			this.setSubType(val);
 			break;
 		default:
-			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+			if(super.isStat(code))
+				super.setStat(code, val);
+			else
+				CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
 		}
 	}
 
-	@Override
-	protected int getCodeNum(final String code)
+	private int getInternalCodeNum(final String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
 		{
