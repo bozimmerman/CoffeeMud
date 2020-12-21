@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Misc;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -16,6 +17,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.IOException;
 import java.util.*;
 
 /*
@@ -79,22 +81,30 @@ public class Phobias extends StdAbility implements HealthCondition
 		return Ability.ACODE_PROPERTY;
 	}
 
-	@Override
-	public boolean isAutoInvoked()
-	{
-		return true;
-	}
-
-	@Override
-	public boolean canBeUninvoked()
-	{
-		return false;
-	}
-
 	//TODO: phobias against flying, riding?
-	protected List<String>	objectPhobias	= new LinkedList<String>();
-	protected Set<Race>		racePhobias		= new HashSet<Race>();
-	protected int			phobicCheckDown	= 0;
+	protected final static int	CHECK_DOWN		= 3;
+	protected List<String>		objectPhobias	= new LinkedList<String>();
+	protected Set<String>		racePhobias		= new HashSet<String>();
+	protected int				phobicCheckDown	= 0;
+
+	protected static int numRaces = 0;
+	protected final static Map<String,String>	raceCatMap	= new Hashtable<String,String>();
+
+	protected final static synchronized Map<String,String> getRaceCatMap()
+	{
+		if(numRaces != CMClass.numPrototypes(CMObjectType.RACE))
+		{
+			raceCatMap.clear();
+			for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+			{
+				final Race R=r.nextElement();
+				if(!raceCatMap.containsKey(R.racialCategory().toUpperCase()))
+					raceCatMap.put(R.racialCategory().toUpperCase(), R.racialCategory());
+			}
+			numRaces = CMClass.numPrototypes(CMObjectType.RACE);
+		}
+		return raceCatMap;
+	}
 
 	@Override
 	public String getHealthConditionDesc()
@@ -102,8 +112,8 @@ public class Phobias extends StdAbility implements HealthCondition
 		final List<String> list=new ArrayList<String>();
 		for(final String obj : objectPhobias)
 			list.add(CMLib.english().makePlural(obj.toLowerCase()));
-		for(final Race R : racePhobias)
-			list.add(R.name());
+		for(final String strr : racePhobias)
+			list.add(CMLib.english().makePlural(strr));
 		if(list.size()==0)
 			return "";
 		return "Afraid of "+CMLib.english().toEnglishStringList(list)+".";
@@ -115,14 +125,18 @@ public class Phobias extends StdAbility implements HealthCondition
 		super.setMiscText(newText);
 		objectPhobias.clear();
 		racePhobias.clear();
-		final Vector<String> V=CMParms.parse(newText.toUpperCase().trim());
+		final List<String> V=CMParms.parseCommas(newText.toUpperCase().trim(),true);
+		final Map<String,String> allRacialCats = getRaceCatMap();
 		for(final String str : V)
 		{
 			final Race R=CMClass.findRace(str);
 			if(R!=null)
-				racePhobias.add(R);
+				racePhobias.add(R.name());
 			else
-				objectPhobias.add(str);
+			if(allRacialCats.containsKey(str))
+				racePhobias.add(allRacialCats.get(str));
+			else
+				objectPhobias.add(str.toLowerCase());
 		}
 	}
 
@@ -131,12 +145,13 @@ public class Phobias extends StdAbility implements HealthCondition
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(((++phobicCheckDown)>10)
+		if(((++phobicCheckDown)>CHECK_DOWN)
 		&&(affected instanceof MOB))
 		{
 			phobicCheckDown=0;
 			final MOB mob=(MOB)affected;
-			if((CMLib.flags().isAliveAwakeMobile(mob,true))&&(CMLib.flags().isInTheGame(mob,true)))
+			if((CMLib.flags().isAliveAwakeMobile(mob,true))
+			&&(CMLib.flags().isInTheGame(mob,true)))
 			{
 				final Room R=CMLib.map().roomLocation(mob);
 				if(racePhobias.size()>0)
@@ -145,9 +160,163 @@ public class Phobias extends StdAbility implements HealthCondition
 					for(int i=0;i<R.numInhabitants();i++)
 					{
 						M=R.fetchInhabitant(i);
-						if((M!=null)&&(M!=mob)&&(racePhobias.contains(M.charStats().getMyRace())))
-							R.show(mob,null,this,CMMsg.TYP_NOISYMOVEMENT,L("<S-NAME> sneeze(s)! AAAAACHHHOOOO!"));
+						if((M!=null)
+						&&(M!=mob)
+						&&(this.isPhobic(M))
+						&&(CMLib.flags().canBeSeenBy(M, mob))
+						&&(CMLib.dice().rollPercentage()<50))
+						{
+							reactToPhobia(mob,M);
+							break;
+						}
 					}
+				}
+				if((objectPhobias.size()>0)
+				&&(R.numItems()<20))
+				{
+					Item I=null;
+					for(int i=0;i<R.numItems();i++)
+					{
+						I=R.getItem(i);
+						if((I!=null)
+						&&(I.container()==null)
+						&&(this.isPhobic(I))
+						&&(CMLib.flags().canBeSeenBy(I, mob))
+						&&(CMLib.dice().rollPercentage()<50))
+						{
+							reactToPhobia(mob,I);
+							break;
+						}
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	protected boolean isObjectPhobic(final Environmental E)
+	{
+		if((E!=null)&&(this.objectPhobias.size()>0))
+			return CMLib.english().containsOneOfString(E.Name(), this.objectPhobias);
+		return false;
+	}
+
+	protected boolean isPhobic(final Environmental P)
+	{
+		if(P instanceof MOB)
+			return isPhobic((MOB)P);
+		return isObjectPhobic(P);
+	}
+
+	protected boolean isPhobic(final MOB M)
+	{
+		if(M!=null)
+		{
+			if(isRacePhobic(M.charStats().getMyRace()))
+				return true;
+			return isObjectPhobic(M);
+		}
+		return false;
+	}
+
+	protected boolean isRacePhobic(final Race R)
+	{
+		if(R!=null)
+		{
+			if(racePhobias.contains(R.name()))
+				return true;
+			if(racePhobias.contains(R.racialCategory()))
+				return true;
+		}
+		return false;
+	}
+
+	public void reactToPhobia(final MOB mob, final Physical fromP)
+	{
+		final Room R=mob.location();
+		if(R==null)
+			return;
+		if((mob.fetchEffect("Cowering")!=null)||(mob.fetchEffect("Fighter_Whomp")!=null))
+			return;
+		if(CMLib.dice().rollPercentage()<30)
+		{
+			final Ability cowerA=CMClass.getAbility("Cowering");
+			if(cowerA!=null)
+				cowerA.invoke(mob, fromP, true, 0);
+			return;
+		}
+		if(mob.isInCombat())
+		{
+			final Command fleeC=CMClass.getCommand("Flee");
+			final List<String> commands=new XVector<String>("FLEE");
+			try
+			{
+				fleeC.execute(mob, commands, 0);
+			}
+			catch (final IOException e)
+			{
+			}
+		}
+		else
+		{
+			if(CMLib.dice().rollPercentage()<40)
+			{
+				if(R.show(mob, fromP, CMMsg.MSG_NOISYMOVEMENT, L("Shaking in fear of <T-NAME>, <S-NAME> vomit(s).")))
+					mob.curState().adjHunger(-500, mob.maxState().getHunger());
+				return;
+			}
+			else
+			if(CMLib.dice().rollPercentage()<40)
+			{
+				if(R.show(mob, fromP, CMMsg.MSG_NOISYMOVEMENT, L("Shaking in fear of <T-NAME>, <S-NAME> pass(es) out.")))
+				{
+					final Ability A=CMClass.findAbility("Fighter_Whomp");
+					if(A!=null)
+						A.startTickDown(mob, mob, 3);
+				}
+				return;
+			}
+			CMLib.tracking().beMobile(mob, true, true, false, false, null, null);
+		}
+		if(R != mob.location())
+			R.show(mob, R, CMMsg.MASK_ALWAYS|CMMsg.MSG_FLEE, L("<S-NAME> flee(s) in fear from @x1.",fromP.Name()));
+	}
+
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost, msg))
+			return false;
+		if((affected!=null)
+		&&(affected instanceof MOB))
+		{
+			if((msg.source()==affected))
+			{
+				switch(msg.targetMinor())
+				{
+				case CMMsg.TYP_EAT:
+					if(isPhobic(msg.target()))
+					{
+						msg.source().tell(L("Yea, you aren't going to eat that, ever."));
+						return false;
+					}
+					break;
+				case CMMsg.TYP_DRINK:
+					if(isPhobic(msg.target()))
+					{
+						msg.source().tell(L("Yea, you aren't going to drink that, ever."));
+						return false;
+					}
+					break;
+				case CMMsg.TYP_GET:
+				case CMMsg.TYP_PUSH:
+				case CMMsg.TYP_PULL:
+					if(isPhobic(msg.target()))
+					{
+						msg.source().tell(L("You are too scared to do that."));
+						return false;
+					}
+					break;
 				}
 			}
 		}
@@ -157,30 +326,20 @@ public class Phobias extends StdAbility implements HealthCondition
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected!=null)
-		&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
-			if(msg.source()==affected)
-			{
-				if((msg.targetMinor()==CMMsg.TYP_EAT)
-				&&(((msg.target() instanceof Item)&&(CMLib.english().containsOneOfString(msg.target().name(), objectPhobias)))
-					||((msg.target() instanceof MOB)&&(racePhobias.contains(((MOB)msg.target()).charStats().getMyRace())))))
-				{
-				}
-				else
-				if(((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL))
-				&&((msg.target() instanceof Item)&&(CMLib.english().containsOneOfString(msg.target().name(), objectPhobias))))
-				{
-				}
-			}
-			else
 			if((msg.target()==affected)
-			&&(racePhobias.contains(msg.source().charStats().getMyRace()))
 			&&((msg.targetMajor(CMMsg.MASK_HANDS))
 			   ||(msg.targetMajor(CMMsg.MASK_MOVE)))
-			&&(((MOB)affected).location()!=null)
-			&&(((MOB)affected).location().isInhabitant(msg.source())))
+			&&(isPhobic(msg.source())))
 			{
+				final MOB mob=(MOB)affected;
+				if((mob.location()!=null)
+				&&(mob.location().isInhabitant(msg.source()))
+				&&(CMLib.dice().rollPercentage()<20))
+				{
+					reactToPhobia(mob, msg.source());
+				}
 			}
 		}
 		super.executeMsg(myHost,msg);
