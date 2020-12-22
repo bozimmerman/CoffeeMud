@@ -2106,7 +2106,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 				}
 			}
-			if(middle.length()>0)
+			if((middle.length()>0)&&(middle.indexOf('$')>=0))
 				middle=CMStrings.replaceAll(middle, "$"+c, "_"+c); // prevent recursion!
 			varifyable=front+middle+back;
 			t=varifyable.indexOf('$',t);
