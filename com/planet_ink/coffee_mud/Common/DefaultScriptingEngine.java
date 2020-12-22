@@ -1787,6 +1787,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			else
 			switch(c)
 			{
+				case '$':
+					middle="$";
+					t=t+1; // this will push the search beyond this $
+					break;
 				case '@':
 					if ((t < varifyable.length() - 2)
 					&& (Character.isLetter(varifyable.charAt(t + 2))||Character.isDigit(varifyable.charAt(t + 2))))
@@ -2103,7 +2107,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 			}
 			varifyable=front+middle+back;
-			t=varifyable.indexOf('$');
+			t=varifyable.indexOf('$',t+1);
 		}
 		return varifyable;
 	}
