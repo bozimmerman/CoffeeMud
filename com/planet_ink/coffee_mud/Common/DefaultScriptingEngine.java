@@ -1776,22 +1776,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if(homeKnownLocation==null)
 			homeKnownLocation=lastKnownLocation;
 		MOB randMOB=null;
-		char lastC='\0';
-		int lastCCount=0;
-		final int limit=(varifyable.length()+100)*10;
 		while((t>=0)&&(t<varifyable.length()-1))
 		{
 			final char c=varifyable.charAt(t+1);
-			if((lastC == c)||(varifyable.length()>limit))
-			{
-				if(++lastCCount>10)
-					break;
-			}
-			else
-			{
-				lastC=c;
-				lastCCount=0;
-			}
 			String middle="";
 			final String front=varifyable.substring(0,t);
 			String back=varifyable.substring(t+2);
@@ -2119,6 +2106,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 				}
 			}
+			if(middle.length()>0)
+				middle=CMStrings.replaceAll(middle, "$"+c, "_"+c); // prevent recursion!
 			varifyable=front+middle+back;
 			t=varifyable.indexOf('$',t);
 		}
