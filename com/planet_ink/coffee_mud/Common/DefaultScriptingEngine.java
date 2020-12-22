@@ -1795,11 +1795,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			String middle="";
 			final String front=varifyable.substring(0,t);
 			String back=varifyable.substring(t+2);
-			if(Character.isDigit(c))
-				middle=makeNamedString(tmp[CMath.s_int(Character.toString(c))]);
-			else
 			switch(c)
 			{
+				case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
+					middle=makeNamedString(tmp[CMath.s_int(Character.toString(c))]);
+					break;
 				case '$':
 					middle="$";
 					t=t+1;
