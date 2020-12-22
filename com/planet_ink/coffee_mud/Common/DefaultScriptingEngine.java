@@ -1776,9 +1776,21 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if(homeKnownLocation==null)
 			homeKnownLocation=lastKnownLocation;
 		MOB randMOB=null;
+		char lastC='\0';
+		int lastCCount=0;
 		while((t>=0)&&(t<varifyable.length()-1))
 		{
 			final char c=varifyable.charAt(t+1);
+			if(lastC == c)
+			{
+				if(++lastCCount>10)
+					break;
+			}
+			else
+			{
+				lastC=c;
+				lastCCount=0;
+			}
 			String middle="";
 			final String front=varifyable.substring(0,t);
 			String back=varifyable.substring(t+2);
@@ -1789,7 +1801,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				case '$':
 					middle="$";
-					t=t+1; // this will push the search beyond this $
+					t=t+1;
 					break;
 				case '@':
 					if ((t < varifyable.length() - 2)
@@ -2107,7 +2119,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 			}
 			varifyable=front+middle+back;
-			t=varifyable.indexOf('$',t+1);
+			t=varifyable.indexOf('$',t);
 		}
 		return varifyable;
 	}
