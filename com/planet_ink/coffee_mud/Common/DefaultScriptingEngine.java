@@ -1778,10 +1778,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		MOB randMOB=null;
 		char lastC='\0';
 		int lastCCount=0;
+		final int limit=(varifyable.length()+10)*10;
 		while((t>=0)&&(t<varifyable.length()-1))
 		{
 			final char c=varifyable.charAt(t+1);
-			if(lastC == c)
+			if((lastC == c)||(varifyable.length()>limit))
 			{
 				if(++lastCCount>10)
 					break;
