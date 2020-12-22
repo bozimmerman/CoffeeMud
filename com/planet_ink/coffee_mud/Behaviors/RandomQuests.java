@@ -19,6 +19,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.*;
@@ -147,6 +148,7 @@ public class RandomQuests extends ActiveTicker
 
 	protected final AtomicBoolean disable = new AtomicBoolean(false);
 	protected final AtomicBoolean processing = new AtomicBoolean(false);
+	protected final static AtomicInteger allprocessing = new AtomicInteger(0);
 
 	public final class GenerateAQuest implements Runnable
 	{
@@ -162,6 +164,9 @@ public class RandomQuests extends ActiveTicker
 		{
 			try
 			{
+				final int max=(int)Math.round(Math.ceil(Runtime.getRuntime().availableProcessors()/4));
+				if(allprocessing.addAndGet(1)>max)
+					return;
 				processing.set(true);
 				for(int i=0;i<maxAttempts;i++)
 				{
@@ -250,6 +255,7 @@ public class RandomQuests extends ActiveTicker
 			}
 			finally
 			{
+				allprocessing.addAndGet(-1);
 				processing.set(false);
 			}
 		}
