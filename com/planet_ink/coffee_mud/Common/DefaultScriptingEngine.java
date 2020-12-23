@@ -1776,6 +1776,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if(homeKnownLocation==null)
 			homeKnownLocation=lastKnownLocation;
 		MOB randMOB=null;
+		//TODO: doing a StringBuilder and strc.replace(x, x+1, middle); is about 10X faster.
+		//      Also, lastKnownLocation doesn't need to be recalculated EVERY time, does it?
 		while((t>=0)&&(t<varifyable.length()-1))
 		{
 			final char c=varifyable.charAt(t+1);
