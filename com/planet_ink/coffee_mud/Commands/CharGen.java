@@ -578,7 +578,11 @@ public class CharGen extends StdCommand
 						int lastPct=0;
 						int playerArmor=0;
 						int playerAttack=0;
-						HashMap<String,long[]> skillScores = new HashMap<String,long[]>();
+						double totalDamageM1Score=0.0;
+						double totalDamageM1toM2=0.0;
+						double totalDamageM2toM1=0.0;
+						double totalRounds=0;
+						final HashMap<String,long[]> skillScores = new HashMap<String,long[]>();
 						for(int tries=0;tries<c.TOTAL_ITERATIONS;tries++)
 						{
 							if((CMath.div(tries,c.TOTAL_ITERATIONS)*100.0)>=lastPct+5)
@@ -775,7 +779,7 @@ public class CharGen extends StdCommand
 									return;
 								}
 							}
-							catch(Exception e)
+							catch(final Exception e)
 							{
 							}
 							//chargen combat charclasses export=test.tab iterations=100 skiplevels=20 1 91
@@ -793,7 +797,7 @@ public class CharGen extends StdCommand
 									latch.countDown();
 									return;
 								}
-								
+
 								iterations++;
 								ALMOSTZEROSKILL=B1.getStat("LASTSPELL");
 								final int h1=M1.curState().getHitPoints();
@@ -803,9 +807,20 @@ public class CharGen extends StdCommand
 								l1=CMath.s_int(B2.getStat("PHYSDAMTAKEN"));
 								l2=CMath.s_int(B1.getStat("PHYSDAMTAKEN"));
 								if(l1>L1)
+								{
 									hits++;
+									final double pctDoneM1toM2=CMath.div(l1,M2.maxState().getHitPoints());
+									totalDamageM1toM2+=pctDoneM1toM2;
+									totalDamageM1Score+=pctDoneM1toM2;
+								}
 								if(l2>L2)
+								{
 									ishits++;
+									final double pctDoneM2toM1=CMath.div(l2,M1.maxState().getHitPoints());
+									totalDamageM2toM1+=pctDoneM2toM1;
+									totalDamageM1Score-=pctDoneM2toM1;
+								}
+								totalRounds+=1.0;
 								try
 								{
 									CMLib.commands().postStand(M1,true, false);
@@ -969,6 +984,7 @@ public class CharGen extends StdCommand
 							mob.session().println("!");
 						if(fileExp==null)
 						{
+							mob.tell(L("SCORE: @x1 vs @x2 = @x3",""+(totalDamageM1toM2/totalRounds),""+(totalDamageM2toM1/totalRounds),""+(totalDamageM1Score/totalRounds)));
 							mob.tell(L("HITPOINTS: @x1 vs @x2",""+H1,""+H2));
 							mob.tell(L("QUICKEST : @x1: @x2",""+bestIterScore[0],bestIterSkill[0]));
 							mob.tell(L("MOST DAM : @x1: @x2",""+bestHitScore[0],bestHitSkill[0]));
@@ -998,15 +1014,15 @@ public class CharGen extends StdCommand
 							}
 							if(skillScores.size()>0)
 							{
-								StringBuilder top5=new StringBuilder("");
-								List<Pair<String,long[]>> top5v=new ArrayList<Pair<String,long[]>>();
+								final StringBuilder top5=new StringBuilder("");
+								final List<Pair<String,long[]>> top5v=new ArrayList<Pair<String,long[]>>();
 								for(final String key : skillScores.keySet())
 									top5v.add(new Pair<String,long[]>(key,skillScores.get(key)));
 								if(skillScores.containsKey("Spell_Lightning"))
 									mob.tell(""+skillScores.get("Spell_Lightning")[0]);
 								Collections.sort(top5v,new Comparator<Pair<String,long[]>>(){
 									@Override
-									public int compare(Pair<String, long[]> o1, Pair<String, long[]> o2)
+									public int compare(final Pair<String, long[]> o1, final Pair<String, long[]> o2)
 									{
 										if(o1.second[0] == o2.second[0])
 											return 0;

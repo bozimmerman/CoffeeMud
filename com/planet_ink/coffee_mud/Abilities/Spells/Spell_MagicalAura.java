@@ -60,7 +60,7 @@ public class Spell_MagicalAura extends Spell
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_BENEFICIAL_SELF;
+		return Ability.QUALITY_OK_SELF;
 	}
 
 	@Override

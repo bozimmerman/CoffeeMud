@@ -93,6 +93,23 @@ public class Spell_IronGrip extends Spell
 	}
 
 	@Override
+	public int castingQuality(final MOB mob, final Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.fetchWieldedItem()==null)
+				return Ability.QUALITY_INDIFFERENT;
+			if(target instanceof MOB)
+			{
+				final MOB victim=((MOB)target).getVictim();
+				if((victim != null)&&(victim.fetchAbility("Skill_Disarm")==null))
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
