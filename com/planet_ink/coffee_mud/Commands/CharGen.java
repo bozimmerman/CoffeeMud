@@ -984,7 +984,7 @@ public class CharGen extends StdCommand
 							mob.session().println("!");
 						if(fileExp==null)
 						{
-							mob.tell(L("SCORE: @x1 vs @x2 = @x3",""+(totalDamageM1toM2/totalRounds),""+(totalDamageM2toM1/totalRounds),""+(totalDamageM1Score/totalRounds)));
+							mob.tell(L("SCORE    : @x1 vs @x2 = @x3",CMath.toPct(totalDamageM1toM2/totalRounds),CMath.toPct(totalDamageM2toM1/totalRounds),CMath.toPct(totalDamageM1Score/totalRounds)));
 							mob.tell(L("HITPOINTS: @x1 vs @x2",""+H1,""+H2));
 							mob.tell(L("QUICKEST : @x1: @x2",""+bestIterScore[0],bestIterSkill[0]));
 							mob.tell(L("MOST DAM : @x1: @x2",""+bestHitScore[0],bestHitSkill[0]));
