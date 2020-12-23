@@ -2115,17 +2115,21 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Error: No direction given."));
 					return;
 				}
-				final String dirStr=parsed.get(1);
-				final ShipDir dir=(ShipDir)CMath.s_valueOf(ShipDir.class, dirStr.toUpperCase().trim());
-				if(dir==null)
-				{
-					super.addScreenMessage(L("Error: Invalid direction given."));
-					return;
-				}
 				E=sensor;
+				final List<ShipDir> dirs = new ArrayList<ShipDir>();
+				parsed.remove(0);
+				for(final String dirStr : parsed)
+				{
+					final ShipDir dir=(ShipDir)CMath.s_valueOf(ShipDir.class, dirStr.toUpperCase().trim());
+					if(dir==null)
+					{
+						super.addScreenMessage(L("Error: Invalid direction given."));
+						return;
+					}
+					dirs.add(dir);
+				}
 				String code;
-
-				code=TechCommand.DIRSET.makeCommand(dir);
+				code=TechCommand.DIRSET.makeCommand(dirs.get(0));
 				msg=CMClass.getMsg(mob, sensor, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 			}
 			else
