@@ -110,7 +110,7 @@ public class StdCompFuellessGenerator extends StdElecCompItem implements PowerGe
 					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, L("<S-NAME> shut(s) down <T-NAME>."));
 				this.activate(false);
 				break;
-			case CMMsg.TYP_LOOK:
+			case CMMsg.TYP_EXAMINE:
 				if(CMLib.flags().canBeSeenBy(this, msg.source()))
 					msg.source().tell(L("@x1 is currently @x2",name(),(activated()?"delivering power.\n\r":"deactivated/shut down.\n\r")));
 				return;

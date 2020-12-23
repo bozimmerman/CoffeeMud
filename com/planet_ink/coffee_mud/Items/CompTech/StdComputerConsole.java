@@ -502,6 +502,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 			case CMMsg.TYP_INSTALL:
 				nextSoftwareCheck=0;
 				break;
+			case CMMsg.TYP_EXAMINE:
 			case CMMsg.TYP_LOOK:
 				super.executeMsg(host, msg);
 				if(CMLib.flags().canBeSeenBy(this, msg.source()))

@@ -73,7 +73,8 @@ public class GenShipViewScreen extends GenElecCompSensor implements ShipDirCompo
 				return new ShipDir[0];
 			if(CMParms.contains(allPossDirs, ShipDir.FORWARD) && (numPermitDirs==1))
 				facingDirs = new ShipDir[] { ShipDir.FORWARD };
-			facingDirs = Arrays.copyOf(allPossDirs, numPermitDirs);
+			else
+				facingDirs = Arrays.copyOf(allPossDirs, numPermitDirs);
 		}
 		return facingDirs;
 	}
@@ -590,7 +591,6 @@ public class GenShipViewScreen extends GenElecCompSensor implements ShipDirCompo
 			else
 			if((msg.targetMinor() == CMMsg.TYP_ACTIVATE)&&(this.requiresPower()))
 			{
-				super.executeMsg(myHost, msg);
 				final LanguageLibrary lang=CMLib.lang();
 				final Software controlI=(msg.tool() instanceof Software)?((Software)msg.tool()):null;
 				final MOB mob=msg.source();

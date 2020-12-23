@@ -221,7 +221,6 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 		{
 			switch(msg.targetMinor())
 			{
-			case CMMsg.TYP_LOOK:
 			case CMMsg.TYP_EXAMINE:
 				if(CMLib.flags().canBeSeenBy(this, msg.source()))
 				{

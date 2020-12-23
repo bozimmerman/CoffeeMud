@@ -150,12 +150,10 @@ public class GenTickerShield extends StdElecItem implements Armor
 		{
 			switch(msg.targetMinor())
 			{
-			case CMMsg.TYP_LOOK:
+			case CMMsg.TYP_EXAMINE:
 				super.executeMsg(host, msg);
 				if(CMLib.flags().canBeSeenBy(this, msg.source()))
-				{
 					msg.source().tell(L("@x1 is currently @x2 and is at @x3% power.",name(),(activated()?"activated":"deactivated"),""+Math.round(CMath.div(powerRemaining(),powerCapacity())*100.0)));
-				}
 				return;
 			case CMMsg.TYP_ACTIVATE:
 			{

@@ -344,7 +344,6 @@ public class RocketShipProgram extends GenShipProgram
 		||uword.equals("TARGET")
 		||uword.equals("FACE")
 		||uword.equals("MOON")
-		||uword.equals("SENSE")
 		||uword.equals("FIRE")
 		||(uword.startsWith("WEAPON")&&(CMath.isInteger(uword.substring(6))))
 		||(uword.startsWith("ENGINE")&&(CMath.isInteger(uword.substring(6))))
@@ -1292,7 +1291,7 @@ public class RocketShipProgram extends GenShipProgram
 						+ "TARGET [NAME]          : target a sensor object\n\r"
 						+ "FACE [NAME]            : face a sensor object\n\r"
 						+ "MOON [NAME]            : moon a sensor object\n\r"
-						+ "SENSE [SENSOR] [DIR]   : aim/use a sensor\n\r"
+						+ "[SENSOR NAME] [DIR]    : aim/use a sensor\n\r"
 						+ "FIRE [WEAPON]          : fire weapon at target\n\r"
 						+ "STOP   : negate all velocity\n\r"
 						+ "LAND   : land your ship on the nearest planet. \n\r"
@@ -2103,7 +2102,7 @@ public class RocketShipProgram extends GenShipProgram
 				msg=CMClass.getMsg(mob, weapon, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 			}
 			else
-			if(uword.startsWith("SENSE"))
+			if(uword.startsWith("SENSOR"))
 			{
 				final TechComponent sensor = this.findSensorByName(uword);
 				if(sensor == null)

@@ -72,7 +72,7 @@ public class GenCompEnviroSystem extends GenElecCompItem
 		{
 			switch(msg.targetMinor())
 			{
-			case CMMsg.TYP_LOOK:
+			case CMMsg.TYP_EXAMINE:
 				if(CMLib.flags().canBeSeenBy(this, msg.source()))
 					msg.source().tell(L("@x1 is currently @x2",name(),(activated()?"operating.\n\r":"deactivated/disconnected.\n\r")));
 				return;

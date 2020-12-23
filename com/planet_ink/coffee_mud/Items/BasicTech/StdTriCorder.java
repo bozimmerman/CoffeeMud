@@ -341,6 +341,7 @@ public class StdTriCorder extends StdElecContainer implements Computer
 				nextSoftwareCheck=0;
 				break;
 			case CMMsg.TYP_LOOK:
+			case CMMsg.TYP_EXAMINE:
 				super.executeMsg(host, msg);
 				if(CMLib.flags().canBeSeenBy(this, msg.source())
 				&& (amBeingWornProperly()))

@@ -116,7 +116,7 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 			return ((TechComponent)this.container()).isInstalled();
 		return false;
 	}
-	
+
 	protected boolean requiresPower()
 	{
 		return true;
@@ -262,8 +262,8 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 					}
 				}
 				break;
-			case CMMsg.TYP_LOOK:
-				super.executeMsg(host, msg);
+			case CMMsg.TYP_EXAMINE:
+				super.executeMsg(host, msg); // this line is why the return below is OK
 				if(CMLib.flags().canBeSeenBy(this, msg.source())&&(this.requiresPower()))
 					msg.source().tell(L("@x1 is currently @x2",name(),(activated()?"connected.\n\r":"deactivated/disconnected.\n\r")));
 				return;
