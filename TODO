@@ -2,7 +2,6 @@ BUGS
 
 TECH
    *. test phaser and missile targeting systems 
-   *. add window/viewscreen type sensor: formula for things you see: ATAN(shipsize in km/range to ship)>0.0015
    *. test ship phaser, laser systems against shield types - murder motel
    *. make ship torpedo launchers and torpedo containers-- see tech doc
    *. make ship impulse and warp engines -- see tech doc
