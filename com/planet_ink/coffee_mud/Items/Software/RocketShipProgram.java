@@ -2131,6 +2131,12 @@ public class RocketShipProgram extends GenShipProgram
 				String code;
 				code=TechCommand.DIRSET.makeCommand(dirs.get(0));
 				msg=CMClass.getMsg(mob, sensor, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+				for(int i=1;i<dirs.size();i++)
+				{
+					sendMessage(mob,E,msg,message);
+					code=TechCommand.DIRSET.makeCommand(dirs.get(1));
+					msg=CMClass.getMsg(mob, sensor, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+				}
 			}
 			else
 			if(!uword.equalsIgnoreCase("HELP"))

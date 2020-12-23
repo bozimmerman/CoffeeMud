@@ -576,11 +576,21 @@ public class GenShipViewScreen extends GenElecCompSensor implements ShipDirCompo
 						if(E2!=null)
 							finalList.add(E2);
 					}
+					final String dirNames=L(CMParms.toListString(facingDirs).toLowerCase());
 					if(finalList.size()==0)
-						setDescription(L("You see the the blackness of space."));
+					{
+						if(getPermittedDirections().length>1)
+							setDescription(L("You see the the blackness of space. ")+"("+dirNames+") ");
+						else
+							setDescription(L("You see the the blackness of space. "));
+					}
 					else
 					{
-						final StringBuilder desc=new StringBuilder(L("^WYou see: %0D"));
+						final StringBuilder desc=new StringBuilder();
+						if(getPermittedDirections().length>1)
+							desc.append(L("^WYou see (@x1): %0D",dirNames));
+						else
+							desc.append(L("^WYou see: %0D"));
 						desc.append(
 							CMLib.lister().lister(msg.source(), finalList, true, null, null, msg.targetMinor()==CMMsg.TYP_EXAMINE, false)
 						);
@@ -612,9 +622,18 @@ public class GenShipViewScreen extends GenElecCompSensor implements ShipDirCompo
 						{
 							final ShipDir dir = (ShipDir)parms[0];
 							if(!CMParms.contains(getPermittedDirections(), dir))
-								reportError(this, controlI, mob, null, lang.L("Failure: @x1: screen does not support that direction.",me.name(mob)));
+								reportError(this, controlI, mob, null, lang.L("Failure: @x1: screen does not support the @x2 direction.",me.name(mob),dir.toString()));
 							else
+							if(this.numPermitDirs<=1)
 								facingDirs = new ShipDir[] { dir };
+							else
+							{
+								final List<ShipDir> dirs=new ArrayList<ShipDir>();
+								for(int i=1;i<facingDirs.length;i++)
+									dirs.add(facingDirs[i]);
+								dirs.add(dir);
+								facingDirs = dirs.toArray(new ShipDir[facingDirs.length]);
+							}
 						}
 					}
 				}
