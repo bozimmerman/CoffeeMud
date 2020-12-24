@@ -82,6 +82,8 @@ public class Spell_MassSleep extends Spell
 			{
 				if(((MOB)target).isInCombat())
 					return Ability.QUALITY_INDIFFERENT;
+				if((((MOB)target).fetchEffect("Spell_Sleep")!=null)||(CMLib.flags().isSleeping(target)))
+					return Ability.QUALITY_INDIFFERENT;
 			}
 		}
 		return super.castingQuality(mob,target);
