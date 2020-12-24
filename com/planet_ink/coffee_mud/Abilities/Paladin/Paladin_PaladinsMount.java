@@ -137,6 +137,7 @@ public class Paladin_PaladinsMount extends PaladinSkill
 					return true;
 
 				if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
+				&&(CMath.bset(((Ability)msg.tool()).flags(), Ability.FLAG_FEARING))
 				&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
 				&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY))
 				&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY))
@@ -145,9 +146,7 @@ public class Paladin_PaladinsMount extends PaladinSkill
 					msg.source().location().show((MOB)msg.target(),null,CMMsg.MSG_OK_VISUAL,L("The holy field around <S-NAME> protect(s) <S-HIM-HER> from the evil magic attack of @x1.",msg.source().name()));
 					return false;
 				}
-				final String str1=msg.tool().ID().toUpperCase();
-				if(((str1.indexOf("SPOOK")>=0)||(str1.indexOf("NIGHTMARE")>=0)||(str1.indexOf("FEAR")>=0))
-				&&(proficiencyCheck(invoker,0,false)))
+				if(proficiencyCheck(invoker,0,false))
 				{
 					final MOB mob=(MOB)msg.target();
 					mob.location().show(invoker,mob,CMMsg.MSG_OK_VISUAL,L("<T-YOUPOSS> courage protects you from the @x1 attack.",msg.tool().name()));
