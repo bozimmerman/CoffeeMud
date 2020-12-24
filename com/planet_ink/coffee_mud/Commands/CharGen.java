@@ -675,7 +675,7 @@ public class CharGen extends StdCommand
 								B1.setStat("PROF","true");
 								B1.setStat("LASTSPELL","");
 								B1.setStat("PRECAST","1");
-								for(int i=0;i<10+level;i++) // give some pre-cast ticks
+								for(int i=(10+(level/3));i>=0;i--) // give some pre-cast ticks
 								{
 									B1.tick(M1,Tickable.TICKID_MOB);
 									M1.resetToMaxState();

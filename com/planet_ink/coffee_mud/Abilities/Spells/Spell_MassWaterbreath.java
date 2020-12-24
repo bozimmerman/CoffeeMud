@@ -74,6 +74,23 @@ public class Spell_MassWaterbreath extends Spell
 	}
 
 	@Override
+	public int castingQuality(final MOB mob, final Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				if(((MOB)target).getGroupMembers(new HashSet<MOB>()).size()<2)
+					return Ability.QUALITY_INDIFFERENT;
+				if(((MOB)target).fetchEffect("Spell_WaterBreathing")!=null)
+					return Ability.QUALITY_INDIFFERENT;
+				return new Spell_WaterBreathing().castingQuality(mob, target);
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Set<MOB> h=properTargets(mob,givenTarget,false);

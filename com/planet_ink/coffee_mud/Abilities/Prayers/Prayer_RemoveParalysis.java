@@ -70,7 +70,7 @@ public class Prayer_RemoveParalysis extends Prayer implements MendingSkill
 	public boolean supportsMending(final Physical item)
 	{
 		return (item instanceof MOB)
-					&&(CMLib.flags().flaggedAffects(item,Ability.FLAG_PARALYZING|Ability.FLAG_UNHOLY).size()>0);
+					&&(CMLib.flags().flaggedAffects(item,Ability.FLAG_PARALYZING).size()>0);
 	}
 
 	@Override
@@ -82,6 +82,7 @@ public class Prayer_RemoveParalysis extends Prayer implements MendingSkill
 			{
 				if(supportsMending(target))
 					return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
+				return Ability.QUALITY_INDIFFERENT;
 			}
 		}
 		return super.castingQuality(mob,target);

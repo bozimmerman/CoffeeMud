@@ -338,13 +338,21 @@ public class StdAbility implements Ability
 			return Ability.QUALITY_INDIFFERENT;
 		if(isAutoInvoked())
 			return Ability.QUALITY_INDIFFERENT;
-		if((mob!=null)&&(target!=null)&&(mob.getVictim()==target))
+		if(mob != null)
 		{
-			if((minRange()>0)&&(mob.rangeToTarget()<minRange()))
+			if((target!=null)
+			&&(mob.getVictim()==target))
+			{
+				if((minRange()>0)&&(mob.rangeToTarget()<minRange()))
+					return Ability.QUALITY_INDIFFERENT;
+				if(mob.rangeToTarget()>maxRange())
+					return Ability.QUALITY_INDIFFERENT;
+			}
+			final Room R=mob.location();
+			if((R!=null)
+			&&(this.canAffect(CAN_ROOMS)||this.canTarget(CAN_ROOMS))
+			&&(R.fetchEffect(ID())!=null))
 				return Ability.QUALITY_INDIFFERENT;
-			if(mob.rangeToTarget()>maxRange())
-				return Ability.QUALITY_INDIFFERENT;
-
 		}
 		switch(abstractQuality)
 		{
