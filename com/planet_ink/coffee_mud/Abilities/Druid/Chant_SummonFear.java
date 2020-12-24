@@ -69,6 +69,12 @@ public class Chant_SummonFear extends Chant
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags()|Ability.FLAG_FEARING;
+	}
+
+	@Override
 	public int maxRange()
 	{
 		return adjustedMaxInvokerRange(1);

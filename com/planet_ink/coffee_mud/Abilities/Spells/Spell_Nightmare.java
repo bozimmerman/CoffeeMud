@@ -84,7 +84,7 @@ public class Spell_Nightmare extends Spell
 	@Override
 	public long flags()
 	{
-		return super.flags() | Ability.FLAG_MINDALTERING;
+		return super.flags() | Ability.FLAG_MINDALTERING|Ability.FLAG_FEARING;
 	}
 
 	public int amountRemaining=0;

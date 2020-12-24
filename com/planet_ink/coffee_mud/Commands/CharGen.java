@@ -675,8 +675,17 @@ public class CharGen extends StdCommand
 								B1.setStat("PROF","true");
 								B1.setStat("LASTSPELL","");
 								B1.setStat("PRECAST","1");
-								for(int i=0;i<20;i++) // give some pre-cast ticks
-									M1.tick(M1,Tickable.TICKID_MOB);
+								for(int i=0;i<10+level;i++) // give some pre-cast ticks
+								{
+									B1.tick(M1,Tickable.TICKID_MOB);
+									M1.resetToMaxState();
+								}
+								B1.setStat("PRECAST","999");
+								B1.setStat("LASTSPELL","");
+								B1.setStat("RECORD"," ");
+								M1.recoverMaxState();
+								M1.recoverCharStats();
+								M1.recoverPhyStats();
 							}
 							M1.resetToMaxState();
 							playerArmor=CMLib.combat().adjustedArmor(M1);
@@ -766,7 +775,7 @@ public class CharGen extends StdCommand
 							if((sess!=null)&&(sess.isStopped() || sess.hotkey(1)=='x'))
 								aborted[0]=true;
 
-							//TODO: Buff period for the player
+							//Buff period for the player (already done above)
 							final Session sess=mob.session();
 							try
 							{

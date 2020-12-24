@@ -91,6 +91,12 @@ public class Cowering extends StdAbility
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags()|Ability.FLAG_FEARING;
+	}
+
+	@Override
 	public int classificationCode()
 	{
 		return Ability.ACODE_SKILL;

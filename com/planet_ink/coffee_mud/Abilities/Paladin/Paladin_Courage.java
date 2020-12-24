@@ -77,23 +77,17 @@ public class Paladin_Courage extends PaladinSkill
 		&&(((MOB)msg.target()).location()==invoker.location()))
 		{
 			if((msg.tool() instanceof Ability)
+			&&(CMath.bset(((Ability)msg.tool()).flags(), Ability.FLAG_FEARING))
 			&&((invoker.fetchAbility(ID())==null)||proficiencyCheck(null,0,false))
 			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			{
 				if((!appropriateToMyFactions(invoker))
 				||(!appropriateToMyFactions((MOB)msg.target())))
 					return true;
-
-				final String str1=msg.tool().ID().toUpperCase();
-				if((str1.indexOf("SPOOK")>=0)
-				||(str1.indexOf("NIGHTMARE")>=0)
-				||(str1.indexOf("FEAR")>=0))
-				{
-					final MOB mob=(MOB)msg.target();
-					mob.location().showSource(mob,null,CMMsg.MSG_OK_VISUAL,L("Your courage protects you from the @x1 attack.",msg.tool().name()));
-					mob.location().showOthers(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME>'s courage protects <S-HIM-HER> from the @x1 attack.",msg.tool().name()));
-					return false;
-				}
+				final MOB mob=(MOB)msg.target();
+				mob.location().showSource(mob,null,CMMsg.MSG_OK_VISUAL,L("Your courage protects you from the @x1 attack.",msg.tool().name()));
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME>'s courage protects <S-HIM-HER> from the @x1 attack.",msg.tool().name()));
+				return false;
 			}
 		}
 		return true;

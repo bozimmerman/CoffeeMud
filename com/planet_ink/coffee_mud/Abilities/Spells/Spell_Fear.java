@@ -72,7 +72,7 @@ public class Spell_Fear extends Spell
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_TRANSPORTING;
+		return Ability.FLAG_TRANSPORTING|Ability.FLAG_FEARING;
 	}
 
 	@Override

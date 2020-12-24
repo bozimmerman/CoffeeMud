@@ -83,7 +83,7 @@ public class Prayer_AuraFear extends Prayer
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_UNHOLY;
+		return Ability.FLAG_UNHOLY|Ability.FLAG_FEARING;
 	}
 
 	private int ratingTickDown=4;
@@ -128,21 +128,29 @@ public class Prayer_AuraFear extends Prayer
 			invoker().getGroupMembers(H);
 			H.add(invoker());
 		}
+		final MOB invoker;
 		if((affected instanceof MOB)&&(affected!=invoker()))
 		{
 			if(H==null)
 				H=new HashSet<MOB>();
 			((MOB)affected).getGroupMembers(H);
 			H.add((MOB)affected);
+			invoker=(MOB)affected;
 		}
+		else
+			invoker=(invoker()==null)?CMLib.map().deity():invoker();
 		for(int i=0;i<R.numInhabitants();i++)
 		{
 			final MOB M=R.fetchInhabitant(i);
 			final MOB blame=((invoker!=null)&&(invoker!=M))?invoker:M;
-			if((M!=null)&&((H==null)||(!H.contains(M))))
+			if((M!=null)
+			&&((H==null)||(!H.contains(M)))
+			&&(R.show(invoker, M, this, CMMsg.TYP_CAST_SPELL, null)))
 			{
 				if(CMLib.dice().rollPercentage()<M.charStats().getSave(CharStats.STAT_SAVE_MIND))
+				{
 					R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> shudder(s) at the sight of <O-NAME>."));
+				}
 				else
 				{
 					// do that fear thing
@@ -161,23 +169,27 @@ public class Prayer_AuraFear extends Prayer
 							}
 							if(CMLib.flags().isSitting(M))
 							{
-								R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_HANDS|CMMsg.MASK_SOUND,L("<S-NAME> cringe(s) in fear at the sight of <O-NAME>."));
-								final Ability A=CMClass.getAbility("Spell_Fear");
-								if(A!=null)
-									A.startTickDown(blame,M,Ability.TICKS_ALMOST_FOREVER);
+								if(R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_HANDS|CMMsg.MASK_SOUND,L("<S-NAME> cringe(s) in fear at the sight of <O-NAME>.")))
+								{
+									final Ability A=CMClass.getAbility("Spell_Fear");
+									if(A!=null)
+										A.startTickDown(blame,M,Ability.TICKS_ALMOST_FOREVER);
+								}
 							}
 						}
 						else
 						if(M.isInCombat())
 						{
-							R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,L("<S-NAME> scream(s) in fear at the sight of <O-NAME>."));
-							final Command C=CMClass.getCommand("Flee");
-							try
+							if(R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,L("<S-NAME> scream(s) in fear at the sight of <O-NAME>.")))
 							{
-								if(C!=null) C.execute(M,new XVector<String>("Flee"),MUDCmdProcessor.METAFLAG_FORCED);
-							}
-							catch(final Exception e)
-							{
+								final Command C=CMClass.getCommand("Flee");
+								try
+								{
+									if(C!=null) C.execute(M,new XVector<String>("Flee"),MUDCmdProcessor.METAFLAG_FORCED);
+								}
+								catch(final Exception e)
+								{
+								}
 							}
 						}
 						else
@@ -190,26 +202,30 @@ public class Prayer_AuraFear extends Prayer
 					{
 						if(M.isInCombat())
 						{
-							R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,L("<S-NAME> scream(s) in fear at the sight of <O-NAME>."));
-							final Command C=CMClass.getCommand("Flee");
-							try
+							if(R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,L("<S-NAME> scream(s) in fear at the sight of <O-NAME>.")))
 							{
-								if(C!=null) C.execute(M,new XVector<String>("Flee"),MUDCmdProcessor.METAFLAG_FORCED);
-							}
-							catch(final Exception e)
-							{
+								final Command C=CMClass.getCommand("Flee");
+								try
+								{
+									if(C!=null) C.execute(M,new XVector<String>("Flee"),MUDCmdProcessor.METAFLAG_FORCED);
+								}
+								catch(final Exception e)
+								{
+								}
 							}
 						}
 						else
 						{
-							R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,L("<S-NAME> scream(s) in fear at the sight of <O-NAME>."));
-							CMLib.tracking().beMobile(M,false,true,false,false,null,null);
-							if(M.location()==R)
+							if(R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,L("<S-NAME> scream(s) in fear at the sight of <O-NAME>.")))
 							{
-								R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_HANDS|CMMsg.MASK_SOUND,L("<S-NAME> cringe(s) in fear at the sight of <O-NAME>."));
-								final Ability A=CMClass.getAbility("Spell_Fear");
-								if(A!=null)
-									A.startTickDown(blame,M,Ability.TICKS_ALMOST_FOREVER);
+								CMLib.tracking().beMobile(M,false,true,false,false,null,null);
+								if(M.location()==R)
+								{
+									R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_HANDS|CMMsg.MASK_SOUND,L("<S-NAME> cringe(s) in fear at the sight of <O-NAME>."));
+									final Ability A=CMClass.getAbility("Spell_Fear");
+									if(A!=null)
+										A.startTickDown(blame,M,Ability.TICKS_ALMOST_FOREVER);
+								}
 							}
 						}
 					}
