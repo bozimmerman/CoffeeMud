@@ -3,6 +3,7 @@ import java.text.DecimalFormat;
 import java.util.*;
 import java.util.Map.Entry;
 import java.io.*;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /*
@@ -49,6 +50,7 @@ public class CMath
 	private static final int[]			INTEGER_BITMASKS= new int[31];
 	private static final long[]			LONG_BITMASKS	= new long[63];
 	private static Random 				rand			= new Random(System.currentTimeMillis());
+	public  static BigDecimal			BIG_PI			= BigDecimal.valueOf(Math.PI);
 
 	static
 	{
