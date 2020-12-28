@@ -4488,7 +4488,23 @@ public class CMMap extends StdLibrary implements WorldMap
 			return Math.min(prevDistance.doubleValue(), currentDistance.doubleValue());
 		}
 		//Log.debugOut("2:prevDistance="+prevDistance.longValue()+", baseDistance="+baseDistance.longValue()+", currentDistance="+currentDistance.longValue());
-
+		final double[] travelDir = getDirection(prevPos, curPosition);
+		final double[] opTravelDir = getOppositeDir(travelDir);
+		final double[] objectDir = getDirection(prevPos, objPos);
+		final double delta=getAngleDelta(travelDir, objectDir);
+		final double delta2=getAngleDelta(opTravelDir, objectDir);
+		if((delta<ZERO_ALMOST||delta2<ZERO_ALMOST))
+		{
+			final double[] objectDir2 = getDirection(curPosition, objPos);
+			final double delta3=getAngleDelta(objectDir, objectDir2);
+			if(delta3>ZERO_ALMOST)
+				return 0;
+			if(prevDistance.compareTo(currentDistance)>0)
+				return currentDistance.doubleValue();
+			else
+				return prevDistance.doubleValue();
+		}
+		
 		final BigDecimal semiPerimeter=currentDistance.add(prevDistance).add(baseDistance).divide(TWO, RoundingMode.HALF_UP);
 		final BigDecimal partOfTriangle=semiPerimeter.multiply(semiPerimeter.subtract(currentDistance))
 													.multiply(semiPerimeter.subtract(baseDistance))
