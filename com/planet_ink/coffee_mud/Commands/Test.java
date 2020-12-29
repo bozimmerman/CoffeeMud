@@ -3195,7 +3195,11 @@ public class Test extends StdCommand
 				final long[] l1= new long[]{3515255, 3877051, -239069815};
 				final long[] l2= new long[]{3953445, 4361852, -269041937};
 				final long[] l3= new long[]{9734, -1358, 707222};
-				System.out.println("((("+CMLib.map().getMinDistanceFrom(l1,l2,l3));
+				if(CMLib.map().getMinDistanceFrom(l1,l2,l3)<239834022)
+				{
+					mob.tell(L("Error: Straight line test failed."));
+					return false;
+				}
 				for(int li=0;li<tests.length;li++)
 				{
 					final long[][] l=tests[li];
