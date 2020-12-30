@@ -434,6 +434,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				BoundedCube cube=O.getBounds();
 				final double speed=O.speed();
 				final long[] startCoords=Arrays.copyOf(O.coordinates(),3);
+				final double[] direction=O.direction();
 				if(speed>=1)
 				{
 					cube=cube.expand(O.direction(),(long)speed);
@@ -450,13 +451,13 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					&&(!cO.amDestroyed())
 					&&(!O.amDestroyed()))
 					{
-						final double minDistance=map.getMinDistanceFrom(startCoords, O.coordinates(), cO.coordinates());
+						final double[] directionTo=map.getDirection(O, cO);
+						final double minDistance=map.getMinDistanceFrom(startCoords, speed, direction, O.coordinates(), directionTo, cO.coordinates());
 						final double gravitationalMove=getGravityForce(O, cO);
 						if(gravitationalMove > 0)
 						{
 							if(isDebugging)
 								Log.debugOut("SpaceShip "+O.name()+" is gravitating "+gravitationalMove+" towards " +cO.Name());
-							final double[] directionTo=map.getDirection(O, cO);
 							map.moveSpaceObject(O, directionTo, gravitationalMove);
 							inAirFlag = true;
 						}

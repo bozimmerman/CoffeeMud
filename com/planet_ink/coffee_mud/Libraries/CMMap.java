@@ -64,8 +64,10 @@ public class CMMap extends StdLibrary implements WorldMap
 	protected static final BigDecimal	TEN						= BigDecimal.valueOf(10L);
 	protected static final BigDecimal	ONE_THOUSAND			= BigDecimal.valueOf(1000);
 	protected static final double		PI_ALMOST				= Math.PI - ZERO_ALMOST;
+	protected static final double		PI_TIMES_2_ALMOST		= Math.PI * 2.0 - ZERO_ALMOST;
 	protected static final double		PI_TIMES_2				= Math.PI * 2.0;
 	protected static final double		PI_BY_2					= Math.PI / 2.0;
+	protected static final double		PI_TIMES_1ANDAHALF		= Math.PI * 1.5;
 	protected final int					QUADRANT_WIDTH			= 10;
 	protected static MOB				deityStandIn			= null;
 	protected long						lastVReset				= 0;
@@ -4428,54 +4430,22 @@ public class CMMap extends StdLibrary implements WorldMap
 		return x1;
 	}
 
-	/*
-	@Override
-	public double getMinDistanceFrom(final long[] prevPos, final long[] curPosition, final long[] objPos)
+	protected final double getDirDiffSum(final double[] d1, final double d2[])
 	{
-		final BigDecimal currentDistance=getBigDistanceFrom(curPosition, objPos);
-		if(Arrays.equals(prevPos, curPosition))
-			return currentDistance.doubleValue();
-		final BigDecimal prevDistance=getBigDistanceFrom(prevPos, objPos);
-		final BigDecimal baseDistance=getBigDistanceFrom(prevPos, curPosition);
-		if(baseDistance.compareTo(currentDistance.add(prevDistance))>=0)
-		{
-			//Log.debugOut("0:prevDistance="+prevDistance.longValue()+", baseDistance="+baseDistance.longValue()+", currentDistance="+currentDistance.longValue());
-			return 0;
-		}
-		if(prevDistance.subtract(baseDistance).equals(currentDistance)
-		||currentDistance.subtract(baseDistance).equals(prevDistance))
-		{
-			//Log.debugOut("1:prevDistance="+prevDistance.longValue()+", baseDistance="+baseDistance.longValue()+", currentDistance="+currentDistance.longValue());
-			return Math.min(prevDistance.doubleValue(), currentDistance.doubleValue());
-		}
-		final BigDecimal[] ab=new BigDecimal[] { BigDecimal.valueOf(prevPos[0]), BigDecimal.valueOf(prevPos[1]), BigDecimal.valueOf(prevPos[2]) };
-		ab[0]=ab[0].subtract(BigDecimal.valueOf(curPosition[0]));
-		ab[1]=ab[1].subtract(BigDecimal.valueOf(curPosition[1]));
-		ab[2]=ab[2].subtract(BigDecimal.valueOf(curPosition[2]));
-		final BigDecimal[] ac=new BigDecimal[] { BigDecimal.valueOf(objPos[0]), BigDecimal.valueOf(objPos[1]), BigDecimal.valueOf(objPos[2]) };
-		ac[0]=ac[0].subtract(BigDecimal.valueOf(prevPos[0]));
-		ac[1]=ac[1].subtract(BigDecimal.valueOf(prevPos[1]));
-		ac[2]=ac[2].subtract(BigDecimal.valueOf(prevPos[2]));
-		final BigDecimal[] abac=new BigDecimal[] {
-			ab[1].multiply(ac[2]).subtract(ab[2].multiply(ac[1])),
-			ab[2].multiply(ac[0]).subtract(ab[0].multiply(ac[2])),
-			ab[0].multiply(ac[1]).subtract(ab[1].multiply(ac[0]))
-		};
-		final BigDecimal abacMagnitude = bigSqrt(abac[0].pow(2).add(abac[1].pow(2)).add(abac[2].pow(2)));
-		final BigDecimal abMagnitude = bigSqrt(ab[0].pow(2).add(ab[1].pow(2)).add(ab[2].pow(2)));
-		return abacMagnitude.divide(abMagnitude,RoundingMode.HALF_UP).doubleValue();
-
+		final double sum1=d1[0]>d2[0]?d1[0]-d2[0]:d2[0]-d1[0];
+		final double sum2=d1[0]>d2[0]?(PI_TIMES_2-d1[0]+d2[0]):(PI_TIMES_2-d2[0]+d1[0]);
+		final double sum3=d1[1]>d2[1]?d1[1]-d2[1]:d2[1]-d1[1];
+		return sum1>sum2?(sum2+sum3):(sum1+sum3);
 	}
-	*/
 
 	@Override
-	public double getMinDistanceFrom(final long[] prevPos, final long[] curPosition, final long[] objPos)
+	public double getMinDistanceFrom(final long[] prevPos, final double speed, final double[] dir, final long[] curPosition, final double[] directionTo, final long[] objPos)
 	{
 		final BigDecimal currentDistance=getBigDistanceFrom(curPosition, objPos);
 		if(Arrays.equals(prevPos, curPosition))
 			return currentDistance.doubleValue();
 		final BigDecimal prevDistance=getBigDistanceFrom(prevPos, objPos);
-		final BigDecimal baseDistance=getBigDistanceFrom(prevPos, curPosition);
+		final BigDecimal baseDistance=BigDecimal.valueOf(speed);
 		if(baseDistance.compareTo(currentDistance.add(prevDistance))>=0)
 		{
 			//Log.debugOut("0:prevDistance="+prevDistance.longValue()+", baseDistance="+baseDistance.longValue()+", currentDistance="+currentDistance.longValue());
@@ -4488,16 +4458,14 @@ public class CMMap extends StdLibrary implements WorldMap
 			return Math.min(prevDistance.doubleValue(), currentDistance.doubleValue());
 		}
 		//Log.debugOut("2:prevDistance="+prevDistance.longValue()+", baseDistance="+baseDistance.longValue()+", currentDistance="+currentDistance.longValue());
-		final double[] travelDir = getDirection(prevPos, curPosition);
-		final double[] opTravelDir = getOppositeDir(travelDir);
-		final double[] objectDir = getDirection(prevPos, objPos);
-		final double delta=getAngleDelta(travelDir, objectDir);
-		final double delta2=getAngleDelta(opTravelDir, objectDir);
-		if((delta<ZERO_ALMOST||delta2<ZERO_ALMOST))
+		final double[] travelDir = dir;
+		final double[] prevDirToObject = getDirection(prevPos, objPos);
+		final double diDelta=getDirDiffSum(travelDir,prevDirToObject);
+		if(diDelta<ZERO_ALMOST)
 		{
-			final double[] objectDir2 = getDirection(curPosition, objPos);
-			final double delta3=getAngleDelta(objectDir, objectDir2);
-			if(delta3>ZERO_ALMOST)
+			final double[] currDirToObject = directionTo;
+			final double fiDelta=getDirDiffSum(currDirToObject,prevDirToObject);
+			if(fiDelta>ZERO_ALMOST)
 				return 0;
 			if(prevDistance.compareTo(currentDistance)>0)
 				return currentDistance.doubleValue();
@@ -4525,5 +4493,15 @@ public class CMMap extends StdLibrary implements WorldMap
 		&&(baseDistance.multiply(ONE_THOUSAND).compareTo(prevDistance)<0))
 			return Math.min(prevDistance.doubleValue(), currentDistance.doubleValue());
 		return TWO.multiply(areaOfTriangle).divide(baseDistance, RoundingMode.HALF_UP).doubleValue();
+	}
+
+	@Override
+	public double getMinDistanceFrom(final long[] prevPos, final long[] curPosition, final long[] objPos)
+	{
+		
+		final double speed=this.getDistanceFrom(prevPos, curPosition);
+		final double[] dir=getDirection(prevPos, curPosition);
+		final double[] dirTo=getDirection(curPosition, objPos);
+		return getMinDistanceFrom(prevPos, speed, dir, curPosition, dirTo, objPos);
 	}
 }
