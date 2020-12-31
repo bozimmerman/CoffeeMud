@@ -465,13 +465,15 @@ public class GroundWired extends StdLibrary implements TechLibrary
 						&&((speed>0)||(cO.speed()>0))
 						&&((oMass < SpaceObject.MOONLET_MASS)||(cO.getMass() < SpaceObject.MOONLET_MASS)))
 						{
-							if(cO instanceof BoardableShip) //TODO: BZ: Comment out me
+							/*
+							if(cO instanceof BoardableShip)
 							{
 								System.out.println(O.name()+"->"+cO.Name()+": speed="+speed+", dir="+((CMath.div((double)Math.round(O.direction()[0]*100.0),100)))+","+((CMath.div((double)Math.round(O.direction()[1]*100.0),100))));
 								System.out.println("Moved from:   ("+CMParms.toListString(startCoords)+"  to  "+CMParms.toListString(O.coordinates())+")");
 								final double[] exactDir=CMLib.map().getDirection(startCoords, cO.coordinates());
 								System.out.println("Closest distance is "+minDistance+" to  object@("+CMParms.toListString(cO.coordinates())+"): Exact dir="+((CMath.div((double)Math.round(exactDir[0]*100.0),100)))+","+((CMath.div((double)Math.round(exactDir[1]*100.0),100))));
 							}
+							*/
 							final MOB host=map.deity();
 							CMMsg msg;
 							if((O instanceof Weapon)||(cO instanceof Weapon))
@@ -484,13 +486,14 @@ public class GroundWired extends StdLibrary implements TechLibrary
 							}
 							else
 								msg=CMClass.getMsg(host, O, cO, CMMsg.MSG_COLLISION,null);
-							if(O.okMessage(host, msg))
+							final CMMsg revMsg=(CMMsg)msg.copyOf();
+							revMsg.setTarget(cO);
+							revMsg.setTool(O);
+							if(O.okMessage(host, msg) && cO.okMessage(host, revMsg))
+							{
 								O.executeMsg(host, msg);
-							msg=(CMMsg)msg.copyOf();
-							msg.setTarget(cO);
-							msg.setTool(O);
-							if(cO.okMessage(host, msg))
-								cO.executeMsg(host, msg);
+								cO.executeMsg(host, revMsg);
+							}
 						}
 					}
 				}

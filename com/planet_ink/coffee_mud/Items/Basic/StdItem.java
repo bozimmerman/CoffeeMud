@@ -1115,6 +1115,7 @@ public class StdItem implements Item
 		case CMMsg.TYP_WEAPONATTACK:
 		case CMMsg.TYP_ATTACKMISS:
 			if((this instanceof BoardableShip)
+			||(this instanceof SpaceObject)
 			||((this instanceof Rideable)&&(((Rideable)this).rideBasis()==Rideable.RIDEABLE_WATER)))
 				return true;
 			break;
