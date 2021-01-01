@@ -325,7 +325,7 @@ public class GrinderItems
 						I.basePhyStats().setAttackAdjustment(CMath.s_int(old));
 					break;
 				case DAMAGE: // damage
-					if(I instanceof Weapon)
+					if((I instanceof Weapon)||(I instanceof ShipWarComponent))
 						I.basePhyStats().setDamage(CMath.s_int(old));
 					break;
 				case MINRANGE: // min range

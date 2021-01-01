@@ -46,6 +46,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 	{
 		super();
 		this.maxRechargePer = 0.2f;
+		basePhyStats.setDamage(100);
 	}
 
 	@Override
