@@ -9702,6 +9702,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				final ShipWarComponent E=(ShipWarComponent)me;
 				genMessageTypes(mob, E, ++showNumber, showFlag);
+				genDamage(mob,me,++showNumber,showFlag);
 			}
 			if(me instanceof PackagedItems)
 				((PackagedItems)me).setNumberOfItemsInPackage(prompt(mob,((PackagedItems)me).numberOfItemsInPackage(),++showNumber,showFlag,"Number of items in the package"));
