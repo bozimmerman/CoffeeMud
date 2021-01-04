@@ -348,6 +348,11 @@ public class Spell_Wish extends Spell
 			{
 				final String currency=CMLib.english().matchAnyCurrencySet(CMParms.combine(goldCheck,1));
 				final MoneyLibrary.MoneyDefinition def=CMLib.beanCounter().getCurrencySet(currency);
+				if(!def.canTrade())
+				{
+					mob.tell(L("You can't bring yourself to wish for that."));
+					return false;
+				}
 				final double xpMultiplier = def.canTrade()?10.0:10000.0;
 				final Coins newItem=(Coins)CMClass.getItem("StdCoins");
 				newItem.setCurrency(currency);
