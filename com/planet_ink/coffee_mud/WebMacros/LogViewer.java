@@ -52,6 +52,6 @@ public class LogViewer extends StdWebMacro
 	{
 		String s=Log.instance().getLog().toString();
 		s=s.replaceAll("\n\r", "\n");
-		return clearWebMacros("<PRE>"+s+"</PRE>");
+		return clearWebMacros("<PRE>"+CMLib.xml().parseOutAngleBrackets(s)+"</PRE>");
 	}
 }
