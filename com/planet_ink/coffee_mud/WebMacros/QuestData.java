@@ -137,7 +137,6 @@ public class QuestData extends StdWebMacro
 								script.setCharAt(i,'\n');
 						}
 					}
-					//script=new StringBuffer(CMStrings.replaceAll(script.toString(),"\\;",";"));
 				}
 				script=new StringBuffer(CMStrings.replaceAll(script.toString(),"&","&amp;"));
 				return clearWebMacros(script);
