@@ -86,6 +86,12 @@ public class Prayer_InfuseBalance extends Prayer implements Deity.DeityWorshippe
 		return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;
 	}
 
+	@Override
+	public String accountForYourself()
+	{
+		return name()+": "+deityName();
+	}
+
 	protected int serviceRunning=0;
 
 	@Override

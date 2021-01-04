@@ -42,10 +42,12 @@ public class Spell_StoreSpell extends Spell implements AbilityContainer
 		return "Spell_StoreSpell";
 	}
 
+	private final static String localizedName = CMLib.lang().L("Store Spell");
+
 	@Override
 	public String Name()
 	{
-		return "Store Spell";
+		return localizedName;
 	}
 
 	@Override
@@ -53,14 +55,8 @@ public class Spell_StoreSpell extends Spell implements AbilityContainer
 	{
 		if((affected!=null)&&(CMLib.flags().isInTheGame(affected,true)))
 		{
-			if(spellName.length()==0)
-			{
-				spellName="unknown";
-				final Ability A=fetchAbility(0);
-				if(A!=null)
-					spellName=A.name();
-			}
-			return "Store Spell: "+spellName;
+			final String spellName=geSpellName();
+			return Name()+": "+spellName;
 		}
 		return Name();
 	}

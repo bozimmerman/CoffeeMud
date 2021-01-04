@@ -42,10 +42,12 @@ public class Prayer_StorePrayer extends Prayer implements AbilityContainer, Disc
 		return "Prayer_StorePrayer";
 	}
 
+	private final static String localizedName = CMLib.lang().L("Store Prayer");
+
 	@Override
 	public String Name()
 	{
-		return "Store Prayer";
+		return localizedName;
 	}
 
 	@Override
@@ -53,7 +55,8 @@ public class Prayer_StorePrayer extends Prayer implements AbilityContainer, Disc
 	{
 		if((affected!=null)&&(CMLib.flags().isInTheGame(affected,true)))
 		{
-			return "Store Prayer: "+prayerName;
+			final String prayerName=getPrayerName();
+			return Name()+": "+prayerName;
 		}
 		return Name();
 	}

@@ -86,6 +86,12 @@ public class Prayer_InfuseHoliness extends Prayer implements Deity.DeityWorshipp
 		return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;
 	}
 
+	@Override
+	public String accountForYourself()
+	{
+		return name()+": "+deityName();
+	}
+
 	protected int serviceRunning=0;
 
 	@Override
