@@ -127,23 +127,20 @@ public class QuestData extends StdWebMacro
 				}
 				else
 				{
-					for(int i=0;i<script.length();i++)
+					for(int i=1;i<script.length();i++)
 					{
-						if((script.charAt(i)==';')
-						&&((i==0)||(script.charAt(i-1)!='\\')))
-							script.setCharAt(i,'\n');
+						if(script.charAt(i)==';')
+						{
+							if(script.charAt(i-1)=='\\')
+								script.delete(i-1, i);
+							else
+								script.setCharAt(i,'\n');
+						}
 					}
 					//script=new StringBuffer(CMStrings.replaceAll(script.toString(),"\\;",";"));
 				}
 				script=new StringBuffer(CMStrings.replaceAll(script.toString(),"&","&amp;"));
-				String postFix="";
-				final int limit=script.toString().toUpperCase().indexOf("<?XML");
-				if(limit>=0)
-				{
-					postFix=script.toString().substring(limit);
-					script=new StringBuffer(script.toString().substring(0,limit));
-				}
-				return clearWebMacros(script+postFix);
+				return clearWebMacros(script);
  			}
 		}
 		return "";
