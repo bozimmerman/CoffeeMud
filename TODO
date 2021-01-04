@@ -12,7 +12,7 @@ TECH
    *. entry systems for ships (default entry key card, voice code, identifying scanner)
    *. work on automatic component values ??
    *. Talk to Tim: Space Tech power consumption depends on tech level of generator, panel, or interaction damage?
-   *. Implement acceleration damage to the people on-board.
+   *. Implement inertia/acceleration damage to the people on-board.
    *. make food generators, and refrigerators, water recycler, 
    *. turbo lift -- moveable rooms
    *. make message bouey launcher
