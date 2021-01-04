@@ -490,10 +490,10 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 							levelChange+= adjCharStats.getStat(i)*5;
 							break;
 						case CharStats.STAT_SAVE_GENERAL:
-							levelChange+= adjCharStats.getStat(i)*50;
+							levelChange+= adjCharStats.getStat(i)*30;
 							break;
 						case CharStats.STAT_SAVE_MAGIC:
-							levelChange+= adjCharStats.getStat(i)*10;
+							levelChange+= adjCharStats.getStat(i)*5;
 							break;
 						case CharStats.STAT_CRIT_CHANCE_PCT_WEAPON:
 						case CharStats.STAT_CRIT_CHANCE_PCT_MAGIC:
