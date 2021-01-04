@@ -148,7 +148,16 @@ public class Spell_Portal extends Spell
 			{
 				final List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, areaName, true, 10);
 				if(rooms.size()>0)
-					newRoom=rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
+				{
+					tries=0;
+					while(((++tries)<rooms.size()*10))
+					{
+						newRoom=rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
+						if(CMLib.flags().canAccess(mob,newRoom))
+							break;
+						newRoom=null;
+					}
+				}
 			}
 			catch(final NoSuchElementException nse)
 			{
