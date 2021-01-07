@@ -2467,13 +2467,21 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(andContent)
 		{
 			for(int i=0;i<croom.numInhabitants();i++)
-				inhabs.add(croom.fetchInhabitant(i));
+			{
+				final MOB M=croom.fetchInhabitant(i);
+				if(M!=null)
+					inhabs.add(M);
+			}
 		}
 		final List<Item> items=new ArrayList<Item>();
 		if(andContent)
 		{
 			for(int i=0;i<croom.numItems();i++)
-				items.add(croom.getItem(i));
+			{
+				final Item I=croom.getItem(i);
+				if(I!=null)
+					items.add(I);
+			}
 		}
 
 		possiblyAddCustomEffect(room, custom);
