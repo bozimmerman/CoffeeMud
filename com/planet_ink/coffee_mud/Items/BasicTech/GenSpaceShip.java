@@ -60,7 +60,9 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 	protected SpaceObject	spaceTarget 	= null;
 	protected double[]		facing			= new double[2];
 	protected Set<ShipFlag>	shipFlags		= new SHashSet<ShipFlag>();
-	protected volatile double	speedTick	= 0;
+
+	protected volatile double				speedTick	= 0;
+	protected volatile List<TechComponent>	sensors		= null;
 
 	public GenSpaceShip()
 	{
@@ -89,6 +91,25 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 		return "StdSpaceShip";
 	}
 
+	protected synchronized List<TechComponent> getShipSensors()
+	{
+		if(sensors == null)
+		{
+			sensors=new Vector<TechComponent>(1);
+			final String circuitKey=getElectronicsKey();
+			if(circuitKey.length()>0)
+			{
+				final List<Electronics> components=CMLib.tech().getMakeRegisteredElectronics(circuitKey);
+				for(final Electronics E : components)
+				{
+					if((E instanceof TechComponent)
+					&&(E.getTechType()==TechType.SHIP_SENSOR))
+						sensors.add((TechComponent)E);
+				}
+			}
+		}
+		return sensors;
+	}
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
@@ -170,20 +191,30 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 		return exitRoom;
 	}
 
+	protected String getElectronicsKey()
+	{
+		final Area area=this.getShipArea();
+		if(area instanceof BoardableShip)
+		{
+			String registryNum=area.getBlurbFlag("REGISTRY");
+			if(registryNum==null)
+				registryNum="";
+			return area.Name()+registryNum;
+		}
+		return "";
+	}
+
 	@Override
 	public void renameShip(final String newName)
 	{
 		final Area area=this.getShipArea();
 		if(area instanceof BoardableShip)
 		{
-			final String oldName=area.Name();
-			String registryNum=area.getBlurbFlag("REGISTRY");
-			if(registryNum==null)
-				registryNum="";
+			final String registryNum=getElectronicsKey();
 			super.renameShip(newName);
-			CMLib.tech().unregisterElectronics(null, oldName+registryNum);
-			registryNum=Double.toString(Math.random());
-			area.addBlurbFlag("REGISTRY Registry#"+registryNum.substring(registryNum.indexOf('.')+1));
+			CMLib.tech().unregisterElectronics(null, registryNum);
+			final String newRegistryNum=Double.toString(Math.random());
+			area.addBlurbFlag("REGISTRY Registry#"+newRegistryNum.substring(newRegistryNum.indexOf('.')+1));
 		}
 	}
 
@@ -212,6 +243,12 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
+
+		if(CMLib.map().areaLocation(msg.source())!=getShipArea())
+		{
+			for(final TechComponent sensor : getShipSensors())
+				sensor.executeMsg(myHost, msg);
+		}
 
 		if(msg.amITarget(this))
 		{

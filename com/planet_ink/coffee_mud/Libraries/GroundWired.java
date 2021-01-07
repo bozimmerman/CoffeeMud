@@ -121,10 +121,11 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	@Override
 	public String getElectronicsKey(final CMObject o)
 	{
+		if((o instanceof SpaceShip)&&(o instanceof Item))
+			return getElectronicsKey(((SpaceShip)o).getShipArea());
+		else
 		if(o instanceof Electronics)
-		{
 			return getElectronicsKey(((Electronics)o).owner());
-		}
 		else
 		if(o instanceof Area)
 		{

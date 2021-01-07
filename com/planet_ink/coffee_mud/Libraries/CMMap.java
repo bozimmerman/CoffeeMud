@@ -526,7 +526,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		final BigDecimal coord_2 = BigDecimal.valueOf(coord1[2]).subtract(BigDecimal.valueOf(coord2[2]));
 		final BigDecimal coord_2m = coord_2.multiply(coord_2);
 		final BigDecimal coords_all = coord_0m.add(coord_1m).add(coord_2m);
-		final BigDecimal val = BigDecimal.valueOf(Math.sqrt(coords_all.doubleValue()));
+		final BigDecimal val = bigSqrt(coords_all);
 		return val;
 	}
 
@@ -584,20 +584,6 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		final double newSpeed = moveSpaceObject(O.direction(),O.speed(),accelDirection,newAcceleration);
 		O.setSpeed(newSpeed);
-	}
-
-	public Pair<ShipDir,Double>[] getRocketFacingDelta(final SpaceShip ship, final SpaceObject targetObj)
-	{
-		//final double[] dirMe = ship.facing();
-		//final double[] dirTo = CMLib.map().getDirection(ship, targetObj);
-		final List<Pair<ShipDir,Double>> list = new ArrayList<Pair<ShipDir,Double>>(2);
-		//final double rotDiff = dirTo[0] - dirMe[0];
-		// if rottDiff 0 < x < 90 then definitely add rotate port x
-		// if rotDiff -90 < x < 0 then definitely add rotate starboard x
-		//
-		@SuppressWarnings("unchecked")
-		final Pair<ShipDir,Double>[] results = (Pair<ShipDir,Double>[])list.toArray();
-		return results;
 	}
 
 	@Override
@@ -4472,7 +4458,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			else
 				return prevDistance.doubleValue();
 		}
-		
+
 		final BigDecimal semiPerimeter=currentDistance.add(prevDistance).add(baseDistance).divide(TWO, RoundingMode.HALF_UP);
 		final BigDecimal partOfTriangle=semiPerimeter.multiply(semiPerimeter.subtract(currentDistance))
 													.multiply(semiPerimeter.subtract(baseDistance))
@@ -4498,7 +4484,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public double getMinDistanceFrom(final long[] prevPos, final long[] curPosition, final long[] objPos)
 	{
-		
+
 		final double speed=this.getDistanceFrom(prevPos, curPosition);
 		final double[] dir=getDirection(prevPos, curPosition);
 		final double[] dirTo=getDirection(curPosition, objPos);
