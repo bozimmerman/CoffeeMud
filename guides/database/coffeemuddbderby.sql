@@ -167,8 +167,8 @@ CREATE TABLE CMAREA (
 	PRIMARY KEY (CMAREA)
 );
 CREATE TABLE CMJRNL (
-	CMJKEY varchar (75) NOT NULL,
-	CMJRNL varchar (50),
+	CMJKEY varchar (160) NOT NULL,
+	CMJRNL varchar (100),
 	CMFROM varchar (50),
 	CMDATE varchar (50),
 	CMTONM varchar (50),

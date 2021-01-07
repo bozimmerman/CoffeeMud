@@ -326,6 +326,11 @@ public class Titling extends CommonSkill
 			return false;
 		}
 
+		if(CMParms.combine(commands, 0).length()>60)
+		{
+			commonTell(mob,L("That title is too long."));
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

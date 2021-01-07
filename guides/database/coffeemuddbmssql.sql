@@ -182,8 +182,8 @@ CREATE TABLE CMAREA (
 );
 
 CREATE TABLE CMJRNL (
-	CMJKEY nvarchar (75) ,
-	CMJRNL nvarchar (50) NULL ,
+	CMJKEY nvarchar (160) ,
+	CMJRNL nvarchar (100) NULL ,
 	CMFROM nvarchar (50) NULL ,
 	CMDATE nvarchar (50) NULL ,
 	CMTONM nvarchar (50) NULL ,

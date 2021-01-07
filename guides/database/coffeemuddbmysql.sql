@@ -203,8 +203,8 @@ CREATE TABLE CMAREA (
 ALTER TABLE CMAREA ADD ( UNIQUE KEY (CMAREA) );
 
 CREATE TABLE CMJRNL (
-	CMJKEY varchar (75) ,
-	CMJRNL varchar (50) NULL ,
+	CMJKEY varchar (160) ,
+	CMJRNL varchar (100) NULL ,
 	CMFROM varchar (50) NULL ,
 	CMDATE varchar (50) NULL ,
 	CMTONM varchar (50) NULL ,

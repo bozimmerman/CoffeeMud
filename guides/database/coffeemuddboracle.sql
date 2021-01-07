@@ -253,8 +253,8 @@ ALTER TABLE CMAREA
 	);
 
 CREATE TABLE CMJRNL (
-	CMJKEY char (75) ,
-	CMJRNL char (50) NULL ,
+	CMJKEY char (160) ,
+	CMJRNL char (100) NULL ,
 	CMFROM char (50) NULL ,
 	CMDATE char (50) NULL ,
 	CMTONM char (50) NULL ,
