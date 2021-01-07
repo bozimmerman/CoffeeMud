@@ -100,8 +100,12 @@ public class GenResource extends GenItem implements RawMaterial
 		switch(getInternalCodeNum(code))
 		{
 		case 0:
+			if(this.domainSource()==null)
+				return "";
 			return this.domainSource();
 		case 1:
+			if(this.getSubType()==null)
+				return "";
 			return this.getSubType();
 		default:
 			if(super.isStat(code))
@@ -167,7 +171,15 @@ public class GenResource extends GenItem implements RawMaterial
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 		{
-			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
+			final String eval=E.getStat(codes[i]);
+			final String myval=getStat(codes[i]);
+			if((eval == null)&&(myval!=null))
+				return false;
+			else
+			if((myval == null)&&(eval!=null))
+				return false;
+			else
+			if(!eval.equals(myval))
 				return false;
 		}
 		return true;
