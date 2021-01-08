@@ -236,7 +236,7 @@ public class Chant_SummonMount extends Chant
 		newMOB.setName(L("a wild horse"));
 		newMOB.setDisplayText(L("a wild horse stands here"));
 		newMOB.setDescription(L("An untamed beast of the fields, tame only by magical means."));
-		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
+		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0 RIDEOK"));
 		newMOB.addTattoo("SYSTEM_SUMMONED");
 		ride.setRiderCapacity(1);
 		newMOB.recoverCharStats();

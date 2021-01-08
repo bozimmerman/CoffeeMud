@@ -220,7 +220,7 @@ public class Spell_SummonFlyer extends Spell
 		newMOB.setDescription(L("A ferocious, fleet of foot, flying friend."));
 		ride.setRideBasis(Rideable.RIDEABLE_AIR);
 		ride.setRiderCapacity(2);
-		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0"));
+		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience","0 RIDEOK"));
 		newMOB.addTattoo("SYSTEM_SUMMONED");
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();

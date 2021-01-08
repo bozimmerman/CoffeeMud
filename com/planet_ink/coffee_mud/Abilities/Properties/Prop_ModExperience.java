@@ -62,6 +62,7 @@ public class Prop_ModExperience extends Property
 
 	protected String			operationFormula	= "";
 	protected boolean			selfXP				= false;
+	protected boolean			rideOK				= false;
 	protected DirectionCheck	dir					= DirectionCheck.POSITIVE;
 	protected CompiledFormula	operation			= null;
 	protected CompiledZMask		mask				= null;
@@ -108,6 +109,13 @@ public class Prop_ModExperience extends Property
 		{
 			selfXP=true;
 			s=s.substring(0,x)+s.substring(x+4);
+			us=s.toUpperCase();
+		}
+		x=us.indexOf("RIDEOK");
+		if(x>=0)
+		{
+			rideOK=true;
+			s=s.substring(0,x)+s.substring(x+6);
 			us=s.toUpperCase();
 		}
 		dir = DirectionCheck.POSITIVE;
@@ -199,8 +207,9 @@ public class Prop_ModExperience extends Property
 		&&(operation != null)
 		&&((((msg.target()==affected)||(selfXP && (msg.source()==affected)))&&(affected instanceof MOB))
 		   ||((affected instanceof Rideable)
+				&&(!rideOK)
 				&&(msg.target()!=null)
-				&&((msg.source().riding()==affected) 
+				&&((msg.source().riding()==affected)
 					|| ((affected instanceof Item)&&(msg.target().Name().equals(affected.Name()))) // what the actual f?
 					||((msg.target() instanceof Rider)&&(((Rider)msg.target()).riding()==affected))))
 		   ||((affected instanceof Item)
