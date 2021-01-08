@@ -5619,6 +5619,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	public List<Object> parseLoadScripts(String text, final List<?> oldArgs, final List<Object> args, final boolean showErrors)
 	{
 		final Vector<Object> script=new Vector<Object>();
+		boolean skipXMLSemicolonFix=false;
 		if(text.trim().toUpperCase().startsWith("LOAD="))
 		{
 			String filename=null;
@@ -5637,7 +5638,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					}
 					final StringBuffer buf=getResourceFileData(filename,showErrors);
 					if(buf!=null)
+					{
 						text=buf.toString();
+						skipXMLSemicolonFix=true;
+					}
 				}
 				catch(final CMException ex)
 				{
@@ -5648,7 +5652,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		final int x=text.toLowerCase().indexOf(XMLLibrary.FILE_XML_BOUNDARY.toLowerCase());
 		if(x>=0)
 		{
-			final String xml=text.substring(x+XMLLibrary.FILE_XML_BOUNDARY.length()).trim();
+			final String xml;
+			if(skipXMLSemicolonFix)
+				xml=text.substring(x+XMLLibrary.FILE_XML_BOUNDARY.length()).trim();
+			else
+				xml=CMStrings.replaceAll(text.substring(x+XMLLibrary.FILE_XML_BOUNDARY.length()),"\\;",";").trim();
 			text=text.substring(0,x);
 			if((xml.length()>0)&&(internalFiles==null))
 			{
