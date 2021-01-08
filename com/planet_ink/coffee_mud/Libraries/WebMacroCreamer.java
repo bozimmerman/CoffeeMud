@@ -1152,7 +1152,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 							responseData = W.runBinaryMacro(request, "", response);
 						else
 							responseData = W.runMacro(request, "", response).getBytes();
-						response.getOutputStream().write(responseData);
+						if(responseData!=null)
+							response.getOutputStream().write(responseData);
 					}
 					catch (final HTTPServerException e)
 					{
