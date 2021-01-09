@@ -1569,7 +1569,6 @@ public class CMParms
 			uMap=new TreeMap<String,String>();
 			final LimitedTreeMap<String,Map<String,String>> subCache=new LimitedTreeMap<String,Map<String,String>>(30000,500,false);
 			cache=new Triad<Map<Character,List<String>>,Map<String,String>,Map<String,Map<String,String>>>(chkMap,uMap,subCache);
-			parsedLooses.put(parmList, cache);
 			for (final String element : parmList)
 			{
 				C=Character.valueOf(Character.toUpperCase(element.charAt(0)));
@@ -1584,6 +1583,7 @@ public class CMParms
 				elems.add(element.toUpperCase());
 				uMap.put(element.toUpperCase(), element);
 			}
+			parsedLooses.put(parmList, cache);
 		}
 		String lastParm=null;
 		int lastEQ=-1;
