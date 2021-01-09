@@ -149,6 +149,9 @@ public class Soiled extends StdAbility
 			&&(((Drink)msg.source().riding()).containsDrink()))
 				unInvoke();
 			else
+			if(CMLib.commands().isHygienicMessage(msg))
+				unInvoke();
+			else
 			if((affected instanceof Item)
 			&&(((Item)affected).container() instanceof Drink)
 			&&(msg.target()==affected)
