@@ -75,6 +75,11 @@ public class Password extends StdCommand
 				public void callBack()
 				{
 					final String old = this.input;
+					if(old.length()==0)
+					{
+						sess.println(L("Old password not entered."));
+						return;
+					}
 					sess.prompt(new InputCallback(InputCallback.Type.PROMPT)
 					{
 						@Override
@@ -82,7 +87,6 @@ public class Password extends StdCommand
 						{
 							sess.promptPrint(L("Enter a new password    : "));
 						}
-
 						@Override
 						public void timedOut()
 						{
@@ -92,6 +96,11 @@ public class Password extends StdCommand
 						public void callBack()
 						{
 							final String nep = this.input;
+							if(nep.length()==0)
+							{
+								sess.println(L("New password not entered."));
+								return;
+							}
 							sess.prompt(new InputCallback(InputCallback.Type.PROMPT)
 							{
 								@Override
