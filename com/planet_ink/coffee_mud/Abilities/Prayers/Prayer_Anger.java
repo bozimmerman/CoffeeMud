@@ -122,8 +122,15 @@ public class Prayer_Anger extends Prayer
 							{
 								if(target==inhab)
 									target=null;
+								else
 								if(target==mob)
 									target=null;
+								else
+								{
+									final int levelDiff = CMath.abs(inhab.phyStats().level()-target.phyStats().level());
+									if(levelDiff > CMProps.getIntVar(CMProps.Int.EXPRATE))
+										target=null;
+								}
 							}
 							tries++;
 						}
