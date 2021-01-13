@@ -124,7 +124,7 @@ public class Withdraw extends StdCommand
 				final MOB mob2=CMLib.players().getPlayerAllHosts(mob.getLiegeID());
 				if(mob2!=null)
 				{
-					final String accountName2=((PostOffice)SHOP).getSenderName(mob, Clan.Function.WITHDRAW, false);
+					final String accountName2=((PostOffice)SHOP).getSenderName(mob2, Clan.Function.WITHDRAW, false);
 					thisThang=((PostOffice)SHOP).findBoxContents(accountName2,str);
 				}
 			}
