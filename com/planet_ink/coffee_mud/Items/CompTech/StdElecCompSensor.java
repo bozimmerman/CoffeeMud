@@ -52,6 +52,7 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 	protected final static long[] emptyCoords = new long[] {0,0,0};
 	protected final static double[] emptyDirection = new double[] {0,0};
 	protected final static BoundedCube smallCube = new BoundedCube(1,1,1,1,1,1);
+	protected Map<Software,Room> feedbackObjects = new TreeMap<Software,Room>(XTreeSet.comparator);
 	protected Set<Environmental> lastSensedObjects = new TreeSet<Environmental>(XTreeSet.comparator);
 
 	private static final Filterer<Environmental> acceptEverythingFilter = new Filterer<Environmental>()
@@ -62,6 +63,29 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 			return true;
 		}
 	};
+
+	protected List<Software> getFeedbackers()
+	{
+		final List<Software> fbList = new LinkedList<Software>();
+		synchronized(feedbackObjects)
+		{
+			for(final Iterator<Software> i=feedbackObjects.keySet().iterator();i.hasNext();)
+			{
+				final Software S=i.next();
+				if((!S.amDestroyed())
+				&&(CMLib.map().roomLocation(S) != feedbackObjects.get(S)))
+					fbList.add(S);
+				else
+					i.remove();
+			}
+		}
+		return fbList;
+	}
+
+	protected boolean canPassivelySense(final CMMsg msg)
+	{
+		return true;
+	}
 
 	private static final Converter<Environmental, Environmental> directConverter = new Converter<Environmental, Environmental>()
 	{
@@ -587,9 +611,14 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 			}
 			case CMMsg.TYP_DEACTIVATE:
 				this.activate(false);
-				//TODO:what does the ship need to know?
 				break;
 			}
+		}
+		else
+		if((msg.othersMessage() != null) && canPassivelySense(msg))
+		{
+			for(final Software controlI : this.getFeedbackers())
+				controlI.addScreenMessage(msg.othersMessage());
 		}
 	}
 
