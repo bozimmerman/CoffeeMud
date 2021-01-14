@@ -71,9 +71,27 @@ public class Prop_AddDamage extends Property implements TriggeredAffect
 		return id;
 	}
 
+	public String makeMiscText()
+	{
+		final StringBuilder str=new StringBuilder("");
+		if(pctDamage != 0)
+			str.append(CMath.toPct(pctDamage)).append(" ");
+		if(bonusDamage != 0)
+			str.append(bonusDamage).append(" ");
+		if((weaponDamageType >= 0)&&(weaponDamageType!=Weapon.TYPE_NATURAL))
+			str.append("\"").append(Weapon.TYPE_DESCS[weaponDamageType]).append("\" ");
+		if((typeOfEffect >= 0)&&(typeOfEffect!=CMMsg.TYP_WEAPONATTACK))
+			str.append("\"").append(CMMsg.TYPE_DESCS[typeOfEffect]).append("\" ");
+		return str.toString().trim();
+	}
+
 	@Override
 	public void setMiscText(final String newMiscText)
 	{
+		pctDamage=0.0;
+		bonusDamage=0;
+		weaponDamageType=Weapon.TYPE_NATURAL;
+		typeOfEffect=CMMsg.TYP_WEAPONATTACK;
 		super.setMiscText(newMiscText);
 		final List<String> parms=CMParms.parse(newMiscText.toUpperCase());
 		for(String s : parms)
@@ -238,5 +256,106 @@ public class Prop_AddDamage extends Property implements TriggeredAffect
 					  CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|typeOfEffect,weaponDamageType,str);
 			}
 		}
+	}
+
+	@Override
+	public String getStat(final String code)
+	{
+		if(code == null)
+			return "";
+		if(code.equalsIgnoreCase("STAT-LEVEL"))
+		{
+			int level =  (int)Math.round(pctDamage / 0.20);
+			level += bonusDamage * 3;
+			return ""+level;
+		}
+		else
+		if(code.toUpperCase().startsWith("STAT-"))
+		{
+			final String subCode=code.substring(5).toUpperCase();
+			if(subCode.startsWith("DAMAGE"))
+			{
+				int level =  (int)Math.round(pctDamage / 0.20);
+				level += bonusDamage * 3;
+				return ""+level;
+			}
+			return "0";
+		}
+		return super.getStat(code);
+	}
+
+	@Override
+	public void setStat(final String code, final String val)
+	{
+		if(code!=null)
+		{
+			if(code.equalsIgnoreCase("STAT-LEVEL"))
+			{
+
+			}
+			else
+			if(code.equalsIgnoreCase("TONEDOWN"))
+			{
+				setStat("TONEDOWN-ARMOR",val);
+				setStat("TONEDOWN-WEAPON",val);
+				setStat("TONEDOWN-MISC",val);
+			}
+			else
+			if(code.equalsIgnoreCase("TONEDOWN-ARMOR"))
+			{
+				final double pct=CMath.s_pct(val);
+				if(bonusDamage != 0)
+					bonusDamage -= (int)Math.round(CMath.mul(bonusDamage, pct));
+				if(bonusDamage != 0)
+					pctDamage -= CMath.mul(pctDamage, pct);
+				setMiscText(makeMiscText());
+			}
+			else
+			if(code.equalsIgnoreCase("TONEDOWN-WEAPON"))
+			{
+				final double pct=CMath.s_pct(val);
+				if(bonusDamage != 0)
+					bonusDamage -= (int)Math.round(CMath.mul(bonusDamage, pct));
+				if(bonusDamage != 0)
+					pctDamage -= CMath.mul(pctDamage, pct);
+				setMiscText(makeMiscText());
+			}
+			else
+			if(code.equalsIgnoreCase("TONEDOWN-MISC"))
+			{
+			}
+			else
+			if(code.equalsIgnoreCase("TONEUP"))
+			{
+				setStat("TONEUP-ARMOR",val);
+				setStat("TONEUP-WEAPON",val);
+				setStat("TONEUP-MISC",val);
+			}
+			else
+			if(code.equalsIgnoreCase("TONEUP-ARMOR"))
+			{
+				final double pct=CMath.s_pct(val);
+				if(bonusDamage != 0)
+					bonusDamage += (int)Math.round(CMath.mul(bonusDamage, pct));
+				if(bonusDamage != 0)
+					pctDamage += CMath.mul(pctDamage, pct);
+				setMiscText(makeMiscText());
+			}
+			else
+			if(code.equalsIgnoreCase("TONEUP-WEAPON"))
+			{
+				final double pct=CMath.s_pct(val);
+				if(bonusDamage != 0)
+					bonusDamage += (int)Math.round(CMath.mul(bonusDamage, pct));
+				if(bonusDamage != 0)
+					pctDamage += CMath.mul(pctDamage, pct);
+				setMiscText(makeMiscText());
+			}
+			else
+			if(code.equalsIgnoreCase("TONEUP-MISC"))
+			{
+			}
+		}
+		super.setStat(code, val);
 	}
 }

@@ -1299,7 +1299,6 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 				setMiscText(s);
 			}
 		}
-		else
-			super.setStat(code, val);
+		super.setStat(code, val);
 	}
 }
