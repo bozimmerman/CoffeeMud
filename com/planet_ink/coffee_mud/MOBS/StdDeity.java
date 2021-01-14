@@ -751,11 +751,20 @@ public class StdDeity extends StdMOB implements Deity
 	public boolean alreadyPowered(final MOB mob)
 	{
 		if(numPowers()>0)
-		for(int a=0;a<mob.numAbilities();a++)
 		{
-			final Ability A=mob.fetchAbility(a);
-			if((A!=null)&&(!A.isSavable()))
-				return true;
+			for(int a=0;a<mob.numAbilities();a++)
+			{
+				final Ability A=mob.fetchAbility(a);
+				if((A!=null)
+				&&(!A.isSavable()))
+				{
+					for(final Ability pA : this.powers)
+					{
+						if(pA.ID().equals(A.ID()))
+							return true;
+					}
+				}
+			}
 		}
 		return false;
 	}
