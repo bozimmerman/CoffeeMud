@@ -209,7 +209,6 @@ public class Prop_HaveSpellCast extends Prop_SpellAdder
 				*/
 			}
 		}
-		else
-			super.setStat(code, val);
+		super.setStat(code, val);
 	}
 }

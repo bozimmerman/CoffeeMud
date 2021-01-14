@@ -548,7 +548,73 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 				}
 				return str.toString();
 			}
+			else
+			if(code.equalsIgnoreCase("STAT-LEVEL"))
+			{
+				int level=0;
+				for(final Object o : new Object[] {
+						allAbsorb,
+						msgTypes,
+						weapTypes,
+						weapClass,
+						weapMats,
+						weapMagic,
+						weapLvls,
+						ableDomains,
+						ableCodes,
+						ableIDs,
+						ableFlags
+				})
+				{
+					if(o instanceof Map)
+					{
+						@SuppressWarnings("rawtypes")
+						final Map m = (Map)o;
+						level += (5*m.size());
+					}
+					else
+						level += 10;
+				}
+				return ""+level;
+			}
+			else
+			if(code.toUpperCase().startsWith("STAT-"))
+				return "";
 		}
 		return "";
+	}
+
+	@Override
+	public void setStat(final String code, final String val)
+	{
+		if(code!=null)
+		{
+			if(code.equalsIgnoreCase("STAT-LEVEL"))
+			{
+			}
+			else
+			if(code.equalsIgnoreCase("TONEDOWN"))
+			{
+				setStat("TONEDOWN-MISC",val);
+			}
+			else
+			if((code.equalsIgnoreCase("TONEDOWN-ARMOR"))
+			||(code.equalsIgnoreCase("TONEDOWN-WEAPON"))
+			||(code.equalsIgnoreCase("TONEDOWN-MISC")))
+			{
+			}
+			else
+			if(code.equalsIgnoreCase("TONEUP"))
+			{
+				setStat("TONEUP-MISC",val);
+			}
+			else
+			if((code.equalsIgnoreCase("TONEUP-ARMOR"))
+			||(code.equalsIgnoreCase("TONEUP-WEAPON"))
+			||(code.equalsIgnoreCase("TONEUP-MISC")))
+			{
+			}
+		}
+		super.setStat(code, val);
 	}
 }
