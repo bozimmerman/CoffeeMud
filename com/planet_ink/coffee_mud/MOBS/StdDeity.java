@@ -725,12 +725,18 @@ public class StdDeity extends StdMOB implements Deity
 				Ability A=mob.fetchAbility(a);
 				if((A!=null)&&(!A.isSavable()))
 				{
-					mob.delAbility(A);
-					A=mob.fetchEffect(A.ID());
-					if(A!=null)
+					for(final Ability pA : this.powers)
 					{
-						A.unInvoke();
-						mob.delEffect(A);
+						if(pA.ID().equals(A.ID()))
+						{
+							mob.delAbility(A);
+							A=mob.fetchEffect(A.ID());
+							if(A!=null)
+							{
+								A.unInvoke();
+								mob.delEffect(A);
+							}
+						}
 					}
 				}
 			}
