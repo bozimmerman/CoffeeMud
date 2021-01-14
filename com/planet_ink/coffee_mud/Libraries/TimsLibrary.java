@@ -235,19 +235,19 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				final long flags=A.flags();
 				final int triggers=((TriggeredAffect) A).triggerMask();
 				if( CMath.bset( flags, Ability.FLAG_ADJUSTER )
-				&& (( triggers&(TriggeredAffect.TRIGGER_WEAR_WIELD|TriggeredAffect.TRIGGER_GET|TriggeredAffect.TRIGGER_MOUNT ))>0))
+				&& (( triggers&(TriggeredAffect.TRIGGER_ALWAYS|TriggeredAffect.TRIGGER_WEAR_WIELD|TriggeredAffect.TRIGGER_GET|TriggeredAffect.TRIGGER_MOUNT ))>0))
 					props.add(A);
 				else
 				if( CMath.bset( flags, Ability.FLAG_RESISTER )
-				&& (( triggers&(TriggeredAffect.TRIGGER_WEAR_WIELD|TriggeredAffect.TRIGGER_GET|TriggeredAffect.TRIGGER_MOUNT ))>0))
+				&& (( triggers&(TriggeredAffect.TRIGGER_ALWAYS|TriggeredAffect.TRIGGER_WEAR_WIELD|TriggeredAffect.TRIGGER_GET|TriggeredAffect.TRIGGER_MOUNT ))>0))
 					props.add(A);
 				else
 				if( CMath.bset( flags, Ability.FLAG_ZAPPER )
-				&& (( triggers&(TriggeredAffect.TRIGGER_WEAR_WIELD|TriggeredAffect.TRIGGER_GET|TriggeredAffect.TRIGGER_MOUNT ))>0))
+				&& (( triggers&(TriggeredAffect.TRIGGER_ALWAYS|TriggeredAffect.TRIGGER_WEAR_WIELD|TriggeredAffect.TRIGGER_GET|TriggeredAffect.TRIGGER_MOUNT ))>0))
 					props.add(A);
 				else
 				if( CMath.bset( flags, Ability.FLAG_ENABLER )
-				&& (( triggers&(TriggeredAffect.TRIGGER_WEAR_WIELD|TriggeredAffect.TRIGGER_GET|TriggeredAffect.TRIGGER_MOUNT ))>0))
+				&& (( triggers&(TriggeredAffect.TRIGGER_ALWAYS|TriggeredAffect.TRIGGER_WEAR_WIELD|TriggeredAffect.TRIGGER_GET|TriggeredAffect.TRIGGER_MOUNT ))>0))
 					props.add(A);
 				else
 				if( CMath.bset( flags, Ability.FLAG_CASTER )

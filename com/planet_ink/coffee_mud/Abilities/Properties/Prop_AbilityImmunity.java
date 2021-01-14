@@ -84,6 +84,12 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 	}
 
 	@Override
+	public long flags()
+	{
+		return Ability.FLAG_RESISTER;
+	}
+
+	@Override
 	public void setMiscText(final String newText)
 	{
 		immStr = null;
@@ -163,9 +169,9 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 					A=CMClass.findAbility(diseaseID);
 				if(A!=null)
 				{
-					int mul=1;
+					int mul=-1;
 					if(A.abstractQuality()==Ability.QUALITY_MALICIOUS)
-						mul=-1;
+						mul=1;
 					level += ((mul*(CMLib.ableMapper().lowestQualifyingLevel(A.ID()))/2));
 				}
 			}
