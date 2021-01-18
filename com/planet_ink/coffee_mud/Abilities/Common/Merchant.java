@@ -648,6 +648,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		&&((affected instanceof Room)
 			||(affected instanceof Exit)
 			||((affected instanceof Item)&&(!canPossiblyVend(affected,msg.tool()))))
+		&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_INTERMSG))
 		&&(putUpForSale(msg.source(),merchantM,msg.target())))
 			return;
 		else
