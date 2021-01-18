@@ -558,7 +558,7 @@ public interface RawMaterial extends Item
 	public final static int	RESOURCE_CHLORINE		= MATERIAL_GAS | 186;
 	public final static int	RESOURCE_ALUMINUM		= MATERIAL_METAL | 187;
 	public final static int	RESOURCE_TITANIUM		= MATERIAL_METAL | 188;
-	public final static int	RESOURCE_FIBREGLASS		= MATERIAL_CLOTH | 189;
+	public final static int	RESOURCE_FIBREGLASS		= MATERIAL_SYNTHETIC | 189;
 	public final static int	RESOURCE_ULTRANIUM		= MATERIAL_METAL | 190;
 	public final static int	RESOURCE_DURANIUM		= MATERIAL_METAL | 191;
 	public final static int	RESOURCE_URANIUM		= MATERIAL_ROCK  | 192;
