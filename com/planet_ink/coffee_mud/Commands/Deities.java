@@ -55,11 +55,11 @@ public class Deities extends StdCommand
 		{
 			msg.append("^N (");
 			int faction=D.fetchFaction(CMLib.factions().getAlignmentID());
-			Faction.FRange range1=CMLib.factions().getRange(CMLib.factions().getAlignmentID(), faction);
+			final Faction.FRange range1=CMLib.factions().getRange(CMLib.factions().getAlignmentID(), faction);
 			if(range1!=null)
 				msg.append(range1.name());
 			faction=D.fetchFaction(CMLib.factions().getInclinationID());
-			Faction.FRange range2=CMLib.factions().getRange(CMLib.factions().getInclinationID(), faction);
+			final Faction.FRange range2=CMLib.factions().getRange(CMLib.factions().getInclinationID(), faction);
 			if(range2!=null)
 				msg.append((range1!=null)?"/":"").append(range2.name());
 			msg.append(")");
@@ -74,7 +74,7 @@ public class Deities extends StdCommand
 			msg.append(D.getWorshipRequirementsDesc()+"\n\r");
 		}
 		else
-		if(mob.charStats().getCurrentClass().baseClass().equals("Cleric"))
+		if(mob.charStats().getStat(CharStats.STAT_FAITH)>=100)
 			msg.append(D.getClericRequirementsDesc()+"\n\r");
 		else
 			msg.append(D.getWorshipRequirementsDesc()+"\n\r");
@@ -96,7 +96,7 @@ public class Deities extends StdCommand
 				msg.append(D.getWorshipTriggerDesc()+"\n\r");
 			}
 			else
-			if(mob.charStats().getCurrentClass().baseClass().equals("Cleric"))
+			if(mob.charStats().getStat(CharStats.STAT_FAITH)>=100)
 				msg.append(D.getClericTriggerDesc()+"\n\r");
 			else
 				msg.append(D.getWorshipTriggerDesc()+"\n\r");

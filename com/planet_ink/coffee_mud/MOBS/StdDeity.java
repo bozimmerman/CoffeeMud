@@ -408,7 +408,7 @@ public class StdDeity extends StdMOB implements Deity
 						CMLib.commands().postSay(msg.source(),null,L("I already worship @x1.",msg.source().charStats().getWorshipCharID()));
 					return false;
 				}
-				if(msg.source().charStats().getCurrentClass().baseClass().equalsIgnoreCase("Cleric"))
+				if(msg.source().charStats().getStat(CharStats.STAT_FAITH)>=100)
 				{
 					if(!CMLib.masking().maskCheck(getClericRequirements(),msg.source(),true))
 					{

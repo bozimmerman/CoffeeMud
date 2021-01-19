@@ -81,7 +81,7 @@ public class Prayer_Faithless extends Prayer
 				return Ability.QUALITY_INDIFFERENT;
 			if(target instanceof MOB)
 			{
-				if(((MOB)target).charStats().getCurrentClass().baseClass().equals("Cleric"))
+				if(((MOB)target).charStats().getStat(CharStats.STAT_FAITH)>=100)
 					return Ability.QUALITY_INDIFFERENT;
 				if(CMLib.flags().isAnimalIntelligence(((MOB)target))||CMLib.flags().isGolem(target))
 					return Ability.QUALITY_INDIFFERENT;
@@ -98,7 +98,7 @@ public class Prayer_Faithless extends Prayer
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
-		if((!auto)&&(target.charStats().getCurrentClass().baseClass().equals("Cleric")))
+		if((!auto)&&(target.charStats().getStat(CharStats.STAT_FAITH)>=100))
 		{
 			mob.tell(L("@x1 can not be affected by this prayer.",target.name(mob)));
 			return false;
