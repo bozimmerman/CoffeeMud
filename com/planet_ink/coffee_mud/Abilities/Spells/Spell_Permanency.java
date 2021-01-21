@@ -134,6 +134,7 @@ public class Spell_Permanency extends Spell
 				}
 				else
 				{
+					theOne.setInvoker(null);
 					theOne.makeNonUninvokable();
 					theOne.setSavable(true);
 					mob.baseState().setMana(mob.baseState().getMana()-100);
