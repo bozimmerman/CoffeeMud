@@ -1057,6 +1057,16 @@ public class CraftingSkill extends GatheringSkill
 		int bestDiff=Integer.MAX_VALUE;
 		final List<List<String>> choices=new ArrayList<List<String>>();
 		final List<List<String>> recipes=fetchRecipes();
+		for(int r=0;r<recipes.size();r++)
+		{
+			final int ilevel=CMath.s_int(recipes.get(r).get(RCP_LEVEL));
+			if(ilevel>0)
+			{
+				final int diff=(ilevel>maxlevel)?CMath.abs(ilevel-maxlevel):(ilevel<minlevel)?CMath.abs(ilevel-minlevel):0;
+				if(diff < bestDiff)
+					bestDiff = diff;
+			}
+		}
 
 		for(int r=0;r<recipes.size();r++)
 		{
@@ -1066,12 +1076,6 @@ public class CraftingSkill extends GatheringSkill
 				final int diff=(ilevel>maxlevel)?CMath.abs(ilevel-maxlevel):(ilevel<minlevel)?CMath.abs(ilevel-minlevel):0;
 				if(diff == bestDiff)
 					choices.add(recipes.get(r));
-				else
-				{
-					choices.clear();
-					bestDiff=diff;
-					choices.add(recipes.get(r));
-				}
 			}
 		}
 		if(choices.size()==0)
