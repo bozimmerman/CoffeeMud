@@ -571,8 +571,12 @@ public class CombatAbilities extends ActiveTicker
 			else
 			if(leaderQuality==Ability.QUALITY_BENEFICIAL_OTHERS)
 				target=((leader==null)||(mob.location()!=leader.location()))?mob:leader;
-			if((target != null) && (tryA != null) && (target.fetchEffect(tryA.ID())!=null))
-				tryA = null;
+			if((target != null) && (tryA != null))
+			{
+				final Ability eA=target.fetchEffect(tryA.ID());
+				if((eA!=null)&&(!eA.isNowAnAutoEffect()))
+					tryA = null;
+			}
 		}
 
 		if(tryA!=null)
