@@ -111,6 +111,14 @@ public class Thief_CaseJoint extends ThiefSkill
 	}
 
 	@Override
+	protected int getProficiencyBonus(final int oldBonus, Ability A)
+	{
+		if(otherSide && (oldBonus<100))
+			return oldBonus+ticks;
+		return 0;
+	}
+	
+	@Override
 	protected int getExpertiseBonus(final int oldBonus, Ability A)
 	{
 		if(otherSide && (oldBonus<10))
