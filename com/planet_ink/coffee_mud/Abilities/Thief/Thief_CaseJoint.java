@@ -113,7 +113,10 @@ public class Thief_CaseJoint extends ThiefSkill
 	@Override
 	protected int getProficiencyBonus(final int oldBonus, Ability A)
 	{
-		if(otherSide && (oldBonus<100))
+		if(otherSide 
+		&& (oldBonus<100)
+		&& (affected instanceof MOB)
+		&&(((MOB)affected).location()==mark))
 			return oldBonus+ticks;
 		return 0;
 	}
@@ -121,7 +124,10 @@ public class Thief_CaseJoint extends ThiefSkill
 	@Override
 	protected int getExpertiseBonus(final int oldBonus, Ability A)
 	{
-		if(otherSide && (oldBonus<10))
+		if(otherSide 
+		&& (oldBonus<10)
+		&& (affected instanceof MOB)
+		&&(((MOB)affected).location()==mark))
 		{
 			final int newBonus=oldBonus+(ticks/2);
 			return newBonus>12?12:newBonus;
@@ -154,7 +160,7 @@ public class Thief_CaseJoint extends ThiefSkill
 		super.affectPhyStats(affected,affectableStats);
 		if(otherSide
 		&& (affected instanceof MOB)
-		&&(((MOB)affected).getVictim()==mark))
+		&&(((MOB)affected).location()==mark))
 		{
 			final int xlvl=super.getXLEVELLevel(invoker());
 			affectableStats.setDamage(affectableStats.damage()+((ticks+xlvl)/20));
