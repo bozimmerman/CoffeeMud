@@ -266,7 +266,7 @@ public class Trap_FloodRoom extends StdTrap
 	public void disable()
 	{
 		super.disable();
-		if((affected!=null)&&(affected instanceof Room))
+		if((affected instanceof Room))
 		{
 			((Room)affected).recoverPhyStats();
 			((Room)affected).recoverRoomStats();

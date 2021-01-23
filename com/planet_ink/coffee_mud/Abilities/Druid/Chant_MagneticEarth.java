@@ -77,7 +77,7 @@ public class Chant_MagneticEarth extends Chant
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		if((affected!=null)&&(affected instanceof Room))
+		if((affected instanceof Room))
 		{
 			final Room R=(Room)affected;
 			final List<Item> toGo=new ArrayList<Item>(1);

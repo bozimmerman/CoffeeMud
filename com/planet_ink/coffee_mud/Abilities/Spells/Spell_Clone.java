@@ -135,7 +135,7 @@ public class Spell_Clone extends Spell
 			if((!CMLib.flags().isInTheGame(invoker, false))
 			||(invoker.amDead())
 			||(invoker.amDestroyed())
-			||((affected!=null)&&(affected instanceof MOB)&&(invoker.location()!=((MOB)affected).location())))
+			||((affected instanceof MOB)&&(invoker.location()!=((MOB)affected).location())))
 				unInvoke();
 		}
 		return super.tick(ticking, tickID);

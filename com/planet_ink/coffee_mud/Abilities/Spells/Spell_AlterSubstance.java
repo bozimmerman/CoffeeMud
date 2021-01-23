@@ -87,7 +87,7 @@ public class Spell_AlterSubstance extends Spell
 	@Override
 	public void unInvoke()
 	{
-		if((affected!=null)&&(affected instanceof Item)&&(super.canBeUninvoked()))
+		if((affected instanceof Item)&&(super.canBeUninvoked()))
 		{
 			final Item I=(Item)affected;
 			I.setMaterial(oldMaterial);

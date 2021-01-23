@@ -150,7 +150,7 @@ public class Prayer_FlameWeapon extends Prayer
 		// undo the affects of this spell
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof Item))
+			if((affected instanceof Item))
 			{
 				if(((((Weapon)affected).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
 				||((((Weapon)affected).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION))

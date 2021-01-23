@@ -95,7 +95,7 @@ public class Composting extends GatheringSkill
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if((affected!=null)&&(affected instanceof Room))
+		if((affected instanceof Room))
 		{
 			final MOB mob=invoker();
 			if(tickUp==6)

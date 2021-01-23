@@ -98,7 +98,7 @@ public class Spell_IncreaseGravity extends Spell
 		if(!super.tick(ticking,tickID))
 			return false;
 		else
-		if((affected!=null)&&(affected instanceof Room)&&(invoker!=null))
+		if((affected instanceof Room)&&(invoker!=null))
 		{
 			final Room room=(Room)affected;
 			for(int i=0;i<room.numInhabitants();i++)

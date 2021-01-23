@@ -234,7 +234,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	@Override
 	public String landPropertyID()
 	{
-		if((affected!=null)&&(affected instanceof Room))
+		if((affected instanceof Room))
 			return CMLib.map().getExtendedRoomID(((Room)affected));
 		return "";
 	}

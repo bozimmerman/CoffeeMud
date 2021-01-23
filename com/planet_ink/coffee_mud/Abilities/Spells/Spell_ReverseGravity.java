@@ -103,7 +103,7 @@ public class Spell_ReverseGravity extends Spell
 		else
 		{
 			final MOB invoker = this.invoker;
-			if((affected!=null)&&(affected instanceof Room)&&(invoker!=null))
+			if((affected instanceof Room)&&(invoker!=null))
 			{
 				final Room room=(Room)affected;
 				for(int i=0;i<room.numInhabitants();i++)

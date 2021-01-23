@@ -80,7 +80,7 @@ public class Chant_SweetScent extends Chant
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((affected!=null)&&(affected instanceof Item)&&((tickDown--)<=0))
+		if((affected instanceof Item)&&((tickDown--)<=0))
 		{
 			tickDown = 2;
 			final Item I=(Item)affected;

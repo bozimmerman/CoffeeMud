@@ -105,7 +105,7 @@ public class Play_Blues extends Play
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((affected!=null)&&(affected instanceof MOB)&&(affected!=invoker()))
+		if((affected instanceof MOB)&&(affected!=invoker()))
 		{
 			final MOB mob=(MOB)affected;
 			mob.curState().adjHunger(-2,mob.maxState().maxHunger(mob.baseWeight()));

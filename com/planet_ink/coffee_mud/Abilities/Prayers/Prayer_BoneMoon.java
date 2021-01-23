@@ -106,7 +106,7 @@ public class Prayer_BoneMoon extends Prayer
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if((affected!=null)&&(affected instanceof Room))
+		if((affected instanceof Room))
 		{
 			final Room R=(Room)affected;
 			DeadBody B=null;

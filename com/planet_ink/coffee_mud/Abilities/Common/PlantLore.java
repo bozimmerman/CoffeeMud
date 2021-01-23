@@ -73,7 +73,7 @@ public class PlantLore extends CommonSkill
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
+		if((affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
 			final MOB mob=(MOB)affected;
 			if(tickUp==6)
@@ -94,7 +94,7 @@ public class PlantLore extends CommonSkill
 	{
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof MOB)&&(!helping))
+			if((affected instanceof MOB)&&(!helping))
 			{
 				final MOB mob=(MOB)affected;
 				final Room room=mob.location();

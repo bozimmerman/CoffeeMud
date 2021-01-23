@@ -145,7 +145,7 @@ public class Thief extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_SneakAttack",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_Countertracking",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_WandUse",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_CaseJoint",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Thief_Sneak",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Thief_Autosneak",false,CMParms.parseSemicolons("*_Sneak",true));
@@ -172,6 +172,7 @@ public class Thief extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Thief_Steal",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_Trip",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_WandUse",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Thief_Listen",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_TwoWeaponFighting",false);

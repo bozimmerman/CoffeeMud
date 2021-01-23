@@ -126,7 +126,7 @@ public class Sinking extends StdAbility
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if((affected!=null)&&(affected instanceof MOB)&&(msg.amISource((MOB)affected)))
+		if((affected instanceof MOB)&&(msg.amISource((MOB)affected)))
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_ENTER)
 			&&(msg.target() instanceof Room)

@@ -75,7 +75,7 @@ public class Chant_VolcanicChasm extends Chant
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if((affected!=null)&&(affected instanceof Room))
+		if((affected instanceof Room))
 		{
 			hasTicked=true;
 			final Room R=(Room)affected;

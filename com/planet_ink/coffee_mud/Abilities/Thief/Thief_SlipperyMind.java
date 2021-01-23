@@ -95,7 +95,7 @@ public class Thief_SlipperyMind extends ThiefSkill
 	{
 		if(unInvoked)
 			return false;
-		if((affected!=null)&&(affected instanceof MOB)&&(ticking instanceof MOB))
+		if((affected instanceof MOB)&&(ticking instanceof MOB))
 		{
 			if(!super.tick(ticking,tickID))
 				return false;

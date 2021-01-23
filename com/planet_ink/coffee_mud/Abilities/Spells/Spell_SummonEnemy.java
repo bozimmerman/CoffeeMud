@@ -111,7 +111,7 @@ public class Spell_SummonEnemy extends Spell
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((affected!=null)&&(affected instanceof MOB))
+		if((affected instanceof MOB))
 		{
 			if((msg.amISource((MOB)affected)
 				||msg.amISource(((MOB)affected).amFollowing())

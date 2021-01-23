@@ -123,7 +123,7 @@ public class Chant_SummonMount extends Chant
 	{
 		if(tickID==Tickable.TICKID_MOB)
 		{
-			if((affected!=null)&&(affected instanceof MOB)&&(invoker!=null))
+			if((affected instanceof MOB)&&(invoker!=null))
 			{
 				final MOB mob=(MOB)affected;
 				if((mob.amFollowing()==null)

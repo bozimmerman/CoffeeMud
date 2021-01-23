@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2020 Bo Zimmerman
+   Copyright 2020-2020 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Mark extends ThiefSkill
+public class Thief_CaseJoint extends ThiefSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Thief_Mark";
+		return "Thief_CaseJoint";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Mark");
+	private final static String localizedName = CMLib.lang().L("Case Joint");
 
 	@Override
 	public String name()
@@ -66,7 +66,7 @@ public class Thief_Mark extends ThiefSkill
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"MARK"});
+	private static final String[] triggerStrings =I(new String[] {"CASEJOINT"});
 	@Override
 	public String[] triggerStrings()
 	{
@@ -74,21 +74,9 @@ public class Thief_Mark extends ThiefSkill
 	}
 
 	@Override
-	public boolean isAutoInvoked()
-	{
-		return true;
-	}
-
-	@Override
-	public boolean canBeUninvoked()
-	{
-		return false;
-	}
-
-	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_COMBATLORE;
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;
 	}
 
 	@Override
@@ -105,42 +93,50 @@ public class Thief_Mark extends ThiefSkill
 
 	protected int code=0;
 
-	public int ticks=0;
-	public MOB mark=null;
+	public volatile int ticks=0;
+	public Room mark=null;
+	public volatile boolean otherSide = false;
 
 	@Override
 	public String displayText()
 	{
 		if(mark!=null)
-			return "(Marked: "+mark.name()+", "+ticks+" ticks)";
+		{
+			if(otherSide)
+				return "(Casing: "+mark.name()+", "+ticks+" ticks)";
+			else
+				return "(Cased: "+mark.name()+")";
+		}
 		return "";
 	}
 
 	@Override
+	protected int getExpertiseBonus(final int oldBonus)
+	{
+		if(otherSide && (oldBonus<10))
+		{
+			final int newBonus=oldBonus+(ticks/2);
+			return newBonus>12?12:newBonus;
+		}
+		return 0;
+	}
+
+	@Override
+	public void setMiscText(final String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		otherSide=false;
+		ticks=0;
+		if(newMiscText.length()>0)
+		{
+			final Room R=CMLib.map().getRoom(newMiscText);
+			if(R!=null)
+				mark=R;
+		}
+	}
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-
-		final MOB mark=this.mark;
-		if(mark != null)
-		{
-			if(msg.amISource(mark)&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
-			{
-				this.mark=null;
-				ticks=0;
-				setMiscText("");
-			}
-			else
-			if((msg.target()==mark)
-			&&(msg.source()==invoker)
-			&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
-			&&(CMLib.flags().canBeSeenBy(mark,msg.source())))
-			{
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,
-											  CMMsg.MSG_OK_VISUAL,L("\n\r^x@x1 is your mark.^?^.\n\r",mark.name(msg.source())),
-											  CMMsg.NO_EFFECT,null,
-											  CMMsg.NO_EFFECT,null));
-			}
-		}
 		super.executeMsg(myHost,msg);
 	}
 
@@ -148,11 +144,18 @@ public class Thief_Mark extends ThiefSkill
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if((affected instanceof MOB)&&(((MOB)affected).getVictim()==mark))
+		if(otherSide
+		&& (affected instanceof MOB)
+		&&(((MOB)affected).getVictim()==mark))
 		{
 			final int xlvl=super.getXLEVELLevel(invoker());
 			affectableStats.setDamage(affectableStats.damage()+((ticks+xlvl)/20));
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+((ticks+xlvl)/2));
+			final double adjustedLevel=adjustedLevel((MOB)affected,0);
+			final int expertise=super.getXLEVELLevel((MOB)affected);
+			final int attBonus=(int)Math.round(0.33 * adjustedLevel)+3+(3*expertise);
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+attBonus);
+			final int armBonus=(int)Math.round(0.14 * adjustedLevel)+1+(1*expertise);
+			affectableStats.setArmor(affectableStats.armor()-armBonus);
 		}
 	}
 
@@ -162,41 +165,29 @@ public class Thief_Mark extends ThiefSkill
 		if((text().length()==0)
 		||((affected==null)||(!(affected instanceof MOB))))
 		   return super.tick(ticking,tickID);
-		final MOB mob=(MOB)affected;
-		if(mob.location()!=null)
+		final Room mark=this.mark;
+		final Physical P=affected;
+		if((mark != null)&&(P instanceof MOB))
 		{
-			if(mark==null)
+			final MOB mob=(MOB)P;
+			if(mob.location()!=mark)
 			{
-				final int x=text().indexOf('/');
-				if(x<0)
-					return super.tick(ticking,tickID);
-				final MOB M=mob.location().fetchInhabitant(text().substring(0,x));
-				if(M!=null)
+				unInvoke();
+				return false;
+			}
+			if(!otherSide)
+			{
+				if(!CMLib.flags().isHidden(mob)||(mob.isInCombat()))
 				{
-					mark=M;
-					ticks=CMath.s_int(text().substring(x+1));
+					otherSide=true;
+					final int maxTicks=(super.adjustedLevel(mob,0)/5)+super.getXTIMELevel(mob);
+					if(ticks>maxTicks)
+						ticks=maxTicks;
+					setTickDownRemaining(ticks);
+					mob.recoverPhyStats();
 				}
 				else
-				{
-					mark=null;
-					ticks=0;
-					setMiscText("");
-				}
-			}
-			else
-			if(mob.location().isInhabitant(mark)
-			&&(CMLib.flags().canBeSeenBy(mark,mob))
-			&&(!CMLib.flags().canBeSeenBy(mob,mark)))
-			{
-				ticks++;
-				setMiscText(mark.Name()+"/"+ticks);
-			}
-			else
-			if(mark.amDestroyed())
-			{
-				mark=null;
-				ticks=0;
-				setMiscText("");
+					ticks++;
 			}
 		}
 		return true;
@@ -205,53 +196,41 @@ public class Thief_Mark extends ThiefSkill
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		if(commands.size()<1)
-		{
-			mob.tell(L("Who would you like to mark?"));
-			return false;
-		}
-		final MOB target=getTarget(mob,commands,givenTarget);
+		final Room target=mob.location();
 		if(target==null)
 			return false;
-		if(target==mob)
+
+		if(mob.fetchEffect(ID())!=null)
 		{
-			mob.tell(L("You cannot mark yourself!"));
+			mob.tell(L("You are already casing a join."));
 			return false;
 		}
-		Ability A=mob.fetchEffect(ID());
-		if((A!=null)&&(((Thief_Mark)A).mark==target))
+
+		if((!auto)&&(!CMLib.flags().isHidden(mob)))
 		{
-			mob.delEffect(A);
-			mob.tell(L("You remove your mark from @x1",target.name(mob)));
-			return true;
+			mob.tell(L("You must be hidden to do that."));
+			return false;
 		}
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(2*getXLEVELLevel(mob)));
-		if(levelDiff<0)
-			levelDiff=0;
-		levelDiff*=5;
-		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
 			return beneficialVisualFizzle(mob,target,L("<S-NAME> lose(s) <S-HIS-HER> concentration on <T-NAMESELF>."));
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,L("<S-NAME> mark(s) <T-NAMESELF>."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,L("<S-NAME> start(s) casing <T-NAMESELF>."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			A=mob.fetchEffect(ID());
-			if(A==null)
+			final Ability A=super.beneficialAffect(mob, mob, asLevel, 0);
+			if(A!=null)
 			{
-				A=(Ability)copyOf();
-				mob.addEffect(A);
-				A.makeNonUninvokable();
+				A.makeLongLasting();
+				A.setMiscText(CMLib.map().getExtendedRoomID(target));
+				if(A instanceof Thief_CaseJoint)
+					((Thief_CaseJoint)A).mark=target;
 			}
-			((Thief_Mark)A).mark=target;
-			((Thief_Mark)A).invoker=mob;
-			((Thief_Mark)A).ticks=0;
-			A.setMiscText(target.Name()+"/0");
-			mob.tell(L("You may use the mark skill again to unmark them."));
 		}
 		return success;
 	}

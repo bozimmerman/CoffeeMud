@@ -83,7 +83,7 @@ public class Chant_MuddyGrounds extends Chant
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
-		if((affected!=null)&&(affected instanceof Room))
+		if((affected instanceof Room))
 			affectableStats.setWeight((affectableStats.weight()*2)+1);
 	}
 

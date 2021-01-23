@@ -84,7 +84,7 @@ public class Spell_LightenItem extends Spell
 	public void unInvoke()
 	{
 		if((canBeUninvoked())
-		&&((affected!=null)&&(affected instanceof Item)))
+		&&((affected instanceof Item)))
 		{
 			final Item item=(Item)affected;
 			if((item.owner()!=null)

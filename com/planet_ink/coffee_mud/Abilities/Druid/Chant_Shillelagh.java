@@ -97,7 +97,7 @@ public class Chant_Shillelagh extends Chant
 		// undo the affects of this spell
 		if(canBeUninvoked())
 		{
-			if(((affected!=null)&&(affected instanceof Item))
+			if(((affected instanceof Item))
 			&&((((Item)affected).owner()!=null)
 			&&(((Item)affected).owner() instanceof MOB)))
 				((MOB)((Item)affected).owner()).tell(L("The enchantment on @x1 fades.",((Item)affected).name()));

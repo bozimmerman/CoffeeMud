@@ -116,7 +116,7 @@ public class LockSmith extends CraftingSkill
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
+		if((affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
 			final MOB mob=(MOB)affected;
 			if((workingOn instanceof Container) && (mob.location()!=CMLib.map().roomLocation(workingOn)))

@@ -201,7 +201,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 	{
 		if(canBeUninvoked() && (!super.unInvoked))
 		{
-			if((affected!=null)&&(affected instanceof MOB)&&(!helping))
+			if((affected instanceof MOB)&&(!helping))
 			{
 				final MOB mob=(MOB)affected;
 				if(!aborted)

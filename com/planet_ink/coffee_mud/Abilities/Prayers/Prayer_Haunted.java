@@ -110,7 +110,7 @@ public class Prayer_Haunted extends Prayer
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if((affected!=null)&&(affected instanceof Room)&&(numDone<numMax))
+		if((affected instanceof Room)&&(numDone<numMax))
 		{
 			final Room R=(Room)affected;
 			DeadBody B=null;

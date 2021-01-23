@@ -87,7 +87,7 @@ public class Spell_FakeWeapon extends Spell
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected!=null)&&(affected instanceof Item))
+		if((affected instanceof Item))
 		{
 			if((msg.tool()==affected)
 			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))

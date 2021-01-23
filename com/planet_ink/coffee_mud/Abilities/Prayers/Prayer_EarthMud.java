@@ -89,14 +89,14 @@ public class Prayer_EarthMud extends Prayer
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
-		if((affected!=null)&&(affected instanceof Room))
+		if((affected instanceof Room))
 			affectableStats.setWeight((affectableStats.weight()*2)+1);
 	}
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if((affected!=null)&&(affected instanceof Room))
+		if((affected instanceof Room))
 		{
 			final Room R=(Room)affected;
 			for(int m=0;m<R.numInhabitants();m++)

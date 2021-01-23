@@ -201,7 +201,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	@Override
 	public String landPropertyID()
 	{
-		if((affected!=null)&&(affected instanceof Area))
+		if((affected instanceof Area))
 			((Area)affected).Name();
 		else
 		if(affected instanceof Room)

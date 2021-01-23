@@ -89,7 +89,7 @@ public class Spell_FoolsGold extends Spell
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((affected!=null)&&(affected instanceof Item))
+		if((affected instanceof Item))
 		{
 			if((msg.amITarget(affected))&&(msg.targetMinor()==CMMsg.TYP_GET)&&(msg.source()!=invoker))
 				destroyOnNextTick=true;

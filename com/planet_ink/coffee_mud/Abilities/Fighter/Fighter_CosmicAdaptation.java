@@ -124,7 +124,7 @@ public class Fighter_CosmicAdaptation extends FighterSkill
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((affected!=null)&&(affected instanceof MOB))
+		if((affected instanceof MOB))
 		{
 			final MOB mob;
 			synchronized(this)

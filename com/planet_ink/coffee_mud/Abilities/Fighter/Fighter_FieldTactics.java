@@ -106,7 +106,7 @@ public class Fighter_FieldTactics extends FighterSkill
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((affected!=null)&&(affected instanceof MOB)&&(activated))
+		if((affected instanceof MOB)&&(activated))
 		{
 			if(hiding(affected))
 			{

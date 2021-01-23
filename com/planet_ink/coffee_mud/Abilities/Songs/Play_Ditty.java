@@ -71,7 +71,7 @@ public class Play_Ditty extends Play
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((affected!=null)&&(affected instanceof MOB)&&(invoker()!=null))
+		if((affected instanceof MOB)&&(invoker()!=null))
 		{
 			final MOB mob=(MOB)affected;
 			final int healing=4+(int)Math.round(CMath.mul(adjustedLevel(invoker(),0),0.25));

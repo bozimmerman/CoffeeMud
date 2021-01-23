@@ -85,7 +85,7 @@ public class BookEditing extends CommonSkill
 	{
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof MOB)&&(!aborted)&&(!helping))
+			if((affected instanceof MOB)&&(!aborted)&&(!helping))
 			{
 				final MOB mob=(MOB)affected;
 				if(found==null)

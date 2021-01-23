@@ -112,7 +112,7 @@ public class Thief_ContractHit extends ThiefSkill
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(invoker()!=null))
+		if((affected instanceof MOB)&&(invoker()!=null))
 		{
 			if(super.tickDown==1)
 			{

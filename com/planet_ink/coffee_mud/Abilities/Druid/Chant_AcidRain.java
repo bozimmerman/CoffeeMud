@@ -92,7 +92,7 @@ public class Chant_AcidRain extends Chant
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		if((affected!=null)&&(affected instanceof Room))
+		if((affected instanceof Room))
 		{
 			final Room R=(Room)affected;
 			if(isRaining(R))
