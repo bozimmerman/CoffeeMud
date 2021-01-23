@@ -79,7 +79,7 @@ public class ThiefSkill extends StdAbility
 		return CAN_MOBS;
 	}
 
-	protected int getExpertiseBonus(final int oldBonus)
+	protected int getExpertiseBonus(final int oldBonus, Ability A)
 	{
 		return 0;
 	}
@@ -114,7 +114,7 @@ public class ThiefSkill extends StdAbility
 			{
 				final Ability A=mob.fetchEffect(i);
 				if((A instanceof ThiefSkill)&&(!A.ID().equals(ID())))
-					xlevel += ((ThiefSkill)A).getExpertiseBonus(xlevel);
+					xlevel += ((ThiefSkill)A).getExpertiseBonus(xlevel, this);
 			}
 		}
 		return xlevel;
