@@ -103,9 +103,9 @@ public class Thief_CaseJoint extends ThiefSkill
 		if(mark!=null)
 		{
 			if(otherSide)
-				return "(Casing: "+mark.name()+", "+ticks+" ticks)";
-			else
 				return "(Cased: "+mark.name()+")";
+			else
+				return "(Casing: "+mark.name()+", "+ticks+" ticks)";
 		}
 		return "";
 	}
