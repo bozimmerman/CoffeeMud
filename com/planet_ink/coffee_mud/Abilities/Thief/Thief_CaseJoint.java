@@ -126,10 +126,11 @@ public class Thief_CaseJoint extends ThiefSkill
 	{
 		if(otherSide 
 		&& (oldBonus<10)
+		&&(ticks>29)
 		&& (affected instanceof MOB)
 		&&(((MOB)affected).location()==mark))
 		{
-			final int newBonus=oldBonus+(ticks/2);
+			final int newBonus=oldBonus+(ticks/30);
 			return newBonus>12?12:newBonus;
 		}
 		return 0;
