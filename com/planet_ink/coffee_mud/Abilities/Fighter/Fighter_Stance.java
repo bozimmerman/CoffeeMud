@@ -302,7 +302,8 @@ public class Fighter_Stance extends FighterSkill
 		}
 
 		final String stanceStr=CMStrings.capitalizeAndLower(CMParms.combine(commands,0));
-		if(CMath.s_valueOf(Stances.class, stanceStr)==null)
+		final Stances stance=(Stances)CMath.s_valueOf(Stances.class, stanceStr);
+		if(stance==null)
 		{
 			mob.tell(L("'@x1' is an invalid fighting stance.  Try @x2.",stanceStr,CMParms.toListString(Stances.values())));
 			return false;
@@ -319,7 +320,11 @@ public class Fighter_Stance extends FighterSkill
 			final Room R=mob.location();
 			if(R==null)
 				return false;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("^F<S-NAME> get(s) into a @x1 fighting stance.^N",stanceStr));
+			final CMMsg msg;
+			if(stance==Stances.None)
+				msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> <S-IS-ARE> no longre in a formal fighting stance.^N",stanceStr));
+			else
+				msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("^F<S-NAME> get(s) into a @x1 fighting stance.^N",stanceStr));
 			if((R!=null)&&(R.okMessage(mob,msg)))
 			{
 				R.send(mob,msg);

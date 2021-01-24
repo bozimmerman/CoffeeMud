@@ -163,13 +163,11 @@ public class Thief_CaseJoint extends ThiefSkill
 		&& (affected instanceof MOB)
 		&&(((MOB)affected).location()==mark))
 		{
-			final int xlvl=super.getXLEVELLevel(invoker());
-			affectableStats.setDamage(affectableStats.damage()+((ticks+xlvl)/20));
 			final double adjustedLevel=adjustedLevel((MOB)affected,0);
 			final int expertise=super.getXLEVELLevel((MOB)affected);
-			final int attBonus=(int)Math.round(0.33 * adjustedLevel)+3+(3*expertise);
+			final int attBonus=(int)Math.round(0.25 * adjustedLevel)+2+(2*expertise);
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+attBonus);
-			final int armBonus=(int)Math.round(0.14 * adjustedLevel)+1+(1*expertise);
+			final int armBonus=(int)Math.round(0.12 * adjustedLevel)+1+(1*expertise);
 			affectableStats.setArmor(affectableStats.armor()-armBonus);
 		}
 	}
