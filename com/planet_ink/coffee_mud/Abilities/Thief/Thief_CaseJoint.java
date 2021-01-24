@@ -124,11 +124,64 @@ public class Thief_CaseJoint extends ThiefSkill
 		}
 	}
 	@Override
-	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		super.executeMsg(myHost,msg);
+		if(!(affected instanceof MOB))
+			return super.okMessage(myHost, msg);
+
+		final MOB mob=(MOB)affected;
+
+		if(msg.amISource(mob) && (!otherSide))
+		{
+			if(((msg.sourceMinor()==CMMsg.TYP_ENTER)
+				||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
+				||(msg.sourceMinor()==CMMsg.TYP_FLEE)
+				||(msg.sourceMinor()==CMMsg.TYP_RECALL))
+			&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
+			&&(msg.sourceMajor()>0))
+			{
+				stopCasing(msg.source());
+			}
+			else
+			if((abilityCode()==0)
+			&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
+			&&(msg.othersMinor()!=CMMsg.TYP_LOOK)
+			&&(msg.othersMinor()!=CMMsg.TYP_EXAMINE)
+			&&(msg.othersMajor()>0))
+			{
+				if(msg.othersMajor(CMMsg.MASK_SOUND))
+				{
+					stopCasing(msg.source());
+				}
+				else
+				switch(msg.othersMinor())
+				{
+				case CMMsg.TYP_SPEAK:
+				case CMMsg.TYP_CAST_SPELL:
+					{
+						stopCasing(msg.source());
+					}
+					break;
+				case CMMsg.TYP_OPEN:
+				case CMMsg.TYP_CLOSE:
+				case CMMsg.TYP_LOCK:
+				case CMMsg.TYP_UNLOCK:
+				case CMMsg.TYP_PUSH:
+				case CMMsg.TYP_PULL:
+					if(((msg.target() instanceof Exit)
+						||((msg.target() instanceof Item)
+						   &&(!msg.source().isMine(msg.target())))))
+					{
+						stopCasing(msg.source());
+					}
+					break;
+				}
+			}
+		}
+		return super.okMessage(myHost, msg);
 	}
 
+	
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
@@ -162,6 +215,33 @@ public class Thief_CaseJoint extends ThiefSkill
 	}
 	
 	@Override
+	public int castingQuality(final MOB mob, final Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+			if(!CMLib.flags().isHidden(mob))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+
+	protected void stopCasing(final MOB mob)
+	{
+		if((mob!=null)
+		&&(mark!=null)
+		&&(!otherSide))
+		{
+			otherSide=true;
+			setTickDownRemaining(ticks);
+			mob.tell(L("You've finished casing @x1, and feel pretty confident.",mark.name(mob)));
+			mob.recoverPhyStats();
+			mob.recoverCharStats();
+		}
+	}
+	
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((text().length()==0)
@@ -181,13 +261,7 @@ public class Thief_CaseJoint extends ThiefSkill
 			{
 				final int maxTicks=(super.adjustedLevel(mob,0)/5)+super.getXTIMELevel(mob);
 				if(!CMLib.flags().isHidden(mob)||(mob.isInCombat()))
-				{
-					otherSide=true;
-					setTickDownRemaining(ticks);
-					mob.tell(L("You've finished casing @x1, and feel pretty confident.",mark.name(mob)));
-					mob.recoverPhyStats();
-					mob.recoverCharStats();
-				}
+					stopCasing(mob);
 				else
 				if(ticks<maxTicks)
 					ticks++;
@@ -203,9 +277,13 @@ public class Thief_CaseJoint extends ThiefSkill
 		if(target==null)
 			return false;
 
-		if(mob.fetchEffect(ID())!=null)
+		final Thief_CaseJoint jointA= (Thief_CaseJoint)mob.fetchEffect(ID());
+		if(jointA!=null)
 		{
-			mob.tell(L("You are already casing a join."));
+			if(jointA.otherSide)
+				mob.tell(L("You have already cased this joint."));
+			else
+				jointA.stopCasing(mob);
 			return false;
 		}
 
