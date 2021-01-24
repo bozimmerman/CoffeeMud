@@ -384,7 +384,14 @@ public class StdAbility implements Ability
 			||(A.canBeUninvoked())
 			||A.isAutoInvoked()))
 		{
-			return CMLib.expertises().getExpertiseLevel(mob, A.ID(), code);
+			int xlevel = CMLib.expertises().getExpertiseLevel(mob, A.ID(), code);
+			final CharStats charStats=mob.charStats(); // circumstantial bonuses
+			final String codeStr="X"+code.name()+"+";
+			xlevel += charStats.getAbilityAdjustment(codeStr+ID().toUpperCase());
+			xlevel += charStats.getAbilityAdjustment(codeStr+Ability.ACODE_DESCS[classificationCode()&Ability.ALL_ACODES]);
+			xlevel += charStats.getAbilityAdjustment(codeStr+Ability.DOMAIN_DESCS[(classificationCode()&Ability.ALL_DOMAINS)>> 5]);
+			xlevel += charStats.getAbilityAdjustment(codeStr+"*");
+			return xlevel;
 		}
 		return 0;
 	}
@@ -675,10 +682,10 @@ public class StdAbility implements Ability
 	protected int getPersonalLevelAdjustments(final MOB caster)
 	{
 		final CharStats charStats = caster.charStats();
-		return  charStats.getAbilityAdjustment("level+"+ID().toUpperCase())
-			+ charStats.getAbilityAdjustment("level+"+Ability.ACODE_DESCS[classificationCode()&Ability.ALL_ACODES])
-			+ charStats.getAbilityAdjustment("level+"+Ability.DOMAIN_DESCS[(classificationCode()&Ability.ALL_DOMAINS)>> 5])
-			+ charStats.getAbilityAdjustment("level+*");
+		return  charStats.getAbilityAdjustment("LEVEL+"+ID().toUpperCase())
+			+ charStats.getAbilityAdjustment("LEVEL+"+Ability.ACODE_DESCS[classificationCode()&Ability.ALL_ACODES])
+			+ charStats.getAbilityAdjustment("LEVEL+"+Ability.DOMAIN_DESCS[(classificationCode()&Ability.ALL_DOMAINS)>> 5])
+			+ charStats.getAbilityAdjustment("LEVEL+*");
 	}
 
 	@Override
@@ -1214,10 +1221,10 @@ public class StdAbility implements Ability
 			if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SUPERSKILL))
 				return true;
 			final CharStats charStats = mob.charStats();
-			pctChance += charStats.getAbilityAdjustment("prof+"+ID().toUpperCase());
-			pctChance += charStats.getAbilityAdjustment("prof+"+Ability.ACODE_DESCS[classificationCode()&Ability.ALL_ACODES]);
-			pctChance += charStats.getAbilityAdjustment("prof+"+Ability.DOMAIN_DESCS[(classificationCode()&Ability.ALL_DOMAINS)>> 5]);
-			pctChance += charStats.getAbilityAdjustment("prof+*");
+			pctChance += charStats.getAbilityAdjustment("PROF+"+ID().toUpperCase());
+			pctChance += charStats.getAbilityAdjustment("PROF+"+Ability.ACODE_DESCS[classificationCode()&Ability.ALL_ACODES]);
+			pctChance += charStats.getAbilityAdjustment("PROF+"+Ability.DOMAIN_DESCS[(classificationCode()&Ability.ALL_DOMAINS)>> 5]);
+			pctChance += charStats.getAbilityAdjustment("PROF+*");
 		}
 
 		if(!CMSecurity.isDisabled(DisFlag.DIS955RULE))

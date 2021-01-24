@@ -111,32 +111,6 @@ public class Thief_CaseJoint extends ThiefSkill
 	}
 
 	@Override
-	protected int getProficiencyBonus(final int oldBonus, Ability A)
-	{
-		if(otherSide 
-		&& (oldBonus<100)
-		&& (affected instanceof MOB)
-		&&(((MOB)affected).location()==mark))
-			return oldBonus+ticks;
-		return 0;
-	}
-	
-	@Override
-	protected int getExpertiseBonus(final int oldBonus, Ability A)
-	{
-		if(otherSide 
-		&& (oldBonus<10)
-		&&(ticks>29)
-		&& (affected instanceof MOB)
-		&&(((MOB)affected).location()==mark))
-		{
-			final int newBonus=oldBonus+(ticks/30);
-			return newBonus>12?12:newBonus;
-		}
-		return 0;
-	}
-
-	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
@@ -173,6 +147,21 @@ public class Thief_CaseJoint extends ThiefSkill
 	}
 
 	@Override
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
+	{
+		super.affectCharStats(affected,affectableStats);
+		if(otherSide
+		&& (affected instanceof MOB)
+		&&(affected.location()==mark))
+		{
+			// theoretical "ticks" max is 30
+			affectableStats.adjustAbilityAdjustment("PROF+THIEF SKILL",affectableStats.getAbilityAdjustment("PROF+THIEF SKILL")+(ticks*3));
+			if(ticks>9) // allow up to 3 expertise bonus
+				affectableStats.adjustAbilityAdjustment("XLEVEL+THIEF SKILL",affectableStats.getAbilityAdjustment("XLEVEL+THIEF SKILL")+(ticks/10));
+		}
+	}
+	
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((text().length()==0)
@@ -190,16 +179,17 @@ public class Thief_CaseJoint extends ThiefSkill
 			}
 			if(!otherSide)
 			{
+				final int maxTicks=(super.adjustedLevel(mob,0)/5)+super.getXTIMELevel(mob);
 				if(!CMLib.flags().isHidden(mob)||(mob.isInCombat()))
 				{
 					otherSide=true;
-					final int maxTicks=(super.adjustedLevel(mob,0)/5)+super.getXTIMELevel(mob);
-					if(ticks>maxTicks)
-						ticks=maxTicks;
 					setTickDownRemaining(ticks);
+					mob.tell(L("You've finished casing @x1, and feel pretty confident.",mark.name(mob)));
 					mob.recoverPhyStats();
+					mob.recoverCharStats();
 				}
 				else
+				if(ticks<maxTicks)
 					ticks++;
 			}
 		}

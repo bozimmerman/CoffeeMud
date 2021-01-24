@@ -79,16 +79,6 @@ public class ThiefSkill extends StdAbility
 		return CAN_MOBS;
 	}
 
-	protected int getExpertiseBonus(final int oldBonus, Ability A)
-	{
-		return 0;
-	}
-
-	protected int getProficiencyBonus(final int oldBonus, Ability A)
-	{
-		return 0;
-	}
-
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -107,38 +97,6 @@ public class ThiefSkill extends StdAbility
 			return false;
 		}
 		return true;
-	}
-
-	@Override
-	protected int getXLEVELLevel(final MOB mob)
-	{
-		int xlevel=super.getXLEVELLevel(mob);
-		if(mob != null)
-		{
-			for(int i=0;i<mob.numEffects();i++)
-			{
-				final Ability A=mob.fetchEffect(i);
-				if((A instanceof ThiefSkill)&&(!A.ID().equals(ID())))
-					xlevel += ((ThiefSkill)A).getExpertiseBonus(xlevel, this);
-			}
-		}
-		return xlevel;
-	}
-
-	@Override
-	public boolean proficiencyCheck(final MOB mob, final int adjustment, final boolean auto)
-	{
-		int profBonus=adjustment;
-		if(mob != null)
-		{
-			for(int i=0;i<mob.numEffects();i++)
-			{
-				final Ability A=mob.fetchEffect(i);
-				if((A instanceof ThiefSkill)&&(!A.ID().equals(ID())))
-					profBonus += ((ThiefSkill)A).getExpertiseBonus(profBonus, this);
-			}
-		}
-		return super.proficiencyCheck(mob, profBonus, auto);
 	}
 
 	public int getMOBLevel(final MOB meMOB)

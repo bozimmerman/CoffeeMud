@@ -694,6 +694,7 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 	 * something else numeric.
 	 * Ability adjustments begin with "prof+" to adjust proficiency.
 	 * They begin with "level+" to adjust the adjusted level.
+	 * They begin with "X"+expertise code name + "+" for expertise level
 	 * The are followed by the exact ID() of the ability, or * for All, or
 	 * the skill classification name in uppercase, or the domain name in
 	 * uppercase.
@@ -707,6 +708,7 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 	 * something else numeric.
 	 * Ability adjustments begin with "prof+" to adjust proficiency.
 	 * They begin with "level+" to adjust the adjusted level.
+	 * They begin with "X"+expertise code name + "+" for expertise level
 	 * The are followed by the exact ID() of the ability, or * for All, or
 	 * the skill classification name in uppercase, or the domain name in
 	 * uppercase.
