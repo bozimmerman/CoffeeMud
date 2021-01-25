@@ -104,7 +104,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	protected final AtomicInteger	recurseCounter	 = new AtomicInteger();
 	protected volatile Object		cachedRef		 = null;
 
-	protected final PrioritizingLimitedMap<String,Room> roomFinder=new PrioritizingLimitedMap<String,Room>(50,30*60000L,60*60000L,100);
+	protected final PrioritizingLimitedMap<String,Room> roomFinder=new PrioritizingLimitedMap<String,Room>(5,30*60000L,60*60000L,20);
 
 	public DefaultScriptingEngine()
 	{
