@@ -137,8 +137,9 @@ public class Spell_KineticPulse extends Spell
 							if(mob.location().maxRange()<2)
 								dist=mob.location().maxRange();
 							shoveWhom.setRangeToTarget(dist);
-							if(shoveWhom.getVictim()!=mob)
-								shoveWhom.getVictim().setRangeToTarget(shoveWhom.rangeToTarget());
+							final MOB shoWhomVictim=shoveWhom.getVictim();
+							if((shoWhomVictim!=mob)&&(shoWhomVictim!=null))
+								shoWhomVictim.setRangeToTarget(shoveWhom.rangeToTarget());
 						}
 					}
 				}
