@@ -104,6 +104,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	protected final AtomicInteger	recurseCounter	 = new AtomicInteger();
 	protected volatile Object		cachedRef		 = null;
 
+	protected final PrioritizingLimitedMap<String,Room> roomFinder=new PrioritizingLimitedMap<String,Room>(50,30*60000L,60*60000L,100);
+
 	public DefaultScriptingEngine()
 	{
 		super();
@@ -938,29 +940,44 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		if(thisName.length()==0)
 			return null;
+		Room roomR=null;
+		if(roomFinder.containsKey(thisName))
+		{
+			roomR=roomFinder.get(thisName);
+			if(roomR!=null)
+				return roomR;
+		}
 		if(imHere!=null)
 		{
 			if(imHere.roomID().equalsIgnoreCase(thisName))
-				return imHere;
+				roomR=imHere;
+			else
 			if((thisName.startsWith("#"))&&(CMath.isLong(thisName.substring(1))))
-				return CMLib.map().getRoom(imHere.getArea().Name()+thisName);
+				roomR=CMLib.map().getRoom(imHere.getArea().Name()+thisName);
+			else
 			if(Character.isDigit(thisName.charAt(0))&&(CMath.isLong(thisName)))
-				return CMLib.map().getRoom(imHere.getArea().Name()+"#"+thisName);
+				roomR=CMLib.map().getRoom(imHere.getArea().Name()+"#"+thisName);
+			if(roomR!=null)
+			{
+				roomFinder.put(thisName, roomR);
+				return roomR;
+			}
 		}
-		final Room room=CMLib.map().getRoom(thisName);
-		if((room!=null)&&(room.roomID().equalsIgnoreCase(thisName)))
+		roomR=CMLib.map().getRoom(thisName);
+		if((roomR!=null)&&(roomR.roomID().equalsIgnoreCase(thisName)))
 		{
-			if(CMath.bset(room.getArea().flags(),Area.FLAG_INSTANCE_PARENT)
+			if(CMath.bset(roomR.getArea().flags(),Area.FLAG_INSTANCE_PARENT)
 			&&(imHere!=null)
 			&&(CMath.bset(imHere.getArea().flags(),Area.FLAG_INSTANCE_CHILD))
-			&&(imHere.getArea().Name().endsWith("_"+room.getArea().Name()))
+			&&(imHere.getArea().Name().endsWith("_"+roomR.getArea().Name()))
 			&&(thisName.indexOf('#')>=0))
 			{
 				final Room otherRoom=CMLib.map().getRoom(imHere.getArea().Name()+thisName.substring(thisName.indexOf('#')));
 				if((otherRoom!=null)&&(otherRoom.roomID().endsWith(thisName)))
-					return otherRoom;
+					roomR=otherRoom;
 			}
-			return room;
+			roomFinder.put(thisName, roomR);
+			return roomR;
 		}
 
 		List<Room> rooms=new ArrayList<Room>(1);
@@ -972,24 +989,23 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				Log.debugOut("ScriptingEngine","World room search called for: "+thisName);
 			rooms=CMLib.map().findWorldRoomsLiberally(null,thisName, "RIEPM",100,2000);
 		}
-		if(rooms.size()>0)
+		if(rooms.size()>0) // this could be people, or items, so no caching.
 			return rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
-		if(room == null)
+
+		// ... and this is indeterminate, so no caching here either.
+		final int x=thisName.indexOf('@');
+		if(x>0)
 		{
-			final int x=thisName.indexOf('@');
-			if(x>0)
+			Room R=CMLib.map().getRoom(thisName.substring(x+1));
+			if((R==null)||(R==imHere))
 			{
-				Room R=CMLib.map().getRoom(thisName.substring(x+1));
-				if((R==null)||(R==imHere))
-				{
-					final Area A=CMLib.map().getArea(thisName.substring(x+1));
-					R=(A!=null)?A.getRandomMetroRoom():null;
-				}
-				if((R!=null)&&(R!=imHere))
-					return getRoom(thisName.substring(0,x),R);
+				final Area A=CMLib.map().getArea(thisName.substring(x+1));
+				R=(A!=null)?A.getRandomMetroRoom():null;
 			}
+			if((R!=null)&&(R!=imHere))
+				roomR=getRoom(thisName.substring(0,x),R);
 		}
-		return room;
+		return roomR;
 	}
 
 	protected void logError(final Environmental scripted, final String cmdName, final String errType, final String errMsg)
