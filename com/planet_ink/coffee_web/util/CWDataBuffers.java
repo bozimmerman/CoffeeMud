@@ -236,13 +236,14 @@ public class CWDataBuffers implements DataBuffers
 	{
 	}
 
+	@Override
 	public void finalize() throws Throwable
 	{
 		if(list.size()>0)
 		{
 			finalized();
 			close();
-			System.err.println("DataBuffer Not Closed!");
+			System.err.println("DataBuffer Not Closed ("+length+")!");
 		}
 		super.finalize();
 	}
