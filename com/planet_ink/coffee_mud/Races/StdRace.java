@@ -605,7 +605,7 @@ public class StdRace implements Race
 							myChar.curState().adjFatigue(CharState.FATIGUED_MILLIS,myChar.maxState());
 						myChar.curState().adjMovement(-myChar.maxState().getMovement()/2, myChar.maxState());
 					}
-					if(!srcExhausted && !meExhausted && (CMLib.dice().rollPercentage()<10))
+					if(!srcExhausted && !meExhausted && (CMLib.dice().rollPercentage()<20))
 					{
 						final Ability A=CMClass.getAbility("Pregnancy");
 						if((A!=null)
