@@ -132,7 +132,10 @@ public class Spell_MassDisintegrate extends Spell
 								if(target.curState().getHitPoints()>0)
 								{
 									if(CMLib.dice().rollPercentage()>(levelDiff*successThreshold)+failChance)
+									{
+										failChance+=successThreshold;
 										CMLib.combat().postDamage(mob,target,this,target.curState().getHitPoints()*100,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,("^SThe spell <DAMAGE> <T-NAME>!^?")+CMLib.protocol().msp("spelldam2.wav",40));
+									}
 									else
 										CMLib.combat().postDamage(mob,target,this,target.curState().getHitPoints()/2,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,("^SThe spell <DAMAGE> <T-NAME>!^?")+CMLib.protocol().msp("spelldam2.wav",40));
 									failChance+=5;
