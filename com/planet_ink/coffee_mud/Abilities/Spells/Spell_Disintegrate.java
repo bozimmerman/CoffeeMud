@@ -112,7 +112,8 @@ public class Spell_Disintegrate extends Spell
 			levelDiff+=6;
 		if(levelDiff<0)
 			levelDiff=0;
-		success=proficiencyCheck(mob,-(levelDiff*15),auto);
+		final int successThreshold = 100 / CMProps.getIntVar(CMProps.Int.EXPRATE);
+		success=proficiencyCheck(mob,-(levelDiff*successThreshold),auto);
 
 		if(auto)
 			affectType=affectType|CMMsg.MASK_ALWAYS;
