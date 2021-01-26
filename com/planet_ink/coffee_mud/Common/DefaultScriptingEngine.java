@@ -11512,17 +11512,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					else
 					if(flag==1)
 					{
-						s2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s2);
-						E=lastKnownLocation.fetchFromRoomFavorItems(null,s2);
+						final String vs2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s2);
+						E=lastKnownLocation.fetchFromRoomFavorItems(null,vs2);
 					}
 					else
 					if(flag==2)
 					{
-						s2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s2);
 						if(monster!=null)
-							E=monster.findItem(s2);
+						{
+							final String vs2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s2);
+							E=monster.findItem(vs2);
+						}
 					}
 					else
+					if(E==null)
 						E=getArgumentItem(s2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 					if(E!=null)
 					{
