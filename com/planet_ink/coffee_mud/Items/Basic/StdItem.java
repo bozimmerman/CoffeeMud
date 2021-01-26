@@ -488,18 +488,24 @@ public class StdItem implements Item
 		final Wearable.CODES codes = Wearable.CODES.instance();
 		if(!wornLogicalAnd)
 		{
+			boolean couldHaveBeenHeldAt=false;
 			for(final long wornCode : codes.all())
 			{
 				if(wornCode != Wearable.IN_INVENTORY)
 				{
 					if(fitsOn(wornCode))
 					{
-						couldHaveBeenWornAt=wornCode;
+						if(wornCode == Wearable.WORN_HELD)
+							couldHaveBeenHeldAt=true;
+						else
+							couldHaveBeenWornAt=wornCode;
 						if(mob.freeWearPositions(wornCode,layer,layerAtt)>0)
 							return 0;
 					}
 				}
 			}
+			if((couldHaveBeenWornAt<0)&&(couldHaveBeenHeldAt))
+				couldHaveBeenWornAt=Wearable.WORN_HELD;
 			return couldHaveBeenWornAt;
 		}
 		for(final long wornCode : codes.all())

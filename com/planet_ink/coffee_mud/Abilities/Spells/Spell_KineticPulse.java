@@ -100,7 +100,7 @@ public class Spell_KineticPulse extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,super.somanticCastCode(mob,target,auto),
-					L("<S-NAME> points at <T-NAMESELF> and sends an invisible wave of force towards <S_HIMHER>."));
+					L("<S-NAME> point(s) at <T-NAMESELF> and sends an invisible wave of force towards <S_HIMHER>."));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{

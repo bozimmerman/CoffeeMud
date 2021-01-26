@@ -293,6 +293,8 @@ public class Where extends StdCommand
 
 					try
 					{
+						if(who.startsWith("\"")&&who.endsWith("\"")&&(who.length()>2))
+							who=who.substring(1,who.length()-1);
 						final Session sess = mob.session();
 						for(;r.hasMoreElements();)
 						{

@@ -133,7 +133,7 @@ public class Thief_CutThroat extends ThiefSkill
 			{
 				A2.invoke(msg.source(),(MOB)msg.target(),true,0);
 				if((msg.trailerMsgs()==null)||(msg.trailerMsgs().size()==0))
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(), msg.target(), msg.tool(), CMMsg.MSG_OK_ACTION, L("<S-NAME> cut(s) <T-YOUPOSS> throat with <O-NAME>! Blood start(s) running...")));
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(), msg.target(), msg.tool(), CMMsg.MSG_OK_ACTION, L("<S-NAME> cut(s) <T-YOUPOSS> throat with <O-NAME>! Blood starts running...")));
 			}
 		}
 	}
