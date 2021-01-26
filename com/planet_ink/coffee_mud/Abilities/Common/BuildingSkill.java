@@ -282,7 +282,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 		{
 			final Room R=room.getRoomInDir(d);
-			if(CMLib.law().doesOwnThisLand(mob, R))
+			if(CMLib.law().doesOwnThisLand(mob, R)||(CMSecurity.isAllowed(mob, R, CMSecurity.SecFlag.CMDROOMS)))
 			{
 				returnToRoom=R;
 				break;
@@ -1381,7 +1381,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			return true;
 		}
 
-		boolean canBuild=CMLib.law().doesOwnThisLand(mob,mob.location());
+		boolean canBuild=CMLib.law().doesOwnThisLand(mob,mob.location()) || CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDROOMS);
 		final String allWords=CMParms.combine(commands,0).toUpperCase();
 		for(int r=0;r<data.length;r++)
 		{
@@ -1473,6 +1473,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		{
 			this.canBeDoneSittingDown = true;
 			if((!CMLib.law().doesOwnThisLand(mob, mob.location()))
+			&&(!CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDROOMS))
 			&&(title!=null)
 			&&(title.getOwnerName().length()>0))
 			{
@@ -1484,9 +1485,12 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				commonTell(mob,L("You aren't permitted to demolish this room."));
 				return false;
 			}
-			if(!CMLib.law().isHomeRoomUpstairs(mob.location()))
+			if(!CMLib.law().isHomeRoomUpstairs(mob.location())
+			&&((mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE))
+			&&((mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE_SEAPORT))
+			&&((mob.location().domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)))
 			{
-				commonTell(mob,L("You can only demolish upstairs/downstairs rooms.  You might try just demolishing the ceiling/roof?"));
+				commonTell(mob,L("You can only demolish upstairs/downstairs rooms, or excavated caves.  You might try just demolishing the ceiling/roof?"));
 				return false;
 			}
 			int numAdjacentProperties=0;
@@ -1857,7 +1861,8 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			if((dir>=0)&&(flags.contains(Flag.DIR)))
 			{
 				final Room R=mob.location().getRoomInDir(dir);
-				if((R!=null)&&(CMLib.law().doesOwnThisLand(mob,R)))
+				if((R!=null)
+				&&(CMLib.law().doesOwnThisLand(mob,R)))
 					canBuild=true;
 			}
 		}
