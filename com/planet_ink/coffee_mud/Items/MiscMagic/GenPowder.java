@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 /**
  * Title: False Realities Flavored CoffeeMUD
  * Description: The False Realities Version of CoffeeMUD
- * Copyright: Copyright (c) 2004-2020 Jeremy Vyska
+ * Copyright: Copyright (c) 2004-2021 Jeremy Vyska
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at

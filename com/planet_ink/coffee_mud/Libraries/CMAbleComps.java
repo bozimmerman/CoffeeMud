@@ -35,7 +35,7 @@ import java.net.Socket;
 import java.util.*;
 
 /*
-   Copyright 2015-2020 Bo Zimmerman
+   Copyright 2015-2021 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

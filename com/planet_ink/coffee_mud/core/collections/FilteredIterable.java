@@ -3,7 +3,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 /*
-   Copyright 2010-2020 Bo Zimmerman
+   Copyright 2010-2021 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

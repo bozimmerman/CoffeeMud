@@ -20,7 +20,7 @@ import java.lang.ref.WeakReference;
 import java.util.*;
 import java.util.Map.Entry;
 /*
-   Copyright 2005-2020 Bo Zimmerman
+   Copyright 2005-2021 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
