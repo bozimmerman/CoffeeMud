@@ -98,7 +98,8 @@ public class Spell_MassDisintegrate extends Spell
 		}
 		if(h.size()>0)
 			avgLevel=avgLevel/h.size();
-		int levelDiff=avgLevel-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
+		final int ppowerLevel=mob.phyStats().level()+(getXLEVELLevel(mob)/2);
+		int levelDiff=avgLevel-(mob.phyStats().level()+ppowerLevel);
 		if(levelDiff<0)
 			levelDiff=0;
 
@@ -109,12 +110,16 @@ public class Spell_MassDisintegrate extends Spell
 		{
 			if(avgLevel <= 0)
 				avgLevel = 1;
+			final int successThreshold = 100 / CMProps.getIntVar(CMProps.Int.EXPRATE);
 			int failChance=0;
 			if(mob.location().show(mob,null,this,somanticCastCode(mob,null,auto),auto?L("Something is happening!"):L("^S<S-NAME> wave(s) <S-HIS-HER> arms and utter(s) a trecherous spell!^?")))
 			{
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
+					int tlevelDiff=(target.phyStats().level()-ppowerLevel);
+					if(tlevelDiff<0)
+						tlevelDiff=0;
 					if((CMath.div(target.phyStats().level(),avgLevel)<2.0)
 					&&((target.phyStats().level()-avgLevel)<CMProps.getIntVar(CMProps.Int.EXPRATE)))
 					{
@@ -126,7 +131,7 @@ public class Spell_MassDisintegrate extends Spell
 							{
 								if(target.curState().getHitPoints()>0)
 								{
-									if(CMLib.dice().rollPercentage()>failChance)
+									if(CMLib.dice().rollPercentage()>(levelDiff*successThreshold)+failChance)
 										CMLib.combat().postDamage(mob,target,this,target.curState().getHitPoints()*100,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,("^SThe spell <DAMAGE> <T-NAME>!^?")+CMLib.protocol().msp("spelldam2.wav",40));
 									else
 										CMLib.combat().postDamage(mob,target,this,target.curState().getHitPoints()/2,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,("^SThe spell <DAMAGE> <T-NAME>!^?")+CMLib.protocol().msp("spelldam2.wav",40));
