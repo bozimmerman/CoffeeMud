@@ -51,7 +51,14 @@ public class Skill_Subdue extends StdSkill
 	@Override
 	public String displayText()
 	{
-		return L("(Subdueing "+whom+")");
+		final MOB whom=this.whom;
+		if(whom == null)
+			return L("(Subdueing)");
+		else
+		if(affected instanceof MOB)
+			return L("(Subdueing "+whom.name((MOB)affected)+")");
+		else
+			return L("(Subdueing "+whom.name()+")");
 	}
 
 	@Override

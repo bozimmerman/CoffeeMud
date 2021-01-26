@@ -208,8 +208,8 @@ public class ClanVote extends StdCommand
 								break;
 							}
 						}
-						final int numVotes=C.getNumVoters(Function.values()[CV.function]);
-						if(numVotes<=(yeas+nays))
+						final int totalVoters=C.getNumVoters(Function.values()[CV.function]);
+						if(totalVoters<=(yeas+nays))
 						{
 							updateVote=true;
 							if(yeas<=nays)

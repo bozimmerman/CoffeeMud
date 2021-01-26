@@ -1052,6 +1052,12 @@ public class ListCmd extends StdCommand
 		if(cmds.size()==0)
 			return new StringBuilder("");
 		cmds.remove(0);
+		boolean areaOnly=false;
+		if((cmds.size()>0)&&(cmds.get(0).equalsIgnoreCase("area")))
+		{
+			areaOnly=true;
+			cmds.remove(0);
+		}
 		if(cmds.size()==0)
 			return new StringBuilder("List what script details? Try LIST SCRIPTS (COUNT/DETAILS/CUSTOM)");
 		final String rest=CMParms.combine(cmds,0);
@@ -1060,7 +1066,8 @@ public class ListCmd extends StdCommand
 		Room R=null;
 		WorldMap.LocatedPair LP=null;
 		PhysicalAgent AE=null;
-		for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
+		final Enumeration<Area> areasE = (areaOnly)?(new XVector<Area>(mob.location().getArea())).elements():CMLib.map().areas();
+		for(final Enumeration<Area> e=areasE;e.hasMoreElements();)
 		{
 			A=e.nextElement();
 			if(A==null)
@@ -1154,9 +1161,9 @@ public class ListCmd extends StdCommand
 		else
 		if(rest.equalsIgnoreCase("DETAILS"))
 		{
-			final int COL_LEN1=CMLib.lister().fixColWidth(30.0,viewerS);
-			final int COL_LEN2=CMLib.lister().fixColWidth(20.0,viewerS);
-			final int COL_LEN3=CMLib.lister().fixColWidth(25.0,viewerS);
+			final int COL_LEN1=CMLib.lister().fixColWidth(40.0,viewerS);
+			final int COL_LEN2=CMLib.lister().fixColWidth(16.0,viewerS);
+			final int COL_LEN3=CMLib.lister().fixColWidth(20.0,viewerS);
 			lines=new StringBuilder("^x")
 			.append(CMStrings.padRight(L("Script File"),COL_LEN1))
 			.append(CMStrings.padRight(L("Host"),COL_LEN2))
