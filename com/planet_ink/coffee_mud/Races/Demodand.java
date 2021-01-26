@@ -132,6 +132,7 @@ public class Demodand extends Demon
 	@Override
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
+		affectableStats.setRacialStat(CharStats.STAT_CHARISMA,3);
 		affectableStats.setStat(CharStats.STAT_SAVE_ACID,affectableStats.getStat(CharStats.STAT_SAVE_ACID)+100);
 		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
 	}

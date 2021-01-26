@@ -57,6 +57,8 @@ public class OozeMephit extends Mephit
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,8);
+		affectableStats.setRacialStat(CharStats.STAT_CONSTITUTION,4);
 		affectableStats.setStat(CharStats.STAT_SAVE_BLUNT, affectableStats.getStat(CharStats.STAT_SAVE_BLUNT)+50);
 		affectableStats.setStat(CharStats.STAT_SAVE_PIERCE, affectableStats.getStat(CharStats.STAT_SAVE_PIERCE)+50);
 		affectableStats.setStat(CharStats.STAT_SAVE_ACID,affectableStats.getStat(CharStats.STAT_SAVE_ACID)+100);

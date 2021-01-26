@@ -181,6 +181,8 @@ public class WaterElemental extends StdRace
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,5);
+		affectableStats.setRacialStat(CharStats.STAT_CONSTITUTION,5);
 		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
 		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+100);
 		affectableStats.setStat(CharStats.STAT_SAVE_WATER,affectableStats.getStat(CharStats.STAT_SAVE_WATER)+100);

@@ -134,6 +134,10 @@ public class Flower extends Vine
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STAT_GENDER,'N');
+		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
+		affectableStats.setRacialStat(CharStats.STAT_WISDOM,1);
+		affectableStats.setRacialStat(CharStats.STAT_CHARISMA,1);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,1);
 		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
 		affectableStats.setStat(CharStats.STAT_SAVE_MIND,affectableStats.getStat(CharStats.STAT_SAVE_MIND)+100);
 		affectableStats.setStat(CharStats.STAT_SAVE_GAS,affectableStats.getStat(CharStats.STAT_SAVE_GAS)+100);
