@@ -112,6 +112,7 @@ public class Skill_Dodge extends StdSkill
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		&&(CMLib.flags().isAliveAwakeMobile(mob,true))
 		&&(msg.source().rangeToTarget()==0)
+		&&(CMLib.flags().canBeSeenBy(mob, msg.source()))
 		&&((msg.tool()==null)
 			||((msg.tool() instanceof Weapon)
 			  &&(((Weapon)msg.tool()).weaponClassification()!=Weapon.CLASS_RANGED)
