@@ -3,7 +3,8 @@
 
   <meta content="HTML Tidy, see www.w3.org" name="generator" /><title>Programming for CoffeeMud 5.9</title>
   
-  <link media="screen" type="text/css" href="style.css" rel="StyleSheet" /><!-- Modified by Josh Mueller, 2006-5-6, fix validation problems, reformat, fix spelling errors --></head><body>
+  <link media="screen" type="text/css" href="style.css" rel="StyleSheet" /><!-- Modified by Josh Mueller, 2006-5-6, fix validation problems, reformat, fix spelling errors --></head>
+<body>
 <center>
 <table border="1" cellpadding="10" cellspacing="0">
   <tbody>
@@ -4393,13 +4394,19 @@ similarly to the Racial Abilities above.</p>
 method we
 discussed in the Core Topics above makes sure that all creatures of
 this race can see in the infrared spectrum.</p>
-      <pre>  public void affectCharStats( MOB affectedMOB, CharStats affectableStats )<br />  {<br />    super.affectCharStats( affectedMOB, affectableStats );<br />    affectableStats.setStat( CharStats.STAT_STRENGTH, 15 );<br />    affectableStats.setStat( CharStats.STAT_DEXTERITY, 25 );<br />    affectableStats.setStat( CharStats.STAT_INTELLIGENCE, 5 );<br />  }<br /></pre>
+      <pre>  public void affectCharStats( MOB affectedMOB, CharStats affectableStats )<br />  {<br />    super.affectCharStats( affectedMOB, affectableStats );<br />    affectableStats.adjStat( CharStats.STAT_STRENGTH, 5 );<br />    affectableStats.adjStat( CharStats.STAT_DEXTERITY, 15 );<br />    affectableStats.adjStat( CharStats.STAT_INTELLIGENCE, -5 );<br />  }<br /><br />  public void unaffectCharStats( MOB affectedMOB, CharStats affectableStats )<br />  {<br />    super.unaffectCharStats( affectedMOB, affectableStats );<br />    affectableStats.adjStat( CharStats.STAT_STRENGTH, -5 );<br />    affectableStats.adjStat( CharStats.STAT_DEXTERITY, -15 );<br />    affectableStats.adjStat( CharStats.STAT_INTELLIGENCE, 5 );<br />  }<br /><br />      <br /></pre>
       <p>This sample of the
-affectCharStats method we discussed in the
-Core Topics above establishes a base strength, dexterity, and
+<span style="font-family: monospace;">affectCharStats</span> method we discussed in the
+Core Topics above changes the current and maximum strength, dexterity, and
 intelligence for all creatures of this race. As this is the ONLY way to
 modify a MOBs stats short of magical equipment, it should be used with
-care!</p>
+care!</p><p>The second method: <span style="font-family: monospace;">unaffectCharStats</span>
+should undo what the affectCharStats method does on a point-for-point
+basis. &nbsp;This method is necessary because, when spell effects, such
+as Improved Polymorph, change a players race, they do so right in the
+middle of the engines update of CharStats, and so must first undo the
+previous races stats before changing the race and then apply the new
+races stat changes.</p>
       <pre>  public void startRacing( MOB mob, boolean verifyOnly )<br />  {<br />    super.startRacing( mob, verifyOnly );<br />  }<br /></pre>
       <p>startRacing is called
 whenever a player of this race logs on,
