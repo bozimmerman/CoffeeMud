@@ -527,6 +527,7 @@ public class Skill_CombatLog extends StdSkill
 				if(log != null)
 				{
 					log.stats = this.stats;
+					log.loggingM=null;
 					log.factionChanges = this.factionChanges;
 					this.stats.clear();
 					this.factionChanges.clear();
