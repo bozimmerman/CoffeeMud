@@ -171,6 +171,8 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 	/**
 	 * Adjusts the value of one of the STAT_ constants, representing attributes,
 	 * saving throws, and max attributes, from the CharStats interface.
+	 * Using this method will also update the STAT_MAX_* attributes to make
+	 * sure that they are not able to be trained upwards.
 	 * @see CharStats
 	 * @param statNum which STAT_ constant to adjust
 	 * @param value the amount + or -, to adjust by

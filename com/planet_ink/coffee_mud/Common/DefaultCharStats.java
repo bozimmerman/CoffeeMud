@@ -1138,7 +1138,15 @@ public class DefaultCharStats implements CharStats
 	public void adjStat(final int statNum, final int value)
 	{
 		if(statNum<stats.length)
+		{
 			stats[statNum]+=(short)value;
+			if(CharStats.CODES.isBASE(statNum))
+			{
+				if(stats[statNum]<1)
+					stats[statNum]=1;
+				setStat(CharStats.CODES.toMAXBASE(statNum),value-CMProps.getIntVar(CMProps.Int.BASEMAXSTAT));
+			}
+		}
 	}
 
 	@Override

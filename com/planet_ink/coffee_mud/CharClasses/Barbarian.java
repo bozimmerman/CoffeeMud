@@ -297,7 +297,10 @@ public class Barbarian extends StdCharClass
 			}
 		}
 		if(doConan.booleanValue())
-			affectableStats.adjStat(CharStats.STAT_MAX_DEXTERITY_ADJ, 1+(int)Math.round(Math.floor(affectableStats.getClassLevel(this)/15)));
+		{
+			affectableStats.setStat(CharStats.STAT_MAX_DEXTERITY_ADJ,
+					affectableStats.getStat(CharStats.STAT_MAX_DEXTERITY_ADJ)+1+(int)Math.round(Math.floor(affectableStats.getClassLevel(this)/15)));
+		}
 	}
 
 	@Override
