@@ -2472,9 +2472,13 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					break;
 				}
 			}
-			observer.setVictim(null);
+			observer.setVictim(null); //BZ: cause of range issues.
 			if(newTargetM!=null)
+			{
 				observer.setVictim(newTargetM);
+				if(newTargetM.getVictim()==observer)
+					observer.setRangeToTarget(newTargetM.rangeToTarget());
+			}
 		}
 	}
 
