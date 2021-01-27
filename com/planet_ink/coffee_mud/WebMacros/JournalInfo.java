@@ -455,6 +455,52 @@ public class JournalInfo extends StdWebMacro
 					s=CMStrings.removeColors(s);
 				}
 				else
+				if(parms.containsKey("EDIT"))
+				{
+					//s=CMStrings.replaceAll(s,JournalsLibrary.JOURNAL_BOUNDARY,"\n<HR>");
+					//s=CMStrings.replaceAll(s,"%0D","\n");
+					s=CMStrings.replaceAll(s,"<BR>","\n");
+					//s=CMStrings.replaceAll(s,"&","&amp;");
+					//s=CMStrings.replaceAll(s,"<","&lt;");
+					//s=CMStrings.replaceAll(s,">","&gt;");
+					//s=CMStrings.removeColors(s);
+				}
+				else
+				if(parms.containsKey("SHOWTAGS"))
+				{
+					int x=0;
+					int y=s.indexOf(JournalsLibrary.JOURNAL_BOUNDARY,x+1);
+					if(y<0)
+						y=s.length();
+					while((x>=0)&&(y>x))
+					{
+						final boolean done=y==s.length();
+						s=s.substring(0,x)
+							+CMStrings.replaceAll(s.substring(x, y), "<","&lt;")
+							+s.substring(y);
+						y=s.indexOf(JournalsLibrary.JOURNAL_BOUNDARY,x+1);
+						if(y<0)
+							y=s.length();
+						if(done)
+							break;
+						else
+						{
+							x=y;
+							if(s.substring(x).startsWith(JournalsLibrary.JOURNAL_BOUNDARY))
+								x+=JournalsLibrary.JOURNAL_BOUNDARY.length();
+							y=s.indexOf(JournalsLibrary.JOURNAL_BOUNDARY,x+1);
+							if(y<0)
+								y=s.length();
+						}
+					}
+					s=CMStrings.replaceAll(s,JournalsLibrary.JOURNAL_BOUNDARY,"<HR>");
+					s=CMStrings.replaceAll(s,"%0D","<BR>");
+					s=CMStrings.replaceAll(s,"\n","<BR>");
+					s=CMStrings.replaceAll(s,"\r","");
+					s=colorwebifyOnly(new StringBuffer(s)).toString();
+					s=clearWebMacros(s);
+				}
+				else
 				{
 					s=CMStrings.replaceAll(s,JournalsLibrary.JOURNAL_BOUNDARY,"<HR>");
 					s=CMStrings.replaceAll(s,"%0D","<BR>");

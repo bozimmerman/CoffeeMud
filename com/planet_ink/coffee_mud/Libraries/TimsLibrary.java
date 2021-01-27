@@ -971,7 +971,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		if(adjA!=null)
 		{
 			final String oldTxt=adjA.text();
-			adjA.setStat("TONEDOWN-ARMOR", "110%");
+			adjA.setStat("TONEUP-ARMOR", "110%");
 			if(!adjA.text().equals(oldTxt))
 				fixit=false;
 		}

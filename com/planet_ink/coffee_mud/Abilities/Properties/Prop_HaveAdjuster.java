@@ -1163,7 +1163,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			else
 			if(code.equalsIgnoreCase("TONEUP-ARMOR"))
 			{
-				if(CMParms.getParmPlus(text(),"ARM")>0)
+				if(CMParms.getParmPlus(text(),"ARM")!=0)
 				{
 					int a=text().toUpperCase().indexOf("ARM");
 					if(a>=0)
@@ -1183,12 +1183,24 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 						}
 					}
 				}
+				else
+					setMiscText("ARMOR-5 "+text());
 			}
 			else
 			if(code.equalsIgnoreCase("TONEUP-WEAPON"))
 			{
 				final double pct=CMath.s_pct(val);
-				if(CMParms.getParmPlus(text(),"DAM")>0)
+				final boolean doesDamn =CMParms.getParmPlus(text(),"DAM")>0;
+				final boolean doesAtt =CMParms.getParmPlus(text(),"DAM")>0;
+				if((!doesDamn) && (!doesAtt))
+				{
+					if(CMLib.dice().rollPercentage()>50)
+						setMiscText("ATTACK+5 "+text());
+					else
+						setMiscText("DAMAGE+1 "+text());
+					return;
+				}
+				if(doesDamn)
 				{
 					int a=text().toUpperCase().indexOf("DAM");
 					if(a>=0)
@@ -1208,7 +1220,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 						}
 					}
 				}
-				if(CMParms.getParmPlus(text(),"ATT")>0)
+				if(doesAtt)
 				{
 					int a=text().toUpperCase().indexOf("ATT");
 					if(a>=0)
@@ -1276,12 +1288,21 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 									proceed=false;
 								else
 								if((!wd.startsWith("ARM"))&&(s.charAt(plusminus)=='-'))
-									proceed=false;
-								if(proceed)
+								{
+									if((num!=1)&&(num!=-1)&&(pct>1))
+									{
+										int newNum = num + (int)Math.abs(Math.round(CMath.mul(num,pct-1.0)));
+										if((newNum == num) && (newNum > 1))
+											newNum--;
+										if(newNum != 0)
+											s=s.substring(0,plusminus+1)+newNum+s.substring(spaceafter);
+									}
+								}
+								else
 								{
 									if((num!=1)&&(num!=-1))
 									{
-										int newNum = (int)Math.round(CMath.mul(num,pct));
+										int newNum = num + (int)Math.round(CMath.mul(num,pct));
 										if((newNum == num) && (newNum > 1))
 											newNum--;
 										if(newNum != 0)

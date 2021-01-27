@@ -1485,12 +1485,12 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				commonTell(mob,L("You aren't permitted to demolish this room."));
 				return false;
 			}
-			if(!CMLib.law().isHomeRoomUpstairs(mob.location())
-			&&((mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE))
+			if(!CMLib.law().isHomeRoomUpstairs(mob.location()))
+			/*&&((mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE))
 			&&((mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE_SEAPORT))
-			&&((mob.location().domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)))
+			&&((mob.location().domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)))*/
 			{
-				commonTell(mob,L("You can only demolish upstairs/downstairs rooms, or excavated caves.  You might try just demolishing the ceiling/roof?"));
+				commonTell(mob,L("You can only demolish upstairs/downstairs rooms.  You might try just demolishing the ceiling/roof?"));
 				return false;
 			}
 			int numAdjacentProperties=0;

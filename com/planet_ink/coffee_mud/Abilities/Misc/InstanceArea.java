@@ -1060,12 +1060,12 @@ public class InstanceArea extends StdAbility
 					final double[] vars = new double[] {instanceLevel, I.phyStats().level(), instanceLevel,
 														stats[Area.Stats.MIN_LEVEL.ordinal()], stats[Area.Stats.MAX_LEVEL.ordinal()],
 														CMProps.getIntVar(CMProps.Int.EXPRATE)+1, topPlayerFacVal} ;
-					final int newILevel = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0))+eliteLevel;
-					final int newFILevel;
+					final int newILevel;
 					if(this.iLevelFormula != null)
-						newFILevel = (int)CMath.round(CMath.parseMathExpression(this.iLevelFormula, vars, 0.0));
+						newILevel = (int)CMath.round(CMath.parseMathExpression(this.iLevelFormula, vars, 0.0));
 					else
-						newFILevel = newILevel;
+						newILevel = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0))+eliteLevel;
+					final int newFILevel = instanceLevel;
 					I.basePhyStats().setLevel(newFILevel);
 					I.phyStats().setLevel(newFILevel);
 					CMLib.itemBuilder().balanceItemByLevel(I);
@@ -1178,15 +1178,16 @@ public class InstanceArea extends StdAbility
 							final double[] ivars = new double[] {instanceLevel, mI.phyStats().level(), instanceLevel,
 																 stats[Area.Stats.MIN_LEVEL.ordinal()], stats[Area.Stats.MAX_LEVEL.ordinal()],
 																 CMProps.getIntVar(CMProps.Int.EXPRATE)+1, topPlayerFacVal} ;
-							final int newILevel = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, ivars, 0.0))+eliteLevel;
-							final int newFILevel;
+							final int newILevel;
 							if(this.iLevelFormula != null)
-								newFILevel = (int)CMath.round(CMath.parseMathExpression(this.iLevelFormula, vars, 0.0));
+								newILevel = (int)CMath.round(CMath.parseMathExpression(this.iLevelFormula, ivars, 0.0));
 							else
-								newFILevel = newILevel;
-							mI.basePhyStats().setLevel(newILevel);
-							mI.phyStats().setLevel(newILevel);
+								newILevel = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, ivars, 0.0))+eliteLevel;
+							final int newFILevel = instanceLevel;
+							mI.basePhyStats().setLevel(newFILevel);
+							mI.phyStats().setLevel(newFILevel);
 							CMLib.itemBuilder().balanceItemByLevel(mI);
+							CMLib.itemBuilder().itemFix(mI, newILevel, true, null);
 							mI.basePhyStats().setLevel(newFILevel);
 							mI.phyStats().setLevel(newFILevel);
 							if((mI instanceof Weapon)

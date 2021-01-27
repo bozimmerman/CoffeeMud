@@ -9,12 +9,12 @@ InstanceArea types definitions
 # TRANSITIONAL: set to "true" to designate the type as transitional
 # ALIGNMENT: numeric value for the alignment of mobs in the instance
 # PREFIX: comma delimited list of strings to prefix mob names with
-# LEVELADJ: either a number, or a formula to adjust mob/item levels:
+# LEVELADJ: either a number, or a formula to adjust mob levels:
 #           @x1 = base areas median level, @x2 = specific mob/item level
 #           @x3 = the instance traveling players level
 #           @x4-@x5 = base area min level/max level, @x6 = exprate
 #           @x7 = if playerfactions set, the best value
-# ILEVELADJ: like leveladj, but sets item final level. 
+# ILEVELADJ: like leveladj, but sets item power level. 
 # MOBRESIST: instance mob resistance arguments, see Prop_Resistance
 # SETSTAT: instance mob stat settings, see Prop_StatTrainer
 # BEHAVAFFID: space delimited list of behavior id = replacement behavior id
@@ -63,7 +63,7 @@ InstanceArea types definitions
 # * In normal areas, add tattoo NOAINST <type name> to prevent a mob from 
 #   spawning in an instance.
 
-"Triumph" category="Main" DISPLAY="Basic Triumph" PLAYFACTIONS="triumph.ini" prefix="" LEADERREQ="-FACTION +TRIUMPH0" duration=900 ileveladj="@x1" leveladj="@x3 + ((((1+@x5-@x4)-(1+@x5-@x2))/(1+@x5-@x4))*(1+@x6)) > 1" ELITE="1+(((@x7 / 25)-0.49999999)>0)" LIMIT="1/DAY" IEFFECT="Prop_NoCraftability Prop_ItemBinder"
+"Triumph" category="Main" DISPLAY="Basic Triumph" PLAYFACTIONS="triumph.ini" prefix="" LEADERREQ="-FACTION +TRIUMPH0" duration=900 ileveladj="@x1 + (@x7/25)" leveladj="@x3 + ((((1+@x5-@x4)-(1+@x5-@x2))/(1+@x5-@x4))*(1+@x6)) > 1" ELITE="1+(((@x7 / 25)-0.49999999)>0)" LIMIT="1/DAY" IEFFECT="Prop_NoCraftability Prop_ItemBinder"
 
 "Triumph" LIKE="Triumph" DISPLAY="Triumph I/Electrocuting" LEADERREQ="-FACTION +TRIUMPH1 -DAY +1" enable="Spell_Lightning electrocuting number((@x7/100)/10)" behave="CombatAbilities"
 "Triumph" LIKE="Triumph" DISPLAY="Triumph I/Burning" LEADERREQ="-FACTION +TRIUMPH1 -DAY +2" enable="burning number((@x7/100)/10)" behave="CombatAbilities""
