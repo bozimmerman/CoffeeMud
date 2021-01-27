@@ -163,7 +163,12 @@ public class Spell_Planarmorph extends Spell
 		if(R!=null)
 		{
 			final int oldCat=affected.baseCharStats().ageCategory();
-			affectableStats.setMyRace(R);
+			if(affectableStats.getMyRace()!=newRace)
+			{
+				affectableStats.setMyRace(newRace);
+				newRace.affectCharStats(affected, affectableStats);
+				newRace.agingAffects(affected, affected.baseCharStats(), affectableStats);
+			}
 			affectableStats.setWearableRestrictionsBitmap(affectableStats.getWearableRestrictionsBitmap()|affectableStats.getMyRace().forbiddenWornBits());
 			if(affected.baseCharStats().getStat(CharStats.STAT_AGE)>0)
 				affectableStats.setStat(CharStats.STAT_AGE,R.getAgingChart()[oldCat]);

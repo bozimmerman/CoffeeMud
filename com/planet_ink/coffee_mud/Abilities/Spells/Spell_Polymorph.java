@@ -101,7 +101,12 @@ public class Spell_Polymorph extends Spell
 		{
 			final int oldCat=affected.baseCharStats().ageCategory();
 			final int oldBaseWeight = affected.baseWeight();
-			affectableStats.setMyRace(newRace);
+			if(affectableStats.getMyRace()!=newRace)
+			{
+				affectableStats.setMyRace(newRace);
+				newRace.affectCharStats(affected, affectableStats);
+				newRace.agingAffects(affected, affected.baseCharStats(), affectableStats);
+			}
 			if(this.newBaseWeightAdj == 0)
 				this.newBaseWeightAdj = affected.baseWeight() - oldBaseWeight;
 			affectableStats.setWearableRestrictionsBitmap(affectableStats.getWearableRestrictionsBitmap()|affectableStats.getMyRace().forbiddenWornBits());

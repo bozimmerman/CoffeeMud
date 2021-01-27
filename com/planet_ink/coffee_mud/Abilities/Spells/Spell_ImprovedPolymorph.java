@@ -126,7 +126,12 @@ public class Spell_ImprovedPolymorph extends Spell
 		if(newRace!=null)
 		{
 			final int oldCat=affected.baseCharStats().ageCategory();
-			affectableStats.setMyRace(newRace);
+			if(affectableStats.getMyRace()!=newRace)
+			{
+				affectableStats.setMyRace(newRace);
+				newRace.affectCharStats(affected, affectableStats);
+				newRace.agingAffects(affected, affected.baseCharStats(), affectableStats);
+			}
 			affectableStats.setWearableRestrictionsBitmap(affectableStats.getWearableRestrictionsBitmap()|affectableStats.getMyRace().forbiddenWornBits());
 			if((affected.baseCharStats().getStat(CharStats.STAT_AGE)>0)
 			&&(newRace.getAgingChart()[oldCat]<Short.MAX_VALUE))

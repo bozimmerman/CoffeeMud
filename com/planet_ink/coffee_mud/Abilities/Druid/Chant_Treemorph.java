@@ -101,7 +101,12 @@ public class Chant_Treemorph extends Chant
 		if(treeForm!=null)
 		{
 			final int oldCat=affected.baseCharStats().ageCategory();
-			affectableStats.setMyRace(treeForm);
+			if(affectableStats.getMyRace()!=treeForm)
+			{
+				affectableStats.setMyRace(treeForm);
+				treeForm.affectCharStats(affected, affectableStats);
+				treeForm.agingAffects(affected, affected.baseCharStats(), affectableStats);
+			}
 			affectableStats.setWearableRestrictionsBitmap(affectableStats.getWearableRestrictionsBitmap()|affectableStats.getMyRace().forbiddenWornBits());
 			if(affected.baseCharStats().getStat(CharStats.STAT_AGE)>0)
 				affectableStats.setStat(CharStats.STAT_AGE,treeForm.getAgingChart()[oldCat]);

@@ -98,7 +98,12 @@ public class Chant_Reincarnation extends Chant
 		if(newRace!=null)
 		{
 			final int oldBaseWeight = affected.baseWeight();
-			affectableStats.setMyRace(newRace);
+			if(affectableStats.getMyRace()!=newRace)
+			{
+				affectableStats.setMyRace(newRace);
+				newRace.affectCharStats(affected, affectableStats);
+				newRace.agingAffects(affected, affected.baseCharStats(), affectableStats);
+			}
 			if(this.newBaseWeightAdj == 0)
 				this.newBaseWeightAdj = affected.baseWeight() - oldBaseWeight;
 			affectableStats.setWearableRestrictionsBitmap(affectableStats.getWearableRestrictionsBitmap()|affectableStats.getMyRace().forbiddenWornBits());

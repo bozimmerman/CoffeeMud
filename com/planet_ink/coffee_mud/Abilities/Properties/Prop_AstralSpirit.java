@@ -168,7 +168,12 @@ public class Prop_AstralSpirit extends Property
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
-		affectableStats.setMyRace(spiritRace());
+		if(affectableStats.getMyRace()!=spiritRace())
+		{
+			affectableStats.setMyRace(spiritRace());
+			spiritRace().affectCharStats(affected, affectableStats);
+			spiritRace().agingAffects(affected, affected.baseCharStats(), affectableStats);
+		}
 		affectableStats.setWearableRestrictionsBitmap(affectableStats.getWearableRestrictionsBitmap()|affectableStats.getMyRace().forbiddenWornBits());
 		super.affectCharStats(affected, affectableStats);
 	}
