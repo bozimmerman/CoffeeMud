@@ -181,7 +181,7 @@ public class Thief_CaseJoint extends ThiefSkill
 		return super.okMessage(myHost, msg);
 	}
 
-	
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
@@ -213,7 +213,7 @@ public class Thief_CaseJoint extends ThiefSkill
 				affectableStats.adjustAbilityAdjustment("XLEVEL+THIEF SKILL",affectableStats.getAbilityAdjustment("XLEVEL+THIEF SKILL")+(ticks/10));
 		}
 	}
-	
+
 	@Override
 	public int castingQuality(final MOB mob, final Physical target)
 	{
@@ -240,7 +240,7 @@ public class Thief_CaseJoint extends ThiefSkill
 			mob.recoverCharStats();
 		}
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -284,6 +284,12 @@ public class Thief_CaseJoint extends ThiefSkill
 				mob.tell(L("You have already cased this joint."));
 			else
 				jointA.stopCasing(mob);
+			return false;
+		}
+
+		if((!auto)&&((target.domainType()&Room.INDOORS)==0))
+		{
+			mob.tell(L("This only works indoors."));
 			return false;
 		}
 
