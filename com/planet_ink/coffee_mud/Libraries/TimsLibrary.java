@@ -819,7 +819,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				break;
 			}
 			if(level>=useArray[useArray.length-1])
-				pts=useArray.length-2;
+				pts=useArray.length-2 + ((level-useArray[useArray.length-1])/(useArray[useArray.length-1]-useArray[useArray.length-2]));
 			else
 			for(int i=0;i<useArray.length;i++)
 			{
