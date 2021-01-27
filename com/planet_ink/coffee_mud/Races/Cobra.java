@@ -140,6 +140,13 @@ public class Cobra extends Snake
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,18);
 	}
 
+	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	{
+		super.unaffectCharStats(affectedMOB, affectableStats);
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectedMOB.baseCharStats().getStat(CharStats.STAT_DEXTERITY));
+		affectableStats.setStat(CharStats.STAT_MAX_DEXTERITY_ADJ,affectedMOB.baseCharStats().getStat(CharStats.STAT_MAX_DEXTERITY_ADJ));
+	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

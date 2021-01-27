@@ -100,9 +100,9 @@ public class Chant_Reincarnation extends Chant
 			final int oldBaseWeight = affected.baseWeight();
 			if(affectableStats.getMyRace()!=newRace)
 			{
+				affectableStats.getMyRace().unaffectCharStats(affected, affectableStats);
 				affectableStats.setMyRace(newRace);
 				newRace.affectCharStats(affected, affectableStats);
-				newRace.agingAffects(affected, affected.baseCharStats(), affectableStats);
 			}
 			if(this.newBaseWeightAdj == 0)
 				this.newBaseWeightAdj = affected.baseWeight() - oldBaseWeight;

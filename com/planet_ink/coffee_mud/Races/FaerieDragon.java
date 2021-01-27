@@ -186,6 +186,14 @@ public class FaerieDragon extends StdRace
 		affectableStats.adjStat(CharStats.STAT_INTELLIGENCE,2);
 	}
 
+	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	{
+		super.unaffectCharStats(affectedMOB, affectableStats);
+		affectableStats.adjStat(CharStats.STAT_STRENGTH,+2);
+		affectableStats.adjStat(CharStats.STAT_DEXTERITY,-5);
+		affectableStats.adjStat(CharStats.STAT_INTELLIGENCE,-2);
+	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{

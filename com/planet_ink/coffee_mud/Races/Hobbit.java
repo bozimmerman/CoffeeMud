@@ -149,6 +149,15 @@ public class Hobbit extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,affectableStats.getStat(CharStats.STAT_SAVE_DETECTION)+10);
 	}
 
+	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	{
+		super.unaffectCharStats(affectedMOB, affectableStats);
+		affectableStats.adjStat(CharStats.STAT_DEXTERITY,-1);
+		affectableStats.adjStat(CharStats.STAT_STRENGTH,+1);
+		affectableStats.setStat(CharStats.STAT_SAVE_PARALYSIS,affectableStats.getStat(CharStats.STAT_SAVE_PARALYSIS)-10);
+		affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,affectableStats.getStat(CharStats.STAT_SAVE_DETECTION)-10);
+	}
+
 	@Override
 	public List<Item> outfit(final MOB myChar)
 	{

@@ -176,6 +176,14 @@ public class Dwarf extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+10);
 	}
 
+	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	{
+		super.unaffectCharStats(affectedMOB, affectableStats);
+		affectableStats.adjStat(CharStats.STAT_CONSTITUTION,-1);
+		affectableStats.adjStat(CharStats.STAT_CHARISMA,+1);
+		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)-10);
+	}
+
 	@Override
 	public List<Item> outfit(final MOB myChar)
 	{

@@ -162,6 +162,15 @@ public class Tabaxi extends GreatCat
 		affectableStats.adjStat(CharStats.STAT_WISDOM,-2);
 	}
 
+	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	{
+		super.unaffectCharStats(affectedMOB, affectableStats);
+		affectableStats.adjStat(CharStats.STAT_DEXTERITY,-3);
+		affectableStats.adjStat(CharStats.STAT_STRENGTH,-3);
+		affectableStats.adjStat(CharStats.STAT_INTELLIGENCE,+4);
+		affectableStats.adjStat(CharStats.STAT_WISDOM,+2);
+	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

@@ -205,6 +205,17 @@ public class LizardMan extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_WATER,affectableStats.getStat(CharStats.STAT_SAVE_WATER)-10);
 	}
 
+	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	{
+		super.unaffectCharStats(affectedMOB, affectableStats);
+		affectableStats.adjStat(CharStats.STAT_INTELLIGENCE,+1);
+		affectableStats.adjStat(CharStats.STAT_CHARISMA,+1);
+		affectableStats.adjStat(CharStats.STAT_STRENGTH,-1);
+		affectableStats.adjStat(CharStats.STAT_CONSTITUTION,-1);
+		affectableStats.setStat(CharStats.STAT_SAVE_ELECTRIC,affectableStats.getStat(CharStats.STAT_SAVE_ELECTRIC)-10);
+		affectableStats.setStat(CharStats.STAT_SAVE_WATER,affectableStats.getStat(CharStats.STAT_SAVE_WATER)+10);
+	}
+
 	@Override
 	public String arriveStr()
 	{

@@ -160,6 +160,13 @@ public class WereBear extends Bear
 		affectableStats.adjStat(CharStats.STAT_DEXTERITY,2);
 	}
 
+	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	{
+		super.unaffectCharStats(affectedMOB, affectableStats);
+		affectableStats.adjStat(CharStats.STAT_STRENGTH,-5);
+		affectableStats.adjStat(CharStats.STAT_DEXTERITY,-2);
+	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

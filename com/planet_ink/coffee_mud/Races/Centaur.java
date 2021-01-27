@@ -205,6 +205,15 @@ public class Centaur extends StdRace
 		affectableStats.adjStat(CharStats.STAT_WISDOM,-1);
 	}
 
+	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	{
+		super.unaffectCharStats(affectedMOB, affectableStats);
+		affectableStats.adjStat(CharStats.STAT_STRENGTH,-1);
+		affectableStats.adjStat(CharStats.STAT_INTELLIGENCE,-1);
+		affectableStats.adjStat(CharStats.STAT_CHARISMA,+1);
+		affectableStats.adjStat(CharStats.STAT_WISDOM,+1);
+	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{

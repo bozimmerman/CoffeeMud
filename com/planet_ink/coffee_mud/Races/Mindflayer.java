@@ -209,6 +209,17 @@ public class Mindflayer extends Humanoid
 		affectableStats.setStat(CharStats.STAT_SAVE_MIND,affectableStats.getStat(CharStats.STAT_SAVE_MIND)+100);
 	}
 
+	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	{
+		super.unaffectCharStats(affectedMOB, affectableStats);
+		affectableStats.adjStat(CharStats.STAT_STRENGTH,+4);
+		affectableStats.adjStat(CharStats.STAT_INTELLIGENCE,-4);
+		affectableStats.adjStat(CharStats.STAT_CONSTITUTION,+2);
+		affectableStats.adjStat(CharStats.STAT_CHARISMA,-2);
+		affectableStats.setStat(CharStats.STAT_SAVE_MAGIC,affectableStats.getStat(CharStats.STAT_SAVE_MAGIC)-50);
+		affectableStats.setStat(CharStats.STAT_SAVE_MIND,affectableStats.getStat(CharStats.STAT_SAVE_MIND)-100);
+	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

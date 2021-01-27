@@ -67,6 +67,17 @@ public class SteamMephit extends Mephit
 		affectableStats.setStat(CharStats.STAT_SAVE_GAS,affectableStats.getStat(CharStats.STAT_SAVE_GAS)-100);
 	}
 
+	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	{
+		super.unaffectCharStats(affectedMOB, affectableStats);
+		affectableStats.adjStat(CharStats.STAT_STRENGTH,+4);
+		affectableStats.adjStat(CharStats.STAT_CONSTITUTION,+4);
+		affectableStats.setStat(CharStats.STAT_SAVE_SLASH, affectableStats.getStat(CharStats.STAT_SAVE_SLASH)-50);
+		affectableStats.setStat(CharStats.STAT_SAVE_WATER,affectableStats.getStat(CharStats.STAT_SAVE_WATER)-50);
+		affectableStats.setStat(CharStats.STAT_SAVE_PIERCE,affectableStats.getStat(CharStats.STAT_SAVE_PIERCE)-100);
+		affectableStats.setStat(CharStats.STAT_SAVE_GAS,affectableStats.getStat(CharStats.STAT_SAVE_GAS)+100);
+	}
+
 	@Override
 	public int lightestWeight()
 	{

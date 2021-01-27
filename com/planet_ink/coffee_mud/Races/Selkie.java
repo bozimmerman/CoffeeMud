@@ -190,6 +190,14 @@ public class Selkie extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_WATER,affectableStats.getStat(CharStats.STAT_SAVE_WATER)+15);
 	}
 
+	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	{
+		super.unaffectCharStats(affectedMOB, affectableStats);
+		affectableStats.adjStat(CharStats.STAT_CHARISMA,-2);
+		affectableStats.adjStat(CharStats.STAT_INTELLIGENCE,+2);
+		affectableStats.setStat(CharStats.STAT_SAVE_WATER,affectableStats.getStat(CharStats.STAT_SAVE_WATER)-15);
+	}
+
 	@Override
 	public List<Item> outfit(final MOB myChar)
 	{

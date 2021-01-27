@@ -133,6 +133,14 @@ public class ManScorpion extends StdRace
 		affectableStats.adjStat(CharStats.STAT_DEXTERITY,3);
 	}
 
+	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	{
+		super.unaffectCharStats(affectedMOB, affectableStats);
+		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)-100);
+		affectableStats.adjStat(CharStats.STAT_STRENGTH,-2);
+		affectableStats.adjStat(CharStats.STAT_DEXTERITY,-3);
+	}
+
 	@Override
 	public String arriveStr()
 	{

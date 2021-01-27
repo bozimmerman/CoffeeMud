@@ -408,6 +408,24 @@ public class GenRace extends StdRace
 	}
 
 	@Override
+	public void unaffectCharStats(final MOB affectedMob, final CharStats affectableStats)
+	{
+		if(adjStats!=null)
+		{
+			for(final int i: CharStats.CODES.ALLCODES())
+				affectableStats.setStat(i,affectableStats.getStat(i)-adjStats.getStat(i));
+		}
+		if(setStats!=null)
+		{
+			for(final int i: CharStats.CODES.ALLCODES())
+			{
+				if(setStats.getStat(i)!=0)
+					affectableStats.setStat(i,affectedMob.baseCharStats().getStat(i));
+			}
+		}
+	}
+
+	@Override
 	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 		if(adjState!=null)

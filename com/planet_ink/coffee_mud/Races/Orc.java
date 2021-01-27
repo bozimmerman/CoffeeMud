@@ -173,6 +173,17 @@ public class Orc extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_WATER,affectableStats.getStat(CharStats.STAT_SAVE_WATER)-10);
 	}
 
+	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	{
+		super.unaffectCharStats(affectedMOB, affectableStats);
+		affectableStats.adjStat(CharStats.STAT_STRENGTH,-2);
+		affectableStats.adjStat(CharStats.STAT_INTELLIGENCE,+1);
+		affectableStats.adjStat(CharStats.STAT_WISDOM,+1);
+		affectableStats.adjStat(CharStats.STAT_CHARISMA,+1);
+		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)-10);
+		affectableStats.setStat(CharStats.STAT_SAVE_WATER,affectableStats.getStat(CharStats.STAT_SAVE_WATER)+10);
+	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{

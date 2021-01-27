@@ -57,6 +57,13 @@ public class Lich extends Skeleton
 		affectableStats.adjStat(CharStats.STAT_CHARISMA,6);
 	}
 
+	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	{
+		super.unaffectCharStats(affectedMOB, affectableStats);
+		affectableStats.adjStat(CharStats.STAT_CONSTITUTION,+4);
+		affectableStats.adjStat(CharStats.STAT_CHARISMA,-6);
+	}
+
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 
 	@Override

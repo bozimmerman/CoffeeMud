@@ -52,6 +52,7 @@
  50. New fighter skill: Stance.
  51. Fighters lose wand use, Rangers swap wands for shards, Paladins wands for relics.
  52. Several exotic (elemental/golem) races were balanced a bit, for transmutation purposes.
+ 53. Racial transformations via magic will undo previous char stat changes and apply new ones correctly.
 # Build 5.9.10 Release 6/16/2020
   1. Wands/etc have enchant type as a restriction, WandMaking/StaffMaking/Rodsmithing support.
   2. New PLAYERDEATH option: RETAIN -- to allow player mobs to keep their items on death.

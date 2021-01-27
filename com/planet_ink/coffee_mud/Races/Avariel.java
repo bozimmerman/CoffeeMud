@@ -176,6 +176,14 @@ public class Avariel extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_MAGIC,affectableStats.getStat(CharStats.STAT_SAVE_MAGIC)+10);
 	}
 
+	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	{
+		super.unaffectCharStats(affectedMOB, affectableStats);
+		affectableStats.adjStat(CharStats.STAT_DEXTERITY,-1);
+		affectableStats.adjStat(CharStats.STAT_CONSTITUTION,-1);
+		affectableStats.setStat(CharStats.STAT_SAVE_MAGIC,affectableStats.getStat(CharStats.STAT_SAVE_MAGIC)-10);
+	}
+
 	@Override
 	public String makeMobName(final char gender, final int age)
 	{

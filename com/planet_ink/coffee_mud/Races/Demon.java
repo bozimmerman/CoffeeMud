@@ -181,6 +181,15 @@ public class Demon extends Unique
 		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)+50);
 	}
 
+	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	{
+		super.unaffectCharStats(affectedMOB, affectableStats);
+		affectableStats.adjStat(CharStats.STAT_STRENGTH,-5);
+		affectableStats.adjStat(CharStats.STAT_CHARISMA,+2);
+		affectableStats.adjStat(CharStats.STAT_WISDOM,+1);
+		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)-50);
+	}
+
 	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override

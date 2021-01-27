@@ -183,6 +183,17 @@ public class Pixie extends SmallElfKin
 		affectableStats.setStat(CharStats.STAT_SAVE_MAGIC,affectableStats.getStat(CharStats.STAT_SAVE_MAGIC)+25);
 	}
 
+	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	{
+		super.unaffectCharStats(affectedMOB, affectableStats);
+		affectableStats.adjStat(CharStats.STAT_DEXTERITY,-4);
+		affectableStats.adjStat(CharStats.STAT_STRENGTH,+6);
+		affectableStats.adjStat(CharStats.STAT_CONSTITUTION,+4);
+		affectableStats.adjStat(CharStats.STAT_CHARISMA,-2);
+		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)-10);
+		affectableStats.setStat(CharStats.STAT_SAVE_MAGIC,affectableStats.getStat(CharStats.STAT_SAVE_MAGIC)-25);
+	}
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{

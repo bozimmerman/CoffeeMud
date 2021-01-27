@@ -155,9 +155,9 @@ public class Druid_PlantForm extends StdAbility
 			final int oldCat=affected.baseCharStats().ageCategory();
 			if(affectableStats.getMyRace()!=newRace)
 			{
+				affectableStats.getMyRace().unaffectCharStats(affected, affectableStats);
 				affectableStats.setMyRace(newRace);
 				newRace.affectCharStats(affected, affectableStats);
-				newRace.agingAffects(affected, affected.baseCharStats(), affectableStats);
 			}
 			affectableStats.setWearableRestrictionsBitmap(affectableStats.getWearableRestrictionsBitmap()|affectableStats.getMyRace().forbiddenWornBits());
 			if(affected.baseCharStats().getStat(CharStats.STAT_AGE)>0)

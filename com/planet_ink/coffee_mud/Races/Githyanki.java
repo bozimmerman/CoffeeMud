@@ -143,6 +143,14 @@ public class Githyanki extends Humanoid
 		affectableStats.adjStat(CharStats.STAT_WISDOM,1);
 	}
 
+	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	{
+		super.unaffectCharStats(affectedMOB, affectableStats);
+		affectableStats.setStat(CharStats.STAT_SAVE_MIND,affectableStats.getStat(CharStats.STAT_SAVE_MIND)-10);
+		affectableStats.adjStat(CharStats.STAT_DEXTERITY,-1);
+		affectableStats.adjStat(CharStats.STAT_WISDOM,-1);
+	}
+
 	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override

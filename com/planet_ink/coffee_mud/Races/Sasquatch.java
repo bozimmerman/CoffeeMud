@@ -131,6 +131,13 @@ public class Sasquatch extends Gorilla
 		affectableStats.adjStat(CharStats.STAT_DEXTERITY,5);
 	}
 
+	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	{
+		super.unaffectCharStats(affectedMOB, affectableStats);
+		affectableStats.adjStat(CharStats.STAT_STRENGTH,-5);
+		affectableStats.adjStat(CharStats.STAT_DEXTERITY,-5);
+	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

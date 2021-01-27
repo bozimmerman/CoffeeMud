@@ -117,6 +117,14 @@ public class Wemic extends StdRace
 		affectableStats.adjStat(CharStats.STAT_CONSTITUTION,-2);
 	}
 
+	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	{
+		super.unaffectCharStats(affectedMOB, affectableStats);
+		affectableStats.adjStat(CharStats.STAT_DEXTERITY,-4);
+		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)+2);
+		affectableStats.adjStat(CharStats.STAT_CONSTITUTION,+2);
+	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{

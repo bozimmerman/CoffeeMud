@@ -62,6 +62,14 @@ public class LightMephit extends Mephit
 		affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD, affectableStats.getStat(CharStats.STAT_SAVE_UNDEAD)+50);
 	}
 
+	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	{
+		super.unaffectCharStats(affectedMOB, affectableStats);
+		affectableStats.setStat(CharStats.STAT_SAVE_SLASH, affectableStats.getStat(CharStats.STAT_SAVE_SLASH)-50);
+		affectableStats.setStat(CharStats.STAT_SAVE_FIRE, affectableStats.getStat(CharStats.STAT_SAVE_FIRE)-50);
+		affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD, affectableStats.getStat(CharStats.STAT_SAVE_UNDEAD)-50);
+	}
+
 	@Override
 	public int lightestWeight()
 	{

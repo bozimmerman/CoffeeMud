@@ -170,9 +170,9 @@ public class Prop_AstralSpirit extends Property
 	{
 		if(affectableStats.getMyRace()!=spiritRace())
 		{
+			affectableStats.getMyRace().unaffectCharStats(affected, affectableStats);
 			affectableStats.setMyRace(spiritRace());
 			spiritRace().affectCharStats(affected, affectableStats);
-			spiritRace().agingAffects(affected, affected.baseCharStats(), affectableStats);
 		}
 		affectableStats.setWearableRestrictionsBitmap(affectableStats.getWearableRestrictionsBitmap()|affectableStats.getMyRace().forbiddenWornBits());
 		super.affectCharStats(affected, affectableStats);

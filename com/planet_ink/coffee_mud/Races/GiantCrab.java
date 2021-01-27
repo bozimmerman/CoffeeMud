@@ -91,4 +91,13 @@ public class GiantCrab extends Crab
 		affectableStats.adjStat(CharStats.STAT_DEXTERITY,4);
 		affectableStats.adjStat(CharStats.STAT_CONSTITUTION,2);
 	}
+
+	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	{
+		super.unaffectCharStats(affectedMOB, affectableStats);
+		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectedMOB.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE));
+		affectableStats.setStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ,affectedMOB.baseCharStats().getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ));
+		affectableStats.adjStat(CharStats.STAT_DEXTERITY,-4);
+		affectableStats.adjStat(CharStats.STAT_CONSTITUTION,-2);
+	}
 }

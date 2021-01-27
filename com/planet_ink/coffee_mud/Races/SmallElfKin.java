@@ -148,6 +148,14 @@ public class SmallElfKin extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_MAGIC,affectableStats.getStat(CharStats.STAT_SAVE_MAGIC)+25);
 	}
 
+	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	{
+		super.unaffectCharStats(affectedMOB, affectableStats);
+		affectableStats.adjStat(CharStats.STAT_DEXTERITY,-3);
+		affectableStats.adjStat(CharStats.STAT_CONSTITUTION,+3);
+		affectableStats.setStat(CharStats.STAT_SAVE_MAGIC,affectableStats.getStat(CharStats.STAT_SAVE_MAGIC)-25);
+	}
+
 	@Override
 	public List<Item> outfit(final MOB myChar)
 	{
