@@ -53,8 +53,8 @@ public class Lich extends Skeleton
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.adjStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-4);
-		affectableStats.adjStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+6);
+		affectableStats.adjStat(CharStats.STAT_CONSTITUTION,-4);
+		affectableStats.adjStat(CharStats.STAT_CHARISMA,6);
 	}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
