@@ -338,8 +338,10 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				//int FTLVL=TLVL;
 				final Set<Object> illegalThings=new HashSet<Object>();
 				//Log.sysOut("Reset",I.name()+"("+I.basePhyStats().level()+") "+TLVL+", "+I.basePhyStats().armor()+"/"+I.basePhyStats().attackAdjustment()+"/"+I.basePhyStats().damage()+"/"+((adjA!=null)?adjA.text():"null"));
+				final long timeOut=System.currentTimeMillis()+5000;
 				while((TLVL>Math.round(CMath.mul(lvl,1.1)))
-				&&(illegalThings.size()<levelsMap.size()))
+				&&(illegalThings.size()<levelsMap.size())
+				&&(System.currentTimeMillis()<timeOut))
 				{
 					Object highestObject=null;
 					for(final Object o : levelsMap.keySet())
@@ -424,8 +426,10 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				//int FTLVL=TLVL;
 				final Set<Object> illegalThings=new HashSet<Object>();
 				//Log.sysOut("Reset",I.name()+"("+I.basePhyStats().level()+") "+TLVL+", "+I.basePhyStats().armor()+"/"+I.basePhyStats().attackAdjustment()+"/"+I.basePhyStats().damage()+"/"+((adjA!=null)?adjA.text():"null"));
+				final long timeOut=System.currentTimeMillis()+5000;
 				while((TLVL<Math.round(CMath.mul(lvl,0.9)))
-				&&(illegalThings.size()<levelsMap.size()))
+				&&(illegalThings.size()<levelsMap.size())
+				&&(System.currentTimeMillis()<timeOut))
 				{
 					Object lowestObject=null;
 					for(final Object o : levelsMap.keySet())
