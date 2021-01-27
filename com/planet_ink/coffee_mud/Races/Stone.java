@@ -156,8 +156,8 @@ public class Stone extends StdRace
 	{
 		affectableStats.setBreathables(allBreathe);
 		affectableStats.setStat(CharStats.STAT_GENDER,'N');
+		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 		affectableStats.setRacialStat(CharStats.STAT_WISDOM,1);
-		affectableStats.setRacialStat(CharStats.STAT_CHARISMA,5);
 		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
 		affectableStats.setStat(CharStats.STAT_SAVE_MIND,affectableStats.getStat(CharStats.STAT_SAVE_MIND)+100);
 		affectableStats.setStat(CharStats.STAT_SAVE_GAS,affectableStats.getStat(CharStats.STAT_SAVE_GAS)+100);

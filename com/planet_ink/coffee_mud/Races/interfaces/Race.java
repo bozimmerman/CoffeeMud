@@ -304,6 +304,17 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @param gainedAbilityIDs the set of abilities/skill IDs gained during this leveling process
 	 */
 	public void level(MOB mob, List<String> gainedAbilityIDs);
+	/**
+	 * This method is called by the recoverCharStats() method on other Stats Affecting objects,
+	 * when those objects are altering the Race away from this current race object to something
+	 * else.  This gives the race an opportunity to undo any stat changes.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CharStats
+	 * @see com.planet_ink.coffee_mud.core.interfaces.StatsAffecting
+	 * @see com.planet_ink.coffee_mud.core.interfaces.StatsAffecting#affectCharStats(MOB, CharStats)
+	 * @param affected the mob of the CharStats object being affected
+	 * @param affectableStats the particular CharStats object being affected
+	 */
+	public void unaffectCharStats(final MOB affected, final CharStats affectableStats);
 
 	/**
 	 * Whenever a player or mob of this race gains experience, this method gets a chance

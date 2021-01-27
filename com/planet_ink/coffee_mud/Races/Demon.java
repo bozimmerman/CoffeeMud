@@ -175,8 +175,9 @@ public class Demon extends Unique
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+5);
-		affectableStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,affectableStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ)+5);
+		affectableStats.adjStat(CharStats.STAT_STRENGTH,+5);
+		affectableStats.adjStat(CharStats.STAT_CHARISMA,-2);
+		affectableStats.adjStat(CharStats.STAT_WISDOM,-1);
 		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)+50);
 	}
 

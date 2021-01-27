@@ -340,6 +340,11 @@ public class StdRace implements Race
 	}
 
 	@Override
+	public void unaffectCharStats(final MOB affected, final CharStats affectableStats)
+	{
+	}
+
+	@Override
 	public String makeMobName(final char gender, final int age)
 	{
 		switch(age)

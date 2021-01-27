@@ -89,8 +89,6 @@ public class GiantCrab extends Crab
 	{
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 		affectableStats.adjStat(CharStats.STAT_DEXTERITY,4);
-		affectableStats.adjStat(CharStats.STAT_MAX_DEXTERITY_ADJ,4);
 		affectableStats.adjStat(CharStats.STAT_CONSTITUTION,2);
-		affectableStats.adjStat(CharStats.STAT_MAX_CONSTITUTION_ADJ,2);
 	}
 }
