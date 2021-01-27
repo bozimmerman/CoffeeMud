@@ -194,9 +194,9 @@ public class Dragon extends StdRace
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		final int bump = affectedMOB.isMonster()?15:5;
-		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+bump);
-		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+bump);
-		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)+bump);
+		affectableStats.adjStat(CharStats.STAT_STRENGTH,bump);
+		affectableStats.adjStat(CharStats.STAT_DEXTERITY,bump);
+		affectableStats.adjStat(CharStats.STAT_INTELLIGENCE,bump);
 	}
 
 	@Override

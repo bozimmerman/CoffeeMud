@@ -129,8 +129,8 @@ public class ManScorpion extends StdRace
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
-		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+2);
-		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+3);
+		affectableStats.adjStat(CharStats.STAT_STRENGTH,2);
+		affectableStats.adjStat(CharStats.STAT_DEXTERITY,3);
 	}
 
 	@Override

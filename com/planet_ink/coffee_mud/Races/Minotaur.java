@@ -129,7 +129,7 @@ public class Minotaur extends StdRace
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+5);
+		affectableStats.adjStat(CharStats.STAT_STRENGTH,5);
 	}
 
 	private final String[]	racialAbilityNames			= { "Skill_Buck", "Grazing" };

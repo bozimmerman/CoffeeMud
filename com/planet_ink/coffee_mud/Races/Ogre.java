@@ -160,10 +160,10 @@ public class Ogre extends Humanoid
 		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+10);
 		if(affectedMOB.isMonster())
 		{
-			affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)-3);
-			affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)-3);
-			affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)-4);
-			affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+5);
+			affectableStats.adjStat(CharStats.STAT_CHARISMA,-3);
+			affectableStats.adjStat(CharStats.STAT_DEXTERITY,-3);
+			affectableStats.adjStat(CharStats.STAT_INTELLIGENCE,-4);
+			affectableStats.adjStat(CharStats.STAT_STRENGTH,5);
 		}
 		else
 		{

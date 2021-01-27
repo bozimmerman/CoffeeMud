@@ -127,8 +127,8 @@ public class Sasquatch extends Gorilla
 	@Override
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
-		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+5);
-		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+5);
+		affectableStats.adjStat(CharStats.STAT_STRENGTH,5);
+		affectableStats.adjStat(CharStats.STAT_DEXTERITY,5);
 	}
 
 	@Override

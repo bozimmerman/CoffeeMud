@@ -143,9 +143,9 @@ public class Draconian extends StdRace
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+5);
-		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+5);
-		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)+5);
+		affectableStats.adjStat(CharStats.STAT_STRENGTH,5);
+		affectableStats.adjStat(CharStats.STAT_DEXTERITY,5);
+		affectableStats.adjStat(CharStats.STAT_INTELLIGENCE,5);
 		//affectableStats.setStat(CharStats.STAT_GENDER,'N');
 	}
 

@@ -164,7 +164,7 @@ public class Naga extends Python
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
-		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+5);
+		affectableStats.adjStat(CharStats.STAT_DEXTERITY,5);
 	}
 
 	@Override
