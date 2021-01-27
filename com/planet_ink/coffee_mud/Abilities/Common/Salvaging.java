@@ -96,7 +96,7 @@ public class Salvaging extends CommonSkill
 		return super.tick(ticking,tickID);
 	}
 
-	protected void finishSalvage(final MOB mob, final Item found, final int amount)
+	protected void finishSalvage(final MOB mob, final Item found, int amount)
 	{
 		final CMMsg msg=CMClass.getMsg(mob,found,this,getCompletedActivityMessageType(),null);
 		msg.setValue(amount);
@@ -108,12 +108,41 @@ public class Salvaging extends CommonSkill
 			else
 				msg.modify(L("<S-NAME> manage(s) to salvage @x1 pounds of @x2.",""+msg.value(),foundShortName));
 			mob.location().send(mob, msg);
-			for(int i=0;i<msg.value();i++)
+			amount=msg.value();
+			int extra=0;
+			int weight=1;
+			if((amount>=20)
+			&&(found instanceof RawMaterial))
+			{
+				weight=amount/10;
+				extra=amount-(weight*10);
+				amount=10;
+			}
+			for(int i=0;i<amount;i++)
 			{
 				final Item newFound=(Item)found.copyOf();
+				if(newFound.basePhyStats().weight()<weight)
+				{
+					newFound.basePhyStats().setWeight(weight);
+					newFound.phyStats().setWeight(weight);
+					CMLib.materials().adjustResourceName(newFound);
+				}
 				if(!dropAWinner(mob,newFound))
 					break;
 			}
+			for(int i=0;i<extra;i++)
+			{
+				final Item newFound=(Item)found.copyOf();
+				if(newFound.basePhyStats().weight()<extra)
+				{
+					newFound.basePhyStats().setWeight(extra);
+					newFound.phyStats().setWeight(extra);
+					CMLib.materials().adjustResourceName(newFound);
+				}
+				if(!dropAWinner(mob,newFound))
+					break;
+			}
+
 		}
 	}
 
