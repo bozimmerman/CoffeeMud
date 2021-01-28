@@ -647,27 +647,29 @@ public class StdAbility implements Ability
 			if(room==null)
 				return;
 			if(affected.fetchEffect(ID())==null)
-				affected.addEffect(this);
-			room.recoverRoomStats();
-			final int ecap=CMProps.getIntVar(CMProps.Int.EFFECTCAP);
-			if(ecap>0)
 			{
-				final List<Ability> candidates = new ArrayList<Ability>(mob.numEffects());
-				for(final Enumeration<Ability> e = mob.effects();e.hasMoreElements();)
+				affected.addEffect(this);
+				final int ecap=CMProps.getIntVar(CMProps.Int.EFFECTCAP);
+				if(ecap>0)
 				{
-					final Ability eA=e.nextElement();
-					if((eA!=null)
-					&&(eA.canBeUninvoked())
-					&&(eA.invoker()!=null))
-						candidates.add(eA);
-				}
-				if(candidates.size()>ecap)
-				{
-					final Ability deadA=candidates.get(CMLib.dice().roll(1, candidates.size(), -1));
-					if(deadA!=null)
-						deadA.unInvoke();
+					final List<Ability> candidates = new ArrayList<Ability>(mob.numEffects());
+					for(final Enumeration<Ability> e = mob.effects();e.hasMoreElements();)
+					{
+						final Ability eA=e.nextElement();
+						if((eA!=null)
+						&&(eA.canBeUninvoked())
+						&&(eA.invoker()!=null))
+							candidates.add(eA);
+					}
+					if(candidates.size()>ecap)
+					{
+						final Ability deadA=candidates.get(CMLib.dice().roll(1, candidates.size(), -1));
+						if(deadA!=null)
+							deadA.unInvoke();
+					}
 				}
 			}
+			room.recoverRoomStats();
 			if(invoker()!=affected)
 			{
 				for(int c=0;c<mob.charStats().numClasses();c++)
