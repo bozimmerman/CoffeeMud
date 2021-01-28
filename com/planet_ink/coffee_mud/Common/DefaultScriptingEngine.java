@@ -219,10 +219,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		if(defaultQuestName.length()==0)
 			return null;
-		if((questCacheObj!=null)
-		&&(questCacheObj.name().equals(defaultQuestName)))
-			return questCacheObj;
-		this.questCacheObj=null;
+		synchronized(this)
+		{
+			final Quest questCacheObj=this.questCacheObj;
+			if((questCacheObj!=null)
+			&&(questCacheObj.name().equals(defaultQuestName)))
+				return questCacheObj;
+			this.questCacheObj=null;
+		}
 		return CMLib.quests().fetchQuest(defaultQuestName);
 	}
 
@@ -321,6 +325,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		&&(named.equals("*")||named.equalsIgnoreCase(defaultQuestName)))
 			return defaultQuest();
 
+		Quest questCacheObj;
+		synchronized(this)
+		{
+			questCacheObj=this.questCacheObj;
+		}
 		if((questCacheObj!=null)
 		&&(questCacheObj.name().equals(named))
 		&&(questCacheObj.running()))
@@ -344,6 +353,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return Q;
 				}
 			}
+		}
+		synchronized(this)
+		{
+			questCacheObj=this.questCacheObj;
 		}
 		if((questCacheObj!=null)
 		&&(questCacheObj.name().equals(named)))
