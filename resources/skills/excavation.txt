@@ -1,7 +1,7 @@
 description	1	10	0			DESC	NA	-	-	description		Long elaborate description of the room details.
 title	1	15	0			TITLE	NA	-	-	title		Brief 1-6 word description of a room.
 wall	1	25	0		DIRUPDOWN CAVEONLY INDOOR	WALL	NA	-		wall @x1		Blocks entry/exit between two caves.
-demolish	1	200	0		DIRUPDOWN	DEMOLISH		-		demolishing		Demolishes something, which has different effects.
+demolish	1	200	0		CAVEONLY DIRUPDOWN	DEMOLISH		-		demolishing		Demolishes something, which has different effects.
 room	3	145	0		DIRUPDOWN CAVEONLY	EXCAVATE	CaveRoom	0		new room @x1		Excavates a new room in the given direction.
 archway	5	25	200		CAVEONLY DIR NOWALL	DOOR	GenExit	archway|an archway||||An archway to @x1		archway @x1		A special kind of open passageway between two cave rooms.
 shallow water	7	35	0		CAVEONLY	ROOM	WetCaveRoom	0		shallow water		Turns a room into a very wet one.
@@ -12,6 +12,7 @@ solid boulder	20	20	25		CAVEONLY DIRUPDOWN NOWALL	DOOR	GenDoor	solid boulder|pus
 medium maze	23	215	2500		CAVEONLY	ROOM	CaveMaze	5		maze frame and roof		Turns a room into a series of twists and turns.
 crawlway	25	25	0		CAVEONLY DIRUPDOWN NOWALL	DOOR	GenExit	crawlway	Prop_Crawlspace	crawlway @x1		Exit between two indoor places you crawl through.
 deep pool	27	200	0		CAVEONLY	ROOM	IndoorWaterSurface	1		pool		Turns a room into one of deep water to swim through and under.
+cavein	27	25	0		WATERONLY CAVEONLY	ROOM	CaveRoom	1		new room @x1		Turns a underground lake/pool into a normal cave room.
 big maze	30	240	3500		CAVEONLY	ROOM	CaveMaze	7		large maze frame and roof		Turns a room into numerous series of twists and turns.
 cavern	33	235	0		DIRUPDOWN CAVEONLY	EXCAVATE	LargeCaveRoom			new cavern @x1		Excavates a new narrow room in a given direction.
 ventilation shaft	35	65	0		CAVEONLY DIRUPDOWN	EXCAVATE	CaveRoom		Prop_Crawlspace	narrow passage @x1		Excavates a new tall room in a given direction.

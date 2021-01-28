@@ -520,6 +520,29 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 					M.setLocation(R);
 				}
 			}
+			room.clearSky();
+			if(((room.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)||(room.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+			&&(R.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)
+			&&(R.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE))
+			{
+				final Room waterR=room.getRoomInDir(Directions.DOWN);
+				if((waterR!=null)
+				&&((waterR.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)||(waterR.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
+				&&(waterR.roomID().length()>0))
+				{
+					final LandTitle title=CMLib.law().getLandTitle(waterR);
+					if(title!=null)
+					{
+						title.setOwnerName("");
+						title.updateLot(null);
+					}
+					room.setRawExit(Directions.DOWN, null);
+					room.rawDoors()[Directions.DOWN]=null;
+					waterR.setRawExit(Directions.UP, null);
+					waterR.rawDoors()[Directions.UP]=null;
+					CMLib.map().obliterateMapRoom(waterR);
+				}
+			}
 			CMLib.threads().deleteTick(room,-1);
 			for(int d=0;d<R.rawDoors().length;d++)
 			{
@@ -1142,24 +1165,42 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		return R;
 	}
 
-	public boolean isHomePeerRoom(final Room R)
+	public boolean isHomePeerRoom(final Room R, final boolean anyType)
 	{
-		return ifHomePeerLandTitle(R)!=null;
+		return ifHomePeerLandTitle(R,anyType)!=null;
 	}
 
-	public boolean isHomePeerTitledRoom(final Room R)
+	public boolean isHomePeerTitledRoom(final Room R, final boolean anyType)
 	{
-		final LandTitle title = ifHomePeerLandTitle(R);
+		final LandTitle title = ifHomePeerLandTitle(R,anyType);
 		if(title == null)
 			return false;
 		return title.getOwnerName().length()>0;
 	}
 
-	public LandTitle ifHomePeerLandTitle(final Room R)
+	public boolean countsAsACave(final Room R)
+	{
+		if(R==null)
+			return false;
+		if((R.domainType()==Room.DOMAIN_INDOORS_CAVE)
+		||((R.getAtmosphere()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_ROCK))
+			return true;
+		if(R.domainType()==Room.DOMAIN_INDOORS_CAVE_SEAPORT)
+			return true;
+		if(R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
+		{
+			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+				if(countsAsACave(R.getRoomInDir(d)))
+					return true;
+		}
+		return false;
+	}
+
+	public LandTitle ifHomePeerLandTitle(final Room R, final boolean anyType)
 	{
 		if((R!=null)
 		&&(R.ID().length()>0)
-		&&(CMath.bset(R.domainType(),Room.INDOORS)))
+		&&(anyType||CMath.bset(R.domainType(),Room.INDOORS)))
 			return CMLib.law().getLandTitle(R);
 		return null;
 	}
@@ -1442,14 +1483,22 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		final String dirName=commands.get(commands.size()-1);
 		dir=CMLib.directions().getGoodDirectionCode(dirName);
 
-		if((doingCode == Building.DEMOLISH)&&(dirName.equalsIgnoreCase("roof"))||(dirName.equalsIgnoreCase("ceiling")))
+		if((doingCode == Building.DEMOLISH)&&(dirName.equalsIgnoreCase("roof")||(dirName.equalsIgnoreCase("ceiling"))))
 		{
 			this.canBeDoneSittingDown = true;
 			final Room upRoom=mob.location().getRoomInDir(Directions.UP);
-			if(isHomePeerRoom(upRoom))
+			if(isHomePeerRoom(upRoom,flags.contains(Flag.CAVEONLY)))
 			{
 				commonTell(mob,L("You need to demolish the upstairs rooms first."));
 				return false;
+			}
+			if(flags.contains(Flag.CAVEONLY))
+			{
+				if((!countsAsACave(mob.location()))&&(!countsAsACave(upRoom)))
+				{
+					commonTell(mob,L("This can only be done underground."));
+					return false;
+				}
 			}
 			if(mob.location().domainType() == Room.DOMAIN_INDOORS_CAVE)
 			{
@@ -1471,6 +1520,14 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		else
 		if((doingCode == Building.DEMOLISH)&&(dirName.equalsIgnoreCase("room")))
 		{
+			if(flags.contains(Flag.CAVEONLY))
+			{
+				if(!countsAsACave(mob.location()))
+				{
+					commonTell(mob,L("This can only be done underground."));
+					return false;
+				}
+			}
 			this.canBeDoneSittingDown = true;
 			if((!CMLib.law().doesOwnThisLand(mob, mob.location()))
 			&&(!CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDROOMS))
@@ -1485,19 +1542,19 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				commonTell(mob,L("You aren't permitted to demolish this room."));
 				return false;
 			}
-			if(!CMLib.law().isHomeRoomUpstairs(mob.location()))
-			/*&&((mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE))
-			&&((mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE_SEAPORT))
-			&&((mob.location().domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)))*/
+			if(!flags.contains(Flag.CAVEONLY))
 			{
-				commonTell(mob,L("You can only demolish upstairs/downstairs rooms.  You might try just demolishing the ceiling/roof?"));
-				return false;
+				if(!CMLib.law().isHomeRoomUpstairs(mob.location()))
+				{
+					commonTell(mob,L("You can only demolish upstairs/downstairs rooms.  You might try just demolishing the ceiling/roof?"));
+					return false;
+				}
 			}
 			int numAdjacentProperties=0;
 			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 			{
 				final Room adjacentRoom=mob.location().getRoomInDir(d);
-				if(isHomePeerTitledRoom(adjacentRoom))
+				if(isHomePeerTitledRoom(adjacentRoom,flags.contains(Flag.CAVEONLY)))
 				{
 					numAdjacentProperties++;
 				}
@@ -1681,8 +1738,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 
 		if(flags.contains(Flag.CAVEONLY))
 		{
-			if((mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
-			&&((mob.location().getAtmosphere()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ROCK))
+			if(!countsAsACave(mob.location()))
 			{
 				commonTell(mob,L("This can only be done underground."));
 				return false;
