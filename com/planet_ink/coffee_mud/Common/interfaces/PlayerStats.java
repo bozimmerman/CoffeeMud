@@ -1124,6 +1124,8 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	public static final int BIRTHDEX_YEAR = 2;
 	/** Constant for year of last known birthday, as from {@link PlayerStats#getBirthday()} */
 	public static final int BIRTHDEX_LASTYEARCELEBRATED = 3;
+	/** Constant for number of birday indexes, as from {@link PlayerStats#getBirthday()} */
+	public static final int BIRTHDEX_COUNT = 4;
 
 	/** Constant for private messenging, means the last private msg was a SAYTO */
 	public static final int REPLY_SAY=0;
