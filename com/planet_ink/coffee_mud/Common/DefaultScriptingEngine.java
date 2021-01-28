@@ -3450,12 +3450,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							 returnable=false;
 						else
 						{
-							final TimeClock C=CMLib.time().localClock(mob.getStartRoom());
+							Room startRoom=mob.getStartRoom();
+							if(startRoom == null)
+								startRoom=CMLib.login().getDefaultStartRoom(mob);
+							if(startRoom == null)
+								startRoom=mob.location();
+							final TimeClock C=CMLib.time().localClock(startRoom);
 							final int month=C.getMonth();
 							final int day=C.getDayOfMonth();
-							final int bday=mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
-							final int bmonth=mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
-							if((C.getYear()==mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED])
+							int[] birthdayIndex = mob.playerStats().getBirthday();
+							if(birthdayIndex.length<PlayerStats.BIRTHDEX_COUNT)
+								birthdayIndex=Arrays.copyOf(birthdayIndex, PlayerStats.BIRTHDEX_COUNT);
+							final int bday=birthdayIndex[PlayerStats.BIRTHDEX_DAY];
+							final int bmonth=birthdayIndex[PlayerStats.BIRTHDEX_MONTH];
+							if((C.getYear()==birthdayIndex[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED])
 							&&((month==bmonth)&&(day==bday)))
 								returnable=true;
 							else
@@ -6592,15 +6600,26 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				final String arg1=CMParms.cleanBit(funcParms);
 				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((E!=null)&&(E instanceof MOB)&&(((MOB)E).playerStats()!=null)&&(((MOB)E).playerStats().getBirthday()!=null))
+				if((E!=null)
+				&&(E instanceof MOB)
+				&&(((MOB)E).playerStats()!=null)
+				&&(((MOB)E).playerStats().getBirthday()!=null))
 				{
 					final MOB mob=(MOB)E;
-					final TimeClock C=CMLib.time().localClock(mob.getStartRoom());
+					Room startRoom=mob.getStartRoom();
+					if(startRoom == null)
+						startRoom=CMLib.login().getDefaultStartRoom(mob);
+					if(startRoom == null)
+						startRoom=mob.location();
+					final TimeClock C=CMLib.time().localClock(startRoom);
 					final int day=C.getDayOfMonth();
 					final int month=C.getMonth();
 					int year=C.getYear();
-					final int bday=mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
-					final int bmonth=mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
+					int[] birthdayIndex = mob.playerStats().getBirthday();
+					if(birthdayIndex.length<PlayerStats.BIRTHDEX_COUNT)
+						birthdayIndex=Arrays.copyOf(birthdayIndex, PlayerStats.BIRTHDEX_COUNT);
+					final int bday=birthdayIndex[PlayerStats.BIRTHDEX_DAY];
+					final int bmonth=birthdayIndex[PlayerStats.BIRTHDEX_MONTH];
 					if((month>bmonth)||((month==bmonth)&&(day>bday)))
 						year++;
 
