@@ -1006,10 +1006,43 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		return false;
 	}
 
+	protected int getEffectFudgedLevel(final MOB mob)
+	{
+		if(mob != null)
+		{
+			final int effectCXL=CMProps.getIntVar(CMProps.Int.EFFECTCXL);
+			if(effectCXL != 0)
+			{
+				int levels=mob.phyStats().level();
+				final int triggerLevel=levels+CMProps.getIntVar(CMProps.Int.EXPRATE);
+				for(final Enumeration<Ability> e = mob.effects();e.hasMoreElements();)
+				{
+					final Ability eA=e.nextElement();
+					if((eA!=null)
+					&&(eA.canBeUninvoked()))
+					{
+						final MOB invokerM=eA.invoker();
+						if((invokerM!=null)
+						&&(invokerM!=mob)
+						&&(invokerM.phyStats().level()>triggerLevel)
+						&&(!(invokerM instanceof Deity)))
+						{
+							if(eA.abstractQuality()==Ability.QUALITY_MALICIOUS)
+								levels-=effectCXL;
+							else
+								levels+=effectCXL;
+						}
+					}
+				}
+				return levels;
+			}
+		}
+		return 0;
+	}
 	@Override
 	public int adjustedExperience(final MOB mob, final MOB victim, int amount)
 	{
-		final int killerLevel=mob.phyStats().level();
+		final int killerLevel=getEffectFudgedLevel(mob);
 		int highestLevelPC = killerLevel;
 		final Room R=mob.location();
 		final Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
@@ -1037,12 +1070,15 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 					if((M!=null)
 					&&(M!=mob)
 					&&(M!=victim)
-					&&(M.isPlayer())
-					&&(M.phyStats().level()>highestLevelPC))
-						highestLevelPC = M.phyStats().level();
+					&&(M.isPlayer()))
+					{
+						final int fudgedLevel=getEffectFudgedLevel(M);
+						if(fudgedLevel>highestLevelPC)
+							highestLevelPC = fudgedLevel;
+					}
 				}
 			}
-			final int vicLevel=victim.phyStats().level();
+			final int vicLevel=getEffectFudgedLevel(victim);
 			final double levelLimit=CMProps.getIntVar(CMProps.Int.EXPRATE);
 			final double levelDiff=vicLevel-killerLevel;
 

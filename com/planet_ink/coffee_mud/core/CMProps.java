@@ -358,6 +358,8 @@ public class CMProps extends Properties
 		RP_CHANNEL_NAMED,
 		MAXITEMSWORN,
 		MAXWEARPERLOC,
+		EFFECTCAP,
+		EFFECTCXL
 		;
 
 		public static final int	EXVIEW_DEFAULT		= 0;
@@ -2467,6 +2469,8 @@ public class CMProps extends Properties
 		setIntVar(Int.BASEMAXSTAT,getStr("BASEMAXSTAT","18"));
 		setIntVar(Int.BASEMINSTAT,getStr("BASEMINSTAT","3"));
 		setIntVar(Int.STARTSTAT,getStr("STARTSTAT"));
+		setIntVar(Int.EFFECTCAP,getStr("EFFECTCAP"));
+		setIntVar(Int.EFFECTCXL,getStr("EFFECTCXL"));
 		setIntVar(Int.DEFCMDTIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFCMDTIME"),p().cmdActionCostExceptions)*100.0));
 		setIntVar(Int.DEFCOMCMDTIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFCOMCMDTIME"),p().cmdComActionCostExceptions)*100.0));
 		setIntVar(Int.DEFABLETIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFABLETIME"),p().skillActionCostExceptions)*100.0));

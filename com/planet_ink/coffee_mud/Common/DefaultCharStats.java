@@ -1144,7 +1144,10 @@ public class DefaultCharStats implements CharStats
 			{
 				if(stats[statNum]<1)
 					stats[statNum]=1;
-				setStat(CharStats.CODES.toMAXBASE(statNum),value-CMProps.getIntVar(CMProps.Int.BASEMAXSTAT));
+				final int maxStatNum=CharStats.CODES.toMAXBASE(statNum);
+				stats[maxStatNum]+=(short)value;
+				if(stats[maxStatNum]<1)
+					stats[maxStatNum]=1;
 			}
 		}
 	}
