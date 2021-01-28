@@ -60,6 +60,7 @@ public class Shell extends StdCommand
 		MAKEDIRECTORY('+',"MAKEDIRECTORY","MKDIR","MD"),
 		FINDFILE('*',"FINDFILE","FF"),
 		SEARCHTEXT('&',"SEARCHTEXT","GREP","ST"),
+		JRUN(':',"EXEC","JRUN"),
 		EDIT('/',"EDIT"),
 		MOVE('~',"MOVE","MV"),
 		COMPAREFILES('?',"COMPAREFILES","DIFF","CF")
@@ -640,6 +641,51 @@ public class Shell extends StdCommand
 				{
 					mob.session().colorOnlyPrintln(L("\n\r^xFile /@x1^.^N\n\r",CF.getVFSPathAndName()));
 					mob.session().rawPrint(CF.text().toString());
+				}
+			}
+			break;
+		}
+		case JRUN: // jrun
+		{
+			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob,false,false,skipHash);
+			if(dirs==null)
+			{
+				mob.tell(L("^xError: invalid filename!^N"));
+				return false;
+			}
+			if(dirs.length==0)
+			{
+				mob.tell(L("^xError: no files matched^N"));
+				return false;
+			}
+			for (final CMFile dir : dirs)
+			{
+				if(killOnSession && ((mob.session()==null)||(mob.session().isStopped())))
+					break;
+				final CMFile CF=dir;
+				if((CF==null)||(!CF.exists()))
+				{
+					mob.tell(L("^xError: file does not exist!^N"));
+					return false;
+				}
+				if(!CF.canRead())
+				{
+					mob.tell(L("^xError: access denied!^N"));
+					return false;
+				}
+				if(mob.session()!=null)
+				{
+					final Command C=CMClass.getCommand("JRUN");
+					if((C!=null)&&(C.securityCheck(mob)))
+					{
+						final List<String> cmdV=new XVector<String>("JRUN",dir.getAbsolutePath());
+						C.execute(mob, cmdV, 0);
+					}
+					else
+					{
+						mob.tell(L("^xError: access denied!^N"));
+						return false;
+					}
 				}
 			}
 			break;
