@@ -138,6 +138,7 @@ public class Group extends StdCommand
 				}
 			}
 			msg.append(showWhoLong(mob,follower));
+			msg.append(L("\r\nYou have @x1/@x2 followers.",""+mob.totalFollowers(),""+mob.maxFollowers()));
 		}
 		mob.tell(msg.toString());
 		return false;
