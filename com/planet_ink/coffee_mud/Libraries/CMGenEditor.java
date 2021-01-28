@@ -404,7 +404,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				sess.safeRawPrintln(showNumber+". "+fieldDisp+": '"+showVal+"'.");
 			}
 			else
-				sess.safeRawPrintln(showNumber+". "+fieldDisp+": '"+showVal+"'.");
+				sess.safeRawPrintln(showNumber+". "+fieldDisp+": '"+CMStrings.ellipse(showVal,60)+"'.");
 		}
 		else
 			mob.tell(showNumber+". "+fieldDisp+": '"+showVal+"'.");

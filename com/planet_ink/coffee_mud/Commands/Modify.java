@@ -869,7 +869,7 @@ public class Modify extends StdCommand
 					if(doCmd<0)
 					{
 						final String oldScript=Q.script();
-						newScript=CMLib.genEd().prompt(mob,oldScript,++showNumber,showFlag,L("Script"),false,false,CMLib.help().getHelpText("QUESTS",mob,true).toString(),null,null);
+						newScript=CMLib.genEd().prompt(mob,oldScript,++showNumber,showFlag,L("Script"),false,true,CMLib.help().getHelpText("QUESTS",mob,true).toString(),null,null);
 						if(!newScript.equals(oldScript))
 						{
 							Q.setScript(newScript,true);
