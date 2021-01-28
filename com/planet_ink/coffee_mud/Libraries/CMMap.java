@@ -2866,7 +2866,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			final MOB M=i.nextElement();
 			if((M!=null)
 			&&(!M.isPlayer())
-			&&(M.isSavable())
+			&&(M.isSavable()) // this is almost certainly to protect Quest mobs, which are just about the only unsavable things.
 			&&((M.amFollowing()==null)||(!M.amFollowing().isPlayer())))
 			{
 				final Room startRoom = M.getStartRoom();
