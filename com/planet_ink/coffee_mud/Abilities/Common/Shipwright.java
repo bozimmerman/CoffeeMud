@@ -337,6 +337,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 										mob.addItem((Item)titleI);
 									}
 								}
+								if(buildingI.subjectToWearAndTear())
+									buildingI.setUsesRemaining(100);
 							}
 						}
 					}
