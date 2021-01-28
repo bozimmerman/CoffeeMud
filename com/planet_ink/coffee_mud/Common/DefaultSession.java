@@ -2618,9 +2618,11 @@ public class DefaultSession implements Session
 			try
 			{
 				loggingOutObj[0]=true;
+				final MOB mob=this.mob;
 				final boolean inTheGame=CMLib.flags().isInTheGame(M,true);
 				if(inTheGame
 				&& (M.location()!=null)
+				&&(mob!=null)
 				&&((!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
 					||(CMLib.sessions().numSessions()>1)))
 				{
@@ -2631,11 +2633,12 @@ public class DefaultSession implements Session
 						if((M2.location()!=null)&&(!rooms.contains(M2.location())))
 							rooms.add(M2.location());
 					}
+					final CMMsg quitMsg=CMClass.getMsg(mob, CMMsg.MSG_QUIT, null);
 					for(final Room R : rooms)
 					{
 						try
 						{
-							R.send(M, CMClass.getMsg(mob, CMMsg.MSG_QUIT, null));
+							R.send(M, quitMsg);
 						}
 						catch (final Throwable t)
 						{ /* and eat it */
