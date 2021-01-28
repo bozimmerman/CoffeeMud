@@ -178,7 +178,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	@Override
 	public String getFinalCurrency()
 	{
-		if(currency.length()>0)
+		if((currency!=null)&&(currency.length()>0))
 			return currency;
 		return "";
 	}
