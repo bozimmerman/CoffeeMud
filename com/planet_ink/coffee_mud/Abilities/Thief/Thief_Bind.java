@@ -292,6 +292,7 @@ public class Thief_Bind extends ThiefSkill
 					}
 					else
 						amountRemaining=(adjustedLevel(mob,asLevel))*25;
+					amountRemaining=(int)Math.round(CMath.mul(amountRemaining, target.basePhyStats().speed()));
 					if((target.location()==mob.location())||(auto))
 						success=maliciousAffect(mob,target,asLevel,Ability.TICKS_FOREVER,-1)!=null;
 				}

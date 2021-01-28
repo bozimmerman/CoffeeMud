@@ -257,6 +257,7 @@ public class Spell_Nightmare extends Spell
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					amountRemaining=100;
+					amountRemaining=(int)Math.round(CMath.mul(amountRemaining, target.basePhyStats().speed()));
 					maliciousAffect(mob,target,asLevel,10,-1);
 					target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> go(es) into the throes of a horrendous nightmare!!"));
 				}

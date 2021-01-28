@@ -191,6 +191,7 @@ public class ShootWeb extends StdAbility
 				if(msg.value()<=0)
 				{
 					amountRemaining=super.adjustedLevel(mob, asLevel)*10;
+					amountRemaining=(int)Math.round(CMath.mul(amountRemaining, target.basePhyStats().speed()));
 					if(target.location()==mob.location())
 					{
 						success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1)!=null;

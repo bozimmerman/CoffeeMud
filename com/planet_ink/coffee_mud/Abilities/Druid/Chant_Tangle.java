@@ -183,6 +183,7 @@ public class Chant_Tangle extends Chant
 					if(msg.value()<=0)
 					{
 						amountRemaining=200;
+						amountRemaining=(int)Math.round(CMath.mul(amountRemaining, target.basePhyStats().speed()));
 						if(target.location()==mob.location())
 						{
 							success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1)!=null;

@@ -179,6 +179,7 @@ public class Spell_Repulsion extends Spell
 						if(msg.value()<=0)
 						{
 							amountRemaining=130;
+							amountRemaining=(int)Math.round(CMath.mul(amountRemaining, target.basePhyStats().speed()));
 							if(target.location()==mob.location())
 							{
 								success=maliciousAffect(mob,target,asLevel,((mob.phyStats().level()+(2*getXLEVELLevel(mob)))*10),-1)!=null;

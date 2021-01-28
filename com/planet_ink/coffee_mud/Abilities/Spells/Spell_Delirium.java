@@ -100,7 +100,7 @@ public class Spell_Delirium extends Spell
 			while(((++tries)<1000)
 			&&(!invoker.location().getArea().isProperlyEmpty()))
 			{
-				
+
 				final Room R=invoker.location().getArea().getRandomProperRoom();
 				if(!R.displayText().equals(likeThisOne.displayText()))
 					return R;

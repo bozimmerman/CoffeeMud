@@ -196,6 +196,7 @@ public class Power_WebSpinning extends SuperPower
 				if(msg.value()<=0)
 				{
 					amountRemaining=160;
+					amountRemaining=(int)Math.round(CMath.mul(amountRemaining, target.basePhyStats().speed()));
 					if(CMLib.map().roomLocation(target)==mob.location())
 					{
 						success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1)!=null;

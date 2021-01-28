@@ -193,6 +193,7 @@ public class Spell_FlamingEnsnarement extends Spell
 						if(msg.value()<=0)
 						{
 							amountRemaining=60;
+							amountRemaining=(int)Math.round(CMath.mul(amountRemaining, target.basePhyStats().speed()));
 							if(target.location()==mob.location())
 							{
 								success=maliciousAffect(mob,target,asLevel,0,-1)!=null;

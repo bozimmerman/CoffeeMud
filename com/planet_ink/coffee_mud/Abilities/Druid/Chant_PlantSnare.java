@@ -214,6 +214,7 @@ public class Chant_PlantSnare extends Chant
 						if(msg.value()<=0)
 						{
 							amountRemaining=400+(100*getXLEVELLevel(mob));
+							amountRemaining=(int)Math.round(CMath.mul(amountRemaining, target.basePhyStats().speed()));
 							if(troom==room)
 							{
 								success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1)!=null;
