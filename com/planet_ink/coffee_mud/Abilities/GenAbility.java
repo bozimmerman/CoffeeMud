@@ -657,7 +657,7 @@ public class GenAbility extends StdAbility
 				final Physical finalTarget = target;
 				final MOB finalTargetMOB = (finalTarget instanceof MOB) ? (MOB) finalTarget : mob;
 				final int finalCastCode = castCode;
-				final Ability me = this;
+				final GenAbility me = this;
 				final Runnable skillAction = new Runnable()
 				{
 					@Override
@@ -671,7 +671,13 @@ public class GenAbility extends StdAbility
 								new double[]
 								{
 									mob.phyStats().level(),
-									(finalTarget==null)?mob.phyStats().level():finalTarget.phyStats().level()
+									((finalTarget==null)?mob.phyStats().level():finalTarget.phyStats().level()),
+									me.getXLEVELLevel(mob),
+									me.getX1Level(mob),
+									me.getX2Level(mob),
+									me.getX3Level(mob),
+									me.getX4Level(mob),
+									me.getX5Level(mob)
 								});
 						}
 						if(((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))

@@ -607,6 +607,8 @@
                 <TD><FONT COLOR=YELLOW>Damage/Healing Formula: </FONT></TD>
                 <TD>
                     <INPUT TYPE=TEXT SIZE=40 MAXLENGTH=255 NAME=POSTCASTDAMAGE VALUE="@AbilityData?POSTCASTDAMAGE@">
+                    <BR>
+                    <FONT SIZE=-1 COLOR=WHITE>@x1=caster level, @x2=target level, @x3=level expertise, @x4-@x8=x1-x5 expertise</FONT>
                 </TD>
             </TR>
         @endif@
