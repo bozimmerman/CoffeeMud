@@ -2838,37 +2838,6 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		return this;
 	}
 
-	protected int getEffectFudgedLevel(final MOB mob)
-	{
-		int levels;
-		if(mob != null)
-		{
-			levels=mob.phyStats().level();
-			final int triggerLevel=levels+CMProps.getIntVar(CMProps.Int.EXPRATE);
-			for(final Enumeration<Ability> e = mob.effects();e.hasMoreElements();)
-			{
-				final Ability eA=e.nextElement();
-				if(eA!=null)
-				{
-					final MOB invokerM=eA.invoker();
-					if((invokerM!=null)
-					&&(invokerM!=mob)
-					&&(invokerM.phyStats().level()>triggerLevel)
-					&&(!(invokerM instanceof Deity)))
-					{
-						if(eA.abstractQuality()==Ability.QUALITY_MALICIOUS)
-							levels--;
-						else
-							levels++;
-					}
-				}
-			}
-		}
-		else
-			levels=0;
-		return levels;
-	}
-
 	@Override
 	public void dispenseExperience(final Set<MOB> killers, final Set<MOB> dividers, final MOB killed)
 	{
@@ -2878,14 +2847,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 		for (final MOB mob : dividers)
 		{
-			final int lvl=getEffectFudgedLevel(mob);
+			final int lvl=mob.phyStats().level();
 			totalSquaredLevels += (lvl*lvl);
 			totalLevels += lvl;
 			if(lvl>highestLevel)
 				highestLevel=lvl;
 		}
 
-		final int killedLevel=(killed==null)?highestLevel:getEffectFudgedLevel(killed);
+		final int killedLevel=(killed==null)?highestLevel:killed.phyStats().level();
 		final double[] totalVars={
 			dividers.size(),
 			totalSquaredLevels,
@@ -2908,9 +2877,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		};
 		for (final MOB mob : killers)
 		{
-			final int lvl=getEffectFudgedLevel(mob);
-			indiVars[1]=lvl*lvl;
-			indiVars[3]=lvl;
+			indiVars[1]=mob.phyStats().level()*mob.phyStats().level();
+			indiVars[3]=mob.phyStats().level();
 			final CompiledFormula indXPformula = getSessionMUDFight(mob.session()).individualCombatExpFormula;
 			final int myAmount=(int)Math.round(CMath.parseMathExpression(indXPformula, indiVars, 0.0));
 			CMLib.get(mob.session())._leveler().postExperience(mob,killed,"",myAmount,false);
