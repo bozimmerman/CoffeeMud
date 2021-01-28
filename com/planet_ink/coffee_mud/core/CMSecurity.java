@@ -2723,7 +2723,8 @@ public class CMSecurity
 		ELECTRICTHREAD("Electric currents"),
 		SCRIPTVARS("MOBPROG Script vars"),
 		SCRIPTTRACE("MOBPROG Script traving"),
-		TOPTHREAD("Top report thread")
+		TOPTHREAD("Top report thread"),
+		SHIPCOMBAT("sailing ship fights")
 		;
 		private final String desc;
 

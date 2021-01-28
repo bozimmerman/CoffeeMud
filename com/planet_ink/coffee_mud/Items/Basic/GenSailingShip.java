@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Move;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMProps.Int;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -1817,7 +1818,12 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 				{
 					final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),null);
 					final int[] coordsToHit;
-					if(this.targetedShip instanceof GenSailingShip)
+					final PhysicalAgent targetedShip;
+					synchronized(this)
+					{
+						targetedShip=this.targetedShip;
+					}
+					if(targetedShip instanceof GenSailingShip)
 						coordsToHit = ((GenSailingShip)this.targetedShip).getMyCoords();
 					else
 						coordsToHit = new int[2];
@@ -1850,7 +1856,13 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 									{
 										final int[] coordsAimedAt = aimings.remove(index).second;
 										final boolean wasHit = Arrays.equals(coordsAimedAt, coordsToHit);
-										CMLib.combat().postShipAttack(mob, this, this.targetedShip, w, wasHit);
+										CMLib.combat().postShipAttack(mob, this, targetedShip, w, wasHit);
+										if(CMSecurity.isDebugging(DbgFlag.SHIPCOMBAT))
+										{
+											final String targetedName=targetedShip!=null?targetedShip.Name():"Unknown";
+											Log.debugOut("ShipCombat: "+Name()+" aimed "+w.Name()+" at "+CMParms.toListString(coordsAimedAt)
+															+" and "+(wasHit?"hit ":"missed ")+targetedName+" at "+CMParms.toListString(coordsToHit));
+										}
 									}
 									else
 										notAimed++;
@@ -2249,6 +2261,8 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 						this.announceActionToDeckOrUnderdeck(msg.source(), underdeckHitMsg, Room.INDOORS);
 						if(pointsLost >= this.usesRemaining())
 						{
+							if(CMSecurity.isDebugging(DbgFlag.SHIPCOMBAT))
+								Log.debugOut("ShipCombat: "+Name()+" takes remaining "+usesRemaining()+" points of damage, and sinks.");
 							this.setUsesRemaining(0);
 							this.recoverPhyStats(); // takes away the swimmability!
 							final Room shipR=CMLib.map().roomLocation(this);
@@ -2290,6 +2304,8 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 						else
 						{
 							this.setUsesRemaining(this.usesRemaining() - pointsLost);
+							if(CMSecurity.isDebugging(DbgFlag.SHIPCOMBAT))
+								Log.debugOut("ShipCombat: "+Name()+" takes "+pointsLost+" points of hull damage, and has"+usesRemaining()+" points remaining.");
 						}
 					}
 				}
