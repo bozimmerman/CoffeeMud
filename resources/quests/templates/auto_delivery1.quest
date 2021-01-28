@@ -73,7 +73,7 @@
 #$DELIVERY_RESPONSE=($LONG_STRING)=Thanks!
 #
 #!QUESTMAKER_PAGE Deliverable item
-#Create the item which the the player must take and give to the deliveree mob.  
+#Create the item which the player must take and give to the deliveree mob.  
 #
 #Deliverable Item: 
 #You may select from the available items below or create a 

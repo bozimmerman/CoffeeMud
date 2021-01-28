@@ -162,7 +162,7 @@ public class Skill_ShipLore extends StdSkill
 			return false;
 		}
 		final Room room=mob.location();
-		final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_THINK,L("<S-NAME> <S-IS-ARE> recalling something about the @x1 race.",shipI.Name()));
+		final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_THINK,L("<S-NAME> <S-IS-ARE> recalling something about @x1.",shipI.Name()));
 		if(room.okMessage(mob,msg))
 		{
 			room.send(mob,msg);

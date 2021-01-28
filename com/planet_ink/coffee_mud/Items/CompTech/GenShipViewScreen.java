@@ -580,9 +580,9 @@ public class GenShipViewScreen extends GenElecCompSensor implements ShipDirCompo
 					if(finalList.size()==0)
 					{
 						if(getPermittedDirections().length>1)
-							setDescription(L("You see the the blackness of space. ")+"("+dirNames+") ");
+							setDescription(L("You see the blackness of space. ")+"("+dirNames+") ");
 						else
-							setDescription(L("You see the the blackness of space. "));
+							setDescription(L("You see the blackness of space. "));
 					}
 					else
 					{
