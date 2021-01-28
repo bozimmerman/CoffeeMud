@@ -217,16 +217,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 	protected Quest defaultQuest()
 	{
-		if(defaultQuestName.length()==0)
-			return null;
+		final Quest questCacheObj;
+		final String defaultQuestName;
 		synchronized(this)
 		{
-			final Quest questCacheObj=this.questCacheObj;
-			if((questCacheObj!=null)
-			&&(questCacheObj.name().equals(defaultQuestName)))
-				return questCacheObj;
-			this.questCacheObj=null;
+			questCacheObj=this.questCacheObj;
+			defaultQuestName=this.defaultQuestName;
 		}
+		if(defaultQuestName.length()==0)
+			return null;
+		if((questCacheObj!=null)
+		&&(questCacheObj.name().equals(defaultQuestName)))
+			return questCacheObj;
+		this.questCacheObj=null;
 		return CMLib.quests().fetchQuest(defaultQuestName);
 	}
 
