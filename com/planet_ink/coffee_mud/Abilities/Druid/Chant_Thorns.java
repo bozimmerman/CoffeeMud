@@ -65,7 +65,7 @@ public class Chant_Thorns extends Chant
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_BENEFICIAL_OTHERS;
+		return Ability.QUALITY_BENEFICIAL_SELF;
 	}
 
 	@Override
