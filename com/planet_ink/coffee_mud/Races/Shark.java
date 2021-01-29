@@ -125,6 +125,7 @@ public class Shark extends GiantFish
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,15);
 	}
 
+	@Override
 	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.unaffectCharStats(affectedMOB, affectableStats);

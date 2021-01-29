@@ -205,6 +205,7 @@ public class Centaur extends StdRace
 		affectableStats.adjStat(CharStats.STAT_WISDOM,-1);
 	}
 
+	@Override
 	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.unaffectCharStats(affectedMOB, affectableStats);

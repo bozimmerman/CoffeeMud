@@ -132,6 +132,7 @@ public class Minotaur extends StdRace
 		affectableStats.adjStat(CharStats.STAT_STRENGTH,5);
 	}
 
+	@Override
 	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.unaffectCharStats(affectedMOB, affectableStats);

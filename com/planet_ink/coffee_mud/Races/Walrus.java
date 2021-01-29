@@ -136,6 +136,7 @@ public class Walrus extends Seal
 		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,17);
 	}
 
+	@Override
 	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.unaffectCharStats(affectedMOB, affectableStats);

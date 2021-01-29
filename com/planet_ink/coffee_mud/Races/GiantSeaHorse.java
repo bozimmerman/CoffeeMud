@@ -92,6 +92,7 @@ public class GiantSeaHorse extends SeaHorse
 		affectableStats.adjStat(CharStats.STAT_CONSTITUTION,2);
 	}
 
+	@Override
 	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.unaffectCharStats(affectedMOB, affectableStats);

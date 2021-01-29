@@ -172,6 +172,7 @@ public class Barghest extends Demon
 		affectableStats.adjStat(CharStats.STAT_DEXTERITY,2);
 	}
 
+	@Override
 	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.unaffectCharStats(affectedMOB, affectableStats);

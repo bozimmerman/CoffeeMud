@@ -183,6 +183,7 @@ public class GreatAmphibian extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,13);
 	}
 
+	@Override
 	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.unaffectCharStats(affectedMOB, affectableStats);

@@ -184,6 +184,7 @@ public class Whale extends GiantFish
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,3);
 	}
 
+	@Override
 	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.unaffectCharStats(affectedMOB, affectableStats);

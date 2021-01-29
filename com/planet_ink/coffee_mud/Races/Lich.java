@@ -57,6 +57,7 @@ public class Lich extends Skeleton
 		affectableStats.adjStat(CharStats.STAT_CHARISMA,6);
 	}
 
+	@Override
 	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.unaffectCharStats(affectedMOB, affectableStats);

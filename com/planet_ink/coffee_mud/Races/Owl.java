@@ -172,6 +172,7 @@ public class Owl extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_WISDOM,18);
 	}
 
+	@Override
 	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.unaffectCharStats(affectedMOB, affectableStats);

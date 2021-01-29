@@ -133,6 +133,7 @@ public class ManScorpion extends StdRace
 		affectableStats.adjStat(CharStats.STAT_DEXTERITY,3);
 	}
 
+	@Override
 	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.unaffectCharStats(affectedMOB, affectableStats);

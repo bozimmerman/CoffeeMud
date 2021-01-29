@@ -141,6 +141,7 @@ public class Rat extends Rodent
 		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,4);
 	}
 
+	@Override
 	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.unaffectCharStats(affectedMOB, affectableStats);

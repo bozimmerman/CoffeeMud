@@ -167,6 +167,7 @@ public class Naga extends Python
 		affectableStats.adjStat(CharStats.STAT_DEXTERITY,5);
 	}
 
+	@Override
 	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.unaffectCharStats(affectedMOB, affectableStats);

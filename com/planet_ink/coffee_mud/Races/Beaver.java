@@ -170,6 +170,7 @@ public class Beaver extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY, 7);
 	}
 
+	@Override
 	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.unaffectCharStats(affectedMOB, affectableStats);

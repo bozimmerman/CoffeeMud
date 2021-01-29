@@ -186,6 +186,7 @@ public class FaerieDragon extends StdRace
 		affectableStats.adjStat(CharStats.STAT_INTELLIGENCE,2);
 	}
 
+	@Override
 	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.unaffectCharStats(affectedMOB, affectableStats);

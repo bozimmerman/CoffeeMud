@@ -117,6 +117,7 @@ public class Wemic extends StdRace
 		affectableStats.adjStat(CharStats.STAT_CONSTITUTION,-2);
 	}
 
+	@Override
 	public void unaffectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.unaffectCharStats(affectedMOB, affectableStats);
