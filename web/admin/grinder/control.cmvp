@@ -368,7 +368,7 @@
 			@loop@
 			@INIValue?MASK=GROUP_*&NEXT@
 			<TR><TD WIDTH=30%><FONT COLOR=WHITE>@RequestParameter?INI@</FONT>
-			</TD><TD WIDTH=70%><INPUT TYPE=TEXT NAME=@RequestParameter?INI@ SIZE=60 VALUE="@INIValue@">
+			</TD><TD WIDTH=70%><INPUT TYPE=TEXT NAME=@RequestParameter?INI@ SIZE=60 VALUE="@INIValue?QUOTESAFE@">
 			</TD></TR>
 			@back@
 			<TR><TD WIDTH=30%><FONT COLOR=WHITE><B>Enter key to ADD</B></FONT>
@@ -399,7 +399,7 @@
 			@loop@
 			@INIValue?MASK=START_*&NEXT@
 			<TR><TD WIDTH=30%><FONT COLOR=WHITE>@RequestParameter?INI@</FONT>
-			</TD><TD WIDTH=70%><INPUT TYPE=TEXT NAME=@RequestParameter?INI@ SIZE=60 VALUE="@INIValue@">
+			</TD><TD WIDTH=70%><INPUT TYPE=TEXT NAME=@RequestParameter?INI@ SIZE=60 VALUE="@INIValue?QUOTESAFE@">
 			</TD></TR>
 			@back@
 			<TR><TD WIDTH=30%><FONT COLOR=WHITE><B>Enter key to ADD</B></FONT>
@@ -424,7 +424,7 @@
 			@loop@
 			@INIValue?MASK=DEATH_*&NEXT@
 			<TR><TD WIDTH=30%><FONT COLOR=WHITE>@RequestParameter?INI@</FONT>
-			</TD><TD WIDTH=70%><INPUT TYPE=TEXT NAME=@RequestParameter?INI@ SIZE=60 VALUE="@INIValue@">
+			</TD><TD WIDTH=70%><INPUT TYPE=TEXT NAME=@RequestParameter?INI@ SIZE=60 VALUE="@INIValue?QUOTESAFE@">
 			</TD></TR>
 			@back@
 			<TR><TD WIDTH=30%><FONT COLOR=WHITE><B>Enter key to ADD</B></FONT>
@@ -449,7 +449,7 @@
 			@loop@
 			@INIValue?MASK=MORGUE_*&NEXT@
 			<TR><TD WIDTH=30%><FONT COLOR=WHITE>@RequestParameter?INI@</FONT>
-			</TD><TD WIDTH=70%><INPUT TYPE=TEXT NAME=@RequestParameter?INI@ SIZE=60 VALUE="@INIValue@">
+			</TD><TD WIDTH=70%><INPUT TYPE=TEXT NAME=@RequestParameter?INI@ SIZE=60 VALUE="@INIValue?QUOTESAFE@">
 			</TD></TR>
 			@back@
 			<TR><TD WIDTH=30%><FONT COLOR=WHITE><B>Enter key to ADD</B></FONT>

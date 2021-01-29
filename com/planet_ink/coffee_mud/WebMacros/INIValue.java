@@ -290,6 +290,7 @@ public class INIValue extends StdWebMacro
 			return "";
 		String last=httpReq.getUrlParameter("INI");
 		final boolean descZapperMask = parms.remove("DESCZAPPERMASK") != null;
+		final boolean quoteSafe = parms.remove("QUOTESAFE") != null;
 		if(last == null)
 			last = parms.remove("INI");
 		if((parms.size()==0)&&(last!=null)&&(last.length()>0))
@@ -297,9 +298,16 @@ public class INIValue extends StdWebMacro
 			final CMProps page=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
 			if((page==null)||(!page.isLoaded()))
 				return "";
+			String val;
 			if(!descZapperMask)
-				return page.getStr(last);
-			return CMLib.masking().maskDesc(page.getStr(last));
+				val=page.getStr(last);
+			else
+				val=CMLib.masking().maskDesc(page.getStr(last));
+			if(val==null)
+				return "";
+			if(quoteSafe)
+				return CMStrings.replaceAll(val, "\"","&quot;");
+			return val;
 		}
 		if(parms.containsKey("RESET"))
 		{
