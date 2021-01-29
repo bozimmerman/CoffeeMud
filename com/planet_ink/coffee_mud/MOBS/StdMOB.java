@@ -2876,6 +2876,9 @@ public class StdMOB implements MOB
 			&& (msg.sourceMinor() != CMMsg.TYP_SELL)
 			&& (msg.sourceMinor() != CMMsg.TYP_VIEW))
 			{
+				// this reason this is here and not in stdability protecting
+				// mana usage is because the target must be determined for
+				// last second ranging, which stdability invoke won't know.
 				int useRange = -1;
 				final Environmental tool = msg.tool();
 				if (getVictim() != null)
