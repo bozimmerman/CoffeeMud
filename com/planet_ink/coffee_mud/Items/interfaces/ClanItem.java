@@ -61,7 +61,8 @@ public interface ClanItem extends Item
 		ANTI_PROPAGANDA("Anti-propaganda"),
 		SPECIALAPRON("Merchant tool"),
 		LEGALBADGE("Officer emblem"),
-		TABBARD("Tabbard")
+		TABBARD("Tabbard"),
+		SAILORSCAP("Sailors cap")
 		;
 		private final String ID;
 		private final String displayName;

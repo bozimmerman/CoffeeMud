@@ -583,7 +583,15 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			return true;
 		if(getOwnerName().length()==0)
 			return true;
-		return CMLib.law().doesOwnThisProperty(mob, this);
+		if(CMLib.law().doesOwnThisProperty(mob, this))
+			return true;
+		final Item I=mob.fetchFirstWornItem(Wearable.WORN_HEAD);
+		if((I instanceof ClanItem)
+		&&(((ClanItem)I).getClanItemType()==ClanItem.ClanItemType.SAILORSCAP)
+		&&(getOwnerName().length()>0)
+		&&(getOwnerName().equalsIgnoreCase(((ClanItem)I).clanID())))
+			return true;
+		return false;
 	}
 
 	protected void announceToShip(final String msgStr)
