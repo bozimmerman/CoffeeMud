@@ -34,6 +34,10 @@ import java.util.*;
 */
 
 /**
+ * The ExpertiseLibrary manages a list of optional, purchaseable player attributes, called expertises.
+ * Each expertise applies to a certain group of skills, and will modify the behavior or cost
+ * of those skills by the expertise type.  Types of expertise include those affecting the level of
+ * the skill, its mana cost, its duration or time, and other miscellaneous scorings.
  *
  * @author Bo Zimmerman
  *
