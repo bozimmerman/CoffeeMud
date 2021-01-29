@@ -55,11 +55,11 @@ public interface ExpertiseLibrary extends CMLibrary
 	public int numExpertises();
 	public SkillCost createNewSkillCost(CostType costType, Double value);
 	public void recompileExpertises();
-	public int getExpertiseLevel(final MOB mob, final String abilityID, final ExpertiseLibrary.Flag code);
+	public int getExpertiseLevel(final MOB mob, final String abilityID, final ExpertiseLibrary.XType code);
 	public String getExpertiseHelp(String ID, boolean exact);
-	public String getApplicableExpertise(String ID, Flag code);
-	public String[] getApplicableExpertises(String ID, Flag code);
-	public int getApplicableExpertiseLevel(String ID, Flag code, MOB mob);
+	public String getApplicableExpertise(String ID, XType code);
+	public String[] getApplicableExpertises(String ID, XType code);
+	public int getApplicableExpertiseLevel(String ID, XType code, MOB mob);
 	public int getStages(String baseExpertiseCode);
 	public List<String> getStageCodes(String baseExpertiseCode);
 	public String confirmExpertiseLine(String row, String ID, boolean addIfPossible);
@@ -69,9 +69,15 @@ public interface ExpertiseLibrary extends CMLibrary
 	public boolean canBeTaught(MOB teacher, MOB student, Environmental item, String msg);
 	public boolean postTeach(MOB teacher, MOB student, CMObject teachObj);
 	public Iterator<String> filterUniqueExpertiseIDList(Iterator<String> i);
-	public int getHighestListableStageBySkill(final MOB mob, String ableID, ExpertiseLibrary.Flag flag);
+	public int getHighestListableStageBySkill(final MOB mob, String ableID, ExpertiseLibrary.XType flag);
 
-	public enum Flag
+	/**
+	 * The Expertise Type num, which describes what skill aspect that this expertise
+	 * will modify
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public enum XType
 	{
 		X1,
 		X2,
@@ -111,38 +117,134 @@ public interface ExpertiseLibrary extends CMLibrary
 		 */
 		public void setBaseName(String baseName);
 
+		/**
+		 * Sets the friendly name of this expertise, including its
+		 * stage/level number.  e.g. EXPERTISE8
+		 * @param name the friendly name
+		 */
 		public void setName(String name);
 
+		/**
+		 * Sets the code name of this expertise, including its
+		 * stage/level number.  e.g. EXPERTISE8
+		 * @param ID the code name of this expertise
+		 */
 		public void setID(String ID);
 
-		public void setData(String[] data);
+		/**
+		 * If this expertise supports naming _DATA for each stage/level, this
+		 * will set an array of the names of each stage/level for easy
+		 * lookup.
+		 * @see ExpertiseDefinition#getStageNames()
+		 * @param data an array of the names
+		 */
+		public void setStageNames(String[] data);
 
+		/**
+		 * If this is a later stage expertise definition, this
+		 * method returns the parent/base definition.
+		 * @return the parent/base definition.
+		 */
 		public ExpertiseDefinition getParent();
 
+		/**
+		 * Returns the minimum player level required to learn this
+		 * expertise.
+		 * @return the minimum player level required
+		 */
 		public int getMinimumLevel();
 
-		public String[] getData();
+		/**
+		 * If this expertise supports naming _DATA for each stage/level, this
+		 * will return an array of the names of each stage/level for easy
+		 * lookup.
+		 * @see ExpertiseDefinition#setStageNames(String[])
+		 * @return the stage names
+		 */
+		public String[] getStageNames();
 
+		/**
+		 * Gets a ZapperMask describing who may know about the availability of this
+		 * expertise.
+		 * @see com.planet_ink.coffee_mud-Libraries.interfaces.MaskingLibrary
+		 * @return a ZapperMask describing who may know about the availability of this
+		 */
 		public MaskingLibrary.CompiledZMask compiledListMask();
 
+		/**
+		 * Gets a ZapperMask describing who may acquire this
+		 * expertise through training.
+		 * @see com.planet_ink.coffee_mud-Libraries.interfaces.MaskingLibrary
+		 * @return a ZapperMask describing who acquire this
+		 */
 		public MaskingLibrary.CompiledZMask compiledFinalMask();
 
+		/**
+		 * Gets a ZapperMask describing who may know about the availability of this
+		 * expertise AND acquire it.
+		 * @see com.planet_ink.coffee_mud-Libraries.interfaces.MaskingLibrary
+		 * @return a ZapperMask describing access to this expertise
+		 */
 		public String allRequirements();
 
+		/**
+		 * Gets a ZapperMask describing who may know about the availability of this
+		 * expertise.
+		 * @see com.planet_ink.coffee_mud-Libraries.interfaces.MaskingLibrary
+		 * @return a ZapperMask describing who may know about the availability of this
+		 */
 		public String listRequirements();
 
+		/**
+		 * Gets a ZapperMask describing who may acquire this
+		 * expertise through training.
+		 * @see com.planet_ink.coffee_mud-Libraries.interfaces.MaskingLibrary
+		 * @return a ZapperMask describing who may acquire this
+		 */
 		public String finalRequirements();
 
+		/**
+		 * Adds a ZapperMask describing who may know about the availability of this
+		 * expertise.
+		 * @see com.planet_ink.coffee_mud-Libraries.interfaces.MaskingLibrary
+		 * @param mask a ZapperMask describing who may know about the availability of this
+		 */
 		public void addListMask(String mask);
 
+		/**
+		 * Adds a ZapperMask describing who may acquire this
+		 * expertise through training.
+		 * @see com.planet_ink.coffee_mud-Libraries.interfaces.MaskingLibrary
+		 * @param mask a ZapperMask describing who may acquire this
+		 */
 		public void addFinalMask(String mask);
 
+		/**
+		 * Adds another resource cost to acquire this expertise.
+		 * @param type the type of cost
+		 * @param value the amount of the resource required
+		 */
 		public void addCost(CostType type, Double value);
 
+		/**
+		 * Returns a friendly description of this expertise cost
+		 * @return a friendly description of this expertise cost
+		 */
 		public String costDescription();
 
+		/**
+		 * Returns whether the given mob has enough resources
+		 * to cover the costs described by this expertise.
+		 * @param mob the mob to lose resources
+		 * @return true if the mob can meet the costs
+		 */
 		public boolean meetsCostRequirements(MOB mob);
 
+		/**
+		 * Subtracts the costs described by this class from
+		 * the given mob
+		 * @param mob the mob to lose resources
+		 */
 		public void spendCostRequirements(MOB mob);
 
 	}
