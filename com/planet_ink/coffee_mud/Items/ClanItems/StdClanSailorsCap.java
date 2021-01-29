@@ -129,8 +129,7 @@ public class StdClanSailorsCap extends StdArmor implements ClanItem
 	{
 		if (StdClanItem.stdOkMessage(this, msg))
 		{
-			if ((clanID().length() > 0)
-			&& (msg.amITarget(this)))
+			if (clanID().length() > 0)
 			{
 				if(msg.targetMinor() == CMMsg.TYP_GET)
 				{
@@ -139,7 +138,7 @@ public class StdClanSailorsCap extends StdArmor implements ClanItem
 					{
 						approvedM=this.approvedGetterM;
 					}
-					if(msg.source()!=approvedM)
+					if((msg.source()!=approvedM)&& (msg.amITarget(this)))
 					{
 						final Clan C=CMLib.clans().getClan(clanID());
 						if((C != null)
