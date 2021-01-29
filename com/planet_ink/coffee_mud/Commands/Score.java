@@ -92,6 +92,7 @@ public class Score extends Affect
 
 		final int classLevel=mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
 		final int powerLevel=CMLib.leveler().getEffectFudgedLevel(mob);
+		final boolean showPowerLevel=CMProps.Int.Prowesses.POWER_LEVEL.is(prowessCode);
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 		&&(!mob.charStats().getMyRace().classless())
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
@@ -103,7 +104,7 @@ public class Score extends Affect
 				levelStr=L("level ")+mob.phyStats().level()+" "+mob.charStats().getCurrentClass().name(mob.charStats().getCurrentClassLevel());
 			else
 				levelStr=mob.charStats().getCurrentClass().name(mob.charStats().getCurrentClassLevel())+" "+classLevel+"/"+mob.phyStats().level();
-			if(powerLevel != mob.phyStats().level())
+			if((powerLevel != mob.phyStats().level())&&(showPowerLevel))
 				msg.append(L("You are ^H@x1^? the ^H@x2^?, power level ^H@x3^?.\n\r",mob.Name(),levelStr,""+powerLevel));
 			else
 				msg.append(L("You are ^H@x1^? the ^H@x2^?.\n\r",mob.Name(),levelStr));
@@ -118,7 +119,7 @@ public class Score extends Affect
 				levelStr=L(", level ")+mob.phyStats().level();
 			else
 				levelStr=L(", level ")+classLevel+"/"+mob.phyStats().level();
-			if(powerLevel != mob.phyStats().level())
+			if((powerLevel != mob.phyStats().level())&&(showPowerLevel))
 				msg.append(L("You are ^H@x1^?^H@x2^?, power level ^H@x3^?.\n\r",mob.Name(),levelStr,""+powerLevel));
 			else
 				msg.append(L("You are ^H@x1^?^H@x2^?.\n\r",mob.Name(),levelStr));

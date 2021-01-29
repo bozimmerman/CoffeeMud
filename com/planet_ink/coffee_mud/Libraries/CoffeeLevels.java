@@ -1011,10 +1011,10 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	{
 		if(mob != null)
 		{
+			int levels=mob.phyStats().level();
 			final int effectCXL=CMProps.getIntVar(CMProps.Int.EFFECTCXL);
 			if(effectCXL != 0)
 			{
-				int levels=mob.phyStats().level();
 				final int triggerLevel=levels+CMProps.getIntVar(CMProps.Int.EXPRATE);
 				for(final Enumeration<Ability> e = mob.effects();e.hasMoreElements();)
 				{

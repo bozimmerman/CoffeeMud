@@ -402,7 +402,8 @@ public class CMProps extends Properties
 			DAMAGE_NUMBER(4096),
 			SKILL_PROFICIENCY(8192),
 			STAT_PROFICIENCY(16384),
-			FACTION_RANGE(32768)
+			FACTION_RANGE(32768),
+			POWER_LEVEL(65536)
 			;
 			public int value;
 			private Prowesses(final int val)
