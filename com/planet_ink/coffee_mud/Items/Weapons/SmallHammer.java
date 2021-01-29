@@ -43,7 +43,7 @@ public class SmallHammer extends StdWeapon
 		super();
 
 		setName("a small hammer");
-		setDisplayText("a ssmall hammer has been dropped on the ground.");
+		setDisplayText("a small hammer has been dropped on the ground.");
 		setDescription("A hammer with a small but dangerous little head.");
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(0);
