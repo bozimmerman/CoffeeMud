@@ -141,17 +141,15 @@ public class StdClanSailorsCap extends StdArmor implements ClanItem
 					}
 					if(msg.source()!=approvedM)
 					{
-						msg.source().tell(L("You have not earned @x1.",name()));
-						return false;
-					}
-					final Clan C=CMLib.clans().getClan(clanID());
-					if((C != null)
-					&&(msg.source().getClanRole(clanID())!=null))
-					{
-						if(C.getAuthority(msg.source().getClanRole(clanID()).second.intValue(), Clan.Function.PROPERTY_OWNER)!=Clan.Authority.CAN_DO)
+						final Clan C=CMLib.clans().getClan(clanID());
+						if((C != null)
+						&&(msg.source().getClanRole(clanID())!=null))
 						{
-							msg.source().tell(L("You have not earned @x1.",name()));
-							return false;
+							if(C.getAuthority(msg.source().getClanRole(clanID()).second.intValue(), Clan.Function.PROPERTY_OWNER)!=Clan.Authority.CAN_DO)
+							{
+								msg.source().tell(L("You have not earned @x1.",name()));
+								return false;
+							}
 						}
 					}
 					return super.okMessage(myHost, msg);
