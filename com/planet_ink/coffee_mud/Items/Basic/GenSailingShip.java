@@ -2305,7 +2305,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 						{
 							this.setUsesRemaining(this.usesRemaining() - pointsLost);
 							if(CMSecurity.isDebugging(DbgFlag.SHIPCOMBAT))
-								Log.debugOut("ShipCombat: "+Name()+" takes "+pointsLost+" points of hull damage, and has"+usesRemaining()+" points remaining.");
+								Log.debugOut("ShipCombat: "+Name()+" takes "+pointsLost+" points of hull damage, and has "+usesRemaining()+" points remaining.");
 						}
 					}
 				}
@@ -2607,6 +2607,8 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 							final int oldDistance = this.getLowestTacticalDistanceFromThis();
 							tacticalCoords[0] = newCoords[0];
 							tacticalCoords[1] = newCoords[1];
+							if(CMSecurity.isDebugging(DbgFlag.SHIPCOMBAT))
+								Log.debugOut("ShipCombat: "+Name()+" maneuvers to "+CMParms.toListString(tacticalCoords));
 							final int newDistance = this.getLowestTacticalDistanceFromThis();
 							ticksSinceMove=0;
 							if((newDistance <= oldDistance)||(newDistance < thisRoom.maxRange()))
@@ -2629,6 +2631,8 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 						{
 							thisRoom.send(mob, maneuverMsg);
 							directionFacing = CMLib.directions().getStrictDirectionCode(maneuverMsg.sourceMessage());
+							if(CMSecurity.isDebugging(DbgFlag.SHIPCOMBAT))
+								Log.debugOut("ShipCombat: "+Name()+" turns "+directionName);
 						}
 						if(direction != directionFacing)
 							return SailResult.REPEAT;
