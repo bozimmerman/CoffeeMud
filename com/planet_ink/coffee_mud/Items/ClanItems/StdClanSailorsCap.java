@@ -163,7 +163,8 @@ public class StdClanSailorsCap extends StdArmor implements ClanItem
 					if((C != null)
 					&&(msg.source().getClanRole(clanID())!=null))
 					{
-						if(C.getAuthority(msg.source().getClanRole(clanID()).second.intValue(), Clan.Function.PROPERTY_OWNER)==Clan.Authority.CAN_DO)
+						if((C.getAuthority(msg.source().getClanRole(clanID()).second.intValue(), Clan.Function.PROPERTY_OWNER)==Clan.Authority.CAN_DO)
+						&&(((MOB)msg.target()).getClanRole(clanID())!=null))
 						{
 							synchronized(this)
 							{
