@@ -3164,7 +3164,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			if(CMath.s_parseIntExpression(whatToDo,varVals)>0)
 			{
 				lostExperience[0]=CMath.s_parseIntExpression(whatToDo,varVals);
-				if(lostExperience[0]>0)
+				if((lostExperience[0]>0)
+				&&(!deadM.charStats().getCurrentClass().expless()))
 				{
 					lostExperience[0]=-CMLib.leveler().postExperience(deadM,null,null,-lostExperience[0],false);
 					message=L(message,""+lostExperience[0]);
@@ -3175,7 +3176,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			if(whatToDo.startsWith("EXPER")) // "EXPERIENCE
 			{
 				lostExperience[0]=baseExperience;
-				if(lostExperience[0]>0)
+				if((lostExperience[0]>0)
+				&&(!deadM.charStats().getCurrentClass().expless()))
 				{
 					lostExperience[0]=-CMLib.leveler().postExperience(deadM,null,null,-lostExperience[0],false);
 					message=L(message,""+lostExperience[0]);
