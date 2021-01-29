@@ -53,6 +53,8 @@ public interface ExpLevelLibrary extends CMLibrary
 	 */
 	public int getLevelExperienceJustThisLevel(MOB mob, int level);
 
+	public int getEffectFudgedLevel(final MOB mob);
+
 	public void handleExperienceChange(CMMsg msg);
 
 	public void handleRPExperienceChange(CMMsg msg);

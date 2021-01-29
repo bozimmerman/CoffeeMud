@@ -1006,7 +1006,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		return false;
 	}
 
-	protected int getEffectFudgedLevel(final MOB mob)
+	@Override
+	public int getEffectFudgedLevel(final MOB mob)
 	{
 		if(mob != null)
 		{
