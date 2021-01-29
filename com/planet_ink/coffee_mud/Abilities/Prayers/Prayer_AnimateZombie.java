@@ -127,8 +127,8 @@ public class Prayer_AnimateZombie extends Prayer
 		final double deathLoreExpertiseLevel = super.getXLEVELLevel(mob);
 		final double appropriateLoreExpertiseLevel = super.getX1Level(mob);
 		final double charLevel = mob.phyStats().level();
-		final double maxDeathLoreExpertiseLevel = exLib.getHighestListableStageBySkill(mob,ID(),ExpertiseLibrary.Flag.LEVEL);
-		final double maxApproLoreExpertiseLevel = exLib.getHighestListableStageBySkill(mob,ID(),ExpertiseLibrary.Flag.X1);
+		final double maxDeathLoreExpertiseLevel = exLib.getHighestListableStageBySkill(mob,ID(),ExpertiseLibrary.XType.LEVEL);
+		final double maxApproLoreExpertiseLevel = exLib.getHighestListableStageBySkill(mob,ID(),ExpertiseLibrary.XType.X1);
 		double lvl = 0;
 		if ((maxApproLoreExpertiseLevel > 0)
 		&& (maxDeathLoreExpertiseLevel > 0))
