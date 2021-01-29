@@ -453,7 +453,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 						if(def==null)
 							def=CMLib.expertises().getDefinition(key);
 						if(def!=null)
-							extras.append(def.getData()[s]+", ");
+							extras.append(def.getStageNames()[s]+", ");
 					}
 				}
 			}
@@ -551,7 +551,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 									def=CMLib.expertises().getDefinition(key);
 								if(def!=null)
 								{
-									if(cmd.equalsIgnoreCase(def.getData()[s]))
+									if(cmd.equalsIgnoreCase(def.getStageNames()[s]))
 									{
 										commands.remove(0);
 										if(hideNext)
@@ -643,7 +643,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					def = CMLib.expertises().getDefinition(expertiseID);
 				if(def==null)
 					continue;
-				name=CMStrings.replaceAll(name," "+def.getData()[stage].toUpperCase()+" ","");
+				name=CMStrings.replaceAll(name," "+def.getStageNames()[stage].toUpperCase()+" ","");
 			}
 		}
 		return name.trim();
@@ -680,16 +680,16 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					switch(stage)
 					{
 					case 0:
-						applyName(item,def.getData()[stage], hide);
+						applyName(item,def.getStageNames()[stage], hide);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.1));
 						break;
 					case 1:
-						applyName(item,def.getData()[stage], hide);
+						applyName(item,def.getStageNames()[stage], hide);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.2));
 						affect.bumpTickDown(Math.round(0.25 * affect.tickDown));
 						break;
 					case 2:
-						applyName(item,def.getData()[stage], hide);
+						applyName(item,def.getStageNames()[stage], hide);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.3));
 						//addStatAdjustment(item,"DEX","+1");
 						affect.bumpTickDown(Math.round(0.5 * affect.tickDown));
@@ -701,7 +701,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				{
 					if(stage >= 0)
 					{
-						applyName(item,def.getData()[stage], hide);
+						applyName(item,def.getStageNames()[stage], hide);
 						item.basePhyStats().setLevel(item.basePhyStats().level()+stage+1);
 						item.phyStats().setLevel(item.basePhyStats().level()+stage+1);
 						if((item instanceof Weapon)
@@ -762,23 +762,23 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				case DURACRAFT:
 				{
 					if((!(item instanceof Armor))||(item.basePhyStats().armor()==0))
-						commonTell(mob,L("@x1 only applies to protective armor.",def.getData()[stage]));
+						commonTell(mob,L("@x1 only applies to protective armor.",def.getStageNames()[stage]));
 					else
 					switch(stage)
 					{
 					case 0:
-						applyName(item,def.getData()[stage], hide);
+						applyName(item,def.getStageNames()[stage], hide);
 						item.basePhyStats().setArmor(item.basePhyStats().armor()+1);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.1));
 						break;
 					case 1:
-						applyName(item,def.getData()[stage], hide);
+						applyName(item,def.getStageNames()[stage], hide);
 						item.basePhyStats().setArmor(atLeast1(item.basePhyStats().armor(),0.1)+1);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.2));
 						affect.bumpTickDown(Math.round(0.25 * affect.tickDown));
 						break;
 					case 2:
-						applyName(item,def.getData()[stage], hide);
+						applyName(item,def.getStageNames()[stage], hide);
 						item.basePhyStats().setArmor(atLeast1(item.basePhyStats().armor(),0.25)+1);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.3));
 						//addStatAdjustment(item,"CON","+1");
@@ -792,17 +792,17 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					switch(stage)
 					{
 					case 0:
-						applyName(item,def.getData()[stage], hide);
+						applyName(item,def.getStageNames()[stage], hide);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.5));
 						affect.bumpTickDown(Math.round(0.25 * affect.tickDown));
 						break;
 					case 1:
-						applyName(item,def.getData()[stage], hide);
+						applyName(item,def.getStageNames()[stage], hide);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),1.5));
 						affect.bumpTickDown(Math.round(0.5 * affect.tickDown));
 						break;
 					case 2:
-						applyName(item,def.getData()[stage], hide);
+						applyName(item,def.getStageNames()[stage], hide);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),2.5));
 						if((item instanceof Armor)
 						&&(!CMath.bset(((Armor)item).getLayerAttributes(),Armor.LAYERMASK_MULTIWEAR)))
@@ -815,25 +815,25 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				case LTHLCRAFT:
 				{
 					if(!(item instanceof Weapon))
-						commonTell(mob,L("@x1 only applies to weapons.",def.getData()[stage]));
+						commonTell(mob,L("@x1 only applies to weapons.",def.getStageNames()[stage]));
 					else
 					switch(stage)
 					{
 					case 0:
-						applyName(item,def.getData()[stage], hide);
+						applyName(item,def.getStageNames()[stage], hide);
 						item.basePhyStats().setDamage(atLeast1(item.basePhyStats().damage(),0.05));
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.1));
 						affect.bumpTickDown(Math.round(0.25 * affect.tickDown));
 						break;
 					case 1:
-						applyName(item,def.getData()[stage], hide);
+						applyName(item,def.getStageNames()[stage], hide);
 						item.basePhyStats().setDamage(atLeast1(item.basePhyStats().damage(),0.1));
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.2));
 						item.basePhyStats().setWeight(atLeast1(item.basePhyStats().weight(),0.1));
 						affect.bumpTickDown(Math.round(0.5 * affect.tickDown));
 						break;
 					case 2:
-						applyName(item,def.getData()[stage], hide);
+						applyName(item,def.getStageNames()[stage], hide);
 						item.basePhyStats().setDamage(atLeast1(item.basePhyStats().damage(),0.15)+1);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.3));
 						item.basePhyStats().setWeight(atLeast1(item.basePhyStats().weight(),0.1));
@@ -845,25 +845,25 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				case CNTRCRAFT:
 				{
 					if(!(item instanceof Weapon))
-						commonTell(mob,L("@x1 only applies to weapons.",def.getData()[stage]));
+						commonTell(mob,L("@x1 only applies to weapons.",def.getStageNames()[stage]));
 					else
 					switch(stage)
 					{
 					case 0:
-						applyName(item,def.getData()[stage], hide);
+						applyName(item,def.getStageNames()[stage], hide);
 						item.basePhyStats().setAttackAdjustment(item.basePhyStats().attackAdjustment()+3);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.1));
 						affect.bumpTickDown(Math.round(0.25 * affect.tickDown));
 						break;
 					case 1:
-						applyName(item,def.getData()[stage], hide);
+						applyName(item,def.getStageNames()[stage], hide);
 						item.basePhyStats().setAttackAdjustment(item.basePhyStats().attackAdjustment()+6);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.2));
 						item.basePhyStats().setWeight(atLeast1(item.basePhyStats().weight(),0.05));
 						affect.bumpTickDown(Math.round(0.5 * affect.tickDown));
 						break;
 					case 2:
-						applyName(item,def.getData()[stage], hide);
+						applyName(item,def.getStageNames()[stage], hide);
 						item.basePhyStats().setAttackAdjustment(item.basePhyStats().attackAdjustment()+9);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.3));
 						item.basePhyStats().setWeight(atLeast1(item.basePhyStats().weight(),0.1));
@@ -876,7 +876,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				case VIGOCRAFT:
 				case IMBUCRAFT:
 				{
-					applyName(item,def.getData()[stage], hide);
+					applyName(item,def.getStageNames()[stage], hide);
 					if (type == EnhancedExpertise.IMBUCRAFT)
 					{
 						addToStat=CharState.STAT_MANA;

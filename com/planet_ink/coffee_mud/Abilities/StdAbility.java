@@ -377,7 +377,7 @@ public class StdAbility implements Ability
 		return castingQuality(mob,target,abstractQuality());
 	}
 
-	protected synchronized int expertise(final MOB mob, final Ability A, final ExpertiseLibrary.Flag code)
+	protected synchronized int expertise(final MOB mob, final Ability A, final ExpertiseLibrary.XType code)
 	{
 		if((mob!=null)
 		&&(A.isNowAnAutoEffect()
@@ -398,57 +398,57 @@ public class StdAbility implements Ability
 
 	protected int getX1Level(final MOB mob)
 	{
-		return expertise(mob, this, ExpertiseLibrary.Flag.X1);
+		return expertise(mob, this, ExpertiseLibrary.XType.X1);
 	}
 
 	protected int getX2Level(final MOB mob)
 	{
-		return expertise(mob, this, ExpertiseLibrary.Flag.X2);
+		return expertise(mob, this, ExpertiseLibrary.XType.X2);
 	}
 
 	protected int getX3Level(final MOB mob)
 	{
-		return expertise(mob, this, ExpertiseLibrary.Flag.X3);
+		return expertise(mob, this, ExpertiseLibrary.XType.X3);
 	}
 
 	protected int getX4Level(final MOB mob)
 	{
-		return expertise(mob, this, ExpertiseLibrary.Flag.X4);
+		return expertise(mob, this, ExpertiseLibrary.XType.X4);
 	}
 
 	protected int getX5Level(final MOB mob)
 	{
-		return expertise(mob, this, ExpertiseLibrary.Flag.X5);
+		return expertise(mob, this, ExpertiseLibrary.XType.X5);
 	}
 
 	protected int getXLEVELLevel(final MOB mob)
 	{
-		return expertise(mob, this, ExpertiseLibrary.Flag.LEVEL);
+		return expertise(mob, this, ExpertiseLibrary.XType.LEVEL);
 	}
 
 	protected int getXLOWCOSTLevel(final MOB mob)
 	{
-		return expertise(mob, this, ExpertiseLibrary.Flag.LOWCOST);
+		return expertise(mob, this, ExpertiseLibrary.XType.LOWCOST);
 	}
 
 	protected int getXLOWFREECOSTLevel(final MOB mob)
 	{
-		return expertise(mob, this, ExpertiseLibrary.Flag.LOWFREECOST);
+		return expertise(mob, this, ExpertiseLibrary.XType.LOWFREECOST);
 	}
 
 	protected int getXMAXRANGELevel(final MOB mob)
 	{
-		return expertise(mob, this, ExpertiseLibrary.Flag.MAXRANGE);
+		return expertise(mob, this, ExpertiseLibrary.XType.MAXRANGE);
 	}
 
 	protected int getXTIMELevel(final MOB mob)
 	{
-		return expertise(mob, this, ExpertiseLibrary.Flag.TIME);
+		return expertise(mob, this, ExpertiseLibrary.XType.TIME);
 	}
 
 	protected int getXPCOSTLevel(final MOB mob)
 	{
-		return expertise(mob, this, ExpertiseLibrary.Flag.XPCOST);
+		return expertise(mob, this, ExpertiseLibrary.XType.XPCOST);
 	}
 
 	protected int getXPCOSTAdjustment(final MOB mob, final int xpLoss)

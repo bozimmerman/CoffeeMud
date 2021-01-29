@@ -401,7 +401,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 							final StringBuilder str=new StringBuilder(A.text());
 							if(str.length()>0)
 								str.append(';');
-							final int prof = mTeachingA.proficiency() + (5 * super.expertise(mob, mTeachingA, ExpertiseLibrary.Flag.LEVEL));
+							final int prof = mTeachingA.proficiency() + (5 * super.expertise(mob, mTeachingA, ExpertiseLibrary.XType.LEVEL));
 							str.append(mTeachingA.ID()).append(',').append(prof);
 							fA.setMiscText(str.toString()); // and this should do it.
 							A.setMiscText(str.toString()); // and this should be savable

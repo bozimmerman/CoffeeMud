@@ -454,7 +454,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								}
 
 								@Override
-								public void setData(final String[] data)
+								public void setStageNames(final String[] data)
 								{
 								}
 
@@ -472,10 +472,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								}
 
 								@Override
-								public String[] getData()
+								public String[] getStageNames()
 								{
 									final ExpertiseDefinition curDef = baseDef();
-									return (curDef == null) ? new String[0] : curDef.getData();
+									return (curDef == null) ? new String[0] : curDef.getStageNames();
 								}
 
 								@Override

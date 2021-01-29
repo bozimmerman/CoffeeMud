@@ -255,9 +255,9 @@ public class Scholar extends StdCharClass
 	}
 
 	@Override
-	public int addedExpertise(final MOB host, final ExpertiseLibrary.Flag expertiseCode, final String abilityID)
+	public int addedExpertise(final MOB host, final ExpertiseLibrary.XType expertiseCode, final String abilityID)
 	{
-		if((expertiseCode == ExpertiseLibrary.Flag.XPCOST) && (abilityID.equals("ScrollScribing")))
+		if((expertiseCode == ExpertiseLibrary.XType.XPCOST) && (abilityID.equals("ScrollScribing")))
 			return 15;
 		return 0;
 	}

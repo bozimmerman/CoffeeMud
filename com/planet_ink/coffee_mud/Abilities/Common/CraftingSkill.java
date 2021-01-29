@@ -123,21 +123,21 @@ public class CraftingSkill extends GatheringSkill
 
 	protected enum EnhancedExpertise
 	{
-		ADVNCRAFT("ADVN",ExpertiseLibrary.Flag.LEVEL),
-		LITECRAFT("LITE",ExpertiseLibrary.Flag.X1),
-		DURACRAFT("DURA",ExpertiseLibrary.Flag.X2),
-		QUALCRAFT("QUAL",ExpertiseLibrary.Flag.X3),
-		LTHLCRAFT("LTHL",ExpertiseLibrary.Flag.X4),
-		CNTRCRAFT("CNTR",ExpertiseLibrary.Flag.X5),
-		FORTCRAFT("FORT",ExpertiseLibrary.Flag.X4),
-		IMBUCRAFT("IMBU",ExpertiseLibrary.Flag.X4),
-		VIGOCRAFT("VIGO",ExpertiseLibrary.Flag.X4),
+		ADVNCRAFT("ADVN",ExpertiseLibrary.XType.LEVEL),
+		LITECRAFT("LITE",ExpertiseLibrary.XType.X1),
+		DURACRAFT("DURA",ExpertiseLibrary.XType.X2),
+		QUALCRAFT("QUAL",ExpertiseLibrary.XType.X3),
+		LTHLCRAFT("LTHL",ExpertiseLibrary.XType.X4),
+		CNTRCRAFT("CNTR",ExpertiseLibrary.XType.X5),
+		FORTCRAFT("FORT",ExpertiseLibrary.XType.X4),
+		IMBUCRAFT("IMBU",ExpertiseLibrary.XType.X4),
+		VIGOCRAFT("VIGO",ExpertiseLibrary.XType.X4),
 		;
 
 		public final String stageKey;
-		public final ExpertiseLibrary.Flag flag;
+		public final ExpertiseLibrary.XType flag;
 
-		private EnhancedExpertise(final String stageKey, final ExpertiseLibrary.Flag flag)
+		private EnhancedExpertise(final String stageKey, final ExpertiseLibrary.XType flag)
 		{
 			this.stageKey = stageKey;
 			this.flag = flag;
@@ -1586,9 +1586,9 @@ public class CraftingSkill extends GatheringSkill
 				allExpertiseWords = new TreeSet<String>();
 				for(final ExpertiseLibrary.ExpertiseDefinition def : V )
 				{
-					if(def.getData() != null)
+					if(def.getStageNames() != null)
 					{
-						for(final String s : def.getData())
+						for(final String s : def.getStageNames())
 							allExpertiseWords.add(s.toUpperCase());
 					}
 				}

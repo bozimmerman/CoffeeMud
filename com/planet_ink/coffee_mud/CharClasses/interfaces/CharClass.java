@@ -259,13 +259,13 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	/**
 	 * Whenever a uses a skill, this method can return any additional expertise
 	 * granted explicitly by the class.
-	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.Flag
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.XType
 	 * @param host the player or mob whose class is being queried
 	 * @param expertiseCode the expertise code
 	 * @param abilityID the Ability ID
 	 * @return the inherent expertise level for this
 	 */
-	public int addedExpertise(MOB host, ExpertiseLibrary.Flag expertiseCode, final String abilityID);
+	public int addedExpertise(MOB host, ExpertiseLibrary.XType expertiseCode, final String abilityID);
 
 	/**
 	 * This method is called whenever a player loses a level while a member of this class.  If

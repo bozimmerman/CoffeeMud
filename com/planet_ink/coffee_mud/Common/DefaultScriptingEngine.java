@@ -4735,7 +4735,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return returnable;
 					}
 					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-					final ExpertiseLibrary.Flag experFlag = (ExpertiseLibrary.Flag)CMath.s_valueOf(ExpertiseLibrary.Flag.class, arg3.toUpperCase().trim());
+					final ExpertiseLibrary.XType experFlag = (ExpertiseLibrary.XType)CMath.s_valueOf(ExpertiseLibrary.XType.class, arg3.toUpperCase().trim());
 					if(experFlag == null)
 					{
 						returnable=false;
@@ -7524,7 +7524,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(A!=null)
 					{
 						final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(funcParms,1));
-						final ExpertiseLibrary.Flag experFlag = (ExpertiseLibrary.Flag)CMath.s_valueOf(ExpertiseLibrary.Flag.class, arg3.toUpperCase().trim());
+						final ExpertiseLibrary.XType experFlag = (ExpertiseLibrary.XType)CMath.s_valueOf(ExpertiseLibrary.XType.class, arg3.toUpperCase().trim());
 						if(experFlag != null)
 							results.append(""+CMLib.expertises().getExpertiseLevel(M, A.ID(), experFlag));
 					}

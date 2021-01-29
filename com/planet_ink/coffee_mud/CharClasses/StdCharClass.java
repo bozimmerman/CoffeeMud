@@ -887,7 +887,7 @@ public class StdCharClass implements CharClass
 	}
 
 	@Override
-	public int addedExpertise(final MOB host, final ExpertiseLibrary.Flag expertiseCode, final String abilityID)
+	public int addedExpertise(final MOB host, final ExpertiseLibrary.XType expertiseCode, final String abilityID)
 	{
 		return 0;
 	}

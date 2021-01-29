@@ -163,7 +163,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 						mob.tell(L("@x1 glows softly.",name()));
 						final Ability SA=mob.fetchAbility(S.ID());
 						if(SA!=null)
-							addedExpertise+=CMLib.expertises().getExpertiseLevel(mob, S.ID(), ExpertiseLibrary.Flag.LEVEL);
+							addedExpertise+=CMLib.expertises().getExpertiseLevel(mob, S.ID(), ExpertiseLibrary.XType.LEVEL);
 						setReadableScrollBy(mob.Name());
 						break;
 					}
