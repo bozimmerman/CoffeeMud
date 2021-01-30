@@ -173,10 +173,40 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			}
 		}
 		else
-		if(caster.isInCombat())
-			h=allCombatants(caster);
-		else
-			h=allPossibleCombatants(caster,includePlayers);
+		{
+			if(caster.isInCombat())
+				h=allCombatants(caster);
+			else
+				h=allPossibleCombatants(caster,includePlayers);
+			/**
+			 * Restore this after 5.9.11 for testing
+			if((A!=null)
+			&&(h.size()>0)
+			&&(caster.getVictim()!=null)
+			&&((A.minRange()>0)||((A.maxRange()>0))&&(A.maxRange()<9999)))
+			{
+				int disqualified=0;
+				for(final MOB M : h)
+				{
+					if((A.minRange()>0)
+					&&(((caster.getVictim()==M)&&(caster.rangeToTarget()<A.minRange()))
+					  ||((M.getVictim()==caster)&&(M.rangeToTarget()<A.minRange())))
+					)	disqualified++;
+					else
+					if((A.maxRange()>0)
+					&&(A.maxRange()<99999)
+					&&(((caster.getVictim()==M)&&(caster.rangeToTarget()>A.maxRange()))
+					  ||((M.getVictim()==caster)&&(M.rangeToTarget()>A.maxRange())))
+					)	disqualified++;
+				}
+				if(disqualified>=h.size())
+				{
+					caster.tell(L("You aren't in range!"));
+					h.clear();
+				}
+			}
+			*/
+		}
 		return h;
 	}
 

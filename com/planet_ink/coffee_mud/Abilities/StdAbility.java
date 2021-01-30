@@ -909,6 +909,34 @@ public class StdAbility implements Ability
 			}
 			return null;
 		}
+		
+		/**
+		 * Restore this after 5.9.11 for testing
+		if((target != null)
+		&&(target!=mob)
+		&&((minRange()>0)||((maxRange()>0)&&(maxRange()<99999)))
+		&&(abstractQuality()==Ability.QUALITY_MALICIOUS)
+		{
+			if((minRange()>0)
+			&&(((mob.getVictim()==target)&&(mob.rangeToTarget()<minRange()))
+			  ||((target.getVictim()==mob)&&(target.rangeToTarget()<minRange())))
+			)
+			{
+				mob.tell(L("You are too close to @x1 to do that.",target.name()));
+				target=null;
+			}
+			else
+			if((maxRange()>0)
+			&&(maxRange()<99999)
+			&&(((mob.getVictim()==target)&&(mob.rangeToTarget()>maxRange()))
+			  ||((target.getVictim()==mob)&&(target.rangeToTarget()>maxRange())))
+			)
+			{
+				mob.tell(L("You are too far away from @x1 to do that.",target.name()));
+				target=null;
+			}
+		}
+		*/
 		return target;
 	}
 
