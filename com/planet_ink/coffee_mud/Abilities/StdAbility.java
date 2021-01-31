@@ -1527,7 +1527,7 @@ public class StdAbility implements Ability
 			if(consumed==Short.MIN_VALUE)
 				consumed=CMProps.getIntVar(CMProps.Int.MANACOST);
 			if(consumed<0)
-				consumed=(50+lowest);
+				consumed=50+(lowest*CMath.abs(consumed));
 			minimum=CMProps.getMinManaException(ID());
 			if(minimum==Short.MIN_VALUE)
 				minimum=CMProps.getIntVar(CMProps.Int.MANAMINCOST);
