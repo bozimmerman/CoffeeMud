@@ -131,7 +131,10 @@ public class Spell_Shockshield extends Spell
 							invoker=source;
 						if(msg2.value()<=0)
 						{
-							final int damage = CMLib.dice().roll(1,(int)Math.round((invoker.phyStats().level()+super.getXLEVELLevel(invoker())+(2.0*super.getX1Level(invoker())))/3.0),1);
+							final int invokerAdjustedLevel=super.adjustedLevel(invoker, 0);
+							final int levelCap=mob.phyStats().level()+CMProps.getIntVar(CMProps.Int.EXPRATE);
+							final int invokerLevel=invokerAdjustedLevel>levelCap?levelCap:invokerAdjustedLevel;
+							final int damage = CMLib.dice().roll(1,(int)Math.round((invokerLevel+(2.0*super.getX1Level(invoker())))/3.0),1);
 							CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_ELECTRIC,
 									Weapon.TYPE_STRIKING,msgStr);
 						}
