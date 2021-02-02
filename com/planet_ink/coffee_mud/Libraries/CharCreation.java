@@ -4085,8 +4085,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	@Override
 	public LoginResult finishLogin(final Session session, final MOB mob, final Room startRoom, final boolean resetStats) throws IOException
 	{
-		if(loginsDisabled(mob))
+		if(loginsDisabled(mob)||(mob==null))
 			return LoginResult.NO_LOGIN;
+		if(startRoom == null)
+		{
+			Log.errOut("No start room for "+mob.Name());
+			return LoginResult.NO_LOGIN;
+		}
 		mob.bringToLife(startRoom,resetStats);
 		CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LOGINS);
 		for(final Pair<Clan,Integer> p : mob.clans())
@@ -4094,6 +4099,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			final Clan C=p.first;
 			if(C.getStatus() == Clan.CLANSTATUS_STAGNANT)
 				C.setStatus(Clan.CLANSTATUS_ACTIVE);
+		}
+		if(mob.location() == null)
+		{
+			Log.errOut("No location for "+mob.Name());
+			return LoginResult.NO_LOGIN;
 		}
 		mob.location().showOthers(mob,startRoom,CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,L("<S-NAME> appears!"));
 		for(int f=0;f<mob.numFollowers();f++)
