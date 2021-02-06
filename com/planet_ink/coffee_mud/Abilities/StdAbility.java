@@ -1377,6 +1377,9 @@ public class StdAbility implements Ability
 		if(consumed>2)
 		{
 			costDown=getXLOWCOSTLevel(mob);
+			final int fivePercent=(int)Math.round(CMath.mul(consumed,0.05));
+			if(fivePercent > 1)
+				costDown *= fivePercent;
 			if(costDown>=consumed)
 				costDown=consumed/2;
 			minimum=(minimum-costDown);
