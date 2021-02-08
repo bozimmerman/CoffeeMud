@@ -115,7 +115,7 @@ public class Mood extends StdAbility
 		/*9 */{"EXCITED","","^Wexcited","excitedly"},
 		/*10*/{"SCARED","","^yscared","scaredly"},
 		/*11*/{"LONELY","","^Clonely","lonely"},
-		/*12*/{"REFLECTIVE","","^Creflective","reflective"},
+		/*12*/{"REFLECTIVE","","^Creflective","reflectively"},
 	};
 
 	public final static String[] uglyPhrases=
