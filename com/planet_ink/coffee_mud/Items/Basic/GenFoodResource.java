@@ -150,6 +150,8 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
 		switch(getInternalCodeNum(code))
 		{
 		case 0:
+			if(this.domainSource()==null)
+				return "";
 			return this.domainSource();
 		case 1:
 			return this.getSubType();
@@ -217,6 +219,7 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 		{
+			System.out.println(codes[i]);
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
 		}

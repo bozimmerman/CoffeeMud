@@ -143,6 +143,8 @@ public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
 		switch(getInternalCodeNum(code))
 		{
 		case 0:
+			if(this.domainSource()==null)
+				return "";
 			return this.domainSource();
 		case 1:
 			return this.getSubType();
