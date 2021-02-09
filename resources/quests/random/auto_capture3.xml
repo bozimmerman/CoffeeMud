@@ -465,7 +465,7 @@ settable vars:
 	</STRING>
 
 	<STRING ID="xp_amount_awarded" DEFINE="xp_amount_awarded" SELECT="any-1">
-		<STRING>$[100 + $target_level*3]</STRING>
+		<STRING>$[100 + ($target_level * 3)]</STRING>
 	</STRING>
 
 	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">

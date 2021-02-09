@@ -213,9 +213,9 @@ public class TaxCollector extends StdBehavior
 								}
 								else
 								{
-									paidAmount=0;
 									T.setBackTaxes(T.backTaxes()-(int)Math.round(paidAmount));
 									T.updateTitle();
+									paidAmount=0;
 									break;
 								}
 							}
