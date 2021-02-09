@@ -2025,7 +2025,23 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 						&&((A1.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_DISEASE)
 						&&((A1.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_POISON)
 						&&(!CMath.bset(A1.flags(), Ability.FLAG_NONENCHANTMENT)))
-							return true;
+						{
+							if(!(I instanceof RawMaterial))
+								return true;
+							final Ability[] natEff = RawMaterial.CODES.EFFECTA(I.material());
+							if(natEff == null)
+								return true;
+							boolean found=false;
+							for(final Ability A2 : natEff)
+							{
+								if((A2 != null)
+								&&(A2.ID().equals(A.ID()))
+								&&(((AbilityContainer)A2).fetchAbility(A1.ID())!=null))
+									found=true;
+							}
+							if(!found)
+								return true;
+						}
 					}
 				}
 			}
