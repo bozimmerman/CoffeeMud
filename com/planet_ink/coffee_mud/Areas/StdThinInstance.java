@@ -123,6 +123,8 @@ public class StdThinInstance extends StdThinArea implements SubArea
 				return null;
 			final TreeMap<String,Room> V=new TreeMap<String,Room>();
 			V.put(roomID,newR);
+			newR.setArea(this); // done here, then deleted, so loaded mobs know where they are
+			this.delProperRoom(newR);
 			CMLib.database().DBReadRoomExits(newR.roomID(), newR, false);
 			CMLib.database().DBReadContent(newR.roomID(), newR, true);
 			newR.clearSky();
@@ -131,7 +133,7 @@ public class StdThinInstance extends StdThinArea implements SubArea
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				newR.rawDoors()[d]=null;
 			newR.setRoomID(roomID);
-			newR.setArea(this);
+			newR.setArea(this); // must be done after the roomid is corrected for adds
 			addProperRoom(newR);
 
 			synchronized(("SYNC"+roomID).intern())
