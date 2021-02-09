@@ -38,18 +38,18 @@
 36	turquoise-colored	thalosian-green	1	6	#00af87	4	032
 37	strong cyan	celadon	1	6	#00afaf	5	033
 38	vivid arctic blue	arctic-blue	1	6	#00afd7	6	034
-39	lumionus vivid cornflower blue	azure-radiance	1	12	#00afff	7	035
+39	luminous vivid cornflower blue	azure-radiance	1	12	#00afff	7	035
 40	vivid green	shamrock-green	1	2	#00d700	5	040
 41	vivid spring green	spring-green	1	2	#00d75f	6	041
 42	vivid aquamarine-colored	caribbean-green	1	2	#00d787	7	042
 43	vivid opal	opal-colored	1	6	#00d7af	7	043
 44	vivid cyan	downy-blue	1	6	#00d7d7	8	044
-45	luminious vivid arctic blue	turquoisey-colored	1	14	#00d7ff	1	045
+45	luminous vivid arctic blue	turquoisey-colored	1	14	#00d7ff	1	045
 46	luminous vivid green	harlequin-green	1	10	#00ff00	1	050
 47	luminous vivid sea green	malachite-green	1	10	#00ff5f	2	051
 48	luminous vivid spring green	Medium-spring-green	1	10	#00ff87	3	052
 49	luminous vivid aquamarine-colored	scandal-green	1	10	#00ffaf	4	053
-50	luminoius vivid opal	java-colored	1	14	#00ffd7	2	054
+50	luminious vivid opal	java-colored	1	14	#00ffd7	2	054
 51	luminous vivid cyan	cyan	1	14	#00ffff	3	055
 52	deep reddish brown	scarlet	1	1	#5f0000	2	100
 53	deep magenta	eggplant-colored	1	5	#5f005f	4	101
@@ -189,7 +189,7 @@
 187	light yellowish gray	mist-yellow	1	11	#d7d7af	10	443
 188	bright silver	gainsboro-grey	1	7	#d7d7d7	8	444
 189	very pale blue	atat-silver	1	12	#d7d7ff	9	445
-190	luminious vivid yellow	chartreuse-yellow	1	11	#d7ff00	7	450
+190	luminous vivid yellow	chartreuse-yellow	1	11	#d7ff00	7	450
 191	light vivid yellow	canary-yellow	1	11	#d7ff5f	7	451
 192	very light spring bud	honeysuckle-colored	1	11	#d7ff87	1	452
 193	pale chartreuse green	reef-yellow	1	10	#d7ffaf	10	453
@@ -201,7 +201,7 @@
 199	luminous vivid cerise	rose-colored	1	13	#ff00af	2	503
 200	luminous vivid orchid	shocking-pink	1	13	#ff00d7	10	504
 201	luminous vivid magenta	magenta	1	13	#ff00ff	1	505
-202	lumnious vivid tangelo	burnt-orange	1	9	#ff5f00	2	510
+202	luminous vivid tangelo	burnt-orange	1	9	#ff5f00	2	510
 203	light brilliant red	bittersweet-red	1	9	#ff5f5f	3	511
 204	light brilliant crimson	wild-watermelon-colored	1	9	#ff5f87	4	512
 205	light brilliant rose	wewak-pink	1	13	#ff5faf	2	513
@@ -213,7 +213,7 @@
 211	very light raspberry	pink-salmon	1	9	#ff87af	8	523
 212	very light cerise	lavender-rose-colored	1	13	#ff87d7	5	524
 213	very light magenta	blush-pink	1	13	#ff87ff	6	525
-214	lumionus vivid gamboge	butterscotch-colored	1	9	#ffaf00	9	530
+214	luminous vivid gamboge	butterscotch-colored	1	9	#ffaf00	9	530
 215	light brilliant orange	orthindar-rose-colored	1	3	#ffaf5f	10	531
 216	very light tangelo	pink-ice	1	9	#ffaf87	10	532
 217	pale pink	flesh-colored	1	9	#ffafaf	5	533

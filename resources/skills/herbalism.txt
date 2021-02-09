@@ -24,7 +24,7 @@ Chant_FireWard	16	LAMP OIL	Myrrh$	GARLIC
 Chant_GasWard	18	OLIVES	Thyme$	Cassia$			
 Chant_Hibernation	18	BERRIES	Gentian$	Rosemary$			
 Chant_Chlorophyll	18	SEAWEED	Elder$	Chamomile$			
-Chant_Bloodhound	19	POULTRY	Mint$	Valerian$			
+Chant_Bloodhound	19	POULTRY	Mint$	Myrrh$			
 Chant_Shapelessness	21	MILK	Cinnamon$	Anise$			
 Chant_Fertility	20	GRAPES	Thyme$	GARLIC	Rosemary$		
 Chant_SpellWard	21	LEMONS	Angelica$	Thyme$	Yerba Mate$		
