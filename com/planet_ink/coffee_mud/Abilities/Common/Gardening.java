@@ -383,8 +383,8 @@ public class Gardening extends GatheringSkill
 				final String str=codes.name(cd).toUpperCase();
 				if((str.toUpperCase().startsWith(what)||(what.startsWith(str)))
 				&&((cd==RawMaterial.RESOURCE_FLOWERS)
-				  ||(cd==RawMaterial.RESOURCE_HERBS))
-				  ||(cd==RawMaterial.RESOURCE_GARLIC))
+				  ||(cd==RawMaterial.RESOURCE_HERBS)
+				  ||(cd==RawMaterial.RESOURCE_GARLIC)))
 				{
 					code=cd;
 					foundShortName=CMStrings.capitalizeAndLower(str);
