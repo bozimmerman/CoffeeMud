@@ -909,7 +909,7 @@ public class StdAbility implements Ability
 			}
 			return null;
 		}
-		
+
 		/**
 		 * Restore this after 5.9.11 for testing
 		if((target != null)
@@ -1530,7 +1530,7 @@ public class StdAbility implements Ability
 			if(consumed==Short.MIN_VALUE)
 				consumed=CMProps.getIntVar(CMProps.Int.MANACOST);
 			if(consumed<0)
-				consumed=50+(lowest*CMath.abs(consumed));
+				consumed=50+lowest;
 			minimum=CMProps.getMinManaException(ID());
 			if(minimum==Short.MIN_VALUE)
 				minimum=CMProps.getIntVar(CMProps.Int.MANAMINCOST);

@@ -150,7 +150,7 @@ public class Chant_ControlFire extends Chant
 					damage = (int)Math.round(CMath.div(damage,2.0));
 
 				if(target.location()==mob.location())
-					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,L("The flames <DAMAGE> <T-NAME>!"));
+					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,L("The flames <DAMAGE-> <T-NAME>!"));
 				CMLib.utensils().extinguish(mob,fireSource,false);
 				target.recoverPhyStats();
 				mob.location().recoverRoomStats();

@@ -718,6 +718,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(str.length() < replace+9)
 			return str;
 		final boolean damages = (str.charAt(replace+7)=='S') && (str.charAt(replace+8)=='>');
+		final boolean damage_ = (str.charAt(replace+7)=='-') && (str.charAt(replace+8)=='>');
 		final String showDamage = CMProps.getVar(CMProps.Str.SHOWDAMAGE);
 		final boolean showNumbers = showDamage.equalsIgnoreCase("YES")
 								||((sourceTargetSTO==CMMsg.View.SOURCE)&&showDamage.equalsIgnoreCase("SOURCE"))
@@ -725,6 +726,21 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(damages)
 		{
 			final String hitWord=CMStrings.deleteAllofAny(standardHitWord(damageType,damage),PARENS);
+			if(!showNumbers)
+				return str.substring(0,replace)+hitWord+str.substring(replace+9);
+			return str.substring(0,replace)+hitWord+" ("+damage+")"+ str.substring(replace+9);
+		}
+		else
+		if(damage_)
+		{
+			String hitWord=standardHitWord(damageType,damage);
+			if(hitWord.indexOf(')')>=0)
+			{
+				final String[][] allPlurals=new String[][] {
+					{"(S)",""},{"(s)",""},{"(YS)",""},{"(ys)",""}
+				};
+				hitWord=CMStrings.replaceAlls(hitWord, allPlurals);
+			}
 			if(!showNumbers)
 				return str.substring(0,replace)+hitWord+str.substring(replace+9);
 			return str.substring(0,replace)+hitWord+" ("+damage+")"+ str.substring(replace+9);
