@@ -434,6 +434,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				if(info==null)
 					return false;
 			}
+			boolean somethingDone=false;
 			for(final LegalWarrant W : laws.warrants())
 			{
 				if((isStillACrime(W,debugging))
@@ -441,9 +442,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				&&((info==null)||(W.crime().equalsIgnoreCase(info[Law.BIT_CRIMENAME]))))
 				{
 					laws.warrants().remove(W);
-					return true;
+					somethingDone=true;
 				}
 			}
+			return somethingDone;
 		}
 		return false;
 	}
