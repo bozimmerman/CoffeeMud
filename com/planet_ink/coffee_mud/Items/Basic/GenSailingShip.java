@@ -64,7 +64,6 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 	protected List<Item>				smallTenderRequests	= new SLinkedList<Item>();
 	protected volatile Room				prevItemRoom		= null;
 
-	protected int					maxHullPoints	= -1;
 	protected volatile int			lastSpamCt		= 0;
 	protected volatile String		lastSpamMsg		= "";
 
