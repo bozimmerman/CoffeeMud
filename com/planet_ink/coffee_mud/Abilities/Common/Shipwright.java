@@ -339,6 +339,9 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 								}
 								if(buildingI.subjectToWearAndTear())
 									buildingI.setUsesRemaining(100);
+								if(ship.getIsDocked() != mob.location())
+									ship.dockHere(mob.location());
+								ship.setHomePortID(mob.location().roomID());
 							}
 						}
 					}
