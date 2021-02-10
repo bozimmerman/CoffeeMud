@@ -574,7 +574,7 @@ public class Skill_ResearchRegionMap extends StdSkill
 					}
 					this.finalMapI=CMClass.getBasicItem("GenReadable");
 					this.finalMapI.setName(L("A region map from @x1 to @x2",this.theRoom.getArea().Name(),what));
-					this.finalMapI.setDisplayText(L("A rolled up map lies here to @x1 lies here.",what));
+					this.finalMapI.setDisplayText(L("A rolled up map to @x1 lies here.",what));
 					this.finalMapI.setReadable(true);
 					this.finalMapI.setReadableText("\n\r"+map.toString());
 					this.finalMapI.recoverPhyStats();
