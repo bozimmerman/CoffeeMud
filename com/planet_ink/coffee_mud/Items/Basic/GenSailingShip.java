@@ -2304,7 +2304,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 						{
 							this.setUsesRemaining(this.usesRemaining() - pointsLost);
 							if(CMSecurity.isDebugging(DbgFlag.SHIPCOMBAT))
-								Log.debugOut("ShipCombat: "+Name()+" takes "+pointsLost+" points of hull damage, and has "+usesRemaining()+" points remaining.");
+								Log.debugOut("ShipCombat: "+Name()+" takes "+pointsLost+" points of hull damage, and has "+usesRemaining()+"% of points remaining.");
 						}
 					}
 				}
