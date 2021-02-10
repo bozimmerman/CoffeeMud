@@ -125,6 +125,7 @@ public class StdThinInstance extends StdThinArea implements SubArea
 			V.put(roomID,newR);
 			newR.setArea(this); // done here, then deleted, so loaded mobs know where they are
 			this.delProperRoom(newR);
+			this.delProperRoomnumber(newR.roomID());
 			CMLib.database().DBReadRoomExits(newR.roomID(), newR, false);
 			CMLib.database().DBReadContent(newR.roomID(), newR, true);
 			newR.clearSky();
