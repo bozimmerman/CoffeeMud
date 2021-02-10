@@ -364,7 +364,8 @@ CNCLMSG_PROG ENTER ALL
 ~
 
 GIVING_PROG p '$[1 *]'
-	if EVAL($o == '$[1 *]') AND QUESTMOB($t *) AND EVAL('${1 *}' != $t)
+	if EVAL($o == '$[1 *]') AND QUESTMOB($t *) AND EVAL('${1 *}' != $t) AND !STRCONTAINS('$<$i $QUEST_ID_DELIVERED>' $@t)
+		mpsetvar $i $QUEST_ID_DELIVERED ' $<$i $QUEST_ID_DELIVERED>  "$@t" '
 		mpargset $g $%INROOM($t)%
 		mpforce $t mpjunk $o
 		mpforce $t sayto "$i" $DELIVERY_RESPONSE
