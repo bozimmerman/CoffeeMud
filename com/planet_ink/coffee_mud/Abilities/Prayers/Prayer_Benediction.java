@@ -86,6 +86,10 @@ public class Prayer_Benediction extends Prayer
 		return Ability.CAN_MOBS;
 	}
 
+	protected Integer[] whichStats = null;
+	protected MOB amtAffected = null;
+	protected int amt=-1;
+	
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
@@ -93,21 +97,31 @@ public class Prayer_Benediction extends Prayer
 		if(invoker==null)
 			return;
 
-		final MOB mob=affected;
-		final int pts=adjustedLevel(invoker(),0)/5;
-		final CharStats chk=(CharStats)CMClass.getCommon("DefaultCharStats"); chk.setAllBaseValues(0);
-		chk.setCurrentClass(mob.charStats().getCurrentClass());
-		for(int c=0;c<mob.charStats().numClasses();c++)
-			mob.charStats().getMyClass(c).affectCharStats(mob,chk);
-		int num=0;
-		for(final int i: CharStats.CODES.MAXCODES())
+		if((amt<0)||(amtAffected!=affected)||(whichStats==null))
 		{
-			if(chk.getStat(i)>0)
-				num++;
+			final MOB mob=affected;
+			int pts=adjustedLevel(invoker(),0)/5;
+			if((invoker().isPlayer())
+			&&(invoker()!=affected)
+			&&(pts > affected.phyStats().level()+CMProps.getIntVar(CMProps.Int.EXPRATE)))
+				pts= affected.phyStats().level()+CMProps.getIntVar(CMProps.Int.EXPRATE);
+			CharStats chk=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+			chk.setAllBaseValues(0);
+			chk.setCurrentClass(mob.charStats().getCurrentClass());
+			for(int c=0;c<mob.charStats().numClasses();c++)
+				mob.charStats().getMyClass(c).affectCharStats(mob,chk);
+			List<Integer> whichOnes = new ArrayList<Integer>();
+			for(final int i: CharStats.CODES.MAXCODES())
+			{
+				if(chk.getStat(i)>0)
+					whichOnes.add(Integer.valueOf(i));
+			}
+			whichStats = whichOnes.toArray(new Integer[whichOnes.size()]);
+			amtAffected=affected;
+			amt=pts/whichStats.length;
 		}
-		for(final int i: CharStats.CODES.BASECODES())
-			if(chk.getStat(CharStats.CODES.toMAXBASE(i))>0)
-				affectableStats.setStat(i,affectableStats.getStat(i)+(pts/num));
+		for(final Integer I : whichStats)
+			affectableStats.setStat(I.intValue(),affectableStats.getStat(I.intValue())+amt);
 	}
 
 	@Override
