@@ -75,8 +75,8 @@ public class Chant_Feralness extends Chant
 		super.affectPhyStats(affected,affectableStats);
 		if((affected instanceof MOB)&&(((MOB)affected).charStats().getMyRace()!=((MOB)affected).baseCharStats().getMyRace()))
 		{
-			final int adjLvl=adjustedLevel(invoker(),0);
-			final int xlvl=getXLEVELLevel(invoker());
+			final int adjLvl=adjustedLevel((MOB)affected,0);
+			final int xlvl=getXLEVELLevel((MOB)affected);
 			final double bonus=CMath.mul(0.1,xlvl);
 			if((((MOB)affected).fetchWieldedItem()==null))
 			{

@@ -119,7 +119,7 @@ public class Spell_ProduceFlame extends Spell
 				mob.location().send(mob,msg2);
 				if(msg2.value()<=0)
 				{
-					final int damage = CMLib.dice().roll(1,adjustedLevel(invoker(),0),1);
+					final int damage = CMLib.dice().roll(1,adjustedLevel((MOB)affected,0),1);
 					CMLib.combat().postDamage(mob,(MOB)msg.target(),this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,
 							Weapon.TYPE_BURNING,L("The flames around <S-YOUPOSS> hands <DAMAGE> <T-NAME>!"));
 				}

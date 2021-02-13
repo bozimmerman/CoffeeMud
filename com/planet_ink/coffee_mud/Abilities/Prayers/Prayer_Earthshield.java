@@ -94,7 +94,7 @@ public class Prayer_Earthshield extends Prayer
 			return;
 		if(!(affected instanceof MOB))
 			return;
-		affectableStats.setArmor(affectableStats.armor()-5 - (adjustedLevel(invoker(),0)/4));
+		affectableStats.setArmor(affectableStats.armor()-5 - (adjustedLevel((MOB)affected,0)/4));
 	}
 
 	@Override

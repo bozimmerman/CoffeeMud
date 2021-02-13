@@ -102,7 +102,7 @@ public class Fighter_KiStrike extends FighterSkill
 			&&(mob.location()!=null))
 			{
 				mob.location().show(mob,null,CMMsg.MSG_SPEAK,L("<S-NAME> yell(s) 'KIA'!"));
-				msg.setValue(msg.value()+adjustedLevel(invoker(),0));
+				msg.setValue(msg.value()+adjustedLevel((MOB)affected,0));
 				unInvoke();
 			}
 

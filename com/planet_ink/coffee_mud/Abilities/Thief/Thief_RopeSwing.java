@@ -115,7 +115,7 @@ public class Thief_RopeSwing extends ThiefSkill
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.addAmbiance("swinging on ropes");
-		affectableStats.setArmor(affectableStats.armor()+10+adjustedLevel(invoker,0));
+		affectableStats.setArmor(affectableStats.armor()+10+adjustedLevel((MOB)affected,0));
 	}
 
 	@Override

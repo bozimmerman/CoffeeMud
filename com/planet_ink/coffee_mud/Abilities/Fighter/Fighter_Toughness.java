@@ -94,7 +94,7 @@ public class Fighter_Toughness extends FighterSkill
 	public void affectCharState(final MOB affected, final CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
-		affectableState.setHitPoints(affectableState.getHitPoints() + 30 + (int)Math.round(2.0*adjustedLevel(invoker,0)*CMath.div(proficiency(), 100.0)));
+		affectableState.setHitPoints(affectableState.getHitPoints() + 30 + (int)Math.round(2.0*adjustedLevel(affected,0)*CMath.div(proficiency(), 100.0)));
 	}
 
 	@Override

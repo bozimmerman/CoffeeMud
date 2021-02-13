@@ -101,8 +101,9 @@ public class Prayer_Benediction extends Prayer
 		{
 			final MOB mob=affected;
 			int pts=adjustedLevel(invoker(),0)/5;
-			if((invoker().isPlayer())
+			if((invoker()!=null)
 			&&(invoker()!=affected)
+			&&(invoker().isPlayer())
 			&&(pts > (affected.phyStats().level()/5)+CMProps.getIntVar(CMProps.Int.EXPRATE)))
 				pts= (affected.phyStats().level()/5)+CMProps.getIntVar(CMProps.Int.EXPRATE);
 			CharStats chk=(CharStats)CMClass.getCommon("DefaultCharStats"); 

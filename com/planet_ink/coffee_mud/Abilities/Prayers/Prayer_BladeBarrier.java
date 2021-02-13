@@ -147,7 +147,7 @@ public class Prayer_BladeBarrier extends Prayer
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		affectableStats.setArmor(affectableStats.armor()-1 - (adjustedLevel(invoker(),0)/10));
+		affectableStats.setArmor(affectableStats.armor()-1 - (adjustedLevel((MOB)affected,0)/10));
 	}
 
 	@Override

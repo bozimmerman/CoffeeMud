@@ -126,7 +126,7 @@ public class Paladin_MountedCharge extends StdAbility
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		final int xlvl=adjustedLevel(invoker(),0);
+		final int xlvl=adjustedLevel((MOB)affected,0);
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(4*xlvl));
 		affectableStats.setArmor(affectableStats.armor()+(4*xlvl));
 		affectableStats.setDamage(affectableStats.damage()+xlvl);

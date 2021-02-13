@@ -111,13 +111,13 @@ public class Prayer_Avatar extends Prayer
 	public void affectPhyStats(final Physical affected, final PhyStats affectedStats)
 	{
 		super.affectPhyStats(affected,affectedStats);
-		final int xlvl=2+(int)Math.round(CMath.div(adjustedLevel(invoker(),0),1.5));
-		affectedStats.setArmor(affectedStats.armor()-(xlvl));
-		affectedStats.setSpeed(affectedStats.speed()+1.0+CMath.mul(0.10,super.getXLEVELLevel(invoker())));
-		affectedStats.setAttackAdjustment(affectedStats.attackAdjustment()+(xlvl*2));
 		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
+			final int xlvl=2+(int)Math.round(CMath.div(adjustedLevel(mob,0),1.5));
+			affectedStats.setArmor(affectedStats.armor()-(xlvl));
+			affectedStats.setSpeed(affectedStats.speed()+1.0+CMath.mul(0.10,super.getXLEVELLevel(invoker())));
+			affectedStats.setAttackAdjustment(affectedStats.attackAdjustment()+(xlvl*2));
 			final String deityName=mob.charStats().deityName();
 			if(deityName.length()>0)
 				affectedStats.setName(L("@x1, the Avatar of @x2",mob.name(),deityName));

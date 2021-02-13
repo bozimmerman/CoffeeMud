@@ -98,10 +98,12 @@ public class Thief_HeroicReflexes extends ThiefSkill
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(activated)
+		{
 			affectableStats.setStat(CharStats.STAT_SAVE_TRAPS,affectableStats.getStat(CharStats.STAT_SAVE_TRAPS)
 																+(proficiency()/5)
 																+(adjustedLevel(affected,0)/5)
 																+(super.getXLEVELLevel(affected)));
+		}
 	}
 
 	@Override
