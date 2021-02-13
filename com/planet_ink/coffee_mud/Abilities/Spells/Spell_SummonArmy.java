@@ -100,33 +100,73 @@ public class Spell_SummonArmy extends Spell
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((affected!=null)
-		&&(affected instanceof MOB)
-		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing())||(msg.source()==invoker()))
-		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
+		if(affected instanceof MOB)
 		{
-			unInvoke();
-			if(msg.source().playerStats()!=null)
-				msg.source().playerStats().setLastUpdated(0);
+			final MOB mob=(MOB)affected;
+			final MOB folM=mob.amFollowing();
+			if((msg.amISource(mob)||msg.amISource(folM)||(msg.source()==invoker()))
+			&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
+			{
+				unInvoke();
+				if(msg.source().playerStats()!=null)
+					msg.source().playerStats().setLastUpdated(0);
+			}
+			else
+			if((mob.isInCombat())
+			&&(folM != null)
+			&&(msg.target() == folM)
+			&&(msg.source().getVictim()==folM)
+			&&((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
+			&&(mob.getVictim()!=msg.source())
+			&&(CMLib.flags().isAliveAwakeMobile(mob, true)))
+			{
+				msg.source().setVictim(mob); // if you don't do this now, then EVERY soldier will jump in...
+				CMLib.threads().scheduleRunnable(new Runnable() 
+				{
+					final MOB targetM=msg.source();
+					@Override
+					public void run()
+					{
+						final Room R=mob.location();
+						if((R!=null)
+						&&(targetM!=null)
+						&&(CMLib.flags().isAliveAwakeMobile(mob, true))
+						&&(CMLib.flags().isAliveAwakeMobile(targetM, true)))
+							R.show(mob, folM, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> leap(s) to <T-YOUPOSS> rescue by jumping in front of @x1!",targetM.name()));
+					}
+				}, 500);
+			}
 		}
 	}
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if((affected==null)
-		||(!(affected instanceof MOB))
-		||(((MOB)affected).amDead())
-		||(((MOB)affected).amFollowing()==null)
-		||(((MOB)affected).amFollowing().amDead())
-		||((hasFought)&&(!((MOB)affected).isInCombat())))
+		final Physical affected=this.affected;
+		if(affected instanceof MOB)
+		{
+			final MOB mob=(MOB)affected;
+			final MOB folM = mob.amFollowing();
+			if((mob.amDead())
+			||(folM==null)
+			||(folM.amDead())
+			||((hasFought)&&(!mob.isInCombat())))
+			{
+				unInvoke();
+				return false;
+			}
+			else
+			if(mob.isInCombat())
+			{
+				if(!hasFought)
+					hasFought=true;
+			}
+		}
+		else
 		{
 			unInvoke();
 			return false;
 		}
-		else
-		if(!hasFought)
-			hasFought=((MOB)affected).isInCombat();
 		return super.tick(ticking,tickID);
 	}
 
