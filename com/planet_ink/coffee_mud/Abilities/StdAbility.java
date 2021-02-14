@@ -1369,91 +1369,67 @@ public class StdAbility implements Ability
 	{
 		invoker=mob;
 	}
-
+	
 	protected int[] buildCostArray(final MOB mob, final int consumed, int minimum)
 	{
-		final int[] usageCosts=new int[Ability.USAGEINDEX_TOTAL];
-		int costDown=0;
-		if(consumed>2)
-		{
-			costDown=getXLOWCOSTLevel(mob);
-			final int fivePercent=(int)Math.round(CMath.mul(consumed,0.05));
-			if(fivePercent > 1)
-				costDown *= fivePercent;
-			if(costDown>=consumed)
-				costDown=consumed/2;
-			minimum=(minimum-costDown);
-			if(minimum<5)
-				minimum=5;
-			final int freeDown=getXLOWFREECOSTLevel(mob) / 2;
-			costDown += freeDown;
-			minimum=(minimum-freeDown);
-			if(minimum<0)
-				minimum=0;
-		}
 		final boolean useMana=CMath.bset(usageType(),Ability.USAGE_MANA);
 		final boolean useMoves=CMath.bset(usageType(),Ability.USAGE_MOVEMENT);
 		final boolean useHits=CMath.bset(usageType(),Ability.USAGE_HITPOINTS);
-		int divider=1;
-		if((useMana)&&(useMoves)&&(useHits))
-			divider=3;
-		else
-		if((useMana)&&(useMoves)&&(!useHits))
-			divider=2;
-		else
-		if((useMana)&&(!useMoves)&&(useHits))
-			divider=2;
-		else
-		if((!useMana)&&(useMoves)&&(useHits))
-			divider=2;
-
-		if(useMana)
+		final int[] usageCosts=new int[Ability.USAGEINDEX_TOTAL];
+		final int divider=Math.max(1,(useMana?1:0) + (useMoves?1:0) + (useHits?1:0));
+		final boolean[] useCostTypes = new boolean[] {useMana, useMoves, useHits};
+		for(int costType=0;costType<Ability.USAGEINDEX_TOTAL;costType++)
 		{
-			if(consumed==COST_ALL)
+			if(useCostTypes[costType])
 			{
-				usageCosts[0]=(mob.maxState().getMana()-costDown);
-				if(mob.baseState().getMana()>mob.maxState().getMana())
-					usageCosts[0]=(mob.baseState().getMana()-costDown);
+				int maxAmt;
+				int baseAmt;
+				switch(costType)
+				{
+				case 1:
+					maxAmt=mob.maxState().getMovement();
+					baseAmt=mob.baseState().getMovement();
+					break;
+				case 2:
+					maxAmt=mob.maxState().getHitPoints();
+					baseAmt=mob.baseState().getHitPoints();
+					break;
+				default:
+				case 0:
+					maxAmt=mob.maxState().getMana();
+					baseAmt=mob.baseState().getMana();
+					break;
+				}
+				int costDown=0;
+				final int rawCost;
+				if(consumed==COST_ALL)
+					rawCost = (baseAmt>maxAmt) ? baseAmt : maxAmt;
+				else
+				if(consumed>COST_PCT)
+					rawCost = (int)Math.round(CMath.mul(maxAmt,CMath.div((COST_ALL-consumed),100.0)));
+				else
+					rawCost = consumed / divider;
+				if(rawCost>2)
+				{
+					costDown=getXLOWCOSTLevel(mob);
+					final int fivePercent=(int)Math.round(CMath.mul(rawCost,0.05));
+					if(fivePercent > 1)
+						costDown *= fivePercent;
+					if((costDown>=rawCost)&&(rawCost<Integer.MAX_VALUE/2))
+						costDown=rawCost/2;
+					minimum=(minimum-costDown);
+					if(minimum<5)
+						minimum=5;
+					final int freeDown=getXLOWFREECOSTLevel(mob) / 2;
+					costDown += freeDown;
+					minimum=(minimum-freeDown);
+					if(minimum<0)
+						minimum=0;
+				}
+				usageCosts[costType]= rawCost - costDown;
+				if(usageCosts[costType]<minimum)
+					usageCosts[costType]=minimum;
 			}
-			else
-			if(consumed>COST_PCT)
-				usageCosts[0]=(int)(Math.round(CMath.mul(mob.maxState().getMana(),CMath.div((COST_ALL-consumed),100.0)))-costDown);
-			else
-				usageCosts[0]=((consumed-costDown)/divider);
-			if(usageCosts[0]<minimum)
-				usageCosts[0]=minimum;
-		}
-		if(useMoves)
-		{
-			if(consumed==COST_ALL)
-			{
-				usageCosts[1]=(mob.maxState().getMovement()-costDown);
-				if(mob.baseState().getMovement()>mob.maxState().getMovement())
-					usageCosts[1]=(mob.baseState().getMovement()-costDown);
-			}
-			else
-			if(consumed>COST_PCT)
-				usageCosts[1]=(int)(Math.round(CMath.mul(mob.maxState().getMovement(),CMath.div((COST_ALL-consumed),100.0)))-costDown);
-			else
-				usageCosts[1]=((consumed-costDown)/divider);
-			if(usageCosts[1]<minimum)
-				usageCosts[1]=minimum;
-		}
-		if(useHits)
-		{
-			if(consumed==COST_ALL)
-			{
-				usageCosts[2]=(mob.maxState().getHitPoints()-costDown);
-				if(mob.baseState().getHitPoints()>mob.maxState().getHitPoints())
-					usageCosts[2]=(mob.baseState().getHitPoints()-costDown);
-			}
-			else
-			if(consumed>COST_PCT)
-				usageCosts[2]=(int)(Math.round(CMath.mul(mob.maxState().getHitPoints(),CMath.div((COST_ALL-consumed),100.0)))-costDown);
-			else
-				usageCosts[2]=((consumed-costDown)/divider);
-			if(usageCosts[2]<minimum)
-				usageCosts[2]=minimum;
 		}
 		return usageCosts;
 	}
