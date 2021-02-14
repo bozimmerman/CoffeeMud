@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -12940,6 +12941,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			String scr=getScript();
 			scr=CMStrings.replaceAll(scr,"`","'");
 			scripts=parseScripts(scriptedE,scr);
+			if(CMSecurity.isDebugging(DbgFlag.SCRIPTTRACE))
+				Log.debugOut("Scripting engine parse "+scripts.size()+" scripts");
 			Resources.submitResource(getScriptResourceKey(),scripts);
 		}
 		return scripts;

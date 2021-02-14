@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -19,6 +20,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ScriptableObject;
@@ -78,6 +80,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	protected volatile Behavable		checkAcceptHost		= null;
 	protected volatile ScriptingEngine	checkAcceptEng		= null;
 	protected final Object[] 			objs				= new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];
+	
+	protected final static AtomicInteger parseId			= new AtomicInteger(0);
 
 	// the unique name of the quest
 	@Override
@@ -780,6 +784,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	@SuppressWarnings("unchecked")
 	public void parseQuestScript(List<?> script, final List<Object> args, final int startLine)
 	{
+		final boolean debug=CMSecurity.isDebugging(DbgFlag.QUESTSCRIPTS);
+		final int parseId = DefaultQuest.parseId.addAndGet(1);
 		script=parseFinalQuestScript(script);
 		final QuestState q=questState;
 		int vStart=startLine;
@@ -800,6 +806,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			if(p.size()>0)
 			{
 				String cmd=p.elementAt(0).toUpperCase();
+				if(debug)
+				{
+					final String flags=(isQuiet?"Q":"")+(optional?"P":"");
+					Log.debugOut("QuestScript#"+parseId+": Doing command '"+cmd+"' ("+flags+") from line "+v+": "+s);
+				}
 				if(cmd.equals("<SCRIPT>"))
 				{
 					final StringBuffer jscript=new StringBuffer("");
@@ -3903,6 +3914,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 								S.registerDefaultQuest(this);
 								S.setVarScope(scope);
 								S.setScript(val);
+								if(debug)
+									Log.debugOut("QuestScript#"+parseId+": Giving "+val.length()+" char script command to "+E2.Name());
 								if((E2 instanceof MOB)
 								&&(((MOB)E2).isPlayer())
 								&&(!playerok)
@@ -4268,6 +4281,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	protected void cleanQuestStep(final int preserveSkip)
 	{
 		stoppingQuest=true;
+		final boolean debug=CMSecurity.isDebugging(DbgFlag.QUESTSCRIPTS);
 		if(questState.worldObjects.size()>0)
 		{
 			synchronized(questState)
@@ -4287,13 +4301,18 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						if(B!=null)
 							B.endQuest(M,M,name());
 					}
+					int oldPreserveState=PO.preserveState;
 					if((PO.preserveState>0)&&(preserveSkip!=0))
 						PO.preserveState-=preserveSkip; // might actually bump it to keep things unchanged
 					if(PO.preserveState>0)
 					{
+						if(debug && (P!=null))
+							Log.debugOut("QuestScript#"+parseId+": Aging "+P.Name()+" @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(P))+" from "+oldPreserveState+" to "+(PO.preserveState-1));
 						PO.preserveState--;
 						continue;
 					}
+					if(debug && (P!=null))
+						Log.debugOut("QuestScript#"+parseId+": De-registering "+P.Name()+" @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(P)));
 					questState.worldObjects.remove(PO);
 					if(PO.preserveState == Integer.MIN_VALUE)
 						continue;
@@ -4307,7 +4326,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						{
 							if((CMath.bset(P.basePhyStats().disposition(),PhyStats.IS_UNSAVABLE))
 							&&(!((Item)P).amDestroyed()))
+							{
+								if(debug)
+									Log.debugOut("QuestScript#"+parseId+": Destroying "+P.Name()+" @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(P)));
 								((Item)P).destroy();
+							}
 						}
 						else
 						if(P instanceof MOB)
@@ -4319,6 +4342,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 								if((R==null)
 								||(CMath.bset(M.basePhyStats().disposition(),PhyStats.IS_UNSAVABLE)))
 								{
+									if(debug)
+										Log.debugOut("QuestScript#"+parseId+": Destroying "+P.Name()+" @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(P)));
 									M.setFollowing(null);
 									CMLib.tracking().wanderAway(M,true,false);
 									if(M.location()!=null)
@@ -4331,6 +4356,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 								&&(!M.amDestroyed())
 								&&((M.location()!=R)||(!R.isInhabitant(M))))
 								{
+									if(debug)
+										Log.debugOut("QuestScript#"+parseId+": Dismissing "+P.Name()+" @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(P)));
 									M.setFollowing(null);
 									CMLib.tracking().wanderAway(M,false,true);
 								}
@@ -4369,18 +4396,24 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 								else
 								if((E instanceof MOB)&&CMStrings.contains(((Physical)E).basePhyStats().getStatCodes(),stat.toUpperCase().trim()))
 								{
+									if(debug)
+										Log.debugOut("QuestScript#"+parseId+": Reverting stat "+stat+" on "+E.Name()+" @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(E)));
 									((Physical)E).basePhyStats().setStat(stat.toUpperCase().trim(),parms);
 									((Physical)E).recoverPhyStats();
 								}
 								else
 								if((E instanceof MOB)&&(CMStrings.contains(CharStats.CODES.NAMES(),stat.toUpperCase().trim())))
 								{
+									if(debug)
+										Log.debugOut("QuestScript#"+parseId+": Reverting stat "+stat+" on "+E.Name()+" @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(E)));
 									((MOB)E).baseCharStats().setStat(CMParms.indexOf(CharStats.CODES.NAMES(),stat.toUpperCase().trim()),CMath.s_int(parms));
 									((MOB)E).recoverCharStats();
 								}
 								else
 								if((E instanceof MOB)&&CMStrings.contains(((MOB)E).baseState().getStatCodes(),stat))
 								{
+									if(debug)
+										Log.debugOut("QuestScript#"+parseId+": Reverting stat "+stat+" on "+E.Name()+" @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(E)));
 									((MOB)E).baseState().setStat(stat,parms);
 									((MOB)E).recoverMaxState();
 									((MOB)E).resetToMaxState();
@@ -4402,11 +4435,17 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 											B=(Behavior)O;
 											BB.addBehavior(B);
 										}
+										if(debug)
+											Log.debugOut("QuestScript#"+parseId+": Reverting bparms on "+B.name()+" on "+E.Name()+" @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(E)));
 										B.setParms((String)V.get(2));
 									}
 									else
 									if(B!=null)
+									{
+										if(debug)
+											Log.debugOut("QuestScript#"+parseId+": Removing behavior "+B.name()+" on "+E.Name()+" @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(E)));
 										BB.delBehavior(B);
+									}
 								}
 							}
 							else
@@ -4423,6 +4462,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 										S.endQuest((PhysicalAgent)E,M,name());
 										M.destroy();
 									}
+									if(debug)
+										Log.debugOut("QuestScript#"+parseId+": Removing script on "+E.Name()+" @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(E)));
 									((PhysicalAgent)E).delScript(S);
 								}
 							}
@@ -4441,11 +4482,17 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 											A=(Ability)O;
 											((MOB)E).addAbility(A);
 										}
+										if(debug)
+											Log.debugOut("QuestScript#"+parseId+": Reverting aparms "+A.ID()+" on "+E.Name()+" @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(E)));
 										A.setMiscText((String)V.get(3));
 									}
 									else
 									if(A!=null)
+									{
+										if(debug)
+											Log.debugOut("QuestScript#"+parseId+": Removing "+A.ID()+" on "+E.Name()+" @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(E)));
 										((MOB)E).delAbility(A);
+									}
 								}
 								else
 								if(E instanceof Physical)
@@ -4458,11 +4505,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 											A=(Ability)O;
 											((Physical)E).addEffect(A);
 										}
+										if(debug)
+											Log.debugOut("QuestScript#"+parseId+": Reverting aparms "+A.ID()+" on "+E.Name()+" @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(E)));
 										A.setMiscText((String)V.get(2));
 									}
 									else
 									if(A!=null)
 									{
+										if(debug)
+											Log.debugOut("QuestScript#"+parseId+": Removing "+A.ID()+" on "+E.Name()+" @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(E)));
 										A.unInvoke();
 										((Physical)E).delEffect(A);
 									}
@@ -5135,12 +5186,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				{
 					if(PO.preserveState<questState.preserveState)
 						PO.preserveState=questState.preserveState;
-					questState.worldObjects.add(PO);
+					//questState.worldObjects.add(PO); // why re-adding? 
 					return;
 				}
 				if(PO.obj.amDestroyed())
 					questState.worldObjects.remove(PO);
 			}
+			if(CMSecurity.isDebugging(DbgFlag.QUESTSCRIPTS))
+				Log.debugOut("QuestScript#"+parseId+": Registering object "+P.Name()+" ("+P.ID()+") @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(P)));
 			questState.worldObjects.add(new PreservedQuestObject(P,questState.preserveState));
 			Ability A=P.fetchEffect("QuestBound");
 			if(A==null)
@@ -5191,6 +5244,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 		synchronized(questState)
 		{
+			if(CMSecurity.isDebugging(DbgFlag.QUESTSCRIPTS))
+				Log.debugOut("QuestScript#"+parseId+": Registering effect "+abilityID+" on "+affected.Name()+" @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(affected)));
 			questState.addons.add(V,Integer.valueOf(questState.preserveState));
 		}
 	}
@@ -5231,6 +5286,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		B.registerDefaultQuest(name());
 		synchronized(questState)
 		{
+			if(CMSecurity.isDebugging(DbgFlag.QUESTSCRIPTS))
+				Log.debugOut("QuestScript#"+parseId+": Registering effect "+behaviorID+" on "+behaving.Name()+" @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(behaving)));
 			questState.addons.add(V,Integer.valueOf(questState.preserveState));
 		}
 	}
@@ -5285,6 +5342,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 		synchronized(questState)
 		{
+			if(CMSecurity.isDebugging(DbgFlag.QUESTSCRIPTS))
+				Log.debugOut("QuestScript#"+parseId+": Registering stat "+stat+" on "+E.Name()+" @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(E)));
 			questState.addons.add(V,Integer.valueOf(questState.preserveState));
 		}
 	}
