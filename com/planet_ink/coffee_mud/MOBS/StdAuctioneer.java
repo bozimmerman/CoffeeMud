@@ -689,7 +689,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 							final Triad<String,Double,Long> bidAmts=CMLib.english().parseMoneyStringSDL(mob,bidStr,data.getCurrency());
 							if(bidAmts==null)
 							{
-								CMLib.commands().postSay(this,mob,L("I can't seem to do any business with you."),true,false);
+								CMLib.commands().postSay(this,mob,L("I can't accept '@x1' as a bid.  This auction is in @x2.",bidStr,CMLib.beanCounter().getDenominationName(data.getCurrency())),true,false);
 								return;
 							}
 							final String myCurrency=bidAmts.first;
