@@ -207,7 +207,7 @@ public class Prayer_UnholyArmament extends Prayer
 				{
 					numThatsOk=2;
 					I.setName(L("an unholy vambrace"));
-					I.setDisplayText(L("a wicked looking spiked vambrace sit here."));
+					I.setDisplayText(L("a wicked looking spiked vambrace sits here."));
 					I.setDescription(L("Whatever made this twisted black metal couldn`t have been good."));
 				}
 				if(pos==Wearable.WORN_HANDS)
