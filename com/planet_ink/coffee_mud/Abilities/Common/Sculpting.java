@@ -532,6 +532,11 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 						((Container)buildingI).setCapacity(0);
 				}
 			}
+			if(buildingI instanceof Wand)
+			{
+				((Wand)buildingI).setMaxCharges(capacity);
+				((Wand)buildingI).setCharges(capacity);
+			}
 			if(buildingI.ID().endsWith("Dice"))
 			{
 				buildingI.basePhyStats().setAbility(capacity);

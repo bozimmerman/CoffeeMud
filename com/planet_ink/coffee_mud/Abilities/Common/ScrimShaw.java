@@ -566,6 +566,11 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			{
 				setRideBasis((Rideable)buildingI,misctype);
 			}
+			if(buildingI instanceof Wand)
+			{
+				((Wand)buildingI).setMaxCharges(capacity);
+				((Wand)buildingI).setCharges(capacity);
+			}
 			if(buildingI.ID().endsWith("Dice"))
 			{
 				buildingI.basePhyStats().setAbility(capacity);
