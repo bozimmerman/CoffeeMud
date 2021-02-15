@@ -20,6 +20,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.mozilla.javascript.Context;
@@ -71,17 +72,18 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	protected int		spawn				= SPAWN_NO;
 	private QuestState	questState			= new QuestState();
 	private boolean		copy				= false;
-	private boolean		suspended			= false;
 	public DVector		internalFiles		= null;
 	private int[]		resetData			= null;
 
+	private final AtomicBoolean			suspended			= new AtomicBoolean(false);
 	protected final Map<String,Long>	stepEllapsedTimes	= new Hashtable<String,Long>();
 	protected final Map<String,Long>	winners				= new CaselessTreeMap<Long>();
 	protected volatile Behavable		checkAcceptHost		= null;
 	protected volatile ScriptingEngine	checkAcceptEng		= null;
 	protected final Object[] 			objs				= new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];
-	
-	protected final static AtomicInteger parseId			= new AtomicInteger(0);
+
+	protected volatile int parseId = 0;
+	protected final static AtomicInteger globalParseId			= new AtomicInteger(0);
 
 	// the unique name of the quest
 	@Override
@@ -260,13 +262,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	@Override
 	public boolean suspended()
 	{
-		return suspended;
+		return suspended.get();
 	}
 
 	@Override
 	public void setSuspended(final boolean truefalse)
 	{
-		suspended = truefalse;
+		suspended.set(truefalse);
 	}
 
 	@Override
@@ -403,6 +405,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	@Override
 	public void setDuration(final int newTicks)
 	{
+		if(duration != newTicks)
+		{
+			if(CMSecurity.isDebugging(DbgFlag.QUESTSCRIPTS))
+				Log.debugOut("QuestScript#"+parseId+" Setting duration to "+newTicks);
+		}
 		duration = newTicks;
 	}
 
@@ -471,6 +478,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	@Override
 	public boolean setScript(final String parm, final boolean showErrors)
 	{
+		if(CMSecurity.isDebugging(DbgFlag.QUESTSCRIPTS))
+			Log.debugOut("QuestScript#"+parseId+" Setting script "+parm.length());
 		rawScriptParameter=parm;
 		name="";
 		author="";
@@ -700,8 +709,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 
 	protected void errorOccurred(final QuestState q, final boolean quietFlag, final String msg)
 	{
+		final String prefix = CMSecurity.isDebugging(DbgFlag.QUESTSCRIPTS)?("QuestScript#"+parseId+" "):"";
 		if(!quietFlag)
-			Log.errOut("Quest",msg);
+			Log.errOut("Quest",prefix+msg);
+		else
+		if(CMSecurity.isDebugging(DbgFlag.QUESTSCRIPTS))
+			Log.debugOut("Quest",prefix+msg);
 		q.error=true;
 	}
 
@@ -785,9 +798,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	public void parseQuestScript(List<?> script, final List<Object> args, final int startLine)
 	{
 		final boolean debug=CMSecurity.isDebugging(DbgFlag.QUESTSCRIPTS);
-		final int parseId = DefaultQuest.parseId.addAndGet(1);
+		parseId = DefaultQuest.globalParseId.addAndGet(1);
+		if(debug)
+			Log.debugOut("QuestScript#"+parseId+": Parsing '"+name()+"' from script size "+script.size()+" from line "+startLine);
 		script=parseFinalQuestScript(script);
-		final QuestState q=questState;
+		final QuestState q;
+		synchronized(this)
+		{
+			q=questState;
+		}
 		int vStart=startLine;
 		if(vStart<0)
 			vStart=0;
@@ -3939,9 +3958,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 									&&((((Item)E2).owner()==null)
 										||(!((Item)E2).owner().isContent((Item)E2))))
 										CMLib.threads().deleteTick(E2, Tickable.TICKID_ITEM_BEHAVIOR); //OMG WHY?!?!/????!!
-									synchronized(questState)
+									synchronized(q)
 									{
-										questState.addons.add(new XVector<Object>(E2,S),Integer.valueOf(questState.preserveState));
+										q.addons.add(new XVector<Object>(E2,S),Integer.valueOf(q.preserveState));
 									}
 								}
 							}
@@ -4186,6 +4205,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	// will call stopQuestInternal first to shut it down.
 	public boolean startQuestInternal()
 	{
+		final String prefix = CMSecurity.isDebugging(DbgFlag.QUESTSCRIPTS)?("QuestScript#"+parseId+" "):"";
+		if(prefix.length()>0)
+			Log.debugOut("Quest",prefix+name()+" Start Internal called ("+running()+": resetting state and starting from scratch.");
+
 		if(running())
 		{
 			stopQuestInternal();
@@ -4229,7 +4252,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				else
 				if(resetData!=null)
 					retry=resetData[0];
-				Log.errOut("Quest","Errors starting '"
+				Log.errOut("Quest",prefix+"Errors starting '"
 						+name()
 						+"', quest not started"
 						+((retry>0)?", retry in "+retry+".":"."));
@@ -4243,11 +4266,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 		else
 		if(!questState.done)
-			Log.errOut("Quest","Nothing parsed in '"+name()+"', quest not started.");
+			Log.errOut("Quest",prefix+"Nothing parsed in '"+name()+"', quest not started.");
 		else
 		if(duration()<0)
 		{
-			Log.errOut("Quest","No duration, quest '"+name()+"' not started.");
+			Log.errOut("Quest",prefix+"No duration, quest '"+name()+"' not started.");
 			questState.error=true;
 		}
 		if((!questState.error)&&(questState.done))
@@ -4301,7 +4324,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						if(B!=null)
 							B.endQuest(M,M,name());
 					}
-					int oldPreserveState=PO.preserveState;
+					final int oldPreserveState=PO.preserveState;
 					if((PO.preserveState>0)&&(preserveSkip!=0))
 						PO.preserveState-=preserveSkip; // might actually bump it to keep things unchanged
 					if(PO.preserveState>0)
@@ -4542,48 +4565,68 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	@Override
 	public boolean stepQuest()
 	{
-		if((questState!=null)&&(stoppingQuest))
+		if(suspended())
 			return false;
-		cleanQuestStep(0);
-		ticksRemaining=-1;
-		setDuration(-1);
-
-		final List<Object> args=new Vector<Object>();
-		final List<Object> script=parseLoadScripts(script(),new Vector<Object>(),args,true);
 		try
 		{
-			questState.stepNumber++;
-			setVars(script,questState.lastLine);
-			parseQuestScript(script,args,questState.lastLine);
-		}
-		catch(final Exception t)
-		{
-			questState.error=true;
-			Log.errOut("DefaultQuest",t);
-		}
-		if(questState.error)
-		{
-			if(!questState.beQuiet)
-				Log.errOut("Quest","One or more errors in '"+name()+"', quest not started");
-		}
-		else
-		if(!questState.done)
-		{
-			// valid DONE state, when stepping over the end
-		}
-		else
-		if(duration()<0)
-		{
-			Log.errOut("Quest","No duration, quest '"+name()+"' not started.");
-			questState.error=true;
-		}
+			setSuspended(true);
+			final QuestState questState;
+			synchronized(this)
+			{
+				questState=this.questState;
+			}
+			if((questState!=null)&&(stoppingQuest))
+				return false;
+			final String prefix = CMSecurity.isDebugging(DbgFlag.QUESTSCRIPTS)?("QuestScript#"+parseId+" "):"";
+			if(prefix.length()>0)
+				Log.debugOut(prefix+" Quest Stepping");
+			cleanQuestStep(0);
+			ticksRemaining=-1;
+			setDuration(-1);
 
-		if((!questState.error)&&(questState.done)&&(duration()>=0))
-		{
-			enterRunningState();
-			return true;
+			final List<Object> args=new Vector<Object>();
+			final List<Object> script=parseLoadScripts(script(),new Vector<Object>(),args,true);
+			try
+			{
+				questState.stepNumber++;
+				if(prefix.length()>0)
+					Log.debugOut(prefix+" Starting step "+questState.stepNumber+" @line "+questState.lastLine);
+				setVars(script,questState.lastLine);
+				parseQuestScript(script,args,questState.lastLine);
+			}
+			catch(final Exception t)
+			{
+				questState.error=true;
+				Log.errOut("DefaultQuest",t);
+			}
+			if(questState.error)
+			{
+				if(!questState.beQuiet)
+					Log.errOut("Quest",prefix+"One or more errors in '"+name()+"', quest not started");
+			}
+			else
+			if(!questState.done)
+			{
+				// valid DONE state, when stepping over the end
+			}
+			else
+			if(duration()<0)
+			{
+				Log.errOut("Quest",prefix+"No duration, quest '"+name()+"' not started.");
+				questState.error=true;
+			}
+
+			if((!questState.error)&&(questState.done)&&(duration()>=0))
+			{
+				enterRunningState();
+				return true;
+			}
+			stopQuestInternal();
 		}
-		stopQuestInternal();
+		finally
+		{
+			setSuspended(false);
+		}
 		return false;
 	}
 
@@ -4621,7 +4664,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	{
 		if(stepNum <=0)
 			return false;
+		final QuestState questState;
+		synchronized(this)
+		{
+			questState=this.questState;
+		}
 		if(questState==null)
+			return false;
+		if(suspended())
 			return false;
 		final DefaultQuest qSave=this;
 		final Runnable setQuestStepRunnable;
@@ -4629,9 +4679,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		{
 			private final int targetStepNum=stepNum;
 			private final DefaultQuest Q=qSave;
+			private final QuestState qs=questState;
 			@Override
 			public void run()
 			{
+				final String prefix = CMSecurity.isDebugging(DbgFlag.QUESTSCRIPTS)?("QuestScript#"+parseId+" "):"";
+				if(prefix.length()>0)
+					Log.debugOut("QuestScript#"+parseId+" setQuestStep: "+stepNum);
 				boolean stoppingQuest;
 				synchronized(Q)
 				{
@@ -4639,60 +4693,76 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				}
 				if(stoppingQuest)
 				{
-					Log.errOut("DefaultQuest","OMG Still stopping "+name()+" when I want to set the "+targetStepNum+" step.");
+					Log.errOut("DefaultQuest",prefix+"OMG Still stopping "+name()+" when I want to set the "+targetStepNum+" step.");
 					CMLib.threads().scheduleRunnable(this, 1000);
 					return;
 				}
-				final int newLine=getLineNumberForStep(targetStepNum);
-				if(newLine < 0) // was an illegal target step
+				if(suspended())
 				{
-					Log.errOut("DefaultQuest","Quest "+name()+" illegally tried to target the "+targetStepNum+" step.");
+					Log.errOut("DefaultQuest",prefix+"OMG Still stopping "+name()+" when in a state of suspense.");
+					CMLib.threads().scheduleRunnable(this, 1000);
 					return;
 				}
-				ticksRemaining=-1;
-				setDuration(-1);
-				final int curStep=questState.stepNumber;
-				if(targetStepNum<curStep)
-					cleanQuestStep(Integer.MAX_VALUE/4);
-				else
-					cleanQuestStep(targetStepNum-curStep-1);
-				final List<Object> args=new Vector<Object>();
-				final List<Object> script=parseLoadScripts(script(),new Vector<Object>(),args,true);
 				try
 				{
-					questState.stepNumber=stepNum;
-					questState.lastLine=newLine;
-					setVars(script,questState.lastLine);
-					parseQuestScript(script,args,questState.lastLine);
-				}
-				catch(final Exception t)
-				{
-					questState.error=true;
-					Log.errOut("DefaultQuest",t);
-				}
-				if(questState.error)
-				{
-					if(!questState.beQuiet)
-						Log.errOut("Quest","One or more errors in '"+name()+"', quest not started");
-				}
-				else
-				if(!questState.done)
-				{
-					// valid DONE state, when stepping over the end
-				}
-				else
-				if(duration()<0)
-				{
-					Log.errOut("Quest","No duration, quest '"+name()+"' not started.");
-					questState.error=true;
-				}
+					setSuspended(true);
+					final int newLine=getLineNumberForStep(targetStepNum);
+					if(newLine < 0) // was an illegal target step
+					{
+						Log.errOut("DefaultQuest",prefix+"Quest "+name()+" illegally tried to target the "+targetStepNum+" step.");
+						return;
+					}
+					ticksRemaining=-1;
+					setDuration(-1);
+					final int curStep=qs.stepNumber;
+					if(targetStepNum<curStep)
+						cleanQuestStep(Integer.MAX_VALUE/4);
+					else
+						cleanQuestStep(targetStepNum-curStep-1);
+					final List<Object> args=new Vector<Object>();
+					final List<Object> script=parseLoadScripts(script(),new Vector<Object>(),args,true);
+					try
+					{
+						qs.stepNumber=stepNum;
+						qs.lastLine=newLine;
+						if(prefix.length()>0)
+							Log.debugOut(prefix+" Setting step "+questState.stepNumber+" @line "+questState.lastLine);
+						setVars(script,qs.lastLine);
+						parseQuestScript(script,args,qs.lastLine);
+					}
+					catch(final Exception t)
+					{
+						qs.error=true;
+						Log.errOut("DefaultQuest",t);
+					}
+					if(qs.error)
+					{
+						if(!qs.beQuiet)
+							Log.errOut("Quest",prefix+"One or more errors in '"+name()+"', quest not started");
+					}
+					else
+					if(!qs.done)
+					{
+						// valid DONE state, when stepping over the end
+					}
+					else
+					if(duration()<0)
+					{
+						Log.errOut("Quest",prefix+"No duration, quest '"+name()+"' not started.");
+						qs.error=true;
+					}
 
-				if((!questState.error)&&(questState.done)&&(duration()>=0))
-				{
-					enterRunningState();
-					return;
+					if((!qs.error)&&(qs.done)&&(duration()>=0))
+					{
+						enterRunningState();
+						return;
+					}
+					stopQuestInternal();
 				}
-				stopQuestInternal();
+				finally
+				{
+					setSuspended(false);
+				}
 			}
 		};
 		if(stoppingQuest)
@@ -5027,7 +5097,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		||(suspended()))
 			return true;
 
-		tickStatus=Tickable.STATUS_START;
+		synchronized(this) // mostly just to fix cpu cache issues
+		{
+			tickStatus=Tickable.STATUS_START;
+		}
 		if(running())
 		{
 			tickStatus=Tickable.STATUS_ALIVE;
@@ -5186,7 +5259,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				{
 					if(PO.preserveState<questState.preserveState)
 						PO.preserveState=questState.preserveState;
-					//questState.worldObjects.add(PO); // why re-adding? 
+					//questState.worldObjects.add(PO); // why re-adding?
 					return;
 				}
 				if(PO.obj.amDestroyed())
@@ -5678,6 +5751,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	public List<Object> parseLoadScripts(String text, final List<?> oldArgs, final List<Object> args, final boolean showErrors)
 	{
 		final Vector<Object> script=new Vector<Object>();
+		final boolean debug=CMSecurity.isDebugging(DbgFlag.QUESTSCRIPTS);
+		final String prefix = debug?("QuestScript#"+parseId+" "):"";
 		boolean skipXMLSemicolonFix=false;
 		if(text.trim().toUpperCase().startsWith("LOAD="))
 		{
@@ -5686,6 +5761,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			if(V.size()>0)
 			{
 				filename=V.firstElement();
+				if(debug)
+					Log.debugOut(prefix+"Loading "+filename);
 				Vector<String> parms=null;
 				try
 				{
@@ -5701,13 +5778,17 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						text=buf.toString();
 						skipXMLSemicolonFix=true;
 					}
+					if(debug)
+						Log.debugOut(prefix+"Loaded "+text.length()+" lines");
 				}
 				catch(final CMException ex)
 				{
-					Log.errOut("DefaultQuest","'"+text+"' either has a space in the filename, or unknown parms.");
+					Log.errOut("DefaultQuest",prefix+"'"+text+"' either has a space in the filename, or unknown parms.");
 				}
 			}
 		}
+		if(debug)
+			Log.debugOut(prefix+"Handed "+text.length()+" lines");
 		final int x=text.toLowerCase().indexOf(XMLLibrary.FILE_XML_BOUNDARY.toLowerCase());
 		if(x>=0)
 		{
@@ -5738,6 +5819,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					}
 					if((name!=null)&&(data!=null)&&(name.trim().length()>0)&&(data.trim().length()>0))
 					{
+						if(debug)
+							Log.debugOut(prefix+"Found file "+name+" of "+data.length()+" lines");
 						if(internalFiles==null)
 							internalFiles=new DVector(2);
 						internalFiles.addElement(name.toUpperCase().trim(),new StringBuffer(data));
