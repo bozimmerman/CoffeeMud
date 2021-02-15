@@ -108,6 +108,8 @@ public class RandomQuests extends ActiveTicker
 		if(!varMap.containsKey("TEMPLATE"))
 			varMap.put("TEMPLATE", "normal");
 		varMap.put("EXPIRATION", expireTime);
+		if(CMSecurity.isDisabled(CMSecurity.DisFlag.RANDOMQUESTS))
+			disable.set(true);
 	}
 
 
