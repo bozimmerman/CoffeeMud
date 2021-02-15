@@ -2841,7 +2841,8 @@ public class CMSecurity
 		AUTOMOODS("automatic mood changes"),
 		DEATHCRY("player purge death cry"),
 		DIS955RULE("no 5% failure chance"),
-		ITEMREJUV("disable item rejuv")
+		ITEMREJUV("item rejuv"),
+		RANDOMQUESTS("random quests")
 		;
 		private final String desc;
 
