@@ -856,17 +856,29 @@ public class DefaultCharStats implements CharStats
 	public CMObject copyOf()
 	{
 		final DefaultCharStats newOne=new DefaultCharStats();
+		newOne.stats=stats.clone();
 		if(myClasses!=null)
 			newOne.myClasses=myClasses.clone();
-		if(myRace!=null)
-			newOne.myRace=myRace;
 		if(myLevels!=null)
 			newOne.myLevels=myLevels.clone();
+		if(myRace!=null)
+			newOne.myRace=myRace;
+		newOne.raceName=raceName;
+		newOne.genderName=genderName;
+		newOne.displayClassName=displayClassName;
+		newOne.displayClassLevel=displayClassLevel;
+		newOne.worshipCharID=worshipCharID;
 		if(bodyAlterations!=null)
 			newOne.bodyAlterations=bodyAlterations.clone();
+		newOne.unwearableBitmap=unwearableBitmap;
+		if(breathables!=null)
+			newOne.breathables=breathables.clone();
+		newOne.arriveStr=arriveStr;
+		newOne.leaveStr=leaveStr;
 		if(profAdj!=null)
 			newOne.profAdj = new TreeMap<String,Integer>(profAdj);
-		newOne.stats=stats.clone();
+		if(proficiencies!=null)
+			newOne.proficiencies=proficiencies.clone();
 		return newOne;
 	}
 
