@@ -5792,11 +5792,24 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		final int x=text.toLowerCase().indexOf(XMLLibrary.FILE_XML_BOUNDARY.toLowerCase());
 		if(x>=0)
 		{
-			final String xml;
-			if(skipXMLSemicolonFix)
-				xml=text.substring(x+XMLLibrary.FILE_XML_BOUNDARY.length()).trim();
-			else
-				xml=CMStrings.replaceAll(text.substring(x+XMLLibrary.FILE_XML_BOUNDARY.length()),"\\;",";").trim();
+			String xml=text.substring(x+XMLLibrary.FILE_XML_BOUNDARY.length()).trim();
+			// mildly risky change to avoid removing ALL ; escapes from JS.
+			if((!skipXMLSemicolonFix)
+			&&(xml.indexOf("\\;")>=0))
+			{
+				final StringBuilder newXML = new StringBuilder("");
+				for(int i=0;i<xml.length();i++)
+				{
+					final char c=xml.charAt(i);
+					if((c=='\\')
+					&&(i<xml.length()-1)
+					&&(xml.charAt(i+1)==';'))
+					{ /* just skip the slash */}
+					else
+						newXML.append(c);
+				}
+				xml=newXML.toString();
+			}
 			text=text.substring(0,x);
 			if((xml.length()>0)&&(internalFiles==null))
 			{
