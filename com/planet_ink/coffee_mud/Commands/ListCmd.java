@@ -4431,6 +4431,9 @@ public class ListCmd extends StdCommand
 		if(as!=null)
 			return Integer.valueOf(A.getAreaIStats()[as.ordinal()]);
 		else
+		if(A.isStat(stat))
+			return A.getStat(stat);
+		else
 			return null;
 	}
 
@@ -5151,6 +5154,8 @@ public class ListCmd extends StdCommand
 	{
 		if(mob==null)
 			return;
+		final Room R=mob.location();
+		final Area mobA=(R!=null)?R.getArea():null;
 		commands.remove(0);
 		List<String> sortBys=null;
 		List<String> colNames=null;
@@ -5179,9 +5184,14 @@ public class ListCmd extends StdCommand
 					final String stat=commands.get(0).toString().toUpperCase().trim();
 					final ListAreaStats ls=(ListAreaStats)CMath.s_valueOf(ListAreaStats.class, stat);
 					final Area.Stats as=(Area.Stats)CMath.s_valueOf(Area.Stats.class, stat);
-					if((ls==null)&&(as==null))
+					final boolean normalStat = (mobA!=null) ? mobA.isStat(stat) : false;
+					if((ls==null)&&(as==null)&&(!normalStat))
 					{
-						mob.tell(L("'@x1' is not recognized.  Try one of these: @x2, @x3",stat,CMParms.toListString(ListAreaStats.values()),CMParms.toListString(Area.Stats.values())));
+						mob.tell(L("'@x1' is not recognized.  Try one of these: @x2, @x3, @x4",
+								stat,
+								CMParms.toListString(ListAreaStats.values()),
+								CMParms.toListString(Area.Stats.values()),
+								mobA!=null?CMParms.toListString(mobA.getStatCodes()):""));
 						return;
 					}
 					addTos.add(stat);
@@ -5189,7 +5199,10 @@ public class ListCmd extends StdCommand
 				}
 				else
 				{
-					mob.tell(L("'@x1' is not recognized.  Try 'columns' or 'sortby' followed by one or more of these: @x2, @x3",commands.get(0).toString(),CMParms.toListString(ListAreaStats.values()),CMParms.toListString(Area.Stats.values())));
+					mob.tell(L("'@x1' is not recognized.  Try 'columns' or 'sortby' followed by one or more of these: @x2, @x3, @x4",
+							commands.get(0).toString(),
+							CMParms.toListString(ListAreaStats.values()),
+							CMParms.toListString(Area.Stats.values())));
 					return;
 				}
 			}
@@ -5201,11 +5214,15 @@ public class ListCmd extends StdCommand
 			{
 				final ListAreaStats ls=(ListAreaStats)CMath.s_valueOf(ListAreaStats.class, newCol);
 				final Area.Stats as=(Area.Stats)CMath.s_valueOf(Area.Stats.class, newCol);
+				final boolean normalStat = (mobA!=null) ? mobA.isStat(newCol) : false;
 				if(ls!=null)
 					columns.add(new Triad<String,String,Integer>(ls.shortName,ls.name(),ls.len));
 				else
 				if(as!=null)
 					columns.add(new Triad<String,String,Integer>(CMStrings.scrunchWord(CMStrings.capitalizeAndLower(newCol), 6),as.name(),Integer.valueOf(6)));
+				else
+				if(normalStat)
+					columns.add(new Triad<String,String,Integer>(CMStrings.scrunchWord(CMStrings.capitalizeAndLower(newCol), 6),newCol,Integer.valueOf(6)));
 			}
 		}
 		else
