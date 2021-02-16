@@ -7717,7 +7717,40 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	@Override
 	public void resaveAchievements(final String modifyTattoo)
 	{
-		final String loadAchievementFilename = getAchievementFilename();
+		// find the right file
+		final String rawFilename = getAchievementFilename();
+		String loadAchievementFilename = rawFilename;
+		final Set<String> added = new HashSet<String>();
+		int fnx=0;
+		final TreeMap<String,Set<String>> foundKeysMap = new TreeMap<String,Set<String>>();
+		for(String fn=rawFilename;;fn=rawFilename+("."+(++fnx)))
+		{
+			final StringBuffer buf = Resources.getRawFileResource(fn,false);
+			if((buf.length()==0)&&(fnx>=2))
+				break;
+			if(!foundKeysMap.containsKey(fn))
+				foundKeysMap.put(fn, new TreeSet<String>());
+			final List<String> V=Resources.getFileLineVector(buf);
+			for(final String row : V)
+			{
+				if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0))
+					continue;
+				final int x=row.indexOf('=');
+				if(x<0)
+					continue;
+				final String tatt = row.substring(0,x).toUpperCase().trim();
+				if((modifyTattoo==null)||(modifyTattoo.length()==0)||(tatt.equalsIgnoreCase(modifyTattoo)))
+					loadAchievementFilename = fn;
+				if(getAchievement(tatt)!=null)
+					foundKeysMap.get(fn).add(tatt);
+			}
+		}
+		for(final String keyfn : foundKeysMap.keySet())
+		{
+			if(!keyfn.equalsIgnoreCase(loadAchievementFilename))
+				added.addAll(foundKeysMap.get(keyfn));
+		}
+		// right file found, but will this still work?
 		final StringBuffer buf = Resources.getRawFileResource(loadAchievementFilename,true);
 		Resources.removeResource(loadAchievementFilename);
 		final List<String> V=Resources.getFileLineVector(buf);
@@ -7735,7 +7768,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			}
 		}
 		final String EOL= Resources.getEOLineMarker(buf);
-		final Set<String> added = new HashSet<String>();
 		Agent currentAgent = Agent.PLAYER;
 		for(final String row : V)
 		{
@@ -7766,8 +7798,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 				else
 				{
-					final String tatt = row.substring(0,x).trim();
-					if(maps[currentAgent.ordinal()].containsKey(tatt.toUpperCase().trim()))
+					final String tatt = row.substring(0,x).toUpperCase().trim();
+					if(maps[currentAgent.ordinal()].containsKey(tatt))
 					{
 						final Achievement A=maps[currentAgent.ordinal()].get(tatt);
 						if((modifyTattoo != null)&&(modifyTattoo.equalsIgnoreCase(tatt)))
@@ -7778,14 +7810,14 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 						else
 							newFileData.append(row).append(EOL);
-						added.add(tatt.toUpperCase().trim());
+						added.add(tatt);
 					}
 				}
 			}
 		}
 		finishSaveAchievementsSection(currentAgent, added, EOL, newFileData);
-		Resources.updateFileResource(achievementFilename, newFileData);
-		Resources.removeResource(achievementFilename);
+		Resources.updateFileResource(loadAchievementFilename, newFileData);
+		Resources.removeResource(loadAchievementFilename);
 	}
 
 	private boolean evaluatePlayerAchievement(final Achievement A, final PlayerStats pStats, final MOB mob)

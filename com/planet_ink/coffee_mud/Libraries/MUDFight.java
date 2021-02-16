@@ -646,7 +646,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	{
 		if(ship == null)
 			return 0;
-		return 10 * ship.getShipArea().numberOfProperIDedRooms();
+		return 25 * ship.getShipArea().numberOfProperIDedRooms();
 	}
 
 	@Override

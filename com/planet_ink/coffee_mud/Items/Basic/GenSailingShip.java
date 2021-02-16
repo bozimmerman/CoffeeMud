@@ -582,6 +582,8 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 						}
 						if((weapon.maxRange() < distance)||(weapon.minRange() > distance))
 						{
+							if(CMSecurity.isDebugging(DbgFlag.SHIPCOMBAT))
+								Log.debugOut("ShipCombat: "+Name()+" target is presently at distance of "+distance+", but "+weapon.Name()+" range is "+weapon.minRange()+" to "+weapon.maxRange());
 							msg.source().tell(L("Your target is presently at distance of @x1, but this weapons range is @x2 to @x3.",
 												""+distance,""+weapon.minRange(),""+weapon.maxRange()));
 							return false;
@@ -590,6 +592,8 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 						&& (weapon.ammunitionCapacity() > 0)
 						&& (weapon.ammunitionRemaining() == 0))
 						{
+							if(CMSecurity.isDebugging(DbgFlag.SHIPCOMBAT))
+								Log.debugOut("ShipCombat: "+Name()+": "+weapon.Name()+" wasn't loaded, couldn't be aimed.");
 							msg.source().tell(L("@x1 needs to be LOADed first.",weapon.Name()));
 							return false;
 						}
@@ -606,6 +610,8 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 							this.aimings.removeFirst(weapon);
 							this.aimings.add(new Pair<Weapon,int[]>(weapon,targetCoords));
 							mobR.send(msg.source(), msg2);
+							if(CMSecurity.isDebugging(DbgFlag.SHIPCOMBAT))
+								Log.debugOut("ShipCombat: "+Name()+": aimed "+weapon.Name()+" at : "+CMParms.toListString(targetCoords));
 							if((!(I instanceof AmmunitionWeapon))
 							||(!((AmmunitionWeapon)I).requiresAmmunition()))
 								msg.source().tell(L("@x1 is now aimed and will be engage in @x2 seconds.",I.name(),timeToFire));
@@ -1885,12 +1891,22 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 							{
 								if(lastSpamCt < 3)
 								{
+									if(CMSecurity.isDebugging(DbgFlag.SHIPCOMBAT))
+									{
+										final String targetedName=targetedShip!=null?targetedShip.Name():"Unknown";
+										Log.debugOut("ShipCombat: "+Name()+" targeted: "+targetedName+", status: "+spamMsg);
+									}
 									announceToDeck(spamMsg);
 									lastSpamCt++;
 								}
 							}
 							else
 							{
+								if(CMSecurity.isDebugging(DbgFlag.SHIPCOMBAT))
+								{
+									final String targetedName=targetedShip!=null?targetedShip.Name():"Unknown";
+									Log.debugOut("ShipCombat: "+Name()+" targeted: "+targetedName+", status: "+spamMsg);
+								}
 								announceToDeck(spamMsg);
 								lastSpamCt=0;
 							}
@@ -2249,7 +2265,8 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 					final int maxHullPoints = CMLib.combat().getShipHullPoints(this);
 					final double pctLoss = CMath.div(msg.value(), maxHullPoints);
 					final int pointsLost = (int)Math.round(pctLoss * maxHullPoints);
-					if(pointsLost > 0)
+					final int pctLostAmt = (int)Math.round(pctLoss);
+					if(pctLostAmt > 0)
 					{
 						final int weaponType = (msg.tool() instanceof Weapon) ? ((Weapon)msg.tool()).weaponDamageType() : Weapon.TYPE_BASHING;
 						final String hitWord = CMLib.combat().standardHitWord(weaponType, pctLoss);
@@ -2258,10 +2275,10 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 						this.announceActionToDeckOrUnderdeck(msg.source(), deckHitMsg, 0);
 						final CMMsg underdeckHitMsg=CMClass.getMsg(msg.source(), this, msg.tool(),CMMsg.MSG_OK_ACTION, L("Something hits and @x1 the ship.",hitWord));
 						this.announceActionToDeckOrUnderdeck(msg.source(), underdeckHitMsg, Room.INDOORS);
-						if(pointsLost >= this.usesRemaining())
+						if(pctLostAmt >= this.usesRemaining())
 						{
 							if(CMSecurity.isDebugging(DbgFlag.SHIPCOMBAT))
-								Log.debugOut("ShipCombat: "+Name()+" takes remaining "+usesRemaining()+" points of damage, and sinks.");
+								Log.debugOut("ShipCombat: "+Name()+" takes "+pointsLost+"/"+maxHullPoints+", which is the remaining "+usesRemaining()+"%, and sinks.");
 							this.setUsesRemaining(0);
 							this.recoverPhyStats(); // takes away the swimmability!
 							final Room shipR=CMLib.map().roomLocation(this);
@@ -2302,9 +2319,9 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 						}
 						else
 						{
-							this.setUsesRemaining(this.usesRemaining() - pointsLost);
+							this.setUsesRemaining(this.usesRemaining() - pctLostAmt);
 							if(CMSecurity.isDebugging(DbgFlag.SHIPCOMBAT))
-								Log.debugOut("ShipCombat: "+Name()+" takes "+pointsLost+" points of hull damage, and has "+usesRemaining()+"% of points remaining.");
+								Log.debugOut("ShipCombat: "+Name()+" takes "+pointsLost+"/"+maxHullPoints+" points of hull damage, and has "+usesRemaining()+"% of points remaining.");
 						}
 					}
 				}

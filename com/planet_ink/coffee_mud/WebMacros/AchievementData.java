@@ -98,10 +98,11 @@ public class AchievementData extends StdWebMacro
 
 			String row = "";
 
-			final String newTattoo=httpReq.getUrlParameter("TATTOO");
+			String newTattoo=httpReq.getUrlParameter("TATTOO");
 			if(newTattoo==null)
 				return "[missing TATTOO error]";
-			row=newTattoo.toUpperCase().trim()+"=";
+			row=newTattoo.trim()+"=";
+			newTattoo=newTattoo.toUpperCase();
 			if((last!=null)&&((last.length()==0)&&(CMLib.achievements().getAchievement(newTattoo)!=null)))
 			{
 				return "[new achievement tattoo already exists!]";
@@ -154,10 +155,20 @@ public class AchievementData extends StdWebMacro
 			{
 				if((last!=null)&&(CMLib.achievements().getAchievement(last)!=null))
 				{
-					final String err=deleteAchievement(last);
-					if((err!=null)&&(err.length()>0))
+					if(last.equalsIgnoreCase(newTattoo))
 					{
-						return err;
+						final Achievement A=CMLib.achievements().deleteAchievement(last);
+						if(A!=null)
+							rebuildTrackers(A.getTattoo());
+						// don't save in this case, just let it ride below.
+					}
+					else
+					{
+						final String err=deleteAchievement(last);
+						if((err!=null)&&(err.length()>0))
+						{
+							return err;
+						}
 					}
 				}
 			}
