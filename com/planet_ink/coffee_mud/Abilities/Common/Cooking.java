@@ -610,6 +610,16 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		finalDishName=replacePercent(finalRecipe.get(RCP_FINALFOOD),
 									CMStrings.capitalizeAndLower(replaceName));
 		final String foodType=finalRecipe.get(RCP_FOODDRINK);
+		double ingredientsWeight = 0.0;
+		if(contents!=null)
+		{
+			for(int v=0;v<contents.size();v++)
+			{
+				final Item I=contents.get(v);
+				if((I.material()!=RawMaterial.RESOURCE_HERBS)||(!honorHerbs()))
+					ingredientsWeight += I.basePhyStats().weight();
+			}
+		}
 		if(foodType.equalsIgnoreCase("FOOD"))
 		{
 			buildingI=CMClass.getItem("GenFood");
@@ -701,8 +711,6 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 				for(int v=0;v<contents.size();v++)
 				{
 					final Item I=contents.get(v);
-					if((I.material()!=RawMaterial.RESOURCE_HERBS)||(!honorHerbs()))
-						food.basePhyStats().setWeight(food.basePhyStats().weight()+((I.basePhyStats().weight())/finalAmount));
 					if((I instanceof Food)
 					&&(material<0))
 					{
@@ -715,25 +723,9 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 						}
 					}
 				}
-				if(material<0)
-				{
-					for(int v=0;v<contents.size();v++)
-					{
-						final Item I=contents.get(v);
-						if((I.material()!=RawMaterial.RESOURCE_HERBS)||(!honorHerbs()))
-							food.basePhyStats().setWeight(food.basePhyStats().weight()+((I.basePhyStats().weight())/finalAmount));
-						if(I instanceof Food)
-						{
-							switch(((Food)I).material()&RawMaterial.MATERIAL_MASK)
-							{
-							case RawMaterial.MATERIAL_VEGETATION:
-							case RawMaterial.MATERIAL_FLESH:
-								material=((Food)I).material();
-								break;
-							}
-						}
-					}
-				}
+				if(ingredientsWeight < finalAmount)
+					ingredientsWeight = finalAmount;
+				food.basePhyStats().setWeight((int)Math.round(ingredientsWeight));
 			}
 			if(material<0)
 			{
@@ -774,7 +766,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 			else
 			if(!messedUp)
 				CMLib.materials().addEffectsToResource(food);
-			food.basePhyStats().setWeight(food.basePhyStats().weight()/finalAmount);
+			food.basePhyStats().setWeight((int)Math.round(CMath.div(food.basePhyStats().weight(),finalAmount)));
 			if(food.basePhyStats().weight()>0)
 				food.setBite(food.nourishment() / (food.basePhyStats().weight()*2));
 			else
@@ -825,7 +817,12 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 						liquidType=((Drink)I).liquidType();
 				}
 			}
-			buildingI.basePhyStats().setWeight(buildingI.basePhyStats().weight()/finalAmount);
+			if(ingredientsWeight >= finalAmount)
+				buildingI.basePhyStats().setWeight((int)Math.round(CMath.div(ingredientsWeight,finalAmount)));
+			else
+			if(ingredientsWeight>0)
+				buildingI.basePhyStats().setWeight((int)Math.round(ingredientsWeight));
+
 			if(drink.liquidRemaining()>0)
 			{
 				drink.setLiquidRemaining(drink.liquidRemaining()+homeCookValue(mob,10));
@@ -893,7 +890,11 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 				buildingI.setMaterial(liquidType);
 				drink.setLiquidType(liquidType);
 			}
-			buildingI.basePhyStats().setWeight(buildingI.basePhyStats().weight()/finalAmount);
+			if(ingredientsWeight >= finalAmount)
+				buildingI.basePhyStats().setWeight((int)Math.round(CMath.div(ingredientsWeight,finalAmount)));
+			else
+			if(ingredientsWeight>0)
+				buildingI.basePhyStats().setWeight((int)Math.round(ingredientsWeight));
 			if(!messedUp)
 				CMLib.materials().addEffectsToResource(buildingI);
 			playSound=defaultFoodSound;
@@ -913,7 +914,13 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 			final String ruinWord=(buildingI instanceof Drink)?"spoiled ":(requireFire()?"burnt ":"ruined ");
 			buildingI.setName(((messedUp)?ruinWord:"")+finalDishName);
 			buildingI.setDisplayText(L("some @x1@x2 is here",((messedUp)?ruinWord:""),finalDishName));
-			buildingI.basePhyStats().setWeight(buildingI.basePhyStats().weight()/finalAmount);
+			if(ingredientsWeight >= finalAmount)
+				buildingI.basePhyStats().setWeight((int)Math.round(CMath.div(ingredientsWeight,finalAmount)));
+			else
+			if(ingredientsWeight>0)
+				buildingI.basePhyStats().setWeight((int)Math.round(ingredientsWeight));
+			else
+				buildingI.basePhyStats().setWeight(1);
 			playSound=defaultFoodSound;
 		}
 
