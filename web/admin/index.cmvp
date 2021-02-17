@@ -17,27 +17,27 @@
 <TR>
     <TD WIDTH=25% ALIGN=CENTER VALIGN=TOP>
     <B><FONT COLOR=WHITE>Builders Guides</FONT></B><br>
-    <a target=OtherBrowser href="pub/guides/ArchonGuide.html"><FONT COLOR=BLUE>Archon's Guide</FONT></a><BR>
-    <A target=OtherBrowser HREF="pub/guides/GameBuildersGuide.html"><FONT COLOR=BLUE>Game Builders Guide</FONT></A><br>
-    <A target=OtherBrowser HREF="pub/guides/Scriptable.html"><FONT COLOR=BLUE>Scripting Guide</FONT></A><br>
-    <A target=OtherBrowser HREF="pub/guides/MUDChat.html"><FONT COLOR=BLUE>MUDChat Guide</FONT></A><br>
-    <A target=OtherBrowser HREF="pub/guides/MUDGrinder.html"><FONT COLOR=BLUE>MUDGrinder Guide</FONT></A><br>
-    <A target=OtherBrowser HREF="pub/guides/RandomAreas.html"><FONT COLOR=BLUE>Random Areas Guide</FONT></A><br>
+    <a target=OtherBrowser href="pub/guides/ArchonGuide.html"><FONT COLOR=CYAN>Archon's Guide</FONT></a><BR>
+    <A target=OtherBrowser HREF="pub/guides/GameBuildersGuide.html"><FONT COLOR=CYAN>Game Builders Guide</FONT></A><br>
+    <A target=OtherBrowser HREF="pub/guides/Scriptable.html"><FONT COLOR=CYAN>Scripting Guide</FONT></A><br>
+    <A target=OtherBrowser HREF="pub/guides/MUDChat.html"><FONT COLOR=CYAN>MUDChat Guide</FONT></A><br>
+    <A target=OtherBrowser HREF="pub/guides/MUDGrinder.html"><FONT COLOR=CYAN>MUDGrinder Guide</FONT></A><br>
+    <A target=OtherBrowser HREF="pub/guides/RandomAreas.html"><FONT COLOR=CYAN>Random Areas Guide</FONT></A><br>
     </TD>
     <TD WIDTH=25% ALIGN=CENTER VALIGN=TOP>
     <B><FONT COLOR=WHITE>Builders Lists</FONT></B><br>
-    <a target=OtherBrowser href="ahelps.cmvp"><FONT COLOR=BLUE>Archon Help Topics</FONT></A><br>
-    <A target=OtherBrowser href="abilities.cmvp"><FONT COLOR=BLUE>Skills List</FONT></a><BR>
-    <A target=OtherBrowser href="behaviors.cmvp"><FONT COLOR=BLUE>Behaviors List</FONT></a><BR>
-    <A target=OtherBrowser href="affects.cmvp"><FONT COLOR=BLUE>Affects List</FONT></a><BR>
+    <a target=OtherBrowser href="ahelps.cmvp"><FONT COLOR=CYAN>Archon Help Topics</FONT></A><br>
+    <A target=OtherBrowser href="abilities.cmvp"><FONT COLOR=CYAN>Skills List</FONT></a><BR>
+    <A target=OtherBrowser href="behaviors.cmvp"><FONT COLOR=CYAN>Behaviors List</FONT></a><BR>
+    <A target=OtherBrowser href="affects.cmvp"><FONT COLOR=CYAN>Affects List</FONT></a><BR>
     </TD>
     <TD WIDTH=25% ALIGN=CENTER VALIGN=TOP>
     <B><FONT COLOR=WHITE>Other Guides</FONT></B><br>
-    <A target=OtherBrowser HREF="pub/guides/InstallationGuide.html"><FONT COLOR=BLUE>Installation Guide</FONT></A><br>
-    <A target=OtherBrowser HREF="pub/guides/WebServer.html"><FONT COLOR=BLUE>Web Server guide</FONT></A><br>
-    <A target=OtherBrowser HREF="pub/guides/SMTPServer.html"><FONT COLOR=BLUE>SMTP Server guide</FONT></A><br>
-    <A target=OtherBrowser HREF="pub/guides/Programming.html"><FONT COLOR=BLUE>Programmers Guide</FONT></A><br>
-    <A target=OtherBrowser HREF="pub/guides/BuildersFAQ.html"><FONT COLOR=BLUE>Builders FAQ</FONT></A><br>
+    <A target=OtherBrowser HREF="pub/guides/InstallationGuide.html"><FONT COLOR=CYAN>Installation Guide</FONT></A><br>
+    <A target=OtherBrowser HREF="pub/guides/WebServer.html"><FONT COLOR=CYAN>Web Server guide</FONT></A><br>
+    <A target=OtherBrowser HREF="pub/guides/SMTPServer.html"><FONT COLOR=CYAN>SMTP Server guide</FONT></A><br>
+    <A target=OtherBrowser HREF="pub/guides/Programming.html"><FONT COLOR=CYAN>Programmers Guide</FONT></A><br>
+    <A target=OtherBrowser HREF="pub/guides/BuildersFAQ.html"><FONT COLOR=CYAN>Builders FAQ</FONT></A><br>
     </TD>
 </TR>
 </TABLE>

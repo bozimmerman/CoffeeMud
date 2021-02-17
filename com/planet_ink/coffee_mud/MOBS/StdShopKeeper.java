@@ -425,6 +425,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 
 						if (product instanceof Item)
 						{
+							msg.modify(msg.source(), msg.target(), product, msg.sourceCode(), msg.sourceMessage(), msg.targetCode(), msg.targetMessage(), msg.othersCode(), msg.othersMessage());
 							if (!CMLib.coffeeShops().purchaseItems((Item) product, products, this, mobFor))
 								return;
 						}
