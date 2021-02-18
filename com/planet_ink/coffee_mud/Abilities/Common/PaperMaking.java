@@ -144,7 +144,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 					else
 					{
 						dropAWinner(mob,buildingI);
-						CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, 1, this);
+						CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, 1, this, buildingI);
 						if(key!=null)
 						{
 							dropAWinner(mob,key);

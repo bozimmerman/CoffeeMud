@@ -153,7 +153,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 						if(activity == CraftingActivity.MENDING)
 						{
 							buildingI.setUsesRemaining(100);
-							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.MENDER, 1, this);
+							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.MENDER, 1, this, buildingI);
 						}
 						else
 						if(activity==CraftingActivity.LEARNING)
@@ -170,7 +170,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 						else
 						{
 							dropAWinner(mob,buildingI);
-							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, 1, this);
+							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, 1, this, buildingI);
 							if(key!=null)
 							{
 								dropAWinner(mob,key);

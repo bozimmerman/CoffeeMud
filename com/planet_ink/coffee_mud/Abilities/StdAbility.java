@@ -1369,7 +1369,7 @@ public class StdAbility implements Ability
 	{
 		invoker=mob;
 	}
-	
+
 	protected int[] buildCostArray(final MOB mob, final int consumed, int minimum)
 	{
 		final boolean useMana=CMath.bset(usageType(),Ability.USAGE_MANA);
@@ -1596,6 +1596,14 @@ public class StdAbility implements Ability
 						mob.tell(L("You become better at @x1.",A.name()));
 					((StdAbility)A).lastCastHelp=System.currentTimeMillis();
 				}
+			}
+			if((A.proficiency() >= maxProficiency)
+			&&(mob.isPlayer()))
+			{
+				final List<String> channels = CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.PROFICIENT, mob);
+				for (int i = 0; i < channels.size(); i++)
+					CMLib.commands().postChannel(channels.get(i), mob.clans(), L("@x1 is now proficienct at @x2.", mob.name(), A.Name()), true);
+				CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.SKILLPROF, 1, A);
 			}
 		}
 		else

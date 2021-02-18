@@ -210,7 +210,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 					else
 					{
 						mob.addItem(buildingI);
-						CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, 1, this);
+						CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, 1, this, buildingI);
 					}
 				}
 				buildingI=null;

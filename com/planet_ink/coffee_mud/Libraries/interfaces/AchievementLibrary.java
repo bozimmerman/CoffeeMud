@@ -71,8 +71,8 @@ public interface AchievementLibrary extends CMLibrary
 		STATVALUE("A Stat value",new String[]{"VALUE","ABOVEBELOW","STAT"}),
 		FACTION("A Faction level",new String[]{"VALUE","ABOVEBELOW","ID"}),
 		EXPLORE("Exploration",new String[]{"PERCENT","AREA"}),
-		CRAFTING("Crafting",new String[]{"NUM","ABILITYID"}),
-		MENDER("Mending",new String[]{"NUM","ABILITYID"}),
+		CRAFTING("Crafting",new String[]{"NUM","ABILITYID","ITEMMASK"}),
+		MENDER("Mending",new String[]{"NUM","ABILITYID","ITEMMASK"}),
 		SKILLUSE("Using Skills",new String[]{"NUM","ABILITYID"}),
 		SOCIALUSE("Using Socials",new String[]{"NUM","SOCIALID"}),
 		QUESTOR("Completing Quests",new String[]{"NUM","PLAYERMASK","QUESTMASK"}),
@@ -103,6 +103,8 @@ public interface AchievementLibrary extends CMLibrary
 		CMDUSE("Using Commands",new String[]{"NUM","COMMANDID"}),
 		AREAVISIT("Visit an Area/Plane",new String[]{"AREAMASK","NUM", "PLAYERMASK","TIME_MINS"}),
 		INSTANCEEXPIRE("An area instance expires",new String[]{"AREAMASK","NUM", "PLAYERMASK","TIME_MINS"}),
+		SKILLPROF("Skill proficiency",new String[]{"NUM", "PROF","ABILITYID"}),
+		DECONSTRUCTING("Deconstructing",new String[]{"NUM","ABILITYID","ITEMMASK"}),
 		;
 		private final String[] parameters;
 		private final String displayName;

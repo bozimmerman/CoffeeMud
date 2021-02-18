@@ -1505,6 +1505,7 @@ public class CraftingSkill extends GatheringSkill
 			&&(mob.location().okMessage(mob, msg)))
 			{
 				mob.location().send(mob, msg);
+				CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.DECONSTRUCTING, 1, this, I);
 				existingRecipes.add(CMLib.ableParms().makeRecipeFromItem(C, I));
 				R.setRecipeCodeLines(existingRecipes.toArray(new String[0]));
 				R.setCommonSkillID( ID() );

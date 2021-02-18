@@ -1757,11 +1757,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			break;
 		case CRAFTING:
 		case MENDER:
+		case DECONSTRUCTING:
 			A=new Achievement()
 			{
 				private int 				num 		= 0;
 				private final Set<String>	abilityIDs 	= new TreeSet<String>();
 				private CompiledZMask seenMask = null;
+				private CompiledZMask itemMask = null;
 
 				@Override
 				public Event getEvent()
@@ -1874,6 +1876,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 									||(abilityIDs.contains(Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES]))
 									||(abilityIDs.contains(Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5]))))
 								{
+									if((itemMask != null)
+									&&(parms.length>1)
+									&&(parms[1] instanceof Environmental))
+									{
+										if(!CMLib.masking().maskCheck(itemMask, (Environmental)parms[1], true))
+											return false;
+									}
 									count+=bumpNum;
 									return true;
 								}
@@ -1909,6 +1918,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
 						this.seenMask = CMLib.masking().getPreCompiledMask(seenMask);
+
+					this.itemMask=null;
+					final String itemMask=CMStrings.deEscape(CMParms.getParmStr(parms, "ITEMMASK", ""));
+					if(itemMask.trim().length()>0)
+						this.itemMask = CMLib.masking().getPreCompiledMask(itemMask);
 
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
@@ -2124,6 +2138,215 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					final String abilityIDs=CMParms.getParmStr(parms, "ABILITYID", "").toUpperCase().trim();
 					if(abilityIDs.length()==0)
 						return "Error: Missing ABILITYID parameter: "+abilityIDs+"!";
+					final String[] strList=abilityIDs.split(",");
+					this.abilityIDs.clear();
+					for(int i=0;i<strList.length;i++)
+					{
+						final String abilityID = strList[i].trim();
+						if(abilityID.equals("*"))
+						{
+							this.abilityIDs.add(abilityID);
+							break;
+						}
+						else
+						{
+							final Ability A;
+							if(CMParms.contains(Ability.ACODE_DESCS,abilityID)
+							||CMParms.contains(Ability.DOMAIN_DESCS,abilityID))
+								A=null;
+							else
+							{
+								A=CMClass.getAbility(abilityID);
+								if(A==null)
+								{
+									if((!CMSecurity.isDisabled(DisFlag.LANGUAGES))
+									||(!CMClass.isLanguage(abilityID)))
+										return "Error: Unknown ABILITYID: "+abilityID+"!";
+									else
+										return "";
+								}
+							}
+							if(A!=null)
+								this.abilityIDs.add(A.ID());
+							else
+								this.abilityIDs.add(abilityID.toUpperCase());
+						}
+					}
+					if(this.abilityIDs.size()==0)
+						return "Error: Unknown crafting ABILITYIDs: "+abilityIDs+"!";
+					return "";
+				}
+			};
+			break;
+		case SKILLPROF:
+			A=new Achievement()
+			{
+				private int					num			= 0;
+				private int					prof		= 100;
+				private final Set<String>	abilityIDs	= new TreeSet<String>();
+				private CompiledZMask		seenMask	= null;
+
+
+				@Override
+				public Event getEvent()
+				{
+					return eventType;
+				}
+
+				@Override
+				public Agent getAgent()
+				{
+					return agent;
+				}
+
+				@Override
+				public boolean canBeSeenBy(final MOB mob)
+				{
+					return ((seenMask==null)||(CMLib.masking().maskCheck(seenMask, mob, true)));
+				}
+
+				@Override
+				public boolean canApplyTo(final Agent agent)
+				{
+					return true;
+				}
+
+				@Override
+				public String getTattoo()
+				{
+					return tattoo;
+				}
+
+				@Override
+				public String getDisplayStr()
+				{
+					return displayStr;
+				}
+
+				@Override
+				public boolean isTargetFloor()
+				{
+					return true;
+				}
+
+				@Override
+				public Award[] getRewards()
+				{
+					return rewardList;
+				}
+
+				@Override
+				public int getDuration()
+				{
+					return duration;
+				}
+
+				@Override
+				public int getTargetCount()
+				{
+					return num;
+				}
+
+				@Override
+				public String getRawParmVal(final String str)
+				{
+					return CMParms.getParmStr(params,str,"");
+				}
+
+				@Override
+				public Tracker getTracker(final int oldCount)
+				{
+					final Achievement me=this;
+					return new Tracker()
+					{
+						private volatile int count = oldCount;
+
+						@Override
+						public Achievement getAchievement()
+						{
+							return me;
+						}
+
+						@Override
+						public boolean isAchieved(final Tattooable tracked)
+						{
+							return getCount(tracked) >= num;
+						}
+
+						@Override
+						public int getCount(final Tattooable tracked)
+						{
+							return count;
+						}
+
+						@Override
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
+						{
+							final Ability A;
+							if(parms.length>0)
+							{
+								if(parms[0] instanceof String)
+									A=CMClass.getAbility((String)parms[0]);
+								else
+								if(parms[0] instanceof Ability)
+									A=(Ability)parms[0];
+								else
+									A=null;
+								if((A!=null)
+								&&(abilityIDs.contains("*")
+									||abilityIDs.contains(A.ID())
+									||(abilityIDs.contains(Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES]))
+									||(abilityIDs.contains(Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5]))))
+								{
+									final Ability A1=mob.fetchAbility(A.ID());
+									if((A1!=null)&&(A1.proficiency() >= prof))
+										count+=bumpNum;
+									return true;
+								}
+							}
+							return false;
+						}
+
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(final Exception e)
+							{
+								return this;
+							}
+						}
+					};
+				}
+
+				@Override
+				public boolean isSavableTracker()
+				{
+					return true;
+				}
+
+				@Override
+				public String parseParms(final String parms)
+				{
+					this.seenMask=null;
+					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
+					if(seenMask.trim().length()>0)
+						this.seenMask = CMLib.masking().getPreCompiledMask(seenMask);
+
+					final String numStr=CMParms.getParmStr(parms, "NUM", "");
+					if(!CMath.isInteger(numStr))
+						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+					this.num=CMath.s_int(numStr);
+					final String abilityIDs=CMParms.getParmStr(parms, "ABILITYID", "").toUpperCase().trim();
+					if(abilityIDs.length()==0)
+						return "Error: Missing ABILITYID parameter: "+abilityIDs+"!";
+					final String profStr=CMParms.getParmStr(parms, "PROFF", "100");
+					if(!CMath.isInteger(profStr))
+						return "Error: Missing or invalid PROF parameter: "+profStr+"!";
+					prof=CMath.s_int(profStr);
 					final String[] strList=abilityIDs.split(",");
 					this.abilityIDs.clear();
 					for(int i=0;i<strList.length;i++)

@@ -172,7 +172,7 @@ public class Costuming extends CraftingSkill implements ItemCraftor, MendingSkil
 						if(activity == CraftingActivity.MENDING)
 						{
 							buildingI.setUsesRemaining(100);
-							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.MENDER, 1, this);
+							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.MENDER, 1, this, buildingI);
 						}
 						else
 						if(activity==CraftingActivity.LEARNING)
@@ -186,7 +186,7 @@ public class Costuming extends CraftingSkill implements ItemCraftor, MendingSkil
 						else
 						{
 							dropAWinner(mob,buildingI);
-							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, 1, this);
+							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, 1, this, buildingI);
 						}
 					}
 				}
@@ -215,6 +215,7 @@ public class Costuming extends CraftingSkill implements ItemCraftor, MendingSkil
 		&&(mob.location().okMessage(mob, msg)))
 		{
 			mob.location().send(mob, msg);
+			CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.DECONSTRUCTING, 1, this, I);
 			final StringBuilder str=new StringBuilder("");
 			str.append(I.Name()).append("\t");
 			str.append(I.basePhyStats().level()).append("\t");

@@ -144,7 +144,7 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 						else
 						{
 							dropAWinner(mob,buildingI);
-							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, 1, this);
+							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, 1, this, buildingI);
 						}
 					}
 				}
