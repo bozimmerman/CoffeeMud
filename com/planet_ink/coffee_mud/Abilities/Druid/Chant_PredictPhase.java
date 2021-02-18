@@ -75,6 +75,9 @@ public class Chant_PredictPhase extends Chant
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
+		final Room R=mob.location();
+		if(R==null)
+			return false;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -86,7 +89,15 @@ public class Chant_PredictPhase extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.tell(mob.location().getArea().getTimeObj().getMoonPhase(mob.location()).getDesc());
+				mob.tell(R.getArea().getTimeObj().getMoonPhase(R).getDesc());
+
+				for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
+				{
+					final Ability eA=a.nextElement();
+					if((eA!=null)
+					&&((eA.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONSUMMONING))
+						mob.tell(L("This place is under the effect of @x1.",eA.name()));
+				}
 				final int exper = super.getXLEVELLevel(mob);
 				if(exper > 0)
 				{
@@ -123,7 +134,7 @@ public class Chant_PredictPhase extends Chant
 					if(exper>=5)
 					{
 						final List<String> subReport = new ArrayList<String>();
-						for(int stat : CharStats.CODES.ALLCODES())
+						for(final int stat : CharStats.CODES.ALLCODES())
 						{
 							if(ce.getStat(stat)>0)
 								subReport.add(CharStats.CODES.NAME(stat).toLowerCase()+" +"+ce.getStat(stat));

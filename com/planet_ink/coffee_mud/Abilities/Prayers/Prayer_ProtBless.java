@@ -118,7 +118,7 @@ public class Prayer_ProtBless extends Prayer
 		if(msg.target()==affected)
 		{
 			if((msg.tool() instanceof Ability)
-			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.DOMAIN_BLESSING))
+			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_BLESSING))
 			{
 				if(msg.source()==affected)
 					msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> repell(s) a blessing."));
