@@ -1,7 +1,10 @@
 package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.WebMacros.BankAccountInfo;
+import com.planet_ink.coffee_mud.WebMacros.BankAccountInfo.BankAccountStuff;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.DebtItem;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Commands.*;
@@ -50,6 +53,24 @@ public class Wealth extends Inventory
 			msg.append(L("\n\r^HMoney:^N None!\n\r"));
 		else
 			msg.append(getShowableMoney(list));
+		for(final Iterator<String> j=CMLib.map().bankChains(null);j.hasNext();)
+		{
+			final String bankChain=j.next();
+			final Banker bankerM=CMLib.map().getBank(bankChain,bankChain);
+			if(bankerM instanceof MOB)
+			{
+				if(!bankerM.isSold(ShopKeeper.DEAL_CLANBANKER))
+				{
+					final double balance=bankerM.getBalance(mob.Name()); // this works for clans because name==clan name
+					if(balance > 0.0)
+					{
+						msg.append(L("\n\r^HMoney at bank chain '@x1': ^N\n\r@x2",
+								bankChain,
+								CMLib.beanCounter().nameCurrencyLong((MOB)bankerM, balance)));
+					}
+				}
+			}
+		}
 		return msg;
 	}
 
