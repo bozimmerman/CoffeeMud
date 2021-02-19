@@ -93,13 +93,18 @@ public class FactionList extends StdCommand
 		list.sort();
 		final int prowessCode = CMProps.getIntVar(CMProps.Int.COMBATPROWESS);
 		final boolean useFactionWords=CMProps.Int.Prowesses.FACTION_RANGE.is(prowessCode);
+		final int[] cols={
+				CMLib.lister().fixColWidth(28,mob.session()),
+				CMLib.lister().fixColWidth(17,mob.session()),
+				CMLib.lister().fixColWidth(25,mob.session())
+			};
 		for (final String name : list)
 		{
 			final Faction F=CMLib.factions().getFaction(name);
 			if((F!=null)&&(F.showInFactionsCommand()))
 			{
 				none=false;
-				msg.append(formatFactionLine(name,mob.fetchFaction(name),useFactionWords));
+				msg.append(formatFactionLine(cols,name,mob.fetchFaction(name),useFactionWords));
 			}
 		}
 		if(!mob.isMonster())
@@ -110,22 +115,22 @@ public class FactionList extends StdCommand
 		return false;
 	}
 
-	public String formatFactionLine(final String name, final int faction, final boolean showWords)
+	public String formatFactionLine(final int[] cols, final String name, final int faction, final boolean showWords)
 	{
 		final StringBuffer line=new StringBuffer();
-		line.append("  "+CMStrings.padRight(CMStrings.capitalizeAndLower(CMLib.factions().getName(name).toLowerCase()),21)+" ");
+		line.append("  "+CMStrings.padRight(CMStrings.capitalizeAllFirstLettersAndLower(CMLib.factions().getName(name).toLowerCase()),cols[0])+" ");
 		final Faction.FRange FR=CMLib.factions().getRange(name,faction);
 		if(FR==null)
-			line.append(CMStrings.padRight(""+faction,17)+" ");
+			line.append(CMStrings.padRight(""+faction,cols[1])+" ");
 		else
 		{
 			if(showWords)
-				line.append(CMStrings.padRight(FR.name(),17)+" ");
+				line.append(CMStrings.padRight(FR.name(),cols[1])+" ");
 			else
-				line.append(CMStrings.padRight(FR.name()+" ("+faction+")",17)+" ");
+				line.append(CMStrings.padRight(FR.name()+" ("+faction+")",cols[1])+" ");
 		}
 		line.append("[");
-		line.append(CMStrings.padRight(calcRangeBar(name,faction),25));
+		line.append(CMStrings.padRight(calcRangeBar(name,faction),cols[2]));
 		line.append("]\n\r");
 		return line.toString();
 	}
