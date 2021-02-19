@@ -2264,8 +2264,8 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 				{
 					final int maxHullPoints = CMLib.combat().getShipHullPoints(this);
 					final double pctLoss = CMath.div(msg.value(), maxHullPoints);
-					final int pointsLost = (int)Math.round(pctLoss * maxHullPoints);
-					final int pctLostAmt = (int)Math.round(pctLoss);
+					final int pointsLost = msg.value();
+					final int pctLostAmt = (int)Math.round(pctLoss * 100.0);
 					if(pctLostAmt > 0)
 					{
 						final int weaponType = (msg.tool() instanceof Weapon) ? ((Weapon)msg.tool()).weaponDamageType() : Weapon.TYPE_BASHING;
