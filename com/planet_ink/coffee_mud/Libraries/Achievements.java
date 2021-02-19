@@ -2390,9 +2390,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		case SOCIALUSE:
 			A=new Achievement()
 			{
-				private int 				num 		= 0;
-				private final Set<String>	socialIDs 	= new TreeSet<String>();
-				private CompiledZMask seenMask = null;
+				private int					num			= 0;
+				private final Set<String>	socialIDs	= new TreeSet<String>();
+				private CompiledZMask		seenMask	= null;
 
 				@Override
 				public Event getEvent()
@@ -2592,9 +2592,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		case CMDUSE:
 			A=new Achievement()
 			{
-				private int 				num 		= 0;
-				private final Set<String>	commandIDs 	= new TreeSet<String>();
-				private CompiledZMask seenMask = null;
+				private int					num			= 0;
+				private final Set<String>	commandIDs	= new TreeSet<String>();
+				private CompiledZMask		mask		= null;
+				private CompiledZMask		seenMask	= null;
 
 				@Override
 				public Event getEvent()
@@ -2691,6 +2692,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
 						{
+							if((mask!=null)&&(!CMLib.masking().maskCheck(mask, mob, true)))
+								return false;
 							final Command C;
 							if(parms.length>0)
 							{
@@ -2740,6 +2743,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
 					if(seenMask.trim().length()>0)
 						this.seenMask = CMLib.masking().getPreCompiledMask(seenMask);
+
+					final String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "PLAYERMASK", ""));
+					if(zapperMask.trim().length()>0)
+						this.mask = CMLib.masking().getPreCompiledMask(zapperMask);
+					else
+						this.mask = null;
 
 					final String numStr=CMParms.getParmStr(parms, "NUM", "");
 					if(!CMath.isInteger(numStr))
