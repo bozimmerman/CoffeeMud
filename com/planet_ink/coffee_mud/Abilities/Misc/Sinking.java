@@ -338,22 +338,22 @@ public class Sinking extends StdAbility
 			return false;
 		if(target.fetchEffect("Sinking")==null)
 		{
+			final Room R=CMLib.map().roomLocation(target);
+			final MOB causeM=(mob!=null)?mob:((target instanceof MOB)?((MOB)target):CMLib.map().deity());
 			final Sinking F=new Sinking();
 			F.setMiscText(this.reversed()?"REVERSED":"NORMAL");
-			F.invoker=null;
-			if(target instanceof MOB)
-				F.invoker=(MOB)target;
-			else
-				F.invoker=CMClass.getMOB("StdMOB");
-			target.addEffect(F);
+			F.invoker=causeM;
 			F.setSavable(false);
-			F.makeLongLasting();
-			final Room R=CMLib.map().roomLocation(target);
-			if((R!=null)&&(mob!=null))
+			target.addEffect(F);
+			if((R!=null)&&(causeM!=null))
 			{
-				final MOB causeM=(mob!=null)?mob:((target instanceof MOB)?((MOB)target):CMLib.map().deity());
-				R.show(causeM, target, CMMsg.MASK_ALWAYS|CMMsg.MSG_CAUSESINK, null);
+				if(!R.show(causeM, target, CMMsg.MSG_CAUSESINK, null))
+				{
+					target.delEffect(F);
+					return false;
+				}
 			}
+			F.makeLongLasting();
 			if(!(target instanceof MOB))
 				CMLib.threads().startTickDown(F,Tickable.TICKID_MOB,1);
 			target.recoverPhyStats();
