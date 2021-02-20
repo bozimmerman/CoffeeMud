@@ -59,7 +59,7 @@ public interface Language extends Ability
 
 	/**
 	 * Returns whether the given language is translated by this one.
-	 * Does not use {@link Language.languagesSupported()}
+	 * Does not use {@link Language#languagesSupported()}
 	 * @param language the language to test
 	 * @return true if this language translates (usually ID() == language)
 	 */
