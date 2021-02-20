@@ -1772,7 +1772,7 @@ public class Stat  extends Skills
 						if(stat.equals(thisStat.substring(4)))
 						{
 							final CharStats base=(CharStats)M.baseCharStats().copyOf();
-							M.baseCharStats().getMyRace().affectCharStats(M, base);
+							//M.baseCharStats().getMyRace().affectCharStats(M, base);
 							str.append(base.getStat(stat)).append(" ");
 							found=true;
 							break;
@@ -1865,7 +1865,7 @@ public class Stat  extends Skills
 						if(stat.startsWith(thisStat.substring(4)))
 						{
 							final CharStats base=(CharStats)M.baseCharStats().copyOf();
-							M.baseCharStats().getMyRace().affectCharStats(M, base);
+							//M.baseCharStats().getMyRace().affectCharStats(M, base);
 							str.append(base.getStat(stat)).append(" ");
 							found=true;
 							break;
