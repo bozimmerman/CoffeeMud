@@ -348,6 +348,12 @@ public class Sinking extends StdAbility
 			target.addEffect(F);
 			F.setSavable(false);
 			F.makeLongLasting();
+			final Room R=CMLib.map().roomLocation(target);
+			if((R!=null)&&(mob!=null))
+			{
+				final MOB causeM=(mob!=null)?mob:((target instanceof MOB)?((MOB)target):CMLib.map().deity());
+				R.show(causeM, target, CMMsg.MASK_ALWAYS|CMMsg.MSG_CAUSESINK, null);
+			}
 			if(!(target instanceof MOB))
 				CMLib.threads().startTickDown(F,Tickable.TICKID_MOB,1);
 			target.recoverPhyStats();
