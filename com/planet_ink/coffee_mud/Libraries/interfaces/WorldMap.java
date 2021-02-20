@@ -161,7 +161,7 @@ public interface WorldMap extends CMLibrary
 	 * @param deityName the deity to de-register
 	 * @param oldOne the old holy place for this deity
 	 */
-	public void deregisterHolyPlace(final String deityName, final Places newOne);
+	public void deregisterHolyPlace(final String deityName, final Places oldOne);
 
 	/**
 	 * Enumerate the holy places for the given deity.
