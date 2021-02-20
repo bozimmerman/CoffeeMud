@@ -558,7 +558,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * code) occurs in the game.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changeEventKeys()
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#MISC_TRIGGERS
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#miscEvent()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#executeChange(MOB, MOB, com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALL_CHANGE_EVENT_TYPES()
 	 * @param eventID the code name of the event that occurred
@@ -576,7 +576,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @param eventData the field used to create the new FactionChangeEvent
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changeEventKeys()
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#MISC_TRIGGERS
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#miscEvent()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALL_CHANGE_EVENT_TYPES()
 	 * @return the FactionChangeEvent object created and added to this faction, or null
 	 */
@@ -586,7 +586,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * Removes a FactionChangeEvent of the given event (trigger) id.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changeEventKeys()
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#MISC_TRIGGERS
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#miscEvent()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALL_CHANGE_EVENT_TYPES()
 	 * @param event the event object to remove from the list of change events
 	 * @return whether the event id was found to remove
@@ -597,7 +597,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * Removes all FactionChangeEvents
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changeEventKeys()
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#MISC_TRIGGERS
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#miscEvent()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALL_CHANGE_EVENT_TYPES()
 	 */
 	public void clearChangeEvents();
