@@ -166,7 +166,7 @@ public interface ExpertiseLibrary extends CMLibrary
 		/**
 		 * Gets a ZapperMask describing who may know about the availability of this
 		 * expertise.
-		 * see {@link com.planet_ink.coffee_mud-Libraries.interfaces.MaskingLibrary}
+		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
 		 * @return a ZapperMask describing who may know about the availability of this
 		 */
 		public MaskingLibrary.CompiledZMask compiledListMask();
@@ -174,7 +174,7 @@ public interface ExpertiseLibrary extends CMLibrary
 		/**
 		 * Gets a ZapperMask describing who may acquire this
 		 * expertise through training.
-		 * see {@link com.planet_ink.coffee_mud-Libraries.interfaces.MaskingLibrary}
+		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
 		 * @return a ZapperMask describing who acquire this
 		 */
 		public MaskingLibrary.CompiledZMask compiledFinalMask();
@@ -182,7 +182,7 @@ public interface ExpertiseLibrary extends CMLibrary
 		/**
 		 * Gets a ZapperMask describing who may know about the availability of this
 		 * expertise AND acquire it.
-		 * see {@link com.planet_ink.coffee_mud-Libraries.interfaces.MaskingLibrary}
+		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
 		 * @return a ZapperMask describing access to this expertise
 		 */
 		public String allRequirements();
@@ -190,7 +190,7 @@ public interface ExpertiseLibrary extends CMLibrary
 		/**
 		 * Gets a ZapperMask describing who may know about the availability of this
 		 * expertise.
-		 * see {@link com.planet_ink.coffee_mud-Libraries.interfaces.MaskingLibrary}
+		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
 		 * @return a ZapperMask describing who may know about the availability of this
 		 */
 		public String listRequirements();
@@ -198,7 +198,7 @@ public interface ExpertiseLibrary extends CMLibrary
 		/**
 		 * Gets a ZapperMask describing who may acquire this
 		 * expertise through training.
-		 * see {@link com.planet_ink.coffee_mud-Libraries.interfaces.MaskingLibrary}
+		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
 		 * @return a ZapperMask describing who may acquire this
 		 */
 		public String finalRequirements();
@@ -206,7 +206,7 @@ public interface ExpertiseLibrary extends CMLibrary
 		/**
 		 * Adds a ZapperMask describing who may know about the availability of this
 		 * expertise.
-		 * see {@link com.planet_ink.coffee_mud-Libraries.interfaces.MaskingLibrary}
+		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
 		 * @param mask a ZapperMask describing who may know about the availability of this
 		 */
 		public void addListMask(String mask);
@@ -214,7 +214,7 @@ public interface ExpertiseLibrary extends CMLibrary
 		/**
 		 * Adds a ZapperMask describing who may acquire this
 		 * expertise through training.
-		 * see {@link com.planet_ink.coffee_mud-Libraries.interfaces.MaskingLibrary}
+		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
 		 * @param mask a ZapperMask describing who may acquire this
 		 */
 		public void addFinalMask(String mask);
