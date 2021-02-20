@@ -148,8 +148,8 @@ public interface WorldMap extends CMLibrary
 
 	/**
 	 * Register a particular room as infused to the given deity.
-	 * @see WorldMap#deregisterHolyPlace(Places)
-	 * @see WorldMap#holyPlaces()
+	 * @see WorldMap#deregisterHolyPlace(String, Places)
+	 * @see WorldMap#holyPlaces(String)
 	 * @param deityName the deity to register
 	 * @param newOne the new holy place
 	 */
@@ -157,7 +157,7 @@ public interface WorldMap extends CMLibrary
 	/**
 	 * De-register a particular room that was probably infused
 	 * to the given deity.
-	 * @see WorldMap#registerHolyPlace(Places)
+	 * @see WorldMap#registerHolyPlace(String, Places)
 	 * @param deityName the deity to de-register
 	 * @param oldOne the old holy place for this deity
 	 */
@@ -165,8 +165,8 @@ public interface WorldMap extends CMLibrary
 
 	/**
 	 * Enumerate the holy places for the given deity.
-	 * @see WorldMap#registerHolyPlace(Places)
-	 * @see WorldMap#deregisterHolyPlace(Places)
+	 * @see WorldMap#registerHolyPlace(String, Places)
+	 * @see WorldMap#deregisterHolyPlace(String, Places)
 	 * @param deityName the deity to list for
 	 * @return the holy places for the deity.
 	 */
