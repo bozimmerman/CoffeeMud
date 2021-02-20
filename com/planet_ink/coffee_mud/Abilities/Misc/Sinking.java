@@ -345,9 +345,9 @@ public class Sinking extends StdAbility
 			F.invoker=causeM;
 			F.setSavable(false);
 			target.addEffect(F);
-			if((R!=null)&&(causeM!=null))
+			if(R!=null)
 			{
-				if(!R.show(causeM, target, CMMsg.MSG_CAUSESINK, null))
+				if(!R.show(CMLib.map().deity(), target, CMMsg.MSG_CAUSESINK, null))
 				{
 					target.delEffect(F);
 					return false;
