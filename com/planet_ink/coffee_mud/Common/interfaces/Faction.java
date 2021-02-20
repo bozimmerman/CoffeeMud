@@ -1493,6 +1493,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 
 		/**
 		 * Returns the counter value for the given key/event id
+		 * @param key the event id
 		 * @return the counter value
 		 */
 		public int getCounter(final String key);
