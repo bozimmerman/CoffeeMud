@@ -385,6 +385,8 @@
 			
 			<li> <a href="#ORDER">ORDER</a>
 			
+			<li> <a href="#OUTFIT">OUTFIT</a>
+			
 			<li> <a href="#PAUSE">PAUSE</a>
 			
 			<li> <a href="#PEACEFULLY">PEACEFULLY</a>
@@ -1183,7 +1185,7 @@
 			
 			<p>
 			<a name="LIST_SCRIPTS"><B>LIST_SCRIPTS</B></a>
-			<pre>Command  : LIST <BR>Usage    : LIST SCRIPTS COUNT/DETAILS/CUSTOM <BR>Example  : list scripts count <BR>Example  : list scripts details <BR>Example  : list scripts custom <BR>Lists all the scripts in use in your game.  The COUNT param will show all the<BR>scripts, and how many objects are referring to that script.  List scripts<BR>details will show the first part of the script name, the name of the object<BR>that it is attached to, and the room where that object is located.  List<BR>scripts custom will show all the objects with custom scripts, the objects<BR>location, and a full listing of the custom script (a custom script is simply<BR>one that is hard coded into the behavior instead of coming from a file).</pre>
+			<pre>Command  : LIST <BR>Usage    : LIST SCRIPTS (AREA) COUNT/DETAILS/CUSTOM <BR>Example  : list scripts count <BR>Example  : list scripts details <BR>Example  : list scripts custom <BR>Lists all the scripts in use in your game.  The COUNT param will show all the<BR>scripts, and how many objects are referring to that script.  List scripts<BR>details will show the first part of the script name, the name of the object<BR>that it is attached to, and the room where that object is located.  List<BR>scripts custom will show all the objects with custom scripts, the objects<BR>location, and a full listing of the custom script (a custom script is simply<BR>one that is hard coded into the behavior instead of coming from a file).</pre>
 			</P>
 			
 			<p>
@@ -1394,6 +1396,11 @@
 			<p>
 			<a name="ORDER"><B>ORDER</B></a>
 			<pre>Command : ORDER <BR>Usage   : ORDER [TARGET NAME] [COMMAND(S)] <BR>Example : order dog flee <BR>Short(s):  <BR>This command will allow you to force a mob to perform any command listed in the<BR>COMMANDS or SOCIALS list.</pre>
+			</P>
+			
+			<p>
+			<a name="OUTFIT"><B>OUTFIT</B></a>
+			<pre>Command : OUTFIT <BR>Usage   : OUTFIT (([LEVEL]) [NAME]) <BR>Example : outfit <BR>Example : outfit 15 bob <BR>Example : outfit bob <BR>Short(s):  <BR>Should your character or the targeted character ever be without clothing or<BR>weapon (usually due to death), this command will give your character some<BR>newbie equipment to get by with, or level appropriate equipment when a player<BR>or mob is targeted by name by the builder.  The mundane player version of this<BR>only gives level 1 equipment to the player using the command.</pre>
 			</P>
 			
 			<p>
