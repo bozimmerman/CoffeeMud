@@ -347,11 +347,14 @@ public class Sinking extends StdAbility
 			target.addEffect(F);
 			if(R!=null)
 			{
+				//TODO:BZ:RESTORE
+				/* too risky for the imminent build -- restore later
 				if(!R.show(CMLib.map().deity(), target, CMMsg.MSG_CAUSESINK, null))
 				{
 					target.delEffect(F);
 					return false;
 				}
+				*/
 			}
 			F.makeLongLasting();
 			if(!(target instanceof MOB))
