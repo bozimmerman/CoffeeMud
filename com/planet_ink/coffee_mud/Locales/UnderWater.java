@@ -99,9 +99,6 @@ public class UnderWater extends StdRoom implements Drink
 				mob.tell(CMLib.lang().L("You have drunk all you can."));
 		}
 
-		if(msg.targetMinor()==CMMsg.TYP_CAUSESINK) // no recursion please
-			return;
-
 		if(msg.source().location()==room)
 			CMLib.commands().handleHygienicMessage(msg, 100, PlayerStats.HYGIENE_WATERCLEAN);
 
