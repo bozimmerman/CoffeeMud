@@ -88,7 +88,7 @@ public class Prayer extends StdAbility
 		return Ability.ACODE_PRAYER;
 	}
 
-	/** These should be pre-localized, because of the damn deity names */
+	/* These should be pre-localized, because of the damn deity names */
 	protected String prayWord(final MOB mob)
 	{
 		if(mob.charStats().deityName().length()>0)
@@ -96,7 +96,7 @@ public class Prayer extends StdAbility
 		return L("pray(s)");
 	}
 
-	/** These should be pre-localized, because of the damn deity names */
+	/* These should be pre-localized, because of the damn deity names */
 	protected String prayForWord(final MOB mob)
 	{
 		if(mob.charStats().deityName().length()>0)
@@ -104,7 +104,7 @@ public class Prayer extends StdAbility
 		return L("pray(s)");
 	}
 
-	/** These should be pre-localized, because of the damn deity names */
+	/* These should be pre-localized, because of the damn deity names */
 	protected String inTheNameOf(final MOB mob)
 	{
 		if(mob.charStats().deityName().length()>0)
@@ -112,7 +112,7 @@ public class Prayer extends StdAbility
 		return "";
 	}
 
-	/** These should be pre-localized, because of the damn deity names */
+	/* These should be pre-localized, because of the damn deity names */
 	protected String againstTheGods(final MOB mob)
 	{
 		if(mob.charStats().deityName().length()>0)
