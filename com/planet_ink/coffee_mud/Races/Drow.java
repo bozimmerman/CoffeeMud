@@ -99,7 +99,6 @@ public class Drow extends Elf
 		return localizedStaticRacialCat;
 	}
 
-	//todo: re-add light sensitivity
 	private final String[]	racialEffectNames			= { "Prayer_TaintOfEvil", "Spell_LightSensitivity" };
 	private final int[]		racialEffectLevels			= { 1, 1 };
 	private final String[]	racialEffectParms			= {  "", "" };

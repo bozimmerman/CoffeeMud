@@ -178,12 +178,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				h=allCombatants(caster);
 			else
 				h=allPossibleCombatants(caster,includePlayers);
-			/**
-			 * Restore this after 5.9.11 for testing
+			//BZ: The magical pre-cast mana-saving range check, pt 2/2
 			if((A!=null)
 			&&(h.size()>0)
 			&&(caster.getVictim()!=null)
-			&&((A.minRange()>0)||((A.maxRange()>0))&&(A.maxRange()<9999)))
+			&&((A.minRange()>0)||((A.maxRange()>0))&&(A.maxRange()<9999))
+			&&(A.abstractQuality()==Ability.QUALITY_MALICIOUS))
 			{
 				int disqualified=0;
 				for(final MOB M : h)
@@ -205,7 +205,6 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					h.clear();
 				}
 			}
-			*/
 		}
 		return h;
 	}

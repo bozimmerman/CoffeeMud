@@ -799,6 +799,36 @@ public class StdAbility implements Ability
 		return getTarget(mob,commands,givenTarget,false,false);
 	}
 
+	//BZ: The magical pre-cast mana-saving range check, pt 1/2
+	protected boolean checkTargetRange(final MOB mob, final MOB target)
+	{
+		if((target != null)
+		&&(target!=mob)
+		&&((minRange()>0)||((maxRange()>0)&&(maxRange()<99999)))
+		&&(abstractQuality()==Ability.QUALITY_MALICIOUS))
+		{
+			if((minRange()>0)
+			&&(((mob.getVictim()==target)&&(mob.rangeToTarget()<minRange()))
+			  ||((target.getVictim()==mob)&&(target.rangeToTarget()<minRange())))
+			)
+			{
+				mob.tell(L("You are too close to @x1 to do that.",target.name()));
+				return false;
+			}
+			else
+			if((maxRange()>0)
+			&&(maxRange()<99999)
+			&&(((mob.getVictim()==target)&&(mob.rangeToTarget()>maxRange()))
+			  ||((target.getVictim()==mob)&&(target.rangeToTarget()>maxRange())))
+			)
+			{
+				mob.tell(L("You are too far away from @x1 to do that.",target.name()));
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	protected MOB getTarget(final MOB mob, final List<String> commands, final Environmental givenTarget, final boolean quiet, final boolean alreadyAffOk)
 	{
 		String targetName=CMParms.combine(commands,0);
@@ -880,33 +910,9 @@ public class StdAbility implements Ability
 			return null;
 		}
 
-		/**
-		 * Restore this after 5.9.11 for testing
-		if((target != null)
-		&&(target!=mob)
-		&&((minRange()>0)||((maxRange()>0)&&(maxRange()<99999)))
-		&&(abstractQuality()==Ability.QUALITY_MALICIOUS)
-		{
-			if((minRange()>0)
-			&&(((mob.getVictim()==target)&&(mob.rangeToTarget()<minRange()))
-			  ||((target.getVictim()==mob)&&(target.rangeToTarget()<minRange())))
-			)
-			{
-				mob.tell(L("You are too close to @x1 to do that.",target.name()));
-				target=null;
-			}
-			else
-			if((maxRange()>0)
-			&&(maxRange()<99999)
-			&&(((mob.getVictim()==target)&&(mob.rangeToTarget()>maxRange()))
-			  ||((target.getVictim()==mob)&&(target.rangeToTarget()>maxRange())))
-			)
-			{
-				mob.tell(L("You are too far away from @x1 to do that.",target.name()));
-				target=null;
-			}
-		}
-		*/
+		if(!checkTargetRange(mob,target))
+			target=null;
+		
 		return target;
 	}
 
@@ -1619,7 +1625,7 @@ public class StdAbility implements Ability
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical target, final boolean auto, final int asLevel)
 	{
 		//expertiseCache=null; // this was insane!
-		if((mob!=null)&&(getXMAXRANGELevel(mob)>0))
+		if((mob!=null)&&(getXMAXRANGELevel(mob)>0)) // wut? this must be preventing an npe in some edge case...
 			invoker=mob;
 		if((!auto)&&(mob!=null))
 		{
