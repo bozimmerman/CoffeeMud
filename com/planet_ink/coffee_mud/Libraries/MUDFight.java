@@ -181,7 +181,6 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			//BZ: The magical pre-cast mana-saving range check, pt 2/2
 			if((A!=null)
 			&&(h.size()>0)
-			&&(caster.getVictim()!=null)
 			&&((A.minRange()>0)||((A.maxRange()>0))&&(A.maxRange()<9999))
 			&&(A.abstractQuality()==Ability.QUALITY_MALICIOUS))
 			{

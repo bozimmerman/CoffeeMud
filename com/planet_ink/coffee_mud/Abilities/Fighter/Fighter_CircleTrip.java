@@ -186,7 +186,7 @@ public class Fighter_CircleTrip extends FighterSkill
 			return false;
 
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
-		if(h==null)
+		if((h==null)||(h.size()==0))
 		{
 			mob.tell(L("There doesn't appear to be anyone here worth tripping."));
 			return false;

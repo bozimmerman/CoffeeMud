@@ -162,7 +162,7 @@ public class Chant_SummonInsects extends Chant
 
 		if(success)
 		{
-			if(h==null)
+			if((h==null)||(h.size()==0))
 			{
 				mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?L("A swarm of stinging insects appear, then flutter away!"):L("^S<S-NAME> chant(s) into the sky.  A swarm of stinging insects appear.  Finding no one to sting, they flutter away.^?"));
 				return false;

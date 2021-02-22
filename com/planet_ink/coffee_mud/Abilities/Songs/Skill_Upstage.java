@@ -154,7 +154,7 @@ public class Skill_Upstage extends BardSkill
 			return false;
 
 		final Set<MOB> h=this.properTargets(mob, givenTarget, auto);
-		if(h.size()==1)
+		if((h==null)||(h.size()==0)||(h.size()==1))
 		{
 			mob.tell(L("There doesn't appear to be anyone to upstage."));
 			return false;

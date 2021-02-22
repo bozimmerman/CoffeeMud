@@ -160,7 +160,7 @@ public class Chant_HighTide extends Chant
 			if(target instanceof MOB)
 			{
 				final Set<MOB> h=properTargets(mob,target,false);
-				if(h==null)
+				if((h==null)||(h.size()==0))
 					return Ability.QUALITY_INDIFFERENT;
 			}
 		}
@@ -230,7 +230,7 @@ public class Chant_HighTide extends Chant
 		}
 
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
-		if(h==null)
+		if((h==null)||(h.size()==0))
 		{
 			mob.tell(L("There doesn't appear to be anyone here worth sending the tide at."));
 			return false;

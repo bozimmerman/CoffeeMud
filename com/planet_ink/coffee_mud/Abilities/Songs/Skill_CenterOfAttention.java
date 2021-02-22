@@ -222,15 +222,15 @@ public class Skill_CenterOfAttention extends BardSkill
 		if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
 			return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-			return false;
-
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
-		if(h==null)
+		if((h==null)||(h.size()==0))
 		{
 			mob.tell(L("There doesn't appear to be anyone here worth performing for."));
 			return false;
 		}
+
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)

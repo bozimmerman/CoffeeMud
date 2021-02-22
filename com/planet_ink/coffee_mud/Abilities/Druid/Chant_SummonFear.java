@@ -86,7 +86,7 @@ public class Chant_SummonFear extends Chant
 		if(mob!=null)
 		{
 			final Set<MOB> h=properTargets(mob,target,false);
-			if(h==null)
+			if((h==null)||(h.size()==0))
 				return Ability.QUALITY_INDIFFERENT;
 		}
 		return super.castingQuality(mob,target);
@@ -96,7 +96,7 @@ public class Chant_SummonFear extends Chant
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
-		if(h==null)
+		if((h==null)||(h.size()==0))
 		{
 			mob.tell(L("There doesn't appear to be anyone here worth scaring."));
 			return false;

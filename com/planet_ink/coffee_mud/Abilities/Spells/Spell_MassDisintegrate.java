@@ -77,7 +77,7 @@ public class Spell_MassDisintegrate extends Spell
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		Set<MOB> h=properTargets(mob,givenTarget,auto);
-		if((h==null)||(h.size()<0))
+		if((h==null)||(h.size()<=0))
 		{
 			if(mob.location().numItems()==0)
 			{

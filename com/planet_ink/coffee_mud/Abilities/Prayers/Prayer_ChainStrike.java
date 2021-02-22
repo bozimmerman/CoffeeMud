@@ -76,8 +76,11 @@ public class Prayer_ChainStrike extends Prayer
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, boolean auto, final int asLevel)
 	{
 		Set<MOB> h=properTargets(mob,givenTarget,auto);
-		if(h==null)
-			h=new HashSet<MOB>();
+		if((h==null)||(h.size()==0))
+		{
+			mob.tell(L("There doesn't appear to be anyone here worth striking at."));
+			return false;
+		}
 
 		final List<MOB> targets=new ArrayList<MOB>(h);
 

@@ -130,7 +130,7 @@ public class Prayer_Refuge extends Prayer
 				if((newRoom!=null)&&(newRoom!=msg.source().location()))
 				{
 					final Set<MOB> h=properTargets(msg.source(),null,false);
-					if(h==null)
+					if((h==null)||(h.size()==0))
 						return;
 					final Room thisRoom=msg.source().location();
 					final Ability thisA=this;

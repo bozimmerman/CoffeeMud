@@ -128,6 +128,13 @@ public class Fighter_Warcry extends FighterSkill
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
+		final Set<MOB> h=properTargets(mob,givenTarget,auto);
+		if((h==null)||(h.size()==0))
+		{
+			mob.tell(L("No one here seems to want to get mad."))
+			return false;
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -138,9 +145,6 @@ public class Fighter_Warcry extends FighterSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final Set<MOB> h=properTargets(mob,givenTarget,auto);
-				if(h==null)
-					return false;
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;

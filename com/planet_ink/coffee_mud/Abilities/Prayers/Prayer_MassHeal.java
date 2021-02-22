@@ -92,13 +92,14 @@ public class Prayer_MassHeal extends Prayer implements MendingSkill
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
+		final Set<MOB> h=properTargets(mob,givenTarget,auto);
+		if((h==null)||(h.size()==0))
+			return false;
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-		final Set<MOB> h=properTargets(mob,givenTarget,auto);
-		if(h==null)
-			return false;
 		for (final Object element : h)
 		{
 			final MOB target=(MOB)element;

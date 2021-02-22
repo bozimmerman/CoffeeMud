@@ -100,7 +100,7 @@ public class Fighter_Sweep extends FighterSkill
 		if((mob!=null)&&(target!=null))
 		{
 			final Set<MOB> h=properTargets(mob,target,false);
-			if(h.size()<2)
+			if((h==null)||(h.size()<2))
 				return Ability.QUALITY_INDIFFERENT;
 			for(final MOB M : h)
 			{
@@ -126,7 +126,9 @@ public class Fighter_Sweep extends FighterSkill
 			mob.tell(L("You must be in combat to sweep!"));
 			return false;
 		}
-		final Set<MOB> h=properTargets(mob,givenTarget,false);
+		Set<MOB> h=properTargets(mob,givenTarget,false);
+		if(h==null)
+			h=new HashSet<MOB>();
 		for(final MOB M : h)
 		{
 			if((M.rangeToTarget()<0)||(M.rangeToTarget()>0))
