@@ -60,6 +60,14 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		return true;
 	}
 
+	protected static class ItemSetDef
+	{
+		protected String			name			= "";
+		protected int				allSetReqNum	= 2;
+		protected volatile boolean	setChecked		= false;
+		protected volatile boolean	setActivated	= false;
+	}
+
 	protected Object[]		charStatsChanges	= null;
 	protected Object[]		charStateChanges	= null;
 	protected Object[]		phyStatsChanges		= null;
@@ -68,6 +76,8 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	protected boolean		multiplyCharStates	= false;
 	protected boolean		firstTime			= false;
 	protected String[]		parameters			= new String[] { "", "" };
+	protected ItemSetDef	allSet				= null;
+
 	private static String[]	allParms			= null;
 
 	@Override
@@ -282,8 +292,10 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		{
 			final List<String> tempV=new ArrayList<String>();
 			tempV.addAll(Arrays.asList(new String[] {
-				"MULTIPLYPH", "MULTIPLYCH", "abi", "arm", "att", "dam", "dis", "lev", "rej", "sen", "spe", "wei", "hei", "gen",
-				"cla", "cls", "rac", "hit", "hun", "man", "mov", "thi", "ALLSAVES", "ABLEPROFS", "ABLELVLS","chr","hp"
+				"MULTIPLYPH", "MULTIPLYCH", "abi", "arm", "att", "dam", "dis", "lev",
+				"rej", "sen", "spe", "wei", "hei", "gen", "cla", "cls", "rac", "hit",
+				"hun", "man", "mov", "thi", "ALLSAVES", "ABLEPROFS", "ABLELVLS","chr","hp",
+				"ALLSET"
 			}));
 			for(final int i : CharStats.CODES.BASECODES())
 			{
@@ -303,6 +315,21 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		|| parameters[0].startsWith("-"))
 			errors.add("Likely bad arguments: "+parameters[0]);
 
+		final String allSet=getParmStr(ps, parameters[0], "ALLSET", null);
+		this.allSet=null;
+		if((allSet!=null) && (allSet.length()>0))
+		{
+			this.allSet=new ItemSetDef();
+			final int x=allSet.lastIndexOf('-');
+			if((x>0)
+			&&(CMath.isInteger(allSet.substring(x+1).trim())))
+			{
+				this.allSet.allSetReqNum=CMath.s_int(allSet.substring(x+1).trim());
+				this.allSet.name=allSet.substring(0,x).trim();
+			}
+			else
+				this.allSet.name=allSet;
+		}
 		multiplyPhyStats = getParmBool(ps, parameters[0],"MULTIPLYPH",false,errors).booleanValue();
 		multiplyCharStates = getParmBool(ps, parameters[0],"MULTIPLYCH",false,errors).booleanValue();
 
@@ -541,13 +568,99 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			}
 		}
 	}
+	
+	protected boolean setItemCheck(final Item I)
+	{
+		return true;
+	}
 
+	protected boolean setCheck(final Item I)
+	{
+		final ItemSetDef allSet;
+		synchronized(this)
+		{
+			allSet=this.allSet;
+		}
+		if(allSet==null)
+			return true;
+		final ItemPossessor P=I.owner();
+		if(!(P instanceof MOB))
+		{
+			allSet.setChecked=false;
+			allSet.setActivated=false;
+			return false;
+		}
+		if(allSet.setChecked)
+			return allSet.setActivated;
+		final MOB mob=(MOB)P;
+		int ct=0;
+		List<ItemSetDef> allDefs=new LinkedList<ItemSetDef>();
+		for(int i=0;i<mob.numItems();i++)
+		{
+			final Item I2=mob.getItem(i);
+			if((I2!=null) && (I2.numEffects()>0))
+			{
+				final Prop_HaveAdjuster hA=(Prop_HaveAdjuster)I2.fetchEffect(ID());
+				if((hA!=null)
+				&&(hA.allSet!=null)
+				&&(hA.allSet.name.equalsIgnoreCase(allSet.name))) // just having it is enough
+				{
+					if(setItemCheck(I2))
+						ct++;
+					allDefs.add(hA.allSet);
+				}
+			}
+		}
+		boolean setActivated=ct >= allSet.allSetReqNum;
+		for(final ItemSetDef def : allDefs)
+		{
+			def.setChecked=true;
+			def.setActivated=setActivated;
+		}
+		return setActivated;
+	}
+	
+	protected void clearSet(final MOB mob, final ItemSetDef allSet)
+	{
+		if(allSet!=null)
+		{
+			synchronized(this)
+			{
+				allSet.setActivated=false;
+				allSet.setChecked=false;
+			}
+			if(mob != null)
+			{
+				for(int i=0;i<mob.numItems();i++)
+				{
+					final Item I=mob.getItem(i);
+					if((I!=affected)
+					&&(I!=null)
+					&&(I.numEffects()>0))
+					{
+						final Prop_HaveAdjuster hA=(Prop_HaveAdjuster)I.fetchEffect(ID());
+						if((hA!=null)
+						&&(hA.allSet!=null)
+						&&(hA.allSet.name.equalsIgnoreCase(allSet.name)))
+						{
+							synchronized(hA)
+							{
+								hA.allSet.setActivated=false;
+								hA.allSet.setChecked=false;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	public boolean canApply(final MOB mob)
 	{
-		if((affected!=null)
-		&&(affected instanceof Item)
+		if((affected instanceof Item)
 		&&(!((Item)affected).amDestroyed())
-		&&((mask==null)||(CMLib.masking().maskCheck(mask,mob,true))))
+		&&((mask==null)||(CMLib.masking().maskCheck(mask,mob,true)))
+		&&(setCheck((Item)affected)))
 			return true;
 		return false;
 	}
@@ -563,6 +676,23 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	{
 		if(mask==null)
 			setMiscText(text());
+	}
+
+	@Override
+	public void executeMsg(final Environmental host, final CMMsg msg)
+	{
+		super.executeMsg(host,msg);
+		if((msg.target() == affected)
+		&&(affected instanceof Item)
+		&&(msg.source()==((Item)affected).owner())
+		&&(this.allSet!=null)
+		&&(ID().equals("Prop_HaveAdjuster")))
+		{
+			if((msg.targetMinor()==CMMsg.TYP_DROP)
+			||(msg.sourceMinor()==CMMsg.TYP_GET)
+			||(msg.sourceMinor()==CMMsg.TYP_GIVE))
+				clearSet(msg.source(),this.allSet);
+		}
 	}
 
 	@Override
@@ -1267,25 +1397,13 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 								spacebefore=0;
 							if(spacebefore<plusminus)
 							{
-								boolean proceed=true;
 								final String wd=s.substring(spacebefore,plusminus).trim().toUpperCase();
-								if(wd.startsWith("DIS"))
-									proceed=false;
-								else
-								if(wd.startsWith("SEN"))
-									proceed=false;
-								else
-								if(wd.startsWith("ARM")&&(I instanceof Armor))
-									proceed=false;
-								else
-								if(wd.startsWith("ATT")&&(I instanceof Weapon))
-									proceed=false;
-								else
-								if(wd.startsWith("DAM")&&(I instanceof Weapon))
-									proceed=false;
-								else
-								if(wd.startsWith("ARM")&&(s.charAt(plusminus)=='+'))
-									proceed=false;
+								if(wd.startsWith("DIS")) {}
+								else if(wd.startsWith("SEN"))  {}
+								else if(wd.startsWith("ARM")&&(I instanceof Armor))  {}
+								else if(wd.startsWith("ATT")&&(I instanceof Weapon))  {}
+								else if(wd.startsWith("DAM")&&(I instanceof Weapon))  {}
+								else if(wd.startsWith("ARM")&&(s.charAt(plusminus)=='+'))  {}
 								else
 								if((!wd.startsWith("ARM"))&&(s.charAt(plusminus)=='-'))
 								{

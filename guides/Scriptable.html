@@ -2,10 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
 
 
+
 <meta name="generator" content="HTML Tidy, see www.w3.org" /><title>Scripting in CoffeeMud 5.9</title>
 
-<link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head>
-<body>
+<link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head><body>
 <center>
 <table border="1" cellpadding="10" cellspacing="0" width="90%">
 <tbody>
@@ -550,8 +550,7 @@ juicy and a buy_prog p apple red poisoned.
 <pre>cast_prog [ability id list]<br />cast_prog p [keyword list]<br />cast_prog all<br /></pre>
 <p>This type of mobprog is
 triggered by the mob having a spell or skill used on them by someone
-else. If the spell or skill&nbsp; matches the keywords of the
-give_prog, the prog is triggered. If there is a &#8216;p' placed
+else. If the spell or skill name or id matches the keywords of the cast_prog, the prog is triggered. If there is a &#8216;p' placed
 before
 the keyword list, the name or id of the spell must exactly match that
 of

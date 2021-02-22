@@ -72,6 +72,7 @@ public class Prop_HereAdjuster extends Prop_HaveAdjuster
 		if((mob.location()!=affected)
 		||((mask!=null)&&(!CMLib.masking().maskCheck(mask,mob,false))))
 			return false;
+		// no earthly idea how to make sets work with this.
 		return true;
 	}
 }

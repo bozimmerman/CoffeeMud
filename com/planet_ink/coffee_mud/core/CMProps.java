@@ -53,8 +53,9 @@ public class CMProps extends Properties
 		return props[Thread.currentThread().getThreadGroup().getName().charAt(0)];
 	}
 
-	protected static final String FILTER_PATTERN="%#@*!$&?";
-	protected static final char[] FILTER_CHARS=FILTER_PATTERN.toCharArray();
+	protected static final String	FILTER_PATTERN		= "%#@*!$&?";
+	protected static final char[]	FILTER_CHARS		= FILTER_PATTERN.toCharArray();
+	private static final double[]	EMPTY_DOUBLE_VARS	= new double[99];
 
 	/**
 	 * Constructor for a property object that applies only to this thread group.
@@ -241,7 +242,8 @@ public class CMProps extends Properties
 		CLANTROPMONTHLYCP,
 		CLANTROPMONTHLYMB,
 		MANACOMPOUND_RULES,
-		DEITYPOLICY
+		DEITYPOLICY,
+		MANACOST
 	}
 
 	/**
@@ -258,7 +260,6 @@ public class CMProps extends Properties
 		MINCLANMEMBERS,
 		DAYSCLANDEATH,
 		MINCLANLEVEL,
-		MANACOST,
 		DAYSCLANOVERTHROW,
 		//LANGTRAINCOST,
 		//SKILLTRAINCOST,
@@ -607,7 +608,8 @@ public class CMProps extends Properties
 	protected double			 TIME_TICK_DOUBLE	= TIME_TICK;
 	protected final Map<String,Integer>	maxClanCatsMap				= new HashMap<String,Integer>();
 	protected final Set<String>			publicClanCats				= new HashSet<String>();
-	protected final Map<String,Double>	skillMaxManaExceptions		= new HashMap<String,Double>();
+	protected volatile Object			skillMaxManaDefault			= Double.valueOf(0.0);
+	protected final Map<String,Object>	skillMaxManaExceptions		= new HashMap<String,Object>();
 	protected final Map<String,Double>	skillMinManaExceptions		= new HashMap<String,Double>();
 	protected final Map<String,Double>	skillActionCostExceptions	= new HashMap<String,Double>();
 	protected final Map<String,Double>	skillComActionCostExceptions= new HashMap<String,Double>();
@@ -1861,17 +1863,72 @@ public class CMProps extends Properties
 	}
 
 	/**
-	 * Returns the maximum amount of usage cost (mana) for the given ability ID().
-	 * All for the callers thread group.  If no cost is found, returns MIN_VALUE.
-	 * @param skillID the Ability ID to find a maximum cost for.
-	 * @return the maximum cost of usage (mana) for the ability.
+	 * Returns the amount of usage cost (mana) for the given ability ID().
+	 * All for the callers thread group.  If no cost is found, returns 
+	 * the base mana cost object.
+	 * @param skillID the Ability ID to find a cost for.
+	 * @return the cost of usage (mana) determiner for the ability.
 	 */
-	public static final int getMaxManaException(final String skillID)
+	public static final Object getManaCostObject(final String skillID)
 	{
-		final Map<String,Double> DV=p().skillMaxManaExceptions;
+		final CMProps p=p();
+		final Map<String,Object> DV=p.skillMaxManaExceptions;
 		if(DV.containsKey(skillID.toUpperCase()))
-			return DV.get(skillID.toUpperCase()).intValue();
-		return Integer.MIN_VALUE;
+			return DV.get(skillID.toUpperCase());
+		return p.skillMaxManaDefault;
+	}
+	
+	/**
+	 * Returns the amount of usage cost (mana) for the given ability ID().
+	 * All for the callers thread group.  If no cost is found, returns 
+	 * null.
+	 * @param skillID the Ability ID to find a cost for.
+	 * @return the cost of usage (mana) determiner for the ability.
+	 */
+	public static final Object getManaCostExceptionObject(final String skillID)
+	{
+		final Map<String,Object> DV=p().skillMaxManaExceptions;
+		if(DV.containsKey(skillID.toUpperCase()))
+			return DV.get(skillID.toUpperCase());
+		return null;
+	}
+	
+	private static final Object getIndividualManaCostObject(final String s)
+	{
+		if(CMath.isNumber(s))
+			return Integer.valueOf((int)CMath.s_double(s));
+		else
+		if(CMath.isMathExpression(s,EMPTY_DOUBLE_VARS))
+			return CMath.compileMathExpression(s);
+		return null;
+	}
+
+	private static final Object setManaCosts(final String val, final Map<String,Object> set)
+	{
+		if((val==null)||(val.length()==0))
+			return Double.valueOf(0);
+		set.clear();
+		final List<String> V=CMParms.parseCommas(val,true);
+		Object endVal=new Double(0);
+		for(final String s : V)
+		{
+			final Object simpleCost = getIndividualManaCostObject(s);
+			if(simpleCost != null)
+				endVal = simpleCost;
+			else
+			{
+				final int x=s.indexOf(' ');
+				if(x>=0)
+				{
+					final String ableID=s.substring(0,x).trim().toUpperCase();
+					final String numStr=s.substring(x+1).trim();
+					final Object simpleSkillCost = getIndividualManaCostObject(numStr);
+					if(simpleSkillCost != null)
+						set.put(ableID,simpleSkillCost);
+				}
+			}
+		}
+		return endVal;
 	}
 
 	private static final double setExceptionCosts(final String val, final Map<String,Double> set)
@@ -2478,7 +2535,8 @@ public class CMProps extends Properties
 		setIntVar(Int.DEFCOMABLETIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFCOMABLETIME"),p().skillComActionCostExceptions)*100.0));
 		setIntVar(Int.DEFSOCTIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFSOCTIME"),p().socActionCostExceptions)*100.0));
 		setIntVar(Int.DEFCOMSOCTIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFCOMSOCTIME"),p().socComActionCostExceptions)*100.0));
-		setIntVar(Int.MANACOST,(int)CMProps.setExceptionCosts(getStr("MANACOST"),p().skillMaxManaExceptions));
+		setUpLowVar(Str.MANACOST,getStr("MANACOST"));
+		p().skillMaxManaDefault = CMProps.setManaCosts(getStr("MANACOST"), p().skillMaxManaExceptions);
 		setIntVar(Int.MANAMINCOST,(int)CMProps.setExceptionCosts(getStr("MANAMINCOST"),p().skillMinManaExceptions));
 		setIntVar(Int.EDITORTYPE,(getStr("EDITORTYPE").equalsIgnoreCase("WIZARD")) ? 1 : 0);
 		setIntVar(Int.MINCLANMEMBERS,getStr("MINCLANMEMBERS"));

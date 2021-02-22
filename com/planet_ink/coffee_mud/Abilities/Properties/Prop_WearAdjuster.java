@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Properties.Prop_HaveAdjuster.ItemSetDef;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -62,22 +63,37 @@ public class Prop_WearAdjuster extends Prop_HaveAdjuster
 		return TriggeredAffect.TRIGGER_WEAR_WIELD;
 	}
 
+	@Override
+	protected boolean setItemCheck(final Item I)
+	{
+		return (I!=null) && (I.amBeingWornProperly());
+	}
+
 	public void check(final MOB mob, final Armor A)
 	{
-		if(!layered)
-		{
-			checked=true;
-			disabled=false;
-		}
+		Item I=null;
 		if(!A.amBeingWornProperly())
 		{
+			disabled=true;
 			checked=false;
 			return;
 		}
-		if(checked)
-			return;
-		Item I=null;
+		if(!checked)
+		{
+			disabled=!super.setCheck(A);
+			if(disabled)
+			{
+				checked=true;
+				return;
+			}
+		}
 		disabled=false;
+		if(!layered)
+		{
+			checked=true;
+			return;
+		}
+		
 		for(int i=0;i<mob.numItems();i++)
 		{
 			I=mob.getItem(i);
@@ -91,9 +107,7 @@ public class Prop_WearAdjuster extends Prop_HaveAdjuster
 			{
 				disabled=A.getClothingLayer()<=((Armor)I).getClothingLayer();
 				if(disabled)
-				{
 					break;
-				}
 			}
 		}
 		checked=true;
@@ -109,14 +123,19 @@ public class Prop_WearAdjuster extends Prop_HaveAdjuster
 	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
-		if((affected instanceof Armor)&&(msg.source()==((Armor)affected).owner()))
+		if((affected instanceof Armor)
+		&&(msg.source()==((Armor)affected).owner()))
 		{
 			if((msg.targetMinor()==CMMsg.TYP_REMOVE)
 			||(msg.sourceMinor()==CMMsg.TYP_WEAR)
 			||(msg.sourceMinor()==CMMsg.TYP_WIELD)
 			||(msg.sourceMinor()==CMMsg.TYP_HOLD)
 			||(msg.sourceMinor()==CMMsg.TYP_DROP))
+			{
+				if(allSet != null)
+					super.clearSet(msg.source(), allSet);
 				checked=false;
+			}
 			else
 			{
 				check(msg.source(),(Armor)affected);

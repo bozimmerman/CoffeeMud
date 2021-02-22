@@ -738,36 +738,6 @@ public class StdAbility implements Ability
 		return level;
 	}
 
-	protected int experienceLevels(final MOB caster, final int asLevel)
-	{
-		if(caster==null)
-			return 1;
-		int adjLevel=1;
-		final int qualifyingLevel=CMLib.ableMapper().qualifyingLevel(caster,this);
-		final int lowestQualifyingLevel=CMLib.ableMapper().lowestQualifyingLevel(this.ID());
-		if(qualifyingLevel>=0)
-		{
-			final int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(caster,this);
-			if(qualClassLevel>=qualifyingLevel)
-				adjLevel=(qualClassLevel-qualifyingLevel)+1;
-			else
-			if(caster.phyStats().level()>=qualifyingLevel)
-				adjLevel=(caster.phyStats().level()-qualifyingLevel)+1;
-			else
-			if(caster.phyStats().level()>=lowestQualifyingLevel)
-				adjLevel=(caster.phyStats().level()-lowestQualifyingLevel)+1;
-		}
-		else
-		if(caster.phyStats().level()>=lowestQualifyingLevel)
-			adjLevel=(caster.phyStats().level()-lowestQualifyingLevel)+1;
-		if(asLevel>0)
-			adjLevel=asLevel;
-		adjLevel += getPersonalLevelAdjustments(caster);
-		if(adjLevel<1)
-			return 1;
-		return adjLevel+getXLEVELLevel(caster);
-	}
-
 	@Override
 	public boolean canTarget(final int can_code)
 	{
@@ -1449,6 +1419,8 @@ public class StdAbility implements Ability
 	@Override
 	public int[] usageCost(final MOB mob, final boolean ignoreClassOverride)
 	{
+if(ID().equalsIgnoreCase("Skill_Recall"))
+	System.out.println("Stop!");
 		if(mob==null)
 		{
 			final Map<String,int[]> overrideCache=getHardOverrideManaCache();
@@ -1502,25 +1474,40 @@ public class StdAbility implements Ability
 			Integer[] costOverrides=null;
 			if(!ignoreClassOverride)
 				costOverrides=CMLib.ableMapper().getCostOverrides(mob,ID());
-			consumed=CMProps.getMaxManaException(ID());
-			if(consumed==Short.MIN_VALUE)
-				consumed=CMProps.getIntVar(CMProps.Int.MANACOST);
-			if(consumed<0)
-				consumed=50+lowest;
 			minimum=CMProps.getMinManaException(ID());
-			if(minimum==Short.MIN_VALUE)
+			if(minimum==Integer.MIN_VALUE)
 				minimum=CMProps.getIntVar(CMProps.Int.MANAMINCOST);
 			if(minimum<0)
 			{
-				minimum=lowest;
+				minimum=(lowest*CMath.abs(minimum));
 				if(minimum<5)
 					minimum=5;
 			}
-			if(diff>0)
+			final Object cost = CMProps.getManaCostObject(ID());
+			if(cost instanceof Integer)
+				consumed=((Integer)cost).intValue();
+			else
+			if(cost instanceof CMath.CompiledFormula)
+			{
+				final double[] vars = new double[] {
+					lowest,
+					mob.phyStats().level(),
+					minimum,
+					adjustedLevel(mob,0),
+					diff
+				};
+				consumed=(int)CMath.parseMathExpression((CMath.CompiledFormula)cost, vars, 0.0);
+			}
+			else
+				consumed=-1;
+			if((consumed<0)&&(consumed>-9999))
+				consumed=50+(lowest*CMath.abs(consumed));
+			if((diff>0)
+			&&(!(cost instanceof CMath.CompiledFormula)))
 				consumed=(consumed - (consumed /10 * diff));
 			if(consumed<minimum)
 				consumed=minimum;
-			if((overrideMana()>=0) && (CMProps.getMaxManaException(ID()) == Integer.MIN_VALUE))
+			if((overrideMana()>=0) && (CMProps.getManaCostExceptionObject(ID()) == null))
 				consumed=overrideMana();
 			if((costOverrides!=null)&&(costOverrides[AbilityMapper.Cost.MANA.ordinal()]!=null))
 			{
@@ -1954,7 +1941,18 @@ public class StdAbility implements Ability
 	{
 		if(tickAdjustmentFromStandard>0)
 			return tickAdjustmentFromStandard;
-		return adjustBeneficialTickdownTime(mob,target,(adjustedLevel(mob,asLevel)*5)+60);
+		int casterLevel = adjustedLevel(mob,asLevel);
+		if((mob != target)
+		&&(target instanceof MOB)
+		&&(mob.isPlayer() || ((mob.amFollowing() != null) && (mob.amFollowing().isPlayer())))
+		&&(((MOB)target).isPlayer()))
+		{
+			final int levelCap = ((MOB)target).phyStats().level() + CMProps.getIntVar(CMProps.Int.EXPRATE);
+			if(casterLevel >  levelCap)
+				casterLevel = levelCap;
+		}
+		final int beneficialTicks = (casterLevel*4)+40;
+		return adjustBeneficialTickdownTime(mob,target,beneficialTicks);
 	}
 
 	public Ability beneficialAffect(final MOB mob, final Physical target, final int asLevel, int tickAdjustmentFromStandard)

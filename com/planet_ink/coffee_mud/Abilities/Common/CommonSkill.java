@@ -722,17 +722,30 @@ public class CommonSkill extends StdAbility
 				consumed = 5;
 				break;
 			}
-			final int maxOverride=CMProps.getMaxManaException(ID());
-			if(maxOverride!=Short.MIN_VALUE)
+			final int maxOverride;
+			final Object maxOverrideCost = CMProps.getManaCostExceptionObject(ID());
+			if(maxOverrideCost instanceof Integer)
+				maxOverride=((Integer)maxOverrideCost).intValue();
+			else
+			if(maxOverrideCost instanceof CMath.CompiledFormula)
 			{
-				if(maxOverride<0)
-					consumed=consumed+lowest;
-				else
-				if(consumed > maxOverride)
-					consumed=maxOverride;
+				final double[] vars = new double[] {
+					lowest,
+					mob.phyStats().level(),
+					consumed,
+					adjustedLevel(mob,0)
+				};
+				maxOverride=(int)CMath.parseMathExpression((CMath.CompiledFormula)maxOverrideCost, vars, 0.0);
 			}
+			else
+				maxOverride=-1;
+			if((maxOverride<0)&&(maxOverride>-9999))
+				consumed=consumed+(lowest*CMath.abs(maxOverride));
+			else
+			if(consumed > maxOverride)
+				consumed=maxOverride;
 			final int minOverride=CMProps.getMinManaException(ID());
-			if(minOverride!=Short.MIN_VALUE)
+			if(minOverride!=Integer.MIN_VALUE)
 			{
 				if(minOverride<0)
 					consumed=(lowest<5)?5:lowest;

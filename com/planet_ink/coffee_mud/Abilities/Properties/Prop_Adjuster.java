@@ -70,6 +70,7 @@ public class Prop_Adjuster extends Prop_HaveAdjuster
 		if((affected!=null)
 		&&((mask==null)||(CMLib.masking().maskCheck(mask,mob,true))))
 			return true;
+		// sets can't really work with this.
 		return false;
 	}
 
@@ -79,6 +80,7 @@ public class Prop_Adjuster extends Prop_HaveAdjuster
 		if((affected!=null)
 		&&((mask==null)||(CMLib.masking().maskCheck(mask,E,true))))
 			return true;
+		// sets can't really work with this.
 		return false;
 	}
 
