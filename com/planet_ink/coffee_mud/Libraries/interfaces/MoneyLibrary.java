@@ -132,7 +132,7 @@ public interface MoneyLibrary extends CMLibrary
 	public static final String goldStandard=
 		"GOLD=0.01 copper piece(s) (cp);0.1 silver piece(s) (sp);1.0 gold piece(s) (gp);5.0 platinum piece(s) (pp)";
 	public static final String copperStandard=
-		"COPPER=1 copper bit(s) (cc);10 silver bit(s) (sc);100 gold bit(s) (gc);500 platinum bit(s) (pc);10000 aluminum bit(s) (ac)";
+		"COPPER=1 copper bit(s) (cb);10 silver bit(s) (sb);100 gold bit(s) (gb);500 platinum bit(s) (pb);10000 aluminum bit(s) (ab)";
 	public static final String creditStandard=
 		"CREDIT=1 credit(s) (c);1000 megacredit(s) (mc);1000000 gigacredit(s) (gc)";
 	public static final String dollarStandard=
