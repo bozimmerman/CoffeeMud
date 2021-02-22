@@ -78,8 +78,7 @@ public class Chant_GrowForest extends Chant
 		final int type=mob.location().domainType();
 		if(((type&Room.INDOORS)>0)
 			||(type==Room.DOMAIN_OUTDOORS_AIR)
-			||(type==Room.DOMAIN_OUTDOORS_CITY)
-			||(type==Room.DOMAIN_OUTDOORS_SPACEPORT)
+			||(CMLib.flags().isACityRoom(mob.location()))
 			||(type==Room.DOMAIN_OUTDOORS_UNDERWATER)
 			||(type==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{

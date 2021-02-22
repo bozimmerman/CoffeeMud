@@ -118,13 +118,13 @@ public class Prayer_EarthMud extends Prayer
 			final Room R=mob.location();
 			if(R!=null)
 			{
+				if(CMLib.flags().isACityRoom(R))
+					return Ability.QUALITY_INDIFFERENT;
 				final int type=mob.location().domainType();
 				if(((type&Room.INDOORS)>0)
-					||(type==Room.DOMAIN_OUTDOORS_AIR)
-					||(type==Room.DOMAIN_OUTDOORS_CITY)
-					||(type==Room.DOMAIN_OUTDOORS_SPACEPORT)
-					||CMLib.flags().isWateryRoom(mob.location()))
-						return Ability.QUALITY_INDIFFERENT;
+				||(type==Room.DOMAIN_OUTDOORS_AIR)
+				||CMLib.flags().isWateryRoom(mob.location()))
+					return Ability.QUALITY_INDIFFERENT;
 			}
 		}
 		return super.castingQuality(mob,target);
@@ -137,8 +137,7 @@ public class Prayer_EarthMud extends Prayer
 		final int type=mob.location().domainType();
 		if(((type&Room.INDOORS)>0)
 			||(type==Room.DOMAIN_OUTDOORS_AIR)
-			||(type==Room.DOMAIN_OUTDOORS_CITY)
-			||(type==Room.DOMAIN_OUTDOORS_SPACEPORT)
+			||(CMLib.flags().isACityRoom(mob.location()))
 			||(CMLib.flags().isWateryRoom(mob.location())))
 		{
 			mob.tell(L("That magic won't work here."));

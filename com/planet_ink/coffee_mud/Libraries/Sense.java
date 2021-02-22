@@ -1049,11 +1049,40 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		else
 		if(P instanceof Room)
 		{
-			return (((Room)P).domainType()!=Room.DOMAIN_OUTDOORS_CITY)
-					&&(((Room)P).domainType()!=Room.DOMAIN_OUTDOORS_SPACEPORT)
-					&&(((Room)P).domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
+			if(isACityRoom(P))
+				return false;
+			return ((((Room)P).domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
 					&&(((Room)P).domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-					&&((((Room)P).domainType()&Room.INDOORS)==0);
+					&&((((Room)P).domainType()&Room.INDOORS)==0));
+		}
+		else
+			return false;
+	}
+
+	@Override
+	public boolean isACityRoom(final Physical P)
+	{
+		if(P instanceof MOB)
+			return isACityRoom(((MOB)P).location());
+		else
+		if(P instanceof Item)
+			return isACityRoom(((Item)P).owner());
+		else
+		if(P instanceof Room)
+		{
+			switch(((Room)P).domainType())
+			{
+			case Room.DOMAIN_OUTDOORS_CITY:
+				return true;
+			case Room.DOMAIN_OUTDOORS_SPACEPORT:
+				return true;
+			case Room.DOMAIN_INDOORS_STONE:
+				if(P.phyStats().weight()>2)
+					return true;
+				return false;
+			default:
+				return false;
+			}
 		}
 		else
 			return false;

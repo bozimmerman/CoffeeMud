@@ -82,6 +82,8 @@ public class Chant_Reabsorb extends Chant
 			final Room R=mob.location();
 			if(R!=null)
 			{
+				if(CMLib.flags().isACityRoom(R))
+					return Ability.QUALITY_INDIFFERENT;
 				final int type=R.domainType();
 				if((type==Room.DOMAIN_INDOORS_STONE)
 				||(type==Room.DOMAIN_INDOORS_WOOD)
@@ -89,8 +91,6 @@ public class Chant_Reabsorb extends Chant
 				||(type==Room.DOMAIN_INDOORS_UNDERWATER)
 				||(type==Room.DOMAIN_INDOORS_WATERSURFACE)
 				||(type==Room.DOMAIN_OUTDOORS_AIR)
-				||(type==Room.DOMAIN_OUTDOORS_CITY)
-				||(type==Room.DOMAIN_OUTDOORS_SPACEPORT)
 				||(type==Room.DOMAIN_OUTDOORS_UNDERWATER)
 				||(type==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 					return Ability.QUALITY_INDIFFERENT;
@@ -135,8 +135,7 @@ public class Chant_Reabsorb extends Chant
 			||(type==Room.DOMAIN_INDOORS_MAGIC)
 			||(type==Room.DOMAIN_INDOORS_UNDERWATER)
 			||(type==Room.DOMAIN_INDOORS_WATERSURFACE)
-			||(type==Room.DOMAIN_OUTDOORS_AIR)
-			||(type==Room.DOMAIN_OUTDOORS_CITY)
+			||(CMLib.flags().isACityRoom(mob.location()))
 			||(type==Room.DOMAIN_OUTDOORS_SPACEPORT)
 			||(type==Room.DOMAIN_OUTDOORS_UNDERWATER)
 			||(type==Room.DOMAIN_OUTDOORS_WATERSURFACE))

@@ -219,8 +219,7 @@ public class Druid_PlantForm extends StdAbility
 			{
 				if((R.domainType()&Room.INDOORS)>0)
 					return Ability.QUALITY_INDIFFERENT;
-				if((R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
-				||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
+				if(CMLib.flags().isACityRoom(R))
 					return Ability.QUALITY_INDIFFERENT;
 			}
 			if(target instanceof MOB)
@@ -271,8 +270,7 @@ public class Druid_PlantForm extends StdAbility
 			mob.tell(L("You must be outdoors to take on your plant form."));
 			return false;
 		}
-		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
-		||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
+		if(CMLib.flags().isACityRoom(mob.location()))
 		{
 			mob.tell(L("You must be in the wild to take on your plant form."));
 			return false;

@@ -260,9 +260,9 @@ public class Chant_PlantTrap extends Chant implements Trap
 			{
 				if(((R.domainType()&Room.INDOORS)>0))
 					return Ability.QUALITY_INDIFFERENT;
-				if((R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
-				   ||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-				   ||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+				if(CMLib.flags().isACityRoom(R))
+					return Ability.QUALITY_INDIFFERENT;
+				if((R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 				   ||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
 				   ||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 					return Ability.QUALITY_INDIFFERENT;
@@ -293,8 +293,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
-		if(((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+		if(((CMLib.flags().isACityRoom(mob.location()))
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))

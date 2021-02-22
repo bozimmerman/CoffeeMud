@@ -92,9 +92,8 @@ public class Thief_Graffiti extends ThiefSkill
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof Room))
 			target=(Room)givenTarget;
 
-		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_CITY)
-		   &&(mob.location().domainType()!=Room.DOMAIN_INDOORS_WOOD)
-		   &&(mob.location().domainType()!=Room.DOMAIN_INDOORS_STONE))
+		if((!CMLib.flags().isACityRoom(mob.location()))
+		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_STONE))
 		{
 			mob.tell(L("You can't put graffiti here."));
 			return false;

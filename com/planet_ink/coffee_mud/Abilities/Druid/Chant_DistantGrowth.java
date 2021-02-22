@@ -92,8 +92,7 @@ public class Chant_DistantGrowth extends Chant
 			{
 				anyRoom=R;
 				if(((R.domainType()&Room.INDOORS)==0)
-				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_CITY)
-				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_SPACEPORT)
+				&&(!CMLib.flags().isACityRoom(R))
 				&&(!CMLib.flags().isWateryRoom(mob.location())))
 				{
 					newRoom=R;
@@ -110,8 +109,7 @@ public class Chant_DistantGrowth extends Chant
 			if(anyRoom==null)
 				mob.tell(L("You don't know of a place called '@x1'.",CMParms.combine(commands,0)));
 			else
-			if((anyRoom.domainType()==Room.DOMAIN_OUTDOORS_CITY)
-			||(anyRoom.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
+			if(CMLib.flags().isACityRoom(anyRoom))
 				mob.tell(L("There IS such a place, but it is an overtrodden street, so your magic would fail."));
 			else
 			if(CMLib.flags().isWateryRoom(anyRoom))

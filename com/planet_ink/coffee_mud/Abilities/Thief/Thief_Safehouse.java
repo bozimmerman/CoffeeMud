@@ -159,12 +159,13 @@ public class Thief_Safehouse extends ThiefSkill
 	{
 		if(target==null)
 			return false;
-		if((target.domainType()==Room.DOMAIN_INDOORS_WOOD)||(target.domainType()==Room.DOMAIN_INDOORS_STONE))
+		if(((target.domainType()==Room.DOMAIN_INDOORS_WOOD)||(target.domainType()==Room.DOMAIN_INDOORS_STONE))
+		&&(!CMLib.flags().isACityRoom(target)))
 		{
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
 				final Room R=target.getRoomInDir(d);
-				if((R!=null)&&(R.domainType()==Room.DOMAIN_OUTDOORS_CITY))
+				if((R!=null)&&(CMLib.flags().isACityRoom(R)))
 					return true;
 			}
 		}

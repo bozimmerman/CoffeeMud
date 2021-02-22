@@ -95,8 +95,7 @@ public class Chant_PlantBed extends Chant
 	{
 		if((((mob.location().domainType()&Room.INDOORS)>0)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_DESERT)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+		   ||(CMLib.flags().isACityRoom(mob.location()))
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR))

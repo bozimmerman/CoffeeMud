@@ -81,11 +81,10 @@ public class Chant_GrowFood extends Chant
 			mob.tell(L("You must be outdoors to try this."));
 			return false;
 		}
-		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+		if((CMLib.flags().isACityRoom(mob.location()))
+		||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+		||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
+		||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
 			mob.tell(L("This magic will not work here."));
 			return false;

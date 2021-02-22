@@ -151,9 +151,9 @@ public class Chant_SummonFlyTrap extends Chant
 			{
 				if((R.domainType()&Room.INDOORS)>0)
 					return Ability.QUALITY_INDIFFERENT;
-				if((R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
-				||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-				||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
+				if(CMLib.flags().isACityRoom(R))
+					return Ability.QUALITY_INDIFFERENT;
+				if((R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
 				||(CMLib.flags().isWateryRoom(R)))
 					return Ability.QUALITY_INDIFFERENT;
 				if(!mob.isInCombat())
@@ -173,8 +173,7 @@ public class Chant_SummonFlyTrap extends Chant
 			return false;
 		}
 
-		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+		if((CMLib.flags().isACityRoom(mob.location()))
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		   ||(CMLib.flags().isWateryRoom(mob.location())))
 		{

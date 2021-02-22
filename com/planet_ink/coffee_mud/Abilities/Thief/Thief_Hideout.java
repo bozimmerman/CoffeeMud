@@ -189,7 +189,7 @@ public class Thief_Hideout extends ThiefSkill
 		}
 
 		final Room thisRoom=mob.location();
-		if(thisRoom.domainType()!=Room.DOMAIN_OUTDOORS_CITY)
+		if(!CMLib.flags().isACityRoom(thisRoom))
 		{
 			mob.tell(L("You must be on the streets to enter your hideout."));
 			return false;
@@ -204,6 +204,12 @@ public class Thief_Hideout extends ThiefSkill
 			switch(room.domainType())
 			{
 			case Room.DOMAIN_INDOORS_STONE:
+				if(room.phyStats().weight()<3)
+				{
+					mob.tell(L("You must be deep in an urban area to enter your hideout."));
+					return false;
+				}
+				break;
 			case Room.DOMAIN_INDOORS_METAL:
 			case Room.DOMAIN_INDOORS_WOOD:
 			case Room.DOMAIN_OUTDOORS_CITY:

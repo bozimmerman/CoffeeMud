@@ -124,11 +124,10 @@ public class Chant_CharmArea extends Chant
 			{
 				if((R.domainType()&Room.INDOORS)>0)
 					return Ability.QUALITY_INDIFFERENT;
-				if((R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
-				||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-				||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR))
+				if(CMLib.flags().isACityRoom(R))
 					return Ability.QUALITY_INDIFFERENT;
-
+				if(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
+					return Ability.QUALITY_INDIFFERENT;
 			}
 			if(target instanceof MOB)
 			{
@@ -153,9 +152,7 @@ public class Chant_CharmArea extends Chant
 			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
-		if(((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR))
+		if((CMLib.flags().isACityRoom(mob.location()) || (mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR))
 		&&(!auto))
 		{
 			mob.tell(L("This chant does not work here."));

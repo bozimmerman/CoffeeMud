@@ -93,7 +93,7 @@ public class Thief_BlendIn extends ThiefSkill
 	{
 		if(R==null)
 			return false;
-		if(R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
+		if(CMLib.flags().isACityRoom(R))
 			return true;
 		for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 		{

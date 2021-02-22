@@ -81,8 +81,7 @@ public class Chant_SummonHerb extends Chant
 			mob.tell(L("You must be outdoors to try this."));
 			return false;
 		}
-		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+		if((CMLib.flags().isACityRoom(mob.location()))
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		   ||(CMLib.flags().isWateryRoom(mob.location())))
 		{

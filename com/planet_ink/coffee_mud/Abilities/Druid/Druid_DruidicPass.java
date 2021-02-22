@@ -97,10 +97,10 @@ public class Druid_DruidicPass extends StdAbility
 			final Room R=M.location();
 			if(R!=null)
 			{
+				if(CMLib.flags().isACityRoom(R))
+					return false;
 				switch(R.domainType())
 				{
-				case Room.DOMAIN_OUTDOORS_CITY:
-				case Room.DOMAIN_OUTDOORS_SPACEPORT:
 				case Room.DOMAIN_OUTDOORS_UNDERWATER:
 				case Room.DOMAIN_OUTDOORS_WATERSURFACE:
 					return false;

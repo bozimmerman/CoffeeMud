@@ -289,7 +289,8 @@ public class Thief_UndergroundConnections extends ThiefSkill
 		if(thisRoom==null)
 			return false;
 
-		if((!auto)&&(thisRoom.domainType()!=Room.DOMAIN_OUTDOORS_CITY))
+		if((!auto)
+		&&(!CMLib.flags().isACityRoom(thisRoom)))
 		{
 			mob.tell(L("You must be out on a street to contact your underground connections."));
 			return false;

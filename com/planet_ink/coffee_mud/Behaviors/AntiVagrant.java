@@ -76,7 +76,8 @@ public class AntiVagrant extends ActiveTicker
 	{
 		if(!canFreelyBehaveNormal(observer))
 			return;
-		if(anywhere||(observer.location().domainType()==Room.DOMAIN_OUTDOORS_CITY))
+		if(anywhere
+		||(CMLib.flags().isACityRoom(observer)))
 		{
 			if(target!=null)
 			if(CMLib.flags().isSleeping(target)&&(target!=observer)&&(CMLib.flags().canBeSeenBy(target,observer)))

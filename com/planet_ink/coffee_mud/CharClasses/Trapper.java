@@ -203,7 +203,7 @@ public class Trapper extends Thief
 					msg.addTrailerMsg(CMClass.getMsg(myChar,null,null,CMMsg.MSG_OK_VISUAL,L("You gain @x1 experience for selling @x2.",""+xp,((MOB)msg.target()).name(myChar)),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 			}
 			if((((myChar.location().domainType()&Room.INDOORS)>0))
-			||(myChar.location().domainType()==Room.DOMAIN_OUTDOORS_CITY))
+			||(CMLib.flags().isACityRoom(myChar.location())))
 			{
 				if((msg.tool().ID().equalsIgnoreCase("Thief_Hide"))
 				||(msg.tool().ID().equalsIgnoreCase("Thief_Sneak")))

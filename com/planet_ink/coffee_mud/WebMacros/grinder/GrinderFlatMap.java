@@ -915,6 +915,8 @@ public class GrinderFlatMap
 		case Room.DOMAIN_INDOORS_CAVE:
 			return ("BGCOLOR=\"#CC99FF\"");
 		case Room.DOMAIN_INDOORS_STONE:
+			if(R.phyStats().weight()>2)
+				return ("BGCOLOR=\"#CCCCCC\"");
 			return ("BGCOLOR=\"#CC00FF\"");
 		case Room.DOMAIN_INDOORS_UNDERWATER:
 			return ("BGCOLOR=\"#6666CC\"");

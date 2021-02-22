@@ -199,8 +199,7 @@ public class Ranger_Hide extends StdAbility
 			mob.tell(L("You only know how to hide outdoors."));
 			return false;
 		}
-		if(((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
+		if((CMLib.flags().isACityRoom(mob.location()))
 		&&(!auto))
 		{
 			mob.tell(L("You don't know how to hide in a place like this."));

@@ -152,6 +152,7 @@ public class Chant_MagneticEarth extends Chant
 			{
 				if((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
 				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_CITY)
+				&&((R.domainType()!=Room.DOMAIN_INDOORS_STONE)||(R.phyStats().weight()<3))
 				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
 				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_ROCKS)
 				&&((R.getAtmosphere()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ROCK))
@@ -168,11 +169,10 @@ public class Chant_MagneticEarth extends Chant
 		if(target==null)
 			return false;
 		if((!auto)
-		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
-		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_CITY)
-		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
-		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_ROCKS)
-		&&((mob.location().getAtmosphere()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ROCK))
+		&&(!CMLib.flags().isACityRoom(target))
+		&&(target.domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
+		&&(target.domainType()!=Room.DOMAIN_OUTDOORS_ROCKS)
+		&&((target.getAtmosphere()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ROCK))
 		{
 			mob.tell(L("This chant only works in caves, mountains, or rocky areas."));
 			return false;

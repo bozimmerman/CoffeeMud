@@ -99,18 +99,18 @@ public class Chant_SenseSentience extends Chant
 				for (final Room room : checkSet)
 				{
 					final Room R=CMLib.map().getRoom(room);
-					if((((R.domainType()&Room.INDOORS)==0)
-						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_CITY)
-						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_SPACEPORT))
+					if((((R.domainType()&Room.INDOORS)==0)&&(!CMLib.flags().isACityRoom(R)))
 					||(R==mob.location()))
-					for(int m=0;m<R.numInhabitants();m++)
 					{
-						final MOB M=R.fetchInhabitant(m);
-						if((M!=null)&&(M.charStats().getStat(CharStats.STAT_INTELLIGENCE)>=2))
+						for(int m=0;m<R.numInhabitants();m++)
 						{
-							lines.append("^!"+CMStrings.padRight(M.name(mob),25)+"^?| ");
-							lines.append(R.displayText(mob));
-							lines.append("\n\r");
+							final MOB M=R.fetchInhabitant(m);
+							if((M!=null)&&(M.charStats().getStat(CharStats.STAT_INTELLIGENCE)>=2))
+							{
+								lines.append("^!"+CMStrings.padRight(M.name(mob),25)+"^?| ");
+								lines.append(R.displayText(mob));
+								lines.append("\n\r");
+							}
 						}
 					}
 				}

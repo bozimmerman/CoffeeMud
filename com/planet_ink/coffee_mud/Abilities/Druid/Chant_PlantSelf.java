@@ -225,8 +225,7 @@ public class Chant_PlantSelf extends Chant
 		}
 		if(R.myResource()!=RawMaterial.RESOURCE_DIRT)
 		{
-			if((R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
-			||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+			if((CMLib.flags().isACityRoom(R))
 			||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 			||(R.domainType()==Room.DOMAIN_OUTDOORS_DESERT)
 			||(R.domainType()==Room.DOMAIN_OUTDOORS_MOUNTAINS)

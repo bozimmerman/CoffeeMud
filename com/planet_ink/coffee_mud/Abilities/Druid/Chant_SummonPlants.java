@@ -240,8 +240,7 @@ public class Chant_SummonPlants extends Chant
 			return false;
 		}
 
-		if((R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
-		   ||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+		if((CMLib.flags().isACityRoom(R))
 		   ||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 		   ||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		   ||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))

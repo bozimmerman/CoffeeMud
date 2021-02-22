@@ -216,8 +216,7 @@ public class Chant_NaturalOrder extends Chant
 			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
-		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
+		if(CMLib.flags().isACityRoom(mob.location()))
 		{
 			mob.tell(L("This magic will not work here."));
 			return false;

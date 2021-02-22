@@ -139,11 +139,11 @@ public class Chant_MuddyGrounds extends Chant
 			final Room R=mob.location();
 			if(R!=null)
 			{
+				if(CMLib.flags().isACityRoom(R))
+					return Ability.QUALITY_INDIFFERENT;
 				final int type=R.domainType();
 				if(((type&Room.INDOORS)>0)
 				||(type==Room.DOMAIN_OUTDOORS_AIR)
-				||(type==Room.DOMAIN_OUTDOORS_CITY)
-				||(type==Room.DOMAIN_OUTDOORS_SPACEPORT)
 				||(type==Room.DOMAIN_OUTDOORS_UNDERWATER)
 				||(type==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 					return Ability.QUALITY_INDIFFERENT;
@@ -159,8 +159,7 @@ public class Chant_MuddyGrounds extends Chant
 		final int type=mob.location().domainType();
 		if(((type&Room.INDOORS)>0)
 			||(type==Room.DOMAIN_OUTDOORS_AIR)
-			||(type==Room.DOMAIN_OUTDOORS_CITY)
-			||(type==Room.DOMAIN_OUTDOORS_SPACEPORT)
+			||(CMLib.flags().isACityRoom(mob.location()))
 			||(type==Room.DOMAIN_OUTDOORS_UNDERWATER)
 			||(type==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{

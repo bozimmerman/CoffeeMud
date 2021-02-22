@@ -176,8 +176,7 @@ public class Druid_PackCall extends StdAbility
 			mob.tell(L("You must be outdoors to call your pack."));
 			return false;
 		}
-		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
-		||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
+		if(CMLib.flags().isACityRoom(mob.location()))
 		{
 			mob.tell(L("You must be in the wild to call your pack."));
 			return false;

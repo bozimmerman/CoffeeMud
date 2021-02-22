@@ -757,6 +757,14 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isInWilderness(Physical P);
 
 	/**
+	 * Returns whether the given mob, item, room, whatever is
+	 * in a city street type room.
+	 * @param P the mob, item, room, whatever to check
+	 * @return true if it is in a city street, false otherwise
+	 */
+	public boolean isACityRoom(final Physical P);
+
+	/**
 	 * Returns whether the given item, mob, whatever is
 	 * marked as swimming/floating.
 	 * @param P the item, mob, whatever to check

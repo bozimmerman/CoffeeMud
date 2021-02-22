@@ -231,7 +231,7 @@ public class Thief_Panhandling extends ThiefSkill
 			mob.tell(L("You must be sitting!"));
 			return false;
 		}
-		if(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_CITY)
+		if(!CMLib.flags().isACityRoom(mob))
 		{
 			mob.tell(L("You must be on a city street to panhandle."));
 			return false;

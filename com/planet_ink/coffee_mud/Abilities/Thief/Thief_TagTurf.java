@@ -160,9 +160,9 @@ public class Thief_TagTurf extends ThiefSkill
 			mob.tell(L("This place has already been tagged by @x1.",A.text()));
 			return false;
 		}
-		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_CITY)
-		   &&(mob.location().domainType()!=Room.DOMAIN_INDOORS_WOOD)
-		   &&(mob.location().domainType()!=Room.DOMAIN_INDOORS_STONE))
+		if((!CMLib.flags().isACityRoom(mob.location()))
+		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_WOOD)
+		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_STONE))
 		{
 			mob.tell(L("A place like this can't get your turf."));
 			return false;

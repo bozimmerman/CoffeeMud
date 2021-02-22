@@ -629,7 +629,8 @@ public class StdRideable extends StdMOB implements Rideable
 				if((sourceRoom!=null)&&(!msg.amITarget(sourceRoom)))
 				{
 					boolean ok=((targetRoom.domainType()&Room.INDOORS)==0)
-								||(targetRoom.maxRange()>4);
+								||(targetRoom.maxRange()>4)
+								||(targetRoom.phyStats().weight()>2);
 					switch(rideBasis)
 					{
 					case Rideable.RIDEABLE_LAND:

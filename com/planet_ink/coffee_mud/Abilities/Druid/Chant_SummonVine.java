@@ -174,9 +174,9 @@ public class Chant_SummonVine extends Chant
 			{
 				if((R.domainType()&Room.INDOORS)>0)
 					return Ability.QUALITY_INDIFFERENT;
-				if((R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
-				||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-				||(CMLib.flags().isWateryRoom(R))
+				if(CMLib.flags().isACityRoom(R))
+					return Ability.QUALITY_INDIFFERENT;
+				if((CMLib.flags().isWateryRoom(R))
 				||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR))
 					return Ability.QUALITY_INDIFFERENT;
 				if(!mob.isInCombat())
@@ -195,8 +195,7 @@ public class Chant_SummonVine extends Chant
 			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
-		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+		if((CMLib.flags().isACityRoom(mob.location()))
 		   ||(CMLib.flags().isWateryRoom(mob.location()))
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR))
 		{

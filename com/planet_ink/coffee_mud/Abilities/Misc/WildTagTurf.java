@@ -191,7 +191,7 @@ public class WildTagTurf extends StdAbility
 			mob.tell(L("You can't wild tag anothers property!"));
 			return false;
 		}
-		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
+		if(CMLib.flags().isACityRoom(mob.location())
 		||(mob.location().domainType()==Room.DOMAIN_INDOORS_WOOD)
 		||(mob.location().domainType()==Room.DOMAIN_INDOORS_STONE))
 		{

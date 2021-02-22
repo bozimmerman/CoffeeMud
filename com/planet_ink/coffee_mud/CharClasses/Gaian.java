@@ -391,7 +391,7 @@ public class Gaian extends StdCharClass
 			if((CMLib.flags().isHidden(mob))
 			&&(classLevel>=30)
 			&&((room.domainType()&Room.INDOORS)==0)
-			&&(room.domainType()!=Room.DOMAIN_OUTDOORS_CITY))
+			&&(!CMLib.flags().isACityRoom(room)))
 				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_NOT_SEEN);
 
 			if(classLevel>=5)

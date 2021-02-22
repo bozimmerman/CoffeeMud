@@ -122,7 +122,7 @@ public class Thief_ContractHit extends ThiefSkill
 			final MOB mob=(MOB)affected;
 			if(readyToHit&&(!hitting)
 			&&(mob.location()!=null)
-			&&(mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY))
+			&&(CMLib.flags().isACityRoom(mob.location())))
 			{
 
 				hitting=true;
@@ -225,7 +225,7 @@ public class Thief_ContractHit extends ThiefSkill
 		{
 			if(!(target instanceof MOB))
 				return Ability.QUALITY_INDIFFERENT;
-			if(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_CITY)
+			if(!CMLib.flags().isACityRoom(mob.location()))
 				return Ability.QUALITY_INDIFFERENT;
 			if(mob.isInCombat())
 				return Ability.QUALITY_INDIFFERENT;
@@ -245,7 +245,7 @@ public class Thief_ContractHit extends ThiefSkill
 		}
 		if(mob.location()==null)
 			return false;
-		if(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_CITY)
+		if(!CMLib.flags().isACityRoom(mob.location()))
 		{
 			mob.tell(L("You need to be on the streets to put out a hit."));
 			return false;
