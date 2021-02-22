@@ -828,7 +828,7 @@ public class StdAbility implements Ability
 		}
 		return true;
 	}
-	
+
 	protected MOB getTarget(final MOB mob, final List<String> commands, final Environmental givenTarget, final boolean quiet, final boolean alreadyAffOk)
 	{
 		String targetName=CMParms.combine(commands,0);
@@ -912,7 +912,7 @@ public class StdAbility implements Ability
 
 		if(!checkTargetRange(mob,target))
 			target=null;
-		
+
 		return target;
 	}
 
@@ -1941,6 +1941,25 @@ public class StdAbility implements Ability
 		return tickDown;
 	}
 
+	protected boolean susceptibleTolocalOrders(final MOB mob)
+	{
+		final Room R=mob.location();
+		if((R==null)||(mob.isPlayer()))
+			return false;
+		if(mob instanceof Deity)
+			return false;
+		for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+		{
+			final MOB M=m.nextElement();
+			if((M!=null)
+			&&(M!=mob)
+			&&(M.isPlayer())
+			&&(mob.willFollowOrdersOf(M)))
+				return true;
+		}
+		return false;
+	}
+
 	protected int getBeneficialTickdownTime(final MOB mob, final Environmental target, final int tickAdjustmentFromStandard, final int asLevel)
 	{
 		if(tickAdjustmentFromStandard>0)
@@ -1948,8 +1967,7 @@ public class StdAbility implements Ability
 		int casterLevel = adjustedLevel(mob,asLevel);
 		if((mob != target)
 		&&(target instanceof MOB)
-		&&(mob.isPlayer() || ((mob.amFollowing() != null) && (mob.amFollowing().isPlayer())))
-		&&(((MOB)target).isPlayer()))
+		&&(mob.isPlayer() || (susceptibleTolocalOrders(mob))))
 		{
 			final int levelCap = ((MOB)target).phyStats().level() + CMProps.getIntVar(CMProps.Int.EXPRATE);
 			if(casterLevel >  levelCap)
