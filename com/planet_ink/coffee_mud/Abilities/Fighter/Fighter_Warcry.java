@@ -131,7 +131,7 @@ public class Fighter_Warcry extends FighterSkill
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if((h==null)||(h.size()==0))
 		{
-			mob.tell(L("No one here seems to want to get mad."))
+			mob.tell(L("No one here seems to want to get mad."));
 			return false;
 		}
 		

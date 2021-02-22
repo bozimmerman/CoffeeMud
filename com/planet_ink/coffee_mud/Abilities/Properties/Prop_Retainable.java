@@ -166,14 +166,11 @@ public class Prop_Retainable extends Property
 					{
 						lastPayDayTimestamp=System.currentTimeMillis();
 						final LandTitle t=CMLib.law().getLandTitle(mob.location());
-						String owner="";
 						if(mob.amFollowing()!=null)
 						{
-							owner=mob.amFollowing().Name();
 							if((t!=null)
 							&&(t.getOwnerName().length()>0)
-							&&(!t.getOwnerName().equalsIgnoreCase(mob.amFollowing().Name()))
-							&&(mob.amFollowing().getClanRole(t.getOwnerName())==null))
+							&&(!CMLib.law().doesHavePriviledgesHere(mob.amFollowing(), mob.location())))
 							{
 								CMLib.commands().postSay(mob,null,L("Hey, I'm not a crook!"),false,false);
 								mob.setFollowing(null);
@@ -182,10 +179,7 @@ public class Prop_Retainable extends Property
 								return false;
 							}
 						}
-						else
-						if((t!=null)&&(t.getOwnerName().length()>0))
-							owner=t.getOwnerName();
-
+						final String owner=CMLib.law().getLandOwnerName(mob.location());
 						if(owner.length()==0)
 						{
 							CMLib.commands().postSay(mob,null,L("Argh! I quit!"),false,false);

@@ -216,10 +216,14 @@ public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
 		{
 			final String eval=E.getStat(codes[i]);
 			final String myval=getStat(codes[i]);
-			if((eval == null)&&(myval!=null))
+			if(eval == null)
+			{
+				if(myval==null)
+					return true;
 				return false;
+			}
 			else
-			if((myval == null)&&(eval!=null))
+			if(myval==null)
 				return false;
 			else
 			if(!eval.equals(myval))
