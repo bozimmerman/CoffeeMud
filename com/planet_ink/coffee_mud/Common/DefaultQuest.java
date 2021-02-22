@@ -4575,7 +4575,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			{
 				questState=this.questState;
 			}
-			if((questState!=null)&&(stoppingQuest))
+			if((questState==null)||(stoppingQuest))
 				return false;
 			final String prefix = CMSecurity.isDebugging(DbgFlag.QUESTSCRIPTS)?("QuestScript#"+parseId+" "):"";
 			if(prefix.length()>0)
