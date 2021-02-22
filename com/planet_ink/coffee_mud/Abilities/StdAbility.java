@@ -1419,8 +1419,6 @@ public class StdAbility implements Ability
 	@Override
 	public int[] usageCost(final MOB mob, final boolean ignoreClassOverride)
 	{
-if(ID().equalsIgnoreCase("Skill_Recall"))
-	System.out.println("Stop!");
 		if(mob==null)
 		{
 			final Map<String,int[]> overrideCache=getHardOverrideManaCache();
