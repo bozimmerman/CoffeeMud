@@ -125,7 +125,7 @@ public class Skill_RegionalAwareness extends StdSkill
 		case Room.DOMAIN_OUTDOORS_SPACEPORT:
 			return 'P';
 		case Room.DOMAIN_INDOORS_STONE:
-			if(room.phyStats().weight()>2)
+			if((room.phyStats().weight()>2)&&(room.maxRange()>4))
 				return '=';
 			return 'w';
 		case Room.DOMAIN_INDOORS_WOOD:
@@ -186,13 +186,15 @@ public class Skill_RegionalAwareness extends StdSkill
 		case Room.DOMAIN_OUTDOORS_SPACEPORT:
 			return '@';
 		case Room.DOMAIN_INDOORS_UNDERWATER:
+			if((room.basePhyStats().weight()>2)&&(room.maxRange()>4))
+				return '=';
 			return '~';
 		case Room.DOMAIN_INDOORS_AIR:
 			return ' ';
 		case Room.DOMAIN_INDOORS_WATERSURFACE:
 			return '~';
 		case Room.DOMAIN_INDOORS_STONE:
-			if(room.basePhyStats().weight()>2)
+			if((room.basePhyStats().weight()>2)&&(room.maxRange()>4))
 				return '=';
 		case Room.DOMAIN_INDOORS_WOOD:
 		case Room.DOMAIN_INDOORS_CAVE:

@@ -915,10 +915,12 @@ public class GrinderFlatMap
 		case Room.DOMAIN_INDOORS_CAVE:
 			return ("BGCOLOR=\"#CC99FF\"");
 		case Room.DOMAIN_INDOORS_STONE:
-			if(R.phyStats().weight()>2)
+			if((R.phyStats().weight()>2)&&(R.maxRange()>4))
 				return ("BGCOLOR=\"#CCCCCC\"");
 			return ("BGCOLOR=\"#CC00FF\"");
 		case Room.DOMAIN_INDOORS_UNDERWATER:
+			if((R.phyStats().weight()>2)&&(R.maxRange()>4))
+				return ("BGCOLOR=\"#CCCCCC\"");
 			return ("BGCOLOR=\"#6666CC\"");
 		case Room.DOMAIN_INDOORS_WATERSURFACE:
 			if(!R.ID().startsWith("Shallow"))

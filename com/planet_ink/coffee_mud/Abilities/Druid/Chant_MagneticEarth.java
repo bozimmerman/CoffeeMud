@@ -152,7 +152,7 @@ public class Chant_MagneticEarth extends Chant
 			{
 				if((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
 				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_CITY)
-				&&((R.domainType()!=Room.DOMAIN_INDOORS_STONE)||(R.phyStats().weight()<3))
+				&&((R.domainType()!=Room.DOMAIN_INDOORS_STONE)||(R.maxRange()<5)||(R.phyStats().weight()<3))
 				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
 				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_ROCKS)
 				&&((R.getAtmosphere()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ROCK))

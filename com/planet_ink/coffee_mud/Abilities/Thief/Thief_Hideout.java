@@ -204,7 +204,7 @@ public class Thief_Hideout extends ThiefSkill
 			switch(room.domainType())
 			{
 			case Room.DOMAIN_INDOORS_STONE:
-				if(room.phyStats().weight()<3)
+				if((room.phyStats().weight()<3)||(room.maxRange()<5))
 				{
 					mob.tell(L("You must be deep in an urban area to enter your hideout."));
 					return false;

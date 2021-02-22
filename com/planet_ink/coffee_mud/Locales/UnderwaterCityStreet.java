@@ -32,17 +32,25 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class UndergroundCityStreet extends LargeStoneRoom
+public class UnderwaterCityStreet extends UnderWater
 {
 	@Override
 	public String ID()
 	{
-		return "UndergroundCityStreet";
+		return "UnderwaterCityStreet";
 	}
 
-	public UndergroundCityStreet()
+	public UnderwaterCityStreet()
 	{
 		super();
 		name="the street";
+		basePhyStats.setWeight(3);
+		recoverPhyStats();
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return 5;
 	}
 }

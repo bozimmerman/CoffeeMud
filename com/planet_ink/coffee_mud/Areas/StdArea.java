@@ -1771,10 +1771,6 @@ public class StdArea implements Area
 				case Room.DOMAIN_OUTDOORS_CITY:
 					statData[Area.Stats.CITY_ROOMS.ordinal()] += countable;
 					break;
-				case Room.DOMAIN_INDOORS_STONE:
-					if(R.phyStats().weight()>2)
-						statData[Area.Stats.CITY_ROOMS.ordinal()] += countable;
-					break;
 				case Room.DOMAIN_OUTDOORS_DESERT:
 					statData[Area.Stats.DESERT_ROOMS.ordinal()] += countable;
 					break;

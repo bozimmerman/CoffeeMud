@@ -90,7 +90,7 @@ public class SeaMap extends BardMap
 		case Room.DOMAIN_INDOORS_WATERSURFACE:
 			return '~';
 		case Room.DOMAIN_INDOORS_STONE:
-			if(room.phyStats().weight()>2)
+			if((room.phyStats().weight()>2)&&(room.maxRange()>4))
 				return '=';
 		case Room.DOMAIN_INDOORS_WOOD:
 		case Room.DOMAIN_INDOORS_CAVE:
