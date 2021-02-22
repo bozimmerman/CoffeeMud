@@ -263,7 +263,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 					{
 						found=true;
 						addTo.add(Integer.valueOf(parmCode));
-						addTo.add(Integer.valueOf(multiply*chc));
+						addTo.add(Integer.valueOf(multiply*((int)Math.pow(2,chc))));
 						break;
 					}
 				}
