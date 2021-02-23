@@ -41,6 +41,7 @@
         <TABLE WIDTH=50% BORDER=1>
         <TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
         <TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
+        <TR><TD><a href="javascript:Clicked('/grinder/ablesummary.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Skill Summary</B></FONT></A></TD></TR>
         @if?CheckAuthCode?AUTH_CMDCOMPONENTS=true@
 		  <TR><TD><a href="javascript:Clicked('/grinder/components.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Skill Components</B></FONT></A></TD></TR>
 		@endif@

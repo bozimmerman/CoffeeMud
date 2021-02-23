@@ -42,6 +42,18 @@ public class AbilityNext extends StdWebMacro
 		return "AbilityNext";
 	}
 
+	protected static final int[] normalAcodes = {
+									Ability.ACODE_CHANT,
+									Ability.ACODE_COMMON_SKILL,
+									Ability.ACODE_LANGUAGE,
+									Ability.ACODE_PRAYER,
+									Ability.ACODE_SKILL,
+									Ability.ACODE_SONG,
+									Ability.ACODE_SPELL,
+									Ability.ACODE_SUPERPOWER,
+									Ability.ACODE_TECH,
+									Ability.ACODE_THIEF_SKILL
+								};
 	@Override
 	@SuppressWarnings("unchecked")
 	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
@@ -73,18 +85,6 @@ public class AbilityNext extends StdWebMacro
 		}
 
 		String lastID="";
-		final int[] normalAcodes = {
-			Ability.ACODE_CHANT,
-			Ability.ACODE_COMMON_SKILL,
-			Ability.ACODE_LANGUAGE,
-			Ability.ACODE_PRAYER,
-			Ability.ACODE_SKILL,
-			Ability.ACODE_SONG,
-			Ability.ACODE_SPELL,
-			Ability.ACODE_SUPERPOWER,
-			Ability.ACODE_TECH,
-			Ability.ACODE_THIEF_SKILL
-		};
 		final String className=httpReq.getUrlParameter("CLASS");
 		final boolean genericOnly =parms.containsKey("GENERIC");
 		final boolean parmsEditable=parms.containsKey("PARMSEDITABLE");

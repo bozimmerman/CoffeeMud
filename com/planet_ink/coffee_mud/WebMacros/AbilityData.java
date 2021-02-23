@@ -252,6 +252,25 @@ public class AbilityData extends StdWebMacro
 					str.append(old+", ");
 				}
 
+				if(parms.containsKey("LOWESTQUALLEVEL"))
+				{
+					final int lql = CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+					str.append(lql+", ");
+				}
+
+				if(parms.containsKey("BASEMANACOST"))
+				{
+					final int[] mcs = A.usageCost(null, false);
+					final StringBuilder costs = new StringBuilder("");
+					if(mcs[Ability.USAGEINDEX_MANA] != 0)
+						costs.append(mcs[Ability.USAGEINDEX_MANA]+"m ");
+					if(mcs[Ability.USAGEINDEX_MOVEMENT] != 0)
+						costs.append(mcs[Ability.USAGEINDEX_MOVEMENT]+"v ");
+					if(mcs[Ability.USAGEINDEX_HITPOINTS] != 0)
+						costs.append(mcs[Ability.USAGEINDEX_HITPOINTS]+"h ");
+					str.append(costs.toString()+", ");
+				}
+
 				if(parms.containsKey("CHARCLASSLEVEL"))
 				{
 					final String old=httpReq.getUrlParameter("CLASS");

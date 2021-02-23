@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?SYSOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+	<META CHARSET="utf-8"/>
+<head>
+	<link rel="coffeemud icon" href="images/coffeemud.ico" >
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
+	<title>Abilities Summary</title>
+    <script language=JavaScript>
+    <!--
+        function Clicked(action)
+        {
+            document.RESOURCES.action=action;
+            document.RESOURCES.submit();
+        }
+        function Refresh()
+        {
+            document.RESOURCES.action='ablesummary.cmvp';
+            document.RESOURCES.submit();
+        }
+    //-->
+    </script>
+</head>
+
+<body BGCOLOR=BLACK>
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="/grinder/ablesummary.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=33% ALIGN=LEFT VALIGN=TOP></TD>
+	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
+	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP>
+        <TABLE WIDTH=50% BORDER=1>
+        <TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
+        <TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
+        <TR><TD><a href="javascript:Clicked('abilities');"><FONT COLOR=WHITE SIZE=-1><B>Ability Manager</B></FONT></A></TD></TR>
+        <TR><TD><a href="javascript:Refresh();"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
+        </TABLE>
+	</TD>
+	</TR>
+	</TABLE>
+	<FONT COLOR=WHITE>
+	
+<h1>Ability Summary Information</h1><P>
+<BR><FONT COLOR=WHITE>
+	<TABLE WIDTH=100% BORDER=1>
+	<TR>
+    <TD WIDTH=10%><B><FONT COLOR=YELLOW>ID</FONT></b></TD>
+    <TD WIDTH=30%><B><FONT COLOR=YELLOW>Name</FONT></b></TD>
+    <TD WIDTH=20%><B><FONT COLOR=YELLOW>Type/Domain</FONT></b></TD>
+    <TD WIDTH=20%><B><FONT COLOR=YELLOW>Lowest Qual. Level</FONT></b></TD>
+    <TD WIDTH=20%><B><FONT COLOR=YELLOW>Base Cost (Max 1000)</FONT></b></TD>
+    </TR>
+    @AbilityNext?RESET@
+    @loop@
+    @AbilityNext?UGH@
+       <TR>
+       <TD><a href="javascript:Ability('@AbilityID@','')"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
+       <TD><FONT COLOR=WHITE><B>@AbilityName@</B></FONT></a></TD>
+       <TD><FONT COLOR=WHITE><B>@AbilityData?TYPENDOMAIN@</B></FONT></a></TD>
+       <TD><FONT COLOR=WHITE><B>@AbilityData?LOWESTQUALLEVEL@</B></FONT></a></TD>
+       <TD><FONT COLOR=WHITE><B>@AbilityData?BASEMANACOST@</B></FONT></a></TD>
+       </TR>
+    @back@
+    </TABLE>
+</BODY>
+</HTML>
+@endif@
+@endif@

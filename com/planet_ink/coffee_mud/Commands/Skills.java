@@ -38,14 +38,19 @@ public class Skills extends StdCommand
 	{
 	}
 
-	protected static final int[] playerAcodes = new int[] 
+	protected static final int[] playerAcodes = new int[]
 	{
 		Ability.ACODE_CHANT,
 		Ability.ACODE_PRAYER,
 		Ability.ACODE_SPELL,
 		Ability.ACODE_SKILL,
 		Ability.ACODE_COMMON_SKILL,
-		Ability.ACODE_CHANT
+		Ability.ACODE_CHANT,
+		Ability.ACODE_LANGUAGE,
+		Ability.ACODE_SONG,
+		Ability.ACODE_SUPERPOWER,
+		Ability.ACODE_TECH,
+		Ability.ACODE_THIEF_SKILL
 	};
 	private final String[]	access	= I(new String[] { "SKILLS", "SK" });
 
