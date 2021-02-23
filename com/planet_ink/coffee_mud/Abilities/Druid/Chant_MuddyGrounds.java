@@ -84,7 +84,10 @@ public class Chant_MuddyGrounds extends Chant
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		if((affected instanceof Room))
+		{
 			affectableStats.setWeight((affectableStats.weight()*2)+1);
+			affectableStats.addAmbiance("^Ymuddy^?");
+		}
 	}
 
 	@Override
@@ -93,8 +96,7 @@ public class Chant_MuddyGrounds extends Chant
 		if(!canBeUninvoked()
 		&&(!hasTicked))
 		{
-			if((msg.source() != null)
-			&&(msg.targetMinor()==CMMsg.TYP_ENTER)
+			if((msg.targetMinor()==CMMsg.TYP_ENTER)
 			&&(msg.target() == affected)
 			&&(affected instanceof Room))
 			{
@@ -106,6 +108,24 @@ public class Chant_MuddyGrounds extends Chant
 					&&(!CMLib.threads().isTicking(R, -1)))
 						CMLib.threads().startTickDown(this, Tickable.TICKID_SPELL_AFFECT, 3);
 				}
+			}
+		}
+		else
+		if((!msg.source().isMonster())
+		&&(!CMLib.flags().isFlying(msg.source())))
+		{
+			switch(msg.sourceMinor())
+			{
+			case CMMsg.TYP_ADVANCE:
+			case CMMsg.TYP_RETREAT:
+			case CMMsg.TYP_ENTER:
+				msg.source().tell(L("^YYou are slogging through the mud...^?\n\r"));
+				break;
+			case CMMsg.TYP_LEAVE:
+				msg.source().tell(L("^YYou slog your way out of the mud...^?\n\r"));
+				break;
+			default:
+				break;
 			}
 		}
 	}
