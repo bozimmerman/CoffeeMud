@@ -72,11 +72,23 @@ public class Chant_MuddyGrounds extends Chant
 		return Ability.CAN_ROOMS;
 	}
 
+	protected Item mudI = null;
+	
 	@Override
 	public void unInvoke()
 	{
-		if((canBeUninvoked())&&(affected instanceof Room))
+		if((canBeUninvoked())
+		&&(affected instanceof Room))
+		{
 			((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,L("The mud in '@x1' dries up.",((Room)affected).displayText()));
+			if(mudI!=null)
+			{
+				mudI.basePhyStats().setSensesMask(0);
+				mudI.phyStats().setSensesMask(0);
+				mudI.destroy();
+				mudI=null;
+			}
+		}
 		super.unInvoke();
 	}
 
@@ -205,15 +217,34 @@ public class Chant_MuddyGrounds extends Chant
 			{
 				mob.location().send(mob,msg);
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The ground here turns to MUD!"));
-				if(CMLib.law().doesOwnThisLand(mob,mob.location()))
+				final Chant_MuddyGrounds cmA;
+				final Item mudI=CMClass.getItem("GenItem");
+				mudI.setDisplayText("^YThe ground here is covered in sludgy mud.^N");
+				mudI.setName("^Ythe mud^N");
+				final boolean saving=CMLib.law().doesOwnThisLand(mob,mob.location());
+				mudI.basePhyStats().setDisposition(mudI.basePhyStats().disposition()|
+					(saving?0:PhyStats.IS_UNSAVABLE)
+				);
+				mudI.basePhyStats().setSensesMask(PhyStats.SENSE_ITEMNOSCRAP
+												|PhyStats.SENSE_ITEMNOTGET
+												|PhyStats.SENSE_ALWAYSCOMPRESSED
+												|PhyStats.SENSE_UNDESTROYABLE
+												|mudI.basePhyStats().sensesMask());
+				mudI.recoverPhyStats();
+				mob.location().addItem(mudI);
+				if(saving)
 				{
-					mob.location().addNonUninvokableEffect((Ability)copyOf());
+					cmA=(Chant_MuddyGrounds)copyOf();
+					mob.location().addNonUninvokableEffect(cmA);
 					CMLib.database().DBUpdateRoom(mob.location());
+					if(mob.location().roomID().length()>0)
+						CMLib.database().DBUpdateItem(mob.location().roomID(), mudI);
 				}
 				else
-					beneficialAffect(mob,mob.location(),asLevel,0);
+					cmA=(Chant_MuddyGrounds)beneficialAffect(mob,mob.location(),asLevel,0);
+				if(cmA!=null)
+					cmA.mudI=mudI;
 			}
-
 		}
 		else
 			beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) to the ground, but nothing happens."));
