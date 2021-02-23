@@ -1360,21 +1360,29 @@ public class StdAbility implements Ability
 			{
 				int maxAmt;
 				int baseAmt;
-				switch(costType)
+				if(mob == null)
 				{
-				case 1:
-					maxAmt=mob.maxState().getMovement();
-					baseAmt=mob.baseState().getMovement();
-					break;
-				case 2:
-					maxAmt=mob.maxState().getHitPoints();
-					baseAmt=mob.baseState().getHitPoints();
-					break;
-				default:
-				case 0:
-					maxAmt=mob.maxState().getMana();
-					baseAmt=mob.baseState().getMana();
-					break;
+					maxAmt=1000;
+					baseAmt=1000;
+				}
+				else
+				{
+					switch(costType)
+					{
+					case 1:
+						maxAmt=mob.maxState().getMovement();
+						baseAmt=mob.baseState().getMovement();
+						break;
+					case 2:
+						maxAmt=mob.maxState().getHitPoints();
+						baseAmt=mob.baseState().getHitPoints();
+						break;
+					default:
+					case 0:
+						maxAmt=mob.maxState().getMana();
+						baseAmt=mob.baseState().getMana();
+						break;
+					}
 				}
 				int costDown=0;
 				final int rawCost;
@@ -1385,7 +1393,7 @@ public class StdAbility implements Ability
 					rawCost = (int)Math.round(CMath.mul(maxAmt,CMath.div((COST_ALL-consumed),100.0)));
 				else
 					rawCost = consumed / divider;
-				if(rawCost>2)
+				if((rawCost>2)&&(mob!=null))
 				{
 					costDown=getXLOWCOSTLevel(mob);
 					final int fivePercent=(int)Math.round(CMath.mul(rawCost,0.05));
@@ -1425,21 +1433,17 @@ public class StdAbility implements Ability
 	@Override
 	public int[] usageCost(final MOB mob, final boolean ignoreClassOverride)
 	{
+		final Map<String,int[]> overrideCache=getHardOverrideManaCache();
 		if(mob==null)
 		{
-			final Map<String,int[]> overrideCache=getHardOverrideManaCache();
-			if(!overrideCache.containsKey(ID()))
-			{
-				final int[] usage=new int[Ability.USAGEINDEX_TOTAL];
-				Arrays.fill(usage,overrideMana());
-				overrideCache.put(ID(), usage);
-			}
-			return overrideCache.get(ID());
+			if(overrideCache.containsKey(ID()))
+				return overrideCache.get(ID());
+
 		}
 		if(usageType()==Ability.USAGE_NADA)
 			return STATIC_USAGE_NADA;
 
-		final int[][] abilityUsageCache=mob.getAbilityUsageCache(ID());
+		final int[][] abilityUsageCache=(mob==null)?new int[Ability.CACHEINDEX_TOTAL][]:mob.getAbilityUsageCache(ID());
 		final int myCacheIndex=ignoreClassOverride?Ability.CACHEINDEX_CLASSLESS:Ability.CACHEINDEX_NORMAL;
 		final int[] myCache=abilityUsageCache[myCacheIndex];
 		final boolean rebuildCache=(myCache==null);
@@ -1456,16 +1460,19 @@ public class StdAbility implements Ability
 		{
 			int diff=0;
 			int lowest=Integer.MAX_VALUE;
-			for(int c=0;c<mob.charStats().numClasses();c++)
+			if(mob != null)
 			{
-				final CharClass C=mob.charStats().getMyClass(c);
-				final int qualifyingLevel=CMLib.ableMapper().getQualifyingLevel(C.ID(),true,ID());
-				final int classLevel=mob.charStats().getClassLevel(C.ID());
-				if((qualifyingLevel>=0)&&(classLevel>=qualifyingLevel))
+				for(int c=0;c<mob.charStats().numClasses();c++)
 				{
-					diff+=(classLevel-qualifyingLevel);
-					if(qualifyingLevel<lowest)
-						lowest=qualifyingLevel;
+					final CharClass C=mob.charStats().getMyClass(c);
+					final int qualifyingLevel=CMLib.ableMapper().getQualifyingLevel(C.ID(),true,ID());
+					final int classLevel=mob.charStats().getClassLevel(C.ID());
+					if((qualifyingLevel>=0)&&(classLevel>=qualifyingLevel))
+					{
+						diff+=(classLevel-qualifyingLevel);
+						if(qualifyingLevel<lowest)
+							lowest=qualifyingLevel;
+					}
 				}
 			}
 			if(lowest==Integer.MAX_VALUE)
@@ -1476,7 +1483,7 @@ public class StdAbility implements Ability
 			}
 
 			Integer[] costOverrides=null;
-			if(!ignoreClassOverride)
+			if((!ignoreClassOverride)&&(mob!=null))
 				costOverrides=CMLib.ableMapper().getCostOverrides(mob,ID());
 			minimum=CMProps.getMinManaException(ID());
 			if(minimum==Integer.MIN_VALUE)
@@ -1495,9 +1502,9 @@ public class StdAbility implements Ability
 			{
 				final double[] vars = new double[] {
 					lowest,
-					mob.phyStats().level(),
+					(mob==null)?lowest:mob.phyStats().level(),
 					minimum,
-					adjustedLevel(mob,0),
+					(mob==null)?lowest:adjustedLevel(mob,0),
 					diff
 				};
 				consumed=(int)CMath.parseMathExpression((CMath.CompiledFormula)cost, vars, 0.0);
@@ -1528,6 +1535,8 @@ public class StdAbility implements Ability
 			else
 				abilityUsageCache[myCacheIndex]=usageCost;
 		}
+		if(mob == null)
+			overrideCache.put(ID(), usageCost);
 		return usageCost;
 	}
 
