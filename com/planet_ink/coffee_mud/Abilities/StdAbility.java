@@ -1941,22 +1941,29 @@ public class StdAbility implements Ability
 		return tickDown;
 	}
 
-	protected boolean susceptibleTolocalOrders(final MOB mob)
+	protected boolean aPossibleAbuserOfCasterLevel(final MOB casterM)
 	{
-		final Room R=mob.location();
-		if((R==null)||(mob.isPlayer()))
+		if(casterM.isPlayer())
+			return true;
+		final Room R=casterM.location();
+		if(R==null)
 			return false;
-		if(mob instanceof Deity)
+		if(casterM instanceof Deity)
 			return false;
+		final MOB folM=casterM.amUltimatelyFollowing();
+		if((folM!=null)&&(folM.isPlayer()))
+			return true;
+		/* too much
 		for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 		{
 			final MOB M=m.nextElement();
 			if((M!=null)
-			&&(M!=mob)
+			&&(M!=casterM)
 			&&(M.isPlayer())
-			&&(mob.willFollowOrdersOf(M)))
+			&&(casterM.willFollowOrdersOf(M)))
 				return true;
 		}
+		*/
 		return false;
 	}
 
@@ -1967,7 +1974,7 @@ public class StdAbility implements Ability
 		int casterLevel = adjustedLevel(mob,asLevel);
 		if((mob != target)
 		&&(target instanceof MOB)
-		&&(mob.isPlayer() || (susceptibleTolocalOrders(mob))))
+		&&(aPossibleAbuserOfCasterLevel(mob)))
 		{
 			final int levelCap = ((MOB)target).phyStats().level() + CMProps.getIntVar(CMProps.Int.EXPRATE);
 			if(casterLevel >  levelCap)
