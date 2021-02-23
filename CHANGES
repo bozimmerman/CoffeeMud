@@ -3,6 +3,7 @@
   2. MANACOST entry in coffeemud.ini allows more flexible skill costs
   3. Skill use will now attempt to check range before consuming mana/resources
   4. New locale types: undergroundcitystreet and underwatercitystreet
+  5. New command: abilities
 # Build 5.9.11 Release 02/20/2021
   1. a(n) is now official filter syntax for a/an
   2. Shutdown command now supports AT syntax to set a RL time certain.

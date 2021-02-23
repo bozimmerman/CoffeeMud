@@ -463,7 +463,7 @@ public class Qualify  extends Skills
 			{
 				StringBuilder list = new StringBuilder("");
 				final Set<Integer> qSet = this.getQualifiedTypes(mob);
-				for(int i=1;i<Ability.ACODE_DESCS.length;i++)
+				for(int i=0;i<Ability.ACODE_DESCS.length;i++)
 				{
 					if(qSet.contains(Integer.valueOf(i)))
 					{

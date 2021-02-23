@@ -38,6 +38,15 @@ public class Skills extends StdCommand
 	{
 	}
 
+	protected static final int[] playerAcodes = new int[] 
+	{
+		Ability.ACODE_CHANT,
+		Ability.ACODE_PRAYER,
+		Ability.ACODE_SPELL,
+		Ability.ACODE_SKILL,
+		Ability.ACODE_COMMON_SKILL,
+		Ability.ACODE_CHANT
+	};
 	private final String[]	access	= I(new String[] { "SKILLS", "SK" });
 
 	@Override
@@ -67,9 +76,24 @@ public class Skills extends StdCommand
 					return false;
 			}
 		}
+		if(acodes==null)
+		{
+			if(qual.length()>0)
+			{
+				for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+				{
+					if(Ability.ACODE_DESCS[i].replace('_',' ').equalsIgnoreCase(qual))
+						return false;
+					else
+					if((Ability.ACODE_DESCS[i].replace('_',' ').indexOf('/')>=0)
+					&&(Ability.ACODE_DESCS[i].replace('_',' ').substring(Ability.ACODE_DESCS[i].indexOf('/')+1).equalsIgnoreCase(qual)))
+						return false;
+				}
+			}
+		}
 		final Ability A=CMClass.findAbility(qual);
 		if((A!=null)
-		&&(acodes.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_ACODES))))
+		&&((acodes==null)||(acodes.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_ACODES)))))
 		{
 			final Ability A2=mob.fetchAbility(A.ID());
 			if(A2==null)
@@ -152,25 +176,27 @@ public class Skills extends StdCommand
 		return V.contains(Integer.valueOf(acode));
 	}
 
-	protected void parseDomainInfo(final MOB mob, final List<String> commands, final Vector<Integer> acodes, final int[] level, final int[] domain, final String[] domainName)
+	protected void parseDomainInfo(final MOB mob, final List<String> commands, final List<Integer> acodes, final int[] level, final int[] domain, final String[] domainName)
 	{
 		level[0]=parseOutLevel(commands);
 		final String qual=CMParms.combine(commands,1).toUpperCase();
 		domain[0]=-1;
 		if(qual.length()>0)
-		for(int i=1;i<Ability.DOMAIN_DESCS.length;i++)
 		{
-			if(Ability.DOMAIN_DESCS[i].replace('_',' ').startsWith(qual))
+			for(int i=1;i<Ability.DOMAIN_DESCS.length;i++)
 			{
-				domain[0] = i << 5;
-				break;
-			}
-			else
-			if((Ability.DOMAIN_DESCS[i].replace('_',' ').indexOf('/')>=0)
-			&&(Ability.DOMAIN_DESCS[i].replace('_',' ').substring(Ability.DOMAIN_DESCS[i].indexOf('/')+1).startsWith(qual)))
-			{
-				domain[0] = i << 5;
-				break;
+				if(Ability.DOMAIN_DESCS[i].replace('_',' ').startsWith(qual))
+				{
+					domain[0] = i << 5;
+					break;
+				}
+				else
+				if((Ability.DOMAIN_DESCS[i].replace('_',' ').indexOf('/')>=0)
+				&&(Ability.DOMAIN_DESCS[i].replace('_',' ').substring(Ability.DOMAIN_DESCS[i].indexOf('/')+1).startsWith(qual)))
+				{
+					domain[0] = i << 5;
+					break;
+				}
 			}
 		}
 		if(domain[0]>0)
@@ -181,9 +207,12 @@ public class Skills extends StdCommand
 			domains.append("\n\rValid schools/domains are: ");
 			for(int i=1;i<Ability.DOMAIN_DESCS.length;i++)
 			{
-				boolean found=false;
-				for(int a=0;a<acodes.size();a++)
-					found=found||isDomainIncludedInAnyAbility(i<<5,acodes.get(a).intValue());
+				boolean found=acodes==null?true:false;
+				if(acodes!=null)
+				{
+					for(int a=0;a<acodes.size();a++)
+						found=found||isDomainIncludedInAnyAbility(i<<5,acodes.get(a).intValue());
+				}
 				if(found)
 					domains.append(Ability.DOMAIN_DESCS[i].toLowerCase().replace('_',' ')+", ");
 			}
@@ -195,6 +224,56 @@ public class Skills extends StdCommand
 		else
 		if(qual.length()>0)
 			domainName[0]+=" ";
+	}
+
+	protected void parseTypeInfo(final MOB mob, final List<String> commands, final int[] level, final int[] type, final String[] typeName)
+	{
+		level[0]=parseOutLevel(commands);
+		final String qual=CMParms.combine(commands,1).toUpperCase();
+		type[0]=-1;
+		if(qual.length()>0)
+		for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+		{
+			if(Ability.ACODE_DESCS[i].replace('_',' ').startsWith(qual))
+			{
+				type[0] = i;
+				break;
+			}
+			else
+			if((Ability.ACODE_DESCS[i].replace('_',' ').indexOf('/')>=0)
+			&&(Ability.ACODE_DESCS[i].replace('_',' ').substring(Ability.ACODE_DESCS[i].indexOf('/')+1).startsWith(qual)))
+			{
+				type[0] = i;
+				break;
+			}
+		}
+		if(type[0]>0)
+			typeName[0]=Ability.ACODE_DESCS[type[0]>>5].toLowerCase();
+		if((type[0]<0)&&(qual.length()>0))
+		{
+			for(int i=1;i<Ability.DOMAIN_DESCS.length;i++)
+			{
+				if(Ability.DOMAIN_DESCS[i].replace('_',' ').equalsIgnoreCase(qual))
+					return;
+				else
+				if((Ability.DOMAIN_DESCS[i].replace('_',' ').indexOf('/')>=0)
+				&&(Ability.DOMAIN_DESCS[i].replace('_',' ').substring(Ability.DOMAIN_DESCS[i].indexOf('/')+1).equalsIgnoreCase(qual)))
+					return;
+			}
+			StringBuffer types=new StringBuffer("");
+			types.append("\n\rValid ability types are: ");
+			for(int i=0;i<playerAcodes.length;i++)
+			{
+				types.append(Ability.ACODE_DESCS[playerAcodes[i]].toLowerCase().replace('_',' ')+", ");
+			}
+			if(types.toString().endsWith(", "))
+				types=new StringBuffer(types.substring(0,types.length()-2));
+			if(!mob.isMonster())
+				mob.session().wraplessPrintln(types.toString()+"\n\r");
+		}
+		else
+		if(qual.length()>0)
+			typeName[0]+=" ";
 	}
 
 	protected StringBuilder getAbilities(final MOB viewerM, final MOB ableM, int ofType, final int ofDomain, final boolean addQualLine, final int maxLevel)
@@ -235,6 +314,7 @@ public class Skills extends StdCommand
 		int highestLevel=0;
 		final int lowestLevel=ableM.phyStats().level()+1;
 		final StringBuilder msg=new StringBuilder("");
+		final Integer allAcodes = Integer.valueOf(Ability.ALL_ACODES);
 		for(final Enumeration<Ability> a=ableM.allAbilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
@@ -244,7 +324,8 @@ public class Skills extends StdCommand
 			if((A!=null)
 			&&(level>highestLevel)
 			&&(level<lowestLevel)
-			&&(ofTypes.contains(Integer.valueOf(A.classificationCode()&mask))))
+			&&(ofTypes.contains(Integer.valueOf(A.classificationCode()&mask))
+				||ofTypes.contains(allAcodes)||ofTypes.contains(Integer.valueOf(Ability.ALL_ACODES|(A.classificationCode()&Ability.ALL_DOMAINS)))))
 				highestLevel=level;
 		}
 		if((maxLevel>=0)&&(maxLevel<highestLevel))
@@ -264,7 +345,8 @@ public class Skills extends StdCommand
 					level=0;
 				if((A!=null)
 				&&(level==l)
-				&&(ofTypes.contains(Integer.valueOf(A.classificationCode()&mask))))
+				&&(ofTypes.contains(Integer.valueOf(A.classificationCode()&mask))
+					||ofTypes.contains(allAcodes)||ofTypes.contains(Integer.valueOf(Ability.ALL_ACODES|(A.classificationCode()&Ability.ALL_DOMAINS)))))
 				{
 					if(thisLine.length()==0)
 					{
