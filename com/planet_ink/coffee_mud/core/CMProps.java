@@ -1864,7 +1864,7 @@ public class CMProps extends Properties
 
 	/**
 	 * Returns the amount of usage cost (mana) for the given ability ID().
-	 * All for the callers thread group.  If no cost is found, returns 
+	 * All for the callers thread group.  If no cost is found, returns
 	 * the base mana cost object.
 	 * @param skillID the Ability ID to find a cost for.
 	 * @return the cost of usage (mana) determiner for the ability.
@@ -1877,10 +1877,10 @@ public class CMProps extends Properties
 			return DV.get(skillID.toUpperCase());
 		return p.skillMaxManaDefault;
 	}
-	
+
 	/**
 	 * Returns the amount of usage cost (mana) for the given ability ID().
-	 * All for the callers thread group.  If no cost is found, returns 
+	 * All for the callers thread group.  If no cost is found, returns
 	 * null.
 	 * @param skillID the Ability ID to find a cost for.
 	 * @return the cost of usage (mana) determiner for the ability.
@@ -1892,7 +1892,7 @@ public class CMProps extends Properties
 			return DV.get(skillID.toUpperCase());
 		return null;
 	}
-	
+
 	private static final Object getIndividualManaCostObject(final String s)
 	{
 		if(CMath.isNumber(s))
@@ -1942,7 +1942,17 @@ public class CMProps extends Properties
 		{
 			if(CMath.isNumber(s))
 			{
-				endVal=CMath.s_double(s);
+				final double x=CMath.s_double(s);
+				if((endVal < 0)&&(x>0))
+					set.put("_DEFAULT",Double.valueOf(x));
+				else
+				if((endVal > 0)&&(x<0))
+				{
+					set.put("_DEFAULT",Double.valueOf(endVal));
+					endVal=x;
+				}
+				else
+					endVal=x;
 			}
 			else
 			{

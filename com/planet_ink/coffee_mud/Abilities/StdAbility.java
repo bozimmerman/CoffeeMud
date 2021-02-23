@@ -1491,8 +1491,12 @@ public class StdAbility implements Ability
 			if(minimum<0)
 			{
 				minimum=(lowest*CMath.abs(minimum));
-				if(minimum<5)
-					minimum=5;
+				int actualMinimum=5;
+				final int exception = CMProps.getMinManaException("_DEFAULT");
+				if(exception > 0 )
+					actualMinimum = exception;
+				if(minimum<actualMinimum)
+					minimum=actualMinimum;
 			}
 			final Object cost = CMProps.getManaCostObject(ID());
 			if(cost instanceof Integer)
@@ -1515,7 +1519,7 @@ public class StdAbility implements Ability
 				consumed=50+(lowest*CMath.abs(consumed));
 			if((diff>0)
 			&&(!(cost instanceof CMath.CompiledFormula)))
-				consumed=(consumed - (consumed /10 * diff));
+				consumed=(consumed - (consumed/30 * diff));
 			if(consumed<minimum)
 				consumed=minimum;
 			if((overrideMana()>=0) && (CMProps.getManaCostExceptionObject(ID()) == null))

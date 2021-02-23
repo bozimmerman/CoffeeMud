@@ -673,12 +673,17 @@ public class CommonSkill extends StdAbility
 	@Override
 	public int[] usageCost(final MOB mob, final boolean ignoreClassOverride)
 	{
+		final Map<String,int[]> overrideCache=getHardOverrideManaCache();
 		if(mob==null)
-			return super.usageCost(null, ignoreClassOverride);
+		{
+			if(overrideCache.containsKey(ID()))
+				return overrideCache.get(ID());
+
+		}
 		if(usageType()==Ability.USAGE_NADA)
 			return super.usageCost(mob, ignoreClassOverride);
 
-		final int[][] abilityUsageCache=mob.getAbilityUsageCache(ID());
+		final int[][] abilityUsageCache=(mob==null)?new int[Ability.CACHEINDEX_TOTAL][]:mob.getAbilityUsageCache(ID());
 		final int myCacheIndex=ignoreClassOverride?Ability.CACHEINDEX_CLASSLESS:Ability.CACHEINDEX_NORMAL;
 		final int[] myCache=abilityUsageCache[myCacheIndex];
 		final boolean rebuildCache=(myCache==null);
@@ -694,33 +699,29 @@ public class CommonSkill extends StdAbility
 		else
 		{
 			consumed=25;
-			final int lvl=CMLib.ableMapper().qualifyingClassLevel(mob,this)+super.getXLOWCOSTLevel(mob);
-			final int lowest=CMLib.ableMapper().qualifyingLevel(mob,this);
+			final int lvl;
+			final int lowest;
+			if(mob != null)
+			{
+				lvl=CMLib.ableMapper().qualifyingClassLevel(mob,this)+super.getXLOWCOSTLevel(mob);
+				lowest=CMLib.ableMapper().qualifyingLevel(mob,this);
+			}
+			else
+			{
+				lvl=CMLib.ableMapper().lowestQualifyingLevel(ID());
+				lowest=lvl;
+			}
 			final int diff=lvl-lowest;
 			Integer[] costOverrides=null;
-			if(!ignoreClassOverride)
+			if((!ignoreClassOverride)&&(mob!=null))
 				costOverrides=CMLib.ableMapper().getCostOverrides(mob,ID());
 			if(diff>0)
-			switch(diff)
 			{
-			case 1:
-				consumed = 20;
-				break;
-			case 2:
-				consumed = 16;
-				break;
-			case 3:
-				consumed = 13;
-				break;
-			case 4:
-				consumed = 11;
-				break;
-			case 5:
-				consumed = 8;
-				break;
-			default:
-				consumed = 5;
-				break;
+				if(diff > 60)
+					consumed=5;
+				else
+				if(diff > 2)
+					consumed = consumed - diff/3;
 			}
 			final int maxOverride;
 			final Object maxOverrideCost = CMProps.getManaCostExceptionObject(ID());
@@ -731,9 +732,9 @@ public class CommonSkill extends StdAbility
 			{
 				final double[] vars = new double[] {
 					lowest,
-					mob.phyStats().level(),
+					(mob==null)?lvl:mob.phyStats().level(),
 					consumed,
-					adjustedLevel(mob,0)
+					(mob==null)?lvl:adjustedLevel(mob,0)
 				};
 				maxOverride=(int)CMath.parseMathExpression((CMath.CompiledFormula)maxOverrideCost, vars, 0.0);
 			}
@@ -748,7 +749,13 @@ public class CommonSkill extends StdAbility
 			if(minOverride!=Integer.MIN_VALUE)
 			{
 				if(minOverride<0)
-					consumed=(lowest<5)?5:lowest;
+				{
+					int actualMinimum=5;
+					final int exception = CMProps.getMinManaException("_DEFAULT");
+					if(exception > 0 )
+						actualMinimum = exception;
+					consumed=(lowest<actualMinimum)?actualMinimum:lowest;
+				}
 				else
 				if(consumed<minOverride)
 					consumed=minOverride;
@@ -771,6 +778,8 @@ public class CommonSkill extends StdAbility
 			else
 				abilityUsageCache[myCacheIndex]=usageCost;
 		}
+		if(mob == null)
+			overrideCache.put(ID(), usageCost);
 		return usageCost;
 	}
 
