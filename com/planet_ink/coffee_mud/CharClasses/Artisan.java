@@ -57,7 +57,7 @@ public class Artisan extends StdCharClass
 	@Override
 	public int getBonusPracLevel()
 	{
-		return 2;
+		return 3;
 	}
 
 	@Override
