@@ -67,6 +67,7 @@ public interface ExpertiseLibrary extends CMLibrary
 	public String getGuessedBaseExpertiseName(final String expertiseCode);
 	public void handleBeingTaught(MOB teacher, MOB student, Environmental item, String msg, int add);
 	public boolean canBeTaught(MOB teacher, MOB student, Environmental item, String msg);
+	public boolean confirmAndTeach(final MOB teacherM, final MOB studentM, final CMObject teachableO, final Runnable callBack);
 	public boolean postTeach(MOB teacher, MOB student, CMObject teachObj);
 	public Iterator<String> filterUniqueExpertiseIDList(Iterator<String> i);
 	public int getHighestListableStageBySkill(final MOB mob, String ableID, ExpertiseLibrary.XType flag);

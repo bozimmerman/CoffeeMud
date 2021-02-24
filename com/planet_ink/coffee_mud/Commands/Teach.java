@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
@@ -111,13 +112,11 @@ public class Teach extends StdCommand
 				}
 			}
 			if(theExpertise!=null)
-			{
-				return CMLib.expertises().postTeach(mob,student,theExpertise);
-			}
+				return CMLib.expertises().confirmAndTeach(mob, student, theExpertise, null);
 			CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to know @x1.",abilityName));
 			return false;
 		}
-		return CMLib.expertises().postTeach(mob,student,myAbility);
+		return CMLib.expertises().confirmAndTeach(mob, student, myAbility, null);
 	}
 
 	@Override

@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -934,32 +935,6 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			}
 			teachWhat=theExpertise.name();
 		}
-		//TODO: move this to handleBeingTaught and make async!!
-		try
-		{
-			if((!teacher.isMonster())
-			&&(student.session()!=null)
-			&&(!student.session().confirm(L("\n\r@x1 wants to teach you @x2.  Is this Ok (y/N)?",teacher.Name(),teachWhat),"N",10000)))
-			{
-				if(student.session()!=null)
-					student.session().println("\n\r");
-				teacher.tell(L("@x1 does not want you to.",student.charStats().HeShe()));
-				return false;
-			}
-		}
-		catch(final Exception e)
-		{
-			try
-			{
-				if(student.session()!=null)
-					student.session().println("\n\r");
-			}
-			catch(final Exception e1)
-			{
-			}
-			teacher.tell(L("@x1 does not answer you.",student.charStats().HeShe()));
-			return false;
-		}
 		return true;
 	}
 
@@ -1010,6 +985,99 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			if((!teacher.isMonster()) && (!student.isMonster()))
 				CMLib.leveler().postExperience(teacher, null, null, 100, false);
 		}
+	}
+
+	@Override
+	public boolean confirmAndTeach(final MOB teacherM, final MOB studentM, final CMObject teachableO, final Runnable callBack)
+	{
+		if((teacherM==null)||(studentM==null))
+		{
+			if(callBack != null)
+				callBack.run();
+			return false;
+		}
+		final Session sess=studentM.session();
+		final Room R=studentM.location();
+		if((sess==null)
+		||(R==null)
+		||((!teacherM.isPlayer())
+			&&((teacherM.amFollowing()==null)||(!teacherM.amUltimatelyFollowing().isPlayer()))))
+		{
+			final boolean success=postTeach(teacherM,studentM,teachableO);
+			if(callBack != null)
+				callBack.run();
+			return success;
+		}
+
+		final String name;
+		if(teachableO instanceof Ability)
+			name=((Ability)teachableO).Name();
+		else
+		if(teachableO instanceof ExpertiseLibrary.ExpertiseDefinition)
+			name=((ExpertiseLibrary.ExpertiseDefinition)teachableO).name();
+		else
+			name=L("Something");
+
+		if(!R.show(teacherM, studentM, CMMsg.MSG_SPEAK, L("<S-NAME> offer(s) to teach <T-NAME>.")))
+		{
+			if(callBack != null)
+				callBack.run();
+			return false;
+		}
+
+		sess.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N",10000)
+		{
+			final MOB teacher = teacherM;
+			final MOB student = studentM;
+			final Session session = sess;
+			final CMObject teachable=teachableO;
+			final String teachWhat= name;
+			final Runnable postCallback=callBack;
+
+			@Override
+			public void showPrompt()
+			{
+				sess.promptPrint(L("\n\r@x1 wants to teach you @x2.  Is this Ok (y/N)?",teacher.Name(),teachWhat));
+			}
+
+			@Override
+			public void timedOut()
+			{
+				teacher.tell(L("@x1 does not answer you.",student.charStats().HeShe()));
+				if(postCallback != null)
+					postCallback.run();
+			}
+
+			@Override
+			public void callBack()
+			{
+				try
+				{
+					if(this.input.equals("Y"))
+					{
+						if(studentM.location()!=teacherM.location())
+						{
+							studentM.tell(L("@x1 vanished.",teacherM.name()));
+							teacherM.tell(L("@x1 vanished.",studentM.name()));
+						}
+						else
+							postTeach(teacher,student,teachable);
+					}
+					else
+					{
+						if(!session.isStopped())
+							session.println("\n\r");
+						teacher.tell(L("@x1 does not want you to.",student.charStats().HeShe()));
+					}
+				}
+				finally
+				{
+					if(postCallback != null)
+						postCallback.run();
+				}
+			}
+		});
+		return true;
 	}
 
 	@Override
