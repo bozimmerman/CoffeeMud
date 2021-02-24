@@ -104,20 +104,23 @@ public class GoodGuardian extends StdBehavior
 			for(int i=0;i<room.numInhabitants();i++)
 			{
 				final MOB inhab=room.fetchInhabitant(i);
-				if((inhab!=null)
-				&&(inhab.isInCombat())
-				&&(inhab.getVictim().isInCombat())
+				if((inhab != null)
 				&&((observer.phyStats().level()>(inhab.phyStats().level()+5))))
 				{
-					final String msg="<S-NAME> stop(s) <T-NAME> from fighting with "+inhab.getVictim().name();
-					final CMMsg msgs=CMClass.getMsg(observer,inhab,CMMsg.MSG_NOISYMOVEMENT,msg);
-					if(observer.location().okMessage(observer,msgs))
+					final MOB inhabV=inhab.getVictim();
+					if((inhabV!=null)
+					&&(inhabV.isInCombat()))
 					{
-						observer.location().send(observer,msgs);
-						final MOB ivictim=inhab.getVictim();
-						if(ivictim!=null)
-							ivictim.makePeace(true);
-						inhab.makePeace(true);
+						final String msg="<S-NAME> stop(s) <T-NAME> from fighting with "+inhab.getVictim().name();
+						final CMMsg msgs=CMClass.getMsg(observer,inhab,CMMsg.MSG_NOISYMOVEMENT,msg);
+						if(observer.location().okMessage(observer,msgs))
+						{
+							observer.location().send(observer,msgs);
+							final MOB ivictim=inhab.getVictim();
+							if(ivictim!=null)
+								ivictim.makePeace(true);
+							inhab.makePeace(true);
+						}
 					}
 				}
 			}
