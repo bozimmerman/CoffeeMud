@@ -311,6 +311,9 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 				amount=CMath.s_int(commands.get(commands.size()-1));
 				commands.remove(commands.size()-1);
 			}
+			final int[] pm=checkMaterialFrom(mob,commands,new int[]{RawMaterial.MATERIAL_CLOTH});
+			if(pm==null)
+				return false;
 			final String recipeName=CMParms.combine(commands,0);
 			List<String> foundRecipe=null;
 			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
@@ -344,7 +347,6 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 			if(amount>woodRequired)
 				woodRequired=amount;
 
-			final int[] pm={RawMaterial.MATERIAL_CLOTH};
 			final int[][] data=fetchFoundResourceData(mob,
 													woodRequired,"cloth",pm,
 													0,null,null,

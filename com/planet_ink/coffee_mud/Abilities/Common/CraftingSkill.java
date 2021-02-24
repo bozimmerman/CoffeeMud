@@ -1380,6 +1380,39 @@ public class CraftingSkill extends GatheringSkill
 		return matches;
 	}
 
+	protected int[] checkMaterialFrom(final MOB mob, final List<String> commands, final int[] pm)
+	{
+		if(commands.size()<3)
+			return pm;
+		for(int i=1;i<commands.size()-1;i++)
+		{
+			if(commands.get(i).equalsIgnoreCase("from"))
+			{
+				final String possRsc=CMParms.combine(commands,i+1);
+				int rscCode=RawMaterial.CODES.FIND_StartsWith(possRsc);
+				if(rscCode > 0)
+				{
+					boolean found=false;
+					for(final int p : pm)
+					{
+						if((rscCode&RawMaterial.MATERIAL_MASK)==p)
+							found=true;
+					}
+					if(!found)
+					{
+						if(mob!=null)
+							mob.tell(L("'@x1' is not a usable material for this skill.",possRsc));
+						return null;
+					}
+					while(commands.size()>i)
+						commands.remove(commands.size()-1);
+					return new int[] {rscCode};
+				}
+			}
+		}
+		return pm;
+	}
+	
 	protected Vector<Item> getAllMendable(final MOB mob, final Environmental from, final Item contained)
 	{
 		Vector<Item> V=new Vector<Item>();

@@ -365,6 +365,9 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 				amount=CMath.s_int(commands.get(commands.size()-1));
 				commands.remove(commands.size()-1);
 			}
+			final int[] pm=checkMaterialFrom(mob,commands,new int[]{RawMaterial.MATERIAL_WOODEN});
+			if(pm==null)
+				return false;
 			final String recipeName=CMParms.combine(commands,0);
 			List<String> foundRecipe=null;
 			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
@@ -401,7 +404,6 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 				woodRequired=amount;
 			final String otherRequired=getOtherRscRequired(foundRecipe.get(RCP_EXTRAREQ));
 			final int otherAmtRequired=getOtherRscAmtRequired(mob,foundRecipe.get(RCP_EXTRAREQ));
-			final int[] pm={RawMaterial.MATERIAL_WOODEN};
 			final int[][] data=fetchFoundResourceData(mob,
 													  woodRequired,"wood",pm,
 													  otherAmtRequired,otherRequired,null,

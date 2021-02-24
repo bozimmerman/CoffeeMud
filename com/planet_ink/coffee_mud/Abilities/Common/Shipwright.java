@@ -804,6 +804,9 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				amount=CMath.s_int(commands.get(commands.size()-1));
 				commands.remove(commands.size()-1);
 			}
+			final int[] pm=checkMaterialFrom(mob,commands,new int[]{RawMaterial.MATERIAL_WOODEN});
+			if(pm==null)
+				return false;
 			final String recipeName=CMParms.combine(commands,0);
 			List<String> foundRecipe=null;
 			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
@@ -838,7 +841,6 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 
 			if(amount>woodRequired)
 				woodRequired=amount;
-			final int[] pm={RawMaterial.MATERIAL_WOODEN};
 			final int[][] data=fetchFoundResourceData(mob,
 													woodRequired,"wood",pm,
 													0,null,null,

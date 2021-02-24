@@ -345,6 +345,9 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 				amount=CMath.s_int(commands.get(commands.size()-1));
 				commands.remove(commands.size()-1);
 			}
+			final int[] pm=checkMaterialFrom(mob,commands,new int[]{RawMaterial.MATERIAL_ROCK});
+			if(pm==null)
+				return false;
 			String recipeName=CMParms.combine(commands,0);
 			String rest="";
 			List<String> foundRecipe=null;
@@ -391,7 +394,6 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 				woodRequired=amount;
 			final String misctype=foundRecipe.get(RCP_MISCTYPE);
 			bundling=misctype.equalsIgnoreCase("BUNDLE");
-			final int[] pm={RawMaterial.MATERIAL_ROCK};
 			final int[][] data=fetchFoundResourceData(mob,
 													woodRequired,"stone",pm,
 													0,null,null,

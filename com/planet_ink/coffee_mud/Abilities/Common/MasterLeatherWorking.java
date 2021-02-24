@@ -480,6 +480,9 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 				amount=CMath.s_int(commands.get(commands.size()-1));
 				commands.remove(commands.size()-1);
 			}
+			final int[] pm=checkMaterialFrom(mob,commands,new int[]{RawMaterial.MATERIAL_LEATHER});
+			if(pm==null)
+				return false;
 			final String recipeName=CMParms.combine(commands,0);
 			List<String> foundRecipe=null;
 			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
@@ -521,7 +524,6 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 
 			if(amount>woodRequired)
 				woodRequired=amount;
-			final int[] pm={RawMaterial.MATERIAL_LEATHER};
 			final int[] pm1={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
 			final String misctype=foundRecipe.get(RCP_MISCTYPE);
 			bundling=misctype.equalsIgnoreCase("BUNDLE");

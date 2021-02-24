@@ -436,6 +436,9 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 				amount=CMath.s_int(commands.get(commands.size()-1));
 				commands.remove(commands.size()-1);
 			}
+			final int[] pm=checkMaterialFrom(mob,commands,getBaseMaterialCodes());
+			if(pm==null)
+				return false;
 			final String recipeName=CMParms.combine(commands,0);
 			List<String> foundRecipe=null;
 			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
@@ -472,7 +475,6 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 				woodRequired=amount;
 			final String otherRequired=getOtherRscRequired(foundRecipe.get(RCP_EXTRAREQ));
 			final int otherAmtRequired=getOtherRscAmtRequired(mob,foundRecipe.get(RCP_EXTRAREQAMT));
-			final int[] pm=getBaseMaterialCodes();
 			final int[][] data=fetchFoundResourceData(mob,
 													  woodRequired,getBaseMaterialType().toLowerCase(),pm,
 													  otherAmtRequired,otherRequired,null,

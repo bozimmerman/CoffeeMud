@@ -5,6 +5,7 @@
   4. New locale types: undergroundcitystreet and underwatercitystreet
   5. New command: abilities
   6. Default MINMANACOST is now skill level or 10, whichever is greater.
+  7. Many crafting skills now support FROM syntax to specify specific resources.
   
 # Build 5.9.11 Release 02/20/2021
   1. a(n) is now official filter syntax for a/an

@@ -338,6 +338,9 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 			amount=CMath.s_int(commands.get(commands.size()-1));
 			commands.remove(commands.size()-1);
 		}
+		final int[] pm=checkMaterialFrom(mob,commands,new int[]{RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL});
+		if(pm==null)
+			return false;
 		final String recipeName=CMParms.combine(commands,0);
 		List<String> foundRecipe=null;
 		final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
@@ -373,7 +376,6 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		if(amount>woodRequired)
 			woodRequired=amount;
 		final String misctype=foundRecipe.get(RCP_MISCTYPE).toUpperCase();
-		final int[] pm={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
 		bundling=misctype.equalsIgnoreCase("BUNDLE");
 		final int[][] data=fetchFoundResourceData(mob,
 												woodRequired,"metal",pm,

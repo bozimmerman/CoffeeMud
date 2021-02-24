@@ -576,6 +576,9 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				amount=CMath.s_int(commands.get(commands.size()-1));
 				commands.remove(commands.size()-1);
 			}
+			final int[] pm=checkMaterialFrom(mob,commands,new int[]{RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL});
+			if(pm==null)
+				return false;
 			final String recipeName=CMParms.combine(commands,0);
 			List<String> foundRecipe=null;
 			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
@@ -621,7 +624,6 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			if(amount>woodRequired)
 				woodRequired=amount;
 			final String otherRequired=foundRecipe.get(RCP_EXTRAREQ);
-			final int[] pm={RawMaterial.MATERIAL_MITHRIL,RawMaterial.MATERIAL_METAL};
 			final int[][] data=fetchFoundResourceData(mob,
 													woodRequired,"metal",pm,
 													otherRequired.length()>0?1:0,otherRequired,null,
