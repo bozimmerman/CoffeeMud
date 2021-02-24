@@ -141,7 +141,7 @@ public class CGIProcessor implements HTTPOutputConverter
 		}
 		final File scriptFilenameFile = config.getFileManager().createFileFromPath(scriptFilename.replace('/', config.getFileManager().getFileSeparator()));
 		env.put(EnvironmentVariables.SCRIPT_FILENAME.name(),scriptFilenameFile.getAbsolutePath());
-		env.put(EnvironmentVariables.SERVER_ADMIN.name(),"unknonwn@nowhere.com"); //TODO: add this to config -- nice idea
+		env.put(EnvironmentVariables.SERVER_ADMIN.name(),config.getAdminEmail());
 		env.put(EnvironmentVariables.SERVER_NAME.name(),request.getHost());
 		env.put(EnvironmentVariables.SERVER_PORT.name(),""+request.getClientPort());
 		env.put(EnvironmentVariables.SERVER_PROTOCOL.name(),"HTTP/"+request.getHttpVer());

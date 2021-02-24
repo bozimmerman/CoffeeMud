@@ -1367,8 +1367,8 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		else
 		if(("SURVEY").startsWith(str.toUpperCase()))
 		{
-			//TODO: FINISH
-			//TODO: OK, but what's it do again?
+			//TODO: finish this
+			//TODO: OK, but what's this do again?
 		}
 
 		designTitle="";
