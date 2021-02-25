@@ -2032,10 +2032,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					break;
 				case '<':
 				{
-					final int x = vchrs.indexOf(">",t);
+					final int x = vchrs.indexOf(">",t+2);
 					if (x > t)
 					{
-						String mid = vchrs.substring(t+1, x);
+						String mid = vchrs.substring(t+2, x);
 						final int y = mid.indexOf(' ');
 						Environmental E = null;
 						String arg1 = "";
@@ -2054,10 +2054,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				case '[':
 				{
 					middle = "";
-					final int x = vchrs.indexOf("]",t);
+					final int x = vchrs.indexOf("]",t+2);
 					if (x > t)
 					{
-						String mid = vchrs.substring(t+1, x);
+						String mid = vchrs.substring(t+2, x);
 						final int y = mid.indexOf(' ');
 						if (y > 0)
 						{
@@ -2074,10 +2074,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				case '{':
 				{
 					middle = "";
-					final int x = vchrs.indexOf("}",t);
+					final int x = vchrs.indexOf("}",t+2);
 					if (x > t)
 					{
-						String mid = vchrs.substring(t+1, x);
+						String mid = vchrs.substring(t+2, x);
 						final int y = mid.indexOf(' ');
 						if (y > 0)
 						{
@@ -2094,10 +2094,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				case '%':
 				{
 					middle = "";
-					final int x = vchrs.indexOf("%",t+1);
+					final int x = vchrs.indexOf("%",t+2);
 					if (x > t)
 					{
-						middle = functify(scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp, vchrs.substring(t+1, x).trim());
+						middle = functify(scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp, vchrs.substring(t+2, x).trim());
 						replLen=x-t+1;
 					}
 					break;
