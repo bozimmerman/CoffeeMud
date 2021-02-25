@@ -354,11 +354,11 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
 			</DESCRIPTION>
 			<ITEM select="any-5">
-				<ITEM class="metacraft:anything<$level_range"/>
-				<ITEM class="metacraft:anything<$level_range" />
-				<ITEM class="metacraft:anything<$level_range" />
-				<ITEM class="metacraft:anything<$level_range" />
-				<ITEM class="metacraft:anything<$level_range" />
+				<ITEM class="metacraft:anything<$level_range{100"/>
+				<ITEM class="metacraft:anything<$level_range{100" />
+				<ITEM class="metacraft:anything<$level_range{100" />
+				<ITEM class="metacraft:anything<$level_range{100" />
+				<ITEM class="metacraft:anything<$level_range{100" />
 			</ITEM>
 			<MOB select="all" insert="$lair_rat" condition="1?2=1" />
 			<EXIT select="pick-1">

@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.CraftorAbility.CraftorFilter;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.Area.State;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -51,8 +52,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return "MUDPercolator";
 	}
 
-	protected final static char[] splitters=new char[]{'<','>','='};
-	protected final static Triad<Integer,Integer,Class<?>[]> emptyMetacraftFilter = new Triad<Integer,Integer,Class<?>[]>(Integer.valueOf(-1),Integer.valueOf(-1),new Class<?>[0]);
+	protected final static char[] splitters=new char[]{'<','>','=','{','}'};
+	protected final static CraftorFilter emptyMetacraftFilter = new CraftorFilter();
 	protected final static String POST_PROCESSING_STAT_SETS="___POST_PROCESSING_SETS___";
 	protected final static Set<String> UPPER_REQUIRES_KEYWORDS=new XHashSet<String>(new String[]{"INT","INTEGER","$","STRING","ANY","DOUBLE","#","NUMBER"});
 	protected final static CMParms.DelimiterChecker REQUIRES_DELIMITERS=CMParms.createDelimiter(new char[]{' ','\t',',','\r','\n'});
@@ -1953,15 +1954,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 	}
 
-	protected String getMetacraftFilter(String recipe, final XMLTag piece, final Map<String,Object> defined, final Triad<Integer,Integer,Class<?>[]> filter) throws CMException
+	protected void getMetacraftFilter(String recipe, final XMLTag piece, final Map<String,Object> defined, final CraftorFilter filter) throws CMException
 	{
-		int levelLimit=-1;
-		int levelFloor=-1;
-		Class<?>[] deriveClasses=new Class[0];
 		final Map.Entry<Character, String>[] otherParms=CMStrings.splitMulti(recipe, splitters);
 		recipe=otherParms[0].getValue();
 		if(otherParms.length==1)
-			return recipe;
+			return;
 		for(int i=1;i<otherParms.length;i++)
 		{
 			switch(otherParms[i].getKey().charValue())
@@ -1971,9 +1969,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				final String lvlStr=strFilterNow(null,null,null,otherParms[i].getValue().trim(),piece, defined);
 				if(CMath.isMathExpression(lvlStr))
 				{
-					levelLimit=CMath.parseIntExpression(lvlStr);
-					if((levelLimit==0)||(levelLimit<levelFloor))
-						levelLimit=-1;
+					filter.maxLevel=CMath.parseIntExpression(lvlStr);
+					if((filter.maxLevel==0)||(filter.maxLevel<filter.minLevel))
+						filter.maxLevel=Integer.MAX_VALUE;
 				}
 				break;
 			}
@@ -1982,9 +1980,31 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				final String lvlStr=strFilterNow(null,null,null,otherParms[i].getValue().trim(),piece, defined);
 				if(CMath.isMathExpression(lvlStr))
 				{
-					levelFloor=CMath.parseIntExpression(lvlStr);
-					if((levelFloor==0)||((levelFloor>levelLimit)&&(levelLimit>0)))
-						levelFloor=-1;
+					filter.minLevel=CMath.parseIntExpression(lvlStr);
+					if((filter.minLevel==0)||((filter.minLevel>filter.maxLevel)&&(filter.maxLevel>0)))
+						filter.minLevel=-1;
+				}
+				break;
+			}
+			case '{':
+			{
+				final String valStr=strFilterNow(null,null,null,otherParms[i].getValue().trim(),piece, defined);
+				if(CMath.isMathExpression(valStr))
+				{
+					filter.maxValue=CMath.parseIntExpression(valStr);
+					if((filter.maxValue==0)||(filter.maxValue<filter.minValue))
+						filter.maxValue=Integer.MAX_VALUE;
+				}
+				break;
+			}
+			case '}':
+			{
+				final String valStr=strFilterNow(null,null,null,otherParms[i].getValue().trim(),piece, defined);
+				if(CMath.isMathExpression(valStr))
+				{
+					filter.minValue=CMath.parseIntExpression(valStr);
+					if((filter.minValue==0)||((filter.minLevel>filter.maxValue)&&(filter.maxValue>0)))
+						filter.minValue=-1;
 				}
 				break;
 			}
@@ -1994,8 +2014,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				final Object O=CMClass.getItemPrototype(classStr);
 				if(O!=null)
 				{
-					deriveClasses=Arrays.copyOf(deriveClasses, deriveClasses.length+1);
-					deriveClasses[deriveClasses.length-1]=O.getClass();
+					if(filter.classes == null)
+						filter.classes=new Class<?>[1];
+					else
+						filter.classes=Arrays.copyOf(filter.classes, filter.classes.length+1);
+					filter.classes[filter.classes.length-1]=O.getClass();
 				}
 				else
 					throw new CMException("Unknown metacraft class= "+classStr);
@@ -2005,13 +2028,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				break;
 			}
 		}
-		if(levelLimit>0)
-			filter.first=Integer.valueOf(levelLimit);
-		if(levelFloor>0)
-			filter.second=Integer.valueOf(levelFloor);
-		if(deriveClasses.length>0)
-			filter.third=deriveClasses;
-		return recipe;
+		filter.name=recipe.trim();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -2040,17 +2057,16 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return skillContentsCopy;
 	}
 
-	protected boolean checkMetacraftItem(final Item I, final Triad<Integer,Integer,Class<?>[]> filter)
+	protected boolean checkMetacraftItem(final Item I, final CraftorFilter filter)
 	{
-		final int levelLimit=filter.first.intValue();
-		final int levelFloor=filter.second.intValue();
-		final Class<?>[] deriveClasses=filter.third;
-		if(((levelLimit>0) && (I.basePhyStats().level() > levelLimit))
-		||((levelFloor>0) && (I.basePhyStats().level() <= levelFloor)))
+		if((I.basePhyStats().level() > filter.maxLevel)
+		||(I.basePhyStats().level() <= filter.minLevel)
+		||(I.baseGoldValue() > filter.maxValue)
+		||(I.baseGoldValue() <= filter.minValue))
 			return false;
-		if(deriveClasses.length==0)
+		if(filter.classes.length==0)
 			return true;
-		for(final Class<?> C : deriveClasses)
+		for(final Class<?> C : filter.classes)
 		{
 			if(C.isAssignableFrom(I.getClass()))
 				return true;
@@ -2068,11 +2084,13 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(classID.toLowerCase().startsWith("metacraft"))
 		{
 			final String classRest=classID.substring(9).toLowerCase().trim();
-			final Triad<Integer,Integer,Class<?>[]> filter = new Triad<Integer,Integer,Class<?>[]>(Integer.valueOf(-1),Integer.valueOf(-1),new Class<?>[0]);
+			final CraftorFilter filter = new CraftorFilter();
 			String recipe="anything";
 			if(classRest.startsWith(":"))
 			{
-				recipe=getMetacraftFilter(classRest.substring(1).trim(), piece, defined, filter);
+				getMetacraftFilter(classRest.substring(1).trim(), piece, defined, filter);
+				if(filter.name.trim().length()>0)
+					recipe=filter.name;
 			}
 			else
 			{
@@ -2106,6 +2124,13 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				if(recipe.equalsIgnoreCase("anything"))
 				{
+					// very special case to prevent ships, boats, and wagons from being junk:
+					for(int i=craftors.size()-1;i>=0;i--)
+					{
+						final String ID=craftors.get(i).ID().toLowerCase();
+						if(ID.indexOf("wright")>=0)
+							craftors.remove(i);
+					}
 					final long startTime=System.currentTimeMillis();
 					while((contents.size()==0)&&((System.currentTimeMillis()-startTime)<1000))
 					{

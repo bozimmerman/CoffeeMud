@@ -493,7 +493,9 @@ public class DataLoader
 			{
 				if(DB.queryRows("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"'")==0)
 					break;
+				DB.DBDone(D);
 				CMLib.s_sleep(250);
+				D=DB.DBFetch();
 				if(i==5)
 					D.update("DELETE FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"'",0);
 				if(i==9)
@@ -518,7 +520,9 @@ public class DataLoader
 		{
 			D=DB.DBFetch();
 			D.update("DELETE FROM CMPDAT WHERE CMPLID='"+playerID+"'",0);
+			DB.DBDone(D);
 			CMLib.s_sleep(500);
+			D=DB.DBFetch();
 			if(DB.queryRows("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"'")>0)
 				Log.errOut("Failed to delete data for player "+playerID+".");
 		}
@@ -543,7 +547,9 @@ public class DataLoader
 			section = DB.injectionClean(section);
 			key = DB.injectionClean(key);
 			D.update("DELETE FROM CMPDAT WHERE CMPKEY='"+key+"' AND CMPLID='"+playerID+"' AND CMSECT='"+section+"'",0);
+			DB.DBDone(D);
 			CMLib.s_sleep(500);
+			D=DB.DBFetch();
 			if(DB.queryRows("SELECT * FROM CMPDAT WHERE CMPKEY='"+key+"' AND CMPLID='"+playerID+"' AND CMSECT='"+section+"'")>0)
 				Log.errOut("Failed to delete data for player "+playerID+".");
 		}

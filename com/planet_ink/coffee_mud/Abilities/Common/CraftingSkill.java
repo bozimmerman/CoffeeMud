@@ -878,10 +878,10 @@ public class CraftingSkill extends GatheringSkill
 		int tries=0;
 		if(material<0)
 		{
-			List<Integer> rscs=myResources();
-			if(rscs.size()==0)
-				rscs=new XVector<Integer>(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
-			material=rscs.get(CMLib.dice().roll(1,rscs.size(),-1)).intValue();
+			List<Integer> wrscs=myResources();
+			if(wrscs.size()==0)
+				wrscs=new XVector<Integer>(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
+			material=wrscs.get(CMLib.dice().roll(1,wrscs.size(),-1)).intValue();
 		}
 		while(((building==null)
 			||(building.name().endsWith(" bundle")&&(!isThereANonBundleChoice(recipes))))
@@ -1028,10 +1028,10 @@ public class CraftingSkill extends GatheringSkill
 
 	public ItemKeyPair craftItem(final String recipeName)
 	{
-		List<Integer> rscs=myResources();
-		if(rscs.size()==0)
-			rscs=new XVector<Integer>(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
-		final int material=rscs.get(CMLib.dice().roll(1,rscs.size(),-1)).intValue();
+		List<Integer> wrscs=myWeightedResources();
+		if(wrscs.size()==0)
+			wrscs=new XVector<Integer>(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
+		final int material=wrscs.get(CMLib.dice().roll(1,wrscs.size(),-1)).intValue();
 		return craftItem(recipeName,material,false, false);
 	}
 
@@ -1389,7 +1389,7 @@ public class CraftingSkill extends GatheringSkill
 			if(commands.get(i).equalsIgnoreCase("from"))
 			{
 				final String possRsc=CMParms.combine(commands,i+1);
-				int rscCode=RawMaterial.CODES.FIND_StartsWith(possRsc);
+				final int rscCode=RawMaterial.CODES.FIND_StartsWith(possRsc);
 				if(rscCode > 0)
 				{
 					boolean found=false;
@@ -1412,7 +1412,7 @@ public class CraftingSkill extends GatheringSkill
 		}
 		return pm;
 	}
-	
+
 	protected Vector<Item> getAllMendable(final MOB mob, final Environmental from, final Item contained)
 	{
 		Vector<Item> V=new Vector<Item>();

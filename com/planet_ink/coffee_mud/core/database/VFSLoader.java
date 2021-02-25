@@ -199,7 +199,9 @@ public class VFSLoader
 		{
 			D=DB.DBFetch();
 			D.update("DELETE FROM CMVFS WHERE CMFNAM='"+filename+"'",0);
+			DB.DBDone(D);
 			CMLib.s_sleep(500);
+			D=DB.DBFetch();
 			if(DB.queryRows("SELECT * FROM CMVFS WHERE CMFNAM='"+filename+"'")>0)
 				Log.errOut("Failed to delete virtual file "+filename+".");
 		}

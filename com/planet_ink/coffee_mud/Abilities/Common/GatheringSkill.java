@@ -179,6 +179,24 @@ public class GatheringSkill extends CommonSkill
 		return amt;
 	}
 
+	public List<Integer> myWeightedResources()
+	{
+		if(supportedResources.containsKey(ID()+"_WEIGHTED_RESOURCES"))
+			return supportedResources.get(ID()+"_WEIGHTED_RESOURCES");
+		final List<Integer> enumResources = myResources();
+		if(enumResources == null)
+			return null;
+		final List<Integer> weightedRscs=new Vector<Integer>();
+		for(final Integer rsc : enumResources)
+		{
+			final int weight = RawMaterial.CODES.FREQUENCY(rsc.intValue());
+			for(int i=0;i<weight;i++)
+				weightedRscs.add(rsc);
+		}
+		supportedResources.put(ID()+"_WEIGHTED_RESOURCES", weightedRscs);
+		return weightedRscs;
+	}
+
 	public List<Integer> myResources()
 	{
 		if(supportedResources.containsKey(ID()))

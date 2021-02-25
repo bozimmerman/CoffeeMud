@@ -103,4 +103,21 @@ public interface CraftorAbility extends Ability
 	 * @return a descriptive pair
 	 */
 	public Pair<String,Integer> getDecodedItemNameAndLevel(final List<String> recipe);
+
+
+	/**
+	 * Class for generating filters of crafted items
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static class CraftorFilter
+	{
+		public int			minLevel	= 0;
+		public int			maxLevel	= Integer.MAX_VALUE;
+		public int			reqLevel	= -1;
+		public int			minValue	= -1;
+		public int			maxValue	= Integer.MAX_VALUE;
+		public Class<?>[]	classes		= new Class<?>[0];
+		public String		name		= "";
+	}
 }
