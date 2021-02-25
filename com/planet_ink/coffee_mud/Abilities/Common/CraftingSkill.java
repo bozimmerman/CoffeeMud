@@ -1401,7 +1401,7 @@ public class CraftingSkill extends GatheringSkill
 					if(!found)
 					{
 						if(mob!=null)
-							mob.tell(L("'@x1' is not a usable material for this skill.",possRsc));
+							mob.tell(L("'@x1' is not a valid resource type for this skill.",possRsc));
 						return null;
 					}
 					while(commands.size()>i)
