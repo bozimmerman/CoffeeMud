@@ -134,6 +134,17 @@ public class Fighter_Whomp extends FighterSkill implements HealthCondition
 		// a sleeping state, so that nothing they do
 		// can get them out of it.
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SLEEPING);
+		if(CMath.bset(affectableStats.disposition(),PhyStats.IS_FLYING))
+		{
+			if(affected instanceof Rider)
+			{
+				if((((Rider)affected).riding() == null)
+				||((((Rider)affected).riding().phyStats().disposition()&PhyStats.IS_FLYING)==0))
+					affectableStats.setDisposition(affectableStats.disposition()&(~PhyStats.IS_FLYING));
+			}
+			else
+				affectableStats.setDisposition(affectableStats.disposition()&(~PhyStats.IS_FLYING));
+		}
 	}
 
 	@Override
