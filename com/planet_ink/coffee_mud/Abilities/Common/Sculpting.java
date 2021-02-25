@@ -72,7 +72,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 	@Override
 	public String supportedResourceString()
 	{
-		return "ROCK-BONE|STONE";
+		return "ROCK-BONE-DUST|STONE";
 	}
 
 	@Override
