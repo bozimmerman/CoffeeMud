@@ -591,11 +591,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		{
 			final List<SubScript> scripts=getScripts(hostObj);
 			if(!mob.amDead())
-			{
-				lastKnownLocation=mob.location();
-				if(homeKnownLocation==null)
-					homeKnownLocation=lastKnownLocation;
-			}
+				confirmLastKnownLocation(mob,mob);
 			String[] tt=null;
 			for(int v=0;v<scripts.size();v++)
 			{
@@ -1785,6 +1781,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return ret.toString();
 	}
 
+	protected void confirmLastKnownLocation(final MOB monster, final MOB source)
+	{
+		if((monster!=null)&&(monster.location()!=null))
+			lastKnownLocation=monster.location();
+		if((source!=null)&&(lastKnownLocation==null))
+			lastKnownLocation=source.location();
+		if(homeKnownLocation==null)
+			homeKnownLocation=lastKnownLocation;
+	}
+
 	@Override
 	public String varify(final MOB source,
 						 final Environmental target,
@@ -1794,47 +1800,38 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						 final Item secondaryItem,
 						 final String msg,
 						 final Object[] tmp,
-						 String varifyable)
+						 final String varifyableStr)
 	{
-		int t=varifyable.indexOf('$');
-		if((monster!=null)&&(monster.location()!=null))
-			lastKnownLocation=monster.location();
-		if(lastKnownLocation==null)
-		{
-			lastKnownLocation=source.location();
-			if(homeKnownLocation==null)
-				homeKnownLocation=lastKnownLocation;
-		}
-		else
-		if(homeKnownLocation==null)
-			homeKnownLocation=lastKnownLocation;
+		int t=varifyableStr.indexOf('$');
+		if(t<0)
+			return varifyableStr;
+		confirmLastKnownLocation(monster,source);
 		MOB randMOB=null;
-		//TODO: doing a StringBuilder and strc.replace(x, x+1, middle); is about 10X faster.
-		//      Also, lastKnownLocation doesn't need to be recalculated EVERY time, does it?
-		while((t>=0)&&(t<varifyable.length()-1))
+		final StringBuilder vchrs = new StringBuilder(varifyableStr);
+		while((t>=0)&&(t<vchrs.length()-1))
 		{
-			final char c=varifyable.charAt(t+1);
+			int replLen = 2;
+			final char c=vchrs.charAt(t+1);
 			String middle="";
-			final String front=varifyable.substring(0,t);
-			String back=varifyable.substring(t+2);
 			switch(c)
 			{
 				case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
 					middle=makeNamedString(tmp[CMath.s_int(Character.toString(c))]);
 					break;
 				case '$':
-					middle="$";
+					middle="";
 					t=t+1;
+					vchrs.deleteCharAt(t);
+					replLen=0;
 					break;
 				case '@':
-					if ((t < varifyable.length() - 2)
-					&& (Character.isLetter(varifyable.charAt(t + 2))||Character.isDigit(varifyable.charAt(t + 2))))
+					if ((t < vchrs.length() - 2)
+					&& (Character.isLetter(vchrs.charAt(t + 2))||Character.isDigit(vchrs.charAt(t + 2))))
 					{
-						final Environmental E = getArgumentItem("$" + varifyable.charAt(t + 2),
+						final Environmental E = getArgumentItem("$" + vchrs.charAt(t + 2),
 								source, monster, scripted, target, primaryItem, secondaryItem, msg, tmp);
-						if(back.length()>0)
-							back=back.substring(1);
 						middle = (E == null) ? "null" : "" + E;
+						replLen++;
 					}
 					break;
 				case 'a':
@@ -2002,9 +1999,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						middle = "";
 						Exit E = null;
 						int dir = -1;
-						if ((t < varifyable.length() - 2) && (CMLib.directions().getGoodDirectionCode("" + varifyable.charAt(t + 2)) >= 0))
+						if ((t < vchrs.length() - 2) && (CMLib.directions().getGoodDirectionCode("" + vchrs.charAt(t + 2)) >= 0))
 						{
-							dir = CMLib.directions().getGoodDirectionCode("" + varifyable.charAt(t + 2));
+							dir = CMLib.directions().getGoodDirectionCode("" + vchrs.charAt(t + 2));
 							E = lastKnownLocation.getExitInDir(dir);
 						}
 						else
@@ -2035,10 +2032,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					break;
 				case '<':
 				{
-					final int x = back.indexOf('>');
-					if (x >= 0)
+					final int x = vchrs.indexOf(">",t);
+					if (x > t)
 					{
-						String mid = back.substring(0, x);
+						String mid = vchrs.substring(t+1, x);
 						final int y = mid.indexOf(' ');
 						Environmental E = null;
 						String arg1 = "";
@@ -2050,17 +2047,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 						if (arg1.length() > 0)
 							middle = getVar(E, arg1, mid, source, target, scripted, monster, primaryItem, secondaryItem, msg, tmp);
-						back = back.substring(x + 1);
+						replLen=x-t+1;
 					}
 					break;
 				}
 				case '[':
 				{
 					middle = "";
-					final int x = back.indexOf(']');
-					if (x >= 0)
+					final int x = vchrs.indexOf("]",t);
+					if (x > t)
 					{
-						String mid = back.substring(0, x);
+						String mid = vchrs.substring(t+1, x);
 						final int y = mid.indexOf(' ');
 						if (y > 0)
 						{
@@ -2070,17 +2067,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if (Q != null)
 								middle = Q.getQuestItemName(num);
 						}
-						back = back.substring(x + 1);
+						replLen=x-t+1;
 					}
 					break;
 				}
 				case '{':
 				{
 					middle = "";
-					final int x = back.indexOf('}');
-					if (x >= 0)
+					final int x = vchrs.indexOf("}",t);
+					if (x > t)
 					{
-						String mid = back.substring(0, x).trim();
+						String mid = vchrs.substring(t+1, x);
 						final int y = mid.indexOf(' ');
 						if (y > 0)
 						{
@@ -2090,44 +2087,45 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if (Q != null)
 								middle = Q.getQuestMobName(num);
 						}
-						back = back.substring(x + 1);
+						replLen=x-t+1;
 					}
 					break;
 				}
 				case '%':
 				{
 					middle = "";
-					final int x = back.indexOf('%');
-					if (x >= 0)
+					final int x = vchrs.indexOf("%",t+1);
+					if (x > t)
 					{
-						middle = functify(scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp, back.substring(0, x).trim());
-						back = back.substring(x + 1);
+						middle = functify(scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp, vchrs.substring(t+1, x).trim());
+						replLen=x-t+1;
 					}
 					break;
 				}
 			}
-			if((back.startsWith("."))
-			&&(back.length()>1))
+			if((t+replLen<vchrs.length()-1)
+			&&(vchrs.charAt(t+replLen)=='.'))
 			{
-				if(back.charAt(1)=='$')
-					back=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,back);
-				if(back.startsWith(".LENGTH#"))
+				if(vchrs.charAt(t+replLen+1)=='$')
+					vchrs.replace(t+replLen+1, vchrs.length(), varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,vchrs.substring(t+replLen+1, vchrs.length())));
+				if(vchrs.substring(t+replLen).startsWith(".LENGTH#"))
 				{
 					middle=""+CMParms.parse(middle).size();
-					back=back.substring(8);
+					replLen += 8;
 				}
 				else
-				if((back.length()>1)&&Character.isDigit(back.charAt(1)))
+				if((t+replLen<vchrs.length()-1)
+				&&(Character.isDigit(vchrs.charAt(t+replLen+1))))
 				{
-					int x=1;
-					while((x<back.length())
-					&&(Character.isDigit(back.charAt(x))))
-						x++;
-					final int y=CMath.s_int(back.substring(1,x).trim());
-					back=back.substring(x);
-					final boolean rest=back.startsWith("..");
+					final int digStartOffset=replLen+1;
+					replLen+=2;
+					while((t+replLen<vchrs.length())
+					&&(Character.isDigit(vchrs.charAt(t+replLen))))
+						replLen++;
+					final int y=CMath.s_int(vchrs.substring(t+digStartOffset,t+replLen).trim());
+					final boolean rest=vchrs.substring(t+replLen).startsWith("..");
 					if(rest)
-						back=back.substring(2);
+						replLen+=2;
 					final Vector<String> V=CMParms.parse(middle);
 					if((V.size()>0)&&(y>=0))
 					{
@@ -2143,10 +2141,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			if((middle.length()>0)&&(middle.indexOf('$')>=0))
 				middle=CMStrings.replaceAll(middle, "$"+c, "_"+c); // prevent recursion!
-			varifyable=front+middle+back;
-			t=varifyable.indexOf('$',t);
+			vchrs.replace(t, t+replLen, middle);
+			t=vchrs.indexOf("$",t);
 		}
-		return varifyable;
+		return vchrs.toString();
 	}
 
 	protected PairList<String,String> getScriptVarSet(final String mobname, final String varname)
@@ -13047,11 +13045,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								{
 									final MOB monster=getMakeMOB(affecting);
 									if(lastKnownLocation==null)
-									{
-										lastKnownLocation=msg.source().location();
-										if(homeKnownLocation==null)
-											homeKnownLocation=lastKnownLocation;
-									}
+										confirmLastKnownLocation(monster,msg.source());
 									if((monster==null)||(monster.amDead())||(lastKnownLocation==null))
 										return true;
 									final Item defaultItem=(affecting instanceof Item)?(Item)affecting:null;
@@ -13191,11 +13185,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					final MOB monster=getMakeMOB(affecting);
 					if(lastKnownLocation==null)
-					{
-						lastKnownLocation=msg.source().location();
-						if(homeKnownLocation==null)
-							homeKnownLocation=lastKnownLocation;
-					}
+						confirmLastKnownLocation(monster, msg.source());
 					if((monster==null)||(monster.amDead())||(lastKnownLocation==null))
 						return true;
 					final Item defaultItem=(affecting instanceof Item)?(Item)affecting:null;
@@ -13311,11 +13301,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			final MOB monster=getMakeMOB(affecting);
 
 			if(lastKnownLocation==null)
-			{
-				lastKnownLocation=msg.source().location();
-				if(homeKnownLocation==null)
-					homeKnownLocation=lastKnownLocation;
-			}
+				confirmLastKnownLocation(monster, msg.source());
 			if((monster==null)||(monster.amDead())||(lastKnownLocation==null))
 				return;
 
