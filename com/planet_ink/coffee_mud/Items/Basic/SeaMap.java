@@ -92,6 +92,7 @@ public class SeaMap extends BardMap
 		case Room.DOMAIN_INDOORS_STONE:
 			if((room.phyStats().weight()>2)&&(room.maxRange()>4))
 				return '=';
+			//$FALL-THROUGH$
 		case Room.DOMAIN_INDOORS_WOOD:
 		case Room.DOMAIN_INDOORS_CAVE:
 		case Room.DOMAIN_INDOORS_MAGIC:

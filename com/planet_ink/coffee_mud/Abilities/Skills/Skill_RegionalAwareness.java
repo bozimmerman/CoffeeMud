@@ -196,6 +196,7 @@ public class Skill_RegionalAwareness extends StdSkill
 		case Room.DOMAIN_INDOORS_STONE:
 			if((room.basePhyStats().weight()>2)&&(room.maxRange()>4))
 				return '=';
+			//$FALL-THROUGH$
 		case Room.DOMAIN_INDOORS_WOOD:
 		case Room.DOMAIN_INDOORS_CAVE:
 		case Room.DOMAIN_INDOORS_MAGIC:

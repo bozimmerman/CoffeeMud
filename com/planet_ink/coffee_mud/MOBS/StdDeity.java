@@ -736,6 +736,7 @@ public class StdDeity extends StdMOB implements Deity
 								A.unInvoke();
 								mob.delEffect(A);
 							}
+							break;
 						}
 					}
 				}
