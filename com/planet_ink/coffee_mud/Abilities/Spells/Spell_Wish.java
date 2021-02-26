@@ -1508,9 +1508,19 @@ public class Spell_Wish extends Spell
 								tm.addAbility(A);
 								baseLoss+=500;
 								wishDrain(mob,baseLoss,true);
-								msg.source().tell(L("Your wish also causes you lose 2 levels."));
-								CMLib.leveler().unLevel(mob);
-								CMLib.leveler().unLevel(mob);
+								int numLevelsToLose = 1;
+								for(final Enumeration<Ability> a = tm.abilities();a.hasMoreElements();)
+								{
+									final Ability A1=a.nextElement();
+									if((A1.isSavable())
+									&&(!CMLib.ableMapper().qualifiesByLevel(tm, A1)))
+										numLevelsToLose++;
+								}
+								if(numLevelsToLose >= mob.phyStats().level())
+									numLevelsToLose = mob.phyStats().level()-1;
+								msg.source().tell(L("Your wish also causes you lose @x1 levels.",""+numLevelsToLose));
+								for(int l=0;i<numLevelsToLose;l++)
+									CMLib.leveler().unLevel(mob);
 							}
 							mob.setExperience(CMLib.leveler().getLevelExperience(mob, mob.basePhyStats().level()-1));
 						}
