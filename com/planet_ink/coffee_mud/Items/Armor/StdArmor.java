@@ -716,6 +716,27 @@ public class StdArmor extends StdContainer implements Armor
 		final int timsLevel=CMLib.itemBuilder().timsLevelCalculator(this);
 		if(timsLevel != phyStats.level())
 			id += " (Power level: "+timsLevel+")";
-		return id+"\n\r"+L("Base Protection: @x1",""+phyStats().armor());
+		final PhyStats stats = (PhyStats)CMClass.getCommon("DefaultPhyStats");
+		stats.setAllValues(0);
+		if(amBeingWornProperly())
+			affectPhyStats(owner(),stats);
+		else
+		{
+			synchronized(this)
+			{
+				final long wornCode=rawWornCode();
+				try
+				{
+					setRawWornCode(rawProperLocationBitmap());
+					affectPhyStats(owner(),stats);
+				}
+				finally
+				{
+					setRawWornCode(wornCode);
+				}
+			}
+		}
+		id +="\n\r"+L("Base Protection: @x1",""+(phyStats().armor()-stats.armor()));
+		return id;
 	}
 }
