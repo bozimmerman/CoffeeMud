@@ -8,6 +8,11 @@
   7. Many crafting skills now support FROM syntax to specify specific resources.
   8. Metacraft will select random resource by weight.  New value filter for metacraft in Random Generator.
   
+# Build 5.9.11.1 Release 02/26/2021
+  Bug Fix Release:
+  1. Fixed experience gains when EFFECTCXL is 0.
+  2. Changed EFFECTCXL default back to 0.
+  3. Fixed Enchanted Item mana-checks.
 # Build 5.9.11 Release 02/20/2021
   1. a(n) is now official filter syntax for a/an
   2. Shutdown command now supports AT syntax to set a RL time certain.
