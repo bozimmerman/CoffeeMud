@@ -1018,7 +1018,12 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		else
 			name=L("Something");
 
-		if(!R.show(teacherM, studentM, CMMsg.MSG_SPEAK, L("<S-NAME> offer(s) to teach <T-NAME>.")))
+		final Environmental tool=(teachableO instanceof Environmental)?(Environmental)teachableO:null;
+		final String teachWhat=teachableO.name();
+		final String ID=teachableO.ID();
+		final CMMsg msg=CMClass.getMsg(teacherM,studentM,tool,CMMsg.MSG_TEACH,null,teachWhat,ID);
+		if((!R.show(teacherM, studentM, CMMsg.MSG_SPEAK, L("<S-NAME> offer(s) to teach <T-NAME>.")))
+		||(!R.okMessage(teacherM, msg)))
 		{
 			if(callBack != null)
 				callBack.run();
