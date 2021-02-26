@@ -1513,7 +1513,7 @@ public class Spell_Wish extends Spell
 								{
 									final Ability A1=a.nextElement();
 									if((A1.isSavable())
-									&&(!CMLib.ableMapper().qualifiesByLevel(tm, A1)))
+									&&(!CMLib.ableMapper().qualifiesByTrajectory(tm, A1.ID())))
 										numLevelsToLose++;
 								}
 								if(numLevelsToLose >= mob.phyStats().level())

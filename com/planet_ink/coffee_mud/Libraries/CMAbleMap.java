@@ -1858,6 +1858,33 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	}
 
 	@Override
+	public boolean qualifiesByTrajectory(final MOB studentM, final String abilityID)
+	{
+		if(studentM==null)
+			return false;
+		final AbilityMapping personalMap = getPersonalMapping(studentM, abilityID);
+		if(personalMap != null)
+			return true;
+		for(int c=studentM.charStats().numClasses()-1;c>=0;c--)
+		{
+			final CharClass C=studentM.charStats().getMyClass(c);
+			final int level=getQualifyingLevel(C.ID(),true,abilityID);
+			if(level>=0)
+				return true;
+		}
+		int level=getQualifyingLevel(studentM.charStats().getMyRace().ID(),false,abilityID);
+		if(level>=0)
+			return true;
+		for(final Pair<Clan,Integer> c : studentM.clans())
+		{
+			level=getQualifyingLevel(c.first.getGovernment().getName(),false,abilityID);
+			if(level>=0)
+				return true;
+		}
+		return false;
+	}
+
+	@Override
 	public boolean getDefaultGain(final String ID, final boolean checkAll, final String abilityID)
 	{
 		if(completeAbleMap.containsKey(ID))
@@ -2319,6 +2346,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		};
 	}
 
+	@Override
 	public CompoundingRule getCompoundingRule(final MOB mob, final Ability A)
 	{
 		if(A==null)

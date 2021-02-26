@@ -548,6 +548,22 @@ public interface AbilityMapper extends CMLibrary
 	public boolean qualifiesByLevel(MOB studentM, String abilityID);
 
 	/**
+	 * Returns whether the given mob qualifies or will qualify for the given
+	 * ability because of any of their char classes at its current level, 
+	 * race, or clan.
+	 * @see AbilityMapper#qualifiesOnlyByClan(MOB, Ability)
+	 * @see AbilityMapper#qualifiesByLevel(MOB, Ability)
+	 * @see AbilityMapper#qualifiesByLevel(MOB, String)
+	 * @see AbilityMapper#qualifiesByCurrentClassAndLevel(MOB, Ability)
+	 * @see AbilityMapper#qualifiesOnlyByRace(MOB, Ability)
+	 * @param studentM the mob to check
+	 * @param abilityID the Ability ID() to check
+	 * @return true if the student qualifies because of their classes, race, etc
+	 */
+	public boolean qualifiesByTrajectory(final MOB studentM, final String abilityID);
+	
+	
+	/**
 	 * Returns whether the given Ability ID() represents a skill qualified for by
 	 * any existing character class, including All-Qualified abilities.
 	 * @see AbilityMapper#classOnly(String, String)
