@@ -132,7 +132,7 @@ public class Shutdown extends StdCommand implements Tickable
 				return false;
 			}
 			else
-			if((s.equalsIgnoreCase("IN"))&&(i==commands.size()-3))
+			if((s.equalsIgnoreCase("IN"))&&(i<=commands.size()-3))
 			{
 				noPrompt=true;
 				commands.remove(i);

@@ -2207,14 +2207,14 @@ public class MUD extends Thread implements MudHost
 				else
 				if(new File(".\\restart.bat").exists())
 				{
-					r.exec("cmd.exe /c restart.bat");
+					r.exec("cmd.exe /c start \"\" restart.bat");
 					Log.sysOut("Attempted to execute 'restart.bat' in "+new File(".").getCanonicalPath());
 				}
 			}
 			else
 			if(System.getProperty("os.name").toLowerCase().indexOf("windows")>=0)
 			{
-				r.exec("cmd.exe /c "+command);
+				r.exec("cmd.exe /c start \"\" "+command);
 				Log.sysOut("Attempted to execute '"+command+"' in "+new File(".").getCanonicalPath());
 			}
 			else
