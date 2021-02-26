@@ -1519,7 +1519,7 @@ public class Spell_Wish extends Spell
 								if(numLevelsToLose >= mob.phyStats().level())
 									numLevelsToLose = mob.phyStats().level()-1;
 								msg.source().tell(L("Your wish also causes you lose @x1 levels.",""+numLevelsToLose));
-								for(int l=0;i<numLevelsToLose;l++)
+								for(int l=0;l<numLevelsToLose;l++)
 									CMLib.leveler().unLevel(mob);
 							}
 							mob.setExperience(CMLib.leveler().getLevelExperience(mob, mob.basePhyStats().level()-1));
