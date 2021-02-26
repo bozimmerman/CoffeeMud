@@ -717,4 +717,10 @@ public class QuestBound implements Ability
 	{
 		return false;
 	}
+
+	@Override
+	public boolean mayBeEnchanted()
+	{
+		return false;
+	}
 }

@@ -133,9 +133,7 @@ public class Spell_MagicItem extends Spell
 			return false;
 		}
 
-		if((CMLib.ableMapper().lowestQualifyingLevel(enchantSpellA.ID())>24)
-		||(((StdAbility)enchantSpellA).usageCost(null,true)[0]>45)
-		||(CMath.bset(enchantSpellA.flags(), Ability.FLAG_CLANMAGIC)))
+		if(!enchantSpellA.mayBeEnchanted())
 		{
 			mob.tell(L("That spell is too powerful to enchant into anything."));
 			return false;

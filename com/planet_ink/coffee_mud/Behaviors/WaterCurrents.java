@@ -877,5 +877,11 @@ public class WaterCurrents extends ActiveTicker
 		{
 			return false;
 		}
+
+		@Override
+		public boolean mayBeEnchanted()
+		{
+			return false;
+		}
 	}
 }

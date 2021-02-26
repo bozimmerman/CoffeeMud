@@ -10348,9 +10348,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						final Item I=CMClass.getItem(name);
 						if(I!=null)
+						{
+							if(I==container)
+								container=null;
 							Is.add(I);
+						}
 						else
+						{
 							findSomethingCalledThis(name,monster,lastKnownLocation,Is,false);
+							if((container!=null)
+							&&(Is.size()==0))
+							{
+								findSomethingCalledThis(tt[1],monster,lastKnownLocation,Is,false);
+								if(Is.size()>0)
+									container=null;
+							}
+						}
 					}
 					for(int i=0;i<Is.size();i++)
 					{

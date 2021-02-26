@@ -649,4 +649,10 @@ public class ThinAbility implements Ability
 	{
 		return false;
 	}
+
+	@Override
+	public boolean mayBeEnchanted()
+	{
+		return false;
+	}
 }

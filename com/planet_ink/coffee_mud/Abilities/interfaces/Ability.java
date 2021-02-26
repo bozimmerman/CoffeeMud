@@ -338,6 +338,15 @@ public interface Ability extends Environmental
 	public boolean isNowAnAutoEffect();
 
 	/**
+	 * Returns whether this skill/spell/whatever can be used by various
+	 * other skills to enchant onto items, scrolls, wands, whatever.
+	 * Returning false really means this skill is just 'too powerful'
+	 * for such things.
+	 * @return true to allow enchanting, false otherwise
+	 */
+	public boolean mayBeEnchanted();
+
+	/**
 	 * Returns an integer array telling the system how much mana,
 	 * movement, or hit points are required to invoke this skill.
 	 * Use the Ability.USAGEINDEX_* constants to index the array.
@@ -608,6 +617,15 @@ public interface Ability extends Environmental
 	public final static int USAGE_HITPOINTS=4;
 	/** constant descriptions for the USAGE_* values @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageType() */
 	public final static String[] USAGE_DESCS={"MANA","MOVEMENT","HITPOINTS"};
+
+	/** The casting cost of a skill above which it is considered too powerful to enchant with */
+	public final static int POWER_COST_THRESHOLD = 74;
+
+	/** The casting cost of a skill above which it is considered too powerful to enchant with */
+	public final static int POWER_LEVEL_THRESHOLD = 24;
+
+	/** The override cost of a skill above which it is considered too powerful to enchant with */
+	public final static int POWER_OVERRIDE_THRESHOLD = 45;
 
 	/** index into internal cache used by usageCost(MOB,boolean) @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageCost(MOB,boolean) */
 	public final static int CACHEINDEX_NORMAL=0;

@@ -117,19 +117,19 @@ public class Prayer_EnchantRelic extends Prayer
 		commands.remove(commands.size()-1);
 		final Wand wand=(Wand)target;
 
-		final String spellName=CMParms.combine(commands,0).trim();
-		Ability wandThis=null;
+		final String prayerName=CMParms.combine(commands,0).trim();
+		Ability prayerA=null;
 		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
 			if((A!=null)
 			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 			&&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
-			&&(A.name().equalsIgnoreCase(spellName))
+			&&(A.name().equalsIgnoreCase(prayerName))
 			&&(!A.ID().equals(this.ID())))
-				wandThis=A;
+				prayerA=A;
 		}
-		if(wandThis==null)
+		if(prayerA==null)
 		{
 			for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 			{
@@ -137,20 +137,18 @@ public class Prayer_EnchantRelic extends Prayer
 				if((A!=null)
 				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 				&&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
-				&&(CMLib.english().containsString(A.name(),spellName))
+				&&(CMLib.english().containsString(A.name(),prayerName))
 				&&(!A.ID().equals(this.ID())))
-					wandThis=A;
+					prayerA=A;
 			}
 		}
-		if(wandThis==null)
+		if(prayerA==null)
 		{
-			mob.tell(L("You don't know how to enchant anything with '@x1'.",spellName));
+			mob.tell(L("You don't know how to enchant anything with '@x1'.",prayerName));
 			return false;
 		}
 
-		if((CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())>24)
-		||(((StdAbility)wandThis).usageCost(null,true)[0]>45)
-		||(CMath.bset(wandThis.flags(), Ability.FLAG_CLANMAGIC)))
+		if(!prayerA.mayBeEnchanted())
 		{
 			mob.tell(L("That is too powerful to enchant into anything."));
 			return false;
@@ -168,7 +166,7 @@ public class Prayer_EnchantRelic extends Prayer
 			return false;
 		}
 
-		int experienceToLose=10*CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID());
+		int experienceToLose=10*CMLib.ableMapper().lowestQualifyingLevel(prayerA.ID());
 		if((mob.getExperience()-experienceToLose)<0)
 		{
 			mob.tell(L("You don't have enough experience to pray for that."));
@@ -186,15 +184,15 @@ public class Prayer_EnchantRelic extends Prayer
 
 		if(success)
 		{
-			setMiscText(wandThis.ID()); // for informational purposes
+			setMiscText(prayerA.ID()); // for informational purposes
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> appear(s) enchanted!":"^S<S-NAME> enchant(s) <T-NAMESELF>"+inTheNameOf(mob)+".^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				wand.setSpell((Ability)wandThis.copyOf());
+				wand.setSpell((Ability)prayerA.copyOf());
 				if((wand.usesRemaining()==Integer.MAX_VALUE)||(wand.usesRemaining()<0))
 					wand.setUsesRemaining(0);
-				final int newLevel=wandThis.adjustedLevel(mob, asLevel);
+				final int newLevel=prayerA.adjustedLevel(mob, asLevel);
 				if(newLevel > wand.basePhyStats().level())
 					wand.basePhyStats().setLevel(newLevel);
 				wand.setUsesRemaining(wand.usesRemaining()+5);

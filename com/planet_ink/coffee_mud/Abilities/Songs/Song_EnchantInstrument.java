@@ -138,7 +138,7 @@ public class Song_EnchantInstrument extends Song
 		final Wand wand=(Wand)target;
 
 		final String spellName=CMParms.combine(commands,0).trim();
-		Ability wandThis=null;
+		Ability enchantA=null;
 		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
@@ -147,9 +147,9 @@ public class Song_EnchantInstrument extends Song
 			&&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
 			&&(A.name().equalsIgnoreCase(spellName))
 			&&(!A.ID().equals(this.ID())))
-				wandThis=A;
+				enchantA=A;
 		}
-		if(wandThis==null)
+		if(enchantA==null)
 		{
 			for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 			{
@@ -159,18 +159,16 @@ public class Song_EnchantInstrument extends Song
 				&&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
 				&&(CMLib.english().containsString(A.name(),spellName))
 				&&(!A.ID().equals(this.ID())))
-					wandThis=A;
+					enchantA=A;
 			}
 		}
-		if(wandThis==null)
+		if(enchantA==null)
 		{
 			mob.tell(L("You don't know how to enchant anything with '@x1'.",spellName));
 			return false;
 		}
 
-		if((CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())>24)
-		||(((StdAbility)wandThis).usageCost(null,true)[0]>45)
-		||(CMath.bset(wandThis.flags(), Ability.FLAG_CLANMAGIC)))
+		if(!enchantA.mayBeEnchanted())
 		{
 			mob.tell(L("That song is too powerful to enchant into wands."));
 			return false;
@@ -182,7 +180,7 @@ public class Song_EnchantInstrument extends Song
 			return false;
 		}
 
-		int experienceToLose=10*CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID());
+		int experienceToLose=10*CMLib.ableMapper().lowestQualifyingLevel(enchantA.ID());
 		if((mob.getExperience()-experienceToLose)<0)
 		{
 			mob.tell(L("You don't have enough experience to cast this spell."));
@@ -200,15 +198,15 @@ public class Song_EnchantInstrument extends Song
 
 		if(success)
 		{
-			setMiscText(wandThis.ID());
+			setMiscText(enchantA.ID());
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> sing(s) magically to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				wand.setSpell((Ability)wandThis.copyOf());
+				wand.setSpell((Ability)enchantA.copyOf());
 				if((wand.usesRemaining()==Integer.MAX_VALUE)||(wand.usesRemaining()<0))
 					wand.setUsesRemaining(0);
-				final int newLevel=wandThis.adjustedLevel(mob, asLevel);
+				final int newLevel=enchantA.adjustedLevel(mob, asLevel);
 				if(newLevel > wand.basePhyStats().level())
 					wand.basePhyStats().setLevel(newLevel);
 				wand.setUsesRemaining(wand.usesRemaining()+5);

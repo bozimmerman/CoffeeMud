@@ -402,7 +402,7 @@ public class Prayer_StorePrayer extends Prayer implements AbilityContainer, Disc
 		commands.remove(commands.size()-1);
 
 		final String spellName=CMParms.combine(commands,0).trim();
-		Prayer wandThis=null;
+		Prayer imbuePrayerA=null;
 		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
@@ -411,22 +411,21 @@ public class Prayer_StorePrayer extends Prayer implements AbilityContainer, Disc
 			&&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
 			&&(A.name().toUpperCase().startsWith(spellName.toUpperCase()))
 			&&(!A.ID().equals(this.ID())))
-				wandThis=(Prayer)A;
+				imbuePrayerA=(Prayer)A;
 		}
-		if(wandThis==null)
+		if(imbuePrayerA==null)
 		{
 			mob.tell(L("You don't know how to bless anything with '@x1'.",spellName));
 			return false;
 		}
-		if((CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())>24)
-		||(((StdAbility)wandThis).usageCost(null,true)[0]>45)
-		||(CMath.bset(wandThis.flags(), Ability.FLAG_CLANMAGIC)))
+
+		if(!imbuePrayerA.mayBeEnchanted())
 		{
 			mob.tell(L("That prayer is too powerful to store."));
 			return false;
 		}
 		Ability A=item.fetchEffect(ID());
-		if((A!=null)&&(A.text().length()>0)&&(!A.text().startsWith(wandThis.ID()+"/")))
+		if((A!=null)&&(A.text().length()>0)&&(!A.text().startsWith(imbuePrayerA.ID()+"/")))
 		{
 			mob.tell(L("'@x1' already has a different prayer stored in it.",item.name()));
 			return false;
@@ -435,14 +434,14 @@ public class Prayer_StorePrayer extends Prayer implements AbilityContainer, Disc
 		if(A==null)
 		{
 			A=(Ability)copyOf();
-			A.setMiscText(wandThis.ID()+"/0");
+			A.setMiscText(imbuePrayerA.ID()+"/0");
 		}
 		int charges=0;
 		final int x=A.text().indexOf('/');
 		if(x>=0)
 			charges=CMath.s_int(A.text().substring(x+1));
 		overridemana=-1;
-		int mana=usageCost(mob,true)[0]+wandThis.usageCost(mob,true)[0];
+		int mana=usageCost(mob,true)[0]+imbuePrayerA.usageCost(mob,true)[0];
 		if(mana>mob.maxState().getMana())
 			mana=mob.maxState().getMana();
 		overridemana=mana;
@@ -456,7 +455,7 @@ public class Prayer_StorePrayer extends Prayer implements AbilityContainer, Disc
 
 		if(success)
 		{
-			setMiscText(wandThis.ID()); // for informational purposes
+			setMiscText(imbuePrayerA.ID()); // for informational purposes
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
 					L("^S<S-NAME> @x1 while moving <S-HIS-HER> hands around <T-NAMESELF>.^?", prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
@@ -467,7 +466,7 @@ public class Prayer_StorePrayer extends Prayer implements AbilityContainer, Disc
 					A.setInvoker(mob);
 					target.addNonUninvokableEffect(A);
 				}
-				A.setMiscText(wandThis.ID()+"/"+(charges+1));
+				A.setMiscText(imbuePrayerA.ID()+"/"+(charges+1));
 				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glow(s) divinely."));
 				Prayer.infusePhysicalByAlignment(mob, target);
 			}

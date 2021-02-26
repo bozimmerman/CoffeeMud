@@ -320,6 +320,17 @@ public class StdAbility implements Ability
 	}
 
 	@Override
+	public boolean mayBeEnchanted()
+	{
+		if((CMLib.ableMapper().lowestQualifyingLevel(ID())>POWER_LEVEL_THRESHOLD)
+		||(usageCost(null,true)[0]>POWER_COST_THRESHOLD)
+		||(overrideMana()>POWER_OVERRIDE_THRESHOLD)
+		||(CMath.bset(flags(), FLAG_CLANMAGIC)))
+			return false;
+		return true;
+	}
+
+	@Override
 	public String L(final String str, final String ... xs)
 	{
 		return CMLib.lang().fullSessionTranslation(str, xs);

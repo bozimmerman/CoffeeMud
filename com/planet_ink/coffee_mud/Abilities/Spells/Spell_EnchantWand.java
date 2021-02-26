@@ -110,7 +110,7 @@ public class Spell_EnchantWand extends Spell
 		final Wand wand=(Wand)target;
 
 		final String spellName=CMParms.combine(commands,0).trim();
-		Ability wandThis=null;
+		Ability wandThisA=null;
 		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
@@ -119,9 +119,9 @@ public class Spell_EnchantWand extends Spell
 			&&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
 			&&(A.name().equalsIgnoreCase(spellName))
 			&&(!A.ID().equals(this.ID())))
-				wandThis=A;
+				wandThisA=A;
 		}
-		if(wandThis==null)
+		if(wandThisA==null)
 		{
 			for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 			{
@@ -131,18 +131,16 @@ public class Spell_EnchantWand extends Spell
 				&&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
 				&&(CMLib.english().containsString(A.name(),spellName))
 				&&(!A.ID().equals(this.ID())))
-					wandThis=A;
+					wandThisA=A;
 			}
 		}
-		if(wandThis==null)
+		if(wandThisA==null)
 		{
 			mob.tell(L("You don't know how to enchant anything with '@x1'.",spellName));
 			return false;
 		}
 
-		if((CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())>24)
-		||(((StdAbility)wandThis).usageCost(null,true)[0]>45)
-		||(CMath.bset(wandThis.flags(), Ability.FLAG_CLANMAGIC)))
+		if(!wandThisA.mayBeEnchanted())
 		{
 			mob.tell(L("That spell is too powerful to enchant into wands."));
 			return false;
@@ -154,7 +152,7 @@ public class Spell_EnchantWand extends Spell
 			return false;
 		}
 
-		int experienceToLose=10*CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID());
+		int experienceToLose=10*CMLib.ableMapper().lowestQualifyingLevel(wandThisA.ID());
 		if((mob.getExperience()-experienceToLose)<0)
 		{
 			mob.tell(L("You don't have enough experience to cast this spell."));
@@ -172,15 +170,15 @@ public class Spell_EnchantWand extends Spell
 
 		if(success)
 		{
-			setMiscText(wandThis.ID());
+			setMiscText(wandThisA.ID());
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				wand.setSpell((Ability)wandThis.copyOf());
+				wand.setSpell((Ability)wandThisA.copyOf());
 				if((wand.usesRemaining()==Integer.MAX_VALUE)||(wand.usesRemaining()<0))
 					wand.setUsesRemaining(0);
-				final int lowestSpellLevel = CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID());
+				final int lowestSpellLevel = CMLib.ableMapper().lowestQualifyingLevel(wandThisA.ID());
 				if(lowestSpellLevel > wand.basePhyStats().level())
 					wand.basePhyStats().setLevel(lowestSpellLevel);
 				wand.setUsesRemaining(wand.usesRemaining()+5);

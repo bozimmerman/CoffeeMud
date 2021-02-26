@@ -368,9 +368,8 @@ public class Spell_StoreSpell extends Spell implements AbilityContainer
 			mob.tell(L("You don't know how to enchant anything with '@x1'.",spellName));
 			return false;
 		}
-		if((CMLib.ableMapper().lowestQualifyingLevel(storeSpellA.ID())>24)
-		||(((StdAbility)storeSpellA).usageCost(null,true)[0]>45)
-		||(CMath.bset(storeSpellA.flags(), Ability.FLAG_CLANMAGIC)))
+
+		if(!storeSpellA.mayBeEnchanted())
 		{
 			mob.tell(L("That spell is too powerful to store."));
 			return false;

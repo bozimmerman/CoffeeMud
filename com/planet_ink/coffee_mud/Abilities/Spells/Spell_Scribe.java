@@ -135,9 +135,8 @@ public class Spell_Scribe extends Spell
 			mob.tell(L("You don't know how to scribe '@x1'.",spellName));
 			return false;
 		}
-		if((CMLib.ableMapper().lowestQualifyingLevel(scrollThis.ID())>24)
-		||(((StdAbility)scrollThis).usageCost(null,true)[0]>45)
-		||(CMath.bset(scrollThis.flags(), Ability.FLAG_CLANMAGIC)))
+
+		if(!scrollThis.mayBeEnchanted())
 		{
 			mob.tell(L("That spell is too powerful to scribe."));
 			return false;

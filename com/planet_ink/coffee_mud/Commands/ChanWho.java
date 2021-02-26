@@ -77,12 +77,12 @@ public class ChanWho extends StdCommand
 			return false;
 		}
 		final int channelInt=channels.getChannelIndex(channel.toUpperCase());
-		channel=channels.getChannel(channelInt).name();
 		if(channelInt<0)
 		{
 			mob.tell(L("You must specify a valid channel name. Try CHANNELS for a list."));
 			return false;
 		}
+		channel=channels.getChannel(channelInt).name();
 		final String head="^x\n\rListening on "+channel+":^?^.^N\n\r";
 		final StringBuffer buf=new StringBuffer("");
 		final boolean areareq=CMLib.channels().getChannel(channelInt).flags().contains(ChannelsLibrary.ChannelFlag.SAMEAREA);

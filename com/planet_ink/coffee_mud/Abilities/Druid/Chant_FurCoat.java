@@ -248,7 +248,7 @@ public class Chant_FurCoat extends Chant
 				theArmor.setRawLogicalAnd(true);
 				for(int i=target.numItems()-1;i>=0;i--)
 				{
-					final Item I=mob.getItem(i);
+					final Item I=target.getItem(i);
 					if((I.rawWornCode()&wornCode)>0)
 						I.unWear();
 				}

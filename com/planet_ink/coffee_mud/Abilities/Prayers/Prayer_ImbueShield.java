@@ -221,9 +221,7 @@ public class Prayer_ImbueShield extends Prayer
 			}
 		}
 
-		if((CMLib.ableMapper().lowestQualifyingLevel(imbuePrayerA.ID())>maxPrayerLevel())
-		||(((StdAbility)imbuePrayerA).usageCost(null,true)[0]>45)
-		||(CMath.bset(imbuePrayerA.flags(), Ability.FLAG_CLANMAGIC)))
+		if(!imbuePrayerA.mayBeEnchanted())
 		{
 			mob.tell(L("That prayer is too powerful to imbue into anything."));
 			return false;
