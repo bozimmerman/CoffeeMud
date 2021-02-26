@@ -1892,6 +1892,12 @@ public class MUD extends Thread implements MudHost
 
 				final LinkedList<MUD> hostMuds=new LinkedList<MUD>();
 				String ports=page.getProperty("PORT");
+				if((ports==null)||(ports.length()==0))
+				{
+					Log.errOut("HOST#"+this.threadCode+" could not start any listeners.");
+					failedStart=true;
+					return;
+				}
 				int pdex=ports.indexOf(',');
 				while(pdex>0)
 				{
