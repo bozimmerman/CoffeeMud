@@ -1035,8 +1035,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 						}
 					}
 				}
-				return levels;
 			}
+			return levels;
 		}
 		return 0;
 	}
