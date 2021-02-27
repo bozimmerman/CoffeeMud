@@ -76,6 +76,7 @@ public class Transfer extends At
 			mob.tell(L("Transfer whom where? Try all or a mob name or item followed by item name, followerd by a Room ID, target player name, inventory, area name, or room text!"));
 			return false;
 		}
+		final List<String> origCommands = new XVector<String>(commands);
 		commands.remove(0);
 		String searchName=commands.get(0);
 		final Room curRoom=mob.location();
@@ -347,6 +348,11 @@ public class Transfer extends At
 		}
 		if(V.size()==0)
 		{
+			if((!itemFlag)&&(commands.size()>1))
+			{
+				origCommands.add(1, "ITEM");
+				return this.execute(mob, origCommands, metaFlags);
+			}
 			mob.tell(L("Transfer what?  '@x1' is unknown to you.",searchName));
 			return false;
 		}
@@ -388,11 +394,6 @@ public class Transfer extends At
 			if(port<=0)
 				port=27733;
 			final int pdex=server.lastIndexOf(':');
-			if(pdex>0)
-			{
-				port=CMath.s_int(server.substring(pdex+1));
-				server=server.substring(0,pdex);
-			}
 			if(pdex>0)
 			{
 				port=CMath.s_int(server.substring(pdex+1));
