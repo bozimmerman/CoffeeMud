@@ -148,8 +148,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			if((inhab!=null)
 			&&(inhab!=mob)
 			&&(!h1.contains(inhab))
-			&&(CMLib.flags().isSeeable(inhab)||CMLib.flags().canMove(inhab))
-			&&(CMLib.flags().isSeeable(inhab)||(!CMLib.flags().isCloaked(inhab)))
+			&&(CMLib.flags().isSeeable(inhab)||(CMLib.flags().canMove(inhab)&&(!CMLib.flags().isCloaked(inhab))))
 			&&((includePlayers)||(!mob.isMonster())||(!inhab.isMonster())))
 				h.addUnsafe(inhab);
 		}
