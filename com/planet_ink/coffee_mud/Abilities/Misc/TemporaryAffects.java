@@ -92,6 +92,23 @@ public class TemporaryAffects extends StdAbility
 	}
 
 	@Override
+	public String accountForYourself()
+	{
+		if(affects.size()>0)
+		{
+			final StringBuilder str=new StringBuilder("");
+			for(final Pair<Object,int[]> p : affects)
+			{
+				if(p.first instanceof Ability)
+					str.append(((Ability)p.first).accountForYourself()).append("\n\r");
+			}
+			return str.toString().trim();
+		}
+		else
+			return name();
+	}
+
+	@Override
 	public int classificationCode()
 	{
 		if(affects.size()>0)

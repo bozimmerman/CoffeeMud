@@ -85,13 +85,13 @@ public class Thief_UsePotion extends ThiefSkill
 		return USAGE_MOVEMENT|USAGE_MANA;
 	}
 
-	public List<Ability> returnOffensiveAffects(final Physical fromMe)
+	public List<Ability> returnOffensiveAffects(final Potion fromMe)
 	{
 		final List<Ability> offenders=new ArrayList<Ability>();
 
-		for(final Enumeration<Ability> a=fromMe.effects();a.hasMoreElements();)
+		for(final Iterator<Ability> a=fromMe.getSpells().iterator();a.hasNext();)
 		{
-			final Ability A=a.nextElement();
+			final Ability A=a.next();
 			if((A!=null)
 			&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
@@ -150,7 +150,7 @@ public class Thief_UsePotion extends ThiefSkill
 			mob.tell(L("@x1 is not a potion!",potion.name()));
 			return false;
 		}
-		final List<Ability> V=returnOffensiveAffects(potion);
+		final List<Ability> V=returnOffensiveAffects((Potion)potion);
 		if((V.size()==0)||(!(potion instanceof Drink)))
 		{
 			if(potion.fetchEffect("Poison_Rotten")!=null)
