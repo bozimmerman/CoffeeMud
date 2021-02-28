@@ -99,9 +99,10 @@ public class Prayer_EmpowerUnholyArmor extends Prayer
 			mob.tell(mob,target,null,L("You can't empower <T-NAME> with this prayer!"));
 			return false;
 		}
+		final long rawProp =((Armor)target).rawProperLocationBitmap(); 
 		if((target instanceof Shield)
-		||((((Armor)target).rawProperLocationBitmap()&~(okLocs|Wearable.WORN_HELD))==0)
-		||((((Armor)target).rawProperLocationBitmap()&~okLocs)!=((Armor)target).rawProperLocationBitmap()))
+		||((rawProp&okLocs)==0)
+		||((rawProp&(okLocs|Wearable.WORN_HELD))!=((Armor)target).rawProperLocationBitmap()))
 		{
 			mob.tell(mob,target,null,L("You can't empower something worn like <T-NAME> with this prayer!"));
 			return false;
