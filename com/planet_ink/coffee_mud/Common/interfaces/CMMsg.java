@@ -1207,6 +1207,8 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_WINQUEST=139;
 	/** MINOR_MASK minor action code type, denoting an act between a player and a deity */
 	public static final int TYP_HOLYEVENT=140;
+	/** MINOR_MASK minor action code type, denoting an act between a player and a deity */
+	public static final int TYP_EMISSION=141;
 
 	/** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -1237,7 +1239,7 @@ public interface CMMsg extends CMCommon
 		"COMMANDFAIL","METACOMMAND", "ITEMGENERATED", "ATTACKMISS", "WEATHER","ITEMSGENERATED",
 		"WROTE", "REWRITE", "WASREAD", "PREMOVE", "THINK", "STARTUP", "RPXPCHANGE",
 		"COMMANDREJECT","RECIPELEARNED", "GRAVITY", "LEGALSTATE", "NEWROOM","CAUSESINK",
-		"ENDQUEST","WINQUEST","HOLYEVENT"
+		"ENDQUEST","WINQUEST","HOLYEVENT","EMISSION"
 	};
 
 	/** Index string descriptions of all the MAJOR_MASK code MAKS_s */
