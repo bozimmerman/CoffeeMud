@@ -1579,6 +1579,8 @@ public interface CMMsg extends CMCommon
 	public static final int MSG_CAUSESINK=MASK_SOUND|MASK_ALWAYS|TYP_CAUSESINK;
 	/** combined MAJOR and MINOR codes for useful event message type for a sinking ship */
 	public static final int MSG_HOLYEVENT=MASK_ALWAYS|TYP_HOLYEVENT;
+	/** combined MAJOR and MINOR codes for useful event message type for emissions/radiation */
+	public static final int MSG_EMISSION=TYP_EMISSION;
 
 	/**
 	 * An enum to use for an external message check from inside
