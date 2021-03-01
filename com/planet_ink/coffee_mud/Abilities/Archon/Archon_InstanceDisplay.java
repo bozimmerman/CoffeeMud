@@ -120,7 +120,17 @@ public class Archon_InstanceDisplay extends ArchonSkill
 		if(A==null)
 			disp="";
 		else
-			disp = A.getStat("SELECT-DISPLAYFOR \""+target.Name()+"\" \""+instanceID+"\"");
+		{
+			try
+			{
+				disp = A.getStat("SELECT-DISPLAYFOR \""+target.Name()+"\" \""+instanceID+"\"");
+			}
+			catch(final IllegalArgumentException ae)
+			{
+				mob.tell(L("'@x1' is not a valid instance id type."));
+				return false;
+			}
+		}
 
 		success = success && (disp.length()>0);
 
