@@ -5303,8 +5303,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
 						{
-							if((playerMask!=null)&&(!CMLib.masking().maskCheck(playerMask, mob, true)))
-								return false;
 							for(final Object o : parms)
 							{
 								if(o instanceof Clan)
@@ -6162,8 +6160,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
 						{
-							if((playerMask!=null)&&(!CMLib.masking().maskCheck(playerMask, mob, true)))
-								return false;
 							Area A=null;
 							Integer val=null;
 							for(final Object o : parms)
