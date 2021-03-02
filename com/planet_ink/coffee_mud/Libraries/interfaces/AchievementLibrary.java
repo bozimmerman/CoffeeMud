@@ -55,7 +55,7 @@ public interface AchievementLibrary extends CMLibrary
 	/**
 	 * The list of arguments/parameters common to all achievement event types
 	 */
-	public final String[] BASE_ACHIEVEMENT_PARAMETERS = new String[] { "EVENT", "DISPLAY", "TITLE", "REWARDS", "VISIBLEMASK", "DURATION" };
+	public final String[] BASE_ACHIEVEMENT_PARAMETERS = new String[] { "EVENT", "DISPLAY", "TITLE", "REWARDS", "VISIBLEMASK", "DURATION", "PLAYERMASK" };
 
 	/**
 	 * Events define the type of achievement, describing specific arguments that
@@ -67,7 +67,7 @@ public interface AchievementLibrary extends CMLibrary
 	 */
 	public enum Event
 	{
-		KILLS("Number of Kills",new String[]{"NUM","ZAPPERMASK","PLAYERMASK"}),
+		KILLS("Number of Kills",new String[]{"NUM","ZAPPERMASK"}),
 		STATVALUE("A Stat value",new String[]{"VALUE","ABOVEBELOW","STAT"}),
 		FACTION("A Faction level",new String[]{"VALUE","ABOVEBELOW","ID"}),
 		FACTIONS("A group of factions",new String[]{"VALUE","ABOVEBELOW","IDMASK","NUM"}),
@@ -79,23 +79,23 @@ public interface AchievementLibrary extends CMLibrary
 		SKILLUSE("Using Skills",new String[]{"NUM","ABILITYID"}),
 		SKILLPROF("Skill proficiency",new String[]{"NUM", "PROF","ABILITYID"}),
 		SOCIALUSE("Using Socials",new String[]{"NUM","SOCIALID"}),
-		QUESTOR("Completing Quests",new String[]{"NUM","PLAYERMASK","QUESTMASK"}),
+		QUESTOR("Completing Quests",new String[]{"NUM","QUESTMASK"}),
 		ACHIEVER("Completing Achievements",new String[]{"ACHIEVEMENTLIST"}),
-		LEVELSGAINED("Gaining Levels",new String[]{"NUM","PLAYERMASK"}),
-		CLASSLEVELSGAINED("Gaining Class Levels",new String[]{"NUM","CLASS","PLAYERMASK"}),
-		TIMEPLAYED("Time Played",new String[]{"SECONDS","PLAYERMASK"}),
+		LEVELSGAINED("Gaining Levels",new String[]{"NUM"}),
+		CLASSLEVELSGAINED("Gaining Class Levels",new String[]{"NUM","CLASS"}),
+		TIMEPLAYED("Time Played",new String[]{"SECONDS"}),
 		JUSTBE("Character State",new String[]{"PLAYERMASK"}),
-		DEATHS("Dieing",new String[]{"NUM","ZAPPERMASK","PLAYERMASK"}),
-		REMORT("Remorting",new String[]{"NUM","PLAYERMASK"}),
-		RETIRE("Retiring",new String[]{"NUM","PLAYERMASK"}),
-		GOTITEM("Got an item",new String[]{"NUM","ITEMMASK","PLAYERMASK"}),
-		BIRTHS("Births",new String[]{"NUM","ZAPPERMASK","PLAYERMASK"}),
-		RACEBIRTH("Race Creation",new String[]{"NUM","ZAPPERMASK","PLAYERMASK"}),
-		PLAYERBORNPARENT("Being a Player Parent",new String[]{"NUM","ZAPPERMASK","PLAYERMASK"}),
+		DEATHS("Dieing",new String[]{"NUM","ZAPPERMASK"}),
+		REMORT("Remorting",new String[]{"NUM"}),
+		RETIRE("Retiring",new String[]{"NUM"}),
+		GOTITEM("Got an item",new String[]{"NUM","ITEMMASK"}),
+		BIRTHS("Births",new String[]{"NUM","ZAPPERMASK"}),
+		RACEBIRTH("Race Creation",new String[]{"NUM","ZAPPERMASK"}),
+		PLAYERBORNPARENT("Being a Player Parent",new String[]{"NUM","ZAPPERMASK"}),
 		PLAYERBORN("Being a Player Born",new String[]{"PLAYERMASK"}),
 		CHARACTERS("Account size",new String[]{"NUM", "PLAYERMASK"}),
 		CLANMEMBERS("Membership size",new String[]{"NUM", "PLAYERMASK"}),
-		CLANKILLS("Killed a rival clan member",new String[]{"NUM","ZAPPERMASK","PLAYERMASK"}),
+		CLANKILLS("Killed a rival clan member",new String[]{"NUM","ZAPPERMASK"}),
 		CLANLEVELSGAINED("Clan levels",new String[]{"NUM"}),
 		CLANDECLARE("Declared a new relationship",new String[]{"NUM","RELATION"}),
 		CLANPROPERTY("Purchased property",new String[]{"NUM","AREAMASK"}),
@@ -512,7 +512,7 @@ public interface AchievementLibrary extends CMLibrary
 	 * is returned, otherwise an error message is returned.
 	 * @param agent whether this is a player or account
 	 * @param row the coded key=value pairs row.
-	 * @param addIfPossible true if, on success, the new achievment is added, false otherwise
+	 * @param addIfPossible true if, on success, the new achievement is added, false otherwise
 	 * @return the error message, or "" for success
 	 */
 	public String evaluateAchievement(AccountStats.Agent agent, String row, boolean addIfPossible);

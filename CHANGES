@@ -7,6 +7,7 @@
   6. Default MINMANACOST is now skill level or 10, whichever is greater.
   7. Many crafting skills now support FROM syntax to specify specific resources.
   8. Metacraft will select random resource by weight.  New value filter for metacraft in Random Generator.
+  9. All achievements now support PLAYERMASK, even if it makes no sense.
   
 # Build 5.9.11.1 Release 02/26/2021
   Bug Fix Release:
