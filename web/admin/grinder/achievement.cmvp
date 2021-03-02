@@ -130,6 +130,26 @@
     </TR>
     <TR>
         <TD>
+            <FONT COLOR=YELLOW>Visibility Mask: </FONT>
+            <FONT COLOR=WHITE SIZE=-1></FONT>
+        </TD>
+        <TD>
+            <INPUT TYPE=TEXT SIZE=60 NAME=DISPLAY VALUE="@AchievementData?VISIBLEMASK@">
+            <BR><FONT COLOR=WHITE SIZE=-1>@AchievementData?HELP&FIELD=VISIBLEMASK@</FONT>
+        </TD>
+    </TR>
+    <TR>
+        <TD>
+            <FONT COLOR=YELLOW>Player Mask: </FONT>
+            <FONT COLOR=WHITE SIZE=-1></FONT>
+        </TD>
+        <TD>
+            <INPUT TYPE=TEXT SIZE=60 NAME=DISPLAY VALUE="@AchievementData?PLAYERMASK@">
+            <BR><FONT COLOR=WHITE SIZE=-1>@AchievementData?HELP&FIELD=PLAYERMASK@</FONT>
+        </TD>
+    </TR>
+    <TR>
+        <TD>
             <FONT COLOR=YELLOW>Title Award: </FONT>
             <FONT COLOR=WHITE SIZE=-1></FONT>
         </TD>

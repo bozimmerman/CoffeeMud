@@ -7974,6 +7974,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				help=getAchievementsHelpFromMap(helpMap,null,"VISIBLEMASK");
 				parmTree.put("VISIBLEMASK",CMLib.genEd().prompt(mob, parmTree.get("VISIBLEMASK"), ++showNumber, showFlag, L("Visible Mask"), true, false, help, null, null));
 
+				help=getAchievementsHelpFromMap(helpMap,null,"PLAYERMASK");
+				parmTree.put("PLAYERMASK",CMLib.genEd().prompt(mob, parmTree.get("PLAYERMASK"), ++showNumber, showFlag, L("Player Mask"), true, false, help, null, null));
+
 				for(final String parmName : E.getParameters())
 				{
 					if(!CMStrings.contains(BASE_ACHIEVEMENT_PARAMETERS, parmName))

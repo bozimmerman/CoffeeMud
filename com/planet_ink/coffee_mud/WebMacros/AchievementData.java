@@ -268,6 +268,30 @@ public class AchievementData extends StdWebMacro
 			if(value!=null)
 				str.append(CMStrings.replaceAll(value,"\"","&quot;")+", ");
 		}
+		if(parms.containsKey("VISIBLEMASK"))
+		{
+			String value=httpReq.getUrlParameter("VISIBLEMASK");
+			if((value==null)&&(A!=null))
+				value=A.getRawParmVal("VISIBLEMASK");
+			if(value!=null)
+				str.append(CMStrings.replaceAll(value,"\"","&quot;")+", ");
+		}
+		if(parms.containsKey("PLAYERMASK"))
+		{
+			String value=httpReq.getUrlParameter("PLAYERMASK");
+			if((value==null)&&(A!=null))
+				value=A.getRawParmVal("PLAYERMASK");
+			if(value!=null)
+				str.append(CMStrings.replaceAll(value,"\"","&quot;")+", ");
+		}
+		if(parms.containsKey("DISPLAY"))
+		{
+			String value=httpReq.getUrlParameter("DISPLAY");
+			if((value==null)&&(A!=null))
+				value=A.getDisplayStr();
+			if(value!=null)
+				str.append(CMStrings.replaceAll(value,"\"","&quot;")+", ");
+		}
 		if(parms.containsKey("TITLE"))
 		{
 			String value=httpReq.getUrlParameter("TITLE");
