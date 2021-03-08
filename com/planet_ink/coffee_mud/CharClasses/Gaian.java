@@ -174,7 +174,7 @@ public class Gaian extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Ranger_Hide",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Druid_KnowPlants",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_Goodberry",false);
-		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL)||CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.INDIFF)||CMLib.factions().isAlignmentLoaded(Faction.Align.NEUTRAL))
 			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_PlantSelf",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_GrowClub",false);
