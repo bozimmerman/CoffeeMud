@@ -154,6 +154,12 @@ public class GrinderFactions
 				v=CMath.s_int(httpReq.getUrlParameter("RPXP"+num));
 				if(v!=0)
 					old+=" RPXP="+v;
+				id=httpReq.getUrlParameter("CHGRESTIME");
+				if((id!=null)&&(id.trim().length()>0))
+					old+=" RESTIME=\""+id+"\"";
+				id=httpReq.getUrlParameter("CHGANNOUNCE");
+				if((id!=null)&&(id.trim().length()>0))
+					old+=" ANNOUNCE=\""+id+"\"";
 				old+=";";
 				old+=httpReq.getUrlParameter("CHANGESMASK"+num);
 				F.createChangeEvent("CHANGE"+num, old);

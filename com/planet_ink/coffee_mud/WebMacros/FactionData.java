@@ -328,6 +328,8 @@ public class FactionData extends StdWebMacro
 									httpReq.addFakeUrlParameter("XP"+v,""+E.getBonusXP());
 									httpReq.addFakeUrlParameter("RPXP"+v,""+E.getBonusRoleplayXP());
 									httpReq.addFakeUrlParameter("CHANGESTPARM"+v,E.triggerParameters());
+									httpReq.addFakeUrlParameter("CHGRESTIME"+v,""+E.getFlagValue("RESTIME"));
+									httpReq.addFakeUrlParameter("CHGANNOUNCE"+v,""+E.getFlagValue("ANNOUNCE"));
 									String id="";
 									final Vector<String> flags=CMParms.parse(E.flagCache());
 									for(int f=0;f<flags.size();f++)
@@ -360,6 +362,7 @@ public class FactionData extends StdWebMacro
 							val=""+httpReq.getUrlParameter("CHANGESTPARM"+num);
 							str.append("<INPUT TYPE=TEXT NAME=CHANGESTPARM"+showNum+" SIZE=20 MAXLENGTH=255 VALUE=\""+htmlOutgoingFilter(val)+"\">");
 							str.append("</TD><TD>");
+							str.append("<FONT SIZE=-1 COLOR=WHITE>Direction:</FONT><BR>");
 							val=""+CMath.s_int(httpReq.getUrlParameter("CHANGESDIR"+num));
 							str.append("<SELECT NAME=CHANGESDIR"+showNum+">");
 							for(int f=0;f<Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS.length;f++)
@@ -370,9 +373,9 @@ public class FactionData extends StdWebMacro
 								str.append(">"+CMStrings.capitalizeAndLower(Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS[f]));
 							}
 							str.append("</SELECT>");
-							str.append("</TD><TD>");
+							str.append("<FONT SIZE=-1 COLOR=WHITE>Factor:</FONT><BR>");
 							val=CMath.toPct(httpReq.getUrlParameter("CHANGESFACTOR"+num));
-							str.append("<INPUT TYPE=TEXT NAME=CHANGESFACTOR"+showNum+" SIZE=3 VALUE=\""+val+"\">");
+							str.append("<INPUT TYPE=TEXT NAME=CHANGESFACTOR"+showNum+" SIZE=2 VALUE=\""+val+"\">");
 							str.append("</TD><TD>");
 							final Vector<String> flags=new Vector<String>();
 							String id="";
@@ -390,13 +393,31 @@ public class FactionData extends StdWebMacro
 							str.append("</SELECT>");
 							str.append("</TD><TD>");
 							val=""+httpReq.getUrlParameter("CHANGESMASK"+num);
-							str.append("<textarea NAME=CHANGESMASK"+showNum+" rows=4 cols=18 wrap=hard>"+htmlOutgoingFilter(val)+"</textarea>");
-							str.append("</TD><TD><FONT COLOR=WHITE>");
+							str.append("<textarea NAME=CHANGESMASK"+showNum+" rows=4 cols=15 wrap=hard>"+htmlOutgoingFilter(val)+"</textarea>");
+							str.append("</TD><TD>");
+							str.append("<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>");
+							str.append("<TR><TD><FONT COLOR=WHITE>");
+							str.append("XP:");
+							str.append("</FONT></TD><TD>");
 							val=""+CMath.s_int(httpReq.getUrlParameter("XP"+num));
-							str.append("XP:<INPUT TYPE=TEXT NAME=XP"+showNum+" SIZE=3 VALUE=\""+val+"\"><BR>");
+							str.append("<INPUT TYPE=TEXT NAME=XP"+showNum+" SIZE=3 VALUE=\""+val+"\">");
+							str.append("</TD></TR><TR><TD><FONT COLOR=WHITE>");
+							str.append("RP:");
+							str.append("</FONT></TD><TD>");
 							val=""+CMath.s_int(httpReq.getUrlParameter("RPXP"+num));
-							str.append("RP:<INPUT TYPE=TEXT NAME=RPXP"+showNum+" SIZE=3 VALUE=\""+val+"\"><BR>");
-							str.append("</FONT></TD></TR>");
+							str.append("<INPUT TYPE=TEXT NAME=RPXP"+showNum+" SIZE=3 VALUE=\""+val+"\">");
+							str.append("</TD></TR><TR><TD><FONT COLOR=WHITE>");
+							str.append("RTime:");
+							str.append("</FONT></TD><TD>");
+							val=httpReq.getUrlParameter("CHGRESTIME"+num);
+							str.append("<INPUT TYPE=TEXT NAME=CHGRESTIME"+showNum+" SIZE=3 VALUE=\""+htmlOutgoingFilter(val)+"\">");
+							str.append("</TD></TR><TR><TD><FONT COLOR=WHITE>");
+							str.append("Announce:");
+							str.append("</FONT></TD><TD>");
+							val=""+httpReq.getUrlParameter("CHGANNOUNCE"+num);
+							str.append("<INPUT TYPE=TEXT NAME=CHGANNOUNCE"+showNum+" SIZE=3 VALUE=\""+htmlOutgoingFilter(val)+"\">");
+							str.append("</TD></TR></TABLE>");
+							str.append("</TD></TR>");
 						}
 						num++;
 					}
@@ -433,11 +454,12 @@ public class FactionData extends StdWebMacro
 					str.append("<BR>");
 					str.append("<INPUT TYPE=TEXT NAME=CHANGESTPARM"+showNum+" SIZE=20 MAXLENGTH=255 VALUE=\"\">");
 					str.append("</TD><TD>");
+					str.append("<FONT SIZE=-1 COLOR=WHITE>Direction:</FONT><BR>");
 					str.append("<SELECT NAME=CHANGESDIR"+showNum+">");
 					for(int f=0;f<Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS.length;f++)
 						str.append("<OPTION VALUE=\""+f+"\">"+CMStrings.capitalizeAndLower(Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS[f]));
 					str.append("</SELECT>");
-					str.append("</TD><TD>");
+					str.append("<FONT SIZE=-1 COLOR=WHITE>Factor:</FONT><BR>");
 					str.append("<INPUT TYPE=TEXT NAME=CHANGESFACTOR"+showNum+" SIZE=3 VALUE=\"\">");
 					str.append("</TD><TD>");
 					str.append("<SELECT NAME=CHANGESFLAGS"+showNum+"_ MULTIPLE>");
@@ -445,11 +467,27 @@ public class FactionData extends StdWebMacro
 						str.append("<OPTION VALUE=\""+element+"\">"+CMStrings.capitalizeAndLower(element));
 					str.append("</SELECT>");
 					str.append("</TD><TD>");
-					str.append("<textarea NAME=CHANGESMASK"+showNum+" rows=4 cols=18 wrap=hard></textarea>");
-					str.append("</TD><TD><FONT COLOR=WHITE>");
-					str.append("XP:<INPUT TYPE=TEXT NAME=XP"+showNum+" SIZE=3 VALUE=\"0\"><BR>");
-					str.append("RP:<INPUT TYPE=TEXT NAME=RPXP"+showNum+" SIZE=3 VALUE=\"0\"><BR>");
-					str.append("</FONT></TD></TR>");
+					str.append("<textarea NAME=CHANGESMASK"+showNum+" rows=4 cols=15 wrap=hard></textarea>");
+					str.append("</TD><TD>");
+					str.append("<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>");
+					str.append("<TR><TD><FONT COLOR=WHITE>");
+					str.append("XP:");
+					str.append("</FONT></TD><TD>");
+					str.append("<INPUT TYPE=TEXT NAME=XP"+showNum+" SIZE=3 VALUE=\"0\">");
+					str.append("</TD></TR><TR><TD><FONT COLOR=WHITE>");
+					str.append("RP:");
+					str.append("</FONT></TD><TD>");
+					str.append("<INPUT TYPE=TEXT NAME=RPXP"+showNum+" SIZE=3 VALUE=\"0\">");
+					str.append("</TD></TR><TR><TD><FONT COLOR=WHITE>");
+					str.append("RTime:");
+					str.append("</FONT></TD><TD>");
+					str.append("<INPUT TYPE=TEXT NAME=CHGRESTIME"+showNum+" SIZE=3 VALUE=\"\">");
+					str.append("</TD></TR><TR><TD><FONT COLOR=WHITE>");
+					str.append("Announce:");
+					str.append("</FONT></TD><TD>");
+					str.append("<INPUT TYPE=TEXT NAME=CHGANNOUNCE"+showNum+" SIZE=3 VALUE=\"\">");
+					str.append("</TD></TR></TABLE>");
+					str.append("</TD></TR>");
 				}
 				if(parms.containsKey("ADJUSTMENTFACTORS"))
 				{
@@ -777,7 +815,7 @@ public class FactionData extends StdWebMacro
 							str.append("</SELECT>");
 							str.append("</TD><TD VALIGN=TOP>");
 							val=""+httpReq.getUrlParameter("REACTIONMASK"+num);
-							str.append("<INPUT TYPE=TEXT NAME=REACTIONMASK"+showNum+" SIZE=18 VALUE=\""+htmlOutgoingFilter(val)+"\">");
+							str.append("<INPUT TYPE=TEXT NAME=REACTIONMASK"+showNum+" SIZE=15 VALUE=\""+htmlOutgoingFilter(val)+"\">");
 							str.append("</TD><TD>");
 							str.append("<SELECT NAME=REACTIONABC"+showNum+">");
 							val=""+httpReq.getUrlParameter("REACTIONABC"+num);
@@ -808,7 +846,7 @@ public class FactionData extends StdWebMacro
 							str.append("</SELECT>");
 							str.append("</TD><TD VALIGN=TOP>");
 							val=""+httpReq.getUrlParameter("REACTIONPARM"+num);
-							str.append("<INPUT TYPE=TEXT NAME=REACTIONPARM"+showNum+" SIZE=18 VALUE=\""+htmlOutgoingFilter(val)+"\">");
+							str.append("<INPUT TYPE=TEXT NAME=REACTIONPARM"+showNum+" SIZE=15 VALUE=\""+htmlOutgoingFilter(val)+"\">");
 							str.append("</TD>");
 							str.append("</TR>");
 						}
@@ -822,19 +860,19 @@ public class FactionData extends StdWebMacro
 						str.append("<OPTION VALUE=\""+(rangeCodes.getFirst(i)+"\">"+rangeCodes.getSecond(i)));
 					str.append("</SELECT>");
 					str.append("</TD><TD VALIGN=TOP>");
-					str.append("<INPUT TYPE=TEXT NAME=REACTIONMASK"+showNum+" SIZE=18 VALUE=\"\">");
+					str.append("<INPUT TYPE=TEXT NAME=REACTIONMASK"+showNum+" SIZE=15 VALUE=\"\">");
 					str.append("</TD><TD VALIGN=TOP>");
 					str.append("<SELECT NAME=REACTIONABC"+showNum+">");
 					str.append("<OPTION VALUE=\"\" SELECTED>Select action");
 					for(final Enumeration<Behavior> e=CMClass.behaviors();e.hasMoreElements();)
 					{
 						final Behavior B=e.nextElement();
-						str.append("<OPTION VALUE=\""+B.ID()+"\">"+CMStrings.limit(B.ID(),20));
+						str.append("<OPTION VALUE=\""+B.ID()+"\">"+CMStrings.limit(B.ID(),16));
 					}
 					for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 					{
 						final Ability A=e.nextElement();
-						str.append("<OPTION VALUE=\""+A.ID()+"\">"+CMStrings.limit(A.ID(),20));
+						str.append("<OPTION VALUE=\""+A.ID()+"\">"+CMStrings.limit(A.ID(),16));
 					}
 					for(final Enumeration<Command> e=CMClass.commands();e.hasMoreElements();)
 					{
@@ -846,7 +884,7 @@ public class FactionData extends StdWebMacro
 					}
 					str.append("</SELECT>");
 					str.append("</TD><TD VALIGN=TOP>");
-					str.append("<INPUT TYPE=TEXT NAME=REACTIONPARM"+showNum+" SIZE=18 VALUE=\"\">");
+					str.append("<INPUT TYPE=TEXT NAME=REACTIONPARM"+showNum+" SIZE=15 VALUE=\"\">");
 					str.append("</TD></TR>");
 				}
 
