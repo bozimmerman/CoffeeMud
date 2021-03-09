@@ -127,7 +127,7 @@ public class Spell_Light extends Spell
 		final Room room=mob.location();
 		if((success)&&(room!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("^S<S-NAME> attain(s) a light above <S-HIS-HER> head!"):L("^S<S-NAME> invoke(s) a white light above <S-HIS-HER> head!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("^S<T-NAME> attain(s) a light above <T-HIS-HER> head!"):L("^S<S-NAME> invoke(s) a white light above <T-YOUPOSS> head!^?"));
 			if(room.okMessage(mob,msg))
 			{
 				room.send(mob,msg);
