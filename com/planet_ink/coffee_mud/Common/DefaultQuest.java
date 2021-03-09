@@ -3685,6 +3685,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						else
 						if(q.mobGroup!=null)
 							toSet.addAll(q.mobGroup);
+						boolean register=false;
 						final List<Item> itemSet=new Vector<Item>();
 						if(q.item!=null)
 							itemSet.add(q.item);
@@ -3693,7 +3694,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							itemSet.addAll(q.itemGroup);
 						else
 						if(q.loadedItems!=null)
+						{
+							register=true;
 							itemSet.addAll(q.loadedItems);
+						}
 						for(int i=0;i<toSet.size();i++)
 						{
 							final MOB M2=toSet.get(i);
@@ -3705,6 +3709,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 									Item I3=itemSet.get(i3);
 									if(q.item==I3)
 									{
+										runtimeRegisterObject(I3);
 										M2.moveItemTo(I3);
 										questifyScriptableBehavs(q.item);
 										q.item=(Item)q.item.copyOf();
@@ -3719,6 +3724,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 										I3=(Item)I3.copyOf();
 										questifyScriptableBehavs(I3);
 										I3.setOwner(null); // because the i3 copy is nowhere
+										runtimeRegisterObject(I3);
 										M2.moveItemTo(I3);
 									}
 								}
@@ -3730,6 +3736,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 								questifyScriptableBehavs(I3);
 								if(q.item==I3)
 								{
+									runtimeRegisterObject(I3);
 									M2.moveItemTo(I3);
 									q.item=(Item)q.item.copyOf();
 									q.item.setOwner(null);// because the copy is nowhere
@@ -3742,6 +3749,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 									I3=(Item)I3.copyOf();
 									I3.setOwner(null);// because the copy is nowhere
 									questifyScriptableBehavs(I3);
+									runtimeRegisterObject(I3);
 									M2.moveItemTo(I3);
 								}
 							}
