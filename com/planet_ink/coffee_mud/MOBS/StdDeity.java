@@ -1663,7 +1663,8 @@ public class StdDeity extends StdMOB implements Deity
 					final Room R=M.location();
 					if(R==null)
 						continue;
-					if(M.charStats().getStat(CharStats.STAT_FAITH)>=100)
+					if((M.charStats().getStat(CharStats.STAT_FAITH)>=100)
+					&&(M.baseCharStats().getWorshipCharID().equals(M.charStats().getWorshipCharID())))
 					{
 						if(!CMLib.masking().maskCheck(getClericRequirements(),M,true))
 						{
