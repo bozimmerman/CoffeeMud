@@ -51,9 +51,8 @@ public class StdDeity extends StdMOB implements Deity
 	protected String	worshipSin		= "";
 	protected int		rebukeCheckDown	= 0;
 	protected boolean	norecurse		= false;
-	protected MOB		blacklist		= null;
-	protected int		blackmarks		= 0;
-	protected long		lastBlackmark	= 0;
+
+	protected final PrioritizingLimitedMap<String,int[]> blacklist=new PrioritizingLimitedMap<String,int[]>(20,30*60000L,60*60000L,100);
 
 	protected List<DeityTrigger>	worshipTriggers		= new Vector<DeityTrigger>();
 	protected List<DeityTrigger>	worshipCurseTriggers= new Vector<DeityTrigger>();
@@ -1639,6 +1638,22 @@ public class StdDeity extends StdMOB implements Deity
 		return true;
 	}
 
+	protected int[] getBlackmarks(final MOB M)
+	{
+		final int[] blackmarks;
+		synchronized(blacklist)
+		{
+			if(!blacklist.containsKey(M.Name()))
+			{
+				blackmarks=new int[]{0};
+				blacklist.put(M.Name(), blackmarks);
+			}
+			else
+				blackmarks=blacklist.get(M.Name());
+		}
+		return blackmarks;
+	}
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -1647,15 +1662,10 @@ public class StdDeity extends StdMOB implements Deity
 		if((tickID==Tickable.TICKID_MOB)
 		&&((--rebukeCheckDown)<0))
 		{
-			rebukeCheckDown=10;
+			rebukeCheckDown=30;
 			for(final Enumeration<MOB> p=CMLib.players().players();p.hasMoreElements();)
 			{
 				final MOB M=p.nextElement();
-				if((lastBlackmark>0)
-				&&(blacklist!=null)
-				&&(blacklist!=M)
-				&&((System.currentTimeMillis()-lastBlackmark)<120000))
-					continue;
 				if((!M.isMonster())
 				&&(M.charStats().getWorshipCharID().equals(name()))
 				&&(CMLib.flags().isInTheGame(M,true)))
@@ -1668,7 +1678,8 @@ public class StdDeity extends StdMOB implements Deity
 					{
 						if(!CMLib.masking().maskCheck(getClericRequirements(),M,true))
 						{
-							if((blacklist==M)&&((++blackmarks)>30))
+							final int[] blackmarks=getBlackmarks(M);
+							if((++blackmarks[0]>30))
 							{
 								final CMMsg eventMsg=CMClass.getMsg(this, M, null,
 										CMMsg.MSG_HOLYEVENT, null,
@@ -1678,39 +1689,35 @@ public class StdDeity extends StdMOB implements Deity
 								final CMMsg msg=CMClass.getMsg(M,this,null,CMMsg.MSG_REBUKE,L("<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!"));
 								if(M.okMessage(M,msg))
 									R.send(M,msg);
-								blackmarks=0;
-								blacklist=null;
-								lastBlackmark=0;
+								blacklist.remove(M.Name());
 							}
 							else
 							{
-								if(blacklist!=M)
-									blackmarks=0;
-								blacklist=M;
-								blackmarks++;
-								lastBlackmark=System.currentTimeMillis();
 								final CMMsg eventMsg=CMClass.getMsg(this, M, null,
 										CMMsg.MSG_HOLYEVENT, null,
 										CMMsg.MSG_HOLYEVENT, null,
 										CMMsg.NO_EFFECT, HolyEvent.DISAPPOINTED.toString());
-								eventMsg.setValue(blackmarks);
-								R.send(this, eventMsg);
-								if((blackmarks%5)==0)
+								eventMsg.setValue(blackmarks[0]);
+								if(M.okMessage(M,eventMsg))
+									R.send(this, eventMsg);
+								if(blackmarks[0]==0)
 									M.tell(L("You feel dirtied by the disappointment of @x1.",name()));
 							}
 						}
 						else
-						if(blacklist==M)
 						{
-							blackmarks=0;
-							blacklist=null;
-							lastBlackmark=0;
+							synchronized(blacklist)
+							{
+								if(blacklist.containsKey(M.Name()))
+									blacklist.remove(M.Name());
+							}
 						}
 					}
 					else
 					if(!CMLib.masking().maskCheck(getWorshipRequirements(),M,true))
 					{
-						if((blacklist==M)&&((++blackmarks)>30))
+						final int[] blackmarks=getBlackmarks(M);
+						if((++blackmarks[0]>30))
 						{
 							final CMMsg eventMsg=CMClass.getMsg(this, M, null,
 									CMMsg.MSG_HOLYEVENT, null,
@@ -1723,35 +1730,25 @@ public class StdDeity extends StdMOB implements Deity
 						}
 						else
 						{
-							if(blacklist!=M)
-								blackmarks=0;
-							blacklist=M;
-							blackmarks++;
 							final CMMsg eventMsg=CMClass.getMsg(this, M, null,
 									CMMsg.MSG_HOLYEVENT, null,
 									CMMsg.MSG_HOLYEVENT, null,
 									CMMsg.NO_EFFECT, HolyEvent.DISAPPOINTED.toString());
-							eventMsg.setValue(blackmarks);
-							R.send(this, eventMsg);
-							lastBlackmark=System.currentTimeMillis();
-							if(blackmarks==1)
+							eventMsg.setValue(blackmarks[0]);
+							if(M.okMessage(M,eventMsg))
+								R.send(this, eventMsg);
+							if(blackmarks[0]==1)
 								M.tell(L("Worshipper, you have disappointed @x1. Make amends or face my wrath!",name()));
 						}
 					}
 					else
-					if(blacklist==M)
 					{
-						blackmarks=0;
-						blacklist=null;
-						lastBlackmark=0;
+						synchronized(blacklist)
+						{
+							if(blacklist.containsKey(M.Name()))
+								blacklist.remove(M.Name());
+						}
 					}
-				}
-				else
-				if(blacklist==M)
-				{
-					blackmarks=0;
-					blacklist=null;
-					lastBlackmark=0;
 				}
 			}
 			final long curTime=System.currentTimeMillis()-60000;
