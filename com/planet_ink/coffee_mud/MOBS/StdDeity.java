@@ -1699,9 +1699,11 @@ public class StdDeity extends StdMOB implements Deity
 										CMMsg.NO_EFFECT, HolyEvent.DISAPPOINTED.toString());
 								eventMsg.setValue(blackmarks[0]);
 								if(M.okMessage(M,eventMsg))
+								{
 									R.send(this, eventMsg);
-								if(blackmarks[0]==0)
-									M.tell(L("You feel dirtied by the disappointment of @x1.",name()));
+									if(blackmarks[0]==0)
+										M.tell(L("You feel dirtied by the disappointment of @x1.",name()));
+								}
 							}
 						}
 						else
@@ -1736,9 +1738,11 @@ public class StdDeity extends StdMOB implements Deity
 									CMMsg.NO_EFFECT, HolyEvent.DISAPPOINTED.toString());
 							eventMsg.setValue(blackmarks[0]);
 							if(M.okMessage(M,eventMsg))
+							{
 								R.send(this, eventMsg);
-							if(blackmarks[0]==1)
-								M.tell(L("Worshipper, you have disappointed @x1. Make amends or face my wrath!",name()));
+								if(blackmarks[0]==1)
+									M.tell(L("Worshipper, you have disappointed @x1. Make amends or face my wrath!",name()));
+							}
 						}
 					}
 					else
