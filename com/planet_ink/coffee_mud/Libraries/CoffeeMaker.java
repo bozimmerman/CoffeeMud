@@ -79,12 +79,6 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(newText!=null)
 			setPropertiesStr(mob,newText,false);
 
-		if(CMProps.getSpeedAdjustment()!=1.0)
-		{
-			final double baseSpeed=mob.basePhyStats().speed();
-			if(baseSpeed>1.0)
-				mob.basePhyStats().setSpeed(1.0+((baseSpeed-1.0)*CMProps.getSpeedAdjustment()));
-		}
 		mob.recoverPhyStats();
 		mob.recoverCharStats();
 		mob.baseState().setHitPoints(CMLib.leveler().getLevelHitPoints(mob));

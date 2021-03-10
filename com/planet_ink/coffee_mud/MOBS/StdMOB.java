@@ -90,6 +90,7 @@ public class StdMOB implements MOB
 	protected long										ageMinutes			= 0;
 	protected int										money				= 0;
 	protected double									moneyVariation		= 0.0;
+	protected double									speedAdj			= CMProps.getSpeedAdjustment();
 	protected int										attributesBitmap	= MOB.Attrib.NOTEACH.getBitCode();
 	protected String									databaseID			= "";
 
@@ -158,6 +159,7 @@ public class StdMOB implements MOB
 			R = CMClass.getRace("StdRace");
 		baseCharStats().setMyRace(R);
 		basePhyStats().setLevel(1);
+		speedAdj = CMProps.getSpeedAdjustment();
 		xtraValues = CMProps.getExtraStatCodesHolder(this);
 	}
 
@@ -777,11 +779,11 @@ public class StdMOB implements MOB
 	public void recoverPhyStats()
 	{
 		basePhyStats.copyInto(phyStats);
-		if(CMProps.getSpeedAdjustment()!=1.0)
+		if(speedAdj!=1.0)
 		{
 			final double baseSpeed=phyStats.speed();
 			if(baseSpeed>1.0)
-				phyStats.setSpeed(1.0+((baseSpeed-1.0)*CMProps.getSpeedAdjustment()));
+				phyStats.setSpeed(1.0+((baseSpeed-1.0)*speedAdj));
 		}
 		phyStats.setWeight(phyStats.weight() + charStats.getStat(CharStats.STAT_WEIGHTADJ));
 		if (location() != null)
@@ -1202,6 +1204,7 @@ public class StdMOB implements MOB
 	{
 		amDead = false;
 		removeFromGame = false;
+		speedAdj = CMProps.getSpeedAdjustment();
 
 		// will ensure no duplicate ticks, this obj, this id
 		kickFlag = true;
@@ -1244,6 +1247,7 @@ public class StdMOB implements MOB
 	public void bringToLife(final Room newLocation, final boolean resetStats)
 	{
 		amDead = false;
+		speedAdj = CMProps.getSpeedAdjustment();
 		if ((miscText != null) && (resetStats) && (isGeneric()))
 		{
 			if (CMProps.getBoolVar(CMProps.Bool.MOBCOMPRESS) && (miscText instanceof byte[]))
