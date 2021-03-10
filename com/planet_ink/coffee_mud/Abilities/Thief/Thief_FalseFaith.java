@@ -112,6 +112,24 @@ public class Thief_FalseFaith extends ThiefSkill
 	}
 
 	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost, msg))
+			return false;
+		if((msg.sourceMinor()==CMMsg.TYP_HOLYEVENT)
+		&&(msg.source() instanceof Deity)
+		&&(msg.othersMessage()!=null)
+		&&(msg.target()==affected)
+		&&((msg.othersMessage().equalsIgnoreCase(Deity.HolyEvent.REBUKE.toString()))
+			||(msg.othersMessage().equalsIgnoreCase(Deity.HolyEvent.DISAPPOINTED.toString()))))
+		{
+			msg.source().tell(L("That minion is beyond your disappointment."));
+			return false;
+		}
+		return true;
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;
