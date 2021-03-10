@@ -777,6 +777,12 @@ public class StdMOB implements MOB
 	public void recoverPhyStats()
 	{
 		basePhyStats.copyInto(phyStats);
+		if(CMProps.getSpeedAdjustment()!=1.0)
+		{
+			final double baseSpeed=phyStats.speed();
+			if(baseSpeed>1.0)
+				phyStats.setSpeed(1.0+((baseSpeed-1.0)*CMProps.getSpeedAdjustment()));
+		}
 		phyStats.setWeight(phyStats.weight() + charStats.getStat(CharStats.STAT_WEIGHTADJ));
 		if (location() != null)
 			location().affectPhyStats(this, phyStats);
