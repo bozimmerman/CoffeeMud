@@ -71,7 +71,7 @@ public class DrowElf extends StdMOB
 
 		setWimpHitPoint(5);
 
-		basePhyStats().setSpeed(2.0);
+		basePhyStats().setSpeed(1.0+CMProps.getSpeedAdjustment());
 		basePhyStats().setSensesMask(PhyStats.CAN_SEE_DARK | PhyStats.CAN_SEE_INFRARED);
 
 		if(gender == MALE)

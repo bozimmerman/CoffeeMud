@@ -53,7 +53,7 @@ public class Angelfish extends Fish
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		affectableStats.setSpeed(affectableStats.speed() + 1.0);
+		affectableStats.setSpeed(affectableStats.speed() + CMProps.getSpeedAdjustment());
 	}
 
 	private final String[]	racialAbilityNames			= { "Aquan", "Skill_Swim", "Blessing" };

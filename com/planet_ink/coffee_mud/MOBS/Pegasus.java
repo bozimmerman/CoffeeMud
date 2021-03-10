@@ -63,7 +63,7 @@ public class Pegasus extends StdRideable
 		baseCharStats().getMyRace().startRacing(this,false);
 
 		basePhyStats().setDamage(8);
-		basePhyStats().setSpeed(3.0);
+		basePhyStats().setSpeed(1.0+(2.0*CMProps.getSpeedAdjustment()));
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(4);
 		basePhyStats().setArmor(60);

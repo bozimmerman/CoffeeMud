@@ -384,7 +384,7 @@ public class GenRace extends StdRace
 			affectableStats.setHeight(affectableStats.height()+adjPStats.height());
 			affectableStats.setLevel(affectableStats.level()+adjPStats.level());
 			affectableStats.setSensesMask(affectableStats.sensesMask()|adjPStats.sensesMask());
-			affectableStats.setSpeed(affectableStats.speed()+adjPStats.speed());
+			affectableStats.setSpeed(affectableStats.speed()+(CMProps.getSpeedAdjustment()*adjPStats.speed()));
 			affectableStats.setWeight(affectableStats.weight()+adjPStats.weight());
 		}
 	}

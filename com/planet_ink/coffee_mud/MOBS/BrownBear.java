@@ -62,7 +62,7 @@ public class BrownBear extends StdMOB
 		baseCharStats().getMyRace().startRacing(this,false);
 
 		basePhyStats().setDamage(8);
-		basePhyStats().setSpeed(2.0);
+		basePhyStats().setSpeed(1.0+CMProps.getSpeedAdjustment());
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(5);
 		basePhyStats().setArmor(70);

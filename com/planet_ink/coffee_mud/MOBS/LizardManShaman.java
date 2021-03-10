@@ -60,7 +60,7 @@ public class LizardManShaman extends LizardMan
 		baseCharStats().setMyRace(CMClass.getRace("LizardMan"));
 		basePhyStats().setAbility(0);
 		basePhyStats().setDamage(6);
-		basePhyStats().setSpeed(3);
+		basePhyStats().setSpeed(1.0+(2.0*CMProps.getSpeedAdjustment()));
 		basePhyStats().setLevel(3);
 		basePhyStats().setArmor(80);
 		baseCharStats().setCurrentClass(CMClass.getCharClass("Cleric"));

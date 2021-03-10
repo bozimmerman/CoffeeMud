@@ -216,7 +216,7 @@ public class Druid_ShapeShift extends StdAbility
 			stats.setAttackAdjustment(stats.attackAdjustment()+(int)Math.round(CMath.mul(adjustedLevel,form.attackAdj)/2.0));
 			stats.setArmor(stats.armor()-(int)Math.round(CMath.mul(adjustedLevel,form.armorAdj)/2.0));
 			stats.setDamage(stats.damage()+(int)Math.round(CMath.mul(adjustedLevel,form.dmgAdj)/2.0));
-			stats.setSpeed(stats.speed()+(form.speedAdj * (1.0+(xlvl/3.0))));
+			stats.setSpeed(stats.speed()+(form.speedAdj * CMProps.getSpeedAdjustment() * (1.0+(xlvl/3.0))));
 			//stats.setSensesMask(stats.sensesMask()|PhyStats.CAN_GRUNT_WHEN_STUPID);
 		}
 	}

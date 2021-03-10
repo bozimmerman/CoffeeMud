@@ -562,13 +562,13 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 					phyStats.setHeight(phyStats.height() + ((Integer) changes[c + 1]).intValue());
 					break;
 				case PhyStats.NUM_STATS:
-					phyStats.setSpeed(phyStats.speed() + ((Double) changes[c + 1]).doubleValue());
+					phyStats.setSpeed(phyStats.speed() + (((Double) changes[c + 1]).doubleValue()));
 					break;
 				}
 			}
 		}
 	}
-	
+
 	protected boolean setItemCheck(final Item I)
 	{
 		return true;
@@ -594,7 +594,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			return allSet.setActivated;
 		final MOB mob=(MOB)P;
 		int ct=0;
-		List<ItemSetDef> allDefs=new LinkedList<ItemSetDef>();
+		final List<ItemSetDef> allDefs=new LinkedList<ItemSetDef>();
 		for(int i=0;i<mob.numItems();i++)
 		{
 			final Item I2=mob.getItem(i);
@@ -611,7 +611,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 				}
 			}
 		}
-		boolean setActivated=ct >= allSet.allSetReqNum;
+		final boolean setActivated=ct >= allSet.allSetReqNum;
 		for(final ItemSetDef def : allDefs)
 		{
 			def.setChecked=true;
@@ -619,7 +619,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		}
 		return setActivated;
 	}
-	
+
 	protected void clearSet(final MOB mob, final ItemSetDef allSet)
 	{
 		if(allSet!=null)
@@ -654,7 +654,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			}
 		}
 	}
-	
+
 	public boolean canApply(final MOB mob)
 	{
 		if((affected instanceof Item)

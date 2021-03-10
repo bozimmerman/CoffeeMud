@@ -270,7 +270,7 @@ public class Monk extends StdCharClass
 			}
 			if(!anyWeapons(mob))
 			{
-				affectableStats.setSpeed(affectableStats.speed()+1.0);
+				affectableStats.setSpeed(affectableStats.speed()+CMProps.getSpeedAdjustment());
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+classLevel);
 			}
 			if(affected.fetchEffect("Falling")!=null)

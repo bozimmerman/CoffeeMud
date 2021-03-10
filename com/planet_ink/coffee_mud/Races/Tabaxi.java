@@ -150,7 +150,7 @@ public class Tabaxi extends GreatCat
 	{
 		super.affectPhyStats(affected,affectableStats);
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INFRARED); //would like to turn this darkvison if it is okay with Zac.
-		affectableStats.setSpeed(affectableStats.speed() * 2.0);
+		affectableStats.setSpeed(affectableStats.speed() + CMProps.getSpeedAdjustment());
 	}
 
 	@Override

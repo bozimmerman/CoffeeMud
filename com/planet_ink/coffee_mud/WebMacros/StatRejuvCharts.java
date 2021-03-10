@@ -158,6 +158,16 @@ public class StatRejuvCharts extends StdWebMacro
 
 		for(int l=1;l<=MAX_LEVEL;l+=SKIP_LEVEL)
 		{
+			if(l==1)
+			{
+				for(int s=4;s<=MAX_STAT;s+=SKIP_STAT)
+				{
+					hitpointcharts[l][s]=sh;
+					manacharts[l][s]=sm;
+					movementcharts[l][s]=sv;
+				}
+				continue;
+			}
 			for(int s=4;s<=MAX_STAT;s+=SKIP_STAT)
 			{
 				int num=0;

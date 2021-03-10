@@ -116,7 +116,7 @@ public class Prayer_Avatar extends Prayer
 			final MOB mob=(MOB)affected;
 			final int xlvl=2+(int)Math.round(CMath.div(adjustedLevel(mob,0),1.5));
 			affectedStats.setArmor(affectedStats.armor()-(xlvl));
-			affectedStats.setSpeed(affectedStats.speed()+1.0+CMath.mul(0.10,super.getXLEVELLevel(invoker())));
+			affectedStats.setSpeed(affectedStats.speed()+(CMProps.getSpeedAdjustment()*(1.0+CMath.mul(0.10,super.getXLEVELLevel(invoker())))));
 			affectedStats.setAttackAdjustment(affectedStats.attackAdjustment()+(xlvl*2));
 			final String deityName=mob.charStats().deityName();
 			if(deityName.length()>0)

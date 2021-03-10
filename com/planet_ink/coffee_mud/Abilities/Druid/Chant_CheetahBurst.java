@@ -87,7 +87,7 @@ public class Chant_CheetahBurst extends Chant
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if(cheetahTick==1)
-			affectableStats.setSpeed(affectableStats.speed() + 3.0+CMath.mul(0.1,getXLEVELLevel(invoker())));
+			affectableStats.setSpeed(affectableStats.speed() + (CMProps.getSpeedAdjustment()*3.0+CMath.mul(0.1,getXLEVELLevel(invoker()))));
 	}
 
 	@Override

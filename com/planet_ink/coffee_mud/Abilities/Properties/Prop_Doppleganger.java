@@ -120,7 +120,7 @@ public class Prop_Doppleganger extends Property
 				level=minLevel;
 			if(level>maxLevel)
 				level=maxLevel;
-			int difflevel=(int)Math.round(CMath.mul(level,diffPct))+diffAdd;
+			final int difflevel=(int)Math.round(CMath.mul(level,diffPct))+diffAdd;
 			I.basePhyStats().setLevel(difflevel);
 			I.phyStats().setLevel(difflevel);
 			final int oldMaterial=I.material();
@@ -150,7 +150,7 @@ public class Prop_Doppleganger extends Property
 			}
 		}
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -200,7 +200,7 @@ public class Prop_Doppleganger extends Property
 					level=minLevel;
 				if(level>maxLevel)
 					level=maxLevel;
-				int difflevel=(int)Math.round(CMath.mul(level,diffPct))+diffAdd;
+				final int difflevel=(int)Math.round(CMath.mul(level,diffPct))+diffAdd;
 				if(level!=mob.basePhyStats().level())
 				{
 					mob.basePhyStats().setLevel(difflevel);
@@ -208,7 +208,7 @@ public class Prop_Doppleganger extends Property
 					mob.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(mob));
 					mob.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(mob));
 					mob.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(mob));
-					mob.basePhyStats().setSpeed(1.0+(CMath.div(level,100)*4.0));
+					mob.basePhyStats().setSpeed(1.0+CMath.div(level,100)*4.0);
 					mob.baseState().setHitPoints(CMLib.leveler().getPlayerHitPoints(mob));
 					mob.baseState().setMana(CMLib.leveler().getLevelMana(mob));
 					mob.baseState().setMovement(CMLib.leveler().getLevelMove(mob));
@@ -222,7 +222,7 @@ public class Prop_Doppleganger extends Property
 			}
 		}
 	}
-	
+
 	public boolean canMimic(final MOB mob, final Room R)
 	{
 		if((mob==affected)

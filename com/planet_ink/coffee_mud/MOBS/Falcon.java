@@ -59,7 +59,7 @@ public class Falcon extends StdMOB
 		baseCharStats().setStat(CharStats.STAT_DEXTERITY,17);
 
 		basePhyStats().setDamage(1);
-		basePhyStats().setSpeed(3.0);
+		basePhyStats().setSpeed(1.0+(2.0*CMProps.getSpeedAdjustment()));
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(2);
 		basePhyStats().setArmor(90);

@@ -140,7 +140,7 @@ public class Chant_UnderwaterAction extends Chant
 				{
 					affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 					if(!M.isInCombat())
-						affectableStats.setSpeed(affectableStats.speed()+1.0);
+						affectableStats.setSpeed(affectableStats.speed()+CMProps.getSpeedAdjustment());
 				}
 			}
 		}

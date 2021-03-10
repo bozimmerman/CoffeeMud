@@ -72,6 +72,20 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			((mob.basePhyStats().level()-1)*getManaBonusNextLevel(mob));
 	}
 
+	@Override
+	public int getLevelHitPoints(final MOB mob)
+	{
+		final int hpCode = mob.basePhyStats().ability();
+		final int level = mob.basePhyStats().level();
+		int hp = CMLib.dice().rollHP(level,hpCode);
+		if((CMProps.getVar(Str.FORMULA_CLASSHPADD).length()>0)&&(level>1))
+		{
+			final double[] variables={ mob.basePhyStats().level(), 10, 18, 10, 18, 10, 18, 10, 10 };
+			hp = (level * CMath.parseIntExpression((hp/level)+CMProps.getVar(Str.FORMULA_CLASSHPADD),variables));
+		}
+		return hp;
+	}
+
 	public int getAttackBonusNextLevel(final MOB mob)
 	{
 		final CharClass charClass = mob.baseCharStats().getCurrentClass();
@@ -237,7 +251,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		//mob.basePhyStats().setDamage((int)Math.round(CMath.div(getLevelMOBDamage(mob),mob.basePhyStats().speed())));
 		mob.basePhyStats().setAttackAdjustment(getLevelAttack(mob));
 		mob.setMoney(CMLib.dice().roll(1,level,0)+CMLib.dice().roll(1,10,0));
-		mob.baseState().setHitPoints(CMLib.dice().rollHP(mob.basePhyStats().level(),mob.basePhyStats().ability()));
+		mob.baseState().setHitPoints(getLevelHitPoints(mob));
 		mob.baseState().setMana(getLevelMana(mob));
 		mob.baseState().setMovement(getLevelMove(mob));
 		if(mob.getWimpHitPoint()>0)

@@ -59,7 +59,7 @@ public class Naga extends StdMOB
 		baseCharStats().setMyRace(CMClass.getRace("Naga"));
 
 		basePhyStats().setDamage(7);
-		basePhyStats().setSpeed(2.0);
+		basePhyStats().setSpeed(1.0+CMProps.getSpeedAdjustment());
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(4);
 		basePhyStats().setArmor(80);

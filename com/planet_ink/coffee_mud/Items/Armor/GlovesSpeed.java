@@ -63,7 +63,7 @@ public class GlovesSpeed extends StdArmor
 		super.affectPhyStats(affected,affectableStats);
 		if((!this.amWearingAt(Wearable.IN_INVENTORY))&&(!this.amWearingAt(Wearable.WORN_HELD)))
 		{
-			affectableStats.setSpeed(affectableStats.speed() * 2.0);
+			affectableStats.setSpeed(affectableStats.speed() + CMProps.getSpeedAdjustment());
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment() + 10);
 		}
 	}

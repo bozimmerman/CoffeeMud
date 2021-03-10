@@ -137,7 +137,7 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 		mob.basePhyStats().setLevel(mob.basePhyStats().level());
 		mob.basePhyStats().setRejuv(mob.basePhyStats().rejuv()+CMParms.getParmPlus(readableText,"rej"));
 		mob.basePhyStats().setSensesMask(mob.basePhyStats().sensesMask()|CMParms.getParmPlus(readableText,"sen"));
-		mob.basePhyStats().setSpeed(mob.basePhyStats().speed()+CMParms.getParmPlus(readableText,"spe"));
+		mob.basePhyStats().setSpeed(mob.basePhyStats().speed()+(CMParms.getParmPlus(readableText,"spe")));
 		mob.basePhyStats().setWeight(mob.basePhyStats().weight()+CMParms.getParmPlus(readableText,"wei"));
 		if(CMParms.getParmPlus(readableText,"wei")!=0)
 			redress=true;

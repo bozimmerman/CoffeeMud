@@ -249,6 +249,8 @@ public class CMProps extends Properties
 		FORMULA_CLASSMVADD
 	}
 
+	public final static int DEFAULT_MOB_HP_BASE = 11;
+
 	/**
 	 * Enums for Integer entries in the coffeemud.ini file
 	 * @author Bo Zimmerman
@@ -627,6 +629,8 @@ public class CMProps extends Properties
 	protected final Map<String,ExpertiseLibrary.SkillCostDefinition> skillsCost  =new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
 	protected final Map<String,ExpertiseLibrary.SkillCostDefinition> languageCost=new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
 
+	protected double speedAdj = 1.0;
+
 	/**
 	 * Creates a properties object for the callers thread group using the given input stream
 	 * as input for the properties.
@@ -928,6 +932,15 @@ public class CMProps extends Properties
 		if(overrides.containsKey(uID))
 			return overrides.get(uID).doubleValue();
 		return defaultValue;
+	}
+
+	/**
+	 * Returns a multiplier adjustment for speed bonuses from all causes
+	 * @return the multiplier
+	 */
+	public static final double getSpeedAdjustment()
+	{
+		return p().speedAdj;
 	}
 
 	/**
@@ -1261,11 +1274,11 @@ public class CMProps extends Properties
 		try
 		{
 			final int x=p().sysInts[Int.MOB_HP_BASE.ordinal()].intValue();
-			return (x<=0)?11:x;
+			return (x<=0)?DEFAULT_MOB_HP_BASE:x;
 		}
 		catch(final Exception t)
 		{
-			return 11;
+			return DEFAULT_MOB_HP_BASE;
 		}
 	}
 
@@ -2437,7 +2450,8 @@ public class CMProps extends Properties
 		setIntVar(Int.THIRST_FULL,thirstCodes.length>0?CMath.s_int(thirstCodes[0]):500);
 		setIntVar(Int.THIRST_GAIN_PCT,thirstCodes.length>1?CMath.s_int(CMStrings.deleteAllofChar(thirstCodes[1], '%')):100);
 		setIntVar(Int.THIRST_LOSS_PCT,thirstCodes.length>2?CMath.s_int(CMStrings.deleteAllofChar(thirstCodes[2], '%')):100);
-		setIntVar(Int.MOB_HP_BASE,CMath.s_int(getStr("MOB_HP_BASE","11")));
+		setIntVar(Int.MOB_HP_BASE,CMath.s_int(getStr("MOB_HP_BASE",""+DEFAULT_MOB_HP_BASE)));
+		p().speedAdj = CMath.s_double(getStr("SPEED_ADJ","1.0"));
 
 		setUpLowVar(Str.BLACKLISTFILE,getStr("BLACKLISTFILE","/resources/ipblock.ini"));
 		setWhitelist(CMProps.WhiteList.CONNS,getStr("WHITELISTIPSCONN"));

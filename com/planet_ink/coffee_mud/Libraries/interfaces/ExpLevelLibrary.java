@@ -114,17 +114,25 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * Returns the amount of hp the given player would have being their current
 	 * base class.
 	 *
-	 * @param mob the mob who would be this class
-	 * @return the amount of hp a pc of this class should have
+	 * @param mob the mob
+	 * @return the amount of hp a pc should have
 	 */
 	public int getPlayerHitPoints(MOB mob);
+
+	/**
+	 * Returns the amount of mana the given npc mob should have
+	 *
+	 * @param mob the mob who would have hit points
+	 * @return the amount of hp an npc should have
+	 */
+	public int getLevelHitPoints(MOB mob);
 
 	/**
 	 * Returns the amount of mana the given mob would have being their current
 	 * base class.
 	 *
-	 * @param mob the mob who would be this class
-	 * @return the amount of mana an npc of this class should have
+	 * @param mob the mob
+	 * @return the amount of mana an npc should have
 	 */
 	public int getLevelMana(MOB mob);
 
@@ -132,8 +140,8 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * Returns the range of money the given mob would have being their current
 	 * base class. Since money is variable, this is a range low-high
 	 *
-	 * @param mob the mob who would be this class
-	 * @return the range of money an npc of this class should have
+	 * @param mob the mob
+	 * @return the range of money an npc should have
 	 */
 	public double[] getLevelMoneyRange(MOB mob);
 
@@ -141,8 +149,8 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * Returns the number of attacks the given mob would have being their
 	 * current base class.
 	 *
-	 * @param mob the mob who would be this class
-	 * @return the number of attacks an npc of this class should have
+	 * @param mob the mob
+	 * @return the number of attacks an npc should have
 	 */
 	public double getLevelMOBSpeed(MOB mob);
 
@@ -150,8 +158,8 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * Returns the amount of movement the given mob would have being their
 	 * current base class.
 	 *
-	 * @param mob the mob who would be this class
-	 * @return the amount of movement an npc of this class should have
+	 * @param mob the mob
+	 * @return the amount of movement an npc should have
 	 */
 	public int getLevelMove(MOB mob);
 
@@ -159,8 +167,8 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * Returns the amount of combat prowess the given mob would have being their
 	 * current base class.
 	 *
-	 * @param mob the mob who would be this class
-	 * @return the amount of combat prowess an npc of this class should have
+	 * @param mob the mob
+	 * @return the amount of combat prowess an npc should have
 	 */
 	public int getLevelAttack(MOB mob);
 
@@ -168,8 +176,8 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * Returns the armor rating the given mob would have being their current
 	 * base class.
 	 *
-	 * @param mob the mob who would be this class
-	 * @return the armor rating an npc of this class should have
+	 * @param mob the mob
+	 * @return the armor rating an npc should have
 	 */
 	public int getLevelMOBArmor(MOB mob);
 
@@ -177,8 +185,8 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * Returns the amount of damage per hit the given mob would have being their
 	 * current base class.
 	 *
-	 * @param mob the mob who would be this class
-	 * @return the amount of damage per hit an npc of this class should have
+	 * @param mob the mob
+	 * @return the amount of damage per hit an npc should have
 	 */
 	public int getLevelMOBDamage(MOB mob);
 
@@ -199,7 +207,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	public void gainExperience(MOB mob, MOB victim, String homage, int amount, boolean quiet);
 
 	/**
-	 * Called whenever a member of this class loses any experience. It actually
+	 * Called whenever a member loses any experience. It actually
 	 * does the experience loss for the player as well as determining how much,
 	 * if any should be taken awa from leiges or clans. Will automatically cause
 	 * an unleveling if necessary.

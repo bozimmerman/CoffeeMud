@@ -320,7 +320,7 @@ public class Fighter_PlanarVeteran extends FighterSkill
 		if(statBonus[STAT_DAMAGE] != 0)
 			affectableStats.setDamage(affectableStats.damage()+statBonus[STAT_DAMAGE]);
 		if(statBonus[STAT_SPEED] != 0)
-			affectableStats.setSpeed(affectableStats.speed()+CMath.div(statBonus[STAT_SPEED],100.0));
+			affectableStats.setSpeed(affectableStats.speed()+(CMProps.getSpeedAdjustment()*CMath.div(statBonus[STAT_SPEED],100.0)));
 		if(statBonus[STAT_ATTACK] != 0)
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+statBonus[STAT_ATTACK]);
 	}

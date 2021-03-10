@@ -108,7 +108,7 @@ public class DrowWarrior extends DrowElf
 			case 1:
 				mainWeapon = CMClass.getWeapon("DrowSword");
 				secondWeapon = CMClass.getWeapon("DrowSword");
-				basePhyStats().setSpeed(2.0);
+				basePhyStats().setSpeed(1.0+CMProps.getSpeedAdjustment());
 				break;
 			case 2:
 				mainWeapon = CMClass.getWeapon("DrowSword");
@@ -117,17 +117,17 @@ public class DrowWarrior extends DrowElf
 			case 3:
 				mainWeapon = CMClass.getWeapon("DrowSword");
 				secondWeapon = CMClass.getWeapon("DrowDagger");
-				basePhyStats().setSpeed(2.0);
+				basePhyStats().setSpeed(1.0+CMProps.getSpeedAdjustment());
 				break;
 			case 4:
 				mainWeapon = CMClass.getWeapon("Scimitar");
 				secondWeapon = CMClass.getWeapon("Scimitar");
-				basePhyStats().setSpeed(2.0);
+				basePhyStats().setSpeed(1.0+CMProps.getSpeedAdjustment());
 				break;
 			default:
 				mainWeapon = CMClass.getWeapon("DrowSword");
 				secondWeapon = CMClass.getWeapon("DrowSword");
-				basePhyStats().setSpeed(2.0);
+				basePhyStats().setSpeed(1.0+CMProps.getSpeedAdjustment());
 				break;
 		}
 		if(mainWeapon!=null)

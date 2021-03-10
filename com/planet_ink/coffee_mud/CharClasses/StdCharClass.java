@@ -117,7 +117,7 @@ public class StdCharClass implements CharClass
 	@Override
 	public String getHitPointsFormula()
 	{
-		return "((@x6<@x7)/3)+(1*(1?6))"+CMProps.getVar(Str.FORMULA_CLASSHPADD);
+		return "((@x6<@x7)/3)+(1*(1?6))";
 	}
 
 	public String	hitPointsDesc	= null;

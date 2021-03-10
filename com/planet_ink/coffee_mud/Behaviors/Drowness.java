@@ -194,7 +194,7 @@ public class Drowness extends StdBehavior
 				secondWeapon.wearAt(Wearable.WORN_HELD);
 				mob.addItem(mainWeapon);
 				mob.addItem(secondWeapon);
-				mob.basePhyStats().setSpeed(2.0);
+				mob.basePhyStats().setSpeed(1.0+CMProps.getSpeedAdjustment());
 				break;
 			case 2:
 				mainWeapon = CMClass.getWeapon("DrowSword");
@@ -212,7 +212,7 @@ public class Drowness extends StdBehavior
 				secondWeapon.wearAt(Wearable.WORN_HELD);
 				mob.addItem(mainWeapon);
 				mob.addItem(secondWeapon);
-				mob.basePhyStats().setSpeed(2.0);
+				mob.basePhyStats().setSpeed(1.0+CMProps.getSpeedAdjustment());
 				break;
 			case 4:
 				mainWeapon = CMClass.getWeapon("Scimitar");
@@ -221,7 +221,7 @@ public class Drowness extends StdBehavior
 				secondWeapon.wearAt(Wearable.WORN_HELD);
 				mob.addItem(mainWeapon);
 				mob.addItem(secondWeapon);
-				mob.basePhyStats().setSpeed(2.0);
+				mob.basePhyStats().setSpeed(1.0+CMProps.getSpeedAdjustment());
 				break;
 			default:
 				mainWeapon = CMClass.getWeapon("DrowSword");
@@ -230,7 +230,7 @@ public class Drowness extends StdBehavior
 				secondWeapon.wearAt(Wearable.WORN_HELD);
 				mob.addItem(mainWeapon);
 				mob.addItem(secondWeapon);
-				mob.basePhyStats().setSpeed(2.0);
+				mob.basePhyStats().setSpeed(1.0+CMProps.getSpeedAdjustment());
 				break;
 		}
 
