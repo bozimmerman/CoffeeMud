@@ -756,7 +756,7 @@ public class CMProps extends Properties
 	*/
 	public final String getPrivateStr(final String tagToGet)
 	{
-		final String s=getProperty(tagToGet);
+		final String s=CMStrings.convertHtmlEntities(getProperty(tagToGet));
 		if(s==null)
 			return "";
 		return s;
@@ -781,7 +781,7 @@ public class CMProps extends Properties
 	*/
 	public final String getStr(final String tagToGet)
 	{
-		final String thisTag=this.getProperty(tagToGet);
+		final String thisTag=CMStrings.convertHtmlEntities(this.getProperty(tagToGet));
 		if((thisTag==null)&&(props[MudHost.MAIN_HOST]!=null)&&(props[MudHost.MAIN_HOST]!=this))
 			return props[MudHost.MAIN_HOST].getStr(tagToGet);
 		if(thisTag==null)
@@ -798,7 +798,7 @@ public class CMProps extends Properties
 	*/
 	public final String getStr(final String tagToGet, final String defaultVal)
 	{
-		String thisTag=this.getProperty(tagToGet);
+		String thisTag=CMStrings.convertHtmlEntities(this.getProperty(tagToGet));
 		if((thisTag==null)&&(props[MudHost.MAIN_HOST]!=null)&&(props[MudHost.MAIN_HOST]!=this))
 			thisTag=props[MudHost.MAIN_HOST].getStr(tagToGet);
 		if((thisTag==null)||(thisTag.length()==0))
