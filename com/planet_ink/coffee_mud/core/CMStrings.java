@@ -2085,6 +2085,54 @@ public class CMStrings
 	}
 
 	/**
+	 * This method returns the given string with any
+	 * &..; entities converted to their original self
+	 * @param s the string to convert
+	 * @return the new converted string
+	 */
+	public static String convertHtmlEntities(String s)
+	{
+		if(s==null)
+			return null;
+		int x=s.indexOf('&');
+		while(x>=0)
+		{
+			final int y=s.indexOf(';',x+1);
+			if(y>x)
+			{
+				final String code=s.substring(x+1,y).toLowerCase();
+				if(code.equals("nbsp"))
+					s=s.substring(0,x)+" "+s.substring(y+1);
+				else
+				if (code.equals("amp"))
+				{
+					s=s.substring(0,x)+"&"+s.substring(y+1);
+					x++;
+				}
+				else
+				if (code.equals("lt"))
+					s=s.substring(0,x)+"<"+s.substring(y+1);
+				else
+				if (code.equals("gt"))
+					s=s.substring(0,x)+">"+s.substring(y+1);
+				else
+				if (code.equals("quot"))
+					s=s.substring(0,x)+"\""+s.substring(y+1);
+				else
+				if (code.startsWith("#")
+				&&(CMath.isInteger(code.substring(1))))
+				{
+					final int num=CMath.s_int(code.substring(1));
+					if(num<65536)
+						s=s.substring(0,x)+Character.toString((char)num)+s.substring(y+1);
+				}
+			}
+			x=s.indexOf('&',x+1);
+		}
+		return s;
+	}
+
+	/**
 	 * This monstrous method converts an html document into a somewhat-readable text
 	 * document for display in, for example, the text portion of an email, or in the
 	 * mud command line.  It does things like remove scripts, convert &nbsp;-like tags
