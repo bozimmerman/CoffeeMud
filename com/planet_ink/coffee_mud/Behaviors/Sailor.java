@@ -375,7 +375,7 @@ public class Sailor extends StdBehavior
 		{
 			if(ticking instanceof Physical)
 			{
-				tickWait = (30 - tickBonus - ((Physical)ticking).phyStats().level() / 4);
+				tickWait = (20 - tickBonus - ((Physical)ticking).phyStats().level() / 4);
 				if(tickWait < 0)
 					tickWait=0;
 			}
