@@ -36,6 +36,7 @@ public interface ThreadEngine extends CMLibrary, Runnable
 	// tick related
 	public TickClient startTickDown(Tickable E, int tickID, long TICK_TIME, int numTicks);
 	public TickClient startTickDown(Tickable E, int tickID, int numTicks);
+	public long getTickGroupPeriod(final Tickable E, final int tickID);
 	public boolean deleteTick(Tickable E, int tickID);
 	public boolean setTickPending(Tickable E, int tickID);
 	public boolean deleteAllTicks(Tickable E);

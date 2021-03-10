@@ -338,6 +338,22 @@ public class ServiceEngine implements ThreadEngine
 		return startTickDown(CMLib.map().getOwnedThreadGroup(E),E,tickID,tickTimeMs,numTicks);
 	}
 
+	@Override
+	public synchronized long getTickGroupPeriod(final Tickable E, final int tickID)
+	{
+		ThreadGroup group = CMLib.map().getOwnedThreadGroup(E);
+		if(group==null)
+			group=Thread.currentThread().getThreadGroup();
+		for(final TickableGroup almostTock : allTicks)
+		{
+			if(almostTock.contains(E,tickID))
+			{
+				return almostTock.getTickInterval();
+			}
+		}
+		return -1;
+	}
+
 	public synchronized TickClient startTickDown(ThreadGroup group, final Tickable E, final int tickID, final long tickTimeMs, final int numTicks)
 	{
 		TickableGroup tock=null;

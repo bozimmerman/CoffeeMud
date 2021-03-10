@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -53,8 +54,11 @@ public class Prop_InstantDeath extends Property
 		return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_ITEMS|Ability.CAN_MOBS;
 	}
 
-	protected CompiledZMask mask=null;
-	protected volatile boolean[] killTrigger={false};
+	protected CompiledZMask			mask			= null;
+	protected volatile boolean[]	killTrigger		= { false };
+	protected double				damagePercent	= 100.0;
+	protected int					damageAmount	= 0;
+	protected String				message			= "";
 
 	public Prop_InstantDeath()
 	{
@@ -69,6 +73,10 @@ public class Prop_InstantDeath extends Property
 		mask=null;
 		if((maskStr!=null)&&(maskStr.trim().length()>0))
 			mask=CMLib.masking().getPreCompiledMask(maskStr);
+		message=CMParms.getParmStr(newMiscText, "msg", "");
+		damageAmount=CMParms.getParmInt(newMiscText, "damage", 0);
+		damagePercent=CMParms.getParmDouble(newMiscText, "dmgpct", 100.0)/100.0;
+
 	}
 
 	@Override
@@ -189,17 +197,60 @@ public class Prop_InstantDeath extends Property
 	{
 		if(tickID!=Tickable.TICKID_MISCELLANEOUS)
 			return super.tick(ticking, tickID);
-		while(killTrigger[0])
+		if(killTrigger[0])
 		{
 			final LinkedList<MOB> killThese=new LinkedList<MOB>();
 			synchronized(killTrigger)
 			{
 				killThese.addAll(getDeadMOBsFrom(affected));
-				killTrigger[0]=false;
 			}
-			for(final MOB M : killThese)
+			final MOB killerM=CMLib.map().getFactoryMOB(CMLib.map().roomLocation(affected));
+			killerM.setName(affected.Name());
+			final MOB killer = (affected instanceof MOB)?((MOB)affected):killerM;
+			final String msgStr=message.length()>0?message:L("<S-NAME> <DAMAGES> <T-NAME>!");
+			try
 			{
-				CMLib.combat().postDeath(null, M, null);
+				synchronized(killTrigger)
+				{
+					killTrigger[0]=false;
+				}
+				for(final MOB M : killThese)
+				{
+					if(M.isAttributeSet(Attrib.SYSOPMSGS))
+						continue;
+					final int dmgAmount=damageAmount + (int)Math.round(CMath.mul(damagePercent, M.maxState().getHitPoints()));
+					if(dmgAmount>=M.curState().getHitPoints())
+					{
+						if(message.length()>0)
+							M.location().show(killer, M, CMMsg.MSG_OK_VISUAL, message);
+						CMLib.combat().postDeath(null, M, null);
+					}
+					else
+					{
+						CMLib.combat().postDamage(killer, M, null, dmgAmount, CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BURSTING,msgStr);
+						synchronized(killTrigger)
+						{
+							killTrigger[0]=true;
+						}
+					}
+				}
+			}
+			finally
+			{
+				killerM.destroy();
+			}
+		}
+		synchronized(killTrigger)
+		{
+			if(killTrigger[0])
+			{
+				if(CMLib.threads().getTickGroupPeriod(this, Tickable.TICKID_MISCELLANEOUS)==500)
+				{
+					CMLib.threads().deleteTick(this, Tickable.TICKID_MISCELLANEOUS);
+					CMLib.threads().startTickDown(this, Tickable.TICKID_MISCELLANEOUS, 4000, 1);
+					return false;
+				}
+				return true;
 			}
 		}
 		return false;
@@ -242,6 +293,7 @@ public class Prop_InstantDeath extends Property
 					activated=true;
 			}
 			else
+			if(msg.targetMinor()==CMMsg.TYP_ENTER)
 				activated=true;
 			if(activated)
 			{
