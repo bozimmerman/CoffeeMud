@@ -62,7 +62,7 @@ public class GiantScorpion extends StdMOB
 		baseCharStats().setStat(CharStats.STAT_DEXTERITY,9);
 
 		basePhyStats().setDamage(10);
-		basePhyStats().setSpeed(1.0+CMProps.getSpeedAdjustment());
+		basePhyStats().setSpeed(2.0);
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(5);
 		basePhyStats().setArmor(70);

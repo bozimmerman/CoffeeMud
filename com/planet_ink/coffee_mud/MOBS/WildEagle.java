@@ -61,7 +61,7 @@ public class WildEagle extends StdMOB
 		baseCharStats().getMyRace().startRacing(this,false);
 
 		basePhyStats().setDamage(2);
-		basePhyStats().setSpeed(1.0+(2.0*CMProps.getSpeedAdjustment()));
+		basePhyStats().setSpeed(3.0);
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(2);
 		basePhyStats().setArmor(90);

@@ -51,7 +51,7 @@ public class Deer extends StdMOB
 		setWimpHitPoint(0);
 
 		basePhyStats().setDamage(1);
-		basePhyStats().setSpeed(1.0+CMProps.getSpeedAdjustment());
+		basePhyStats().setSpeed(2.0);
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(2);
 		basePhyStats().setArmor(90);

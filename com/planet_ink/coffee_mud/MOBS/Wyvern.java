@@ -63,7 +63,7 @@ public class Wyvern extends StdMOB
 		baseCharStats().getMyRace().startRacing(this,false);
 
 		basePhyStats().setDamage(16);
-		basePhyStats().setSpeed(1.0+CMProps.getSpeedAdjustment());
+		basePhyStats().setSpeed(2.0);
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(7);
 		basePhyStats().setArmor(70);

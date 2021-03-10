@@ -67,7 +67,7 @@ public class Doppleganger extends StdMOB
 		baseCharStats().setStat(CharStats.STAT_DEXTERITY,9 + Math.abs(randomizer.nextInt() % 6));
 
 		basePhyStats().setDamage(7);
-		basePhyStats().setSpeed(1.0+CMProps.getSpeedAdjustment());
+		basePhyStats().setSpeed(2.0);
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(6);
 		basePhyStats().setArmor(70);

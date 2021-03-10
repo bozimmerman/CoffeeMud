@@ -62,7 +62,7 @@ public class Jaguar extends StdMOB
 		baseCharStats().getMyRace().startRacing(this,false);
 
 		basePhyStats().setDamage(8);
-		basePhyStats().setSpeed(1.0+CMProps.getSpeedAdjustment());
+		basePhyStats().setSpeed(2.0);
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(4);
 		basePhyStats().setArmor(80);

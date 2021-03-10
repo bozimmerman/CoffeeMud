@@ -62,7 +62,7 @@ public class Ogre extends StdMOB
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(4);
 		basePhyStats().setArmor(80);
-		basePhyStats().setSpeed(1.0+(2.0*CMProps.getSpeedAdjustment()));
+		basePhyStats().setSpeed(3.0);
 
 		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
