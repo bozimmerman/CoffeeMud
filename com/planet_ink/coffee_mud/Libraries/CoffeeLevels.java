@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMProps.Bool;
+import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
@@ -61,7 +62,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				mob.charStats().getStat(CharStats.STAT_CHARISMA),
 				mob.charStats().getStat(CharStats.STAT_CONSTITUTION)
 			};
-		return (int)Math.round(CMath.parseMathExpression(charClass.getManaFormula(), variables));
+		return (int)Math.round(CMath.parseMathExpression(charClass.getManaFormula()+CMProps.getVar(Str.FORMULA_CLASSMNADD), variables));
 	}
 
 	@Override
@@ -127,7 +128,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			mob.charStats().getStat(CharStats.STAT_WISDOM),
 			mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)
 		};
-		return (int)Math.round(CMath.parseMathExpression(charClass.getMovementFormula(), variables));
+		return (int)Math.round(CMath.parseMathExpression(charClass.getMovementFormula()+CMProps.getVar(Str.FORMULA_CLASSMVADD), variables));
 	}
 
 	@Override
@@ -153,7 +154,9 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			mob.charStats().getStat(CharStats.STAT_WISDOM),
 			mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)
 		};
-		final int newHitPointGain=(int)Math.round(CMath.parseMathExpression(charClass.getHitPointsFormula(), variables));
+		final int newHitPointGain=(int)Math.round(CMath.parseMathExpression(
+												charClass.getHitPointsFormula()+CMProps.getVar(Str.FORMULA_CLASSHPADD),
+												variables));
 		if(newHitPointGain<=0)
 		{
 			if(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)>=1)

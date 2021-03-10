@@ -243,7 +243,10 @@ public class CMProps extends Properties
 		CLANTROPMONTHLYMB,
 		MANACOMPOUND_RULES,
 		DEITYPOLICY,
-		MANACOST
+		MANACOST,
+		FORMULA_CLASSHPADD,
+		FORMULA_CLASSMNADD,
+		FORMULA_CLASSMVADD
 	}
 
 	/**
@@ -2632,15 +2635,9 @@ public class CMProps extends Properties
 		}
 		setIntVar(Int.COMBATPROWESS, prowValue);
 
-		String stateVar=getStr("STARTHP");
-		if((stateVar.length()>0)&&(CMath.isNumber(stateVar)))
-			setIntVar(Int.STARTHP,CMath.s_int(stateVar));
-		stateVar=getStr("STARTMANA");
-		if((stateVar.length()>0)&&(CMath.isNumber(stateVar)))
-			setIntVar(Int.STARTMANA,CMath.s_int(stateVar));
-		stateVar=getStr("STARTMOVE");
-		if((stateVar.length()>0)&&(CMath.isNumber(stateVar)))
-			setIntVar(Int.STARTMOVE,CMath.s_int(stateVar));
+		setStartStateStuff(Int.STARTHP, Str.FORMULA_CLASSHPADD, "STARTHP");
+		setStartStateStuff(Int.STARTMANA, Str.FORMULA_CLASSMNADD, "STARTMANA");
+		setStartStateStuff(Int.STARTMOVE, Str.FORMULA_CLASSMVADD, "STARTMOVE");
 
 		setIntVar(Int.MAXITEMSHOWN,getStr("MAXITEMSHOWN"));
 		setIntVar(Int.MAXITEMSWORN,getStr("MAXITEMSWORN"));
@@ -2701,6 +2698,20 @@ public class CMProps extends Properties
 
 		CMLib.propertiesLoaded();
 		this.lastReset=System.currentTimeMillis();
+	}
+
+	protected void setStartStateStuff(final Int startState, final Str addState, final String var)
+	{
+		setUpLowVar(addState,"");
+		String stateVar=getStr(var);
+		final int stateVarX=stateVar.indexOf(',');
+		if(stateVarX>0)
+		{
+			setUpLowVar(addState,stateVar.substring(stateVarX+1));
+			stateVar=stateVar.substring(0,stateVarX).trim();
+		}
+		if((stateVar.length()>0)&&(CMath.isNumber(stateVar)))
+			setIntVar(startState,CMath.s_int(stateVar));
 	}
 
 	/**

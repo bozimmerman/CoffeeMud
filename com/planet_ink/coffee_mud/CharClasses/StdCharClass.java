@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.CharClasses;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -116,7 +117,7 @@ public class StdCharClass implements CharClass
 	@Override
 	public String getHitPointsFormula()
 	{
-		return "((@x6<@x7)/3)+(1*(1?6))";
+		return "((@x6<@x7)/3)+(1*(1?6))"+CMProps.getVar(Str.FORMULA_CLASSHPADD);
 	}
 
 	public String	hitPointsDesc	= null;
@@ -684,7 +685,7 @@ public class StdCharClass implements CharClass
 	{
 		if(hitPointsDesc==null)
 		{
-			String formula=getHitPointsFormula();
+			String formula=getHitPointsFormula()+CMProps.getVar(Str.FORMULA_CLASSHPADD);
 			final int x=formula.indexOf("*(1?");
 			if(x>0)
 			{
@@ -703,7 +704,7 @@ public class StdCharClass implements CharClass
 	{
 		if(manaDesc==null)
 		{
-			String formula=getManaFormula();
+			String formula=getManaFormula()+CMProps.getVar(Str.FORMULA_CLASSMNADD);
 			final int x=formula.indexOf("*(1?");
 			if(x>0)
 			{
@@ -722,7 +723,7 @@ public class StdCharClass implements CharClass
 	{
 		if(movementDesc==null)
 		{
-			String formula=getMovementFormula();
+			String formula=getMovementFormula()+CMProps.getVar(Str.FORMULA_CLASSMVADD);
 			final int x=formula.indexOf("*(1?");
 			if(x>0)
 			{
