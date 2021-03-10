@@ -3685,7 +3685,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						else
 						if(q.mobGroup!=null)
 							toSet.addAll(q.mobGroup);
-						boolean register=false;
 						final List<Item> itemSet=new Vector<Item>();
 						if(q.item!=null)
 							itemSet.add(q.item);
@@ -3694,10 +3693,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							itemSet.addAll(q.itemGroup);
 						else
 						if(q.loadedItems!=null)
-						{
-							register=true;
 							itemSet.addAll(q.loadedItems);
-						}
 						for(int i=0;i<toSet.size();i++)
 						{
 							final MOB M2=toSet.get(i);
