@@ -5877,6 +5877,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private int				num			= -1;
 				private long			minTime		= 10L * 60L * 1000L;
 				private CompiledZMask	areaMask	= null;
+				private CompiledZMask	roomMask	= null;
 				private CompiledZMask	playerMask	= null;
 				private CompiledZMask	seenMask	= null;
 
@@ -5977,6 +5978,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
 						{
 							Area A=null;
+							Room R=null;
 							for(final Object o : parms)
 							{
 								if(o instanceof Clan)
@@ -5987,13 +5989,17 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								}
 								else
 								if(o instanceof Room)
-									A=CMLib.map().getRoom((Room)o).getArea();
+								{
+									R=(Room)o;
+									A=CMLib.map().getRoom(R).getArea();
+								}
 								else
 								if(o instanceof Area)
 									A=(Area)o;
 							}
 							if(((areaMask==null)||(A==null)||(CMLib.masking().maskCheck(areaMask, A, true)))
 							&&((playerMask==null)||(CMLib.masking().maskCheck(playerMask, mob, true)))
+							&&((roomMask==null)||((R!=null)&&(CMLib.masking().maskCheck(roomMask, mob, true))))
 							&&((recentVisit==0)||(System.currentTimeMillis()>recentVisit)))
 							{
 								recentVisit=System.currentTimeMillis() + minTime;
@@ -6045,6 +6051,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					if(areaMaskStr.trim().length()==0)
 						return "Error: Missing or invalid AREAMASK parameter: "+numStr+"!";
 					this.areaMask = CMLib.masking().getPreCompiledMask(areaMaskStr);
+					final String roomMaskStr = CMStrings.deEscape(CMParms.getParmStr(parms, "ROOMMASK", ""));
+					this.roomMask = null;
+					if(roomMaskStr.trim().length()>0)
+						this.roomMask = CMLib.masking().getPreCompiledMask(roomMaskStr);
 					final String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "PLAYERMASK", ""));
 					this.playerMask = null;
 					if(zapperMask.trim().length()>0)

@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Event;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -549,6 +550,8 @@ public class Dragon extends StdMOB
 							myStomachR.bringMobHere(TastyMorsel,false);
 							final CMMsg enterMsg=CMClass.getMsg(TastyMorsel,myStomachR,null,CMMsg.MSG_ENTER,myStomachR.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> slide(s) down the gullet into the stomach!"));
 							myStomachR.send(TastyMorsel,enterMsg);
+							if(TastyMorsel.isPlayer())
+								CMLib.achievements().possiblyBumpAchievement(TastyMorsel, Event.AREAVISIT, 1, new Object[] {myStomachR.getArea(), myStomachR});
 						}
 					}
 				}

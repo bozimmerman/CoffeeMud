@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Event;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.SkillCost;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -189,7 +190,10 @@ public class MOBEater extends ActiveTicker
 		for(final Enumeration<MOB> p=CMLib.players().players();p.hasMoreElements();)
 		{
 			final MOB M=p.nextElement();
-			if((M!=null)&&(M.location()==stomachR)&&(!CMLib.flags().isInTheGame(M,true))&&(!these.contains(M)))
+			if((M!=null)
+			&&(M.location()==stomachR)
+			&&(!CMLib.flags().isInTheGame(M,true))
+			&&(!these.contains(M)))
 			{
 				M.setLocation(lastKnownLocationR);
 				for(int f=0;f<M.numFollowers();f++)
@@ -293,6 +297,8 @@ public class MOBEater extends ActiveTicker
 						stomachR.bringMobHere(tastyMorselM,false);
 						final CMMsg enterMsg=CMClass.getMsg(tastyMorselM,stomachR,null,CMMsg.MSG_ENTER,stomachR.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> slide(s) down the gullet into the stomach!"));
 						stomachR.send(tastyMorselM,enterMsg);
+						if(tastyMorselM.isPlayer())
+							CMLib.achievements().possiblyBumpAchievement(tastyMorselM, Event.AREAVISIT, 1, new Object[] {stomachR.getArea(), stomachR});
 					}
 				}
 			}

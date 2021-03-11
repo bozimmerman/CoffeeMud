@@ -101,7 +101,7 @@ public interface AchievementLibrary extends CMLibrary
 		CLANPROPERTY("Purchased property",new String[]{"NUM","AREAMASK"}),
 		CONQUEREDAREAS("Conquered an area",new String[]{"NUM","AREAMASK"}),
 		CONQUESTPOINTS("Conquest points",new String[]{"NUM","AREAMASK"}),
-		AREAVISIT("Visit an Area/Plane",new String[]{"AREAMASK","NUM", "PLAYERMASK","TIME_MINS"}),
+		AREAVISIT("Visit an Area/Plane",new String[]{"AREAMASK","NUM", "PLAYERMASK","TIME_MINS", "ROOMMASK"}),
 		INSTANCEEXPIRE("An area instance expires",new String[]{"AREAMASK","NUM", "PLAYERMASK","TIME_MINS"}),
 		SHIPSSUNK("Ships sunk",new String[] {"NUM", "PLAYERMASK", "SHIPMASK"}),
 		CMDUSE("Using Commands",new String[]{"NUM","COMMANDID", "PLAYERMASK"}),
