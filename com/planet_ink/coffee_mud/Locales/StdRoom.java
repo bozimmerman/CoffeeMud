@@ -756,7 +756,7 @@ public class StdRoom implements Room
 					if((R!=null)&&(R.getArea()!=getArea()))
 					{
 						CMLib.factions().updatePlayerFactions(mob,this,false);
-						CMLib.achievements().possiblyBumpAchievement(mob, Event.AREAVISIT, 1, new Object[] {getArea(), R});
+						CMLib.achievements().possiblyBumpAchievement(mob, Event.AREAVISIT, 1, new Object[] {getArea(), this});
 					}
 					giveASky(0);
 				}
