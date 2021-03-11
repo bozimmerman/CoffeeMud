@@ -97,7 +97,7 @@ public class Prayer_DivineResistance extends Prayer
 			return;
 
 		for(final int i : CharStats.CODES.SAVING_THROWS())
-			affectableStats.setStat(i,100);
+			affectableStats.setStat(i,affectableStats.getStat(i)+100);
 	}
 
 	@Override
