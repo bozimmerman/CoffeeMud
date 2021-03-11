@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
+import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.EnhancedExpertise;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.ItemKeyPair;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -951,43 +952,68 @@ public class CraftingSkill extends GatheringSkill
 
 	public boolean checkInfo(final MOB mob, final List<String> commands)
 	{
+		return checkInfo(mob, commands, new PairVector<EnhancedExpertise,Integer>());
+	}
+
+	public void fixInfoItem(final MOB mob, final Item I, final int lvl, final PairVector<EnhancedExpertise,Integer> enhancedTypes)
+	{
+	}
+
+	public boolean checkInfo(final MOB mob, final List<String> commands, final PairVector<EnhancedExpertise,Integer> enhancedTypes)
+	{
 		if((commands!=null)
 		&&(commands.size()>1)
 		&&(commands.get(0).equalsIgnoreCase("info")))
 		{
 			final List<String> recipe = new XVector<String>(commands);
 			recipe.remove(0);
-			final String recipeName = CMParms.combine(recipe);
-			List<Integer> rscs=myResources();
-			if(rscs.size()==0)
-				rscs=new XVector<Integer>(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
-			final int material;
-			switch(rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK)
+			final int[] matSet = myMaterials();
+			final int[] pm;
+			if(matSet.length==0)
+				pm=matSet;
+			else
 			{
-			case RawMaterial.MATERIAL_CLOTH:
-				material = RawMaterial.RESOURCE_COTTON;
-				break;
-			case RawMaterial.MATERIAL_LEATHER:
-				material = RawMaterial.RESOURCE_LEATHER;
-				break;
-			case RawMaterial.MATERIAL_METAL:
-			case RawMaterial.MATERIAL_MITHRIL:
-				material = RawMaterial.RESOURCE_IRON;
-				break;
-			case RawMaterial.MATERIAL_WOODEN:
-				material = RawMaterial.RESOURCE_WOOD;
-				break;
-			case RawMaterial.MATERIAL_ROCK:
-				material = RawMaterial.RESOURCE_STONE;
-				break;
-			default:
-				if(((rscs.get(0).intValue()&RawMaterial.RESOURCE_MASK)>0)
-				&&((rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK)>0))
-					material = rscs.get(0).intValue();
-				else
-					material=RawMaterial.CODES.MOST_FREQUENT(rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK);
-				break;
+				pm=checkMaterialFrom(mob,recipe,matSet);
+				if(pm==null)
+					return false;
 			}
+			final int material;
+			if((pm != matSet)&&(pm.length==1))
+				material=pm[0];
+			else
+			{
+				List<Integer> rscs=myResources();
+				if(rscs.size()==0)
+					rscs=new XVector<Integer>(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
+				switch(rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK)
+				{
+				case RawMaterial.MATERIAL_CLOTH:
+					material = RawMaterial.RESOURCE_COTTON;
+					break;
+				case RawMaterial.MATERIAL_LEATHER:
+					material = RawMaterial.RESOURCE_LEATHER;
+					break;
+				case RawMaterial.MATERIAL_METAL:
+				case RawMaterial.MATERIAL_MITHRIL:
+					material = RawMaterial.RESOURCE_IRON;
+					break;
+				case RawMaterial.MATERIAL_WOODEN:
+					material = RawMaterial.RESOURCE_WOOD;
+					break;
+				case RawMaterial.MATERIAL_ROCK:
+					material = RawMaterial.RESOURCE_STONE;
+					break;
+				default:
+					if(((rscs.get(0).intValue()&RawMaterial.RESOURCE_MASK)>0)
+					&&((rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK)>0))
+						material = rscs.get(0).intValue();
+					else
+						material=RawMaterial.CODES.MOST_FREQUENT(rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK);
+					break;
+				}
+			}
+
+			final String recipeName = CMParms.combine(recipe);
 			final List<List<String>> recipes=addRecipes(mob,loadRecipes());
 			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
 			if(matches.size()>0)
@@ -1012,6 +1038,7 @@ public class CraftingSkill extends GatheringSkill
 				}
 				else
 				{
+					fixInfoItem(mob,pair.item,pair.item.phyStats().level(),enhancedTypes);
 					final String viewDesc = CMLib.coffeeShops().getViewDescription(mob, pair.item, viewFlags());
 					commonTell(mob,viewDesc);
 					if(viewDesc.length()>0)

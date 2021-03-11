@@ -220,6 +220,34 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				bundle,autoGeneration,expMods);
 	}
 
+	@Override
+	public boolean checkInfo(final MOB mob, final List<String> commands)
+	{
+		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
+		return checkInfo(mob, commands, enhancedTypes);
+	}
+
+	@Override
+	public void fixInfoItem(final MOB mob, final Item I, final int lvl, final PairVector<EnhancedExpertise,Integer> enhancedTypes)
+	{
+		final EnhancedCraftingSkill affect=(EnhancedCraftingSkill)mob.fetchEffect(ID());
+		Ability delEffectA=null;
+		try
+		{
+			if(affect==null)
+			{
+				delEffectA=this;
+				mob.addEffect(delEffectA);
+			}
+			enhanceItem(mob,I,lvl,enhancedTypes);
+		}
+		finally
+		{
+			if(delEffectA != null)
+				mob.delEffect(delEffectA);
+		}
+	}
+
 	public void fixDataForComponents(final int[][] data, final String woodRequiredStr, final boolean autoGeneration, List<Object> componentsFoundList, final int amount)
 	{
 		boolean emptyComponents=false;
@@ -512,13 +540,20 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		if((commands!=null)
 		&&(commands.size()>0))
 		{
-			cmd=commands.get(0);
+			int cmdDex=0;
+			cmd=commands.get(cmdDex);
 			boolean hideNext = false;
 			if((cmd.equalsIgnoreCase("hide"))
 			&&(commands.size()>1))
 			{
 				hideNext = true;
 				cmd=commands.get(1);
+			}
+			if((cmd.equalsIgnoreCase("info"))
+			&&(commands.size()>1))
+			{
+				cmdDex++;
+				cmd=commands.get(cmdDex);
 			}
 			if((!cmd.equalsIgnoreCase("list"))
 			&&(!cmd.equalsIgnoreCase("mend"))
@@ -553,9 +588,9 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 								{
 									if(cmd.equalsIgnoreCase(def.getStageNames()[s]))
 									{
-										commands.remove(0);
+										commands.remove(cmdDex);
 										if(hideNext)
-											commands.remove(0);
+											commands.remove(cmdDex);
 										if(types==null)
 											types=new PairVector<EnhancedExpertise,Integer>();
 										if(!types.containsFirst(code))
@@ -564,11 +599,19 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 											if(commands.size()>0)
 											{
 												hideNext=false;
+												cmdDex=0;
 												cmd=commands.get(0);
-												if(cmd.equalsIgnoreCase("hide") && (commands.size()>1))
+												if(cmd.equalsIgnoreCase("hide")
+												&& (commands.size()>1))
 												{
 													hideNext=true;
 													cmd=commands.get(1);
+												}
+												if((cmd.equalsIgnoreCase("info"))
+												&&(commands.size()>1))
+												{
+													cmdDex++;
+													cmd=commands.get(cmdDex);
 												}
 											}
 											else

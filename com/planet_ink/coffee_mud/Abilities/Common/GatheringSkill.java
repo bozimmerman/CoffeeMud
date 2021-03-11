@@ -63,6 +63,7 @@ public class GatheringSkill extends CommonSkill
 	}
 
 	protected static final Map<String, List<Integer>>	supportedResources	= new Hashtable<String, List<Integer>>();
+	protected static final Map<String, int[]>			supportedMaterials	= new Hashtable<String, int[]>();
 
 	protected static TreeMap<Room,Quad<Room,Integer,short[],Long>> roomSpamCounter = new TreeMap<Room,Quad<Room,Integer,short[],Long>>();
 
@@ -197,11 +198,70 @@ public class GatheringSkill extends CommonSkill
 		return weightedRscs;
 	}
 
+	public int[] myMaterials()
+	{
+		if(supportedMaterials.containsKey(ID()))
+			return supportedMaterials.get(ID());
+		final String mask=supportedResourceString();
+		if(mask.equalsIgnoreCase("MISC"))
+		{
+			final int[] empty = new int[0];
+			supportedMaterials.put(ID(), empty);
+			return empty;
+		}
+		final List<Integer> maskV=new Vector<Integer>();
+		for(String str : CMParms.parseAny(mask,"|",true))
+		{
+			if(str.trim().length()>0)
+			{
+				boolean found=false;
+				if(str.startsWith("_"))
+				{
+					final int rsc=RawMaterial.CODES.FIND_IgnoreCase(str.substring(1));
+					if(rsc>=0)
+					{
+						maskV.add(Integer.valueOf(rsc));
+						found=true;
+					}
+				}
+				if(!found)
+				{
+					final int y=str.indexOf('-');
+					if(y>0)
+						str=str.substring(0,y);
+					final RawMaterial.Material m=RawMaterial.Material.findIgnoreCase(str);
+					if(m!=null)
+					{
+						maskV.add(Integer.valueOf(m.mask()));
+						found=true;
+					}
+				}
+				if(!found)
+				{
+					final int rsc=RawMaterial.CODES.FIND_IgnoreCase(str);
+					if(rsc>=0)
+						maskV.add(Integer.valueOf(rsc));
+				}
+			}
+		}
+		final int[] set=new int[maskV.size()];
+		for(int i=0;i<maskV.size();i++)
+			set[i]=maskV.get(i).intValue();
+		supportedMaterials.put(ID(),set);
+		return set;
+	}
+
 	public List<Integer> myResources()
 	{
 		if(supportedResources.containsKey(ID()))
 			return supportedResources.get(ID());
 		String mask=supportedResourceString();
+		if(mask.equalsIgnoreCase("MISC"))
+		{
+			final List<Integer> empty = new ReadOnlyVector<Integer>(1);
+			supportedResources.put(ID(), empty);
+			return empty;
+		}
 		final List<Integer> maskV=new Vector<Integer>();
 		String str=mask;
 		while(mask.length()>0)
