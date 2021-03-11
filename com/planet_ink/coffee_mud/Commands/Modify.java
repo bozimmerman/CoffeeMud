@@ -264,6 +264,24 @@ public class Modify extends StdCommand
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
 	}
 
+	protected void fixDeities(final Room R)
+	{
+		if(R==null)
+			return;
+		//OK! Keep this wierdness here!  It's necessary because oldRoom will have blown
+		//away any real deities with copy deities in the CMMap, and this will restore
+		//the real ones.
+		for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+		{
+			final MOB M=m.nextElement();
+			if((M instanceof Deity)
+			&&(M.isMonster())
+			&&(M.isSavable())
+			&&(M.getStartRoom()==R))
+				CMLib.map().registerWorldObjectLoaded(R.getArea(), R, M);
+		}
+	}
+
 	public void rooms(final MOB mob, final List<String> commands)
 		throws IOException
 	{
@@ -286,6 +304,7 @@ public class Modify extends StdCommand
 			}
 			oldRoom.destroy();
 			newRoom.getArea().fillInAreaRoom(newRoom);
+			fixDeities(newRoom);
 			return;
 		}
 		if (commands.size() < 3)
@@ -505,6 +524,7 @@ public class Modify extends StdCommand
 				}
 				oldRoom.destroy();
 				newRoom.getArea().fillInAreaRoom(newRoom);
+				fixDeities(newRoom);
 			}
 			return;
 		}

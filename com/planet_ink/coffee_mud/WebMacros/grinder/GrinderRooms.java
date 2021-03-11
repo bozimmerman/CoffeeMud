@@ -379,8 +379,27 @@ public class GrinderRooms
 			if(!copyRoom.sameAs(R))
 				Log.sysOut("Grinder",whom.Name()+" modified room "+R.roomID()+".");
 			copyRoom.destroy();
+			fixDeities(R);
 		}
 		return "";
+	}
+
+	protected static void fixDeities(final Room R)
+	{
+		if(R==null)
+			return;
+		//OK! Keep this wierdness here!  It's necessary because oldRoom will have blown
+		//away any real deities with copy deities in the CMMap, and this will restore
+		//the real ones.
+		for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+		{
+			final MOB M=m.nextElement();
+			if((M instanceof Deity)
+			&&(M.isMonster())
+			&&(M.isSavable())
+			&&(M.getStartRoom()==R))
+				CMLib.map().registerWorldObjectLoaded(R.getArea(), R, M);
+		}
 	}
 
 	public static String delRoom(final Room R)
