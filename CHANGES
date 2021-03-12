@@ -11,7 +11,7 @@
  10. Lots of new achievements -- mostly skill proficiency related
  11. Prop_InstantDeath can now kill you less instantly.
  12. STARTMANA, STARTMOVE, and STARTHP in ini file can append to class changes/level.
- 13. New INI entry: SPEED_ADJ -- for global action bonus tweeking
+ 13. New INI entry: BONUSACT -- for global action bonus tweeking
  14. Crafting skill INFO command now supports expertises and specific resources
  15. CLASSSYSTEM has new class limit boundary options, and new GAIN and SWITCH for train cost. 
   
