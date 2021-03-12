@@ -1205,7 +1205,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean containsString(final String toSrchStr, final String srchForStr)
 	{
@@ -1218,7 +1218,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			toSrchC[c]=Character.toUpperCase(toSrchC[c]);
 		return unsafeContainsString(toSrchC,srchForStr);
 	}
-		
+
 	protected final boolean unsafeContainsString(final char[] toSrchC, final String srchForStr)
 	{
 		char[] srchC=srchForStr.toCharArray();
@@ -2585,7 +2585,6 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 			else
 			{
-				myOccurrance=flags.occurrance;
 				for (final Environmental E : list)
 				{
 					if((E!=null)
@@ -2596,16 +2595,18 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 							return E;
 					}
 				}
-				myOccurrance=flags.occurrance;
-				for (final Environmental E : list)
+				if(myOccurrance == flags.occurrance)
 				{
-					if((E!=null)
-					&&(!(E instanceof Ability))
-					&&(containsString(E.displayText(),srchStr)
-						||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr))))
+					for (final Environmental E : list)
 					{
-						if((--myOccurrance)<=0)
-							return E;
+						if((E!=null)
+						&&(!(E instanceof Ability))
+						&&(containsString(E.displayText(),srchStr)
+							||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr))))
+						{
+							if((--myOccurrance)<=0)
+								return E;
+						}
 					}
 				}
 			}
@@ -2652,7 +2653,6 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 			else
 			{
-				myOccurrance=flags.occurrance;
 				for (final Environmental E : list)
 				{
 					if((E instanceof Exit)
@@ -2666,14 +2666,16 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 							return (Exit)E;
 					}
 				}
-				myOccurrance=flags.occurrance;
-				for (final Environmental E : list)
+				if(myOccurrance == flags.occurrance)
 				{
-					if((E instanceof Exit)
-					&&(containsString(E.displayText(),srchStr)))
+					for (final Environmental E : list)
 					{
-						if((--myOccurrance)<=0)
-							return (Exit)E;
+						if((E instanceof Exit)
+						&&(containsString(E.displayText(),srchStr)))
+						{
+							if((--myOccurrance)<=0)
+								return (Exit)E;
+						}
 					}
 				}
 			}
@@ -2721,7 +2723,6 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 			else
 			{
-				myOccurrance=flags.occurrance;
 				for (;iter.hasNext();)
 				{
 					final Environmental E=iter.next();
@@ -2781,7 +2782,6 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 			else
 			{
-				myOccurrance=flags.occurrance;
 				for (;iter.hasMoreElements();)
 				{
 					final Environmental E=iter.nextElement();
@@ -2843,7 +2843,6 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 			else
 			{
-				myOccurrance=flags.occurrance;
 				for (final Environmental E : list)
 				{
 					if((E!=null)
@@ -2854,9 +2853,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 							matches.addElement(E);
 					}
 				}
-				if(matches.isEmpty())
+				if(matches.isEmpty() && (myOccurrance == flags.occurrance))
 				{
-					myOccurrance=flags.occurrance;
 					for (final Environmental E : list)
 					{
 						if((E!=null)
@@ -2916,7 +2914,6 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		else
 		{
-			myOccurrance=flags.occurrance;
 			for (final String string : list.keySet())
 			{
 				E=list.get(string);
@@ -2928,17 +2925,19 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						return E;
 				}
 			}
-			myOccurrance=flags.occurrance;
-			for (final String string : list.keySet())
+			if(myOccurrance == flags.occurrance)
 			{
-				E=list.get(string);
-				if(E!=null)
+				for (final String string : list.keySet())
 				{
-					if((containsString(E.displayText(),srchStr))
-					||((E instanceof MOB) && containsString(((MOB)E).genericName(),srchStr)))
+					E=list.get(string);
+					if(E!=null)
 					{
-						if((--myOccurrance)<=0)
-							return E;
+						if((containsString(E.displayText(),srchStr))
+						||((E instanceof MOB) && containsString(((MOB)E).genericName(),srchStr)))
+						{
+							if((--myOccurrance)<=0)
+								return E;
+						}
 					}
 				}
 			}
@@ -3007,23 +3006,25 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			catch (final java.lang.ArrayIndexOutOfBoundsException x)
 			{
 			}
-			myOccurrance=flags.occurrance;
-			try
+			if(myOccurrance == flags.occurrance)
 			{
-				for (final Item I : list)
+				try
 				{
-					if((I!=null)
-					&&(I.container()==goodLocation)
-					&&(filter.passesFilter(I))
-					&&(containsString(I.displayText(),srchStr)))
+					for (final Item I : list)
 					{
-						if((--myOccurrance)<=0)
-							return I;
+						if((I!=null)
+						&&(I.container()==goodLocation)
+						&&(filter.passesFilter(I))
+						&&(containsString(I.displayText(),srchStr)))
+						{
+							if((--myOccurrance)<=0)
+								return I;
+						}
 					}
 				}
-			}
-			catch (final java.lang.ArrayIndexOutOfBoundsException x)
-			{
+				catch (final java.lang.ArrayIndexOutOfBoundsException x)
+				{
+				}
 			}
 		}
 		return null;
@@ -3080,9 +3081,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 							matches.addElement(I);
 					}
 				}
-				if(matches.isEmpty())
+				if(matches.isEmpty() && (myOccurrance == flags.occurrance))
 				{
-					myOccurrance=flags.occurrance;
 					for (final Item I : list)
 					{
 						if(I==null)
@@ -3183,28 +3183,30 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					}
 				}
 
-				myOccurrance=flags.occurrance - counterSlap[0];
-				for (final Environmental E : list)
+				if(myOccurrance == flags.occurrance-counterSlap[0])
 				{
-					if(E instanceof Item)
+					for (final Environmental E : list)
 					{
-						I=(Item)E;
-						if((I.container()==goodLocation)
-						&&(filter.passesFilter(I))
-						&&(containsString(I.displayText(),srchStr)))
+						if(E instanceof Item)
 						{
-							if((--myOccurrance)<=0)
-								return I;
+							I=(Item)E;
+							if((I.container()==goodLocation)
+							&&(filter.passesFilter(I))
+							&&(containsString(I.displayText(),srchStr)))
+							{
+								if((--myOccurrance)<=0)
+									return I;
+							}
 						}
-					}
-					else
-					if(E!=null)
-					{
-						if((containsString(E.displayText(),srchStr))
-						||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr)))
+						else
+						if(E!=null)
 						{
-							if((--myOccurrance)<=0)
-								return E;
+							if((containsString(E.displayText(),srchStr))
+							||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr)))
+							{
+								if((--myOccurrance)<=0)
+									return E;
+							}
 						}
 					}
 				}
@@ -3298,28 +3300,30 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					}
 				}
 
-				myOccurrance=flags.occurrance;
-				for (final Environmental E : list)
+				if(myOccurrance == flags.occurrance)
 				{
-					if(E instanceof Item)
+					for (final Environmental E : list)
 					{
-						I=(Item)E;
-						if((I.container()==goodLocation)
-						&&(filter.passesFilter(I))
-						&&(containsString(I.displayText(),srchStr)))
+						if(E instanceof Item)
 						{
-							if((--myOccurrance)<=0)
-								return I;
+							I=(Item)E;
+							if((I.container()==goodLocation)
+							&&(filter.passesFilter(I))
+							&&(containsString(I.displayText(),srchStr)))
+							{
+								if((--myOccurrance)<=0)
+									return I;
+							}
 						}
-					}
-					else
-					if(E!=null)
-					{
-						if((containsString(E.displayText(),srchStr))
-						||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr)))
+						else
+						if(E!=null)
 						{
-							if((--myOccurrance)<=0)
-								return E;
+							if((containsString(E.displayText(),srchStr))
+							||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr)))
+							{
+								if((--myOccurrance)<=0)
+									return E;
+							}
 						}
 					}
 				}

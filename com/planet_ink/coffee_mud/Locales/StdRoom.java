@@ -2651,26 +2651,30 @@ public class StdRoom implements Room
 				}
 			};
 			found=mob.fetchItem(goodLocation, mobCheckFilter, thingName);
-			if(found == null)
+			if(found == null) // smurfy well exception -- see below -- this is under favorItems and !wornonly
 			{
 				// this ugliness allows you do use dot syntax on things on the ground when you have SOME stuff in inventory, but not much
 				final int dotNumber=CMLib.english().getContextDotNumber(thingName);
 				if(dotNumber > 1)
 				{
-					thingName =  CMLib.english().bumpDotContextNumber(thingName, -(dotNumber-1));
+					String testThingName =  CMLib.english().bumpDotContextNumber(thingName, -(dotNumber-1));
 					int numMobHas = 0;
 					for(int i=1;i<=dotNumber;i++)
 					{
-						if(mob.fetchItem(goodLocation, mobCheckFilter, thingName)==null)
+						if(mob.fetchItem(goodLocation, mobCheckFilter, testThingName)==null)
 							break;
 						numMobHas++;
-						thingName =  CMLib.english().bumpDotContextNumber(thingName, 1);
+						testThingName =  CMLib.english().bumpDotContextNumber(testThingName, 1);
 					}
 					if(dotNumber > numMobHas)
 					{
 						final int curDotNumber=numMobHas+1;
 						final int delta = -(curDotNumber-1) + (dotNumber-numMobHas-1);
-						thingName =  CMLib.english().bumpDotContextNumber(thingName, delta);
+						testThingName =  CMLib.english().bumpDotContextNumber(testThingName, delta);
+						found = fetchFromRoomFavorItems(goodLocation, testThingName);
+						if((found != null)
+						&&((filter==null)||(filter.passesFilter(found))))
+							return found;
 					}
 				}
 			}
