@@ -2451,7 +2451,7 @@ public class CMProps extends Properties
 		setIntVar(Int.THIRST_GAIN_PCT,thirstCodes.length>1?CMath.s_int(CMStrings.deleteAllofChar(thirstCodes[1], '%')):100);
 		setIntVar(Int.THIRST_LOSS_PCT,thirstCodes.length>2?CMath.s_int(CMStrings.deleteAllofChar(thirstCodes[2], '%')):100);
 		setIntVar(Int.MOB_HP_BASE,CMath.s_int(getStr("MOB_HP_BASE",""+DEFAULT_MOB_HP_BASE)));
-		p().speedAdj = CMath.s_double(getStr("SPEED_ADJ","1.0"));
+		p().speedAdj = CMath.s_double(getStr("BONUSACT","1.0"));
 
 		setUpLowVar(Str.BLACKLISTFILE,getStr("BLACKLISTFILE","/resources/ipblock.ini"));
 		setWhitelist(CMProps.WhiteList.CONNS,getStr("WHITELISTIPSCONN"));
