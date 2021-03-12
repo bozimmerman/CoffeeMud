@@ -365,7 +365,9 @@ public class CMProps extends Properties
 		MAXITEMSWORN,
 		MAXWEARPERLOC,
 		EFFECTCAP,
-		EFFECTCXL
+		EFFECTCXL,
+		CLASSTRAINCOST,
+		CLASSSWITCHCOST
 		;
 
 		public static final int	EXVIEW_DEFAULT		= 0;
@@ -2291,7 +2293,18 @@ public class CMProps extends Properties
 			privateSet.put(s.trim(),Thread.currentThread().getThreadGroup());
 
 		setVar(Str.BADNAMES,getStr("BADNAMES"));
-		setVar(Str.MULTICLASS,getStr("CLASSSYSTEM"));
+		setIntVar(Int.CLASSTRAINCOST,1);
+		setIntVar(Int.CLASSSWITCHCOST,1);
+		for(final String cs : CMParms.parseCommas(getStr("CLASSSYSTEM"), true))
+		{
+			if(CMath.isNumber(CMParms.getParmStr(cs,"GAIN", "")))
+				setIntVar(Int.CLASSTRAINCOST,""+Math.round(CMath.s_double(CMParms.getParmStr(cs,"GAIN", ""))));
+			else
+			if(CMath.isNumber(CMParms.getParmStr(cs,"SWITCH", "")))
+				setIntVar(Int.CLASSTRAINCOST,""+Math.round(CMath.s_double(CMParms.getParmStr(cs,"SWITCH", ""))));
+			else
+				setVar(Str.MULTICLASS,cs.toUpperCase());
+		}
 		setVar(Str.PKILL,getStr("PLAYERKILL"));
 		setVar(Str.PLAYERDEATH,getStr("PLAYERDEATH"));
 		setVar(Str.ITEMLOOTPOLICY,getStr("ITEMLOOTPOLICY"));

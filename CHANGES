@@ -13,6 +13,7 @@
  12. STARTMANA, STARTMOVE, and STARTHP in ini file can append to class changes/level.
  13. New INI entry: SPEED_ADJ -- for global action bonus tweeking
  14. Crafting skill INFO command now supports expertises and specific resources
+ 15. CLASSSYSTEM has new class limit boundary options, and new GAIN and SWITCH for train cost. 
   
 # Build 5.9.11.1 Release 02/26/2021
   Bug Fix Release:

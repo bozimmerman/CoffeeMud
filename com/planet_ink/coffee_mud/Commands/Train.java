@@ -116,8 +116,12 @@ public class Train extends StdCommand
 			{
 				final CharClass C=c.nextElement();
 				int classLevel=mob.charStats().getClassLevel(C);
+				int trainCost = CMProps.getIntVar(CMProps.Int.CLASSSWITCHCOST);
 				if(classLevel<0)
+				{
 					classLevel=0;
+					trainCost = CMProps.getIntVar(CMProps.Int.CLASSTRAINCOST);
+				}
 				if((C.name().toUpperCase().startsWith(abilityName.toUpperCase()))
 				||(C.name(classLevel).toUpperCase().startsWith(abilityName.toUpperCase())))
 				{
@@ -126,6 +130,9 @@ public class Train extends StdCommand
 					{
 						abilityCode=TRAIN_CCLASS;
 						theClass=C;
+						trainsRequired=trainCost;
+						if(trainsRequired<0)
+							return false;
 					}
 					break;
 				}
@@ -171,7 +178,7 @@ public class Train extends StdCommand
 			}
 		}
 		else
-		if(mob.getTrains()<=0)
+		if((mob.getTrains()<=0)&&(trainsRequired>0))
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to have enough training sessions to do that."));
 			return false;
@@ -196,13 +203,15 @@ public class Train extends StdCommand
 		if(teacherName!=null)
 			teacher=mob.location().fetchInhabitant(teacherName);
 		if(teacher==null)
-		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
-			final MOB possTeach=mob.location().fetchInhabitant(i);
-			if((possTeach!=null)&&(possTeach!=mob))
+			for(int i=0;i<mob.location().numInhabitants();i++)
 			{
-				teacher=possTeach;
-				break;
+				final MOB possTeach=mob.location().fetchInhabitant(i);
+				if((possTeach!=null)&&(possTeach!=mob))
+				{
+					teacher=possTeach;
+					break;
+				}
 			}
 		}
 		if((teacher==null)||(!CMLib.flags().canBeSeenBy(teacher,mob)))
@@ -386,7 +395,7 @@ public class Train extends StdCommand
 				if(classLevel<0)
 					classLevel=0;
 				mob.tell(L("You have undergone @x1 training!",theClass.name(classLevel)));
-				mob.setTrains(mob.getTrains()-1);
+				mob.setTrains(mob.getTrains()-trainsRequired);
 				mob.baseCharStats().getCurrentClass().endCharacter(mob);
 				mob.baseCharStats().setCurrentClass(theClass);
 				if((!mob.isMonster())&&(mob.soulMate()==null))

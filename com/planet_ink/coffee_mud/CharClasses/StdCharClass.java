@@ -399,6 +399,28 @@ public class StdCharClass implements CharClass
 					canOnlyBeClassID=possibleClass.ID();
 				multiClassSecondRule="NO";
 			}
+
+			// check the # class limits rule
+			if((multiClassFirstRule.equals("MULTI")
+				||multiClassFirstRule.equals("MULTIAPP")
+				||multiClassFirstRule.equals("SUB"))
+			&&(CMath.isInteger(multiClassSecondRule)))
+			{
+				if((mob!=null)
+				&&(mob.baseCharStats().getClassLevel(this)<0)
+				&&(!mob.baseCharStats().getCurrentClass().ID().equals("StdCharClass")))
+				{
+					final int max=CMath.s_int(multiClassSecondRule);
+					final int num=mob.baseCharStats().numClasses();
+					if(num>=max)
+					{
+						if(!quiet)
+							mob.tell(L("You have already trained for your max @x1 classes.",""+num));
+						return false;
+					}
+				}
+				multiClassSecondRule="";
+			}
 		}
 
 		if(mob == null)
