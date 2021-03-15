@@ -3315,13 +3315,27 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if(str2.startsWith(plusMinus))
 						{
 							final String str3=str2.substring(1).toUpperCase().trim();
-							final Faction.FRange FR=getRange(str3);
-							if(FR!=null)
+							if(str3.equalsIgnoreCase("EVIL")||str3.equalsIgnoreCase("NEUTRAL")||str3.equalsIgnoreCase("GOOD"))
+							{
+								parms.clear();
+								v=v2-1;
+								break;
+							}
+							else
+							{
+								//if(str3.startsWith("AREA_"))
+								//	parms.add(str3);
+								//else
+								//final Faction.FRange FR=getRange(str3);
+								//if(FR==null)
+								//	Log.debugOut("Range not found in MUDZapper: "+str3);
 								parms.add(str3);
+							}
 						}
 						v=V.size();
 					}
-					buf.add(new CompiledZapperMaskEntryImpl(entryType,parms.toArray(new Object[0])));
+					if(parms.size()>0)
+						buf.add(new CompiledZapperMaskEntryImpl(entryType,parms.toArray(new Object[0])));
 					break;
 				}
 				case CLAN: // +Clan
