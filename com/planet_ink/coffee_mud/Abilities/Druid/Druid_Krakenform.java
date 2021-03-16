@@ -107,7 +107,7 @@ public class Druid_Krakenform extends StdAbility
 
 	protected SailingShip ship = null;
 	protected Language	krakenSpeak = null;
-	
+
 	protected SailingShip getShip()
 	{
 		if(ship == null)
@@ -123,6 +123,12 @@ public class Druid_Krakenform extends StdAbility
 				ship.setSavable(false);
 				ship.setAnchorDown(false);
 				ship.setUsesRemaining(100);
+				if(ship instanceof Container)
+				{
+					final Container cont = (Container)ship;
+					cont.setDoorsNLocks(false, false, false, false, false, false);
+					cont.setCapacity(0);
+				}
 				ship.setName("a kraken");
 				ship.setDisplayText("a kraken is here");
 				ship.setStat("SPECIAL_NOUN_SHIP", "kraken");
