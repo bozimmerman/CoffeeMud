@@ -987,7 +987,7 @@ public class QuestMaker extends StdWebMacro
 								val="";
 								for(int v1=0;v1<V.size();v1++)
 								{
-									MOB M2=RoomData.getMOBFromCode(RoomData.getMOBCache(),V.get(v1));
+									MOB M2=RoomData.getMOBFromCode(V.get(v1));
 									if(M2==null)
 										M2=RoomData.getMOBFromCatalog(V.get(v1));
 									if(M2!=null)

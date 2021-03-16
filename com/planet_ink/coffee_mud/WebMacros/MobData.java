@@ -924,7 +924,7 @@ public class MobData extends StdWebMacro
 				{
 					if(O instanceof MOB)
 					{
-						final String s=RoomData.getMOBCode(RoomData.getMOBCache(),(MOB)O);
+						final String s=RoomData.getMOBCode((MOB)O);
 						str.append("<INPUT TYPE=BUTTON NAME=EDITSHOPMOB"+(i+1)+" VALUE=EDIT ONCLICK=\"EditShopMob('"+s+"');\">");
 					}
 					else
@@ -1181,7 +1181,7 @@ public class MobData extends StdWebMacro
 					if(R!=null)
 						M=RoomData.getMOBFromCode(R,mobCode);
 					else
-						M=RoomData.getMOBFromCode(RoomData.getMOBCache(),mobCode);
+						M=RoomData.getMOBFromCode(mobCode);
 					if((shopMobCode != null)
 					&&(shopMobCode.length()>0)
 					&&(M instanceof ShopKeeper))
@@ -1198,7 +1198,7 @@ public class MobData extends StdWebMacro
 						if(shopMobCode.equals("NEW"))
 							M=CMClass.getMOB("GenMob");
 						else
-							M=RoomData.getMOBFromCode(RoomData.getMOBCache(),shopMobCode);
+							M=RoomData.getMOBFromCode(shopMobCode);
 					}
 				}
 

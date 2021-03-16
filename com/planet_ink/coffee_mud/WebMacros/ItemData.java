@@ -119,7 +119,7 @@ public class ItemData extends StdWebMacro
 					if(R!=null)
 						M=RoomData.getMOBFromCode(R,mobNum);
 					else
-						M=RoomData.getMOBFromCode(RoomData.getMOBCache(),mobNum);
+						M=RoomData.getMOBFromCode(mobNum);
 					if(M==null)
 					{
 						final StringBuffer str=new StringBuffer("No MOB?!");

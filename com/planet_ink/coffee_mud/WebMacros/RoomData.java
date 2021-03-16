@@ -149,6 +149,12 @@ public class RoomData extends StdWebMacro
 		return "";
 	}
 
+	public static String getMOBCode(final MOB M)
+	{
+		final String code = getMOBCode(getMOBCache(), M);
+		return code;
+	}
+
 	public static String getMOBCode(final Collection<MOB> mobs, final MOB M)
 	{
 		if(M==null)
@@ -236,6 +242,11 @@ public class RoomData extends StdWebMacro
 		return null;
 	}
 
+	public static Item getItemFromCode(final String code)
+	{
+		return getItemFromCode(getItemCache(), code);
+	}
+
 	public static Item getItemFromCode(final Collection<Item> allitems, String code)
 	{
 		if(code.startsWith("CATALOG-"))
@@ -258,7 +269,7 @@ public class RoomData extends StdWebMacro
 	public static MOB getMOBFromCode(final Room R, String code)
 	{
 		if(R==null)
-			return getMOBFromCode(getMOBCache(),code);
+			return getMOBFromCode(code);
 		for(int i=0;i<R.numInhabitants();i++)
 		{
 			if(getMOBCode(R,R.fetchInhabitant(i)).equals(code))
@@ -272,6 +283,11 @@ public class RoomData extends StdWebMacro
 				return R.fetchInhabitant(i);
 		}
 		return null;
+	}
+
+	public static MOB getMOBFromCode(final String code)
+	{
+		return getMOBFromCode(getMOBCache(), code);
 	}
 
 	public static MOB getMOBFromCode(final Collection<MOB> allmobs, String code)

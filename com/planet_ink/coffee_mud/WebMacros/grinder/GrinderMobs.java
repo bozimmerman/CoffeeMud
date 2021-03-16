@@ -1092,7 +1092,7 @@ public class GrinderMobs
 				{
 					RoomData.contributeMOBs(new XVector<MOB>(M));
 					final MOB M2=RoomData.getReferenceMOB(M);
-					newMobCode=RoomData.getMOBCode(RoomData.getMOBCache(),M2);
+					newMobCode=RoomData.getMOBCode(M2);
 				}
 			}
 			else
@@ -1104,7 +1104,7 @@ public class GrinderMobs
 					((ShopKeeper)shopM).getShop().addStoreInventory(M);
 				RoomData.contributeMOBs(new XVector<MOB>(M));
 				final MOB M2=RoomData.getReferenceMOB(M);
-				newShopMobCode=RoomData.getMOBCode(RoomData.getMOBCache(),M2);
+				newShopMobCode=RoomData.getMOBCode(M2);
 				CMLib.database().DBUpdateMOBs(R);
 				newMobCode=RoomData.getMOBCode(R,shopM);
 			}

@@ -128,7 +128,7 @@ public class MUDGrinder extends StdWebMacro
 					if(R!=null)
 						M=RoomData.getMOBFromCode(R,mobCode);
 					else
-						M=RoomData.getMOBFromCode(RoomData.getMOBCache(),mobCode);
+						M=RoomData.getMOBFromCode(mobCode);
 					if(M!=null)
 					{
 						I=RoomData.getItemFromCode(M,itemCode);
