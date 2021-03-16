@@ -49,7 +49,7 @@ public class RoomData extends StdWebMacro
 	}
 	static final String[][] STAT_CHECKS={{"DISPLAY","NAME"},{"CLASS","CLASSES"},{"DESCRIPTION","DESCRIPTION"},{"XSIZE","XGRID"},{"YSIZE","XGRID"},{"IMAGE","IMAGE"}};
 
-	public static Collection<MOB> getMOBCache()
+	private static Collection<MOB> getMOBCache()
 	{
 		@SuppressWarnings("unchecked")
 		Collection<MOB> mobSet=(Collection<MOB>)Resources.getResource("SYSTEM_WEB_MOB_CACHE");
@@ -61,7 +61,19 @@ public class RoomData extends StdWebMacro
 		return mobSet;
 	}
 
-	public static Collection<Item> getItemCache()
+	public static Iterable<MOB> getMOBCacheIterable()
+	{
+		return getMOBCache();
+	}
+
+	public static boolean isCachedMOB(final Object M)
+	{
+		if(M!=null)
+			return getMOBCache().contains(M);
+		return false;
+	}
+
+	private static Collection<Item> getItemCache()
 	{
 		@SuppressWarnings("unchecked")
 		Collection<Item> itemSet=(Collection<Item>)Resources.getResource("SYSTEM_WEB_ITEM_CACHE");
@@ -71,6 +83,18 @@ public class RoomData extends StdWebMacro
 			Resources.submitResource("SYSTEM_WEB_ITEM_CACHE", itemSet);
 		}
 		return itemSet;
+	}
+
+	public static Iterable<Item> getItemCacheIterable()
+	{
+		return getItemCache();
+	}
+
+	public static boolean isCachedItem(final Object I)
+	{
+		if(I!=null)
+			return getItemCache().contains(I);
+		return false;
 	}
 
 	public static String getItemCode(final Room R, final Item I)
@@ -83,6 +107,11 @@ public class RoomData extends StdWebMacro
 				return Long.toString((I.ID()+"/"+I.Name()+"/"+I.displayText()).hashCode()<<5)+i;
 		}
 		return "";
+	}
+
+	public static String getItemCode(final Item I)
+	{
+		return getItemCode(getItemCache(), I);
 	}
 
 	public static String getItemCode(final Collection<Item> allitems, final Item I)
@@ -336,18 +365,23 @@ public class RoomData extends StdWebMacro
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static String getAppropriateCode(final Environmental E, final Environmental RorM, final Collection classes, final Collection list)
+	public static String getAppropriateCode(final Environmental E, final Environmental RorM, final Collection classes)
 	{
 		if(CMLib.flags().isCataloged(E))
 			return "CATALOG-"+E.Name();
 		else
-		if(list.contains(E))
+		if(isCachedItem(E)||isCachedMOB(E))
 			return ""+E;
 		else
 		if(((RorM instanceof Room)&&(((Room)RorM).isHere(E)))
 		||((RorM instanceof MOB)&&(((MOB)RorM).isMine(E))))
 			return (E instanceof Item)?getItemCode(classes,(Item)E):getMOBCode(classes,(MOB)E);
 		return E.ID();
+	}
+
+	public static Item getItemFromAnywhere(final String MATCHING)
+	{
+		return getItemFromAnywhere(getItemCache(), MATCHING);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -384,6 +418,26 @@ public class RoomData extends StdWebMacro
 				return I;
 		}
 		return null;
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static MOB getMOBFromAnywhere(final Object allitems, final String MATCHING)
+	{
+		if(isAllNum(MATCHING))
+			return getMOBFromCode((Collection)allitems,MATCHING);
+		else
+		if(MATCHING.startsWith("CATALOG-"))
+			return getMOBFromCatalog(MATCHING);
+		else
+		if(MATCHING.indexOf('@')>0)
+		{
+			for (final MOB M2 : getMOBCache())
+			{
+				if(MATCHING.equals(""+M2))
+					return M2;
+			}
+		}
+		return CMClass.getMOB(MATCHING);
 	}
 
 	public static MOB getReferenceMOB(final MOB M)
@@ -1303,10 +1357,8 @@ public class RoomData extends StdWebMacro
 			if(parms.containsKey("MOBLIST"))
 			{
 				final List<MOB> classes=new ArrayList<MOB>();
-				Collection<MOB> moblist=null;
 				if(httpReq.isUrlParameter("MOB1"))
 				{
-					moblist=getMOBCache();
 					for(int i=1;;i++)
 					{
 						final String MATCHING=httpReq.getUrlParameter("MOB"+i);
@@ -1333,15 +1385,9 @@ public class RoomData extends StdWebMacro
 						else
 						if(MATCHING.indexOf('@')>0)
 						{
-							for(final Iterator<MOB> m=moblist.iterator(); m.hasNext();)
-							{
-								final MOB M2=m.next();
-								if(MATCHING.equals(""+M2))
-								{
-									classes.add(M2);
-									break;
-								}
-							}
+							final MOB M2=RoomData.getMOBFromAnywhere(null,MATCHING);
+							if(M2 != null)
+								classes.add(M2);
 						}
 						else
 						for(final Enumeration<MOB> m=CMClass.mobTypes();m.hasMoreElements();)
@@ -1368,7 +1414,7 @@ public class RoomData extends StdWebMacro
 								classes.add(M);
 						}
 					}
-					moblist=contributeMOBs(classes);
+					contributeMOBs(classes);
 				}
 				str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
 				for(int i=0;i<classes.size();i++)
@@ -1378,7 +1424,7 @@ public class RoomData extends StdWebMacro
 					str.append("<TD WIDTH=90%>");
 					str.append("<SELECT ONCHANGE=\"DelMOB(this);\" NAME=MOB"+(i+1)+">");
 					str.append("<OPTION VALUE=\"\">Delete!");
-					final String code=getAppropriateCode(M,R,useRoomItems?classes:new Vector<MOB>(),moblist);
+					final String code=getAppropriateCode(M,R,useRoomItems?classes:new ArrayList<MOB>());
 					str.append("<OPTION SELECTED VALUE=\""+code+"\">"+M.Name()+" ("+M.ID()+")");
 					str.append("</SELECT>");
 					str.append("</TD>");
@@ -1390,7 +1436,7 @@ public class RoomData extends StdWebMacro
 				str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
 				str.append("<SELECT ONCHANGE=\"AddMOB(this);\" NAME=MOB"+(classes.size()+1)+">");
 				str.append("<OPTION SELECTED VALUE=\"\">Select a new MOB");
-				for(final Iterator<MOB> m=moblist.iterator(); m.hasNext();)
+				for(final Iterator<MOB> m=getMOBCacheIterable().iterator(); m.hasNext();)
 				{
 					final MOB M=m.next();
 					str.append("<OPTION VALUE=\""+M+"\">"+M.Name()+getObjIDSuffix(M));
@@ -1424,10 +1470,8 @@ public class RoomData extends StdWebMacro
 				final List<Item> classes=new ArrayList<Item>();
 				final List<Object> containers=new ArrayList<Object>();
 				final List<Boolean> beingWorn=new ArrayList<Boolean>();
-				Collection<Item> itemlist=null;
 				if(httpReq.isUrlParameter("ITEM1"))
 				{
-					itemlist=getItemCache();
 					final Vector<String> cstrings=new Vector<String>();
 					for(int i=1;;i++)
 					{
@@ -1466,7 +1510,7 @@ public class RoomData extends StdWebMacro
 							beingWorn.add(Boolean.valueOf(!I2.amWearingAt(Wearable.IN_INVENTORY)));
 						}
 					}
-					itemlist=contributeItems(classes);
+					contributeItems(classes);
 				}
 				str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
 				final Map<Container,String> classesContainers = new HashMap<Container,String>();
@@ -1495,7 +1539,7 @@ public class RoomData extends StdWebMacro
 					str.append("<TD WIDTH=90%>");
 					str.append("<SELECT ONCHANGE=\"DelItem(this);\" NAME=ITEM"+(i+1)+">");
 					str.append("<OPTION VALUE=\"\">Delete!");
-					final String code=getAppropriateCode(I,R,useRoomItems?classes:new ArrayList<Item>(),itemlist);
+					final String code=getAppropriateCode(I,R,useRoomItems?classes:new ArrayList<Item>());
 					str.append("<OPTION SELECTED VALUE=\""+code+"\">"+I.Name()+" ("+I.ID()+")");
 					str.append("</SELECT><BR>");
 					str.append("<FONT COLOR=WHITE SIZE=-1>");
@@ -1521,10 +1565,8 @@ public class RoomData extends StdWebMacro
 				str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
 				str.append("<SELECT ONCHANGE=\"AddItem(this);\" NAME=ITEM"+(classes.size()+1)+">");
 				str.append("<OPTION SELECTED VALUE=\"\">Select a new Item");
-				for (final Item I : itemlist)
-				{
+				for (final Item I : getItemCacheIterable())
 					str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+getObjIDSuffix(I));
-				}
 				StringBuffer ilist=(StringBuffer)Resources.getResource("MUDGRINDER-ITEMLIST"+theme);
 				if(ilist==null)
 				{

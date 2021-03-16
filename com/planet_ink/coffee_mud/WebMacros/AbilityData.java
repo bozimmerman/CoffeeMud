@@ -862,7 +862,7 @@ public class AbilityData extends StdWebMacro
 						final int x=newKey.indexOf('=');
 						if(x > 0)
 							newKey = newKey.substring(x+1).trim();
-						final Item newItem = RoomData.getItemFromAnywhere(RoomData.getItemCache(),newKey);
+						final Item newItem = RoomData.getItemFromAnywhere(newKey);
 						if(newItem != null)
 						{
 							itemList.add(newItem);

@@ -970,9 +970,9 @@ public class QuestMaker extends StdWebMacro
 								val="";
 								for(int v1=0;v1<V.size();v1++)
 								{
-									Item I=RoomData.getItemFromCode(RoomData.getItemCache(),V.get(v1));
+									Item I=RoomData.getItemFromCode(V.get(v1));
 									if(I==null)
-										I=RoomData.getItemFromAnywhere(RoomData.getItemCache(),V.get(v1));
+										I=RoomData.getItemFromAnywhere(V.get(v1));
 									if(I==null)
 										I=RoomData.getItemFromCatalog(V.get(v1));
 									if(I!=null)

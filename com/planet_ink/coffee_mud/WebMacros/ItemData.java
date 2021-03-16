@@ -197,7 +197,7 @@ public class ItemData extends StdWebMacro
 					if(itemCode.equals("NEW"))
 						I=CMClass.getItem("GenItem");
 					else
-						I=RoomData.getItemFromAnywhere(RoomData.getItemCache(),itemCode);
+						I=RoomData.getItemFromAnywhere(itemCode);
 					if(I!=null)
 						httpReq.getRequestObjects().put(itemCode,I);
 				}

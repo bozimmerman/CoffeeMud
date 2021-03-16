@@ -137,16 +137,14 @@ public class GrinderRaces
 		if(items==null)
 			items=new Vector<Item>();
 		final Vector<Item> classes=new Vector<Item>(); // return value
-		Collection<Item> itemlist=null;
 		if(httpReq.isUrlParameter(c+"ITEM1"))
 		{
-			itemlist=RoomData.getItemCache();
 			for(int i=1;;i++)
 			{
 				final String MATCHING=httpReq.getUrlParameter(c+"ITEM"+i);
 				if(MATCHING==null)
 					break;
-				Item I2=RoomData.getItemFromAnywhere(itemlist,MATCHING);
+				Item I2=RoomData.getItemFromAnywhere(MATCHING);
 				if(I2==null)
 				{
 					I2=RoomData.getItemFromAnywhere(items,MATCHING);

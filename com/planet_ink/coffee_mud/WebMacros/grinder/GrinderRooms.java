@@ -246,14 +246,9 @@ public class GrinderRooms
 					else
 					if(MATCHING.indexOf('@')>0)
 					{
-						for (final MOB M2 : RoomData.getMOBCache())
-						{
-							if(MATCHING.equals(""+M2))
-							{
-								happilyAddMob((MOB)M2.copyOf(),R);
-								break;
-							}
-						}
+						final MOB M2=RoomData.getMOBFromAnywhere(null,MATCHING);
+						if(M2 != null)
+							happilyAddMob((MOB)M2.copyOf(),R);
 					}
 					else
 					for(final Enumeration<MOB> m=CMClass.mobTypes();m.hasMoreElements();)

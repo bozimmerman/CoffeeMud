@@ -815,15 +815,7 @@ public class MobData extends StdWebMacro
 					else
 					if(MATCHING.indexOf('@')>0)
 					{
-						Environmental O=null;
-						for (final MOB M2 : RoomData.getMOBCache())
-						{
-							if(MATCHING.equals(""+M2))
-							{
-								O = M2;
-								break;
-							}
-						}
+						Environmental O=RoomData.getMOBFromAnywhere(null,MATCHING);
 						if(O==null)
 							O=RoomData.getItemFromAnywhere(null,MATCHING);
 						if(O!=null)
@@ -904,10 +896,10 @@ public class MobData extends StdWebMacro
 				if(CMLib.flags().isCataloged(O))
 					str.append("<OPTION SELECTED VALUE=\"CATALOG-"+O.Name()+"\">"+O.Name()+" (Cataloged)");
 				else
-				if(RoomData.getItemCache().contains(O))
+				if(RoomData.isCachedItem(O))
 					str.append("<OPTION SELECTED VALUE=\""+O+"\">"+O.Name()+RoomData.getObjIDSuffix(O));
 				else
-				if(RoomData.getMOBCache().contains(O))
+				if(RoomData.isCachedMOB(O))
 					str.append("<OPTION SELECTED VALUE=\""+O+"\">"+O.Name()+RoomData.getObjIDSuffix(O));
 				else
 					str.append("<OPTION SELECTED VALUE=\""+O.ID()+"\">"+O.Name()+" ("+O.ID()+")");
@@ -929,18 +921,18 @@ public class MobData extends StdWebMacro
 					}
 					else
 					if(O instanceof Item)
-						str.append("<INPUT TYPE=BUTTON NAME=EDITSHOPITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditShopItem('"+RoomData.getItemCode(RoomData.getItemCache(),(Item)O)+"');\">");
+						str.append("<INPUT TYPE=BUTTON NAME=EDITSHOPITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditShopItem('"+RoomData.getItemCode((Item)O)+"');\">");
 				}
 				str.append("</TD></TR>");
 			}
 			str.append("<TR><TD WIDTH=90%>");
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=SHP"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select an item");
-			for (final Item I : RoomData.getItemCache())
+			for (final Item I : RoomData.getItemCacheIterable())
 			{
 				str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+RoomData.getObjIDSuffix(I));
 			}
-			for (final MOB M : RoomData.getMOBCache())
+			for (final MOB M : RoomData.getMOBCacheIterable())
 			{
 				str.append("<OPTION VALUE=\""+M+"\">"+M.Name()+RoomData.getObjIDSuffix(M));
 			}
@@ -997,7 +989,6 @@ public class MobData extends StdWebMacro
 			final ArrayList<Item> classes=new ArrayList<Item>();
 			ArrayList<Object> containers=new ArrayList<Object>();
 			final ArrayList<Boolean> beingWorn=new ArrayList<Boolean>();
-			Collection<Item> itemlist=null;
 			if(httpReq.isUrlParameter("ITEM1"))
 			{
 				if(oldM!=M)
@@ -1007,7 +998,6 @@ public class MobData extends StdWebMacro
 				}
 
 				containers=new ArrayList<Object>();
-				itemlist=RoomData.getItemCache();
 				final Vector<String> cstrings=new Vector<String>();
 				for(int i=1;;i++)
 				{
@@ -1046,7 +1036,7 @@ public class MobData extends StdWebMacro
 						beingWorn.add(Boolean.valueOf(!I2.amWearingAt(Wearable.IN_INVENTORY)));
 					}
 				}
-				itemlist=RoomData.contributeItems(classes);
+				RoomData.contributeItems(classes);
 			}
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<classes.size();i++)
@@ -1058,7 +1048,7 @@ public class MobData extends StdWebMacro
 				str.append("<TD WIDTH=90%>");
 				str.append("<SELECT ONCHANGE=\"DelItem(this);\" NAME=ITEM"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
-				final String code=RoomData.getAppropriateCode(I,M,classes,itemlist);
+				final String code=RoomData.getAppropriateCode(I,M,classes);
 				str.append("<OPTION SELECTED VALUE=\""+code+"\">"+I.Name()+" ("+I.ID()+")");
 				str.append("</SELECT><BR>");
 				str.append("<FONT COLOR=WHITE SIZE=-1>");
@@ -1085,10 +1075,8 @@ public class MobData extends StdWebMacro
 			str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
 			str.append("<SELECT ONCHANGE=\"AddItem(this);\" NAME=ITEM"+(classes.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select a new Item");
-			for (final Item I : itemlist)
-			{
+			for (final Item I : RoomData.getItemCacheIterable())
 				str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+RoomData.getObjIDSuffix(I));
-			}
 			StringBuffer mposs=(StringBuffer)Resources.getResource("MUDGRINDER-MOBPOSS"+theme);
 			if(mposs==null)
 			{

@@ -271,16 +271,14 @@ public class RaceData extends StdWebMacro
 			items=new ArrayList<Item>();
 		final StringBuffer str=new StringBuffer("");
 		final List<Item> classes=new ArrayList<Item>();
-		Collection<Item> itemlist=null;
 		if(httpReq.isUrlParameter(c+"ITEM1"))
 		{
-			itemlist=RoomData.getItemCache();
 			for(int i=1;;i++)
 			{
 				final String MATCHING=httpReq.getUrlParameter(c+"ITEM"+i);
 				if(MATCHING==null)
 					break;
-				Item I2=RoomData.getItemFromAnywhere(itemlist,MATCHING);
+				Item I2=RoomData.getItemFromAnywhere(MATCHING);
 				if(I2==null)
 				{
 					I2=RoomData.getItemFromAnywhere(items,MATCHING);
@@ -296,7 +294,7 @@ public class RaceData extends StdWebMacro
 		else
 		{
 			classes.addAll(items);
-			itemlist=RoomData.contributeItems(classes);
+			RoomData.contributeItems(classes);
 		}
 		str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 		int numItems=0;
@@ -313,7 +311,7 @@ public class RaceData extends StdWebMacro
 			if(items.contains(I))
 				str.append("<OPTION SELECTED VALUE=\""+RoomData.getItemCode(classes,I)+"\">"+I.Name()+" ("+I.ID()+")");
 			else
-			if(itemlist.contains(I))
+			if(RoomData.isCachedItem(I))
 				str.append("<OPTION SELECTED VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
 			else
 				str.append("<OPTION SELECTED VALUE=\""+I.ID()+"\">"+I.Name()+" ("+I.ID()+")");
@@ -327,7 +325,7 @@ public class RaceData extends StdWebMacro
 		str.append("<SELECT ONCHANGE=\"AddItem(this);\" NAME="+c+"ITEM"+(numItems+1)+">");
 		if(!one)
 			str.append("<OPTION SELECTED VALUE=\"\">Select a new Item");
-		for(final Item I : itemlist)
+		for(final Item I : RoomData.getItemCacheIterable())
 		{
 			if(one&&(classes.contains(I)))
 			{

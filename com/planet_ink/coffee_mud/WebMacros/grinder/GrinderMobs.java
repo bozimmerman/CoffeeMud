@@ -986,15 +986,7 @@ public class GrinderMobs
 						else
 						if(MATCHING.indexOf('@')>0)
 						{
-							Environmental O=null;
-							for (final MOB M2 : RoomData.getMOBCache())
-							{
-								if(MATCHING.equals(""+M2))
-								{
-									O=M2;
-									break;
-								}
-							}
+							Environmental O=RoomData.getMOBFromAnywhere(null,MATCHING);
 							if(O==null)
 								O=RoomData.getItemFromAnywhere(null,MATCHING);
 							if(O!=null)

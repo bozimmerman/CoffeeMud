@@ -125,7 +125,7 @@ public class GrinderItems
 				if(R!=null)
 					M=RoomData.getMOBFromCode(R,mobNum);
 				else
-					M=RoomData.getMOBFromCode(RoomData.getMOBCache(),mobNum);
+					M=RoomData.getMOBFromCode(mobNum);
 				if(M==null)
 				{
 					final StringBuffer str=new StringBuffer("No MOB?!");
@@ -1066,7 +1066,7 @@ public class GrinderItems
 					&&(!itemCode.startsWith("NEWCATA-")))
 					{
 						RoomData.contributeItems(new XVector<Item>(I));
-						httpReq.addFakeUrlParameter("ITEM",RoomData.getItemCode(RoomData.getItemCache(),I));
+						httpReq.addFakeUrlParameter("ITEM",RoomData.getItemCode(I));
 					}
 				}
 				else
