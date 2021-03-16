@@ -137,7 +137,7 @@ public class GrinderRaces
 		if(items==null)
 			items=new Vector<Item>();
 		final Vector<Item> classes=new Vector<Item>(); // return value
-		List<Item> itemlist=null;
+		Collection<Item> itemlist=null;
 		if(httpReq.isUrlParameter(c+"ITEM1"))
 		{
 			itemlist=RoomData.getItemCache();

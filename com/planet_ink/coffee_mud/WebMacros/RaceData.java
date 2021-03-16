@@ -271,7 +271,7 @@ public class RaceData extends StdWebMacro
 			items=new ArrayList<Item>();
 		final StringBuffer str=new StringBuffer("");
 		final List<Item> classes=new ArrayList<Item>();
-		List<Item> itemlist=null;
+		Collection<Item> itemlist=null;
 		if(httpReq.isUrlParameter(c+"ITEM1"))
 		{
 			itemlist=RoomData.getItemCache();

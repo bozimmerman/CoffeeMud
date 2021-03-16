@@ -997,7 +997,7 @@ public class MobData extends StdWebMacro
 			final ArrayList<Item> classes=new ArrayList<Item>();
 			ArrayList<Object> containers=new ArrayList<Object>();
 			final ArrayList<Boolean> beingWorn=new ArrayList<Boolean>();
-			List<Item> itemlist=null;
+			Collection<Item> itemlist=null;
 			if(httpReq.isUrlParameter("ITEM1"))
 			{
 				if(oldM!=M)

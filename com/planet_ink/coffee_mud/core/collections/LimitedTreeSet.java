@@ -35,13 +35,15 @@ public class LimitedTreeSet<K> extends TreeSet<K>
 {
 	private static final long serialVersionUID = 5949532522375107316L;
 
-	private final long expireMs;
-	private final int max;
-	private long nextCheck = 0;
-	private final boolean caseLess;
+	private final long		expireMs;
+	private int				max;
+	private long			nextCheck	= 0;
+	private final boolean	caseLess;
+	private final boolean	grow;
+
 	private final OrderedMap<K,long[]> expirations;
 
-	public LimitedTreeSet(final long expireMs, final int max, final boolean caseInsensitive)
+	public LimitedTreeSet(final long expireMs, final int max, final boolean caseInsensitive, final boolean grow)
 	{
 		super(new Comparator<Object>()
 		{
@@ -70,6 +72,12 @@ public class LimitedTreeSet<K> extends TreeSet<K>
 		expirations=new OrderedMap<K,long[]>();
 		this.expireMs=expireMs;
 		this.max=max;
+		this.grow=grow;
+	}
+
+	public LimitedTreeSet(final long expireMs, final int max, final boolean caseInsensitive)
+	{
+		this(expireMs, max, caseInsensitive, false);
 	}
 
 	public LimitedTreeSet()
@@ -122,6 +130,11 @@ public class LimitedTreeSet<K> extends TreeSet<K>
 						this.internalRemove(p.first);
 					}
 				}
+				if(grow && (size()>max))
+				{
+					max=size();
+					break;
+				}
 				then += expireMs/10;
 			}
 			while(size()>max);
@@ -143,6 +156,12 @@ public class LimitedTreeSet<K> extends TreeSet<K>
 	    	return c;
     	}
     }
+
+	@Override
+	public Iterator<K> iterator()
+	{
+		return super.iterator();
+	}
 
 	@Override
     public void clear()

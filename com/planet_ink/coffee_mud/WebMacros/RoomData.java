@@ -49,25 +49,25 @@ public class RoomData extends StdWebMacro
 	}
 	static final String[][] STAT_CHECKS={{"DISPLAY","NAME"},{"CLASS","CLASSES"},{"DESCRIPTION","DESCRIPTION"},{"XSIZE","XGRID"},{"YSIZE","XGRID"},{"IMAGE","IMAGE"}};
 
-	public static List<MOB> getMOBCache()
+	public static Collection<MOB> getMOBCache()
 	{
 		@SuppressWarnings("unchecked")
-		List<MOB> mobSet=(List<MOB>)Resources.getResource("SYSTEM_WEB_MOB_CACHE");
+		Set<MOB> mobSet=(Set<MOB>)Resources.getResource("SYSTEM_WEB_MOB_CACHE");
 		if(mobSet==null)
 		{
-			mobSet=new SLinkedList<MOB>();
+			mobSet=new LimitedTreeSet<MOB>(30L * 60L * 1000L, 100, false, true);
 			Resources.submitResource("SYSTEM_WEB_MOB_CACHE", mobSet);
 		}
 		return mobSet;
 	}
 
-	public static List<Item> getItemCache()
+	public static Collection<Item> getItemCache()
 	{
 		@SuppressWarnings("unchecked")
-		List<Item> itemSet=(List<Item>)Resources.getResource("SYSTEM_WEB_ITEM_CACHE");
+		Set<Item> itemSet=(Set<Item>)Resources.getResource("SYSTEM_WEB_ITEM_CACHE");
 		if(itemSet==null)
 		{
-			itemSet=new SLinkedList<Item>();
+			itemSet=new LimitedTreeSet<Item>(30L * 60L * 1000L, 100, false, true);
 			Resources.submitResource("SYSTEM_WEB_ITEM_CACHE", itemSet);
 		}
 		return itemSet;
@@ -85,7 +85,7 @@ public class RoomData extends StdWebMacro
 		return "";
 	}
 
-	public static String getItemCode(final List<Item> allitems, final Item I)
+	public static String getItemCode(final Collection<Item> allitems, final Item I)
 	{
 		if(I==null)
 			return "";
@@ -149,7 +149,7 @@ public class RoomData extends StdWebMacro
 		return "";
 	}
 
-	public static String getMOBCode(final List<MOB> mobs, final MOB M)
+	public static String getMOBCode(final Collection<MOB> mobs, final MOB M)
 	{
 		if(M==null)
 			return "";
@@ -236,7 +236,7 @@ public class RoomData extends StdWebMacro
 		return null;
 	}
 
-	public static Item getItemFromCode(final List<Item> allitems, String code)
+	public static Item getItemFromCode(final Collection<Item> allitems, String code)
 	{
 		if(code.startsWith("CATALOG-"))
 			return getItemFromCatalog(code);
@@ -274,7 +274,7 @@ public class RoomData extends StdWebMacro
 		return null;
 	}
 
-	public static MOB getMOBFromCode(final List<MOB> allmobs, String code)
+	public static MOB getMOBFromCode(final Collection<MOB> allmobs, String code)
 	{
 		if(code.startsWith("CATALOG-"))
 			return getMOBFromCatalog(code);
@@ -320,7 +320,7 @@ public class RoomData extends StdWebMacro
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static String getAppropriateCode(final Environmental E, final Environmental RorM, final List classes, final List list)
+	public static String getAppropriateCode(final Environmental E, final Environmental RorM, final Collection classes, final Collection list)
 	{
 		if(CMLib.flags().isCataloged(E))
 			return "CATALOG-"+E.Name();
@@ -394,7 +394,7 @@ public class RoomData extends StdWebMacro
 		return null;
 	}
 
-	public static List<MOB> contributeMOBs(final List<MOB> inhabs)
+	public static Collection<MOB> contributeMOBs(final Collection<MOB> inhabs)
 	{
 		for (final MOB M : inhabs)
 		{
@@ -431,7 +431,7 @@ public class RoomData extends StdWebMacro
 		return true;
 	}
 
-	public static List<Item> contributeItems(final List<Item> inhabs)
+	public static Collection<Item> contributeItems(final Collection<Item> inhabs)
 	{
 		for (final Item I : inhabs)
 		{
@@ -1287,7 +1287,7 @@ public class RoomData extends StdWebMacro
 			if(parms.containsKey("MOBLIST"))
 			{
 				final List<MOB> classes=new ArrayList<MOB>();
-				List<MOB> moblist=null;
+				Collection<MOB> moblist=null;
 				if(httpReq.isUrlParameter("MOB1"))
 				{
 					moblist=getMOBCache();
@@ -1408,7 +1408,7 @@ public class RoomData extends StdWebMacro
 				final List<Item> classes=new ArrayList<Item>();
 				final List<Object> containers=new ArrayList<Object>();
 				final List<Boolean> beingWorn=new ArrayList<Boolean>();
-				List<Item> itemlist=null;
+				Collection<Item> itemlist=null;
 				if(httpReq.isUrlParameter("ITEM1"))
 				{
 					itemlist=getItemCache();

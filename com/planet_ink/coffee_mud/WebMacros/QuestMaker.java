@@ -153,7 +153,7 @@ public class QuestMaker extends StdWebMacro
 		return qPages.get(pageNumber);
 	}
 
-	private String itemList(final List<Item> itemList, Item oldItem, final String oldValue)
+	private String itemList(final Collection<Item> itemList, Item oldItem, final String oldValue)
 	{
 		final StringBuffer list=new StringBuffer("");
 		if(oldItem==null)
@@ -206,7 +206,7 @@ public class QuestMaker extends StdWebMacro
 		return toList;
 	}
 
-	private String mobList(final List<MOB> mobList, MOB oldMob, final String oldValue)
+	private String mobList(final Collection<MOB> mobList, MOB oldMob, final String oldValue)
 	{
 		final StringBuffer list=new StringBuffer("");
 		if(oldMob==null)
@@ -531,7 +531,7 @@ public class QuestMaker extends StdWebMacro
 						oldValue=defValue;
 					if(oldValue==null)
 						oldValue="";
-					List<Item> itemList=new Vector<Item>();
+					Collection<Item> itemList=new Vector<Item>();
 					itemList=RoomData.contributeItems(itemList);
 					final Item oldItem=RoomData.getItemFromAnywhere(itemList,oldValue);
 					list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
@@ -551,7 +551,7 @@ public class QuestMaker extends StdWebMacro
 				{
 					if(oldValue==null)
 						oldValue=defValue;
-					List<Item> itemList=new Vector<Item>();
+					Collection<Item> itemList=new Vector<Item>();
 					itemList=RoomData.contributeItems(itemList);
 					final Vector<String> oldValues=new Vector<String>();
 					int which=1;
@@ -593,7 +593,7 @@ public class QuestMaker extends StdWebMacro
 						oldValue=defValue;
 					if(oldValue != null)
 					{
-						List<MOB> mobList=new Vector<MOB>();
+						Collection<MOB> mobList=new Vector<MOB>();
 						mobList=RoomData.contributeMOBs(mobList);
 						final MOB oldMob=RoomData.getMOBFromCode(mobList,oldValue);
 						list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
@@ -613,7 +613,7 @@ public class QuestMaker extends StdWebMacro
 				{
 					if(oldValue==null)
 						oldValue=defValue;
-					final List<MOB>mobList=RoomData.contributeMOBs(new Vector<MOB>());
+					final Collection<MOB>mobList=RoomData.contributeMOBs(new Vector<MOB>());
 					final Vector<String> oldValues=new Vector<String>();
 					int which=1;
 					oldValue=httpReq.getUrlParameter(httpKeyName+"_"+which);
@@ -748,7 +748,7 @@ public class QuestMaker extends StdWebMacro
 					case $ITEMXML_ZEROORMORE:
 					case $ITEMXML_ONEORMORE:
 					{
-						final List<Item> rawitemlist=RoomData.contributeItems(new Vector<Item>());
+						final Collection<Item> rawitemlist=RoomData.contributeItems(new Vector<Item>());
 						rawitemlist.addAll(getCatalogItemsForList(CMLib.catalog().getCatalogItems()));
 						final Vector<String> oldValues=new Vector<String>();
 						int which=1;
@@ -795,7 +795,7 @@ public class QuestMaker extends StdWebMacro
 					}
 					case $ITEMXML:
 					{
-						final List<Item> rawitemlist=RoomData.contributeItems(new Vector<Item>());
+						final Collection<Item> rawitemlist=RoomData.contributeItems(new Vector<Item>());
 						rawitemlist.addAll(getCatalogItemsForList(CMLib.catalog().getCatalogItems()));
 						if(oldValue==null)
 							oldValue="";
@@ -827,7 +827,7 @@ public class QuestMaker extends StdWebMacro
 					}
 					case $MOBXML_ONEORMORE:
 					{
-						final List<MOB> rawmoblist=RoomData.contributeMOBs(new Vector<MOB>());
+						final Collection<MOB> rawmoblist=RoomData.contributeMOBs(new Vector<MOB>());
 						rawmoblist.addAll(getCatalogMobsForList(CMLib.catalog().getCatalogMobs()));
 						final Vector<String> oldValues=new Vector<String>();
 						int which=1;
@@ -874,7 +874,7 @@ public class QuestMaker extends StdWebMacro
 					}
 					case $MOBXML:
 					{
-						final List<MOB> rawmoblist=RoomData.contributeMOBs(new Vector<MOB>());
+						final Collection<MOB> rawmoblist=RoomData.contributeMOBs(new Vector<MOB>());
 						rawmoblist.addAll(getCatalogMobsForList(CMLib.catalog().getCatalogMobs()));
 						if(oldValue==null)
 							oldValue="";
