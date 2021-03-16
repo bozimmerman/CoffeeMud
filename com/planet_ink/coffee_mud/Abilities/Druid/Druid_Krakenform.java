@@ -163,6 +163,9 @@ public class Druid_Krakenform extends StdAbility
 				}
 				R.addItem(ship);
 				CMLib.map().registerWorldObjectLoaded(A, R, ship);
+				final double hpPct = CMath.div(mob.curState().getHitPoints(), mob.maxState().getHitPoints());
+				if(ship.subjectToWearAndTear())
+					ship.setUsesRemaining((int)Math.round(hpPct*100.0));
 			}
 		}
 		return ship;
@@ -265,6 +268,12 @@ public class Druid_Krakenform extends StdAbility
 		{
 			if(ship != null)
 			{
+				if(ship.subjectToWearAndTear())
+				{
+					final double pct=CMath.div(ship.usesRemaining(), 100.0);
+					if(pct  < 1.0)
+						mob.curState().setHitPoints((int)CMath.mul(pct,mob.maxState().getHitPoints()));
+				}
 				final Room shipR=CMLib.map().roomLocation(ship);
 				if(shipR != null)
 				{
