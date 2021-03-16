@@ -52,10 +52,10 @@ public class RoomData extends StdWebMacro
 	public static Collection<MOB> getMOBCache()
 	{
 		@SuppressWarnings("unchecked")
-		Set<MOB> mobSet=(Set<MOB>)Resources.getResource("SYSTEM_WEB_MOB_CACHE");
+		Collection<MOB> mobSet=(Collection<MOB>)Resources.getResource("SYSTEM_WEB_MOB_CACHE");
 		if(mobSet==null)
 		{
-			mobSet=new LimitedTreeSet<MOB>(30L * 60L * 1000L, 100, false, true);
+			mobSet=new SLinkedList<MOB>();
 			Resources.submitResource("SYSTEM_WEB_MOB_CACHE", mobSet);
 		}
 		return mobSet;
@@ -64,10 +64,10 @@ public class RoomData extends StdWebMacro
 	public static Collection<Item> getItemCache()
 	{
 		@SuppressWarnings("unchecked")
-		Set<Item> itemSet=(Set<Item>)Resources.getResource("SYSTEM_WEB_ITEM_CACHE");
+		Collection<Item> itemSet=(Collection<Item>)Resources.getResource("SYSTEM_WEB_ITEM_CACHE");
 		if(itemSet==null)
 		{
-			itemSet=new LimitedTreeSet<Item>(30L * 60L * 1000L, 100, false, true);
+			itemSet=new SLinkedList<Item>();
 			Resources.submitResource("SYSTEM_WEB_ITEM_CACHE", itemSet);
 		}
 		return itemSet;
@@ -345,8 +345,8 @@ public class RoomData extends StdWebMacro
 			if(allitems instanceof MOB)
 				return getItemFromCode((MOB)allitems,MATCHING);
 			else
-			if(allitems instanceof List)
-				return getItemFromCode((List)allitems,MATCHING);
+			if(allitems instanceof Collection)
+				return getItemFromCode((Collection)allitems,MATCHING);
 		}
 		else
 		if(MATCHING.startsWith("CATALOG-"))

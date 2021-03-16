@@ -26,7 +26,7 @@ public class XVector<T> extends Vector<T>
 {
 	private static final long	serialVersionUID	= 6687178785122563992L;
 
-	public XVector(final Collection<? extends T> V)
+	public XVector(final List<? extends T> V)
 	{
 		super((V==null)?0:V.size());
 		if (V != null)
