@@ -124,11 +124,7 @@ public class Druid_Krakenform extends StdAbility
 				ship.setAnchorDown(false);
 				ship.setUsesRemaining(100);
 				if(ship instanceof Container)
-				{
-					final Container cont = (Container)ship;
-					cont.setDoorsNLocks(false, false, false, false, false, false);
-					cont.setCapacity(0);
-				}
+					((Container)ship).setCapacity(0);
 				ship.setName("a kraken");
 				ship.setDisplayText("a kraken is here");
 				ship.setStat("SPECIAL_NOUN_SHIP", "kraken");
@@ -136,9 +132,7 @@ public class Druid_Krakenform extends StdAbility
 				ship.setStat("SPECIAL_VERB_SAILING","swimming");
 				ship.setStat("SPECIAL_DISABLE_CMDS", "anchor,throw,tender");
 				ship.setStat("SPECIAL_HEAD_OFFTHEDECK", "");
-				((Exit)ship).setDoorsNLocks(true, false, true, true, true, true);
-				((Exit)ship).setKeyName(""+Math.random());
-				//((Exit)ship).setExitParams("", newCloseWord, newOpenWord, newClosedText);
+				((Exit)ship).setDoorsNLocks(false, false, false, false, false, false);
 				if(ship instanceof PrivateProperty)
 					((PrivateProperty)ship).setOwnerName(mob.Name());
 				final Area A=ship.getShipArea();
