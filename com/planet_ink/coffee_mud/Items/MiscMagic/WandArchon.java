@@ -244,15 +244,31 @@ public class WandArchon extends StdWand implements ArchonOnly
 						else
 						{
 							mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly at <T-NAME>.",this.name()));
-							if(target.fetchAbility(A.ID())!=null)
+							final Ability existA=target.fetchAbility(A.ID());
+							if(existA!=null)
 							{
-								target.fetchAbility(A.ID()).setProficiency(100);
-								if(target.fetchEffect(A.ID())!=null)
-									target.fetchEffect(A.ID()).setProficiency(100);
+								if(existA.proficiency()<100)
+								{
+									existA.setProficiency(99);
+									for(int i=0;i<100 && existA.proficiency()<100;i++)
+									{
+										final int oldInt=target.charStats().getStat(CharStats.STAT_INTELLIGENCE);
+										target.charStats().setStat(CharStats.STAT_INTELLIGENCE,99);
+										existA.helpProficiency(target, 1);
+										target.charStats().setStat(CharStats.STAT_INTELLIGENCE,oldInt);
+									}
+									existA.setProficiency(100);
+									mob.recoverCharStats();
+									final Ability effA=target.fetchEffect(A.ID());
+									if(effA!=null)
+										effA.setProficiency(100);
+								}
+
 							}
 							else
 							{
 								A.setProficiency(100);
+								A.helpProficiency(mob, 1);
 								target.addAbility(A);
 								A.setSavable(true);
 								A.autoInvocation(target, false);
@@ -271,7 +287,16 @@ public class WandArchon extends StdWand implements ArchonOnly
 								final Ability A=target.fetchAbility(map.abilityID());
 								if(A.proficiency()<100)
 								{
+									A.setProficiency(99);
+									for(int i=0;i<100 && A.proficiency()<100;i++)
+									{
+										final int oldInt=target.charStats().getStat(CharStats.STAT_INTELLIGENCE);
+										target.charStats().setStat(CharStats.STAT_INTELLIGENCE,99);
+										A.helpProficiency(target, 1);
+										target.charStats().setStat(CharStats.STAT_INTELLIGENCE,oldInt);
+									}
 									A.setProficiency(100);
+									mob.recoverCharStats();
 									didSomething = true;
 								}
 								if(target.fetchEffect(A.ID())!=null)
