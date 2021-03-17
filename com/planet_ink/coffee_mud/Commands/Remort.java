@@ -552,6 +552,7 @@ public class Remort extends StdCommand
 												failsafeA.setSavable(false);
 												mob.addNonUninvokableEffect(failsafeA);
 											}
+											CMLib.database().DBUpdatePlayerItems(mob);
 											recoverEverything(mob);
 											if(retainRace < 0)
 											{
