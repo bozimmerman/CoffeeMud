@@ -806,7 +806,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				&&(attacker.isMine(weapon)||(attacker.phyStats().level()>1))) // why >1? because quickly made fake-mobs tend to have lvl=1
 					damage = modifySpellDamage(attacker, target, damage);
 				if((((Ability)weapon).affecting() instanceof Item)
-				&&(((Weapon)((Ability)weapon).affecting()).owner()==attacker)
+				&&(((Item)((Ability)weapon).affecting()).owner()==attacker)
 				&&((((Ability)weapon).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)
 				&&(attacker.isAttributeSet(Attrib.NOBATTLESPAM)))
 					srcMsgStr=null;
