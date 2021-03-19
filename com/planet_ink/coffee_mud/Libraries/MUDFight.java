@@ -787,7 +787,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public void postDamage(final MOB attacker, final MOB target, final Environmental weapon, int damage, final int messageCode, final int damageType, String allDisplayMessage)
+	public void postDamage(final MOB attacker, final MOB target, final Environmental weapon,
+						   int damage, final int messageCode, final int damageType, String allDisplayMessage)
 	{
 		if((attacker==null)||(target==null)||(target.location()==null))
 			return;
@@ -795,18 +796,29 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			allDisplayMessage="^F^<FIGHT^>"+allDisplayMessage+"^</FIGHT^>^?";
 
 		final int damageTypeMsg;
+		final int srcMsgCode = messageCode;
+		String srcMsgStr=allDisplayMessage;
 		if(attacker != target)
 		{
-			if((weapon instanceof Ability)
-			&&(damage>0)
-			&&(attacker.isMine(weapon)||(attacker.phyStats().level()>1))) // why >1? because quickly made fake-mobs tend to have lvl=1
-				damage = modifySpellDamage(attacker, target, damage);
+			if(weapon instanceof Ability)
+			{
+				if((damage>0)
+				&&(attacker.isMine(weapon)||(attacker.phyStats().level()>1))) // why >1? because quickly made fake-mobs tend to have lvl=1
+					damage = modifySpellDamage(attacker, target, damage);
+				if((((Ability)weapon).affecting() instanceof Item)
+				&&(((Weapon)((Ability)weapon).affecting()).owner()==attacker)
+				&&((((Ability)weapon).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)
+				&&(attacker.isAttributeSet(Attrib.NOBATTLESPAM)))
+					srcMsgStr=null;
+			}
 			damageTypeMsg = CMMsg.TYP_DAMAGE | (CMMsg.MASK_MALICIOUS & messageCode);
 		}
 		else
 			damageTypeMsg = CMMsg.TYP_DAMAGE;
 
-		final CMMsg msg=CMClass.getMsg(attacker,target,weapon,messageCode,damageTypeMsg,messageCode,allDisplayMessage);
+		final CMMsg msg=CMClass.getMsg(attacker,target,weapon,srcMsgCode,srcMsgStr,
+															  damageTypeMsg,allDisplayMessage,
+															  messageCode,allDisplayMessage);
 		msg.setValue(damage);
 		CMLib.color().fixSourceFightColor(msg);
 		final Room R=target.location();
