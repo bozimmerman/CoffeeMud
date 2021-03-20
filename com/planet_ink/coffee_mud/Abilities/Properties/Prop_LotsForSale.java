@@ -142,6 +142,14 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		if(theRoom==null)
 			return true;
 		
+		if((recurseChkRooms != null)
+		&&(recurseChkRooms.containsKey(theRoom)))
+		{
+			final Boolean B=recurseChkRooms.get(theRoom);
+			if(B!=null)
+				return B.booleanValue();
+		}
+
 		final LegalLibrary theLaw=CMLib.law();
 		
 		// if its a legit room and either not for sale, or owned already, then it is NOT retractable.
@@ -160,19 +168,27 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			final Room R=theRoom.rawDoors()[d];
-			if(R!=null)
+			if((R!=null)
+			&&(R!=fromRoom))
 			{
 				if((recurseChkRooms != null)
 				&&(recurseChkRooms.containsKey(R)))
-					return recurseChkRooms.get(R).booleanValue();
-				if((R!=fromRoom)
-				&&(R.roomID().length()>0))
 				{
-					if((recurseChkRooms != null)
-					&&(!isRetractableLink(recurseChkRooms,theRoom,R)))
+					final Boolean B=recurseChkRooms.get(R);
+					if(B!=null)
+						return B.booleanValue();
+					continue;
+				}
+				if(R.roomID().length()>0)
+				{
+					if(recurseChkRooms != null)
 					{
-						recurseChkRooms.put(theRoom, Boolean.valueOf(false));
-						return false;
+						recurseChkRooms.put(R, null);
+						if(!isRetractableLink(recurseChkRooms,theRoom,R))
+						{
+							recurseChkRooms.put(theRoom, Boolean.valueOf(false));
+							return false;
+						}
 					}
 				}
 			}
