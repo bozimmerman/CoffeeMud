@@ -138,17 +138,24 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 
 	protected boolean isRetractableLink(final Map<Room,Boolean> recurseChkRooms, final Room fromRoom, final Room theRoom)
 	{
+		// the only potentially retractable rooms are those that ARE for sale, and NOT owned
 		if(theRoom==null)
 			return true;
-
-		if((theRoom.roomID().length()>0)
-		&&((CMLib.law().getLandTitle(theRoom)==null)
-			||(CMLib.law().getLandTitle(theRoom).getOwnerName().length()>0)))
+		
+		final LegalLibrary theLaw=CMLib.law();
+		
+		// if its a legit room and either not for sale, or owned already, then it is NOT retractable.
+		if(theRoom.roomID().length()>0)
 		{
-			if(recurseChkRooms != null)
-				recurseChkRooms.put(theRoom, Boolean.valueOf(false));
-			return false;
+			final LandTitle theTitle=theLaw.getLandTitle(theRoom);
+			if((theTitle==null)||(theTitle.getOwnerName().length()>0))
+			{
+				if(recurseChkRooms != null)
+					recurseChkRooms.put(theRoom, Boolean.valueOf(false));
+				return false;
+			}
 		}
+		
 
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
@@ -157,16 +164,10 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			{
 				if((recurseChkRooms != null)
 				&&(recurseChkRooms.containsKey(R)))
-					return recurseChkRooms.get(theRoom).booleanValue();
+					return recurseChkRooms.get(R).booleanValue();
 				if((R!=fromRoom)
 				&&(R.roomID().length()>0))
 				{
-					if((CMLib.law().getLandTitle(R)==null)||(CMLib.law().getLandTitle(R).getOwnerName().length()>0))
-					{
-						if(recurseChkRooms != null)
-							recurseChkRooms.put(theRoom, Boolean.valueOf(false));
-						return false;
-					}
 					if((recurseChkRooms != null)
 					&&(!isRetractableLink(recurseChkRooms,theRoom,R)))
 					{
