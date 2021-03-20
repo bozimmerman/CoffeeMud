@@ -136,7 +136,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 
 	}
 
-	protected boolean isRetractableLink(final Map<Room,Boolean> recurseChkRooms, final Room fromRoom, final Room theRoom)
+	protected boolean isRetractableLink(final Map<Room,boolean[]> recurseChkRooms, final Room fromRoom, final Room theRoom)
 	{
 		// the only potentially retractable rooms are those that ARE for sale, and NOT owned
 		if(theRoom==null)
@@ -145,9 +145,9 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		if((recurseChkRooms != null)
 		&&(recurseChkRooms.containsKey(theRoom)))
 		{
-			final Boolean B=recurseChkRooms.get(theRoom);
-			if(B!=null)
-				return B.booleanValue();
+			final boolean[] B=recurseChkRooms.get(theRoom);
+			if(B.length>0)
+				return B[0];
 		}
 
 		final LegalLibrary theLaw=CMLib.law();
@@ -159,42 +159,54 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			if((theTitle==null)||(theTitle.getOwnerName().length()>0))
 			{
 				if(recurseChkRooms != null)
-					recurseChkRooms.put(theRoom, Boolean.valueOf(false));
+					recurseChkRooms.put(theRoom, new boolean[]{false});
 				return false;
 			}
 		}
-		
 
-		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+		if(recurseChkRooms == null)
 		{
-			final Room R=theRoom.rawDoors()[d];
-			if((R!=null)
-			&&(R!=fromRoom))
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
-				if((recurseChkRooms != null)
-				&&(recurseChkRooms.containsKey(R)))
+				final Room R=theRoom.rawDoors()[d];
+				if((R!=null)
+				&&(R!=fromRoom)
+				&&(R.roomID().length()>0))
 				{
-					final Boolean B=recurseChkRooms.get(R);
-					if(B!=null)
-						return B.booleanValue();
-					continue;
+					final LandTitle theTitle=theLaw.getLandTitle(theRoom);
+					if((theTitle==null)
+					||(theTitle.getOwnerName().length()>0))
+						return false;
 				}
-				if(R.roomID().length()>0)
+			}
+		}
+		else
+		{
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+			{
+				final Room R=theRoom.rawDoors()[d];
+				if((R!=null)
+				&&(R!=fromRoom)
+				&&(R.roomID().length()>0))
 				{
-					if(recurseChkRooms != null)
+					if(recurseChkRooms.containsKey(R))
 					{
-						recurseChkRooms.put(R, null);
-						if(!isRetractableLink(recurseChkRooms,theRoom,R))
-						{
-							recurseChkRooms.put(theRoom, Boolean.valueOf(false));
-							return false;
-						}
+						final boolean[] B=recurseChkRooms.get(R);
+						if(B.length>0)
+							return B[0];
+						continue;
+					}
+					recurseChkRooms.put(R, new boolean[0]);
+					if(!isRetractableLink(recurseChkRooms,theRoom,R))
+					{
+						recurseChkRooms.put(theRoom, new boolean[]{false});
+						return false;
 					}
 				}
 			}
 		}
 		if(recurseChkRooms != null)
-			recurseChkRooms.put(theRoom, Boolean.valueOf(true));
+			recurseChkRooms.put(theRoom, new boolean[]{true});
 		return true;
 	}
 
@@ -225,9 +237,9 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		boolean updateExits=false;
 		boolean foundOne=false;
 		boolean didAnything = false;
-		final Map<Room,Boolean> checkedRetractRooms;
+		final Map<Room,boolean[]> checkedRetractRooms;
 		if(super.gridLayout())
-			checkedRetractRooms = new Hashtable<Room,Boolean>();
+			checkedRetractRooms = new Hashtable<Room,boolean[]>();
 		else
 			checkedRetractRooms = null;
 		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
