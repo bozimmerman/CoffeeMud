@@ -605,7 +605,11 @@ public class RoomLoader
 						}
 						else
 						if(!nextRoomID.startsWith("#"))
+						{
 							Log.errOut("RoomLoader","Unknown unlinked room #"+nextRoomID+" in "+roomID);
+							if(CMSecurity.isDisabled(CMSecurity.DisFlag.BADEXITS))
+								DB.update("DELETE FROM CMROEX WHERE ROOMID='"+roomID+"' AND CMDIRE="+direction);
+						}
 						else
 						if(newExit!=null)
 							newExit.setTemporaryDoorLink(nextRoomID);

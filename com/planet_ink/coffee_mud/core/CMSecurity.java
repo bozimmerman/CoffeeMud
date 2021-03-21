@@ -2842,7 +2842,8 @@ public class CMSecurity
 		DEATHCRY("player purge death cry"),
 		DIS955RULE("no 5% failure chance"),
 		ITEMREJUV("item rejuv"),
-		RANDOMQUESTS("random quests")
+		RANDOMQUESTS("random quests"),
+		BADEXITS("unlinked exits")
 		;
 		private final String desc;
 
