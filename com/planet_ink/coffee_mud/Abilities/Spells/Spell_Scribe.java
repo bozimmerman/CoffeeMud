@@ -185,7 +185,7 @@ public class Spell_Scribe extends Spell
 		}
 		if(level <= 0)
 		{
-			mob.tell(L("You can only scribe on blank scrolls, or scroll with less than 25 levels of spells on it."));
+			mob.tell(L("You can only scribe on blank scrolls, or a scroll with less than 25 levels of spells on it."));
 			return false;
 		}
 

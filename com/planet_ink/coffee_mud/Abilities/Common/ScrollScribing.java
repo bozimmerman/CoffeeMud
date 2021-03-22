@@ -393,7 +393,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 				}
 				if(level <= 0)
 				{
-					commonTell(mob,L("You can only scribe on blank scrolls, or scroll with enough free space on it."));
+					commonTell(mob,L("You can only scribe on blank scrolls, or a scroll with enough free space on it."));
 					return false;
 				}
 			}
