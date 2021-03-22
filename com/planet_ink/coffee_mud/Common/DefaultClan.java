@@ -1176,7 +1176,7 @@ public class DefaultClan implements Clan
 		if(((mobClanRole!=null)&&(getAuthority(mobClanRole.second.intValue(),Function.CLAN_BENEFITS)!=Clan.Authority.CAN_NOT_DO))||sysmsgs)
 		{
 			msg.append("-----------------------------------------------------------------\n\r");
-			msg.append(L("^xClan Level Benefits:^.^N\n\r"));
+			msg.append(L("^xClan Benefits:^.^N\n\r"));
 			final List<AbilityMapper.AbilityMapping> abilities=CMLib.ableMapper().getUpToLevelListings(govt().getName(),getClanLevel(),true,false);
 			if(abilities.size()>0)
 			{
