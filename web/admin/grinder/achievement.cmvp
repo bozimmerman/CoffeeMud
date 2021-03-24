@@ -152,6 +152,7 @@
         <TD><FONT COLOR=YELLOW>Flags: </FONT></TD>
         <TD>
             <SELECT NAME=FLAGS MULTIPLE>@AchievementData?FLAGS@</SELECT>
+            <FONT COLOR=WHITE SIZE=-1>@AchievementData?HELP&FIELD=FLAGS@</FONT>
         </TD>
     </TR>
     <TR>
