@@ -1160,6 +1160,23 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					CMLib.commands().postSay(sellerShopM,buyerCustM,L("That's too advanced for you, I'm afraid."),true,false);
 					return false;
 				}
+				if(buyerCustM.maxItems()<=buyerCustM.numItems())
+				{
+					buyerCustM.tell(L("You can't carry any more items."));
+					return false;
+				}
+				if(buyerCustM.maxCarry()<=buyerCustM.numItems())
+				{
+					buyerCustM.tell(L("You can't carry any more items."));
+					return false;
+				}
+				if((((Item)product).phyStats().weight()>(buyerCustM.maxCarry()-buyerCustM.phyStats().weight()))
+				&&(!buyerCustM.isMine(product))
+				&&(((Item)product).phyStats().weight()!=0))
+				{
+					buyerCustM.tell(L("You are to encumbered to get @x1.",((Item) product).name(buyerCustM)));
+					return false;
+				}
 			}
 			if((product instanceof PrivateProperty)
 			&&((shop.isSold(ShopKeeper.DEAL_CLANDSELLER))||(shop.isSold(ShopKeeper.DEAL_CSHIPSELLER))))
