@@ -223,8 +223,10 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	@Override
 	public boolean checkInfo(final MOB mob, final List<String> commands)
 	{
-		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
-		return checkInfo(mob, commands, enhancedTypes);
+		final List<String> infoCmds = new ArrayList<String>(commands.size());
+		infoCmds.addAll(commands);
+		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,infoCmds);
+		return checkInfo(mob, infoCmds, enhancedTypes);
 	}
 
 	@Override
