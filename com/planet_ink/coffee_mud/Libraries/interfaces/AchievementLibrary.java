@@ -55,7 +55,7 @@ public interface AchievementLibrary extends CMLibrary
 	/**
 	 * The list of arguments/parameters common to all achievement event types
 	 */
-	public final String[] BASE_ACHIEVEMENT_PARAMETERS = new String[] { "EVENT", "DISPLAY", "TITLE", "REWARDS", "VISIBLEMASK", "DURATION", "PLAYERMASK" };
+	public final String[] BASE_ACHIEVEMENT_PARAMETERS = new String[] { "EVENT", "DISPLAY", "TITLE", "REWARDS", "VISIBLEMASK", "DURATION", "PLAYERMASK", "FLAGS" };
 
 	/**
 	 * Events define the type of achievement, describing specific arguments that
@@ -144,6 +144,16 @@ public interface AchievementLibrary extends CMLibrary
 				choices.add(E.name());
 			return choices.toArray(new String[0]);
 		}
+	}
+
+	/**
+	 * Legal values for the FLAGS field in an achievement.
+	 *
+	 * @author Bo Zimmerman
+	 */
+	public enum AchievementFlag
+	{
+		REMORT // is reset on remort and can be re-attained
 	}
 
 	/**
@@ -276,6 +286,14 @@ public interface AchievementLibrary extends CMLibrary
 		 * @return the duration, in ticks, of the achievement
 		 */
 		public int getDuration();
+
+		/**
+		 * Returns whether the given achievment flag applies
+		 * to this achievement.
+		 * @param flag the flag
+		 * @return true if it applies
+		 */
+		public boolean isFlag(AchievementFlag flag);
 	}
 
 	/**

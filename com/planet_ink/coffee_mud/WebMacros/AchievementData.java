@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AchievementFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Award;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AwardType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Event;
@@ -138,6 +139,17 @@ public class AchievementData extends StdWebMacro
 			final String newPlayMask=httpReq.getUrlParameter("PLAYERMASK");
 			if((newPlayMask != null)&&(newPlayMask.length()>0))
 				row+="PLAYERMASK=\""+CMStrings.escape(newPlayMask)+"\" ";
+
+			if(httpReq.isUrlParameter("FLAGS"))
+			{
+				String id="";
+				int num=0;
+				final List<String> V=new ArrayList<String>();
+				for(;httpReq.isUrlParameter("FLAGS"+id);id=""+(++num))
+					V.add(httpReq.getUrlParameter("FLAGS"+id));
+				if(V.size()>0)
+					row += "FLAGS=\""+CMParms.combine(V)+"\" ";
+			}
 
 			for(final String s : E.getParameters())
 			{
@@ -275,6 +287,26 @@ public class AchievementData extends StdWebMacro
 				value=A.getRawParmVal("VISIBLEMASK");
 			if(value!=null)
 				str.append(CMStrings.replaceAll(value,"\"","&quot;")+", ");
+		}
+		if(parms.containsKey("FLAGS"))
+		{
+			final List<String> list=new ArrayList<String>();
+			if(httpReq.isUrlParameter("FLAGS"))
+			{
+				String id="";
+				int num=0;
+				for(;httpReq.isUrlParameter("FLAGS"+id);id=""+(++num))
+					list.add(httpReq.getUrlParameter("FLAGS"+id).toUpperCase().trim());
+			}
+			else
+			{
+				for(final AchievementFlag f : AchievementFlag.values())
+					if(A.isFlag(f))
+						list.add(f.name());
+			}
+			for(final AchievementFlag f : AchievementFlag.values())
+				str.append("<OPTION VALUE=\""+f.name()+"\""+(list.contains(f.name())?" SELECTED":"")+">"+f.name());
+			str.append(", ");
 		}
 		if(parms.containsKey("PLAYERMASK"))
 		{

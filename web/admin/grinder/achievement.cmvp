@@ -149,6 +149,12 @@
         </TD>
     </TR>
     <TR>
+        <TD><FONT COLOR=YELLOW>Flags: </FONT></TD>
+        <TD>
+            <SELECT NAME=FLAGS MULTIPLE>@AchievementData?FLAGS@</SELECT>
+        </TD>
+    </TR>
+    <TR>
         <TD>
             <FONT COLOR=YELLOW>Title Award: </FONT>
             <FONT COLOR=WHITE SIZE=-1></FONT>

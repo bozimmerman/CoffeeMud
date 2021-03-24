@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AchievementFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AchievementLoadFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Event;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -473,12 +474,15 @@ public class Remort extends StdCommand
 						{
 							final Achievement A=CMLib.achievements().getAchievement(T.getTattooName());
 							if((A != null) && (A.getAgent() == Agent.PLAYER))
-								reAwardTattoos.add(A);
+							{
+								if(A.isFlag(AchievementFlag.REMORT))
+									delTattoo.add(T);
+								else
+									reAwardTattoos.add(A);
+							}
 							else
 								delTattoo.add(T);
 						}
-						else
-							delTattoo.add(T);
 					}
 					for(final Iterator<Tattoo> t=delTattoo.iterator();t.hasNext();)
 						mob.delTattoo(t.next());
