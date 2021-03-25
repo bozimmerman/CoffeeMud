@@ -3660,9 +3660,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 							newSensesMask |= (2^x);
 					}
 					if(current)
-						P.phyStats().setDisposition(newSensesMask);
+						P.phyStats().setSensesMask(newSensesMask);
 					else
-						P.basePhyStats().setDisposition(newSensesMask);
+						P.basePhyStats().setSensesMask(newSensesMask);
 					break;
 				}
 			default:
