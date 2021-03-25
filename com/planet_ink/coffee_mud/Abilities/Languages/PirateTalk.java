@@ -290,6 +290,10 @@ public class PirateTalk extends StdLanguage
 		hashwords.put("manipulating","running a rig");
 		hashwords.put("manipulation","rig running");
 		hashwords.put("go downwind","haul wind");
+		hashwords.put("castle","ksul");
+		hashwords.put("fore","fo`");
+		hashwords.put("forecastle","fo`ksul");
+		hashwords.put("haul","hal");
 		for(final Iterator<String> i=hashwords.keySet().iterator();i.hasNext();)
 		{
 			final String key = i.next();
