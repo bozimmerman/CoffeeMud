@@ -193,9 +193,14 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			int which=(int)Math.round(CMath.div(curArmor,weightpts)+1);
 			if(which<0)
 				which=0;
+			int rollOver=0;
 			if(which>=useArray.length)
+			{
+				final int maxAmt=useArray[useArray.length-1];
+				rollOver =  ((maxAmt-useArray[useArray.length-2]) * (which-useArray.length));
 				which=useArray.length-1;
-			level=useArray[which];
+			}
+			level=useArray[which] + rollOver;
 		}
 		if(level < 1)
 			level = 1;
@@ -466,6 +471,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 						if((I.basePhyStats().armor()==oldArm)
 						&&((adjA==null)||(adjA.text().equals(s))))
 							illegalThings.add(lowestObject);
+						levelsMap=getItemLevels(I,props);
 					}
 					else
 					if((lowestObject instanceof String)
@@ -1107,9 +1113,14 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			int which=(int)Math.round(CMath.div(curArmor,weightpts)+1);
 			if(which<0)
 				which=0;
+			int rollOver=0;
 			if(which>=useArray.length)
+			{
+				final int maxAmt=useArray[useArray.length-1];
+				rollOver =  ((maxAmt-useArray[useArray.length-2]) * (which-useArray.length));
 				which=useArray.length-1;
-			level=useArray[which];
+ 			}
+			level=useArray[which] + rollOver;
 		}
 		if(!CMLib.flags().isRemovable(I))
 			level-=5;
