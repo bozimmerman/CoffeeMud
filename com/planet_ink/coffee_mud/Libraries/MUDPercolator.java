@@ -2091,6 +2091,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				getMetacraftFilter(classRest.substring(1).trim(), piece, defined, filter);
 				if(filter.name.trim().length()>0)
 					recipe=filter.name;
+				else
+				if(classRest.substring(1).trim().length()>1)
+					recipe=classRest.substring(1).trim();
 			}
 			else
 			{
