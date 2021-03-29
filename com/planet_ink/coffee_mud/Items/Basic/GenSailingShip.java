@@ -109,6 +109,88 @@ public class GenSailingShip extends GenBoardable implements SailingShip
 		return R;
 	}
 
+	public void fixShipArea(final Area area)
+	{
+		final Ability oldA=area.fetchEffect("GenSailingShipListener");
+		if(oldA!=null)
+			area.delEffect(oldA);
+		final ExtendableAbility extAble = (ExtendableAbility)CMClass.getAbility("ExtAbility");
+		extAble.setAbilityID("GenSailingShipListener");
+		extAble.setName("Sailing Ship Listener");
+		extAble.setSavable(false);
+		final GenSailingShip thisMe = this;
+		extAble.setMsgListener(new MsgListener()
+		{
+			final GenSailingShip me=thisMe;
+			final Area meA=area;
+
+			protected void lookOverBow(final Room R, final CMMsg msg)
+			{
+				msg.addTrailerRunnable(new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						if(CMLib.flags().canBeSeenBy(R, msg.source()) && (msg.source().session()!=null))
+							msg.source().session().print(L("^HOff the bow you see: ^N"));
+						final CMMsg msg2=CMClass.getMsg(msg.source(), R, msg.tool(), msg.sourceCode(), null, msg.targetCode(), null, msg.othersCode(), null);
+						if((msg.source().isAttributeSet(MOB.Attrib.AUTOEXITS))
+						&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=CMProps.Int.EXVIEW_PARAGRAPH))
+							msg2.addTrailerMsg(CMClass.getMsg(msg.source(),R,null,CMMsg.MSG_LOOK_EXITS,null));
+						if(R.okMessage(msg.source(), msg))
+							R.send(msg.source(),msg2);
+					}
+				});
+			}
+
+			@Override
+			public void executeMsg(final Environmental myHost, final CMMsg msg)
+			{
+				switch(msg.targetMinor())
+				{
+				case CMMsg.TYP_LOOK:
+				case CMMsg.TYP_EXAMINE:
+					if((msg.target() instanceof Exit)&&(((Exit)msg.target()).isOpen()))
+					{
+						final Room hereR=msg.source().location();
+						if((hereR!=null)
+						&&((hereR.domainType()&Room.INDOORS)==0)
+						&&(hereR.getArea()==meA))
+						{
+							final Room lookingR=hereR.getRoomInDir(CMLib.map().getExitDir(hereR, (Exit)msg.target()));
+							final Room R=CMLib.map().roomLocation(me);
+							if(lookingR==R)
+								lookOverBow(R,msg);
+						}
+					}
+					else
+					if((msg.target() instanceof Room)
+					&&((((Room)msg.target()).domainType()&Room.INDOORS)==0)
+					&&(((Room)msg.target()).getArea()==meA))
+					{
+						if(msg.targetMinor()==CMMsg.TYP_EXAMINE)
+						{
+							final Room R=CMLib.map().roomLocation(me);
+							if((R!=null)
+							&&(R.getArea()!=meA))
+								lookOverBow(R,msg);
+						}
+					}
+					break;
+				}
+			}
+
+			@Override
+			public boolean okMessage(final Environmental myHost, final CMMsg msg)
+			{
+				return true;
+			}
+
+		});
+		area.addNonUninvokableEffect(extAble);
+		extAble.setSavable(false);
+	}
+
 	@Override
 	public Area getShipArea()
 	{
@@ -118,9 +200,19 @@ public class GenSailingShip extends GenBoardable implements SailingShip
 			final Area area=super.getShipArea();
 			if(area != null)
 				area.setTheme(Area.THEME_FANTASY);
+			fixShipArea(area);
 			return area;
 		}
 		return super.getShipArea();
+	}
+
+
+	@Override
+	public void setShipArea(final String xml)
+	{
+		super.setShipArea(xml);
+		if(this.area!=null)
+			fixShipArea(this.area);
 	}
 
 	private enum SailingCommand

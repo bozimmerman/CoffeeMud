@@ -812,25 +812,6 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		blurbFlags.remove(flagOnly);
 	}
 
-	protected void lookOverBow(final Room R, final CMMsg msg)
-	{
-		msg.addTrailerRunnable(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				if(CMLib.flags().canBeSeenBy(R, msg.source()) && (msg.source().session()!=null))
-					msg.source().session().print(L("^HOff the bow you see: ^N"));
-				final CMMsg msg2=CMClass.getMsg(msg.source(), R, msg.tool(), msg.sourceCode(), null, msg.targetCode(), null, msg.othersCode(), null);
-				if((msg.source().isAttributeSet(MOB.Attrib.AUTOEXITS))
-				&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=CMProps.Int.EXVIEW_PARAGRAPH))
-					msg2.addTrailerMsg(CMClass.getMsg(msg.source(),R,null,CMMsg.MSG_LOOK_EXITS,null));
-				if(R.okMessage(msg.source(), msg))
-					R.send(msg.source(),msg2);
-			}
-		});
-	}
-
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -883,35 +864,6 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 							I.setExpirationDate(0);
 						}
 					});
-				}
-				break;
-			case CMMsg.TYP_LOOK:
-			case CMMsg.TYP_EXAMINE:
-				if((msg.target() instanceof Exit)&&(((Exit)msg.target()).isOpen()))
-				{
-					final Room hereR=msg.source().location();
-					if((hereR!=null)
-					&&((hereR.domainType()&Room.INDOORS)==0)
-					&&(hereR.getArea()==this.getShipArea()))
-					{
-						final Room lookingR=hereR.getRoomInDir(CMLib.map().getExitDir(hereR, (Exit)msg.target()));
-						final Room R=CMLib.map().roomLocation(this.shipItem);
-						if(lookingR==R)
-							lookOverBow(R,msg);
-					}
-				}
-				else
-				if((msg.target() instanceof Room)
-				&&((((Room)msg.target()).domainType()&Room.INDOORS)==0)
-				&&(((Room)msg.target()).getArea()==this))
-				{
-					if(msg.targetMinor()==CMMsg.TYP_EXAMINE)
-					{
-						final Room R=CMLib.map().roomLocation(this.shipItem);
-						if((R!=null)
-						&&(R.getArea()!=this.getShipArea()))
-							lookOverBow(R,msg);
-					}
 				}
 				break;
 			}

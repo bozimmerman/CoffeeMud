@@ -4745,7 +4745,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			for(int a=0;a<P.numEffects();a++) // definitely personal
 			{
 				final Ability A=P.fetchEffect(a);
-				if((A!=null)&&(A.isSavable()))
+				if((A!=null)
+				&&(A.isSavable()))
 				{
 					affectstr.append("<AFF>");
 					affectstr.append(CMLib.xml().convertXMLtoTag("ACLASS",CMClass.classID(A)));
