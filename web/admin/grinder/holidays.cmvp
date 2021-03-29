@@ -11,8 +11,16 @@
     <!--
         function Holiday(action)
         {
-            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=750,alwaysRaised=yes,dependent=yes";
-            w=window.open("holiday.cmvp?AUTH=@Authenticate?AUTH@&HOLIDAY="+action,"Holiday",strFeatures, false);
+            if(document.RESOURCES.NEWHOLIDAY.value=='')
+            {
+                window.alert('You must enter a name for the holiday.');
+                document.RESOURCES.NEWHOLIDAY.value='holiday number '+Math.random();
+            }
+            else
+            {
+                var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=750,alwaysRaised=yes,dependent=yes";
+                w=window.open("holiday.cmvp?AUTH=@Authenticate?AUTH@&HOLIDAY="+action,"Holiday",strFeatures, false);
+            }
         }
         function Clicked(action)
         {
@@ -63,7 +71,7 @@
     </TR>
     @back@
     <TR>
-    <TD COLSPAN=4><a href="javascript:if(document.RESOURCES.NEWHOLIDAY.value!='')Holiday(document.RESOURCES.NEWHOLIDAY.value+'&NEWHOLIDAY='+document.RESOURCES.NEWHOLIDAY.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=NEWHOLIDAY SIZE=70></B></FONT></TD>
+    <TD COLSPAN=4><a href="javascript:Holiday(document.RESOURCES.NEWHOLIDAY.value+'&NEWHOLIDAY='+document.RESOURCES.NEWHOLIDAY.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=NEWHOLIDAY SIZE=70></B></FONT></TD>
     </TR>
     </TABLE>
     <P>
