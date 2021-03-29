@@ -1,6 +1,5 @@
 package com.planet_ink.coffee_mud.Items.Basic;
 import com.planet_ink.coffee_mud.Items.Basic.StdPortal;
-import com.planet_ink.coffee_mud.Items.BasicTech.GenSpaceShip;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Move;
@@ -43,7 +42,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Event;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenSailingShip extends StdBoardable implements SailingShip
+public class GenSailingShip extends GenBoardable implements SailingShip
 {
 	@Override
 	public String ID()
@@ -81,12 +80,6 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 		setMaterial(RawMaterial.RESOURCE_OAK);
 		basePhyStats().setAbility(2);
 		this.recoverPhyStats();
-	}
-
-	@Override
-	public boolean isGeneric()
-	{
-		return true;
 	}
 
 	@Override
@@ -3115,245 +3108,6 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 		this.courseDirections.add(Integer.valueOf(-1));
 	}
 
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES",
-											"RESETTIME","RIDEBASIS","MOBSHELD",
-											"AREA","OWNER","PRICE","DEFCLOSED","DEFLOCKED",
-											"EXITNAME",
-											"PUTSTR","MOUNTSTR","DISMOUNTSTR","STATESTR","STATESUBJSTR","RIDERSTR"
-										  };
-
-	@Override
-	public String getStat(final String code)
-	{
-		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
-			return CMLib.coffeeMaker().getGenItemStat(this,code);
-		switch(getInternalCodeNum(code))
-		{
-		case 0:
-			return "" + hasALock();
-		case 1:
-			return "" + hasADoor();
-		case 2:
-			return "" + capacity();
-		case 3:
-			return "" + containTypes();
-		case 4:
-			return "" + openDelayTicks();
-		case 5:
-			return "" + rideBasis();
-		case 6:
-			return "" + riderCapacity();
-		case 7:
-			return CMLib.coffeeMaker().getAreaObjectXML(getShipArea(), null, null, null, true).toString();
-		case 8:
-			return getOwnerName();
-		case 9:
-			return "" + getPrice();
-		case 10:
-			return "" + defaultsClosed();
-		case 11:
-			return "" + defaultsLocked();
-		case 12:
-			return "" + doorName();
-		case 13:
-			return this.getPutString();
-		case 14:
-			return this.getMountString();
-		case 15:
-			return this.getDismountString();
-		case 16:
-			return this.getStateString();
-		case 17:
-			return this.getStateStringSubject();
-		case 18:
-			return this.getRideString();
-		default:
-			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
-		}
-	}
-
-	@Override
-	public void setStat(final String code, final String val)
-	{
-		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
-			CMLib.coffeeMaker().setGenItemStat(this,code,val);
-		else
-		switch(getInternalCodeNum(code))
-		{
-		case 0:
-			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), CMath.s_bool(val), false, CMath.s_bool(val) && defaultsLocked());
-			break;
-		case 1:
-			setDoorsNLocks(CMath.s_bool(val), isOpen(), CMath.s_bool(val) && defaultsClosed(), hasALock(), isLocked(), defaultsLocked());
-			break;
-		case 2:
-			setCapacity(CMath.s_parseIntExpression(val));
-			break;
-		case 3:
-			setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS, val));
-			break;
-		case 4:
-			setOpenDelayTicks(CMath.s_parseIntExpression(val));
-			break;
-		case 5:
-			break;
-		case 6:
-			break;
-		case 7:
-			setShipArea(val);
-			break;
-		case 8:
-			setOwnerName(val);
-			break;
-		case 9:
-			setPrice(CMath.s_int(val));
-			break;
-		case 10:
-			setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
-			break;
-		case 11:
-			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
-			break;
-		case 12:
-			this.doorName = val;
-			break;
-		case 13:
-			setPutString(val);
-			break;
-		case 14:
-			setMountString(val);
-			break;
-		case 15:
-			setDismountString(val);
-			break;
-		case 16:
-			setStateString(val);
-			break;
-		case 17:
-			setStateStringSubject(val);
-			break;
-		case 18:
-			setRideString(val);
-			break;
-		default:
-		{
-			final String up_code = (""+code).toUpperCase();
-			if(up_code.startsWith("SPECIAL_"))
-			{
-				if(up_code.equals("SPECIAL_NOUN_SHIP"))
-					noun_ship=val;
-				else
-				if(up_code.equals("SPECIAL_VERB_SAIL"))
-					verb_sail=val;
-				else
-				if(up_code.equals("SPECIAL_VERB_SAILING"))
-					verb_sailing=val;
-				else
-				if(up_code.equals("SPECIAL_HEAD_OFFTHEDECK"))
-					head_offTheDeck=val;
-				else
-				if(up_code.equals("SPECIAL_DISABLE_CMDS"))
-				{
-					disableCmds.clear();
-					disableCmds.addAll(CMParms.parseCommas(val.toUpperCase().trim(),true));
-				}
-			}
-			else
-				CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
-			break;
-		}
-		}
-	}
-
-	private int getInternalCodeNum(final String code)
-	{
-		for(int i=0;i<MYCODES.length;i++)
-		{
-			if(code.equalsIgnoreCase(MYCODES[i]))
-				return i;
-		}
-		return -1;
-	}
-
-	private static String[] codes=null;
-
-	@Override
-	public String[] getStatCodes()
-	{
-		if(codes!=null)
-			return codes;
-		final String[] MYCODES=CMProps.getStatCodesList(GenSailingShip.MYCODES,this);
-		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
-		codes=new String[superCodes.length+MYCODES.length];
-		int i=0;
-		for(;i<superCodes.length;i++)
-			codes[i]=superCodes[i];
-		for(int x=0;x<MYCODES.length;i++,x++)
-			codes[i]=MYCODES[x];
-		return codes;
-	}
-
-	@Override
-	public boolean sameAs(final Environmental E)
-	{
-		if(!(E instanceof GenSailingShip))
-			return false;
-		final String[] codes=getStatCodes();
-		for(int i=0;i<codes.length;i++)
-		{
-			if((!E.getStat(codes[i]).equals(getStat(codes[i])))
-			&&(!codes[i].equals("AREA"))
-			&&(!codes[i].equals("ABILITY")))
-				return false;
-		}
-		final Area eA = ((GenSailingShip)E).getShipArea();
-		if(eA==null)
-			return getShipArea()==null;
-		final Area A = this.getShipArea();
-		if(A==null)
-			return false;
-		final Enumeration<Room> er = eA.getProperMap();
-		final Enumeration<Room> r = A.getProperMap();
-		for(;r.hasMoreElements();)
-		{
-			final Room R=r.nextElement();
-			if(!er.hasMoreElements())
-				return false;
-			final Room eR = er.nextElement();
-			if(!R.sameAs(eR))
-				return false;
-			final Enumeration<Item> i=R.items();
-			final Enumeration<Item> ei = eR.items();
-			for(;i.hasMoreElements();)
-			{
-				final Item I=i.nextElement();
-				if(!ei.hasMoreElements())
-					return false;
-				final Item eI=ei.nextElement();
-				if(!I.sameAs(eI))
-					return false;
-			}
-			if(ei.hasMoreElements())
-				return false;
-			final Enumeration<MOB> m=R.inhabitants();
-			final Enumeration<MOB> em = eR.inhabitants();
-			for(;m.hasMoreElements();)
-			{
-				final MOB M=m.nextElement();
-				if(!em.hasMoreElements())
-					return false;
-				final MOB eM=em.nextElement();
-				if(!M.sameAs(eM))
-					return false;
-			}
-			if(em.hasMoreElements())
-				return false;
-		}
-		if(er.hasMoreElements())
-			return false;
-		return true;
-	}
-
 	@Override
 	public boolean isSunk()
 	{
@@ -3367,4 +3121,40 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 		}
 		return false;
 	}
+
+	@Override
+	public void setStat(final String code, final String val)
+	{
+		final String up_code = (""+code).toUpperCase();
+		if(up_code.startsWith("SPECIAL_"))
+		{
+			if(up_code.equals("SPECIAL_NOUN_SHIP"))
+				noun_ship=val;
+			else
+			if(up_code.equals("SPECIAL_VERB_SAIL"))
+				verb_sail=val;
+			else
+			if(up_code.equals("SPECIAL_VERB_SAILING"))
+				verb_sailing=val;
+			else
+			if(up_code.equals("SPECIAL_HEAD_OFFTHEDECK"))
+				head_offTheDeck=val;
+			else
+			if(up_code.equals("SPECIAL_DISABLE_CMDS"))
+			{
+				disableCmds.clear();
+				disableCmds.addAll(CMParms.parseCommas(val.toUpperCase().trim(),true));
+			}
+		}
+		super.setStat(up_code, val);
+	}
+
+	@Override
+	public boolean sameAs(final Environmental E)
+	{
+		if(!(E instanceof GenSailingShip))
+			return false;
+		return super.sameAs(E);
+	}
+
 }

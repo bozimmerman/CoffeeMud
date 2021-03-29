@@ -1,5 +1,5 @@
 package com.planet_ink.coffee_mud.Items.BasicTech;
-import com.planet_ink.coffee_mud.Items.Basic.StdBoardable;
+import com.planet_ink.coffee_mud.Items.Basic.GenBoardable;
 import com.planet_ink.coffee_mud.Items.Basic.StdPortal;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
@@ -43,7 +43,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
+public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 {
 	@Override
 	public String ID()
@@ -71,12 +71,6 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 		setDisplayText("the space ship [NEWNAME] is here.");
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 		this.doorName="hatch";
-	}
-
-	@Override
-	public boolean isGeneric()
-	{
-		return true;
 	}
 
 	@Override
@@ -875,189 +869,11 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 			((SpaceShip)area).setOMLCoeff(coeff);
 	}
 
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD",
-											"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","AREA","COORDS","RADIUS",
-											"ROLL","DIRECTION","SPEED","FACING","OWNER","PRICE","DEFCLOSED","DEFLOCKED",
-											"EXITNAME","TECHLEVEL",
-											"PUTSTR","MOUNTSTR","DISMOUNTSTR","STATESTR","STATESUBJSTR","RIDERSTR"
-										  };
-
-	@Override
-	public String getStat(final String code)
+	private final static String[] MYCODES=
 	{
-		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
-			return CMLib.coffeeMaker().getGenItemStat(this,code);
-		switch(getInternalCodeNum(code))
-		{
-		case 0:
-			return "" + hasALock();
-		case 1:
-			return "" + hasADoor();
-		case 2:
-			return "" + capacity();
-		case 3:
-			return "" + containTypes();
-		case 4:
-			return "" + openDelayTicks();
-		case 5:
-			return "" + rideBasis();
-		case 6:
-			return "" + riderCapacity();
-		case 7:
-			return "" + powerCapacity();
-		case 8:
-			return "" + activated();
-		case 9:
-			return "" + powerRemaining();
-		case 10:
-			return getManufacturerName();
-		case 11:
-			return CMLib.coffeeMaker().getAreaObjectXML(getShipArea(), null, null, null, true).toString();
-		case 12:
-			return CMParms.toListString(coordinates());
-		case 13:
-			return "" + radius();
-		case 14:
-			return "" + roll();
-		case 15:
-			return CMParms.toListString(direction());
-		case 16:
-			return "" + speed();
-		case 17:
-			return CMParms.toListString(facing());
-		case 18:
-			return getOwnerName();
-		case 19:
-			return "" + getPrice();
-		case 20:
-			return "" + defaultsClosed();
-		case 21:
-			return "" + defaultsLocked();
-		case 22:
-			return "" + doorName();
-		case 23:
-			return "" + techLevel();
-		case 24:
-			return this.getPutString();
-		case 25:
-			return this.getMountString();
-		case 26:
-			return this.getDismountString();
-		case 27:
-			return this.getStateString();
-		case 28:
-			return this.getStateStringSubject();
-		case 29:
-			return this.getRideString();
-		default:
-			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
-		}
-	}
-
-	@Override
-	public void setStat(final String code, final String val)
-	{
-		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
-			CMLib.coffeeMaker().setGenItemStat(this,code,val);
-		else
-		switch(getInternalCodeNum(code))
-		{
-		case 0:
-			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), CMath.s_bool(val), false, CMath.s_bool(val) && defaultsLocked());
-			break;
-		case 1:
-			setDoorsNLocks(CMath.s_bool(val), isOpen(), CMath.s_bool(val) && defaultsClosed(), hasALock(), isLocked(), defaultsLocked());
-			break;
-		case 2:
-			setCapacity(CMath.s_parseIntExpression(val));
-			break;
-		case 3:
-			setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS, val));
-			break;
-		case 4:
-			setOpenDelayTicks(CMath.s_parseIntExpression(val));
-			break;
-		case 5:
-			break;
-		case 6:
-			break;
-		case 7:
-			setPowerCapacity(CMath.s_parseIntExpression(val));
-			break;
-		case 8:
-			activate(CMath.s_bool(val));
-			break;
-		case 9:
-			setPowerRemaining(CMath.s_parseLongExpression(val));
-			break;
-		case 10:
-			setManufacturerName(val);
-			break;
-		case 11:
-			setShipArea(val);
-			break;
-		case 12:
-			setCoords(CMParms.toLongArray(CMParms.parseCommas(val, true)));
-			coordinates[0] = coordinates[0] % SpaceObject.Distance.GalaxyRadius.dm;
-			coordinates[1] = coordinates[1] % SpaceObject.Distance.GalaxyRadius.dm;
-			coordinates[2] = coordinates[2] % SpaceObject.Distance.GalaxyRadius.dm;
-			break;
-		case 13:
-			setRadius(CMath.s_long(val));
-			break;
-		case 14:
-			setRoll(CMath.s_double(val));
-			break;
-		case 15:
-			setDirection(CMParms.toDoubleArray(CMParms.parseCommas(val, true)));
-			break;
-		case 16:
-			setSpeed(CMath.s_double(val));
-			break;
-		case 17:
-			setFacing(CMParms.toDoubleArray(CMParms.parseCommas(val, true)));
-			break;
-		case 18:
-			setOwnerName(val);
-			break;
-		case 19:
-			setPrice(CMath.s_int(val));
-			break;
-		case 20:
-			setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
-			break;
-		case 21:
-			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
-			break;
-		case 22:
-			doorName = val;
-			break;
-		case 23:
-			setTechLevel(CMath.s_parseIntExpression(val));
-			break;
-		case 24:
-			setPutString(val);
-			break;
-		case 25:
-			setMountString(val);
-			break;
-		case 26:
-			setDismountString(val);
-			break;
-		case 27:
-			setStateString(val);
-			break;
-		case 28:
-			setStateStringSubject(val);
-			break;
-		case 29:
-			setRideString(val);
-			break;
-		default:
-			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
-			break;
-		}
-	}
+		"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","COORDS","RADIUS",
+		"ROLL","DIRECTION","SPEED","FACING","TECHLEVEL"
+	};
 
 	private int getInternalCodeNum(final String code)
 	{
@@ -1077,7 +893,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 		if(codes!=null)
 			return codes;
 		final String[] MYCODES=CMProps.getStatCodesList(GenSpaceShip.MYCODES,this);
-		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
+		final String[] superCodes=CMParms.toStringArray(super.getStatCodes());
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
 		for(;i<superCodes.length;i++)
@@ -1088,59 +904,89 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 	}
 
 	@Override
+	public String getStat(final String code)
+	{
+		switch(getInternalCodeNum(code))
+		{
+		case 0:
+			return "" + powerCapacity();
+		case 1:
+			return "" + activated();
+		case 2:
+			return "" + powerRemaining();
+		case 3:
+			return getManufacturerName();
+		case 4:
+			return CMParms.toListString(coordinates());
+		case 5:
+			return "" + radius();
+		case 6:
+			return "" + roll();
+		case 7:
+			return CMParms.toListString(direction());
+		case 8:
+			return "" + speed();
+		case 9:
+			return CMParms.toListString(facing());
+		case 10:
+			return "" + techLevel();
+		default:
+			return super.getStat(code);
+		}
+	}
+
+	@Override
+	public void setStat(final String code, final String val)
+	{
+		switch(getInternalCodeNum(code))
+		{
+		case 0:
+			setPowerCapacity(CMath.s_parseIntExpression(val));
+			break;
+		case 1:
+			activate(CMath.s_bool(val));
+			break;
+		case 2:
+			setPowerRemaining(CMath.s_parseLongExpression(val));
+			break;
+		case 3:
+			setManufacturerName(val);
+			break;
+		case 4:
+			setCoords(CMParms.toLongArray(CMParms.parseCommas(val, true)));
+			coordinates[0] = coordinates[0] % SpaceObject.Distance.GalaxyRadius.dm;
+			coordinates[1] = coordinates[1] % SpaceObject.Distance.GalaxyRadius.dm;
+			coordinates[2] = coordinates[2] % SpaceObject.Distance.GalaxyRadius.dm;
+			break;
+		case 5:
+			setRadius(CMath.s_long(val));
+			break;
+		case 6:
+			setRoll(CMath.s_double(val));
+			break;
+		case 7:
+			setDirection(CMParms.toDoubleArray(CMParms.parseCommas(val, true)));
+			break;
+		case 8:
+			setSpeed(CMath.s_double(val));
+			break;
+		case 9:
+			setFacing(CMParms.toDoubleArray(CMParms.parseCommas(val, true)));
+			break;
+		case 10:
+			setTechLevel(CMath.s_parseIntExpression(val));
+			break;
+		default:
+			super.setStat(code, val);
+			break;
+		}
+	}
+
+	@Override
 	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenSpaceShip))
 			return false;
-		final String[] codes=getStatCodes();
-		for(int i=0;i<codes.length;i++)
-		{
-			if((!E.getStat(codes[i]).equals(getStat(codes[i])))
-			&&(!codes[i].equals("AREA"))
-			&&(!codes[i].equals("ABILITY")))
-				return false;
-		}
-		final Area eA = ((GenSpaceShip)E).getShipArea();
-		final Area A = this.getShipArea();
-		final Enumeration<Room> er = eA.getProperMap();
-		final Enumeration<Room> r = A.getProperMap();
-		for(;r.hasMoreElements();)
-		{
-			final Room R=r.nextElement();
-			if(!er.hasMoreElements())
-				return false;
-			final Room eR = er.nextElement();
-			if(!R.sameAs(eR))
-				return false;
-			final Enumeration<Item> i=R.items();
-			final Enumeration<Item> ei = eR.items();
-			for(;i.hasMoreElements();)
-			{
-				final Item I=i.nextElement();
-				if(!ei.hasMoreElements())
-					return false;
-				final Item eI=ei.nextElement();
-				if(!I.sameAs(eI))
-					return false;
-			}
-			if(ei.hasMoreElements())
-				return false;
-			final Enumeration<MOB> m=R.inhabitants();
-			final Enumeration<MOB> em = eR.inhabitants();
-			for(;m.hasMoreElements();)
-			{
-				final MOB M=m.nextElement();
-				if(!em.hasMoreElements())
-					return false;
-				final MOB eM=em.nextElement();
-				if(!M.sameAs(eM))
-					return false;
-			}
-			if(em.hasMoreElements())
-				return false;
-		}
-		if(er.hasMoreElements())
-			return false;
-		return true;
+		return super.sameAs(E);
 	}
 }

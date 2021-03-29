@@ -177,7 +177,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			}
 			else
 			{
-				Log.warnOut("Failed to unpack a boardable area for the space ship");
+				Log.warnOut("Failed to unpack a boardable area");
 				getShipArea();
 			}
 			if(resetState!=null)
@@ -868,14 +868,14 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 					final Room finalR=findNearestDocks(R);
 					if(finalR==null)
 					{
-						Log.errOut("Could not dock ship in area "+R.getArea().Name()+" due to lack of spaceport.");
-						buyer.tell(L("Nowhere was found to dock your ship.  Please contact the administrators!."));
+						Log.errOut("Could not dock "+me.name()+" in area "+R.getArea().Name()+" due to lack of port.");
+						buyer.tell(L("Nowhere was found to dock.  Please contact the administrators!."));
 					}
 					else
 					{
 						me.setHomePortID("");
 						me.dockHere(finalR);
-						buyer.tell(L("You'll find your ship docked at '@x1'.",finalR.displayText(buyer)));
+						buyer.tell(L("You'll find @x1 docked at '@x2'.",me.name(),finalR.displayText(buyer)));
 					}
 					// re-register all electronics by re-settings its owners.  That should do it.
 					for(final Enumeration<Room> r=me.getShipArea().getProperMap();r.hasMoreElements();)
@@ -939,7 +939,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			}
 			final Room finalR=findNearestDocks(R);
 			if(finalR==null)
-				Log.errOut("Could not dock ship in area "+R.getArea().Name()+" due to lack of docks.");
+				Log.errOut("Could not dock in area "+R.getArea().Name()+" due to lack of docks.");
 			else
 			{
 				this.setHomePortID("");
