@@ -1920,7 +1920,6 @@ public class StdArea implements Area
 		try
 		{
 			boolean blurbed = false;
-			String flag = null;
 			final List<Area> areas = new XVector<Area>(getParentsIterator());
 			areas.add(this);
 			for (final Iterator<Area> i = areas.iterator(); i.hasNext();)
@@ -1928,15 +1927,18 @@ public class StdArea implements Area
 				final Area A = i.next();
 				for (final Enumeration<String> f = A.areaBlurbFlags(); f.hasMoreElements();)
 				{
-					flag = A.getBlurbFlag(f.nextElement());
-					if ((flag != null) && ((!flag.startsWith("{")) || (!flag.endsWith("}"))))
+					final String flagID = f.nextElement();
+					final String flagVal = A.getBlurbFlag(flagID);
+					if ((flagVal != null)
+					&& ((!flagVal.startsWith("{")) || (!flagVal.endsWith("}")))
+					&& ((A==this)||(getBlurbFlag(flagID)==null)))
 					{
 						if (!blurbed)
 						{
 							blurbed = true;
 							s.append("\n\r");
 						}
-						s.append(flag + "\n\r");
+						s.append(flagVal + "\n\r");
 					}
 				}
 			}
