@@ -609,6 +609,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			activity = CraftingActivity.RETITLING;
 			activityRoom=R;
 			duration=getDuration(10,mob,mob.phyStats().level(),3);
+			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+				return false;
 		}
 		else
 		if(str.equalsIgnoreCase("desc"))
@@ -648,6 +650,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			activity = CraftingActivity.RETITLING;
 			activityRoom=R;
 			duration=getDuration(40,mob,mob.phyStats().level(),10);
+			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+				return false;
 		}
 		else
 		if(str.equalsIgnoreCase("door"))
