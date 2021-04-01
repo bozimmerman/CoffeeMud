@@ -87,6 +87,18 @@ public class MasterCooking extends Cooking
 			int num=1;
 			while(mob.fetchEffect("MasterCooking"+cookingID)!=null)
 				cookingID=Integer.toString(++num);
+			num--;
+			if(num>1)
+				cookingID=Integer.toString(num);
+			else
+				cookingID="";
+			if(super.checkStop(mob, commands))
+				return true;
+
+			cookingID="";
+			num=1;
+			while(mob.fetchEffect("MasterCooking"+cookingID)!=null)
+				cookingID=Integer.toString(++num);
 			final List<String> noUninvokes=new Vector<String>(1);
 			for(int i=0;i<mob.numEffects();i++)
 			{
