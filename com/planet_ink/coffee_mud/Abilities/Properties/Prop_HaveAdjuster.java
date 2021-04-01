@@ -1269,8 +1269,9 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 										int newNum = (int)Math.round(CMath.mul(num,pct));
 										if((newNum == num) && (newNum > 1))
 											newNum--;
+										final String newNumStr=((newNum>=0)?"+":"")+Integer.toString(newNum);
 										if(newNum != 0)
-											s=s.substring(0,plusminus+1)+newNum+s.substring(spaceafter);
+											s=s.substring(0,plusminus)+newNumStr+s.substring(spaceafter);
 									}
 								}
 							}
@@ -1412,8 +1413,9 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 										int newNum = num + (int)Math.abs(Math.round(CMath.mul(num,pct-1.0)));
 										if((newNum == num) && (newNum > 1))
 											newNum--;
+										final String newNumStr=((newNum>=0)?"+":"")+Integer.toString(newNum);
 										if(newNum != 0)
-											s=s.substring(0,plusminus+1)+newNum+s.substring(spaceafter);
+											s=s.substring(0,plusminus)+newNumStr+s.substring(spaceafter);
 									}
 								}
 								else
@@ -1423,8 +1425,9 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 										int newNum = num + (int)Math.round(CMath.mul(num,pct));
 										if((newNum == num) && (newNum > 1))
 											newNum--;
+										final String newNumStr=((newNum>=0)?"+":"")+Integer.toString(newNum);
 										if(newNum != 0)
-											s=s.substring(0,plusminus+1)+newNum+s.substring(spaceafter);
+											s=s.substring(0,plusminus)+newNumStr+s.substring(spaceafter);
 									}
 								}
 							}
