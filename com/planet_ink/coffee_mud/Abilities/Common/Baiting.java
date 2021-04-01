@@ -266,7 +266,7 @@ public class Baiting extends GatheringSkill
 
 		if(mine==null)
 		{
-			commonTell(mob,L("You'll need to have some @x1 on the ground first if you want to use it as bait.",foundShortName));
+			commonTell(mob,L("You'll need to have some @x1 first if you want to use it as bait.",foundShortName));
 			return false;
 		}
 		final String mineName=mine.name();
