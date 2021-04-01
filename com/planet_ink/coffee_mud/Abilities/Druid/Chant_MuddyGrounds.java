@@ -73,7 +73,7 @@ public class Chant_MuddyGrounds extends Chant
 	}
 
 	protected Item mudI = null;
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -225,6 +225,7 @@ public class Chant_MuddyGrounds extends Chant
 				mudI.basePhyStats().setDisposition(mudI.basePhyStats().disposition()|
 					(saving?0:PhyStats.IS_UNSAVABLE)
 				);
+				mudI.setMaterial(RawMaterial.RESOURCE_DIRT);
 				mudI.basePhyStats().setSensesMask(PhyStats.SENSE_ITEMNOSCRAP
 												|PhyStats.SENSE_ITEMNOTGET
 												|PhyStats.SENSE_ALWAYSCOMPRESSED
