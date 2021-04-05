@@ -377,11 +377,14 @@ public class Skill_PlanarLore extends StdSkill
 					final List<Pair<String,String>> enableAs=CMParms.parseSpaceParenList(enables);
 					for(final Pair<String,String> P : enableAs)
 					{
-						final Ability A1=CMClass.getAbility(P.first);
-						if(A1!=null)
-							tidbits.add(L("You'll need to worry about creatures using @x1 there.",A1.name()));
-						else
-							tidbits.add(L("You'll need to worry about creatures using their @x1 powers against you there.",P.first.toLowerCase()));
+						if(!P.first.equalsIgnoreCase("Number"))
+						{
+							final Ability A1=CMClass.getAbility(P.first);
+							if(A1!=null)
+								tidbits.add(L("You'll need to worry about creatures using @x1 there.",A1.name()));
+							else
+								tidbits.add(L("You'll need to worry about creatures using their @x1 powers against you there.",P.first.toLowerCase()));
+						}
 					}
 				}
 				final String bonusDamageStat = planeVars.get(PlanarVar.BONUSDAMAGESTAT.toString());
