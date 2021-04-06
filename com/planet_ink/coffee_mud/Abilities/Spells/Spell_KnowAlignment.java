@@ -68,7 +68,10 @@ public class Spell_KnowAlignment extends Spell
 		if(target==null)
 			return false;
 		if(target==mob)
+		{
+			mob.tell(L("If you want to know your own alignment, try SCORE."));
 			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
