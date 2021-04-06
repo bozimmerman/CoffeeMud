@@ -507,6 +507,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			}
 		}
 
+		if((killerM!=null)&&(killerM.getVictim()==deadM))
+			handleDamageSpamSummary(killerM);
+
 		final String msp=CMLib.protocol().msp("death"+CMLib.dice().roll(1,7,0)+".wav",50);
 		CMMsg msg=null;
 		if((deadM.playerStats()!=null)
@@ -2564,7 +2567,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				if(numEnemies>1)
 					msg.append("^<FIGHT^>"+L("Fighting @x1 enemies.  ",""+numEnemies)+"^</FIGHT^>");
 				if(combatSpam.size()==0)
-					msg.append("^<FIGHT^>"+L("No new combat damage reported.")+"^</FIGHT^>");
+				{
+					if(mob.isInCombat()||(numEnemies>0))
+						msg.append("^<FIGHT^>"+L("No new combat damage reported.")+"^</FIGHT^>");
+				}
 				else
 				{
 					msg.append("^<FIGHT^>"+L("New combat damage: "));
