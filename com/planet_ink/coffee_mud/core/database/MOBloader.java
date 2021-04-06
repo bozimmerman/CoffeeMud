@@ -1983,7 +1983,7 @@ public class MOBloader
 		try
 		{
 			D=DB.DBFetch();
-			final ResultSet R=D.query("SELECT * FROM CMCHAR");
+			final ResultSet R=D.query("SELECT CMUSERID,CMPFIL FROM CMCHAR");
 			if(R!=null) while(R.next())
 			{
 				final String username=DB.getRes(R,"CMUSERID");
