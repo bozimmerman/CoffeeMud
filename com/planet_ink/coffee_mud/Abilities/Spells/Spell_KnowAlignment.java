@@ -67,11 +67,6 @@ public class Spell_KnowAlignment extends Spell
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
-		if(target==mob)
-		{
-			mob.tell(L("If you want to know your own alignment, try SCORE."));
-			return false;
-		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -89,15 +84,15 @@ public class Spell_KnowAlignment extends Spell
 				if(CMLib.flags().isChaotic(target))
 					alignment = L("chaotic "+goodEvilName);
 				else
-				if(CMLib.flags().isChaotic(target))
+				if(CMLib.flags().isLawful(target))
 					alignment = L("lawful "+goodEvilName);
 				else
 					alignment = L(goodEvilName);
-				mob.tell(mob,target,null,L("<T-NAME> seem(s) like <T-HE-SHE> is @x1.",alignment));
+				mob.tell(mob,target,null,L("<T-NAME> seem(s) like <T-HE-SHE> <T-IS-ARE> @x1.",alignment));
 			}
 			else
 			{
-				mob.tell(mob,target,null,L("<T-NAME> seem(s) like <T-HE-SHE> is @x1.",Faction.Align.values()[CMLib.dice().roll(1,Faction.Align.values().length-1,0)].toString().toLowerCase()));
+				mob.tell(mob,target,null,L("<T-NAME> seem(s) like <T-HE-SHE> <T-IS-ARE> @x1.",Faction.Align.values()[CMLib.dice().roll(1,Faction.Align.values().length-1,0)].toString().toLowerCase()));
 			}
 		}
 
