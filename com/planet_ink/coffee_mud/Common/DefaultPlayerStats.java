@@ -1066,7 +1066,10 @@ public class DefaultPlayerStats implements PlayerStats
 			pageBreak=CMath.s_int(str);
 		else
 			pageBreak=CMProps.getIntVar(CMProps.Int.PAGEBREAK);
-		str=xmlLib.restoreAngleBrackets(xmlLib.getValFromPieces(xml,"SECGRPS"));
+		if(xmlLib.getValFromPieces(xml, "SECGRPS", null) == null)
+			Log.debugOut("DefaultPlayerStats","MISSING SECGRPS XML="+xmlStr);
+		str=xmlLib.getValFromPieces(xml,"SECGRPS");
+		str=xmlLib.restoreAngleBrackets(str);
 		if(debug)
 			Log.debugOut("SECGRPS="+str);
 		getSetSecurityFlags(str);
