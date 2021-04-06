@@ -1123,7 +1123,7 @@ public class StdAbility implements Ability
 		return getTarget(mob, location, givenTarget, container, commands, filter, false);
 	}
 
-	protected Item evalTargetItem(final MOB mob, final Environmental givenTarget, final Environmental target, final String targetName, final boolean quiet)
+	protected Item evalTargetItem(final MOB mob, final Room location, final Environmental givenTarget, final Environmental target, final String targetName, final boolean quiet)
 	{
 		if((target==null)
 		||(!(target instanceof Item))
@@ -1140,7 +1140,12 @@ public class StdAbility implements Ability
 						mob.tell(L("You don't see that here."));
 					else
 					if(!CMLib.flags().isSleeping(mob)) // no idea why this is here :(
-						mob.tell(L("You don't see anything called '@x1' here.",targetName));
+					{
+						if(location != null)
+							mob.tell(L("You don't see anything called '@x1' here.",targetName));
+						else
+							mob.tell(L("You don't have anything called '@x1'.",targetName));
+					}
 					else // this was added for clan donate (and other things I'm sure) while sleeping.
 						mob.tell(L("You don't see '@x1' in your dreams.",targetName));
 				}
@@ -1174,7 +1179,7 @@ public class StdAbility implements Ability
 		if(target!=null)
 			targetName=target.name();
 
-		return evalTargetItem(mob, givenTarget, target, targetName, quiet);
+		return evalTargetItem(mob, location, givenTarget, target, targetName, quiet);
 
 	}
 
@@ -1209,7 +1214,7 @@ public class StdAbility implements Ability
 		if(target!=null)
 			targetName=target.name();
 
-		return evalTargetItem(mob, givenTarget, target, targetName, quiet);
+		return evalTargetItem(mob, location, givenTarget, target, targetName, quiet);
 	}
 
 	@Override
