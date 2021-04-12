@@ -153,17 +153,26 @@ public class Thief_Graverobbing extends ThiefSkill
 				}
 			}
 		}
-		if((target instanceof Room)
-		&&(!isGravyRoom((Room)target)))
+		if(target instanceof Room)
 		{
-			mob.tell(L("This place doesn't look much like a graveyard.",what));
-			return false;
+			if(!isGravyRoom((Room)target))
+			{
+				mob.tell(L("This place doesn't look much like a graveyard.",what));
+				return false;
+			}
 		}
-
-		if((target instanceof DeadBody)
-		&&(((DeadBody)target).isPlayerCorpse()))
+		else
+		if(target instanceof DeadBody)
 		{
-			mob.tell(L("You can not rob @x1.",target.name(mob)));
+			if(((DeadBody)target).isPlayerCorpse())
+			{
+				mob.tell(L("You can not rob @x1.",target.name(mob)));
+				return false;
+			}
+		}
+		else
+		{
+			mob.tell(L("You can not grave-rob @x1.",target.name(mob)));
 			return false;
 		}
 		if(target.fetchEffect(ID())!=null)
