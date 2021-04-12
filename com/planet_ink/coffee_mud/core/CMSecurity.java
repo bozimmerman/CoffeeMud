@@ -2725,8 +2725,7 @@ public class CMSecurity
 		SCRIPTTRACE("MOBPROG Script traving"),
 		TOPTHREAD("Top report thread"),
 		SHIPCOMBAT("sailing ship fights"),
-		QUESTSCRIPTS("quest script parsing"),
-		SECGRPS("security group saving/loading")
+		QUESTSCRIPTS("quest script parsing")
 		;
 		private final String desc;
 
