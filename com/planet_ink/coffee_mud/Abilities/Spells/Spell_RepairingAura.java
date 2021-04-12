@@ -79,15 +79,22 @@ public class Spell_RepairingAura extends Spell
 		return 50;
 	}
 
-	public static final int	REPAIR_MAX		= 30;
-	public int				repairDown		= REPAIR_MAX;
-	public int				adjustedLevel	= 1;
+	protected static final int	REPAIR_MAX		= 30;
+	protected int				repairDown		= REPAIR_MAX;
+	protected int				adjustedLevel	= 1;
+	protected boolean			everTicked		= false;
 
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BONUS);
+		if((!canBeUninvoked())&&(affected instanceof Item))
+		{
+			final Item I=(Item)affected;
+			if((I.subjectToWearAndTear())&&(I.usesRemaining()<100))
+				I.setUsesRemaining(100);
+		}
 	}
 
 	@Override
