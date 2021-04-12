@@ -445,7 +445,7 @@ public class Transfer extends At
 						&&(CMSecurity.isAllowed(mob, room, CMSecurity.SecFlag.TRANSFER)))
 						{
 							final StringBuffer mobXML=CMLib.coffeeMaker().getMobXML(M);
-							writer.write("IMPORT <MOBS>"+mobXML+"<MOBS>"+blockEnd);
+							writer.write("IMPORT <MOBS>"+mobXML+"</MOBS>"+blockEnd);
 							mob.tell(getComResponse(writer,reader));
 						}
 					}
