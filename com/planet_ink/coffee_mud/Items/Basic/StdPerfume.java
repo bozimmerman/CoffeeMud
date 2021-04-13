@@ -91,7 +91,7 @@ public class StdPerfume extends StdDrink implements Perfume
 		else
 		{
 			E=CMClass.getAbility("Prop_MOBEmoter");
-			String s=getSmellList();
+			String s=";"+getSmellList();
 			if(s.toUpperCase().indexOf("EXPIRES")<0)
 				s="expires=50 "+s;
 			if(s.toUpperCase().trim().startsWith("SMELL "))
