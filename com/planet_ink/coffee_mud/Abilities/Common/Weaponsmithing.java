@@ -381,16 +381,16 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 					final String item=replacePercent(V.get(RCP_FINALNAME),"");
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
 					final String wood=getComponentDescription(mob,V,RCP_WOOD);
-					if(wood.length()>5)
-					{
-						if(toggler>1)
-							buf.append("\n\r");
-						toggler=toggleTop;
-					}
 					if((autoGenerate>0)
 						||(level<=xlevel(mob))
 						||(allFlag))
 					{
+						if(wood.length()>5)
+						{
+							if(toggler>1)
+								buf.append("\n\r");
+							toggler=toggleTop;
+						}
 						buf.append(CMStrings.padRight(item,itemWidth)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRightPreserve(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop)
 							toggler=1;

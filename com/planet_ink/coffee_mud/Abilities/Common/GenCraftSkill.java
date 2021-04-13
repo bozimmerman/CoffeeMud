@@ -639,14 +639,14 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 					final String item=replacePercent(V.get(RCP_FINALNAME),"");
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
 					final String mats=getComponentDescription(mob,V,RCP_AMOUNTMATS);
-					if(mats.length()>5)
-					{
-						if(toggler>1)
-							buf.append("\n\r");
-						toggler=toggleTop;
-					}
 					if((level<=xlevel(mob))||allFlag)
 					{
+						if(mats.length()>5)
+						{
+							if(toggler>1)
+								buf.append("\n\r");
+							toggler=toggleTop;
+						}
 						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+CMStrings.padRightPreserve(""+mats,cols[2])+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop)
 							toggler=1;

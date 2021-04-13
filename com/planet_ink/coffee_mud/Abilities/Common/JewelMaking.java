@@ -387,14 +387,14 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 					&&(otherRequired.equalsIgnoreCase("PRECIOUS"))
 					&&(CMath.s_int(wood)==0))
 						wood = "1*";
-					if(wood.length()>5)
-					{
-						if(toggler>1)
-							buf.append("\n\r");
-						toggler=toggleTop;
-					}
 					if((level<=xlevel(mob))||allFlag)
 					{
+						if(wood.length()>5)
+						{
+							if(toggler>1)
+								buf.append("\n\r");
+							toggler=toggleTop;
+						}
 						buf.append(CMStrings.padRight(item,cols[0])+" "+
 									CMStrings.padRight(""+level,cols[1])+" "+
 									CMStrings.padRightPreserve(""+wood,cols[2])
