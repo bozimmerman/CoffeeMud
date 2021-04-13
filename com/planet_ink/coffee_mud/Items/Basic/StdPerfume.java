@@ -149,7 +149,7 @@ public class StdPerfume extends StdDrink implements Perfume
 				}
 				amountOfLiquidRemaining-=amountOfThirstQuenched;
 				wearIfAble(msg.source());
-				if(disappearsAfterDrinking)
+				if((liquidRemaining()<=0) && disappearsAfterDrinking)
 					destroy();
 				return;
 			}
