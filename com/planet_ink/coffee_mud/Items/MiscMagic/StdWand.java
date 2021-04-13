@@ -213,6 +213,7 @@ public class StdWand extends StdItem implements Wand
 				if(y>=0)
 					message=message.substring(0,y);
 				message=message.trim();
+				Ability spellA=me.getSpell();
 				Ability wandUse = null;
 				final boolean pickFirstOne = me.getEnchantType() < 0;
 				for(final Enumeration<Ability> e=mob.abilities();e.hasMoreElements();)
@@ -224,15 +225,21 @@ public class StdWand extends StdItem implements Wand
 						||(((WandUsage)A).getEnchantType()==me.getEnchantType())))
 					{
 						wandUse = A;
-						break;
+						if((pickFirstOne)
+						&&(spellA != null)
+						&&(((WandUsage)A).getEnchantType()>0)
+						&&(((WandUsage)A).getEnchantType()<WandUsage.WAND_OPTIONS.length))
+						{
+							if(WandUsage.WAND_OPTIONS[((WandUsage)A).getEnchantType()][0].equals(Ability.ACODE_DESCS_[spellA.classificationCode()&Ability.ALL_ACODES]))
+								break;
+						}
 					}
 				}
 				if((wandUse==null)||(!wandUse.proficiencyCheck(null,0,false)))
 					mob.tell(CMLib.lang().L("@x1 glows faintly for a moment, then fades.",me.name()));
 				else
 				{
-					Ability A=me.getSpell();
-					if(A==null)
+					if(spellA==null)
 						mob.tell(CMLib.lang().L("Something seems wrong with @x1.",me.name()));
 					else
 					if(me.usesRemaining()<=0)
@@ -240,8 +247,8 @@ public class StdWand extends StdItem implements Wand
 					else
 					{
 						wandUse.setInvoker(mob);
-						A=(Ability)A.newInstance();
-						if(useTheWand(A,mob,wandUse.abilityCode()))
+						spellA=(Ability)spellA.newInstance();
+						if(useTheWand(spellA,mob,wandUse.abilityCode()))
 						{
 							final Vector<String> V=new Vector<String>();
 							if(target!=null)
@@ -251,10 +258,10 @@ public class StdWand extends StdItem implements Wand
 							me.setUsesRemaining(me.usesRemaining()-1);
 							int level=me.phyStats().level()
 									+ CMLib.expertises().getExpertiseLevel(mob, wandUse.ID(), ExpertiseLibrary.XType.LEVEL);
-							final int lowest=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+							final int lowest=CMLib.ableMapper().lowestQualifyingLevel(spellA.ID());
 							if(level<lowest)
 								level=lowest;
-							A.invoke(mob, V, target, true, level);
+							spellA.invoke(mob, V, target, true, level);
 							wandUse.helpProficiency(mob, 0);
 							return;
 						}
