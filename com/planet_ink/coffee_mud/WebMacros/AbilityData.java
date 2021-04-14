@@ -337,6 +337,8 @@ public class AbilityData extends StdWebMacro
 						}
 						else
 						{
+							if(wordLists == null)
+								wordLists=new ArrayList<String[]>();
 							for(int i=wordLists.size()-1;i>=0;i--)
 								httpReq.addFakeUrlParameter("WORDLIST"+(i+1), CMParms.toListString(wordLists.get(i)));
 							httpReq.removeUrlParameter("WORDLIST"+(wordLists.size()+1));

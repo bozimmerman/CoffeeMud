@@ -216,7 +216,7 @@ public class StdLanguage extends StdAbility implements Language
 		if(M!=null)
 			return word;
 		final List<String[]> translationVector=translationLists(language);
-		if(translationVector.size()>0)
+		if((translationVector!=null)&&(translationVector.size()>0))
 		{
 			String[] choices=null;
 			try

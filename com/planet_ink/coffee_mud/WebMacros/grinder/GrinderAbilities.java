@@ -250,7 +250,8 @@ public class GrinderAbilities
 		{
 			old=httpReq.getUrlParameter("NATURALLANG");
 			A.setStat("NATURALLANG",(old==null)?"false":Boolean.toString(old.equalsIgnoreCase("on")));
-			((Language)A).translationLists(A.ID()).clear();
+			if(((Language)A).translationLists(A.ID())!=null)
+				((Language)A).translationLists(A.ID()).clear();
 			if(httpReq.isUrlParameter("WORDLIST1"))
 			{
 				int x=1;

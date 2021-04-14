@@ -1090,7 +1090,8 @@ public class DefaultClan implements Clan
 			updateClanPrivileges(mob);
 			for(final ClanPosition pos : govt().getPositions())
 			{
-				if((!pos.isPublic())&&(member)
+				if((!pos.isPublic())
+				&&(member)
 				&&((pos.getRoleID()!=govt().getAutoRole())||(pos.getRoleID()==govt().getAcceptPos())))
 				{
 					msg.append("-----------------------------------------------------------------\n\r");
