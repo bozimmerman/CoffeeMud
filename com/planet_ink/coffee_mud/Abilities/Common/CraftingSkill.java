@@ -975,7 +975,7 @@ public class CraftingSkill extends GatheringSkill
 			{
 				pm=checkMaterialFrom(mob,recipe,matSet);
 				if(pm==null)
-					return false;
+					return true;
 			}
 			final int material;
 			if((pm != matSet)&&(pm.length==1))

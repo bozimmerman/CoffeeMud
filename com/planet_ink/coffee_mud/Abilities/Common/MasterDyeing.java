@@ -202,68 +202,72 @@ public class MasterDyeing extends MasterPaintingSkill
 		}
 		commands.remove(commands.get(0)); // remove item
 		commands.remove(commands.get(0)); // remove design
-		final String allColors = CMParms.combine(commands,0);
 		final List<Color256> colorsFound = new ArrayList<Color256>();
 		final List<String> colorNamesFound = new ArrayList<String>();
-		String workColors = allColors.toLowerCase();
-		while(workColors.length()>0)
+		if(!writing.equalsIgnoreCase("remove"))
 		{
-			final int numFound=colorsFound.size();
-			for(final String cStr : getAllColors256NamesLowercased())
+			final String allColors = CMParms.combine(commands,0);
+			String workColors = allColors.toLowerCase();
+			while(workColors.length()>0)
 			{
-				if(workColors.startsWith(cStr))
+				final int numFound=colorsFound.size();
+				for(final String cStr : getAllColors256NamesLowercased())
 				{
-					final Color256 C=getAllColors256NamesMap().get(cStr);
-					if(C!=null)
+					if(workColors.startsWith(cStr))
 					{
-						if(C.getExpertiseNum()<=super.getXLEVELLevel(mob))
+						final Color256 C=getAllColors256NamesMap().get(cStr);
+						if(C!=null)
 						{
-							colorNamesFound.add(cStr);
-							colorsFound.add(C);
-							workColors=workColors.substring(cStr.length()).trim();
+							if(C.getExpertiseNum()<=super.getXLEVELLevel(mob))
+							{
+								colorNamesFound.add(cStr);
+								colorsFound.add(C);
+								workColors=workColors.substring(cStr.length()).trim();
+							}
 						}
+						break;
 					}
-					break;
+				}
+				if(colorsFound.size()==numFound)
+				{
+					commonTell(mob,L("The first color in '@x1' is unrecognized. Try MASTERDYE COLORS",workColors));
+					return false;
 				}
 			}
-			if(colorsFound.size()==numFound)
+			if((colorsFound.size()<2)
+			&&(!writing.equalsIgnoreCase("remove")))
 			{
-				commonTell(mob,L("The first color in '@x1' is unrecognized. Try MASTERDYE COLORS",workColors));
+				commonTell(mob,L("At least two colors is required."));
 				return false;
 			}
-		}
-		if(colorsFound.size()<2)
-		{
-			commonTell(mob,L("At least two colors is required."));
-			return false;
-		}
-		if(colorsFound.size()>3)
-		{
-			commonTell(mob,L("You may not list more than 3 colors."));
-			return false;
-		}
-		if((((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
-			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER)
-			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LIQUID)
-			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_VEGETATION)
-			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER))
-		||(!target.isGeneric()))
-		{
-			commonTell(mob,L("You can't dye that material."));
-			return false;
-		}
-
-		for(final List<String> list : recipes)
-		{
-			final String name=list.get(0);
-			final int level=CMath.s_int(list.get(1));
-			final int numColors=requiredColorsInRecipe(list.get(RCP_MASK));
-			if(name.equalsIgnoreCase(writing)
-			&&(level<=adjustedLevel(mob,asLevel))
-			&&(numColors==colorsFound.size()))
+			if(colorsFound.size()>3)
 			{
-				finalRecipe=list;
-				break;
+				commonTell(mob,L("You may not list more than 3 colors."));
+				return false;
+			}
+			if((((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
+				&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER)
+				&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LIQUID)
+				&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_VEGETATION)
+				&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER))
+			||(!target.isGeneric()))
+			{
+				commonTell(mob,L("You can't dye that material."));
+				return false;
+			}
+
+			for(final List<String> list : recipes)
+			{
+				final String name=list.get(0);
+				final int level=CMath.s_int(list.get(1));
+				final int numColors=requiredColorsInRecipe(list.get(RCP_MASK));
+				if(name.equalsIgnoreCase(writing)
+				&&(level<=adjustedLevel(mob,asLevel))
+				&&(numColors==colorsFound.size()))
+				{
+					finalRecipe=list;
+					break;
+				}
 			}
 		}
 		if((finalRecipe == null) && (!writing.equalsIgnoreCase("remove")))

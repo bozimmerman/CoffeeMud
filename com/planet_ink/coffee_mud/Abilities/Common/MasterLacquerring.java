@@ -203,7 +203,7 @@ public class MasterLacquerring extends MasterPaintingSkill
 			}
 			if(!ok)
 			{
-				commonTell(mob,L("You aren't allowed to work on '@x1'.",(commands.get(0))));
+				commonTell(mob,L("You aren't allowed to work on '@x1'.",target.name(mob)));
 				return false;
 			}
 		}
