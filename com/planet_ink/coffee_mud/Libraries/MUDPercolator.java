@@ -1489,14 +1489,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						o=CMClass.getObjectOrPrototype(s);
 					if(!(o instanceof Modifiable))
 						throw new CMException("Invalid copystat: '"+s+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
-					final Modifiable E2=(Modifiable)o;
-					if(o instanceof MOB)
+					final Modifiable copyFromE=(Modifiable)o;
+					if((o instanceof MOB)&&(E instanceof MOB))
 					{
-						((MOB)E2).setBaseCharStats((CharStats)((MOB)o).baseCharStats().copyOf());
-						((MOB)E2).setBasePhyStats((PhyStats)((MOB)o).basePhyStats().copyOf());
-						((MOB)E2).setBaseState((CharState)((MOB)o).baseState().copyOf());
+						((MOB)E).setBaseCharStats((CharStats)((MOB)o).baseCharStats().copyOf());
+						((MOB)E).setBasePhyStats((PhyStats)((MOB)o).basePhyStats().copyOf());
+						((MOB)E).setBaseState((CharState)((MOB)o).baseState().copyOf());
 					}
-					fillOutCopyStats(E,E2);
+					fillOutCopyStats(E,copyFromE);
 					if(E instanceof Physical)
 						((Physical)E).recoverPhyStats();
 					if(E instanceof MOB)
