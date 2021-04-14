@@ -1493,7 +1493,21 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 								if(promptSub.startsWith(s))
 								{
 									c+=1+s.length();
-									buf.append(mob.phyStats().getStat(s));
+									switch(CMParms.indexOf(PhyStats.STAT_DESCS, s))
+									{
+									case PhyStats.STAT_ATTACK:
+										buf.append(CMLib.combat().fightingProwessStr(mob));
+										break;
+									case PhyStats.STAT_ARMOR:
+										buf.append(CMLib.combat().armorStr(mob)).append(" ");
+										break;
+									case PhyStats.STAT_DAMAGE:
+										buf.append(CMLib.combat().damageProwessStr(mob)).append(" ");
+										break;
+									default:
+										buf.append(mob.phyStats().getStat(s));
+										break;
+									}
 									isFound=true;
 									break;
 								}
