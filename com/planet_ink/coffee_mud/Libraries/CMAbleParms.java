@@ -274,14 +274,20 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			if(dataRow.elementAt(d,1) instanceof List)
 			{
 				final List<String> V=(List<String>)dataRow.elementAt(d,1);
-				if(V.contains("ITEM_CLASS_ID")||V.contains("FOOD_DRINK")||V.contains("BUILDING_CODE"))
+				if(V.contains("ITEM_CLASS_ID")
+				||V.contains("FOOD_DRINK")
+				||V.contains("POTION_POWDER")
+				||V.contains("BUILDING_CODE"))
 					return d;
 			}
 			else
 			if(dataRow.elementAt(d,1) instanceof String)
 			{
 				final String s=(String)dataRow.elementAt(d,1);
-				if(s.equalsIgnoreCase("ITEM_CLASS_ID")||s.equalsIgnoreCase("FOOD_DRINK")||s.equalsIgnoreCase("BUILDING_CODE"))
+				if(s.equalsIgnoreCase("ITEM_CLASS_ID")
+				||s.equalsIgnoreCase("FOOD_DRINK")
+				||s.equalsIgnoreCase("POTION_POWDER")
+				||s.equalsIgnoreCase("BUILDING_CODE"))
 					return d;
 			}
 		}
@@ -3963,6 +3969,30 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "FOOD";
 					if(I instanceof Drink)
 						return "DRINK";
+					return "";
+				}
+			},
+			new AbilityParmEditorImpl("POTION_POWDER","PTyp",ParmType.CHOICES)
+			{
+				@Override
+				public void createChoices()
+				{
+					createChoices(new String[] { "", "POTION", "POWDER" });
+				}
+
+				@Override
+				public String defaultValue()
+				{
+					return "";
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					if(I instanceof Potion)
+						return "POTION";
+					if(I instanceof MagicDust)
+						return "POWDER";
 					return "";
 				}
 			},

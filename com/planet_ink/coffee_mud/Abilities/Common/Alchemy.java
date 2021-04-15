@@ -74,7 +74,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 	@Override
 	public String parametersFormat()
 	{
-		return "SPELL_ID\tRESOURCE_NAME";
+		return "SPELL_ID\tRESOURCE_NAME\tPOTION_POWDER";
 	}
 
 	@Override
@@ -164,12 +164,17 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			return false;
 		if(!super.mayBeCrafted(I))
 			return false;
-		if(!(I instanceof Potion))
+		if(I instanceof Potion)
+		{
+			final Potion P=(Potion)I;
+			if((P.liquidType()==RawMaterial.RESOURCE_LIQUOR)
+			||(P.liquidType()==RawMaterial.RESOURCE_POISON))
+				return false;
+		}
+		else
+		if(!(I instanceof MagicDust))
 			return false;
-		final Potion P=(Potion)I;
-		if((P.liquidType()==RawMaterial.RESOURCE_LIQUOR)
-		||(P.liquidType()==RawMaterial.RESOURCE_POISON))
-			return false;
+		final SpellHolder P=(SpellHolder)I;
 		final List<Ability> spells=P.getSpells();
 		if((spells == null)||(spells.size()==0))
 			return false;
@@ -257,7 +262,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		return craftItem(recipe,0,false, false);
 	}
 
-	protected Item buildItem(final Ability theSpell, final int level)
+	protected Item buildPotion(final Ability theSpell, final int level)
 	{
 		buildingI=CMClass.getItem("GenPotion");
 		final Item buildingI=this.buildingI;
@@ -270,6 +275,82 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		buildingI.recoverPhyStats();
 		buildingI.text();
 		return buildingI;
+	}
+
+	protected Item buildPowder(final Ability theSpell, final int level)
+	{
+		buildingI=CMClass.getItem("GenPowder");
+		final Item buildingI=this.buildingI;
+		((Potion)buildingI).setSpellList(theSpell.ID());
+		buildingI.setName(L("some dust of @x1",theSpell.name().toLowerCase()));
+		buildingI.setDisplayText(L("some dust of @x1 sits here.",theSpell.name().toLowerCase()));
+		buildingI.setDescription("");
+		buildingI.basePhyStats().setLevel(level);
+		buildingI.phyStats().setLevel(level);
+		buildingI.recoverPhyStats();
+		buildingI.text();
+		return buildingI;
+	}
+
+	protected boolean hasPowder(final List<List<String>> recipes)
+	{
+		for(int r=0;r<recipes.size();r++)
+		{
+			final List<String> V=recipes.get(r);
+			if((V.size()>2)&&(V.get(2).equalsIgnoreCase("POWDER")))
+				return true;
+		}
+		return false;
+	}
+
+	protected boolean hasPotion(final List<List<String>> recipes)
+	{
+		for(int r=0;r<recipes.size();r++)
+		{
+			final List<String> V=recipes.get(r);
+			if((V.size()>2)&&(V.get(2).equalsIgnoreCase("POTION")))
+				return true;
+		}
+		return false;
+	}
+
+	protected void makeList(final MOB mob, final String type, String mask, final List<List<String>> recipes, final StringBuilder buf)
+	{
+		final int[] cols={
+				CMLib.lister().fixColWidth(25,mob.session()),
+			};
+		boolean allFlag=false;
+		if(mask.equalsIgnoreCase("all"))
+		{
+			allFlag=true;
+			mask="";
+		}
+		buf.append(CMStrings.padRight(L("Spell"),cols[0])+" "+CMStrings.padRight(L("Spell"),cols[0])+" "+CMStrings.padRight(L("Spell"),cols[0]));
+		int toggler=1;
+		final int toggleTop=3;
+		final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipeNames(recipes, mask, true);
+		for(int r=0;r<listRecipes.size();r++)
+		{
+			final List<String> V=listRecipes.get(r);
+			if(V.size()>0)
+			{
+				final String spell=V.get(0);
+				final String typ = (V.size()>2)?V.get(2):"POTION";
+				if(!typ.equalsIgnoreCase(type))
+					continue;
+				final Ability A=mob.fetchAbility(spell);
+				if((A!=null)
+				&&((spellLevel(mob,A)>=0)||(allFlag))
+				&&((xlevel(mob)>=spellLevel(mob,A))||(allFlag)))
+				{
+					buf.append(CMStrings.padRight(A.name(),cols[0])+((toggler!=toggleTop)?" ":"\n\r"));
+					if(++toggler>toggleTop)
+						toggler=1;
+				}
+			}
+		}
+		if(toggler!=1)
+			buf.append("\n\r");
 	}
 
 	@Override
@@ -287,7 +368,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			if(theSpell==null)
 				return false;
 			final int level=spellLevel(mob,theSpell);
-			buildingI=buildItem(theSpell, level);
+			buildingI=buildPotion(theSpell, level);
 			crafted.add(buildingI);
 			if(forceLevels)
 			{
@@ -305,44 +386,22 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			commonTell(mob,L("Brew what? Enter \"brew list\" for a list, or \"brew stop\" to cancel."));
 			return false;
 		}
-		final int[] cols={
-				CMLib.lister().fixColWidth(25,mob.session()),
-			};
 		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
 		final String pos=commands.get(commands.size()-1);
 		if(((commands.get(0))).equalsIgnoreCase("list") && (autoGenerate <= 0))
 		{
-			String mask=CMParms.combine(commands,1);
-			boolean allFlag=false;
-			if(mask.equalsIgnoreCase("all"))
+			final String mask=CMParms.combine(commands,1);
+			final StringBuilder buf=new StringBuilder();
+			if(hasPotion(recipes))
 			{
-				allFlag=true;
-				mask="";
+				buf.append(L("Potions you know how to brew:\n\r"));
+				makeList(mob, "POTION", mask, recipes, buf);
 			}
-			final StringBuffer buf=new StringBuffer(L("Potions you know how to brew:\n\r"));
-			buf.append(CMStrings.padRight(L("Spell"),cols[0])+" "+CMStrings.padRight(L("Spell"),cols[0])+" "+CMStrings.padRight(L("Spell"),cols[0]));
-			int toggler=1;
-			final int toggleTop=3;
-			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipeNames(recipes, mask, true);
-			for(int r=0;r<listRecipes.size();r++)
+			if(hasPowder(recipes))
 			{
-				final List<String> V=listRecipes.get(r);
-				if(V.size()>0)
-				{
-					final String spell=V.get(0);
-					final Ability A=mob.fetchAbility(spell);
-					if((A!=null)
-					&&((spellLevel(mob,A)>=0)||(allFlag))
-					&&((xlevel(mob)>=spellLevel(mob,A))||(allFlag)))
-					{
-						buf.append(CMStrings.padRight(A.name(),cols[0])+((toggler!=toggleTop)?" ":"\n\r"));
-						if(++toggler>toggleTop)
-							toggler=1;
-					}
-				}
+				buf.append(L("Powders/Dusts you know how to make:\n\r"));
+				makeList(mob, "POWDER", mask, recipes, buf);
 			}
-			if(toggler!=1)
-				buf.append("\n\r");
 			commonTell(mob,buf.toString());
 			return true;
 		}
@@ -370,7 +429,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			}
 			if(!(buildingI instanceof Drink))
 			{
-				commonTell(mob,L("You can't drink out of a @x1.",buildingI.name(mob)));
+				commonTell(mob,L("@x1 isn't a liquid container.",buildingI.name(mob)));
 				return false;
 			}
 			if(((Drink)buildingI).liquidRemaining()==0)
@@ -388,6 +447,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			theSpell=null;
 			int theSpellLevel=1;
 			String ingredient="";
+			boolean powder=false;
 			for(int r=0;r<recipes.size();r++)
 			{
 				final List<String> V=recipes.get(r);
@@ -402,6 +462,8 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 						theSpell=A;
 						theSpellLevel=spellLevel(mob, A);
 						ingredient=V.get(1);
+						if(V.size()>2)
+							powder=V.get(2).equalsIgnoreCase("POWDER");
 					}
 				}
 			}
@@ -455,7 +517,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 				}
 				if(!found)
 				{
-					commonTell(mob,L("This potion requires @x1.  Please place some inside the @x2 and try again.",ingredient,buildingI.name(mob)));
+					commonTell(mob,L("This recipe requires @x1.  Please place some inside the @x2 and try again.",ingredient,buildingI.name(mob)));
 					return false;
 				}
 			}
@@ -471,7 +533,10 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			commonTell(mob,L("You lose @x1 experience points for the effort.",""+experienceToLose));
 			oldName=buildingI.name();
 			buildingI.destroy();
-			buildingI=buildItem(theSpell, theSpellLevel);
+			if(powder)
+				buildingI=buildPowder(theSpell, theSpellLevel);
+			else
+				buildingI=buildPotion(theSpell, theSpellLevel);
 			setBrand(mob, buildingI);
 
 			int duration=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*5;
