@@ -70,7 +70,7 @@ CREATE TABLE CMCHAR (
 	CMHEIT integer,
 	CMWEIT integer,
 	CMPRPT varchar (250),
-	CMCOLR varchar (100),
+	CMCOLR varchar (255),
 	CMLSIP varchar (100),
 	CMEMAL varchar (255),
 	CMPFIL CLOB,

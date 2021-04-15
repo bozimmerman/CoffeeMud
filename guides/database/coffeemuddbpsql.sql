@@ -83,7 +83,7 @@ CREATE TABLE CMCHAR (
 	CMHEIT int NULL ,
 	CMWEIT int NULL ,
 	CMPRPT varchar(250) NULL,
-	CMCOLR varchar(100) NULL,
+	CMCOLR varchar(255) NULL,
 	CMLSIP varchar(100) NULL,
 	CMEMAL varchar(255) NULL,
 	CMPFIL text NULL,

@@ -75,7 +75,7 @@ CREATE TABLE CMCHAR (
 	CMHEIT integer NULL,
 	CMWEIT integer NULL,
 	CMPRPT nvarchar (250) NULL,
-	CMCOLR nvarchar (100) NULL,
+	CMCOLR nvarchar (255) NULL,
 	CMLSIP nvarchar (100) NULL,
 	CMEMAL nvarchar (255),
 	CMPFIL ntext NULL,
