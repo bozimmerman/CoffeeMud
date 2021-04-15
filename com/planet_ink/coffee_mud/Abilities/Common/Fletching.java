@@ -78,7 +78,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 	{
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
-		+"ITEM_CLASS_ID\tAMMO_TYPE\tAMMO_CAPACITY\tBASE_DAMAGE\tMAXIMUM_RANGE\t"
+		+"ITEM_CLASS_ID\tAMMO_TYPE\tAMMO_CAPACITY\tBASE_DAMAGE\tMIN_MAX_RANGE\t"
 		+"OPTIONAL_RESOURCE_OR_MATERIAL\tCODED_SPELL_LIST";
 	}
 
@@ -254,6 +254,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 		if(super.checkInfo(mob, commands))
 			return true;
 
+		final String woodName=(supportedResourceString().indexOf("METAL")>=0)?"Metal":"Wood";
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		int recipeLevel = 1;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
@@ -295,7 +296,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 				CMLib.lister().fixColWidth(5,mob.session())
 			};
 			for(int r=0;r<toggleTop;r++)
-				buf.append((r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Wood"),cols[2]));
+				buf.append((r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L(woodName),cols[2]));
 			buf.append("\n\r");
 			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipeNames(recipes, mask, true);
 			for(int r=0;r<listRecipes.size();r++)
@@ -365,7 +366,9 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 				amount=CMath.s_int(commands.get(commands.size()-1));
 				commands.remove(commands.size()-1);
 			}
-			final int[] pm=checkMaterialFrom(mob,commands,new int[]{RawMaterial.MATERIAL_WOODEN});
+			final int[] matCat = (this.supportedResourceString().indexOf("METAL")>=0)?
+					new int[]{RawMaterial.MATERIAL_METAL}:new int[]{RawMaterial.MATERIAL_WOODEN};
+			final int[] pm=checkMaterialFrom(mob,commands,matCat);
 			if(pm==null)
 				return false;
 			final String recipeName=CMParms.combine(commands,0);
@@ -405,7 +408,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			final String otherRequired=getOtherRscRequired(foundRecipe.get(RCP_EXTRAREQ));
 			final int otherAmtRequired=getOtherRscAmtRequired(mob,foundRecipe.get(RCP_EXTRAREQ));
 			final int[][] data=fetchFoundResourceData(mob,
-													  woodRequired,"wood",pm,
+													  woodRequired,woodName.toLowerCase(),pm,
 													  otherAmtRequired,otherRequired,null,
 													  false,
 													  autoGenerate,
@@ -476,7 +479,19 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			setBrand(mob, buildingI);
 			final String ammotype=foundRecipe.get(RCP_AMMOTYPE);
 			final int capacity=CMath.s_int(foundRecipe.get(RCP_AMOCAPACITY));
-			final int maxrange=CMath.s_int(foundRecipe.get(RCP_MAXRANGE));
+			final String maxRangeStr=foundRecipe.get(RCP_MAXRANGE);
+			final int maxrange;
+			final int minrange;
+			if(maxRangeStr.indexOf(',')>0)
+			{
+				minrange=CMath.s_int(maxRangeStr.substring(0,maxRangeStr.indexOf(',')).trim());
+				maxrange=CMath.s_int(maxRangeStr.substring(0,maxRangeStr.indexOf(',')+1).trim());
+			}
+			else
+			{
+				minrange=-1;
+				maxrange=CMath.s_int(maxRangeStr);
+			}
 			final int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
 			if(bundling)
 				buildingI.setBaseValue(lostValue);
@@ -495,7 +510,10 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 				}
 				buildingI.basePhyStats().setAttackAdjustment((baseYield()+abilityCode()-1+(hardness*5)));
 				buildingI.basePhyStats().setDamage(armordmg+hardness);
-				((Weapon)buildingI).setRanges(((Weapon)buildingI).minRange(),maxrange);
+				if(minrange<0)
+					((Weapon)buildingI).setRanges(((Weapon)buildingI).minRange(),maxrange);
+				else
+					((Weapon)buildingI).setRanges(minrange,maxrange);
 			}
 			else
 			if((ammotype.length()>0)

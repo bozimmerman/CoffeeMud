@@ -430,7 +430,7 @@
                 </TD>
             </TR>
             <TR>
-                <TD><FONT COLOR=YELLOW>Maximum Range: </FONT></TD>
+                <TD><FONT COLOR=YELLOW>Min/Max Range: </FONT></TD>
                 <TD>
                     <SELECT NAME=MAXRANGE>@AbilityData?MAXRANGE@</SELECT>
                 </TD>

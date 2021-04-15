@@ -4293,7 +4293,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return "";
 				}
 			},
-			new AbilityParmEditorImpl("MAXIMUM_RANGE","Max",ParmType.NUMBER)
+			new AbilityParmEditorImpl("MIN_MAX_RANGE","Rng",ParmType.NUMBER_PAIR)
 			{
 				@Override
 				public int appliesToClass(final Object o)
@@ -4316,10 +4316,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				public String convertFromItem(final ItemCraftor A, final Item I)
 				{
 					if(I instanceof Weapon)
-						return ""+((Weapon)I).getRanges()[1];
+						return ""+((Weapon)I).getRanges()[0]+","+((Weapon)I).getRanges()[1];
 					else
 					if(I instanceof Ammunition)
-						return ""+I.maxRange();
+						return ""+I.minRange()+","+I.maxRange();
 					return "";
 				}
 			},
@@ -5366,6 +5366,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			}
 			case NUMBER:
 				return CMath.isInteger(oldVal);
+			case NUMBER_PAIR:
+			{
+				final int x=(oldVal==null)?-1:oldVal.indexOf(',');
+				return CMath.isInteger(oldVal)
+					||((x>0)&&(CMath.isInteger(oldVal.substring(0,x).trim()))&&(CMath.isInteger(oldVal.substring(x+1).trim())));
+			}
 			case CHOICES:
 				if(!CMStrings.contains(choices.toArrayFirst(new String[0]),oldVal))
 					return CMStrings.contains(choices.toArrayFirst(new String[0]),oldVal.toUpperCase().trim());
@@ -5395,6 +5401,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				return new String[]{oldVal};
 			}
 			case NUMBER:
+			case NUMBER_PAIR:
 				return new String[]{oldVal};
 			case CHOICES:
 			{
@@ -5479,6 +5486,25 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					str = Integer.toString(CMath.s_int(newStr));
 				break;
 			}
+			case NUMBER_PAIR:
+			{
+				final String newStr=CMLib.genEd().prompt(mob,oldVal,++showNumber[0],showFlag,prompt(),true);
+				if(newStr.trim().length()==0)
+					str="";
+				else
+				if(CMath.isInteger(newStr))
+					str = Integer.toString(CMath.s_int(newStr));
+				else
+				{
+					final int x=newStr.indexOf(',');
+					if(x>0)
+					{
+						str = Integer.toString(CMath.s_int(newStr.substring(0,x).trim()))
+							+ Integer.toString(CMath.s_int(newStr.substring(x+1).trim()));
+					}
+				}
+				break;
+			}
 			case CHOICES:
 				str = CMLib.genEd().promptMultiOrExtra(mob,oldVal,++showNumber[0],showFlag,prompt(),choices);
 				break;
@@ -5503,6 +5529,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			case STRINGORNULL:
 			case STRING:
 			case NUMBER:
+			case NUMBER_PAIR:
 				return (webValue == null)?oldVal:webValue;
 			case MULTICHOICES:
 			{
@@ -5550,6 +5577,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			case STRING:
 				return "\n\r<INPUT TYPE=TEXT NAME=" + fieldName + " SIZE=" + textSize + " VALUE=\"" + webValue + "\">";
 			case NUMBER:
+			case NUMBER_PAIR:
 				return "\n\r<INPUT TYPE=TEXT NAME=" + fieldName + " SIZE=10 VALUE=\"" + webValue + "\">";
 			case MULTICHOICES:
 			{
