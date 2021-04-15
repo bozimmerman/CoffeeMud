@@ -176,6 +176,7 @@ public class Oracle extends Cleric
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL)||CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
 			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_InfuseModeration",false);
 
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_SenseChants",true);
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
 			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Godstrike",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_CureExhaustion",false);
