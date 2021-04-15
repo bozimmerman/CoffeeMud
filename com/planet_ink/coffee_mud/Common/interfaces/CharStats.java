@@ -1214,7 +1214,7 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 		 */
 		public static boolean isBASE(final int code)
 		{
-			return c().isBaseStatCode[code];
+			return c().isBase(code);
 		}
 
 		/**
@@ -1225,7 +1225,9 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 		 */
 		public boolean isBase(final int code)
 		{
-			return isBaseStatCode[code];
+			if(code<isBaseStatCode.length)
+				return isBaseStatCode[code];
+			return false;
 		}
 
 		/**
@@ -1237,10 +1239,7 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 		 */
 		public static int toMAXBASE(final int max)
 		{
-			final CODES c = c();
-			if(max<c.MaxBaseCrossCodes.length)
-				return c.MaxBaseCrossCodes[max];
-			return -1;
+			return c().toMaxBase(max);
 		}
 
 		/**
@@ -1353,7 +1352,7 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 		 */
 		public static String NAME(final int code)
 		{
-			return c().statNames[code];
+			return c().name(code);
 		}
 
 		/**
@@ -1364,7 +1363,7 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 		 */
 		public static String SHORTNAME(final int code)
 		{
-			return c().shortNames[code];
+			return c().shortName(code);
 		}
 
 		/**
@@ -1375,7 +1374,9 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 		 */
 		public String name(final int code)
 		{
-			return statNames[code];
+			if(code < statNames.length)
+				return statNames[code];
+			return "";
 		}
 
 		/**
@@ -1386,7 +1387,9 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 		 */
 		public String shortName(final int code)
 		{
-			return shortNames[code];
+			if(code < shortNames.length)
+				return shortNames[code];
+			return "";
 		}
 
 		/**
@@ -1407,7 +1410,7 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 		 */
 		public static String DESC(final int code)
 		{
-			return c().statDescriptions[code];
+			return c().desc(code);
 		}
 
 		/**
@@ -1418,7 +1421,9 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 		 */
 		public String desc(final int code)
 		{
-			return statDescriptions[code];
+			if(code < statDescriptions.length)
+				return statDescriptions[code];
+			return "";
 		}
 
 		/**
@@ -1439,7 +1444,7 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 		 */
 		public static String ABBR(final int code)
 		{
-			return c().statAbbreviations[code];
+			return c().abbr(code);
 		}
 
 		/**
@@ -1450,7 +1455,9 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 		 */
 		public String abbr(final int code)
 		{
-			return statAbbreviations[code];
+			if(code < statAbbreviations.length)
+				return statAbbreviations[code];
+			return "";
 		}
 
 		/**
