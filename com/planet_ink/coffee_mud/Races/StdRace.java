@@ -605,6 +605,7 @@ public class StdRace implements Race
 					if(meExhausted)
 						myChar.tell(L("You are exhausted!"));
 					else
+					if(msg.source().mayIFight(myChar))
 					{
 						if(myChar.maxState().getFatigue()>Long.MIN_VALUE/2)
 							myChar.curState().adjFatigue(CharState.FATIGUED_MILLIS,myChar.maxState());
