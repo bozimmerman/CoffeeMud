@@ -1165,7 +1165,7 @@ public class StdArea implements Area
 			case CMMsg.TYP_POWERCURRENT:
 				return false;
 			default:
-				if (msg.tool() instanceof Electronics)
+				if (msg.tool() instanceof Technical)
 				{
 					Room room = null;
 					if ((msg.target() instanceof MOB) && (((MOB) msg.target()).location() != null))
