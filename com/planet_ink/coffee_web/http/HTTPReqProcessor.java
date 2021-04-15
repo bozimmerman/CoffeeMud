@@ -25,6 +25,7 @@ import com.planet_ink.coffee_web.util.ChunkSpec;
 import com.planet_ink.coffee_web.util.CWDataBuffers;
 import com.planet_ink.coffee_web.util.CWConfig;
 import com.planet_ink.coffee_web.util.RequestStats;
+import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.collections.Pair;
 
 /*
@@ -732,7 +733,17 @@ public class HTTPReqProcessor implements HTTPFileGetter
 							extraHeaders.put(HTTPHeader.Common.CACHE_CONTROL, "no-cache");
 							final long dateTime=System.currentTimeMillis();
 							if(dateTime >= 0)
-								extraHeaders.put(HTTPHeader.Common.EXPIRES, HTTPIOHandler.DATE_FORMAT.format(Long.valueOf(dateTime)));
+							{
+								try
+								{
+									extraHeaders.put(HTTPHeader.Common.EXPIRES, HTTPIOHandler.DATE_FORMAT.format(Long.valueOf(dateTime)));
+								}
+								catch(final ArrayIndexOutOfBoundsException ae)
+								{
+									Log.errOut("ArrayIndexOutOfBoundsException (format failed): DateTime was "+dateTime);
+									extraHeaders.put(HTTPHeader.Common.EXPIRES, "MON, 01 Jan 1970 01:00:00 000");
+								}
+							}
 							buffers=new CWDataBuffers(converter.convertOutput(config, request, pathFile, HTTPStatus.S200_OK, buffers.flushToBuffer()), dateTime, true);
 							buffers = handleEncodingRequest(request, null, buffers, extraHeaders);
 						}
