@@ -64,11 +64,11 @@ public class StdGun extends StdTechItem implements Weapon, AmmunitionWeapon
 		basePhyStats().setDamage(20);
 		basePhyStats().setLevel(1);
 		setBaseValue(1500);
-		setRanges(0,10);
+		setRanges(1,10);
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 		setAmmunitionType("bullets");
-		setAmmoCapacity(20);
-		setAmmoRemaining(20);
+		setAmmoCapacity(10);
+		setAmmoRemaining(10);
 		recoverPhyStats();
 	}
 
