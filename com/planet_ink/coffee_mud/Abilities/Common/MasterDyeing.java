@@ -181,7 +181,7 @@ public class MasterDyeing extends MasterPaintingSkill
 			commonTell(mob,colors.substring(0,colors.length()-2)+"^N.\n\r");
 			return false;
 		}
-		if(commands.get(1).equalsIgnoreCase("remove"))
+		if((commands.size()>1)&&(commands.get(1).equalsIgnoreCase("remove")))
 		{
 			// ok
 			writing="remove";
