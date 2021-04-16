@@ -145,11 +145,6 @@ public class MOBloader
 				mob.setClan("", Integer.MIN_VALUE); // delete all sequence
 				pstats.setEmail(DBConnections.getRes(R,"CMEMAL"));
 				final String buf=DBConnections.getRes(R,"CMPFIL");
-				{ //TODO:BZ:DELME *******************************************
-					final int z=buf.indexOf("<SECGRPS>");
-					if(buf.length()>z+20)
-						Log.debugOut("SECFLAGS-R for "+mob.Name()+": "+buf.substring(z+9,z+18)+"...");
-				} //TODO:BZ:DELME *******************************************
 				pstats.setXML(buf);
 				stats.setNonBaseStatsFromString(DBConnections.getRes(R,"CMSAVE"));
 				List<String> V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"TATTS"),true);
@@ -1179,11 +1174,6 @@ public class MOBloader
 			pfxml.append("</EDUS>");
 		}
 		pfxml.append(CMLib.xml().convertXMLtoTag("IMG",mob.rawImage()));
-		{ //TODO:BZ:DELME *******************************************
-			final int x=pfxml.indexOf("<SECGRPS>");
-			if(pfxml.length()>x+20)
-				Log.debugOut("SECFLAGS-W for "+mob.Name()+": "+pfxml.substring(x+9,x+18)+"...");
-		} //TODO:BZ:DELME *******************************************
 		return pfxml.toString();
 	}
 
