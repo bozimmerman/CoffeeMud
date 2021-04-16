@@ -558,7 +558,7 @@ HELP_LTHLCRAFT2=<EXPERTISE>The ability to craft weapons that are more deadly tha
 HELP_LTHLCRAFT3=<EXPERTISE>The ability to craft weapons that are more deadly than usual. Items crafted "Lethal" are more damaging, and worth much more.
 DATA_=Damaging,Brutal,Lethal
 
-CNTRCRAFT@x1=Counterbalance Crafting @x2,3,X5,-SKILL +Carpentry +Fletching +ScrimShaw +Weaponsmithing +MasterWeaponsmithing +LegendaryWeaponsmithing +StaffMaking,,+INT {10+(4*@x1)},0,2,0,0,0
+CNTRCRAFT@x1=Counterbalance Crafting @x2,3,X5,-SKILL +Carpentry +Fletching +ScrimShaw +Weaponsmithing +MasterWeaponsmithing +LegendaryWeaponsmithing +StaffMaking +LeatherWorking +MasterLeatherWorking,,+INT {10+(4*@x1)},0,2,0,0,0
 HELP_=<EXPERTISE>The ability to craft weapons that are more balanced for attacking than usual.
 HELP_CNTRCRAFT1=<EXPERTISE>The ability to craft weapons that are more balanced for attacking than usual. Items crafted "Even" are slightly better for attack, and worth a little more.
 HELP_CNTRCRAFT2=<EXPERTISE>The ability to craft weapons that are more balanced for attacking than usual. Items crafted "Balanced" are better for attack, and worth more.
