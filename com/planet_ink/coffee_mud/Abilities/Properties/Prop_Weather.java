@@ -59,9 +59,11 @@ public class Prop_Weather extends Property
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
-		final List<String> parms=CMParms.parse(newMiscText);
 		code=-1;
 		climask=-1;
+		if(newMiscText.length()==0)
+			return;
+		final List<String> parms=CMParms.parse(newMiscText.toUpperCase().trim());
 		if(text().length()>0)
 		{
 			for(String parm : parms)
