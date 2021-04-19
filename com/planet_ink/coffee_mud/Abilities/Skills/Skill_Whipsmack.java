@@ -152,7 +152,7 @@ public class Skill_Whipsmack extends StdSkill
 				R.send(mob,msg);
 				if(msg.value()>0)
 					damage = (int)Math.round(CMath.div(damage,2.0));
-				str=auto?L("<T-NAME> is whipsmacked!"):L("^F^<FIGHT^><S-NAME> <DAMAGE> <T-NAMESELF> with a whsipsmack from @x1!^</FIGHT^>^?",thisWhip.name());
+				str=auto?L("<T-NAME> is whipsmacked!"):L("^F^<FIGHT^><S-NAME> <DAMAGE> <T-NAMESELF> with a whipsmack from @x1!^</FIGHT^>^?",thisWhip.name());
 				CMLib.color().fixSourceFightColor(msg);
 				CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.MASK_SOUND|CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,str);
 			}
