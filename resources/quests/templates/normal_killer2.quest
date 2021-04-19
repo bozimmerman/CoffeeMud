@@ -269,6 +269,7 @@ GREET_PROG 100
 	if QUESTMOB($n *) AND !ISFOLLOW('$n') AND CANSEE($n $i) AND EVAL('${1 *}' != $n)
 		if EVAL('$KILLABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
 			mpforce $n kill $i
+		endif
 	endif
 ~
 FUNCTION_PROG DEL_LAST_MOB
