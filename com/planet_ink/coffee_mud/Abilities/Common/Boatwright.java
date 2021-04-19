@@ -445,6 +445,7 @@ public class Boatwright extends CraftingSkill implements ItemCraftor, MendingSki
 													null);
 			if(data==null)
 				return false;
+			fixDataForComponents(data,woodRequiredStr,(autoGenerate>0) && (woodRequired==0),componentsFoundList, 1);
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;

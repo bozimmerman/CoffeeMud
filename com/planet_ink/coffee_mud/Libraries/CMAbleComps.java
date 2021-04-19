@@ -1,13 +1,5 @@
 package com.planet_ink.coffee_mud.Libraries;
 
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Vector;
-
 import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
@@ -705,19 +697,41 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 					break;
 				}
 			}
+			final List<Pair<Integer,String>> compInts=new ArrayList<Pair<Integer,String>>();
 			while(i>=0)
 			{
+
 				if((destroy)
 				&&(found.get(0) instanceof Item))
 				{
-					props.addAll(((Item)found.get(0)).effects());
-					props.addAll(((Item)found.get(0)).behaviors());
-					record.lostAmt += ((Item)found.get(0)).basePhyStats().weight();
-					record.lostValue +=((Item)found.get(0)).value();
-					((Item)found.get(0)).destroy();
+					final Item I=(Item)found.get(0);
+					props.addAll(I.effects());
+					props.addAll(I.behaviors());
+					record.lostAmt += I.basePhyStats().weight();
+					record.lostValue +=I.value();
+					compInts.add(new Pair<Integer,String>(
+							Integer.valueOf(I.material()),
+							((I instanceof RawMaterial)?((RawMaterial)I).getSubType():"")));
+					I.destroy();
 				}
 				found.remove(0);
 				i--;
+			}
+			if(compInts.size()>0)
+			{
+				Collections.sort(compInts, new Comparator<Pair<Integer,String>>()
+				{
+					@Override
+					public int compare(final Pair<Integer, String> o1, final Pair<Integer, String> o2)
+					{
+						return o1.first.compareTo(o2.first);
+					}
+				});
+				final int index=(int)Math.round(Math.floor(compInts.size()/2));
+				if(record.resCode<0)
+					record.resCode=compInts.get(index).first.intValue();
+				if((record.subType==null)||(record.subType.length()==0))
+					record.subType=compInts.get(index).second;
 			}
 		}
 		return record;

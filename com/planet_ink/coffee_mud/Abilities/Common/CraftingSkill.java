@@ -1145,6 +1145,106 @@ public class CraftingSkill extends GatheringSkill
 		return false;
 	}
 
+	public void fixDataForComponents(final int[][] data, final String woodRequiredStr, final boolean autoGeneration, List<Object> componentsFoundList, final int amount)
+	{
+		boolean emptyComponents=false;
+		if((componentsFoundList==null)||(componentsFoundList.size()==0))
+		{
+			emptyComponents=true;
+			if(componentsFoundList==null)
+				componentsFoundList=new ArrayList<Object>();
+			final List<AbilityComponent> componentsRequirements=getNonStandardComponentRequirements(woodRequiredStr, amount);
+			if(componentsRequirements!=null)
+			{
+				final List<Item> components=CMLib.ableComponents().componentsSample(componentsRequirements, true);
+				if(components != null)
+					componentsFoundList.addAll(components);
+			}
+		}
+
+		if(autoGeneration)
+		{
+			final List<Integer> compInts=new ArrayList<Integer>();
+			for(final Object o : componentsFoundList)
+			{
+				if(o instanceof Item)
+				{
+					final Item I=(Item)o;
+					compInts.add(Integer.valueOf(I.material()));
+					data[0][FOUND_AMT] += I.phyStats().weight();
+				}
+			}
+			if(compInts.size()>0)
+			{
+				Collections.sort(compInts);
+				data[0][FOUND_CODE]=compInts.get((int)Math.round(Math.floor(compInts.size()/2))).intValue();
+				data[0][FOUND_SUB]="".hashCode();
+			}
+		}
+		else
+		if(((data[0][FOUND_CODE]==0)&&(data[1][FOUND_CODE]==0)))
+		{
+			final List<Integer> rscs=myResources();
+			for(final Object o : componentsFoundList)
+			{
+				if(o instanceof Item)
+				{
+					final Item I=(Item)o;
+					if(rscs.contains(Integer.valueOf(I.material())))
+					{
+						if(data[0][FOUND_CODE]==0)
+						{
+							data[0][FOUND_CODE]=I.material();
+							data[0][FOUND_SUB]=((I instanceof RawMaterial)?((RawMaterial)I).getSubType().hashCode():("".hashCode()));
+						}
+						data[0][FOUND_AMT] += I.phyStats().weight();
+					}
+				}
+			}
+			if(data[0][FOUND_CODE]==0)
+			{
+				final List<Pair<Integer,String>> compInts=new ArrayList<Pair<Integer,String>>();
+				for(final Object o : componentsFoundList)
+				{
+					if(o instanceof Item)
+					{
+						final Item I=(Item)o;
+						compInts.add(new Pair<Integer,String>(
+								Integer.valueOf(I.material()),
+								((I instanceof RawMaterial)?((RawMaterial)I).getSubType():"")));
+						data[0][FOUND_AMT] += I.phyStats().weight();
+					}
+				}
+				if(compInts.size()>0)
+				{
+					Collections.sort(compInts, new Comparator<Pair<Integer,String>>()
+					{
+						@Override
+						public int compare(final Pair<Integer, String> o1, final Pair<Integer, String> o2)
+						{
+							return o1.first.compareTo(o2.first);
+						}
+					});
+					final int index=(int)Math.round(Math.floor(compInts.size()/2));
+					data[0][FOUND_CODE]=compInts.get(index).first.intValue();
+					data[0][FOUND_SUB]=compInts.get(index).second.hashCode();
+				}
+			}
+		}
+		if(emptyComponents)
+		{
+			for(final Object o : componentsFoundList)
+			{
+				if(o instanceof Item)
+				{
+					final Item I=(Item)o;
+					I.destroy();
+				}
+			}
+			componentsFoundList.clear();
+		}
+	}
+
 	protected List<List<String>> matchingRecipeNames(final List<List<String>> recipes, String recipeName, final boolean beLoose)
 	{
 		final List<List<String>> matches=new Vector<List<String>>();
