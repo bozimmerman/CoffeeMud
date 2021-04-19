@@ -139,7 +139,7 @@ public class Spell_CombatPrecognition extends Spell
 					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"blast of heat":tool)));
 					break;
 				case CMMsg.TYP_WATER:
-					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"weat blast":tool)));
+					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"wet blast":tool)));
 					break;
 				case CMMsg.TYP_ACID:
 					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"acid attack":tool)));
