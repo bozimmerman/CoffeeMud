@@ -49,7 +49,7 @@
 47	luminous vivid sea green	malachite-green	1	10	#00ff5f	2	051
 48	luminous vivid spring green	Medium-spring-green	1	10	#00ff87	3	052
 49	luminous vivid aquamarine-colored	scandal-green	1	10	#00ffaf	4	053
-50	luminious vivid opal	java-colored	1	14	#00ffd7	2	054
+50	luminous vivid opal	java-colored	1	14	#00ffd7	2	054
 51	luminous vivid cyan	cyan	1	14	#00ffff	3	055
 52	deep reddish brown	scarlet	1	1	#5f0000	2	100
 53	deep magenta	eggplant-colored	1	5	#5f005f	4	101
@@ -220,7 +220,7 @@
 218	pale rose	pink	1	9	#ffafd7	1	534
 219	pale magenta	cherub-pink	1	13	#ffafff	10	535
 220	luminous vivid golden	golden-hufflepuff	1	11	#ffd700	6	540
-221	light brilliant amber	goldernrod	1	11	#ffd75f	5	541
+221	light brilliant amber	goldenrod	1	11	#ffd75f	5	541
 222	very light gamboge	grandis-yellow	1	11	#ffd787	5	542
 223	pale orange	champagne-colored	1	3	#ffd7af	8	543
 224	very pale pink	mistyrose-colored	1	13	#ffd7d7	8	544

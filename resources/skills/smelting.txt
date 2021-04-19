@@ -1,10 +1,41 @@
 bronze	1	40	(onground:consumed:1:TIN:)&&(onground:consumed:1:COPPER:)	10	GenResource	BRONZE		
+terne	3	45	(onground:consumed:4:LEAD:)&&(onground:consumed:1:TIN:)	12	GenResource	LEAD	TERNE	
 pewter	5	50	(onground:consumed:1:TIN:)&&(onground:consumed:1:COPPER:)&&(onground:consumed:1:LEAD:)	10	GenResource	BRONZE	PEWTER	
+molybdochalkos	8	300	(onground:consumed:9:LEAD:)&&(onground:consumed:1:COPPER:)	11	GenResource	LEAD	MOLYBDOCHALKOS	
 brass	10	40	(onground:consumed:1:ZINC:)&&(onground:consumed:1:COPPER:)	20	GenResource	BRASS		
+brittanium	12	200	(onground:consumed:9:TIN:)&&(onground:consumed:1:COPPER:)	15	GenResource	TIN	BRITTANIUM	
+electrum	13	50	(onground:consumed:1:GOLD:)&&(onground:consumed:1:SILVER:)	90	GenResource	BRONZE	ELECTRUM	
 cold iron	14	50	(onground:consumed:1:IRON:)&&(onground:consumed:1:CHROMIUM:)	18	GenResource	IRON	COLD IRON	
 steel	15	120	(onground:consumed:1:IRON:)&&(onground:consumed:1:COAL:)	75	GenResource	STEEL		
-stainless steel	20	120	(onground:consumed:1:STEEL:)&&(onground:consumed:1:CHROMIUM:)	60	GenResource	STEEL	STAINLESS STEEL	
-adamantite	30	250	(onground:consumed:1:MITHRIL:)&&(onground:consumed:1:STEEL:)	175	GenResource	ADAMANTITE		
-atlantite	40	200	(onground:consumed:1:MITHRIL:)&&(onground:consumed:1:SEAWEED:)	200	GenResource	ATLANTITE		
-white gold	25	90	(onground:consumed:1:GOLD:)&&(onground:consumed:1:PLATINUM:)	450	GenResource	WHITE GOLD		
+corinthiacum	16	120	(onground:consumed:1:GOLD:)&&(onground:consumed:1:SILVER:)&&(onground:consumed:1:COPPER:)	65	GenResource	BRONZE	CORINTHIACUM	
+illuminum	17	150	(onground:consumed:1:TIN:)&&(onground:consumed:1:MITHRIL:)	75	GenResource	TIN	ILLUMINUM	Prop_Adjuster;DISPOSITION=ISLIGHT DAM-1 ARMOR-1
+hepatizon	18	55	(onground:consumed:1:ELECTRUM:)&&(onground:consumed:1:COPPER:)	50	GenResource	BRONZE	HEPATIZON	
+stainless steel	20	120	(onground:consumed:1:STEEL:)&&(onground:consumed:1:CHROMIUM:)	60	GenResource	STEEL	STAINLESS STEEL	Prop_Adjuster;SAVEWAT+100
 rose gold	22	60	(onground:consumed:1:GOLD:)&&(onground:consumed:1:COPPER:)	75	GenResource	GOLD	ROSE GOLD	
+sterling	24	80	(onground:consumed:1:PLATINUM:)&&(onground:consumed:1:SILVER:)	400	GenResource	SILVER	STERLING	
+white gold	25	90	(onground:consumed:1:GOLD:)&&(onground:consumed:1:PLATINUM:)	450	GenResource	WHITE GOLD		
+haderoth	27	100	(onground:consumed:1:MITHRIL:)&&(onground:consumed:1:BRONZE:)	100	GenResource	IRON	HADEROTH	Prop_Adjuster;CRITDMGWEAPONS+10
+adamantite	30	250	(onground:consumed:1:MITHRIL:)&&(onground:consumed:1:STEEL:)	175	GenResource	ADAMANTITE		
+darksteel	33	90	(onground:consumed:1:IRON:)&&(onground:consumed:1:HEPATIZON:)	60	GenResource	IRON	DARKSTEEL	Prop_Adjuster;DISPOSITION=ISHIDDEN
+tungstabidium	35	180	(onground:consumed:2:MITHRIL:)&&(onground:consumed:1:BRASS:)	60	GenResource	STEEL	TUNGSTABIDIUM	
+blacksteel	37	120	(onground:consumed:1:STEEL:)&&(onground:consumed:1:IRON:)	90	GenResource	STEEL	BLACKSTEEL	Prop_Adjuster;DISPOSITION=ISEVIL DAM+2
+damascus steel	38	120	(onground:consumed:1:STEEL:)&&(onground:consumed:1:CORINTHIACUM:)	120	GenResource	STEEL	DAMASCUS STEEL	Prop_Adjuster;DISPOSITION=ISGOOD DAM+2
+atlantite	40	200	(onground:consumed:1:MITHRIL:)&&(onground:consumed:1:SEAWEED:)	200	GenResource	ATLANTITE		
+truesilver	43	130	(onground:consumed:1:SILVER:)&&(onground:consumed:1:STERLING:)	300	GenResource	SILVER	TRUESILVER	Prop_Adjuster;attack+20
+galvorn	45	300	(onground:consumed:1:PLATINUM:)&&(onground:consumed:1:ADAMANTITE:)	2500	GenResource	ADAMANTITE	GALVORN	
+volcanium	47	250	(onground:consumed:1:CHROMIUM:)&&(onground:consumed:1:ADAMANTITE:)	200	GenResource	ATLANTITE	VOLCANIUM	Prop_Adjuster;SAVEFIRE+100
+tilkal	50	360	(onground:consumed:1:COPPER:)&&(onground:consumed:1:SILVER:)&&(onground:consumed:1:TIN:)&&(onground:consumed:1:LEAD:)&&(onground:consumed:1:IRON:)&&(onground:consumed:1:GOLD:)	80	GenResource	STEEL	TILKAL	
+coralite	53	250	(onground:consumed:4:ATLANTITE:)&&(onground:consumed:1:LIMESTONE:)	150	GenResource	ATLANTITE	CORALITE	
+moonsilver	56	150	(onground:consumed:1:SILVER:)&&(onground:consumed:1:ILLUMINUM:)	90	GenResource	SILVER	MOONSILVER	Prop_Adjuster;DISPOSITION=ISLIGHT DAM-1 ARMOR-1
+dwarfstar iron	58	200	(onground:consumed:2:MITHRIL:)&&(onground:consumed:1:IRON:)&&(onground:consumed:1:COAL:)	75	GenResource	STEEL	DWARFSTAR IRON	Prop_Adjuster;DAM+105 MULTIPLYPH=TRUE
+sky-iron	60	200	(onground:consumed:1:MITHRIL:)&&(onground:consumed:2:IRON:)&&(onground:consumed:1:COAL:)	75	GenResource	STEEL	DWARFSTAR IRON	Prop_Adjuster;ARMOR+110 MULTIPLYPH=TRUE
+magesteel	62	300	(onground:consumed:3:IRON:)&&(onground:consumed:1:COAL:)&&(onground:consumed:1:DRAGONSCALES:)	100	GenResource	STEEL	MAGESTEEL	Prop_Adjuster;DISPOSITION=ISFLYING
+sunglass	64	300	(onground:consumed:1:DRAGONSCALES:)&&(onground:consumed:1:PLATINUM:)	500	GenResource	PLATINUM	SUNGLASS	Prop_Adjuster;DISPOSITION=ISINVISIBLE
+demonsteel	66	666	(onground:consumed:9:ADAMANTITE:)&&(onground:consumed:1:A DEMON INTERNAL ORGAN:)	666	GenResource	ADAMANTITE	DEMONSTEEL	Prop_Adjuster;DISPOSITION=ISEVIL ABILITY+1
+orichalcum	70	140	(onground:consumed:1:ATLANTITE:)&&(onground:consumed:1:COPPER:)	200	GenResource	ATLANTITE	ORICHALCUM	Prop_Adjuster;DISPOSITION=ABILITY+1
+celenegil	75	180	(onground:consumed:1:ORICHALCUM:)&&(onground:consumed:1:PLATINUM:)	1000	GenResource	ATLANTITE	CELENEGIL	Prop_Adjuster;DISPOSITION=ABILITY+1
+celesteel	77	777	(onground:consumed:9:ADAMANTITE:)&&(onground:consumed:1:SOME DEVA BLOOD:)	777	GenResource	ADAMANTITE	CELESTEEL	Prop_Adjuster;DISPOSITION=ISGOOD ABILITY+1
+yautjavian	78	500	(onground:consumed:4:MITHRIL:)&&(onground:consumed:1:ADAMANTITE:)	300	GenResource	MITHRIL	YAUTJAVIAN	Prop_Adjuster;CRITPCTWEAPONS+5
+ithildin	80	200	(onground:consumed:1:MITHRIL:)&&(onground:consumed:1:SUNGLASS:)	750	GenResource	MITHRIL	VITAENIUM	Prop_Adjuster;DISPOSITION=ISINVISIBLE
+quicksilver	85	1000	(onground:consumed:9:MITHRIL:)&&(onground:consumed:1:SILVER:)	200	GenResource	MITHRIL	QUICKSILVER	Prop_Adjuster;attack+200 MULTIPLYPH=TRUE
+uru	90	1000	(onground:consumed:1:ATLANTITE:)&&(onground:consumed:1:COPPER:)&&(onground:consumed:1:ADAMANTITE:)	1250	GenResource	ADAMANTITE	URU	Prop_Adjuster;DISPOSITION=ABILITY+2
