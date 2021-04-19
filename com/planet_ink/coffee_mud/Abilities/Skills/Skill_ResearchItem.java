@@ -87,7 +87,7 @@ public class Skill_ResearchItem extends StdSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL;
+		return Ability.ACODE_SKILL | Ability.DOMAIN_EDUCATIONLORE;
 	}
 
 	@Override
