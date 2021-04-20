@@ -167,7 +167,8 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			}
 
 			Ability A=CMClass.getAbility(thisOne);
-			if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON))
+			if((A!=null)
+			&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON))
 			{
 				A=(Ability)A.copyOf();
 				A.setMiscText(parm);

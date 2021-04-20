@@ -418,6 +418,32 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		return 0;
 	}
 
+	@Override
+	public boolean sendSpaceEmissionEvent(final SpaceObject srcP, final Environmental tool, final int emissionType, final String msgStr)
+	{
+		return sendSpaceEmissionEvent(srcP, tool, 30L*SpaceObject.Distance.LightSecond.dm, emissionType, msgStr);
+	}
+
+	@Override
+	public boolean sendSpaceEmissionEvent(final SpaceObject srcP, final Environmental tool, final long range, final int emissionType, final String msgStr)
+	{
+		final WorldMap map = CMLib.map();
+		final List<SpaceObject> cOs=map.getSpaceObjectsWithin(srcP, 0, range);
+		if(cOs.size()==0)
+			return false;
+		final MOB deityM=map.deity();
+		final CMMsg msg=CMClass.getMsg(deityM, srcP, tool, CMMsg.MSG_EMISSION, null, CMMsg.MSG_EMISSION, null, emissionType, msgStr);
+		if(srcP.okMessage(srcP, msg))
+		{
+			for(final SpaceObject cO : cOs)
+				cO.executeMsg(srcP, msg);
+			if(!cOs.contains(srcP))
+				srcP.executeMsg(srcP, msg);
+			return true;
+		}
+		return false;
+	}
+
 	public void runSpace()
 	{
 		final WorldMap map = CMLib.map();

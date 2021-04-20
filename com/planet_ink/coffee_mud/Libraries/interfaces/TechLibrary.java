@@ -214,6 +214,29 @@ public interface TechLibrary extends CMLibrary
 	public double getGravityForce(SpaceObject S, SpaceObject cO);
 
 	/**
+	 * Generates an sends a message representing an emission in space,
+	 * which might be picked up by various sensors.  Includes broadcast messages.
+	 * @param srcP the generator of the event/the center
+	 * @param tool the means by which the event was generated
+	 * @param emissionType the CMMsg type of the event
+	 * @param msgStr a description of the sensory message
+	 * @return true if the event was propogated
+	 */
+	public boolean sendSpaceEmissionEvent(final SpaceObject srcP, final Environmental tool, final int emissionType, final String msgStr);
+
+	/**
+	 * Generates an sends a message representing an emission in space,
+	 * which might be picked up by various sensors.  Includes broadcast messages.
+	 * @param srcP the generator of the event/the center
+	 * @param tool the means by which the event was generated
+	 * @param range the range at which the emission can be detected
+	 * @param emissionType the CMMsg type of the event
+	 * @param msgStr a description of the sensory message
+	 * @return true if the event was propogated
+	 */
+	public boolean sendSpaceEmissionEvent(final SpaceObject srcP, final Environmental tool, final long range, final int emissionType, final String msgStr);
+
+	/**
 	 * Given a ship war component, returns the directions in which it is
 	 * currently covering.
 	 *

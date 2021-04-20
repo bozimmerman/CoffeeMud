@@ -176,6 +176,13 @@ public class StdSpaceBody extends StdItem implements SpaceObject
 		return super.okMessage(myHost, msg);
 	}
 
+	protected boolean isTechWeapon(final Environmental E)
+	{
+		if((E instanceof SpaceObject) && (E instanceof Weapon))
+			return true;
+		return false;
+	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -191,7 +198,15 @@ public class StdSpaceBody extends StdItem implements SpaceObject
 				final long myMass=getMass();
 				if((msg.value() > 0)&&(myMass>0))
 				{
-					// not sure
+					if(!isTechWeapon(msg.tool()))
+					{
+						final SpaceObject srcP;
+						if((msg.tool() == this) && (msg.target() instanceof SpaceObject))
+						{
+							srcP=(SpaceObject)msg.target();
+							CMLib.tech().sendSpaceEmissionEvent(srcP, this, CMMsg.TYP_WEAPONATTACK, L("<S-NAME> is hit by <O-NAME>"));
+						}
+					}
 				}
 				break;
 			}
