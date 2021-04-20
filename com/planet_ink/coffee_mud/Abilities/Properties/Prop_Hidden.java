@@ -52,11 +52,13 @@ public class Prop_Hidden extends Property
 		return Ability.CAN_MOBS
 			 |Ability.CAN_ITEMS
 			 |Ability.CAN_EXITS
+			 |Ability.CAN_ROOMS
 			 |Ability.CAN_AREAS;
 	}
 
 	protected int ticksSinceLoss=100;
 	protected boolean unLocatable=false;
+	protected boolean bubbles=false;
 
 	@Override
 	public long flags()
@@ -93,13 +95,22 @@ public class Prop_Hidden extends Property
 	}
 
 	@Override
+	public boolean bubbleAffect()
+	{
+		return bubbles;
+	}
+
+	@Override
 	public void setMiscText(final String text)
 	{
 		super.setMiscText(text);
+		unLocatable=false;
+		bubbles=false;
 		if(!(affected instanceof MOB))
 		{
 			final Vector<String> parms=CMParms.parse(text.toUpperCase());
 			unLocatable=parms.contains("UNLOCATABLE");
+			bubbles=parms.contains("BUBBLES");
 		}
 	}
 
