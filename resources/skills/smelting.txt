@@ -28,7 +28,7 @@ tilkal	50	360	(onground:consumed:1:COPPER:)&&(onground:consumed:1:SILVER:)&&(ong
 coralite	53	250	(onground:consumed:4:ATLANTITE:)&&(onground:consumed:1:LIMESTONE:)	150	GenResource	ATLANTITE	CORALITE	
 moonsilver	56	150	(onground:consumed:1:SILVER:)&&(onground:consumed:1:ILLUMINUM:)	90	GenResource	SILVER	MOONSILVER	Prop_Adjuster;DISPOSITION=ISLIGHT DAM-1 ARMOR-1
 dwarfstar iron	58	200	(onground:consumed:2:MITHRIL:)&&(onground:consumed:1:IRON:)&&(onground:consumed:1:COAL:)	75	GenResource	STEEL	DWARFSTAR IRON	Prop_Adjuster;DAM+105 MULTIPLYPH=TRUE
-sky-iron	60	200	(onground:consumed:1:MITHRIL:)&&(onground:consumed:2:IRON:)&&(onground:consumed:1:COAL:)	75	GenResource	STEEL	DWARFSTAR IRON	Prop_Adjuster;ARMOR+110 MULTIPLYPH=TRUE
+sky-iron	60	200	(onground:consumed:1:MITHRIL:)&&(onground:consumed:2:IRON:)&&(onground:consumed:1:COAL:)	75	GenResource	STEEL	SKY-IRON	Prop_Adjuster;ARMOR+110 MULTIPLYPH=TRUE
 magesteel	62	300	(onground:consumed:3:IRON:)&&(onground:consumed:1:COAL:)&&(onground:consumed:1:DRAGONSCALES:)	100	GenResource	STEEL	MAGESTEEL	Prop_Adjuster;DISPOSITION=ISFLYING
 sunglass	64	300	(onground:consumed:1:DRAGONSCALES:)&&(onground:consumed:1:PLATINUM:)	500	GenResource	PLATINUM	SUNGLASS	Prop_Adjuster;DISPOSITION=ISINVISIBLE
 demonsteel	66	666	(onground:consumed:9:ADAMANTITE:)&&(onground:consumed:1:A DEMON INTERNAL ORGAN:)	666	GenResource	ADAMANTITE	DEMONSTEEL	Prop_Adjuster;DISPOSITION=ISEVIL ABILITY+1
