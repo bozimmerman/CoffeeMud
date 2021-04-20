@@ -240,7 +240,7 @@ public class Chant_WindColor extends Chant
 			if((M!=null)&&(M!=mob)&&(!group.contains(M)))
 			{
 				if(colors==null)
-					colors=new int[9];
+					colors=new int[11];
 				if(M.phyStats().level()>=(mob.phyStats().level()+25))
 					levelCode=4;
 				else
