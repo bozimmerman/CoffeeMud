@@ -105,6 +105,7 @@ public interface AchievementLibrary extends CMLibrary
 		INSTANCEEXPIRE("An area instance expires",new String[]{"AREAMASK","NUM", "PLAYERMASK","TIME_MINS"}),
 		SHIPSSUNK("Ships sunk",new String[] {"NUM", "PLAYERMASK", "SHIPMASK"}),
 		CMDUSE("Using Commands",new String[]{"NUM","COMMANDID", "PLAYERMASK"}),
+		GROUPKILLS("Number of Group Kills",new String[]{"NUM","SIZE","ZAPPERMASK"}),
 		;
 		private final String[] parameters;
 		private final String displayName;
