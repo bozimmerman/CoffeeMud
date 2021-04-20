@@ -104,28 +104,32 @@ public class Modify extends StdCommand
 		if(commands.size()>4)
 			restStr=CMParms.combine(commands,4);
 
-		Item modItem=null;
+		Environmental modE=null;
 		if((srchMob!=null)&&(srchRoom!=null))
-			modItem=(Item)srchRoom.fetchFromMOBRoomFavorsItems(srchMob,srchContainer,itemID,Wearable.FILTER_ANY);
+		{
+			final Environmental E=srchRoom.fetchFromMOBRoomFavorsItems(srchMob,srchContainer,itemID,Wearable.FILTER_ANY);
+			if(E instanceof Item)
+				modE=E;
+		}
 		else
 		if(srchMob!=null)
-			modItem=srchMob.findItem(itemID);
+			modE=srchMob.findItem(itemID);
 		else
 		if(srchRoom!=null)
 		{
-			modItem=srchRoom.findItem(srchContainer, itemID);
-			if(modItem==null)
-				modItem=srchRoom.findItem(itemID);
+			modE=srchRoom.findItem(srchContainer, itemID);
+			if(modE==null)
+				modE=srchRoom.findItem(itemID);
 		}
-		if(modItem==null)
+		if(modE==null)
 		{
 			Environmental E=CMLib.map().findSpaceObject(itemID,true);
 			if(!(E instanceof Item))
 				E=CMLib.map().findSpaceObject(itemID,false);
 			if(E instanceof Item)
-				modItem=(Item)E;
+				modE=E;
 		}
-		if(modItem == null)
+		if(modE == null)
 		{
 			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(srchMob);
 			if(SK!=null)
@@ -133,9 +137,9 @@ public class Modify extends StdCommand
 				final CoffeeShop shop=(SK instanceof Librarian)?((Librarian)SK).getBaseLibrary():SK.getShop();
 				final Environmental E=shop.getStock(itemID,mob);
 				if(E instanceof Item)
-					modItem=(Item)E;
+					modE=E;
 			}
-			if(modItem == null)
+			if(modE == null)
 			{
 				SK=CMLib.coffeeShops().getShopKeeper(srchRoom);
 				if(SK!=null)
@@ -143,16 +147,17 @@ public class Modify extends StdCommand
 					final CoffeeShop shop=(SK instanceof Librarian)?((Librarian)SK).getBaseLibrary():SK.getShop();
 					final Environmental E=shop.getStock(itemID,mob);
 					if(E instanceof Item)
-						modItem=(Item)E;
+						modE=E;
 				}
 			}
 		}
-		if(modItem==null)
+		if((modE==null)||(!(modE instanceof Item)))
 		{
 			mob.tell(L("I don't see '@x1 here.\n\r",itemID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
+		final Item modItem=(Item)modE;
 		mob.location().showOthers(mob,modItem,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>."));
 
 		final Item copyItem=(Item)modItem.copyOf();
