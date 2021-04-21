@@ -53,6 +53,7 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 	}
 
 	public Hashtable<String,Object> flags=new Hashtable<String,Object>();
+	public boolean fixFlags = false;
 
 	@Override
 	public int triggerMask()
@@ -73,10 +74,33 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 		return id;
 	}
 
+	private static final Set<String> validFlags = new HashSet<String>();
+
 	@Override
 	public void setMiscText(final String newValue)
 	{
 		super.setMiscText(newValue);
+		if(validFlags.size()==0)
+		{
+			synchronized(validFlags)
+			{
+				if(validFlags.size()==0)
+				{
+					validFlags.addAll(Arrays.asList(new String[]{ "ALL", "MAGIC", "NONMAGIC", "LEVEL", "MAGICSKILLS"}));
+					for(final String s : Weapon.TYPE_DESCS)
+						validFlags.add(s);
+					for(final String s : Weapon.CLASS_DESCS)
+						validFlags.add(s);
+					for(final int r : RawMaterial.CODES.ALL())
+					{
+						validFlags.add(RawMaterial.CODES.NAME(r));
+						validFlags.add(RawMaterial.CODES.MAT_NAME(r));
+					}
+					for(final int c : CharStats.CODES.ALLCODES())
+						validFlags.add(CharStats.CODES.NAME(c));
+				}
+			}
+		}
 		flags=new Hashtable<String,Object>();
 		final Vector<String> V=CMParms.parse(newValue.toUpperCase());
 		Object c=null;
@@ -94,9 +118,21 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 				c=((Character)c).charValue()+" "+s.substring(5).trim();
 				s=s.substring(5).trim();
 			}
-			flags.put(s,c);
+			if(!validFlags.contains(s))
+			{
+				if(affected != null)
+					Log.errOut(ID(),"Unknown weapon immunity flag on "+affected.Name()+"@"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(affected))+": "+s);
+				else
+				{
+					flags.put(s, Boolean.FALSE);
+					fixFlags=true;
+				}
+			}
+			else
+				flags.put(s,c);
 		}
 	}
+
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -124,6 +160,19 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 				return true;
 			if(flags.size()==0)
 				return true;
+			if(fixFlags)
+			{
+				fixFlags=false;
+				for(final Iterator<String> s1=flags.keySet().iterator();s1.hasNext();)
+				{
+					final String key = s1.next();
+					if(flags.get(key) == Boolean.FALSE)
+					{
+						Log.errOut(ID(),"Unknown weapon immunity flag on "+affected.Name()+"@"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(affected))+": "+key);
+						s1.remove();
+					}
+				}
+			}
 
 			boolean immune=flags.containsKey("ALL")&&(((Character)flags.get("ALL")).charValue()=='+');
 			Character foundPlusMinus=null;
