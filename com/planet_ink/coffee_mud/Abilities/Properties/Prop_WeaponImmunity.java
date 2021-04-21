@@ -139,6 +139,23 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
+
+		if(flags.size()==0)
+			return true;
+		if(fixFlags)
+		{
+			fixFlags=false;
+			for(final Iterator<String> s1=flags.keySet().iterator();s1.hasNext();)
+			{
+				final String key = s1.next();
+				if(flags.get(key) == Boolean.FALSE)
+				{
+					Log.errOut(ID(),"Unknown weapon immunity flag on "+affected.Name()+"@"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(affected))+": "+key);
+					s1.remove();
+				}
+			}
+		}
+
 		if((affected!=null)
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.value()>0))
@@ -158,21 +175,6 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 				return true;
 			if(msg.tool()==null)
 				return true;
-			if(flags.size()==0)
-				return true;
-			if(fixFlags)
-			{
-				fixFlags=false;
-				for(final Iterator<String> s1=flags.keySet().iterator();s1.hasNext();)
-				{
-					final String key = s1.next();
-					if(flags.get(key) == Boolean.FALSE)
-					{
-						Log.errOut(ID(),"Unknown weapon immunity flag on "+affected.Name()+"@"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(affected))+": "+key);
-						s1.remove();
-					}
-				}
-			}
 
 			boolean immune=flags.containsKey("ALL")&&(((Character)flags.get("ALL")).charValue()=='+');
 			Character foundPlusMinus=null;
