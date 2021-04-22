@@ -1,11 +1,11 @@
 ale	DRINK	Poison_Alcohol	1	Malt	1	WATER	1	SUGAR	1	hops	-1	HERBS	-1	SPICE	-1		
 beer	DRINK	Poison_Alcohol	1	MALT	1	WATER	1	SUGAR	1	YEAST	1						
-watered beer	DRINK	Poison_Alcohol	2	beer	1	WATER	1										
+watered-beer	DRINK	Poison_Alcohol	2	beer	1	WATER	1										
 blood wine	DRINK	Poison_Alcohol	3	GRAPES	1	BLOOD	1	SUGAR	1	blood orange	-1						
 wine	DRINK	Poison_Alcohol	3	GRAPES	1	WATER	1	SUGAR	1								
 mead	DRINK	Poison_Alcohol	3	HONEY	1	WATER	1	YEAST	1								
 whiskey	DRINK	Poison_Liquor	4	WHEAT	5	WATER	1	SUGAR	1	YEAST	1						
-watered wine	DRINK	Poison_Alcohol	4	wine	1	WATER	1										
+watered-wine	DRINK	Poison_Alcohol	4	wine	1	WATER	1										
 snake wine	DRINK	Poison_Alcohol	5	wine	1	snake blood	1										
 tequila	DRINK	Poison_Liquor	6	CACTUS	1	WATER	1	SUGAR	1	CLAY	-1						
 rum	DRINK	Poison_Liquor	7	molasses	1	WATER	1	YEAST	1	WOOD	-1	HERBS	-1	SPICE	-1		

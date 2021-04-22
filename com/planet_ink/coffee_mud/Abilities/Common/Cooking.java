@@ -388,7 +388,18 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		return h;
 	}
 
-	protected List<Object> countIngredients(final List<String> Vr)
+	private static class Ingredients
+	{
+		final int amount;
+		final List<String> list;
+		public Ingredients(final int amount, final List<String> list)
+		{
+			this.amount=amount;
+			this.list=list;
+		}
+	}
+
+	protected Ingredients countIngredients(final List<String> Vr)
 	{
 		final String[] contents=new String[oldPotContents.size()];
 		final int[] amounts=new int[oldPotContents.size()];
@@ -402,7 +413,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 
 		int amountMade=0;
 
-		final List<Object> codedList=new ArrayList<Object>();
+		final Ingredients codedList;
 		boolean RanOutOfSomething=false;
 		boolean NotEnoughForThisRun=false;
 		while((!RanOutOfSomething)&&(!NotEnoughForThisRun))
@@ -426,7 +437,10 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 						final String ingredient2=contents[i].toUpperCase();
 						final int amount2=amounts[i];
 						final int index =ingredient2.indexOf(ingredient+"/");
-						if((index==0)||((index>0)&&(!Character.isLetter(ingredient2.charAt(index-1)))))
+						if((index==0)
+						||((index>0)
+							&&(!Character.isLetter(ingredient2.charAt(index-1)))
+							&&(ingredient2.charAt(index-1)!='-')))
 						{
 							amounts[i]=amount2-amount;
 							if(amounts[i]<0)
@@ -442,7 +456,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		}
 		if(NotEnoughForThisRun)
 		{
-			codedList.add(Integer.valueOf(-amountMade));
+			final List<String> list=new ArrayList<String>();
 			for(int i=0;i<contents.length;i++)
 			{
 				if(amounts[i]<0)
@@ -450,13 +464,14 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 					String content=contents[i];
 					if(content.indexOf('/')>=0)
 						content=content.substring(0,content.indexOf('/'));
-					codedList.add(content);
+					list.add(content);
 				}
 			}
+			codedList=new Ingredients(-amountMade, list);
 		}
 		else
 		{
-			codedList.add(Integer.valueOf(amountMade));
+			final List<String> list=new ArrayList<String>();
 			for(int i=0;i<contents.length;i++)
 			{
 				final String ingredient2=contents[i];
@@ -468,11 +483,11 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 					String content=contents[i];
 					if(content.indexOf('/')>=0)
 						content=content.substring(0,content.indexOf('/'));
-					codedList.add(content);
+					list.add(content);
 				}
 			}
+			codedList=new Ingredients(amountMade, list);
 		}
-
 		return codedList;
 	}
 
@@ -491,9 +506,14 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 				final String ingredient2=Vr.get(vr).toUpperCase();
 				final int index=ingredient.toUpperCase().indexOf(ingredient2+"/");
 				if((ingredient2.length()>0)
-				&&(((!perfectOnly)&&((index==0)||((index>0)&&(!Character.isLetter(ingredient.charAt(index-1))))))
-				||((perfectOnly)&&ingredient.toUpperCase().equalsIgnoreCase(ingredient2))))
-					found=true;
+				&&(((!perfectOnly)
+					&&((index==0)
+						||((index>0)
+							&&(!Character.isLetter(ingredient.charAt(index-1)))
+							&&(ingredient.charAt(index-1)!='-'))))
+				||((perfectOnly)
+					&&(ingredient.toUpperCase().equalsIgnoreCase(ingredient2)))))
+						found=true;
 			}
 			if(!found)
 			{
@@ -525,8 +545,12 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 				for(final String ingredient2 : oldPotContents.keySet())
 				{
 					final int index=ingredient2.toUpperCase().indexOf(ingredient.toUpperCase()+"/");
-					if((((index==0)||((index>0)&&(!Character.isLetter(ingredient2.charAt(index-1))))))
-					||((!perfectOnly)&&ingredient2.equalsIgnoreCase(ingredient.toUpperCase())))
+					if((((index==0)
+						||((index>0)
+							&&(!Character.isLetter(ingredient2.charAt(index-1)))
+							&&(ingredient2.charAt(index-1)!='-'))))
+					||((!perfectOnly)
+						&&(ingredient2.equalsIgnoreCase(ingredient.toUpperCase()))))
 					{
 						found = true;
 						break;
@@ -1174,7 +1198,10 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 			for(final String ingredient2 : oldPotContents.keySet())
 			{
 				final int index =ingredient2.indexOf(Vr.get(RCP_MAININGR).toUpperCase()+"/");
-				if((index==0)||((index>0)&&(!Character.isLetter(ingredient2.charAt(index-1)))))
+				if((index==0)
+				||((index>0)
+					&&(!Character.isLetter(ingredient2.charAt(index-1)))
+					&&(ingredient2.charAt(index-1)!='-')))
 				{
 					found = true;
 					break;
@@ -1243,10 +1270,10 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		for(int vr=0;vr<perfectRecipes.size();vr++)
 		{
 			final List<String> Vr=perfectRecipes.get(vr);
-			final List<Object> counts=countIngredients(Vr);
-			final Integer amountMaking=(Integer)counts.get(0);
+			final Ingredients ingrs=countIngredients(Vr);
+			final Integer amountMaking=ingrs.amount;
 			final String recipeName=replacePercent(Vr.get(RCP_FINALFOOD),Vr.get(RCP_MAININGR).toLowerCase());
-			if(counts.size()==1)
+			if(ingrs.list.size()==0)
 			{
 				if(CMath.s_int(Vr.get(RCP_LEVEL))>xlevel(mob))
 					complaints.add("If you are trying to make "+recipeName+", you need to wait until you are level "+CMath.s_int(Vr.get(RCP_LEVEL))+".");
@@ -1261,15 +1288,15 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 			if(amountMaking.intValue()<=0)
 			{
 				final StringBuffer buf=new StringBuffer(L("If you are trying to make @x1, you need to add a little more ",recipeName));
-				for(int i=1;i<counts.size();i++)
+				for(int i=0;i<ingrs.list.size();i++)
 				{
-					if(i==1)
-						buf.append(((String)counts.get(i)).toLowerCase());
+					if(i==0)
+						buf.append(ingrs.list.get(i).toLowerCase());
 					else
-					if(i==counts.size()-1)
-						buf.append(L(", and @x1",((String)counts.get(i)).toLowerCase()));
+					if(i==ingrs.list.size()-1)
+						buf.append(L(", and @x1",ingrs.list.get(i).toLowerCase()));
 					else
-						buf.append(", "+((String)counts.get(i)).toLowerCase());
+						buf.append(", "+ingrs.list.get(i).toLowerCase());
 				}
 				complaints.add(buf.toString());
 			}
@@ -1277,15 +1304,15 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 			if(amountMaking.intValue()>0)
 			{
 				final StringBuffer buf=new StringBuffer(L("If you are trying to make @x1, you need to remove some of the ",recipeName));
-				for(int i=1;i<counts.size();i++)
+				for(int i=0;i<ingrs.list.size();i++)
 				{
-					if(i==1)
-						buf.append(((String)counts.get(i)).toLowerCase());
+					if(i==0)
+						buf.append(ingrs.list.get(i).toLowerCase());
 					else
-					if(i==counts.size()-1)
-						buf.append(L(", and @x1",((String)counts.get(i)).toLowerCase()));
+					if(i==ingrs.list.size()-1)
+						buf.append(L(", and @x1",ingrs.list.get(i).toLowerCase()));
 					else
-						buf.append(", "+((String)counts.get(i)).toLowerCase());
+						buf.append(", "+ingrs.list.get(i).toLowerCase());
 				}
 				complaints.add(buf.toString());
 			}
