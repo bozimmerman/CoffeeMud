@@ -727,6 +727,24 @@ public class GModify extends StdCommand
 		return allFieldsMsg.toString();
 	}
 
+	protected static void fixDeities(final Room R)
+	{
+		if(R==null)
+			return;
+		//OK! Keep this wierdness here!  It's necessary because oldRoom will have blown
+		//away any real deities with copy deities in the CMMap, and this will restore
+		//the real ones.
+		for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+		{
+			final MOB M=m.nextElement();
+			if((M instanceof Deity)
+			&&(M.isMonster())
+			&&(M.isSavable())
+			&&(M.getStartRoom()==R))
+				CMLib.map().registerWorldObjectLoaded(R.getArea(), R, M);
+		}
+	}
+
 	@Override
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
@@ -1083,6 +1101,7 @@ public class GModify extends StdCommand
 				R=CMLib.map().getRoom(R);
 				if((sess==null)||(sess.isStopped())||(R==null)||(R.getArea()==null))
 					return false;
+				final Room origR=R;
 				final Area A=R.getArea();
 				final Area.State oldFlag=A.getAreaState();
 				if(changes.size()==0)
@@ -1193,7 +1212,11 @@ public class GModify extends StdCommand
 					sess.rawPrint(".");
 				A.setAreaState(oldFlag);
 				if(changes.size()==0)
+				{
 					R.destroy();
+					if(origR!=null)
+						fixDeities(origR);
+				}
 				if(saveroom)
 				{
 					final Room realR=CMLib.map().getRoom(R);

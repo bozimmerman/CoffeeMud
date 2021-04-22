@@ -15,7 +15,7 @@
  13. New INI entry: BONUSACT -- for global action bonus tweeking
  14. Crafting skill INFO command now supports expertises and specific resources
  15. CLASSSYSTEM has new class limit boundary options, and new GAIN and SWITCH for train cost.
- 16. New achievement flag: REMORT, for forcing remorting players to re-acquire player achivements.
+ 16. New achievement flag: REMORT, for forcing remorting players to re-acquire player achievements.
  17. Alchemy now supports powders/dusts
  18. New prayer: sense chants
  19. Weaponsmith/Fletching now supports min range data
