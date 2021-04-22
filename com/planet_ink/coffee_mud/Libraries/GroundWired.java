@@ -154,6 +154,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	@Override
 	public synchronized String registerElectrics(final Electronics E, final String oldKey)
 	{
+		final boolean debugging = CMSecurity.isDebugging(DbgFlag.ELECTRICTHREAD);
 		final ItemPossessor possessor=(E==null)?null:E.owner();
 		if((E != null) && (possessor instanceof Room))
 		{
@@ -181,8 +182,13 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				sets.put(newKey, set);
 			}
 			set.add(new WeakReference<Electronics>(E));
+			if(debugging)
+				Log.debugOut("GroundWired","Registered: "+E.Name()+": "+newKey+", was: "+oldKey);
 			return newKey;
 		}
+		else
+		if(debugging)
+			Log.debugOut("GroundWired","Not registered: "+((E==null)?"null":E.Name())+": "+oldKey);
 		return null;
 	}
 
@@ -224,12 +230,18 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					final WeakReference<Electronics> w=e.next();
 					if(w.get()==E)
 					{
+						if(CMSecurity.isDebugging(DbgFlag.ELECTRICTHREAD))
+							Log.debugOut("GroundWired","Unegistered: "+E.Name());
 						e.remove();
 						break;
 					}
 				}
 				if(oldSet.size()==0)
+				{
+					if(CMSecurity.isDebugging(DbgFlag.ELECTRICTHREAD))
+						Log.debugOut("GroundWired","Unegistered: "+oldKey);
 					sets.remove(oldKey);
+				}
 			}
 		}
 	}
@@ -241,7 +253,11 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		{
 			final LinkedList<WeakReference<Electronics>> oldSet=sets.get(oldKey.toLowerCase());
 			if(oldSet!=null)
+			{
 				sets.remove(oldKey);
+				if(CMSecurity.isDebugging(DbgFlag.ELECTRICTHREAD))
+					Log.debugOut("GroundWired","Unegistered: "+oldKey);
+			}
 		}
 	}
 
@@ -488,19 +504,21 @@ public class GroundWired extends StdLibrary implements TechLibrary
 							map.moveSpaceObject(O, directionTo, gravitationalMove);
 							inAirFlag = true;
 						}
+						/*
+						if((O instanceof Weapon)
+						&&(cO.Name().toLowerCase().indexOf("joob")>=0))
+						{
+							System.out.println("-------");
+							System.out.println(O.name()+"->"+cO.Name()+": speed="+speed+", radius="+cO.radius()+", dir="+Math.toDegrees(O.direction()[0])+","+Math.toDegrees(O.direction()[1]));
+							System.out.println("Moved from:   ("+CMParms.toListString(startCoords)+"  to  "+CMParms.toListString(O.coordinates())+")");
+							final double[] exactDir=CMLib.map().getDirection(startCoords, cO.coordinates());
+							System.out.println("Closest distance is "+minDistance+" to  object@("+CMParms.toListString(cO.coordinates())+"): Exact dir="+Math.toDegrees(exactDir[0])+","+Math.toDegrees(exactDir[1]));
+						}
+						*/
 						if ((minDistance<(O.radius()+cO.radius()))
 						&&((speed>0)||(cO.speed()>0))
 						&&((oMass < SpaceObject.MOONLET_MASS)||(cO.getMass() < SpaceObject.MOONLET_MASS)))
 						{
-							/*
-							if(cO instanceof BoardableShip)
-							{
-								System.out.println(O.name()+"->"+cO.Name()+": speed="+speed+", dir="+((CMath.div((double)Math.round(O.direction()[0]*100.0),100)))+","+((CMath.div((double)Math.round(O.direction()[1]*100.0),100))));
-								System.out.println("Moved from:   ("+CMParms.toListString(startCoords)+"  to  "+CMParms.toListString(O.coordinates())+")");
-								final double[] exactDir=CMLib.map().getDirection(startCoords, cO.coordinates());
-								System.out.println("Closest distance is "+minDistance+" to  object@("+CMParms.toListString(cO.coordinates())+"): Exact dir="+((CMath.div((double)Math.round(exactDir[0]*100.0),100)))+","+((CMath.div((double)Math.round(exactDir[1]*100.0),100))));
-							}
-							*/
 							final MOB host=map.deity();
 							CMMsg msg;
 							if((O instanceof Weapon)||(cO instanceof Weapon))

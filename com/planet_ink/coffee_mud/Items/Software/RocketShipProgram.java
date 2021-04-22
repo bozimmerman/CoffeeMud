@@ -2012,7 +2012,10 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Unable to determine target direction and range."));
 					return;
 				}
-				final double[] targetDirection = CMLib.map().getDirection(ship, targetObj);
+				//final double[] targetDirection = CMLib.map().getDirection(ship.coordinates(), CMLib.map().moveSpaceObject(targetObj.coordinates(), targetObj.direction(), (long)targetObj.speed()));
+				final double[] targetDirection = CMLib.map().getDirection(ship.coordinates(), targetObj.coordinates());
+				if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+					Log.debugOut("Fire: "+ship.Name()+" -> "+targetObj.Name()+"@"+Math.toDegrees(targetDirection[0])+","+Math.toDegrees(targetDirection[1]));
 				TechComponent finalWeaponToFire = null;
 				final String weapName = CMParms.combine(parsed,1);
 				if(weapName.length()>0)

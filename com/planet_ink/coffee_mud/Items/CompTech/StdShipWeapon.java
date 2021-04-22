@@ -327,6 +327,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 								weaponO.setKnownSource(ship);
 								final int weaponRadius = 10;
 								final long[] firstCoords = CMLib.map().moveSpaceObject(ship.coordinates(), targetDirection, ship.radius()+weaponRadius+1);
+								//TODO: adjust targeting based on tech, efficiency, installed, etc, etc.
 								weaponO.setCoords(firstCoords);
 								weaponO.setRadius(weaponRadius);
 								weaponO.setDirection(targetDirection);
