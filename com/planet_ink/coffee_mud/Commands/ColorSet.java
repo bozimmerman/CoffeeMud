@@ -69,9 +69,9 @@ public class ColorSet extends StdCommand
 				buf.append(L("^N=background, foreground="));
 			}
 			else
-			if(what.indexOf('~')>0)
+			if(what.indexOf(ColorLibrary.COLORCODE_BACKGROUND)>0)
 			{
-				what=what.substring(what.indexOf('~')).toUpperCase();
+				what=what.substring(what.indexOf(ColorLibrary.COLORCODE_BACKGROUND)).toUpperCase();
 				buf.append(L("^N=foreground, background="));
 			}
 			else

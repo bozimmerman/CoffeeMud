@@ -45,6 +45,9 @@ public class CMColor extends StdLibrary implements ColorLibrary
 	protected String[]		htlookup	= null;
 	protected Color256[]	color256s	= null;
 
+	protected final Map<Character, Color>	bgCodeMap	= new Hashtable<Character, Color>();
+	protected final Map<String, Color>		ansiColorMap= new Hashtable<String, Color>();
+
 	protected final Map<Short, Color> color256to16map =  new HashMap<Short, Color>();
 
 	private final static Map<Integer,ColorState> cache=new SHashtable<Integer,ColorState>();
@@ -254,6 +257,67 @@ public class CMColor extends StdLibrary implements ColorLibrary
 				bold=1;
 		}
 		return bold+";"+(30+translateSingleCMCodeToANSIOffSet(code))+"m";
+	}
+
+	protected Map<Character, Color> getBackgroundCodeMap()
+	{
+		if(bgCodeMap.size()==0)
+		{
+			synchronized(bgCodeMap)
+			{
+				if(bgCodeMap.size()==0)
+				{
+					for(final Color bC : Color.values())
+					{
+						if((bC.getCodeChar() == 0)&& (bC.getBGCodeChar() != 0))
+							bgCodeMap.put(Character.valueOf(bC.getBGCodeChar()), bC);
+					}
+					for(final Color bC : Color.values())
+					{
+						if((bC.getCodeChar() != 0)&& (bC.getBGCodeChar() != 0) && (bgCodeMap.containsKey(bC.getBGCodeChar())))
+							bgCodeMap.put(Character.valueOf(bC.getCodeChar()), bgCodeMap.get(bC.getBGCodeChar()));
+					}
+				}
+			}
+		}
+		return bgCodeMap;
+	}
+
+	@Override
+	public String getBackgroundHtmlTag(final char codeC)
+	{
+		final Color bgColor = getBackgroundCodeMap().get(Character.valueOf(codeC));
+		if(bgColor != null)
+			return bgColor.getHtmlTag();
+		return null;
+	}
+
+	/**
+	 * Returns the background ansi code associated with the given
+	 * foreground ansi code, or null if no match.
+	 * @param ansi the foreground ansi color
+	 * @return the background ansi color, or null
+	 */
+	@Override
+	public String getBackgroundAnsiCode(final String ansi)
+	{
+		if(ansiColorMap.size()==0)
+		{
+			synchronized(ansiColorMap)
+			{
+				if(ansiColorMap.size()==0)
+				{
+					for(final Color C : Color.values())
+						ansiColorMap.put(C.getANSICode(), C);
+				}
+			}
+		}
+		final Color C=ansiColorMap.get(ansi);
+		if(C==null)
+			return null;
+		if((C.getCodeChar() != 0) && (C.getBGCodeChar() != '\0'))
+			return getBackgroundCodeMap().get(Character.valueOf(C.getBGCodeChar())).getANSICode();
+		return null;
 	}
 
 	@Override

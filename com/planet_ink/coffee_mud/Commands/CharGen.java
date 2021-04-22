@@ -989,8 +989,6 @@ public class CharGen extends StdCommand
 						allSkills[charClassDex][level-levelStart][0]=bestIterSkill[0];
 						allSkills[charClassDex][level-levelStart][1]=bestHitSkill[0];
 						allSkills[charClassDex][level-levelStart][2]=bestSingleHitSkill[0];
-						if(mob.session()!=null)
-							mob.session().println("!");
 						if(fileExp==null)
 						{
 							mob.tell(L("SCORE    : @x1 vs @x2 = @x3",CMath.toPct(totalDamageM1toM2/totalRounds),CMath.toPct(totalDamageM2toM1/totalRounds),CMath.toPct(totalDamageM1Score/totalRounds)));

@@ -340,7 +340,16 @@ public class StdWebMacro implements WebMacro
 						char c=s.charAt(x+1);
 						if(c=='?')
 							c='w';
-						final String code=lookup[c];
+						final String code;
+						if((c==ColorLibrary.COLORCODE_BACKGROUND)
+						&&(x<(s.length()-2)))
+						{
+							c=s.charAt(x+2);
+							s.delete(x, x+1);
+							code=CMLib.color().getBackgroundHtmlTag(c);
+						}
+						else
+							code=lookup[c];
 						if(code!=null)
 						{
 							s.delete(x,x+2);
@@ -351,7 +360,7 @@ public class StdWebMacro implements WebMacro
 							}
 							else
 							{
-								s.insert(x,code);
+								s.insert(x-1,code);
 								x+=code.length()-1;
 							}
 						}

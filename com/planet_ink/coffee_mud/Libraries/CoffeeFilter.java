@@ -396,8 +396,11 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 						if(bgEscapeSequence==null)
 							bgEscapeSequence=ColorLibrary.Color.BGBLACK.getANSICode();
 						else
-						if(ColorLibrary.MAP_ANSICOLOR_TO_ANSIBGCOLOR.containsKey(bgEscapeSequence))
-							bgEscapeSequence=ColorLibrary.MAP_ANSICOLOR_TO_ANSIBGCOLOR.get(bgEscapeSequence);
+						{
+							final String bgAnsi = CMLib.color().getBackgroundAnsiCode(bgEscapeSequence);
+							if(bgAnsi != null)
+								bgEscapeSequence=bgAnsi;
+						}
 					}
 					else
 						bgEscapeSequence="\033[48;5;"+(lastColor.backgroundCode() & 0xff)+"m";
@@ -498,7 +501,9 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					}
 					else
 					{
-						escapeSequence=ColorLibrary.MAP_ANSICOLOR_TO_ANSIBGCOLOR.get(escapeSequence);
+						escapeSequence=CMLib.color().getBackgroundAnsiCode(escapeSequence);
+						if(escapeSequence == null)
+							escapeSequence = "";
 						if(S!=null)
 						{
 							final ColorState curColor=S.getCurrentColor();
@@ -528,7 +533,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			if(escapeSequence == null)
 				bgEscapeSequence = null;
 			else
-				bgEscapeSequence=ColorLibrary.MAP_ANSICOLOR_TO_ANSIBGCOLOR.get(escapeSequence);
+				bgEscapeSequence=CMLib.color().getBackgroundAnsiCode(escapeSequence);
 			if(bgEscapeSequence != null)
 			{
 				str.insert(index+3, bgEscapeSequence);

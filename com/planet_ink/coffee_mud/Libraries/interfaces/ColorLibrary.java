@@ -50,56 +50,51 @@ public interface ColorLibrary extends CMLibrary
 	 */
 	public enum Color
 	{
-		WHITE("\033[1;37m","<FONT COLOR=WHITE",'w'),
-		LIGHTGREEN("\033[1;32m","<FONT COLOR=LIGHTGREEN",'g'),
-		LIGHTBLUE("\033[1;34m","<FONT COLOR=BLUE",'b'),
-		LIGHTRED("\033[1;31m","<FONT COLOR=RED",'r'),
-		YELLOW("\033[1;33m","<FONT COLOR=YELLOW",'y'),
-		LIGHTCYAN("\033[1;36m","<FONT COLOR=CYAN",'c'),
-		LIGHTPURPLE("\033[1;35m","<FONT COLOR=VIOLET",'p'),
-		GREY("\033[0;37m","<FONT COLOR=LIGHTGREY",'W'),
-		GREEN("\033[0;32m","<FONT COLOR=GREEN",'G'),
-		BLUE("\033[0;34m","<FONT COLOR=#000099",'B'),
-		RED("\033[0;31m","<FONT COLOR=#993300",'R'),
-		BROWN("\033[0;33m","<FONT COLOR=#999966",'Y'),
-		CYAN("\033[0;36m","<FONT COLOR=DARKCYAN",'C'),
-		PURPLE("\033[0;35m","<FONT COLOR=PURPLE",'P'),
-		DARKGREY("\033[1;30m","<FONT COLOR=GRAY",'k'),
-		BLACK("\033[0;30m","<FONT COLOR=BLACK",'K'),
-		NONE("\033[0;0m","</I></U></BLINK></B></FONT"),
-		BOLD("\033[1m","<B"),
-		UNDERLINE("\033[4m","<U"),
-		BLINK("\033[5m","<BLINK"),
-		ITALICS("\033[6m","<I"),
-		BGWHITE("\033[47m"," style=\"background-color: white\""),
-		BGGREEN("\033[42m"," style=\"background-color: green\""),
-		BGBLUE("\033[44m"," style=\"background-color: #000099\""),
-		BGRED("\033[41m"," style=\"background-color: #993300\""),
-		BGYELLOW("\033[43m"," style=\"background-color: #999966\""),
-		BGCYAN("\033[46m"," style=\"background-color: darkcyan\""),
-		BGPURPLE("\033[45m"," style=\"background-color: purple\""),
-		BGBLACK("\033[40m"," style=\"background-color: black\""),
-		BGDEFAULT("\033[49m"," style=\"background-color: white\""),
+		WHITE("\033[1;37m","<FONT COLOR=WHITE",'w','w'),
+		LIGHTGREEN("\033[1;32m","<FONT COLOR=LIGHTGREEN",'g','g'),
+		LIGHTBLUE("\033[1;34m","<FONT COLOR=BLUE",'b','b'),
+		LIGHTRED("\033[1;31m","<FONT COLOR=RED",'r','r'),
+		YELLOW("\033[1;33m","<FONT COLOR=YELLOW",'y','y'),
+		LIGHTCYAN("\033[1;36m","<FONT COLOR=CYAN",'c','c'),
+		LIGHTPURPLE("\033[1;35m","<FONT COLOR=VIOLET",'p','p'),
+		GREY("\033[0;37m","<FONT COLOR=LIGHTGREY",'W','w'),
+		GREEN("\033[0;32m","<FONT COLOR=GREEN",'G','g'),
+		BLUE("\033[0;34m","<FONT COLOR=#000099",'B','b'),
+		RED("\033[0;31m","<FONT COLOR=#993300",'R','r'),
+		BROWN("\033[0;33m","<FONT COLOR=#999966",'Y','y'),
+		CYAN("\033[0;36m","<FONT COLOR=DARKCYAN",'C','c'),
+		PURPLE("\033[0;35m","<FONT COLOR=PURPLE",'P','p'),
+		DARKGREY("\033[1;30m","<FONT COLOR=GRAY",'k','w'),
+		BLACK("\033[0;30m","<FONT COLOR=BLACK",'K','k'),
+		NONE("\033[0;0m","</I></U></BLINK></B></FONT",'\0','\0'),
+		BOLD("\033[1m","<B",'\0','\0'),
+		UNDERLINE("\033[4m","<U",'\0','\0'),
+		BLINK("\033[5m","<BLINK",'\0','\0'),
+		ITALICS("\033[6m","<I",'\0','\0'),
+		BGWHITE("\033[47m"," style=\"background-color: white\"",'\0','w'),
+		BGGREEN("\033[42m"," style=\"background-color: green\"",'\0','g'),
+		BGBLUE("\033[44m"," style=\"background-color: #000099\"",'\0','b'),
+		BGRED("\033[41m"," style=\"background-color: #993300\"",'\0','r'),
+		BGYELLOW("\033[43m"," style=\"background-color: #999966\"",'\0','y'),
+		BGCYAN("\033[46m"," style=\"background-color: darkcyan\"",'\0','c'),
+		BGPURPLE("\033[45m"," style=\"background-color: purple\"",'\0','p'),
+		BGBLACK("\033[40m"," style=\"background-color: black\"",'\0','k'),
+		BGDEFAULT("\033[49m"," style=\"background-color: white\"",'\0','k'),
 		;
 
 		private final String	ansiCode;
 		private final String	htmlTag;
 		private final char		codeLetter;
+		private final char		bgLetter;
 		private final boolean	isBasicColor;
-		private final boolean	isExtendedColor;
 
-		private Color(final String ansiCode, final String htmlTag, final char codeLetter)
+		private Color(final String ansiCode, final String htmlTag, final char codeLetter, final char bgColor)
 		{
 			this.ansiCode = ansiCode;
 			this.codeLetter = codeLetter;
 			this.htmlTag = htmlTag;
+			this.bgLetter = bgColor;
 			isBasicColor = ((this.codeLetter != 'K') && (this.codeLetter != '\0'));
-			isExtendedColor = (this.codeLetter != '\0');
-		}
-
-		private Color(final String ansiCode, final String htmlTag)
-		{
-			this(ansiCode, htmlTag, '\0');
 		}
 
 		/**
@@ -109,15 +104,6 @@ public interface ColorLibrary extends CMLibrary
 		public final boolean isBasicColor()
 		{
 			return isBasicColor;
-		}
-
-		/**
-		 * True if its a basic 16 color, including black.
-		 * @return its a basic 16 color, including black.
-		 */
-		public final boolean isExtendedColor()
-		{
-			return isExtendedColor;
 		}
 
 		/**
@@ -148,6 +134,15 @@ public interface ColorLibrary extends CMLibrary
 		}
 
 		/**
+		 * Returns the ^~ char code, or 0 if its not a basic color
+		 * @return the ^~ char code, or 0 if its not a basic color
+		 */
+		public final char getBGCodeChar()
+		{
+			return bgLetter;
+		}
+
+		/**
 		 * Returns the name, but with - instead of _
 		 * @return the name, but with - instead of _
 		 */
@@ -155,7 +150,6 @@ public interface ColorLibrary extends CMLibrary
 		{
 			return name();
 		}
-
 	}
 
 	/**
@@ -174,31 +168,6 @@ public interface ColorLibrary extends CMLibrary
 		null,
 		null
 	};
-
-	/**
-	 * A mapping of the escape codes for the basic 16 ansi
-	 * colors to the basic 16 background ansi color codes
-	 */
-	public static final Map<String,String> MAP_ANSICOLOR_TO_ANSIBGCOLOR=new SHashtable<String,String>(new Object[][]{
-		{   Color.WHITE.getANSICode(), Color.BGWHITE.getANSICode()},
-		{   Color.LIGHTGREEN.getANSICode(), Color.BGGREEN.getANSICode()},
-		{   Color.LIGHTBLUE.getANSICode(), Color.BGBLUE.getANSICode()},
-		{   Color.LIGHTRED.getANSICode(), Color.BGRED.getANSICode()},
-		{   Color.YELLOW.getANSICode(), Color.BGYELLOW.getANSICode()},
-		{   Color.LIGHTCYAN.getANSICode(), Color.BGCYAN.getANSICode()},
-		{   Color.LIGHTPURPLE.getANSICode(), Color.BGPURPLE.getANSICode()},
-		{   Color.GREY.getANSICode(), Color.BGWHITE.getANSICode()},
-		{   Color.GREEN.getANSICode(), Color.BGGREEN.getANSICode()},
-		{   Color.BLUE.getANSICode(), Color.BGBLUE.getANSICode()},
-		{   Color.RED.getANSICode(), Color.BGRED.getANSICode()},
-		{   Color.BROWN.getANSICode(), Color.BGYELLOW.getANSICode()},
-		{   Color.CYAN.getANSICode(), Color.BGCYAN.getANSICode()},
-		{   Color.PURPLE.getANSICode(), Color.BGPURPLE.getANSICode()},
-		{   Color.DARKGREY.getANSICode(), Color.BGDEFAULT.getANSICode()},
-		{
-			Color.BLACK.getANSICode(), Color.BGBLACK.getANSICode()
-		}
-	});
 
 	//remaining=aijlnoszAJV
 	/**
@@ -450,6 +419,24 @@ public interface ColorLibrary extends CMLibrary
 	 * @return the combined ansi escape code
 	 */
 	public String mixColorCodes(String code1, String code2);
+
+	/**
+	 * Given the ansi code for a foreground color, this method
+	 * will return the corresponding ansi code for the background
+	 * character.
+	 * @param ansi the foreground ansi color
+	 * @return the background ansi color
+	 */
+	public String getBackgroundAnsiCode(final String ansi);
+
+	/**
+	 * Given a color code (bg or fg), this method will return
+	 * the appropriate html tag for the background color.
+	 *
+	 * @param codeC the color code
+	 * @return the html tag, or null
+	 */
+	public String getBackgroundHtmlTag(final char codeC);
 
 	/**
 	 * Does nothing more impressive than adding the color codes
