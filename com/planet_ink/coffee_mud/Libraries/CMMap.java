@@ -1861,10 +1861,10 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		if (deitiesList.contains(oneToDel))
 		{
-			final boolean deitiesRemain = deitiesList.size()>0;
+			//final boolean deitiesRemain = deitiesList.size()>0;
 			deitiesList.remove(oneToDel);
-			if(deitiesRemain && ((deitiesList.size()==0))) //TODO:BZ:DEL WHEN FIXED
-				Log.debugOut("**DEITIES",new Exception());
+			//if(deitiesRemain && ((deitiesList.size()==0)))
+			//	Log.debugOut("**DEITIES",new Exception());
 		}
 	}
 
