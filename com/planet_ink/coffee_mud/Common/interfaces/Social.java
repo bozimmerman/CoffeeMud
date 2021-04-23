@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Although at one time a simple public variable object, the Social became an environmental
@@ -384,4 +385,21 @@ public interface Social extends Environmental, CMCommon
 	 * @return the number of player free actions required to do this
 	 */
 	public double checkedActionsCost(final MOB mob, final List<String> cmds);
+
+	/**
+	 * Returns the readable/writeable flag set for this social.
+	 *
+	 * @return the readable/writeable flag set for this social.
+	 */
+	public Set<SocialFlag> getFlags();
+
+	/**
+	 * Flags that apply to a particular social
+	 * @author Bo Zimmerman
+	 */
+	public static enum SocialFlag
+	{
+		CONFIRM, TARG_CONFIRM
+		;
+	}
 }

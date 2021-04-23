@@ -118,6 +118,7 @@ public interface GenericEditor extends CMLibrary
 	public void promptStatDouble(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException;
 	public void promptStatChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, Object[] choices) throws IOException;
 	public void promptStatCommaChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, Object[] choices) throws IOException;
+	public Collection<? extends Object> promptFlags(final MOB mob, final Collection<? extends Object> flags, final Object[] values, final int showNumber, final int showFlag, final String fieldDisplayStr) throws IOException;
 
 	public static interface CMEval
 	{

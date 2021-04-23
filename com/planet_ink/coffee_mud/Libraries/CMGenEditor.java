@@ -82,6 +82,31 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	};
 
 	@Override
+	public Collection<? extends Object> promptFlags(final MOB mob, final Collection<? extends Object> flags, final Object[] values, final int showNumber, final int showFlag, final String fieldDisplayStr) throws IOException
+	{
+		final String help=CMParms.toListString(values);
+		final String oldVal = CMParms.toListString(flags.toArray());
+		final String newVal = CMLib.genEd().prompt(mob, oldVal, showNumber, showFlag, fieldDisplayStr, true, help);
+		String[] newVals;
+		if(newVal.indexOf(',')>0)
+			newVals = CMParms.parseCommas(newVal.toUpperCase().trim(), true).toArray(new String[0]);
+		else
+		if(newVal.indexOf(';')>0)
+			newVals = CMParms.parseSemicolons(newVal.toUpperCase().trim(), true).toArray(new String[0]);
+		else
+			newVals = CMParms.parse(newVal.toUpperCase().trim()).toArray(new String[0]);
+		final Collection<Object> newFlags = new ArrayList<Object>();
+		final List<? extends Object> lst = Arrays.asList(values);
+		for(int i=0;i<newVals.length;i++)
+		{
+			final int index=CMParms.indexOfIgnoreCase(lst, newVals[i]);
+			if(index>=0)
+				newFlags.add(values[index]);
+		}
+		return newFlags;
+	}
+
+	@Override
 	public void promptStatDouble(final MOB mob, final Modifiable E, final int showNumber, final int showFlag, final String fieldDisplayStr, final String field) throws IOException
 	{
 		promptStatDouble(mob, E, null, showNumber, showFlag, fieldDisplayStr, field);

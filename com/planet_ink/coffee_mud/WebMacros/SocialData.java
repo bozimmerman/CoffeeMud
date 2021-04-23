@@ -247,9 +247,10 @@ public class SocialData extends StdWebMacro
 
 				final Social S=CMLib.socials().makeDefaultSocial(last,EXTN);
 				final String field=(t<BTYPES.length)?BFIELDS[t]:BFIELDS[0];
+				final String subnam="SDAT_"+TYPE+"_";
 				for(int f=0;f<field.length();f++)
 				{
-					final String fnam="SDAT_"+TYPE+"_"+field.charAt(f);
+					final String fnam=subnam+field.charAt(f);
 					old=httpReq.getUrlParameter(fnam);
 					if(old!=null)
 					{
@@ -296,6 +297,22 @@ public class SocialData extends StdWebMacro
 						case 'Z':
 							break;
 						}
+					}
+				}
+				S.getFlags().clear();
+				if(httpReq.isUrlParameter(subnam+"F"))
+				{
+					int num=0;
+					String numStr="";
+					String flagS=httpReq.getUrlParameter(subnam+"F"+numStr);
+					while(flagS!=null)
+					{
+						final Social.SocialFlag F=(Social.SocialFlag)CMath.s_valueOf(Social.SocialFlag.class, flagS);
+						if(F!=null)
+							S.getFlags().add(F);
+						num++;
+						numStr=""+num;
+						flagS=httpReq.getUrlParameter(subnam+"F"+numStr);
 					}
 				}
 				SV.add(S);
@@ -514,10 +531,11 @@ public class SocialData extends StdWebMacro
 							if(!old.equalsIgnoreCase("on"))
 								continue;
 						}
+						final String subnam="SDAT_"+TYPE+"_";
 						final String field=(t<BTYPES.length)?BFIELDS[t]:BFIELDS[0];
 						for(int f=0;f<field.length();f++)
 						{
-							final String fnam="SDAT_"+TYPE+"_"+field.charAt(f);
+							final String fnam=subnam+field.charAt(f);
 							if(parms.containsKey(fnam))
 							{
 								old=httpReq.getUrlParameter(fnam);
@@ -589,6 +607,35 @@ public class SocialData extends StdWebMacro
 										str.append(">"+CODESTR[c]);
 									}
 								}
+							}
+						}
+						if(parms.containsKey(subnam+"F"))
+						{
+							if(S==null)
+								S=CMLib.socials().makeDefaultSocial(last,EXTN);
+							int num=0;
+							String numStr="";
+							old=httpReq.getUrlParameter(subnam+"F"+numStr);
+							final Set<String> flags=new TreeSet<String>();
+							if(old==null)
+							{
+								for(final Social.SocialFlag f1 : S.getFlags())
+									flags.add(f1.name());
+							}
+							else
+							while(old!=null)
+							{
+								flags.add(old);
+								num++;
+								numStr=""+num;
+								old=httpReq.getUrlParameter(subnam+"F"+numStr);
+							}
+							for(final Social.SocialFlag f1 : Social.SocialFlag.values())
+							{
+								str.append("<OPTION VALUE="+f1.name());
+								if(flags.contains(f1.name()))
+									str.append(" SELECTED");
+								str.append(">"+f1.name());
 							}
 						}
 					}

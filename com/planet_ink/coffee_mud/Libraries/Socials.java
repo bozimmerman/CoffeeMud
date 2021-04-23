@@ -145,6 +145,22 @@ public class Socials extends StdLibrary implements SocialsList
 										if(x>=0)
 										{
 											socobj.setCriteriaZappermask(getline.substring(0,x));
+											getline=getline.substring(x+1);
+											x=getline.indexOf("\t");
+											socobj.getFlags().clear();
+											final String flagStr;
+											if(x>=0)
+											{
+												flagStr = getline.substring(0,x);
+											}
+											else
+												flagStr = getline;
+											for(final String flagS : CMParms.parseCommas(flagStr.toUpperCase().trim(), true))
+											{
+												final Social.SocialFlag f = (Social.SocialFlag)CMath.s_valueOf(Social.SocialFlag.class, flagS);
+												if(f!=null)
+													socobj.getFlags().add(f);
+											}
 										}
 										else
 											socobj.setCriteriaZappermask(getline);
@@ -690,6 +706,11 @@ public class Socials extends StdLibrary implements SocialsList
 						soc.setFailedMessage(CMLib.genEd().prompt(mob,soc.getFailedTargetMessage(),++showNumber,showFlag,L("You-see when no target"),false,true));
 					soc.setSoundFile(CMLib.genEd().prompt(mob,soc.getSoundFile(),++showNumber,showFlag,L("Sound file"),true,false));
 					soc.setCriteriaZappermask(CMLib.genEd().prompt(mob,soc.getCriteriaZappermask(),++showNumber,showFlag,L("Zappermask"),true,false));
+					final Collection<? extends Object> newFlags = CMLib.genEd().promptFlags(mob, soc.getFlags(), Social.SocialFlag.values(), ++showNumber, showFlag, L("Flags (?): "));
+					@SuppressWarnings("unchecked")
+					final Collection<Social.SocialFlag> newSocFlags=(Collection<Social.SocialFlag>)newFlags;
+					soc.getFlags().clear();
+					soc.getFlags().addAll(newSocFlags);
 					resaveSocials=true;
 					if(showFlag<-900)
 					{
@@ -1019,9 +1040,9 @@ public class Socials extends StdLibrary implements SocialsList
 		V2=sorted;
 		for(int v=0;v<V2.size();v++)
 		{
-			final Social I=V2.elementAt(v);
+			final Social socObj=V2.elementAt(v);
 
-			switch(I.getSourceCode())
+			switch(socObj.getSourceCode())
 			{
 			case CMMsg.MSG_SPEAK:
 				buf.append('w');
@@ -1043,7 +1064,7 @@ public class Socials extends StdLibrary implements SocialsList
 				buf.append(' ');
 				break;
 			}
-			switch(I.getTargetCode())
+			switch(socObj.getTargetCode())
 			{
 			case CMMsg.MSG_HANDS:
 				buf.append('t');
@@ -1069,13 +1090,14 @@ public class Socials extends StdLibrary implements SocialsList
 				break;
 			}
 			final String[] stuff=new String[] {
-				I.name(),
-				I.getSourceMessage(),
-				I.getOthersMessage(),
-				I.getTargetMessage(),
-				I.getFailedTargetMessage(),
-				I.getSoundFile(),
-				I.getCriteriaZappermask()
+				socObj.name(),
+				socObj.getSourceMessage(),
+				socObj.getOthersMessage(),
+				socObj.getTargetMessage(),
+				socObj.getFailedTargetMessage(),
+				socObj.getSoundFile(),
+				socObj.getCriteriaZappermask(),
+				CMParms.toListString(socObj.getFlags())
 			};
 			buf.append('\t');
 			for (final String element : stuff)

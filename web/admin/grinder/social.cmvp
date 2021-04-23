@@ -193,6 +193,10 @@
                     <TD><FONT COLOR=YELLOW>Zappermask: </FONT></TD>
                     <TD><INPUT TYPE=TEXT SIZE=60 NAME=SDAT_NONE_Z VALUE="@SocialData?SDAT_NONE_Z@"></TD>
                 </TR>
+                <TR>
+                    <TD><FONT COLOR=YELLOW>Flags: </FONT></TD>
+                    <TD><SELECT NAME=SDAT_NONE_F MULTIPLE> @SocialData?SDAT_NONE_F@ </SELECT></TD>
+                </TR>
                 </TABLE>
                 @endif@
             </TD>
@@ -227,6 +231,10 @@
                 <TR>
                     <TD><FONT COLOR=YELLOW>Zappermask: </FONT></TD>
                     <TD><INPUT TYPE=TEXT SIZE=60 NAME=SDAT_SELF_Z VALUE="@SocialData?SDAT_SELF_Z@"></TD>
+                </TR>
+                <TR>
+                    <TD><FONT COLOR=YELLOW>Flags: </FONT></TD>
+                    <TD><SELECT NAME=SDAT_SELF_F MULTIPLE> @SocialData?SDAT_SELF_F@ </SELECT></TD>
                 </TR>
                 </TABLE>
                 @endif@
@@ -269,7 +277,11 @@
                 </TR>
                 <TR>
                     <TD><FONT COLOR=YELLOW>Zappermask: </FONT></TD>
-                    <TD><INPUT TYPE=TEXT SIZE=60 NAME=SDAT_TARGETMOB_Z VALUE="@SDAT_TARGETMOB_Z@"></TD>
+                    <TD><INPUT TYPE=TEXT SIZE=60 NAME=SDAT_TARGETMOB_Z VALUE="@SocialData?SDAT_TARGETMOB_Z@"></TD>
+                </TR>
+                <TR>
+                    <TD><FONT COLOR=YELLOW>Flags: </FONT></TD>
+                    <TD><SELECT NAME=SDAT_TARGETMOB_F MULTIPLE> @SocialData?SDAT_TARGETMOB_F@ </SELECT></TD>
                 </TR>
                 </TABLE>
                 @endif@
@@ -316,6 +328,10 @@
 	                        <TD><FONT COLOR=YELLOW>Zappermask: </FONT></TD>
 	                        <TD><INPUT TYPE=TEXT SIZE=60 NAME=SDAT_TARGETMOB_@RequestParameter?XARG@_Z VALUE="@SocialData?SDAT_TARGETMOB_@@RequestParameter?XARG@@_Z@"></TD>
 	                    </TR>
+		                <TR>
+		                    <TD><FONT COLOR=YELLOW>Flags: </FONT></TD>
+		                    <TD><SELECT NAME=SDAT_TARGETMOB_@RequestParameter?XARG@_F MULTIPLE> @SocialData?SDAT_TARGETMOB_@RequestParameter?XARG@_F@ </SELECT></TD>
+		                </TR>
 	                    </TABLE>
 	                    @endif@
 	                </TD>
@@ -364,6 +380,10 @@
                     <TD><FONT COLOR=YELLOW>Zappermask: </FONT></TD>
                     <TD><INPUT TYPE=TEXT SIZE=60 NAME=SDAT_TARGETINV_Z VALUE="@SocialData?SDAT_TARGETINV_Z@"></TD>
                 </TR>
+                <TR>
+                    <TD><FONT COLOR=YELLOW>Flags: </FONT></TD>
+                    <TD><SELECT NAME=SDAT_TARGETINV_F MULTIPLE> @SocialData?SDAT_TARGETINV_F@ </SELECT></TD>
+                </TR>
                 </TABLE>
                 @endif@
             </TD>
@@ -403,6 +423,10 @@
                     <TD><FONT COLOR=YELLOW>Zappermask: </FONT></TD>
                     <TD><INPUT TYPE=TEXT SIZE=60 NAME=SDAT_TARGETEQUIP_Z VALUE="@SocialData?SDAT_TARGETEQUIP_Z@"></TD>
                 </TR>
+                <TR>
+                    <TD><FONT COLOR=YELLOW>Flags: </FONT></TD>
+                    <TD><SELECT NAME=SDAT_TARGETEQUIP_F MULTIPLE> @SocialData?SDAT_TARGETEQUIP_F@ </SELECT></TD>
+                </TR>
                 </TABLE>
                 @endif@
             </TD>
@@ -437,6 +461,10 @@
                 <TR>
                     <TD><FONT COLOR=YELLOW>MSP Filename: </FONT></TD>
                     <TD><INPUT TYPE=TEXT SIZE=60 NAME=SDAT_TARGETITEM_Z VALUE="@SocialData?SDAT_TARGETITEM_Z@"></TD>
+                </TR>
+                <TR>
+                    <TD><FONT COLOR=YELLOW>Flags: </FONT></TD>
+                    <TD><SELECT NAME=SDAT_TARGETITEM_F MULTIPLE> @SocialData?SDAT_TARGETITEM_F@ </SELECT></TD>
                 </TR>
                 </TABLE>
                 @endif@
@@ -476,6 +504,10 @@
                 <TR>
                     <TD><FONT COLOR=YELLOW>Zappermask: </FONT></TD>
                     <TD><INPUT TYPE=TEXT SIZE=60 NAME=SDAT_ALL_Z VALUE="@SocialData?SDAT_ALL_Z@"></TD>
+                </TR>
+                <TR>
+                    <TD><FONT COLOR=YELLOW>Flags: </FONT></TD>
+                    <TD><SELECT NAME=SDAT_ALL_F MULTIPLE> @SocialData?SDAT_ALL_F@ </SELECT></TD>
                 </TR>
                 </TABLE>
                 @endif@
@@ -521,6 +553,10 @@
                         <TD><FONT COLOR=YELLOW>Zappermask: </FONT></TD>
                         <TD><INPUT TYPE=TEXT SIZE=60 NAME=SDAT_@RequestParameter?XSOCIAL@_Z VALUE="@SocialData?SDAT_@@RequestParameter?XSOCIAL@@_Z@"></TD>
                     </TR>
+                <TR>
+                    <TD><FONT COLOR=YELLOW>Flags: </FONT></TD>
+                    <TD><SELECT NAME=SDAT_@RequestParameter?XSOCIAL@_F MULTIPLE> @SocialData?SDAT_@RequestParameter?XSOCIAL@_F@ </SELECT></TD>
+                </TR>
                     </TABLE>
                     @endif@
                 </TD>

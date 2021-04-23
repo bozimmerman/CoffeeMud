@@ -99,6 +99,8 @@ public class Prop_Socials extends Property
 			final String targetSee=CMParms.getParmStr(social, "TARGSEE", CMParms.getParmStr(social, "TARGETSEE", CMParms.getParmStr(social, "TGTSEE", "")));
 			final String seeNoTargetSee=CMParms.getParmStr(social, "NOTARGSEE", CMParms.getParmStr(social, "NOTARGETSEE", CMParms.getParmStr(social, "NOTGTSEE", "")));
 			final String mspFile=CMParms.getParmStr(social, "MSPFILE", "");
+			final String zapMask=CMParms.getParmStr(social, "ZAPMASK", "");
+			final String flagStr=CMParms.getParmStr(social, "FLAGSTR", "");
 			if(name.length()==0)
 			{
 				if(!forgive)
@@ -134,7 +136,9 @@ public class Prop_Socials extends Property
 				tabLine.append(othersSee).append("\t");
 				tabLine.append(targetSee).append("\t");
 				tabLine.append(seeNoTargetSee).append("\t");
-				tabLine.append(mspFile);
+				tabLine.append(mspFile).append("\t");
+				tabLine.append(zapMask).append("\t");
+				tabLine.append(flagStr).append("\t");
 				lines.add(tabLine.toString());
 			}
 		}

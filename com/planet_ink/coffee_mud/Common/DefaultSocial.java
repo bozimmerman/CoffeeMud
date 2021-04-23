@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary;
@@ -18,6 +19,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.IOException;
 import java.util.*;
 
 // requires nothing to load
@@ -39,22 +41,23 @@ import java.util.*;
 
 public class DefaultSocial implements Social
 {
-	protected String		socialFullID;
-	protected String		socialFullTail;
-	protected String		socialBaseName;
-	protected String		socialTarget;
-	protected boolean		isTargetable;
-	protected String		socialArg;
-	protected String		sourceMsg;
-	protected String		othersSeeMsg;
-	protected String		targetSeesMsg;
-	protected String		failedTargetMsg;
-	protected String		soundFile	= "";
-	protected String		zapperMask	= "";
-	protected CompiledZMask	zMask		= null;
-	protected int			sourceCode	= CMMsg.MSG_OK_ACTION;
-	protected int			othersCode	= CMMsg.MSG_OK_ACTION;
-	protected int			targetCode	= CMMsg.MSG_OK_ACTION;
+	protected String		 socialFullID;
+	protected String		 socialFullTail;
+	protected String		 socialBaseName;
+	protected String		 socialTarget;
+	protected boolean		 isTargetable;
+	protected String		 socialArg;
+	protected String		 sourceMsg;
+	protected String		 othersSeeMsg;
+	protected String		 targetSeesMsg;
+	protected String		 failedTargetMsg;
+	protected String		 soundFile	= "";
+	protected String		 zapperMask	= "";
+	protected CompiledZMask	 zMask		= null;
+	protected int			 sourceCode	= CMMsg.MSG_OK_ACTION;
+	protected int			 othersCode	= CMMsg.MSG_OK_ACTION;
+	protected int			 targetCode	= CMMsg.MSG_OK_ACTION;
+	protected Set<SocialFlag>flags		= Collections.synchronizedSet(new HashSet<SocialFlag>());
 
 	@Override
 	public String ID()
@@ -323,14 +326,21 @@ public class DefaultSocial implements Social
 		return this.zapperMask != null ? this.zapperMask : "";
 	}
 
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical target, final boolean auto)
 	{
 		if(mob == null)
 			return false;
-		final Room R = mob.location();
-		if(R== null)
-			return false;
+
+		boolean confirmed=false;
+		if(getFlags().contains(SocialFlag.CONFIRM)
+		&&(commands.size()>0)
+		&&(commands.get(commands.size()-1).equalsIgnoreCase("CONFIRMED")))
+		{
+			commands.remove(commands.size()-1);
+			confirmed=true;
+		}
 
 		String targetStr = "";
 		String restArg = "";
@@ -343,21 +353,99 @@ public class DefaultSocial implements Social
 				restArg=commands.get(2);
 		}
 
-		Physical targetE = target;
-		if (targetE == null)
+		Physical targetP = target;
+		if (targetP == null)
 		{
-			targetE = R.fetchFromMOBRoomFavorsMOBs(mob, null, targetStr, Wearable.FILTER_ANY);
-			if ((targetE != null) && (!CMLib.flags().canBeSeenBy(targetE, mob)))
-				targetE = null;
+			final Room R = mob.location();
+			if(R== null)
+				return false;
+			targetP = R.fetchFromMOBRoomFavorsMOBs(mob, null, targetStr, Wearable.FILTER_ANY);
+			if ((targetP != null) && (!CMLib.flags().canBeSeenBy(targetP, mob)))
+				targetP = null;
 			else
-			if ((targetE != null) && (!targetable(targetE)))
+			if ((targetP != null) && (!targetable(targetP)))
 			{
-				final Social S = CMLib.socials().fetchSocial(baseName(), targetE, restArg, true);
+				final Social S = CMLib.socials().fetchSocial(baseName(), targetP, restArg, true);
 				if((S != null)
 				&& (S.meetsCriteriaToUse(mob)))
-					return S.invoke(mob, commands, targetE, auto);
+				{
+					if(confirmed)
+						commands.add("CONFIRMED");
+					return S.invoke(mob, commands, targetP, auto);
+				}
 			}
 		}
+
+		if(getFlags().contains(SocialFlag.CONFIRM)
+		&&(!confirmed)
+		&&(!mob.isMonster()))
+		{
+			final Session sess=mob.session();
+			sess.prompt(new InputCallback(InputCallback.Type.CONFIRM,"Y",0)
+			{
+				@Override
+				public void showPrompt()
+				{
+					sess.promptPrint(L("\n\rAre you sure (Y/n)? "));
+				}
+
+				@Override
+				public void timedOut()
+				{
+				}
+
+				@Override
+				public void callBack()
+				{
+					if (this.input.equals("Y"))
+					{
+						if(confirmed)
+							commands.add("CONFIRMED");
+						invoke(mob, commands, target, auto);
+					}
+				}
+			});
+			return true;
+		}
+		if(getFlags().contains(SocialFlag.TARG_CONFIRM)
+		&&(targetP instanceof MOB)
+		&&(!((MOB)targetP).isMonster()))
+		{
+			final Session sess=((MOB)targetP).session();
+			final Physical fP=targetP;
+			sess.prompt(new InputCallback(InputCallback.Type.CONFIRM,"Y",0)
+			{
+				final Physical tarP=fP;
+				@Override
+				public void showPrompt()
+				{
+					sess.promptPrint(L("\n\r@x1 want(s) to @x2 you.  Is this OK (Y/n)? ",mob.name(),baseName().toLowerCase()));
+				}
+
+				@Override
+				public void timedOut()
+				{
+				}
+
+				@Override
+				public void callBack()
+				{
+					if (this.input.equals("Y"))
+					{
+						invokeIntern(mob, commands, tarP, auto);
+					}
+				}
+			});
+			return true;
+		}
+		return invokeIntern(mob, commands, target, auto);
+	}
+
+	protected boolean invokeIntern(final MOB mob, final List<String> commands, final Physical targetP, final boolean auto)
+	{
+		final Room R = mob.location();
+		if(R== null)
+			return false;
 
 		final String mspFile = ((soundFile != null) && (soundFile.length() > 0)) ? CMLib.protocol().msp(soundFile, 10) : "";
 
@@ -377,8 +465,8 @@ public class DefaultSocial implements Social
 		if ((failMsg != null) && (failMsg.trim().length() == 0))
 			failMsg = null;
 
-		if (((targetE == null) && (targetable(null)))
-		|| ((targetE != null) && (!targetable(targetE))))
+		if (((targetP == null) && (targetable(null)))
+		|| ((targetP != null) && (!targetable(targetP))))
 		{
 			final CMMsg msg = CMClass.getMsg(mob, null, this,
 					(auto ? CMMsg.MASK_ALWAYS : 0) | getSourceCode(), failMsg,
@@ -395,7 +483,7 @@ public class DefaultSocial implements Social
 			}
 		}
 		else
-		if (targetE == null)
+		if (targetP == null)
 		{
 			final CMMsg msg = CMClass.getMsg(mob, null, this,
 					(auto ? CMMsg.MASK_ALWAYS : 0) | getSourceCode(), (srcMsg == null) ? null : srcMsg + mspFile,
@@ -413,7 +501,7 @@ public class DefaultSocial implements Social
 		}
 		else
 		{
-			final CMMsg msg = CMClass.getMsg(mob, targetE, this,
+			final CMMsg msg = CMClass.getMsg(mob, targetP, this,
 					(auto ? CMMsg.MASK_ALWAYS : 0) | getSourceCode(), (srcMsg == null) ? null : srcMsg + mspFile,
 					getTargetCode(), (tgtMsg == null) ? null : tgtMsg + mspFile,
 					getOthersCode(), (othMsg == null) ? null : othMsg + mspFile);
@@ -425,9 +513,9 @@ public class DefaultSocial implements Social
 					CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_SOCUSE);
 					CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.SOCIALUSE, 1, this);
 				}
-				if (targetE instanceof MOB)
+				if (targetP instanceof MOB)
 				{
-					final MOB tmob = (MOB) targetE;
+					final MOB tmob = (MOB) targetP;
 					if(mob.isPlayer())
 					{
 						if(tmob.isPlayer())
@@ -452,7 +540,7 @@ public class DefaultSocial implements Social
 					&& (!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 					{
 						final Ability A = CMClass.getAbility("Disease_Smiles");
-						if ((A != null) && (targetE.fetchEffect(A.ID()) == null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
+						if ((A != null) && (targetP.fetchEffect(A.ID()) == null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 							A.invoke(tmob, tmob, true, 0);
 					}
 				}
@@ -731,6 +819,16 @@ public class DefaultSocial implements Social
 		if (((soundFile == null) != (((Social) E).getSoundFile() == null))
 		|| ((soundFile != null) && (!soundFile.equals(((Social) E).getSoundFile()))))
 			return false;
+		if (flags.size() != ((Social)E).getFlags().size())
+			return false;
+		if(flags.size()>0)
+		{
+			if(!flags.containsAll(((Social)E).getFlags()))
+				return false;
+			if(!((Social)E).getFlags().containsAll(flags))
+				return false;
+		}
+
 		return true;
 	}
 
@@ -856,5 +954,11 @@ public class DefaultSocial implements Social
 		if (mob != null)
 			return mob.isInCombat() ? combatActionsCost(mob, cmds) : actionsCost(mob, cmds);
 		return actionsCost(mob, cmds);
+	}
+
+	@Override
+	public Set<SocialFlag> getFlags()
+	{
+		return flags;
 	}
 }
