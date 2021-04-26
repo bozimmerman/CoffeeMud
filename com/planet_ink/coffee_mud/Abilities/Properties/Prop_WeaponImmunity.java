@@ -86,7 +86,7 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 			{
 				if(validFlags.size()==0)
 				{
-					validFlags.addAll(Arrays.asList(new String[]{ "ALL", "MAGIC", "NONMAGIC", "LEVEL", "MAGICSKILLS"}));
+					validFlags.addAll(Arrays.asList(new String[]{ "ALL", "MAGIC", "NONMAGIC", "LEVEL", "MAGICSKILLS", "MAGICSPELLS"}));
 					for(final String s : Weapon.TYPE_DESCS)
 						validFlags.add(s);
 					for(final String s : Weapon.CLASS_DESCS)
@@ -252,6 +252,8 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 						foundPlusMinus=(Character)flags.get("MAGICSKILLS");
 						if(foundPlusMinus==null)
 							foundPlusMinus=(Character)flags.get("MAGIC");
+						if(foundPlusMinus==null)
+							foundPlusMinus=(Character)flags.get("MAGICSPELLS");
 						if(foundPlusMinus!=null)
 						{
 							if((foundPlusMinus.charValue()=='-')&&(immune))
