@@ -438,7 +438,7 @@ public class DefaultSocial implements Social
 			});
 			return true;
 		}
-		return invokeIntern(mob, commands, target, auto);
+		return invokeIntern(mob, commands, targetP, auto);
 	}
 
 	protected boolean invokeIntern(final MOB mob, final List<String> commands, final Physical targetP, final boolean auto)
