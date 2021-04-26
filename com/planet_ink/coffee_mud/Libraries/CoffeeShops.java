@@ -1751,6 +1751,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		final Area myArea=myRoom.getArea();
 		String name=buyer.Name();
 		Pair<Clan,Integer> buyerClanPair=null;
+		final TreeSet<String> foundNames = new TreeSet<String>();
 		if(shop.isSold(ShopKeeper.DEAL_CLANDSELLER)
 		&&((buyerClanPair=CMLib.clans().findPrivilegedClan(buyer, Clan.Function.PROPERTY_OWNER))!=null))
 			name=buyerClanPair.first.clanID();
@@ -1766,8 +1767,12 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				final LandTitle T=law.getLandTitle(R);
 				if(T!=null)
 				{
-					if(!titles.contains(T))
+					if((!titles.contains(T))
+					&&(!foundNames.contains(T.getUniqueLotID())))
+					{
+						foundNames.add(T.getUniqueLotID());
 						titles.add(T);
+					}
 					roomTitleMap.put(R, T);
 				}
 			}
