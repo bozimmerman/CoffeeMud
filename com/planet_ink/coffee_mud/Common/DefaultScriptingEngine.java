@@ -63,15 +63,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return "Default Scripting Engine";
 	}
 
-	protected static final Map<String,Integer>	funcH	= new Hashtable<String,Integer>();
-	protected static final Map<String,Integer>	methH	= new Hashtable<String,Integer>();
-	protected static final Map<String,Integer>	progH	= new Hashtable<String,Integer>();
-	protected static final Map<String,Integer>	connH	= new Hashtable<String,Integer>();
-	protected static final Map<String,Integer>	gstatH	= new Hashtable<String,Integer>();
-	protected static final Map<String,Integer>	signH	= new Hashtable<String,Integer>();
+	protected static final Map<String,Integer>	funcH	= new HashMap<String,Integer>();
+	protected static final Map<String,Integer>	methH	= new HashMap<String,Integer>();
+	protected static final Map<String,Integer>	progH	= new HashMap<String,Integer>();
+	protected static final Map<String,Integer>	connH	= new HashMap<String,Integer>();
+	protected static final Map<String,Integer>	gstatH	= new HashMap<String,Integer>();
+	protected static final Map<String,Integer>	signH	= new HashMap<String,Integer>();
 
-	protected static final Map<String, AtomicInteger>	counterCache= new Hashtable<String, AtomicInteger>();
-	protected static final Map<String, Pattern>			patterns	= new Hashtable<String, Pattern>();
+	protected static final Map<String, AtomicInteger>	counterCache= Collections.synchronizedMap(new HashMap<String, AtomicInteger>());
+	protected static final Map<String, Pattern>			patterns	= Collections.synchronizedMap(new HashMap<String, Pattern>());
 
 	protected boolean 				noDelay			 = CMSecurity.isDisabled(CMSecurity.DisFlag.SCRIPTABLEDELAY);
 
@@ -84,13 +84,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	protected Room					lastKnownLocation= null;
 	protected Room					homeKnownLocation= null;
 	protected Tickable				altStatusTickable= null;
-	protected List<Integer>			oncesDone		 = new Vector<Integer>();
-	protected Map<Integer,Integer>	delayTargetTimes = new Hashtable<Integer,Integer>();
-	protected Map<Integer,int[]>	delayProgCounters= new Hashtable<Integer,int[]>();
-	protected Map<Integer,Integer>	lastTimeProgsDone= new Hashtable<Integer,Integer>();
-	protected Map<Integer,Integer>	lastDayProgsDone = new Hashtable<Integer,Integer>();
+	protected List<Integer>			oncesDone		 = Collections.synchronizedList(new ArrayList<Integer>());
+	protected Map<Integer,Integer>	delayTargetTimes = Collections.synchronizedMap(new HashMap<Integer,Integer>());
+	protected Map<Integer,int[]>	delayProgCounters= Collections.synchronizedMap(new HashMap<Integer,int[]>());
+	protected Map<Integer,Integer>	lastTimeProgsDone= Collections.synchronizedMap(new HashMap<Integer,Integer>());
+	protected Map<Integer,Integer>	lastDayProgsDone = Collections.synchronizedMap(new HashMap<Integer,Integer>());
 	protected Set<Integer>			registeredEvents = new HashSet<Integer>();
-	protected Map<Integer,Long>		noTrigger		 = new Hashtable<Integer,Long>();
+	protected Map<Integer,Long>		noTrigger		 = Collections.synchronizedMap(new HashMap<Integer,Long>());
 	protected MOB					backupMOB		 = null;
 	protected CMMsg					lastMsg			 = null;
 	protected Resources				resources		 = null;
@@ -101,7 +101,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	protected String				scriptKey		 = null;
 	protected boolean				runInPassiveAreas= true;
 	protected boolean				debugBadScripts	 = false;
-	protected List<ScriptableResponse>que			 = new Vector<ScriptableResponse>();
+	protected List<ScriptableResponse>que			 = Collections.synchronizedList(new ArrayList<ScriptableResponse>());
 	protected final AtomicInteger	recurseCounter	 = new AtomicInteger();
 	protected volatile Object		cachedRef		 = null;
 
@@ -283,10 +283,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				str.append("<"+key.substring(10)+">");
 				@SuppressWarnings("unchecked")
-				final Hashtable<String,String> H=(Hashtable<String,String>)resources._getResource(key);
-				for(final Enumeration<String> e=H.keys();e.hasMoreElements();)
+				final Map<String,String> H=(Map<String,String>)resources._getResource(key);
+				for(final String vn : H.keySet())
 				{
-					final String vn=e.nextElement();
 					final String val=H.get(vn);
 					str.append("<"+vn+">"+CMLib.xml().parseOutAngleBrackets(val)+"</"+vn+">");
 				}
@@ -312,7 +311,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			if((piece.contents()!=null)&&(piece.contents().size()>0))
 			{
 				final String kkey="SCRIPTVAR-"+piece.tag();
-				final Hashtable<String,String> H=new Hashtable<String,String>();
+				final Map<String,String> H=Collections.synchronizedMap(new HashMap<String,String>());
 				for(int c=0;c<piece.contents().size();c++)
 				{
 					final XMLTag piece2=piece.contents().get(c);
@@ -621,7 +620,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	@Override
 	public List<String> externalFiles()
 	{
-		final Vector<String> xmlfiles=new Vector<String>();
+		final List<String> xmlfiles=Collections.synchronizedList(new ArrayList<String>());
 		parseLoads(null, getScript(), 0, xmlfiles, null);
 		return xmlfiles;
 	}
@@ -657,7 +656,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if(host.equalsIgnoreCase("*"))
 		{
 			String val=null;
-			Hashtable<String,String> H=null;
+			Map<String,String> H=null;
 			String key=null;
 			var=var.toUpperCase();
 			for(final Iterator<String> k = resources._findResourceKeys("SCRIPTVAR-");k.hasNext();)
@@ -665,7 +664,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				key=k.next();
 				if(key.startsWith("SCRIPTVAR-"))
 				{
-					H=(Hashtable<String,String>)resources._getResource(key);
+					H=(Map<String,String>)resources._getResource(key);
 					val=H.get(var);
 					if(val!=null)
 						return true;
@@ -673,7 +672,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			return false;
 		}
-		final Hashtable<String,String> H=(Hashtable<String,String>)resources._getResource("SCRIPTVAR-"+host);
+		final Map<String,String> H=(Map<String,String>)resources._getResource("SCRIPTVAR-"+host);
 		String val=null;
 		if(H!=null)
 			val=H.get(var.toUpperCase());
@@ -728,7 +727,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				return str.toString();
 			}
 			String val=null;
-			Hashtable<String,String> H=null;
+			Map<String,String> H=null;
 			String key=null;
 			var=var.toUpperCase();
 			for(final Iterator<String> k = resources._findResourceKeys("SCRIPTVAR-");k.hasNext();)
@@ -736,7 +735,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				key=k.next();
 				if(key.startsWith("SCRIPTVAR-"))
 				{
-					H=(Hashtable<String,String>)resources._getResource(key);
+					H=(Map<String,String>)resources._getResource(key);
 					val=H.get(var);
 					if(val!=null)
 						return val;
@@ -745,7 +744,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return defaultVal;
 		}
 		Resources.instance();
-		final Hashtable<String,String> H=(Hashtable<String,String>)resources._getResource("SCRIPTVAR-"+host);
+		final Map<String,String> H=(Map<String,String>)resources._getResource("SCRIPTVAR-"+host);
 		String val=null;
 		if(H!=null)
 			val=H.get(var.toUpperCase());
@@ -793,18 +792,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 	public void reset()
 	{
-		que = new Vector<ScriptableResponse>();
+		que = Collections.synchronizedList(new ArrayList<ScriptableResponse>());
 		lastToHurtMe = null;
 		lastKnownLocation= null;
 		homeKnownLocation=null;
 		altStatusTickable= null;
-		oncesDone = new Vector<Integer>();
-		delayTargetTimes = new Hashtable<Integer,Integer>();
-		delayProgCounters= new Hashtable<Integer,int[]>();
-		lastTimeProgsDone= new Hashtable<Integer,Integer>();
-		lastDayProgsDone = new Hashtable<Integer,Integer>();
+		oncesDone = Collections.synchronizedList(new ArrayList<Integer>());
+		delayTargetTimes = Collections.synchronizedMap(new HashMap<Integer,Integer>());
+		delayProgCounters= Collections.synchronizedMap(new HashMap<Integer,int[]>());
+		lastTimeProgsDone= Collections.synchronizedMap(new HashMap<Integer,Integer>());
+		lastDayProgsDone = Collections.synchronizedMap(new HashMap<Integer,Integer>());
 		registeredEvents = new HashSet<Integer>();
-		noTrigger = new Hashtable<Integer,Long>();
+		noTrigger = Collections.synchronizedMap(new HashMap<Integer,Long>());
 		backupMOB = null;
 		lastMsg = null;
 		bumpUpCache();
@@ -938,7 +937,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			reset();
 		}
 		final List<List<String>> V = CMParms.parseDoubleDelimited(text,'~',';');
-		final Vector<SubScript> V2=new Vector<SubScript>(3);
+		final List<SubScript> V2=Collections.synchronizedList(new ArrayList<SubScript>(3));
 		for(final List<String> ls : V)
 		{
 			final SubScript DV=new SubScriptImpl();
@@ -1158,7 +1157,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return null;
 		}
 		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(buf.toString());
-		monsters=new Vector<MOB>();
+		monsters=Collections.synchronizedList(new ArrayList<MOB>());
 		if(xml!=null)
 		{
 			if(CMLib.xml().getContentsFromPieces(xml,"MOBS")!=null)
@@ -1216,12 +1215,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return null;
 		}
 		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(buf.toString());
-		monsters=new Vector<MOB>();
+		monsters=Collections.synchronizedList(new ArrayList<MOB>());
 		if(xml!=null)
 		{
 			if(CMLib.xml().getContentsFromPieces(xml,"AREADATA")!=null)
 			{
-				final Hashtable<String,Object> definedIDs = new Hashtable<String,Object>();
+				final Map<String,Object> definedIDs = Collections.synchronizedMap(new HashMap<String,Object>());
 				final Map<String,String> eqParms=new HashMap<String,String>();
 				eqParms.putAll(CMParms.parseEQParms(rest.trim()));
 				final String idName=tagName.toUpperCase();
@@ -1296,7 +1295,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			logError(scripted,"XMLLOAD","?","Unknown XML file: '"+filename+"' in "+thangName);
 			return null;
 		}
-		items=new Vector<Item>();
+		items=Collections.synchronizedList(new ArrayList<Item>());
 		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(buf.toString());
 		if(xml!=null)
 		{
@@ -1354,13 +1353,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			logError(scripted,"XMLLOAD","?","Unknown XML file: '"+filename+"' in "+thangName);
 			return null;
 		}
-		items=new Vector<Item>();
+		items=Collections.synchronizedList(new ArrayList<Item>());
 		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(buf.toString());
 		if(xml!=null)
 		{
 			if(CMLib.xml().getContentsFromPieces(xml,"AREADATA")!=null)
 			{
-				final Hashtable<String,Object> definedIDs = new Hashtable<String,Object>();
+				final Map<String,Object> definedIDs = Collections.synchronizedMap(new HashMap<String,Object>());
 				final Map<String,String> eqParms=new HashMap<String,String>();
 				eqParms.putAll(CMParms.parseEQParms(rest.trim()));
 				final String idName=tagName.toUpperCase();
@@ -1499,7 +1498,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(areaThing==null)
 				{
 					final Area A=imHere.getArea();
-					final Vector<Environmental> all=new Vector<Environmental>();
+					final List<Environmental> all=Collections.synchronizedList(new ArrayList<Environmental>());
 					if(mob)
 					{
 						all.addAll(CMLib.map().findInhabitants(A.getProperMap(),null,thisName,100));
@@ -1507,11 +1506,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							all.addAll(CMLib.map().findShopStock(A.getProperMap(), null, thisName,100));
 						for(int a=all.size()-1;a>=0;a--)
 						{
-							if(!(all.elementAt(a) instanceof MOB))
-								all.removeElementAt(a);
+							if(!(all.get(a) instanceof MOB))
+								all.remove(a);
 						}
 						if(all.size()>0)
-							areaThing=all.elementAt(CMLib.dice().roll(1,all.size(),-1));
+							areaThing=all.get(CMLib.dice().roll(1,all.size(),-1));
 						else
 						{
 							all.addAll(CMLib.map().findInhabitantsFavorExact(CMLib.map().rooms(),null,thisName,false,100));
@@ -1519,11 +1518,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								all.addAll(CMLib.map().findShopStock(CMLib.map().rooms(), null, thisName,100));
 							for(int a=all.size()-1;a>=0;a--)
 							{
-								if(!(all.elementAt(a) instanceof MOB))
-									all.removeElementAt(a);
+								if(!(all.get(a) instanceof MOB))
+									all.remove(a);
 							}
 							if(all.size()>0)
-								thing=all.elementAt(CMLib.dice().roll(1,all.size(),-1));
+								thing=all.get(CMLib.dice().roll(1,all.size(),-1));
 						}
 					}
 					if(all.size()==0)
@@ -1534,7 +1533,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(all.size()==0)
 							all.addAll(CMLib.map().findShopStock(A.getProperMap(), null,thisName,100));
 						if(all.size()>0)
-							areaThing=all.elementAt(CMLib.dice().roll(1,all.size(),-1));
+							areaThing=all.get(CMLib.dice().roll(1,all.size(),-1));
 						else
 						{
 							all.addAll(CMLib.map().findRoomItems(CMLib.map().rooms(), null,thisName,true,100));
@@ -1543,7 +1542,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(all.size()==0)
 								all.addAll(CMLib.map().findShopStock(CMLib.map().rooms(), null,thisName,100));
 							if(all.size()>0)
-								thing=all.elementAt(CMLib.dice().roll(1,all.size(),-1));
+								thing=all.get(CMLib.dice().roll(1,all.size(),-1));
 						}
 					}
 				}
@@ -2126,7 +2125,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final boolean rest=vchrs.substring(t+replLen).startsWith("..");
 					if(rest)
 						replLen+=2;
-					final Vector<String> V=CMParms.parse(middle);
+					final List<String> V=CMParms.parse(middle);
 					if((V.size()>0)&&(y>=0))
 					{
 						if(y>=V.size())
@@ -2135,7 +2134,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(rest)
 							middle=CMParms.combine(V,y);
 						else
-							middle=V.elementAt(y);
+							middle=V.get(y);
 					}
 				}
 			}
@@ -2158,16 +2157,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(key.startsWith("SCRIPTVAR-"))
 				{
 					@SuppressWarnings("unchecked")
-					final Hashtable<String,?> H=(Hashtable<String,?>)resources._getResource(key);
+					final Map<String,?> H=(Map<String,?>)resources._getResource(key);
 					if(varname.equals("*"))
 					{
 						if(H!=null)
 						{
-							for(final Enumeration<String> e=H.keys();e.hasMoreElements();)
-							{
-								final String vn=e.nextElement();
+							for(final String vn : H.keySet())
 								set.add(key.substring(10),vn);
-							}
 						}
 					}
 					else
@@ -2178,16 +2174,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		else
 		{
 			@SuppressWarnings("unchecked")
-			final Hashtable<String,?> H=(Hashtable<String,?>)resources._getResource("SCRIPTVAR-"+mobname);
+			final Map<String,?> H=(Map<String,?>)resources._getResource("SCRIPTVAR-"+mobname);
 			if(varname.equals("*"))
 			{
 				if(H!=null)
 				{
-					for(final Enumeration<String> e=H.keys();e.hasMoreElements();)
-					{
-						final String vn=e.nextElement();
+					for(final String vn : H.keySet())
 						set.add(mobname,vn);
-					}
 				}
 			}
 			else
@@ -2510,7 +2503,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			final String name=vars.elementAtFirst(v);
 			key=vars.elementAtSecond(v).toUpperCase();
 			@SuppressWarnings("unchecked")
-			Hashtable<String,String> H=(Hashtable<String,String>)resources._getResource("SCRIPTVAR-"+name);
+			Map<String,String> H=(Map<String,String>)resources._getResource("SCRIPTVAR-"+name);
 			if((H==null)&&(defaultQuestName!=null)&&(defaultQuestName.length()>0))
 			{
 				final MOB M=CMLib.players().getPlayerAllHosts(name);
@@ -2535,7 +2528,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(val.length()==0)
 					continue;
 
-				H=new Hashtable<String,String>();
+				H=Collections.synchronizedMap(new HashMap<String,String>());
 				resources._submitResource("SCRIPTVAR-"+name,H);
 			}
 			if(val.length()>0)
@@ -2966,7 +2959,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	}
 
 	/**
-	 * Returns the index, in the given string vector, of the given string, starting
+	 * Returns the index, in the given string List, of the given string, starting
 	 * from the given index.  If the string to search for contains more than one
 	 * "word", where a word is defined in space-delimited terms respecting double-quotes,
 	 * then it will return the index at which all the words in the parsed search string
@@ -2976,19 +2969,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	 * @param start the index to start at (0 is good)
 	 * @return the index at which the search string was found in the string list, or -1
 	 */
-	private static int strIndex(final Vector<String> V, final String str, final int start)
+	private static int strIndex(final List<String> V, final String str, final int start)
 	{
-		int x=V.indexOf(str,start);
+		int x=(start == 0)?V.indexOf(str):V.subList(start, V.size()).indexOf(str);
 		if(x>=0)
-			return x;
+			return start + x;
 		final List<String> V2=CMParms.parse(str);
 		if(V2.size()==0)
 			return -1;
-		x=V.indexOf(V2.get(0),start);
+		x=(start == 0)?V.indexOf(V2.get(0)):V.subList(start, V.size()).indexOf(V2.get(0));
+		if(x>=0)
+			x+=start;
 		boolean found=false;
 		while((x>=0)&&((x+V2.size())<=V.size())&&(!found))
 		{
-			found=true;
 			for(int v2=1;v2<V2.size();v2++)
 			{
 				if(!V.get(x+v2).equals(V2.get(v2)))
@@ -2998,7 +2992,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 			}
 			if(!found)
-				x=V.indexOf(V2.get(0),x+1);
+			{
+				final int y=V.subList(x+1, V.size()).indexOf(V2.get(0));
+				x=(y>=0)?y+x+1:-1;
+			}
 		}
 		if(found)
 			return x;
@@ -3023,7 +3020,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	 * @param lastIndex the previously found index
 	 * @return the result of the search
 	 */
-	private static int stringContains(final Vector<String> V, final char combiner, final StringBuffer buf, int lastIndex)
+	private static int stringContains(final List<String> V, final char combiner, final StringBuffer buf, int lastIndex)
 	{
 		final String str=buf.toString().trim();
 		if(str.length()==0)
@@ -3063,7 +3060,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	 * @param depth the number of close parenthesis to expect
 	 * @return the last index in the coded search function evaluated
 	 */
-	private static int stringContains(final Vector<String> V, final char[] str, final int[] index, final int depth)
+	private static int stringContains(final List<String> V, final char[] str, final int[] index, final int depth)
 	{
 		final StringBuffer buf=new StringBuffer("");
 		int lastIndex=0;
@@ -3198,7 +3195,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				break;
 			}
 		}
-		final Vector<String> V=CMParms.parse(buf1.toString());
+		final List<String> V=CMParms.parse(buf1.toString());
 		return stringContains(V,buf2.toString().toCharArray(),new int[]{0},0);
 	}
 
@@ -8791,7 +8788,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(tt==null)
 						return null;
 					if(script.get(si).third==null)
-						script.get(si).third=new Hashtable<String,Integer>();
+						script.get(si).third=Collections.synchronizedMap(new HashMap<String,Integer>());
 				}
 				@SuppressWarnings("unchecked")
 				final Map<String,Integer> skipSwitchMap=(Map<String,Integer>)script.get(si).third;
@@ -8934,7 +8931,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							{
 								tt=parseBits(script,si,"Cr");
 								if(script.get(si).third==null)
-									script.get(si).third=new Hashtable<String,Integer>();
+									script.get(si).third=Collections.synchronizedMap(new HashMap<String,Integer>());
 							}
 							depth++;
 						}
@@ -11968,7 +11965,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						which=vars.elementAtFirst(v);
 						arg2=vars.elementAtSecond(v).toUpperCase();
 						@SuppressWarnings("unchecked")
-						final Hashtable<String,String> H=(Hashtable<String,String>)resources._getResource("SCRIPTVAR-"+which);
+						final Map<String,String> H=(Map<String,String>)resources._getResource("SCRIPTVAR-"+which);
 						String val="";
 						if(H!=null)
 						{
@@ -12830,7 +12827,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			default:
 				if(cmd.length()>0)
 				{
-					final Vector<String> V=CMParms.parse(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s));
+					final List<String> V=CMParms.parse(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s));
 					if((V.size()>0)
 					&&(monster!=null))
 						monster.doCommand(V,MUDCmdProcessor.METAFLAG_MPFORCED);
@@ -12842,7 +12839,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return null;
 	}
 
-	protected static final Vector<SubScript> empty=new ReadOnlyVector<SubScript>();
+	protected static final List<SubScript> empty=new ReadOnlyVector<SubScript>();
 
 	@Override
 	public String getScriptResourceKey()
@@ -14914,15 +14911,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				try
 				{
 					SB=que.get(q);
+					if(SB.checkTimeToExecute())
+					{
+						execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,newObjs());
+						que.remove(q);
+					}
 				}
 				catch(final ArrayIndexOutOfBoundsException x)
 				{
 					continue;
-				}
-				if(SB.checkTimeToExecute())
-				{
-					execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,newObjs());
-					que.remove(SB);
 				}
 			}
 			if((noTrigger.size()>0)&&(noTrigger.containsKey(Integer.valueOf(-52))))
@@ -14955,7 +14952,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		final Item						pi;
 		final Item						si;
 		final Object[]					objs;
-		Vector<String>					scr;
+		List<String>					scr;
 		final String					message;
 		final DefaultScriptingEngine	c;
 
