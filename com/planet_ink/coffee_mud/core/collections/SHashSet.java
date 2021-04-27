@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.core.collections;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 /*
    Copyright 2010-2021 Bo Zimmerman
@@ -20,8 +21,9 @@ import java.util.*;
  */
 public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Set<K>
 {
-	private static final long	serialVersionUID	= -6713012858869312626L;
-	private volatile HashSet<K>	T;
+	private static final long				serialVersionUID	= -6713012858869312626L;
+	private transient final ReentrantLock	lock				= new ReentrantLock();
+	private volatile HashSet<K>				T;
 
 	public SHashSet()
 	{
@@ -83,58 +85,112 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 		}
 	}
 
-	public synchronized void addAll(final Enumeration<K> E)
+	public void addAll(final Enumeration<K> E)
 	{
 		if (E != null)
 		{
-			for (; E.hasMoreElements();)
-				T.add(E.nextElement());
+			final ReentrantLock lock = this.lock;
+			lock.lock();
+			final HashSet<K> T2 = new HashSet<K>(T);
+			try
+			{
+				for (; E.hasMoreElements();)
+					T2.add(E.nextElement());
+			}
+			finally
+			{
+				this.T=T2;
+				lock.unlock();
+			}
 		}
 	}
 
-	public synchronized void addAll(final Iterator<K> E)
+	public void addAll(final Iterator<K> E)
 	{
 		if (E != null)
 		{
-			for (; E.hasNext();)
-				T.add(E.next());
+			final ReentrantLock lock = this.lock;
+			lock.lock();
+			final HashSet<K> T2 = new HashSet<K>(T);
+			try
+			{
+				for (; E.hasNext();)
+					T2.add(E.next());
+			}
+			finally
+			{
+				this.T=T2;
+				lock.unlock();
+			}
 		}
 	}
 
-	public synchronized void removeAll(final Enumeration<K> E)
+	public void removeAll(final Enumeration<K> E)
 	{
 		if (E != null)
 		{
-			for (; E.hasMoreElements();)
-				T.remove(E.nextElement());
+			final ReentrantLock lock = this.lock;
+			lock.lock();
+			final HashSet<K> T2 = new HashSet<K>(T);
+			try
+			{
+				for (; E.hasMoreElements();)
+					T2.remove(E.nextElement());
+			}
+			finally
+			{
+				this.T=T2;
+				lock.unlock();
+			}
 		}
 	}
 
-	public synchronized void removeAll(final Iterator<K> E)
+	public void removeAll(final Iterator<K> E)
 	{
 		if (E != null)
 		{
-			for (; E.hasNext();)
-				T.remove(E.next());
+			final ReentrantLock lock = this.lock;
+			lock.lock();
+			final HashSet<K> T2 = new HashSet<K>(T);
+			try
+			{
+				for (; E.hasNext();)
+					T2.remove(E.next());
+			}
+			finally
+			{
+				this.T=T2;
+				lock.unlock();
+			}
 		}
 	}
 
-	public synchronized void removeAll(final List<K> E)
+	public void removeAll(final List<K> E)
 	{
 		if (E != null)
 		{
-			for (final K o : E)
-				T.remove(o);
+			final ReentrantLock lock = this.lock;
+			lock.lock();
+			final HashSet<K> T2 = new HashSet<K>(T);
+			try
+			{
+				for (final K o : E)
+					T2.remove(o);
+			}
+			finally
+			{
+				this.T=T2;
+				lock.unlock();
+			}
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public synchronized HashSet<K> toHashSet()
+	public HashSet<K> toHashSet()
 	{
-		return (HashSet<K>) T.clone();
+		return new HashSet<K>(T);
 	}
 
-	public synchronized Vector<K> toVector()
+	public Vector<K> toVector()
 	{
 		final Vector<K> V = new Vector<K>(size());
 		for (final K k : T)
@@ -142,75 +198,108 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 		return V;
 	}
 
-	@SuppressWarnings("unchecked")
-
 	@Override
-	public synchronized boolean add(final K e)
+	public boolean add(final K e)
 	{
-		T = (HashSet<K>) T.clone();
+		final ReentrantLock lock = this.lock;
+		lock.lock();
+		final HashSet<K> T2 = new HashSet<K>(T);
+		try
+		{
+			return T2.add(e);
+		}
+		finally
+		{
+			this.T=T2;
+			lock.unlock();
+		}
+	}
+
+	public boolean addUnsafe(final K e)
+	{
 		return T.add(e);
 	}
 
-	public synchronized boolean addUnsafe(final K e)
+	@Override
+	public boolean addAll(final Collection<? extends K> c)
 	{
-		return T.add(e);
+		final ReentrantLock lock = this.lock;
+		lock.lock();
+		final HashSet<K> T2 = new HashSet<K>(T);
+		try
+		{
+			return T2.addAll(c);
+		}
+		finally
+		{
+			this.T=T2;
+			lock.unlock();
+		}
 	}
-
-	@SuppressWarnings("unchecked")
 
 	@Override
-	public synchronized boolean addAll(final Collection<? extends K> c)
+	public void clear()
 	{
-		T = (HashSet<K>) T.clone();
-		return T.addAll(c);
+		final ReentrantLock lock = this.lock;
+		lock.lock();
+		try
+		{
+			if(T.size()==0)
+				return;
+			this.T = new HashSet<K>();
+		}
+		finally
+		{
+			lock.unlock();
+		}
 	}
 
-	@SuppressWarnings("unchecked")
-
-	@Override
-	public synchronized void clear()
-	{
-		T = (HashSet<K>) T.clone();
-		T.clear();
-	}
-
-	@SuppressWarnings("unchecked")
-	public synchronized SHashSet<K> copyOf()
+	public SHashSet<K> copyOf()
 	{
 		final SHashSet<K> TS = new SHashSet<K>();
-		TS.T = (HashSet<K>) T.clone();
+		TS.T = new HashSet<K>(T);
 		return TS;
 	}
 
 	@Override
-	public synchronized boolean contains(final Object o)
+	public boolean contains(final Object o)
 	{
 		return T.contains(o);
 	}
 
 	@Override
-	public synchronized boolean isEmpty()
+	public boolean isEmpty()
 	{
 		return T.isEmpty();
 	}
 
 	@Override
-	public synchronized Iterator<K> iterator()
+	public Iterator<K> iterator()
 	{
 		return new ReadOnlyIterator<K>(T.iterator());
 	}
 
-	@SuppressWarnings("unchecked")
-
 	@Override
-	public synchronized boolean remove(final Object o)
+	public boolean remove(final Object o)
 	{
-		T = (HashSet<K>) T.clone();
-		return T.remove(o);
+		if(!T.contains(o))
+			return false;
+		final ReentrantLock lock = this.lock;
+		lock.lock();
+		final HashSet<K> T2 = new HashSet<K>(T);
+		try
+		{
+			return T2.remove(o);
+		}
+		finally
+		{
+			this.T=T2;
+			lock.unlock();
+		}
 	}
 
 	@Override
-	public synchronized int size()
+	public int size()
 	{
 		return T.size();
 	}
@@ -227,38 +316,54 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 		return super.hashCode();
 	}
 
-	@SuppressWarnings("unchecked")
-
 	@Override
-	public synchronized boolean removeAll(final Collection<?> arg0)
+	public boolean removeAll(final Collection<?> arg0)
 	{
-		T = (HashSet<K>) T.clone();
-		return T.removeAll(arg0);
+		final ReentrantLock lock = this.lock;
+		lock.lock();
+		final HashSet<K> T2 = new HashSet<K>(T);
+		try
+		{
+			return T2.removeAll(arg0);
+		}
+		finally
+		{
+			this.T=T2;
+			lock.unlock();
+		}
 	}
 
 	@Override
-	public synchronized boolean containsAll(final Collection<?> arg0)
+	public boolean containsAll(final Collection<?> arg0)
 	{
 		return T.containsAll(arg0);
 	}
 
-	@SuppressWarnings("unchecked")
-
 	@Override
-	public synchronized boolean retainAll(final Collection<?> arg0)
+	public boolean retainAll(final Collection<?> arg0)
 	{
-		T = (HashSet<K>) T.clone();
-		return T.retainAll(arg0);
+		final ReentrantLock lock = this.lock;
+		lock.lock();
+		final HashSet<K> T2 = new HashSet<K>(T);
+		try
+		{
+			return T2.retainAll(arg0);
+		}
+		finally
+		{
+			this.T=T2;
+			lock.unlock();
+		}
 	}
 
 	@Override
-	public synchronized Object[] toArray()
+	public Object[] toArray()
 	{
 		return T.toArray();
 	}
 
 	@Override
-	public synchronized <T> T[] toArray(final T[] arg0)
+	public <T> T[] toArray(final T[] arg0)
 	{
 		return T.toArray(arg0);
 	}

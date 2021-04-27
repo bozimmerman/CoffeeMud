@@ -14,6 +14,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Vector;
+import java.util.concurrent.locks.ReentrantLock;
 
 /*
    Copyright 2010-2021 Bo Zimmerman
@@ -32,8 +33,10 @@ import java.util.Vector;
 */
 public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>, SortedMap<K,V>
 {
-	private static final long serialVersionUID = -6713012858839312626L;
-	private volatile TreeMap<K,V> T;
+	private static final long				serialVersionUID	= -6713012858839312626L;
+	private volatile TreeMap<K, V>			T;
+	private transient final ReentrantLock	lock				= new ReentrantLock();
+
 	public STreeMap()
 	{
 		T=new TreeMap<K,V>();
@@ -53,12 +56,12 @@ public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>,
 	}
 
 	@SuppressWarnings("unchecked")
-	public synchronized TreeMap<K,V> toTreeMap()
+	public TreeMap<K,V> toTreeMap()
 	{
 		return (TreeMap<K,V>)T.clone();
 	}
 
-	public synchronized Vector<String> toStringVector(final String divider)
+	public Vector<String> toStringVector(final String divider)
 	{
 		final Vector<String> V=new Vector<String>(size());
 		for(final Object S : navigableKeySet())
@@ -76,238 +79,284 @@ public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>,
 	}
 
 	@Override
-	public synchronized java.util.Map.Entry<K, V> ceilingEntry(final K key)
+	public java.util.Map.Entry<K, V> ceilingEntry(final K key)
 	{
 		return T.ceilingEntry(key);
 	}
 
 	@Override
-	public synchronized K ceilingKey(final K key)
+	public K ceilingKey(final K key)
 	{
 		return T.ceilingKey(key);
 	}
 
-	@SuppressWarnings("unchecked")
-
 	@Override
-	public synchronized void clear()
+	public void clear()
 	{
-		T=(TreeMap<K,V>)T.clone();
-		T.clear();
+		if(T.size()==0)
+			return;
+		final ReentrantLock lock = this.lock;
+		lock.lock();
+		try
+		{
+			this.T = new TreeMap<K, V>();
+		}
+		finally
+		{
+			lock.unlock();
+		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public synchronized STreeMap<K,V> copyOf()
+	public STreeMap<K,V> copyOf()
 	{
 		final STreeMap<K,V> SH=new STreeMap<K,V>();
-		SH.T=(TreeMap<K,V>)T.clone();
+		SH.T=new TreeMap<K,V>(T);
 		return SH;
 	}
 
 	@Override
-	public synchronized Comparator<? super K> comparator()
+	public Comparator<? super K> comparator()
 	{
 		return T.comparator();
 	}
 
 	@Override
-	public synchronized boolean containsKey(final Object key)
+	public boolean containsKey(final Object key)
 	{
 		return T.containsKey(key);
 	}
 
 	@Override
-	public synchronized boolean containsValue(final Object value)
+	public boolean containsValue(final Object value)
 	{
 		return T.containsValue(value);
 	}
 
 	@Override
-	public synchronized NavigableSet<K> descendingKeySet()
+	public NavigableSet<K> descendingKeySet()
 	{
 		return new ReadOnlyNavigableSet<K>(T.descendingKeySet());
 	}
 
 	@Override
-	public synchronized NavigableMap<K, V> descendingMap()
+	public NavigableMap<K, V> descendingMap()
 	{
 		return new ReadOnlyNavigableMap<K,V>(T.descendingMap());
 	}
 
 	@Override
-	public synchronized Set<java.util.Map.Entry<K, V>> entrySet()
+	public Set<java.util.Map.Entry<K, V>> entrySet()
 	{
 		return new ReadOnlySet<java.util.Map.Entry<K, V>>(T.entrySet());
 	}
 
 	@Override
-	public synchronized java.util.Map.Entry<K, V> firstEntry()
+	public java.util.Map.Entry<K, V> firstEntry()
 	{
 		return T.firstEntry();
 	}
 
 	@Override
-	public synchronized K firstKey()
+	public K firstKey()
 	{
 		return T.firstKey();
 	}
 
 	@Override
-	public synchronized java.util.Map.Entry<K, V> floorEntry(final K key)
+	public java.util.Map.Entry<K, V> floorEntry(final K key)
 	{
 		return T.floorEntry(key);
 	}
 
 	@Override
-	public synchronized K floorKey(final K key)
+	public K floorKey(final K key)
 	{
 		return T.floorKey(key);
 	}
 
 	@Override
-	public synchronized V get(final Object key)
+	public V get(final Object key)
 	{
 		return T.get(key);
 	}
 
 	@Override
-	public synchronized NavigableMap<K, V> headMap(final K toKey, final boolean inclusive)
+	public NavigableMap<K, V> headMap(final K toKey, final boolean inclusive)
 	{
 		return new ReadOnlyNavigableMap<K,V>(T.headMap(toKey, inclusive));
 	}
 
 	@Override
-	public synchronized SortedMap<K, V> headMap(final K toKey)
+	public SortedMap<K, V> headMap(final K toKey)
 	{
 		return new ReadOnlySortedMap<K,V>(T.headMap(toKey));
 	}
 
 	@Override
-	public synchronized java.util.Map.Entry<K, V> higherEntry(final K key)
+	public java.util.Map.Entry<K, V> higherEntry(final K key)
 	{
 		return T.higherEntry(key);
 	}
 
 	@Override
-	public synchronized K higherKey(final K key)
+	public K higherKey(final K key)
 	{
 		return T.higherKey(key);
 	}
 
 	@Override
-	public synchronized Set<K> keySet()
+	public Set<K> keySet()
 	{
 		return new ReadOnlySet<K>(T.keySet());
 	}
 
 	@Override
-	public synchronized java.util.Map.Entry<K, V> lastEntry()
+	public java.util.Map.Entry<K, V> lastEntry()
 	{
 		return T.lastEntry();
 	}
 
 	@Override
-	public synchronized K lastKey()
+	public K lastKey()
 	{
 		return T.lastKey();
 	}
 
 	@Override
-	public synchronized java.util.Map.Entry<K, V> lowerEntry(final K key)
+	public java.util.Map.Entry<K, V> lowerEntry(final K key)
 	{
 		return T.lowerEntry(key);
 	}
 
 	@Override
-	public synchronized K lowerKey(final K key)
+	public K lowerKey(final K key)
 	{
 		return T.lowerKey(key);
 	}
 
 	@Override
-	public synchronized NavigableSet<K> navigableKeySet()
+	public NavigableSet<K> navigableKeySet()
 	{
 		return new ReadOnlyNavigableSet<K>(T.navigableKeySet());
 	}
 
-	@SuppressWarnings("unchecked")
-
 	@Override
-	public synchronized java.util.Map.Entry<K, V> pollFirstEntry()
+	public java.util.Map.Entry<K, V> pollFirstEntry()
 	{
-		T=(TreeMap<K,V>)T.clone();
-		return T.pollFirstEntry();
-	}
-
-	@SuppressWarnings("unchecked")
-
-	@Override
-	public synchronized java.util.Map.Entry<K, V> pollLastEntry()
-	{
-		T=(TreeMap<K,V>)T.clone();
-		return T.pollLastEntry();
-	}
-
-	@SuppressWarnings("unchecked")
-
-	@Override
-	public synchronized V put(final K key, final V value)
-	{
-		T=(TreeMap<K,V>)T.clone();
-		return T.put(key, value);
-	}
-
-	@SuppressWarnings("unchecked")
-
-	@Override
-	public synchronized void putAll(final Map<? extends K, ? extends V> map)
-	{
-		T=(TreeMap<K,V>)T.clone();
-		T.putAll(map);
-	}
-
-	@SuppressWarnings("unchecked")
-
-	@Override
-	public synchronized V remove(final Object key)
-	{
-		T=(TreeMap<K,V>)T.clone();
-		return T.remove(key);
+		final ReentrantLock lock = this.lock;
+		lock.lock();
+		final TreeMap<K, V> T2 = new TreeMap<K, V>(T);
+		try
+		{
+			return T2.pollFirstEntry();
+		}
+		finally
+		{
+			this.T=T2;
+			lock.unlock();
+		}
 	}
 
 	@Override
-	public synchronized int size()
+	public java.util.Map.Entry<K, V> pollLastEntry()
+	{
+		final ReentrantLock lock = this.lock;
+		lock.lock();
+		final TreeMap<K, V> T2 = new TreeMap<K, V>(T);
+		try
+		{
+			return T2.pollLastEntry();
+		}
+		finally
+		{
+			this.T=T2;
+			lock.unlock();
+		}
+	}
+
+	@Override
+	public V put(final K key, final V value)
+	{
+		final ReentrantLock lock = this.lock;
+		lock.lock();
+		final TreeMap<K, V> T2 = new TreeMap<K, V>(T);
+		try
+		{
+			return T2.put(key, value);
+		}
+		finally
+		{
+			this.T=T2;
+			lock.unlock();
+		}
+	}
+
+	@Override
+	public void putAll(final Map<? extends K, ? extends V> map)
+	{
+		final ReentrantLock lock = this.lock;
+		lock.lock();
+		final TreeMap<K, V> T2 = new TreeMap<K, V>(T);
+		try
+		{
+			T2.putAll(map);
+		}
+		finally
+		{
+			this.T=T2;
+			lock.unlock();
+		}
+	}
+
+	@Override
+	public V remove(final Object key)
+	{
+		final ReentrantLock lock = this.lock;
+		lock.lock();
+		final TreeMap<K, V> T2 = new TreeMap<K, V>(T);
+		try
+		{
+			return T2.remove(key);
+		}
+		finally
+		{
+			this.T=T2;
+			lock.unlock();
+		}
+	}
+
+	@Override
+	public int size()
 	{
 		return T.size();
 	}
 
 	@Override
-	public synchronized NavigableMap<K, V> subMap(final K fromKey, final boolean fromInclusive, final K toKey,
-			final boolean toInclusive)
-			{
+	public NavigableMap<K, V> subMap(final K fromKey, final boolean fromInclusive, final K toKey, final boolean toInclusive)
+	{
 		return new ReadOnlyNavigableMap<K,V>(T.subMap(fromKey, fromInclusive, toKey, toInclusive));
 	}
 
 	@Override
-	public synchronized SortedMap<K, V> subMap(final K fromKey, final K toKey)
+	public SortedMap<K, V> subMap(final K fromKey, final K toKey)
 	{
 		return new ReadOnlySortedMap<K,V>(T.subMap(fromKey, toKey));
 	}
 
 	@Override
-	public synchronized NavigableMap<K, V> tailMap(final K fromKey, final boolean inclusive)
+	public NavigableMap<K, V> tailMap(final K fromKey, final boolean inclusive)
 	{
 		return new ReadOnlyNavigableMap<K, V>(T.tailMap(fromKey, inclusive));
 	}
 
 	@Override
-	public synchronized SortedMap<K, V> tailMap(final K fromKey)
+	public SortedMap<K, V> tailMap(final K fromKey)
 	{
 		return new ReadOnlySortedMap<K, V>(T.tailMap(fromKey));
 	}
 
 	@Override
-	public synchronized Collection<V> values()
+	public Collection<V> values()
 	{
 		return new ReadOnlyCollection<V>(T.values());
 	}
@@ -325,7 +374,7 @@ public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>,
 	}
 
 	@Override
-	public synchronized boolean isEmpty()
+	public boolean isEmpty()
 	{
 		return T.isEmpty();
 	}

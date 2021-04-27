@@ -14917,7 +14917,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						que.remove(q);
 					}
 				}
-				catch(final ArrayIndexOutOfBoundsException x)
+				catch(final IndexOutOfBoundsException x)
 				{
 					continue;
 				}
