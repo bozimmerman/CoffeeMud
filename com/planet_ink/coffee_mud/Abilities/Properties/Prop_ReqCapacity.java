@@ -215,12 +215,44 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 									}
 									if(targetRoom != null)
 									{
-										for(int ri=R.numItems()-1;ri>=0 && totOver>0;ri--,totOver--)
+										for(int ri=R.numItems()-1;ri>=0 && totOver>0;ri--)
 										{
 											final Item I=R.getItem(ri);
 											if((I!=null)
-											&&(I.container()==null))
+											&&(I.container()==null)
+											&&((!(I instanceof Container))||(((Container)I).capacity()<=I.basePhyStats().weight())))
+											{
 												targetRoom.moveItemTo(I, Expire.Inheret, Move.Optimize);
+												totOver--;
+											}
+										}
+										if(totOver > 0)
+										{
+											for(int ri=R.numItems()-1;ri>=0 && totOver>0;ri--)
+											{
+												final Item I=R.getItem(ri);
+												if((I!=null)
+												&&(I.container()==null))
+												{
+													I.setContainer(null);
+													targetRoom.moveItemTo(I, Expire.Inheret, Move.Optimize);
+													totOver--;
+												}
+											}
+										}
+										if(totOver > 0)
+										{
+											for(int ri=R.numItems()-1;ri>=0 && totOver>0;ri--)
+											{
+												final Item I=R.getItem(ri);
+												if((I!=null)
+												&&(I.container()!=null))
+												{
+													I.setContainer(null);
+													targetRoom.moveItemTo(I, Expire.Inheret, Move.Optimize);
+													totOver--;
+												}
+											}
 										}
 										R.recoverRoomStats();
 										targetRoom.recoverRoomStats();
