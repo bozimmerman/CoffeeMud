@@ -1023,7 +1023,20 @@ public class Log extends java.util.logging.Logger
 	*/
 	public static final void errOut(final String module, final Throwable e)
 	{
-		l().standardExOut(Type.error,module,Integer.MIN_VALUE,e);
+		l().standardExOut(Type.error,module,Integer.MIN_VALUE,null,e);
+	}
+
+	/**
+	* Sends the given exception to the error channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no priority is given, priority is set to lowest possible.
+	* @param module The module name to prefix the message with
+	* @param e The exception to send out the stack and message of
+	* @param preMsgStr brief message to prepend to the error
+	*/
+	public static final void errOut(final String module, final Throwable e, final String preMsgStr)
+	{
+		l().standardExOut(Type.error,module,Integer.MIN_VALUE,preMsgStr,e);
 	}
 
 	/**
@@ -1035,7 +1048,7 @@ public class Log extends java.util.logging.Logger
 	*/
 	public static final void warnOut(final String module, final Throwable e)
 	{
-		l().standardExOut(Type.error,module,Integer.MIN_VALUE,e);
+		l().standardExOut(Type.error,module,Integer.MIN_VALUE,null,e);
 	}
 
 	/**
@@ -1059,7 +1072,7 @@ public class Log extends java.util.logging.Logger
 	*/
 	public static final void errOut(final Throwable e)
 	{
-		l().standardExOut(Type.error,Thread.currentThread().getName(),Integer.MIN_VALUE,e);
+		l().standardExOut(Type.error,Thread.currentThread().getName(),Integer.MIN_VALUE,null,e);
 	}
 
 	/**
@@ -1071,7 +1084,7 @@ public class Log extends java.util.logging.Logger
 	*/
 	public static final void warnOut(final Throwable e)
 	{
-		l().standardExOut(Type.error,Thread.currentThread().getName(),Integer.MIN_VALUE,e);
+		l().standardExOut(Type.error,Thread.currentThread().getName(),Integer.MIN_VALUE,null,e);
 	}
 
 	/**
@@ -1311,7 +1324,7 @@ public class Log extends java.util.logging.Logger
 	*/
 	public static final void errOut(final String module, final int priority, final Throwable e)
 	{
-		l().standardExOut(Type.error,module,priority,e);
+		l().standardExOut(Type.error,module,priority,null,e);
 	}
 
 	/**
@@ -1323,7 +1336,7 @@ public class Log extends java.util.logging.Logger
 	*/
 	public static final void warnOut(final String module, final int priority, final Throwable e)
 	{
-		l().standardExOut(Type.error,module,priority,e);
+		l().standardExOut(Type.error,module,priority,null,e);
 	}
 
 	/**
@@ -1348,7 +1361,7 @@ public class Log extends java.util.logging.Logger
 	* @param priority the priority level to give to this message
 	* @param e	The exception whose string one wishes to print
 	*/
-	public final void standardExOut(final Type type, final String module, final int priority, final Throwable e)
+	public final void standardExOut(final Type type, final String module, final int priority, final String prePend, final Throwable e)
 	{
 		final Conf conf=getConfig(type);
 		PrintWriter outWriter=getWriter(type,conf,priority);
@@ -1356,7 +1369,13 @@ public class Log extends java.util.logging.Logger
 		{
 			synchronized(outWriter)
 			{
-				final String msg=(e!=null)?e.getMessage():"Null/Unknown error occurred.";
+
+				final String errStr = ((e!=null)?e.getMessage():"Null/Unknown error occurred.");
+				final String msg;
+				if(prePend != null)
+					msg=prePend + ": " + errStr;
+				else
+					msg=errStr;
 				final String firstLine=makeLogEntry(type,module,msg);
 				outWriter=writeBytes(conf,outWriter, firstLine);
 				if(conf.target==Target.BOTH)
@@ -1871,7 +1890,8 @@ public class Log extends java.util.logging.Logger
 	{
 		if(thrown==null)
 			log(level,msg);
-		else standardExOut(getTypeFromLevel(level),toModuleName(msg),Integer.MIN_VALUE,thrown);
+		else
+			standardExOut(getTypeFromLevel(level),toModuleName(msg),Integer.MIN_VALUE,null,thrown);
 	}
 	//Log a LogRecord.
 	@Override
@@ -1903,7 +1923,8 @@ public class Log extends java.util.logging.Logger
 	{
 		if(thrown==null)
 			log(level,msg);
-		else standardExOut(getTypeFromLevel(level),toModuleName(sourceClass),Integer.MIN_VALUE,thrown);
+		else
+			standardExOut(getTypeFromLevel(level),toModuleName(sourceClass),Integer.MIN_VALUE,null,thrown);
 	}
 	//Log a message, specifying source class, method, and resource bundle name with no arguments.
 	@Override
@@ -1968,7 +1989,7 @@ public class Log extends java.util.logging.Logger
 	@Override
 	public void	throwing(final String sourceClass, final String sourceMethod, final Throwable thrown)
 	{
-		standardExOut(Type.error, toModuleName(sourceClass), Integer.MIN_VALUE, thrown);
+		standardExOut(Type.error, toModuleName(sourceClass), Integer.MIN_VALUE, null, thrown);
 	}
 	//Log a WARNING message.
 	@Override

@@ -151,7 +151,7 @@ public class DBConnection
 		{
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
 			{
-				Log.errOut("DBConnection",e);
+				Log.errOut("DBConnection",e,"catalog");
 			}
 		}
 		return "";
@@ -185,7 +185,7 @@ public class DBConnection
 		catch (final SQLException e)
 		{
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
-				Log.errOut("DBConnection",e);
+				Log.errOut("DBConnection",e,"sclose");
 		}
 		try
 		{
@@ -195,7 +195,7 @@ public class DBConnection
 		catch (final SQLException e)
 		{
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
-				Log.errOut("DBConnection",e);
+				Log.errOut("DBConnection",e,"pclose");
 		}
 		try
 		{
@@ -205,7 +205,7 @@ public class DBConnection
 		catch (final SQLException e)
 		{
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
-				Log.errOut("DBConnection",e);
+				Log.errOut("DBConnection",e,"cclose");
 		}
 		myConnection=null;
 		myStatement=null;
@@ -234,7 +234,7 @@ public class DBConnection
 			catch(final SQLException e)
 			{
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
-					Log.errOut("DBConnection",e);
+					Log.errOut("DBConnection",e,"use1");
 				myConnection=null;
 				failuresInARow++;
 				sqlserver=false;
@@ -422,7 +422,7 @@ public class DBConnection
 		{
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
 			{
-				Log.errOut("DBConnection",e);
+				Log.errOut("DBConnection",e,"closestat");
 			}
 			// not a real error?
 		}
