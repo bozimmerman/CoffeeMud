@@ -520,6 +520,16 @@ public class Spell_Wish extends Spell
 					}
 					if(!isLegalTarget(mob, foundThang, false, myWish))
 						return false;
+					if(foundThang instanceof Coins)
+					{
+						final String currency=((Coins)foundThang).getCurrency();
+						final MoneyLibrary.MoneyDefinition def=CMLib.beanCounter().getCurrencySet(currency);
+						if((def!=null)&&(!def.canTrade()))
+						{
+							mob.tell(L("You can't bring yourself to wish for that."));
+							return false;
+						}
+					}
 					final Item newItem=(Item)foundThang.copyOf();
 					experienceRequired+=newItem.value();
 					if(newItem instanceof LandTitle)
