@@ -57,7 +57,7 @@ public class DefaultSocial implements Social
 	protected int			 sourceCode	= CMMsg.MSG_OK_ACTION;
 	protected int			 othersCode	= CMMsg.MSG_OK_ACTION;
 	protected int			 targetCode	= CMMsg.MSG_OK_ACTION;
-	protected Set<SocialFlag>flags		= Collections.synchronizedSet(new HashSet<SocialFlag>());
+	protected Set<SocialFlag>flags		= new SHashSet<SocialFlag>();
 
 	@Override
 	public String ID()
