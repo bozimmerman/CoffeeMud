@@ -14914,7 +14914,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(SB.checkTimeToExecute())
 					{
 						execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,newObjs());
-						que.remove(q);
+						que.remove(SB);
 					}
 				}
 				catch(final IndexOutOfBoundsException x)
