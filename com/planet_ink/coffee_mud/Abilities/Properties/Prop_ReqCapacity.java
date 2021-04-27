@@ -234,9 +234,10 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 												if((I!=null)
 												&&(I.container()==null))
 												{
-													I.setContainer(null);
 													targetRoom.moveItemTo(I, Expire.Inheret, Move.Optimize);
 													totOver--;
+													if(I instanceof Container)
+														totOver-= ((Container)I).getContents().size();
 												}
 											}
 										}
@@ -251,6 +252,8 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 													I.setContainer(null);
 													targetRoom.moveItemTo(I, Expire.Inheret, Move.Optimize);
 													totOver--;
+													if(I instanceof Container)
+														totOver-= ((Container)I).getContents().size();
 												}
 											}
 										}
