@@ -104,11 +104,11 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 	public enum Stage
 	{
 		Designer(30,4,0),
-		Cuirbouli(37,5,7),
-		Thick(45,6,14),
-		Masterwork(54,7,21),
-		Laminar(63,8,28),
-		Battlemoulded(72,9,35);
+		Cuirbouli(37,5,6),
+		Thick(45,6,13),
+		Masterwork(54,7,20),
+		Laminar(63,8,27),
+		Battlemoulded(72,9,34);
 		public final int recipeLevel;
 		public final int multiplier;
 		public final int damage;
@@ -606,7 +606,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			}
 			if(buildingI instanceof Weapon)
 			{
-				((Weapon)buildingI).basePhyStats().setAttackAdjustment(baseYield()+abilityCode()+(hardness*5)-1);
+				((Weapon)buildingI).basePhyStats().setAttackAdjustment(baseYield()+abilityCode()+(hardness*5)-7);
 				((Weapon)buildingI).setWeaponClassification(Weapon.CLASS_FLAILED);
 				setWeaponTypeClass((Weapon)buildingI,misctype,Weapon.TYPE_SLASHING);
 				buildingI.basePhyStats().setDamage(armordmg+hardness+bonusDamage);

@@ -575,10 +575,10 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			if(buildingI instanceof Weapon)
 			{
-				((Weapon)buildingI).basePhyStats().setAttackAdjustment(baseYield()+abilityCode()+(hardness*5)-1);
+				((Weapon)buildingI).basePhyStats().setAttackAdjustment(baseYield()+abilityCode()+(hardness*5)-7);
 				((Weapon)buildingI).setWeaponClassification(Weapon.CLASS_FLAILED);
 				setWeaponTypeClass((Weapon)buildingI,misctype,Weapon.TYPE_SLASHING);
-				buildingI.basePhyStats().setDamage(armordmg+hardness+((multiplier-1)*7));
+				buildingI.basePhyStats().setDamage(armordmg+hardness+((multiplier-1)*8));
 				((Weapon)buildingI).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 			}
 			if((buildingI instanceof Armor)&&(!(buildingI instanceof FalseLimb)))
