@@ -113,8 +113,8 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 				Log.errOut("LeatherWorking","Recipes not found!");
 			else
 			{
-				final List<List<String>> pleaseAdd1=new Vector<List<String>>();
-				final List<List<String>> pleaseAdd2=new Vector<List<String>>();
+				final List<List<String>> pleaseAdd1=new ArrayList<List<String>>();
+				final List<List<String>> pleaseAdd2=new ArrayList<List<String>>();
 				for(int r=0;r<recipes.size();r++)
 				{
 					final List<String> V=recipes.get(r);
@@ -578,7 +578,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 				((Weapon)buildingI).basePhyStats().setAttackAdjustment(baseYield()+abilityCode()+(hardness*5)-1);
 				((Weapon)buildingI).setWeaponClassification(Weapon.CLASS_FLAILED);
 				setWeaponTypeClass((Weapon)buildingI,misctype,Weapon.TYPE_SLASHING);
-				buildingI.basePhyStats().setDamage(armordmg+hardness);
+				buildingI.basePhyStats().setDamage(armordmg+hardness+((multiplier-1)*7));
 				((Weapon)buildingI).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 			}
 			if((buildingI instanceof Armor)&&(!(buildingI instanceof FalseLimb)))

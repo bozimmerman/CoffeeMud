@@ -103,18 +103,20 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 
 	public enum Stage
 	{
-		Designer(30,4),
-		Cuirbouli(37,5),
-		Thick(45,6),
-		Masterwork(54,7),
-		Laminar(63,8),
-		Battlemoulded(72,9);
-		public int recipeLevel;
-		public int multiplier;
-		private Stage(final int recipeLevel, final int multiplier)
+		Designer(30,4,0),
+		Cuirbouli(37,5,7),
+		Thick(45,6,14),
+		Masterwork(54,7,21),
+		Laminar(63,8,28),
+		Battlemoulded(72,9,35);
+		public final int recipeLevel;
+		public final int multiplier;
+		public final int damage;
+		private Stage(final int recipeLevel, final int multiplier, final int dmg)
 		{
 			this.recipeLevel=recipeLevel;
 			this.multiplier=multiplier;
+			this.damage=dmg;
 		}
 	}
 
@@ -486,6 +488,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			final String recipeName=CMParms.combine(commands,0);
 			List<String> foundRecipe=null;
 			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
+			int bonusDamage=0;
 			for(int r=0;r<matches.size();r++)
 			{
 				final List<String> V=matches.get(r);
@@ -500,7 +503,10 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 						if(stage == null)
 							multiplier=1;
 						else
+						{
 							multiplier=stage.multiplier;
+							bonusDamage=stage.damage;
+						}
 						foundRecipe=V;
 						recipeLevel=level;
 						break;
@@ -603,7 +609,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 				((Weapon)buildingI).basePhyStats().setAttackAdjustment(baseYield()+abilityCode()+(hardness*5)-1);
 				((Weapon)buildingI).setWeaponClassification(Weapon.CLASS_FLAILED);
 				setWeaponTypeClass((Weapon)buildingI,misctype,Weapon.TYPE_SLASHING);
-				buildingI.basePhyStats().setDamage(armordmg+hardness);
+				buildingI.basePhyStats().setDamage(armordmg+hardness+bonusDamage);
 				((Weapon)buildingI).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 			}
 			if((buildingI instanceof Armor)&&(!(buildingI instanceof FalseLimb)))
