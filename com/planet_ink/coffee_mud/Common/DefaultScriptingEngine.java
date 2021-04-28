@@ -8924,7 +8924,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					else
 					{
 						if(inCase)
-							subScript.add(script.get(si));
+						{
+							final ScriptLn line = script.get(si);
+							if(line != null)
+								subScript.add(line);
+						}
 						if(cmd.equals("SWITCH"))
 						{
 							if(tt==null)
@@ -9074,7 +9078,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								tt=parseBits(script,si,"C");
 							depth--;
 						}
-						subScript.add(script.get(si));
+						final ScriptLn line = script.get(si);
+						if(line != null)
+							subScript.add(line);
 					}
 					si++;
 				}
