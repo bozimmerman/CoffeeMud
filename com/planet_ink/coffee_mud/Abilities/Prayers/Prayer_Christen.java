@@ -123,7 +123,7 @@ public class Prayer_Christen extends Prayer
 			}
 		}
 		targetMob.destroy();
-		
+
 		if(name.length()==0)
 		{
 			mob.tell(L("Christen @x1 what?",target.name(mob)));
@@ -140,6 +140,12 @@ public class Prayer_Christen extends Prayer
 		if(CMLib.players().playerExists(name))
 		{
 			mob.tell(L("That name is already taken.  Please choose another."));
+			return false;
+		}
+
+		if(!CMLib.login().isOkName(name, false))
+		{
+			mob.tell(L("That name is not appropriate."));
 			return false;
 		}
 
