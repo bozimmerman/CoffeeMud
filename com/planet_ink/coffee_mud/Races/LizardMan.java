@@ -239,6 +239,10 @@ public class LizardMan extends StdRace
 			p1.setName(L("a loincloth"));
 			p1.setDisplayText(L("a simple loincloth sits here."));
 			p1.setDescription(L("A simple piece of cloth for wrapping around your mid-parts."));
+			p1.setRawProperLocationBitmap(Wearable.WORN_WAIST);
+			p1.basePhyStats().setAbility(0);
+			((Container)p1).setCapacity(20);
+			((Container)p1).setContainTypes(Container.CONTAIN_DAGGERS|Container.CONTAIN_ONEHANDWEAPONS|Container.CONTAIN_SWORDS|Container.CONTAIN_OTHERWEAPONS);
 			p1.text();
 			outfitChoices.add(p1);
 		}

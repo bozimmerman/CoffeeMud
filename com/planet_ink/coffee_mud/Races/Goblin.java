@@ -245,6 +245,11 @@ public class Goblin extends StdRace
 			p1.setName(L("a cotton loincloth"));
 			p1.setDisplayText(L("a cotton loincloth lies here"));
 			p1.setDescription(L("Looks like little more than some rags pinned together at the corners."));
+			p1.setRawLogicalAnd(true);
+			p1.setRawProperLocationBitmap(Wearable.WORN_WAIST);
+			p1.basePhyStats().setAbility(0);
+			((Container)p1).setCapacity(20);
+			((Container)p1).setContainTypes(Container.CONTAIN_DAGGERS|Container.CONTAIN_ONEHANDWEAPONS|Container.CONTAIN_SWORDS|Container.CONTAIN_OTHERWEAPONS);
 			p1.text();
 			outfitChoices.add(p1);
 			final Armor s3=CMClass.getArmor("GenBelt");

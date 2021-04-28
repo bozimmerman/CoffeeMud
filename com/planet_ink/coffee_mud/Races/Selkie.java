@@ -220,7 +220,11 @@ public class Selkie extends StdRace
 			p1.setName(L("a sharkskin loincloth"));
 			p1.setDisplayText(L("a sharkskin loincloth has been left here."));
 			p1.setDescription(L("A plain looking loincloth, with slick sharky leather gloss."));
-			s1.setMaterial(RawMaterial.RESOURCE_LEATHER);
+			p1.setRawProperLocationBitmap(Wearable.WORN_WAIST);
+			p1.basePhyStats().setAbility(0);
+			((Container)p1).setCapacity(20);
+			((Container)p1).setContainTypes(Container.CONTAIN_DAGGERS|Container.CONTAIN_ONEHANDWEAPONS|Container.CONTAIN_SWORDS|Container.CONTAIN_OTHERWEAPONS);
+			p1.setMaterial(RawMaterial.RESOURCE_LEATHER);
 			p1.text();
 			outfitChoices.add(p1);
 
