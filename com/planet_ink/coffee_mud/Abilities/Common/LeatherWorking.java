@@ -78,7 +78,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tWEAPON_CLASS||CODED_WEAR_LOCATION\t"
 		+"CONTAINER_CAPACITY||LIQUID_CAPACITY||WEAPON_HANDS_REQUIRED||MAX_WAND_USES\tBASE_DAMAGE||BASE_ARMOR_AMOUNT\t"
-		+"CONTAINER_TYPE\tCODED_SPELL_LIST";
+		+"CONTAINER_TYPE||MIN_MAX_RANGE\tCODED_SPELL_LIST";
 	}
 
 	//protected static final int RCP_FINALNAME=0;
@@ -555,7 +555,6 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			if(buildingI.basePhyStats().level()<1)
 				buildingI.basePhyStats().setLevel(1);
 			final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
-			final long canContain=getContainerType(foundRecipe.get(RCP_CONTAINMASK));
 			int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
 			if(armordmg!=0)
 				armordmg=armordmg+(multiplier-1);
@@ -575,6 +574,23 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			if(buildingI instanceof Weapon)
 			{
+				final String maxRangeStr=foundRecipe.get(RCP_CONTAINMASK);
+				final int maxrange;
+				final int minrange;
+				if(maxRangeStr.indexOf(',')>0)
+				{
+					minrange=CMath.s_int(maxRangeStr.substring(0,maxRangeStr.indexOf(',')).trim());
+					maxrange=CMath.s_int(maxRangeStr.substring(0,maxRangeStr.indexOf(',')+1).trim());
+				}
+				else
+				{
+					minrange=-1;
+					maxrange=CMath.s_int(maxRangeStr);
+				}
+				if(minrange<0)
+					((Weapon)buildingI).setRanges(((Weapon)buildingI).minRange(),maxrange);
+				else
+					((Weapon)buildingI).setRanges(minrange,maxrange);
 				((Weapon)buildingI).basePhyStats().setAttackAdjustment(baseYield()+abilityCode()+(hardness*5)-7);
 				((Weapon)buildingI).setWeaponClassification(Weapon.CLASS_FLAILED);
 				setWeaponTypeClass((Weapon)buildingI,misctype,Weapon.TYPE_SLASHING);
@@ -583,6 +599,8 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			if((buildingI instanceof Armor)&&(!(buildingI instanceof FalseLimb)))
 			{
+				final String containStr=foundRecipe.get(RCP_CONTAINMASK);
+				final long canContain=getContainerType(containStr);
 				if((capacity>0)&&(buildingI instanceof Container))
 				{
 					((Container)buildingI).setCapacity(capacity+woodRequired);
