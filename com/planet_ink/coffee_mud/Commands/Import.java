@@ -5773,6 +5773,20 @@ public class Import extends StdCommand
 					continue;
 				}
 				else
+				if((buf!=null)&&(buf.length()>20)&&(buf.substring(0,20).indexOf("<CUSTOM>")>=0))
+				{
+					final String error = CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(), custom, externalFiles);
+					if(error.length()==0)
+					{
+						importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
+						importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
+						Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
+						if(session!=null)
+							session.println(L("Custom object(s) successfully imported!"));
+					}
+					continue;
+				}
+				else
 				if((buf!=null)&&(buf.length()>20)&&((buf.substring(0,20).indexOf("<PLAYERS>")>=0)||(buf.substring(0,20).indexOf("<ACCOUNTS>")>=0)))
 				{
 					if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.IMPORTPLAYERS))

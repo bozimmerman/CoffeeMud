@@ -195,6 +195,9 @@ public class Export extends StdCommand
 		if((!commandType.equalsIgnoreCase("ROOM"))
 		&&(!commandType.equalsIgnoreCase("WORLD"))
 		&&(!commandType.equalsIgnoreCase("CATALOG"))
+		&&(!commandType.equalsIgnoreCase("CLASS"))
+		&&(!commandType.equalsIgnoreCase("RACE"))
+		&&(!commandType.equalsIgnoreCase("ABILITY"))
 		&&(!commandType.equalsIgnoreCase("PLAYER"))
 		&&(!commandType.equalsIgnoreCase("USER"))
 		&&(!(commandType.equalsIgnoreCase("ACCOUNT")&&(CMProps.isUsingAccountSystem())))
@@ -203,13 +206,15 @@ public class Export extends StdCommand
 			if(S!=null)
 			{
 				if(CMProps.isUsingAccountSystem())
-					mob.tell(L("Export what?  Room, World, Player, Account, or Area?"));
+					mob.tell(L("Export what?  Room, World, Area, Player, Account, Race, Class, or Ability?"));
 				else
-					mob.tell(L("Export what?  Room, World, Player, or Area?"));
+					mob.tell(L("Export what?  Room, World, Area, Player, Race, Class, or Ability?"));
 			}
 			return false;
 		}
-		if(commandType.equalsIgnoreCase("PLAYER")||commandType.equalsIgnoreCase("ACCOUNT")||commandType.equalsIgnoreCase("USER"))
+		if(commandType.equalsIgnoreCase("PLAYER")
+		||commandType.equalsIgnoreCase("ACCOUNT")
+		||commandType.equalsIgnoreCase("USER"))
 		{
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.EXPORTPLAYERS))
 			{
@@ -236,6 +241,9 @@ public class Export extends StdCommand
 				||sub.equalsIgnoreCase("ARMOR"))
 			&&(!commandType.equalsIgnoreCase("PLAYER"))
 			&&(!commandType.equalsIgnoreCase("USER"))
+			&&(!commandType.equalsIgnoreCase("CLASS"))
+			&&(!commandType.equalsIgnoreCase("RACE"))
+			&&(!commandType.equalsIgnoreCase("ABILITY"))
 			&&(!commandType.equalsIgnoreCase("CATALOG"))
 			&&(!commandType.equalsIgnoreCase("ACCOUNT")))
 			{
@@ -248,6 +256,27 @@ public class Export extends StdCommand
 			else
 			if((commandType.equalsIgnoreCase("PLAYER")||commandType.equalsIgnoreCase("USER"))
 			&&(CMLib.players().getLoadPlayer(sub)!=null))
+			{
+				subType=sub;
+				commands.remove(0);
+			}
+			else
+			if((commandType.equalsIgnoreCase("CLASS"))
+			&&(CMClass.getCharClass(sub)!=null))
+			{
+				subType=sub;
+				commands.remove(0);
+			}
+			else
+			if((commandType.equalsIgnoreCase("RACE"))
+			&&(CMClass.getRace(sub)!=null))
+			{
+				subType=sub;
+				commands.remove(0);
+			}
+			else
+			if((commandType.equalsIgnoreCase("ABILITY"))
+			&&(CMClass.getAbility(sub)!=null))
 			{
 				subType=sub;
 				commands.remove(0);
@@ -505,6 +534,65 @@ public class Export extends StdCommand
 					S.rawPrintln("!");
 			}
 			else
+			if(commandType.equalsIgnoreCase("CLASS"))
+			{
+				if(fileNameCode==2)
+					fileName=fileName+"/classes";
+				xml="";
+				for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+				{
+					final CharClass C=c.nextElement();
+					if(C.isGeneric())
+					{
+						custom.add(C);
+						for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+						{
+							final Ability A=a.nextElement();
+							if(A.isGeneric()
+							&&(CMLib.ableMapper().getQualifyingLevel(C.ID(), false, A.ID()) >=0)
+							&&(!custom.contains(A)))
+								custom.add(A);
+						}
+					}
+				}
+			}
+			else
+			if(commandType.equalsIgnoreCase("RACE"))
+			{
+				if(fileNameCode==2)
+					fileName=fileName+"/races";
+				xml="";
+				for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+				{
+					final Race R=r.nextElement();
+					if(R.isGeneric())
+					{
+						custom.add(R);
+						for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+						{
+							final Ability A=a.nextElement();
+							if(A.isGeneric()
+							&&(CMLib.ableMapper().getQualifyingLevel(R.ID(), false, A.ID()) >=0)
+							&&(!custom.contains(A)))
+								custom.add(A);
+						}
+					}
+				}
+			}
+			else
+			if(commandType.equalsIgnoreCase("ABILITY"))
+			{
+				if(fileNameCode==2)
+					fileName=fileName+"/abilities";
+				xml="";
+				for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+				{
+					final Ability A=a.nextElement();
+					if(A.isGeneric())
+						custom.add(A);
+				}
+			}
+			else
 			{
 				if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.EXPORT))
 				{
@@ -558,6 +646,53 @@ public class Export extends StdCommand
 			if(fileNameCode==2)
 				fileName=fileName+"/player";
 			xml=x.toString()+"</PLAYERS>";
+		}
+		else
+		if(commandType.equalsIgnoreCase("CLASS"))
+		{
+			final CharClass C=CMClass.getCharClass(subType);
+			if(C.isGeneric())
+			{
+				custom.add(C);
+				for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+				{
+					final Ability A=a.nextElement();
+					if(A.isGeneric()
+					&&(CMLib.ableMapper().getQualifyingLevel(C.ID(), false, A.ID()) >=0)
+					&&(!custom.contains(A)))
+						custom.add(A);
+				}
+			}
+			if(fileNameCode==2)
+				fileName=fileName+"/classes";
+		}
+		else
+		if(commandType.equalsIgnoreCase("RACE"))
+		{
+			final Race R=CMClass.getRace(subType);
+			if(R.isGeneric())
+			{
+				custom.add(R);
+				for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+				{
+					final Ability A=a.nextElement();
+					if(A.isGeneric()
+					&&(CMLib.ableMapper().getQualifyingLevel(R.ID(), false, A.ID()) >=0)
+					&&(!custom.contains(A)))
+						custom.add(A);
+				}
+			}
+			if(fileNameCode==2)
+				fileName=fileName+"/races";
+		}
+		else
+		if(commandType.equalsIgnoreCase("ABILITY"))
+		{
+			final Ability A=CMClass.getAbility(subType);
+			if(A.isGeneric())
+				custom.add(A);
+			if(fileNameCode==2)
+				fileName=fileName+"/abilities";
 		}
 		else
 		if(commandType.equalsIgnoreCase("ACCOUNT"))
