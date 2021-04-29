@@ -123,7 +123,10 @@ public class OrderedMap<K,J> implements Map<K,J>,  Iterable<J>
 		{
 			final LinkedEntry<Pair<K,J>> l = map.get(key);
 			if(coll.remove(l))
+			{
+				map.remove(key);
 				return l.value.second;
+			}
 
 		}
 		return null;
