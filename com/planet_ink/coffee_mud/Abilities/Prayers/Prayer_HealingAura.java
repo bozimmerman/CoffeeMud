@@ -149,7 +149,10 @@ public class Prayer_HealingAura extends Prayer
 			if(A!=null)
 			{
 				for (final MOB M : followers)
-					A.invoke(myChar,M,true,0);
+				{
+					if(((MendingSkill)A).supportsMending(M))
+						A.invoke(myChar,M,true,0);
+				}
 			}
 		}
 		if((tenDown)<=0)
@@ -159,7 +162,10 @@ public class Prayer_HealingAura extends Prayer
 			if(A!=null)
 			{
 				for (final MOB M : followers)
-					A.invoke(myChar,M,true,0);
+				{
+					if(((MendingSkill)A).supportsMending(M))
+						A.invoke(myChar,M,true,0);
+				}
 			}
 		}
 		if((twentyDown)<=0)
@@ -169,7 +175,10 @@ public class Prayer_HealingAura extends Prayer
 			if(A!=null)
 			{
 				for (final MOB M : followers)
-					A.invoke(myChar,M,true,0);
+				{
+					if(((MendingSkill)A).supportsMending(M))
+						A.invoke(myChar,M,true,0);
+				}
 			}
 		}
 		return true;
