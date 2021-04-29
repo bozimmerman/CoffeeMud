@@ -21,6 +21,7 @@
  19. Weaponsmith/Fletching/leatherworking now supports min/max range data
  20. New achievement type GROUPKILL
  21. Socials now support flags.  Initial flags for confirming, target confirming.
+ 22. New Property: Prop_MultiEffects, for stacking the same prop multiple times.
   
 # Build 5.9.11.1 Release 02/26/2021
   Bug Fix Release:
