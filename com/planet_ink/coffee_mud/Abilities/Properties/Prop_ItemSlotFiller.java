@@ -120,7 +120,7 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 			affected2 = P;
 			for(final Ability A : getAffects())
 			{
-				if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
+				if((A!=null)&&(!A.ID().startsWith("Prop_ItemSlot")))
 					A.setAffectedOne(P);
 			}
 		}
@@ -259,7 +259,7 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 			final Physical P=(affected2 != null)?affected2:(Physical)myHost;
 			for(final Ability A : getAffects())
 			{
-				if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
+				if((A!=null)&&(!A.ID().startsWith("Prop_ItemSlot")))
 				{
 					if(!A.okMessage(P, msg))
 						return false;
@@ -278,7 +278,7 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 			final Physical P=(affected2 != null)?affected2:(Physical)myHost;
 			for(final Ability A : getAffects())
 			{
-				if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
+				if((A!=null)&&(!A.ID().startsWith("Prop_ItemSlot")))
 				{
 					A.executeMsg(P, msg);
 				}
@@ -295,7 +295,7 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 			final Physical P=(affected2 != null)?affected2:host;
 			for(final Ability A : getAffects())
 			{
-				if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
+				if((A!=null)&&(!A.ID().startsWith("Prop_ItemSlot")))
 				{
 					A.affectPhyStats(P, affectableStats);
 				}
@@ -311,7 +311,7 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 		{
 			for(final Ability A : getAffects())
 			{
-				if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
+				if((A!=null)&&(!A.ID().startsWith("Prop_ItemSlot")))
 				{
 					A.affectCharStats(affectedMOB, affectedStats);
 				}
@@ -327,7 +327,7 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 		{
 			for(final Ability A : getAffects())
 			{
-				if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
+				if((A!=null)&&(!A.ID().startsWith("Prop_ItemSlot")))
 				{
 					A.affectCharState(affectedMOB, affectedState);
 				}
