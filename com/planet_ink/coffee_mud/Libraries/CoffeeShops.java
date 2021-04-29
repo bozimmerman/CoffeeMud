@@ -1170,7 +1170,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					buyerCustM.tell(L("You can't carry any more items."));
 					return false;
 				}
-				if(product instanceof BoardableShip)
+				if((product instanceof BoardableShip)
+				||(!CMLib.flags().isGettable((Item)product)))
 				{
 					if((buyerCustM.maxCarry()-buyerCustM.phyStats().weight())<=0)
 					{
