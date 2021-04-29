@@ -185,7 +185,7 @@ public class Hamstring extends StdAbility
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE,auto?"":L("F^<FIGHT^><S-NAME> attempt(s) to hamstring <T-NAME>.^</FIGHT^>^N"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE,auto?"":L("^F<FIGHT^><S-NAME> attempt(s) to hamstring <T-NAME>.^</FIGHT^>^N"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
