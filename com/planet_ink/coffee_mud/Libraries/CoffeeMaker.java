@@ -1035,10 +1035,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		final List<XMLLibrary.XMLTag> cV=CMLib.xml().getContentsFromPieces(xml,"ROOMCONTENT");
 		if(cV==null)
 			return unpackErr("Room","null 'ROOMCONTENT' in room "+newRoom.roomID(),xml);
+		final XMLLibrary xmlLib=CMLib.xml();
 		if(cV.size()>0)
 		{
 			final Map<MOB,String> mobRideTable=new Hashtable<MOB,String>();
-			final List<XMLLibrary.XMLTag> mV=CMLib.xml().getContentsFromPieces(cV,"ROOMMOBS");
+			final List<XMLLibrary.XMLTag> mV=xmlLib.getContentsFromPieces(cV,"ROOMMOBS");
 			if(mV!=null)
 			{
 				for(int m=0;m<mV.size();m++)
@@ -1056,7 +1057,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					if((iden!=null)&&(iden.length()>0))
 						identTable.put(iden,newMOB);
 
-					newMOB.setMiscText(CMLib.xml().restoreAngleBrackets(mblk.getValFromPieces("MTEXT")));
+					newMOB.setMiscText(xmlLib.restoreAngleBrackets(mblk.getValFromPieces("MTEXT")));
 					newMOB.basePhyStats().setLevel(mblk.getIntFromPieces("MLEVL"));
 					newMOB.basePhyStats().setAbility(mblk.getIntFromPieces("MABLE"));
 					newMOB.basePhyStats().setRejuv(mblk.getIntFromPieces("MREJV"));
@@ -1074,7 +1075,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			}
 
 			final Map<Item,String> itemLocTable=new Hashtable<Item,String>();
-			final List<XMLLibrary.XMLTag> iV=CMLib.xml().getContentsFromPieces(cV,"ROOMITEMS");
+			final List<XMLLibrary.XMLTag> iV=xmlLib.getContentsFromPieces(cV,"ROOMITEMS");
 			if(iV!=null)
 			{
 				for(int i=0;i<iV.size();i++)
@@ -1105,7 +1106,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						newItem.basePhyStats().setRejuv(iblk.getIntFromPieces("IREJV"));
 						newItem.setUsesRemaining(iblk.getIntFromPieces("IUSES"));
 						newItem.setOwner(newRoom); // temporary measure to take care of behaviors
-						newItem.setMiscText(CMLib.xml().restoreAngleBrackets(iblk.getValFromPieces("ITEXT")));
+						newItem.setMiscText(xmlLib.restoreAngleBrackets(iblk.getValFromPieces("ITEXT")));
 						newItem.setContainer(null);
 						newItem.recoverPhyStats();
 						newRoom.addItem(newItem);
@@ -1145,6 +1146,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	@Override
 	public String unpackRoomFromXML(final Area forceArea, final List<XMLTag> xml, final boolean andContent, final boolean andSave)
 	{
+		final XMLLibrary xmlLib=CMLib.xml();
 		Area myArea;
 		String areaName;
 		if(forceArea!=null)
@@ -1154,16 +1156,16 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		else
 		{
-			areaName = CMLib.xml().getValFromPieces(xml,"RAREA");
+			areaName = xmlLib.getValFromPieces(xml,"RAREA");
 			myArea=CMLib.map().getArea(areaName);
 		}
 		if(myArea==null)
 			return unpackErr("Room","null RAREA '"+areaName+"'",xml);
-		final String roomClass=CMLib.xml().getValFromPieces(xml,"RCLAS");
+		final String roomClass=xmlLib.getValFromPieces(xml,"RCLAS");
 		final Room newRoom=CMClass.getLocale(roomClass);
 		if(newRoom==null)
 			return unpackErr("Room","null RCLAS '"+roomClass+"'",xml);
-		newRoom.setRoomID(CMLib.xml().getValFromPieces(xml,"ROOMID"));
+		newRoom.setRoomID(xmlLib.getValFromPieces(xml,"ROOMID"));
 		if(newRoom.roomID().equals("NEW"))
 			newRoom.setRoomID(myArea.getNewRoomID(newRoom,-1));
 		if((forceArea==null) && CMLib.map().getRoom(newRoom.roomID())!=null)
@@ -1171,12 +1173,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		newRoom.setArea(myArea);
 		if(andSave)
 			CMLib.database().DBCreateRoom(newRoom);
-		newRoom.setDisplayText(CMLib.xml().getValFromPieces(xml,"RDISP"));
-		newRoom.setDescription(CMLib.xml().getValFromPieces(xml,"RDESC"));
-		newRoom.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xml,"RTEXT")));
+		newRoom.setDisplayText(xmlLib.getValFromPieces(xml,"RDISP"));
+		newRoom.setDescription(xmlLib.getValFromPieces(xml,"RDESC"));
+		newRoom.setMiscText(xmlLib.restoreAngleBrackets(xmlLib.getValFromPieces(xml,"RTEXT")));
 
 		// now EXITS!
-		final List<XMLLibrary.XMLTag> xV=CMLib.xml().getContentsFromPieces(xml,"ROOMEXITS");
+		final List<XMLLibrary.XMLTag> xV=xmlLib.getContentsFromPieces(xml,"ROOMEXITS");
 		if(xV==null)
 			return unpackErr("Room","null 'ROOMEXITS' in room "+newRoom.roomID(),xml);
 		for(int x=0;x<xV.size();x++)
@@ -1236,12 +1238,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				Exit exit=null;
 				if(xxV.size()>0)
 				{
-					final String exitID=CMLib.xml().getValFromPieces(xxV,"EXID");
+					final String exitID=xmlLib.getValFromPieces(xxV,"EXID");
 					exit=CMClass.getExit(exitID);
 					if(exit==null)
 						return unpackErr("Room","null EXID '"+exitID+"' in room "+newRoom.roomID());
 					exit.setTemporaryDoorLink("{{#"+newRoom.roomID()+"#}}");
-					exit.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xxV,"EXDAT")));
+					exit.setMiscText(xmlLib.restoreAngleBrackets(xmlLib.getValFromPieces(xxV,"EXDAT")));
 					newRoom.setRawExit(dir,exit);
 				}
 				else
@@ -2461,6 +2463,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		final StringBuffer buf=new StringBuffer("");
 		if(room==null)
 			return buf;
+		final XMLLibrary xmlLib=CMLib.xml();
 		// do this quick before a tick messes it up!
 		final List<MOB> inhabs=new ArrayList<MOB>();
 		final Room croom=andIsInDB?makeNewRoomContent(room,false):room;
@@ -2489,12 +2492,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		final boolean isShip=(area instanceof BoardableShip);
 
 		buf.append("<AROOM>");
-		buf.append(CMLib.xml().convertXMLtoTag("ROOMID",room.roomID()));
-		buf.append(CMLib.xml().convertXMLtoTag("RAREA",room.getArea().Name()));
-		buf.append(CMLib.xml().convertXMLtoTag("RCLAS",CMClass.classID(room)));
-		buf.append(CMLib.xml().convertXMLtoTag("RDISP",room.displayText()));
-		buf.append(CMLib.xml().convertXMLtoTag("RDESC",room.description()));
-		buf.append(CMLib.xml().convertXMLtoTag("RTEXT",CMLib.xml().parseOutAngleBrackets(room.text())));
+		buf.append(xmlLib.convertXMLtoTag("ROOMID",room.roomID()));
+		buf.append(xmlLib.convertXMLtoTag("RAREA",room.getArea().Name()));
+		buf.append(xmlLib.convertXMLtoTag("RCLAS",CMClass.classID(room)));
+		buf.append(xmlLib.convertXMLtoTag("RDISP",room.displayText()));
+		buf.append(xmlLib.convertXMLtoTag("RDESC",room.description()));
+		buf.append(xmlLib.convertXMLtoTag("RTEXT",xmlLib.parseOutAngleBrackets(room.text())));
 		fillFileSet(room,files);
 		if(skipDoors)
 			buf.append("<ROOMEXITS />");
@@ -2512,11 +2515,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				||((door==null)&&(exit!=null)))
 				{
 					buf.append("<REXIT>");
-					buf.append(CMLib.xml().convertXMLtoTag("XDIRE",d));
+					buf.append(xmlLib.convertXMLtoTag("XDIRE",d));
 					if(door==null)
 						buf.append("<XDOOR />");
 					else
-						buf.append(CMLib.xml().convertXMLtoTag("XDOOR",door.roomID()));
+						buf.append(xmlLib.convertXMLtoTag("XDOOR",door.roomID()));
 					if(exit==null)
 						buf.append("<XEXIT />");
 					else
@@ -2556,9 +2559,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						for (final String string : oldStrs)
 							exitStr.append(string);
 						buf.append("<REXIT>");
-						buf.append(CMLib.xml().convertXMLtoTag("XDIRE",(256+(++ordinal))));
-						buf.append(CMLib.xml().convertXMLtoTag("XDOOR",R.roomID()));
-						buf.append(CMLib.xml().convertXMLtoTag("XDATA",exitStr.toString()));
+						buf.append(xmlLib.convertXMLtoTag("XDIRE",(256+(++ordinal))));
+						buf.append(xmlLib.convertXMLtoTag("XDOOR",R.roomID()));
+						buf.append(xmlLib.convertXMLtoTag("XDATA",exitStr.toString()));
 						buf.append("</REXIT>");
 					}
 				}
@@ -2585,18 +2588,18 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						possiblyAddCustomEffect(mob, custom);
 
 						buf.append("<RMOB>");
-						buf.append(CMLib.xml().convertXMLtoTag("MCLAS",CMClass.classID(mob)));
+						buf.append(xmlLib.convertXMLtoTag("MCLAS",CMClass.classID(mob)));
 						if((((mob instanceof Rideable)&&(((Rideable)mob).numRiders()>0)))||(mob.numFollowers()>0))
-							buf.append(CMLib.xml().convertXMLtoTag("MIDEN",""+mob));
-						buf.append(CMLib.xml().convertXMLtoTag("MLEVL",mob.basePhyStats().level()));
-						buf.append(CMLib.xml().convertXMLtoTag("MABLE",mob.basePhyStats().ability()));
-						buf.append(CMLib.xml().convertXMLtoTag("MREJV",mob.basePhyStats().rejuv()));
-						buf.append(CMLib.xml().convertXMLtoTag("MTEXT",CMLib.xml().parseOutAngleBrackets(mob.text())));
+							buf.append(xmlLib.convertXMLtoTag("MIDEN",""+mob));
+						buf.append(xmlLib.convertXMLtoTag("MLEVL",mob.basePhyStats().level()));
+						buf.append(xmlLib.convertXMLtoTag("MABLE",mob.basePhyStats().ability()));
+						buf.append(xmlLib.convertXMLtoTag("MREJV",mob.basePhyStats().rejuv()));
+						buf.append(xmlLib.convertXMLtoTag("MTEXT",xmlLib.parseOutAngleBrackets(mob.text())));
 						if(mob.riding()!=null)
-							buf.append(CMLib.xml().convertXMLtoTag("MRIDE",""+mob.riding()));
+							buf.append(xmlLib.convertXMLtoTag("MRIDE",""+mob.riding()));
 						else
 						if(mob.amFollowing()!=null)
-							buf.append(CMLib.xml().convertXMLtoTag("MRIDE",""+mob.amFollowing()));
+							buf.append(xmlLib.convertXMLtoTag("MRIDE",""+mob.amFollowing()));
 						else
 							buf.append("<MRIDE />");
 						fillFileSet(mob,files);
@@ -2618,19 +2621,19 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					{
 						possiblyAddCustomEffect(item, custom);
 						StringBuilder ibuf=new StringBuilder();
-						ibuf.append(CMLib.xml().convertXMLtoTag("ICLAS",CMClass.classID(item)));
+						ibuf.append(xmlLib.convertXMLtoTag("ICLAS",CMClass.classID(item)));
 						if(((item instanceof Container)&&(((Container)item).capacity()>0))
 						||((item instanceof Rideable)&&(((Rideable)item).numRiders()>0)))
-							ibuf.append(CMLib.xml().convertXMLtoTag("IIDEN",""+item));
+							ibuf.append(xmlLib.convertXMLtoTag("IIDEN",""+item));
 						if(item.container()==null)
 							ibuf.append("<ILOCA />");
 						else
-							ibuf.append(CMLib.xml().convertXMLtoTag("ILOCA",""+item.container()));
-						ibuf.append(CMLib.xml().convertXMLtoTag("IREJV",item.basePhyStats().rejuv()));
-						ibuf.append(CMLib.xml().convertXMLtoTag("IUSES",item.usesRemaining()));
-						ibuf.append(CMLib.xml().convertXMLtoTag("ILEVL",item.basePhyStats().level()));
-						ibuf.append(CMLib.xml().convertXMLtoTag("IABLE",item.basePhyStats().ability()));
-						ibuf.append(CMLib.xml().convertXMLtoTag("ITEXT",CMLib.xml().parseOutAngleBrackets(item.text())));
+							ibuf.append(xmlLib.convertXMLtoTag("ILOCA",""+item.container()));
+						ibuf.append(xmlLib.convertXMLtoTag("IREJV",item.basePhyStats().rejuv()));
+						ibuf.append(xmlLib.convertXMLtoTag("IUSES",item.usesRemaining()));
+						ibuf.append(xmlLib.convertXMLtoTag("ILEVL",item.basePhyStats().level()));
+						ibuf.append(xmlLib.convertXMLtoTag("IABLE",item.basePhyStats().ability()));
+						ibuf.append(xmlLib.convertXMLtoTag("ITEXT",xmlLib.parseOutAngleBrackets(item.text())));
 						if((item instanceof BoardableShip)
 						&&(files != null))
 						{
