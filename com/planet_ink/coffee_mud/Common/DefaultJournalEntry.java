@@ -311,6 +311,56 @@ public class DefaultJournalEntry implements JournalEntry
 	}
 
 	@Override
+	public String getXML()
+	{
+		final XMLLibrary xmlLib=CMLib.xml();
+		final StringBuilder xml=new StringBuilder();
+		xml.append("<JENTRY ");
+		xml.append("KEY=\"").append(xmlLib.parseOutAngleBracketsAndQuotes(key)).append("\" ");
+		xml.append("FROM=\"").append(xmlLib.parseOutAngleBracketsAndQuotes(from)).append("\" ");
+		xml.append("TO=\"").append(xmlLib.parseOutAngleBracketsAndQuotes(to)).append("\" ");
+		xml.append("SUBJ=\"").append(xmlLib.parseOutAngleBracketsAndQuotes(subj)).append("\" ");
+		xml.append("DATE=\"").append(date).append("\" ");
+		xml.append("UPDATE=\"").append(update).append("\" ");
+		xml.append("PARENT=\"").append(xmlLib.parseOutAngleBracketsAndQuotes(parent)).append("\" ");
+		xml.append("ATTRIB=\"").append(attributes).append("\" ");
+		xml.append("CARD=\"").append(cardinal).append("\" ");
+		xml.append("REPLIES=\"").append(replies).append("\" ");
+		xml.append("VIEWS=\"").append(views).append("\" ");
+		xml.append("LAST=\"").append(isLastEntry).append("\" ");
+		xml.append("ICON=\"").append(xmlLib.parseOutAngleBracketsAndQuotes(msgIcon)).append("\" ");
+		xml.append("DATA=\"").append(xmlLib.parseOutAngleBracketsAndQuotes(data)).append(">");
+		xml.append(xmlLib.parseOutAngleBrackets(msg));
+		xml.append("</JENTRY>");
+		return xml.toString();
+	}
+
+	@Override
+	public void setXML(final String xml)
+	{
+		final XMLLibrary xmlLib=CMLib.xml();
+		final List<XMLLibrary.XMLTag> dat=xmlLib.parseAllXML(xml);
+		if(dat.size()>0 && dat.get(0).tag().equals("JENTRY"))
+		{
+			final XMLLibrary.XMLTag tag = dat.get(0);
+			key=xmlLib.restoreAngleBrackets(tag.getParmValue("KEY"));
+			from=xmlLib.restoreAngleBrackets(tag.getParmValue("FROM"));
+			to=xmlLib.restoreAngleBrackets(tag.getParmValue("TO"));
+			subj=xmlLib.restoreAngleBrackets(tag.getParmValue("SUBJ"));
+			date=CMath.s_long(tag.getParmValue("DATE"));
+			update=CMath.s_long(tag.getParmValue("UPDATE"));
+			parent=xmlLib.restoreAngleBrackets(tag.getParmValue("PARENT"));
+			replies=CMath.s_int(tag.getParmValue("REPLIES"));
+			views=CMath.s_int(tag.getParmValue("VIEWS"));
+			isLastEntry=CMath.s_bool(tag.getParmValue("LAST"));
+			msgIcon=xmlLib.restoreAngleBrackets(tag.getParmValue("ICON"));
+			data=xmlLib.restoreAngleBrackets(tag.getParmValue("DATA"));
+			msg=xmlLib.restoreAngleBrackets(tag.value());
+
+		}
+	}
+
+	@Override
 	public JournalEntry copyOf()
 	{
 		try

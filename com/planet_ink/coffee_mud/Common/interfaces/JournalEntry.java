@@ -266,6 +266,18 @@ public interface JournalEntry extends CMCommon, Cloneable
 	 */
 	public int compareTo(JournalEntry o);
 
+	/**
+	 * Returns an xml representation of this entry.
+	 * @return an xml representation of this entry
+	 */
+	public String getXML();
+
+	/**
+	 * Sets an entry based on the given xml.
+	 * @param xml the xml to use.
+	 */
+	public void setXML(final String xml);
+
 	@Override
 	/**
 	 * Returns a copy of the journal entry
