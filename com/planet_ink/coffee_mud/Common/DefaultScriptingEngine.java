@@ -2530,6 +2530,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 				H=Collections.synchronizedMap(new HashMap<String,String>());
 				resources._submitResource("SCRIPTVAR-"+name,H);
+				if(H==null)
+					continue;
 			}
 			if(val.length()>0)
 			{

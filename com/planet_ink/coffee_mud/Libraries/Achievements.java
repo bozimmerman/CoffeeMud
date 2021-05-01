@@ -1080,7 +1080,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								if((killed != null)
 								&&((npcMask==null)||(CMLib.masking().maskCheck(npcMask, killed, true)))
 								&&((playerMask==null)||(CMLib.masking().maskCheck(playerMask, mob, true)))
-								&&((gSize < 2)||(grpSize>=gSize)))
+								&&((gSize < 2)||(grpSize.intValue()>=gSize)))
 								{
 									count+=bumpNum;
 									return true;

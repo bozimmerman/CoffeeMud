@@ -299,10 +299,13 @@ public class AchievementData extends StdWebMacro
 					list.add(httpReq.getUrlParameter("FLAGS"+id).toUpperCase().trim());
 			}
 			else
+			if(A!=null)
 			{
 				for(final AchievementFlag f : AchievementFlag.values())
+				{
 					if(A.isFlag(f))
 						list.add(f.name());
+				}
 			}
 			for(final AchievementFlag f : AchievementFlag.values())
 				str.append("<OPTION VALUE=\""+f.name()+"\""+(list.contains(f.name())?" SELECTED":"")+">"+f.name());

@@ -5366,7 +5366,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				return CMath.isInteger(oldVal);
 			case NUMBER_PAIR:
 			{
-				final int x=(oldVal==null)?-1:oldVal.indexOf(',');
+				if(oldVal==null)
+					return emptyOK;
+				final int x=oldVal.indexOf(',');
 				return CMath.isInteger(oldVal)
 					||((x>0)&&(CMath.isInteger(oldVal.substring(0,x).trim()))&&(CMath.isInteger(oldVal.substring(x+1).trim())));
 			}

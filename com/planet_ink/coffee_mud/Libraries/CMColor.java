@@ -274,8 +274,11 @@ public class CMColor extends StdLibrary implements ColorLibrary
 					}
 					for(final Color bC : Color.values())
 					{
-						if((bC.getCodeChar() != 0)&& (bC.getBGCodeChar() != 0) && (bgCodeMap.containsKey(bC.getBGCodeChar())))
-							bgCodeMap.put(Character.valueOf(bC.getCodeChar()), bgCodeMap.get(bC.getBGCodeChar()));
+						if((bC.getCodeChar() != 0)
+						&& (bC.getBGCodeChar() != 0) 
+						&& (bgCodeMap.containsKey(Character.valueOf(bC.getBGCodeChar()))))
+							bgCodeMap.put(Character.valueOf(bC.getCodeChar()), 
+										bgCodeMap.get(Character.valueOf(bC.getBGCodeChar())));
 					}
 				}
 			}

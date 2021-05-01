@@ -1271,7 +1271,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		{
 			final List<String> Vr=perfectRecipes.get(vr);
 			final Ingredients ingrs=countIngredients(Vr);
-			final Integer amountMaking=ingrs.amount;
+			final Integer amountMaking=Integer.valueOf(ingrs.amount);
 			final String recipeName=replacePercent(Vr.get(RCP_FINALFOOD),Vr.get(RCP_MAININGR).toLowerCase());
 			if(ingrs.list.size()==0)
 			{

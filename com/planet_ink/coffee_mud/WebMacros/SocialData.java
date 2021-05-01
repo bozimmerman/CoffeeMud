@@ -613,6 +613,8 @@ public class SocialData extends StdWebMacro
 						{
 							if(S==null)
 								S=CMLib.socials().makeDefaultSocial(last,EXTN);
+							if(S==null)
+								return "";
 							int num=0;
 							String numStr="";
 							old=httpReq.getUrlParameter(subnam+"F"+numStr);
