@@ -867,6 +867,12 @@ public class DBInterface implements DatabaseEngine
 	{
 		return MOBloader.DBRead(name);
 	}
+	
+	@Override
+	public PairList<String,Integer> DBReadPlayerClans(String name)
+	{
+		return MOBloader.DBReadPlayerClans(name);
+	}
 
 	@Override
 	public int DBReadPlayerBitmap(final String name)
@@ -1229,11 +1235,17 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public List<Pair<String, Long>> getBackLogEntries(final String channelName, final int newestToSkip, final int numToReturn)
+	public List<Triad<String, Integer, Long>> getBackLogEntries(final String channelName, Set<String> extraData, final int newestToSkip, final int numToReturn)
 	{
-		return BackLogLoader.getBackLogEntries(channelName, newestToSkip, numToReturn);
+		return BackLogLoader.getBackLogEntries(channelName, extraData, newestToSkip, numToReturn);
 	}
 
+	@Override
+	public List<Triad<String,Integer,Long>> enumBackLogEntries(String channelName, final int firstIndex, final int numToReturn)
+	{
+		return BackLogLoader.enumBackLogEntries(channelName, firstIndex, numToReturn);
+	}
+	
 	@Override
 	public void trimBackLogEntries(final String[] channels, final int maxMessages, final long oldestTime)
 	{
@@ -1244,6 +1256,18 @@ public class DBInterface implements DatabaseEngine
 	public void addBackLogEntry(final String channelName, final long timeStamp, final String entry)
 	{
 		BackLogLoader.addBackLogEntry(channelName, entry);
+	}
+
+	@Override
+	public void updateBackLogEntry(String channelName, int index, long timeStamp, final String entry)
+	{
+		BackLogLoader.updateBackLogEntry(channelName, index, timeStamp, entry);
+	}
+	
+	@Override
+	public Integer checkSetBacklogTableVersion(final Integer setVersion)
+	{
+		return BackLogLoader.checkSetBacklogTableVersion(setVersion);
 	}
 
 	@Override

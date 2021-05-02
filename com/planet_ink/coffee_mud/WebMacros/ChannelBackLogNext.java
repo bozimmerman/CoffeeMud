@@ -74,7 +74,7 @@ public class ChannelBackLogNext extends StdWebMacro
 				List<ChannelsLibrary.ChannelMsg> que=(List<ChannelsLibrary.ChannelMsg>)httpReq.getRequestObjects().get("CHANNELMSG_"+channelInt+" QUE "+pageSize+" "+pageNum);
 				if(que==null)
 				{
-					final List<ChannelsLibrary.ChannelMsg> oldQue=CMLib.channels().getChannelQue(channelInt,pageNum * pageSize, pageSize);
+					final List<ChannelsLibrary.ChannelMsg> oldQue=CMLib.channels().getChannelQue(channelInt,pageNum * pageSize, pageSize, mob);
 					que=new ArrayList<ChannelsLibrary.ChannelMsg>(oldQue.size());
 					que.addAll(oldQue);
 					httpReq.getRequestObjects().put("CHANNELMSG_"+channelInt+" QUE "+pageSize+" "+pageNum,que);

@@ -314,7 +314,7 @@ public class IMudInterface implements ImudServices, Serializable
 				}
 				CMLib.commands().monitorGlobalMessage(mob.location(), msg);
 				if(channelInt>=0)
-					channels.channelQueUp(channelInt,msg);
+					channels.channelQueUp(channelInt, msg, null);
 				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
 					final MOB M=S.mob();

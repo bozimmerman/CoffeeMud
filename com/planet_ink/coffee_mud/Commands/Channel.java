@@ -130,7 +130,7 @@ public class Channel extends StdCommand
 
 		if(commands.size()==0)
 		{
-			int size = CMLib.channels().getChannelQue(channelInt, 0, 5).size();
+			int size = CMLib.channels().getChannelQue(channelInt, 0, 5, mob).size();
 			if(size>0)
 			{
 				if(size>5)
@@ -173,7 +173,7 @@ public class Channel extends StdCommand
 		if((commands.size()==1)
 		&&("undo".startsWith(commands.get(0))||"delete".startsWith(commands.get(0))))
 		{
-			final List<ChannelsLibrary.ChannelMsg> que=CMLib.channels().getChannelQue(channelInt, 0, 1);
+			final List<ChannelsLibrary.ChannelMsg> que=CMLib.channels().getChannelQue(channelInt, 0, 1, mob);
 			if(que.size()>0)
 			{
 				final ChannelsLibrary.ChannelMsg chanMsg =que.get(que.size()-1);
@@ -216,7 +216,7 @@ public class Channel extends StdCommand
 			{
 				page++;
 				skippedSome=false;
-				final List<ChannelsLibrary.ChannelMsg> que=CMLib.channels().getChannelQue(channelInt, (page*pageSize), pageSize);
+				final List<ChannelsLibrary.ChannelMsg> que=CMLib.channels().getChannelQue(channelInt, (page*pageSize), pageSize, mob);
 				lastIndex=0;
 				for(int i=que.size()-1;i>=0;i--)
 				{
@@ -238,7 +238,7 @@ public class Channel extends StdCommand
 			}
 			page=lastPage;
 			boolean showedAny=false;
-			List<ChannelsLibrary.ChannelMsg> q=CMLib.channels().getChannelQue(channelInt, (page*pageSize), pageSize);
+			List<ChannelsLibrary.ChannelMsg> q=CMLib.channels().getChannelQue(channelInt, (page*pageSize), pageSize, mob);
 			if(lastIndex<0)
 				lastIndex=0;
 			for(int i=lastIndex;i<q.size();i++)
@@ -250,7 +250,7 @@ public class Channel extends StdCommand
 			page--;
 			while(page >=0)
 			{
-				q=CMLib.channels().getChannelQue(channelInt, (page*pageSize), pageSize);
+				q=CMLib.channels().getChannelQue(channelInt, (page*pageSize), pageSize, mob);
 				for(int i=0;i<q.size();i++)
 				{
 					final ChannelsLibrary.ChannelMsg m=q.get(i);

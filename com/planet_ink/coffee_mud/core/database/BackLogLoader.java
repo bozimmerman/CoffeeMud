@@ -69,7 +69,7 @@ public class BackLogLoader
 				}
 				catch(final Exception sqle)
 				{
-					Log.errOut("Journal",sqle);
+					Log.errOut("BackLog",sqle);
 				}
 				finally
 				{
@@ -91,7 +91,7 @@ public class BackLogLoader
 				}
 				catch(final Exception sqle)
 				{
-					Log.errOut("Journal",sqle);
+					Log.errOut("BackLog",sqle);
 				}
 				finally
 				{
@@ -99,6 +99,69 @@ public class BackLogLoader
 				}
 			}
 			return counter[0];
+		}
+	}
+	
+	public Integer checkSetBacklogTableVersion(final Integer setVersion)
+	{
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			Integer existingVersion = null;
+			final ResultSet R=D.query("SELECT CMDATE FROM CMBKLG WHERE CMNAME='TABLE_VERSION' AND CMINDX = 0");
+			if(R.next())
+			{
+				final Integer I= Integer.valueOf((int)R.getLong("CMDATE"));
+				existingVersion=I;
+			}
+			R.close();
+			if(setVersion == null)
+				return existingVersion == null ? Integer.valueOf(0) : existingVersion;
+			if(existingVersion == null)
+				D.update("INSERT INTO CMBKLG (CMNAME,  CMINDX, CMDATE) VALUES ('TABLE_VERSION', 0, "+setVersion.intValue()+")", 0);
+			else
+				D.update("UPDATE CMBKLG SET CMDATE="+setVersion.intValue()+" WHERE CMNAME='TABLE_VERSION' AND CMINDX=0;", 0);
+			return setVersion;
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut(sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return setVersion;
+	}
+	
+	public void updateBackLogEntry(String channelName, final int index, final long date, final String entry)
+	{
+		if((entry == null) || (channelName == null) || (entry.length()==0))
+			return;
+		channelName = channelName.toUpperCase().trim();
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetchPrepared("UPDATE CMBKLG SET CMDATE="+date+", CMDATA=? WHERE CMNAME='"+channelName+"' AND CMINDX="+index);
+			D.setPreparedClobs(new String[]{entry});
+			try
+			{
+				D.update("",0);
+			}
+			catch(final Exception sqle)
+			{
+				Log.errOut("Fail: "+sqle.getMessage());
+				DB.DBDone(D);
+			}
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("BackLog",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
 		}
 	}
 
@@ -130,7 +193,7 @@ public class BackLogLoader
 		}
 		catch(final Exception sqle)
 		{
-			Log.errOut("Journal",sqle);
+			Log.errOut("BackLog",sqle);
 		}
 		finally
 		{
@@ -187,7 +250,7 @@ public class BackLogLoader
 		}
 		catch(final Exception sqle)
 		{
-			Log.errOut("Journal",sqle);
+			Log.errOut("BackLog",sqle);
 		}
 		finally
 		{
@@ -205,18 +268,56 @@ public class BackLogLoader
 			}
 			catch(final Exception sqle)
 			{
-				Log.errOut("Journal",sqle);
+				Log.errOut("BackLog",sqle);
 			}
 		}
 	}
 
-	public List<Pair<String,Long>> getBackLogEntries(String channelName, final int newestToSkip, final int numToReturn)
+	public List<Triad<String,Integer,Long>> enumBackLogEntries(String channelName, final int firstIndex, final int numToReturn)
 	{
-		final List<Pair<String,Long>> list=new Vector<Pair<String,Long>>();
+		final List<Triad<String,Integer,Long>> list=new Vector<Triad<String,Integer,Long>>();
+		if(channelName == null)
+			return list;
+		channelName = channelName.toUpperCase().trim();
+		final StringBuilder sql=new StringBuilder("SELECT CMDATA,CMINDX,CMDATE FROM CMBKLG WHERE CMNAME='"+channelName+"'");
+		sql.append(" AND CMINDX >="+firstIndex);
+		sql.append(" ORDER BY CMINDX");
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			final ResultSet R = D.query(sql.toString());
+			while((R.next())&&(list.size()<numToReturn))
+				list.add(new Triad<String,Integer,Long>(DB.getRes(R, "CMDATA"),Integer.valueOf((int)DB.getLongRes(R,"CMINDX")),Long.valueOf(DB.getLongRes(R, "CMDATE"))));
+			R.close();
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("BackLog",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return list;
+		
+	}
+	
+	public List<Triad<String,Integer,Long>> getBackLogEntries(String channelName, Set<String> extraData, final int newestToSkip, final int numToReturn)
+	{
+		final List<Triad<String,Integer,Long>> list=new Vector<Triad<String,Integer,Long>>();
 		if(channelName == null)
 			return list;
 		channelName = channelName.toUpperCase().trim();
 		final int counter = getCounter(channelName, false);
+		final List<String> extraDataFixed=new LinkedList<String>();
+		final String[][] extraDataFixes = new String[][] {
+			{ "\\", "\\\\" },
+			{ "'", "\\'"},
+			{ "%","\\%"}
+		};
+		for(final String str : extraData)
+			extraDataFixed.add("%<D>" + CMStrings.replaceAlls(str,extraDataFixes)+"</D>%");
 		DBConnection D=null;
 		try
 		{
@@ -224,18 +325,29 @@ public class BackLogLoader
 			final int oldest = number >= counter ? 1 : (counter - number + 1);
 			final int newest = newestToSkip >= counter ? counter : (counter - newestToSkip);
 			D=DB.DBFetch();
-			final StringBuilder sql=new StringBuilder("SELECT CMDATA,CMDATE FROM CMBKLG WHERE CMNAME='"+channelName+"'");
+			final StringBuilder sql=new StringBuilder("SELECT CMDATA,CMINDX,CMDATE FROM CMBKLG WHERE CMNAME='"+channelName+"'");
 			sql.append(" AND CMINDX >="+oldest);
 			sql.append(" AND CMINDX <="+newest);
+			if(extraDataFixed.size()==1)
+				sql.append(" AND CMDATA LIKE '"+extraDataFixed.iterator().next()+"'");
+			else
+			if(extraDataFixed.size() > 1)
+			{
+				sql.append(" AND (");
+				boolean first=false;
+				for(final String str : extraDataFixed)
+					sql.append((first?"":" OR ")+"CMDATA LIKE '"+str+"'");
+				sql.append(")");
+			}
 			sql.append(" ORDER BY CMINDX");
 			final ResultSet R = D.query(sql.toString());
 			while((R.next())&&(list.size()<numToReturn))
-				list.add(new Pair<String,Long>(DB.getRes(R, "CMDATA"),Long.valueOf(DB.getLongRes(R, "CMDATE"))));
+				list.add(new Triad<String,Integer,Long>(DB.getRes(R, "CMDATA"),Integer.valueOf((int)DB.getLongRes(R,"CMINDX")),Long.valueOf(DB.getLongRes(R, "CMDATE"))));
 			R.close();
 		}
 		catch(final Exception sqle)
 		{
-			Log.errOut("Journal",sqle);
+			Log.errOut("BackLog",sqle);
 		}
 		finally
 		{
@@ -270,7 +382,7 @@ public class BackLogLoader
 			}
 			catch(final Exception sqle)
 			{
-				Log.errOut("Journal",sqle);
+				Log.errOut("BackLog",sqle);
 			}
 			finally
 			{

@@ -231,6 +231,36 @@ public class MOBloader
 		return mob;
 	}
 
+	public PairList<String,Integer> DBReadPlayerClans(String name)
+	{
+		DBConnection D=null;
+		name = DB.injectionClean(name);
+		final PairList<String,Integer> list = new PairVector<String,Integer>();
+		try
+		{
+			D=DB.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMCHCL WHERE CMUSERID='"+name+"'");
+			while(R.next())
+			{
+				final String clanID=DBConnections.getRes(R,"CMCLAN");
+				final int clanRole = this.BuildClanMemberRole(R);
+				final Clan C=CMLib.clans().getClan(clanID);
+				if(C!=null)
+					list.add(C.clanID(), Integer.valueOf(clanRole));
+			}
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("MOB",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return list;
+	}
+	
+	
 	public int DBReadPlayerBitmap(String name)
 	{
 		if((name==null)||(name.length()==0))

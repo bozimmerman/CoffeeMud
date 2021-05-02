@@ -795,9 +795,10 @@ public class DefaultMessage implements CMMsg
 			return null;
 		if(subParts[0].equals("StdMOB") || subParts[0].equals("StdRideable"))
 		{
-			final MOB M=CMLib.players().getLoadPlayer(subParts[1]); // this is bad. :(
+			final MOB M=CMLib.players().getPlayer(subParts[1]); // this is bad. :(
 			if(M != null)
 				return M;
+			
 		}
 		CMObject o;
 		o = CMClass.getCommon(subParts[0]);
@@ -805,8 +806,17 @@ public class DefaultMessage implements CMMsg
 			o = CMClass.getByType(subParts[0], preferClass);
 		if(o == null)
 			o = CMClass.getUnknown(subParts[0]);
+		boolean isPlayer = false;
 		if((o == null) || (o instanceof MOB))
-			o = CMClass.getFactoryMOB();
+		{
+			if(o==null)
+				o = CMClass.getFactoryMOB();
+			else
+			if(CMLib.players().playerExists(subParts[1]))
+				isPlayer=true;
+			else
+				o = CMClass.getFactoryMOB();
+		}
 		if(o instanceof Social)
 			o = CMLib.socials().fetchSocial(subParts[1], true);
 		else
@@ -829,8 +839,22 @@ public class DefaultMessage implements CMMsg
 		else
 		if((o instanceof Environmental)&&(!o.name().equals(subParts[1])))
 			((Environmental)o).setName(subParts[1]);
-		if((o instanceof MOB)&&(((MOB)o).location()==null))
-			((MOB)o).setLocation(CMLib.map().getRandomRoom());
+		
+		if(o instanceof MOB)
+		{
+			MOB mob=(MOB)o;
+			if(isPlayer && (!mob.isPlayer()))
+			{
+				final PairList<String,Integer> lst = CMLib.database().DBReadPlayerClans(subParts[1]);
+				if(lst.size()>0)
+				{
+					for(final Pair<String,Integer> p : lst)
+						mob.setClan(p.first, p.second.intValue());
+				}
+			}
+			if(mob.location()==null)
+				mob.setLocation(CMLib.map().getRandomRoom());
+		}
 		return o;
 	}
 

@@ -143,7 +143,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	}
 
 	@Override
-	public List<ChannelMsg> getChannelQue(final int channelNumber, final int numNewToSkip, final int numToReturn)
+	public List<ChannelMsg> getChannelQue(final int channelNumber, final int numNewToSkip, final int numToReturn, MOB mob)
 	{
 		if((channelNumber>=0)
 		&&(channelNumber<channelList.size()))
@@ -164,15 +164,34 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				return msgs;
 			if(channel.flags().contains(ChannelsLibrary.ChannelFlag.NOBACKLOG))
 				return msgs;
-			final List<Pair<String,Long>> backLog=CMLib.database().getBackLogEntries(channel.name(), numNewToSkip, numToReturn);
+			final Set<String> extraData = this.getExtraChannelData(mob, channel);
+			final List<Triad<String,Integer,Long>> backLog=CMLib.database().getBackLogEntries(channel.name(), extraData, numNewToSkip, numToReturn);
 			if(backLog.size()<=msgs.size())
 				return msgs;
 			final List<ChannelMsg> allMsgs = new XVector<ChannelMsg>();
 			for(int x=0;x<backLog.size()-msgs.size();x++)
 			{
+				final Triad<String,Integer,Long> p = backLog.get(x);
 				final CMMsg msg=CMClass.getMsg();
-				msg.parseFlatString(backLog.get(x).first);
-				final long time = backLog.get(x).second.longValue();
+				final Set<String> extraMsgData = new TreeSet<String>();
+				final String codedMsgStr;
+				if(p.first.startsWith("<EXTRA>"))
+				{
+					int y=p.first.indexOf("</EXTRA>");
+					if(y<0)
+						continue;
+					final List<XMLLibrary.XMLTag> tags=CMLib.xml().parseAllXML(p.first.substring(0,y+8));
+					if((tags.size()==1) && (tags.get(0).tag().equals("EXTRA")))
+					{
+						for(final XMLLibrary.XMLTag tag : tags.get(0).contents())
+							extraMsgData.add(tag.value());
+					}
+					codedMsgStr = p.first.substring(y+8);
+				}
+				else
+					codedMsgStr = p.first;
+				msg.parseFlatString(codedMsgStr);
+				final long time = p.third.longValue();
 				allMsgs.add(new ChannelMsg()
 				{
 					@Override
@@ -186,6 +205,13 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 					{
 						return time;
 					}
+					
+					@Override
+					public Set<String> extraData()
+					{
+						return extraMsgData;
+					}
+					
 				});
 			}
 			allMsgs.addAll(msgs);
@@ -312,8 +338,23 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		return false;
 	}
 
+	protected String makeExtraDataXML(final Set<String> extraData)
+	{
+		final String prefixExtraData;
+		if((extraData!=null)&&(extraData.size()>0))
+		{
+			final StringBuilder str=new StringBuilder("<EXTRA>");
+			for(final String x : extraData)
+				str.append("<D>").append(x).append("</D>");
+			prefixExtraData = str.toString()+"</EXTRA>";
+		}
+		else
+			prefixExtraData="";
+		return prefixExtraData;
+	}
+	
 	@Override
-	public void channelQueUp(final int channelNumber, final CMMsg msg)
+	public void channelQueUp(final int channelNumber, final CMMsg msg, final Set<String> extraData)
 	{
 		CMLib.map().sendGlobalMessage(msg.source(),CMMsg.TYP_CHANNEL,msg);
 		final CMChannel channel=getChannel(channelNumber);
@@ -337,6 +378,12 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				{
 					return now;
 				}
+				
+				@Override
+				public Set<String> extraData()
+				{
+					return extraData;
+				}
 			});
 		}
 		if((!channel.flags().contains(ChannelsLibrary.ChannelFlag.NOBACKLOG))
@@ -345,7 +392,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		{
 			try
 			{
-				CMLib.database().addBackLogEntry(getChannel(channelNumber).name(), now, msg.toFlatString());
+				final String prefixExtraData = makeExtraDataXML(extraData);
+				CMLib.database().addBackLogEntry(getChannel(channelNumber).name(), now, prefixExtraData + msg.toFlatString());
 			}
 			catch(final Exception e)
 			{
@@ -889,7 +937,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				tweet(message);
 			
 			final boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
-			channelQueUp(channelInt, msg);
+			channelQueUp(channelInt, msg, this.getExtraChannelData(mob, chan));
 			for(final Session S : CMLib.sessions().localOnlineIterable())
 			{
 				final ChannelsLibrary myChanLib=CMLib.get(S)._channels();
@@ -923,6 +971,70 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		{
 			name="THChannels"+Thread.currentThread().getThreadGroup().getName().charAt(0);
 			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, MudHost.TIME_UTILTHREAD_SLEEP, 1);
+			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CHANNELBACKLOGS))
+			{
+				final List<CMChannel> chansToDo = new LinkedList<CMChannel>();
+				for(final CMChannel chan : this.channelList)
+				{
+					if((chan.flags().contains(ChannelFlag.CLANALLYONLY))
+					||(chan.flags().contains(ChannelFlag.CLANONLY))
+					||(chan.flags().contains(ChannelFlag.SAMEAREA)))
+					{
+						if(!chan.flags().contains(ChannelsLibrary.ChannelFlag.NOBACKLOG))
+							chansToDo.add(chan);
+					}
+				}
+				if(chansToDo.size()>0)
+				{
+					final Integer tableVer = CMLib.database().checkSetBacklogTableVersion(null);
+					if((tableVer == null) || (tableVer.intValue() < 1))
+					{
+						final CMChannels myLib = this;
+						CMLib.threads().scheduleRunnable(new Runnable() 
+						{
+							final CMChannels chanLib = myLib;
+							final Set<CMChannel> chans = new XTreeSet<CMChannel>(chansToDo);
+							@Override
+							public void run()
+							{
+								Log.sysOut("Processing backlog table upgrade...");
+								int amountDone = 0;
+								for(final CMChannel chan : chans)
+								{
+									int firstIndex=1;
+									boolean done=false;
+									while(!done)
+									{
+										final List<Triad<String,Integer,Long>> msgs = CMLib.database().enumBackLogEntries(chan.name(), firstIndex, 50);
+										if(msgs.size()==0)
+											break;
+										for(final Triad<String,Integer,Long> m : msgs)
+										{
+											if(!m.first.startsWith("<EXTRA>"))
+											{
+												final CMMsg msg=CMClass.getMsg();
+												msg.parseFlatString(m.first);
+												final Set<String> extraData = chanLib.getExtraChannelData(msg.source(), chan);
+												if(extraData.size()>0)
+												{
+													amountDone++;
+													m.first = makeExtraDataXML(extraData) + m.first;
+													CMLib.database().updateBackLogEntry(chan.name(), m.second.intValue(), m.third.longValue(), m.first);
+												}
+											}
+											firstIndex = m.second.intValue()+1;
+										}
+										done = msgs.size()  < 50;
+									}
+								}
+								Log.sysOut("Backlog table upgrade completed. "+amountDone+" messages altered in "+chans.size()+" channels.");
+								CMLib.database().checkSetBacklogTableVersion(Integer.valueOf(1));
+							}
+						}
+						, 500);
+					}
+				}
+			}
 		}
 		return true;
 	}

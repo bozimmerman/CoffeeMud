@@ -74,9 +74,10 @@ public interface ChannelsLibrary extends CMLibrary
 	 * @param channelNumber the channel id number/index
 	 * @param numNewToSkip starting message number (0 based)
 	 * @param numToReturn total number of messages to return
+	 * @param mob TODO
 	 * @return the list of messages
 	 */
-	public List<ChannelMsg> getChannelQue(int channelNumber, int numNewToSkip, int numToReturn);
+	public List<ChannelMsg> getChannelQue(int channelNumber, int numNewToSkip, int numToReturn, MOB mob);
 
 	/**
 	 * Returns whether the given Mob can read a channel message from the given sender, on
@@ -145,8 +146,9 @@ public interface ChannelsLibrary extends CMLibrary
 	 * @see ChannelsLibrary#getChannelIndex(String)
 	 * @param channelNumber the channel index number
 	 * @param msg the channel message msg that was sent around
+	 * @param extraData extra audience data for the given new message
 	 */
-	public void channelQueUp(int channelNumber, CMMsg msg);
+	public void channelQueUp(int channelNumber, CMMsg msg, Set<String> extraData);
 
 	/**
 	 * Returns the official index number of the channel with the
@@ -392,6 +394,13 @@ public interface ChannelsLibrary extends CMLibrary
 		 * @return timestamp of when the message was sent
 		 */
 		public long sentTimeMillis();
+		
+		/**
+		 * A set of extra data to help determine the audience of a message,
+		 * such as applicable clan names, or area names, etc.
+		 * @return a set of strings
+		 */
+		public Set<String> extraData();
 	}
 
 	/**
