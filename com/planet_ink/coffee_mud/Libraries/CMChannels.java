@@ -722,14 +722,12 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		final Set<String> extraData = new TreeSet<String>();
 		if(chan.flags().contains(ChannelsLibrary.ChannelFlag.CLANONLY))
 		{
-			final StringBuilder str=new StringBuilder("");
 			for(final Pair<Clan,Integer> p : CMLib.clans().findPrivilegedClans(mob, Clan.Function.CHANNEL))
 				extraData.add(p.first.name());
 		}
 		else
 		if(chan.flags().contains(ChannelsLibrary.ChannelFlag.CLANALLYONLY))
 		{
-			final StringBuilder str=new StringBuilder("");
 			for(final Pair<Clan,Integer> p : CMLib.clans().findPrivilegedClans(mob, Clan.Function.CHANNEL))
 			{
 				extraData.add(p.first.name());
