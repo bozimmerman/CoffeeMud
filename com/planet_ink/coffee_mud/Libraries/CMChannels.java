@@ -717,6 +717,36 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		return didIt;
 	}
 
+	protected Set<String> getExtraChannelData(final MOB mob, final CMChannel chan)
+	{
+		final Set<String> extraData = new TreeSet<String>();
+		if(chan.flags().contains(ChannelsLibrary.ChannelFlag.CLANONLY))
+		{
+			final StringBuilder str=new StringBuilder("");
+			for(final Pair<Clan,Integer> p : CMLib.clans().findPrivilegedClans(mob, Clan.Function.CHANNEL))
+				extraData.add(p.first.name());
+		}
+		else
+		if(chan.flags().contains(ChannelsLibrary.ChannelFlag.CLANALLYONLY))
+		{
+			final StringBuilder str=new StringBuilder("");
+			for(final Pair<Clan,Integer> p : CMLib.clans().findPrivilegedClans(mob, Clan.Function.CHANNEL))
+			{
+				extraData.add(p.first.name());
+				for(final Clan C1 : CMLib.clans().getAllCommonClanRelations(p.first, Clan.REL_ALLY))
+					extraData.add(C1.name());
+			}
+		}
+		else
+		if(chan.flags().contains(ChannelsLibrary.ChannelFlag.SAMEAREA))
+		{
+			final Area A=CMLib.map().areaLocation(mob);
+			if(A!=null)
+				extraData.add(A.Name());
+		}
+		return extraData;
+	}
+	
 	@Override
 	public void createAndSendChannelMessage(final MOB mob, String channelName, String message, final boolean systemMsg)
 	{
@@ -859,8 +889,9 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		{
 			if(chan.flags().contains(ChannelsLibrary.ChannelFlag.TWITTER))
 				tweet(message);
+			
 			final boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
-			channelQueUp(channelInt,msg);
+			channelQueUp(channelInt, msg);
 			for(final Session S : CMLib.sessions().localOnlineIterable())
 			{
 				final ChannelsLibrary myChanLib=CMLib.get(S)._channels();

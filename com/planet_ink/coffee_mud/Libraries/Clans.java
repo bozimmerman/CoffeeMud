@@ -316,6 +316,19 @@ public class Clans extends StdLibrary implements ClanManager
 	}
 
 	@Override
+	public List<Clan> getAllCommonClanRelations(final Clan C, final int rel)
+	{
+		final List<Clan> clans=new Vector<Clan>();
+		for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
+		{
+			final Clan C1=e.nextElement();
+			if((C!=C1)&&(getCommonClanRelations(C,C1)==rel))
+				clans.add(C1);
+		}
+		return clans;
+	}
+	
+	@Override
 	public int getCommonClanRelations(final String clanID1, final String clanID2)
 	{
 		if((clanID1==null)||(clanID2==null)||(clanID1.length()==0)||(clanID2.length()==0))

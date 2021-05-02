@@ -171,6 +171,15 @@ public interface ClanManager extends CMLibrary
 	public int getCommonClanRelations(Clan clan1, Clan clan2);
 
 	/**
+	 * Returns all existing clans who have the given common relationship with 
+	 * the given clan.
+	 * @param C the clan to find relations with
+	 * @param rel the relationship to find, usually war or ally
+	 * @return the list of clans that are related in the given way
+	 */
+	public List<Clan> getAllCommonClanRelations(final Clan C, final int rel);
+	
+	/**
 	 * Get last time governments were loaded/updated
 	 * @return time in ms
 	 */
