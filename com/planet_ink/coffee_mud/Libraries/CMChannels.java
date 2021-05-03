@@ -143,7 +143,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	}
 
 	@Override
-	public List<ChannelMsg> getChannelQue(final int channelNumber, final int numNewToSkip, final int numToReturn, MOB mob)
+	public List<ChannelMsg> getChannelQue(final int channelNumber, final int numNewToSkip, final int numToReturn, final MOB mob)
 	{
 		if((channelNumber>=0)
 		&&(channelNumber<channelList.size()))
@@ -177,7 +177,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				final String codedMsgStr;
 				if(p.first.startsWith("<EXTRA>"))
 				{
-					int y=p.first.indexOf("</EXTRA>");
+					final int y=p.first.indexOf("</EXTRA>");
 					if(y<0)
 						continue;
 					final List<XMLLibrary.XMLTag> tags=CMLib.xml().parseAllXML(p.first.substring(0,y+8));
@@ -205,13 +205,13 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 					{
 						return time;
 					}
-					
+
 					@Override
 					public Set<String> extraData()
 					{
 						return extraMsgData;
 					}
-					
+
 				});
 			}
 			allMsgs.addAll(msgs);
@@ -340,6 +340,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 
 	protected String makeExtraDataXML(final Set<String> extraData)
 	{
+		return "";
+		/*
 		final String prefixExtraData;
 		if((extraData!=null)&&(extraData.size()>0))
 		{
@@ -351,8 +353,9 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		else
 			prefixExtraData="";
 		return prefixExtraData;
+		*/
 	}
-	
+
 	@Override
 	public void channelQueUp(final int channelNumber, final CMMsg msg, final Set<String> extraData)
 	{
@@ -378,7 +381,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				{
 					return now;
 				}
-				
+
 				@Override
 				public Set<String> extraData()
 				{
@@ -488,6 +491,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	@Override
 	public String getExtraChannelDesc(final String channelName)
 	{
+		return "";
+		/*
 		final StringBuilder str=new StringBuilder("");
 		final int dex = getChannelIndex(channelName);
 		if(dex >= 0)
@@ -509,6 +514,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				str.append(L(" The following may read this channel : @x1",CMLib.masking().maskDesc(mask)));
 		}
 		return str.toString();
+		*/
 	}
 
 	private void clearChannels()
@@ -792,7 +798,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		}
 		return extraData;
 	}
-	
+
 	@Override
 	public void createAndSendChannelMessage(final MOB mob, String channelName, String message, final boolean systemMsg)
 	{
@@ -935,7 +941,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		{
 			if(chan.flags().contains(ChannelsLibrary.ChannelFlag.TWITTER))
 				tweet(message);
-			
+
 			final boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
 			channelQueUp(channelInt, msg, this.getExtraChannelData(mob, chan));
 			for(final Session S : CMLib.sessions().localOnlineIterable())
@@ -980,8 +986,10 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 					||(chan.flags().contains(ChannelFlag.CLANONLY))
 					||(chan.flags().contains(ChannelFlag.SAMEAREA)))
 					{
+						/*
 						if(!chan.flags().contains(ChannelsLibrary.ChannelFlag.NOBACKLOG))
 							chansToDo.add(chan);
+						*/
 					}
 				}
 				if(chansToDo.size()>0)
@@ -990,7 +998,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 					if((tableVer == null) || (tableVer.intValue() < 1))
 					{
 						final CMChannels myLib = this;
-						CMLib.threads().scheduleRunnable(new Runnable() 
+						CMLib.threads().scheduleRunnable(new Runnable()
 						{
 							final CMChannels chanLib = myLib;
 							final Set<CMChannel> chans = new XTreeSet<CMChannel>(chansToDo);
