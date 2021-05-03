@@ -2985,6 +2985,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		boolean found=false;
 		while((x>=0)&&((x+V2.size())<=V.size())&&(!found))
 		{
+			found=true;
 			for(int v2=1;v2<V2.size();v2++)
 			{
 				if(!V.get(x+v2).equals(V2.get(v2)))
