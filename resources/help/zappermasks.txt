@@ -32,7 +32,7 @@
 -LEVEL +=1 +>5 +>=7 +<13 +<=20 (<WORD> all but those player level ranges)
 -=1 ->5 ->=7 -<13 -<=20 (<WORD> only listed levels range)
 -CLASSLEVEL +=1 +>5 +<=20 (<WORD> all except those with current class lvl)
--MAXCLASSLEVEL +=1 +<13 (<WORD> only those with current class level range)
+-MAXCLASSLEVEL +=1 +<13 (<WORD> only those with highest class level range)
 +ANYCLASS -thief -mage (<WORD> only those with a listed multi-class)
 -ANYCLASSLEVEL +thief +>5 +mage +<10 (<WORD> all except multi-class lvl)
 +ANYCLASSLEVEL -thief ->5 -mage -<10 (<WORD> only these multi-class lvls)
