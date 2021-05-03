@@ -101,7 +101,7 @@ public class BackLogLoader
 			return counter[0];
 		}
 	}
-	
+
 	public Integer checkSetBacklogTableVersion(final Integer setVersion)
 	{
 		DBConnection D=null;
@@ -124,7 +124,7 @@ public class BackLogLoader
 				D.update("UPDATE CMBKLG SET CMDATE="+setVersion.intValue()+" WHERE CMNAME='TABLE_VERSION' AND CMINDX=0;", 0);
 			return setVersion;
 		}
-		catch(SQLException sqle)
+		catch(final SQLException sqle)
 		{
 			Log.errOut(sqle);
 		}
@@ -134,7 +134,7 @@ public class BackLogLoader
 		}
 		return setVersion;
 	}
-	
+
 	public void updateBackLogEntry(String channelName, final int index, final long date, final String entry)
 	{
 		if((entry == null) || (channelName == null) || (entry.length()==0))
@@ -300,10 +300,10 @@ public class BackLogLoader
 			DB.DBDone(D);
 		}
 		return list;
-		
+
 	}
-	
-	public List<Triad<String,Integer,Long>> getBackLogEntries(String channelName, Set<String> extraData, final int newestToSkip, final int numToReturn)
+
+	public List<Triad<String,Integer,Long>> getBackLogEntries(String channelName, final Set<String> extraData, final int newestToSkip, final int numToReturn)
 	{
 		final List<Triad<String,Integer,Long>> list=new Vector<Triad<String,Integer,Long>>();
 		if(channelName == null)
@@ -328,6 +328,7 @@ public class BackLogLoader
 			final StringBuilder sql=new StringBuilder("SELECT CMDATA,CMINDX,CMDATE FROM CMBKLG WHERE CMNAME='"+channelName+"'");
 			sql.append(" AND CMINDX >="+oldest);
 			sql.append(" AND CMINDX <="+newest);
+			/*
 			if(extraDataFixed.size()==1)
 				sql.append(" AND CMDATA LIKE '"+extraDataFixed.iterator().next()+"'");
 			else
@@ -339,6 +340,7 @@ public class BackLogLoader
 					sql.append((first?"":" OR ")+"CMDATA LIKE '"+str+"'");
 				sql.append(")");
 			}
+			*/
 			sql.append(" ORDER BY CMINDX");
 			final ResultSet R = D.query(sql.toString());
 			while((R.next())&&(list.size()<numToReturn))
