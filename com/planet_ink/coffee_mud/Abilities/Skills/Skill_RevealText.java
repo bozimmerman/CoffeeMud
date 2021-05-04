@@ -156,10 +156,16 @@ public class Skill_RevealText extends StdSkill
 	@Override
 	public void unInvoke()
 	{
+		final Item revealI;
+		synchronized(this)
+		{
+			revealI=this.revealI;
+		}
 		final Physical P=affected;
 		confirmSuccess();
 		super.unInvoke();
-		if(P instanceof MOB)
+		if((P instanceof MOB)
+		&&(revealI!=null))
 		{
 			final MOB mob=(MOB)P;
 			if(!success)
