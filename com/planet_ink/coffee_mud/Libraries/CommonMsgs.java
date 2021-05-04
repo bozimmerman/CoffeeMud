@@ -277,13 +277,17 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 
 			if(clanList != null)
 			{
-				talker=CMClass.getFactoryMOB();
-				talker.setName("^</B^>");
-				talker.setLocation(talkLocationR);
-				talker.basePhyStats().setDisposition(PhyStats.IS_GOLEM);
-				talker.phyStats().setDisposition(PhyStats.IS_GOLEM);
 				for(final Pair<Clan,Integer> c : clanList)
+				{
+					talker=CMClass.getFactoryMOB();
+					talker.setName("^</B^>");
+					talker.setLocation(talkLocationR);
+					talker.basePhyStats().setDisposition(PhyStats.IS_GOLEM);
+					talker.phyStats().setDisposition(PhyStats.IS_GOLEM);
 					talker.setClan(c.first.clanID(),c.second.intValue());
+					postChannel(talker,channelName,message,systemMsg);
+					talker.destroy();
+				}
 			}
 			else
 			if(nonClanTalkerM!=null)

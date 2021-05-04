@@ -73,7 +73,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooa
 
 	/**
 	 * Sends a message to all members of all clans.
-	 * 
+	 *
 	 * @param msg the message to send
 	 */
 	public void clanAnnounce(String msg);
@@ -1194,4 +1194,20 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooa
 		/** constant for the clan function writing MOTD messages. @see Clan#getAuthority(int,Function) */
 		CLAN_MOTD,
 	}
+
+	/**
+	 * A helpful comparator to sort clans in a pairlist by roles, with highest on top
+	 */
+	public static Comparator<Pair<Clan,Integer>> compareByRole = new Comparator<Pair<Clan,Integer>>()
+	{
+		@Override
+		public int compare(final Pair<Clan, Integer> o1, final Pair<Clan, Integer> o2)
+		{
+			if(o1.second.intValue()==o2.second.intValue())
+				return 0;
+			if(o1.second.intValue()>o2.second.intValue())
+				return -1;
+			return 1;
+		}
+	};
 }

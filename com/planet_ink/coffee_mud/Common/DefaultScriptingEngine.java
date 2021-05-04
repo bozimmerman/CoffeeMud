@@ -8667,8 +8667,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				while((si<script.size())
 				&&(!foundendif))
 				{
-					s=script.get(si).first;
-					tt=script.get(si).second;
+					final ScriptLn ln = script.get(si);
+					s=ln.first;
+					tt=ln.second;
 					if(tt!=null)
 						cmd=tt[0];
 					else

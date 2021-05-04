@@ -255,7 +255,7 @@ public class DBConnection
 			{
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
 				{
-					Log.errOut("DBConnection","Error use: "+openerSQL);
+					Log.errOut("Error use: "+openerSQL);
 					Log.errOut("DBConnection",e);
 				}
 				return false;
@@ -317,7 +317,7 @@ public class DBConnection
 			{
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
 				{
-					Log.errOut("DBConnection","Error prepare: "+SQL);
+					Log.errOut("Error prepare: "+SQL);
 					Log.errOut("DBConnection",e);
 				}
 				sqlserver=false;
@@ -361,14 +361,14 @@ public class DBConnection
 			{
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
 				{
-					Log.errOut("DBConnection","Error reprepare: "+SQL);
+					Log.errOut("Error reprepare: "+SQL);
 					Log.errOut("DBConnection",e);
 				}
 				else
 				if((""+e).equals("null"))
-					Log.errOut("DBConnection","Re-prepare error: null");
+					Log.errOut("Re-prepare error: null");
 				else
-					Log.errOut("DBConnection","Re-prepare error: "+e.getMessage());
+					Log.errOut("Re-prepare error: "+e.getMessage());
 				sqlserver=false;
 				myConnection=null;
 				failuresInARow++;
@@ -481,14 +481,14 @@ public class DBConnection
 			{
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
 				{
-					Log.errOut("DBConnection","Error query: "+queryString);
-					Log.errOut("DBConnection",""+sqle);
+					Log.errOut("Error query: "+queryString);
+					Log.errOut(""+sqle);
 				}
 				else
 				if((""+sqle).equals("null"))
-					Log.errOut("DBConnection","Query error: null");
+					Log.errOut("Query error: null");
 				else
-					Log.errOut("DBConnection","Query error: "+sqle.getMessage());
+					Log.errOut("Query error: "+sqle.getMessage());
 				sqlserver=false;
 				failuresInARow++;
 				lastError=""+sqle;
@@ -575,11 +575,11 @@ public class DBConnection
 				lastError=""+sqle;
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
 				{
-					Log.errOut("DBConnection","Error update: "+updateString);
+					Log.errOut("Error update: "+updateString);
 					Log.errOut("DBConnection",sqle);
 				}
 				else
-					Log.errOut("DBConnection",updateString+": "+sqle);
+					Log.errOut(updateString+": "+sqle);
 				if((myParent!=null) && (myStatement != null))
 					myParent.enQueueError(updateString,""+sqle,""+(retryNum+1));
 				if(isProbablyDead())

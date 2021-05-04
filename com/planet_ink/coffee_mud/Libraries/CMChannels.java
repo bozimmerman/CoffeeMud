@@ -164,8 +164,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				return msgs;
 			if(channel.flags().contains(ChannelsLibrary.ChannelFlag.NOBACKLOG))
 				return msgs;
-			final Set<String> extraData = this.getExtraChannelData(mob, channel);
-			final List<Triad<String,Integer,Long>> backLog=CMLib.database().getBackLogEntries(channel.name(), extraData, numNewToSkip, numToReturn);
+			final int subNameField = this.getExtraChannelDataField(mob, channel);
+			final List<Triad<String,Integer,Long>> backLog=CMLib.database().getBackLogEntries(channel.name(), subNameField, numNewToSkip, numToReturn);
 			if(backLog.size()<=msgs.size())
 				return msgs;
 			final List<ChannelMsg> allMsgs = new XVector<ChannelMsg>();
@@ -173,24 +173,32 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			{
 				final Triad<String,Integer,Long> p = backLog.get(x);
 				final CMMsg msg=CMClass.getMsg();
-				final Set<String> extraMsgData = new TreeSet<String>();
 				final String codedMsgStr;
 				if(p.first.startsWith("<EXTRA>"))
 				{
 					final int y=p.first.indexOf("</EXTRA>");
 					if(y<0)
 						continue;
-					final List<XMLLibrary.XMLTag> tags=CMLib.xml().parseAllXML(p.first.substring(0,y+8));
-					if((tags.size()==1) && (tags.get(0).tag().equals("EXTRA")))
-					{
-						for(final XMLLibrary.XMLTag tag : tags.get(0).contents())
-							extraMsgData.add(tag.value());
-					}
 					codedMsgStr = p.first.substring(y+8);
 				}
 				else
 					codedMsgStr = p.first;
 				msg.parseFlatString(codedMsgStr);
+				if((subNameField != 0)
+				&&(msg.source().isMonster()))
+				{
+					if((channel.flags().contains(ChannelFlag.CLANALLYONLY)||(channel.flags().contains(ChannelFlag.CLANONLY)))
+					&&(msg.source().isMonster())
+					&&(!msg.source().clans().iterator().hasNext()))
+					{
+						for(final Pair<Clan,Integer> c : mob.clans())
+							msg.source().setClan(c.first.clanID(), c.second.intValue());
+					}
+					else
+					if(channel.flags().contains(ChannelFlag.SAMEAREA))
+						msg.source().setLocation(mob.location());
+				}
+
 				final long time = p.third.longValue();
 				allMsgs.add(new ChannelMsg()
 				{
@@ -207,11 +215,10 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 					}
 
 					@Override
-					public Set<String> extraData()
+					public int subNameField()
 					{
-						return extraMsgData;
+						return subNameField;
 					}
-
 				});
 			}
 			allMsgs.addAll(msgs);
@@ -338,26 +345,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		return false;
 	}
 
-	protected String makeExtraDataXML(final Set<String> extraData)
-	{
-		return "";
-		/*
-		final String prefixExtraData;
-		if((extraData!=null)&&(extraData.size()>0))
-		{
-			final StringBuilder str=new StringBuilder("<EXTRA>");
-			for(final String x : extraData)
-				str.append("<D>").append(x).append("</D>");
-			prefixExtraData = str.toString()+"</EXTRA>";
-		}
-		else
-			prefixExtraData="";
-		return prefixExtraData;
-		*/
-	}
-
 	@Override
-	public void channelQueUp(final int channelNumber, final CMMsg msg, final Set<String> extraData)
+	public void channelQueUp(final int channelNumber, final CMMsg msg, final int subNameField)
 	{
 		CMLib.map().sendGlobalMessage(msg.source(),CMMsg.TYP_CHANNEL,msg);
 		final CMChannel channel=getChannel(channelNumber);
@@ -383,9 +372,9 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				}
 
 				@Override
-				public Set<String> extraData()
+				public int subNameField()
 				{
-					return extraData;
+					return subNameField;
 				}
 			});
 		}
@@ -395,8 +384,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		{
 			try
 			{
-				final String prefixExtraData = makeExtraDataXML(extraData);
-				CMLib.database().addBackLogEntry(getChannel(channelNumber).name(), now, prefixExtraData + msg.toFlatString());
+				CMLib.database().addBackLogEntry(getChannel(channelNumber).name(), subNameField, now, msg.toFlatString());
 			}
 			catch(final Exception e)
 			{
@@ -491,8 +479,6 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	@Override
 	public String getExtraChannelDesc(final String channelName)
 	{
-		return "";
-		/*
 		final StringBuilder str=new StringBuilder("");
 		final int dex = getChannelIndex(channelName);
 		if(dex >= 0)
@@ -514,7 +500,6 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				str.append(L(" The following may read this channel : @x1",CMLib.masking().maskDesc(mask)));
 		}
 		return str.toString();
-		*/
 	}
 
 	private void clearChannels()
@@ -771,32 +756,39 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		return didIt;
 	}
 
-	protected Set<String> getExtraChannelData(final MOB mob, final CMChannel chan)
+	protected int[] getExtraChannelDataFields(final MOB mob, final CMChannel chan)
 	{
-		final Set<String> extraData = new TreeSet<String>();
-		if(chan.flags().contains(ChannelsLibrary.ChannelFlag.CLANONLY))
-		{
-			for(final Pair<Clan,Integer> p : CMLib.clans().findPrivilegedClans(mob, Clan.Function.CHANNEL))
-				extraData.add(p.first.name());
-		}
-		else
-		if(chan.flags().contains(ChannelsLibrary.ChannelFlag.CLANALLYONLY))
-		{
-			for(final Pair<Clan,Integer> p : CMLib.clans().findPrivilegedClans(mob, Clan.Function.CHANNEL))
-			{
-				extraData.add(p.first.name());
-				for(final Clan C1 : CMLib.clans().getAllCommonClanRelations(p.first, Clan.REL_ALLY))
-					extraData.add(C1.name());
-			}
-		}
-		else
+		final List<Integer> all=new LinkedList<Integer>();
 		if(chan.flags().contains(ChannelsLibrary.ChannelFlag.SAMEAREA))
 		{
 			final Area A=CMLib.map().areaLocation(mob);
 			if(A!=null)
-				extraData.add(A.Name());
+				all.add(Integer.valueOf(A.Name().toUpperCase().hashCode()));
 		}
-		return extraData;
+		else
+		if((chan.flags().contains(ChannelsLibrary.ChannelFlag.CLANONLY))
+		||(chan.flags().contains(ChannelsLibrary.ChannelFlag.CLANALLYONLY)))
+		{
+			final List<Pair<Clan,Integer>> allClans=new ArrayList<Pair<Clan,Integer>>();
+			allClans.addAll(CMLib.clans().findPrivilegedClans(mob, Clan.Function.CHANNEL));
+			Collections.sort(allClans,Clan.compareByRole);
+			for(final Pair<Clan,Integer> p : allClans)
+				all.add(Integer.valueOf(p.first.name().toUpperCase().hashCode()));
+		}
+		if(all.size()==0)
+			return new int[0];
+		final int[] f = new int[all.size()];
+		for(int i=0;i<f.length;i++)
+			f[i]=all.get(i).intValue();
+		return f;
+	}
+
+	protected int getExtraChannelDataField(final MOB mob, final CMChannel chan)
+	{
+		final int[] extraFields = getExtraChannelDataFields(mob, chan);
+		if(extraFields.length==0)
+			return 0;
+		return extraFields[0];
 	}
 
 	@Override
@@ -943,7 +935,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				tweet(message);
 
 			final boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
-			channelQueUp(channelInt, msg, this.getExtraChannelData(mob, chan));
+			channelQueUp(channelInt, msg, this.getExtraChannelDataField(mob, chan));
 			for(final Session S : CMLib.sessions().localOnlineIterable())
 			{
 				final ChannelsLibrary myChanLib=CMLib.get(S)._channels();
@@ -983,13 +975,11 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				for(final CMChannel chan : this.channelList)
 				{
 					if((chan.flags().contains(ChannelFlag.CLANALLYONLY))
-					||(chan.flags().contains(ChannelFlag.CLANONLY))
-					||(chan.flags().contains(ChannelFlag.SAMEAREA)))
+					||(chan.flags().contains(ChannelFlag.CLANONLY)))
+					//||(chan.flags().contains(ChannelFlag.SAMEAREA))) // can't do anything about this
 					{
-						/*
 						if(!chan.flags().contains(ChannelsLibrary.ChannelFlag.NOBACKLOG))
 							chansToDo.add(chan);
-						*/
 					}
 				}
 				if(chansToDo.size()>0)
@@ -1005,37 +995,96 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 							@Override
 							public void run()
 							{
-								Log.sysOut("Processing backlog table upgrade...");
+								Log.sysOut("Processing backlog clan table upgrades...");
+								final Map<String, Boolean> isPlayerCache=new TreeMap<String, Boolean>();
+								final Map<String, MOB> playerCache=new TreeMap<String, MOB>();
 								int amountDone = 0;
+								int amountSkipped = 0;
 								for(final CMChannel chan : chans)
 								{
 									int firstIndex=1;
 									boolean done=false;
 									while(!done)
 									{
-										final List<Triad<String,Integer,Long>> msgs = CMLib.database().enumBackLogEntries(chan.name(), firstIndex, 50);
+										final List<Quad<String,Integer,Long,Integer>> msgs = CMLib.database().enumBackLogEntries(chan.name(), firstIndex, 50);
 										if(msgs.size()==0)
 											break;
-										for(final Triad<String,Integer,Long> m : msgs)
+										for(final Quad<String,Integer,Long,Integer> m : msgs)
 										{
-											if(!m.first.startsWith("<EXTRA>"))
+											if(m.fourth.intValue()==0)
 											{
 												final CMMsg msg=CMClass.getMsg();
 												msg.parseFlatString(m.first);
-												final Set<String> extraData = chanLib.getExtraChannelData(msg.source(), chan);
-												if(extraData.size()>0)
+												if((msg.source().Name().length()>0)
+												&&(!Character.isLetter(msg.source().Name().charAt(0)))
+												&&(msg.othersMessage()!=null))
+												{
+													final int y=msg.othersMessage().indexOf(" has logged o");
+													if(y>0)
+													{
+														final int x=msg.othersMessage().indexOf("] '");
+														if((x>0)&&(x<y))
+														{
+															final String name=msg.othersMessage().substring(x+3,y).trim();
+															if((name.length()>0)
+															&&(Character.isLetter(name.charAt(0)))
+															&&(Character.isUpperCase(name.charAt(0))))
+																msg.source().setName(name);
+														}
+													}
+												}
+												final String srcName=msg.source().name();
+												if(!isPlayerCache.containsKey(srcName))
+												{
+													final boolean isPlayer = CMLib.players().playerExists(srcName);
+													isPlayerCache.put(srcName, Boolean.valueOf(isPlayer));
+												}
+												if(isPlayerCache.get(srcName).booleanValue())
+												{
+													if(!playerCache.containsKey(srcName))
+													{
+														for(final Pair<String, Integer> c : CMLib.database().DBReadPlayerClans(srcName))
+															msg.source().setClan(c.first, c.second.intValue());
+														playerCache.put(srcName, msg.source());
+													}
+													else
+														msg.source().destroy();
+													msg.setSource(playerCache.get(srcName));
+												}
+												if(!msg.source().clans().iterator().hasNext())
+												{
+													for(final Enumeration<Clan> c=CMLib.clans().clans();c.hasMoreElements();)
+													{
+														final Clan C=c.nextElement();
+														final String msgStr=msg.othersMessage();
+														if((msgStr!=null)&&(msgStr.indexOf(C.name())>=0))
+														{
+															msg.source().setClan(C.clanID(), C.getTopRankedRoles(Clan.Function.CHANNEL).get(0).intValue());
+															break;
+														}
+													}
+												}
+												final int subNameField = chanLib.getExtraChannelDataField(msg.source(), chan);
+												if(subNameField != 0)
 												{
 													amountDone++;
-													m.first = makeExtraDataXML(extraData) + m.first;
-													CMLib.database().updateBackLogEntry(chan.name(), m.second.intValue(), m.third.longValue(), m.first);
+													CMLib.database().updateBackLogEntry(chan.name(), m.second.intValue(), m.third.longValue(), subNameField, m.first);
 												}
+												else
+													amountSkipped++;
+												if(!playerCache.containsKey(srcName))
+													msg.source().destroy();
+												if(msg.target()!=null)
+													msg.target().destroy();
+												if(msg.tool()!=null)
+													msg.tool().destroy();
 											}
 											firstIndex = m.second.intValue()+1;
 										}
 										done = msgs.size()  < 50;
 									}
 								}
-								Log.sysOut("Backlog table upgrade completed. "+amountDone+" messages altered in "+chans.size()+" channels.");
+								Log.sysOut("Backlog clan table upgrades completed. "+amountDone+"/"+(amountDone+amountSkipped)+" messages altered in "+chans.size()+" channels.");
 								CMLib.database().checkSetBacklogTableVersion(Integer.valueOf(1));
 							}
 						}

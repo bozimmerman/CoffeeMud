@@ -134,7 +134,7 @@ public class DBConnections
 				{
 					if(sqle instanceof java.io.EOFException)
 					{
-						Log.errOut("DBConnections",""+sqle);
+						Log.errOut(""+sqle);
 						DBDone(dbConnection);
 						return -1;
 					}
@@ -145,7 +145,7 @@ public class DBConnections
 				}
 				if(result<0)
 				{
-					Log.errOut("DBConnections",""+dbConnection.getLastError()+"/"+updateString);
+					Log.errOut(""+dbConnection.getLastError()+"/"+updateString);
 				}
 			}
 		}
@@ -153,7 +153,7 @@ public class DBConnections
 		{
 			enQueueError(updateString,""+e,""+0);
 			reportError();
-			Log.errOut("DBConnections",""+e);
+			Log.errOut(""+e);
 		}
 		finally
 		{
@@ -198,7 +198,7 @@ public class DBConnections
 				{
 					if(sqle instanceof java.io.EOFException)
 					{
-						Log.errOut("DBConnections",""+sqle);
+						Log.errOut(""+sqle);
 						DBDone(dbConnection);
 						return -1;
 					}
@@ -209,14 +209,14 @@ public class DBConnections
 				}
 				if(result<0)
 				{
-					Log.errOut("DBConnections",""+dbConnection.getLastError()+"/"+entry.sql);
+					Log.errOut(""+dbConnection.getLastError()+"/"+entry.sql);
 				}
 			}
 		}
 		catch(final Exception e)
 		{
 			reportError();
-			Log.errOut("DBConnections",""+e);
+			Log.errOut(""+e);
 		}
 		finally
 		{
@@ -309,7 +309,7 @@ public class DBConnections
 					}
 					catch (final SQLException e)
 					{
-						Log.errOut("DBConnections",e.getMessage());
+						Log.errOut(e.getMessage());
 					}
 				}
 			}
@@ -432,7 +432,7 @@ public class DBConnections
 			}
 			if((newConn!=null)&&(newConn.isProbablyDead()||newConn.isProbablyLockedUp()||(!newConn.ready())))
 			{
-				Log.errOut("DBConnections","Failed to connect to database.");
+				Log.errOut("Failed to connect to database.");
 				try
 				{
 					newConn.close();
@@ -465,21 +465,21 @@ public class DBConnections
 					}
 					if(consecutiveFailures==180)
 					{
-						Log.errOut("DBConnections","Serious failure obtaining DBConnection ("+inuse+"/"+connections.size()+" in use).");
+						Log.errOut("Serious failure obtaining DBConnection ("+inuse+"/"+connections.size()+" in use).");
 						for(final DBConnection conn : connections)
 						{
 							if(conn.inUse())
-								Log.errOut("DBConnections","Last SQL was: "+conn.lastSQL);
+								Log.errOut("Last SQL was: "+conn.lastSQL);
 						}
 						if(inuse==0)
 							resetConnections();
 					}
 					else
 					if(consecutiveFailures==90)
-						Log.errOut("DBConnections","Moderate failure obtaining DBConnection ("+inuse+"/"+connections.size()+" in use).");
+						Log.errOut("Moderate failure obtaining DBConnection ("+inuse+"/"+connections.size()+" in use).");
 					else
 					if(consecutiveFailures==30)
-						Log.errOut("DBConnections","Minor failure obtaining DBConnection("+inuse+"/"+connections.size()+" in use).");
+						Log.errOut("Minor failure obtaining DBConnection("+inuse+"/"+connections.size()+" in use).");
 					try
 					{
 						Thread.sleep(Math.round(Math.random()*500));
@@ -587,11 +587,11 @@ public class DBConnections
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
 			{
 
-				Log.errOut("DBConnections","getString: "+Field);
-				Log.errOut("DBConnections",sqle);
+				Log.errOut("getString: "+Field);
+				Log.errOut(sqle);
 			}
 			else
-				Log.errOut("DBConnections",""+sqle);
+				Log.errOut(""+sqle);
 			return "";
 		}
 	}
@@ -624,11 +624,11 @@ public class DBConnections
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
 			{
 
-				Log.errOut("DBConnections","getLong: "+Field);
-				Log.errOut("DBConnections",sqle);
+				Log.errOut("getLong: "+Field);
+				Log.errOut(sqle);
 			}
 			else
-				Log.errOut("DBConnections",""+sqle);
+				Log.errOut(""+sqle);
 			return 0;
 		}
 		catch (final java.lang.NumberFormatException nfe)
@@ -661,11 +661,11 @@ public class DBConnections
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
 			{
 
-				Log.errOut("DBConnections","getRes: "+One);
-				Log.errOut("DBConnections",sqle);
+				Log.errOut("getRes: "+One);
+				Log.errOut(sqle);
 			}
 			else
-				Log.errOut("DBConnections",""+sqle);
+				Log.errOut(""+sqle);
 			return "";
 		}
 	}
@@ -684,8 +684,8 @@ public class DBConnections
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
 			{
 
-				Log.errOut("DBConnections","getStringQ: "+Field);
-				Log.errOut("DBConnections",sqle);
+				Log.errOut("getStringQ: "+Field);
+				Log.errOut(sqle);
 			}
 			return "";
 		}
@@ -762,7 +762,7 @@ public class DBConnections
 	{
 		if(!errorQueingEnabled)
 		{
-			Log.errOut("DBConnections","Error Queueing not enabled.");
+			Log.errOut("Error Queueing not enabled.");
 			return;
 		}
 
@@ -775,8 +775,8 @@ public class DBConnections
 			}
 			catch(final FileNotFoundException fnfe)
 			{
-				Log.errOut("DBConnections","Could not open queue?!?!");
-				Log.errOut("DBConnections",SQLString+"\t"+SQLError);
+				Log.errOut("Could not open queue?!?!");
+				Log.errOut(SQLString+"\t"+SQLError);
 			}
 
 			if(out!=null)
@@ -799,13 +799,13 @@ public class DBConnections
 
 		if((lockedUp)||(disconnected))
 		{
-			Log.sysOut("DBConnections","Database is in trouble.  Retry skipped.");
+			Log.sysOut("Database is in trouble.  Retry skipped.");
 			return;
 		}
 
 		if(!errorQueingEnabled)
 		{
-			Log.errOut("DBConnections","Error Queueing not enabled.");
+			Log.errOut("Error Queueing not enabled.");
 			return;
 		}
 
@@ -857,7 +857,7 @@ public class DBConnections
 		// did we actually READ anything?
 		if(Queue.size()==0)
 		{
-			//Log.sysOut("DBConnections","DB Retry Queue is empty.  Good.");
+			//Log.sysOut("DB Retry Queue is empty.  Good.");
 		}
 		else
 		{
@@ -879,8 +879,8 @@ public class DBConnections
 					final int oldAttempts=CMath.s_int(queueLine.substring(secondTab+5));
 					if(oldAttempts>20)
 					{
-						Log.errOut("DBConnections","Giving up on :"+retrySQL);
-						Log.errOut("DBConnections","Giving up because: "+queueLine.substring(firstTab+5,secondTab));
+						Log.errOut("Giving up on :"+retrySQL);
+						Log.errOut("Giving up because: "+queueLine.substring(firstTab+5,secondTab));
 					}
 					else
 					{
@@ -892,13 +892,13 @@ public class DBConnections
 								dbConnection.update(retrySQL,oldAttempts);
 								successes++;
 								if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
-									Log.sysOut("DBConnections","Successful retry: "+queueLine);
+									Log.sysOut("Successful retry: "+queueLine);
 							}
 							catch(final SQLException sqle)
 							{
 								unsuccesses++;
 								if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
-									Log.errOut("DBConnections","Unsuccessfull retry: "+queueLine);
+									Log.errOut("Unsuccessfull retry: "+queueLine);
 								//DO NOT DO THIS AGAIN -- the UPDATE WILL GENERATE the ENQUE!!!
 								//enQueueError(retrySQL,""+sqle,oldDate);
 							}
@@ -917,13 +917,13 @@ public class DBConnections
 					}
 				}
 				else
-					Log.errOut("DBConnections","Could not retry line: "+queueLine+"/"+firstTab+"/"+secondTab);
+					Log.errOut("Could not retry line: "+queueLine+"/"+firstTab+"/"+secondTab);
 			}
 			clearErrors();
 			if(unsuccesses>successes)
-				Log.errOut("DBConnections","Finished running retry Que. Successes: "+successes+"/Failures: "+unsuccesses);
+				Log.errOut("Finished running retry Que. Successes: "+successes+"/Failures: "+unsuccesses);
 			else
-				Log.sysOut("DBConnections","Finished running retry Que. Successes: "+successes+"/Failures: "+unsuccesses);
+				Log.sysOut("Finished running retry Que. Successes: "+successes+"/Failures: "+unsuccesses);
 		}
 	}
 
@@ -953,7 +953,7 @@ public class DBConnections
 			{
 				if(sqle instanceof java.io.EOFException)
 				{
-					Log.errOut("DBConnections",""+sqle);
+					Log.errOut(""+sqle);
 					DBDone(dbConnection);
 					return -1;
 				}
@@ -965,7 +965,7 @@ public class DBConnections
 		}
 		catch(final Exception e)
 		{
-			Log.errOut("DBConnections",""+e);
+			Log.errOut(""+e);
 		}
 		if(dbConnection!=null)
 			DBDone(dbConnection);

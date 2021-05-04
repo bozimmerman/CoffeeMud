@@ -1,5 +1,5 @@
 # Build 5.9.12 Release ?/??/2021
-  *. Optional DB Change: CMCOLR field in CMCHAR increased in size to 255 chars
+  *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG
   1. Prop_Have/WearAdjuster supports item sets now
   2. MANACOST and MANAMINCOST entries in coffeemud.ini allows more flexible skill costs
   3. Skill use will now attempt to check range before consuming mana/resources

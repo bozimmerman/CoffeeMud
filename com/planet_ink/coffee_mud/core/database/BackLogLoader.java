@@ -135,7 +135,7 @@ public class BackLogLoader
 		return setVersion;
 	}
 
-	public void updateBackLogEntry(String channelName, final int index, final long date, final String entry)
+	public void updateBackLogEntry(String channelName, final int index, final long date, final int subNameField, final String entry)
 	{
 		if((entry == null) || (channelName == null) || (entry.length()==0))
 			return;
@@ -143,7 +143,7 @@ public class BackLogLoader
 		DBConnection D=null;
 		try
 		{
-			D=DB.DBFetchPrepared("UPDATE CMBKLG SET CMDATE="+date+", CMDATA=? WHERE CMNAME='"+channelName+"' AND CMINDX="+index);
+			D=DB.DBFetchPrepared("UPDATE CMBKLG SET CMDATE="+date+", CMSNAM="+subNameField+", CMDATA=? WHERE CMNAME='"+channelName+"' AND CMINDX="+index);
 			D.setPreparedClobs(new String[]{entry});
 			try
 			{
@@ -165,7 +165,7 @@ public class BackLogLoader
 		}
 	}
 
-	public void addBackLogEntry(String channelName, final String entry)
+	public void addBackLogEntry(String channelName, final int subNameField, final String entry)
 	{
 		if((entry == null) || (channelName == null) || (entry.length()==0))
 			return;
@@ -174,7 +174,7 @@ public class BackLogLoader
 		DBConnection D=null;
 		try
 		{
-			D=DB.DBFetchPrepared("INSERT INTO CMBKLG (CMNAME,  CMINDX, CMDATE, CMDATA) VALUES ('"+channelName+"', "+counter+", "+System.currentTimeMillis()+", ?)");
+			D=DB.DBFetchPrepared("INSERT INTO CMBKLG (CMNAME, CMSNAM, CMINDX, CMDATE, CMDATA) VALUES ('"+channelName+"', "+subNameField+", "+counter+", "+System.currentTimeMillis()+", ?)");
 			D.setPreparedClobs(new String[]{entry});
 			try
 			{
@@ -186,7 +186,7 @@ public class BackLogLoader
 				Log.errOut("Retry: "+sqle.getMessage());
 				DB.DBDone(D);
 				final int counter2 = getCounter(channelName, true);
-				D=DB.DBFetchPrepared("INSERT INTO CMBKLG (CMNAME,  CMINDX, CMDATE, CMDATA) VALUES ('"+channelName+"', "+counter2+", "+System.currentTimeMillis()+", ?)");
+				D=DB.DBFetchPrepared("INSERT INTO CMBKLG (CMNAME,  CMSNAM, CMINDX, CMDATE, CMDATA) VALUES ('"+channelName+"', "+subNameField+", "+counter2+", "+System.currentTimeMillis()+", ?)");
 				D.setPreparedClobs(new String[]{entry});
 				D.update("",0);
 			}
@@ -273,13 +273,13 @@ public class BackLogLoader
 		}
 	}
 
-	public List<Triad<String,Integer,Long>> enumBackLogEntries(String channelName, final int firstIndex, final int numToReturn)
+	public List<Quad<String,Integer,Long,Integer>> enumBackLogEntries(String channelName, final int firstIndex, final int numToReturn)
 	{
-		final List<Triad<String,Integer,Long>> list=new Vector<Triad<String,Integer,Long>>();
+		final List<Quad<String,Integer,Long,Integer>> list=new Vector<Quad<String,Integer,Long,Integer>>();
 		if(channelName == null)
 			return list;
 		channelName = channelName.toUpperCase().trim();
-		final StringBuilder sql=new StringBuilder("SELECT CMDATA,CMINDX,CMDATE FROM CMBKLG WHERE CMNAME='"+channelName+"'");
+		final StringBuilder sql=new StringBuilder("SELECT * FROM CMBKLG WHERE CMNAME='"+channelName+"'");
 		sql.append(" AND CMINDX >="+firstIndex);
 		sql.append(" ORDER BY CMINDX");
 		DBConnection D=null;
@@ -288,7 +288,11 @@ public class BackLogLoader
 			D=DB.DBFetch();
 			final ResultSet R = D.query(sql.toString());
 			while((R.next())&&(list.size()<numToReturn))
-				list.add(new Triad<String,Integer,Long>(DB.getRes(R, "CMDATA"),Integer.valueOf((int)DB.getLongRes(R,"CMINDX")),Long.valueOf(DB.getLongRes(R, "CMDATE"))));
+				list.add(new Quad<String,Integer,Long,Integer>(
+						DB.getRes(R, "CMDATA"),
+						Integer.valueOf((int)DB.getLongRes(R,"CMINDX")),
+						Long.valueOf(DB.getLongRes(R, "CMDATE")),
+						Integer.valueOf((int)DB.getLongRes(R, "CMSNAM"))));
 			R.close();
 		}
 		catch(final Exception sqle)
@@ -303,21 +307,13 @@ public class BackLogLoader
 
 	}
 
-	public List<Triad<String,Integer,Long>> getBackLogEntries(String channelName, final Set<String> extraData, final int newestToSkip, final int numToReturn)
+	public List<Triad<String,Integer,Long>> getBackLogEntries(String channelName, final int subNameField, final int newestToSkip, final int numToReturn)
 	{
 		final List<Triad<String,Integer,Long>> list=new Vector<Triad<String,Integer,Long>>();
 		if(channelName == null)
 			return list;
 		channelName = channelName.toUpperCase().trim();
 		final int counter = getCounter(channelName, false);
-		final List<String> extraDataFixed=new LinkedList<String>();
-		final String[][] extraDataFixes = new String[][] {
-			{ "\\", "\\\\" },
-			{ "'", "\\'"},
-			{ "%","\\%"}
-		};
-		for(final String str : extraData)
-			extraDataFixed.add("%<D>" + CMStrings.replaceAlls(str,extraDataFixes)+"</D>%");
 		DBConnection D=null;
 		try
 		{
@@ -328,19 +324,8 @@ public class BackLogLoader
 			final StringBuilder sql=new StringBuilder("SELECT CMDATA,CMINDX,CMDATE FROM CMBKLG WHERE CMNAME='"+channelName+"'");
 			sql.append(" AND CMINDX >="+oldest);
 			sql.append(" AND CMINDX <="+newest);
-			/*
-			if(extraDataFixed.size()==1)
-				sql.append(" AND CMDATA LIKE '"+extraDataFixed.iterator().next()+"'");
-			else
-			if(extraDataFixed.size() > 1)
-			{
-				sql.append(" AND (");
-				boolean first=false;
-				for(final String str : extraDataFixed)
-					sql.append((first?"":" OR ")+"CMDATA LIKE '"+str+"'");
-				sql.append(")");
-			}
-			*/
+			if(subNameField != 0)
+				sql.append(" AND CMSNAM = "+subNameField);
 			sql.append(" ORDER BY CMINDX");
 			final ResultSet R = D.query(sql.toString());
 			while((R.next())&&(list.size()<numToReturn))

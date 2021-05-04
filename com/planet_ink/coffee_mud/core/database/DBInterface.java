@@ -867,9 +867,9 @@ public class DBInterface implements DatabaseEngine
 	{
 		return MOBloader.DBRead(name);
 	}
-	
+
 	@Override
-	public PairList<String,Integer> DBReadPlayerClans(String name)
+	public PairList<String,Integer> DBReadPlayerClans(final String name)
 	{
 		return MOBloader.DBReadPlayerClans(name);
 	}
@@ -1235,17 +1235,17 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public List<Triad<String, Integer, Long>> getBackLogEntries(final String channelName, Set<String> extraData, final int newestToSkip, final int numToReturn)
+	public List<Triad<String, Integer, Long>> getBackLogEntries(final String channelName, final int subNameField, final int newestToSkip, final int numToReturn)
 	{
-		return BackLogLoader.getBackLogEntries(channelName, extraData, newestToSkip, numToReturn);
+		return BackLogLoader.getBackLogEntries(channelName, subNameField, newestToSkip, numToReturn);
 	}
 
 	@Override
-	public List<Triad<String,Integer,Long>> enumBackLogEntries(String channelName, final int firstIndex, final int numToReturn)
+	public List<Quad<String,Integer,Long,Integer>> enumBackLogEntries(final String channelName, final int firstIndex, final int numToReturn)
 	{
 		return BackLogLoader.enumBackLogEntries(channelName, firstIndex, numToReturn);
 	}
-	
+
 	@Override
 	public void trimBackLogEntries(final String[] channels, final int maxMessages, final long oldestTime)
 	{
@@ -1253,17 +1253,17 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void addBackLogEntry(final String channelName, final long timeStamp, final String entry)
+	public void addBackLogEntry(final String channelName, final int subNameField, final long timeStamp, final String entry)
 	{
-		BackLogLoader.addBackLogEntry(channelName, entry);
+		BackLogLoader.addBackLogEntry(channelName, subNameField, entry);
 	}
 
 	@Override
-	public void updateBackLogEntry(String channelName, int index, long timeStamp, final String entry)
+	public void updateBackLogEntry(final String channelName, final int index, final long timeStamp, final int subNameField, final String entry)
 	{
-		BackLogLoader.updateBackLogEntry(channelName, index, timeStamp, entry);
+		BackLogLoader.updateBackLogEntry(channelName, index, timeStamp, subNameField, entry);
 	}
-	
+
 	@Override
 	public Integer checkSetBacklogTableVersion(final Integer setVersion)
 	{

@@ -209,6 +209,7 @@ CMAXML string NULL
 CMBKLG
 CMNAME string KEY
 CMINDX integer KEY
+CMSNAM integer NULL,
 CMDATE long NULL
 CMDATA string NULL
 

@@ -2271,10 +2271,11 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#delBackLogEntry(String, long)
 	 * @see DatabaseEngine#trimBackLogEntries(String[], int, long)
 	 * @param channelName the unique name of the channel
+	 * @param subNameField the sub-category of the channel message
 	 * @param timeStamp the time the message was added in millis
 	 * @param entry message
 	 */
-	public void addBackLogEntry(String channelName, long timeStamp, final String entry);
+	public void addBackLogEntry(String channelName, int subNameField, long timeStamp, final String entry);
 
 	/**
 	 * Table category: DBBACKLOG
@@ -2287,9 +2288,10 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param channelName the unique name of the channel
 	 * @param index the index of the message
 	 * @param timeStamp the time the message was added in millis
+	 * @param subNameField the sub category of the channel message
 	 * @param entry message
 	 */
-	public void updateBackLogEntry(String channelName, int index, long timeStamp, final String entry);
+	public void updateBackLogEntry(String channelName, int index, long timeStamp, int subNameField, final String entry);
 
 	/**
 	 * Table category: DBBACKLOG
@@ -2299,12 +2301,12 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#updateBackLogEntry(String, int, long, String)
 	 * @see DatabaseEngine#addBackLogEntry(String, long, String)
 	 * @see DatabaseEngine#trimBackLogEntries(String[], int, long)
-	 * 
+	 *
 	 * @param setVersion set to null to read, or a value to change
 	 * @return the value read, or changed to
 	 */
 	public Integer checkSetBacklogTableVersion(final Integer setVersion);
-	
+
 	/**
 	 * Table category: DBBACKLOG
 	 * Removes a CHANNEL message from the backlog table
@@ -2332,18 +2334,18 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#trimBackLogEntries(String[], int, long)
 	 *
 	 * @param channelName the unique name of the channel to return messages from
-	 * @param extraData any extra query fields, substrings of cmdata
+	 * @param subNameField any extra query field, or 0
 	 * @param newestToSkip the number of "newest" messages to skip
 	 * @param numToReturn the number of total messages to return
 	 * @return a list of applicable messages, coded as string,timestamp
 	 */
-	public List<Triad<String,Integer,Long>> getBackLogEntries(String channelName, Set<String> extraData, final int newestToSkip, final int numToReturn);
+	public List<Triad<String,Integer,Long>> getBackLogEntries(String channelName, int subNameField, final int newestToSkip, final int numToReturn);
 
 	/**
 	 * Table category: DBBACKLOG
 	 * Returns a list of channel messages for the given channel and criteria.
 	 * The list returned includes the message, index, and the timestamp of the
-	 * message.  The list is index sorted.
+	 * message, and the subnameField.  The list is index sorted.
 	 *
 	 * @see DatabaseEngine#addBackLogEntry(String, long, String)
 	 * @see DatabaseEngine#updateBackLogEntry(String, int, long, String)
@@ -2355,7 +2357,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param numToReturn the number of total messages to return
 	 * @return a list of applicable messages, coded as string,timestamp
 	 */
-	public List<Triad<String,Integer,Long>> enumBackLogEntries(String channelName, final int firstIndex, final int numToReturn);
+	public List<Quad<String,Integer,Long,Integer>> enumBackLogEntries(String channelName, final int firstIndex, final int numToReturn);
 
 	/**
 	 * Table category: DBBACKLOG

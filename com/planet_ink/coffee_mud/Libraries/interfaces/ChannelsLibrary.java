@@ -146,9 +146,9 @@ public interface ChannelsLibrary extends CMLibrary
 	 * @see ChannelsLibrary#getChannelIndex(String)
 	 * @param channelNumber the channel index number
 	 * @param msg the channel message msg that was sent around
-	 * @param extraData extra audience data for the given new message
+	 * @param subNameField extra audience data for the given new message
 	 */
-	public void channelQueUp(int channelNumber, CMMsg msg, Set<String> extraData);
+	public void channelQueUp(int channelNumber, CMMsg msg, int subNameField);
 
 	/**
 	 * Returns the official index number of the channel with the
@@ -394,13 +394,14 @@ public interface ChannelsLibrary extends CMLibrary
 		 * @return timestamp of when the message was sent
 		 */
 		public long sentTimeMillis();
-		
+
 		/**
-		 * A set of extra data to help determine the audience of a message,
-		 * such as applicable clan names, or area names, etc.
+		 * A number as a sub-category to determine the proper audience
+		 * for this message.  This number might represent the hash of
+		 * an area or clan name, for example.
 		 * @return a set of strings
 		 */
-		public Set<String> extraData();
+		public int subNameField();
 	}
 
 	/**
