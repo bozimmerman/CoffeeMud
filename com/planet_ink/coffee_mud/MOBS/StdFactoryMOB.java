@@ -69,6 +69,7 @@ public class StdFactoryMOB extends StdMOB
 	@Override
 	public void setName(final String newName)
 	{
+		_name = newName; // this is done for debugging and single-thread purposes.
 		volatileName = newName;
 	}
 
