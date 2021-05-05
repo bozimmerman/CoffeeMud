@@ -610,11 +610,21 @@ public class CMFile extends File
 
 	public static final void unloadVFS()
 	{
+		final CMFile.CMVFSDir[] vfs;
+		synchronized(CMFile.vfs)
+		{
+			vfs = CMFile.vfs;
+		}
 		Arrays.fill(vfs, null);
 	}
 
 	private static final CMVFSDir vfsV()
 	{
+		final CMFile.CMVFSDir[] vfs;
+		synchronized(CMFile.vfs)
+		{
+			vfs = CMFile.vfs;
+		}
 		return vfs[Thread.currentThread().getThreadGroup().getName().charAt(0)];
 	}
 
@@ -1693,26 +1703,41 @@ public class CMFile extends File
 	 */
 	public static final CMVFSDir getVFSDirectory()
 	{
-		CMVFSDir vvfs=vfsV();
+		final CMFile.CMVFSDir[] vfs;
+		CMVFSDir vvfs;
+		synchronized(CMFile.vfs)
+		{
+			vfs = CMFile.vfs;
+			vvfs=vfsV();
+		}
 		if(vvfs==null)
 		{
 			if(CMLib.database()==null)
 				return new CMVFSDir(null,"",CMFile.VFS_MASK_DIRECTORY,System.currentTimeMillis(),"SYS");
-			final char threadCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
-			if(threadCode==MudHost.MAIN_HOST)
-				vvfs=vfs[threadCode]=CMLib.database().DBReadVFSDirectory();
-			else
+			synchronized(vfs)
 			{
-				if(CMProps.isPrivateToMe("DBVFS"))
-					vvfs=vfs[threadCode]=CMLib.database().DBReadVFSDirectory();
-				else
-				if(vfs[MudHost.MAIN_HOST]!=null)
+				vvfs=vfsV();
+				if(vvfs==null)
 				{
-					vfs[threadCode]=vfs[MudHost.MAIN_HOST];
-					return vfs[threadCode];
+					final char threadCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
+					if(threadCode==MudHost.MAIN_HOST)
+						vvfs=vfs[threadCode]=CMLib.database().DBReadVFSDirectory();
+					else
+					if(CMProps.isPrivateToMe("DBVFS"))
+						vvfs=vfs[threadCode]=CMLib.database().DBReadVFSDirectory();
+					else
+					if(vfs[MudHost.MAIN_HOST]!=null)
+					{
+						vfs[threadCode]=vfs[MudHost.MAIN_HOST];
+						vvfs=vfs[threadCode];
+					}
+					else
+					{
+						vfs[MudHost.MAIN_HOST]=CMLib.database().DBReadVFSDirectory();
+						vfs[threadCode]=vfs[MudHost.MAIN_HOST];
+						vvfs=vfs[threadCode];
+					}
 				}
-				else
-					vvfs=vfs[threadCode]=vfs[MudHost.MAIN_HOST]=CMLib.database().DBReadVFSDirectory();
 			}
 		}
 		if((catalogPluginAdded!=CMLib.catalog())&&(CMLib.catalog()!=null))
