@@ -72,7 +72,7 @@ Sleeveless % Doublet	24	60	16	15	GenArmor	TORSO	0	13	0
 % Frock	11	30	14	11	GenArmor	-1:TORSO&&LEGS	0	15	0	
 % Belt	7	10	2	2	GenArmor	-1:WAIST	25	1	8	
 Full-Length % Robes	29	80	18	18	GenArmor	3:HEAD&&NECK&&TORSO&&ARMS&&LEFT WRIST&&RIGHT WRIST&&FEET&&WAIST&&LEGS	40	16	0	
-% Bra	22	45	2	50	GenArmor	S-3:TORSO	0	0	0	
+% Bra	22	45	2	50	GenArmor	S-3:TORSO	5	0	2	
 % Veil	14	20	2	25	GenArmor	3:EYES	0	0	0	
 % Winter Cap	14	20	30	5	GenArmor	HEAD	0	1	0	Prop_HaveResister;COLD 10%
 % Sweater	15	60	10	30	GenArmor	1:BODY	0	6	0	Prop_HaveResister;COLD 10%
