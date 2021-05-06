@@ -387,46 +387,45 @@ public class BackLogLoader
 			final Integer tableVer = checkSetBacklogTableVersion(null);
 			if((tableVer == null) || (tableVer.intValue() < 1))
 			{
-				DBConnection D=null;
-				try
+				CMLib.threads().scheduleRunnable(new Runnable()
 				{
-					D=DB.DBFetch();
-					D.update("UPDATE CMBKLG SET CMSNAM=0;", 0);
-				}
-				catch(final Exception sqle)
-				{
-					Log.errOut("BackLog",sqle);
-				}
-				finally
-				{
-					DB.DBDone(D);
-				}
-				final List<CMChannel> chansToDo = new LinkedList<CMChannel>();
-				for(int f = 0; f<channels.getNumChannels(); f++)
-				{
-					final CMChannel chan = channels.getChannel(f);
-					if((chan.flags().contains(ChannelFlag.CLANALLYONLY))
-					||(chan.flags().contains(ChannelFlag.CLANONLY)))
-					//||(chan.flags().contains(ChannelFlag.SAMEAREA))) // can't do anything about this
+					@Override
+					public void run()
 					{
-						if(!chan.flags().contains(ChannelsLibrary.ChannelFlag.NOBACKLOG))
-							chansToDo.add(chan);
-					}
-				}
-				if(chansToDo.size()>0)
-				{
-					CMLib.threads().scheduleRunnable(new Runnable()
-					{
-						final Set<CMChannel> chans = new XTreeSet<CMChannel>(chansToDo);
-						@Override
-						public void run()
+						DBConnection D=null;
+						try
+						{
+							D=DB.DBFetch();
+							D.update("UPDATE CMBKLG SET CMSNAM=0;", 0);
+						}
+						catch(final Exception sqle)
+						{
+							Log.errOut("BackLog",sqle);
+						}
+						finally
+						{
+							DB.DBDone(D);
+						}
+						final List<CMChannel> chansToDo = new LinkedList<CMChannel>();
+						for(int f = 0; f<channels.getNumChannels(); f++)
+						{
+							final CMChannel chan = channels.getChannel(f);
+							if((chan.flags().contains(ChannelFlag.CLANALLYONLY))
+							||(chan.flags().contains(ChannelFlag.CLANONLY)))
+							//||(chan.flags().contains(ChannelFlag.SAMEAREA))) // can't do anything about this
+							{
+								if(!chan.flags().contains(ChannelsLibrary.ChannelFlag.NOBACKLOG))
+									chansToDo.add(chan);
+							}
+						}
+						if(chansToDo.size()>0)
 						{
 							Log.sysOut("Processing backlog clan table upgrades...");
 							final Map<String, Boolean> isPlayerCache=new TreeMap<String, Boolean>();
 							final Map<String, MOB> playerCache=new TreeMap<String, MOB>();
 							int amountDone = 0;
 							int amountSkipped = 0;
-							for(final CMChannel chan : chans)
+							for(final CMChannel chan : chansToDo)
 							{
 								int firstIndex=1;
 								boolean done=false;
@@ -515,12 +514,11 @@ public class BackLogLoader
 									done = msgs.size()  < 50;
 								}
 							}
-							Log.sysOut("Backlog clan table upgrades completed. "+amountDone+"/"+(amountDone+amountSkipped)+" messages altered in "+chans.size()+" channels.");
+							Log.sysOut("Backlog clan table upgrades completed. "+amountDone+"/"+(amountDone+amountSkipped)+" messages altered in "+chansToDo.size()+" channels.");
 						}
+						checkSetBacklogTableVersion(Integer.valueOf(1));
 					}
-					, 500);
-				}
-				checkSetBacklogTableVersion(Integer.valueOf(1));
+				}, 500);
 			}
 		}
 	}
