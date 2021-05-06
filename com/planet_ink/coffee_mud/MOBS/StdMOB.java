@@ -3965,9 +3965,9 @@ public class StdMOB implements MOB
 								}
 								if (smallChance && (!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 								{
-									final Ability theYawns = CMClass.getAbility("Disease_Yawning");
-									if ((theYawns != null) && (!CMSecurity.isAbilityDisabled(A.ID())))
-										theYawns.invoke(this, this, true, 0);
+									final Ability yawnsA = CMClass.getAbility("Disease_Yawning");
+									if ((yawnsA != null) && (!CMSecurity.isAbilityDisabled(A.ID())))
+										yawnsA.invoke(this, this, true, 0);
 								}
 								if (smallChance && curState().getFatigue() > (CharState.FATIGUED_EXHAUSTED_MILLIS))
 								{
@@ -3976,9 +3976,9 @@ public class StdMOB implements MOB
 									phyStats().setDisposition(phyStats().disposition() | PhyStats.IS_SLEEPING);
 									if ((CMLib.dice().rollPercentage() < 10) && (!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 									{
-										final Ability theYawns = CMClass.getAbility("Disease_Sleepwalking");
-										if ((theYawns != null) && (!CMSecurity.isAbilityDisabled(A.ID())))
-											theYawns.invoke(this, this, true, 0);
+										final Ability sleepA = CMClass.getAbility("Disease_Sleepwalking");
+										if ((sleepA != null) && (!CMSecurity.isAbilityDisabled(A.ID())))
+											sleepA.invoke(this, this, true, 0);
 									}
 								}
 							}
