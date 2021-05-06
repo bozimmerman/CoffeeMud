@@ -3955,7 +3955,7 @@ public class StdMOB implements MOB
 							if (curState().getFatigue() > CharState.FATIGUED_MILLIS)
 							{
 								final boolean smallChance = (CMLib.dice().rollPercentage() == 1);
-								if((CMLib.dice().rollPercentage() <10)
+								if((CMLib.dice().rollPercentage() < 5)
 								&&(curState().getHitPoints()>=maxState().getHitPoints())
 								&&(fetchEffect("Mood")==null));
 								{
