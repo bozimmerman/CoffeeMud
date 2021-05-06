@@ -384,22 +384,36 @@ public class BackLogLoader
 	{
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CHANNELBACKLOGS))
 		{
-			final List<CMChannel> chansToDo = new LinkedList<CMChannel>();
-			for(int f = 0; f<channels.getNumChannels(); f++)
+			final Integer tableVer = checkSetBacklogTableVersion(null);
+			if((tableVer == null) || (tableVer.intValue() < 1))
 			{
-				final CMChannel chan = channels.getChannel(f);
-				if((chan.flags().contains(ChannelFlag.CLANALLYONLY))
-				||(chan.flags().contains(ChannelFlag.CLANONLY)))
-				//||(chan.flags().contains(ChannelFlag.SAMEAREA))) // can't do anything about this
+				DBConnection D=null;
+				try
 				{
-					if(!chan.flags().contains(ChannelsLibrary.ChannelFlag.NOBACKLOG))
-						chansToDo.add(chan);
+					D=DB.DBFetch();
+					D.update("UPDATE CMBKLG SET CMSNAM=0;", 0);
 				}
-			}
-			if(chansToDo.size()>0)
-			{
-				final Integer tableVer = checkSetBacklogTableVersion(null);
-				if((tableVer == null) || (tableVer.intValue() < 1))
+				catch(final Exception sqle)
+				{
+					Log.errOut("BackLog",sqle);
+				}
+				finally
+				{
+					DB.DBDone(D);
+				}
+				final List<CMChannel> chansToDo = new LinkedList<CMChannel>();
+				for(int f = 0; f<channels.getNumChannels(); f++)
+				{
+					final CMChannel chan = channels.getChannel(f);
+					if((chan.flags().contains(ChannelFlag.CLANALLYONLY))
+					||(chan.flags().contains(ChannelFlag.CLANONLY)))
+					//||(chan.flags().contains(ChannelFlag.SAMEAREA))) // can't do anything about this
+					{
+						if(!chan.flags().contains(ChannelsLibrary.ChannelFlag.NOBACKLOG))
+							chansToDo.add(chan);
+					}
+				}
+				if(chansToDo.size()>0)
 				{
 					CMLib.threads().scheduleRunnable(new Runnable()
 					{
@@ -502,11 +516,11 @@ public class BackLogLoader
 								}
 							}
 							Log.sysOut("Backlog clan table upgrades completed. "+amountDone+"/"+(amountDone+amountSkipped)+" messages altered in "+chans.size()+" channels.");
-							checkSetBacklogTableVersion(Integer.valueOf(1));
 						}
 					}
 					, 500);
 				}
+				checkSetBacklogTableVersion(Integer.valueOf(1));
 			}
 		}
 	}
