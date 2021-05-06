@@ -580,7 +580,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 				if(maxRangeStr.indexOf(',')>0)
 				{
 					minrange=CMath.s_int(maxRangeStr.substring(0,maxRangeStr.indexOf(',')).trim());
-					maxrange=CMath.s_int(maxRangeStr.substring(0,maxRangeStr.indexOf(',')+1).trim());
+					maxrange=CMath.s_int(maxRangeStr.substring(maxRangeStr.indexOf(',')+1).trim());
 				}
 				else
 				{
