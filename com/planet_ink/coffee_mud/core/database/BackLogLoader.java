@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.core.database;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.ChannelFlag;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -102,7 +104,7 @@ public class BackLogLoader
 		}
 	}
 
-	public Integer checkSetBacklogTableVersion(final Integer setVersion)
+	protected Integer checkSetBacklogTableVersion(final Integer setVersion)
 	{
 		DBConnection D=null;
 		try
@@ -135,7 +137,7 @@ public class BackLogLoader
 		return setVersion;
 	}
 
-	public void updateBackLogEntry(String channelName, final int index, final long date, final int subNameField, final String entry)
+	protected void updateBackLogEntry(String channelName, final int index, final long date, final int subNameField, final String entry)
 	{
 		if((entry == null) || (channelName == null) || (entry.length()==0))
 			return;
@@ -273,7 +275,7 @@ public class BackLogLoader
 		}
 	}
 
-	public List<Quad<String,Integer,Long,Integer>> enumBackLogEntries(String channelName, final int firstIndex, final int numToReturn)
+	protected List<Quad<String,Integer,Long,Integer>> enumBackLogEntries(String channelName, final int firstIndex, final int numToReturn)
 	{
 		final List<Quad<String,Integer,Long,Integer>> list=new Vector<Quad<String,Integer,Long,Integer>>();
 		if(channelName == null)
@@ -374,6 +376,137 @@ public class BackLogLoader
 			finally
 			{
 				DB.DBDone(D);
+			}
+		}
+	}
+
+	public void checkUpgradeBacklogTable(final ChannelsLibrary channels)
+	{
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CHANNELBACKLOGS))
+		{
+			final List<CMChannel> chansToDo = new LinkedList<CMChannel>();
+			for(int f = 0; f<channels.getNumChannels(); f++)
+			{
+				final CMChannel chan = channels.getChannel(f);
+				if((chan.flags().contains(ChannelFlag.CLANALLYONLY))
+				||(chan.flags().contains(ChannelFlag.CLANONLY)))
+				//||(chan.flags().contains(ChannelFlag.SAMEAREA))) // can't do anything about this
+				{
+					if(!chan.flags().contains(ChannelsLibrary.ChannelFlag.NOBACKLOG))
+						chansToDo.add(chan);
+				}
+			}
+			if(chansToDo.size()>0)
+			{
+				final Integer tableVer = checkSetBacklogTableVersion(null);
+				if((tableVer == null) || (tableVer.intValue() < 1))
+				{
+					CMLib.threads().scheduleRunnable(new Runnable()
+					{
+						final Set<CMChannel> chans = new XTreeSet<CMChannel>(chansToDo);
+						@Override
+						public void run()
+						{
+							Log.sysOut("Processing backlog clan table upgrades...");
+							final Map<String, Boolean> isPlayerCache=new TreeMap<String, Boolean>();
+							final Map<String, MOB> playerCache=new TreeMap<String, MOB>();
+							int amountDone = 0;
+							int amountSkipped = 0;
+							for(final CMChannel chan : chans)
+							{
+								int firstIndex=1;
+								boolean done=false;
+								while(!done)
+								{
+									final List<Quad<String,Integer,Long,Integer>> msgs = enumBackLogEntries(chan.name(), firstIndex, 50);
+									if(msgs.size()==0)
+										break;
+									for(final Quad<String,Integer,Long,Integer> m : msgs)
+									{
+										int subNameField=0;
+										if(m.fourth.intValue()==0)
+										{
+											final CMMsg msg=CMClass.getMsg();
+											msg.parseFlatString(m.first);
+											if((msg.source().Name().length()>0)
+											&&(!Character.isLetter(msg.source().Name().charAt(0)))
+											&&(msg.othersMessage()!=null))
+											{
+												final int y=msg.othersMessage().indexOf(" has logged o");
+												if(y>0)
+												{
+													final int x=msg.othersMessage().indexOf("] '");
+													if((x>0)&&(x<y))
+													{
+														final String name=msg.othersMessage().substring(x+3,y).trim();
+														if((name.length()>0)
+														&&(Character.isLetter(name.charAt(0)))
+														&&(Character.isUpperCase(name.charAt(0))))
+															msg.source().setName(name);
+													}
+												}
+											}
+											final String srcName=msg.source().name();
+											if(!isPlayerCache.containsKey(srcName))
+											{
+												final boolean isPlayer = CMLib.players().playerExists(srcName);
+												isPlayerCache.put(srcName, Boolean.valueOf(isPlayer));
+											}
+											if(isPlayerCache.get(srcName).booleanValue())
+											{
+												if(!playerCache.containsKey(srcName))
+												{
+													for(final Pair<String, Integer> c : CMLib.database().DBReadPlayerClans(srcName))
+														msg.source().setClan(c.first, c.second.intValue());
+													playerCache.put(srcName, msg.source());
+												}
+												else
+													msg.source().destroy();
+												msg.setSource(playerCache.get(srcName));
+											}
+											if(!msg.source().clans().iterator().hasNext())
+											{
+												for(final Enumeration<Clan> c=CMLib.clans().clans();c.hasMoreElements();)
+												{
+													final Clan C=c.nextElement();
+													final String msgStr=msg.othersMessage();
+													if((msgStr!=null)&&(msgStr.indexOf(C.name())>=0))
+													{
+														msg.source().setClan(C.clanID(), C.getTopRankedRoles(Clan.Function.CHANNEL).get(0).intValue());
+														break;
+													}
+												}
+											}
+											final List<Pair<Clan,Integer>> allClans=new ArrayList<Pair<Clan,Integer>>();
+											allClans.addAll(CMLib.clans().findPrivilegedClans(msg.source(), Clan.Function.CHANNEL));
+											Collections.sort(allClans,Clan.compareByRole);
+											if(allClans.size()>0)
+												subNameField=allClans.get(0).first.name().toUpperCase().hashCode();
+											if(subNameField != 0)
+											{
+												amountDone++;
+												updateBackLogEntry(chan.name(), m.second.intValue(), m.third.longValue(), subNameField, m.first);
+											}
+											else
+												amountSkipped++;
+											if(!playerCache.containsKey(srcName))
+												msg.source().destroy();
+											if(msg.target()!=null)
+												msg.target().destroy();
+											if(msg.tool()!=null)
+												msg.tool().destroy();
+										}
+										firstIndex = m.second.intValue()+1;
+									}
+									done = msgs.size()  < 50;
+								}
+							}
+							Log.sysOut("Backlog clan table upgrades completed. "+amountDone+"/"+(amountDone+amountSkipped)+" messages altered in "+chans.size()+" channels.");
+							checkSetBacklogTableVersion(Integer.valueOf(1));
+						}
+					}
+					, 500);
+				}
 			}
 		}
 	}

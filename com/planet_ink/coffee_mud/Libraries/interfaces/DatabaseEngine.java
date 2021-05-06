@@ -2279,40 +2279,8 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBBACKLOG
-	 * Updates a CHANNEL message in the backlog table
-	 * @see DatabaseEngine#getBackLogEntries(String, Set, int, int)
-	 * @see DatabaseEngine#enumBackLogEntries(String, int, int)
-	 * @see DatabaseEngine#delBackLogEntry(String, long)
-	 * @see DatabaseEngine#addBackLogEntry(String, long, String)
-	 * @see DatabaseEngine#trimBackLogEntries(String[], int, long)
-	 * @param channelName the unique name of the channel
-	 * @param index the index of the message
-	 * @param timeStamp the time the message was added in millis
-	 * @param subNameField the sub category of the channel message
-	 * @param entry message
-	 */
-	public void updateBackLogEntry(String channelName, int index, long timeStamp, int subNameField, final String entry);
-
-	/**
-	 * Table category: DBBACKLOG
-	 * Sets or Checks the version of the backlog db table.
-	 * @see DatabaseEngine#getBackLogEntries(String, Set, int, int)
-	 * @see DatabaseEngine#enumBackLogEntries(String, int, int)
-	 * @see DatabaseEngine#updateBackLogEntry(String, int, long, String)
-	 * @see DatabaseEngine#addBackLogEntry(String, long, String)
-	 * @see DatabaseEngine#trimBackLogEntries(String[], int, long)
-	 *
-	 * @param setVersion set to null to read, or a value to change
-	 * @return the value read, or changed to
-	 */
-	public Integer checkSetBacklogTableVersion(final Integer setVersion);
-
-	/**
-	 * Table category: DBBACKLOG
 	 * Removes a CHANNEL message from the backlog table
 	 * @see DatabaseEngine#getBackLogEntries(String, Set, int, int)
-	 * @see DatabaseEngine#enumBackLogEntries(String, int, int)
-	 * @see DatabaseEngine#updateBackLogEntry(String, int, long, String)
 	 * @see DatabaseEngine#addBackLogEntry(String, long, String)
 	 * @see DatabaseEngine#trimBackLogEntries(String[], int, long)
 	 * @param channelName the unique name of the channel
@@ -2328,8 +2296,6 @@ public interface DatabaseEngine extends CMLibrary
 	 * by setting the number to skip and the number to return.
 	 *
 	 * @see DatabaseEngine#addBackLogEntry(String, long, String)
-	 * @see DatabaseEngine#enumBackLogEntries(String, int, int)
-	 * @see DatabaseEngine#updateBackLogEntry(String, int, long, String)
 	 * @see DatabaseEngine#delBackLogEntry(String, long)
 	 * @see DatabaseEngine#trimBackLogEntries(String[], int, long)
 	 *
@@ -2343,32 +2309,12 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBBACKLOG
-	 * Returns a list of channel messages for the given channel and criteria.
-	 * The list returned includes the message, index, and the timestamp of the
-	 * message, and the subnameField.  The list is index sorted.
-	 *
-	 * @see DatabaseEngine#addBackLogEntry(String, long, String)
-	 * @see DatabaseEngine#updateBackLogEntry(String, int, long, String)
-	 * @see DatabaseEngine#delBackLogEntry(String, long)
-	 * @see DatabaseEngine#trimBackLogEntries(String[], int, long)
-	 *
-	 * @param channelName the unique name of the channel to return messages from
-	 * @param newestToSkip the number of "newest" messages to skip
-	 * @param numToReturn the number of total messages to return
-	 * @return a list of applicable messages, coded as string,timestamp
-	 */
-	public List<Quad<String,Integer,Long,Integer>> enumBackLogEntries(String channelName, final int firstIndex, final int numToReturn);
-
-	/**
-	 * Table category: DBBACKLOG
 	 * This is a periodic maintenance method which will go through the
 	 * list of unique channel names, and trim them according to the maximum
 	 * number of messages to retain (absolute), and the oldest message
 	 * to return (absolute timestamp -- no 0 nonsense).  Both criteria
 	 * will be used in the trimming.
 	 * @see DatabaseEngine#getBackLogEntries(String, Set, int, int)
-	 * @see DatabaseEngine#enumBackLogEntries(String, int, int)
-	 * @see DatabaseEngine#updateBackLogEntry(String, int, long, String)
 	 * @see DatabaseEngine#delBackLogEntry(String, long)
 	 * @see DatabaseEngine#addBackLogEntry(String, long, String)
 	 *
@@ -2377,6 +2323,16 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param oldestTime the oldest message to retain
 	 */
 	public void trimBackLogEntries(final String[] channels, final int maxMessages, final long oldestTime);
+
+	/**
+	 * Table category: DBBACKLOG
+	 * This method checks if the backlog table requires any upgrades and, if so, does them.
+	 * @see DatabaseEngine#getBackLogEntries(String, Set, int, int)
+	 * @see DatabaseEngine#delBackLogEntry(String, long)
+	 * @see DatabaseEngine#addBackLogEntry(String, long, String)
+	 * @param channels the channels library to which the backlog applies
+	 */
+	public void checkUpgradeBacklogTable(final ChannelsLibrary channels);
 
 	/**
 	 * Table category: DBPLAYERDATA

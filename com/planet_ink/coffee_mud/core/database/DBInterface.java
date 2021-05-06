@@ -1241,12 +1241,6 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public List<Quad<String,Integer,Long,Integer>> enumBackLogEntries(final String channelName, final int firstIndex, final int numToReturn)
-	{
-		return BackLogLoader.enumBackLogEntries(channelName, firstIndex, numToReturn);
-	}
-
-	@Override
 	public void trimBackLogEntries(final String[] channels, final int maxMessages, final long oldestTime)
 	{
 		BackLogLoader.trimBackLogEntries(channels, maxMessages, oldestTime);
@@ -1259,15 +1253,9 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void updateBackLogEntry(final String channelName, final int index, final long timeStamp, final int subNameField, final String entry)
+	public void checkUpgradeBacklogTable(final ChannelsLibrary channels)
 	{
-		BackLogLoader.updateBackLogEntry(channelName, index, timeStamp, subNameField, entry);
-	}
-
-	@Override
-	public Integer checkSetBacklogTableVersion(final Integer setVersion)
-	{
-		return BackLogLoader.checkSetBacklogTableVersion(setVersion);
+		BackLogLoader.checkUpgradeBacklogTable(channels);
 	}
 
 	@Override
