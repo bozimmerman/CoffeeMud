@@ -431,9 +431,9 @@ public class DefaultSocial implements Social
 				public void callBack()
 				{
 					if (this.input.equals("Y"))
-					{
 						invokeIntern(mob, commands, tarP, auto);
-					}
+					else
+						mob.tell(L("@x1 forbid(s) you to @x2.",tarP.name(),baseName().toLowerCase()));
 				}
 			});
 			return true;
