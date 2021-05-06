@@ -54,7 +54,7 @@ public class Mood extends StdAbility
 	@Override
 	public String displayText()
 	{
-		return (moodCode <= 0) ? "" : "(In " + CMLib.english().startWithAorAn(MOODS[moodCode][0].toLowerCase()) + " mood)";
+		return (mood == null) ? "" : "(In " + CMLib.english().startWithAorAn(mood.name().toLowerCase()) + " mood)";
 	}
 
 	@Override
@@ -93,29 +93,44 @@ public class Mood extends StdAbility
 		return false;
 	}
 
-	protected int		moodCode	= -1;
-	protected Object	lastOne		= null;
-	protected CMMsg		lastMsg		= null;
+	protected enum MoodType
+	{
+		FORMAL("+ADJCHA 17","^Bformal","formally"),
+		POLITE("+ADJCHA 13","^Bpolite","politely"),
+		HAPPY("","^Yhappy","happily"),
+		SAD("","^Csad","sadly"),
+		ANGRY("","^rangry","angrily"),
+		RUDE("","^grude","rudely"),
+		MEAN("","^rmean","meanly"),
+		PROUD("","^bproud","proudly"),
+		GRUMPY("","^Ggrumpy","grumpily"),
+		EXCITED("","^Wexcited","excitedly"),
+		SCARED("","^yscared","scaredly"),
+		LONELY("","^Clonely","lonely"),
+		REFLECTIVE("","^Creflective","reflectively"),
+		SILLY("","^psilly","sillily")
+		;
+		final String statChanges;
+		final String adj;
+		final String adv;
+
+		private MoodType(final String statChanges, final String adj, final String adv)
+		{
+			this.statChanges=statChanges;
+			this.adj=adj;
+			this.adv=adv;
+		}
+
+	}
+
+	protected MoodType		mood	= null;
+	protected volatile int	counter	= 0;
+	protected Object		lastOne	= null;
+	protected CMMsg			lastMsg	= null;
 
 	public static final String[] BOAST_CHANNELS=
 	{
 		"BOAST","GRATZ","ANNOUNCE","GOSSIP","OOC","CHAT"
-	};
-
-	public static final String[][] MOODS={
-		/*0 */{"FORMAL","+ADJCHA 17","^Bformal","formally"},
-		/*1 */{"POLITE","+ADJCHA 13","^Bpolite","politely"},
-		/*2 */{"HAPPY","","^Yhappy","happily"},
-		/*3 */{"SAD","","^Csad","sadly"},
-		/*4 */{"ANGRY","","^rangry","angrily"},
-		/*5 */{"RUDE","","^grude","rudely"},
-		/*6 */{"MEAN","","^rmean","meanly"},
-		/*7 */{"PROUD","","^bproud","proudly"},
-		/*8 */{"GRUMPY","","^Ggrumpy","grumpily"},
-		/*9 */{"EXCITED","","^Wexcited","excitedly"},
-		/*10*/{"SCARED","","^yscared","scaredly"},
-		/*11*/{"LONELY","","^Clonely","lonely"},
-		/*12*/{"REFLECTIVE","","^Creflective","reflectively"},
 	};
 
 	public final static String[] uglyPhrases=
@@ -150,6 +165,25 @@ public class Mood extends StdAbility
 		"tiny-brained wiper of other people`s bottoms"
 	};
 
+	public static String[] sillySocials = new String[] {
+		"ADJUST","AGREE","AIR","ANGELIC","ANTICIPATE","APPLAUD","BABBLE","BARK","BAT",
+		"BEAM","BEARHUG","BECKON","BEER","BEG","BIRD","BITE","BKISS","BLINK","BLUSH",
+		"BOAST","BOGGLE","BONK","BONK","BONK","BONK","BOUNCE","BOW","CACKLE","CHARGE",
+		"CHEER","CHEST","CHORTLE","CHUCKLE","CLAP","COLLAPSE","COMB","COMMANDO","CONFUSED",
+		"CONSPIRE","CONTEMPLATE","COUGH","COZY","CURTSEY","DANCE","DISCODANCE","DOH",
+		"DROOL","DUCK","EARPLUG","EMBRACE","EYEBROW","FART","FIDGET","FLASH","FLEX",
+		"FLIRT","FLUTTER","FOOTSIE","FPALM","FROLICK","GIGGLE","GOOSE","GREET","GROUPHUG",
+		"HICCIP","HIGHFIVE","HOMEWORK","HOP","HOWL","HUSH","INNOCENT","JIG","KISS","LAUGH",
+		"LAUGH","LAUGH","LICK","MOO","MOON","MOSH","NIBBLE","NOOGIE","NTWIST","NUDGE",
+		"NUZZLE","PANT","PAT","PATPAT","PECK","PET","PIE","PILLOW","PINCH","POINT","POKE",
+		"POUNCE","PRANCE","PRAY","PURR","RASPBERRY","ROAR","ROFL","ROFL","ROFL","ROFL",
+		"ROFLMAO","ROFLMAO","ROFLMAO","ROLL","ROLLOVER","SERENADE","SHAKE","SILLY","SILLY",
+		"SILLY","SLOBBER","SLOWDANCE","SMILE","SMILE","SMIRK","SMIRK","SNOWBALL","SPIN",
+		"SQUEEL","SQUIRM","SSMILE","STRUT","SWEET","SWOON","TEASE","TEASE","THANK","THANK",
+		"THANK","TICKLE","TICKLE","TONGUE","TWERK","TWIDDLE","WHEW","WIGGY","WIGGY","WIGGY",
+		"WINK","WINK","WONDER","WORM","YEEHAW","ZERBERT"
+	};
+
 	@Override
 	public void setMiscText(String newText)
 	{
@@ -157,24 +191,30 @@ public class Mood extends StdAbility
 		// lists without having the code in front of us.
 		if(newText.length()>0)
 		{
-			moodCode=-1;
+			mood=null;
 			if(CMath.isInteger(newText))
 			{
 				final int x=CMath.s_int(newText);
-				if((x>=0)&&(x<MOODS.length))
+				if((x>=0)&&(x<MoodType.values().length))
 				{
-					moodCode=x;
-					newText=MOODS[x][0];
+					mood=MoodType.values()[x];
+					newText=mood.name();
 				}
 			}
 			else
-			for(int i=0;i<MOODS.length;i++)
 			{
-				if(MOODS[i][0].equalsIgnoreCase(newText))
-					moodCode=i;
+				mood=(MoodType)CMath.s_valueOf(MoodType.class, newText);
+				if(mood == null)
+				{
+					for(int i=0;i<MoodType.values().length;i++)
+					{
+						if(MoodType.values()[i].name().equalsIgnoreCase(newText))
+							mood=MoodType.values()[i];
+					}
+					if(mood == null)
+						newText="";
+				}
 			}
-			if(moodCode<0)
-				newText="";
 		}
 		super.setMiscText(newText);
 	}
@@ -184,9 +224,41 @@ public class Mood extends StdAbility
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		switch(moodCode)
+		switch(mood)
 		{
-
+		case SILLY: // silly
+		{
+			final Physical affected=this.affected;
+			if(affected instanceof MOB)
+			{
+				if(counter<=0)
+					counter=CMLib.dice().roll(1, 55, 5);
+				else
+				if(--counter<=1)
+				{
+					counter=2;
+					final int sillySocialIndex=CMLib.dice().roll(1, sillySocials.length, -1);
+					final String socialName = sillySocials[sillySocialIndex];
+					final Social social = CMLib.socials().fetchSocial(socialName, true);
+					if(social != null)
+					{
+						counter=CMLib.dice().roll(1, 55, 5);
+						CMLib.threads().scheduleRunnable(new Runnable()
+						{
+							final MOB mob=(MOB)affected;
+							@Override
+							public void run()
+							{
+								mob.enqueCommand(new XVector<String>(socialName), 0, 0);
+							}
+						}, 500);
+					}
+				}
+			}
+			break;
+		}
+		default:
+			break;
 		}
 		return true;
 	}
@@ -195,8 +267,8 @@ public class Mood extends StdAbility
 	public void affectPhyStats(final Physical affected, final PhyStats stats)
 	{
 		super.affectPhyStats(affected,stats);
-		if(moodCode>=0)
-			stats.addAmbiance(MOODS[moodCode][2].toLowerCase()+"^?");
+		if(mood != null)
+			stats.addAmbiance(mood.adj.toLowerCase()+"^?");
 	}
 
 	private String changeSay(final String msg, final String to)
@@ -276,7 +348,7 @@ public class Mood extends StdAbility
 			&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
 			   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
-			&&(moodCode>=0))
+			&&(mood != null))
 			{
 				String str=CMStrings.getSayFromMessage(msg.othersMessage());
 				if(str==null)
@@ -299,23 +371,23 @@ public class Mood extends StdAbility
 						{
 							tag=tag2;
 							if((msg.othersMessage()!=null)
-							&&(msg.othersMessage().indexOf(MOODS[moodCode][3])<0)
+							&&(msg.othersMessage().indexOf(mood.adv)<0)
 							&&(msg.othersMessage().indexOf(tag)<msg.othersMessage().indexOf('\'')))
-								msg.setOthersMessage(CMStrings.replaceFirst(msg.othersMessage(),tag,tag+" "+MOODS[moodCode][3]));
+								msg.setOthersMessage(CMStrings.replaceFirst(msg.othersMessage(),tag,tag+" "+mood.adv));
 							if((msg.targetMessage()!=null)
-							&&(msg.targetMessage().indexOf(MOODS[moodCode][3])<0)
+							&&(msg.targetMessage().indexOf(mood.adv)<0)
 							&&(msg.targetMessage().indexOf(tag)<msg.targetMessage().indexOf('\'')))
-								msg.setTargetMessage(CMStrings.replaceFirst(msg.targetMessage(),tag,tag+" "+MOODS[moodCode][3]));
+								msg.setTargetMessage(CMStrings.replaceFirst(msg.targetMessage(),tag,tag+" "+mood.adv));
 							if((msg.sourceMessage()!=null)
-							&&(msg.sourceMessage().indexOf(MOODS[moodCode][3])<0)
+							&&(msg.sourceMessage().indexOf(mood.adv)<0)
 							&&(msg.sourceMessage().indexOf(tag)<msg.sourceMessage().indexOf('\'')))
-								msg.setSourceMessage(CMStrings.replaceFirst(msg.sourceMessage(),tag,tag+" "+MOODS[moodCode][3]));
+								msg.setSourceMessage(CMStrings.replaceFirst(msg.sourceMessage(),tag,tag+" "+mood.adv));
 						}
 					}
 					final String oldStr=str;
-					switch(moodCode)
+					switch(mood)
 					{
-					case 0: // formal
+					case FORMAL: // formal
 					{
 						if(str.toUpperCase().startsWith("YOU "))
 							str=CMStrings.replaceFirstWord(str,"you","thou");
@@ -464,7 +536,7 @@ public class Mood extends StdAbility
 						}
 						break;
 					}
-					case 1: // polite
+					case POLITE: // polite
 					{
 						if((M!=null)
 						&&(lastOne!=M))
@@ -529,7 +601,7 @@ public class Mood extends StdAbility
 						}
 						break;
 					}
-					case 2: // happy
+					case HAPPY: // happy
 					{
 						if((M!=null)
 						&&(lastOne!=M))
@@ -563,7 +635,7 @@ public class Mood extends StdAbility
 						}
 						break;
 					}
-					case 3: // sad
+					case SAD: // sad
 					{
 						if((M!=null)
 						&&(lastOne!=M))
@@ -599,7 +671,7 @@ public class Mood extends StdAbility
 						}
 						break;
 					}
-					case 4: // angry
+					case ANGRY: // angry
 					{
 						switch(CMLib.dice().roll(1,10,0))
 						{
@@ -636,7 +708,7 @@ public class Mood extends StdAbility
 						str=str.toUpperCase();
 						break;
 					}
-					case 5: // rude
+					case RUDE: // rude
 					{
 						switch(CMLib.dice().roll(1,10,0))
 						{
@@ -675,7 +747,7 @@ public class Mood extends StdAbility
 						}
 						break;
 					}
-					case 6: // mean
+					case MEAN: // mean
 					{
 						switch(CMLib.dice().roll(1,10,0))
 						{
@@ -734,7 +806,7 @@ public class Mood extends StdAbility
 							M.setVictim(msg.source());
 						break;
 					}
-					case 7: // proud
+					case PROUD: // proud
 					{
 						if((M!=null)
 						&&(lastOne!=M))
@@ -758,7 +830,7 @@ public class Mood extends StdAbility
 						}
 						break;
 					}
-					case 8: // grumpy
+					case GRUMPY: // grumpy
 					{
 						if((M!=null)
 						&&(lastOne!=M))
@@ -779,7 +851,7 @@ public class Mood extends StdAbility
 						}
 						break;
 					}
-					case 9: // excited
+					case EXCITED: // excited
 					{
 						if((M!=null)
 						&&(lastOne!=M))
@@ -818,7 +890,7 @@ public class Mood extends StdAbility
 						str=str.toUpperCase();
 						break;
 					}
-					case 10: // scared
+					case SCARED: // scared
 					{
 						if((M!=null)
 						&&(lastOne!=M))
@@ -856,7 +928,7 @@ public class Mood extends StdAbility
 							str=str.charAt(0)+"-"+str.charAt(0)+"-"+str.charAt(0)+"-"+str;
 						break;
 					}
-					case 11: // lonely
+					case LONELY: // lonely
 					{
 						if((M!=null)
 						&&(lastOne!=M))
@@ -886,7 +958,7 @@ public class Mood extends StdAbility
 						}
 						break;
 					}
-					case 12: // reflective
+					case REFLECTIVE: // reflective
 					{
 						switch(CMLib.dice().roll(1,6,0))
 						{
@@ -963,9 +1035,60 @@ public class Mood extends StdAbility
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		switch(moodCode)
+		switch(mood)
 		{
-		case 7: // proud
+		case SILLY: // silly
+		{
+			if((msg.source()==affected)
+			&&(msg.sourceMessage()!=null)
+			&&((msg.tool()==null)||(msg.tool().ID().equals("Common")))
+			&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
+			   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
+			&&(CMLib.dice().rollPercentage()<33))
+			{
+				final int sillySocialIndex=CMLib.dice().roll(1, sillySocials.length, -1);
+				final String socialName = sillySocials[sillySocialIndex];
+				final Social social = CMLib.socials().fetchSocial(socialName, true);
+				if(social != null)
+				{
+					if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
+					{
+						CMLib.threads().scheduleRunnable(new Runnable()
+						{
+							final MOB mob=msg.source();
+							final int channelCode = msg.othersMinor() - CMMsg.TYP_CHANNEL;
+							@Override
+							public void run()
+							{
+								final CMChannel chan = CMLib.channels().getChannel(channelCode);
+								if(chan != null)
+								{
+									final String channelName = chan.name();
+									mob.enqueCommand(new XVector<String>(channelName,","+socialName), 0, 0);
+								}
+							}
+						}, 500);
+					}
+					else
+					if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+					||(msg.sourceMinor()==CMMsg.TYP_TELL))
+					{
+						CMLib.threads().scheduleRunnable(new Runnable()
+						{
+							final MOB mob=msg.source();
+							@Override
+							public void run()
+							{
+								mob.enqueCommand(new XVector<String>(socialName), 0, 0);
+							}
+						}, 500);
+					}
+				}
+			}
+			break;
+		}
+		case PROUD: // proud
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_DEATH)
 			&&(msg.tool()==affected)
@@ -1033,15 +1156,15 @@ public class Mood extends StdAbility
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		Ability MOOD=target.fetchEffect(ID());
+		Ability moodA=target.fetchEffect(ID());
 		boolean add=false;
-		if(MOOD==null)
+		if(moodA==null)
 		{
 			add=true;
-			MOOD=(Ability)copyOf();
-			MOOD.setMiscText("NORMAL");
+			moodA=(Ability)copyOf();
+			moodA.setMiscText("NORMAL");
 		}
-		String moodCode = MOOD.text();
+		String moodCode = moodA.text();
 		if(moodCode.trim().length()==0)
 			moodCode="NORMAL";
 		final String moodName = CMLib.english().startWithAorAn(moodCode.toLowerCase());
@@ -1052,11 +1175,11 @@ public class Mood extends StdAbility
 		}
 		if(entered.equalsIgnoreCase("RANDOM"))
 		{
-			final int rand=CMLib.dice().roll(1,MOODS.length+3,-1);
-			if(rand>=MOODS.length)
+			final int rand=CMLib.dice().roll(1,MoodType.values().length+3,-1);
+			if(rand>=MoodType.values().length)
 				entered="NORMAL";
 			else
-				entered=MOODS[rand][0];
+				entered=MoodType.values()[rand].name();
 		}
 		String choice=null;
 		String mask="";
@@ -1064,12 +1187,12 @@ public class Mood extends StdAbility
 			choice="NORMAL";
 		else
 		{
-			for (final String[] element : MOODS)
+			for (final MoodType element : MoodType.values())
 			{
-				if(element[0].equalsIgnoreCase(entered))
+				if(element.name().equalsIgnoreCase(entered))
 				{
-					choice=element[0];
-					mask=element[1];
+					choice=element.name();
+					mask=element.statChanges;
 				}
 			}
 		}
@@ -1079,12 +1202,12 @@ public class Mood extends StdAbility
 				choice="NORMAL";
 			else
 			{
-				for (final String[] element : MOODS)
+				for (final MoodType element : MoodType.values())
 				{
-					if(element[0].startsWith(entered.toUpperCase()))
+					if(element.name().startsWith(entered.toUpperCase()))
 					{
-						choice=element[0];
-						mask=element[1];
+						choice=element.name();
+						mask=element.statChanges;
 					}
 				}
 			}
@@ -1092,8 +1215,8 @@ public class Mood extends StdAbility
 		if((choice==null)||(entered.equalsIgnoreCase("list")))
 		{
 			String choices=", NORMAL";
-			for (final String[] element : MOODS)
-				choices+=", "+element[0];
+			for (final MoodType element : MoodType.values())
+				choices+=", "+element.name();
 			if(entered.equalsIgnoreCase("LIST"))
 				mob.tell(L("Mood choices include: @x1",choices.substring(2)));
 			else
@@ -1128,12 +1251,12 @@ public class Mood extends StdAbility
 				{
 					target.location().send(target,msg);
 					if(choice.equalsIgnoreCase("NORMAL"))
-						target.delEffect(MOOD);
+						target.delEffect(moodA);
 					else
 					{
 						if(add)
-							target.addNonUninvokableEffect(MOOD);
-						MOOD.setMiscText(choice);
+							target.addNonUninvokableEffect(moodA);
+						moodA.setMiscText(choice);
 					}
 					target.recoverPhyStats();
 					target.location().recoverRoomStats();
