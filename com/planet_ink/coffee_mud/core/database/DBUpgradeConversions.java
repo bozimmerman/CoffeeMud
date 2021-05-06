@@ -1,9 +1,11 @@
 package com.planet_ink.coffee_mud.core.database;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
+import java.util.TreeMap;
 
 /*
    Copyright 2014-2021 Bo Zimmerman
@@ -22,23 +24,50 @@ import java.util.Vector;
 */
 public class DBUpgradeConversions
 {
-	private static void pl(final PrintStream out, final String str)
+	private void pl(final PrintStream out, final String str)
 	{
 		if(out!=null)
 			out.println(str);
 	}
 
-	private static void p(final PrintStream out, final String str)
+	private void p(final PrintStream out, final String str)
 	{
 		if(out!=null)
 			out.print(str);
 	}
 
-	public static void DBUpgradeConversionV1(
-											final Map<String,List<String>> oldTables,
-											final Map<String,List<String>> newTables,
-											final Map<String,List<List<String>>> data,
-											final PrintStream out)
+
+	private boolean needToUpgradeBacklogIndexes(final Map<String,List<String>> oldTables)
+	{
+		if(oldTables.containsKey("CMBKLG"))
+		{
+			final List<String> backLogTables = oldTables.get("CMBKLG");
+			if(!backLogTables.contains("#CMSNAM"))
+				return true;
+		}
+		return false;
+	}
+	
+	public void DBUpgradeTableSort(final List<String> tableList, 
+								   final Map<String,List<String>> oldTables, 
+								   final PrintStream out)
+	{
+		if(needToUpgradeBacklogIndexes(oldTables))
+		{
+			tableList.remove("CMCLAN");
+			tableList.remove("CMCHCL");
+			tableList.add(0, "CMCHCL");
+			tableList.add(0, "CMCLAN");
+		}
+	}
+
+	//private final List<String>				clans		= new LinkedList<String>();
+	//private final Map<String, List<String>>	clanLinks	= new TreeMap<String, List<String>>();
+	
+	public void DBUpgradeConversionV1(final Map<String,List<String>> oldTables,
+									  final Map<String,List<String>> newTables,
+									  final Map<String,List<List<String>>> data,
+									  final PrintStream out)
 	{
 		// first, look for the CLAN conversion
 		if(newTables.containsKey("CMCHCL") && (!oldTables.containsKey("CMCHCL")))
@@ -49,7 +78,7 @@ public class DBUpgradeConversions
 				List<List<String>> cmchclRows=data.get("CMCHCL");
 				if(cmchclRows==null)
 				{
-					cmchclRows=new Vector<List<String>>();
+					cmchclRows=new ArrayList<List<String>>();
 					data.put("CMCHCL", cmchclRows);
 				}
 				pl(out," ");
@@ -71,7 +100,7 @@ public class DBUpgradeConversions
 					final String clanRo=row.get(cmClRoIndex);
 					if((clanID==null)||(clanID.length()==0))
 						continue;
-					final Vector<String> newRow=new Vector<String>(3);
+					final ArrayList<String> newRow=new ArrayList<String>(3);
 					newRow.add(""); newRow.add(""); newRow.add("");
 					newRow.add(cm2UserIDIndex,userID);
 					newRow.add(cm2ClanIndex,clanID);
@@ -105,6 +134,38 @@ public class DBUpgradeConversions
 				}
 			}
 		}
-
+		/*
+		if(needToUpgradeBacklogIndexes(oldTables) && newTables.containsKey("CMCHCL"))
+		{
+			final List<List<String>> clanRows=data.get("CMCLAN");
+			if(clanRows != null)
+			{
+				int x=oldTables.get("CMCLAN").indexOf("$CMCLID");
+				for(int r=0;r<clanRows.size();r++)
+				{
+					final List<String> row=clanRows.get(r);
+					if(!clans.contains(row.get(x)))
+						clans.add(row.get(x));
+				}
+			}
+			final List<List<String>> chclRows=data.get("CMCHCL");
+			if(chclRows != null)
+			{
+				int x=oldTables.get("CMCHCL").indexOf("$CMUSERID");
+				int y=oldTables.get("CMCHCL").indexOf("$CMCLAN");
+				for(int r=0;r<chclRows.size();r++)
+				{
+					final List<String> row=chclRows.get(r);
+					if(!clanLinks.containsKey(row.get(x)))
+						clanLinks.put(row.get(x), new ArrayList<String>(4));
+					clanLinks.get(row.get(x)).add(row.get(y));
+				}
+			}
+			final List<List<String>> bklgRows=data.get("CMBKLG");
+			if(chclRows != null)
+			{
+			}
+		}
+		*/
 	}
 }

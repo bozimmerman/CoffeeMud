@@ -147,7 +147,7 @@ public class DBUpgrade
 				final FileReader FR = new FileReader(F);
 				final BufferedReader reader = new BufferedReader(FR);
 				String line = "";
-				Vector<String> table = null;
+				List<String> table = null;
 				while ((line != null) && (reader.ready()))
 				{
 					line = reader.readLine().trim();
@@ -164,7 +164,7 @@ public class DBUpgrade
 						{
 							if (table == null)
 							{
-								table = new Vector<String>();
+								table = new ArrayList<String>();
 								oldTables.put(line, table);
 							}
 							else
@@ -178,9 +178,9 @@ public class DBUpgrade
 								if (x > 0)
 									line = line.substring(0, x).trim();
 								if (line.toUpperCase().startsWith("INT") || line.toUpperCase().startsWith("NUMB") || line.toUpperCase().startsWith("DOUB") || line.toUpperCase().startsWith("FLOAT"))
-									table.addElement('#' + name);
+									table.add('#' + name);
 								else
-									table.addElement('$' + name);
+									table.add('$' + name);
 							}
 						}
 					}
@@ -232,7 +232,7 @@ public class DBUpgrade
 				final FileReader FR = new FileReader(F);
 				final BufferedReader reader = new BufferedReader(FR);
 				String line = "";
-				Vector<String> table = null;
+				List<String> table = null;
 				while ((line != null) && (reader.ready()))
 				{
 					line = reader.readLine().trim();
@@ -274,7 +274,7 @@ public class DBUpgrade
 						{
 							if (table == null)
 							{
-								table = new Vector<String>();
+								table = new ArrayList<String>();
 								newTables.put(line, table);
 							}
 							else
@@ -289,9 +289,9 @@ public class DBUpgrade
 									line = line.substring(0, x).trim();
 								if (line.toUpperCase().startsWith("INT") || line.toUpperCase().startsWith("NUMB") || line.toUpperCase().startsWith("DOUB") || line.toUpperCase().startsWith("LONG")
 										|| line.toUpperCase().startsWith("TIME") || line.toUpperCase().startsWith("FLOAT"))
-									table.addElement('#' + name);
+									table.add('#' + name);
 								else
-									table.addElement('$' + name);
+									table.add('$' + name);
 							}
 						}
 					}
@@ -684,6 +684,22 @@ public class DBUpgrade
 				pl(ce.getMessage());
 			}
 		}
+		final List<String> sortedTables = new ArrayList<String>();
+		sortedTables.addAll(oldTables.keySet());
+		for (final Object o : converters.keySet())
+		{
+			try
+			{
+				final Method M = o.getClass().getMethod("DBUpgradeTableSort", List.class, Map.class, PrintStream.class);
+				if (M != null)
+					M.invoke(o, sortedTables, oldTables, out);
+			}
+			catch (final Exception e)
+			{
+				e.printStackTrace();
+				System.out.println("Something is wrong with the table sorter.");
+			}
+		}
 
 		final HashSet<String> oldTablesAlreadyDone = new HashSet<String>();
 		int currentTableSkipRows = 0;
@@ -698,23 +714,22 @@ public class DBUpgrade
 		final int memoryAmount = 3 * 1024 * 1024;
 		while (!allDone)
 		{
-			pl("");
-			pl("");
-			p("Reading source tables: ");
 			final Hashtable<String, List<List<String>>> data = new Hashtable<String, List<List<String>>>();
 			try
 			{
 				Class.forName(sclass);
 				final java.sql.Connection myConnection = DriverManager.getConnection(sservice, slogin, spassword);
 				boolean hasNextProbably = false;
-				for (final Enumeration<String> e = oldTables.keys(); e.hasMoreElements();)
+				pl("");
+				pl("");
+				p("Reading source tables: ");
+				for (final String table : sortedTables)
 				{
-					final String table = e.nextElement();
 					data.remove(table);
 					if (!oldTablesAlreadyDone.contains(table))
 					{
 						final List<String> fields = oldTables.get(table);
-						final Vector<List<String>> rows = new Vector<List<String>>();
+						final List<List<String>> rows = new ArrayList<List<String>>();
 						data.put(table, rows);
 						System.gc();
 						final java.sql.Statement myStatement = myConnection.createStatement(java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.CONCUR_READ_ONLY);
@@ -723,8 +738,8 @@ public class DBUpgrade
 							R.next();
 						while (R.next())
 						{
-							final Vector<String> row = new Vector<String>();
-							rows.addElement(row);
+							final List<String> row = new ArrayList<String>();
+							rows.add(row);
 							currentTableSkipRows++;
 							for (int s = 0; s < fields.size(); s++)
 							{
@@ -732,7 +747,7 @@ public class DBUpgrade
 								String S = R.getString(field);
 								if (S == null)
 									S = "";
-								row.addElement(S);
+								row.add(S);
 							}
 							if (Runtime.getRuntime().freeMemory() < memoryAmount)
 							{
@@ -813,43 +828,46 @@ public class DBUpgrade
 					}
 					final int[] matrix = getMatrix(ofields, nfields);
 
+					final StringBuilder str = new StringBuilder();
+					str.setLength(0);
+					str.append("INSERT INTO " + table + " (");
+					for (int i = 0; i < nfields.size(); i++)
+						str.append(nfields.get(i).substring(1) + ",");
+					if (nfields.size() > 0)
+						str.setCharAt(str.length() - 1, ' ');
+					str.append(") VALUES (");
+					for (int i = 0; i < nfields.size(); i++)
+						str.append("?,");
+					if (nfields.size() > 0)
+						str.setCharAt(str.length() - 1, ')');
+					else
+						str.append(")");
+					final String insertStatement = str.toString();
+					final java.sql.PreparedStatement insertStmt = myConnection.prepareStatement(insertStatement);
 					for (int r = 0; r < rows.size(); r++)
 					{
 						final List<String> row = rows.get(r);
 						try
 						{
-							final StringBuffer str = new StringBuffer("INSERT INTO " + table + " (");
-							for (int i = 0; i < nfields.size(); i++)
-								str.append(nfields.get(i).substring(1) + ",");
-							if (nfields.size() > 0)
-								str.setCharAt(str.length() - 1, ' ');
-							str.append(") VALUES (");
-							for (int i = 0; i < nfields.size(); i++)
-								str.append("?,");
-							if (nfields.size() > 0)
-								str.setCharAt(str.length() - 1, ')');
-							else
-								str.append(")");
-							final java.sql.PreparedStatement myStatement = myConnection.prepareStatement(str.toString());
 							for (int i = 0; i < nfields.size(); i++)
 							{
 								final String field = nfields.get(i);
 								final int oldIndex = matrix[i];
 								final Object value = getFieldValue(field, oldIndex, row);
 								if (value instanceof String)
-									myStatement.setString(i + 1, (String) value);
+									insertStmt.setString(i + 1, (String) value);
 								else
 								if (value instanceof Long)
-									myStatement.setLong(i + 1, ((Long) value).longValue());
+									insertStmt.setLong(i + 1, ((Long) value).longValue());
 							}
 							if (debug)
 								p(".");
-							myStatement.executeUpdate();
-							myStatement.close();
+							insertStmt.executeUpdate();
 						}
 						catch (final SQLException sqle)
 						{
-							final StringBuffer str = new StringBuffer("SELECT * FROM " + table + " WHERE ");
+							str.setLength(0);
+							str.append("SELECT * FROM " + table + " WHERE ");
 							for (int i = 0; i < 2 && i < nfields.size(); i++)
 							{
 								final String field = nfields.get(i).substring(1);
@@ -869,6 +887,7 @@ public class DBUpgrade
 								throw sqle;
 						}
 					}
+					insertStmt.close();
 					p(" ");
 				}
 				myConnection.close();
