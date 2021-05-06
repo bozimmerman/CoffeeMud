@@ -1085,6 +1085,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 				if(moveGain>0)
 					curState.adjMovement((int)Math.round(moveGain),maxState);
+
+				if(((hpGain>0)||(manaGain>0)||(moveGain>0))
+				&&(!isSleeping)
+				&&(!isSittingOrRiding))
+					mob.curState().adjFatigue(Math.round(CMProps.getTickMillis()), mob.maxState());
 			}
 		}
 	}

@@ -3955,6 +3955,14 @@ public class StdMOB implements MOB
 							if (curState().getFatigue() > CharState.FATIGUED_MILLIS)
 							{
 								final boolean smallChance = (CMLib.dice().rollPercentage() == 1);
+								if((CMLib.dice().rollPercentage() <10)
+								&&(curState().getHitPoints()>=maxState().getHitPoints())
+								&&(fetchEffect("Mood")==null));
+								{
+									final Ability moodA = CMClass.getAbility("Mood");
+									if (moodA != null)
+										moodA.invoke(this, new XVector<String>("SILLY"), this, true, 0);
+								}
 								if (smallChance && (!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 								{
 									final Ability theYawns = CMClass.getAbility("Disease_Yawning");
