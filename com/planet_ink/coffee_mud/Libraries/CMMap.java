@@ -165,15 +165,22 @@ public class CMMap extends StdLibrary implements WorldMap
 		while(start<=end)
 		{
 			final int mid=(end+start)/2;
-			final int comp=list.get(mid).Name().compareToIgnoreCase(name);
-			if(comp==0)
-				return mid;
-			else
-			if(comp>0)
-				end=mid-1;
-			else
-				start=mid+1;
-
+			try
+			{
+				final int comp=list.get(mid).Name().compareToIgnoreCase(name);
+				if(comp==0)
+					return mid;
+				else
+				if(comp>0)
+					end=mid-1;
+				else
+					start=mid+1;
+			}
+			catch(final java.lang.ArrayIndexOutOfBoundsException e)
+			{
+				start=0;
+				end=list.size()-1;
+			}
 		}
 		return -1;
 	}

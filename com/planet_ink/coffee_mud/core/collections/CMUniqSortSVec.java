@@ -74,14 +74,24 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 		while(start<=end)
 		{
 			mid=(end+start)/2;
-			comp=compareTo(super.get(mid),arg0);
-			if(comp==0)
-				return false;
-			else
-			if(comp>0)
-				end=mid-1;
-			else
-				start=mid+1;
+			try
+			{
+				comp=compareTo(super.get(mid),arg0);
+				if(comp==0)
+					return false;
+				else
+				if(comp>0)
+					end=mid-1;
+				else
+					start=mid+1;
+			}
+			catch(final java.lang.ArrayIndexOutOfBoundsException e)
+			{
+				comp=-1;
+				mid=-1;
+				start=0;
+				end=size()-1;
+			}
 		}
 		if(comp==0)
 			super.add(mid,arg0);
@@ -174,15 +184,22 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 			while(start<=end)
 			{
 				final int mid=(end+start)/2;
-				final int comp=compareTo(super.get(mid),(CMObject)arg0);
-				if(comp==0)
-					return mid;
-				else
-				if(comp>0)
-					end=mid-1;
-				else
-					start=mid+1;
-
+				try
+				{
+					final int comp=compareTo(super.get(mid),(CMObject)arg0);
+					if(comp==0)
+						return mid;
+					else
+					if(comp>0)
+						end=mid-1;
+					else
+						start=mid+1;
+				}
+				catch(final java.lang.ArrayIndexOutOfBoundsException e)
+				{
+					start=0;
+					end=size()-1;
+				}
 			}
 		}
 		else
@@ -191,15 +208,22 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 			while(start<=end)
 			{
 				final int mid=(end+start)/2;
-				final int comp=compareTo(super.get(mid),(String)arg0);
-				if(comp==0)
-					return mid;
-				else
-				if(comp>0)
-					end=mid-1;
-				else
-					start=mid+1;
-
+				try
+				{
+					final int comp=compareTo(super.get(mid),(String)arg0);
+					if(comp==0)
+						return mid;
+					else
+					if(comp>0)
+						end=mid-1;
+					else
+						start=mid+1;
+				}
+				catch(final java.lang.ArrayIndexOutOfBoundsException e)
+				{
+					start=0;
+					end=size()-1;
+				}
 			}
 		}
 		return -1;
@@ -217,14 +241,22 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 		while(start<=end)
 		{
 			final int mid=(end+start)/2;
-			final int comp=compareTo(super.get(mid),arg0);
-			if(comp==0)
-				return super.get(mid);
-			else
-			if(comp>0)
-				end=mid-1;
-			else
-				start=mid+1;
+			try
+			{
+				final int comp=compareTo(super.get(mid),arg0);
+				if(comp==0)
+					return super.get(mid);
+				else
+				if(comp>0)
+					end=mid-1;
+				else
+					start=mid+1;
+			}
+			catch(final java.lang.ArrayIndexOutOfBoundsException e)
+			{
+				start=0;
+				end=size()-1;
+			}
 		}
 		return null;
 	}
@@ -241,14 +273,22 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 		while(start<=end)
 		{
 			final int mid=(end+start)/2;
-			final int comp=compareToLowerStarts(super.get(mid), larg0);
-			if(comp==0)
-				return super.get(mid);
-			else
-			if(comp>0)
-				end=mid-1;
-			else
-				start=mid+1;
+			try
+			{
+				final int comp=compareToLowerStarts(super.get(mid), larg0);
+				if(comp==0)
+					return super.get(mid);
+				else
+				if(comp>0)
+					end=mid-1;
+				else
+					start=mid+1;
+			}
+			catch(final java.lang.ArrayIndexOutOfBoundsException e)
+			{
+				start=0;
+				end=size()-1;
+			}
 		}
 		return null;
 	}
@@ -265,14 +305,22 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 		while(start<=end)
 		{
 			final int mid=(end+start)/2;
-			final int comp=compareTo(super.get(mid),arg0);
-			if(comp==0)
-				return super.get(mid);
-			else
-			if(comp>0)
-				end=mid-1;
-			else
-				start=mid+1;
+			try
+			{
+				final int comp=compareTo(super.get(mid),arg0);
+				if(comp==0)
+					return super.get(mid);
+				else
+				if(comp>0)
+					end=mid-1;
+				else
+					start=mid+1;
+			}
+			catch(final java.lang.ArrayIndexOutOfBoundsException e)
+			{
+				start=0;
+				end=size()-1;
+			}
 
 		}
 		return null;

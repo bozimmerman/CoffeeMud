@@ -220,16 +220,26 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		while((start<=end)&&(tries++<rooms.size()))
 		{
 			mid=(end+start)/2;
-			entry = rooms.elementAt(mid);
-			comptotal=((long)entry.xy.x<<31)+entry.xy.y;
-			comp=comptotal>total?1:(comptotal==total)?0:-1;
-			if(comp==0)
-				return mid;
-			else
-			if(comp>0)
-				end=mid-1;
-			else
-				start=mid+1;
+			try
+			{
+				entry = rooms.elementAt(mid);
+				comptotal=((long)entry.xy.x<<31)+entry.xy.y;
+				comp=comptotal>total?1:(comptotal==total)?0:-1;
+				if(comp==0)
+					return mid;
+				else
+				if(comp>0)
+					end=mid-1;
+				else
+					start=mid+1;
+			}
+			catch(final java.lang.IndexOutOfBoundsException e)
+			{
+				comp=0;
+				mid=0;
+				start=0;
+				end=rooms.size()-1;
+			}
 		}
 		if(end<0)
 			return 0;

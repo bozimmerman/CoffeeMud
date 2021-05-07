@@ -41,14 +41,24 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 		while(start<=end)
 		{
 			mid=(end+start)/2;
-			comp=compareTo(list.get(mid),arg0);
-			if(comp==0)
-				break;
-			else
-			if(comp>0)
-				end=mid-1;
-			else
-				start=mid+1;
+			try
+			{
+				comp=compareTo(list.get(mid),arg0);
+				if(comp==0)
+					break;
+				else
+				if(comp>0)
+					end=mid-1;
+				else
+					start=mid+1;
+			}
+			catch(final java.lang.ArrayIndexOutOfBoundsException e)
+			{
+				comp=-1;
+				mid=-1;
+				start=0;
+				end=list.size()-1;
+			}
 		}
 		if(comp==0)
 			list.add(mid,arg0);
@@ -137,14 +147,22 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 		while(start<=end)
 		{
 			final int mid=(end+start)/2;
-			final int comp=compareTo(list.get(mid),arg0);
-			if(comp==0)
-				return mid;
-			else
-			if(comp>0)
-				end=mid-1;
-			else
-				start=mid+1;
+			try
+			{
+				final int comp=compareTo(list.get(mid),arg0);
+				if(comp==0)
+					return mid;
+				else
+				if(comp>0)
+					end=mid-1;
+				else
+					start=mid+1;
+			}
+			catch(final java.lang.ArrayIndexOutOfBoundsException e)
+			{
+				start=0;
+				end=size()-1;
+			}
 		}
 		return -1;
 	}

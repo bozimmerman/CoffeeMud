@@ -1778,15 +1778,23 @@ public class CMClass extends ClassLoader
 		while(start<=end)
 		{
 			final int mid=(end+start)/2;
-			final String s=classID(list.get(mid));
-			final int comp=s.compareToIgnoreCase(ID);
-			if(comp==0)
-				return list.get(mid);
-			else
-			if(comp>0)
-				end=mid-1;
-			else
-				start=mid+1;
+			try
+			{
+				final String s=classID(list.get(mid));
+				final int comp=s.compareToIgnoreCase(ID);
+				if(comp==0)
+					return list.get(mid);
+				else
+				if(comp>0)
+					end=mid-1;
+				else
+					start=mid+1;
+			}
+			catch(final java.lang.ArrayIndexOutOfBoundsException e)
+			{
+				start=0;
+				end=list.size()-1;
+			}
 		}
 		return null;
 	}

@@ -1601,14 +1601,22 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 			while(start<=end)
 			{
 				final int mid=(end+start)/2;
-				final int comp=myRooms.elementAt(mid).roomID().compareToIgnoreCase(roomID);
-				if(comp==0)
-					return myRooms.elementAt(mid);
-				else
-				if(comp>0)
-					end=mid-1;
-				else
-					start=mid+1;
+				try
+				{
+					final int comp=myRooms.elementAt(mid).roomID().compareToIgnoreCase(roomID);
+					if(comp==0)
+						return myRooms.elementAt(mid);
+					else
+					if(comp>0)
+						end=mid-1;
+					else
+						start=mid+1;
+				}
+				catch(final java.lang.IndexOutOfBoundsException e)
+				{
+					start=0;
+					end=myRooms.size()-1;
+				}
 			}
 		}
 		return null;
