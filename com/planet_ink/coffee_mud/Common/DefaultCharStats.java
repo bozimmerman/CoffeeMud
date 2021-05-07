@@ -536,7 +536,7 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public int getClassLevel(final CharClass aClass)
 	{
-		if((myClasses==null)||(aClass==null))
+		if(aClass==null)
 			return -1;
 		return getClassLevel(aClass.ID());
 	}
