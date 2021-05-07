@@ -101,9 +101,9 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 
 	public enum Stage
 	{
-		Normal(0,1,0, -6),
-		Hard(9,2,8, -12),
-		Studded(18,3,16, -18)
+		Normal(0,1,0, -7),
+		Hard(9,2,8, -13),
+		Studded(18,3,16, -19)
 		;
 		public final int recipeLevel;
 		public final int multiplier;
@@ -525,7 +525,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 				return false;
 			}
 			final int multiplier=recipeStage.multiplier;
-			final int damage=recipeStage.damage;
+			int damage=recipeStage.damage;
 			final int attack=recipeStage.attack;
 			final boolean requiresMetal = recipeStage == Stage.Studded;
 
@@ -638,6 +638,8 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 				((Weapon)buildingI).basePhyStats().setAttackAdjustment(baseYield()+abilityCode()+(hardness*5)+attack);
 				((Weapon)buildingI).setWeaponClassification(Weapon.CLASS_FLAILED);
 				setWeaponTypeClass((Weapon)buildingI,misctype,Weapon.TYPE_SLASHING);
+				if(buildingI.rawLogicalAnd())
+					damage += 6;
 				buildingI.basePhyStats().setDamage(armordmg+hardness+damage);
 				((Weapon)buildingI).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 			}
