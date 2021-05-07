@@ -109,7 +109,9 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 		Thick     (45, 6,13, -36),
 		Masterwork(54, 7,20, -42),
 		Laminar   (63, 8,27, -48),
-		Battlemoulded(72,9,34, -54);
+		Battlemoulded(72,9,34, -54),
+		Legendary(80, 10, 42, -60)
+		;
 		public final int recipeLevel;
 		public final int multiplier;
 		public final int damage;
