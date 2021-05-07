@@ -101,9 +101,9 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 
 	public enum Stage
 	{
-		Normal(0,1,8, -6),
-		Hard(9,2,16, -12),
-		Studded(18,3,24, -18)
+		Normal(0,1,0, -6),
+		Hard(9,2,8, -12),
+		Studded(18,3,16, -18)
 		;
 		public final int recipeLevel;
 		public final int multiplier;
