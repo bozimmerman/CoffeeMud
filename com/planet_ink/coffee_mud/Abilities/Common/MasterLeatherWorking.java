@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftParms;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
+import com.planet_ink.coffee_mud.Abilities.Common.LeatherWorking.Stage;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.CraftorType;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -119,6 +120,32 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			this.multiplier=multiplier;
 			this.damage=dmg;
 			this.attack=attackAdj;
+		}
+
+		public final String term()
+		{
+			return CMLib.lang().L(name());
+		}
+
+		public final static Stage find(final String name)
+		{
+			final Stage stage = (Stage)CMath.s_valueOf(Stage.class, CMStrings.capitalizeAndLower(name));
+			if(stage != null)
+				return stage;
+			for(final Stage s : Stage.values())
+			{
+				if(s.term().equalsIgnoreCase(name))
+					return s;
+			}
+			final String uname=name.toUpperCase();
+			for(final Stage s : Stage.values())
+			{
+				final String uterm=s.term().toUpperCase();
+				if(uname.startsWith(uterm)
+				||(uname.indexOf(" "+uterm+" ")>0))
+					return s;
+			}
+			return null;
 		}
 	}
 
@@ -281,7 +308,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 						for(final Stage s : Stage.values())
 						{
 							final List<String> V1=new XVector<String>(V);
-							V1.set(RCP_FINALNAME,s.name()+" "+name);
+							V1.set(RCP_FINALNAME,s.term()+" "+name);
 							final int level=baseLevel+s.recipeLevel;
 							V1.set(RCP_LEVEL,""+level);
 							for(int i=0;i<=newRecipes.size();i++)
@@ -501,8 +528,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
 					if(level<=xlevel(mob))
 					{
-						final int x=name.indexOf(' ');
-						final Stage stage=(Stage)CMath.s_valueOf(Stage.class, name.substring(0,x));
+						final Stage stage=Stage.find(name);
 						if(stage == null)
 							multiplier=1;
 						else

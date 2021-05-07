@@ -116,6 +116,32 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			this.damage=dmg;
 			this.attack=attackAdj;
 		}
+
+		public final String term()
+		{
+			return CMLib.lang().L(name());
+		}
+
+		public final static Stage find(final String name)
+		{
+			final Stage stage = (Stage)CMath.s_valueOf(Stage.class, CMStrings.capitalizeAndLower(name));
+			if(stage != null)
+				return stage;
+			for(final Stage s : Stage.values())
+			{
+				if(s.term().equalsIgnoreCase(name))
+					return s;
+			}
+			final String uname=name.toUpperCase();
+			for(final Stage s : Stage.values())
+			{
+				final String uterm=s.term().toUpperCase();
+				if(uname.startsWith(uterm)
+				||(uname.indexOf(" "+uterm+" ")>0))
+					return s;
+			}
+			return null;
+		}
 	}
 
 	@Override
@@ -138,13 +164,13 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 					final List<String> V=recipes.get(r);
 					if(V.size()>0)
 					{
-						final List<String> V1=new XVector<String>(V);
 						final String name=V.get(RCP_FINALNAME);
 						for(final Stage stage : Stage.values())
 						{
 							if(stage != Stage.Normal)
 							{
-								V1.set(RCP_FINALNAME,stage.name()+" "+name);
+								final List<String> V1=new XVector<String>(V);
+								V1.set(RCP_FINALNAME,stage.term()+" "+name);
 								V1.set(RCP_LEVEL,""+(CMath.s_int(V.get(RCP_LEVEL))+stage.recipeLevel));
 								pleaseAdd1.add(V1);
 							}
@@ -241,7 +267,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			return false;
 		if(I.basePhyStats().level()>30)
 			return (isANativeItem(I.Name()));
-		if(I.name().toUpperCase().startsWith("DESIGNER")||(I.name().toUpperCase().indexOf(" DESIGNER ")>0))
+		if(Stage.find(I.name())!=null)
 			return (isANativeItem(I.Name()));
 		if(I instanceof Armor)
 		{
@@ -484,14 +510,9 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 					if(level<=xlevel(mob))
 					{
 						final String name=V.get(RCP_FINALNAME);
-						final int x=name.indexOf(' ');
-						if(x>0)
-						{
-							final String prefix=name.substring(0,x).trim();
-							final Stage stage = (Stage)CMath.s_valueOf(Stage.class, prefix);
-							if(stage != null)
-								recipeStage=stage;
-						}
+						recipeStage = Stage.find(name);
+						if(recipeStage == null)
+							recipeStage=Stage.Normal;
 						foundRecipe=V;
 						recipeLevel=level;
 						break;
