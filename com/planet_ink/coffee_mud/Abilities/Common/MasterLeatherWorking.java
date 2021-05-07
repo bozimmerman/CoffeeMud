@@ -103,20 +103,22 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 
 	public enum Stage
 	{
-		Designer(30,4,0),
-		Cuirbouli(37,5,6),
-		Thick(45,6,13),
-		Masterwork(54,7,20),
-		Laminar(63,8,27),
-		Battlemoulded(72,9,34);
+		Designer(30,4,0, -24),
+		Cuirbouli(37,5,6, -30),
+		Thick(45,6,13, -36),
+		Masterwork(54,7,20, -42),
+		Laminar(63,8,27, -48),
+		Battlemoulded(72,9,34, -54);
 		public final int recipeLevel;
 		public final int multiplier;
 		public final int damage;
-		private Stage(final int recipeLevel, final int multiplier, final int dmg)
+		public final int attack;
+		private Stage(final int recipeLevel, final int multiplier, final int dmg, final int attackAdj)
 		{
 			this.recipeLevel=recipeLevel;
 			this.multiplier=multiplier;
 			this.damage=dmg;
+			this.attack=attackAdj;
 		}
 	}
 
@@ -489,6 +491,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			List<String> foundRecipe=null;
 			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
 			int bonusDamage=0;
+			int bonusAttack=0;
 			for(int r=0;r<matches.size();r++)
 			{
 				final List<String> V=matches.get(r);
@@ -506,6 +509,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 						{
 							multiplier=stage.multiplier;
 							bonusDamage=stage.damage;
+							bonusAttack=stage.attack;
 						}
 						foundRecipe=V;
 						recipeLevel=level;
@@ -622,7 +626,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 					((Weapon)buildingI).setRanges(((Weapon)buildingI).minRange(),maxrange);
 				else
 					((Weapon)buildingI).setRanges(minrange,maxrange);
-				((Weapon)buildingI).basePhyStats().setAttackAdjustment(baseYield()+abilityCode()+(hardness*5)-7);
+				((Weapon)buildingI).basePhyStats().setAttackAdjustment(baseYield()+abilityCode()+(hardness*5)+bonusAttack);
 				((Weapon)buildingI).setWeaponClassification(Weapon.CLASS_FLAILED);
 				setWeaponTypeClass((Weapon)buildingI,misctype,Weapon.TYPE_SLASHING);
 				buildingI.basePhyStats().setDamage(armordmg+hardness+bonusDamage);
