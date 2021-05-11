@@ -18,4 +18,3 @@ atlantite	40	200	(onground:consumed:1:MITHRIL:)&&(onground:consumed:1:SEAWEED:)	
 galvorn	45	300	(onground:consumed:1:PLATINUM:)&&(onground:consumed:1:ADAMANTITE:)	2500	GenResource	ADAMANTITE	GALVORN	
 tilkal	50	360	(onground:consumed:1:COPPER:)&&(onground:consumed:1:SILVER:)&&(onground:consumed:1:TIN:)&&(onground:consumed:1:LEAD:)&&(onground:consumed:1:IRON:)&&(onground:consumed:1:GOLD:)	80	GenResource	STEEL	TILKAL	
 coralite	53	250	(onground:consumed:4:ATLANTITE:)&&(onground:consumed:1:LIMESTONE:)	150	GenResource	ATLANTITE	CORALITE	
-quicksilver	85	1000	(onground:consumed:9:MITHRIL:)&&(onground:consumed:1:SILVER:)	200	GenResource	MITHRIL	QUICKSILVER	Prop_Adjuster;attack+200 MULTIPLYPH=TRUE
