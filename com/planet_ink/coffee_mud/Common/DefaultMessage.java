@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -796,11 +797,28 @@ public class DefaultMessage implements CMMsg
 		CMObject o;
 		o = CMClass.getCommon(subParts[0]);
 		if(o == null)
-			o = CMClass.getByType(subParts[0], preferClass);
-		if(o == null)
-			o = CMClass.getUnknown(subParts[0]);
-		if((o == null) || (o instanceof MOB))
-			o = CMClass.getFactoryMOB();
+		{
+			if(CMClass.doesTypeExist(preferClass, subParts[0]))
+			{
+				if(preferClass == CMObjectType.MOB)
+					o=CMClass.getFactoryMOB();
+				else
+					o = CMClass.getByType(subParts[0], preferClass);
+			}
+			else
+			{
+				final CMObjectType preferredType = CMClass.getUnknownType(subParts[0]);
+				if(preferredType != null)
+				{
+					if(preferredType == CMObjectType.MOB)
+						o=CMClass.getFactoryMOB();
+					else
+						o = CMClass.getUnknown(subParts[0]);
+				}
+				else
+					o=CMClass.getFactoryMOB();
+			}
+		}
 		if(o instanceof Social)
 			o = CMLib.socials().fetchSocial(subParts[1], true);
 		else

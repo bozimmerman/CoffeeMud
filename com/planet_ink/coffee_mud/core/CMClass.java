@@ -1674,6 +1674,12 @@ public class CMClass extends ClassLoader
 		return null;
 	}
 
+	private static CMObjectType[] unknownTypesInOrder = new CMObjectType[] {
+		CMObjectType.ITEM, CMObjectType.ARMOR, CMObjectType.WEAPON, CMObjectType.MISCMAGIC,
+		CMObjectType.TECH, CMObjectType.MOB, CMObjectType.ABILITY, CMObjectType.CLANITEM
+	};
+
+
 	/**
 	 * Returns a new instance of a Environmental of the given id, prefers items,
 	 * but also checks mobs and abilities as well.
@@ -1682,24 +1688,52 @@ public class CMClass extends ClassLoader
 	 */
 	public static final Environmental getUnknown(final String calledThis)
 	{
-		Environmental thisItem=(Environmental)getNewGlobal(c().items,calledThis);
-		if(thisItem==null)
-			thisItem=(Environmental)getNewGlobal(c().armor,calledThis);
-		if(thisItem==null)
-			thisItem=(Environmental)getNewGlobal(c().weapons,calledThis);
-		if(thisItem==null)
-			thisItem=(Environmental)getNewGlobal(c().miscMagic,calledThis);
-		if(thisItem==null)
-			thisItem=(Environmental)getNewGlobal(c().tech,calledThis);
-		if(thisItem==null)
-			thisItem=(Environmental)getNewGlobal(c().MOBs,calledThis);
-		if(thisItem==null)
-			thisItem=(Environmental)getNewGlobal(c().abilities,calledThis);
-		if(thisItem==null)
-			thisItem=(Environmental)getNewGlobal(c().clanItems,calledThis);
-		if((thisItem==null)&&(c().charClasses.size()>0)&&(calledThis.length()>0))
+		for(final CMObjectType typ : unknownTypesInOrder)
+		{
+			final Object setO = getClassSet(typ);
+			if(setO instanceof List)
+			{
+				@SuppressWarnings({ "unchecked", "rawtypes" })
+				final List<? extends CMObject> lst = (List)setO;
+				final CMObject o = getNewGlobal(lst, calledThis);
+				if(o instanceof Environmental)
+					return (Environmental)o;
+			}
+		}
+		if((c().charClasses.size()>0)&&(calledThis.length()>0))
 			Log.sysOut("CMClass","Unknown Unknown '"+calledThis+"'.");
-		return thisItem;
+		return null;
+	}
+
+	/**
+	 * Returns the most preferred object type for the given coffeemud ID
+	 * @param calledThis the coffeemud ID
+	 * @return the type it prefers, or null
+	 */
+	public static CMObjectType getUnknownType(final String calledThis)
+	{
+		for(final CMObjectType typ : unknownTypesInOrder)
+		{
+			final CMObject o=CMClass.getPrototypeByID(typ, calledThis);
+			if(o != null)
+				return typ;
+		}
+		return null;
+	}
+
+	/**
+	 * Returns whether a object with the given coffeemud id can be of the
+	 * given type.
+	 * @param typ the type of object to check
+	 * @param calledThis the coffeemud ID
+	 * @return true if it exists, false otherwise
+	 */
+	public static boolean doesTypeExist(final CMObjectType typ, final String calledThis)
+	{
+		final CMObject o=CMClass.getPrototypeByID(typ, calledThis);
+		if(o != null)
+			return true;
+		return false;
 	}
 
 	/**

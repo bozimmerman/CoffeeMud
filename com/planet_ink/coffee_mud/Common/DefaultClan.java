@@ -107,6 +107,7 @@ public class DefaultClan implements Clan
 	protected volatile int			tickUp					= 0;
 	protected volatile int			transientSize			= -1;
 	protected Set<ClanFlag>			clanFlags				= new SHashSet<ClanFlag>();
+	protected MOB					factoryMob				= null;
 
 	protected final static List<Ability> empty=new XVector<Ability>(1,true);
 
@@ -1375,6 +1376,20 @@ public class DefaultClan implements Clan
 	public void setPremise(final String newPremise)
 	{
 		clanPremise = newPremise;
+	}
+
+	@Override
+	public MOB getFactoryMOB()
+	{
+		if(this.factoryMob == null)
+		{
+			this.factoryMob = CMClass.getMOB("StdMOB");
+			this.factoryMob.setName("^</B^>");
+			this.factoryMob.basePhyStats().setDisposition(PhyStats.IS_GOLEM);
+			this.factoryMob.phyStats().setDisposition(PhyStats.IS_GOLEM);
+			this.factoryMob.setClan(clanID(),this.autoPosition);
+		}
+		return this.factoryMob;
 	}
 
 	@Override

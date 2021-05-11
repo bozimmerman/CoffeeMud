@@ -279,14 +279,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			&&(clanList.iterator().hasNext()))
 			{
 				final Pair<Clan,Integer> c = clanList.iterator().next();
-				talker=CMClass.getFactoryMOB();
-				talker.setName("^</B^>");
+				talker = c.first.getFactoryMOB();
+				talker.setClan(c.first.clanID(), c.second.intValue());
 				talker.setLocation(talkLocationR);
-				talker.basePhyStats().setDisposition(PhyStats.IS_GOLEM);
-				talker.phyStats().setDisposition(PhyStats.IS_GOLEM);
-				talker.setClan(c.first.clanID(),c.second.intValue());
 				postChannel(talker,channelName,message,systemMsg);
-				talker.destroy();
+				// never destroy the clans factory mob!
 			}
 			else
 			if(nonClanTalkerM!=null)

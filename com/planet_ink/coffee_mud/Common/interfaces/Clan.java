@@ -871,6 +871,12 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooa
 	 */
 	public void setFlag(ClanFlag flag, boolean setOrUnset);
 
+	/**
+	 * Returns a temporary use nameless mob that belongs to this clan,
+	 * for the purposes of channelling, usually. Do Not Delete!
+	 * @return this clans factory mob
+	 */
+	public MOB getFactoryMOB();
 
 	/**
 	 * Represents an individual clan vote
