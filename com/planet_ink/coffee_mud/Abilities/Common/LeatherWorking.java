@@ -525,7 +525,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 				return false;
 			}
 			final int multiplier=recipeStage.multiplier;
-			int damage=recipeStage.damage;
+			final int damage=recipeStage.damage;
 			final int attack=recipeStage.attack;
 			final boolean requiresMetal = recipeStage == Stage.Studded;
 
@@ -638,8 +638,6 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 				((Weapon)buildingI).basePhyStats().setAttackAdjustment(baseYield()+abilityCode()+(hardness*5)+attack);
 				((Weapon)buildingI).setWeaponClassification(Weapon.CLASS_FLAILED);
 				setWeaponTypeClass((Weapon)buildingI,misctype,Weapon.TYPE_SLASHING);
-				if(buildingI.rawLogicalAnd())
-					damage += 6;
 				buildingI.basePhyStats().setDamage(armordmg+hardness+damage);
 				((Weapon)buildingI).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 			}
@@ -649,7 +647,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 				final long canContain=getContainerType(containStr);
 				if((capacity>0)&&(buildingI instanceof Container))
 				{
-					((Container)buildingI).setCapacity(capacity+woodRequired);
+					((Container)buildingI).setCapacity(capacity+woodRequired + ((multiplier - 1) * 2));
 					((Container)buildingI).setContainTypes(canContain);
 				}
 				((Armor)buildingI).basePhyStats().setArmor(0);
@@ -662,7 +660,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 				if(CMLib.flags().isGettable(buildingI))
 				{
 					((Drink)buildingI).setLiquidRemaining(0);
-					((Drink)buildingI).setLiquidHeld(capacity*50);
+					((Drink)buildingI).setLiquidHeld((capacity + ((multiplier - 1) * 2))*50);
 					((Drink)buildingI).setThirstQuenched(250);
 					if((capacity*50)<250)
 						((Drink)buildingI).setThirstQuenched(capacity*50);

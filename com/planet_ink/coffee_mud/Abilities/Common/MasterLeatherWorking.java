@@ -104,13 +104,13 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 
 	public enum Stage
 	{
-		Designer  (30, 4, 0, -24),
-		Cuirbouli (37, 5, 6, -30),
-		Thick     (45, 6,13, -36),
-		Masterwork(54, 7,20, -42),
-		Laminar   (63, 8,27, -48),
-		Battlemoulded(72,9,34, -54),
-		Legendary(80, 10, 42, -60)
+		Designer  (30, 4, 0, -16),
+		Cuirbouli (37, 5, 6, -24),
+		Thick     (45, 6,13, -30),
+		Masterwork(54, 7,20, -36),
+		Laminar   (63, 8,27, -42),
+		Battlemoulded(72,9,34, -48),
+		Legendary(80, 10, 42, -54)
 		;
 		public final int recipeLevel;
 		public final int multiplier;
@@ -521,6 +521,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
 			int bonusDamage=0;
 			int bonusAttack=0;
+			Stage foundStage = Stage.Designer;
 			for(int r=0;r<matches.size();r++)
 			{
 				final List<String> V=matches.get(r);
@@ -538,6 +539,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 							multiplier=stage.multiplier;
 							bonusDamage=stage.damage;
 							bonusAttack=stage.attack;
+							foundStage=stage;
 						}
 						foundRecipe=V;
 						recipeLevel=level;
@@ -565,11 +567,12 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			final int[] pm1={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
 			final String misctype=foundRecipe.get(RCP_MISCTYPE);
 			bundling=misctype.equalsIgnoreCase("BUNDLE");
+			final boolean needsMetal = foundStage==Stage.Battlemoulded;
 			final int[][] data=fetchFoundResourceData(mob,
 													woodRequired,"leather",pm,
-													(multiplier==6)?1:0,
-													(multiplier==6)?"metal":null,
-													(multiplier==6)?pm1:null,
+													(needsMetal)?1:0,
+													(needsMetal)?"metal":null,
+													(needsMetal)?pm1:null,
 													bundling,
 													autoGenerate,
 													enhancedTypes);
@@ -657,8 +660,6 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 				((Weapon)buildingI).basePhyStats().setAttackAdjustment(baseYield()+abilityCode()+(hardness*5)+bonusAttack);
 				((Weapon)buildingI).setWeaponClassification(Weapon.CLASS_FLAILED);
 				setWeaponTypeClass((Weapon)buildingI,misctype,Weapon.TYPE_SLASHING);
-				if(buildingI.rawLogicalAnd())
-					bonusDamage += 6;
 				buildingI.basePhyStats().setDamage(armordmg+hardness+bonusDamage);
 				((Weapon)buildingI).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 			}
@@ -668,7 +669,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 				final long canContain=getContainerType(containStr);
 				if((capacity>0)&&(buildingI instanceof Container))
 				{
-					((Container)buildingI).setCapacity(capacity+woodRequired);
+					((Container)buildingI).setCapacity(capacity+woodRequired + ((multiplier - 1) * 2));
 					((Container)buildingI).setContainTypes(canContain);
 				}
 				((Armor)buildingI).basePhyStats().setArmor(0);
@@ -681,7 +682,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 				if(CMLib.flags().isGettable(buildingI))
 				{
 					((Drink)buildingI).setLiquidRemaining(0);
-					((Drink)buildingI).setLiquidHeld(capacity*50);
+					((Drink)buildingI).setLiquidHeld((capacity + ((multiplier - 1) * 2))*50);
 					((Drink)buildingI).setThirstQuenched(250);
 					if((capacity*50)<250)
 						((Drink)buildingI).setThirstQuenched(capacity*50);
