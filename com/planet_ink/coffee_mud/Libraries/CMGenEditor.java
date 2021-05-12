@@ -5370,7 +5370,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						int newRole=-1;
 						while((mob.session()!=null)&&(!mob.session().isStopped())&&(newRole<0))
 						{
-							final String newRoleStr=mob.session().prompt(L("Enter this members role (?) '@x1': ",C.getRoleName(members.get(index).role,true,false)),"");
+							final String newRoleStr=mob.session().prompt(L("Enter this members role (?) '@x1': ",C.getRoleName(members.get(index).role,true,false)),C.getRoleName(members.get(index).role,true,false));
 							newRole =C.getRoleFromName(newRoleStr);
 							if(newRole<0)
 								mob.tell(L("That role is invalid.  Valid roles include: @x1",CMParms.toListString(C.getRolesList())));
@@ -5398,7 +5398,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					{
 						final MOB M=CMLib.players().getLoadPlayer(newName);
 						if((M!=null)&&(M.getClanRole(C.clanID())==null))
-							C.addMember(M, 0);
+						{
+							C.addMember(M, mR.role);
+						}
 					}
 				}
 				// now adjust changed roles

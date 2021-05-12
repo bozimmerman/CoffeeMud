@@ -635,6 +635,7 @@ public class ClanData extends StdWebMacro
 						posFilter=parms.get("CLANFUNCFILTER");
 					if(posFilter==null)
 						posFilter="";
+					final boolean publicFilter=CMath.s_bool(parms.get("CLANPUBLICFILTER"));
 					final Clan.Function reqFunction = (Clan.Function)CMath.s_valueOf(Clan.Function.values(), posFilter);
 					final List<MemberRecord> members = getMembers(C,httpReq);
 					for(final MemberRecord member : members)
@@ -642,13 +643,12 @@ public class ClanData extends StdWebMacro
 						final String name=member.name;
 						if((reqFunction!=null)&&(C.getAuthority(member.role,reqFunction)==Clan.Authority.CAN_NOT_DO))
 							continue;
-						if((!authorized)&&((M==null)||(!M.Name().equalsIgnoreCase(name))))
+						if((publicFilter)&&(!authorized))
 						{
-							if(reqFunction == null)
+							if((member.role<0)||(member.role>=C.getGovernment().getPositions().length))
 								continue;
-							if((reqFunction!=Clan.Function.ASSIGN)
-							&&(reqFunction!=Clan.Function.HOME_PRIVS)
-							&&(reqFunction!=Clan.Function.DECLARE))
+							final ClanPosition pos = C.getGovernment().getPositions()[member.role];
+							if(!pos.isPublic())
 								continue;
 						}
 						if((cmember==null)
