@@ -240,7 +240,7 @@ public class Archon_Metacraft extends ArchonSkill
 				skill = (ItemCraftor)CMLib.english().fetchEnvironmental(craftingSkills, skillName, false);
 			if(skill == null)
 			{
-				mob.tell(L("'@x1' is not a known crafting skill.",recipe));
+				mob.tell(L("'@x1' is not a known crafting skill.",skillName));
 				return false;
 			}
 			skillsToUse=new XVector<Pair<Ability,String>>();
