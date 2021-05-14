@@ -104,24 +104,26 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 
 	public enum Stage
 	{
-		Designer  (30, 4, 0, -16),
-		Cuirbouli (37, 5, 6, -24),
-		Thick     (45, 6,13, -30),
-		Masterwork(54, 7,20, -36),
-		Laminar   (63, 8,27, -42),
-		Battlemoulded(72,9,34, -48),
-		Legendary(80, 10, 42, -54)
+		Designer     (30, 4,  1.0,  -16, 1.0),
+		Cuirbouli    (37, 5,  1.28, -24, 1.15),
+		Thick        (45, 6,  1.56, -30, 1.3),
+		Masterwork   (54, 7,  1.84, -36, 1.45),
+		Laminar      (63, 8,  2.12, -42, 1.60),
+		Battlemoulded(72, 9,  2.40, -48, 1.75),
+		Legendary    (80, 10, 2.68, -54, 1.85)
 		;
 		public final int recipeLevel;
 		public final int multiplier;
-		public final int damage;
+		public final double damagePct;
 		public final int attack;
-		private Stage(final int recipeLevel, final int multiplier, final int dmg, final int attackAdj)
+		public final double armorPct;
+		private Stage(final int recipeLevel, final int multiplier, final double dmgPct, final int attackAdj, final double armorAdjPct)
 		{
 			this.recipeLevel=recipeLevel;
 			this.multiplier=multiplier;
-			this.damage=dmg;
+			this.damagePct=dmgPct;
 			this.attack=attackAdj;
+			this.armorPct=armorAdjPct;
 		}
 
 		public final String term()
@@ -519,8 +521,9 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			final String recipeName=CMParms.combine(commands,0);
 			List<String> foundRecipe=null;
 			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
-			int bonusDamage=0;
+			double bonusDamagePct=1;
 			int bonusAttack=0;
+			double bonusArmorPct=1;
 			Stage foundStage = Stage.Designer;
 			for(int r=0;r<matches.size();r++)
 			{
@@ -537,8 +540,9 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 						else
 						{
 							multiplier=stage.multiplier;
-							bonusDamage=stage.damage;
+							bonusDamagePct=stage.damagePct;
 							bonusAttack=stage.attack;
+							bonusArmorPct=stage.armorPct;
 							foundStage=stage;
 						}
 						foundRecipe=V;
@@ -621,9 +625,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			final int hardness=RawMaterial.CODES.HARDNESS(buildingI.material())-2;
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL))+hardness);
 			final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
-			int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
-			if(armordmg!=0)
-				armordmg=armordmg+(multiplier-1);
+			final int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
 			if(bundling)
 				buildingI.setBaseValue(lostValue);
 			final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
@@ -660,7 +662,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 				((Weapon)buildingI).basePhyStats().setAttackAdjustment(baseYield()+abilityCode()+(hardness*5)+bonusAttack);
 				((Weapon)buildingI).setWeaponClassification(Weapon.CLASS_FLAILED);
 				setWeaponTypeClass((Weapon)buildingI,misctype,Weapon.TYPE_SLASHING);
-				buildingI.basePhyStats().setDamage(armordmg+hardness+bonusDamage);
+				buildingI.basePhyStats().setDamage((int)Math.round(CMath.mul(armordmg, bonusDamagePct))+hardness);
 				((Weapon)buildingI).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 			}
 			if((buildingI instanceof Armor)&&(!(buildingI instanceof FalseLimb)))
@@ -674,7 +676,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 				}
 				((Armor)buildingI).basePhyStats().setArmor(0);
 				if(armordmg!=0)
-					((Armor)buildingI).basePhyStats().setArmor(armordmg+(baseYield()+abilityCode()-1)+hardness);
+					((Armor)buildingI).basePhyStats().setArmor((int)Math.round(CMath.mul(armordmg, bonusArmorPct))+(baseYield()+abilityCode()-1)+hardness);
 				setWearLocation(buildingI,misctype,0);
 			}
 			if(buildingI instanceof Drink)

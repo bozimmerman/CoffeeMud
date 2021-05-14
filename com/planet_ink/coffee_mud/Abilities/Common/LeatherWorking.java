@@ -101,20 +101,22 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 
 	public enum Stage
 	{
-		Normal(0,1,0, -7),
-		Hard(9,2,8, -13),
-		Studded(18,3,16, -19)
+		Normal (0, 1, 1.0, -7,  1.0),
+		Hard   (9, 2, 1.5, -13, 2.0),
+		Studded(18,3, 3.0, -19, 3.0)
 		;
 		public final int recipeLevel;
 		public final int multiplier;
-		public final int damage;
+		public final double damagePct;
 		public final int attack;
-		private Stage(final int recipeLevel, final int multiplier, final int dmg, final int attackAdj)
+		public final double armorPct;
+		private Stage(final int recipeLevel, final int multiplier, final double dmgPct, final int attackAdj, final double armorAdjPct)
 		{
 			this.recipeLevel=recipeLevel;
 			this.multiplier=multiplier;
-			this.damage=dmg;
+			this.damagePct=dmgPct;
 			this.attack=attackAdj;
+			this.armorPct=armorAdjPct;
 		}
 
 		public final String term()
@@ -525,9 +527,10 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 				return false;
 			}
 			final int multiplier=recipeStage.multiplier;
-			final int damage=recipeStage.damage;
-			final int attack=recipeStage.attack;
+			final double bonusDamagePct=recipeStage.damagePct;
+			final int bonusAttack=recipeStage.attack;
 			final boolean requiresMetal = recipeStage == Stage.Studded;
+			final double bonusArmorPct=recipeStage.armorPct;
 
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 			final int[] compData = new int[CF_TOTAL];
@@ -599,9 +602,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			if(buildingI.basePhyStats().level()<1)
 				buildingI.basePhyStats().setLevel(1);
 			final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
-			int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
-			if(armordmg!=0)
-				armordmg=armordmg+(multiplier-1);
+			final int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
 			if(bundling)
 				buildingI.setBaseValue(lostValue);
 			final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
@@ -635,10 +636,10 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 					((Weapon)buildingI).setRanges(((Weapon)buildingI).minRange(),maxrange);
 				else
 					((Weapon)buildingI).setRanges(minrange,maxrange);
-				((Weapon)buildingI).basePhyStats().setAttackAdjustment(baseYield()+abilityCode()+(hardness*5)+attack);
+				((Weapon)buildingI).basePhyStats().setAttackAdjustment(baseYield()+abilityCode()+(hardness*5)+bonusAttack);
 				((Weapon)buildingI).setWeaponClassification(Weapon.CLASS_FLAILED);
 				setWeaponTypeClass((Weapon)buildingI,misctype,Weapon.TYPE_SLASHING);
-				buildingI.basePhyStats().setDamage(armordmg+hardness+damage);
+				buildingI.basePhyStats().setDamage((int)Math.round(CMath.mul(armordmg, bonusDamagePct))+hardness);
 				((Weapon)buildingI).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 			}
 			if((buildingI instanceof Armor)&&(!(buildingI instanceof FalseLimb)))
@@ -652,7 +653,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 				}
 				((Armor)buildingI).basePhyStats().setArmor(0);
 				if(armordmg!=0)
-					((Armor)buildingI).basePhyStats().setArmor(armordmg+(baseYield()+abilityCode()-1)+hardness);
+					((Armor)buildingI).basePhyStats().setArmor((int)Math.round(CMath.mul(armordmg, bonusArmorPct))+(baseYield()+abilityCode()-1)+hardness);
 				setWearLocation(buildingI,misctype,0);
 			}
 			if(buildingI instanceof Drink)
