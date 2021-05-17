@@ -3957,7 +3957,7 @@ public class StdMOB implements MOB
 								final boolean smallChance = (CMLib.dice().rollPercentage() == 1);
 								if((CMLib.dice().rollPercentage() < 5)
 								&&(curState().getHitPoints()>=maxState().getHitPoints())
-								&&(fetchEffect("Mood")==null));
+								&&(fetchEffect("Mood")==null))
 								{
 									final Ability moodA = CMClass.getAbility("Mood");
 									if (moodA != null)
