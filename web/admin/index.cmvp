@@ -45,7 +45,12 @@
 <h3>CoffeeMud Admin Server</H3>
 <B>@WEBSERVERVERSION@ '@WEBSERVERNAME@'</B> on port <B>@WEBSERVERPORT@</B><br>
 <br>
-MUD Server: <b>@MUDSERVERVERSION@</b> on port <b>@MUDSERVERPORT@</b>: <b>@MUDSERVERSTATUS@</B><br>
+@AddRequestParameter?BOOTSTATUS=@@MUDSERVERPORT@@ @
+@if?CheckReqParm?BOOTSTATUS=[error]@
+	MUD Server: <b>@MUDSERVERVERSION@</b>: <b>@MUDSERVERSTATUS@</B><br>
+@else@
+	MUD Server: <b>@MUDSERVERVERSION@</b> on port <b>@MUDSERVERPORT@</b>: <b>@MUDSERVERSTATUS@</B><br>
+@endif@
 	<br>
 	<a href="http://@MudInfo?DOMAIN@:@WebServerPort?SERVER&PUB@/"><FONT COLOR=BLUE>Go to public pages</FONT></A><br>
 	<br>
