@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.core.database;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.Bool;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.database.DBConnector.DBPreparedBatchEntry;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -522,6 +523,7 @@ public class RoomLoader
 
 	public void DBReadRoomExits(String roomID, final Map<String, Room> allRooms, final boolean reportStatus, final RoomnumberSet unloadedRooms)
 	{
+		final List<String> badRoomIDs=new LinkedList<String>();
 		DBConnection D=null;
 		// now grab the exits
 		try
@@ -543,7 +545,13 @@ public class RoomLoader
 				if(thisRoom==null)
 				{
 					if((unloadedRooms!=null)&&(!unloadedRooms.contains(roomID)))
-						Log.errOut("Room","Couldn't set "+direction+" exit for unknown room '"+roomID+"'");
+					{
+						if((!CMProps.getBoolVar(Bool.MUDSTARTED))
+						&&(!CMProps.getBoolVar(Bool.MUDSHUTTINGDOWN)))
+							badRoomIDs.add(roomID);
+						else
+							Log.errOut("Room","Couldn't set "+direction+" exit for unknown room '"+roomID+"'");
+					}
 				}
 				else
 				{
@@ -675,6 +683,11 @@ public class RoomLoader
 		finally
 		{
 			DB.DBDone(D);
+		}
+		for(final String badRoomId : badRoomIDs)
+		{
+			Log.errOut("RoomLoader","Deleted exits for unknown room #"+badRoomId);
+			DB.update("DELETE FROM CMROEX WHERE CMROID='"+badRoomId+"';");
 		}
 	}
 
