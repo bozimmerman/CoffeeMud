@@ -332,12 +332,12 @@ public class DefaultClimate implements Climate
 				}
 			}
 		}
-		for(final Enumeration<BoardableShip> s =CMLib.map().ships();s.hasMoreElements();)
+		for(final Enumeration<BoardableItem> s =CMLib.map().ships();s.hasMoreElements();)
 		{
-			final BoardableShip ship = s.nextElement();
-			if((ship != null) && (A == CMLib.map().areaLocation(ship.getShipItem())))
+			final BoardableItem ship = s.nextElement();
+			if((ship != null) && (A == CMLib.map().areaLocation(ship.getBoardableItem())))
 			{
-				final Area inA=ship.getShipArea();
+				final Area inA=ship.getArea();
 				if(inA!=null)
 					sayToEveryoneInArea(inA,oldWeather,say);
 			}

@@ -109,7 +109,7 @@ public class Knock extends StdCommand
 							final Room R3=R2.getRoomInDir(dir2);
 							if(((R3!=null)&&(R3.domainType()&Room.INDOORS)==Room.INDOORS))
 							{
-								final boolean useShipDirs=(R2 instanceof BoardableShip)||(R2.getArea() instanceof BoardableShip);
+								final boolean useShipDirs=(R2 instanceof BoardableItem)||(R2.getArea() instanceof BoardableItem);
 								final String inDirName=useShipDirs?CMLib.directions().getShipInDirectionName(dir2):CMLib.directions().getInDirectionName(dir2);
 								R2.showHappens(CMMsg.MASK_SOUND|CMMsg.TYP_KNOCK,L("You hear a knock @x1.@x2",inDirName,CMLib.protocol().msp("knock.wav",50)));
 							}

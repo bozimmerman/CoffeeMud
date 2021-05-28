@@ -95,8 +95,8 @@ public class ClanLoader
 									final Room itemR=CMLib.map().getRoom(roomID);
 									if(itemR!=null)
 									{
-										if(newItem instanceof BoardableShip)
-											((BoardableShip)newItem).dockHere(itemR);
+										if(newItem instanceof BoardableItem)
+											((BoardableItem)newItem).dockHere(itemR);
 										else
 											itemR.addItem(newItem);
 										newItem.setExpirationDate(expirationDate);

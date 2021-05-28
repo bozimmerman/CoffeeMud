@@ -87,7 +87,7 @@ public class Open extends StdCommand
 					&&(opE.isOpen())
 					&&(((Exit)openThis).isOpen()))
 					{
-						final boolean useShipDirs=(opR instanceof BoardableShip)||(opR.getArea() instanceof BoardableShip);
+						final boolean useShipDirs=(opR instanceof BoardableItem)||(opR.getArea() instanceof BoardableItem);
 						final String inDirName=useShipDirs?CMLib.directions().getShipInDirectionName(opCode):CMLib.directions().getInDirectionName(opCode);
 						opR.showHappens(CMMsg.MSG_OK_ACTION,L("@x1 @x2 opens.",opE.name(),inDirName));
 					}

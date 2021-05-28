@@ -54,7 +54,7 @@ public class Horse extends StdRideable
 		setWimpHitPoint(2);
 
 		basePhyStats().setDamage(4);
-		setRideBasis(Rideable.RIDEABLE_LAND);
+		setRideBasis(Rideable.Basis.LAND_BASED);
 		setRiderCapacity(2);
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);

@@ -51,7 +51,7 @@ public class StdCageRideable extends StdRideable
 		material=RawMaterial.RESOURCE_OAK;
 		baseGoldValue=15;
 		basePhyStats().setWeight(1000);
-		rideBasis=Rideable.RIDEABLE_WAGON;
+		rideBasis=Rideable.Basis.WAGON;
 		recoverPhyStats();
 	}
 

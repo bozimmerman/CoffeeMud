@@ -108,7 +108,7 @@ public class Create extends StdCommand
 			}
 		}
 
-		final boolean useShipDirs=(mob.location() instanceof BoardableShip)||(mob.location().getArea() instanceof BoardableShip);
+		final boolean useShipDirs=(mob.location() instanceof BoardableItem)||(mob.location().getArea() instanceof BoardableItem);
 		mob.location().setRawExit(direction,thisExit);
 		if(mob.location() instanceof GridLocale)
 			((GridLocale)mob.location()).buildGrid();

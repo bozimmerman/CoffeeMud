@@ -237,7 +237,7 @@ public class Sinking extends StdAbility
 
 			if((room==null)
 			||((room!=null)&&(!room.isContent(item)))
-			||((!CMLib.flags().isGettable(item)&&(!(item instanceof BoardableShip)))))
+			||((!CMLib.flags().isGettable(item)&&(!(item instanceof BoardableItem)))))
 			{
 				unInvoke();
 				return false;
@@ -263,7 +263,7 @@ public class Sinking extends StdAbility
 			if((nextRoom!=null)&&(canSinkFrom(room,direction)))
 			{
 				final MOB mob;
-				if((item instanceof Rideable)&&(item instanceof BoardableShip))
+				if((item instanceof Rideable)&&(item instanceof BoardableItem))
 				{
 					mob = CMClass.getFactoryMOB(item.name(),item.phyStats().level(),room);
 					if(item instanceof PrivateProperty)

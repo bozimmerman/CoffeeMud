@@ -176,9 +176,9 @@ public class Thief_PubContacts extends ThiefSkill
 						}
 					}
 					final Map<Room,List<Item>> allShips=new HashMap<Room,List<Item>>(CMLib.map().numShips());
-					for(final Enumeration<BoardableShip> ship=CMLib.map().ships();ship.hasMoreElements();)
+					for(final Enumeration<BoardableItem> ship=CMLib.map().ships();ship.hasMoreElements();)
 					{
-						final BoardableShip S=ship.nextElement();
+						final BoardableItem S=ship.nextElement();
 						if((S!=null)
 						&&(S instanceof Item)
 						&&((level==3)||(CMLib.flags().canBeSeenBy(S, mob))))

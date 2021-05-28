@@ -581,7 +581,7 @@ public class RocketShipProgram extends GenShipProgram
 			str.append("^X").append(CMStrings.centerPreserve(L(" -- Commands -- "),60)).append("^.^N\n\r");
 			str.append("^H").append(CMStrings.padRight(L("TYPE HELP INTO CONSOLE : Get help."),60)).append("\n\r");
 			if((container() instanceof Rideable)
-			&&(((Rideable)container()).rideBasis()==Rideable.RIDEABLE_TABLE)
+			&&(((Rideable)container()).rideBasis()==Rideable.Basis.FURNITURE_TABLE)
 			&&(((Rideable)container()).numRiders()==0))
 				str.append("^H").append(CMStrings.padRight(L("* Sit at "+container().name()+" to shorten commands *"),60)).append("\n\r");
 			str.append("^X").append(CMStrings.centerPreserve("",60)).append("^.^N\n\r");

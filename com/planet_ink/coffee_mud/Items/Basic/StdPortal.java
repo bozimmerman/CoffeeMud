@@ -70,13 +70,13 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	}
 
 	@Override
-	public int rideBasis()
+	public Basis rideBasis()
 	{
-		return Rideable.RIDEABLE_ENTERIN;
+		return Rideable.Basis.ENTER_IN;
 	}
 
 	@Override
-	public void setRideBasis(final int basis)
+	public void setRideBasis(final Basis basis)
 	{
 	}
 

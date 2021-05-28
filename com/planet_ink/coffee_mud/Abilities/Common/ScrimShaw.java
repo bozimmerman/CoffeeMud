@@ -191,12 +191,12 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 		if(I instanceof Rideable)
 		{
 			final Rideable R=(Rideable)I;
-			final int rideType=R.rideBasis();
+			final Rideable.Basis rideType=R.rideBasis();
 			switch(rideType)
 			{
-			case Rideable.RIDEABLE_SLEEP:
-			case Rideable.RIDEABLE_SIT:
-			case Rideable.RIDEABLE_TABLE:
+			case FURNITURE_SLEEP:
+			case FURNITURE_SIT:
+			case FURNITURE_TABLE:
 				return true;
 			default:
 				return false;

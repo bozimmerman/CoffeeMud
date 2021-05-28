@@ -91,9 +91,9 @@ public class Chant_Capsize extends Chant
 		final List<Item> items = new ArrayList<Item>();
 		if(I instanceof Container)
 			items.addAll(((Container)I).getContents());
-		if(I instanceof BoardableShip)
+		if(I instanceof BoardableItem)
 		{
-			final Area A=((BoardableShip)I).getShipArea();
+			final Area A=((BoardableItem)I).getArea();
 			if(A!=null)
 			{
 				for(final Enumeration<Room> r=A.getFilledProperMap();r.hasMoreElements();)
@@ -154,9 +154,9 @@ public class Chant_Capsize extends Chant
 				}
 			}
 		}
-		if(I instanceof BoardableShip)
+		if(I instanceof BoardableItem)
 		{
-			final Area A=((BoardableShip)I).getShipArea();
+			final Area A=((BoardableItem)I).getArea();
 			if(A!=null)
 			{
 				for(final Enumeration<Room> r=A.getFilledProperMap();r.hasMoreElements();)
@@ -198,7 +198,7 @@ public class Chant_Capsize extends Chant
 	{
 		if(mob!=null)
 		{
-			if(!(target instanceof BoardableShip))
+			if(!(target instanceof BoardableItem))
 				return Ability.QUALITY_INDIFFERENT;
 		}
 		return super.castingQuality(mob,target);
@@ -233,11 +233,11 @@ public class Chant_Capsize extends Chant
 			}
 		}
 		else
-		if((target instanceof Rideable) && (((Rideable)target).rideBasis() == Rideable.RIDEABLE_WATER))
+		if((target instanceof Rideable) && (((Rideable)target).rideBasis() == Rideable.Basis.WATER_BASED))
 		{ //ok
 		}
 		else
-		if(target instanceof BoardableShip)
+		if(target instanceof BoardableItem)
 		{ //ok
 		}
 		else

@@ -100,15 +100,15 @@ public class Thief_Scuttle extends ThiefSkill
 			return false;
 		final Room boatRoom;
 		final Rideable boat;
-		if((R.getArea() instanceof BoardableShip)
+		if((R.getArea() instanceof BoardableItem)
 		&&(R.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
-		&&(((BoardableShip)R.getArea()).getShipItem() instanceof Rideable))
+		&&(((BoardableItem)R.getArea()).getBoardableItem() instanceof Rideable))
 		{
-			boat = (Rideable)((BoardableShip)R.getArea()).getShipItem();
-			boatRoom=CMLib.map().roomLocation(((BoardableShip)R.getArea()).getShipItem());
+			boat = (Rideable)((BoardableItem)R.getArea()).getBoardableItem();
+			boatRoom=CMLib.map().roomLocation(((BoardableItem)R.getArea()).getBoardableItem());
 		}
 		else
-		if((mob.riding() != null)&&(mob.riding().rideBasis()==Rideable.RIDEABLE_WATER))
+		if((mob.riding() != null)&&(mob.riding().rideBasis()==Rideable.Basis.WATER_BASED))
 		{
 			boat=mob.riding();
 			boatRoom=mob.location();
@@ -140,7 +140,7 @@ public class Thief_Scuttle extends ThiefSkill
 		}
 
 		int numRiders=0;
-		if(R.getArea() instanceof BoardableShip)
+		if(R.getArea() instanceof BoardableItem)
 		{
 			for(final Enumeration<Room> r=R.getArea().getProperMap();r.hasMoreElements();)
 			{
@@ -152,7 +152,7 @@ public class Thief_Scuttle extends ThiefSkill
 			}
 		}
 		else
-		if((mob.riding() != null)&&(mob.riding().rideBasis()==Rideable.RIDEABLE_WATER))
+		if((mob.riding() != null)&&(mob.riding().rideBasis()==Rideable.Basis.WATER_BASED))
 			numRiders=mob.riding().numRiders();
 		if(numRiders > 1)
 		{
@@ -188,8 +188,8 @@ public class Thief_Scuttle extends ThiefSkill
 					@Override
 					public void run()
 					{
-						if((mob.riding() != null)&&(mob.riding().rideBasis()==Rideable.RIDEABLE_WATER))
-							mob.riding().setRideBasis(Rideable.RIDEABLE_SIT);
+						if((mob.riding() != null)&&(mob.riding().rideBasis()==Rideable.Basis.WATER_BASED))
+							mob.riding().setRideBasis(Rideable.Basis.FURNITURE_SIT);
 						CMLib.tracking().makeSink(boat, boatRoom, false);
 						final String sinkString = L("<T-NAME> start(s) sinking!");
 						boatRoom.show(mob, boatRoom, CMMsg.MSG_OK_ACTION, sinkString);

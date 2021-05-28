@@ -122,7 +122,7 @@ public class Skill_Lobotomizing extends StdSkill
 		&&(!CMLib.flags().isSitting(target))
 		&&(!CMLib.flags().isSleeping(target))
 		&&((target.riding()==null)
-			||(target.riding().rideBasis()!=Rideable.RIDEABLE_SLEEP)))
+			||(target.riding().rideBasis()!=Rideable.Basis.FURNITURE_SLEEP)))
 		{
 			mob.tell(L("@x1 must be sitting down or lying on something.",target.name(mob)));
 			return false;

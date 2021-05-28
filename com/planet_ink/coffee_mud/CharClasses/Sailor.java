@@ -353,21 +353,21 @@ public class Sailor extends StdCharClass
 			&&(msg.source().riding() !=null)
 			&&(!msg.source().isMonster())
 			&&(msg.source().playerStats()!=null)
-			&&(msg.source().riding().rideBasis() == Rideable.RIDEABLE_WATER))
+			&&(msg.source().riding().rideBasis() == Rideable.Basis.WATER_BASED))
 				giveExploreXP(msg.source(), (Room)msg.target(), 5, msg);
-			if((msg.source().riding() instanceof SailingShip)
+			if((msg.source().riding() instanceof NavigableItem)
 			&&(msg.source().Name().equals(msg.source().riding().Name()))
 			&&(myHost instanceof MOB)
 			&&(((MOB)myHost).playerStats()!=null)
 			&&(((MOB)myHost).location()!=null)
-			&&(((MOB)myHost).location().getArea() == ((BoardableShip)msg.source().riding()).getShipArea()))
+			&&(((MOB)myHost).location().getArea() == ((BoardableItem)msg.source().riding()).getArea()))
 				giveExploreXP((MOB)myHost, (Room)msg.target(), 10, msg);
 		}
 
 		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
 		&&(msg.value()>0)
 		&&(msg.source().charStats().getCurrentClass() == this)
-		&&(CMLib.map().areaLocation(msg.source()) instanceof BoardableShip)
+		&&(CMLib.map().areaLocation(msg.source()) instanceof BoardableItem)
 		&&(msg.source() != msg.target()))
 		{
 			if(msg.target() instanceof MOB)
@@ -375,16 +375,16 @@ public class Sailor extends StdCharClass
 			else
 			if(msg.target() == null)
 			{
-				final BoardableShip shipArea = (BoardableShip)CMLib.map().areaLocation(msg.source());
-				final Room R=CMLib.map().roomLocation(shipArea.getShipItem());
+				final BoardableItem shipArea = (BoardableItem)CMLib.map().areaLocation(msg.source());
+				final Room R=CMLib.map().roomLocation(shipArea.getBoardableItem());
 				if(R!=null)
 				{
 					for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 					{
 						final Item I=i.nextElement();
-						if((I instanceof BoardableShip)
+						if((I instanceof BoardableItem)
 						&&(I.fetchEffect("Sinking")!=null)
-						&&(I!=shipArea.getShipItem()))
+						&&(I!=shipArea.getBoardableItem()))
 						{
 							msg.setValue(msg.value() * 2);
 							break;

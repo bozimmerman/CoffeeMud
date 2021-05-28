@@ -121,7 +121,7 @@ public class Chant_PlantBed extends Chant
 				newItem.setName(L("a plant bed"));
 				newItem.setDisplayText(L("An enormously comfortable pea-pod looks ready to sleep in."));
 				newItem.setDescription(L("The plant bed looks like a hollowed pea-pod with fern-like cushioning inside.  Looks like a nice place to take a nap in!"));
-				newRide.setRideBasis(Rideable.RIDEABLE_SLEEP);
+				newRide.setRideBasis(Rideable.Basis.FURNITURE_SLEEP);
 				newRide.setRiderCapacity(1);
 				newItem.setMaterial(RawMaterial.RESOURCE_HEMP);
 				newItem.basePhyStats().setWeight(1000);

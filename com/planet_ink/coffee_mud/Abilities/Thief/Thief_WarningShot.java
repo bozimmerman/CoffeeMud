@@ -95,12 +95,12 @@ public class Thief_WarningShot extends ThiefSkill
 	protected List<Item> getSiegeWeapons(final Physical P)
 	{
 		final List<Item> items=new ArrayList<Item>();
-		if(P instanceof BoardableShip)
+		if(P instanceof BoardableItem)
 		{
-			final BoardableShip myShip=(BoardableShip)P;
-			if(myShip.getShipArea()!=null)
+			final BoardableItem myShip=(BoardableItem)P;
+			if(myShip.getArea()!=null)
 			{
-				for(final Enumeration<Room> r=myShip.getShipArea().getProperMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=myShip.getArea().getProperMap();r.hasMoreElements();)
 				{
 					final Room R2=r.nextElement();
 					if((R2!=null)&&(R2.numItems()>0)&&(((R2.domainType()&Room.INDOORS)==0)))
@@ -109,7 +109,7 @@ public class Thief_WarningShot extends ThiefSkill
 						{
 							final Item I2=i.nextElement();
 							if((I2.container()==null)
-							&&(CMLib.combat().isAShipSiegeWeapon(I2)))
+							&&(CMLib.combat().isASiegeWeapon(I2)))
 								items.add(I2);
 						}
 					}
@@ -135,9 +135,9 @@ public class Thief_WarningShot extends ThiefSkill
 
 	public static void tellTheDeck(final Item ship, final MOB M, final String msg)
 	{
-		if(ship instanceof BoardableShip)
+		if(ship instanceof BoardableItem)
 		{
-			for(final Enumeration<Room> r=((BoardableShip)ship).getShipArea().getProperMap();r.hasMoreElements();)
+			for(final Enumeration<Room> r=((BoardableItem)ship).getArea().getProperMap();r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
 				if((R!=null)&&((R.domainType()&Room.INDOORS)==0)&&(R.numPCInhabitants()>0))
@@ -175,15 +175,15 @@ public class Thief_WarningShot extends ThiefSkill
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		if((!(R.getArea() instanceof BoardableShip))
-		||(!(((BoardableShip)R.getArea()).getShipItem() instanceof SailingShip))
+		if((!(R.getArea() instanceof BoardableItem))
+		||(!(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem))
 		||((R.domainType()&Room.INDOORS)!=0))
 		{
 			mob.tell(L("You must be on the deck of a ship to fire a warning shot."));
 			return false;
 		}
-		final BoardableShip myShip=(BoardableShip)R.getArea();
-		final SailingShip myShipItem=(SailingShip)myShip.getShipItem();
+		final BoardableItem myShip=(BoardableItem)R.getArea();
+		final NavigableItem myShipItem=(NavigableItem)myShip.getBoardableItem();
 		if((myShipItem==null)
 		||(!(myShipItem.owner() instanceof Room))
 		||(!CMLib.flags().isWateryRoom((Room)myShipItem.owner())))
@@ -242,24 +242,24 @@ public class Thief_WarningShot extends ThiefSkill
 				final String targetSeesStr;
 				final String iSeeStr;
 				final Item hisShipItem;
-				if((target instanceof BoardableShip)
-				&&(((BoardableShip)target).getShipItem() instanceof SailingShip)
+				if((target instanceof BoardableItem)
+				&&(((BoardableItem)target).getBoardableItem() instanceof NavigableItem)
 				&&(hisItems.size()>0))
 				{
-					hisShipItem = ((BoardableShip)target).getShipItem();
-					double mySpeed = myShipItem.getShipSpeed();
+					hisShipItem = ((BoardableItem)target).getBoardableItem();
+					double mySpeed = myShipItem.getMaxSpeed();
 					if(mySpeed <=0)
 						mySpeed = 1.0;
-					double hisSpeed = ((SailingShip)hisShipItem).getShipSpeed();
+					double hisSpeed = ((NavigableItem)hisShipItem).getMaxSpeed();
 					if(hisSpeed <=0)
 						hisSpeed = 1.0;
 					final double myChancePerRoundToBeHit =  CMath.div(CMath.div(100.0, mySpeed + 1.0), 100.0);
 					final double hisChancePerRoundToBeHit =  CMath.div(CMath.div(100.0, hisSpeed + 1.0), 100.0);
 
-					double myHullPoints = CMLib.combat().getShipHullPoints(myShip);
+					double myHullPoints = (myShipItem instanceof SiegableItem)?((SiegableItem)myShipItem).getMaxHullPoints():0;
 					if(myShipItem.subjectToWearAndTear())
 						myHullPoints = myHullPoints * CMath.div(myShipItem.usesRemaining(), 100.0);
-					double hisHullPoints = CMLib.combat().getShipHullPoints((BoardableShip)target);
+					double hisHullPoints = (hisShipItem instanceof SiegableItem)?((SiegableItem)hisShipItem).getMaxHullPoints():0;
 					if(hisShipItem.subjectToWearAndTear())
 						hisHullPoints = hisHullPoints * CMath.div(hisShipItem.usesRemaining(), 100.0);
 

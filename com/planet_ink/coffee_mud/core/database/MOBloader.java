@@ -393,15 +393,15 @@ public class MOBloader
 								final Room itemR=CMLib.map().getRoom(roomID);
 								if(itemR!=null)
 								{
-									if(newItem instanceof BoardableShip)
-										((BoardableShip)newItem).dockHere(itemR);
+									if(newItem instanceof BoardableItem)
+										((BoardableItem)newItem).dockHere(itemR);
 									else
 										itemR.addItem(newItem);
 									newItem.setExpirationDate(expirationDate);
 									addToMOB=false;
 								}
 								else
-								if(newItem instanceof BoardableShip)
+								if(newItem instanceof BoardableItem)
 								{
 									Log.errOut("Destroying "+newItem.name()+" on "+name+" because it has an invalid location '"+roomID+"'.");
 									newItem.destroy();
@@ -415,9 +415,9 @@ public class MOBloader
 						newItem.setMiscText(text);
 					}
 					if((prevRoom==null)
-					&&(newItem instanceof BoardableShip))
+					&&(newItem instanceof BoardableItem))
 					{
-						final Area area=((BoardableShip)newItem).getShipArea();
+						final Area area=((BoardableItem)newItem).getArea();
 						if(area != null)
 							prevRoom=area.getRoom(oldLocID[0]);
 					}
@@ -439,7 +439,7 @@ public class MOBloader
 					if(addToMOB)
 					{
 						mob.addItem(newItem);
-						if(newItem instanceof BoardableShip)
+						if(newItem instanceof BoardableItem)
 							CMLib.map().registerWorldObjectLoaded(null, null, newItem);
 					}
 					else

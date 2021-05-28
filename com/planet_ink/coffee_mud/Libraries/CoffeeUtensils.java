@@ -101,7 +101,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			if(R instanceof Rideable)
 			{
 				int totalWeight=0;
-				final boolean smallWeight = (((Rideable)R).rideBasis()==Rideable.RIDEABLE_WAGON);
+				final boolean smallWeight = (((Rideable)R).rideBasis()==Rideable.Basis.WAGON);
 				final LinkedList<Rider> weightsToDo = new LinkedList<Rider>();
 				weightsToDo.add(R);
 				while((weightsToDo.size()>0)
@@ -526,9 +526,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		if(E instanceof Electronics)
 		{
 			CMLib.tech().fixItemTechLevel((Electronics)E, -1);
-			if(E instanceof BoardableShip)
+			if(E instanceof BoardableItem)
 			{
-				final Area A=((BoardableShip)E).getShipArea();
+				final Area A=((BoardableItem)E).getArea();
 				for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();

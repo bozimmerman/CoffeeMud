@@ -114,11 +114,11 @@ public class Thief_SilentRunning extends ThiefSkill
 		final Physical affected=this.affected;
 		final MOB invoker = invoker();
 		if((msg.source().riding()==affected)
-		&&(affected instanceof SailingShip)
+		&&(affected instanceof NavigableItem)
 		&&(msg.source().isMonster())
 		&&(msg.source().Name().equals(affected.Name())))
 		{
-			final SailingShip affShip = (SailingShip)affected;
+			final NavigableItem affShip = (NavigableItem)affected;
 			if((affShip.isInCombat())
 			||(msg.sourceMinor()==CMMsg.TYP_ADVANCE))
 			{
@@ -181,11 +181,11 @@ public class Thief_SilentRunning extends ThiefSkill
 		if(R==null)
 			return false;
 
-		final SailingShip ship;
-		if((R.getArea() instanceof BoardableShip)
-		&&(((BoardableShip)R.getArea()).getShipItem() instanceof SailingShip))
+		final NavigableItem ship;
+		if((R.getArea() instanceof BoardableItem)
+		&&(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem))
 		{
-			ship=(SailingShip)((BoardableShip)R.getArea()).getShipItem();
+			ship=(NavigableItem)((BoardableItem)R.getArea()).getBoardableItem();
 		}
 		else
 		{

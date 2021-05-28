@@ -165,11 +165,11 @@ public class Thief_HideShip extends ThiefSkill
 		if(R==null)
 			return false;
 
-		final SailingShip ship;
-		if((R.getArea() instanceof BoardableShip)
-		&&(((BoardableShip)R.getArea()).getShipItem() instanceof SailingShip))
+		final NavigableItem ship;
+		if((R.getArea() instanceof BoardableItem)
+		&&(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem))
 		{
-			ship=(SailingShip)((BoardableShip)R.getArea()).getShipItem();
+			ship=(NavigableItem)((BoardableItem)R.getArea()).getBoardableItem();
 		}
 		else
 		{

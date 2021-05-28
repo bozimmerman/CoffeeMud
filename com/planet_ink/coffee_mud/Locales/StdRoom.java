@@ -537,7 +537,7 @@ public class StdRoom implements Room
 			sky.rawDoors()[Directions.DOWN]=this;
 			sky.setRawExit(Directions.DOWN,dnE);
 
-			if(!(getArea() instanceof BoardableShip))
+			if(!(getArea() instanceof BoardableItem))
 			{
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
@@ -2406,7 +2406,7 @@ public class StdRoom implements Room
 			{
 				if(exits[e]==E)
 				{
-					if((this instanceof BoardableShip)||(this.getArea() instanceof BoardableShip))
+					if((this instanceof BoardableItem)||(this.getArea() instanceof BoardableItem))
 						return CMLib.directions().getShipDirectionName(e);
 					else
 						return CMLib.directions().getDirectionName(e);
@@ -2729,7 +2729,7 @@ public class StdRoom implements Room
 			found=mob.fetchItem(goodLocation,filter,thingName);
 		if(found==null)
 		{
-			final boolean inShip=(this instanceof BoardableShip)||(this.getArea() instanceof BoardableShip);
+			final boolean inShip=(this instanceof BoardableItem)||(this.getArea() instanceof BoardableItem);
 			for(int d=0;d<exits.length;d++)
 			{
 				if((exits[d]!=null)

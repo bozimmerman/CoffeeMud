@@ -40,7 +40,7 @@ public class StdRideable extends StdContainer implements Rideable
 		return "StdRideable";
 	}
 
-	protected int			rideBasis		= Rideable.RIDEABLE_WATER;
+	protected Basis			rideBasis		= Rideable.Basis.WATER_BASED;
 	protected int			riderCapacity	= 4;
 	protected List<Rider>	riders			= new SVector<Rider>();
 	protected String		putString		= "";
@@ -66,7 +66,7 @@ public class StdRideable extends StdContainer implements Rideable
 	@Override
 	public boolean subjectToWearAndTear()
 	{
-		return (rideBasis() == Rideable.RIDEABLE_WATER);
+		return (rideBasis() == Rideable.Basis.WATER_BASED);
 	}
 
 	@Override
@@ -101,25 +101,27 @@ public class StdRideable extends StdContainer implements Rideable
 	{
 		switch(rideBasis())
 		{
-			case RIDEABLE_SIT:
-			case RIDEABLE_TABLE:
-			case RIDEABLE_ENTERIN:
-			case RIDEABLE_SLEEP:
-			case RIDEABLE_LADDER:
+			case FURNITURE_SIT:
+			case FURNITURE_TABLE:
+			case ENTER_IN:
+			case FURNITURE_SLEEP:
+			case LADDER:
 				return false;
+			default:
+				break;
 		}
 		return true;
 	}
 
 	// common item/mob stuff
 	@Override
-	public int rideBasis()
+	public Basis rideBasis()
 	{
 		return rideBasis;
 	}
 
 	@Override
-	public void setRideBasis(final int basis)
+	public void setRideBasis(final Basis basis)
 	{
 		rideBasis = basis;
 	}
@@ -204,11 +206,13 @@ public class StdRideable extends StdContainer implements Rideable
 	{
 		switch(rideBasis)
 		{
-		case Rideable.RIDEABLE_AIR:
-		case Rideable.RIDEABLE_LAND:
-		case Rideable.RIDEABLE_WAGON:
-		case Rideable.RIDEABLE_WATER:
+		case AIR_FLYING:
+		case LAND_BASED:
+		case WAGON:
+		case WATER_BASED:
 			return true;
+		default:
+			break;
 		}
 		return false;
 	}
@@ -220,20 +224,20 @@ public class StdRideable extends StdContainer implements Rideable
 		{
 			switch(rideBasis)
 			{
-			case Rideable.RIDEABLE_AIR:
-			case Rideable.RIDEABLE_LAND:
-			case Rideable.RIDEABLE_WAGON:
-			case Rideable.RIDEABLE_WATER:
+			case AIR_FLYING:
+			case LAND_BASED:
+			case WAGON:
+			case WATER_BASED:
 				return "riding in";
-			case Rideable.RIDEABLE_ENTERIN:
+			case ENTER_IN:
 				return "in";
-			case Rideable.RIDEABLE_SIT:
+			case FURNITURE_SIT:
 				return "on";
-			case Rideable.RIDEABLE_TABLE:
+			case FURNITURE_TABLE:
 				return "at";
-			case Rideable.RIDEABLE_LADDER:
+			case LADDER:
 				return "climbing on";
-			case Rideable.RIDEABLE_SLEEP:
+			case FURNITURE_SLEEP:
 				return "on";
 			}
 			return "riding in";
@@ -268,16 +272,16 @@ public class StdRideable extends StdContainer implements Rideable
 		{
 			switch(rideBasis)
 			{
-			case Rideable.RIDEABLE_AIR:
-			case Rideable.RIDEABLE_LAND:
-			case Rideable.RIDEABLE_WAGON:
-			case Rideable.RIDEABLE_WATER:
-			case Rideable.RIDEABLE_SLEEP:
-			case Rideable.RIDEABLE_ENTERIN:
+			case AIR_FLYING:
+			case LAND_BASED:
+			case WAGON:
+			case WATER_BASED:
+			case FURNITURE_SLEEP:
+			case ENTER_IN:
 				return "in";
-			case Rideable.RIDEABLE_SIT:
-			case Rideable.RIDEABLE_TABLE:
-			case Rideable.RIDEABLE_LADDER:
+			case FURNITURE_SIT:
+			case FURNITURE_TABLE:
+			case LADDER:
 				return "on";
 			}
 			return "in";
@@ -346,20 +350,20 @@ public class StdRideable extends StdContainer implements Rideable
 		{
 			switch(rideBasis)
 			{
-			case Rideable.RIDEABLE_AIR:
-			case Rideable.RIDEABLE_LAND:
-			case Rideable.RIDEABLE_WAGON:
-			case Rideable.RIDEABLE_WATER:
+			case AIR_FLYING:
+			case LAND_BASED:
+			case WAGON:
+			case WATER_BASED:
 				return "board(s)";
-			case Rideable.RIDEABLE_SIT:
+			case FURNITURE_SIT:
 				return "sit(s) on";
-			case Rideable.RIDEABLE_TABLE:
+			case FURNITURE_TABLE:
 				return "sit(s) at";
-			case Rideable.RIDEABLE_ENTERIN:
+			case ENTER_IN:
 				return "get(s) into";
-			case Rideable.RIDEABLE_LADDER:
+			case LADDER:
 				return "climb(s) onto";
-			case Rideable.RIDEABLE_SLEEP:
+			case FURNITURE_SLEEP:
 				if(commandType==CMMsg.TYP_SIT)
 					return "sit(s) down on";
 				return "lie(s) down on";
@@ -390,18 +394,18 @@ public class StdRideable extends StdContainer implements Rideable
 		{
 			switch(rideBasis)
 			{
-			case Rideable.RIDEABLE_AIR:
-			case Rideable.RIDEABLE_LAND:
-			case Rideable.RIDEABLE_WATER:
+			case AIR_FLYING:
+			case LAND_BASED:
+			case WATER_BASED:
 				return "disembark(s) from";
-			case Rideable.RIDEABLE_TABLE:
+			case FURNITURE_TABLE:
 				return "get(s) up from";
-			case Rideable.RIDEABLE_SIT:
-			case Rideable.RIDEABLE_SLEEP:
-			case Rideable.RIDEABLE_WAGON:
-			case Rideable.RIDEABLE_LADDER:
+			case FURNITURE_SIT:
+			case FURNITURE_SLEEP:
+			case WAGON:
+			case LADDER:
 				return "get(s) off of";
-			case Rideable.RIDEABLE_ENTERIN:
+			case ENTER_IN:
 				return "get(s) out of";
 			}
 			return "disembark(s) from";
@@ -436,20 +440,20 @@ public class StdRideable extends StdContainer implements Rideable
 		{
 			switch(rideBasis)
 			{
-			case Rideable.RIDEABLE_AIR:
-			case Rideable.RIDEABLE_LAND:
-			case Rideable.RIDEABLE_WATER:
-			case Rideable.RIDEABLE_WAGON:
+			case AIR_FLYING:
+			case LAND_BASED:
+			case WATER_BASED:
+			case WAGON:
 				return "being ridden by";
-			case Rideable.RIDEABLE_TABLE:
+			case FURNITURE_TABLE:
 				return "occupied by";
-			case Rideable.RIDEABLE_SIT:
+			case FURNITURE_SIT:
 				return "";
-			case Rideable.RIDEABLE_SLEEP:
+			case FURNITURE_SLEEP:
 				return "";
-			case Rideable.RIDEABLE_ENTERIN:
+			case ENTER_IN:
 				return "occupied by";
-			case Rideable.RIDEABLE_LADDER:
+			case LADDER:
 				return "occupied by";
 			}
 			return "";
@@ -481,7 +485,7 @@ public class StdRideable extends StdContainer implements Rideable
 	public void recoverPhyStats()
 	{
 		super.recoverPhyStats();
-		if(rideBasis==Rideable.RIDEABLE_AIR)
+		if(rideBasis==Rideable.Basis.AIR_FLYING)
 		{
 			if((!subjectToWearAndTear())||(usesRemaining()>0))
 				phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_FLYING);
@@ -489,7 +493,7 @@ public class StdRideable extends StdContainer implements Rideable
 				phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_FALLING);
 		}
 		else
-		if(rideBasis==Rideable.RIDEABLE_WATER)
+		if(rideBasis==Rideable.Basis.WATER_BASED)
 		{
 			if((!subjectToWearAndTear())||(usesRemaining()>0))
 				phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_SWIMMING);
@@ -512,7 +516,7 @@ public class StdRideable extends StdContainer implements Rideable
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-mob.basePhyStats().attackAdjustment());
 				affectableStats.setDamage(affectableStats.damage()-mob.basePhyStats().damage());
 			}
-			if((rideBasis()==Rideable.RIDEABLE_LADDER)
+			if((rideBasis()==Rideable.Basis.LADDER)
 			&&(amRiding(mob)))
 			{
 				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_CLIMBING);
@@ -574,7 +578,7 @@ public class StdRideable extends StdContainer implements Rideable
 			}
 			break;
 		case CMMsg.TYP_ADVANCE:
-			if((rideBasis()==Rideable.RIDEABLE_LADDER)
+			if((rideBasis()==Rideable.Basis.LADDER)
 			&&(amRiding(msg.source())))
 			{
 				msg.source().tell(L("You cannot advance while @x1 @x2!",stateString(msg.source()),name(msg.source())));
@@ -582,7 +586,7 @@ public class StdRideable extends StdContainer implements Rideable
 			}
 			break;
 		case CMMsg.TYP_RETREAT:
-			if((rideBasis()==Rideable.RIDEABLE_LADDER)
+			if((rideBasis()==Rideable.Basis.LADDER)
 			&&(amRiding(msg.source())))
 			{
 				msg.source().tell(L("You cannot retreat while @x1 @x2!",stateString(msg.source()),name(msg.source())));
@@ -619,14 +623,14 @@ public class StdRideable extends StdContainer implements Rideable
 			{
 				switch(rideBasis())
 				{
-				case Rideable.RIDEABLE_ENTERIN:
-				case Rideable.RIDEABLE_WAGON:
-				case Rideable.RIDEABLE_WATER:
-				case Rideable.RIDEABLE_LAND:
-				case Rideable.RIDEABLE_AIR:
-				case Rideable.RIDEABLE_SIT:
+				case ENTER_IN:
+				case WAGON:
+				case WATER_BASED:
+				case LAND_BASED:
+				case AIR_FLYING:
+				case FURNITURE_SIT:
 					return true;
-				case Rideable.RIDEABLE_SLEEP:
+				case FURNITURE_SLEEP:
 					if(CMLib.flags().isSleeping(msg.source()))
 						return true;
 					break;
@@ -639,10 +643,10 @@ public class StdRideable extends StdContainer implements Rideable
 			}
 			else
 			if((riding()!=msg.source())
-			&&((rideBasis()==Rideable.RIDEABLE_SIT)
-			||(rideBasis()==Rideable.RIDEABLE_ENTERIN)
-			||(rideBasis()==Rideable.RIDEABLE_TABLE)
-			||(rideBasis()==Rideable.RIDEABLE_SLEEP)))
+			&&((rideBasis()==Rideable.Basis.FURNITURE_SIT)
+			||(rideBasis()==Rideable.Basis.ENTER_IN)
+			||(rideBasis()==Rideable.Basis.FURNITURE_TABLE)
+			||(rideBasis()==Rideable.Basis.FURNITURE_SLEEP)))
 			{
 				if(msg.amITarget(this)
 				&&(numRiders()>=riderCapacity())
@@ -666,12 +670,12 @@ public class StdRideable extends StdContainer implements Rideable
 		case CMMsg.TYP_SLEEP:
 			if((amRiding(msg.source()))
 			&&(((!msg.amITarget(this))&&(msg.target()!=null))
-			   ||((rideBasis()!=Rideable.RIDEABLE_SLEEP)
-					&&(rideBasis()!=Rideable.RIDEABLE_ENTERIN)
-					&&(rideBasis()!=Rideable.RIDEABLE_WAGON)
-					&&(rideBasis()!=Rideable.RIDEABLE_LAND)
-					&&(rideBasis()!=Rideable.RIDEABLE_AIR)
-					&&(rideBasis()!=Rideable.RIDEABLE_WATER)
+			   ||((rideBasis()!=Rideable.Basis.FURNITURE_SLEEP)
+					&&(rideBasis()!=Rideable.Basis.ENTER_IN)
+					&&(rideBasis()!=Rideable.Basis.WAGON)
+					&&(rideBasis()!=Rideable.Basis.LAND_BASED)
+					&&(rideBasis()!=Rideable.Basis.AIR_FLYING)
+					&&(rideBasis()!=Rideable.Basis.WATER_BASED)
 				)
 			))
 			{
@@ -681,8 +685,8 @@ public class StdRideable extends StdContainer implements Rideable
 			}
 			else
 			if((riding()!=msg.source())
-			&&((rideBasis()==Rideable.RIDEABLE_SLEEP)
-			||(rideBasis()==Rideable.RIDEABLE_ENTERIN)))
+			&&((rideBasis()==Rideable.Basis.FURNITURE_SLEEP)
+			||(rideBasis()==Rideable.Basis.ENTER_IN)))
 			{
 				if(msg.amITarget(this)
 				&&(numRiders()>=riderCapacity())
@@ -765,9 +769,9 @@ public class StdRideable extends StdContainer implements Rideable
 				if(msg.tool()==null)
 					switch(rideBasis())
 					{
-					case Rideable.RIDEABLE_ENTERIN:
-					case Rideable.RIDEABLE_SIT:
-					case Rideable.RIDEABLE_SLEEP:
+					case ENTER_IN:
+					case FURNITURE_SIT:
+					case FURNITURE_SLEEP:
 						msg.source().tell(L("@x1 can not be mounted in this way.",name(msg.source())));
 						return false;
 					default:
@@ -800,13 +804,13 @@ public class StdRideable extends StdContainer implements Rideable
 								||(targetRoom.phyStats().weight()>2);
 					switch(rideBasis)
 					{
-					case Rideable.RIDEABLE_LAND:
-					case Rideable.RIDEABLE_WAGON:
+					case LAND_BASED:
+					case WAGON:
 						if((targetRoom.domainType()==Room.DOMAIN_OUTDOORS_AIR)
 						||(targetRoom.domainType()==Room.DOMAIN_INDOORS_AIR)
 						||CMLib.flags().isWateryRoom(targetRoom))
 							ok=false;
-						if((rideBasis==Rideable.RIDEABLE_WAGON)
+						if((rideBasis==Rideable.Basis.WAGON)
 						&&((riding()==null)
 						   ||(!(riding() instanceof MOB))
 						   ||(((MOB)riding()).basePhyStats().weight()<(basePhyStats().weight()/5))))
@@ -815,12 +819,12 @@ public class StdRideable extends StdContainer implements Rideable
 							return false;
 						}
 						break;
-					case Rideable.RIDEABLE_AIR:
+					case AIR_FLYING:
 						break;
-					case Rideable.RIDEABLE_LADDER:
+					case LADDER:
 						ok=true;
 						break;
-					case Rideable.RIDEABLE_WATER:
+					case WATER_BASED:
 						if((!CMLib.flags().isWaterySurfaceRoom(sourceRoom))
 						&&(!CMLib.flags().isWaterySurfaceRoom(targetRoom)))
 							ok=false;
@@ -830,6 +834,8 @@ public class StdRideable extends StdContainer implements Rideable
 						||(targetRoom.domainType()==Room.DOMAIN_OUTDOORS_AIR)
 						||(CMLib.flags().isUnderWateryRoom(targetRoom)))
 							ok=false;
+						break;
+					default:
 						break;
 					}
 					if(!ok)
@@ -851,7 +857,7 @@ public class StdRideable extends StdContainer implements Rideable
 				final MOB tmob=(MOB)msg.target();
 				if((amRiding(tmob))&&(!amRiding(msg.source())))
 				{
-					if(rideBasis()==Rideable.RIDEABLE_ENTERIN)
+					if(rideBasis()==Rideable.Basis.ENTER_IN)
 						msg.source().tell(msg.source(),tmob,null,L("<T-NAME> must exit first."));
 					else
 						msg.source().tell(msg.source(),tmob,null,L("<T-NAME> must disembark first."));
@@ -863,8 +869,8 @@ public class StdRideable extends StdContainer implements Rideable
 		case CMMsg.TYP_BID:
 		case CMMsg.TYP_SELL:
 			if((amRiding(msg.source()))
-			&&(rideBasis()!=Rideable.RIDEABLE_TABLE)
-			&&(rideBasis()!=Rideable.RIDEABLE_SIT))
+			&&(rideBasis()!=Rideable.Basis.FURNITURE_TABLE)
+			&&(rideBasis()!=Rideable.Basis.FURNITURE_SIT))
 			{
 				msg.source().tell(L("You can not do that while @x1 @x2.",stateString(msg.source()),name(msg.source())));
 				return false;
@@ -902,7 +908,7 @@ public class StdRideable extends StdContainer implements Rideable
 				&&(CMLib.flags().canBeSeenBy(this,msg.source())))
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,displayText(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 				if((this.subjectToWearAndTear())
-				&& (this.rideBasis() == Rideable.RIDEABLE_WATER)
+				&& (this.rideBasis() == Rideable.Basis.WATER_BASED)
 				&& (CMath.bset(material(), RawMaterial.MATERIAL_WOODEN)))
 				{
 					// this is for the small rideable boats
@@ -910,7 +916,7 @@ public class StdRideable extends StdContainer implements Rideable
 					if(this.subjectToWearAndTear() && (usesRemaining() <= 100))
 					{
 						final double pct=(CMath.div(usesRemaining(),100.0));
-						GenSailingShip.appendCondition(visualCondition,pct,CMStrings.capitalizeFirstLetter(name(msg.source())));
+						StdSiegableBoardable.appendCondition(visualCondition,pct,CMStrings.capitalizeFirstLetter(name(msg.source())));
 					}
 					msg.addTrailerRunnable(new Runnable()
 					{
@@ -942,7 +948,7 @@ public class StdRideable extends StdContainer implements Rideable
 		case CMMsg.TYP_ENTER:
 		case CMMsg.TYP_LEAVE:
 		case CMMsg.TYP_FLEE:
-			if((rideBasis()==Rideable.RIDEABLE_LADDER)
+			if((rideBasis()==Rideable.Basis.LADDER)
 			&&(amRiding(msg.source())))
 			{
 				msg.source().setRiding(null);
@@ -962,11 +968,11 @@ public class StdRideable extends StdContainer implements Rideable
 					if(msg.tool() instanceof MOB)
 					switch(rideBasis())
 					{
-					case Rideable.RIDEABLE_SIT:
-					case Rideable.RIDEABLE_ENTERIN:
+					case FURNITURE_SIT:
+					case ENTER_IN:
 						R.basePhyStats().setDisposition(R.basePhyStats().disposition()|PhyStats.IS_SITTING);
 						break;
-					case Rideable.RIDEABLE_SLEEP:
+					case FURNITURE_SLEEP:
 						R.basePhyStats().setDisposition(R.basePhyStats().disposition()|PhyStats.IS_SLEEPING);
 						break;
 					default:
@@ -993,7 +999,7 @@ public class StdRideable extends StdContainer implements Rideable
 				if((weapon!=null)&&(msg.source().riding()!=null))
 				{
 					final boolean isHit=msg.value()>0;
-					if(isHit && CMLib.combat().isAShipSiegeWeapon(weapon)
+					if(isHit && CMLib.combat().isASiegeWeapon(weapon)
 					&& (((AmmunitionWeapon)weapon).ammunitionCapacity() > 1))
 					{
 						int shotsRemaining = ((AmmunitionWeapon)weapon).ammunitionRemaining() + 1;
@@ -1044,50 +1050,7 @@ public class StdRideable extends StdContainer implements Rideable
 						}
 					}
 					else
-						CMLib.combat().postShipWeaponAttackResult(msg.source(), msg.source().riding(), this, weapon, isHit);
-				}
-			}
-			break;
-		case CMMsg.TYP_DAMAGE:
-			if((msg.target()==this) && (msg.value() > 0))
-			{
-				int level = phyStats().level();
-				if(level < 10)
-					level = 10;
-				final double pctLoss = CMath.div(msg.value(), level) * 10.0; // siege weapons against rideables is harsh
-				final int pointsLost = (int)Math.round(pctLoss * level);
-				if(pointsLost > 0)
-				{
-					final int weaponType = (msg.tool() instanceof Weapon) ? ((Weapon)msg.tool()).weaponDamageType() : Weapon.TYPE_BASHING;
-					final String hitWord = CMLib.combat().standardHitWord(weaponType, pctLoss);
-					final String msgStr = (msg.targetMessage() == null) ? L("<O-NAME> fired from <S-NAME> hits and @x1 the ship.",hitWord) : msg.targetMessage();
-					final CMMsg deckHitMsg=CMClass.getMsg(msg.source(), this, msg.tool(),CMMsg.MSG_OK_ACTION, msgStr);
-					final Room targetRoom=CMLib.map().roomLocation(this);
-					if(targetRoom.okMessage(msg.source(), deckHitMsg))
-						targetRoom.send(msg.source(), deckHitMsg);
-					final CMMsg underdeckHitMsg=CMClass.getMsg(msg.source(), this, msg.tool(),CMMsg.MSG_OK_ACTION, L("Something hits and @x1 the ship.",hitWord));
-					if(targetRoom.okMessage(msg.source(), underdeckHitMsg))
-						targetRoom.send(msg.source(), underdeckHitMsg);
-					if(pointsLost >= this.usesRemaining())
-					{
-						this.setUsesRemaining(0);
-						this.recoverPhyStats(); // takes away the swimmability!
-						final Room shipR=CMLib.map().roomLocation(this);
-						if(shipR!=null)
-						{
-							CMLib.tracking().makeSink(this, shipR, false);
-							final String sinkString = L("<T-NAME> start(s) sinking!");
-							shipR.show(msg.source(), this, CMMsg.MSG_OK_ACTION, sinkString);
-						}
-						/*
-						if(!CMLib.leveler().postExperienceToAllAboard(msg.source().riding(), 500, this))
-							CMLib.leveler().postExperience(msg.source(), null, null, 500, false);
-						*/
-					}
-					else
-					{
-						this.setUsesRemaining(this.usesRemaining() - pointsLost);
-					}
+						CMLib.combat().postSiegeWeaponAttackResult(msg.source(), msg.source().riding(), this, weapon, isHit);
 				}
 			}
 			break;

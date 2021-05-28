@@ -454,9 +454,9 @@ public class Nanny extends StdBehavior
 	{
 		if((E instanceof MOB)
 		&&(E instanceof Rideable)
-		&&((((Rideable)E).rideBasis()==Rideable.RIDEABLE_LAND)
-				||(((Rideable)E).rideBasis()==Rideable.RIDEABLE_AIR)
-				||(((Rideable)E).rideBasis()==Rideable.RIDEABLE_WATER)))
+		&&((((Rideable)E).rideBasis()==Rideable.Basis.LAND_BASED)
+				||(((Rideable)E).rideBasis()==Rideable.Basis.AIR_FLYING)
+				||(((Rideable)E).rideBasis()==Rideable.Basis.WATER_BASED)))
 			return true;
 		return false;
 	}
@@ -477,22 +477,22 @@ public class Nanny extends StdBehavior
 			return true;
 		if((this.watchesWagons)
 		&&(E instanceof Rideable)
-		&&(((Rideable)E).rideBasis()==Rideable.RIDEABLE_WAGON))
+		&&(((Rideable)E).rideBasis()==Rideable.Basis.WAGON))
 			return true;
 		if((this.watchesCars)
 		&&(E instanceof Item)
 		&&(E instanceof Rideable)
-		&&(((Rideable)E).rideBasis()==Rideable.RIDEABLE_LAND))
+		&&(((Rideable)E).rideBasis()==Rideable.Basis.LAND_BASED))
 			return true;
 		if((this.watchesBoats)
 		&&(E instanceof Item)
 		&&(E instanceof Rideable)
-		&&(((Rideable)E).rideBasis()==Rideable.RIDEABLE_WATER))
+		&&(((Rideable)E).rideBasis()==Rideable.Basis.WATER_BASED))
 			return true;
 		if((this.watchesAirCars)
 		&&(E instanceof Item)
 		&&(E instanceof Rideable)
-		&&(((Rideable)E).rideBasis()==Rideable.RIDEABLE_AIR))
+		&&(((Rideable)E).rideBasis()==Rideable.Basis.AIR_FLYING))
 			return true;
 		return false;
 	}

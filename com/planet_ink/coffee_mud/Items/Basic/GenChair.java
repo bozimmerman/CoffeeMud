@@ -54,7 +54,7 @@ public class GenChair extends GenRideable
 		baseGoldValue=5;
 		basePhyStats().setLevel(1);
 		setRiderCapacity(1);
-		setRideBasis(Rideable.RIDEABLE_SIT);
+		setRideBasis(Rideable.Basis.FURNITURE_SIT);
 		recoverPhyStats();
 	}
 }

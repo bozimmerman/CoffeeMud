@@ -51,7 +51,7 @@ public class Chair extends StdRideable
 		material=RawMaterial.RESOURCE_OAK;
 		baseGoldValue=5;
 		basePhyStats().setLevel(1);
-		setRideBasis(Rideable.RIDEABLE_SIT);
+		setRideBasis(Rideable.Basis.FURNITURE_SIT);
 		setRiderCapacity(1);
 		recoverPhyStats();
 	}

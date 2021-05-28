@@ -1718,8 +1718,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		final Room mobLocR=mob.location();
 		if((mobLocR!=room)
 		&&(mobLocR!=null)
-		&&(mobLocR.getArea() instanceof BoardableShip))
-			notItem=((BoardableShip)mobLocR.getArea()).getShipItem();
+		&&(mobLocR.getArea() instanceof BoardableItem))
+			notItem=((BoardableItem)mobLocR.getArea()).getBoardableItem();
 		else
 			notItem=null;
 
@@ -1872,7 +1872,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		final Vector<Integer> exitDirs=new Vector<Integer>();
 		Room R;
 		Exit E;
-		final boolean useShipNames=((room instanceof BoardableShip)||(room.getArea() instanceof BoardableShip));
+		final boolean useShipNames=((room instanceof BoardableItem)||(room.getArea() instanceof BoardableItem));
 		for(final int dir : Directions.CODES())
 		{
 			E = room.getExitInDir(dir);
@@ -1938,7 +1938,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		final Exit exit = room.getExitInDir(dir);
 		if(exit == null)
 			return "";
-		final boolean useShipDirs=(room instanceof BoardableShip)||(room.getArea() instanceof BoardableShip);
+		final boolean useShipDirs=(room instanceof BoardableItem)||(room.getArea() instanceof BoardableItem);
 		final String inDirName=useShipDirs?CMLib.directions().getShipInDirectionName(dir):CMLib.directions().getInDirectionName(dir);
 		if(style)
 			return inDirName   + " is " +exit.viewableText(mob, room.getRoomInDir(dir));
@@ -2556,7 +2556,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			return;
 		}
 
-		final boolean useShipNames=((room instanceof BoardableShip)||(room.getArea() instanceof BoardableShip));
+		final boolean useShipNames=((room instanceof BoardableItem)||(room.getArea() instanceof BoardableItem));
 		final StringBuilder buf=new StringBuilder("^<RExits^>^DObvious exits:^.^N\n\r");
 		String Dir=null;
 		for(final int d : Directions.DISPLAY_CODES())
@@ -2584,7 +2584,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if((mob.location() != room)
 		&&(mob.location() != null)
 		&&(mob.location().getArea()!=room.getArea())
-		&&(mob.location().getArea() instanceof BoardableShip))
+		&&(mob.location().getArea() instanceof BoardableItem))
 			noBoardableShips = true;
 
 		Item I=null;
@@ -2594,7 +2594,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			if((I instanceof Exit)
 			&&(((Exit)I).doorName().length()>0)
 			&&(I.container()==null)
-			&&((!(I instanceof BoardableShip))||(!noBoardableShips)))
+			&&((!(I instanceof BoardableItem))||(!noBoardableShips)))
 			{
 				final StringBuilder Say=((Exit)I).viewableText(mob, room);
 				if(Say.length()>0)
@@ -2619,7 +2619,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(!CMLib.flags().canSee(mob))
 			return;
 
-		final boolean useShipNames=((room instanceof BoardableShip)||(room.getArea() instanceof BoardableShip));
+		final boolean useShipNames=((room instanceof BoardableItem)||(room.getArea() instanceof BoardableItem));
 		final StringBuilder buf=new StringBuilder(L("^<RExits^>^D[Exits: "));
 		for(final int d : Directions.DISPLAY_CODES())
 		{
@@ -2632,7 +2632,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if((mob.location() != room)
 		&&(mob.location() != null)
 		&&(mob.location().getArea()!=room.getArea())
-		&&(mob.location().getArea() instanceof BoardableShip))
+		&&(mob.location().getArea() instanceof BoardableItem))
 			noBoardableShips = true;
 		Item I=null;
 		for(int i=0;i<room.numItems();i++)
@@ -2641,7 +2641,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			if((I instanceof Exit)
 			&&(I.container()==null)
 			&&(((Exit)I).viewableText(mob, room).length()>0)
-			&&((!(I instanceof BoardableShip))||(!noBoardableShips)))
+			&&((!(I instanceof BoardableItem))||(!noBoardableShips)))
 				buf.append("^<MEX^>"+((Exit)I).doorName()+"^</MEX^> ");
 		}
 		mob.tell(buf.toString().trim()+"]^</RExits^>^.^N");

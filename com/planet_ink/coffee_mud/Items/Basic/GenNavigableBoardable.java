@@ -18,7 +18,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2021-2021 Bo Zimmerman
 
@@ -34,12 +33,12 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenBoardable extends StdBoardable
+public class GenNavigableBoardable extends StdNavigableBoardable
 {
 	@Override
 	public String ID()
 	{
-		return "GenBoardable";
+		return "GenNavigableBoardable";
 	}
 
 	@Override
@@ -72,7 +71,7 @@ public class GenBoardable extends StdBoardable
 	{
 		if(codes!=null)
 			return codes;
-		final String[] MYCODES=CMProps.getStatCodesList(GenBoardable.MYCODES,this);
+		final String[] MYCODES=CMProps.getStatCodesList(GenNavigableBoardable.MYCODES,this);
 		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -214,7 +213,7 @@ public class GenBoardable extends StdBoardable
 	@Override
 	public boolean sameAs(final Environmental E)
 	{
-		if(!(E instanceof GenBoardable))
+		if(!(E instanceof GenNavigableBoardable))
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
@@ -224,7 +223,7 @@ public class GenBoardable extends StdBoardable
 			&&(!codes[i].equals("ABILITY")))
 				return false;
 		}
-		final Area eA = ((GenBoardable)E).getArea();
+		final Area eA = ((GenNavigableBoardable)E).getArea();
 		if(eA==null)
 			return getArea()==null;
 		final Area A = this.getArea();

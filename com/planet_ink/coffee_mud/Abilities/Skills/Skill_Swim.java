@@ -176,8 +176,8 @@ public class Skill_Swim extends StdSkill
 			}
 
 			if((mob.riding()!=null)
-			&&(mob.riding().rideBasis()!=Rideable.RIDEABLE_WATER)
-			&&(mob.riding().rideBasis()!=Rideable.RIDEABLE_AIR))
+			&&(mob.riding().rideBasis()!=Rideable.Basis.WATER_BASED)
+			&&(mob.riding().rideBasis()!=Rideable.Basis.AIR_FLYING))
 			{
 				mob.tell(L("You need to get off @x1 first!",mob.riding().name()));
 				return false;

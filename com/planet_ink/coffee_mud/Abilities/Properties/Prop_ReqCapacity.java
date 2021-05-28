@@ -158,7 +158,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 		for(int i=0;i<R.numItems();i++)
 		{
 			final Item I=R.getItem(i);
-			if(CMLib.combat().isAShipSiegeWeapon(I))
+			if(CMLib.combat().isASiegeWeapon(I))
 				soFar++;
 		}
 		return soFar;
@@ -293,7 +293,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 										for(int ri=R.numItems()-1;ri>=0 && totOver>0;ri--,totOver--)
 										{
 											final Item I=R.getItem(ri);
-											if(CMLib.combat().isAShipSiegeWeapon(I))
+											if(CMLib.combat().isASiegeWeapon(I))
 												targetRoom.moveItemTo(I, Expire.Inheret, Move.Optimize);
 										}
 										R.recoverRoomStats();
@@ -464,13 +464,13 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 							}
 						}
 						if((siegeCap<Integer.MAX_VALUE)
-						&&(CMLib.combat().isAShipSiegeWeapon((Item)msg.target())))
+						&&(CMLib.combat().isASiegeWeapon((Item)msg.target())))
 						{
 							int soFar=0;
 							for(int i=0;i<R.numItems();i++)
 							{
 								final Item I=R.getItem(i);
-								if(CMLib.combat().isAShipSiegeWeapon(I))
+								if(CMLib.combat().isASiegeWeapon(I))
 									soFar++;
 							}
 							if(soFar>=siegeCap)

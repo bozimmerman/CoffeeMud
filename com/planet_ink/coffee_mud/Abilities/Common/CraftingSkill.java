@@ -1899,19 +1899,19 @@ public class CraftingSkill extends GatheringSkill
 	{
 		final List<String> basises=CMParms.parseAny(type.toUpperCase().trim(), '|', true);
 		if(basises.indexOf("CHAIR")>=0)
-			rideable.setRideBasis(Rideable.RIDEABLE_SIT);
+			rideable.setRideBasis(Rideable.Basis.FURNITURE_SIT);
 		else
 		if(basises.indexOf("TABLE")>=0)
-			rideable.setRideBasis(Rideable.RIDEABLE_TABLE);
+			rideable.setRideBasis(Rideable.Basis.FURNITURE_TABLE);
 		else
 		if(basises.indexOf("LADDER")>=0)
-			rideable.setRideBasis(Rideable.RIDEABLE_LADDER);
+			rideable.setRideBasis(Rideable.Basis.LADDER);
 		else
 		if(basises.indexOf("ENTER")>=0)
-			rideable.setRideBasis(Rideable.RIDEABLE_ENTERIN);
+			rideable.setRideBasis(Rideable.Basis.ENTER_IN);
 		else
 		if(basises.indexOf("BED")>=0)
-			rideable.setRideBasis(Rideable.RIDEABLE_SLEEP);
+			rideable.setRideBasis(Rideable.Basis.FURNITURE_SLEEP);
 	}
 
 	protected boolean canMend(final MOB mob, final Environmental E, final boolean quiet)

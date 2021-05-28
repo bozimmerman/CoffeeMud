@@ -113,9 +113,9 @@ public class Skill_CombatRepairs extends StdSkill
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		if(affected instanceof SailingShip)
+		if(affected instanceof NavigableItem)
 		{
-			final SailingShip I=(SailingShip)affected;
+			final NavigableItem I=(NavigableItem)affected;
 			if(I.subjectToWearAndTear())
 			{
 				final PhysicalAgent currentVictim = I.getCombatant();
@@ -126,7 +126,7 @@ public class Skill_CombatRepairs extends StdSkill
 					else
 					{
 						I.setUsesRemaining(I.usesRemaining()-5);
-						final Area A=I.getShipArea();
+						final Area A=I.getArea();
 						if(A!=null)
 						{
 							for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
@@ -161,11 +161,11 @@ public class Skill_CombatRepairs extends StdSkill
 		if(R==null)
 			return false;
 
-		final SailingShip ship;
-		if((R.getArea() instanceof BoardableShip)
-		&&(((BoardableShip)R.getArea()).getShipItem() instanceof SailingShip))
+		final NavigableItem ship;
+		if((R.getArea() instanceof BoardableItem)
+		&&(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem))
 		{
-			ship=(SailingShip)((BoardableShip)R.getArea()).getShipItem();
+			ship=(NavigableItem)((BoardableItem)R.getArea()).getBoardableItem();
 		}
 		else
 		{

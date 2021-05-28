@@ -70,13 +70,13 @@ public class Skill_SeaMapping extends Skill_Map
 		if((mob!=null)&&(srcM!=null))
 		{
 			if((mob.riding() !=null)
-			&& (mob.riding().rideBasis() == Rideable.RIDEABLE_WATER)
+			&& (mob.riding().rideBasis() == Rideable.Basis.WATER_BASED)
 			&&(mob == srcM))
 				return true;
 
-			if((srcM.riding() instanceof BoardableShip)
+			if((srcM.riding() instanceof BoardableItem)
 			&&(mob.location()!=null)
-			&&(mob.location().getArea() == ((BoardableShip)srcM.riding()).getShipArea()))
+			&&(mob.location().getArea() == ((BoardableItem)srcM.riding()).getArea()))
 				return true;
 		}
 		return false;
@@ -85,15 +85,15 @@ public class Skill_SeaMapping extends Skill_Map
 	@Override
 	protected Room getCurrentRoom(final MOB mob)
 	{
-		if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.RIDEABLE_WATER))
+		if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.Basis.WATER_BASED))
 			return mob.location();
 
 		final Room R=mob.location();
 		if(R!=null)
 		{
-			if(R.getArea() instanceof BoardableShip)
+			if(R.getArea() instanceof BoardableItem)
 			{
-				final Item I = ((BoardableShip)R.getArea()).getShipItem();
+				final Item I = ((BoardableItem)R.getArea()).getBoardableItem();
 				if(I!=null)
 					return CMLib.map().roomLocation(I);
 			}
@@ -113,10 +113,10 @@ public class Skill_SeaMapping extends Skill_Map
 		final Room R=mob.location();
 		if(R!=null)
 		{
-			if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.RIDEABLE_WATER))
+			if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.Basis.WATER_BASED))
 				return true;
 
-			if(R.getArea() instanceof BoardableShip)
+			if(R.getArea() instanceof BoardableItem)
 			{
 				return true;
 			}

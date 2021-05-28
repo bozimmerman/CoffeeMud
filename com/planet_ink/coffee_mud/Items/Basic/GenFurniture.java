@@ -47,7 +47,7 @@ public class GenFurniture extends GenRideable
 		basePhyStats().setWeight(40);
 		capacity=0;
 		setDisplayText("a piece of generic furniture sits here.");
-		setRideBasis(Rideable.RIDEABLE_SIT);
+		setRideBasis(Rideable.Basis.FURNITURE_SIT);
 		setRiderCapacity(2);
 		baseGoldValue=100;
 		basePhyStats().setSensesMask(PhyStats.SENSE_ITEMNOTGET);

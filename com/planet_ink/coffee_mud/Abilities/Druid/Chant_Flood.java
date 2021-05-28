@@ -220,11 +220,11 @@ public class Chant_Flood extends Chant
 		else
 		{
 			int waterDir = -1;
-			if(mobR.getArea() instanceof BoardableShip)
+			if(mobR.getArea() instanceof BoardableItem)
 			{
 				if((mobR.domainType()&Room.INDOORS)==0)
 				{
-					final Item I=((BoardableShip)mobR.getArea()).getShipItem();
+					final Item I=((BoardableItem)mobR.getArea()).getBoardableItem();
 					if((I!=null)&&(I.owner() instanceof Room))
 					{
 						final Room R=(Room)I.owner();

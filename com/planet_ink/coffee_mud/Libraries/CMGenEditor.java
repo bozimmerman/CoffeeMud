@@ -839,8 +839,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			E.setName(newName);
 			if(E.displayText().toLowerCase().startsWith(oldName.toLowerCase()))
 				E.setDisplayText(newName+E.displayText().substring(oldName.length()));
-			if(E instanceof BoardableShip)
-				((BoardableShip)E).renameShip(newName);
+			if(E instanceof BoardableItem)
+				((BoardableItem)E).rename(newName);
 			return;
 		}
 		if((E instanceof Physical)&&(CMLib.flags().isCataloged(E)))
@@ -4525,7 +4525,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
-		mob.tell(L("@x1. Rideable Type: '@x2'.",""+showNumber,Rideable.RIDEABLE_DESCS[R.rideBasis()]));
+		mob.tell(L("@x1. Rideable Type: '@x2'.",""+showNumber,R.rideBasis().toString()));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		boolean q=false;
@@ -4536,7 +4536,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(newType.equals("?"))
 			{
 				for(int i=0;i<sel.length();i++)
-					mob.tell(sel.charAt(i)+") "+Rideable.RIDEABLE_DESCS[i].toLowerCase());
+					mob.tell(sel.charAt(i)+") "+Rideable.Basis.values()[i].toString().toLowerCase());
 				q=false;
 			}
 			else
@@ -4546,7 +4546,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(newType.length()>0)
 					newValue=sel.indexOf(newType.toUpperCase());
 				if(newValue>=0)
-					R.setRideBasis(newValue);
+					R.setRideBasis(Rideable.Basis.values()[newValue]);
 				else
 					mob.tell(L("(no change)"));
 			}
@@ -9752,7 +9752,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof Coins)
 				genCoinStuff(mob,(Coins)me,++showNumber,showFlag);
 			else
-			if((me instanceof BoardableShip)&&(!(me instanceof SpaceObject)))
+			if((me instanceof BoardableItem)&&(!(me instanceof SpaceObject)))
 				genAbility(mob,me,++showNumber,showFlag,L("Moves per Tick"));
 			else
 				genAbility(mob,me,++showNumber,showFlag);
@@ -10186,7 +10186,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				genDoorName(mob,(Exit)me,++showNumber,showFlag);
 				genClosedText(mob,(Exit)me,++showNumber,showFlag);
 			}
-			if((me instanceof BoardableShip)&&(!(me instanceof SpaceObject)))
+			if((me instanceof BoardableItem)&&(!(me instanceof SpaceObject)))
 				genAbility(mob,me,++showNumber,showFlag,L("Moves per Tick"));
 			//if(me instanceof PrivateProperty)
 			//	me.setStat("OWNER",prompt(mob,((PrivateProperty)me).getOwnerName(),++showNumber,showFlag,CMStrings.capitalizeAndLower("Property Owner")));
@@ -11480,7 +11480,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(showFlag<0)
 				mob.tell(L("*. Class: @x1",myArea.ID()));
 			genName(mob,myArea,++showNumber,showFlag);
-			if(myArea instanceof BoardableShip)
+			if(myArea instanceof BoardableItem)
 				genDisplayText(mob,myArea,++showNumber,showFlag);
 			genDescription(mob,myArea,++showNumber,showFlag);
 			genAuthor(mob,myArea,++showNumber,showFlag);

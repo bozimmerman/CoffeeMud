@@ -115,9 +115,9 @@ public class Thief_MerchantFlag extends ThiefSkill
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		if(affected instanceof SailingShip)
+		if(affected instanceof NavigableItem)
 		{
-			final SailingShip I=(SailingShip)affected;
+			final NavigableItem I=(NavigableItem)affected;
 			if(I.subjectToWearAndTear())
 			{
 				if(I.isInCombat())
@@ -134,7 +134,7 @@ public class Thief_MerchantFlag extends ThiefSkill
 	{
 		super.executeMsg(myHost, msg);
 		if((msg.targetMinor() == CMMsg.TYP_ADVANCE)
-		&&((msg.target() instanceof BoardableShip)
+		&&((msg.target() instanceof BoardableItem)
 			||(msg.target() instanceof Rideable))
 		&&(msg.targetMajor(CMMsg.MASK_MALICIOUS))
 		&&(CMLib.flags().isAShip(msg.source())))
@@ -154,7 +154,7 @@ public class Thief_MerchantFlag extends ThiefSkill
 		if(!super.okMessage(myHost, msg))
 			return false;
 		if((msg.targetMinor() == CMMsg.TYP_ADVANCE)
-		&&((msg.target() instanceof BoardableShip)
+		&&((msg.target() instanceof BoardableItem)
 			||(msg.target() instanceof Rideable))
 		&&(msg.targetMajor(CMMsg.MASK_MALICIOUS))
 		&&(CMLib.flags().isAShip(msg.source())))
@@ -167,10 +167,10 @@ public class Thief_MerchantFlag extends ThiefSkill
 			if(msg.target() == affected)
 			{
 				boolean pirateAboard=false;
-				final BoardableShip ship=(BoardableShip)msg.source().riding();
+				final BoardableItem ship=(BoardableItem)msg.source().riding();
 				if(ship != null)
 				{
-					final Area area=ship.getShipArea();
+					final Area area=ship.getArea();
 					for(final Enumeration<Room> r=area.getProperMap();r.hasMoreElements();)
 					{
 						final Room R=r.nextElement();
@@ -208,7 +208,7 @@ public class Thief_MerchantFlag extends ThiefSkill
 	{
 		final Physical P=affected;
 		super.unInvoke();
-		if(P instanceof BoardableShip)
+		if(P instanceof BoardableItem)
 		{
 			final Room R=CMLib.map().roomLocation(P);
 			if((R!=null)&&(CMLib.flags().isWaterySurfaceRoom(R))&&(super.canBeUninvoked()))
@@ -232,11 +232,11 @@ public class Thief_MerchantFlag extends ThiefSkill
 		if(R==null)
 			return false;
 
-		final SailingShip ship;
-		if((R.getArea() instanceof BoardableShip)
-		&&(((BoardableShip)R.getArea()).getShipItem() instanceof SailingShip))
+		final NavigableItem ship;
+		if((R.getArea() instanceof BoardableItem)
+		&&(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem))
 		{
-			ship=(SailingShip)((BoardableShip)R.getArea()).getShipItem();
+			ship=(NavigableItem)((BoardableItem)R.getArea()).getBoardableItem();
 		}
 		else
 		{

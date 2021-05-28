@@ -551,7 +551,7 @@ public class GrinderMobs
 					break;
 				case RIDEABLETYPE: // rideable type
 					if(M instanceof Rideable)
-						((Rideable)M).setRideBasis(CMath.s_int(old));
+						((Rideable)M).setRideBasis(Rideable.Basis.values()[CMath.s_int(old)]);
 					break;
 				case MOBSHELD: // mobs held
 					if(M instanceof Rideable)

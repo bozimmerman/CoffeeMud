@@ -1432,12 +1432,12 @@ public class MobData extends StdWebMacro
 				case RIDEABLETYPE: // rideable type
 					if((firstTime)&&(M instanceof Rideable))
 						old=""+((Rideable)M).rideBasis();
-					for(int r=0;r<Rideable.RIDEABLE_DESCS.length;r++)
+					for(int r=0;r<Rideable.Basis.values().length;r++)
 					{
 						str.append("<OPTION VALUE=\""+r+"\"");
 						if(r==CMath.s_int(old))
 							str.append(" SELECTED");
-						str.append(">"+Rideable.RIDEABLE_DESCS[r]);
+						str.append(">"+Rideable.Basis.values()[r].toString());
 					}
 					break;
 				case MOBSHELD: // rideable capacity

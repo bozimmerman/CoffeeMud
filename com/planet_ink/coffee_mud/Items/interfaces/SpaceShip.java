@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author Bo Zimmerman
  *
  */
-public interface SpaceShip extends SpaceObject, BoardableShip
+public interface SpaceShip extends SpaceObject, BoardableItem
 {
 	/**
 	 *

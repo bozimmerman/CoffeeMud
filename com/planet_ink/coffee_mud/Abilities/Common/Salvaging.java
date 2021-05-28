@@ -236,15 +236,15 @@ public class Salvaging extends CommonSkill
 			return false;
 		}
 
-		if((!(I instanceof SailingShip))
-		||((((SailingShip)I).subjectToWearAndTear())&&(((SailingShip)I).usesRemaining()>0))
-		||(((SailingShip)I).getShipArea()==null))
+		if((!(I instanceof NavigableItem))
+		||((((NavigableItem)I).subjectToWearAndTear())&&(((NavigableItem)I).usesRemaining()>0))
+		||(((NavigableItem)I).getArea()==null))
 		{
 			mob.tell(L("You can only salvage large sunk sailing ships, which @x1 is not.",I.Name()));
 			return false;
 		}
-		final SailingShip ship=(SailingShip)I;
-		final Area shipArea=ship.getShipArea();
+		final NavigableItem ship=(NavigableItem)I;
+		final Area shipArea=ship.getArea();
 
 		final int totalWeight=I.phyStats().weight();
 		final List<Item> itemsToMove=new ArrayList<Item>();

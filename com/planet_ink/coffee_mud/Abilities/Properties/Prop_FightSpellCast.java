@@ -93,7 +93,7 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&((msg.value())>0))
 			{
-				if(CMLib.combat().isAShipSiegeWeapon(myItem)
+				if(CMLib.combat().isASiegeWeapon(myItem)
 				&&(msg.target() instanceof MOB))
 					addMeIfNeccessary(msg.source(),(MOB)msg.target(),false,0,maxTicks);
 				else
@@ -119,13 +119,13 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 					}
 				}
 				else
-				if(CMLib.combat().isAShipSiegeWeapon(myItem)
+				if(CMLib.combat().isASiegeWeapon(myItem)
 				&&(msg.target() instanceof Item))
 				{
 					final Item I=(Item)msg.target();
-					if(I instanceof BoardableShip)
+					if(I instanceof BoardableItem)
 					{
-						final Area A=((BoardableShip)I).getShipArea();
+						final Area A=((BoardableItem)I).getArea();
 						if(A!=null)
 						{
 							final List<Physical> stuff = new ArrayList<Physical>();

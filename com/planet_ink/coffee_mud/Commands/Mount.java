@@ -118,7 +118,7 @@ public class Mount extends StdCommand
 			CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",CMParms.combine(commands,0)));
 			return false;
 		}
-		if((recipient instanceof BoardableShip)
+		if((recipient instanceof BoardableItem)
 		&&(cmd.toUpperCase().startsWith("B")))
 		{
 			final Command C=CMClass.getCommand("Enter");

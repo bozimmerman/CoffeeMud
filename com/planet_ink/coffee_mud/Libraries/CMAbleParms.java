@@ -3501,15 +3501,15 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "";
 					switch(((Rideable)I).rideBasis())
 					{
-					case Rideable.RIDEABLE_SIT:
+					case FURNITURE_SIT:
 						return "SIT";
-					case Rideable.RIDEABLE_TABLE:
+					case FURNITURE_TABLE:
 						return "TABLE";
-					case Rideable.RIDEABLE_LADDER:
+					case LADDER:
 						return "LADDER";
-					case Rideable.RIDEABLE_ENTERIN:
+					case ENTER_IN:
 						return "ENTER";
-					case Rideable.RIDEABLE_SLEEP:
+					case FURNITURE_SLEEP:
 						return "BED";
 					default:
 						return "";

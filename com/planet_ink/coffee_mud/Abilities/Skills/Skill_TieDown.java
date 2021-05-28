@@ -120,7 +120,7 @@ public class Skill_TieDown extends StdSkill
 			final Physical affected=this.affected;
 			msg.source().tell(L("@x1 is tied down and not going anywhere.",affected.Name()));
 			final Room R=CMLib.map().roomLocation(affected);
-			if(affected instanceof BoardableShip)
+			if(affected instanceof BoardableItem)
 				R.show(msg.source(), null, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> struggle(s) against the ropes."));
 			else
 				R.show(msg.source(), affected, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> fail(s) to sail off in <T-NAME>."));
@@ -172,14 +172,14 @@ public class Skill_TieDown extends StdSkill
 			return false;
 
 		if((target instanceof Rideable)
-		&&((((Rideable)target).rideBasis()==Rideable.RIDEABLE_WATER)
-			||(((Rideable)target).rideBasis()==Rideable.RIDEABLE_AIR))
+		&&((((Rideable)target).rideBasis()==Rideable.Basis.WATER_BASED)
+			||(((Rideable)target).rideBasis()==Rideable.Basis.AIR_FLYING))
 		&&(((Rideable)target).mobileRideBasis()))
 		{
 			// OK
 		}
 		else
-		if(target instanceof SailingShip)
+		if(target instanceof NavigableItem)
 		{
 			final PrivateProperty rec=CMLib.law().getPropertyRecord(target);
 			if((rec == null)

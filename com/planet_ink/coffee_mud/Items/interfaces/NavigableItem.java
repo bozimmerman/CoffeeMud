@@ -1,10 +1,9 @@
 package com.planet_ink.coffee_mud.Items.interfaces;
-import com.planet_ink.coffee_mud.core.interfaces.*;
+
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.collections.*;
-
-import java.util.List;
-
+import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -13,10 +12,12 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+
+import java.util.*;
 
 /*
    Copyright 2016-2021 Bo Zimmerman
@@ -34,13 +35,13 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    limitations under the License.
 */
 /**
- * A Sailing Ship, which is an object that's boardable, rooms are attached
+ * A Sailing Ship or Caravan, which is an object that's boardable, rooms are attached
  * to it so you can get in, and its an item that can appear in rooms, have
- * speed and direction, be in combat, etc.
+ * speed and direction in real rooms, and can be in combat, etc.
  * @author Bo Zimmerman
  *
  */
-public interface SailingShip extends BoardableShip, Item, Combatant, Rideable
+public interface NavigableItem extends BoardableItem, Item, Rideable, SiegableItem
 {
 	public static final int COURSE_STEER_MASK = 256;
 
@@ -66,14 +67,7 @@ public interface SailingShip extends BoardableShip, Item, Combatant, Rideable
 	 * Returns this ships max speed, typically &gt;= 1
 	 * @return this ships max speed, typically &gt;= 1
 	 */
-	public int getShipSpeed();
-
-	/**
-	 * Returns whether this ship is sunk or sinking..
-	 * @return true if this ship is sunk or sinking
-	 */
-	public boolean isSunk();
-
+	public int getMaxSpeed();
 	/**
 	 * Sets whether the anchor is down, thus holding the ship in place.
 	 * @param truefalse true if the anchor is down, false if the anchor is up
@@ -81,19 +75,12 @@ public interface SailingShip extends BoardableShip, Item, Combatant, Rideable
 	public void setAnchorDown(boolean truefalse);
 
 	/**
-	 * Returns the mapping of this ships siege weapons to the coordinates
-	 * they are presently aimed at.  Each coordinate is int[x,y]
-	 * @return the pairings of weapons to coordinates aimed at
-	 */
-	public PairList<Weapon,int[]> getSiegeWeaponAimings();
-
-	/**
 	 * Returns the future course of this ship.  A stop-course direction is
 	 * always -1, so it is typically the last entry.  Otherwise, each entry
 	 * is a compass direction, possibly masked by COURSE_STEER_MASK in order
 	 * to specify that it is a TURN ONLY.  Directions not marked as turns
 	 * are automatic movements in that direction.
-	 * @see SailingShip#setCurrentCourse(List)
+	 * @see NavigableItem#setCurrentCourse(List)
 	 * @return the future course of this ship.
 	 */
 	public List<Integer> getCurrentCourse();
@@ -104,8 +91,15 @@ public interface SailingShip extends BoardableShip, Item, Combatant, Rideable
 	 * is a compass direction, possibly masked by COURSE_STEER_MASK in order
 	 * to specify that it is a TURN ONLY.  Directions not marked as turns
 	 * are automatic movements in that direction.
-	 * @see SailingShip#getCurrentCourse()
+	 * @see NavigableItem#getCurrentCourse()
 	 * @param course the new course to set.
 	 */
 	public void setCurrentCourse(List<Integer> course);
+
+	/**
+	 * The type of navigable object this is.
+	 * @see Rideable.Basis
+	 * @return the Basis* enum describing how this is navigated
+	 */
+	public Basis navBasis();
 }

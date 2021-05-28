@@ -142,7 +142,7 @@ public class Thief_Belay extends ThiefSkill
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		if((!(R.getArea() instanceof BoardableShip))
+		if((!(R.getArea() instanceof BoardableItem))
 		||((R.domainType()&Room.INDOORS)!=0))
 		{
 			mob.tell(L("You must be on the deck of a ship to belay an item."));

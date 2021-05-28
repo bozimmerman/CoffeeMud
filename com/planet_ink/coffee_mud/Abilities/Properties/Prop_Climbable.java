@@ -128,14 +128,14 @@ public class Prop_Climbable extends Property
 			&&(CMLib.map().roomLocation(msg.target())==R)
 			&&(msg.tool() instanceof Item)
 			&&((!(msg.tool() instanceof Rideable))
-			   ||(((Rideable)msg.tool()).rideBasis()!=Rideable.RIDEABLE_LADDER))
+			   ||(((Rideable)msg.tool()).rideBasis()!=Rideable.Basis.LADDER))
 			&&(!CMLib.flags().isFlying((Item)msg.tool())))
 				CMLib.tracking().makeFall((Item)msg.tool(),R,false);
 			else
 			if((msg.targetMinor()==CMMsg.TYP_DROP)
 			&&(msg.target() instanceof Item)
 			&&((!(msg.target() instanceof Rideable))
-			   ||(((Rideable)msg.target()).rideBasis()!=Rideable.RIDEABLE_LADDER))
+			   ||(((Rideable)msg.target()).rideBasis()!=Rideable.Basis.LADDER))
 			&&(!CMLib.flags().isFlying((Item)msg.target())))
 				CMLib.tracking().makeFall((Item)msg.target(),R,false);
 			else

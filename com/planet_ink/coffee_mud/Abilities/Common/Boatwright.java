@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.Rideable.Basis;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -241,10 +242,10 @@ public class Boatwright extends CraftingSkill implements ItemCraftor, MendingSki
 		if(I instanceof Rideable)
 		{
 			final Rideable R=(Rideable)I;
-			final int rideType=R.rideBasis();
+			final Basis rideType=R.rideBasis();
 			switch(rideType)
 			{
-			case Rideable.RIDEABLE_WATER:
+			case WATER_BASED:
 				return true;
 			default:
 				return false;
@@ -368,10 +369,10 @@ public class Boatwright extends CraftingSkill implements ItemCraftor, MendingSki
 			messedUp=false;
 			final Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
 			final Room R=mob.location();
-			if(R.getArea() instanceof BoardableShip)
+			if(R.getArea() instanceof BoardableItem)
 			{
-				buildingI=getTarget(mob,CMLib.map().roomLocation(((BoardableShip)R.getArea()).getShipItem()),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
-				if(buildingI != ((BoardableShip)R.getArea()).getShipItem())
+				buildingI=getTarget(mob,CMLib.map().roomLocation(((BoardableItem)R.getArea()).getBoardableItem()),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
+				if(buildingI != ((BoardableItem)R.getArea()).getBoardableItem())
 					buildingI=null;
 			}
 			if(buildingI==null)

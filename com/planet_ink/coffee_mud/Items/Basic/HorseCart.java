@@ -48,7 +48,7 @@ public class HorseCart extends StdRideable
 		baseGoldValue=500;
 		basePhyStats().setWeight(500);
 		setMaterial(RawMaterial.RESOURCE_OAK);
-		setRideBasis(Rideable.RIDEABLE_WAGON);
+		setRideBasis(Rideable.Basis.WAGON);
 		setRiderCapacity(10);
 		recoverPhyStats();
 	}

@@ -177,9 +177,9 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			return null;
 		if(area instanceof LandTitle)
 			return (LandTitle)area;
-		if((area instanceof BoardableShip)
-		&&(((BoardableShip)area).getShipItem() instanceof LandTitle))
-			return (LandTitle)((BoardableShip)area).getShipItem();
+		if((area instanceof BoardableItem)
+		&&(((BoardableItem)area).getBoardableItem() instanceof LandTitle))
+			return (LandTitle)((BoardableItem)area).getBoardableItem();
 		for(final Enumeration<Ability> a=area.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();

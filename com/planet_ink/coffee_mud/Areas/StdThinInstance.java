@@ -198,9 +198,9 @@ public class StdThinInstance extends StdThinArea implements SubArea
 				final Area A=R.getArea();
 				if(R.getArea()==childA)
 					return true;
-				if(A instanceof BoardableShip)
+				if(A instanceof BoardableItem)
 				{
-					final Room R2=CMLib.map().roomLocation(((BoardableShip)A).getShipItem());
+					final Room R2=CMLib.map().roomLocation(((BoardableItem)A).getBoardableItem());
 					if((R2!=null)
 					&&(R2.getArea()==childA))
 						return true;
@@ -250,12 +250,12 @@ public class StdThinInstance extends StdThinArea implements SubArea
 				}
 			}
 		}
-		for(final Enumeration<BoardableShip> s = CMLib.map().ships();s.hasMoreElements();)
+		for(final Enumeration<BoardableItem> s = CMLib.map().ships();s.hasMoreElements();)
 		{
-			final BoardableShip B=s.nextElement();
+			final BoardableItem B=s.nextElement();
 			if(B!=null)
 			{
-				final Item I=B.getShipItem();
+				final Item I=B.getBoardableItem();
 				if((I!=null)
 				&&(I.baseGoldValue()>2)
 				&&(I.owner() instanceof Room))
@@ -381,7 +381,7 @@ public class StdThinInstance extends StdThinArea implements SubArea
 				if(R!=null)
 				{
 					if((startRoom == null)
-					&&(I instanceof SailingShip))
+					&&(I instanceof NavigableItem))
 					{
 						final Room R1=CMLib.tracking().getRadiantRoomTarget(R, new AllWaterFilters(), new OutOfAreaFilter(childA));
 						if(R1!=null)
@@ -709,11 +709,11 @@ public class StdThinInstance extends StdThinArea implements SubArea
 			Area redirectA = null;
 			final Set<MOB> grp = msg.source().getGroupMembers(new HashSet<MOB>());
 			if(msg.source().isMonster()
-			&&(msg.source().riding() instanceof BoardableShip))
+			&&(msg.source().riding() instanceof BoardableItem))
 			{
 				final List<MOB> mobSet=new LinkedList<MOB>();
 				boolean playerFound=false;
-				final Area subA=((BoardableShip)msg.source().riding()).getShipArea();
+				final Area subA=((BoardableItem)msg.source().riding()).getArea();
 				for(final Enumeration<Room> r=subA.getProperMap();r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();

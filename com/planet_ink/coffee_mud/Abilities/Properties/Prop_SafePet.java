@@ -57,7 +57,7 @@ public class Prop_SafePet extends Property
 	{
 		if(super.canAffect(P))
 			return true;
-		if((P instanceof BoardableShip)
+		if((P instanceof BoardableItem)
 		&&(P instanceof Item))
 			return true;
 		return false;

@@ -118,8 +118,8 @@ public class Skill_ShipLore extends StdSkill
 
 		final String shipName=CMParms.combine(commands);
 		Room shipChkR=R;
-		if(shipChkR.getArea() instanceof BoardableShip)
-			shipChkR=CMLib.map().roomLocation(((BoardableShip)shipChkR.getArea()).getShipItem());
+		if(shipChkR.getArea() instanceof BoardableItem)
+			shipChkR=CMLib.map().roomLocation(((BoardableItem)shipChkR.getArea()).getBoardableItem());
 		if(shipChkR==null)
 			return false;
 		if((shipChkR.domainType()&Room.INDOORS)==Room.INDOORS)
@@ -131,7 +131,7 @@ public class Skill_ShipLore extends StdSkill
 		int penalty=1;
 		if(targetI==null)
 		{
-			final List<BoardableShip> ships=new XVector<BoardableShip>(CMLib.map().ships());
+			final List<BoardableItem> ships=new XVector<BoardableItem>(CMLib.map().ships());
 			targetI=(Item)CMLib.english().fetchAvailable(ships, shipName, null, Item.FILTER_UNWORNONLY, true);
 			if(targetI==null)
 				targetI=(Item)CMLib.english().fetchAvailable(ships, shipName, null, Item.FILTER_UNWORNONLY, false);
@@ -143,13 +143,13 @@ public class Skill_ShipLore extends StdSkill
 			else
 				penalty++;
 		}
-		if(!(targetI instanceof SailingShip))
+		if(!(targetI instanceof NavigableItem))
 		{
 			mob.tell(L("@x1 doesn't look much like a ship."));
 			return false;
 		}
-		final SailingShip shipI=(SailingShip)targetI;
-		final Area shipA=shipI.getShipArea();
+		final NavigableItem shipI=(NavigableItem)targetI;
+		final Area shipA=shipI.getArea();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -179,7 +179,7 @@ public class Skill_ShipLore extends StdSkill
 					tidbits.add(L("it is owned and captained by @x1",prop.getOwnerName()));
 				else
 					tidbits.add(L("it is owned by @x1, and captained by @x1",prop.getOwnerName(),ownerM.Name()));
-				tidbits.add(L("the ship has a speed of @x1",""+shipI.getShipSpeed()));
+				tidbits.add(L("the ship has a speed of @x1",""+shipI.getMaxSpeed()));
 			}
 			if(expertise >= 1)
 			{
@@ -288,7 +288,7 @@ public class Skill_ShipLore extends StdSkill
 			*/
 			if(expertise >= 5)
 			{
-				if(A instanceof BoardableShip)
+				if(A instanceof BoardableItem)
 				{
 					int itemLimit=0;
 					int weightLimit=0;

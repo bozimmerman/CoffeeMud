@@ -149,7 +149,7 @@ public class Prop_UseEmoter extends Property
 							final Exit E=room.getExitInDir(d);
 							if((R!=null)&&(E!=null)&&(E.isOpen()))
 							{
-								final String inDir=((R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip))?
+								final String inDir=((R instanceof BoardableItem)||(R.getArea() instanceof BoardableItem))?
 										CMLib.directions().getShipInDirectionName(Directions.getOpDirectionCode(d)):
 											CMLib.directions().getInDirectionName(Directions.getOpDirectionCode(d));
 								emoter.setName(L("something @x1",inDir));

@@ -37,7 +37,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
+public class StdBoardableShip implements Area, BoardableItem, PrivateProperty
 {
 	@Override
 	public String ID()
@@ -63,7 +63,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	protected PhyStats  	phyStats		= (PhyStats)CMClass.getCommon("DefaultPhyStats");
 	protected PhyStats  	basePhyStats	= (PhyStats)CMClass.getCommon("DefaultPhyStats");
 	protected Area 			me			 	= this;
-	protected BoardableShip	shipItem		= null;
+	protected BoardableItem	shipItem		= null;
 
 	protected SVector<Ability>			affects			= new SVector<Ability>(1);
 	protected SVector<Behavior> 		behaviors		= new SVector<Behavior>(1);
@@ -145,8 +145,8 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	@Override
 	public void setDockableItem(final Item dockableItem)
 	{
-		if(dockableItem instanceof BoardableShip)
-			shipItem=(BoardableShip)dockableItem;
+		if(dockableItem instanceof BoardableItem)
+			shipItem=(BoardableItem)dockableItem;
 	}
 
 	@Override
@@ -210,7 +210,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public Item getShipItem()
+	public Item getBoardableItem()
 	{
 		return (shipItem instanceof Item) ? (Item)shipItem : null;
 	}
@@ -312,7 +312,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void renameShip(final String newName)
+	public void rename(final String newName)
 	{
 		final String oldName=Name();
 		setName(newName);
@@ -348,13 +348,13 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public Area getShipArea()
+	public Area getArea()
 	{
 		return this;
 	}
 
 	@Override
-	public void setShipArea(final String xml)
+	public void setArea(final String xml)
 	{
 	}
 
@@ -657,7 +657,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 
 		if(!msg.source().isMonster())
 		{
-			final Item areaItem=getShipItem();
+			final Item areaItem=getBoardableItem();
 			if(areaItem != null)
 			{
 				final ItemPossessor possessor = areaItem.owner();
@@ -731,7 +731,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		{
 			final Room R=msg.source().location();
 			if((R!=null)
-			&&(R.getArea()==this.getShipArea()))
+			&&(R.getArea()==this.getArea()))
 			{
 				if(!CMLib.law().robberyCheck(this,msg, false))
 					return false;
@@ -883,8 +883,8 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 				&&(msg.source().getStartRoom()==msg.source().location())
 				&&(msg.source().basePhyStats().rejuv()>0)
 				&&(msg.source().basePhyStats().rejuv()<Integer.MAX_VALUE)
-				&&(this.shipItem instanceof SailingShip)
-				&&((SailingShip)this.shipItem).isSunk())
+				&&(this.shipItem instanceof SiegableItem)
+				&&((SiegableItem)this.shipItem).isDefeated())
 				{
 					// this might be a bad idea?
 					msg.source().destroy();
@@ -2135,46 +2135,46 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	@Override
 	public int getPrice()
 	{
-		if( getShipItem() instanceof PrivateProperty)
-			return ((PrivateProperty)getShipItem()).getPrice();
+		if( getBoardableItem() instanceof PrivateProperty)
+			return ((PrivateProperty)getBoardableItem()).getPrice();
 		return 0;
 	}
 
 	@Override
 	public void setPrice(final int price)
 	{
-		if( getShipItem() instanceof PrivateProperty)
-			((PrivateProperty)getShipItem()).setPrice(price);
+		if( getBoardableItem() instanceof PrivateProperty)
+			((PrivateProperty)getBoardableItem()).setPrice(price);
 	}
 
 	@Override
 	public String getOwnerName()
 	{
-		if( getShipItem() instanceof PrivateProperty)
-			return ((PrivateProperty)getShipItem()).getOwnerName();
+		if( getBoardableItem() instanceof PrivateProperty)
+			return ((PrivateProperty)getBoardableItem()).getOwnerName();
 		return "";
 	}
 
 	@Override
 	public void setOwnerName(final String owner)
 	{
-		if( getShipItem() instanceof PrivateProperty)
-			((PrivateProperty)getShipItem()).setOwnerName(owner);
+		if( getBoardableItem() instanceof PrivateProperty)
+			((PrivateProperty)getBoardableItem()).setOwnerName(owner);
 	}
 
 	@Override
 	public CMObject getOwnerObject()
 	{
-		if( getShipItem() instanceof PrivateProperty)
-			return ((PrivateProperty)getShipItem()).getOwnerObject();
+		if( getBoardableItem() instanceof PrivateProperty)
+			return ((PrivateProperty)getBoardableItem()).getOwnerObject();
 		return null;
 	}
 
 	@Override
 	public String getTitleID()
 	{
-		if( getShipItem() instanceof PrivateProperty)
-			return ((PrivateProperty)getShipItem()).getTitleID();
+		if( getBoardableItem() instanceof PrivateProperty)
+			return ((PrivateProperty)getBoardableItem()).getTitleID();
 		return null;
 	}
 

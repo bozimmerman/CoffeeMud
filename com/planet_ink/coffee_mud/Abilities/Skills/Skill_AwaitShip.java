@@ -118,7 +118,7 @@ public class Skill_AwaitShip extends StdSkill
 		if(!super.invoke(mob, commands, givenTarget, auto, asLevel))
 			return false;
 
-		SailingShip targetShip=null;
+		NavigableItem targetShip=null;
 		boolean success=proficiencyCheck(mob,0,auto);
 		Room targetR = null;
 		List<Room> trail = null;
@@ -126,7 +126,7 @@ public class Skill_AwaitShip extends StdSkill
 		{
 			final TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR)
 															.plus(TrackingFlag.WATERSURFACEORSHOREONLY);
-			final SailingShip[] targetShipI=new SailingShip[1];
+			final NavigableItem[] targetShipI=new NavigableItem[1];
 			final TrackingLibrary.RFilter destFilter = new TrackingLibrary.RFilter()
 			{
 				@Override
@@ -144,11 +144,11 @@ public class Skill_AwaitShip extends StdSkill
 						for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 						{
 							final Item I=i.nextElement();
-							if((I instanceof SailingShip)
+							if((I instanceof NavigableItem)
 							&&(I instanceof PrivateProperty)
 							&&(CMLib.law().doesHavePrivilegesWith(mob, (PrivateProperty)I)))
 							{
-								targetShipI[0]=(SailingShip)I;
+								targetShipI[0]=(NavigableItem)I;
 								return false;
 							}
 						}

@@ -66,13 +66,13 @@ public class StdRideableWrapper extends StdContainerWrapper implements Item, Con
 	}
 
 	@Override
-	public int rideBasis()
+	public Basis rideBasis()
 	{
-		return (rideable == null) ? 0 : rideable.rideBasis();
+		return (rideable == null) ? Rideable.Basis.WATER_BASED : rideable.rideBasis();
 	}
 
 	@Override
-	public void setRideBasis(final int basis)
+	public void setRideBasis(final Basis basis)
 	{
 	}
 

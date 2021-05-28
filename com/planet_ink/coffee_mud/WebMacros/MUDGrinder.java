@@ -157,9 +157,9 @@ public class MUDGrinder extends StdWebMacro
 						I=RoomData.getItemFromAnywhere(itemCode);
 				}
 			}
-			if(I instanceof BoardableShip)
+			if(I instanceof BoardableItem)
 			{
-				return ((BoardableShip)I).getShipArea();
+				return ((BoardableItem)I).getArea();
 			}
 		}
 		else

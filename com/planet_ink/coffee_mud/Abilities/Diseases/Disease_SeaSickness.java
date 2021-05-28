@@ -134,9 +134,9 @@ public class Disease_SeaSickness extends Disease
 		final Room R=mob.location();
 		if(R!=null)
 		{
-			if(R.getArea() instanceof BoardableShip)
+			if(R.getArea() instanceof BoardableItem)
 			{
-				final Item I=((BoardableShip)R.getArea()).getShipItem();
+				final Item I=((BoardableItem)R.getArea()).getBoardableItem();
 				final Room shipR=CMLib.map().roomLocation(I);
 				if(!CMLib.flags().isWateryRoom(shipR))
 				{
@@ -146,7 +146,7 @@ public class Disease_SeaSickness extends Disease
 			}
 			else
 			if((mob.riding() !=null )
-			&&(mob.riding().rideBasis()==Rideable.RIDEABLE_WATER))
+			&&(mob.riding().rideBasis()==Rideable.Basis.WATER_BASED))
 			{
 				if(!CMLib.flags().isWateryRoom(R))
 				{

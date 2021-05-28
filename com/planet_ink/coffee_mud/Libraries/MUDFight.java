@@ -599,9 +599,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			return true;
 		if(CMLib.flags().isUnattackable(defender))
 			return false;
-		if(defender instanceof BoardableShip)
+		if(defender instanceof BoardableItem)
 		{
-			final Area otherArea = ((BoardableShip)defender).getShipArea();
+			final Area otherArea = ((BoardableItem)defender).getArea();
 			if(otherArea != null)
 			{
 				for(final Enumeration<Room> r=otherArea.getProperMap();r.hasMoreElements();)
@@ -642,15 +642,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public final int getShipHullPoints(final BoardableShip ship)
-	{
-		if(ship == null)
-			return 0;
-		return 25 * ship.getShipArea().numberOfProperIDedRooms();
-	}
-
-	@Override
-	public final boolean isAShipSiegeWeapon(final Item I)
+	public final boolean isASiegeWeapon(final Item I)
 	{
 		if((I instanceof AmmunitionWeapon)
 		&&(I instanceof Rideable)
@@ -661,14 +653,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public boolean postShipAttack(final MOB attacker, final PhysicalAgent attackingShip, final PhysicalAgent target, final Weapon weapon, final boolean wasAHit)
+	public boolean postSiegeAttack(final MOB attacker, final SiegableItem siegeAttacker, final SiegableItem siegeTarget, final Weapon weapon, final boolean wasAHit)
 	{
 		// if not in combat, howd you get here? if you are, this MUST happen
 		//(!mayIAttack(attacker,attackingShip, target))
 		if((attacker==null)||(weapon==null))
 			return false;
-		final CMMsg msg=CMClass.getMsg(attacker,target,weapon,CMMsg.MSG_WEAPONATTACK,null);
-		final Room R=CMLib.map().roomLocation(target);
+		final CMMsg msg=CMClass.getMsg(attacker,siegeTarget,weapon,CMMsg.MSG_WEAPONATTACK,null);
+		final Room R=CMLib.map().roomLocation(siegeTarget);
 		if(R!=null)
 		{
 			msg.setValue(wasAHit?1:0);
@@ -1047,14 +1039,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			{
 				final Room R=mob.location();
 				final Area A=(R!=null)?R.getArea():null;
-				if((A instanceof BoardableShip)
-				&&(((BoardableShip)A).getShipItem() instanceof Combatant)
-				&&(((Combatant)((BoardableShip)A).getShipItem()).isInCombat()))
+				if((A instanceof BoardableItem)
+				&&(((BoardableItem)A).getBoardableItem() instanceof Combatant)
+				&&(((Combatant)((BoardableItem)A).getBoardableItem()).isInCombat()))
 					return;
 
 				final Rideable riding=mob.riding();
 				final boolean isSleeping=CMLib.flags().isSleeping(mob);
-				final boolean bedBonus=isSleeping && (riding!=null) && (riding.rideBasis()==Rideable.RIDEABLE_SLEEP);
+				final boolean bedBonus=isSleeping && (riding!=null) && (riding.rideBasis()==Rideable.Basis.FURNITURE_SLEEP);
 				final boolean isSittingOrRiding=((!isSleeping) && ((CMLib.flags().isSitting(mob))||(mob.riding()!=null))) || bedBonus;
 				final boolean isFlying=((!isSleeping) && (!isSittingOrRiding) && CMLib.flags().isFlying(mob)) || bedBonus;
 				final boolean isSwimming=(!isSleeping) && (!isSittingOrRiding) && (!isFlying) && CMLib.flags().isSwimming(mob);
@@ -1137,8 +1129,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			}
 			if(source.mayIFight(target))
 			{
-				if((msg.source().riding() instanceof BoardableShip)
-				&&(CMLib.combat().isAShipSiegeWeapon(item)))
+				if((msg.source().riding() instanceof BoardableItem)
+				&&(CMLib.combat().isASiegeWeapon(item)))
 				{
 					room.send(source,msg);
 					return msg;
@@ -1202,7 +1194,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public void postShipWeaponAttackResult(final MOB source, final PhysicalAgent attacker, final PhysicalAgent defender, final Weapon weapon, final boolean success)
+	public void postSiegeWeaponAttackResult(final MOB source, final PhysicalAgent attacker, final PhysicalAgent defender, final Weapon weapon, final boolean success)
 	{
 		if(source==null)
 			return;
@@ -1250,7 +1242,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				if(//(mayIAttack(source,attacker,defender))&&
 				(CMLib.map().roomLocation(attacker)==room)
 				&&(CMLib.map().roomLocation(defender)==room))
-					room.send(source,msg);
+					room.sendOthers(source,msg);
 			}
 		}
 		else
@@ -3289,14 +3281,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if((CMLib.map() != CMLib.get(MudHost.MAIN_HOST)._map())
 		||(Thread.currentThread().getThreadGroup().getName().charAt(0)==MudHost.MAIN_HOST))
 		{
-			for(final Enumeration<BoardableShip> s = CMLib.map().ships();s.hasMoreElements();)
+			for(final Enumeration<BoardableItem> s = CMLib.map().ships();s.hasMoreElements();)
 			{
-				final BoardableShip ship = s.nextElement();
+				final BoardableItem ship = s.nextElement();
 				ship.tick(ship, Tickable.TICKID_SPECIALMANEUVER);
 			}
-			for(final Enumeration<BoardableShip> s = CMLib.map().ships();s.hasMoreElements();)
+			for(final Enumeration<BoardableItem> s = CMLib.map().ships();s.hasMoreElements();)
 			{
-				final BoardableShip ship = s.nextElement();
+				final BoardableItem ship = s.nextElement();
 				ship.tick(ship, Tickable.TICKID_SPECIALCOMBAT);
 			}
 		}
@@ -3374,5 +3366,4 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 		return true;
 	}
-
 }

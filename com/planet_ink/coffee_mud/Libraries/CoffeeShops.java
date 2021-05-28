@@ -214,7 +214,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					if(E instanceof MOB)
 						str.append(L("Creature"));
 					else
-					if(E instanceof BoardableShip)
+					if(E instanceof BoardableItem)
 						str.append(L("Vessel"));
 					else
 					if(E instanceof ClanItem)
@@ -279,9 +279,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					str.append(L("\n\rModel Num. : @x1",""+(((Technical)I).techLevel()
 															+ (lie?plus(4,lieHash):0))));
 				}
-				if(I instanceof BoardableShip)
+				if(I instanceof BoardableItem)
 				{
-					final Area A=((BoardableShip)I).getShipArea();
+					final Area A=((BoardableItem)I).getArea();
 					if(A!=null)
 					{
 						str.append(L("\n\rRooms      : @x1",""+(A.numberOfProperIDedRooms()
@@ -1170,7 +1170,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					buyerCustM.tell(L("You can't carry any more items."));
 					return false;
 				}
-				if((product instanceof BoardableShip)
+				if((product instanceof BoardableItem)
 				||(!CMLib.flags().isGettable((Item)product)))
 				{
 					if((buyerCustM.maxCarry()-buyerCustM.phyStats().weight())<=0)
@@ -1388,7 +1388,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		{
 			if((R.getExitInDir(d)!=null)&&(R.getExitInDir(d).keyName().equals(keyNum)))
 			{
-				final String dirName=((R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip))?
+				final String dirName=((R instanceof BoardableItem)||(R.getArea() instanceof BoardableItem))?
 						CMLib.directions().getShipDirectionName(d):CMLib.directions().getDirectionName(d);
 				if(addThis.length()>0)
 					return addThis+" and to the "+dirName.toLowerCase();
@@ -1726,7 +1726,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		{
 			final Item I=i.nextElement();
 			if((I instanceof PrivateProperty)
-			&&(I instanceof BoardableShip)
+			&&(I instanceof BoardableItem)
 			&&(!I.amDestroyed()))
 			{
 				final PrivateProperty P = (PrivateProperty)I;
@@ -2058,7 +2058,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					&&(!(E instanceof Ammunition))
 					&&(!(E instanceof MOB))
 					&&(!(E instanceof LandTitle))
-					&&(!(E instanceof BoardableShip))
+					&&(!(E instanceof BoardableItem))
 					&&(!(E instanceof RawMaterial))
 					&&(!(E instanceof Ability)));
 			break;
@@ -2103,7 +2103,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			break;
 		case ShopKeeper.DEAL_SHIPSELLER:
 		case ShopKeeper.DEAL_CSHIPSELLER:
-			chk = ((E instanceof BoardableShip)
+			chk = ((E instanceof BoardableItem)
 					||((E instanceof LandTitle)&&(CMLib.map().getShip(((LandTitle)E).landPropertyID())!=null)));
 			break;
 		case ShopKeeper.DEAL_ANYTECHNOLOGY:

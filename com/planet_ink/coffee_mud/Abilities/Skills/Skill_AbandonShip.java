@@ -120,15 +120,15 @@ public class Skill_AbandonShip extends StdSkill
 		Room R=mob.location();
 		if(R==null)
 			return false;
-		if((!(R.getArea() instanceof BoardableShip))
-		||(!(((BoardableShip)R.getArea()).getShipItem() instanceof SailingShip)))
+		if((!(R.getArea() instanceof BoardableItem))
+		||(!(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem)))
 		{
 			mob.tell(L("You must be on a sailing ship."));
 			return false;
 		}
-		final BoardableShip myShip=(BoardableShip)R.getArea();
-		final SailingShip myShipItem=(SailingShip)myShip.getShipItem();
-		final Area myShipArea=myShip.getShipArea();
+		final BoardableItem myShip=(BoardableItem)R.getArea();
+		final NavigableItem myShipItem=(NavigableItem)myShip.getBoardableItem();
+		final Area myShipArea=myShip.getArea();
 		final Room myShipRoom = CMLib.map().roomLocation(myShipItem);
 		if((myShipItem==null)
 		||(myShipArea==null)
@@ -204,7 +204,7 @@ public class Skill_AbandonShip extends StdSkill
 						{
 							final Item I=i.nextElement();
 							if((I instanceof Rideable)
-							&&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_WATER)
+							&&(((Rideable)I).rideBasis()==Rideable.Basis.WATER_BASED)
 							&&(((Rideable)I).mobileRideBasis())
 							&&(CMLib.flags().isGettable(I)))
 								boats.add(I);

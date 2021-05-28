@@ -99,9 +99,9 @@ public class Skill_SeaManeuvers extends StdSkill
 		if((msg.sourceMinor()==CMMsg.TYP_ADVANCE)
 		&&(msg.target() instanceof Room)
 		&&(R!=null)
-		&&(R.getArea() instanceof BoardableShip)
+		&&(R.getArea() instanceof BoardableItem)
 		&&(R.roomID().length()>0)
-		&&(msg.source().riding() == ((BoardableShip)R.getArea()).getShipItem())
+		&&(msg.source().riding() == ((BoardableItem)R.getArea()).getBoardableItem())
 		&&(msg.source().Name().equals(msg.source().riding().Name()))
 		&&(msg.sourceMessage()!=null)
 		&&(msg.targetMessage()!=null)
@@ -109,7 +109,7 @@ public class Skill_SeaManeuvers extends StdSkill
 		&&(CMLib.directions().getStrictCompassDirectionCode(msg.targetMessage())>=0)
 		&&(!msg.sourceMessage().equals(msg.targetMessage())))
 		{
-			final SailingShip ship = (SailingShip)((BoardableShip)R.getArea()).getShipItem();
+			final NavigableItem ship = (NavigableItem)((BoardableItem)R.getArea()).getBoardableItem();
 			if(ship.isInCombat())
 			{
 				if(proficiencyCheck(mob, 0, false))

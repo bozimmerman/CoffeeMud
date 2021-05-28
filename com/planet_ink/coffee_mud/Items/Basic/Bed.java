@@ -53,7 +53,7 @@ public class Bed extends GenRideable
 		baseGoldValue=5;
 		basePhyStats().setLevel(1);
 		setMaterial(RawMaterial.RESOURCE_COTTON);
-		setRideBasis(Rideable.RIDEABLE_SLEEP);
+		setRideBasis(Rideable.Basis.FURNITURE_SLEEP);
 		setRiderCapacity(2);
 		recoverPhyStats();
 	}

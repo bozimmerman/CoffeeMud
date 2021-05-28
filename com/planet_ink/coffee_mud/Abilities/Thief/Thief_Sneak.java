@@ -115,7 +115,7 @@ public class Thief_Sneak extends ThiefSkill
 
 					}
 					else
-					if(((Rideable)target).rideBasis()!=Rideable.RIDEABLE_LADDER)
+					if(((Rideable)target).rideBasis()!=Rideable.Basis.LADDER)
 					{
 						mob.tell(L("You can not sneak into '@x1'.",target.name(mob)));
 						return false;

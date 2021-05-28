@@ -175,7 +175,7 @@ public class Chant_Tsunami extends Chant
 	{
 		if(mob!=null)
 		{
-			if(!(target instanceof BoardableShip))
+			if(!(target instanceof BoardableItem))
 				return Ability.QUALITY_INDIFFERENT;
 		}
 		return super.castingQuality(mob,target);
@@ -187,7 +187,7 @@ public class Chant_Tsunami extends Chant
 		final Room mobR=mob.location();
 		if(mobR==null)
 			return false;
-		if(((mobR.domainType()&Room.INDOORS)>0)||(mobR.getArea() instanceof BoardableShip))
+		if(((mobR.domainType()&Room.INDOORS)>0)||(mobR.getArea() instanceof BoardableItem))
 		{
 			mob.tell(L("You must be on or near the shore for this chant to work."));
 			return false;

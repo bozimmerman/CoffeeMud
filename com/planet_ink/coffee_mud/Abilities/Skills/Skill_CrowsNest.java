@@ -130,9 +130,9 @@ public class Skill_CrowsNest extends StdSkill
 			final Room mobR=(Room)affected;
 			final Room downR=mobR.getRoomInDir(Directions.DOWN);
 			if((downR!=null)
-			&&(downR.getArea() instanceof BoardableShip))
+			&&(downR.getArea() instanceof BoardableItem))
 			{
-				final Item I=((BoardableShip)downR.getArea()).getShipItem();
+				final Item I=((BoardableItem)downR.getArea()).getBoardableItem();
 				final Room shipR=CMLib.map().roomLocation(I);
 				if(msg.target() instanceof Exit)
 				{
@@ -324,13 +324,13 @@ public class Skill_CrowsNest extends StdSkill
 		if(R==null)
 			return false;
 
-		final SailingShip ship;
-		if((R.getArea() instanceof BoardableShip)
+		final NavigableItem ship;
+		if((R.getArea() instanceof BoardableItem)
 		&&((R.domainType()&Room.INDOORS)==0)
-		&&(((BoardableShip)R.getArea()).getShipItem() instanceof SailingShip)
+		&&(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem)
 		&&(R.roomID().length()>0))
 		{
-			ship=(SailingShip)((BoardableShip)R.getArea()).getShipItem();
+			ship=(NavigableItem)((BoardableItem)R.getArea()).getBoardableItem();
 		}
 		else
 		{

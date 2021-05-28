@@ -461,7 +461,7 @@ public class GrinderItems
 					break;
 				case RIDEABLETYPE: // rideable type
 					if(I instanceof Rideable)
-						((Rideable)I).setRideBasis(CMath.s_int(old));
+						((Rideable)I).setRideBasis(Rideable.Basis.values()[CMath.s_int(old)]);
 					break;
 				case MOBSHELD: // mob capacity
 					if(I instanceof Rideable)
@@ -893,8 +893,8 @@ public class GrinderItems
 					}
 					break;
 				case AREAXML:
-					if((I instanceof BoardableShip)&&(old.trim().length()>0))
-						((BoardableShip)I).setShipArea(CMLib.xml().restoreAngleBrackets(old));
+					if((I instanceof BoardableItem)&&(old.trim().length()>0))
+						((BoardableItem)I).setArea(CMLib.xml().restoreAngleBrackets(old));
 					break;
 				case ISBOOK:
 					break;
@@ -925,8 +925,8 @@ public class GrinderItems
 
 			if(!copyItem.Name().equals(I.Name()))
 			{
-				if(I instanceof BoardableShip)
-					((BoardableShip)I).renameShip(I.Name());
+				if(I instanceof BoardableItem)
+					((BoardableItem)I).rename(I.Name());
 			}
 			I.recoverPhyStats();
 			I.text();

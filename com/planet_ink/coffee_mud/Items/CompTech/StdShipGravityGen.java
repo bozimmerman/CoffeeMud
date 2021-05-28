@@ -107,7 +107,7 @@ public class StdShipGravityGen extends StdElecCompItem
 						double wearAndTear = 1.0;
 						if(this.subjectToWearAndTear() && this.usesRemaining()<100)
 							wearAndTear = Math.min(1.0, reliability * CMath.div(this.usesRemaining(), 100.0));
-						final double amountNeeded = ship.getShipArea().numberOfProperIDedRooms();
+						final double amountNeeded = ship.getArea().numberOfProperIDedRooms();
 						final double powerUsed = amountNeeded * efficiency; // eff is from 0.5 (great) to 2.0 (terrible)
 						double powerFactor = 1.0;
 						if(powerUsed > this.powerRemaining())

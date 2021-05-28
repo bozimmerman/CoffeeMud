@@ -95,12 +95,12 @@ public class Skill_DeadReckoning extends StdSkill
 		if(R==null)
 			return false;
 		Room currentR=null;
-		if(R.getArea() instanceof BoardableShip)
+		if(R.getArea() instanceof BoardableItem)
 		{
-			currentR=CMLib.map().roomLocation(((BoardableShip)R.getArea()).getShipItem());
+			currentR=CMLib.map().roomLocation(((BoardableItem)R.getArea()).getBoardableItem());
 		}
 		else
-		if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.RIDEABLE_WATER))
+		if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.Basis.WATER_BASED))
 		{
 			if(CMLib.flags().isWaterySurfaceRoom(mob.location()))
 				currentR=mob.location();

@@ -100,7 +100,7 @@ public class StdShipDampener extends StdElecCompItem
 				wearAndTear = Math.min(1.0, reliability * CMath.div(this.usesRemaining(), 100.0));
 
 			final double amountNeeded = (msg.value()-1.0);
-			final double powerUsed = CMath.mul(ship.getShipArea().numberOfProperIDedRooms() , efficiency ); // eff is from 0.5 (great) to 2.0 (terrible)
+			final double powerUsed = CMath.mul(ship.getArea().numberOfProperIDedRooms() , efficiency ); // eff is from 0.5 (great) to 2.0 (terrible)
 			double powerFactor = 1.0;
 			if(powerUsed > this.powerRemaining())
 			{

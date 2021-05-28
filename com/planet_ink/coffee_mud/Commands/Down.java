@@ -68,6 +68,6 @@ public class Down extends Go
 	public boolean securityCheck(final MOB mob)
 	{
 		return (mob==null) || (mob.isMonster()) || (mob.location()==null)
-				|| ((!(mob.location() instanceof BoardableShip)) && (!(mob.location().getArea() instanceof BoardableShip)));
+				|| ((!(mob.location() instanceof BoardableItem)) && (!(mob.location().getArea() instanceof BoardableItem)));
 	}
 }

@@ -102,11 +102,11 @@ public class Skill_SeaCharting extends StdSkill
 		final String cmd=commands.get(0).toString().toUpperCase().trim();
 		if(!cmd.equals("LIST"))
 		{
-			if(R.getArea() instanceof BoardableShip)
+			if(R.getArea() instanceof BoardableItem)
 			{
 			}
 			else
-			if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.RIDEABLE_WATER))
+			if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.Basis.WATER_BASED))
 			{
 			}
 			else
@@ -154,12 +154,12 @@ public class Skill_SeaCharting extends StdSkill
 		}
 
 		Room currentR=null;
-		if(R.getArea() instanceof BoardableShip)
+		if(R.getArea() instanceof BoardableItem)
 		{
-			currentR=CMLib.map().roomLocation(((BoardableShip)R.getArea()).getShipItem());
+			currentR=CMLib.map().roomLocation(((BoardableItem)R.getArea()).getBoardableItem());
 		}
 		else
-		if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.RIDEABLE_WATER))
+		if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.Basis.WATER_BASED))
 		{
 			if(CMLib.flags().isWaterySurfaceRoom(mob.location()))
 				currentR=mob.location();

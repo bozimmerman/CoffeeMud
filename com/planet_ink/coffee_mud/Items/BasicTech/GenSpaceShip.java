@@ -126,16 +126,16 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 	}
 
 	@Override
-	public Area getShipArea()
+	public Area getArea()
 	{
 		if((!destroyed)&&(area==null))
 		{
-			final Area area=super.getShipArea();
+			final Area area=super.getArea();
 			if(area != null)
 				area.setTheme(Area.THEME_TECHNOLOGY);
 			return area;
 		}
-		return super.getShipArea();
+		return super.getArea();
 	}
 
 	@Override
@@ -187,8 +187,8 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 
 	protected String getElectronicsKey()
 	{
-		final Area area=this.getShipArea();
-		if(area instanceof BoardableShip)
+		final Area area=this.getArea();
+		if(area instanceof BoardableItem)
 		{
 			String registryNum=area.getBlurbFlag("REGISTRY");
 			if(registryNum==null)
@@ -199,13 +199,13 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 	}
 
 	@Override
-	public void renameShip(final String newName)
+	public void rename(final String newName)
 	{
-		final Area area=this.getShipArea();
-		if(area instanceof BoardableShip)
+		final Area area=this.getArea();
+		if(area instanceof BoardableItem)
 		{
 			final String registryNum=getElectronicsKey();
-			super.renameShip(newName);
+			super.rename(newName);
 			CMLib.tech().unregisterElectronics(null, registryNum);
 			final String newRegistryNum=Double.toString(Math.random());
 			area.addBlurbFlag("REGISTRY Registry#"+newRegistryNum.substring(newRegistryNum.indexOf('.')+1));
@@ -238,7 +238,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 	{
 		super.executeMsg(myHost,msg);
 
-		if(CMLib.map().areaLocation(msg.source())!=getShipArea())
+		if(CMLib.map().areaLocation(msg.source())!=getArea())
 		{
 			for(final TechComponent sensor : getShipSensors())
 				sensor.executeMsg(myHost, msg);
@@ -396,7 +396,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 							hullDamage=1;
 						if(hullDamage < usesRemaining())
 						{
-							final List<Electronics> list = CMLib.tech().getMakeRegisteredElectronics(CMLib.tech().getElectronicsKey(getShipArea()));
+							final List<Electronics> list = CMLib.tech().getMakeRegisteredElectronics(CMLib.tech().getElectronicsKey(getArea()));
 							for(final Iterator<Electronics> i=list.iterator();i.hasNext();)
 							{
 								final Electronics E=i.next();
@@ -427,7 +427,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 							msg.setOthersMessage(L("You hear a loud deafening crash and feel a massive jolt."));
 						sendAreaMessage(msg,false);
 						if(hullDamage>0)
-							destroyThisShip();
+							destroyThisBoardable();
 					}
 					else
 					{
@@ -587,7 +587,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 		if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 			Log.debugOut("SpaceShip "+name()+" is now STOPPED!");
 		setSpeed(0); // if you collide with something massive, your speed ENDS
-		final List<Electronics> electronics=CMLib.tech().getMakeRegisteredElectronics(CMLib.tech().getElectronicsKey(getShipArea()));
+		final List<Electronics> electronics=CMLib.tech().getMakeRegisteredElectronics(CMLib.tech().getElectronicsKey(getArea()));
 		for(final Electronics E : electronics)
 		{
 			if(E instanceof ShipEngine)
@@ -645,7 +645,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 
 	protected void sendComputerMessage(final MOB mob, final CMMsg msg)
 	{
-		final Area ship=getShipArea();
+		final Area ship=getArea();
 		if(ship!=null)
 		{
 			final List<Electronics> electronics = CMLib.tech().getMakeRegisteredElectronics(CMLib.tech().getElectronicsKey(ship));

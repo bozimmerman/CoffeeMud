@@ -122,7 +122,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	public String getElectronicsKey(final CMObject o)
 	{
 		if((o instanceof SpaceShip)&&(o instanceof Item))
-			return getElectronicsKey(((SpaceShip)o).getShipArea());
+			return getElectronicsKey(((SpaceShip)o).getArea());
 		else
 		if(o instanceof Electronics)
 			return getElectronicsKey(((Electronics)o).owner());
@@ -471,8 +471,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			{
 				final SpaceShip S=(O instanceof SpaceShip)?(SpaceShip)O:null;
 				if((S!=null)
-				&&(S.getShipArea()!=null)
-				&&(S.getShipArea().getAreaState()!=Area.State.ACTIVE))
+				&&(S.getArea()!=null)
+				&&(S.getArea().getAreaState()!=Area.State.ACTIVE))
 					continue;
 				BoundedCube cube=O.getBounds();
 				final double speed=O.speed();

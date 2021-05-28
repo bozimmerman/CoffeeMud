@@ -98,16 +98,16 @@ public class Thief_WalkThePlank extends ThiefSkill
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		if((!(R.getArea() instanceof BoardableShip))
+		if((!(R.getArea() instanceof BoardableItem))
 		||((R.domainType()&Room.INDOORS)!=0)
 		||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR))
 		{
 			mob.tell(L("You must be on the deck of a ship to make someone walk the plank."));
 			return false;
 		}
-		final BoardableShip myShip=(BoardableShip)R.getArea();
-		final Item myShipItem=myShip.getShipItem();
-		final Area myShipArea=myShip.getShipArea();
+		final BoardableItem myShip=(BoardableItem)R.getArea();
+		final Item myShipItem=myShip.getBoardableItem();
+		final Area myShipArea=myShip.getArea();
 		if((myShipItem==null)
 		||(myShipArea==null)
 		||(!(myShipItem.owner() instanceof Room))
@@ -159,7 +159,7 @@ public class Thief_WalkThePlank extends ThiefSkill
 						||(M.getStartRoom().getArea() == myShipArea))
 							mobsConnectedToThisShip.add(M);
 						else
-						if((M.getStartRoom().getArea() instanceof BoardableShip)
+						if((M.getStartRoom().getArea() instanceof BoardableItem)
 						&&(owner.equals(startOwner) && (owner.length()>0)))
 							mobsConnectedToThisShip.add(M);
 						else

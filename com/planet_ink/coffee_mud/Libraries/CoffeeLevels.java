@@ -1294,7 +1294,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	public boolean postExperienceToAllAboard(final Physical possibleShip, final int amount, final Physical target)
 	{
 		boolean posted = false;
-		if(possibleShip instanceof BoardableShip)
+		if(possibleShip instanceof BoardableItem)
 		{
 			boolean destroyTargetMob=false;
 			final MOB targetM;
@@ -1317,7 +1317,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			}
 			try
 			{
-				final Area A=((BoardableShip)possibleShip).getShipArea();
+				final Area A=((BoardableItem)possibleShip).getArea();
 				if(A!=null)
 				{
 					posted = true;

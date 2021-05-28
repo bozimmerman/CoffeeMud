@@ -276,13 +276,13 @@ public interface CombatLibrary extends CMLibrary
 	 * may be a fake factory mob) on the given attacking ship against the
 	 * given target ship with the given siege weapon.
 	 * @param attacker the attacking agent mob
-	 * @param attackingShip the ship the attacker is on
-	 * @param target the target ship
+	 * @param siegeAttacker the ship the attacker is on
+	 * @param siegeTarget the target ship
 	 * @param weapon the siege weapon used
 	 * @param wasAHit true to register a hit, false to register an attack
 	 * @return true if the attack succeeded, false if it failed
 	 */
-	public boolean postShipAttack(MOB attacker, PhysicalAgent attackingShip, PhysicalAgent target, Weapon weapon, boolean wasAHit);
+	public boolean postSiegeAttack(MOB attacker, SiegableItem siegeAttacker, SiegableItem siegeTarget, Weapon weapon, boolean wasAHit);
 
 	/**
 	 * Returns whether the given attacking mob, on the given attacker ship, may attack the people and property
@@ -382,7 +382,7 @@ public interface CombatLibrary extends CMLibrary
 	 * @param weapon the weapon used
 	 * @param success true if it was a hit with damage, false if it was a miss
 	 */
-	public void postShipWeaponAttackResult(MOB source, PhysicalAgent attacker, PhysicalAgent defender, Weapon weapon, boolean success);
+	public void postSiegeWeaponAttackResult(MOB source, PhysicalAgent attacker, PhysicalAgent defender, Weapon weapon, boolean success);
 
 	/**
 	 * This method handles an item taking damage.  If the item is subject
@@ -775,14 +775,7 @@ public interface CombatLibrary extends CMLibrary
 	 * @param I the item to check
 	 * @return true if its a siege weapon, false otherwise
 	 */
-	public boolean isAShipSiegeWeapon(Item I);
-
-	/**
-	 * Returns the number of base hull points that the given ship has.
-	 * @param ship the ship to get points for
-	 * @return the base hull points of the ship
-	 */
-	public int getShipHullPoints(BoardableShip ship);
+	public boolean isASiegeWeapon(Item I);
 
 	/**
 	 * Checks to see if the given message gets a saving throw

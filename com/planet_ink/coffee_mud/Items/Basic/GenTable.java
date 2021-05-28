@@ -54,7 +54,7 @@ public class GenTable extends GenRideable
 		baseGoldValue=5;
 		basePhyStats().setLevel(1);
 		setRiderCapacity(4);
-		setRideBasis(Rideable.RIDEABLE_TABLE);
+		setRideBasis(Rideable.Basis.FURNITURE_TABLE);
 		recoverPhyStats();
 	}
 

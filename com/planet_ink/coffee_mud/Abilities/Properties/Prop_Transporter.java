@@ -104,13 +104,15 @@ public class Prop_Transporter extends Property implements TriggeredAffect
 			transCode= CMMsg.TYP_MOUNT;
 			switch(((Rideable)affected).rideBasis())
 			{
-			case Rideable.RIDEABLE_ENTERIN:
+			case ENTER_IN:
 				transCode= CMMsg.TYP_ENTER; break;
-			case Rideable.RIDEABLE_SIT:
-			case Rideable.RIDEABLE_TABLE:
+			case FURNITURE_SIT:
+			case FURNITURE_TABLE:
 				transCode= CMMsg.TYP_SIT; break;
-			case Rideable.RIDEABLE_SLEEP:
+			case FURNITURE_SLEEP:
 				transCode= CMMsg.TYP_SLEEP; break;
+			default:
+				break;
 			}
 		}
 		else

@@ -173,9 +173,9 @@ public class Chant_TidalWave extends Chant
 		{
 			gatherHighestLevels(casterM,(Rideable)target,grp,highestLevels,highestLevelM);
 		}
-		if(target instanceof BoardableShip)
+		if(target instanceof BoardableItem)
 		{
-			final Area A=((BoardableShip)target).getShipArea();
+			final Area A=((BoardableItem)target).getArea();
 			gatherHighestLevels(casterM,A,grp,highestLevels,highestLevelM);
 		}
 		if(target instanceof Room)
@@ -218,7 +218,7 @@ public class Chant_TidalWave extends Chant
 	{
 		if(mob!=null)
 		{
-			if(!(target instanceof BoardableShip))
+			if(!(target instanceof BoardableItem))
 				return Ability.QUALITY_INDIFFERENT;
 		}
 		return super.castingQuality(mob,target);
@@ -233,9 +233,9 @@ public class Chant_TidalWave extends Chant
 
 		}
 
-		if(target instanceof BoardableShip)
+		if(target instanceof BoardableItem)
 		{
-			final Item I=((BoardableShip)target).getShipItem();
+			final Item I=((BoardableItem)target).getBoardableItem();
 			if(I != null)
 				return CMLib.map().roomLocation(target);
 		}
@@ -272,7 +272,7 @@ public class Chant_TidalWave extends Chant
 			if(target==null)
 				return false;
 
-			if(target instanceof BoardableShip)
+			if(target instanceof BoardableItem)
 			{ //ok
 				if(target instanceof PrivateProperty)
 				{
@@ -282,7 +282,7 @@ public class Chant_TidalWave extends Chant
 						return false;
 					}
 				}
-				for(final Enumeration<Room> r=((BoardableShip)target).getShipArea().getProperMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=((BoardableItem)target).getArea().getProperMap();r.hasMoreElements();)
 				{
 					final Room R2=r.nextElement();
 					if((R2!=null)&&((R2.domainType()&Room.INDOORS)==0))
@@ -292,7 +292,7 @@ public class Chant_TidalWave extends Chant
 				washDirection="overboard";
 			}
 			else
-			if((target instanceof Rideable) && (((Rideable)target).rideBasis() == Rideable.RIDEABLE_WATER))
+			if((target instanceof Rideable) && (((Rideable)target).rideBasis() == Rideable.Basis.WATER_BASED))
 			{ //ok
 				targetRooms.add(CMLib.map().roomLocation(target));
 				washRoom = CMLib.map().roomLocation(target);
@@ -313,7 +313,7 @@ public class Chant_TidalWave extends Chant
 		else
 		{
 			target = R;
-			if(R.getArea() instanceof BoardableShip)
+			if(R.getArea() instanceof BoardableItem)
 			{ //ok
 				if(target instanceof PrivateProperty)
 				{
@@ -323,8 +323,8 @@ public class Chant_TidalWave extends Chant
 						return false;
 					}
 				}
-				target=((BoardableShip)R.getArea()).getShipItem();
-				for(final Enumeration<Room> r=((BoardableShip)target).getShipArea().getProperMap();r.hasMoreElements();)
+				target=((BoardableItem)R.getArea()).getBoardableItem();
+				for(final Enumeration<Room> r=((BoardableItem)target).getArea().getProperMap();r.hasMoreElements();)
 				{
 					final Room R2=r.nextElement();
 					if((R2!=null)&&((R2.domainType()&Room.INDOORS)==0))
@@ -363,11 +363,11 @@ public class Chant_TidalWave extends Chant
 			fromDir="right here";
 		else
 		{
-			if(R.getArea() instanceof BoardableShip)
+			if(R.getArea() instanceof BoardableItem)
 			{
 				if((R.domainType()&Room.INDOORS)==0)
 				{
-					final Item I=((BoardableShip)R.getArea()).getShipItem();
+					final Item I=((BoardableItem)R.getArea()).getBoardableItem();
 					if((I!=null)&&(I.owner() instanceof Room))
 					{
 						final Room R2=(Room)I.owner();

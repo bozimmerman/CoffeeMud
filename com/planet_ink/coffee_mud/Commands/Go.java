@@ -92,7 +92,7 @@ public class Go extends StdCommand
 		if(R==null)
 			return false;
 
-		final boolean inAShip =(R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip);
+		final boolean inAShip =(R instanceof BoardableItem)||(R.getArea() instanceof BoardableItem);
 		final String validDirs = inAShip?Directions.SHIP_NAMES_LIST() : Directions.NAMES_LIST();
 		final boolean running = mob.isAttributeSet(MOB.Attrib.AUTORUN);
 

@@ -1018,10 +1018,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							}
 							if(oldSize==areas.size())
 							{
-								for(final Enumeration<BoardableShip> e=CMLib.map().ships();e.hasMoreElements();)
+								for(final Enumeration<BoardableItem> e=CMLib.map().ships();e.hasMoreElements();)
 								{
-									final BoardableShip ship=e.nextElement();
-									final Area A2=(ship != null) ? ship.getShipArea() : null;
+									final BoardableItem ship=e.nextElement();
+									final Area A2=(ship != null) ? ship.getArea() : null;
 									if(A2 != null)
 									{
 										if (A2.Name().equalsIgnoreCase(areaName))
@@ -1046,10 +1046,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							}
 							if(oldSize==areas.size())
 							{
-								for(final Enumeration<BoardableShip> e=CMLib.map().ships();e.hasMoreElements();)
+								for(final Enumeration<BoardableItem> e=CMLib.map().ships();e.hasMoreElements();)
 								{
-									final BoardableShip ship=e.nextElement();
-									final Area A2=(ship != null) ? ship.getShipArea() : null;
+									final BoardableItem ship=e.nextElement();
+									final Area A2=(ship != null) ? ship.getArea() : null;
 									if(A2 != null)
 									{
 										if(CMLib.english().containsString(A2.Name(),areaName))
@@ -1105,9 +1105,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 									Area A2=CMLib.map().findArea(areaName);
 									if(A2 == null)
 									{
-										final BoardableShip ship=CMLib.map().findShip(areaName, true);
+										final BoardableItem ship=CMLib.map().findShip(areaName, true);
 										if(ship != null)
-											A2=ship.getShipArea();
+											A2=ship.getArea();
 									}
 									if((A2!=null)&&(!areas.contains(A2)))
 										areas.add(A2);

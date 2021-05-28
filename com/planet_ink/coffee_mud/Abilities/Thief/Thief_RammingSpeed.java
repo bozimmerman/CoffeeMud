@@ -132,9 +132,9 @@ public class Thief_RammingSpeed extends ThiefSkill
 		if(!super.tick(ticking, tickID))
 			return false;
 		final Physical affected=this.affected;
-		if(affected instanceof SailingShip)
+		if(affected instanceof NavigableItem)
 		{
-			if((!((SailingShip)affected).isInCombat())
+			if((!((NavigableItem)affected).isInCombat())
 			||(CMLib.flags().isFalling(affected)))
 			{
 				unInvoke();
@@ -160,11 +160,11 @@ public class Thief_RammingSpeed extends ThiefSkill
 		if(R==null)
 			return false;
 
-		final SailingShip ship;
-		if((R.getArea() instanceof BoardableShip)
-		&&(((BoardableShip)R.getArea()).getShipItem() instanceof SailingShip))
+		final NavigableItem ship;
+		if((R.getArea() instanceof BoardableItem)
+		&&(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem))
 		{
-			ship=(SailingShip)((BoardableShip)R.getArea()).getShipItem();
+			ship=(NavigableItem)((BoardableItem)R.getArea()).getBoardableItem();
 		}
 		else
 		{

@@ -58,7 +58,7 @@ public class StdTub extends StdRideable implements Drink
 		setDescription("A porcelin bath tub.");
 		baseGoldValue=500;
 		material=RawMaterial.RESOURCE_CLAY;
-		rideBasis=Rideable.RIDEABLE_SIT;
+		rideBasis=Rideable.Basis.FURNITURE_SIT;
 		riderCapacity=4;
 		recoverPhyStats();
 	}
@@ -162,16 +162,16 @@ public class StdTub extends StdRideable implements Drink
 		{
 			switch(rideBasis)
 			{
-			case Rideable.RIDEABLE_AIR:
-			case Rideable.RIDEABLE_LAND:
-			case Rideable.RIDEABLE_WAGON:
-			case Rideable.RIDEABLE_WATER:
+			case AIR_FLYING:
+			case LAND_BASED:
+			case WAGON:
+			case WATER_BASED:
 				return "riding in";
-			case Rideable.RIDEABLE_ENTERIN:
-			case Rideable.RIDEABLE_SIT:
-			case Rideable.RIDEABLE_TABLE:
-			case Rideable.RIDEABLE_LADDER:
-			case Rideable.RIDEABLE_SLEEP:
+			case ENTER_IN:
+			case FURNITURE_SIT:
+			case FURNITURE_TABLE:
+			case LADDER:
+			case FURNITURE_SLEEP:
 				return "in";
 			}
 			return "riding in";
@@ -194,17 +194,17 @@ public class StdTub extends StdRideable implements Drink
 		{
 			switch(rideBasis)
 			{
-			case Rideable.RIDEABLE_AIR:
-			case Rideable.RIDEABLE_LAND:
-			case Rideable.RIDEABLE_WAGON:
-			case Rideable.RIDEABLE_WATER:
+			case AIR_FLYING:
+			case LAND_BASED:
+			case WAGON:
+			case WATER_BASED:
 				return "board(s)";
-			case Rideable.RIDEABLE_SIT:
-			case Rideable.RIDEABLE_TABLE:
-			case Rideable.RIDEABLE_ENTERIN:
-			case Rideable.RIDEABLE_SLEEP:
+			case FURNITURE_SIT:
+			case FURNITURE_TABLE:
+			case ENTER_IN:
+			case FURNITURE_SLEEP:
 				return "get(s) into";
-			case Rideable.RIDEABLE_LADDER:
+			case LADDER:
 				return "climb(s) into";
 			}
 			return "board(s)";
@@ -219,16 +219,16 @@ public class StdTub extends StdRideable implements Drink
 		{
 			switch(rideBasis)
 			{
-			case Rideable.RIDEABLE_AIR:
-			case Rideable.RIDEABLE_LAND:
-			case Rideable.RIDEABLE_WATER:
+			case AIR_FLYING:
+			case LAND_BASED:
+			case WATER_BASED:
 				return "disembark(s) from";
-			case Rideable.RIDEABLE_TABLE:
-			case Rideable.RIDEABLE_SIT:
-			case Rideable.RIDEABLE_SLEEP:
-			case Rideable.RIDEABLE_WAGON:
-			case Rideable.RIDEABLE_LADDER:
-			case Rideable.RIDEABLE_ENTERIN:
+			case FURNITURE_TABLE:
+			case FURNITURE_SIT:
+			case FURNITURE_SLEEP:
+			case WAGON:
+			case LADDER:
+			case ENTER_IN:
 				return "get(s) out of";
 			}
 			return "disembark(s) from";
@@ -243,16 +243,16 @@ public class StdTub extends StdRideable implements Drink
 		{
 			switch(rideBasis)
 			{
-			case Rideable.RIDEABLE_AIR:
-			case Rideable.RIDEABLE_LAND:
-			case Rideable.RIDEABLE_WATER:
-			case Rideable.RIDEABLE_WAGON:
+			case AIR_FLYING:
+			case LAND_BASED:
+			case WATER_BASED:
+			case WAGON:
 				return "being ridden by";
-			case Rideable.RIDEABLE_TABLE:
-			case Rideable.RIDEABLE_SIT:
-			case Rideable.RIDEABLE_SLEEP:
-			case Rideable.RIDEABLE_ENTERIN:
-			case Rideable.RIDEABLE_LADDER:
+			case FURNITURE_TABLE:
+			case FURNITURE_SIT:
+			case FURNITURE_SLEEP:
+			case ENTER_IN:
+			case LADDER:
 				return "occupied by";
 			}
 			return "";

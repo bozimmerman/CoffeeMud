@@ -380,7 +380,7 @@ public class InstrumentMaking extends EnhancedCraftingSkill implements ItemCraft
 		setBrand(mob, buildingI);
 		if(buildingI instanceof Rideable)
 		{
-			((Rideable)buildingI).setRideBasis(Rideable.RIDEABLE_SIT);
+			((Rideable)buildingI).setRideBasis(Rideable.Basis.FURNITURE_SIT);
 			((Rideable)buildingI).setRiderCapacity(CMath.s_int(misctype));
 			if(((Rideable)buildingI).riderCapacity()<=0)
 				((Rideable)buildingI).setRiderCapacity(1);

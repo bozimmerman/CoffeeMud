@@ -989,7 +989,7 @@ public class InstanceArea extends StdAbility
 				final Item I=i.nextElement();
 				if(I==null)
 					continue;
-				if((I instanceof Exit)&&((I instanceof BoardableShip)))
+				if((I instanceof Exit)&&((I instanceof BoardableItem)))
 				{
 					for(int x=0;x<100;x++)
 					{
@@ -1575,11 +1575,11 @@ public class InstanceArea extends StdAbility
 	{
 		final Set<MOB> grp = mob.getGroupMembers(new HashSet<MOB>());
 		if(mob.isMonster()
-		&&(mob.riding() instanceof BoardableShip))
+		&&(mob.riding() instanceof BoardableItem))
 		{
 			final List<MOB> mobSet=new LinkedList<MOB>();
 			boolean playerFound=false;
-			final Area subA=((BoardableShip)mob.riding()).getShipArea();
+			final Area subA=((BoardableItem)mob.riding()).getArea();
 			for(final Enumeration<Room> r=subA.getProperMap();r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();

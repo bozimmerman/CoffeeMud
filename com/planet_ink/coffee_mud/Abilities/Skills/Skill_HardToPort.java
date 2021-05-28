@@ -100,9 +100,9 @@ public class Skill_HardToPort extends StdSkill
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;
-		if(affected instanceof SailingShip)
+		if(affected instanceof NavigableItem)
 		{
-			final SailingShip ship=(SailingShip)affected;
+			final NavigableItem ship=(NavigableItem)affected;
 			if((msg.target()==ship)
 			&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			&&(msg.value()>0)
@@ -122,15 +122,15 @@ public class Skill_HardToPort extends StdSkill
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		if((!(R.getArea() instanceof BoardableShip))
-		||(!(((BoardableShip)R.getArea()).getShipItem() instanceof SailingShip)))
+		if((!(R.getArea() instanceof BoardableItem))
+		||(!(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem)))
 		{
 			mob.tell(L("You must be on a sailing ship."));
 			return false;
 		}
-		final BoardableShip myShip=(BoardableShip)R.getArea();
-		final SailingShip myShipItem=(SailingShip)myShip.getShipItem();
-		final Area myShipArea=myShip.getShipArea();
+		final BoardableItem myShip=(BoardableItem)R.getArea();
+		final NavigableItem myShipItem=(NavigableItem)myShip.getBoardableItem();
+		final Area myShipArea=myShip.getArea();
 		final Room myShipRoom = CMLib.map().roomLocation(myShipItem);
 		if((myShipItem==null)
 		||(myShipArea==null)

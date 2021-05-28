@@ -110,7 +110,7 @@ public class Skill_InterceptShip extends StdSkill
 		&&(affected instanceof MOB))
 		{
 			final MOB mob=(MOB)affected;
-			if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.RIDEABLE_WATER))
+			if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.Basis.WATER_BASED))
 			{
 				if(mob.isInCombat())
 				{
@@ -126,9 +126,9 @@ public class Skill_InterceptShip extends StdSkill
 			}
 		}
 		else
-		if(affected instanceof SailingShip)
+		if(affected instanceof NavigableItem)
 		{
-			final SailingShip ship=(SailingShip)affected;
+			final NavigableItem ship=(NavigableItem)affected;
 			if(ship.isInCombat())
 			{
 				unInvoke();
@@ -174,10 +174,10 @@ public class Skill_InterceptShip extends StdSkill
 			return false;
 		Room currentR=null;
 		Rideable myShip=null;
-		if((R.getArea() instanceof BoardableShip)
-		&&(((BoardableShip)R.getArea()).getShipItem() instanceof SailingShip))
+		if((R.getArea() instanceof BoardableItem)
+		&&(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem))
 		{
-			final SailingShip sailShip=(SailingShip)((BoardableShip)R.getArea()).getShipItem();
+			final NavigableItem sailShip=(NavigableItem)((BoardableItem)R.getArea()).getBoardableItem();
 			myShip=sailShip;
 			currentR=CMLib.map().roomLocation(myShip);
 			if(currentR!=null)
@@ -196,7 +196,7 @@ public class Skill_InterceptShip extends StdSkill
 			}
 		}
 		else
-		if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.RIDEABLE_WATER))
+		if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.Basis.WATER_BASED))
 		{
 			myShip=mob.riding();
 			if(CMLib.flags().isWaterySurfaceRoom(mob.location()))
@@ -238,8 +238,8 @@ public class Skill_InterceptShip extends StdSkill
 				{
 					final Item I=R.findItem(null,parm);
 					if((I instanceof Rideable)
-					&&((I instanceof BoardableShip)
-						||(((Rideable)I).rideBasis()==Rideable.RIDEABLE_WATER))
+					&&((I instanceof BoardableItem)
+						||(((Rideable)I).rideBasis()==Rideable.Basis.WATER_BASED))
 					&&(!CMLib.flags().isHidden(I)))
 					{
 						targetShipI[0]=I;
@@ -302,7 +302,7 @@ public class Skill_InterceptShip extends StdSkill
 					room=nextRoom;
 				}
 				final String msgStr=L("Your charts say the way there is: @x1",dirs.toString());
-				if(myShip instanceof BoardableShip)
+				if(myShip instanceof BoardableItem)
 				{
 					final String courseMsgStr="COURSE "+courseStr.toString();
 					final CMMsg huhMsg=CMClass.getMsg(mob,null,null,CMMsg.MSG_HUH,msgStr,courseMsgStr,null);
@@ -312,7 +312,7 @@ public class Skill_InterceptShip extends StdSkill
 					A.targetRoom = targetR;
 				}
 				else
-				if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.RIDEABLE_WATER))
+				if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.Basis.WATER_BASED))
 				{
 					final Skill_InterceptShip A = (Skill_InterceptShip)beneficialAffect(mob,mob,asLevel,trail.size()/2);
 					A.targetRoom = targetR;

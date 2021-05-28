@@ -203,7 +203,7 @@ public class Skill_FindClanShip extends StdAbility
 	{
 		if(I==null)
 			return "";
-		if(I instanceof SailingShip)
+		if(I instanceof NavigableItem)
 		{
 			final PrivateProperty prop=CMLib.law().getPropertyRecord(I);
 			if(((prop != null)

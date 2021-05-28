@@ -244,7 +244,7 @@ public class WeatherAffects extends PuddleMaker
 			{
 				final Rideable riding=msg.source().riding();
 				if((riding!=null)
-				&&((riding.rideBasis()==Rideable.RIDEABLE_WATER)||(riding instanceof BoardableShip))
+				&&((riding.rideBasis()==Rideable.Basis.WATER_BASED)||(riding instanceof BoardableItem))
 				&&(!CMLib.flags().isABonusItems(riding))
 				&&(!riding.phyStats().isAmbiance("-ANTIWEATHER")))
 				{
@@ -280,9 +280,9 @@ public class WeatherAffects extends PuddleMaker
 						if(R.okMessage(msg.source(), wmsg))
 						{
 							R.send(msg.source(), wmsg);
-							if(riding instanceof BoardableShip)
+							if(riding instanceof BoardableItem)
 							{
-								final Area shipArea=((BoardableShip)riding).getShipArea();
+								final Area shipArea=((BoardableItem)riding).getArea();
 								if(shipArea != null)
 								{
 									for(final Enumeration<Room> sr=shipArea.getProperMap();sr.hasMoreElements();)
@@ -364,9 +364,9 @@ public class WeatherAffects extends PuddleMaker
 			final Area mA=M.location().getArea();
 			if(mA==A)
 				return true;
-			if(mA instanceof BoardableShip)
+			if(mA instanceof BoardableItem)
 			{
-				final Area inA=CMLib.map().areaLocation(((BoardableShip)mA).getShipItem());
+				final Area inA=CMLib.map().areaLocation(((BoardableItem)mA).getBoardableItem());
 				return inA==A;
 			}
 		}

@@ -40,7 +40,7 @@ public class StdRideable extends StdMOB implements Rideable
 		return "StdRideable";
 	}
 
-	protected int			rideBasis		= Rideable.RIDEABLE_LAND;
+	protected Basis			rideBasis		= Rideable.Basis.LAND_BASED;
 	protected int			riderCapacity	= 2;
 	protected List<Rider>	riders			= new SVector<Rider>();
 	protected String		putString		= "";
@@ -103,12 +103,14 @@ public class StdRideable extends StdMOB implements Rideable
 	{
 		switch(rideBasis())
 		{
-			case RIDEABLE_SIT:
-			case RIDEABLE_TABLE:
-			case RIDEABLE_ENTERIN:
-			case RIDEABLE_SLEEP:
-			case RIDEABLE_LADDER:
+			case FURNITURE_SIT:
+			case FURNITURE_TABLE:
+			case ENTER_IN:
+			case FURNITURE_SLEEP:
+			case LADDER:
 				return false;
+			default:
+				break;
 		}
 		return true;
 	}
@@ -128,13 +130,13 @@ public class StdRideable extends StdMOB implements Rideable
 
 	// common item/mob stuff
 	@Override
-	public int rideBasis()
+	public Basis rideBasis()
 	{
 		return rideBasis;
 	}
 
 	@Override
-	public void setRideBasis(final int basis)
+	public void setRideBasis(final Basis basis)
 	{
 		rideBasis = basis;
 	}
@@ -236,10 +238,10 @@ public class StdRideable extends StdMOB implements Rideable
 	public void recoverPhyStats()
 	{
 		super.recoverPhyStats();
-		if(rideBasis==Rideable.RIDEABLE_AIR)
+		if(rideBasis==Rideable.Basis.AIR_FLYING)
 			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_FLYING);
 		else
-		if(rideBasis==Rideable.RIDEABLE_WATER)
+		if(rideBasis==Rideable.Basis.WATER_BASED)
 			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_SWIMMING);
 	}
 
@@ -422,7 +424,7 @@ public class StdRideable extends StdMOB implements Rideable
 	{
 		if((R==null)||(stateSubjectStr.length()==0))
 		{
-			if((R instanceof Rideable)&&((Rideable)R).rideBasis()==Rideable.RIDEABLE_WAGON)
+			if((R instanceof Rideable)&&((Rideable)R).rideBasis()==Rideable.Basis.WAGON)
 				return "pulling along";
 			return "being ridden by";
 		}
@@ -581,7 +583,7 @@ public class StdRideable extends StdMOB implements Rideable
 				}
 				if((msg.tool() instanceof Rideable)
 				&&(msg.tool() instanceof Item)
-				&&(((Rideable)msg.tool()).rideBasis()!=Rideable.RIDEABLE_WAGON))
+				&&(((Rideable)msg.tool()).rideBasis()!=Rideable.Basis.WAGON))
 				{
 					msg.source().tell(L("@x1 can not be mounted on @x2.",((Item)msg.tool()).name(msg.source()),name(msg.source())));
 					return false;
@@ -633,15 +635,15 @@ public class StdRideable extends StdMOB implements Rideable
 								||(targetRoom.phyStats().weight()>2);
 					switch(rideBasis)
 					{
-					case Rideable.RIDEABLE_LAND:
+					case LAND_BASED:
 						if((targetRoom.domainType()==Room.DOMAIN_OUTDOORS_AIR)
 						||(CMLib.flags().isWateryRoom(targetRoom))
 						||(targetRoom.domainType()==Room.DOMAIN_INDOORS_AIR))
 							ok=false;
 						break;
-					case Rideable.RIDEABLE_AIR:
+					case AIR_FLYING:
 						break;
-					case Rideable.RIDEABLE_WATER:
+					case WATER_BASED:
 						if((!CMLib.flags().isWaterySurfaceRoom(sourceRoom))
 						&&(!CMLib.flags().isWaterySurfaceRoom(targetRoom)))
 							ok=false;
@@ -649,6 +651,8 @@ public class StdRideable extends StdMOB implements Rideable
 						||(targetRoom.domainType()==Room.DOMAIN_OUTDOORS_AIR)
 						||(CMLib.flags().isUnderWateryRoom(targetRoom)))
 							ok=false;
+						break;
+					default:
 						break;
 					}
 					if(!ok)

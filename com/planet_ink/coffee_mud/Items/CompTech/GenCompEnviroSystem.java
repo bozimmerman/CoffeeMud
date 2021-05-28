@@ -94,7 +94,7 @@ public class GenCompEnviroSystem extends GenElecCompItem
 						if(obj instanceof SpaceShip)
 						{
 							final SpaceShip ship=(SpaceShip)obj;
-							final Area A=ship.getShipArea();
+							final Area A=ship.getArea();
 							double pct= 1.0;
 							if(subjectToWearAndTear())
 								pct=pct*CMath.div(usesRemaining(),50);

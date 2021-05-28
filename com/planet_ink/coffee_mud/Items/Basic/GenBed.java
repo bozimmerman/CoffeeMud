@@ -54,7 +54,7 @@ public class GenBed extends GenRideable
 		basePhyStats().setLevel(1);
 		setMaterial(RawMaterial.RESOURCE_COTTON);
 		setRiderCapacity(2);
-		setRideBasis(Rideable.RIDEABLE_SLEEP);
+		setRideBasis(Rideable.Basis.FURNITURE_SLEEP);
 		recoverPhyStats();
 	}
 

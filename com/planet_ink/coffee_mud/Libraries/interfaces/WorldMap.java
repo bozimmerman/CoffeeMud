@@ -174,9 +174,9 @@ public interface WorldMap extends CMLibrary
 
 	public Auctioneer getAuctionHouse(String chain, String areaNameOrBranch);
 	public Enumeration<Auctioneer> auctionHouses();
-	public BoardableShip getShip(String calledThis);
-	public BoardableShip findShip(final String s, final boolean exactOnly);
-	public Enumeration<BoardableShip> ships();
+	public BoardableItem getShip(String calledThis);
+	public BoardableItem findShip(final String s, final boolean exactOnly);
+	public Enumeration<BoardableItem> ships();
 	public int numShips();
 	public Room getSafeRoomToMovePropertyTo(Room room, PrivateProperty I);
 

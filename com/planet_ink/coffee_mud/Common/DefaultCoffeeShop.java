@@ -180,7 +180,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 
 	protected void stopTicking(final Environmental E)
 	{
-		if((E instanceof BoardableShip)&&(E instanceof Item))
+		if((E instanceof BoardableItem)&&(E instanceof Item))
 		{
 			((Item)E).stopTicking();
 		}
@@ -299,10 +299,10 @@ public class DefaultCoffeeShop implements CoffeeShop
 			if(P instanceof LandTitle)
 			{
 				final LandTitle T=(LandTitle)P;
-				final BoardableShip ship = CMLib.map().getShip(T.landPropertyID());
+				final BoardableItem ship = CMLib.map().getShip(T.landPropertyID());
 				if(ship != null)
 				{
-					final Item I=ship.getShipItem();
+					final Item I=ship.getBoardableItem();
 					if(I!=null)
 					{
 						I.removeFromOwnerContainer();

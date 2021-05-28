@@ -46,7 +46,7 @@ public class Boat extends StdRideable
 		setName("a boat");
 		setDisplayText("a boat is docked here.");
 		setDescription("Looks like a boat");
-		rideBasis=Rideable.RIDEABLE_WATER;
+		rideBasis=Rideable.Basis.WATER_BASED;
 		material=RawMaterial.RESOURCE_OAK;
 	}
 

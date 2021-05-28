@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.Rideable.Basis;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftParms;
@@ -155,12 +156,12 @@ public class Wainwrighting extends EnhancedCraftingSkill implements ItemCraftor
 		if(I instanceof Rideable)
 		{
 			final Rideable R=(Rideable)I;
-			final int rideType=R.rideBasis();
+			final Basis rideType=R.rideBasis();
 			switch(rideType)
 			{
-			case Rideable.RIDEABLE_AIR:
-			case Rideable.RIDEABLE_LAND:
-			case Rideable.RIDEABLE_WAGON:
+			case AIR_FLYING:
+			case LAND_BASED:
+			case WAGON:
 				return true;
 			default:
 				return false;
@@ -415,7 +416,7 @@ public class Wainwrighting extends EnhancedCraftingSkill implements ItemCraftor
 		key=null;
 		if(buildingI instanceof Rideable)
 		{
-			((Rideable)buildingI).setRideBasis(Rideable.RIDEABLE_WAGON);
+			((Rideable)buildingI).setRideBasis(Rideable.Basis.WAGON);
 			((Rideable)buildingI).setRiderCapacity(riders);
 		}
 

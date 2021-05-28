@@ -64,7 +64,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 		setDescription("");
 		baseGoldValue=5;
 		containType=Container.CONTAIN_SSCOMPONENTS;
-		rideBasis=Rideable.RIDEABLE_TABLE;
+		rideBasis=Rideable.Basis.FURNITURE_TABLE;
 		riderCapacity=1;
 		basePhyStats.setSensesMask(basePhyStats.sensesMask()|PhyStats.SENSE_ITEMREADABLE|PhyStats.SENSE_ITEMNOTGET);
 		setDoorsNLocks(false,true,false,false,false,false);

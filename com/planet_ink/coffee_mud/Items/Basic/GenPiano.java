@@ -54,7 +54,7 @@ public class GenPiano extends GenRideable implements MusicalInstrument
 		basePhyStats().setLevel(1);
 		recoverPhyStats();
 		basePhyStats().setWeight(2000);
-		rideBasis = Rideable.RIDEABLE_SIT;
+		rideBasis = Rideable.Basis.FURNITURE_SIT;
 		riderCapacity = 2;
 		setMaterial(RawMaterial.RESOURCE_OAK);
 	}

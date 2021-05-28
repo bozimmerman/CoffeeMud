@@ -1101,7 +1101,7 @@ public class StdItem implements Item
 		else
 		if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MAGIC))
 		&&(!CMLib.flags().isGettable(this))
-		&&(!(this instanceof BoardableShip))
+		&&(!(this instanceof BoardableItem))
 		&&((displayText().isEmpty())
 		   ||((msg.tool() instanceof Ability)
 			&&(((Ability)msg.tool()).abstractQuality()==Ability.QUALITY_MALICIOUS))))
@@ -1120,9 +1120,9 @@ public class StdItem implements Item
 		case CMMsg.TYP_DAMAGE:
 		case CMMsg.TYP_WEAPONATTACK:
 		case CMMsg.TYP_ATTACKMISS:
-			if((this instanceof BoardableShip)
+			if((this instanceof BoardableItem)
 			||(this instanceof SpaceObject)
-			||((this instanceof Rideable)&&(((Rideable)this).rideBasis()==Rideable.RIDEABLE_WATER)))
+			||((this instanceof Rideable)&&(((Rideable)this).rideBasis()==Rideable.Basis.WATER_BASED)))
 				return true;
 			break;
 		case CMMsg.TYP_LOOK:
@@ -1487,7 +1487,7 @@ public class StdItem implements Item
 			break;
 		}
 		case CMMsg.TYP_CAUSESINK:
-			if(this instanceof BoardableShip)
+			if(this instanceof BoardableItem)
 				return true;
 			break;
 		case CMMsg.TYP_FILL:
@@ -1509,8 +1509,8 @@ public class StdItem implements Item
 				return true;
 			break;
 		case CMMsg.TYP_ADVANCE:
-			if((this instanceof BoardableShip)
-			||((this instanceof Rideable)||(((Rideable)this).rideBasis()==Rideable.RIDEABLE_WATER)))
+			if((this instanceof BoardableItem)
+			||((this instanceof Rideable)||(((Rideable)this).rideBasis()==Rideable.Basis.WATER_BASED)))
 				return true;
 			break;
 		case CMMsg.TYP_ACTIVATE:

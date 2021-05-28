@@ -163,10 +163,10 @@ public class Prop_LocationBound extends Property
 					return true;
 			}
 			else
-			if(affected instanceof BoardableShip)
+			if(affected instanceof BoardableItem)
 			{
-				final BoardableShip B=(BoardableShip)affected;
-				final Area A=B.getShipArea();
+				final BoardableItem B=(BoardableItem)affected;
+				final Area A=B.getArea();
 				if(A!=null)
 				{
 					for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)

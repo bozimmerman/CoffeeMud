@@ -9,7 +9,6 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
-import com.planet_ink.coffee_mud.Items.Basic.GenSailingShip;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -105,10 +104,10 @@ public class Skill_BoulderThrowing extends StdSkill
 				final MOB mob=(MOB)affected;
 				final Room R=(mob!=null)?mob.location():null;
 				final Area A=(R != null) ? R.getArea() : null;
-				final Item shipItem=(A instanceof BoardableShip) ? ((BoardableShip)A).getShipItem() : null;
+				final Item shipItem=(A instanceof BoardableItem) ? ((BoardableItem)A).getBoardableItem() : null;
 				if((mob!=null)
 				&&(mob.isMonster())
-				&&(shipItem instanceof SailingShip)
+				&&(shipItem instanceof NavigableItem)
 				&&(!mob.isInCombat()))
 				{
 					final Item ammoI=mob.fetchHeldItem();
@@ -116,7 +115,7 @@ public class Skill_BoulderThrowing extends StdSkill
 					{
 						if(tickDownThisShipCombatRound==0)
 						{
-							if(((SailingShip)shipItem).isInCombat())
+							if(((NavigableItem)shipItem).isInCombat())
 								CMLib.commands().forceStandardCommand(mob, "Throw", new XVector<String>("THROW",ammoI.Name()));
 						}
 					}
@@ -183,7 +182,8 @@ public class Skill_BoulderThrowing extends StdSkill
 				if((O instanceof Command) && (((Command)O).ID().equals("Throw")))
 				{
 					final Area A=R.getArea();
-					final Item shipItem=(A instanceof BoardableShip) ? ((BoardableShip)A).getShipItem() : null;
+					final Item possShipItem = (A instanceof BoardableItem) ? ((BoardableItem)A).getBoardableItem() : null;
+					final SiegableItem shipItem = (possShipItem instanceof SiegableItem) ? (SiegableItem)possShipItem : null;
 					final Room shipR=(shipItem != null)?CMLib.map().roomLocation(shipItem):null;
 
 					final String str;
@@ -193,10 +193,10 @@ public class Skill_BoulderThrowing extends StdSkill
 						cmd.remove(str);
 					}
 					else
-					if((shipItem instanceof SailingShip)
+					if((shipItem instanceof NavigableItem)
 					&&(shipR!=null)
-					&&(((SailingShip)shipItem).getCombatant()!=null))
-						str=shipR.getContextName(((SailingShip)shipItem).getCombatant());
+					&&(((NavigableItem)shipItem).getCombatant()!=null))
+						str=shipR.getContextName(((NavigableItem)shipItem).getCombatant());
 					else
 						return true;
 
@@ -213,9 +213,10 @@ public class Skill_BoulderThrowing extends StdSkill
 						target=shipR.findItem(null,str);
 					else
 						target=R.findItem(null,str);
-					if((target instanceof BoardableShip)
+					if((target instanceof SiegableItem)
 					&&(CMLib.flags().canBeSeenBy(target, mob)))
 					{
+						final SiegableItem targetSiegeItem = (SiegableItem)target;
 						if(tickDownThisShipCombatRound>0)
 							msg.setSourceMessage(L("You've already thrown at a ship this round."));
 						else
@@ -225,10 +226,10 @@ public class Skill_BoulderThrowing extends StdSkill
 						if((!(item instanceof Ammunition))||(((Ammunition)item).ammunitionRemaining()<1))
 							msg.setSourceMessage(L("You can't throw that at another ship."));
 						else
-						if((shipItem instanceof SailingShip)
+						if((shipItem instanceof NavigableItem)
 						&&((R.domainType()&Room.INDOORS)==0))
 						{
-							final SailingShip sailShip=(SailingShip)shipItem;
+							final NavigableItem sailShip=(NavigableItem)shipItem;
 							if(sailShip.isInCombat() && (sailShip.getCombatant()==target))
 							{
 								if(this.boulderThrower==null)
@@ -289,7 +290,7 @@ public class Skill_BoulderThrowing extends StdSkill
 									tickDownThisShipCombatRound=CombatLibrary.TICKS_PER_SHIP_COMBAT;
 									for(int i=0;i<distance;i++)
 										wasHit = wasHit && super.proficiencyCheck(mob, -50+mob.charStats().getStat(CharStats.STAT_DEXTERITY)+(super.getXLEVELLevel(mob)*2), false);
-									CMLib.combat().postShipAttack(mob, shipItem, target, weapon, wasHit);
+									CMLib.combat().postSiegeAttack(mob, shipItem, targetSiegeItem, weapon, wasHit);
 									if(ammo.ammunitionRemaining()<=0)
 										ammo.destroy();
 								}

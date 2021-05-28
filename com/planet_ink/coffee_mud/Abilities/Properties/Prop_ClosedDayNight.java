@@ -334,7 +334,7 @@ public class Prop_ClosedDayNight extends Property
 							&&(I.container()==null)
 							&&(I instanceof Rideable)
 							&&(!(I instanceof Exit))
-							&&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_SLEEP))
+							&&(((Rideable)I).rideBasis()==Rideable.Basis.FURNITURE_SLEEP))
 							{
 								final String itemName=R.getContextName(I);
 								if(!CMLib.flags().isSleeping(mob))
@@ -361,7 +361,7 @@ public class Prop_ClosedDayNight extends Property
 							&&(I.container()==null)
 							&&(I instanceof Rideable)
 							&&(!(I instanceof Exit))
-							&&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_SIT))
+							&&(((Rideable)I).rideBasis()==Rideable.Basis.FURNITURE_SIT))
 							{
 								final String itemName=R.getContextName(I);
 								if(!CMLib.flags().isSitting(mob))

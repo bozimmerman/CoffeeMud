@@ -52,7 +52,7 @@ public class Pegasus extends StdRideable
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
-		rideBasis=Rideable.RIDEABLE_AIR;
+		rideBasis=Rideable.Basis.AIR_FLYING;
 
 		basePhyStats.setWeight(1500 + Math.abs(randomizer.nextInt() % 200));
 

@@ -682,7 +682,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		else
 		if(O instanceof Rideable)
 		{
-			image=getHashedMXPImage(H,"RIDEABLE_"+Rideable.RIDEABLE_DESCS[((Rideable)O).rideBasis()]);
+			image=getHashedMXPImage(H,"RIDEABLE_"+((Rideable)O).rideBasis().toString());
 			if(image==null)
 				image=getHashedMXPImage(H,"RIDEABLE_*");
 		}

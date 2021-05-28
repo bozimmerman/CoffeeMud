@@ -121,7 +121,7 @@ public class Skill_Climb extends StdSkill
 
 					}
 					else
-					if(((Rideable)target).rideBasis()!=Rideable.RIDEABLE_LADDER)
+					if(((Rideable)target).rideBasis()!=Rideable.Basis.LADDER)
 					{
 						mob.tell(L("You can not climb '@x1'.",target.name(mob)));
 						return false;

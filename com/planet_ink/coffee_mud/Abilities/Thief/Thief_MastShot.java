@@ -110,7 +110,7 @@ public class Thief_MastShot extends ThiefSkill
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected, affectableStats);
-		if(affected instanceof BoardableShip)
+		if(affected instanceof BoardableItem)
 		{
 			affectableStats.setAbility(affectableStats.ability() - abilityCode());
 		}
@@ -130,18 +130,18 @@ public class Thief_MastShot extends ThiefSkill
 		if(!super.okMessage(myHost, msg))
 			return false;
 		final Physical affected=this.affected;
-		if(affected instanceof BoardableShip)
+		if(affected instanceof BoardableItem)
 		{
 
 		}
 		else
 		if(affected instanceof AmmunitionWeapon)
 		{
-			if((msg.source().riding() instanceof SailingShip)
+			if((msg.source().riding() instanceof NavigableItem)
 			&&(msg.tool()==affected)
 			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&(msg.target() instanceof Rideable)
-			&&(msg.target() instanceof BoardableShip)
+			&&(msg.target() instanceof BoardableItem)
 			&&(msg.target() instanceof Physical)
 			)
 			{
@@ -181,7 +181,7 @@ public class Thief_MastShot extends ThiefSkill
 				}
 				else
 				{
-					CMLib.combat().postShipWeaponAttackResult(msg.source(), (SailingShip)msg.source().riding(), (Rideable)msg.target(), (Weapon)affected, false);
+					CMLib.combat().postSiegeWeaponAttackResult(msg.source(), (NavigableItem)msg.source().riding(), (Rideable)msg.target(), (Weapon)affected, false);
 					if(this.canBeUninvoked())
 						unInvoke();
 					return false;
@@ -197,15 +197,15 @@ public class Thief_MastShot extends ThiefSkill
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		if((!(R.getArea() instanceof BoardableShip))
-		||(!(((BoardableShip)R.getArea()).getShipItem() instanceof SailingShip))
+		if((!(R.getArea() instanceof BoardableItem))
+		||(!(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem))
 		||((R.domainType()&Room.INDOORS)!=0))
 		{
 			mob.tell(L("You must be on the deck of a ship to fire a mast shot."));
 			return false;
 		}
-		final BoardableShip myShip=(BoardableShip)R.getArea();
-		final SailingShip myShipItem=(SailingShip)myShip.getShipItem();
+		final BoardableItem myShip=(BoardableItem)R.getArea();
+		final NavigableItem myShipItem=(NavigableItem)myShip.getBoardableItem();
 		if((myShipItem==null)
 		||(!(myShipItem.owner() instanceof Room))
 		||(!CMLib.flags().isWateryRoom((Room)myShipItem.owner())))
@@ -213,12 +213,12 @@ public class Thief_MastShot extends ThiefSkill
 			mob.tell(L("Your ship must be at sea to fire a mast shot."));
 			return false;
 		}
-		SailingShip enemyShip=null;
+		NavigableItem enemyShip=null;
 		final PhysicalAgent combatant=myShipItem.getCombatant();
 		if(combatant != null)
 		{
-			if(combatant instanceof SailingShip)
-				enemyShip=(SailingShip)combatant;
+			if(combatant instanceof NavigableItem)
+				enemyShip=(NavigableItem)combatant;
 		}
 
 		if(enemyShip == null)
@@ -227,7 +227,7 @@ public class Thief_MastShot extends ThiefSkill
 			return false;
 		}
 
-		final Item enemyShipItem=enemyShip.getShipItem();
+		final Item enemyShipItem=enemyShip.getBoardableItem();
 
 		if(commands.size()==0)
 		{
@@ -246,7 +246,7 @@ public class Thief_MastShot extends ThiefSkill
 		final Item siegeItem = R.findItem(null, weaponName);
 		if(((siegeItem)==null)
 		||(!CMLib.flags().canBeSeenBy(siegeItem, mob))
-		||(!CMLib.combat().isAShipSiegeWeapon(siegeItem)))
+		||(!CMLib.combat().isASiegeWeapon(siegeItem)))
 		{
 			mob.tell(L("You don't see a siege weapon called '@x1' here.",weaponName));
 			return false;

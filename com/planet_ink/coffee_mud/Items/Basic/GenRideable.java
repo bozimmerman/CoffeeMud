@@ -50,7 +50,7 @@ public class GenRideable extends StdRideable
 		setDisplayText("a generic boat sits here.");
 		setDescription("");
 		basePhyStats().setWeight(2000);
-		rideBasis=Rideable.RIDEABLE_WATER;
+		rideBasis=Rideable.Basis.WATER_BASED;
 		setMaterial(RawMaterial.RESOURCE_OAK);
 		recoverPhyStats();
 	}
@@ -171,8 +171,16 @@ public class GenRideable extends StdRideable
 			setOpenDelayTicks(CMath.s_parseIntExpression(val));
 			break;
 		case 5:
-			setRideBasis(CMath.s_parseListIntExpression(Rideable.RIDEABLE_DESCS, val));
+		{
+			final Rideable.Basis bas = (Rideable.Basis)CMath.s_valueOf(Rideable.Basis.class, val);
+			if(bas == null)
+			{
+				final int x=CMath.s_parseListIntExpression(Rideable.Basis.getStrings(), val);
+				if((x>=0)&&(x<Rideable.Basis.values().length))
+					setRideBasis(Rideable.Basis.values()[x]);
+			}
 			break;
+		}
 		case 6:
 			setRiderCapacity(CMath.s_parseIntExpression(val));
 			break;

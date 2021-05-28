@@ -105,10 +105,10 @@ public class Druid_Krakenform extends StdAbility
 
 	protected final static String ammoType="tentacle";
 
-	protected SailingShip ship = null;
+	protected NavigableItem ship = null;
 	protected Language	krakenSpeak = null;
 
-	protected SailingShip getShip()
+	protected NavigableItem getShip()
 	{
 		if(ship == null)
 		{
@@ -117,7 +117,7 @@ public class Druid_Krakenform extends StdAbility
 			{
 				final MOB mob=(MOB)affected;
 				final Room R=mob.location();
-				ship=(SailingShip)CMClass.getItem("GenSailingShip");
+				ship=(NavigableItem)CMClass.getItem("GenSailingShip");
 				ship.basePhyStats().setAbility((int)Math.round(Math.ceil(CMath.div(adjustedLevel(mob,0),15.0))));
 				ship.recoverPhyStats();
 				ship.setSavable(false);
@@ -135,7 +135,7 @@ public class Druid_Krakenform extends StdAbility
 				((Exit)ship).setDoorsNLocks(false, false, false, false, false, false);
 				if(ship instanceof PrivateProperty)
 					((PrivateProperty)ship).setOwnerName(mob.Name());
-				final Area A=ship.getShipArea();
+				final Area A=ship.getArea();
 				A.setName("Krakenform_"+mob.Name());
 				final Room deckR=CMClass.getLocale("ShipDeck");
 				deckR.setRoomID(A.getNewRoomID(R,-1));
@@ -218,7 +218,7 @@ public class Druid_Krakenform extends StdAbility
 					final int dir=CMLib.directions().getDirectionCode(word);
 					if(dir >= 0)
 					{
-						final SailingShip ship=getShip();
+						final NavigableItem ship=getShip();
 						if(ship != null)
 						{
 							msg.setTargetMessage("SAIL "+word);
@@ -321,13 +321,13 @@ public class Druid_Krakenform extends StdAbility
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		final SailingShip ship=this.getShip();
+		final NavigableItem ship=this.getShip();
 		if(ship != null)
 		{
 			ship.setAnchorDown(false);
 			if(ship.isInCombat())
 			{
-				final Area A=ship.getShipArea();
+				final Area A=ship.getArea();
 				if(A!=null)
 				{
 					for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)

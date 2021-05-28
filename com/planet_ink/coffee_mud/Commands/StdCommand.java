@@ -190,11 +190,11 @@ public class StdCommand implements Command
 			if(R!=null)
 			{
 				final Area A=R.getArea();
-				if(A instanceof BoardableShip)
+				if(A instanceof BoardableItem)
 				{
-					final BoardableShip ship = (BoardableShip)A;
-					if((ship.getShipItem() instanceof Combatant)
-					&&(((Combatant)ship.getShipItem()).isInCombat()))
+					final BoardableItem ship = (BoardableItem)A;
+					if((ship.getBoardableItem() instanceof Combatant)
+					&&(((Combatant)ship.getBoardableItem()).isInCombat()))
 						return combatActionsCost(mob,cmds);
 				}
 			}

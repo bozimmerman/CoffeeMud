@@ -36,7 +36,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author Bo Zimmerman
  *
  */
-public interface BoardableShip extends Environmental
+public interface BoardableItem extends Environmental
 {
 	/**
 	 * Designates that this ship is landed and docked in the given
@@ -72,7 +72,7 @@ public interface BoardableShip extends Environmental
 	 * represents the contents of the ship.
 	 * @return the official area version of this ship
 	 */
-	public Area getShipArea();
+	public Area getArea();
 
 	/**
 	 * Space ships are unique in having an Item stand-in for dirt-side access,
@@ -80,13 +80,13 @@ public interface BoardableShip extends Environmental
 	 * represents the contents of the ship.
 	 * @param xml area xml for the ship
 	 */
-	public void setShipArea(String xml);
+	public void setArea(String xml);
 
 	/**
-	 * Renames the ship to something else
-	 * @param newName the new ship name
+	 * Renames the boardable to something else
+	 * @param newName the new name
 	 */
-	public void renameShip(String newName);
+	public void rename(String newName);
 
 	/**
 	 * Returns the room ID of the ships home port.
@@ -105,5 +105,5 @@ public interface BoardableShip extends Environmental
 	 * as well as an Area object.  This method returns that Item.
 	 * @return the official space version of this ship
 	 */
-	public Item getShipItem();
+	public Item getBoardableItem();
 }

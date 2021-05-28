@@ -222,12 +222,12 @@ public class CargoLoading extends CommonSkill
 			if(possShipI==null)
 				return false;
 			shipName=possShipI.Name();
-			if(!(possShipI instanceof BoardableShip))
+			if(!(possShipI instanceof BoardableItem))
 			{
 				commonTell(mob, L("@x1 is not a cargo ship.",possShipI.name()));
 				return false;
 			}
-			if((I instanceof BoardableShip)
+			if((I instanceof BoardableItem)
 			||(!CMLib.flags().isGettable(I)))
 			{
 				commonTell(mob, L("You can't load @x1 as cargo!",I.name()));
@@ -243,7 +243,7 @@ public class CargoLoading extends CommonSkill
 				}
 			}
 			this.cargoR=null;
-			final Area shipA=((BoardableShip)possShipI).getShipArea();
+			final Area shipA=((BoardableItem)possShipI).getArea();
 			for(final Enumeration<Room> r=shipA.getProperMap();r.hasMoreElements();)
 			{
 				final Room R1=r.nextElement();
@@ -268,7 +268,7 @@ public class CargoLoading extends CommonSkill
 			if(possShipI==null)
 				return false;
 			shipName=possShipI.Name();
-			if(!(possShipI instanceof BoardableShip))
+			if(!(possShipI instanceof BoardableItem))
 			{
 				commonTell(mob, L("@x1 is not a cargo ship.",possShipI.name()));
 				return false;
@@ -283,7 +283,7 @@ public class CargoLoading extends CommonSkill
 				}
 			}
 			this.cargoR=null;
-			final Area shipA=((BoardableShip)possShipI).getShipArea();
+			final Area shipA=((BoardableItem)possShipI).getArea();
 			for(final Enumeration<Room> r=shipA.getProperMap();r.hasMoreElements();)
 			{
 				final Room R1=r.nextElement();

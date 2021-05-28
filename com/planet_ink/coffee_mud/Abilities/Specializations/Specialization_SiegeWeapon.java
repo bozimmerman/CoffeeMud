@@ -105,7 +105,7 @@ public class Specialization_SiegeWeapon extends StdAbility
 
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.tool() instanceof AmmunitionWeapon)
-		&&(CMLib.combat().isAShipSiegeWeapon((Item)msg.tool()))
+		&&(CMLib.combat().isASiegeWeapon((Item)msg.tool()))
 		&&(affected instanceof MOB)
 		&&(((MOB)affected).location()==CMLib.map().roomLocation(msg.tool()))
 		&&(msg.value()>0))

@@ -243,7 +243,7 @@ public class Scrapping extends CommonSkill
 
 		final PrivateProperty prop=CMLib.law().getPropertyRecord(I);
 		if(((prop != null)&&(!CMLib.law().doesHavePrivilegesWith(mob, prop)))
-		||(I instanceof SailingShip))
+		||(I instanceof NavigableItem))
 		{
 			commonTell(mob,L("@x1 can't be scrapped.",I.name(mob)));
 			return false;

@@ -87,16 +87,16 @@ public class StdGrapples extends StdPortal
 			final Area sourceA=sourceR.getArea();
 			final Area targetA=targetR.getArea();
 			if((sourceA==targetA)
-			||(!(sourceA instanceof BoardableShip))
-			||(!(targetA instanceof BoardableShip)))
+			||(!(sourceA instanceof BoardableItem))
+			||(!(targetA instanceof BoardableItem)))
 			{
 				ungrapple();
 				return;
 			}
-			final BoardableShip sourceS=(BoardableShip)sourceA;
-			final BoardableShip targetS=(BoardableShip)targetA;
-			final Room sourceShipR=CMLib.map().roomLocation(sourceS.getShipItem());
-			final Room targetShipR=CMLib.map().roomLocation(targetS.getShipItem());
+			final BoardableItem sourceS=(BoardableItem)sourceA;
+			final BoardableItem targetS=(BoardableItem)targetA;
+			final Room sourceShipR=CMLib.map().roomLocation(sourceS.getBoardableItem());
+			final Room targetShipR=CMLib.map().roomLocation(targetS.getBoardableItem());
 			if((sourceShipR==null)||(sourceShipR!=targetShipR))
 			{
 				ungrapple();
@@ -148,8 +148,8 @@ public class StdGrapples extends StdPortal
 				if((sourceRoom!=null)
 				&&(targetRoom!=null)
 				&&(sourceRoom.getArea()!=targetRoom.getArea())
-				&&(sourceRoom.getArea() instanceof BoardableShip)
-				&&(targetRoom.getArea() instanceof BoardableShip))
+				&&(sourceRoom.getArea() instanceof BoardableItem)
+				&&(targetRoom.getArea() instanceof BoardableItem))
 				{
 					final StdGrapples me=this;
 					msg.addTrailerRunnable(new Runnable()
@@ -186,30 +186,30 @@ public class StdGrapples extends StdPortal
 			{
 				final Area sourceA=sourceR.getArea();
 				final Area targetA=targetR.getArea();
-				if((sourceA instanceof BoardableShip)
-				&&(targetA instanceof BoardableShip))
+				if((sourceA instanceof BoardableItem)
+				&&(targetA instanceof BoardableItem))
 				{
-					final BoardableShip sourceS=(BoardableShip)sourceA;
-					final BoardableShip targetS=(BoardableShip)targetA;
-					if((msg.source().riding()==sourceS.getShipItem())
-					&&(sourceS.getShipArea()!=null))
+					final BoardableItem sourceS=(BoardableItem)sourceA;
+					final BoardableItem targetS=(BoardableItem)targetA;
+					if((msg.source().riding()==sourceS.getBoardableItem())
+					&&(sourceS.getArea()!=null))
 					{
-						for(final Enumeration<Room> r=sourceS.getShipArea().getProperMap();r.hasMoreElements();)
+						for(final Enumeration<Room> r=sourceS.getArea().getProperMap();r.hasMoreElements();)
 						{
 							final Room R=r.nextElement();
 							if((R!=null) && ((R.domainType()&Room.INDOORS)==0))
-								R.showHappens(CMMsg.MSG_OK_VISUAL, L("Your ship is grappled to @x1 and cannot move.",targetS.getShipItem().name()));
+								R.showHappens(CMMsg.MSG_OK_VISUAL, L("Your ship is grappled to @x1 and cannot move.",targetS.getBoardableItem().name()));
 						}
 						return false;
 					}
-					if((msg.source().riding()==targetS.getShipItem())
-					&&(targetS.getShipArea()!=null))
+					if((msg.source().riding()==targetS.getBoardableItem())
+					&&(targetS.getArea()!=null))
 					{
-						for(final Enumeration<Room> r=targetS.getShipArea().getProperMap();r.hasMoreElements();)
+						for(final Enumeration<Room> r=targetS.getArea().getProperMap();r.hasMoreElements();)
 						{
 							final Room R=r.nextElement();
 							if((R!=null) && ((R.domainType()&Room.INDOORS)==0))
-								R.showHappens(CMMsg.MSG_OK_VISUAL, L("Your ship is grappled to @x1 and cannot move.",sourceS.getShipItem().name()));
+								R.showHappens(CMMsg.MSG_OK_VISUAL, L("Your ship is grappled to @x1 and cannot move.",sourceS.getBoardableItem().name()));
 						}
 						return false;
 					}

@@ -44,7 +44,7 @@ public class PegasusGreater extends StdRideable
 	{
 		super();
 
-		rideBasis = Rideable.RIDEABLE_AIR;
+		rideBasis = Rideable.Basis.AIR_FLYING;
 
 		final Random randomizer = new Random(System.currentTimeMillis());
 

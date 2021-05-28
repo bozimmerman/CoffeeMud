@@ -153,15 +153,15 @@ public class FishLore extends CommonSkill
 			commonTell(mob,L("You can't do this indoors!"));
 			return false;
 		}
-		if((mob.riding()!=null)&&(mob.riding().rideBasis()==Rideable.RIDEABLE_WATER))
+		if((mob.riding()!=null)&&(mob.riding().rideBasis()==Rideable.Basis.WATER_BASED))
 			fishRoom=R;
 		else
 		if(CMLib.flags().isWateryRoom(R))
 			fishRoom=R;
 		else
-		if((R.getArea() instanceof BoardableShip)
+		if((R.getArea() instanceof BoardableItem)
 		&&((R.domainType()&Room.INDOORS)==0))
-			fishRoom=CMLib.map().roomLocation(((BoardableShip)R.getArea()).getShipItem());
+			fishRoom=CMLib.map().roomLocation(((BoardableItem)R.getArea()).getBoardableItem());
 
 		if(fishRoom==null)
 		{

@@ -41,30 +41,40 @@ import java.util.Set;
  */
 public interface Rideable extends Rider
 {
-	/** constant for the  rideType() method.  Means it is ridden over land*/
-	public final static int RIDEABLE_LAND=0;
-	/** constant for the  rideType() method.  Means it is ridden over water*/
-	public final static int RIDEABLE_WATER=1;
-	/** constant for the  rideType() method.  Means it is ridden through the air*/
-	public final static int RIDEABLE_AIR=2;
-	/** constant for the  rideType() method.  Means it is sat upon*/
-	public final static int RIDEABLE_SIT=3;
-	/** constant for the  rideType() method.  Means it is slept upon*/
-	public final static int RIDEABLE_SLEEP=4;
-	/** constant for the  rideType() method.  Means it is sat at*/
-	public final static int RIDEABLE_TABLE=5;
-	/** constant for the  rideType() method.  Means it is entered into*/
-	public final static int RIDEABLE_ENTERIN=6;
-	/** constant for the  rideType() method.  Means it is climbed*/
-	public final static int RIDEABLE_LADDER=7;
-	/** constant for the  rideType() method.  Means it is pulled by others*/
-	public final static int RIDEABLE_WAGON=8;
-	/** constant for the  rideType() method.  Means it is climbed and travels with player*/
-	public final static String[] RIDEABLE_DESCS=
+	public static enum Basis
 	{
-		"LAND-BASED","WATER-BASED","AIR-FLYING","FURNITURE-SIT","FURNITURE-SLEEP","FURNITURE-TABLE",
-		"ENTER-IN","LADDER","WAGON"
-	};
+		LAND_BASED,
+		WATER_BASED,
+		AIR_FLYING,
+		FURNITURE_SIT,
+		FURNITURE_SLEEP,
+		FURNITURE_TABLE,
+		ENTER_IN,
+		LADDER,
+		WAGON
+		;
+		private final String friendlyCodeName;
+		private static String[] friendlyCodeNames = null;
+		private Basis()
+		{
+			friendlyCodeName = name().replace('_','-');
+		}
+		public String toString()
+		{
+			return friendlyCodeName;
+		}
+		public static String[] getStrings()
+		{
+			if(friendlyCodeNames == null)
+			{
+				final String[] friendlyCodeNames = new String[Basis.values().length];
+				for(int b=0; b<Basis.values().length;b++)
+					friendlyCodeNames[b]=Basis.values()[b].toString();
+				Basis.friendlyCodeNames = friendlyCodeNames;
+			}
+			return friendlyCodeNames;
+		}
+	}
 
 	/**
 	 * Whether the type of rideable is mobile.
@@ -78,31 +88,36 @@ public interface Rideable extends Rider
 	 * @see Rideable
 	 * @return the RIDEABLE_* constant describing how this is ridden
 	 */
-	public int rideBasis();
+	public Basis rideBasis();
+
 	/**
 	 * Sets type of rideable object this is.
 	 * @see Rideable
 	 * @param basis the RIDEABLE_* constant describing how this is ridden
 	 */
-	public void setRideBasis(int basis);
+	public void setRideBasis(Basis basis);
+
 	/**
 	 * The number of Riders which may ride upon this Rideable
 	 * @see Rider
 	 * @return the maximum riders
 	 */
 	public int riderCapacity();
+
 	/**
 	 * Sets the number of Riders which may ride upon this Rideable
 	 * @see Rider
 	 * @param newCapacity the maximum riders
 	 */
 	public void setRiderCapacity(int newCapacity);
+
 	/**
 	 * Returns the number of riders currently mounted on this Rideable
 	 * @see Rider
 	 * @return the number of current Riders
 	 */
 	public int numRiders();
+
 	/**
 	 * Returns an iterator of the riders on this rideable
 	 * @see Rider

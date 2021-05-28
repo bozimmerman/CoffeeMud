@@ -239,7 +239,7 @@ public class AreaData extends StdWebMacro
 				final StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("AREAISBOARDABLE"))
 				{
-					return ""+(A instanceof BoardableShip);
+					return ""+(A instanceof BoardableItem);
 				}
 				if(parms.containsKey("AREAXML"))
 				{
@@ -539,7 +539,7 @@ public class AreaData extends StdWebMacro
 					str.append(((SpaceObject)A).speed());
 
 				if(parms.containsKey("ISSPACE"))
-					str.append(""+((A instanceof SpaceObject)&&(!(A instanceof BoardableShip))));
+					str.append(""+((A instanceof SpaceObject)&&(!(A instanceof BoardableItem))));
 
 				str.append(AreaData.affects(A,httpReq,parms,1));
 				str.append(AreaData.behaves(A,httpReq,parms,1));

@@ -355,9 +355,9 @@ public class Hunting extends GatheringSkill
 						if((CMLib.flags().canBreatheThis(found, RawMaterial.RESOURCE_FRESHWATER)
 							|| CMLib.flags().canBreatheThis(found, RawMaterial.RESOURCE_SALTWATER))
 						&&(!CMLib.flags().canBreatheThis(found, RawMaterial.RESOURCE_AIR)))
-							((Rideable)found).setRideBasis(Rideable.RIDEABLE_WATER);
+							((Rideable)found).setRideBasis(Rideable.Basis.WATER_BASED);
 						else
-							((Rideable)found).setRideBasis(Rideable.RIDEABLE_LAND);
+							((Rideable)found).setRideBasis(Rideable.Basis.LAND_BASED);
 					}
 				}
 			}

@@ -751,12 +751,12 @@ public class ItemData extends StdWebMacro
 					case RIDEABLETYPE: // rideable type
 						if((firstTime)&&(I instanceof Rideable))
 							old=""+((Rideable)I).rideBasis();
-						for(int r=0;r<Rideable.RIDEABLE_DESCS.length;r++)
+						for(int r=0;r<Rideable.Basis.values().length;r++)
 						{
 							str.append("<OPTION VALUE=\""+r+"\"");
 							if(r==CMath.s_int(old))
 								str.append(" SELECTED");
-							str.append(">"+Rideable.RIDEABLE_DESCS[r]);
+							str.append(">"+Rideable.Basis.values()[r].toString());
 						}
 						break;
 					case MOBSHELD: // mobsheld rideable capacity
@@ -792,13 +792,13 @@ public class ItemData extends StdWebMacro
 					case READABLETEXT: // readabletext
 						if(firstTime)
 							old=""+I.readableText();
-						if(I instanceof BoardableShip)
+						if(I instanceof BoardableItem)
 						{
-							final BoardableShip ship=(BoardableShip)I;
-							if((ship.getShipArea()!=null)
-							&&(ship.getShipArea().getRoom(old)==null)
-							&&(ship.getShipArea().getProperMap().hasMoreElements()))
-								old=ship.getShipArea().getProperMap().nextElement().roomID();
+							final BoardableItem ship=(BoardableItem)I;
+							if((ship.getArea()!=null)
+							&&(ship.getArea().getRoom(old)==null)
+							&&(ship.getArea().getProperMap().hasMoreElements()))
+								old=ship.getArea().getProperMap().nextElement().roomID();
 						}
 						str.append(old);
 						break;
@@ -1259,7 +1259,7 @@ public class ItemData extends StdWebMacro
 						}
 						break;
 					case ISBOARDABLEITEM:
-						str.append(I instanceof BoardableShip);
+						str.append(I instanceof BoardableItem);
 						break;
 					case ISPRIVATEPROPERTY:
 						str.append(I instanceof PrivateProperty);
@@ -1452,9 +1452,9 @@ public class ItemData extends StdWebMacro
 						}
 						break;
 					case AREAXML:
-						if(I instanceof BoardableShip)
+						if(I instanceof BoardableItem)
 						{
-							final String xml=CMLib.xml().parseOutAngleBracketsAndQuotes(CMLib.coffeeMaker().getAreaObjectXML(((BoardableShip)I).getShipArea(), null, null, null, true).toString());
+							final String xml=CMLib.xml().parseOutAngleBracketsAndQuotes(CMLib.coffeeMaker().getAreaObjectXML(((BoardableItem)I).getArea(), null, null, null, true).toString());
 							str.append((firstTime) ?
 								this.htmlOutgoingFilter(xml) :
 									this.htmlOutgoingFilter(old)).append(", ");

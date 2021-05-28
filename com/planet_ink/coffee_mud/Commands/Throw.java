@@ -147,7 +147,7 @@ public class Throw extends StdCommand
 		}
 		else
 		{
-			final boolean useShipDirs=((mob.location() instanceof BoardableShip)||(mob.location().getArea() instanceof BoardableShip));
+			final boolean useShipDirs=((mob.location() instanceof BoardableItem)||(mob.location().getArea() instanceof BoardableItem));
 			final int opDir=mob.location().getReverseDir(dir);
 			final String inDir=useShipDirs?CMLib.directions().getShipInDirectionName(dir):CMLib.directions().getInDirectionName(dir);
 			final String fromDir=useShipDirs?CMLib.directions().getFromShipDirectionName(opDir):CMLib.directions().getFromCompassDirectionName(opDir);

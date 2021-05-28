@@ -206,7 +206,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		}
 	}
 
-	protected void doShipTransfer(final BoardableShip buildingI, final MOB buyer)
+	protected void doShipTransfer(final BoardableItem buildingI, final MOB buyer)
 	{
 		final MOB shopKeeper = CMClass.getMOB("StdShopkeeper");
 		try
@@ -292,7 +292,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 					{
 						if(activity == CraftingActivity.MENDING)
 						{
-							if((buildingI instanceof BoardableShip)
+							if((buildingI instanceof BoardableItem)
 							&&(buildingI.usesRemaining()<95))
 								buildingI.setUsesRemaining(buildingI.usesRemaining()+5);
 							else
@@ -315,14 +315,14 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 								if(key instanceof Container)
 									key.setContainer((Container)buildingI);
 							}
-							if(buildingI instanceof BoardableShip)
+							if(buildingI instanceof BoardableItem)
 							{
-								final BoardableShip ship=(BoardableShip)buildingI;
+								final BoardableItem ship=(BoardableItem)buildingI;
 								MOB buyer = mob;
 								if(buyer.isMonster() && (buyer.amFollowing()!=null))
 									buyer = buyer.amUltimatelyFollowing();
 								if(buyer.isMonster())
-									((BoardableShip)buildingI).renameShip(""+CMLib.dice().roll(1, 999, 0));
+									((BoardableItem)buildingI).rename(""+CMLib.dice().roll(1, 999, 0));
 								else
 									doShipTransfer(ship, buyer);
 								if(ship instanceof PrivateProperty)
@@ -371,7 +371,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			return false;
 		if(CMLib.flags().isDeadlyOrMaliciousEffect(I))
 			return false;
-		if(I instanceof SailingShip)
+		if(I instanceof NavigableItem)
 			return true;
 		return false;
 	}
@@ -387,9 +387,9 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 	{
 		if(!super.canMend(mob,E,quiet))
 			return false;
-		if((E instanceof BoardableShip)
+		if((E instanceof BoardableItem)
 		&&(E instanceof Rideable)
-		&&(((Rideable)E).rideBasis()==Rideable.RIDEABLE_ENTERIN))
+		&&(((Rideable)E).rideBasis()==Rideable.Basis.ENTER_IN))
 			return true;
 		if((!(E instanceof Item))||(!mayICraft((Item)E)))
 		{
@@ -508,10 +508,10 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			messedUp=false;
 			final Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
 			final Room R=mob.location();
-			if(R.getArea() instanceof BoardableShip)
+			if(R.getArea() instanceof BoardableItem)
 			{
-				buildingI=getTarget(mob,CMLib.map().roomLocation(((BoardableShip)R.getArea()).getShipItem()),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
-				if(buildingI != ((BoardableShip)R.getArea()).getShipItem())
+				buildingI=getTarget(mob,CMLib.map().roomLocation(((BoardableItem)R.getArea()).getBoardableItem()),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
+				if(buildingI != ((BoardableItem)R.getArea()).getBoardableItem())
 					buildingI=null;
 			}
 			if(buildingI==null)
@@ -576,7 +576,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				commonTell(mob,L("You are not permitted to do that here."));
 				return false;
 			}
-			if(!(R.getArea() instanceof BoardableShip))
+			if(!(R.getArea() instanceof BoardableItem))
 			{
 				commonTell(mob,L("You don't know how to do that here."));
 				return false;
@@ -627,7 +627,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				commonTell(mob,L("You are not permitted to do that here."));
 				return false;
 			}
-			if(!(R.getArea() instanceof BoardableShip))
+			if(!(R.getArea() instanceof BoardableItem))
 			{
 				commonTell(mob,L("You don't know how to do that here."));
 				return false;
@@ -668,7 +668,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				commonTell(mob,L("You are not permitted to do that here."));
 				return false;
 			}
-			if(!(R.getArea() instanceof BoardableShip))
+			if(!(R.getArea() instanceof BoardableItem))
 			{
 				commonTell(mob,L("You don't know how to do that here."));
 				return false;
@@ -748,7 +748,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				commonTell(mob,L("You are not permitted to do that here."));
 				return false;
 			}
-			if(!(R.getArea() instanceof BoardableShip))
+			if(!(R.getArea() instanceof BoardableItem))
 			{
 				commonTell(mob,L("You don't know how to do that here."));
 				return false;

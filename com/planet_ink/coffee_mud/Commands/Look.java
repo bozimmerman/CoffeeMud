@@ -178,7 +178,7 @@ public class Look extends StdCommand
 						name="around";
 					else
 					if(dirCode>=0)
-						name=((R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip))?
+						name=((R instanceof BoardableItem)||(R.getArea() instanceof BoardableItem))?
 								CMLib.directions().getShipDirectionName(dirCode):CMLib.directions().getDirectionName(dirCode);
 				}
 				final CMMsg msg=CMClass.getMsg(mob,thisThang,lookingTool,CMMsg.MSG_LOOK,textMsg+name+".");

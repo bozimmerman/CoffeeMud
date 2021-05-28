@@ -47,7 +47,7 @@ public class GenScale extends GenRideable
 		this.description="It has a fulcrum and an arm under which hang two large plates, upon which things may be placed, or upon which people may sit.";
 		super.containType = Container.CONTAIN_ANYTHING;
 		super.capacity = 10000;
-		super.rideBasis = Rideable.RIDEABLE_SIT;
+		super.rideBasis = Rideable.Basis.FURNITURE_SIT;
 		super.riderCapacity = 2;
 	}
 
