@@ -1242,7 +1242,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				if(//(mayIAttack(source,attacker,defender))&&
 				(CMLib.map().roomLocation(attacker)==room)
 				&&(CMLib.map().roomLocation(defender)==room))
-					room.sendOthers(source,msg);
+					room.send(source,msg);
 			}
 		}
 		else

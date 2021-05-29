@@ -334,7 +334,6 @@ public class GenSailingShip extends GenNavigableBoardable
 		default:
 			if(msg.source().riding()==this)
 			{
-				sendAreaMessage(msg, true);
 				final ItemPossessor owner = owner();
 				if((owner instanceof Room)
 				&&(owner != prevItemRoom)
@@ -407,7 +406,7 @@ public class GenSailingShip extends GenNavigableBoardable
 			final boolean isWater=CMLib.flags().isUnderWateryRoom(R);
 			return isWater && (R.getGridParent()!=null) && (R.getGridParent().roomID().length()==0);
 		}
-		return false;
+		return amDestroyed();
 	}
 
 }

@@ -952,6 +952,9 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 					sendAreaMessage(msg2, true);
 				}
 			}
+			else
+			if(msg.sourceMinor()!=CMMsg.TYP_ENTER)
+				sendAreaMessage(msg, true);
 			break;
 		}
 	}

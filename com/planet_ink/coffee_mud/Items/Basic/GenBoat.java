@@ -362,6 +362,13 @@ public class GenBoat extends GenRideable implements SiegableItem
 	@Override
 	public boolean isDefeated()
 	{
+		final ItemPossessor owner = owner();
+		if(owner instanceof Room)
+		{
+			final Room R = (Room)owner;
+			final boolean isWater=CMLib.flags().isUnderWateryRoom(R);
+			return isWater && (R.getGridParent()!=null) && (R.getGridParent().roomID().length()==0);
+		}
 		return amDestroyed();
 	}
 
@@ -372,7 +379,9 @@ public class GenBoat extends GenRideable implements SiegableItem
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_DAMAGE:
-			if((msg.target()==this) && (msg.value() > 0))
+			if((msg.target()==this)
+			&& (msg.value() > 0)
+			&& (!this.isDefeated()))
 			{
 				int level = phyStats().level();
 				if(level < 10)
@@ -381,13 +390,15 @@ public class GenBoat extends GenRideable implements SiegableItem
 				final int pointsLost = (int)Math.round(pctLoss * level);
 				if(pointsLost > 0)
 				{
+					/*
 					final int weaponType = (msg.tool() instanceof Weapon) ? ((Weapon)msg.tool()).weaponDamageType() : Weapon.TYPE_BASHING;
 					final String hitWord = CMLib.combat().standardHitWord(weaponType, pctLoss);
-					final String msgStr = (msg.targetMessage() == null) ? L("<O-NAME> fired from <S-NAME> hits and @x1 @x2.",hitWord,name()) : msg.targetMessage();
+					final String msgStr = L("<O-NAME> fired from <S-NAME> hits and @x1 @x2.",hitWord,name());
 					final CMMsg deckHitMsg=CMClass.getMsg(msg.source(), this, msg.tool(),CMMsg.MSG_OK_ACTION, msgStr);
 					final Room targetRoom=CMLib.map().roomLocation(this);
 					if(targetRoom.okMessage(msg.source(), deckHitMsg))
 						targetRoom.send(msg.source(), deckHitMsg);
+					*/
 					if(pointsLost >= this.usesRemaining())
 					{
 						this.setUsesRemaining(0);
