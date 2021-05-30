@@ -308,12 +308,16 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 							mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
 							if(tenderToI.tenderItem == this)
 							{
+								final BoardableItem myArea=(BoardableItem)this.getArea();
+								final BoardableItem hisArea=(BoardableItem)tenderToI.getArea();
+								if((myArea.getIsDocked()==null)||(hisArea.getIsDocked()==null))
+								{
+									msg.source().tell(L("Both ships must first be docked."));
+									return false;
+								}
 								if(thisRoom.show(mob, tenderToI, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> connect(s) her gangplank with <T-NAME>")))
 								{
 									this.tenderItem = tenderToI;
-									final BoardableItem myArea=(BoardableItem)this.getArea();
-									final BoardableItem hisArea=(BoardableItem)tenderToI.getArea();
-
 									final Room hisExitRoom = hisArea.unDock(false);
 									final Room myExitRoom = myArea.unDock(false);
 									myArea.dockHere(hisExitRoom);
@@ -330,13 +334,13 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						{
 							mob.destroy();
 						}
+						return false;
 					}
 					else
 					{
 						msg.source().tell(L("You don't see the "+noun_word+" '@x1' here to board",rest));
 						return false;
 					}
-					break;
 				}
 				case JUMP:
 				{
@@ -391,9 +395,8 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 					final Room targetR=msg.source().location();
 					if((R!=null)&&(targetR!=null))
 					{
-						if(((targetR.domainType()&Room.INDOORS)==0)
-						&& (targetR.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
-						&&(msg.source().isPlayer()))
+						if(((targetR.domainType()&Room.INDOORS)!=0)
+						|| (targetR.domainType()==Room.DOMAIN_OUTDOORS_AIR))
 						{
 							msg.source().tell(L("You must be on deck to raise a tendered item."));
 							return false;
@@ -448,9 +451,8 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 					final Room targetR=CMLib.map().roomLocation(this);
 					if((R!=null)&&(targetR!=null))
 					{
-						if(((R.domainType()&Room.INDOORS)==0)
-						&& (R.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
-						&&(msg.source().isPlayer()))
+						if(((targetR.domainType()&Room.INDOORS)!=0)
+						|| (targetR.domainType()==Room.DOMAIN_OUTDOORS_AIR))
 						{
 							msg.source().tell(L("You must be on deck to lower a boat."));
 							return false;
@@ -1019,13 +1021,13 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 									smallTenderRequests.add(isR);
 							}
 						}
+						return false;
 					}
 					else
 					{
 						msg.source().tell(L("You don't see the "+noun_word+" '@x1' here to tender with",rest));
 						return false;
 					}
-					break;
 				}
 				}
 			}

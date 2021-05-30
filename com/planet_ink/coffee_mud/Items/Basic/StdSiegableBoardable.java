@@ -596,6 +596,7 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 							msg.source().tell(L("You are now targeting @x1.",this.siegeTarget.Name()));
 							msg.source().tell(this.siegeTarget.getTacticalView(this));
 						}
+						return false;
 					}
 					else
 					if(result  == Boolean.FALSE)
@@ -605,7 +606,6 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 						msg.source().tell(L("You don't see '@x1' here to target",rest));
 						return false;
 					}
-					break;
 				}
 				case IMPLODE:
 				{
