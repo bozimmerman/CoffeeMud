@@ -1108,7 +1108,8 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 				}
 				else
 				{
-					this.tenderItem=null;
+					if(this.tenderItem != null)
+						this.tenderItem=null;
 					if((((BoardableItem)area).getIsDocked() != owner())
 					&&(owner() instanceof Room))
 					{
@@ -1291,7 +1292,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 	{
 		final int[] targetCoords = getTacticalCoords();
 		final int[] myCoords;
-		final String dist = ""+getTacticalDistance(viewer);;
+		final String dist = ""+getTacticalDistance(viewer);
 		if(viewer instanceof PhysicalAgent)
 		{
 			myCoords = viewer.getTacticalCoords();

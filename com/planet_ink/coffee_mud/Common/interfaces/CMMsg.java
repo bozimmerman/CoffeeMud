@@ -833,6 +833,14 @@ public interface CMMsg extends CMCommon
 	public CMMsg addTrailerMsg(final CMMsg msg);
 
 	/**
+	 * Suspend or resume processing of trailer messages and runnables whenever
+	 * a room finishes processing a message.
+	 * @param newValue null to return the existing value only, or a new value
+	 * @return the new existing value
+	 */
+	public boolean suspendResumeTrailers(final Boolean newValue);
+	
+	/**
 	 * Returns a List of other Runnables which are slated to be
 	 * and executed AFTER this current message is handled.  This is implemented
 	 * by the Room object

@@ -33,7 +33,7 @@ public class MapKeyList<K, L> extends XVector<K>
 		this.m=map;
 	}
 	@Override
-	public Iterator<K> iterator()
+	public synchronized Iterator<K> iterator()
 	{
 		return new ReadOnlyIterator<K>(m.keySet().iterator());
 	}
@@ -128,13 +128,13 @@ public class MapKeyList<K, L> extends XVector<K>
 	}
 
 	@Override
-	public ListIterator<K> listIterator()
+	public synchronized ListIterator<K> listIterator()
 	{
 		return new ReadOnlyListIterator<K>(super.listIterator());
 	}
 
 	@Override
-	public ListIterator<K> listIterator(final int index)
+	public synchronized ListIterator<K> listIterator(final int index)
 	{
 		return new ReadOnlyListIterator<K>(super.listIterator());
 	}

@@ -259,7 +259,7 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 	{
 		final int[] targetCoords = getTacticalCoords();
 		final int[] myCoords;
-		final String dist = ""+getTacticalDistance(viewer);;
+		final String dist = ""+getTacticalDistance(viewer);
 		if(viewer instanceof SiegableItem)
 		{
 			myCoords = viewer.getTacticalCoords();
@@ -658,7 +658,7 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 						}
 						if(!CMLib.combat().isASiegeWeapon(I))
 						{
-							msg.source().tell(L("@x1 is not a useable siege weapon.",leadStr));
+							msg.source().tell(L("@x1 is not a usable siege weapon.",leadStr));
 							return false;
 						}
 						final AmmunitionWeapon weapon=(AmmunitionWeapon)I;
@@ -769,15 +769,18 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 				&&(owner() instanceof Room)
 				&&(this.canViewOuterRoom((Room)owner())))
 				{
-					final int msgType = "EXAMINE".startsWith(cmd) ? CMMsg.MSG_EXAMINE : CMMsg.MSG_LOOK;
 					final Room R = (Room)owner();
 					final String rest = CMParms.combine(parsedFail,1);
 					final Item I = R.findItem(null, rest);
-					final CMMsg lookMsg=CMClass.getMsg(msg.source(),I,null,msgType,null,msgType,null,msgType,null);
-					if(R.okMessage(msg.source(),lookMsg))
+					if(I!=null)
 					{
-						R.send(msg.source(),lookMsg);
-						return false;
+						final int msgType = "EXAMINE".startsWith(cmd) ? CMMsg.MSG_EXAMINE : CMMsg.MSG_LOOK;
+						final CMMsg lookMsg=CMClass.getMsg(msg.source(),I,null,msgType,null,msgType,null,msgType,null);
+						if(R.okMessage(msg.source(),lookMsg))
+						{
+							R.send(msg.source(),lookMsg);
+							return false;
+						}
 					}
 				}
 				break;
@@ -1070,6 +1073,25 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 		{
 			switch(msg.targetMinor())
 			{
+			case CMMsg.TYP_LOOK:
+			case CMMsg.TYP_EXAMINE:
+				if(msg.target() instanceof SiegableItem)
+				{
+					final String otherInfo=((SiegableItem)msg.target()).getTacticalView(this);
+					if(otherInfo.length()>0)
+					{
+						msg.addTrailerRunnable(new Runnable()
+						{
+							@Override
+							public void run()
+							{
+								msg.source().tell(otherInfo);
+								msg.trailerRunnables().remove(this);
+							}
+						});
+					}
+				}
+				break;
 			case CMMsg.TYP_ENTER:
 				break;
 			case CMMsg.TYP_WEAPONATTACK:
@@ -1212,29 +1234,6 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 				}
 				break;
 			}
-		}
-		else
-		switch(msg.targetMinor())
-		{
-		case CMMsg.TYP_LOOK:
-		case CMMsg.TYP_EXAMINE:
-			if((msg.target() instanceof SiegableItem)
-			&&(msg.target()!=this))
-			{
-				final String otherInfo=((SiegableItem)msg.target()).getTacticalView(this);
-				if(otherInfo.length()>0)
-				{
-					msg.addTrailerRunnable(new Runnable()
-					{
-						@Override
-						public void run()
-						{
-							msg.source().tell(otherInfo);
-						}
-					});
-				}
-			}
-			break;
 		}
 		super.executeMsg(myHost, msg);
 	}

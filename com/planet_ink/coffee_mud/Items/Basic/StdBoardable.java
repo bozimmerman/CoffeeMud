@@ -631,17 +631,26 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 				{
 					mob = CMClass.getFactoryMOB(name(),phyStats().level(),mobR);
 					msg.setSource(mob);
-					for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+					final Boolean oldValue = Boolean.valueOf(msg.suspendResumeTrailers(null));
+					try
 					{
-						final Room R=r.nextElement();
-						if(canViewOuterRoom(R)
-						&& (R.okMessage(mob, msg)))
+						msg.suspendResumeTrailers(Boolean.TRUE);
+						for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 						{
-							if(R == mobR)
-								R.send(mob, msg); // this lets the source know, i guess
-							else
-								R.sendOthers(mob, msg); // this lets the source know, i guess
+							final Room R=r.nextElement();
+							if(canViewOuterRoom(R)
+							&& (R.okMessage(mob, msg)))
+							{
+								if(R == mobR)
+									R.send(mob, msg); // this lets the source know, i guess
+								else
+									R.sendOthers(mob, msg); // this lets the source know, i guess
+							}
 						}
+					}
+					finally
+					{
+						msg.suspendResumeTrailers(oldValue);
 					}
 				}
 			}
@@ -697,16 +706,25 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		final Room mobR=CMLib.map().roomLocation(mob);
 		if(A!=null)
 		{
-			for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+			final Boolean oldValue = Boolean.valueOf(msg.suspendResumeTrailers(null));
+			try
 			{
-				final Room R=r.nextElement();
-				if((R!=null) && (canViewOuterRoom(R)==outerViewerStatus) && (R.okMessage(mob, msg)))
+				msg.suspendResumeTrailers(Boolean.TRUE);
+				for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 				{
-					if(R == mobR)
-						R.send(mob, msg); // this lets the source know, i guess
-					else
-						R.sendOthers(mob, msg); // this lets the source know, i guess
+					final Room R=r.nextElement();
+					if((R!=null) && (canViewOuterRoom(R)==outerViewerStatus) && (R.okMessage(mob, msg)))
+					{
+						if(R == mobR)
+							R.send(mob, msg); // this lets the source know, i guess
+						else
+							R.sendOthers(mob, msg); // this lets the source know, i guess
+					}
 				}
+			}
+			finally
+			{
+				msg.suspendResumeTrailers(oldValue);
 			}
 		}
 	}
@@ -716,12 +734,21 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		final Area boardedArea=getArea();
 		if(boardedArea!=null)
 		{
-			for(final Enumeration<Room> r = boardedArea.getProperMap(); r.hasMoreElements();)
+			final Boolean oldValue = Boolean.valueOf(msg.suspendResumeTrailers(null));
+			try
 			{
-				final Room R=r.nextElement();
-				if(((!outerViewersOnly)||canViewOuterRoom(R))
-				&&(R.roomID().length()>0))
-					R.sendOthers(msg.source(), msg);
+				msg.suspendResumeTrailers(Boolean.TRUE);
+				for(final Enumeration<Room> r = boardedArea.getProperMap(); r.hasMoreElements();)
+				{
+					final Room R=r.nextElement();
+					if(((!outerViewersOnly)||canViewOuterRoom(R))
+					&&(R.roomID().length()>0))
+						R.sendOthers(msg.source(), msg);
+				}
+			}
+			finally
+			{
+				msg.suspendResumeTrailers(oldValue);
 			}
 		}
 	}

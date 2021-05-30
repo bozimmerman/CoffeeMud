@@ -86,6 +86,7 @@ public class DefaultMessage implements CMMsg
 	protected int				value			= 0;
 	protected List<CMMsg>		trailMsgs		= null;
 	protected List<Runnable>	trailRunnables	= null;
+	protected boolean			suspendTrailers = false;
 
 	@Override
 	public CMObject copyOf()
@@ -130,6 +131,7 @@ public class DefaultMessage implements CMMsg
 		myTool=null;
 		trailMsgs=null;
 		trailRunnables=null;
+		suspendTrailers=false;
 		value=0;
 		if(!CMClass.returnMsg(this))
 			super.finalize();
@@ -303,15 +305,23 @@ public class DefaultMessage implements CMMsg
 	@Override
 	public List<CMMsg> trailerMsgs()
 	{
-		return trailMsgs;
+		return this.suspendTrailers?null:trailMsgs;
 	}
 
 	@Override
 	public List<Runnable> trailerRunnables()
 	{
-		return trailRunnables;
+		return this.suspendTrailers?null:trailRunnables;
 	}
 
+	@Override
+	public boolean suspendResumeTrailers(final Boolean newValue)
+	{
+		if(newValue != null)
+			suspendTrailers=newValue.booleanValue();
+		return this.suspendTrailers;
+	}
+	
 	@Override
 	public CMMsg addTrailerMsg(final CMMsg msg)
 	{
