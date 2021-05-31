@@ -56,6 +56,8 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 
 	protected String		verb_sail		= "navigate";
 	protected String		verb_sailing	= "navigating";
+	protected String		anchor_name		= "anchor";
+	protected String		anchor_verbed	= "lowered";
 
 	public StdNavigableBoardable()
 	{
@@ -506,11 +508,11 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 					}
 					final Room R=CMLib.map().roomLocation(this);
 					if(!anchorDown)
-						msg.source().tell(L("The anchor is already up."));
+						msg.source().tell(L("The "+anchor_name+" is not "+anchor_verbed+"."));
 					else
 					if(R!=null)
 					{
-						final CMMsg msg2=CMClass.getMsg(msg.source(), this, null, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> raise(s) anchor on <T-NAME>."));
+						final CMMsg msg2=CMClass.getMsg(msg.source(), this, null, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> "+word.toLowerCase()+"(s) the "+anchor_name+" on <T-NAME>."));
 						if((R.okMessage(msg.source(), msg2) && this.okAreaMessage(msg2, true)))
 						{
 							R.send(msg.source(), msg2);
@@ -535,11 +537,11 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 					}
 					final Room R=CMLib.map().roomLocation(this);
 					if(anchorDown)
-						msg.source().tell(L("The anchor is already down."));
+						msg.source().tell(L("The "+anchor_name+" is already "+anchor_verbed+"."));
 					else
 					if(R!=null)
 					{
-						final CMMsg msg2=CMClass.getMsg(msg.source(), this, null, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> lower(s) anchor on <T-NAME>."));
+						final CMMsg msg2=CMClass.getMsg(msg.source(), this, null, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> "+word.toLowerCase()+"(s) the "+anchor_name+" on <T-NAME>."));
 						if((R.okMessage(msg.source(), msg2) && this.okAreaMessage(msg2, true)))
 						{
 							R.send(msg.source(), msg2);
@@ -613,7 +615,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 					}
 					if(anchorDown)
 					{
-						msg.source().tell(L("The anchor is down, so you won`t be moving anywhere."));
+						msg.source().tell(L("The "+anchor_name+" is "+anchor_verbed+", so you won`t be moving anywhere."));
 						return false;
 					}
 					break;
@@ -683,7 +685,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 					}
 					if(anchorDown)
 					{
-						msg.source().tell(L("The anchor is down, so you won`t be moving anywhere."));
+						msg.source().tell(L("The "+anchor_name+" is "+anchor_verbed+", so you won`t be moving anywhere."));
 						return false;
 					}
 					break;
@@ -825,7 +827,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						steer(msg.source(),R, firstDir);
 					}
 					if(anchorDown)
-						msg.source().tell(L("The anchor is down, so you won`t be moving anywhere."));
+						msg.source().tell(L("The "+anchor_name+" is "+anchor_verbed+", so you won`t be moving anywhere."));
 					return false;
 				}
 				}
@@ -1227,7 +1229,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 			{
 				final StringBuilder visualCondition = new StringBuilder("");
 				if(this.anchorDown)
-					visualCondition.append(L("^HThe anchor on @x1 is lowered, holding her in place.^.^?",name(msg.source())));
+					visualCondition.append(L("^HThe "+anchor_name+" on @x1 is "+anchor_verbed+", holding her in place.^.^?",name(msg.source())));
 				else
 				if((this.courseDirection >= 0)
 				&&(getTopCourse()>=0))
@@ -1267,7 +1269,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 				{
 					final StringBuilder visualCondition = new StringBuilder("");
 					if(this.anchorDown)
-						visualCondition.append(L("\n\r^HThe anchor on @x1 is lowered, holding her in place.^.^?",name(msg.source())));
+						visualCondition.append(L("\n\r^HThe "+anchor_name+" on @x1 is "+anchor_verbed+", holding her in place.^.^?",name(msg.source())));
 					else
 					if((this.courseDirection >= 0)
 					&&(getTopCourse()>=0))

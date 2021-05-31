@@ -60,6 +60,8 @@ public class GenSailingShip extends GenNavigableBoardable
 		this.verb_sail = "sail";
 		this.verb_sailing = "sailing";
 		this.noun_word = "ship";
+		this.anchor_name= "anchor";
+		this.anchor_verbed = "lowered";
 		this.head_offTheDeck = "^HOff the deck you see: ^N";
 		setMaterial(RawMaterial.RESOURCE_OAK);
 		basePhyStats().setAbility(2);
@@ -266,6 +268,7 @@ public class GenSailingShip extends GenNavigableBoardable
 		return true;
 	}
 
+	@Override
 	protected Boolean startAttack(final MOB sourceM, final Room thisRoom, final String rest)
 	{
 		final Item I=thisRoom.findItem(rest);
@@ -282,6 +285,7 @@ public class GenSailingShip extends GenNavigableBoardable
 		return super.startAttack(sourceM, thisRoom, rest);
 	}
 
+	@Override
 	protected void doCombatDefeat(final MOB victorM)
 	{
 		final Room baseR=CMLib.map().roomLocation(this);
@@ -408,5 +412,4 @@ public class GenSailingShip extends GenNavigableBoardable
 		}
 		return amDestroyed();
 	}
-
 }

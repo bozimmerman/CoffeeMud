@@ -22,6 +22,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Event;
 
 /*
    Copyright 2021-2021 Bo Zimmerman
@@ -38,7 +39,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenCastle extends GenBoardable
+public class GenCastle extends GenSiegableBoardable
 {
 	@Override
 	public String ID()
@@ -63,13 +64,35 @@ public class GenCastle extends GenBoardable
 		return R;
 	}
 
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(msg.amITarget(this))
+		if((msg.targetMinor()==CMMsg.TYP_SIT)
+		&&(msg.target()==this)
+		&&(msg.source().location()==owner())
+		&&(!CMLib.flags().isFlying(msg.source()))
+		&&(!CMLib.flags().isFalling((Physical)msg.target()))
+		&&(!CMLib.law().doesHavePriviledgesHere(msg.source(), super.getDestinationRoom(msg.source().location()))))
 		{
+			final Rideable ride=msg.source().riding();
+			if(ride == null)
+			{
+				msg.source().tell(CMLib.lang().L("You'll need permission to get inside this castle."));
+				return false;
+			}
+			else
+			if(!CMLib.flags().isClimbing(msg.source()))
+			{
+				msg.source().tell(CMLib.lang().L("You'll need permission to get inside this castle from @x1, such as some means to climb up.",ride.name(msg.source())));
+				return false;
+			}
+			else
+				msg.source().setRiding(null); // if you're climbing, you're not riding any more
 		}
-		return super.okMessage(myHost, msg);
+		if(!super.okMessage(myHost, msg))
+			return false;
+		return true;
 	}
 
 	@Override
@@ -122,6 +145,44 @@ public class GenCastle extends GenBoardable
 		return null;
 	}
 
+	@Override
+	protected void doCombatDefeat(final MOB victorM)
+	{
+		final Room baseR=CMLib.map().roomLocation(this);
+		if(baseR!=null)
+		{
+			final String crumbleString = L("<T-NAME> start(s) crumbling!");
+			baseR.show(victorM, this, CMMsg.MSG_OK_ACTION, crumbleString);
+			this.announceToNonOuterViewers(victorM, crumbleString);
+			//TODO: make it crumble
+		}
+		if((victorM.riding() instanceof BoardableItem)
+		&&((victorM.Name().equals(victorM.riding().Name()))))
+		{
+			final Area A=((BoardableItem)victorM.riding()).getArea();
+			if(A!=null)
+			{
+				for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+				{
+					final Room R=r.nextElement();
+					if((R!=null)
+					&&(R.numInhabitants()>0))
+					{
+						for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+						{
+							final MOB M=m.nextElement();
+							final CMMsg msg2=CMClass.getMsg(M, this, CMMsg.MSG_CAUSESINK, null);
+							this.sendAreaMessage(msg2, false);
+							R.showSource(M, this, CMMsg.MSG_CAUSESINK, null);
+							CMLib.achievements().possiblyBumpAchievement(M, Event.SHIPSSUNK, 1, this);
+						}
+					}
+				}
+			}
+		}
+		if(!CMLib.leveler().postExperienceToAllAboard(victorM.riding(), 500, this))
+			CMLib.leveler().postExperience(victorM, null, null, 500, false);
+	}
 
 	@Override
 	public boolean sameAs(final Environmental E)
