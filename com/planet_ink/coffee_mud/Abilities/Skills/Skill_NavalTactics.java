@@ -137,7 +137,8 @@ public class Skill_NavalTactics extends StdSkill
 
 		{
 			final Physical affected=this.affected;
-			if(!(affected instanceof NavigableItem))
+			if((!(affected instanceof NavigableItem))
+			||(((NavigableItem)affected).navBasis()!=Rideable.Basis.WATER_BASED))
 				return false;
 			if(wait)
 				return true;

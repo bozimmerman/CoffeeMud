@@ -115,9 +115,9 @@ public class Thief_MerchantFlag extends ThiefSkill
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		if(affected instanceof NavigableItem)
+		if(affected instanceof SiegableItem)
 		{
-			final NavigableItem I=(NavigableItem)affected;
+			final SiegableItem I=(SiegableItem)affected;
 			if(I.subjectToWearAndTear())
 			{
 				if(I.isInCombat())

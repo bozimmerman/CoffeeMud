@@ -176,15 +176,14 @@ public class Thief_WarningShot extends ThiefSkill
 		if(R==null)
 			return false;
 		if((!(R.getArea() instanceof BoardableItem))
-		||(!(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem))
-		||(((NavigableItem)(((BoardableItem)R.getArea()).getBoardableItem())).navBasis() != Rideable.Basis.WATER_BASED)
+		||(!(((BoardableItem)R.getArea()).getBoardableItem() instanceof SiegableItem))
 		||((R.domainType()&Room.INDOORS)!=0))
 		{
-			mob.tell(L("You must be on the deck of a ship to fire a warning shot."));
+			mob.tell(L("You must be able to man a siege weapon to fire a warning shot."));
 			return false;
 		}
 		final BoardableItem myShip=(BoardableItem)R.getArea();
-		final NavigableItem myShipItem=(NavigableItem)myShip.getBoardableItem();
+		final SiegableItem myShipItem=(SiegableItem)myShip.getBoardableItem();
 		if((myShipItem==null)
 		||(!(myShipItem.owner() instanceof Room))
 		||(!CMLib.flags().isWateryRoom((Room)myShipItem.owner())))
@@ -248,7 +247,7 @@ public class Thief_WarningShot extends ThiefSkill
 				&&(hisItems.size()>0))
 				{
 					hisShipItem = ((BoardableItem)target).getBoardableItem();
-					double mySpeed = myShipItem.getMaxSpeed();
+					double mySpeed = (myShipItem instanceof NavigableItem)?((NavigableItem)myShipItem).getMaxSpeed():1.0;
 					if(mySpeed <=0)
 						mySpeed = 1.0;
 					double hisSpeed = ((NavigableItem)hisShipItem).getMaxSpeed();
@@ -257,7 +256,7 @@ public class Thief_WarningShot extends ThiefSkill
 					final double myChancePerRoundToBeHit =  CMath.div(CMath.div(100.0, mySpeed + 1.0), 100.0);
 					final double hisChancePerRoundToBeHit =  CMath.div(CMath.div(100.0, hisSpeed + 1.0), 100.0);
 
-					double myHullPoints = (myShipItem instanceof SiegableItem)?((SiegableItem)myShipItem).getMaxHullPoints():0;
+					double myHullPoints = (myShipItem instanceof SiegableItem)?myShipItem.getMaxHullPoints():0;
 					if(myShipItem.subjectToWearAndTear())
 						myHullPoints = myHullPoints * CMath.div(myShipItem.usesRemaining(), 100.0);
 					double hisHullPoints = (hisShipItem instanceof SiegableItem)?((SiegableItem)hisShipItem).getMaxHullPoints():0;

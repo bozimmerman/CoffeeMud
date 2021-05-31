@@ -1,7 +1,7 @@
-BUGS/UNTESTED STUFF
-  * ramming with a ramming weapon
+BUGS/UNTESTED STUFF:
+  *.
 
-TECH
+TECH TODO:
    *. test ship phaser, laser systems against shield types - murder motel
    *. make ship torpedo launchers and torpedo containers-- see tech doc
    *. make ship impulse and warp engines -- see tech doc
@@ -29,8 +29,8 @@ TECH
    *. Droids! Powered slave mobs.
    *. Radiation Props: Alpha (damage), Beta (?!), Gamma (Mutation if in too long)
 
-NON-TECH (Long Term)
-   *. Builder Achievements, Archon Achievements, Timed achievements (within a time period)
+NON-TECH (Long Term) TODO:
+   *. Builder Achievements, Archon Achievements
    *. Simple Desires quest behavior - see Tim's Wants and Needs doc
    *. Wants and Needs engine - similar to slavery system
    *. Port Siplet to C++ and shove it inside a Chromium window.

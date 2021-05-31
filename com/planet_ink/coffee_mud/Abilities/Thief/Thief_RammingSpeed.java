@@ -132,9 +132,9 @@ public class Thief_RammingSpeed extends ThiefSkill
 		if(!super.tick(ticking, tickID))
 			return false;
 		final Physical affected=this.affected;
-		if(affected instanceof NavigableItem)
+		if(affected instanceof SiegableItem)
 		{
-			if((!((NavigableItem)affected).isInCombat())
+			if((!((SiegableItem)affected).isInCombat())
 			||(CMLib.flags().isFalling(affected)))
 			{
 				unInvoke();

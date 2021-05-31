@@ -107,7 +107,7 @@ public class Skill_BoulderThrowing extends StdSkill
 				final Item shipItem=(A instanceof BoardableItem) ? ((BoardableItem)A).getBoardableItem() : null;
 				if((mob!=null)
 				&&(mob.isMonster())
-				&&(shipItem instanceof NavigableItem)
+				&&(shipItem instanceof SiegableItem)
 				&&(!mob.isInCombat()))
 				{
 					final Item ammoI=mob.fetchHeldItem();
@@ -115,7 +115,7 @@ public class Skill_BoulderThrowing extends StdSkill
 					{
 						if(tickDownThisShipCombatRound==0)
 						{
-							if(((NavigableItem)shipItem).isInCombat())
+							if(((SiegableItem)shipItem).isInCombat())
 								CMLib.commands().forceStandardCommand(mob, "Throw", new XVector<String>("THROW",ammoI.Name()));
 						}
 					}
@@ -183,8 +183,8 @@ public class Skill_BoulderThrowing extends StdSkill
 				{
 					final Area A=R.getArea();
 					final Item possShipItem = (A instanceof BoardableItem) ? ((BoardableItem)A).getBoardableItem() : null;
-					final SiegableItem shipItem = (possShipItem instanceof SiegableItem) ? (SiegableItem)possShipItem : null;
-					final Room shipR=(shipItem != null)?CMLib.map().roomLocation(shipItem):null;
+					final SiegableItem siegeBase = (possShipItem instanceof SiegableItem) ? (SiegableItem)possShipItem : null;
+					final Room shipR=(siegeBase != null)?CMLib.map().roomLocation(siegeBase):null;
 
 					final String str;
 					if(cmd.size()>2)
@@ -193,10 +193,10 @@ public class Skill_BoulderThrowing extends StdSkill
 						cmd.remove(str);
 					}
 					else
-					if((shipItem instanceof NavigableItem)
+					if((siegeBase instanceof SiegableItem)
 					&&(shipR!=null)
-					&&(((NavigableItem)shipItem).getCombatant()!=null))
-						str=shipR.getContextName(((NavigableItem)shipItem).getCombatant());
+					&&(siegeBase.getCombatant()!=null))
+						str=shipR.getContextName(siegeBase.getCombatant());
 					else
 						return true;
 
@@ -209,7 +209,7 @@ public class Skill_BoulderThrowing extends StdSkill
 					if((!item.amWearingAt(Wearable.WORN_HELD))&&(!item.amWearingAt(Wearable.WORN_WIELD)))
 						return true;
 					final Item target;
-					if((shipItem != null)&&(shipR!=null))
+					if((siegeBase != null)&&(shipR!=null))
 						target=shipR.findItem(null,str);
 					else
 						target=R.findItem(null,str);
@@ -218,20 +218,18 @@ public class Skill_BoulderThrowing extends StdSkill
 					{
 						final SiegableItem targetSiegeItem = (SiegableItem)target;
 						if(tickDownThisShipCombatRound>0)
-							msg.setSourceMessage(L("You've already thrown at a ship this round."));
+							msg.setSourceMessage(L("You've already thrown this round."));
 						else
 						if(mob.charStats().getStat(CharStats.STAT_STRENGTH)<10)
 							msg.setSourceMessage(L("You aren't strong enough."));
 						else
 						if((!(item instanceof Ammunition))||(((Ammunition)item).ammunitionRemaining()<1))
-							msg.setSourceMessage(L("You can't throw that at another ship."));
+							msg.setSourceMessage(L("You can't throw that."));
 						else
-						if((shipItem instanceof NavigableItem)
-						&&(((NavigableItem)shipItem).navBasis()==Rideable.Basis.WATER_BASED)
+						if((siegeBase instanceof SiegableItem)
 						&&((R.domainType()&Room.INDOORS)==0))
 						{
-							final NavigableItem sailShip=(NavigableItem)shipItem;
-							if(sailShip.isInCombat() && (sailShip.getCombatant()==target))
+							if(siegeBase.isInCombat() && (siegeBase.getCombatant()==target))
 							{
 								if(this.boulderThrower==null)
 								{
@@ -246,7 +244,7 @@ public class Skill_BoulderThrowing extends StdSkill
 								weapon.setAmmunitionType(ammo.ammunitionType());
 								weapon.setName(ammo.Name());
 								weapon.setRanges(0, 1+(mob.charStats().getStat(CharStats.STAT_STRENGTH)-10)/2);
-								final int distance=sailShip.rangeToTarget();
+								final int distance=siegeBase.rangeToTarget();
 								boolean wasHit=true;
 								if((weapon.maxRange() < distance)||(weapon.minRange() > distance))
 								{
@@ -291,7 +289,7 @@ public class Skill_BoulderThrowing extends StdSkill
 									tickDownThisShipCombatRound=CombatLibrary.TICKS_PER_SHIP_COMBAT;
 									for(int i=0;i<distance;i++)
 										wasHit = wasHit && super.proficiencyCheck(mob, -50+mob.charStats().getStat(CharStats.STAT_DEXTERITY)+(super.getXLEVELLevel(mob)*2), false);
-									CMLib.combat().postSiegeAttack(mob, shipItem, targetSiegeItem, weapon, wasHit);
+									CMLib.combat().postSiegeAttack(mob, siegeBase, targetSiegeItem, weapon, wasHit);
 									if(ammo.ammunitionRemaining()<=0)
 										ammo.destroy();
 								}
