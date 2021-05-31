@@ -94,6 +94,7 @@ public class Skill_HardToStern extends StdSkill
 		return USAGE_MOVEMENT;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))
@@ -121,7 +122,8 @@ public class Skill_HardToStern extends StdSkill
 		if(R==null)
 			return false;
 		if((!(R.getArea() instanceof BoardableItem))
-		||(!(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem)))
+		||(!(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem))
+		||(((NavigableItem)(((BoardableItem)R.getArea()).getBoardableItem())).navBasis() != Rideable.Basis.WATER_BASED))
 		{
 			mob.tell(L("You must be on a sailing ship."));
 			return false;

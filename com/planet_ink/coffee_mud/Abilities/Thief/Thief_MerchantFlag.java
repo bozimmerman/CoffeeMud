@@ -234,7 +234,8 @@ public class Thief_MerchantFlag extends ThiefSkill
 
 		final NavigableItem ship;
 		if((R.getArea() instanceof BoardableItem)
-		&&(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem))
+		&&(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem)
+		&&(((NavigableItem)(((BoardableItem)R.getArea()).getBoardableItem())).navBasis() == Rideable.Basis.WATER_BASED))
 		{
 			ship=(NavigableItem)((BoardableItem)R.getArea()).getBoardableItem();
 		}

@@ -177,6 +177,7 @@ public class Thief_WarningShot extends ThiefSkill
 			return false;
 		if((!(R.getArea() instanceof BoardableItem))
 		||(!(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem))
+		||(((NavigableItem)(((BoardableItem)R.getArea()).getBoardableItem())).navBasis() != Rideable.Basis.WATER_BASED)
 		||((R.domainType()&Room.INDOORS)!=0))
 		{
 			mob.tell(L("You must be on the deck of a ship to fire a warning shot."));

@@ -336,7 +336,8 @@ public class Skill_NavalTactics extends StdSkill
 		if(R==null)
 			return false;
 		if((!(R.getArea() instanceof BoardableItem))
-		||(!(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem)))
+		||(!(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem))
+		||(((NavigableItem)(((BoardableItem)R.getArea()).getBoardableItem())).navBasis() != Rideable.Basis.WATER_BASED))
 		{
 			mob.tell(L("You must be on a sailing ship."));
 			return false;

@@ -145,6 +145,7 @@ public class Skill_AwaitShip extends StdSkill
 						{
 							final Item I=i.nextElement();
 							if((I instanceof NavigableItem)
+							&&(((NavigableItem)I).navBasis()==Rideable.Basis.WATER_BASED)
 							&&(I instanceof PrivateProperty)
 							&&(CMLib.law().doesHavePrivilegesWith(mob, (PrivateProperty)I)))
 							{

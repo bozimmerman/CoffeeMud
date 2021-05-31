@@ -356,6 +356,7 @@ public class Sailor extends StdCharClass
 			&&(msg.source().riding().rideBasis() == Rideable.Basis.WATER_BASED))
 				giveExploreXP(msg.source(), (Room)msg.target(), 5, msg);
 			if((msg.source().riding() instanceof NavigableItem)
+			&&(((NavigableItem)msg.source().riding()).navBasis() == Rideable.Basis.WATER_BASED)
 			&&(msg.source().Name().equals(msg.source().riding().Name()))
 			&&(myHost instanceof MOB)
 			&&(((MOB)myHost).playerStats()!=null)

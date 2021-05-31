@@ -212,7 +212,7 @@ public class Skill_MorseCode extends StdSkill
 					if(R.getArea() instanceof BoardableItem)
 					{
 						deckShip=((BoardableItem)R.getArea()).getBoardableItem();
-						if(deckShip instanceof NavigableItem)
+						if(deckShip instanceof BoardableItem)
 						{
 							deckArea=R.getArea();
 							deckShipRoom=CMLib.map().roomLocation(deckShip);

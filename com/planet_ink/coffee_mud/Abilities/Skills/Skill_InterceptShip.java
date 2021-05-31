@@ -175,7 +175,8 @@ public class Skill_InterceptShip extends StdSkill
 		Room currentR=null;
 		Rideable myShip=null;
 		if((R.getArea() instanceof BoardableItem)
-		&&(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem))
+		&&(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem)
+		&&(((NavigableItem)(((BoardableItem)R.getArea()).getBoardableItem())).navBasis() == Rideable.Basis.WATER_BASED))
 		{
 			final NavigableItem sailShip=(NavigableItem)((BoardableItem)R.getArea()).getBoardableItem();
 			myShip=sailShip;

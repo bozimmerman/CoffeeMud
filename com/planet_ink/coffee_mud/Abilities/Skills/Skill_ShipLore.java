@@ -143,7 +143,8 @@ public class Skill_ShipLore extends StdSkill
 			else
 				penalty++;
 		}
-		if(!(targetI instanceof NavigableItem))
+		if((!(targetI instanceof NavigableItem))
+		||(((NavigableItem)targetI).navBasis() != Rideable.Basis.WATER_BASED))
 		{
 			mob.tell(L("@x1 doesn't look much like a ship."));
 			return false;

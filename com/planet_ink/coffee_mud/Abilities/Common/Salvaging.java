@@ -237,6 +237,7 @@ public class Salvaging extends CommonSkill
 		}
 
 		if((!(I instanceof NavigableItem))
+		||(((NavigableItem)I).navBasis() != Rideable.Basis.WATER_BASED)
 		||((((NavigableItem)I).subjectToWearAndTear())&&(((NavigableItem)I).usesRemaining()>0))
 		||(((NavigableItem)I).getArea()==null))
 		{

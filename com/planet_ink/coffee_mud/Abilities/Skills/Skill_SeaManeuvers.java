@@ -107,7 +107,9 @@ public class Skill_SeaManeuvers extends StdSkill
 		&&(msg.targetMessage()!=null)
 		&&(CMLib.directions().getStrictCompassDirectionCode(msg.sourceMessage())>=0)
 		&&(CMLib.directions().getStrictCompassDirectionCode(msg.targetMessage())>=0)
-		&&(!msg.sourceMessage().equals(msg.targetMessage())))
+		&&(!msg.sourceMessage().equals(msg.targetMessage()))
+		&&(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem)
+		&&(((NavigableItem)(((BoardableItem)R.getArea()).getBoardableItem())).navBasis() == Rideable.Basis.WATER_BASED))
 		{
 			final NavigableItem ship = (NavigableItem)((BoardableItem)R.getArea()).getBoardableItem();
 			if(ship.isInCombat())

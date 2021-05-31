@@ -371,7 +371,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			return false;
 		if(CMLib.flags().isDeadlyOrMaliciousEffect(I))
 			return false;
-		if(I instanceof NavigableItem)
+		if((I instanceof NavigableItem)
+		&&(((NavigableItem)I).navBasis() == Rideable.Basis.WATER_BASED))
 			return true;
 		return false;
 	}

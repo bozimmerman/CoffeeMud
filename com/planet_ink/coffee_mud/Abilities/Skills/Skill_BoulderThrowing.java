@@ -227,6 +227,7 @@ public class Skill_BoulderThrowing extends StdSkill
 							msg.setSourceMessage(L("You can't throw that at another ship."));
 						else
 						if((shipItem instanceof NavigableItem)
+						&&(((NavigableItem)shipItem).navBasis()==Rideable.Basis.WATER_BASED)
 						&&((R.domainType()&Room.INDOORS)==0))
 						{
 							final NavigableItem sailShip=(NavigableItem)shipItem;

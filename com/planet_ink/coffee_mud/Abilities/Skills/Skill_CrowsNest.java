@@ -328,6 +328,7 @@ public class Skill_CrowsNest extends StdSkill
 		if((R.getArea() instanceof BoardableItem)
 		&&((R.domainType()&Room.INDOORS)==0)
 		&&(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem)
+		&&(((NavigableItem)(((BoardableItem)R.getArea()).getBoardableItem())).navBasis() == Rideable.Basis.WATER_BASED)
 		&&(R.roomID().length()>0))
 		{
 			ship=(NavigableItem)((BoardableItem)R.getArea()).getBoardableItem();

@@ -137,11 +137,12 @@ public class Thief_MastShot extends ThiefSkill
 		else
 		if(affected instanceof AmmunitionWeapon)
 		{
-			if((msg.source().riding() instanceof NavigableItem)
+			if((msg.source().riding() instanceof SiegableItem)
 			&&(msg.tool()==affected)
 			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&(msg.target() instanceof Rideable)
-			&&(msg.target() instanceof BoardableItem)
+			&&(msg.target() instanceof NavigableItem)
+		    &&(((NavigableItem)msg.target()).navBasis()==Rideable.Basis.WATER_BASED)
 			&&(msg.target() instanceof Physical)
 			)
 			{
@@ -198,14 +199,15 @@ public class Thief_MastShot extends ThiefSkill
 		if(R==null)
 			return false;
 		if((!(R.getArea() instanceof BoardableItem))
-		||(!(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem))
+		||(!(((BoardableItem)R.getArea()).getBoardableItem() instanceof SiegableItem))
 		||((R.domainType()&Room.INDOORS)!=0))
 		{
-			mob.tell(L("You must be on the deck of a ship to fire a mast shot."));
+			mob.tell(L("You must be able to man siege engines to fire a mast shot."));
 			return false;
 		}
 		final BoardableItem myShip=(BoardableItem)R.getArea();
 		final NavigableItem myShipItem=(NavigableItem)myShip.getBoardableItem();
+		/*
 		if((myShipItem==null)
 		||(!(myShipItem.owner() instanceof Room))
 		||(!CMLib.flags().isWateryRoom((Room)myShipItem.owner())))
@@ -213,17 +215,19 @@ public class Thief_MastShot extends ThiefSkill
 			mob.tell(L("Your ship must be at sea to fire a mast shot."));
 			return false;
 		}
+		*/
 		NavigableItem enemyShip=null;
 		final PhysicalAgent combatant=myShipItem.getCombatant();
 		if(combatant != null)
 		{
-			if(combatant instanceof NavigableItem)
+			if((combatant instanceof NavigableItem)
+			&&(((NavigableItem)combatant).navBasis() == Rideable.Basis.WATER_BASED))
 				enemyShip=(NavigableItem)combatant;
 		}
 
 		if(enemyShip == null)
 		{
-			mob.tell(L("Your ship must be in combat with another big ship to fire a mast shot."));
+			mob.tell(L("You must be in combat with a big sailing ship to fire a mast shot."));
 			return false;
 		}
 
