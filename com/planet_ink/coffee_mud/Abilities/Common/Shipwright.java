@@ -24,7 +24,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2021 Bo Zimmerman
+   Copyright 2018-2021 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -388,14 +388,10 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 	{
 		if(!super.canMend(mob,E,quiet))
 			return false;
-		if((E instanceof BoardableItem)
-		&&(E instanceof Rideable)
-		&&(((Rideable)E).rideBasis()==Rideable.Basis.ENTER_IN))
-			return true;
 		if((!(E instanceof Item))||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
-				commonTell(mob,L("That's not a shipwrighting item."));
+				commonTell(mob,L("That's not a "+name().toLowerCase()+" item."));
 			return false;
 		}
 		return true;
@@ -543,7 +539,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			helpingAbility=targetMOB.fetchEffect(ID());
 			if(helpingAbility==null)
 			{
-				commonTell(mob,L("@x1 is not wrighting anything.",targetMOB.Name()));
+				commonTell(mob,L("@x1 is not building anything.",targetMOB.Name()));
 				return false;
 			}
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
