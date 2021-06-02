@@ -255,7 +255,7 @@ public class Thief_Hideout extends ThiefSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,L("<S-NAME> attemp(s) to slip away, and fail(s)."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to slip away, and fail(s)."));
 
 		return success;
 	}
