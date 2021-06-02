@@ -255,10 +255,14 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 		return true;
 	}
 
-	protected boolean canSteerFromHere(final Room R)
+	protected boolean canSteer(final MOB mob, final Room R)
 	{
 		if((R.domainType()&Room.INDOORS)!=0)
+		{
+			if(mob.isPlayer())
+				mob.tell(L("You must be on deck to steer your "+noun_word+"."));
 			return false;
+		}
 		return true;
 	}
 
@@ -597,12 +601,8 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
 						return false;
 					}
-					if((!canSteerFromHere(msg.source().location()))
-					&&(msg.source().isPlayer()))
-					{
-						msg.source().tell(L("You must be on deck to steer your "+noun_word+"."));
+					if(!canSteer(msg.source(), msg.source().location()))
 						return false;
-					}
 					final String dirName = CMLib.directions().getDirectionName(dir);
 					if(!this.amInTacticalMode())
 					{
@@ -660,12 +660,8 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
 						return false;
 					}
-					if(!canSteerFromHere(msg.source().location())
-					&&(msg.source().isPlayer()))
-					{
-						msg.source().tell(L("You must be on deck to "+verb_sail+" your "+noun_word+"."));
+					if(!canSteer(msg.source(), msg.source().location()))
 						return false;
-					}
 					final int dir=CMLib.directions().getCompassDirectionCode(secondWord);
 					if(dir<0)
 					{
@@ -731,12 +727,8 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
 						return false;
 					}
-					if((!canSteerFromHere(msg.source().location()))
-					&&(msg.source().isPlayer()))
-					{
-						msg.source().tell(L("You must be on deck to steer your "+noun_word+".."));
+					if(!canSteer(msg.source(), msg.source().location()))
 						return false;
-					}
 					int dirIndex = 1;
 					if(word.equals("SET"))
 						dirIndex = 2;

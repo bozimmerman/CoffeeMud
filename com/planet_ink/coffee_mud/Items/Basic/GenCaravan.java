@@ -63,6 +63,7 @@ public class GenCaravan extends GenNavigableBoardable
 		this.anchor_name= "break";
 		this.anchor_verbed = "set";
 		this.head_offTheDeck = "^HOff the side you see: ^N";
+		this.setRideBasis(Basis.WAGON);
 		setMaterial(RawMaterial.RESOURCE_OAK);
 		basePhyStats().setAbility(2);
 		this.recoverPhyStats();
@@ -152,6 +153,13 @@ public class GenCaravan extends GenNavigableBoardable
 			}
 		}
 		return null;
+	}
+
+	@Override
+	protected boolean canSteer(final MOB mob, final Room R)
+	{
+		//TODO: count the horses
+		return true;
 	}
 
 	@Override
