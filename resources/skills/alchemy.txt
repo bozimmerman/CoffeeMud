@@ -1,127 +1,128 @@
-Spell_IronGrip	IRON
-Spell_InsatiableThirst	SALT WATER
-Spell_ResistMagicMissiles	SCALES
-Spell_MagicalAura	MILK
-Spell_Shield	BRASS
-Spell_Blur	COTTON
-Spell_Infravision	CARROTS
-Spell_DetectUndead	PEPPERS
-Spell_ObscureSelf	MILK
-Spell_ResistPoison	ORANGES
-Spell_Clog	STONE
-Spell_DeadenSmell	TOMATOES
-Spell_DetectMetal	TIN
-Spell_ResistGas	BERRIES
-Spell_Deafness	CORN
-Spell_FeatherFall	FEATHERS
-Spell_Sleep	SAND
-Spell_Hunger	POTATOES
-Spell_DetectWater	WATER
-Spell_ResistAcid	MILK
-Spell_WaterBreathing	SEAWEED
-Spell_DetectMagic	MAPLE
-Spell_DetectGold	GOLD
-Spell_Spook	BLOOD
-Spell_ResistCold	FUR
-Spell_WeaknessGas	MARBLE
-Spell_DispelMagic	AQUAMARINE
-Spell_FaerieFire	FLINT
-Spell_WeaknessAcid	LEMONS
-Spell_DetectInvisible	EGGS
-Spell_ResistElectricity	OAK
-Spell_GraceOfTheCat	GREENS
-Spell_WeaknessCold	CLAY
-Spell_Invisibility	GLASS
-Spell_LightSensitivity	ZINC
-Spell_Tourettes	HOPS
-Spell_ManaBurn	MUTTON
-Spell_ResistFire	SCALES
-Spell_DetectHidden	TOPAZ
-Spell_WeaknessElectricity	IRONWOOD
-Spell_ResistDisease	APPLES
-Spell_Fear	DATES
-Spell_WeaknessFire	HICKORY
-Spell_Blindness	FLINT
-Spell_ComprehendLangs	HICKORY
-Spell_Slow	PORK
-Spell_ResistArrows	IRON
-Spell_Mute	CHRYSOBERYL
-Spell_Feeblemind	POULTRY
-Spell_Stoneskin	GRANITE
-Spell_Laughter	OLIVES
-Spell_Weaken	WATER
-Spell_ChangeSex	BONE
-Spell_Haste	COFFEEBEANS
-Spell_Confusion	FISH
-Spell_Delirium	BEEF
-Spell_Fly	FEATHERS
-Spell_ResistParalyzation	BERRIES
-Spell_GiantStrength	GREENS
-Spell_Frenzy	COFFEEBEANS
-Spell_Nondetection	JADE
-Spell_Advancement	PLATINUM
-Spell_Hold	OBSIDIAN
-Spell_Blink	GEM
-Spell_Polymorph	WHEAT
-Spell_Choke	CACTUS
-Spell_MageClaws	BONE
-Spell_MindFog	COAL
-Spell_FreeMovement	BLOOD
-Spell_Delude	SILVER
-Spell_ResistPetrification	GARNET
-Spell_FleshStone	STONE
-Spell_ImprovedInvisibility	GLASS
-Spell_Nightmare	BLOOD
-Spell_Immunity	MITHRIL
-Spell_MindBlock	BALSA
-Spell_LowerResists	RICE
-Spell_CombatPrecognition	STEEL
-Spell_Frailty	CLAY
-Spell_Anchor	LEAD
-Spell_Disintegrate	COCOA
-Prayer_CureLight	WATER
-Prayer_CureFatigue	WATER
-Prayer_MinorInfusion	SALT WATER
-Prayer_RestoreSmell	WATER
-Prayer_SenseEvil	SALT WATER
-Prayer_SenseLife	SALT WATER
-Prayer_SenseGood	SALT WATER
-Prayer_ProtEvil	WATER
-Prayer_ProtUndead	WATER
-Prayer_ProtGood	BLOOD
-Prayer_CureDeafness	WATER
-Prayer_Deafness	BLOOD
-Prayer_CureSerious	WATER
-Prayer_CureExhaustion	WATER
-Prayer_CauseSerious	BLOOD
-Prayer_ModerateInfusion	SALT WATER
-Prayer_Bless	WATER
-Prayer_Curse	BLOOD
-Prayer_Freedom	WATER
-Prayer_ProtParalyzation	WATER
-Prayer_Paralyze	BLOOD
-Prayer_SenseInvisible	SALT WATER
-Prayer_SenseMagic	SALT WATER
-Prayer_RestoreVoice	WATER
-Prayer_SenseHidden	SALT WATER
-Prayer_ProtPoison	WATER
-Prayer_Poison	BLOOD
-Prayer_RemovePoison	WATER
-Prayer_CureDisease	WATER
-Prayer_ProtDisease	WATER
-Prayer_Plague	BLOOD
-Prayer_Sanctuary	WATER
-Prayer_ProtectHealth	WATER
-Prayer_BloodMoon	BLOOD
-Prayer_CureCritical	WATER
-Prayer_CauseCritical	BLOOD
-Prayer_HolyAura	WATER
-Prayer_GreatCurse	BLOOD
-Prayer_CureBlindness	WATER
-Prayer_Blindsight	SALT WATER
-Prayer_Blindness	BLOOD
-Prayer_ProtectElements	WATER
-Prayer_Heal	WATER
-Prayer_Harm	BLOOD
-Prayer_Invigorate	WATER
-Prayer_MajorInfusion	SALT WATER
+Spell_IronGrip	IRON	POTION
+Spell_InsatiableThirst	SALT WATER	POTION
+Spell_ResistMagicMissiles	SCALES	POTION
+Spell_MagicalAura	MILK	POTION
+Spell_Shield	BRASS	POTION
+Spell_Blur	COTTON	POWDER
+Spell_Blur	BLOOD	POTION
+Spell_Infravision	CARROTS	POTION
+Spell_DetectUndead	PEPPERS	POTION
+Spell_ObscureSelf	MILK	POTION
+Spell_ResistPoison	ORANGES	POTION
+Spell_Clog	STONE	POTION
+Spell_DeadenSmell	TOMATOES	POTION
+Spell_DetectMetal	TIN	POTION
+Spell_ResistGas	BERRIES	POTION
+Spell_Deafness	CORN	POTION
+Spell_FeatherFall	FEATHERS	POTION
+Spell_Sleep	SAND	POWDER
+Spell_Hunger	POTATOES	POTION
+Spell_DetectWater	WATER	POTION
+Spell_ResistAcid	MILK	POTION
+Spell_WaterBreathing	SEAWEED	POTION
+Spell_DetectMagic	MAPLE	POTION
+Spell_DetectGold	GOLD	POTION
+Spell_Spook	BLOOD	POTION
+Spell_ResistCold	FUR	POTION
+Spell_WeaknessGas	MARBLE	POTION
+Spell_DispelMagic	AQUAMARINE	POTION
+Spell_FaerieFire	FLINT	POTION
+Spell_WeaknessAcid	LEMONS	POTION
+Spell_DetectInvisible	EGGS	POTION
+Spell_ResistElectricity	OAK	POTION
+Spell_GraceOfTheCat	GREENS	POTION
+Spell_WeaknessCold	CLAY	POTION
+Spell_Invisibility	GLASS	POTION
+Spell_LightSensitivity	ZINC	POTION
+Spell_Tourettes	HOPS	POTION
+Spell_ManaBurn	MUTTON	POTION
+Spell_ResistFire	SCALES	POTION
+Spell_DetectHidden	TOPAZ	POTION
+Spell_WeaknessElectricity	IRONWOOD	POTION
+Spell_ResistDisease	APPLES	POTION
+Spell_Fear	DATES	POTION
+Spell_WeaknessFire	HICKORY	POTION
+Spell_Blindness	FLINT	POTION
+Spell_ComprehendLangs	HICKORY	POTION
+Spell_Slow	PORK	POTION
+Spell_ResistArrows	IRON	POTION
+Spell_Mute	CHRYSOBERYL	POTION
+Spell_Feeblemind	POULTRY	POTION
+Spell_Stoneskin	GRANITE	POTION
+Spell_Laughter	OLIVES	POTION
+Spell_Weaken	WATER	POTION
+Spell_ChangeSex	BONE	POTION
+Spell_Haste	COFFEEBEANS	POTION
+Spell_Confusion	FISH	POTION
+Spell_Delirium	BEEF	POTION
+Spell_Fly	FEATHERS	POTION
+Spell_ResistParalyzation	BERRIES	POTION
+Spell_GiantStrength	GREENS	POTION
+Spell_Frenzy	COFFEEBEANS	POTION
+Spell_Nondetection	JADE	POTION
+Spell_Advancement	PLATINUM	POTION
+Spell_Hold	OBSIDIAN	POTION
+Spell_Blink	GEM	POTION
+Spell_Polymorph	WHEAT	POTION
+Spell_Choke	CACTUS	POTION
+Spell_MageClaws	BONE	POTION
+Spell_MindFog	COAL	POTION
+Spell_FreeMovement	BLOOD	POTION
+Spell_Delude	SILVER	POTION
+Spell_ResistPetrification	GARNET	POTION
+Spell_FleshStone	STONE	POTION
+Spell_ImprovedInvisibility	GLASS	POTION
+Spell_Nightmare	BLOOD	POTION
+Spell_Immunity	MITHRIL	POTION
+Spell_MindBlock	BALSA	POTION
+Spell_LowerResists	RICE	POTION
+Spell_CombatPrecognition	STEEL	POTION
+Spell_Frailty	CLAY	POTION
+Spell_Anchor	LEAD	POTION
+Spell_Disintegrate	COCOA	POTION
+Prayer_CureLight	WATER	POTION
+Prayer_CureFatigue	WATER	POTION
+Prayer_MinorInfusion	SALT WATER	POTION
+Prayer_RestoreSmell	WATER	POTION
+Prayer_SenseEvil	SALT WATER	POTION
+Prayer_SenseLife	SALT WATER	POTION
+Prayer_SenseGood	SALT WATER	POTION
+Prayer_ProtEvil	WATER	POTION
+Prayer_ProtUndead	WATER	POTION
+Prayer_ProtGood	BLOOD	POTION
+Prayer_CureDeafness	WATER	POTION
+Prayer_Deafness	BLOOD	POTION
+Prayer_CureSerious	WATER	POTION
+Prayer_CureExhaustion	WATER	POTION
+Prayer_CauseSerious	BLOOD	POTION
+Prayer_ModerateInfusion	SALT WATER	POTION
+Prayer_Bless	WATER	POTION
+Prayer_Curse	BLOOD	POTION
+Prayer_Freedom	WATER	POTION
+Prayer_ProtParalyzation	WATER	POTION
+Prayer_Paralyze	BLOOD	POTION
+Prayer_SenseInvisible	SALT WATER	POTION
+Prayer_SenseMagic	SALT WATER	POTION
+Prayer_RestoreVoice	WATER	POTION
+Prayer_SenseHidden	SALT WATER	POTION
+Prayer_ProtPoison	WATER	POTION
+Prayer_Poison	BLOOD	POTION
+Prayer_RemovePoison	WATER	POTION
+Prayer_CureDisease	WATER	POTION
+Prayer_ProtDisease	WATER	POTION
+Prayer_Plague	BLOOD	POTION
+Prayer_Sanctuary	WATER	POTION
+Prayer_ProtectHealth	WATER	POTION
+Prayer_BloodMoon	BLOOD	POTION
+Prayer_CureCritical	WATER	POTION
+Prayer_CauseCritical	BLOOD	POTION
+Prayer_HolyAura	WATER	POTION
+Prayer_GreatCurse	BLOOD	POTION
+Prayer_CureBlindness	WATER	POTION
+Prayer_Blindsight	SALT WATER	POTION
+Prayer_Blindness	BLOOD	POTION
+Prayer_ProtectElements	WATER	POTION
+Prayer_Heal	WATER	POTION
+Prayer_Harm	BLOOD	POTION
+Prayer_Invigorate	WATER	POTION
+Prayer_MajorInfusion	SALT WATER	POTION
