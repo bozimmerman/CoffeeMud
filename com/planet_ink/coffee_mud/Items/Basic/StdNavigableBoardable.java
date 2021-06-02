@@ -247,10 +247,27 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 		return speed;
 	}
 
-	@Override
-	public final int getMaxHullPoints()
+	protected boolean canTenderFromHere(final Room R)
 	{
-		return 10 * getArea().numberOfProperIDedRooms();
+		if(((R.domainType()&Room.INDOORS)!=0)
+		&& (R.domainType()!=Room.DOMAIN_OUTDOORS_AIR))
+			return false;
+		return true;
+	}
+
+	protected boolean canSteerFromHere(final Room R)
+	{
+		if((R.domainType()&Room.INDOORS)!=0)
+			return false;
+		return true;
+	}
+
+	protected boolean canJumpFromHere(final Room R)
+	{
+		if(((R.domainType()&Room.INDOORS)!=0)
+		&& (R.domainType()!=Room.DOMAIN_OUTDOORS_AIR))
+			return false;
+		return true;
 	}
 
 	@Override
@@ -356,10 +373,11 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 							final String str=CMParms.combine(cmds,1).toLowerCase();
 							if(("overboard").startsWith(str) || ("water").startsWith(str))
 							{
-								if(((mobR.domainType()&Room.INDOORS)!=0)
-								&& (mobR.domainType()!=Room.DOMAIN_OUTDOORS_AIR))
-									msg.source().tell(L("You must be on deck to jump overboard."));
-								else
+								if(!canJumpFromHere(mobR))
+								{
+									mob.tell(L("You must be on deck to jump overboard."));
+									return false;
+								}
 								if(mobR.show(mob, null, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> jump(s) overboard.")))
 								{
 									CMLib.tracking().walkForced(mob, mobR, thisRoom, true, true, L("<S-NAME> arrive(s) from @x1.",name()));
@@ -390,8 +408,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 					final Room targetR=msg.source().location();
 					if((R!=null)&&(targetR!=null))
 					{
-						if(((targetR.domainType()&Room.INDOORS)!=0)
-						|| (targetR.domainType()==Room.DOMAIN_OUTDOORS_AIR))
+						if(!canTenderFromHere(targetR))
 						{
 							msg.source().tell(L("You must be on deck to raise a tendered item."));
 							return false;
@@ -417,13 +434,13 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 								}
 								else
 								{
-									msg.source().tell(L("You can only raise @x1 once it has tendered itself to this one.",I.name()));
+									msg.source().tell(L("You can only raise @x1 once it has tendered itself.",I.name()));
 									return false;
 								}
 							}
 							else
 							{
-								msg.source().tell(L("You don't think @x1 is a suitable boat.",I.name()));
+								msg.source().tell(L("You don't think @x1 is a suitable target.",I.name()));
 								return false;
 							}
 						}
@@ -446,8 +463,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 					final Room targetR=CMLib.map().roomLocation(this);
 					if((R!=null)&&(targetR!=null))
 					{
-						if(((targetR.domainType()&Room.INDOORS)!=0)
-						|| (targetR.domainType()==Room.DOMAIN_OUTDOORS_AIR))
+						if(!canTenderFromHere(targetR))
 						{
 							msg.source().tell(L("You must be on deck to lower that."));
 							return false;
@@ -581,7 +597,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
 						return false;
 					}
-					if(((msg.source().location().domainType()&Room.INDOORS)==Room.INDOORS)
+					if((!canSteerFromHere(msg.source().location()))
 					&&(msg.source().isPlayer()))
 					{
 						msg.source().tell(L("You must be on deck to steer your "+noun_word+"."));
@@ -644,7 +660,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
 						return false;
 					}
-					if(((msg.source().location().domainType()&Room.INDOORS)==Room.INDOORS)
+					if(!canSteerFromHere(msg.source().location())
 					&&(msg.source().isPlayer()))
 					{
 						msg.source().tell(L("You must be on deck to "+verb_sail+" your "+noun_word+"."));
@@ -715,7 +731,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
 						return false;
 					}
-					if(((msg.source().location().domainType()&Room.INDOORS)==Room.INDOORS)
+					if((!canSteerFromHere(msg.source().location()))
 					&&(msg.source().isPlayer()))
 					{
 						msg.source().tell(L("You must be on deck to steer your "+noun_word+".."));

@@ -169,6 +169,12 @@ public class GenCaravan extends GenNavigableBoardable
 	}
 
 	@Override
+	public final int getMaxHullPoints()
+	{
+		return 10 * getArea().numberOfProperIDedRooms();
+	}
+
+	@Override
 	protected boolean requiresSafetyMove()
 	{
 		final Room R=CMLib.map().roomLocation(this);
