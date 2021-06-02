@@ -248,6 +248,12 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 	}
 
 	@Override
+	public final int getMaxHullPoints()
+	{
+		return 10 * getArea().numberOfProperIDedRooms();
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.sourceMinor()==CMMsg.TYP_HUH)

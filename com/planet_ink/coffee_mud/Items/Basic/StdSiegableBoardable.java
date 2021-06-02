@@ -1021,9 +1021,9 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 	}
 
 	@Override
-	public final int getMaxHullPoints()
+	public int getMaxHullPoints()
 	{
-		return 25 * getArea().numberOfProperIDedRooms();
+		return 5 * getArea().numberOfProperIDedRooms();
 	}
 
 	@Override

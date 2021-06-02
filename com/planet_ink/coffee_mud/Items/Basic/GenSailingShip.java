@@ -148,6 +148,12 @@ public class GenSailingShip extends GenNavigableBoardable
 	}
 
 	@Override
+	public final int getMaxHullPoints()
+	{
+		return 25 * getArea().numberOfProperIDedRooms();
+	}
+
+	@Override
 	protected Room findNearestDocks(final Room R)
 	{
 		if(R!=null)
