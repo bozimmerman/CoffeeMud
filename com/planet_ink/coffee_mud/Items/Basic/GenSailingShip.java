@@ -206,6 +206,15 @@ public class GenSailingShip extends GenNavigableBoardable
 	}
 
 	@Override
+	protected MOB createNavMob(final Room thisRoom)
+	{
+		final MOB mob = super.createNavMob(thisRoom);
+		mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
+		mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
+		return mob;
+	}
+
+	@Override
 	protected boolean requiresSafetyMove()
 	{
 		final Room R=CMLib.map().roomLocation(this);
@@ -218,6 +227,61 @@ public class GenSailingShip extends GenNavigableBoardable
 			return true;
 		return false;
 
+	}
+
+	@Override
+	protected boolean navCheck(final Room thisRoom, final int direction, final Room destRoom)
+	{
+		if((!CMLib.flags().isDeepWaterySurfaceRoom(destRoom))
+		&&(destRoom.domainType()!=Room.DOMAIN_OUTDOORS_SEAPORT)
+		&&(destRoom.domainType()!=Room.DOMAIN_INDOORS_CAVE_SEAPORT)
+		&&(destRoom.domainType()!=Room.DOMAIN_INDOORS_SEAPORT))
+		{
+			if(CMLib.flags().isWateryRoom(thisRoom))
+				announceToAllAboard(L("As there is no where to "+verb_sail+" @x1, <S-NAME> meanders along the waves.",CMLib.directions().getInDirectionName(direction)));
+			else
+				announceToAllAboard(L("As there is no where to "+verb_sail+" @x1, <S-NAME> go(es) nowhere.",CMLib.directions().getInDirectionName(direction)));
+			courseDirections.clear();
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	protected int getDirectionFacing(final int direction)
+	{
+		final Room thisRoom=CMLib.map().roomLocation(this);
+		if(directionFacing < 0)
+		{
+			if(thisRoom != null)
+			{
+				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+				{
+					final Room R2=thisRoom.getRoomInDir(d);
+					if((R2!=null)
+					&&(thisRoom.getExitInDir(d)!=null)
+					&&(thisRoom.getExitInDir(d).isOpen())
+					&&(!CMLib.flags().isWateryRoom(R2)))
+					{
+						return Directions.getOpDirectionCode(d);
+					}
+				}
+			}
+			return direction;
+		}
+		return directionFacing;
+	}
+
+	@Override
+	public long expirationDate()
+	{
+		final Room R=CMLib.map().roomLocation(this);
+		if(R==null)
+			return 0;
+		if((!CMLib.flags().isUnderWateryRoom(R))
+		&&(this.usesRemaining()>0))
+			return 0;
+		return super.expirationDate();
 	}
 
 	@Override

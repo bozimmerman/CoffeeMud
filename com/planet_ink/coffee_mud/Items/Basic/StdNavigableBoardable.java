@@ -250,14 +250,6 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((msg.target() == this)
-		&&(msg.tool()!=null)
-		&&(msg.tool().ID().equals("AWaterCurrent")))
-		{
-			if(anchorDown)
-				return false;
-		}
-
 		if((msg.sourceMinor()==CMMsg.TYP_HUH)
 		&&(msg.targetMessage()!=null)
 		&&(area == CMLib.map().areaLocation(msg.source())))
@@ -300,14 +292,9 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 							msg.source().tell(L("Not while @x1 is in in combat!",tenderToI.Name()));
 							return false;
 						}
-						final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),thisRoom);
+						final MOB mob = createNavMob(thisRoom);
 						try
 						{
-							mob.setRiding(this);
-							if(getOwnerObject() instanceof Clan)
-								mob.setClan(getOwnerObject().name(), ((Clan)getOwnerObject()).getAutoPosition());
-							mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
-							mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
 							if(tenderToI.tenderItem == this)
 							{
 								final BoardableItem myArea=(BoardableItem)this.getArea();
@@ -456,7 +443,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						if(((targetR.domainType()&Room.INDOORS)!=0)
 						|| (targetR.domainType()==Room.DOMAIN_OUTDOORS_AIR))
 						{
-							msg.source().tell(L("You must be on deck to lower a boat."));
+							msg.source().tell(L("You must be on deck to lower that."));
 							return false;
 						}
 						final String rest = CMParms.combine(cmds,1);
@@ -466,7 +453,8 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 							if((I instanceof Rideable)
 							&&(((Rideable)I).mobileRideBasis())
 							&&((((Rideable)I).rideBasis()==Rideable.Basis.WATER_BASED)
-								||(((Rideable)I).rideBasis()==Rideable.Basis.AIR_FLYING)))
+								||(((Rideable)I).rideBasis()==Rideable.Basis.AIR_FLYING)
+								||(((Rideable)I).rideBasis()==Rideable.Basis.LAND_BASED)))
 							{
 								final MOB riderM=getBestRider(R,(Rideable)I);
 								if(((riderM==null)||(R.show(riderM, R, CMMsg.MSG_LEAVE, null)))
@@ -920,10 +908,9 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 			if(disableCmds.contains("LEAVE"))
 				return false;
 			if((msg.source().riding() != null)
-			&&(this.siegeTarget == msg.source().riding())
-			&&(CMLib.flags().isWaterWorthy(msg.source().riding())))
+			&&(this.siegeTarget == msg.source().riding()))
 			{
-				msg.source().tell(L("Your small vessel can not get away during combat."));
+				msg.source().tell(L("You can not get away during combat."));
 				return false;
 			}
 			if(msg.tool() instanceof Exit)
@@ -1161,14 +1148,9 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 					final Room combatRoom=this.siegeCombatRoom;
 					if(combatRoom != null)
 					{
-						final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),null);
+						final MOB mob = createNavMob(null);
 						try
 						{
-							mob.setRiding(this);
-							if(getOwnerObject() instanceof Clan)
-								mob.setClan(getOwnerObject().name(), ((Clan)getOwnerObject()).getAutoPosition());
-							mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
-							mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
 							combatRoom.show(mob, this, CMMsg.MSG_ACTIVATE|CMMsg.MASK_MALICIOUS, null);
 						}
 						finally
@@ -1318,9 +1300,6 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 		final Room R=CMLib.map().roomLocation(this);
 		if(R==null)
 			return 0;
-		if((!CMLib.flags().isUnderWateryRoom(R))
-		&&(this.usesRemaining()>0))
-			return 0;
 		return super.expirationDate();
 	}
 
@@ -1369,25 +1348,8 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 
 	protected int getDirectionFacing(final int direction)
 	{
-		final Room thisRoom=CMLib.map().roomLocation(this);
 		if(directionFacing < 0)
-		{
-			if(thisRoom != null)
-			{
-				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
-				{
-					final Room R2=thisRoom.getRoomInDir(d);
-					if((R2!=null)
-					&&(thisRoom.getExitInDir(d)!=null)
-					&&(thisRoom.getExitInDir(d).isOpen())
-					&&(!CMLib.flags().isWateryRoom(R2)))
-					{
-						return Directions.getOpDirectionCode(d);
-					}
-				}
-			}
 			return direction;
-		}
 		return directionFacing;
 	}
 
@@ -1395,6 +1357,20 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 	public void setDirectionFacing(final int direction)
 	{
 		this.directionFacing=direction;
+	}
+
+	protected boolean navCheck(final Room thisRoom, final int direction, final Room destRoom)
+	{
+		return true;
+	}
+
+	protected MOB createNavMob(final Room thisRoom)
+	{
+		final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),thisRoom);
+		mob.setRiding(this);
+		if(getOwnerObject() instanceof Clan)
+			mob.setClan(getOwnerObject().name(), ((Clan)getOwnerObject()).getAutoPosition());
+		return mob;
 	}
 
 	protected NavResult navMove(final int direction)
@@ -1428,14 +1404,9 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 			}
 			if(tacticalCoords != null)
 			{
-				final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),thisRoom);
+				final MOB mob = createNavMob(thisRoom);
 				try
 				{
-					mob.setRiding(this);
-					if(getOwnerObject() instanceof Clan)
-						mob.setClan(getOwnerObject().name(), ((Clan)getOwnerObject()).getAutoPosition());
-					mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
-					mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
 					if(directionFacing == direction)
 					{
 						final String directionName = CMLib.directions().getDirectionName(direction);
@@ -1497,28 +1468,13 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 			final Exit exit=thisRoom.getExitInDir(direction);
 			if((destRoom!=null)&&(exit!=null))
 			{
-				if((!CMLib.flags().isDeepWaterySurfaceRoom(destRoom))
-				&&(destRoom.domainType()!=Room.DOMAIN_OUTDOORS_SEAPORT)
-				&&(destRoom.domainType()!=Room.DOMAIN_INDOORS_CAVE_SEAPORT)
-				&&(destRoom.domainType()!=Room.DOMAIN_INDOORS_SEAPORT))
-				{
-					if(CMLib.flags().isWateryRoom(thisRoom))
-						announceToAllAboard(L("As there is no where to "+verb_sail+" @x1, <S-NAME> meanders along the waves.",CMLib.directions().getInDirectionName(direction)));
-					else
-						announceToAllAboard(L("As there is no where to "+verb_sail+" @x1, <S-NAME> go(es) nowhere.",CMLib.directions().getInDirectionName(direction)));
-					courseDirections.clear();
+				if(!navCheck(thisRoom, direction, destRoom))
 					return NavResult.CANCEL;
-				}
 				final int oppositeDirectionFacing=thisRoom.getReverseDir(direction);
 				final String directionName=CMLib.directions().getDirectionName(direction);
 				final String otherDirectionName=CMLib.directions().getDirectionName(oppositeDirectionFacing);
 				final Exit opExit=destRoom.getExitInDir(oppositeDirectionFacing);
-				final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),CMLib.map().roomLocation(this));
-				mob.setRiding(this);
-				if(getOwnerObject() instanceof Clan)
-					mob.setClan(getOwnerObject().name(), ((Clan)getOwnerObject()).getAutoPosition());
-				mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
-				mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
+				final MOB mob = createNavMob(CMLib.map().roomLocation(this));
 				try
 				{
 					final boolean isSneaking = CMLib.flags().isSneaking(this);

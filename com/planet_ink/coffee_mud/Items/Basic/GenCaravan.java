@@ -114,9 +114,22 @@ public class GenCaravan extends GenNavigableBoardable
 	{
 		if(R==null)
 			return false;
-		return (R.domainType()==Room.DOMAIN_OUTDOORS_CITY);
+		switch(R.domainType())
+		{
+		case Room.DOMAIN_OUTDOORS_SEAPORT:
+		case Room.DOMAIN_OUTDOORS_SPACEPORT:
+		case Room.DOMAIN_INDOORS_CAVE_SEAPORT:
+		case Room.DOMAIN_INDOORS_SEAPORT:
+		case Room.DOMAIN_OUTDOORS_CITY:
+			return true;
+		case Room.DOMAIN_INDOORS_CAVE:
+			return R.basePhyStats().weight()>3;
+		case Room.DOMAIN_OUTDOORS_PLAINS:
+			return R.resourceChoices().size()<10;
+		}
+		return false;
 	}
-	
+
 	@Override
 	protected Room findNearestDocks(final Room R)
 	{
@@ -169,6 +182,18 @@ public class GenCaravan extends GenNavigableBoardable
 	}
 
 	@Override
+	protected boolean navCheck(final Room thisRoom, final int direction, final Room destRoom)
+	{
+		if(!isDrivableRoom(destRoom))
+		{
+			announceToAllAboard(L("As there is no where to "+verb_sail+" @x1, <S-NAME> go(es) nowhere.",CMLib.directions().getInDirectionName(direction)));
+			courseDirections.clear();
+			return false;
+		}
+		return true;
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_SIT)
@@ -214,7 +239,6 @@ public class GenCaravan extends GenNavigableBoardable
 		final Room baseR=CMLib.map().roomLocation(this);
 		if(baseR!=null)
 		{
-			CMLib.tracking().makeSink(this, baseR, false);
 			final String sinkString = L("<T-NAME> start(s) collapsing!");
 			baseR.show(victorM, this, CMMsg.MSG_OK_ACTION, sinkString);
 			this.announceToNonOuterViewers(victorM, sinkString);
