@@ -77,7 +77,7 @@ public class CaravanBuilding extends Shipwright
 	@Override
 	protected List<Item> getShips()
 	{
-		final String allItemID = "CARABUILD_PARSED";
+		final String allItemID = "CARAVANBUILD_PARSED";
 		@SuppressWarnings("unchecked")
 		List<Item> shipPrototypes = (List<Item>)Resources.getResource(allItemID);
 		if(shipPrototypes == null)
