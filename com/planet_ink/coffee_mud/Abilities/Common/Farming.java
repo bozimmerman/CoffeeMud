@@ -257,6 +257,17 @@ public class Farming extends GatheringSkill
 		return false;
 	}
 
+	private boolean plantableResource(final int rsc)
+	{
+		if((rsc==RawMaterial.RESOURCE_MUSHROOMS)
+		||(rsc==RawMaterial.RESOURCE_FUNGUS))
+			return false;
+		return ((rsc&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
+				||(rsc==RawMaterial.RESOURCE_COTTON)
+				||(rsc==RawMaterial.RESOURCE_HEMP)
+				||((rsc&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN);
+	}
+
 	private boolean plantable(final MOB mob, final Item I2)
 	{
 		if((I2!=null)
@@ -264,10 +275,7 @@ public class Farming extends GatheringSkill
 		&&(CMLib.flags().canBeSeenBy(I2,mob))
 		&&(I2.container()==null)
 		&&((I2 instanceof Food)||(((RawMaterial)I2).getSubType().equals(RawMaterial.ResourceSubType.SEED.name())))
-		&&(((I2.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
-			||(I2.material()==RawMaterial.RESOURCE_COTTON)
-			||(I2.material()==RawMaterial.RESOURCE_HEMP)
-			||((I2.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)))
+		&&(plantableResource(I2.material())))
 			return true;
 		return false;
 	}
@@ -368,10 +376,7 @@ public class Farming extends GatheringSkill
 		{
 			final String str=codes.name(cd).toUpperCase();
 			if((str.equals(what))
-			&&(((cd&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
-			  ||(cd==RawMaterial.RESOURCE_COTTON)
-			  ||(cd==RawMaterial.RESOURCE_HEMP)
-			  ||((cd&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)))
+			&&(plantableResource(cd)))
 			{
 				code=cd;
 				foundShortName=CMStrings.capitalizeAndLower(str);
@@ -384,10 +389,7 @@ public class Farming extends GatheringSkill
 			{
 				final String str=codes.name(cd).toUpperCase();
 				if((str.toUpperCase().startsWith(what)||(what.startsWith(str)))
-				&&(((cd&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
-				  ||(cd==RawMaterial.RESOURCE_COTTON)
-				  ||(cd==RawMaterial.RESOURCE_HEMP)
-				  ||((cd&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)))
+				&&(plantableResource(cd)))
 				{
 					code=cd;
 					foundShortName=CMStrings.capitalizeAndLower(str);
