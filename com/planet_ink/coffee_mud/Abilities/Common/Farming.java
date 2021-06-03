@@ -257,7 +257,7 @@ public class Farming extends GatheringSkill
 		return false;
 	}
 
-	private boolean plantableResource(final int rsc)
+	protected boolean plantableResource(final int rsc)
 	{
 		if((rsc==RawMaterial.RESOURCE_MUSHROOMS)
 		||(rsc==RawMaterial.RESOURCE_FUNGUS))
@@ -268,7 +268,7 @@ public class Farming extends GatheringSkill
 				||((rsc&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN);
 	}
 
-	private boolean plantable(final MOB mob, final Item I2)
+	protected boolean plantable(final MOB mob, final Item I2)
 	{
 		if((I2!=null)
 		&&(I2 instanceof RawMaterial)
@@ -278,6 +278,16 @@ public class Farming extends GatheringSkill
 		&&(plantableResource(I2.material())))
 			return true;
 		return false;
+	}
+
+	protected boolean canGrowHere(final Room R)
+	{
+		return ((R.domainType()==Room.DOMAIN_OUTDOORS_HILLS)
+				||(R.domainType()==Room.DOMAIN_OUTDOORS_PLAINS)
+				||(R.domainType()==Room.DOMAIN_OUTDOORS_WOODS)
+				||(R.domainType()==Room.DOMAIN_OUTDOORS_JUNGLE)
+				||(R.domainType()==Room.DOMAIN_OUTDOORS_SWAMP)
+				||(R.myResource()==RawMaterial.RESOURCE_DIRT));
 	}
 
 	@Override
@@ -305,13 +315,7 @@ public class Farming extends GatheringSkill
 			commonTell(mob,L("You need clear sunlight to do your farming.  Check the time and weather."));
 			return false;
 		}
-		if((!auto)
-		&&(R.domainType()!=Room.DOMAIN_OUTDOORS_HILLS)
-		&&(R.domainType()!=Room.DOMAIN_OUTDOORS_PLAINS)
-		&&(R.domainType()!=Room.DOMAIN_OUTDOORS_WOODS)
-		&&(R.domainType()!=Room.DOMAIN_OUTDOORS_JUNGLE)
-		&&(R.domainType()!=Room.DOMAIN_OUTDOORS_SWAMP)
-		&&(R.myResource()!=RawMaterial.RESOURCE_DIRT))
+		if((!auto) && (!canGrowHere(R)))
 		{
 			commonTell(mob,L("The land is not suitable for farming here."));
 			return false;
