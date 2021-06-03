@@ -1021,7 +1021,8 @@ public class WeatherAffects extends PuddleMaker
 						final Item I=M.getItem(i);
 						if(I==null)
 							continue;
-						if(!I.amWearingAt(Wearable.IN_INVENTORY))
+						if((!I.amWearingAt(Wearable.IN_INVENTORY))
+						&&(I.container()==null))
 						{
 							if((((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL))
 							&&(I.subjectToWearAndTear())
