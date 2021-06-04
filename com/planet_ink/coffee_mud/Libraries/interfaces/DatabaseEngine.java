@@ -2298,6 +2298,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#addBackLogEntry(String, long, String)
 	 * @see DatabaseEngine#delBackLogEntry(String, long)
 	 * @see DatabaseEngine#trimBackLogEntries(String[], int, long)
+	 * @see DatabaseEngine#getBackLogPageEnd(String, int)
 	 *
 	 * @param channelName the unique name of the channel to return messages from
 	 * @param subNameField any extra query field, or 0
@@ -2306,6 +2307,21 @@ public interface DatabaseEngine extends CMLibrary
 	 * @return a list of applicable messages, coded as string,timestamp
 	 */
 	public List<Triad<String,Integer,Long>> getBackLogEntries(String channelName, int subNameField, final int newestToSkip, final int numToReturn);
+
+	/**
+	 * Table category: DBBACKLOG
+	 * Returns the highest page index for the given channel in the backlog table
+	 *
+	 * @see DatabaseEngine#addBackLogEntry(String, long, String)
+	 * @see DatabaseEngine#delBackLogEntry(String, long)
+	 * @see DatabaseEngine#trimBackLogEntries(String[], int, long)
+	 * @see DatabaseEngine#getBackLogEntries(String, int, int, int)
+	 *
+	 * @param channelName the unique name of the channel to return messages from
+	 * @param subNameField any extra query field, or 0
+	 * @return the highest page index for messages
+	 */
+	public int getBackLogPageEnd(String channelName, int subNameField);
 
 	/**
 	 * Table category: DBBACKLOG

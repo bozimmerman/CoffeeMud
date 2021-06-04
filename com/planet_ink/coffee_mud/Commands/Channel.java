@@ -212,7 +212,8 @@ public class Channel extends StdCommand
 			int lastPage=0;
 			boolean skippedSome=true;
 			final int pageSize=50;
-			while((count < num)&&((skippedSome)||((page*pageSize) < (num*100))))
+			final int highestNum=CMLib.channels().getChannelQuePageEnd(channelInt, mob);
+			while((count < num)&&((skippedSome)||((page*pageSize) < (highestNum+2+pageSize))))
 			{
 				page++;
 				skippedSome=false;

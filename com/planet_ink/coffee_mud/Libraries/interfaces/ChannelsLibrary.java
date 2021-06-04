@@ -71,13 +71,27 @@ public interface ChannelsLibrary extends CMLibrary
 	 * object format.  This may potentially hit the database.
 	 * @see ChannelsLibrary#getChannelIndex(String)
 	 * @see ChannelsLibrary.ChannelMsg
+	 * @see ChannelsLibrary#getChannelQuePageEnd(int, MOB)
 	 * @param channelNumber the channel id number/index
 	 * @param numNewToSkip starting message number (0 based)
 	 * @param numToReturn total number of messages to return
-	 * @param mob TODO
+	 * @param mob the channel reader
 	 * @return the list of messages
 	 */
 	public List<ChannelMsg> getChannelQue(int channelNumber, int numNewToSkip, int numToReturn, MOB mob);
+
+	/**
+	 * Returns the highest page index for messages in the given channel, for the given reader.
+	 *
+	 * @see ChannelsLibrary#getChannelIndex(String)
+	 * @see ChannelsLibrary.ChannelMsg
+	 * @see ChannelsLibrary#getChannelQue(int, int, int, MOB)
+	 *
+	 * @param channelNumber the channel id number/index
+	 * @param mob the channel reader
+	 * @return the highest page index for messages in the given channel, for the given reader.
+	 */
+	public int getChannelQuePageEnd(final int channelNumber, final MOB mob);
 
 	/**
 	 * Returns whether the given Mob can read a channel message from the given sender, on

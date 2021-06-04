@@ -143,6 +143,19 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	}
 
 	@Override
+	public int getChannelQuePageEnd(final int channelNumber, final MOB mob)
+	{
+		if((channelNumber>=0)
+		&&(channelNumber<channelList.size()))
+		{
+			final CMChannel channel = channelList.get(channelNumber);
+			final int subNameField = this.getExtraChannelDataField(mob, channel);
+			return CMLib.database().getBackLogPageEnd(channel.name(), subNameField);
+		}
+		return -1;
+	}
+
+	@Override
 	public List<ChannelMsg> getChannelQue(final int channelNumber, final int numNewToSkip, final int numToReturn, final MOB mob)
 	{
 		if((channelNumber>=0)

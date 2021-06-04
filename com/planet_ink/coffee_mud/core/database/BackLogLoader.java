@@ -56,11 +56,26 @@ public class BackLogLoader
 				try
 				{
 					D=DB.DBFetch();
-					final ResultSet R=D.query("SELECT CMDATE FROM CMBKLG WHERE CMNAME='"+channelName+"' AND CMINDX = 0");
+					ResultSet R=D.query("SELECT CMDATE FROM CMBKLG WHERE CMNAME='"+channelName+"' AND CMINDX = 0");
 					if(R.next())
 					{
-						counters.put(channelName, new int[] { (int)DBConnections.getLongRes(R, "CMDATE") });
+						final int setCounter = (int)DBConnections.getLongRes(R, "CMDATE");
+						int c=setCounter;
 						R.close();
+						final StringBuilder sql=new StringBuilder("SELECT CMINDX FROM CMBKLG WHERE CMNAME='"+channelName+"'");
+						sql.append(" AND CMINDX >="+setCounter);
+						R = D.query(sql.toString());
+						while(R.next())
+						{
+							final int i = R.getInt(1);
+							if(i>=c)
+								c=i+1;
+						}
+						R.close();
+						if(c!=setCounter)
+							D.update("UPDATE CMBKLG SET CMDATE="+c+" WHERE CMNAME='"+channelName+"' AND CMINDX=0", 0);
+						counters.put(channelName, new int[] { c });
+
 					}
 					else
 					{
@@ -307,6 +322,14 @@ public class BackLogLoader
 		}
 		return list;
 
+	}
+
+	public int getBackLogPageEnd(String channelName, final int subNameField)
+	{
+		if(channelName == null)
+			return -1;
+		channelName = channelName.toUpperCase().trim();
+		return getCounter(channelName, true);
 	}
 
 	public List<Triad<String,Integer,Long>> getBackLogEntries(String channelName, final int subNameField, final int newestToSkip, final int numToReturn)

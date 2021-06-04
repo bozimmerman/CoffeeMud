@@ -1241,6 +1241,12 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public int getBackLogPageEnd(final String channelName, final int subNameField)
+	{
+		return BackLogLoader.getBackLogPageEnd(channelName, subNameField);
+	}
+
+	@Override
 	public void trimBackLogEntries(final String[] channels, final int maxMessages, final long oldestTime)
 	{
 		BackLogLoader.trimBackLogEntries(channels, maxMessages, oldestTime);
