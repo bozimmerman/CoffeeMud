@@ -63,13 +63,13 @@ public class BackLogLoader
 						int c=setCounter;
 						R.close();
 						final StringBuilder sql=new StringBuilder("SELECT CMINDX FROM CMBKLG WHERE CMNAME='"+channelName+"'");
-						sql.append(" AND CMINDX >="+setCounter);
+						sql.append(" AND CMINDX >"+setCounter);
 						R = D.query(sql.toString());
 						while(R.next())
 						{
 							final int i = R.getInt(1);
-							if(i>=c)
-								c=i+1;
+							if(i>c)
+								c=i;
 						}
 						R.close();
 						if(c!=setCounter)
