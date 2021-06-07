@@ -281,7 +281,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 	{
 		buildingI=CMClass.getItem("GenPowder");
 		final Item buildingI=this.buildingI;
-		((Potion)buildingI).setSpellList(theSpell.ID());
+		((MagicDust)buildingI).setSpellList(theSpell.ID());
 		buildingI.setName(L("some dust of @x1",theSpell.name().toLowerCase()));
 		buildingI.setDisplayText(L("some dust of @x1 sits here.",theSpell.name().toLowerCase()));
 		buildingI.setDescription("");
