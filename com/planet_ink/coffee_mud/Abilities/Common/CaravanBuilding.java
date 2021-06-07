@@ -132,7 +132,8 @@ public class CaravanBuilding extends Shipwright
 		if(CMLib.flags().isDeadlyOrMaliciousEffect(I))
 			return false;
 		if((I instanceof NavigableItem)
-		&&(((NavigableItem)I).navBasis() == Rideable.Basis.LAND_BASED))
+		&&((((NavigableItem)I).navBasis() == Rideable.Basis.LAND_BASED)
+			||(((NavigableItem)I).navBasis() == Rideable.Basis.WAGON)))
 			return true;
 		return false;
 	}

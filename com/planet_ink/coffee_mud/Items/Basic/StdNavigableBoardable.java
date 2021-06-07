@@ -419,7 +419,9 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						}
 						final String rest = CMParms.combine(cmds,1);
 						final Item I=R.findItem(rest);
-						if((I!=this)&&(CMLib.flags().canBeSeenBy(I, msg.source())))
+						if((I!=this)
+						&&(I!=null)
+						&&(CMLib.flags().canBeSeenBy(I, msg.source())))
 						{
 							if((I instanceof Rideable)
 							&&(((Rideable)I).mobileRideBasis()))
@@ -480,7 +482,8 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 							&&(((Rideable)I).mobileRideBasis())
 							&&((((Rideable)I).rideBasis()==Rideable.Basis.WATER_BASED)
 								||(((Rideable)I).rideBasis()==Rideable.Basis.AIR_FLYING)
-								||(((Rideable)I).rideBasis()==Rideable.Basis.LAND_BASED)))
+								||(((Rideable)I).rideBasis()==Rideable.Basis.LAND_BASED)
+								||(((Rideable)I).rideBasis()==Rideable.Basis.WAGON)))
 							{
 								final MOB riderM=getBestRider(R,(Rideable)I);
 								if(((riderM==null)||(R.show(riderM, R, CMMsg.MSG_LEAVE, null)))
@@ -873,7 +876,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 				{
 					this.courseDirections.clear(); // sail eliminates a course
 					this.courseDirections.add(Integer.valueOf(-1));
-					this.beginSail(msg.source(), R, dir);
+					this.beginNavigate(msg.source(), R, dir);
 				}
 				else
 				{
@@ -1093,7 +1096,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		final int sailingTickID = amInTacticalMode() ? Tickable.TICKID_SPECIALMANEUVER : Tickable.TICKID_AREA;
+		final int navTickID = amInTacticalMode() ? Tickable.TICKID_SPECIALMANEUVER : Tickable.TICKID_AREA;
 		if(tickID == Tickable.TICKID_AREA)
 		{
 			if(amDestroyed())
@@ -1121,7 +1124,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 				}
 			}
 		}
-		if(tickID == sailingTickID)
+		if(tickID == navTickID)
 		{
 			ticksSinceMove++;
 			if((!this.anchorDown)
@@ -1373,7 +1376,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 		this.directionFacing=direction;
 	}
 
-	protected boolean navCheck(final Room thisRoom, final int direction, final Room destRoom)
+	protected boolean preNavigateCheck(final Room thisRoom, final int direction, final Room destRoom)
 	{
 		return true;
 	}
@@ -1482,7 +1485,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 			final Exit exit=thisRoom.getExitInDir(direction);
 			if((destRoom!=null)&&(exit!=null))
 			{
-				if(!navCheck(thisRoom, direction, destRoom))
+				if(!preNavigateCheck(thisRoom, direction, destRoom))
 					return NavResult.CANCEL;
 				final int oppositeDirectionFacing=thisRoom.getReverseDir(direction);
 				final String directionName=CMLib.directions().getDirectionName(direction);
@@ -1492,10 +1495,10 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 				try
 				{
 					final boolean isSneaking = CMLib.flags().isSneaking(this);
-					final String sailEnterStr = isSneaking ? null : L("<S-NAME> "+verb_sail+"(s) in from @x1.",otherDirectionName);
-					final String sailAwayStr = isSneaking ? null : L("<S-NAME> "+verb_sail+"(s) @x1.",directionName);
-					final CMMsg enterMsg=CMClass.getMsg(mob,destRoom,exit,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,sailEnterStr);
-					final CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,sailAwayStr);
+					final String navEnterStr = isSneaking ? null : L("<S-NAME> "+verb_sail+"(s) in from @x1.",otherDirectionName);
+					final String navAwayStr = isSneaking ? null : L("<S-NAME> "+verb_sail+"(s) @x1.",directionName);
+					final CMMsg enterMsg=CMClass.getMsg(mob,destRoom,exit,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,navEnterStr);
+					final CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,navAwayStr);
 					if((exit.okMessage(mob,enterMsg))
 					&&(leaveMsg.target().okMessage(mob,leaveMsg))
 					&&((opExit==null)||(opExit.okMessage(mob,leaveMsg)))
@@ -1557,7 +1560,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 		return false;
 	}
 
-	protected boolean beginSail(final MOB mob, final Room R, final int dir)
+	protected boolean beginNavigate(final MOB mob, final Room R, final int dir)
 	{
 		directionFacing = dir;
 		final String outerStr;

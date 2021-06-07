@@ -690,7 +690,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			final Room R=CMLib.map().roomLocation(this);
 			if((R!=null) && (R.okMessage(mob, msg2) && this.okAreaMessage(msg2, false)))
 			{
-				R.send(mob, msg2); // this lets the source know, i guess
+				//R.send(mob, msg2); // this lets the source know, i guess
 				this.sendAreaMessage(msg2, false); // this just sends to "others"
 			}
 		}

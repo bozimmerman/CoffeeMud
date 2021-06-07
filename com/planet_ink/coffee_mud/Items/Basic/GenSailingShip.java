@@ -236,7 +236,7 @@ public class GenSailingShip extends GenNavigableBoardable
 	}
 
 	@Override
-	protected boolean navCheck(final Room thisRoom, final int direction, final Room destRoom)
+	protected boolean preNavigateCheck(final Room thisRoom, final int direction, final Room destRoom)
 	{
 		if((!CMLib.flags().isDeepWaterySurfaceRoom(destRoom))
 		&&(destRoom.domainType()!=Room.DOMAIN_OUTDOORS_SEAPORT)

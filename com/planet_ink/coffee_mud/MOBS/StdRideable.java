@@ -588,10 +588,19 @@ public class StdRideable extends StdMOB implements Rideable
 					msg.source().tell(L("@x1 can not be mounted on @x2.",((Item)msg.tool()).name(msg.source()),name(msg.source())));
 					return false;
 				}
-				if((basePhyStats().weight()*5<whoWantsToRide.basePhyStats().weight()))
+				if((msg.tool() instanceof Rideable)
+				&&(msg.tool() instanceof NavigableItem)
+				&&((((NavigableItem)msg.tool()).navBasis() ==Rideable.Basis.LAND_BASED)))
 				{
-					msg.source().tell(L("@x1 is too small for @x2.",name(msg.source()),whoWantsToRide.name(msg.source())));
-					return false;
+					//handles its own pullers
+				}
+				else
+				{
+					if((basePhyStats().weight()*5<whoWantsToRide.basePhyStats().weight()))
+					{
+						msg.source().tell(L("@x1 is too small for @x2.",name(msg.source()),whoWantsToRide.name(msg.source())));
+						return false;
+					}
 				}
 				if((numRiders()>=riderCapacity())
 				&&(!amRiding(whoWantsToRide)))

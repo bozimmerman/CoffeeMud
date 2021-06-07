@@ -64,6 +64,7 @@ public class GenCaravan extends GenNavigableBoardable
 		this.anchor_verbed = "set";
 		this.head_offTheDeck = "^HOff the side you see: ^N";
 		this.setRideBasis(Basis.WAGON);
+		super.setRiderCapacity(0);
 		setMaterial(RawMaterial.RESOURCE_OAK);
 		basePhyStats().setAbility(2);
 		this.recoverPhyStats();
@@ -73,6 +74,12 @@ public class GenCaravan extends GenNavigableBoardable
 	public Basis navBasis()
 	{
 		return Rideable.Basis.LAND_BASED;
+	}
+
+	@Override
+	public Basis rideBasis()
+	{
+		return Rideable.Basis.WAGON;
 	}
 
 	private final static Map<String, NavigatingCommand> navCommandWords = new Hashtable<String, NavigatingCommand>();
@@ -93,10 +100,11 @@ public class GenCaravan extends GenNavigableBoardable
 					navCommandWords.put("DRIVE", N);
 					break;
 				case RAISE_ANCHOR:
-					navCommandWords.put("SET BREAK", N);
+					navCommandWords.put("RELEASE_BREAK", N);
+					navCommandWords.put("UNSET_BREAK", N);
 					break;
 				case LOWER_ANCHOR:
-					navCommandWords.put("RELEASE BREAK", N);
+					navCommandWords.put("SET_BREAK", N);
 					break;
 				default:
 					navCommandWords.put(N.name().toUpperCase().trim(), N);
@@ -158,7 +166,6 @@ public class GenCaravan extends GenNavigableBoardable
 	@Override
 	protected boolean canSteer(final MOB mob, final Room R)
 	{
-		//TODO: count the horses
 		return true;
 	}
 
@@ -195,14 +202,83 @@ public class GenCaravan extends GenNavigableBoardable
 
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	protected boolean navCheck(final Room thisRoom, final int direction, final Room destRoom)
+	protected boolean preNavigateCheck(final Room thisRoom, final int direction, final Room destRoom)
 	{
 		if(!isDrivableRoom(destRoom))
 		{
 			announceToAllAboard(L("As there is no where to "+verb_sail+" @x1, <S-NAME> go(es) nowhere.",CMLib.directions().getInDirectionName(direction)));
 			courseDirections.clear();
 			return false;
+		}
+		final Rideable baseRide = this.riding();
+		Physical rideLeader = baseRide;
+		final Set<Physical> allPullers = new HashSet<Physical>();
+		while(rideLeader!=null)
+		{
+			allPullers.add(rideLeader);
+			if(rideLeader instanceof Followable)
+				allPullers.addAll(((Followable)rideLeader).getGroupMembers(allPullers));
+			if((rideLeader instanceof Rideable)
+			&&(((Rideable)rideLeader).riding()!=null))
+				rideLeader=((Rideable)rideLeader).riding();
+			else
+			if((rideLeader instanceof Followable)
+			&&(((Followable)rideLeader).amFollowing()!=null))
+				rideLeader=((Followable)rideLeader).amFollowing();
+			else
+				break;
+		}
+		long totalPullWeight = 0;
+		for(final Iterator<Physical> p=allPullers.iterator();p.hasNext();)
+		{
+			final Physical P=p.next();
+			final Room R=CMLib.map().roomLocation(P);
+			if(R!=thisRoom)
+				p.remove();
+			else
+				totalPullWeight+=P.phyStats().weight()*4;
+		}
+		if(totalPullWeight <= 0)
+		{
+			announceToAllAboard(L("You can't seem to "+verb_sail+" @x1 due to a lack of team to pull it, <S-NAME> go(es) nowhere.",CMLib.directions().getInDirectionName(direction)));
+			courseDirections.clear();
+			return false;
+		}
+		if(totalPullWeight < phyStats().weight())
+		{
+			announceToAllAboard(L("You can't seem to "+verb_sail+" @x1 due to weight, <S-NAME> go(es) nowhere.",CMLib.directions().getInDirectionName(direction)));
+			courseDirections.clear();
+			return false;
+		}
+		if(rideLeader instanceof MOB)
+		{
+			try
+			{
+				final MOB leadM=(MOB)rideLeader;
+				if(!CMLib.tracking().walk(leadM, direction, false, false, false))
+				{
+					announceToAllAboard(L("@x1 can't seem to "+verb_sail+" you @x2, <S-NAME> go(es) nowhere.",rideLeader.name(), CMLib.directions().getInDirectionName(direction)));
+					courseDirections.clear();
+					return false;
+				}
+				for(final Iterator<Physical> p=allPullers.iterator();p.hasNext();)
+				{
+					final Physical P=p.next();
+					final Room R=CMLib.map().roomLocation(P);
+					if(R!=destRoom)
+					{
+						announceToAllAboard(L("@x1 can't seem to "+verb_sail+" you @x2, <S-NAME> go(es) nowhere.",P.name(), CMLib.directions().getInDirectionName(direction)));
+						courseDirections.clear();
+						return false;
+					}
+				}
+			}
+			finally
+			{
+
+			}
 		}
 		return true;
 	}
