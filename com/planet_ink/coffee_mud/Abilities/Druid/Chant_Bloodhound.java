@@ -137,7 +137,7 @@ public class Chant_Bloodhound extends Chant
 			return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> a bloodhounds nose."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> a bloodhounds nose."));
 			return false;
 		}
 

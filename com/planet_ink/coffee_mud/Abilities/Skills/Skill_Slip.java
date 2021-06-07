@@ -188,7 +188,7 @@ public class Skill_Slip extends StdSkill
 
 		if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
 		{
-			mob.tell(target,null,null,L("<S-NAME> is already on the floor!"));
+			failureTell(mob,target,auto,L("<S-NAME> is already on the floor!"));
 			return false;
 		}
 		if(CMLib.flags().isInFlight(target))

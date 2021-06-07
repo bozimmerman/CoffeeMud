@@ -140,7 +140,7 @@ public class Prayer_ProtParalyzation extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> protection from paralyzation."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> protection from paralyzation."));
 			return false;
 		}
 

@@ -232,7 +232,7 @@ public class Prayer_Revival extends Prayer
 		}
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already participating in a revival."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already participating in a revival."));
 			return false;
 		}
 

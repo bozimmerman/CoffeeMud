@@ -179,7 +179,7 @@ public class Thief_SlipperyMind extends ThiefSkill
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> a slippery mind."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> a slippery mind."));
 			return false;
 		}
 

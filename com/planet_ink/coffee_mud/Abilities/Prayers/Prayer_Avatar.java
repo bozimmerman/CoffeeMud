@@ -211,7 +211,7 @@ public class Prayer_Avatar extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already the AVATAR."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already the AVATAR."));
 			return false;
 		}
 

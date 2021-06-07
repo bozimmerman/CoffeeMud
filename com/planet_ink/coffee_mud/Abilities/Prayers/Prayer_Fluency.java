@@ -180,7 +180,7 @@ public class Prayer_Fluency extends Prayer
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already fluent."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already fluent."));
 			return false;
 		}
 

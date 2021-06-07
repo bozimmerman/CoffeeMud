@@ -222,7 +222,7 @@ public class Thief_Panhandling extends ThiefSkill
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already panhandling."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already panhandling."));
 			return false;
 		}
 

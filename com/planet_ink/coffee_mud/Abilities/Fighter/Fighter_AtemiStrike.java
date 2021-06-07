@@ -177,7 +177,7 @@ public class Fighter_AtemiStrike extends MonkSkill
 
 		if(CMLib.flags().isGolem(target))
 		{
-			mob.tell(target,null,null,L("You can't hurt <S-NAMESELF> with Atemi Strike."));
+			failureTell(mob,target,auto,L("You can't hurt <S-NAMESELF> with Atemi Strike."));
 			return false;
 		}
 

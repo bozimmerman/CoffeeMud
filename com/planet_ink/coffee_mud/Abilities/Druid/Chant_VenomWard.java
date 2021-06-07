@@ -98,7 +98,7 @@ public class Chant_VenomWard extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already resisting poison."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already resisting poison."));
 			return false;
 		}
 

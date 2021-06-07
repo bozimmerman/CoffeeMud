@@ -143,7 +143,7 @@ public class Chant_Dragonsight extends Chant
 			return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> dragonsight."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> dragonsight."));
 			return false;
 		}
 

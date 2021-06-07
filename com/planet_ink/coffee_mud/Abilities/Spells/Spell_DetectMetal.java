@@ -121,7 +121,7 @@ public class Spell_DetectMetal extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already detecting metallic things."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already detecting metallic things."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

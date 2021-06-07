@@ -154,7 +154,7 @@ public class Spell_ComprehendLangs extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> comprehension."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> comprehension."));
 			return false;
 		}
 

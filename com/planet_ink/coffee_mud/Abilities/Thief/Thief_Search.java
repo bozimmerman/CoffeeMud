@@ -167,7 +167,7 @@ public class Thief_Search extends ThiefSkill
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already aware of hidden things."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already aware of hidden things."));
 			return false;
 		}
 

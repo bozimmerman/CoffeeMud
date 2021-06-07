@@ -144,7 +144,7 @@ public class Chant_FishyFecundity extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already fishily fecund."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already fishily fecund."));
 			return false;
 		}
 

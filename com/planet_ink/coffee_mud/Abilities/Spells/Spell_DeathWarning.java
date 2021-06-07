@@ -125,7 +125,7 @@ public class Spell_DeathWarning extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> a death's warning."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> a death's warning."));
 			return false;
 		}
 

@@ -206,7 +206,7 @@ public class Spell_MirrorImage extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> mirror images."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> mirror images."));
 			return false;
 		}
 

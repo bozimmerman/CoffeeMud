@@ -139,7 +139,7 @@ public class Prayer_ProtCurses extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> protection from curses."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> protection from curses."));
 			return false;
 		}
 

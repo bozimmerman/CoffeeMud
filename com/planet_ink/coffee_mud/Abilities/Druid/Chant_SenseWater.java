@@ -312,7 +312,7 @@ public class Chant_SenseWater extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already sensing water."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already sensing water."));
 			return false;
 		}
 		final boolean success=proficiencyCheck(mob,0,auto);

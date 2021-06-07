@@ -108,7 +108,7 @@ public class Spell_SpiderClimb extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> spidery magic."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> spidery magic."));
 			return false;
 		}
 

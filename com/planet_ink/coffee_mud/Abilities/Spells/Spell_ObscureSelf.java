@@ -196,7 +196,7 @@ public class Spell_ObscureSelf extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already obscure."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already obscure."));
 			return false;
 		}
 

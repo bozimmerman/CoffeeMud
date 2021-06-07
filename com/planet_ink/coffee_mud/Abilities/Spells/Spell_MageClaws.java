@@ -166,13 +166,13 @@ public class Spell_MageClaws extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> mage claws."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> mage claws."));
 			return false;
 		}
 
 		if(!freeHands(target))
 		{
-			mob.tell(target,null,null,L("<S-NAME> do(es) not have <S-HIS-HER> hands free."));
+			failureTell(mob,target,auto,L("<S-NAME> do(es) not have <S-HIS-HER> hands free."));
 			return false;
 		}
 

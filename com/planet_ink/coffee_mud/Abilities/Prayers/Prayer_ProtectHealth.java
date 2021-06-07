@@ -139,7 +139,7 @@ public class Prayer_ProtectHealth extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> protected health."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> protected health."));
 			return false;
 		}
 		Room R=CMLib.map().roomLocation(target);

@@ -170,7 +170,7 @@ public class Chant_TremorSense extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already sensing tremors."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already sensing tremors."));
 			return false;
 		}
 

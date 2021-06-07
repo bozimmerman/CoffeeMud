@@ -200,7 +200,7 @@ public class Spell_GroupStatus extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already knowledgable about <S-HIS-HER> group."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already knowledgable about <S-HIS-HER> group."));
 			return false;
 		}
 

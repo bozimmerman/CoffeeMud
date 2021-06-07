@@ -123,7 +123,7 @@ public class Chant_WindShape extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already the shape of the wind."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already the shape of the wind."));
 			return false;
 		}
 

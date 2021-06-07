@@ -150,7 +150,7 @@ public class Chant_Feralness extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already feral."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already feral."));
 			return false;
 		}
 

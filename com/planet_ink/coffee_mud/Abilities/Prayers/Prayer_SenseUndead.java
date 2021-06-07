@@ -132,7 +132,7 @@ public class Prayer_SenseUndead extends Prayer
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already sensing undead things."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already sensing undead things."));
 			return false;
 		}
 

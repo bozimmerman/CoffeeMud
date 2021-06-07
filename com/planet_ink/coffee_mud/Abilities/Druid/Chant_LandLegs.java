@@ -161,7 +161,7 @@ public class Chant_LandLegs extends Chant
 		if((target.fetchEffect(this.ID())!=null)
 		||(target.charStats().getBodyPart(Race.BODY_LEG)>0))
 		{
-			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> land legs."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> land legs."));
 			return false;
 		}
 

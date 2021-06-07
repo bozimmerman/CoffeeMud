@@ -105,7 +105,7 @@ public class Spell_Delude extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already deluding others."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already deluding others."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

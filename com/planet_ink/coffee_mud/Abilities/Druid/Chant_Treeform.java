@@ -235,7 +235,7 @@ public class Chant_Treeform extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already a tree."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already a tree."));
 			return false;
 		}
 

@@ -111,13 +111,13 @@ public class Chant_AnimalCompanion extends Chant
 
 		if(target.isInCombat())
 		{
-			mob.tell(target,null,null,L("Not while <S-NAME> <S-IS-ARE> fighting!"));
+			failureTell(mob,target,auto,L("Not while <S-NAME> <S-IS-ARE> fighting!"));
 			return false;
 		}
 
 		if(CMLib.flags().isSleeping(target) || (!CMLib.flags().canBeHeardSpeakingBy(mob,target)) || (!target.isMonster()))
 		{
-			mob.tell(target,null,null,L("<S-NAME> cannot make the oath with you right now!"));
+			failureTell(mob,target,auto,L("<S-NAME> cannot make the oath with you right now!"));
 			return false;
 		}
 

@@ -282,7 +282,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			target=(MOB)givenTarget;
 		if(target.isInCombat())
 		{
-			mob.tell(target,null,null,L("Not while <S-NAME> <S-IS-ARE> fighting."));
+			failureTell(mob,target,auto,L("Not while <S-NAME> <S-IS-ARE> fighting."));
 			return false;
 		}
 		final Room thisRoom=target.location();

@@ -164,7 +164,7 @@ public class Chant_WarningWinds extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already attuned to the winds."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already attuned to the winds."));
 			return false;
 		}
 

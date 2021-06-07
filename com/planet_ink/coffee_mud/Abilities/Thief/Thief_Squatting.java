@@ -187,7 +187,7 @@ public class Thief_Squatting extends ThiefSkill
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already squatting."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already squatting."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

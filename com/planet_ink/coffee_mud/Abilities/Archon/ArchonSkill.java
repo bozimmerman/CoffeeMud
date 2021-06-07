@@ -150,7 +150,7 @@ public class ArchonSkill extends StdAbility implements ArchonOnly
 				if(target==mob)
 					mob.tell(L("You are already affected by @x1.",name()));
 				else
-					mob.tell(target,null,null,L("<S-NAME> is already affected by @x1.",name()));
+					failureTell(mob,target,false,L("<S-NAME> is already affected by @x1.",name()));
 			}
 			return null;
 		}

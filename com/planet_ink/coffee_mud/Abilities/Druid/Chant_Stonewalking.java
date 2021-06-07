@@ -166,7 +166,7 @@ public class Chant_Stonewalking extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already @x1.",name()));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already @x1.",name()));
 			return false;
 		}
 

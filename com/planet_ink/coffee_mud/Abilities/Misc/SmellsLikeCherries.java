@@ -136,7 +136,7 @@ public class SmellsLikeCherries extends StdAbility
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> already smell(s) like cherries."));
+			failureTell(mob,target,auto,L("<S-NAME> already smell(s) like cherries."));
 			return false;
 		}
 

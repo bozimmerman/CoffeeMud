@@ -160,18 +160,18 @@ public class Thief_EscapeBonds extends ThiefSkill
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already trying to slip free of <S-HIS-HER> bonds."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already trying to slip free of <S-HIS-HER> bonds."));
 			return false;
 		}
 		if((!CMLib.flags().isAliveAwakeMobile(mob,true))||(!CMLib.flags().isBound(mob)))
 		{
-			mob.tell(target,null,null,L("<T-NAME> <T-IS-ARE> not bound!"));
+			failureTell(mob,target,auto,L("<T-NAME> <T-IS-ARE> not bound!"));
 			return false;
 		}
 		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_BINDING);
 		if(V.size()==0)
 		{
-			mob.tell(target,null,null,L("<T-NAME> <T-IS-ARE> not bound by anything which can be slipped free of."));
+			failureTell(mob,target,auto,L("<T-NAME> <T-IS-ARE> not bound by anything which can be slipped free of."));
 			return false;
 		}
 

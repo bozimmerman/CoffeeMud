@@ -118,7 +118,7 @@ public class Spell_MageArmor extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already wearing mage armor."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already wearing mage armor."));
 			return false;
 		}
 

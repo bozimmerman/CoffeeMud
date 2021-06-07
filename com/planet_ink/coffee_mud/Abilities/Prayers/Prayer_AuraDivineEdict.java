@@ -214,7 +214,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,L("The aura of the divine edict is already with <S-NAME>."));
+			failureTell(mob,target,auto,L("The aura of the divine edict is already with <S-NAME>."));
 			return false;
 		}
 

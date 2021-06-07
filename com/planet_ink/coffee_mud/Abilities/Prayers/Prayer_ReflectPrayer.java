@@ -256,7 +256,7 @@ public class Prayer_ReflectPrayer extends Prayer
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already reflecting prayers."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already reflecting prayers."));
 			return false;
 		}
 

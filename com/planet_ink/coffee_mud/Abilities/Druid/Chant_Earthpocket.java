@@ -193,7 +193,7 @@ public class Chant_Earthpocket extends Chant
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already connected with an earthpocket."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already connected with an earthpocket."));
 			return false;
 		}
 

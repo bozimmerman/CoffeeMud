@@ -150,7 +150,7 @@ public class Chant_Tether extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already tethered."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already tethered."));
 			return false;
 		}
 

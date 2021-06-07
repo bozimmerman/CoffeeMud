@@ -138,7 +138,7 @@ public class Spell_DetectUndead extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> detecting undead things."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> detecting undead things."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

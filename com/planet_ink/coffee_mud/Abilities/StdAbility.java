@@ -823,7 +823,7 @@ public class StdAbility implements Ability
 			  ||((target.getVictim()==mob)&&(target.rangeToTarget()<minRange())))
 			)
 			{
-				mob.tell(L("You are too close to @x1 to do that.",target.name()));
+				failureTell(mob,mob,false,L("You are too close to @x1 to do that.",target.name()));
 				return false;
 			}
 			else
@@ -833,7 +833,7 @@ public class StdAbility implements Ability
 			  ||((target.getVictim()==mob)&&(target.rangeToTarget()>maxRange())))
 			)
 			{
-				mob.tell(L("You are too far away from @x1 to do that.",target.name()));
+				failureTell(mob,mob,false,L("You are too far away from @x1 to do that.",target.name()));
 				return false;
 			}
 		}
@@ -868,7 +868,7 @@ public class StdAbility implements Ability
 				target=mob;
 			if(target == null)
 			{
-				mob.tell(L("You need to specify a target."));
+				failureTell(mob,mob,false,L("You need to specify a target."));
 				return null;
 			}
 		}
@@ -902,9 +902,9 @@ public class StdAbility implements Ability
 			if(!quiet)
 			{
 				if(targetName.trim().length()==0)
-					mob.tell(L("You don't see them here."));
+					failureTell(mob,mob,false,L("You don't see them here."));
 				else
-					mob.tell(L("You don't see anyone called '@x1' here.",targetName));
+					failureTell(mob,mob,false,L("You don't see anyone called '@x1' here.",targetName));
 			}
 			return null;
 		}
@@ -914,9 +914,9 @@ public class StdAbility implements Ability
 			if((givenTarget==null)&&(!quiet))
 			{
 				if(target==mob)
-					mob.tell(L("You are already affected by @x1.",name()));
+					failureTell(mob,mob,false,L("You are already affected by @x1.",name()));
 				else
-					mob.tell(target,null,null,L("<S-NAME> is already affected by @x1.",name()));
+					failureTell(mob,target,false,L("<S-NAME> is already affected by @x1.",name()));
 			}
 			return null;
 		}
@@ -1018,10 +1018,10 @@ public class StdAbility implements Ability
 			if(!quiet)
 			{
 				if(targetName.trim().length()==0)
-					mob.tell(L("You don't see that here."));
+					failureTell(mob,mob,false,L("You don't see that here."));
 				else
 				if(!CMLib.flags().isSleeping(mob))
-					mob.tell(L("You don't see '@x1' here.",targetName));
+					failureTell(mob,mob,false,L("You don't see '@x1' here.",targetName));
 			}
 			return null;
 		}
@@ -1033,7 +1033,7 @@ public class StdAbility implements Ability
 				if(!quiet)
 				{
 					if(target==mob)
-						mob.tell(L("You are already affected by @x1.",name()));
+						failureTell(mob,mob,false,L("You are already affected by @x1.",name()));
 					else
 						mob.tell(mob,target,null,L("<T-NAME> is already affected by @x1.",name()));
 				}
@@ -1132,22 +1132,22 @@ public class StdAbility implements Ability
 			if(!quiet)
 			{
 				if(targetName.length()==0)
-					mob.tell(L("You need to be more specific."));
+					failureTell(mob,mob,false,L("You need to be more specific."));
 				else
 				if((target==null)||(target instanceof Item))
 				{
 					if(targetName.trim().length()==0)
-						mob.tell(L("You don't see that here."));
+						failureTell(mob,mob,false,L("You don't see that here."));
 					else
 					if(!CMLib.flags().isSleeping(mob)) // no idea why this is here :(
 					{
 						if(location != null)
-							mob.tell(L("You don't see anything called '@x1' here.",targetName));
+							failureTell(mob,mob,false,L("You don't see anything called '@x1' here.",targetName));
 						else
-							mob.tell(L("You don't have anything called '@x1'.",targetName));
+							failureTell(mob,mob,false,L("You don't have anything called '@x1'.",targetName));
 					}
 					else // this was added for clan donate (and other things I'm sure) while sleeping.
-						mob.tell(L("You don't see '@x1' in your dreams.",targetName));
+						failureTell(mob,mob,false,L("You don't see '@x1' in your dreams.",targetName));
 				}
 				else
 					mob.tell(mob,target,null,L("You can't do that to <T-NAMESELF>."));
@@ -1636,6 +1636,20 @@ public class StdAbility implements Ability
 			A.setProficiency(maxProficiency);
 	}
 
+	protected boolean failureTell(final MOB mob, final MOB targetM, final boolean auto, final String msg)
+	{
+		if(mob==null)
+			return false;
+		if(auto 
+		&&(mob.isMonster())
+		&&(targetM!=null)
+		&&(targetM.isPlayer()))
+			targetM.tell(targetM,null,null,msg);
+		else
+			mob.tell(targetM,null,null,msg);
+		return false;
+	}
+	
 	@Override
 	public boolean preInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel, final int secondsElapsed, final double actionsRemaining)
 	{
@@ -1680,14 +1694,14 @@ public class StdAbility implements Ability
 			{
 				final TimeClock C=room.getArea().getTimeObj();
 				if(C!=null)
-					mob.tell(L("You must wait @x1 before you can do that again.",C.deriveEllapsedTimeString(getTimeOfNextCast()-System.currentTimeMillis())));
+					failureTell(mob,mob,auto,L("You must wait @x1 before you can do that again.",C.deriveEllapsedTimeString(getTimeOfNextCast()-System.currentTimeMillis())));
 				return false;
 			}
 
 			if(CMath.bset(usageType(),Ability.USAGE_MOVEMENT)
 			&&(CMLib.flags().isBound(mob)))
 			{
-				mob.tell(L("You are bound!"));
+				failureTell(mob,mob,auto,L("You are bound!"));
 				return false;
 			}
 
@@ -1716,7 +1730,7 @@ public class StdAbility implements Ability
 					final double amtPenalty = rule.amtPenalty();
 					if(amtPenalty < 0)
 					{
-						mob.tell(L("You can't do that again just yet."));
+						failureTell(mob,mob,auto,L("You can't do that again just yet."));
 						return false;
 					}
 					else
@@ -1745,25 +1759,25 @@ public class StdAbility implements Ability
 			if(mob.curState().getMana()<consumed[Ability.USAGEINDEX_MANA])
 			{
 				if(mob.maxState().getMana()==consumed[Ability.USAGEINDEX_MANA])
-					mob.tell(L("You must be at full mana to do that."));
+					failureTell(mob,mob,auto,L("You must be at full mana to do that."));
 				else
-					mob.tell(L("You don't have enough mana to do that."));
+					failureTell(mob,mob,auto,L("You don't have enough mana to do that."));
 				return false;
 			}
 			if(mob.curState().getMovement()<consumed[Ability.USAGEINDEX_MOVEMENT])
 			{
 				if(mob.maxState().getMovement()==consumed[Ability.USAGEINDEX_MOVEMENT])
-					mob.tell(L("You must be at full movement to do that."));
+					failureTell(mob,mob,auto,L("You must be at full movement to do that."));
 				else
-					mob.tell(L("You don't have enough movement to do that.  You are too tired."));
+					failureTell(mob,mob,auto,L("You don't have enough movement to do that.  You are too tired."));
 				return false;
 			}
 			if(mob.curState().getHitPoints()<consumed[Ability.USAGEINDEX_HITPOINTS])
 			{
 				if(mob.maxState().getHitPoints()==consumed[Ability.USAGEINDEX_HITPOINTS])
-					mob.tell(L("You must be at full health to do that."));
+					failureTell(mob,mob,auto,L("You must be at full health to do that."));
 				else
-					mob.tell(L("You don't have enough hit points to do that."));
+					failureTell(mob,mob,auto,L("You don't have enough hit points to do that."));
 				return false;
 			}
 
@@ -1772,12 +1786,12 @@ public class StdAbility implements Ability
 				if((System.currentTimeMillis()-lastCastHelp)<minCastWaitTime())
 				{
 					if(minCastWaitTime()<=1000)
-						mob.tell(L("You need a second to recover before doing that again."));
+						failureTell(mob,mob,auto,L("You need a second to recover before doing that again."));
 					else
 					if(minCastWaitTime()<=5000)
-						mob.tell(L("You need a few seconds to recover before doing that again."));
+						failureTell(mob,mob,auto,L("You need a few seconds to recover before doing that again."));
 					else
-						mob.tell(L("You need awhile to recover before doing that again."));
+						failureTell(mob,mob,auto,L("You need awhile to recover before doing that again."));
 					return false;
 				}
 			}
@@ -1816,7 +1830,7 @@ public class StdAbility implements Ability
 				final List<Object> components=CMLib.ableComponents().componentCheck(mob,componentsRequirements, false);
 				if(components==null)
 				{
-					mob.tell(L("You lack the necessary materials to use this @x1, the requirements are: @x2.",
+					failureTell(mob,mob,false,L("You lack the necessary materials to use this @x1, the requirements are: @x2.",
 							Ability.ACODE_DESCS[classificationCode()&Ability.ALL_ACODES].toLowerCase(),
 							CMLib.ableComponents().getAbilityComponentDesc(mob,ID())));
 					return false;

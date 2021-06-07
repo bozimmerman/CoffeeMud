@@ -290,13 +290,13 @@ public class Skill_Befriend extends BardSkill
 
 		if(target.amFollowing()!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> is already someone elses friend."));
+			failureTell(mob,target,auto,L("<S-NAME> is already someone elses friend."));
 			return false;
 		}
 
 		if(!target.charStats().getMyRace().racialCategory().equals(mob.charStats().getMyRace().racialCategory()))
 		{
-			mob.tell(target,null,null,L("<S-NAME> is not a fellow @x1.",mob.charStats().getMyRace().racialCategory()));
+			failureTell(mob,target,auto,L("<S-NAME> is not a fellow @x1.",mob.charStats().getMyRace().racialCategory()));
 			return false;
 		}
 
@@ -307,7 +307,7 @@ public class Skill_Befriend extends BardSkill
 			final int mine=target.fetchFaction(F.factionID());
 			if(F.fetchRange(his)!=F.fetchRange(mine))
 			{
-				mob.tell(target,null,null,L("<S-NAME> is not @x1, like yourself.",F.fetchRangeName(mine)));
+				failureTell(mob,target,auto,L("<S-NAME> is not @x1, like yourself.",F.fetchRangeName(mine)));
 				return false;
 			}
 		}

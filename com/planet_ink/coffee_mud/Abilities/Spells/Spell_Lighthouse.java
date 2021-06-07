@@ -348,7 +348,7 @@ public class Spell_Lighthouse extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> a lighthouse."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> a lighthouse."));
 			return false;
 		}
 
