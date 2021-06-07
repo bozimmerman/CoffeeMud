@@ -140,14 +140,15 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			final double range=((Weapon)savedI).getRanges()[1];
 			final int wclass=((Weapon)savedI).weaponClassification();
 			final double dmgMod = this.timsDmgModifier(wclass);
+			final double attMod = this.timsAttackModifier(wclass);
 			final double dmgLevel = Math.floor(((2.0*curDamage/(2.0*(itemI.rawLogicalAnd()?2.0:1.0)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)/dmgMod))+1;
-			final double baseAttack = (curAttack - timsBaseAttackModifier(wclass));
+			final double baseAttack = (curAttack - attMod);
 			double attackLevel;
 			if(baseAttack < 0)
-				attackLevel = dmgLevel - baseAttack;
+				attackLevel = dmgLevel + baseAttack; // + == - when baseAttack is -
 			else
-			if(this.timsAttackModifier(wclass)>0.0)
-				attackLevel = baseAttack / this.timsAttackModifier(wclass);
+			if(attMod>0.0)
+				attackLevel = baseAttack / attMod;
 			else
 				attackLevel = dmgLevel + baseAttack;
 			level = (int)Math.round((dmgLevel + attackLevel) / 2.0);
@@ -1059,14 +1060,15 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			final double range=((Weapon)I).getRanges()[1];
 			final int wclass = ((Weapon)I).weaponClassification();
 			final double dmgMod = this.timsDmgModifier(wclass);
+			final double attMod = this.timsAttackModifier(wclass);
 			final double dmgLevel = Math.floor(((2.0*curDamage/(2.0*(I.rawLogicalAnd()?2.0:1.0)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)/dmgMod))+1;
-			final double baseAttack = (curAttack - timsBaseAttackModifier(wclass));
+			final double baseAttack = (curAttack - attMod);
 			double attackLevel;
 			if(baseAttack < 0)
-				attackLevel = dmgLevel - baseAttack;
+				attackLevel = dmgLevel + baseAttack; // + == - when baseAttack is -
 			else
-			if(this.timsAttackModifier(wclass)>0.0)
-				attackLevel = baseAttack / this.timsAttackModifier(wclass);
+			if(attMod>0.0)
+				attackLevel = baseAttack / attMod;
 			else
 				attackLevel = dmgLevel + baseAttack;
 			level = (int)Math.round((dmgLevel + attackLevel) / 2.0);
