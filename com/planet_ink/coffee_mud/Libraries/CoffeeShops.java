@@ -1780,10 +1780,13 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 
 			for(final LandTitle T : titles)
 			{
-				if((T.getOwnerName().length()>0) // someone elses title, so never ever list it
-				&&(!T.getOwnerName().equals(name))
-				&&((!T.getOwnerName().equals(buyer.getLiegeID()))||(!buyer.isMarriedToLiege())))
+				final String towner=T.getOwnerName();
+				if((towner.length()>0) // someone elses title, so never ever list it
+				&&(!towner.equals(name))
+				&&((!towner.equals(buyer.getLiegeID()))||(!buyer.isMarriedToLiege())))
+				{
 					continue;
+				}
 
 				boolean skipThisOne=false;
 				final WorldMap map=CMLib.map();

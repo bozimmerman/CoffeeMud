@@ -133,6 +133,7 @@ public class Prop_RoomPlusForSale extends Prop_RoomForSale implements LandTitle
 				if(A instanceof Prop_LotsForSale)
 					((Prop_LotsForSale)A).uniqueLotID=uniqueID;
 			}
+			this.uniqueLotID=uniqueID;
 		}
 		else
 			uniqueLotID="";
