@@ -1506,8 +1506,12 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 					{
 						exit.executeMsg(mob,enterMsg);
 						thisRoom.sendOthers(mob, leaveMsg);
-						this.unDock(false);
-						((Room)enterMsg.target()).moveItemTo(this);
+						if((owner()!=enterMsg.target())
+						||(!((Room)enterMsg.target()).isContent(this)))
+						{
+							this.unDock(false);
+							((Room)enterMsg.target()).moveItemTo(this);
+						}
 						ticksSinceMove=0;
 						this.dockHere(((Room)enterMsg.target()));
 						//this.sendAreaMessage(leaveMsg, true);
