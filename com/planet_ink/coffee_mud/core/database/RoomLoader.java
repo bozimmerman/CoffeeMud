@@ -916,6 +916,11 @@ public class RoomLoader
 				final PhysicalAgent P=itemNums.get(ride);
 				if(P!=null)
 				{
+					if((M instanceof Rideable)
+					&&(P instanceof Rideable)
+					&&(P instanceof MOB))
+						M.setFollowing((MOB)P);
+					else
 					if(P instanceof Rideable)
 						M.setRiding((Rideable)P);
 					else

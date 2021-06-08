@@ -164,6 +164,35 @@ public class GenCaravan extends GenNavigableBoardable
 	}
 
 	@Override
+	public String displayText(final MOB viewerMob)
+	{
+		if (riding() != null)
+		{
+			final StringBuilder sendBack = new StringBuilder(name(viewerMob));
+			sendBack.append(" ");
+			sendBack.append(L(CMLib.flags().getPresentDispositionVerb(this, CMFlagLibrary.ComingOrGoing.IS) + " here"));
+			if (riding() != null)
+			{
+				sendBack.append(" " + riding().stateString(this) + " ");
+				if (riding() == viewerMob)
+					sendBack.append(L("YOU"));
+				else
+				if (!CMLib.flags().canBeSeenBy(riding(), viewerMob))
+				{
+					if (riding() instanceof Item)
+						sendBack.append(L("something"));
+					else
+						sendBack.append(L("someone"));
+				}
+				else
+					sendBack.append(riding().name());
+				sendBack.append(".");
+				return sendBack.toString();
+			}
+		}
+		return super.displayText(viewerMob);
+	}
+	@Override
 	protected boolean canSteer(final MOB mob, final Room R)
 	{
 		return true;

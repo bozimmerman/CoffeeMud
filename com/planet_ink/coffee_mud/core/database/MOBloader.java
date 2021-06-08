@@ -1,6 +1,8 @@
 package com.planet_ink.coffee_mud.core.database;
 
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Move;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMSecurity.SecFlag;
 import com.planet_ink.coffee_mud.core.CMSecurity.SecGroup;
@@ -239,7 +241,7 @@ public class MOBloader
 		try
 		{
 			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMCHCL WHERE CMUSERID='"+name+"'");
+			final ResultSet R=D.query("SELECT * FROM CMCHCL WHERE CMUSERID='"+name+"'");
 			while(R.next())
 			{
 				final String clanID=DBConnections.getRes(R,"CMCLAN");
@@ -259,8 +261,8 @@ public class MOBloader
 		}
 		return list;
 	}
-	
-	
+
+
 	public int DBReadPlayerBitmap(String name)
 	{
 		if((name==null)||(name.length()==0))
@@ -360,6 +362,7 @@ public class MOBloader
 			final ResultSet R=D.query("SELECT * FROM CMCHIT WHERE CMUSERID='"+mob.Name()+"'");
 			final Map<String,Item> itemNums=new HashMap<String,Item>();
 			final Map<Item,String> itemLocs=new HashMap<Item,String>();
+			Room extraContentR=null;
 			while(R.next())
 			{
 				final String itemNum=DBConnections.getRes(R,"CMITNM");
@@ -377,6 +380,14 @@ public class MOBloader
 					{
 						final String roomXML=text.substring(0,roomX+2);
 						text=text.substring(roomX+2);
+						int roomY;
+						if(text.startsWith("<AROOM")
+						&&((roomY=text.indexOf("</AROOM>"))>=0))
+						{
+							final String addOnXml=text.substring(0,roomY+8);
+							text=text.substring(roomY+8);
+							extraContentR=(Room)CMLib.coffeeMaker().getUnknownFromXML(addOnXml);
+						}
 						newItem.setMiscText(text);
 						final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(roomXML);
 						if((xml!=null)&&(xml.size()>0))
@@ -450,6 +461,36 @@ public class MOBloader
 						&&(((DeadBody)newItem).isPlayerCorpse())
 						&&(newItem.isSavable()))
 							newItem.setSavable(false); // so the rooms dont save it.
+					}
+					if(extraContentR!=null)
+					{
+						final Room itemR=CMLib.map().roomLocation(newItem);
+						if(itemR!=null)
+						{
+							Rideable leadR=null;
+							for(final Enumeration<MOB> m=extraContentR.inhabitants();m.hasMoreElements();)
+							{
+								final MOB M=m.nextElement();
+								if((M instanceof Rideable)&&(leadR==null))
+									leadR=(Rideable)M;
+								M.setSavable(false);
+								if(M.location()!=itemR)
+									itemR.bringMobHere(M, true);
+							}
+							for(final Enumeration<Item> i=extraContentR.items();i.hasMoreElements();)
+							{
+								final Item I=i.nextElement();
+								if((I instanceof Rideable)&&(leadR==null))
+									leadR=(Rideable)I;
+								I.setSavable(false);
+								if(I.owner()!=itemR)
+									itemR.moveItemTo(I, Expire.Never, Move.Followers);
+							}
+							if((leadR!=null)&&(newItem instanceof Rider))
+								((Rider)newItem).setRiding(leadR);
+						}
+						extraContentR.destroy();
+						extraContentR=null;
 					}
 				}
 			}
@@ -1494,7 +1535,52 @@ public class MOBloader
 						roomID="SPACE."+CMParms.toListString(((SpaceObject)thisItem).coordinates());
 					else
 						roomID="";
-					final String text="<ROOM ID=\""+roomID+"\" EXPIRE="+thisItem.expirationDate()+" />"+thisItem.text();
+					String insert="";
+					if((thisItem instanceof Rider)
+					&&(thisItem instanceof NavigableItem)
+					&&(((Rider)thisItem).riding()!=null))
+					{
+						Rideable leadR=null;
+						final Room R=CMLib.map().roomLocation(thisItem);
+						if(thisItem.riding() instanceof MOB)
+						{
+							final MOB rideM=(MOB)thisItem.riding();
+							if((rideM.isMonster())
+							&&((rideM.amUltimatelyFollowing()==null)||(!rideM.amUltimatelyFollowing().isPlayer()))
+							&&(rideM.location()==R))
+								leadR=(Rideable)rideM;
+						}
+						else
+						if(thisItem.riding() instanceof Item)
+						{
+							final Item rideI=(Item)thisItem.riding();
+							if((!finalCollection.contains(rideI))
+							&&(rideI.owner()==R))
+								leadR=(Rideable)rideI;
+						}
+						if(leadR!=null)
+						{
+							final Room fakeR=CMClass.getLocale("StoneRoom");
+							if(leadR instanceof MOB)
+							{
+								fakeR.addInhabitant((MOB)leadR); // will not affect location
+								for(final MOB M : ((MOB)leadR).getGroupMembers(new HashSet<MOB>()))
+								{
+									if((M.isMonster())
+									&&(M!=leadR)
+									&&((M.amUltimatelyFollowing()==null)||(!M.amUltimatelyFollowing().isPlayer()))
+									&&(M.location()==R))
+										fakeR.addInhabitant(M); // will not affect location
+								}
+							}
+							else
+								fakeR.addItem((Item)leadR);
+							insert = CMLib.coffeeMaker().getUnknownXML(fakeR).toString();
+							fakeR.delAllInhabitants(false);
+							fakeR.delAllItems(false);
+						}
+					}
+					final String text="<ROOM ID=\""+roomID+"\" EXPIRE="+thisItem.expirationDate()+" />"+insert+thisItem.text();
 					if(!useBulkInserts)
 						strings.add(new DBPreparedBatchEntry(sql,text+" "));
 					else
