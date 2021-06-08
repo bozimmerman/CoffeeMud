@@ -24,6 +24,7 @@
  22. New Property: Prop_MultiEffects, for stacking the same prop multiple times.
  23. Import, Export now support class, race, ability as specific object.
  24. New Mood: Silly
+ 35. Nwe items: GenCaravan, a land-based sailing ship, and GenGangline, for making mob follower teams
   
 # Build 5.9.11.1 Release 02/26/2021
   Bug Fix Release:
