@@ -244,7 +244,8 @@ public class GenCaravan extends GenNavigableBoardable
 		final Rideable baseRide = this.riding();
 		Physical rideLeader = baseRide;
 		final Set<Physical> allPullers = new HashSet<Physical>();
-		while(rideLeader!=null)
+		while((rideLeader!=null)
+		&&(rideLeader == thisRoom))
 		{
 			allPullers.add(rideLeader);
 			if(rideLeader instanceof Followable)
