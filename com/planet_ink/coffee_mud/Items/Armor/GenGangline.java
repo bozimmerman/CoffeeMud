@@ -58,6 +58,8 @@ public class GenGangline extends GenArmor
 		material=RawMaterial.RESOURCE_LEATHER;
 	}
 
+	protected volatile long nextCheck = Long.MAX_VALUE;
+
 	protected boolean isGanglined(final Environmental E)
 	{
 		boolean found=false;
@@ -163,6 +165,59 @@ public class GenGangline extends GenArmor
 			final MOB M=(MOB)owner();
 			if(M.amFollowing()!=null)
 				CMLib.commands().postFollow(M, null, true);
+		}
+		else
+		if((msg.targetMinor()==CMMsg.TYP_LEAVE)
+		&&(owner() instanceof MOB)
+		&&(msg.source()==((MOB)owner()).amFollowing())
+		&&(this.amBeingWornProperly()))
+		{
+			this.nextCheck=System.currentTimeMillis()+4000;
+		}
+		else
+		if(System.currentTimeMillis()>this.nextCheck)
+		{
+			this.nextCheck=Long.MAX_VALUE;
+			final ItemPossessor P=owner();
+			if(P instanceof MOB)
+			{
+				final MOB M=(MOB)P;
+				final MOB fM=M.amFollowing();
+				final Item I=this;
+				if((fM!=null)
+				&&(fM.location()!=M.location())
+				&&(!fM.amDead())
+				&&(!fM.amDestroyed())
+				&&(!M.amDead())
+				&&(!M.amDestroyed())
+				&&(this.amBeingWornProperly()))
+				{
+					CMLib.threads().scheduleRunnable(new Runnable()
+					{
+						final MOB followM = fM;
+						final MOB meM=M;
+						final Item meI=I;
+						@Override
+						public void run()
+						{
+							final Room R=followM.location();
+							if((R!=meM.location())
+							&&(R!=null)
+							&&(!followM.amDead())
+							&&(!followM.amDestroyed())
+							&&(!M.amDead())
+							&&(!M.amDestroyed())
+							&&(R.isInhabitant(followM))
+							&&(meI.amBeingWornProperly()))
+							{
+								R.bringMobHere(meM, true);
+							}
+						}
+
+					}, 1500);
+				}
+			}
+			this.nextCheck=Long.MAX_VALUE;
 		}
 	}
 }
