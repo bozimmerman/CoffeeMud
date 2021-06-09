@@ -94,6 +94,12 @@ public class StdPowder extends StdItem implements MagicDust
 				super.executeMsg(myHost,msg);
 		}
 		else
+		if((msg.targetMinor()==CMMsg.TYP_SNIFF )
+		&&(msg.target()==this))
+		{
+			spreadIfAble(msg.source(),msg.source());
+		}
+		else
 			super.executeMsg(myHost,msg);
 	}
 
