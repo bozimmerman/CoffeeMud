@@ -362,7 +362,47 @@ public class GenCaravan extends GenNavigableBoardable
 			final String sinkString = L("<T-NAME> start(s) collapsing!");
 			baseR.show(victorM, this, CMMsg.MSG_OK_ACTION, sinkString);
 			this.announceToNonOuterViewers(victorM, sinkString);
-			//TODO: the collapse
+			final Area A=this.getArea();
+			if(A!=null)
+			{
+				for(final Enumeration<Room> r=A.getFilledCompleteMap();r.hasMoreElements();)
+				{
+					final Room R=r.nextElement();
+					if(R!=null)
+					{
+						for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+						{
+							final MOB M=m.nextElement();
+							if(M!=null)
+							{
+								baseR.bringMobHere(M, false);
+								final double pctDmg = CMath.div(CMLib.dice().roll(1, 150, 0), 100.0);
+								final int dmg = (int)Math.round(CMath.mul(pctDmg, M.baseState().getHitPoints()));
+								CMLib.combat().postDamage(victorM, M,this,dmg,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK,Weapon.TYPE_SLASHING,null);
+							}
+						}
+						for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
+						{
+							final Item I=i.nextElement();
+							if((I!=null)
+							&&(CMLib.flags().isGettable(I))
+							&&(I.container()==null))
+							{
+								baseR.moveItemTo(null, Expire.Monster_EQ, Move.Followers);
+								if(I.subjectToWearAndTear())
+								{
+									final int dmg = CMLib.dice().roll(1, 150, 0);
+									CMLib.combat().postItemDamage(victorM, I, this, dmg, CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK, null);
+								}
+							}
+						}
+					}
+				}
+			}
+			final Item newI = CMLib.utensils().ruinItem(this);
+			if(newI != this)
+				baseR.addItem(newI, Expire.Monster_EQ);
+			this.destroy();
 		}
 		if(!CMLib.leveler().postExperienceToAllAboard(victorM.riding(), 500, this))
 			CMLib.leveler().postExperience(victorM, null, null, 500, false);
