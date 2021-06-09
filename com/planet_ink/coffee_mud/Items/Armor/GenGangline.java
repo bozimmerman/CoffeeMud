@@ -126,6 +126,17 @@ public class GenGangline extends GenArmor
 				final String newMsgText = L("<O-NAME> connect(s) <S-NAME> to <T-NAME>.");
 				final int newCd = CMMsg.MASK_ALWAYS|CMMsg.MSG_FOLLOW;
 				msg.modify((MOB)msg.tool(), msg.target(), actorM, newCd, newMsgText, newCd, newMsgText, newCd, newMsgText);
+				msg.addTrailerRunnable(new Runnable()
+				{
+					final MOB fixM=ownM;
+					@Override
+					public void run()
+					{
+						fixM.recoverCharStats();
+					}
+				});
+				ownM.charStats().setStat(CharStats.STAT_CHARISMA, 25);
+				//((MOB)msg.tool()).charStats().setStat(CharStats.STAT_CHARISMA, 25);
 			}
 			else
 			if((msg.tool()==owner())
@@ -143,6 +154,47 @@ public class GenGangline extends GenArmor
 							if(R instanceof Item)
 							{
 								msg.source().tell(L("@x1 is already mounted to @x2.",R.name(),M.amFollowing().name()));
+								return false;
+							}
+						}
+					}
+				}
+			}
+		}
+		else
+		if((msg.sourceMinor()==CMMsg.TYP_COMMANDFAIL)
+		&&(msg.targetMessage()!=null)
+		&&(msg.targetMessage().length()>0))
+		{
+			if(Character.toUpperCase(msg.targetMessage().charAt(0)) == 'D')
+			{
+				final List<String> parsedFail = CMParms.parse(msg.targetMessage());
+				if(parsedFail.size()<2)
+					return true;
+				final String cmd=parsedFail.get(0).toUpperCase();
+				if(!("DISMOUNT".startsWith(cmd)))
+					return true;
+				final ItemPossessor P=owner();
+				if(P instanceof MOB)
+				{
+					final MOB M=(MOB)P;
+					final Room R=M.location();
+					if(R!=null)
+					{
+						final MOB targetM=R.fetchInhabitant(CMParms.combine(parsedFail,1));
+						if(targetM == M)
+						{
+							if(this.amBeingWornProperly())
+							{
+								final MOB folM=M.amFollowing();
+								if(folM==null)
+								{
+									msg.source().tell(L("@x1 is not connected.",M.name(msg.source())));
+									return false;
+								}
+								CMLib.commands().postFollow(M, null, true);
+								if(M.amFollowing()==null)
+									R.show(msg.source(), M, folM, CMMsg.MSG_OK_VISUAL, L("<S-NAME> disconnects <T-NAME> from <O-NAME>."));
 								return false;
 							}
 						}
