@@ -168,6 +168,7 @@ public class Shaman extends Cleric
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.NEUTRAL))
 			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_InfuseBalance",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_SanctifyRoom",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"ImprovedAlchemy",false,CMParms.parseSemicolons("Alchemy(50)",true));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_MajorInfusion",false);

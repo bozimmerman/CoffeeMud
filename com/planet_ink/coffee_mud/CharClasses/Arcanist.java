@@ -146,6 +146,7 @@ public class Arcanist extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_WardArea",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_DetectInvisible",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"ImprovedAlchemy",false,CMParms.parseSemicolons("Alchemy(50)",true));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_Shadow",true);

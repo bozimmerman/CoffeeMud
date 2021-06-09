@@ -224,7 +224,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 
-	protected int spellLevel(final MOB mob, final Ability A)
+	protected int spellLevelAdjustment(final MOB mob, final Ability A)
 	{
 		int lvl=CMLib.ableMapper().qualifyingLevel(mob,A);
 		if(lvl<0)
@@ -232,28 +232,38 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		switch(lvl)
 		{
 		case 0:
-			return lvl;
+			return 0;
 		case 1:
-			return lvl;
+			return 0;
 		case 2:
-			return lvl + 1;
+			return 1;
 		case 3:
-			return lvl + 1;
+			return 1;
 		case 4:
-			return lvl + 2;
+			return 2;
 		case 5:
-			return lvl + 2;
+			return 2;
 		case 6:
-			return lvl + 3;
+			return 3;
 		case 7:
-			return lvl + 3;
+			return 3;
 		case 8:
-			return lvl + 4;
+			return 4;
 		case 9:
-			return lvl + 4;
+			return 4;
 		default:
-			return lvl + 5;
+			return 5;
 		}
+	}
+
+	protected int spellLevel(final MOB mob, final Ability A, final int asLevel)
+	{
+		if(asLevel > 0)
+			return asLevel;
+		int lvl=CMLib.ableMapper().qualifyingLevel(mob,A);
+		if(lvl<0)
+			lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+		return lvl + this.spellLevelAdjustment(mob, A);
 	}
 
 	@Override
@@ -340,8 +350,8 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 					continue;
 				final Ability A=mob.fetchAbility(spell);
 				if((A!=null)
-				&&((spellLevel(mob,A)>=0)||(allFlag))
-				&&((xlevel(mob)>=spellLevel(mob,A))||(allFlag)))
+				&&((spellLevel(mob,A,0)>=0)||(allFlag))
+				&&((xlevel(mob)>=spellLevel(mob,A,0))||(allFlag)))
 				{
 					buf.append(CMStrings.padRight(A.name(),cols[0])+((toggler!=toggleTop)?" ":"\n\r"));
 					if(++toggler>toggleTop)
@@ -351,6 +361,14 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		}
 		if(toggler!=1)
 			buf.append("\n\r");
+	}
+
+	protected int getAlchemyDuration(final MOB mob, final Ability theSpell, final int asLevel)
+	{
+		int duration=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*5;
+		if(duration<10)
+			duration=10;
+		return duration;
 	}
 
 	@Override
@@ -367,7 +385,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			final Ability theSpell=super.getCraftableSpellRecipeSpell(commands);
 			if(theSpell==null)
 				return false;
-			final int level=spellLevel(mob,theSpell);
+			final int level=spellLevel(mob,theSpell,asLevel);
 			buildingI=buildPotion(theSpell, level);
 			crafted.add(buildingI);
 			if(forceLevels)
@@ -383,7 +401,8 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,0);
 		if(commands.size()<1)
 		{
-			commonTell(mob,L("Brew what? Enter \"brew list\" for a list, or \"brew stop\" to cancel."));
+			final String word = this.triggerStrings()[0].toLowerCase();
+			commonTell(mob,L(CMStrings.capitalizeFirstLetter(word)+" what? Enter \""+word+" list\" for a list, or \""+word+" stop\" to cancel."));
 			return false;
 		}
 		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
@@ -456,11 +475,11 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 					final String spell=V.get(0);
 					final Ability A=mob.fetchAbility(spell);
 					if((A!=null)
-					&&(xlevel(mob)>=spellLevel(mob,A))
+					&&(xlevel(mob)>=spellLevel(mob,A,0))
 					&&(A.name().equalsIgnoreCase(recipeName)))
 					{
 						theSpell=A;
-						theSpellLevel=spellLevel(mob, A);
+						theSpellLevel=spellLevel(mob, A, asLevel);
 						ingredient=V.get(1);
 						if(V.size()>2)
 							powder=V.get(2).equalsIgnoreCase("POWDER");
@@ -539,9 +558,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 				buildingI=buildPotion(theSpell, theSpellLevel);
 			setBrand(mob, buildingI);
 
-			int duration=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*5;
-			if(duration<10)
-				duration=10;
+			final int duration = getAlchemyDuration(mob, theSpell, asLevel);
 			messedUp=!proficiencyCheck(mob,0,auto);
 
 			final CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),null);
