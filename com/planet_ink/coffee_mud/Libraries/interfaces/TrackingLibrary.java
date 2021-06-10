@@ -74,6 +74,7 @@ public interface TrackingLibrary extends CMLibrary
 	public int findRoomDir(MOB mob, Room R);
 	public Room getNearestValidIDRoom(final Room R);
 	public boolean isAnAdminHere(Room R, boolean sysMsgsOnly);
+	public Set<Physical> getAllGroupRiders(final Physical P, final Room hereOnlyR);
 	public void markToWanderHomeLater(MOB M);
 	public List<Integer> getShortestTrail(final List<List<Integer>> finalSets);
 	public List<List<Integer>> findAllTrails(Room from, Room to, List<Room> radiantTrail);

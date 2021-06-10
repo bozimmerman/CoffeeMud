@@ -92,6 +92,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	@Override
 	public int getPullWeight(final Physical P)
 	{
+		final int pullMultiplier = 4;
 		if(P instanceof Rider)
 		{
 			Rider R=(Rider)P;
@@ -108,7 +109,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				&&(totalWeight < Integer.MAX_VALUE/2))
 				{
 					R=weightsToDo.pop();
-					totalWeight += getSimpleWeight(R);
+					totalWeight += getSimpleWeight(R)*pullMultiplier;
 					if(R instanceof Rideable)
 					{
 						for(final Enumeration<Rider> r=((Rideable)R).riders();r.hasMoreElements();)
@@ -120,10 +121,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				return totalWeight;
 			}
 			else
-				return getSimpleWeight(P);
+				return getSimpleWeight(P)*pullMultiplier;
 		}
 		else
-			return getSimpleWeight(P);
+			return getSimpleWeight(P)*pullMultiplier;
 	}
 
 	@Override

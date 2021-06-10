@@ -2465,6 +2465,44 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	protected Set<Physical> getAllGroupRiders(final Physical P, final Set<Physical> set)
+	{
+		if((P==null)||(set.contains(P)))
+			return set;
+		set.add(P);
+		if(P instanceof Followable)
+		{
+			getAllGroupRiders(((Followable)P).amFollowing(), set);
+			for(final Enumeration<Pair<MOB,Short>> f=((Followable)P).followers();f.hasMoreElements();)
+				getAllGroupRiders(f.nextElement().first, set);
+		}
+		if(P instanceof Rider)
+			getAllGroupRiders(((Rider)P).riding(), set);
+		if(P instanceof Rideable)
+		{
+			for(final Enumeration<Rider> r=((Rideable)P).riders();r.hasMoreElements();)
+				getAllGroupRiders(r.nextElement(), set);
+		}
+		return set;
+	}
+
+	@Override
+	public Set<Physical> getAllGroupRiders(final Physical P, final Room hereOnlyR)
+	{
+		final Set<Physical> set=getAllGroupRiders(P, new HashSet<Physical>());
+		if(hereOnlyR == null)
+			return set;
+		final WorldMap map=CMLib.map();
+		for(final Iterator<Physical> p=set.iterator();p.hasNext();)
+		{
+			final Room R=map.roomLocation(p.next());
+			if(R!=hereOnlyR)
+				p.remove();
+		}
+		return set;
+	}
+
 	@Override
 	public PairVector<Room,int[]> buildGridList(final Room room, final String ownerName, final int maxDepth)
 	{

@@ -70,6 +70,8 @@ public class GenCaravan extends GenNavigableBoardable
 		this.recoverPhyStats();
 	}
 
+	private volatile boolean isDriving=false;
+
 	@Override
 	public Basis navBasis()
 	{
@@ -244,8 +246,9 @@ public class GenCaravan extends GenNavigableBoardable
 		final Rideable baseRide = this.riding();
 		Physical rideLeader = baseRide;
 		final Set<Physical> allPullers = new HashSet<Physical>();
+		final WorldMap map=CMLib.map();
 		while((rideLeader!=null)
-		&&(rideLeader == thisRoom))
+		&&(map.roomLocation(rideLeader) == thisRoom))
 		{
 			allPullers.add(rideLeader);
 			if(rideLeader instanceof Followable)
@@ -268,7 +271,7 @@ public class GenCaravan extends GenNavigableBoardable
 			if(R!=thisRoom)
 				p.remove();
 			else
-				totalPullWeight+=P.phyStats().weight()*4;
+				totalPullWeight += CMLib.utensils().getPullWeight(P);
 		}
 		if(totalPullWeight <= 0)
 		{
@@ -286,6 +289,7 @@ public class GenCaravan extends GenNavigableBoardable
 		{
 			try
 			{
+				isDriving=true;
 				final MOB leadM=(MOB)rideLeader;
 				if(!CMLib.tracking().walk(leadM, direction, false, false, false))
 				{
@@ -307,7 +311,7 @@ public class GenCaravan extends GenNavigableBoardable
 			}
 			finally
 			{
-
+				isDriving=false;
 			}
 		}
 		return true;
@@ -347,6 +351,24 @@ public class GenCaravan extends GenNavigableBoardable
 			}
 			else
 				msg.source().setRiding(null); // if you're climbing, you're not riding any more
+		}
+		else
+		if((!isDriving)
+		&&(msg.targetMinor()==CMMsg.TYP_LEAVE)
+		&&(msg.target() instanceof Room)
+		&&(msg.source().location()==owner())
+		&&(this.riding()!=null)
+		&&(msg.source().riding()!=this)
+		&&((msg.source().riding()!=null)
+			||(msg.source().numFollowers()>0)
+			||((msg.source() instanceof Rideable)&&((Rideable)msg.source()).numRiders()>0)))
+		{
+			final Set<Physical> grp=CMLib.tracking().getAllGroupRiders(msg.source(), msg.source().location());
+			if(grp.contains(this))
+			{
+				msg.source().tell(L("@x1 must be driven from the deck.",name()));
+				return false;
+			}
 		}
 		if(!super.okMessage(myHost, msg))
 			return false;

@@ -1307,6 +1307,65 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		return ""+CMLib.time().date2EllapsedTime((item.expirationDate()-System.currentTimeMillis()), TimeUnit.MINUTES, false);
 	}
 
+	protected String getRiderAddendum(final Rider iR)
+	{
+		String addendum="";
+		final Rideable rR=iR.riding();
+		if(rR==null)
+		{
+			addendum += L(""
+			+ "Ride  : null\n\r");
+		}
+		else
+		{
+			final Room R=CMLib.map().roomLocation(iR);
+			final Room rrR=CMLib.map().roomLocation(rR);
+			if(R==rrR)
+			{
+				addendum += L(""
+				+ "Ride  : @x1\n\r",
+				""+R.getContextName(rR));
+			}
+			else
+			{
+				addendum += L(""
+				+ "Ride  : @x1\n\r",
+				""+rrR.getContextName(rR)+"@"+CMLib.map().getExtendedRoomID(rrR));
+			}
+		}
+		return addendum;
+	}
+
+	@SuppressWarnings("rawtypes")
+	protected String getFollowAddendum(final Followable iF)
+	{
+		String addendum="";
+		final Followable rR=iF.amFollowing();
+		if(rR==null)
+		{
+			addendum += L(""
+			+ "Follow: null\n\r");
+		}
+		else
+		{
+			final Room R=CMLib.map().roomLocation(iF);
+			final Room rrR=CMLib.map().roomLocation(rR);
+			if(R==rrR)
+			{
+				addendum += L(""
+				+ "Follow: @x1\n\r",
+				""+R.getContextName(rR));
+			}
+			else
+			{
+				addendum += L(""
+				+ "Ride  : @x1\n\r",
+				""+rrR.getContextName(rR)+"@"+CMLib.map().getExtendedRoomID(rrR));
+			}
+		}
+		return addendum;
+	}
+
 	protected void handleBeingItemLookedAt(final CMMsg msg)
 	{
 		final MOB mob=msg.source();
@@ -1356,7 +1415,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				+ "Armor : @x1\n\r",
 					""+item.phyStats().armor());
 			}
-
+			if(item instanceof Rider)
+				addendum += getRiderAddendum(item);
 			buf.append(L("\n\r"
 			+ "Type  : @x1\n\r"
 			+ "Rejuv : @x2\n\r"
@@ -2150,16 +2210,18 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		{
 			if(viewermob.isAttributeSet(MOB.Attrib.SYSOPMSGS))
 			{
-				myDescription.append("\n\rType :"+viewedmob.ID()
-									+"\n\rRejuv:"+viewedmob.basePhyStats().rejuv()
+				myDescription.append("\n\rType  : "+viewedmob.ID()
+									+"\n\rRejuv : "+viewedmob.basePhyStats().rejuv()
 									+((!viewedmob.isMonster())?", Hunger="+viewedmob.curState().getHunger():"")
-									+"\n\rAbile:"+viewedmob.basePhyStats().ability()
+									+"\n\rAbile : "+viewedmob.basePhyStats().ability()
 									+((!viewedmob.isMonster())?", Thirst="+viewedmob.curState().getThirst():"")
-									+"\n\rLevel:"+viewedmob.basePhyStats().level()
+									+"\n\rLevel : "+viewedmob.basePhyStats().level()
 									+((viewedmob.isPlayer())?", Hygeine="+viewedmob.playerStats().getHygiene():"")
-									+"\n\rDesc : "+viewedmob.description()
-									+"\n\rStart: "+((viewedmob.getStartRoom()==null)?"null":viewedmob.getStartRoom().roomID())
-									+"\n\rMisc : "+viewedmob.text()
+									+"\n\rDesc  : "+viewedmob.description()
+									+"\n\rStart : "+((viewedmob.getStartRoom()==null)?"null":viewedmob.getStartRoom().roomID())
+									+"\n\r"+getRiderAddendum(viewedmob)
+									       +getFollowAddendum(viewedmob)
+									+"Misc  : "+viewedmob.text()
 									+"\n\r");
 			}
 			if(!viewedmob.isMonster())
