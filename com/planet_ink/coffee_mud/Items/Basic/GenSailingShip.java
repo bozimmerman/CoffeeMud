@@ -291,6 +291,15 @@ public class GenSailingShip extends GenNavigableBoardable
 	}
 
 	@Override
+	protected MOB getFactoryAttacker(final Room thisRoom)
+	{
+		final MOB mob = super.getFactoryAttacker(thisRoom);
+		mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
+		mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
+		return mob;
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.target() == this)

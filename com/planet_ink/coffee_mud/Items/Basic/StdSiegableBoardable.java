@@ -455,6 +455,15 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 		return "";
 	}
 
+	protected MOB getFactoryAttacker(final Room thisRoom)
+	{
+		final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),thisRoom);
+		mob.setRiding(this);
+		if(getOwnerObject() instanceof Clan)
+			mob.setClan(getOwnerObject().name(), ((Clan)getOwnerObject()).getAutoPosition());
+		return mob;
+	}
+
 	protected Boolean startAttack(final MOB sourceM, final Room thisRoom, final String rest)
 	{
 		final Item I=thisRoom.findItem(rest);
@@ -467,14 +476,9 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 				sourceM.tell(L("You are not permitted to attack @x1",I.name()));
 				return Boolean.FALSE;
 			}
-			final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),thisRoom);
+			final MOB mob = getFactoryAttacker(thisRoom);
 			try
 			{
-				mob.setRiding(this);
-				if(getOwnerObject() instanceof Clan)
-					mob.setClan(getOwnerObject().name(), ((Clan)getOwnerObject()).getAutoPosition());
-				mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
-				mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
 				final CMMsg maneuverMsg=CMClass.getMsg(mob,I,null,CMMsg.MSG_ADVANCE,null,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE,null,CMMsg.MSG_ADVANCE,L("<S-NAME> engage(s) @x1.",I.Name()));
 				if(thisRoom.okMessage(mob, maneuverMsg))
 				{
@@ -916,7 +920,7 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 				}
 				if(weapons.size()>0)
 				{
-					final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),null);
+					final MOB mob = getFactoryAttacker(null);
 					final int[] coordsToHit;
 					final SiegableItem siegeTarget;
 					synchronized(this)
@@ -926,11 +930,6 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 					coordsToHit = siegeTarget.getTacticalCoords();
 					try
 					{
-						mob.setRiding(this);
-						if(getOwnerObject() instanceof Clan)
-							mob.setClan(getOwnerObject().name(), ((Clan)getOwnerObject()).getAutoPosition());
-						mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
-						mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
 						int notLoaded = 0;
 						int notAimed = 0;
 						final PairList<Weapon,int[]> aimings=this.aimings;

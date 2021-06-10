@@ -583,6 +583,53 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 		}
 	}
 
+	protected MOB getFactoryAttacker(final Room thisRoom)
+	{
+		final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),thisRoom);
+		mob.setRiding(this);
+		return mob;
+	}
+
+	protected Boolean startAttack(final MOB sourceM, final Room thisRoom, final String rest)
+	{
+		final Item I=thisRoom.findItem(rest);
+		if((I instanceof SiegableItem)
+		&&(I!=this)
+		&&(CMLib.flags().canBeSeenBy(I, sourceM)))
+		{
+			if(!sourceM.mayPhysicallyAttack(I))
+			{
+				sourceM.tell(L("You are not permitted to attack @x1",I.name()));
+				return Boolean.FALSE;
+			}
+			final MOB mob = getFactoryAttacker(thisRoom);
+			try
+			{
+				final CMMsg maneuverMsg=CMClass.getMsg(mob,I,null,CMMsg.MSG_ADVANCE,null,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE,null,CMMsg.MSG_ADVANCE,L("<S-NAME> engage(s) @x1.",I.Name()));
+				if(thisRoom.okMessage(mob, maneuverMsg))
+				{
+					thisRoom.send(mob, maneuverMsg);
+					siegeTarget	 = (SiegableItem)I;
+					siegeCombatRoom	 = thisRoom;
+					if(I instanceof SiegableItem)
+					{
+						final SiegableItem otherI=(SiegableItem)I;
+						if(otherI.getCombatant() == null)
+							otherI.setCombatant(this);
+					}
+					amInTacticalMode(); // now he is in combat
+					//also support ENGAGE <name> as an alternative to attack?
+					return Boolean.TRUE;
+				}
+			}
+			finally
+			{
+				mob.destroy();
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -600,6 +647,62 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 				return false;
 			else
 				setUsesRemaining(usesRemaining()-1);
+		}
+		else
+		if((msg.sourceMinor()==CMMsg.TYP_HUH)
+		&&(msg.targetMessage()!=null)
+		&&(owner() instanceof Room)
+		&&(!(((Room)owner()) instanceof BoardableItem)))
+		{
+			final List<String> cmds=CMParms.parse(msg.targetMessage());
+			if(cmds.size()<1)
+				return true;
+			final String word=cmds.get(0).toUpperCase();
+			if("TARGET".startsWith(word))
+			{
+				final boolean isRiding=msg.source().riding()==this;
+				if((cmds.size()==1)
+				||((!isRiding)&&(cmds.size()<3)))
+				{
+					if(isRiding)
+						msg.source().tell(L("You must specify a target."));
+					else
+						msg.source().tell(L("You must which weapon to target, and at what."));
+					return false;
+				}
+				final Room thisRoom = (Room)owner();
+				if(thisRoom==null)
+				{
+					msg.source().tell(L("@x1 is nowhere to be found!",name()));
+					return false;
+				}
+				if(!isRiding)
+				{
+					final String what=cmds.get(1);
+					if(msg.source().location().findItem(null, what)!=this)
+						return true;
+					cmds.remove(1);
+				}
+				final String rest = CMParms.combine(cmds,1);
+				final Boolean result = startAttack(msg.source(),thisRoom,rest);
+				if(result  == Boolean.TRUE)
+				{
+					if(this.siegeTarget != null)
+					{
+						msg.source().tell(L("You are now targeting @x1.",this.siegeTarget.Name()));
+						msg.source().tell(this.siegeTarget.getTacticalView(this));
+					}
+					return false;
+				}
+				else
+				if(result  == Boolean.FALSE)
+					return false;
+				else
+				{
+					msg.source().tell(L("You don't see '@x1' here to target",rest));
+					return false;
+				}
+			}
 		}
 		return true;
 	}
