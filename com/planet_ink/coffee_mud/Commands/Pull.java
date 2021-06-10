@@ -60,14 +60,16 @@ public class Pull extends Go
 			dirCode=CMLib.directions().getGoodDirectionCode(commands.get(commands.size()-1));
 			if(dirCode>=0)
 			{
-				if((mob.location().getRoomInDir(dirCode)==null)
-				||(mob.location().getExitInDir(dirCode)==null)
-				||(!mob.location().getExitInDir(dirCode).isOpen()))
+				final Room nextR=mob.location().getRoomInDir(dirCode);
+				final Exit nextE=mob.location().getExitInDir(dirCode);
+				if((nextR==null)
+				||(nextE==null)
+				||(!nextE.isOpen()))
 				{
-					CMLib.commands().postCommandFail(mob,origCmds,L("You can't pull anything that way."));
-					return false;
+					// checked later
 				}
-				E=mob.location().getRoomInDir(dirCode);
+				else
+					E=nextR;
 				dir=" "+(((mob.location() instanceof BoardableItem)||(mob.location().getArea() instanceof BoardableItem))?
 						CMLib.directions().getShipDirectionName(dirCode):CMLib.directions().getDirectionName(dirCode));
 				commands.remove(commands.size()-1);
@@ -89,15 +91,30 @@ public class Pull extends Go
 			CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",itemName));
 			return false;
 		}
+		if((E==null)
+		&&(dirCode>=0))
+		{
+			if((pullThis instanceof SiegableItem)
+			&&(((SiegableItem)pullThis).isInCombat()))
+				E=mob.location();
+			else
+			{
+				CMLib.commands().postCommandFail(mob,origCmds,L("You can't pull anything that way."));
+				return false;
+			}
+		}
 		final CMMsg msg=CMClass.getMsg(mob,pullThis,E,CMMsg.MSG_PULL,L("<S-NAME> pull(s) <T-NAME>@x1.",dir));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			if((dir.length()>0)&&(msg.tool() instanceof Room))
+			if((dir.length()>0)
+			&&(msg.tool() instanceof Room))
 			{
 				final Room R=(Room)msg.tool();
 				dirCode=CMLib.tracking().findRoomDir(mob,R);
-				if((dirCode>=0)&&(CMLib.tracking().walk(mob,dirCode,false,false,false,false)))
+				if((dirCode>=0)
+				&&(R!=mob.location())
+				&&(CMLib.tracking().walk(mob,dirCode,false,false,false,false)))
 				{
 					int expense = Math.round(CMath.sqrt(pullThis.phyStats().weight()));
 					if(expense < CMProps.getIntVar(CMProps.Int.RUNCOST))

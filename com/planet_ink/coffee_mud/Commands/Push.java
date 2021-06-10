@@ -60,22 +60,19 @@ public class Push extends Go
 			dirCode=CMLib.directions().getGoodDirectionCode(commands.get(commands.size()-1));
 			if(dirCode>=0)
 			{
-				if((mob.location().getRoomInDir(dirCode)==null)
-				||(mob.location().getExitInDir(dirCode)==null)
-				||(!mob.location().getExitInDir(dirCode).isOpen()))
+				final Room nextR=mob.location().getRoomInDir(dirCode);
+				final Exit nextE=mob.location().getExitInDir(dirCode);
+				if((nextR==null)
+				||(nextE==null)
+				||(!nextE.isOpen()))
 				{
 					if(CMLib.flags().isFloatingFreely(mob))
-					{
 						E=mob.location();
-					}
 					else
-					{
-						CMLib.commands().postCommandFail(mob,origCmds,L("You can't push anything that way."));
-						return false;
-					}
+						E=null;
 				}
 				else
-					E=mob.location().getRoomInDir(dirCode);
+					E=nextR;
 				dir=" "+(((mob.location() instanceof BoardableItem)||(mob.location().getArea() instanceof BoardableItem))?
 						CMLib.directions().getShipDirectionName(dirCode):CMLib.directions().getDirectionName(dirCode));
 				commands.remove(commands.size()-1);
@@ -97,6 +94,18 @@ public class Push extends Go
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",itemName));
 			return false;
+		}
+		if((E==null)
+		&&(dirCode>=0))
+		{
+			if((pushThis instanceof SiegableItem)
+			&&(((SiegableItem)pushThis).isInCombat()))
+				E=mob.location();
+			else
+			{
+				CMLib.commands().postCommandFail(mob,origCmds,L("You can't push anything that way."));
+				return false;
+			}
 		}
 		final int malmask=(pushThis instanceof MOB)?CMMsg.MASK_MALICIOUS:0;
 		final String msgStr = "<S-NAME> push(es) <T-NAME>"+dir+".";
