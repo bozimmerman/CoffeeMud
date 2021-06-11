@@ -395,6 +395,8 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 					((Combatant)other).setCombatant(this);
 			}
 			amInTacticalMode(); // now he is in combat
+			if(!CMLib.threads().isTicking(this, Tickable.TICKID_SPECIALCOMBAT))
+				CMLib.threads().startTickDown(this, Tickable.TICKID_SPECIALCOMBAT, CombatLibrary.TICKS_PER_SHIP_COMBAT);
 		}
 	}
 
@@ -643,7 +645,8 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 							otherI.setCombatant(this);
 					}
 					amInTacticalMode(); // now he is in combat
-					CMLib.threads().startTickDown(this, Tickable.TICKID_SPECIALCOMBAT, CombatLibrary.TICKS_PER_SHIP_COMBAT);
+					if(!CMLib.threads().isTicking(this, Tickable.TICKID_SPECIALCOMBAT))
+						CMLib.threads().startTickDown(this, Tickable.TICKID_SPECIALCOMBAT, CombatLibrary.TICKS_PER_SHIP_COMBAT);
 					//also support ENGAGE <name> as an alternative to attack?
 					return Boolean.TRUE;
 				}
