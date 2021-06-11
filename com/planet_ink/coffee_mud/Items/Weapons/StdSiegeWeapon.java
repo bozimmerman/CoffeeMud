@@ -3,6 +3,7 @@ import java.util.*;
 
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -41,12 +42,20 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 		return "StdSiegeWeapon";
 	}
 
-	protected int		weaponDamageType		= TYPE_PIERCING;
-	protected int		weaponClassification	= CLASS_RANGED;
-	protected boolean	useExtendedMissString	= false;
-	protected int		minRange				= 0;
-	protected int		maxRange				= 10;
-	protected int		ammoCapacity			= 1;
+	protected int						weaponDamageType		= TYPE_PIERCING;
+	protected int						weaponClassification	= CLASS_RANGED;
+	protected boolean					useExtendedMissString	= false;
+	protected int						minRange				= 0;
+	protected int						maxRange				= 10;
+	protected int						ammoCapacity			= 1;
+	protected volatile int				nextTacticalMoveDir		= -1;
+	protected volatile int				lastSpamCt				= 0;
+	protected volatile String			lastSpamMsg				= "";
+	protected PairList<MOB, Long>		otherUsers				= new PairVector<MOB, Long>();
+	protected SiegableItem				siegeTarget				= null;
+	protected Room						siegeCombatRoom			= null;
+	protected PairList<Item, int[]>		coordinates				= null;
+	protected volatile int[]			aiming					= null;
 
 	public StdSiegeWeapon()
 	{
@@ -130,11 +139,6 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 		if((subjectToWearAndTear())&&(usesRemaining()<100))
 			phyStats().setDamage(((int)Math.round(CMath.mul(phyStats().damage(),CMath.div(usesRemaining(),100)))));
 	}
-
-	protected SiegableItem				siegeTarget		= null;
-	protected Room						siegeCombatRoom	= null;
-	protected PairList<Item, int[]>		coordinates		= null;
-	protected PairList<Weapon, int[]>	aimings			= new PairVector<Weapon, int[]>();
 
 	@Override
 	public void setRangeToTarget(final int newRange)
@@ -332,7 +336,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 		this.siegeTarget = null;
 		this.siegeCombatRoom = null;
 		this.coordinates = null;
-		this.aimings.clear();
+		this.aiming = null;
 	}
 
 	protected synchronized void clearTacticalModeInternal()
@@ -357,6 +361,8 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 				}
 			}
 		}
+		this.otherUsers.clear();
+		CMLib.threads().deleteTick(this, Tickable.TICKID_SPECIALCOMBAT);
 	}
 
 	@Override
@@ -417,7 +423,18 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 	@Override
 	public PairList<Weapon,int[]> getSiegeWeaponAimings()
 	{
-		return this.aimings;
+		final PairList<Weapon, int[]> aimings = new PairVector<Weapon, int[]>();
+		if(aiming==null)
+			return aimings;
+		aimings.add(this, aiming);
+		return aimings;
+	}
+
+	@Override
+	public void destroy()
+	{
+		super.destroy();
+		CMLib.threads().deleteTick(this, Tickable.TICKID_SPECIALCOMBAT);
 	}
 
 	@Override
@@ -587,6 +604,14 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 	{
 		final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),thisRoom);
 		mob.setRiding(this);
+		for(final MOB M : this.getPlayerAttackers())
+		{
+			for(final Pair<Clan,Integer> C : M.clans())
+			{
+				if(mob.getClanRole(C.first.clanID())==null)
+					mob.setClan(C.first.clanID(), C.second.intValue());
+			}
+		}
 		return mob;
 	}
 
@@ -618,6 +643,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 							otherI.setCombatant(this);
 					}
 					amInTacticalMode(); // now he is in combat
+					CMLib.threads().startTickDown(this, Tickable.TICKID_SPECIALCOMBAT, CombatLibrary.TICKS_PER_SHIP_COMBAT);
 					//also support ENGAGE <name> as an alternative to attack?
 					return Boolean.TRUE;
 				}
@@ -628,6 +654,223 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 			}
 		}
 		return null;
+	}
+
+	protected void addPlayerAttacker(final MOB M)
+	{
+		if((!(owner() instanceof Room))
+		||(M==null)
+		||(!M.isPlayer()))
+			return;
+		final Room R=(Room)owner();
+		synchronized(this.otherUsers)
+		{
+			final long expire = System.currentTimeMillis() - 300000;
+			for(final Iterator<Pair<MOB, Long>> p = this.otherUsers.iterator();p.hasNext();)
+			{
+				final Pair<MOB, Long> P = p.next();
+				if(P.first == M)
+				{
+					P.second=Long.valueOf(System.currentTimeMillis());
+					return;
+				}
+				else
+				if(P.first.location()!=R)
+					p.remove();
+				else
+				if(expire > P.second.longValue())
+					p.remove();
+			}
+			this.otherUsers.add(new Pair<MOB, Long>(M,Long.valueOf(System.currentTimeMillis())));
+		}
+	}
+
+	protected List<MOB> getPlayerAttackers()
+	{
+		final List<MOB> players=new LinkedList<MOB>();
+		if(!(owner() instanceof Room))
+			return players;
+		final Room R=(Room)owner();
+		synchronized(this.otherUsers)
+		{
+			final long expire = System.currentTimeMillis() - 300000;
+			for(final Iterator<Pair<MOB, Long>> p = this.otherUsers.iterator();p.hasNext();)
+			{
+				final Pair<MOB, Long> P = p.next();
+				if(P.first.location()!=R)
+					p.remove();
+				else
+				if(expire > P.second.longValue())
+					p.remove();
+				else
+					players.add(P.first);
+			}
+		}
+		for(final Enumeration<Rider> r=riders();r.hasMoreElements();)
+		{
+			final Rider rR=r.nextElement();
+			if((rR instanceof MOB)
+			&&(((MOB)rR).location()==R)
+			&&(!players.contains(rR)))
+				players.add((MOB)rR);
+		}
+		return players;
+	}
+
+	public void announceToUsers(final String msgStr)
+	{
+		for(final MOB M : this.getPlayerAttackers())
+			M.tell(msgStr);
+	}
+
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(tickID == Tickable.TICKID_SPECIALCOMBAT)
+		{
+			if(this.amInTacticalMode())
+			{
+				final int direction = this.nextTacticalMoveDir;
+				if(direction >= 0)
+				{
+					this.nextTacticalMoveDir = -1;
+					final Room thisRoom=CMLib.map().roomLocation(this);
+					if((thisRoom != null) && this.amInTacticalMode())
+					{
+						int[] tacticalCoords = null;
+						int x=0;
+						try
+						{
+							while((x>=0)&&(this.coordinates!=null)&&(tacticalCoords==null))
+							{
+								x=this.coordinates.indexOfFirst(this);
+								final Pair<Item,int[]> pair = (x>=0) ? this.coordinates.get(x) : null;
+								if(pair == null)
+									break;
+								else
+								if(pair.first != this)
+									x=this.coordinates.indexOfFirst(this);
+								else
+									tacticalCoords = pair.second;
+							}
+						}
+						catch(final Exception e)
+						{
+						}
+						if(tacticalCoords != null)
+						{
+							final MOB mob = this.getFactoryAttacker(thisRoom);
+							try
+							{
+								final String directionName = CMLib.directions().getDirectionName(direction).toLowerCase();
+								final int[] newCoords = Directions.adjustXYByDirections(tacticalCoords[0], tacticalCoords[1], direction);
+								final CMMsg maneuverMsg=CMClass.getMsg(mob, thisRoom, null,
+																		CMMsg.MSG_ADVANCE,newCoords[0]+","+newCoords[1],
+																		CMMsg.MSG_ADVANCE,directionName,
+																		CMMsg.MSG_ADVANCE,L("<S-NAME> maneuver(s) @x1.",directionName));
+								if(thisRoom.okMessage(mob, maneuverMsg))
+								{
+									thisRoom.send(mob, maneuverMsg);
+									tacticalCoords[0] = newCoords[0];
+									tacticalCoords[1] = newCoords[1];
+									if(CMSecurity.isDebugging(DbgFlag.SIEGECOMBAT))
+										Log.debugOut("SiegeCombat: "+Name()+" maneuvers to "+CMParms.toListString(tacticalCoords));
+								}
+							}
+							finally
+							{
+								mob.destroy();
+							}
+						}
+					}
+				}
+
+				final MOB mob = getFactoryAttacker(null);
+				final int[] coordsToHit;
+				final SiegableItem siegeTarget;
+				synchronized(this)
+				{
+					siegeTarget=this.siegeTarget;
+				}
+				coordsToHit = siegeTarget.getTacticalCoords();
+				try
+				{
+					int notLoaded = 0;
+					int notAimed = 0;
+					final int[] aiming=this.aiming;
+					final Weapon w=this;
+					final Room R=CMLib.map().roomLocation(w);
+					if(R!=null)
+					{
+						mob.setLocation(R);
+						if((w instanceof AmmunitionWeapon)
+						&&(((AmmunitionWeapon)w).requiresAmmunition())
+						&&(((AmmunitionWeapon)w).ammunitionRemaining() <=0))
+							notLoaded++;
+						else
+						if(aiming!=null)
+						{
+							final boolean wasHit = Arrays.equals(aiming, coordsToHit);
+							CMLib.combat().postSiegeAttack(mob, this, siegeTarget, w, wasHit);
+							if(CMSecurity.isDebugging(DbgFlag.SIEGECOMBAT))
+							{
+								final String targetedName=siegeTarget!=null?siegeTarget.Name():"Unknown";
+								Log.debugOut("SiegeCombat: "+Name()+" aimed "+w.Name()+" at "+CMParms.toListString(aiming)
+												+" and "+(wasHit?"hit ":"missed ")+targetedName+" at "+CMParms.toListString(coordsToHit));
+							}
+							this.aiming=null; // reset for next attack
+						}
+						else
+							notAimed++;
+					}
+					final String spamMsg;
+					if((notLoaded > 0) && (notAimed > 0))
+						spamMsg = L("@x1 was not loaded and not aimed.",name());
+					else
+					if(notLoaded > 0)
+						spamMsg = L("@x1 was not loaded.",name());
+					else
+					if(notAimed > 0)
+						spamMsg = L("@x1 was not aimed.",name());
+					else
+						spamMsg = "";
+					if(spamMsg.length()>0)
+					{
+						if(spamMsg.equals(lastSpamMsg))
+						{
+							if(lastSpamCt < 3)
+							{
+								if(CMSecurity.isDebugging(DbgFlag.SIEGECOMBAT))
+								{
+									final String targetedName=siegeTarget!=null?siegeTarget.Name():"Unknown";
+									Log.debugOut("SiegeCombat: "+Name()+" targeted: "+targetedName+", status: "+spamMsg);
+								}
+								announceToUsers(spamMsg);
+								lastSpamCt++;
+							}
+						}
+						else
+						{
+							if(CMSecurity.isDebugging(DbgFlag.SIEGECOMBAT))
+							{
+								final String targetedName=siegeTarget!=null?siegeTarget.Name():"Unknown";
+								Log.debugOut("SiegeCombat: "+Name()+" targeted: "+targetedName+", status: "+spamMsg);
+							}
+							announceToUsers(spamMsg);
+							lastSpamCt=0;
+						}
+					}
+					lastSpamMsg=spamMsg;
+				}
+				finally
+				{
+					mob.setRangeToTarget(0);
+					mob.destroy();
+				}
+			}
+			else
+				return false;
+		}
+		return super.tick(ticking, tickID);
 	}
 
 	@Override
@@ -652,12 +895,13 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 		if((msg.sourceMinor()==CMMsg.TYP_HUH)
 		&&(msg.targetMessage()!=null)
 		&&(owner() instanceof Room)
-		&&(!(((Room)owner()) instanceof BoardableItem)))
+		&&(!(((Room)owner()).getArea() instanceof BoardableItem)))
 		{
 			final List<String> cmds=CMParms.parse(msg.targetMessage());
 			if(cmds.size()<1)
 				return true;
 			final String word=cmds.get(0).toUpperCase();
+			// MUST IMPLEMENT AIM, since your target might be moving.
 			if("TARGET".startsWith(word))
 			{
 				final boolean isRiding=msg.source().riding()==this;
@@ -683,6 +927,8 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 						return true;
 					cmds.remove(1);
 				}
+				for(final MOB M: msg.source().getGroupMembers(new HashSet<MOB>()))
+					this.addPlayerAttacker(M);
 				final String rest = CMParms.combine(cmds,1);
 				final Boolean result = startAttack(msg.source(),thisRoom,rest);
 				if(result  == Boolean.TRUE)
@@ -702,6 +948,142 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 					msg.source().tell(L("You don't see '@x1' here to target",rest));
 					return false;
 				}
+			}
+			else
+			if("AIM".startsWith(word))
+			{
+				if(!this.amInTacticalMode())
+				{
+					msg.source().tell(L("You must be in tactical mode to aim."));
+					return false;
+				}
+				final boolean isRiding=msg.source().riding()==this;
+				if((cmds.size()==1)
+				||((!isRiding)&&(cmds.size()<3)))
+				{
+					if(isRiding)
+						msg.source().tell(L("You must specify an amount to lead the target."));
+					else
+						msg.source().tell(L("You must which weapon to aim, and how far ahead of the target to aim it."));
+					return false;
+				}
+				final Room thisRoom = (Room)owner();
+				if(thisRoom==null)
+				{
+					msg.source().tell(L("@x1 is nowhere to be found!",name()));
+					return false;
+				}
+				if(!isRiding)
+				{
+					final String what=cmds.get(1);
+					if(msg.source().location().findItem(null, what)!=this)
+						return true;
+					cmds.remove(1);
+				}
+				for(final MOB M: msg.source().getGroupMembers(new HashSet<MOB>()))
+					this.addPlayerAttacker(M);
+				final String rest = CMParms.combine(cmds,1);
+				if((!CMath.isInteger(rest))||(CMath.s_int(rest)<0))
+				{
+					if(this.siegeTarget!=null)
+						msg.source().tell(L("'@x1' is not a valid distance ahead of @x2 to fire.",rest,this.siegeTarget.name()));
+					else
+						msg.source().tell(L("'@x1' is not a valid distance.",rest));
+					return false;
+				}
+				int distance = maxRange();
+				int[] targetCoords = new int[2];
+				int leadAmt=0;
+				if(this.siegeTarget instanceof SiegableItem)
+				{
+					targetCoords = this.siegeTarget.getTacticalCoords();
+					if(targetCoords == null)
+					{
+						msg.source().tell(L("You must be targeting an enemy to aim weapons."));
+						return false;
+					}
+					distance = rangeToTarget();
+					leadAmt = CMath.s_int(rest);
+					final int direction;
+					if(this.siegeTarget instanceof NavigableItem)
+						direction = ((NavigableItem)this.siegeTarget).getDirectionFacing();
+					else
+						direction = CMLib.dice().roll(1, Directions.NUM_DIRECTIONS(), -1);
+					for(int i=0;i<leadAmt;i++)
+						targetCoords = Directions.adjustXYByDirections(targetCoords[0], targetCoords[1], direction);
+				}
+				if((maxRange() < distance)||(minRange() > distance))
+				{
+					if(CMSecurity.isDebugging(DbgFlag.SIEGECOMBAT))
+						Log.debugOut("SiegeCombat: "+Name()+" target is presently at distance of "+distance+", but "+Name()+" range is "+minRange()+" to "+maxRange());
+					msg.source().tell(L("Your target is presently at distance of @x1, but this weapons range is @x2 to @x3.",
+										""+distance,""+minRange(),""+maxRange()));
+					return false;
+				}
+				if(requiresAmmunition()
+				&& (ammunitionCapacity() > 0)
+				&& (ammunitionRemaining() == 0))
+				{
+					if(CMSecurity.isDebugging(DbgFlag.SIEGECOMBAT))
+						Log.debugOut("SiegeCombat: "+Name()+": "+Name()+" wasn't loaded, couldn't be aimed.");
+					msg.source().tell(L("@x1 needs to be LOADed first.",Name()));
+					return false;
+				}
+				final String timeToFire=""+(CMLib.threads().msToNextTick(this, Tickable.TICKID_SPECIALCOMBAT) / 1000);
+				final String msgStr=L("<S-NAME> aim(s) <O-NAME> at <T-NAME> (@x1).",""+leadAmt);
+				if(msg.source().isMonster() && aiming != null)
+				{
+					msg.source().tell(L("@x1 is already aimed.",Name()));
+					return false;
+				}
+				final CMMsg msg2=CMClass.getMsg(msg.source(), siegeTarget, this, CMMsg.MSG_NOISYMOVEMENT, msgStr);
+				if(thisRoom.okMessage(msg.source(), msg2))
+				{
+					this.aiming = targetCoords;
+					thisRoom.send(msg.source(), msg2);
+					if(CMSecurity.isDebugging(DbgFlag.SIEGECOMBAT))
+						Log.debugOut("SiegeCombat: "+Name()+": aimed "+Name()+" at : "+CMParms.toListString(targetCoords));
+					if(!this.requiresAmmunition())
+						msg.source().tell(L("@x1 is now aimed and will be engage in @x2 seconds.",name(),timeToFire));
+					else
+						msg.source().tell(L("@x1 is now aimed and will be fired in @x2 seconds.",name(),timeToFire));
+				}
+			}
+		}
+		else
+		if((msg.target()==this)
+		&&((msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL))
+		&&(msg.tool() instanceof Room)
+		&&(this.amInTacticalMode())
+		&&(msg.value()>=0)
+		&&(msg.value()<Directions.NUM_DIRECTIONS()))
+		{
+			for(final MOB M: msg.source().getGroupMembers(new HashSet<MOB>()))
+				this.addPlayerAttacker(M);
+			msg.setTool(null); // this is even better than cancelling it.
+			msg.source().tell(L("<S-NAME> order(s) @x1 moved @x2.",name(msg.source()),CMLib.directions().getDirectionName(msg.value()).toLowerCase()));
+			this.nextTacticalMoveDir=msg.value();
+			return false;
+		}
+		else
+		if((msg.targetMinor()==CMMsg.TYP_LEAVE)
+		&&(msg.target() instanceof Room)
+		&&(msg.source().location()==owner())
+		&&(this.riding()!=null)
+		&&(msg.source().riding()!=this)
+		&&((msg.source().riding()!=null)
+			||(msg.source().numFollowers()>0)
+			||((msg.source() instanceof Rideable)&&((Rideable)msg.source()).numRiders()>0)))
+		{
+			final Set<Physical> grp=CMLib.tracking().getAllGroupRiders(msg.source(), msg.source().location());
+			if(grp.contains(this)
+			&&(this.amInTacticalMode()))
+			{
+				for(final MOB M: msg.source().getGroupMembers(new HashSet<MOB>()))
+					this.addPlayerAttacker(M);
+				msg.source().tell(L("<S-NAME> order(s) @x1 moved @x2.",name(msg.source()),CMLib.directions().getDirectionName(msg.value()).toLowerCase()));
+				this.nextTacticalMoveDir=msg.value();
+				return false;
 			}
 		}
 		return true;
