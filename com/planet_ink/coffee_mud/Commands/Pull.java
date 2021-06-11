@@ -104,6 +104,7 @@ public class Pull extends Go
 			}
 		}
 		final CMMsg msg=CMClass.getMsg(mob,pullThis,E,CMMsg.MSG_PULL,L("<S-NAME> pull(s) <T-NAME>@x1.",dir));
+		msg.setValue(dirCode);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

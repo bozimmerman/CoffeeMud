@@ -110,6 +110,7 @@ public class Push extends Go
 		final int malmask=(pushThis instanceof MOB)?CMMsg.MASK_MALICIOUS:0;
 		final String msgStr = "<S-NAME> push(es) <T-NAME>"+dir+".";
 		final CMMsg msg=CMClass.getMsg(mob,pushThis,E,CMMsg.MSG_PUSH|malmask,msgStr);
+		msg.setValue(dirCode);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
