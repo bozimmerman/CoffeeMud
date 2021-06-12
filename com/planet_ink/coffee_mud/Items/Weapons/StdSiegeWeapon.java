@@ -80,8 +80,10 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 		weaponDamageType=Weapon.TYPE_PIERCING;
 		material=RawMaterial.RESOURCE_WOOD;
 		weaponClassification=Weapon.CLASS_RANGED;
+		super.setRideBasis(Basis.FURNITURE_SIT);
 		properWornBitmap=0;
 		wornLogicalAnd = false;
+		setCapacity(0);
 	}
 
 	@Override
@@ -556,13 +558,6 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 					final int pointsLost = (int)Math.round(pctLoss * level);
 					if(pointsLost > 0)
 					{
-						final int weaponType = (msg.tool() instanceof Weapon) ? ((Weapon)msg.tool()).weaponDamageType() : Weapon.TYPE_BASHING;
-						final String hitWord = CMLib.combat().standardHitWord(weaponType, pctLoss);
-						final String msgStr = (msg.targetMessage() == null) ? L("<O-NAME> fired from <S-NAME> hits and @x1 @x2.",hitWord,name()) : msg.targetMessage();
-						final CMMsg deckHitMsg=CMClass.getMsg(msg.source(), this, msg.tool(),CMMsg.MSG_OK_ACTION, msgStr);
-						final Room targetRoom=CMLib.map().roomLocation(this);
-						if(targetRoom.okMessage(msg.source(), deckHitMsg))
-							targetRoom.send(msg.source(), deckHitMsg);
 						if(pointsLost >= this.usesRemaining())
 						{
 							this.setUsesRemaining(0);
@@ -1051,6 +1046,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 					else
 						msg.source().tell(L("@x1 is now aimed and will be fired in @x2 seconds.",name(),timeToFire));
 				}
+				return false;
 			}
 		}
 		else

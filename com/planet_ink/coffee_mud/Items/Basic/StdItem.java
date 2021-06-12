@@ -1120,7 +1120,7 @@ public class StdItem implements Item
 		case CMMsg.TYP_DAMAGE:
 		case CMMsg.TYP_WEAPONATTACK:
 		case CMMsg.TYP_ATTACKMISS:
-			if((this instanceof BoardableItem)
+			if((this instanceof SiegableItem)
 			||(this instanceof SpaceObject)
 			||((this instanceof Rideable)&&(((Rideable)this).rideBasis()==Rideable.Basis.WATER_BASED)))
 				return true;

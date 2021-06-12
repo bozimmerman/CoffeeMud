@@ -113,7 +113,11 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					if(R instanceof Rideable)
 					{
 						for(final Enumeration<Rider> r=((Rideable)R).riders();r.hasMoreElements();)
-							weightsToDo.addLast(r.nextElement());
+						{
+							final Rider R1=r.nextElement();
+							if(R1 instanceof MOB)
+								weightsToDo.addLast(r.nextElement());
+						}
 					}
 				}
 				if(smallWeight)

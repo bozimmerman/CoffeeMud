@@ -1094,7 +1094,6 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 			case CMMsg.TYP_ENTER:
 				break;
 			case CMMsg.TYP_WEAPONATTACK:
-				if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 				{
 					Weapon weapon=null;
 					if((msg.tool() instanceof Weapon))
@@ -1157,20 +1156,32 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 						}
 						else
 						{
-							PhysicalAgent attacker;
-							if(msg.source().riding() instanceof BoardableItem)
-								attacker=msg.source().riding();
-							else
+							MOB factoryM = null;
+							try
 							{
-								final Room R=msg.source().location();
-								if((R!=null)
-								&&(R.getArea() instanceof BoardableItem))
-									attacker=((BoardableItem)R.getArea()).getBoardableItem();
+								PhysicalAgent attacker;
+								if(msg.source().riding() instanceof BoardableItem)
+									attacker=msg.source().riding();
 								else
-									attacker=null;
+								{
+									final Room R=msg.source().location();
+									if((R!=null)
+									&&(R.getArea() instanceof BoardableItem))
+										attacker=((BoardableItem)R.getArea()).getBoardableItem();
+									else
+									{
+										factoryM=CMClass.getFactoryMOB(L("someone"), 1, CMLib.map().roomLocation(this));
+										attacker=factoryM;
+									}
+								}
+								if(attacker != null)
+									CMLib.combat().postSiegeWeaponAttackResult(msg.source(), attacker, this, weapon, isHit);
 							}
-							if(attacker != null)
-								CMLib.combat().postSiegeWeaponAttackResult(msg.source(), attacker, this, weapon, isHit);
+							finally
+							{
+								if(factoryM!=null)
+									factoryM.destroy();
+							}
 						}
 					}
 				}
