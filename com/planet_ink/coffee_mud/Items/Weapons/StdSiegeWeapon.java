@@ -392,6 +392,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 				siegeTarget = (SiegableItem)other;
 			if(R != null)
 				siegeCombatRoom = R;
+			ticksFromHappen=0;
 			if(other instanceof Combatant)
 			{
 				if(((Combatant)other).getCombatant()==null)
@@ -617,6 +618,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 
 	protected Boolean startAttack(final MOB sourceM, final Room thisRoom, final String rest)
 	{
+		this.ticksFromHappen=0;
 		final Item I=thisRoom.findItem(rest);
 		if((I instanceof SiegableItem)
 		&&(I!=this)
@@ -728,9 +730,10 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 	{
 		if(tickID == Tickable.TICKID_SPECIALCOMBAT)
 		{
-			if(this.amInTacticalMode())
+			if(this.amInTacticalMode()
+			&&(!(CMLib.map().areaLocation(this) instanceof BoardableItem)))
 			{
-				if(this.ticksFromHappen > 20)
+				if(this.ticksFromHappen > 10)
 				{
 					ticksFromHappen=0;
 					final Room thisRoom=CMLib.map().roomLocation(this);
@@ -755,6 +758,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 					}
 					return false;
 				}
+				ticksFromHappen++;
 				final int direction = this.nextTacticalMoveDir;
 				if(direction >= 0)
 				{
