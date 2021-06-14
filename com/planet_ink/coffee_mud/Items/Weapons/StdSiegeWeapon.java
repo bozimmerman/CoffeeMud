@@ -50,6 +50,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 	protected int						ammoCapacity			= 1;
 	protected volatile int				nextTacticalMoveDir		= -1;
 	protected volatile int				lastSpamCt				= 0;
+	protected volatile int				ticksFromHappen			= 0;
 	protected volatile String			lastSpamMsg				= "";
 	protected PairList<MOB, Long>		otherUsers				= new PairVector<MOB, Long>();
 	protected SiegableItem				siegeTarget				= null;
@@ -551,6 +552,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 			case CMMsg.TYP_DAMAGE:
 				if(msg.value() > 0)
 				{
+					this.ticksFromHappen=0;
 					int level = phyStats().level();
 					if(level < 10)
 						level = 10;
@@ -593,6 +595,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 		&&((material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ENERGY)
 		&&((material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_GAS))
 		{
+			this.ticksFromHappen=0;
 			CMLib.combat().postItemDamage(msg.source(), this, null, 1, CMMsg.TYP_JUSTICE, null);
 		}
 	}
@@ -727,6 +730,31 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 		{
 			if(this.amInTacticalMode())
 			{
+				if(this.ticksFromHappen > 20)
+				{
+					ticksFromHappen=0;
+					final Room thisRoom=CMLib.map().roomLocation(this);
+					final MOB mob = CMClass.getFactoryMOB(name(), 1, thisRoom);
+					try
+					{
+						final CMMsg maneuverMsg=CMClass.getMsg(mob, thisRoom, null,
+																CMMsg.NO_EFFECT,null,
+																CMMsg.NO_EFFECT,null,
+																CMMsg.MSG_RETREAT,L("<S-NAME> disengage(s)."));
+						if((thisRoom!=null)&&(thisRoom.okMessage(mob, maneuverMsg)))
+						{
+							thisRoom.send(mob, maneuverMsg);
+							this.clearTacticalModeInternal();
+							if(CMSecurity.isDebugging(DbgFlag.SIEGECOMBAT))
+								Log.debugOut("SiegeCombat: "+Name()+" disengages");
+						}
+					}
+					finally
+					{
+						mob.destroy();
+					}
+					return false;
+				}
 				final int direction = this.nextTacticalMoveDir;
 				if(direction >= 0)
 				{
@@ -770,6 +798,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 									thisRoom.send(mob, maneuverMsg);
 									tacticalCoords[0] = newCoords[0];
 									tacticalCoords[1] = newCoords[1];
+									ticksFromHappen=0;
 									if(CMSecurity.isDebugging(DbgFlag.SIEGECOMBAT))
 										Log.debugOut("SiegeCombat: "+Name()+" maneuvers to "+CMParms.toListString(tacticalCoords));
 								}
@@ -815,6 +844,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 								Log.debugOut("SiegeCombat: "+Name()+" aimed "+w.Name()+" at "+CMParms.toListString(aiming)
 												+" and "+(wasHit?"hit ":"missed ")+targetedName+" at "+CMParms.toListString(coordsToHit));
 							}
+							ticksFromHappen=0;
 							this.aiming=null; // reset for next attack
 						}
 						else
