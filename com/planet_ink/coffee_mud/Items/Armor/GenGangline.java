@@ -82,6 +82,16 @@ public class GenGangline extends GenArmor
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;
+		if((msg.source()==this)
+		&&(msg.targetMinor()==CMMsg.TYP_LEAVE)
+		&&(msg.target() instanceof Room))
+		{
+			//TODO: shouldn't be able to do unless
+			//1. is their leader
+			//2. their leader is not present
+			// howevever, okmess happens before any mobs actually move... <sigh>
+		}
+		else
 		if((msg.targetMinor()==CMMsg.TYP_MOUNT)
 		&&(owner() instanceof MOB)
 		&&(this.amBeingWornProperly()))
@@ -132,6 +142,13 @@ public class GenGangline extends GenArmor
 					@Override
 					public void run()
 					{
+						/*
+						if(toM instanceof Rideable)
+						{
+							fixM.setFollowing(null);
+							fixM.setRiding((Rideable)toM);
+						}
+						*/
 						fixM.recoverCharStats();
 					}
 				});
