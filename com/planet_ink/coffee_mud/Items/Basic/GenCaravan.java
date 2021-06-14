@@ -410,7 +410,7 @@ public class GenCaravan extends GenNavigableBoardable
 							&&(CMLib.flags().isGettable(I))
 							&&(I.container()==null))
 							{
-								baseR.moveItemTo(null, Expire.Monster_EQ, Move.Followers);
+								baseR.moveItemTo(I, Expire.Monster_EQ, Move.Followers);
 								if(I.subjectToWearAndTear())
 								{
 									final int dmg = CMLib.dice().roll(1, 150, 0);
@@ -421,6 +421,7 @@ public class GenCaravan extends GenNavigableBoardable
 					}
 				}
 			}
+			phyStats.setDisposition(phyStats.disposition()&~PhyStats.IS_UNSAVABLE);
 			final Item newI = CMLib.utensils().ruinItem(this);
 			if(newI != this)
 				baseR.addItem(newI, Expire.Monster_EQ);
