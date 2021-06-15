@@ -466,7 +466,7 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 
 	protected Boolean startAttack(final MOB sourceM, final Room thisRoom, final String rest)
 	{
-		final Item I=thisRoom.findItem(rest);
+		Item I=thisRoom.findItem(rest);
 		if((I instanceof SiegableItem)
 		&&(I!=this)
 		&&(CMLib.flags().canBeSeenBy(I, sourceM)))
@@ -499,6 +499,84 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 			finally
 			{
 				mob.destroy();
+			}
+		}
+		else
+		if(I==null)
+		{
+			final Room wasR=sourceM.location();
+			final MOB M=thisRoom.fetchInhabitant(rest);
+			if((M!=null)
+			&&(CMLib.flags().canBeSeenBy(M, sourceM))
+			&&(wasR!=null))
+			{
+				if(!this.canViewOuterRoom(wasR))
+				{
+					sourceM.tell(L("You can't attack @x1 from here.",M.name(sourceM)));
+					return Boolean.FALSE;
+				}
+				if(!sourceM.mayPhysicallyAttack(M))
+				{
+					sourceM.tell(L("You are not permitted to attack @x1",M.name()));
+					return Boolean.FALSE;
+				}
+				I=sourceM.fetchWieldedItem();
+				if((!(I instanceof Weapon))
+				||((((Weapon)I).weaponClassification()!=Weapon.CLASS_RANGED)
+					&&(((Weapon)I).weaponClassification()!=Weapon.CLASS_THROWN)))
+				{
+					sourceM.tell(L("You can't attack @x1 with @x2 from here.",M.name(sourceM),I.name(sourceM)));
+					return Boolean.FALSE;
+				}
+				final Command C=CMClass.getCommand("Kill");
+				final double actionCost = (C==null)?0:C.actionsCost(sourceM, new XVector<String>("Kill",rest));
+				if((C==null)||(sourceM.actions()<=actionCost))
+				{
+					sourceM.tell(L("You aren't quite ready to attack just this second."));
+					return Boolean.FALSE;
+				}
+				if(sourceM.isInCombat())
+				{
+					sourceM.tell(L("You are already in combat!"));
+					return Boolean.FALSE;
+				}
+				final String uniqueID=Name()+"_"+sourceM.Name()+"_"+System.currentTimeMillis();
+				final ExtendableAbility namerA=(ExtendableAbility)CMClass.getAbility("ExtAbility");
+				{
+					namerA.setAbilityID(uniqueID);
+					namerA.setStatsAffector(new StatsAffecting() {
+						final String newName = Name();
+						@Override
+						public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+						{
+							affectableStats.setName(newName);
+						}
+
+						@Override
+						public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
+						{
+						}
+
+						@Override
+						public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
+						{
+						}
+					});
+				};
+				try
+				{
+					sourceM.addNonUninvokableEffect(namerA);
+					sourceM.recoverPhyStats();
+					thisRoom.bringMobHere(sourceM, false);
+					CMLib.combat().postAttack(sourceM, M, I);
+					sourceM.setActions(sourceM.actions()-actionCost);
+				}
+				finally
+				{
+					sourceM.delAbility(namerA);
+					wasR.bringMobHere(sourceM, false);
+					sourceM.makePeace(true);
+				}
 			}
 		}
 		return null;
