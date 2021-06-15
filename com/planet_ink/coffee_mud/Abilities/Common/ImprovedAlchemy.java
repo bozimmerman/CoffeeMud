@@ -109,7 +109,7 @@ public class ImprovedAlchemy extends Alchemy
 		&&(!"LIST".startsWith(commands.get(0).toUpperCase()))
 		&&(asLevel == 0)
 		&&(CMath.isInteger(commands.get(commands.size()-1))))
-			asLevel = Math.max(0, CMath.s_int(commands.get(commands.size()-1)));
+			asLevel = Math.max(0, CMath.s_int(commands.remove(commands.size()-1)));
 		return super.autoGenInvoke(mob, commands, givenTarget, auto, asLevel, autoGenerate, forceLevels, crafted);
 	}
 }
