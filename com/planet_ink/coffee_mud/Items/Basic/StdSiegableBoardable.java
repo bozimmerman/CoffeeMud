@@ -515,7 +515,7 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 					sourceM.tell(L("You can't attack @x1 from here.",M.name(sourceM)));
 					return Boolean.FALSE;
 				}
-				if(!sourceM.mayPhysicallyAttack(M))
+				if(!sourceM.mayIFight(M))
 				{
 					sourceM.tell(L("You are not permitted to attack @x1",M.name()));
 					return Boolean.FALSE;
@@ -577,6 +577,7 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 					wasR.bringMobHere(sourceM, false);
 					sourceM.makePeace(true);
 				}
+				return Boolean.FALSE;
 			}
 		}
 		return null;
