@@ -404,7 +404,14 @@ public class StdRideable extends StdMOB implements Rideable
 	public String rideString(final Rider R)
 	{
 		if((R==null)||(rideString.length()==0))
+		{
+			if(R instanceof Item)
+				return "is pulled";
+			else
+			if(R instanceof Rideable)
+				return "follow(s)";
 			return "ride(s)";
+		}
 		return rideString;
 	}
 
