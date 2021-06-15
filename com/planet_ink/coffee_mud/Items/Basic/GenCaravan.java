@@ -233,7 +233,6 @@ public class GenCaravan extends GenNavigableBoardable
 
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	protected boolean preNavigateCheck(final Room thisRoom, final int direction, final Room destRoom)
 	{
@@ -251,28 +250,13 @@ public class GenCaravan extends GenNavigableBoardable
 		&&(map.roomLocation(rideLeader) == thisRoom))
 		{
 			allPullers.add(rideLeader);
-			if(rideLeader instanceof Followable)
-				allPullers.addAll(((Followable)rideLeader).getGroupMembers(allPullers));
 			if((rideLeader instanceof Rideable)
 			&&(((Rideable)rideLeader).riding()!=null))
 				rideLeader=((Rideable)rideLeader).riding();
 			else
-			if((rideLeader instanceof Followable)
-			&&(((Followable)rideLeader).amFollowing()!=null))
-				rideLeader=((Followable)rideLeader).amFollowing();
-			else
 				break;
 		}
-		long totalPullWeight = 0;
-		for(final Iterator<Physical> p=allPullers.iterator();p.hasNext();)
-		{
-			final Physical P=p.next();
-			final Room R=CMLib.map().roomLocation(P);
-			if(R!=thisRoom)
-				p.remove();
-			else
-				totalPullWeight += CMLib.utensils().getPullWeight(P);
-		}
+		final long totalPullWeight = CMLib.utensils().getPullWeight(rideLeader);
 		if(totalPullWeight <= 0)
 		{
 			announceToAllAboard(L("You can't seem to "+verb_sail+" @x1 due to a lack of team to pull it, <S-NAME> go(es) nowhere.",CMLib.directions().getInDirectionName(direction)));

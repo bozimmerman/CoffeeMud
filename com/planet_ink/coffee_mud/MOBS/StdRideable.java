@@ -310,10 +310,15 @@ public class StdRideable extends StdMOB implements Rideable
 	@Override
 	public String stateString(final Rider R)
 	{
-		if((R==null)||(stateString.length()==0))
+
+		if((R==null)
+		||(stateString.length()==0))
 		{
 			if(R instanceof Item)
-				return "mounted to";
+				return "being pulled by";
+			else
+			if(R instanceof Rideable)
+				return "mounted with";
 			return "riding on";
 		}
 		return stateString;
@@ -428,8 +433,14 @@ public class StdRideable extends StdMOB implements Rideable
 	{
 		if((R==null)||(stateSubjectStr.length()==0))
 		{
-			if((R instanceof Rideable)&&((Rideable)R).rideBasis()==Rideable.Basis.WAGON)
-				return "pulling along";
+			if(R instanceof Rideable)
+			{
+				final Rideable rI=(Rideable)R;
+				if(rI.rideBasis()==Rideable.Basis.WAGON)
+					return "pulling along";
+				if(rI instanceof MOB)
+					return "mounted with";
+			}
 			return "being ridden by";
 		}
 		return stateSubjectStr;

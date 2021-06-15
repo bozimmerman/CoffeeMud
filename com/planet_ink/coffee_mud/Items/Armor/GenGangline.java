@@ -98,7 +98,8 @@ public class GenGangline extends GenArmor
 		{
 			final MOB ownM=(MOB)owner();
 			if((msg.target()==owner())
-			&&(msg.tool() instanceof MOB))
+			&&(msg.tool() instanceof MOB)
+			&&(msg.tool() != owner()))
 			{
 				final MOB toM=(MOB)msg.tool();
 				if(!isGanglined(toM))
@@ -106,49 +107,48 @@ public class GenGangline extends GenArmor
 					msg.source().tell(L("Both targets must be wearing @x1 to do that.",name()));
 					return false;
 				}
-				if(toM.amFollowing()!=null)
+				if(toM.riding()!=null)
 				{
 					if(isGanglined(toM))
 					{
-						msg.source().tell(L("@x1 is already connected to @x2.",toM.name(),toM.amFollowing().name()));
+						msg.source().tell(L("@x1 is already connected to @x2.",toM.name(),toM.riding().name()));
 						return false;
 					}
 					else
 					{
-						msg.source().tell(L("@x1 is already following @x2.",toM.name(),toM.amFollowing().name()));
+						msg.source().tell(L("@x1 is already riding @x2.",toM.name(),toM.riding().name()));
 						return false;
 					}
 				}
-				if(ownM.amFollowing()!=null)
+				if(ownM.riding()!=null)
 				{
 					if(isGanglined(ownM))
 					{
-						msg.source().tell(L("@x1 is already connected to @x2.",ownM.name(),ownM.amFollowing().name()));
+						msg.source().tell(L("@x1 is already connected to @x2.",ownM.name(),ownM.riding().name()));
 						return false;
 					}
 					else
 					{
-						msg.source().tell(L("@x1 is already following @x2.",ownM.name(),ownM.amFollowing().name()));
+						msg.source().tell(L("@x1 is already riding @x2.",ownM.name(),ownM.riding().name()));
 						return false;
 					}
 				}
 				final MOB actorM=msg.source();
 				final String newMsgText = L("<O-NAME> connect(s) <S-NAME> to <T-NAME>.");
 				final int newCd = CMMsg.MASK_ALWAYS|CMMsg.MSG_FOLLOW;
-				msg.modify((MOB)msg.tool(), msg.target(), actorM, newCd, newMsgText, newCd, newMsgText, newCd, newMsgText);
+				msg.modify((MOB)msg.tool(), msg.target(), actorM, msg.sourceCode(), newMsgText, newCd, newMsgText, msg.othersCode(), newMsgText);
 				msg.addTrailerRunnable(new Runnable()
 				{
 					final MOB fixM=ownM;
+					final MOB toM=msg.source();
 					@Override
 					public void run()
 					{
-						/*
 						if(toM instanceof Rideable)
 						{
-							fixM.setFollowing(null);
-							fixM.setRiding((Rideable)toM);
+							toM.setFollowing(null);
+							toM.setRiding((Rideable)fixM);
 						}
-						*/
 						fixM.recoverCharStats();
 					}
 				});
@@ -159,22 +159,10 @@ public class GenGangline extends GenArmor
 			if((msg.tool()==owner())
 			&&(msg.target() instanceof Item))
 			{
-				for(final MOB M : ownM.getGroupMembers(new HashSet<MOB>()))
+				if(ownM.riding()!=null)
 				{
-					if(isGanglined(M)
-					&&(M instanceof Rideable)
-					&&(((Rideable)M).numRiders()>0))
-					{
-						for(final Enumeration<Rider> r=((Rideable)M).riders();r.hasMoreElements();)
-						{
-							final Rider R=r.nextElement();
-							if(R instanceof Item)
-							{
-								msg.source().tell(L("@x1 is already mounted to @x2.",R.name(),M.amFollowing().name()));
-								return false;
-							}
-						}
-					}
+					msg.source().tell(L("@x1 is already mounted to @x2.",ownM.name(),ownM.riding().name()));
+					return false;
 				}
 			}
 		}
@@ -201,16 +189,17 @@ public class GenGangline extends GenArmor
 						final MOB targetM=R.fetchInhabitant(CMParms.combine(parsedFail,1));
 						if(targetM == M)
 						{
-							if(this.amBeingWornProperly())
+							if(this.amBeingWornProperly()
+							&&(M.riding() instanceof MOB))
 							{
-								final MOB folM=M.amFollowing();
+								final MOB folM=(MOB)M.riding();
 								if(folM==null)
 								{
 									msg.source().tell(L("@x1 is not connected.",M.name(msg.source())));
 									return false;
 								}
-								CMLib.commands().postFollow(M, null, true);
-								if(M.amFollowing()==null)
+								CMLib.commands().forceStandardCommand(targetM, "Dismount", new XVector<String>("Dismount"));
+								if(M.riding()==null)
 									R.show(msg.source(), M, folM, CMMsg.MSG_OK_VISUAL, L("<S-NAME> disconnects <T-NAME> from <O-NAME>."));
 								return false;
 							}
@@ -232,13 +221,13 @@ public class GenGangline extends GenArmor
 		&&(this.amBeingWornProperly()))
 		{
 			final MOB M=(MOB)owner();
-			if(M.amFollowing()!=null)
-				CMLib.commands().postFollow(M, null, true);
+			if(M.riding()!=null)
+				CMLib.commands().forceStandardCommand(M, "Dismount", new XVector<String>("Dismount"));
 		}
 		else
 		if((msg.targetMinor()==CMMsg.TYP_LEAVE)
 		&&(owner() instanceof MOB)
-		&&(msg.source()==((MOB)owner()).amFollowing())
+		&&(msg.source()==((MOB)owner()).riding())
 		&&(this.amBeingWornProperly()))
 		{
 			this.nextCheck=System.currentTimeMillis()+4000;
@@ -248,10 +237,11 @@ public class GenGangline extends GenArmor
 		{
 			this.nextCheck=Long.MAX_VALUE;
 			final ItemPossessor P=owner();
-			if(P instanceof MOB)
+			if((P instanceof MOB)
+			&&(((MOB)P).riding() instanceof MOB))
 			{
 				final MOB M=(MOB)P;
-				final MOB fM=M.amFollowing();
+				final MOB fM=(MOB)M.riding();
 				final Item I=this;
 				if((fM!=null)
 				&&(fM.location()!=M.location())
@@ -263,20 +253,20 @@ public class GenGangline extends GenArmor
 				{
 					CMLib.threads().scheduleRunnable(new Runnable()
 					{
-						final MOB followM = fM;
+						final MOB rideM = fM;
 						final MOB meM=M;
 						final Item meI=I;
 						@Override
 						public void run()
 						{
-							final Room R=followM.location();
+							final Room R=rideM.location();
 							if((R!=meM.location())
 							&&(R!=null)
-							&&(!followM.amDead())
-							&&(!followM.amDestroyed())
+							&&(!rideM.amDead())
+							&&(!rideM.amDestroyed())
 							&&(!M.amDead())
 							&&(!M.amDestroyed())
-							&&(R.isInhabitant(followM))
+							&&(R.isInhabitant(rideM))
 							&&(meI.amBeingWornProperly()))
 							{
 								R.bringMobHere(meM, true);

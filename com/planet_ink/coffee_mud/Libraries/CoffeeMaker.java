@@ -1133,12 +1133,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				{
 					final Environmental E=identTable.get(ride);
 					if(E instanceof Rideable)
-					{
-						if((M instanceof Rideable)&&(E instanceof MOB))
-							M.setFollowing((MOB)E);
-						else
-							M.setRiding((Rideable)E);
-					}
+						M.setRiding((Rideable)E);
 					else
 					if(E instanceof MOB)
 						M.setFollowing((MOB)E);

@@ -2132,7 +2132,8 @@ public class StdRoom implements Room
 				{
 					if(destroy || (M.location()==this))
 						M.setLocation(null);
-					M.destroy();
+					if(destroy)
+						M.destroy();
 				}
 			}
 			inhabitants.clear();

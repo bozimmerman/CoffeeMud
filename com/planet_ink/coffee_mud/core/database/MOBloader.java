@@ -1540,45 +1540,37 @@ public class MOBloader
 					&&(thisItem instanceof NavigableItem)
 					&&(((Rider)thisItem).riding()!=null))
 					{
-						Rideable leadR=null;
 						final Room R=CMLib.map().roomLocation(thisItem);
-						if(thisItem.riding() instanceof MOB)
+						final Room fakeR=CMClass.getLocale("StoneRoom");
+						Rideable leadR=((Rider)thisItem).riding();
+						while(leadR != null)
 						{
-							final MOB rideM=(MOB)thisItem.riding();
-							if((rideM.isMonster())
-							&&((rideM.amUltimatelyFollowing()==null)||(!rideM.amUltimatelyFollowing().isPlayer()))
-							&&(rideM.location()==R))
-								leadR=(Rideable)rideM;
-						}
-						else
-						if(thisItem.riding() instanceof Item)
-						{
-							final Item rideI=(Item)thisItem.riding();
-							if((!finalCollection.contains(rideI))
-							&&(rideI.owner()==R))
-								leadR=(Rideable)rideI;
-						}
-						if(leadR!=null)
-						{
-							final Room fakeR=CMClass.getLocale("StoneRoom");
 							if(leadR instanceof MOB)
 							{
-								fakeR.addInhabitant((MOB)leadR); // will not affect location
-								for(final MOB M : ((MOB)leadR).getGroupMembers(new HashSet<MOB>()))
+								final MOB rideM=(MOB)leadR;
+								if((rideM.isMonster())
+								&&((rideM.amUltimatelyFollowing()==null)||(!rideM.amUltimatelyFollowing().isPlayer()))
+								&&(rideM.location()==R))
+									fakeR.addInhabitant(rideM); // will not affect location
+								leadR=rideM.riding();
+							}
+							else
+							if(leadR instanceof Item)
+							{
+								final Item rideI=(Item)leadR;
+								if((!finalCollection.contains(rideI))
+								&&(rideI.owner()==R))
 								{
-									if((M.isMonster())
-									&&(M!=leadR)
-									&&((M.amUltimatelyFollowing()==null)||(!M.amUltimatelyFollowing().isPlayer()))
-									&&(M.location()==R))
-										fakeR.addInhabitant(M); // will not affect location
+									fakeR.addItem(rideI);
+									leadR=rideI.riding();
 								}
 							}
 							else
-								fakeR.addItem((Item)leadR);
-							insert = CMLib.coffeeMaker().getUnknownXML(fakeR).toString();
-							fakeR.delAllInhabitants(false);
-							fakeR.delAllItems(false);
+								break;
 						}
+						insert = CMLib.coffeeMaker().getUnknownXML(fakeR).toString();
+						fakeR.delAllInhabitants(false);
+						fakeR.delAllItems(false);
 					}
 					final String text="<ROOM ID=\""+roomID+"\" EXPIRE="+thisItem.expirationDate()+" />"+insert+thisItem.text();
 					if(!useBulkInserts)

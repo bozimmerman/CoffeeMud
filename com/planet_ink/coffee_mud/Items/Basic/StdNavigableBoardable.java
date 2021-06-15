@@ -214,6 +214,14 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 
 	private final static Map<String, NavigatingCommand> commandWords = new Hashtable<String, NavigatingCommand>();
 
+	@Override
+	public void recoverPhyStats()
+	{
+		super.recoverPhyStats();
+		if(this.area!=null)
+			this.phyStats.setWeight(phyStats.weight()+(this.area.numberOfProperIDedRooms() * 1200));
+	}
+
 	protected NavigatingCommand findNavCommand(final String word, final String secondWord)
 	{
 		if(word == null)
