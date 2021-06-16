@@ -115,6 +115,7 @@ public class Farming extends GatheringSkill
 				else
 				if(age < .5)
 					adj="@x1";
+				else
 				if(age < .75)
 					adj="Young @x1";
 				else
