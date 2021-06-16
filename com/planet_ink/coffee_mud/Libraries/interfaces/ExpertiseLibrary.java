@@ -248,6 +248,13 @@ public interface ExpertiseLibrary extends CMLibrary
 		 */
 		public void spendCostRequirements(MOB mob);
 
+		/**
+		 * Read/Writeable list of XType flags for this
+		 * expertise.
+		 * @return the xtype flag set
+		 */
+		public Set<XType> getFlagTypes();
+
 	}
 
 	/** Enumeration of the types of costs of gaining this ability */

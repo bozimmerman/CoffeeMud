@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achieve
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.CostType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.XType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericEditor.CMEval;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
@@ -572,6 +573,14 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 									if(curDef != null)
 										curDef.spendCostRequirements(mob);
 								}
+
+								@Override
+								public Set<XType> getFlagTypes()
+								{
+									final ExpertiseDefinition curDef = baseDef();
+									return (curDef == null) ? new HashSet<XType>() : curDef.getFlagTypes();
+								}
+
 							};
 							awardsList.add(new ExpertiseAward()
 							{

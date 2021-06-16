@@ -420,7 +420,7 @@ public class Mage extends StdCharClass
 			CMLib.ableMapper().addCharAbilityMapping(ID(),26,"Spell_Imprisonment", ID().equals("Conjurer")?25:0, "", false,
 													 SecretFlag.MASKED, null, "+PLANE \"-Prime Material\"");
 		}
-		CMLib.ableMapper().addCharAbilityMapping(ID(),26,"ImprovedAlchemy",false,CMParms.parseSemicolons("Alchemy(50)",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),26,"ImprovedAlchemy",false,CMParms.parseSemicolons("Alchemy(100)",true));
 
 		if(!ID().equals("Illusionist"))
 		{

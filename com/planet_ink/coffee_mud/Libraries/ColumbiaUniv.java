@@ -732,6 +732,13 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			return "Error: No flags ("+parts.get(2).toUpperCase()+") were set: "+ID+"="+row;
 		if(addIfPossible)
 		{
+			final Set<XType> fflags = new HashSet<XType>();
+			for(final String f : flags)
+			{
+				final XType fl = (XType)CMath.s_valueOf(XType.class, f.toUpperCase().trim());
+				if(fl != null)
+					fflags.add(fl);
+			}
 			final String baseName=CMStrings.replaceAll(CMStrings.replaceAll(ID,"@X2",""),"@X1","").toUpperCase();
 			for(int l=1;l<=levels;l++)
 			{
@@ -754,6 +761,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				def=addDefinition(WKID,WKname,baseName,WKlistMask,WKfinalMask,costs,data);
 				if(def!=null)
 				{
+					def.getFlagTypes().addAll(fflags);
 					def.compiledFinalMask();
 					def.compiledListMask();
 				}
@@ -1116,6 +1124,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			private final ExpertiseDefinition			parent				= null;
 			private MaskingLibrary.CompiledZMask		compiledFinalMask	= null;
 			private final List<SkillCost>				costs				= new LinkedList<SkillCost>();
+			private final Set<XType>					xTypes				= new HashSet<XType>();
 
 			@Override
 			public String getBaseName()
@@ -1305,6 +1314,12 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			@Override
 			public void initializeClass()
 			{
+			}
+
+			@Override
+			public Set<XType> getFlagTypes()
+			{
+				return xTypes;
 			}
 		};
 		definition.setID(ID.toUpperCase());
