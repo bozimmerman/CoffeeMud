@@ -98,6 +98,34 @@ public class Farming extends GatheringSkill
 	}
 
 	@Override
+	public void executeMsg(final Environmental host, final CMMsg msg)
+	{
+		super.executeMsg(host, msg);
+		if((msg.target()==affected)
+		&&(affected instanceof Room)
+		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
+		{
+			final Room R=(Room)affected;
+			if(R!=null)
+			{
+				final double age = (tickDown == 0) ? 0 : CMath.div(tickDown, tickDown+tickUp);
+				String adj;
+				if(age < .25)
+					adj="Mature @x1";
+				else
+				if(age < .5)
+					adj="@x1";
+				if(age < .75)
+					adj="Young @x1";
+				else
+					adj="Seeds of @x1";
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,
+						L(adj+" are growing here.",foundShortName)));
+			}
+		}
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((affected instanceof Room))
