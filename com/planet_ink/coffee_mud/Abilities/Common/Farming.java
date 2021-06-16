@@ -309,14 +309,29 @@ public class Farming extends GatheringSkill
 		return false;
 	}
 
-	protected boolean canGrowHere(final Room R)
+	protected boolean canGrowHere(final MOB mob, final Room R)
 	{
-		return ((R.domainType()==Room.DOMAIN_OUTDOORS_HILLS)
-				||(R.domainType()==Room.DOMAIN_OUTDOORS_PLAINS)
-				||(R.domainType()==Room.DOMAIN_OUTDOORS_WOODS)
-				||(R.domainType()==Room.DOMAIN_OUTDOORS_JUNGLE)
-				||(R.domainType()==Room.DOMAIN_OUTDOORS_SWAMP)
-				||(R.myResource()==RawMaterial.RESOURCE_DIRT));
+		if(!R.getArea().getClimateObj().canSeeTheSun(R))
+		{
+			commonTell(mob,L("You need clear sunlight to do your farming.  Check the time and weather."));
+			return false;
+		}
+		if(!(((R.domainType()==Room.DOMAIN_OUTDOORS_HILLS)
+			||(R.domainType()==Room.DOMAIN_OUTDOORS_PLAINS)
+			||(R.domainType()==Room.DOMAIN_OUTDOORS_WOODS)
+			||(R.domainType()==Room.DOMAIN_OUTDOORS_JUNGLE)
+			||(R.domainType()==Room.DOMAIN_OUTDOORS_SWAMP)
+			||(R.myResource()==RawMaterial.RESOURCE_DIRT))))
+		{
+			commonTell(mob,L("The land is not suitable for farming here."));
+			return false;
+		}
+		if(R.getArea().getClimateObj().weatherType(R)==Climate.WEATHER_DROUGHT)
+		{
+			commonTell(mob,L("The current drought conditions make planting useless."));
+			return false;
+		}
+		return true;
 	}
 
 	@Override
@@ -339,21 +354,8 @@ public class Farming extends GatheringSkill
 		}
 
 		verb=L("planting");
-		if((!auto)&&(!R.getArea().getClimateObj().canSeeTheSun(R)))
-		{
-			commonTell(mob,L("You need clear sunlight to do your farming.  Check the time and weather."));
+		if((!auto) && (!canGrowHere(mob, R)))
 			return false;
-		}
-		if((!auto) && (!canGrowHere(R)))
-		{
-			commonTell(mob,L("The land is not suitable for farming here."));
-			return false;
-		}
-		if((!auto)&&(R.getArea().getClimateObj().weatherType(R)==Climate.WEATHER_DROUGHT))
-		{
-			commonTell(mob,L("The current drought conditions make planting useless."));
-			return false;
-		}
 		if(R.fetchEffect(ID())!=null)
 		{
 			commonTell(mob,L("It looks like a crop is already growing here."));
@@ -432,7 +434,7 @@ public class Farming extends GatheringSkill
 		}
 		if(code<0)
 		{
-			commonTell(mob,L("You can't plant '@x1'.",CMParms.combine(commands,0)));
+			commonTell(mob,L("You can't seem to grow '@x1'.",CMParms.combine(commands,0)));
 			return false;
 		}
 
