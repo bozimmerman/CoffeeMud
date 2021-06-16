@@ -432,7 +432,7 @@ public class Farming extends GatheringSkill
 		}
 		if(code<0)
 		{
-			commonTell(mob,L("You've never heard of '@x1'.",CMParms.combine(commands,0)));
+			commonTell(mob,L("You can't plant '@x1'.",CMParms.combine(commands,0)));
 			return false;
 		}
 
