@@ -432,7 +432,8 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						&&(CMLib.flags().canBeSeenBy(I, msg.source())))
 						{
 							if((I instanceof Rideable)
-							&&(((Rideable)I).mobileRideBasis()))
+							&&(((Rideable)I).mobileRideBasis())
+							&&(!(I instanceof BoardableItem)))
 							{
 								if(smallTenderRequests.contains(I))
 								{
