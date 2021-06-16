@@ -28,6 +28,7 @@
  36. New common skill: CaravanBuilding, for, well, building caravans.
  37. Magic Powders can now be sniffed to self-enchant
  38. New common skill: Improved Alchemy
+ 39. New prompt flag: combat-only sections
   
 # Build 5.9.11.1 Release 02/26/2021
   Bug Fix Release:
