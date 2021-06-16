@@ -101,6 +101,7 @@ public class Skill_Subdue extends StdSkill
 	protected MOB whom=null;
 	protected int whomDamage=0;
 	protected int asLevel=0;
+	protected final Set<MOB> lastKills = new LimitedTreeSet<MOB>(TimeManager.MILI_DAY,250,false);
 
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
@@ -158,6 +159,12 @@ public class Skill_Subdue extends StdSkill
 					sap.invoke(whom,new XVector<String>("SAFELY",Integer.toString(adjustedLevel(msg.source(),asLevel))),whom,true,0);
 				whom.makePeace(true);
 				msg.source().makePeace(true);
+				final Skill_Subdue skillA = (Skill_Subdue)msg.source().fetchAbility(ID());
+				if((skillA!=null)
+				&&(!skillA.lastKills.contains(whom)))
+				{
+					skillA.lastKills.add(whom);
+				}
 				unInvoke();
 			}
 		}
