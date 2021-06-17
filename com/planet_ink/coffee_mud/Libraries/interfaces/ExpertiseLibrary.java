@@ -44,8 +44,7 @@ import java.util.*;
  */
 public interface ExpertiseLibrary extends CMLibrary
 {
-	public ExpertiseDefinition addDefinition(String ID, String name, String baseName, String listMask, String finalMask, String[] costs, String[] data);
-	public void delDefinition(String ID);
+	public boolean delDefinition(String ID, final boolean andSave);
 	public ExpertiseDefinition getDefinition(String ID);
 	public ExpertiseDefinition findDefinition(String ID, boolean exactOnly);
 	public Enumeration<ExpertiseDefinition> definitions();
@@ -54,7 +53,9 @@ public interface ExpertiseLibrary extends CMLibrary
 	public ExpertiseDefinition getConfirmedDefinition(final MOB mob, final String ID);
 	public int numExpertises();
 	public SkillCost createNewSkillCost(CostType costType, Double value);
+	public boolean addModifyDefinition(final String codedLine, final boolean andSave);
 	public void recompileExpertises();
+	public String getExpertiseInstructions();
 	public int getExpertiseLevel(final MOB mob, final String abilityID, final ExpertiseLibrary.XType code);
 	public String getExpertiseHelp(String ID, boolean exact);
 	public String getApplicableExpertise(String ID, XType code);

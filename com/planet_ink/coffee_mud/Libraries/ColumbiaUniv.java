@@ -55,8 +55,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	protected Properties helpMap=new Properties();
 	protected DVector rawDefinitions=new DVector(7);
 
-	@Override
-	public ExpertiseLibrary.ExpertiseDefinition addDefinition(final String ID, final String name, final String baseName, final String listMask, final String finalMask, final String[] costs, final String[] data)
+	protected ExpertiseLibrary.ExpertiseDefinition addDefinition(final String ID, final String name, final String baseName, final String listMask, final String finalMask, final String[] costs, final String[] data)
 	{
 		ExpertiseLibrary.ExpertiseDefinition def=getDefinition(ID);
 		if(def!=null)
@@ -94,6 +93,85 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 
 	@Override
+	public boolean addModifyDefinition(final String codedLine, final boolean andSave)
+	{
+		int x=codedLine.indexOf('=');
+		if(x<0)
+			return false;
+		String ID=codedLine.substring(0,x).toUpperCase().trim();
+		ID=CMStrings.replaceAll(CMStrings.replaceAll(ID,"@X2",""),"@X1","").toUpperCase();
+		final String resp = this.confirmExpertiseLine(codedLine, ID, false);
+		if((resp!=null)&&(resp.toLowerCase().startsWith("error")))
+			return false;
+		if(andSave)
+		{
+			String baseID=null;
+			if(completeEduMap.containsKey(ID.trim().toUpperCase()))
+			{
+				final ExpertiseDefinition def=completeEduMap.get(ID.trim().toUpperCase());
+				baseID=def.getBaseName();
+			}
+			else
+			{
+				for(final String defID : completeEduMap.keySet())
+				{
+					final ExpertiseDefinition def = completeEduMap.get(defID);
+					if(def.getBaseName().equalsIgnoreCase(ID))
+						baseID = def.getBaseName();
+				}
+			}
+			if(baseID != null)
+			{
+				final String expertiseFilename="skills/expertises.txt";
+				String fileName=Resources.getRawFileResourceName(expertiseFilename, false);
+				final List<String> lines = getExpertiseLines();
+				final StringBuilder buf = new StringBuilder("");
+				boolean readyToSave=false;
+				for(final String l : lines)
+				{
+					if(l.trim().startsWith("#"))
+					{
+						if(l.trim().startsWith("#FILE:"))
+						{
+							if(readyToSave)
+								break;
+							fileName = l.trim().substring(6).trim();
+							buf.setLength(0);
+							continue;
+						}
+					}
+					else
+					{
+						x=l.indexOf('=');
+						if(x>0)
+						{
+							String baseId=l.substring(0,x).trim().toUpperCase();
+							baseId=CMStrings.replaceAll(CMStrings.replaceAll(baseId,"@X2",""),"@X1","").toUpperCase();
+							if(baseId.equalsIgnoreCase(baseID))
+							{
+								buf.append(codedLine).append("\n\r");
+								readyToSave=true;
+								continue;
+							}
+						}
+					}
+					buf.append(l).append("\n\r");
+				}
+				if(readyToSave && (buf.length()>0))
+					new CMFile(fileName,null).saveText(buf);
+			}
+			else
+			{
+				final CMFile F=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,CMFile.FLAG_LOGERRORS);
+				F.saveText("\n"+codedLine,true);
+			}
+			Resources.removeResource(Resources.makeFileResourceName("skills/expertises.txt"));
+			CMLib.expertises().recompileExpertises();
+		}
+		return true;
+	}
+
+	@Override
 	public String getExpertiseHelp(String ID, final boolean exact)
 	{
 		if(ID==null)
@@ -117,10 +195,81 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 
 	@Override
-	public void delDefinition(final String ID)
+	public boolean delDefinition(final String ID, final boolean andSave)
 	{
-		completeEduMap.remove(ID);
+		final List<String> delThese = new LinkedList<String>();
+		String baseID=null;
+		if(completeEduMap.containsKey(ID.trim().toUpperCase()))
+		{
+			final ExpertiseDefinition def=completeEduMap.get(ID.trim().toUpperCase());
+			delThese.add(ID.trim().toUpperCase());
+			baseID=def.getBaseName();
+		}
+		else
+		{
+			for(final String defID : completeEduMap.keySet())
+			{
+				final ExpertiseDefinition def = completeEduMap.get(defID);
+				if(def.getBaseName().equalsIgnoreCase(ID))
+				{
+					baseID = def.getBaseName();
+					delThese.add(defID);
+				}
+			}
+		}
+		for(final String id : delThese)
+			completeEduMap.remove(id);
 		baseEduSetLists.clear();
+		if(andSave && (baseID != null))
+		{
+			final String expertiseFilename="skills/expertises.txt";
+			String fileName=Resources.getRawFileResourceName(expertiseFilename, false);
+			final List<String> lines = getExpertiseLines();
+			final StringBuilder buf = new StringBuilder("");
+			boolean readyToSave=false;
+			boolean delNextHelp=false;
+			for(final String l : lines)
+			{
+				if(l.trim().startsWith("#"))
+				{
+					if(l.trim().startsWith("#FILE:"))
+					{
+						if(readyToSave)
+							break;
+						fileName = l.trim().substring(6).trim();
+						buf.setLength(0);
+					}
+				}
+				else
+				if(delNextHelp && l.trim().startsWith("HELP_=<EXPERTISE>"))
+				{
+					delNextHelp=false;
+					continue;
+				}
+				else
+				{
+					delNextHelp=false;
+					final int x=l.indexOf('=');
+					if(x>0)
+					{
+						String baseId=l.substring(0,x).trim().toUpperCase();
+						baseId=CMStrings.replaceAll(CMStrings.replaceAll(baseId,"@X2",""),"@X1","").toUpperCase();
+						if(baseId.equalsIgnoreCase(baseID))
+						{
+							delNextHelp=true;
+							readyToSave=true;
+							continue;
+						}
+					}
+				}
+				buf.append(l).append("\n\r");
+			}
+			if(readyToSave && (buf.length()>0))
+				new CMFile(fileName,null).saveText(buf);
+			Resources.removeResource(fileName);
+			recompileExpertises();
+		}
+		return delThese.size()>0;
 	}
 
 	@Override
@@ -793,6 +942,41 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 
 	@Override
+	public String getExpertiseInstructions()
+	{
+		final StringBuilder inst = new StringBuilder("");
+		final String expertiseFilename="skills/expertises.txt";
+		final List<String> V=Resources.getFileLineVector(Resources.getFileResource(expertiseFilename,true));
+		for(int v=0;v<V.size();v++)
+		{
+			if(V.get(v).startsWith("#"))
+				inst.append(V.get(v).substring(1)+"\n\r");
+			else
+			if(V.get(v).length()>0)
+				break;
+		}
+		return inst.toString();
+	}
+
+	protected List<String> getExpertiseLines()
+	{
+		final String expertiseFilename="skills/expertises.txt";
+		final List<String> V=Resources.getFileLineVector(Resources.getFileResource(expertiseFilename,true));
+		Resources.removeResource(Resources.makeFileResourceName("skills/expertises.txt"));
+		for(int i=2;i<99;i++)
+		{
+			final String fileName=Resources.getRawFileResourceName(expertiseFilename, false)+"."+i;
+			final StringBuffer buf = Resources.getFileResource(expertiseFilename+"."+i,false);
+			Resources.removeResource(fileName);
+			if(buf.length()==0)
+				break;
+			V.add("#FILE:"+fileName);
+			V.addAll(Resources.getFileLineVector(buf));
+		}
+		return V;
+	}
+
+	@Override
 	public void recompileExpertises()
 	{
 		for(int u=0;u<completeUsageMap.length;u++)
@@ -800,7 +984,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		for(int u=0;u<completeUsageMaps.length;u++)
 			completeUsageMaps[u]=new Hashtable<String,String[]>();
 		helpMap.clear();
-		final List<String> V=Resources.getFileLineVector(Resources.getFileResource("skills/expertises.txt",true));
+		final List<String> V = getExpertiseLines();
 		String ID=null,WKID=null;
 		for(int v=0;v<V.size();v++)
 		{

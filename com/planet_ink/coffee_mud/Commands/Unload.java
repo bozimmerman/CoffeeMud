@@ -378,7 +378,6 @@ public class Unload extends StdCommand
 			if(("EXPERTISE".startsWith(commands.get(1).toUpperCase()))
 			&&(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.EXPERTISE)))
 			{
-				Resources.removeResource("skills/expertises.txt");
 				CMLib.expertises().recompileExpertises();
 				mob.tell(L("Expertise list unloaded and reloaded."));
 				return false;

@@ -8340,8 +8340,14 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		final String achievementFilename = getAchievementFilename();
 		final List<String> V=Resources.getFileLineVector(Resources.getRawFileResource(achievementFilename,true));
 		Resources.removeResource(achievementFilename);
-		V.addAll(Resources.getFileLineVector(Resources.getRawFileResource(achievementFilename+".2",false)));
-		Resources.removeResource(achievementFilename+".2");
+		for(int i=2;i<99;i++)
+		{
+			final StringBuffer buf = Resources.getRawFileResource(achievementFilename+"."+i,false);
+			Resources.removeResource(Resources.getRawFileResourceName(achievementFilename, false)+"."+i);
+			if(buf.length()==0)
+				break;
+			V.addAll(Resources.getFileLineVector(buf));
+		}
 		String WKID=null;
 		Agent agent = Agent.PLAYER;
 		for(int v=0;v<V.size();v++)

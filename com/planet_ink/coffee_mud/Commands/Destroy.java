@@ -753,13 +753,14 @@ public class Destroy extends StdCommand
 		}
 
 		final String classID=CMParms.combine(commands,2);
-		final CMFile F=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,CMFile.FLAG_LOGERRORS);
-		final boolean removed=Resources.findRemoveProperty(F, classID);
-		if(removed)
+		if(CMLib.expertises().delDefinition(classID, true))
 		{
-			Resources.removeResource("skills/expertises.txt");
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The power of skill usage just decreased!"));
-			CMLib.expertises().recompileExpertises();
+		}
+		else
+		{
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
 		}
 		return true;
 	}

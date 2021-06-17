@@ -1050,19 +1050,7 @@ public class Create extends StdCommand
 		if((commands.size()<3)||(CMParms.combine(commands,1).indexOf('=')<0))
 		{
 			mob.tell(L("You have failed to specify the proper fields.\n\rFormat: CREATE EXPERTISE [EXPERTISE ID]=[PARAMETERS] as follows: \n\r"));
-			final StringBuffer buf=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,CMFile.FLAG_LOGERRORS).text();
-			final StringBuffer inst=new StringBuffer("");
-			List<String> V=new Vector<String>();
-			if(buf!=null)
-				V=Resources.getFileLineVector(buf);
-			for(int v=0;v<V.size();v++)
-			{
-				if(V.get(v).startsWith("#"))
-					inst.append(V.get(v).substring(1)+"\n\r");
-				else
-				if(V.get(v).length()>0)
-					break;
-			}
+			final String inst=CMLib.expertises().getExpertiseInstructions();
 			if(mob.session()!=null)
 				mob.session().wraplessPrintln(inst.toString());
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
@@ -1091,10 +1079,11 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		final CMFile F=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,CMFile.FLAG_LOGERRORS);
-		F.saveText("\n"+parms,true);
-		Resources.removeResource("skills/expertises.txt");
-		CMLib.expertises().recompileExpertises();
+		if(!CMLib.expertises().addModifyDefinition(parms, true))
+		{
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The power of skill usage just increased!"));
 	}
 

@@ -29,6 +29,7 @@
  37. Magic Powders can now be sniffed to self-enchant
  38. New common skill: Improved Alchemy
  39. New prompt flag: combat-only sections
+ 40. Expertises now support .2 files like achievements, and MODIFY EXPERTISE now works.
   
 # Build 5.9.11.1 Release 02/26/2021
   Bug Fix Release:

@@ -279,6 +279,19 @@ public class Resources
 	}
 
 	/**
+	 * Returns the final vfs filename of a raw resource file, accounting
+	 * for resource/-ifying, and for private resource paths from the ini
+	 * file.  The ::// prefix is stripped, but can be included on request.
+	 * @param filename the initial filename/path
+	 * @param withPrefix whether to restore ::// prefixes if sent
+	 * @return the resource filename
+	 */
+	public static final String getRawFileResourceName(final String filename, final boolean withPrefix)
+	{
+		return r()._getRawFileResourceName(filename, withPrefix);
+	}
+
+	/**
 	 * Returns the stringbuffer content for the given resource filename, from
 	 * the resources for the current calling thread group. This method returns
 	 * the raw file text, with unnormalized line endings.
@@ -850,13 +863,7 @@ public class Resources
 		filename=filename.trim();
 		final boolean vfsFile=filename.startsWith("::");
 		final boolean localFile=filename.startsWith("//");
-		filename=makeFileResourceName(CMFile.vfsifyFilename(filename));
-		if(CMProps.isPrivateToMe(filename))
-		{
-			final String newPrefix = CMProps.getVar(CMProps.Str.PRIVATERESOURCEPATH);
-			if(newPrefix.length()>0)
-				filename = newPrefix+filename.substring(10);
-		}
+		filename=_getRawFileResourceName(filename,false);
 		final Object rsc=_getResource(filename);
 		if(rsc != null)
 			return _toStringBuffer(rsc);
@@ -867,6 +874,29 @@ public class Resources
 		if(!CMProps.getBoolVar(CMProps.Bool.FILERESOURCENOCACHE))
 			_submitResource(filenameId,buf);
 		return buf;
+	}
+
+	/**
+	 * Returns the final vfs filename of a raw resource file, accounting
+	 * for resource/-ifying, and for private resource paths from the ini
+	 * file.  The ::// prefix is stripped, but can be included on request.
+	 * @param filename the initial filename/path
+	 * @param withPrefix whether to restore ::// prefixes if sent
+	 * @return the resource filename
+	 */
+	public final String _getRawFileResourceName(String filename, final boolean withPrefix)
+	{
+		filename=filename.trim();
+		final boolean vfsFile=filename.startsWith("::");
+		final boolean localFile=filename.startsWith("//");
+		filename=makeFileResourceName(CMFile.vfsifyFilename(filename));
+		if(CMProps.isPrivateToMe(filename))
+		{
+			final String newPrefix = CMProps.getVar(CMProps.Str.PRIVATERESOURCEPATH);
+			if(newPrefix.length()>0)
+				filename = newPrefix+filename.substring(10);
+		}
+		return (withPrefix?(vfsFile?"::":localFile?"//":""):"")+filename;
 	}
 
 	/**
@@ -881,13 +911,7 @@ public class Resources
 		filename=filename.trim();
 		final boolean vfsFile=filename.startsWith("::");
 		final boolean localFile=filename.startsWith("//");
-		filename=makeFileResourceName(CMFile.vfsifyFilename(filename));
-		if(CMProps.isPrivateToMe(filename))
-		{
-			final String newPrefix = CMProps.getVar(CMProps.Str.PRIVATERESOURCEPATH);
-			if(newPrefix.length()>0)
-				filename = newPrefix+filename.substring(10);
-		}
+		filename=_getRawFileResourceName(filename,false);
 		final Object rsc=_getResource(filename);
 		if(rsc != null)
 			return _toStringBuffer(rsc);

@@ -287,6 +287,48 @@ public class Modify extends StdCommand
 		}
 	}
 
+	public void expertises(final MOB mob, final List<String> commands)
+	{
+		if((commands.size()<3)||(CMParms.combine(commands,1).indexOf('=')<0))
+		{
+			mob.tell(L("You have failed to specify the proper fields.\n\rFormat: CREATE EXPERTISE [EXPERTISE ID]=[PARAMETERS] as follows: \n\r"));
+			final String inst=CMLib.expertises().getExpertiseInstructions();
+			if(mob.session()!=null)
+				mob.session().wraplessPrintln(inst.toString());
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		final String parms=CMParms.combineQuoted(commands,2);
+		final String skillID=parms.substring(0,parms.indexOf('='));
+		if(skillID.indexOf(' ')>=0)
+		{
+			mob.tell(L("Spaces are not allowed in expertise codes."));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		String WKID=CMStrings.replaceAll(skillID.toUpperCase(),"@X1","");
+		WKID=CMStrings.replaceAll(WKID,"@X2","").trim();
+		if(CMLib.expertises().getStages(WKID)<=0)
+		{
+			mob.tell(L("'@x1' does not exist, try LIST EXPERTISES.",WKID));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		final String error=CMLib.expertises().confirmExpertiseLine(parms,null,false);
+		if(error!=null)
+		{
+			mob.tell(error);
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		if(!CMLib.expertises().addModifyDefinition(parms, true))
+		{
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The power of skill usage just went sideways!"));
+	}
+
 	public void rooms(final MOB mob, final List<String> commands)
 		throws IOException
 	{
@@ -1835,7 +1877,8 @@ public class Modify extends StdCommand
 	protected String listOfThings()
 	{
 		return "ITEM, RACE, CLASS, ABILITY, LANGUAGE, CRAFTSKILL, GATHERSKILL, "
-			+ "ALLQUALIFY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, TITLE, QUEST, MOB, USER, HOLIDAY, ACHIEVEMENT, MANUFACTURER, "
+			+ "ALLQUALIFY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, TITLE, QUEST, "
+			+ "MOB, USER, HOLIDAY, ACHIEVEMENT, MANUFACTURER, EXPERTISE, "
 			+ "GOVERNMENT, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, NEWS, DAY, MONTH, YEAR, TIME, HOUR, or ROOM";
 	}
 
@@ -2129,6 +2172,14 @@ public class Modify extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS))
 				return errorOut(mob);
 			players(mob,commands);
+		}
+		else
+		if(commandType.equals("EXPERTISE"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.EXPERTISES))
+				return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
+			expertises(mob,commands);
 		}
 		else
 		if(commandType.equals("POLL"))
