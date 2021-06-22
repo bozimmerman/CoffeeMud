@@ -402,6 +402,12 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		return "shipwright";
 	}
 
+	protected int[] getMaterialArray()
+	{
+		final int[] pm={RawMaterial.MATERIAL_WOODEN};
+		return pm;
+	}
+
 	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
 	{
@@ -515,6 +521,33 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(!canMend(mob,buildingI,false))
 				return false;
+			/*
+			if((buildingI instanceof SiegableItem)
+			&&(mob.isPlayer()))
+			{
+				final double pctDamage = 100.0 - CMath.div(buildingI.usesRemaining(), 100.0);
+				final int hullPointsDamage = (int)Math.round(CMath.mul(pctDamage,((SiegableItem)buildingI).getMaxHullPoints()));
+				final int[] pm=getMaterialArray();
+				int woodRequired=hullPointsDamage * 10;
+				woodRequired=adjustWoodRequired(woodRequired,mob);
+				final int[][] data=fetchFoundResourceData(mob,
+														woodRequired,"wood",pm,
+														0,null,null,
+														false,
+														autoGenerate,
+														null);
+				if(data==null)
+					return false;
+				woodRequired=data[0][FOUND_AMT];
+				if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+					return false;
+				if(autoGenerate<=0)
+				{
+					CMLib.materials().destroyResources(mob.location(),woodRequired,
+							data[0][FOUND_CODE],data[0][FOUND_SUB],data[1][FOUND_CODE],data[1][FOUND_SUB]);
+				}
+			}
+			*/
 			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
@@ -707,7 +740,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 
 			int woodRequired=125 ;
 			woodRequired=adjustWoodRequired(woodRequired,mob);
-			final int[] pm={RawMaterial.MATERIAL_WOODEN};
+			final int[] pm=getMaterialArray();
 			final int[][] data=fetchFoundResourceData(mob,
 													woodRequired,"wood",pm,
 													0,null,null,

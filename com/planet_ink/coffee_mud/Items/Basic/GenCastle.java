@@ -52,7 +52,7 @@ public class GenCastle extends GenSiegableBoardable
 		super();
 		setName("the castle [NEWNAME]");
 		setDisplayText("the castle [NEWNAME] is here.");
-		setMaterial(RawMaterial.RESOURCE_STEEL);
+		setMaterial(RawMaterial.RESOURCE_STONE);
 		this.doorName="portcullis";
 	}
 
@@ -64,6 +64,12 @@ public class GenCastle extends GenSiegableBoardable
 		return R;
 	}
 
+
+	@Override
+	public int getMaxHullPoints()
+	{
+		return 50 * getArea().numberOfProperIDedRooms();
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
