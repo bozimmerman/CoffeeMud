@@ -32,6 +32,7 @@
  40. Expertises now support .2 files like achievements, and MODIFY EXPERTISE now works.
  41. Prop_RoomView has new parms, LONGLOOK, and ATTACK to give ship-like abilities
  42. New misc property: AmbianceAdder, for adding random ambiances to things.
+ 43. New Items: GenCastle, GenClanCastle -- stationary boardables.
  # Build 5.9.11.1 Release 02/26/2021
   Bug Fix Release:
   1. Fixed experience gains when EFFECTCXL is 0.
