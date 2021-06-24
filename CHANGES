@@ -30,7 +30,7 @@
  38. New common skill: Improved Alchemy
  39. New prompt flag: combat-only sections
  40. Expertises now support .2 files like achievements, and MODIFY EXPERTISE now works.
- 41. Prop_RoomView has new parm (LONGLOOK) to give ship-like abilities
+ 41. Prop_RoomView has new parms, LONGLOOK, and ATTACK to give ship-like abilities
 # Build 5.9.11.1 Release 02/26/2021
   Bug Fix Release:
   1. Fixed experience gains when EFFECTCXL is 0.
