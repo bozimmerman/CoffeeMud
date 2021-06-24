@@ -198,7 +198,7 @@ public class Chant_Capsize extends Chant
 	{
 		if(mob!=null)
 		{
-			if(!(target instanceof BoardableItem))
+			if(!(target instanceof NavigableItem))
 				return Ability.QUALITY_INDIFFERENT;
 		}
 		return super.castingQuality(mob,target);

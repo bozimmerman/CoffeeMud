@@ -1474,7 +1474,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 
 		final Set<Flag> flags = makeFlags(recipe);
 
-		if((mob.location()!=null)
+		if((mob.location()!=null) // this is correct!
 		&&((mob.location() instanceof BoardableItem) || (mob.location().getArea() instanceof BoardableItem)))
 		{
 			commonTell(mob,L("You may not do @x1 projects here.",name()));

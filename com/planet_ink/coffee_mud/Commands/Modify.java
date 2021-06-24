@@ -1118,7 +1118,7 @@ public class Modify extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		final boolean useShipDirs=(mob.location() instanceof BoardableItem)||(mob.location().getArea() instanceof BoardableItem);
+		final boolean useShipDirs=CMLib.flags().isInAShip(mob);
 		final String inDirName=useShipDirs?CMLib.directions().getShipInDirectionName(direction):CMLib.directions().getInDirectionName(direction);
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around to the @x1.",inDirName));
 		final Exit copyExit=(Exit)thisExit.copyOf();

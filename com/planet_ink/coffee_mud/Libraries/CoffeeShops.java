@@ -214,8 +214,11 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					if(E instanceof MOB)
 						str.append(L("Creature"));
 					else
-					if(E instanceof BoardableItem)
+					if(E instanceof NavigableItem)
 						str.append(L("Vessel"));
+					else
+					if(E instanceof BoardableItem)
+						str.append(L("Castle"));
 					else
 					if(E instanceof ClanItem)
 						str.append(L(((ClanItem)E).getClanItemType().getDisplayName()));
@@ -1388,7 +1391,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		{
 			if((R.getExitInDir(d)!=null)&&(R.getExitInDir(d).keyName().equals(keyNum)))
 			{
-				final String dirName=((R instanceof BoardableItem)||(R.getArea() instanceof BoardableItem))?
+				final String dirName=CMLib.flags().isInAShip(R)?
 						CMLib.directions().getShipDirectionName(d):CMLib.directions().getDirectionName(d);
 				if(addThis.length()>0)
 					return addThis+" and to the "+dirName.toLowerCase();

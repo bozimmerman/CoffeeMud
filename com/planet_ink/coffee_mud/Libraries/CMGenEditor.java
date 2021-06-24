@@ -9752,7 +9752,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof Coins)
 				genCoinStuff(mob,(Coins)me,++showNumber,showFlag);
 			else
-			if((me instanceof BoardableItem)&&(!(me instanceof SpaceObject)))
+			if((me instanceof NavigableItem)&&(!(me instanceof SpaceObject)))
 				genAbility(mob,me,++showNumber,showFlag,L("Moves per Tick"));
 			else
 				genAbility(mob,me,++showNumber,showFlag);
@@ -10186,7 +10186,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				genDoorName(mob,(Exit)me,++showNumber,showFlag);
 				genClosedText(mob,(Exit)me,++showNumber,showFlag);
 			}
-			if((me instanceof BoardableItem)&&(!(me instanceof SpaceObject)))
+			if((me instanceof NavigableItem)&&(!(me instanceof SpaceObject)))
 				genAbility(mob,me,++showNumber,showFlag,L("Moves per Tick"));
 			//if(me instanceof PrivateProperty)
 			//	me.setStat("OWNER",prompt(mob,((PrivateProperty)me).getOwnerName(),++showNumber,showFlag,CMStrings.capitalizeAndLower("Property Owner")));

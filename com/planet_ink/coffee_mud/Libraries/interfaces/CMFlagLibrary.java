@@ -732,15 +732,6 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isClimbing(Physical P);
 
 	/**
-	 * Returns whether the given thing is a ship,
-	 * or a mob representing a ship, or similar.
-	 *
-	 * @param P the thing to check
-	 * @return true if its a ship
-	 */
-	public boolean isAShip(final Physical P);
-
-	/**
 	 * Returns whether the given room, area, exit, whatever is
 	 * crawlable (not necc. crawling).
 	 * @param P the room, area, exit, whatever to check
@@ -1056,6 +1047,31 @@ public interface CMFlagLibrary extends CMLibrary
 	 * @return true if its made of metal, false otherwise
 	 */
 	public boolean isMetal(Environmental E);
+
+	/**
+	 * Returns whether the given mob is in a sailing
+	 * ship, or space ship, or similar.
+	 * @param M the mob to check
+	 * @return true if they are in a ship
+	 */
+	public boolean isInAShip(final MOB M);
+
+	/**
+	 * Returns whether the given room is in a sailing
+	 * ship, or space ship, or similar.
+	 * @param R the room to check
+	 * @return true if it is in a ship
+	 */
+	public boolean isInAShip(final Room R);
+
+	/**
+	 * Returns whether the given thing is a ship,
+	 * or a mob representing a ship, or similar.
+	 *
+	 * @param P the thing to check
+	 * @return true if its a ship
+	 */
+	public boolean isAShip(final Physical P);
 
 	/**
 	 * Returns whether the given room, item, whatever has a

@@ -151,7 +151,7 @@ public class Chant_FavorableWinds extends Chant
 	{
 		if(mob!=null)
 		{
-			if(!(target instanceof BoardableItem))
+			if(!(target instanceof NavigableItem))
 				return Ability.QUALITY_INDIFFERENT;
 		}
 		return super.castingQuality(mob,target);
@@ -187,7 +187,7 @@ public class Chant_FavorableWinds extends Chant
 				return false;
 		}
 
-		if((target == null)||(R==null)||(!(target instanceof BoardableItem)))
+		if((target == null)||(R==null)||(!(target instanceof NavigableItem)))
 		{
 			mob.tell(L("This magic only works when set upon a ship!"));
 			return false;

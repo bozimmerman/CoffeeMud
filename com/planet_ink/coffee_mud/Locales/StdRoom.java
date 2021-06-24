@@ -2411,7 +2411,7 @@ public class StdRoom implements Room
 			{
 				if(exits[e]==E)
 				{
-					if((this instanceof BoardableItem)||(this.getArea() instanceof BoardableItem))
+					if(CMLib.flags().isInAShip(this))
 						return CMLib.directions().getShipDirectionName(e);
 					else
 						return CMLib.directions().getDirectionName(e);
@@ -2734,7 +2734,7 @@ public class StdRoom implements Room
 			found=mob.fetchItem(goodLocation,filter,thingName);
 		if(found==null)
 		{
-			final boolean inShip=(this instanceof BoardableItem)||(this.getArea() instanceof BoardableItem);
+			final boolean inShip=CMLib.flags().isInAShip(this);
 			for(int d=0;d<exits.length;d++)
 			{
 				if((exits[d]!=null)

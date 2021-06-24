@@ -346,7 +346,7 @@ public class Say extends StdCommand
 			if(langSwap[0]!=null)
 				langSwap[0].setBeingSpoken(langSwap[0].ID(), true);
 		}
-		final boolean useShipDirs=(R instanceof BoardableItem)||(R.getArea() instanceof BoardableItem);
+		final boolean useShipDirs=CMLib.flags().isInAShip(R);
 		if(R.okMessage(mob,msg))
 		{
 			R.send(mob,msg);

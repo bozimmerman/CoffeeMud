@@ -259,7 +259,7 @@ public class Copy extends StdCommand
 				}
 				if(room.getRoomInDir(dirCode)!=null)
 				{
-					final boolean useShipDirs=(room instanceof BoardableItem)||(room.getArea() instanceof BoardableItem);
+					final boolean useShipDirs=CMLib.flags().isInAShip(room);
 					mob.tell(L("A room already exists @x1!",(useShipDirs?CMLib.directions().getShipInDirectionName(dirCode):CMLib.directions().getInDirectionName(dirCode))));
 					return false;
 				}
@@ -295,7 +295,7 @@ public class Copy extends StdCommand
 					if(newRoom.numItems()>0)
 						CMLib.database().DBUpdateItems(newRoom);
 					newRoom.getArea().fillInAreaRoom(newRoom);
-					final boolean useShipDirs=(room instanceof BoardableItem)||(room.getArea() instanceof BoardableItem);
+					final boolean useShipDirs=CMLib.flags().isInAShip(room);
 					final String inDirName=useShipDirs?CMLib.directions().getShipInDirectionName(dirCode):CMLib.directions().getInDirectionName(dirCode);
 					if(i==0)
 					{
@@ -337,7 +337,7 @@ public class Copy extends StdCommand
 						editRoom.setRawExit(dirCode, (Exit)E);
 						CMLib.database().DBUpdateExits(editRoom);
 					}
-					final boolean useShipDirs=(editRoom instanceof BoardableItem)||(editRoom.getArea() instanceof BoardableItem);
+					final boolean useShipDirs=CMLib.flags().isInAShip(editRoom);
 					final String inDirName=useShipDirs?CMLib.directions().getShipInDirectionName(dirCode):CMLib.directions().getInDirectionName(dirCode);
 					room.showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 falls @x2.",E.name(),inDirName));
 				}

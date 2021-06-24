@@ -70,7 +70,7 @@ public class Pull extends Go
 				}
 				else
 					E=nextR;
-				dir=" "+(((mob.location() instanceof BoardableItem)||(mob.location().getArea() instanceof BoardableItem))?
+				dir=" "+(CMLib.flags().isInAShip(mob)?
 						CMLib.directions().getShipDirectionName(dirCode):CMLib.directions().getDirectionName(dirCode));
 				commands.remove(commands.size()-1);
 			}

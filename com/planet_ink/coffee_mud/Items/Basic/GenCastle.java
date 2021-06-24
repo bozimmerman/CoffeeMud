@@ -87,6 +87,7 @@ public class GenCastle extends GenSiegableBoardable
 		&&(msg.source().location()==owner())
 		&&(!CMLib.flags().isFlying(msg.source()))
 		&&(!CMLib.flags().isFalling((Physical)msg.target()))
+		&&(this.getOwnerName().length()>0)
 		&&(!CMLib.law().doesHavePriviledgesHere(msg.source(), super.getDestinationRoom(msg.source().location()))))
 		{
 			final Rideable ride=msg.source().riding();
@@ -165,34 +166,51 @@ public class GenCastle extends GenSiegableBoardable
 		final Room baseR=CMLib.map().roomLocation(this);
 		if(baseR!=null)
 		{
-			final String crumbleString = L("<T-NAME> start(s) crumbling!");
-			baseR.show(victorM, this, CMMsg.MSG_OK_ACTION, crumbleString);
-			this.announceToNonOuterViewers(victorM, crumbleString);
-			//TODO: make it crumble
-		}
-		if((victorM.riding() instanceof BoardableItem)
-		&&((victorM.Name().equals(victorM.riding().Name()))))
-		{
-			final Area A=((BoardableItem)victorM.riding()).getArea();
+			final String sinkString = L("<T-NAME> start(s) collapsing!");
+			baseR.show(victorM, this, CMMsg.MSG_OK_ACTION, sinkString);
+			this.announceToNonOuterViewers(victorM, sinkString);
+			final Area A=this.getArea();
 			if(A!=null)
 			{
-				for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=A.getFilledCompleteMap();r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();
-					if((R!=null)
-					&&(R.numInhabitants()>0))
+					if(R!=null)
 					{
 						for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 						{
 							final MOB M=m.nextElement();
-							final CMMsg msg2=CMClass.getMsg(M, this, CMMsg.MSG_CAUSESINK, null);
-							this.sendAreaMessage(msg2, false);
-							R.showSource(M, this, CMMsg.MSG_CAUSESINK, null);
-							CMLib.achievements().possiblyBumpAchievement(M, Event.SHIPSSUNK, 1, this);
+							if(M!=null)
+							{
+								baseR.bringMobHere(M, false);
+								final double pctDmg = CMath.div(CMLib.dice().roll(1, 150, 0), 100.0);
+								final int dmg = (int)Math.round(CMath.mul(pctDmg, M.baseState().getHitPoints()));
+								CMLib.combat().postDamage(victorM, M,this,dmg,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK,Weapon.TYPE_SLASHING,null);
+							}
+						}
+						for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
+						{
+							final Item I=i.nextElement();
+							if((I!=null)
+							&&(CMLib.flags().isGettable(I))
+							&&(I.container()==null))
+							{
+								baseR.moveItemTo(I, Expire.Monster_EQ, Move.Followers);
+								if(I.subjectToWearAndTear())
+								{
+									final int dmg = CMLib.dice().roll(1, 300, 0);
+									CMLib.combat().postItemDamage(victorM, I, this, dmg, CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK, null);
+								}
+							}
 						}
 					}
 				}
 			}
+			phyStats.setDisposition(phyStats.disposition()&~PhyStats.IS_UNSAVABLE);
+			final Item newI = CMLib.utensils().ruinItem(this);
+			if(newI != this)
+				baseR.addItem(newI, Expire.Monster_EQ);
+			this.destroy();
 		}
 		if(!CMLib.leveler().postExperienceToAllAboard(victorM.riding(), 500, this))
 			CMLib.leveler().postExperience(victorM, null, null, 500, false);

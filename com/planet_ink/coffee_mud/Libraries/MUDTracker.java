@@ -1213,7 +1213,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				((Room)enterMsg.target()).show(M,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wanders in."));
 			else
 			{
-				final String inDir=((toHere instanceof BoardableItem)||(toHere.getArea() instanceof BoardableItem))?
+				final String inDir=CMLib.flags().isInAShip(toHere)?
 						CMLib.directions().getShipDirectionName(dir):CMLib.directions().getDirectionName(dir);
 						((Room)enterMsg.target()).show(M,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wanders in from @x1.",inDir));
 			}

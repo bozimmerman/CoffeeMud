@@ -143,7 +143,7 @@ public class EmissionScanProgram extends GenSoftware
 			return 0;
 		roomsDone.add(R);
 		int numFound=0;
-		final boolean useShipDirs=(R instanceof BoardableItem)||(R.getArea() instanceof BoardableItem);
+		final boolean useShipDirs=CMLib.flags().isInAShip(R);
 		for(int m=0;m<R.numInhabitants();m++)
 		{
 			final MOB M=R.fetchInhabitant(m);

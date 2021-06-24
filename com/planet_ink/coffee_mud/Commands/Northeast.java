@@ -70,7 +70,7 @@ public class Northeast extends Go
 		if(Directions.NUM_DIRECTIONS()<=6)
 			return false;
 		return (mob==null) || (mob.isMonster()) || (mob.location()==null)
-				|| ((!(mob.location() instanceof BoardableItem)) && (!(mob.location().getArea() instanceof BoardableItem)));
+				|| !CMLib.flags().isInAShip(mob);
 	}
 }
 

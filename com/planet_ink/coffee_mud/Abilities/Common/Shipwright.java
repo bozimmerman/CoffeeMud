@@ -292,6 +292,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 					{
 						if(activity == CraftingActivity.MENDING)
 						{
+							//TODO: not right for caravan, etc..
 							if((buildingI instanceof BoardableItem)
 							&&(buildingI.usesRemaining()<95))
 								buildingI.setUsesRemaining(buildingI.usesRemaining()+5);

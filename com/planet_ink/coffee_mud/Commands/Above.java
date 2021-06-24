@@ -68,6 +68,7 @@ public class Above extends Go
 	public boolean securityCheck(final MOB mob)
 	{
 		return (mob==null) || (mob.isMonster()) || (mob.location()==null)
-				|| (mob.location() instanceof BoardableItem) || (mob.location().getArea() instanceof BoardableItem);
+				|| CMLib.flags().isInAShip(mob);
+
 	}
 }

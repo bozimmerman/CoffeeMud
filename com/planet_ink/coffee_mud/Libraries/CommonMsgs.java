@@ -1932,7 +1932,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		final Vector<Integer> exitDirs=new Vector<Integer>();
 		Room R;
 		Exit E;
-		final boolean useShipNames=((room instanceof BoardableItem)||(room.getArea() instanceof BoardableItem));
+		final boolean useShipNames=CMLib.flags().isInAShip(room);
 		for(final int dir : Directions.CODES())
 		{
 			E = room.getExitInDir(dir);
@@ -1998,7 +1998,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		final Exit exit = room.getExitInDir(dir);
 		if(exit == null)
 			return "";
-		final boolean useShipDirs=(room instanceof BoardableItem)||(room.getArea() instanceof BoardableItem);
+		final boolean useShipDirs=CMLib.flags().isInAShip(room);
 		final String inDirName=useShipDirs?CMLib.directions().getShipInDirectionName(dir):CMLib.directions().getInDirectionName(dir);
 		if(style)
 			return inDirName   + " is " +exit.viewableText(mob, room.getRoomInDir(dir));
@@ -2621,7 +2621,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			return;
 		}
 
-		final boolean useShipNames=((room instanceof BoardableItem)||(room.getArea() instanceof BoardableItem));
+		final boolean useShipNames=CMLib.flags().isInAShip(room);
 		final StringBuilder buf=new StringBuilder("^<RExits^>^DObvious exits:^.^N\n\r");
 		String Dir=null;
 		for(final int d : Directions.DISPLAY_CODES())
@@ -2684,7 +2684,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(!CMLib.flags().canSee(mob))
 			return;
 
-		final boolean useShipNames=((room instanceof BoardableItem)||(room.getArea() instanceof BoardableItem));
+		final boolean useShipNames=CMLib.flags().isInAShip(room);
 		final StringBuilder buf=new StringBuilder(L("^<RExits^>^D[Exits: "));
 		for(final int d : Directions.DISPLAY_CODES())
 		{

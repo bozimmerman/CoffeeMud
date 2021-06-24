@@ -217,7 +217,7 @@ public class Prop_Smell extends Property
 							{
 								emoter.setLocation(R);
 								final int opDir=R.getReverseDir(d);
-								final String inDir=((R instanceof BoardableItem)||(R.getArea() instanceof BoardableItem))?
+								final String inDir=CMLib.flags().isInAShip(R)?
 										CMLib.directions().getShipInDirectionName(opDir):
 											CMLib.directions().getInDirectionName(opDir);
 								emoter.setName(L("something @x1",inDir));

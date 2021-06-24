@@ -185,9 +185,9 @@ public class Baiting extends GatheringSkill
 			if(CMLib.flags().isWateryRoom(R))
 				fishRoom=R;
 			else
-			if((R.getArea() instanceof BoardableItem)
+			if((R.getArea() instanceof NavigableItem)
 			&&((R.domainType()&Room.INDOORS)==0))
-				fishRoom=CMLib.map().roomLocation(((BoardableItem)R.getArea()).getBoardableItem());
+				fishRoom=CMLib.map().roomLocation(((NavigableItem)R.getArea()).getBoardableItem());
 
 			if((fishRoom==null)||(!CMLib.flags().isWateryRoom(fishRoom)))
 			{

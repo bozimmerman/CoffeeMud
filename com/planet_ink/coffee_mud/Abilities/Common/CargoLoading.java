@@ -224,7 +224,7 @@ public class CargoLoading extends CommonSkill
 			shipName=possShipI.Name();
 			if(!(possShipI instanceof BoardableItem))
 			{
-				commonTell(mob, L("@x1 is not a cargo ship.",possShipI.name()));
+				commonTell(mob, L("@x1 is not cargo loadable.",possShipI.name()));
 				return false;
 			}
 			if((I instanceof BoardableItem)
@@ -270,7 +270,7 @@ public class CargoLoading extends CommonSkill
 			shipName=possShipI.Name();
 			if(!(possShipI instanceof BoardableItem))
 			{
-				commonTell(mob, L("@x1 is not a cargo ship.",possShipI.name()));
+				commonTell(mob, L("@x1 is not cargo loadable.",possShipI.name()));
 				return false;
 			}
 			final PrivateProperty propRecord = CMLib.law().getPropertyRecord(possShipI);

@@ -384,7 +384,7 @@ public class Destroy extends StdCommand
 				CMLib.database().DBUpdateExits(GL);
 			}
 			mob.location().getArea().fillInAreaRoom(mob.location());
-			final boolean useShipDirs=(mob.location() instanceof BoardableItem)||(mob.location().getArea() instanceof BoardableItem);
+			final boolean useShipDirs=CMLib.flags().isInAShip(mob);
 			final String inDirName=useShipDirs?CMLib.directions().getShipDirectionName(direction):CMLib.directions().getDirectionName(direction);
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A wall of inhibition falls @x1.",inDirName));
 			final String dirName=useShipDirs?CMLib.directions().getShipDirectionName(direction):CMLib.directions().getDirectionName(direction);
@@ -426,7 +426,7 @@ public class Destroy extends StdCommand
 		mob.location().getArea().fillInAreaRoom(mob.location());
 		if(mob.location() instanceof GridLocale)
 			((GridLocale)mob.location()).buildGrid();
-		final boolean useShipDirs=(mob.location() instanceof BoardableItem)||(mob.location().getArea() instanceof BoardableItem);
+		final boolean useShipDirs=CMLib.flags().isInAShip(mob);
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A wall of inhibition falls @x1.",
 				(useShipDirs?CMLib.directions().getShipInDirectionName(direction):CMLib.directions().getInDirectionName(direction))));
 		Log.sysOut("Exits",mob.location().roomID()+" exits destroyed by "+mob.Name()+".");

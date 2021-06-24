@@ -1548,6 +1548,32 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
+	public boolean isInAShip(final MOB M)
+	{
+		return (M==null)?false:isInAShip(M.location());
+	}
+
+	@Override
+	public boolean isInAShip(final Room R)
+	{
+		final Area A=(R==null)?null:R.getArea();
+		if(A instanceof BoardableItem)
+		{
+			final Item I=((BoardableItem)A).getBoardableItem();
+			if(I instanceof SpaceShip)
+				return true;
+			if(I instanceof NavigableItem)
+			{
+				final Rideable.Basis basis = ((NavigableItem)I).navBasis();
+				if((basis==Rideable.Basis.WATER_BASED)
+				||(basis==Rideable.Basis.AIR_FLYING))
+					return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
 	public boolean isSeenTheSameWay(final MOB seer, final Physical seen1, final Physical seen2)
 	{
 		if(canBeSeenBy(seen1,seer)!=canBeSeenBy(seen2,seer))

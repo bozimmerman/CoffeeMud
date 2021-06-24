@@ -230,7 +230,7 @@ public class Every extends StdCommand
 					break;
 				case EXIT:
 				{
-					final boolean inAShip =(R instanceof BoardableItem)||(R.getArea() instanceof BoardableItem);
+					final boolean inAShip =CMLib.flags().isInAShip(R);
 					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 					{
 						final Exit E=R.getExitInDir(d);

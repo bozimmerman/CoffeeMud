@@ -104,7 +104,7 @@ public class Unlock extends StdCommand
 					&&(!opE.isLocked())
 					&&(!((Exit)unlockThis).isLocked()))
 					{
-						final boolean useShipDirs=(opR instanceof BoardableItem)||(opR.getArea() instanceof BoardableItem);
+						final boolean useShipDirs=CMLib.flags().isInAShip(opR);
 						final String inDirName=useShipDirs?CMLib.directions().getShipInDirectionName(opCode):CMLib.directions().getInDirectionName(opCode);
 						opR.showHappens(CMMsg.MSG_OK_ACTION,L("@x1 @x2 is unlocked from the other side.",opE.name(),inDirName));
 					}
