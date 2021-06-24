@@ -1448,7 +1448,7 @@ Room</td>
             <td>Bit mask of
 relevant disposition state</td>
           </tr>
-        </tbody>
+        <tr><td>ambiance</td><td>All</td><td>See below</td></tr></tbody>
       </table>
       <p>Although most of these
 fields are better described in the
@@ -1458,7 +1458,18 @@ value of each bit is defined by equates in the
 Common.interfaces.PhyStats interface. The equates which refer to the
 bits for sensesMask all begin with "CAN_" for MOBs or "SENSE_" for
 non-MOBs, while the equates which
-refer to the bits for disposition all begin with "IS_".</p>
+refer to the bits for disposition all begin with "IS_".</p><p>Related
+to disposition and sensesMask are ambiances. By default, these are
+arbitary strings&nbsp;designed for adding random text to the&nbsp;room
+display text of items and mobs, such as "glowing" or other&nbsp;<br />decorations.&nbsp;
+Ambiances also have a 'flagging' capability, when&nbsp;specific string
+values are used.&nbsp; These include: -ALL and -MOST to hides all or
+most natural flag displays that come from disposition, or -GOOD, -EVIL,
+-INVISIBLE, -SNEAKING, -HIDDEN, -MAGIC, -METAL, -GLOWING, -BUSY, -LAW,
+-CHAOS, -BOUND, -FLYING, -FALLING to&nbsp; hide these flag displays.
+&nbsp;Other special values are: (?)X:Y to show X if target heard, Y
+otherwise, @X to designate: X as a special flag, not to be shown by
+default, and #X to show: X if @X is also an ambiance.<br /></p>
       <p>Now, as mentioned
 previously, all Physical objects have
 two methods for accessing their PhyStats. One is <code>core.interfaces.Physical.basePhyStats()</code>

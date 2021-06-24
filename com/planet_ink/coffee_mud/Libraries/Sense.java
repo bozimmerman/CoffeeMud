@@ -2366,6 +2366,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 							say.append(" "+ambiances[i]);
 						break;
 					case '-':
+						break;
 					case '@':
 						break;
 					case '#':
@@ -2374,9 +2375,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 						if((pStats.isAmbiance("@"+ambiCode))
 						&&(!ambiCode.equals("LAW"))
 						&&(!ambiCode.equals("CHAOS")))
-						{
 							say.append(" ("+ambiCode+")");
-						}
 						break;
 					}
 					default:

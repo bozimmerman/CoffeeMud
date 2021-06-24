@@ -235,32 +235,6 @@ public class TemporaryAffects extends StdAbility
 		super.unInvoke();
 	}
 
-	protected class AmbianceAdder implements StatsAffecting
-	{
-		private final String ambiance;
-
-		public AmbianceAdder(final String ambiance)
-		{
-			this.ambiance=ambiance;
-		}
-
-		@Override
-		public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
-		{
-			affectableStats.addAmbiance(ambiance);
-		}
-
-		@Override
-		public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
-		{
-		}
-
-		@Override
-		public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
-		{
-		}
-	}
-
 	@Override
 	public void setMiscText(String txt)
 	{
@@ -346,7 +320,8 @@ public class TemporaryAffects extends StdAbility
 			{
 				if(parms.length()>0)
 				{
-					final AmbianceAdder A=new AmbianceAdder(parms);
+					final AmbianceAdder A=new AmbianceAdder();
+					A.setMiscText(parms);
 					affects.add(new Pair<Object,int[]>(A,new int[] { CMath.s_int(numTicksStr)}));
 					finishInit(A);
 				}
