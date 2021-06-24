@@ -423,7 +423,18 @@ public class Conquerable extends Arrest
 		int totalNeeded=(int)Math.round(CMath.mul(0.05,totalControlPoints));
 		if(totalNeeded<=0)
 			totalNeeded=1;
-		final int chance=(int)Math.round(10.0-(CMath.mul(10.0,CMath.div(itemControlPoints,totalNeeded))));
+		int chance=(int)Math.round(10.0-(CMath.mul(10.0,CMath.div(itemControlPoints,totalNeeded))));
+		synchronized(clanItems)
+		{
+			for(int i=clanItems.size()-1;i>=0;i--)
+			{
+				final ClanItem I=clanItems.elementAt(i);
+				if((I instanceof BoardableItem)
+				&&(!I.amDestroyed())
+				&&(((BoardableItem)I).getArea()!=null))
+					chance -= ((BoardableItem)I).getArea().numberOfProperIDedRooms();
+			}
+		}
 		if(chance<=0)
 			return 0;
 		return chance;
