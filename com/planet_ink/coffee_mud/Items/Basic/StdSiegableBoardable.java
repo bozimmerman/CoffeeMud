@@ -170,6 +170,112 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 		return CMLib.combat().mayIAttackThisVessel(mob, defender);
 	}
 
+	protected void fixArea(final Area area)
+	{
+		final Ability oldA=area.fetchEffect("SiegableListener");
+		if(oldA!=null)
+			area.delEffect(oldA);
+		final ExtendableAbility extAble = (ExtendableAbility)CMClass.getAbility("ExtAbility");
+		extAble.setAbilityID("SiegableListener");
+		extAble.setName("Siegable Listener");
+		extAble.setSavable(false);
+		final StdSiegableBoardable thisMe = this;
+		extAble.setMsgListener(new MsgListener()
+		{
+			final StdSiegableBoardable me=thisMe;
+			final Area meA=area;
+
+			protected void lookOverBow(final Room R, final CMMsg msg)
+			{
+				msg.addTrailerRunnable(new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						if(CMLib.flags().canBeSeenBy(R, msg.source()) && (msg.source().session()!=null))
+							msg.source().session().print(L(me.head_offTheDeck));
+						final CMMsg msg2=CMClass.getMsg(msg.source(), R, msg.tool(), msg.sourceCode(), null, msg.targetCode(), null, msg.othersCode(), null);
+						if((msg.source().isAttributeSet(MOB.Attrib.AUTOEXITS))
+						&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=CMProps.Int.EXVIEW_PARAGRAPH))
+							msg2.addTrailerMsg(CMClass.getMsg(msg.source(),R,null,CMMsg.MSG_LOOK_EXITS,null));
+						if(R.okMessage(msg.source(), msg))
+							R.send(msg.source(),msg2);
+					}
+				});
+			}
+
+			@Override
+			public void executeMsg(final Environmental myHost, final CMMsg msg)
+			{
+				switch(msg.targetMinor())
+				{
+				case CMMsg.TYP_LOOK:
+				case CMMsg.TYP_EXAMINE:
+					if((msg.target() instanceof Exit)&&(((Exit)msg.target()).isOpen()))
+					{
+						final Room hereR=msg.source().location();
+						if((hereR!=null)
+						&&(me.canViewOuterRoom(hereR))
+						&&(hereR.getArea()==meA))
+						{
+							final Room lookingR=hereR.getRoomInDir(CMLib.map().getExitDir(hereR, (Exit)msg.target()));
+							final Room R=CMLib.map().roomLocation(me);
+							if(lookingR==R)
+								lookOverBow(R,msg);
+						}
+					}
+					else
+					if((msg.target() instanceof Room)
+					&&(me.canViewOuterRoom((Room)msg.target()))
+					&&(((Room)msg.target()).getArea()==meA))
+					{
+						if(msg.targetMinor()==CMMsg.TYP_EXAMINE)
+						{
+							final Room R=CMLib.map().roomLocation(me);
+							if((R!=null)
+							&&(R.getArea()!=meA))
+								lookOverBow(R,msg);
+						}
+					}
+					break;
+				}
+			}
+
+			@Override
+			public boolean okMessage(final Environmental myHost, final CMMsg msg)
+			{
+				return true;
+			}
+
+		});
+		area.addNonUninvokableEffect(extAble);
+		extAble.setSavable(false);
+	}
+
+	@Override
+	public Area getArea()
+	{
+		if((!destroyed)
+		&&(area==null))
+		{
+			final Area area=super.getArea();
+			if(area != null)
+				area.setTheme(Area.THEME_FANTASY);
+			fixArea(area);
+			return area;
+		}
+		return super.getArea();
+	}
+
+
+	@Override
+	public void setArea(final String xml)
+	{
+		super.setArea(xml);
+		if(this.area!=null)
+			fixArea(this.area);
+	}
+
 	@Override
 	public void makePeace(final boolean includePlayerFollowers)
 	{

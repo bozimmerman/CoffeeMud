@@ -53,11 +53,30 @@ public class Prop_RoomView extends Property
 	}
 
 	protected Room newRoom=null;
+	protected boolean longlook = false;
+	protected String viewedRoomID = "";
+
+	@Override
+	public void setMiscText(final String text)
+	{
+		final int x=text.indexOf(';');
+		longlook=false;
+		if(x>=0)
+		{
+			final String parms=text.substring(0,x);
+			for(final String str : CMParms.parse(parms))
+				if(str.equalsIgnoreCase("LONGLOOK"))
+					longlook=true;
+			viewedRoomID=text.substring(x+1).trim();
+		}
+		else
+			viewedRoomID=text.trim();
+	}
 
 	@Override
 	public String accountForYourself()
 	{
-		return "Different View of "+text();
+		return "Different View of "+viewedRoomID;
 	}
 
 	@Override
@@ -65,25 +84,50 @@ public class Prop_RoomView extends Property
 	{
 		if((newRoom==null)
 		||(newRoom.amDestroyed())
-		||(!CMLib.map().getExtendedRoomID(newRoom).equalsIgnoreCase(text().trim())))
-			newRoom=CMLib.map().getRoom(text());
+		||(!CMLib.map().getExtendedRoomID(newRoom).equalsIgnoreCase(viewedRoomID)))
+			newRoom=CMLib.map().getRoom(viewedRoomID);
 		if(newRoom==null)
 			return super.okMessage(myHost,msg);
 
 		if((affected!=null)
 		&&((affected instanceof Room)||(affected instanceof Exit)||(affected instanceof Item))
 		&&(msg.amITarget(affected))
-		&&(newRoom.fetchEffect(ID())==null)
-		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
+		&&(newRoom.fetchEffect(ID())==null))
 		{
-			final CMMsg msg2=CMClass.getMsg(msg.source(),newRoom,msg.tool(),
-						  msg.sourceCode(),msg.sourceMessage(),
-						  msg.targetCode(),msg.targetMessage(),
-						  msg.othersCode(),msg.othersMessage());
-			if(newRoom.okMessage(msg.source(),msg2))
+			if(longlook && (msg.targetMinor()==CMMsg.TYP_EXAMINE))
 			{
-				newRoom.executeMsg(msg.source(),msg2);
-				return false;
+				msg.addTrailerRunnable(new Runnable()
+				{
+					final Room R=newRoom;
+					final CMMsg mmsg=msg;
+					@Override
+					public void run()
+					{
+						if(CMLib.flags().canBeSeenBy(R, mmsg.source()) && (mmsg.source().session()!=null))
+							mmsg.source().session().print(L("In @x1 you can see:",R.displayText(mmsg.source())));
+						final CMMsg msg2=CMClass.getMsg(mmsg.source(), R, mmsg.tool(), mmsg.sourceCode(), null, mmsg.targetCode(), null, mmsg.othersCode(), null);
+						if((mmsg.source().isAttributeSet(MOB.Attrib.AUTOEXITS))
+						&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=CMProps.Int.EXVIEW_PARAGRAPH))
+							msg2.addTrailerMsg(CMClass.getMsg(mmsg.source(),R,null,CMMsg.MSG_LOOK_EXITS,null));
+						if(R.okMessage(mmsg.source(), mmsg))
+							R.send(mmsg.source(),msg2);
+					}
+				});
+			}
+			else
+			{
+				if((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
+				{
+					final CMMsg msg2=CMClass.getMsg(msg.source(),newRoom,msg.tool(),
+								  msg.sourceCode(),msg.sourceMessage(),
+								  msg.targetCode(),msg.targetMessage(),
+								  msg.othersCode(),msg.othersMessage());
+					if(newRoom.okMessage(msg.source(),msg2))
+					{
+						newRoom.executeMsg(msg.source(),msg2);
+						return false;
+					}
+				}
 			}
 		}
 		return super.okMessage(myHost,msg);

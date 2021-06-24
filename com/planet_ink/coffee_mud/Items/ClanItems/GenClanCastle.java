@@ -53,6 +53,10 @@ public class GenClanCastle extends GenCastle implements ClanItem
 	private Environmental	riteOwner		= null;
 	protected ClanItemType	ciType			= ClanItemType.SPECIALOTHER;
 	protected String		myClan			= "";
+	protected volatile int	holesInWalls	= 0;
+	protected volatile int  lastPctHealth	= 100;
+	protected volatile Room targetRoom		= null;
+	protected volatile long	targetExpire	= 0;
 
 	public GenClanCastle()
 	{
@@ -109,9 +113,71 @@ public class GenClanCastle extends GenCastle implements ClanItem
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if (StdClanItem.stdOkMessage(this, msg))
-			return super.okMessage(myHost, msg);
-		return false;
+		if (!StdClanItem.stdOkMessage(this, msg))
+			return false;
+
+		if((msg.target()==this)
+		&&(msg.targetMinor()==CMMsg.TYP_SIT)
+		&&hasADoor()
+		&&(!isOpen())
+		&&(holesInWalls>0)
+		&&(msg.sourceMessage().indexOf(mountString(CMMsg.TYP_SIT,msg.source()))>0)
+		&&(clanID().length()>0))
+		{
+			final MOB srcM=(msg.source().amUltimatelyFollowing()==null)?msg.source():msg.source().amUltimatelyFollowing();
+			final Clan C=CMLib.clans().getClan(clanID());
+			if((C!=null)
+			&&(!CMLib.clans().isClanFriendly(srcM, C))
+			&&(!CMLib.flags().isSneaking(msg.source())))
+			{
+				this.isOpen=true;
+				final boolean success=super.okMessage(myHost, msg);
+				this.isOpen=false;
+				if(!success)
+					return false;
+			}
+			else
+			if(!super.okMessage(myHost, msg))
+				return false;
+		}
+		else
+		if(!super.okMessage(myHost, msg))
+			return false;
+		if((msg.target()==this)
+		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
+		&&(clanID().length()>0))
+		{
+			final MOB srcM=(msg.source().amUltimatelyFollowing()==null)?msg.source():msg.source().amUltimatelyFollowing();
+			final Clan C=CMLib.clans().getClan(clanID());
+			if(C!=null)
+			{
+				if((!CMLib.clans().isClanFriendly(srcM, C))
+				&&(!CMLib.flags().isSneaking(msg.source())))
+				{
+					if(holesInWalls>0)
+					{
+						holesInWalls--;
+						this.targetExpire=System.currentTimeMillis()+2000;
+					}
+					else
+					{
+						msg.source().tell(L("You do not have leave from @x1 to enter there.",C.name()));
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	protected Room getDestinationRoom(final Room fromRoom)
+	{
+		if(System.currentTimeMillis()>targetExpire)
+			return super.getDestinationRoom(fromRoom);
+		final Room tr=targetRoom;
+		if(tr == null)
+			return super.getDestinationRoom(fromRoom);
+		return tr;
 	}
 
 	@Override
@@ -119,6 +185,45 @@ public class GenClanCastle extends GenCastle implements ClanItem
 	{
 		if (!StdClanItem.standardTick(this, tickID))
 			return false;
+		if(tickID == Tickable.TICKID_SPECIALCOMBAT)
+		{
+			if(this.amInTacticalMode())
+			{
+				if(this.usesRemaining()<lastPctHealth)
+				{
+					final double pct=CMath.div(lastPctHealth-usesRemaining(), 100.0);
+					final int hullPtsLost = (int)Math.round(CMath.mul(pct, this.getMaxHullPoints()));
+					if(hullPtsLost >= 50)
+					{
+						final int newHoles = hullPtsLost/50;
+						final Room R=CMLib.map().roomLocation(this);
+						if(newHoles == 1)
+							R.showHappens(CMMsg.MSG_OK_VISUAL, L("A new temporary breach opens up in @x1.",name()));
+						else
+							R.showHappens(CMMsg.MSG_OK_VISUAL, L("@x1 temporary breaches open up in @x2.",""+newHoles,name()));
+						this.holesInWalls += newHoles;
+						final Area A=this.getArea();
+						Room tR=null;
+						for(int i=0;i<A.numberOfProperIDedRooms()*10;i++)
+						{
+							final Room rR=A.getRandomProperRoom();
+							if((rR!=null)
+							&&(rR.domainType()!=Room.DOMAIN_INDOORS_AIR)
+							&&(rR.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
+							&&(rR.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
+							&&(rR.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER))
+							{
+								tR=rR;
+								break;
+							}
+						}
+						if(tR!=null)
+							targetRoom=tR;
+					}
+				}
+				lastPctHealth=this.usesRemaining();
+			}
+		}
 		return super.tick(ticking, tickID);
 	}
 
