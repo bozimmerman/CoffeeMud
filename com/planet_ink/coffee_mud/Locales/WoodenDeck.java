@@ -45,6 +45,7 @@ public class WoodenDeck extends StdRoom
 		super();
 		name="a wooden deck";
 		basePhyStats.setWeight(1);
+		basePhyStats.addAmbiance("@DECK_ROOM");
 		recoverPhyStats();
 	}
 

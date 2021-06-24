@@ -68,7 +68,15 @@ public class GenCastle extends GenSiegableBoardable
 	@Override
 	public int getMaxHullPoints()
 	{
-		return 50 * getArea().numberOfProperIDedRooms();
+		return 100 * getArea().numberOfProperIDedRooms();
+	}
+
+	@Override
+	protected boolean canViewOuterRoom(final Room R)
+	{
+		if(!super.canViewOuterRoom(R))
+			return false;
+		return R.phyStats().isAmbiance("@DECK_ROOM");
 	}
 
 	@Override
