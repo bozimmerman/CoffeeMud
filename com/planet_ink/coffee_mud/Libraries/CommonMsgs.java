@@ -2163,17 +2163,20 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						for(int r=0;r<view.size();r++)
 						{
 							lookAtR=view.get(r);
-							for(int i=0;i<lookAtR.numItems();i++)
+							if(lookAtR!=mobR)
 							{
-								final Item E=lookAtR.getItem(i);
-								if(E!=null)
-									items.add(E);
-							}
-							for(int i=0;i<lookAtR.numInhabitants();i++)
-							{
-								final MOB E=lookAtR.fetchInhabitant(i);
-								if(E!=null)
-									items.add(E);
+								for(int i=0;i<lookAtR.numItems();i++)
+								{
+									final Item E=lookAtR.getItem(i);
+									if(E!=null)
+										items.add(E);
+								}
+								for(int i=0;i<lookAtR.numInhabitants();i++)
+								{
+									final MOB E=lookAtR.fetchInhabitant(i);
+									if(E!=null)
+										items.add(E);
+								}
 							}
 						}
 						final StringBuilder seenThatWay=CMLib.lister().lister(msg.source(),items,true,"","",false,true);
