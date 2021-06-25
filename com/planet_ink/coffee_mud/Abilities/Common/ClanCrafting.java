@@ -180,7 +180,10 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 				recipe.add(I.ID()); // class
 				recipe.add(""); // area flag, wear location, readable text
 				recipe.add("0"); // container capacity
-				recipe.add("0"); // base armor
+				if(I instanceof BoardableItem)
+					recipe.add(""+getDefaultPopRequirement((BoardableItem)I)); // base armor/room pop
+				else
+					recipe.add("0"); // base armor/room pop
 				recipe.add("0"); // container type
 				recipe.add(""); // additional spells
 				recipe.add("Masonry"); // required common skill id ?!
@@ -277,6 +280,15 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
+	}
+
+	protected int getDefaultPopRequirement(final BoardableItem B)
+	{
+		if(B==null)
+			return 0;
+		if(B.getArea()==null)
+			return 0;
+		return 20 + (B.getArea().numberOfProperIDedRooms() * 10);
 	}
 
 	@Override
@@ -500,7 +512,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 						&&(I instanceof BoardableItem))
 						{
 							another=true;
-							areaPop -= ((BoardableItem)I).getArea().numberOfProperIDedRooms() * 10;
+							areaPop -= getDefaultPopRequirement((BoardableItem)I);
 						}
 					}
 				}
