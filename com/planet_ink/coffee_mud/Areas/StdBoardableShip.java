@@ -884,7 +884,7 @@ public class StdBoardableShip implements Area, BoardableItem, PrivateProperty
 				&&(msg.source().basePhyStats().rejuv()>0)
 				&&(msg.source().basePhyStats().rejuv()<Integer.MAX_VALUE)
 				&&(this.shipItem instanceof SiegableItem)
-				&&((SiegableItem)this.shipItem).isDefeated())
+				&&((SiegableItem)this.shipItem).amDead())
 				{
 					// this might be a bad idea?
 					msg.source().destroy();

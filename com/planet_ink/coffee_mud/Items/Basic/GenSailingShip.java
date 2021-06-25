@@ -365,7 +365,7 @@ public class GenSailingShip extends GenNavigableBoardable
 	}
 
 	@Override
-	protected void doCombatDefeat(final MOB victorM)
+	protected Item doCombatDefeat(final MOB victorM, final boolean createBody)
 	{
 		final Room baseR=CMLib.map().roomLocation(this);
 		if(baseR!=null)
@@ -401,6 +401,7 @@ public class GenSailingShip extends GenNavigableBoardable
 		}
 		if(!CMLib.leveler().postExperienceToAllAboard(victorM.riding(), 500, this))
 			CMLib.leveler().postExperience(victorM, null, null, 500, false);
+		return this;
 	}
 
 	@Override
@@ -479,7 +480,7 @@ public class GenSailingShip extends GenNavigableBoardable
 	}
 
 	@Override
-	public boolean isDefeated()
+	public boolean amDead()
 	{
 		final ItemPossessor owner = owner();
 		if((owner instanceof Room)

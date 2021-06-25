@@ -198,35 +198,6 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public int baseWeight();
 
 	/**
-	 * Returns the friendly viewable description of this mobs health status,
-	 * from the given viewer mobs point of view.
-	 * @param viewer the mob viewing this mob
-	 * @return the friendly viewable health status string
-	 */
-	public String healthText(MOB viewer);
-
-	/* Combat and death */
-	/**
-	 * Returns whether this mob is dead and presumably waiting for rejuv.
-	 * @see MOB#killMeDead(boolean)
-	 * @see MOB#bringToLife(Room, boolean)
-	 * @see MOB#removeFromGame(boolean, boolean)
-	 * @return true if this mob is dead, false otherwise
-	 */
-	public boolean amDead();
-
-	/**
-	 * Puts this mob in a dead state, removes all temporary effects,
-	 * creates a corpse, ends combat, and sends players to their graveyard.
-	 * @see MOB#amDead()
-	 * @see MOB#bringToLife(Room, boolean)
-	 * @see MOB#removeFromGame(boolean, boolean)
-	 * @param createBody true to create a corpse, false otherwise
-	 * @return the corpse, if one was created
-	 */
-	public DeadBody killMeDead(boolean createBody);
-
-	/**
 	 * Brings this mob to life, or back to life, and puts the mob
 	 * into the given room, or their start room if none given.
 	 * This also calls bringToLife to start ticking.

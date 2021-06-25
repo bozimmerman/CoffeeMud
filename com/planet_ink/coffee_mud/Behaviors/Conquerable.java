@@ -294,27 +294,34 @@ public class Conquerable extends Arrest
 		for(int v=0;v<clanItems.size();v++)
 		{
 			final Item I=clanItems.elementAt(v);
-			if((I.owner() instanceof MOB)
-			&&(I instanceof ClanItem)
-			&&(((ClanItem)I).clanID().equals(holdingClan)))
+			if((I instanceof ClanItem)
+			&&(((ClanItem)I).clanID().equals(holdingClan))
+			&&(!I.amDestroyed()))
 			{
-				final MOB M=(MOB)I.owner();
-				if((M.location()!=null)&&(!M.amDead())&&(M.isMonster()))
+				if((I instanceof SiegableItem)
+				&&(I instanceof BoardableItem))
+					((SiegableItem)I).killMeDead(true);
+				else
+				if(I.owner() instanceof MOB)
 				{
-					M.delItem(I);
-					if(M.getClanRole(holdingClan)!=null)
+					final MOB M=(MOB)I.owner();
+					if((M.location()!=null)&&(!M.amDead())&&(M.isMonster()))
 					{
-						M.setClan(holdingClan,-1);
-						if((worship!=null)
-						&&(M.baseCharStats().getWorshipCharID().equals(worship)))
+						M.delItem(I);
+						if(M.getClanRole(holdingClan)!=null)
 						{
-							M.baseCharStats().setWorshipCharID("");
-							M.charStats().setWorshipCharID("");
+							M.setClan(holdingClan,-1);
+							if((worship!=null)
+							&&(M.baseCharStats().getWorshipCharID().equals(worship)))
+							{
+								M.baseCharStats().setWorshipCharID("");
+								M.charStats().setWorshipCharID("");
+							}
 						}
+						I.setRawWornCode(0);
+						I.setContainer(null);
+						M.location().addItem(I,ItemPossessor.Expire.Player_Drop);
 					}
-					I.setRawWornCode(0);
-					I.setContainer(null);
-					M.location().addItem(I,ItemPossessor.Expire.Player_Drop);
 				}
 			}
 		}
@@ -823,6 +830,14 @@ public class Conquerable extends Arrest
 					totalControlPoints+=M.phyStats().level();
 				}
 			}
+			for(int i=0;i<R.numItems();i++)
+			{
+				final Item I=R.getItem(i);
+				if((I instanceof ClanItem)
+				&&(I instanceof SiegableItem)
+				&&(I instanceof BoardableItem))
+					totalControlPoints += ((SiegableItem)I).getMaxHullPoints();
+			}
 		}
 	}
 
@@ -1068,6 +1083,10 @@ public class Conquerable extends Arrest
 			&&(I.container()!=null))
 				I.setContainer(null);
 			I.setExpirationDate(0);
+			if((I instanceof SiegableItem)
+			&&(I instanceof BoardableItem)
+			&&(totalControlPoints>0))
+				totalControlPoints += ((SiegableItem)I).getMaxHullPoints();
 		}
 	}
 

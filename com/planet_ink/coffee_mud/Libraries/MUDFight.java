@@ -1531,7 +1531,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		DeadBody body=null; //must be done before consequences because consequences could be purging
 		if((!CMParms.containsIgnoreCase(cmds,"RECALL"))
 		&&(!isKnockedOutUponDeath(deadM,killerM)))
-			body=deadM.killMeDead(true);
+			body=(DeadBody)deadM.killMeDead(true);
 
 		final boolean stillExists = handleCombatLossConsequences(deadM,killerM,cmds,expLost,"^*You lose @x1 experience points.^?^.");
 		if(!isKnockedOutUponDeath(deadM,killerM))

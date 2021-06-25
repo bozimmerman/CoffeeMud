@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.core.interfaces;
 
 import com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior;
+import com.planet_ink.coffee_mud.Items.interfaces.Item;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 /*
    Copyright 2016-2021 Bo Zimmerman
@@ -149,4 +150,33 @@ public interface Combatant extends PhysicalAgent
 	 * @param other the combat target, or null for a peace state
 	 */
 	public void setCombatant(PhysicalAgent other);
+
+	/**
+	 * Returns the friendly viewable description of this mobs health status,
+	 * from the given viewer mobs point of view.
+	 * @param viewer the mob viewing this mob
+	 * @return the friendly viewable health status string
+	 */
+	public String healthText(MOB viewer);
+
+	/* Combat and death */
+	/**
+	 * Returns whether this combatant is dead and presumably waiting for rejuv.
+	 * @see Combatant#killMeDead(boolean)
+	 * @see MOB#bringToLife(Room, boolean)
+	 * @see MOB#removeFromGame(boolean, boolean)
+	 * @return true if this combatant is dead, false otherwise
+	 */
+	public boolean amDead();
+
+	/**
+	 * Puts this combatant in a dead state, removes all temporary effects,
+	 * creates a corpse, ends combat, and sends mob players to their graveyard.
+	 * @see Combatant#amDead()
+	 * @see MOB#bringToLife(Room, boolean)
+	 * @see MOB#removeFromGame(boolean, boolean)
+	 * @param createBody true to create a corpse, false otherwise
+	 * @return the corpse, if one was created
+	 */
+	public Item killMeDead(boolean createBody);
 }

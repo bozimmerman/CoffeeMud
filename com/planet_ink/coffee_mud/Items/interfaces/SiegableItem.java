@@ -78,7 +78,7 @@ public interface SiegableItem extends Item, Combatant
 	 * Returns whether this is sunk or destroyed in a siege..
 	 * @return true if this is sunk or destroyed in a siege
 	 */
-	public boolean isDefeated();
+	public boolean amDead();
 
 	/**
 	 * Returns the number of base hull points that the given obj has.

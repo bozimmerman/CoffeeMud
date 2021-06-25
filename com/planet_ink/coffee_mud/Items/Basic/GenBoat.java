@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Items.Basic;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -72,6 +73,12 @@ public class GenBoat extends GenRideable implements SiegableItem
 				return Directions.getRelative11Directions(myCoords, targetCoords);
 		}
 		return -1;
+	}
+
+	@Override
+	public boolean subjectToWearAndTear()
+	{
+		return true;
 	}
 
 	@Override
@@ -360,7 +367,7 @@ public class GenBoat extends GenRideable implements SiegableItem
 	}
 
 	@Override
-	public boolean isDefeated()
+	public boolean amDead()
 	{
 		final ItemPossessor owner = owner();
 		if(owner instanceof Room)
@@ -373,6 +380,54 @@ public class GenBoat extends GenRideable implements SiegableItem
 	}
 
 	@Override
+	public Item killMeDead(final boolean createBody)
+	{
+		final Room shipR=CMLib.map().roomLocation(this);
+		final MOB sinkerM=CMClass.getFactoryMOB(name(), phyStats().level(), shipR);
+		try
+		{
+			if(CMLib.flags().isDeepWaterySurfaceRoom(shipR))
+			{
+				CMLib.tracking().makeSink(this, shipR, false);
+				final String sinkString = L("<T-NAME> start(s) sinking!");
+				shipR.show(sinkerM, this, CMMsg.MSG_OK_ACTION, sinkString);
+				return this;
+			}
+			else
+			{
+				final String sinkString = L("<T-NAME> <T-IS-ARE> destroyed!");
+				shipR.show(sinkerM, this, CMMsg.MSG_OK_ACTION, sinkString);
+				final Item newI = CMLib.utensils().ruinItem(this);
+				if(newI != this)
+					shipR.addItem(newI, Expire.Monster_EQ);
+				this.destroy();
+				return newI;
+			}
+		}
+		finally
+		{
+			sinkerM.destroy();
+		}
+	}
+
+	@Override
+	public String healthText(final MOB viewer)
+	{
+		final int[] condSet = new int[]{95, 85, 75, 50, 25, 10, 5, 0};
+		int ordinal=0;
+		for(int i=0;i<condSet.length;i++)
+		{
+			if(usesRemaining()>=condSet[i])
+			{
+				ordinal=i;
+				break;
+			}
+		}
+		final String message=CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.WEAPON_CONDITION_OTHER, ordinal);
+		return L(message,name(),""+usesRemaining());
+	}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
@@ -381,7 +436,7 @@ public class GenBoat extends GenRideable implements SiegableItem
 		case CMMsg.TYP_DAMAGE:
 			if((msg.target()==this)
 			&& (msg.value() > 0)
-			&& (!this.isDefeated()))
+			&& (!this.amDead()))
 			{
 				int level = phyStats().level();
 				if(level < 10)
@@ -405,20 +460,7 @@ public class GenBoat extends GenRideable implements SiegableItem
 						this.recoverPhyStats(); // takes away the swimmability!
 						final Room shipR=CMLib.map().roomLocation(this);
 						if(shipR!=null)
-						{
-							if(CMLib.flags().isDeepWaterySurfaceRoom(shipR))
-							{
-								CMLib.tracking().makeSink(this, shipR, false);
-								final String sinkString = L("<T-NAME> start(s) sinking!");
-								shipR.show(msg.source(), this, CMMsg.MSG_OK_ACTION, sinkString);
-							}
-							else
-							{
-								final String sinkString = L("<T-NAME> <T-IS-ARE> destroyed!");
-								shipR.show(msg.source(), this, CMMsg.MSG_OK_ACTION, sinkString);
-								this.destroy();
-							}
-						}
+							this.killMeDead(true);
 						/*
 						if(!CMLib.leveler().postExperienceToAllAboard(msg.source().riding(), 500, this))
 							CMLib.leveler().postExperience(msg.source(), null, null, 500, false);
@@ -435,5 +477,4 @@ public class GenBoat extends GenRideable implements SiegableItem
 			break;
 		}
 	}
-
 }

@@ -360,7 +360,7 @@ public class GenCaravan extends GenNavigableBoardable
 	}
 
 	@Override
-	protected void doCombatDefeat(final MOB victorM)
+	protected Item doCombatDefeat(final MOB victorM, final boolean createBody)
 	{
 		final Room baseR=CMLib.map().roomLocation(this);
 		if(baseR!=null)
@@ -406,13 +406,19 @@ public class GenCaravan extends GenNavigableBoardable
 				}
 			}
 			phyStats.setDisposition(phyStats.disposition()&~PhyStats.IS_UNSAVABLE);
-			final Item newI = CMLib.utensils().ruinItem(this);
-			if(newI != this)
-				baseR.addItem(newI, Expire.Monster_EQ);
+			Item newI = null;
+			if(createBody)
+			{
+				newI = CMLib.utensils().ruinItem(this);
+				if(newI != this)
+					baseR.addItem(newI, Expire.Monster_EQ);
+			}
 			this.destroy();
+			return newI;
 		}
 		if(!CMLib.leveler().postExperienceToAllAboard(victorM.riding(), 500, this))
 			CMLib.leveler().postExperience(victorM, null, null, 500, false);
+		return null;
 	}
 
 	@Override

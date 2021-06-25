@@ -73,6 +73,12 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 	}
 
 	@Override
+	public boolean subjectToWearAndTear()
+	{
+		return true;
+	}
+
+	@Override
 	public void setRangeToTarget(final int newRange)
 	{
 		//nothing to do atm
@@ -705,6 +711,19 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 		return CMLib.lang().fullSessionTranslation(str, xs);
 	}
 
+	@Override
+	public String healthText(final MOB viewer)
+	{
+		final StringBuilder str=new StringBuilder("");
+		if(this.subjectToWearAndTear())
+		{
+			final double pct=(CMath.div(usesRemaining(),100.0));
+			appendCondition(str, pct, name());
+		}
+		return str.toString();
+	}
+
+
 	public static void appendCondition(final StringBuilder visualCondition, final double pct, final String name)
 	{
 		if(pct<=0.0)
@@ -1200,8 +1219,23 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 		return super.tick(ticking, tickID);
 	}
 
-	protected void doCombatDefeat(final MOB victorM)
+	protected Item doCombatDefeat(final MOB victorM, final boolean createBody)
 	{
+		return null;
+	}
+
+	@Override
+	public Item killMeDead(final boolean createBody)
+	{
+		final MOB mob=CMClass.getFactoryMOB(name(), phyStats().level(), CMLib.map().roomLocation(this));
+		try
+		{
+			return doCombatDefeat(mob, createBody);
+		}
+		finally
+		{
+			mob.destroy();
+		}
 	}
 
 	@Override
@@ -1393,7 +1427,7 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 								Log.debugOut("SiegeCombat: "+Name()+" takes "+pointsLost+"/"+maxHullPoints+", which is the remaining "+usesRemaining()+"%, and is defeated.");
 							this.setUsesRemaining(0);
 							this.recoverPhyStats(); // takes away the swimmability!
-							this.doCombatDefeat(msg.source());
+							this.doCombatDefeat(msg.source(), true);
 							this.clearTacticalModeInternal();
 						}
 						else
@@ -1434,7 +1468,7 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 	}
 
 	@Override
-	public boolean isDefeated()
+	public boolean amDead()
 	{
 		return amDestroyed();
 	}

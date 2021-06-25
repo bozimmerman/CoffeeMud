@@ -200,7 +200,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 	}
 
 	@Override
-	public boolean isDefeated()
+	public boolean amDead()
 	{
 		return amDestroyed();
 	}
@@ -1128,6 +1128,19 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 		if(newUses==Integer.MAX_VALUE)
 			newUses=100;
 		super.setUsesRemaining(newUses);
+	}
+
+	@Override
+	public String healthText(final MOB viewer)
+	{
+		return this.weaponHealth();
+	}
+
+	@Override
+	public Item killMeDead(final boolean createBody)
+	{
+		this.destroy();
+		return null;
 	}
 
 	protected String weaponHealth()
