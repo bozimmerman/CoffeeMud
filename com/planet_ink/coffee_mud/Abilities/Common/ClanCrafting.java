@@ -82,7 +82,8 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		"ITEM_NAME\tRESOURCE_NAME_AMOUNT_MATERIAL_REQUIRED\tRESOURCE_NAME_AMOUNT_MATERIAL_REQUIRED\t"
 		+"CLAN_ITEM_CODENUMBER\tITEM_LEVEL\tBUILD_TIME_TICKS\tCLAN_EXPERIENCE_COST_AMOUNT\t"
 		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\tCLAN_AREA_FLAG||CODED_WEAR_LOCATION||READABLE_TEXT\t"
-		+"CONTAINER_CAPACITY\tBASE_ARMOR_AMOUNT\tCONTAINER_TYPE\tCODED_SPELL_LIST\tREQUIRED_COMMON_SKILL_ID";
+		+"CONTAINER_CAPACITY\tBASE_ARMOR_AMOUNT||BOARDABLE_POP\tCONTAINER_TYPE\tCODED_SPELL_LIST\t"
+		+"REQUIRED_COMMON_SKILL_ID";
 	}
 
 	protected static final int RCP_FINALNAME=0;
@@ -130,6 +131,27 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		return false;
 	}
 
+	protected List<Item> getCastles()
+	{
+		final String allItemID = "CLANCRAFTING_PARSED";
+		@SuppressWarnings("unchecked")
+		List<Item> castlePrototypes = (List<Item>)Resources.getResource(allItemID);
+		if(castlePrototypes == null)
+		{
+			final CMFile F=new CMFile(Resources.makeFileResourceName("skills/clancastles.cmare"),null);
+			if(F.exists())
+			{
+				castlePrototypes=new Vector<Item>();
+				CMLib.coffeeMaker().addItemsFromXML(F.textUnformatted().toString(), castlePrototypes, null);
+				for(final Item I : castlePrototypes)
+					CMLib.threads().deleteAllTicks(I);
+				if(castlePrototypes.size()>0)
+					Resources.submitResource(allItemID, castlePrototypes);
+			}
+		}
+		return castlePrototypes;
+	}
+
 	@Override
 	@SuppressWarnings("unchecked")
 	protected List<List<String>> loadRecipes(final String filename)
@@ -139,6 +161,31 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		{
 			final StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,CMFile.FLAG_LOGERRORS).text();
 			V=loadList(str);
+			for(final Item I : getCastles())
+			{
+				final List<String> recipe = new ArrayList<String>();
+				recipe.add(I.Name());
+				int weight;
+				if(I instanceof BoardableItem)
+					weight=((BoardableItem)I).getArea().numberOfProperIDedRooms();
+				else
+					weight=I.basePhyStats().weight();
+				recipe.add(RawMaterial.CODES.NAME(I.material())+"/"+(weight*2500)); // material
+				recipe.add(""); // material#2
+				recipe.add(""+((I instanceof ClanItem)?((ClanItem)I).getClanItemType().ordinal():0)); // type
+				recipe.add(""+I.basePhyStats().level()); // level
+				recipe.add(""+(weight * 450)); // build time
+				recipe.add(RawMaterial.CODES.NAME(I.material())+"/"+(weight*50)); // xp cost
+				recipe.add(""+I.baseGoldValue()); // value
+				recipe.add(I.ID()); // class
+				recipe.add(""); // area flag, wear location, readable text
+				recipe.add("0"); // container capacity
+				recipe.add("0"); // base armor
+				recipe.add("0"); // container type
+				recipe.add(""); // additional spells
+				recipe.add("Masonry"); // required common skill id ?!
+				V.add(recipe);
+			}
 			Collections.sort(V,new Comparator<List<String>>()
 			{
 				@Override
@@ -412,13 +459,6 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			}
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-			return false;
-		if((amt1>0)&&(autoGenerate<=0))
-			CMLib.materials().destroyResourcesValue(mob.location(),amt1,data[0][FOUND_CODE],data[0][FOUND_SUB],0,0);
-		if((amt2>0)&&(autoGenerate<=0))
-			CMLib.materials().destroyResourcesValue(mob.location(),amt2,data[1][FOUND_CODE],data[1][FOUND_SUB],0,0);
-
 		buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 		final Item buildingI=this.buildingI;
 		if(buildingI==null)
@@ -426,6 +466,65 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
 			return false;
 		}
+		final int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
+		if((buildingI instanceof SiegableItem)
+		&&(buildingI instanceof BoardableItem)
+		&&(clanC!=null)
+		&&(autoGenerate<=0))
+		{
+			final Room R=CMLib.map().roomLocation(mob);
+			if(R==null)
+				return false;
+			final LegalBehavior conqB = CMLib.law().getLegalBehavior(R.getArea());
+			if((conqB == null)
+			||(conqB.rulingOrganization().length()==0)
+			||(!conqB.rulingOrganization().equalsIgnoreCase(clanC.clanID()))
+			||(!conqB.isFullyControlled()))
+			{
+				commonTell(mob, L("That can only be built in an area conquered by @x1.",clanName));
+				return false;
+			}
+			final Area A=CMLib.law().getLegalObject(R.getArea());
+			int areaPop = (A==null)?0:A.getAreaIStats()[Area.Stats.INTELLIGENT_MOBS.ordinal()];
+			boolean another=false;
+			for(final Enumeration<Room> r=A.getMetroMap();r.hasMoreElements();)
+			{
+				final Room R1=r.nextElement();
+				if(R1!=null)
+				{
+					for(final Enumeration<Item> i=R1.items();i.hasMoreElements();)
+					{
+						final Item I=i.nextElement();
+						if((I instanceof ClanItem)
+						&&(I instanceof SiegableItem)
+						&&(I instanceof BoardableItem))
+						{
+							another=true;
+							areaPop -= ((BoardableItem)I).getArea().numberOfProperIDedRooms() * 10;
+						}
+					}
+				}
+			}
+			if(areaPop < armordmg)
+			{
+				final String areaName = (A==null)?"This Area":A.Name();
+				if(another)
+					commonTell(mob, L("@x1 does not have the population to support another such structure.",areaName));
+				else
+					commonTell(mob, L("@x1 does not have the population to support such a structure.",areaName));
+				return false;
+			}
+		}
+
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+		{
+			buildingI.destroy();
+			return false;
+		}
+		if((amt1>0)&&(autoGenerate<=0))
+			CMLib.materials().destroyResourcesValue(mob.location(),amt1,data[0][FOUND_CODE],data[0][FOUND_SUB],0,0);
+		if((amt2>0)&&(autoGenerate<=0))
+			CMLib.materials().destroyResourcesValue(mob.location(),amt2,data[1][FOUND_CODE],data[1][FOUND_SUB],0,0);
 
 		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
 		final String misctype=foundRecipe.get(RCP_MISCTYPE);
@@ -474,7 +573,6 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			buildingI.basePhyStats().setLevel(1);
 		final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 		final long canContain=getContainerType(foundRecipe.get(RCP_CONTAINMASK));
-		final int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
 		setBrand(mob, buildingI);
 		final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 		if(buildingI instanceof ClanItem)

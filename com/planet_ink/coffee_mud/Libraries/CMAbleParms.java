@@ -2446,6 +2446,33 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return ""+I.basePhyStats().armor();
 				}
 			},
+			new AbilityParmEditorImpl("BOARDABLE_POP","Pop.",ParmType.NUMBER)
+			{
+				@Override
+				public int appliesToClass(final Object o)
+				{
+					return (o instanceof BoardableItem) ? 2 : -1;
+				}
+
+				@Override
+				public void createChoices()
+				{
+				}
+
+				@Override
+				public String defaultValue()
+				{
+					return "100";
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					if(I instanceof BoardableItem)
+						return ""+((BoardableItem)I).getArea().numberOfProperIDedRooms()*10;
+					return "100";
+				}
+			},
 			new AbilityParmEditorImpl("CONTAINER_TYPE","Con.",ParmType.MULTICHOICES)
 			{
 				@Override
