@@ -1303,15 +1303,21 @@ public class Conquerable extends Arrest
 
 		Clan srcC;
 		final boolean debugging=CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST);
-		if((msg.sourceMinor()==CMMsg.TYP_CLANEVENT)
-		&&(msg.sourceMessage().startsWith("-")))
+		if(msg.sourceMinor()==CMMsg.TYP_CLANEVENT)
 		{
-			if((holdingClan!=null)
-			&&(holdingClan.equalsIgnoreCase(msg.sourceMessage().substring(1))))
+			if(msg.sourceMessage().equals("CONTROLRESET"))
+				totalControlPoints=-1;
+			else
+			if(msg.sourceMessage().startsWith("-"))
 			{
-				if(debugging)
-					Log.debugOut("Conquest",holdingClan+" no longer exists.");
-				endClanRule(L(" due to clan dissolution"));
+				final String event=msg.sourceMessage().substring(1);
+				if((holdingClan!=null)
+				&&(holdingClan.equalsIgnoreCase(event)))
+				{
+					if(debugging)
+						Log.debugOut("Conquest",holdingClan+" no longer exists.");
+					endClanRule(L(" due to clan dissolution"));
+				}
 			}
 		}
 		else

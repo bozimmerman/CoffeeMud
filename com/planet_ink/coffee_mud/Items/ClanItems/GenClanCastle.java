@@ -171,6 +171,19 @@ public class GenClanCastle extends GenCastle implements ClanItem
 		return true;
 	}
 
+	@Override
+	protected Item doCombatDefeat(final MOB victorM, final boolean createBody)
+	{
+		final Room baseR=CMLib.map().roomLocation(this);
+		if(baseR!=null)
+		{
+			final Behavior conqB=CMLib.law().getLegalBehavior(baseR);
+			if(conqB!=null)
+				conqB.executeMsg(baseR, CMClass.getMsg(CMLib.map().deity(), CMMsg.MSG_CLANEVENT, "CONTROLRESET"));
+		}
+		return super.doCombatDefeat(victorM, createBody);
+	}
+
 	protected Room getDestinationRoom(final Room fromRoom)
 	{
 		if(System.currentTimeMillis()>targetExpire)
