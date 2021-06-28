@@ -626,6 +626,8 @@ public class Conquerable extends Arrest
 											}
 										}
 										R.addItem(newItem);
+										if(newItem instanceof BoardableItem)
+											((BoardableItem)newItem).dockHere(R);
 									}
 									if(newItem instanceof ClanItem)
 										registerClanItem((ClanItem)newItem);

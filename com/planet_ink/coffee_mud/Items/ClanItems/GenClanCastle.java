@@ -160,6 +160,7 @@ public class GenClanCastle extends GenCastle implements ClanItem
 						this.targetExpire=System.currentTimeMillis()+2000;
 					}
 					else
+					if(!CMSecurity.isAllowed(msg.source(), msg.source().location(), CMSecurity.SecFlag.CMDROOMS))
 					{
 						msg.source().tell(L("You do not have leave from @x1 to enter there.",C.name()));
 						return false;

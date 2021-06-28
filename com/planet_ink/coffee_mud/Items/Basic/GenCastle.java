@@ -137,6 +137,22 @@ public class GenCastle extends GenSiegableBoardable
 	}
 
 	@Override
+	public String mountString(final int commandType, final Rider R)
+	{
+		if((R==null)||(mountString.length()==0))
+			return "enter(s)";
+		return mountString;
+	}
+
+	@Override
+	public String dismountString(final Rider R)
+	{
+		if((R==null)||(dismountString.length()==0))
+			return "leave(s)";
+		return dismountString;
+	}
+
+	@Override
 	protected Room findNearestDocks(final Room R)
 	{
 		if(R!=null)

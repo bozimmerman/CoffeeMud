@@ -164,18 +164,18 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			for(final Item I : getCastles())
 			{
 				final List<String> recipe = new ArrayList<String>();
-				recipe.add(I.Name());
 				int weight;
 				if(I instanceof BoardableItem)
 					weight=((BoardableItem)I).getArea().numberOfProperIDedRooms();
 				else
 					weight=I.basePhyStats().weight();
+				recipe.add(I.Name());
 				recipe.add(RawMaterial.CODES.NAME(I.material())+"/"+(weight*2500)); // material
 				recipe.add(""); // material#2
 				recipe.add(""+((I instanceof ClanItem)?((ClanItem)I).getClanItemType().ordinal():0)); // type
 				recipe.add(""+I.basePhyStats().level()); // level
 				recipe.add(""+(weight * 450)); // build time
-				recipe.add(RawMaterial.CODES.NAME(I.material())+"/"+(weight*50)); // xp cost
+				recipe.add(""+(weight*50)); // xp cost
 				recipe.add(""+I.baseGoldValue()); // value
 				recipe.add(I.ID()); // class
 				recipe.add(""); // area flag, wear location, readable text
@@ -236,7 +236,13 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 					{
 						dropAWinner(mob,buildingI);
 						CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, 1, this, buildingI);
-						CMLib.commands().postGet(mob,null,buildingI,true);
+						if(buildingI instanceof BoardableItem)
+						{
+							if(buildingI instanceof BoardableItem)
+								((BoardableItem)buildingI).dockHere(mob.location());
+						}
+						else
+							CMLib.commands().postGet(mob,null,buildingI,true);
 					}
 				}
 				buildingI=null;
@@ -472,6 +478,12 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		}
 
 		buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
+		if(buildingI instanceof BoardableItem)
+		{
+			for(final Item I : getCastles())
+				if(I.Name().equals(foundRecipe.get(RCP_FINALNAME)))
+					buildingI=(Item)I.copyOf();
+		}
 		final Item buildingI=this.buildingI;
 		if(buildingI==null)
 		{
@@ -491,7 +503,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			if((conqB == null)
 			||(conqB.rulingOrganization().length()==0)
 			||(!conqB.rulingOrganization().equalsIgnoreCase(clanC.clanID()))
-			||(!conqB.isFullyControlled()))
+			||((!conqB.isFullyControlled())&&(!CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDROOMS))))
 			{
 				commonTell(mob, L("That can only be built in an area conquered by @x1.",clanName));
 				return false;
@@ -574,8 +586,11 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		displayText=L("You are crafting @x1",buildingI.name());
 		playSound="sanding.wav";
 		verb=L("crafting @x1",buildingI.name());
-		buildingI.setDisplayText(L("@x1 lies here",itemName));
-		buildingI.setDescription(itemName+". ");
+		if(!(buildingI instanceof BoardableItem))
+		{
+			buildingI.setDisplayText(L("@x1 lies here",itemName));
+			buildingI.setDescription(itemName+". ");
+		}
 		buildingI.basePhyStats().setWeight(amt1+amt2);
 		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
 		buildingI.setMaterial(getBuildingMaterial(amt1+amt2,data,new int[CF_TOTAL]));

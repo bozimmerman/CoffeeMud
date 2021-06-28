@@ -33,6 +33,8 @@
  41. Prop_RoomView has new parms, LONGLOOK, and ATTACK to give ship-like abilities
  42. New misc property: AmbianceAdder, for adding random ambiances to things.
  43. New Items: GenCastle, GenClanCastle -- stationary boardables.
+ 44. Clans can now make GenClanCastles using ClanCrafting.
+ 
  # Build 5.9.11.1 Release 02/26/2021
   Bug Fix Release:
   1. Fixed experience gains when EFFECTCXL is 0.
