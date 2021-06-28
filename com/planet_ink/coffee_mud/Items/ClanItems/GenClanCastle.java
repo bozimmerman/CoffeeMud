@@ -47,7 +47,7 @@ public class GenClanCastle extends GenCastle implements ClanItem
 	@Override
 	public String ID()
 	{
-		return "GenCastle";
+		return "GenClanCastle";
 	}
 
 	private Environmental	riteOwner		= null;
@@ -61,8 +61,8 @@ public class GenClanCastle extends GenCastle implements ClanItem
 	public GenClanCastle()
 	{
 		super();
-		setName("the castle [NEWNAME]");
-		setDisplayText("the castle [NEWNAME] is here.");
+		setName("a castle");
+		setDisplayText("a castle is here.");
 		setMaterial(RawMaterial.RESOURCE_STONE);
 		this.doorName="portcullis";
 	}
