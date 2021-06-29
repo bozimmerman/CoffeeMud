@@ -1246,7 +1246,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 				if(currency==null)
 					clear.add(I);
 				else
-				if(((Coins)I).getCurrency().equalsIgnoreCase(currency))
+				if(isCurrencyMatch(((Coins)I).getCurrency(),currency))
 					clear.add(I);
 			}
 		}
@@ -1298,7 +1298,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			final Item I=R.getItem(i);
 			if((I!=null)
 			&&(I instanceof Coins)
-			&&((currency==null)||((Coins)I).getCurrency().equalsIgnoreCase(currency))
+			&&((currency==null)||this.isCurrencyMatch(((Coins)I).getCurrency(),currency))
 			&&(I.container()==container))
 				V.addElement((Coins)I);
 		}
@@ -1312,12 +1312,31 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	}
 
 	@Override
+	public boolean isCurrencyMatch(final String curr1, final String curr2)
+	{
+		if(curr1 == null)
+			return curr2==null;
+		else
+		if(curr2 == null)
+			return false;
+		if(curr1.length()==curr2.length())
+			return curr1.equalsIgnoreCase(curr2);
+		final int x1=curr1.indexOf('=');
+		final int x2=curr2.indexOf('=');
+		if((x1<0)&&(x2<0))
+			return curr1.equalsIgnoreCase(curr2);
+		final String curr1n = (x1 < 0)?curr1:curr1.substring(0, x1);
+		final String curr2n = (x2 < 0)?curr2:curr2.substring(0, x2);
+		return curr1n.equalsIgnoreCase(curr2n);
+	}
+
+	@Override
 	public List<Coins> getStandardCurrency(final MOB mob, final Item container, final String currency)
 	{
 		final Vector<Coins> V=new Vector<Coins>();
 		if(mob==null)
 			return V;
-		if(((currency==null)||(currency.equals(getCurrency(mob))))
+		if(((currency==null)||(isCurrencyMatch(currency,getCurrency(mob))))
 		&&(mob.getMoney()>0)
 		&&(container==null))
 		{
@@ -1329,7 +1348,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			final Item I=mob.getItem(i);
 			if((I!=null)
 			&&(I instanceof Coins)
-			&&((currency==null)||((Coins)I).getCurrency().equalsIgnoreCase(currency))
+			&&((currency==null)||isCurrencyMatch(((Coins)I).getCurrency(),currency))
 			&&(I.container()==container))
 				V.addElement((Coins)I);
 		}

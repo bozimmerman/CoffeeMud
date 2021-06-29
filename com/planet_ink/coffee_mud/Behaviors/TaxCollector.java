@@ -270,7 +270,7 @@ public class TaxCollector extends StdBehavior
 			if((paid!=null)&&(paid.contains(msg.source())))
 				owe[OWE_TOTAL]-=owe[OWE_CITIZENTAX];
 			final String owed=CMLib.beanCounter().nameCurrencyShort(currency,owe[OWE_TOTAL]);
-			if((!((Coins)msg.tool()).getCurrency().equals(CMLib.beanCounter().getCurrency(mob))))
+			if((!CMLib.beanCounter().isCurrencyMatch(((Coins)msg.tool()).getCurrency(),CMLib.beanCounter().getCurrency(mob))))
 			{
 				msg.source().tell(L("@x1 refuses your money.",mob.name(msg.source())));
 				CMLib.commands().postSay(mob,msg.source(),L("I don't accept that kind of currency."),false,false);

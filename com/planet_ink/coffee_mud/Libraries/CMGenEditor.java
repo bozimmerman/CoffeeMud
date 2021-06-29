@@ -3108,7 +3108,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					mob.tell(L("(no change)"));
 			}
 			else
-			if((oldCurrency.length()==0)||(oldCurrency.equalsIgnoreCase(I.getCurrency())))
+			if((oldCurrency.length()==0)||CMLib.beanCounter().isCurrencyMatch(oldCurrency,I.getCurrency()))
 				mob.tell(L("(no change)"));
 			else
 			if(!CMLib.beanCounter().getAllCurrencies().contains(oldCurrency))

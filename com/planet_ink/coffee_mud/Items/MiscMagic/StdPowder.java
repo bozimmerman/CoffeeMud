@@ -158,6 +158,6 @@ public class StdPowder extends StdItem implements MagicDust
 	@Override
 	public String secretIdentity()
 	{
-		return description()+"\n\r"+super.secretIdentity();
+		return StdScroll.makeSecretIdentity("powder",super.secretIdentity(),"",StdPotion.getSpells(this));
 	}
 }

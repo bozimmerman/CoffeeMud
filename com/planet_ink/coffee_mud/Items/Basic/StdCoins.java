@@ -45,7 +45,7 @@ public class StdCoins extends StdItem implements Coins
 	{
 		return phyStats().ability();
 	}
-	
+
 	protected double denomination=1.0;
 	protected String currency="";
 
@@ -175,7 +175,7 @@ public class StdCoins extends StdItem implements Coins
 		case CMMsg.TYP_DROP:
 			if(msg.target()==this)
 			{
-				MoneyLibrary.MoneyDefinition def=CMLib.beanCounter().getCurrencySet(currency);
+				final MoneyLibrary.MoneyDefinition def=CMLib.beanCounter().getCurrencySet(currency);
 				if(((def != null) && (!def.canTrade()))
 				&&(!CMSecurity.isAllowed(msg.source(), msg.source().location(), CMSecurity.SecFlag.CMDPLAYERS)))
 				{
@@ -189,7 +189,7 @@ public class StdCoins extends StdItem implements Coins
 		case CMMsg.TYP_DEPOSIT:
 			if(msg.tool()==this)
 			{
-				MoneyLibrary.MoneyDefinition def=CMLib.beanCounter().getCurrencySet(currency);
+				final MoneyLibrary.MoneyDefinition def=CMLib.beanCounter().getCurrencySet(currency);
 				if(((def != null) && (!def.canTrade()))
 				&&(!CMSecurity.isAllowed(msg.source(), msg.source().location(), CMSecurity.SecFlag.CMDPLAYERS)))
 				{
@@ -237,7 +237,7 @@ public class StdCoins extends StdItem implements Coins
 				&&(I instanceof Coins)
 				&&(!I.amDestroyed())
 				&&(((Coins)I).getDenomination()==getDenomination())
-				&&(((Coins)I).getCurrency().equals(getCurrency()))
+				&&(CMLib.beanCounter().isCurrencyMatch(((Coins)I).getCurrency(),getCurrency()))
 				&&(I.container()==container()))
 				{
 					alternative=(Coins)I;
@@ -257,7 +257,7 @@ public class StdCoins extends StdItem implements Coins
 				&&(I instanceof Coins)
 				&&(!I.amDestroyed())
 				&&(((Coins)I).getDenomination()==getDenomination())
-				&&(((Coins)I).getCurrency().equals(getCurrency()))
+				&&(CMLib.beanCounter().isCurrencyMatch(((Coins)I).getCurrency(),getCurrency()))
 				&&(I.container()==container()))
 				{
 					alternative=(Coins)I;

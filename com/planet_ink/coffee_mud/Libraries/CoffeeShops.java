@@ -2230,7 +2230,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		if(bid==0.0)
 			return new String[]{L("Up for auction: ^[@x1^].  The current bid is @x2.",I.name(),bidWords),null};
 
-		if(!bidCurrency.equals(auctionData.getCurrency()))
+		if(!CMLib.beanCounter().isCurrencyMatch(bidCurrency,auctionData.getCurrency()))
 			return new String[]{L("This auction is being bid in @x1 only.",currencyName),null};
 
 		if(bid>CMLib.beanCounter().getTotalAbsoluteValue(mob,auctionData.getCurrency()))

@@ -346,7 +346,7 @@ public class Nanny extends StdBehavior
 			{
 				final Coins C=(Coins)msg.tool();
 				final String myCurrency=CMLib.beanCounter().getCurrency(host);
-				if(!C.getCurrency().equalsIgnoreCase(myCurrency))
+				if(!CMLib.beanCounter().isCurrencyMatch(C.getCurrency(),myCurrency))
 				{
 					if(host instanceof MOB)
 						CMLib.commands().postSay((MOB)host,msg.source(),L("I'm don't accept @x1.  I can only accept @x2.",CMLib.beanCounter().getDenominationName(C.getCurrency(),C.getDenomination()),CMLib.beanCounter().getDenominationName(myCurrency)));

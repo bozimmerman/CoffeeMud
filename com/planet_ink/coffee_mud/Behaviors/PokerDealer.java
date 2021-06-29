@@ -342,7 +342,7 @@ public class PokerDealer extends StdBehavior
 			// if they put down foreign currency, tell them its
 			// wrong, then abort their attempt to drop it into
 			// the pot.
-			if(!currency.equals(theMoneyDropped.getCurrency()))
+			if(!CMLib.beanCounter().isCurrencyMatch(currency,theMoneyDropped.getCurrency()))
 			{
 				playerDroppingMoney.tell(L("That is not the proper currency.  This table is only dealing in @x1.",CMLib.beanCounter().getDenominationName(currency)));
 				return false;

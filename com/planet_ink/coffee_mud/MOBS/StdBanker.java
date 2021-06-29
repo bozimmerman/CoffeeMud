@@ -1055,7 +1055,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							CMLib.commands().postSay(this,mob,L("I'm sorry, the law prevents us from holding that much money in one account."),true,false);
 							return false;
 						}
-						if(!((Coins)msg.tool()).getCurrency().equalsIgnoreCase(CMLib.beanCounter().getCurrency(this)))
+						if(!CMLib.beanCounter().isCurrencyMatch(((Coins)msg.tool()).getCurrency(),CMLib.beanCounter().getCurrency(this)))
 						{
 							CMLib.commands().postSay(this,mob,L("I'm sorry, this bank only deals in @x1.",CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(this))),true,false);
 							return false;
@@ -1112,7 +1112,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					final double totalItemsWorth=totalItemsWorth(withdrawerName);
 					if(msg.tool() instanceof Coins)
 					{
-						if(!((Coins)msg.tool()).getCurrency().equals(CMLib.beanCounter().getCurrency(this)))
+						if(!CMLib.beanCounter().isCurrencyMatch(((Coins)msg.tool()).getCurrency(),CMLib.beanCounter().getCurrency(this)))
 						{
 							CMLib.commands().postSay(this,mob,L("I'm sorry, I can only give you @x1.",CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(this))),true,false);
 							return false;

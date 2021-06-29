@@ -235,7 +235,7 @@ public class Hireling extends StdBehavior
 					CMLib.commands().postSay(observer,null,L("I wouldn't work for the likes of you."),false,false);
 					return false;
 				}
-				if(!((Coins)msg.tool()).getCurrency().equals(CMLib.beanCounter().getCurrency(observer)))
+				if(!CMLib.beanCounter().isCurrencyMatch(((Coins)msg.tool()).getCurrency(),CMLib.beanCounter().getCurrency(observer)))
 				{
 					CMLib.commands().postSay(observer,null,L("I'm sorry, I only deal in @x1.",CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(observer))),false,false);
 					return false;

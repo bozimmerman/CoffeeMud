@@ -349,7 +349,7 @@ public class BribeGateGuard extends StdBehavior
 		&& (!msg.amISource(monster))
 		&& (msg.targetMinor() == CMMsg.TYP_GIVE)
 		&& (msg.tool()instanceof Coins)
-		&& (!((Coins)msg.tool()).getCurrency().equals(currency)))
+		&& (!CMLib.beanCounter().isCurrencyMatch(((Coins)msg.tool()).getCurrency(),currency)))
 		{
 			final double denomination=CMLib.beanCounter().getLowestDenomination(currency);
 			CMLib.commands().postSay(monster,mob,L("I only accept @x1.",CMLib.beanCounter().getDenominationName(currency,denomination)),false,false);

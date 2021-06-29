@@ -138,7 +138,7 @@ public class Thief_PiecesOfEight extends ThiefSkill
 						if(I2 instanceof Coins)
 						{
 							final Coins C=(Coins)I2;
-							if(C.getCurrency().equals(triad.first))
+							if(CMLib.beanCounter().isCurrencyMatch(C.getCurrency(),triad.first))
 							{
 								if(C.getDenomination()==triad.second.doubleValue())
 								{

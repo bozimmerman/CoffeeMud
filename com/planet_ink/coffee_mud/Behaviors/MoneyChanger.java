@@ -72,7 +72,7 @@ public class MoneyChanger extends StdBehavior
 		if(rates.containsKey(currency))
 			return rates;
 		String myCurrency=CMLib.beanCounter().getCurrency(affecting);
-		if(myCurrency.equalsIgnoreCase(currency))
+		if(CMLib.beanCounter().isCurrencyMatch(myCurrency,currency))
 		{
 			rates.put(currency, Double.valueOf(cut));
 			return rates;
@@ -81,7 +81,7 @@ public class MoneyChanger extends StdBehavior
 		if(homeO!=null)
 		{
 			myCurrency=CMLib.beanCounter().getCurrency(homeO);
-			if(myCurrency.equalsIgnoreCase(currency))
+			if(CMLib.beanCounter().isCurrencyMatch(myCurrency,currency))
 			{
 				rates.put(currency, Double.valueOf(cut));
 				return rates;
@@ -103,7 +103,7 @@ public class MoneyChanger extends StdBehavior
 			if((A!=null)&&(A!=homeO))
 			{
 				myCurrency=CMLib.beanCounter().getCurrency(A);
-				if(myCurrency.equalsIgnoreCase(currency))
+				if(CMLib.beanCounter().isCurrencyMatch(myCurrency,currency))
 				{
 					final SpaceObject oA=(SpaceObject)A;
 					final long distance=CMLib.map().getDistanceFrom(homeO, oA);

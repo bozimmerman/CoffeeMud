@@ -433,7 +433,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 							final double myDenomination=bidAmts.second.doubleValue();
 							final long myCoins=bidAmts.third.longValue();
 							final double bid=CMath.mul(myCoins,myDenomination);
-							if(!myCurrency.equals(data.getCurrency()))
+							if(!CMLib.beanCounter().isCurrencyMatch(myCurrency, data.getCurrency()))
 							{
 								final String currencyName=CMLib.beanCounter().getDenominationName(data.getCurrency());
 								CMLib.commands().postSay(this,mob,L("This auction is being handled in @x1.",currencyName),true,false);

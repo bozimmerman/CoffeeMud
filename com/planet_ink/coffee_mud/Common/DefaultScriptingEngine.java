@@ -6143,7 +6143,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						else
 						if(E instanceof Coins)
 						{
-							if(((Coins)E).getCurrency().equalsIgnoreCase(arg2))
+							if(CMLib.beanCounter().isCurrencyMatch(((Coins)E).getCurrency(),arg2))
 								val1=(int)Math.round(((Coins)E).getTotalValue());
 						}
 						else
@@ -8241,7 +8241,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					else
 					if(E instanceof Coins)
 					{
-						if(((Coins)E).getCurrency().equalsIgnoreCase(arg2))
+						if(CMLib.beanCounter().isCurrencyMatch(((Coins)E).getCurrency(),arg2))
 							val1=(int)Math.round(((Coins)E).getTotalValue());
 					}
 					else
@@ -14085,7 +14085,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(t[1].startsWith("ANY")||t[1].startsWith("ALL"))
 								t[1]=t[1].trim();
 							else
-							if(!((Coins)msg.tool()).getCurrency().equals(CMLib.beanCounter().getCurrency(monster)))
+							if(!CMLib.beanCounter().isCurrencyMatch(((Coins)msg.tool()).getCurrency(),CMLib.beanCounter().getCurrency(monster)))
 								break;
 							double d=0.0;
 							if(CMath.isDouble(t[1]))

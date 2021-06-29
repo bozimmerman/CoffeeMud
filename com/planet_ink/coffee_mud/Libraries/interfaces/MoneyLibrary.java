@@ -93,6 +93,7 @@ public interface MoneyLibrary extends CMLibrary
 	public void setMoney(MOB mob, int amount);
 	public void clearZeroMoney(MOB mob, String currency);
 	public void clearInventoryMoney(MOB mob, String currency);
+	public boolean isCurrencyMatch(final String curr1, final String curr2);
 	public List<Coins> getStandardCurrency(MOB mob, String currency);
 	public List<Coins> getStandardCurrency(MOB mob, Item container, String currency);
 	public List<Coins> getStandardCurrency(Room R, Item container, String currency);

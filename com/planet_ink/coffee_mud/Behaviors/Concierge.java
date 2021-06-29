@@ -442,7 +442,7 @@ public class Concierge extends StdBehavior
 				return false;
 			}
 			else
-			if(!((Coins)possibleCoins).getCurrency().equalsIgnoreCase(CMLib.beanCounter().getCurrency(conceirgeM)))
+			if(!CMLib.beanCounter().isCurrencyMatch(((Coins)possibleCoins).getCurrency(),CMLib.beanCounter().getCurrency(conceirgeM)))
 			{
 				CMLib.commands().postSay(conceirgeM,source,L("I'm sorry, I don't accept that kind of currency."),true,false);
 				return false;
