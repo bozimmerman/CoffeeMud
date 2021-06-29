@@ -581,6 +581,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			buildingI.setReadableText(A2.name());
 		}
 		itemName=CMLib.english().startWithAorAn(itemName);
+		final String oldName=buildingI.Name();
 		buildingI.setName(itemName);
 		startStr=L("<S-NAME> start(s) crafting @x1.",buildingI.name());
 		displayText=L("You are crafting @x1",buildingI.name());
@@ -591,6 +592,8 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
 		}
+		else
+			buildingI.setDisplayText(CMStrings.replaceAllIgnoreCase(buildingI.displayText(), oldName, itemName));
 		buildingI.basePhyStats().setWeight(amt1+amt2);
 		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
 		buildingI.setMaterial(getBuildingMaterial(amt1+amt2,data,new int[CF_TOTAL]));

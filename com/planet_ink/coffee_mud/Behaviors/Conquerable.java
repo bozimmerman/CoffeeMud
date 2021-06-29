@@ -1088,7 +1088,7 @@ public class Conquerable extends Arrest
 			if((I instanceof SiegableItem)
 			&&(I instanceof BoardableItem)
 			&&(totalControlPoints>0))
-				totalControlPoints += ((SiegableItem)I).getMaxHullPoints();
+				recalculateControlPoints(myArea);
 		}
 	}
 

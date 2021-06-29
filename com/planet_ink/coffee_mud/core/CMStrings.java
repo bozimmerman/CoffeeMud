@@ -748,6 +748,41 @@ public class CMStrings
 	}
 
 	/**
+	 * Finds all instances of the second parameter string in the first string, ignoring case,
+	 * replaces them with the third word.  Returns the string with or without changes.
+	 * The search is case insensitive
+	 * @param str the string to look inside of
+	 * @param thisStr the string to look for inside the first string
+	 * @param withThisStr the string to replace the second string with, where found.
+	 * @return the string modified, or not modified if no replacements were made.
+	 */
+	public final static String replaceAllIgnoreCase(String str, final String thisStr, final String withThisStr)
+	{
+		if((str==null)
+		||(thisStr==null)
+		||(withThisStr==null)
+		||(str.length()==0)
+		||(thisStr.length()==0)
+		||(thisStr.equalsIgnoreCase(withThisStr)))
+		{
+			return str;
+		}
+		final String lthisStr = thisStr.toLowerCase();
+		final String lstr = str.toLowerCase();
+		for(int i=str.length()-1;i>=0;i--)
+		{
+			if(lstr.charAt(i)==lthisStr.charAt(0))
+			{
+				if(lstr.substring(i).startsWith(lthisStr))
+				{
+					str=str.substring(0,i)+withThisStr+str.substring(i+thisStr.length());
+				}
+			}
+		}
+		return str;
+	}
+
+	/**
 	 * Flattens a string by converting all carriage returns and linefeeds into spaces.
 	 * @param str the string to flatten
 	 * @return the flat string
