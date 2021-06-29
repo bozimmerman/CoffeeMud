@@ -60,9 +60,11 @@ public class Prop_RoomView extends Property
 	@Override
 	public void setMiscText(final String text)
 	{
+		super.setMiscText(text);
 		final int x=text.indexOf(';');
 		longlook=false;
 		attack=false;
+		newRoom=null;
 		if(x>=0)
 		{
 			final String parms=text.substring(0,x);
@@ -88,9 +90,20 @@ public class Prop_RoomView extends Property
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((newRoom==null)
-		||(newRoom.amDestroyed())
-		||(!CMLib.map().getExtendedRoomID(newRoom).equalsIgnoreCase(viewedRoomID)))
+		||(newRoom.amDestroyed()))
+		{
 			newRoom=CMLib.map().getRoom(viewedRoomID);
+			if(newRoom == null)
+			{
+				final int dirCode = CMLib.directions().getDirectionCode(viewedRoomID);
+				if(dirCode >= 0)
+				{
+					final Room hereR=CMLib.map().roomLocation(affected);
+					if(hereR != null)
+						newRoom=hereR.getRoomInDir(dirCode);
+				}
+			}
+		}
 		if(newRoom==null)
 			return super.okMessage(myHost,msg);
 

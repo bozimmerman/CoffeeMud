@@ -30,7 +30,7 @@
  38. New common skill: Improved Alchemy
  39. New prompt flag: combat-only sections
  40. Expertises now support .2 files like achievements, and MODIFY EXPERTISE now works.
- 41. Prop_RoomView has new parms, LONGLOOK, and ATTACK to give ship-like abilities
+ 41. Prop_RoomView has new parms, LONGLOOK, and ATTACK to give ship-like abilities, and dirs.
  42. New misc property: AmbianceAdder, for adding random ambiances to things.
  43. New Items: GenCastle, GenClanCastle -- stationary boardables.
  44. Clans can now make GenClanCastles using ClanCrafting.
