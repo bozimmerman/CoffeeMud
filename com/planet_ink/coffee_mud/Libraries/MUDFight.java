@@ -591,10 +591,23 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	@Override
 	public boolean mayIAttackThisVessel(final MOB mob, final PhysicalAgent defender)
 	{
-		final String defenderOwnerName = (defender instanceof PrivateProperty) ? ((PrivateProperty)defender).getOwnerName() : "";
+		String defenderOwnerName = (defender instanceof PrivateProperty) ? ((PrivateProperty)defender).getOwnerName() : "";
 		// is this how we determine npc ships?
 		if(((defenderOwnerName == null)||(defenderOwnerName.length()==0))&&(defender instanceof PrivateProperty))
-			return true;
+		{
+			if(!(defender instanceof ClanItem))
+				return true;
+			defenderOwnerName = ((ClanItem)defender).clanID();
+			if((defenderOwnerName == null)||(defenderOwnerName.length()==0))
+				return true;
+			final Clan C=CMLib.clans().getClan(defenderOwnerName);
+			final Clan srcC=CMLib.clans().findConquerableClan(mob);
+			if((C!=null)
+			&&(srcC!=null)
+			&&(C!=srcC)
+			&&(srcC.getClanRelations(defenderOwnerName)==Clan.REL_WAR))
+				return true;
+		}
 		if(CMSecurity.isASysOp(mob) && mob.isAttributeSet(Attrib.PLAYERKILL))
 			return true;
 		if(CMLib.flags().isUnattackable(defender))

@@ -1306,7 +1306,7 @@ public class Conquerable extends Arrest
 		if(msg.sourceMinor()==CMMsg.TYP_CLANEVENT)
 		{
 			if(msg.sourceMessage().equals("CONTROLRESET"))
-				totalControlPoints=-1;
+				recalculateControlPoints(CMLib.map().areaLocation(myArea));
 			else
 			if(msg.sourceMessage().startsWith("-"))
 			{
