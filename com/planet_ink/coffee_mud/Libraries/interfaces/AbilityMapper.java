@@ -64,6 +64,21 @@ public interface AbilityMapper extends CMLibrary
 	 * @see AbilityMapping
 	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, SecretFlag, boolean, List, String, Integer[])
 	 * @see AbilityMapper#delCharAbilityMapping(String, String)
+	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, boolean, List)
+	 * @param ID the race ID(), charclass ID(), "All" is also acceptable.
+	 * @param qualLevel the charclass or race player level at which one qualifies to receive the ability
+	 * @param abilityID the Ability ID()
+	 * @param costOverrides cost overrides
+	 * @return the finished AbilityMapping
+	 */
+	public AbilityMapping addCharAbilityMapping(final String ID, final int qualLevel, final String abilityID, final Integer[] costOverrides);
+
+	/**
+	 * Adds a mapping between a charclass, race, or whatever, and an Ability, by String Ability ID.
+	 * Also allows specifying numerous other attributes.
+	 * @see AbilityMapping
+	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, SecretFlag, boolean, List, String, Integer[])
+	 * @see AbilityMapper#delCharAbilityMapping(String, String)
 	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, boolean)
 	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, boolean, String)
 	 * @param ID the race ID(), charclass ID(), "All" is also acceptable.
@@ -549,7 +564,7 @@ public interface AbilityMapper extends CMLibrary
 
 	/**
 	 * Returns whether the given mob qualifies or will qualify for the given
-	 * ability because of any of their char classes at its current level, 
+	 * ability because of any of their char classes at its current level,
 	 * race, or clan.
 	 * @see AbilityMapper#qualifiesOnlyByClan(MOB, Ability)
 	 * @see AbilityMapper#qualifiesByLevel(MOB, Ability)
@@ -561,8 +576,8 @@ public interface AbilityMapper extends CMLibrary
 	 * @return true if the student qualifies because of their classes, race, etc
 	 */
 	public boolean qualifiesByTrajectory(final MOB studentM, final String abilityID);
-	
-	
+
+
 	/**
 	 * Returns whether the given Ability ID() represents a skill qualified for by
 	 * any existing character class, including All-Qualified abilities.

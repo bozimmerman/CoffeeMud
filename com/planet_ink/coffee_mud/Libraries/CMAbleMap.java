@@ -76,6 +76,15 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	public AbilityMapping addCharAbilityMapping(final String ID,
 												final int qualLevel,
 												final String abilityID,
+												final Integer[] costOverrides)
+	{
+		return addCharAbilityMapping(ID,qualLevel,abilityID,0,100,"",false,SecretFlag.PUBLIC,new Vector<String>(),"",costOverrides);
+	}
+
+	@Override
+	public AbilityMapping addCharAbilityMapping(final String ID,
+												final int qualLevel,
+												final String abilityID,
 												final boolean autoGain,
 												final String extraMasks)
 	{
@@ -285,13 +294,13 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 
 	@Override
 	public AbilityMapping addDynaAbilityMapping(final String ID,
-									  final int qualLevel,
-									  final String abilityID,
-									  final int defaultProficiency,
-									  final String defaultParam,
-									  final boolean autoGain,
-									  final SecretFlag secret,
-									  final String extraMask)
+												final int qualLevel,
+												final String abilityID,
+												final int defaultProficiency,
+												final String defaultParam,
+												final boolean autoGain,
+												final SecretFlag secret,
+												final String extraMask)
 	{
 		delCharAbilityMapping(ID,abilityID);
 		if(CMSecurity.isAbilityDisabled(ID.toUpperCase()))
