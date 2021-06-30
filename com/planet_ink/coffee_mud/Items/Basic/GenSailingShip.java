@@ -150,7 +150,7 @@ public class GenSailingShip extends GenNavigableBoardable
 	@Override
 	public final int getMaxHullPoints()
 	{
-		return 25 * getArea().numberOfProperIDedRooms();
+		return (25 * getArea().numberOfProperIDedRooms())+(phyStats().armor());
 	}
 
 	@Override

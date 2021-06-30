@@ -217,7 +217,7 @@ public class GenCaravan extends GenNavigableBoardable
 	@Override
 	public final int getMaxHullPoints()
 	{
-		return 10 * getArea().numberOfProperIDedRooms();
+		return (10 * getArea().numberOfProperIDedRooms())+(phyStats().armor());
 	}
 
 	@Override

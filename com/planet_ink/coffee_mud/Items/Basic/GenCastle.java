@@ -68,7 +68,7 @@ public class GenCastle extends GenSiegableBoardable
 	@Override
 	public int getMaxHullPoints()
 	{
-		return 100 * getArea().numberOfProperIDedRooms();
+		return (100 * getArea().numberOfProperIDedRooms())+(phyStats().armor());
 	}
 
 	@Override

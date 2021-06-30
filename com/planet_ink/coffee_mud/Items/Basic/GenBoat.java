@@ -98,7 +98,7 @@ public class GenBoat extends GenRideable implements SiegableItem
 	@Override
 	public final int getMaxHullPoints()
 	{
-		return 12;
+		return 12+(phyStats().armor());
 	}
 
 	@Override

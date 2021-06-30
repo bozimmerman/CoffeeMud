@@ -165,7 +165,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 	@Override
 	public final int getMaxHullPoints()
 	{
-		return 12;
+		return 12+(phyStats().armor());
 	}
 
 	@Override
