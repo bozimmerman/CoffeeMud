@@ -92,7 +92,9 @@ public class Spell_RepairingAura extends Spell
 		if((!canBeUninvoked())&&(affected instanceof Item))
 		{
 			final Item I=(Item)affected;
-			if((I.subjectToWearAndTear())&&(I.usesRemaining()<100))
+			if((I.subjectToWearAndTear())
+			&&(I.usesRemaining()<100)
+			&&(I.phyStats().weight()<=500))
 				I.setUsesRemaining(100);
 		}
 	}
@@ -136,6 +138,12 @@ public class Spell_RepairingAura extends Spell
 		if((!(target instanceof Item))&&(!(target instanceof MOB)))
 		{
 			mob.tell(L("@x1 would not be affected by this spell.",target.name(mob)));
+			return false;
+		}
+		if((target instanceof Item)
+		&&(target.phyStats().weight()>500))
+		{
+			mob.tell(L("@x1 is too large to be affected by this magic."));
 			return false;
 		}
 

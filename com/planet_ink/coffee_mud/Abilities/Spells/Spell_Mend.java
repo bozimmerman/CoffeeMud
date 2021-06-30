@@ -78,6 +78,11 @@ public class Spell_Mend extends Spell
 			mob.tell(L("@x1 cannot be mended.",target.name(mob)));
 			return false;
 		}
+		if(target.phyStats().weight()>500)
+		{
+			mob.tell(L("@x1 is too large to be affected by this magic."));
+			return false;
+		}
 
 		if(!super.invoke(mob,commands, givenTarget, auto,asLevel))
 			return false;

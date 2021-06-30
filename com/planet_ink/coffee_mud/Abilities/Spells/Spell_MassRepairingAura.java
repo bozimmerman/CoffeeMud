@@ -115,7 +115,9 @@ public class Spell_MassRepairingAura extends Spell
 				choices.addAll(this.getChoices((ItemPossessor)affected));
 			for(final Item I : choices)
 			{
-				if((I.subjectToWearAndTear())&&(I.usesRemaining()<100))
+				if((I.subjectToWearAndTear())
+				&&(I.usesRemaining()<100)
+				&&(I.phyStats().weight()<=500))
 				{
 					if(I.owner() instanceof Room)
 						((Room)I.owner()).showHappens(CMMsg.MSG_OK_VISUAL,I,L("<S-NAME> is magically repairing itself."));
