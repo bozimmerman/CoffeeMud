@@ -2326,8 +2326,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			}
 			if(!viewermob.isMonster())
 				myDescription.append(CMLib.protocol().mxpImage(viewedmob," ALIGN=RIGHT H=70 W=70"));
-			myDescription.append(viewedmob.healthText(viewermob)+"\n\r\n\r");
-			myDescription.append(viewedmob.description(viewermob)+"\n\r\n\r");
+			myDescription.append(CMStrings.capitalizeFirstLetter(viewedmob.healthText(viewermob))+"\n\r\n\r");
+			myDescription.append(CMStrings.capitalizeFirstLetter(viewedmob.description(viewermob))+"\n\r\n\r");
 
 			final StringBuilder eq=CMLib.commands().getEquipment(viewermob,viewedmob);
 			if(eq.length() > 0)
