@@ -282,7 +282,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				talker = c.first.getFactoryMOB();
 				talker.setClan(c.first.clanID(), c.second.intValue());
 				talker.setLocation(talkLocationR);
-				postChannel(talker,channelName,message,systemMsg);
+				//postChannel(talker,channelName,message,systemMsg);
 				// never destroy the clans factory mob!
 			}
 			else

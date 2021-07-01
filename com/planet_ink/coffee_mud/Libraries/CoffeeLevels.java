@@ -851,6 +851,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			mob.playerStats().setLeveledDateTime(mob.basePhyStats().level(),mob.getAgeMinutes(),room);
 			final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DETAILEDLEVELS, mob);
 			final List<String> channels2=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LEVELS, mob);
+			channels2.removeAll(channels);
 			if(!CMLib.flags().isCloaked(mob))
 			for(int i=0;i<channels.size();i++)
 				CMLib.commands().postChannel(channels.get(i),mob.clans(),L("@x1 has just gained a level at @x2.",mob.Name(),CMLib.map().getDescriptiveExtendedRoomID(room)),true);

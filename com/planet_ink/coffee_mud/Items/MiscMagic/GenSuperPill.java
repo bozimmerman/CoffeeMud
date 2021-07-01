@@ -179,7 +179,12 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 					||(mob.charStats().getMyRace().expless()))
 						CMLib.leveler().level(mob);
 					else
-						CMLib.leveler().postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
+					{
+						final int targetXp = mob.getExpNextLevel()+1;
+						int tries = 100;
+						while((--tries>0)&&(mob.getExperience()<targetXp))
+								CMLib.leveler().postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
+					}
 				}
 			}
 			else
