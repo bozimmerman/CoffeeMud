@@ -1455,6 +1455,19 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					}
 					c++;
 					break;
+				case '\\':
+					if(mob.isInCombat())
+					{
+						while((c<prompt.length()-1)
+						&&((prompt.charAt(c)!='%')||(prompt.charAt(c+1)!='\\')))
+							c++;
+						if((c<prompt.length()-1)
+						&&(prompt.charAt(c)=='%')
+						&&(prompt.charAt(c+1)=='\\'))
+							c++;
+					}
+					c++;
+					break;
 				case '-':
 					if(c<(prompt.length()-2))
 					{

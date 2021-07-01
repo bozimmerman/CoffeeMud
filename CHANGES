@@ -28,7 +28,7 @@
  36. New common skill: CaravanBuilding, for, well, building caravans.
  37. Magic Powders can now be sniffed to self-enchant
  38. New common skill: Improved Alchemy
- 39. New prompt flag: combat-only sections
+ 39. New prompt flags: combat-only sections, non-combat-only sections
  40. Expertises now support .2 files like achievements, and MODIFY EXPERTISE now works.
  41. Prop_RoomView has new parms, LONGLOOK, and ATTACK to give ship-like abilities, and dirs.
  42. New misc property: AmbianceAdder, for adding random ambiances to things.
