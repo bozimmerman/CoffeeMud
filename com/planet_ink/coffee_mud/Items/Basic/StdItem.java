@@ -1299,6 +1299,10 @@ public class StdItem implements Item
 				}
 			}
 			return canWearComplete(mob,0);
+		case CMMsg.TYP_THROW:
+			if(msg.tool() instanceof MagicDust)
+				return true;
+			break;
 		case CMMsg.TYP_PUSH:
 		case CMMsg.TYP_PULL:
 			if(msg.source().isMine(this))

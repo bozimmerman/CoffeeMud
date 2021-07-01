@@ -79,7 +79,7 @@ public class Throw extends StdCommand
 		final int dir=CMLib.directions().getGoodDirectionCode(str);
 		Environmental target=null;
 		if(dir<0)
-			target=mob.location().fetchInhabitant(str);
+			target=mob.location().fetchFromRoomFavorItems(null, str);
 		else
 		{
 			target=mob.location().getRoomInDir(dir);
