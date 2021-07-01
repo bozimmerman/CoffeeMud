@@ -35,6 +35,7 @@
  43. New Items: GenCastle, GenClanCastle -- stationary boardables.
  44. Clans can now make GenClanCastles using ClanCrafting.
  45. AREAVISIT achievement type now supports CONFLICT argument.
+ 46. Refusing to create a new character no longer counts against login attempts.
  
  # Build 5.9.11.1 Release 02/26/2021
   Bug Fix Release:

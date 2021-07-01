@@ -1533,6 +1533,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		if(result==LoginResult.NO_LOGIN)
 		{
+			loginObj.attempt--; // not confirming doesn't count against your pass guesses
 			loginObj.state=LoginState.LOGIN_START;
 			return null;
 		}
