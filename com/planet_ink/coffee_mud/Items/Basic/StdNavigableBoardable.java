@@ -50,6 +50,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 	protected final List<Integer>	courseDirections	= new Vector<Integer>();
 	protected volatile int			directionFacing		= 0;
 	protected volatile int			ticksSinceMove		= 0;
+	protected volatile int			ticksSinceLastTurn	= 0;
 	protected volatile Item			tenderItem			= null;
 	protected List<Item>			smallTenderRequests	= new SLinkedList<Item>();
 	protected volatile Room			prevItemRoom		= null;
@@ -595,6 +596,12 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 							return false;
 						}
 					}
+					if((ticksSinceLastTurn<phyStats().speed())
+					&&((dir) != getDirectionFacing(dir)))
+					{
+						msg.source().tell(L("@x1 can't change direction that quickly.  You must wait a bit longer.",name(msg.source())));
+						return false;
+					}
 					if(anchorDown)
 					{
 						msg.source().tell(L("The "+anchor_name+" is "+anchor_verbed+", so you won`t be moving anywhere."));
@@ -1030,6 +1037,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 		if(tickID == navTickID)
 		{
 			ticksSinceMove++;
+			ticksSinceLastTurn++;
 			if((!this.anchorDown)
 			&& (area != null)
 			&& (courseDirection != -1) )
@@ -1037,7 +1045,12 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 				final int speed=getMaxSpeed();
 				for(int s=0;s<speed && (courseDirection>=0);s++)
 				{
-					switch(navMove(courseDirection & 127))
+					final int newDirection = courseDirection & 127;
+					final int directionFacing = getDirectionFacing(newDirection);
+					if((ticksSinceLastTurn<phyStats().speed())
+					&&((newDirection) != directionFacing))
+						break;
+					switch(navMove(newDirection))
 					{
 					case CANCEL:
 					{
@@ -1365,6 +1378,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						{
 							thisRoom.send(mob, maneuverMsg);
 							directionFacing = CMLib.directions().getStrictDirectionCode(maneuverMsg.sourceMessage());
+							ticksSinceLastTurn = 0;
 							if(CMSecurity.isDebugging(DbgFlag.SIEGECOMBAT))
 								Log.debugOut("SiegeCombat: "+Name()+" turns "+directionName);
 						}
@@ -1381,7 +1395,11 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 			}
 			else
 			{
-				directionFacing = direction;
+				if(directionFacing != direction)
+				{
+					ticksSinceLastTurn = 0;
+					directionFacing = direction;
+				}
 			}
 			this.clearTacticalModeInternal();
 			final Room destRoom=thisRoom.getRoomInDir(direction);
