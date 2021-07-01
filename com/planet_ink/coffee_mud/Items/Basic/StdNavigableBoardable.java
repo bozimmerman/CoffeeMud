@@ -45,19 +45,19 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 		return "StdNavigableBoardable";
 	}
 
-	protected volatile int				courseDirection		= -1;
-	protected volatile boolean			anchorDown			= true;
-	protected final List<Integer>		courseDirections	= new Vector<Integer>();
-	protected volatile int				directionFacing		= 0;
-	protected volatile int				ticksSinceMove		= 0;
-	protected volatile Item				tenderItem			= null;
-	protected List<Item>				smallTenderRequests	= new SLinkedList<Item>();
-	protected volatile Room				prevItemRoom		= null;
+	protected volatile int			courseDirection		= -1;
+	protected volatile boolean		anchorDown			= true;
+	protected final List<Integer>	courseDirections	= new Vector<Integer>();
+	protected volatile int			directionFacing		= 0;
+	protected volatile int			ticksSinceMove		= 0;
+	protected volatile Item			tenderItem			= null;
+	protected List<Item>			smallTenderRequests	= new SLinkedList<Item>();
+	protected volatile Room			prevItemRoom		= null;
 
-	protected String		verb_sail		= "navigate";
-	protected String		verb_sailing	= "navigating";
-	protected String		anchor_name		= "anchor";
-	protected String		anchor_verbed	= "lowered";
+	protected String	verb_sail		= "navigate";
+	protected String	verb_sailing	= "navigating";
+	protected String	anchor_name		= "anchor";
+	protected String	anchor_verbed	= "lowered";
 
 	public StdNavigableBoardable()
 	{

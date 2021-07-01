@@ -1321,14 +1321,17 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				}
 			}
 
+			int prodWidth=Math.max(totalWidth-csize,5);
+			final int costWidth=(5+csize);
 			final String c;
 			if(shop instanceof Librarian)
 			{
 				csize=-7;
-				c="^x"+CMStrings.padRight(L("Item"),Math.max(totalWidth-csize,5));
+				prodWidth=Math.max(totalWidth-csize,5);
+				c="^x"+CMStrings.padRight(L("Item"),prodWidth);
 			}
 			else
-				c="^x["+CMStrings.padRight(L("Cost"),4+csize)+"] "+CMStrings.padRight(L("Product"),Math.max(totalWidth-csize,5));
+				c="^x["+CMStrings.padRight(L("Cost"),4+csize)+"] "+CMStrings.padRight(L("Product"),prodWidth);
 			str.append(c+((totalCols>1)?c:"")+"^.^N^<!ENTITY shopkeeper \""+CMStrings.removeColors(seller.name())+"\"^>^.^N\n\r");
 			int colNum=0;
 			int rowNum=0;
@@ -1341,16 +1344,29 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				if(csize >= 0)
 				{
 					if(price.questPointPrice>0)
-						col=CMStrings.padRight(L("[@x1qp",""+price.questPointPrice),(5+csize))+"] ";
+						col=CMStrings.padRight(L("[@x1qp",""+price.questPointPrice),costWidth)+"] ";
 					else
 					if(price.experiencePrice>0)
-						col=CMStrings.padRight(L("[@x1xp",""+price.experiencePrice),(5+csize))+"] ";
+						col=CMStrings.padRight(L("[@x1xp",""+price.experiencePrice),costWidth)+"] ";
 					else
 						col=CMStrings.padRight("["+CMLib.beanCounter().abbreviatedPrice(seller,price.absoluteGoldPrice),5+csize)+"] ";
 				}
 				else
 					col="";
-				col += "^<SHOP^>"+CMStrings.padRight(E.name(),"^</SHOP^>",Math.max(totalWidth-csize,5));
+				col += CMStrings.padRightPreserve("^<SHOP^>"+E.name()+"^</SHOP^>",prodWidth);
+				if(E.name().equalsIgnoreCase("some spiked iron banded greaves"))
+					System.out.println(""+(E.name().length()+2));
+				if(E.name().length()>=prodWidth)
+				{
+					if(colNum>=totalCols)
+						str.append("\n\r");
+					col += "\n\r";
+					rowNum++;
+					if((limit>0)&&(rowNum>limit))
+						break;
+					colNum=0;
+				}
+				else
 				if((++colNum)>totalCols)
 				{
 					str.append("\n\r");
