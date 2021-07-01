@@ -268,10 +268,10 @@ public class Thief_SmugglersHold extends ThiefSkill
 			return false;
 
 		final Item target;
-		if((R.getArea() instanceof BoardableItem)
-		&&(((BoardableItem)R.getArea()).getBoardableItem() instanceof BoardableItem))
+		if((R.getArea() instanceof Boardable)
+		&&(((Boardable)R.getArea()).getBoardableItem() instanceof Boardable))
 		{
-			target=((BoardableItem)R.getArea()).getBoardableItem();
+			target=((Boardable)R.getArea()).getBoardableItem();
 		}
 		else
 		{

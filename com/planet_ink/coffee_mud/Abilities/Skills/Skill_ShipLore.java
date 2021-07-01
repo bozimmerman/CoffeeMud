@@ -118,8 +118,8 @@ public class Skill_ShipLore extends StdSkill
 
 		final String shipName=CMParms.combine(commands);
 		Room shipChkR=R;
-		if(shipChkR.getArea() instanceof BoardableItem)
-			shipChkR=CMLib.map().roomLocation(((BoardableItem)shipChkR.getArea()).getBoardableItem());
+		if(shipChkR.getArea() instanceof Boardable)
+			shipChkR=CMLib.map().roomLocation(((Boardable)shipChkR.getArea()).getBoardableItem());
 		if(shipChkR==null)
 			return false;
 		if((shipChkR.domainType()&Room.INDOORS)==Room.INDOORS)
@@ -131,7 +131,7 @@ public class Skill_ShipLore extends StdSkill
 		int penalty=1;
 		if(targetI==null)
 		{
-			final List<BoardableItem> ships=new XVector<BoardableItem>(CMLib.map().ships());
+			final List<Boardable> ships=new XVector<Boardable>(CMLib.map().ships());
 			targetI=(Item)CMLib.english().fetchAvailable(ships, shipName, null, Item.FILTER_UNWORNONLY, true);
 			if(targetI==null)
 				targetI=(Item)CMLib.english().fetchAvailable(ships, shipName, null, Item.FILTER_UNWORNONLY, false);
@@ -289,7 +289,7 @@ public class Skill_ShipLore extends StdSkill
 			*/
 			if(expertise >= 5)
 			{
-				if(A instanceof BoardableItem)
+				if(A instanceof Boardable)
 				{
 					int itemLimit=0;
 					int weightLimit=0;

@@ -190,7 +190,7 @@ public class Link extends At
 		}
 		else
 		if((room.rawDoors()[opDir]==null)
-		&&(!(mob.location().getArea() instanceof BoardableItem)))
+		&&(!(mob.location().getArea() instanceof Boardable)))
 		{
 			if(hereGL!=null)
 			{

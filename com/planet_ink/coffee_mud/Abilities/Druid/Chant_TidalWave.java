@@ -173,9 +173,9 @@ public class Chant_TidalWave extends Chant
 		{
 			gatherHighestLevels(casterM,(Rideable)target,grp,highestLevels,highestLevelM);
 		}
-		if(target instanceof BoardableItem)
+		if(target instanceof Boardable)
 		{
-			final Area A=((BoardableItem)target).getArea();
+			final Area A=((Boardable)target).getArea();
 			gatherHighestLevels(casterM,A,grp,highestLevels,highestLevelM);
 		}
 		if(target instanceof Room)
@@ -218,7 +218,7 @@ public class Chant_TidalWave extends Chant
 	{
 		if(mob!=null)
 		{
-			if(!(target instanceof BoardableItem))
+			if(!(target instanceof Boardable))
 				return Ability.QUALITY_INDIFFERENT;
 		}
 		return super.castingQuality(mob,target);
@@ -233,9 +233,9 @@ public class Chant_TidalWave extends Chant
 
 		}
 
-		if(target instanceof BoardableItem)
+		if(target instanceof Boardable)
 		{
-			final Item I=((BoardableItem)target).getBoardableItem();
+			final Item I=((Boardable)target).getBoardableItem();
 			if(I != null)
 				return CMLib.map().roomLocation(target);
 		}
@@ -272,7 +272,7 @@ public class Chant_TidalWave extends Chant
 			if(target==null)
 				return false;
 
-			if(target instanceof BoardableItem)
+			if(target instanceof Boardable)
 			{ //ok
 				if(target instanceof PrivateProperty)
 				{
@@ -282,7 +282,7 @@ public class Chant_TidalWave extends Chant
 						return false;
 					}
 				}
-				for(final Enumeration<Room> r=((BoardableItem)target).getArea().getProperMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=((Boardable)target).getArea().getProperMap();r.hasMoreElements();)
 				{
 					final Room R2=r.nextElement();
 					if((R2!=null)&&((R2.domainType()&Room.INDOORS)==0))
@@ -313,7 +313,7 @@ public class Chant_TidalWave extends Chant
 		else
 		{
 			target = R;
-			if(R.getArea() instanceof BoardableItem)
+			if(R.getArea() instanceof Boardable)
 			{ //ok
 				if(target instanceof PrivateProperty)
 				{
@@ -323,8 +323,8 @@ public class Chant_TidalWave extends Chant
 						return false;
 					}
 				}
-				target=((BoardableItem)R.getArea()).getBoardableItem();
-				for(final Enumeration<Room> r=((BoardableItem)target).getArea().getProperMap();r.hasMoreElements();)
+				target=((Boardable)R.getArea()).getBoardableItem();
+				for(final Enumeration<Room> r=((Boardable)target).getArea().getProperMap();r.hasMoreElements();)
 				{
 					final Room R2=r.nextElement();
 					if((R2!=null)&&((R2.domainType()&Room.INDOORS)==0))
@@ -363,11 +363,11 @@ public class Chant_TidalWave extends Chant
 			fromDir="right here";
 		else
 		{
-			if(R.getArea() instanceof BoardableItem)
+			if(R.getArea() instanceof Boardable)
 			{
 				if((R.domainType()&Room.INDOORS)==0)
 				{
-					final Item I=((BoardableItem)R.getArea()).getBoardableItem();
+					final Item I=((Boardable)R.getArea()).getBoardableItem();
 					if((I!=null)&&(I.owner() instanceof Room))
 					{
 						final Room R2=(Room)I.owner();

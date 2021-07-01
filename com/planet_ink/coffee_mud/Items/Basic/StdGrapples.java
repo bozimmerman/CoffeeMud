@@ -87,14 +87,14 @@ public class StdGrapples extends StdPortal
 			final Area sourceA=sourceR.getArea();
 			final Area targetA=targetR.getArea();
 			if((sourceA==targetA)
-			||(!(sourceA instanceof BoardableItem))
-			||(!(targetA instanceof BoardableItem)))
+			||(!(sourceA instanceof Boardable))
+			||(!(targetA instanceof Boardable)))
 			{
 				ungrapple();
 				return;
 			}
-			final BoardableItem sourceS=(BoardableItem)sourceA;
-			final BoardableItem targetS=(BoardableItem)targetA;
+			final Boardable sourceS=(Boardable)sourceA;
+			final Boardable targetS=(Boardable)targetA;
 			final Room sourceShipR=CMLib.map().roomLocation(sourceS.getBoardableItem());
 			final Room targetShipR=CMLib.map().roomLocation(targetS.getBoardableItem());
 			if((sourceShipR==null)||(sourceShipR!=targetShipR))
@@ -148,8 +148,8 @@ public class StdGrapples extends StdPortal
 				if((sourceRoom!=null)
 				&&(targetRoom!=null)
 				&&(sourceRoom.getArea()!=targetRoom.getArea())
-				&&(sourceRoom.getArea() instanceof BoardableItem)
-				&&(targetRoom.getArea() instanceof BoardableItem))
+				&&(sourceRoom.getArea() instanceof Boardable)
+				&&(targetRoom.getArea() instanceof Boardable))
 				{
 					final StdGrapples me=this;
 					msg.addTrailerRunnable(new Runnable()
@@ -186,11 +186,11 @@ public class StdGrapples extends StdPortal
 			{
 				final Area sourceA=sourceR.getArea();
 				final Area targetA=targetR.getArea();
-				if((sourceA instanceof BoardableItem)
-				&&(targetA instanceof BoardableItem))
+				if((sourceA instanceof Boardable)
+				&&(targetA instanceof Boardable))
 				{
-					final BoardableItem sourceS=(BoardableItem)sourceA;
-					final BoardableItem targetS=(BoardableItem)targetA;
+					final Boardable sourceS=(Boardable)sourceA;
+					final Boardable targetS=(Boardable)targetA;
 					if((msg.source().riding()==sourceS.getBoardableItem())
 					&&(sourceS.getArea()!=null))
 					{

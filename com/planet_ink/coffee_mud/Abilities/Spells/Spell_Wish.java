@@ -416,7 +416,7 @@ public class Spell_Wish extends Spell
 					for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						final Room R=r.nextElement();
-						if((R!=null)&&(!(R.getArea() instanceof BoardableItem)))
+						if((R!=null)&&(!(R.getArea() instanceof Boardable)))
 						{
 							final LandTitle title = law.getLandTitle(R);
 							if((title!=null)

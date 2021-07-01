@@ -182,11 +182,11 @@ public class Thief_SilentRunning extends ThiefSkill
 			return false;
 
 		final NavigableItem ship;
-		if((R.getArea() instanceof BoardableItem)
-		&&(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem)
-		&&(((NavigableItem)(((BoardableItem)R.getArea()).getBoardableItem())).navBasis() == Rideable.Basis.WATER_BASED))
+		if((R.getArea() instanceof Boardable)
+		&&(((Boardable)R.getArea()).getBoardableItem() instanceof NavigableItem)
+		&&(((NavigableItem)(((Boardable)R.getArea()).getBoardableItem())).navBasis() == Rideable.Basis.WATER_BASED))
 		{
-			ship=(NavigableItem)((BoardableItem)R.getArea()).getBoardableItem();
+			ship=(NavigableItem)((Boardable)R.getArea()).getBoardableItem();
 		}
 		else
 		{

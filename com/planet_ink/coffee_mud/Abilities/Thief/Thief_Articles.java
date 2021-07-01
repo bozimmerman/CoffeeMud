@@ -247,12 +247,12 @@ public class Thief_Articles extends ThiefSkill
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		if(!(R.getArea() instanceof BoardableItem))
+		if(!(R.getArea() instanceof Boardable))
 		{
 			mob.tell(L("You must be on a sailing ship."));
 			return false;
 		}
-		final BoardableItem myShip=(BoardableItem)R.getArea();
+		final Boardable myShip=(Boardable)R.getArea();
 		final Item myShipItem=myShip.getBoardableItem();
 		final Area myShipArea=myShip.getArea();
 		if((myShipItem==null)

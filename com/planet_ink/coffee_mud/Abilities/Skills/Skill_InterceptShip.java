@@ -174,11 +174,11 @@ public class Skill_InterceptShip extends StdSkill
 			return false;
 		Room currentR=null;
 		Rideable myShip=null;
-		if((R.getArea() instanceof BoardableItem)
-		&&(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem)
-		&&(((NavigableItem)(((BoardableItem)R.getArea()).getBoardableItem())).navBasis() == Rideable.Basis.WATER_BASED))
+		if((R.getArea() instanceof Boardable)
+		&&(((Boardable)R.getArea()).getBoardableItem() instanceof NavigableItem)
+		&&(((NavigableItem)(((Boardable)R.getArea()).getBoardableItem())).navBasis() == Rideable.Basis.WATER_BASED))
 		{
-			final NavigableItem sailShip=(NavigableItem)((BoardableItem)R.getArea()).getBoardableItem();
+			final NavigableItem sailShip=(NavigableItem)((Boardable)R.getArea()).getBoardableItem();
 			myShip=sailShip;
 			currentR=CMLib.map().roomLocation(myShip);
 			if(currentR!=null)
@@ -239,7 +239,7 @@ public class Skill_InterceptShip extends StdSkill
 				{
 					final Item I=R.findItem(null,parm);
 					if((I instanceof Rideable)
-					&&((I instanceof BoardableItem)
+					&&((I instanceof Boardable)
 						||(((Rideable)I).rideBasis()==Rideable.Basis.WATER_BASED))
 					&&(!CMLib.flags().isHidden(I)))
 					{
@@ -303,7 +303,7 @@ public class Skill_InterceptShip extends StdSkill
 					room=nextRoom;
 				}
 				final String msgStr=L("Your charts say the way there is: @x1",dirs.toString());
-				if(myShip instanceof BoardableItem)
+				if(myShip instanceof Boardable)
 				{
 					final String courseMsgStr="COURSE "+courseStr.toString();
 					final CMMsg huhMsg=CMClass.getMsg(mob,null,null,CMMsg.MSG_HUH,msgStr,courseMsgStr,null);

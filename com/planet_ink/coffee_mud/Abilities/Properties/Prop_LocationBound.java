@@ -163,9 +163,9 @@ public class Prop_LocationBound extends Property
 					return true;
 			}
 			else
-			if(affected instanceof BoardableItem)
+			if(affected instanceof Boardable)
 			{
-				final BoardableItem B=(BoardableItem)affected;
+				final Boardable B=(Boardable)affected;
 				final Area A=B.getArea();
 				if(A!=null)
 				{

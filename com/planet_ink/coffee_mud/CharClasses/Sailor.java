@@ -361,14 +361,14 @@ public class Sailor extends StdCharClass
 			&&(myHost instanceof MOB)
 			&&(((MOB)myHost).playerStats()!=null)
 			&&(((MOB)myHost).location()!=null)
-			&&(((MOB)myHost).location().getArea() == ((BoardableItem)msg.source().riding()).getArea()))
+			&&(((MOB)myHost).location().getArea() == ((Boardable)msg.source().riding()).getArea()))
 				giveExploreXP((MOB)myHost, (Room)msg.target(), 10, msg);
 		}
 
 		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
 		&&(msg.value()>0)
 		&&(msg.source().charStats().getCurrentClass() == this)
-		&&(CMLib.map().areaLocation(msg.source()) instanceof BoardableItem)
+		&&(CMLib.map().areaLocation(msg.source()) instanceof Boardable)
 		&&(msg.source() != msg.target()))
 		{
 			if(msg.target() instanceof MOB)
@@ -376,14 +376,14 @@ public class Sailor extends StdCharClass
 			else
 			if(msg.target() == null)
 			{
-				final BoardableItem shipArea = (BoardableItem)CMLib.map().areaLocation(msg.source());
+				final Boardable shipArea = (Boardable)CMLib.map().areaLocation(msg.source());
 				final Room R=CMLib.map().roomLocation(shipArea.getBoardableItem());
 				if(R!=null)
 				{
 					for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 					{
 						final Item I=i.nextElement();
-						if((I instanceof BoardableItem)
+						if((I instanceof Boardable)
 						&&(I.fetchEffect("Sinking")!=null)
 						&&(I!=shipArea.getBoardableItem()))
 						{

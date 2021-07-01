@@ -612,9 +612,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			return true;
 		if(CMLib.flags().isUnattackable(defender))
 			return false;
-		if(defender instanceof BoardableItem)
+		if(defender instanceof Boardable)
 		{
-			final Area otherArea = ((BoardableItem)defender).getArea();
+			final Area otherArea = ((Boardable)defender).getArea();
 			if(otherArea != null)
 			{
 				for(final Enumeration<Room> r=otherArea.getProperMap();r.hasMoreElements();)
@@ -1052,9 +1052,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			{
 				final Room R=mob.location();
 				final Area A=(R!=null)?R.getArea():null;
-				if((A instanceof BoardableItem)
-				&&(((BoardableItem)A).getBoardableItem() instanceof Combatant)
-				&&(((Combatant)((BoardableItem)A).getBoardableItem()).isInCombat()))
+				if((A instanceof Boardable)
+				&&(((Boardable)A).getBoardableItem() instanceof Combatant)
+				&&(((Combatant)((Boardable)A).getBoardableItem()).isInCombat()))
 					return;
 
 				final Rideable riding=mob.riding();
@@ -1142,7 +1142,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			}
 			if(source.mayIFight(target))
 			{
-				if((msg.source().riding() instanceof BoardableItem)
+				if((msg.source().riding() instanceof Boardable)
 				&&(CMLib.combat().isASiegeWeapon(item)))
 				{
 					room.send(source,msg);
@@ -3294,14 +3294,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if((CMLib.map() != CMLib.get(MudHost.MAIN_HOST)._map())
 		||(Thread.currentThread().getThreadGroup().getName().charAt(0)==MudHost.MAIN_HOST))
 		{
-			for(final Enumeration<BoardableItem> s = CMLib.map().ships();s.hasMoreElements();)
+			for(final Enumeration<Boardable> s = CMLib.map().ships();s.hasMoreElements();)
 			{
-				final BoardableItem ship = s.nextElement();
+				final Boardable ship = s.nextElement();
 				ship.tick(ship, Tickable.TICKID_SPECIALMANEUVER);
 			}
-			for(final Enumeration<BoardableItem> s = CMLib.map().ships();s.hasMoreElements();)
+			for(final Enumeration<Boardable> s = CMLib.map().ships();s.hasMoreElements();)
 			{
-				final BoardableItem ship = s.nextElement();
+				final Boardable ship = s.nextElement();
 				ship.tick(ship, Tickable.TICKID_SPECIALCOMBAT);
 			}
 		}

@@ -95,9 +95,9 @@ public class Thief_WarningShot extends ThiefSkill
 	protected List<Item> getSiegeWeapons(final Physical P)
 	{
 		final List<Item> items=new ArrayList<Item>();
-		if(P instanceof BoardableItem)
+		if(P instanceof Boardable)
 		{
-			final BoardableItem myShip=(BoardableItem)P;
+			final Boardable myShip=(Boardable)P;
 			if(myShip.getArea()!=null)
 			{
 				for(final Enumeration<Room> r=myShip.getArea().getProperMap();r.hasMoreElements();)
@@ -135,9 +135,9 @@ public class Thief_WarningShot extends ThiefSkill
 
 	public static void tellTheDeck(final Item ship, final MOB M, final String msg)
 	{
-		if(ship instanceof BoardableItem)
+		if(ship instanceof Boardable)
 		{
-			for(final Enumeration<Room> r=((BoardableItem)ship).getArea().getProperMap();r.hasMoreElements();)
+			for(final Enumeration<Room> r=((Boardable)ship).getArea().getProperMap();r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
 				if((R!=null)&&((R.domainType()&Room.INDOORS)==0)&&(R.numPCInhabitants()>0))
@@ -175,14 +175,14 @@ public class Thief_WarningShot extends ThiefSkill
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		if((!(R.getArea() instanceof BoardableItem))
-		||(!(((BoardableItem)R.getArea()).getBoardableItem() instanceof SiegableItem))
+		if((!(R.getArea() instanceof Boardable))
+		||(!(((Boardable)R.getArea()).getBoardableItem() instanceof SiegableItem))
 		||((R.domainType()&Room.INDOORS)!=0))
 		{
 			mob.tell(L("You must be able to man a siege weapon to fire a warning shot."));
 			return false;
 		}
-		final BoardableItem myShip=(BoardableItem)R.getArea();
+		final Boardable myShip=(Boardable)R.getArea();
 		final SiegableItem myShipItem=(SiegableItem)myShip.getBoardableItem();
 		if((myShipItem==null)
 		||(!(myShipItem.owner() instanceof Room))
@@ -242,11 +242,11 @@ public class Thief_WarningShot extends ThiefSkill
 				final String targetSeesStr;
 				final String iSeeStr;
 				final Item hisShipItem;
-				if((target instanceof BoardableItem)
-				&&(((BoardableItem)target).getBoardableItem() instanceof NavigableItem)
+				if((target instanceof Boardable)
+				&&(((Boardable)target).getBoardableItem() instanceof NavigableItem)
 				&&(hisItems.size()>0))
 				{
-					hisShipItem = ((BoardableItem)target).getBoardableItem();
+					hisShipItem = ((Boardable)target).getBoardableItem();
 					double mySpeed = (myShipItem instanceof NavigableItem)?((NavigableItem)myShipItem).getMaxSpeed():1.0;
 					if(mySpeed <=0)
 						mySpeed = 1.0;

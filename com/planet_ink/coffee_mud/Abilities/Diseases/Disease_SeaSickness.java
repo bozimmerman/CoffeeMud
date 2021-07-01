@@ -136,7 +136,7 @@ public class Disease_SeaSickness extends Disease
 		{
 			if(R.getArea() instanceof NavigableItem)
 			{
-				final Item I=((BoardableItem)R.getArea()).getBoardableItem();
+				final Item I=((Boardable)R.getArea()).getBoardableItem();
 				final Room shipR=CMLib.map().roomLocation(I);
 				if(!CMLib.flags().isWateryRoom(shipR))
 				{

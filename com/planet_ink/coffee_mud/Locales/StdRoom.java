@@ -537,7 +537,7 @@ public class StdRoom implements Room
 			sky.rawDoors()[Directions.DOWN]=this;
 			sky.setRawExit(Directions.DOWN,dnE);
 
-			if(!(getArea() instanceof BoardableItem))
+			if(!(getArea() instanceof Boardable))
 			{
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{

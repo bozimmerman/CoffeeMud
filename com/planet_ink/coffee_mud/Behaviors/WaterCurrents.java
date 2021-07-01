@@ -124,7 +124,7 @@ public class WaterCurrents extends ActiveTicker
 					||(doBoats))
 				&&(!CMLib.flags().isInFlight(I))
 				&&(!CMLib.flags().isMobile(I))
-				&&((CMLib.flags().isGettable(I))||(I instanceof BoardableItem))
+				&&((CMLib.flags().isGettable(I))||(I instanceof Boardable))
 				&&((!(I instanceof Exit))||(doBoats))
 				&&(!done.contains(I)))
 				{
@@ -184,9 +184,9 @@ public class WaterCurrents extends ActiveTicker
 						if(R.show(srcM,I,new AWaterCurrent(),CMMsg.MSG_OK_ACTION,L("@x1 is swept @x2 by the current.",
 								I.name(),CMLib.directions().getDirectionName(dir).toLowerCase())))
 						{
-							if(I instanceof BoardableItem)
+							if(I instanceof Boardable)
 							{
-								for(final Enumeration<Room> r = ((BoardableItem)I).getArea().getProperMap();r.hasMoreElements();)
+								for(final Enumeration<Room> r = ((Boardable)I).getArea().getProperMap();r.hasMoreElements();)
 								{
 									final Room R3=r.nextElement();
 									if((R3!=null)&&((R3.domainType()&Room.INDOORS)==0))

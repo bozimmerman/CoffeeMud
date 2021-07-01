@@ -127,7 +127,7 @@ public class Spell_Lighthouse extends Spell
 				else
 				if(fromDir >= 0)
 				{
-					if(R.getArea() instanceof BoardableItem)
+					if(R.getArea() instanceof Boardable)
 						dirName=CMLib.directions().getFromShipDirectionName(fromDir);
 					else
 						dirName=CMLib.directions().getFromCompassDirectionName(fromDir);
@@ -167,7 +167,7 @@ public class Spell_Lighthouse extends Spell
 					else
 					if(fromDir >= 0)
 					{
-						if(R.getArea() instanceof BoardableItem)
+						if(R.getArea() instanceof Boardable)
 							dirName=CMLib.directions().getFromShipDirectionName(fromDir);
 						else
 							dirName=CMLib.directions().getFromCompassDirectionName(fromDir);
@@ -250,9 +250,9 @@ public class Spell_Lighthouse extends Spell
 			return false;
 		}
 		if(((currentRoom.domainType()&Room.INDOORS)==0)
-		&&(currentRoom.getArea() instanceof BoardableItem))
+		&&(currentRoom.getArea() instanceof Boardable))
 		{
-			final Item shipItem = ((BoardableItem)currentRoom.getArea()).getBoardableItem();
+			final Item shipItem = ((Boardable)currentRoom.getArea()).getBoardableItem();
 			final Room shipRoom = CMLib.map().roomLocation(shipItem);
 			if((shipRoom == null)||(!shipRoom.isHere(shipItem)))
 			{

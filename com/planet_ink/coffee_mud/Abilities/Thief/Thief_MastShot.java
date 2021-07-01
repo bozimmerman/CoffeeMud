@@ -110,7 +110,7 @@ public class Thief_MastShot extends ThiefSkill
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected, affectableStats);
-		if(affected instanceof BoardableItem)
+		if(affected instanceof Boardable)
 		{
 			affectableStats.setAbility(affectableStats.ability() - abilityCode());
 		}
@@ -130,7 +130,7 @@ public class Thief_MastShot extends ThiefSkill
 		if(!super.okMessage(myHost, msg))
 			return false;
 		final Physical affected=this.affected;
-		if(affected instanceof BoardableItem)
+		if(affected instanceof Boardable)
 		{
 
 		}
@@ -198,14 +198,14 @@ public class Thief_MastShot extends ThiefSkill
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		if((!(R.getArea() instanceof BoardableItem))
-		||(!(((BoardableItem)R.getArea()).getBoardableItem() instanceof SiegableItem))
+		if((!(R.getArea() instanceof Boardable))
+		||(!(((Boardable)R.getArea()).getBoardableItem() instanceof SiegableItem))
 		||((R.domainType()&Room.INDOORS)!=0))
 		{
 			mob.tell(L("You must be able to man siege engines to fire a mast shot."));
 			return false;
 		}
-		final BoardableItem myShip=(BoardableItem)R.getArea();
+		final Boardable myShip=(Boardable)R.getArea();
 		final NavigableItem myShipItem=(NavigableItem)myShip.getBoardableItem();
 		/*
 		if((myShipItem==null)

@@ -345,7 +345,7 @@ public class GravityFloat extends StdAbility
 					final Room R=msg.source().location();
 					if(R==null)
 						break;
-					final boolean useShip =((R instanceof BoardableItem)||(R.getArea() instanceof BoardableItem))?true:false;
+					final boolean useShip =((R instanceof Boardable)||(R.getArea() instanceof Boardable))?true:false;
 					int floatDir = -1;
 					for(int i=words.size()-1;(i>=0) && (floatDir<0);i--)
 					{

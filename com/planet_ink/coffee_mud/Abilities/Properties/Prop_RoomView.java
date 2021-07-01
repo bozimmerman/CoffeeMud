@@ -56,6 +56,7 @@ public class Prop_RoomView extends Property
 	protected boolean longlook = false;
 	protected boolean attack = false;
 	protected String viewedRoomID = "";
+	//protected Integer[] dirAdj = new Integer[0];
 
 	@Override
 	public void setMiscText(final String text)
@@ -92,15 +93,33 @@ public class Prop_RoomView extends Property
 		if((newRoom==null)
 		||(newRoom.amDestroyed()))
 		{
-			newRoom=CMLib.map().getRoom(viewedRoomID);
-			if(newRoom == null)
+			if(viewedRoomID.equalsIgnoreCase("OUT"))
 			{
-				final int dirCode = CMLib.directions().getDirectionCode(viewedRoomID);
-				if(dirCode >= 0)
+				final Room hereR=CMLib.map().roomLocation(affected);
+				if(hereR != null)
 				{
-					final Room hereR=CMLib.map().roomLocation(affected);
-					if(hereR != null)
-						newRoom=hereR.getRoomInDir(dirCode);
+					if(hereR.getArea() instanceof Boardable)
+					{
+						final Room thereR=CMLib.map().roomLocation(((Boardable)hereR).getBoardableItem());
+						if(thereR!=null)
+							newRoom=thereR;
+					}
+					else
+						newRoom=hereR;
+				}
+			}
+			else
+			{
+				newRoom=CMLib.map().getRoom(viewedRoomID);
+				if(newRoom == null)
+				{
+					final int dirCode = CMLib.directions().getDirectionCode(viewedRoomID);
+					if(dirCode >= 0)
+					{
+						final Room hereR=CMLib.map().roomLocation(affected);
+						if(hereR != null)
+							newRoom=hereR.getRoomInDir(dirCode);
+					}
 				}
 			}
 		}

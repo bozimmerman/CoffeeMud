@@ -1785,9 +1785,9 @@ public class StdArea implements Area
 			for (int i = 0; i < R.numItems(); i++)
 			{
 				final Item I = R.getItem(i);
-				if (I instanceof BoardableItem)
+				if (I instanceof Boardable)
 				{
-					final Area A = ((BoardableItem) I).getArea();
+					final Area A = ((Boardable) I).getArea();
 					if (A == null)
 						continue;
 					for (final Enumeration<Room> r2 = A.getProperMap(); r2.hasMoreElements();)
@@ -2544,7 +2544,7 @@ public class StdArea implements Area
 	@Override
 	public boolean canChild(final Area area)
 	{
-		if (area instanceof BoardableItem)
+		if (area instanceof Boardable)
 			return false;
 		if (parents != null)
 		{
@@ -2650,7 +2650,7 @@ public class StdArea implements Area
 	@Override
 	public boolean canParent(final Area area)
 	{
-		if (this instanceof BoardableItem)
+		if (this instanceof Boardable)
 			return false;
 		if (children != null)
 		{

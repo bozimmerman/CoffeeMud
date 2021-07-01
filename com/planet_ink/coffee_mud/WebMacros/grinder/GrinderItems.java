@@ -893,8 +893,8 @@ public class GrinderItems
 					}
 					break;
 				case AREAXML:
-					if((I instanceof BoardableItem)&&(old.trim().length()>0))
-						((BoardableItem)I).setArea(CMLib.xml().restoreAngleBrackets(old));
+					if((I instanceof Boardable)&&(old.trim().length()>0))
+						((Boardable)I).setArea(CMLib.xml().restoreAngleBrackets(old));
 					break;
 				case ISBOOK:
 					break;
@@ -925,8 +925,8 @@ public class GrinderItems
 
 			if(!copyItem.Name().equals(I.Name()))
 			{
-				if(I instanceof BoardableItem)
-					((BoardableItem)I).rename(I.Name());
+				if(I instanceof Boardable)
+					((Boardable)I).rename(I.Name());
 			}
 			I.recoverPhyStats();
 			I.text();

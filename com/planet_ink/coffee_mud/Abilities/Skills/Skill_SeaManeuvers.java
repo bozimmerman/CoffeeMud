@@ -99,19 +99,19 @@ public class Skill_SeaManeuvers extends StdSkill
 		if((msg.sourceMinor()==CMMsg.TYP_ADVANCE)
 		&&(msg.target() instanceof Room)
 		&&(R!=null)
-		&&(R.getArea() instanceof BoardableItem)
+		&&(R.getArea() instanceof Boardable)
 		&&(R.roomID().length()>0)
-		&&(msg.source().riding() == ((BoardableItem)R.getArea()).getBoardableItem())
+		&&(msg.source().riding() == ((Boardable)R.getArea()).getBoardableItem())
 		&&(msg.source().Name().equals(msg.source().riding().Name()))
 		&&(msg.sourceMessage()!=null)
 		&&(msg.targetMessage()!=null)
 		&&(CMLib.directions().getStrictCompassDirectionCode(msg.sourceMessage())>=0)
 		&&(CMLib.directions().getStrictCompassDirectionCode(msg.targetMessage())>=0)
 		&&(!msg.sourceMessage().equals(msg.targetMessage()))
-		&&(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem)
-		&&(((NavigableItem)(((BoardableItem)R.getArea()).getBoardableItem())).navBasis() == Rideable.Basis.WATER_BASED))
+		&&(((Boardable)R.getArea()).getBoardableItem() instanceof NavigableItem)
+		&&(((NavigableItem)(((Boardable)R.getArea()).getBoardableItem())).navBasis() == Rideable.Basis.WATER_BASED))
 		{
-			final NavigableItem ship = (NavigableItem)((BoardableItem)R.getArea()).getBoardableItem();
+			final NavigableItem ship = (NavigableItem)((Boardable)R.getArea()).getBoardableItem();
 			if(ship.isInCombat())
 			{
 				if(proficiencyCheck(mob, 0, false))

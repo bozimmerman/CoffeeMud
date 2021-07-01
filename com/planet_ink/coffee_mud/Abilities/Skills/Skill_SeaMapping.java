@@ -74,9 +74,9 @@ public class Skill_SeaMapping extends Skill_Map
 			&&(mob == srcM))
 				return true;
 
-			if((srcM.riding() instanceof BoardableItem)
+			if((srcM.riding() instanceof Boardable)
 			&&(mob.location()!=null)
-			&&(mob.location().getArea() == ((BoardableItem)srcM.riding()).getArea()))
+			&&(mob.location().getArea() == ((Boardable)srcM.riding()).getArea()))
 				return true;
 		}
 		return false;
@@ -91,9 +91,9 @@ public class Skill_SeaMapping extends Skill_Map
 		final Room R=mob.location();
 		if(R!=null)
 		{
-			if(R.getArea() instanceof BoardableItem)
+			if(R.getArea() instanceof Boardable)
 			{
-				final Item I = ((BoardableItem)R.getArea()).getBoardableItem();
+				final Item I = ((Boardable)R.getArea()).getBoardableItem();
 				if(I!=null)
 					return CMLib.map().roomLocation(I);
 			}
@@ -116,7 +116,7 @@ public class Skill_SeaMapping extends Skill_Map
 			if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.Basis.WATER_BASED))
 				return true;
 
-			if(R.getArea() instanceof BoardableItem)
+			if(R.getArea() instanceof Boardable)
 			{
 				return true;
 			}

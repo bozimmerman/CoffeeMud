@@ -320,19 +320,19 @@ public class Transfer extends At
 		{
 			try
 			{
-				final ConvertingEnumeration<BoardableItem,Item> shipItems=new ConvertingEnumeration<BoardableItem,Item>(
-					new FilteredEnumeration<BoardableItem>(CMLib.map().ships(),new Filterer<BoardableItem>()
+				final ConvertingEnumeration<Boardable,Item> shipItems=new ConvertingEnumeration<Boardable,Item>(
+					new FilteredEnumeration<Boardable>(CMLib.map().ships(),new Filterer<Boardable>()
 					{
 						@Override
-						public boolean passesFilter(final BoardableItem obj)
+						public boolean passesFilter(final Boardable obj)
 						{
 							return obj instanceof Item;
 						}
 					}),
-					new Converter<BoardableItem,Item>()
+					new Converter<Boardable,Item>()
 					{
 						@Override
-						public Item convert(final BoardableItem obj)
+						public Item convert(final Boardable obj)
 						{
 							return (Item)obj;
 						}

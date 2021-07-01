@@ -731,7 +731,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 		if(tickID == Tickable.TICKID_SPECIALCOMBAT)
 		{
 			if(this.amInTacticalMode()
-			&&(!(CMLib.map().areaLocation(this) instanceof BoardableItem)))
+			&&(!(CMLib.map().areaLocation(this) instanceof Boardable)))
 			{
 				if(this.ticksFromHappen > 10)
 				{
@@ -927,7 +927,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 		if((msg.sourceMinor()==CMMsg.TYP_HUH)
 		&&(msg.targetMessage()!=null)
 		&&(owner() instanceof Room)
-		&&(!(((Room)owner()).getArea() instanceof BoardableItem)))
+		&&(!(((Room)owner()).getArea() instanceof Boardable)))
 		{
 			final List<String> cmds=CMParms.parse(msg.targetMessage());
 			if(cmds.size()<1)

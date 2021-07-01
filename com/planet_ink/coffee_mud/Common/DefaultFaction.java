@@ -1432,10 +1432,10 @@ public class DefaultFaction implements Faction, MsgListener
 			break;
 		case CMMsg.TYP_CAUSESINK:
 			if((myHost instanceof MOB)
-			&&(msg.target() instanceof BoardableItem))
+			&&(msg.target() instanceof Boardable))
 			{
 				final MOB killerM=msg.source();
-				final Area shipArea=((BoardableItem)msg.target()).getArea();
+				final Area shipArea=((Boardable)msg.target()).getArea();
 				if(CMLib.map().areaLocation(killerM)==shipArea)
 					events=getChangeEvents(MiscTrigger.SUNK.toString());
 				else

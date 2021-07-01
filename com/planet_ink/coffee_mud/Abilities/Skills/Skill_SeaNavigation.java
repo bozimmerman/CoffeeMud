@@ -95,9 +95,9 @@ public class Skill_SeaNavigation extends StdSkill
 		if(R==null)
 			return false;
 		Room currentR=null;
-		if(R.getArea() instanceof BoardableItem)
+		if(R.getArea() instanceof Boardable)
 		{
-			currentR=CMLib.map().roomLocation(((BoardableItem)R.getArea()).getBoardableItem());
+			currentR=CMLib.map().roomLocation(((Boardable)R.getArea()).getBoardableItem());
 		}
 		else
 		if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.Basis.WATER_BASED))
@@ -250,7 +250,7 @@ public class Skill_SeaNavigation extends StdSkill
 					room=nextRoom;
 				}
 				final String msgStr=L("Your charts say the way there is: @x1",dirs.toString());
-				if(R.getArea() instanceof BoardableItem)
+				if(R.getArea() instanceof Boardable)
 				{
 					final String courseMsgStr="COURSE "+courseStr.toString();
 					final CMMsg huhMsg=CMClass.getMsg(mob,null,null,CMMsg.MSG_HUH,msgStr,courseMsgStr,null);

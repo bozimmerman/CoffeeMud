@@ -165,8 +165,8 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			{
 				final List<String> recipe = new ArrayList<String>();
 				int weight;
-				if(I instanceof BoardableItem)
-					weight=((BoardableItem)I).getArea().numberOfProperIDedRooms();
+				if(I instanceof Boardable)
+					weight=((Boardable)I).getArea().numberOfProperIDedRooms();
 				else
 					weight=I.basePhyStats().weight();
 				recipe.add(I.Name());
@@ -180,8 +180,8 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 				recipe.add(I.ID()); // class
 				recipe.add(""); // area flag, wear location, readable text
 				recipe.add("0"); // container capacity
-				if(I instanceof BoardableItem)
-					recipe.add(""+getDefaultPopRequirement((BoardableItem)I)); // base armor/room pop
+				if(I instanceof Boardable)
+					recipe.add(""+getDefaultPopRequirement((Boardable)I)); // base armor/room pop
 				else
 					recipe.add("0"); // base armor/room pop
 				recipe.add("0"); // container type
@@ -236,10 +236,10 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 					{
 						dropAWinner(mob,buildingI);
 						CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, 1, this, buildingI);
-						if(buildingI instanceof BoardableItem)
+						if(buildingI instanceof Boardable)
 						{
-							if(buildingI instanceof BoardableItem)
-								((BoardableItem)buildingI).dockHere(mob.location());
+							if(buildingI instanceof Boardable)
+								((Boardable)buildingI).dockHere(mob.location());
 						}
 						else
 							CMLib.commands().postGet(mob,null,buildingI,true);
@@ -288,7 +288,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
 
-	protected int getDefaultPopRequirement(final BoardableItem B)
+	protected int getDefaultPopRequirement(final Boardable B)
 	{
 		if(B==null)
 			return 0;
@@ -478,7 +478,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		}
 
 		buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
-		if(buildingI instanceof BoardableItem)
+		if(buildingI instanceof Boardable)
 		{
 			for(final Item I : getCastles())
 				if(I.Name().equals(foundRecipe.get(RCP_FINALNAME)))
@@ -492,7 +492,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		}
 		final int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
 		if((buildingI instanceof SiegableItem)
-		&&(buildingI instanceof BoardableItem)
+		&&(buildingI instanceof Boardable)
 		&&(clanC!=null)
 		&&(autoGenerate<=0))
 		{
@@ -521,10 +521,10 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 						final Item I=i.nextElement();
 						if((I instanceof ClanItem)
 						&&(I instanceof SiegableItem)
-						&&(I instanceof BoardableItem))
+						&&(I instanceof Boardable))
 						{
 							another=true;
-							areaPop -= getDefaultPopRequirement((BoardableItem)I);
+							areaPop -= getDefaultPopRequirement((Boardable)I);
 						}
 					}
 				}
@@ -587,7 +587,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		displayText=L("You are crafting @x1",buildingI.name());
 		playSound="sanding.wav";
 		verb=L("crafting @x1",buildingI.name());
-		if(!(buildingI instanceof BoardableItem))
+		if(!(buildingI instanceof Boardable))
 		{
 			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");

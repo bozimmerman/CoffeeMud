@@ -2451,7 +2451,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public int appliesToClass(final Object o)
 				{
-					return (o instanceof BoardableItem) ? 2 : -1;
+					return (o instanceof Boardable) ? 2 : -1;
 				}
 
 				@Override
@@ -2468,8 +2468,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public String convertFromItem(final ItemCraftor A, final Item I)
 				{
-					if(I instanceof BoardableItem)
-						return ""+((BoardableItem)I).getArea().numberOfProperIDedRooms()*10;
+					if(I instanceof Boardable)
+						return ""+((Boardable)I).getArea().numberOfProperIDedRooms()*10;
 					return "100";
 				}
 			},

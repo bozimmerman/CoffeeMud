@@ -205,11 +205,11 @@ public class Chant_HighTide extends Chant
 			return false;
 		}
 		int waterDir = -1;
-		if(mobR.getArea() instanceof BoardableItem)
+		if(mobR.getArea() instanceof Boardable)
 		{
 			if((mobR.domainType()&Room.INDOORS)==0)
 			{
-				final Item I=((BoardableItem)mobR.getArea()).getBoardableItem();
+				final Item I=((Boardable)mobR.getArea()).getBoardableItem();
 				if((I!=null)&&(I.owner() instanceof Room))
 				{
 					final Room R=(Room)I.owner();

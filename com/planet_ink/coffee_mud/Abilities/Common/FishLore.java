@@ -159,9 +159,9 @@ public class FishLore extends CommonSkill
 		if(CMLib.flags().isWateryRoom(R))
 			fishRoom=R;
 		else
-		if((R.getArea() instanceof BoardableItem)
+		if((R.getArea() instanceof Boardable)
 		&&((R.domainType()&Room.INDOORS)==0))
-			fishRoom=CMLib.map().roomLocation(((BoardableItem)R.getArea()).getBoardableItem());
+			fishRoom=CMLib.map().roomLocation(((Boardable)R.getArea()).getBoardableItem());
 
 		if(fishRoom==null)
 		{

@@ -95,7 +95,7 @@ public class Spell_Duplicate extends Spell
 			mob.tell(L("That item can not be duplicated."));
 			return false;
 		}
-		if(target instanceof BoardableItem)
+		if(target instanceof Boardable)
 		{
 			mob.tell(L("That item can not be duplicated."));
 			return false;

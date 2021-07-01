@@ -102,7 +102,7 @@ public class Skill_SeaCharting extends StdSkill
 		final String cmd=commands.get(0).toString().toUpperCase().trim();
 		if(!cmd.equals("LIST"))
 		{
-			if(R.getArea() instanceof BoardableItem)
+			if(R.getArea() instanceof Boardable)
 			{
 			}
 			else
@@ -154,9 +154,9 @@ public class Skill_SeaCharting extends StdSkill
 		}
 
 		Room currentR=null;
-		if(R.getArea() instanceof BoardableItem)
+		if(R.getArea() instanceof Boardable)
 		{
-			currentR=CMLib.map().roomLocation(((BoardableItem)R.getArea()).getBoardableItem());
+			currentR=CMLib.map().roomLocation(((Boardable)R.getArea()).getBoardableItem());
 		}
 		else
 		if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.Basis.WATER_BASED))

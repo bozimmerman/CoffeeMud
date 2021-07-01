@@ -104,10 +104,10 @@ public class Chant_WaterHammer extends Chant
 					}
 				}
 			}
-			if((R.getArea() instanceof BoardableItem)
+			if((R.getArea() instanceof Boardable)
 			&&((R.domainType()&Room.INDOORS)==0))
 			{
-				final Item I=((BoardableItem)R.getArea()).getBoardableItem();
+				final Item I=((Boardable)R.getArea()).getBoardableItem();
 				if(I.owner() instanceof Room)
 				{
 					final Room outerR=((Room)I.owner());

@@ -246,7 +246,7 @@ public class StdTitle extends StdItem implements LandTitle
 			if(A!=null)
 				return A;
 		}
-		final BoardableItem ship = CMLib.map().getShip(landPropertyID());
+		final Boardable ship = CMLib.map().getShip(landPropertyID());
 		if(ship instanceof PrivateProperty)
 			return (PrivateProperty)ship;
 		final List<Room> V=getAllTitledRooms();
@@ -446,9 +446,9 @@ public class StdTitle extends StdItem implements LandTitle
 
 	private void removeBoardableProperty(final MOB buyer, final PrivateProperty P)
 	{
-		if(P instanceof BoardableItem)
+		if(P instanceof Boardable)
 		{
-			final Item I=((BoardableItem)P).getBoardableItem();
+			final Item I=((Boardable)P).getBoardableItem();
 			if(I!=null)
 			{
 				final CMObject owner = this.getOwnerObject();
@@ -476,9 +476,9 @@ public class StdTitle extends StdItem implements LandTitle
 
 	private void addBoardableProperty(final PrivateProperty P, final CMObject obj)
 	{
-		if(P instanceof BoardableItem)
+		if(P instanceof Boardable)
 		{
-			final Item I=((BoardableItem)P).getBoardableItem();
+			final Item I=((Boardable)P).getBoardableItem();
 			if(I!=null)
 			{
 				final CMObject owner = obj;

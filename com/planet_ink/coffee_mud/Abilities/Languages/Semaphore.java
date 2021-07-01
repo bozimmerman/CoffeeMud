@@ -80,10 +80,10 @@ public class Semaphore extends StdLanguage
 						   msg.targetMessage(),
 						   msg.othersCode() & mask,
 						   msg.othersMessage());
-				if((R.getArea() instanceof BoardableItem)
+				if((R.getArea() instanceof Boardable)
 				&&((R.domainType()&Room.INDOORS)==0))
 				{
-					final Room room=CMLib.map().roomLocation(((BoardableItem)R.getArea()).getBoardableItem());
+					final Room room=CMLib.map().roomLocation(((Boardable)R.getArea()).getBoardableItem());
 					if(room != null)
 					{
 						final CMMsg outerMsg=(CMMsg)msg.copyOf();
@@ -297,7 +297,7 @@ public class Semaphore extends StdLanguage
 			final MOB mob=(MOB)affected;
 			final Room R=mob.location();
 			if((R!=null)
-			&&(R.getArea() instanceof BoardableItem)
+			&&(R.getArea() instanceof Boardable)
 			||((mob.riding()!=null)&&(mob.riding().rideBasis()==Rideable.Basis.WATER_BASED)))
 			{
 				// fine.
@@ -332,7 +332,7 @@ public class Semaphore extends StdLanguage
 			{
 				final Room R=mob.location();
 				if((R!=null)
-				&&(R.getArea() instanceof BoardableItem)
+				&&(R.getArea() instanceof Boardable)
 				||((mob.riding()!=null)&&(mob.riding().rideBasis()==Rideable.Basis.WATER_BASED)))
 				{
 					// fine.

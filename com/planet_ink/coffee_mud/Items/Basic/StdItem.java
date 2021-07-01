@@ -1101,7 +1101,7 @@ public class StdItem implements Item
 		else
 		if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MAGIC))
 		&&(!CMLib.flags().isGettable(this))
-		&&(!(this instanceof BoardableItem))
+		&&(!(this instanceof Boardable))
 		&&((displayText().isEmpty())
 		   ||((msg.tool() instanceof Ability)
 			&&(((Ability)msg.tool()).abstractQuality()==Ability.QUALITY_MALICIOUS))))
@@ -1487,7 +1487,7 @@ public class StdItem implements Item
 			break;
 		}
 		case CMMsg.TYP_CAUSESINK:
-			if(this instanceof BoardableItem)
+			if(this instanceof Boardable)
 				return true;
 			break;
 		case CMMsg.TYP_FILL:
@@ -1509,7 +1509,7 @@ public class StdItem implements Item
 				return true;
 			break;
 		case CMMsg.TYP_ADVANCE:
-			if((this instanceof BoardableItem)
+			if((this instanceof Boardable)
 			||((this instanceof Rideable)||(((Rideable)this).rideBasis()==Rideable.Basis.WATER_BASED)))
 				return true;
 			break;

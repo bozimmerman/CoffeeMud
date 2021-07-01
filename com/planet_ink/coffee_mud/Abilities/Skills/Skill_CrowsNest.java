@@ -130,9 +130,9 @@ public class Skill_CrowsNest extends StdSkill
 			final Room mobR=(Room)affected;
 			final Room downR=mobR.getRoomInDir(Directions.DOWN);
 			if((downR!=null)
-			&&(downR.getArea() instanceof BoardableItem))
+			&&(downR.getArea() instanceof Boardable))
 			{
-				final Item I=((BoardableItem)downR.getArea()).getBoardableItem();
+				final Item I=((Boardable)downR.getArea()).getBoardableItem();
 				final Room shipR=CMLib.map().roomLocation(I);
 				if(msg.target() instanceof Exit)
 				{
@@ -325,13 +325,13 @@ public class Skill_CrowsNest extends StdSkill
 			return false;
 
 		final NavigableItem ship;
-		if((R.getArea() instanceof BoardableItem)
+		if((R.getArea() instanceof Boardable)
 		&&((R.domainType()&Room.INDOORS)==0)
-		&&(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem)
-		&&(((NavigableItem)(((BoardableItem)R.getArea()).getBoardableItem())).navBasis() == Rideable.Basis.WATER_BASED)
+		&&(((Boardable)R.getArea()).getBoardableItem() instanceof NavigableItem)
+		&&(((NavigableItem)(((Boardable)R.getArea()).getBoardableItem())).navBasis() == Rideable.Basis.WATER_BASED)
 		&&(R.roomID().length()>0))
 		{
-			ship=(NavigableItem)((BoardableItem)R.getArea()).getBoardableItem();
+			ship=(NavigableItem)((Boardable)R.getArea()).getBoardableItem();
 		}
 		else
 		{

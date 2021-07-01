@@ -375,10 +375,10 @@ public class GenSailingShip extends GenNavigableBoardable
 			baseR.show(victorM, this, CMMsg.MSG_OK_ACTION, sinkString);
 			this.announceToNonOuterViewers(victorM, sinkString);
 		}
-		if((victorM.riding() instanceof BoardableItem)
+		if((victorM.riding() instanceof Boardable)
 		&&((victorM.Name().equals(victorM.riding().Name()))))
 		{
-			final Area A=((BoardableItem)victorM.riding()).getArea();
+			final Area A=((Boardable)victorM.riding()).getArea();
 			if(A!=null)
 			{
 				for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
@@ -421,7 +421,7 @@ public class GenSailingShip extends GenNavigableBoardable
 				final ItemPossessor owner = owner();
 				if((owner instanceof Room)
 				&&(owner != prevItemRoom)
-				&&(this.area instanceof BoardableItem))
+				&&(this.area instanceof Boardable))
 				{
 					final Room R = (Room)owner;
 					boolean fixSky=false;
@@ -484,7 +484,7 @@ public class GenSailingShip extends GenNavigableBoardable
 	{
 		final ItemPossessor owner = owner();
 		if((owner instanceof Room)
-		&&(this.area instanceof BoardableItem))
+		&&(this.area instanceof Boardable))
 		{
 			final Room R = (Room)owner;
 			final boolean isWater=CMLib.flags().isUnderWateryRoom(R);

@@ -1018,9 +1018,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							}
 							if(oldSize==areas.size())
 							{
-								for(final Enumeration<BoardableItem> e=CMLib.map().ships();e.hasMoreElements();)
+								for(final Enumeration<Boardable> e=CMLib.map().ships();e.hasMoreElements();)
 								{
-									final BoardableItem ship=e.nextElement();
+									final Boardable ship=e.nextElement();
 									final Area A2=(ship != null) ? ship.getArea() : null;
 									if(A2 != null)
 									{
@@ -1046,9 +1046,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							}
 							if(oldSize==areas.size())
 							{
-								for(final Enumeration<BoardableItem> e=CMLib.map().ships();e.hasMoreElements();)
+								for(final Enumeration<Boardable> e=CMLib.map().ships();e.hasMoreElements();)
 								{
-									final BoardableItem ship=e.nextElement();
+									final Boardable ship=e.nextElement();
 									final Area A2=(ship != null) ? ship.getArea() : null;
 									if(A2 != null)
 									{
@@ -1105,7 +1105,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 									Area A2=CMLib.map().findArea(areaName);
 									if(A2 == null)
 									{
-										final BoardableItem ship=CMLib.map().findShip(areaName, true);
+										final Boardable ship=CMLib.map().findShip(areaName, true);
 										if(ship != null)
 											A2=ship.getArea();
 									}

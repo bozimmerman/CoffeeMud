@@ -126,9 +126,9 @@ public class Skill_CombatRepairs extends StdSkill
 					else
 					{
 						I.setUsesRemaining(I.usesRemaining()-5);
-						if(I instanceof BoardableItem)
+						if(I instanceof Boardable)
 						{
-							final Area A=((BoardableItem)I).getArea();
+							final Area A=((Boardable)I).getArea();
 							if(A!=null)
 							{
 								for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
@@ -165,11 +165,11 @@ public class Skill_CombatRepairs extends StdSkill
 			return false;
 
 		final SiegableItem ship;
-		if((R.getArea() instanceof BoardableItem)
-		&&(((BoardableItem)R.getArea()).getBoardableItem() instanceof SiegableItem))
+		if((R.getArea() instanceof Boardable)
+		&&(((Boardable)R.getArea()).getBoardableItem() instanceof SiegableItem))
 		//&&(((NavigableItem)(((BoardableItem)R.getArea()).getBoardableItem())).navBasis() == Rideable.Basis.WATER_BASED))
 		{
-			ship=(NavigableItem)((BoardableItem)R.getArea()).getBoardableItem();
+			ship=(NavigableItem)((Boardable)R.getArea()).getBoardableItem();
 		}
 		else
 		{

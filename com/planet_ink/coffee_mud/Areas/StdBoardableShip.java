@@ -37,7 +37,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdBoardableShip implements Area, BoardableItem, PrivateProperty
+public class StdBoardableShip implements Area, Boardable, PrivateProperty
 {
 	@Override
 	public String ID()
@@ -63,7 +63,7 @@ public class StdBoardableShip implements Area, BoardableItem, PrivateProperty
 	protected PhyStats  	phyStats		= (PhyStats)CMClass.getCommon("DefaultPhyStats");
 	protected PhyStats  	basePhyStats	= (PhyStats)CMClass.getCommon("DefaultPhyStats");
 	protected Area 			me			 	= this;
-	protected BoardableItem	shipItem		= null;
+	protected Boardable	shipItem		= null;
 
 	protected SVector<Ability>			affects			= new SVector<Ability>(1);
 	protected SVector<Behavior> 		behaviors		= new SVector<Behavior>(1);
@@ -145,8 +145,8 @@ public class StdBoardableShip implements Area, BoardableItem, PrivateProperty
 	@Override
 	public void setDockableItem(final Item dockableItem)
 	{
-		if(dockableItem instanceof BoardableItem)
-			shipItem=(BoardableItem)dockableItem;
+		if(dockableItem instanceof Boardable)
+			shipItem=(Boardable)dockableItem;
 	}
 
 	@Override

@@ -122,7 +122,7 @@ public class Chant_Whirlpool extends Chant
 		return true;
 	}
 
-	public boolean canEnterTheWhirlpool(final BoardableItem S)
+	public boolean canEnterTheWhirlpool(final Boardable S)
 	{
 		if(S instanceof PrivateProperty)
 		{
@@ -152,8 +152,8 @@ public class Chant_Whirlpool extends Chant
 		boolean enterThePool = false;
 		if((M.riding()!=null)&&(!CMLib.flags().isFlying(M.riding())))
 		{
-			if(M.riding() instanceof BoardableItem)
-				enterThePool = canEnterTheWhirlpool((BoardableItem)M.riding());
+			if(M.riding() instanceof Boardable)
+				enterThePool = canEnterTheWhirlpool((Boardable)M.riding());
 			else
 			if(M.riding().rideBasis()==Rideable.Basis.WATER_BASED)
 				enterThePool = canEnterTheWhirlpool(M.riding());
@@ -167,8 +167,8 @@ public class Chant_Whirlpool extends Chant
 
 	public boolean canEverEnterThePool(final Item I)
 	{
-		if(I instanceof BoardableItem)
-			return canEnterTheWhirlpool((BoardableItem)I);
+		if(I instanceof Boardable)
+			return canEnterTheWhirlpool((Boardable)I);
 		else
 		if((I instanceof Rideable)
 		&&(((Rideable)I).rideBasis()==Rideable.Basis.WATER_BASED))
@@ -191,9 +191,9 @@ public class Chant_Whirlpool extends Chant
 				final Item I=r.nextElement();
 				if((I!=null)&&(canEverEnterThePool(I)))
 				{
-					if(I instanceof BoardableItem)
+					if(I instanceof Boardable)
 					{
-						final Area A=((BoardableItem)I).getArea();
+						final Area A=((Boardable)I).getArea();
 						if(A!=null)
 						{
 							for(final Enumeration<Room> r2=A.getProperMap();r2.hasMoreElements();)

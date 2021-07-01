@@ -34,7 +34,7 @@ public class Sailor extends StdBehavior
 	protected volatile int	tickDown		= -1;
 	protected int			tickWait		= -1;
 	protected int			tickBonus		= 0;
-	protected BoardableItem	loyalShipArea	= null;
+	protected Boardable	loyalShipArea	= null;
 	protected Item			loyalShipItem	= null;
 	protected Rideable		targetShipItem	= null;
 	protected boolean		combatIsOver	= false;
@@ -75,9 +75,9 @@ public class Sailor extends StdBehavior
 
 	public Item getShip(final MOB M)
 	{
-		if(M.getStartRoom() instanceof BoardableItem)
+		if(M.getStartRoom() instanceof Boardable)
 		{
-			final Item hisShip=((BoardableItem)M.getStartRoom()).getBoardableItem();
+			final Item hisShip=((Boardable)M.getStartRoom()).getBoardableItem();
 			if(hisShip != null)
 				return hisShip;
 		}
@@ -90,9 +90,9 @@ public class Sailor extends StdBehavior
 		if(M.isPlayer())
 		{
 			final Room R=M.location();
-			if((R!=null)&&(R.getArea() instanceof BoardableItem))
+			if((R!=null)&&(R.getArea() instanceof Boardable))
 			{
-				final Item shipI=((BoardableItem)R.getArea()).getBoardableItem();
+				final Item shipI=((Boardable)R.getArea()).getBoardableItem();
 				if((shipI!=null)&&(CMLib.law().doesHaveWeakPriviledgesHere(M, M.location())))
 					return shipI;
 				final Room shipR=CMLib.map().roomLocation(shipI);
@@ -101,10 +101,10 @@ public class Sailor extends StdBehavior
 					for(final Enumeration<Item> i=shipR.items();i.hasMoreElements();)
 					{
 						final Item I=i.nextElement();
-						if((I instanceof BoardableItem)&&(I!=shipI))
+						if((I instanceof Boardable)&&(I!=shipI))
 						{
-							final Item otherShipI=((BoardableItem)I).getBoardableItem();
-							final Area otherShipA=((BoardableItem)I).getArea();
+							final Item otherShipI=((Boardable)I).getBoardableItem();
+							final Area otherShipA=((Boardable)I).getArea();
 							if((otherShipI!=null)
 							&&(otherShipA!=null)
 							&&(CMLib.law().doesHaveWeakPriviledgesHere(M, otherShipA.getRandomProperRoom())))
@@ -120,8 +120,8 @@ public class Sailor extends StdBehavior
 	public boolean amOnMyShip(final MOB M)
 	{
 		final Room R=M.location();
-		if((R!=null)&&(R.getArea() instanceof BoardableItem))
-			return (((BoardableItem)R.getArea()).getBoardableItem() == loyalShipItem);
+		if((R!=null)&&(R.getArea() instanceof Boardable))
+			return (((Boardable)R.getArea()).getBoardableItem() == loyalShipItem);
 		return false;
 	}
 
@@ -396,9 +396,9 @@ public class Sailor extends StdBehavior
 					return true;
 
 				if((loyalShipItem==null)
-				&&(mobRoom.getArea() instanceof BoardableItem))
+				&&(mobRoom.getArea() instanceof Boardable))
 				{
-					loyalShipArea = (BoardableItem)mobRoom.getArea();
+					loyalShipArea = (Boardable)mobRoom.getArea();
 					loyalShipItem = loyalShipArea.getBoardableItem();
 					if((mob.isMonster())
 					&&(mob.amFollowing()==null)
@@ -471,7 +471,7 @@ public class Sailor extends StdBehavior
 					else
 					if(!amOnMyShip(mob))
 					{
-						if((mob.getStartRoom() != null)&&(mob.getStartRoom().getArea() instanceof BoardableItem))
+						if((mob.getStartRoom() != null)&&(mob.getStartRoom().getArea() instanceof Boardable))
 						{
 							CMLib.tracking().wanderAway(mob, false, true);
 						}
@@ -748,7 +748,7 @@ public class Sailor extends StdBehavior
 							if((I!=null)
 							&&(I.container()==null)
 							&&(I!=loyalShipItem)
-							&&((I instanceof BoardableItem)
+							&&((I instanceof Boardable)
 								||((I instanceof Rideable)&&(((Rideable)I).rideBasis()==Rideable.Basis.WATER_BASED)))
 							&&(CMLib.flags().canBeSeenBy(I, mob)))
 							{
@@ -763,9 +763,9 @@ public class Sailor extends StdBehavior
 											eligible.add((MOB)R);
 									}
 								}
-								if(I instanceof BoardableItem)
+								if(I instanceof Boardable)
 								{
-									final Area shipArea=((BoardableItem)I).getArea();
+									final Area shipArea=((Boardable)I).getArea();
 									if(shipArea!=null)
 									{
 										for(final Enumeration<Room> r=shipArea.getProperMap();r.hasMoreElements();)

@@ -107,7 +107,7 @@ public class Skill_SeaLegs extends StdSkill
 			if((((Ability)msg.tool()).abstractQuality()==Ability.QUALITY_MALICIOUS)
 			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_MOVING))
 			&&(mob.location()!=null)
-			&&(mob.location().getArea() instanceof BoardableItem)
+			&&(mob.location().getArea() instanceof Boardable)
 			&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,-40+(2*getXLEVELLevel(mob)),false)))
 			{
 				Room roomS=null;

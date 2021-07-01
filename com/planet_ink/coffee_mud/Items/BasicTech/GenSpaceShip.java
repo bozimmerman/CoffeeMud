@@ -188,7 +188,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 	protected String getElectronicsKey()
 	{
 		final Area area=this.getArea();
-		if(area instanceof BoardableItem)
+		if(area instanceof Boardable)
 		{
 			String registryNum=area.getBlurbFlag("REGISTRY");
 			if(registryNum==null)
@@ -202,7 +202,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 	public void rename(final String newName)
 	{
 		final Area area=this.getArea();
-		if(area instanceof BoardableItem)
+		if(area instanceof Boardable)
 		{
 			final String registryNum=getElectronicsKey();
 			super.rename(newName);

@@ -104,7 +104,7 @@ public class Skill_BoulderThrowing extends StdSkill
 				final MOB mob=(MOB)affected;
 				final Room R=(mob!=null)?mob.location():null;
 				final Area A=(R != null) ? R.getArea() : null;
-				final Item shipItem=(A instanceof BoardableItem) ? ((BoardableItem)A).getBoardableItem() : null;
+				final Item shipItem=(A instanceof Boardable) ? ((Boardable)A).getBoardableItem() : null;
 				if((mob!=null)
 				&&(mob.isMonster())
 				&&(shipItem instanceof SiegableItem)
@@ -182,7 +182,7 @@ public class Skill_BoulderThrowing extends StdSkill
 				if((O instanceof Command) && (((Command)O).ID().equals("Throw")))
 				{
 					final Area A=R.getArea();
-					final Item possShipItem = (A instanceof BoardableItem) ? ((BoardableItem)A).getBoardableItem() : null;
+					final Item possShipItem = (A instanceof Boardable) ? ((Boardable)A).getBoardableItem() : null;
 					final SiegableItem siegeBase = (possShipItem instanceof SiegableItem) ? (SiegableItem)possShipItem : null;
 					final Room shipR=(siegeBase != null)?CMLib.map().roomLocation(siegeBase):null;
 

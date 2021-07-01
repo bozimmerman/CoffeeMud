@@ -85,9 +85,9 @@ public class Chant_PredictTides extends Chant
 			&&(R.resourceChoices().contains(Integer.valueOf(RawMaterial.RESOURCE_FISH))))
 				isWateryEnough = true;
 			final Area A=R.getArea();
-			if(A instanceof BoardableItem)
+			if(A instanceof Boardable)
 			{
-				final Room R2=CMLib.map().roomLocation(((BoardableItem)A).getBoardableItem());
+				final Room R2=CMLib.map().roomLocation(((Boardable)A).getBoardableItem());
 				if(R2!=null)
 				{
 					if(CMLib.flags().isWateryRoom(R2))

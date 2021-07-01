@@ -289,7 +289,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			str.append(getExtraEnvPropertiesStr(E));
 			str.append(getGenScripts((Area)E,false));
 			str.append(xml.convertXMLtoTag("AUTHOR",myArea.getAuthorID()));
-			if(myArea instanceof BoardableItem)
+			if(myArea instanceof Boardable)
 				str.append(xml.convertXMLtoTag("DISP",xml.parseOutAngleBrackets(myArea.displayText())));
 			final List<String> V=new ArrayList<String>();
 			String flag=null;
@@ -511,8 +511,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				final Room itemR=CMLib.map().getRoom(roomID);
 				if(itemR!=null)
 				{
-					if(newOne instanceof BoardableItem)
-						((BoardableItem)newOne).dockHere(itemR);
+					if(newOne instanceof Boardable)
+						((Boardable)newOne).dockHere(itemR);
 					else
 						itemR.addItem(newOne);
 					newOne.setExpirationDate(expirationDate);
@@ -583,10 +583,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(E instanceof AmmunitionWeapon)
 				text.append(xml.convertXMLtoTag("ACAPA",((AmmunitionWeapon)item).ammunitionCapacity()));
 
-			if(E instanceof BoardableItem)
+			if(E instanceof Boardable)
 			{
-				text.append(xml.convertXMLtoTag("SSAREA",xml.parseOutAngleBrackets(getAreaObjectXML(((BoardableItem)item).getArea(), null, null, null, true).toString())));
-				text.append(xml.convertXMLtoTag("PORTID",((BoardableItem)item).getHomePortID()));
+				text.append(xml.convertXMLtoTag("SSAREA",xml.parseOutAngleBrackets(getAreaObjectXML(((Boardable)item).getArea(), null, null, null, true).toString())));
+				text.append(xml.convertXMLtoTag("PORTID",((Boardable)item).getHomePortID()));
 			}
 			if(E instanceof SpaceShip)
 			{
@@ -2489,7 +2489,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 		possiblyAddCustomEffect(room, custom);
 		final Area area=room.getArea();
-		final boolean isShip=(area instanceof BoardableItem);
+		final boolean isShip=(area instanceof Boardable);
 
 		buf.append("<AROOM>");
 		buf.append(xmlLib.convertXMLtoTag("ROOMID",room.roomID()));
@@ -2634,10 +2634,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						ibuf.append(xmlLib.convertXMLtoTag("ILEVL",item.basePhyStats().level()));
 						ibuf.append(xmlLib.convertXMLtoTag("IABLE",item.basePhyStats().ability()));
 						ibuf.append(xmlLib.convertXMLtoTag("ITEXT",xmlLib.parseOutAngleBrackets(item.text())));
-						if((item instanceof BoardableItem)
+						if((item instanceof Boardable)
 						&&(files != null))
 						{
-							for(final Enumeration<Room> r=((BoardableItem)item).getArea().getProperMap();r.hasMoreElements();)
+							for(final Enumeration<Room> r=((Boardable)item).getArea().getProperMap();r.hasMoreElements();)
 							{
 								final Room shipR=r.nextElement();
 								fillFileSet(shipR,files);
@@ -2780,7 +2780,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(E instanceof Area)
 		{
 			((Area)E).setArchivePath(CMLib.xml().getValFromPieces(V,"ARCHP"));
-			if(E instanceof BoardableItem)
+			if(E instanceof Boardable)
 				((Area)E).setDisplayText(CMLib.xml().getValFromPieces(V,"DISP"));
 			((Area)E).setAuthorID(CMLib.xml().getValFromPieces(V,"AUTHOR"));
 			((Area)E).setAtmosphere(CMLib.xml().getIntFromPieces(V,"AATMO",((Area)E).getAtmosphereCode()));
@@ -3106,7 +3106,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				if(key != null)
 					CMLib.tech().unregisterAllElectronics(key);
 			}
-			if(newOne instanceof BoardableItem)
+			if(newOne instanceof Boardable)
 			{
 				if(newOne instanceof LandTitle)
 					((LandTitle)newOne).setOwnerName("");
@@ -3957,10 +3957,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			item.setRawLogicalAnd(xml.getBoolFromPieces(buf,"WORNL"));
 			item.setRawProperLocationBitmap(xml.getLongFromPieces(buf,"WORNB"));
 			item.setReadableText(xml.getValFromPieces(buf,"READ"));
-			if(item instanceof BoardableItem)
+			if(item instanceof Boardable)
 			{
-				((BoardableItem)item).setArea(xml.restoreAngleBrackets(xml.getValFromPieces(buf,"SSAREA")));
-				((BoardableItem)item).setHomePortID(xml.restoreAngleBrackets(xml.getValFromPieces(buf,"PORTID")));
+				((Boardable)item).setArea(xml.restoreAngleBrackets(xml.getValFromPieces(buf,"SSAREA")));
+				((Boardable)item).setHomePortID(xml.restoreAngleBrackets(xml.getValFromPieces(buf,"PORTID")));
 			}
 			if(item instanceof SpaceShip)
 			{

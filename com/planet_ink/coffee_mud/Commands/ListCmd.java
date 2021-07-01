@@ -4741,9 +4741,9 @@ public class ListCmd extends StdCommand
 		str.append(CMStrings.padRight(L("Reg."), CMLib.lister().fixColWidth(15.0,viewerS))).append(" ");
 		str.append("\n\r");
 		str.append(CMStrings.repeat('-', CMLib.lister().fixColWidth(75.0,viewerS))).append("\n\r");
-		for(final Enumeration<BoardableItem> s=CMLib.map().ships(); s.hasMoreElements();)
+		for(final Enumeration<Boardable> s=CMLib.map().ships(); s.hasMoreElements();)
 		{
-			final BoardableItem S=s.nextElement();
+			final Boardable S=s.nextElement();
 			str.append(CMStrings.padRight(S.Name(), CMLib.lister().fixColWidth(30.0,viewerS))).append(" ");
 			if((S instanceof SpaceObject)&&(((SpaceShip)S).getIsDocked()==null))
 				str.append(CMStrings.padRight(CMParms.toListString(((SpaceObject)S).coordinates()), CMLib.lister().fixColWidth(30.0,viewerS))).append(" ");

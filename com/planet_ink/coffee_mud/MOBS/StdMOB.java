@@ -1479,7 +1479,7 @@ public class StdMOB implements MOB
 			if ((R == null) || (myArea == null))
 				return false;
 			if ((myLocation != R)
-			&& ((!(myArea instanceof BoardableItem)) || (!R.isContent(((BoardableItem) myArea).getBoardableItem()))))
+			&& ((!(myArea instanceof Boardable)) || (!R.isContent(((Boardable) myArea).getBoardableItem()))))
 				return false;
 		}
 		if ((!CMLib.flags().isInTheGame(this, false))
@@ -2487,8 +2487,8 @@ public class StdMOB implements MOB
 				{
 					if ((!CMLib.flags().canBeSeenBy(msg.target(), this))
 					&& (!(isMine(msg.target()) && (msg.target() instanceof Item)))
-					&& ((!(msg.target() instanceof BoardableItem))
-						|| (((BoardableItem) msg.target()).getArea() != location().getArea()))
+					&& ((!(msg.target() instanceof Boardable))
+						|| (((Boardable) msg.target()).getArea() != location().getArea()))
 					&& (!((isInCombat()) && (msg.target() == victim)))
 					&& (CMath.bset(msg.targetMajor(), CMMsg.MASK_HANDS))
 					&& (!(msg.target() instanceof Room)))
@@ -3653,10 +3653,10 @@ public class StdMOB implements MOB
 			if (((othersMinor == CMMsg.TYP_ADVANCE) || (othersMinor == CMMsg.TYP_ENTER))
 			&& (!isMonster())
 			&& (location() != null)
-			&& (location().getArea() instanceof BoardableItem)
-			&& (msg.source().riding() == ((BoardableItem) location().getArea()).getBoardableItem())
+			&& (location().getArea() instanceof Boardable)
+			&& (msg.source().riding() == ((Boardable) location().getArea()).getBoardableItem())
 			&& (CMLib.dice().rollPercentage() == 1)
-			&& (CMLib.flags().isWateryRoom(CMLib.map().roomLocation(((BoardableItem) location().getArea()).getBoardableItem())))
+			&& (CMLib.flags().isWateryRoom(CMLib.map().roomLocation(((Boardable) location().getArea()).getBoardableItem())))
 			&& (CMLib.dice().rollPercentage() < 10))
 			{
 				final Ability A = CMClass.getAbility((CMLib.dice().rollPercentage() < 20) ? "Disease_Scurvy" : "Disease_SeaSickness");

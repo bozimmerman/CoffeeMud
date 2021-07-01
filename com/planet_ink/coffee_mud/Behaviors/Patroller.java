@@ -145,7 +145,7 @@ public class Patroller extends ActiveTicker
 		&&((msg.targetMinor()==CMMsg.TYP_ENTER)||(msg.targetMinor()==CMMsg.TYP_LEAVE))
 		&&(msg.source()!=host)
 		&&(msg.source().riding()==host)
-		&&(!(host instanceof BoardableItem)))
+		&&(!(host instanceof Boardable)))
  		{
 			if(host instanceof MOB)
 				msg.source().tell(L("You must dismount before you can do that."));
@@ -192,10 +192,10 @@ public class Patroller extends ActiveTicker
 				return true;
 			}
 
-			if((ticking instanceof BoardableItem)
-			&&(((BoardableItem)ticking).getBoardableItem() instanceof NavigableItem))
+			if((ticking instanceof Boardable)
+			&&(((Boardable)ticking).getBoardableItem() instanceof NavigableItem))
 			{
-				final NavigableItem ship=(NavigableItem)((BoardableItem)ticking).getBoardableItem();
+				final NavigableItem ship=(NavigableItem)((Boardable)ticking).getBoardableItem();
 				if((ship.isInCombat())
 				||((ship.subjectToWearAndTear())&&(ship.usesRemaining()<=0))
 				||(CMLib.flags().isFalling(ship)))
@@ -208,7 +208,7 @@ public class Patroller extends ActiveTicker
 			tickStatus=Tickable.STATUS_MISC+1;
 			ArrayList<Rider> riders=null;
 			if((ticking instanceof Rideable)
-			&&(!(ticking instanceof BoardableItem)))
+			&&(!(ticking instanceof Boardable)))
 			{
 				riders=new ArrayList<Rider>(((Rideable)ticking).numRiders());
 				for(int i=0;i<((Rideable)ticking).numRiders();i++)
@@ -453,11 +453,11 @@ public class Patroller extends ActiveTicker
 			if(ticking instanceof Item)
 			{
 				final Item I=(Item)ticking;
-				if((ticking instanceof BoardableItem)
-				&&(((BoardableItem)ticking).getBoardableItem() instanceof NavigableItem)
+				if((ticking instanceof Boardable)
+				&&(((Boardable)ticking).getBoardableItem() instanceof NavigableItem)
 				&&(thatRoom!=null))
 				{
-					final NavigableItem ship = (NavigableItem)((BoardableItem)ticking).getBoardableItem();
+					final NavigableItem ship = (NavigableItem)((Boardable)ticking).getBoardableItem();
 					if(ship.isAnchorDown())
 						ship.setAnchorDown(false);
 					ship.setCurrentCourse(new XVector<Integer>(Integer.valueOf(direction)));

@@ -91,9 +91,9 @@ public class Chant_Capsize extends Chant
 		final List<Item> items = new ArrayList<Item>();
 		if(I instanceof Container)
 			items.addAll(((Container)I).getContents());
-		if(I instanceof BoardableItem)
+		if(I instanceof Boardable)
 		{
-			final Area A=((BoardableItem)I).getArea();
+			final Area A=((Boardable)I).getArea();
 			if(A!=null)
 			{
 				for(final Enumeration<Room> r=A.getFilledProperMap();r.hasMoreElements();)
@@ -154,9 +154,9 @@ public class Chant_Capsize extends Chant
 				}
 			}
 		}
-		if(I instanceof BoardableItem)
+		if(I instanceof Boardable)
 		{
-			final Area A=((BoardableItem)I).getArea();
+			final Area A=((Boardable)I).getArea();
 			if(A!=null)
 			{
 				for(final Enumeration<Room> r=A.getFilledProperMap();r.hasMoreElements();)
@@ -237,7 +237,7 @@ public class Chant_Capsize extends Chant
 		{ //ok
 		}
 		else
-		if(target instanceof BoardableItem)
+		if(target instanceof Boardable)
 		{ //ok
 		}
 		else

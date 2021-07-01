@@ -217,7 +217,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					if(E instanceof NavigableItem)
 						str.append(L("Vessel"));
 					else
-					if(E instanceof BoardableItem)
+					if(E instanceof Boardable)
 						str.append(L("Castle"));
 					else
 					if(E instanceof ClanItem)
@@ -282,9 +282,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					str.append(L("\n\rModel Num. : @x1",""+(((Technical)I).techLevel()
 															+ (lie?plus(4,lieHash):0))));
 				}
-				if(I instanceof BoardableItem)
+				if(I instanceof Boardable)
 				{
-					final Area A=((BoardableItem)I).getArea();
+					final Area A=((Boardable)I).getArea();
 					if(A!=null)
 					{
 						str.append(L("\n\rRooms      : @x1",""+(A.numberOfProperIDedRooms()
@@ -1173,7 +1173,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					buyerCustM.tell(L("You can't carry any more items."));
 					return false;
 				}
-				if((product instanceof BoardableItem)
+				if((product instanceof Boardable)
 				||(!CMLib.flags().isGettable((Item)product)))
 				{
 					if((buyerCustM.maxCarry()-buyerCustM.phyStats().weight())<=0)
@@ -1729,7 +1729,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		{
 			final Item I=i.nextElement();
 			if((I instanceof PrivateProperty)
-			&&(I instanceof BoardableItem)
+			&&(I instanceof Boardable)
 			&&(!I.amDestroyed()))
 			{
 				final PrivateProperty P = (PrivateProperty)I;
@@ -2064,7 +2064,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					&&(!(E instanceof Ammunition))
 					&&(!(E instanceof MOB))
 					&&(!(E instanceof LandTitle))
-					&&(!(E instanceof BoardableItem))
+					&&(!(E instanceof Boardable))
 					&&(!(E instanceof RawMaterial))
 					&&(!(E instanceof Ability)));
 			break;
@@ -2109,7 +2109,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			break;
 		case ShopKeeper.DEAL_SHIPSELLER:
 		case ShopKeeper.DEAL_CSHIPSELLER:
-			chk = ((E instanceof BoardableItem)
+			chk = ((E instanceof Boardable)
 					||((E instanceof LandTitle)&&(CMLib.map().getShip(((LandTitle)E).landPropertyID())!=null)));
 			break;
 		case ShopKeeper.DEAL_ANYTECHNOLOGY:

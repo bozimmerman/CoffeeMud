@@ -338,9 +338,9 @@ public class Where extends StdCommand
 									{
 										final Item I=R.getItem(i);
 										if((areaFlag)
-										&&(I instanceof BoardableItem))
+										&&(I instanceof Boardable))
 										{
-											final Area A=((BoardableItem)I).getArea();
+											final Area A=((Boardable)I).getArea();
 											final Enumeration<Room> Ar=(A==null)?null:A.getProperMap();
 											if(Ar!=null)
 												r.addEnumeration(Ar);
@@ -425,9 +425,9 @@ public class Where extends StdCommand
 											{
 												final Item I=M.getItem(i);
 												if((areaFlag)
-												&&(I instanceof BoardableItem))
+												&&(I instanceof Boardable))
 												{
-													final Area A=((BoardableItem)I).getArea();
+													final Area A=((Boardable)I).getArea();
 													final Enumeration<Room> Ar=(A==null)?null:A.getProperMap();
 													if(Ar!=null)
 														r.addEnumeration(Ar);
@@ -471,9 +471,9 @@ public class Where extends StdCommand
 											{
 												final Environmental E=i.next();
 												if((areaFlag)
-												&&(E instanceof BoardableItem))
+												&&(E instanceof Boardable))
 												{
-													final Area A=((BoardableItem)E).getArea();
+													final Area A=((Boardable)E).getArea();
 													final Enumeration<Room> Ar=(A==null)?null:A.getProperMap();
 													if(Ar!=null)
 														r.addEnumeration(Ar);

@@ -191,9 +191,9 @@ public class Druid_MyPlants extends StdAbility
 					}
 				}
 				else
-				if(I instanceof BoardableItem)
+				if(I instanceof Boardable)
 				{
-					final Area A=((BoardableItem)I).getArea();
+					final Area A=((Boardable)I).getArea();
 					if(A!=null)
 					{
 						for(final Enumeration<Room> r=A.getFilledProperMap();r.hasMoreElements();)

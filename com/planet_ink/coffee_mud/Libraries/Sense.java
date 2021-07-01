@@ -266,14 +266,14 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isAShip(final Physical P)
 	{
-		if(P instanceof BoardableItem)
+		if(P instanceof Boardable)
 			return true;
 		if(P instanceof Rider)
 		{
 			final Rider rider=(Rider)P;
 			final Rideable ride=rider.riding();
-			if((ride instanceof BoardableItem)
-			&&(((BoardableItem)ride).Name().equals(rider.Name())))
+			if((ride instanceof Boardable)
+			&&(((Boardable)ride).Name().equals(rider.Name())))
 				return true;
 		}
 		return false;
@@ -1557,9 +1557,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean isInAShip(final Room R)
 	{
 		final Area A=(R==null)?null:R.getArea();
-		if(A instanceof BoardableItem)
+		if(A instanceof Boardable)
 		{
-			final Item I=((BoardableItem)A).getBoardableItem();
+			final Item I=((Boardable)A).getBoardableItem();
 			if(I instanceof SpaceShip)
 				return true;
 			if(I instanceof NavigableItem)
@@ -1687,7 +1687,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		if(P!=null)
 		{
-			if((P instanceof BoardableItem)&&(!((BoardableItem)P).amDestroyed()))
+			if((P instanceof Boardable)&&(!((Boardable)P).amDestroyed()))
 				return true;
 			for(final Enumeration<Behavior> e=P.behaviors();e.hasMoreElements();)
 			{

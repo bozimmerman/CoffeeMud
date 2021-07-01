@@ -36,7 +36,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author Bo Zimmerman
  *
  */
-public interface BoardableItem extends Environmental
+public interface Boardable extends Environmental
 {
 	/**
 	 * Designates that this ship is landed and docked in the given

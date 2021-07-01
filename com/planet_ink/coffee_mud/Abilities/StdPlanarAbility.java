@@ -1010,7 +1010,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 				final Item I=i.nextElement();
 				if(I==null)
 					continue;
-				if((I instanceof Exit)&&((I instanceof BoardableItem)))
+				if((I instanceof Exit)&&((I instanceof Boardable)))
 				{
 					for(int x=0;x<100;x++)
 					{

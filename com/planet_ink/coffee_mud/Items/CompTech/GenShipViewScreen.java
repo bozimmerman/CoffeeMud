@@ -422,9 +422,9 @@ public class GenShipViewScreen extends GenElecCompSensor implements ShipDirCompo
 	{
 		Room R=null;
 		final Area A=CMLib.map().areaLocation(this);
-		if(A instanceof BoardableItem)
+		if(A instanceof Boardable)
 		{
-			final BoardableItem shipO = (BoardableItem)A;
+			final Boardable shipO = (Boardable)A;
 			final Room dockR = shipO.getIsDocked();
 			if(dockR != null)
 				R=dockR;
@@ -479,9 +479,9 @@ public class GenShipViewScreen extends GenElecCompSensor implements ShipDirCompo
 			return super.getAllSensibleObjects();
 		Room R=null;
 		final Area A=CMLib.map().areaLocation(this);
-		if(A instanceof BoardableItem)
+		if(A instanceof Boardable)
 		{
-			final BoardableItem shipO = (BoardableItem)A;
+			final Boardable shipO = (Boardable)A;
 			final Room dockR = shipO.getIsDocked();
 			if(dockR != null)
 				R=dockR;

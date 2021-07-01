@@ -188,7 +188,7 @@ public class Thief_RopeSwing extends ThiefSkill
 		if(R==null)
 			return false;
 
-		if((R.getArea() instanceof BoardableItem)
+		if((R.getArea() instanceof Boardable)
 		&&(R.domainType()==Room.DOMAIN_OUTDOORS_CITY))
 		{
 			// this is good

@@ -297,12 +297,12 @@ public class Skill_HireCrewmember extends StdSkill
 					return false;
 				}
 
-				if((R.getArea() instanceof BoardableItem)
-				&&(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem)
-				&&(((NavigableItem)((BoardableItem)R.getArea()).getBoardableItem()).navBasis()==Rideable.Basis.WATER_BASED))
+				if((R.getArea() instanceof Boardable)
+				&&(((Boardable)R.getArea()).getBoardableItem() instanceof NavigableItem)
+				&&(((NavigableItem)((Boardable)R.getArea()).getBoardableItem()).navBasis()==Rideable.Basis.WATER_BASED))
 				{
 					final Area shipArea=R.getArea();
-					final NavigableItem ship = (NavigableItem)((BoardableItem)shipArea).getBoardableItem();
+					final NavigableItem ship = (NavigableItem)((Boardable)shipArea).getBoardableItem();
 					if(this.type==null)
 					{
 						int numRooms=0;

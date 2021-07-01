@@ -209,10 +209,10 @@ public class Skill_MorseCode extends StdSkill
 					msg2.setOthersMessage(L("You hear someone banging morse code on the walls in the distance."));
 				else
 				{
-					if(R.getArea() instanceof BoardableItem)
+					if(R.getArea() instanceof Boardable)
 					{
-						deckShip=((BoardableItem)R.getArea()).getBoardableItem();
-						if(deckShip instanceof BoardableItem)
+						deckShip=((Boardable)R.getArea()).getBoardableItem();
+						if(deckShip instanceof Boardable)
 						{
 							deckArea=R.getArea();
 							deckShipRoom=CMLib.map().roomLocation(deckShip);

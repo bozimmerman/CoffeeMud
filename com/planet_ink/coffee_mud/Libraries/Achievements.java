@@ -5702,8 +5702,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
 						{
 							if((parms.length>0)
-							&&(parms[0] instanceof BoardableItem)
-							&&((shipMask==null)||(CMLib.masking().maskCheck(shipMask, (BoardableItem)parms[0], true)))
+							&&(parms[0] instanceof Boardable)
+							&&((shipMask==null)||(CMLib.masking().maskCheck(shipMask, (Boardable)parms[0], true)))
 							&&((playerMask==null)||(CMLib.masking().maskCheck(playerMask, mob, true))))
 							{
 								count+=bumpNum;

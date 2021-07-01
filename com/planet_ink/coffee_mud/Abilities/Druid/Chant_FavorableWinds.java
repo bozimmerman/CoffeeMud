@@ -120,9 +120,9 @@ public class Chant_FavorableWinds extends Chant
 				if(R!=null)
 					R.showHappens(CMMsg.MSG_OK_VISUAL,L("The favorable winds die down."));
 			}
-			if(affected instanceof BoardableItem)
+			if(affected instanceof Boardable)
 			{
-				final Area A=((BoardableItem)affected).getArea();
+				final Area A=((Boardable)affected).getArea();
 				if(A!=null)
 				{
 					for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
@@ -142,7 +142,7 @@ public class Chant_FavorableWinds extends Chant
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(affected instanceof BoardableItem)
+		if(affected instanceof Boardable)
 			affectableStats.setAbility(affectableStats.ability() + abilityCode());
 	}
 
@@ -164,20 +164,20 @@ public class Chant_FavorableWinds extends Chant
 		Room shipR = null;
 		Item target=null;
 
-		if((R!=null)&&(R.getArea() instanceof BoardableItem)&&(commands.size()==0))
+		if((R!=null)&&(R.getArea() instanceof Boardable)&&(commands.size()==0))
 		{
-			target=((BoardableItem)R.getArea()).getBoardableItem();
+			target=((Boardable)R.getArea()).getBoardableItem();
 			shipR = CMLib.map().roomLocation(target);
 		}
 		else
 		{
-			if((R!=null)&&(R.getArea() instanceof BoardableItem))
-				shipR=CMLib.map().roomLocation(((BoardableItem)R.getArea()).getBoardableItem());
+			if((R!=null)&&(R.getArea() instanceof Boardable))
+				shipR=CMLib.map().roomLocation(((Boardable)R.getArea()).getBoardableItem());
 			Room checkRoom = R;
 			if((R==null)||(R.findItem(CMParms.combine(commands,0))==null))
 				checkRoom=shipR;
 			final Item I=super.getTarget(mob, checkRoom, givenTarget, commands, Room.FILTER_ROOMONLY);
-			if(I instanceof BoardableItem)
+			if(I instanceof Boardable)
 			{
 				target=I;
 				shipR=checkRoom;

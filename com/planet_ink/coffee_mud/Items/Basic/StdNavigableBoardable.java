@@ -226,8 +226,8 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						{
 							if(tenderToI.tenderItem == this)
 							{
-								final BoardableItem myArea=(BoardableItem)this.getArea();
-								final BoardableItem hisArea=(BoardableItem)tenderToI.getArea();
+								final Boardable myArea=(Boardable)this.getArea();
+								final Boardable hisArea=(Boardable)tenderToI.getArea();
 								if((myArea.getIsDocked()==null)||(hisArea.getIsDocked()==null))
 								{
 									msg.source().tell(L("Both ships must first be docked."));
@@ -327,7 +327,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						{
 							if((I instanceof Rideable)
 							&&(((Rideable)I).mobileRideBasis())
-							&&(!(I instanceof BoardableItem)))
+							&&(!(I instanceof Boardable)))
 							{
 								if(smallTenderRequests.contains(I))
 								{
@@ -1005,7 +1005,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 			if(amDestroyed())
 				return false;
 			final Area area = this.getArea();
-			if(area instanceof BoardableItem)
+			if(area instanceof Boardable)
 			{
 				if((this.tenderItem != null)
 				&&(this.tenderItem.owner()==owner())
@@ -1019,7 +1019,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 				{
 					if(this.tenderItem != null)
 						this.tenderItem=null;
-					if((((BoardableItem)area).getIsDocked() != owner())
+					if((((Boardable)area).getIsDocked() != owner())
 					&&(owner() instanceof Room))
 					{
 						this.dockHere((Room)owner());

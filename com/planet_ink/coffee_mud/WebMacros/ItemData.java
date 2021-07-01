@@ -792,9 +792,9 @@ public class ItemData extends StdWebMacro
 					case READABLETEXT: // readabletext
 						if(firstTime)
 							old=""+I.readableText();
-						if(I instanceof BoardableItem)
+						if(I instanceof Boardable)
 						{
-							final BoardableItem ship=(BoardableItem)I;
+							final Boardable ship=(Boardable)I;
 							if((ship.getArea()!=null)
 							&&(ship.getArea().getRoom(old)==null)
 							&&(ship.getArea().getProperMap().hasMoreElements()))
@@ -1259,7 +1259,7 @@ public class ItemData extends StdWebMacro
 						}
 						break;
 					case ISBOARDABLEITEM:
-						str.append(I instanceof BoardableItem);
+						str.append(I instanceof Boardable);
 						break;
 					case ISPRIVATEPROPERTY:
 						str.append(I instanceof PrivateProperty);
@@ -1452,9 +1452,9 @@ public class ItemData extends StdWebMacro
 						}
 						break;
 					case AREAXML:
-						if(I instanceof BoardableItem)
+						if(I instanceof Boardable)
 						{
-							final String xml=CMLib.xml().parseOutAngleBracketsAndQuotes(CMLib.coffeeMaker().getAreaObjectXML(((BoardableItem)I).getArea(), null, null, null, true).toString());
+							final String xml=CMLib.xml().parseOutAngleBracketsAndQuotes(CMLib.coffeeMaker().getAreaObjectXML(((Boardable)I).getArea(), null, null, null, true).toString());
 							str.append((firstTime) ?
 								this.htmlOutgoingFilter(xml) :
 									this.htmlOutgoingFilter(old)).append(", ");

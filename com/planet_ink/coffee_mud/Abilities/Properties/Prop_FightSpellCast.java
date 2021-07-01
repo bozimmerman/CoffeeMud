@@ -123,9 +123,9 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 				&&(msg.target() instanceof Item))
 				{
 					final Item I=(Item)msg.target();
-					if(I instanceof BoardableItem)
+					if(I instanceof Boardable)
 					{
-						final Area A=((BoardableItem)I).getArea();
+						final Area A=((Boardable)I).getArea();
 						if(A!=null)
 						{
 							final List<Physical> stuff = new ArrayList<Physical>();

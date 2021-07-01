@@ -120,7 +120,7 @@ public class Skill_TieDown extends StdSkill
 			final Physical affected=this.affected;
 			msg.source().tell(L("@x1 is tied down and not going anywhere.",affected.Name()));
 			final Room R=CMLib.map().roomLocation(affected);
-			if(affected instanceof BoardableItem)
+			if(affected instanceof Boardable)
 				R.show(msg.source(), null, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> struggle(s) against the ropes."));
 			else
 				R.show(msg.source(), affected, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> fail(s) to sail off in <T-NAME>."));

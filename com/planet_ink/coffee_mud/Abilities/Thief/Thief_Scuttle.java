@@ -100,12 +100,12 @@ public class Thief_Scuttle extends ThiefSkill
 			return false;
 		final Room boatRoom;
 		final Rideable boat;
-		if((R.getArea() instanceof BoardableItem)
+		if((R.getArea() instanceof Boardable)
 		&&(R.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
-		&&(((BoardableItem)R.getArea()).getBoardableItem() instanceof Rideable))
+		&&(((Boardable)R.getArea()).getBoardableItem() instanceof Rideable))
 		{
-			boat = (Rideable)((BoardableItem)R.getArea()).getBoardableItem();
-			boatRoom=CMLib.map().roomLocation(((BoardableItem)R.getArea()).getBoardableItem());
+			boat = (Rideable)((Boardable)R.getArea()).getBoardableItem();
+			boatRoom=CMLib.map().roomLocation(((Boardable)R.getArea()).getBoardableItem());
 		}
 		else
 		if((mob.riding() != null)&&(mob.riding().rideBasis()==Rideable.Basis.WATER_BASED))
@@ -140,7 +140,7 @@ public class Thief_Scuttle extends ThiefSkill
 		}
 
 		int numRiders=0;
-		if(R.getArea() instanceof BoardableItem)
+		if(R.getArea() instanceof Boardable)
 		{
 			for(final Enumeration<Room> r=R.getArea().getProperMap();r.hasMoreElements();)
 			{

@@ -39,7 +39,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdBoardable extends StdPortal implements PrivateProperty, BoardableItem
+public class StdBoardable extends StdPortal implements PrivateProperty, Boardable
 {
 	@Override
 	public String ID()
@@ -116,8 +116,8 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	@Override
 	public void setDockableItem(final Item dockableItem)
 	{
-		if(area instanceof BoardableItem)
-			((BoardableItem)area).setDockableItem(dockableItem);
+		if(area instanceof Boardable)
+			((Boardable)area).setDockableItem(dockableItem);
 	}
 
 	@Override
@@ -139,7 +139,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			R.setRoomID(area.Name()+"#0");
 			R.setSavable(false);
 			area.addProperRoom(R);
-			((BoardableItem)area).setDockableItem(this);
+			((Boardable)area).setDockableItem(this);
 			readableText=R.roomID();
 		}
 		return area;
@@ -159,10 +159,10 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 				area.destroy();
 			}
 			area=CMLib.coffeeMaker().unpackAreaObjectFromXML(xml);
-			if(area instanceof BoardableItem)
+			if(area instanceof Boardable)
 			{
 				area.setSavable(false);
-				((BoardableItem)area).setDockableItem(this);
+				((Boardable)area).setDockableItem(this);
 				for(final Enumeration<Room> r=area.getCompleteMap();r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();
@@ -204,8 +204,8 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		}
 		if(this.homePortID.length()==0)
 			this.homePortID=CMLib.map().getExtendedRoomID(R);
-		if (area instanceof BoardableItem)
-			((BoardableItem)area).dockHere(R);
+		if (area instanceof Boardable)
+			((Boardable)area).dockHere(R);
 	}
 
 	@Override
@@ -217,16 +217,16 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			R.delItem(this);
 			setOwner(null);
 		}
-		if (area instanceof BoardableItem)
-			return ((BoardableItem)area).unDock(moveToOutside);
+		if (area instanceof Boardable)
+			return ((Boardable)area).unDock(moveToOutside);
 		return null;
 	}
 
 	@Override
 	public Room getIsDocked()
 	{
-		if (area instanceof BoardableItem)
-			return ((BoardableItem)area).getIsDocked();
+		if (area instanceof Boardable)
+			return ((Boardable)area).getIsDocked();
 		if(owner() instanceof Room)
 			return ((Room)owner());
 		return null;
@@ -462,10 +462,10 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	public void rename(final String newName)
 	{
 		final Area area=getArea();
-		if(area instanceof BoardableItem)
+		if(area instanceof Boardable)
 		{
 			final String oldName=area.Name();
-			((BoardableItem)area).rename(newName);
+			((Boardable)area).rename(newName);
 			renameDestinationRooms(oldName,area.Name());
 			setArea(CMLib.coffeeMaker().getAreaObjectXML(area, null, null, null, true).toString());
 		}
@@ -1044,9 +1044,9 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 				@Override
 				public void callBack()
 				{
-					for(final Enumeration<BoardableItem> s=CMLib.map().ships();s.hasMoreElements();)
+					for(final Enumeration<Boardable> s=CMLib.map().ships();s.hasMoreElements();)
 					{
-						final BoardableItem boardableItem=s.nextElement();
+						final Boardable boardableItem=s.nextElement();
 						if((boardableItem!=null)
 						&&(!boardableItem.amDestroyed())
 						&&(boardableItem.getArea()!=null)

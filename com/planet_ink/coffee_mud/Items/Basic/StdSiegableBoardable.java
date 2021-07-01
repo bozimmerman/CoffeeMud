@@ -1379,14 +1379,14 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 							try
 							{
 								PhysicalAgent attacker;
-								if(msg.source().riding() instanceof BoardableItem)
+								if(msg.source().riding() instanceof Boardable)
 									attacker=msg.source().riding();
 								else
 								{
 									final Room R=msg.source().location();
 									if((R!=null)
-									&&(R.getArea() instanceof BoardableItem))
-										attacker=((BoardableItem)R.getArea()).getBoardableItem();
+									&&(R.getArea() instanceof Boardable))
+										attacker=((Boardable)R.getArea()).getBoardableItem();
 									else
 									{
 										factoryM=CMClass.getFactoryMOB(L("someone"), 1, CMLib.map().roomLocation(this));

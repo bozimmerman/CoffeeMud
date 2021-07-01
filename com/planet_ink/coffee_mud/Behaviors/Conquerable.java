@@ -299,7 +299,7 @@ public class Conquerable extends Arrest
 			&&(!I.amDestroyed()))
 			{
 				if((I instanceof SiegableItem)
-				&&(I instanceof BoardableItem))
+				&&(I instanceof Boardable))
 					((SiegableItem)I).killMeDead(true);
 				else
 				if(I.owner() instanceof MOB)
@@ -436,10 +436,10 @@ public class Conquerable extends Arrest
 			for(int i=clanItems.size()-1;i>=0;i--)
 			{
 				final ClanItem I=clanItems.elementAt(i);
-				if((I instanceof BoardableItem)
+				if((I instanceof Boardable)
 				&&(!I.amDestroyed())
-				&&(((BoardableItem)I).getArea()!=null))
-					chance -= ((BoardableItem)I).getArea().numberOfProperIDedRooms();
+				&&(((Boardable)I).getArea()!=null))
+					chance -= ((Boardable)I).getArea().numberOfProperIDedRooms();
 			}
 		}
 		if(chance<=0)
@@ -626,8 +626,8 @@ public class Conquerable extends Arrest
 											}
 										}
 										R.addItem(newItem);
-										if(newItem instanceof BoardableItem)
-											((BoardableItem)newItem).dockHere(R);
+										if(newItem instanceof Boardable)
+											((Boardable)newItem).dockHere(R);
 									}
 									if(newItem instanceof ClanItem)
 										registerClanItem((ClanItem)newItem);
@@ -837,7 +837,7 @@ public class Conquerable extends Arrest
 				final Item I=R.getItem(i);
 				if((I instanceof ClanItem)
 				&&(I instanceof SiegableItem)
-				&&(I instanceof BoardableItem))
+				&&(I instanceof Boardable))
 					totalControlPoints += ((SiegableItem)I).getMaxHullPoints();
 			}
 		}
@@ -1086,7 +1086,7 @@ public class Conquerable extends Arrest
 				I.setContainer(null);
 			I.setExpirationDate(0);
 			if((I instanceof SiegableItem)
-			&&(I instanceof BoardableItem)
+			&&(I instanceof Boardable)
 			&&(totalControlPoints>0))
 				recalculateControlPoints(myArea);
 		}

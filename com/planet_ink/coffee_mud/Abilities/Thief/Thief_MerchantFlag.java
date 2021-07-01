@@ -134,7 +134,7 @@ public class Thief_MerchantFlag extends ThiefSkill
 	{
 		super.executeMsg(myHost, msg);
 		if((msg.targetMinor() == CMMsg.TYP_ADVANCE)
-		&&((msg.target() instanceof BoardableItem)
+		&&((msg.target() instanceof Boardable)
 			||(msg.target() instanceof Rideable))
 		&&(msg.targetMajor(CMMsg.MASK_MALICIOUS))
 		&&(CMLib.flags().isAShip(msg.source())))
@@ -154,7 +154,7 @@ public class Thief_MerchantFlag extends ThiefSkill
 		if(!super.okMessage(myHost, msg))
 			return false;
 		if((msg.targetMinor() == CMMsg.TYP_ADVANCE)
-		&&((msg.target() instanceof BoardableItem)
+		&&((msg.target() instanceof Boardable)
 			||(msg.target() instanceof Rideable))
 		&&(msg.targetMajor(CMMsg.MASK_MALICIOUS))
 		&&(CMLib.flags().isAShip(msg.source())))
@@ -167,7 +167,7 @@ public class Thief_MerchantFlag extends ThiefSkill
 			if(msg.target() == affected)
 			{
 				boolean pirateAboard=false;
-				final BoardableItem ship=(BoardableItem)msg.source().riding();
+				final Boardable ship=(Boardable)msg.source().riding();
 				if(ship != null)
 				{
 					final Area area=ship.getArea();
@@ -208,7 +208,7 @@ public class Thief_MerchantFlag extends ThiefSkill
 	{
 		final Physical P=affected;
 		super.unInvoke();
-		if(P instanceof BoardableItem)
+		if(P instanceof Boardable)
 		{
 			final Room R=CMLib.map().roomLocation(P);
 			if((R!=null)&&(CMLib.flags().isWaterySurfaceRoom(R))&&(super.canBeUninvoked()))
@@ -233,11 +233,11 @@ public class Thief_MerchantFlag extends ThiefSkill
 			return false;
 
 		final NavigableItem ship;
-		if((R.getArea() instanceof BoardableItem)
-		&&(((BoardableItem)R.getArea()).getBoardableItem() instanceof NavigableItem)
-		&&(((NavigableItem)(((BoardableItem)R.getArea()).getBoardableItem())).navBasis() == Rideable.Basis.WATER_BASED))
+		if((R.getArea() instanceof Boardable)
+		&&(((Boardable)R.getArea()).getBoardableItem() instanceof NavigableItem)
+		&&(((NavigableItem)(((Boardable)R.getArea()).getBoardableItem())).navBasis() == Rideable.Basis.WATER_BASED))
 		{
-			ship=(NavigableItem)((BoardableItem)R.getArea()).getBoardableItem();
+			ship=(NavigableItem)((Boardable)R.getArea()).getBoardableItem();
 		}
 		else
 		{

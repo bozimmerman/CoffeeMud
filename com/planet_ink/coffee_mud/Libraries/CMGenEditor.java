@@ -839,8 +839,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			E.setName(newName);
 			if(E.displayText().toLowerCase().startsWith(oldName.toLowerCase()))
 				E.setDisplayText(newName+E.displayText().substring(oldName.length()));
-			if(E instanceof BoardableItem)
-				((BoardableItem)E).rename(newName);
+			if(E instanceof Boardable)
+				((Boardable)E).rename(newName);
 			return;
 		}
 		if((E instanceof Physical)&&(CMLib.flags().isCataloged(E)))
@@ -11480,7 +11480,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(showFlag<0)
 				mob.tell(L("*. Class: @x1",myArea.ID()));
 			genName(mob,myArea,++showNumber,showFlag);
-			if(myArea instanceof BoardableItem)
+			if(myArea instanceof Boardable)
 				genDisplayText(mob,myArea,++showNumber,showFlag);
 			genDescription(mob,myArea,++showNumber,showFlag);
 			genAuthor(mob,myArea,++showNumber,showFlag);

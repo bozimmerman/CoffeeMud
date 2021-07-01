@@ -369,10 +369,10 @@ public class Boatwright extends CraftingSkill implements ItemCraftor, MendingSki
 			messedUp=false;
 			final Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
 			final Room R=mob.location();
-			if(R.getArea() instanceof BoardableItem)
+			if(R.getArea() instanceof Boardable)
 			{
-				buildingI=getTarget(mob,CMLib.map().roomLocation(((BoardableItem)R.getArea()).getBoardableItem()),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
-				if(buildingI != ((BoardableItem)R.getArea()).getBoardableItem())
+				buildingI=getTarget(mob,CMLib.map().roomLocation(((Boardable)R.getArea()).getBoardableItem()),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
+				if(buildingI != ((Boardable)R.getArea()).getBoardableItem())
 					buildingI=null;
 			}
 			if(buildingI==null)

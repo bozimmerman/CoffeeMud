@@ -41,7 +41,7 @@ import java.util.*;
  * @author Bo Zimmerman
  *
  */
-public interface NavigableItem extends BoardableItem, Item, Rideable, SiegableItem
+public interface NavigableItem extends Boardable, Item, Rideable, SiegableItem
 {
 	public static final int COURSE_STEER_MASK = 256;
 

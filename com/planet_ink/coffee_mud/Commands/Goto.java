@@ -108,9 +108,9 @@ public class Goto extends At
 				room=((Area)o).getRandomProperRoom();
 			}
 			else
-			if(o instanceof BoardableItem)
+			if(o instanceof Boardable)
 			{
-				final Area A=((BoardableItem)o).getArea();
+				final Area A=((Boardable)o).getArea();
 				room=A.getRandomProperRoom();
 			}
 		}

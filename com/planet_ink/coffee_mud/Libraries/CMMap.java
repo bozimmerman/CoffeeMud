@@ -72,7 +72,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	protected long						lastVReset				= 0;
 	protected CMNSortSVec<Area>			areasList				= new CMNSortSVec<Area>();
 	protected CMNSortSVec<Deity>		deitiesList				= new CMNSortSVec<Deity>();
-	protected List<BoardableItem>		shipList				= new SVector<BoardableItem>();
+	protected List<Boardable>		shipList				= new SVector<Boardable>();
 	protected List<PostOffice>			postOfficeList			= new SVector<PostOffice>();
 	protected List<Auctioneer>			auctionHouseList		= new SVector<Auctioneer>();
 	protected List<Banker>				bankList				= new SVector<Banker>();
@@ -878,9 +878,9 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		if(o instanceof SpaceObject)
 		{
-			if(o instanceof BoardableItem)
+			if(o instanceof Boardable)
 			{
-				final Item I=((BoardableItem)o).getBoardableItem();
+				final Item I=((Boardable)o).getBoardableItem();
 				if(I instanceof SpaceObject)
 					return (SpaceObject)I;
 			}
@@ -988,8 +988,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(O instanceof Area)
 			A=(Area)O;
 		else
-		if(O instanceof BoardableItem)
-			A=((BoardableItem)O).getArea();
+		if(O instanceof Boardable)
+			A=((Boardable)O).getArea();
 		else
 		if(O instanceof Room)
 			A=((Room)O).getArea();
@@ -1894,7 +1894,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return shipList.size();
 	}
 
-	protected void addShip(final BoardableItem newOne)
+	protected void addShip(final Boardable newOne)
 	{
 		if (!shipList.contains(newOne))
 		{
@@ -1905,23 +1905,23 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 	}
 
-	protected void delShip(final BoardableItem oneToDel)
+	protected void delShip(final Boardable oneToDel)
 	{
 		if(oneToDel!=null)
 		{
 			shipList.remove(oneToDel);
 			final Item shipI = oneToDel.getBoardableItem();
-			if(shipI instanceof BoardableItem)
+			if(shipI instanceof Boardable)
 			{
-				final BoardableItem boardableShipI = (BoardableItem)shipI;
+				final Boardable boardableShipI = (Boardable)shipI;
 				shipList.remove(boardableShipI);
 			}
 			final Area area=oneToDel.getArea();
 			if(area!=null)
 			{
-				if(area instanceof BoardableItem)
+				if(area instanceof Boardable)
 				{
-					final BoardableItem boardableShipA = (BoardableItem)area;
+					final Boardable boardableShipA = (Boardable)area;
 					shipList.remove(boardableShipA);
 				}
 				area.setAreaState(Area.State.STOPPED);
@@ -1930,9 +1930,9 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public BoardableItem getShip(final String calledThis)
+	public Boardable getShip(final String calledThis)
 	{
-		for (final BoardableItem S : shipList)
+		for (final Boardable S : shipList)
 		{
 			if (S.Name().equalsIgnoreCase(calledThis))
 				return S;
@@ -1941,15 +1941,15 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public BoardableItem findShip(final String s, final boolean exactOnly)
+	public Boardable findShip(final String s, final boolean exactOnly)
 	{
-		return (BoardableItem)CMLib.english().fetchEnvironmental(shipList, s, exactOnly);
+		return (Boardable)CMLib.english().fetchEnvironmental(shipList, s, exactOnly);
 	}
 
 	@Override
-	public Enumeration<BoardableItem> ships()
+	public Enumeration<Boardable> ships()
 	{
-		return new IteratorEnumeration<BoardableItem>(shipList.iterator());
+		return new IteratorEnumeration<Boardable>(shipList.iterator());
 	}
 
 	public Enumeration<Room> shipsRoomEnumerator(final Area inA)
@@ -1992,7 +1992,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return new Enumeration<Area>()
 		{
 			private volatile Area nextArea=null;
-			private volatile Enumeration<BoardableItem> shipsEnum=ships();
+			private volatile Enumeration<Boardable> shipsEnum=ships();
 
 			@Override
 			public boolean hasMoreElements()
@@ -2004,7 +2004,7 @@ public class CMMap extends StdLibrary implements WorldMap
 						shipsEnum=null;
 						return false;
 					}
-					final BoardableItem ship=shipsEnum.nextElement();
+					final Boardable ship=shipsEnum.nextElement();
 					if((ship!=null)&&(ship.getArea()!=null))
 					{
 						if((inA==null)||(areaLocation(ship)==inA))
@@ -2788,9 +2788,9 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public Room getSafeRoomToMovePropertyTo(final Room room, final PrivateProperty I)
 	{
-		if(I instanceof BoardableItem)
+		if(I instanceof Boardable)
 		{
-			final Room R=getRoom(((BoardableItem)I).getHomePortID());
+			final Room R=getRoom(((Boardable)I).getHomePortID());
 			if((R!=null)&&(R!=room)&&(!R.amDestroyed()))
 				return R;
 		}
@@ -3574,9 +3574,9 @@ public class CMMap extends StdLibrary implements WorldMap
 			final Room R=M.location();
 			R.delInhabitant(M);
 		}
-		for(final Enumeration<BoardableItem> b=ships();b.hasMoreElements();)
+		for(final Enumeration<Boardable> b=ships();b.hasMoreElements();)
 		{
-			final BoardableItem ship=b.nextElement();
+			final Boardable ship=b.nextElement();
 			final Room R=roomLocation(ship);
 			if((R!=null)
 			&&(R.getArea()==area)
@@ -3632,8 +3632,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(o instanceof Deity)
 			delDeity((Deity)o);
 
-		if((o instanceof BoardableItem)&&(!(o instanceof Area)))
-			delShip((BoardableItem)o);
+		if((o instanceof Boardable)&&(!(o instanceof Area)))
+			delShip((Boardable)o);
 
 		if(o instanceof PostOffice)
 			delPostOffice((PostOffice)o);
@@ -3664,8 +3664,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(o instanceof Deity)
 			addDeity((Deity)o);
 
-		if(o instanceof BoardableItem)
-			addShip((BoardableItem)o);
+		if(o instanceof Boardable)
+			addShip((Boardable)o);
 
 		if(o instanceof PostOffice)
 			addPostOffice((PostOffice)o);

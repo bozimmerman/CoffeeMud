@@ -198,9 +198,9 @@ public class StdThinInstance extends StdThinArea implements SubArea
 				final Area A=R.getArea();
 				if(R.getArea()==childA)
 					return true;
-				if(A instanceof BoardableItem)
+				if(A instanceof Boardable)
 				{
-					final Room R2=CMLib.map().roomLocation(((BoardableItem)A).getBoardableItem());
+					final Room R2=CMLib.map().roomLocation(((Boardable)A).getBoardableItem());
 					if((R2!=null)
 					&&(R2.getArea()==childA))
 						return true;
@@ -250,9 +250,9 @@ public class StdThinInstance extends StdThinArea implements SubArea
 				}
 			}
 		}
-		for(final Enumeration<BoardableItem> s = CMLib.map().ships();s.hasMoreElements();)
+		for(final Enumeration<Boardable> s = CMLib.map().ships();s.hasMoreElements();)
 		{
-			final BoardableItem B=s.nextElement();
+			final Boardable B=s.nextElement();
 			if(B!=null)
 			{
 				final Item I=B.getBoardableItem();
@@ -709,11 +709,11 @@ public class StdThinInstance extends StdThinArea implements SubArea
 			Area redirectA = null;
 			final Set<MOB> grp = msg.source().getGroupMembers(new HashSet<MOB>());
 			if(msg.source().isMonster()
-			&&(msg.source().riding() instanceof BoardableItem))
+			&&(msg.source().riding() instanceof Boardable))
 			{
 				final List<MOB> mobSet=new LinkedList<MOB>();
 				boolean playerFound=false;
-				final Area subA=((BoardableItem)msg.source().riding()).getArea();
+				final Area subA=((Boardable)msg.source().riding()).getArea();
 				for(final Enumeration<Room> r=subA.getProperMap();r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();

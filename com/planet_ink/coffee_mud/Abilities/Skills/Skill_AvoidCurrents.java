@@ -85,7 +85,7 @@ public class Skill_AvoidCurrents extends StdSkill
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;
-		if((msg.target() instanceof BoardableItem)
+		if((msg.target() instanceof Boardable)
 		&&(msg.tool() != null)
 		&&(msg.target() == affected)
 		&&(msg.tool().ID().equals("AWaterCurrent"))
@@ -94,8 +94,8 @@ public class Skill_AvoidCurrents extends StdSkill
 			final MOB M=invoker();
 			if((M!=null)
 			&&(M.location()!=null)
-			&&(M.location().getArea() instanceof BoardableItem)
-			&&(((BoardableItem)M.location().getArea()).getBoardableItem() == msg.target())
+			&&(M.location().getArea() instanceof Boardable)
+			&&(((Boardable)M.location().getArea()).getBoardableItem() == msg.target())
 			&&(super.proficiencyCheck(M, 0, false)))
 			{
 				super.helpProficiency(M, 0);
@@ -127,10 +127,10 @@ public class Skill_AvoidCurrents extends StdSkill
 			return false;
 
 		final Item target;
-		if((R.getArea() instanceof BoardableItem)
-		&&(((BoardableItem)R.getArea()).getBoardableItem() instanceof BoardableItem))
+		if((R.getArea() instanceof Boardable)
+		&&(((Boardable)R.getArea()).getBoardableItem() instanceof Boardable))
 		{
-			target=((BoardableItem)R.getArea()).getBoardableItem();
+			target=((Boardable)R.getArea()).getBoardableItem();
 		}
 		else
 		{

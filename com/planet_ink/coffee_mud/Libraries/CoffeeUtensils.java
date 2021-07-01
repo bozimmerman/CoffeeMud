@@ -531,9 +531,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		if(E instanceof Electronics)
 		{
 			CMLib.tech().fixItemTechLevel((Electronics)E, -1);
-			if(E instanceof BoardableItem)
+			if(E instanceof Boardable)
 			{
-				final Area A=((BoardableItem)E).getArea();
+				final Area A=((Boardable)E).getArea();
 				for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();
