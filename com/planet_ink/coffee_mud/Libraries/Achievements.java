@@ -5926,6 +5926,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				private int				num			= -1;
 				private long			minTime		= 10L * 60L * 1000L;
+				private boolean			intruder	= false;
 				private CompiledZMask	areaMask	= null;
 				private CompiledZMask	roomMask	= null;
 
@@ -6056,12 +6057,43 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							&&((roomMask==null)||((R!=null)&&(CMLib.masking().maskCheck(roomMask, mob, true))))
 							&&((recentVisit==0)||(System.currentTimeMillis()>recentVisit)))
 							{
+								if(intruder)
+								{
+									final PrivateProperty P;
+									if(R!=null)
+										P=CMLib.law().getPropertyRecord(R);
+									else
+										P=CMLib.law().getPropertyRecord(A);
+									if((P != null)
+									&&(P.getOwnerName().length()>0))
+									{
+										if(CMLib.law().doesHavePriviledgesHere(mob, R))
+											return false;
+									}
+									final LegalBehavior B;
+									if(R!=null)
+										B=CMLib.law().getLegalBehavior(R);
+									else
+										B=CMLib.law().getLegalBehavior(A);
+									if(B != null)
+									{
+										final String org = B.rulingOrganization();
+										if(org.length()>0)
+										{
+											final Clan C=CMLib.clans().getClan(org);
+											if((C!=null)
+											&&(mob.getClanRole(C.clanID())==null))
+												return false;
+										}
+									}
+								}
 								recentVisit=System.currentTimeMillis() + minTime;
 								count+=bumpNum;
 								if(count < 0)
 									count = 0;
+								return true;
 							}
-							return true;
+							return false;
 						}
 
 						@Override
@@ -6095,6 +6127,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					if(!CMath.isInteger(numStr))
 						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
 					num=CMath.s_int(numStr);
+					intruder=CMParms.getParmBool(parms, "INTRUDE", false);
 					final String areaMaskStr = CMStrings.deEscape(CMParms.getParmStr(parms, "AREAMASK", ""));
 					this.areaMask = null;
 					if(areaMaskStr.trim().length()==0)
