@@ -1043,6 +1043,14 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 			&& (courseDirection != -1) )
 			{
 				final int speed=getMaxSpeed();
+				if((speed == 0)
+				&&(subjectToWearAndTear())
+				&&(usesRemaining()<25))
+				{
+					courseDirection = -1;
+					this.courseDirections.clear();
+					announceToAllAboard(L("<S-NAME> is too damaged to move."));
+				}
 				for(int s=0;s<speed && (courseDirection>=0);s++)
 				{
 					final int newDirection = courseDirection & 127;
