@@ -1572,6 +1572,13 @@ public class CraftingSkill extends GatheringSkill
 				&&((mob==from)||(!I.amWearingAt(Wearable.IN_INVENTORY))))
 					V.addElement(I);
 			}
+			final Room R=M.location();
+			if(R!=null)
+			{
+				V.addAll(getAllMendable(mob, R, contained));
+				if(R.getArea() instanceof Boardable)
+					V.addAll(getAllMendable(mob, ((Boardable)R.getArea()).getBoardableItem(), contained));
+			}
 		}
 		else
 		if(from instanceof Item)
