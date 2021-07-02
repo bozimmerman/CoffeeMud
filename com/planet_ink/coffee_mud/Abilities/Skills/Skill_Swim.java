@@ -142,6 +142,18 @@ public class Skill_Swim extends StdSkill
 	}
 
 	@Override
+	public boolean proficiencyCheck(final MOB mob, final int adjustment, final boolean auto)
+	{
+		if(!super.proficiencyCheck(mob, adjustment, auto))
+		{
+			if((proficiency()>=100)
+			&&(adjustment>=0))
+				return true;
+		}
+		return true;
+	}
+
+	@Override
 	public boolean preInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel, final int secondsElapsed, final double actionsRemaining)
 	{
 		if(secondsElapsed==0)
