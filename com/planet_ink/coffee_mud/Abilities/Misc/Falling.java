@@ -234,8 +234,14 @@ public class Falling extends StdAbility
 					damageToTake=reversed()?damage:(damageToTake+damage);
 				}
 				temporarilyDisable=true;
-				CMLib.tracking().walk(mob,direction,false,false);
-				temporarilyDisable=false;
+				try
+				{
+					CMLib.tracking().walk(mob,direction,false,false);
+				}
+				finally
+				{
+					temporarilyDisable=false;
+				}
 				if(!canFallFrom(mob.location(),direction))
 					return stopFalling(mob);
 				return true;

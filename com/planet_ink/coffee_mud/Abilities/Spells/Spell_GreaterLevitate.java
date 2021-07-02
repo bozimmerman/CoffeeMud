@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2021 Bo Zimmerman
+   Copyright 2021-2021 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,16 +32,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Spell_Levitate extends Spell
+public class Spell_GreaterLevitate extends Spell
 {
 
 	@Override
 	public String ID()
 	{
-		return "Spell_Levitate";
+		return "Spell_GreaterLevitate";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Levitate");
+	private final static String localizedName = CMLib.lang().L("Greater Levitate");
 
 	@Override
 	public String name()
@@ -49,7 +49,7 @@ public class Spell_Levitate extends Spell
 		return localizedName;
 	}
 
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Levitated)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Greater Levitating)");
 
 	@Override
 	public String displayText()
@@ -87,6 +87,9 @@ public class Spell_Levitate extends Spell
 		return Ability.FLAG_MOVING;
 	}
 
+	protected volatile int maxRise = -1;
+	protected volatile boolean temporarilyDisable = false;
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -121,6 +124,80 @@ public class Spell_Levitate extends Spell
 	}
 
 	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if(maxRise == 0)
+			return true;
+		final Physical affected=this.affected;
+		final Room curRoom = CMLib.map().roomLocation(affected);
+		if(curRoom == null)
+			return false;
+		final Room upRoom = curRoom.getRoomInDir(Directions.UP);
+		final Exit upExit = curRoom.getExitInDir(Directions.UP);
+		if((upRoom == null)
+		||(upExit == null)
+		||(!upExit.isOpen()))
+		{
+			maxRise = 0;
+			return true;
+		}
+		final long expiration=(affected instanceof Item)?((Item)affected).expirationDate():0;
+		final boolean curUnderWatery = CMLib.flags().isUnderWateryRoom(curRoom);
+		final boolean upUnderWatery = CMLib.flags().isUnderWateryRoom(upRoom);
+		curRoom.show(invoker(),null,affected,CMMsg.MSG_OK_ACTION,L("<O-NAME> levitate(s) upward."));
+		if(affected instanceof Item)
+		{
+			upRoom.moveItemTo((Item)affected,ItemPossessor.Expire.Player_Drop);
+			((Item)affected).setExpirationDate(expiration);
+		}
+		else
+		if(affected instanceof MOB)
+		{
+			final MOB mob=(MOB)affected;
+			temporarilyDisable=true;
+			try
+			{
+				CMLib.tracking().walk(mob,Directions.UP,false,false);
+			}
+			finally
+			{
+				temporarilyDisable=false;
+			}
+		}
+		upRoom.show(invoker,null,affected,CMMsg.MSG_OK_ACTION,L("<O-NAME> levitates in from below."));
+		if(maxRise<0)
+		{
+			if(curUnderWatery && (!upUnderWatery))
+			{
+				final Ability sinkA=affected.fetchEffect("Sinking");
+				if(sinkA!=null)
+				{
+					sinkA.unInvoke();
+					affected.delEffect(sinkA);
+				}
+				if((affected instanceof NavigableItem)
+				&&(((NavigableItem)affected).navBasis()==Rideable.Basis.WATER_BASED))
+				{
+					if(((NavigableItem)affected).subjectToWearAndTear())
+					{
+						if(((NavigableItem)affected).usesRemaining()<5)
+							((NavigableItem)affected).setUsesRemaining(5);
+						((NavigableItem)affected).setExpirationDate(0);
+					}
+				}
+				maxRise = 0;
+			}
+		}
+		else
+		if(maxRise > 0)
+			maxRise = maxRise - 1;
+
+		return true;
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -128,7 +205,7 @@ public class Spell_Levitate extends Spell
 		{
 			final Room R=CMLib.map().roomLocation(affected);
 			if(R!=null)
-				R.show(CMLib.map().deity(),affected,CMMsg.MSG_OK_ACTION,L("<T-NAME> float(s) back down."));
+				R.show(CMLib.map().deity(),affected,CMMsg.MSG_OK_ACTION,L("<T-NAME> stop(s) levitating."));
 			super.unInvoke();
 			return;
 		}
@@ -137,7 +214,7 @@ public class Spell_Levitate extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> float(s) back down."));
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> stop(s) levitating."));
 			CMLib.commands().postStand(mob,true, false);
 		}
 	}
@@ -156,6 +233,18 @@ public class Spell_Levitate extends Spell
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
+		int max = -1;
+		if((commands!=null)
+		&&(commands.size()>1)
+		&&CMath.isInteger(commands.get(commands.size()-1)))
+		{
+			max=CMath.s_int(commands.remove(commands.size()-1));
+			if(max<0)
+			{
+				mob.tell(L("'@x1' is not a valid number.",""+max));
+				return false;
+			}
+		}
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 		if(target==null)
 			return false;
@@ -165,6 +254,14 @@ public class Spell_Levitate extends Spell
 			{
 				mob.tell(L("You'd better set it down first!"));
 				return false;
+			}
+			if(!CMLib.flags().isGettable((Item)target))
+			{
+				if(!(target instanceof NavigableItem))
+				{
+					mob.tell(L("You can't levitate @x1!",target.name(mob)));
+					return false;
+				}
 			}
 		}
 		else
@@ -184,22 +281,27 @@ public class Spell_Levitate extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> arms and cast(s) a spell.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> arms and cast(s) a great spell.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=maliciousAffect(mob,target,asLevel,5+super.getXLEVELLevel(mob),-1)!=null;
-					if(target instanceof MOB)
-						((MOB)target).location().show((MOB)target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> float(s) straight up!"));
-					else
-						mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("@x1 float(s) straight up!",target.name()));
+					final Spell_GreaterLevitate A = (Spell_GreaterLevitate)maliciousAffect(mob,target,asLevel,5+super.getXLEVELLevel(mob),-1);
+					success = A!=null;
+					if(success)
+					{
+						A.maxRise = max;
+						if(target instanceof MOB)
+							((MOB)target).location().show((MOB)target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> begin(s) floating straight up!"));
+						else
+							mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("@x1 begin(s) floating straight up!",target.name()));
+					}
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> wave(s) <S-HIS-HER> hands at <T-NAME>, but the spell fizzles."));
+			return maliciousFizzle(mob,target,L("<S-NAME> wave(s) <S-HIS-HER> hands at <T-NAME>, but the great spell fizzles."));
 		// return whether it worked
 		return success;
 	}
