@@ -633,6 +633,12 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 					return Boolean.FALSE;
 				}
 				I=sourceM.fetchWieldedItem();
+				if(I==null)
+				{
+					sourceM.tell(L("You can't attack @x1 from here.",M.name(sourceM)));
+					return Boolean.FALSE;
+				}
+				else
 				if((!(I instanceof Weapon))
 				||((((Weapon)I).weaponClassification()!=Weapon.CLASS_RANGED)
 					&&(((Weapon)I).weaponClassification()!=Weapon.CLASS_THROWN)))
