@@ -88,7 +88,7 @@ public class Spell_GreaterMend extends Spell
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
 									(auto?"<T-NAME> begins to shimmer!"
-										 :"^S<S-NAME> incant(s) greattly at <T-NAMESELF>!^?"));
+										 :"^S<S-NAME> incant(s) greatly at <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
