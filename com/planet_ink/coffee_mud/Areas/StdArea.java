@@ -2267,7 +2267,8 @@ public class StdArea implements Area
 					}
 					if (R != null)
 					{
-						if (StdArea.lastComplainer != this)
+						if((StdArea.lastComplainer != this)
+						&&(!CMath.bset(flags(), Area.FLAG_INSTANCE_CHILD)))
 						{
 							StdArea.lastComplainer = this;
 							Log.errOut("StdArea", "Last Resort random-find due to failure on " + roomID
