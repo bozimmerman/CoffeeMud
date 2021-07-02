@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2021 Bo Zimmerman
+   Copyright 2021-2021 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,16 +32,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Spell_Mend extends Spell
+public class Spell_GreaterMend extends Spell
 {
 
 	@Override
 	public String ID()
 	{
-		return "Spell_Mend";
+		return "Spell_GreaterMend";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Mend");
+	private final static String localizedName = CMLib.lang().L("Greater Mend");
 
 	@Override
 	public String name()
@@ -78,11 +78,6 @@ public class Spell_Mend extends Spell
 			mob.tell(L("@x1 cannot be mended.",target.name(mob)));
 			return false;
 		}
-		if(target.phyStats().weight()>1000)
-		{
-			mob.tell(L("@x1 is too large to be affected by this magic."));
-			return false;
-		}
 
 		if(!super.invoke(mob,commands, givenTarget, auto,asLevel))
 			return false;
@@ -93,7 +88,7 @@ public class Spell_Mend extends Spell
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
 									(auto?"<T-NAME> begins to shimmer!"
-										 :"^S<S-NAME> incant(s) at <T-NAMESELF>!^?"));
+										 :"^S<S-NAME> incant(s) greattly at <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -102,7 +97,12 @@ public class Spell_Mend extends Spell
 				else
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> begin(s) to glow and mend!"));
-					target.setUsesRemaining(100);
+					int pts = (int)Math.round((1.0 - CMath.div(target.phyStats().weight(), 20000))*100.0);
+					if(pts<1)
+						pts=0;
+					pts += 5 + (1*super.getXLEVELLevel(mob));
+					final int newPts = Math.min(target.usesRemaining() + pts,100);
+					target.setUsesRemaining(newPts);
 				}
 				target.recoverPhyStats();
 				mob.location().recoverRoomStats();
@@ -110,7 +110,7 @@ public class Spell_Mend extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,L("<S-NAME> incant(s) at <T-NAMESELF>, but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> incant(s) greatly at <T-NAMESELF>, but nothing happens."));
 
 		// return whether it worked
 		return success;

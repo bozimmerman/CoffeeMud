@@ -1702,7 +1702,7 @@ public class CraftingSkill extends GatheringSkill
 		if(I instanceof DeadBody)
 			return false;
 		if((!CMLib.flags().isDroppable(I))
-		||(!CMLib.flags().isGettable(I))
+		||((!CMLib.flags().isGettable(I))&&(!(I instanceof Boardable)))
 		||(!CMLib.flags().isRemovable(I))
 		||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ITEMNORUIN))
 		||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ITEMNOWISH))
