@@ -85,6 +85,8 @@ public class UnderWater extends StdRoom implements Drink
 
 	public static void sinkAffects(final Room room, final CMMsg msg)
 	{
+		if(msg.sourceMinor()==CMMsg.TYP_CAUSESINK) // no recursion please
+			return;
 		if(msg.amITarget(room)
 		&&(msg.targetMinor()==CMMsg.TYP_DRINK)
 		&&(room instanceof Drink))
