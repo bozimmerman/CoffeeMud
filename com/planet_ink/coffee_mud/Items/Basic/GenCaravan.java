@@ -60,7 +60,7 @@ public class GenCaravan extends GenNavigableBoardable
 		this.verb_sail = "drive";
 		this.verb_sailing = "driving";
 		this.noun_word = "drive";
-		this.anchor_name= "break";
+		this.anchor_name= "brake";
 		this.anchor_verbed = "set";
 		this.head_offTheDeck = "^HOff the side you see: ^N";
 		this.setRideBasis(Basis.WAGON);
@@ -102,11 +102,14 @@ public class GenCaravan extends GenNavigableBoardable
 					navCommandWords.put("DRIVE", N);
 					break;
 				case RAISE_ANCHOR:
+					navCommandWords.put("RELEASE_BRAKE", N);
+					navCommandWords.put("UNSET_BRAKE", N);
 					navCommandWords.put("RELEASE_BREAK", N);
 					navCommandWords.put("UNSET_BREAK", N);
 					break;
 				case LOWER_ANCHOR:
 					navCommandWords.put("SET_BREAK", N);
+					navCommandWords.put("SET_BRAKE", N);
 					break;
 				default:
 					navCommandWords.put(N.name().toUpperCase().trim(), N);
