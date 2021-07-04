@@ -513,7 +513,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			final Room R=mob.location();
 			if(R.getArea() instanceof Boardable)
 			{
-				buildingI=getTarget(mob,CMLib.map().roomLocation(((Boardable)R.getArea()).getBoardableItem()),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
+				final Room boardR=CMLib.map().roomLocation(((Boardable)R.getArea()).getBoardableItem());
+				buildingI=getTarget(mob,boardR,givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 				if(buildingI != ((Boardable)R.getArea()).getBoardableItem())
 					buildingI=null;
 			}
