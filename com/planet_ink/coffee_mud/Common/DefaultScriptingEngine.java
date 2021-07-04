@@ -11666,18 +11666,23 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							goHere=getRoom(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,roomName),lastKnownLocation);
 						if(goHere!=null)
 						{
-							goHere.bringMobHere(monster,true);
 							final SubScript subScript=new SubScriptImpl();
 							subScript.add(new ScriptLn("",null,null));
 							subScript.add(new ScriptLn(doWhat,null,null));
-							lastKnownLocation=goHere;
-							execute(scripted,source,target,monster,primaryItem,secondaryItem,subScript,msg,tmp);
-							lastKnownLocation=lastPlace;
-							lastPlace.bringMobHere(monster,true);
-							if(!(scripted instanceof MOB))
+							if(goHere == lastPlace)
+								execute(scripted,source,target,monster,primaryItem,secondaryItem,subScript,msg,tmp);
+							else
 							{
-								goHere.delInhabitant(monster);
-								lastPlace.delInhabitant(monster);
+								goHere.bringMobHere(monster,true);
+								lastKnownLocation=goHere;
+								execute(scripted,source,target,monster,primaryItem,secondaryItem,subScript,msg,tmp);
+								lastKnownLocation=lastPlace;
+								lastPlace.bringMobHere(monster,true);
+								if(!(scripted instanceof MOB))
+								{
+									goHere.delInhabitant(monster);
+									lastPlace.delInhabitant(monster);
+								}
 							}
 						}
 					}
