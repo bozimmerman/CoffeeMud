@@ -138,10 +138,10 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		List<Item> castlePrototypes = (List<Item>)Resources.getResource(allItemID);
 		if(castlePrototypes == null)
 		{
+			castlePrototypes=new Vector<Item>();
 			final CMFile F=new CMFile(Resources.makeFileResourceName("skills/clancastles.cmare"),null);
 			if(F.exists())
 			{
-				castlePrototypes=new Vector<Item>();
 				CMLib.coffeeMaker().addItemsFromXML(F.textUnformatted().toString(), castlePrototypes, null);
 				for(final Item I : castlePrototypes)
 					CMLib.threads().deleteAllTicks(I);
