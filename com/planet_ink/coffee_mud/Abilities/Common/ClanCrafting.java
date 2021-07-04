@@ -511,20 +511,23 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			final Area A=CMLib.law().getLegalObject(R.getArea());
 			int areaPop = (A==null)?0:A.getAreaIStats()[Area.Stats.INTELLIGENT_MOBS.ordinal()];
 			boolean another=false;
-			for(final Enumeration<Room> r=A.getMetroMap();r.hasMoreElements();)
+			if(A != null)
 			{
-				final Room R1=r.nextElement();
-				if(R1!=null)
+				for(final Enumeration<Room> r=A.getMetroMap();r.hasMoreElements();)
 				{
-					for(final Enumeration<Item> i=R1.items();i.hasMoreElements();)
+					final Room R1=r.nextElement();
+					if(R1!=null)
 					{
-						final Item I=i.nextElement();
-						if((I instanceof ClanItem)
-						&&(I instanceof SiegableItem)
-						&&(I instanceof Boardable))
+						for(final Enumeration<Item> i=R1.items();i.hasMoreElements();)
 						{
-							another=true;
-							areaPop -= getDefaultPopRequirement((Boardable)I);
+							final Item I=i.nextElement();
+							if((I instanceof ClanItem)
+							&&(I instanceof SiegableItem)
+							&&(I instanceof Boardable))
+							{
+								another=true;
+								areaPop -= getDefaultPopRequirement((Boardable)I);
+							}
 						}
 					}
 				}
