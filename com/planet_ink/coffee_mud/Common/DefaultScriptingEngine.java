@@ -956,8 +956,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if(roomFinder.containsKey(thisName))
 		{
 			roomR=roomFinder.get(thisName);
-			if(roomR!=null)
+			if((roomR!=null)
+			&&(!roomR.amDestroyed()))
 				return roomR;
+			roomR=null;
 		}
 		if(imHere!=null)
 		{

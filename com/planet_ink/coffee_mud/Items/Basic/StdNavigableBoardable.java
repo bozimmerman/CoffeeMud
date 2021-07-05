@@ -54,6 +54,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 	protected volatile Item			tenderItem			= null;
 	protected List<Item>			smallTenderRequests	= new SLinkedList<Item>();
 	protected volatile Room			prevItemRoom		= null;
+	protected int					ticksPerTurn		= 1;
 
 	protected String	verb_sail		= "navigate";
 	protected String	verb_sailing	= "navigating";
@@ -135,6 +136,11 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 		return cmd;
 	}
 
+	protected int ticksPerTurn()
+	{
+		return ticksPerTurn;
+	}
+	
 	@Override
 	public int getMaxSpeed()
 	{
@@ -596,7 +602,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 							return false;
 						}
 					}
-					if((ticksSinceLastTurn<phyStats().speed())
+					if((ticksSinceLastTurn<ticksPerTurn())
 					&&((dir) != getDirectionFacing(dir)))
 					{
 						msg.source().tell(L("@x1 can't change direction that quickly.  You must wait a bit longer.",name(msg.source())));
@@ -1055,7 +1061,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 				{
 					final int newDirection = courseDirection & 127;
 					final int directionFacing = getDirectionFacing(newDirection);
-					if((ticksSinceLastTurn<phyStats().speed())
+					if((ticksSinceLastTurn<ticksPerTurn())
 					&&((newDirection) != directionFacing))
 						break;
 					switch(navMove(newDirection))
@@ -1694,6 +1700,9 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 			else
 			if(up_code.equals("SPECIAL_HEAD_OFFTHEDECK"))
 				head_offTheDeck=val;
+			else
+			if(up_code.equals("SPECIAL_TICKS_PER_TURN"))
+				this.ticksPerTurn=CMath.s_int(val);
 		}
 		super.setStat(up_code, val);
 	}
