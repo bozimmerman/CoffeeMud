@@ -84,6 +84,12 @@ public class Spell_Reinforce extends Spell
 			mob.tell(L("@x1 must be repaired before it can be reinforced.",target.name(mob)));
 			return false;
 		}
+		else
+		if(target instanceof Boardable)
+		{
+			mob.tell(L("@x1 is too big to reinforce with this magic.",target.name(mob)));
+			return false;
+		}
 
 		if(!super.invoke(mob,commands, givenTarget, auto,asLevel))
 			return false;
@@ -101,7 +107,7 @@ public class Spell_Reinforce extends Spell
 					mob.tell(L("@x1 cannot be reinforced further.",target.name(mob)));
 				else
 				{
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> begin(s) to glow and harden!"));
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> begin(s) to glow with reinforcement!"));
 					target.setUsesRemaining(target.usesRemaining()+50);
 					target.recoverPhyStats();
 					mob.location().recoverRoomStats();
