@@ -232,6 +232,7 @@ public class Mage extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_DispelMagic",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_FaerieFire",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_MysticShine",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_Harden",false);
 		// level 6
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Spell_WeaknessAcid",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Spell_Augury",false);
