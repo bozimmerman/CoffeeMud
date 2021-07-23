@@ -228,6 +228,9 @@ public class Mood extends StdAbility
 		{
 			if(affected != null)
 				affected.delEffect(this);
+			else
+			if(ticking instanceof Physical)
+				((Physical)ticking).delEffect(this);
 		}
 		else
 		switch(mood)
