@@ -224,6 +224,12 @@ public class Mood extends StdAbility
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
+		if(mood == null)
+		{
+			if(affected != null)
+				affected.delEffect(this);
+		}
+		else
 		switch(mood)
 		{
 		case SILLY: // silly
