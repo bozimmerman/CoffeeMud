@@ -979,6 +979,9 @@ public class StdAbility implements Ability
 		if(targetName.equalsIgnoreCase("self")||targetName.equalsIgnoreCase("me"))
 			target=mob;
 		else
+		if(targetName.equalsIgnoreCase("here") && (R!=null))
+			target=R;
+		else
 		if((targetName.length()==0)&&(mob.isInCombat())&&(abstractQuality()==Ability.QUALITY_MALICIOUS))
 			target=mob.getVictim();
 		else
@@ -989,7 +992,6 @@ public class StdAbility implements Ability
 				target=R.fetchFromMOBRoomFavorsItems(mob,null,targetName,filter);
 			if((target==null)
 			&&(targetName.equalsIgnoreCase("room")
-				||targetName.equalsIgnoreCase("here")
 				||targetName.equalsIgnoreCase("place")))
 				target=R;
 			int dir=-1;
@@ -1640,7 +1642,7 @@ public class StdAbility implements Ability
 	{
 		if(mob==null)
 			return false;
-		if(auto 
+		if(auto
 		&&(mob.isMonster())
 		&&(targetM!=null)
 		&&(targetM.isPlayer()))
@@ -1649,7 +1651,7 @@ public class StdAbility implements Ability
 			mob.tell(targetM,null,null,msg);
 		return false;
 	}
-	
+
 	@Override
 	public boolean preInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel, final int secondsElapsed, final double actionsRemaining)
 	{
