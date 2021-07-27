@@ -979,15 +979,16 @@ public class StdAbility implements Ability
 		if(targetName.equalsIgnoreCase("self")||targetName.equalsIgnoreCase("me"))
 			target=mob;
 		else
-		if(targetName.equalsIgnoreCase("here") && (R!=null))
-			target=R;
-		else
 		if((targetName.length()==0)&&(mob.isInCombat())&&(abstractQuality()==Ability.QUALITY_MALICIOUS))
 			target=mob.getVictim();
 		else
 		if(R!=null)
 		{
-			target=R.fetchFromRoomFavorMOBs(null,targetName);
+			if((target==null)
+			&&(targetName.equalsIgnoreCase("here")))
+				target=R;
+			if(target == null)
+				target=R.fetchFromRoomFavorMOBs(null,targetName);
 			if(target==null)
 				target=R.fetchFromMOBRoomFavorsItems(mob,null,targetName,filter);
 			if((target==null)

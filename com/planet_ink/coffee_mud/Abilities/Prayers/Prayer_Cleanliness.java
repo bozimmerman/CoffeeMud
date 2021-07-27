@@ -143,6 +143,7 @@ public class Prayer_Cleanliness extends Prayer
 							}
 						}
 					}
+					((Room)target).recoverRoomStats();
 					mob.tell(L("@x1 seems cleaner!",target.name(mob)));
 				}
 				else
