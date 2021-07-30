@@ -3747,7 +3747,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return "";
 				}
 			},
-			new AbilityParmEditorImpl("WEAPON_HANDS_REQUIRED","Hand",ParmType.NUMBER)
+			new AbilityParmEditorImpl("WEAPON_HANDS_REQUIRED","Hand",ParmType.NUMBERORNULL)
 			{
 				@Override
 				public int appliesToClass(final Object o)
@@ -5389,6 +5389,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return false;
 				return (emptyOK)||(oldVal.trim().length()>0);
 			}
+			case NUMBERORNULL:
+				if(oldVal.length()==0)
+					return true;
 			case NUMBER:
 				return CMath.isInteger(oldVal);
 			case NUMBER_PAIR:
@@ -5427,6 +5430,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return new String[]{"NULL"};
 				return new String[]{oldVal};
 			}
+			case NUMBERORNULL:
+				if(oldVal.trim().length()==0)
+					return new String[]{"NULL"};
 			case NUMBER:
 			case NUMBER_PAIR:
 				return new String[]{oldVal};
@@ -5504,6 +5510,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				}
 				break;
 			}
+			case NUMBERORNULL:
 			case NUMBER:
 			{
 				final String newStr=CMLib.genEd().prompt(mob,oldVal,++showNumber[0],showFlag,prompt(),true);
@@ -5556,6 +5563,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			case STRINGORNULL:
 			case STRING:
 			case NUMBER:
+			case NUMBERORNULL:
 			case NUMBER_PAIR:
 				return (webValue == null)?oldVal:webValue;
 			case MULTICHOICES:
@@ -5604,6 +5612,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			case STRING:
 				return "\n\r<INPUT TYPE=TEXT NAME=" + fieldName + " SIZE=" + textSize + " VALUE=\"" + webValue + "\">";
 			case NUMBER:
+			case NUMBERORNULL:
 			case NUMBER_PAIR:
 				return "\n\r<INPUT TYPE=TEXT NAME=" + fieldName + " SIZE=10 VALUE=\"" + webValue + "\">";
 			case MULTICHOICES:

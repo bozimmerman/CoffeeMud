@@ -79,7 +79,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tAMMO_TYPE\tAMMO_CAPACITY\tBASE_DAMAGE\tMIN_MAX_RANGE\t"
-		+"OPTIONAL_RESOURCE_OR_MATERIAL\tCODED_SPELL_LIST";
+		+"OPTIONAL_RESOURCE_OR_MATERIAL\tCODED_SPELL_LIST\tWEAPON_HANDS_REQUIRED";
 	}
 
 	//protected static final int RCP_FINALNAME=0;
@@ -94,6 +94,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 	protected static final int	RCP_MAXRANGE	= 9;
 	protected static final int	RCP_EXTRAREQ	= 10;
 	protected static final int	RCP_SPELL		= 11;
+	protected static final int	RCP_HANDS		= 12;
 
 	@Override
 	public String parametersFile()
@@ -525,6 +526,8 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			}
 			if(buildingI.subjectToWearAndTear())
 				buildingI.setUsesRemaining(100);
+			final int hands=CMath.s_int(foundRecipe.get(RCP_HANDS));
+			buildingI.setRawLogicalAnd((hands==1)?false:(hands==2)?true:buildingI.rawLogicalAnd());
 			buildingI.recoverPhyStats();
 			buildingI.text();
 			buildingI.recoverPhyStats();

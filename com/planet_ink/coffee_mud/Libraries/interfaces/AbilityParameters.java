@@ -60,7 +60,8 @@ public interface AbilityParameters extends CMLibrary
 		ONEWORD,
 		MULTICHOICES,
 		SPECIAL,
-		NUMBER_PAIR
+		NUMBER_PAIR,
+		NUMBERORNULL
 	}
 
 	/**

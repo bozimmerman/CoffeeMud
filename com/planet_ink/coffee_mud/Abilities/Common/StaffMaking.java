@@ -80,7 +80,7 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
 		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\tMAX_WAND_USES\tBASE_DAMAGE\t"
 		+"OPTIONAL_RESOURCE_OR_MATERIAL\tOPTIONAL_RESOURCE_OR_MATERIAL_AMT\t"
-		+"CODED_SPELL_LIST\tWAND_TYPE";
+		+"CODED_SPELL_LIST\tWAND_TYPE\tWEAPON_HANDS_REQUIRED";
 	}
 
 	//protected static final int RCP_FINALNAME=0;
@@ -95,6 +95,7 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 	protected static final int	RCP_EXTRAREQAMT	= 9;
 	protected static final int	RCP_SPELL		= 10;
 	protected static final int	RCP_WAND_TYPE	= 11;
+	protected static final int	RCP_HANDS		= 12;
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
@@ -564,6 +565,8 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 				buildingI.basePhyStats().setAttackAdjustment((baseYield()+abilityCode()+(hardness*5)-1));
 				buildingI.basePhyStats().setDamage(armordmg+hardness);
 			}
+			final int hands=CMath.s_int(foundRecipe.get(RCP_HANDS));
+			buildingI.setRawLogicalAnd((hands==1)?false:(hands==2)?true:buildingI.rawLogicalAnd());
 			buildingI.recoverPhyStats();
 			buildingI.text();
 			buildingI.recoverPhyStats();

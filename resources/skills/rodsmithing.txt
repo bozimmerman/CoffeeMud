@@ -1,49 +1,49 @@
-short % rod	1	10	10	83	GenWand	5				Prop_ItemSlot;num=1 type=finial removable=false level=high
-long % rod	5	20	16	333	GenStaff	7	10			Prop_ItemSlot;num=1 type=finial removable=false level=high
-% half rod	9	20	12	333	GenWand	9				Prop_ItemSlot;num=1 type=finial removable=false level=high
-% full rod	11	15	8	270	GenStaff	10	9			Prop_ItemSlot;num=1 type=finial removable=false level=high
-thick % rod	31	40	10	1333	GenStaff	20	20			Prop_ItemSlot;num=1 type=finial removable=false level=high
-stylish % rod	35	50	16	2083	GenStaff	22	25			Prop_ItemSlot;num=1 type=finial removable=false level=high
-master short % rod	37	50	14	2083	GenWand	24				Prop_ItemSlot;num=1 type=finial removable=false level=high
-master long % rod	38	60	24	3000	GenStaff	25	30			Prop_ItemSlot;num=1 type=finial removable=false level=high
-master % half rod	39	50	12	2083	GenWand	25				Prop_ItemSlot;num=1 type=finial removable=false level=high
-master % full rod	40	45	8	1763	GenStaff	26	23			Prop_ItemSlot;num=1 type=finial removable=false level=high
-master thick % rod	41	45	8	1920	GenStaff	26	24			Prop_ItemSlot;num=1 type=finial removable=false level=high
-master stylish % rod	43	65	22	3413	GenStaff	27	32			Prop_ItemSlot;num=1 type=finial removable=false level=high
-round % finial	1	15	1	100	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+10)
-triangular % finial	3	15	1	100	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+20)
-square % finial	5	15	1	100	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+30)
-hexagonal % finial	7	15	1	100	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+40)
-pointed % finial	9	15	1	100	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+50)
-frog finial	11	20	(onground:consumed:1:some frog blood:)	250	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(move+50)
-cat finial	13	20	(onground:consumed:1:a pile of cat bones:)	250	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(dex+1)
-bat finial	15	20	(onground:consumed:1:some bat blood:)	250	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(con+1)
-snake finial	17	20	(onground:consumed:1:some snake blood:)	250	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(armor-10)
-monkey finial	19	20	(onground:consumed:1:a pile of monkey bones:)	250	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(hit+25)
-fox finial	21	20	(onground:consumed:1:a pile of fox bones:)	500	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(int+1)
-deer finial	23	20	(onground:consumed:1:a pile of deer bones:)	500	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(cha+1)
-eagle finial	25	20	(onground:consumed:1:a pile of eagle bones:)	500	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(wis+1)
-gorilla finial	27	20	(onground:consumed:1:a pile of gorilla bones:)	500	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(str+1)
-horse finial	29	20	(onground:consumed:1:a pile of horse bones:)	500	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(move+100)
-dolphin finial	31	20	(onground:consumed:1:a pile of dolphin bones:)	750	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+100)
-dire wolf finial	33	30	(onground:consumed:1:a pile of dire wolf bones:)	750	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(armor-20)
-dwarven finial	35	30	(onground:consumed:1:a pile of dwarf bones:)	750	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(hit+50)
-wererat finial	37	30	(onground:consumed:1:some wererat blood:)	750	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(dex+2)
-pixie finial	39	30	(onground:consumed:1:a pile of pixie bones:)	750	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(int+2)
-naga finial	41	30	(onground:consumed:1:some naga blood:)	1000	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(armor-30)
-griffon finial	43	30	(onground:consumed:1:a pile of griffon bones:)	1000	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(wis+2)
-nymph finial	45	30	(onground:consumed:1:some nymph blood:)	1000	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(cha+2)
-manitcore finial	47	30	(onground:consumed:1:a pile of manitcore bones:)	1000	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(con+2)
-minotaur finial	49	30	(onground:consumed:1:a pile of minotaur bones:)	1000	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(str+2)
-troll finial	51	30	(onground:consumed:1:a pile of troll bones:)	2500	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(hit+75)
-centaur finial	53	30	(onground:consumed:1:a pile of centaur bones:)	2500	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(move+150)
-sasquatch finial	55	30	(onground:consumed:1:a pile of sasquatch bones:)	2500	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+150)
-wyvern finial	57	30	(onground:consumed:1:some wyvern blood:)	2500	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(armor-50)
-undead finial	59	30	(onground:consumed:1:some undead blood:)	2500	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+200)
-unicorn finial	61	60	(onground:consumed:1:a pint of unicorn blood:)	5000	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+250)
-spectral finial	63	60	(onground:consumed:1:some spirit essence:)	5000	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+300)
-umber hulk finial	65	60	(onground:consumed:1:umber hulk blood:)	5000	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+350)
-demonic finial	67	60	(onground:consumed:1:a demon internal organ:)	5000	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+400)
-faerie dragon finial	69	60	(onground:consumed:1:some faerie dragon blood:)	5000	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+450)
-devilish finial	71	60	(onground:consumed:1:a devil internal organ:)	7500	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+500)
-draconic finial	73	60	(onground:consumed:1:some dragon blood:)	7500	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+750)
+short % rod	1	10	10	83	GenWand	5				Prop_ItemSlot;num=1 type=finial removable=false level=high	
+long % rod	5	20	16	333	GenStaff	7	10			Prop_ItemSlot;num=1 type=finial removable=false level=high	
+% half rod	9	20	12	333	GenWand	9				Prop_ItemSlot;num=1 type=finial removable=false level=high	
+% full rod	11	15	8	270	GenStaff	10	9			Prop_ItemSlot;num=1 type=finial removable=false level=high	
+thick % rod	31	40	10	1333	GenStaff	20	20			Prop_ItemSlot;num=1 type=finial removable=false level=high	
+stylish % rod	35	50	16	2083	GenStaff	22	25			Prop_ItemSlot;num=1 type=finial removable=false level=high	
+master short % rod	37	50	14	2083	GenWand	24				Prop_ItemSlot;num=1 type=finial removable=false level=high	
+master long % rod	38	60	24	3000	GenStaff	25	30			Prop_ItemSlot;num=1 type=finial removable=false level=high	
+master % half rod	39	50	12	2083	GenWand	25				Prop_ItemSlot;num=1 type=finial removable=false level=high	
+master % full rod	40	45	8	1763	GenStaff	26	23			Prop_ItemSlot;num=1 type=finial removable=false level=high	
+master thick % rod	41	45	8	1920	GenStaff	26	24			Prop_ItemSlot;num=1 type=finial removable=false level=high	
+master stylish % rod	43	65	22	3413	GenStaff	27	32			Prop_ItemSlot;num=1 type=finial removable=false level=high	
+round % finial	1	15	1	100	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+10)	
+triangular % finial	3	15	1	100	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+20)	
+square % finial	5	15	1	100	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+30)	
+hexagonal % finial	7	15	1	100	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+40)	
+pointed % finial	9	15	1	100	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+50)	
+frog finial	11	20	(onground:consumed:1:some frog blood:)	250	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(move+50)	
+cat finial	13	20	(onground:consumed:1:a pile of cat bones:)	250	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(dex+1)	
+bat finial	15	20	(onground:consumed:1:some bat blood:)	250	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(con+1)	
+snake finial	17	20	(onground:consumed:1:some snake blood:)	250	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(armor-10)	
+monkey finial	19	20	(onground:consumed:1:a pile of monkey bones:)	250	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(hit+25)	
+fox finial	21	20	(onground:consumed:1:a pile of fox bones:)	500	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(int+1)	
+deer finial	23	20	(onground:consumed:1:a pile of deer bones:)	500	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(cha+1)	
+eagle finial	25	20	(onground:consumed:1:a pile of eagle bones:)	500	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(wis+1)	
+gorilla finial	27	20	(onground:consumed:1:a pile of gorilla bones:)	500	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(str+1)	
+horse finial	29	20	(onground:consumed:1:a pile of horse bones:)	500	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(move+100)	
+dolphin finial	31	20	(onground:consumed:1:a pile of dolphin bones:)	750	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+100)	
+dire wolf finial	33	30	(onground:consumed:1:a pile of dire wolf bones:)	750	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(armor-20)	
+dwarven finial	35	30	(onground:consumed:1:a pile of dwarf bones:)	750	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(hit+50)	
+wererat finial	37	30	(onground:consumed:1:some wererat blood:)	750	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(dex+2)	
+pixie finial	39	30	(onground:consumed:1:a pile of pixie bones:)	750	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(int+2)	
+naga finial	41	30	(onground:consumed:1:some naga blood:)	1000	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(armor-30)	
+griffon finial	43	30	(onground:consumed:1:a pile of griffon bones:)	1000	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(wis+2)	
+nymph finial	45	30	(onground:consumed:1:some nymph blood:)	1000	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(cha+2)	
+manitcore finial	47	30	(onground:consumed:1:a pile of manitcore bones:)	1000	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(con+2)	
+minotaur finial	49	30	(onground:consumed:1:a pile of minotaur bones:)	1000	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(str+2)	
+troll finial	51	30	(onground:consumed:1:a pile of troll bones:)	2500	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(hit+75)	
+centaur finial	53	30	(onground:consumed:1:a pile of centaur bones:)	2500	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(move+150)	
+sasquatch finial	55	30	(onground:consumed:1:a pile of sasquatch bones:)	2500	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+150)	
+wyvern finial	57	30	(onground:consumed:1:some wyvern blood:)	2500	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(armor-50)	
+undead finial	59	30	(onground:consumed:1:some undead blood:)	2500	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+200)	
+unicorn finial	61	60	(onground:consumed:1:a pint of unicorn blood:)	5000	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+250)	
+spectral finial	63	60	(onground:consumed:1:some spirit essence:)	5000	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+300)	
+umber hulk finial	65	60	(onground:consumed:1:umber hulk blood:)	5000	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+350)	
+demonic finial	67	60	(onground:consumed:1:a demon internal organ:)	5000	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+400)	
+faerie dragon finial	69	60	(onground:consumed:1:some faerie dragon blood:)	5000	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+450)	
+devilish finial	71	60	(onground:consumed:1:a devil internal organ:)	7500	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+500)	
+draconic finial	73	60	(onground:consumed:1:some dragon blood:)	7500	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+750)	

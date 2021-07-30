@@ -1,18 +1,18 @@
-% Ballista	15	75	500	2500	GenSiegeWeapon	ballista-bolts	1	15	5	LEATHER	
-% Light Ballista	18	80	360	3000	GenSiegeWeapon	ballista-bolts	3	15	5	LEATHER	
-Heavy % Ballista	25	100	650	5000	GenSiegeWeapon	ballista-bolts	1	20	10	LEATHER	
-% Catapult	20	60	500	5000	GenSiegeWeapon	catapult-boulders	1	20	6		
-Light % Catapult	25	70	360	2500	GenSiegeWeapon	catapult-boulders	3	20	6		
-% Trebuchet	30	80	700	7000	GenSiegeWeapon	trebuchet-shots	1	35	8	METAL	
-% Ramming Prow	35	70	550	5000	GenSiegeWeapon	nada	0	40	1		
-% Grapples	5	10	(onground:consumed:10:metal:)	25	GenGrapples		0	0			
-% bolt	5	5	5	5	GenAmmunition	ballista-bolts	1			METAL	
-% flaming bolt	7	10	5	10	GenAmmunition	ballista-bolts	1			LAMP OIL	Burning
-% bolt bundle	9	10	10	10	GenAmmunition	ballista-bolts	3			METAL	
-% boulder	10	5	(onground:consumed:25:rock:)	5	GenAmmunition	catapult-boulders	1				
-% flaming pitch boulder	12	10	(onground:consumed:10:rock:)	25	GenAmmunition	catapult-boulders	1			LAMP OIL	PROP_FIGHTSPELLCAST;50% Burning
-% boulder bundle	14	3	(onground:consumed:25:rock:)	5	GenAmmunition	catapult-boulders	3				
-% disease boulder	18	15	(onground:consumed:10:rock:)	50	GenAmmunition	catapult-boulders	3				PROP_FIGHTSPELLCAST;75% Disease
-% shot	20	10	(onground:consumed:50:rock:)	5	GenAmmunition	trebuchet-shots	1				
-% flaming pitch shot	24	10	(onground:consumed:20:rock:)	50	GenAmmunition	trebuchet-shots	1			LAMP OIL	PROP_FIGHTSPELLCAST;50% Burning
-% disease shot	28	15	(onground:consumed:20:rock:)	100	GenAmmunition	trebuchet-shots	3				PROP_FIGHTSPELLCAST;75% Disease
+% Ballista	15	75	500	2500	GenSiegeWeapon	ballista-bolts	1	15	5	LEATHER		
+% Light Ballista	18	80	360	3000	GenSiegeWeapon	ballista-bolts	3	15	5	LEATHER		
+Heavy % Ballista	25	100	650	5000	GenSiegeWeapon	ballista-bolts	1	20	10	LEATHER		
+% Catapult	20	60	500	5000	GenSiegeWeapon	catapult-boulders	1	20	6			
+Light % Catapult	25	70	360	2500	GenSiegeWeapon	catapult-boulders	3	20	6			
+% Trebuchet	30	80	700	7000	GenSiegeWeapon	trebuchet-shots	1	35	8	METAL		
+% Ramming Prow	35	70	550	5000	GenSiegeWeapon	nada	0	40	1			
+% Grapples	5	10	(onground:consumed:10:metal:)	25	GenGrapples		0	0				
+% bolt	5	5	5	5	GenAmmunition	ballista-bolts	1			METAL		
+% flaming bolt	7	10	5	10	GenAmmunition	ballista-bolts	1			LAMP OIL	Burning	
+% bolt bundle	9	10	10	10	GenAmmunition	ballista-bolts	3			METAL		
+% boulder	10	5	(onground:consumed:25:rock:)	5	GenAmmunition	catapult-boulders	1					
+% flaming pitch boulder	12	10	(onground:consumed:10:rock:)	25	GenAmmunition	catapult-boulders	1			LAMP OIL	PROP_FIGHTSPELLCAST;50% Burning	
+% boulder bundle	14	3	(onground:consumed:25:rock:)	5	GenAmmunition	catapult-boulders	3					
+% disease boulder	18	15	(onground:consumed:10:rock:)	50	GenAmmunition	catapult-boulders	3				PROP_FIGHTSPELLCAST;75% Disease	
+% shot	20	10	(onground:consumed:50:rock:)	5	GenAmmunition	trebuchet-shots	1					
+% flaming pitch shot	24	10	(onground:consumed:20:rock:)	50	GenAmmunition	trebuchet-shots	1			LAMP OIL	PROP_FIGHTSPELLCAST;50% Burning	
+% disease shot	28	15	(onground:consumed:20:rock:)	100	GenAmmunition	trebuchet-shots	3				PROP_FIGHTSPELLCAST;75% Disease	

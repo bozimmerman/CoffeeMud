@@ -1,84 +1,84 @@
-small % wand	1	10	2	140	GenWand	5			*Prop_ItemSlot;NUM=1 REMOVABLE=FALSE TYPE="wandcore" LEVEL="HIGH" ; <ITEMS></ITEMS>	SPELL
-short % wand	2	10	2	140	GenWand	6			*Prop_ItemSlot;NUM=1 REMOVABLE=FALSE TYPE="wandcore" LEVEL="HIGH" ; <ITEMS></ITEMS>	SPELL
-tiny % wand	3	11	1	144	GenWand	6			prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-peculiar % wand	4	12	3	148	GenWand	7			prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-pliant % wand	5	14	3	156	GenWand	7			prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-bent % wand	6	15	3	160	GenWand	8			prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-long % wand	7	17	4	168	GenWand	8			prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-heavy % wand	8	21	6	184	GenWand	9			prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-crooked % wand	9	20	3	180	GenWand	9			prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-gnarled % wand	10	24	4	196	GenWand	10			prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-tin-tipped % wand	12	29	3	216	GenWand	11	tin	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-zinc-tipped % wand	14	35	3	240	GenWand	12	zinc	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-lead-tipped % wand	16	42	3	268	GenWand	13	lead	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-copper-tipped % wand	18	49	3	296	GenWand	14	copper	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-bronze-tipped % wand	20	58	3	332	GenWand	15	bronze	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-brass-tipped % wand	22	67	3	368	GenWand	16	brass	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-iron-tipped % wand	24	77	3	408	GenWand	17	iron	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-silver-tipped % wand	26	88	3	452	GenWand	18	silver	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-steel-tipped % wand	28	99	3	496	GenWand	19	steel	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-chromium-tipped % wand	30	112	3	548	GenWand	20	chromium	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-gold-tipped % wand	32	125	3	600	GenWand	21	gold	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-platinum-tipped % wand	34	139	3	656	GenWand	22	platinum	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-mithril-tipped % wand	36	154	3	716	GenWand	23	mithril	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-adamantite-tipped % wand	38	169	3	776	GenWand	24	adamantite	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-quartz-fused % wand	40	186	3	844	GenWand	25	quartz	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-chrysoberyl-fused % wand	42	203	3	912	GenWand	26	chrysoberyl	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-aquamarine-fused % wand	44	221	3	984	GenWand	27	aquamarine	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-jade-fused % wand	46	240	3	1060	GenWand	28	jade	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-peridot-fused % wand	48	259	3	1136	GenWand	29	peridot	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-garnet-fused % wand	50	280	3	1220	GenWand	30	garnet	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-lapis-fused % wand	52	301	3	1304	GenWand	31	lapis	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-onyx-fused % wand	54	323	3	1392	GenWand	32	onyx	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-turquoise-fused % wand	56	346	3	1484	GenWand	33	turquoise	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-amber-fused % wand	58	369	3	1576	GenWand	34	amber	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-opal-fused % wand	60	394	3	1676	GenWand	35	opal	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-bloodstone-fused % wand	62	419	3	1776	GenWand	36	bloodstone	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-moonstone-fused % wand	64	445	3	1880	GenWand	37	moonstone	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-alexandrite-fused % wand	66	472	3	1988	GenWand	38	alexandrite	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-citrine-fused % wand	68	499	3	2096	GenWand	39	citrine	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-agate-fused % wand	70	528	3	2212	GenWand	40	agate	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-sapphire-fused % wand	72	557	3	2328	GenWand	41	sapphire	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-topaz-fused % wand	75	602	3	2508	GenWand	42	topaz	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-emerald-fused % wand	78	649	3	2696	GenWand	44	emerald	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-amethyst-fused % wand	81	698	3	2892	GenWand	45	amethyst	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-ruby-fused % wand	84	749	3	3096	GenWand	47	ruby	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-pearl-fused % wand	87	801	3	3304	GenWand	48	pearl	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-diamond-fused % wand	90	856	3	3524	GenWand	50	diamond	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
-brittle % wand core	1	15	1	100	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+10)	
-porous % wand core	3	15	1	100	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+20)	
-sturdy % wand core	5	15	1	100	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+30)	
-pliable % wand core	7	15	1	100	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+40)	
-rigid % wand core	9	15	1	100	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+50)	
-frog wand core	11	20	(onground:consumed:1:a frog hide:)	250	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(move+50)	
-cat wand core	13	20	(onground:consumed:1:a strip of cat fur:)	250	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(dex+1)	
-bat wand core	15	20	(onground:consumed:1:some bat hair:)	250	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(con+1)	
-snake wand core	17	20	(onground:consumed:1:some snake scales:)	250	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(armor-10)	
-monkey wand core	19	20	(onground:consumed:1:some monkey fur:)	250	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(hit+25)	
-fox wand core	21	20	(onground:consumed:1:a strip of fox hide:)	500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(int+1)	
-deer wand core	23	20	(onground:consumed:1:a pair of deer horns:)	500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(cha+1)	
-eagle wand core	25	20	(onground:consumed:1:some eagle feathers:)	500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(wis+1)	
-gorilla wand core	27	20	(onground:consumed:1:a strip of gorilla fur:)	500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(str+1)	
-horse wand core	29	20	(onground:consumed:1:horse mane:)	500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(move+100)	
-dolphin wand core	31	20	(onground:consumed:1:A SLIPPERY DOLPHIN HIDE:)	750	GenItem				*Prop_ItemSlotFiller;num=1 type=wandcore adds=prop_wearadjuster(mana+100)	
-dire wolf wand core	33	30	(onground:consumed:1:a strip of dire wolf fur:)	750	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(armor-20)	
-dwarven wand core	35	30	(onground:consumed:1:a dwarf beard:)	750	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(hit+50)	
-wererat wand core	37	30	(onground:consumed:1:a strip of wererat hair:)	750	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(dex+2)	
-pixie wand core	39	30	(onground:consumed:1:some pixie blood:)	750	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(int+2)	
-naga wand core	41	30	(onground:consumed:1:a strip of naga scales:)	1000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(armor-30)	
-griffon wand core	43	30	(onground:consumed:1:some dirty griffon feathers:)	1000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(wis+2)	
-nymph wand core	45	30	(onground:consumed:1:some nymph hair:)	1000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(cha+2)	
-manticore wand core	47	30	(onground:consumed:1:A PAIR OF MANTICORE HORNS:)	1000	GenItem				*Prop_ItemSlotFiller;num=1 type=wandcore adds=prop_wearadjuster(con+2)	
-minotaur wand core	49	30	(onground:consumed:1:a pair of minotaur horns:)	1000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(str+2)	
-troll wand core	51	30	(onground:consumed:1:some troll blood:)	2500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(hit+75)	
-centaur wand core	53	30	(onground:consumed:1:centaur mane:)	2500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(move+150)	
-sasquatch wand core	55	30	(onground:consumed:1:a strip of sasquatch hide:)	2500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+150)	
-wyvern wand core	57	30	(onground:consumed:1:a strip of wyvern scales:)	2500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(armor-50)	
-undead wand core	59	30	(onground:consumed:1:undead blood:)	2500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+200)	
-unicorn wand core	61	60	(onground:consumed:1:a unicorn mane:)	5000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+250)	
-spectral wand core	63	60	(onground:consumed:1:some spirit essence:)	5000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+300)	
-umber hulk wand core	65	60	(onground:consumed:1:umber hulk leather:)	5000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+350)	
-demonic wand core	67	60	(onground:consumed:1:a demon internal organ:)	5000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+400)	
-faerie dragon wand core	69	60	(onground:consumed:1:a strip of faerie dragon scales:)	5000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+450)	
-devilish wand core	71	60	(onground:consumed:1:a devil internal organ:)	7500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+500)	
-draconic wand core	73	60	(onground:consumed:1:a strip of dragon scales:)	7500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+750)	
+small % wand	1	10	2	140	GenWand	5			*Prop_ItemSlot;NUM=1 REMOVABLE=FALSE TYPE="wandcore" LEVEL="HIGH" ; <ITEMS></ITEMS>	SPELL	
+short % wand	2	10	2	140	GenWand	6			*Prop_ItemSlot;NUM=1 REMOVABLE=FALSE TYPE="wandcore" LEVEL="HIGH" ; <ITEMS></ITEMS>	SPELL	
+tiny % wand	3	11	1	144	GenWand	6			prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+peculiar % wand	4	12	3	148	GenWand	7			prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+pliant % wand	5	14	3	156	GenWand	7			prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+bent % wand	6	15	3	160	GenWand	8			prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+long % wand	7	17	4	168	GenWand	8			prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+heavy % wand	8	21	6	184	GenWand	9			prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+crooked % wand	9	20	3	180	GenWand	9			prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+gnarled % wand	10	24	4	196	GenWand	10			prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+tin-tipped % wand	12	29	3	216	GenWand	11	tin	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+zinc-tipped % wand	14	35	3	240	GenWand	12	zinc	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+lead-tipped % wand	16	42	3	268	GenWand	13	lead	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+copper-tipped % wand	18	49	3	296	GenWand	14	copper	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+bronze-tipped % wand	20	58	3	332	GenWand	15	bronze	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+brass-tipped % wand	22	67	3	368	GenWand	16	brass	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+iron-tipped % wand	24	77	3	408	GenWand	17	iron	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+silver-tipped % wand	26	88	3	452	GenWand	18	silver	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+steel-tipped % wand	28	99	3	496	GenWand	19	steel	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+chromium-tipped % wand	30	112	3	548	GenWand	20	chromium	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+gold-tipped % wand	32	125	3	600	GenWand	21	gold	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+platinum-tipped % wand	34	139	3	656	GenWand	22	platinum	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+mithril-tipped % wand	36	154	3	716	GenWand	23	mithril	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+adamantite-tipped % wand	38	169	3	776	GenWand	24	adamantite	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+quartz-fused % wand	40	186	3	844	GenWand	25	quartz	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+chrysoberyl-fused % wand	42	203	3	912	GenWand	26	chrysoberyl	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+aquamarine-fused % wand	44	221	3	984	GenWand	27	aquamarine	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+jade-fused % wand	46	240	3	1060	GenWand	28	jade	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+peridot-fused % wand	48	259	3	1136	GenWand	29	peridot	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+garnet-fused % wand	50	280	3	1220	GenWand	30	garnet	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+lapis-fused % wand	52	301	3	1304	GenWand	31	lapis	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+onyx-fused % wand	54	323	3	1392	GenWand	32	onyx	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+turquoise-fused % wand	56	346	3	1484	GenWand	33	turquoise	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+amber-fused % wand	58	369	3	1576	GenWand	34	amber	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+opal-fused % wand	60	394	3	1676	GenWand	35	opal	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+bloodstone-fused % wand	62	419	3	1776	GenWand	36	bloodstone	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+moonstone-fused % wand	64	445	3	1880	GenWand	37	moonstone	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+alexandrite-fused % wand	66	472	3	1988	GenWand	38	alexandrite	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+citrine-fused % wand	68	499	3	2096	GenWand	39	citrine	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+agate-fused % wand	70	528	3	2212	GenWand	40	agate	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+sapphire-fused % wand	72	557	3	2328	GenWand	41	sapphire	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+topaz-fused % wand	75	602	3	2508	GenWand	42	topaz	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+emerald-fused % wand	78	649	3	2696	GenWand	44	emerald	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+amethyst-fused % wand	81	698	3	2892	GenWand	45	amethyst	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+ruby-fused % wand	84	749	3	3096	GenWand	47	ruby	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+pearl-fused % wand	87	801	3	3304	GenWand	48	pearl	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+diamond-fused % wand	90	856	3	3524	GenWand	50	diamond	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL	
+brittle % wand core	1	15	1	100	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+10)		
+porous % wand core	3	15	1	100	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+20)		
+sturdy % wand core	5	15	1	100	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+30)		
+pliable % wand core	7	15	1	100	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+40)		
+rigid % wand core	9	15	1	100	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+50)		
+frog wand core	11	20	(onground:consumed:1:a frog hide:)	250	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(move+50)		
+cat wand core	13	20	(onground:consumed:1:a strip of cat fur:)	250	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(dex+1)		
+bat wand core	15	20	(onground:consumed:1:some bat hair:)	250	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(con+1)		
+snake wand core	17	20	(onground:consumed:1:some snake scales:)	250	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(armor-10)		
+monkey wand core	19	20	(onground:consumed:1:some monkey fur:)	250	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(hit+25)		
+fox wand core	21	20	(onground:consumed:1:a strip of fox hide:)	500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(int+1)		
+deer wand core	23	20	(onground:consumed:1:a pair of deer horns:)	500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(cha+1)		
+eagle wand core	25	20	(onground:consumed:1:some eagle feathers:)	500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(wis+1)		
+gorilla wand core	27	20	(onground:consumed:1:a strip of gorilla fur:)	500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(str+1)		
+horse wand core	29	20	(onground:consumed:1:horse mane:)	500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(move+100)		
+dolphin wand core	31	20	(onground:consumed:1:A SLIPPERY DOLPHIN HIDE:)	750	GenItem				*Prop_ItemSlotFiller;num=1 type=wandcore adds=prop_wearadjuster(mana+100)		
+dire wolf wand core	33	30	(onground:consumed:1:a strip of dire wolf fur:)	750	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(armor-20)		
+dwarven wand core	35	30	(onground:consumed:1:a dwarf beard:)	750	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(hit+50)		
+wererat wand core	37	30	(onground:consumed:1:a strip of wererat hair:)	750	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(dex+2)		
+pixie wand core	39	30	(onground:consumed:1:some pixie blood:)	750	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(int+2)		
+naga wand core	41	30	(onground:consumed:1:a strip of naga scales:)	1000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(armor-30)		
+griffon wand core	43	30	(onground:consumed:1:some dirty griffon feathers:)	1000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(wis+2)		
+nymph wand core	45	30	(onground:consumed:1:some nymph hair:)	1000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(cha+2)		
+manticore wand core	47	30	(onground:consumed:1:A PAIR OF MANTICORE HORNS:)	1000	GenItem				*Prop_ItemSlotFiller;num=1 type=wandcore adds=prop_wearadjuster(con+2)		
+minotaur wand core	49	30	(onground:consumed:1:a pair of minotaur horns:)	1000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(str+2)		
+troll wand core	51	30	(onground:consumed:1:some troll blood:)	2500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(hit+75)		
+centaur wand core	53	30	(onground:consumed:1:centaur mane:)	2500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(move+150)		
+sasquatch wand core	55	30	(onground:consumed:1:a strip of sasquatch hide:)	2500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+150)		
+wyvern wand core	57	30	(onground:consumed:1:a strip of wyvern scales:)	2500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(armor-50)		
+undead wand core	59	30	(onground:consumed:1:undead blood:)	2500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+200)		
+unicorn wand core	61	60	(onground:consumed:1:a unicorn mane:)	5000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+250)		
+spectral wand core	63	60	(onground:consumed:1:some spirit essence:)	5000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+300)		
+umber hulk wand core	65	60	(onground:consumed:1:umber hulk leather:)	5000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+350)		
+demonic wand core	67	60	(onground:consumed:1:a demon internal organ:)	5000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+400)		
+faerie dragon wand core	69	60	(onground:consumed:1:a strip of faerie dragon scales:)	5000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+450)		
+devilish wand core	71	60	(onground:consumed:1:a devil internal organ:)	7500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+500)		
+draconic wand core	73	60	(onground:consumed:1:a strip of dragon scales:)	7500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+750)		

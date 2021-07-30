@@ -37,6 +37,7 @@
  45. AREAVISIT achievement type now supports CONFLICT argument.
  46. Refusing to create a new character no longer counts against login attempts.
  47. New spells: Greater Levitate, Greater Mend, Deflection, Harden, Improved Harden
+ 48. Rodsmithing, Staffmaking, Wandmaking, Fletching, Gunsmithing, Siegecraft all support X handed items
  
  # Build 5.9.11.1 Release 02/26/2021
   Bug Fix Release:

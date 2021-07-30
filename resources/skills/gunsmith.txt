@@ -1,4 +1,4 @@
-a rifle	1	200	20	800	GenGun	22cal bullets	5	50	1,10	WOODEN	
-a pistol	1	100	10	400	GenGun	9mm bullets	10	50	0,5	WOODEN	
-pack of 22cal bullets	1	50	5	10	GenAmmunition	22 cal bullets	20				
-pack of 9mm bullets	1	50	5	10	GenAmmunition	9mm bullets	50				
+a rifle	1	200	20	800	GenGun	22cal bullets	5	50	1,10	WOODEN		
+a pistol	1	100	10	400	GenGun	9mm bullets	10	50	0,5	WOODEN		
+pack of 22cal bullets	1	50	5	10	GenAmmunition	22 cal bullets	20					
+pack of 9mm bullets	1	50	5	10	GenAmmunition	9mm bullets	50					

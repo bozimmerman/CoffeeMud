@@ -1,199 +1,199 @@
-crude % atlatl	4	20	6	160	GenSling	javelins	1	8	2		
-basic % atlatl	19	30	6	1200	GenSling	javelins	1	32	4		
-expert % atlatl	43	40	6	5040	GenSling	javelins	1	112	4		
-master % atlatl	67	50	6	12420	GenSling	javelins	1	184	4		
-legendary % atlatl	91	60	6	23040	GenSling	javelins	1	256	4		
-crude % blowgun	2	30	5	25	GenSling	darts	6	1	2		
-basic % blowgun	7	40	5	60	GenSling	darts	6	2	2		
-expert % blowgun	31	50	5	960	GenSling	darts	8	12	2		
-master % blowgun	55	60	5	2860	GenSling	darts	10	22	2		
-legendary % blowgun	79	70	5	5760	GenSling	darts	12	32	2		
-% hand crossbow	23	150	5	1600	GenHandBow	darts	5	16	2		
-% pistol crossbow	47	180	5	7980	GenHandBow	darts	5	38	2		
-% marksman hand crossbow	71	210	5	12420	GenHandBow	darts	5	46	4		
-crude sling	1	10	0	40	GenSling	bullets	10	2	1	LEATHER	
-basic sling	13	20	2	80	GenSling	bullets	20	2	3	LEATHER	
-staff-sling	25	30	10	640	GenSling	bullets	10	8	4	LEATHER	
-arm sling	37	40	2	675	GenSling	bullets	30	9	3	LEATHER	
-expert sling	49	50	2	1235	GenSling	bullets	40	13	3	LEATHER	
-hopak	61	60	10	3255	GenSling	bullets	20	21	5	LEATHER	
-master sling	73	70	2	2340	GenSling	bullets	50	18	4	LEATHER	
-legendary sling	85	80	2	3300	GenSling	bullets	50	22	4	LEATHER	
-practice shortbow	3	60	7	27	GenBow	arrows	20	2	1		
-practice longbow	9	80	10	133	GenBow	arrows	20	4	3		
-composite shortbow	15	70	7	320	GenBow	arrows	20	8	2		
-composite longbow	21	90	10	600	GenBow	arrows	20	10	4		
-recurve shortbow	27	80	7	933	GenBow	arrows	20	14	3		
-recurve longbow	33	100	10	1250	GenBow	arrows	20	15	5		
-expert shortbow	39	90	7	2053	GenBow	arrows	20	22	3		
-expert longbow	45	110	10	2347	GenBow	arrows	20	22	5		
-short war bow	51	100	7	3383	GenBow	arrows	20	29	3		
-long war bow	57	120	10	4000	GenBow	arrows	20	30	5		
-siege bow	63	150	20	5390	GenBow	arrows	20	33	8		
-master shortbow	69	110	7	5550	GenBow	arrows	20	37	4		
-master longbow	75	130	10	6333	GenBow	arrows	20	38	6		
-legendary shortbow	81	120	7	6667	GenBow	arrows	20	40	5		
-legendary longbow	87	140	10	7517	GenBow	arrows	20	41	7		
-simple light % crossbow	5	80	15	640	GenBow	bolts	2	12	2		
-basic light % crossbow	17	90	15	3150	GenBow	bolts	2	27	4		
-light % siege crossbow	29	100	20	8550	GenBow	bolts	2	45	6		
-light % repeating siege crossbow	41	160	20	2917	GenBow	bolts	30	25	5		
-master light % crossbow	53	120	15	14880	GenBow	bolts	3	62	5		
-master light % repeating crossbow	65	180	15	6370	GenBow	bolts	30	39	5		
-legendary light % crossbow	77	140	15	31280	GenBow	bolts	3	92	5		
-legendary light % repeating crossbow	89	200	15	11520	GenBow	bolts	30	54	5		
-basic heavy % crossbow	11	90	25	6133	GenBow	bolts	1	40	3		
-expert heavy % crossbow	35	120	25	36000	GenBow	bolts	1	100	4		
-master heavy % crossbow	59	150	25	83093	GenBow	bolts	1	152	6		
-legendary heavy % crossbow	83	180	25	148240	GenBow	bolts	1	204	7		
-pack of 20 arrows	3	5	2	3	GenAmmunition	arrows	20				
-pack of 50 arrows	6	6	5	18	GenAmmunition	arrows	50				
-pack of 20 flint arrows	9	6	2	11	GenAmmunition	arrows	20			FLINT	PROP_ADDDAMAGE;15% PIERCING
-pack of 100 arrows	12	7	10	84	GenAmmunition	arrows	100				
-pack of 50 flint arrows	15	7	5	53	GenAmmunition	arrows	50			FLINT	PROP_ADDDAMAGE;15% PIERCING
-pack of 20 blunted arrows	18	7	2	25	GenAmmunition	arrows	20			LEAD	PROP_ADDDAMAGE;30% BASHING
-pack of 250 arrows	21	8	25	420	GenAmmunition	arrows	250				
-pack of 100 flint arrows	24	8	10	192	GenAmmunition	arrows	100			FLINT	PROP_ADDDAMAGE;15% PIERCING
-pack of 50 blunted arrows	27	8	5	108	GenAmmunition	arrows	50			LEAD	PROP_ADDDAMAGE;30% BASHING
-pack of 20 sharp arrows	30	8	2	48	GenAmmunition	arrows	20			IRON	PROP_ADDDAMAGE;30% PIERCING
-pack of 500 arrows	33	9	50	1485	GenAmmunition	arrows	500				
-pack of 250 flint arrows	36	9	25	810	GenAmmunition	arrows	250			FLINT	PROP_ADDDAMAGE;15% PIERCING
-pack of 100 blunted arrows	39	9	10	351	GenAmmunition	arrows	100			LEAD	PROP_ADDDAMAGE;30% BASHING
-pack of 50 sharp arrows	42	9	5	189	GenAmmunition	arrows	50			IRON	PROP_ADDDAMAGE;30% PIERCING
-pack of 20 steel-tipped arrows	45	9	2	81	GenAmmunition	arrows	20			STEEL	PROP_ADDDAMAGE;45% PIERCING
-pack of 500 flint arrows	48	10	50	2400	GenAmmunition	arrows	500			FLINT	PROP_ADDDAMAGE;15% PIERCING
-pack of 250 blunted arrows	51	10	25	1275	GenAmmunition	arrows	250			LEAD	PROP_ADDDAMAGE;30% BASHING
-pack of 100 sharp arrows	54	10	10	540	GenAmmunition	arrows	100			IRON	PROP_ADDDAMAGE;30% PIERCING
-pack of 50 steel-tipped arrows	57	10	5	285	GenAmmunition	arrows	50			STEEL	PROP_ADDDAMAGE;45% PIERCING
-pack of 20 mithril-tipped arrows	60	10	2	120	GenAmmunition	arrows	20			MITHRIL	PROP_ADDDAMAGE;60% PIERCING
-pack of 500 blunted arrows	63	11	50	3465	GenAmmunition	arrows	500			LEAD	PROP_ADDDAMAGE;30% BASHING
-pack of 250 sharp arrows	66	11	25	1815	GenAmmunition	arrows	250			IRON	PROP_ADDDAMAGE;30% PIERCING
-pack of 100 steel-tipped arrows	69	11	10	759	GenAmmunition	arrows	100			STEEL	PROP_ADDDAMAGE;45% PIERCING
-pack of 50 mithril-tipped arrows	72	11	5	396	GenAmmunition	arrows	50			MITHRIL	PROP_ADDDAMAGE;60% PIERCING
-pack of 20 adamantite-tipped arrows	75	11	2	165	GenAmmunition	arrows	20			ADAMANTITE	PROP_ADDDAMAGE;75% PIERCING
-pack of 500 sharp arrows	78	12	50	4680	GenAmmunition	arrows	500			IRON	PROP_ADDDAMAGE;30% PIERCING
-pack of 250 steel-tipped arrows	81	12	25	2430	GenAmmunition	arrows	250			STEEL	PROP_ADDDAMAGE;45% PIERCING
-pack of 100 mithril-tipped arrows	84	12	10	1008	GenAmmunition	arrows	100			MITHRIL	PROP_ADDDAMAGE;60% PIERCING
-pack of 50 adamantite-tipped arrows	87	12	5	522	GenAmmunition	arrows	50			ADAMANTITE	PROP_ADDDAMAGE;75% PIERCING
-pack of 500 steel-tipped arrows	87	13	50	5655	GenAmmunition	arrows	500			STEEL	PROP_ADDDAMAGE;45% PIERCING
-pack of 20 bolts	5	5	2	5	GenAmmunition	bolts	20				
-pack of 50 bolts	8	6	5	24	GenAmmunition	bolts	50				
-pack of 20 flint bolts	11	6	2	13	GenAmmunition	bolts	20			FLINT	PROP_ADDDAMAGE;15% PIERCING
-pack of 100 bolts	14	7	10	98	GenAmmunition	bolts	100				
-pack of 50 flint bolts	17	7	5	60	GenAmmunition	bolts	50			FLINT	PROP_ADDDAMAGE;15% PIERCING
-pack of 20 blunted bolts	20	7	2	28	GenAmmunition	bolts	20			LEAD	PROP_ADDDAMAGE;30% BASHING
-pack of 250 bolts	23	8	25	460	GenAmmunition	bolts	250				
-pack of 100 flint bolts	26	8	10	208	GenAmmunition	bolts	100			FLINT	PROP_ADDDAMAGE;15% PIERCING
-pack of 50 blunted bolts	29	8	5	116	GenAmmunition	bolts	50			LEAD	PROP_ADDDAMAGE;30% BASHING
-pack of 20 sharp bolts	32	8	2	51	GenAmmunition	bolts	20			IRON	PROP_ADDDAMAGE;30% PIERCING
-pack of 500 bolts	35	9	50	1575	GenAmmunition	bolts	500				
-pack of 250 flint bolts	38	9	25	855	GenAmmunition	bolts	250			FLINT	PROP_ADDDAMAGE;15% PIERCING
-pack of 100 blunted bolts	41	9	10	369	GenAmmunition	bolts	100			LEAD	PROP_ADDDAMAGE;30% BASHING
-pack of 50 sharp bolts	44	9	5	198	GenAmmunition	bolts	50			IRON	PROP_ADDDAMAGE;30% PIERCING
-pack of 20 steel-tipped bolts	47	9	2	85	GenAmmunition	bolts	20			STEEL	PROP_ADDDAMAGE;45% PIERCING
-pack of 500 flint bolts	50	10	50	2500	GenAmmunition	bolts	500			FLINT	PROP_ADDDAMAGE;15% PIERCING
-pack of 250 blunted bolts	53	10	25	1325	GenAmmunition	bolts	250			LEAD	PROP_ADDDAMAGE;30% BASHING
-pack of 100 sharp bolts	56	10	10	560	GenAmmunition	bolts	100			IRON	PROP_ADDDAMAGE;30% PIERCING
-pack of 50 steel-tipped bolts	59	10	5	295	GenAmmunition	bolts	50			STEEL	PROP_ADDDAMAGE;45% PIERCING
-pack of 20 mithril-tipped bolts	62	10	2	124	GenAmmunition	bolts	20			MITHRIL	PROP_ADDDAMAGE;60% PIERCING
-pack of 500 blunted bolts	65	11	50	3575	GenAmmunition	bolts	500			LEAD	PROP_ADDDAMAGE;30% BASHING
-pack of 250 sharp bolts	68	11	25	1870	GenAmmunition	bolts	250			IRON	PROP_ADDDAMAGE;30% PIERCING
-pack of 100 steel-tipped bolts	71	11	10	781	GenAmmunition	bolts	100			STEEL	PROP_ADDDAMAGE;45% PIERCING
-pack of 50 mithril-tipped bolts	74	11	5	407	GenAmmunition	bolts	50			MITHRIL	PROP_ADDDAMAGE;60% PIERCING
-pack of 20 adamantite-tipped bolts	77	11	2	169	GenAmmunition	bolts	20			ADAMANTITE	PROP_ADDDAMAGE;75% PIERCING
-pack of 500 sharp bolts	80	12	50	4800	GenAmmunition	bolts	500			IRON	PROP_ADDDAMAGE;30% PIERCING
-pack of 250 steel-tipped bolts	83	12	25	2490	GenAmmunition	bolts	250			STEEL	PROP_ADDDAMAGE;45% PIERCING
-pack of 100 mithril-tipped bolts	86	12	10	1032	GenAmmunition	bolts	100			MITHRIL	PROP_ADDDAMAGE;60% PIERCING
-pack of 50 adamantite-tipped bolts	89	12	5	534	GenAmmunition	bolts	50			ADAMANTITE	PROP_ADDDAMAGE;75% PIERCING
-pack of 20 bullets	1	2	(onground:consumed:1:STONE:)	1	GenAmmunition	bullets	20				
-pack of 50 bullets	4	3	(onground:consumed:3:STONE:)	6	GenAmmunition	bullets	50				
-pack of 20 granite bullets	7	3	(onground:consumed:1:GRANITE:)	4	GenAmmunition	bullets	20				PROP_ADDDAMAGE;15% BASHING
-pack of 100 bullets	11	4	(onground:consumed:5:STONE:)	44	GenAmmunition	bullets	100				
-pack of 50 granite bullets	14	4	(onground:consumed:3:GRANITE:)	28	GenAmmunition	bullets	50				PROP_ADDDAMAGE;15% BASHING
-pack of 20 dirt bullets	17	3	(onground:consumed:1:DIRT:)	10	GenAmmunition	bullets	20				PROP_FIGHTSPELLCAST;50% SKILL_DIRT
-pack of 250 bullets	20	7	(onground:consumed:13:STONE:)	350	GenAmmunition	bullets	250				
-pack of 100 granite bullets	23	5	(onground:consumed:5:GRANITE:)	115	GenAmmunition	bullets	100				PROP_ADDDAMAGE;15% BASHING
-pack of 50 dirt bullets	26	4	(onground:consumed:3:DIRT:)	52	GenAmmunition	bullets	50				PROP_FIGHTSPELLCAST;50% SKILL_DIRT
-pack of 20 obsidian bullets	29	3	(onground:consumed:1:OBSIDIAN:)	17	GenAmmunition	bullets	20				PROP_ADDDAMAGE;30% SLASHING
-pack of 500 bullets	32	7	(onground:consumed:25:STONE:)	1120	GenAmmunition	bullets	500				
-pack of 250 granite bullets	35	5	(onground:consumed:13:GRANITE:)	438	GenAmmunition	bullets	250				PROP_ADDDAMAGE;15% BASHING
-pack of 100 dirt bullets	38	5	(onground:consumed:5:DIRT:)	190	GenAmmunition	bullets	100				PROP_FIGHTSPELLCAST;50% SKILL_DIRT
-pack of 50 obsidian bullets	41	4	(onground:consumed:3:OBSIDIAN:)	82	GenAmmunition	bullets	50				PROP_ADDDAMAGE;30% SLASHING
-pack of 20 iron bullets	44	4	(onground:consumed:1:IRON:)	35	GenAmmunition	bullets	20				PROP_ADDDAMAGE;60% BASHING
-pack of 500 granite bullets	47	8	(onground:consumed:25:GRANITE:)	1880	GenAmmunition	bullets	500				PROP_ADDDAMAGE;15% BASHING
-pack of 250 dirt bullets	50	6	(onground:consumed:13:DIRT:)	750	GenAmmunition	bullets	250				PROP_FIGHTSPELLCAST;50% SKILL_DIRT
-pack of 100 obsidian bullets	53	5	(onground:consumed:5:OBSIDIAN:)	265	GenAmmunition	bullets	100				PROP_ADDDAMAGE;30% SLASHING
-pack of 50 iron bullets	56	5	(onground:consumed:3:IRON:)	140	GenAmmunition	bullets	50				PROP_ADDDAMAGE;60% BASHING
-pack of 20 fire bullets	59	4	(onground:consumed:1:COAL:)	47	GenAmmunition	bullets	20				PROP_ADDDAMAGE;45% BURNING
-pack of 500 dirt bullets	62	6	(onground:consumed:25:DIRT:)	1860	GenAmmunition	bullets	500				PROP_FIGHTSPELLCAST;50% SKILL_DIRT
-pack of 250 obsidian bullets	65	6	(onground:consumed:13:OBSIDIAN:)	975	GenAmmunition	bullets	250				PROP_ADDDAMAGE;30% SLASHING
-pack of 100 iron bullets	68	6	(onground:consumed:5:IRON:)	408	GenAmmunition	bullets	100				PROP_ADDDAMAGE;60% BASHING
-pack of 50 fire bullets	71	5	(onground:consumed:3:COAL:)	178	GenAmmunition	bullets	50				PROP_ADDDAMAGE;45% BURNING
-pack of 20 adamantite bullets	74	5	(onground:consumed:1:ADAMANTITE:)	74	GenAmmunition	bullets	20				PROP_ADDDAMAGE;75% BASHING
-pack of 500 obsidian bullets	77	7	(onground:consumed:25:OBSIDIAN:)	2695	GenAmmunition	bullets	500				PROP_ADDDAMAGE;30% SLASHING
-pack of 250 iron bullets	80	6	(onground:consumed:13:IRON:)	1200	GenAmmunition	bullets	250				PROP_ADDDAMAGE;60% BASHING
-pack of 100 fire bullets	83	6	(onground:consumed:5:COAL:)	498	GenAmmunition	bullets	100				PROP_ADDDAMAGE;45% BURNING
-pack of 50 adamantite bullets	86	6	(onground:consumed:3:ADAMANTITE:)	258	GenAmmunition	bullets	50				PROP_ADDDAMAGE;75% BASHING
-pack of 500 iron bullets	89	7	(onground:consumed:25:IRON:)	3115	GenAmmunition	bullets	500				PROP_ADDDAMAGE;60% BASHING
-pack of 250 fire bullets	92	7	(onground:consumed:13:COAL:)	1610	GenAmmunition	bullets	250				PROP_ADDDAMAGE;45% BURNING
-pack of 20 darts	2	4	1	2	GenAmmunition	darts	20				
-pack of 20 copper-tipped darts	8	5	1	8	GenAmmunition	darts	20			COPPER	PROP_ADDDAMAGE;15% PIERCING
-pack of 20 barbed darts	17	5	1	17	GenAmmunition	darts	20			IRON	PROP_ADDDAMAGE;30% SLASHING
-pack of 20 steel-tipped darts	29	5	1	29	GenAmmunition	darts	20			STEEL	PROP_ADDDAMAGE;45% PIERCING
-pack of 20 sleep darts	44	5	1	44	GenAmmunition	darts	20			MUSHROOMS	PROP_FIGHTSPELLCAST;50% SPELL_SLEEP
-pack of 20 mithril-tipped darts	59	6	1	71	GenAmmunition	darts	20			MITHRIL	PROP_ADDDAMAGE;60% PIERCING
-pack of 20 adamantite-tipped darts	74	7	1	104	GenAmmunition	darts	20			ADAMANTITE	PROP_ADDDAMAGE;75% PIERCING
-pack of 50 darts	5	5	3	13	GenAmmunition	darts	50				
-pack of 50 copper-tipped darts	14	6	3	42	GenAmmunition	darts	50			COPPER	PROP_ADDDAMAGE;15% PIERCING
-pack of 50 barbed darts	26	6	3	78	GenAmmunition	darts	50			IRON	PROP_ADDDAMAGE;30% SLASHING
-pack of 50 steel-tipped darts	41	6	3	123	GenAmmunition	darts	50			STEEL	PROP_ADDDAMAGE;45% PIERCING
-pack of 50 sleep darts	56	6	3	168	GenAmmunition	darts	50			MUSHROOMS	PROP_FIGHTSPELLCAST;50% SPELL_SLEEP
-pack of 50 mithril-tipped darts	71	7	3	249	GenAmmunition	darts	50			MITHRIL	PROP_ADDDAMAGE;60% PIERCING
-pack of 50 adamantite-tipped darts	86	8	3	344	GenAmmunition	darts	50			ADAMANTITE	PROP_ADDDAMAGE;75% PIERCING
-pack of 100 darts	11	6	5	66	GenAmmunition	darts	100				
-pack of 100 copper-tipped darts	23	7	5	161	GenAmmunition	darts	100			COPPER	PROP_ADDDAMAGE;15% PIERCING
-pack of 100 barbed darts	38	7	5	266	GenAmmunition	darts	100			IRON	PROP_ADDDAMAGE;30% SLASHING
-pack of 100 steel-tipped darts	53	7	5	371	GenAmmunition	darts	100			STEEL	PROP_ADDDAMAGE;45% PIERCING
-pack of 100 sleep darts	68	7	5	476	GenAmmunition	darts	100			MUSHROOMS	PROP_FIGHTSPELLCAST;50% SPELL_SLEEP
-pack of 100 mithril-tipped darts	83	8	5	664	GenAmmunition	darts	100			MITHRIL	PROP_ADDDAMAGE;60% PIERCING
-pack of 250 darts	20	7	13	350	GenAmmunition	darts	250				
-pack of 250 copper-tipped darts	35	8	13	700	GenAmmunition	darts	250			COPPER	PROP_ADDDAMAGE;15% PIERCING
-pack of 250 barbed darts	50	8	13	1000	GenAmmunition	darts	250			IRON	PROP_ADDDAMAGE;30% SLASHING
-pack of 250 steel-tipped darts	65	8	13	1300	GenAmmunition	darts	250			STEEL	PROP_ADDDAMAGE;45% PIERCING
-pack of 250 sleep darts	80	8	13	1600	GenAmmunition	darts	250			MUSHROOMS	PROP_FIGHTSPELLCAST;50% SPELL_SLEEP
-pack of 250 mithril-tipped darts	92	9	13	2070	GenAmmunition	darts	250			MITHRIL	PROP_ADDDAMAGE;60% PIERCING
-pack of 500 darts	32	8	25	1280	GenAmmunition	darts	500				
-pack of 500 copper-tipped darts	47	9	25	2115	GenAmmunition	darts	500			COPPER	PROP_ADDDAMAGE;15% PIERCING
-pack of 500 barbed darts	62	9	25	2790	GenAmmunition	darts	500			IRON	PROP_ADDDAMAGE;30% SLASHING
-pack of 500 steel-tipped darts	77	9	25	3465	GenAmmunition	darts	500			STEEL	PROP_ADDDAMAGE;45% PIERCING
-pack of 500 sleep darts	89	9	25	4005	GenAmmunition	darts	500			MUSHROOMS	PROP_FIGHTSPELLCAST;50% SPELL_SLEEP
-pack of 20 oak javelins	4	10	(onground:consumed:10:OAK:)	8	GenAmmunition	javelins	20				
-pack of 20 lead javelins	10	11	(onground:consumed:10:LEAD:)	22	GenAmmunition	javelins	20				PROP_FIGHTSPELLCAST;25% PRAYER_CAUSEFATIGUE
-pack of 20 iron javelins	19	11	(onground:consumed:10:IRON:)	42	GenAmmunition	javelins	20				PROP_ADDDAMAGE;15% PIERCING
-pack of 20 ironwood javelins	31	12	(onground:consumed:10:IRONWOOD:)	74	GenAmmunition	javelins	20				PROP_ADDDAMAGE;30% PIERCING
-pack of 20 steel javelins	46	12	(onground:consumed:10:STEEL:)	110	GenAmmunition	javelins	20				PROP_ADDDAMAGE;45% PIERCING
-pack of 20 mithril javelins	61	12	(onground:consumed:10:MITHRIL:)	146	GenAmmunition	javelins	20				PROP_ADDDAMAGE;60% PIERCING
-pack of 20 adamantite javelins	76	13	(onground:consumed:10:ADAMANTITE:)	198	GenAmmunition	javelins	20				PROP_ADDDAMAGE;75% PIERCING
-pack of 50 oak javelins	7	13	(onground:consumed:25:OAK:)	46	GenAmmunition	javelins	50				
-pack of 50 lead javelins	16	13	(onground:consumed:25:LEAD:)	104	GenAmmunition	javelins	50				PROP_FIGHTSPELLCAST;25% PRAYER_CAUSEFATIGUE
-pack of 50 iron javelins	28	13	(onground:consumed:25:IRON:)	182	GenAmmunition	javelins	50				PROP_ADDDAMAGE;15% PIERCING
-pack of 50 ironwood javelins	43	14	(onground:consumed:25:IRONWOOD:)	301	GenAmmunition	javelins	50				PROP_ADDDAMAGE;30% PIERCING
-pack of 50 steel javelins	58	14	(onground:consumed:25:STEEL:)	406	GenAmmunition	javelins	50				PROP_ADDDAMAGE;45% PIERCING
-pack of 50 mithril javelins	73	14	(onground:consumed:25:MITHRIL:)	511	GenAmmunition	javelins	50				PROP_ADDDAMAGE;60% PIERCING
-pack of 50 adamantite javelins	88	14	(onground:consumed:25:ADAMANTITE:)	616	GenAmmunition	javelins	50				PROP_ADDDAMAGE;75% PIERCING
-pack of 100 oak javelins	13	15	(onground:consumed:50:OAK:)	195	GenAmmunition	javelins	100				
-pack of 100 lead javelins	25	15	(onground:consumed:50:LEAD:)	375	GenAmmunition	javelins	100				PROP_FIGHTSPELLCAST;25% PRAYER_CAUSEFATIGUE
-pack of 100 iron javelins	40	15	(onground:consumed:50:IRON:)	600	GenAmmunition	javelins	100				PROP_ADDDAMAGE;15% PIERCING
-pack of 100 ironwood javelins	55	15	(onground:consumed:50:IRONWOOD:)	825	GenAmmunition	javelins	100				PROP_ADDDAMAGE;30% PIERCING
-pack of 100 steel javelins	70	16	(onground:consumed:50:STEEL:)	1120	GenAmmunition	javelins	100				PROP_ADDDAMAGE;45% PIERCING
-pack of 100 mithril javelins	85	16	(onground:consumed:50:MITHRIL:)	1360	GenAmmunition	javelins	100				PROP_ADDDAMAGE;60% PIERCING
-pack of 250 oak javelins	22	16	(onground:consumed:125:OAK:)	880	GenAmmunition	javelins	250				
-pack of 250 lead javelins	37	16	(onground:consumed:125:LEAD:)	1480	GenAmmunition	javelins	250				PROP_FIGHTSPELLCAST;25% PRAYER_CAUSEFATIGUE
-pack of 250 iron javelins	52	17	(onground:consumed:125:IRON:)	2210	GenAmmunition	javelins	250				PROP_ADDDAMAGE;15% PIERCING
-pack of 250 ironwood javelins	67	17	(onground:consumed:125:IRONWOOD:)	2848	GenAmmunition	javelins	250				PROP_ADDDAMAGE;30% PIERCING
-pack of 250 steel javelins	82	17	(onground:consumed:125:STEEL:)	3485	GenAmmunition	javelins	250				PROP_ADDDAMAGE;45% PIERCING
-pack of 500 oak javelins	34	17	(onground:consumed:250:OAK:)	2890	GenAmmunition	javelins	500				
-pack of 500 lead javelins	49	18	(onground:consumed:250:LEAD:)	4410	GenAmmunition	javelins	500				PROP_FIGHTSPELLCAST;25% PRAYER_CAUSEFATIGUE
-pack of 500 iron javelins	64	18	(onground:consumed:250:IRON:)	5760	GenAmmunition	javelins	500				PROP_ADDDAMAGE;15% PIERCING
-pack of 500 ironwood javelins	79	18	(onground:consumed:250:IRONWOOD:)	7110	GenAmmunition	javelins	500				PROP_ADDDAMAGE;30% PIERCING
-pack of 500 steel javelins	91	18	(onground:consumed:250:STEEL:)	8190	GenAmmunition	javelins	500				PROP_ADDDAMAGE;45% PIERCING
+crude % atlatl	4	20	6	160	GenSling	javelins	1	8	2			
+basic % atlatl	19	30	6	1200	GenSling	javelins	1	32	4			
+expert % atlatl	43	40	6	5040	GenSling	javelins	1	112	4			
+master % atlatl	67	50	6	12420	GenSling	javelins	1	184	4			
+legendary % atlatl	91	60	6	23040	GenSling	javelins	1	256	4			
+crude % blowgun	2	30	5	25	GenSling	darts	6	1	2			
+basic % blowgun	7	40	5	60	GenSling	darts	6	2	2			
+expert % blowgun	31	50	5	960	GenSling	darts	8	12	2			
+master % blowgun	55	60	5	2860	GenSling	darts	10	22	2			
+legendary % blowgun	79	70	5	5760	GenSling	darts	12	32	2			
+% hand crossbow	23	150	5	1600	GenHandBow	darts	5	16	2			
+% pistol crossbow	47	180	5	7980	GenHandBow	darts	5	38	2			
+% marksman hand crossbow	71	210	5	12420	GenHandBow	darts	5	46	4			
+crude sling	1	10	0	40	GenSling	bullets	10	2	1	LEATHER		
+basic sling	13	20	2	80	GenSling	bullets	20	2	3	LEATHER		
+staff-sling	25	30	10	640	GenSling	bullets	10	8	4	LEATHER		
+arm sling	37	40	2	675	GenSling	bullets	30	9	3	LEATHER		
+expert sling	49	50	2	1235	GenSling	bullets	40	13	3	LEATHER		
+hopak	61	60	10	3255	GenSling	bullets	20	21	5	LEATHER		
+master sling	73	70	2	2340	GenSling	bullets	50	18	4	LEATHER		
+legendary sling	85	80	2	3300	GenSling	bullets	50	22	4	LEATHER		
+practice shortbow	3	60	7	27	GenBow	arrows	20	2	1			
+practice longbow	9	80	10	133	GenBow	arrows	20	4	3			
+composite shortbow	15	70	7	320	GenBow	arrows	20	8	2			
+composite longbow	21	90	10	600	GenBow	arrows	20	10	4			
+recurve shortbow	27	80	7	933	GenBow	arrows	20	14	3			
+recurve longbow	33	100	10	1250	GenBow	arrows	20	15	5			
+expert shortbow	39	90	7	2053	GenBow	arrows	20	22	3			
+expert longbow	45	110	10	2347	GenBow	arrows	20	22	5			
+short war bow	51	100	7	3383	GenBow	arrows	20	29	3			
+long war bow	57	120	10	4000	GenBow	arrows	20	30	5			
+siege bow	63	150	20	5390	GenBow	arrows	20	33	8			
+master shortbow	69	110	7	5550	GenBow	arrows	20	37	4			
+master longbow	75	130	10	6333	GenBow	arrows	20	38	6			
+legendary shortbow	81	120	7	6667	GenBow	arrows	20	40	5			
+legendary longbow	87	140	10	7517	GenBow	arrows	20	41	7			
+simple light % crossbow	5	80	15	640	GenBow	bolts	2	12	2			
+basic light % crossbow	17	90	15	3150	GenBow	bolts	2	27	4			
+light % siege crossbow	29	100	20	8550	GenBow	bolts	2	45	6			
+light % repeating siege crossbow	41	160	20	2917	GenBow	bolts	30	25	5			
+master light % crossbow	53	120	15	14880	GenBow	bolts	3	62	5			
+master light % repeating crossbow	65	180	15	6370	GenBow	bolts	30	39	5			
+legendary light % crossbow	77	140	15	31280	GenBow	bolts	3	92	5			
+legendary light % repeating crossbow	89	200	15	11520	GenBow	bolts	30	54	5			
+basic heavy % crossbow	11	90	25	6133	GenBow	bolts	1	40	3			
+expert heavy % crossbow	35	120	25	36000	GenBow	bolts	1	100	4			
+master heavy % crossbow	59	150	25	83093	GenBow	bolts	1	152	6			
+legendary heavy % crossbow	83	180	25	148240	GenBow	bolts	1	204	7			
+pack of 20 arrows	3	5	2	3	GenAmmunition	arrows	20					
+pack of 50 arrows	6	6	5	18	GenAmmunition	arrows	50					
+pack of 20 flint arrows	9	6	2	11	GenAmmunition	arrows	20			FLINT	PROP_ADDDAMAGE;15% PIERCING	
+pack of 100 arrows	12	7	10	84	GenAmmunition	arrows	100					
+pack of 50 flint arrows	15	7	5	53	GenAmmunition	arrows	50			FLINT	PROP_ADDDAMAGE;15% PIERCING	
+pack of 20 blunted arrows	18	7	2	25	GenAmmunition	arrows	20			LEAD	PROP_ADDDAMAGE;30% BASHING	
+pack of 250 arrows	21	8	25	420	GenAmmunition	arrows	250					
+pack of 100 flint arrows	24	8	10	192	GenAmmunition	arrows	100			FLINT	PROP_ADDDAMAGE;15% PIERCING	
+pack of 50 blunted arrows	27	8	5	108	GenAmmunition	arrows	50			LEAD	PROP_ADDDAMAGE;30% BASHING	
+pack of 20 sharp arrows	30	8	2	48	GenAmmunition	arrows	20			IRON	PROP_ADDDAMAGE;30% PIERCING	
+pack of 500 arrows	33	9	50	1485	GenAmmunition	arrows	500					
+pack of 250 flint arrows	36	9	25	810	GenAmmunition	arrows	250			FLINT	PROP_ADDDAMAGE;15% PIERCING	
+pack of 100 blunted arrows	39	9	10	351	GenAmmunition	arrows	100			LEAD	PROP_ADDDAMAGE;30% BASHING	
+pack of 50 sharp arrows	42	9	5	189	GenAmmunition	arrows	50			IRON	PROP_ADDDAMAGE;30% PIERCING	
+pack of 20 steel-tipped arrows	45	9	2	81	GenAmmunition	arrows	20			STEEL	PROP_ADDDAMAGE;45% PIERCING	
+pack of 500 flint arrows	48	10	50	2400	GenAmmunition	arrows	500			FLINT	PROP_ADDDAMAGE;15% PIERCING	
+pack of 250 blunted arrows	51	10	25	1275	GenAmmunition	arrows	250			LEAD	PROP_ADDDAMAGE;30% BASHING	
+pack of 100 sharp arrows	54	10	10	540	GenAmmunition	arrows	100			IRON	PROP_ADDDAMAGE;30% PIERCING	
+pack of 50 steel-tipped arrows	57	10	5	285	GenAmmunition	arrows	50			STEEL	PROP_ADDDAMAGE;45% PIERCING	
+pack of 20 mithril-tipped arrows	60	10	2	120	GenAmmunition	arrows	20			MITHRIL	PROP_ADDDAMAGE;60% PIERCING	
+pack of 500 blunted arrows	63	11	50	3465	GenAmmunition	arrows	500			LEAD	PROP_ADDDAMAGE;30% BASHING	
+pack of 250 sharp arrows	66	11	25	1815	GenAmmunition	arrows	250			IRON	PROP_ADDDAMAGE;30% PIERCING	
+pack of 100 steel-tipped arrows	69	11	10	759	GenAmmunition	arrows	100			STEEL	PROP_ADDDAMAGE;45% PIERCING	
+pack of 50 mithril-tipped arrows	72	11	5	396	GenAmmunition	arrows	50			MITHRIL	PROP_ADDDAMAGE;60% PIERCING	
+pack of 20 adamantite-tipped arrows	75	11	2	165	GenAmmunition	arrows	20			ADAMANTITE	PROP_ADDDAMAGE;75% PIERCING	
+pack of 500 sharp arrows	78	12	50	4680	GenAmmunition	arrows	500			IRON	PROP_ADDDAMAGE;30% PIERCING	
+pack of 250 steel-tipped arrows	81	12	25	2430	GenAmmunition	arrows	250			STEEL	PROP_ADDDAMAGE;45% PIERCING	
+pack of 100 mithril-tipped arrows	84	12	10	1008	GenAmmunition	arrows	100			MITHRIL	PROP_ADDDAMAGE;60% PIERCING	
+pack of 50 adamantite-tipped arrows	87	12	5	522	GenAmmunition	arrows	50			ADAMANTITE	PROP_ADDDAMAGE;75% PIERCING	
+pack of 500 steel-tipped arrows	87	13	50	5655	GenAmmunition	arrows	500			STEEL	PROP_ADDDAMAGE;45% PIERCING	
+pack of 20 bolts	5	5	2	5	GenAmmunition	bolts	20					
+pack of 50 bolts	8	6	5	24	GenAmmunition	bolts	50					
+pack of 20 flint bolts	11	6	2	13	GenAmmunition	bolts	20			FLINT	PROP_ADDDAMAGE;15% PIERCING	
+pack of 100 bolts	14	7	10	98	GenAmmunition	bolts	100					
+pack of 50 flint bolts	17	7	5	60	GenAmmunition	bolts	50			FLINT	PROP_ADDDAMAGE;15% PIERCING	
+pack of 20 blunted bolts	20	7	2	28	GenAmmunition	bolts	20			LEAD	PROP_ADDDAMAGE;30% BASHING	
+pack of 250 bolts	23	8	25	460	GenAmmunition	bolts	250					
+pack of 100 flint bolts	26	8	10	208	GenAmmunition	bolts	100			FLINT	PROP_ADDDAMAGE;15% PIERCING	
+pack of 50 blunted bolts	29	8	5	116	GenAmmunition	bolts	50			LEAD	PROP_ADDDAMAGE;30% BASHING	
+pack of 20 sharp bolts	32	8	2	51	GenAmmunition	bolts	20			IRON	PROP_ADDDAMAGE;30% PIERCING	
+pack of 500 bolts	35	9	50	1575	GenAmmunition	bolts	500					
+pack of 250 flint bolts	38	9	25	855	GenAmmunition	bolts	250			FLINT	PROP_ADDDAMAGE;15% PIERCING	
+pack of 100 blunted bolts	41	9	10	369	GenAmmunition	bolts	100			LEAD	PROP_ADDDAMAGE;30% BASHING	
+pack of 50 sharp bolts	44	9	5	198	GenAmmunition	bolts	50			IRON	PROP_ADDDAMAGE;30% PIERCING	
+pack of 20 steel-tipped bolts	47	9	2	85	GenAmmunition	bolts	20			STEEL	PROP_ADDDAMAGE;45% PIERCING	
+pack of 500 flint bolts	50	10	50	2500	GenAmmunition	bolts	500			FLINT	PROP_ADDDAMAGE;15% PIERCING	
+pack of 250 blunted bolts	53	10	25	1325	GenAmmunition	bolts	250			LEAD	PROP_ADDDAMAGE;30% BASHING	
+pack of 100 sharp bolts	56	10	10	560	GenAmmunition	bolts	100			IRON	PROP_ADDDAMAGE;30% PIERCING	
+pack of 50 steel-tipped bolts	59	10	5	295	GenAmmunition	bolts	50			STEEL	PROP_ADDDAMAGE;45% PIERCING	
+pack of 20 mithril-tipped bolts	62	10	2	124	GenAmmunition	bolts	20			MITHRIL	PROP_ADDDAMAGE;60% PIERCING	
+pack of 500 blunted bolts	65	11	50	3575	GenAmmunition	bolts	500			LEAD	PROP_ADDDAMAGE;30% BASHING	
+pack of 250 sharp bolts	68	11	25	1870	GenAmmunition	bolts	250			IRON	PROP_ADDDAMAGE;30% PIERCING	
+pack of 100 steel-tipped bolts	71	11	10	781	GenAmmunition	bolts	100			STEEL	PROP_ADDDAMAGE;45% PIERCING	
+pack of 50 mithril-tipped bolts	74	11	5	407	GenAmmunition	bolts	50			MITHRIL	PROP_ADDDAMAGE;60% PIERCING	
+pack of 20 adamantite-tipped bolts	77	11	2	169	GenAmmunition	bolts	20			ADAMANTITE	PROP_ADDDAMAGE;75% PIERCING	
+pack of 500 sharp bolts	80	12	50	4800	GenAmmunition	bolts	500			IRON	PROP_ADDDAMAGE;30% PIERCING	
+pack of 250 steel-tipped bolts	83	12	25	2490	GenAmmunition	bolts	250			STEEL	PROP_ADDDAMAGE;45% PIERCING	
+pack of 100 mithril-tipped bolts	86	12	10	1032	GenAmmunition	bolts	100			MITHRIL	PROP_ADDDAMAGE;60% PIERCING	
+pack of 50 adamantite-tipped bolts	89	12	5	534	GenAmmunition	bolts	50			ADAMANTITE	PROP_ADDDAMAGE;75% PIERCING	
+pack of 20 bullets	1	2	(onground:consumed:1:STONE:)	1	GenAmmunition	bullets	20					
+pack of 50 bullets	4	3	(onground:consumed:3:STONE:)	6	GenAmmunition	bullets	50					
+pack of 20 granite bullets	7	3	(onground:consumed:1:GRANITE:)	4	GenAmmunition	bullets	20				PROP_ADDDAMAGE;15% BASHING	
+pack of 100 bullets	11	4	(onground:consumed:5:STONE:)	44	GenAmmunition	bullets	100					
+pack of 50 granite bullets	14	4	(onground:consumed:3:GRANITE:)	28	GenAmmunition	bullets	50				PROP_ADDDAMAGE;15% BASHING	
+pack of 20 dirt bullets	17	3	(onground:consumed:1:DIRT:)	10	GenAmmunition	bullets	20				PROP_FIGHTSPELLCAST;50% SKILL_DIRT	
+pack of 250 bullets	20	7	(onground:consumed:13:STONE:)	350	GenAmmunition	bullets	250					
+pack of 100 granite bullets	23	5	(onground:consumed:5:GRANITE:)	115	GenAmmunition	bullets	100				PROP_ADDDAMAGE;15% BASHING	
+pack of 50 dirt bullets	26	4	(onground:consumed:3:DIRT:)	52	GenAmmunition	bullets	50				PROP_FIGHTSPELLCAST;50% SKILL_DIRT	
+pack of 20 obsidian bullets	29	3	(onground:consumed:1:OBSIDIAN:)	17	GenAmmunition	bullets	20				PROP_ADDDAMAGE;30% SLASHING	
+pack of 500 bullets	32	7	(onground:consumed:25:STONE:)	1120	GenAmmunition	bullets	500					
+pack of 250 granite bullets	35	5	(onground:consumed:13:GRANITE:)	438	GenAmmunition	bullets	250				PROP_ADDDAMAGE;15% BASHING	
+pack of 100 dirt bullets	38	5	(onground:consumed:5:DIRT:)	190	GenAmmunition	bullets	100				PROP_FIGHTSPELLCAST;50% SKILL_DIRT	
+pack of 50 obsidian bullets	41	4	(onground:consumed:3:OBSIDIAN:)	82	GenAmmunition	bullets	50				PROP_ADDDAMAGE;30% SLASHING	
+pack of 20 iron bullets	44	4	(onground:consumed:1:IRON:)	35	GenAmmunition	bullets	20				PROP_ADDDAMAGE;60% BASHING	
+pack of 500 granite bullets	47	8	(onground:consumed:25:GRANITE:)	1880	GenAmmunition	bullets	500				PROP_ADDDAMAGE;15% BASHING	
+pack of 250 dirt bullets	50	6	(onground:consumed:13:DIRT:)	750	GenAmmunition	bullets	250				PROP_FIGHTSPELLCAST;50% SKILL_DIRT	
+pack of 100 obsidian bullets	53	5	(onground:consumed:5:OBSIDIAN:)	265	GenAmmunition	bullets	100				PROP_ADDDAMAGE;30% SLASHING	
+pack of 50 iron bullets	56	5	(onground:consumed:3:IRON:)	140	GenAmmunition	bullets	50				PROP_ADDDAMAGE;60% BASHING	
+pack of 20 fire bullets	59	4	(onground:consumed:1:COAL:)	47	GenAmmunition	bullets	20				PROP_ADDDAMAGE;45% BURNING	
+pack of 500 dirt bullets	62	6	(onground:consumed:25:DIRT:)	1860	GenAmmunition	bullets	500				PROP_FIGHTSPELLCAST;50% SKILL_DIRT	
+pack of 250 obsidian bullets	65	6	(onground:consumed:13:OBSIDIAN:)	975	GenAmmunition	bullets	250				PROP_ADDDAMAGE;30% SLASHING	
+pack of 100 iron bullets	68	6	(onground:consumed:5:IRON:)	408	GenAmmunition	bullets	100				PROP_ADDDAMAGE;60% BASHING	
+pack of 50 fire bullets	71	5	(onground:consumed:3:COAL:)	178	GenAmmunition	bullets	50				PROP_ADDDAMAGE;45% BURNING	
+pack of 20 adamantite bullets	74	5	(onground:consumed:1:ADAMANTITE:)	74	GenAmmunition	bullets	20				PROP_ADDDAMAGE;75% BASHING	
+pack of 500 obsidian bullets	77	7	(onground:consumed:25:OBSIDIAN:)	2695	GenAmmunition	bullets	500				PROP_ADDDAMAGE;30% SLASHING	
+pack of 250 iron bullets	80	6	(onground:consumed:13:IRON:)	1200	GenAmmunition	bullets	250				PROP_ADDDAMAGE;60% BASHING	
+pack of 100 fire bullets	83	6	(onground:consumed:5:COAL:)	498	GenAmmunition	bullets	100				PROP_ADDDAMAGE;45% BURNING	
+pack of 50 adamantite bullets	86	6	(onground:consumed:3:ADAMANTITE:)	258	GenAmmunition	bullets	50				PROP_ADDDAMAGE;75% BASHING	
+pack of 500 iron bullets	89	7	(onground:consumed:25:IRON:)	3115	GenAmmunition	bullets	500				PROP_ADDDAMAGE;60% BASHING	
+pack of 250 fire bullets	92	7	(onground:consumed:13:COAL:)	1610	GenAmmunition	bullets	250				PROP_ADDDAMAGE;45% BURNING	
+pack of 20 darts	2	4	1	2	GenAmmunition	darts	20					
+pack of 20 copper-tipped darts	8	5	1	8	GenAmmunition	darts	20			COPPER	PROP_ADDDAMAGE;15% PIERCING	
+pack of 20 barbed darts	17	5	1	17	GenAmmunition	darts	20			IRON	PROP_ADDDAMAGE;30% SLASHING	
+pack of 20 steel-tipped darts	29	5	1	29	GenAmmunition	darts	20			STEEL	PROP_ADDDAMAGE;45% PIERCING	
+pack of 20 sleep darts	44	5	1	44	GenAmmunition	darts	20			MUSHROOMS	PROP_FIGHTSPELLCAST;50% SPELL_SLEEP	
+pack of 20 mithril-tipped darts	59	6	1	71	GenAmmunition	darts	20			MITHRIL	PROP_ADDDAMAGE;60% PIERCING	
+pack of 20 adamantite-tipped darts	74	7	1	104	GenAmmunition	darts	20			ADAMANTITE	PROP_ADDDAMAGE;75% PIERCING	
+pack of 50 darts	5	5	3	13	GenAmmunition	darts	50					
+pack of 50 copper-tipped darts	14	6	3	42	GenAmmunition	darts	50			COPPER	PROP_ADDDAMAGE;15% PIERCING	
+pack of 50 barbed darts	26	6	3	78	GenAmmunition	darts	50			IRON	PROP_ADDDAMAGE;30% SLASHING	
+pack of 50 steel-tipped darts	41	6	3	123	GenAmmunition	darts	50			STEEL	PROP_ADDDAMAGE;45% PIERCING	
+pack of 50 sleep darts	56	6	3	168	GenAmmunition	darts	50			MUSHROOMS	PROP_FIGHTSPELLCAST;50% SPELL_SLEEP	
+pack of 50 mithril-tipped darts	71	7	3	249	GenAmmunition	darts	50			MITHRIL	PROP_ADDDAMAGE;60% PIERCING	
+pack of 50 adamantite-tipped darts	86	8	3	344	GenAmmunition	darts	50			ADAMANTITE	PROP_ADDDAMAGE;75% PIERCING	
+pack of 100 darts	11	6	5	66	GenAmmunition	darts	100					
+pack of 100 copper-tipped darts	23	7	5	161	GenAmmunition	darts	100			COPPER	PROP_ADDDAMAGE;15% PIERCING	
+pack of 100 barbed darts	38	7	5	266	GenAmmunition	darts	100			IRON	PROP_ADDDAMAGE;30% SLASHING	
+pack of 100 steel-tipped darts	53	7	5	371	GenAmmunition	darts	100			STEEL	PROP_ADDDAMAGE;45% PIERCING	
+pack of 100 sleep darts	68	7	5	476	GenAmmunition	darts	100			MUSHROOMS	PROP_FIGHTSPELLCAST;50% SPELL_SLEEP	
+pack of 100 mithril-tipped darts	83	8	5	664	GenAmmunition	darts	100			MITHRIL	PROP_ADDDAMAGE;60% PIERCING	
+pack of 250 darts	20	7	13	350	GenAmmunition	darts	250					
+pack of 250 copper-tipped darts	35	8	13	700	GenAmmunition	darts	250			COPPER	PROP_ADDDAMAGE;15% PIERCING	
+pack of 250 barbed darts	50	8	13	1000	GenAmmunition	darts	250			IRON	PROP_ADDDAMAGE;30% SLASHING	
+pack of 250 steel-tipped darts	65	8	13	1300	GenAmmunition	darts	250			STEEL	PROP_ADDDAMAGE;45% PIERCING	
+pack of 250 sleep darts	80	8	13	1600	GenAmmunition	darts	250			MUSHROOMS	PROP_FIGHTSPELLCAST;50% SPELL_SLEEP	
+pack of 250 mithril-tipped darts	92	9	13	2070	GenAmmunition	darts	250			MITHRIL	PROP_ADDDAMAGE;60% PIERCING	
+pack of 500 darts	32	8	25	1280	GenAmmunition	darts	500					
+pack of 500 copper-tipped darts	47	9	25	2115	GenAmmunition	darts	500			COPPER	PROP_ADDDAMAGE;15% PIERCING	
+pack of 500 barbed darts	62	9	25	2790	GenAmmunition	darts	500			IRON	PROP_ADDDAMAGE;30% SLASHING	
+pack of 500 steel-tipped darts	77	9	25	3465	GenAmmunition	darts	500			STEEL	PROP_ADDDAMAGE;45% PIERCING	
+pack of 500 sleep darts	89	9	25	4005	GenAmmunition	darts	500			MUSHROOMS	PROP_FIGHTSPELLCAST;50% SPELL_SLEEP	
+pack of 20 oak javelins	4	10	(onground:consumed:10:OAK:)	8	GenAmmunition	javelins	20					
+pack of 20 lead javelins	10	11	(onground:consumed:10:LEAD:)	22	GenAmmunition	javelins	20				PROP_FIGHTSPELLCAST;25% PRAYER_CAUSEFATIGUE	
+pack of 20 iron javelins	19	11	(onground:consumed:10:IRON:)	42	GenAmmunition	javelins	20				PROP_ADDDAMAGE;15% PIERCING	
+pack of 20 ironwood javelins	31	12	(onground:consumed:10:IRONWOOD:)	74	GenAmmunition	javelins	20				PROP_ADDDAMAGE;30% PIERCING	
+pack of 20 steel javelins	46	12	(onground:consumed:10:STEEL:)	110	GenAmmunition	javelins	20				PROP_ADDDAMAGE;45% PIERCING	
+pack of 20 mithril javelins	61	12	(onground:consumed:10:MITHRIL:)	146	GenAmmunition	javelins	20				PROP_ADDDAMAGE;60% PIERCING	
+pack of 20 adamantite javelins	76	13	(onground:consumed:10:ADAMANTITE:)	198	GenAmmunition	javelins	20				PROP_ADDDAMAGE;75% PIERCING	
+pack of 50 oak javelins	7	13	(onground:consumed:25:OAK:)	46	GenAmmunition	javelins	50					
+pack of 50 lead javelins	16	13	(onground:consumed:25:LEAD:)	104	GenAmmunition	javelins	50				PROP_FIGHTSPELLCAST;25% PRAYER_CAUSEFATIGUE	
+pack of 50 iron javelins	28	13	(onground:consumed:25:IRON:)	182	GenAmmunition	javelins	50				PROP_ADDDAMAGE;15% PIERCING	
+pack of 50 ironwood javelins	43	14	(onground:consumed:25:IRONWOOD:)	301	GenAmmunition	javelins	50				PROP_ADDDAMAGE;30% PIERCING	
+pack of 50 steel javelins	58	14	(onground:consumed:25:STEEL:)	406	GenAmmunition	javelins	50				PROP_ADDDAMAGE;45% PIERCING	
+pack of 50 mithril javelins	73	14	(onground:consumed:25:MITHRIL:)	511	GenAmmunition	javelins	50				PROP_ADDDAMAGE;60% PIERCING	
+pack of 50 adamantite javelins	88	14	(onground:consumed:25:ADAMANTITE:)	616	GenAmmunition	javelins	50				PROP_ADDDAMAGE;75% PIERCING	
+pack of 100 oak javelins	13	15	(onground:consumed:50:OAK:)	195	GenAmmunition	javelins	100					
+pack of 100 lead javelins	25	15	(onground:consumed:50:LEAD:)	375	GenAmmunition	javelins	100				PROP_FIGHTSPELLCAST;25% PRAYER_CAUSEFATIGUE	
+pack of 100 iron javelins	40	15	(onground:consumed:50:IRON:)	600	GenAmmunition	javelins	100				PROP_ADDDAMAGE;15% PIERCING	
+pack of 100 ironwood javelins	55	15	(onground:consumed:50:IRONWOOD:)	825	GenAmmunition	javelins	100				PROP_ADDDAMAGE;30% PIERCING	
+pack of 100 steel javelins	70	16	(onground:consumed:50:STEEL:)	1120	GenAmmunition	javelins	100				PROP_ADDDAMAGE;45% PIERCING	
+pack of 100 mithril javelins	85	16	(onground:consumed:50:MITHRIL:)	1360	GenAmmunition	javelins	100				PROP_ADDDAMAGE;60% PIERCING	
+pack of 250 oak javelins	22	16	(onground:consumed:125:OAK:)	880	GenAmmunition	javelins	250					
+pack of 250 lead javelins	37	16	(onground:consumed:125:LEAD:)	1480	GenAmmunition	javelins	250				PROP_FIGHTSPELLCAST;25% PRAYER_CAUSEFATIGUE	
+pack of 250 iron javelins	52	17	(onground:consumed:125:IRON:)	2210	GenAmmunition	javelins	250				PROP_ADDDAMAGE;15% PIERCING	
+pack of 250 ironwood javelins	67	17	(onground:consumed:125:IRONWOOD:)	2848	GenAmmunition	javelins	250				PROP_ADDDAMAGE;30% PIERCING	
+pack of 250 steel javelins	82	17	(onground:consumed:125:STEEL:)	3485	GenAmmunition	javelins	250				PROP_ADDDAMAGE;45% PIERCING	
+pack of 500 oak javelins	34	17	(onground:consumed:250:OAK:)	2890	GenAmmunition	javelins	500					
+pack of 500 lead javelins	49	18	(onground:consumed:250:LEAD:)	4410	GenAmmunition	javelins	500				PROP_FIGHTSPELLCAST;25% PRAYER_CAUSEFATIGUE	
+pack of 500 iron javelins	64	18	(onground:consumed:250:IRON:)	5760	GenAmmunition	javelins	500				PROP_ADDDAMAGE;15% PIERCING	
+pack of 500 ironwood javelins	79	18	(onground:consumed:250:IRONWOOD:)	7110	GenAmmunition	javelins	500				PROP_ADDDAMAGE;30% PIERCING	
+pack of 500 steel javelins	91	18	(onground:consumed:250:STEEL:)	8190	GenAmmunition	javelins	500				PROP_ADDDAMAGE;45% PIERCING	
