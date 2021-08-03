@@ -68,6 +68,7 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 	protected SVector<Ability>			affects			= new SVector<Ability>(1);
 	protected SVector<Behavior> 		behaviors		= new SVector<Behavior>(1);
 	protected SVector<ScriptingEngine>	scripts			= new SVector<ScriptingEngine>(1);
+	protected SVector<String>			subOps			= new SVector<String>(1);
 	protected SLinkedList<Area>			parents			= new SLinkedList<Area>();
 	protected STreeMap<String,String>	blurbFlags		= new STreeMap<String,String>();
 	protected List<Pair<Room,Integer>>	shipExitCache	= new SLinkedList<Pair<Room,Integer>>();
@@ -244,6 +245,7 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 		author=null;
 		currency=null;
 		parents=new SLinkedList<Area>();
+		subOps=new SVector<String>(1);
 		amDestroyed=true;
 	}
 
@@ -449,28 +451,48 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 	@Override
 	public boolean amISubOp(final String username)
 	{
+		for (int s = subOps.size() - 1; s >= 0; s--)
+		{
+			if (subOps.elementAt(s).equalsIgnoreCase(username))
+				return true;
+		}
 		return false;
 	}
 
 	@Override
 	public String getSubOpList()
 	{
-		return "";
+		final StringBuffer list = new StringBuffer("");
+		for (int s = subOps.size() - 1; s >= 0; s--)
+		{
+			final String str = subOps.elementAt(s);
+			list.append(str);
+			list.append(";");
+		}
+		return list.toString();
 	}
 
 	@Override
 	public void setSubOpList(final String list)
 	{
+		subOps.clear();
+		subOps.addAll(CMParms.parseSemicolons(list, true));
 	}
 
 	@Override
 	public void addSubOp(final String username)
 	{
+		subOps.addElement(username);
 	}
 
 	@Override
 	public void delSubOp(final String username)
 	{
+		for (int s = subOps.size() - 1; s >= 0; s--)
+		{
+			if (subOps.elementAt(s).equalsIgnoreCase(username))
+				subOps.removeElementAt(s);
+		}
 	}
 
 	@Override
