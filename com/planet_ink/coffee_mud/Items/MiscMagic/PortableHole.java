@@ -43,7 +43,7 @@ public class PortableHole extends BagOfHolding implements MiscMagic
 		super();
 
 		setName("a small disk");
-		setDisplayText("a small black disk can be found up here.");
+		setDisplayText("a small black disk can be found here.");
 		setDescription("This dark fabric opens to another dimension, allowing near infinite storage capacity!");
 		secretIdentity="A Portable Hole";
 		basePhyStats().setLevel(1);
