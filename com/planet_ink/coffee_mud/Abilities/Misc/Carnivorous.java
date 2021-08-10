@@ -119,10 +119,12 @@ public class Carnivorous extends StdAbility
 			else
 			{
 				msg.addTrailerRunnable(new Runnable() {
+					final MOB M=msg.source();
+					final int oldH = hunger;
 					@Override
 					public void run()
 					{
-						msg.source().curState().setHunger(hunger);
+						M.curState().setHunger(oldH);
 					}
 				});
 			}
