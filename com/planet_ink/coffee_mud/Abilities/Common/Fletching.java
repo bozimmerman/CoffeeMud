@@ -526,7 +526,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			}
 			if(buildingI.subjectToWearAndTear())
 				buildingI.setUsesRemaining(100);
-			final int hands=CMath.s_int(foundRecipe.get(RCP_HANDS));
+			final int hands=foundRecipe.size()>RCP_HANDS?CMath.s_int(foundRecipe.get(RCP_HANDS)):0;
 			buildingI.setRawLogicalAnd((hands==1)?false:(hands==2)?true:buildingI.rawLogicalAnd());
 			buildingI.recoverPhyStats();
 			buildingI.text();

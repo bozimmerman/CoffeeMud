@@ -565,7 +565,7 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 				buildingI.basePhyStats().setAttackAdjustment((baseYield()+abilityCode()+(hardness*5)-1));
 				buildingI.basePhyStats().setDamage(armordmg+hardness);
 			}
-			final int hands=CMath.s_int(foundRecipe.get(RCP_HANDS));
+			final int hands=foundRecipe.size()>RCP_HANDS?CMath.s_int(foundRecipe.get(RCP_HANDS)):0;
 			buildingI.setRawLogicalAnd((hands==1)?false:(hands==2)?true:buildingI.rawLogicalAnd());
 			buildingI.recoverPhyStats();
 			buildingI.text();

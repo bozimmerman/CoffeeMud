@@ -545,14 +545,17 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 				w.setWeaponDamageType(specType(foundRecipe.get(RCP_WEAPONTYPE)));
 				w.setRanges(w.minRange(),CMath.s_int(foundRecipe.get(RCP_MAXRANGE)));
 			}
-			if(buildingI instanceof Wand)
+			if(foundRecipe.size()>RCP_HANDS)
 			{
-				if(foundRecipe.get(RCP_HANDS).trim().length()>0)
-					((Wand)buildingI).setMaxCharges(CMath.s_int(foundRecipe.get(RCP_HANDS).trim()));
+				if(buildingI instanceof Wand)
+				{
+					if(foundRecipe.get(RCP_HANDS).trim().length()>0)
+						((Wand)buildingI).setMaxCharges(CMath.s_int(foundRecipe.get(RCP_HANDS).trim()));
+				}
+				else
+				if(CMath.s_int(foundRecipe.get(RCP_HANDS))==2)
+					buildingI.setRawLogicalAnd(true);
 			}
-			else
-			if(CMath.s_int(foundRecipe.get(RCP_HANDS))==2)
-				buildingI.setRawLogicalAnd(true);
 			buildingI.basePhyStats().setAttackAdjustment(CMath.s_int(foundRecipe.get(RCP_ATTACK))+(hardness*5)+(baseYield()+abilityCode()-1));
 			buildingI.basePhyStats().setDamage(CMath.s_int(foundRecipe.get(RCP_ARMORDMG))+hardness);
 
