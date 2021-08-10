@@ -107,9 +107,9 @@ public class Orc extends StdRace
 		return culturalAbilityProficiencies;
 	}
 
-	private final String[]	racialEffectNames			= { "Prayer_TaintOfEvil"};
-	private final int[]		racialEffectLevels			= { 1};
-	private final String[]	racialEffectParms			= { ""};
+	private final String[]	racialEffectNames			= { "Prayer_TaintOfEvil", "Carnivorous"};
+	private final int[]		racialEffectLevels			= { 1, 1};
+	private final String[]	racialEffectParms			= { "", ""};
 
 	@Override
 	protected String[] racialEffectNames()

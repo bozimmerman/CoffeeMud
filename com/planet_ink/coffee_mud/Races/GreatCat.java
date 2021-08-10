@@ -128,6 +128,28 @@ public class GreatCat extends StdRace
 		return racialAbilityParms;
 	}
 
+	private final String[]	racialEffectNames			= { "Carnivorous" };
+	private final int[]		racialEffectLevels			= { 1 };
+	private final String[]	racialEffectParms			= { "" };
+
+	@Override
+	protected String[] racialEffectNames()
+	{
+		return racialEffectNames;
+	}
+
+	@Override
+	protected int[] racialEffectLevels()
+	{
+		return racialEffectLevels;
+	}
+
+	@Override
+	protected String[] racialEffectParms()
+	{
+		return racialEffectParms;
+	}
+
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
 

@@ -1715,6 +1715,7 @@ public class Stat  extends Skills
 				else
 				if(thisStat.equals("DAMAGE"))
 				{
+					M.tell(""+M.phyStats().damage());
 					str.append(CMLib.combat().damageProwessStr(M)).append(" ");
 					found=true;
 				}
