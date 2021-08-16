@@ -166,13 +166,13 @@ public class WaterCurrents extends ActiveTicker
 					if(todo.elementAt(m) instanceof MOB)
 					{
 						M=(MOB)todo.elementAt(m);
-						final CMMsg themsg=CMClass.getMsg(srcM,M,new AWaterCurrent(),CMMsg.MSG_OK_ACTION,L("<T-NAME> <T-IS-ARE> swept @x1 by the current.",
+						final CMMsg themsg=CMClass.getMsg(M,R,new AWaterCurrent(),CMMsg.MASK_ALWAYS|CMMsg.MSG_LEAVE,L("<T-NAME> <T-IS-ARE> swept @x1 by the current.",
 								CMLib.directions().getDirectionName(dir).toLowerCase()));
 						if(R.okMessage(M,themsg))
 						{
 							R.send(M,themsg);
 							R2.bringMobHere(M,true);
-							R2.showOthers(srcM,M,new AWaterCurrent(),CMMsg.MSG_OK_ACTION,L("<T-NAME> <T-IS-ARE> swept in from @x1 by the current.",
+							R2.showOthers(M,R,new AWaterCurrent(),CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,L("<T-NAME> <T-IS-ARE> swept in from @x1 by the current.",
 									CMLib.directions().getFromCompassDirectionName(R.getReverseDir(dir)).toLowerCase()));
 							CMLib.commands().postLook(M,true);
 						}
