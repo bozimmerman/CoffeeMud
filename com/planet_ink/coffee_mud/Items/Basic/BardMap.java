@@ -75,11 +75,13 @@ public class BardMap extends GenMap
 		final String newText=getMapArea();
 		final List<String> mapAreas=CMParms.parseSemicolons(newText,true);
 		final Hashtable<Room,MapRoom> mapRooms=new Hashtable<Room,MapRoom>();
+		final WorldMap mapper = CMLib.map();
 		for(int a=0;a<mapAreas.size();a++)
 		{
 			final String area=mapAreas.get(a);
-			final Room room=CMLib.map().getRoom(area);
-			if(room!=null)
+			final Room room=mapper.getRoom(area);
+			if((room!=null)
+			&&(!CMath.bset(room.phyStats().sensesMask(), PhyStats.SENSE_ROOMUNMAPPABLE)))
 			{
 				final MapRoom mr=new MapRoom();
 				mr.r=room;

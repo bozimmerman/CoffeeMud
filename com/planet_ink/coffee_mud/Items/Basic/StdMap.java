@@ -217,9 +217,13 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 				for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();
-					final MapRoom mr=new MapRoom();
-					mr.r=R;
-					mapRooms.put(R,mr);
+					if((R!=null)
+					&&(!CMath.bset(R.phyStats().sensesMask(), PhyStats.SENSE_ROOMUNMAPPABLE)))
+					{
+						final MapRoom mr=new MapRoom();
+						mr.r=R;
+						mapRooms.put(R,mr);
+					}
 				}
 			}
 		}
