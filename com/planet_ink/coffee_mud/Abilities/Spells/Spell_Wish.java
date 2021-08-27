@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Faction.FRange;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.LegalLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary;
@@ -1485,7 +1486,8 @@ public class Spell_Wish extends Spell
 					{
 						if(!isLegalTarget(mob, target, true, myWish))
 							return false;
-						if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>=25)
+						if((CMLib.ableMapper().lowestQualifyingLevel(A.ID())>=25)
+						||(CMLib.ableMapper().getSecretSkill(A.ID())==SecretFlag.SECRET))
 						{
 							baseLoss=getXPCOSTAdjustment(mob,baseLoss);
 							baseLoss=-CMLib.leveler().postExperience(mob,null,null,-baseLoss,false);
