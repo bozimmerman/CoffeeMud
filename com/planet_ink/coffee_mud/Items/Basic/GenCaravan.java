@@ -259,7 +259,7 @@ public class GenCaravan extends GenNavigableBoardable
 			else
 				break;
 		}
-		final long totalPullWeight = CMLib.utensils().getPullWeight(rideLeader);
+		final long totalPullWeight = (rideLeader==null)?0:CMLib.utensils().getPullWeight(rideLeader);
 		if(totalPullWeight <= 0)
 		{
 			announceToAllAboard(L("You can't seem to "+verb_sail+" @x1 due to a lack of team to pull it, <S-NAME> go(es) nowhere.",CMLib.directions().getInDirectionName(direction)));

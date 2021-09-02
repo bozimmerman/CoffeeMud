@@ -890,6 +890,13 @@ public class InstanceArea extends StdAbility
 
 	protected synchronized void fixRoom(final Room room)
 	{
+		if(room.roomID().endsWith("Toklandia#0")) //TODO:BZ:DELME
+		{
+			Log.errOut(""+this);
+			Log.errOut(""+room);
+			Log.errOut(""+room.getArea());
+			Log.errOut(new Exception());
+		}
 		try
 		{
 			final Area instArea = ((affected instanceof Area) && (CMath.bset(((Area)affected).flags(), Area.FLAG_INSTANCE_CHILD)))
@@ -1495,11 +1502,16 @@ public class InstanceArea extends StdAbility
 		}
 	}
 
-	protected synchronized void doneRoom(final Room R)
+	protected synchronized boolean doneRoom(final Room R)
 	{
 		synchronized(roomsDone)
 		{
-			this.roomsDone.add(R);
+			if(!this.roomsDone.contains(R))
+			{
+				this.roomsDone.add(R);
+				return false;
+			}
+			return true;
 		}
 	}
 
@@ -1515,8 +1527,8 @@ public class InstanceArea extends StdAbility
 				&&(!roomDone((Room)msg.target()))
 				&&(((Room)msg.target()).getArea()==affected))
 				{
-					doneRoom((Room)msg.target());
-					fixRoom((Room)msg.target());
+					if(!doneRoom((Room)msg.target()))
+						fixRoom((Room)msg.target());
 				}
 			}
 			else
@@ -1831,6 +1843,7 @@ public class InstanceArea extends StdAbility
 								}
 								else
 								if((bunch.first[0]>=limit.first.intValue())
+								&&(false) //TODO: BZ: OMG DELME!!!
 								&&(!CMSecurity.isAllowedEverywhere(msg.source(),CMSecurity.SecFlag.CMDAREAS)))
 								{
 									msg.source().tell(L("You are not allowed to re-enter this special place right now."));

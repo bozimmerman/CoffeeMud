@@ -86,7 +86,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		if(P instanceof Item)
 			return ((Item)P).recursiveWeight();
 		else
+		if(P!=null)
 			return P.phyStats().weight();
+		else
+			return 0;
 	}
 
 	@Override
@@ -128,7 +131,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				return getSimpleWeight(P)*pullMultiplier;
 		}
 		else
+		if(P!=null)
 			return getSimpleWeight(P)*pullMultiplier;
+		else
+			return 0;
 	}
 
 	@Override
