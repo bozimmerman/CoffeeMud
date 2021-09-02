@@ -140,7 +140,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 	{
 		return ticksPerTurn;
 	}
-	
+
 	@Override
 	public int getMaxSpeed()
 	{
@@ -386,7 +386,9 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						}
 						final String rest = CMParms.combine(cmds,1);
 						final Item I=R.findItem(rest);
-						if((I!=this)&&(CMLib.flags().canBeSeenBy(I, msg.source())))
+						if((I!=this)
+						&&(I!=null)
+						&&(CMLib.flags().canBeSeenBy(I, msg.source())))
 						{
 							if((I instanceof Rideable)
 							&&(((Rideable)I).mobileRideBasis())
