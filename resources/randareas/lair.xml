@@ -856,7 +856,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			<ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname storekey" name="(a(n)) ${l:mob_race} key" material="iron" validate="1?10=1 or (1?2=1 and $__storekey&lt;2)" define="__storekey+=1">
 				<AFFECT class="Prop_ItemNoRuin"/>
 			</ITEM>
-			<ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname labkey"  name="a wierd ${l:mob_race} key" material="copper" validate="1?20=1 or (1?2=1 and $__labkey&lt;1)" define="__labkey+=1">
+			<ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname labkey"  name="a weird ${l:mob_race} key" material="copper" validate="1?20=1 or (1?2=1 and $__labkey&lt;1)" define="__labkey+=1">
 				<AFFECT class="Prop_ItemNoRuin"/>
 			</ITEM>
 			<ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname thronekey"  name="a golden ${l:mob_race} key" material="gold" validate="1?10=1 or (1?2=1 and $__thronekey&lt;1)" define="__thronekey+=1">

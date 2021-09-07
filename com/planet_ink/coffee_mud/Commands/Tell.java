@@ -46,7 +46,7 @@ public class Tell extends StdCommand
 		{String.class,String.class},
 		{String.class,String.class,Long.class}
 	};
-	
+
 	@Override
 	public String[] getAccessWords()
 	{
@@ -98,7 +98,7 @@ public class Tell extends StdCommand
 						elapsedTime=Math.round(elapsedTime/1000L)*1000L;
 						if(elapsedTime<0)
 						{
-							Log.errOut("Channel","Wierd elapsed time: now="+now+", then="+T.time());
+							Log.errOut("Channel","Weird elapsed time: now="+now+", then="+T.time());
 							elapsedTime=0;
 						}
 						final String timeAgo = "^.^N ("+CMLib.time().date2SmartEllapsedTime(elapsedTime,false)+" ago)";
@@ -209,7 +209,7 @@ public class Tell extends StdCommand
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;
-		int index = getArgumentSetIndex(internalParameters, args);
+		final int index = getArgumentSetIndex(internalParameters, args);
 		if(index == 0)
 		{
 			final String targetName=(String)args[0];

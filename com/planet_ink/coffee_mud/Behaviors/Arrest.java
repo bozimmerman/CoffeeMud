@@ -3169,7 +3169,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					if(officer!=null)
 					{
 						debugLogLostConvicts("Officer can't parole criminal: ",W,officer);
-						CMLib.commands().postSay(officer,null,L("That was wierd."),false,false);
+						CMLib.commands().postSay(officer,null,L("That was weird."),false,false);
 					}
 					unCuff(W.criminal());
 					W.setArrestingOfficer(myArea,null);

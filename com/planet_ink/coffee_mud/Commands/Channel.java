@@ -80,7 +80,7 @@ public class Channel extends StdCommand
 		elapsedTime=Math.round(elapsedTime/1000L)*1000L;
 		if(elapsedTime<0)
 		{
-			Log.errOut("Channel","Wierd elapsed time: now="+now+", then="+msg.sentTimeMillis());
+			Log.errOut("Channel","Weird elapsed time: now="+now+", then="+msg.sentTimeMillis());
 			elapsedTime=0;
 		}
 

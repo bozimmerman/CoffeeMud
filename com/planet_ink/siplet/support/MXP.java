@@ -425,7 +425,7 @@ public class MXP
 						buf.insert(oldI + 1, "lt;");
 						if (tagDebug)
 						{
-							System.out.println("/TAG*/****/Tag has wierd quote!!!!");
+							System.out.println("/TAG*/****/Tag has weird quote!!!!");
 							System.out.flush();
 						}
 						return 3;

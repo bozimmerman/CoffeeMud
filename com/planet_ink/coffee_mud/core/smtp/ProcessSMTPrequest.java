@@ -993,7 +993,7 @@ public class ProcessSMTPrequest implements Runnable
 						replyData=null;
 						if((cmdQueue.size()==0)&&(respQueue.size()>0))
 						{
-							// we should be looping through these .. why does ZD act so wierd?!
+							// we should be looping through these .. why does ZD act so weird?!
 							//final byte [] resp=respQueue.getLast();
 							for(final byte[] resp : respQueue)
 							{

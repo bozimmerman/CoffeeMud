@@ -74,7 +74,7 @@ public interface WebMacro extends CMObject
 	 * http://mydomain.com/mymacroname?firstparm=value&amp;secondparm=value
 	 * might succeeed
 	 *
-	 * @return whether this is a wierd URL macro
+	 * @return whether this is a weird URL macro
 	 */
 	public boolean isAWebPath();
 

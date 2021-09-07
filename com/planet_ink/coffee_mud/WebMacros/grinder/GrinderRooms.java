@@ -383,7 +383,7 @@ public class GrinderRooms
 	{
 		if(R==null)
 			return;
-		//OK! Keep this wierdness here!  It's necessary because oldRoom will have blown
+		//OK! Keep this weirdness here!  It's necessary because oldRoom will have blown
 		//away any real deities with copy deities in the CMMap, and this will restore
 		//the real ones.
 		for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)

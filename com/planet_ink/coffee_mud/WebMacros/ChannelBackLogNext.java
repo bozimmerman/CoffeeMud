@@ -116,7 +116,7 @@ public class ChannelBackLogNext extends StdWebMacro
 					elapsedTime=Math.round(elapsedTime/1000L)*1000L;
 					if(elapsedTime<0)
 					{
-						Log.errOut("Channel","Wierd elapsed time: now="+now+", then="+cmsg.sentTimeMillis());
+						Log.errOut("Channel","Weird elapsed time: now="+now+", then="+cmsg.sentTimeMillis());
 						elapsedTime=0;
 					}
 					str += " ("+CMLib.time().date2SmartEllapsedTime(elapsedTime,false)+" ago)";

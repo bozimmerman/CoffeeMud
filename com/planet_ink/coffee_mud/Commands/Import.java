@@ -6356,14 +6356,14 @@ public class Import extends StdCommand
 						}
 					};
 					boolean circleFormat=false;
-					if((CMParms.numBits(codeLine)>=6)||(CMParms.numBits(codeLine)==4)) // wierder circlemud exception
+					if((CMParms.numBits(codeLine)>=6)||(CMParms.numBits(codeLine)==4)) // weirder circlemud exception
 					{
 						codeBits=(getBitMask(codeLine,2)<<16)|getBitMask(codeLine,1); // ignoring 3 & 4
 						sectorType=CMath.s_int(CMParms.getBit(codeLine,5));
 						circleFormat=true;
 					}
 					else
-					if(CMParms.numBits(codeLine)==5) // wierd circlemud exception
+					if(CMParms.numBits(codeLine)==5) // weird circlemud exception
 					{
 						codeBits=sectorType;
 						codeBits=(getBitMask(codeLine,2)<<16)|getBitMask(codeLine,1); // ignoring 3
@@ -6731,7 +6731,7 @@ public class Import extends StdCommand
 							final long exitFlag=getBitMask(codeStr,0) & 31;
 							final long doorState=getBitMask(codeStr,1);
 							final long linkRoomID=getBitMask(codeStr,2);
-							if(CMParms.numBits(codeStr)==11) // wierd circle format
+							if(CMParms.numBits(codeStr)==11) // weird circle format
 							{
 								/* all is well */
 							}
@@ -6743,7 +6743,7 @@ public class Import extends StdCommand
 							else
 							if(CMParms.numBits(codeStr)==5)
 							{
-								/*TODO:BZ all is still well -- from wierd modified rom. */
+								/*TODO:BZ all is still well -- from weird modified rom. */
 							}
 							else
 							if(CMParms.numBits(codeStr)!=3)

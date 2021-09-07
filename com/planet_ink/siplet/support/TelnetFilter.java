@@ -375,7 +375,7 @@ public class TelnetFilter
 				}
 				case 7:
 				{
-					// this is reverse on, and requires a wierd color reversal
+					// this is reverse on, and requires a weird color reversal
 					// from whatever the previous colors were.
 					// do it later
 					break;

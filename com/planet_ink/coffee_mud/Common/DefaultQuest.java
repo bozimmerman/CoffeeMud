@@ -2072,7 +2072,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						}
 						if(reselect)
 							q.reselectable.add(q.mob);
-						questifyScriptableBehavs(q.mob);  // just wierd
+						questifyScriptableBehavs(q.mob);  // just weird
 						if(q.room!=null)
 							q.room.bringMobHere(q.mob,false);
 						else
@@ -2170,7 +2170,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						}
 						if(reselect)
 							q.reselectable.add(q.mob);
-						questifyScriptableBehavs(q.mob);  // just wierd
+						questifyScriptableBehavs(q.mob);  // just weird
 						if(q.room!=null)
 							q.room.bringMobHere(q.mob,false);
 						else

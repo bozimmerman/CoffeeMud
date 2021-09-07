@@ -213,8 +213,8 @@ public class Spell_SummonMonster extends Spell
 			newMOB=CMClass.getMOB("GenMOB");
 			newMOB.basePhyStats().setLevel(level);
 			newMOB.charStats().setMyRace(CMClass.getRace("Unique"));
-			newMOB.setName(L("a wierd extra-planar monster"));
-			newMOB.setDisplayText(L("a wierd extra-planar monster stands here"));
+			newMOB.setName(L("a weird extra-planar monster"));
+			newMOB.setDisplayText(L("a weird extra-planar monster stands here"));
 			newMOB.setDescription(L("It's too difficult to describe what this thing looks like, but he/she/it is definitely angry!"));
 			CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 			newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);

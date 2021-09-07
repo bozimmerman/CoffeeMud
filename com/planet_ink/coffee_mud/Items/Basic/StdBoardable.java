@@ -1156,7 +1156,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 				}
 				else
 				{
-					buyer.tell(L("However, there is no entity to actually take ownership.  Wierd."));
+					buyer.tell(L("However, there is no entity to actually take ownership.  Weird."));
 				}
 			}
 			final Room finalR=findNearestDocks(R);
