@@ -62,6 +62,16 @@ public class Prop_LotForSale extends Prop_LotsForSale
 	}
 
 	@Override
+	protected void fillCluster(final Room R, final List<Room> roomsV)
+	{
+		final Set<Room> roomsS=new HashSet<Room>();
+		final boolean[] foundEntrance=new boolean[1];
+		foundEntrance[0] = false;
+		roomsS.add(R);
+		fillCluster(R, roomsV, roomsS, foundEntrance, null);
+	}
+
+	@Override
 	public boolean canGenerateAdjacentRooms(final Room R)
 	{
 		return ((R.displayText().indexOf(L(LegalLibrary.INDOORSTR).trim())<0)

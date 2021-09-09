@@ -64,10 +64,12 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		final boolean[] foundEntrance=new boolean[1];
 		foundEntrance[0] = false;
 		roomsS.add(R);
-		fillCluster(R, roomsV, roomsS, foundEntrance);
+		fillCluster(R, roomsV, roomsS, foundEntrance, getOwnerName());
 	}
 
-	protected void fillCluster(final Room R, final List<Room> roomsV, final Set<Room> visitedS, final boolean[] foundEntrance)
+	protected void fillCluster(final Room R, final List<Room> roomsV,
+							   final Set<Room> visitedS, final boolean[] foundEntrance,
+							   final String owner)
 	{
 		roomsV.add(R);
 		final WorldMap map=CMLib.map();
@@ -81,8 +83,12 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 				visitedS.add(R2);
 				final Ability A=R2.fetchEffect(ID());
 				if((R2.getArea()==R.getArea())
-				&&(A!=null))
-					fillCluster(R2,roomsV, visitedS, foundEntrance);
+				&&(A!=null)
+				&&((owner==null)
+					||((Prop_LotsForSale)A).getOwnerName().equals(getOwnerName())))
+				{
+					fillCluster(R2,roomsV, visitedS, foundEntrance, owner);
+				}
 				else
 				if(!foundEntrance[0])
 				{
@@ -141,7 +147,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		// the only potentially retractable rooms are those that ARE for sale, and NOT owned
 		if(theRoom==null)
 			return true;
-		
+
 		if((recurseChkRooms != null)
 		&&(recurseChkRooms.containsKey(theRoom)))
 		{
@@ -151,7 +157,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		}
 
 		final LegalLibrary theLaw=CMLib.law();
-		
+
 		// if its a legit room and either not for sale, or owned already, then it is NOT retractable.
 		if(theRoom.roomID().length()>0)
 		{
