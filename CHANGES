@@ -39,7 +39,7 @@
  47. New spells: Greater Levitate, Greater Mend, Deflection, Harden, Improved Harden
  48. Rodsmithing, Staffmaking, Wandmaking, Fletching, Gunsmithing, Siegecraft all support X handed items
  49. New misc property: Carnivorous, for particular races, such as cats, orcs, and goblins
- 
+ 50. Thrown weapons are now cheaper for crafters to make 
  # Build 5.9.11.1 Release 02/26/2021
   Bug Fix Release:
   1. Fixed experience gains when EFFECTCXL is 0.

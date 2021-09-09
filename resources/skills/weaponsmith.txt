@@ -4,7 +4,7 @@
 % mallet	1	20	8	25	GenWeapon	HAMMER	BASHING	5	-10	1	0	WOODEN	
 % spear	1	20	12	42	GenWeapon	POLEARM	PIERCING	6	-5	2	1		
 % khopesh	1	20	10	20	GenWeapon	SWORD	SLASHING	4	-5	1	0		
-% throwing iron	1	20	2	7	GenSpear	THROWN	SLASHING	3	-10	1	1		
+% throwing iron	1	5	2	7	GenSpear	THROWN	SLASHING	3	-10	1	1		
 % hand ax	2	30	8	40	GenWeapon	AXE	SLASHING	6	-10	1	0	WOODEN	
 % knife	2	20	2	5	GenWeapon	DAGGER	PIERCING	1	-5	1	0		
 % flail	2	20	12	26	GenWeapon	FLAILED	BASHING	4	0	1	0		
@@ -13,15 +13,15 @@
 % shillelagh	3	20	8	40	GenWeapon	BLUNT	BASHING	6	-10	1	0		
 % sickle	3	20	8	7	GenWeapon	EDGED	PIERCING	2	1	1	0	WOODEN	
 % machete	3	20	6	20	GenWeapon	SWORD	SLASHING	4	-5	1	0		
-% throwing knife	3	20	2	13	GenSpear	THROWN	PIERCING	4	-10	1	1		
+% throwing knife	3	5	2	13	GenSpear	THROWN	PIERCING	4	-10	1	1		
 large % axe	4	60	18	255	GenWeapon	AXE	SLASHING	17	-10	2	0	WOODEN	
 % sai	4	20	5	16	GenWeapon	BLUNT	PIERCING	3	1	1	0		
 % chefs knife	4	20	3	7	GenWeapon	DAGGER	PIERCING	1	3	1	0		
-% throwing axe	4	50	4	6	GenSpear	THROWN	SLASHING	2	0	1	1	WOODEN	
+% throwing axe	4	10	4	6	GenSpear	THROWN	SLASHING	2	0	1	1	WOODEN	
 % glaive	5	30	22	240	GenWeapon	POLEARM	SLASHING	15	-5	2	1		
 % short sword	5	20	10	60	GenWeapon	SWORD	SLASHING	6	0	1	0		
 % orc blade	5	40	16	81	GenWeapon	SWORD	SLASHING	7	0	1	0		
-% boomerang	5	20	4	12	GenSpear	THROWN	BASHING	3	0	1	1		Spell_Boomerang
+% boomerang	5	5	4	12	GenSpear	THROWN	BASHING	3	0	1	1		Spell_Boomerang
 % hatchet	6	50	8	60	GenWeapon	AXE	SLASHING	6	0	1	0	WOODEN	
 % dagger	6	20	6	8	GenWeapon	DAGGER	PIERCING	2	3	1	0		
 % nunchaku	6	20	8	79	GenWeapon	FLAILED	BASHING	7	-1	1	0		
@@ -39,7 +39,7 @@ short % staff	7	20	10	104	GenWeapon	STAFF	BASHING	10	2	2	0
 % craftsmans hammer	8	40	4	60	GenWeapon	HAMMER	BASHING	6	0	1	0	WOODEN	
 % maul	8	40	30	728	GenWeapon	HAMMER	BASHING	28	-10	2	0	WOODEN	
 % cutlass	8	40	8	98	GenWeapon	SWORD	SLASHING	8	-3	1	0		
-% shuriken	8	60	2	8	GenSpear	THROWN	SLASHING	2	5	1	1		
+% shuriken	8	10	2	8	GenSpear	THROWN	SLASHING	2	5	1	1		
 spiked % club	9	30	15	112	GenWeapon	BLUNT	PIERCING	8	2	1	0		
 % yari	9	40	14	224	GenWeapon	POLEARM	PIERCING	14	0	2	1		
 % gladius	9	40	10	135	GenWeapon	SWORD	PIERCING	9	0	1	0		
@@ -54,17 +54,17 @@ two-handed % club	10	60	20	299	GenWeapon	BLUNT	BASHING	17	3	2	0
 % bill-guisarme	11	70	28	784	GenWeapon	POLEARM	SLASHING	28	-10	2	1		
 long % staff	11	20	16	232	GenWeapon	STAFF	BASHING	14	3	2	1		
 % epee	11	90	6	80	GenWeapon	SWORD	PIERCING	6	10	1	0		
-% dart	11	60	1	29	GenSpear	THROWN	PIERCING	5	0	1	1		
+% dart	11	10	1	29	GenSpear	THROWN	PIERCING	5	0	1	1		
 % dirk	12	60	5	27	GenWeapon	DAGGER	PIERCING	3	12	1	0		
 % kusari-gama	12	20	12	428	GenWeapon	FLAILED	SLASHING	20	-3	2	1		
 % bardiche	12	90	36	1260	GenWeapon	POLEARM	SLASHING	36	-15	2	1		
 giant % sword	12	60	30	930	GenWeapon	SWORD	SLASHING	31	-5	2	0		
-% tomahawk	12	70	6	90	GenSpear	THROWN	SLASHING	9	5	1	1	WOODEN	
+% tomahawk	12	15	6	90	GenSpear	THROWN	SLASHING	9	5	1	1	WOODEN	
 % mace	13	50	12	176	GenWeapon	BLUNT	BASHING	10	3	1	0		
 % sledgehammer	13	120	40	1845	GenWeapon	HAMMER	BASHING	45	-20	2	0	WOODEN	
 light % lance	13	100	16	375	GenWeapon	POLEARM	PIERCING	15	-10	1	1		
 % rapier	13	80	6	150	GenWeapon	SWORD	PIERCING	9	5	1	0		
-% throwing hammer	13	30	4	119	GenSpear	THROWN	BASHING	11	0	1	1	WOODEN	
+% throwing hammer	13	8	4	119	GenSpear	THROWN	BASHING	11	0	1	1	WOODEN	
 % double axe	14	40	16	303	GenWeapon	AXE	SLASHING	13	5	1	0	WOODEN	
 % crys-knife	14	90	6	33	GenWeapon	DAGGER	PIERCING	3	18	1	0		
 % chain	14	30	25	576	GenWeapon	FLAILED	BASHING	18	-4	1	1		
@@ -75,11 +75,11 @@ light % lance	13	100	16	375	GenWeapon	POLEARM	PIERCING	15	-10	1	1
 % military pick	16	50	11	400	GenWeapon	AXE	PIERCING	16	-5	1	0	WOODEN	
 % jewelers hammer	16	60	3	240	GenWeapon	HAMMER	BASHING	12	0	1	0	WOODEN	
 % partisan	16	120	26	1089	GenWeapon	POLEARM	PIERCING	33	-10	2	1		
-% throwing spike	16	50	1	82	GenSpear	THROWN	PIERCING	9	0	1	1		
+% throwing spike	16	12	1	82	GenSpear	THROWN	PIERCING	9	0	1	1		
 % cudgel	17	20	14	303	GenWeapon	BLUNT	BASHING	13	5	1	0		
 % quarterstaff	17	30	12	462	GenWeapon	STAFF	BASHING	21	5	2	0		
 % shamshir	17	50	12	375	GenWeapon	SWORD	SLASHING	15	0	1	0		
-weighted % axe	17	60	6	160	GenSpear	THROWN	SLASHING	12	10	1	1	WOODEN	
+weighted % axe	17	15	6	160	GenSpear	THROWN	SLASHING	12	10	1	1	WOODEN	
 % tabar	18	110	18	992	GenWeapon	AXE	SLASHING	32	-5	2	0	WOODEN	
 % rondel	18	100	6	54	GenWeapon	DAGGER	PIERCING	4	21	1	0		
 % scourge	18	80	10	510	GenWeapon	FLAILED	SLASHING	18	-5	1	0	LEATHER	
@@ -92,16 +92,16 @@ grand % sceptre	19	140	16	400	GenWeapon	BLUNT	BASHING	15	5	1	0
 % falchion	19	50	12	481	GenWeapon	SWORD	SLASHING	17	0	1	0		
 % herculean club	20	80	30	1062	GenWeapon	BLUNT	BASHING	32	6	2	0		
 heavy % lance	20	130	30	1083	GenWeapon	POLEARM	PIERCING	26	-15	1	1		
-% battle dart	20	100	1	64	GenSpear	THROWN	PIERCING	7	10	1	1		
+% battle dart	20	20	1	64	GenSpear	THROWN	PIERCING	7	10	1	1		
 % battle axe	21	120	25	990	GenWeapon	AXE	SLASHING	30	15	2	0	WOODEN	
 % jo staff	21	40	8	556	GenWeapon	STAFF	BASHING	23	6	2	0		
 % drussus	21	70	8	373	GenWeapon	SWORD	PIERCING	14	10	1	0		
-% manriki-gusari	21	40	3	300	GenSpear	THROWN	BASHING	18	0	1	1		
+% manriki-gusari	21	20	3	300	GenSpear	THROWN	BASHING	18	0	1	1		
 % crowbill	22	70	14	601	GenWeapon	AXE	PIERCING	19	0	1	0	WOODEN	
 % stiletto	22	140	10	88	GenWeapon	DAGGER	PIERCING	5	28	1	0		
 barbed whip	22	100	18	912	GenWeapon	FLAILED	SLASHING	23	-6	1	1	LEATHER	
 % hammer	22	40	10	665	GenWeapon	HAMMER	BASHING	21	-10	1	0	WOODEN	
-% javelin	22	90	8	400	GenSpear	THROWN	PIERCING	20	0	1	2		
+% javelin	22	18	8	400	GenSpear	THROWN	PIERCING	20	0	1	2		
 flanged % mace	23	80	14	515	GenWeapon	BLUNT	BASHING	17	6	1	0		
 martel de fer	23	140	40	2600	GenWeapon	HAMMER	BASHING	52	-10	2	0	WOODEN	
 % trident	23	150	22	1600	GenWeapon	POLEARM	PIERCING	40	-10	2	1		
@@ -115,11 +115,11 @@ three-sectioned % staff	24	20	15	1788	GenWeapon	FLAILED	BASHING	43	-7	2	0
 % war axe	26	90	14	665	GenWeapon	AXE	SLASHING	19	10	1	0	WOODEN	
 cat-o-nine tails	26	140	14	1152	GenWeapon	FLAILED	BASHING	27	-7	1	0	LEATHER	
 % ranseur	26	180	30	2450	GenWeapon	POLEARM	PIERCING	50	-15	2	1		
-weighted % knife	26	90	2	315	GenSpear	THROWN	PIERCING	18	5	1	1		
+weighted % knife	26	18	2	315	GenSpear	THROWN	PIERCING	18	5	1	1		
 % cat claws	27	90	10	401	GenWeapon	EDGED	SLASHING	14	16	1	0		
 % bo staff	27	60	14	1010	GenWeapon	STAFF	BASHING	31	8	2	0		
 % katana	27	150	10	665	GenWeapon	SWORD	SLASHING	19	10	1	0		
-% pilum	27	130	8	433	GenSpear	THROWN	PIERCING	20	10	1	2		
+% pilum	27	22	8	433	GenSpear	THROWN	PIERCING	20	10	1	2		
 % war sceptre	28	180	18	720	GenWeapon	BLUNT	BASHING	20	8	1	0		
 % main gauche	28	160	4	101	GenWeapon	DAGGER	PIERCING	5	36	1	0		
 % lucern hammer	28	140	18	1936	GenWeapon	HAMMER	BASHING	44	-10	2	1		
@@ -132,4 +132,4 @@ weighted % knife	26	90	2	315	GenSpear	THROWN	PIERCING	18	5	1	1
 three-headed % flail	30	130	18	2818	GenWeapon	FLAILED	BASHING	54	-9	2	0		
 % naginata	30	230	35	3025	GenWeapon	POLEARM	SLASHING	55	-10	2	1		
 % zweihander	30	70	24	2304	GenWeapon	SWORD	SLASHING	48	0	2	0		
-% hurlbat	30	140	8	1171	GenSpear	THROWN	SLASHING	38	-15	1	1		
+% hurlbat	30	30	8	1171	GenSpear	THROWN	SLASHING	38	-15	1	1		

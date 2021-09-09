@@ -3,7 +3,7 @@ master butter knife	30	20	1	106	GenWeapon	DAGGER	PIERCING	5	39	1	0
 master % mallet	31	20	8	1256	GenWeapon	HAMMER	BASHING	29	-15	1	0	WOODEN	
 master % spear	31	20	12	1936	GenWeapon	POLEARM	PIERCING	44	-10	2	1		
 master % khopesh	31	20	10	1350	GenWeapon	SWORD	SLASHING	30	-15	1	0		
-master % throwing iron	31	20	2	630	GenSpear	THROWN	SLASHING	27	-5	1	1		
+master % throwing iron	31	5	2	630	GenSpear	THROWN	SLASHING	27	-5	1	1		
 master % hand ax	32	30	8	1395	GenWeapon	AXE	SLASHING	31	-20	1	0	WOODEN	
 master % knife	32	20	2	110	GenWeapon	DAGGER	PIERCING	5	41	1	0		
 master % flail	32	20	12	1610	GenWeapon	FLAILED	BASHING	32	-9	1	0		
@@ -12,15 +12,15 @@ master % tulwar	32	20	14	1215	GenWeapon	SWORD	SLASHING	27	0	1	0
 master % shillelagh	33	20	8	1208	GenWeapon	BLUNT	BASHING	29	-20	1	0		
 master % sickle	33	20	8	528	GenWeapon	EDGED	PIERCING	16	19	1	0	WOODEN	
 master % machete	33	20	6	1213	GenWeapon	SWORD	SLASHING	28	-10	1	0		
-master % throwing knife	33	20	2	183	GenSpear	THROWN	PIERCING	11	35	1	1		
+master % throwing knife	33	5	2	183	GenSpear	THROWN	PIERCING	11	35	1	1		
 master large % axe	34	60	18	3078	GenWeapon	AXE	SLASHING	57	-15	2	0	WOODEN	
 master % sai	34	20	5	733	GenWeapon	BLUNT	PIERCING	20	10	1	0		
 master % chefs knife	34	20	3	148	GenWeapon	DAGGER	PIERCING	6	44	1	0		
-master % throwing axe	34	50	4	427	GenSpear	THROWN	SLASHING	19	30	1	1	WOODEN	
+master % throwing axe	34	10	4	427	GenSpear	THROWN	SLASHING	19	30	1	1	WOODEN	
 master % glaive	35	30	22	3025	GenWeapon	POLEARM	SLASHING	55	-10	2	1		
 master % short sword	35	20	10	1306	GenWeapon	SWORD	SLASHING	28	0	1	0		
 master % orc blade	35	40	16	1550	GenWeapon	SWORD	SLASHING	31	-5	1	0		
-master % boomerang	35	20	4	210	GenSpear	THROWN	BASHING	11	50	1	1		Spell_Boomerang
+master % boomerang	35	5	4	210	GenSpear	THROWN	BASHING	11	50	1	1		Spell_Boomerang
 master % hatchet	36	50	8	1306	GenWeapon	AXE	SLASHING	28	0	1	0	WOODEN	
 master % dagger	36	20	6	189	GenWeapon	DAGGER	PIERCING	7	46	1	0		
 master % nunchaku	36	20	8	1813	GenWeapon	FLAILED	BASHING	34	-10	1	0		
@@ -38,7 +38,7 @@ master % serrated knife	38	20	4	196	GenWeapon	DAGGER	PIERCING	7	49	1	0
 master % craftsmans hammer	38	40	4	1306	GenWeapon	HAMMER	BASHING	28	0	1	0	WOODEN	
 master % maul	38	40	30	4420	GenWeapon	HAMMER	BASHING	68	-15	2	0	WOODEN	
 master % cutlass	38	40	8	1500	GenWeapon	SWORD	SLASHING	30	0	1	0		
-master % shuriken	38	120	2	450	GenSpear	THROWN	SLASHING	20	25	1	1		
+master % shuriken	38	20	2	450	GenSpear	THROWN	SLASHING	20	25	1	1		
 master spiked % club	39	30	15	1222	GenWeapon	BLUNT	PIERCING	26	11	1	0		
 master % yari	39	40	14	2600	GenWeapon	POLEARM	PIERCING	50	0	2	1		
 master % gladius	39	40	10	1400	GenWeapon	SWORD	PIERCING	28	10	1	0		
@@ -53,17 +53,17 @@ master % kama	41	50	6	753	GenWeapon	EDGED	PIERCING	19	24	1	0	WOODEN
 master % bill-guisarme	41	70	28	4760	GenWeapon	POLEARM	SLASHING	70	-20	2	1		
 master long % staff	41	20	16	2038	GenWeapon	STAFF	BASHING	43	12	2	1		
 master % epee	41	90	6	693	GenWeapon	SWORD	PIERCING	16	50	1	0		
-master % dart	41	60	1	166	GenSpear	THROWN	PIERCING	10	40	1	1		
+master % dart	41	15	1	166	GenSpear	THROWN	PIERCING	10	40	1	1		
 master % dirk	42	60	5	250	GenWeapon	DAGGER	PIERCING	8	54	1	0		
 master % kusari-gama	42	20	12	4070	GenWeapon	FLAILED	SLASHING	64	-12	2	1		
 master % bardiche	42	90	36	6237	GenWeapon	POLEARM	SLASHING	81	-30	2	1		
 master giant % sword	42	60	30	5110	GenWeapon	SWORD	SLASHING	73	-15	2	0		
-master % tomahawk	42	70	6	1230	GenSpear	THROWN	SLASHING	36	15	1	1	WOODEN	
+master % tomahawk	42	17	6	1230	GenSpear	THROWN	SLASHING	36	15	1	1	WOODEN	
 master % mace	43	50	12	1418	GenWeapon	BLUNT	BASHING	28	12	1	0		
 master % sledgehammer	43	120	40	7728	GenWeapon	HAMMER	BASHING	92	-40	2	0	WOODEN	
 master light % lance	43	100	16	2405	GenWeapon	POLEARM	PIERCING	39	-20	1	1		
 master % rapier	43	80	6	1446	GenWeapon	SWORD	PIERCING	28	15	1	0		
-master % throwing hammer	43	30	4	1469	GenSpear	THROWN	BASHING	41	0	1	1	WOODEN	
+master % throwing hammer	43	10	4	1469	GenSpear	THROWN	BASHING	41	0	1	1	WOODEN	
 master % double axe	44	40	16	1866	GenWeapon	AXE	SLASHING	32	15	1	0	WOODEN	
 master % crys-knife	44	90	6	258	GenWeapon	DAGGER	PIERCING	8	57	1	0		
 master % chain	44	30	25	3330	GenWeapon	FLAILED	BASHING	45	-13	1	1		
@@ -74,11 +74,11 @@ master % bastard sword	45	50	14	1866	GenWeapon	SWORD	SLASHING	32	15	1	0
 master % military pick	46	50	11	2533	GenWeapon	AXE	PIERCING	40	-10	1	0	WOODEN	
 master % jewelers hammer	46	60	3	1926	GenWeapon	HAMMER	BASHING	34	0	1	0	WOODEN	
 master % partisan	46	120	26	5475	GenWeapon	POLEARM	PIERCING	75	-20	2	1		
-master % throwing spike	46	50	1	333	GenSpear	THROWN	PIERCING	16	35	1	1		
+master % throwing spike	46	12	1	333	GenSpear	THROWN	PIERCING	16	35	1	1		
 master % cudgel	47	20	14	1746	GenWeapon	BLUNT	BASHING	31	14	1	0		
 master % quarterstaff	47	30	12	2640	GenWeapon	STAFF	BASHING	50	14	2	0		
 master % shamshir	47	50	12	2406	GenWeapon	SWORD	SLASHING	38	0	1	0		
-master weighted % axe	47	60	6	1462	GenSpear	THROWN	SLASHING	39	20	1	1	WOODEN	
+master weighted % axe	47	15	6	1462	GenSpear	THROWN	SLASHING	39	20	1	1	WOODEN	
 master % tabar	48	110	18	5400	GenWeapon	AXE	SLASHING	75	-15	2	0	WOODEN	
 master % rondel	48	100	6	321	GenWeapon	DAGGER	PIERCING	9	62	1	0		
 master % scourge	48	80	10	3312	GenWeapon	FLAILED	SLASHING	46	-14	1	0	LEATHER	
@@ -91,16 +91,16 @@ master % katar	49	80	8	1104	GenWeapon	EDGED	PIERCING	23	29	1	0
 master % falchion	49	50	12	2535	GenWeapon	SWORD	SLASHING	39	0	1	0		
 master herculean % club	50	80	30	3904	GenWeapon	BLUNT	BASHING	61	15	2	0		
 master heavy % lance	50	130	30	4160	GenWeapon	POLEARM	PIERCING	52	-30	1	1		
-master % battle dart	50	100	1	191	GenSpear	THROWN	PIERCING	10	55	1	1		
+master % battle dart	50	20	1	191	GenSpear	THROWN	PIERCING	10	55	1	1		
 master % battle axe	51	120	25	4154	GenWeapon	AXE	SLASHING	62	25	2	0	WOODEN	
 master % jo staff	51	40	8	2968	GenWeapon	STAFF	BASHING	53	15	2	0		
 master % drussus	51	70	8	2035	GenWeapon	SWORD	PIERCING	33	20	1	0		
-master % manriki-gusari	51	40	3	1919	GenSpear	THROWN	BASHING	47	0	1	1		
+master % manriki-gusari	51	20	3	1919	GenSpear	THROWN	BASHING	47	0	1	1		
 master % crowbill	52	70	14	2940	GenWeapon	AXE	PIERCING	42	0	1	0	WOODEN	
 master % stiletto	52	140	10	390	GenWeapon	DAGGER	PIERCING	10	67	1	0		
 master barbed whip	52	100	18	4083	GenWeapon	FLAILED	SLASHING	50	-15	1	1	LEATHER	
 master % hammer	52	40	10	3150	GenWeapon	HAMMER	BASHING	45	-15	1	0	WOODEN	
-master % javelin	52	90	8	2660	GenSpear	THROWN	PIERCING	56	-15	1	2		
+master % javelin	52	18	8	2660	GenSpear	THROWN	PIERCING	56	-15	1	2		
 master flanged % mace	53	80	14	2096	GenWeapon	BLUNT	BASHING	34	15	1	0		
 master % martel de fer	53	140	40	8645	GenWeapon	HAMMER	BASHING	95	-20	2	0	WOODEN	
 master % trident	53	150	22	6560	GenWeapon	POLEARM	PIERCING	82	-20	2	1		
@@ -114,11 +114,11 @@ master % pixie blade	55	160	3	1400	GenWeapon	SWORD	PIERCING	24	55	1	0
 master % war axe	56	90	14	2795	GenWeapon	AXE	SLASHING	39	20	1	0	WOODEN	
 master cat-o-nine tails	56	140	14	4748	GenWeapon	FLAILED	BASHING	55	-16	1	0	LEATHER	
 master % ranseur	56	180	30	8645	GenWeapon	POLEARM	PIERCING	95	-30	2	1		
-master weighted % knife	56	90	2	855	GenSpear	THROWN	PIERCING	27	45	1	1		
+master weighted % knife	56	18	2	855	GenSpear	THROWN	PIERCING	27	45	1	1		
 master % cat claws	57	90	10	1521	GenWeapon	EDGED	SLASHING	27	34	1	0		
 master % bo staff	57	60	14	3928	GenWeapon	STAFF	BASHING	61	17	2	0		
 master % katana	57	150	10	2795	GenWeapon	SWORD	SLASHING	39	20	1	0		
-master % pilum	57	130	8	2470	GenSpear	THROWN	PIERCING	52	5	1	2		
+master % pilum	57	25	8	2470	GenSpear	THROWN	PIERCING	52	5	1	2		
 master % war sceptre	58	180	18	2622	GenWeapon	BLUNT	BASHING	38	17	1	0		
 master % main gauche	58	160	4	416	GenWeapon	DAGGER	PIERCING	10	75	1	0		
 master % lucern hammer	58	140	18	7055	GenWeapon	HAMMER	BASHING	85	-20	2	1		
@@ -131,4 +131,4 @@ master % half-moon	60	90	25	5009	GenWeapon	BLUNT	SLASHING	69	18	2	0
 master three-headed % flail	60	130	18	9640	GenWeapon	FLAILED	BASHING	100	-18	2	0		
 master % naginata	60	230	35	9215	GenWeapon	POLEARM	SLASHING	97	-20	2	1		
 master twohanded % sword	48	70	20	4624	GenWeapon	SWORD	SLASHING	68	0	2	0		
-master % hurlbat	60	140	8	5062	GenSpear	THROWN	SLASHING	81	-40	1	1		
+master % hurlbat	60	30	8	5062	GenSpear	THROWN	SLASHING	81	-40	1	1		
