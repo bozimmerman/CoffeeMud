@@ -979,7 +979,7 @@
         <TITLE>*, @x2 of @x1</TITLE>
     </TITLES>
     <ABILITIES>
-        <ABILITY ID="Spell_ClanExperience" PROFF=100 LEVEL=1 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanExperience" PROFF=100 LEVEL=0 QUALIFYONLY=false />
         <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
@@ -1322,7 +1322,7 @@
         <TITLE>*, @x2 of @x1</TITLE>
     </TITLES>
     <ABILITIES>
-        <ABILITY ID="Spell_ClanExperience" PROFF=100 LEVEL=1 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanExperience" PROFF=100 LEVEL=0 QUALIFYONLY=false />
         <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
