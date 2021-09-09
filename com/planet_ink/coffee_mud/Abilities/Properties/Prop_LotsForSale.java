@@ -230,6 +230,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		final LandTitle newTitle=(LandTitle)this.copyOf();
 		newTitle.setOwnerName("");
 		newTitle.setBackTaxes(0);
+		this.lastRoomsTimestamp=0;
 		return newTitle;
 	}
 
