@@ -169,6 +169,7 @@ public class Skill_Cage extends StdSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
+		CMLib.commands().postStand(target, true, true);
 		final CagedAnimal caged=(CagedAnimal)CMClass.getItem("GenCaged");
 		if((success)&&(caged.cageMe(target)))
 		{
