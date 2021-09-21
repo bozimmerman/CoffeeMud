@@ -570,13 +570,12 @@ public class StdTitle extends StdItem implements LandTitle
 				return;
 			}
 
-			removeBoardableProperty(msg.source(), P);
-
 			if(CMLib.clans().checkClanPrivilege(msg.source(), getOwnerName(), Clan.Function.PROPERTY_OWNER))
 			{
 				final Pair<Clan,Integer> targetClan=CMLib.clans().findPrivilegedClan((MOB)msg.target(), Clan.Function.PROPERTY_OWNER);
 				if(targetClan!=null)
 				{
+					removeBoardableProperty(msg.source(), P);
 					addBoardableProperty(P,targetClan.first);
 					P.setOwnerName(targetClan.first.clanID());
 					final Room R=this.getAllTitledRooms().size()>0 ? this.getAllTitledRooms().get(0) : null;
@@ -584,13 +583,21 @@ public class StdTitle extends StdItem implements LandTitle
 						CMLib.achievements().possiblyBumpAchievement((MOB)msg.target(), AchievementLibrary.Event.CLANPROPERTY, 1, targetClan, R);
 				}
 				else
+				if(((MOB)msg.target()).getClanRole(getOwnerName())!=null)
 				{
+					// do nothing
+					return;
+				}
+				else
+				{
+					removeBoardableProperty(msg.source(), P);
 					addBoardableProperty(P,msg.target());
 					P.setOwnerName(msg.target().Name());
 				}
 			}
 			else
 			{
+				removeBoardableProperty(msg.source(), P);
 				addBoardableProperty(P,msg.target());
 				P.setOwnerName(msg.target().Name());
 			}
