@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -1786,7 +1787,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 							}
 							else
 							{
-								final Object newObj = cType.newInstance();
+								final Object newObj = cType.getDeclaredConstructor().newInstance();
 								fromXMLtoPOJO(vTag.contents(), newObj);
 								Array.set(tgt, i, newObj);
 							}
@@ -1844,7 +1845,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 						field.set(o, Boolean.valueOf(valTag.value()));
 					else
 					{
-						final Object newObj = field.getType().newInstance();
+						final Object newObj = field.getType().getDeclaredConstructor().newInstance();
 						fromXMLtoPOJO(valTag.contents(), newObj);
 						field.set(o, newObj);
 					}
@@ -1859,6 +1860,14 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 				throw new IllegalArgumentException(e.getMessage(),e);
 			}
 			catch (final InstantiationException e)
+			{
+				throw new IllegalArgumentException(e.getMessage(),e);
+			}
+			catch (final NoSuchMethodException e)
+			{
+				throw new IllegalArgumentException(e.getMessage(),e);
+			}
+			catch (final InvocationTargetException e)
 			{
 				throw new IllegalArgumentException(e.getMessage(),e);
 			}

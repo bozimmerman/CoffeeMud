@@ -350,7 +350,7 @@ public class MiniJSON
 				newObj.put(key, jsonDeepCopy(this.get(key)));
 			return newObj;
 		}
-		
+
 		public void putString(final String key, final String value)
 		{
 			if(value == null)
@@ -918,7 +918,7 @@ public class MiniJSON
 							else
 							if(objs[i] instanceof JSONObject)
 							{
-								final Object newObj = cType.newInstance();
+								final Object newObj = cType.getDeclaredConstructor().newInstance();
 								fromJSONtoPOJO((JSONObject)objs[i], newObj);
 								Array.set(tgt, i, newObj);
 							}
@@ -958,7 +958,7 @@ public class MiniJSON
 					else
 					if(jo instanceof JSONObject)
 					{
-						final Object newObj = field.getType().newInstance();
+						final Object newObj = field.getType().getDeclaredConstructor().newInstance();
 						fromJSONtoPOJO((JSONObject)jo, newObj);
 						field.set(o, newObj);
 					}
@@ -996,6 +996,14 @@ public class MiniJSON
 				throw new MJSONException(e.getMessage(),e);
 			}
 			catch (final InstantiationException e)
+			{
+				throw new MJSONException(e.getMessage(),e);
+			}
+			catch (final NoSuchMethodException e)
+			{
+				throw new MJSONException(e.getMessage(),e);
+			}
+			catch (final InvocationTargetException e)
 			{
 				throw new MJSONException(e.getMessage(),e);
 			}

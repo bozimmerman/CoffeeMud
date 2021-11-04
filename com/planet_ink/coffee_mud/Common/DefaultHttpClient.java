@@ -80,7 +80,7 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 	{
 		try
 		{
-			return getClass().newInstance();
+			return getClass().getDeclaredConstructor().newInstance();
 		}
 		catch(final Exception e)
 		{

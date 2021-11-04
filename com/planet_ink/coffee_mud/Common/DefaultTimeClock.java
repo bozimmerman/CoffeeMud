@@ -53,7 +53,7 @@ public class DefaultTimeClock implements TimeClock
 	{
 		try
 		{
-			return getClass().newInstance();
+			return getClass().getDeclaredConstructor().newInstance();
 		}
 		catch (final Exception e)
 		{

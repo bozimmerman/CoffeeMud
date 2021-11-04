@@ -1337,7 +1337,7 @@ public class CWConfig implements Cloneable
 				{
 					try
 					{
-						tree=treeClass.newInstance();
+						tree=treeClass.getDeclaredConstructor().newInstance();
 						portMap.put(from.second, tree);
 					}
 					catch (final Exception e)

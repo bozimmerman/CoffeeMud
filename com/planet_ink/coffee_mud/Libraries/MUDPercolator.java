@@ -188,7 +188,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		{
 			try
 			{
-				return mgr.newInstance();
+				return mgr.getDeclaredConstructor().newInstance();
 			}
 			catch(final Exception e)
 			{

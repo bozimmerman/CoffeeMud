@@ -106,7 +106,7 @@ public class ServerThread implements Tickable
 
 		try
 		{
-			ob = (ServerObject)Class.forName(str).newInstance();
+			ob = (ServerObject)Class.forName(str).getDeclaredConstructor().newInstance();
 			count++;
 			str = str + "#" + count;
 			ob.setObjectId(str);
@@ -138,7 +138,7 @@ public class ServerThread implements Tickable
 		{
 			try
 			{
-				ob = (ServerObject)Class.forName(str).newInstance();
+				ob = (ServerObject)Class.forName(str).getDeclaredConstructor().newInstance();
 				ob.setObjectId(str);
 				objects.put(str, ob);
 			}
@@ -196,7 +196,7 @@ public class ServerThread implements Tickable
 		try
 		{
 			Intermud.setup(intermuds,
-						   (PersistentPeer)Class.forName("com.planet_ink.coffee_mud.core.intermud.i3.IMudPeer").newInstance());
+						   (PersistentPeer)Class.forName("com.planet_ink.coffee_mud.core.intermud.i3.IMudPeer").getDeclaredConstructor().newInstance());
 		}
 		catch( final Exception e )
 		{

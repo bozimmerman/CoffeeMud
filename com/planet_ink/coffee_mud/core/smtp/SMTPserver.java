@@ -64,7 +64,7 @@ public class SMTPserver extends Thread implements Tickable
 	{
 		try
 		{
-			return getClass().newInstance();
+			return getClass().getDeclaredConstructor().newInstance();
 		}
 		catch(final Exception e)
 		{

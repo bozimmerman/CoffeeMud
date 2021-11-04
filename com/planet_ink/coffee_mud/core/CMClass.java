@@ -1571,7 +1571,7 @@ public class CMClass extends ClassLoader
 		{
 			final String pathLess=makeDotClassPath(path);
 			if(classes.containsKey(pathLess))
-				return (classes.get(pathLess)).newInstance();
+				return (classes.get(pathLess)).getDeclaredConstructor().newInstance();
 		}
 		catch(final Exception e)
 		{
@@ -1584,7 +1584,7 @@ public class CMClass extends ClassLoader
 		final Object o = V.firstElement();
 		try
 		{
-			return o.getClass().newInstance();
+			return o.getClass().getDeclaredConstructor().newInstance();
 		}
 		catch(final Exception e)
 		{
@@ -1659,7 +1659,7 @@ public class CMClass extends ClassLoader
 			shortThis=shortThis.substring(x+1);
 			try
 			{
-				return classes.get(calledThis).newInstance();
+				return classes.get(calledThis).getDeclaredConstructor().newInstance();
 			}
 			catch (final Exception e)
 			{
@@ -2451,7 +2451,7 @@ public class CMClass extends ClassLoader
 							Log.sysOut("CMClass","WARNING: class failed ancestral check: "+packageName);
 					}
 					else
-						O=C.newInstance();
+						O=C.getDeclaredConstructor().newInstance();
 				}
 				if(O==null)
 				{

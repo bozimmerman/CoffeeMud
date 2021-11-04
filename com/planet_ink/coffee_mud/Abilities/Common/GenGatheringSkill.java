@@ -164,7 +164,7 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 	{
 		try
 		{
-			final GenGatheringSkill A=this.getClass().newInstance();
+			final GenGatheringSkill A=this.getClass().getDeclaredConstructor().newInstance();
 			A.ID=ID;
 			return A;
 		}

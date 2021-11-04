@@ -68,7 +68,7 @@ public class DefaultAuction implements AuctionData
 	{
 		try
 		{
-			return getClass().newInstance();
+			return getClass().getDeclaredConstructor().newInstance();
 		}
 		catch (final Exception e)
 		{

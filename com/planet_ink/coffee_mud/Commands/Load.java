@@ -254,7 +254,7 @@ public class Load extends StdCommand
 						{
 							C=Class.forName("com.sun.tools.javac.Main", true, CMClass.instance());
 							if(C!=null)
-								CO=C.newInstance();
+								CO=C.getDeclaredConstructor().newInstance();
 						}
 						catch(final Exception e)
 						{

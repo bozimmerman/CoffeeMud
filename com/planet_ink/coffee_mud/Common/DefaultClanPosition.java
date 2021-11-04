@@ -73,7 +73,7 @@ public class DefaultClanPosition implements ClanPosition
 	{
 		try
 		{
-			return getClass().newInstance();
+			return getClass().getDeclaredConstructor().newInstance();
 		}
 		catch(final Exception e)
 		{

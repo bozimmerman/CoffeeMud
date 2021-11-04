@@ -301,7 +301,7 @@ public class GenAbility extends StdAbility
 	{
 		try
 		{
-			final GenAbility A = this.getClass().newInstance();
+			final GenAbility A = this.getClass().getDeclaredConstructor().newInstance();
 			A.ID=ID;
 			getScripter();
 			A.scriptParmHash=scriptParmHash;

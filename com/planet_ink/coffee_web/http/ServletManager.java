@@ -109,7 +109,7 @@ public class ServletManager implements SimpleServletManager
 			SimpleServlet servlet;
 			try
 			{
-				servlet = c.newInstance();
+				servlet = c.getDeclaredConstructor().newInstance();
 				servlet.init();
 			}
 			catch (final Exception e)

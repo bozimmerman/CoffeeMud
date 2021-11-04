@@ -96,7 +96,7 @@ public class StdBehavior implements Behavior
 	{
 		try
 		{
-			return this.getClass().newInstance();
+			return this.getClass().getDeclaredConstructor().newInstance();
 		}
 		catch(final Exception e)
 		{

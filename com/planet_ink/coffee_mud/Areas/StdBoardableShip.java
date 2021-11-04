@@ -500,7 +500,7 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 	{
 		try
 		{
-			return this.getClass().newInstance();
+			return this.getClass().getDeclaredConstructor().newInstance();
 		}
 		catch(final Exception e)
 		{

@@ -66,7 +66,7 @@ public class Sword extends StdWeapon
 		{
 			try
 			{
-				return this.getClass().newInstance();
+				return this.getClass().getDeclaredConstructor().newInstance();
 			}
 			catch(final Exception e)
 			{
@@ -92,7 +92,7 @@ public class Sword extends StdWeapon
 		default:
 			try
 			{
-				return this.getClass().newInstance();
+				return this.getClass().getDeclaredConstructor().newInstance();
 			}
 			catch(final Exception e)
 			{

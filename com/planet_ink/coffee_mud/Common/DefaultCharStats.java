@@ -55,7 +55,7 @@ public class DefaultCharStats implements CharStats
 	{
 		try
 		{
-			final DefaultCharStats newStats=getClass().newInstance();
+			final DefaultCharStats newStats=getClass().getDeclaredConstructor().newInstance();
 			if(newStats.myRace==null)
 				newStats.myRace=CMClass.getRace("StdRace");
 			return newStats;

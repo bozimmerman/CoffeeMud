@@ -134,7 +134,7 @@ public class GenLanguage extends StdLanguage
 	{
 		try
 		{
-			final GenLanguage A=this.getClass().newInstance();
+			final GenLanguage A=this.getClass().getDeclaredConstructor().newInstance();
 			A.ID=ID;
 			return A;
 		}

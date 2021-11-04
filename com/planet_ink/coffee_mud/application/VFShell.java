@@ -169,7 +169,7 @@ public class VFShell
 					Log.errOut("Database error! Panic shutdown!");
 					System.exit(-1);
 				}
-				
+
 				CMClass.initialize();
 				Resources.initialize();
 				CMSecurity.instance();
@@ -226,7 +226,7 @@ public class VFShell
 					{
 						try
 						{
-							return getClass().newInstance();
+							return getClass().getDeclaredConstructor().newInstance();
 						}
 						catch (final Exception e)
 						{

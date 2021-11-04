@@ -52,7 +52,7 @@ public class DefaultMessage implements CMMsg
 	{
 		try
 		{
-			return getClass().newInstance();
+			return getClass().getDeclaredConstructor().newInstance();
 		}
 		catch (final Exception e)
 		{
@@ -321,7 +321,7 @@ public class DefaultMessage implements CMMsg
 			suspendTrailers=newValue.booleanValue();
 		return this.suspendTrailers;
 	}
-	
+
 	@Override
 	public CMMsg addTrailerMsg(final CMMsg msg)
 	{
