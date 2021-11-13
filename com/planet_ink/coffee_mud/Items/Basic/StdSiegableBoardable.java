@@ -680,7 +680,7 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 						{
 						}
 					});
-				};
+				}
 				try
 				{
 					sourceM.addNonUninvokableEffect(namerA);

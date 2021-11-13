@@ -289,7 +289,7 @@ public class Spell_GreaterLevitate extends Spell
 				{
 					final Spell_GreaterLevitate A = (Spell_GreaterLevitate)maliciousAffect(mob,target,asLevel,5+super.getXLEVELLevel(mob),-1);
 					success = A!=null;
-					if(success)
+					if((success)&&(A!=null))
 					{
 						A.maxRise = max;
 						if(target instanceof MOB)

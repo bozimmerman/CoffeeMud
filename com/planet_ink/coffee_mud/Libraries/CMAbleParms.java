@@ -5392,6 +5392,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			case NUMBERORNULL:
 				if(oldVal.length()==0)
 					return true;
+				//$FALL-THROUGH$
 			case NUMBER:
 				return CMath.isInteger(oldVal);
 			case NUMBER_PAIR:
@@ -5433,6 +5434,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			case NUMBERORNULL:
 				if(oldVal.trim().length()==0)
 					return new String[]{"NULL"};
+				//$FALL-THROUGH$
 			case NUMBER:
 			case NUMBER_PAIR:
 				return new String[]{oldVal};

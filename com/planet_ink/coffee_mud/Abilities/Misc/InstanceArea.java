@@ -1843,7 +1843,7 @@ public class InstanceArea extends StdAbility
 								}
 								else
 								if((bunch.first[0]>=limit.first.intValue())
-								&&(false) //TODO: BZ: OMG DELME!!!
+								//&&(false) //TODO: BZ: OMG DELME!!!
 								&&(!CMSecurity.isAllowedEverywhere(msg.source(),CMSecurity.SecFlag.CMDAREAS)))
 								{
 									msg.source().tell(L("You are not allowed to re-enter this special place right now."));

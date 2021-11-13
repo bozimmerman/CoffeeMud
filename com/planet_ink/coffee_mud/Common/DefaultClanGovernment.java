@@ -825,11 +825,8 @@ public class DefaultClanGovernment implements ClanGovernment
 			code=code.substring(0,numDex);
 		}
 		final GOVT_STAT_CODES stat = getStatIndex(code);
-		final boolean isNull = (stat == null);
-		if (isNull)
-		{
+		if (stat == null)
 			return;
-		}
 		switch(stat)
 		{
 		case NAME:
