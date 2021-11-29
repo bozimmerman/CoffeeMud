@@ -94,7 +94,7 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 	{
 		immStr = null;
 		messages=new Vector<String>();
-		diseases=CMParms.parseSemicolons(newText.toUpperCase(),true);
+		diseases=CMParms.parseSemicolons(newText,true);
 		owner = false;
 		wearer = false;
 		for(int d=0;d<diseases.size();d++)
@@ -112,7 +112,7 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 					messages.add("");
 				else
 				{
-					diseases.set(d,s.substring(0,x).trim());
+					diseases.set(d,s.substring(0,x).trim().toUpperCase());
 					messages.add(s.substring(x+1).trim());
 				}
 			}
