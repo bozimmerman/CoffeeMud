@@ -432,17 +432,24 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		amount = loseLeigeExperience(mob, amount);
 		amount = loseClanExperience(mob, amount);
 		mob.setExperience(mob.getExperience()-amount);
-		checkLevelDown(mob);
+		checkedLevelLosses(mob);
 	}
 
-	protected void checkLevelDown(final MOB mob)
+	protected void checkedLevelLosses(final MOB mob)
 	{
 		int neededLowest=getLevelExperience(mob, mob.basePhyStats().level()-2);
-		if((mob.getExperience()<neededLowest)
-		&&(mob.basePhyStats().level()>1))
+		synchronized(mob) {} // does this really do anything?
+		boolean checkAgain=true;
+		while(checkAgain
+		&&(mob.getExperience()<neededLowest)
+		&&(mob.basePhyStats().level()>1)
+		&&(neededLowest>0))
 		{
+			checkAgain=false;
+			final int baseLevel = mob.basePhyStats().level();
 			unLevel(mob);
 			neededLowest=getLevelExperience(mob, mob.basePhyStats().level()-2);
+			checkAgain = mob.basePhyStats().level() < baseLevel;
 		}
 	}
 
@@ -495,7 +502,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		amount = loseLeigeExperience(mob, amount);
 		amount = loseClanExperience(mob, amount);
 		mob.setExperience(mob.getExperience()-amount);
-		checkLevelDown(mob);
+		checkedLevelLosses(mob);
 	}
 
 	protected int gainClanExperience(final MOB mob, int amount)
@@ -528,20 +535,27 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		return amount;
 	}
 
-	protected void checkLevelGain(final MOB mob)
+	protected void checkedLevelGains(final MOB mob)
 	{
 		if(mob == null)
 			return;
-		if((mob.getExperience()>=mob.getExpNextLevel())
+		boolean checkAgain = true;
+		while(checkAgain
+		&&(mob.getExperience()>=mob.getExpNextLevel())
 		&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))
 		{
+			checkAgain=false;
 			synchronized(("SYSTEM_LEVELING_"+mob.Name()).intern())
 			{
 				synchronized(mob) // does this really do anything?
 				{}
 				if((mob.getExperience()>=mob.getExpNextLevel())
 				&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))
+				{
+					final int prevLevel = mob.basePhyStats().level();
 					level(mob);
+					checkAgain = (mob.basePhyStats().level()>prevLevel);
+				}
 			}
 		}
 	}
@@ -630,7 +644,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 					mob.tell(L("^N^!You gain ^H@x1^N^! experience point@x2.^N",""+amount,homageMessage));
 			}
 		}
-		checkLevelGain(mob);
+		checkedLevelGains(mob);
 	}
 
 	@Override
@@ -703,7 +717,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			//	mob.tell(L("^N^!You gain ^H@x1^N^! roleplay XP@x2.^N",""+amount,homageMessage));
 		}
 
-		checkLevelGain(mob);
+		checkedLevelGains(mob);
 	}
 
 	@Override
