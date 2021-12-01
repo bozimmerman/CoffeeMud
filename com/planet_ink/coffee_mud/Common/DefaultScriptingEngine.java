@@ -1674,8 +1674,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							return lastKnownLocation.getExitInDir(CMLib.directions().getGoodDirectionCode("" + str.charAt(2)));
 						int i = 0;
 						Exit E = null;
-						while (((++i) < 100) || (E != null))
+						while (((++i) < 100) && (E == null))
 							E = lastKnownLocation.getExitInDir(CMLib.dice().roll(1, Directions.NUM_DIRECTIONS(), -1));
+						if(E!=null)
 						return E;
 					}
 					return null;
@@ -2004,11 +2005,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						{
 							dir = CMLib.directions().getGoodDirectionCode("" + vchrs.charAt(t + 2));
 							E = lastKnownLocation.getExitInDir(dir);
+							vchrs.deleteCharAt(t+2);
 						}
 						else
 						{
 							int i = 0;
-							while (((++i) < 100) || (E != null))
+							while (((++i) < 100) && (E == null))
 							{
 								dir = CMLib.dice().roll(1, Directions.NUM_DIRECTIONS(), -1);
 								E = lastKnownLocation.getExitInDir(dir);
