@@ -140,6 +140,20 @@ public class MetalGolem extends StdRace
 	}
 
 	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!(myHost instanceof MOB))
+			return true;
+
+		final MOB mob=(MOB)myHost;
+		if((msg.amITarget(mob))
+		&&(msg.targetMinor()==CMMsg.TYP_DISEASE)
+		&&(!mob.amDead()))
+			return false;
+		return super.okMessage(myHost,msg);
+	}
+
+	@Override
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
