@@ -150,7 +150,7 @@ public class Prayer_AnimateVampire extends Prayer
 		if ((maxApproLoreExpertiseLevel > 0)
 		&& (maxDeathLoreExpertiseLevel > 0))
 		{
-			lvl = (charLevel * appropriateLoreExpertiseLevel / maxApproLoreExpertiseLevel)
+			lvl = (charLevel * (10 + appropriateLoreExpertiseLevel) / (10 + maxApproLoreExpertiseLevel))
 					-(baseLvl+4+(2*maxDeathLoreExpertiseLevel));
 		}
 		if(lvl < 0.0)

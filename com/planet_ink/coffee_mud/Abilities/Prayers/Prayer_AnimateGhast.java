@@ -124,7 +124,6 @@ public class Prayer_AnimateGhast extends Prayer
 		}
 		return true;
 	}
-
 	public int getUndeadLevel(final MOB mob, final double baseLvl, final double corpseLevel)
 	{
 		final ExpertiseLibrary exLib=CMLib.expertises();
@@ -137,7 +136,7 @@ public class Prayer_AnimateGhast extends Prayer
 		if ((maxApproLoreExpertiseLevel > 0)
 		&& (maxDeathLoreExpertiseLevel > 0))
 		{
-			lvl = (charLevel * appropriateLoreExpertiseLevel / maxApproLoreExpertiseLevel)
+			lvl = (charLevel * (10 + appropriateLoreExpertiseLevel) / (10 + maxApproLoreExpertiseLevel))
 					-(baseLvl+4+(2*maxDeathLoreExpertiseLevel));
 		}
 		if(lvl < 0.0)
