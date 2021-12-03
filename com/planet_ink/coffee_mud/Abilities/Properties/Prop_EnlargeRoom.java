@@ -71,21 +71,22 @@ public class Prop_EnlargeRoom extends Property
 	@Override
 	public void setMiscText(final String newText)
 	{
+		super.setMiscText(newText);
 		ifactor	= 0;
 		dfactor = 0.0;
 		operator= '+';
 		if(newText.length()>1)
 		{
 			operator = newText.charAt(0);
-			switch(text().charAt(0))
+			switch(newText.charAt(0))
 			{
 			case '+':
 			case '-':
-				ifactor = ival(text().substring(1).trim());
+				ifactor = ival(newText.substring(1).trim());
 				break;
 			case '*':
 			case '/':
-				dfactor = dval(text().substring(1).trim());
+				dfactor = dval(newText.substring(1).trim());
 				break;
 			default:
 				break;
@@ -108,29 +109,26 @@ public class Prop_EnlargeRoom extends Property
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
-		if(text().length()>0)
+		switch(operator)
 		{
-			switch(operator)
-			{
-			case '+':
-				affectableStats.setWeight(affectableStats.weight()+ifactor);
-				affectableStats.setHeight(affectableStats.height()+ifactor);
-				break;
-			case '-':
-				affectableStats.setWeight(affectableStats.weight()-ifactor);
-				affectableStats.setHeight(affectableStats.height()-ifactor);
-				break;
-			case '*':
-				affectableStats.setWeight((int)Math.round(CMath.mul(affectableStats.weight(),dfactor)));
-				affectableStats.setHeight((int)Math.round(CMath.mul(affectableStats.height(),dfactor)));
-				break;
-			case '/':
-				affectableStats.setWeight((int)Math.round(CMath.div(affectableStats.weight(),dfactor)));
-				affectableStats.setHeight((int)Math.round(CMath.div(affectableStats.height(),dfactor)));
-				break;
-			default:
-				break;
-			}
+		case '+':
+			affectableStats.setWeight(affectableStats.weight()+ifactor);
+			affectableStats.setHeight(affectableStats.height()+ifactor);
+			break;
+		case '-':
+			affectableStats.setWeight(affectableStats.weight()-ifactor);
+			affectableStats.setHeight(affectableStats.height()-ifactor);
+			break;
+		case '*':
+			affectableStats.setWeight((int)Math.round(CMath.mul(affectableStats.weight(),dfactor)));
+			affectableStats.setHeight((int)Math.round(CMath.mul(affectableStats.height(),dfactor)));
+			break;
+		case '/':
+			affectableStats.setWeight((int)Math.round(CMath.div(affectableStats.weight(),dfactor)));
+			affectableStats.setHeight((int)Math.round(CMath.div(affectableStats.height(),dfactor)));
+			break;
+		default:
+			break;
 		}
 	}
 }
