@@ -217,7 +217,8 @@ public class Burning extends StdAbility
 							}
 						}
 					}
-					if(!(affected instanceof ClanItem))
+					if((!(affected instanceof ClanItem))
+					&&(!CMath.bset(affected.phyStats().sensesMask(), PhyStats.SENSE_ITEMNORUIN)))
 					{
 						switch(((Item)affected).material()&RawMaterial.MATERIAL_MASK)
 						{
