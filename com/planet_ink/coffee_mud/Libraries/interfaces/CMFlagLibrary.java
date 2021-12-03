@@ -1074,6 +1074,15 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isAShip(final Physical P);
 
 	/**
+	 * If the given thing is related to a ship, it returns
+	 * the navBasis of the boardable, such as water or
+	 * land-based.
+	 * @param E the thing or place to check
+	 * @return the Rideable.Basis.*
+	 */
+	public Rideable.Basis getNavRideBasis(final Environmental E);
+
+	/**
 	 * Returns whether the given room, item, whatever has a
 	 * deadly effect, such as a trap, autodeath behavior, or
 	 * a property with a malicious spell in it.

@@ -279,6 +279,21 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return false;
 	}
 
+	@Override
+	public Rideable.Basis getNavRideBasis(final Environmental E)
+	{
+		if(E instanceof NavigableItem)
+			return ((NavigableItem)E).navBasis();
+		if((E instanceof Boardable)&&(((Boardable)E).getBoardableItem()!=E))
+			return getNavRideBasis(((Boardable)E).getBoardableItem());
+		if(E instanceof Room)
+			return getNavRideBasis(((Room)E).getArea());
+		else
+		if(E instanceof Area)
+			return null;
+		return null;
+	}
+
 	private Room roomLocation(final Environmental E)
 	{
 		if(E==null)

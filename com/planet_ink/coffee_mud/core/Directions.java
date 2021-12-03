@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.planet_ink.coffee_mud.Items.interfaces.SpaceShip;
-import com.planet_ink.coffee_mud.Libraries.interfaces.LanguageLibrary;
-import com.planet_ink.coffee_mud.Locales.interfaces.Room;
-
 /*
    Copyright 2001-2021 Bo Zimmerman
 
@@ -34,6 +30,18 @@ public class Directions
 		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		if(dirs[c]==null)
 			dirs[c]=this;
+	}
+
+	/**
+	 * The type of direction words supported
+	 * @author BZ
+	 *
+	 */
+	public static enum DirType
+	{
+		COMPASS,
+		SHIP,
+		CARAVAN
 	}
 
 	/**
@@ -86,17 +94,24 @@ public class Directions
 	private final static String	DEFAULT_DIRECTION_7_LETTERS		= "N, S, E, W, U, D, or V";
 	private final static String	DEFAULT_DIRECTION_11_LETTERS	= "N, S, E, W, NE, NW, SE, SW, U, D, or V";
 	private final static String	DEFAULT_DIRECTION_7_NAMES		= "North, South, East, West, Up, or Down";
-	private final static String	DEFAULT_DIRECTION_11_NAMES		= "North, South, East, West, Northeast, Northwest, Southeast, Southwest, Up, or Down";
+	private final static String	DEFAULT_DIRECTION_11_NAMES		= "North, South, East, West, Northeast, "
+																+ "Northwest, Southeast, Southwest, Up, or Down";
 	private final static String	DEFAULT_DIRECTION_7_SHIPNAMES	= "Foreward, Aft, Starboard, Port, Above, or Below";
 	private final static String	DEFAULT_DIRECTION_11_SHIPNAMES	= "Foreward, Aft, Starboard, Port, Foreward Starboard, Foreward Port, "
 																+ "Aft Starboard, Aft Port, Above, or Below";
+	private final static String	DEFAULT_DIRECTION_7_CARANAMES	= "Foreward, Backward, Right, Left, Up, or Down";
+	private final static String	DEFAULT_DIRECTION_11_CARANAMES	= "Foreward, Backward, Right, Left, Foreward Right, "
+																+ "Foreward Left, Backward Right, Backward Left, Up, or Down";
 	private final static String DEFAULT_DIRECTIONS_LIST_COMPASS	= "North,South,East,West,Up,Down,There,Northeast,Northwest,Southeast,Southwest";
 	private final static String DEFAULT_DIRECTIONS_LIST_SHIP	= "Foreward,Aft,Starboard,Portside,Above,Below,There,Fore Starboard,Fore Portside,Aft Starboard,Aft Portside";
+	private final static String DEFAULT_DIRECTIONS_LIST_CARA	= "Foreward,Back,Right,Left,Up,Down,There,Fore Right,Fore Left,Back Right,Back Left";
 	private final static String DEFAULT_FROM_DIR_LIST_COMPASS	= "the north,the south,the east,the west,above,below,out of nowhere,the northeast,the northwest,the southeast,the southwest";
 	private final static String DEFAULT_FROM_DIR_LIST_SHIP		= "foreward,aft,starboard,portside,above,below,out of nowhere,forward starboard,forward portside,aft starboard,aft portside";
+	private final static String DEFAULT_FROM_DIR_LIST_CARA		= "foreward,back,right,left,up,down,out of nowhere,forward right,forward left,back right,back left";
 	private final static String DEFAULT_OF_DIR_LIST_COMPASS		= "north of,south of,east of,west of,above,below,,northeast of,northwest of,southeast of,southwest of";
 	private final static String DEFAULT_TO_DIR_LIST_COMPASS		= "to the north,to the south,to the east,to the west,above you,below,there,to the northeast,to the northwest,to the southeast,to the southwest";
 	private final static String DEFAULT_TO_DIR_LIST_SHIP		= "to foreward,to aft,to starboard,to portside,above you,below,there,to forward starboard,to forward port,to aft starboard,to aft portside";
+	private final static String DEFAULT_TO_DIR_LIST_CARA		= "to foreward,to the back,to the right,to the left,above you,below,there,to forward rightward,to forward leftward,to aft rightward,to aft leftward";
 	private static final String DEFAULT_DIRECTION_CHARS			= "N,S,E,W,U,D,V,NE,NW,SE,SW";
 
 	/* Display order directions.  Include up, down, and gate.  Include -1 to insert the other 4/8 */
@@ -110,15 +125,21 @@ public class Directions
 	private String	 DIRECTION_11_NAMES					= DEFAULT_DIRECTION_11_NAMES;
 	private String	 DIRECTION_7_SHIPNAMES				= DEFAULT_DIRECTION_7_SHIPNAMES;
 	private String	 DIRECTION_11_SHIPNAMES				= DEFAULT_DIRECTION_11_SHIPNAMES;
+	private String	 DIRECTION_7_CARANAMES				= DEFAULT_DIRECTION_7_CARANAMES;
+	private String	 DIRECTION_11_CARANAMES				= DEFAULT_DIRECTION_11_CARANAMES;
 	private String[] DIRECTIONS_COMPASS_UPPER_INDEXED	= DEFAULT_DIRECTIONS_LIST_COMPASS.toUpperCase().split(",");
 	private String[] DIRECTIONS_SHIP_UPPER_INDEXED		= DEFAULT_DIRECTIONS_LIST_SHIP.toUpperCase().split(",");
+	private String[] DIRECTIONS_CARA_UPPER_INDEXED		= DEFAULT_DIRECTIONS_LIST_CARA.toUpperCase().split(",");
 	private String[] DIRECTIONS_COMPASS_INDEXED			= DEFAULT_DIRECTIONS_LIST_COMPASS.split(",");
 	private String[] DIRECTIONS_SHIP_INDEXED			= DEFAULT_DIRECTIONS_LIST_SHIP.split(",");
+	private String[] DIRECTIONS_CARA_INDEXED			= DEFAULT_DIRECTIONS_LIST_CARA.split(",");
 	private String[] DIRECTIONS_COMPASS_FROM_INDEXED	= DEFAULT_FROM_DIR_LIST_COMPASS.split(",");
 	private String[] DIRECTIONS_SHIP_FROM_INDEXED		= DEFAULT_FROM_DIR_LIST_SHIP.split(",");
+	private String[] DIRECTIONS_CARA_FROM_INDEXED		= DEFAULT_FROM_DIR_LIST_CARA.split(",");
 	private String[] DIRECTIONS_COMPASS_OF_INDEXED		= DEFAULT_OF_DIR_LIST_COMPASS.split(",");
 	private String[] DIRECTIONS_COMPASS_TO_INDEXED		= DEFAULT_TO_DIR_LIST_COMPASS.split(",");
 	private String[] DIRECTIONS_SHIP_TO_INDEXED			= DEFAULT_TO_DIR_LIST_SHIP.split(",");
+	private String[] DIRECTIONS_CARA_TO_INDEXED			= DEFAULT_TO_DIR_LIST_CARA.split(",");
 	private String[] DIRECTION_CHARS					= DEFAULT_DIRECTION_CHARS.split(",");
 
 	private int[]	DIRECTIONS_CODES	= { NORTH, SOUTH, EAST, WEST };
@@ -126,6 +147,7 @@ public class Directions
 	private String	DIRECTION_LETTERS	= DIRECTION_7_LETTERS;
 	private String	DIRECTION_NAMES		= DIRECTION_7_NAMES;
 	private String	DIRECTION_SHIPNAMES	= DIRECTION_7_SHIPNAMES;
+	private String	DIRECTION_CARANAMES	= DIRECTION_7_CARANAMES;
 
 	private int NUM_DIRECTIONS=7;
 
@@ -175,6 +197,28 @@ public class Directions
 		{"VORTEX",Integer.valueOf(GATE)}
 	};
 
+	private Object[][] DIRECTIONS_CARA_CHART=
+	{
+		{"UP",Integer.valueOf(UP)},
+		{"FOREWARD",Integer.valueOf(NORTH)},
+		{"RIGHT",Integer.valueOf(EAST)},
+		{"LEFT",Integer.valueOf(WEST)},
+		{"BACKWARD",Integer.valueOf(SOUTH)},
+		{"FORERIGHT",Integer.valueOf(NORTHEAST)},
+		{"FORELEFT",Integer.valueOf(NORTHWEST)},
+		{"BACKLEFT",Integer.valueOf(SOUTHWEST)},
+		{"BACKRIGHT",Integer.valueOf(SOUTHEAST)},
+		{"FL",Integer.valueOf(NORTHWEST)},
+		{"FR",Integer.valueOf(NORTHEAST)},
+		{"BL",Integer.valueOf(SOUTHWEST)},
+		{"BR",Integer.valueOf(SOUTHEAST)},
+		{"DOWN",Integer.valueOf(DOWN)},
+		{"NOWHERE",Integer.valueOf(GATE)},
+		{"HERE",Integer.valueOf(GATE)},
+		{"THERE",Integer.valueOf(GATE)},
+		{"VORTEX",Integer.valueOf(GATE)}
+	};
+
 	private static <T> T[] concat(final T[] first, final T[] second)
 	{
 		final T[] result = Arrays.copyOf(first, first.length + second.length);
@@ -182,7 +226,7 @@ public class Directions
 		return result;
 	}
 
-	private Object[][] DIRECTIONS_FULL_CHART=concat(DIRECTIONS_COMPASS_CHART, DIRECTIONS_SHIP_CHART);
+	private Object[][] DIRECTIONS_FULL_CHART=concat(concat(DIRECTIONS_COMPASS_CHART, DIRECTIONS_SHIP_CHART), DIRECTIONS_CARA_CHART);
 
 	/**
 	 * Returns the total number of permitted exit directions, either 7 or 11
@@ -239,6 +283,15 @@ public class Directions
 	}
 
 	/**
+	 * Returns a string list of all of the permitted direction names, in ship-talk. Either 6 or 10.
+	 * @return a string list of all of the permitted direction names, in ship-talk. Either 6 or 10.
+	 */
+	public static final String CARA_NAMES_LIST()
+	{
+		return d().DIRECTION_CARANAMES;
+	}
+
+	/**
 	 * Returns the formal direction name of the partial direction given.
 	 * @param theDir the partial direction name, case insensitive
 	 * @return the formal direction name
@@ -272,6 +325,7 @@ public class Directions
 			DIRECTION_LETTERS=DIRECTION_7_LETTERS;
 			DIRECTION_NAMES=DIRECTION_7_NAMES;
 			DIRECTION_SHIPNAMES=DIRECTION_7_SHIPNAMES;
+			DIRECTION_CARANAMES=DIRECTION_7_CARANAMES;
 		}
 		else
 		{
@@ -279,6 +333,7 @@ public class Directions
 			DIRECTION_LETTERS=DIRECTION_11_LETTERS;
 			DIRECTION_NAMES=DIRECTION_11_NAMES;
 			DIRECTION_SHIPNAMES=DIRECTION_11_SHIPNAMES;
+			DIRECTION_CARANAMES=DIRECTION_11_CARANAMES;
 		}
 		DIRECTIONS_DISPLAY = new int[100];
 		int index=0;
@@ -306,15 +361,21 @@ public class Directions
 			DIRECTION_11_NAMES=translator.translate(DEFAULT_DIRECTION_11_NAMES);
 			DIRECTION_7_SHIPNAMES=translator.translate(DEFAULT_DIRECTION_7_SHIPNAMES);
 			DIRECTION_11_SHIPNAMES=translator.translate(DEFAULT_DIRECTION_11_SHIPNAMES);
+			DIRECTION_7_CARANAMES=translator.translate(DEFAULT_DIRECTION_7_CARANAMES);
+			DIRECTION_11_CARANAMES=translator.translate(DEFAULT_DIRECTION_11_CARANAMES);
 			DIRECTIONS_COMPASS_UPPER_INDEXED=translator.translate(DEFAULT_DIRECTIONS_LIST_COMPASS).toUpperCase().split(",");
 			DIRECTIONS_SHIP_UPPER_INDEXED=translator.translate(DEFAULT_DIRECTIONS_LIST_SHIP).toUpperCase().split(",");
+			DIRECTIONS_CARA_UPPER_INDEXED=translator.translate(DEFAULT_DIRECTIONS_LIST_CARA).toUpperCase().split(",");
 			DIRECTIONS_COMPASS_INDEXED=translator.translate(DEFAULT_DIRECTIONS_LIST_COMPASS).split(",");
 			DIRECTIONS_SHIP_INDEXED=translator.translate(DEFAULT_DIRECTIONS_LIST_SHIP).split(",");
+			DIRECTIONS_CARA_INDEXED=translator.translate(DEFAULT_DIRECTIONS_LIST_CARA).split(",");
 			DIRECTIONS_COMPASS_FROM_INDEXED	= translator.translate(DEFAULT_FROM_DIR_LIST_COMPASS).split(",");
 			DIRECTIONS_SHIP_FROM_INDEXED = translator.translate(DEFAULT_FROM_DIR_LIST_SHIP).split(",");
+			DIRECTIONS_CARA_FROM_INDEXED = translator.translate(DEFAULT_FROM_DIR_LIST_CARA).split(",");
 			DIRECTIONS_COMPASS_OF_INDEXED = translator.translate(DEFAULT_OF_DIR_LIST_COMPASS).split(",");
 			DIRECTIONS_COMPASS_TO_INDEXED = translator.translate(DEFAULT_TO_DIR_LIST_COMPASS).split(",");
 			DIRECTIONS_SHIP_TO_INDEXED = translator.translate(DEFAULT_TO_DIR_LIST_SHIP).split(",");
+			DIRECTIONS_CARA_TO_INDEXED = translator.translate(DEFAULT_TO_DIR_LIST_CARA).split(",");
 			DIRECTION_CHARS = translator.translate(DEFAULT_DIRECTION_CHARS).split(",");
 			final List<Object[]> newChart = new ArrayList<Object[]>();
 			newChart.add(new Object[]{DIRECTIONS_COMPASS_UPPER_INDEXED[UP],Integer.valueOf(UP)});
@@ -359,7 +420,28 @@ public class Directions
 			newChart.add(new Object[]{translator.translate("VORTEX"),Integer.valueOf(GATE)});
 			DIRECTIONS_SHIP_CHART = newChart.toArray(new Object[0][]);
 
-			DIRECTIONS_FULL_CHART=concat(DIRECTIONS_COMPASS_CHART, DIRECTIONS_SHIP_CHART);
+			newChart.clear();
+			newChart.add(new Object[]{DIRECTIONS_CARA_UPPER_INDEXED[UP],Integer.valueOf(UP)});
+			newChart.add(new Object[]{DIRECTIONS_CARA_UPPER_INDEXED[NORTH],Integer.valueOf(NORTH)});
+			newChart.add(new Object[]{DIRECTIONS_CARA_UPPER_INDEXED[SOUTH],Integer.valueOf(SOUTH)});
+			newChart.add(new Object[]{DIRECTIONS_CARA_UPPER_INDEXED[EAST],Integer.valueOf(EAST)});
+			newChart.add(new Object[]{DIRECTIONS_CARA_UPPER_INDEXED[WEST],Integer.valueOf(WEST)});
+			newChart.add(new Object[]{CMStrings.replaceAll(DIRECTIONS_CARA_UPPER_INDEXED[NORTHEAST]," ",""),Integer.valueOf(NORTHEAST)});
+			newChart.add(new Object[]{CMStrings.replaceAll(DIRECTIONS_CARA_UPPER_INDEXED[NORTHWEST]," ",""),Integer.valueOf(NORTHWEST)});
+			newChart.add(new Object[]{CMStrings.replaceAll(DIRECTIONS_CARA_UPPER_INDEXED[SOUTHWEST]," ",""),Integer.valueOf(SOUTHWEST)});
+			newChart.add(new Object[]{CMStrings.replaceAll(DIRECTIONS_CARA_UPPER_INDEXED[SOUTHEAST]," ",""),Integer.valueOf(SOUTHEAST)});
+			newChart.add(new Object[]{translator.translate("FP"),Integer.valueOf(NORTHWEST)});
+			newChart.add(new Object[]{translator.translate("FS"),Integer.valueOf(NORTHEAST)});
+			newChart.add(new Object[]{translator.translate("AP"),Integer.valueOf(SOUTHWEST)});
+			newChart.add(new Object[]{translator.translate("AS"),Integer.valueOf(SOUTHEAST)});
+			newChart.add(new Object[]{DIRECTIONS_CARA_UPPER_INDEXED[DOWN],Integer.valueOf(DOWN)});
+			newChart.add(new Object[]{translator.translate("NOWHERE"),Integer.valueOf(GATE)});
+			newChart.add(new Object[]{translator.translate("HERE"),Integer.valueOf(GATE)});
+			newChart.add(new Object[]{translator.translate("THERE"),Integer.valueOf(GATE)});
+			newChart.add(new Object[]{translator.translate("VORTEX"),Integer.valueOf(GATE)});
+			DIRECTIONS_CARA_CHART = newChart.toArray(new Object[0][]);
+
+			DIRECTIONS_FULL_CHART=concat(concat(DIRECTIONS_COMPASS_CHART, DIRECTIONS_SHIP_CHART), DIRECTIONS_CARA_CHART);
 		}
 		catch(final Exception e)
 		{
@@ -384,14 +466,24 @@ public class Directions
 	 * @param useShip true to use ship type directions, false for compass
 	 * @return the name of that direction, capitalized
 	 */
-	public String getUpperDirectionName(final int code, final boolean useShip)
+	public String getUpperDirectionName(final int code, final DirType typ)
 	{
 		if((code>=0)&&(code<NUM_DIRECTIONS()))
 		{
-			if(useShip)
-				return DIRECTIONS_SHIP_UPPER_INDEXED[code];
-			else
+			if(typ == null)
 				return DIRECTIONS_COMPASS_UPPER_INDEXED[code];
+			else
+			switch(typ)
+			{
+			case SHIP:
+				return DIRECTIONS_SHIP_UPPER_INDEXED[code];
+			case CARAVAN:
+				return DIRECTIONS_CARA_UPPER_INDEXED[code];
+			case COMPASS:
+			default:
+				return DIRECTIONS_COMPASS_UPPER_INDEXED[code];
+
+			}
 		}
 		return "";
 	}
@@ -405,6 +497,18 @@ public class Directions
 	{
 		if((code>=0)&&(code < DIRECTIONS_SHIP_INDEXED.length))
 			return DIRECTIONS_SHIP_INDEXED[code];
+		return "";
+	}
+
+	/**
+	 * Given the direction code, returns the ship-talk name of that direction, capitalized.
+	 * @param code the direction code
+	 * @return the caravan-talk name of that direction, capitalized
+	 */
+	public String getCaraDirectionName(final int code)
+	{
+		if((code>=0)&&(code < DIRECTIONS_CARA_INDEXED.length))
+			return DIRECTIONS_CARA_INDEXED[code];
 		return "";
 	}
 
@@ -457,6 +561,20 @@ public class Directions
 	public int getShipDirectionCode(final String theDir)
 	{
 		return getGoodShipDirectionCode(theDir);
+	}
+
+	/**
+	 * Given a string which is technically supposed to be a caravan-talk direction name,
+	 * this method will make a case-insensitive check against the given
+	 * string and return the direction it probably represents.  It gives
+	 * preference to actual direction names, such as left and back, but
+	 * if all fail, it will try prefixes, such as bac, for, etc.
+	 * @param theDir the caravan-talk direction search string
+	 * @return the direction code it represents, or -1 if no match at ALL
+	 */
+	public int getCaraDirectionCode(final String theDir)
+	{
+		return getGoodCaraDirectionCode(theDir);
 	}
 
 	/**
@@ -644,6 +762,29 @@ public class Directions
 	}
 
 	/**
+	 * Given a string which is technically supposed to be a caravan-talk direction name,
+	 * this method will make a case-insensitive check against the given
+	 * string and return the direction it probably represents.  It gives
+	 * preference to actual direction names, such as left and back, but
+	 * if all fail, it will try prefixes, such as lef, for, etc.
+	 * @param theDir the caravan-talk direction search string
+	 * @return the direction code it represents, or -1 if no match at ALL
+	 */
+	public int getGoodCaraDirectionCode(final String theDir)
+	{
+		if(theDir.length()==0)
+			return -1;
+		final String upDir=theDir.toUpperCase();
+		for (final Object[] element : DIRECTIONS_CARA_CHART)
+		{
+			if((element[0].toString().startsWith(upDir))
+			&&(((Integer)element[1]).intValue()<NUM_DIRECTIONS()))
+				return ((Integer)element[1]).intValue();
+		}
+		return -1;
+	}
+
+	/**
 	 * Given a string which is technically supposed to be a ship-talk direction name,
 	 * this method will make a case-insensitive check against the given
 	 * string and return the direction it represents.  It requires
@@ -657,6 +798,29 @@ public class Directions
 			return -1;
 		final String upDir=theDir.toUpperCase();
 		for (final Object[] element : DIRECTIONS_SHIP_CHART)
+		{
+			if((element[0].toString().equals(upDir))
+			&&(((Integer)element[1]).intValue()<NUM_DIRECTIONS()))
+				return ((Integer)element[1]).intValue();
+		}
+		return -1;
+	}
+
+
+	/**
+	 * Given a string which is technically supposed to be a caravan-talk direction name,
+	 * this method will make a case-insensitive check against the given
+	 * string and return the direction it represents.  It requires
+	 * actual direction names, such as left and back.
+	 * @param theDir the caravan-talk direction search string
+	 * @return the direction code it represents, or -1 if no match at ALL
+	 */
+	public int getStrictCaraDirectionCode(final String theDir)
+	{
+		if(theDir.length()==0)
+			return -1;
+		final String upDir=theDir.toUpperCase();
+		for (final Object[] element : DIRECTIONS_CARA_CHART)
 		{
 			if((element[0].toString().equals(upDir))
 			&&(((Integer)element[1]).intValue()<NUM_DIRECTIONS()))
@@ -794,6 +958,7 @@ public class Directions
 			return DIRECTIONS_COMPASS_OF_INDEXED[code];
 		return "";
 	}
+
 	/**
 	 * Returns the proper english ship direction name to follow the preposition
 	 * "from" when talking about something or someone coming FROM the given direction
@@ -805,6 +970,20 @@ public class Directions
 	{
 		if((code>=0)&&(code < DIRECTIONS_SHIP_FROM_INDEXED.length))
 			return DIRECTIONS_SHIP_FROM_INDEXED[code];
+		return "";
+	}
+
+	/**
+	 * Returns the proper english caravan direction name to follow the preposition
+	 * "from" when talking about something or someone coming FROM the given direction
+	 * code on a ship.  Completes the following sentence: "Joe arrived from ..."
+	 * @param code the direction code
+	 * @return the name of the direction phrase
+	 */
+	public  String getFromCaraDirectionName(final int code)
+	{
+		if((code>=0)&&(code < DIRECTIONS_CARA_FROM_INDEXED.length))
+			return DIRECTIONS_CARA_FROM_INDEXED[code];
 		return "";
 	}
 
@@ -835,6 +1014,21 @@ public class Directions
 	{
 		if((code>=0)&&(code < DIRECTIONS_SHIP_TO_INDEXED.length))
 			return DIRECTIONS_SHIP_TO_INDEXED[code];
+		return "";
+	}
+
+	/**
+	 * Returns the proper english caravan-talk direction name to follow the preposition
+	 * "happens" when talking about something happening in the given direction
+	 * code on a ship.  Completes the following sentence: "You hear something happen ..."
+	 * Usually begins with "to", such as "to foreward", "to the left", etc.
+	 * @param code the direction code the direction the thing is happening in
+	 * @return the name of the direction completion phrase
+	 */
+	public String getCaraInDirectionName(final int code)
+	{
+		if((code>=0)&&(code < DIRECTIONS_CARA_TO_INDEXED.length))
+			return DIRECTIONS_CARA_TO_INDEXED[code];
 		return "";
 	}
 

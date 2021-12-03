@@ -345,13 +345,21 @@ public class GravityFloat extends StdAbility
 					final Room R=msg.source().location();
 					if(R==null)
 						break;
-					final boolean useShip =((R instanceof Boardable)||(R.getArea() instanceof Boardable))?true:false;
+					final Directions.DirType typ;
+					final Rideable.Basis basis = CMLib.flags().getNavRideBasis(R);
+					if(basis == Rideable.Basis.WATER_BASED)
+						typ = Directions.DirType.SHIP;
+					else
+					if(basis == Rideable.Basis.LAND_BASED)
+						typ = Directions.DirType.CARAVAN;
+					else
+						typ = Directions.DirType.COMPASS;
 					int floatDir = -1;
 					for(int i=words.size()-1;(i>=0) && (floatDir<0);i--)
 					{
 						for(final int dir : Directions.DISPLAY_CODES())
 						{
-							if(words.get(i).equals(CMLib.directions().getUpperDirectionName(dir, useShip)))
+							if(words.get(i).equals(CMLib.directions().getUpperDirectionName(dir, typ)))
 							{
 								floatDir = Directions.getOpDirectionCode(dir);
 								break;
