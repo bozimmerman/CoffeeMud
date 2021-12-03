@@ -4513,14 +4513,15 @@ extends them.</p>
       <p>Let's looks at an example
 of a standard grid room, which has
 much of the functionality we are interested in:</p>
-      <pre>public class RoadGrid extends com.planet_ink.coffee_mud.Locales.StdGrid<br />{<br />  public String ID()<br />  {<br />    return "RoadGrid";<br />  }<br /><br />  public RoadGrid()<br />  {<br />    super();<br />    name = "a road";<br />    basePhyStats.setWeight( 1 );<br />    recoverPhyStats();<br />  }<br /><br />  public String getGridChildLocaleID()<br />  {<br />    return "Road";<br />  }<br /><br />  public List&lt;Integer&gt; resourceChoices()<br />  {<br />    return Road.roomResources;<br />  }<br /><br />  public int domainType()<br />  {<br />    return Room.DOMAIN_OUTDOORS_PLAINS;<br />  }<br />}<br /></pre>
+      <pre>public class RoadGrid extends com.planet_ink.coffee_mud.Locales.StdGrid<br />{<br />  public String ID()<br />  {<br />    return "RoadGrid";<br />  }<br /><br />  public RoadGrid()<br />  {<br />    super();<br />    name = "a road";<br />    basePhyStats.setWeight( 1 );<br />    basePhyStats.setHeight( 10 );<br />    recoverPhyStats();<br />  }<br /><br />  public String getGridChildLocaleID()<br />  {<br />    return "Road";<br />  }<br /><br />  public List&lt;Integer&gt; resourceChoices()<br />  {<br />    return Road.roomResources;<br />  }<br /><br />  public int domainType()<br />  {<br />    return Room.DOMAIN_OUTDOORS_PLAINS;<br />  }<br />}<br /></pre>
       <p>Here we see the standard
 RoadGrid. It's effects, behaviors,
 displaytext, description, and (since it is a grid type) size in the x
 and y are all defined by the builder. The features (and they aren't
 many) which are available to the coder can be seen here. We see the
-base weight being set to "1" here. This is the default number of
-movement points consumed by crossing this room. For Grids, we see the
+base weight being set to "1" here, which is the default number of
+movement points consumed by crossing this room. The height is set to
+10, which is the maximum range for ranges combat in this room. For Grids, we see the
 Locale ID of the child-rooms inside the grid. We also see the standard
 room settings methods for the domain type (the type of locale it is)
 and the domain conditions (the quality of the weather, or the air,
