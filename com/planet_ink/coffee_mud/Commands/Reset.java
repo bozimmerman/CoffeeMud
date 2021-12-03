@@ -865,9 +865,13 @@ public class Reset extends StdCommand
 					&&(S.mob().location()==mob.location()))
 						S.mob().tell(mob,null,null,L("<S-NAME> order(s) this room to normalcy."));
 				}
-				CMLib.map().resetRoom(mob.location(), true);
-				mob.location().giveASky(0);
-				mob.tell(L("Done."));
+				final Room R=mob.location();
+				if(R!=null)
+				{
+					CMLib.map().resetRoom(R, true);
+					R.giveASky(0);
+					mob.tell(L("Done."));
+				}
 			}
 			else
 				mob.tell(L("Cancelled."));
