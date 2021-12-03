@@ -201,6 +201,7 @@ public class FireBuilding extends CommonSkill
 				return false;
 
 			if((lighting.displayText().length()==0)
+			||(CMath.bset(lighting.phyStats().sensesMask(), PhyStats.SENSE_ITEMNORUIN))
 			||(!CMLib.flags().isGettable(lighting)))
 			{
 				commonTell(mob,L("For some reason, @x1 just won't catch.",lighting.name()));

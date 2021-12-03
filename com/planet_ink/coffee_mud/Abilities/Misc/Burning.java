@@ -203,7 +203,8 @@ public class Burning extends StdAbility
 							if(I.name().equals(affected.name())
 							&&(I!=affected)
 							&&(I instanceof RawMaterial)
-							&&(I.material()==((Item)affected).material()))
+							&&(I.material()==((Item)affected).material())
+							&&(!CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ITEMNORUIN)))
 							{
 								int durationOfBurn=CMLib.materials().getBurnDuration(I);
 								if(durationOfBurn<=0)

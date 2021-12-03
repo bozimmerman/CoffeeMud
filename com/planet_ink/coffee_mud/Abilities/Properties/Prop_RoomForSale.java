@@ -53,9 +53,9 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return Ability.CAN_ROOMS;
 	}
 
-	protected int	lastItemNums	= -1;
-	protected int	lastDayDone		= -1;
-	protected int	daysWithNoChange= 0;
+	protected int		lastItemNums	= -1;
+	protected int		lastDayDone		= -1;
+	protected int		daysWithNoChange= 0;
 	protected boolean	scheduleReset	= false;
 
 	@Override
@@ -258,7 +258,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	{
 		super.executeMsg(myHost,msg);
 		if(((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
-			||((msg.targetMinor()==CMMsg.TYP_EXPIRE)&&(msg.target()==affected))
+			||((msg.targetMinor()==CMMsg.TYP_EXPIRE)
+				&&(msg.target()==affected))
 			||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
 		&&(affected instanceof Room))
 		{
@@ -491,26 +492,30 @@ public class Prop_RoomForSale extends Property implements LandTitle
 						final long t = t0 * CMProps.getMillisPerMudHour() / MudHost.TIME_SAVETHREAD_SLEEP;
 
 						final CMFlagLibrary flags=CMLib.flags();
+Log.errOut("** Room #"+R.roomID()+" Check: "+daysSinceItemsSaved+"/"+t);
 						if(daysSinceItemsSaved > t)
 						{
 							daysSinceItemsSaved=-1;
 							if(!CMLib.flags().isWateryRoom(R))
 							{
+Log.errOut("** Room #"+R.roomID()+" GOING DUSTY!!!!!!!!!!!!!!!!!!!!");
 								for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 								{
 									final Item I=i.nextElement();
 									if((I!=null)
 									&&(I.container()==null)
 									&&(flags.isGettable(I))
-									&&((I.numEffects()==0)||(I.fetchEffect("Dusty")==null))
 									&&(flags.isSavable(I)))
 									{
-										final Ability A=CMClass.getAbility("Dusty");
-										if(A!=null)
+										if((I.numEffects()==0)||(I.fetchEffect("Dusty")==null))
 										{
-											A.setMiscText("LEVEL=0 INTERVAL="+t0);
-											I.addNonUninvokableEffect(A);
-											updateItems=true;
+											final Ability A=CMClass.getAbility("Dusty");
+											if(A!=null)
+											{
+												A.setMiscText("LEVEL=0 INTERVAL="+t0);
+												I.addNonUninvokableEffect(A);
+												updateItems=true;
+											}
 										}
 									}
 								}
