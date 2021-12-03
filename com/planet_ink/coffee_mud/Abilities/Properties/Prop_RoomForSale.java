@@ -492,13 +492,11 @@ public class Prop_RoomForSale extends Property implements LandTitle
 						final long t = t0 * CMProps.getMillisPerMudHour() / MudHost.TIME_SAVETHREAD_SLEEP;
 
 						final CMFlagLibrary flags=CMLib.flags();
-Log.errOut("** Room #"+R.roomID()+" Check: "+daysSinceItemsSaved+"/"+t);
 						if(daysSinceItemsSaved > t)
 						{
 							daysSinceItemsSaved=-1;
 							if(!CMLib.flags().isWateryRoom(R))
 							{
-Log.errOut("** Room #"+R.roomID()+" GOING DUSTY!!!!!!!!!!!!!!!!!!!!");
 								for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 								{
 									final Item I=i.nextElement();
