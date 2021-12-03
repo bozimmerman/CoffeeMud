@@ -46,6 +46,7 @@ public class CaveRoom extends StdRoom
 		name="the cave";
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_DARK);
 		basePhyStats.setWeight(2);
+		basePhyStats.setHeight(5);
 		recoverPhyStats();
 		climask=Places.CLIMASK_NORMAL;
 	}
@@ -54,12 +55,6 @@ public class CaveRoom extends StdRoom
 	public int domainType()
 	{
 		return Room.DOMAIN_INDOORS_CAVE;
-	}
-
-	@Override
-	public int maxRange()
-	{
-		return 5;
 	}
 
 	@Override

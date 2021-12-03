@@ -45,6 +45,7 @@ public class IndoorWaterThinSurface extends IndoorWaterSurface
 		super();
 		name="the water";
 		basePhyStats.setWeight(2);
+		basePhyStats.setHeight(5);
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
@@ -73,12 +74,6 @@ public class IndoorWaterThinSurface extends IndoorWaterSurface
 		return (thatSea instanceof IndoorUnderWaterGrid)
 			 ||(thatSea instanceof IndoorUnderWaterThinGrid)
 			 ||(thatSea instanceof IndoorUnderWaterColumnGrid);
-	}
-
-	@Override
-	public int maxRange()
-	{
-		return 5;
 	}
 
 	@Override

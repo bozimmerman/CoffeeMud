@@ -34,6 +34,13 @@ import java.util.*;
 */
 public class IndoorUnderWaterColumnGrid extends UnderWaterColumnGrid
 {
+	public IndoorUnderWaterColumnGrid()
+	{
+		super();
+		basePhyStats.setHeight(5);
+		recoverPhyStats();
+	}
+
 	@Override
 	public String ID()
 	{
@@ -50,12 +57,6 @@ public class IndoorUnderWaterColumnGrid extends UnderWaterColumnGrid
 	public String getGridChildLocaleID()
 	{
 		return "IndoorUnderWater";
-	}
-
-	@Override
-	public int maxRange()
-	{
-		return 5;
 	}
 
 }

@@ -44,6 +44,7 @@ public class IndoorWaterSurfaceColumn extends WaterSurfaceColumn implements Drin
 	{
 		super();
 		name="the water";
+		basePhyStats.setHeight(5);
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
@@ -66,9 +67,4 @@ public class IndoorWaterSurfaceColumn extends WaterSurfaceColumn implements Drin
 		return Room.DOMAIN_INDOORS_UNDERWATER;
 	}
 
-	@Override
-	public int maxRange()
-	{
-		return 5;
-	}
 }

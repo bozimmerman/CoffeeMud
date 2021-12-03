@@ -44,6 +44,7 @@ public class IndoorWaterSurface extends WaterSurface implements Drink
 	{
 		super();
 		name="the water";
+		basePhyStats.setHeight(5);
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
@@ -52,12 +53,6 @@ public class IndoorWaterSurface extends WaterSurface implements Drink
 	public int domainType()
 	{
 		return Room.DOMAIN_INDOORS_WATERSURFACE;
-	}
-
-	@Override
-	public int maxRange()
-	{
-		return 5;
 	}
 
 	@Override

@@ -45,6 +45,7 @@ public class IndoorInTheAir extends StdRoom
 		super();
 		name="the space";
 		basePhyStats.setWeight(1);
+		basePhyStats.setHeight(5);
 		recoverPhyStats();
 	}
 
@@ -52,12 +53,6 @@ public class IndoorInTheAir extends StdRoom
 	public int domainType()
 	{
 		return Room.DOMAIN_INDOORS_AIR;
-	}
-
-	@Override
-	public int maxRange()
-	{
-		return 5;
 	}
 
 	@Override

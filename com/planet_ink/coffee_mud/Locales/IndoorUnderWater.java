@@ -47,14 +47,9 @@ public class IndoorUnderWater extends StdRoom implements Drink
 		basePhyStats.setWeight(3);
 		name="the water";
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_SWIMMING);
+		basePhyStats.setHeight(5);
 		recoverPhyStats();
 		atmosphere=RawMaterial.RESOURCE_FRESHWATER;
-	}
-
-	@Override
-	public int maxRange()
-	{
-		return 5;
 	}
 
 	@Override

@@ -44,6 +44,7 @@ public class WetCaveGrid extends StdMaze
 	{
 		super();
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_DARK);
+		basePhyStats.setHeight(5);
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
@@ -58,12 +59,6 @@ public class WetCaveGrid extends StdMaze
 	public String getGridChildLocaleID()
 	{
 		return "WetCaveRoom";
-	}
-
-	@Override
-	public int maxRange()
-	{
-		return 5;
 	}
 
 	@Override

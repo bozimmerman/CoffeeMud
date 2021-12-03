@@ -45,12 +45,7 @@ public class UnderwaterCityStreet extends UnderWater
 		super();
 		name="the street";
 		basePhyStats.setWeight(3);
+		basePhyStats.setHeight(5);
 		recoverPhyStats();
-	}
-
-	@Override
-	public int maxRange()
-	{
-		return 5;
 	}
 }

@@ -44,12 +44,7 @@ public class LargeStoneRoom extends StoneRoom
 	{
 		super();
 		basePhyStats.setWeight(3);
+		basePhyStats.setHeight(5);
 		recoverPhyStats();
-	}
-
-	@Override
-	public int maxRange()
-	{
-		return 5;
 	}
 }

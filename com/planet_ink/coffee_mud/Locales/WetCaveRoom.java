@@ -43,14 +43,9 @@ public class WetCaveRoom extends CaveRoom
 	public WetCaveRoom()
 	{
 		super();
+		basePhyStats.setHeight(5);
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
-	}
-
-	@Override
-	public int maxRange()
-	{
-		return 5;
 	}
 
 	@Override

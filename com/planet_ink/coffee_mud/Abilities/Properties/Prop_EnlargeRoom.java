@@ -64,6 +64,35 @@ public class Prop_EnlargeRoom extends Property
 		return Ability.FLAG_ADJUSTER;
 	}
 
+	protected int		ifactor		= 0;
+	protected double	dfactor		= 0;
+	protected char		operator	= '+';
+
+	@Override
+	public void setMiscText(final String newText)
+	{
+		ifactor	= 0;
+		dfactor = 0.0;
+		operator= '+';
+		if(newText.length()>1)
+		{
+			operator = newText.charAt(0);
+			switch(text().charAt(0))
+			{
+			case '+':
+			case '-':
+				ifactor = ival(text().substring(1).trim());
+				break;
+			case '*':
+			case '/':
+				dfactor = dval(text().substring(1).trim());
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
 	protected double dval(final String s)
 	{
 		if(s.indexOf('.')>=0)
@@ -81,23 +110,25 @@ public class Prop_EnlargeRoom extends Property
 	{
 		if(text().length()>0)
 		{
-			final int weight=affectableStats.weight();
-			switch(text().charAt(0))
+			switch(operator)
 			{
 			case '+':
-				affectableStats.setWeight(weight+ival(text().substring(1).trim()));
+				affectableStats.setWeight(affectableStats.weight()+ifactor);
+				affectableStats.setHeight(affectableStats.height()+ifactor);
 				break;
 			case '-':
-				affectableStats.setWeight(weight-ival(text().substring(1).trim()));
+				affectableStats.setWeight(affectableStats.weight()-ifactor);
+				affectableStats.setHeight(affectableStats.height()-ifactor);
 				break;
 			case '*':
-				affectableStats.setWeight((int)Math.round(CMath.mul(weight,dval(text().substring(1).trim()))));
+				affectableStats.setWeight((int)Math.round(CMath.mul(affectableStats.weight(),dfactor)));
+				affectableStats.setHeight((int)Math.round(CMath.mul(affectableStats.height(),dfactor)));
 				break;
 			case '/':
-				affectableStats.setWeight((int)Math.round(CMath.div(weight,dval(text().substring(1).trim()))));
+				affectableStats.setWeight((int)Math.round(CMath.div(affectableStats.weight(),dfactor)));
+				affectableStats.setHeight((int)Math.round(CMath.div(affectableStats.height(),dfactor)));
 				break;
 			default:
-				affectableStats.setWeight(ival(text()));
 				break;
 			}
 		}

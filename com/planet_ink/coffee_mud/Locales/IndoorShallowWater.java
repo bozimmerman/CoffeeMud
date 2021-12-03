@@ -44,6 +44,7 @@ public class IndoorShallowWater extends ShallowWater implements Drink
 	{
 		super();
 		name="the water";
+		basePhyStats.setHeight(5);
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
@@ -58,11 +59,5 @@ public class IndoorShallowWater extends ShallowWater implements Drink
 	protected int baseThirst()
 	{
 		return 0;
-	}
-
-	@Override
-	public int maxRange()
-	{
-		return 5;
 	}
 }

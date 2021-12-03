@@ -85,7 +85,8 @@ public class StdRoom implements Room
 		super();
 		//CMClass.bumpCounter(this,CMClass.CMObjectType.LOCALE);//removed for mem & perf
 		xtraValues=CMProps.getExtraStatCodesHolder(this);
-		basePhyStats.setWeight(2);
+		basePhyStats.setWeight(2); // movement consumption
+		basePhyStats.setHeight(((domainType()&Room.INDOORS)>0)?1:10);
 		recoverPhyStats();
 	}
 
@@ -2789,7 +2790,7 @@ public class StdRoom implements Room
 	@Override
 	public int maxRange()
 	{
-		return((domainType()&Room.INDOORS)>0)?1:10;
+		return phyStats().height();
 	}
 
 	@Override
