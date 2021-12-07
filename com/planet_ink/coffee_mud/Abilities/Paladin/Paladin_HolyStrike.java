@@ -137,10 +137,13 @@ public class Paladin_HolyStrike extends StdAbility
 			return false;
 
 		final Item w=mob.fetchWieldedItem();
-		if((w==null)||(!(w instanceof Weapon))||(((Weapon)w).weaponClassification()!=Weapon.CLASS_SWORD))
+		if((w==null)
+		||(!(w instanceof Weapon))
+		||(((Weapon)w).weaponClassification()==Weapon.CLASS_RANGED)
+		||(((Weapon)w).weaponClassification()==Weapon.CLASS_THROWN))
 		{
 			if(!quiet)
-				mob.tell(L("You need a sword to perform a holy strike!"));
+				mob.tell(L("You need a melee to perform a holy strike!"));
 			return false;
 		}
 		return true;
