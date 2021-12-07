@@ -1251,7 +1251,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		if(rejuvedMOB!=null) // doing this here is helpful -- it can trigger a socket error.
 			rejuvedMOB.tell(L("You are being resurrected."));
 
-		if((rejuvedMOB!=null)&&(rejuvedMOB.session()!=null)&&(!rejuvedMOB.session().isStopped()))
+		if((rejuvedMOB!=null)
+		&&(rejuvedMOB.session()!=null)
+		&&(!rejuvedMOB.session().isStopped()))
 		{
 			if(rejuvedMOB.location()!=corpseRoom)
 			{
@@ -1292,7 +1294,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				rejuv=rejuvedMOB.phyStats().level();
 			if(((!rejuvedMOB.isMonster())&&(rejuvedMOB.soulMate()==null)))
 				rejuv=1;
-			final double[] vars=new double[] { rejuvedMOB.phyStats().level(), rejuvedMOB.phyStats().level(), rejuv };
+			int bodyLevel = body.phyStats().level();
+			if(bodyLevel < 1)
+				bodyLevel = 1;
+			final double[] vars=new double[] { bodyLevel, bodyLevel, rejuv };
 			for(int w=0;w<whatsToDo.size();w++)
 			{
 				final String whatToDo=whatsToDo.get(w);
