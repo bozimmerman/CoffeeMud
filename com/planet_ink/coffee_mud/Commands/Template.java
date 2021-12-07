@@ -300,6 +300,10 @@ public class Template extends StdCommand
 				||(what.equals("room")))
 					E=mob.location();
 				else
+				if((CMLib.directions().getGoodDirectionCode(what)>=0)
+				&&mob.location().getExitInDir(CMLib.directions().getGoodDirectionCode(what))!=null)
+					E=mob.location().getExitInDir(CMLib.directions().getGoodDirectionCode(what));
+				else
 				if(CMLib.map().getRoom(what)!=null)
 					E=CMLib.map().getRoom(what);
 				else
