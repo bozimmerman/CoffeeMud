@@ -890,13 +890,6 @@ public class InstanceArea extends StdAbility
 
 	protected synchronized void fixRoom(final Room room)
 	{
-		if(room.roomID().endsWith("Toklandia#0")) //TODO:BZ:DELME
-		{
-			Log.errOut(""+this);
-			Log.errOut(""+room);
-			Log.errOut(""+room.getArea());
-			Log.errOut(new Exception());
-		}
 		try
 		{
 			final Area instArea = ((affected instanceof Area) && (CMath.bset(((Area)affected).flags(), Area.FLAG_INSTANCE_CHILD)))
@@ -2009,9 +2002,17 @@ public class InstanceArea extends StdAbility
 						msg.setTarget(R);
 						if(created)
 						{
+							final WeakArrayList<Room> roomsDone = able.roomsDone;
+							final String text = text();
+							final boolean clearFix = instA.properSize() == roomsDone.size()
+														&& text.equals(able.text());
 							instA.okMessage(myHost, msg);
 							able.setMiscText(text());
-							instA.addBlurbFlag("AREAINSTANCE {"+instTypeID+"}");
+							if(clearFix)
+								able.roomsDone = roomsDone;
+							final String blurb = "AREAINSTANCE {"+instTypeID+"}";
+							if(instA.getBlurbFlag("AREAINSTANCE") == null)
+								instA.addBlurbFlag(blurb);
 						}
 					}
 				}
