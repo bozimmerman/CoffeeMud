@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -40,8 +41,8 @@ public class Prop_RoomRedirect extends Property
 		return "Prop_RoomRedirect";
 	}
 
-	final PairSVector<String, String>						rawRedirects	= new PairSVector<String, String>();
-	final PairSVector<MaskingLibrary.CompiledZMask, Room>	redirects		= new PairSVector<MaskingLibrary.CompiledZMask, Room>();
+	final PairSVector<String, String>			rawRedirects	= new PairSVector<String, String>();
+	final PairSVector<CompiledZMask, Object>	redirects		= new PairSVector<CompiledZMask, Object>();
 
 	@Override
 	public String name()
@@ -76,7 +77,7 @@ public class Prop_RoomRedirect extends Property
 		}
 	}
 
-	protected synchronized final PairList<MaskingLibrary.CompiledZMask, Room> getRedirects()
+	protected synchronized final PairList<CompiledZMask, Object> getRedirects()
 	{
 		if(rawRedirects.size() != redirects.size())
 		{
@@ -86,23 +87,34 @@ public class Prop_RoomRedirect extends Property
 			for(int p=rawRedirects.size()-1;p>=0;p--)
 			{
 				final Pair<String,String> pair=rawRedirects.get(p);
-				if(pair.second.length()==0)
+				final String maskStr = pair.second;
+				final String maskUpp = maskStr.toUpperCase();
+				final String roomIdStr = pair.first;
+				if(maskStr.length()==0)
 				{
-					if(foundMasks.contains(pair.second.toUpperCase().trim()))
+					if(foundMasks.contains(maskUpp))
 					{
-						Log.errOut("Prop_RoomRedirect '"+roomID+"' has multiple mask '"+pair.second+"'.");
+						Log.errOut("Prop_RoomRedirect '"+roomID+"' has multiple mask '"+maskStr+"'.");
 						rawRedirects.remove(p);
 					}
 					else
-						foundMasks.add(pair.second.toUpperCase().trim());
+						foundMasks.add(maskUpp);
 				}
-				final MaskingLibrary.CompiledZMask mask = CMLib.masking().getPreCompiledMask(pair.second);
-				final Room R=CMLib.map().getRoom(pair.first);
+				final CompiledZMask mask = CMLib.masking().getPreCompiledMask(maskStr);
+				final Room R=CMLib.map().getRoom(roomIdStr);
 				if((R==null)
-				&&(pair.first.length()>0))
+				&&(roomIdStr.length()>0))
 				{
-					Log.errOut("Prop_RoomRedirect '"+roomID+"' has invalid room id '"+pair.first+"'.");
-					rawRedirects.remove(p);
+					if(roomIdStr.startsWith("#"))
+						redirects.add(mask, roomIdStr);
+					else
+					if(CMath.isInteger(roomIdStr))
+						redirects.add(mask, "#"+roomIdStr);
+					else
+					{
+						Log.errOut("Prop_RoomRedirect '"+roomID+"' has invalid room id '"+roomIdStr+"'.");
+						rawRedirects.remove(p);
+					}
 				}
 				else
 					redirects.add(mask, R);
@@ -113,11 +125,27 @@ public class Prop_RoomRedirect extends Property
 
 	public Room getRedirectRoom(final MOB mob)
 	{
-		final PairList<MaskingLibrary.CompiledZMask, Room> redirects = this.getRedirects();
-		for(final Pair<MaskingLibrary.CompiledZMask, Room> p : redirects)
+		final PairList<CompiledZMask, Object> redirects = this.getRedirects();
+		Area area=CMLib.map().areaLocation(mob);
+		if(area == null)
+			area=CMLib.map().areaLocation(affected);
+		for(final Pair<CompiledZMask, Object> p : redirects)
 		{
 			if(CMLib.masking().maskCheck(p.first, mob, true))
-				return CMLib.map().getRoom(p.second);
+			{
+				final Object o = p.second;
+				if(o instanceof Room)
+					return CMLib.map().getRoom((Room)o);
+				else
+				if((o instanceof String)
+				&&(((String)o).startsWith("#"))
+				&&(area!=null))
+				{
+					final Room R=area.getRoom(area.Name()+(String)o);
+					if(R!=null)
+						return R;
+				}
+			}
 		}
 		return null;
 	}
@@ -138,7 +166,7 @@ public class Prop_RoomRedirect extends Property
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
