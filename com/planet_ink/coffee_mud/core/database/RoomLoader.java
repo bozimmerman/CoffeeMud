@@ -913,12 +913,24 @@ public class RoomLoader
 			final String ride=mobRides.get(M);
 			if(ride!=null)
 			{
-				final PhysicalAgent P=itemNums.get(ride);
+				final boolean rideFlag;
+				final PhysicalAgent P;
+				if(ride.startsWith("*"))
+				{
+					P=itemNums.get(ride.substring(1));
+					rideFlag=true;
+				}
+				else
+				{
+					P=itemNums.get(ride);
+					rideFlag=false;
+				}
 				if(P!=null)
 				{
 					if((M instanceof Rideable)
 					&&(P instanceof Rideable)
-					&&(P instanceof MOB))
+					&&(P instanceof MOB)
+					&&(!rideFlag))
 						M.setFollowing((MOB)P);
 					else
 					if(P instanceof Rideable)
@@ -1831,7 +1843,7 @@ public class RoomLoader
 		final String mobID=this.getShortID(thisMOB);
 		thisMOB.setDatabaseID(mobID);
 		if(thisMOB.riding()!=null)
-			ride=this.getShortID(thisMOB.riding());
+			ride="*"+this.getShortID(thisMOB.riding());
 		else
 		if(thisMOB.amFollowing()!=null)
 			ride=this.getShortID(thisMOB.amFollowing());
