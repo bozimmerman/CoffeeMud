@@ -140,11 +140,11 @@ public class StdCommand implements Command
 		}
 		return -1;
 	}
-	
+
 	@SuppressWarnings({ "rawtypes"})
 	public boolean checkArguments(final Class[][] fmt, final Object... args)
 	{
-		int index = getArgumentSetIndex(fmt,args);
+		final int index = getArgumentSetIndex(fmt,args);
 		if(index >=0)
 			return true;
 
@@ -248,4 +248,11 @@ public class StdCommand implements Command
 	{
 		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
 	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return true;
+	}
+
 }

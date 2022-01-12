@@ -45,6 +45,15 @@ public interface Command extends CMObject
 	 */
 	public String[] getAccessWords();
 
+
+	/**
+	 * Returns whether this commands`s access words should be
+	 * places in the master list of commands.
+	 * @see com.planet_ink.coffee_mud.Commands.interfaces.Command#getAccessWords()
+	 * @return whether to add the access words to the commands list
+	 */
+	public boolean putInCommandlist();
+
 	/**
 	 * Returns the number of actions required to completely
 	 * activate this command. A value of 0.0 means perform
