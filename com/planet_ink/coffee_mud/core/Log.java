@@ -10,7 +10,7 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 /*
-   Copyright 2000-2021 Bo Zimmerman
+   Copyright 2000-2022 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

@@ -11,7 +11,7 @@ import com.planet_ink.coffee_web.interfaces.SimpleServletResponse;
 import com.planet_ink.coffee_web.util.RequestStats;
 
 /*
-   Copyright 2012-2021 Bo Zimmerman
+   Copyright 2012-2022 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

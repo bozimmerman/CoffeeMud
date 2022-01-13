@@ -7,7 +7,7 @@ import java.util.*;
 import java.sql.*;
 
 /*
-   Copyright 2004-2021 Bo Zimmerman
+   Copyright 2004-2022 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -108,7 +108,7 @@ public class DBUpgrade
 	public static void main(final String a[]) throws IOException
 	{
 		pl("Welcome to the FakeDB Database Upgrade Tool!");
-		pl("(C) 2003-2021 Bo Zimmerman");
+		pl("(C) 2003-2022 Bo Zimmerman");
 		pl("Another product of ...Planet Ink!");
 		pl("");
 		pl("");

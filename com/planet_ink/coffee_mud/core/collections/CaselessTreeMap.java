@@ -16,7 +16,7 @@ import java.util.TreeSet;
 import java.util.Vector;
 
 /*
-   Copyright 2013-2021 Bo Zimmerman
+   Copyright 2013-2022 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
