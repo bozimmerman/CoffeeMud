@@ -2053,7 +2053,7 @@ public class MUD extends Thread implements MudHost
 			System.err.println("*** Please give your mud a unique name in mud.bat or mudUNIX.sh!! ***");
 		}
 		else
-		if(nameID.equalsIgnoreCase( "TheRealCoffeeMudCopyright2000-2021ByBoZimmerman" ))
+		if(nameID.equalsIgnoreCase( "TheRealCoffeeMudCopyright2000-2022ByBoZimmerman" ))
 			nameID="CoffeeMud";
 		String iniFile=iniFiles.firstElement();
 		final CMProps page=CMProps.loadPropPage("//"+iniFile);
