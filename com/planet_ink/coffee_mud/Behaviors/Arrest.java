@@ -1802,7 +1802,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 		if(isAnyKindOfOfficer(laws,criminalM)
 		||(isTheJudge(laws,criminalM))
-		||CMSecurity.isAllowed(criminalM,criminalM.location(),CMSecurity.SecFlag.ABOVELAW))
+		||CMSecurity.isAllowed(criminalM,criminalM.location(),CMSecurity.SecFlag.ABOVELAW)
+		||(this.isAnUltimateAuthorityHere(criminalM, laws)))
 		{
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST))
 				Log.debugOut("ARREST","("+lastAreaName+"): "+criminalM.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Accused is an officer ("+isAnyKindOfOfficer(laws,criminalM)+"), judge ("+isTheJudge(laws,criminalM)+"), or above the law ("+CMSecurity.isAllowed(criminalM,criminalM.location(),CMSecurity.SecFlag.ABOVELAW)+").");

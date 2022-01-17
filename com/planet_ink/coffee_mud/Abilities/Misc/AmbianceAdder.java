@@ -67,6 +67,7 @@ public class AmbianceAdder extends StdAbility
 	@Override
 	public void setMiscText(final String newText)
 	{
+		super.setMiscText(newText);
 		ambiances.clear();
 		if(newText.length()>0)
 		{
