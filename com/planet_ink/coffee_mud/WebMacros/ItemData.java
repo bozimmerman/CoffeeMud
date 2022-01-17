@@ -749,16 +749,19 @@ public class ItemData extends StdWebMacro
 							return "true";
 						return "false";
 					case RIDEABLETYPE: // rideable type
+					{
 						if((firstTime)&&(I instanceof Rideable))
-							old=""+((Rideable)I).rideBasis();
+							old=""+((Rideable)I).rideBasis().ordinal();
+						final int or=CMath.s_int(old);
 						for(int r=0;r<Rideable.Basis.values().length;r++)
 						{
 							str.append("<OPTION VALUE=\""+r+"\"");
-							if(r==CMath.s_int(old))
+							if(r==or)
 								str.append(" SELECTED");
 							str.append(">"+Rideable.Basis.values()[r].toString());
 						}
 						break;
+					}
 					case MOBSHELD: // mobsheld rideable capacity
 						if((firstTime)&&(I instanceof Rideable))
 							old=""+((Rideable)I).riderCapacity();
