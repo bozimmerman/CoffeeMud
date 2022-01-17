@@ -63,7 +63,7 @@ public class ClanWho extends Who
 				{
 					for(final Pair<Clan,Integer> c : mob.clans())
 					{
-						if(c.first.getAuthority(c.second.intValue(), Clan.Function.CLAN_BENEFITS) != Clan.Authority.CAN_NOT_DO)
+						if(c.first.getAuthority(c.second.intValue(), Clan.Function.LIST_MEMBERS) != Clan.Authority.CAN_NOT_DO)
 						{
 							final MOB M = CMLib.players().getLoadPlayer(clanName);
 							if(M!=null)
