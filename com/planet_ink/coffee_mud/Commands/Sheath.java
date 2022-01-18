@@ -45,23 +45,19 @@ public class Sheath extends StdCommand
 		return access;
 	}
 
-	protected static List<Container> getSheaths(final MOB mob)
+	public final boolean canSheathIn(final Item I, final Container C, final Map<Container,int[]> sheaths)
 	{
-		final List<Container> sheaths=new ArrayList<Container>();
-		if(mob==null)
-			return sheaths;
-		for(int i=0;i<mob.numItems();i++)
+		if(C.canContain(I))
 		{
-			final Item I=mob.getItem(i);
-			if((I!=null)
-			&&(!I.amWearingAt(Wearable.IN_INVENTORY))
-			&&(I instanceof Container)
-			&&(!(I instanceof Drink))
-			&&(((Container)I).capacity()>0)
-			&&(((Container)I).containTypes()!=Container.CONTAIN_ANYTHING))
-				sheaths.add((Container)I);
+			final int[] capRem = sheaths.get(C);
+			if((capRem!=null)
+			&&(capRem[0] >= I.phyStats().weight()))
+			{
+				capRem[0] -= I.phyStats().weight();
+				return true;
+			}
 		}
-		return sheaths;
+		return false;
 	}
 
 	@Override
@@ -86,63 +82,81 @@ public class Sheath extends StdCommand
 		Item item2=null;
 		if(commands.size()>0)
 			commands.remove(0);
-		if(commands.size()==0)
+		final OrderedMap<Container,int[]> sheaths=new OrderedMap<Container,int[]>();
+		for(int i=0;i<mob.numItems();i++)
 		{
-			for(int i=0;i<mob.numItems();i++)
+			final Item I=mob.getItem(i);
+			if(I != null)
 			{
-				final Item I=mob.getItem(i);
-				if((I!=null)
-				&&(I instanceof Weapon)
-				&&(!I.amWearingAt(Wearable.IN_INVENTORY)))
+				if(!I.amWearingAt(Wearable.IN_INVENTORY))
 				{
-					if(I.amWearingAt(Wearable.WORN_WIELD))
-						item1=I;
+					if(I instanceof Weapon)
+					{
+						if(I.amWearingAt(Wearable.WORN_WIELD))
+							item1=I;
+						else
+						if(I.amWearingAt(Wearable.WORN_HELD))
+							item2=I;
+					}
 					else
-					if(I.amWearingAt(Wearable.WORN_HELD))
-						item2=I;
+					if((I instanceof Container)
+					&&(!(I instanceof Drink))
+					&&(((Container)I).capacity()>0)
+					&&(((Container)I).containTypes()!=Container.CONTAIN_ANYTHING)
+					&&(!sheaths.containsKey(I)))
+						sheaths.put((Container)I, new int[] {((Container)I).capacity()});
+				}
+				else
+				{
+					final Container C=I.container();
+					if((C != null)
+					&&(!(C instanceof Drink))
+					&&(C.capacity()>0)
+					&&(C.containTypes()!=Container.CONTAIN_ANYTHING))
+					{
+						if(!sheaths.containsKey(C))
+							sheaths.put(C, new int[] {C.capacity()});
+						sheaths.get(C)[0] -= I.phyStats().weight();
+					}
 				}
 			}
-			if((noerrors)&&(item1==null)&&(item2==null))
+		}
+		if(commands.size()==0)
+		{
+			if((noerrors)
+			&&(item1==null)
+			&&(item2==null))
 				return false;
 		}
-		final List<Container> sheaths=getSheaths(mob);
-		final List<Item> items=new ArrayList<Item>();
-		final List<Container> containers=new Vector<Container>();
+		final OrderedMap<Item,Container> sheathMap=new OrderedMap<Item,Container>();
 		Item sheathable=null;
 		if(commands.size()==0)
 		{
 			if(item2==item1)
 				item2=null;
-			for(int i=0;i<sheaths.size();i++)
+			for(final Iterator<Pair<Container,int[]>> p = sheaths.pairIterator();p.hasNext();)
 			{
-				final Container sheath=sheaths.get(i);
+				final Pair<Container,int[]> sheathPair = p.next();
+				final Container sheath=sheathPair.first;
 				if((item1!=null)
-				&&(!items.contains(item1))
-				&&(sheath.canContain(item1)))
-				{
-					items.add(item1);
-					containers.add(sheath);
-				}
+				&&(!sheathMap.containsKey(item1))
+				&&(canSheathIn(item1,sheath,sheaths)))
+					sheathMap.put(item1, sheath);
 				else
 				if((item2!=null)
-				&&(!items.contains(item2))
-				&&(sheath.canContain(item2)))
-				{
-					items.add(item2);
-					containers.add(sheath);
-				}
+				&&(!sheathMap.containsKey(item2))
+				&&(canSheathIn(item2,sheath,sheaths)))
+					sheathMap.put(item2, sheath);
 			}
 			if(item2!=null)
 			{
-				for(int i=0;i<sheaths.size();i++)
+				for(final Iterator<Pair<Container,int[]>> p = sheaths.pairIterator();p.hasNext();)
 				{
-					final Container sheath=sheaths.get(i);
-					if((sheath.canContain(item2))
-					&&(!items.contains(item2)))
-					{
-						items.add(item2);
-						containers.add(sheath);
-					}
+					final Pair<Container,int[]> sheathPair = p.next();
+					final Container sheath=sheathPair.first;
+					if((!sheathMap.containsKey(item2))
+					&&(canSheathIn(item2,sheath,sheaths)))
+						sheathMap.put(item2, sheath);
 				}
 			}
 			if(item1!=null)
@@ -180,28 +194,25 @@ public class Sheath extends StdCommand
 				   ||(putThis.amWearingAt(Wearable.WORN_HELD)))
 				   &&(putThis instanceof Weapon))
 				{
-					if(CMLib.flags().canBeSeenBy(putThis,mob)&&(!items.contains(putThis)))
+					if(CMLib.flags().canBeSeenBy(putThis,mob)
+					&&(!sheathMap.containsKey(putThis)))
 					{
 						sheathable=putThis;
-						items.add(putThis);
-						if((container!=null)&&(container.canContain(putThis)))
-							containers.add(container);
+						if((container!=null)
+						&&(canSheathIn(putThis,container,sheaths)))
+							sheathMap.put(putThis, container);
 						else
 						{
-							Container tempContainer=null;
-							for(int i=0;i<sheaths.size();i++)
+							for(final Iterator<Pair<Container,int[]>> p = sheaths.pairIterator();p.hasNext();)
 							{
-								final Container sheath=sheaths.get(i);
-								if(sheath.canContain(putThis))
+								final Pair<Container,int[]> sheathPair = p.next();
+								final Container sheath=sheathPair.first;
+								if(canSheathIn(putThis,sheath,sheaths))
 								{
-									tempContainer=sheath;
+									sheathMap.put(putThis, sheath);
 									break;
 								}
 							}
-							if(tempContainer==null)
-								items.remove(putThis);
-							else
-								containers.add(tempContainer);
 						}
 					}
 				}
@@ -209,9 +220,10 @@ public class Sheath extends StdCommand
 			}
 		}
 
-		if(items.size()==0)
+		if(sheathMap.size()==0)
 		{
 			if(!noerrors)
+			{
 				if(sheaths.size()==0)
 					CMLib.commands().postCommandFail(mob,origCmds,L("You are not wearing an appropriate sheath."));
 				else
@@ -222,12 +234,14 @@ public class Sheath extends StdCommand
 					CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to be wielding anything you can sheath."));
 				else
 					CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to be wielding that."));
+			}
 		}
 		else
-		for(int i=0;i<items.size();i++)
+		for(final Iterator<Pair<Item,Container>> p=sheathMap.pairIterator();p.hasNext();)
 		{
-			final Item putThis=items.get(i);
-			final Container container=containers.get(i);
+			final Pair<Item,Container> P=p.next();
+			final Item putThis=P.first;
+			final Container container=P.second;
 			if(CMLib.commands().postRemove(mob,putThis,true))
 			{
 				final CMMsg putMsg=CMClass.getMsg(mob,container,putThis,CMMsg.MSG_PUT,((quiet?null:L("<S-NAME> sheath(s) <O-NAME> in <T-NAME>."))));
