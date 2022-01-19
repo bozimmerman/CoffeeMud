@@ -378,7 +378,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		for(int t=0;t<types.size();t++)
 		{
 			key=types.get(t);
-			final int stages=CMLib.expertises().getStages(key);
+			final int stages=CMLib.expertises().numStages(key);
 			final EnhancedExpertise code=getLocalExpCode(key);
 			if(code != null)
 			{
@@ -417,7 +417,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		for(int t=0;t<experTypes.size();t++)
 		{
 			key=experTypes.get(t);
-			final int stages=CMLib.expertises().getStages(key);
+			final int stages=CMLib.expertises().numStages(key);
 			final EnhancedExpertise code=getLocalExpCode(key);
 			if(code != null)
 			{
@@ -482,7 +482,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					for(int t=0;t<experTypes.size();t++)
 					{
 						key=experTypes.get(t);
-						final int stages=CMLib.expertises().getStages(key);
+						final int stages=CMLib.expertises().numStages(key);
 						final EnhancedExpertise code=getLocalExpCode(key);
 						if(code != null)
 						{

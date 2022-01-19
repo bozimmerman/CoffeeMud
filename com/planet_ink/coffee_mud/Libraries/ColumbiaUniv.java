@@ -376,7 +376,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 
 	@Override
-	public int getExpertiseLevel(final MOB mob, final String abilityID, final ExpertiseLibrary.XType code)
+	public int getExpertiseLevelCached(final MOB mob, final String abilityID, final ExpertiseLibrary.XType code)
 	{
 		if((mob==null)||(code==null)||(abilityID==null)||(abilityID.length()==0))
 			return 0;
@@ -392,7 +392,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				return 0;
 			for(final ExpertiseLibrary.XType flag : ExpertiseLibrary.XType.values())
 			{
-				xFlagCache[flag.ordinal()]=getApplicableExpertiseLevel(abilityID,flag,mob)
+				xFlagCache[flag.ordinal()]=getExpertiseLevelCalced(mob,abilityID,flag)
 											+charClass.addedExpertise(mob, flag, abilityID);
 			}
 			usageCache[Ability.CACHEINDEX_EXPERTISE]=xFlagCache;
@@ -503,13 +503,12 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 
 	@Override
-	public int getStages(final String baseExpertiseCode)
+	public int numStages(final String baseExpertiseCode)
 	{
 		return getStageCodes(baseExpertiseCode).size();
 	}
 
-	@Override
-	public String getGuessedBaseExpertiseName(final String expertiseCode)
+	protected String getGuessedBaseExpertiseName(final String expertiseCode)
 	{
 		int lastBadChar=expertiseCode.length()-1;
 		while( (lastBadChar>=0)
@@ -527,26 +526,26 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 
 	@Override
-	public String getApplicableExpertise(final String ID, final XType code)
+	public String getApplicableExpertise(final String abilityID, final XType code)
 	{
-		return completeUsageMap[code.ordinal()].get(ID);
+		return completeUsageMap[code.ordinal()].get(abilityID);
 	}
 
 	@Override
-	public String[] getApplicableExpertises(final String ID, final XType code)
+	public String[] getApplicableExpertises(final String abilityID, final XType code)
 	{
 		if(code == null)
 		{
 			final Set<String> all=new TreeSet<String>();
 			for(final XType f : XType.values())
 			{
-				final String[] set=completeUsageMaps[f.ordinal()].get(ID);
+				final String[] set=completeUsageMaps[f.ordinal()].get(abilityID);
 				if(set != null)
 					all.addAll(Arrays.asList(set));
 			}
 			return all.toArray(new String[0]);
 		}
-		return completeUsageMaps[code.ordinal()].get(ID);
+		return completeUsageMaps[code.ordinal()].get(abilityID);
 	}
 
 	@Override
@@ -602,9 +601,9 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 
 	@Override
-	public int getApplicableExpertiseLevel(final String ID, final XType code, final MOB mob)
+	public int getExpertiseLevelCalced(final MOB mob, final String abilityID, final XType code)
 	{
-		final String[] applicableExpIDs = getApplicableExpertises(ID, code);
+		final String[] applicableExpIDs = getApplicableExpertises(abilityID, code);
 		if((applicableExpIDs==null)||(applicableExpIDs.length<1))
 			return 0;
 		final Pair<String,Integer> e=mob.fetchExpertise(applicableExpIDs[0]);
@@ -833,14 +832,16 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 					}
 				}
 				if(addIfPossible)
-				for(int s1=0;s1<stages.size();s1++)
 				{
-					def=getDefinition(stages.get(s1));
-					if(def==null)
-						continue;
-					WKID=def.name().toUpperCase().replace(' ','_');
-					if(!helpMap.containsKey(WKID))
-						helpMap.put(WKID,row);
+					for(int s1=0;s1<stages.size();s1++)
+					{
+						def=getDefinition(stages.get(s1));
+						if(def==null)
+							continue;
+						WKID=def.name().toUpperCase().replace(' ','_');
+						if(!helpMap.containsKey(WKID))
+							helpMap.put(WKID,row);
+					}
 				}
 			}
 			return null;

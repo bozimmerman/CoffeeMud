@@ -308,7 +308,7 @@ public class Modify extends StdCommand
 		}
 		String WKID=CMStrings.replaceAll(skillID.toUpperCase(),"@X1","");
 		WKID=CMStrings.replaceAll(WKID,"@X2","").trim();
-		if(CMLib.expertises().getStages(WKID)<=0)
+		if(CMLib.expertises().numStages(WKID)<=0)
 		{
 			mob.tell(L("'@x1' does not exist, try LIST EXPERTISES.",WKID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));

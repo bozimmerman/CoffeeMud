@@ -201,7 +201,7 @@ public class ArtisanalFocus extends StdAbility
 								final Pair<String,Integer> p=affectedMOB.fetchExpertise(experID);
 								if(p != null)
 								{
-									final double experValue = 1.0 + CMath.div(10 * p.second.intValue(),CMLib.expertises().getStages(experID));
+									final double experValue = 1.0 + CMath.div(10 * p.second.intValue(),CMLib.expertises().numStages(experID));
 									score *= experValue;
 								}
 							}

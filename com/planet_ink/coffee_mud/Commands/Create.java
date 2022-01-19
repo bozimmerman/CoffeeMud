@@ -1066,7 +1066,7 @@ public class Create extends StdCommand
 		}
 		String WKID=CMStrings.replaceAll(skillID.toUpperCase(),"@X1","");
 		WKID=CMStrings.replaceAll(WKID,"@X2","").trim();
-		if(CMLib.expertises().getStages(WKID)>0)
+		if(CMLib.expertises().numStages(WKID)>0)
 		{
 			mob.tell(L("'@x1' already exists, you'll need to destroy it first.",WKID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));

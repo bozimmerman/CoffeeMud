@@ -3647,7 +3647,7 @@ public class ListCmd extends StdCommand
 							+ "|Description="+CMStrings.replaceAll(desc,helpEOL,helpEOL+helpEOL)
 							+ "|Cost="+def.costDescription()
 							+ "|Level="+def.getMinimumLevel()
-							+ "|Ranks="+CMLib.expertises().getStages(def.getBaseName())
+							+ "|Ranks="+CMLib.expertises().numStages(def.getBaseName())
 							+ "|Flags="+CMStrings.capitalizeAllFirstLettersAndLower(CMParms.toListString(def.getFlagTypes()))
 							+ "}}\n\r");
 				}

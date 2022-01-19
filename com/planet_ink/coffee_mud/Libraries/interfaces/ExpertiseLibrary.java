@@ -44,34 +44,376 @@ import java.util.*;
  */
 public interface ExpertiseLibrary extends CMLibrary
 {
-	public boolean delDefinition(String ID, final boolean andSave);
-	public ExpertiseDefinition getDefinition(String ID);
-	public ExpertiseDefinition findDefinition(String ID, boolean exactOnly);
-	public Enumeration<ExpertiseDefinition> definitions();
-	public List<ExpertiseDefinition> myQualifiedExpertises(MOB mob);
-	public List<ExpertiseDefinition> myListableExpertises(MOB mob);
-	public ExpertiseDefinition getConfirmedDefinition(final MOB mob, final String ID);
+	/**
+	 * Returns the number of expertise definitions, which
+	 * includes all stages for each expertise type.
+	 * @see ExpertiseLibrary#delDefinition(String, boolean)
+	 * @see ExpertiseLibrary#addModifyDefinition(String, boolean)
+	 * @see ExpertiseLibrary#numStages(String)
+	 * @see ExpertiseLibrary#getDefinition(String)
+	 * @see ExpertiseLibrary#definitions()
+	 *
+	 * @return the number of all expertise stages
+	 */
 	public int numExpertises();
-	public SkillCost createNewSkillCost(CostType costType, Double value);
+
+	/**
+	 * Adds a temporary or permanent expertise and all of its stage
+	 * definitions from a coded string.  The coded string format is
+	 * as defined in the expertises.txt file.
+	 * @see ExpertiseLibrary#delDefinition(String, boolean)
+	 * @see ExpertiseLibrary#numExpertises()
+	 * @see ExpertiseLibrary#numStages(String)
+	 * @see ExpertiseLibrary#getDefinition(String)
+	 * @see ExpertiseLibrary#definitions()
+	 * @see ExpertiseLibrary#createNewSkillCost(CostType, Double)
+	 * @see ExpertiseLibrary#confirmExpertiseLine(String, String, boolean)
+	 *
+	 * @param codedLine the coded expertise line
+	 * @param andSave true to save, false to leave in ram
+	 * @return true if the expertise stages were added
+	 */
 	public boolean addModifyDefinition(final String codedLine, final boolean andSave);
+
+	/**
+	 * Can delete either a single definition stage, or all stages of a expertise,
+	 * and optionally save.
+	 * @see ExpertiseLibrary#addModifyDefinition(String, boolean)
+	 * @see ExpertiseLibrary#numExpertises()
+	 * @see ExpertiseLibrary#numStages(String)
+	 * @see ExpertiseLibrary#getDefinition(String)
+	 * @see ExpertiseLibrary#definitions()
+	 *
+	 * @param ID either a fully qualified, or base expertise name
+	 * @param andSave true to save, false to just change ram
+	 * @return true if a delete happened, false otherwise
+	 */
+	public boolean delDefinition(String ID, final boolean andSave);
+
+	/**
+	 * Returns a single expertise stage definition
+	 * @see ExpertiseLibrary#delDefinition(String, boolean)
+	 * @see ExpertiseLibrary#addModifyDefinition(String, boolean)
+	 * @see ExpertiseLibrary#numExpertises()
+	 * @see ExpertiseLibrary#numStages(String)
+	 * @see ExpertiseLibrary#definitions()
+	 *
+	 * @param ID a full expertise id, including stage
+	 * @return the corresponding expertise definition
+	 */
+	public ExpertiseDefinition getDefinition(String ID);
+
+
+	/**
+	 * Find an expertise stage definition by name or id
+	 * @see ExpertiseLibrary#delDefinition(String, boolean)
+	 * @see ExpertiseLibrary#addModifyDefinition(String, boolean)
+	 * @see ExpertiseLibrary#numExpertises()
+	 * @see ExpertiseLibrary#definitions()
+	 *
+	 * @param ID search string
+	 * @param exactOnly true for only exact matches, false to be looser
+	 * @return the found definition, or null
+	 */
+	public ExpertiseDefinition findDefinition(String ID, boolean exactOnly);
+
+	/**
+	 * Returns an enumeration of all expertise stage definitions
+	 * @see ExpertiseLibrary#delDefinition(String, boolean)
+	 * @see ExpertiseLibrary#addModifyDefinition(String, boolean)
+	 * @see ExpertiseLibrary#numExpertises()
+	 * @see ExpertiseLibrary#findDefinition(String, boolean)
+	 *
+	 * @return all the definitions by stage
+	 */
+	public Enumeration<ExpertiseDefinition> definitions();
+	/**
+	 * Re-loads all expertise definitions from the file
+	 * /resources/expertises.txt (.1, .2, etc)
+	 *
+	 * @see ExpertiseLibrary#delDefinition(String, boolean)
+	 * @see ExpertiseLibrary#addModifyDefinition(String, boolean)
+	 * @see ExpertiseLibrary#numExpertises()
+	 * @see ExpertiseLibrary#findDefinition(String, boolean)
+	 * @see ExpertiseLibrary#definitions()
+	 */
 	public void recompileExpertises();
+
+	/**
+	 * Returns the instructions for the coded line version of
+	 * base expertise definitions.
+	 *
+	 * @return the instructions from expertises.txt
+	 */
 	public String getExpertiseInstructions();
-	public int getExpertiseLevel(final MOB mob, final String abilityID, final ExpertiseLibrary.XType code);
+
+	/**
+	 * Gets the help/info about a specific expertise stage.
+	 *
+	 * @param ID the expertise stage id, or search string
+	 * @param exact true to return exact match, or false for the first
+	 * @return help/info text for the stage
+	 */
 	public String getExpertiseHelp(String ID, boolean exact);
-	public String getApplicableExpertise(String ID, XType code);
-	public String[] getApplicableExpertises(String ID, XType code);
-	public int getApplicableExpertiseLevel(String ID, XType code, MOB mob);
-	public int getStages(String baseExpertiseCode);
+
+	/**
+	 * Returns the number of stages of the given base
+	 * expertise ID.
+	 * @see ExpertiseLibrary#numExpertises()
+	 * @see ExpertiseLibrary#getStageCodes(String)
+	 * @see ExpertiseLibrary#getDefinition(String)
+	 *
+	 * @param baseExpertiseCode full base expertise code
+	 * @return the number of stages in the expertise
+	 */
+	public int numStages(String baseExpertiseCode);
+
+	/**
+	 * Returns the individual expertise stage ids for
+	 * all stages in a given base expertise id.
+	 * @see ExpertiseLibrary#numExpertises()
+	 * @see ExpertiseLibrary#numStages(String)
+	 * @see ExpertiseLibrary#getDefinition(String)
+	 *
+	 * @param baseExpertiseCode the base expertise id code
+	 * @return the expertise stage id codes
+	 */
 	public List<String> getStageCodes(String baseExpertiseCode);
-	public String confirmExpertiseLine(String row, String ID, boolean addIfPossible);
+
+	/**
+	 * Returns the other individual expertise stage ids for
+	 * all stages in the base expertise as the given full
+	 * stage expertise id.
+	 * @see ExpertiseLibrary#numExpertises()
+	 * @see ExpertiseLibrary#numStages(String)
+	 * @see ExpertiseLibrary#getDefinition(String)
+	 * @see ExpertiseLibrary#getStageCodes(String)
+	 *
+	 * @param expertiseCode the full stage expertise id code
+	 * @return the other expertise stage id codes
+	 */
 	public List<String> getPeerStageCodes(final String expertiseCode);
-	public String getGuessedBaseExpertiseName(final String expertiseCode);
-	public void handleBeingTaught(MOB teacher, MOB student, Environmental item, String msg, int add);
-	public boolean canBeTaught(MOB teacher, MOB student, Environmental item, String msg);
-	public boolean confirmAndTeach(final MOB teacherM, final MOB studentM, final CMObject teachableO, final Runnable callBack);
-	public boolean postTeach(MOB teacher, MOB student, CMObject teachObj);
-	public Iterator<String> filterUniqueExpertiseIDList(Iterator<String> i);
+
+	/**
+	 * Validate the syntax of a coded expertise definition line,
+	 * returning a readable error if found.
+	 * @see ExpertiseLibrary#addModifyDefinition(String, boolean)
+	 * @see ExpertiseLibrary#createNewSkillCost(CostType, Double)
+	 *
+	 * @param row the coded definition
+	 * @param ID the expertise definition id code
+	 * @param addIfPossible true to cache, false to not
+	 * @return an error message, or null if all is OK
+	 */
+	public String confirmExpertiseLine(String row, String ID, boolean addIfPossible);
+
+	/**
+	 * Creates a new SkillCost object reflecting the given type and value.
+	 * This is part of the expertise defining process.
+	 * @see ExpertiseLibrary#addModifyDefinition(String, boolean)
+	 * @see ExpertiseLibrary#confirmExpertiseLine(String, String, boolean)
+	 *
+	 * @param costType the type of code
+	 * @param value the amount of the type
+	 * @return the SkillCost object
+	 */
+	public SkillCost createNewSkillCost(CostType costType, Double value);
+
+	/**
+	 * Given a mob and expertise id, this method will return the definition for the
+	 * expertise that the mob actually has, if it is the same.
+	 * @see ExpertiseLibrary#getDefinition(String)
+	 * @see ExpertiseLibrary#myListableExpertises(MOB)
+	 * @see ExpertiseLibrary#myQualifiedExpertises(MOB)
+	 * @see ExpertiseLibrary#getExpertiseLevelCached(MOB, String, XType)
+	 * @see ExpertiseLibrary#getExpertiseLevelCalced(MOB, String, XType)
+	 *
+	 * @param mob the mob/player to check
+	 * @param ID the expertise stage id
+	 * @return the definition that applies, or null
+	 */
+	public ExpertiseDefinition getConfirmedDefinition(final MOB mob, final String ID);
+
+	/**
+	 * Returns all the expertises that the given mob qualifies for.
+	 *
+	 * @see ExpertiseLibrary#getDefinition(String)
+	 * @see ExpertiseLibrary#myListableExpertises(MOB)
+	 * @see ExpertiseLibrary#getConfirmedDefinition(MOB, String)
+	 * @see ExpertiseLibrary#getExpertiseLevelCached(MOB, String, XType)
+	 * @see ExpertiseLibrary#getExpertiseLevelCalced(MOB, String, XType)
+	 * @see ExpertiseLibrary#getHighestListableStageBySkill(MOB, String, XType)
+	 *
+	 * @param mob the mob to check
+	 * @return the definitions qualified for
+	 */
+	public List<ExpertiseDefinition> myQualifiedExpertises(MOB mob);
+
+	/**
+	 * Returns all the expertises that the given mob can list
+	 * for possible training.
+	 *
+	 * @see ExpertiseLibrary#getDefinition(String)
+	 * @see ExpertiseLibrary#myQualifiedExpertises(MOB)
+	 * @see ExpertiseLibrary#getConfirmedDefinition(MOB, String)
+	 * @see ExpertiseLibrary#getExpertiseLevelCached(MOB, String, XType)
+	 * @see ExpertiseLibrary#getExpertiseLevelCalced(MOB, String, XType)
+	 * @see ExpertiseLibrary#getHighestListableStageBySkill(MOB, String, XType)
+	 *
+	 * @param mob the mob to check
+	 * @return the definitions qualified for
+	 */
+	public List<ExpertiseDefinition> myListableExpertises(MOB mob);
+
+	/**
+	 * If the given mob has an expertise that applies the given
+	 * expertise type to the given ability id, then this method will
+	 * return how many levels of that expertise the mob has, or 0
+	 * if none.
+	 * This method employs the mob-specific cache to prevent
+	 * constant recalculation.
+	 *
+	 * @see ExpertiseLibrary#getDefinition(String)
+	 * @see ExpertiseLibrary#myListableExpertises(MOB)
+	 * @see ExpertiseLibrary#myQualifiedExpertises(MOB)
+	 * @see ExpertiseLibrary#getConfirmedDefinition(MOB, String)
+	 * @see ExpertiseLibrary#getExpertiseLevelCalced(MOB, String, XType)
+	 *
+	 * @param mob the player to check
+	 * @param abilityID the ability to check
+	 * @param code the expertise type to check
+	 * @return the level of expertise that applies, or 0
+	 */
+	public int getExpertiseLevelCached(final MOB mob, final String abilityID, final XType code);
+
+
+	/**
+	 * If the given mob has an expertise that applies the given
+	 * expertise type to the given ability id, then this method will
+	 * return how many levels of that expertise the mob has, or 0
+	 * if none.
+	 * This method employs the mob-specific cache to prevent
+	 * constant recalculation.
+	 *
+	 * @see ExpertiseLibrary#getDefinition(String)
+	 * @see ExpertiseLibrary#myListableExpertises(MOB)
+	 * @see ExpertiseLibrary#myQualifiedExpertises(MOB)
+	 * @see ExpertiseLibrary#getConfirmedDefinition(MOB, String)
+	 * @see ExpertiseLibrary#getExpertiseLevelCached(MOB, String, XType)
+	 *
+	 * @param mob the player to check
+	 * @param abilityID the ability to check
+	 * @param code the expertise type to check
+	 * @return the level of expertise that applies, or 0
+	 */
+	public int getExpertiseLevelCalced(MOB mob, String abilityID, XType code);
+
+	/**
+	 * Finds the expertise that applies to the given mob and ability id and expertise
+	 * type, and then returns the highest stage that is qualified for by the mob.
+	 *
+	 * @see ExpertiseLibrary#myListableExpertises(MOB)
+	 * @see ExpertiseLibrary#myQualifiedExpertises(MOB)
+	 * @see ExpertiseLibrary#getHighestListableStageBySkill(MOB, String, XType)
+	 *
+	 * @param mob the mob to check
+	 * @param ableID the ability id
+	 * @param flag the expertise type
+	 * @return the highest listable stage or 0
+	 */
 	public int getHighestListableStageBySkill(final MOB mob, String ableID, ExpertiseLibrary.XType flag);
+
+	/**
+	 * Returns the base expertise id that applies to the given ability and expertise type
+	 * @see ExpertiseLibrary#getApplicableExpertises(String, XType)
+	 *
+	 * @param abilityID ability ID
+	 * @param code expertise type
+	 * @return the expertise base id or null
+	 */
+	public String getApplicableExpertise(String abilityID, XType code);
+
+	/**
+	 * Returns all stage expertise ids that apply to the given ability and
+	 * expertise type.
+	 *
+	 * @see ExpertiseLibrary#getApplicableExpertise(String, XType)
+	 *
+	 * @param abilityID ability ID
+	 * @param code expertise type
+	 * @return the expertise stage ids or null
+	 */
+	public String[] getApplicableExpertises(String abilityID, XType code);
+
+	/**
+	 * Handles the teaching of an Ability or ExpertiseDefinition, either given,
+	 * or by parsing a coded Learn string from a message.
+	 * @see ExpertiseLibrary#handleBeingTaught(MOB, MOB, Environmental, String, int)
+	 * @see ExpertiseLibrary#canBeTaught(MOB, MOB, Environmental, String)
+	 * @see ExpertiseLibrary#confirmAndTeach(MOB, MOB, CMObject, Runnable)
+	 * @see ExpertiseLibrary#postTeach(MOB, MOB, CMObject)
+	 *
+	 * @param teacher the teacher mob
+	 * @param student the student mob
+	 * @param item the Ability or ExpertiseDefinition object
+	 * @param msg an optional coded learn string
+	 * @param add an amount of ability proficiency to add over default
+	 */
+	public void handleBeingTaught(MOB teacher, MOB student, Environmental item, String msg, int add);
+
+	/**
+	 * Given an Ability or ExpertiseDefinition, or msg containing a learn coded string,
+	 * this will return whether the given teacher can teach, and the given student can
+	 * learn the ability or expertise.
+	 * @see ExpertiseLibrary#handleBeingTaught(MOB, MOB, Environmental, String, int)
+	 * @see ExpertiseLibrary#confirmAndTeach(MOB, MOB, CMObject, Runnable)
+	 * @see ExpertiseLibrary#postTeach(MOB, MOB, CMObject)
+	 *
+	 * @param teacher the teacher mob
+	 * @param student the student mob
+	 * @param item the Ability or ExpertiseDefinition object
+	 * @param msg an optional coded learn string
+	 * @return true if teaching is OK, false otherwise
+	 */
+	public boolean canBeTaught(MOB teacher, MOB student, Environmental item, String msg);
+
+	/**
+	 * Given a teacher, student, and either an Ability or Expertise, this method
+	 * will confirm the lesson with the student, and call the Runnable if approval
+	 * is given.
+	 * @see ExpertiseLibrary#handleBeingTaught(MOB, MOB, Environmental, String, int)
+	 * @see ExpertiseLibrary#canBeTaught(MOB, MOB, Environmental, String)
+	 * @see ExpertiseLibrary#postTeach(MOB, MOB, CMObject)
+	 *
+	 * @param teacherM the teacher
+	 * @param studentM the student
+	 * @param teachableO the ability or expertise
+	 * @param callBack the runnable to call on approval
+	 * @return true if confirmation is proceeding
+	 */
+	public boolean confirmAndTeach(final MOB teacherM, final MOB studentM, final CMObject teachableO, final Runnable callBack);
+
+	/**
+	 * Posts a teaching message of the given Ability or ExpertiseDefinition
+	 * for the given teacher and student.
+	 * @see ExpertiseLibrary#handleBeingTaught(MOB, MOB, Environmental, String, int)
+	 * @see ExpertiseLibrary#canBeTaught(MOB, MOB, Environmental, String)
+	 * @see ExpertiseLibrary#confirmAndTeach(MOB, MOB, CMObject, Runnable)
+	 *
+	 * @param teacher the teacher mob
+	 * @param student the student mob
+	 * @param teachObj the ability or expertisedefinition
+	 * @return true if the posting went ok, though not necessarily a completed learn
+	 */
+	public boolean postTeach(MOB teacher, MOB student, CMObject teachObj);
+
+	/**
+	 * Given an iterator of expertise stage ids, this will return an iterator
+	 * of unique expertise stage ids, filtering out other later stages.
+	 * @param i the id list to filter
+	 * @return the filtered list
+	 */
+	public Iterator<String> filterUniqueExpertiseIDList(Iterator<String> i);
 
 	/**
 	 * The Expertise Type num, which describes what skill aspect that this expertise

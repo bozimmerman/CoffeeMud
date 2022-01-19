@@ -4745,7 +4745,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						logError(scripted,"EXPLORED","Unknown Exper Flag",tt[t+2]);
 						return returnable;
 					}
-					final int num=CMLib.expertises().getExpertiseLevel(M, A.ID(), experFlag);
+					final int num=CMLib.expertises().getExpertiseLevelCached(M, A.ID(), experFlag);
 					final String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+3]);
 					final String arg5=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+4]);
 					if(lastKnownLocation!=null)
@@ -7529,7 +7529,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(funcParms,1));
 						final ExpertiseLibrary.XType experFlag = (ExpertiseLibrary.XType)CMath.s_valueOf(ExpertiseLibrary.XType.class, arg3.toUpperCase().trim());
 						if(experFlag != null)
-							results.append(""+CMLib.expertises().getExpertiseLevel(M, A.ID(), experFlag));
+							results.append(""+CMLib.expertises().getExpertiseLevelCached(M, A.ID(), experFlag));
 					}
 				}
 				break;

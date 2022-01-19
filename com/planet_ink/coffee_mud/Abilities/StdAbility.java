@@ -395,7 +395,7 @@ public class StdAbility implements Ability
 			||(A.canBeUninvoked())
 			||A.isAutoInvoked()))
 		{
-			int xlevel = CMLib.expertises().getExpertiseLevel(mob, A.ID(), code);
+			int xlevel = CMLib.expertises().getExpertiseLevelCached(mob, A.ID(), code);
 			final CharStats charStats=mob.charStats(); // circumstantial bonuses
 			final String codeStr="X"+code.name()+"+";
 			xlevel += charStats.getAbilityAdjustment(codeStr+ID().toUpperCase());
