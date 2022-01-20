@@ -53,33 +53,158 @@ public interface ExpLevelLibrary extends CMLibrary
 	 */
 	public int getLevelExperienceJustThisLevel(MOB mob, int level);
 
+	/**
+	 * Calculates the 'Power Level' for the given mob.
+	 * The Power Level is determined by the EFFECTCXL from
+	 * the ini file, and reflects Affects on the mob cast
+	 * by higher level friends.
+	 *
+	 * @param mob the mob to get the power level of
+	 * @return the power level, which might be same as normal level
+	 */
 	public int getEffectFudgedLevel(final MOB mob);
 
+	/**
+	 * Handles a message dealing with an experience change
+	 * and applies it if necessary.  Can be called with
+	 * any sort of message and it will filter it.
+	 * @see ExpLevelLibrary#handleRPExperienceChange(CMMsg)
+	 * @see ExpLevelLibrary#adjustedExperience(MOB, MOB, int)
+	 * @see ExpLevelLibrary#postExperience(MOB, MOB, String, int, boolean)
+	 * @see ExpLevelLibrary#gainExperience(MOB, MOB, String, int, boolean)
+	 * @see ExpLevelLibrary#loseExperience(MOB, int)
+	 *
+	 * @param msg the message to check and maybe handle
+	 */
 	public void handleExperienceChange(CMMsg msg);
 
+	/**
+	 * Handles a message dealing with an RP experience change
+	 * and applies it if necessary.  Can be called with
+	 * any sort of message and it will filter it.
+	 * @see ExpLevelLibrary#handleExperienceChange(CMMsg)
+	 * @see ExpLevelLibrary#gainRPExperience(MOB, MOB, String, int, boolean)
+	 * @see ExpLevelLibrary#loseRPExperience(MOB, int)
+	 * @see ExpLevelLibrary#postRPExperience(MOB, MOB, String, int, boolean)
+	 *
+	 * @param msg the message to check and maybe handle
+	 */
 	public void handleRPExperienceChange(CMMsg msg);
 
+	/**
+	 * Given a killer mob, and his victim, and a base
+	 * amount of experience, this method will adjust the
+	 * experience gain according to context, levels
+	 * and so forth
+	 * @see ExpLevelLibrary#handleExperienceChange(CMMsg)
+	 * @see ExpLevelLibrary#postExperience(MOB, MOB, String, int, boolean)
+	 *
+	 * @param mob the killer who gains xp
+	 * @param victim the victim
+	 * @param amount the base amount of xp to gain
+	 * @return the adjusted amount of xp
+	 */
 	public int adjustedExperience(MOB mob, MOB victim, int amount);
 
+	/**
+	 * Called whenever a player actually loses RP experience.
+	 * @see ExpLevelLibrary#gainRPExperience(MOB, MOB, String, int, boolean)
+	 * @see ExpLevelLibrary#postRPExperience(MOB, MOB, String, int, boolean)
+	 * @see ExpLevelLibrary#handleRPExperienceChange(CMMsg)
+	 * @see ExpLevelLibrary#loseExperience(MOB, int)
+	 *
+	 * @param mob the mob to take experience from
+	 * @param amount the amount of experience to lose
+	 */
+	public void loseRPExperience(MOB mob, int amount);
+
+	/**
+	 * Called whenever a player actually gains RP experience.
+	 * @see ExpLevelLibrary#loseRPExperience(MOB, int)
+	 * @see ExpLevelLibrary#postRPExperience(MOB, MOB, String, int, boolean)
+	 * @see ExpLevelLibrary#handleRPExperienceChange(CMMsg)
+	 * @see ExpLevelLibrary#gainExperience(MOB, MOB, String, int, boolean)
+	 *
+	 * @param mob the mob to distribute experience to
+	 * @param victim the mob killed, if any, to cause the experience gain
+	 * @param homageMessage the name, if any, of another mob whose gain experience is
+	 *            causing this gain
+	 * @param amount the amount of experience to gain
+	 * @param quiet true if no messages should be given
+	 */
+	public void gainRPExperience(MOB mob, MOB victim, String homageMessage, int amount, boolean quiet);
+
+	/**
+	 * Generates and posts a rolePlay experience gain message, allowing it to
+	 * be previewed, modified, and then to happen.
+	 * @see ExpLevelLibrary#loseRPExperience(MOB, int)
+	 * @see ExpLevelLibrary#gainRPExperience(MOB, MOB, String, int, boolean)
+	 * @see ExpLevelLibrary#handleRPExperienceChange(CMMsg)
+	 * @see ExpLevelLibrary#postExperience(MOB, MOB, String, int, boolean)
+	 *
+	 * @param mob the gainer of the rp xp
+	 * @param target the target of the event that causes the xp to be gained
+	 * @param homage null, or person to credit the xp to (or clan, or a message, whatever)
+	 * @param amount the amount of xp to gain
+	 * @param quiet true to gain xp silently, false to be up front.
+	 * @return true if the xp was granted.
+	 */
+	public boolean postRPExperience(MOB mob, MOB target, String homage, int amount, boolean quiet);
+
+	/**
+	 * Generates and posts a normal experience gain message, allowing it to
+	 * be previewed, modified, and then to happen.
+	 * @see ExpLevelLibrary#handleExperienceChange(CMMsg)
+	 * @see ExpLevelLibrary#gainExperience(MOB, MOB, String, int, boolean)
+	 * @see ExpLevelLibrary#loseExperience(MOB, int)
+	 * @see ExpLevelLibrary#postRPExperience(MOB, MOB, String, int, boolean)
+	 *
+	 * @param mob the gainer of the xp, usually the killer
+	 * @param victim the victim of the event that causes the xp to be gained
+	 * @param homage null, or person to credit the xp to (or clan, or a message, whatever)
+	 * @param amount the amount of xp to gain
+	 * @param quiet true to gain xp silently, false to be up front.
+	 * @return true if the xp was granted.
+	 */
 	public int postExperience(MOB mob, MOB victim, String homage, int amount, boolean quiet);
 
 	public String doBaseLevelAdjustment(MOB mob, int adjuster);
 
+	/**
+	 * Causes the given mob to gain a level, with all that entails
+	 * @see ExpLevelLibrary#unLevel(MOB)
+	 *
+	 * @param mob the mob to gain the level
+	 */
 	public void level(MOB mob);
 
+	/**
+	 * Causes the given mob to lose a level, with all that entails
+	 * This might include losing skills/abilities, and always includes
+	 * things like losing trains and pracs
+	 *
+	 * @see ExpLevelLibrary#level(MOB)
+	 *
+	 * @param mob the mob to lose the level
+	 */
 	public void unLevel(MOB mob);
 
-	public void loseRPExperience(MOB mob, int amount);
-
-	public void gainRPExperience(MOB mob, MOB target, String homageMessage, int amount, boolean quiet);
-
-	public boolean postRPExperience(MOB mob, MOB target, String homage, int amount, boolean quiet);
-
+	/**
+	 * Checks whether the given Command is assigned as the Deferred XP Assignment
+	 * command in the coffeemud.ini file.  If it is, then a Defer command
+	 * is returned instead, thus making the original command consumed.
+	 *
+	 * @param mob the mob who is commanding
+	 * @param C the command the mob wants to do
+	 * @param cmds the command line that generated the command
+	 * @return the command to actually execute, which is usually the one given
+	 */
 	public Command deferCommandCheck(final MOB mob, final Command C, List<String> cmds);
 
 	/**
 	 * If the given item is a boardable, this method will post the given
-	 * amount of experience to all abord.
+	 * amount of experience to all aboard.
+	 *
 	 * @param possibleShip the ship to give experience to
 	 * @param amount amount of experience to give to each person found
 	 * @param target the vanquished whatever that was the reason for the xp
@@ -113,6 +238,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	/**
 	 * Returns the amount of hp the given player would have being their current
 	 * base class.
+	 * @see ExpLevelLibrary#getLevelHitPoints(MOB)
 	 *
 	 * @param mob the mob
 	 * @return the amount of hp a pc should have
@@ -121,6 +247,10 @@ public interface ExpLevelLibrary extends CMLibrary
 
 	/**
 	 * Returns the amount of mana the given npc mob should have
+	 * @see ExpLevelLibrary#getLevelMana(MOB)
+	 * @see ExpLevelLibrary#getLevelMove(MOB)
+	 * @see ExpLevelLibrary#getLevelMoneyRange(MOB)
+	 * @see ExpLevelLibrary#getPlayerHitPoints(MOB)
 	 *
 	 * @param mob the mob who would have hit points
 	 * @return the amount of hp an npc should have
@@ -130,6 +260,9 @@ public interface ExpLevelLibrary extends CMLibrary
 	/**
 	 * Returns the amount of mana the given mob would have being their current
 	 * base class.
+	 * @see ExpLevelLibrary#getLevelMove(MOB)
+	 * @see ExpLevelLibrary#getLevelMoneyRange(MOB)
+	 * @see ExpLevelLibrary#getLevelHitPoints(MOB)
 	 *
 	 * @param mob the mob
 	 * @return the amount of mana an npc should have
@@ -139,6 +272,9 @@ public interface ExpLevelLibrary extends CMLibrary
 	/**
 	 * Returns the range of money the given mob would have being their current
 	 * base class. Since money is variable, this is a range low-high
+	 * @see ExpLevelLibrary#getLevelMana(MOB)
+	 * @see ExpLevelLibrary#getLevelMove(MOB)
+	 * @see ExpLevelLibrary#getLevelHitPoints(MOB)
 	 *
 	 * @param mob the mob
 	 * @return the range of money an npc should have
@@ -148,6 +284,9 @@ public interface ExpLevelLibrary extends CMLibrary
 	/**
 	 * Returns the number of attacks the given mob would have being their
 	 * current base class.
+	 * @see ExpLevelLibrary#getLevelMOBArmor(MOB)
+	 * @see ExpLevelLibrary#getLevelAttack(MOB)
+	 * @see ExpLevelLibrary#getLevelMOBDamage(MOB)
 	 *
 	 * @param mob the mob
 	 * @return the number of attacks an npc should have
@@ -157,6 +296,9 @@ public interface ExpLevelLibrary extends CMLibrary
 	/**
 	 * Returns the amount of movement the given mob would have being their
 	 * current base class.
+	 * @see ExpLevelLibrary#getLevelMana(MOB)
+	 * @see ExpLevelLibrary#getLevelMoneyRange(MOB)
+	 * @see ExpLevelLibrary#getLevelHitPoints(MOB)
 	 *
 	 * @param mob the mob
 	 * @return the amount of movement an npc should have
@@ -166,6 +308,9 @@ public interface ExpLevelLibrary extends CMLibrary
 	/**
 	 * Returns the amount of combat prowess the given mob would have being their
 	 * current base class.
+	 * @see ExpLevelLibrary#getLevelMOBArmor(MOB)
+	 * @see ExpLevelLibrary#getLevelMOBDamage(MOB)
+	 * @see ExpLevelLibrary#getLevelMOBSpeed(MOB)
 	 *
 	 * @param mob the mob
 	 * @return the amount of combat prowess an npc should have
@@ -175,6 +320,9 @@ public interface ExpLevelLibrary extends CMLibrary
 	/**
 	 * Returns the armor rating the given mob would have being their current
 	 * base class.
+	 * @see ExpLevelLibrary#getLevelAttack(MOB)
+	 * @see ExpLevelLibrary#getLevelMOBDamage(MOB)
+	 * @see ExpLevelLibrary#getLevelMOBSpeed(MOB)
 	 *
 	 * @param mob the mob
 	 * @return the armor rating an npc should have
@@ -184,6 +332,10 @@ public interface ExpLevelLibrary extends CMLibrary
 	/**
 	 * Returns the amount of damage per hit the given mob would have being their
 	 * current base class.
+	 * @see ExpLevelLibrary#getLevelMOBArmor(MOB)
+	 * @see ExpLevelLibrary#getLevelAttack(MOB)
+	 * @see ExpLevelLibrary#getLevelMOBSpeed(MOB)
+	 *
 	 *
 	 * @param mob the mob
 	 * @return the amount of damage per hit an npc should have
@@ -195,8 +347,12 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * the experience gain for the player as well as determining how much, if
 	 * any should be distributed to leiges or clans. Will automatically cause a
 	 * call to level if necessary.
-	 *
 	 * @see ExpLevelLibrary#level(MOB)
+	 * @see ExpLevelLibrary#handleExperienceChange(CMMsg)
+	 * @see ExpLevelLibrary#postExperience(MOB, MOB, String, int, boolean)
+	 * @see ExpLevelLibrary#loseExperience(MOB, int)
+	 * @see ExpLevelLibrary#gainRPExperience(MOB, MOB, String, int, boolean)
+	 *
 	 * @param mob the mob to distribute experience to
 	 * @param victim the mob killed, if any, to cause the experience gain
 	 * @param homage the name, if any, of another mob whose gain experience is
@@ -209,10 +365,14 @@ public interface ExpLevelLibrary extends CMLibrary
 	/**
 	 * Called whenever a member loses any experience. It actually
 	 * does the experience loss for the player as well as determining how much,
-	 * if any should be taken awa from leiges or clans. Will automatically cause
+	 * if any should be taken away from leiges or clans. Will automatically cause
 	 * an unleveling if necessary.
-	 *
 	 * @see ExpLevelLibrary#unLevel(MOB)
+	 * @see ExpLevelLibrary#handleExperienceChange(CMMsg)
+	 * @see ExpLevelLibrary#postExperience(MOB, MOB, String, int, boolean)
+	 * @see ExpLevelLibrary#gainExperience(MOB, MOB, String, int, boolean)
+	 * @see ExpLevelLibrary#loseRPExperience(MOB, int)
+	 *
 	 * @param mob the mob to take experience away from
 	 * @param amount the amount of experience to take away
 	 */
