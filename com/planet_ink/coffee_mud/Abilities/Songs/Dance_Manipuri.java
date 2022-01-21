@@ -88,7 +88,7 @@ public class Dance_Manipuri extends Dance
 		if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&(mob.location()!=null)
-		&&((msg.amITarget(mob)))
+		&&(msg.amITarget(mob))
 		&&((count>0)||(lastRoom==null)||(lastRoom!=mob.location())))
 		{
 			final MOB target=(MOB)msg.target();
