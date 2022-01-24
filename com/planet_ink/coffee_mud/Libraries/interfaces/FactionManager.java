@@ -42,44 +42,51 @@ public interface FactionManager extends CMLibrary, Tickable
 	public int numFactions();
 	public void clearFactions();
 	public void reloadFactions(String factionList);
-	public boolean isRangeCodeName(String key);
-	public boolean isFactionedThisWay(MOB mob, Faction.FRange rangeCode);
-	public boolean isFactionID(String key);
-	public boolean isAlignmentLoaded(final Faction.Align align);
-	public boolean isFactionLoaded(String key);
-	public String rangeDescription(Faction.FRange FR, String andOr);
+	public void modifyFaction(MOB mob, Faction me) throws IOException;
+	public String resaveFaction(Faction F);
 	public Faction getFaction(String factionID);
-	public Faction getFactionByRangeCodeName(String rangeCodeName);
-	public Faction.FRange getFactionRangeByCodeName(String rangeCodeName);
-	public Faction getFactionByName(String factionNamed);
-	public Faction getFactionByNumber(int index);
-	public String makeFactionFilename(String factionID);
 	public boolean removeFaction(String factionID);
 	public String listFactions();
+
+	public boolean isRangeCodeName(String key);
+	public String rangeDescription(Faction.FRange FR, String andOr);
+	public Faction getFactionByRangeCodeName(String rangeCodeName);
+	public Faction.FRange getFactionRangeByCodeName(String rangeCodeName);
+	public Faction.FRange getRange(String factionID, int faction);
+	public Enumeration<Faction.FRange> getRanges(String factionID);
+	public double getRangePercent(String factionID, int faction);
+
+	public boolean isFactionID(String key);
+	public boolean isFactionLoaded(String key);
+	public Faction getFactionByName(String factionNamed);
+	public Faction getFactionByNumber(int index);
 	public String getName(String factionID);
 	public int getMinimum(String factionID);
 	public int getMaximum(String factionID);
 	public int getPercent(String factionID, int faction);
 	public int getPercentFromAvg(String factionID, int faction);
-	public Faction.FRange getRange(String factionID, int faction);
-	public Enumeration<Faction.FRange> getRanges(String factionID);
-	public double getRangePercent(String factionID, int faction);
 	public int getTotal(String factionID);
 	public int getRandom(String factionID);
+	public int isFactionTag(String tag);
+	public Faction makeReactionFaction(final String prefix, final String classID, final String Name, final String code, final String baseTemplateFilename);
+	public int getAbilityFlagType(String strflag);
+
+	public String makeFactionFilename(String factionID);
+
+	public boolean isFactionedThisWay(MOB mob, Faction.FRange rangeCode);
 	public void updatePlayerFactions(MOB mob, Room R, boolean forceAutoCheck);
+	public boolean postChangeAllFactions(MOB mob, MOB victim, int amount, boolean quiet);
+	public boolean postFactionChange(MOB mob, Environmental tool,String factionID, int amount);
+
 	public String getAlignmentID();
-	public String getInclinationID();
 	public void setAlignment(MOB mob, Faction.Align newAlignment);
 	public void setAlignmentOldRange(MOB mob, int oldRange);
 	public int getAlignPurity(int faction, Faction.Align eq);
-	public int getInclinationPurity(final int faction, final Faction.Align eq);
 	public int getAlignMedianFacValue(Faction.Align eq);
-	public int isFactionTag(String tag);
 	public Faction.Align getAlignEnum(String str);
-	public void modifyFaction(MOB mob, Faction me) throws IOException;
-	public boolean postChangeAllFactions(MOB mob, MOB victim, int amount, boolean quiet);
-	public boolean postFactionChange(MOB mob, Environmental tool,String factionID, int amount);
-	public Faction makeReactionFaction(final String prefix, final String classID, final String Name, final String code, final String baseTemplateFilename);
-	public int getAbilityFlagType(String strflag);
-	public String resaveFaction(Faction F);
+	public boolean isAlignmentLoaded(final Faction.Align align);
+
+	public String getInclinationID();
+	public int getInclinationPurity(final int faction, final Faction.Align eq);
+
 }
