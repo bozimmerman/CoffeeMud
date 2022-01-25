@@ -82,6 +82,8 @@ public class Healer extends Cleric
 
 	protected volatile long auraCheckTime = System.currentTimeMillis();
 
+	protected final long auraCheckPeriod = 2L * 60L * 1000L;
+
 	public Healer()
 	{
 		super();
@@ -226,12 +228,11 @@ public class Healer extends Cleric
 		final MOB myChar=(MOB)ticking;
 		if(tickID!=Tickable.TICKID_MOB)
 			return super.tick(ticking, tickID);
-		if((System.currentTimeMillis() - auraCheckTime) > 2 * 60 * 1000)
+		final long auraEllapsed = System.currentTimeMillis() - auraCheckTime;
+		if(auraEllapsed > auraCheckPeriod)
 		{
-			if((System.currentTimeMillis() - auraCheckTime) > 3 * 60 * 1000)
-			{
+			if(auraEllapsed > auraCheckPeriod + 30) // try it every tick for 30 secs?! why is this necessary?!
 				auraCheckTime = System.currentTimeMillis();
-			}
 			affectHealingAura(myChar);
 		}
 		return super.tick(myChar,tickID);
@@ -240,7 +241,8 @@ public class Healer extends Cleric
 	public void affectHealingAura(final MOB myChar)
 	{
 		Ability A = myChar.fetchEffect("Prayer_HealingAura");
-		if((myChar.charStats().getClassLevel(this)>=30)&&(CMLib.flags().isGood(myChar)))
+		if((myChar.charStats().getClassLevel(this)>=30)
+		&&(CMLib.flags().isGood(myChar)))
 		{
 			if(A==null)
 			{
@@ -258,6 +260,20 @@ public class Healer extends Cleric
 			myChar.delEffect(A);
 			A.destroy();
 		}
+	}
+
+	@Override
+	public void unLevel(final MOB mob)
+	{
+		super.unLevel(mob);
+		affectHealingAura(mob);
+	}
+
+	@Override
+	public void level(final MOB mob, final List<String> gainedAbilityIDs)
+	{
+		super.level(mob, gainedAbilityIDs);;
+		affectHealingAura(mob);
 	}
 
 	private final String[] raceRequiredList=new String[]{

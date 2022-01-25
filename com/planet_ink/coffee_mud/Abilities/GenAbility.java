@@ -764,7 +764,10 @@ public class GenAbility extends StdAbility
 				};
 				this.periodicEffect=null;
 				skillAction.run();
-				if((canAffectCode()!=0)&&(finalTarget!=null)&&(!finalTargetMOB.amDead())&&(CMLib.flags().isInTheGame(finalTarget, true)))
+				if((canAffectCode()!=0)
+				&&(finalTarget!=null)
+				&&(!finalTargetMOB.amDead())
+				&&(CMLib.flags().isInTheGame(finalTarget, true)))
 				{
 					Ability A=finalTarget.fetchEffect(ID());
 					if((!(A instanceof GenAbility))||(A.invoker()!=mob))
