@@ -1,3 +1,6 @@
+@ Build 5.9.13 Release ?/??/2022
+  1. New Scriptable functions: ROOMPC and AREAPC
+
 # Build 5.9.12 Release 1/17/2022
   *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG
   1. Prop_Have/WearAdjuster supports item sets now

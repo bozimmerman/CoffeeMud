@@ -4700,16 +4700,96 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-					if(lastKnownLocation!=null)
+					final Area A=(lastKnownLocation!=null)?lastKnownLocation.getArea():null;
+					if(A!=null)
 					{
 						int num=0;
 						for(final Session S : CMLib.sessions().localOnlineIterable())
 						{
-							if((S.mob().location()!=null)&&(S.mob().location().getArea()==lastKnownLocation.getArea()))
+							final Room mR = S.mob().location();
+							final Area mA = (mR!=null)?mR.getArea():null;
+							if(mA==A)
 								num++;
 						}
 						returnable=simpleEval(scripted,""+num,arg2,arg1,"NUMPCSAREA");
 					}
+					break;
+				}
+				case 117: // areapc
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					Environmental which=null;
+					if(lastKnownLocation!=null)
+					{
+						final Area A=(lastKnownLocation!=null)?lastKnownLocation.getArea():null;
+						if(A!=null)
+						{
+							final String arg1t = arg1.trim();
+							final int whichI = CMath.isInteger(arg1t)?CMath.s_int(arg1t): -1;
+							int num=0;
+							for(final Session S : CMLib.sessions().localOnlineIterable())
+							{
+								final MOB M = S.mob();
+								final Room mR = (M!=null)?M.location():null;
+								final Area mA = (mR!=null)?mR.getArea():null;
+								if(mA==A)
+								{
+									num++;
+									if((whichI == num)
+									||((whichI<0)&&(mR.fetchInhabitants(arg1t).contains(M))))
+									{
+										which = M;
+										break;
+									}
+								}
+							}
+						}
+					}
+					if(which==null)
+						returnable=false;
+					else
+						returnable=(CMLib.english().containsString(which.name(),arg2)
+									||CMLib.english().containsString(which.Name(),arg2)
+									||CMLib.english().containsString(which.displayText(),arg2));
+					break;
+				}
+				case 116: // roompc
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					Environmental which=null;
+					final Room R = lastKnownLocation;
+					if(R!=null)
+					{
+						final String arg1t = arg1.trim();
+						final int whichI = CMath.isInteger(arg1t)?CMath.s_int(arg1t): -1;
+						int num=0;
+						for(final Enumeration<MOB> m= R.inhabitants();m.hasMoreElements();)
+						{
+							final MOB M=m.nextElement();
+							if((M!=null)&&(!M.isMonster()))
+							{
+								num++;
+								if((whichI == num)
+								||((whichI<0)&&(R.fetchInhabitants(arg1t).contains(M))))
+								{
+									which = M;
+									break;
+								}
+							}
+						}
+					}
+					if(which==null)
+						returnable=false;
+					else
+						returnable=(CMLib.english().containsString(which.name(),arg2)
+									||CMLib.english().containsString(which.Name(),arg2)
+									||CMLib.english().containsString(which.displayText(),arg2));
 					break;
 				}
 				case 115: // expertise
@@ -7422,6 +7502,89 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 						results.append(CMLib.english().getContextName(list,which));
 					}
+				}
+				break;
+			}
+			case 116: // roompc
+			{
+				final String clean=CMParms.cleanBit(funcParms);
+				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,clean);
+				Environmental which=null;
+				final Room R=lastKnownLocation;
+				if(R!=null)
+				{
+					final String arg1t = arg1.trim();
+					if(CMath.isInteger(arg1t))
+					{
+						final int whichI = CMath.s_int(arg1t);
+						int num=0;
+						for(int i=0;i<R.numInhabitants();i++)
+						{
+							final MOB M=R.fetchInhabitant(i);
+							if((M!=null)&&(!M.isMonster()))
+							{
+								num++;
+								if(num == whichI)
+								{
+									which=M;
+									break;
+								}
+							}
+						}
+					}
+					else
+					{
+						final Environmental E=getArgumentMOB(clean, source, monster, target, primaryItem, secondaryItem, msg, tmp);
+						if(E instanceof MOB)
+							which=E;
+						else
+							which=R.fetchInhabitant(arg1t);
+						if((which instanceof MOB)&&(((MOB)which).isMonster()))
+							which=null;
+					}
+					if(which!=null)
+					{
+						final List<MOB> list=new ArrayList<MOB>();
+						for(int i=0;i<R.numInhabitants();i++)
+						{
+							final MOB M=R.fetchInhabitant(i);
+							if(M!=null)
+								list.add(M); // ALL of them are necc to get the proper context name
+						}
+						results.append(CMLib.english().getContextName(list,which));
+					}
+				}
+				break;
+			}
+			case 117: // areapc
+			{
+				final String clean=CMParms.cleanBit(funcParms);
+				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,clean);
+				Environmental which=null;
+				final Area A=(lastKnownLocation!=null)?lastKnownLocation.getArea():null;
+				if(A!=null)
+				{
+					final String arg1t = arg1.trim();
+					final int whichI = CMath.isInteger(arg1t)?CMath.s_int(arg1t): -1;
+					int num=0;
+					for(final Session S : CMLib.sessions().localOnlineIterable())
+					{
+						final MOB M = S.mob();
+						final Room mR = (M!=null)?M.location():null;
+						final Area mA = (mR!=null)?mR.getArea():null;
+						if(mA==A)
+						{
+							num++;
+							if((whichI == num)
+							||((whichI<0)&&(mR.fetchInhabitants(arg1t).contains(M))))
+							{
+								which = M;
+								break;
+							}
+						}
+					}
+					if(which!=null)
+						results.append(which.Name());
 				}
 				break;
 			}
