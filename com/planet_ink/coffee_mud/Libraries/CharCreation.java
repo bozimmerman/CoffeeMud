@@ -730,7 +730,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			final Deity D = i.next();
 			if(!i.hasNext())
 			{
-				if (list.length()>0)
+				if (list.length()>2)
 				{
 					list.append(finalConnector+" ");
 				}
