@@ -1536,14 +1536,32 @@ public class GenCharClass extends StdCharClass
 	public void startCharacter(final MOB mob, final boolean isBorrowedClass, final boolean verifyOnly)
 	{
 		super.startCharacter(mob,isBorrowedClass,verifyOnly);
-		if((!verifyOnly)&&(startAdjState!=null))
+		if(!verifyOnly)
 		{
-			mob.baseState().setFatigue(mob.baseState().getFatigue()+startAdjState.getFatigue());
-			mob.baseState().setHitPoints(mob.baseState().getHitPoints()+startAdjState.getHitPoints());
-			mob.baseState().setHunger(mob.baseState().getHunger()+startAdjState.getHunger());
-			mob.baseState().setMana(mob.baseState().getMana()+startAdjState.getMana());
-			mob.baseState().setMovement(mob.baseState().getMovement()+startAdjState.getMovement());
-			mob.baseState().setThirst(mob.baseState().getThirst()+startAdjState.getThirst());
+			if(startAdjState!=null)
+			{
+				mob.baseState().setFatigue(mob.baseState().getFatigue()+startAdjState.getFatigue());
+				mob.baseState().setHitPoints(mob.baseState().getHitPoints()+startAdjState.getHitPoints());
+				mob.baseState().setHunger(mob.baseState().getHunger()+startAdjState.getHunger());
+				mob.baseState().setMana(mob.baseState().getMana()+startAdjState.getMana());
+				mob.baseState().setMovement(mob.baseState().getMovement()+startAdjState.getMovement());
+				mob.baseState().setThirst(mob.baseState().getThirst()+startAdjState.getThirst());
+			}
+			if(mob.playerStats()==null)
+			{
+				final List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
+															mob.charStats().getClassLevel(ID()),
+															false,
+															false);
+				for(final AbilityMapper.AbilityMapping able : V)
+				{
+					final Ability A=CMClass.getAbility(able.abilityID());
+					if((A!=null)
+					&&(!CMLib.ableMapper().getAllQualified(ID(),true,A.ID()))
+					&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
+						giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
+				}
+			}
 		}
 	}
 
