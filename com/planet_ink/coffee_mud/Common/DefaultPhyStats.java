@@ -237,6 +237,22 @@ public class DefaultPhyStats implements PhyStats
 	}
 
 	@Override
+	public int getStat(final int statNum)
+	{
+		if(statNum<PhyStats.NUM_STATS)
+			return stats[statNum];
+		return 0;
+	}
+
+	@Override
+	public void setStat(final int statNum, final int value)
+	{
+		if(statNum<PhyStats.NUM_STATS)
+			stats[statNum] = value;
+	}
+
+
+	@Override
 	public String getCombatStats()
 	{
 		return "L" + stats[STAT_LEVEL] + ":A" + stats[STAT_ARMOR] + ":K" + stats[STAT_ATTACK] + ":D" + stats[STAT_DAMAGE];

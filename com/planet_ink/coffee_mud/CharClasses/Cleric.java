@@ -339,12 +339,13 @@ public class Cleric extends StdCharClass
 		if(!ID().equals("Cleric"))
 			return;
 
+		final int classLevel = mob.baseCharStats().getClassLevel(this);
 		for(int a=0;a<mob.numAbilities();a++)
 		{
 			final Ability A=mob.fetchAbility(a);
 			if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())>0)
 			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
-			&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())==mob.baseCharStats().getClassLevel(this))
+			&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())==classLevel)
 			&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
 				return;
 		}
@@ -356,7 +357,7 @@ public class Cleric extends StdCharClass
 			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 			&&(A.appropriateToMyFactions(mob))
 			&&(CMLib.ableMapper().getSecretSkill(ID(),true,A.ID())==SecretFlag.PUBLIC)
-			&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())==mob.baseCharStats().getClassLevel(this))
+			&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())==classLevel)
 			&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
 			{
 				giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);

@@ -313,6 +313,23 @@ public interface PhyStats extends CMCommon, Modifiable
 	 */
 	public void setAllValues(int def);
 
+
+	/**
+	 * Get the value of one of the STAT_ constants from the PhyStats interface.
+	 * @see PhyStats
+	 * @param statNum which STAT_ constant to get a value for
+	 * @return the value of the given STAT
+	 */
+	public int getStat(int statNum);
+
+	/**
+	 * Set the value of one of the STAT_ constants from the PhyStats interface.
+	 * @see PhyStats
+	 * @param statNum which STAT_ constant to get a value for
+	 * @param value the value of the given STAT
+	 */
+	public void setStat(int statNum, int value);
+
 	/**
 	 * Resets all the stats in this object to their factory defaults.
 	 */

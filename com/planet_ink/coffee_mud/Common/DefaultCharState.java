@@ -343,6 +343,21 @@ public class DefaultCharState implements CharState
 		return true;
 	}
 
+	@Override
+	public int getStat(final int statNum)
+	{
+		if(statNum<CharState.STAT_NUMSTATS)
+			return states[statNum];
+		return 0;
+	}
+
+	@Override
+	public void setStat(final int statNum, final int value)
+	{
+		if(statNum<CharState.STAT_NUMSTATS)
+			states[statNum] = value;
+	}
+
 	private final static String[] CODES={
 		"HITS","MANA","MOVE",
 		"HUNGER","THIRST","FATIGUE"};

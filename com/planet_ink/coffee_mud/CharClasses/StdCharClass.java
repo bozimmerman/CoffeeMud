@@ -939,7 +939,7 @@ public class StdCharClass implements CharClass
 					A.setSavable(false);
 					final Ability A2=alreadyAff.get(A.ID());
 					if(A2!=null)
-						A2.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,A.ID()));
+						A2.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,A2.ID()));
 					else
 						A.autoInvocation(mob, false);
 					alreadyAble.put(A.ID(),A);
@@ -962,13 +962,14 @@ public class StdCharClass implements CharClass
 		else
 		{
 			final PairList<Ability,AbilityMapping> onesToAdd=new PairVector<Ability,AbilityMapping>();
+			final int classLevel = mob.baseCharStats().getClassLevel(this);
 			for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
 				final AbilityMapping mapping = CMLib.ableMapper().getQualifyingMapping(ID(), true, A.ID());
 				if((mapping != null)
 				&&(mapping.qualLevel()>0)
-				&&(mapping.qualLevel()<=mob.baseCharStats().getClassLevel(this))
+				&&(mapping.qualLevel()<=classLevel)
 				&&(mapping.autoGain()))
 				{
 					final String extraMask=mapping.extraMask();

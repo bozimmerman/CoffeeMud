@@ -824,8 +824,10 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		super.affectCharState(affectedMOB,affectedState);
 	}
 
-	public static final String fixAccoutingsWithMask(String parameters, final String mask)
+	public final String fixAccoutingsWithMask(String parameters, final String mask)
 	{
+		if(allSet != null)
+			parameters = CMParms.delParmStr(parameters, "ALLSET");
 		int x=parameters.toUpperCase().indexOf("ARM");
 		for(final StringBuffer ID=new StringBuffer(parameters);((x>0)&&(x<parameters.length()));x++)
 		{
@@ -878,6 +880,8 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 				parameters=parameters.substring(0,x)+middle.toString().trim()+parameters.substring(y+((""+val).length()));
 			}
 		}
+		if(allSet!=null)
+			parameters+="  (Requires "+allSet.allSetReqNum+" pieces from the *"+allSet.name.replace('_', ' ')+"* set)";
 		if(mask.length()>0)
 			parameters+="  Restrictions: "+CMLib.masking().maskDesc(mask);
 		return parameters;
