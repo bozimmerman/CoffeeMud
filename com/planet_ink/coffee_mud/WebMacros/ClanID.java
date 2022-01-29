@@ -52,7 +52,7 @@ public class ClanID extends StdWebMacro
 		{
 			final boolean webify=parms.containsKey("WEBCOLOR");
 			final boolean decolor=parms.containsKey("NOCOLOR");
-			final Clan C=CMLib.clans().getClan(last);
+			final Clan C=CMLib.clans().getClanAnyHost(last);
 			if(C!=null)
 			{
 				StringBuffer clanId=new StringBuffer(C.clanID());

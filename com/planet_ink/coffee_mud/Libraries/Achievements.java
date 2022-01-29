@@ -6080,7 +6080,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 										final String org = B.rulingOrganization();
 										if(org.length()>0)
 										{
-											final Clan C=CMLib.clans().getClan(org);
+											final Clan C=CMLib.clans().getClanAnyHost(org);
 											if((C!=null)
 											&&(mob.getClanRole(C.clanID())==null))
 												return false;

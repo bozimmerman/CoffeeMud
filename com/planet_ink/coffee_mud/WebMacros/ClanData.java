@@ -229,7 +229,7 @@ public class ClanData extends StdWebMacro
 			return " @break@";
 		if(last.length()>0)
 		{
-			final Clan C=CMLib.clans().getClan(last);
+			final Clan C=CMLib.clans().getClanAnyHost(last);
 			if(C!=null)
 			{
 				final boolean webify=parms.containsKey("WEBCOLOR");
@@ -744,7 +744,7 @@ public class ClanData extends StdWebMacro
 				if(parms.containsKey("OTHERCLANNAME"))
 				{
 					final String member=httpReq.getUrlParameter("CLANID");
-					final Clan CC=CMLib.clans().getClan(member);
+					final Clan CC=CMLib.clans().getClanAnyHost(member);
 					if(CC!=null)
 						str.append(CMStrings.removeColors(CC.getName())+", ");
 				}

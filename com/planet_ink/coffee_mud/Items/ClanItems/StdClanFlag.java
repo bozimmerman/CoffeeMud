@@ -319,7 +319,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 					if (!rulingClan.equals(clanID()))
 					{
 						int relation = Clan.REL_WAR;
-						final Clan C = CMLib.clans().getClan(clanID());
+						final Clan C = CMLib.clans().getClanAnyHost(clanID());
 						if (C == null)
 						{
 							msg.source().tell(L("This ancient relic from a lost clan fades out of existence."));
