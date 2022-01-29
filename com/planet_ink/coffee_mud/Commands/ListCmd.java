@@ -793,7 +793,7 @@ public class ListCmd extends StdCommand
 	public StringBuilder areaConquests(final Session viewerS, final Enumeration<Area> these)
 	{
 		final int COL_LEN1=CMLib.lister().fixColWidth(26.0,viewerS);
-		final int COL_LEN2=CMLib.lister().fixColWidth(40.0,viewerS);
+		final int COL_LEN2=CMLib.lister().fixColWidth(36.0,viewerS);
 		final StringBuilder lines=new StringBuilder(CMStrings.padRight(L("Area"),COL_LEN1)+"| "
 										   +CMStrings.padRight(L("Clan"),COL_LEN2)+"| "
 										   +"Controlled\n\r");

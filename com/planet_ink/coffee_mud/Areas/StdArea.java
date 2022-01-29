@@ -1900,7 +1900,7 @@ public class StdArea implements Area
 				final String ruler = B.rulingOrganization();
 				if (ruler.length() > 0)
 				{
-					final Clan C = CMLib.clans().getClan(ruler);
+					final Clan C = CMLib.clans().getClanAnyHost(ruler);
 					if (C != null)
 						s.append("Controlled by  : ^H" + C.getGovernmentName() + " " + C.name() + "^N\n\r");
 				}
