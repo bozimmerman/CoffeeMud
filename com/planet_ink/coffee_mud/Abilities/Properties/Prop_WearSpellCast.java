@@ -81,6 +81,11 @@ public class Prop_WearSpellCast extends Prop_HaveSpellCast
 			checked=false;
 			return;
 		}
+		if((A instanceof Light)&&(!((Light)A).isLit()))
+		{
+			checked=false;
+			return;
+		}
 		if(checked)
 			return;
 		Item I=null;
