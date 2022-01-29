@@ -578,6 +578,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 	}
 
+	@Override
 	public Enumeration<Room> getRadiantRoomsEnum(final Room room, final RFilters filters, final Room radiateTo, final int maxDepth, final Set<Room> ignoreRooms)
 	{
 		if(room==null)
@@ -1213,9 +1214,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				((Room)enterMsg.target()).show(M,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wanders in."));
 			else
 			{
-				final String inDir=CMLib.flags().isInAShip(toHere)?
-						CMLib.directions().getShipDirectionName(dir):CMLib.directions().getDirectionName(dir);
-						((Room)enterMsg.target()).show(M,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wanders in from @x1.",inDir));
+				final String inDir=CMLib.directions().getFromDirectionName(dir, CMLib.flags().getDirType(toHere));
+				((Room)enterMsg.target()).show(M,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wanders in from @x1.",inDir));
 			}
 			((Room)enterMsg.target()).executeMsg(M, enterMsg);
 			if(M.location()!=((Room)enterMsg.target()))
@@ -1536,9 +1536,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		final CMFlagLibrary flags=CMLib.flags();
 		final int opDir=thisRoom.getReverseDir(directionCode);
 		final Exit opExit=((opDir < 0)||(destRoom==null)) ? null : destRoom.getExitInDir(opDir);
-		final boolean useShipDirs=((thisRoom instanceof Boardable)||(thisRoom.getArea() instanceof Boardable));
-		final String dirName=useShipDirs?CMLib.directions().getShipDirectionName(directionCode):CMLib.directions().getDirectionName(directionCode);
-		final String fromDir=useShipDirs?CMLib.directions().getFromShipDirectionName(opDir):CMLib.directions().getFromCompassDirectionName(opDir);
+		final Directions.DirType dirType=flags.getDirType(thisRoom);
+		final String dirName=CMLib.directions().getDirectionName(directionCode, dirType);
+		final String fromDir=CMLib.directions().getFromDirectionName(opDir, dirType);
 		final String directionName;
 		if((exit instanceof PrepositionExit)&&(((PrepositionExit)exit).getExitPreposition().length()>0))
 			directionName=((PrepositionExit)exit).getExitPreposition();

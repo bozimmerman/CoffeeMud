@@ -108,12 +108,12 @@ public class Create extends StdCommand
 			}
 		}
 
-		final boolean useShipDirs=CMLib.flags().isInAShip(mob);
+		final Directions.DirType dirType=CMLib.flags().getInDirType(mob);
 		mob.location().setRawExit(direction,thisExit);
 		if(mob.location() instanceof GridLocale)
 			((GridLocale)mob.location()).buildGrid();
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly a portal opens up @x1.\n\r",
-				(useShipDirs?CMLib.directions().getShipInDirectionName(direction):CMLib.directions().getInDirectionName(direction))));
+				(CMLib.directions().getInDirectionName(direction, dirType))));
 		CMLib.database().DBUpdateExits(mob.location());
 		if((reverseExit!=null)&&(opExit!=null)&&(opRoom!=null))
 		{

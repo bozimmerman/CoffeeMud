@@ -1095,7 +1095,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		if(victim!=null)
 		{
 			if((R!=null)
-			&&(!CMLib.flags().isAShip(victim)))
+			&&(CMLib.flags().getDirType(victim)==Directions.DirType.COMPASS))
 			{
 				for(int m=0;m<R.numInhabitants();m++)
 				{

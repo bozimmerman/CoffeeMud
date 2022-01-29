@@ -1049,29 +1049,32 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isMetal(Environmental E);
 
 	/**
-	 * Returns whether the given mob is in a sailing
-	 * ship, or space ship, or similar.
+	 * Returns the proper type/flavor of direction
+	 * for the given mob, which depends on what
+	 * sort of place he/she is in.
+	 * 
+	 * @see Directions.DirType
+	 * @see CMFlagLibrary#getDirType(Physical)
+	 * 
 	 * @param M the mob to check
-	 * @return true if they are in a ship
+	 * @return the DirType code
 	 */
-	public boolean isInAShip(final MOB M);
+	public Directions.DirType getInDirType(final MOB M);
 
 	/**
-	 * Returns whether the given room is in a sailing
-	 * ship, or space ship, or similar.
-	 * @param R the room to check
-	 * @return true if it is in a ship
+	 * Returns the proper type/flavor of direction
+	 * appropriate to the given object, based on whether 
+	 * the given physical actually IS a sailing ship,
+	 * space ship, caravan, or other.  This might include
+	 * a mob standing in for such a vessel.
+	 * 
+	 * @see Directions.DirType
+	 * @see CMFlagLibrary#getInDirType(Physical)
+	 * 
+	 * @param P the object to inspect
+	 * @return the DirType code
 	 */
-	public boolean isInAShip(final Room R);
-
-	/**
-	 * Returns whether the given thing is a ship,
-	 * or a mob representing a ship, or similar.
-	 *
-	 * @param P the thing to check
-	 * @return true if its a ship
-	 */
-	public boolean isAShip(final Physical P);
+	public Directions.DirType getDirType(final Physical P);
 
 	/**
 	 * If the given thing is related to a ship, it returns

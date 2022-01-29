@@ -292,6 +292,28 @@ public class Directions
 	}
 
 	/**
+	 * Returns a string list of all of the permitted direction names. Either 6 or 10.
+	 * @param dirType the type/flavor of direction names to use
+	 * 
+	 * @return a string list of all of the permitted direction names. Either 6 or 10.
+	 */
+	public static final String NAMES_LIST(final DirType dirType)
+	{
+		switch(dirType)
+		{
+		case CARAVAN:
+			return d().DIRECTION_CARANAMES;
+		case SHIP:
+			return d().DIRECTION_SHIPNAMES;
+		case COMPASS:
+		default:
+			return d().DIRECTION_NAMES;
+		
+		}
+	}
+
+	
+	/**
 	 * Returns the formal direction name of the partial direction given.
 	 * @param theDir the partial direction name, case insensitive
 	 * @return the formal direction name
@@ -460,10 +482,32 @@ public class Directions
 		return "";
 	}
 
+	/** 
+	 * Given the direction code, and the type/flavor of direction, this
+	 * will return the normal direction name.
+	 * 
+	 * @param code the direction code
+	 * @param typ true the direction type/flavor to use
+	 * @return the name of the direction, normal-style
+	 */
+	public String getDirectionName(final int code, final DirType typ)
+	{
+		switch(typ)
+		{
+		case CARAVAN:
+			return getCaraDirectionName(code);
+		case SHIP:
+			return getShipDirectionName(code);
+		case COMPASS:
+		default:
+			return getDirectionName(code);
+		}
+	}
+	
 	/**
 	 * Given the direction code, returns the formal name of that direction, capitalized.
 	 * @param code the direction code
-	 * @param useShip true to use ship type directions, false for compass
+	 * @param typ true the direction type/flavor to use
 	 * @return the name of that direction, capitalized
 	 */
 	public String getUpperDirectionName(final int code, final DirType typ)
@@ -784,6 +828,32 @@ public class Directions
 		return -1;
 	}
 
+
+	/**
+	 * Given a string which is technically supposed to be a talk direction name,
+	 * this method will make a case-insensitive check against the given
+	 * string and return the direction it probably represents.  It gives
+	 * preference to actual direction names, such as port and north, but
+	 * if all fail, it will try prefixes, such as por, nor, etc.
+	 * 
+	 * @param theDir the ship-talk direction search string
+	 * @param typ the direction type/flavor code
+	 * @return the direction code it represents, or -1 if no match at ALL
+	 */
+	public int getGoodDirectionCode(final String theDir, final Directions.DirType typ)
+	{
+		switch(typ)
+		{
+		case CARAVAN:
+			return getGoodCaraDirectionCode(theDir);
+		case SHIP:
+			return getGoodShipDirectionCode(theDir);
+		case COMPASS:
+		default:
+			return getGoodDirectionCode(theDir);
+		}
+	}
+	
 	/**
 	 * Given a string which is technically supposed to be a ship-talk direction name,
 	 * this method will make a case-insensitive check against the given
@@ -946,6 +1016,30 @@ public class Directions
 			return DIRECTIONS_COMPASS_FROM_INDEXED[code];
 		return "";
 	}
+	
+
+	/**
+	 * Returns the proper english compass direction name to follow the preposition
+	 * "from" when talking about something or someone coming FROM the given direction
+	 * code.  Completes the following sentence: "Joe arrived from ..."
+	 * 
+	 * @param code the direction code
+	 * @param typ the type/flavor of direction
+	 * @return the name of the direction phrase
+	 */
+	public String getFromDirectionName(final int code, final DirType typ)
+	{
+		switch(typ)
+		{
+		case CARAVAN:
+			return getFromCaraDirectionName(code);
+		case SHIP:
+			return getFromShipDirectionName(code);
+		case COMPASS:
+		default:
+			return getFromCompassDirectionName(code);
+		}
+	}
 
 	/**
 	 * Returns the proper english compass direction name to relative to somewhere else.
@@ -987,6 +1081,32 @@ public class Directions
 		return "";
 	}
 
+
+	/** 
+	 * Given the direction code, and the type/flavor of direction, this
+	 * returns the proper english compass direction name to follow the preposition
+	 * "happens" when talking about something happening in the given direction
+	 * code.  Completes the following sentence: "You hear something happen ..."
+	 * Usually begins with "to the", such as "to the north", "to the northeast", etc.
+	 * 
+	 * @param code the direction code
+	 * @param typ true the direction type/flavor to use
+	 * @return the name of the direction, normal-style
+	 */
+	public String getInDirectionName(final int code, final DirType typ)
+	{
+		switch(typ)
+		{
+		case CARAVAN:
+			return getCaraInDirectionName(code);
+		case SHIP:
+			return getShipInDirectionName(code);
+		case COMPASS:
+		default:
+			return getInDirectionName(code);
+		}
+	}
+	
 	/**
 	 * Returns the proper english compass direction name to follow the preposition
 	 * "happens" when talking about something happening in the given direction

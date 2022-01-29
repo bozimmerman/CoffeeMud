@@ -147,10 +147,10 @@ public class Throw extends StdCommand
 		}
 		else
 		{
-			final boolean useShipDirs=CMLib.flags().isInAShip(mob);
+			final Directions.DirType dirType=CMLib.flags().getInDirType(mob);
 			final int opDir=mob.location().getReverseDir(dir);
-			final String inDir=useShipDirs?CMLib.directions().getShipInDirectionName(dir):CMLib.directions().getInDirectionName(dir);
-			final String fromDir=useShipDirs?CMLib.directions().getFromShipDirectionName(opDir):CMLib.directions().getFromCompassDirectionName(opDir);
+			final String inDir=CMLib.directions().getInDirectionName(dir, dirType);
+			final String fromDir=CMLib.directions().getFromDirectionName(opDir, dirType);
 			final CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,L("<S-NAME> throw(s) <O-NAME> @x1.",inDir.toLowerCase()));
 			final CMMsg msg2=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,L("<O-NAME> fl(ys) in from @x1.",fromDir.toLowerCase()));
 			if(mob.location()==target)

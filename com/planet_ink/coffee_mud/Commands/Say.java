@@ -346,7 +346,7 @@ public class Say extends StdCommand
 			if(langSwap[0]!=null)
 				langSwap[0].setBeingSpoken(langSwap[0].ID(), true);
 		}
-		final boolean useShipDirs=CMLib.flags().isInAShip(R);
+		final Directions.DirType dirType=CMLib.flags().getDirType(R);
 		if(R.okMessage(mob,msg))
 		{
 			R.send(mob,msg);
@@ -371,7 +371,7 @@ public class Say extends StdCommand
 						if(opDirCode<0)
 							opDirCode=Directions.getOpDirectionCode(dirCode);
 					}
-					final String inDirName=(dirCode<0)?"":(useShipDirs?CMLib.directions().getShipInDirectionName(opDirCode):CMLib.directions().getInDirectionName(opDirCode));
+					final String inDirName=(dirCode<0)?"":(CMLib.directions().getInDirectionName(opDirCode, dirType));
 					msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,L("^TYou hear someone yell ")+"'"+combinedCommands+"' "+inDirName+"^?");
 					if((R2.okMessage(mob,msg))
 					&&((tool==null)||(tool.okMessage(mob,msg))))

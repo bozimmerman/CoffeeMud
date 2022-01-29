@@ -2411,12 +2411,7 @@ public class StdRoom implements Room
 			for(int e=0;e<exits.length;e++)
 			{
 				if(exits[e]==E)
-				{
-					if(CMLib.flags().isInAShip(this))
-						return CMLib.directions().getShipDirectionName(e);
-					else
-						return CMLib.directions().getDirectionName(e);
-				}
+					return CMLib.directions().getDirectionName(e, CMLib.flags().getDirType(this));
 			}
 			return E.Name();
 		}
@@ -2735,11 +2730,11 @@ public class StdRoom implements Room
 			found=mob.fetchItem(goodLocation,filter,thingName);
 		if(found==null)
 		{
-			final boolean inShip=CMLib.flags().isInAShip(this);
+			final Directions.DirType dirType=CMLib.flags().getDirType(this);
 			for(int d=0;d<exits.length;d++)
 			{
 				if((exits[d]!=null)
-				&&(thingName.equalsIgnoreCase(inShip?CMLib.directions().getShipDirectionName(d):CMLib.directions().getDirectionName(d))))
+				&&(thingName.equalsIgnoreCase(CMLib.directions().getDirectionName(d,dirType))))
 					return getExitInDir(d);
 			}
 		}

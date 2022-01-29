@@ -259,8 +259,8 @@ public class Copy extends StdCommand
 				}
 				if(room.getRoomInDir(dirCode)!=null)
 				{
-					final boolean useShipDirs=CMLib.flags().isInAShip(room);
-					mob.tell(L("A room already exists @x1!",(useShipDirs?CMLib.directions().getShipInDirectionName(dirCode):CMLib.directions().getInDirectionName(dirCode))));
+					final Directions.DirType dirType=CMLib.flags().getDirType(room);
+					mob.tell(L("A room already exists @x1!",(CMLib.directions().getInDirectionName(dirCode, dirType))));
 					return false;
 				}
 				synchronized(("SYNC"+room.roomID()).intern())
@@ -295,8 +295,8 @@ public class Copy extends StdCommand
 					if(newRoom.numItems()>0)
 						CMLib.database().DBUpdateItems(newRoom);
 					newRoom.getArea().fillInAreaRoom(newRoom);
-					final boolean useShipDirs=CMLib.flags().isInAShip(room);
-					final String inDirName=useShipDirs?CMLib.directions().getShipInDirectionName(dirCode):CMLib.directions().getInDirectionName(dirCode);
+					final Directions.DirType dirType=CMLib.flags().getDirType(room);
+					final String inDirName=CMLib.directions().getInDirectionName(dirCode, dirType);
 					if(i==0)
 					{
 						if(number>1)
@@ -337,8 +337,8 @@ public class Copy extends StdCommand
 						editRoom.setRawExit(dirCode, (Exit)E);
 						CMLib.database().DBUpdateExits(editRoom);
 					}
-					final boolean useShipDirs=CMLib.flags().isInAShip(editRoom);
-					final String inDirName=useShipDirs?CMLib.directions().getShipInDirectionName(dirCode):CMLib.directions().getInDirectionName(dirCode);
+					final Directions.DirType dirType=CMLib.flags().getDirType(editRoom);
+					final String inDirName=CMLib.directions().getInDirectionName(dirCode, dirType);
 					room.showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 falls @x2.",E.name(),inDirName));
 				}
 			}

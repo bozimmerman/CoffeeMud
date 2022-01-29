@@ -411,9 +411,7 @@ public class Emoter extends ActiveTicker
 						&&(R.numPCInhabitants()>0))
 						{
 							final int opDir=room.getReverseDir(d);
-							final String inDir=CMLib.flags().isInAShip(R)?
-									CMLib.directions().getShipInDirectionName(opDir):
-										CMLib.directions().getInDirectionName(opDir);
+							final String inDir=CMLib.directions().getInDirectionName(opDir, CMLib.flags().getDirType(R));
 							if(emoter == null)
 							{
 								emoter=CMClass.getFactoryMOB();

@@ -384,10 +384,10 @@ public class Destroy extends StdCommand
 				CMLib.database().DBUpdateExits(GL);
 			}
 			mob.location().getArea().fillInAreaRoom(mob.location());
-			final boolean useShipDirs=CMLib.flags().isInAShip(mob);
-			final String inDirName=useShipDirs?CMLib.directions().getShipDirectionName(direction):CMLib.directions().getDirectionName(direction);
+			final Directions.DirType dirType = CMLib.flags().getInDirType(mob);
+			final String inDirName=CMLib.directions().getDirectionName(direction, dirType);
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A wall of inhibition falls @x1.",inDirName));
-			final String dirName=useShipDirs?CMLib.directions().getShipDirectionName(direction):CMLib.directions().getDirectionName(direction);
+			final String dirName=CMLib.directions().getDirectionName(direction, dirType);
 			Log.sysOut("Rooms",mob.Name()+" unlinked direction "+dirName+" from room "+mob.location().roomID()+".");
 		}
 	}
@@ -426,9 +426,9 @@ public class Destroy extends StdCommand
 		mob.location().getArea().fillInAreaRoom(mob.location());
 		if(mob.location() instanceof GridLocale)
 			((GridLocale)mob.location()).buildGrid();
-		final boolean useShipDirs=CMLib.flags().isInAShip(mob);
+		final Directions.DirType dirType=CMLib.flags().getInDirType(mob);
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A wall of inhibition falls @x1.",
-				(useShipDirs?CMLib.directions().getShipInDirectionName(direction):CMLib.directions().getInDirectionName(direction))));
+				(CMLib.directions().getInDirectionName(direction, dirType))));
 		Log.sysOut("Exits",mob.location().roomID()+" exits destroyed by "+mob.Name()+".");
 	}
 

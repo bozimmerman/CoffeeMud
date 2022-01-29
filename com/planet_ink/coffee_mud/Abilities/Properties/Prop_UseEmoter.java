@@ -100,6 +100,7 @@ public class Prop_UseEmoter extends Property
 			final Physical P = affected;
 			final Room room=CMLib.map().roomLocation(affected);
 			final MOB mob=(P instanceof MOB)?(MOB)P:((P instanceof Item)&&((Item)P).owner() instanceof MOB)?(MOB)((Item)P).owner():null;
+			@Override
 			public void run()
 			{
 				boolean killEmoter=false;
@@ -149,9 +150,7 @@ public class Prop_UseEmoter extends Property
 							final Exit E=room.getExitInDir(d);
 							if((R!=null)&&(E!=null)&&(E.isOpen()))
 							{
-								final String inDir=CMLib.flags().isInAShip(R)?
-										CMLib.directions().getShipInDirectionName(Directions.getOpDirectionCode(d)):
-											CMLib.directions().getInDirectionName(Directions.getOpDirectionCode(d));
+								final String inDir=CMLib.directions().getInDirectionName(Directions.getOpDirectionCode(d),CMLib.flags().getDirType(R));
 								emoter.setName(L("something @x1",inDir));
 								emoteHere(R,emoter,emote,emoteTo,true);
 							}

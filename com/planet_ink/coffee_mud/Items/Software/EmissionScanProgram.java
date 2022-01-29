@@ -86,7 +86,7 @@ public class EmissionScanProgram extends GenSoftware
 		return CMClass.getMsg(CMLib.map().getFactoryMOB(R), null, this, CMMsg.MASK_CNTRLMSG|CMMsg.MSG_SNIFF, null); // cntrlmsg is important
 	}
 
-	public void getDirDesc(final String dirBuilder, final StringBuilder str, final boolean useShipDirs)
+	public void getDirDesc(final String dirBuilder, final StringBuilder str, final Directions.DirType dirType)
 	{
 		int numDone=0;
 		int numTotal=0;
@@ -127,12 +127,12 @@ public class EmissionScanProgram extends GenSoftware
 			}
 			final int dir=dirBuilder.charAt(d)-'a';
 			if(numDone==0)
-				str.append(" ").append(locDesc).append(useShipDirs?CMLib.directions().getShipDirectionName(dir):CMLib.directions().getDirectionName(dir));
+				str.append(" ").append(locDesc).append(CMLib.directions().getDirectionName(dir, dirType));
 			else
 			if(numDone<numTotal-1)
-				str.append(", ").append(locDesc).append(useShipDirs?CMLib.directions().getShipDirectionName(dir):CMLib.directions().getDirectionName(dir));
+				str.append(", ").append(locDesc).append(CMLib.directions().getDirectionName(dir, dirType));
 			else
-				str.append(", and then ").append(locDesc).append(useShipDirs?CMLib.directions().getShipInDirectionName(dir):CMLib.directions().getInDirectionName(dir));
+				str.append(", and then ").append(locDesc).append(CMLib.directions().getInDirectionName(dir, dirType));
 			numDone++;
 		}
 	}
@@ -143,7 +143,7 @@ public class EmissionScanProgram extends GenSoftware
 			return 0;
 		roomsDone.add(R);
 		int numFound=0;
-		final boolean useShipDirs=CMLib.flags().isInAShip(R);
+		final Directions.DirType dirType=CMLib.flags().getDirType(R);
 		for(int m=0;m<R.numInhabitants();m++)
 		{
 			final MOB M=R.fetchInhabitant(m);
@@ -166,7 +166,7 @@ public class EmissionScanProgram extends GenSoftware
 						}
 						else
 							str.append("Something");
-						getDirDesc(dirBuilder, str, useShipDirs);
+						getDirDesc(dirBuilder, str, dirType);
 						str.append(".\n\r");
 						break;
 					}
@@ -200,7 +200,7 @@ public class EmissionScanProgram extends GenSoftware
 					}
 					else
 						str.append("Something");
-					getDirDesc(dirBuilder, str, useShipDirs);
+					getDirDesc(dirBuilder, str, dirType);
 					str.append(".\n\r");
 				}
 			}

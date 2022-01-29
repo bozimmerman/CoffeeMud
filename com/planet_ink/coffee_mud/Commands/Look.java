@@ -178,8 +178,7 @@ public class Look extends StdCommand
 						name="around";
 					else
 					if(dirCode>=0)
-						name=CMLib.flags().isInAShip(R)?
-								CMLib.directions().getShipDirectionName(dirCode):CMLib.directions().getDirectionName(dirCode);
+						name=CMLib.directions().getDirectionName(dirCode, CMLib.flags().getDirType(R));
 				}
 				final CMMsg msg=CMClass.getMsg(mob,thisThang,lookingTool,CMMsg.MSG_LOOK,textMsg+name+".");
 				if((thisThang instanceof Room)

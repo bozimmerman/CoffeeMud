@@ -70,8 +70,7 @@ public class Pull extends Go
 				}
 				else
 					E=nextR;
-				dir=" "+(CMLib.flags().isInAShip(mob)?
-						CMLib.directions().getShipDirectionName(dirCode):CMLib.directions().getDirectionName(dirCode));
+				dir=" "+CMLib.directions().getDirectionName(dirCode, CMLib.flags().getInDirType(mob));
 				commands.remove(commands.size()-1);
 			}
 		}

@@ -69,7 +69,10 @@ public class Southeast extends Go
 	{
 		if(Directions.NUM_DIRECTIONS()<=6)
 			return false;
-		return (mob==null) || (mob.isMonster()) || (mob.location()==null)
-				|| !CMLib.flags().isInAShip(mob);
+		if((mob==null) || (mob.location()==null))
+			return false;
+		if(mob.isMonster())
+			return true;
+		return (CMLib.flags().getInDirType(mob) == Directions.DirType.COMPASS);
 	}
 }

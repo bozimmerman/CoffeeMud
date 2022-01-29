@@ -230,14 +230,14 @@ public class Every extends StdCommand
 					break;
 				case EXIT:
 				{
-					final boolean inAShip =CMLib.flags().isInAShip(R);
+					final Directions.DirType dirType = CMLib.flags().getDirType(R);
 					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 					{
 						final Exit E=R.getExitInDir(d);
 						if((E!=null)
 						&&((mask==null)||(CMLib.masking().maskCheck(mask, E, true))))
 						{
-							mob.doCommand(makeNewCommands(commands,inAShip ? CMLib.directions().getShipDirectionName(d) : CMLib.directions().getDirectionName(d)),metaFlags);
+							mob.doCommand(makeNewCommands(commands,CMLib.directions().getDirectionName(d,dirType)),metaFlags);
 						}
 					}
 				}

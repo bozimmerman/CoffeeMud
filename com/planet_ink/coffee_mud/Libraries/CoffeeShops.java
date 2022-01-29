@@ -1407,8 +1407,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		{
 			if((R.getExitInDir(d)!=null)&&(R.getExitInDir(d).keyName().equals(keyNum)))
 			{
-				final String dirName=CMLib.flags().isInAShip(R)?
-						CMLib.directions().getShipDirectionName(d):CMLib.directions().getDirectionName(d);
+				final String dirName=CMLib.directions().getDirectionName(d, CMLib.flags().getDirType(R));
 				if(addThis.length()>0)
 					return addThis+" and to the "+dirName.toLowerCase();
 				return "to the "+dirName.toLowerCase();

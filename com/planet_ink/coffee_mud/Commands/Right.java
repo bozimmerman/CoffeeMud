@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2013-2022 Bo Zimmerman
+   Copyright 2022-2022 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,13 +32,13 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Above extends Go
+public class Right extends Go
 {
-	public Above()
+	public Right()
 	{
 	}
 
-	private final String[] access=I(new String[]{"ABOVE"});
+	private final String[] access=I(new String[]{"RIGHT"});
 	@Override
 	public String[] getAccessWords()
 	{
@@ -49,12 +49,22 @@ public class Above extends Go
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
+		int direction=Directions.EAST;
+		if((commands!=null)&&(commands.size()>1))
+		{
+			final int nextDir=CMLib.directions().getDirectionCode(commands.get(1));
+			if(nextDir == Directions.NORTH)
+				direction=Directions.NORTHEAST;
+			else
+			if(nextDir == Directions.SOUTH)
+				direction=Directions.SOUTHEAST;
+		}
 		if(!standIfNecessary(mob,commands, metaFlags, true))
 			return false;
 		if(mob.isAttributeSet(MOB.Attrib.AUTORUN))
-			CMLib.tracking().run(mob, Directions.UP, false,false,false);
+			CMLib.tracking().run(mob, direction, false,false,false);
 		else
-			CMLib.tracking().walk(mob, Directions.UP, false,false,false);
+			CMLib.tracking().walk(mob, direction, false,false,false);
 		return false;
 	}
 
@@ -71,7 +81,12 @@ public class Above extends Go
 			return false;
 		if(mob.isMonster())
 			return true;
-		return (CMLib.flags().getInDirType(mob) == Directions.DirType.SHIP);
-
+		return (CMLib.flags().getInDirType(mob) == Directions.DirType.CARAVAN);
+	}
+	
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
 	}
 }

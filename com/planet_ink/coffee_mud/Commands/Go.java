@@ -92,8 +92,8 @@ public class Go extends StdCommand
 		if(R==null)
 			return false;
 
-		final boolean inAShip =CMLib.flags().isInAShip(R);
-		final String validDirs = inAShip?Directions.SHIP_NAMES_LIST() : Directions.NAMES_LIST();
+		final Directions.DirType dirType = CMLib.flags().getDirType(R);
+		final String validDirs = Directions.NAMES_LIST(dirType);
 		final boolean running = mob.isAttributeSet(MOB.Attrib.AUTORUN);
 
 		int direction=-1;
@@ -130,7 +130,7 @@ public class Go extends StdCommand
 			if(mob.isMonster())
 				direction=CMLib.directions().getGoodDirectionCode(whereStr);
 			else
-				direction=(inAShip)?CMLib.directions().getGoodShipDirectionCode(whereStr):CMLib.directions().getGoodCompassDirectionCode(whereStr);
+				direction=CMLib.directions().getGoodDirectionCode(whereStr, dirType);
 		}
 		if(direction<0)
 		{
@@ -195,7 +195,7 @@ public class Go extends StdCommand
 				if(mob.isMonster())
 					direction=CMLib.directions().getGoodDirectionCode(s);
 				else
-					direction=(inAShip)?CMLib.directions().getGoodShipDirectionCode(s):CMLib.directions().getGoodCompassDirectionCode(s);
+					direction=CMLib.directions().getGoodDirectionCode(s, dirType);
 				if(direction>=0)
 				{
 					doneAnything=true;
@@ -216,7 +216,7 @@ public class Go extends StdCommand
 						{
 							final Vector<String> V=new Vector<String>();
 							V.add(doing);
-							V.add(inAShip?CMLib.directions().getShipDirectionName(direction):CMLib.directions().getDirectionName(direction));
+							V.add(CMLib.directions().getDirectionName(direction, dirType));
 							prequeCommands.add(V);
 						}
 					}

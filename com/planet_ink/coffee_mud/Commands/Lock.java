@@ -113,8 +113,8 @@ public class Lock extends StdCommand
 					&&(opE.isLocked())
 					&&(((Exit)lockThis).isLocked()))
 					{
-						final boolean useShipDirs=CMLib.flags().isInAShip(opR);
-						final String inDirName=useShipDirs?CMLib.directions().getShipInDirectionName(opCode):CMLib.directions().getInDirectionName(opCode);
+						final Directions.DirType dirType=CMLib.flags().getDirType(opR);
+						final String inDirName=CMLib.directions().getInDirectionName(opCode, dirType);
 						opR.showHappens(CMMsg.MSG_OK_ACTION,L("@x1 @x2 is locked from the other side.",opE.name(),inDirName));
 					}
 				}

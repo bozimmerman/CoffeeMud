@@ -272,7 +272,7 @@ public class Healer extends Cleric
 	@Override
 	public void level(final MOB mob, final List<String> gainedAbilityIDs)
 	{
-		super.level(mob, gainedAbilityIDs);;
+		super.level(mob, gainedAbilityIDs);
 		affectHealingAura(mob);
 	}
 

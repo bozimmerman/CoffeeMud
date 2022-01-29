@@ -50,7 +50,7 @@ public class Close extends StdCommand
 
 	public boolean closeMe(final MOB mob, final Environmental closeThis, final String whatToClose, int dirCode)
 	{
-		final boolean useShipDirs=CMLib.flags().isInAShip(mob);
+		final Directions.DirType dirType=CMLib.flags().getInDirType(mob);
 		final String closeWord=(!(closeThis instanceof Exit))?"close":((Exit)closeThis).closeWord();
 		final String closeMsg="<S-NAME> "+((closeWord.indexOf('(')>0)?closeWord:(closeWord+"(s)"))+" <T-NAMESELF>."+CMLib.protocol().msp("dooropen.wav",10);
 		final CMMsg msg=CMClass.getMsg(mob,closeThis,null,CMMsg.MSG_CLOSE,closeMsg,whatToClose,closeMsg);
@@ -89,7 +89,7 @@ public class Close extends StdCommand
 					if((opE!=null)
 					&&(!opE.isOpen())
 					&&(!((Exit)closeThis).isOpen()))
-						opR.showHappens(CMMsg.MSG_OK_ACTION,L("@x1 @x2 closes.",opE.name(),(useShipDirs?CMLib.directions().getShipInDirectionName(opCode):CMLib.directions().getInDirectionName(opCode))));
+						opR.showHappens(CMMsg.MSG_OK_ACTION,L("@x1 @x2 closes.",opE.name(),(CMLib.directions().getInDirectionName(opCode, dirType))));
 				}
 				return true;
 			}

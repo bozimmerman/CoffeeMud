@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.Directions.DirType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -264,22 +265,6 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
-	public boolean isAShip(final Physical P)
-	{
-		if(P instanceof Boardable)
-			return true;
-		if(P instanceof Rider)
-		{
-			final Rider rider=(Rider)P;
-			final Rideable ride=rider.riding();
-			if((ride instanceof Boardable)
-			&&(((Boardable)ride).Name().equals(rider.Name())))
-				return true;
-		}
-		return false;
-	}
-
-	@Override
 	public Rideable.Basis getNavRideBasis(final Environmental E)
 	{
 		if(E instanceof NavigableItem)
@@ -288,9 +273,6 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return getNavRideBasis(((Boardable)E).getBoardableItem());
 		if(E instanceof Room)
 			return getNavRideBasis(((Room)E).getArea());
-		else
-		if(E instanceof Area)
-			return null;
 		return null;
 	}
 
@@ -1562,30 +1544,53 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return false;
 	}
 
-	@Override
-	public boolean isInAShip(final MOB M)
-	{
-		return (M==null)?false:isInAShip(M.location());
-	}
 
 	@Override
-	public boolean isInAShip(final Room R)
+	public Directions.DirType getDirType(final Physical P)
 	{
-		final Area A=(R==null)?null:R.getArea();
-		if(A instanceof Boardable)
+		// never check the location of P generically, as
+		// it would create ambiguity with getInDirtype when
+		// a mob is passed in.
+		if(P instanceof Boardable)
 		{
-			final Item I=((Boardable)A).getBoardableItem();
+			final Item I=((Boardable)P).getBoardableItem();
 			if(I instanceof SpaceShip)
-				return true;
+				return DirType.SHIP;
 			if(I instanceof NavigableItem)
 			{
-				final Rideable.Basis basis = ((NavigableItem)I).navBasis();
-				if((basis==Rideable.Basis.WATER_BASED)
-				||(basis==Rideable.Basis.AIR_FLYING))
-					return true;
+				switch(((NavigableItem)I).navBasis())
+				{
+				case AIR_FLYING:
+					return DirType.SHIP;
+				case LAND_BASED:
+					return DirType.CARAVAN;
+				case WAGON:
+					return DirType.CARAVAN;
+				case WATER_BASED:
+					return DirType.SHIP;
+				default:
+					return DirType.COMPASS;
+				}
 			}
+			return DirType.SHIP;
 		}
-		return false;
+		if(P instanceof Rider)
+		{
+			final Rider rider=(Rider)P;
+			final Rideable ride=rider.riding();
+			if((ride instanceof Boardable)
+			&&(((Boardable)ride).Name().equals(rider.Name())))
+				return getDirType(ride);
+		}
+		if(P instanceof Room)
+			return getDirType(((Room)P).getArea());
+		return DirType.COMPASS;
+	}
+	
+	@Override
+	public Directions.DirType getInDirType(final MOB M)
+	{
+		return (M==null)?DirType.COMPASS:getDirType(M.location());
 	}
 
 	@Override

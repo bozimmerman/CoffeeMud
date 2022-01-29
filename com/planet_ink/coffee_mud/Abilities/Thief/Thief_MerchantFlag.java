@@ -137,7 +137,7 @@ public class Thief_MerchantFlag extends ThiefSkill
 		&&((msg.target() instanceof Boardable)
 			||(msg.target() instanceof Rideable))
 		&&(msg.targetMajor(CMMsg.MASK_MALICIOUS))
-		&&(CMLib.flags().isAShip(msg.source())))
+		&&(CMLib.flags().getDirType(msg.source())==Directions.DirType.SHIP))
 		{
 			if((msg.source().riding() == affected)
 			&&(msg.source().Name().equals(affected.Name())))
@@ -157,7 +157,7 @@ public class Thief_MerchantFlag extends ThiefSkill
 		&&((msg.target() instanceof Boardable)
 			||(msg.target() instanceof Rideable))
 		&&(msg.targetMajor(CMMsg.MASK_MALICIOUS))
-		&&(CMLib.flags().isAShip(msg.source())))
+		&&(CMLib.flags().getDirType(msg.source())==Directions.DirType.SHIP))
 		{
 			if(msg.source().riding() == affected)
 			{

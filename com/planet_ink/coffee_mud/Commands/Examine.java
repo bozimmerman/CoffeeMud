@@ -145,8 +145,7 @@ public class Examine extends StdCommand
 						name="around";
 					else
 					if(dirCode>=0)
-						name=CMLib.flags().isInAShip(R)?
-							CMLib.directions().getShipDirectionName(dirCode):CMLib.directions().getDirectionName(dirCode);
+						name=CMLib.directions().getDirectionName(dirCode, CMLib.flags().getDirType(R));
 				}
 				final CMMsg msg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_EXAMINE,L("@x1@x2 closely.",textMsg,name));
 				if(R.okMessage(mob,msg))

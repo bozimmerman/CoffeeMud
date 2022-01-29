@@ -1118,8 +1118,8 @@ public class Modify extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		final boolean useShipDirs=CMLib.flags().isInAShip(mob);
-		final String inDirName=useShipDirs?CMLib.directions().getShipInDirectionName(direction):CMLib.directions().getInDirectionName(direction);
+		final Directions.DirType dirType=CMLib.flags().getInDirType(mob);
+		final String inDirName=CMLib.directions().getInDirectionName(direction, dirType);
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around to the @x1.",inDirName));
 		final Exit copyExit=(Exit)thisExit.copyOf();
 		if(thisExit.isGeneric() && (commands.size()<5))
