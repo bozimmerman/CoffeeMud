@@ -126,7 +126,7 @@ public class Chant_VineWeave extends Chant
 			{
 				mob.location().send(mob,msg);
 				final ItemCraftor A=(ItemCraftor)CMClass.getAbility("Weaving");
-				ItemCraftor.ItemKeyPair pair=null;
+				ItemCraftor.CraftedItem pair=null;
 				if(A!=null)
 					pair=A.craftAnyItem(material);
 				if(pair==null)

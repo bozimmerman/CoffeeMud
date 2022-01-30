@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftParms;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.CraftorType;
-import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.ItemKeyPair;
+import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.CraftedItem;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -190,7 +190,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public ItemKeyPair craftItem(final String recipe)
+	public CraftedItem craftItem(final String recipe)
 	{
 		return craftItem(recipe, 0, false, false);
 	}
@@ -279,12 +279,20 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
+		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new ArrayList<CraftedItem>(0));
 	}
 
+	private int calculateDuration(final MOB mob, final Ability theSpell)
+	{
+		int duration=getDuration(CMLib.ableMapper().qualifyingLevel(mob,theSpell)*5,mob,CMLib.ableMapper().lowestQualifyingLevel(theSpell.ID()),10);
+		if(duration<10)
+			duration=10;
+		return duration;
+	}
+	
 	@Override
 	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto,
-								 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
+								 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<CraftedItem> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -296,7 +304,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 				return false;
 			final int level=spellLevel(mob,theSpell);
 			buildingI=buildScrollItem(null, theSpell, level);
-			crafted.add(buildingI);
+			crafted.add(new CraftedItem(buildingI,null,calculateDuration(mob,theSpell)));
 			return true;
 		}
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,0);
@@ -547,9 +555,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 				commonTell(mob,L("You lose @x1 experience points for the effort.",""+experienceToLose));
 			}
 
-			int duration=getDuration(CMLib.ableMapper().qualifyingLevel(mob,theSpell)*5,mob,CMLib.ableMapper().lowestQualifyingLevel(theSpell.ID()),10);
-			if(duration<10)
-				duration=10;
+			final int duration=calculateDuration(mob,theSpell);
 			messedUp=!proficiencyCheck(mob,0,auto);
 
 			String msgStr;

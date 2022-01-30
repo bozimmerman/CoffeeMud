@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.EnhancedExpertise;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
-import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.ItemKeyPair;
+import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.CraftedItem;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -23,6 +23,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /*
    Copyright 2004-2022 Bo Zimmerman
@@ -818,7 +819,7 @@ public class CraftingSkill extends GatheringSkill
 		}
 	}
 
-	public ItemKeyPair craftAnyItem(final int material)
+	public CraftedItem craftAnyItem(final int material)
 	{
 		return craftItem(null,material,false, false);
 	}
@@ -837,15 +838,17 @@ public class CraftingSkill extends GatheringSkill
 	 * @param asLevel -1, unless being auto-invoked, when it is the level to invoke it at.
 	 * @param autoGenerate 0, unless auto generation, in which case it's a RawMaterial Resource Code number
 	 * @param forceLevels true to override other level modifiers on the items to force the Stock level.
-	 * @param crafted when autoGenerate &gt; 0, this is where the auto generated crafted items are placed
+	 * @param crafted when autoGenerate &gt; 0, this is where the auto generated crafted items are placed, along with the duration
 	 * @return whether the skill successfully invoked.
 	 */
-	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
+	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, 
+									final boolean auto, final int asLevel, final int autoGenerate, 
+									final boolean forceLevels, final List<CraftedItem> crafted)
 	{
 		return false;
 	}
 
-	public ItemKeyPair craftItem(final String recipeName, final int material, final boolean forceLevels, final boolean noSafety)
+	public CraftedItem craftItem(final String recipeName, final int material, final boolean forceLevels, final boolean noSafety)
 	{
 		if(factoryWorkerM==null)
 		{
@@ -872,7 +875,7 @@ public class CraftingSkill extends GatheringSkill
 		return false;
 	}
 
-	public ItemKeyPair craftItem(final MOB mob, final List<String> recipes, int material, final boolean forceLevels)
+	public CraftedItem craftItem(final MOB mob, final List<String> recipes, int material, final boolean forceLevels)
 	{
 		Item building=null;
 		DoorKey key=null;
@@ -884,19 +887,18 @@ public class CraftingSkill extends GatheringSkill
 				wrscs=new XVector<Integer>(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
 			material=wrscs.get(CMLib.dice().roll(1,wrscs.size(),-1)).intValue();
 		}
+		int duration=0;
 		while(((building==null)
 			||(building.name().endsWith(" bundle")&&(!isThereANonBundleChoice(recipes))))
 		&&(((++tries)<100)))
 		{
-			final List<Item> V=new ArrayList<Item>(1);
+			final List<CraftedItem> V=new ArrayList<CraftedItem>(1);
 			autoGenInvoke(mob,recipes,null,true,-1,material,forceLevels,V);
 			if(V.size()>0)
 			{
-				if((V.size()>1)&&((V.get(V.size()-2) instanceof DoorKey)))
-					key=(DoorKey)V.get(V.size()-2);
-				else
-					key=null;
-				building=V.get(V.size()-1);
+				key = V.get(V.size()-1).key;
+				building=V.get(V.size()-1).item;
+				duration=V.get(V.size()-1).duration;
 			}
 			else
 				building=null;
@@ -916,16 +918,16 @@ public class CraftingSkill extends GatheringSkill
 			key.text();
 			key.recoverPhyStats();
 		}
-		return new ItemKeyPair(building, key);
+		return new CraftedItem(building, key, duration);
 	}
 
-	public List<ItemKeyPair> craftAllItemSets(final int material, final boolean forceLevels)
+	public List<CraftedItem> craftAllItemSets(final int material, final boolean forceLevels)
 	{
-		final List<ItemKeyPair> allItems=new Vector<ItemKeyPair>();
+		final List<CraftedItem> allItems=new Vector<CraftedItem>();
 		final List<List<String>> recipes=fetchRecipes();
 		Item built=null;
 		final HashSet<String> usedNames=new HashSet<String>();
-		ItemKeyPair pair=null;
+		CraftedItem pair=null;
 		String s=null;
 		for(int r=0;r<recipes.size();r++)
 		{
@@ -1031,7 +1033,7 @@ public class CraftingSkill extends GatheringSkill
 			}
 			else
 			{
-				final ItemKeyPair pair = craftItem(mob,recipe,material,false);
+				final CraftedItem pair = craftItem(mob,recipe,material,false);
 				if(pair == null)
 				{
 					commonTell(mob,L("You don't know how to make anything called '@x1'",recipeName));
@@ -1042,7 +1044,15 @@ public class CraftingSkill extends GatheringSkill
 					final String viewDesc = CMLib.coffeeShops().getViewDescription(mob, pair.item, viewFlags());
 					commonTell(mob,viewDesc);
 					if(viewDesc.length()>0)
+					{
+						if(pair.duration>0)
+						{
+							final long msduration = CMProps.getTickMillis() * pair.duration;
+							final String strDuration = CMLib.time().date2EllapsedTime(msduration, TimeUnit.SECONDS, false);
+							commonTell(mob,L("This will take approximately @x1 to complete.",strDuration));
+						}
 						commonTell(mob,L("* The material type is an example only."));
+					}
 					pair.item.destroy();
 					if(pair.key!=null)
 						pair.key.destroy();
@@ -1053,7 +1063,7 @@ public class CraftingSkill extends GatheringSkill
 		return false;
 	}
 
-	public ItemKeyPair craftItem(final String recipeName)
+	public CraftedItem craftItem(final String recipeName)
 	{
 		List<Integer> wrscs=myWeightedResources();
 		if(wrscs.size()==0)
@@ -1062,11 +1072,11 @@ public class CraftingSkill extends GatheringSkill
 		return craftItem(recipeName,material,false, false);
 	}
 
-	public List<ItemKeyPair> craftAllItemSets(final boolean forceLevels)
+	public List<CraftedItem> craftAllItemSets(final boolean forceLevels)
 	{
 		List<Integer> rscs=myResources();
-		final List<ItemKeyPair> allItems=new Vector<ItemKeyPair>();
-		List<ItemKeyPair> pairs=null;
+		final List<CraftedItem> allItems=new Vector<CraftedItem>();
+		List<CraftedItem> pairs=null;
 		if(rscs.size()==0)
 			rscs=new XVector<Integer>(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
 		for(int r=0;r<rscs.size();r++)
@@ -1079,7 +1089,7 @@ public class CraftingSkill extends GatheringSkill
 		return allItems;
 	}
 
-	public ItemKeyPair craftAnyItemNearLevel(final int minlevel, final int maxlevel)
+	public CraftedItem craftAnyItemNearLevel(final int minlevel, final int maxlevel)
 	{
 		int bestDiff=Integer.MAX_VALUE;
 		final List<List<String>> choices=new ArrayList<List<String>>();

@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftParms;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.CraftorType;
-import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.ItemKeyPair;
+import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.CraftedItem;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -146,7 +146,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public ItemKeyPair craftItem(final String recipe)
+	public CraftedItem craftItem(final String recipe)
 	{
 		return craftItem(recipe,0,false, false);
 	}
@@ -284,12 +284,20 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
+		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new ArrayList<CraftedItem>(0));
 	}
 
+	private int calculateDuration(final MOB mob, final Ability theSpell)
+	{
+		int duration=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*5;
+		if(duration<10)
+			duration=10;
+		return duration;
+	}
+	
 	@Override
 	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto,
-								 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
+								 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<CraftedItem> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -304,7 +312,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			if(level<0)
 				level=1;
 			buildingI=buildItem(theSpell, level);
-			crafted.add(buildingI);
+			crafted.add(new CraftedItem(buildingI,null,calculateDuration(mob,theSpell)));
 			return true;
 		}
 		if(commands.size()<1)
@@ -511,10 +519,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			buildingI=buildItem(theSpell, theLevel);
 			playSound="hotspring.wav";
 
-			int duration=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*5;
-			if(duration<10)
-				duration=10;
-
+			int duration=calculateDuration(mob,theSpell);
 			messedUp=!proficiencyCheck(mob,0,auto);
 			final CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),null);
 			if(mob.location().okMessage(mob,msg))

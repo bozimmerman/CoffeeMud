@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
 
+
   <meta content="HTML Tidy, see www.w3.org" name="generator" /><title>Programming for CoffeeMud 5.9</title>
   
-  <link media="screen" type="text/css" href="style.css" rel="StyleSheet" /><!-- Modified by Josh Mueller, 2006-5-6, fix validation problems, reformat, fix spelling errors --></head>
-<body>
+  <link media="screen" type="text/css" href="style.css" rel="StyleSheet" /><!-- Modified by Josh Mueller, 2006-5-6, fix validation problems, reformat, fix spelling errors --></head><body>
 <center>
 <table border="1" cellpadding="10" cellspacing="0">
   <tbody>
@@ -5546,7 +5546,7 @@ checking whether everything went ok and adding it to the room if things
 did. Since common skills work by adding themselves as affects on the
 player/mobs performing the skill, we need only check the
 StdAbility.affected reference variable to find our craftor.</p>
-      <pre><br />  @Override<br />  public boolean invoke(MOB mob, List&lt;String&gt; commands, Physical givenTarget, boolean auto, int asLevel)<br />  {<br />    // same invoke method as in all other Abilities, but we are redirecting to a special<br />    // method only for Crafting Skills.<br />    return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector&lt;Item&gt;(0));<br />  }<br /><br />  @Override<br />  protected boolean autoGenInvoke(final MOB mob, List&lt;String&gt; commands, Physical givenTarget, final boolean auto, <br />                                  final int asLevel, int autoGenerate, boolean forceLevels, List&lt;Item&gt; crafted)<br /></pre>
+      <pre><br />  @Override<br />  public boolean invoke(MOB mob, List&lt;String&gt; commands, Physical givenTarget, boolean auto, int asLevel)<br />  {<br />    // same invoke method as in all other Abilities, but we are redirecting to a special<br />    // method only for Crafting Skills.<br />    return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector&lt;Item&gt;(0));<br />  }<br /><br />  @Override<br />  protected boolean autoGenInvoke(final MOB mob, List&lt;String&gt; commands, Physical givenTarget, final boolean auto, <br />                                  final int asLevel, int autoGenerate, boolean forceLevels, PairList&lt;Item,Integer&gt; crafted)<br /></pre>
       <p>Crafting skills are all
 outfitted with the ability to allow
 the rest of the system to use the skill class as an automatic item
@@ -5713,7 +5713,7 @@ the env stats again in case that changed anything.</p>
 messedUp flag based on a proficiency check,
 and change our common skill player-message strings based on whether we
 are bundling.</p>
-      <pre>  if( autoGenerate &gt; 0 )<br />  {<br />    crafted.add( building );<br />    return true;<br />  }<br /> <br /></pre>
+      <pre>  if( autoGenerate &gt; 0 )<br />  {<br />    crafted.add( building, Integer.valueOf(completion) );<br />    return true;<br />  }<br /> <br /></pre>
       <p>If the autoGenInvoke
 method was called simply to generate the
 item,

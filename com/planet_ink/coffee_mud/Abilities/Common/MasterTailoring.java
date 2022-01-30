@@ -75,7 +75,7 @@ public class MasterTailoring extends Tailoring
 
 	@Override
 	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto,
-			 					 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
+			 					 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<CraftedItem> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;

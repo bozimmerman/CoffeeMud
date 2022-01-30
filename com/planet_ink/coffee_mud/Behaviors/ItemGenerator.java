@@ -274,11 +274,11 @@ public class ItemGenerator extends ActiveTicker
 				skill = skills.remove(0);
 			}
 
-			List<ItemCraftor.ItemKeyPair> skillSet=null;
+			List<ItemCraftor.CraftedItem> skillSet=null;
 			skillSet=skill.craftAllItemSets(false);
 			if(skillSet!=null)
 			{
-				for(final ItemCraftor.ItemKeyPair materialSet: skillSet)
+				for(final ItemCraftor.CraftedItem materialSet: skillSet)
 					allItems.add(materialSet.item);
 			}
 			return true;

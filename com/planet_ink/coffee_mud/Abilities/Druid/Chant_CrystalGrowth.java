@@ -100,7 +100,7 @@ public class Chant_CrystalGrowth extends Chant
 			{
 				mob.location().send(mob,msg);
 
-				ItemCraftor.ItemKeyPair pair=null;
+				ItemCraftor.CraftedItem pair=null;
 				int tries=100;
 				while((pair==null)&&(--tries>0))
 				{

@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftParms;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.CraftorType;
-import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.ItemKeyPair;
+import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.CraftedItem;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -267,7 +267,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public ItemKeyPair craftItem(final String recipe)
+	public CraftedItem craftItem(final String recipe)
 	{
 		return craftItem(recipe,0,false, false);
 	}
@@ -374,11 +374,11 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(1));
+		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new ArrayList<CraftedItem>(0));
 	}
 
 	@Override
-	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
+	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel, final int autoGenerate, final boolean forceLevels, final List<CraftedItem> crafted)
 	{
 		if(autoGenerate>0)
 		{
@@ -386,8 +386,9 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			if(theSpell==null)
 				return false;
 			final int level=spellLevel(mob,theSpell,asLevel);
+			final int duration = getAlchemyDuration(mob, theSpell, asLevel);
 			buildingI=buildPotion(theSpell, level);
-			crafted.add(buildingI);
+			crafted.add(new CraftedItem(buildingI,null,duration));
 			if(forceLevels)
 			{
 				final int minLevel=CMLib.ableMapper().lowestQualifyingLevel(theSpell.ID());

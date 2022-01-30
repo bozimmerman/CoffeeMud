@@ -848,8 +848,8 @@ public class Test extends StdCommand
 						final ItemCraftor I=(ItemCraftor)A;
 						if((theRest.length()==0)||(I.ID().toUpperCase().indexOf(theRest)>=0))
 						{
-							final List<ItemCraftor.ItemKeyPair> set=I.craftAllItemSets(false);
-							for(final ItemCraftor.ItemKeyPair KP : set)
+							final List<ItemCraftor.CraftedItem> set=I.craftAllItemSets(false);
+							for(final ItemCraftor.CraftedItem KP : set)
 							{
 								if((KP.item instanceof Armor)||(KP.item instanceof Weapon))
 								{
@@ -926,7 +926,7 @@ public class Test extends StdCommand
 			if(what.equalsIgnoreCase("deconstruction"))
 			{
 				mob.tell(L("Building item sets..."));
-				final Hashtable<ItemCraftor,List<ItemCraftor.ItemKeyPair>> allSets=new Hashtable<ItemCraftor,List<ItemCraftor.ItemKeyPair>>();
+				final Hashtable<ItemCraftor,List<ItemCraftor.CraftedItem>> allSets=new Hashtable<ItemCraftor,List<ItemCraftor.CraftedItem>>();
 				for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 				{
 					final Ability A=a.nextElement();
@@ -939,8 +939,8 @@ public class Test extends StdCommand
 				mob.tell(L("Sorting..."));
 				for(final ItemCraftor I : allSets.keySet())
 				{
-					final List<ItemCraftor.ItemKeyPair> allItems=allSets.get(I);
-					for(final ItemCraftor.ItemKeyPair P : allItems)
+					final List<ItemCraftor.CraftedItem> allItems=allSets.get(I);
+					for(final ItemCraftor.CraftedItem P : allItems)
 					{
 						if(P.item.material()!=RawMaterial.RESOURCE_WHITE_GOLD)
 						for(final ItemCraftor oI : allSets.keySet())

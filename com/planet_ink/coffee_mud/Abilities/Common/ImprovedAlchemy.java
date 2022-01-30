@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftParms;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.CraftorType;
-import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.ItemKeyPair;
+import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.CraftedItem;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -98,7 +98,7 @@ public class ImprovedAlchemy extends Alchemy
 	}
 
 	@Override
-	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
+	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, int asLevel, final int autoGenerate, final boolean forceLevels, final List<CraftedItem> crafted)
 	{
 		if(autoGenerate>0)
 			return super.autoGenInvoke(mob, commands, givenTarget, auto, asLevel, autoGenerate, forceLevels, crafted);

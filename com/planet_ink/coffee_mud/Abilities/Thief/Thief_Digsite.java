@@ -3,7 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
-import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.ItemKeyPair;
+import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.CraftedItem;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -177,7 +177,7 @@ public class Thief_Digsite extends ThiefSkill
 				}
 
 				final ItemCraftor craftor = craftingSkills.get(CMLib.dice().roll(1, craftingSkills.size(), -1));
-				final ItemKeyPair pair = craftor.craftAnyItemNearLevel(minLevel, maxLevel);
+				final CraftedItem pair = craftor.craftAnyItemNearLevel(minLevel, maxLevel);
 				if(pair != null)
 				{
 					Item item=pair.item;

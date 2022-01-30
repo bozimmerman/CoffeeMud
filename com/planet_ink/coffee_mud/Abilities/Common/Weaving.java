@@ -96,7 +96,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 	protected static final int	RCP_CONTAINMASK	= 9;
 	protected static final int	RCP_SPELL		= 10;
 
-	protected Item key=null;
+	protected DoorKey key=null;
 
 	final static int[] pm=
 	{
@@ -300,12 +300,12 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
+		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new ArrayList<CraftedItem>(0));
 	}
 
 	@Override
 	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto,
-								 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
+								 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<CraftedItem> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -608,8 +608,8 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 				{
 					((Container)buildingI).setDoorsNLocks(true,false,true,true,false,true);
 					((Container)buildingI).setKeyName(Double.toString(Math.random()));
-					key=CMClass.getItem("GenKey");
-					((DoorKey)key).setKey(((Container)buildingI).keyName());
+					key=(DoorKey)CMClass.getItem("GenKey");
+					key.setKey(((Container)buildingI).keyName());
 					key.setName(L("a key"));
 					key.setDisplayText(L("a small key sits here"));
 					key.setDescription(L("looks like a key to @x1",buildingI.name()));
@@ -640,9 +640,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 
 		if(autoGenerate>0)
 		{
-			if(key!=null)
-				crafted.add(key);
-			crafted.add(buildingI);
+			crafted.add(new CraftedItem(buildingI,key,duration));
 			return true;
 		}
 

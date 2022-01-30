@@ -3,7 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
-import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.ItemKeyPair;
+import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.CraftedItem;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -62,7 +62,7 @@ public class OutFit extends StdCommand
 	}
 
 	protected Item findArmorWinner(final MOB mob, final List<String> useSkills, final long wornCode, final int material,
-									final long positionsFound, final Map<String,List<ItemKeyPair>> cache)
+									final long positionsFound, final Map<String,List<CraftedItem>> cache)
 	{
 		final int mlvl=mob.phyStats().level();
 		Item winnerW=null;
@@ -70,20 +70,20 @@ public class OutFit extends StdCommand
 		for(final String skillID : useSkills)
 		{
 			final ItemCraftor cA=(ItemCraftor)CMClass.getAbility(skillID);
-			List<ItemKeyPair> set = cache.get(skillID);
+			List<CraftedItem> set = cache.get(skillID);
 			if(set == null)
 			{
-				set = new XVector<ItemKeyPair>(cA.craftAllItemSets(material, true));
-				for(final Iterator<ItemKeyPair> i=set.iterator();i.hasNext();)
+				set = new XVector<CraftedItem>(cA.craftAllItemSets(material, true));
+				for(final Iterator<CraftedItem> i=set.iterator();i.hasNext();)
 				{
-					final ItemKeyPair p=i.next();
+					final CraftedItem p=i.next();
 					if((!(p.item instanceof Armor))
 					||(p.item.fetchEffect("Prop_WearOverride")!=null))
 						i.remove();
 				}
 				cache.put(skillID, set);
 			}
-			for(final ItemKeyPair p : set)
+			for(final CraftedItem p : set)
 			{
 				if(((((Armor)p.item).rawProperLocationBitmap()&wornCode)>0)
 				&&((!p.item.rawLogicalAnd())
@@ -108,7 +108,7 @@ public class OutFit extends StdCommand
 		if(C==null)
 			return null;
 		final List<String> clothSkills = new ArrayList<String>();
-		final Map<String,List<ItemKeyPair>> armorCache = new HashMap<String,List<ItemKeyPair>>();
+		final Map<String,List<CraftedItem>> armorCache = new HashMap<String,List<CraftedItem>>();
 		clothSkills.add("Tailoring");
 		clothSkills.add("MasterTailoring");
 		List<String> useSkills = new ArrayList<String>();
@@ -180,8 +180,8 @@ public class OutFit extends StdCommand
 		}
 		for(final String key : armorCache.keySet())
 		{
-			final List<ItemKeyPair> ps = armorCache.get(key);
-			for(final ItemKeyPair p : ps)
+			final List<CraftedItem> ps = armorCache.get(key);
+			for(final CraftedItem p : ps)
 			{
 				if(p.key!=null)
 					p.key.destroy();
@@ -254,8 +254,8 @@ public class OutFit extends StdCommand
 		for(final String skillID : useSkills)
 		{
 			final ItemCraftor cA=(ItemCraftor)CMClass.getAbility(skillID);
-			final List<ItemKeyPair> set = cA.craftAllItemSets(material, true);
-			for(final ItemKeyPair p : set)
+			final List<CraftedItem> set = cA.craftAllItemSets(material, true);
+			for(final CraftedItem p : set)
 			{
 				if((p.item instanceof Weapon)
 				&&(((Weapon)p.item).weaponClassification() == reqWeaponClass))

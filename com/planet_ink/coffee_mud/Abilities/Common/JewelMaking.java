@@ -311,12 +311,12 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
+		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new ArrayList<CraftedItem>(0));
 	}
 
 	@Override
 	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto,
-								 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
+								 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<CraftedItem> crafted)
 	{
 		final List<String> originalCommands = new XVector<String>(commands);
 		if(super.checkStop(mob, commands))
@@ -772,7 +772,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 
 		if(autoGenerate>0)
 		{
-			crafted.add(buildingI);
+			crafted.add(new CraftedItem(buildingI,null,duration));
 			return true;
 		}
 

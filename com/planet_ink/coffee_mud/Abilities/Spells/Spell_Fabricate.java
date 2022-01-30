@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
-import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.ItemKeyPair;
+import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.CraftedItem;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -148,7 +148,7 @@ public class Spell_Fabricate extends Spell
 			final List<List<String>> L = A.matchingRecipeNames(intoWhat, false);
 			if((L!=null)&&(L.size()>0))
 			{
-				final ItemKeyPair what=A.craftItem(L.get(0).get(0),-1,true, false);
+				final CraftedItem what=A.craftItem(L.get(0).get(0),-1,true, false);
 				if((what!=null)&&(what.item!=null))
 				{
 					intoI=what.item;
@@ -163,7 +163,7 @@ public class Spell_Fabricate extends Spell
 				final List<List<String>> L = A.matchingRecipeNames(intoWhat, true);
 				if((L!=null)&&(L.size()>0))
 				{
-					final ItemKeyPair what=A.craftItem(L.get(0).get(0),-1,true, false);
+					final CraftedItem what=A.craftItem(L.get(0).get(0),-1,true, false);
 					if((what!=null)
 					&&(what.item!=null))
 					{
