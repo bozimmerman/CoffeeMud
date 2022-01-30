@@ -2601,16 +2601,16 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public void obliterateMapRoom(final Room deadRoom)
 	{
-		obliterateRoom(deadRoom,true);
+		obliterateRoom(deadRoom,null,true);
 	}
 
 	@Override
 	public void destroyRoomObject(final Room deadRoom)
 	{
-		obliterateRoom(deadRoom,false);
+		obliterateRoom(deadRoom,null,false);
 	}
 
-	protected void obliterateRoom(final Room deadRoom, final boolean includeDB)
+	protected void obliterateRoom(final Room deadRoom, final List<Room> linkInRooms, final boolean includeDB)
 	{
 		for(final Enumeration<Ability> a=deadRoom.effects();a.hasMoreElements();)
 		{
@@ -2623,8 +2623,14 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		try
 		{
+			
 			final List<Pair<Room,Integer>> roomsToDo=new LinkedList<Pair<Room,Integer>>();
-			for(final Enumeration<Room> r=rooms();r.hasMoreElements();)
+			final Enumeration<Room> r;
+			if(linkInRooms != null)
+				r=new IteratorEnumeration<Room>(linkInRooms.iterator());
+			else
+				r=rooms();
+			for(;r.hasMoreElements();)
 			{
 				final Room R=getRoom(r.nextElement());
 				if(R!=null)
@@ -2869,7 +2875,17 @@ public class CMMap extends StdLibrary implements WorldMap
 			{
 				final MOB M=i.nextElement();
 				if((M!=null) && (M.isPlayer()))
-					M.getStartRoom().bringMobHere(M,true);
+				{
+					Room sR=M.getStartRoom();
+					int attempts=1000;
+					while(((sR == room)||(sR==null))
+					&&(--attempts>0))
+						sR=getRandomRoom();
+					if((sR!=null)&&(sR!=room))
+						sR.bringMobHere(M,true);
+					else
+						room.delInhabitant(M);
+				}
 			}
 		}
 		for(final Enumeration<MOB> i=room.inhabitants();i.hasMoreElements();)
@@ -2982,8 +2998,27 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		if(includeDB)
 			CMLib.database().DBDeleteAreaAndRooms(A);
+		final List<Room> linkInRooms = new LinkedList<Room>();
+		for(final Enumeration<Room> r=rooms();r.hasMoreElements();)
+		{
+			final Room R=getRoom(r.nextElement());
+			if(R!=null)
+			{
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+				{
+					final Room thatRoom=R.rawDoors()[d];
+					if((thatRoom!=null)
+					&&(thatRoom.getArea()==A))
+					{
+						linkInRooms.add(R);
+						break;
+					}
+				}
+			}
+		}
+		
 		for(final Room R : allRooms)
-			obliterateRoom(R,includeDB);
+			obliterateRoom(R,linkInRooms,includeDB);
 		delArea(A);
 		A.destroy(); // why not?
 	}
