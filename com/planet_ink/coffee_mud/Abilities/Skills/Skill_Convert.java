@@ -189,7 +189,7 @@ public class Skill_Convert extends StdSkill
 		}
 		if(!auto)
 		{
-			convertStack.clear();
+			//convertStack.clear(); // W the actual F?!
 			if(convertStack.containsFirst(target))
 			{
 				final Long L=convertStack.getSecond(convertStack.indexOfFirst(target));
