@@ -279,9 +279,7 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 			for(final Ability A : getAffects())
 			{
 				if((A!=null)&&(!A.ID().startsWith("Prop_ItemSlot")))
-				{
 					A.executeMsg(P, msg);
-				}
 			}
 		}
 		super.executeMsg(myHost, msg);
@@ -297,7 +295,10 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 			{
 				if((A!=null)&&(!A.ID().startsWith("Prop_ItemSlot")))
 				{
-					A.affectPhyStats(P, affectableStats);
+					if(A.bubbleAffect())
+						A.affectPhyStats(host, affectableStats);
+					else
+						A.affectPhyStats(P, affectableStats);
 				}
 			}
 		}
@@ -312,9 +313,7 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 			for(final Ability A : getAffects())
 			{
 				if((A!=null)&&(!A.ID().startsWith("Prop_ItemSlot")))
-				{
 					A.affectCharStats(affectedMOB, affectedStats);
-				}
 			}
 		}
 		super.affectCharStats(affectedMOB,affectedStats);
@@ -328,9 +327,7 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 			for(final Ability A : getAffects())
 			{
 				if((A!=null)&&(!A.ID().startsWith("Prop_ItemSlot")))
-				{
 					A.affectCharState(affectedMOB, affectedState);
-				}
 			}
 		}
 		super.affectCharState(affectedMOB,affectedState);

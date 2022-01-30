@@ -538,9 +538,7 @@ public class Prop_ItemSlot extends Property
 			for(final Ability A : slotProps)
 			{
 				if(A!=null)
-				{
-					A.affectPhyStats(A.affecting(), affectableStats);
-				}
+					A.affectPhyStats(host, affectableStats);
 			}
 		}
 		super.affectPhyStats(host,affectableStats);
