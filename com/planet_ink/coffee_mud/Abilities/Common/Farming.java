@@ -97,6 +97,11 @@ public class Farming extends GatheringSkill
 		return 1;
 	}
 
+	protected String seedWord()
+	{
+		return "seed";
+	}
+	
 	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
@@ -119,7 +124,7 @@ public class Farming extends GatheringSkill
 				if(age < .75)
 					adj="Young @x1";
 				else
-					adj="Seeds of @x1";
+					adj=CMStrings.capitalizeFirstLetter(CMLib.english().makePlural(seedWord()))+" of @x1";
 				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,
 						L(adj+" are growing here.",foundShortName)));
 			}
