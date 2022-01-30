@@ -209,6 +209,7 @@ public class Gaoler extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"PaperMaking",0,"",false,SecretFlag.SECRET);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Distilling",0,"",false,SecretFlag.SECRET);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Farming",0,"",false,SecretFlag.SECRET);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Shrooming",0,"",false,SecretFlag.SECRET);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Speculate",0,"",false,SecretFlag.SECRET);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Painting",0,"",false,SecretFlag.SECRET);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Construction",0,"",false,SecretFlag.SECRET,CMParms.parseSemicolons("Carpentry",true),"");

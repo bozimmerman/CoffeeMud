@@ -89,7 +89,8 @@
 8 Skill_Autoswim MASK=+CON 8 REQUIRES=Skill_Swim
 
 10 Construction MASK=+CON 12 REQUIRES=Carpentry 
-10 Farming 
+10 Farming
+10 Shrooming
 10 JewelMaking MASK=+WIS 16 REQUIRES=Blacksmithing Pottery 
 10 LockSmith MASK=+DEX 14 REQUIRES=Blacksmithing 
 10 Masonry MASK=+CON 12 REQUIRES=Sculpting 

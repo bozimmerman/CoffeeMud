@@ -134,7 +134,7 @@ public class Farming extends GatheringSkill
 			final Room R=(Room)affected;
 			if(R!=null)
 			{
-				if(R.getArea().getClimateObj().canSeeTheSun(R))
+				if(canGrowHere(null,R,true))
 					goodticks++;
 				final MOB mob=invoker();
 				if(tickUp==6)
@@ -309,11 +309,17 @@ public class Farming extends GatheringSkill
 		return false;
 	}
 
-	protected boolean canGrowHere(final MOB mob, final Room R)
+	protected boolean canGrowHere(final MOB mob, final Room R, final boolean quiet)
 	{
-		if(!R.getArea().getClimateObj().canSeeTheSun(R))
+		if(R==null)
+			return false;
+		final Area A=R.getArea();
+		if(A==null)
+			return false;
+		if(!A.getClimateObj().canSeeTheSun(R))
 		{
-			commonTell(mob,L("You need clear sunlight to do your farming.  Check the time and weather."));
+			if(!quiet)
+				commonTell(mob,L("You need clear sunlight to do your farming.  Check the time and weather."));
 			return false;
 		}
 		if(!(((R.domainType()==Room.DOMAIN_OUTDOORS_HILLS)
@@ -323,12 +329,14 @@ public class Farming extends GatheringSkill
 			||(R.domainType()==Room.DOMAIN_OUTDOORS_SWAMP)
 			||(R.myResource()==RawMaterial.RESOURCE_DIRT))))
 		{
-			commonTell(mob,L("The land is not suitable for farming here."));
+			if(!quiet)
+				commonTell(mob,L("The land is not suitable for farming here."));
 			return false;
 		}
 		if(R.getArea().getClimateObj().weatherType(R)==Climate.WEATHER_DROUGHT)
 		{
-			commonTell(mob,L("The current drought conditions make planting useless."));
+			if(!quiet)
+				commonTell(mob,L("The current drought conditions make planting useless."));
 			return false;
 		}
 		return true;
@@ -354,7 +362,7 @@ public class Farming extends GatheringSkill
 		}
 
 		verb=L("planting");
-		if((!auto) && (!canGrowHere(mob, R)))
+		if((!auto) && (!canGrowHere(mob, R, false)))
 			return false;
 		if(R.fetchEffect(ID())!=null)
 		{

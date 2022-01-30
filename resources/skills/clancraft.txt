@@ -16,6 +16,7 @@ Tanners Knife %	OAK/1	IRON/3	4	1	10	100	0	GenClanCommonItem	Butchering					Butch
 Fishers Pole %	HICKORY/10		4	1	10	100	0	GenClanCommonItem	Fishing					Fishing
 Hunters Snare %	REDWOOD/10		4	1	10	100	0	GenClanCommonItem	Hunting					Hunting
 Farmers Tiller %	BALSA/10		4	10	10	100	0	GenClanCommonItem	Farming					Farming
+Shroomers Bag %	HEMP/10		4	10	10	100	0	GenClanCommonItem	Shrooming					Shrooming
 Tailors Needle %	COPPER/5		5	2	20	100	0	GenClanCommonItem	Tailoring					Tailoring
 Weaponsmiths Hammer %	GRANITE/10		5	2	20	100	0	GenClanCommonItem	Weaponsmithing					Weaponsmithing
 Armorsmiths Anvil %	IRON/50		5	2	20	100	0	GenClanCommonItem	Armorsmithing					Armorsmithing

@@ -2,6 +2,7 @@
   1. New Scriptable functions: ROOMPC and AREAPC
   2. Caravans now have their own internal Directions (fore, back, right, left, up, down)
   3. Crafting INFO feature will now give the approx. time to craft
+  4. New common skill: Shrooming, for growing mushrooms/fungus
 
 # Build 5.9.12 Release 1/17/2022
   *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG

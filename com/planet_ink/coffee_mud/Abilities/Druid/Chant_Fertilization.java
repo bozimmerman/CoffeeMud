@@ -114,6 +114,8 @@ public class Chant_Fertilization extends Chant
 							A=M.fetchEffect("MasterGardening");
 						if(A==null)
 							A=M.fetchEffect("Gardening");
+						if(A==null)
+							A=M.fetchEffect("Shrooming");
 						if(A!=null)
 							A.setAbilityCode(3);
 					}
