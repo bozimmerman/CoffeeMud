@@ -86,6 +86,12 @@ public class Shrooming extends Farming
 	}
 
 	@Override
+	protected boolean allowedInTheDark()
+	{
+		return true;
+	}
+
+	@Override
 	protected boolean canGrowHere(final MOB mob, final Room R, final boolean quiet)
 	{
 		if(R==null)

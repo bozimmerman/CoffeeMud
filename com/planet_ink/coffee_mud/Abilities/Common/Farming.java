@@ -301,7 +301,6 @@ public class Farming extends GatheringSkill
 	{
 		if((I2!=null)
 		&&(I2 instanceof RawMaterial)
-		&&(CMLib.flags().canBeSeenBy(I2,mob))
 		&&(I2.container()==null)
 		&&((I2 instanceof Food)||(((RawMaterial)I2).getSubType().equals(RawMaterial.ResourceSubType.SEED.name())))
 		&&(plantableResource(I2.material())))
