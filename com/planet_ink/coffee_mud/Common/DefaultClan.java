@@ -83,6 +83,7 @@ public class DefaultClan implements Clan
 	protected long					lastStatusChange		= 0;
 	protected String				lastClanKillLog			= null;
 	protected double				taxRate					= 0.0;
+	protected double				duesPerDay				= 0.0;
 	protected volatile long			exp						= 0;
 	protected volatile long			lastClanTickMs			= System.currentTimeMillis();
 	protected Object				expSync					= new Object();
@@ -665,6 +666,18 @@ public class DefaultClan implements Clan
 	}
 
 	@Override
+	public void setDues(final double dues)
+	{
+		duesPerDay=dues;
+	}
+
+	@Override
+	public double getDues()
+	{
+		return duesPerDay;
+	}
+
+	@Override
 	public int getClanRelations(final String id)
 	{
 		final long i[]=relations.get(id.toUpperCase());
@@ -1011,6 +1024,7 @@ public class DefaultClan implements Clan
 		if(clanC!=null)
 			msg.append("^x"+CMStrings.padRight(L("Class"),COLBL_WIDTH)+":^.^N "+clanC.name()+"\n\r");
 		msg.append("^x"+CMStrings.padRight(L("Exp. Tax Rate"),COLBL_WIDTH)+":^.^N "+((int)Math.round(getTaxes()*100))+"%\n\r");
+		//msg.append("^x"+CMStrings.padRight(L("Dues"),COLBL_WIDTH)+":^.^N "+((int)Math.round(getDues()))+"\n\r");
 		if(member||sysmsgs)
 		{
 			msg.append("^x"+CMStrings.padRight(L("Experience Pts."),COLBL_WIDTH)+":^.^N "+getExp()+"\n\r");
@@ -1439,6 +1453,7 @@ public class DefaultClan implements Clan
 		str.append("<POLITICS>");
 		str.append(xmlLib.convertXMLtoTag("GOVERNMENT",""+getGovernmentID()));
 		str.append(xmlLib.convertXMLtoTag("TAXRATE",""+getTaxes()));
+		str.append(xmlLib.convertXMLtoTag("DUES",""+getDues()));
 		str.append(xmlLib.convertXMLtoTag("EXP",""+getExp()));
 		str.append(xmlLib.convertXMLtoTag("ONLINEMINS",""+totalOnlineMins));
 		str.append(xmlLib.convertXMLtoTag("LVLSGAINED",""+totalLevelsGained));
@@ -1522,6 +1537,7 @@ public class DefaultClan implements Clan
 		setClanLevel(xmlLib.getIntFromPieces(poliData,"LEVEL"));
 		setExp(exp); // may change the level
 		taxRate=xmlLib.getDoubleFromPieces(poliData,"TAXRATE");
+		duesPerDay=xmlLib.getDoubleFromPieces(poliData,"DUES");
 		clanClass=xmlLib.getValFromPieces(poliData,"CCLASS");
 		lastStatusChange=xmlLib.getLongFromPieces(poliData,"LASTSTATUSCHANGE");
 
@@ -1971,9 +1987,7 @@ public class DefaultClan implements Clan
 
 			// only do the following once per rl day
 			if(tickUp < CMProps.getTicksPerDay())
-			{
 				return true;
-			}
 			tickUp = 0;
 
 			final List<FullMemberRecord> members=getFullMemberList();
@@ -2573,7 +2587,6 @@ public class DefaultClan implements Clan
 			}
 		}
 
-
 		if(changed)
 			update();
 		return exp;
@@ -2749,7 +2762,8 @@ public class DefaultClan implements Clan
 		"MINMEMBERS", //20
 		"CLANCHARCLASS", // 21
 		"NAME", // 22
-		"FLAGS" // 23
+		"FLAGS", // 23
+		"DUES" //24
 	};
 
 	@Override
@@ -2843,6 +2857,8 @@ public class DefaultClan implements Clan
 			return "" + getName();
 		case 23:
 			return CMParms.toListString(clanFlags);
+		case 24:
+			return "" + getDues();
 		}
 		return "";
 	}
@@ -2930,6 +2946,9 @@ public class DefaultClan implements Clan
 			}
 			break;
 		}
+		case 24:
+			this.setDues(CMath.s_double(val.trim()));
+			break; // dues
 		}
 	}
 }

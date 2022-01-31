@@ -575,6 +575,22 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooa
 	 * @return rate the tax rate 0-100.0
 	 */
 	public double getTaxes();
+	
+	/**
+	 * Sets the amount of money dues due from
+	 * every member per rl day.
+	 * 
+	 * @param dues the amount of dues in clan bank money
+	 */
+	public void setDues(double dues);
+
+	/**
+	 * Gets the amount of money dues due from
+	 * every member due every rl day.
+	 * 
+	 * @return dues the amount of dues in clan bank money
+	 */
+	public double getDues();
 
 	/**
 	 * Returns the maximum number of players who can hold the given
