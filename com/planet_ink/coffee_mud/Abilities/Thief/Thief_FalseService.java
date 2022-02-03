@@ -140,7 +140,7 @@ public class Thief_FalseService extends ThiefSkill
 							{
 								if(F!=null)
 								{
-									if(CMLib.factions().postFactionChange(M,this, F.factionID(), 25))
+									if(CMLib.factions().postSkillFactionChange(M,this, F.factionID(), 25))
 										M.tell(L("You receive @x1 faction with @x2.",""+25,F.name()));
 								}
 							}

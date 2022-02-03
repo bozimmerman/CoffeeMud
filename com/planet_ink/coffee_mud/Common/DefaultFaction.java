@@ -646,46 +646,44 @@ public class DefaultFaction implements Faction, MsgListener
 	@Override
 	public String getTagValue(final String tag)
 	{
-		final int tagRef=CMLib.factions().isFactionTag(tag);
-		if(tagRef<0)
+		final FacTag tagRef=CMLib.factions().getFactionTag(tag);
+		if(tagRef==null)
 			return "";
 		int numCall=-1;
-		if((tagRef<TAG_NAMES.length)&&(TAG_NAMES[tagRef].endsWith("*")))
-		{
-			if(CMath.isInteger(tag.substring(TAG_NAMES[tagRef].length()-1)))
-				numCall=CMath.s_int(tag.substring(TAG_NAMES[tagRef].length()-1));
-		}
+		if((tagRef.maskPrefix!=null)
+		&&(CMath.isInteger(tag.substring(tagRef.maskPrefix.length()))))
+			numCall=CMath.s_int(tag.substring(tagRef.maskPrefix.length()));
 		switch(tagRef)
 		{
-		case TAG_NAME:
+		case NAME:
 			return name;
-		case TAG_MINIMUM:
+		case MINIMUM:
 			return "" + minimum;
-		case TAG_MAXIMUM:
+		case MAXIMUM:
 			return "" + maximum;
-		case TAG_SCOREDISPLAY:
+		case SCOREDISPLAY:
 			return Boolean.toString(showInScore).toUpperCase();
-		case TAG_SHOWINFACTIONSCMD:
+		case SHOWINFACTIONSCMD:
 			return Boolean.toString(showInFacCommand).toUpperCase();
-		case TAG_SPECIALREPORTED:
+		case SPECIALREPORTED:
 			return Boolean.toString(showInSpecialReport).toUpperCase();
-		case TAG_EDITALONE:
+		case EDITALONE:
 			return Boolean.toString(showInEditor).toUpperCase();
-		case TAG_DEFAULT:
+		case DEFAULT:
 			return CMParms.toSemicolonListString(defaults);
-		case TAG_AUTODEFAULTS:
+		case AUTODEFAULTS:
 			return CMParms.toSemicolonListString(autoDefaults);
-		case TAG_CHOICEINTRO:
+		case CHOICEINTRO:
 			return choiceIntro;
-		case TAG_AUTOCHOICES:
+		case AUTOCHOICES:
 			return CMParms.toSemicolonListString(choices);
-		case TAG_RATEMODIFIER:
+		case RATEMODIFIER:
 			return "" + rateModifier;
-		case TAG_EXPERIENCE:
+		case EXPERIENCE:
 			return "" + experienceFlag;
-		case TAG_INHERITABLE:
+		case INHERITABLE:
 			return Boolean.toString(isInherited).toUpperCase();
-		case TAG_RANGE_:
+		case RANGE_:
 		{
 			if((numCall<0)||(numCall>=ranges.size()))
 				return ""+ranges.size();
@@ -699,7 +697,7 @@ public class DefaultFaction implements Faction, MsgListener
 			}
 			return "";
 		}
-		case TAG_CHANGE_:
+		case CHANGE_:
 		{
 			int sz=0;
 			for(final Enumeration<Faction.FactionChangeEvent[]> es=changes.elements();es.hasMoreElements();)
@@ -719,19 +717,19 @@ public class DefaultFaction implements Faction, MsgListener
 			}
 			return "";
 		}
-		case TAG_ABILITY_:
+		case ABILITY_:
 		{
 			if((numCall<0)||(numCall>=abilityUsages.size()))
 				return ""+abilityUsages.size();
 			return abilityUsages.get(numCall).toString();
 		}
-		case TAG_FACTOR_:
+		case FACTOR_:
 		{
 			if((numCall<0)||(numCall>=factors.size()))
 				return ""+factors.size();
 			return factors.get(numCall).toString();
 		}
-		case TAG_RELATION_:
+		case RELATION_:
 		{
 			if((numCall<0)||(numCall>=relations.size()))
 				return ""+relations.size();
@@ -746,7 +744,7 @@ public class DefaultFaction implements Faction, MsgListener
 			}
 			return "";
 		}
-		case TAG_AFFBEHAV_:
+		case AFFBEHAV_:
 		{
 			if((numCall<0)||(numCall>=affBehavs.size()))
 				return ""+affBehavs.size();
@@ -761,14 +759,14 @@ public class DefaultFaction implements Faction, MsgListener
 			}
 			return "";
 		}
-		case TAG_REACTION_:
+		case REACTION_:
 		{
 			if((numCall<0)||(numCall>=reactions.size()))
 				return ""+reactions.size();
 			final Faction.FReactionItem item = reactions.get(numCall);
 			return item.toString();
 		}
-		case TAG_USELIGHTREACTIONS:
+		case USELIGHTREACTIONS:
 			return "" + useLightReactions;
 		}
 		return "";
@@ -777,22 +775,21 @@ public class DefaultFaction implements Faction, MsgListener
 	@Override
 	public String getINIDef(final String tag, final String delimeter)
 	{
-		final int tagRef=CMLib.factions().isFactionTag(tag);
-		if(tagRef<0)
+		final FacTag tagRef=CMLib.factions().getFactionTag(tag);
+		if(tagRef==null)
 			return "";
-		final String rawTagName=TAG_NAMES[tagRef];
-		if(TAG_NAMES[tagRef].endsWith("*"))
+		if(tagRef.maskPrefix!=null)
 		{
-			final int number=CMath.s_int(getTagValue(rawTagName));
+			final int number=CMath.s_int(getTagValue(tagRef.name()));
 			final StringBuffer str=new StringBuffer("");
 			for(int i=0;i<number;i++)
 			{
-				final String value=getTagValue(rawTagName.substring(0,rawTagName.length()-1)+i);
-				str.append(rawTagName.substring(0,rawTagName.length()-1)+(i+1)+"="+value+delimeter);
+				final String value=getTagValue(tagRef.maskPrefix+i);
+				str.append(tagRef.maskPrefix+(i+1)+"="+value+delimeter);
 			}
 			return str.toString();
 		}
-		return rawTagName+"="+getTagValue(tag)+delimeter;
+		return tagRef.name()+"="+getTagValue(tag)+delimeter;
 	}
 
 	@Override
@@ -3425,13 +3422,14 @@ public class DefaultFaction implements Faction, MsgListener
 					strflag=strflag.substring(1);
 				switch(CMLib.factions().getAbilityFlagType(strflag))
 				{
-				case 1:
+				case ACODE:
 					type=CMParms.indexOfIgnoreCase(Ability.ACODE_DESCS, strflag);
 					break;
-				case 2:
+				case DOMAIN:
 					domain=CMParms.indexOfIgnoreCase(Ability.DOMAIN_DESCS, strflag);
 					break;
-				case 3:
+				case FLAG:
+				{
 					final int val=CMParms.indexOfIgnoreCase(Ability.FLAG_DESCS, strflag);
 					if(not)
 					{
@@ -3446,6 +3444,7 @@ public class DefaultFaction implements Faction, MsgListener
 						flag=flag|CMath.pow(2,val);
 					}
 					break;
+				}
 				default:
 					unknowns.add(strflag);
 					break;

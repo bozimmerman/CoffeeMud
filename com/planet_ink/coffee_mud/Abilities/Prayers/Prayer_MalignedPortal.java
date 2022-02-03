@@ -456,9 +456,9 @@ public class Prayer_MalignedPortal extends Prayer
 		if(mob.fetchFaction(CMLib.factions().getAlignmentID())!=Integer.MAX_VALUE)
 		{
 			if(CMath.bset(flags(), Ability.FLAG_UNHOLY))
-				CMLib.factions().postFactionChange(mob,this, CMLib.factions().getAlignmentID(), -100);
+				CMLib.factions().postSkillFactionChange(mob,this, CMLib.factions().getAlignmentID(), -100);
 			if(CMath.bset(flags(), Ability.FLAG_HOLY))
-				CMLib.factions().postFactionChange(mob,this, CMLib.factions().getAlignmentID(), 100);
+				CMLib.factions().postSkillFactionChange(mob,this, CMLib.factions().getAlignmentID(), 100);
 		}
 
 		PlanarAbility planeAble = (PlanarAbility)CMClass.getAbility("StdPlanarAbility");

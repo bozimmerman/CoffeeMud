@@ -404,7 +404,7 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 				final Faction deity1F=CMLib.factions().getFaction("DEITY_"+name1Code);
 				if(deity1F!=null)
 				{
-					CMLib.factions().postFactionChange(deity2M, this, deity1F.factionID(), -deityFactionChange);
+					CMLib.factions().postSkillFactionChange(deity2M, this, deity1F.factionID(), -deityFactionChange);
 					if(deity2M.isSavable()
 					&& (deity2M.getStartRoom()!=null)
 					&& (deity2M.getStartRoom().roomID().length()>0)

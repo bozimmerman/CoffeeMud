@@ -253,7 +253,7 @@ public class Skill_BefoulShrine extends StdSkill
 					if(F!=null)
 					{
 						final int amt = -25 - (super.getXLEVELLevel(mob));
-						if(CMLib.factions().postFactionChange(mob,this, F.factionID(), amt))
+						if(CMLib.factions().postSkillFactionChange(mob,this, F.factionID(), amt))
 							mob.tell(L("You lose @x1 faction with @x2.",""+(-amt),F.name()));
 					}
 				}

@@ -157,9 +157,9 @@ public class Chant_NaturalBalance extends Chant
 			if(CMLib.factions().getAlignPurity(myAlignment,Faction.Align.MODERATE)<99)
 			{
 				if(CMLib.factions().getAlignPurity(myAlignment,Faction.Align.EVIL)<CMLib.factions().getAlignPurity(myAlignment,Faction.Align.GOOD))
-					CMLib.factions().postFactionChange(mob,this, CMLib.factions().getAlignmentID(), oneHalfPct);
+					CMLib.factions().postSkillFactionChange(mob,this, CMLib.factions().getAlignmentID(), oneHalfPct);
 				else
-					CMLib.factions().postFactionChange(mob,this, CMLib.factions().getAlignmentID(), -oneHalfPct);
+					CMLib.factions().postSkillFactionChange(mob,this, CMLib.factions().getAlignmentID(), -oneHalfPct);
 				switch(CMLib.dice().roll(1,10,0))
 				{
 				case 0:

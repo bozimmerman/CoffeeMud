@@ -92,7 +92,7 @@ public class Prayer_Corruption extends Prayer
 				{
 					target.tell(L("Evil, vile thoughts fill your head."));
 					final int evilness=CMLib.dice().roll(10,adjustedLevel(mob,asLevel),10*super.getXLEVELLevel(mob))*-1;
-					CMLib.factions().postFactionChange(target,this, CMLib.factions().getAlignmentID(), evilness);
+					CMLib.factions().postSkillFactionChange(target,this, CMLib.factions().getAlignmentID(), evilness);
 				}
 				if(msg2!=null)
 					mob.location().send(mob,msg2);

@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.FactionManager.FAbilityMaskType;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
@@ -232,8 +233,9 @@ public class GrinderFactions
 			old=httpReq.getUrlParameter("ABILITYUSE"+num);
 			if(old.length()>0)
 			{
-				final int usedType=CMLib.factions().getAbilityFlagType(old);
-				if(usedType>0)
+				final FAbilityMaskType usedType=CMLib.factions().getAbilityFlagType(old);
+				if((usedType != null)
+				&&(usedType != FAbilityMaskType.ID))
 				{
 					int x=-1;
 					while(httpReq.isUrlParameter("ABILITYUSE"+num+"_"+(++x)))

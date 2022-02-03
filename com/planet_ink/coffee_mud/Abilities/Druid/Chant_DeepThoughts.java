@@ -149,18 +149,18 @@ public class Chant_DeepThoughts extends Chant
 			if(CMLib.factions().getAlignPurity(myAlignment,Faction.Align.MODERATE)<99)
 			{
 				if(CMLib.factions().getAlignPurity(myAlignment,Faction.Align.EVIL)<CMLib.factions().getAlignPurity(myAlignment,Faction.Align.GOOD))
-					CMLib.factions().postFactionChange(mob,this, CMLib.factions().getAlignmentID(), ratePct);
+					CMLib.factions().postSkillFactionChange(mob,this, CMLib.factions().getAlignmentID(), ratePct);
 				else
-					CMLib.factions().postFactionChange(mob,this, CMLib.factions().getAlignmentID(), -ratePct);
+					CMLib.factions().postSkillFactionChange(mob,this, CMLib.factions().getAlignmentID(), -ratePct);
 				if(mob.fetchFaction(CMLib.factions().getInclinationID())!=Integer.MAX_VALUE)
 				{
 					final int myInclination=mob.fetchFaction(CMLib.factions().getInclinationID());
 					final int inclinationTotal=CMLib.factions().getTotal(CMLib.factions().getInclinationID());
 					final int inclinationRatePct=(int)Math.round(CMath.mul(inclinationTotal,.01));
 					if(CMLib.factions().getInclinationPurity(myInclination,Faction.Align.CHAOTIC)<CMLib.factions().getInclinationPurity(myInclination,Faction.Align.LAWFUL))
-						CMLib.factions().postFactionChange(mob,this, CMLib.factions().getInclinationID(), inclinationRatePct);
+						CMLib.factions().postSkillFactionChange(mob,this, CMLib.factions().getInclinationID(), inclinationRatePct);
 					else
-						CMLib.factions().postFactionChange(mob,this, CMLib.factions().getInclinationID(), -inclinationRatePct);
+						CMLib.factions().postSkillFactionChange(mob,this, CMLib.factions().getInclinationID(), -inclinationRatePct);
 				}
 				switch(CMLib.dice().roll(1,10,0))
 				{

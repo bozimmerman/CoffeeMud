@@ -202,7 +202,7 @@ public class Prayer_ReligiousDoubt extends Prayer
 				if(target != mob)
 				{
 					if(mob.fetchFaction(CMLib.factions().getInclinationID())!=Integer.MAX_VALUE)
-						CMLib.factions().postFactionChange(mob,this, CMLib.factions().getInclinationID(), -25);
+						CMLib.factions().postSkillFactionChange(mob,this, CMLib.factions().getInclinationID(), -25);
 				}
 			}
 		}

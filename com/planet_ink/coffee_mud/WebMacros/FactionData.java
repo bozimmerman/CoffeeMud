@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.FactionManager.FAbilityMaskType;
 import com.planet_ink.coffee_mud.Commands.interfaces.Command;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent;
@@ -624,12 +625,13 @@ public class FactionData extends StdWebMacro
 							showNum++;
 							String val=abilityID;
 							str.append("<TR><TD>");
-							final int usedType=CMLib.factions().getAbilityFlagType(val);
+							final FAbilityMaskType usedType=CMLib.factions().getAbilityFlagType(val);
 							str.append("<SELECT NAME=ABILITYUSE"+showNum+" ONCHANGE=\"DelItem(this);\">");
 							str.append("<OPTION VALUE=\"\">Delete!");
 							str.append("<OPTION VALUE=\""+val+"\" SELECTED>"+CMStrings.capitalizeAndLower(val));
 							str.append("</SELECT>");
-							if(usedType>0)
+							if((usedType!=null)
+							&&(usedType != FAbilityMaskType.ID))
 							{
 								int x=-1;
 								int sx=-1;
@@ -926,22 +928,24 @@ public class FactionData extends StdWebMacro
 	{
 		switch(CMLib.factions().getAbilityFlagType(val))
 		{
-		case 1:
+		case ACODE:
 			for(int i=0;i<Ability.ACODE_DESCS.length;i++)
 			{
 				if(!done.contains(Ability.ACODE_DESCS[i].toUpperCase()))
 					done.add(Ability.ACODE_DESCS[i].toUpperCase());
 			}
 			break;
-		case 2:
+		case DOMAIN:
 			for(int i=0;i<Ability.DOMAIN_DESCS.length;i++)
 			{
 				if(!done.contains(Ability.DOMAIN_DESCS[i].toUpperCase()))
 					done.add(Ability.DOMAIN_DESCS[i].toUpperCase());
 			}
 			break;
-		case 3:
+		case FLAG:
 			done.add(val.toUpperCase());
+			break;
+		default:
 			break;
 		}
 	}

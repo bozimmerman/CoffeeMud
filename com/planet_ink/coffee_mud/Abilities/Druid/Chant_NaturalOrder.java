@@ -157,9 +157,9 @@ public class Chant_NaturalOrder extends Chant
 			if(CMLib.factions().getInclinationPurity(myInclination,Faction.Align.MODERATE)<99)
 			{
 				if(CMLib.factions().getInclinationPurity(myInclination,Faction.Align.CHAOTIC)<CMLib.factions().getInclinationPurity(myInclination,Faction.Align.LAWFUL))
-					CMLib.factions().postFactionChange(mob,this, CMLib.factions().getInclinationID(), oneHalfPct);
+					CMLib.factions().postSkillFactionChange(mob,this, CMLib.factions().getInclinationID(), oneHalfPct);
 				else
-					CMLib.factions().postFactionChange(mob,this, CMLib.factions().getInclinationID(), -oneHalfPct);
+					CMLib.factions().postSkillFactionChange(mob,this, CMLib.factions().getInclinationID(), -oneHalfPct);
 				switch(CMLib.dice().roll(1,10,0))
 				{
 				case 0:

@@ -92,7 +92,7 @@ public class Prayer_Discipline extends Prayer
 				{
 					target.tell(L("Orderly, lawful thoughts fill your head."));
 					final int lawfulness=CMLib.dice().roll(10,adjustedLevel(mob,asLevel),10*super.getXLEVELLevel(mob));
-					CMLib.factions().postFactionChange(target,this, CMLib.factions().getInclinationID(), lawfulness);
+					CMLib.factions().postSkillFactionChange(target,this, CMLib.factions().getInclinationID(), lawfulness);
 				}
 				if(msg2!=null)
 					mob.location().send(mob,msg2);

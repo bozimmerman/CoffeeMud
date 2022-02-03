@@ -1828,6 +1828,11 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		;
 		public final static Align[] alignAligns = { EVIL, NEUTRAL, GOOD};
 		public final static Align[] inclinationAligns = { CHAOTIC, MODERATE, LAWFUL};
+		public final boolean isInclination;
+		private Align()
+		{
+			isInclination=this.ordinal() >= 4;
+		}
 	}
 
 	/** String list for the valid {@link Faction#experienceFlag()} constants */
@@ -1835,55 +1840,48 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	/** String descriptions for the valid {@link Faction#experienceFlag()} constants */
 	public final static String[] EXPAFFECT_DESCS={"None","Proportional (Extreme)","Higher (mine)","Lower (mine)","Higher (other)","Lower (other)"};
 
-	/** index constant for tag names in {@link Faction#TAG_NAMES} denoting the NAME tag */
-	public final static int TAG_NAME=0;
-	/** index constant for tag names in {@link Faction#TAG_NAMES} denoting the MINIMUM tag */
-	public final static int TAG_MINIMUM=1;
-	/** index constant for tag names in {@link Faction#TAG_NAMES} denoting the MAXIMUM tag */
-	public final static int TAG_MAXIMUM=2;
-	/** index constant for tag names in {@link Faction#TAG_NAMES} denoting the SCOREDISPLAY tag */
-	public final static int TAG_SCOREDISPLAY=3;
-	/** index constant for tag names in {@link Faction#TAG_NAMES} denoting the SPECIALREPORTED tag */
-	public final static int TAG_SPECIALREPORTED=4;
-	/** index constant for tag names in {@link Faction#TAG_NAMES} denoting the EDITALONE tag */
-	public final static int TAG_EDITALONE=5;
-	/** index constant for tag names in {@link Faction#TAG_NAMES} denoting the DEFAULT tag */
-	public final static int TAG_DEFAULT=6;
-	/** index constant for tag names in {@link Faction#TAG_NAMES} denoting the AUTODEFAULTS tag */
-	public final static int TAG_AUTODEFAULTS=7;
-	/** index constant for tag names in {@link Faction#TAG_NAMES} denoting the AUTOCHOICES tag */
-	public final static int TAG_AUTOCHOICES=8;
-	/** index constant for tag names in {@link Faction#TAG_NAMES} denoting the CHOICEINTRO tag */
-	public final static int TAG_CHOICEINTRO=9;
-	/** index constant for tag names in {@link Faction#TAG_NAMES} denoting the RATEMODIFIER tag */
-	public final static int TAG_RATEMODIFIER=10;
-	/** index constant for tag names in {@link Faction#TAG_NAMES} denoting the EXPERIENCE tag */
-	public final static int TAG_EXPERIENCE=11;
-	/** index constant for tag names in {@link Faction#TAG_NAMES} denoting the RANGE tag */
-	public final static int TAG_RANGE_=12;
-	/** index constant for tag names in {@link Faction#TAG_NAMES} denoting the CHANGE tag */
-	public final static int TAG_CHANGE_=13;
-	/** index constant for tag names in {@link Faction#TAG_NAMES} denoting the ABILITY tag */
-	public final static int TAG_ABILITY_=14;
-	/** index constant for tag names in {@link Faction#TAG_NAMES} denoting the FACTOR tag */
-	public final static int TAG_FACTOR_=15;
-	/** index constant for tag names in {@link Faction#TAG_NAMES} denoting the RELATION tag */
-	public final static int TAG_RELATION_=16;
-	/** index constant for tag names in {@link Faction#TAG_NAMES} denoting the SHOWINFACTIONSCMD tag */
-	public final static int TAG_SHOWINFACTIONSCMD=17;
-	/** index constant for tag names in {@link Faction#TAG_NAMES} denoting the AFFBEHAV tag */
-	public final static int TAG_AFFBEHAV_=18;
-	/** index constant for tag names in {@link Faction#TAG_NAMES} denoting the RELATION tag */
-	public final static int TAG_REACTION_=19;
-	/** index constant for tag names in {@link Faction#TAG_NAMES} denoting the SCOREDISPLAY tag */
-	public final static int TAG_USELIGHTREACTIONS=20;
-	/** index constant for tag names in {@link Faction#TAG_NAMES} denoting the INHERITABLE tag */
-	public final static int TAG_INHERITABLE=21;
-	/** list of valid tag names for internal faction data, retrieved by {@link Faction#getTagValue(String)} */
-	public final static String[] TAG_NAMES={"NAME","MINIMUM","MAXIMUM","SCOREDISPLAY",
-											"SPECIALREPORTED","EDITALONE","DEFAULT","AUTODEFAULTS",
-											"AUTOCHOICES","CHOICEINTRO","RATEMODIFIER","EXPERIENCE",
-											"RANGE*","CHANGE*","ABILITY*","FACTOR*","RELATION*",
-											"SHOWINFACTIONSCMD","AFFBEHAV*","REACTION*","USELIGHTREACTIONS",
-											"INHERITABLE"};
+	/**
+	 * Faction Tags are the named parameter keys found in
+	 * faction ini files, which are used to define the
+	 * faction.  Those tags ending with "_" are wildcards.
+	 * For example, RANGE_ is as RANGE*, or a parameter key
+	 * starting with RANGE.
+	 *
+	 * @author BZ
+	 *
+	 */
+	public enum FacTag
+	{
+		NAME,
+		MINIMUM,
+		MAXIMUM,
+		SCOREDISPLAY,
+		SPECIALREPORTED,
+		EDITALONE,
+		DEFAULT,
+		AUTODEFAULTS,
+		AUTOCHOICES,
+		CHOICEINTRO,
+		RATEMODIFIER,
+		EXPERIENCE,
+		RANGE_,
+		CHANGE_,
+		ABILITY_,
+		FACTOR_,
+		RELATION_,
+		SHOWINFACTIONSCMD,
+		AFFBEHAV_,
+		REACTION_,
+		USELIGHTREACTIONS,
+		INHERITABLE
+		;
+		public final String maskPrefix;
+		private FacTag()
+		{
+			if(name().endsWith("_"))
+				maskPrefix=name().substring(0,name().length()-1);
+			else
+				maskPrefix=null;
+		}
+	}
 }

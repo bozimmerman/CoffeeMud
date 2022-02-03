@@ -92,7 +92,7 @@ public class Prayer_RemoveInhibitions extends Prayer
 				{
 					target.tell(L("Chaotic, disorderly thoughts fill your head."));
 					final int lawfulness=CMLib.dice().roll(10,adjustedLevel(mob,asLevel),10*super.getXLEVELLevel(mob))*-1;
-					CMLib.factions().postFactionChange(target,this, CMLib.factions().getInclinationID(), lawfulness);
+					CMLib.factions().postSkillFactionChange(target,this, CMLib.factions().getInclinationID(), lawfulness);
 				}
 				if(msg2!=null)
 					mob.location().send(mob,msg2);
