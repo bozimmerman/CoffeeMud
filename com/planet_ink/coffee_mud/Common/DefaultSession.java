@@ -2940,6 +2940,7 @@ public class DefaultSession implements Session
 	protected boolean setLoggedInState(final LoginResult loginResult)
 	{
 		setStatus(SessionStatus.LOGIN2);
+		final MOB mob=this.mob;
 		if((mob!=null)&&(mob.playerStats()!=null))
 			acct=mob.playerStats().getAccount();
 		if((!killFlag)&&((mob!=null)))
@@ -2948,9 +2949,10 @@ public class DefaultSession implements Session
 				CMLib.threads().suspendResumeRecurse(mob, false, false);
 			userLoginTime=System.currentTimeMillis();
 			final String ansiStr;
-			if((mob.isAttributeSet(MOB.Attrib.ANSI)&&getClientTelnetMode(Session.TELNET_ANSI)))
+			if((mob!=null)
+			&&(mob.isAttributeSet(MOB.Attrib.ANSI)&&getClientTelnetMode(Session.TELNET_ANSI)))
 			{
-				if(!mob.isAttributeSet(MOB.Attrib.ANSI16))
+				if((mob!=null)&&(!mob.isAttributeSet(MOB.Attrib.ANSI16)))
 					ansiStr = " ANSI";
 				else
 					ansiStr = " ANSI-16";
