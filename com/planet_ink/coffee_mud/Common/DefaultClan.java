@@ -83,7 +83,7 @@ public class DefaultClan implements Clan
 	protected long					lastStatusChange		= 0;
 	protected String				lastClanKillLog			= null;
 	protected double				taxRate					= 0.0;
-	protected double				duesPerDay				= 0.0;
+	protected double				dues				= 0.0;
 	protected volatile long			exp						= 0;
 	protected volatile long			lastClanTickMs			= System.currentTimeMillis();
 	protected Object				expSync					= new Object();
@@ -668,13 +668,13 @@ public class DefaultClan implements Clan
 	@Override
 	public void setDues(final double dues)
 	{
-		duesPerDay=dues;
+		this.dues=dues;
 	}
 
 	@Override
 	public double getDues()
 	{
-		return duesPerDay;
+		return dues;
 	}
 
 	@Override
@@ -1023,8 +1023,10 @@ public class DefaultClan implements Clan
 		final CharClass clanC=getClanClassC();
 		if(clanC!=null)
 			msg.append("^x"+CMStrings.padRight(L("Class"),COLBL_WIDTH)+":^.^N "+clanC.name()+"\n\r");
-		msg.append("^x"+CMStrings.padRight(L("Exp. Tax Rate"),COLBL_WIDTH)+":^.^N "+((int)Math.round(getTaxes()*100))+"%\n\r");
-		//msg.append("^x"+CMStrings.padRight(L("Dues"),COLBL_WIDTH)+":^.^N "+((int)Math.round(getDues()))+"\n\r");
+		if(getTaxes()>0.0)
+			msg.append("^x"+CMStrings.padRight(L("Exp. Tax Rate"),COLBL_WIDTH)+":^.^N "+((int)Math.round(getTaxes()*100))+"%\n\r");
+		if(getDues()>0)
+			msg.append("^x"+CMStrings.padRight(L("Dues"),COLBL_WIDTH)+":^.^N "+((int)Math.round(getDues()))+"\n\r");
 		if(member||sysmsgs)
 		{
 			msg.append("^x"+CMStrings.padRight(L("Experience Pts."),COLBL_WIDTH)+":^.^N "+getExp()+"\n\r");
@@ -1537,7 +1539,7 @@ public class DefaultClan implements Clan
 		setClanLevel(xmlLib.getIntFromPieces(poliData,"LEVEL"));
 		setExp(exp); // may change the level
 		taxRate=xmlLib.getDoubleFromPieces(poliData,"TAXRATE");
-		duesPerDay=xmlLib.getDoubleFromPieces(poliData,"DUES");
+		dues=xmlLib.getDoubleFromPieces(poliData,"DUES");
 		clanClass=xmlLib.getValFromPieces(poliData,"CCLASS");
 		lastStatusChange=xmlLib.getLongFromPieces(poliData,"LASTSTATUSCHANGE");
 
