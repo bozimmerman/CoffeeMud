@@ -407,29 +407,43 @@ public class DefaultClan implements Clan
 
 
 	@Override
-	public double getCurrentClanGoldDonations(final MOB killer)
+	public double getCurrentClanGoldDonations(final MOB memberM)
 	{
-		if(killer==null)
+		if(memberM==null)
 		{
 			return 0;
 		}
 		else
 		{
-			final MemberRecord M = CMLib.database().DBGetClanMember(this.clanID(), killer.Name());
+			final MemberRecord M = CMLib.database().DBGetClanMember(this.clanID(), memberM.Name());
 			return M.donatedGold;
 		}
 	}
 
 	@Override
-	public long getCurrentClanXPDonations(final MOB killer)
+	public double getCurrentClanDuesOwed(final MOB memberM)
 	{
-		if(killer==null)
+		if(memberM==null)
+		{
+			return 0;
+		}
+		else
+		{
+			final MemberRecord M = CMLib.database().DBGetClanMember(this.clanID(), memberM.Name());
+			return M.dues;
+		}
+	}
+
+	@Override
+	public long getCurrentClanXPDonations(final MOB memberM)
+	{
+		if(memberM==null)
 		{
 			return this.exp;
 		}
 		else
 		{
-			final MemberRecord M = CMLib.database().DBGetClanMember(this.clanID(), killer.Name());
+			final MemberRecord M = CMLib.database().DBGetClanMember(this.clanID(), memberM.Name());
 			return M.donatedXP;
 		}
 	}
@@ -623,7 +637,7 @@ public class DefaultClan implements Clan
 			if(howMuch > 0)
 				bumpTrophyData(Trophy.MonthlyClanXP, howMuch);
 			if(memberM != null)
-				CMLib.database().DBUpdateClanDonates(this.clanID(), memberM.Name(), 0, howMuch);
+				CMLib.database().DBUpdateClanDonates(this.clanID(), memberM.Name(), 0, howMuch,0);
 		}
 	}
 
@@ -631,9 +645,15 @@ public class DefaultClan implements Clan
 	public void adjDeposit(final MOB memberM, final double howMuch)
 	{
 		if(memberM != null)
-			CMLib.database().DBUpdateClanDonates(this.clanID(), memberM.Name(), howMuch, 0);
+			CMLib.database().DBUpdateClanDonates(this.clanID(), memberM.Name(), howMuch, 0,0);
 	}
 
+	@Override
+	public void adjDuesDeposit(final MOB memberM, final double howMuch)
+	{
+		if(memberM != null)
+			CMLib.database().DBUpdateClanDonates(this.clanID(), memberM.Name(), 0, 0,howMuch);
+	}
 
 	@Override
 	public long getExp()

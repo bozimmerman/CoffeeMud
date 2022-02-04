@@ -496,6 +496,14 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooa
 	public void adjDeposit(MOB memberM, double newValue);
 
 	/**
+	 * Adjusts the amount of base gold value deposited by this
+	 * member from an auto-dues payment.
+	 * @param memberM member the person contributing
+	 * @param newValue the value adjustment, + or -
+	 */
+	public void adjDuesDeposit(MOB memberM, double newValue);
+
+	/**
 	 * Adjusts the amount of experience earned by a player based
 	 * on the tax rate.  Will automatically adjust the exp of
 	 * the clan and save it.
@@ -522,17 +530,24 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooa
 
 	/**
 	 * Returns the amount of base gold value this clan has received.
+	 * @param memberM the member of this clan that did the killing or NULL for all
+	 * @return the amount of deposits.
+	 */
+	public double getCurrentClanGoldDonations(MOB memberM);
+
+	/**
+	 * Returns the amount of base gold value this clan has received.
 	 * @param killer the member of this clan that did the killing or NULL for all
 	 * @return the amount of deposits.
 	 */
-	public double getCurrentClanGoldDonations(MOB killer);
+	public double getCurrentClanDuesOwed(MOB memberM);
 
 	/**
 	 * Returns the amount of xp this clan has earned.
-	 * @param killer the member of this clan that did the killing or NULL for all
+	 * @param memberM the member of this clan that did the killing or NULL for all
 	 * @return the number of xp contributed.
 	 */
-	public long getCurrentClanXPDonations(MOB killer);
+	public long getCurrentClanXPDonations(MOB memberM);
 
 	/**
 	 * Returns the total control points represented by the list of
@@ -575,11 +590,11 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooa
 	 * @return rate the tax rate 0-100.0
 	 */
 	public double getTaxes();
-	
+
 	/**
 	 * Sets the amount of money dues due from
 	 * every member per rl day.
-	 * 
+	 *
 	 * @param dues the amount of dues in clan bank money
 	 */
 	public void setDues(double dues);
@@ -587,7 +602,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooa
 	/**
 	 * Gets the amount of money dues due from
 	 * every member due every rl day.
-	 * 
+	 *
 	 * @return dues the amount of dues in clan bank money
 	 */
 	public double getDues();
@@ -945,6 +960,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooa
 		public int		playerpvps	= 0;
 		public long		donatedXP	= 0;
 		public double	donatedGold	= 0;
+		public double	dues		= 0;
 
 		public MemberRecord(final String name, final int role)
 		{
@@ -993,6 +1009,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooa
 			this.level=level;
 			this.lastActiveTimeMs=timestamp;
 			this.isAdmin=isAdmin;
+			this.dues = M.dues;
 		}
 	}
 
@@ -1135,7 +1152,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooa
 		XP_OVERWRITE,
 		GOLD_OVERWRITE,
 		JOINDATE,
-		JOINDATE_OVERWRITE,
+		JOINDATE_OVERWRITE
 	}
 
 	/**

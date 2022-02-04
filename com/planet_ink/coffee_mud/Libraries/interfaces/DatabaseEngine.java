@@ -1086,8 +1086,9 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param name the name of the member to update
 	 * @param adjGold the number of ADDITIONAL (plus or minus) clan gold donations
 	 * @param adjXP the number of ADDITIONAL (plus or minus) clan xp adjustments
+	 * @param adjDues the number of ADDITIONAL (plus or minus) clan dues made
 	 */
-	public void DBUpdateClanDonates(String clan, String name, double adjGold, int adjXP);
+	public void DBUpdateClanDonates(String clan, String name, double adjGold, int adjXP, double adjDues);
 
 	/**
 	 * Table category: DBCLANS
