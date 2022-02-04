@@ -646,6 +646,9 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			setWearLocation(buildingI,misctype,hardness);
 		}
 
+		if((buildingI instanceof Book)&&(((Book)buildingI).isJournal()))
+			((Book)buildingI).setReadableText("WRITE=\"-CLAN +\\\""+clanName+"(JOURNAL)\\\" \"");
+
 		if(buildingI instanceof Container)
 		{
 			if(capacity>0)

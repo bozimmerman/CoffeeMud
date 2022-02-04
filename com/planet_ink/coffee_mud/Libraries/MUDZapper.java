@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -55,6 +56,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		public final String minusNameStart;
 		public final String catNameStart;
 		public final String minusCatNameStart;
+
 		public SavedRace(final Race race, final int startChars)
 		{
 			name=race.name();
@@ -5279,6 +5281,20 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 											else
 											{
 												final ClanPosition cP=c.first.getGovernment().getPosition(oP.second);
+												if(cP==null)
+												{
+													final Clan.Function cf = (Clan.Function)CMath.s_valueOf(Clan.Function.class, oP.second);
+													if(cf != null)
+													{
+														final Authority a = c.first.getAuthority(c.second.intValue(), cf);
+														if((a!=null)&&(a != Authority.CAN_NOT_DO))
+														{
+															found=true;
+															break;
+														}
+														continue;
+													}
+												}
 												if((cP==null)||(cP.getRoleID()==c.second.intValue()))
 												{
 													found=true;
@@ -5344,6 +5360,16 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 										else
 										{
 											final ClanPosition cP=c.first.getGovernment().getPosition(oP.second);
+											if(cP==null)
+											{
+												final Clan.Function cf = (Clan.Function)CMath.s_valueOf(Clan.Function.class, oP.second);
+												if(cf != null)
+												{
+													final Authority a = c.first.getAuthority(c.second.intValue(), cf);
+													if((a!=null)&&(a != Authority.CAN_NOT_DO))
+														return false;
+												}
+											}
 											if((cP!=null)&&(cP.getRoleID()==c.second.intValue()))
 												return false;
 										}

@@ -46,8 +46,9 @@ public class StdJournal extends StdItem implements Book
 		return "StdJournal";
 	}
 
-	protected MOB lastReadTo=null;
-	protected long[] lastDateRead={-1,0};
+	protected MOB					lastReadTo		= null;
+	protected long[]				lastDateRead	= { -1, 0 };
+	protected Map<String, String>	parmCache		= null;
 
 	public StdJournal()
 	{
@@ -270,6 +271,16 @@ public class StdJournal extends StdItem implements Book
 				cmJournalAlias=CMJ;
 		}
 		return cmJournalAlias;
+	}
+
+	@Override
+	public void setReadableText(final String text)
+	{
+		super.setReadableText(text);
+		synchronized(this)
+		{
+			this.parmCache = null;
+		}
 	}
 
 	@Override
@@ -889,22 +900,29 @@ public class StdJournal extends StdItem implements Book
 	{
 		if(readableText().length()==0)
 			return "";
-		final Map<String,String> h;
-		h=CMParms.parseEQParms(readableText().toUpperCase(), JOURNAL_PARMS_LIST);
-		if((parmName.equals("FILTER"))&&(h.containsKey("FILTER")))
+		Map<String,String> useH;
+		synchronized(this)
 		{
-			final Map<String,String> h2=CMParms.parseEQParms(readableText(), JOURNAL_PARMS_LIST);
-			for(final String key : h2.keySet())
+			useH = this.parmCache;
+			if(useH == null)
 			{
-				if(key.equalsIgnoreCase("FILTER"))
+				useH=CMParms.parseEQParms(readableText().toUpperCase(), JOURNAL_PARMS_LIST);
+				if(useH.containsKey("FILTER"))
 				{
-					h.put("FILTER", h2.get(key));
+					// looks the same as above, but its not, because case sensitivity.
+					final Map<String,String> h2=CMParms.parseEQParms(readableText(), JOURNAL_PARMS_LIST);
+					for(final String key : h2.keySet())
+					{
+						if(key.equalsIgnoreCase("FILTER"))
+							useH.put("FILTER", h2.get(key));
+					}
 				}
+				this.parmCache = useH;
 			}
 		}
-		String req=h.get(parmName.toUpperCase().trim());
+		final String req=useH.get(parmName.toUpperCase().trim());
 		if(req==null)
-			req="";
+			return "";
 		return req;
 	}
 

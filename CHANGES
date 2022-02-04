@@ -3,6 +3,7 @@
   2. Caravans now have their own internal Directions (fore, back, right, left, up, down)
   3. Crafting INFO feature will now give the approx. time to craft
   4. New common skill: Shrooming, for growing mushrooms/fungus
+  5. Newly crafted Clan Journals now writeable only by clan role power (journal). INI updated.
 
 # Build 5.9.12 Release 1/17/2022
   *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG

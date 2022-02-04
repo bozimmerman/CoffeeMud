@@ -41,6 +41,7 @@ public class GenJournal extends StdJournal
 	}
 
 	protected String readableText="";
+
 	public GenJournal()
 	{
 		super();
@@ -83,6 +84,10 @@ public class GenJournal extends StdJournal
 	public void setReadableText(final String text)
 	{
 		readableText=text;
+		synchronized(this)
+		{
+			super.parmCache = null;
+		}
 	}
 
 	@Override
