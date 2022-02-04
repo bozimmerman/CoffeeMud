@@ -58,12 +58,14 @@ public class StdLawBook extends StdItem
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))
-		switch(msg.targetMinor())
 		{
-		case CMMsg.TYP_WRITE:
-		case CMMsg.TYP_REWRITE:
-			msg.source().tell(L("You are not allowed to write on @x1. Try reading it.",name()));
-			return false;
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_WRITE:
+			case CMMsg.TYP_REWRITE:
+				msg.source().tell(L("You are not allowed to write on @x1. Try reading it.",name()));
+				return false;
+			}
 		}
 		return super.okMessage(myHost,msg);
 	}
@@ -110,7 +112,7 @@ public class StdLawBook extends StdItem
 				&&(mob.getClanRole(rulingClan)!=null))
 				{
 					final Clan C=CMLib.clans().getClan(rulingClan);
-					if((C!=null)&&(C.getAuthority(mob.getClanRole(rulingClan).second.intValue(),Clan.Function.ORDER_CONQUERED)==Clan.Authority.CAN_DO))
+					if((C!=null)&&(C.getAuthority(mob.getClanRole(rulingClan).second.intValue(),Clan.Function.CREATE_LAW)==Clan.Authority.CAN_DO))
 						allowedToModify=true;
 				}
 

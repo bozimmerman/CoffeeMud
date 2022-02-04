@@ -1233,7 +1233,9 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooa
 		/** constant for the clan function writing MOTD messages. @see Clan#getAuthority(int,Function) */
 		CLAN_MOTD,
 		/** constant for the clan function writing Journal messages. @see Clan#getAuthority(int,Function) */
-		JOURNAL
+		JOURNAL,
+		/** constant for the clan function writing in Law Books. @see Clan#getAuthority(int,Function) */
+		CREATE_LAW
 	}
 
 	/**
