@@ -35,8 +35,25 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * The Generic CMObject Building library is the heart and core of 
+ * CoffeeMud 2.0, formerly called "Generic".  The purpose is to 
+ * provide abstract methods for handling the modifiable aspects of
+ * CMObjects, such as manipulating and reading fields, converting
+ * to and from XML, etc.
+ * 
+ * @author Bo Zimmerman
+ *
+ */
 public interface GenericBuilder extends CMLibrary
 {
+	/**
+	 * Enum for the most basic fields common to 
+	 * all objects that implement the Item interface.
+	 * 
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public enum GenItemCode
 	{
 		CLASS,
@@ -233,7 +250,27 @@ public interface GenericBuilder extends CMLibrary
 	public String getGenMobStat(MOB M, String code);
 	public void setGenMobStat(MOB M, String code, String val);
 	public Area copyArea(Area A, String newName, boolean setSavable);
+	
+	/**
+	 * Converts all the faction values and associations on the given
+	 * mob into a complete xml doc for storage in the db.
+	 * @see GenericBuilder#setFactionFromXML(MOB, List)
+	 * 
+	 * @param mob the mob to grab faction associations from
+	 * @return the xml doc of all factions on the mob
+	 */
 	public String getFactionXML(MOB mob);
+	
+	/**
+	 * Sets the faction values and associations on the given
+	 * mob from a pre-parsed xml doc.  The list of tags
+	 * must include one called "FACTIONS".
+	 * 
+	 * @see GenericBuilder#getFactionXML(MOB)
+	 * 
+	 * @param mob the mob to set faction associations on
+	 * @param xml the list of pre-parsed xml tags
+	 */
 	public void setFactionFromXML(MOB mob, List<XMLTag> xml);
 
 	/**
@@ -243,6 +280,7 @@ public interface GenericBuilder extends CMLibrary
 	 * combinations, but, well, it seemed like a good idea at the time.
 	 * @see Affectable#effects()
 	 * @see GenericBuilder#getCodedSpellsOrBehaviors(String)
+	 * 
 	 * @param I the Affectable one to look at the effects of
 	 * @return the coded string of those effects
 	 */
@@ -251,9 +289,10 @@ public interface GenericBuilder extends CMLibrary
 	/**
 	 * Parses the coded effects available from an ability parameter column and generates
 	 * the Ability objects with any parameters of their own.
-	 * @param spells the coded ability parameter affectable effects string
 	 * @see Affectable#effects()
 	 * @see GenericBuilder#getCodedSpellsOrBehaviors(PhysicalAgent)
+	 * 
+	 * @param spells the coded ability parameter affectable effects string
 	 * @return the list of ability which are the effects
 	 */
 	public List<CMObject> getCodedSpellsOrBehaviors(String spells);
