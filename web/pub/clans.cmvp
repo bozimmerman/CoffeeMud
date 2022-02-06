@@ -27,6 +27,7 @@
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Qualifications</B></TD><TD>@ClanData?acceptance@</TD>
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Premise</B></TD><TD>@ClanData?premise&NOCOLOR@<BR></TD>
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Tax Rate</B></TD><TD>@ClanData?tax@</TD>
+<TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Dues/yr</B></TD><TD>@ClanData?duesdesc@</TD>
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Trophies</B></TD><TD>@ClanData?trophies@</TD>
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Officers</B></TD>
 	<TD>

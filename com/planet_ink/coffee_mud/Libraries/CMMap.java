@@ -2142,7 +2142,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		for (final Banker B : bankList)
 		{
 			if((B.bankChain().equalsIgnoreCase(chain))
-			&&(B.bankChain().equalsIgnoreCase(areaNameOrBranch)))
+			&&((areaNameOrBranch==null)||(B.bankChain().equalsIgnoreCase(areaNameOrBranch))))
 				return B;
 		}
 

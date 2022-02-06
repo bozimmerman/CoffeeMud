@@ -411,6 +411,27 @@ public class ClanData extends StdWebMacro
 						old=((int)Math.round(CMath.s_pct(old)*100.0))+"%";
 					str.append(old+", ");
 				}
+				if(parms.containsKey("DUES"))
+				{
+					String old=httpReq.getUrlParameter("DUES");
+					if(old==null)
+						old=""+((int)Math.round(C.getDues()));
+					else
+						old=""+((int)Math.round(CMath.s_double(old)));
+					str.append(old+", ");
+				}
+				if(parms.containsKey("DUESDESC"))
+				{
+					if(C.getDues()>0)
+					{
+						final Pair<String,String> bankInfo = C.getPreferredBanking();
+						if(bankInfo == null)
+							str.append("N/A, ");
+						else
+							str.append(CMLib.beanCounter().nameCurrencyLong(bankInfo.second, C.getDues())).append(", ");
+					}
+
+				}
 				if(parms.containsKey("CCLASSID"))
 				{
 					String old=httpReq.getUrlParameter("CCLASSID");

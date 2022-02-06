@@ -105,7 +105,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 	{
 		final String classID;
 		if((item instanceof Coins)&&(container == null))
+		{
+			((Coins)item).setCurrency(CMLib.beanCounter().getCurrency(this));
 			classID="COINS";
+		}
 		else
 			classID=item.ID();
 		CMLib.catalog().updateCatalogIntegrity(item);

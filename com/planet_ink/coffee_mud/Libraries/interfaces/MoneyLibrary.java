@@ -76,6 +76,8 @@ public interface MoneyLibrary extends CMLibrary
 	public void giveSomeoneMoney(MOB banker, MOB customer, double absoluteValue);
 	public void giveSomeoneMoney(MOB banker, MOB customer, String currency, double absoluteValue);
 	public void bankLedger(String bankName, String owner, String explanation);
+	public Set<String> getBankAccountChains(final String owner);
+	public Pair<String,Double> getBankBalance(final String bankName, final String owner, final String optionalCurrency);
 	public boolean modifyBankGold(String bankName,  String owner, String explanation, String currency, double absoluteAmount);
 	public boolean modifyThisAreaBankGold(Area A,  Set<String> triedBanks, String owner, String explanation, double absoluteAmount);
 	public boolean modifyLocalBankGold(Area A, String owner, String explanation, double absoluteAmount);
@@ -99,6 +101,7 @@ public interface MoneyLibrary extends CMLibrary
 	public List<Coins> getStandardCurrency(Room R, Item container, String currency);
 	public long getNumberOfCoins(MOB mob, String currency, double denomination);
 	public String getCurrency(Environmental E);
+	public String getBankChainCurrency(final String bankChain);
 	public double getTotalAbsoluteValue(Room R, Item container, String currency);
 	public double getTotalAbsoluteValue(MOB mob, Item container, String currency);
 	public double getTotalAbsoluteValue(MOB mob, String currency);

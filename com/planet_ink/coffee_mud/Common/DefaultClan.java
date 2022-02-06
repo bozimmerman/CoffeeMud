@@ -115,6 +115,7 @@ public class DefaultClan implements Clan
 	protected final List<Pair<Clan, Integer>>	channelSet		= new XVector<Pair<Clan, Integer>>(1, true);
 	protected CMUniqNameSortSVec<Tattoo>		tattoos			= new CMUniqNameSortSVec<Tattoo>(1);
 	protected Map<String, Tracker>				achievementers	= new STreeMap<String, Tracker>();
+	protected Pair<Long,Pair<String,String>>	bankingInfo		= null;
 
 	/** return a new instance of the object*/
 	@Override
@@ -1046,7 +1047,16 @@ public class DefaultClan implements Clan
 		if(getTaxes()>0.0)
 			msg.append("^x"+CMStrings.padRight(L("Exp. Tax Rate"),COLBL_WIDTH)+":^.^N "+((int)Math.round(getTaxes()*100))+"%\n\r");
 		if(getDues()>0)
-			msg.append("^x"+CMStrings.padRight(L("Dues"),COLBL_WIDTH)+":^.^N "+((int)Math.round(getDues()))+"\n\r");
+		{
+			final Pair<String,String> bankInfo = getPreferredBanking();
+			if(bankInfo == null)
+				msg.append("^x"+CMStrings.padRight(L("Dues"),COLBL_WIDTH)+":^.^N (needs banking)\n\r");
+			else
+			{
+				final String amtDesc = CMLib.beanCounter().nameCurrencyLong(bankInfo.second, getDues());
+				msg.append("^x"+CMStrings.padRight(L("Dues"),COLBL_WIDTH)+":^.^N "+amtDesc+"\n\r");
+			}
+		}
 		if(member||sysmsgs)
 		{
 			msg.append("^x"+CMStrings.padRight(L("Experience Pts."),COLBL_WIDTH)+":^.^N "+getExp()+"\n\r");
@@ -2759,6 +2769,41 @@ public class DefaultClan implements Clan
 			achievementers.remove(achievementTattoo);
 	}
 
+	
+	/**
+	 * Expensively calculates the given clans preferred banking details, 
+	 * which is a pair including the bank chain, and the currency preferred.
+	 * 
+	 * @return the pair including the bank chain, and the currency preferred.
+	 */
+	@Override
+	public Pair<String,String> getPreferredBanking()
+	{
+		if((this.bankingInfo == null)||(System.currentTimeMillis()>bankingInfo.first.longValue()))
+		{
+			String bankChain=null;
+			final Set<String> bankChains = CMLib.beanCounter().getBankAccountChains(clanID());
+			double mostAtChain=0;
+			String currency=null;
+			for(final String chain : bankChains)
+			{
+				final Pair<String,Double> amtP = CMLib.beanCounter().getBankBalance(chain, clanID(), null);
+				if((amtP !=null) && (amtP.second.doubleValue()>0) && ((bankChain==null)||(amtP.second.doubleValue() > mostAtChain)))
+				{
+					mostAtChain=amtP.second.doubleValue();
+					currency=amtP.first;
+					bankChain = chain;
+				}
+			}
+			if(bankChain==null)
+				bankingInfo=null;
+			else
+				bankingInfo=new Pair<Long,Pair<String,String>>(Long.valueOf(System.currentTimeMillis()+CMProps.getMillisPerMudHour()*10), 
+															new Pair<String,String>(bankChain,currency));
+		}
+		return bankingInfo.second;
+	}
+	
 	/** Stat variables associated with clan objects. */
 	private final static String[] CLAN_STATS={
 		"ACCEPTANCE", // 0

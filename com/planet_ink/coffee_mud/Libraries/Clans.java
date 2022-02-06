@@ -1718,6 +1718,133 @@ public class Clans extends StdLibrary implements ClanManager
 		}
 	}
 
+	public void clanDues()
+	{
+		final long lastDuesPaid = CMath.s_long(Resources.getPropResource(this.name, "LAST_DUES_PAID"));
+		final TimeClock clock = CMLib.time().globalClock();
+		final long hoursPerYear = clock.getHoursInDay() * clock.getDaysInYear();
+		final long nextDuesPaid = lastDuesPaid + (CMProps.getMillisPerMudHour() * hoursPerYear);
+		if((System.currentTimeMillis() > nextDuesPaid)
+		&&(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+		&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
+		{
+			Resources.setPropResource(this.name, "LAST_DUES_PAID", ""+System.currentTimeMillis());
+			for(final Enumeration<Clan> c=clans();c.hasMoreElements();)
+			{
+				final Clan C=c.nextElement();
+				if(C.getDues() <= 0.0)
+					continue;
+				final Pair<String,String> bankInfo = C.getPreferredBanking();
+				if(bankInfo == null)
+				{
+					C.clanAnnounce(L("The @x1 @x2 requires a bank account to collect dues.",C.getGovernmentName(),C.name()));
+					continue;
+				}
+				String bankChain=bankInfo.first;
+				String currency=bankInfo.second;
+				double totalAmtToDeposit = 0.0;
+				final List<Clan.MemberRecord> membList = C.getMemberList();
+				final Set<Clan.MemberRecord> paidList = new HashSet<Clan.MemberRecord>();
+				final Set<Clan.MemberRecord> unpaidList = new HashSet<Clan.MemberRecord>();
+				for(final Clan.MemberRecord rec : membList)
+				{
+					double duesDue = C.getDues() + rec.dues;
+					final Set<MOB> unloadMobs = new HashSet<MOB>();
+					final Set<MOB> updatePlayerItems = new HashSet<MOB>();
+					try
+					{
+						final List<String> memberNames = new ArrayList<String>();
+						memberNames.add(rec.name);
+						MOB M=CMLib.players().getPlayer(rec.name); // not all hosts, we want the RIGHT one
+						if(M==null)
+						{
+							M=CMLib.players().getLoadPlayer(rec.name);
+							if(M!=null)
+								unloadMobs.add(M);
+							else
+							{
+								//?!
+								continue;
+							}
+						}
+						if((M.getLiegeID()!=null)&&(M.getLiegeID().length()>0)&&(M.isMarriedToLiege()))
+							memberNames.add(M.getLiegeID());
+						for(final String payerName : memberNames)
+						{
+							if(duesDue == 0)
+								break;
+							M=CMLib.players().getPlayer(payerName);
+							if(M==null)
+							{
+								M=CMLib.players().getLoadPlayer(payerName);
+								if(M!=null)
+									unloadMobs.add(M);
+								else
+								{
+									//?!
+									continue;
+								}
+							}
+							double amtOnHand = CMLib.beanCounter().getTotalAbsoluteValue(M, currency);
+							if(amtOnHand > 0.0)
+							{
+								double amtToTake = duesDue;
+								if(amtToTake > amtOnHand)
+									amtToTake = amtOnHand;
+								CMLib.beanCounter().subtractMoney(M, currency, amtToTake);
+								duesDue -= amtToTake;
+								totalAmtToDeposit += amtToTake;
+								final Session S=M.session();
+								if((S==null)||(S.isStopped())||unloadMobs.contains(M))
+									updatePlayerItems.add(M);
+							}
+							if(duesDue > 0.0)
+							{
+								final Set<String> memberBankChains = CMLib.beanCounter().getBankAccountChains(payerName);
+								for(final String membChain : memberBankChains)
+								{
+									final Pair<String,Double> amt = CMLib.beanCounter().getBankBalance(membChain, payerName, currency);
+									if((amt != null)&&(amt.second.doubleValue()>1.0)&&(duesDue>0))
+									{
+										final double amtInAccout = amt.second.doubleValue()-1.0;
+										double amtToTake = duesDue;
+										if(amtToTake > amtInAccout)
+											amtToTake = amtInAccout;
+										final String amtName = CMLib.beanCounter().nameCurrencyShort(currency, amtToTake);
+										CMLib.beanCounter().modifyBankGold(membChain, payerName, amtName+" paid to "+C.getGovernmentName()+" "+C.name()+" in dues", 
+																			currency, -amtToTake);
+									}
+								}
+							}
+						}
+						for(final MOB M2 : updatePlayerItems)
+							CMLib.database().DBUpdatePlayerItems(M2);
+						for(final MOB M2 : unloadMobs)
+							CMLib.players().unloadOfflinePlayer(M2);
+						if(rec.dues != duesDue)
+							CMLib.database().DBUpdateClanDonates(C.clanID(), rec.name, 0,0, duesDue-rec.dues);
+						if(duesDue == 0)
+							paidList.add(rec);
+						else
+							unpaidList.add(rec);
+					}
+					catch(Exception e)
+					{
+						Log.errOut(e);
+					}
+				}
+				if(totalAmtToDeposit>0)
+				{
+					List<String> payers = new ArrayList<String>();
+					for(final MemberRecord m : paidList)
+						payers.add(m.name);
+					final String mlist = CMLib.english().toEnglishStringList(payers);
+					CMLib.beanCounter().modifyBankGold(bankChain, C.clanID(), "Dues paid by: "+mlist, currency, totalAmtToDeposit);
+				}
+			}
+		}
+	}
+	
 	public void clanTrophyScan()
 	{
 		if(trophySystemActive())
@@ -2131,6 +2258,8 @@ public class Clans extends StdLibrary implements ClanManager
 				isDebugging=CMSecurity.isDebugging(DbgFlag.CLANS);
 				setThreadStatus(serviceClient,"clan trophy scan");
 				clanTrophyScan();
+				setThreadStatus(serviceClient,"clan dues sweep");
+				clanDues();
 				setThreadStatus(serviceClient,"clan achievement scan");
 				CMLib.achievements().evaluateClanAchievements();
 				setThreadStatus(serviceClient,"sleeping");

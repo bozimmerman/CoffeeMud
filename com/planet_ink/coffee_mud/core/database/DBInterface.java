@@ -1007,6 +1007,12 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public Set<String> DBReadUniqueSections(final String name)
+	{
+		return DataLoader.DBReadSections(name);
+	}
+	
+	@Override
 	public void DBDeletePlayerData(final String playerID, final String section)
 	{
 		DataLoader.DBDelete(playerID, section);

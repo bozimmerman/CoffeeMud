@@ -392,6 +392,34 @@ public class DataLoader
 		return false;
 	}
 
+	public Set<String> DBReadSections(String name)
+	{
+		final Set<String> sects = new HashSet<String>();
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			name = DB.injectionClean(name);
+			final ResultSet R=D.query("SELECT CMSECT FROM CMPDAT WHERE CMPLID='"+name+"'");
+			while(R.next())
+			{
+				final String s = R.getString(1);
+				if(!sects.contains(s))
+					sects.add(s);
+			}
+			R.close();
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("DataLoader",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return Collections.synchronizedSet(sects);
+	}
+
 	public List<PlayerData> DBRead(String playerID, final List<String> sections)
 	{
 		DBConnection D=null;

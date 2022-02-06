@@ -908,6 +908,14 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooa
 	 * @return this clans factory mob
 	 */
 	public MOB getFactoryMOB();
+	
+	/**
+	 * Expensively calculates the given clans preferred banking details, 
+	 * which is a pair including the bank chain, and the currency preferred.
+	 * 
+	 * @return the pair including the bank chain, and the currency preferred.
+	 */
+	public Pair<String,String> getPreferredBanking();
 
 	/**
 	 * Represents an individual clan vote

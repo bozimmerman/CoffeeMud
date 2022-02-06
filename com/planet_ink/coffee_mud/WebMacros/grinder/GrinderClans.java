@@ -151,6 +151,9 @@ public class GrinderClans
 				str=httpReq.getUrlParameter("TAX");
 				if(str!=null)
 					C.setTaxes(CMath.s_pct(str));
+				str=httpReq.getUrlParameter("DUES");
+				if(str!=null)
+					C.setDues(CMath.s_double(str));
 				str=httpReq.getUrlParameter("CCLASSID");
 				if(str!=null)
 				{

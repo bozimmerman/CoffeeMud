@@ -1037,6 +1037,49 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 				CMLib.database().DBCreatePlayerData(owner,"LEDGER-"+bankName,"LEDGER-"+bankName+"/"+owner,explanation+";|;");
 		}
 	}
+	
+	@Override
+	public Set<String> getBankAccountChains(final String owner)
+	{
+		final Set<String> chains = new HashSet<String>();
+		final Set<String> bankChains = new XHashSet<String>(CMLib.map().bankChains(null));
+		final Set<String> sections = CMLib.database().DBReadUniqueSections(owner);
+		for(final String sect : sections)
+		{
+			if(bankChains.contains(sect))
+				chains.add(sect);
+		}
+		return Collections.synchronizedSet(chains);
+	}
+
+	@Override
+	public Pair<String,Double> getBankBalance(final String bankName, final String owner, final String optionalCurrency)
+	{
+		if((bankName==null)||(owner==null))
+			return null;
+		final List<PlayerData> V=CMLib.database().DBReadPlayerData(owner, bankName);
+		for(int v=0;v<V.size();v++)
+		{
+			final DatabaseEngine.PlayerData D=V.get(v);
+			final String last=D.xml();
+			if(last.startsWith("COINS;"))
+			{
+				if(bankName.equals(D.section()))
+				{
+					Coins C=(Coins)CMClass.getItem("StdCoins");
+					CMLib.coffeeMaker().setPropertiesStr(C,last.substring(6),true);
+					if((C.getDenomination()==0.0)&&(C.getNumberOfCoins()>0))
+						C.setDenomination(1.0);
+					C.recoverPhyStats();
+					final double value=C.getTotalValue();
+					if((optionalCurrency==null)
+					||(optionalCurrency.equalsIgnoreCase(C.getCurrency())))
+						return new Pair<String,Double>(C.getCurrency(), Double.valueOf(value));
+				}
+			}
+		}
+		return null;
+	}
 
 	@Override
 	public boolean modifyBankGold(final String bankName, final String owner, final String explanation, final String currency, final double absoluteAmount)
@@ -1403,6 +1446,32 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		if(E instanceof Coins)
 			return ((Coins)E).getCurrency();
 		return "";
+	}
+	
+	@Override
+	public String getBankChainCurrency(final String bankChain)
+	{
+		final Map<String,int[]> currencies = new HashMap<String,int[]>();
+		for(final Enumeration<Banker> b=CMLib.map().banks();b.hasMoreElements();)
+		{
+			final Banker B=b.nextElement();
+			if((bankChain == null)||(B.bankChain().equalsIgnoreCase(bankChain)))
+			{
+				final String curr = CMLib.beanCounter().getCurrency(B);
+				if(!currencies.containsKey(curr))
+					currencies.put(curr, new int[] {0});
+				currencies.get(curr)[0]++;
+			}
+		}
+		String winningCur=null;
+		int mostAmt = 0;
+		for(final String curr : currencies.keySet())
+		{
+			final int amt = currencies.get(curr)[0];
+			if(amt > mostAmt)
+				winningCur=curr;
+		}
+		return (winningCur==null)?"":winningCur;
 	}
 
 	@Override

@@ -1686,6 +1686,20 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERDATA
+	 * Reads in all unique sections with the given owner/name
+	 * 
+	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine#DBReadPlayerData(String, String)
+	 * @see DatabaseEngine#DBCountPlayerData(String, String)
+	 * @see DatabaseEngine#DBDeletePlayerData(String, String)
+	 * @see DatabaseEngine#DBExistsPlayerData(String, String)
+	 * @param name the user id of the player/clan/whatever
+	 * @return the list of unique sections
+	 */
+	public Set<String> DBReadUniqueSections(String name);
+	
+	/**
+	 * Table category: DBPLAYERDATA
 	 * Reads in all unique player names for all players for the given
 	 * data type/section.
 	 * @see DatabaseEngine#DBReadPlayerSectionData(String)
