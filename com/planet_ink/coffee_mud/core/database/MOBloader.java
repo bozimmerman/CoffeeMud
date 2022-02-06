@@ -1110,7 +1110,8 @@ public class MOBloader
 				}
 				else
 				{
-					D.update("INSERT INTO CMCHCL (CMUSERID, CMCLAN, CMCLRO, CMCLSTS) values ('"+name+"','"+clan+"',"+role+",'0;0')",0);
+					final String newStats="0;0;0;0;"+System.currentTimeMillis()+";0";
+					D.update("INSERT INTO CMCHCL (CMUSERID, CMCLAN, CMCLRO, CMCLSTS) values ('"+name+"','"+clan+"',"+role+",'"+newStats+"')",0);
 					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANMEMBERS))
 						Log.debugOut("User '"+name+"' was inserted into clan '"+clan+"' as role "+role);
 				}
@@ -1381,7 +1382,9 @@ public class MOBloader
 			{
 				if(!savedClans.contains(p.first.clanID().toUpperCase()))
 				{
-					clanStatements.add("INSERT INTO CMCHCL (CMUSERID, CMCLAN, CMCLRO, CMCLSTS) values ('"+mob.Name()+"','"+p.first.clanID()+"',"+p.second.intValue()+",'0;0')");
+					final String newStats="0;0;0;0;"+System.currentTimeMillis()+";0";
+					clanStatements.add("INSERT INTO CMCHCL (CMUSERID, CMCLAN, CMCLRO, CMCLSTS) "
+							+ "values ('"+mob.Name()+"','"+p.first.clanID()+"',"+p.second.intValue()+",'"+newStats+"')");
 					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANMEMBERS))
 						Log.debugOut("User '"+mob.Name()+"' was added to clan '"+p.first.clanID()+"' as role "+p.second.intValue());
 				}
