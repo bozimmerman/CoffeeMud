@@ -112,7 +112,7 @@ public class StdWebMacro implements WebMacro
 		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
 	}
 
-	protected StringBuffer colorwebifyOnly(final StringBuffer s)
+	protected static StringBuffer colorwebifyOnly(final StringBuffer s)
 	{
 		if(s==null)
 			return null;
@@ -155,7 +155,12 @@ public class StdWebMacro implements WebMacro
 		return s;
 	}
 
-	protected StringBuffer webify(StringBuffer s)
+	protected static String webify(final String s)
+	{
+		return webify(new StringBuffer(s)).toString();
+	}
+
+	protected static StringBuffer webify(StringBuffer s)
 	{
 		if(s==null)
 			return null;
@@ -508,12 +513,12 @@ public class StdWebMacro implements WebMacro
 		return buf;
 	}
 
-	protected String htmlOutgoingFilter(final String buf)
+	protected static String htmlOutgoingFilter(final String buf)
 	{
 		return htmlOutgoingFilter(new StringBuffer(buf)).toString();
 	}
 
-	protected StringBuffer htmlOutgoingFilter(final StringBuffer buf)
+	protected static StringBuffer htmlOutgoingFilter(final StringBuffer buf)
 	{
 		int loop=0;
 

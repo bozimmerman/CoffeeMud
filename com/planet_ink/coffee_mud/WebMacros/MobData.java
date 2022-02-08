@@ -762,7 +762,7 @@ public class MobData extends StdWebMacro
 				str.append("<TR><TD>");
 				str.append("<INPUT TYPE=TEXT SIZE=5 NAME=IPRIC"+(i+1)+" VALUE=\""+PRICE+"\">");
 				str.append("</TD><TD>");
-				str.append("<INPUT TYPE=TEXT SIZE=50 NAME=IPRICM"+(i+1)+" VALUE=\""+MASK+"\">");
+				str.append("<INPUT TYPE=TEXT SIZE=50 NAME=IPRICM"+(i+1)+" VALUE=\""+htmlOutgoingFilter(MASK)+"\">");
 				str.append("</TD>");
 				str.append("</TR>");
 			}
