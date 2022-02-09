@@ -1822,7 +1822,10 @@ public class Clans extends StdLibrary implements ClanManager
 						for(final MOB M2 : unloadMobs)
 							CMLib.players().unloadOfflinePlayer(M2);
 						if(rec.dues != duesDue)
+						{
 							CMLib.database().DBUpdateClanDonates(C.clanID(), rec.name, 0,0, duesDue-rec.dues);
+							rec.dues = duesDue-rec.dues;
+						}
 						if(duesDue == 0)
 							paidList.add(rec);
 						else

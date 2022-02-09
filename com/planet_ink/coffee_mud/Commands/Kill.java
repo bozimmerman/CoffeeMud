@@ -38,7 +38,7 @@ public class Kill extends StdCommand
 	{
 	}
 
-	private final String[]	access	= I(new String[] { "KILL", "K", "ATTACK", "MURDER" });
+	private final String[]	access	= I(new String[] { "KILL", "K", "ATTACK", "MURDER", "FIGHT" });
 
 	@Override
 	public String[] getAccessWords()
