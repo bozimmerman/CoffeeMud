@@ -145,11 +145,33 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 	public int getMaxSpeed()
 	{
 		int speed=phyStats().ability();
+		if((speed > 0)
+		&&(navBasis()!=Rideable.Basis.LAND_BASED)
+		&&(owner() instanceof Room))
+		{
+			final Room R=(Room)owner();
+			final Area A=(R==null)?null:R.getArea();
+			final Climate C=(A==null)?null:A.getClimateObj();
+			if(C!=null)
+			{
+				if(C.weatherType(R)==Climate.WEATHER_WINDY)
+				{
+					speed+=1;
+					if(CMath.bset(R.getClimateType(), Room.CLIMASK_WINDY))
+						speed+=1;
+				}
+				else
+				if((CMath.bset(R.getClimateType(), Room.CLIMASK_WINDY))
+				&&(CMLib.dice().rollPercentage()>50))
+					speed+=1;
+			}
+		}
 		if(subjectToWearAndTear())
 		{
 			if(usesRemaining()<10)
 				return 0;
 			speed=(int)Math.round(speed * CMath.div(usesRemaining(), 100));
+
 		}
 		if(speed <= 0)
 			return 1;
