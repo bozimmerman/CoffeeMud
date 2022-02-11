@@ -125,6 +125,7 @@ public class Chant_SummonHeat extends Chant
 				case Climate.WEATHER_CLEAR:
 					C.setNextWeatherType(Climate.WEATHER_HEAT_WAVE);
 					break;
+				case Climate.WEATHER_FOG:
 				case Climate.WEATHER_CLOUDY:
 					C.setNextWeatherType(Climate.WEATHER_CLEAR);
 					break;

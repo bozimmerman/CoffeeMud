@@ -199,6 +199,7 @@ public class Dusty extends StdAbility
 					}
 					break;
 				case Climate.WEATHER_CLEAR:
+				case Climate.WEATHER_FOG:
 				case Climate.WEATHER_CLOUDY:
 				case Climate.WEATHER_WINDY:
 				case Climate.WEATHER_HEAT_WAVE:

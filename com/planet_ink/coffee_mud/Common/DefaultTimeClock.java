@@ -324,6 +324,9 @@ public class DefaultTimeClock implements TimeClock
 			case Climate.WEATHER_CLOUDY:
 				timeDesc.append(L("\n\rThe clouds obscure the moon."));
 				break;
+			case Climate.WEATHER_FOG:
+				timeDesc.append(L("\n\rIt is very foggy."));
+				break;
 			case Climate.WEATHER_DUSTSTORM:
 				timeDesc.append(L("\n\rThe dust obscures the moon."));
 				break;

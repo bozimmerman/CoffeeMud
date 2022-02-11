@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2022 Bo Zimmerman
+   Copyright 2022-2022 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Chant_SummonCold extends Chant
+public class Chant_SummonFog extends Chant
 {
 	@Override
 	public String ID()
 	{
-		return "Chant_SummonCold";
+		return "Chant_SummonFog";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Summon Cold");
+	private final static String localizedName = CMLib.lang().L("Summon Fog");
 
 	@Override
 	public String name()
@@ -61,12 +61,6 @@ public class Chant_SummonCold extends Chant
 	}
 
 	@Override
-	public long flags()
-	{
-		return Ability.FLAG_WEATHERAFFECTING;
-	}
-
-	@Override
 	public int abstractQuality()
 	{
 		return Ability.QUALITY_INDIFFERENT;
@@ -79,18 +73,9 @@ public class Chant_SummonCold extends Chant
 	}
 
 	@Override
-	public int castingQuality(final MOB mob, final Physical target)
+	public long flags()
 	{
-		if(mob!=null)
-		{
-			final Room R=mob.location();
-			if(R!=null)
-			{
-				if(CMath.bset(weatherQue(R),WEATHERQUE_COLD))
-					return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
-			}
-		}
-		return super.castingQuality(mob,target);
+		return Ability.FLAG_WEATHERAFFECTING;
 	}
 
 	@Override
@@ -111,63 +96,19 @@ public class Chant_SummonCold extends Chant
 		final boolean success=proficiencyCheck(mob,-size,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?L("^JThe sky changes color!^?"):L("^S<S-NAME> chant(s) into the sky for cold!^?"));
+			final Climate C=mob.location().getArea().getClimateObj();
+			final Climate oldC=(Climate)C.copyOf();
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?L("^JThe air becomes foggy!^?"):L("^S<S-NAME> chant(s) into the air for fog!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final Climate C=mob.location().getArea().getClimateObj();
-				final Climate oldC=(Climate)C.copyOf();
-				switch(C.weatherType(mob.location()))
-				{
-				case Climate.WEATHER_BLIZZARD:
-					C.setNextWeatherType(Climate.WEATHER_BLIZZARD);
-					break;
-				case Climate.WEATHER_CLEAR:
-					C.setNextWeatherType(Climate.WEATHER_WINTER_COLD);
-					break;
-				case Climate.WEATHER_CLOUDY:
-				case Climate.WEATHER_FOG:
-					C.setNextWeatherType(Climate.WEATHER_SNOW);
-					break;
-				case Climate.WEATHER_DROUGHT:
-					C.setNextWeatherType(Climate.WEATHER_WINTER_COLD);
-					break;
-				case Climate.WEATHER_DUSTSTORM:
-					C.setNextWeatherType(Climate.WEATHER_WINDY);
-					break;
-				case Climate.WEATHER_HAIL:
-					C.setNextWeatherType(Climate.WEATHER_HAIL);
-					break;
-				case Climate.WEATHER_HEAT_WAVE:
-					C.setNextWeatherType(Climate.WEATHER_WINDY);
-					break;
-				case Climate.WEATHER_RAIN:
-					C.setNextWeatherType(Climate.WEATHER_SLEET);
-					break;
-				case Climate.WEATHER_SLEET:
-					C.setNextWeatherType(Climate.WEATHER_SNOW);
-					break;
-				case Climate.WEATHER_SNOW:
-					C.setNextWeatherType(Climate.WEATHER_SNOW);
-					break;
-				case Climate.WEATHER_THUNDERSTORM:
-					C.setNextWeatherType(Climate.WEATHER_BLIZZARD);
-					break;
-				case Climate.WEATHER_WINDY:
-					C.setNextWeatherType(Climate.WEATHER_WINTER_COLD);
-					break;
-				case Climate.WEATHER_WINTER_COLD:
-					C.setNextWeatherType(Climate.WEATHER_WINTER_COLD);
-					break;
-				default:
-					break;
-				}
+				C.setNextWeatherType(Climate.WEATHER_FOG);
 				C.forceWeatherTick(mob.location().getArea());
 				Chant_CalmWeather.xpWorthyChange(mob,mob.location().getArea(),oldC,C);
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,L("<S-NAME> chant(s) into the sky for cold, but the magic fizzles."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> chant(s) into the air for fog, but the magic fizzles."));
 
 		return success;
 	}

@@ -94,6 +94,7 @@ public class GenWindGenerator extends GenFuellessGenerator
 					case Climate.WEATHER_CLOUDY:
 					case Climate.WEATHER_HEAT_WAVE:
 					case Climate.WEATHER_DROUGHT:
+					case Climate.WEATHER_FOG:
 						lastWindFactor *= .5;
 						break;
 					}

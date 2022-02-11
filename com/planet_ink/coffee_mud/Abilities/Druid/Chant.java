@@ -137,6 +137,8 @@ public class Chant extends StdAbility
 			return WEATHERQUE_NADA;
 		case Climate.WEATHER_CLEAR:
 			return WEATHERQUE_WIND | WEATHERQUE_RAIN | WEATHERQUE_HOT | WEATHERQUE_COLD;
+		case Climate.WEATHER_FOG:
+			return WEATHERQUE_RAIN | WEATHERQUE_CALM;
 		case Climate.WEATHER_CLOUDY:
 			return WEATHERQUE_WIND | WEATHERQUE_RAIN;
 		case Climate.WEATHER_DROUGHT:

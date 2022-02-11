@@ -107,6 +107,7 @@ public class Archon extends StdCharClass implements ArchonOnly
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_InstanceDisplay",100,"",true,SecretFlag.SECRET);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_AlterTime",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_MoveSky",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_SummonFog",true);
 	}
 
 	@Override

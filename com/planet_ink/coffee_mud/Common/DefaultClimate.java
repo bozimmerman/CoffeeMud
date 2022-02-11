@@ -116,7 +116,7 @@ public class DefaultClimate implements Climate
 
 	protected final static
 	int[] seasonalWeather={
-		/*  		-   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
+		/*  		-   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC  FG*/
 		/*SPRING*/  40, 20, 10, 14,  5,  1,  0,  5,  0,  0,  0,  0,  5,
 		/*SUMMER*/  31, 20, 5,  10, 12,  0,  0, 20,  0,  0,  1,  1,  0,
 		/*FALL*/	37, 10, 15, 15, 10,  5,  2,  5,  2,  1,  0,  0, 10,
@@ -125,7 +125,7 @@ public class DefaultClimate implements Climate
 
 	protected final static
 	int[] cold={
-		/*  		-   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
+		/*  		-   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC  FG*/
 		/*SPRING*/  -5, -5,  5,-10,  0,  5,  0, -5,  5,  0,  0,  0,  10,
 		/*SUMMER*/   5,  1,  5,  0,  0,  1,  1,-20,  1,  1,  0,  0,  5,
 		/*FALL*/	 0,  0,  1, -5,  0,  1,  1, -5,  1,  1,  0,  0,  5,
@@ -133,52 +133,53 @@ public class DefaultClimate implements Climate
 	};
 	protected final static
 	int[] hot={
-		/*  		-   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
-		/*SPRING*/   5,  5, -5, 10,  0, -5,  0,  5, -5,  0,  0,  0, -10,
-		/*SUMMER*/  -5, -1, -5,  0,  0, -1, -1, 20, -1, -1,  0,  0, -5,
-		/*FALL*/	 0,  0, -1,  5,  0, -1, -1,  5, -1, -1,  0,  0, -5,
-		/*WINTER*/  15,  0,  0,  4,  2, -5, -2,  0, -2, -2,  0,  0, -10,
+		/*  		-   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC  FG*/
+		/*SPRING*/   5,  5, -5, 10,  0, -5,  0,  5, -5,  0,  0,  0, -10,  0,
+		/*SUMMER*/  -5, -1, -5,  0,  0, -1, -1, 20, -1, -1,  0,  0, -5,   0,
+		/*FALL*/	 0,  0, -1,  5,  0, -1, -1,  5, -1, -1,  0,  0, -5,   0,
+		/*WINTER*/  15,  0,  0,  4,  2, -5, -2,  0, -2, -2,  0,  0, -10,  0,
 	};
 	protected final static
 	int[] dry={
-		/*  		-   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
-		/*SPRING*/  10,-15,  0,  0,  0,  0,  0,  2,  0,  0,  0,  3,   0,
-		/*SUMMER*/  10,-22,  0,  0,  0,  0,  0,  0,  0,  0,  6,  6,   0,
-		/*FALL*/	10,-15,  0,  0,  0,  0,  0,  2,  0,  0,  0,  3,   0,
-		/*WINTER*/  10,-15,  0,  0,  0,  0,  0,  2,  0,  0,  0,  3,   0,
+		/*  		-   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR   WC  FG*/
+		/*SPRING*/  10,-15,  0,  0,  0,  0,  0,  2,  0,  0,  0,  3,   0,-30,
+		/*SUMMER*/  10,-22,  0,  0,  0,  0,  0,  0,  0,  0,  6,  6,   0,-30,
+		/*FALL*/	10,-15,  0,  0,  0,  0,  0,  2,  0,  0,  0,  3,   0,-30,
+		/*WINTER*/  10,-15,  0,  0,  0,  0,  0,  2,  0,  0,  0,  3,   0,-30,
 	};
 	protected final static
 	int[] wet={
-		/*  		-   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
-		/*SPRING*/ -10, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0, -3,  -2,
-		/*SUMMER*/ -10, 22,  0,  0,  0,  0,  0,  0,  0,  0, -6, -6,   0,
-		/*FALL*/   -10, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0, -3,  -2,
-		/*WINTER*/ -10, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0, -3,   2,
+		/*  		-   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC  FG*/
+		/*SPRING*/ -10, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0, -3,  -2, 15,
+		/*SUMMER*/ -10, 22,  0,  0,  0,  0,  0,  0,  0,  0, -6, -6,   0, 22,
+		/*FALL*/   -10, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0, -3,  -2, 15,
+		/*WINTER*/ -10, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0, -3,   2, 15,
 	};
 	protected final static
 	int[] windy={
-		/*  		-   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
-		/*SPRING*/ -10,  0, 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,   0,
-		/*SUMMER*/ -10,  0, 11,  0,  0,  0,  0, -2,  0,  0,  0,  1,   0,
-		/*FALL*/   -10,  0, 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,   0,
-		/*WINTER*/ -10, -2, 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,   2,
+		/*  		-   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC  FG*/
+		/*SPRING*/ -10,  0, 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,   0,-15,
+		/*SUMMER*/ -10,  0, 11,  0,  0,  0,  0, -2,  0,  0,  0,  1,   0,-15,
+		/*FALL*/   -10,  0, 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,   0,-15,
+		/*WINTER*/ -10, -2, 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,   2,-15,
 	};
 	protected final static
 	int[] changeMap=		{
-	/*					 -    CL   WD   RA   TH   SN   HA   HE   SL   BL   DU   DR   WC*/
-	/*CLEAR*/			85,    0,   0,-100,-100,-100,-100,   0,-100,-100,   0, -20,   0,
-	/*CLOUDY*/			 0,   75,   0,   0,   0,   0,   0,   0,   0,   0,-100,-100,   0,
-	/*WINDY*/			 0,    0,  25,-100,-100,-100,-100,-100,-100,-100,   1,   0,   0,
-	/*RAIN*/			-5,    5,   0,  50,   5, -20,   0,-100, -20,-100,-100,-100,   0,
-	/*THUNDERSTORM*/	-5,   10,   5,   5,  35,-100,   0,   0,   0,-100,-100,-100,   0,
-	/*SNOW*/			-5,    5,   0,-100,-100,  35,-100,-100,-100,   5,-100,-100,   5,
-	/*HAIL*/			-5,    5,   0,  -8,  -8,-100,  10,-100,   0,-100,-100,-100,   5,
-	/*HEAT*/			 0,    0,   0,  -8,  -8,-100,-100,  50,-100,-100,   0,   1,-100,
-	/*SLEET*/			-5,    5,   0,  -8,  -8,   0,   0,   0,  10,   0,-100,   0,   5,
-	/*BLIZZ*/			-5,    5,   0,-100,-100,   5,-100,-100,-100,  15,-100,   0,  10,
-	/*DUST*/			-5,  -10,  20,-100,-100,-100,-100,   0,-100,-100,  15,   0,   0,
-	/*DROUGHT*/		   -15,  -15,   0,-100,-100,-100,-100,   0,-100,-100,   1,  85,   0,
-	/*WINTER*/			 0,    0,   0,   0,-100,-100,-100,-100,-100,-100,-100,  -5,  85,
+	/*					 -    CL   WD   RA   TH   SN   HA   HE   SL   BL   DU   DR   WC  FG*/
+	/*CLEAR*/			85,    0,   0,-100,-100,-100,-100,   0,-100,-100,   0, -20,   0,-75,
+	/*CLOUDY*/			 0,   75,   0,   0,   0,   0,   0,   0,   0,   0,-100,-100,   0,-50,
+	/*WINDY*/			 0,    0,  25,-100,-100,-100,-100,-100,-100,-100,   1,   0,   0,-75,
+	/*RAIN*/			-5,    5,   0,  50,   5, -20,   0,-100, -20,-100,-100,-100,   0,-100,
+	/*THUNDERSTORM*/	-5,   10,   5,   5,  35,-100,   0,   0,   0,-100,-100,-100,   0,-100,
+	/*SNOW*/			-5,    5,   0,-100,-100,  35,-100,-100,-100,   5,-100,-100,   5,-100,
+	/*HAIL*/			-5,    5,   0,  -8,  -8,-100,  10,-100,   0,-100,-100,-100,   5,-100,
+	/*HEAT*/			 0,    0,   0,  -8,  -8,-100,-100,  50,-100,-100,   0,   1,-100,-100,
+	/*SLEET*/			-5,    5,   0,  -8,  -8,   0,   0,   0,  10,   0,-100,   0,   5,-100,
+	/*BLIZZ*/			-5,    5,   0,-100,-100,   5,-100,-100,-100,  15,-100,   0,  10,-100,
+	/*DUST*/			-5,  -10,  20,-100,-100,-100,-100,   0,-100,-100,  15,   0,   0,-100,
+	/*DROUGHT*/		   -15,  -15,   0,-100,-100,-100,-100,   0,-100,-100,   1,  85,   0,-100,
+	/*WINTER*/			 0,    0,   0,   0,-100,-100,-100,-100,-100,-100,-100,  -5,  85,-50,
+	/*FOG*/				 0,    0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,-50,
 	};
 
 	@Override
@@ -253,6 +254,7 @@ public class DefaultClimate implements Climate
 		case Climate.WEATHER_RAIN:
 		case Climate.WEATHER_THUNDERSTORM:
 		case Climate.WEATHER_CLOUDY:
+		case Climate.WEATHER_FOG:
 		case Climate.WEATHER_DUSTSTORM:
 			return false;
 		default:
@@ -266,17 +268,23 @@ public class DefaultClimate implements Climate
 		if(room==null)
 			return false;
 
-		if(CMLib.flags().flaggedAffects(room,Ability.FLAG_SUNSUMMONING).size()>0)
+		final Area A=room.getArea();
+		if((CMLib.flags().flaggedAffects(room,Ability.FLAG_SUNSUMMONING).size()>0)
+		||(A==null))
 			return true;
 
-		if(((room.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAY)
-			&&(room.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAWN))
+		if(((A.getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAY)
+			&&(A.getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAWN))
 		||(!CMLib.map().hasASky(room))
 		||(CMLib.flags().isInDark(room)))
 			return false;
 
 		switch(weatherType(room))
 		{
+		case Climate.WEATHER_FOG:
+			if(A.getTimeObj().getTODCode()==TimeClock.TimeOfDay.DAWN)
+				return false;
+			return true;
 		case Climate.WEATHER_BLIZZARD:
 		case Climate.WEATHER_HAIL:
 		case Climate.WEATHER_SLEET:
@@ -542,6 +550,8 @@ public class DefaultClimate implements Climate
 			break;
 		case Climate.WEATHER_CLOUDY:
 			break;
+		case Climate.WEATHER_FOG:
+			break;
 		case Climate.WEATHER_THUNDERSTORM:
 			break;
 		case Climate.WEATHER_DUSTSTORM:
@@ -595,6 +605,7 @@ public class DefaultClimate implements Climate
 		case Climate.WEATHER_HAIL:
 		case Climate.WEATHER_WINDY:
 		case Climate.WEATHER_WINTER_COLD:
+		case Climate.WEATHER_FOG:
 			break;
 		}
 		return base;

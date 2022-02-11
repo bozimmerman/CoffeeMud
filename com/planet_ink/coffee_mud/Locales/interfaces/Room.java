@@ -270,6 +270,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 		SNOW('W',Climate.WEATHER_SNOW),
 		CLEAR('W',Climate.WEATHER_CLEAR),
 		HEATWAVE('W',Climate.WEATHER_HEAT_WAVE),
+		FOG('W',Climate.WEATHER_FOG),
 		THUNDERSTORM('W',Climate.WEATHER_THUNDERSTORM),
 		BLIZZARD('W',Climate.WEATHER_BLIZZARD),
 		WINDY('W',Climate.WEATHER_WINDY),

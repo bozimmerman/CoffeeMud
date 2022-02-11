@@ -111,6 +111,7 @@ public class Chant_SummonWind extends Chant
 					C.setNextWeatherType(Climate.WEATHER_WINDY);
 					break;
 				case Climate.WEATHER_CLOUDY:
+				case Climate.WEATHER_FOG:
 					C.setNextWeatherType(Climate.WEATHER_WINDY);
 					break;
 				case Climate.WEATHER_DROUGHT:

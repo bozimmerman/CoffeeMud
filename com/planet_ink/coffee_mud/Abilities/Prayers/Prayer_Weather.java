@@ -116,6 +116,7 @@ public class Prayer_Weather extends Prayer
 					else
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_CLOUDY);
 					break;
+				case Climate.WEATHER_FOG:
 				case Climate.WEATHER_CLOUDY:
 					if(switcher==1)
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_WINDY);

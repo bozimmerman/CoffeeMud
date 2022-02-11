@@ -2607,6 +2607,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			mob.tell(L("You can't see anything!"));
 			return;
 		}
+		if(room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_FOG)
+		{
+			mob.tell(L("It is too foggy."));
+			return;
+		}
 
 		final Directions.DirType dirType=CMLib.flags().getDirType(room);
 		final StringBuilder buf=new StringBuilder("^<RExits^>^DObvious exits:^.^N\n\r");
@@ -2671,6 +2676,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(!CMLib.flags().canSee(mob))
 			return;
 
+		if(room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_FOG)
+		{
+			mob.tell(L("It is too foggy."));
+			return;
+		}
 		final Directions.DirType dirType=CMLib.flags().getDirType(room);
 		final StringBuilder buf=new StringBuilder(L("^<RExits^>^D[Exits: "));
 		for(final int d : Directions.DISPLAY_CODES())

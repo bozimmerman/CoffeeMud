@@ -161,6 +161,9 @@ public class Chant_CalmWeather extends Chant
 				final Climate oldC=(Climate)C.copyOf();
 				switch(C.weatherType(mob.location()))
 				{
+				case Climate.WEATHER_FOG:
+					C.setNextWeatherType(Climate.WEATHER_CLEAR);
+					break;
 				case Climate.WEATHER_WINDY:
 					C.setNextWeatherType(Climate.WEATHER_CLEAR);
 					break;

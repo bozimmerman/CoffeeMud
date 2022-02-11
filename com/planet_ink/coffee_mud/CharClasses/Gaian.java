@@ -335,6 +335,7 @@ public class Gaian extends StdCharClass
 					{
 					case Climate.WEATHER_BLIZZARD:
 					case Climate.WEATHER_CLOUDY:
+					case Climate.WEATHER_FOG:
 					case Climate.WEATHER_DUSTSTORM:
 					case Climate.WEATHER_HAIL:
 					case Climate.WEATHER_RAIN:
@@ -405,6 +406,7 @@ public class Gaian extends StdCharClass
 					{
 					case Climate.WEATHER_BLIZZARD:
 					case Climate.WEATHER_CLOUDY:
+					case Climate.WEATHER_FOG:
 					case Climate.WEATHER_DUSTSTORM:
 					case Climate.WEATHER_HAIL:
 					case Climate.WEATHER_RAIN:

@@ -271,6 +271,7 @@ public class FireBuilding extends CommonSkill
 			break;
 		case Climate.WEATHER_DUSTSTORM:
 		case Climate.WEATHER_WINDY:
+		case Climate.WEATHER_FOG:
 			proficiencyAdjustment=-10;
 			break;
 		case Climate.WEATHER_HEAT_WAVE:
