@@ -52,15 +52,68 @@ public class ClanDues extends StdCommand
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
+		if(commands.size()<=1)
+		{
+			final Session S=mob.session();
+			if(S==null)
+				return false;
+			boolean found=false;
+			for(final Pair<Clan,Integer> c : mob.clans())
+			{
+				if(c.first.getAuthority(c.second.intValue(), Clan.Function.TAX)!=Authority.CAN_NOT_DO)
+				{
+					final Clan C=c.first;
+					found=true;
+					if(C.getDues()==0.0)
+						S.println(L("There are presently no dues for @x1.",C.name()));
+					else
+					{
+						final Pair<String,String> info = C.getPreferredBanking();
+						final List<String> badMembers = new ArrayList<String>();
+						final String curr=(info==null)?CMLib.beanCounter().getCurrency(mob):info.second;
+						for(final Clan.MemberRecord rec : C.getFullMemberList())
+						{
+							if(rec.dues > 0.0)
+								badMembers.add(rec.name+"("+CMLib.beanCounter().nameCurrencyShort(curr, rec.dues));
+						}
+						S.println(L("Dues are presently set at @x1 per year for @x2.",CMLib.beanCounter().nameCurrencyLong(curr, C.getDues()),C.name()));
+						if(badMembers.size()==0)
+							S.println(L("All members are current and paid-up on their dues."));
+						else
+							S.println(L("The following members are behind in their dues: @x1.",CMLib.english().toEnglishStringList(badMembers)));
+					}
+				}
+			}
+			if(!found)
+				return CMLib.commands().postCommandFail(mob,commands,L("How much in dues?"));
+			return true;
+		}
 		String taxStr=(commands.size()>1)?(String)commands.get(commands.size()-1):"";
 		String clanName="";
-		if(!CMath.isInteger(taxStr))
+		String forgiveWhom=null;
+		if(commands.size()>2)
 		{
-			clanName=(commands.size()>2)?CMParms.combine(commands,1,commands.size()):"";
-			taxStr="";
+			if(CMath.isNumber(commands.get(2)))
+			{
+				clanName=commands.get(1);
+				taxStr=CMParms.combine(commands,2);
+			}
+			else
+			if("FORGIVE".startsWith(commands.get(1).toUpperCase().trim()))
+			{
+				final String s=CMStrings.capitalizeAndLower(commands.get(2));
+				if(CMLib.players().playerExists(s))
+				{
+					forgiveWhom=s;
+					taxStr="";
+					if(commands.size()>3)
+						clanName=CMParms.combine(commands,3);
+				}
+			}
+			else
+			if(CMath.isNumber(commands.get(1)))
+				taxStr=CMParms.combine(commands,1);
 		}
-		else
-			clanName=(commands.size()>2)?CMParms.combine(commands,1,commands.size()-1):"";
 
 		Clan chkC=null;
 		final boolean skipChecks=mob.getClanRole(mob.Name())!=null;
@@ -85,24 +138,57 @@ public class ClanDues extends StdCommand
 		final Clan C=chkC;
 		if(C==null)
 		{
-			mob.tell(L("You aren't allowed to require dues from anyone from @x1.",((clanName.length()==0)?"anything":clanName)));
+			if(forgiveWhom != null)
+				mob.tell(L("You aren't allowed to forgive dues from anyone from @x1.",((clanName.length()==0)?L("anything"):clanName)));
+			else
+				mob.tell(L("You aren't allowed to require dues from anyone from @x1.",((clanName.length()==0)?L("anything"):clanName)));
 			return false;
 		}
-		if((!skipChecks)&&(!CMLib.clans().goForward(mob,chkC,commands,Clan.Function.TAX,false)))
+		if((!skipChecks)
+		&&(!CMLib.clans().goForward(mob,chkC,commands,Clan.Function.TAX,false)))
 		{
-			mob.tell(L("You aren't in the right position to set the amount of dues for your @x1.",C.getGovernmentName()));
+			if(forgiveWhom != null)
+				mob.tell(L("You aren't in the right position to forgive dues for your @x1.",C.getGovernmentName()));
+			else
+				mob.tell(L("You aren't in the right position to set the amount of dues for your @x1.",C.getGovernmentName()));
 			return false;
 		}
+
+		if((!skipChecks)
+		&&(forgiveWhom!=null))
+		{
+			final Clan.MemberRecord m = C.getMember(forgiveWhom);
+			if(m==null)
+			{
+				mob.tell(L("'@x1' is not a member of @x2 @x3.",forgiveWhom,C.getGovernmentName(),C.name()));
+				return false;
+			}
+			if(m.dues<=0.0)
+			{
+				mob.tell(L("'@x1' does not owe any dues."));
+				return false;
+			}
+		}
+
 		final Session S=mob.session();
-		if((skipChecks)&&(commands.size()>1))
-			setClanDues(mob,chkC,skipChecks,commands,CMath.div(CMath.s_int(CMParms.combine(commands,1)),100));
+		if(forgiveWhom != null)
+		{
+			final Pair<String,String> info = C.getPreferredBanking();
+			final String curr=(info==null)?CMLib.beanCounter().getCurrency(mob):info.second;
+			final Clan.MemberRecord m = C.getMember(forgiveWhom);
+			CMLib.database().DBUpdateClanDonates(C.clanID(), forgiveWhom, 0, 0, -m.dues);
+			mob.tell(L("@x1 has been forgiven @x2 in dues.",forgiveWhom,CMLib.beanCounter().nameCurrencyLong(curr, m.dues)));
+		}
+		else
+		if((skipChecks)&&(taxStr.length()>0))
+			possiblySetClanDues(mob,chkC,skipChecks,taxStr);
 		else
 		if(S!=null)
 		{
-			if((taxStr.length()==0)||(!CMath.isNumber(taxStr)))
+			if(taxStr.length()==0)
 			{
 				final Pair<String,String> info = C.getPreferredBanking();
-				List<String> badMembers = new ArrayList<String>();
+				final List<String> badMembers = new ArrayList<String>();
 				final String curr=(info==null)?CMLib.beanCounter().getCurrency(mob):info.second;
 				for(final Clan.MemberRecord rec : C.getFullMemberList())
 				{
@@ -170,8 +256,10 @@ public class ClanDues extends StdCommand
 				else
 					curr="";
 			}
-			String currName = (curr.length()==0)?"default (gold)":curr.toLowerCase();
-			if((info!=null)&&(!curr.equalsIgnoreCase(info.second)))
+			final String currName = (curr.length()==0)?"default (gold)":curr.toLowerCase();
+			if((info!=null)
+			&&(!curr.equalsIgnoreCase(info.second))
+			&&(!skipChecks))
 			{
 				if(mob.session()!=null)
 					mob.session().println(L("'@x1' must be in the @x2 currency.",t,currName));
@@ -180,7 +268,7 @@ public class ClanDues extends StdCommand
 			final Triad<String,Double,Long> triad =  CMLib.english().parseMoneyStringSDL(mob, t, curr);
 			if(triad == null)
 			{
-				if(mob.session()!=null)
+				if((mob.session()!=null)&&(!skipChecks))
 					mob.session().println(L("'@x1' is not a valid amount of @x2 currency.",t,currName));
 				return;
 			}
