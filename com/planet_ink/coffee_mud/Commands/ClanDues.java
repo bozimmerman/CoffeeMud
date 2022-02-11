@@ -74,7 +74,7 @@ public class ClanDues extends StdCommand
 						for(final Clan.MemberRecord rec : C.getFullMemberList())
 						{
 							if(rec.dues > 0.0)
-								badMembers.add(rec.name+"("+CMLib.beanCounter().nameCurrencyShort(curr, rec.dues));
+								badMembers.add("^H"+rec.name+"^N("+CMLib.beanCounter().nameCurrencyShort(curr, rec.dues)+")");
 						}
 						S.println(L("Dues are presently set at @x1 per year for @x2.",CMLib.beanCounter().nameCurrencyLong(curr, C.getDues()),C.name()));
 						if(badMembers.size()==0)
@@ -193,7 +193,7 @@ public class ClanDues extends StdCommand
 				for(final Clan.MemberRecord rec : C.getFullMemberList())
 				{
 					if(rec.dues > 0.0)
-						badMembers.add(rec.name+"("+CMLib.beanCounter().nameCurrencyShort(curr, rec.dues));
+						badMembers.add("^H"+rec.name+"^N("+CMLib.beanCounter().nameCurrencyShort(curr, rec.dues)+")");
 				}
 				final String currentDues;
 				if(C.getDues()==0.0)

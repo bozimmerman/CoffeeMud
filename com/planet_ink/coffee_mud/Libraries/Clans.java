@@ -327,7 +327,7 @@ public class Clans extends StdLibrary implements ClanManager
 		}
 		return clans;
 	}
-	
+
 	@Override
 	public int getCommonClanRelations(final String clanID1, final String clanID2)
 	{
@@ -1722,7 +1722,7 @@ public class Clans extends StdLibrary implements ClanManager
 	{
 		final long lastDuesPaid = CMath.s_long(Resources.getPropResource(this.name, "LAST_DUES_PAID"));
 		final TimeClock clock = CMLib.time().globalClock();
-		final long hoursPerYear = clock.getHoursInDay() * clock.getDaysInYear();
+		final long hoursPerYear = 0;//clock.getHoursInDay() * clock.getDaysInYear();
 		final long nextDuesPaid = lastDuesPaid + (CMProps.getMillisPerMudHour() * hoursPerYear);
 		if((System.currentTimeMillis() > nextDuesPaid)
 		&&(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
@@ -1740,8 +1740,8 @@ public class Clans extends StdLibrary implements ClanManager
 					C.clanAnnounce(L("The @x1 @x2 requires a bank account to collect dues.",C.getGovernmentName(),C.name()));
 					continue;
 				}
-				String bankChain=bankInfo.first;
-				String currency=bankInfo.second;
+				final String bankChain=bankInfo.first;
+				final String currency=bankInfo.second;
 				double totalAmtToDeposit = 0.0;
 				final List<Clan.MemberRecord> membList = C.getMemberList();
 				final Set<Clan.MemberRecord> paidList = new HashSet<Clan.MemberRecord>();
@@ -1785,7 +1785,7 @@ public class Clans extends StdLibrary implements ClanManager
 									continue;
 								}
 							}
-							double amtOnHand = CMLib.beanCounter().getTotalAbsoluteValue(M, currency);
+							final double amtOnHand = CMLib.beanCounter().getTotalAbsoluteValue(M, currency);
 							if(amtOnHand > 0.0)
 							{
 								double amtToTake = duesDue;
@@ -1811,7 +1811,7 @@ public class Clans extends StdLibrary implements ClanManager
 										if(amtToTake > amtInAccout)
 											amtToTake = amtInAccout;
 										final String amtName = CMLib.beanCounter().nameCurrencyShort(currency, amtToTake);
-										CMLib.beanCounter().modifyBankGold(membChain, payerName, amtName+" paid to "+C.getGovernmentName()+" "+C.name()+" in dues", 
+										CMLib.beanCounter().modifyBankGold(membChain, payerName, amtName+" paid to "+C.getGovernmentName()+" "+C.name()+" in dues",
 																			currency, -amtToTake);
 									}
 								}
@@ -1831,14 +1831,14 @@ public class Clans extends StdLibrary implements ClanManager
 						else
 							unpaidList.add(rec);
 					}
-					catch(Exception e)
+					catch(final Exception e)
 					{
 						Log.errOut(e);
 					}
 				}
 				if(totalAmtToDeposit>0)
 				{
-					List<String> payers = new ArrayList<String>();
+					final List<String> payers = new ArrayList<String>();
 					for(final MemberRecord m : paidList)
 						payers.add(m.name);
 					final String mlist = CMLib.english().toEnglishStringList(payers);
@@ -1847,7 +1847,7 @@ public class Clans extends StdLibrary implements ClanManager
 			}
 		}
 	}
-	
+
 	public void clanTrophyScan()
 	{
 		if(trophySystemActive())

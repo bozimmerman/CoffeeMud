@@ -1167,7 +1167,7 @@ public class MOBloader
 
 	public void DBUpdateClanDonates(String clan, String name, final double adjGold, final int adjXP, final double adjDues)
 	{
-		if(((adjGold==0)&&(adjXP==0))
+		if(((adjGold==0)&&(adjXP==0)&&(adjDues==0))
 		||(clan==null)
 		||(name==null))
 			return;
