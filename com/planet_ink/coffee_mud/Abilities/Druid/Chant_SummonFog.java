@@ -79,6 +79,12 @@ public class Chant_SummonFog extends Chant
 	}
 
 	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_ALL - 99;
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
@@ -104,7 +110,6 @@ public class Chant_SummonFog extends Chant
 				mob.location().send(mob,msg);
 				C.setNextWeatherType(Climate.WEATHER_FOG);
 				C.forceWeatherTick(mob.location().getArea());
-				Chant_CalmWeather.xpWorthyChange(mob,mob.location().getArea(),oldC,C);
 			}
 		}
 		else
