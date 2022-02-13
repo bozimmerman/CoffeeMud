@@ -238,8 +238,9 @@ public class SkyWatcher extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Chant_ChargeMetal",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Scrapping",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_Shapelessness",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_Shapelessness",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_SpellWard",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_SummonFog",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Skill_Meditation",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_SummonLightning",true);

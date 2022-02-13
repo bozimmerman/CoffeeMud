@@ -40,6 +40,8 @@ public class Chant_SummonFog extends Chant
 		return "Chant_SummonFog";
 	}
 
+	private int oldWeatherType = -1;
+	
 	private final static String localizedName = CMLib.lang().L("Summon Fog");
 
 	@Override
@@ -83,33 +85,60 @@ public class Chant_SummonFog extends Chant
 	{
 		return Ability.COST_ALL - 99;
 	}
+	
+	@Override
+	public void unInvoke()
+	{
+		final Physical affected = this.affected;
+		boolean undo = super.canBeUninvoked();
+		super.unInvoke();
+		if(undo && (this.oldWeatherType >=0) && (affected instanceof Area))
+		{
+			final Area A=(Area)affected;
+			final Climate C=A.getClimateObj();
+			C.setNextWeatherType(this.oldWeatherType);
+			C.forceWeatherTick(A);
+		}
+	}
 
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
+		final Room room=mob.location();
+		if(room==null)
+			return false;
+		final Area A=room.getArea();
+		if(((room.domainType()&Room.INDOORS)>0)&&(!auto))
 		{
 			mob.tell(L("You must be outdoors for this chant to work."));
+			return false;
+		}
+		if((A.fetchEffect(ID())!=null)||(A.getClimateObj().weatherType(room)==Climate.WEATHER_FOG))
+		{
+			mob.tell(L("It is already foggy here."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int size=mob.location().getArea().numberOfProperIDedRooms();
+		int size=A.numberOfProperIDedRooms();
 		size=size/(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 		if(size<0)
 			size=0;
 		final boolean success=proficiencyCheck(mob,-size,auto);
 		if(success)
 		{
-			final Climate C=mob.location().getArea().getClimateObj();
-			final Climate oldC=(Climate)C.copyOf();
+			final Climate C=A.getClimateObj();
 			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?L("^JThe air becomes foggy!^?"):L("^S<S-NAME> chant(s) into the air for fog!^?"));
-			if(mob.location().okMessage(mob,msg))
+			if(room.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
+				room.send(mob,msg);
+				final int oldWeatherCode = C.weatherType(null); /// null room gets raw weather code
 				C.setNextWeatherType(Climate.WEATHER_FOG);
-				C.forceWeatherTick(mob.location().getArea());
+				C.forceWeatherTick(A);
+				final Chant_SummonFog fogA = (Chant_SummonFog)beneficialAffect(mob, A, asLevel, 10);
+				if(fogA!=null)
+					fogA.oldWeatherType = oldWeatherCode;
 			}
 		}
 		else

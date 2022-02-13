@@ -6,6 +6,8 @@
   5. Newly crafted Clan Journals now writeable only by clan role power (journal). INI updated.
   6. New clan govt roles: CREATE_LAW (for law books), and JOURNAL (for writing to journals)
   7. Clans now support mud-yearly dues
+  8. New weather type: FOG, with weatheraffects support
+  9. New chant: Summon Fog
 
 # Build 5.9.12 Release 1/17/2022
   *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG

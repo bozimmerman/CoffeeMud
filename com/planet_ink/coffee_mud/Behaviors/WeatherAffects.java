@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Behaviors;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -46,6 +47,8 @@ public class WeatherAffects extends PuddleMaker
 	{
 		return Behavior.CAN_ROOMS | Behavior.CAN_AREAS;
 	}
+	
+	protected Ability obscureA			= null;
 
 	protected int	puddlepct			= 0;
 	protected int	windsheer			= 0;
@@ -214,21 +217,52 @@ public class WeatherAffects extends PuddleMaker
 				&&((((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)
 				   ||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN)))))
 		{
-			switch(weather)
+			final int range;
+			if(msg.source().getVictim()==msg.target())
+				range=msg.source().rangeToTarget();
+			else
+			if(msg.target() instanceof MOB)
+				range = CMLib.combat().calculateRangeToTarget(msg.source(), (MOB)msg.target(), (Item)msg.tool());
+			else
+				range=0;
+			if(CMLib.dice().rollPercentage()<(range*10))
 			{
-			case Climate.WEATHER_WINDY:
-			case Climate.WEATHER_THUNDERSTORM:
-			case Climate.WEATHER_BLIZZARD:
-			case Climate.WEATHER_DUSTSTORM:
-			{
-				if((CMLib.dice().rollPercentage()<windsheer)
-				&&(R!=null))
+				switch(weather)
 				{
-					if(R.show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_WEATHER,L("^WThe strong wind blows <S-YOUPOSS> attack against <T-NAMESELF> with <O-NAME> off target.^?")))
-						return false;
+				case Climate.WEATHER_WINDY:
+				case Climate.WEATHER_THUNDERSTORM:
+				case Climate.WEATHER_BLIZZARD:
+				case Climate.WEATHER_DUSTSTORM:
+				{
+					if((CMLib.dice().rollPercentage()<windsheer)
+					&&(R!=null))
+					{
+						if(R.show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_WEATHER,L("^WThe strong wind blows <S-YOUPOSS> attack against <T-NAMESELF> with <O-NAME> off target.^?")))
+							return false;
+					}
+					break;
 				}
-				break;
+				default:
+					break;
+				}
 			}
+			if(CMLib.dice().rollPercentage()<(range*10))
+			{
+				switch(weather)
+				{
+				case Climate.WEATHER_WINDY:
+				case Climate.WEATHER_THUNDERSTORM:
+				case Climate.WEATHER_BLIZZARD:
+				case Climate.WEATHER_DUSTSTORM:
+				case Climate.WEATHER_FOG:
+				{
+					final String weatherWord = Climate.WEATHER_DESCS[weather].toLowerCase();
+					msg.source().tell(L("You fail to aim @x1 due to the @x2.",((Item)msg.tool()).name(msg.source()),weatherWord));
+					break;
+				}
+				default:
+					break;
+				}
 			}
 		}
 		// then try to handle slippage of boats and feet in bad weather
@@ -341,15 +375,62 @@ public class WeatherAffects extends PuddleMaker
 			}
 			}
 		}
-		if((R!=null)
-		&&(weather==Climate.WEATHER_BLIZZARD))
+		if(R!=null)
 		{
-			final Ability A=CMClass.getAbility("Spell_ObscureSelf");
-			if(A!=null)
+			if((weather==Climate.WEATHER_BLIZZARD)
+			||(weather==Climate.WEATHER_FOG)
+			||(weather==Climate.WEATHER_DUSTSTORM))
 			{
-				A.setAffectedOne(msg.source());
-				if(!A.okMessage(msg.source(),msg))
-					return false;
+				if(obscureA==null)
+					obscureA=CMClass.getAbility("Spell_ObscureSelf");
+				if(obscureA!=null)
+				{
+					obscureA.setAffectedOne(msg.source());
+					if(!obscureA.okMessage(msg.source(),msg))
+						return false;
+				}
+				if(weather==Climate.WEATHER_FOG)
+				{
+					switch(msg.targetMinor())
+					{
+					case CMMsg.TYP_LOOK:
+					case CMMsg.TYP_EXAMINE:
+					case CMMsg.TYP_READ:
+					case CMMsg.TYP_WASREAD:
+					case CMMsg.TYP_OK_VISUAL:
+					{
+						if(msg.target() instanceof Exit)
+						{
+							msg.source().tell(L("It is too foggy to see that."));
+							return false;
+						}
+						break;
+					}
+					case CMMsg.TYP_LOOK_EXITS:
+						if((msg.target() instanceof Room)
+						&&(msg.source().location()==msg.target()))
+						{
+							msg.source().tell(L("It is too foggy to tell."));
+							return false;
+						}
+						break;
+					case CMMsg.TYP_NOISYMOVEMENT:
+						if((msg.target() instanceof SiegableItem)
+						&&(msg.tool() instanceof SiegableItem)
+						&&(SiegableItem.SiegeCommand.AIM.name().equals(msg.targetMessage())))
+						{
+							if(((SiegableItem)msg.target()).rangeToTarget()>2)
+							{
+								final String weatherWord = Climate.WEATHER_DESCS[weather].toLowerCase();
+								msg.source().tell(L("You fail to aim @x1 due to the @x2.",((SiegableItem)msg.tool()).name(msg.source()),weatherWord));
+								return false;
+							}
+						}
+						break;
+					default:
+						break;
+					}
+				}
 			}
 		}
 		return true;

@@ -587,9 +587,27 @@ public interface CombatLibrary extends CMLibrary
 
 	/**
 	 * Given an attacking source and a defending target and the sources weapon
+	 * or skill, this method will calculate the distance between the source and target
+	 * from each other.  Does not care about current combat or range state.
+	 * 
+	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#setRangeToTarget(int)
+	 * @see CombatLibrary#establishRange(MOB, MOB, Environmental)
+	 * 
+	 * @param source the attacker
+	 * @param target the target
+	 * @param tool the sources weapon
+	 * 
+	 * @return the calculated range
+	 */
+	public int calculateRangeToTarget(final MOB source, final MOB target, final Environmental tool);
+	
+	/**
+	 * Given an attacking source and a defending target and the sources weapon
 	 * or skill, this method will set the distance between the source and target
 	 * from each other.
 	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#setRangeToTarget(int)
+	 * @see CombatLibrary#calculateRangeToTarget(MOB, MOB, Environmental)
+	 * 
 	 * @param source the attacker
 	 * @param target the target
 	 * @param tool the sources weapon

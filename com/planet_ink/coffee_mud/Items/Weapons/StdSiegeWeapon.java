@@ -726,6 +726,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 			M.tell(msgStr);
 	}
 
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(tickID == Tickable.TICKID_SPECIALCOMBAT)
@@ -912,16 +913,17 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 			return false;
 
 		if((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
-		&&(msg.tool()==this)
-		&&(requiresAmmunition())
-		&&(ammunitionCapacity()>0))
+		&&(msg.tool()==this))
 		{
-			if(ammunitionRemaining()>ammunitionCapacity())
-				setAmmoRemaining(ammunitionCapacity());
-			if(ammunitionRemaining()<=0)
-				return false;
-			else
-				setUsesRemaining(usesRemaining()-1);
+			if(requiresAmmunition()&&(ammunitionCapacity()>0))
+			{
+				if(ammunitionRemaining()>ammunitionCapacity())
+					setAmmoRemaining(ammunitionCapacity());
+				if(ammunitionRemaining()<=0)
+					return false;
+				else
+					setUsesRemaining(usesRemaining()-1);
+			}
 		}
 		else
 		if((msg.sourceMinor()==CMMsg.TYP_HUH)
@@ -934,7 +936,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 				return true;
 			final String word=cmds.get(0).toUpperCase();
 			// MUST IMPLEMENT AIM, since your target might be moving.
-			if("TARGET".startsWith(word))
+			if(SiegableItem.SiegeCommand.TARGET.name().startsWith(word))
 			{
 				final boolean isRiding=msg.source().riding()==this;
 				if((cmds.size()==1)
@@ -982,7 +984,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 				}
 			}
 			else
-			if("AIM".startsWith(word))
+			if(SiegableItem.SiegeCommand.AIM.name().startsWith(word))
 			{
 				if(!this.amInTacticalMode())
 				{
@@ -1068,7 +1070,10 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 					msg.source().tell(L("@x1 is already aimed.",Name()));
 					return false;
 				}
-				final CMMsg msg2=CMClass.getMsg(msg.source(), siegeTarget, this, CMMsg.MSG_NOISYMOVEMENT, msgStr);
+				final CMMsg msg2=CMClass.getMsg(msg.source(), siegeTarget, this, 
+												CMMsg.MSG_NOISYMOVEMENT, msgStr,
+												CMMsg.MSG_NOISYMOVEMENT, SiegableItem.SiegeCommand.AIM.name(),
+												CMMsg.MSG_NOISYMOVEMENT, msgStr);
 				if(thisRoom.okMessage(msg.source(), msg2))
 				{
 					this.aiming = targetCoords;

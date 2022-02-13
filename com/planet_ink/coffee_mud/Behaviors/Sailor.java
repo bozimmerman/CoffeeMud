@@ -576,7 +576,7 @@ public class Sailor extends StdBehavior
 								&&(distanceToTarget <= ((AmmunitionWeapon)I).maxRange()))
 								{
 									final int aimPt = CMLib.dice().roll(1, targetSpeed, -1);
-									mob.enqueCommand(new XVector<String>("AIM",mobRoom.getContextName(I),""+aimPt), 0, 0);
+									mob.enqueCommand(new XVector<String>(SiegableItem.SiegeCommand.AIM.name(),mobRoom.getContextName(I),""+aimPt), 0, 0);
 									return true;
 								}
 							}
@@ -844,7 +844,7 @@ public class Sailor extends StdBehavior
 									if((captaiM!=null)
 									&&((!aggrLvlChk)||(mob.phyStats().level()<(captaiM.phyStats().level()+5)))
 									&&(CMLib.masking().maskCheck(aggrMask,captaiM,false)))
-										mob.enqueCommand(new XVector<String>("TARGET",mobRoom.getContextName(I)), 0, 0);
+										mob.enqueCommand(new XVector<String>(SiegableItem.SiegeCommand.TARGET.name(),mobRoom.getContextName(I)), 0, 0);
 								}
 							}
 						}

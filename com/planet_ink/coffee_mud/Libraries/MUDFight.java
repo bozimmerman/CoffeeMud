@@ -2737,76 +2737,78 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
+	public int calculateRangeToTarget(final MOB source, final MOB target, final Environmental tool)
+	{
+		if(source.riding()!=null)
+		{
+			if((target==source.riding())||(source.riding().amRiding(target)))
+				return 0;
+			else
+			if((source.riding() instanceof MOB)
+			   &&(((MOB)source.riding()).isInCombat())
+			   &&(((MOB)source.riding()).getVictim()==target)
+			   &&(((MOB)source.riding()).rangeToTarget()>=0)
+			   &&(((MOB)source.riding()).rangeToTarget()<source.rangeToTarget()))
+				return ((MOB)source.riding()).rangeToTarget();
+			else
+			for(int r=0;r<source.riding().numRiders();r++)
+			{
+				final Rider rider=source.riding().fetchRider(r);
+				if(!(rider instanceof MOB))
+					continue;
+				final MOB otherMOB=(MOB)rider;
+				if((otherMOB!=source)
+				   &&(otherMOB.isInCombat())
+				   &&(otherMOB.getVictim()==target)
+				   &&(otherMOB.rangeToTarget()>=0)
+				   &&(otherMOB.rangeToTarget()<source.rangeToTarget()))
+					return otherMOB.rangeToTarget();
+			}
+		}
+
+		final MOB follow=source.amFollowing();
+		if((target.getVictim()==source)&&(target.rangeToTarget()>=0))
+			return target.rangeToTarget();
+		else
+		if((follow!=null)&&(follow.location()==source.location()))
+		{
+			int newRange=follow.fetchFollowerOrder(source);
+			if(newRange<0)
+			{
+				if(follow.rangeToTarget()>=0)
+				{
+					newRange=follow.rangeToTarget();
+					if(newRange<maxRangeWith(source,tool))
+						newRange=maxRangeWith(source,tool);
+				}
+				else
+					newRange=maxRangeWith(source,tool);
+			}
+			else
+			{
+				if(follow.rangeToTarget()>=0)
+					newRange=newRange+follow.rangeToTarget();
+			}
+			if((source.location()!=null)&&(source.location().maxRange()<newRange))
+				newRange=source.location().maxRange();
+			return newRange;
+		}
+		else
+			return maxRangeWith(source,tool);
+	}
+	
+	@Override
 	public void establishRange(final MOB source, final MOB target, final Environmental tool)
 	{
 		// establish and enforce range
 		if((source.rangeToTarget()<0))
 		{
-			if(source.riding()!=null)
+			final int newRange = calculateRangeToTarget(source, target, tool);
+			if(newRange != source.rangeToTarget())
 			{
-				if((target==source.riding())||(source.riding().amRiding(target)))
-					source.setRangeToTarget(0);
-				else
-				if((source.riding() instanceof MOB)
-				   &&(((MOB)source.riding()).isInCombat())
-				   &&(((MOB)source.riding()).getVictim()==target)
-				   &&(((MOB)source.riding()).rangeToTarget()>=0)
-				   &&(((MOB)source.riding()).rangeToTarget()<source.rangeToTarget()))
-				{
-					source.setRangeToTarget(((MOB)source.riding()).rangeToTarget());
-					source.recoverPhyStats();
-					return;
-				}
-				else
-				for(int r=0;r<source.riding().numRiders();r++)
-				{
-					final Rider rider=source.riding().fetchRider(r);
-					if(!(rider instanceof MOB))
-						continue;
-					final MOB otherMOB=(MOB)rider;
-					if((otherMOB!=source)
-					   &&(otherMOB.isInCombat())
-					   &&(otherMOB.getVictim()==target)
-					   &&(otherMOB.rangeToTarget()>=0)
-					   &&(otherMOB.rangeToTarget()<source.rangeToTarget()))
-					{
-						source.setRangeToTarget(otherMOB.rangeToTarget());
-						source.recoverPhyStats();
-						return;
-					}
-				}
-			}
-
-			final MOB follow=source.amFollowing();
-			if((target.getVictim()==source)&&(target.rangeToTarget()>=0))
-				source.setRangeToTarget(target.rangeToTarget());
-			else
-			if((follow!=null)&&(follow.location()==source.location()))
-			{
-				int newRange=follow.fetchFollowerOrder(source);
-				if(newRange<0)
-				{
-					if(follow.rangeToTarget()>=0)
-					{
-						newRange=follow.rangeToTarget();
-						if(newRange<maxRangeWith(source,tool))
-							newRange=maxRangeWith(source,tool);
-					}
-					else
-						newRange=maxRangeWith(source,tool);
-				}
-				else
-				{
-					if(follow.rangeToTarget()>=0)
-						newRange=newRange+follow.rangeToTarget();
-				}
-				if((source.location()!=null)&&(source.location().maxRange()<newRange))
-					newRange=source.location().maxRange();
 				source.setRangeToTarget(newRange);
+				source.recoverPhyStats();
 			}
-			else
-				source.setRangeToTarget(maxRangeWith(source,tool));
-			source.recoverPhyStats();
 		}
 	}
 

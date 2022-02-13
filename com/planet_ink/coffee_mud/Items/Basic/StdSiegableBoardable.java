@@ -921,7 +921,10 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 							msg.source().tell(L("@x1 is already aimed.",weapon.Name()));
 							return false;
 						}
-						final CMMsg msg2=CMClass.getMsg(msg.source(), siegeTarget, weapon, CMMsg.MSG_NOISYMOVEMENT, msgStr);
+						final CMMsg msg2=CMClass.getMsg(msg.source(), siegeTarget, weapon, 
+														CMMsg.MSG_NOISYMOVEMENT, msgStr,
+														CMMsg.MSG_NOISYMOVEMENT, SiegableItem.SiegeCommand.AIM.name(),
+														CMMsg.MSG_NOISYMOVEMENT, msgStr);
 						if(mobR.okMessage(msg.source(), msg2))
 						{
 							this.aimings.removeFirst(weapon);
