@@ -115,24 +115,24 @@ public class DefaultClimate implements Climate
 	}
 
 	protected final static
-	int[] seasonalWeather={
+	int[] seasonalWeather= {
 		/*  		-   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC  FG*/
-		/*SPRING*/  40, 20, 10, 14,  5,  1,  0,  5,  0,  0,  0,  0,  5,
-		/*SUMMER*/  31, 20, 5,  10, 12,  0,  0, 20,  0,  0,  1,  1,  0,
-		/*FALL*/	37, 10, 15, 15, 10,  5,  2,  5,  2,  1,  0,  0, 10,
-		/*WINTER*/  32, 15, 11,  4,  2,  7,  3,  0,  3,  3,  0,  0, 20,
+		/*SPRING*/  40, 20, 10, 14,  5,  1,  0,  5,  0,  0,  0,  0,  5, 0,
+		/*SUMMER*/  31, 20, 5,  10, 12,  0,  0, 20,  0,  0,  1,  1,  0, 0,
+		/*FALL*/	37, 10, 15, 15, 10,  5,  2,  5,  2,  1,  0,  0, 10, 0,
+		/*WINTER*/  32, 15, 11,  4,  2,  7,  3,  0,  3,  3,  0,  0, 20, 0,
 	};
 
 	protected final static
-	int[] cold={
+	int[] cold= {
 		/*  		-   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC  FG*/
-		/*SPRING*/  -5, -5,  5,-10,  0,  5,  0, -5,  5,  0,  0,  0,  10,
-		/*SUMMER*/   5,  1,  5,  0,  0,  1,  1,-20,  1,  1,  0,  0,  5,
-		/*FALL*/	 0,  0,  1, -5,  0,  1,  1, -5,  1,  1,  0,  0,  5,
-		/*WINTER*/ -15,  0,  0, -4, -2,  5,  2,  0,  2,  2,  0,  0,  10,
+		/*SPRING*/  -5, -5,  5,-10,  0,  5,  0, -5,  5,  0,  0,  0,  10,-5,
+		/*SUMMER*/   5,  1,  5,  0,  0,  1,  1,-20,  1,  1,  0,  0,  5, -5,
+		/*FALL*/	 0,  0,  1, -5,  0,  1,  1, -5,  1,  1,  0,  0,  5, -5,
+		/*WINTER*/ -15,  0,  0, -4, -2,  5,  2,  0,  2,  2,  0,  0,  10,-5,
 	};
 	protected final static
-	int[] hot={
+	int[] hot= {
 		/*  		-   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC  FG*/
 		/*SPRING*/   5,  5, -5, 10,  0, -5,  0,  5, -5,  0,  0,  0, -10,  0,
 		/*SUMMER*/  -5, -1, -5,  0,  0, -1, -1, 20, -1, -1,  0,  0, -5,   0,
@@ -140,46 +140,46 @@ public class DefaultClimate implements Climate
 		/*WINTER*/  15,  0,  0,  4,  2, -5, -2,  0, -2, -2,  0,  0, -10,  0,
 	};
 	protected final static
-	int[] dry={
-		/*  		-   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR   WC  FG*/
-		/*SPRING*/  10,-15,  0,  0,  0,  0,  0,  2,  0,  0,  0,  3,   0,-30,
-		/*SUMMER*/  10,-22,  0,  0,  0,  0,  0,  0,  0,  0,  6,  6,   0,-30,
-		/*FALL*/	10,-15,  0,  0,  0,  0,  0,  2,  0,  0,  0,  3,   0,-30,
-		/*WINTER*/  10,-15,  0,  0,  0,  0,  0,  2,  0,  0,  0,  3,   0,-30,
-	};
-	protected final static
-	int[] wet={
+	int[] dry= {
 		/*  		-   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC  FG*/
-		/*SPRING*/ -10, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0, -3,  -2, 15,
-		/*SUMMER*/ -10, 22,  0,  0,  0,  0,  0,  0,  0,  0, -6, -6,   0, 22,
-		/*FALL*/   -10, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0, -3,  -2, 15,
-		/*WINTER*/ -10, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0, -3,   2, 15,
+		/*SPRING*/  10,-15,  0,  0,  0,  0,  0,  2,  0,  0,  0,  3,  0,-30,
+		/*SUMMER*/  10,-22,  0,  0,  0,  0,  0,  0,  0,  0,  6,  6,  0,-30,
+		/*FALL*/	10,-15,  0,  0,  0,  0,  0,  2,  0,  0,  0,  3,  0,-30,
+		/*WINTER*/  10,-15,  0,  0,  0,  0,  0,  2,  0,  0,  0,  3,  0,-30,
 	};
 	protected final static
-	int[] windy={
+	int[] wet= {
 		/*  		-   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC  FG*/
-		/*SPRING*/ -10,  0, 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,   0,-15,
-		/*SUMMER*/ -10,  0, 11,  0,  0,  0,  0, -2,  0,  0,  0,  1,   0,-15,
-		/*FALL*/   -10,  0, 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,   0,-15,
-		/*WINTER*/ -10, -2, 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,   2,-15,
+		/*SPRING*/ -10, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0, -3, -2, 15,
+		/*SUMMER*/ -10, 22,  0,  0,  0,  0,  0,  0,  0,  0, -6, -6,  0, 22,
+		/*FALL*/   -10, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0, -3, -2, 15,
+		/*WINTER*/ -10, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0, -3,  2, 15,
 	};
 	protected final static
-	int[] changeMap=		{
-	/*					 -    CL   WD   RA   TH   SN   HA   HE   SL   BL   DU   DR   WC  FG*/
-	/*CLEAR*/			85,    0,   0,-100,-100,-100,-100,   0,-100,-100,   0, -20,   0,-75,
-	/*CLOUDY*/			 0,   75,   0,   0,   0,   0,   0,   0,   0,   0,-100,-100,   0,-50,
-	/*WINDY*/			 0,    0,  25,-100,-100,-100,-100,-100,-100,-100,   1,   0,   0,-75,
-	/*RAIN*/			-5,    5,   0,  50,   5, -20,   0,-100, -20,-100,-100,-100,   0,-100,
-	/*THUNDERSTORM*/	-5,   10,   5,   5,  35,-100,   0,   0,   0,-100,-100,-100,   0,-100,
-	/*SNOW*/			-5,    5,   0,-100,-100,  35,-100,-100,-100,   5,-100,-100,   5,-100,
-	/*HAIL*/			-5,    5,   0,  -8,  -8,-100,  10,-100,   0,-100,-100,-100,   5,-100,
-	/*HEAT*/			 0,    0,   0,  -8,  -8,-100,-100,  50,-100,-100,   0,   1,-100,-100,
-	/*SLEET*/			-5,    5,   0,  -8,  -8,   0,   0,   0,  10,   0,-100,   0,   5,-100,
-	/*BLIZZ*/			-5,    5,   0,-100,-100,   5,-100,-100,-100,  15,-100,   0,  10,-100,
-	/*DUST*/			-5,  -10,  20,-100,-100,-100,-100,   0,-100,-100,  15,   0,   0,-100,
-	/*DROUGHT*/		   -15,  -15,   0,-100,-100,-100,-100,   0,-100,-100,   1,  85,   0,-100,
-	/*WINTER*/			 0,    0,   0,   0,-100,-100,-100,-100,-100,-100,-100,  -5,  85,-50,
-	/*FOG*/				 0,    0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,-50,
+	int[] windy= {
+		/*  		-   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC  FG*/
+		/*SPRING*/ -10,  0, 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,-15,
+		/*SUMMER*/ -10,  0, 11,  0,  0,  0,  0, -2,  0,  0,  0,  1,  0,-15,
+		/*FALL*/   -10,  0, 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,-15,
+		/*WINTER*/ -10, -2, 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,  2,-15,
+	};
+	protected final static
+	int[] changeMap= {
+	/*					 -    CL   WD   RA   TH   SN   HA   HE   SL   BL   DU   DR   WC   FG*/
+	/*CLEAR*/			85,    0,   0,-100,-100,-100,-100,   0,-100,-100,   0, -20,   0, -75,
+	/*CLOUDY*/			 0,   75,   0,   0,   0,   0,   0,   0,   0,   0,-100,-100,   0, -20,
+	/*WINDY*/			 0,    0,  25,-100,-100,-100,-100,-100,-100,-100,   1,   0,   0, -75,
+	/*RAIN*/			-5,    5,   0,  50,   5, -20,   0,-100, -20,-100,-100,-100,   0, -100,
+	/*THUNDERSTORM*/	-5,   10,   5,   5,  35,-100,   0,   0,   0,-100,-100,-100,   0, -100,
+	/*SNOW*/			-5,    5,   0,-100,-100,  35,-100,-100,-100,   5,-100,-100,   5, -100,
+	/*HAIL*/			-5,    5,   0,  -8,  -8,-100,  10,-100,   0,-100,-100,-100,   5, -100,
+	/*HEAT*/			 0,    0,   0,  -8,  -8,-100,-100,  50,-100,-100,   0,   1,-100, -100,
+	/*SLEET*/			-5,    5,   0,  -8,  -8,   0,   0,   0,  10,   0,-100,   0,   5, -100,
+	/*BLIZZ*/			-5,    5,   0,-100,-100,   5,-100,-100,-100,  15,-100,   0,  10, -100,
+	/*DUST*/			-5,  -10,  20,-100,-100,-100,-100,   0,-100,-100,  15,   0,   0, -100,
+	/*DROUGHT*/		   -15,  -15,   0,-100,-100,-100,-100,   0,-100,-100,   1,  85,   0, -100,
+	/*WINTER*/			 0,    0,   0,   0,-100,-100,-100,-100,-100,-100,-100,  -5,  85, -50,
+	/*FOG*/				 0,    0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, -20,
 	};
 
 	@Override
@@ -391,6 +391,7 @@ public class DefaultClimate implements Climate
 			int goodWeatherTotal=0;
 			nextWeather = Math.abs(nextWeather) % Climate.WEATHER_DESCS.length;
 			int possibleNextWeather=nextWeather;
+			final int[] weatherChanceChart = new int[Climate.NUM_WEATHER];
 			for(int g=0;g<Climate.NUM_WEATHER;g++)
 			{
 				// take the base chance for a seasonal weather occurrence (rain in winter, etc)
@@ -400,6 +401,11 @@ public class DefaultClimate implements Climate
 				// add them together to find the chance of a particular change in a particular season
 				// to a particular condition.
 				final int chance=seasonalNum+changeNum;
+				weatherChanceChart[g] = chance;
+
+			}
+			for(final int chance : weatherChanceChart)
+			{
 				// total all the change chances, negative means NO chance of this change
 				if(chance>0)
 					goodWeatherTotal+=chance;
@@ -422,13 +428,7 @@ public class DefaultClimate implements Climate
 			int tempWeatherTotal=0;
 			for(int g=0;g<Climate.NUM_WEATHER;g++)
 			{
-				// take the base chance for a seasonal weather occurrence (rain in winter, etc)
-				final int seasonalNum=seasonal[(A.getTimeObj().getSeasonCode().ordinal()*Climate.NUM_WEATHER)+g];
-				// find the chance of changing from what it will be, to some new condition.
-				final int changeNum=changeMap[(nextWeather*Climate.NUM_WEATHER)+g];
-				// add them together to find the chance of a particular change in a particular season
-				// to a particular condition.
-				final int chance=seasonalNum+changeNum;
+				final int chance=weatherChanceChart[g];
 				if(chance>0)
 				{
 					tempWeatherTotal+=chance;
@@ -454,7 +454,7 @@ public class DefaultClimate implements Climate
 				// 2=say stop word only
 				// 3=say stop word, then weatherdescription
 				/*					 -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
-				final int[] sayMap=		{
+				final int[] sayMap=	{
 				/*CLEAR*/			 0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,
 				/*CLOUDY*/			 2,  0,  3,  1,  1,  1,  1,  3,  1,  1,  3,  3,  3,
 				/*WINDY*/			 2,  1,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,
