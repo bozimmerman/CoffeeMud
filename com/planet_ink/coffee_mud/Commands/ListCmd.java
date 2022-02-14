@@ -3597,6 +3597,7 @@ public class ListCmd extends StdCommand
 	{
 		final WikiFlag wiki = getWikiFlagRemoved(commands);
 		final StringBuilder buf=new StringBuilder("^xAll Defined Expertise Codes: ^N\n\r");
+		final String rest=CMParms.combine(commands,0).toUpperCase();
 		final int COL_LEN=CMLib.lister().fixColWidth(20.0,viewerS);
 		if(wiki==WikiFlag.WIKILIST)
 		{
@@ -3658,9 +3659,14 @@ public class ListCmd extends StdCommand
 			for(final Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
 			{
 				final ExpertiseLibrary.ExpertiseDefinition def=e.nextElement();
-				buf.append(CMStrings.padRight("^Z"+def.ID(),COL_LEN)+"^?: "
-						  +CMStrings.padRight(def.name(),COL_LEN)+": "
-						  +CMLib.masking().maskDesc(def.allRequirements())+"\n\r");
+				if((rest.length()==0)
+				||(def.name().toUpperCase().indexOf(rest)>0)
+				||(def.ID().toUpperCase().indexOf(rest)>0))
+				{
+					buf.append(CMStrings.padRight("^Z"+def.ID(),COL_LEN)+"^?: "
+							  +CMStrings.padRight(def.name(),COL_LEN)+": "
+							  +CMLib.masking().maskDesc(def.allRequirements())+"\n\r");
+				}
 			}
 		}
 		if(buf.length()==0)
