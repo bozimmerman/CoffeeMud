@@ -151,30 +151,38 @@ public class Skill_CrowsNest extends StdSkill
 							try
 							{
 								final int dir=CMLib.map().getExitDir(mobR, E);
-								if((dir >=0)&&(shipR!=null)&&(shipR.getRoomInDir(dir)!=null))
+								if((dir >=0)
+								&&(shipR!=null)
+								&&(shipR.getRoomInDir(dir)!=null))
 								{
-									Room R=shipR.getRoomInDir(dir);
-									if((R!=null)&&(targetMinor==CMMsg.TYP_EXAMINE)&&(R.getRoomInDir(dir)!=null))
-										R=R.getRoomInDir(dir);
-									if(R!=null)
+									Room lookR=shipR.getRoomInDir(dir);
+									final Exit lookE=shipR.getExitInDir(dir);
+									if((lookR!=null)&&(lookE!=null))
 									{
-										final CMMsg msg2=CMClass.getMsg(mob,R,targetCode,null);
-										R.executeMsg(mob,msg2);
-										if((targetMinor==CMMsg.TYP_EXAMINE)&&(R.getRoomInDir(dir)!=null))
+										final CMMsg emsg=CMClass.getMsg(mob,lookE,CMMsg.MSG_LOOK,null);
+										if((lookR!=null)&&(targetMinor==CMMsg.TYP_EXAMINE)&&(lookR.getRoomInDir(dir)!=null))
+											lookR=lookR.getRoomInDir(dir);
+										if((lookR!=null)
+										&&(shipR.okMessage(mob, emsg)))
 										{
-											for(final int dir2 : Directions.CODES())
+											final CMMsg msg2=CMClass.getMsg(mob,lookR,targetCode,null);
+											lookR.executeMsg(mob,msg2);
+											if((targetMinor==CMMsg.TYP_EXAMINE)&&(lookR.getRoomInDir(dir)!=null))
 											{
-												if(dir2!=Directions.getOpDirectionCode(dir))
+												for(final int dir2 : Directions.CODES())
 												{
-													final Room R2=R.getRoomInDir(dir);
-													if((R2!=null)
-													&&((dir2==dir)
-														||(!CMLib.flags().isWateryRoom(R2))
-														||(R2.numInhabitants()>0)
-														||(R2.numItems()>0)))
+													if(dir2!=Directions.getOpDirectionCode(dir))
 													{
-														msg2.setTarget(R2);
-														R2.executeMsg(msg.source(),msg2);
+														final Room R2=lookR.getRoomInDir(dir);
+														if((R2!=null)
+														&&((dir2==dir)
+															||(!CMLib.flags().isWateryRoom(R2))
+															||(R2.numInhabitants()>0)
+															||(R2.numItems()>0)))
+														{
+															msg2.setTarget(R2);
+															R2.executeMsg(msg.source(),msg2);
+														}
 													}
 												}
 											}
@@ -207,7 +215,11 @@ public class Skill_CrowsNest extends StdSkill
 							{
 								final CMMsg msg2=CMClass.getMsg(mob,shipR,CMMsg.MSG_LOOK,null);
 								shipR.executeMsg(mob,msg2);
-
+								if(shipR.getArea().getClimateObj().weatherType(shipR)==Climate.WEATHER_FOG)
+								{
+									mob.tell(L("It is too foggy to see anything else."));
+									return;
+								}
 								final TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.WATERSURFACEONLY);
 								final int maxRadius=1+(selfA.adjustedLevel(mob, 0)/20)+(selfA.getXLEVELLevel(mob)/2)+selfA.getXMAXRANGELevel(mob);
 								final List<Room> Rs=CMLib.tracking().getRadiantRooms(shipR, flags, maxRadius);
@@ -219,7 +231,8 @@ public class Skill_CrowsNest extends StdSkill
 									for(final int dir : Directions.CODES())
 									{
 										final Room R3=R2.getRoomInDir(dir);
-										if((R3!=null)&&(!CMLib.flags().isWateryRoom(R3)))
+										if((R3!=null)
+										&&(!CMLib.flags().isWateryRoom(R3)))
 											landHo=dir;
 									}
 									if((R2.numInhabitants()>0)||(R2.numItems()>0)||(landHo>=0))
@@ -240,23 +253,32 @@ public class Skill_CrowsNest extends StdSkill
 												listOfStuff.add(I.name(mob));
 										}
 										final List<Room> trail=CMLib.tracking().findTrailToRoom(shipR, R2, flags, maxRadius+1,Rs);
-										if((trail.size()==1)&&(landHo>=0))
+										if((trail.size()==1)
+										&&(landHo>=0))
 										{
-											mob.tell(L("Directly @x1, you see Land!.",CMLib.directions().getInDirectionName(landHo)));
+											final Exit shipE=shipR.getExitInDir(landHo);
+											final CMMsg emsg=CMClass.getMsg(mob,shipE,CMMsg.MSG_LOOK,null);
+											if((shipE!=null)&&(shipR.okMessage(mob, emsg)))
+												mob.tell(L("Directly @x1, you see Land!.",CMLib.directions().getInDirectionName(landHo)));
 										}
 										else
 										if((trail.size()>1)&&(trail.get(trail.size()-1)==shipR)&&(listOfStuff.size()>0))
 										{
 											final StringBuilder str=new StringBuilder("");
 											final int dir=CMLib.map().getRoomDir(shipR, trail.get(trail.size()-2));
-											if(trail.size()<3)
-												str.append(L("Directly @x1, you see @x2.",CMLib.directions().getInDirectionName(dir),CMLib.english().toEnglishStringList(listOfStuff)));
-											else
-											if(trail.size()==3)
-												str.append(L("Farther @x1, you see @x2.",CMLib.directions().getInDirectionName(dir),CMLib.english().toEnglishStringList(listOfStuff)));
-											else
-												str.append(L("Way off @x1, you can barely see @x2.",CMLib.directions().getInDirectionName(dir),CMLib.english().toEnglishStringList(listOfStuff)));
-											mob.tell(str.toString());
+											final Exit shipE=shipR.getExitInDir(dir);
+											final CMMsg emsg=CMClass.getMsg(mob,shipE,CMMsg.MSG_LOOK,null);
+											if((shipE!=null)&&(shipR.okMessage(mob, emsg)))
+											{
+												if(trail.size()<3)
+													str.append(L("Directly @x1, you see @x2.",CMLib.directions().getInDirectionName(dir),CMLib.english().toEnglishStringList(listOfStuff)));
+												else
+												if(trail.size()==3)
+													str.append(L("Farther @x1, you see @x2.",CMLib.directions().getInDirectionName(dir),CMLib.english().toEnglishStringList(listOfStuff)));
+												else
+													str.append(L("Way off @x1, you can barely see @x2.",CMLib.directions().getInDirectionName(dir),CMLib.english().toEnglishStringList(listOfStuff)));
+												mob.tell(str.toString());
+											}
 										}
 									}
 								}
