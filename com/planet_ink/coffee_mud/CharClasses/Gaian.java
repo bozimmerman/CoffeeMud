@@ -248,6 +248,9 @@ public class Gaian extends StdCharClass
 				 SecretFlag.MASKED, null, "+PLANE \"-Prime Material\"");
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Chant_GrowOak",true);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Chant_PlanarLink", 0, "", false,
+				 SecretFlag.MASKED, null, "+PLANE \"-Prime Material\"");
 	}
 
 	@Override
