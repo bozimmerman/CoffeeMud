@@ -515,29 +515,46 @@ public class GroundWired extends StdLibrary implements TechLibrary
 							System.out.println("Closest distance is "+minDistance+" to  object@("+CMParms.toListString(cO.coordinates())+"): Exact dir="+Math.toDegrees(exactDir[0])+","+Math.toDegrees(exactDir[1]));
 						}
 						*/
+
+						/*
+						if (O instanceof Weapon)
+						{
+							final long dist = CMLib.map().getDistanceFrom(O, cO);
+							System.out.println(O.Name()+"/"+cO.Name()+"="+minDistance+"<"+(O.radius()+cO.radius())+"/"+dist);
+						}
+						*/
 						if ((minDistance<(O.radius()+cO.radius()))
 						&&((speed>0)||(cO.speed()>0))
 						&&((oMass < SpaceObject.MOONLET_MASS)||(cO.getMass() < SpaceObject.MOONLET_MASS)))
 						{
 							final MOB host=map.deity();
 							CMMsg msg;
-							if((O instanceof Weapon)||(cO instanceof Weapon))
+							if(O instanceof Weapon)
 							{
 								msg=CMClass.getMsg(host, O, cO, CMMsg.MSG_COLLISION,CMMsg.MSG_DAMAGE,CMMsg.MSG_COLLISION,null);
-								if(O instanceof Weapon)
-									msg.setValue(((Weapon)O).phyStats().damage());
-								else
-									msg.setValue(((Weapon)cO).phyStats().damage());
+								msg.setValue(((Weapon)O).phyStats().damage());
+							}
+							else
+							if(cO instanceof Weapon)
+							{
+								msg=CMClass.getMsg(host, O, cO, CMMsg.MSG_COLLISION,CMMsg.MSG_DAMAGE,CMMsg.MSG_COLLISION,null);
+								msg.setValue(((Weapon)cO).phyStats().damage());
 							}
 							else
 								msg=CMClass.getMsg(host, O, cO, CMMsg.MSG_COLLISION,null);
-							final CMMsg revMsg=(CMMsg)msg.copyOf();
-							revMsg.setTarget(cO);
-							revMsg.setTool(O);
-							if(O.okMessage(host, msg) && cO.okMessage(host, revMsg))
+							if(O.okMessage(host, msg))
 							{
-								O.executeMsg(host, msg);
-								cO.executeMsg(host, revMsg);
+								msg.setTarget(cO);
+								msg.setTool(O);
+								if(cO.okMessage(host, msg))
+								{
+									msg.setTarget(O);
+									msg.setTool(cO);
+									O.executeMsg(host, msg);
+									msg.setTarget(cO);
+									msg.setTool(O);
+									cO.executeMsg(host, msg);
+								}
 							}
 						}
 					}
