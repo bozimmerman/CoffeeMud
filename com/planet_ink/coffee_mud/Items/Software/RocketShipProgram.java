@@ -61,6 +61,8 @@ public class RocketShipProgram extends GenShipProgram
 	protected volatile Double				lastAngle			= null;
 	protected volatile Double				lastInject			= null;
 	protected volatile Double				targetAcceleration	= Double.valueOf(SpaceObject.ACCELERATION_TYPICALSPACEROCKET);
+	protected volatile SpaceObject			approachTarget		= null;
+	protected volatile long					deproachDistance	= 0;
 	protected volatile RocketStateMachine	rocketState			= null;
 	protected volatile SpaceObject			currentTarget		= null;
 	protected volatile SpaceObject			programPlanet		= null;
@@ -82,7 +84,9 @@ public class RocketShipProgram extends GenShipProgram
 		LANDING,
 		ORBITSEARCH,
 		ORBITCHECK,
-		ORBITCRUISE
+		ORBITCRUISE,
+		APPROACH,
+		DEPROACH
 	}
 
 	public RocketShipProgram()
@@ -343,6 +347,8 @@ public class RocketShipProgram extends GenShipProgram
 		||uword.equals("DEACTIVATE")
 		||uword.equals("TARGET")
 		||uword.equals("FACE")
+		||uword.equals("APPROACH")
+		||uword.equals("CANCEL")
 		||uword.equals("MOON")
 		||uword.equals("FIRE")
 		||(uword.startsWith("WEAPON")&&(CMath.isInteger(uword.substring(6))))
@@ -732,6 +738,24 @@ public class RocketShipProgram extends GenShipProgram
 		}
 	}
 
+	protected void findTargetAcceleration()
+	{
+		boolean dampenerFound = false;
+		for(final TechComponent T : this.getDampeners())
+		{
+			if(T.activated()
+			&&((!T.subjectToWearAndTear()))||(T.usesRemaining()>30))
+				dampenerFound = true;
+		}
+		if(!dampenerFound)
+		{
+			super.addScreenMessage(L("No inertial dampeners found.  Limiting acceleration to 3G."));
+			this.targetAcceleration = Double.valueOf(SpaceObject.ACCELERATION_TYPICALSPACEROCKET);
+		}
+		else
+			this.targetAcceleration = Double.valueOf(30);
+	}
+
 	@Override
 	public boolean checkPowerCurrent(final int value)
 	{
@@ -847,6 +871,61 @@ public class RocketShipProgram extends GenShipProgram
 			}
 			break;
 		}
+		case APPROACH:
+		case DEPROACH:
+		{
+			final long distance = (CMLib.map().getDistanceFrom(ship, approachTarget)-ship.radius()-approachTarget.radius());
+			int safeDistance=100 + (int)Math.round(ship.speed());
+			final double[] dirTo = CMLib.map().getDirection(ship, this.approachTarget);
+			final double[] diffDelta = CMLib.map().getFacingAngleDiff(ship.direction(), dirTo); // starboard is -, port is +
+			if((Math.abs(diffDelta[0])+Math.abs(diffDelta[1]))<.05)
+				safeDistance += (int)Math.round(ship.speed());
+			if(distance < safeDistance)
+			{
+				for(final ShipEngine engineE : programEngines)
+					performSimpleThrust(engineE,Double.valueOf(0.0), true);
+				this.rocketState=null;
+				this.programEngines=null;
+				this.lastInject=null;
+				this.approachTarget=null;
+				super.addScreenMessage(L("Approach program completed."));
+				return super.checkPowerCurrent(value);
+			}
+			else
+			if(distance < this.deproachDistance)
+			{
+				if(state == RocketStateMachine.APPROACH)
+					state=RocketStateMachine.DEPROACH;
+				final double[] desiredFacing;
+				if(state == RocketStateMachine.APPROACH)
+					desiredFacing = CMLib.map().getDirection(ship, this.approachTarget);
+				else
+					desiredFacing = CMLib.map().getOppositeDir(ship.direction());
+				final double[] angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), desiredFacing); // starboard is -, port is +
+				if((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))>.02)
+				{
+					if(!changeFacing(ship, desiredFacing))
+					{
+						this.rocketState=null;
+						this.programEngines=null;
+						this.lastInject=null;
+						this.approachTarget=null;
+						super.addScreenMessage(L("Stop program aborted with error (directional control failure)."));
+						return super.checkPowerCurrent(value);
+					}
+					final double targetAcceleration = this.targetAcceleration.doubleValue();
+					if(this.lastInject != null)
+					{
+						if(ship.speed() < targetAcceleration)
+							this.lastInject = Double.valueOf(this.lastInject.doubleValue()/2.0);
+						else
+						if(ship.speed() < (targetAcceleration * 2))
+							this.lastInject = Double.valueOf(this.lastInject.doubleValue()/1.5);
+					}
+				}
+			}
+			break;
+		}
 		case LAUNCHCHECK:
 		case LAUNCHCRUISE:
 		case LAUNCHSEARCH:
@@ -896,6 +975,8 @@ public class RocketShipProgram extends GenShipProgram
 		switch(state)
 		{
 		case STOP:
+		case APPROACH:
+		case DEPROACH:
 		case PRE_LANDING_STOP:
 		{
 			double targetAcceleration = this.targetAcceleration.doubleValue(); //
@@ -969,7 +1050,7 @@ public class RocketShipProgram extends GenShipProgram
 					newInject=calculateMarginalTargetInjection(newInject, targetAcceleration);
 					if((targetAcceleration > 1.0) && (newInject.doubleValue()==0.0))
 					{
-						primeMainThrusters(ship);
+						primeMainThrusters(ship,true);
 						newInject = forceAccelerationAllProgramEngines(targetAcceleration);
 					}
 					performSimpleThrust(engineE,newInject, false);
@@ -1030,7 +1111,7 @@ public class RocketShipProgram extends GenShipProgram
 						Log.debugOut("Landing Deccelerating @ "+  targetAcceleration +" because "+ticksToDecellerate+">"+ticksToDestinationAtCurrentSpeed+"  or "+distance+" < "+(ship.speed()*20));
 					if((targetAcceleration >= 1.0) && (newInject.doubleValue()==0.0))
 					{
-						primeMainThrusters(ship);
+						primeMainThrusters(ship,true);
 						Log.debugOut("Landing Deccelerating Check "+  Math.abs(this.lastAcceleration.doubleValue()-targetAcceleration));
 						newInject = forceAccelerationAllProgramEngines(targetAcceleration);
 					}
@@ -1045,7 +1126,7 @@ public class RocketShipProgram extends GenShipProgram
 					newInject=calculateMarginalTargetInjection(this.lastInject, targetAcceleration);
 					if((targetAcceleration >= 1.0) && (newInject.doubleValue()==0.0))
 					{
-						primeMainThrusters(ship);
+						primeMainThrusters(ship,true);
 						Log.debugOut("Landing Accelerating Check "+  Math.abs(this.lastAcceleration.doubleValue()-targetAcceleration));
 						newInject = forceAccelerationAllProgramEngines(targetAcceleration);
 					}
@@ -1168,7 +1249,7 @@ public class RocketShipProgram extends GenShipProgram
 		return false;
 	}
 
-	public ShipEngine primeMainThrusters(final SpaceShip ship)
+	public ShipEngine primeMainThrusters(final SpaceShip ship, final boolean limit)
 	{
 		CMMsg msg;
 		final List<ShipEngine> engines = getEngines();
@@ -1206,7 +1287,8 @@ public class RocketShipProgram extends GenShipProgram
 						{
 							final double ratio = targetAcceleration/thisLastAccel.doubleValue();
 							if((thisLastAccel.doubleValue() >= targetAcceleration)
-							&&((!isDocked)||(ship.getIsDocked()==null)))
+							&&((!isDocked)||(ship.getIsDocked()==null))
+							&&(!limit))
 							{
 								this.lastInject=Double.valueOf(lastTryAmt);
 								this.primeInjects.put(engineE,new Double[] {lastInject,lastAcceleration});
@@ -1290,11 +1372,13 @@ public class RocketShipProgram extends GenShipProgram
 						+ "LAUNCH / ORBIT         : take your ship off the planet\n\r"
 						+ "TARGET [NAME]          : target a sensor object\n\r"
 						+ "FACE [NAME]            : face a sensor object\n\r"
+						+ "APPROACH [NAME]        : approach a sensor object\n\r"
 						+ "MOON [NAME]            : moon a sensor object\n\r"
 						+ "[SENSOR NAME] [DIR]    : aim/use a sensor\n\r"
 						+ "FIRE [WEAPON]          : fire weapon at target\n\r"
-						+ "STOP   : negate all velocity\n\r"
-						+ "LAND   : land your ship on the nearest planet. \n\r"
+						+ "STOP                   : negate all velocity\n\r"
+						+ "LAND                   : land on the nearest planet.\n\r"
+						+ "CANCEL                 : cancel any running prgs.\n\r"
 						+ "HELP [ENGINE/SYSTEM/SENSOR/WEAPON/...] : more info"));
 					return;
 				}
@@ -1532,28 +1616,14 @@ public class RocketShipProgram extends GenShipProgram
 					this.programEngines=null;
 				}
 				this.programPlanet=CMLib.map().getSpaceObject(ship.getIsDocked(), true);
-				final ShipEngine engineE =this.primeMainThrusters(ship);
+				final ShipEngine engineE =this.primeMainThrusters(ship,true);
 				if(engineE==null)
 				{
 					this.programEngines = null;
 					super.addScreenMessage(L("Error: Malfunctioning launch thrusters interface."));
 					return;
 				}
-				boolean dampenerFound = false;
-				for(final TechComponent T : this.getDampeners())
-				{
-					if(T.activated()
-					&&((!T.subjectToWearAndTear()))||(T.usesRemaining()>30))
-						dampenerFound = true;
-				}
-				if(!dampenerFound)
-				{
-					super.addScreenMessage(L("No inertial dampeners found.  Limiting acceleration to 3G."));
-					this.targetAcceleration = Double.valueOf(SpaceObject.ACCELERATION_TYPICALSPACEROCKET);
-				}
-				else
-					this.targetAcceleration = Double.valueOf(30);
-
+				findTargetAcceleration();
 				this.programEngines=new XVector<ShipEngine>(engineE);
 				if(uword.equalsIgnoreCase("ORBIT"))
 					this.rocketState = RocketShipProgram.RocketStateMachine.ORBITSEARCH;
@@ -1593,7 +1663,8 @@ public class RocketShipProgram extends GenShipProgram
 				}
 				else
 				{
-					engineE=this.primeMainThrusters(ship);
+					findTargetAcceleration();
+					engineE=this.primeMainThrusters(ship,ship.getIsDocked()!=null);
 				}
 				if(engineE==null)
 				{
@@ -1681,7 +1752,8 @@ public class RocketShipProgram extends GenShipProgram
 				}
 				else
 				{
-					engineE=this.primeMainThrusters(ship);
+					findTargetAcceleration();
+					engineE=this.primeMainThrusters(ship,true);
 				}
 				if(engineE==null)
 				{
@@ -1860,6 +1932,111 @@ public class RocketShipProgram extends GenShipProgram
 						}
 					}
 				}
+				return;
+			}
+			else
+			if(uword.equalsIgnoreCase("CANCEL"))
+			{
+				if(this.rocketState == null)
+				{
+					super.addScreenMessage(L("Error: No programs running."));
+					return;
+				}
+				switch(this.rocketState)
+				{
+				case APPROACH:
+				case DEPROACH:
+					super.addScreenMessage(L("Error: Approach program stopped."));
+					break;
+				case LANDING:
+				case LANDING_APPROACH:
+				case PRE_LANDING_STOP:
+					super.addScreenMessage(L("Error: Landing program stopped."));
+					break;
+				case LAUNCHCHECK:
+				case LAUNCHCRUISE:
+				case LAUNCHSEARCH:
+					super.addScreenMessage(L("Error: Launch program stopped."));
+					break;
+				case ORBITCHECK:
+				case ORBITCRUISE:
+				case ORBITSEARCH:
+					super.addScreenMessage(L("Error: Orbit program stopped."));
+					break;
+				case STOP:
+					super.addScreenMessage(L("Error: Stop program stopped."));
+					break;
+				}
+				this.rocketState = null;
+				return;
+			}
+			else
+			if(uword.equalsIgnoreCase("APPROACH"))
+			{
+				final SpaceObject spaceObject=CMLib.map().getSpaceObject(this,true);
+				final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+				if(ship==null)
+				{
+					super.addScreenMessage(L("Error: Malfunctioning hull interface."));
+					return;
+				}
+				if(parsed.size()<2)
+				{
+					super.addScreenMessage(L("Error: APPROACH requires the name of the object.   Try HELP."));
+					return;
+				}
+				if(sensorReports.size()==0)
+				{
+					super.addScreenMessage(L("Error: no sensor data found to identify object."));
+					return;
+				}
+				final String targetStr=CMParms.combine(parsed, 1);
+				final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
+				for(final TechComponent sensor : sensors)
+					allObjects.addAll(takeNewSensorReport(sensor));
+				Collections.sort(allObjects, new DistanceSorter(spaceObject));
+				SpaceObject targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, false);
+				if(targetObj == null)
+					targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, true);
+				if(targetObj == null)
+				{
+					super.addScreenMessage(L("No suitable object @x1 found within sensor range.",targetStr));
+					return;
+				}
+				if(targetObj.coordinates() == null)
+				{
+					super.addScreenMessage(L("Can not approach @x1 due to lack of coordinate information.",targetObj.Name()));
+					return;
+				}
+				this.approachTarget = targetObj;
+				final long distance = CMLib.map().getDistanceFrom(ship, targetObj);
+				this.deproachDistance = (distance - ship.radius() - targetObj.radius())/2;
+				if(deproachDistance < 100)
+				{
+					super.addScreenMessage(L("Can not approach @x1 due being too close.",targetObj.Name()));
+					return;
+				}
+				ShipEngine engineE=null;
+				final double[] dirTo = CMLib.map().getDirection(ship, targetObj);
+				if(!this.changeFacing(ship, dirTo))
+				{
+					super.addScreenMessage(L("Warning. Approach program cancelled due to engine failure."));
+					this.rocketState=null;
+					this.programEngines=null;
+					return;
+				}
+				findTargetAcceleration();
+				engineE=this.primeMainThrusters(ship,ship.getIsDocked()!=null);
+				if(engineE==null)
+				{
+					this.rocketState=null;
+					this.programEngines = null;
+					super.addScreenMessage(L("Error: Malfunctioning thrusters interface."));
+					return;
+				}
+				this.programEngines=new XVector<ShipEngine>(engineE);
+				this.rocketState = RocketStateMachine.APPROACH;
+				super.addScreenMessage(L("Approach to @x1 procedure engaged.",targetObj.Name()));
 				return;
 			}
 			else
