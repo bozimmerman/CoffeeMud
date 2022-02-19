@@ -3380,7 +3380,17 @@
   13. New TIME command
   14. Weather is more descriptive
 # Build 3.0.0.5 (3.0.5) - Released Mar 15, 2002
+                                                     1. Spell Domains are no longer classes, but simple enum field values
 # Build 3.0.0.0 - Released Feb 25th, 2002
+   1. MUDGrinder updated to support new Behavables and Affectables
+   2. New items: WandArchon
+   3. Max level goes from 25 to 30
+   4. New Archon commands: WIZINV, DISPOSSES, POSSESS, GOTO, CHARGEN
+   5. More things have been colored for your viewing pleasure
+   6. Areas are now actual objects instead of just strings, and stored in own DB table
+   7. New Skills:Skill_AttackHalf
+   8. Abilities no longer qualify for classes per se, but now classes qualify for abilities.
+   9. New Properties: Prop_WizInvis
 # Build 1.25(2.5) - Released Jan 27, 2002
    1. More new mudchat animal sounds
    2. Archon help is now in its own file: arc_help.ini
