@@ -3382,7 +3382,18 @@
 # Build 3.0.0.5 (3.0.5) - Released Mar 15, 2002
 # Build 3.0.0.0 - Released Feb 25th, 2002
 # Build 1.25(2.5) - Released Jan 27, 2002
+   1. More new mudchat animal sounds
+   2. Archon help is now in its own file: arc_help.ini
+   3. New Archon commands: AHELP, ARCHELP, ARCTOPICS, DUMPFILE, UNLOADHELP
+   4. New commands: ANSI, NOANSI
+   5. Item targeting now has a "smurfy well" exception
+   6. CoffeeMud now supports ansi color, and color codes
 # Build 1.2.1 (2.1) - Released Jan 6, 2002
+   1. GoodGuardian respects "brother"hood (a mob from the same room).
+   2. Ability now affects armor bonus when worn
+   3. Lots of tiny tweeks to the detailed behavior of various specific skills/spells
+   4. New Songs: Mana, Armor
+   5. Several little bug fixes
 # Build 1.2 (2.0) - Released Dec 17, 2001
    1. Added support for IBM DB2
    2. New help file "misc_help.ini", for help that fits nowhere else
