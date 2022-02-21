@@ -101,7 +101,7 @@ public class Deities extends StdCommand
 			else
 				msg.append(D.getWorshipTriggerDesc()+"\n\r");
 		}
-		if((mob==null)||CMSecurity.isASysOp(mob)||mob.charStats().getCurrentClass().baseClass().equals("Cleric"))
+		if((mob==null)||(mob.charStats().getStat(CharStats.STAT_FAITH)>=100))
 		{
 			if(D.numPowers()>0)
 			{

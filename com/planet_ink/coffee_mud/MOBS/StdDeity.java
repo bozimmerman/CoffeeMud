@@ -345,7 +345,7 @@ public class StdDeity extends StdMOB implements Deity
 	@Override
 	public String getClericRequirementsDesc()
 	{
-		return L("The following may be clerics of @x1: @x2",name(),CMLib.masking().maskDesc(getClericRequirements()));
+		return L("The following may be priests of @x1: @x2",name(),CMLib.masking().maskDesc(getClericRequirements()));
 	}
 
 	@Override

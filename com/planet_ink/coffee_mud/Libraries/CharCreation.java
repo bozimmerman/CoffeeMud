@@ -3630,6 +3630,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected List<Deity> deityQualifies(final MOB mob, final int theme)
 	{
 		final List<Deity> list=new Vector<Deity>();
+		mob.recoverCharStats();
 		for(final Enumeration<Deity> d=CMLib.map().deities();d.hasMoreElements();)
 		{
 			final Deity D=d.nextElement();
@@ -3641,8 +3642,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			&&(CMProps.isTheme(A.getTheme()))
 			&&((this.deitiesMask == null)||(CMLib.masking().maskCheck(this.deitiesMask, mob, true))))
 			{
-				final String mask=(mob.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Cleric")
-								  ?D.getClericRequirements():D.getWorshipRequirements());
+				final boolean isClericLike = mob.charStats().getStat(CharStats.STAT_FAITH)>=100;
+				final String mask=isClericLike?D.getClericRequirements():D.getWorshipRequirements();
 				if((mask==null)||(mask.length()==0)||(CMLib.masking().maskCheck(mask, mob, true)))
 					list.add(D);
 			}
