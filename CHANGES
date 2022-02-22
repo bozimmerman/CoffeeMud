@@ -3246,22 +3246,70 @@
       restrict what they can contain.
    9. AUTODRAW command created to support the above.
    10. Armor now extends Container, allowing armor to be a sheath.
-   11. Numerous unremembered bug fixes. :)
+   11. Diku CMARE files finally dropped from the damn distribution
+   12. Numerous unremembered bug fixes. :)
 # Build 3.0.7.6 (3.7.6) - Released Jan 28, 2003
+   1. Filling out trap help entries
+   2. MUDGrinder support for bankers
+   3. Raw Telnet codes from users are filtered out.
+   4. Non-letter chars no longer allowed in player names
 # Build 3.0.7.5 (3.7.5) - Released Jan 28, 2003
+   1. Internal: Can now delete an entire journal
+   2. StdBanker added, as well as GenBanker!
 # Build 3.0.7.4 (3.7.4) - Released Jan 27, 2003
+   1. LOOK at/to syntax added
+   2. Internal: Lots of shopkeeper refactoring in preparation for bankers
+   3. StdBanker prototyped, and interface defined 
+   4. MOBTeacher now responds to politeness
+   5. New shopkeeper types: jeweller, banker, alchemist
+   6. DOT syntax added for picking out specific items in a pile: sword.2 sword.3, etc..
 # Build 3.0.7.3 (3.7.3) - Released Jan 26, 2003
+   1. New commands: CHANWHO, DEPOSIT, WITHDRAW
+   2. WHOIS now supports I3
+   3. CHANWHO packets now supported by I3
 # Build 3.0.7.2 (3.7.2) - Released Jan 24, 2003
+   1. I3 messages have color codes converted to ansi
+   2. Color off code added in lots of places
+   3. New spell color codes used in spells, skills
+   4. New ini setting: I3PORT
 # Build 3.0.7.1 (3.7.1) - Released Jan 23, 2003
+   1. New traps: Trap_GetGas, Trap_EnterSpell, Trap_OpenNeedle, Trap_GetSpell, Trap_UnlockGas, Trap_OpenBlade
+   2. New traps: Trap_EnterNeedle, Trap_EnterPit, Trap_UnlockSpell, Trap_GetNeedle, Trap_OpenGas, Trap_OpenSpell
+   3. New traps: Trap_EnterBlade, Trap_GetBlade, Trap_EnterGas, Trap_UnlockNeedle, Trap_UnlockBlade
 # Build 3.0.7.0 (3.7) - Released Jan 23, 2003
+   1. Intermud3 (I3) system added
+   2. Underline, flash, italic color codes added, as well as all colors off: ^^
+   3. CoffeeMud now has login NEWS
+   4. New commands: LOCATE, MUDLIST, I3CHANNELS
+   5. New properties: Prop_NoPurge
+   6. New ini settings: RUNI3SERVER, ICHANNELS
 # Build 3.0.6.1 (3.6.1) - Released Jan 19, 2003
+   1. Arrest bug fixes, and more aggressive cops
+   2. Social action code tweeks
+   3. More memory-efficient exit links added in grids
+   4. New pronoun codes -HIMERSELF, HISHERSELF
 # Build 3.0.6.0 (3.6) - Released Jan 17, 2003
+   1. resources/laws.ini added to make Arrest configurable
+   2. New property: Prisoner
+   3. Arrest can now send players to jail, and has a trial
+   4. New skills: Skill_HandCuff
 # Build 3.0.5.9 (3.5.9) - Released Jan 14, 2003
    1. Added AutoWeather
    2. Find water, Track causes mobs to automatically walk
    3. MUDGrinder colors rooms by type now
 # Build 3.0.5.8 (3.5.8) - Released Jan 12, 2003
+   1. Can now copy a room in mudgrinder
+   2. New locales: GreatLake, MountainsGrid, EndlessOcean, DesertGrid, 
+   3. Skys now try to link to each other!
+   4. Re-importing an area will re-link the room exits lost thereby
+   5. Prop_EnlargeRoom now supports formula-ish syntax
 # Build 3.0.5.7 (3.5.7) - Released Jan 10, 2003
+   1. WaterSurface type rooms auto-add underwater grids
+   2. Internal: room "weight" now holds base move point cost
+   3. Lots of color-related enhancements to game text
+   4. Can now wear/wield all or groups of things
+   5. New properties: Prop_EnlargeRoom
+   6. Several .cmare files updated.  When will this stop?!
 # Build 3.0.5.6 (3.5.6) - Released Jan 05, 2003
    1. Trying to re-wield will remove the old wielded item
    2. Trying to re-wear will remove the old worn item
@@ -3270,8 +3318,16 @@
 # Build 3.0.5.5 (3.5.5) - Released Jan 04, 2003
    1. Better SQL Error logging
    2. Disallow renaming a player as another existing player
-# Build 3.0.5.3 (3.5.3) - Released Jan 03, 2003
+# Build 3.0.5.4 (3.5.4) - Released Jan 03, 2003
+   1. Internal: lots of refacting in the DB loader classes
+   2. Players can be modified from command line
+   3. New NOFOLLOW flag for mobs/players
+   4. Spells that create mobs clean them up properly now
+   5. midgaard.cmare updated?! omg why was I doing that?
 # Build 3.0.5.2 (3.5.2) - Released Dec 31, 2002
+   1. A bunch of wording tweeks and fixes in skills, esp removing the word 'chant' from spells.
+   2. Wish gets more expensive, xp-wise
+   3. Good lord, but I checked in .cmare files of ALL the base diku areas
 # Build 3.0.5.1 (3.5.1) - Released Dec 20, 2002
    1. Carpentry can now make barrells and other Drinkables
    2. Leatherworking can now make Drinkables
@@ -3280,9 +3336,20 @@
    5. New Property: Prop_PracticeDummy
    6. GlowingMageArmor is destroyed on removal
 # Build 3.0.5.0 (3.5) - Released Dec 19, 2002
+   1. Grinder exits can be duplicated both ways
+   2. Changing the level of a mob in MUDGrinder will change stats
+   3. Neuter genders are called "it"
 # Build 3.0.4.9 (3.4.9) - Released Dec 18, 2002
+   1. New Behaviors: Decay, FightFlee
+   2. New damage types:  FROSTING, GASSING, MELTING, STRIKING
+   3. New archon command: BEACON
 # Build 3.0.4.8 (3.4.8) - Released Dec 16, 2002
+   1. New locales: UnderSaltWaterGrid, UnderSaltWaterMaze
+   2. LIST REPORT added
 # Build 3.0.4.7 (3.4.7) - Released Dec 15, 2002
+   1. Updates to Programming Guide
+   2. Many socials updated with action mask codes
+   3. Fix to sculpting
 # Build 3.0.4.6 (3.4.6) - Released Dec 14, 2002
    1. Can't get things from ground while riding
    2. GET * IN * syntax added
