@@ -3284,25 +3284,132 @@
 # Build 3.0.4.8 (3.4.8) - Released Dec 16, 2002
 # Build 3.0.4.7 (3.4.7) - Released Dec 15, 2002
 # Build 3.0.4.6 (3.4.6) - Released Dec 14, 2002
+   1. Can't get things from ground while riding
+   2. GET * IN * syntax added
+   3. Tweeks to discovery chance on some thief skills
+   4. MUDGrinder room save bugfix
 # Build 3.0.4.5 (3.4.5) - Released Dec 13, 2002
+   1. Crafting skill opening action string properly tensed now
+   2. Bug fix in help file, and numerous behaviors
+   3. MOBTeacher now teaches w/ higher int & wis
 # Build 3.0.4.4 (3.4.4) - Released Dec 13, 2002
+   1. COLOR is now a synonym for ANSI
+   2. New commands: BRIEF, WHERE, PULL, PUSH
+   3. New Archon command: SNOOP
+   4. Socials can now be edited by Archons
+   5. New behaviors: ItemRefitter
+   6. Internal: room mobility can now be turned on/off
 # Build 3.0.4.3 (3.4.3) - Released Dec 10, 2002
+   1. Internal: auto-invoking skills now skips most user invoke checks
+   2. Exits now have configurable door names
+   3. New behaviors: Druidness, Bardness
+   4. Worn items are now displayed in a defined particular order instead of enum order   
 # Build 3.0.4.2 (3.4.2) - Released Dec 08, 2002
+   1. Internal: Items can now be flagged non-locatable
+   2. New Archon Command: TICKTOCK
+   3. New command: ENTER
+   4. Crafting skills can now be used to refit/resize
+   5. New spells: Spell_Shrink, Spell_Refit
+   6. New properties: Prop_ClosedDayNight, 
 # Build 3.0.4.1 (3.4.1) - Released Dec 07, 2002
+   1. New races: Ogre, Frog
+   2. Incorporeality now displayed in Score
+   3. Internal: Affects can now be made non-uninvokable
+   4. Internal: Ticks can now be suspended/resumed
 # Build 3.0.4.0 (3.4) - Released Dec 05, 2002
+   1. New races: WaterElemental, MindFlayer, Githyanki, ElectricityElemental, FireElemental, EarthElemental
+   2. New races: AirElemental, Humanoid, GiantInsect, GiantScorpion, Insect, GiantWorm, GiantSpider, Spider
+   3. New races: Scorpion, Worm, StoneGolem, WoodGolem, MetalGolem
 # Build 3.0.3.9 (3.3.9) - Released Dec 03, 2002
+   1. New commands: IDEA, TYPO, GAIN
+   2. Skills can now cost practices, if desired
+   3. New behavior: ItemIdentifier
 # Build 3.0.3.8 (3.3.8) - Released Dev 03, 2002
+   1. New Behavior: Arrest, DelayedTransporter, 
+   2. Prototyping: ItemIdentifier
+   3. New races: Smurf, Chicken
+   4. New properties: Prop_EnterAdjuster, Prop_Transporter
+   5. Lots of new socials
 # Build 3.0.3.6 (3.3.6) - Released Nov 26, 2002
    1. Renamed Prop_RoomTransporter to just Prop_Transporter
    2. Added Behavior DelayedTransporter prototype 
 # Build 3.0.3.5 (3.3.5) - Released Nov 26, 2002
+   1. Programming Guide filled out more
+   2. Prototyping: Arrest, Prop_RoomTransporter, Prop_EnterAdjuster
+   3. Internal Session state debug info added, prob to help hunt down some race condition
 # Build 3.0.3.4 (3.3.4) - Released Nov 24, 2002
+   1. Weakness spells are now impacted by weather
+   2. New chants: Chant_FeelElectricity, Chant_Plague, Chant_Poison, Chant_FeelCold, Chant_FeelHeat
 # Build 3.0.3.3 (3.3.3) - Released Nov 24, 2002
+   1. Items in rooms can now be temporary drops
+   2. Rings, and itmes on ears, eyes, neck don't affect class armor restrictions
+   3. New command: retire
+   4. Light source and glowing are different things
+   5. Sleeping prevents thirst
+   6. New Programming Guide
+   7. New MUDGrinder Guide
+   8. New generic table creation sql script
+   9. New archon command: SHUTDOWN
 # Build 3.0.3.1 (3.3.1) - Released Nov 19, 2002
+   1. There is now an InstallationGuide
+   2. Internal: Properties/Behaviors now have "canaffect" to help guide mudgrinder drop-downs
+   3. Internal: Spells/Prayers now have "cantarget" to help combatabilities
+   4. New web macros: GrinderMobs, MobData
+   5. Fakedb Added, so you don't need a real-db to try things out!
+   6. MUDGrinder can now edit mobs, and more item properties
 # Build 3.0.3.0 (3.3) - Released Nov 15, 2002
+   1. The original java-based MUDGrinder is officially no-more. Long live the MUDGrinder
+   2. The Web-based MUDGrinder area editor is online.
+   3. New web macros: ExitData, RoomData, ItemData, RequestParameterEncoded
 # Build 3.0.2.0 (3.2) - Released Nov 04, 2002
+   1. The Web-based MUDGrinder area editor is almost done.
+   2. New material type: PRECIOUS
+   3. Can now wear things on ears, eyes, and about body
+   4. New skills: Fighter_RapidShot
+   5. New items: StdBow, GenSpear, GenBow, StdSling, GenSling, StdSpear
+   6. Many crafting skills from 3.1.5 now finally have recipes
 # Build 3.0.1.5 (3.1.5) - Released Nov 01, 2002
+   1. New items: GenMirror, Ingrediants,  
+   2. New locales: IndoorWaterSurface, IndoorUnderWater, IndoorInTheAir,
+   3. New raw resources: coal, lamp oil
+   4. Raw resources now have a strength code
+   5. Cows can now be milked
+   6. New mobs: Chimp, Rabbit, Raven, Duck, Monkey, Ape, Rat, Puppy, Turtle, Kitten, Mouse
+   7. New common skills: Smelting, Pottery, Embroidering, Carpentry, Blacksmithing, Dyeing,
+   8. New common skills: Engraving, Leatherworking, Tailoring, GlassBlowing, Apothecary, Fletching
+   9. New common skills: Chemistry, Sculpting, Alchemy, Armorsmithing, Weaponsmithing, JewelMaking
+  10. New common skills: Hunting, Chopping, Cooking, 
+  11. Many spell/skill effects now scale up according to class level
+  12. New chants: Chant_Treemorph, Druid_MyPlants, Chant_ControlFire, Chant_Goodberry, Chant_Tangle, Chant_SummonElemental
+  13. New chants: Chant_Shillelagh, Chant_Bury, Chant_FortifyFood, Chant_WhisperWard, Chant_WarpWood, Chant_SummonMount
+  14. New chants: Chant_Earthquake, Chant_SummonFire, Chant_Moonbeam, Chant_AnimalSpy, Chant_Hibernation, Chant_CharmAnimal
+  15. New chants: Chant_SenseLife, Chant_Hunger, Chant_SummonAnimal, Chant_PlantPass, Chant_SummonPlants, Chant_SummonWater
+  16. New chants: Chant_SummonFood, Chant_CharmArea, Chant_IllusionaryForest, Chant_DistantGrowth, Chant_Farsight
+  17. New chants: Chant_AnimalFriendship, Chant_Treeform, Chant_WaterWalking, Chant_PlantSnare, Chant_SummonInsects
+  18. New chants: Chant_SpeedTime, Chant_SummonLightning, Chant_LocatePlants, Chant_Barkskin, Chant_HoldAnimal
+  19. New chants: Chant_NeutralizePoison, Chant_SummonPeace, Chant_SummonFear, Chant_LocateAnimals, Chant_ResistLightning
+  20. New chants: Chant_SummonCold, Chant_SummonHeat, Druid_DruidicPass, Chant_SummonRain, Chant_SummonWind, Chant_WindGust
+  21. New chants: Chant_WaterBreathing, Chant_Treemind, Chant_PredictWeather, Chant_Sunray, Chant_CalmWeather, Chant_CalmWind
+  22. New chants: Chant_CalmAnimal, Chant_ResistCold, Chant_ResistPoison, Chant_ResistGas, Chant_ResistFire
+  23. New songs:  Song_Thanks, Song_Flight, Song_Mercy, Song_Disgust, Song_Distraction, Song_Comprehension, Song_Knowledge
+  24. New songs: Song_Babble
+  25. New properties: Burning
+  26. New skills: Thief_Lore, Thief_Snatch, Thief_Sap, Thief_Shadow, Thief_Bind, Thief_Appraise, Thief_Distract
+  27. New skills: Ranger_TrackAnimal, Fighter_Tumble
+  28. New races: Puppy, Bull
+  29. Multiple same items in a room now "stack" visually.
+  30. New web macros: CrossClassAbilities, GrinderArea, GrinderMap, GrinderRoom, GrinderDir, RequestParameter, MUDGrinder
+  31. New web macros: Authenticate, CheckReqParm, AddFile
 # Build 3.0.1.4 (3.1.4) - Released Apr 04, 2002
+   1. New common skills: Mine(ing), FireBuilding, Butcher(ing), Digging, Chop(ping), Fish(ing), Hunt(ing), 
+   2. New raw resources: blood, and bone
+   3. New locales: IndoorShallowWater, 
+   4. New web macros: AreaNameEncoded, RequestParametersEncoded, 
+   5. New races: Deer, Sheep, 
+   6. Races now have raw resources that they drop, for Butchering
+   7. New mobs: Sheep, Doe, Buck, Chicken, Python, Cobra, Buffalo, Pig, Parakeet, Rattlesnake, Deer
+   8. New mobs: GardenSnake, Lizard, Cow, Bull
+   9. New items: GenLiquidResource 
 # Build 3.0.1.3 (3.1.3) - Released Mar 30, 2002
    1. Web server now supports redirects, and "admin" mode macros
    2. New WebMacros: AreaData, BehaviorNext, BehaviorData, AreaNext, AreaName, AbilityAffectNext, AbilityData, AbilityNext
@@ -3321,12 +3428,11 @@
   16. New prayers: Prayer_CureDeafness, Prayer_Bury
   17. Added string filters?! <?-HIS-HER>, <?-HIM-HER>, <?-NAME>, <?-NAMESELF>, <?-HE-SHE>, <?-IS-ARE>, <?-HAS-HAVE>
   18. New commands: Chants
-  19. Weapon/Armor Condition is now a thing via uses remaining
-  20. New char class: Druid
-  21. New races: ManScorpion, Griffon, Chimp, Lion, GiantRat, Robin, DireWolf, Raven, Gorilla, Hawk, WereWolf
-  22. New races: Monkey, Calf, Ape, Python, Cobra, Rat, GiantWolf, DireRat, Scarab, Naga, Cub, Eagle, Buffalo
-  23. New races: WereBat, Sasquatch, Grasshopper, Kitten, Puma, WereRat, Manticore, GardenSnake, Lizard, 
-  24. New races: Mouse, Cow, Tarantula, WereBear, Minotaur, 
+  19. New char class: Druid
+  20. New races: ManScorpion, Griffon, Chimp, Lion, GiantRat, Robin, DireWolf, Raven, Gorilla, Hawk, WereWolf
+  21. New races: Monkey, Calf, Ape, Python, Cobra, Rat, GiantWolf, DireRat, Scarab, Naga, Cub, Eagle, Buffalo
+  22. New races: WereBat, Sasquatch, Grasshopper, Kitten, Puma, WereRat, Manticore, GardenSnake, Lizard, 
+  23. New races: Mouse, Cow, Tarantula, WereBear, Minotaur, 
 # Build 3.0.1.2 (3.1.2) - Released Mar 25, 2002
    1. New items: HolyAvenger, GenFoodResource, GenResource, GenWallpaper
    2. HUnger/Thirst can now result in death.
@@ -3359,11 +3465,10 @@
   14. New Properties: Prop_ReqNoMOB, Prop_StatTrainer, Prop_ItemTransReceiver
   15. New Skills: Skill_TwoWeaponFighting, Skill_Distract, Skill_Trip, Ranger_FindWater 
   16. New Behaviors: ROMPatrolman, Vagrant, ROMGangMember, AntiVagrant, Beggar, GateGuard, 
-  17. Players can now have Leiges to share XP with
-  18. Rideable items can now be sat on, slept on, or sat At
-  19. Races now have ranges of weights, and heights by race
-  20. New Locales: UnderSaltWater, SaltWaterSurface
-  21. Watery Locales are now Drinkables
+  17. Rideable items can now be sat on, slept on, or sat At
+  18. Races now have ranges of weights, and heights by race
+  19. New Locales: UnderSaltWater, SaltWaterSurface
+  20. Watery Locales are now Drinkables
 # Build 3.0.0.6 (3.0.6) - Released Mar 18, 2002
    1. New Races: Raven, Turtle, Owl, Bird, Rodent, Horse, Undead
    2. New Spells: Wall of Stone, Find Familiar, Summon Steed, Acid Arrow, Delay, Acid Fog, Repulsion, Nightmare, Gust of Wind
@@ -3380,7 +3485,41 @@
   13. New TIME command
   14. Weather is more descriptive
 # Build 3.0.0.5 (3.0.5) - Released Mar 15, 2002
-                                                     1. Spell Domains are no longer classes, but simple enum field values
+   1. Spell Domains are no longer classes, but simple enum field values
+   2. Weapon & Armor Condition is now a thing via uses remaining
+   3. Armor material now subtly affects saving throws
+   4. No uses remaining on wands and stuff reduces their value to 0
+   5. Thrown weapons exist now!
+   6. Ranged weapons with Ammunition now exist.
+   7. New Item type: StdRideable, for boats, cars, and airplanes
+   8. New Item type: StdJournal, for message bases and such
+   9. New Item types: StdCoins, GenRideable, GenJournal, 
+  10. New behaviors: ItemMender, MoneyChanger, 
+  11. Internal: mob senses masks and disposition are added, and room domains added
+  12. Internal: weapon types and classifications are now a thing
+  13. mob attributes now exist: autogold, autoloot, autoexits, autoassist, ansi, sysopmsgs, automelee
+  14. Web Macros now exist
+  15. .CMARE files are invented, and can now be Imported
+  16. Saving Throws now exist
+  17. Players can now have Leiges to share XP with
+  18. Internal: commands are their own package, w/ StdCommand as the base
+  19. New Skills: Skill_Meditation, 
+  20. New Spells: Spell_DetectGold, Spell_DetectWater, Spell_Augury, Spell_Wish, Spell_LightSensitivity
+  21. New Spells: Spell_WeaknessGas, Spell_WeaknessFire, Spell_WeaknessElectricity, Spell_WeaknessCold, Spell_WeaknessAcid
+  22. New Spells: Spell_ResistMagicMissiles, Spell_ReverseGravity, Spell_TimeStop, Spell_Reinforce, Spell_MassHaste
+  23. New Spells: Spell_Ensnare, Spell_Mend, Spell_Shatter, Spell_SeeAura, Spell_CombatPrecognition, Spell_DetectMetal
+  24. New Spells: Spell_Clairevoyance, Spell_Claireaudience, Spell_Scry, Spell_ComprehendLangs, Spell_KnowValue
+  25. New Spells: Spell_PredictWeather, Spell_DetectUndead
+  26. New Prayers: Prayer_SenseLife, Prayer_AnimateDead, Prayer_SenseEvil, Prayer_SenseGood, Prayer_Drain
+  28. New Properties: Prop_Crawlspace, 
+  29. Languages are now a thing! New Langs: Common, Draconic, Gnomish, Dwarven, Orcish, Elvish, ThievesCant
+  30. New MOB types: StdRideable (for horses mostly), GenRideable
+  31. Diff Races now have their own health descriptions
+  32. Natural Racial weapons added, so unarmed mobs can, on a race-by-race basis, have a special attack weapon
+  33. New Web Server added, with ability to show mud variables via macros.
+  34. New Web Macros: StdWebMacro, HTTPstatusInfo, NumPlayers, MUDServerStatus, MUDServerPort, MUDServerVersion
+  35. New Web Macros: HTTPstatus, WebServerName, HTTPclientIP, PlayerList, WebServerPort, AreaTbl, WebServerVersion
+  36. MUDGrinder app updated again, but its days are numbered.  Did this really still work at this time?
 # Build 3.0.0.0 - Released Feb 25th, 2002
    1. MUDGrinder updated to support new Behavables and Affectables
    2. New items: WandArchon
