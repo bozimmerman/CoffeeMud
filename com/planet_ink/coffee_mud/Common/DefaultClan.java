@@ -2769,11 +2769,11 @@ public class DefaultClan implements Clan
 			achievementers.remove(achievementTattoo);
 	}
 
-	
+
 	/**
-	 * Expensively calculates the given clans preferred banking details, 
+	 * Expensively calculates the given clans preferred banking details,
 	 * which is a pair including the bank chain, and the currency preferred.
-	 * 
+	 *
 	 * @return the pair including the bank chain, and the currency preferred.
 	 */
 	@Override
@@ -2796,14 +2796,14 @@ public class DefaultClan implements Clan
 				}
 			}
 			if(bankChain==null)
-				bankingInfo=null;
+				return null;
 			else
-				bankingInfo=new Pair<Long,Pair<String,String>>(Long.valueOf(System.currentTimeMillis()+CMProps.getMillisPerMudHour()*10), 
+				bankingInfo=new Pair<Long,Pair<String,String>>(Long.valueOf(System.currentTimeMillis()+CMProps.getMillisPerMudHour()*10),
 															new Pair<String,String>(bankChain,currency));
 		}
 		return bankingInfo.second;
 	}
-	
+
 	/** Stat variables associated with clan objects. */
 	private final static String[] CLAN_STATS={
 		"ACCEPTANCE", // 0

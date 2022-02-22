@@ -1721,7 +1721,6 @@ public class Clans extends StdLibrary implements ClanManager
 	public void clanDues()
 	{
 		final long lastDuesPaid = CMath.s_long(Resources.getPropResource(this.name, "LAST_DUES_PAID"));
-		final TimeClock clock = CMLib.time().globalClock();
 		final long hoursPerYear = 0;//clock.getHoursInDay() * clock.getDaysInYear();
 		final long nextDuesPaid = lastDuesPaid + (CMProps.getMillisPerMudHour() * hoursPerYear);
 		if((System.currentTimeMillis() > nextDuesPaid)
