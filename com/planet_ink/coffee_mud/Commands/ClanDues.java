@@ -144,6 +144,12 @@ public class ClanDues extends StdCommand
 				mob.tell(L("You aren't allowed to require dues from anyone from @x1.",((clanName.length()==0)?L("anything"):clanName)));
 			return false;
 		}
+		final Pair<String,String> info = C.getPreferredBanking();
+		if((!skipChecks) &&(info == null))
+		{
+			mob.tell(L("The @x1 @x2 requires a clan bank account to collect dues.",C.getGovernmentName(),C.name()));
+			return false;
+		}
 		if((!skipChecks)
 		&&(!CMLib.clans().goForward(mob,chkC,commands,Clan.Function.TAX,false)))
 		{
@@ -173,7 +179,6 @@ public class ClanDues extends StdCommand
 		final Session S=mob.session();
 		if(forgiveWhom != null)
 		{
-			final Pair<String,String> info = C.getPreferredBanking();
 			final String curr=(info==null)?CMLib.beanCounter().getCurrency(mob):info.second;
 			final Clan.MemberRecord m = C.getMember(forgiveWhom);
 			CMLib.database().DBUpdateClanDonates(C.clanID(), forgiveWhom, 0, 0, -m.dues);
@@ -187,7 +192,6 @@ public class ClanDues extends StdCommand
 		{
 			if(taxStr.length()==0)
 			{
-				final Pair<String,String> info = C.getPreferredBanking();
 				final List<String> badMembers = new ArrayList<String>();
 				final String curr=(info==null)?CMLib.beanCounter().getCurrency(mob):info.second;
 				for(final Clan.MemberRecord rec : C.getFullMemberList())
