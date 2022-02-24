@@ -738,7 +738,7 @@ public class RocketShipProgram extends GenShipProgram
 		}
 	}
 
-	protected void findTargetAcceleration()
+	protected void findTargetAcceleration(final ShipEngine E)
 	{
 		boolean dampenerFound = false;
 		for(final TechComponent T : this.getDampeners())
@@ -1623,7 +1623,7 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Error: Malfunctioning launch thrusters interface."));
 					return;
 				}
-				findTargetAcceleration();
+				findTargetAcceleration(engineE);
 				this.programEngines=new XVector<ShipEngine>(engineE);
 				if(uword.equalsIgnoreCase("ORBIT"))
 					this.rocketState = RocketShipProgram.RocketStateMachine.ORBITSEARCH;
@@ -1662,10 +1662,7 @@ public class RocketShipProgram extends GenShipProgram
 					return;
 				}
 				else
-				{
-					findTargetAcceleration();
 					engineE=this.primeMainThrusters(ship,ship.getIsDocked()!=null);
-				}
 				if(engineE==null)
 				{
 					this.rocketState=null;
@@ -1673,6 +1670,7 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Error: Malfunctioning thrusters interface."));
 					return;
 				}
+				findTargetAcceleration(engineE);
 				this.programEngines=new XVector<ShipEngine>(engineE);
 				this.rocketState = RocketShipProgram.RocketStateMachine.STOP;
 				super.addScreenMessage(L("All Stop procedure initialized."));
@@ -1751,10 +1749,7 @@ public class RocketShipProgram extends GenShipProgram
 					return;
 				}
 				else
-				{
-					findTargetAcceleration();
 					engineE=this.primeMainThrusters(ship,true);
-				}
 				if(engineE==null)
 				{
 					this.rocketState=null;
@@ -1762,6 +1757,7 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Error: Malfunctioning thrusters interface."));
 					return;
 				}
+				findTargetAcceleration(engineE);
 				this.programPlanet = landingPlanet;
 				this.programEngines=new XVector<ShipEngine>(engineE);
 				// this lands you at the nearest point, which will pick the nearest location room, if any
@@ -2025,7 +2021,6 @@ public class RocketShipProgram extends GenShipProgram
 					this.programEngines=null;
 					return;
 				}
-				findTargetAcceleration();
 				engineE=this.primeMainThrusters(ship,ship.getIsDocked()!=null);
 				if(engineE==null)
 				{
@@ -2034,6 +2029,7 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Error: Malfunctioning thrusters interface."));
 					return;
 				}
+				findTargetAcceleration(engineE);
 				this.programEngines=new XVector<ShipEngine>(engineE);
 				this.rocketState = RocketStateMachine.APPROACH;
 				super.addScreenMessage(L("Approach to @x1 procedure engaged.",targetObj.Name()));
