@@ -259,9 +259,9 @@ public class Spell_BigMouth extends Spell
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(invoker()==null)
+		if(!(affected instanceof MOB))
 			return true;
-		final MOB mob=invoker();
+		final MOB mob=(MOB)affected;
 		if((!mob.amDead())&&((--digestDown)<=0)&&(getStomach()!=null))
 		{
 			digestDown=2;

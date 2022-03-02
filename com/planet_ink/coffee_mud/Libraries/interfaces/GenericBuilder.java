@@ -36,21 +36,21 @@ import java.util.*;
    limitations under the License.
 */
 /**
- * The Generic CMObject Building library is the heart and core of 
- * CoffeeMud 2.0, formerly called "Generic".  The purpose is to 
+ * The Generic CMObject Building library is the heart and core of
+ * CoffeeMud 2.0, formerly called "Generic".  The purpose is to
  * provide abstract methods for handling the modifiable aspects of
  * CMObjects, such as manipulating and reading fields, converting
  * to and from XML, etc.
- * 
+ *
  * @author Bo Zimmerman
  *
  */
 public interface GenericBuilder extends CMLibrary
 {
 	/**
-	 * Enum for the most basic fields common to 
+	 * Enum for the most basic fields common to
 	 * all objects that implement the Item interface.
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 *
 	 */
@@ -237,37 +237,198 @@ public interface GenericBuilder extends CMLibrary
 	public String getQuickName(final String classID, final String miscText);
 	public void setEnvProperties(Environmental E, List<XMLTag> buf);
 	public void setExtraEnvProperties(Environmental E, List<XMLTag> buf);
+
+	/**
+	 * Sets the value of the given stat on the given object,
+	 * even if the object is not generic. This includes not only the Generic codes,
+	 * but also any fakeitem or fakemob stat codes as well.  All Physical
+	 * type objects are supported.  This method supports deltas to numeric
+	 * values as well, by sending a value with + or - as a prefix.
+	 * @see GenericBuilder#setAnyGenStat(Physical, String, String)
+	 * @see GenericBuilder#getAnyGenStat(Physical, String)
+	 * @see GenericBuilder#isAnyGenStat(Physical, String)
+	 *
+	 * @param P the type of object to change
+	 * @param stat the stat code to change
+	 * @param value the new value for the stat
+	 * @param supportPlusMinusPrefix true to support += prefix
+	 *
+	 */
 	public void setAnyGenStat(Physical P, String stat, String value, boolean supportPlusMinusPrefix);
+
+	/**
+	 * Sets the value of the given stat on the given object,
+	 * even if the object is not generic. This includes not only the Generic codes,
+	 * but also any fakeitem or fakemob stat codes as well.  All Physical
+	 * type objects are supported.
+	 * @see GenericBuilder#setAnyGenStat(Physical, String, String, boolean)
+	 * @see GenericBuilder#getAnyGenStat(Physical, String)
+	 * @see GenericBuilder#isAnyGenStat(Physical, String)
+	 *
+	 * @param P the type of object to change
+	 * @param stat the stat code to change
+	 * @param value the new value for the stat
+	 */
 	public void setAnyGenStat(Physical P, String stat, String value);
+
+	/**
+	 * Returns the value of the given stat on the given object,
+	 * even if the object is not generic. This includes not only the Generic codes,
+	 * but also any fakeitem or fakemob stat codes as well.  All Physical
+	 * type objects are supported.
+	 * @see GenericBuilder#setAnyGenStat(Physical, String, String)
+	 * @see GenericBuilder#setAnyGenStat(Physical, String, String, boolean)
+	 * @see GenericBuilder#isAnyGenStat(Physical, String)
+	 *
+	 * @param P the type of object to read
+	 * @param stat the stat code to read
+	 * @return the value of the stat, or ""
+	 */
 	public String getAnyGenStat(Physical P, String stat);
-	public List<String> getAllGenStats(Physical P);
+
+	/**
+	 * Returns whether the given string represents any of the
+	 * "AnyGen" stat codes for the given type object, even if the
+	 * object is not generic.  This includes not only the Generic codes,
+	 * but also any fakeitem or fakemob stat codes as well.  All Physical
+	 * type objects are supported.
+	 * @see GenericBuilder#setAnyGenStat(Physical, String, String)
+	 * @see GenericBuilder#setAnyGenStat(Physical, String, String, boolean)
+	 * @see GenericBuilder#getAnyGenStat(Physical, String)
+	 *
+	 * @param P the type of object to check
+	 * @param stat the stat code to check
+	 * @return true if the stat code can apply, false otherwise
+	 */
 	public boolean isAnyGenStat(Physical P, String stat);
+
+	/**
+	 * Returns the list of basic generic state codes applicable
+	 * to the given object.  It does not rely on the
+	 * Modifiable interface.  It also does not support any
+	 * of the fake GenItem or GenMobBonusFakeStats stats.
+	 * @param P the object to get stat codes for
+	 * @return the list of stat codes.
+	 */
+	public List<String> getAllGenStats(Physical P);
+
+	/**
+	 * Removes any qualifying prefixes from stat names, to
+	 * reveal the underlying stat code.  Prefixes include
+	 * things like CURRENT_, CURRENT ,BASE_, BASE ,MAX_, and MAX
+	 * @param stat the possibly qualified stat code
+	 * @return the underlying state code
+	 */
 	public String getFinalStatName(String stat);
+
+	/**
+	 * Returns the ordinal of the given code in the basic
+	 * genitem stat codes.  It does not rely on the
+	 * Modifiable interface.  It also does not support any
+	 * of the fake GenItemBonusFakeStats stats.
+	 * @see GenericBuilder#getGenItemStat(MOB, String)
+	 * @see GenericBuilder#setGenItemStat(MOB, String, String)
+	 *
+	 * @param code the stat code
+	 * @return the ordinal of the stat
+	 */
 	public int getGenItemCodeNum(String code);
+
+	/**
+	 * Gets the value of a basic genitem stat, even if the mob given
+	 * is not generic.  Therefore, it does not rely on the
+	 * Modifiable interface.  It also does not support any
+	 * of the fake GenItemBonusFakeStats stats.
+	 * @see GenericBuilder#getGenItemCodeNum(String)
+	 * @see GenericBuilder#setGenItemStat(MOB, String, String)
+	 *
+	 * @param I the item object to read
+	 * @param code the stat code to return the value of
+	 * @return the value of the stat
+	 */
 	public String getGenItemStat(Item I, String code);
+
+	/**
+	 * Sets the value of a basic genitem stat, even if the mob given
+	 * is not generic.  Therefore, it does not rely on the
+	 * Modifiable interface.  It also does not support any
+	 * of the fake GenItemBonusFakeStats stats.
+	 * @see GenericBuilder#getGenItemStat(MOB, String)
+	 * @see GenericBuilder#getGenItemCodeNum(String)
+	 *
+	 * @param I the item object to modify
+	 * @param code the stat code to modify
+	 * @param val the value to set the stat to
+	 */
 	public void setGenItemStat(Item I, String code, String val);
+
+	/**
+	 * Returns the ordinal of the given code in the basic
+	 * genmob stat codes.
+	 * @see GenericBuilder#getGenMobStat(MOB, String)
+	 * @see GenericBuilder#setGenMobStat(MOB, String, String)
+	 *
+	 * @param code the stat code
+	 * @return the ordinal of the stat
+	 */
 	public int getGenMobCodeNum(String code);
+
+	/**
+	 * Gets the value of a basic genmob stat, even if the mob given
+	 * is not generic.  Therefore, it does not rely on the
+	 * Modifiable interface.  It also does not support any
+	 * of the fake GenMOBBonusFakeStats stats.
+	 * @see GenericBuilder#getGenMobCodeNum(String)
+	 * @see GenericBuilder#setGenMobStat(MOB, String, String)
+	 *
+	 * @param M the mob object to read
+	 * @param code the stat code to return the value of
+	 * @return the value of the stat
+	 */
 	public String getGenMobStat(MOB M, String code);
+
+	/**
+	 * Sets the value of a basic genmob stat, even if the mob given
+	 * is not generic.  Therefore, it does not rely on the
+	 * Modifiable interface.  It also does not support any
+	 * of the fake GenMOBBonusFakeStats stats.
+	 * @see GenericBuilder#getGenMobStat(MOB, String)
+	 * @see GenericBuilder#getGenMobCodeNum(String)
+	 *
+	 * @param M the mob object to modify
+	 * @param code the stat code to modify
+	 * @param val the value to set the stat to
+	 */
 	public void setGenMobStat(MOB M, String code, String val);
+
+	/**
+	 * This makes either a full database, or simple memory copy
+	 * of the given area with the given new name
+	 *
+	 * @param A the area to copy, including rooms, items, etc..
+	 * @param newName the name of the area copy
+	 * @param setSavable true to save to db, false for ram
+	 * @return the new area object
+	 */
 	public Area copyArea(Area A, String newName, boolean setSavable);
-	
+
 	/**
 	 * Converts all the faction values and associations on the given
 	 * mob into a complete xml doc for storage in the db.
 	 * @see GenericBuilder#setFactionFromXML(MOB, List)
-	 * 
+	 *
 	 * @param mob the mob to grab faction associations from
 	 * @return the xml doc of all factions on the mob
 	 */
 	public String getFactionXML(MOB mob);
-	
+
 	/**
 	 * Sets the faction values and associations on the given
 	 * mob from a pre-parsed xml doc.  The list of tags
 	 * must include one called "FACTIONS".
-	 * 
+	 *
 	 * @see GenericBuilder#getFactionXML(MOB)
-	 * 
+	 *
 	 * @param mob the mob to set faction associations on
 	 * @param xml the list of pre-parsed xml tags
 	 */
@@ -280,7 +441,7 @@ public interface GenericBuilder extends CMLibrary
 	 * combinations, but, well, it seemed like a good idea at the time.
 	 * @see Affectable#effects()
 	 * @see GenericBuilder#getCodedSpellsOrBehaviors(String)
-	 * 
+	 *
 	 * @param I the Affectable one to look at the effects of
 	 * @return the coded string of those effects
 	 */
@@ -291,7 +452,7 @@ public interface GenericBuilder extends CMLibrary
 	 * the Ability objects with any parameters of their own.
 	 * @see Affectable#effects()
 	 * @see GenericBuilder#getCodedSpellsOrBehaviors(PhysicalAgent)
-	 * 
+	 *
 	 * @param spells the coded ability parameter affectable effects string
 	 * @return the list of ability which are the effects
 	 */

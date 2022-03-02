@@ -516,13 +516,11 @@ public class GroundWired extends StdLibrary implements TechLibrary
 						}
 						*/
 
-						/*
 						if (O instanceof Weapon)
 						{
 							final long dist = CMLib.map().getDistanceFrom(O, cO);
 							System.out.println(O.Name()+"/"+cO.Name()+"="+minDistance+"<"+(O.radius()+cO.radius())+"/"+dist);
 						}
-						*/
 						if ((minDistance<(O.radius()+cO.radius()))
 						&&((speed>0)||(cO.speed()>0))
 						&&((oMass < SpaceObject.MOONLET_MASS)||(cO.getMass() < SpaceObject.MOONLET_MASS)))
@@ -542,6 +540,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 							}
 							else
 								msg=CMClass.getMsg(host, O, cO, CMMsg.MSG_COLLISION,null);
+							if(isDebugging)
+								Log.debugOut("SpaceShip "+O.name()+" collided with "+cO.Name());
 							if(O.okMessage(host, msg))
 							{
 								msg.setTarget(cO);
