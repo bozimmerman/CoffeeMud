@@ -4321,13 +4321,39 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					PO=e.nextElement();
 					final PhysicalAgent P=PO.obj;
 					// always end quest between steps
-					if((P instanceof MOB)
-					&&(PO.preserveState!=Integer.MIN_VALUE))
+					if(PO.preserveState!=Integer.MIN_VALUE)
 					{
-						final MOB M=(MOB)P;
-						final ScriptingEngine B=(ScriptingEngine)M.fetchBehavior("Scriptable");
-						if(B!=null)
-							B.endQuest(M,M,name());
+						if(P instanceof MOB)
+						{
+							final MOB M=(MOB)P;
+							final ScriptingEngine B=(ScriptingEngine)M.fetchBehavior("Scriptable");
+							if(B!=null)
+								B.endQuest(M,M,name());
+							for(final Enumeration<ScriptingEngine> se= M.scripts(); se.hasMoreElements();)
+							{
+								final ScriptingEngine SE=se.nextElement();
+								if(SE!=null)
+									SE.endQuest(M, M, name());
+							}
+						}
+						else
+						if(P instanceof Behavable)
+						{
+							final MOB M=CMClass.getFactoryMOB(P.name(),P.phyStats().level(),CMLib.map().roomLocation(P));
+							try
+							{
+								for(final Enumeration<ScriptingEngine> se= ((Behavable)P).scripts(); se.hasMoreElements();)
+								{
+									final ScriptingEngine SE=se.nextElement();
+									if(SE!=null)
+										SE.endQuest(P, M, name());
+								}
+							}
+							finally
+							{
+								M.destroy();
+							}
+						}
 					}
 					final int oldPreserveState=PO.preserveState;
 					if((PO.preserveState>0)&&(preserveSkip!=0))

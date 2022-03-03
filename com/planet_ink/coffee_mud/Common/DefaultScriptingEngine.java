@@ -591,7 +591,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			final List<SubScript> scripts=getScripts(hostObj);
 			if(!mob.amDead())
 				confirmLastKnownLocation(mob,mob);
-			String[] tt=null;
 			for(int v=0;v<scripts.size();v++)
 			{
 				final SubScript script=scripts.get(v);
@@ -600,6 +599,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if((script.getTriggerCode()==13) //questtimeprog quest_time_prog
 					&&(!oncesDone.contains(Integer.valueOf(v))))
 					{
+						String[] tt=script.getTriggerArgs();
 						if(tt==null)
 							tt=parseBits(script,0,"CCC");
 						if((tt!=null)
