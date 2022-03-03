@@ -841,8 +841,8 @@ public class CraftingSkill extends GatheringSkill
 	 * @param crafted when autoGenerate &gt; 0, this is where the auto generated crafted items are placed, along with the duration
 	 * @return whether the skill successfully invoked.
 	 */
-	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, 
-									final boolean auto, final int asLevel, final int autoGenerate, 
+	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget,
+									final boolean auto, final int asLevel, final int autoGenerate,
 									final boolean forceLevels, final List<CraftedItem> crafted)
 	{
 		return false;
@@ -1915,6 +1915,7 @@ public class CraftingSkill extends GatheringSkill
 	protected void setRideBasis(final Rideable rideable, final String type)
 	{
 		final List<String> basises=CMParms.parseAny(type.toUpperCase().trim(), '|', true);
+		boolean fixDisplay=true;
 		if(basises.indexOf("CHAIR")>=0)
 			rideable.setRideBasis(Rideable.Basis.FURNITURE_SIT);
 		else
@@ -1922,13 +1923,18 @@ public class CraftingSkill extends GatheringSkill
 			rideable.setRideBasis(Rideable.Basis.FURNITURE_TABLE);
 		else
 		if(basises.indexOf("LADDER")>=0)
+		{
 			rideable.setRideBasis(Rideable.Basis.LADDER);
+			fixDisplay=false;
+		}
 		else
 		if(basises.indexOf("ENTER")>=0)
 			rideable.setRideBasis(Rideable.Basis.ENTER_IN);
 		else
 		if(basises.indexOf("BED")>=0)
 			rideable.setRideBasis(Rideable.Basis.FURNITURE_SLEEP);
+		if(fixDisplay)
+			buildingI.setDisplayText(L("@x1 sits here",rideable.name()));
 	}
 
 	protected boolean canMend(final MOB mob, final Environmental E, final boolean quiet)
