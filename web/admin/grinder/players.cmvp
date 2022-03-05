@@ -41,6 +41,7 @@
 		
 		@if?CheckAuthCode?AUTH_BAN=true@
 			<TR><TD><a href="javascript:Clicked('banners.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Banned List</B></FONT></A></TD></TR>
+			<TR><TD><a href="javascript:Clicked('whitelist.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Whitelists</B></FONT></A></TD></TR>
 		@endif@
 		
 		@if?CheckAuthCode?AUTH_CMDPLAYERS=true@

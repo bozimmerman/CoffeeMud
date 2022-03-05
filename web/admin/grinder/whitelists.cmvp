@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_BAN=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+	<META CHARSET="utf-8"/>
+<head>
+	<title>Whitelist Lists Management</title>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
+	<script language=JavaScript>
+	<!--
+		function ClearClicked(action, typ)
+		{
+			document.RESOURCES.NEWWHITELIST.value='';
+			document.RESOURCES.action=action;
+			document.RESOURCES.submit();
+		}
+		function Clicked(action)
+		{
+			document.RESOURCES.action=action;
+			document.RESOURCES.submit();
+		}
+		function Refresh()
+		{
+			document.location.href='whitelists.cmvp?AUTH=@Authenticate?AUTH@';
+		}
+	//-->
+	</script>
+</head>
+<body BGCOLOR=BLACK>
+	<TABLE WIDTH=100% BORDER=0><TR>
+	<TD WIDTH=33% ALIGN=LEFT VALIGN=TOP></TD>
+	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP>
+		<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0">
+	</TD>
+	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP>
+		<TABLE WIDTH=50% BORDER=1>
+		<TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
+		<TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
+		@if?CheckAuthCode?AUTH_CMDPLAYERS=true@
+			<TR><TD><a href="javascript:Clicked('accounts.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Account Manager</B></FONT></A></TD></TR>
+			<TR><TD><a href="javascript:Clicked('players.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Player Manager</B></FONT></A></TD></TR>
+		@endif@
+		@if?CheckAuthCode?AUTH_BAN=true@
+			<TR><TD><a href="javascript:Clicked('banners.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Banned List</B></FONT></A></TD></TR>
+		@endif@
+		<TR><TD><a href="javascript:Refresh();"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
+		</TABLE>
+	</TD>
+	</TR>
+	</TABLE>
+<CENTER>
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=WHITE_IPCONN TARGET=_top METHOD=POST ACTION="whitelists.cmvp">
+	<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+	<CENTER><FONT COLOR=RED><B>@WhiteListMgr?DELETE&IPCONN@ @WhiteListMgr?ADD&IPCONN@</B></FONT></CENTER>
+	<BR>
+	<TABLE WIDTH=100% BORDER=1>
+	<TR><TD WIDTH=100% COLSPAN=4 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>IP Address Whitelist Management</H2></FONT></TD></TR>
+	@WhiteListMgr?RESET&IPCONN@
+	@loop@
+	<TR>
+	@WhiteListMgr?NEXT&IPCONN@<TD WIDTH=33%><INPUT TYPE=RADIO NAME=BANNEDONE_IPCONN VALUE="@WhiteListMgr?IPCONN@"><FONT COLOR=WHITE><B>@WhiteListMgr?IPCONN@</B></FONT></TD>
+	@WhiteListMgr?NEXT&EMPTYOK&IPCONN@<TD WIDTH=33%><INPUT TYPE=RADIO NAME=BANNEDONE_IPCONN VALUE="@WhiteListMgr?IPCONN@"><FONT COLOR=WHITE><B>@WhiteListMgr?IPCONN@</B></FONT></TD>
+	@WhiteListMgr?NEXT&EMPTYOK&IPCONN@<TD WIDTH=33%><INPUT TYPE=RADIO NAME=BANNEDONE_IPCONN VALUE="@WhiteListMgr?IPCONN@"><FONT COLOR=WHITE><B>@WhiteListMgr?IPCONN@</B></FONT></TD>
+	</TR>
+	@back@
+	<TR>
+	<TD WIDTH=100% COLSPAN=3><FONT COLOR=WHITE><B>Add New: </B></FONT><INPUT TYPE=TEXT SIZE=50 MAXLENGTH=255 NAME=NEWBANNEDONE1></TD>
+	</TR>
+	</TABLE>
+	<P>
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=50% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=DELGO VALUE="Delete selected" ONCLICK="ClearClicked('/grinder/whitelists.cmvp','1');">
+	</TD>
+	<TD WIDTH=50% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=ADDNEW VALUE="Add New" ONCLICK="Clicked('/grinder/whitelists.cmvp','1');">
+	</TD>
+	</TABLE>
+</FORM>
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=WHITE_LOGINS TARGET=_top METHOD=POST ACTION="whitelists.cmvp">
+	<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+	<CENTER><FONT COLOR=RED><B>@WhiteListMgr?DELETE&LOGINS@ @WhiteListMgr?ADD&LOGINS@</B></FONT></CENTER>
+	<BR>
+	<TABLE WIDTH=100% BORDER=1>
+	<TR><TD WIDTH=100% COLSPAN=4 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>IP Address Whitelist Management</H2></FONT></TD></TR>
+	@WhiteListMgr?RESET&LOGINS@
+	@loop@
+	<TR>
+	@WhiteListMgr?NEXT&LOGINS@<TD WIDTH=33%><INPUT TYPE=RADIO NAME=BANNEDONE_LOGINS VALUE="@WhiteListMgr?LOGINS@"><FONT COLOR=WHITE><B>@WhiteListMgr?LOGINS@</B></FONT></TD>
+	@WhiteListMgr?NEXT&EMPTYOK&LOGINS@<TD WIDTH=33%><INPUT TYPE=RADIO NAME=BANNEDONE_LOGINS VALUE="@WhiteListMgr?LOGINS@"><FONT COLOR=WHITE><B>@WhiteListMgr?LOGINS@</B></FONT></TD>
+	@WhiteListMgr?NEXT&EMPTYOK&LOGINS@<TD WIDTH=33%><INPUT TYPE=RADIO NAME=BANNEDONE_LOGINS VALUE="@WhiteListMgr?LOGINS@"><FONT COLOR=WHITE><B>@WhiteListMgr?LOGINS@</B></FONT></TD>
+	</TR>
+	@back@
+	<TR>
+	<TD WIDTH=100% COLSPAN=3><FONT COLOR=WHITE><B>Add New: </B></FONT><INPUT TYPE=TEXT SIZE=50 MAXLENGTH=255 NAME=NEWBANNEDONE1></TD>
+	</TR>
+	</TABLE>
+	<P>
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=50% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=DELGO VALUE="Delete selected" ONCLICK="ClearClicked('/grinder/whitelists.cmvp','2');">
+	</TD>
+	<TD WIDTH=50% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=ADDNEW VALUE="Add New" ONCLICK="Clicked('/grinder/whitelists.cmvp','2');">
+	</TD>
+	</TABLE>
+</FORM>
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=WHITE_NEWPLAYERS TARGET=_top METHOD=POST ACTION="whitelists.cmvp">
+	<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+	<CENTER><FONT COLOR=RED><B>@WhiteListMgr?DELETE&NEWPLAYERS@ @WhiteListMgr?ADD&NEWPLAYERS@</B></FONT></CENTER>
+	<BR>
+	<TABLE WIDTH=100% BORDER=1>
+	<TR><TD WIDTH=100% COLSPAN=4 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>IP Address Whitelist Management</H2></FONT></TD></TR>
+	@WhiteListMgr?RESET&NEWPLAYERS@
+	@loop@
+	<TR>
+	@WhiteListMgr?NEXT&NEWPLAYERS@<TD WIDTH=33%><INPUT TYPE=RADIO NAME=BANNEDONE_NEWPLAYERS VALUE="@WhiteListMgr?NEWPLAYERS@"><FONT COLOR=WHITE><B>@WhiteListMgr?NEWPLAYERS@</B></FONT></TD>
+	@WhiteListMgr?NEXT&EMPTYOK&NEWPLAYERS@<TD WIDTH=33%><INPUT TYPE=RADIO NAME=BANNEDONE_NEWPLAYERS VALUE="@WhiteListMgr?NEWPLAYERS@"><FONT COLOR=WHITE><B>@WhiteListMgr?NEWPLAYERS@</B></FONT></TD>
+	@WhiteListMgr?NEXT&EMPTYOK&NEWPLAYERS@<TD WIDTH=33%><INPUT TYPE=RADIO NAME=BANNEDONE_NEWPLAYERS VALUE="@WhiteListMgr?NEWPLAYERS@"><FONT COLOR=WHITE><B>@WhiteListMgr?NEWPLAYERS@</B></FONT></TD>
+	</TR>
+	@back@
+	<TR>
+	<TD WIDTH=100% COLSPAN=3><FONT COLOR=WHITE><B>Add New: </B></FONT><INPUT TYPE=TEXT SIZE=50 MAXLENGTH=255 NAME=NEWBANNEDONE1></TD>
+	</TR>
+	</TABLE>
+	<P>
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=50% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=DELGO VALUE="Delete selected" ONCLICK="ClearClicked('/grinder/whitelists.cmvp','NEWPLAYERS');">
+	</TD>
+	<TD WIDTH=50% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=ADDNEW VALUE="Add New" ONCLICK="Clicked('/grinder/whitelists.cmvp','NEWPLAYERS');">
+	</TD>
+	</TABLE>
+</FORM>
+</BODY>
+</HTML>
+@endif@
+@endif@
