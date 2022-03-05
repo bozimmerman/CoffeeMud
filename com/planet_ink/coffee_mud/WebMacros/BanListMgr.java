@@ -50,6 +50,9 @@ public class BanListMgr extends StdWebMacro
 	@Override
 	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		if((M==null)||(!CMSecurity.isAllowedAnywhere(M, CMSecurity.SecFlag.BAN)))
+			return " @break@";
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("BANNEDONE");
 		if(parms.containsKey("RESET"))

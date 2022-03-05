@@ -574,9 +574,9 @@ public class CMProps extends Properties
 	 */
 	public static enum WhiteList
 	{
-		CONNS,
+		IPSCONN,
 		LOGINS,
-		NEWPLAYERS
+		IPSNEWPLAYERS
 	}
 
 	@SuppressWarnings("unchecked")
@@ -2468,9 +2468,9 @@ public class CMProps extends Properties
 		p().speedAdj = CMath.s_double(getStr("BONUSACT","1.0"));
 
 		setUpLowVar(Str.BLACKLISTFILE,getStr("BLACKLISTFILE","/resources/ipblock.ini"));
-		setWhitelist(CMProps.WhiteList.CONNS,getStr("WHITELISTIPSCONN"));
+		setWhitelist(CMProps.WhiteList.IPSCONN,getStr("WHITELISTIPSCONN"));
 		setWhitelist(CMProps.WhiteList.LOGINS,getStr("WHITELISTLOGINS"));
-		setWhitelist(CMProps.WhiteList.NEWPLAYERS,getStr("WHITELISTIPSNEWPLAYERS"));
+		setWhitelist(CMProps.WhiteList.IPSNEWPLAYERS,getStr("WHITELISTIPSNEWPLAYERS"));
 
 		if(p().sysBools[Bool.MUDSHUTTINGDOWN.ordinal()]==null)
 			p().sysBools[Bool.MUDSHUTTINGDOWN.ordinal()]=Boolean.FALSE;

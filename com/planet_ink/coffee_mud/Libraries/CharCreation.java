@@ -2400,7 +2400,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			if((maxConnectionsPerAccount>0)
 			&&(numAccountOnline>=maxConnectionsPerAccount)
 			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAXCONNSPERACCOUNT))
-			&&(!CMProps.isOnWhiteList(CMProps.WhiteList.CONNS, session.getAddress()))
+			&&(!CMProps.isOnWhiteList(CMProps.WhiteList.IPSCONN, session.getAddress()))
 			&&(!CMProps.isOnWhiteList(CMProps.WhiteList.LOGINS, acct.getAccountName()))
 			&&(!CMProps.isOnWhiteList(CMProps.WhiteList.LOGINS, realMOB.Name()))
 			&&(!acct.isSet(PlayerAccount.AccountFlag.MAXCONNSOVERRIDE)))
@@ -3882,8 +3882,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if((CMProps.getIntVar(CMProps.Int.MAXNEWPERIP)>0)
 		&&(CMProps.getCountNewUserByIP(ipAddress)>=CMProps.getIntVar(CMProps.Int.MAXNEWPERIP))
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAXNEWPERIP))
-		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.NEWPLAYERS, login))
-		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.NEWPLAYERS, ipAddress)))
+		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.IPSNEWPLAYERS, login))
+		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.IPSNEWPLAYERS, ipAddress)))
 			return NewCharNameCheckResult.CREATE_LIMIT_REACHED;
 		return NewCharNameCheckResult.OK;
 	}
@@ -3900,7 +3900,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		final int maxAtThisAddress=6;
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CONNSPAMBLOCK))
 		{
-			if(!CMProps.isOnWhiteList(CMProps.WhiteList.CONNS, address))
+			if(!CMProps.isOnWhiteList(CMProps.WhiteList.IPSCONN, address))
 			{
 				if(CMSecurity.isIPBlocked(address))
 				{
@@ -3967,8 +3967,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 		if(((CMSecurity.isDisabled(CMSecurity.DisFlag.NEWPLAYERS)&&(!accountSystemEnabled))
 			||(CMSecurity.isDisabled(CMSecurity.DisFlag.NEWCHARACTERS)))
-		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.NEWPLAYERS, login))
-		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.NEWPLAYERS, ipAddress)))
+		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.IPSNEWPLAYERS, login))
+		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.IPSNEWPLAYERS, ipAddress)))
 			return NewCharNameCheckResult.NO_NEW_PLAYERS;
 		else
 		if((!isOkName(login,false))
@@ -3983,8 +3983,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	public NewCharNameCheckResult newAccountNameCheck(final String login, final String ipAddress)
 	{
 		if((CMSecurity.isDisabled(CMSecurity.DisFlag.NEWPLAYERS))
-		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.NEWPLAYERS, login))
-		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.NEWPLAYERS, ipAddress)))
+		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.IPSNEWPLAYERS, login))
+		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.IPSNEWPLAYERS, ipAddress)))
 			return NewCharNameCheckResult.NO_NEW_PLAYERS;
 		else
 		if((!isOkName(login,false))
@@ -4210,7 +4210,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if((CMProps.getIntVar(CMProps.Int.MAXCONNSPERIP)>0)
 		&&(numAtAddress>=CMProps.getIntVar(CMProps.Int.MAXCONNSPERIP))
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAXCONNSPERIP))
-		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.CONNS, session.getAddress()))
+		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.IPSCONN, session.getAddress()))
 		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.LOGINS, login)))
 		{
 			session.println(L("The maximum player limit has already been reached for your IP address."));
