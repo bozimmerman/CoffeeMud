@@ -29,6 +29,13 @@ read yesnofullcompile
 echo "4. What have you decided to name your MUD (you can change this later by editing the mudUNIX.sh file) ?"
 read MUDname
 
+echo "5. Do you want your passwords hashed? [y/n]"
+read yesnohashpasswords
+
+if [ $yesnohashpasswords = y ] ; then
+	sed -i 's/HASHPASSWORDS=NO/HASHPASSWORDS=YES/g' coffeemud.ini
+fi
+
 echo "Alright, we're good to go, compiling will begin in 5 seconds."
 
 sleep 5
