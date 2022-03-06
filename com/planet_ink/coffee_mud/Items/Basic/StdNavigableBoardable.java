@@ -152,7 +152,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 			final Room R=(Room)owner();
 			final Area A=(R==null)?null:R.getArea();
 			final Climate C=(A==null)?null:A.getClimateObj();
-			if(C!=null)
+			if((C!=null)&&(R!=null))
 			{
 				if(C.weatherType(R)==Climate.WEATHER_WINDY)
 				{

@@ -854,7 +854,9 @@ public class Factions extends StdLibrary implements FactionManager
 	@Override
 	public int getAlignPurity(final int faction, final Faction.Align eq)
 	{
-		if((eq!=null)&&(eq.isInclination))
+		if(eq==null)
+			return 0;
+		if(eq.isInclination)
 			return getInclinationPurity(faction,eq);
 		if(!factionMap.containsKey(this.getAlignmentID().toUpperCase()))
 			return 0;
@@ -892,7 +894,9 @@ public class Factions extends StdLibrary implements FactionManager
 	@Override
 	public int getInclinationPurity(final int faction, final Faction.Align eq)
 	{
-		if((eq!=null)&&(!eq.isInclination))
+		if(eq == null)
+			return 0;
+		if(!eq.isInclination)
 			return getAlignPurity(faction,eq);
 		if(!factionMap.containsKey(this.getInclinationID().toUpperCase()))
 			return 0;

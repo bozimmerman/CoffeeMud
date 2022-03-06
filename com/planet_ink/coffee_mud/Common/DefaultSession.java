@@ -2960,14 +2960,15 @@ public class DefaultSession implements Session
 			else
 				ansiStr="";
 			final StringBuilder loginMsg=new StringBuilder("");
-			loginMsg.append(getAddress()).append(" "+terminalType)
-			.append(((mob.isAttributeSet(MOB.Attrib.MXP)&&getClientTelnetMode(Session.TELNET_MXP)))?" MXP":"")
-			.append(getClientTelnetMode(Session.TELNET_MSDP)?" MSDP":"")
-			.append(getClientTelnetMode(Session.TELNET_ATCP)?" ATCP":"")
-			.append(getClientTelnetMode(Session.TELNET_GMCP)?" GMCP":"")
-			.append((getClientTelnetMode(Session.TELNET_COMPRESS)||getClientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
-			.append(ansiStr)
-			.append(", character login: "+mob.Name());
+			if(mob != null)
+				loginMsg.append(getAddress()).append(" "+terminalType)
+				.append(((mob.isAttributeSet(MOB.Attrib.MXP)&&getClientTelnetMode(Session.TELNET_MXP)))?" MXP":"")
+				.append(getClientTelnetMode(Session.TELNET_MSDP)?" MSDP":"")
+				.append(getClientTelnetMode(Session.TELNET_ATCP)?" ATCP":"")
+				.append(getClientTelnetMode(Session.TELNET_GMCP)?" GMCP":"")
+				.append((getClientTelnetMode(Session.TELNET_COMPRESS)||getClientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
+				.append(ansiStr)
+				.append(", character login: "+mob.Name());
 			Log.sysOut(loginMsg.toString());
 			if(loginResult != CharCreationLibrary.LoginResult.NO_LOGIN)
 			{
@@ -2975,6 +2976,7 @@ public class DefaultSession implements Session
 				if(!CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_LOGIN,msg))
 					setKillFlag(true);
 				else
+				if(mob != null)
 					CMLib.commands().monitorGlobalMessage(mob.location(), msg);
 			}
 		}
