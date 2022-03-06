@@ -110,6 +110,8 @@ public class Modify extends StdCommand
 			final Environmental E=srchRoom.fetchFromMOBRoomFavorsItems(srchMob,srchContainer,itemID,Wearable.FILTER_ANY);
 			if(E instanceof Item)
 				modE=E;
+			else
+				modE=srchRoom.findItem(srchContainer,itemID);
 		}
 		else
 		if(srchMob!=null)
