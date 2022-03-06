@@ -967,9 +967,15 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("INIFILE")||s.equalsIgnoreCase("coffeemud.ini"))
 		{
-			CMProps.instance().resetSecurityVars();
-			CMProps.instance().resetSystemVars();
-			mob.tell(L("Done."));
+			CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
+			if((ipage!=null)&&(ipage.isLoaded()))
+			{
+				CMProps.instance().resetSecurityVars();
+				CMProps.instance().resetSystemVars();
+				mob.tell(L("Done."));
+			}
+			else
+				mob.tell(L("Not Done."));
 		}
 		else
 		if(s.equalsIgnoreCase("area"))

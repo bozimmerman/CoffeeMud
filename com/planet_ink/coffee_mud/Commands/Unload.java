@@ -47,7 +47,11 @@ public class Unload extends StdCommand
 		return access;
 	}
 
-	final String[]	ARCHON_LIST	= { "CLASS", "HELP", "USER", "AREA", "FACTION", "ALL", "FILE", "RESOURCE", "INIFILE", "ACHIEVEMENTS", "[FILENAME]", "VFS" };
+	final String[]	ARCHON_LIST	= { 
+		"CLASS", "HELP", "USER", "AREA", "FACTION", "ALL", "FILE", 
+		"RESOURCE", "INIFILE", "ACHIEVEMENTS", "[FILENAME]", "VFS",
+		"INI", "SETTINGS"
+	};
 
 	@SuppressWarnings("rawtypes")
 	@Override
@@ -243,17 +247,23 @@ public class Unload extends StdCommand
 				mob.tell(L("VFS Cache unloaded"));
 			}
 			else
+			if(str.equalsIgnoreCase("ini")||str.equalsIgnoreCase("settings")||str.equalsIgnoreCase("inifile"))
+			{
+				CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
+				if((ipage!=null)&&(ipage.isLoaded()))
+				{
+					ipage.resetSystemVars();
+					ipage.resetSecurityVars();
+					mob.tell(L("INI Settings unloaded and reset"));
+				}
+				else
+					mob.tell(L("INI Settings not unloaded or reset"));
+			}
+			else
 			if(str.equalsIgnoreCase("achievements"))
 			{
 				CMLib.achievements().shutdown();
 				mob.tell(L("Achievements unloaded."));
-			}
-			else
-			if(str.equalsIgnoreCase("inifile"))
-			{
-				CMProps.instance().resetSecurityVars();
-				CMProps.instance().resetSystemVars();
-				mob.tell(L("INI file entries have been unloaded."));
 			}
 			else
 			if((str.equalsIgnoreCase("all"))&&(CMSecurity.isASysOp(mob)))
