@@ -135,6 +135,8 @@ public class Archon extends StdCharClass implements ArchonOnly
 		"Thief_Listen",
 		"Spell_Claireaudience",
 		"Spell_Clairevoyance",
+		"Spell_GreaterClaireaudience",
+		"Spell_GreaterClairevoyance",
 		"Spell_Enthrall",
 		"Spell_Charm",
 		"Skill_Befriend",

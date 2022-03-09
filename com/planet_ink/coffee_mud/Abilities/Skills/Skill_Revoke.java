@@ -105,6 +105,9 @@ public class Skill_Revoke extends StdSkill
 		if(whatToRevoke.equalsIgnoreCase("room"))
 			target=mob.location();
 		else
+		if(whatToRevoke.equalsIgnoreCase("area"))
+			target=mob.location().getArea();
+		else
 		if(whatToRevoke.equalsIgnoreCase("self"))
 			target=mob;
 		else

@@ -88,7 +88,9 @@ public class Diviner extends SpecialistMage
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_KnowFate",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Spell_DiviningEye",25,"",true,SecretFlag.PUBLIC,CMParms.parseSemicolons("Spell_PryingEye",true),"");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_SpottersOrders",25,"",true,SecretFlag.PUBLIC,CMParms.parseSemicolons("Spell_DetectWeaknesses",true),"");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_GreaterClaireaudience",25,"",true,SecretFlag.PUBLIC,CMParms.parseSemicolons("Spell_Claireaudience",true),"");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Spell_Breadcrumbs",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Spell_GreaterClairevoyance",25,"",true,SecretFlag.PUBLIC,CMParms.parseSemicolons("Spell_Clairevoyance",true),"");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Spell_FindDirections",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Spell_KnowPain",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Spell_KnowBliss",25,true);

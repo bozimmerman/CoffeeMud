@@ -93,6 +93,24 @@ public class Spell_DetectScrying extends Spell
 		return super.castingQuality(mob,target);
 	}
 
+	public Ability foundEffect(final Physical P, final String abilityID)
+	{
+		if(P == null)
+			return null;
+		final Ability A=P.fetchEffect(abilityID);
+		if(A!=null)
+			return A;
+		if(P instanceof MOB)
+			return foundEffect(((MOB)P).location(), abilityID);
+		if(P instanceof Item)
+			return foundEffect(CMLib.map().roomLocation(P), abilityID);
+		if(P instanceof Room)
+			return foundEffect(((Room)P).getArea(), abilityID);
+		if(P instanceof Boardable)
+			return foundEffect(((Boardable)P).getBoardableItem(), abilityID);
+		return null;
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -112,19 +130,28 @@ public class Spell_DetectScrying extends Spell
 			{
 				mob.location().send(mob,msg);
 				final StringBuffer str=new StringBuffer("");
-				if(target.session()!=null)
+				final Session tS=target.session();
+				if(tS!=null)
+				{
 					for(final Session S1 : CMLib.sessions().localOnlineIterable())
-						if(target.session().isBeingSnoopedBy(S1))
+						if(tS.isBeingSnoopedBy(S1))
 							str.append(L("@x1 is snooping on <T-NAME>.  ",S1.mob().name()));
-				Ability A=target.fetchEffect("Spell_Scry");
+				}
+				Ability A=foundEffect(target, "Spell_Scry");
 				if((A!=null)&&(A.invoker()!=null))
 					str.append(L("@x1 is scrying on <T-NAME>.",A.invoker().name()));
-				A=target.fetchEffect("Spell_Claireaudience");
+				A=foundEffect(target, "Spell_Claireaudience");
 				if((A!=null)&&(A.invoker()!=null))
 					str.append(L("@x1 is listening to <T-NAME>.",A.invoker().name()));
-				A=target.fetchEffect("Spell_Clairevoyance");
+				A=foundEffect(target, "Spell_GreaterClaireaudience");
+				if((A!=null)&&(A.invoker()!=null))
+					str.append(L("@x1 is listening to everyone around <T-NAME>.",A.invoker().name()));
+				A=foundEffect(target, "Spell_Clairevoyance");
 				if((A!=null)&&(A.invoker()!=null))
 					str.append(L("@x1 is watching <T-NAME>.",A.invoker().name()));
+				A=foundEffect(target, "Spell_GreaterClairevoyance");
+				if((A!=null)&&(A.invoker()!=null))
+					str.append(L("@x1 is watching everyone around <T-NAME>.",A.invoker().name()));
 				if(str.length()==0)
 					str.append(L("There doesn't seem to be anyone scrying on <T-NAME>."));
 				CMLib.commands().postSay(mob,target,str.toString(),false,false);
