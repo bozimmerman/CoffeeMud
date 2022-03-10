@@ -118,23 +118,6 @@ public class Spell_GreaterClairevoyance extends Spell
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-
-		if((auto||mob.isMonster())&&((commands.size()<1)||((commands.get(0)).equals(mob.name()))))
-		{
-			commands.clear();
-			MOB M=null;
-			int tries=0;
-			while(((++tries)<100)&&(M==null))
-			{
-				final Room R=CMLib.map().getRandomRoom();
-				if(R.numInhabitants()>0)
-					M=R.fetchRandomInhabitant();
-				if((M!=null)&&(M.name().equals(mob.name())))
-					M=null;
-			}
-			if(M!=null)
-				commands.add(M.Name());
-		}
 		if(commands.size()<1)
 		{
 			mob.tell(L("Cast on what or where? Do you mean Here?"));
@@ -211,7 +194,7 @@ public class Spell_GreaterClairevoyance extends Spell
 				mob.location().send(mob,msg);
 				if(newRoom!=mob.location())
 					newRoom.send(mob,msg2);
-				beneficialAffect(mob,target,asLevel,0);
+				beneficialAffect(mob,target,asLevel,-50/*%*/);
 			}
 
 		}

@@ -1909,7 +1909,11 @@ public class StdAbility implements Ability
 	{
 		if(tickAdjustmentFromStandard>0)
 			return tickAdjustmentFromStandard;
-		return adjustMaliciousTickdownTime(mob,target,((int)Math.round(CMath.mul(adjustedLevel(mob,asLevel),1.1)))+25,asLevel);
+		final int tickTime = adjustMaliciousTickdownTime(mob,target,((int)Math.round(CMath.mul(adjustedLevel(mob,asLevel),1.1)))+25,asLevel);
+		if(tickAdjustmentFromStandard == 0)
+			return tickTime;
+		else
+			return (int)Math.round(CMath.mul(CMath.div(-tickAdjustmentFromStandard, 100.0) , (double)tickTime));
 	}
 
 	public Ability maliciousAffect(final MOB mob, final Physical target, final int asLevel, int tickAdjustmentFromStandard, final int additionAffectCheckCode)
@@ -2033,7 +2037,11 @@ public class StdAbility implements Ability
 				casterLevel = levelCap;
 		}
 		final int beneficialTicks = (casterLevel*4)+40;
-		return adjustBeneficialTickdownTime(mob,target,beneficialTicks);
+		final int tickTime = adjustBeneficialTickdownTime(mob,target,beneficialTicks);
+		if(tickAdjustmentFromStandard==0)
+			return tickTime;
+		else
+			return (int)Math.round(CMath.mul(CMath.div(-tickAdjustmentFromStandard, 100.0) , (double)tickTime));
 	}
 
 	public Ability beneficialAffect(final MOB mob, final Physical target, final int asLevel, int tickAdjustmentFromStandard)
