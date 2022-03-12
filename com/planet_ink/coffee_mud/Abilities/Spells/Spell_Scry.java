@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /*
    Copyright 2002-2022 Bo Zimmerman
@@ -80,7 +81,7 @@ public class Spell_Scry extends Spell
 	}
 
 	public static final DVector scries=new DVector(2);
-	private boolean recurse=false;
+	private final AtomicBoolean recurse=new AtomicBoolean(false);
 
 	@Override
 	public void unInvoke()
@@ -107,12 +108,18 @@ public class Spell_Scry extends Spell
 		&&(invoker!=null)
 		&&(msg.target()!=null)
 		&&((invoker.location()!=((MOB)affected).location())||(!(msg.target() instanceof Room)))
-		&&(!recurse))
+		&&(!recurse.get()))
 		{
 			final CMMsg newAffect=CMClass.getMsg(invoker,msg.target(),msg.sourceMinor(),null);
-			recurse=true;
-			msg.target().executeMsg(msg.target(),newAffect);
-			recurse=false;
+			try
+			{
+				recurse.set(true);
+				msg.target().executeMsg(msg.target(),newAffect);
+			}
+			finally
+			{
+				recurse.set(false);
+			}
 		}
 		else
 		if((affected instanceof MOB)
@@ -122,11 +129,17 @@ public class Spell_Scry extends Spell
 		&&(msg.othersCode()!=CMMsg.NO_EFFECT)
 		&&(msg.othersMessage()!=null)
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
-		&&(!recurse))
+		&&(!recurse.get()))
 		{
-			recurse=true;
-			invoker.executeMsg(invoker,msg);
-			recurse=false;
+			try
+			{
+				recurse.set(true);
+				invoker.executeMsg(invoker,msg);
+			}
+			finally
+			{
+				recurse.set(false);
+			}
 		}
 	}
 

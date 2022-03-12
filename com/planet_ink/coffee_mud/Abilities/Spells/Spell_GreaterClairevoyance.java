@@ -103,6 +103,8 @@ public class Spell_GreaterClairevoyance extends Spell
 		&&(R!=null)
 		&&(mob.location()!=R)
 		&&(msg.target() != null)
+		&&(!CMSecurity.isAllowed(msg.source(), msg.source().location(), CMSecurity.SecFlag.ALLSKILLS))
+		&&(!CMLib.flags().isCloaked(msg.source()))
 		&&(msg.othersMessage()!=null))
 		{
 			final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,verbalCastCode(mob,msg.source(),false),null);

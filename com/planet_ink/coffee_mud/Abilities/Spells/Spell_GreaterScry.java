@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /*
    Copyright 2022-2022 Bo Zimmerman
@@ -32,16 +33,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Spell_GreaterClaireaudience extends Spell
+public class Spell_GreaterScry extends Spell
 {
 
 	@Override
 	public String ID()
 	{
-		return "Spell_GreaterClaireaudience";
+		return "Spell_GreaterScry";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Greater Claireaudience");
+	private final static String localizedName = CMLib.lang().L("Greater Scry");
 
 	@Override
 	public String name()
@@ -81,13 +82,15 @@ public class Spell_GreaterClaireaudience extends Spell
 		return Ability.COST_ALL;
 	}
 
+	private final AtomicBoolean recurse=new AtomicBoolean(false);
+
 	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
 		final Physical P=affected;
 		if((canBeUninvoked())&&(invoker!=null)&&(P!=null))
-			invoker.tell(L("The sounds of '@x1' fade.",P.name(invoker)));
+			invoker.tell(L("Your knowledge of '@x1' fade.",P.name(invoker)));
 		super.unInvoke();
 
 	}
@@ -96,19 +99,46 @@ public class Spell_GreaterClaireaudience extends Spell
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		final MOB mob=invoker;
-		final Room R=msg.source().location();
-		if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
-		&&(mob!=null)
-		&&(R!=null)
-		&&(mob.location()!=R)
-		&&(!CMSecurity.isAllowed(msg.source(), msg.source().location(), CMSecurity.SecFlag.ALLSKILLS))
-		&&(!CMLib.flags().isCloaked(msg.source()))
-		&&(msg.othersMessage()!=null))
+		if((invoker!=msg.source())
+		&&(invoker!=null))
 		{
-			final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,verbalCastCode(mob,msg.source(),false),null);
-			if(R.okMessage(mob,msg2))
-				mob.executeMsg(mob,msg);
+			if(((msg.sourceMinor()==CMMsg.TYP_LOOK)||(msg.sourceMinor()==CMMsg.TYP_EXAMINE))
+			&&(msg.target()!=null)
+			&&((invoker.location()!=msg.source().location())||(!(msg.target() instanceof Room)))
+			&&(!CMSecurity.isAllowed(msg.source(), msg.source().location(), CMSecurity.SecFlag.ALLSKILLS))
+			&&(!CMLib.flags().isCloaked(msg.source()))
+			&&(!recurse.get()))
+			{
+				final CMMsg newAffect=CMClass.getMsg(invoker,msg.target(),msg.sourceMinor(),null);
+				try
+				{
+					recurse.set(true);
+					msg.target().executeMsg(msg.target(),newAffect);
+				}
+				finally
+				{
+					recurse.set(false);
+				}
+			}
+			else
+			if((invoker.location()!=((MOB)affected).location())
+			&&(msg.othersCode()!=CMMsg.NO_EFFECT)
+			&&(msg.othersMessage()!=null)
+			&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
+			&&(!CMSecurity.isAllowed(msg.source(), msg.source().location(), CMSecurity.SecFlag.ALLSKILLS))
+			&&(!CMLib.flags().isCloaked(msg.source()))
+			&&(!recurse.get()))
+			{
+				try
+				{
+					recurse.set(true);
+					invoker.executeMsg(invoker,msg);
+				}
+				finally
+				{
+					recurse.set(false);
+				}
+			}
 		}
 	}
 
@@ -116,7 +146,6 @@ public class Spell_GreaterClaireaudience extends Spell
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-
 		if(commands.size()<1)
 		{
 			mob.tell(L("Cast on what or where? Do you mean Here?"));
@@ -185,7 +214,7 @@ public class Spell_GreaterClaireaudience extends Spell
 		if(success)
 		{
 			final Room newRoom=(target instanceof Room)?((Room)target):((Area)target).getRandomProperRoom();
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> invoke(s) a greater claireaudience, calling '@x1'.^?",targetName));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> invoke(s) a greater scrying calling '@x1'.^?",targetName));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 			if((mob.location().okMessage(mob,msg))
 			&&((newRoom==mob.location())||(newRoom.okMessage(mob,msg2))))
@@ -193,12 +222,12 @@ public class Spell_GreaterClaireaudience extends Spell
 				mob.location().send(mob,msg);
 				if(newRoom!=mob.location())
 					newRoom.send(mob,msg2);
-				beneficialAffect(mob,target,asLevel,-50/*%*/);
+				beneficialAffect(mob,target,asLevel,-25/*%*/);
 			}
 
 		}
 		else
-			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to invoke a greater claireaudience, but fizzle(s) the spell."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to invoke a greater scrying, but fizzle(s) the spell."));
 
 		// return whether it worked
 		return success;
