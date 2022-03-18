@@ -469,17 +469,24 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			renameDestinationRooms(oldName,area.Name());
 			setArea(CMLib.coffeeMaker().getAreaObjectXML(area, null, null, null, true).toString());
 		}
+		boolean wouldRecurse=false;
 		for(final String word : new String[]{"NAME","NEWNAME","SHIPNAME","SHIP","name","newname","shipname","ship"})
+			for(final String rubs : new String[]{"<>","[]","{}","()"})
+				wouldRecurse=wouldRecurse || newName.indexOf(rubs.charAt(0)+word+rubs.charAt(1))>=0;
+		if(!wouldRecurse)
 		{
-			for(final String rubs : new String[]{"<>","[]","{}","()"})
+			for(final String word : new String[]{"NAME","NEWNAME","SHIPNAME","SHIP","name","newname","shipname","ship"})
 			{
-				if(Name().indexOf(rubs.charAt(0)+word+rubs.charAt(1))>=0)
-					setName(CMStrings.replaceAll(Name(), rubs.charAt(0)+word+rubs.charAt(1), newName));
-			}
-			for(final String rubs : new String[]{"<>","[]","{}","()"})
-			{
-				if(displayText().indexOf(rubs.charAt(0)+word+rubs.charAt(1))>=0)
-					setDisplayText(CMStrings.replaceAll(displayText(), rubs.charAt(0)+word+rubs.charAt(1), newName));
+				for(final String rubs : new String[]{"<>","[]","{}","()"})
+				{
+					if(Name().indexOf(rubs.charAt(0)+word+rubs.charAt(1))>=0)
+						setName(CMStrings.replaceAll(Name(), rubs.charAt(0)+word+rubs.charAt(1), newName));
+				}
+				for(final String rubs : new String[]{"<>","[]","{}","()"})
+				{
+					if(displayText().indexOf(rubs.charAt(0)+word+rubs.charAt(1))>=0)
+						setDisplayText(CMStrings.replaceAll(displayText(), rubs.charAt(0)+word+rubs.charAt(1), newName));
+				}
 			}
 		}
 	}
