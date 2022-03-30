@@ -99,7 +99,9 @@ public class WanderHomeLater extends StdAbility
 	{
 		final Physical P=affected;
 		super.unInvoke();
-		if((P!=null)&&(this.canBeUninvoked)&&(this.unInvoked))
+		if((P!=null)
+		&&(this.canBeUninvoked)
+		&&(this.unInvoked))
 		{
 			if((!P.amDestroyed())
 			&&(destroy)
@@ -165,5 +167,16 @@ public class WanderHomeLater extends StdAbility
 			}
 		}
 		return super.tick(ticking, tickID);
+	}
+
+	@Override
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
+	{
+		if(givenTarget==null)
+			return false;
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+			return false;
+		this.startTickDown(mob, givenTarget, Integer.MAX_VALUE/2);;
+		return true;
 	}
 }
