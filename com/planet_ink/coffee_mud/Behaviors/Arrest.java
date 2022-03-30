@@ -3658,7 +3658,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				if(((W.criminal().fetchEffect("Prisoner")==null)
 					||(W.crime().equalsIgnoreCase("pardoned")))
 				&&(!W.criminal().amDead())
-				&&(W.jail()!=null))
+				&&(W.jail()!=null)
+				&&(CMLib.flags().isInTheGame(W.criminal(), false)))
 				{
 					final Ability P=W.criminal().fetchEffect("Prisoner");
 					if(P!=null)
@@ -3812,10 +3813,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				if(((W.criminal().fetchEffect("Prisoner")!=null)
 					&&(!W.crime().equalsIgnoreCase("pardoned")))
 				&&(!W.criminal().amDead())
-				&&(W.jail()!=null))
-				if((!W.criminal().amDead())
 				&&(W.jail()!=null)
-				&&(!W.jail().isInhabitant(W.criminal())))
+				&&(!W.criminal().amDead())
+				&&(!W.jail().isInhabitant(W.criminal()))
+				&&(CMLib.flags().isInTheGame(W.criminal(), false)))
 				{
 					W.setState(Law.STATE_SEEKING);
 					W.setTravelAttemptTime(0);
