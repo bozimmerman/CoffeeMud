@@ -17,7 +17,7 @@ the holy aroma	GenPerfume	smell(s) of elderberries. It remind(s) you of your fat
 all day spray	GenPerfume	smell(s) like unstoppable perseverance! Also mint.;smell(s) like pure endurance.;<S-HAS-HAVE> a sweet air of persistence about them.	24	LEATHER	1	WATER	1										
 sickly sniff	GenPerfume	do(es) NOT smell of death!;absolutely do(es) not stink of disease!!!;reek(s) like something other than infection.;could not smell ANY more alive. For real!;shouldn`t even worry about seeing a doctor! Everything is a-okay!	3	MUSHROOMS	1	SOME UNDEAD BLOOD	1										
 precious parfum	GenPerfume	smell(s) of trumpet vines and spring.;<S-HAS-HAVE> a sweet smell of honey and true love.; smell(s) like vanilla and fond memories.	6	FLOWERS	1	VINE	1	WATER									
-wood-cutting cologne	GenPerfume	<S-HAS-HAVE> a musky sent.; smell(s) like an unbathed construction worker.;smell(s) like sweat and lumber.;smell(s) underpaid and overworked.	12	HIDE	1	LAMP OIL	1										
+wood-cutting cologne	GenPerfume	<S-HAS-HAVE> a musky scent.; smell(s) like an unbathed construction worker.;smell(s) like sweat and lumber.;smell(s) underpaid and overworked.	12	HIDE	1	LAMP OIL	1										
 pixie paramour	GenPerfume	smell(s) like the sweetest of roses.;<S-HAS-HAVE> a lovely fragrance like nectar.;<S-HAS-HAVE> butterflies and bees swooning nearby from the scent.	36	FLOWERS	1	HERBS	1	HONEY	1								
 berserker`s rage	GenPerfume	smell(s) like the heat of battle.;<S-HAS-HAVE> the scent of fallen foes.;<S-HAS-HAVE> a scent that makes the blood surge with adrenaline.	48	LEATHER	1	BLOOD	1										
 coastal gale	GenPerfume	smell(s) of sea salt and rum.;smell(s) nautical.;give(s) off whiffs of scurvy.	60	FISH	1	LIQUOR	1										
