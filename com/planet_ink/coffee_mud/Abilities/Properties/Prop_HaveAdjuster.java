@@ -440,7 +440,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		}
 	}
 
-	public void phyStuff(final Object[] changes, final PhyStats phyStats)
+	public void phyStuff(final Object[] changes, final Physical host, final PhyStats phyStats)
 	{
 		if(changes==null)
 			return;
@@ -455,8 +455,13 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 					break;
 				case PhyStats.STAT_ARMOR:
 				{
-					final int baseAmt=100 - phyStats.armor();
-					phyStats.setArmor(100 - (int)Math.round(CMath.mul(baseAmt, CMath.div(((Integer) changes[c + 1]).intValue(),100))));
+					if(host instanceof MOB)
+					{
+						final int baseAmt=100 - phyStats.armor();
+						phyStats.setArmor(100 - (int)Math.round(CMath.mul(baseAmt, CMath.div(((Integer) changes[c + 1]).intValue(),100))));
+					}
+					else
+						phyStats.setArmor((int)Math.round(CMath.mul(phyStats.armor(), CMath.div(((Integer) changes[c + 1]).intValue(),100))));
 					break;
 				}
 				case PhyStats.STAT_ATTACK:
@@ -700,7 +705,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	{
 		ensureStarted();
 		if(canApply(host))
-			phyStuff(phyStatsChanges,affectableStats);
+			phyStuff(phyStatsChanges,host,affectableStats);
 		super.affectPhyStats(host,affectableStats);
 	}
 

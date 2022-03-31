@@ -197,7 +197,7 @@ public class Prop_UseAdjuster extends Prop_Adjuster implements ArchonOnly
 						if(canApply(owner))
 						{
 							adjCharStats((MOB)owner, charStatsChanges,msg.source().baseCharStats());
-							phyStuff(phyStatsChanges, msg.source().basePhyStats());
+							phyStuff(phyStatsChanges, msg.source(), msg.source().basePhyStats());
 							adjCharState((MOB)owner, charStateChanges,msg.source().curState());
 						}
 					}
@@ -214,7 +214,7 @@ public class Prop_UseAdjuster extends Prop_Adjuster implements ArchonOnly
 							if(canApply((MOB)msg.target()))
 							{
 								adjCharStats((MOB)msg.target(), charStatsChanges,((MOB)msg.target()).baseCharStats());
-								phyStuff(phyStatsChanges, ((MOB)msg.target()).basePhyStats());
+								phyStuff(phyStatsChanges, (MOB)msg.target(), ((MOB)msg.target()).basePhyStats());
 								adjCharState((MOB)msg.target(), charStateChanges,((MOB)msg.target()).curState());
 							}
 						}
@@ -222,7 +222,7 @@ public class Prop_UseAdjuster extends Prop_Adjuster implements ArchonOnly
 						if(canApply(owner))
 						{
 							adjCharStats(msg.source(), charStatsChanges,msg.source().baseCharStats());
-							phyStuff(phyStatsChanges, msg.source().basePhyStats());
+							phyStuff(phyStatsChanges, msg.source(), msg.source().basePhyStats());
 							adjCharState(msg.source(), charStateChanges,msg.source().curState());
 						}
 					}
@@ -236,7 +236,7 @@ public class Prop_UseAdjuster extends Prop_Adjuster implements ArchonOnly
 						if(canApply(owner))
 						{
 							adjCharStats((MOB)owner, charStatsChanges,msg.source().baseCharStats());
-							phyStuff(phyStatsChanges, msg.source().basePhyStats());
+							phyStuff(phyStatsChanges, msg.source(), msg.source().basePhyStats());
 							adjCharState((MOB)owner, charStateChanges,msg.source().curState());
 						}
 					}
@@ -256,7 +256,7 @@ public class Prop_UseAdjuster extends Prop_Adjuster implements ArchonOnly
 					if(canApply(msg.source()))
 					{
 						adjCharStats(msg.source(), charStatsChanges,msg.source().baseCharStats());
-						phyStuff(phyStatsChanges, msg.source().basePhyStats());
+						phyStuff(phyStatsChanges, msg.source(), msg.source().basePhyStats());
 						adjCharState(msg.source(), charStateChanges,msg.source().curState());
 					}
 				}
@@ -264,7 +264,7 @@ public class Prop_UseAdjuster extends Prop_Adjuster implements ArchonOnly
 				if(canApply(owner))
 				{
 					adjCharStats((MOB)owner, charStatsChanges,((MOB)owner).baseCharStats());
-					phyStuff(phyStatsChanges, ((MOB)owner).basePhyStats());
+					phyStuff(phyStatsChanges, owner, ((MOB)owner).basePhyStats());
 					adjCharState((MOB)owner, charStateChanges, ((MOB)owner).curState());
 				}
 			}
