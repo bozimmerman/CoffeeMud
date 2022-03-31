@@ -11,6 +11,7 @@
  10. MUDGrinder Player Manager now links to a WhiteList editor.
  11. New spells: Greater Claireaudience, Greater Clairevoyance, Greater Scry
  12. Smelting recipes updated
+ 13. New account flag: NOCHARPURGE
 
 # Build 5.9.12 Release 1/17/2022
   *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG

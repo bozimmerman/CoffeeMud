@@ -1471,7 +1471,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				&&(System.currentTimeMillis()>warnDateTime))
 				{
 					final MOB M=getLoadPlayer(name);
-					if((M!=null)&&(M.playerStats()!=null))
+					if((M!=null)
+					&&(M.playerStats()!=null)
+					&&((M.playerStats().getAccount()==null)
+						||(!M.playerStats().getAccount().isSet(AccountFlag.NOCHARPURGE))))
 					{
 						warnStr.append(M.name()+" "+M.playerStats().getEmail()+" "+System.currentTimeMillis()+"\n");
 						warnMap.put(M.Name().toUpperCase().trim(),Long.valueOf(System.currentTimeMillis()));
@@ -1487,7 +1490,12 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				&&((System.currentTimeMillis()-foundWarningDateTime)>TimeManager.MILI_DAY))
 				{
 					final MOB M=getLoadPlayer(name);
-					if((M!=null)&&(!CMSecurity.isASysOp(M))&&(!CMSecurity.isAllowedAnywhere(M, CMSecurity.SecFlag.NOPURGE)))
+					if((M!=null)
+					&&(!CMSecurity.isASysOp(M))
+					&&(!CMSecurity.isAllowedAnywhere(M, CMSecurity.SecFlag.NOPURGE))
+					&&((M.playerStats()==null)
+						||(M.playerStats().getAccount()==null)
+						||(!M.playerStats().getAccount().isSet(AccountFlag.NOCHARPURGE))))
 					{
 						obliteratePlayer(M,true, true);
 						M.destroy();

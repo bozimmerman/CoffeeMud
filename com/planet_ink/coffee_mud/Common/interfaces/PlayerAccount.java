@@ -188,6 +188,8 @@ public interface PlayerAccount extends CMCommon, AccountStats, Modifiable, Tatto
 		NOTOP,
 		/** Constant for account flags that require 16 color ansi instead of 256 */
 		ANSI16,
+		/** Constant for account flags that prevents any character purges */
+		NOCHARPURGE,
 		;
 		/**
 		 * Returns a comma-delimited list of strings representing the accountflag values
