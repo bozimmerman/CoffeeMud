@@ -576,6 +576,8 @@ public interface RawMaterial extends Item
 	public final static int	RESOURCE_SPICE			= MATERIAL_VEGETATION | 204;
 	public final static int	RESOURCE_DIRT			= MATERIAL_ROCK | 205;
 	public final static int	RESOURCE_FUNGUS			= MATERIAL_VEGETATION | 206;
+	public final static int	RESOURCE_PALLADIUM		= MATERIAL_VEGETATION | 207;
+	public final static int	RESOURCE_NICKEL			= MATERIAL_VEGETATION | 208;
 
 	public final static int	RESOURCE_MASK			= 255;
 
@@ -597,6 +599,10 @@ public interface RawMaterial extends Item
 	 * resources.
 	 * Data about each resource includes:
 	 * code, value, frequency, hardness, bouyancy, smell, effects, ResourceFlag flags
+	 *
+	 * value is in base gold value/pound
+	 * bouyancy is equal to 1000 times the density of the material in g/cm3
+	 * hardness is based off of the Mohs Scale of Hardness
 	 * @author Bo Zimmerman
 	 */
 	public static enum DefResource
@@ -635,16 +641,16 @@ public interface RawMaterial extends Item
 		SAND(RESOURCE_SAND, 1, 50, 1, 1600, "", "", null),
 		JADE(RESOURCE_JADE, 50, 2, 5, 3800, "", "", null),
 		IRON(RESOURCE_IRON, 20, 10, 6, 7900, "", "", null),
-		LEAD(RESOURCE_LEAD, 10, 10, 4, 11300, "", "", null),
+		LEAD(RESOURCE_LEAD, 10, 10, 3, 11300, "", "", null),
 		BRONZE(RESOURCE_BRONZE, 10, 10, 5, 8100, "", "", null),
-		SILVER(RESOURCE_SILVER, 30, 2, 5, 10500, "", "", null),
-		GOLD(RESOURCE_GOLD, 150, 1, 5, 19320, "", "", null),
+		SILVER(RESOURCE_SILVER, 30, 2, 4, 10500, "", "", null),
+		GOLD(RESOURCE_GOLD, 150, 1, 4, 19320, "", "", null),
 		WHITE_GOLD(RESOURCE_WHITE_GOLD, 150, 1, 5, 1450, "", "", null),
-		PLATINUM(RESOURCE_PLATINUM, 750, 1, 6, 21450, "", "", null),
-		ALUMINUM(RESOURCE_ALUMINUM, 15000, 0, 2, 7300, "", "", null),
-		ZINC(RESOURCE_ZINC, 10, 5, 5, 7100, "", "", null),
+		PLATINUM(RESOURCE_PLATINUM, 175, 1, 6, 21450, "", "", null),
+		ALUMINUM(RESOURCE_ALUMINUM, 205, 0, 4, 7300, "", "", null),
+		ZINC(RESOURCE_ZINC, 10, 5, 4, 7100, "", "", null),
 		COPPER(RESOURCE_COPPER, 10, 10, 5, 8900, "", "", null),
-		TIN(RESOURCE_TIN, 10, 10, 4, 7300, "", "", null),
+		TIN(RESOURCE_TIN, 10, 10, 3, 7300, "", "", null),
 		MITHRIL(RESOURCE_MITHRIL, 100, 1, 9, 3990, "", "", null),
 		ADAMANTITE(RESOURCE_ADAMANTITE, 175, 1, 10, 4500, "", "", null),
 		STEEL(RESOURCE_STEEL, 75, 0, 8, 7840, "", "", null),
@@ -808,6 +814,8 @@ public interface RawMaterial extends Item
 		SPICE(RESOURCE_SPICE			, 100,  5,  1, 750, "very spicy", "", null),
 		DIRT(RESOURCE_DIRT				, 1,   50,  1, 1600, "rich earthy", "", null),
 		FUNGUS(RESOURCE_FUNGUS			, 1,    3,  1,  750, "", "", null),
+		PALLADIUM(RESOURCE_PALLADIUM	, 25,   1,  7,12020, "", "", null),
+		NICKEL(RESOURCE_NICKEL			, 10,   2,  5, 8900, "", "", null),
 
 		;//code, 						  v, freq, h, b, smell, effects, ResourceFlag flags
 		public final int			code, value, frequency, hardness, bouancy;
