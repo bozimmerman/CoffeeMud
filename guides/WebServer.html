@@ -1,11 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
   <meta name="generator" content="HTML Tidy, see www.w3.org" />
-  <title>The CoffeeMud Web Server</title>
-  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
-<!-- Modified by Josh Mueller, 2006-05-05, fix validation errors, fix format of code sections, add index, and fix spelling errors -->
-</head>
+  
+  <title>The CoffeeMud Web Server</title><link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation errors, fix format of code sections, add index, and fix spelling errors --></head>
+
 <body>
 <center>
 <table border="1" cellpadding="10" cellspacing="0" width="90%">
@@ -115,15 +113,13 @@ DEFAULTFILE=index.cmvp)</i>
           <p>Sets the default filename to be appended if none is
 specified in the request. &nbsp;This is in common.ini.</p>
         </li>
-        <li> <b>SSLKEYSTOREPATH=</b>path/to/keystore.jks <span
- style="font-style: italic;">(e.g. SSLKEYSTOREPATH=keys/keystore.jks)</span><b><br />
-SSLKEYSTOREPASSWORD=</b>keystore file password <span
- style="font-style: italic;">(e.g. SSLKEYSTOREPASSWORD=mypassphrase)</span><b><br />
+        <li> <b>SSLKEYSTOREPATH=</b>path/to/keystore.jks <span style="font-style: italic;">(e.g. SSLKEYSTOREPATH=keys/keystore.jks)</span><b><br />
+SSLKEYSTOREPASSWORD=</b>keystore file password <span style="font-style: italic;">(e.g. SSLKEYSTOREPASSWORD=mypassphrase)</span><b><br />
 SSLKEYSTORETYPE=</b>JKS <span style="font-style: italic;">(are there
 other useful values for this?)</span><b><br />
 SSLKEYMANAGERENCODING=</b>SunX509 <span style="font-style: italic;">(are
 there other useful values for this?)</span><b><br />
-          <span style="font-style: italic;" /></b>
+          <span style="font-style: italic;"></span></b>
           <p>Allows you to turn on support for SSLv3 via a java
 keystore file (SSLKEYSTOREPATH), but you can&nbsp;specify any key file
 format that java supports, so long as you also specify its type
@@ -139,8 +135,7 @@ FILECACHEMAXBYTES=</span>#bytes <span style="font-style: italic;">(e.g.
 FILECACHEMAXBYTES=65535)</span><span style="font-weight: bold;"><br />
 FILECACHEMAXFILEBYTES=</span>#bytes <span style="font-style: italic;">(e.g.
 FILECACHEMAXFILEBYTES=8192)</span><span style="font-weight: bold;"><br />
-FILECOMPMAXBYTES=</span><span style="font-weight: bold;">#bytes <span
- style="font-style: italic;">(e.g.&nbsp;FILECOMPMAXBYTES=16485760)</span>
+FILECOMPMAXBYTES=</span><span style="font-weight: bold;">#bytes <span style="font-style: italic;">(e.g.&nbsp;FILECOMPMAXBYTES=16485760)</span>
           <p>The data for your web site can be cached in memory for
 better performance. &nbsp;To tune this feature, you can specify the
 amount of time a cache entry lives in memory (FILECACHEEXPIREMS), how
@@ -184,8 +179,7 @@ default.<br />
         </li>
         <li><span style="font-weight: bold;">CORETHREADPOOLSIZE</span>=#threads
           <span style="font-style: italic;">(e.g. CORETHREADPOOLSIZE=1)</span><br />
-          <span style="font-weight: bold;">MAXTHREADS</span>=#threads <span
- style="font-style: italic;">(e.g. MAXTHREADS=10)</span><br />
+          <span style="font-weight: bold;">MAXTHREADS</span>=#threads <span style="font-style: italic;">(e.g. MAXTHREADS=10)</span><br />
           <span style="font-weight: bold;">MAXTHREADIDLEMILLIS</span>=milliseconds
           <span style="font-style: italic;">(e.g.
 MAXTHREADIDLEMILLIS=60000)</span><br />
@@ -233,8 +227,7 @@ directories, you can specify <b>MOUNT/virtualdir=physicaldir</b> in
 the pub.ini or admin.ini files; for example, <b>MOUNT/guides=guides</b>
 creates a virtual directory with access to the player guides. &nbsp;If
 you want, you can also tie particular web hostnames and ports to
-particular directories. &nbsp;For example <span
- style="font-weight: bold;">MOUNT/mydomain.com:8080/files=/web/pub</span>
+particular directories. &nbsp;For example <span style="font-weight: bold;">MOUNT/mydomain.com:8080/files=/web/pub</span>
 would allow browser urls such as http://www.mydomain.com:8080/files to
 access the /web/pub folder.</p>
       <h2><a name="virtualpages">CoffeeMud Virtual Pages</a></h2>
@@ -574,7 +567,9 @@ MacParm "EMPTYOK" found. Accepts MacParm of RESET to restart listing.</td>
             <td>CrossClassAbilities</td>
             <td>Returns a full HTML table of classes and abilities.</td>
           </tr>
-          <tr>
+          <tr><td>DelRequestParameter</td><td>Removes the given Request (URL) parameters, unless one of them is
+ALLBUT, in which case it removes all Request (URL) parameters except
+those listed.</td></tr><tr>
             <td>ExpertiseData</td>
             <td>Requires ReqParm EXPERTISE be set to a valid expertise
 id. Returns information about that expertise depending on MacParms
@@ -1025,13 +1020,11 @@ be sent to the mud with the \MSDP prefix.<br />
       <br />
 Siplet communicates with the mud through WebSockets by using a special
 &nbsp;URL-triggered WebMacro called SipletInterface, which is then used
-to send commands. &nbsp;The Url to connect to SipletInterface is <span
- style="font-family: monospace;">ws://localhost:27744/SipletInterface</span>
+to send commands. &nbsp;The Url to connect to SipletInterface is <span style="font-family: monospace;">ws://localhost:27744/SipletInterface</span>
 &nbsp; where 'localhost' is your coffeemud web server domain name, and
 '27744' is the port of your public pages. &nbsp;<br />
       <br />
-SipletInterface supports the following commands from the browser:<br
- style="font-family: monospace;" />
+SipletInterface supports the following commands from the browser:<br style="font-family: monospace;" />
       <span style="font-family: monospace;"><br />
       </span><span style="font-weight: bold;">Connect Command:</span><br />
       <span style="font-family: monospace;">CONNECT&amp;URL=&lt;mud
@@ -1075,8 +1068,7 @@ The success argument is the string 'true' or 'false', depending on
 whether the disconnection was successful.<br />
       <br />
       <span style="font-weight: bold;">Poll Command:</span><br />
-      <span style="font-family: monospace;">POLL</span><span
- style="font-family: monospace;">&amp;TOKEN=&lt;connection token&gt;</span><br />
+      <span style="font-family: monospace;">POLL</span><span style="font-family: monospace;">&amp;TOKEN=&lt;connection token&gt;</span><br />
 &nbsp; &nbsp; This command acts like a ping command to the siplet
 interface, and is used to let the interface know that the web client is
 still there, and to check whether the connection to the underlying mud
@@ -1102,12 +1094,10 @@ The javascript string is a block of javascript that can be executed
 with the eval() command, or ignored.<br />
 An example response for a successful connection might be:<br />
       <span style="font-family: monospace;">true;You have connected to
-the mud!318cae09;window.alert('hi')</span><span
- style="font-family: monospace;">318cae09;<br />
+the mud!318cae09;window.alert('hi')</span><span style="font-family: monospace;">318cae09;<br />
       <br />
       </span><span style="font-weight: bold;">Send Data Command:</span><br />
-      <span style="font-family: monospace;">SENDATA</span><span
- style="font-family: monospace;">&amp;TOKEN=&lt;connection
+      <span style="font-family: monospace;">SENDATA</span><span style="font-family: monospace;">&amp;TOKEN=&lt;connection
 token&gt;&amp;DATA=&lt;string to send&gt;</span><br />
 &nbsp; &nbsp; This command is used to send user input and commands to
 the mud through the web socket. The token argument is the same
@@ -1117,7 +1107,7 @@ above, and the &lt;string to send&gt; is the user input.<br />
 After sending this command, the next data received on the web socket
 will be the formatted response to this command, which is identical to
 the Poll Command output above.<br />
-      <span style="font-family: monospace;" /><br />
+      <span style="font-family: monospace;"><br />
       <span style="font-weight: bold;">* Note:<br />
       </span>After connection to a mud through the web socket, you will
 periodically receive spontaneous packets that are not in response to
@@ -1128,10 +1118,9 @@ above.<br />
       </span><br />
       <br />
       <pre><br /></pre>
-      </td>
+      </span></td>
     </tr>
   </tbody>
 </table>
 </center>
-</body>
-</html>
+</body></html>

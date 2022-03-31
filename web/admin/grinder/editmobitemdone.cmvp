@@ -15,6 +15,7 @@
 </HTML>
 @else@
 @if?RequestParameter?SINGLEMOB@
+	@DelRequestParameter?ALLBUT&AUTH&AREA&ROOM&MOB&SINGLEMOB@
 	@AddFile?/grinder/editmobform.cmvp@
 @else@
 <HTML>
