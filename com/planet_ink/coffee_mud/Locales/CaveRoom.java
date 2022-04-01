@@ -108,7 +108,10 @@ public class CaveRoom extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_AGATE),
 		Integer.valueOf(RawMaterial.RESOURCE_DIRT),
 		Integer.valueOf(RawMaterial.RESOURCE_CITRINE),
-		Integer.valueOf(RawMaterial.RESOURCE_PLATINUM)};
+		Integer.valueOf(RawMaterial.RESOURCE_PLATINUM),
+		Integer.valueOf(RawMaterial.RESOURCE_PALLADIUM),
+		Integer.valueOf(RawMaterial.RESOURCE_NICKEL)
+	};
 	public static final List<Integer> roomResources=new Vector<Integer>(Arrays.asList(resourceList));
 
 	@Override

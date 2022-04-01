@@ -576,8 +576,8 @@ public interface RawMaterial extends Item
 	public final static int	RESOURCE_SPICE			= MATERIAL_VEGETATION | 204;
 	public final static int	RESOURCE_DIRT			= MATERIAL_ROCK | 205;
 	public final static int	RESOURCE_FUNGUS			= MATERIAL_VEGETATION | 206;
-	public final static int	RESOURCE_PALLADIUM		= MATERIAL_VEGETATION | 207;
-	public final static int	RESOURCE_NICKEL			= MATERIAL_VEGETATION | 208;
+	public final static int	RESOURCE_PALLADIUM		= MATERIAL_METAL | 207;
+	public final static int	RESOURCE_NICKEL			= MATERIAL_METAL | 208;
 
 	public final static int	RESOURCE_MASK			= 255;
 
