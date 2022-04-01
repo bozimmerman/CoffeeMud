@@ -51,6 +51,8 @@ public interface MUDCmdProcessor
 	public static final int METAFLAG_INORDER=128;
 	/** constant mask for the metaflags parameter for execute and preexecute, means to try to reverse the command effect*/
 	public static final int METAFLAG_REVERSED=256;
+	/** constant mask for the metaflags parameter for execute and preexecute, means to do it quietly, w/o visible msgs*/
+	public static final int METAFLAG_QUIETLY=512;
 
 	/**
 	 * Parses the given command string tokens to determine what kind of command is

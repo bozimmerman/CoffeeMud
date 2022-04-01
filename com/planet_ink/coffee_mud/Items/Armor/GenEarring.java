@@ -162,7 +162,7 @@ public class GenEarring extends GenThinArmor implements BodyToken
 	}
 
 	@Override
-	protected boolean canWearComplete(final MOB mob, final long wearWhere)
+	protected boolean canWearComplete(final MOB mob, final long wearWhere, final boolean quiet)
 	{
 		if((mob!=null)
 		&&(wearWhere == 0)
@@ -183,7 +183,7 @@ public class GenEarring extends GenThinArmor implements BodyToken
 				}
 			}
 		}
-		return super.canWearComplete(mob, wearWhere);
+		return super.canWearComplete(mob, wearWhere, quiet);
 	}
 
 	@Override

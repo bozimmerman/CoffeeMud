@@ -50,7 +50,7 @@ public class Stand extends StdCommand
 		throws java.io.IOException
 	{
 		boolean ifnecessary=false;
-		boolean quietly=false;
+		boolean quietly=(CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_QUIETLY));
 		for(int i=1;i<commands.size();i++)
 		{
 			final String s=commands.get(i).toUpperCase();

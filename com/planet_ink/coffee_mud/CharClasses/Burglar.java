@@ -149,6 +149,7 @@ public class Burglar extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_SenseLaw",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Mug",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Safehouse",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_SilentHold",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_Lore",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_AttackHalf",false);
@@ -162,6 +163,7 @@ public class Burglar extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Spell_AnalyzeDweomer",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_Tumble",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_SilentWear",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_Con",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_Comprehension",false);

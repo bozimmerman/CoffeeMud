@@ -939,7 +939,7 @@ public class StdItem implements Item
 		CMLib.flags().setSavable(this, truefalse);
 	}
 
-	protected boolean canWearComplete(final MOB mob, final long wearWhere)
+	protected boolean canWearComplete(final MOB mob, final long wearWhere, final boolean quiet)
 	{
 		if(!canWear(mob,wearWhere))
 		{
@@ -953,13 +953,13 @@ public class StdItem implements Item
 				if((cantWearAt!=Wearable.WORN_HELD)&&(cantWearAt!=Wearable.WORN_WIELD))
 				{
 					final boolean amWearingOther = !alreadyWearing.amWearingAt(Item.IN_INVENTORY);
-					if(!CMLib.commands().postRemove(mob,alreadyWearing,false))
+					if(!CMLib.commands().postRemove(mob,alreadyWearing,quiet))
 					{
 						mob.tell(L("You are already wearing @x1 on your @x2.",alreadyWearing.name(),codes.name(cantWearAt)));
 						return false;
 					}
 					if(amWearingOther && alreadyWearing.amWearingAt(Item.IN_INVENTORY) && (!canWear(mob,wearWhere)))
-						return canWearComplete(mob, wearWhere);
+						return canWearComplete(mob, wearWhere, quiet);
 					alreadyWearing=mob.fetchFirstWornItem(cantWearAt);
 					if((alreadyWearing!=null)&&(!canWear(mob,0)))
 					{
@@ -975,7 +975,7 @@ public class StdItem implements Item
 					&&(rawLogicalAnd())
 					&&(alreadyWearing.rawLogicalAnd())
 					&&(layer == layer2)
-					&&(CMLib.commands().postRemove(mob,alreadyWearing,false)))
+					&&(CMLib.commands().postRemove(mob,alreadyWearing,quiet)))
 						return true;
 					if(cantWearAt==Wearable.WORN_HELD)
 						mob.tell(L("You are already holding @x1.",alreadyWearing.name()));
@@ -1227,7 +1227,7 @@ public class StdItem implements Item
 					final Item alreadyWearing=mob.fetchHeldItem();
 					if(alreadyWearing!=null)
 					{
-						if((!CMLib.commands().postRemove(mob,alreadyWearing,false))
+						if((!CMLib.commands().postRemove(mob,alreadyWearing,msg.othersMessage()==null))
 						||(!canWear(mob,Wearable.WORN_HELD)))
 						{
 							mob.tell(L("Your hands are full."));
@@ -1246,7 +1246,7 @@ public class StdItem implements Item
 				}
 				return true;
 			}
-			return canWearComplete(mob,0);
+			return canWearComplete(mob,0,msg.othersMessage()==null);
 		case CMMsg.TYP_WEAR:
 			if(properWornBitmap==0)
 			{
@@ -1260,7 +1260,7 @@ public class StdItem implements Item
 				mob.tell(L("That looks too advanced for you."));
 				return false;
 			}
-			return canWearComplete(mob,(msg.value()<=0)?0:((long)(1<<msg.value())/2));
+			return canWearComplete(mob,(msg.value()<=0)?0:((long)(1<<msg.value())/2),msg.othersMessage()==null);
 		case CMMsg.TYP_WIELD:
 			if((!fitsOn(Wearable.WORN_WIELD))||(properWornBitmap==0))
 			{
@@ -1281,7 +1281,7 @@ public class StdItem implements Item
 					final Item alreadyWearing=mob.fetchFirstWornItem(Wearable.WORN_WIELD);
 					if(alreadyWearing!=null)
 					{
-						if(!CMLib.commands().postRemove(mob,alreadyWearing,false))
+						if(!CMLib.commands().postRemove(mob,alreadyWearing,msg.othersMessage()==null))
 						{
 							mob.tell(L("You are already wielding @x1.",alreadyWearing.name()));
 							return false;
@@ -1298,7 +1298,7 @@ public class StdItem implements Item
 					}
 				}
 			}
-			return canWearComplete(mob,0);
+			return canWearComplete(mob,0,msg.othersMessage()==null);
 		case CMMsg.TYP_THROW:
 			if(msg.tool() instanceof MagicDust)
 				return true;

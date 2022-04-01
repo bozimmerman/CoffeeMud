@@ -54,7 +54,8 @@ public class NOMXP extends StdCommand
 			boolean quiet=false;
 			if((commands!=null)
 			&&(commands.size()>1)
-			&&(commands.get(1).toUpperCase().equals("QUIET")))
+			&&(commands.get(1).toUpperCase().equals("QUIET")
+				||(CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_QUIETLY))))
 			{
 				quiet=true;
 			}

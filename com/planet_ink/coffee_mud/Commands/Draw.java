@@ -98,7 +98,8 @@ public class Draw extends Get
 		}
 		else
 		{
-			if((commands.size()>0)&&(commands.get(commands.size()-1).equalsIgnoreCase("QUIETLY")))
+			if(((commands.size()>0)&&(commands.get(commands.size()-1).equalsIgnoreCase("QUIETLY")))
+			||(CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_QUIETLY)))
 			{
 				commands.remove(commands.size()-1);
 				quiet=true;

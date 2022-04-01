@@ -177,20 +177,25 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		return Boolean.FALSE;
 	}
 
-	@Override
-	public boolean forceStandardCommand(final MOB mob, final String command, final List<String> parms)
+	protected boolean forceStandardCommand(final MOB mob, final String command, final List<String> parms, final boolean quietly)
 	{
 		try
 		{
 			final Command C=CMClass.getCommand(command);
 			if(C!=null)
-				return C.execute(mob,parms,MUDCmdProcessor.METAFLAG_FORCED);
+				return C.execute(mob,parms,MUDCmdProcessor.METAFLAG_FORCED|(quietly?MUDCmdProcessor.METAFLAG_QUIETLY:0));
 		}
 		catch(final IOException e)
 		{
 			Log.errOut("CommonMsgs",e);
 		}
 		return false;
+	}
+
+	@Override
+	public boolean forceStandardCommand(final MOB mob, final String command, final List<String> parms)
+	{
+		return forceStandardCommand(mob, command, parms, false);
 	}
 
 	@Override
@@ -409,7 +414,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			cmds.add("IFNECESSARY");
 		if(quietly)
 			cmds.add("QUIETLY");
-		forceStandardCommand(mob,"Stand",cmds);
+		forceStandardCommand(mob,"Stand",cmds, quietly);
 	}
 
 	@Override

@@ -144,7 +144,7 @@ public class Wear extends StdCommand
 			{
 				I=items.get(i);
 				if((items.size()==1)||(I.canWear(mob,0)))
-					wear(mob,I,wearLocationIndex,false);
+					wear(mob,I,wearLocationIndex,CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_QUIETLY));
 			}
 		}
 		return false;
@@ -157,7 +157,7 @@ public class Wear extends StdCommand
 			return Boolean.FALSE;
 		final Wearable.CODES codes = Wearable.CODES.instance();
 		final Item targetWearI = (Item)args[0];
-		boolean quietly = false;
+		boolean quietly = (CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_QUIETLY));
 		int wearLocationIndex = 0;
 		for(int i=1;i<args.length;i++)
 		{

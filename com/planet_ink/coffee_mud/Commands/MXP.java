@@ -63,7 +63,8 @@ public class MXP extends StdCommand
 					}
 				}
 				else
-				if(commands.get(1).toUpperCase().equals("QUIET"))
+				if(commands.get(1).toUpperCase().equals("QUIET")
+				||(CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_QUIETLY)))
 				{
 					doCodeResend=false;
 				}

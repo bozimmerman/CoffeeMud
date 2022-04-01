@@ -53,9 +53,11 @@ public class NoFollow extends Follow
 		final Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()>1)
 		{
+			final boolean quietly = ((commands.size()>1)&&(commands.get(1).equalsIgnoreCase("QUIETLY")))
+								||(CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_QUIETLY));
 			if(commands.get(0).equalsIgnoreCase("UNFOLLOW"))
 			{
-				unfollow(mob,((commands.size()>1)&&(commands.get(1).equalsIgnoreCase("QUIETLY"))));
+				unfollow(mob,quietly);
 				return false;
 			}
 			final String name=CMParms.combine(commands,1);
@@ -64,7 +66,7 @@ public class NoFollow extends Follow
 				if(mob.numFollowers()==0)
 					CMLib.commands().postCommandFail(mob,origCmds,L("No one is following you!"));
 				else
-					unfollow(mob,((commands.size()>1)&&(commands.get(1).equalsIgnoreCase("QUIETLY"))));
+					unfollow(mob,quietly);
 				return false;
 			}
 			MOB M=mob.fetchFollower(name);

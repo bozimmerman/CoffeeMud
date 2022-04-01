@@ -71,7 +71,7 @@ public class Hold extends StdCommand
 			if((items.size()==1)||(items.get(i).canWear(mob,Wearable.WORN_HELD)))
 			{
 				final Item item=items.get(i);
-				hold(mob,item,false);
+				hold(mob,item,CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_QUIETLY));
 			}
 		}
 		return false;
@@ -103,7 +103,7 @@ public class Hold extends StdCommand
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;
 		final Item targetWearI = (Item)args[0];
-		boolean quietly = false;
+		boolean quietly = (CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_QUIETLY));
 		for(int i=1;i<args.length;i++)
 		{
 			if(args[i] instanceof Boolean)
