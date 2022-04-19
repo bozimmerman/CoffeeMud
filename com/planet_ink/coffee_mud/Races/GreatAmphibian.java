@@ -254,7 +254,7 @@ public class GreatAmphibian extends StdRace
 				for(int i=0;i<15;i++)
 				{
 					resources.addElement(makeResource
-					(L("some @x1",name().toLowerCase()),RawMaterial.RESOURCE_FISH));
+					(L("some @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_FISH));
 				}
 				for(int i=0;i<5;i++)
 				{

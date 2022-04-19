@@ -104,7 +104,7 @@ public class Angelfish extends Fish
 				for(int i=0;i<3;i++)
 				{
 					resources.addElement(makeResource
-					(L("some @x1",name().toLowerCase()),RawMaterial.RESOURCE_FISH));
+					(L("some @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_FISH));
 				}
 				for(int i=0;i<2;i++)
 				{
