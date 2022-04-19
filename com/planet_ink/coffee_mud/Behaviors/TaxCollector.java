@@ -49,7 +49,7 @@ public class TaxCollector extends StdBehavior
 
 	protected DVector			demanded			= null;
 	protected DVector			paid				= null;
-	protected long				waitTime			= 1000 * 60 * 2;
+	protected long				waitTime			= 1000 * 60 * 5;
 	protected long				graceTime			= 1000 * 60 * 60;
 	protected int				lastMonthChecked	= -1;
 	protected List<LandTitle>	taxableProperties	= new Vector<LandTitle>();
