@@ -1059,7 +1059,7 @@ public class ListCmd extends StdCommand
 			cmds.remove(0);
 		}
 		if(cmds.size()==0)
-			return new StringBuilder("List what script details? Try LIST SCRIPTS (COUNT/DETAILS/CUSTOM)");
+			return new StringBuilder("List what script details? Try LIST SCRIPTS (AREA) (COUNT/DETAILS/CUSTOM)");
 		final String rest=CMParms.combine(cmds,0);
 		final DVector scriptTree=new DVector(6);
 		Area A=null;
