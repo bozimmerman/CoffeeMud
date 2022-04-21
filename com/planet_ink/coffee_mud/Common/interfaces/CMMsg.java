@@ -839,7 +839,7 @@ public interface CMMsg extends CMCommon
 	 * @return the new existing value
 	 */
 	public boolean suspendResumeTrailers(final Boolean newValue);
-	
+
 	/**
 	 * Returns a List of other Runnables which are slated to be
 	 * and executed AFTER this current message is handled.  This is implemented
@@ -1217,6 +1217,8 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_HOLYEVENT=140;
 	/** MINOR_MASK minor action code type, denoting an act between a player and a deity */
 	public static final int TYP_EMISSION=141;
+	/** MINOR_MASK minor action code type, denoting an act of dropping a corpse */
+	public static final int TYP_BODYDROP=142;
 
 	/** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -1247,7 +1249,7 @@ public interface CMMsg extends CMCommon
 		"COMMANDFAIL","METACOMMAND", "ITEMGENERATED", "ATTACKMISS", "WEATHER","ITEMSGENERATED",
 		"WROTE", "REWRITE", "WASREAD", "PREMOVE", "THINK", "STARTUP", "RPXPCHANGE",
 		"COMMANDREJECT","RECIPELEARNED", "GRAVITY", "LEGALSTATE", "NEWROOM","CAUSESINK",
-		"ENDQUEST","WINQUEST","HOLYEVENT","EMISSION"
+		"ENDQUEST","WINQUEST","HOLYEVENT","EMISSION", "BODYDROP"
 	};
 
 	/** Index string descriptions of all the MAJOR_MASK code MAKS_s */
@@ -1589,6 +1591,8 @@ public interface CMMsg extends CMCommon
 	public static final int MSG_HOLYEVENT=MASK_ALWAYS|TYP_HOLYEVENT;
 	/** combined MAJOR and MINOR codes for useful event message type for emissions/radiation */
 	public static final int MSG_EMISSION=TYP_EMISSION;
+	/** combined MAJOR and MINOR codes for useful event message type for corpse drop */
+	public static final int MSG_BODYDROP=TYP_BODYDROP;
 
 	/**
 	 * An enum to use for an external message check from inside

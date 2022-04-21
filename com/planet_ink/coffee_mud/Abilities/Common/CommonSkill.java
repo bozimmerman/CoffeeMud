@@ -571,11 +571,12 @@ public class CommonSkill extends StdAbility
 			final CMMsg msg=CMClass.getMsg(mob,buildingI,this,CMMsg.TYP_ITEMGENERATED|CMMsg.MASK_ALWAYS,null);
 			if(R.okMessage(mob,msg))
 			{
-				R.addItem(buildingI,ItemPossessor.Expire.Resource);
+				final Item I=(Item)msg.target();
+				R.addItem(I,ItemPossessor.Expire.Resource);
 				R.recoverRoomStats();
 				mob.location().send(mob,msg);
 
-				if(!R.isContent(buildingI))
+				if(!R.isContent(I))
 				{
 					commonTell(mob,L("You have won the common-skill-failure LOTTERY! Congratulations!"));
 					CMLib.leveler().postExperience(mob, null, null,50,false);

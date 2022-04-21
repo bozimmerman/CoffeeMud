@@ -1660,6 +1660,8 @@ public class StdMOB implements MOB
 				bodyI.setSavable(false); // if the player is saving it, rooms are NOT.
 				playerStats().getExtItems().addItem(bodyI);
 			}
+			if(deathRoom != null)
+				deathRoom.show(this, bodyI, CMMsg.MASK_ALWAYS|CMMsg.MSG_BODYDROP, null);
 		}
 		makePeace(false);
 		setRiding(null);
