@@ -99,6 +99,14 @@ public class ActiveTicker extends StdBehavior
 		return parms;
 	}
 
+	protected boolean canChance()
+	{
+		final int a=CMLib.dice().rollPercentage();
+		if(a>chance)
+			return false;
+		return true;
+	}
+
 	protected boolean canAct(final Tickable ticking, final int tickID)
 	{
 		switch(tickID)
@@ -118,10 +126,7 @@ public class ActiveTicker extends StdBehavior
 				tickReset();
 				if((ticking instanceof MOB)&&(!canActAtAll(ticking)))
 					return false;
-				final int a=CMLib.dice().rollPercentage();
-				if(a>chance)
-					return false;
-				return true;
+				return canChance();
 			}
 			break;
 		}

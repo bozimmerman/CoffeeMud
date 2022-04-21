@@ -90,12 +90,6 @@ public class ResourceOverride extends ActiveTicker
 	}
 
 	@Override
-	public void endBehavior(final PhysicalAgent forMe)
-	{
-		System.out.println("WTF");
-	}
-
-	@Override
 	public void setParms(final String newStr)
 	{
 		super.setParms(newStr);
@@ -242,7 +236,8 @@ public class ResourceOverride extends ActiveTicker
 	{
 		if((msg.source()==host)
 		&&(msg.sourceMinor()==CMMsg.TYP_BODYDROP)
-		&&(msg.target() instanceof DeadBody))
+		&&(msg.target() instanceof DeadBody)
+		&&(canChance()))
 			((DeadBody)msg.target()).addBehavior(this);
 		else
 		if((host instanceof DeadBody)
