@@ -4699,15 +4699,15 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	public String getExtraEnvPropertiesStr(final Environmental E)
 	{
 		final StringBuilder text=new StringBuilder("");
-
+		final XMLLibrary xmlLib = CMLib.xml();
 		if(E instanceof Economics)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("PREJFC",((Economics)E).getRawPrejudiceFactors()));
-			text.append(CMLib.xml().convertXMLtoTag("IGNMSK",((Economics)E).getRawIgnoreMask()));
-			text.append(CMLib.xml().convertXMLtoTag("BUDGET",((Economics)E).getRawBbudget()));
-			text.append(CMLib.xml().convertXMLtoTag("DEVALR",((Economics)E).getRawDevalueRate()));
-			text.append(CMLib.xml().convertXMLtoTag("INVRER",((Economics)E).getRawInvResetRate()));
-			text.append(CMLib.xml().convertXMLtoTag("CURRENCY",((Economics)E).getRawCurrency()==null?"":((Economics)E).getRawCurrency()));
+			text.append(xmlLib.convertXMLtoTag("PREJFC",((Economics)E).getRawPrejudiceFactors()));
+			text.append(xmlLib.convertXMLtoTag("IGNMSK",((Economics)E).getRawIgnoreMask()));
+			text.append(xmlLib.convertXMLtoTag("BUDGET",((Economics)E).getRawBbudget()));
+			text.append(xmlLib.convertXMLtoTag("DEVALR",((Economics)E).getRawDevalueRate()));
+			text.append(xmlLib.convertXMLtoTag("INVRER",((Economics)E).getRawInvResetRate()));
+			text.append(xmlLib.convertXMLtoTag("CURRENCY",((Economics)E).getRawCurrency()==null?"":((Economics)E).getRawCurrency()));
 			final String[] prics=((Economics)E).getRawItemPricingAdjustments();
 			if(prics.length==0)
 				text.append("<IPRICS />");
@@ -4715,13 +4715,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			{
 				text.append("<IPRICS>");
 				for (final String pric : prics)
-					text.append(CMLib.xml().convertXMLtoTag("IPRIC",CMLib.xml().parseOutAngleBrackets(pric)));
+					text.append(xmlLib.convertXMLtoTag("IPRIC",xmlLib.parseOutAngleBrackets(pric)));
 				text.append("</IPRICS>");
 			}
 
 		}
 
-		text.append(CMLib.xml().convertXMLtoTag("IMG",E.rawImage()));
+		text.append(xmlLib.convertXMLtoTag("IMG",E.rawImage()));
 
 		if(E instanceof PhysicalAgent)
 		{
@@ -4733,12 +4733,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				if(B!=null)
 				{
 					behaviorstr.append("<BHAVE>");
-					behaviorstr.append(CMLib.xml().convertXMLtoTag("BCLASS",CMClass.classID(B)));
-					behaviorstr.append(CMLib.xml().convertXMLtoTag("BPARMS",CMLib.xml().parseOutAngleBrackets(B.getParms())));
+					behaviorstr.append(xmlLib.convertXMLtoTag("BCLASS",CMClass.classID(B)));
+					behaviorstr.append(xmlLib.convertXMLtoTag("BPARMS",xmlLib.parseOutAngleBrackets(B.getParms())));
 					behaviorstr.append("</BHAVE>");
 				}
 			}
-			text.append(CMLib.xml().convertXMLtoTag("BEHAVES",behaviorstr.toString()));
+			text.append(xmlLib.convertXMLtoTag("BEHAVES",behaviorstr.toString()));
 		}
 
 		if(E instanceof Physical)
@@ -4752,17 +4752,17 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				&&(A.isSavable()))
 				{
 					affectstr.append("<AFF>");
-					affectstr.append(CMLib.xml().convertXMLtoTag("ACLASS",CMClass.classID(A)));
-					affectstr.append(CMLib.xml().convertXMLtoTag("ATEXT",CMLib.xml().parseOutAngleBrackets(A.text())));
+					affectstr.append(xmlLib.convertXMLtoTag("ACLASS",CMClass.classID(A)));
+					affectstr.append(xmlLib.convertXMLtoTag("ATEXT",xmlLib.parseOutAngleBrackets(A.text())));
 					affectstr.append("</AFF>");
 				}
 			}
-			text.append(CMLib.xml().convertXMLtoTag("AFFECS",affectstr.toString()));
+			text.append(xmlLib.convertXMLtoTag("AFFECS",affectstr.toString()));
 		}
 
 		final String[] codes=E.getStatCodes();
 		for(int i=E.getSaveStatIndex();i<codes.length;i++)
-			text.append(CMLib.xml().convertXMLtoTag(codes[i].toUpperCase(),E.getStat(codes[i].toUpperCase())));
+			text.append(xmlLib.convertXMLtoTag(codes[i].toUpperCase(),E.getStat(codes[i].toUpperCase())));
 		return text.toString();
 	}
 

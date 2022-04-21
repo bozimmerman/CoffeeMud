@@ -266,8 +266,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		return new double[]{2,mob.basePhyStats().level()+10};
 	}
 
-	@Override
-	public String doBaseLevelAdjustment(final MOB mob, final int adjuster)
+	protected String doBaseLevelAdjustment(final MOB mob, final int adjuster)
 	{
 		synchronized(mob.basePhyStats())
 		{

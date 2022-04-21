@@ -32,6 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
+/**
+ * Library which handles the gaining and losing of experience, as
+ * well as the gaining and losing of levels.
+ *
+ * Also handles giving mobs stats appropriate to their level.
+ *
+ * @author Bo Zimmerman
+ *
+ */
 public interface ExpLevelLibrary extends CMLibrary
 {
 	/**
@@ -167,8 +176,6 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * @return true if the xp was granted.
 	 */
 	public int postExperience(MOB mob, MOB victim, String homage, int amount, boolean quiet);
-
-	public String doBaseLevelAdjustment(MOB mob, int adjuster);
 
 	/**
 	 * Causes the given mob to gain a level, with all that entails

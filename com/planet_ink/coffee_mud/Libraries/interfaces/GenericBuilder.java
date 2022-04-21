@@ -177,7 +177,8 @@ public interface GenericBuilder extends CMLibrary
 	public String getGenAbilityXML(Ability A);
 	public String addAbilitiesFromXml(final String xml, final List<Ability> ables);
 	public String getPropertiesStr(Environmental E, boolean fromTop);
-	public String getGenScripts(PhysicalAgent E, boolean includeVars);
+	public void setPropertiesStr(Environmental E, String buf, boolean fromTop);
+	public void setPropertiesStr(Environmental E, List<XMLTag> V, boolean fromTop);
 	public String getGenMobInventory(MOB M);
 	public void doGenPropertiesCopy(Environmental fromE, Environmental toE);
 	public String unpackRoomFromXML(String buf, boolean andContent);
@@ -217,26 +218,197 @@ public interface GenericBuilder extends CMLibrary
 	public StringBuffer getItemXML(Item item);
 	public StringBuffer getRoomXML(Room room,  Set<CMObject> custom, Set<String> files, boolean andContent);
 	public Ammunition makeAmmunition(String ammunitionType, int number);
-	public void setPropertiesStr(Environmental E, String buf, boolean fromTop);
-	public void setPropertiesStr(Environmental E, List<XMLTag> V, boolean fromTop);
-	public void setGenScripts(PhysicalAgent E, List<XMLTag> buf, boolean restoreVars);
 	public void populateShops(ShopKeeper shopKeep, List<XMLTag> buf);
 	public String getPlayerXML(MOB mob, Set<CMObject> custom, Set<String> files);
 	public String getAccountXML(PlayerAccount account, Set<CMObject> custom, Set<String> files);
 	public String addPlayersAndAccountsFromXML(String xmlBuffer, List<PlayerAccount> addAccounts, List<MOB> addMobs, Session S);
-	public String getExtraEnvPropertiesStr(Environmental E);
+
+	/**
+	 * Attempts to fill the given set full of script file paths from the object
+	 * given by recursively inspecting it for embedded scripts, digging into
+	 * mob and store inventory and so forth.
+	 *
+	 * @see GenericBuilder#fillFileMap(Environmental, Map)
+	 *
+	 * @param E the top level object to dig for script paths
+	 * @param H the set of script paths found
+	 */
 	public void fillFileSet(Environmental E, Set<String> H);
-	public void fillFileMap(Environmental E, Map<String,Set<Environmental>> H);
+
+	/**
+	 * Attempts to fill the given map of script file paths->set of object that use the
+	 * script.   Does so recursively, going into mob and store inventory and so forth.
+	 *
+	 * @see GenericBuilder#fillFileSet(Environmental, Set)
+	 *
+	 * @param E the top level object to go digging for script paths
+	 * @param H the map to fill.
+	 */
+	public void fillFileMap(final Environmental E, final Map<String,Set<Environmental>> H);
+
+	/**
+	 * Given the PhyStats object, returns the encoded string
+	 * representing the values in the object.  The encoding is
+	 * the values of the object, in ordinal order, separated
+	 * by | chars.
+	 *
+	 * @see GenericBuilder#setPhyStats(PhyStats, String)
+	 *
+	 * @param E the PhyStats Object
+	 * @return the encoded values object
+	 */
 	public String getPhyStatsStr(PhyStats E);
+
+	/**
+	 * Given the CharState object, returns the encoded string
+	 * representing the values in the object.  The encoding is
+	 * the values of the object, in ordinal order, separated
+	 * by | chars.
+	 *
+	 * @see GenericBuilder#setCharState(CharState, String)
+	 *
+	 * @param E the CharState Object
+	 * @return the encoded values object
+	 */
 	public String getCharStateStr(CharState E);
+
+	/**
+	 * Given the CharStats object, returns the encoded string
+	 * representing the values in the object.  The encoding is
+	 * the values of the object, in ordinal order, separated
+	 * by | chars.
+	 *
+	 * @see GenericBuilder#setCharStats(CharStats, String)
+	 *
+	 * @param E the CharStats Object
+	 * @return the encoded values object
+	 */
 	public String getCharStatsStr(CharStats E);
+
+	/**
+	 * From the given Environmental, returns the XML of the most basic fields,
+	 * and then phyStats settings, and the ExtraEnv properties.
+	 *
+	 * @see GenericBuilder#setEnvProperties(Environmental, List)
+	 * @see GenericBuilder#getExtraEnvPropertiesStr(Environmental)
+	 *
+	 * @param E the object to give settings to
+	 * @param buf the xml tags containing settings
+	 */
 	public String getEnvPropertiesStr(Environmental E);
+
+	/**
+	 * From the given Environmental, returns xml of certain object
+	 *  settings that come from the objects most basic interfaces,
+	 * such as Physical, Economic, PhysicalAgent, extra bonus stats,
+	 * and scripts.
+	 *
+	 * @see GenericBuilder#setExtraEnvProperties(Environmental, List)
+	 * @see GenericBuilder#getGenScripts(PhysicalAgent, boolean)
+	 *
+	 * @param E the object to give settings to
+	 * @param buf the xml tags containing settings
+	 */
+	public String getExtraEnvPropertiesStr(Environmental E);
+
+	/**
+	 * If the given PhysicalAgent contains any attached Scripts, this
+	 * will bundle them up into an XML document and return them.  If
+	 * includeVars is set to true, it will also bundle all currently
+	 * set script variables.
+	 *
+	 * @see GenericBuilder#setGenScripts(PhysicalAgent, List, boolean)
+	 *
+	 * @param E the object that might be scripted
+	 * @param includeVars true to return any vars also
+	 * @return the xml document, or ""
+	 */
+	public String getGenScripts(PhysicalAgent E, boolean includeVars);
+
+	/**
+	 * Sets the values in the given CharStats object from the
+	 * encoded string.  The encoding is the values of the
+	 * object in ordinal order separated by | chars
+	 *
+	 * @see GenericBuilder#getCharStatsStr(CharStats)
+	 *
+	 * @param E the CharStats object to alter
+	 * @param props the encoded values
+	 */
 	public void setCharStats(CharStats E, String props);
+
+	/**
+	 * Sets the values in the given CharState object from the
+	 * encoded string.  The encoding is the values of the
+	 * object in ordinal order separated by | chars
+	 *
+	 * @see GenericBuilder#getCharStateStr(CharState)
+	 *
+	 * @param E the CharState object to alter
+	 * @param props the encoded values
+	 */
 	public void setCharState(CharState E, String props);
+
+	/**
+	 * Sets the values in the given PhyStats object from the
+	 * encoded string.  The encoding is the values of the
+	 * object in ordinal order separated by | chars
+	 *
+	 * @see GenericBuilder#getPhyStatsStr(PhyStats)
+	 *
+	 * @param E the PhyStats object to alter
+	 * @param props the encoded values
+	 */
 	public void setPhyStats(PhyStats E, String props);
+
+	/**
+	 * Weird function.  Given an optional xml doc in miscText, it will
+	 * return the value of the first &lt;NAME&gt; tag found.  If not,
+	 * then, given a standard mob or item class id, this will return
+	 * the name of that standard object.
+	 *
+	 * @param classID the optional standard class id object
+	 * @param miscText the optional xml document with NAME tag
+	 * @return a name derived from one of the fields, or ""
+	 */
 	public String getQuickName(final String classID, final String miscText);
+
+	/**
+	 * From the given XML tags, set the most basic CMObject fields, and
+	 * then dig into phyStats settings, and ExtraEnv properties,
+	 * and scripts.
+	 *
+	 * @see GenericBuilder#getEnvPropertiesStr(Environmental)
+	 * @see GenericBuilder#setExtraEnvProperties(Environmental, List)
+	 * @see GenericBuilder#setGenScripts(PhysicalAgent, List, boolean)
+	 *
+	 * @param E the object to give settings to
+	 * @param buf the xml tags containing settings
+	 */
 	public void setEnvProperties(Environmental E, List<XMLTag> buf);
+
+	/**
+	 * From the given XML tags, set certain given object settings
+	 * that come from the objects most basic interfaces, such as
+	 * Physical, Economic, PhysicalAgent, extra bonus stats
+	 *
+	 * @see GenericBuilder#getExtraEnvPropertiesStr(Environmental)
+	 *
+	 * @param E the object to give settings to
+	 * @param buf the xml tags containing settings
+	 */
 	public void setExtraEnvProperties(Environmental E, List<XMLTag> buf);
+
+	/**
+	 * From the given XML tags, set any object level Scripts attached to the
+	 * given PhysicalAgent object.  If restoreVars is true, then any variable
+	 * values stored in the XML document are also restored.
+	 *
+	 * @param E the object to give scripts to
+	 * @param buf the xml tags containing scripts
+	 * @param restoreVars true to look for saved variables and restore them
+	 */
+	public void setGenScripts(PhysicalAgent E, List<XMLTag> buf, boolean restoreVars);
 
 	/**
 	 * Sets the value of the given stat on the given object,
