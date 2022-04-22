@@ -121,7 +121,8 @@ public class Spell_GreaterScry extends Spell
 				}
 			}
 			else
-			if((invoker.location()!=((MOB)affected).location())
+			if((affected instanceof MOB)
+			&&(invoker.location()!=((MOB)affected).location())
 			&&(msg.othersCode()!=CMMsg.NO_EFFECT)
 			&&(msg.othersMessage()!=null)
 			&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
