@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -18,6 +19,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.*;
 
 /*
@@ -54,6 +56,12 @@ public class Config extends StdCommand
 	{
 		String postStr="";
 		final int maxAttribLen = 15;
+		boolean quieter=false;
+		if((commands!=null)
+		&&(commands.size()>2)
+		&&(commands.get(1).equalsIgnoreCase("QUIET")))
+			quieter = commands.remove(1) != null;
+
 		if((commands!=null)&&(commands.size()>1))
 		{
 			final String name=commands.get(1);
@@ -115,6 +123,105 @@ public class Config extends StdCommand
 							}
 						}
 						mob.tell(m.toString());
+					}
+					return true;
+				}
+				else
+				if(name.equalsIgnoreCase("COPY"))
+				{
+					final String whomName=(commands.size()>2)?CMParms.combine(commands,2):"";
+					if(whomName.length()==0)
+						mob.tell(L("Copy whose settings?"));
+					else
+					if(!CMLib.players().playerExists(whomName))
+						mob.tell(L("Player '@x1' doesn't exist.",whomName));
+					else
+					{
+						final boolean unloadAfter = CMLib.players().isLoadedPlayer(whomName);
+						final MOB M=CMLib.players().getLoadPlayer(whomName);
+						if((M!=null)
+						&&(M!=mob)
+						&&(!mob.isMonster()))
+						{
+							try
+							{
+								final Session sess = mob.session();
+								final java.util.List<String> changes = new ArrayList<String>();
+								for(final MOB.Attrib a : MOB.Attrib.values())
+								{
+									if(M.isAttributeSet(a) != mob.isAttributeSet(a))
+										changes.add(a.name());
+								}
+								if(mob.playerStats().getPageBreak()!=M.playerStats().getPageBreak())
+									changes.add("PAGEBREAK");
+								if(mob.playerStats().getWrap()!=M.playerStats().getWrap())
+									changes.add("LINEWRAP");
+								final MOB M1=mob;
+								final MOB M2=M;
+								final Config C=this;
+								if(changes.size()==0)
+									mob.tell(L("Your configuration already matches @x1s.",M.name()));
+								else
+								sess.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N",0)
+								{
+									final Session S=sess;
+									final MOB mob=M1;
+									final MOB M=M2;
+									final Config configC = C;
+									@Override
+									public void showPrompt()
+									{
+										S.promptPrint(L("\n\rCopy the config settings '@x1' from player @x2 (y/N)? ",
+												CMLib.english().toEnglishStringList(changes),
+												M.name()));
+									}
+									@Override
+									public void timedOut()
+									{
+									}
+									@Override
+									public void callBack()
+									{
+										if(this.input.equals("Y"))
+										{
+											try
+											{
+												for(final MOB.Attrib a : MOB.Attrib.values())
+												{
+													if(M.isAttributeSet(a) != mob.isAttributeSet(a))
+													{
+														final Vector<String> newCmd = new XVector<String>("CONFIG","QUIET",a.getName());
+														configC.execute(mob, newCmd, metaFlags);
+													}
+												}
+												if(mob.playerStats().getPageBreak()!=M.playerStats().getPageBreak())
+												{
+													final Vector<String> newCmd = new XVector<String>("CONFIG","QUIET","PAGEBREAK",""+M.playerStats().getPageBreak());
+													configC.execute(mob, newCmd, metaFlags);
+												}
+												if(mob.playerStats().getWrap()!=M.playerStats().getWrap())
+												{
+													final Vector<String> newCmd = new XVector<String>("CONFIG","QUIET","LINEWRAP",""+M.playerStats().getWrap());
+													configC.execute(mob, newCmd, metaFlags);
+												}
+												mob.tell(L("Configuration copied and active."));
+											}
+											catch(final IOException e)
+											{
+												Log.errOut(e);
+											}
+										}
+									}
+								});
+							}
+							finally
+							{
+								if(unloadAfter
+								&&(M!=null)
+								&&((M.session()==null)||(M.session().isStopped())))
+									CMLib.players().unloadOfflinePlayer(M);
+							}
+						}
 					}
 					return true;
 				}
@@ -276,7 +383,7 @@ public class Config extends StdCommand
 				}
 				mob.setAttribute(finalA, newSet);
 			}
-			mob.tell(postStr);
+			//mob.tell(postStr);
 		}
 
 		final StringBuffer msg=new StringBuffer(L("^HYour configuration flags:^?\n\r"));
@@ -353,7 +460,8 @@ public class Config extends StdCommand
 		}
 		msg.append("^N");
 		msg.append(L("\n\rUse CONFIG HELP (X) for more information.\n\r"));
-		mob.tell(msg.toString());
+		if(!quieter)
+			mob.tell(msg.toString());
 		mob.tell(postStr);
 		return false;
 	}
