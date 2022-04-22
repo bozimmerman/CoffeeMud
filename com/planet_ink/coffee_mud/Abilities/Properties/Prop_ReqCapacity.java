@@ -164,6 +164,20 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 		return soFar;
 	}
 
+	protected void overflowFix(final Item I, final Room targetRoom)
+	{
+		if((I.phyStats().rejuv()!=0)
+		&&(I.phyStats().rejuv()!=Integer.MAX_VALUE))
+		{
+			I.basePhyStats().setRejuv(PhyStats.NO_REJUV);
+			I.phyStats().setRejuv(PhyStats.NO_REJUV);
+			final ItemTicker iA=(ItemTicker)CMClass.getAbility("ItemRejuv");
+			if(iA!=null)
+				iA.unloadIfNecessary(I);
+		}
+		targetRoom.moveItemTo(I, Expire.Inheret, Move.Optimize);
+	}
+
 	protected void overflowCheck()
 	{
 		final Physical affected=this.affected;
@@ -222,7 +236,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 											&&(I.container()==null)
 											&&((!(I instanceof Container))||(((Container)I).capacity()<=I.basePhyStats().weight())))
 											{
-												targetRoom.moveItemTo(I, Expire.Inheret, Move.Optimize);
+												overflowFix(I,targetRoom);
 												totOver--;
 											}
 										}
@@ -250,7 +264,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 												&&(I.container()!=null))
 												{
 													I.setContainer(null);
-													targetRoom.moveItemTo(I, Expire.Inheret, Move.Optimize);
+													overflowFix(I,targetRoom);
 													totOver--;
 													if(I instanceof Container)
 														totOver-= ((Container)I).getContents().size();
@@ -294,7 +308,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 										{
 											final Item I=R.getItem(ri);
 											if(CMLib.combat().isASiegeWeapon(I))
-												targetRoom.moveItemTo(I, Expire.Inheret, Move.Optimize);
+												overflowFix(I,targetRoom);
 										}
 										R.recoverRoomStats();
 										targetRoom.recoverRoomStats();
@@ -334,7 +348,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 											final Item I=R.getItem(ri);
 											if((I!=null)&&(I.container()==null))
 											{
-												targetRoom.moveItemTo(I, Expire.Inheret, Move.Optimize);
+												overflowFix(I,targetRoom);
 												totOver -= I.phyStats().weight();
 											}
 										}

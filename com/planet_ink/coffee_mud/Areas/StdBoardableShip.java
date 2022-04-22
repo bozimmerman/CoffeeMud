@@ -877,6 +877,7 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 			case CMMsg.TYP_DROP:
 				if(msg.target() instanceof Item)
 				{
+					final StdBoardableShip me=this;
 					final Item I=(Item)msg.target();
 					msg.addTrailerRunnable(new Runnable()
 					{
@@ -884,6 +885,15 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 						public void run()
 						{
 							I.setExpirationDate(0);
+							if((I.phyStats().rejuv()!=Integer.MAX_VALUE)
+							&&(I.phyStats().rejuv()!=0)
+							&&(me.getOwnerName().length()>0)
+							&&(msg.source().location()!=null)
+							&&(me == msg.source().location().getArea()))
+							{
+								I.basePhyStats().setRejuv(PhyStats.NO_REJUV);
+								I.phyStats().setRejuv(PhyStats.NO_REJUV);
+							}
 						}
 					});
 				}

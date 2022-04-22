@@ -54,8 +54,8 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	protected Area 		area			= null;
 	protected String	homePortID		= "";
 
-	protected String		noun_word		= "base";
-	protected String		head_offTheDeck = "^HOutside, you see: ^N";
+	protected String	noun_word		= "base";
+	protected String	head_offTheDeck = "^HOutside, you see: ^N";
 
 	public StdBoardable()
 	{

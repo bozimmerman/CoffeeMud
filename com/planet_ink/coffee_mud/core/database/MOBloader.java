@@ -1791,7 +1791,7 @@ public class MOBloader
 			if((followM.basePhyStats().rejuv()>0)
 			&&(followM.basePhyStats().rejuv()!=PhyStats.NO_REJUV))
 			{
-				final Room loc=followM.location();
+				final Room R=followM.location();
 				final Integer order = Integer.valueOf(mob.fetchFollowerOrder(followM));
 				followM.setFollowing(null);
 				mob.delFollower(followM);
@@ -1803,8 +1803,8 @@ public class MOBloader
 				mob.addFollower(newFol, order.intValue());
 				if(CMLib.flags().isInTheGame(mob, true)
 				&&(!CMLib.flags().isInTheGame(newFol, true))
-				&&(loc!=null))
-					newFol.bringToLife(loc, false);
+				&&(R!=null))
+					newFol.bringToLife(R, false);
 				followM=newFol;
 			}
 

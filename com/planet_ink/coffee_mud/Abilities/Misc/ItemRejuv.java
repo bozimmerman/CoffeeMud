@@ -82,8 +82,8 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 	}
 
 	protected Room			myProperLocation	= null;
-	protected Vector<Item>	contents			= new Vector<Item>();
-	protected Vector<Item>	ccontents			= new Vector<Item>();
+	protected Vector<Item>	contents			= new Vector<Item>(1);
+	protected Vector<Item>	ccontents			= new Vector<Item>(1);
 
 	public synchronized void loadContent(final ItemTicker ticker, final Item item, final Room room)
 	{
