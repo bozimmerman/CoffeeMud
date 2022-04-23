@@ -221,6 +221,22 @@ public interface GenericBuilder extends CMLibrary
 	public void populateShops(ShopKeeper shopKeep, List<XMLTag> buf);
 	public String getPlayerXML(MOB mob, Set<CMObject> custom, Set<String> files);
 	public String getAccountXML(PlayerAccount account, Set<CMObject> custom, Set<String> files);
+
+	/**
+	 * Creates player account objects and player character MOB objects from the
+	 * given XML document.  If a Session is sent, then any confirmations or
+	 * special messages are done through that session.  This does not actually
+	 * save the accounts or characters to the database.
+	 *
+	 * @see GenericBuilder#getPlayerXML(MOB, Set, Set)
+	 * @see GenericBuilder#getAccountXML(PlayerAccount, Set, Set)
+	 *
+	 * @param xmlBuffer the XML document
+	 * @param addAccounts the list to put accounts into
+	 * @param addMobs the list to put character mobsinto
+	 * @param S an optional session object for interaction
+	 * @return any errors that occurred, or "" for all-OK
+	 */
 	public String addPlayersAndAccountsFromXML(String xmlBuffer, List<PlayerAccount> addAccounts, List<MOB> addMobs, Session S);
 
 	/**
