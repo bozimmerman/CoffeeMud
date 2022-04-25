@@ -1310,6 +1310,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					oldBehavsNEffects.addElement(B);
 			}
 			CMLib.threads().deleteTick(oldR,-1);
+			CMLib.threads().rejuv(R, Tickable.TICKID_ROOM_ITEM_REJUV);
 			R.setRoomID(oldR.roomID());
 			for(int d=0;d<R.rawDoors().length;d++)
 				R.rawDoors()[d]=oldR.rawDoors()[d];

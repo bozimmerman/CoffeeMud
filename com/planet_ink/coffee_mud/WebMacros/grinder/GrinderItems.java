@@ -1073,6 +1073,7 @@ public class GrinderItems
 				{
 					CMLib.database().DBUpdateItems(R);
 					httpReq.addFakeUrlParameter("ITEM",RoomData.getItemCode(R,I));
+					CMLib.threads().rejuv(R, Tickable.TICKID_ROOM_ITEM_REJUV);
 					R.startItemRejuv();
 				}
 			}

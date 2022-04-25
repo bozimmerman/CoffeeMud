@@ -365,6 +365,7 @@ public class GrinderRooms
 			CMLib.database().DBUpdateRoom(R);
 			CMLib.database().DBUpdateMOBs(R);
 			CMLib.database().DBUpdateItems(R);
+			CMLib.threads().rejuv(R, Tickable.TICKID_ROOM_ITEM_REJUV);
 			R.startItemRejuv();
 			if(oldR!=R)
 			{

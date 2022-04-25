@@ -124,6 +124,7 @@ public class Save extends StdCommand
 			if((taskCode == SaveTask.ALL) || (taskCode == SaveTask.ITEMS))
 			{
 				CMLib.database().DBUpdateItems(room);
+				CMLib.threads().rejuv(room, Tickable.TICKID_ROOM_ITEM_REJUV);
 				room.startItemRejuv();
 			}
 			if((taskCode == SaveTask.ALL) || (taskCode == SaveTask.MOBS))

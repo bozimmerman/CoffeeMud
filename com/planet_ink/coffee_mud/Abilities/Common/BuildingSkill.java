@@ -1138,6 +1138,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			R.rawDoors()[d]=room.rawDoors()[d];
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			R.setRawExit(d,room.getRawExit(d));
+		CMLib.threads().rejuv(R, Tickable.TICKID_ROOM_ITEM_REJUV);
 		R.startItemRejuv();
 		try
 		{
