@@ -218,8 +218,43 @@ public interface GenericBuilder extends CMLibrary
 	public StringBuffer getItemXML(Item item);
 	public StringBuffer getRoomXML(Room room,  Set<CMObject> custom, Set<String> files, boolean andContent);
 	public Ammunition makeAmmunition(String ammunitionType, int number);
+
+	/**
+	 * Given parsed xml tags, this method will extract the basic shop
+	 * settings into the given ShopKeeper object, as well as populate
+	 * the shop inventory itself from the given xml.
+	 *
+	 * @param shopKeep the shopkeeper to populate
+	 * @param buf the parsed xml doc with STORE, etc tags
+	 */
 	public void populateShops(ShopKeeper shopKeep, List<XMLTag> buf);
+
+	/**
+	 * Give a player/character mob, this will return an xml document of the mob object,
+	 * as well as any items, etc contained therein.  Dependency custom objects and
+	 * script file paths can optionally be captured during this process.
+	 *
+	 * @see GenericBuilder#addPlayersAndAccountsFromXML(String, List, List, Session)
+	 *
+	 * @param mob the player/character mob to get the xml of
+	 * @param custom optional set in which to capture custom classes, races
+	 * @param files optional set in which to capture script paths
+	 * @return the xml document of the character
+	 */
 	public String getPlayerXML(MOB mob, Set<CMObject> custom, Set<String> files);
+
+	/**
+	 * Given a player account, this will return an XML document of the account objects, as
+	 * well as all characters contained in the account.  Dependency custom objects and
+	 * script file paths can optionally be captured during this process.
+	 *
+	 * @see GenericBuilder#addPlayersAndAccountsFromXML(String, List, List, Session)
+	 *
+	 * @param account the account to get the xml of
+	 * @param custom optional set in which to capture custom classes, races
+	 * @param files optional set in which to capture script paths
+	 * @return the xml document of the account
+	 */
 	public String getAccountXML(PlayerAccount account, Set<CMObject> custom, Set<String> files);
 
 	/**
