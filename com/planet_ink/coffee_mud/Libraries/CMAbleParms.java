@@ -5141,7 +5141,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						oldRsc = oldVal.substring(0,x);
 						oldAmt = CMath.s_int(oldVal.substring(x));
 					}
-					oldRsc = CMLib.genEd().prompt(mob,oldRsc,++showNumber[0],showFlag,prompt(),choices());
+					oldRsc = CMLib.genEd().promptChoice(mob,oldRsc,++showNumber[0],showFlag,prompt(),choices());
 					if(oldRsc.length()>0)
 						return oldRsc+"/"+CMLib.genEd().prompt(mob,oldAmt,++showNumber[0],showFlag,prompt());
 					return "";
