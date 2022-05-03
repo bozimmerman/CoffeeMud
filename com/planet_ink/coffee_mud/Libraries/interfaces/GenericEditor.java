@@ -32,10 +32,36 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * The command line user interface for almost all On Line Editor functions
+ * goes through this library.  Functions are available for Modifiable
+ * interface edits, general menu edits, as well as abstract object
+ * editor menu interfaces.
+ *
+ * @author Bo Zimmerman
+ *
+ */
 public interface GenericEditor extends CMLibrary
 {
+	/**
+	 * An interface for implementing a custom evaluator
+	 * for prompts requiring lists of things.
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public static interface CMEval
 	{
+		/**
+		 * Evaluate the given value entry against a list
+		 * of choices, throwing an exception on problems.
+		 *
+		 * @param val the user entry
+		 * @param choices the choices
+		 * @param emptyOK true if "" is an ok value
+		 * @return the adjusted value
+		 * @throws CMException any errors
+		 */
 		public Object eval(Object val, Object[] choices, boolean emptyOK)
 				throws CMException;
 	}
@@ -74,30 +100,30 @@ public interface GenericEditor extends CMLibrary
 	public void genName(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException;
 	public void genMiscText(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException;
 
-	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, PairList<String,String> choices) throws IOException;
-	public int promptMulti(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp, PairList<String,String> choices) throws IOException;
-	public String promptMultiSelectList(MOB mob, String oldVal, String delimiter, int showNumber, int showFlag, String FieldDisp, PairList<String,String> choices, boolean nullOK) throws IOException;
-	public String promptMultiOrExtra(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, PairList<String,String> choices) throws IOException;
-	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException;
-	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK) throws IOException;
-	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint) throws IOException;
-	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, String help) throws IOException;
-	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, String help) throws IOException;
-	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint, String help) throws IOException;
-	public boolean promptToggle(MOB mob, int showNumber, int showFlag, String FieldDisp) throws IOException;
-	public boolean prompt(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException;
-	public boolean prompt(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp, String help) throws IOException;
-	public double prompt(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException;
-	public double prompt(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp, String help) throws IOException;
-	public int prompt(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException;
-	public int prompt(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp, String help) throws IOException;
-	public long prompt(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException;
-	public long prompt(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp, String help) throws IOException;
+	public boolean promptToggle(MOB mob, int showNumber, int showFlag, String fieldDisp) throws IOException;
+	public boolean prompt(MOB mob, boolean oldVal, int showNumber, int showFlag, String fieldDisp) throws IOException;
+	public boolean prompt(MOB mob, boolean oldVal, int showNumber, int showFlag, String fieldDisp, String help) throws IOException;
+	public double prompt(MOB mob, double oldVal, int showNumber, int showFlag, String fieldDisp) throws IOException;
+	public double prompt(MOB mob, double oldVal, int showNumber, int showFlag, String fieldDisp, String help) throws IOException;
+	public int prompt(MOB mob, int oldVal, int showNumber, int showFlag, String fieldDisp) throws IOException;
+	public int prompt(MOB mob, int oldVal, int showNumber, int showFlag, String fieldDisp, String help) throws IOException;
+	public long prompt(MOB mob, long oldVal, int showNumber, int showFlag, String fieldDisp) throws IOException;
+	public long prompt(MOB mob, long oldVal, int showNumber, int showFlag, String fieldDisp, String help) throws IOException;
+	public int promptMulti(MOB mob, int oldVal, int showNumber, int showFlag, String fieldDisp, PairList<String,String> choices) throws IOException;
+	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String fieldDisp, PairList<String,String> choices) throws IOException;
+	public String promptMultiSelectList(MOB mob, String oldVal, String delimiter, int showNumber, int showFlag, String fieldDisp, PairList<String,String> choices, boolean nullOK) throws IOException;
+	public String promptMultiOrExtra(MOB mob, String oldVal, int showNumber, int showFlag, String fieldDisp, PairList<String,String> choices) throws IOException;
+	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String fieldDisp) throws IOException;
+	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String fieldDisp, boolean emptyOK) throws IOException;
+	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String fieldDisp, boolean emptyOK, boolean rawPrint) throws IOException;
+	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String fieldDisp, boolean emptyOK, String help) throws IOException;
+	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String fieldDisp, String help) throws IOException;
+	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String fieldDisp, boolean emptyOK, boolean rawPrint, String help) throws IOException;
 	public String prompt(MOB mob,
 						String oldVal,
 						int showNumber,
 						int showFlag,
-						String FieldDisp,
+						String fieldDisp,
 						boolean emptyOK,
 						boolean rawPrint,
 						String help,
@@ -107,22 +133,189 @@ public interface GenericEditor extends CMLibrary
 						String oldVal,
 						int showNumber,
 						int showFlag,
-						String FieldDisp,
+						String fieldDisp,
 						boolean emptyOK,
 						boolean rawPrint,
 						int maxChars,
 						String help,
 						CMEval eval,
 						Object[] choices) throws IOException;
-	public void promptStatStr(MOB mob, Modifiable E, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException;
-	public void promptStatStr(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, boolean emptyOK) throws IOException;
-	public void promptStatInt(MOB mob, Modifiable E, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException;
-	public void promptStatInt(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException;
-	public void promptStatBool(MOB mob, Modifiable E, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException;
-	public void promptStatBool(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException;
-	public void promptStatDouble(MOB mob, Modifiable E, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException;
-	public void promptStatDouble(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException;
-	public void promptStatChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, Object[] choices) throws IOException;
-	public void promptStatCommaChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, Object[] choices) throws IOException;
-	public Collection<? extends Object> promptFlags(final MOB mob, final Collection<? extends Object> flags, final Object[] values, final int showNumber, final int showFlag, final String fieldDisplayStr) throws IOException;
+
+	/**
+	 * Prompts the given mob for a Modifiable interface String stat value.
+	 * Sets the Modifiable stat value appropriately.
+	 *
+	 * @see com.planet_ink.coffee_mud.core.interfaces.Modifiable
+	 * @param mob the player doing the editing
+	 * @param E the Modifiable object to modify
+	 * @param showNumber the item number of this menu entry
+	 * @param showFlag 0 to only show prompt and value, -999 to always edit, or the showNumber to edit
+	 * @param fieldDisp the prompt display string
+	 * @param statField the official Modifiable stat field id
+	 * @param emptyOK true if "" is acceptable, false otherwise
+	 * @throws IOException any i/o errors that occur (socket reset errors usually)
+	 */
+	public void promptStatStr(MOB mob, Modifiable E, int showNumber, int showFlag, String fieldDisp, String statField) throws IOException;
+
+	/**
+	 * Prompts the given mob for a Modifiable interface String stat value.
+	 * Sets the Modifiable stat value appropriately.
+	 *
+	 * @see com.planet_ink.coffee_mud.core.interfaces.Modifiable
+	 * @param mob the player doing the editing
+	 * @param E the Modifiable object to modify
+	 * @param help null, or a help message to respond to on ?
+	 * @param showNumber the item number of this menu entry
+	 * @param showFlag 0 to only show prompt and value, -999 to always edit, or the showNumber to edit
+	 * @param fieldDisp the prompt display string
+	 * @param statField the official Modifiable stat field id
+	 * @param emptyOK true if "" is acceptable, false otherwise
+	 * @throws IOException any i/o errors that occur (socket reset errors usually)
+	 */
+	public void promptStatStr(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String fieldDisp, String statField, boolean emptyOK) throws IOException;
+
+	/**
+	 * Prompts the given mob for a Modifiable interface Integer stat value.
+	 * Sets the Modifiable stat value appropriately.
+	 *
+	 * @see com.planet_ink.coffee_mud.core.interfaces.Modifiable
+	 * @param mob the player doing the editing
+	 * @param E the Modifiable object to modify
+	 * @param showNumber the item number of this menu entry
+	 * @param showFlag 0 to only show prompt and value, -999 to always edit, or the showNumber to edit
+	 * @param fieldDisp the prompt display string
+	 * @param statField the official Modifiable stat field id
+	 * @throws IOException any i/o errors that occur (socket reset errors usually)
+	 */
+	public void promptStatInt(MOB mob, Modifiable E, int showNumber, int showFlag, String fieldDisp, String statField) throws IOException;
+
+	/**
+	 * Prompts the given mob for a Modifiable interface Integer stat value.
+	 * Sets the Modifiable stat value appropriately.
+	 *
+	 * @see com.planet_ink.coffee_mud.core.interfaces.Modifiable
+	 * @param mob the player doing the editing
+	 * @param E the Modifiable object to modify
+	 * @param help null, or a help message to respond to on ?
+	 * @param showNumber the item number of this menu entry
+	 * @param showFlag 0 to only show prompt and value, -999 to always edit, or the showNumber to edit
+	 * @param fieldDisp the prompt display string
+	 * @param statField the official Modifiable stat field id
+	 * @throws IOException any i/o errors that occur (socket reset errors usually)
+	 */
+	public void promptStatInt(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String fieldDisp, String statField) throws IOException;
+
+	/**
+	 * Prompts the given mob for a Modifiable interface Boolean stat value.
+	 * Sets the Modifiable stat value appropriately.
+	 *
+	 * @see com.planet_ink.coffee_mud.core.interfaces.Modifiable
+	 * @param mob the player doing the editing
+	 * @param E the Modifiable object to modify
+	 * @param showNumber the item number of this menu entry
+	 * @param showFlag 0 to only show prompt and value, -999 to always edit, or the showNumber to edit
+	 * @param fieldDisp the prompt display string
+	 * @param statField the official Modifiable stat field id
+	 * @throws IOException any i/o errors that occur (socket reset errors usually)
+	 */
+	public void promptStatBool(MOB mob, Modifiable E, int showNumber, int showFlag, String fieldDisp, String statField) throws IOException;
+
+	/**
+	 * Prompts the given mob for a Modifiable interface Boolean stat value.
+	 * Sets the Modifiable stat value appropriately.
+	 *
+	 * @see com.planet_ink.coffee_mud.core.interfaces.Modifiable
+	 * @param mob the player doing the editing
+	 * @param E the Modifiable object to modify
+	 * @param help null, or a help message to respond to on ?
+	 * @param showNumber the item number of this menu entry
+	 * @param showFlag 0 to only show prompt and value, -999 to always edit, or the showNumber to edit
+	 * @param fieldDisp the prompt display string
+	 * @param statField the official Modifiable stat field id
+	 * @throws IOException any i/o errors that occur (socket reset errors usually)
+	 */
+	public void promptStatBool(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String fieldDisp, String statField) throws IOException;
+
+	/**
+	 * Prompts the given mob for a Modifiable interface Double stat value.
+	 * Sets the Modifiable stat value appropriately.
+	 *
+	 * @see com.planet_ink.coffee_mud.core.interfaces.Modifiable
+	 * @param mob the player doing the editing
+	 * @param E the Modifiable object to modify
+	 * @param showNumber the item number of this menu entry
+	 * @param showFlag 0 to only show prompt and value, -999 to always edit, or the showNumber to edit
+	 * @param fieldDisp the prompt display string
+	 * @param statField the official Modifiable stat field id
+	 * @throws IOException any i/o errors that occur (socket reset errors usually)
+	 */
+	public void promptStatDouble(MOB mob, Modifiable E, int showNumber, int showFlag, String fieldDisp, String statField) throws IOException;
+
+	/**
+	 * Prompts the given mob for a Modifiable interface Double stat value.
+	 * Sets the Modifiable stat value appropriately.
+	 *
+	 * @see com.planet_ink.coffee_mud.core.interfaces.Modifiable
+	 * @param mob the player doing the editing
+	 * @param E the Modifiable object to modify
+	 * @param help null, or a help message to respond to on ?
+	 * @param showNumber the item number of this menu entry
+	 * @param showFlag 0 to only show prompt and value, -999 to always edit, or the showNumber to edit
+	 * @param fieldDisp the prompt display string
+	 * @param statField the official Modifiable stat field id
+	 * @throws IOException any i/o errors that occur (socket reset errors usually)
+	 */
+	public void promptStatDouble(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String fieldDisp, String statField) throws IOException;
+
+	/**
+	 * Prompts the given mob for a Modifiable interface stat value chosen from
+	 * a set of choices.
+	 * Sets the Modifiable stat value appropriately.
+	 *
+	 * @see com.planet_ink.coffee_mud.core.interfaces.Modifiable
+	 * @param mob the player doing the editing
+	 * @param E the Modifiable object to modify
+	 * @param help null, or a help message to respond to on ?
+	 * @param showNumber the item number of this menu entry
+	 * @param showFlag 0 to only show prompt and value, -999 to always edit, or the showNumber to edit
+	 * @param fieldDisp the prompt display string
+	 * @param statField the official Modifiable stat field id
+	 * @param choices the set of valid choices, any object that has toString()
+	 * @throws IOException any i/o errors that occur (socket reset errors usually)
+	 */
+	public void promptStatChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String fieldDisp, String statField, Object[] choices) throws IOException;
+
+	/**
+	 * Prompts the given mob for a Modifiable interface stat value that consists of a
+	 * comma delimited list of values from a set of choices.
+	 * Sets the Modifiable stat value appropriately.
+	 *
+	 * @see com.planet_ink.coffee_mud.core.interfaces.Modifiable
+	 * @param mob the player doing the editing
+	 * @param E the Modifiable object to modify
+	 * @param help null, or a help message to respond to on ?
+	 * @param showNumber the item number of this menu entry
+	 * @param showFlag 0 to only show prompt and value, -999 to always edit, or the showNumber to edit
+	 * @param fieldDisp the prompt display string
+	 * @param statField the official Modifiable stat field id
+	 * @param choices the set of valid choices, any object that has toString()
+	 * @throws IOException any i/o errors that occur (socket reset errors usually)
+	 */
+	public void promptStatCommaChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String fieldDisp, String statField, Object[] choices) throws IOException;
+
+	/**
+	 * Prompts the given mob for one or more choices from a given enum values
+	 * array.  Returns all the choices in a collection.  Uses the standard
+	 * menu interface.
+	 *
+	 * @param mob the player doing the editing
+	 * @param flags the current existing set of selected enum values
+	 * @param values the full set of all enum values
+	 * @param showNumber the item number of this menu entry
+	 * @param showFlag 0 to only show prompt and value, -999 to always edit, or the showNumber to edit
+	 * @param fieldDisplayStr the prompt display string
+	 * @return the new user value
+	 * @throws IOException any i/o errors that occur (socket reset errors usually)
+	 */
+	public Collection<? extends Object> promptEnumChoices(final MOB mob, final Collection<? extends Object> flags, final Object[] values, final int showNumber, final int showFlag, final String fieldDisplayStr) throws IOException;
 }

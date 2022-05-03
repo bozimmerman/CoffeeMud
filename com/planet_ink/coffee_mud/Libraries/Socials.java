@@ -706,7 +706,7 @@ public class Socials extends StdLibrary implements SocialsList
 						soc.setFailedMessage(CMLib.genEd().prompt(mob,soc.getFailedTargetMessage(),++showNumber,showFlag,L("You-see when no target"),false,true));
 					soc.setSoundFile(CMLib.genEd().prompt(mob,soc.getSoundFile(),++showNumber,showFlag,L("Sound file"),true,false));
 					soc.setCriteriaZappermask(CMLib.genEd().prompt(mob,soc.getCriteriaZappermask(),++showNumber,showFlag,L("Zappermask"),true,false));
-					final Collection<? extends Object> newFlags = CMLib.genEd().promptFlags(mob, soc.getFlags(), Social.SocialFlag.values(), ++showNumber, showFlag, L("Flags (?): "));
+					final Collection<? extends Object> newFlags = CMLib.genEd().promptEnumChoices(mob, soc.getFlags(), Social.SocialFlag.values(), ++showNumber, showFlag, L("Flags (?): "));
 					@SuppressWarnings("unchecked")
 					final Collection<Social.SocialFlag> newSocFlags=(Collection<Social.SocialFlag>)newFlags;
 					soc.getFlags().clear();

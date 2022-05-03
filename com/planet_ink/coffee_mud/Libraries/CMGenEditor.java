@@ -82,7 +82,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	};
 
 	@Override
-	public Collection<? extends Object> promptFlags(final MOB mob, final Collection<? extends Object> flags, final Object[] values, final int showNumber, final int showFlag, final String fieldDisplayStr) throws IOException
+	public Collection<? extends Object> promptEnumChoices(final MOB mob, final Collection<? extends Object> flags, final Object[] values, final int showNumber, final int showFlag, final String fieldDisplayStr) throws IOException
 	{
 		final String help=CMParms.toListString(values);
 		final String oldVal = CMParms.toListString(flags.toArray());
