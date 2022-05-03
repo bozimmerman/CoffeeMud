@@ -1603,7 +1603,7 @@ public class Quests extends StdLibrary implements QuestManager
 	{
 		MOB M=null;
 		final List<MOB> choices=new ArrayList<MOB>();
-		MOB baseM=((showValue!=null)?baseM=CMLib.coffeeMaker().getMobFromXML(showValue):null);
+		MOB baseM=((showValue!=null)?baseM=CMLib.coffeeMaker().unpackMobFromXML(showValue):null);
 		final StringBuffer choiceDescs=new StringBuffer("");
 		if(baseM!=null)
 		{
@@ -1675,7 +1675,7 @@ public class Quests extends StdLibrary implements QuestManager
 	{
 		Item I=null;
 		final List<Item> choices=new ArrayList<Item>();
-		Item baseI=((showValue!=null)?baseI=CMLib.coffeeMaker().getItemFromXML(showValue):null);
+		Item baseI=((showValue!=null)?baseI=CMLib.coffeeMaker().unpackItemFromXML(showValue):null);
 		final StringBuffer choiceDescs=new StringBuffer("");
 		if(baseI!=null)
 		{

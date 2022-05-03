@@ -434,7 +434,7 @@ public class StdRoom implements Room
 	@Override
 	public String text()
 	{
-		return CMLib.coffeeMaker().getPropertiesStr(this,true);
+		return CMLib.coffeeMaker().getEnvironmentalMiscTextXML(this,true);
 	}
 
 	@Override
@@ -447,7 +447,7 @@ public class StdRoom implements Room
 	public void setMiscText(final String newMiscText)
 	{
 		if(newMiscText.trim().length()>0)
-			CMLib.coffeeMaker().setPropertiesStr(this,newMiscText,true);
+			CMLib.coffeeMaker().unpackEnvironmentalMiscTextXML(this,newMiscText,true);
 	}
 
 	@Override
@@ -3164,7 +3164,7 @@ public class StdRoom implements Room
 		case 3:
 			return text();
 		case 4:
-			return CMLib.coffeeMaker().getExtraEnvPropertiesStr(this);
+			return CMLib.coffeeMaker().getExtraEnvironmentalXML(this);
 		case 5:
 			return rawImage();
 		case 6:
@@ -3198,7 +3198,7 @@ public class StdRoom implements Room
 		{
 			delAllEffects(true);
 			delAllBehaviors();
-			CMLib.coffeeMaker().setExtraEnvProperties(this, CMLib.xml().parseAllXML(val));
+			CMLib.coffeeMaker().unpackExtraEnvironmentalXML(this, CMLib.xml().parseAllXML(val));
 			break;
 		}
 		case 5:

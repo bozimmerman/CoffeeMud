@@ -1227,7 +1227,7 @@ public interface AbilityMapper extends CMLibrary
 		/**
 		 * Gets whether this skill is secret and unseen even when
 		 * qualified for.
-		 * see {@link com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping#secretFlag(SecretFlag) }
+		 * @see AbilityMapper.AbilityMapping#secretFlag(SecretFlag)
 		 * @return whether this skill is secret and unseen
 		 */
 		public SecretFlag				secretFlag();

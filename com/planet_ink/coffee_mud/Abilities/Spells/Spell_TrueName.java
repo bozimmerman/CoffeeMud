@@ -145,7 +145,7 @@ public class Spell_TrueName extends Spell
 			if(x<0)
 				return monster;
 			trueName=text().substring(0,x);
-			monster=CMLib.coffeeMaker().getMobFromXML(text().substring(x+1));
+			monster=CMLib.coffeeMaker().unpackMobFromXML(text().substring(x+1));
 			monsterAppearanceTime=Long.valueOf(System.currentTimeMillis()+(5*60*1000));
 		}
 		return monster;
@@ -379,7 +379,7 @@ public class Spell_TrueName extends Spell
 					final Spell_TrueName A=(Spell_TrueName)beneficialAffect(mob, mob, asLevel, (int)CMProps.getTicksPerDay());
 					if(A!=null)
 					{
-						final StringBuffer xml=CMLib.coffeeMaker().getMobXML(target);
+						final String xml=CMLib.coffeeMaker().getMobXML(target);
 						A.setMiscText(trueName+";"+xml.toString());
 						if(target.isInCombat())
 							target.makePeace(true);

@@ -1000,7 +1000,7 @@ public class StdArea implements Area
 	@Override
 	public String text()
 	{
-		return CMLib.coffeeMaker().getPropertiesStr(this, true);
+		return CMLib.coffeeMaker().getEnvironmentalMiscTextXML(this, true);
 	}
 
 	@Override
@@ -1008,7 +1008,7 @@ public class StdArea implements Area
 	{
 		miscText = "";
 		if (newMiscText.trim().length() > 0)
-			CMLib.coffeeMaker().setPropertiesStr(this, newMiscText, true);
+			CMLib.coffeeMaker().unpackEnvironmentalMiscTextXML(this, newMiscText, true);
 		derivedClimate = CLIMASK_INHERIT;
 		derivedAtmo = ATMOSPHERE_INHERIT;
 		derivedTheme = THEME_INHERIT;

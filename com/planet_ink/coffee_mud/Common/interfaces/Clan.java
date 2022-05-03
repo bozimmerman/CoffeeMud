@@ -537,7 +537,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooa
 
 	/**
 	 * Returns the amount of base gold value this clan has received.
-	 * @param killer the member of this clan that did the killing or NULL for all
+	 * @param memberM the member of this clan that did the killing or NULL for all
 	 * @return the amount of deposits.
 	 */
 	public double getCurrentClanDuesOwed(MOB memberM);
@@ -908,11 +908,11 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooa
 	 * @return this clans factory mob
 	 */
 	public MOB getFactoryMOB();
-	
+
 	/**
-	 * Expensively calculates the given clans preferred banking details, 
+	 * Expensively calculates the given clans preferred banking details,
 	 * which is a pair including the bank chain, and the currency preferred.
-	 * 
+	 *
 	 * @return the pair including the bank chain, and the currency preferred.
 	 */
 	public Pair<String,String> getPreferredBanking();

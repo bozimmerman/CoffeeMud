@@ -190,7 +190,7 @@ public class MOBloader
 				R.close();
 				if(pstats.getSavedPose().length()>0)
 					mob.setDisplayText(pstats.getSavedPose());
-				CMLib.coffeeMaker().setFactionFromXML(mob,CleanXML);
+				CMLib.coffeeMaker().unpackFactionFromXML(mob,CleanXML);
 				if((CMProps.isUsingAccountSystem())&&(pstats.getAccount()==null))
 				{
 					// yes, this can happen when you wiggle in and out of the account system.
@@ -386,7 +386,7 @@ public class MOBloader
 						{
 							final String addOnXml=text.substring(0,roomY+8);
 							text=text.substring(roomY+8);
-							extraContentR=(Room)CMLib.coffeeMaker().getUnknownFromXML(addOnXml);
+							extraContentR=(Room)CMLib.coffeeMaker().unpackUnknownFromXML(addOnXml);
 						}
 						newItem.setMiscText(text);
 						final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(roomXML);
@@ -545,7 +545,7 @@ public class MOBloader
 
 							final String xml=DBConnections.getRes(R,"CMABTX");
 							if(xml.length()>0)
-								CMLib.coffeeMaker().setGenScripts(mob,CMLib.xml().parseAllXML(xml),true);
+								CMLib.coffeeMaker().unpackGenScriptsXML(mob,CMLib.xml().parseAllXML(xml),true);
 						}
 					}
 					else
@@ -1926,7 +1926,7 @@ public class MOBloader
 				}
 			}
 		}
-		final String scriptStuff = CMLib.coffeeMaker().getGenScripts(mob,true);
+		final String scriptStuff = CMLib.coffeeMaker().getGenScriptsXML(mob,true);
 		if(scriptStuff.length()>0)
 		{
 			final String sql="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"

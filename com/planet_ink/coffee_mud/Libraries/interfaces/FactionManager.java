@@ -231,7 +231,7 @@ public interface FactionManager extends CMLibrary, Tickable
 	 *
 	 * @see FactionManager#getFactionByRangeCodeName(String)
 	 * @see FactionManager#getFactionRangeByCodeName(String)
-	 * @see FactionManager#getRange(String, int)n
+	 * @see FactionManager#getRange(String, int)
 	 *
 	 * @param factionID the faction id of the faction to check
 	 * @return the enumerator of faction range objects
@@ -264,7 +264,7 @@ public interface FactionManager extends CMLibrary, Tickable
 	 * Returns the faction object with the given
 	 * exact case-insensitive display name.
 	 *
-	 * @see FactionManager#getFaction(String)n
+	 * @see FactionManager#getFaction(String)
 	 *
 	 * @param factionNamed the display name to look for
 	 * @return the faction obj or null
@@ -411,7 +411,7 @@ public interface FactionManager extends CMLibrary, Tickable
 	 * @see FAbilityMaskType
 	 *
 	 * @param strflag the string to find a flag type rep of
-	 * @return
+	 * @return the ability mask type
 	 */
 	public FAbilityMaskType getAbilityFlagType(String strflag);
 

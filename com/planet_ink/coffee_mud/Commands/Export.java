@@ -494,13 +494,13 @@ public class Export extends StdCommand
 					S.rawPrint(L("Reading catalog items and mobs..."));
 				x.append("\r\n<MOBS>");
 				final Map<String,List<MOB>> foundMobs=new TreeMap<String,List<MOB>>();
-				x.append(CMLib.coffeeMaker().getMobsXML(Arrays.asList(CMLib.catalog().getCatalogMobs()), custom, files, foundMobs));
+				x.append(CMLib.coffeeMaker().getUniqueMobsXML(Arrays.asList(CMLib.catalog().getCatalogMobs()), custom, files, foundMobs));
 				x.append("\r\n</MOBS>\r\n");
 				x.append("\r\n").append(getCatalogData(foundMobs));
 				foundMobs.clear();
 				x.append("\r\n<ITEMS>");
 				final Map<String,List<Item>> foundItems=new TreeMap<String,List<Item>>();
-				x.append(CMLib.coffeeMaker().getItemsXML(Arrays.asList(CMLib.catalog().getCatalogItems()), foundItems, files, null));
+				x.append(CMLib.coffeeMaker().getUniqueItemsXML(Arrays.asList(CMLib.catalog().getCatalogItems()), foundItems, files, null));
 				x.append("\r\n</ITEMS>\r\n");
 				x.append("\r\n").append(getCatalogData(foundItems));
 				foundItems.clear();
@@ -728,7 +728,7 @@ public class Export extends StdCommand
 			{
 				x.append("\r\n<MOBS>");
 				final Map<String,List<MOB>> found = new TreeMap<String,List<MOB>>();
-				x.append(CMLib.coffeeMaker().getMobsXML(Arrays.asList(CMLib.catalog().getCatalogMobs()), custom, files, found));
+				x.append(CMLib.coffeeMaker().getUniqueMobsXML(Arrays.asList(CMLib.catalog().getCatalogMobs()), custom, files, found));
 				x.append("\r\n</MOBS>\r\n");
 				x.append("\r\n").append(getCatalogData(found));
 			}
@@ -736,7 +736,7 @@ public class Export extends StdCommand
 			{
 				final Map<String,List<Item>> found=new TreeMap<String,List<Item>>();
 				x.append("\r\n<ITEMS>");
-				x.append(CMLib.coffeeMaker().getItemsXML(Arrays.asList(CMLib.catalog().getCatalogItems()), found, files, type));
+				x.append(CMLib.coffeeMaker().getUniqueItemsXML(Arrays.asList(CMLib.catalog().getCatalogItems()), found, files, type));
 				x.append("\r\n</ITEMS>\r\n");
 				x.append("\r\n").append(getCatalogData(found));
 			}

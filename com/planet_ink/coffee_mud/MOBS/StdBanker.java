@@ -116,10 +116,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 		if(container != null)
 		{
 			final String containerKey=""+container+container.hashCode();
-			CMLib.database().DBCreatePlayerData(depositorName,bankChain(),key,classID+";CONTAINER="+containerKey+";"+CMLib.coffeeMaker().getPropertiesStr(item,true));
+			CMLib.database().DBCreatePlayerData(depositorName,bankChain(),key,classID+";CONTAINER="+containerKey+";"+CMLib.coffeeMaker().getEnvironmentalMiscTextXML(item,true));
 		}
 		else
-			CMLib.database().DBCreatePlayerData(depositorName,bankChain(),key,classID+";"+CMLib.coffeeMaker().getPropertiesStr(item,true));
+			CMLib.database().DBCreatePlayerData(depositorName,bankChain(),key,classID+";"+CMLib.coffeeMaker().getEnvironmentalMiscTextXML(item,true));
 	}
 
 	protected Pair<Item,String> makeItemContainer(final String data)
@@ -145,7 +145,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					xml=xml.substring(x+1);
 				}
 			}
-			CMLib.coffeeMaker().setPropertiesStr(I,xml,true);
+			CMLib.coffeeMaker().unpackEnvironmentalMiscTextXML(I,xml,true);
 			if((I instanceof Coins)
 			&&(((Coins)I).getDenomination()==0.0)
 			&&(((Coins)I).getNumberOfCoins()>0))

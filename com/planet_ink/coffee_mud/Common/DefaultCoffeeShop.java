@@ -642,7 +642,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 			itemstr.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.classID(E)));
 			itemstr.append(CMLib.xml().convertXMLtoTag("INUM",""+numberInStock(E)));
 			itemstr.append(CMLib.xml().convertXMLtoTag("IVAL",""+stockPrice(E)));
-			itemstr.append(CMLib.xml().convertXMLtoTag("IDATA",CMLib.coffeeMaker().getPropertiesStr(E,true)));
+			itemstr.append(CMLib.xml().convertXMLtoTag("IDATA",CMLib.coffeeMaker().getEnvironmentalMiscTextXML(E,true)));
 			itemstr.append("</INV>");
 		}
 		return itemstr.toString()+"</INVS>";
@@ -761,7 +761,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 				Log.errOut("DefaultCoffeeShop","Error parsing 'INV' data.");
 				return;
 			}
-			CMLib.coffeeMaker().setPropertiesStr(newOne,idat,true);
+			CMLib.coffeeMaker().unpackEnvironmentalMiscTextXML(newOne,idat,true);
 			final PhysicalAgent P=newOne;
 			P.recoverPhyStats();
 			addStoreInventory(P,itemnum,val);

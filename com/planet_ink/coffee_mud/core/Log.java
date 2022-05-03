@@ -1359,6 +1359,7 @@ public class Log extends java.util.logging.Logger
 	* @param type The channel to print to
 	* @param module The module to print
 	* @param priority the priority level to give to this message
+	* @param prePend A string to prepend the message, or null
 	* @param e	The exception whose string one wishes to print
 	*/
 	public final void standardExOut(final Type type, final String module, final int priority, final String prePend, final Throwable e)

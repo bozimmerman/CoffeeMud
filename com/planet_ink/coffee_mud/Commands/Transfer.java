@@ -430,7 +430,7 @@ public class Transfer extends At
 						&&(CMSecurity.isAllowed(mob, itemRoom, CMSecurity.SecFlag.TRANSFER))
 						&&(CMSecurity.isAllowed(mob, room, CMSecurity.SecFlag.TRANSFER)))
 						{
-							final StringBuffer itemXML=CMLib.coffeeMaker().getItemXML(I);
+							final String itemXML=CMLib.coffeeMaker().getItemXML(I);
 							writer.write("IMPORT <ITEMS>"+itemXML+"</ITEMS>"+blockEnd);
 							mob.tell(getComResponse(writer,reader));
 						}
@@ -444,7 +444,7 @@ public class Transfer extends At
 						&&(CMSecurity.isAllowed(mob, mobRoom, CMSecurity.SecFlag.TRANSFER))
 						&&(CMSecurity.isAllowed(mob, room, CMSecurity.SecFlag.TRANSFER)))
 						{
-							final StringBuffer mobXML=CMLib.coffeeMaker().getMobXML(M);
+							final String mobXML=CMLib.coffeeMaker().getMobXML(M);
 							writer.write("IMPORT <MOBS>"+mobXML+"</MOBS>"+blockEnd);
 							mob.tell(getComResponse(writer,reader));
 						}

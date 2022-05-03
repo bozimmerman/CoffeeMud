@@ -806,6 +806,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * Table category: DBPLAYERS
 	 * Returns only list of clan names and roles this player belongs to
 	 * player name
+	 * @param name the player to read clan info for
 	 * @return the list of clan names and roles
 	 */
 	public PairList<String,Integer> DBReadPlayerClans(String name);
@@ -1687,7 +1688,7 @@ public interface DatabaseEngine extends CMLibrary
 	/**
 	 * Table category: DBPLAYERDATA
 	 * Reads in all unique sections with the given owner/name
-	 * 
+	 *
 	 * @see DatabaseEngine.PlayerData
 	 * @see DatabaseEngine#DBReadPlayerData(String, String)
 	 * @see DatabaseEngine#DBCountPlayerData(String, String)
@@ -1697,7 +1698,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @return the list of unique sections
 	 */
 	public Set<String> DBReadUniqueSections(String name);
-	
+
 	/**
 	 * Table category: DBPLAYERDATA
 	 * Reads in all unique player names for all players for the given
@@ -2281,10 +2282,11 @@ public interface DatabaseEngine extends CMLibrary
 	/**
 	 * Table category: DBBACKLOG
 	 * Adds a CHANNEL message to the backlog table
-	 * @see DatabaseEngine#getBackLogEntries(String, Set, int, int)
-	 * @see DatabaseEngine#updateBackLogEntry(String, int, long, String)
+	 *
+	 * @see DatabaseEngine#getBackLogEntries(String, int, int, int)
 	 * @see DatabaseEngine#delBackLogEntry(String, long)
 	 * @see DatabaseEngine#trimBackLogEntries(String[], int, long)
+	 *
 	 * @param channelName the unique name of the channel
 	 * @param subNameField the sub-category of the channel message
 	 * @param timeStamp the time the message was added in millis
@@ -2295,8 +2297,8 @@ public interface DatabaseEngine extends CMLibrary
 	/**
 	 * Table category: DBBACKLOG
 	 * Removes a CHANNEL message from the backlog table
-	 * @see DatabaseEngine#getBackLogEntries(String, Set, int, int)
-	 * @see DatabaseEngine#addBackLogEntry(String, long, String)
+	 * @see DatabaseEngine#getBackLogEntries(String, int, int, int)
+	 * @see DatabaseEngine#addBackLogEntry(String, int, long, String)
 	 * @see DatabaseEngine#trimBackLogEntries(String[], int, long)
 	 * @param channelName the unique name of the channel
 	 * @param timeStamp the time the message was posted
@@ -2310,7 +2312,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * message.  The list is date-sorted, so list returns can ge "paged"
 	 * by setting the number to skip and the number to return.
 	 *
-	 * @see DatabaseEngine#addBackLogEntry(String, long, String)
+	 * @see DatabaseEngine#addBackLogEntry(String, int, long, String)
 	 * @see DatabaseEngine#delBackLogEntry(String, long)
 	 * @see DatabaseEngine#trimBackLogEntries(String[], int, long)
 	 * @see DatabaseEngine#getBackLogPageEnd(String, int)
@@ -2327,7 +2329,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * Table category: DBBACKLOG
 	 * Returns the highest page index for the given channel in the backlog table
 	 *
-	 * @see DatabaseEngine#addBackLogEntry(String, long, String)
+	 * @see DatabaseEngine#addBackLogEntry(String, int, long, String)
 	 * @see DatabaseEngine#delBackLogEntry(String, long)
 	 * @see DatabaseEngine#trimBackLogEntries(String[], int, long)
 	 * @see DatabaseEngine#getBackLogEntries(String, int, int, int)
@@ -2345,9 +2347,9 @@ public interface DatabaseEngine extends CMLibrary
 	 * number of messages to retain (absolute), and the oldest message
 	 * to return (absolute timestamp -- no 0 nonsense).  Both criteria
 	 * will be used in the trimming.
-	 * @see DatabaseEngine#getBackLogEntries(String, Set, int, int)
+	 * @see DatabaseEngine#getBackLogEntries(String, int, int, int)
 	 * @see DatabaseEngine#delBackLogEntry(String, long)
-	 * @see DatabaseEngine#addBackLogEntry(String, long, String)
+	 * @see DatabaseEngine#addBackLogEntry(String, int, long, String)
 	 *
 	 * @param channels the list of channels to go through.
 	 * @param maxMessages the maximum number of messages to retain
@@ -2358,9 +2360,9 @@ public interface DatabaseEngine extends CMLibrary
 	/**
 	 * Table category: DBBACKLOG
 	 * This method checks if the backlog table requires any upgrades and, if so, does them.
-	 * @see DatabaseEngine#getBackLogEntries(String, Set, int, int)
+	 * @see DatabaseEngine#getBackLogEntries(String, int, int, int)
 	 * @see DatabaseEngine#delBackLogEntry(String, long)
-	 * @see DatabaseEngine#addBackLogEntry(String, long, String)
+	 * @see DatabaseEngine#addBackLogEntry(String, int, long, String)
 	 * @param channels the channels library to which the backlog applies
 	 */
 	public void checkUpgradeBacklogTable(final ChannelsLibrary channels);

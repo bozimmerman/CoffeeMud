@@ -5664,7 +5664,7 @@ public class Import extends StdCommand
 					{
 						error=CMLib.coffeeMaker().addMOBsFromXML(buf.toString(),mobs,session);
 						if(error.length()==0)
-							error=CMLib.coffeeMaker().addCataDataFromXML(buf.toString(),mobCatData,mobs,session);
+							error=CMLib.catalog().addCataDataFromXML(buf.toString(),mobCatData,mobs,session);
 					}
 					final List<Item> items=new ArrayList<Item>();
 					final List<CataData> itemCatData=new ArrayList<CataData>();
@@ -5672,7 +5672,7 @@ public class Import extends StdCommand
 					{
 						error=CMLib.coffeeMaker().addItemsFromXML(buf.toString(),items,session);
 						if(error.length()==0)
-							error=CMLib.coffeeMaker().addCataDataFromXML(buf.toString(),itemCatData,items,session);
+							error=CMLib.catalog().addCataDataFromXML(buf.toString(),itemCatData,items,session);
 					}
 					if(session!=null)
 						session.rawPrintln("!");

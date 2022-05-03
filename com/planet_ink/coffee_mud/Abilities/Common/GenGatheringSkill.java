@@ -582,7 +582,7 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 				else
 				if(start.startsWith("<ITEM>"))
 				{
-					final Item I=CMLib.coffeeMaker().getItemFromXML(xml);
+					final Item I=CMLib.coffeeMaker().unpackItemFromXML(xml);
 					if(I==null)
 						error="Gathering skill "+ID+" had bad data: "+xml;
 					else

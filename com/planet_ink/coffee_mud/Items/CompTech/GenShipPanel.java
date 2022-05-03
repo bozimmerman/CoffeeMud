@@ -66,7 +66,7 @@ public class GenShipPanel extends StdCompPanel
 	@Override
 	public String text()
 	{
-		return CMLib.coffeeMaker().getPropertiesStr(this, false);
+		return CMLib.coffeeMaker().getEnvironmentalMiscTextXML(this, false);
 	}
 
 	@Override
@@ -85,7 +85,7 @@ public class GenShipPanel extends StdCompPanel
 	public void setMiscText(final String newText)
 	{
 		miscText="";
-		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
+		CMLib.coffeeMaker().unpackEnvironmentalMiscTextXML(this,newText,false);
 		recoverPhyStats();
 	}
 

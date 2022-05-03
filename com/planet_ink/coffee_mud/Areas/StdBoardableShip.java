@@ -604,7 +604,7 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 	@Override
 	public String text()
 	{
-		return CMLib.coffeeMaker().getPropertiesStr(this,true);
+		return CMLib.coffeeMaker().getEnvironmentalMiscTextXML(this,true);
 	}
 
 	@Override
@@ -612,7 +612,7 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 	{
 		miscText="";
 		if(newMiscText.trim().length()>0)
-			CMLib.coffeeMaker().setPropertiesStr(this,newMiscText,true);
+			CMLib.coffeeMaker().unpackEnvironmentalMiscTextXML(this,newMiscText,true);
 	}
 
 	@Override

@@ -192,7 +192,7 @@ public class GenMagicInstrument extends GenItem implements MusicalInstrument, Mi
 	@Override
 	public String text()
 	{
-		return CMLib.coffeeMaker().getPropertiesStr(this,false);
+		return CMLib.coffeeMaker().getEnvironmentalMiscTextXML(this,false);
 	}
 
 	@Override

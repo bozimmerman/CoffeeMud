@@ -211,7 +211,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 				+holdTime+";"
 				+COD+";"
 				+name+";"
-				+CMLib.coffeeMaker().getPropertiesStr(thisThang,true));
+				+CMLib.coffeeMaker().getEnvironmentalMiscTextXML(thisThang,true));
 	}
 
 	@Override
@@ -401,7 +401,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		final Item I=CMClass.getItem(data.classID);
 		if(I!=null)
 		{
-			CMLib.coffeeMaker().setPropertiesStr(I,data.xml,true);
+			CMLib.coffeeMaker().unpackEnvironmentalMiscTextXML(I,data.xml,true);
 			I.recoverPhyStats();
 			I.text();
 			return I;

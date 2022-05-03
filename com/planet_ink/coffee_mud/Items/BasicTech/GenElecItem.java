@@ -64,7 +64,7 @@ public class GenElecItem extends StdElecItem
 	@Override
 	public String text()
 	{
-		return CMLib.coffeeMaker().getPropertiesStr(this, false);
+		return CMLib.coffeeMaker().getEnvironmentalMiscTextXML(this, false);
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class GenElecItem extends StdElecItem
 	public void setMiscText(final String newText)
 	{
 		miscText = "";
-		CMLib.coffeeMaker().setPropertiesStr(this, newText, false);
+		CMLib.coffeeMaker().unpackEnvironmentalMiscTextXML(this, newText, false);
 		recoverPhyStats();
 	}
 

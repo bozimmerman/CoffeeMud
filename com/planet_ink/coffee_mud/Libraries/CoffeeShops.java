@@ -2410,7 +2410,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				final XMLTag X=xmlV.get(v);
 				if(X.tag().equalsIgnoreCase("AUCTIONITEM"))
 				{
-					data.setAuctionedItem(CMLib.coffeeMaker().getItemFromXML(X.value()));
+					data.setAuctionedItem(CMLib.coffeeMaker().unpackItemFromXML(X.value()));
 					break;
 				}
 			}

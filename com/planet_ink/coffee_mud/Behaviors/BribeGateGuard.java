@@ -164,7 +164,7 @@ public class BribeGateGuard extends StdBehavior
 					final Coins item = (Coins) CMClass.getItem("StdCoins");
 					if (item != null)
 					{
-						CMLib.coffeeMaker().setPropertiesStr(item,V2.msg(), true);
+						CMLib.coffeeMaker().unpackEnvironmentalMiscTextXML(item,V2.msg(), true);
 						item.recoverPhyStats();
 						item.text();
 						balance += item.getTotalValue();
@@ -248,7 +248,7 @@ public class BribeGateGuard extends StdBehavior
 		if(surviveReboot)
 		{
 			CMLib.database().DBWriteJournal("BRIBEGATE_"+gates(), mob.Name(), CMClass.classID(balance),
-										"COINS", CMLib.coffeeMaker().getPropertiesStr(balance, true));
+										"COINS", CMLib.coffeeMaker().getEnvironmentalMiscTextXML(balance, true));
 		}
 		else
 		{

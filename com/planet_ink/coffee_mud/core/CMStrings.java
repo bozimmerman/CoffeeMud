@@ -2121,7 +2121,7 @@ public class CMStrings
 
 	/**
 	 * This method returns the given string with any
-	 * &..; entities converted to their original self
+	 * &amp;..; entities converted to their original self
 	 * @param s the string to convert
 	 * @return the new converted string
 	 */

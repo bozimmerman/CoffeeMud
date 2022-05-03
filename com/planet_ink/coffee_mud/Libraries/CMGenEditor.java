@@ -10540,7 +10540,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				{
 					if(session.confirm(L("\n\r**This mob has variable equipment in the catalog, would you like to reset it first (Y/n)? "),"Y"))
 					{
-						CMLib.coffeeMaker().setPropertiesStr(me, cataM.text(),false);
+						CMLib.coffeeMaker().unpackEnvironmentalMiscTextXML(me, cataM.text(),false);
 						CMLib.catalog().changeCatalogUsage(me, true);
 						break;
 					}

@@ -1052,10 +1052,10 @@ public interface CMFlagLibrary extends CMLibrary
 	 * Returns the proper type/flavor of direction
 	 * for the given mob, which depends on what
 	 * sort of place he/she is in.
-	 * 
+	 *
 	 * @see Directions.DirType
 	 * @see CMFlagLibrary#getDirType(Physical)
-	 * 
+	 *
 	 * @param M the mob to check
 	 * @return the DirType code
 	 */
@@ -1063,14 +1063,14 @@ public interface CMFlagLibrary extends CMLibrary
 
 	/**
 	 * Returns the proper type/flavor of direction
-	 * appropriate to the given object, based on whether 
+	 * appropriate to the given object, based on whether
 	 * the given physical actually IS a sailing ship,
 	 * space ship, caravan, or other.  This might include
 	 * a mob standing in for such a vessel.
-	 * 
+	 *
 	 * @see Directions.DirType
-	 * @see CMFlagLibrary#getInDirType(Physical)
-	 * 
+	 * @see CMFlagLibrary#getInDirType(MOB)
+	 *
 	 * @param P the object to inspect
 	 * @return the DirType code
 	 */

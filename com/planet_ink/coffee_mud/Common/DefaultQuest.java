@@ -3297,7 +3297,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							break;
 						}
 						q.loadedAbilities=Collections.synchronizedList(new ArrayList<Ability>());
-						final String errorStr=CMLib.coffeeMaker().addAbilitiesFromXml(buf.toString(),q.loadedAbilities);
+						final String errorStr=CMLib.coffeeMaker().unpackAbilitiesFromXml(buf.toString(),q.loadedAbilities);
 						if(errorStr.length()>0)
 						{
 							if(optional)

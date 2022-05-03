@@ -1067,7 +1067,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 				if(bankName.equals(D.section()))
 				{
 					Coins C=(Coins)CMClass.getItem("StdCoins");
-					CMLib.coffeeMaker().setPropertiesStr(C,last.substring(6),true);
+					CMLib.coffeeMaker().unpackEnvironmentalMiscTextXML(C,last.substring(6),true);
 					if((C.getDenomination()==0.0)&&(C.getNumberOfCoins()>0))
 						C.setDenomination(1.0);
 					C.recoverPhyStats();
@@ -1098,7 +1098,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 				if((bankName==null)||(bankName.length()==0)||(bankName.equals(D.section())))
 				{
 					Coins C=(Coins)CMClass.getItem("StdCoins");
-					CMLib.coffeeMaker().setPropertiesStr(C,last.substring(6),true);
+					CMLib.coffeeMaker().unpackEnvironmentalMiscTextXML(C,last.substring(6),true);
 					if((C.getDenomination()==0.0)&&(C.getNumberOfCoins()>0))
 						C.setDenomination(1.0);
 					C.recoverPhyStats();
@@ -1107,7 +1107,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 					{
 						C=makeBestCurrency(currency,value+absoluteAmount);
 						if(C!=null)
-							CMLib.database().DBReCreatePlayerData(owner,D.section(),D.key(),"COINS;"+CMLib.coffeeMaker().getPropertiesStr(C,true));
+							CMLib.database().DBReCreatePlayerData(owner,D.section(),D.key(),"COINS;"+CMLib.coffeeMaker().getEnvironmentalMiscTextXML(C,true));
 						else
 							CMLib.database().DBDeletePlayerData(owner,D.section(),D.key());
 						bankLedger(bankName,owner,explanation);

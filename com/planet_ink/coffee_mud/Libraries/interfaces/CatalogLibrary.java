@@ -360,7 +360,7 @@ public interface CatalogLibrary extends CMLibrary
 	 * @return the vfs dir of the catalog directory
 	 */
 	public CMFile.CMVFSDir getCatalogRoot(CMFile.CMVFSDir resourcesRoot);
-	
+
 	/**
 	 * This is for the non-catalog Builder Templates system.
 	 * It returns a list of basic information about the templates,
@@ -373,12 +373,12 @@ public interface CatalogLibrary extends CMLibrary
 	 * @see CatalogLibrary#makeValidNewBuilderTemplateID(String)
 	 * @see CatalogLibrary#getBuilderTemplateObject(String, String)
 	 * @see CatalogLibrary#getBuilderTemplateList(String)
-	 * 
+	 *
 	 * @param playerName the owner of the templates
 	 * @return the list which includes id, type, and name
 	 */
 	public List<Triad<String, String, String>> getBuilderTemplateList(final String playerName);
-	
+
 	/**
 	 * This is for the non-catalog Builder Templates system.
 	 * It returns a valid form of a given possible new template
@@ -389,16 +389,16 @@ public interface CatalogLibrary extends CMLibrary
 	 * @see CatalogLibrary#makeValidNewBuilderTemplateID(String)
 	 * @see CatalogLibrary#getBuilderTemplateObject(String, String)
 	 * @see CatalogLibrary#getBuilderTemplateList(String)
-	 * 
+	 *
 	 * @param ID the possible new template object id
 	 * @return the valid id, or null if it is invalid
 	 */
 	public String makeValidNewBuilderTemplateID(final String ID);
-	
+
 	/**
 	 * This is for the non-catalog Builder Templates system.
 	 * Creates a new personal builder template object from the
-	 * given room, mob, item, or exit.  The ID must have 
+	 * given room, mob, item, or exit.  The ID must have
 	 * already been validated by makeValidNewBuilderTemplateID.
 	 * @see CatalogLibrary#addNewBuilderTemplateObject(String, String, Environmental)
 	 * @see CatalogLibrary#deleteBuilderTemplateObject(String, String)
@@ -406,14 +406,14 @@ public interface CatalogLibrary extends CMLibrary
 	 * @see CatalogLibrary#makeValidNewBuilderTemplateID(String)
 	 * @see CatalogLibrary#getBuilderTemplateObject(String, String)
 	 * @see CatalogLibrary#getBuilderTemplateList(String)
-	 * 
+	 *
 	 * @param playerName the player to whom the template belongs
 	 * @param ID the friendly short validated id code
 	 * @param E the mob, item, room, or exit object to add
 	 * @return true if it was successfuly added, false otherwise
 	 */
 	public boolean addNewBuilderTemplateObject(final String playerName, final String ID, final Environmental E);
-	
+
 	/**
 	 * This is for the non-catalog Builder Templates system.
 	 * Returns the pre-built object from the given player name
@@ -425,25 +425,25 @@ public interface CatalogLibrary extends CMLibrary
 	 * @see CatalogLibrary#makeValidNewBuilderTemplateID(String)
 	 * @see CatalogLibrary#getBuilderTemplateObject(String, String)
 	 * @see CatalogLibrary#getBuilderTemplateList(String)
-	 * 
+	 *
 	 * @param playerName the player to whom the template belongs
 	 * @param ID the id code of the item
 	 * @return null if not found, or the object ready to go
 	 */
 	public Environmental getBuilderTemplateObject(final String playerName, final String ID);
-	
+
 	/**
 	 * This is for the non-catalog Builder Templates system.
 	 * Deletes an existing template from the given player name
 	 * and ID code.  This can be personal or shared.
-	 * 
+	 *
 	 * @see CatalogLibrary#addNewBuilderTemplateObject(String, String, Environmental)
 	 * @see CatalogLibrary#deleteBuilderTemplateObject(String, String)
 	 * @see CatalogLibrary#toggleBuilderTemplateObject(String, String)
 	 * @see CatalogLibrary#makeValidNewBuilderTemplateID(String)
 	 * @see CatalogLibrary#getBuilderTemplateObject(String, String)
 	 * @see CatalogLibrary#getBuilderTemplateList(String)
-	 * 
+	 *
 	 * @param playerName the player who owns the template
 	 * @param ID the id code of the template
 	 * @return true if it was deleted, and false otherwise
@@ -454,20 +454,32 @@ public interface CatalogLibrary extends CMLibrary
 	 * This is for the non-catalog Builder Templates system.
 	 * Changes/Toggles whether the given builder object is public
 	 * or private. shared or personal.
-	 * 
+	 *
 	 * @see CatalogLibrary#addNewBuilderTemplateObject(String, String, Environmental)
 	 * @see CatalogLibrary#deleteBuilderTemplateObject(String, String)
 	 * @see CatalogLibrary#toggleBuilderTemplateObject(String, String)
 	 * @see CatalogLibrary#makeValidNewBuilderTemplateID(String)
 	 * @see CatalogLibrary#getBuilderTemplateObject(String, String)
 	 * @see CatalogLibrary#getBuilderTemplateList(String)
-	 * 
+	 *
 	 * @param playerName the owner of the template
 	 * @param ID the templates id
 	 * @return true if the switch occurred, and false otherwise
 	 */
 	public boolean toggleBuilderTemplateObject(final String playerName, final String ID);
-	
+
+	/**
+	 * Populate a given CataData list with data objects contained in the given
+	 * xml document.  An optional nameMaters filter for data can be given.
+	 *
+	 * @param xmlBuffer the catalog data xml document
+	 * @param addHere the list to add catalog data objects to
+	 * @param nameMatchers null, or list of objects to match the names of
+	 * @param S optional session for progress, prompts, etc
+	 * @return error message, or "" if everything went well.
+	 */
+	public String addCataDataFromXML(String xmlBuffer, List<CataData> addHere, List<? extends Physical> nameMatchers, Session S);
+
 	/**
 	 * An enumeration for the two general catalog object kinds.
 	 * @author Bo Zimmerman

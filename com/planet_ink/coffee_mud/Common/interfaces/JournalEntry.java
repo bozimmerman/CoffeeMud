@@ -57,6 +57,7 @@ public interface JournalEntry extends CMCommon, Cloneable
 	/**
 	 * Sets the fully unique key for this entry, unique across all entries in all books and journals
 	 * @param key the key
+	 * @return the journal entry
 	 */
 	public JournalEntry key(String key);
 
@@ -69,7 +70,7 @@ public interface JournalEntry extends CMCommon, Cloneable
 	/**
 	 * Sets the author of the entry
 	 * @param from author of the entry
-	 * @return the journal
+	 * @return the journal entry
 	 */
 	public JournalEntry from(String from);
 
@@ -82,7 +83,7 @@ public interface JournalEntry extends CMCommon, Cloneable
 	/**
 	 * Sets who the entry is for, usually ALL
 	 * @param to who the entry is for, usually ALL
-	 * @return the journal
+	 * @return the journal entry
 	 */
 	public JournalEntry to(String to);
 
@@ -95,7 +96,7 @@ public interface JournalEntry extends CMCommon, Cloneable
 	/**
 	 * Sets the subject of the entry
 	 * @param subj the subject of the entry
-	 * @return the journal
+	 * @return the journal entry
 	 */
 	public JournalEntry subj(String subj);
 
@@ -108,7 +109,7 @@ public interface JournalEntry extends CMCommon, Cloneable
 	/**
 	 * Sets the content of the entry.
 	 * @param msg the content of the entry.
-	 * @return the journal
+	 * @return the journal entry
 	 */
 	public JournalEntry msg(String msg);
 
@@ -121,7 +122,7 @@ public interface JournalEntry extends CMCommon, Cloneable
 	/**
 	 * Sets the date/time, in ms, that the message was posted
 	 * @param date the date/time, in ms, that the message was posted
-	 * @return the journal
+	 * @return the journal entry
 	 */
 	public JournalEntry date(long date);
 
@@ -134,7 +135,7 @@ public interface JournalEntry extends CMCommon, Cloneable
 	/**
 	 * Sets the date/time, in ms, that the message was updated
 	 * @param update the date/time, in ms, that the message was updated
-	 * @return the journal
+	 * @return the journal entry
 	 */
 	public JournalEntry update(long update);
 
@@ -147,7 +148,7 @@ public interface JournalEntry extends CMCommon, Cloneable
 	/**
 	 * Sets the entry key of the entry that this entry is a reply to
 	 * @param parent the entry key of the entry that this entry is a reply to
-	 * @return the journal
+	 * @return the journal entry
 	 */
 	public JournalEntry parent(String parent);
 
@@ -160,7 +161,7 @@ public interface JournalEntry extends CMCommon, Cloneable
 	/**
 	 * Sets the attribute flags for this entry
 	 * @param attributes the attribute flags for this entry
-	 * @return the journal
+	 * @return the journal entry
 	 */
 	public JournalEntry attributes(long attributes);
 
@@ -173,7 +174,7 @@ public interface JournalEntry extends CMCommon, Cloneable
 	/**
 	 * Sets the "image path" or, for mailboxes, the Journal Name this mail served as a source for.
 	 * @param data the "image path" or, for mailboxes, the Journal Name this mail served as a source for.
-	 * @return the journal
+	 * @return the journal entry
 	 */
 	public JournalEntry data(String data);
 
@@ -186,7 +187,7 @@ public interface JournalEntry extends CMCommon, Cloneable
 	/**
 	 * Sets the cardinal entry number for the journal entry.
 	 * @param cardinal the cardinal entry number for the journal entry.
-	 * @return the journal
+	 * @return the journal entry
 	 */
 	public JournalEntry cardinal(int cardinal);
 
@@ -199,7 +200,7 @@ public interface JournalEntry extends CMCommon, Cloneable
 	/**
 	 * Sets the image icon for forum entries
 	 * @param msgIcon the image icon for forum entries
-	 * @return the journal
+	 * @return the journal entry
 	 */
 	public JournalEntry msgIcon(String msgIcon);
 
@@ -212,7 +213,7 @@ public interface JournalEntry extends CMCommon, Cloneable
 	/**
 	 * Sets he number of replies to this entry.
 	 * @param replies the number of replies to this entry.
-	 * @return the journal
+	 * @return the journal entry
 	 */
 	public JournalEntry replies(int replies);
 
@@ -225,7 +226,7 @@ public interface JournalEntry extends CMCommon, Cloneable
 	/**
 	 * Sets the number of views of this entry
 	 * @param views the number of views of this entry
-	 * @return the journal
+	 * @return the journal entry
 	 */
 	public JournalEntry views(int views);
 
@@ -240,7 +241,7 @@ public interface JournalEntry extends CMCommon, Cloneable
 	/**
 	 * Sets whether this is the last entry in the db
 	 * @param lastEntry whether this is the last entry in the db
-	 * @return the journal
+	 * @return the journal entry
 	 */
 	public JournalEntry lastEntry(boolean lastEntry);
 
@@ -255,7 +256,7 @@ public interface JournalEntry extends CMCommon, Cloneable
 	 * The friendly viewable form of this message in the command line.
 	 * Is not included in any xml builds or in the DB.
 	 * @param msg the friendly message
-	 * @return the journal
+	 * @return the journal entry
 	 */
 	public JournalEntry derivedBuildMessage(StringBuffer msg);
 
@@ -281,7 +282,7 @@ public interface JournalEntry extends CMCommon, Cloneable
 	@Override
 	/**
 	 * Returns a copy of the journal entry
-	 * @return the new entry
+	 * @return the journal entry
 	 */
 	public JournalEntry copyOf();
 

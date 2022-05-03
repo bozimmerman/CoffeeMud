@@ -1647,13 +1647,13 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		final PlayerData PD=getBuilderTemplates(playerName,true).get(ID.toUpperCase().trim());
 		if(PD==null)
 			return null;
-		return CMLib.coffeeMaker().getUnknownFromXML(PD.xml());
+		return CMLib.coffeeMaker().unpackUnknownFromXML(PD.xml());
 	}
 
 	@Override
 	public boolean addNewBuilderTemplateObject(final String playerName, final String ID, final Environmental E)
 	{
-		final StringBuffer xml=CMLib.coffeeMaker().getUnknownXML(E);
+		final String xml=CMLib.coffeeMaker().getUnknownXML(E);
 		if(xml==null)
 			return false;
 		CMLib.database().DBCreatePlayerData(playerName, templatePersonalSection, commonBuilderTemplateKey+"_"+playerName.toUpperCase().trim()+"_"+ID.toUpperCase().trim(), xml.toString());
@@ -1694,4 +1694,84 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		else
 			return false;
 	}
+
+	protected String unpackErr(final String where, final String msg)
+	{
+		Log.errOut("CoffeeMaker","unpack"+where+"FromXML: "+msg);
+		return msg;
+	}
+
+	@Override
+	public String addCataDataFromXML(final String xmlBuffer, final List<CataData> addHere, final List<? extends Physical> nameMatchers, final Session S)
+	{
+		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(xmlBuffer);
+		if(xml==null)
+			return unpackErr("CataDats","null 'xml'");
+		final List<Map<String,CataData>> sets = new ArrayList<Map<String,CataData>>();
+		for(final Iterator<XMLLibrary.XMLTag> t= xml.iterator();t.hasNext();)
+		{
+			final XMLLibrary.XMLTag tag = t.next();
+			if(tag.tag().equalsIgnoreCase("CATADATAS"))
+			{
+				final Map<String,CataData> set = new TreeMap<String,CataData>();
+				sets.add(set);
+				for(final Iterator<XMLLibrary.XMLTag> t2= tag.contents().iterator();t2.hasNext();)
+				{
+					final XMLLibrary.XMLTag cataDataTag = t2.next();
+					if(cataDataTag.tag().equalsIgnoreCase("CATALOGDATA"))
+					{
+						final CataData catDat = sampleCataData(cataDataTag.toString());
+						if(cataDataTag.parms().containsKey("NAME"))
+							set.put(CMLib.xml().restoreAngleBrackets(cataDataTag.parms().get("NAME")), catDat);
+						else
+							return unpackErr("CataDats","null 'NAME'");
+					}
+				}
+			}
+		}
+		if(nameMatchers == null)
+		{
+			for(final Map<String,CataData> chk : sets)
+			{
+				for(final CataData dat : chk.values())
+					addHere.add(dat);
+			}
+		}
+		else
+		{
+			int bestMatch = -1;
+			Map<String,CataData> bestSet = null;
+			for(final Map<String,CataData> chk : sets)
+			{
+				int ct = 0;
+				for(final Physical P : nameMatchers)
+				{
+					if(chk.containsKey(P.Name()))
+						ct++;
+				}
+				if((ct > bestMatch)&&(ct>0))
+				{
+					bestMatch=ct;
+					bestSet=chk;
+				}
+			}
+			if(bestSet != null)
+			{
+				for(final Physical P : nameMatchers)
+				{
+					if(bestSet.containsKey(P.Name()))
+						addHere.add(bestSet.get(P.Name()));
+					else
+					{
+						addHere.clear();
+						break;
+					}
+				}
+			}
+		}
+		if(addHere.size() == 0)
+			return unpackErr("CataDats","nothing found");
+		return "";
+	}
+
 }

@@ -77,7 +77,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 
 	/**
 	 * Returns the value of a given internal faction variable.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#TAG_NAMES
+	 *
 	 * @param tag the tag to get the value of
 	 * @return the value of the given tag
 	 */
@@ -85,9 +85,10 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 
 	/**
 	 * Retrieves an entry for an ini properties definition document that describes this faction.
+	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#getINIDef(String, String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#initializeFaction(StringBuffer, String)
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#TAG_NAMES
+	 *
 	 * @param tag the tag to retrieve a properties definition for
 	 * @param delimeter if the tag represents a list, this is the delimiter for entries.
 	 * @return the ini properties definition entry for the tag

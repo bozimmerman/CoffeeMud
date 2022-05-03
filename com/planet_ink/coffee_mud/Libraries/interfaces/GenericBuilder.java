@@ -12,7 +12,6 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -95,6 +94,13 @@ public interface GenericBuilder extends CMLibrary
 		}
 	}
 
+	/**
+	 * The basic enum of GenMOB Modifiable
+	 * codes used by the Modifiable interface
+	 * on all mob derivatives.
+	 *
+	 * @author Bo Zimmerman
+	 */
 	public enum GenMOBCode
 	{
 		CLASS,
@@ -135,6 +141,15 @@ public interface GenericBuilder extends CMLibrary
 		}
 	}
 
+	/**
+	 * An enum for properties found on
+	 * MOB objects that are derivative,
+	 * or otherwise not available in
+	 * this form from the Modifiable
+	 * interface.
+	 *
+	 * @author Bo Zimmerman
+	 */
 	public enum GenMOBBonusFakeStats
 	{
 		QUESTPOINTS,
@@ -154,6 +169,15 @@ public interface GenericBuilder extends CMLibrary
 		OBJATTRIB
 	}
 
+	/**
+	 * An enum for properties found on
+	 * Item objects that are derivative,
+	 * or otherwise not available in
+	 * this form from the Modifiable
+	 * interface.
+	 *
+	 * @author Bo Zimmerman
+	 */
 	public enum GenItemBonusFakeStats
 	{
 		MATERIALNAME,
@@ -161,6 +185,15 @@ public interface GenericBuilder extends CMLibrary
 		LIQUIDREMAINING
 	}
 
+	/**
+	 * An enum for properties found on
+	 * many different Physical objects
+	 * that are derivative, or otherwise
+	 * not available from the Modifiable
+	 * interface.
+	 *
+	 * @author Bo Zimmerman
+	 */
 	public enum GenPhysBonusFakeStats
 	{
 		DISPOSITIONSTR,
@@ -170,53 +203,543 @@ public interface GenericBuilder extends CMLibrary
 		DENOMINATION_NAME
 	}
 
-	public String getGenMOBTextUnpacked(MOB mob, String newText);
-	public void resetGenMOB(MOB mob, String newText);
-	public int envFlags(Environmental E);
-	public void setEnvFlags(Environmental E, int f);
-	public String getGenAbilityXML(Ability A);
-	public String addAbilitiesFromXml(final String xml, final List<Ability> ables);
-	public String getPropertiesStr(Environmental E, boolean fromTop);
-	public void setPropertiesStr(Environmental E, String buf, boolean fromTop);
-	public void setPropertiesStr(Environmental E, List<XMLTag> V, boolean fromTop);
-	public String getGenMobInventory(MOB M);
-	public void doGenPropertiesCopy(Environmental fromE, Environmental toE);
-	public String unpackRoomFromXML(String buf, boolean andContent);
-	public Environmental getUnknownFromXML(final String xml);
-	public StringBuffer getUnknownXML(final Environmental obj);
-	public CMClass.CMObjectType getUnknownTypeFromXML(final String xml);
-	public String getUnknownNameFromXML(final String xml);
-	public String unpackRoomFromXML(List<XMLTag> xml, boolean andContent);
-	public String unpackRoomFromXML(final Area forceArea, final List<XMLTag> xml, final boolean andContent, final boolean andSave);
-	public String fillAreaAndCustomVectorFromXML(String buf,  List<XMLTag> area, List<CMObject> custom, Map<String,String> externalFiles);
-	public String fillCustomVectorFromXML(String xml, List<CMObject> custom, Map<String,String> externalFiles);
-	public String fillCustomVectorFromXML(List<XMLTag> xml,  List<CMObject> custom, Map<String,String> externalFiles);
-	public String fillAreasVectorFromXML(String buf,  List<List<XMLTag>> areas, List<CMObject> custom, Map<String,String> externalFiles);
+	/**
+	 * Some object types (items and exits) still
+	 * use a compressed numeric form for some of their
+	 * properties.  This method will return the value
+	 * of that special flag.
+	 *
+	 * @see GenericBuilder#setSpecialEnvFlags(Environmental, int)
+	 *
+	 * @param E the object to get envflags for
+	 * @return the value of the special flags
+	 */
+	public int getSpecialEnvFlags(Environmental E);
+
+	/**
+	 * Some object types (items and exits) still
+	 * use a compressed numeric form for some of their
+	 * properties.  This method will set the value
+	 * of that special flag.
+	 *
+	 * @see GenericBuilder#getSpecialEnvFlags(Environmental)
+	 *
+	 * @param E the object to set envflags for
+	 * @param f the value of the special flags
+	 */
+	public void setSpecialEnvFlags(Environmental E, int f);
+
+	/**
+	 * Called when a new area enters the game in order to add any
+	 * Automatic/Default properties to the area that are specified
+	 * in the INI file.
+	 *
+	 * @param newArea the area to add things to, if necessary
+	 */
 	public void addAutoPropsToAreaIfNecessary(Area newArea);
-	public Area unpackAreaObjectFromXML(String xml) throws CMException;
-	public String unpackAreaFromXML(List<XMLTag> aV, Session S, String overrideAreaType, boolean andRooms, boolean savable);
-	public String unpackAreaFromXML(String buf, Session S, String overrideAreaType, boolean andRooms);
-	public StringBuffer getAreaXML(Area area,  Session S, Set<CMObject> custom, Set<String> files, boolean andRooms);
-	public StringBuffer getAreaObjectXML(Area area, Session S, Set<CMObject> custom, Set<String> files, boolean andRooms);
-	public StringBuffer logTextDiff(String e1, String e2);
-	public void logDiff(Environmental E1, Environmental E2);
+
+	/**
+	 * Duplicates the contents of an official database room by
+	 * reloading the room and its contents into a new room
+	 * object.  You can optionally activate the room as a full
+	 * map member.
+	 *
+	 * @param room the room with an id to duplicate
+	 * @param makeLive true to make the room live, or false to leave passive and unticking
+	 * @return the new room object
+	 */
 	public Room makeNewRoomContent(Room room, boolean makeLive);
-	public StringBuffer getRoomMobs(Room room, Set<CMObject> custom, Set<String> files, Map<String,List<MOB>> found);
-	public StringBuffer getMobXML(MOB mob);
-	public StringBuffer getMobsXML(List<MOB> mobs, Set<CMObject> custom, Set<String> files, Map<String,List<MOB>> found);
-	public StringBuffer getUniqueItemXML(Item item, CMObjectType type, Map<String,List<Item>> found, Set<String> files);
+
+	/**
+	 * Given an ability, including a generic one, this will construct
+	 * an xml document representing the ability.
+	 *
+	 * @see GenericBuilder#unpackAbilitiesFromXml(String, List)
+	 *
+	 * @param A the ability to get xml for
+	 * @return the xml
+	 */
+	public String getGenAbilityXML(Ability A);
+
+	/**
+	 * Given an xml document containing one or more ABILITY tags, this will
+	 * parse out the Ability objects, including generic types, and add them
+	 * to the given list.
+	 *
+	 * @see GenericBuilder#getGenAbilityXML(Ability)
+	 *
+	 * @param xml the xml document with AbILITY tags
+	 * @param ables the list to put ability objects into
+	 * @return "" if all went well, and an error message otherwise
+	 */
+	public String unpackAbilitiesFromXml(final String xml, final List<Ability> ables);
+
+	/**
+	 * Given an xml document for a single item, mob, room,
+	 * or exit, this will return the fully formed object
+	 * represented by the document.
+	 *
+	 * @see GenericBuilder#getUnknownXML(Environmental)
+	 *
+	 * @param xml the xml document
+	 * @return the item, mob, room, or exit object
+	 */
+	public Environmental unpackUnknownFromXML(final String xml);
+
+	/**
+	 * Given an item, mob, room, or exit, this will
+	 * return the full XML document for that object.
+	 *
+	 * @see GenericBuilder#unpackUnknownFromXML(String)
+	 *
+	 * @param obj the object to get xml for
+	 * @return the xml
+	 */
+	public String getUnknownXML(final Environmental obj);
+
+	/**
+	 * Given an xml document that starts with a MOB, ITEM, AROOM, or
+	 * EXIT tag, this will return the appropriate CMOBjectType
+	 *
+	 * @see CMClass.CMObjectType
+	 * @see GenericBuilder#getUnknownNameFromXML(String)
+	 *
+	 * @param xml the xml document to get the type of
+	 * @return the object type
+	 */
+	public CMClass.CMObjectType getUnknownTypeFromXML(final String xml);
+
+	/**
+	 * Given an xml document with a mob, item, or room, this will
+	 * return the value of the first NAME or RDISP tag found herein.
+	 *
+	 * @see GenericBuilder#getUnknownTypeFromXML(String)
+	 *
+	 * @param xml the xml document to get a name from
+	 * @return the name
+	 */
+	public String getUnknownNameFromXML(final String xml);
+
+	/**
+	 * An xml helper function that merely parses the given xml document containing an AREA tag
+	 * into its various content tags, and puts them into the given area list.  It will
+	 * also parse out any custom objects and external files contained therein into the custom
+	 * and externalFiles object given.
+	 *
+	 * @see GenericBuilder#fillAreasVectorFromXML(String, List, List, Map)
+	 *
+	 * @param buf the xml document containing AREAS tag
+	 * @param area the list to put AREA tag contents into
+	 * @param custom the required list to put any generic races or classes
+	 * @param externalFiles the optional list to put a map of file paths to their contents
+	 * @return "" if all went well, or an error message
+	 */
+	public String fillAreaAndCustomVectorFromXML(String buf,  List<XMLTag> area, List<CMObject> custom, Map<String,String> externalFiles);
+
+	/**
+	 * An xml helper function that merely parses the given xml document containing an AREAS tag
+	 * into its various AREA tags, and puts the contents into the given areas list.  It will
+	 * also parse out any custom objects and external files contained therein into the custom
+	 * and externalFiles object given.
+	 *
+	 * @see GenericBuilder#fillAreaAndCustomVectorFromXML(String, List, List, Map)
+	 *
+	 * @param buf the xml document containing AREAS tag
+	 * @param areas the list to put AREA tag contents into
+	 * @param custom the required list to put any generic races or classes
+	 * @param externalFiles the optional list to put a map of file paths to their contents
+	 * @return "" if all went well, or an error message
+	 */
+	public String fillAreasVectorFromXML(String buf,  List<List<XMLTag>> areas, List<CMObject> custom, Map<String,String> externalFiles);
+
+	/**
+	 * Given a string xml document with CUSTOM tag containing generic races, classes, and
+	 * external files and scripts, this method will recreate the appropriate objects to
+	 * populate into the custom list, and separate file paths from their string contents
+	 * into the externalFiles map.
+	 *
+	 * @param xml the xml document containing the CUSTOM tag
+	 * @param custom required list to put genraces and classes into
+	 * @param externalFiles null, or optional map to put filepaths, file contents into
+	 * @return "" or an error message
+	 */
+	public String fillCustomVectorFromXML(String xml, List<CMObject> custom, Map<String,String> externalFiles);
+
+	/**
+	 * Given a string xml document, and an environmental to unpack the xml properties
+	 * into, this will, well, do that.  Send fromTop to handle ordinary properties
+	 * for standard items.
+	 *
+	 * @see GenericBuilder#getEnvironmentalMiscTextXML(Environmental, boolean)
+	 * @see GenericBuilder#unpackEnvironmentalMiscTextXML(Environmental, List, boolean)
+	 *
+	 * @param E the environmental object to populate
+	 * @param buf the xml doc
+	 * @param fromTop true to unpack xml for standard objects
+	 */
+	public void unpackEnvironmentalMiscTextXML(Environmental E, String buf, boolean fromTop);
+
+	/**
+	 * Given a parsed xml document, and an environmental to unpack the xml properties
+	 * into, this will, well, do that.  Send fromTop to handle ordinary properties
+	 * for standard items.
+	 *
+	 * @see GenericBuilder#getEnvironmentalMiscTextXML(Environmental, boolean)
+	 * @see GenericBuilder#unpackEnvironmentalMiscTextXML(Environmental, String, boolean)
+	 *
+	 * @param E the environmental object to populate
+	 * @param V the parsed xml doc
+	 * @param fromTop true to unpack xml for standard objects
+	 */
+	public void unpackEnvironmentalMiscTextXML(Environmental E, List<XMLTag> V, boolean fromTop);
+
+	/**
+	 * Gives an environmental object of a more basic sort, such as a mob or item,
+	 * this will return the XML representation of that object.  This will work
+	 * for standard or generic objects, and you can specify with the fromTop
+	 * variable whether you want full xml for standard objects.
+	 *
+	 * @see GenericBuilder#unpackEnvironmentalMiscTextXML(Environmental, List, boolean)
+	 * @see GenericBuilder#unpackEnvironmentalMiscTextXML(Environmental, String, boolean)
+	 *
+	 * @param E the object to get xml for
+	 * @param fromTop true to get all xml for a standard object
+	 * @return the xml document
+	 */
+	public String getEnvironmentalMiscTextXML(Environmental E, boolean fromTop);
+
+	/**
+	 * Given a database room, this function will grab its real contents from
+	 * the database, and construct an xml document consisting of the unique
+	 * items in the room.  It will also filter based on type, or populate
+	 * a set with the paths of any externally used files, as
+	 * well as use a map to keep track of duplicates.
+	 *
+	 * @param room the room to get items from
+	 * @param found a map for keeping track of dups
+	 * @param files a set for any file paths used
+	 * @param type the object type filter
+	 * @return the xml document of items
+	 */
+	public String getRoomItems(Room room, Map<String,List<Item>> found, Set<String> files, CMObjectType type);
+
+	/**
+	 * Given a String xml document containing a ITEMs tag, this will build a
+	 * set of item objects and add them to the given list.  An optional session
+	 * can handle any progress reporting.  Returns an error, or "".
+	 *
+	 * @see GenericBuilder#getUniqueItemsXML(List, Map, Set, CMObjectType)
+	 * @see GenericBuilder#getItemXML(Item)
+	 * @see GenericBuilder#addItemsFromXML(List, List, Session)
+	 * @see GenericBuilder#unpackItemFromXML(String)
+	 *
+	 * @param xmlBuffer the xml document with the ITEMs tag
+	 * @param addHere the list to add the item objects to
+	 * @param S an optional session object for progress
+	 * @return "", or an error message
+	 */
 	public String addItemsFromXML(String xmlBuffer, List<Item> addHere, Session S);
-	public String addMOBsFromXML(String xmlBuffer, List<MOB> addHere, Session S);
+
+	/**
+	 * Given a pre-parsed xml document containing a ITEMs tag, this will build a
+	 * set of item objects and add them to the given list.  An optional session
+	 * can handle any progress reporting.  Returns an error, or "".
+	 *
+	 * @see GenericBuilder#getUniqueItemsXML(List, Map, Set, CMObjectType)
+	 * @see GenericBuilder#getItemXML(Item)
+	 * @see GenericBuilder#addItemsFromXML(String, List, Session)
+	 * @see GenericBuilder#unpackItemFromXML(String)
+	 *
+	 * @param xml the xml document with the ITEMs tag
+	 * @param addHere the list to add the item objects to
+	 * @param S an optional session object for progress
+	 * @return "", or an error message
+	 */
 	public String addItemsFromXML(List<XMLTag> xml, List<Item> addHere, Session S);
+
+	/**
+	 * Given an xml document with a ITEM tag in it, this will extract and create the
+	 * associated item object.  Any generic races or scripts must already exist.
+	 *
+	 * @see GenericBuilder#getUniqueItemsXML(List, Map, Set, CMObjectType)
+	 * @see GenericBuilder#getItemXML(Item)
+	 * @see GenericBuilder#addItemsFromXML(String, List, Session)
+	 * @see GenericBuilder#addItemsFromXML(List, List, Session)
+	 *
+	 * @param xmlBuffer the xml document with the item tag
+	 * @return the item object, or null
+	 */
+	public Item unpackItemFromXML(String xmlBuffer);
+
+	/**
+	 * Given a list of item objects, this will return an xml document of the set of
+	 * ITEMs, but only returning any unique item from the list, relegating dups
+	 * to the give map.  It will also populate sets with any script paths or
+	 * generic races and classes found.
+	 *
+	 * @see GenericBuilder#getItemXML(Item)
+	 * @see GenericBuilder#addItemsFromXML(String, List, Session)
+	 * @see GenericBuilder#addItemsFromXML(List, List, Session)
+	 * @see GenericBuilder#unpackItemFromXML(String)
+	 *
+	 * @param items the list of items to create xml for
+	 * @param found required map to keep track of dups, for some reason
+	 * @param files any script paths found
+	 * @param type object type of item to grab
+	 * @return the xml document of the unique items from the list
+	 */
+	public String getUniqueItemsXML(List<Item> items, Map<String,List<Item>> found, Set<String> files, CMObjectType type);
+
+	/**
+	 * Returns an xml document representing the given item, wrapped in a neat
+	 * ITEM tag.  No custom objects or scripts are captured.
+	 *
+	 * @see GenericBuilder#addItemsFromXML(String, List, Session)
+	 * @see GenericBuilder#addItemsFromXML(List, List, Session)
+	 * @see GenericBuilder#getUniqueItemsXML(List, Map, Set, CMObjectType)
+	 * @see GenericBuilder#unpackItemFromXML(String)
+	 *
+	 * @param item the item to get the xml of
+	 * @return the full xml of the item
+	 */
+	public String getItemXML(Item item);
+
+	/**
+	 * Confirms the length of a misc text XML document for a
+	 * generic mob, and if it is stored in the DB, retreives it
+	 * before returning the final misc text xml document.
+	 *
+	 * @param mob the mob whose misc text this is
+	 * @param newText the misc text
+	 * @return the final misc text
+	 */
+	public String getGenMOBTextUnpacked(MOB mob, String newText);
+
+	/**
+	 * Given a mob and its generic misc text, this method
+	 * will reset the mob with the given misc text values,
+	 * and reset its hit points, mana, etc.  This is often
+	 * called during generic mob rebirth.
+	 *
+	 * @param mob the mob to repopulate
+	 * @param newText the misctext for the mob
+	 */
+	public void resetGenMOB(MOB mob, String newText);
+
+	/**
+	 * Given a string xml document containing a MOBS tag, this will build a
+	 * set of mob objects and add them to the given list.  An optional session
+	 * can handle any progress reporting.  Returns an error, or "".
+	 *
+	 * @see GenericBuilder#getMobXML(MOB)
+	 * @see GenericBuilder#addMOBsFromXML(List, List, Session)
+	 * @see GenericBuilder#getUniqueMobsXML(List, Set, Set, Map)
+	 * @see GenericBuilder#unpackMobFromXML(String)
+	 *
+	 * @param xmlBuffer the xml document with the MOBS tag
+	 * @param addHere the list to add the mob objects to
+	 * @param S an optional session object for progress
+	 * @return "", or an error message
+	 */
+	public String addMOBsFromXML(String xmlBuffer, List<MOB> addHere, Session S);
+
+	/**
+	 * Given a database room, this function will grab its real contents from
+	 * the database, and construct an xml document consisting of the unique
+	 * mobs in the room.  It will also populate a set with custom races and
+	 * classes, and a set with the paths of any externally used files, as
+	 * well as use a map to keep track of duplicates.
+	 *
+	 * @param room the room to get mobs from
+	 * @param custom a set for any generic classes or races
+	 * @param files a set for any file paths used
+	 * @param found a map for keeping track of dups
+	 * @return the xml document of mobs
+	 */
+	public String getRoomMobs(Room room, Set<CMObject> custom, Set<String> files, Map<String,List<MOB>> found);
+
+	/**
+	 * Given a pre-parsed xml document containing a MOBS tag, this will build a
+	 * set of mob objects and add them to the given list.  An optional session
+	 * can handle any progress reporting.  Returns an error, or "".
+	 *
+	 * @see GenericBuilder#getMobXML(MOB)
+	 * @see GenericBuilder#addMOBsFromXML(String, List, Session)
+	 * @see GenericBuilder#getUniqueMobsXML(List, Set, Set, Map)
+	 * @see GenericBuilder#unpackMobFromXML(String)
+	 *
+	 * @param xml the xml document with the MOBS tag
+	 * @param addHere the list to add the mob objects to
+	 * @param S an optional session object for progress
+	 * @return "", or an error message
+	 */
 	public String addMOBsFromXML(List<XMLTag> xml, List<MOB> addHere, Session S);
-	public String addCataDataFromXML(String xmlBuffer, List<CataData> addHere, List<? extends Physical> nameMatchers, Session S);
-	public MOB getMobFromXML(String xmlBuffer);
-	public Item getItemFromXML(String xmlBuffer);
-	// TYPE= 0=item, 1=weapon, 2=armor
-	public StringBuffer getRoomItems(Room room, Map<String,List<Item>> found, Set<String> files, CMObjectType type);
-	public StringBuffer getItemsXML(List<Item> items, Map<String,List<Item>> found, Set<String> files, CMObjectType type);
-	public StringBuffer getItemXML(Item item);
-	public StringBuffer getRoomXML(Room room,  Set<CMObject> custom, Set<String> files, boolean andContent);
+
+	/**
+	 * Returns an xml document representing the given mob, wrapped in a neat
+	 * MOB tag.  No custom objects or scripts are captured.
+	 *
+	 * @see GenericBuilder#addMOBsFromXML(String, List, Session)
+	 * @see GenericBuilder#addMOBsFromXML(List, List, Session)
+	 * @see GenericBuilder#getUniqueMobsXML(List, Set, Set, Map)
+	 * @see GenericBuilder#unpackMobFromXML(String)
+	 *
+	 * @param mob the mob to get the xml of
+	 * @return the full xml of the mob
+	 */
+	public String getMobXML(MOB mob);
+
+	/**
+	 * Given a list of mob objects, this will return an xml document of the set of
+	 * MOBs, but only returning any unique mobs from the list, relegating dups
+	 * to the give map.  It will also populate sets with any script paths or
+	 * generic races and classes found.
+	 *
+	 * @see GenericBuilder#getMobXML(MOB)
+	 * @see GenericBuilder#unpackMobFromXML(String)
+	 * @see GenericBuilder#addMOBsFromXML(List, List, Session)
+	 * @see GenericBuilder#addMOBsFromXML(String, List, Session)
+	 *
+	 * @param mobs the list of mobs to create xml for
+	 * @param custom any generic races/classes found
+	 * @param files any script paths found
+	 * @param found required map to keep track of dups, for some reason
+	 * @return the xml document of the unique mobs from the list
+	 */
+	public String getUniqueMobsXML(List<MOB> mobs, Set<CMObject> custom, Set<String> files, Map<String,List<MOB>> found);
+
+	/**
+	 * Given an xml document with a MOB tag in it, this will extract and create the
+	 * associated mob object.  Any generic races or scripts must already exist.
+	 *
+	 * @see GenericBuilder#getUniqueMobsXML(List, Set, Set, Map)
+	 * @see GenericBuilder#getMobXML(MOB)
+	 * @see GenericBuilder#addMOBsFromXML(List, List, Session)
+	 * @see GenericBuilder#addMOBsFromXML(String, List, Session)
+	 *
+	 * @param xmlBuffer the xml document with the mob tag
+	 * @return the mob object, or null
+	 */
+	public MOB unpackMobFromXML(String xmlBuffer);
+
+	/**
+	 * Gives a parsed XML document containing the contents of room xml, with RCLAS tag, this
+	 * will extract the room, optionally including mobs/items inside it, and add it to
+	 * whatever world map area it belongs in, or the forced area if given.
+	 *
+	 * @see GenericBuilder#getRoomXML(Room, Set, Set, boolean)
+	 *
+	 * @param forceArea null to use a map area, or an area object to add the room to
+	 * @param xml the pre-parsed xml document containing room tags
+	 * @param andContent true to also build mobs/items, or false to ignore them
+	 * @param andSave true to save the room to the db, or false to not.
+	 * @return an error message, or ""
+	 */
+	public String unpackRoomFromXML(final Area forceArea, final List<XMLTag> xml, final boolean andContent, final boolean andSave);
+
+	/**
+	 * Given an xml document containing an AROOM tag, this method will extract the room,
+	 * and optionally the mobs/items inside it, and add it to whatever world map area
+	 * it is supposed to belong to.
+	 *
+	 * @see GenericBuilder#getRoomXML(Room, Set, Set, boolean)
+	 *
+	 * @param buf the xml document containing AROOM tag
+	 * @param andContent true to also extract mob/items or false otherwise
+	 * @return an error message, or "" if all is well
+	 */
+	public String unpackRoomFromXML(String buf, boolean andContent);
+
+	/**
+	 * Generates an xml document of the given room, and optionally all of its contents.  It will
+	 * also split out any files, or local generic races and classes for optional inclusion.
+	 *
+	 * @see GenericBuilder#unpackRoomFromXML(String, boolean)
+	 * @see GenericBuilder#unpackRoomFromXML(Area, List, boolean, boolean)
+	 *
+	 * @param room the room to generate an xml document for
+	 * @param custom optional set to put generic races/classes into
+	 * @param files optional set to put the paths to scripts used in the room
+	 * @param andContent true to include mobs/items, false otherwise
+	 * @return the xml document for the room
+	 */
+	public String getRoomXML(Room room,  Set<CMObject> custom, Set<String> files, boolean andContent);
+
+	/**
+	 * Unpack an XML document containing an AREA tag into an actual area object,
+	 * including any rooms, mobs, items, etc.  Saves nothing to the db, or to
+	 * the world map.  Just returns the populated object.
+	 *
+	 * @see GenericBuilder#getAreaObjectXML(Area, Session, Set, Set, boolean)
+	 * @see GenericBuilder#getAreaXML(Area, Session, Set, Set, boolean)
+	 *
+	 * @param xml the xml document containing an AREA tag
+	 * @return the populated area object
+	 * @throws CMException any unpacking errors, bad xml, etc
+	 */
+	public Area unpackAreaObjectFromXML(String xml) throws CMException;
+
+	/**
+	 * Given a pre-parsed XML document containing an ACLAS tag, this method will unpack the given area
+	 * into an area object, optionally complete with rooms, items, mobs, etc.  An optional session
+	 * can be sent which will receive progress messages.  An optional area class id can be sent to
+	 * override whatever is in the xml document.  The area can also optionally be saved to the
+	 * database and added to the game map.
+	 *
+	 * @see GenericBuilder#getAreaObjectXML(Area, Session, Set, Set, boolean)
+	 * @see GenericBuilder#getAreaXML(Area, Session, Set, Set, boolean)
+	 *
+	 * @param aV parsed XML document of the inside of the AREA tag.
+	 * @param S an optional session for monitoring, or null
+	 * @param overrideAreaType null, or an area class id
+	 * @param andRooms true to also unpack rooms, mobs, and items, false otherwise
+	 * @param savable true to save to the db and add to the map
+	 * @return any errors, or "" for no errors
+	 */
+	public String unpackAreaFromXML(List<XMLTag> aV, Session S, String overrideAreaType, boolean andRooms, boolean savable);
+
+	/**
+	 * Generates an xml document of the given area, and optionally all of its rooms.  It will
+	 * also split out any files, or local generic races and classes for optional inclusion.
+	 * The area must be in the database, as the rooms will be refreshed from there.
+	 *
+	 * @see GenericBuilder#unpackAreaFromXML(List, Session, String, boolean, boolean)
+	 * @see GenericBuilder#unpackAreaObjectFromXML(String)
+	 *
+	 * @param area the area to generate an xml document for
+	 * @param S optional session for progress messages, or null
+	 * @param custom optional set to put generic races/classes into
+	 * @param files optional set to put the paths to scripts used in the room
+	 * @param andRooms true to include rooms/mobs/items, false otherwise
+	 * @return the xml document for the area
+	 */
+	public String getAreaXML(Area area,  Session S, Set<CMObject> custom, Set<String> files, boolean andRooms);
+
+	/**
+	 * Generates an xml document of the given area, and optionally all of its rooms.  It will
+	 * also split out any files, or local generic races and classes for optional inclusion.
+	 * The area need not be in the database, as the room xml will be generated from memory.
+	 *
+	 * @see GenericBuilder#unpackAreaFromXML(List, Session, String, boolean, boolean)
+	 * @see GenericBuilder#unpackAreaObjectFromXML(String)
+	 *
+	 * @param area the area to generate an xml document for
+	 * @param S optional session for progress messages, or null
+	 * @param custom optional set to put generic races/classes into
+	 * @param files optional set to put the paths to scripts used in the room
+	 * @param andRooms true to include rooms/mobs/items, false otherwise
+	 * @return the xml document for the area
+	 */
+	public String getAreaObjectXML(Area area, Session S, Set<CMObject> custom, Set<String> files, boolean andRooms);
+
+	/**
+	 * Create a standard GenAmmunition Item, representing a bundle of ammo,
+	 * of the give type and number.
+	 *
+	 * @param ammunitionType the type of ammo "arrows" "bullets", etc.
+	 * @param number the number of ammo in the bundle
+	 * @return the new GenAmmunition object
+	 */
 	public Ammunition makeAmmunition(String ammunitionType, int number);
 
 	/**
@@ -287,7 +810,7 @@ public interface GenericBuilder extends CMLibrary
 	public void fillFileSet(Environmental E, Set<String> H);
 
 	/**
-	 * Attempts to fill the given map of script file paths->set of object that use the
+	 * Attempts to fill the given map of script file paths to set of object that use the
 	 * script.   Does so recursively, going into mob and store inventory and so forth.
 	 *
 	 * @see GenericBuilder#fillFileSet(Environmental, Set)
@@ -337,30 +860,18 @@ public interface GenericBuilder extends CMLibrary
 	public String getCharStatsStr(CharStats E);
 
 	/**
-	 * From the given Environmental, returns the XML of the most basic fields,
-	 * and then phyStats settings, and the ExtraEnv properties.
-	 *
-	 * @see GenericBuilder#setEnvProperties(Environmental, List)
-	 * @see GenericBuilder#getExtraEnvPropertiesStr(Environmental)
-	 *
-	 * @param E the object to give settings to
-	 * @param buf the xml tags containing settings
-	 */
-	public String getEnvPropertiesStr(Environmental E);
-
-	/**
 	 * From the given Environmental, returns xml of certain object
 	 *  settings that come from the objects most basic interfaces,
 	 * such as Physical, Economic, PhysicalAgent, extra bonus stats,
 	 * and scripts.
 	 *
-	 * @see GenericBuilder#setExtraEnvProperties(Environmental, List)
-	 * @see GenericBuilder#getGenScripts(PhysicalAgent, boolean)
+	 * @see GenericBuilder#unpackExtraEnvironmentalXML(Environmental, List)
+	 * @see GenericBuilder#getGenScriptsXML(PhysicalAgent, boolean)
 	 *
 	 * @param E the object to give settings to
-	 * @param buf the xml tags containing settings
+	 * @return the xml tags containing settings
 	 */
-	public String getExtraEnvPropertiesStr(Environmental E);
+	public String getExtraEnvironmentalXML(Environmental E);
 
 	/**
 	 * If the given PhysicalAgent contains any attached Scripts, this
@@ -368,13 +879,13 @@ public interface GenericBuilder extends CMLibrary
 	 * includeVars is set to true, it will also bundle all currently
 	 * set script variables.
 	 *
-	 * @see GenericBuilder#setGenScripts(PhysicalAgent, List, boolean)
+	 * @see GenericBuilder#unpackGenScriptsXML(PhysicalAgent, List, boolean)
 	 *
 	 * @param E the object that might be scripted
 	 * @param includeVars true to return any vars also
 	 * @return the xml document, or ""
 	 */
-	public String getGenScripts(PhysicalAgent E, boolean includeVars);
+	public String getGenScriptsXML(PhysicalAgent E, boolean includeVars);
 
 	/**
 	 * Sets the values in the given CharStats object from the
@@ -425,41 +936,29 @@ public interface GenericBuilder extends CMLibrary
 	public String getQuickName(final String classID, final String miscText);
 
 	/**
-	 * From the given XML tags, set the most basic CMObject fields, and
-	 * then dig into phyStats settings, and ExtraEnv properties,
-	 * and scripts.
-	 *
-	 * @see GenericBuilder#getEnvPropertiesStr(Environmental)
-	 * @see GenericBuilder#setExtraEnvProperties(Environmental, List)
-	 * @see GenericBuilder#setGenScripts(PhysicalAgent, List, boolean)
-	 *
-	 * @param E the object to give settings to
-	 * @param buf the xml tags containing settings
-	 */
-	public void setEnvProperties(Environmental E, List<XMLTag> buf);
-
-	/**
 	 * From the given XML tags, set certain given object settings
 	 * that come from the objects most basic interfaces, such as
 	 * Physical, Economic, PhysicalAgent, extra bonus stats
 	 *
-	 * @see GenericBuilder#getExtraEnvPropertiesStr(Environmental)
+	 * @see GenericBuilder#getExtraEnvironmentalXML(Environmental)
 	 *
 	 * @param E the object to give settings to
 	 * @param buf the xml tags containing settings
 	 */
-	public void setExtraEnvProperties(Environmental E, List<XMLTag> buf);
+	public void unpackExtraEnvironmentalXML(Environmental E, List<XMLTag> buf);
 
 	/**
 	 * From the given XML tags, set any object level Scripts attached to the
 	 * given PhysicalAgent object.  If restoreVars is true, then any variable
 	 * values stored in the XML document are also restored.
 	 *
+	 * @see GenericBuilder#getGenScriptsXML(PhysicalAgent, boolean)
+	 *
 	 * @param E the object to give scripts to
 	 * @param buf the xml tags containing scripts
 	 * @param restoreVars true to look for saved variables and restore them
 	 */
-	public void setGenScripts(PhysicalAgent E, List<XMLTag> buf, boolean restoreVars);
+	public void unpackGenScriptsXML(PhysicalAgent E, List<XMLTag> buf, boolean restoreVars);
 
 	/**
 	 * Sets the value of the given stat on the given object,
@@ -467,6 +966,7 @@ public interface GenericBuilder extends CMLibrary
 	 * but also any fakeitem or fakemob stat codes as well.  All Physical
 	 * type objects are supported.  This method supports deltas to numeric
 	 * values as well, by sending a value with + or - as a prefix.
+	 *
 	 * @see GenericBuilder#setAnyGenStat(Physical, String, String)
 	 * @see GenericBuilder#getAnyGenStat(Physical, String)
 	 * @see GenericBuilder#isAnyGenStat(Physical, String)
@@ -484,6 +984,7 @@ public interface GenericBuilder extends CMLibrary
 	 * even if the object is not generic. This includes not only the Generic codes,
 	 * but also any fakeitem or fakemob stat codes as well.  All Physical
 	 * type objects are supported.
+	 *
 	 * @see GenericBuilder#setAnyGenStat(Physical, String, String, boolean)
 	 * @see GenericBuilder#getAnyGenStat(Physical, String)
 	 * @see GenericBuilder#isAnyGenStat(Physical, String)
@@ -499,6 +1000,7 @@ public interface GenericBuilder extends CMLibrary
 	 * even if the object is not generic. This includes not only the Generic codes,
 	 * but also any fakeitem or fakemob stat codes as well.  All Physical
 	 * type objects are supported.
+	 *
 	 * @see GenericBuilder#setAnyGenStat(Physical, String, String)
 	 * @see GenericBuilder#setAnyGenStat(Physical, String, String, boolean)
 	 * @see GenericBuilder#isAnyGenStat(Physical, String)
@@ -515,6 +1017,7 @@ public interface GenericBuilder extends CMLibrary
 	 * object is not generic.  This includes not only the Generic codes,
 	 * but also any fakeitem or fakemob stat codes as well.  All Physical
 	 * type objects are supported.
+	 *
 	 * @see GenericBuilder#setAnyGenStat(Physical, String, String)
 	 * @see GenericBuilder#setAnyGenStat(Physical, String, String, boolean)
 	 * @see GenericBuilder#getAnyGenStat(Physical, String)
@@ -530,6 +1033,7 @@ public interface GenericBuilder extends CMLibrary
 	 * to the given object.  It does not rely on the
 	 * Modifiable interface.  It also does not support any
 	 * of the fake GenItem or GenMobBonusFakeStats stats.
+	 *
 	 * @param P the object to get stat codes for
 	 * @return the list of stat codes.
 	 */
@@ -539,6 +1043,7 @@ public interface GenericBuilder extends CMLibrary
 	 * Removes any qualifying prefixes from stat names, to
 	 * reveal the underlying stat code.  Prefixes include
 	 * things like CURRENT_, CURRENT ,BASE_, BASE ,MAX_, and MAX
+	 *
 	 * @param stat the possibly qualified stat code
 	 * @return the underlying state code
 	 */
@@ -549,8 +1054,9 @@ public interface GenericBuilder extends CMLibrary
 	 * genitem stat codes.  It does not rely on the
 	 * Modifiable interface.  It also does not support any
 	 * of the fake GenItemBonusFakeStats stats.
-	 * @see GenericBuilder#getGenItemStat(MOB, String)
-	 * @see GenericBuilder#setGenItemStat(MOB, String, String)
+	 *
+	 * @see GenericBuilder#getGenItemStat(Item, String)
+	 * @see GenericBuilder#setGenItemStat(Item, String, String)
 	 *
 	 * @param code the stat code
 	 * @return the ordinal of the stat
@@ -562,8 +1068,9 @@ public interface GenericBuilder extends CMLibrary
 	 * is not generic.  Therefore, it does not rely on the
 	 * Modifiable interface.  It also does not support any
 	 * of the fake GenItemBonusFakeStats stats.
+	 *
 	 * @see GenericBuilder#getGenItemCodeNum(String)
-	 * @see GenericBuilder#setGenItemStat(MOB, String, String)
+	 * @see GenericBuilder#setGenItemStat(Item, String, String)
 	 *
 	 * @param I the item object to read
 	 * @param code the stat code to return the value of
@@ -576,7 +1083,8 @@ public interface GenericBuilder extends CMLibrary
 	 * is not generic.  Therefore, it does not rely on the
 	 * Modifiable interface.  It also does not support any
 	 * of the fake GenItemBonusFakeStats stats.
-	 * @see GenericBuilder#getGenItemStat(MOB, String)
+	 *
+	 * @see GenericBuilder#getGenItemStat(Item, String)
 	 * @see GenericBuilder#getGenItemCodeNum(String)
 	 *
 	 * @param I the item object to modify
@@ -588,6 +1096,7 @@ public interface GenericBuilder extends CMLibrary
 	/**
 	 * Returns the ordinal of the given code in the basic
 	 * genmob stat codes.
+	 *
 	 * @see GenericBuilder#getGenMobStat(MOB, String)
 	 * @see GenericBuilder#setGenMobStat(MOB, String, String)
 	 *
@@ -601,6 +1110,7 @@ public interface GenericBuilder extends CMLibrary
 	 * is not generic.  Therefore, it does not rely on the
 	 * Modifiable interface.  It also does not support any
 	 * of the fake GenMOBBonusFakeStats stats.
+	 *
 	 * @see GenericBuilder#getGenMobCodeNum(String)
 	 * @see GenericBuilder#setGenMobStat(MOB, String, String)
 	 *
@@ -615,6 +1125,7 @@ public interface GenericBuilder extends CMLibrary
 	 * is not generic.  Therefore, it does not rely on the
 	 * Modifiable interface.  It also does not support any
 	 * of the fake GenMOBBonusFakeStats stats.
+	 *
 	 * @see GenericBuilder#getGenMobStat(MOB, String)
 	 * @see GenericBuilder#getGenMobCodeNum(String)
 	 *
@@ -638,7 +1149,7 @@ public interface GenericBuilder extends CMLibrary
 	/**
 	 * Converts all the faction values and associations on the given
 	 * mob into a complete xml doc for storage in the db.
-	 * @see GenericBuilder#setFactionFromXML(MOB, List)
+	 * @see GenericBuilder#unpackFactionFromXML(MOB, List)
 	 *
 	 * @param mob the mob to grab faction associations from
 	 * @return the xml doc of all factions on the mob
@@ -655,7 +1166,7 @@ public interface GenericBuilder extends CMLibrary
 	 * @param mob the mob to set faction associations on
 	 * @param xml the list of pre-parsed xml tags
 	 */
-	public void setFactionFromXML(MOB mob, List<XMLTag> xml);
+	public void unpackFactionFromXML(MOB mob, List<XMLTag> xml);
 
 	/**
 	 * Returns all of the given effect Abilities on the given Affectable as a semicolon delimited

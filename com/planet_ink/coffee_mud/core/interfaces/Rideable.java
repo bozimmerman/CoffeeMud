@@ -301,7 +301,6 @@ public interface Rideable extends Rider
 	 * @see Rider
 	 * @see Rideable#setMountString(String)
 	 * @see Rideable#getMountString()
-	 * @see Rideable#RIDEABLE_DESCS
 	 * @param commandType one of the RIDEABLE_ constants as a type
 	 * @param R The rider object to make grammatically correct.
 	 * @return a string describing the riders state of mounting this Rideable
@@ -314,7 +313,6 @@ public interface Rideable extends Rider
 	 * @see Rider
 	 * @see Rideable#setMountString(String)
 	 * @see Rideable#mountString(int, Rider)
-	 * @see Rideable#RIDEABLE_DESCS
 	 * @return a custom string describing the riders state of mounting this Rideable
 	 */
 	public String getMountString();
@@ -325,7 +323,6 @@ public interface Rideable extends Rider
 	 * @see Rider
 	 * @see Rideable#mountString(int, Rider)
 	 * @see Rideable#getDismountString()
-	 * @see Rideable#RIDEABLE_DESCS
 	 * @param str a string describing the riders state of mounting this Rideable
 	 */
 	public void setMountString(String str);

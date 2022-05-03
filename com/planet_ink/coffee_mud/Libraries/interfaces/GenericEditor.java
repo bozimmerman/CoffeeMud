@@ -34,6 +34,12 @@ import java.util.*;
 */
 public interface GenericEditor extends CMLibrary
 {
+	public static interface CMEval
+	{
+		public Object eval(Object val, Object[] choices, boolean emptyOK)
+				throws CMException;
+	}
+
 	public void modifyArea(MOB mob, Area myArea, Set<Area> alsoUpdateAreas, int showFlag) throws IOException;
 	public Room modifyRoom(MOB mob, Room R, int showFlag) throws IOException;
 	public void modifyAccount(MOB mob, PlayerAccount A, int showFlag) throws IOException;
@@ -119,10 +125,4 @@ public interface GenericEditor extends CMLibrary
 	public void promptStatChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, Object[] choices) throws IOException;
 	public void promptStatCommaChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, Object[] choices) throws IOException;
 	public Collection<? extends Object> promptFlags(final MOB mob, final Collection<? extends Object> flags, final Object[] values, final int showNumber, final int showFlag, final String fieldDisplayStr) throws IOException;
-
-	public static interface CMEval
-	{
-		public Object eval(Object val, Object[] choices, boolean emptyOK)
-				throws CMException;
-	}
 }
