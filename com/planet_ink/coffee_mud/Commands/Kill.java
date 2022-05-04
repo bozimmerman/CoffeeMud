@@ -120,8 +120,7 @@ public class Kill extends StdCommand
 				return false;
 			}
 			// preference to not kill your followers
-			if((target != null)
-			&& ((mob.amFollowing()!=null)||(target.amFollowing()!=null)))
+			if((mob.amFollowing()!=null)||(target.amFollowing()!=null))
 			{
 				final Set<MOB> followers = mob.getGroupMembers(new HashSet<MOB>());
 				if(followers.contains(target))
