@@ -982,12 +982,14 @@ public class Intermud implements Runnable, Persistent, Serializable
 			}
 			else
 			if( type.equals("error") )
-			{
 				error(data);
-			}
+			else
+			if( type.equals("ping-req") )
+				Log.sysOut("Intermud","Ping reply: " + data);
 			else
 			if( type.equals("ucache-update") )
 			{
+				Log.errOut("Intermud","Other packet: " + type);
 				// i have NO idea what to do here
 			}
 			else
