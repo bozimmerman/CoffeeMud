@@ -119,6 +119,25 @@ public class Kill extends StdCommand
 				CMLib.commands().postCommandFail(mob,origCmds,L("I don't see '@x1' here.",whomToKill));
 				return false;
 			}
+			// preference to not kill your followers
+			if((target != null)
+			&& ((mob.amFollowing()!=null)||(target.amFollowing()!=null)))
+			{
+				final Set<MOB> followers = mob.getGroupMembers(new HashSet<MOB>());
+				if(followers.contains(target))
+				{
+					final int dot=whomToKill.lastIndexOf('.');
+					if((dot<0)||(!CMath.isInteger(whomToKill.substring(dot+1).trim())))
+					{
+						MOB subTarget = target;
+						int num=1;
+						while((subTarget != null) && (followers.contains(subTarget)) && (num<1000))
+							subTarget=mob.location().fetchInhabitant(whomToKill+"."+(++num));
+						if(subTarget != null)
+							target=subTarget;
+					}
+				}
+			}
 		}
 
 		if(reallyKill)
