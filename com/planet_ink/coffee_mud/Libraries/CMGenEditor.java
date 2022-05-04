@@ -4402,7 +4402,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 								parms=mob.session().prompt(L("Enter any behavior parameters (?)\n\r:@x1",parms));
 								if(parms.equals("?"))
 								{
-									final StringBuilder s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true);
+									final String s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true);
 									if(s2!=null)
 										mob.tell(s2.toString());
 									else mob.tell(L("no help!"));
@@ -4505,7 +4505,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 								parms=mob.session().prompt(L("Enter any effect parameters (?)\n\r:@x1",parms));
 								if(parms.equals("?"))
 								{
-									final StringBuilder s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true);
+									final String s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true);
 									if(s2!=null)
 										mob.tell(s2.toString());
 									else mob.tell(L("no help!"));
@@ -5178,7 +5178,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 									parms=mob.session().prompt(L("Enter any parameters (?)\n\r:@x1",parms));
 									if(parms.equals("?"))
 									{
-										final StringBuilder s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true);
+										final String s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true);
 										if(s2!=null)
 											mob.tell(s2.toString());
 										else mob.tell(L("no help!"));
@@ -5293,7 +5293,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 									}
 									if (parms.equals("?"))
 									{
-										final StringBuilder s2 = CMLib.help().getHelpText(chosenOne.ID(), mob, true);
+										final String s2 = CMLib.help().getHelpText(chosenOne.ID(), mob, true);
 										if (s2 != null)
 											mob.tell(s2.toString());
 										else

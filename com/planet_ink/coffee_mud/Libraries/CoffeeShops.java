@@ -177,7 +177,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		{
 			if(E instanceof Ability)
 			{
-				final StringBuilder text;
+				final String text;
 				if(lie)
 				{
 					final int qualifyingLevel = CMLib.ableMapper().lowestQualifyingLevel(E.ID());

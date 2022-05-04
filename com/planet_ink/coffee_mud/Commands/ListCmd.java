@@ -2075,17 +2075,17 @@ public class ListCmd extends StdCommand
 						if(A!=null)
 							immunoStr+=((immunoStr.length()>0)?", ":"")+A.name();
 					}
-					StringBuilder help=CMLib.help().getHelpText(R.ID(),null,false,true);
+					String help=CMLib.help().getHelpText(R.ID(),null,false,true);
 					if(help==null)
 						help=CMLib.help().getHelpText(R.name(),null,false,true);
 					if((help!=null)&&(help.toString().startsWith("<RACE>")))
-						help=new StringBuilder(help.toString().substring(6));
+						help=help.toString().substring(6);
 					else
-						help=new StringBuilder("");
+						help="";
 					try
 					{
 						if((help!=null)&&(help.toString().indexOf('@')>=0))
-							help = new StringBuilder(CMLib.webMacroFilter().virtualPageFilter(help.toString()));
+							help = CMLib.webMacroFilter().virtualPageFilter(help.toString());
 					}
 					catch (final com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException x)
 					{
@@ -2203,17 +2203,17 @@ public class ListCmd extends StdCommand
 					Integer.valueOf(Ability.ACODE_TECH),
 					Integer.valueOf(Ability.ACODE_SUPERPOWER)
 				});
-				StringBuilder help=CMLib.help().getHelpText(C.ID(),null,false,true);
+				String help=CMLib.help().getHelpText(C.ID(),null,false,true);
 				if(help==null)
 					help=CMLib.help().getHelpText(C.name(),null,false,true);
 				if((help!=null)&&(help.toString().startsWith("<CHARCLASS>")))
-					help=new StringBuilder(help.toString().substring(11));
+					help=help.toString().substring(11);
 				else
-					help=new StringBuilder("");
+					help="";
 				try
 				{
 					if((help!=null)&&(help.toString().indexOf('@')>=0))
-						help = new StringBuilder(CMLib.webMacroFilter().virtualPageFilter(help.toString()));
+						help = CMLib.webMacroFilter().virtualPageFilter(help.toString());
 				}
 				catch (final com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException x)
 				{
@@ -4502,13 +4502,13 @@ public class ListCmd extends StdCommand
 			else
 			if(wiki == WikiFlag.WIKIHELP)
 			{
-				StringBuilder help=CMLib.help().getHelpText(s,null,false,true);
+				String help=CMLib.help().getHelpText(s,null,false,true);
 				if(help==null)
 					continue;
 				try
 				{
 					if(help.toString().indexOf('@')>=0)
-						help = new StringBuilder(CMLib.webMacroFilter().virtualPageFilter(help.toString()));
+						help = CMLib.webMacroFilter().virtualPageFilter(help.toString());
 				}
 				catch (final com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException x)
 				{
@@ -4882,7 +4882,7 @@ public class ListCmd extends StdCommand
 				String targets=CMLib.help().getAbilityTargetDesc(A);
 				final String range=CMLib.help().getAbilityRangeDesc(A);
 				final boolean archon = ofType == Ability.ACODE_PROPERTY;
-				StringBuilder help=CMLib.help().getHelpText(A.ID(),null,archon,true);
+				String help=CMLib.help().getHelpText(A.ID(),null,archon,true);
 				String usage="";
 				String example="";
 				String helpStr="";
@@ -4891,7 +4891,7 @@ public class ListCmd extends StdCommand
 				try
 				{
 					if((help!=null)&&(help.toString().indexOf('@')>=0))
-						help = new StringBuilder(CMLib.webMacroFilter().virtualPageFilter(help.toString()));
+						help = CMLib.webMacroFilter().virtualPageFilter(help.toString());
 				}
 				catch (final com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException x)
 				{
@@ -5013,7 +5013,7 @@ public class ListCmd extends StdCommand
 			for(final Enumeration<Behavior> e=CMClass.behaviors();e.hasMoreElements();)
 			{
 				final Behavior B=e.nextElement();
-				StringBuilder help=CMLib.help().getHelpText(B.ID(),null,true,true);
+				String help=CMLib.help().getHelpText(B.ID(),null,true,true);
 				String usage="";
 				String example="";
 				String targets="";
@@ -5025,7 +5025,7 @@ public class ListCmd extends StdCommand
 					try
 					{
 						if(help.toString().indexOf('@')>=0)
-							help = new StringBuilder(CMLib.webMacroFilter().virtualPageFilter(help.toString()));
+							help = CMLib.webMacroFilter().virtualPageFilter(help.toString());
 					}
 					catch (final com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException x)
 					{

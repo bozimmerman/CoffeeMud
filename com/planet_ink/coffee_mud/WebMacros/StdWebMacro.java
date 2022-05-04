@@ -218,22 +218,17 @@ public class StdWebMacro implements WebMacro
 		return CMLib.webMacroFilter().clearWebMacros(s);
 	}
 
-	protected StringBuilder helpHelp(final StringBuilder s)
+	protected String helpHelp(final String s)
 	{
 		return helpHelp(s, 70);
 	}
 
-	protected StringBuilder helpHelp(final String s)
+	protected String helpHelp(final String s1, final int limit)
 	{
-		return helpHelp(new StringBuilder(s), 70);
-	}
-
-	protected StringBuilder helpHelp(StringBuilder s, final int limit)
-	{
-		if(s!=null)
+		if(s1!=null)
 		{
 			final String[] lookup=CMLib.color().standardHTMLlookups();
-			s=new StringBuilder(s.toString());
+			final StringBuilder s=new StringBuilder(s1.toString());
 			int x=0;
 			int count=0;
 			x=0;
@@ -385,9 +380,9 @@ public class StdWebMacro implements WebMacro
 				else
 					x++;
 			}
-			return s;
+			return s.toString();
 		}
-		return new StringBuilder("");
+		return "";
 	}
 
 	protected PairSVector<String,String> parseOrderedParms(final String parm, final boolean preserveCase)

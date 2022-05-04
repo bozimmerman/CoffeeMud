@@ -151,7 +151,7 @@ public class AHelp extends StdCommand
 		}
 		else
 		{
-			final StringBuilder text = CMLib.help().getHelpText(helpStr,CMLib.help().getArcHelpFile(),mob);
+			final String text = CMLib.help().getHelpText(helpStr,CMLib.help().getArcHelpFile(),mob);
 			if(text != null)
 				thisTag=new StringBuffer(text.toString());
 		}

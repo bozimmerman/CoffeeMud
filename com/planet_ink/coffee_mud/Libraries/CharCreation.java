@@ -2871,7 +2871,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 			if(newRace!=null)
 			{
-				final StringBuilder str=CMLib.help().getHelpText(newRace.ID().toUpperCase(),mob,false);
+				final String str=CMLib.help().getHelpText(newRace.ID().toUpperCase(),mob,false);
 				if(str!=null)
 					session.println("\n\r^N"+str.toString()+"\n\r");
 				session.promptPrint(L("^!Is ^H@x1^N^! correct (Y/n)?^N",newRace.name()));
@@ -3410,11 +3410,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		if((newClass!=null)&&(canChangeToThisClass(mob,newClass,loginObj.theme)))
 		{
-			final StringBuilder str=CMLib.help().getHelpText(newClass.ID().toUpperCase(),mob,false,false);
+			final String str=CMLib.help().getHelpText(newClass.ID().toUpperCase(),mob,false,false);
 			if(str!=null)
-			{
 				session.println("\n\r^N"+str.toString()+"\n\r");
-			}
 			session.promptPrint(L("^NIs ^H@x1^N correct (Y/n)?",newClass.name()));
 			mob.baseCharStats().setCurrentClass(newClass);
 			mob.charStats().setCurrentClass(newClass);
@@ -3702,7 +3700,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 
 
-		final StringBuilder str=CMLib.help().getHelpText(newDeity.Name(),mob,false,false);
+		final String str=CMLib.help().getHelpText(newDeity.Name(),mob,false,false);
 		if(str!=null)
 			session.println("\n\r^N"+str.toString()+"\n\r");
 		session.promptPrint(L("^NIs ^H@x1^N correct (Y/n)?",newDeity.name()));

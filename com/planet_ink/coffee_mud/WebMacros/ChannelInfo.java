@@ -69,7 +69,7 @@ public class ChannelInfo extends StdWebMacro
 				final ChannelsLibrary.CMChannel C=CMLib.channels().getChannel(code);
 				if(parms.containsKey("HELP"))
 				{
-					StringBuilder s=CMLib.help().getHelpText("CHANNEL_"+last,null,false);
+					String s=CMLib.help().getHelpText("CHANNEL_"+last,null,false);
 					if(s==null)
 						s=CMLib.help().getHelpText(last,null,false);
 					int limit=78;

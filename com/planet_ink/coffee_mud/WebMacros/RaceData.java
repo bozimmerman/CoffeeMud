@@ -828,13 +828,13 @@ public class RaceData extends StdWebMacro
 				final StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("HELP"))
 				{
-					StringBuilder s=CMLib.help().getHelpText(R.ID(),null,false,true);
+					String s=CMLib.help().getHelpText(R.ID(),null,false,true);
 					if(s==null)
 						s=CMLib.help().getHelpText(R.name(),null,false,true);
 					if(s!=null)
 					{
 						if(s.toString().startsWith("<RACE>"))
-							s=new StringBuilder(s.toString().substring(6));
+							s=s.toString().substring(6);
 						int limit=78;
 						if(parms.containsKey("LIMIT"))
 							limit=CMath.s_int(parms.get("LIMIT"));

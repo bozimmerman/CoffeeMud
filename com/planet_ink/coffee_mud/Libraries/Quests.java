@@ -1023,9 +1023,9 @@ public class Quests extends StdLibrary implements QuestManager
 					showNumber--;
 					continue;
 				}
-				StringBuilder help=CMLib.help().getHelpText(behavior,mob,true);
+				String help=CMLib.help().getHelpText(behavior,mob,true);
 				if(help==null)
-					help=new StringBuilder("No help on '"+behavior+"'");
+					help="No help on '"+behavior+"'";
 				parms=CMLib.genEd().prompt(mob,parms,showNumber,showFlag,L("Behavior Parameters"),help.toString());
 				behaviors.get(b).first = behavior;
 				behaviors.get(b).second = parms;
@@ -1088,9 +1088,9 @@ public class Quests extends StdLibrary implements QuestManager
 					showNumber--;
 					continue;
 				}
-				StringBuilder help=CMLib.help().getHelpText(propertyID,mob,true);
+				String help=CMLib.help().getHelpText(propertyID,mob,true);
 				if(help==null)
-					help=new StringBuilder("No help on '"+propertyID+"'");
+					help="No help on '"+propertyID+"'";
 				parms=CMLib.genEd().prompt(mob,parms,showNumber,showFlag,L("Ability Parameters"),help.toString());
 				properties.get(p).first =propertyID;
 				properties.get(p).second = parms;

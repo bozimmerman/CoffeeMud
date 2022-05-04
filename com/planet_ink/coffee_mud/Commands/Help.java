@@ -56,21 +56,21 @@ public class Help extends StdCommand
 			mob.tell(L("No help is available."));
 			return false;
 		}
-		StringBuilder thisTag=null;
+		String thisTag=null;
 		if(helpStr.length()==0)
-			thisTag=new StringBuilder(Resources.getFileResource("help/help.txt",true));
+			thisTag=Resources.getFileResource("help/help.txt",true).toString();
 		else
 			thisTag=CMLib.help().getHelpText(helpStr,CMLib.help().getHelpFile(),mob);
 		if((thisTag==null)&&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP)))
 			thisTag=CMLib.help().getHelpText(helpStr,CMLib.help().getArcHelpFile(),mob);
 		if(thisTag==null)
 		{
-			final StringBuilder thisList=
+			final String thisList=
 				CMLib.help().getHelpList(
-				helpStr,
-				CMLib.help().getHelpFile(),
-				CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP)?CMLib.help().getArcHelpFile():null,
-				mob);
+					helpStr,
+					CMLib.help().getHelpFile(),
+					CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP)?CMLib.help().getArcHelpFile():null,
+					mob);
 			if((thisList!=null)&&(thisList.length()>0))
 				mob.tell(L("No help is available on '@x1'.\n\rHowever, here are some search matches:\n\r^N@x2",helpStr,thisList.toString().replace('_',' ')));
 			else

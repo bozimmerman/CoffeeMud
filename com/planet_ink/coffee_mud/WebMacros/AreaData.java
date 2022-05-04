@@ -247,7 +247,7 @@ public class AreaData extends StdWebMacro
 				}
 				if(parms.containsKey("HELP"))
 				{
-					StringBuilder s=CMLib.help().getHelpText("AREA_"+A.Name(),null,false);
+					String s=CMLib.help().getHelpText("AREA_"+A.Name(),null,false);
 					if(s==null)
 						s=CMLib.help().getHelpText("AREAHELP_"+A.Name(),null,false);
 					int limit=78;
@@ -729,7 +729,7 @@ public class AreaData extends StdWebMacro
 				if(parms.containsKey("TODCODE"))
 					str.append(CMStrings.removeColors(A.getTimeObj().getTODCode().getDesc())+", ");
 				if(parms.containsKey("WEATHER"))
-					str.append(super.helpHelp(A.getClimateObj().getWeatherDescription(A))+", ");
+					str.append(helpHelp(A.getClimateObj().getWeatherDescription(A))+", ");
 				if(parms.containsKey("MOON"))
 					str.append(CMStrings.removeColors(A.getTimeObj().getMoonPhase(A.getRandomProperRoom()).getDesc())+", ");
 				if(parms.containsKey("STATS"))

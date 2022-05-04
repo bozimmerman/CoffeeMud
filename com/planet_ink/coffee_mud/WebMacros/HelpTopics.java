@@ -61,7 +61,7 @@ public class HelpTopics extends StdWebMacro
 				limit=CMath.s_int(parms.get("LIMIT"));
 			if((last!=null)&&(last.length()>0))
 			{
-				final StringBuilder s=CMLib.help().getHelpText(last,null,parms.containsKey("AHELP"));
+				final String s=CMLib.help().getHelpText(last,null,parms.containsKey("AHELP"));
 				if(s!=null)
 					return clearWebMacros(helpHelp(s,limit).toString());
 			}

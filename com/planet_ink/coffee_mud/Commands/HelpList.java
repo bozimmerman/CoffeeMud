@@ -60,7 +60,7 @@ public class HelpList extends StdCommand
 			mob.tell(L("You must enter a search pattern.  Use 'TOPICS' or 'COMMANDS' for an unfiltered list."));
 			return false;
 		}
-		final StringBuilder thisTag=
+		final String thisTag=
 					CMLib.help().getHelpList(
 					helpStr,
 					CMLib.help().getHelpFile(),
