@@ -31,6 +31,17 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+
+/**
+ * Journals are any set of ordered messages, threaded or unthreaded,
+ * which are stored in a database and divided into categories, called
+ * Journals or Forums.  Journals are the common name when talking about
+ * readable message items and certain system journals, such as BUGS.
+ * Forums the term used when a journal is available from a web page.
+ *
+ * @author BZ
+ *
+ */
 public interface JournalsLibrary extends CMLibrary
 {
 	public Set<String> getArchonJournalNames();
@@ -59,8 +70,6 @@ public interface JournalsLibrary extends CMLibrary
 	public JournalMetaData getJournalStats(ForumJournal journal);
 	public void clearJournalSummaryStats(ForumJournal journal);
 
-	public enum MsgMkrResolution { SAVEFILE, CANCELFILE }
-
 	public MsgMkrResolution makeMessage(final MOB mob, final String messageTitle, final List<String> vbuf, boolean autoAdd) throws IOException;
 	public void makeMessageASync(final MOB mob, final String messageTitle, final List<String> vbuf, final boolean autoAdd, final MsgMkrCallback back);
 
@@ -68,6 +77,12 @@ public interface JournalsLibrary extends CMLibrary
 	public void notifyReplying(final String journal, final String tpAuthor, final String reAuthor, final String subject);
 
 	public static final String JOURNAL_BOUNDARY="%0D^w---------------------------------------------^N%0D";
+
+	public enum MsgMkrResolution
+	{
+		SAVEFILE,
+		CANCELFILE
+	}
 
 	public interface MsgMkrCallback
 	{
@@ -129,27 +144,123 @@ public interface JournalsLibrary extends CMLibrary
 		public MaskingLibrary.CompiledZMask criteria();
 	}
 
+	/**
+	 * Journals with a meta-flags entry, typically Forums,
+	 * are described by the accessors of this interface.
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public static interface ForumJournal
 	{
+		/**
+		 * Returns the journal name
+		 * @return the journal name
+		 */
 		public String NAME();
+
+		/**
+		 * Returns the category this journal is in
+		 * @return the category this journal is in
+		 */
 		public String category();
+
+		/**
+		 * Returns the raw zapper mask for reading
+		 * @return the raw zapper mask for reading
+		 */
 		public String readMask();
+
+		/**
+		 * Returns the raw zapper mask for posting
+		 * @return the raw zapper mask for posting
+		 */
 		public String postMask();
+
+		/**
+		 * Returns the raw zapper mask for replying
+		 * @return the raw zapper mask for replying
+		 */
 		public String replyMask();
+
+		/**
+		 * Returns the raw zapper mask for administering
+		 * @return the raw zapper mask for administering
+		 */
 		public String adminMask();
+
+		/**
+		 * Returns the value of a forum journal flag
+		 * @see JournalsLibrary.ForumJournalFlags
+		 *
+		 * @param flag the flag to return
+		 * @return the value of the flag or null
+		 */
 		public String getFlag(ForumJournalFlags flag);
+
+		/**
+		 * Returns whether the given mob passes the
+		 * given zapper mask, presumably one of the above.
+		 * It might seem wasteful, but remember that
+		 * the masking library caches stuff like this.
+		 *
+		 * @param M the mob to check
+		 * @param mask the mask to check them against
+		 * @return true if the mob passes, false otherwise
+		 */
 		public boolean maskCheck(MOB M, String mask);
+
+		/**
+		 * Returns whether the given mob is authorized to
+		 * do the task designated by the given flag,
+		 * typically by calling maskCheck above.
+		 *
+		 * @see JournalsLibrary.ForumJournalFlags
+		 *
+		 * @param M the mob to check
+		 * @param fl an appropriate flag
+		 * @return true if the mob is authorized, false otherwise
+		 */
 		public boolean authorizationCheck(MOB M, ForumJournalFlags fl);
 	}
 
+	/**
+	 * Journals with a meta-flags entry, typically Forums,
+	 * have numerous flags that define them.  These are
+	 * those flags
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public static enum ForumJournalFlags
 	{
+		/**
+		 * The expiration time of messages
+		 */
 		EXPIRE,
+		/**
+		 * The ZapperMask for readers
+		 */
 		READ,
+		/**
+		 * The ZapperMask for posters
+		 */
 		POST,
+		/**
+		 * The ZapperMask for repliers
+		 */
 		REPLY,
+		/**
+		 * The ZapperMask for administrators
+		 */
 		ADMIN,
+		/**
+		 * The field to sort messages by
+		 */
 		SORTBY,
+		/**
+		 * The category that the journal belongs to
+		 */
 		CATEGORY;
 	}
 }
