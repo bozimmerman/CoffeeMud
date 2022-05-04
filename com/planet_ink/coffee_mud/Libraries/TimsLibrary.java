@@ -213,8 +213,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return level;
 	}
 
-	@Override
-	public boolean fixRejuvItem(final Item I)
+	protected boolean fixRejuvItem(final Item I)
 	{
 		Ability A=I.fetchEffect("ItemRejuv");
 		if(A!=null)
@@ -283,7 +282,6 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public boolean itemFix(final Item I, final int lvlOr0, final boolean preferMagic, final StringBuffer changes)
 	{
 		final Item oldI = (changes!=null)?(Item)I.copyOf():null;
@@ -291,7 +289,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		if((I instanceof SpellHolder)
 		||((I instanceof Wand)&&(lvlOr0<=0)))
 		{
-			Vector<Ability> spells=new Vector<Ability>();
+			final List<Ability> spells=new ArrayList<Ability>();
 			if(I instanceof SpellHolder)
 				spells.addAll(((SpellHolder)I).getSpells());
 			else
@@ -300,7 +298,6 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			if(spells.size()==0)
 				return false;
 			int levels=0;
-			spells=(Vector<Ability>)spells.clone();
 			for (final Ability ability : spells)
 				levels+=CMLib.ableMapper().lowestQualifyingLevel(ability.ID());
 			final int level=(int)Math.round(CMath.div(levels, spells.size()));
