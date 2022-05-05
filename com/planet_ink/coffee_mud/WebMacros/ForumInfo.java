@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.ForumJournalFlags;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.SMTPJournal;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -71,8 +72,8 @@ public class ForumInfo extends StdWebMacro
 			@SuppressWarnings("unchecked")
 			// the smtp forwarding vars are set in the smtp.ini file, read by the smtp server.  This is out ONLY access to that info.
 			final
-			TreeMap<String, JournalsLibrary.SMTPJournal> set=(TreeMap<String, JournalsLibrary.SMTPJournal>) Resources.getResource("SYSTEM_SMTP_JOURNALS");
-			final JournalsLibrary.SMTPJournal entry =(set!=null) ? set.get(last.toUpperCase().trim()) : null;
+			Map<String, SMTPJournal> set=(TreeMap<String, SMTPJournal>) Resources.getResource("SYSTEM_SMTP_JOURNALS");
+			final SMTPJournal entry =(set!=null) ? set.get(last.toUpperCase().trim()) : null;
 			final String email=((M!=null) &&(M.playerStats()!=null) && (M.playerStats().getEmail()!=null)) ? M.playerStats().getEmail() : "";
 			str.append( ((entry!=null) && (email.length()>0)) ? Boolean.toString(entry.forward()) : "false").append(", ");
 		}
@@ -103,8 +104,8 @@ public class ForumInfo extends StdWebMacro
 		{
 			@SuppressWarnings("unchecked")
 			final
-			TreeMap<String, JournalsLibrary.SMTPJournal> set=(TreeMap<String, JournalsLibrary.SMTPJournal>) Resources.getResource("SYSTEM_SMTP_JOURNALS");
-			final JournalsLibrary.SMTPJournal entry =(set!=null) ? set.get(last.toUpperCase().trim()) : null;
+			TreeMap<String, SMTPJournal> set=(TreeMap<String, SMTPJournal>) Resources.getResource("SYSTEM_SMTP_JOURNALS");
+			final SMTPJournal entry =(set!=null) ? set.get(last.toUpperCase().trim()) : null;
 			if((entry!=null)&&(entry.forward()))
 			{
 				str.append( entry.name().replace(' ','_')+"@"+CMProps.getVar(CMProps.Str.MUDDOMAIN)).append(", ");
@@ -169,7 +170,7 @@ public class ForumInfo extends StdWebMacro
 			||(metaData.imagePath().trim().length()==0))
 				str.append( L("images/lilcm.jpg")).append(", ");
 			else
-				str.append( ""+metaData.threads()).append(", ");
+				str.append( ""+metaData.imagePath()).append(", ");
 		}
 
 		String strstr=str.toString();

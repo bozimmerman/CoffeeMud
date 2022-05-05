@@ -34,7 +34,7 @@ public class Directions
 
 	/**
 	 * The type of direction words supported
-	 * @author BZ
+	 * @author Bo Zimmerman
 	 *
 	 */
 	public static enum DirType

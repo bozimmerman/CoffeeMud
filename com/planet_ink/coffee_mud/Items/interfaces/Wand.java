@@ -44,7 +44,7 @@ public interface Wand extends MiscMagic, Dischargeable
 	 * A type of ability, via interface, that allows a Wand to actually
 	 * be used.
 	 *
-	 * @author BZ
+	 * @author Bo Zimmerman
 	 *
 	 */
 	public static interface WandUsage extends Ability

@@ -1848,7 +1848,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * For example, RANGE_ is as RANGE*, or a parameter key
 	 * starting with RANGE.
 	 *
-	 * @author BZ
+	 * @author Bo Zimmerman
 	 *
 	 */
 	public enum FacTag

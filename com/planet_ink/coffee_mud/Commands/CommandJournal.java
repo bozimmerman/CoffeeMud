@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
@@ -351,28 +352,66 @@ public class CommandJournal extends StdCommand
 		if((!review(mob,journal.JOURNAL_NAME(),journal.NAME().toLowerCase()+"s",commands,journal.NAME()))
 		&&(!transfer(mob,journal.JOURNAL_NAME(),journal.NAME().toLowerCase()+"s",commands,journal.NAME())))
 		{
-			String msgString=CMParms.combine(commands,1);
+			final String msgStr;
 			if((sess!=null)&&(!sess.isStopped()))
-				msgString=CMLib.journals().getScriptValue(mob,journal.NAME(),msgString);
-			if(msgString.trim().length()>0)
+				msgStr=CMLib.journals().getScriptValue(mob,journal.NAME(),CMParms.combine(commands,1));
+			else
+				msgStr=CMParms.combine(commands,1);
+
+			final JournalsLibrary.CommandJournal cj = journal;
+			final Runnable finishPostRunner = new Runnable()
+			{
+				final JournalsLibrary.CommandJournal journal = cj;
+				final String msgString = msgStr;
+
+				@Override
+				public void run()
+				{
+					final String prePend;
+					if(journal.getFlag(JournalsLibrary.CommandJournalFlags.ADDROOM)!=null)
+						prePend="(^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(mob.location())+"^</LSTROOMID^>) ";
+					else
+						prePend="";
+					CMLib.journals().notifyPosting(journal.JOURNAL_NAME(), mob.Name(), "ALL", msgString);
+					CMLib.database().DBWriteJournal(journal.JOURNAL_NAME(),mob.Name(),"ALL",
+							CMStrings.padRight("^.^N"+msgString+"^.^N",20),
+							prePend+msgString);
+					mob.tell(L("Your @x1 message has been sent.  Thank you.",journal.NAME().toLowerCase()));
+					if(journal.getFlag(JournalsLibrary.CommandJournalFlags.CHANNEL)!=null)
+						CMLib.commands().postChannel(journal.getFlag(JournalsLibrary.CommandJournalFlags.CHANNEL).toUpperCase().trim(),null,L("@x1 posted to @x2: @x3",mob.Name(),journal.NAME(),CMParms.combine(commands,1)),true);
+				}
+
+			};
+			if(msgStr.trim().length()>0)
 			{
 				if((journal.getFlag(JournalsLibrary.CommandJournalFlags.CONFIRM)!=null)&&(sess!=null))
 				{
-					if(!sess.confirm(L("\n\r^HSubmit this @x1: '^N@x2^H' (Y/n)?^.^N",journal.NAME().toLowerCase(),msgString),"Y"))
-						return false;
+					sess.prompt(new InputCallback(InputCallback.Type.CHOOSE,"Y","YN\n",0)
+					{
+						final Session session = sess;
+						final JournalsLibrary.CommandJournal journal = cj;
+
+						@Override
+						public void showPrompt()
+						{
+							session.promptPrint(L("\n\r^HSubmit this @x1: '^N@x2^H' (Y/n)?^.^N",journal.NAME().toLowerCase(),msgStr));
+						}
+
+						@Override
+						public void timedOut()
+						{
+						}
+
+						@Override
+						public void callBack()
+						{
+							if(this.input.equalsIgnoreCase("Y"))
+								finishPostRunner.run();
+						}
+					});
 				}
-				final String prePend;
-				if(journal.getFlag(JournalsLibrary.CommandJournalFlags.ADDROOM)!=null)
-					prePend="(^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(mob.location())+"^</LSTROOMID^>) ";
 				else
-					prePend="";
-				CMLib.journals().notifyPosting(journal.JOURNAL_NAME(), mob.Name(), "ALL", msgString);
-				CMLib.database().DBWriteJournal(journal.JOURNAL_NAME(),mob.Name(),"ALL",
-						CMStrings.padRight("^.^N"+msgString+"^.^N",20),
-						prePend+msgString);
-				mob.tell(L("Your @x1 message has been sent.  Thank you.",journal.NAME().toLowerCase()));
-				if(journal.getFlag(JournalsLibrary.CommandJournalFlags.CHANNEL)!=null)
-					CMLib.commands().postChannel(journal.getFlag(JournalsLibrary.CommandJournalFlags.CHANNEL).toUpperCase().trim(),null,L("@x1 posted to @x2: @x3",mob.Name(),journal.NAME(),CMParms.combine(commands,1)),true);
+					finishPostRunner.run();
 			}
 			else
 			{

@@ -46,7 +46,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  *
  * @see com.planet_ink.coffee_mud.Common.interfaces.Faction
  *
- * @author BZ
+ * @author Bo Zimmerman
  *
  */
 public interface FactionManager extends CMLibrary, Tickable
@@ -593,7 +593,7 @@ public interface FactionManager extends CMLibrary, Tickable
 	 * This enum identifies the different types of ability masks
 	 * and flags that are found in faciton definitions.
 	 *
-	 * @author BZ
+	 * @author Bo Zimmerman
 	 *
 	 */
 	public enum FAbilityMaskType

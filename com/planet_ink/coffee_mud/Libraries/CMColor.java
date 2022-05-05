@@ -97,7 +97,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 	/**
 	 * Special mapping object for 256 color ansi system.
 	 *
-	 * @author BZ
+	 * @author Bo Zimmerman
 	 */
 	private static class Color256Impl implements Color256
 	{

@@ -530,7 +530,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				final String replyMask=flagMap.containsKey(ForumJournalFlags.REPLY)?flagMap.get(ForumJournalFlags.REPLY).trim():"";
 				final String adminMask=flagMap.containsKey(ForumJournalFlags.ADMIN)?flagMap.get(ForumJournalFlags.ADMIN).trim():"";
 				final String category =flagMap.containsKey(ForumJournalFlags.CATEGORY)?flagMap.get(ForumJournalFlags.CATEGORY).trim():"";
-				
+
 				@Override
 				public String NAME()
 				{
@@ -1375,8 +1375,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		});
 	}
 
-	@Override
-	public MsgMkrResolution makeMessage(final MOB mob, final String messageTitle, final List<String> vbuf, final boolean autoAdd) throws IOException
+	protected MsgMkrResolution makeMessage(final MOB mob, final String messageTitle, final List<String> vbuf, final boolean autoAdd) throws IOException
 	{
 		final Session sess=mob.session();
 		if((sess == null )||(sess.isStopped()))

@@ -321,7 +321,7 @@ public interface ColorLibrary extends CMLibrary
 	 * The object with information about all
 	 * supported ANSI-256 colors
 	 *
-	 * @author BZ
+	 * @author Bo Zimmerman
 	 *
 	 */
 	public interface Color256

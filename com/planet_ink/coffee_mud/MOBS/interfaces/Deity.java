@@ -50,7 +50,7 @@ public interface Deity extends MOB
 	 * Helper interface for the deity to identify worshippers and
 	 * other things associated with a specific deity.
 	 *
-	 * @author BZ
+	 * @author Bo Zimmerman
 	 *
 	 */
 	public static interface DeityWorshipper extends CMObject

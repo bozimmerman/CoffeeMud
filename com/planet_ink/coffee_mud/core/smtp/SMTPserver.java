@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.SMTPJournal;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 
 /*
@@ -225,9 +226,9 @@ public class SMTPserver extends Thread implements Tickable
 		return true;
 	}
 
-	public TreeMap<String, JournalsLibrary.SMTPJournal> parseJournalList(final String journalStr)
+	public TreeMap<String, SMTPJournal> parseJournalList(final String journalStr)
 	{
-		final TreeMap<String, JournalsLibrary.SMTPJournal> set=new TreeMap<String, JournalsLibrary.SMTPJournal>();
+		final TreeMap<String, SMTPJournal> set=new TreeMap<String, SMTPJournal>();
 		if((journalStr==null)||(journalStr.length()>0))
 		{
 			final List<String> V=CMParms.parseCommas(journalStr,true);
@@ -267,7 +268,7 @@ public class SMTPserver extends Thread implements Tickable
 					final boolean isSubscribeOnly = subscribeOnly;
 					final boolean isKeepAll = keepAll;
 					final String criteriaString = crit.toString();
-					set.put(s.toUpperCase().trim(), new JournalsLibrary.SMTPJournal()
+					set.put(s.toUpperCase().trim(), new SMTPJournal()
 					{
 						@Override
 						public String name()
@@ -314,14 +315,14 @@ public class SMTPserver extends Thread implements Tickable
 	public String getAnEmailJournal(String journal)
 	{
 		journal=CMStrings.replaceAll(journal,"_"," ");
-		final JournalsLibrary.SMTPJournal jrnl=getAJournal(journal);
+		final SMTPJournal jrnl=getAJournal(journal);
 		return jrnl != null ? jrnl.name() : null;
 	}
 
 	@SuppressWarnings("unchecked")
-	public TreeMap<String, JournalsLibrary.SMTPJournal> getJournalSets()
+	public TreeMap<String, SMTPJournal> getJournalSets()
 	{
-		TreeMap<String, JournalsLibrary.SMTPJournal> set=(TreeMap<String, JournalsLibrary.SMTPJournal>)
+		TreeMap<String, SMTPJournal> set=(TreeMap<String, SMTPJournal>)
 															Resources.getResource("SYSTEM_SMTP_JOURNALS");
 		if(set==null)
 		{
@@ -331,9 +332,9 @@ public class SMTPserver extends Thread implements Tickable
 		return set;
 	}
 
-	public JournalsLibrary.SMTPJournal getAJournal(final String journal)
+	public SMTPJournal getAJournal(final String journal)
 	{
-		final TreeMap<String, JournalsLibrary.SMTPJournal> set=getJournalSets();
+		final TreeMap<String, SMTPJournal> set=getJournalSets();
 		if(set==null)
 			return null;
 		return set.get(journal.toUpperCase().trim());
@@ -341,25 +342,25 @@ public class SMTPserver extends Thread implements Tickable
 
 	public boolean isAForwardingJournal(final String journal)
 	{
-		final JournalsLibrary.SMTPJournal jrnl=getAJournal(journal);
+		final SMTPJournal jrnl=getAJournal(journal);
 		return jrnl != null ? jrnl.forward() : false;
 	}
 
 	public boolean isASubscribeOnlyJournal(final String journal)
 	{
-		final JournalsLibrary.SMTPJournal jrnl=getAJournal(journal);
+		final SMTPJournal jrnl=getAJournal(journal);
 		return jrnl != null ? jrnl.subscribeOnly() : false;
 	}
 
 	public boolean isAKeepAllJournal(final String journal)
 	{
-		final JournalsLibrary.SMTPJournal jrnl=getAJournal(journal);
+		final SMTPJournal jrnl=getAJournal(journal);
 		return jrnl != null ? jrnl.keepAll() : false;
 	}
 
 	public MaskingLibrary.CompiledZMask getJournalCriteria(final String journal)
 	{
-		final JournalsLibrary.SMTPJournal jrnl=getAJournal(journal);
+		final SMTPJournal jrnl=getAJournal(journal);
 		return jrnl != null ? jrnl.criteria() : null;
 	}
 
@@ -518,7 +519,7 @@ public class SMTPserver extends Thread implements Tickable
 		{
 			final MassMailer massMailer = new MassMailer(page,domain,oldEmailComplaints);
 
-			final Map<String, JournalsLibrary.SMTPJournal> set=getJournalSets();
+			final Map<String, SMTPJournal> set=getJournalSets();
 			long lastAllProcessing=0;
 			if(Resources.isPropResource("SMTP","LASTALLPROCESING"))
 				lastAllProcessing=CMath.s_long(Resources.getPropResource("SMTP","LASTALLPROCESING"));
@@ -531,7 +532,7 @@ public class SMTPserver extends Thread implements Tickable
 			// remember that new to all messages need to be parsed
 			// for subscribe/unsubscribe and deleted, or then
 			// forwarded to all members private boxes.  Lots of work to do!
-			for(final JournalsLibrary.SMTPJournal smtpJournal : set.values())
+			for(final SMTPJournal smtpJournal : set.values())
 			{
 				final String journalName=smtpJournal.name();
 				if(smtpJournal.forward())

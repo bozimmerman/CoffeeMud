@@ -1389,7 +1389,7 @@ public interface AbilityMapper extends CMLibrary
 	/**
 	 * The secret flag type for an ability mapping.
 	 *
-	 * @author BZ
+	 * @author Bo Zimmerman
 	 *
 	 */
 	public enum SecretFlag
