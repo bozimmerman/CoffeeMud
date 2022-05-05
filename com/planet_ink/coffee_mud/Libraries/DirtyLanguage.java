@@ -448,9 +448,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		return "PARSER_"+language.toUpperCase()+"_"+country.toUpperCase();
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
-	public DVector getLanguageParser(final String parser)
+	protected DVector getLanguageParser(final String parser)
 	{
 		final String parserKey=getLanguageParserKey();
 		Hashtable<String,DVector> parserSections=(Hashtable<String,DVector>)Resources.getResource(parserKey);
@@ -464,9 +463,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		return parserSections.get(parser);
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
-	public DVector getLanguageTranslator(final String parser)
+	protected DVector getLanguageTranslator(final String parser)
 	{
 		final String translatorKey=getLanguageTranslatorKey();
 		Hashtable<String,DVector> translationSections=(Hashtable<String,DVector>)Resources.getResource(translatorKey);
@@ -517,7 +515,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		final List<String> MORE_CMDS=new Vector<String>();
 		final String combinedWithTabs=CMParms.combineWithTabs(CMDS,0);
 		MORE_CMDS.add(combinedWithTabs);
-		final DVector parser=CMLib.lang().getLanguageParser("COMMAND-PRE-PROCESSOR");
+		final DVector parser=getLanguageParser("COMMAND-PRE-PROCESSOR");
 		if((parser==null)||(CMDS==null))
 		{
 			return new XVector<List<String>>(CMDS);
