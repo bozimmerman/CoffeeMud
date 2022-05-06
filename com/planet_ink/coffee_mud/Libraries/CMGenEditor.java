@@ -11031,7 +11031,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			final Room newRoom=CMLib.map().getRoom(newName);
 			if((newRoom==null)
 			||(CMLib.map().getExtendedRoomID(newRoom).length()==0)
-			||(!CMLib.law().doesOwnThisProperty(C.clanID(),newRoom)))
+			||(!CMLib.law().isPropertyOwnersName(C.clanID(),newRoom)))
 				mob.tell(L("That is either not a valid room id, or that room is not owned by the clan."));
 			else
 				return CMLib.map().getExtendedRoomID(newRoom);

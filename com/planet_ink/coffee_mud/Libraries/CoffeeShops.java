@@ -997,7 +997,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	{
 		if((seller==null)||(homeRoom==null))
 			return 0.0;
-		final Law theLaw=CMLib.law().getTheLaw(homeRoom,seller);
+		final Law theLaw=CMLib.law().getTheLaw(homeRoom);
 		if(theLaw!=null)
 		{
 			final String taxs=(String)theLaw.taxLaws().get("SALESTAX");
@@ -1547,7 +1547,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			double totalFunds=price.absoluteGoldPrice;
 			if(getSalesTax(seller.getStartRoom(),seller)!=0.0)
 			{
-				final Law theLaw=CMLib.law().getTheLaw(room,seller);
+				final Law theLaw=CMLib.law().getTheLaw(room);
 				final Area A2=CMLib.law().getLegalObject(room);
 				if((theLaw!=null)&&(A2!=null))
 				{

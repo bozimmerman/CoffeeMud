@@ -314,7 +314,7 @@ public class TaxCollector extends StdBehavior
 		&&(lastMonthChecked!=R.getArea().getTimeObj().getMonth()))
 		{
 			lastMonthChecked=R.getArea().getTimeObj().getMonth();
-			final Law theLaw=CMLib.law().getTheLaw(R,mob);
+			final Law theLaw=CMLib.law().getTheLaw(R);
 			if(theLaw!=null)
 			{
 				final Area A2=CMLib.law().getLegalObject(R);

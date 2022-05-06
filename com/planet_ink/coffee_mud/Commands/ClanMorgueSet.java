@@ -97,7 +97,7 @@ public class ClanMorgueSet extends StdCommand
 		}
 		if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.SET_HOME,false))
 		{
-			if(!CMLib.law().doesOwnThisProperty(C.clanID(),R))
+			if(!CMLib.law().isPropertyOwnersName(C.clanID(),R))
 			{
 				mob.tell(L("Your @x1 does not own this room.",C.getGovernmentName()));
 				return false;

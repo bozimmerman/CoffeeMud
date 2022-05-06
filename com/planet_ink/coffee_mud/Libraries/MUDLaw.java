@@ -46,7 +46,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public Law getTheLaw(final Room R, final MOB mob)
+	public Law getTheLaw(final Room R)
 	{
 		final LegalBehavior B=getLegalBehavior(R);
 		if(B!=null)
@@ -500,7 +500,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public boolean doesOwnThisLand(final String name, final Room room)
+	public boolean isLandOwnersName(final String name, final Room room)
 	{
 		final LandTitle title=getLandTitle(room);
 		if(title==null)
@@ -515,7 +515,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public boolean doesOwnThisProperty(final String name, final Room room)
+	public boolean isPropertyOwnersName(final String name, final Room room)
 	{
 		final PrivateProperty record=getPropertyRecord(room);
 		if(record==null)
@@ -614,14 +614,16 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	{
 		if(P==null)
 			return null;
+		if(P instanceof DeityWorshipper)
+			return (DeityWorshipper)P;
 		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
 			if(A!=null)
 			{
-				if((A instanceof Deity.DeityWorshipper)
+				if((A instanceof DeityWorshipper)
 				&&(((Deity.DeityWorshipper)A).getWorshipCharID().length()>0))
-					return (Deity.DeityWorshipper)A;
+					return (DeityWorshipper)A;
 			}
 		}
 		return null;
@@ -630,7 +632,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	@Override
 	public String getClericInfused(final Physical P)
 	{
-		final Deity.DeityWorshipper A=getClericInfusion(P);
+		final DeityWorshipper A=getClericInfusion(P);
 		if(A==null)
 			return null;
 		return A.getWorshipCharID();

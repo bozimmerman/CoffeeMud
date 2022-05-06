@@ -1,4 +1,114 @@
-a rifle	1	200	20	800	GenGun	22cal bullets	5	50	1,10	WOODEN		
-a pistol	1	100	10	400	GenGun	9mm bullets	10	50	0,5	WOODEN		
-pack of 22cal bullets	1	50	5	10	GenAmmunition	22 cal bullets	20					
-pack of 9mm bullets	1	50	5	10	GenAmmunition	9mm bullets	50					
+pack of 30 small rounds	1	7	1	10	GenAmmunition	small rounds	30					
+% pipe gun	1	30	7	128	GenGun	small rounds	1	7	2			2
+pack of 30 small blank rounds	2	7	1	10	GenAmmunition	small rounds	30				Prop_NoDamage;Prop_FightSpellCast;50% Spell_ColorSpray	
+pack of 30 small snakeshot rounds	3	7	1	10	GenAmmunition	small rounds	30				Prop_WearAdjuster;attacks+20;Prop_AddDamage;15% BASHING	
+crude % derringer	4	40	2	13	GenGun	small rounds	1	2	1			1
+pack of 60 small rounds	5	14	2	20	GenAmmunition	small rounds	60					
+pack of 2 medium rounds	6	3	1	3	GenAmmunition	medium rounds	2					
+pack of 60 small blank rounds	6	14	2	20	GenAmmunition	small rounds	60				Prop_NoDamage;Prop_FightSpellCast;50% Spell_ColorSpray	
+pack of 30 small hollowpoint rounds	8	7	1	10	GenAmmunition	small rounds	30				Prop_AddDamage;15% SLASHING;Prop_FightSpellCast;30% BLEEDING	
+% survival rifle	8	50	4	225	GenGun	small rounds	1	9	3			2
+pack of 60 small snakeshot rounds	9	14	2	20	GenAmmunition	small rounds	60				Prop_WearAdjuster;attacks+20;Prop_AddDamage;15% BASHING	
+% derringer	10	50	3	165	GenGun	small rounds	2	9	1			1
+pack of 30 small jacketed rounds	11	7	1	10	GenAmmunition	small rounds	30			BRASS	Prop_AddDamage;30% PIERCING	
+pack of 2 large rounds	11	7	1	3	GenAmmunition	large rounds	2					
+pack of 60 small hollowpoint rounds	13	14	2	20	GenAmmunition	small rounds	60				Prop_AddDamage;15% SLASHING;Prop_FightSpellCast;30% BLEEDING	
+pack of 120 small rounds	14	28	4	40	GenAmmunition	small rounds	120					
+pack of 3 birdshot	15	3	1	3	GenAmmunition	shotshell	3				Prop_WearAdjuster;attacks+48	
+pack of 120 small blank rounds	15	28	4	40	GenAmmunition	small rounds	120				Prop_NoDamage;Prop_FightSpellCast;50% Spell_ColorSpray	
+pack of 10 medium rounds	16	5	1	5	GenAmmunition	medium rounds	10					
+pack of 60 small jacketed rounds	16	14	2	20	GenAmmunition	small rounds	60			BRASS	Prop_AddDamage;30% PIERCING	
+% pepperbox	16	60	3	373	GenGun	small rounds	4	14	1			1
+pack of 120 small snakeshot rounds	18	28	4	40	GenAmmunition	small rounds	120				Prop_WearAdjuster;attacks+20;Prop_AddDamage;15% BASHING	
+pack of 120 small hollowpoint rounds	19	28	4	40	GenAmmunition	small rounds	120				Prop_AddDamage;15% SLASHING;Prop_FightSpellCast;30% BLEEDING	
+% pest rifle	19	60	6	1200	GenGun	small rounds	1	24	3	WOODEN		2
+pack of 120 small jacketed rounds	21	28	4	40	GenAmmunition	small rounds	120			BRASS	Prop_AddDamage;30% PIERCING	
+% lever-action handgun	23	80	5	660	GenGun	small rounds	7	18	2			1
+pack of 240 small rounds	23	56	8	80	GenAmmunition	small rounds	240					
+pack of 240 small blank rounds	25	56	8	80	GenAmmunition	small rounds	240				Prop_NoDamage;Prop_FightSpellCast;50% Spell_ColorSpray	
+pack of 20 medium rounds	26	10	1	10	GenAmmunition	medium rounds	20					
+pack of 240 small snakeshot rounds	27	56	8	80	GenAmmunition	small rounds	240				Prop_WearAdjuster;attacks+20;Prop_AddDamage;15% BASHING	
+pack of 240 small hollowpoint rounds	29	56	8	80	GenAmmunition	small rounds	240				Prop_AddDamage;15% SLASHING;Prop_FightSpellCast;30% BLEEDING	
+pack of 6 birdshot	30	5	1	5	GenAmmunition	shotshell	6				Prop_WearAdjuster;attacks+49	
+pack of 20 medium debilitating rounds	30	10	1	10	GenAmmunition	medium rounds	20				Prop_AddDamage;10% PIERCING;Prop_FightSpellCast;MAXTICKS=10;40% Spell_Frailty	
+% pocket turret	30	100	5	1208	GenGun	small rounds	10	25	2			1
+pack of 500 small rounds	30	112	16	160	GenAmmunition	small rounds	500					
+pack of 5 large rounds	31	30	1	5	GenAmmunition	large rounds	5					
+pack of 240 small jacketed rounds	31	56	8	80	GenAmmunition	small rounds	240			BRASS	Prop_AddDamage;30% PIERCING	
+pack of 500 small blank rounds	31	112	16	160	GenAmmunition	small rounds	500				Prop_NoDamage;Prop_FightSpellCast;50% Spell_ColorSpray	
+pack of 20 medium dazzler rounds	32	10	1	10	GenAmmunition	medium rounds	20				Prop_AddDamage;20% PIERCING;Prop_FightSpellCast;MAXTICKS=30;75% Spell_LightSensitivity;20% Spell_ColorSpray	
+% mare's leg	33	90	5	2027	GenGun	medium rounds	5	32	3	WOODEN		2
+pack of 500 small snakeshot rounds	36	112	16	160	GenAmmunition	small rounds	500				Prop_WearAdjuster;attacks+20;Prop_AddDamage;15% BASHING	
+pack of 20 medium softpoint rounds	37	10	1	15	GenAmmunition	medium rounds	20			LEAD	Prop_AddDamage;30% SLASHING;Prop_FightSpellCast;50% BLEEDING	
+pack of 40 medium rounds	37	20	2	20	GenAmmunition	medium rounds	40					
+% duck's foot	37	50	5	2405	GenGun	medium rounds	4	37	1	WOODEN		1
+pack of 500 small hollowpoint rounds	39	112	16	160	GenAmmunition	small rounds	500				Prop_AddDamage;15% SLASHING;Prop_FightSpellCast;30% BLEEDING	
+% infantry rifle	41	100	8	3055	GenGun	medium rounds	5	39	4	WOODEN		2
+pack of 500 small jacketed rounds	41	112	16	160	GenAmmunition	small rounds	500			BRASS	Prop_AddDamage;30% PIERCING	
+pack of 40 medium debilitating rounds	44	20	2	20	GenAmmunition	medium rounds	40				Prop_AddDamage;10% PIERCING;Prop_FightSpellCast;MAXTICKS=10;40% Spell_Frailty	
+pack of 15 birdshot	45	10	1	10	GenAmmunition	shotshell	15				Prop_WearAdjuster;attacks+50	
+short % revolver	45	80	3	2400	GenGun	medium rounds	6	36	2			1
+% coach gun	45	70	6	5795	GenGun	shotshell	2	57	2	WOODEN		2
+pack of 40 medium dazzler rounds	46	20	2	20	GenAmmunition	medium rounds	40				Prop_AddDamage;20% PIERCING;Prop_FightSpellCast;MAXTICKS=30;75% Spell_LightSensitivity;20% Spell_ColorSpray	
+pack of 20 medium jacketed rounds	47	10	1	20	GenAmmunition	medium rounds	20			BRASS	Prop_AddDamage;45% PIERCING	
+pack of 80 medium rounds	48	40	4	40	GenAmmunition	medium rounds	80					
+pack of 40 medium softpoint rounds	52	20	2	30	GenAmmunition	medium rounds	40			LEAD	Prop_AddDamage;30% SLASHING;Prop_FightSpellCast;50% BLEEDING	
+% carbine	52	140	9	4833	GenGun	medium rounds	10	50	4	WOODEN		2
+% broomhandle pistol	54	130	3	3520	GenGun	medium rounds	10	44	2	WOODEN		1
+pack of 15 buckshot	55	10	1	30	GenAmmunition	shotshell	15				Prop_WearAdjuster;attacks+20;Prop_AddDamage;40% PIERCING	
+pack of 80 medium debilitating rounds	57	40	4	40	GenAmmunition	medium rounds	80				Prop_AddDamage;10% PIERCING;Prop_FightSpellCast;MAXTICKS=10;40% Spell_Frailty	
+pack of 30 birdshot	58	20	2	20	GenAmmunition	shotshell	30				Prop_WearAdjuster;attacks+50	
+pack of 40 medium jacketed rounds	58	20	2	40	GenAmmunition	medium rounds	40			BRASS	Prop_AddDamage;45% PIERCING	
+pack of 80 medium dazzler rounds	59	40	4	40	GenAmmunition	medium rounds	80				Prop_AddDamage;20% PIERCING;Prop_FightSpellCast;MAXTICKS=30;75% Spell_LightSensitivity;20% Spell_ColorSpray	
+% hunting shotgun	60	100	7	7475	GenGun	shotshell	5	65	2	WOODEN		2
+pack of 160 medium rounds	60	80	8	80	GenAmmunition	medium rounds	160					
+pack of 10 large rounds	61	10	1	10	GenAmmunition	large rounds	10					
+pack of 15 flechette shells	63	10	1	50	GenAmmunition	shotshell	15				Prop_WearAdjuster;attacks+30;Prop_AddDamage;50% SLASHING	
+% lever-action rifle	63	120	7	6175	GenGun	large rounds	7	57	4	WOODEN		2
+pack of 25 medium ultrasolid rounds	63	10	(onground:consumed:8:MITHRIL:)	100	GenAmmunition	medium rounds	20				*Prop_AddDamage;20% SLASHING	
+% hunting revolver	66	110	6	5787	GenGun	large rounds	5	56	3			1
+pack of 20 large rounds	67	20	2	20	GenAmmunition	large rounds	20					
+pack of 80 medium softpoint rounds	68	40	4	60	GenAmmunition	medium rounds	80			LEAD	Prop_AddDamage;30% SLASHING;Prop_FightSpellCast;50% BLEEDING	
+pack of 160 medium debilitating rounds	68	80	8	80	GenAmmunition	medium rounds	160				Prop_AddDamage;10% PIERCING;Prop_FightSpellCast;MAXTICKS=10;40% Spell_Frailty	
+pack of 10 large ripper rounds	70	10	1	50	GenAmmunition	large rounds	10			LEAD	Prop_AddDamage;50% SLASHING;Prop_FightSpellCast;70% BLEEDING	
+pack of 30 buckshot	70	20	2	60	GenAmmunition	shotshell	30				Prop_WearAdjuster;attacks+20;Prop_AddDamage;40% PIERCING	
+pack of 160 medium dazzler rounds	70	80	8	80	GenAmmunition	medium rounds	160				Prop_AddDamage;20% PIERCING;Prop_FightSpellCast;MAXTICKS=30;75% Spell_LightSensitivity;20% Spell_ColorSpray	
+pack of 60 birdshot	71	40	4	40	GenAmmunition	shotshell	60				Prop_WearAdjuster;attacks+50	
+pack of 80 medium jacketed rounds	71	40	4	80	GenAmmunition	medium rounds	80			BRASS	Prop_AddDamage;45% PIERCING	
+pack of 30 flechette shells	72	20	2	100	GenAmmunition	shotshell	30				Prop_WearAdjuster;attacks+30;Prop_AddDamage;50% SLASHING	
+pack of 40 large rounds	73	40	4	40	GenAmmunition	large rounds	40					
+pack of 160 medium softpoint rounds	73	80	8	120	GenAmmunition	medium rounds	160			LEAD	Prop_AddDamage;30% SLASHING;Prop_FightSpellCast;50% BLEEDING	
+pack of 10 large jacketed rounds	74	10	1	70	GenAmmunition	large rounds	10			BRASS	Prop_AddDamage;75% PIERCING	
+pack of 20 large ripper rounds	75	20	2	100	GenAmmunition	large rounds	20			LEAD	Prop_AddDamage;50% SLASHING;Prop_FightSpellCast;70% BLEEDING	
+% combat shotgun	75	150	8	11753	GenGun	shotshell	10	82	2			2
+% battle rifle	75	150	12	9585	GenGun	large rounds	10	71	5			2
+pack of 15 dragonsbreath shells	76	10	1	80	GenAmmunition	shotshell	15			ZINC	Prop_WearAdjuster;attacks+10;Prop_AddDamage;70% BURNING	
+pack of 300 medium rounds	77	150	15	150	GenAmmunition	medium rounds	300					
+pack of 50 medium ultrasolid rounds	78	20	(onground:consumed:4:MITHRIL:)	200	GenAmmunition	medium rounds	40				Prop_AddDamage;60% PIERCING;20% SLASHING	
+% autoloading pistol	79	150	3	7928	GenGun	medium rounds	13	67	2			1
+pack of 80 large rounds	79	80	8	80	GenAmmunition	large rounds	80					
+pack of 20 large jacketed rounds	80	20	2	140	GenAmmunition	large rounds	20			BRASS	Prop_AddDamage;75% PIERCING	
+pack of 300 medium debilitating rounds	80	150	15	150	GenAmmunition	medium rounds	300				Prop_AddDamage;10% PIERCING;Prop_FightSpellCast;MAXTICKS=10;40% Spell_Frailty	
+pack of 40 large ripper rounds	81	40	4	200	GenAmmunition	large rounds	40			LEAD	Prop_AddDamage;50% SLASHING;Prop_FightSpellCast;70% BLEEDING	
+pack of 120 birdshot	83	80	8	80	GenAmmunition	shotshell	120				Prop_WearAdjuster;attacks+50	
+pack of 160 medium jacketed rounds	83	80	8	160	GenAmmunition	medium rounds	160			BRASS	Prop_AddDamage;45% PIERCING	
+pack of 300 medium dazzler rounds	83	150	15	150	GenAmmunition	medium rounds	300				Prop_AddDamage;20% PIERCING;Prop_FightSpellCast;MAXTICKS=30;75% Spell_LightSensitivity;20% Spell_ColorSpray	
+% marksman rifle	84	180	15	11982	GenGun	large rounds	10	79	6			2
+pack of 100 medium ultrasolid rounds	84	40	(onground:consumed:8:MITHRIL:)	400	GenAmmunition	medium rounds	80				Prop_AddDamage;60% PIERCING;20% SLASHING	
+pack of 30 dragonsbreath shells	85	20	2	160	GenAmmunition	shotshell	30			ZINC	Prop_WearAdjuster;attacks+10;Prop_AddDamage;70% BURNING	
+pack of 300 medium softpoint rounds	85	150	15	240	GenAmmunition	medium rounds	300			LEAD	Prop_AddDamage;30% SLASHING;Prop_FightSpellCast;50% BLEEDING	
+pack of 60 buckshot	86	40	4	120	GenAmmunition	shotshell	60				Prop_WearAdjuster;attacks+20;Prop_AddDamage;40% PIERCING	
+pack of 10 large ultrasolid rounds	86	10	(onground:consumed:2:MITHRIL:)	200	GenAmmunition	large rounds	10				Prop_AddDamage;80% PIERCING;20% SLASHING	
+pack of 60 flechette shells	87	40	4	200	GenAmmunition	shotshell	60				Prop_WearAdjuster;attacks+30;Prop_AddDamage;50% SLASHING	
+pack of 100 large rounds	87	100	10	100	GenAmmunition	large rounds	100					
+pack of 40 large jacketed rounds	88	40	4	280	GenAmmunition	large rounds	40			BRASS	Prop_AddDamage;75% PIERCING	
+pack of 300 medium jacketed rounds	88	150	15	320	GenAmmunition	medium rounds	300			BRASS	Prop_AddDamage;45% PIERCING	
+pack of 20 large ultrasolid rounds	88	20	(onground:consumed:4:MITHRIL:)	400	GenAmmunition	large rounds	20				Prop_AddDamage;80% PIERCING;20% SLASHING	
+pack of 80 large ripper rounds	89	80	8	400	GenAmmunition	large rounds	80			LEAD	Prop_AddDamage;50% SLASHING;Prop_FightSpellCast;70% BLEEDING	
+pack of 120 buckshot	90	80	8	240	GenAmmunition	shotshell	120				Prop_WearAdjuster;attacks+20;Prop_AddDamage;40% PIERCING	
+pack of 10 large hyperdrill rounds	90	10	(onground:consumed:2:ADAMANTITE:)	500	GenAmmunition	large rounds	10				*Prop_AddDamage;30% SLASHING	
+high-capacity % pistol	91	160	4	11475	GenGun	medium rounds	30	81	2			1
+% handcannon	91	160	5	12320	GenGun	large rounds	7	84	2			1
+% clockwork shotgun	91	230	12	18020	GenGun	shotshell	12	102	2			2
+pack of 250 birdshot	91	175	16	175	GenAmmunition	shotshell	250				Prop_WearAdjuster;attacks+50	
+% sniper rifle	91	210	18	14025	GenGun	large rounds	8	85	7			2
