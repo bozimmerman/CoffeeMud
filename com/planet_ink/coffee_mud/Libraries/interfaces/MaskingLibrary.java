@@ -41,13 +41,109 @@ public interface MaskingLibrary extends CMLibrary
 	public List<String> getAbilityEduReqs(final String text);
 	public String maskDesc(final String text);
 	public String maskDesc(final String text, final boolean skipFirstWord);
+
+	/**
+	 * Given a zappermask, this will return a compiled version of the
+	 * given string, build a new one if necessary, and return it
+	 *
+	 * @see MaskingLibrary#getPreCompiledMask(String)
+	 *
+	 * @param str the zappermask string
+	 * @return the compiled zappermask
+	 */
 	public CompiledZMask maskCompile(final String text);
+
+	/**
+	 * Given a zappermask, this will check the internal cache for an
+	 * already compiled version of the given string, build a new one
+	 * if necessary, and return it
+	 *
+	 * @see MaskingLibrary#maskCompile(String)
+	 *
+	 * @param str the zappermask string
+	 * @return the compiled zappermask
+	 */
 	public CompiledZMask getPreCompiledMask(final String str);
+
+	/**
+	 * Given a compiled zappermask and a Environmental object, this will return whether the
+	 * Environmental passes the filter, or is rejected by it.
+	 *
+	 * @see MaskingLibrary#maskCheck(CompiledZMask, com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer)
+	 * @see MaskingLibrary#maskCheck(String, com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer)
+	 * @see MaskingLibrary#maskCheck(String, Environmental, boolean)
+	 *
+	 * @param cset the compiled zappermask to apply to the player
+	 * @param E the object to apply the pas to
+	 * @param actual true to use base stats, false for adjusted
+	 * @return true to pass the given object, false if rejected
+	 */
 	public boolean maskCheck(final CompiledZMask cset, final Environmental E, final boolean actual);
+
+	/**
+	 * Given a zappermask and a Environmental object, this will return whether the
+	 * Environmental passes the filter, or is rejected by it.
+	 *
+	 * @see MaskingLibrary#maskCheck(CompiledZMask, com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer)
+	 * @see MaskingLibrary#maskCheck(String, com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer)
+	 * @see MaskingLibrary#maskCheck(CompiledZMask, Environmental, boolean)
+	 *
+	 * @param text the zappermask to apply to the player
+	 * @param E the object to apply the pas to
+	 * @param actual true to use base stats, false for adjusted
+	 * @return true to pass the given object, false if rejected
+	 */
 	public boolean maskCheck(final String text, final Environmental E, final boolean actual);
+
+	/**
+	 * Given a compiled zappermask and a ThinPlayer object, this will return whether the
+	 * ThinPlayer passes the filter, or is rejected by it.
+	 *
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer
+	 * @see MaskingLibrary#maskCheck(String, com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer)
+	 * @see MaskingLibrary#maskCheck(CompiledZMask, Environmental, boolean)
+	 * @see MaskingLibrary#maskCheck(String, Environmental, boolean)
+	 *
+	 * @param cset the compiled zappermask to apply to the player
+	 * @param E the thinplayer object
+	 * @return true to pass the thinplayer, false if rejected
+	 */
 	public boolean maskCheck(final CompiledZMask cset, final PlayerLibrary.ThinPlayer E);
+
+	/**
+	 * Given a zappermask and a ThinPlayer object, this will return whether the
+	 * ThinPlayer passes the filter, or is rejected by it.
+	 *
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer
+	 * @see MaskingLibrary#maskCheck(CompiledZMask, com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer)
+	 * @see MaskingLibrary#maskCheck(CompiledZMask, Environmental, boolean)
+	 * @see MaskingLibrary#maskCheck(String, Environmental, boolean)
+	 *
+	 * @param text the zappermask to apply to the player
+	 * @param E the thinplayer object
+	 * @return true to pass the thinplayer, false if rejected
+	 */
 	public boolean maskCheck(final String text, final PlayerLibrary.ThinPlayer E);
+
+	/**
+	 * Parses the given string as a zappermask and returns true
+	 * if any parsed bit is a valid zappermask type word.
+	 *
+	 * @param text the postential zappermask
+	 * @param errorSink the list to put the error message in
+	 * @return true if any part of the given string looks zappermasky
+	 */
 	public boolean syntaxCheck(final String text, final List<String> errorSink);
+
+	/**
+	 * Given a zappermask string, this method will find any level-check
+	 * related criteria, such as level, classlevel, or maxclasslevel,
+	 * and returns the minimum level of the criteria.
+	 *
+	 * @param text the zappermask
+	 * @param minMinLevel the default floor to return
+	 * @return the minimum level in the mask
+	 */
 	public int minMaskLevel(final String text, final int minMinLevel);
 
 	/**

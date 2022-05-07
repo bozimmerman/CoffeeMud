@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AchievementLoadFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary.LoginSession;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinnerPlayer;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -160,7 +161,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		public int			 statPoints= 0;
 		public CharStats	 baseStats = null;
 		public int			 index	   = 0;
-		public PlayerLibrary.ThinnerPlayer player = null;
+		public ThinnerPlayer player = null;
 
 		@Override
 		public String login()
