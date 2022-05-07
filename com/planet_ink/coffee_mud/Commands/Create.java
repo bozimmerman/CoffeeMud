@@ -934,7 +934,7 @@ public class Create extends StdCommand
 			if(CMClass.getAreaType(areaType)==null)
 			{
 				mob.session().println(L("Invalid area type! Valid ones are:"));
-				mob.session().println(CMLib.lister().reallyList(mob,CMClass.areaTypes()).toString());
+				mob.session().println(CMLib.lister().build3ColTable(mob,CMClass.areaTypes()).toString());
 				areaType="";
 			}
 		}

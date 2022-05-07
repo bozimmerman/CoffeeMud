@@ -124,8 +124,8 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		return CMLister.stringer;
 	}
 
-	@Override
-	public String itemSeenString(final MOB viewerM, final Environmental item, final boolean useName, final boolean longLook, final boolean sysmsgs, final boolean compress)
+	protected String itemSeenString(final MOB viewerM, final Environmental item, final boolean useName, final boolean longLook,
+									final boolean sysmsgs, final boolean compress)
 	{
 		final String seen;
 		if(useName)
@@ -169,12 +169,11 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		return seen;
 	}
 
-	@Override
-	public int getReps(final MOB viewerM,
-					   final Environmental item,
-					   final List<? extends Environmental> theRest,
-					   final boolean useName,
-					   final boolean longLook)
+	protected int getReps(final MOB viewerM,
+						  final Environmental item,
+						  final List<? extends Environmental> theRest,
+						  final boolean useName,
+						  final boolean longLook)
 	{
 		final String str=itemSeenString(viewerM,item,useName,longLook,false, false);
 		String str2=null;
@@ -202,8 +201,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		return reps;
 	}
 
-	@Override
-	public void appendReps(final int reps, final StringBuilder say, final boolean compress)
+	protected void appendReps(final int reps, final StringBuilder say, final boolean compress)
 	{
 		if(compress)
 		{
@@ -260,13 +258,13 @@ public class CMLister extends StdLibrary implements ListingLibrary
 	}
 
 	@Override
-	public StringBuilder lister(final MOB viewerM,
-								final List<? extends Environmental> items,
-								final boolean useName,
-								final String tag,
-								final String tagParm,
-								final boolean longLook,
-								final boolean compress)
+	public String lister(final MOB viewerM,
+						 final List<? extends Environmental> items,
+						 final boolean useName,
+						 final String tag,
+						 final String tagParm,
+						 final boolean longLook,
+						 final boolean compress)
 	{
 		final boolean nameTagParm=((tagParm!=null)&&(tagParm.indexOf('*')>=0));
 		final StringBuilder say=new StringBuilder("");
@@ -368,7 +366,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		}
 		if(useName && compress && say.length()>2 && say.substring(say.length()-2).equals(", "))
 			say.delete(say.length()-2, say.length());
-		return say;
+		return say.toString();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -384,61 +382,61 @@ public class CMLister extends StdLibrary implements ListingLibrary
 	}
 
 	@Override
-	public StringBuilder reallyList(final MOB viewerM, final Map<String,? extends Object> these, final int ofType)
+	public String build3ColTable(final MOB viewerM, final Map<String, Ability> these, final int ofType)
 	{
-		return reallyList(viewerM,these,buildOfTypeFilter(ofType),stringer);
+		return build3ColTable(viewerM,these,buildOfTypeFilter(ofType),stringer);
 	}
 
 	@Override
-	public StringBuilder reallyList(final MOB viewerM, final Map<String,? extends Object> these)
+	public String build3ColTable(final MOB viewerM, final Map<String,? extends Object> these)
 	{
-		return reallyList(viewerM,these,NO_FILTER,stringer);
+		return build3ColTable(viewerM,these,NO_FILTER,stringer);
 	}
 
 	@Override
-	public StringBuilder reallyList(final MOB viewerM, final Map<String,? extends Object> these, final Room likeRoom)
+	public String build3ColTable(final MOB viewerM, final Map<String, Room> these, final Room likeRoom)
 	{
-		return reallyList(viewerM,these,buildLikeRoomFilter(likeRoom),stringer);
+		return build3ColTable(viewerM,these,buildLikeRoomFilter(likeRoom),stringer);
 	}
 
 	@Override
-	public StringBuilder reallyList(final MOB viewerM, final Vector<? extends Object> these, final int ofType)
+	public String build3ColTable(final MOB viewerM, final Vector<Ability> these, final int ofType)
 	{
-		return reallyList(viewerM,these.elements(),buildOfTypeFilter(ofType),stringer);
+		return build3ColTable(viewerM,these.elements(),buildOfTypeFilter(ofType),stringer);
 	}
 
 	@Override
-	public StringBuilder reallyList(final MOB viewerM, final Enumeration<? extends Object> these, final int ofType)
+	public String build3ColTable(final MOB viewerM, final Enumeration<Ability> these, final int ofType)
 	{
-		return reallyList(viewerM,these,buildOfTypeFilter(ofType),stringer);
+		return build3ColTable(viewerM,these,buildOfTypeFilter(ofType),stringer);
 	}
 
 	@Override
-	public StringBuilder reallyList(final MOB viewerM, final Vector<? extends Object> these)
+	public String build3ColTable(final MOB viewerM, final Vector<? extends Object> these)
 	{
-		return reallyList(viewerM,these.elements(),NO_FILTER,stringer);
+		return build3ColTable(viewerM,these.elements(),NO_FILTER,stringer);
 	}
 
 	@Override
-	public StringBuilder reallyList(final MOB viewerM, final Enumeration<? extends Object> these)
+	public String build3ColTable(final MOB viewerM, final Enumeration<? extends Object> these)
 	{
-		return reallyList(viewerM,these,NO_FILTER,stringer);
+		return build3ColTable(viewerM,these,NO_FILTER,stringer);
 	}
 
 	@Override
-	public StringBuilder reallyList(final MOB viewerM, final Vector<? extends Object> these, final Room likeRoom)
+	public String build3ColTable(final MOB viewerM, final Vector<Room> these, final Room likeRoom)
 	{
-		return reallyList(viewerM,these.elements(),buildLikeRoomFilter(likeRoom),stringer);
+		return build3ColTable(viewerM,these.elements(),buildLikeRoomFilter(likeRoom),stringer);
 	}
 
 	@Override
-	public StringBuilder reallyList(final MOB viewerM, final Map<String,? extends Object> these, final Filterer<Object>[] filters, ListStringer stringer)
+	public String build3ColTable(final MOB viewerM, final Map<String,? extends Object> these, final Filterer<Object>[] filters, ListStringer stringer)
 	{
 		if(stringer==null)
 			stringer=CMLister.stringer;
 		final StringBuilder lines=new StringBuilder("");
 		if(these.size()==0)
-			return lines;
+			return "";
 		int column=0;
 		final int COL_LEN=fixColWidth(24.0, viewerM);
 		for(final String key : these.keySet())
@@ -464,29 +462,29 @@ public class CMLister extends StdLibrary implements ListingLibrary
 			}
 		}
 		lines.append("\n\r");
-		return lines;
+		return lines.toString();
 	}
 
 	@Override
-	public StringBuilder reallyList(final MOB viewerM, final Vector<? extends Object> these, final Filterer<Object>[] filters, final ListStringer stringer)
+	public String build3ColTable(final MOB viewerM, final Vector<? extends Object> these, final Filterer<Object>[] filters, final ListStringer stringer)
 	{
-		return reallyList(viewerM,these.elements(),filters,stringer);
+		return build3ColTable(viewerM,these.elements(),filters,stringer);
 	}
 
 	@Override
-	public StringBuilder reallyList(final MOB viewerM, final Enumeration<? extends Object> these, final Room likeRoom)
+	public String build3ColTable(final MOB viewerM, final Enumeration<Room> these, final Room likeRoom)
 	{
-		return reallyList(viewerM,these,buildLikeRoomFilter(likeRoom),stringer);
+		return build3ColTable(viewerM,these,buildLikeRoomFilter(likeRoom),stringer);
 	}
 
 	@Override
-	public StringBuilder reallyList(final MOB viewerM, final Enumeration<? extends Object> these, final Filterer<Object>[] filters, ListStringer stringer)
+	public String build3ColTable(final MOB viewerM, final Enumeration<? extends Object> these, final Filterer<Object>[] filters, ListStringer stringer)
 	{
 		if(stringer==null)
 			stringer=CMLister.stringer;
 		final StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements())
-			return lines;
+			return "";
 		int column=0;
 		final int COL_LEN=fixColWidth(24.0, viewerM);
 		for(final Enumeration<? extends Object> e=these;e.hasMoreElements();)
@@ -512,21 +510,21 @@ public class CMLister extends StdLibrary implements ListingLibrary
 			}
 		}
 		lines.append("\n\r");
-		return lines;
+		return lines.toString();
 	}
 
 	@Override
-	public StringBuilder reallyWikiList(final MOB viewerM, final Enumeration<? extends Object> these, final int ofType)
+	public String buildWikiList(final Enumeration<? extends CMObject> these, final int ofType)
 	{
-		return reallyWikiList(viewerM,these,buildOfTypeFilter(ofType), ofType != Ability.ACODE_PROPERTY);
+		return buildWikiList(these,buildOfTypeFilter(ofType),ofType != Ability.ACODE_PROPERTY);
 	}
 
 	@Override
-	public StringBuilder reallyWikiList(final MOB viewerM, final Enumeration<? extends Object> these, final Filterer<Object>[] filters, final boolean includeName)
+	public String buildWikiList(final Enumeration<? extends CMObject> these, final Filterer<Object>[] filters, final boolean includeName)
 	{
 		final StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements())
-			return lines;
+			return "";
 		for(final Enumeration<? extends Object> e=these;e.hasMoreElements();)
 		{
 			final Object thisObj=e.nextElement();
@@ -550,23 +548,23 @@ public class CMLister extends StdLibrary implements ListingLibrary
 					lines.append("*[["+thisThang.ID()+"|"+thisThang.name()+"]]\n\r");
 			}
 		}
-		return lines;
+		return lines.toString();
 	}
 
 	@Override
-	public StringBuilder reallyList2Cols(final MOB viewerM, final Enumeration<? extends Object> these)
+	public String build2ColTable(final MOB viewerM, final Enumeration<? extends Object> these)
 	{
-		return reallyList2Cols(viewerM, these, NO_FILTER, stringer);
+		return build2ColTable(viewerM, these, NO_FILTER, stringer);
 	}
 
 	@Override
-	public StringBuilder reallyList2Cols(final MOB viewerM, final Enumeration<? extends Object> these, final Filterer<Object>[] filters, ListStringer stringer)
+	public String build2ColTable(final MOB viewerM, final Enumeration<? extends Object> these, final Filterer<Object>[] filters, ListStringer stringer)
 	{
 		if(stringer==null)
 			stringer=CMLister.stringer;
 		final StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements())
-			return lines;
+			return "";
 		int column=0;
 		final int COL_LEN=fixColWidth(37.0, viewerM);
 		for(final Enumeration<? extends Object> e=these;e.hasMoreElements();)
@@ -592,31 +590,31 @@ public class CMLister extends StdLibrary implements ListingLibrary
 			}
 		}
 		lines.append("\n\r");
-		return lines;
+		return lines.toString();
 	}
 
 	@Override
-	public StringBuilder fourColumns(final MOB viewerM, final List<String> reverseList)
+	public String build4ColTable(final MOB viewerM, final List<String> reverseList)
 	{
-		return fourColumns(viewerM,reverseList,null);
+		return build4ColTable(viewerM,reverseList,null);
 	}
 
 	@Override
-	public StringBuilder fourColumns(final MOB viewerM, final List<String> reverseList, final String tag)
+	public String build4ColTable(final MOB viewerM, final List<String> reverseList, final String tag)
 	{
-		return makeColumns(viewerM,reverseList,tag,4);
+		return buildNColTable(viewerM,reverseList,tag,4);
 	}
 
 	@Override
-	public StringBuilder threeColumns(final MOB viewerM, final List<String> reverseList)
+	public String build3ColTable(final MOB viewerM, final List<String> reverseList)
 	{
-		return threeColumns(viewerM,reverseList,null);
+		return build3ColTable(viewerM,reverseList,null);
 	}
 
 	@Override
-	public StringBuilder threeColumns(final MOB viewerM, final List<String> reverseList, final String tag)
+	public String build3ColTable(final MOB viewerM, final List<String> reverseList, final String tag)
 	{
-		return makeColumns(viewerM,reverseList,tag,3);
+		return buildNColTable(viewerM,reverseList,tag,3);
 	}
 
 	@Override
@@ -651,7 +649,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 	}
 
 	@Override
-	public StringBuilder makeColumns(final MOB viewerM, final List<String> reverseList, final String tag, final int numCols)
+	public String buildNColTable(final MOB viewerM, final List<String> reverseList, final String tag, final int numCols)
 	{
 		final StringBuilder topicBuffer=new StringBuilder("");
 		int col=0;
@@ -680,6 +678,6 @@ public class CMLister extends StdLibrary implements ListingLibrary
 					topicBuffer.append(CMStrings.padRight(s,colSize)+" ");
 			}
 		}
-		return topicBuffer;
+		return topicBuffer.toString();
 	}
 }

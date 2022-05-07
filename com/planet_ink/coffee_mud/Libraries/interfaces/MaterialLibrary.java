@@ -79,6 +79,7 @@ public interface MaterialLibrary extends CMLibrary
 	/**
 	 * Returns the number of ticks that the given item, whatever
 	 * will burn, or 0 if it won't burn.
+	 *
 	 * @param E the item to check
 	 * @return the number of ticks to burn, or 0
 	 */
@@ -88,14 +89,40 @@ public interface MaterialLibrary extends CMLibrary
 	 * A record detailing information about
 	 * destoryed resources, used mostly for common
 	 * skills that consume them.
+	 *
 	 * @author Bo Zimmerman
 	 */
-	public static class DeadResourceRecord
+	public static interface DeadResourceRecord
 	{
-		public int lostValue=0;
-		public int lostAmt=0;
-		public int resCode=-1;
-		public String subType="";
-		public List<CMObject> lostProps = null;
+		/**
+		 * Returns the amount of base gold value consumed.
+		 *
+		 * @return the amount of base gold value consumed.
+		 */
+		public int getLostValue();
+
+		/**
+		 * Returns the pounds of material consumed
+		 * @return the pounds of material consumed
+		 */
+		public int getLostAmt();
+
+		/**
+		 * Returns the Resource code of the consumed material
+		 * @return the Resource code of the consumed material
+		 */
+		public int getResCode();
+
+		/**
+		 * Returns the subType, if any, of the consumed resource
+		 * @return the subType, if any, of the consumed resource
+		 */
+		public String getSubType();
+
+		/**
+		 * Returns any property effects on consumed resource
+		 * @return any property effects on consumed resource
+		 */
+		public List<CMObject> getLostProps();
 	}
 }

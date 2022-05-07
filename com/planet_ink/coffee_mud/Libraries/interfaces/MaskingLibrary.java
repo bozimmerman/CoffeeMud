@@ -49,9 +49,40 @@ public interface MaskingLibrary extends CMLibrary
 	public boolean maskCheck(final String text, final PlayerLibrary.ThinPlayer E);
 	public boolean syntaxCheck(final String text, final List<String> errorSink);
 	public int minMaskLevel(final String text, final int minMinLevel);
+
+	/**
+	 * Lots of property strings support including zappermasks
+	 * by including the string MASK= followed by the remainder of
+	 * the string being the zappermask.  This method helps support
+	 * those properties.  It will return a two dimensional array
+	 * where the first string is the normal arguments, and the
+	 * second string is the zappermask, or "" if none was found.
+	 *
+	 * @param newText the property parameters
+	 * @return the property parameter and zappermask array
+	 */
 	public String[] separateMaskStrs(final String newText);
+
+	/**
+	 * Creates an empty always-passing compiled zappermask
+	 * object.
+	 *
+	 * @return an empty always-passing compiled zappermask
+	 */
 	public CompiledZMask createEmptyMask();
 
+	/**
+	 * The set of mask types.  Each of these reflects some stat or
+	 * aspect of a CoffeeMud object that is being tested.  ZapperMask
+	 * entries are typically of the type VALUE in SET.  For this reason
+	 * there are two type of keys: -TYPE, which means "disallow all values"
+	 * but are then followed by exceptions to that rule, and +TYPE which
+	 * means "allow any value" but is then followed by exceptions to that
+	 * rule, listing values that would cause a mask failure.
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public enum ZapperKey
 	{
 		_PLAYER("-PLAYER"),
@@ -243,16 +274,89 @@ public interface MaskingLibrary extends CMLibrary
 		}
 	}
 
+	/**
+	 * A Compiled Mask Entry is a condition, typically of
+	 * the form VALUE in SET, or KEY=VALUE, or VALUE in RANGE.
+	 * These are an OR condition as part of a larger ZapperMask.
+	 *
+	 * @see MaskingLibrary.CompiledZMask
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public static interface CompiledZMaskEntry
 	{
+		/**
+		 * Returns the type of value to check for.
+		 *
+		 * @see MaskingLibrary.Zapperkey
+		 *
+		 * @return the type of value to check for.
+		 */
 		public ZapperKey maskType();
+
+		/**
+		 * The set of acceptable values, or parameters
+		 * to the particular mask.  These are very
+		 * dependent on the above mask type.
+		 *
+		 * @return the parameters to the mask type
+		 */
 		public Object[] parms();
 	}
 
+	/**
+	 * A Compiled ZapperMask is a set of conditions, typically
+	 * of the form VALUE in SET, KEY=VALUE or VALUE, etc. These
+	 * masks are used to select among a stream of objects, in order
+	 * to determine the objects elligibility for some purpose.
+	 * The most common use is as a mask to determine whether some
+	 * mob is able to do something, or will have something happen
+	 * to them.  ZapperMasks are made up of one or more entries,
+	 * as mentioned above.  These entries have an implicit AND
+	 * connector between them, whereas the entries themselves are
+	 * typically an internal OR (see above).
+	 *
+	 * @see MaskingLibrary.CompiledZMaskEntry
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public static interface CompiledZMask
 	{
-		public boolean[] flags();
-		public boolean empty();
+		/**
+		 * Returns a list of ZapperMask entries, where all the
+		 * list entries must pass for the mask to pass
+		 *
+		 * @see MaskingLibrary.CompiledZMaskEntry
+		 *
+		 * @return a list of entries
+		 */
 		public CompiledZMaskEntry[][] entries();
+
+		/**
+		 * Returns whether the mask is empty and always passes
+		 *
+		 * @return true if this mask always passes
+		 */
+		public boolean empty();
+
+		/**
+		 * As some mask entries only apply to items, set this flag
+		 * if an item MIGHT be masked, or if the mask contains item
+		 * entries, and thus an item needs creating to do the check.
+		 *
+		 * @return true to create an item, false otherwise
+		 */
+		public boolean useItemFlag();
+
+		/**
+		 * As some mask entries only apply to rooms, set this flag
+		 * if an item MIGHT be masked, or if the mask contains location
+		 * entries, and thus a room needs referencing to do the check.
+		 *
+		 * @return true to create or reference a room, false otherwise
+		 */
+		public boolean useRoomFlag();
 	}
 }

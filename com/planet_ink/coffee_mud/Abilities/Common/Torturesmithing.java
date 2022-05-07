@@ -353,14 +353,14 @@ public class Torturesmithing extends EnhancedCraftingSkill implements ItemCrafto
 			return false;
 		final MaterialLibrary.DeadResourceRecord deadMats;
 		if((componentsFoundList.size() > 0)||(autoGenerate>0))
-			deadMats = new MaterialLibrary.DeadResourceRecord();
+			deadMats = deadRecord;
 		else
 		{
 			deadMats = CMLib.materials().destroyResources(mob.location(),data[0][FOUND_AMT],
 					data[0][FOUND_CODE],data[0][FOUND_SUB],data[1][FOUND_CODE],data[1][FOUND_SUB]);
 		}
 		final MaterialLibrary.DeadResourceRecord deadComps = CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
-		final int lostValue=autoGenerate>0?0:(deadMats.lostValue + deadComps.lostValue);
+		final int lostValue=autoGenerate>0?0:(deadMats.getLostValue() + deadComps.getLostValue());
 		buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 		final Item buildingI=this.buildingI;
 		if(buildingI==null)
@@ -390,7 +390,7 @@ public class Torturesmithing extends EnhancedCraftingSkill implements ItemCrafto
 		final int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
 		final int hardness=RawMaterial.CODES.HARDNESS(buildingI.material())-3;
 		final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
-		addSpellsOrBehaviors(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
+		addSpellsOrBehaviors(buildingI,spell,deadMats.getLostProps(),deadComps.getLostProps());
 		if(buildingI instanceof Container)
 		{
 			((Container)buildingI).setCapacity(capacity+woodRequired);

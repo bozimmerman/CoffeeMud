@@ -87,15 +87,9 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 		super.setMiscText(newText);
 		adjCharStats=(CharStats)CMClass.getCommon("DefaultCharStats");
 		ignoreCharStats=true;
-		String parmString=newText;
-		final int maskindex=newText.toUpperCase().indexOf("MASK=");
-		if(maskindex>0)
-		{
-			maskString=newText.substring(maskindex+5).trim();
-			parmString=newText.substring(0,maskindex).trim();
-		}
-
-		parmString = parmString.toUpperCase();
+		final String[] sepParms = CMLib.masking().separateMaskStrs(newText);
+		final String parmString=sepParms[0].toUpperCase();
+		maskString=sepParms[1];
 		final List<String> parmParts = CMParms.parseSpaces(parmString.toUpperCase(), true);
 		final List<String> previousSet = new LinkedList<String>();
 		this.prots.clear();

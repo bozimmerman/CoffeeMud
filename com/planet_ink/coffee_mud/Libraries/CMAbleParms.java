@@ -4769,7 +4769,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						if(behave.length()>0)
 						{
 							if(behave.equalsIgnoreCase("?"))
-								mob.tell(CMLib.lister().reallyList(mob,CMClass.races(),-1).toString());
+								mob.tell(CMLib.lister().build3ColTable(mob,CMClass.races()).toString());
 							else
 							{
 								final Race R=CMClass.getRace(behave);

@@ -1247,7 +1247,7 @@ public class DefaultClan implements Clan
 					for(final Award award : awards)
 						names.add(CMLib.achievements().fixAwardDescription(A, award, mob, mob));
 				}
-				msg.append(CMLib.lister().makeColumns(mob,names,null,3));
+				msg.append(CMLib.lister().buildNColTable(mob,names,null,3));
 				msg.append("\n\r");
 			}
 			final int numReff=CMath.s_int(govt().getStat("NUMREFF"));

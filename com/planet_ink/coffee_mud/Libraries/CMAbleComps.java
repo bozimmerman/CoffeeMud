@@ -4,6 +4,7 @@ import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityParameters.AbilityParmEditor;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaterialLibrary.DeadResourceRecord;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -678,63 +679,112 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	@Override
 	public MaterialLibrary.DeadResourceRecord destroyAbilityComponents(final List<Object> found)
 	{
-		final MaterialLibrary.DeadResourceRecord record = new MaterialLibrary.DeadResourceRecord();
-		if((found==null)||(found.size()==0))
+		int lostValue=0;
+		int lostAmt=0;
+		int resCode=-1;
+		String subType="";
+		XVector<CMObject> lostProps = null;
+		if((found!=null)&&(found.size()>0))
 		{
-			return record;
-		}
-		final XVector<CMObject> props=new XVector<CMObject>();
-		record.lostProps=props;
-		while(found.size()>0)
-		{
-			int i=0;
-			boolean destroy=false;
-			for(;i<found.size();i++)
+			lostProps=new XVector<CMObject>();
+			while(found.size()>0)
 			{
-				if(found.get(i) instanceof Boolean)
+				int i=0;
+				boolean destroy=false;
+				for(;i<found.size();i++)
 				{
-					destroy = ((Boolean) found.get(i)).booleanValue();
-					break;
-				}
-			}
-			final List<Pair<Integer,String>> compInts=new ArrayList<Pair<Integer,String>>();
-			while(i>=0)
-			{
-
-				if((destroy)
-				&&(found.get(0) instanceof Item))
-				{
-					final Item I=(Item)found.get(0);
-					props.addAll(I.effects());
-					props.addAll(I.behaviors());
-					record.lostAmt += I.basePhyStats().weight();
-					record.lostValue +=I.value();
-					compInts.add(new Pair<Integer,String>(
-							Integer.valueOf(I.material()),
-							((I instanceof RawMaterial)?((RawMaterial)I).getSubType():"")));
-					I.destroy();
-				}
-				found.remove(0);
-				i--;
-			}
-			if(compInts.size()>0)
-			{
-				Collections.sort(compInts, new Comparator<Pair<Integer,String>>()
-				{
-					@Override
-					public int compare(final Pair<Integer, String> o1, final Pair<Integer, String> o2)
+					if(found.get(i) instanceof Boolean)
 					{
-						return o1.first.compareTo(o2.first);
+						destroy = ((Boolean) found.get(i)).booleanValue();
+						break;
 					}
-				});
-				final int index=(int)Math.round(Math.floor(compInts.size()/2));
-				if(record.resCode<0)
-					record.resCode=compInts.get(index).first.intValue();
-				if((record.subType==null)||(record.subType.length()==0))
-					record.subType=compInts.get(index).second;
+				}
+				final List<Pair<Integer,String>> compInts=new ArrayList<Pair<Integer,String>>();
+				while(i>=0)
+				{
+
+					if((destroy)
+					&&(found.get(0) instanceof Item))
+					{
+						final Item I=(Item)found.get(0);
+						lostProps.addAll(I.effects());
+						lostProps.addAll(I.behaviors());
+						lostAmt += I.basePhyStats().weight();
+						lostValue +=I.value();
+						compInts.add(new Pair<Integer,String>(
+								Integer.valueOf(I.material()),
+								((I instanceof RawMaterial)?((RawMaterial)I).getSubType():"")));
+						I.destroy();
+					}
+					found.remove(0);
+					i--;
+				}
+				if(compInts.size()>0)
+				{
+					Collections.sort(compInts, new Comparator<Pair<Integer,String>>()
+					{
+						@Override
+						public int compare(final Pair<Integer, String> o1, final Pair<Integer, String> o2)
+						{
+							return o1.first.compareTo(o2.first);
+						}
+					});
+					final int index=(int)Math.round(Math.floor(compInts.size()/2));
+					if(resCode<0)
+						resCode=compInts.get(index).first.intValue();
+					if((subType==null)||(subType.length()==0))
+						subType=compInts.get(index).second;
+				}
 			}
 		}
-		return record;
+		return new DeadResourceRecord()
+		{
+			int lostValue=0;
+			int lostAmt=0;
+			int resCode=-1;
+			String subType="";
+			List<CMObject> lostProps = null;
+
+			public DeadResourceRecord set(final int lostValue, final int lostAmt, final int resCode, final String subType, final List<CMObject> lostProps)
+			{
+				this.lostValue = lostValue;
+				this.lostAmt = lostAmt;
+				this.resCode = resCode;
+				this.subType = subType;
+				this.lostProps = lostProps;
+				return this;
+			}
+
+			@Override
+			public int getLostValue()
+			{
+				return lostValue;
+			}
+
+			@Override
+			public int getLostAmt()
+			{
+				return lostAmt;
+			}
+
+			@Override
+			public int getResCode()
+			{
+				return resCode;
+			}
+
+			@Override
+			public String getSubType()
+			{
+				return subType;
+			}
+
+			@Override
+			public List<CMObject> getLostProps()
+			{
+				return lostProps;
+			}
+		}.set(lostValue, lostAmt, resCode, subType, lostProps);
 	}
 
 	@Override

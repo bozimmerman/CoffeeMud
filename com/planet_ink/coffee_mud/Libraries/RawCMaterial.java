@@ -927,7 +927,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		if(howMuch<=0)
 			return 0;
 		final RawMaterial firstMaterialI = (finalMaterial>0)?this.findFirstResource(V, finalMaterial, C, subType):null;
-		return destroyResources(V, howMuch, finalMaterial, -1, null, C, firstMaterialI, null).lostAmt;
+		return destroyResources(V, howMuch, finalMaterial, -1, null, C, firstMaterialI, null).getLostAmt();
 	}
 
 	@Override
@@ -947,7 +947,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	@Override
 	public int destroyResourcesValue(final List<Item> V, final int howMuch, final int finalMaterial, final int otherMaterial, final Item never, final Container C)
 	{
-		return destroyResources(V, howMuch, finalMaterial, otherMaterial, never, C, null, null).lostValue;
+		return destroyResources(V, howMuch, finalMaterial, otherMaterial, never, C, null, null).getLostValue();
 	}
 
 	@Override
@@ -960,108 +960,158 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	protected DeadResourceRecord destroyResources(final List<Item> V, int howMuch, int finalMaterial, int otherMaterial, final Item never,
 												  final Container C, RawMaterial firstMaterialI, RawMaterial otherMaterialI)
 	{
-		final DeadResourceRecord record = new DeadResourceRecord();
-		if((V==null)||(V.size()==0))
-			return record;
-		if((howMuch<=0)&&(otherMaterial<=0))
-			return record;
-
-		final XVector<CMObject> props=new XVector<CMObject>();
-		record.lostProps=props;
-		if(firstMaterialI == null)
-			firstMaterialI = (finalMaterial>0)?this.findFirstResource(V, finalMaterial, C, null):null;
-		if(otherMaterialI == null)
-			otherMaterialI = (otherMaterial>0)?this.findFirstResource(V, otherMaterial, C, null):null;
-		final int firstResourceType = (firstMaterialI != null)?firstMaterialI.material():-1;
-		final int otherResourceType = (otherMaterialI != null)?otherMaterialI.material():-1;
-		for(int i=V.size()-1;i>=0;i--)
+		int lostValue=0;
+		int lostAmt=0;
+		int resCode=-1;
+		String subType="";
+		XVector<CMObject> lostProps = null;
+		if((V!=null)
+		&&(V.size()>0)
+		&&((howMuch>0)||(otherMaterial>0)))
 		{
-			final Item I=V.get(i);
-			if(!(I instanceof RawMaterial)
-			||(I==never))
-				continue;
-			final RawMaterial rI=(RawMaterial)I;
-			if((otherResourceType>0)
-			&&(rI.material()==otherResourceType)
-			&&(rI.container()==C)
-			&&(!CMLib.flags().isOnFire(I))
-			&&(!CMLib.flags().isEnchanted(I))
-			&&(otherMaterialI!=null)
-			&&(rI.getSubType().equals(otherMaterialI.getSubType()))
-			&&(rI.rawSecretIdentity().equals(otherMaterialI.rawSecretIdentity())))
+			lostProps = new XVector<CMObject>();
+			if(firstMaterialI == null)
+				firstMaterialI = (finalMaterial>0)?this.findFirstResource(V, finalMaterial, C, null):null;
+			if(otherMaterialI == null)
+				otherMaterialI = (otherMaterial>0)?this.findFirstResource(V, otherMaterial, C, null):null;
+			final int firstResourceType = (firstMaterialI != null)?firstMaterialI.material():-1;
+			final int otherResourceType = (otherMaterialI != null)?otherMaterialI.material():-1;
+			for(int i=V.size()-1;i>=0;i--)
 			{
-				if(I.basePhyStats().weight()>1)
+				final Item I=V.get(i);
+				if(!(I instanceof RawMaterial)
+				||(I==never))
+					continue;
+				final RawMaterial rI=(RawMaterial)I;
+				if((otherResourceType>0)
+				&&(rI.material()==otherResourceType)
+				&&(rI.container()==C)
+				&&(!CMLib.flags().isOnFire(I))
+				&&(!CMLib.flags().isEnchanted(I))
+				&&(otherMaterialI!=null)
+				&&(rI.getSubType().equals(otherMaterialI.getSubType()))
+				&&(rI.rawSecretIdentity().equals(otherMaterialI.rawSecretIdentity())))
 				{
-					final List<Environmental> set=disBundle(I,1,1,C);
-					if((set==null)||(set.size()==0))
-						continue;
-					final Environmental E=set.get(0);
-					if(E instanceof Item)
+					if(I.basePhyStats().weight()>1)
 					{
-						record.lostValue+=((Item)E).value();
-						props.addAll(((Item)E).effects());
-						props.addAll(((Item)E).behaviors());
+						final List<Environmental> set=disBundle(I,1,1,C);
+						if((set==null)||(set.size()==0))
+							continue;
+						final Environmental E=set.get(0);
+						if(E instanceof Item)
+						{
+							lostValue+=((Item)E).value();
+							lostProps.addAll(((Item)E).effects());
+							lostProps.addAll(((Item)E).behaviors());
+						}
+						E.destroy();
 					}
-					E.destroy();
-				}
-				else
-				{
-					record.lostValue+=I.value();
-					props.addAll(I.effects());
-					props.addAll(I.behaviors());
-					((RawMaterial)I).quickDestroy();
-				}
-				otherMaterial=-1;
-				if((finalMaterial<0)||(howMuch<=0))
-					break;
-			}
-			else
-			if((rI.material()==firstResourceType)
-			&&(howMuch>0)
-			&&(I.container()==C)
-			&&(!CMLib.flags().isOnFire(I))
-			&&(!CMLib.flags().isEnchanted(I))
-			&&(firstMaterialI!=null)
-			&&(rI.getSubType().equals(firstMaterialI.getSubType()))
-			&&(rI.rawSecretIdentity().equals(firstMaterialI.rawSecretIdentity())))
-			{
-				if(I.basePhyStats().weight()>howMuch)
-				{
-					final List<Environmental> set=disBundle(I,1,howMuch,C);
-					if((set==null)||(set.size()==0))
-						continue;
-					final Environmental E=set.get(0);
-					record.lostAmt+=howMuch;
-					record.resCode=I.material();
-					if(E instanceof Item)
+					else
 					{
-						record.lostValue+=(((Item)E).value());
-						record.subType=rI.getSubType();
-						props.addAll(((Item)E).effects());
-						props.addAll(((Item)E).behaviors());
+						lostValue+=I.value();
+						lostProps.addAll(I.effects());
+						lostProps.addAll(I.behaviors());
+						((RawMaterial)I).quickDestroy();
 					}
-					E.destroy();
-					howMuch=0;
-				}
-				else
-				{
-					record.lostAmt+=I.basePhyStats().weight();
-					record.subType=rI.getSubType();
-					record.resCode=I.material();
-					howMuch-=I.basePhyStats().weight();
-					props.addAll(I.effects());
-					record.lostValue+=I.value();
-					((RawMaterial)I).quickDestroy();
-				}
-				if(howMuch<=0)
-				{
-					finalMaterial=-1;
-					if(otherMaterial<=0)
+					otherMaterial=-1;
+					if((finalMaterial<0)||(howMuch<=0))
 						break;
+				}
+				else
+				if((rI.material()==firstResourceType)
+				&&(howMuch>0)
+				&&(I.container()==C)
+				&&(!CMLib.flags().isOnFire(I))
+				&&(!CMLib.flags().isEnchanted(I))
+				&&(firstMaterialI!=null)
+				&&(rI.getSubType().equals(firstMaterialI.getSubType()))
+				&&(rI.rawSecretIdentity().equals(firstMaterialI.rawSecretIdentity())))
+				{
+					if(I.basePhyStats().weight()>howMuch)
+					{
+						final List<Environmental> set=disBundle(I,1,howMuch,C);
+						if((set==null)||(set.size()==0))
+							continue;
+						final Environmental E=set.get(0);
+						lostAmt+=howMuch;
+						resCode=I.material();
+						if(E instanceof Item)
+						{
+							lostValue+=(((Item)E).value());
+							subType=rI.getSubType();
+							lostProps.addAll(((Item)E).effects());
+							lostProps.addAll(((Item)E).behaviors());
+						}
+						E.destroy();
+						howMuch=0;
+					}
+					else
+					{
+						lostAmt+=I.basePhyStats().weight();
+						subType=rI.getSubType();
+						resCode=I.material();
+						howMuch-=I.basePhyStats().weight();
+						lostProps.addAll(I.effects());
+						lostValue+=I.value();
+						((RawMaterial)I).quickDestroy();
+					}
+					if(howMuch<=0)
+					{
+						finalMaterial=-1;
+						if(otherMaterial<=0)
+							break;
+					}
 				}
 			}
 		}
-		return record;
+		return new DeadResourceRecord()
+		{
+			int lostValue=0;
+			int lostAmt=0;
+			int resCode=-1;
+			String subType="";
+			List<CMObject> lostProps = null;
+
+			public DeadResourceRecord set(final int lostValue, final int lostAmt, final int resCode, final String subType, final List<CMObject> lostProps)
+			{
+				this.lostValue = lostValue;
+				this.lostAmt = lostAmt;
+				this.resCode = resCode;
+				this.subType = subType;
+				this.lostProps = lostProps;
+				return this;
+			}
+
+			@Override
+			public int getLostValue()
+			{
+				return lostValue;
+			}
+
+			@Override
+			public int getLostAmt()
+			{
+				return lostAmt;
+			}
+
+			@Override
+			public int getResCode()
+			{
+				return resCode;
+			}
+
+			@Override
+			public String getSubType()
+			{
+				return subType;
+			}
+
+			@Override
+			public List<CMObject> getLostProps()
+			{
+				return lostProps;
+			}
+		}.set(lostValue, lostAmt, resCode, subType, lostProps);
 	}
 
 	@Override

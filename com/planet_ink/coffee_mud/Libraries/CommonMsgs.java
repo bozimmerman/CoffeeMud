@@ -1830,7 +1830,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		final boolean hadCompressedItems = ((compressedItems != null) && (compressedItems.size()>0));
 		if(hadCompressedItems)
 		{
-			final StringBuilder itemStr=CMLib.lister().lister(mob,compressedItems,useName,"RItem"," \"*\"",false,true);
+			final String itemStr=CMLib.lister().lister(mob,compressedItems,useName,"RItem"," \"*\"",false,true);
 			if(itemStr.length()>0)
 				finalLookStr.append(itemStr);
 		}
@@ -1839,7 +1839,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			||(!mob.isAttributeSet(MOB.Attrib.BRIEF))
 			||(hadCompressedItems)))
 				finalLookStr.append("^N\n\r\n\r");
-		final StringBuilder itemStr=CMLib.lister().lister(mob,viewItems,useName,"RItem"," \"*\"",lookCode==LOOK_LONG,compress);
+		final String itemStr=CMLib.lister().lister(mob,viewItems,useName,"RItem"," \"*\"",lookCode==LOOK_LONG,compress);
 		if(itemStr.length()>0)
 			finalLookStr.append(itemStr);
 
@@ -2171,7 +2171,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 								}
 							}
 						}
-						final StringBuilder seenThatWay=CMLib.lister().lister(msg.source(),items,true,"","",false,true);
+						final String seenThatWay=CMLib.lister().lister(msg.source(),items,true,"","",false,true);
 						if(seenThatWay.length()>0)
 							mob.tell(L("Yonder, you can also see: @x1",seenThatWay.toString()));
 					}

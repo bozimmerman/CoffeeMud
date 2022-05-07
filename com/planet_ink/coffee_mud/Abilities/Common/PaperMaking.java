@@ -349,7 +349,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 
 		final MaterialLibrary.DeadResourceRecord deadMats;
 		if((componentsFoundList.size() > 0)||(autoGenerate>0))
-			deadMats = new MaterialLibrary.DeadResourceRecord();
+			deadMats = deadRecord;
 		else
 		{
 			deadMats = CMLib.materials().destroyResources(mob.location(),data[0][FOUND_AMT],
@@ -380,7 +380,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
 		buildingI.setMaterial(super.getBuildingMaterial(woodRequired, data, compData));
 		final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
-		addSpellsOrBehaviors(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
+		addSpellsOrBehaviors(buildingI,spell,deadMats.getLostProps(),deadComps.getLostProps());
 		setBrand(mob, buildingI);
 		if(((data[0][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
 		||(data[0][FOUND_CODE]==RawMaterial.RESOURCE_RICE))

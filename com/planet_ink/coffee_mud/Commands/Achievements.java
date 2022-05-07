@@ -527,7 +527,7 @@ public class Achievements extends StdCommand
 				else
 				{
 					finalResponse.append("^H"+prefix+L(CMStrings.capitalizeAndLower(agent.name())+" Achievements"+subName+":")+"^w\n\r");
-					finalResponse.append(CMLib.lister().makeColumns(mob, achievedList, null, 2).toString()+"^w\n\r\n\r");
+					finalResponse.append(CMLib.lister().buildNColTable(mob, achievedList, null, 2).toString()+"^w\n\r\n\r");
 				}
 			}
 		}

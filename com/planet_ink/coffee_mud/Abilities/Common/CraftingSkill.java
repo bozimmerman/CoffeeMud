@@ -147,6 +147,36 @@ public class CraftingSkill extends GatheringSkill
 
 	}
 
+	protected static final MaterialLibrary.DeadResourceRecord deadRecord = new MaterialLibrary.DeadResourceRecord()
+	{
+		@Override
+		public int getLostValue()
+		{
+			return 0;
+		}
+		@Override
+		public int getLostAmt()
+		{
+			return 0;
+		}
+		@Override
+		public int getResCode()
+		{
+			return -1;
+		}
+		@Override
+		public String getSubType()
+		{
+			return "";
+		}
+		@Override
+		public List<CMObject> getLostProps()
+		{
+			return null;
+		}
+	};
+
+
 	public String parametersFile()
 	{
 		return "";
@@ -202,14 +232,14 @@ public class CraftingSkill extends GatheringSkill
 
 	protected String determineFinalResourceName(final int backupMaterial, final MaterialLibrary.DeadResourceRecord res1, final MaterialLibrary.DeadResourceRecord res2)
 	{
-		if((res1 != null)&&(res1.subType.length()>0))
-			return res1.subType.toLowerCase();
-		if((res2 != null)&&(res2.subType.length()>0))
-			return res2.subType.toLowerCase();
-		if((res1!=null)&&(res1.resCode>=0))
-			return RawMaterial.CODES.NAME(res1.resCode).toLowerCase();
-		if((res2!=null)&&(res2.resCode>=0))
-			return RawMaterial.CODES.NAME(res2.resCode).toLowerCase();
+		if((res1 != null)&&(res1.getSubType().length()>0))
+			return res1.getSubType().toLowerCase();
+		if((res2 != null)&&(res2.getSubType().length()>0))
+			return res2.getSubType().toLowerCase();
+		if((res1!=null)&&(res1.getResCode()>=0))
+			return RawMaterial.CODES.NAME(res1.getResCode()).toLowerCase();
+		if((res2!=null)&&(res2.getResCode()>=0))
+			return RawMaterial.CODES.NAME(res2.getResCode()).toLowerCase();
 		return RawMaterial.CODES.NAME(backupMaterial).toLowerCase();
 	}
 

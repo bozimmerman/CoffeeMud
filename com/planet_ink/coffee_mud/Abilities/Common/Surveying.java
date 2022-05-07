@@ -245,7 +245,7 @@ public class Surveying extends CommonSkill
 								if(item.container()==null)
 									viewItems.add(item);
 							}
-							final StringBuilder itemStr=CMLib.lister().lister(mob,viewItems,false,null,null,true,false);
+							final String itemStr=CMLib.lister().lister(mob,viewItems,false,null,null,true,false);
 							if(itemStr.length()>0)
 								msgBuilder.append("\n\r").append(itemStr);
 							else

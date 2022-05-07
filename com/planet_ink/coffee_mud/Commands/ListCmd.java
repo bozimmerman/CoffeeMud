@@ -2967,7 +2967,7 @@ public class ListCmd extends StdCommand
 			return "^x"+key+"^?\n\r" + getValue(o,"");
 		}
 		final Enumeration<String> keys=new IteratorEnumeration<String>(Resources.findResourceKeys(parm));
-		return CMLib.lister().reallyList2Cols(mob,keys).toString();
+		return CMLib.lister().build2ColTable(mob,keys).toString();
 	}
 
 	public String listHelpFileRequests(final MOB mob, final String rest)
@@ -3445,7 +3445,7 @@ public class ListCmd extends StdCommand
 			if(l.size()>0)
 			{
 				buf.append(L("\n\rThere are currently @x1 expired @x2s.\n\r",""+l.size(),theWord));
-				buf.append(CMLib.lister().reallyList2Cols(mob,new IteratorEnumeration<String>(l.iterator())).toString());
+				buf.append(CMLib.lister().build2ColTable(mob,new IteratorEnumeration<String>(l.iterator())).toString());
 				buf.append(L("\n\r\n\rUse EXPIRE command to alter them.^?^.\n\r"));
 			}
 			else
@@ -4824,7 +4824,7 @@ public class ListCmd extends StdCommand
 				s.println("==="+title+"===");
 			final XVector<Ability> sortedAs = new XVector<Ability>(enumA);
 			CMClass.sortEnvironmentalsByName(sortedAs);
-			s.wraplessPrintln(CMLib.lister().reallyWikiList(mob, sortedAs.elements(), ofType|domain).toString());
+			s.wraplessPrintln(CMLib.lister().buildWikiList(sortedAs.elements(), ofType|domain).toString());
 		}
 		else
 		if(wiki == WikiFlag.WIKIHELP)
@@ -4992,7 +4992,7 @@ public class ListCmd extends StdCommand
 		else
 		{
 			s.println("^H"+title+" Ability IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, enumA, ofType|domain).toString());
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, enumA, ofType|domain).toString());
 		}
 	}
 
@@ -5004,7 +5004,7 @@ public class ListCmd extends StdCommand
 			if(title.length()==0)
 				title="Behaviors";
 			s.println("==="+title+"s===");
-			s.wraplessPrintln(CMLib.lister().reallyWikiList(mob, CMClass.behaviors(), 0).toString());
+			s.wraplessPrintln(CMLib.lister().buildWikiList(CMClass.behaviors(), 0).toString());
 		}
 		else
 		if(wiki == WikiFlag.WIKIHELP)
@@ -5082,7 +5082,7 @@ public class ListCmd extends StdCommand
 		else
 		{
 			s.println("^H"+title+" Behavior IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.behaviors(), 0).toString());
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, CMClass.behaviors()).toString());
 		}
 	}
 
@@ -5516,22 +5516,22 @@ public class ListCmd extends StdCommand
 			break;
 		case ITEMS:
 			s.println("^HBasic Item IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.basicItems()).toString());
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, CMClass.basicItems()).toString());
 			break;
 		case ARMOR:
 			s.println("^HArmor Item IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.armor()).toString());
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, CMClass.armor()).toString());
 			break;
 		case ENVRESOURCES:
 			s.wraplessPrintln(listEnvResources(mob.session(), rest));
 			break;
 		case WEAPONS:
 			s.println("^HWeapon Item IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.weapons()).toString());
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, CMClass.weapons()).toString());
 			break;
 		case MOBS:
 			s.println("^HMOB IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.mobTypes()).toString());
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, CMClass.mobTypes()).toString());
 			break;
 		case ROOMS:
 			s.println("^HRoom Locale IDs:^N");
@@ -5542,9 +5542,9 @@ public class ListCmd extends StdCommand
 			break;
 		case LOCALES:
 			s.println("^HRoom Class Locale IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.locales()).toString());
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, CMClass.locales()).toString());
 			s.println("^HDomain Locales include the following:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, new IteratorEnumeration<String>(Arrays.asList(CMParms.combine(Room.DOMAIN_INDOORS_DESCS, Room.DOMAIN_OUTDOOR_DESCS)).iterator())).toString());
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, new IteratorEnumeration<String>(Arrays.asList(CMParms.combine(Room.DOMAIN_INDOORS_DESCS, Room.DOMAIN_OUTDOOR_DESCS)).iterator())).toString());
 			break;
 		case BEHAVIORS:
 			//s.println("^HBehavior IDs:^N");
@@ -5552,7 +5552,7 @@ public class ListCmd extends StdCommand
 			break;
 		case EXITS:
 			s.println("^HExit IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.exits()).toString());
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, CMClass.exits()).toString());
 			break;
 		case RACES:
 			s.println("^HRace IDs (Racial Category):^N");
@@ -5642,24 +5642,24 @@ public class ListCmd extends StdCommand
 		{
 			final PlanarAbility planeSet = (PlanarAbility)CMClass.getAbility("StdPlanarAbility");
 			s.println("^HPlanes of Existence:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, new IteratorEnumeration<String>(planeSet.getAllPlaneKeys().iterator()), 0).toString());
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, new IteratorEnumeration<String>(planeSet.getAllPlaneKeys().iterator())).toString());
 			break;
 		}
 		case MAGIC:
 			s.println("^HMagic Item IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.miscMagic()).toString());
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, CMClass.miscMagic()).toString());
 			break;
 		case TECH:
 			s.println("^HTech Item IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.tech()).toString());
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, CMClass.tech()).toString());
 			break;
 		case CLANITEMS:
 			s.println("^HClan Item IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.clanItems()).toString());
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, CMClass.clanItems()).toString());
 			break;
 		case AREATYPES:
 			s.println("^HArea Type IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.areaTypes()).toString());
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, CMClass.areaTypes()).toString());
 			break;
 		case COMMANDJOURNAL:
 			s.println(journalList(mob,mob.session(), listWord, rest).toString());
@@ -5833,7 +5833,7 @@ public class ListCmd extends StdCommand
 			break;
 		case SOFTWARE:
 			s.println("^HSoftware Item IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.tech(new Filterer<Technical>()
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob, CMClass.tech(new Filterer<Technical>()
 			{
 				@Override
 				public boolean passesFilter(final Technical obj)

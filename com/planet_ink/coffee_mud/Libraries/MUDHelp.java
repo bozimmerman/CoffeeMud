@@ -1192,7 +1192,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		}
 		if(matches.size()==0)
 			return "";
-		return CMLib.lister().fourColumns(forM,matches).toString();
+		return CMLib.lister().build4ColTable(forM,matches).toString();
 	}
 
 	@Override

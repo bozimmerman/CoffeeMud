@@ -1478,7 +1478,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			newName=mob.session().prompt(L("Enter a new one (?)\n\r:"),"");
 			if(newName.trim().equals("?"))
 			{
-				mob.tell(CMLib.lister().reallyList2Cols(mob,CMClass.locales()).toString()+"\n\r");
+				mob.tell(CMLib.lister().build2ColTable(mob,CMClass.locales()).toString()+"\n\r");
 				newName="";
 			}
 			else
@@ -2093,7 +2093,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					{
 						final int ofType=(E instanceof Wand)?((Wand)E).getEnchantType():-1;
 						if(newName.equalsIgnoreCase("?"))
-							mob.tell(CMLib.lister().reallyList(mob,CMClass.abilities(),ofType).toString());
+							mob.tell(CMLib.lister().build3ColTable(mob,CMClass.abilities(),ofType).toString());
 						else
 						if(E instanceof Wand)
 						{
@@ -3967,7 +3967,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				return;
 			raceID=mob.session().prompt(L("Enter a new race (?)\n\r:"),"").trim();
 			if(raceID.equalsIgnoreCase("?"))
-				mob.tell(CMLib.lister().reallyList(mob,CMClass.races(),-1).toString());
+				mob.tell(CMLib.lister().build3ColTable(mob,CMClass.races()).toString());
 			else
 			if(raceID.length()==0)
 				mob.tell(L("(no change)"));
@@ -4005,7 +4005,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				return;
 			classID=mob.session().prompt(L("Enter a class to add/remove(?)\n\r:"),"").trim();
 			if(classID.equalsIgnoreCase("?"))
-				mob.tell(CMLib.lister().reallyList(mob,CMClass.charClasses(),-1).toString());
+				mob.tell(CMLib.lister().build3ColTable(mob,CMClass.charClasses()).toString());
 			else
 			if(classID.length()==0)
 				mob.tell(L("(no change)"));
@@ -4364,7 +4364,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							return s;
 						}
 					};
-					mob.tell(CMLib.lister().reallyList(mob,CMClass.behaviors(),null,stringer).toString());
+					mob.tell(CMLib.lister().build3ColTable(mob,CMClass.behaviors(),null,stringer).toString());
 				}
 				else
 				{
@@ -4473,7 +4473,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							return s;
 						}
 					};
-					mob.tell(CMLib.lister().reallyList(mob,CMClass.abilities(),null,stringer).toString());
+					mob.tell(CMLib.lister().build3ColTable(mob,CMClass.abilities(),null,stringer).toString());
 				}
 				else
 				{
@@ -4685,14 +4685,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				if(itemstr.equalsIgnoreCase("?"))
 				{
-					mob.tell(CMLib.lister().reallyList(mob,CMClass.abilities(),-1).toString());
-					mob.tell(CMLib.lister().reallyList(mob,CMClass.armor(),-1).toString());
-					mob.tell(CMLib.lister().reallyList(mob,CMClass.weapons(),-1).toString());
-					mob.tell(CMLib.lister().reallyList(mob,CMClass.miscMagic(),-1).toString());
-					mob.tell(CMLib.lister().reallyList(mob,CMClass.tech(),-1).toString());
-					mob.tell(CMLib.lister().reallyList(mob,CMClass.clanItems(),-1).toString());
-					mob.tell(CMLib.lister().reallyList(mob,CMClass.basicItems(),-1).toString());
-					mob.tell(CMLib.lister().reallyList(mob,CMClass.mobTypes(),-1).toString());
+					mob.tell(CMLib.lister().build3ColTable(mob,CMClass.abilities()).toString());
+					mob.tell(CMLib.lister().build3ColTable(mob,CMClass.armor()).toString());
+					mob.tell(CMLib.lister().build3ColTable(mob,CMClass.weapons()).toString());
+					mob.tell(CMLib.lister().build3ColTable(mob,CMClass.miscMagic()).toString());
+					mob.tell(CMLib.lister().build3ColTable(mob,CMClass.tech()).toString());
+					mob.tell(CMLib.lister().build3ColTable(mob,CMClass.clanItems()).toString());
+					mob.tell(CMLib.lister().build3ColTable(mob,CMClass.basicItems()).toString());
+					mob.tell(CMLib.lister().build3ColTable(mob,CMClass.mobTypes()).toString());
 					mob.tell(L("* Plus! Any items on the ground."));
 					mob.tell(L("* Plus! Any mobs hanging around in the room."));
 				}
@@ -4982,12 +4982,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				if(itemstr.equalsIgnoreCase("?"))
 				{
-					mob.tell(CMLib.lister().reallyList(mob,CMClass.armor(),-1).toString());
-					mob.tell(CMLib.lister().reallyList(mob,CMClass.weapons(),-1).toString());
-					mob.tell(CMLib.lister().reallyList(mob,CMClass.miscMagic(),-1).toString());
-					mob.tell(CMLib.lister().reallyList(mob,CMClass.tech(),-1).toString());
-					mob.tell(CMLib.lister().reallyList(mob,CMClass.clanItems(),-1).toString());
-					mob.tell(CMLib.lister().reallyList(mob,CMClass.basicItems(),-1).toString());
+					mob.tell(CMLib.lister().build3ColTable(mob,CMClass.armor()).toString());
+					mob.tell(CMLib.lister().build3ColTable(mob,CMClass.weapons()).toString());
+					mob.tell(CMLib.lister().build3ColTable(mob,CMClass.miscMagic()).toString());
+					mob.tell(CMLib.lister().build3ColTable(mob,CMClass.tech()).toString());
+					mob.tell(CMLib.lister().build3ColTable(mob,CMClass.clanItems()).toString());
+					mob.tell(CMLib.lister().build3ColTable(mob,CMClass.basicItems()).toString());
 					mob.tell(L("* Plus! Any items on the ground."));
 				}
 				else
@@ -5055,7 +5055,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(behave.length()>0)
 			{
 				if(behave.equalsIgnoreCase("?"))
-					mob.tell(CMLib.lister().reallyList(mob,CMClass.abilities(),-1).toString());
+					mob.tell(CMLib.lister().build3ColTable(mob,CMClass.abilities(),-1).toString());
 				else
 				{
 					Ability chosenOne=null;
@@ -5141,8 +5141,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				if(behave.equalsIgnoreCase("?"))
 				{
-					mob.tell(CMLib.lister().reallyList(mob,CMClass.abilities(),-1).toString());
-					mob.tell(CMLib.lister().reallyList(mob,CMClass.behaviors(),-1).toString());
+					mob.tell(CMLib.lister().build3ColTable(mob,CMClass.abilities()).toString());
+					mob.tell(CMLib.lister().build3ColTable(mob,CMClass.behaviors()).toString());
 				}
 				else
 				{
@@ -5251,8 +5251,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				if(behave.equalsIgnoreCase("?"))
 				{
-					mob.tell(CMLib.lister().reallyList(mob,CMClass.abilities(),-1).toString());
-					mob.tell(CMLib.lister().reallyList(mob,CMClass.behaviors(),-1).toString());
+					mob.tell(CMLib.lister().build3ColTable(mob,CMClass.abilities()).toString());
+					mob.tell(CMLib.lister().build3ColTable(mob,CMClass.behaviors()).toString());
 				}
 				else
 				{
@@ -5499,7 +5499,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(behave.length()>0)
 			{
 				if(behave.equalsIgnoreCase("?"))
-					mob.tell(CMLib.lister().reallyList(mob,CMClass.abilities(),-1).toString());
+					mob.tell(CMLib.lister().build3ColTable(mob,CMClass.abilities(),-1).toString());
 				else
 				{
 					Ability chosenOne=null;
@@ -5574,7 +5574,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(behave.length()>0)
 			{
 				if(behave.equalsIgnoreCase("?"))
-					mob.tell(CMLib.lister().reallyList(mob,CMClass.abilities(),-1).toString());
+					mob.tell(CMLib.lister().build3ColTable(mob,CMClass.abilities(),-1).toString());
 				else
 				{
 					Ability chosenOne=null;
@@ -5649,7 +5649,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(behave.length()>0)
 			{
 				if(behave.equalsIgnoreCase("?"))
-					mob.tell(CMLib.lister().reallyList(mob,CMClass.abilities(),-1).toString());
+					mob.tell(CMLib.lister().build3ColTable(mob,CMClass.abilities(),-1).toString());
 				else
 				{
 					Ability chosenOne=null;
@@ -7661,7 +7661,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				return;
 			final String newName=mob.session().prompt(L("Enter an ability name to add or remove (?)\n\r:"),"");
 			if(newName.equalsIgnoreCase("?"))
-				mob.tell(CMLib.lister().reallyList(mob,CMClass.abilities(),-1).toString());
+				mob.tell(CMLib.lister().build3ColTable(mob,CMClass.abilities(),-1).toString());
 			else
 			if(newName.length()>0)
 			{
@@ -7827,7 +7827,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				return;
 			final String newName=mob.session().prompt(L("Enter an effect name to add or remove\n\r:"),"");
 			if(newName.equalsIgnoreCase("?"))
-				mob.tell(CMLib.lister().reallyList(mob,CMClass.abilities(),-1).toString());
+				mob.tell(CMLib.lister().build3ColTable(mob,CMClass.abilities(),-1).toString());
 			else
 			if(newName.length()>0)
 			{
@@ -7965,7 +7965,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				return;
 			final String newName=mob.session().prompt(L("Enter an ability id to add or remove\n\r:"),"");
 			if(newName.equalsIgnoreCase("?"))
-				mob.tell(CMLib.lister().reallyList(mob,CMClass.abilities(),-1).toString());
+				mob.tell(CMLib.lister().build3ColTable(mob,CMClass.abilities(),-1).toString());
 			else
 			if(newName.length()>0)
 			{
@@ -8196,7 +8196,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			mob.session().wraplessPrintln(header+parts.toString());
 			final String newName=mob.session().prompt(L("Enter an ability name to add or remove (?)\n\r:"),"");
 			if(newName.equalsIgnoreCase("?"))
-				mob.tell(CMLib.lister().reallyList(mob,CMClass.abilities(),-1).toString());
+				mob.tell(CMLib.lister().build3ColTable(mob,CMClass.abilities(),-1).toString());
 			else
 			if(newName.length()>0)
 			{
@@ -8369,7 +8369,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				return;
 			final String newName=mob.session().prompt(L("Enter an ability name to add or remove (?)\n\r:"),"");
 			if(newName.equalsIgnoreCase("?"))
-				mob.tell(CMLib.lister().reallyList(mob,CMClass.abilities(),-1).toString());
+				mob.tell(CMLib.lister().build3ColTable(mob,CMClass.abilities(),-1).toString());
 			else
 			if(newName.length()>0)
 			{
