@@ -1216,19 +1216,19 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			loginObj.acct = CMLib.players().getLoadAccount(loginObj.login);
 			if(loginObj.acct!=null)
 			{
-				loginObj.player=new PlayerLibrary.ThinnerPlayer();
-				loginObj.player.name=loginObj.acct.getAccountName();
-				loginObj.player.accountName=loginObj.acct.getAccountName();
-				loginObj.player.email=loginObj.acct.getEmail();
-				loginObj.player.expiration=loginObj.acct.getAccountExpiration();
-				loginObj.player.password=loginObj.acct.getPasswordStr();
+				loginObj.player=CMLib.players().newThinnerPlayer();
+				loginObj.player.name(loginObj.acct.getAccountName());
+				loginObj.player.accountName(loginObj.acct.getAccountName());
+				loginObj.player.email(loginObj.acct.getEmail());
+				loginObj.player.expiration(loginObj.acct.getAccountExpiration());
+				loginObj.player.password(loginObj.acct.getPasswordStr());
 			}
 			else
 			{
 				loginObj.player=CMLib.database().DBUserSearch(loginObj.login);
 				if(loginObj.player != null)
 				{
-					session.promptPrint(L("password for @x1: ",loginObj.player.name));
+					session.promptPrint(L("password for @x1: ",loginObj.player.name()));
 					loginObj.state=LoginState.LOGIN_ACCTCHAR_PWORD;
 					return LoginResult.INPUT_REQUIRED;
 				}
@@ -1244,12 +1244,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			final MOB mob=CMLib.players().getPlayer(loginObj.login);
 			if((mob!=null)&&(mob.playerStats()!=null))
 			{
-				loginObj.player=new PlayerLibrary.ThinnerPlayer();
-				loginObj.player.name=mob.Name();
-				loginObj.player.email=mob.playerStats().getEmail();
-				loginObj.player.expiration=mob.playerStats().getAccountExpiration();
-				loginObj.player.password=mob.playerStats().getPasswordStr();
-				loginObj.player.loadedMOB=mob;
+				loginObj.player=CMLib.players().newThinnerPlayer();
+				loginObj.player.name(mob.Name());
+				loginObj.player.email(mob.playerStats().getEmail());
+				loginObj.player.expiration(mob.playerStats().getAccountExpiration());
+				loginObj.player.password(mob.playerStats().getPasswordStr());
+				loginObj.player.loadedMOB(mob);
 			}
 			else
 				loginObj.player=CMLib.database().DBUserSearch(loginObj.login);
@@ -1261,20 +1261,20 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult loginAcctcharPword(final LoginSessionImpl loginObj, final Session session)
 	{
 		loginObj.password=loginObj.lastInput;
-		if(loginObj.player.matchesPassword(loginObj.password))
+		if(CMLib.encoder().passwordCheck(loginObj.password, loginObj.player.password()))
 		{
-			if((loginObj.player.accountName==null)||(loginObj.player.accountName.trim().length()==0))
+			if((loginObj.player.accountName()==null)||(loginObj.player.accountName().trim().length()==0))
 			{
 				session.println(L("\n\rThis mud is now using an account system.  Please create a new account "
 								+ "and use the IMPORT command to add your character(s) to your account."));
-				session.promptPrint(L("Would you like to create your new master account and call it '@x1' (y/N)? ",loginObj.player.name));
+				session.promptPrint(L("Would you like to create your new master account and call it '@x1' (y/N)? ",loginObj.player.name()));
 				loginObj.state=LoginState.LOGIN_ACCTCONV_CONFIRM;
 				return LoginResult.INPUT_REQUIRED;
 			}
 			else
 			{
 				session.println(L("\n\rThis mud uses an account system.  Your account name is `^H@x1^N`.\n\r"
-								+ "Please use this account name when logging in.",loginObj.player.accountName));
+								+ "Please use this account name when logging in.",loginObj.player.accountName()));
 			}
 		}
 		loginObj.state=LoginState.LOGIN_START;
@@ -1544,9 +1544,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult loginPassReceived(final LoginSessionImpl loginObj, final Session session) throws IOException
 	{
 		loginObj.password=loginObj.lastInput;
-		if(loginObj.player.matchesPassword(loginObj.password))
+		if(CMLib.encoder().passwordCheck(loginObj.password, loginObj.player.password()))
 		{
-			final LoginResult prelimResults = prelimChecks(session,loginObj.mob,loginObj.login,loginObj.player.email);
+			final LoginResult prelimResults = prelimChecks(session,loginObj.mob,loginObj.login,loginObj.player.email());
 			if(prelimResults!=null)
 			{
 				if(prelimResults==LoginResult.NO_LOGIN)
@@ -1618,11 +1618,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		else
 		{
-			Log.sysOut("Failed login: "+loginObj.player.name);
+			Log.sysOut("Failed login: "+loginObj.player.name());
 			session.println(L("\n\rInvalid password.\n\r"));
 			if((!session.isStopped())
-			&&(loginObj.player.email.length()>0)
-			&&(loginObj.player.email.indexOf('@')>0)
+			&&(loginObj.player.email().length()>0)
+			&&(loginObj.player.email().indexOf('@')>0)
 			&&(loginObj.attempt>2)
 			&&(CMProps.getVar(CMProps.Str.MUDDOMAIN).length()>0))
 			{
@@ -1645,31 +1645,31 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		final String input=loginObj.lastInput.toUpperCase().trim();
 		if(input.startsWith("Y"))
 		{
-			String password=loginObj.player.password;
+			String password=loginObj.player.password();
 			if(CMProps.getBoolVar(CMProps.Bool.HASHPASSWORDS))
 			{
 				if(loginObj.acct!=null)
 				{
 					password=CMLib.encoder().generateRandomPassword();
 					loginObj.acct.setPassword(password);
-					loginObj.player.password=loginObj.acct.getPasswordStr();
+					loginObj.player.password(loginObj.acct.getPasswordStr());
 					CMLib.database().DBUpdateAccount(loginObj.acct);
 				}
 				else
 				{
-					final MOB playerM=CMLib.players().getLoadPlayer(loginObj.player.name);
+					final MOB playerM=CMLib.players().getLoadPlayer(loginObj.player.name());
 					if((playerM!=null)&&(playerM.playerStats()!=null))
 					{
 						password=CMLib.encoder().generateRandomPassword();
 						playerM.playerStats().setPassword(password);
-						loginObj.player.password=playerM.playerStats().getPasswordStr();
-						CMLib.database().DBUpdatePassword(loginObj.player.name, loginObj.player.password);
+						loginObj.player.password(playerM.playerStats().getPasswordStr());
+						CMLib.database().DBUpdatePassword(loginObj.player.name(), loginObj.player.password());
 					}
 				}
 			}
-			CMLib.smtp().emailOrJournal(loginObj.player.name, "noreply",
-				loginObj.player.name, L("Password for @x1",loginObj.player.name),
-				L("Your password for @x1 at @x2 is '@x3'.",loginObj.player.name,CMProps.getVar(CMProps.Str.MUDDOMAIN),password));
+			CMLib.smtp().emailOrJournal(loginObj.player.name(), "noreply",
+				loginObj.player.name(), L("Password for @x1",loginObj.player.name()),
+				L("Your password for @x1 at @x2 is '@x3'.",loginObj.player.name(),CMProps.getVar(CMProps.Str.MUDDOMAIN),password));
 			session.stopSession(false,false,false);
 			loginObj.reset=true;
 			loginObj.state=LoginState.LOGIN_START;
@@ -2305,11 +2305,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 				return null;
 			}
+
 			if((newCharT==null)
-			||(!newCharT.matchesPassword(password))
-			||((newCharT.accountName!=null)
-				&&(newCharT.accountName.length()>0)
-				&&(!newCharT.accountName.equalsIgnoreCase(acct.getAccountName()))))
+			||(!CMLib.encoder().passwordCheck(password, newCharT.password()))
+			||((newCharT.accountName()!=null)
+				&&(newCharT.accountName().length()>0)
+				&&(!newCharT.accountName().equalsIgnoreCase(acct.getAccountName()))))
 			{
 				session.println(L("Character name or password is incorrect."));
 				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
@@ -2317,7 +2318,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 			if((parms.length>3)&&(parms[parms.length-1].equalsIgnoreCase("<CONFIRMED>")))
 			{
-				final MOB M=CMLib.players().getLoadPlayer(newCharT.name);
+				final MOB M=CMLib.players().getLoadPlayer(newCharT.name());
 				if(M!=null)
 				{
 					acct.addNewPlayer(M);
@@ -2330,7 +2331,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 			else
 			{
-				session.promptPrint(L("Are you sure you want to import character  '@x1' into your account (y/N)?",newCharT.name));
+				session.promptPrint(L("Are you sure you want to import character  '@x1' into your account (y/N)?",newCharT.name()));
 				loginObj.state=LoginState.ACCTMENU_CONFIRMCOMMAND;
 				return LoginResult.INPUT_REQUIRED;
 			}
@@ -2353,7 +2354,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 				return null;
 			}
-			final MOB realMOB=CMLib.players().getLoadPlayer(playMe.name);
+			final MOB realMOB=CMLib.players().getLoadPlayer(playMe.name());
 			if(realMOB==null)
 			{
 				session.println(L("Error loading character '@x1'.  Please contact the management.",name));
@@ -2361,11 +2362,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				return null;
 			}
 			session.setMob(realMOB);
-			playMe.loadedMOB=realMOB;
+			playMe.loadedMOB(realMOB);
 			if(this.completePlayerLogin(session, wizi)!=LoginResult.NORMAL_LOGIN)
 			{
 				session.setMob(null);
-				playMe.loadedMOB=null;
+				playMe.loadedMOB(null);
 				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 				return null;
 			}

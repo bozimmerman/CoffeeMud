@@ -1247,6 +1247,98 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
+	public PlayerLibrary.ThinnerPlayer newThinnerPlayer()
+	{
+		return new PlayerLibrary.ThinnerPlayer()
+		{
+			private String name="";
+			private String password="";
+			private String accountName="";
+			private String email="";
+			private long expiration = 0;
+			private MOB loadedMOB = null;
+
+			@Override
+			public String name()
+			{
+				return name;
+			}
+
+			@Override
+			public ThinnerPlayer name(final String name)
+			{
+				this.name = name;
+				return this;
+			}
+
+			@Override
+			public String password()
+			{
+				return password;
+			}
+
+			@Override
+			public ThinnerPlayer password(final String password)
+			{
+				this.password = password;
+				return this;
+			}
+
+			@Override
+			public long expiration()
+			{
+				return expiration;
+			}
+
+			@Override
+			public ThinnerPlayer expiration(final long expiration)
+			{
+				this.expiration = expiration;
+				return this;
+			}
+
+			@Override
+			public String accountName()
+			{
+				return accountName;
+			}
+
+			@Override
+			public ThinnerPlayer accountName(final String accountName)
+			{
+				this.accountName = accountName;
+				return this;
+			}
+
+			@Override
+			public String email()
+			{
+				return email;
+			}
+
+			@Override
+			public ThinnerPlayer email(final String email)
+			{
+				this.email = email;
+				return this;
+			}
+
+			@Override
+			public MOB loadedMOB()
+			{
+				return loadedMOB;
+			}
+			@Override
+			public ThinnerPlayer loadedMOB(final MOB mob)
+			{
+				this.loadedMOB = mob;
+				return this;
+			}
+
+		};
+	}
+
+	@Override
 	@SuppressWarnings("unchecked")
 	public Enumeration<PlayerAccount> accounts(final String sort, final Map<String, Object> cache)
 	{

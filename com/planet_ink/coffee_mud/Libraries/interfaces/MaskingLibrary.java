@@ -33,13 +33,66 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A ZapperMask is a set of conditions, typically of the form VALUE in SET,
+ * KEY=VALUE or VALUE, etc. These masks are used to determine the objects
+ * eligibility for some purpose. The most common use is as a mask to
+ * determine whether some mob is able to do something, or will have something
+ * happen to them.  ZapperMasks are made up of one or more entries, as
+ * mentioned above.  These entries have an implicit AND connector between
+ * them, whereas the values in each entry are typically an internal OR.
+ * e.g.
+ * Zappermask = condition entry AND condition entry AND condition entry, etc..
+ * Condition Entry = VALUE = OPTION or OPTION or OPTION or OPTION...
+ *
+ * @author Bo Zimmerman
+ */
 public interface MaskingLibrary extends CMLibrary
 {
-	public Map<String,ZapperKey> getMaskCodes();
-	public String rawMaskHelp();
+	/**
+	 * Returns the official help file for the list of all
+	 * zappermask codes, customized for the caller.
+	 *
+	 * @param CR  null, or the type of EOL string to use.
+	 * @param word null, or a substitute for the word 'disallow'
+	 * @return the customized help file for the zappermask codes
+	 */
 	public String maskHelp(final String CR, final String word);
+
+	/**
+	 * If the given zappermask contains any references to ability or
+	 * expertise requirements, this will return the IDs of the
+	 * required object.
+	 *
+	 * @param text the zappermask
+	 * @return a list of any required abilities or expertises
+	 */
 	public List<String> getAbilityEduReqs(final String text);
+
+	/**
+	 * Given a zappermask, this will return a brief readable english
+	 * description of the mask.  The normal format is "allows only..."
+	 * or "disallows ...".
+	 *
+	 * @see MaskingLibrary#maskDesc(String, boolean)
+	 *
+	 * @param text  the ZapperMask string
+	 * @return a description of the mask
+	 */
 	public String maskDesc(final String text);
+
+	/**
+	 * Given a zappermask, this will return a brief readable english
+	 * description of the mask.  The normal format is "allows only..."
+	 * or "disallows ...".  If skipFirstWord is sent, then the allows
+	 * case returns "only...".
+	 *
+	 * @see MaskingLibrary#maskDesc(String)
+	 *
+	 * @param text  the ZapperMask string
+	 * @param skipFirstWord true to skip the word 'allows'
+	 * @return a description of the mask
+	 */
 	public String maskDesc(final String text, final boolean skipFirstWord);
 
 	/**

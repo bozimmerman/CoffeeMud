@@ -20,6 +20,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.PlayerStats.PlayerFlag;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinnerPlayer;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -2139,12 +2140,12 @@ public class MOBloader
 			if(R!=null) while(R.next())
 			{
 				final String username=DB.getRes(R,"CMUSERID");
-				thinPlayer = new PlayerLibrary.ThinnerPlayer();
+				thinPlayer = CMLib.players().newThinnerPlayer();
 				final String password=DB.getRes(R,"CMPASS");
 				final String email=DB.getRes(R,"CMEMAL");
-				thinPlayer.name=username;
-				thinPlayer.password=password;
-				thinPlayer.email=email;
+				thinPlayer.name(username);
+				thinPlayer.password(password);
+				thinPlayer.email(email);
 				// Acct Exp Code
 				buf=DBConnections.getRes(R,"CMPFIL");
 			}
@@ -2160,19 +2161,19 @@ public class MOBloader
 		if((buf!=null)&&(thinPlayer!=null))
 		{
 			PlayerAccount acct = null;
-			thinPlayer.accountName = CMLib.xml().returnXMLValue(buf,"ACCOUNT");
-			if((thinPlayer.accountName!=null)&&(thinPlayer.accountName.length()>0))
-				acct = CMLib.players().getLoadAccount(thinPlayer.accountName);
+			thinPlayer.accountName(CMLib.xml().returnXMLValue(buf,"ACCOUNT"));
+			if((thinPlayer.accountName()!=null)&&(thinPlayer.accountName().length()>0))
+				acct = CMLib.players().getLoadAccount(thinPlayer.accountName());
 			if((acct != null)&&(CMProps.isUsingAccountSystem()))
-				thinPlayer.expiration=acct.getAccountExpiration();
+				thinPlayer.expiration(acct.getAccountExpiration());
 			else
 			if(CMLib.xml().returnXMLValue(buf,"ACCTEXP").length()>0)
-				thinPlayer.expiration=CMath.s_long(CMLib.xml().returnXMLValue(buf,"ACCTEXP"));
+				thinPlayer.expiration(CMath.s_long(CMLib.xml().returnXMLValue(buf,"ACCTEXP")));
 			else
 			{
 				final Calendar C=Calendar.getInstance();
 				C.add(Calendar.DATE,CMProps.getIntVar(CMProps.Int.TRIALDAYS));
-				thinPlayer.expiration=C.getTimeInMillis();
+				thinPlayer.expiration(C.getTimeInMillis());
 			}
 		}
 		return thinPlayer;

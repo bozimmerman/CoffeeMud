@@ -204,8 +204,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return nonCrashingItem;
 	}
 
-	@Override
-	public String rawMaskHelp()
+	protected String rawMaskHelp()
 	{
 		String maskHelp = (String)Resources.getResource("SYSTEM_ZAPPERMASK_HELP");
 		if(maskHelp == null)
@@ -293,16 +292,17 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return new CompiledZapperMaskImpl(false, false, new CompiledZMaskEntry[0][0], true);
 	}
 
-	@Override
-	public Map<String,ZapperKey> getMaskCodes()
+	protected Map<String,ZapperKey> getMaskCodes()
 	{
 		if(zapCodes.size()==0)
 		{
+			final Map<String,ZapperKey> newZapCodes = new Hashtable<String,ZapperKey>();
 			for(final ZapperKey Z : ZapperKey.values())
 			{
 				for(final String key : Z.keys())
-					zapCodes.put(key, Z);
+					newZapCodes.put(key, Z);
 			}
+			this.zapCodes = newZapCodes;
 		}
 		return zapCodes;
 	}

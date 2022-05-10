@@ -51,6 +51,7 @@ public interface PlayerLibrary extends CMLibrary
 	public PlayerAccount getLoadAccountByEmail(String email);
 	public PlayerAccount getAccount(String calledThis);
 	public PlayerAccount getAccountAllHosts(String calledThis);
+	public PlayerLibrary.ThinnerPlayer newThinnerPlayer();
 	public void addAccount(PlayerAccount acct);
 	public boolean accountExists(String name);
 	public boolean accountExistsAllHosts(String name);
@@ -100,18 +101,19 @@ public interface PlayerLibrary extends CMLibrary
 		public String worship();
 	}
 
-	public static class ThinnerPlayer
+	public static interface ThinnerPlayer
 	{
-		public String name="";
-		public String password="";
-		public long expiration=0;
-		public String accountName="";
-		public String email="";
-		public MOB loadedMOB=null;
-
-		public boolean matchesPassword(final String checkPass)
-		{
-			return CMLib.encoder().passwordCheck(checkPass, password);
-		}
+		public String name();
+		ThinnerPlayer name(String name);
+		public String password();
+		ThinnerPlayer password(String password);
+		public long expiration();
+		ThinnerPlayer expiration(long expiration);
+		public String accountName();
+		ThinnerPlayer accountName(String accountName);
+		public String email();
+		ThinnerPlayer email(String email);
+		public MOB loadedMOB();
+		ThinnerPlayer loadedMOB(MOB mob);
 	}
 }

@@ -2914,9 +2914,7 @@ public class DefaultSession implements Session
 		final MOB mob=CMLib.players().getLoadPlayer(name);
 		if((mob==null)||(mob.playerStats()==null))
 			return false;
-		final PlayerLibrary.ThinnerPlayer player=new PlayerLibrary.ThinnerPlayer();
-		player.password=mob.playerStats().getPasswordStr();
-		if(!player.matchesPassword(password))
+		if(!CMLib.encoder().passwordCheck(password, mob.playerStats().getPasswordStr()))
 			return false;
 		try
 		{

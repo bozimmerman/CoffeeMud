@@ -305,11 +305,13 @@ public class BackLogLoader
 			D=DB.DBFetch();
 			final ResultSet R = D.query(sql.toString());
 			while((R.next())&&(list.size()<numToReturn))
+			{
 				list.add(new Quad<String,Integer,Long,Integer>(
 						DB.getRes(R, "CMDATA"),
 						Integer.valueOf((int)DB.getLongRes(R,"CMINDX")),
 						Long.valueOf(DB.getLongRes(R, "CMDATE")),
 						Integer.valueOf((int)DB.getLongRes(R, "CMSNAM"))));
+			}
 			R.close();
 		}
 		catch(final Exception sqle)
