@@ -183,8 +183,11 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		return get(index);
 	}
 
+	@SuppressWarnings("unchecked")
 	public Enumeration<T> elements()
 	{
+		if(list.size()==0)
+			return EmptyEnumeration.INSTANCE;
 		return new Enumeration<T>()
 		{
 			final Iterator<T>	i	= iterator();

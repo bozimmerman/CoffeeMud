@@ -22,6 +22,7 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 {
 	private static final long serialVersionUID = -4174213459327144471L;
 	private static final Random rand=new Random(System.currentTimeMillis());
+
 	private class CMListNode
 	{
 		public K			obj;
@@ -401,8 +402,11 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 		return findLastNode(arg0) != null;
 	}
 
+	@SuppressWarnings("unchecked")
 	public Enumeration<K> elements()
 	{
+		if(size==0)
+			return EmptyEnumeration.INSTANCE;
 		final CMListNode firstNode=nodeAt(0);
 		return new Enumeration<K>()
 		{

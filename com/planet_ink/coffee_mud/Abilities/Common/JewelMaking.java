@@ -453,7 +453,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				commonTell(mob,L("@x1 is not suitable to @x2 on anything.",jewelE.name(),word));
 				return false;
 			}
-			final Item jewelI=(Item)CMLib.materials().unbundle((Item)jewelE,1,null);
+			final Item jewelI=CMLib.materials().unbundle((Item)jewelE,1,null);
 			if(jewelI==null)
 			{
 				commonTell(mob,L("@x1 is not pure enough to be @x2ed with.  You will need to use a gathered one.",jewelE.name(),word));

@@ -62,8 +62,11 @@ public class PairArrayList<T, K> extends ArrayList<Pair<T, K>> implements PairLi
 		return new ConvertingEnumeration<Pair<T, K>, K>(elements(), getSecondConverter());
 	}
 
+	@SuppressWarnings("unchecked")
 	public Enumeration<Pair<T,K>> elements()
 	{
+		if(size()==0)
+			return EmptyEnumeration.INSTANCE;
 		return new IteratorEnumeration<Pair<T,K>>(iterator());
 	}
 

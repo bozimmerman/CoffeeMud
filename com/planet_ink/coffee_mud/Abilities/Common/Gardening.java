@@ -428,7 +428,7 @@ public class Gardening extends GatheringSkill
 			return false;
 		}
 		final String mineName=mine.name();
-		mine=(Item)CMLib.materials().unbundle(mine,-1,null);
+		mine=CMLib.materials().unbundle(mine,-1,null);
 		if(mine==null)
 		{
 			commonTell(mob,L("'@x1' is not suitable for use as seed.",mineName));

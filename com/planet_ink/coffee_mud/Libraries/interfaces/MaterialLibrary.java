@@ -36,8 +36,6 @@ import java.util.*;
 */
 public interface MaterialLibrary extends CMLibrary
 {
-	public Environmental unbundle(Item I, int number, Container C);
-	public Environmental splitBundle(Item I, int size, Container C);
 	public int getMaterialRelativeInt(String s);
 	public int getMaterialCode(String s, boolean exact);
 	public int getResourceCode(String s, boolean exact);
@@ -46,10 +44,7 @@ public interface MaterialLibrary extends CMLibrary
 	public Item makeItemResource(int type);
 	public Item makeItemResource(int type, String subType);
 	public PhysicalAgent makeResource(int myResource, String localeCode, boolean noAnimals, String fullName, String subType);
-	public void addEffectsToResource(Item I);
 	public int getRandomResourceOfMaterial(int material);
-	public boolean rebundle(Item I);
-	public boolean quickDestroy(Item I);
 	public DeadResourceRecord destroyResources(final Room R, final int howMuch, final int finalMaterial, final int finalSubHash, final int otherMaterial, final int finalOtherHash);
 	public int destroyResourcesValue(MOB M, int howMuch, final int finalMaterial, final int finalSubHash, final int otherMaterial, final int otherSubHash);
 	public int destroyResourcesValue(final Room R, final int howMuch, final int finalMaterial, final int finalSubHash, final int otherMaterial, final int otherSubHash);
@@ -69,12 +64,130 @@ public interface MaterialLibrary extends CMLibrary
 	public RawMaterial findFirstResource(MOB E, int resource);
 	public RawMaterial findFirstResource(Room E, String other);
 	public RawMaterial findFirstResource(MOB E, String other);
+
+
+	/**
+	 * Given a bundle (more than weight 1) raw resource item, this
+	 * method will split the item into the given number of parts,
+	 * each being 1 pound.  One of those is then returned.
+	 * The container of the item is also required, for some reason.
+	 *
+	 * @see MaterialLibrary#splitBundle(Item, int, Container)
+	 *
+	 * @param I the resource bundle to split up
+	 * @param number the number of 1 pounders to remove
+	 * @param C the container of the bundle and the 1 pounders
+	 * @return the first one pounder
+	 */
+	public Item unbundle(Item I, int number, Container C);
+
+	/**
+	 * Given a bundle (more than weight 1) raw resource item, this
+	 * method will split the item into two parts, one part of the given
+	 * size, which is returned, and the other being what remains of I.
+	 * The container of the item is also required, for some reason.
+	 *
+	 * @see MaterialLibrary#unbundle(Item, int, Container)
+	 *
+	 * @param I the bundled item
+	 * @param size the amount of the bundle to split out
+	 * @param C the container I is in, and which the split goes into
+	 * @return null, or the split out resource
+	 */
+	public Item splitBundle(Item I, int size, Container C);
+
+	/**
+	 * This great workhorse takes a given raw resource item and
+	 * finds any pairings in its new possessor, and, if found,
+	 * re-bundles with the existing item, and renames it.  The
+	 * passed item is then destroyed.
+	 *
+	 * @see MaterialLibrary#unbundle(Item, int, Container)
+	 * @see MaterialLibrary#rebundle(Item)
+	 * @see MaterialLibrary#splitBundle(Item, int, Container)
+	 *
+	 * @param I the raw material item to rebundle
+	 * @return true if the rebundle happened, false otherwise
+	 */
+	public boolean rebundle(Item I);
+
+	/**
+	 * Given a raw material resource, this method will query for the
+	 * natural effects/properties of that resource type, and add
+	 * them to the given item.
+	 *
+	 * @param I the raw material item
+	 */
+	public void addEffectsToResource(Item I);
+
+	/**
+	 * Removes the given item from its possessor, and then calls
+	 * destroy on the item.  By removing it first, it shortcuts
+	 * some of the more thorough processes that standard item
+	 * destroy goes through, including recovery of stats.
+	 *
+	 * @param I null, or an item to destroy
+	 * @return true if it was destroyed, or false if null
+	 */
+	public boolean quickDestroy(Item I);
+
+	/**
+	 * Given a raw material resource item with particular resource and
+	 * subType and weight/amount, this method will set its name and
+	 * display text as appropriate.
+	 *
+	 * @see MaterialLibrary#makeResourceBetterName(int, String, boolean)
+	 * @see MaterialLibrary#makeResourceSimpleName(int, String)
+	 *
+	 * @param I the raw material item to name
+	 */
 	public void adjustResourceName(Item I);
+
+	/**
+	 * Returns a simplistic name for a raw material item of the given
+	 * resource and subtype.  The name is always broad, like "iron ore".
+	 *
+	 * @see MaterialLibrary#makeResourceBetterName(int, String, boolean)
+	 * @see MaterialLibrary#adjustResourceName(Item)
+	 *
+	 * @param rscCode the resource code
+	 * @param subType "", null, or a subType
+	 * @return a broad name for the resource
+	 */
 	public String makeResourceSimpleName(final int rscCode, String subType);
-	public String makeResourceDescriptiveName(final int rscCode, String subType, final boolean plural);
-	public String genericType(Item I);
+
+	/**
+	 * Returns an appropriate name for an raw material item of the given
+	 * resource and subtype. Differentiates between ores and cloth bolts and
+	 * liquid pools, which is why it is a "better" name.
+	 *
+	 * @see MaterialLibrary#makeResourceSimpleName(int, String)
+	 * @see MaterialLibrary#adjustResourceName(Item)
+	 *
+	 * @param rscCode the resource code
+	 * @param subType null, "" or the subType
+	 * @param plural true to make the name plural (more than 1), or false singular
+	 * @return the better resource item name
+	 */
+	public String makeResourceBetterName(final int rscCode, String subType, final boolean plural);
+
+	/**
+	 * Returns a plural for the type of item given.  For raw resources, it
+	 * returns the material name.
+	 *
+	 * @param I the item to get the general type of
+	 * @return the general type of the item
+	 */
+	public String getGeneralItemType(Item I);
+
+	/**
+	 * Searches through all the locale/room classes to discover whether the given
+	 * resource code appears in any of them as a possible resource.
+	 *
+	 * @param resourceCode the resource code
+	 * @return true if its used somewhere.
+	 */
 	public boolean isResourceCodeRoomMapped(final int resourceCode);
-	public List<Item> getAllFarmables(final int materialType);
 
 	/**
 	 * Returns the number of ticks that the given item, whatever

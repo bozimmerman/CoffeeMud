@@ -240,9 +240,12 @@ public class StdArea implements Area
 		return num;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Enumeration<String> areaBlurbFlags()
 	{
+		if(blurbFlags.size()==0)
+			return EmptyEnumeration.INSTANCE;
 		return new IteratorEnumeration<String>(blurbFlags.keySet().iterator());
 	}
 

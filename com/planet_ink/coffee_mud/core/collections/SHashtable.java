@@ -169,8 +169,11 @@ public class SHashtable<K, F> implements CMap<K, F>, java.io.Serializable
 		return H.containsValue(arg0);
 	}
 
+	@SuppressWarnings("unchecked")
 	public Enumeration<F> elements()
 	{
+		if(size()==0)
+			return EmptyEnumeration.INSTANCE;
 		return new IteratorEnumeration<F>(H.values().iterator());
 	}
 

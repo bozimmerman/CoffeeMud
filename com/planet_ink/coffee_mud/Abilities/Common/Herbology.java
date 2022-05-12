@@ -104,7 +104,7 @@ public class Herbology extends CommonSkill
 					while(found != null)
 					{
 						if(found.phyStats().weight()>1)
-							found=(Item)CMLib.materials().unbundle(found, 1, null);
+							found=CMLib.materials().unbundle(found, 1, null);
 						String herb=null;
 						while((herbList.size()>2)&&((herb==null)||(herb.trim().length()==0)))
 							herb=herbList.get(CMLib.dice().roll(1,herbList.size(),-1)).trim().toLowerCase();
@@ -200,7 +200,7 @@ public class Herbology extends CommonSkill
 			return false;
 		}
 		if(isLimitedToOne() && target.basePhyStats().weight()>1)
-			target=(Item)CMLib.materials().unbundle(target, 1, null);
+			target=CMLib.materials().unbundle(target, 1, null);
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		verb=L("studying @x1",target.name());

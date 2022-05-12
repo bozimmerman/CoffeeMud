@@ -60,6 +60,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	protected final static List<String> ITEM_IGNORE_STATS = Arrays.asList(GenericBuilder.GenItemCode.getAllCodeNames());
 	protected final static List<String> MOB_IGNORE_STATS =new XVector<String>(Arrays.asList(GenericBuilder.GenMOBCode.getAllCodeNames())).append("GENDER");
 
+	protected Map<Integer,List<Item>> farmablesCache = new Hashtable<Integer,List<Item>>();
+
+
 	protected static enum MQLSpecialFromSet
 	{
 		AREAS,
@@ -2183,7 +2186,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					else
 					if("farmables".equals(recipe))
 					{
-						final List<Item> coll=CMLib.materials().getAllFarmables(material & RawMaterial.MATERIAL_MASK);
+						final List<Item> coll=getAllFarmables(material & RawMaterial.MATERIAL_MASK);
 						if(coll.size()>0)
 						{
 							final Item I=(Item)coll.get(CMLib.dice().roll(1, coll.size(), -1)).copyOf();
@@ -2259,7 +2262,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				else
 				if("farmables".equals(recipe))
 				{
-					for(final Item I : CMLib.materials().getAllFarmables(material))
+					for(final Item I : getAllFarmables(material))
 					{
 						final Item I2=(Item)I.copyOf();
 						if(I2.numBehaviors()>0 || I2.numScripts()>0)
@@ -7098,4 +7101,72 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return changeMade;
 	}
 
+	protected List<Item> getAllFarmables(final int materialType)
+	{
+		final Integer mat=Integer.valueOf(materialType);
+		synchronized(farmablesCache)
+		{
+			if(farmablesCache.containsKey(mat))
+				return farmablesCache.get(mat);
+		}
+		final List<Item> coll = new ArrayList<Item>();
+		final Collection<Integer> useThese;
+		if(materialType > 0)
+			useThese = RawMaterial.CODES.COMPOSE_RESOURCES(materialType);
+		else
+		if(materialType == 0)
+			useThese = Arrays.asList(new Integer[0]);
+		else
+		{
+			useThese = new ArrayList<Integer>(RawMaterial.CODES.ALL().length);
+			for(final int r : RawMaterial.CODES.ALL())
+			{
+				if(r != 0)
+					useThese.add(Integer.valueOf(r));
+			}
+		}
+		for(final Integer rsc : useThese)
+		{
+			for(final Enumeration<Room> e=CMClass.locales();e.hasMoreElements();)
+			{
+				final Room R=e.nextElement();
+				if(!(R instanceof GridLocale))
+				{
+					if((R.resourceChoices()!=null)&&(R.resourceChoices().contains(rsc)))
+					{
+						final Physical P=CMLib.materials().makeResource(rsc.intValue(),Integer.toString(R.domainType()),false,null, "");
+						if(P instanceof Item)
+						{
+							final Item I=(Item)P;
+							if((I.numBehaviors()>0)||(I.numScripts()>0))
+								CMLib.threads().deleteAllTicks(I);
+							coll.add(I);
+						}
+						else
+						if(P instanceof MOB)
+						{
+							final MOB M=(MOB)P;
+							final Race raceR=M.baseCharStats().getMyRace();
+							if(raceR.myResources()!=null)
+							{
+								for(final RawMaterial I : raceR.myResources())
+								{
+									final Item I2=(Item)I.copyOf();
+									if((I2.numBehaviors()>0)||(I2.numScripts()>0))
+										CMLib.threads().deleteAllTicks(I2);
+									coll.add(I2);
+								}
+							}
+						}
+						break;
+					}
+				}
+			}
+		}
+		synchronized(farmablesCache)
+		{
+			farmablesCache.put(mat, new ReadOnlyVector<Item>(coll));
+		}
+		return coll;
+	}
 }

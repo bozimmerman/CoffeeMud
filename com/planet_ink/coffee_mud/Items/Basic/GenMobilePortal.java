@@ -64,7 +64,9 @@ public class GenMobilePortal extends GenPortal implements Rideable, Exit
 				if(destR==null)
 				{
 					msg.source().tell(L("Something has gone wrong!"));
-					Log.errOut("GenMobilePortal","Destination not found: "+readableText());
+					final String roomStr = CMLib.map().getApproximateExtendedRoomID(R);
+					final String itemStr = name()+"@"+roomStr;
+					Log.errOut("GenMobilePortal","Destination not found: "+readableText()+" on "+itemStr);
 					return;
 				}
 				final List<Item> choices=new ArrayList<Item>();

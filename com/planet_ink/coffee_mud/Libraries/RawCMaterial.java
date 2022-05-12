@@ -43,8 +43,6 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		return "RawCMaterial";
 	}
 
-	protected Map<Integer,List<Item>> farmablesCache = new Hashtable<Integer,List<Item>>();
-
 	@Override
 	public int getRandomResourceOfMaterial(int material)
 	{
@@ -95,6 +93,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		final String subType=(item instanceof RawMaterial)?((RawMaterial)item).getSubType():"";
 		if(subType.equals(RawMaterial.ResourceSubType.SEED.name()))
 			return false;
+		final CMFlagLibrary flags = CMLib.flags();
 		if(owner instanceof Room)
 		{
 			final Room R=(Room)owner;
@@ -104,11 +103,11 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				if((I instanceof RawMaterial)
 				&&(I.material()==item.material())
 				&&(I!=item)
-				&&(!CMLib.flags().isOnFire(I))
-				&&(!CMLib.flags().isEnchanted(I))
 				&&(I.container()==item.container())
 				&&(((RawMaterial)I).getSubType().equals(subType))
-				&&(I.rawSecretIdentity().equals(item.rawSecretIdentity())))
+				&&(I.rawSecretIdentity().equals(item.rawSecretIdentity()))
+				&&(!flags.isOnFire(I))
+				&&(!flags.isEnchanted(I)))
 					found.add(I);
 			}
 		}
@@ -122,11 +121,11 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				if((I instanceof RawMaterial)
 				&&(I.material()==item.material())
 				&&(I!=item)
-				&&(!CMLib.flags().isOnFire(I))
-				&&(!CMLib.flags().isEnchanted(I))
 				&&(I.container()==item.container())
 				&&(((RawMaterial)I).getSubType().equals(subType))
-				&&(I.rawSecretIdentity().equals(item.rawSecretIdentity())))
+				&&(I.rawSecretIdentity().equals(item.rawSecretIdentity()))
+				&&(!flags.isOnFire(I))
+				&&(!flags.isEnchanted(I)))
 					found.add(I);
 			}
 		}
@@ -203,14 +202,18 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		}
 		for(int i=0;i<found.size();i++)
 			((RawMaterial)found.get(i)).quickDestroy();
-		if((owner instanceof Room)&&(((Room)owner).numItems()>0)&&(((Room)owner).getItem(((Room)owner).numItems()-1)!=bundle))
+		if((owner instanceof Room)
+		&&(((Room)owner).numItems()>0)
+		&&(((Room)owner).getItem(((Room)owner).numItems()-1)!=bundle))
 		{
 			final Container C=bundle.container();
 			((Room)owner).delItem(bundle);
 			((Room)owner).moveItemTo(bundle,ItemPossessor.Expire.Player_Drop);
 			bundle.setContainer(C);
 		}
-		if((owner instanceof MOB)&&(((MOB)owner).numItems()>0)&&(((MOB)owner).getItem(((MOB)owner).numItems()-1)!=bundle))
+		if((owner instanceof MOB)
+		&&(((MOB)owner).numItems()>0)
+		&&(((MOB)owner).getItem(((MOB)owner).numItems()-1)!=bundle))
 		{
 			final Container C=bundle.container();
 			((MOB)owner).delItem(bundle);
@@ -224,24 +227,24 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public Environmental splitBundle(final Item I, final int size, final Container C)
+	public Item splitBundle(final Item I, final int size, final Container C)
 	{
-		final List<Environmental> set=disBundle(I,1,size,C);
+		final List<Item> set=disBundle(I,1,size,C);
 		if((set==null)||(set.size()==0))
 			return null;
 		return set.get(0);
 	}
 
 	@Override
-	public Environmental unbundle(final Item I, final int number, final Container C)
+	public Item unbundle(final Item I, final int number, final Container C)
 	{
-		final List<Environmental> set=disBundle(I,number,1,C);
+		final List<Item> set=disBundle(I,number,1,C);
 		if((set==null)||(set.size()==0))
 			return null;
 		return set.get(0);
 	}
 
-	protected List<Environmental> disBundle(Item I, int number, final int bundleSize, final Container C)
+	protected List<Item> disBundle(Item I, int number, final int bundleSize, final Container C)
 	{
 		if((I==null)||(I.amDestroyed())||(bundleSize<1))
 			return null;
@@ -259,8 +262,8 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			final Environmental owner=I.owner();
 			final List<Item> parts=((PackagedItems)I).unPackage(number);
 			if(parts.size()==0)
-				return new XVector<Environmental>(I);
-			final List<Environmental> bundle=new XVector<Environmental>();
+				return new XVector<Item>(I);
+			final List<Item> bundle=new XVector<Item>();
 			for(int p=0;p<parts.size();p+=bundleSize)
 			{
 				I=parts.get(p);
@@ -324,15 +327,15 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				int loseNourishment=0;
 				int loseThirstHeld=0;
 				int loseThirstRemain=0;
-				Physical E=null;
-				final List<Environmental> bundle=new XVector<Environmental>();
+				Item E=null;
+				final List<Item> bundle=new XVector<Item>();
 				for(int x=0;x<number;x+=bundleSize)
 				{
-					E=makeResource(I.material(),null,true,I.rawSecretIdentity(), ((RawMaterial)I).getSubType());
+					E=makeItemResource(I.material(),null,true,I.rawSecretIdentity(), ((RawMaterial)I).getSubType());
 					if(E instanceof Item)
 					{
-						((Item)E).setContainer(C);
-						loseValue+=((Item)E).baseGoldValue();
+						E.setContainer(C);
+						loseValue+=E.baseGoldValue();
 						for(final Enumeration<Ability> a=I.effects();a.hasMoreElements();)
 						{
 							final Ability A=a.nextElement();
@@ -344,36 +347,44 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 								E.addNonUninvokableEffect(A2);
 							}
 						}
-						if((E instanceof RawMaterial)&&(I instanceof RawMaterial))
+						if((E instanceof RawMaterial)
+						&&(I instanceof RawMaterial))
 							((RawMaterial)E).setSubType(((RawMaterial)I).getSubType());
-						if((E instanceof Decayable)&&(I instanceof Decayable))
+						if((E instanceof Decayable)
+						&&(I instanceof Decayable))
 							((Decayable)E).setDecayTime(((Decayable)I).decayTime());
-						if((E instanceof Food)&&(I instanceof Food))
+						if((E instanceof Food)
+						&&(I instanceof Food))
 							loseNourishment+=((Food)E).nourishment();
-						if((E instanceof Drink)&&(I instanceof Drink))
+						if((E instanceof Drink)
+						&&(I instanceof Drink))
 						{
 							loseThirstHeld+=((Drink)E).liquidHeld();
 							loseThirstRemain+=((Drink)E).liquidRemaining();
 						}
-						if((rott!=null)&&(!rott.canBeUninvoked())&&(!CMSecurity.isDisabled(DisFlag.FOODROT)))
+						if((rott!=null)
+						&&(!rott.canBeUninvoked())
+						&&(!CMSecurity.isDisabled(DisFlag.FOODROT)))
 							E.addNonUninvokableEffect((Ability)rott.copyOf());
-						if((purt!=null)&&(!purt.canBeUninvoked())&&(!CMSecurity.isDisabled(DisFlag.FOODROT)))
+						if((purt!=null)
+						&&(!purt.canBeUninvoked())
+						&&(!CMSecurity.isDisabled(DisFlag.FOODROT)))
 							E.addNonUninvokableEffect((Ability)purt.copyOf());
 						if(bundleSize>1)
 						{
-							((Item)E).basePhyStats().setWeight(bundleSize);
-							((Item)E).phyStats().setWeight(bundleSize);
-							adjustResourceName((Item)E);
+							E.basePhyStats().setWeight(bundleSize);
+							E.phyStats().setWeight(bundleSize);
+							adjustResourceName(E);
 						}
 						if(owner instanceof Room)
 						{
-							((Room)owner).addItem((Item)E,ItemPossessor.Expire.Player_Drop);
+							((Room)owner).addItem(E,ItemPossessor.Expire.Player_Drop);
 							bundle.add(E);
 						}
 						else
 						if(owner instanceof MOB)
 						{
-							((MOB)owner).addItem((Item)E);
+							((MOB)owner).addItem(E);
 							bundle.add(E);
 						}
 					}
@@ -423,7 +434,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				return bundle;
 			}
 			else
-				return new XVector<Environmental>(I);
+				return new XVector<Item>(I);
 		}
 		return null;
 	}
@@ -497,14 +508,132 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		}
 	}
 
-	@Override
-	public PhysicalAgent makeResource(final int myResource, final String localeCode, final boolean noAnimals, final String fullName, final String subType)
+	protected MOB makeMOBResource(final int myResource)
 	{
 		if(myResource<0)
 			return null;
-		int material=(myResource&RawMaterial.MATERIAL_MASK);
+		switch(myResource)
+		{
+		case RawMaterial.RESOURCE_MUTTON:
+		case RawMaterial.RESOURCE_WOOL:
+			return CMClass.getMOB("Sheep");
+		case RawMaterial.RESOURCE_LEATHER:
+			switch(CMLib.dice().roll(1,10,0))
+			{
+			case 1:
+			case 2:
+			case 3:
+				return CMClass.getMOB("Cow");
+			case 4:
+				return CMClass.getMOB("Bull");
+			case 5:
+			case 6:
+			case 7:
+				return CMClass.getMOB("Doe");
+			case 8:
+			case 9:
+			case 10:
+				return CMClass.getMOB("Buck");
+			}
+			break;
+		case RawMaterial.RESOURCE_HIDE:
+			switch(CMLib.dice().roll(1,10,0))
+			{
+			case 1:
+			case 2:
+				return CMClass.getMOB("Gorilla");
+			case 3:
+				return CMClass.getMOB("Lion");
+			case 4:
+				return CMClass.getMOB("Cheetah");
+			case 5:
+			case 6:
+				return CMClass.getMOB("Ape");
+			case 7:
+			case 8:
+				return CMClass.getMOB("Fox");
+			case 9:
+			case 10:
+				return CMClass.getMOB("Monkey");
+			}
+			break;
+		case RawMaterial.RESOURCE_PORK:
+			return CMClass.getMOB("Pig");
+		case RawMaterial.RESOURCE_FUR:
+		case RawMaterial.RESOURCE_MEAT:
+			switch(CMLib.dice().roll(1,10,0))
+			{
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+				return CMClass.getMOB("Wolf");
+			case 5:
+			case 6:
+			case 7:
+				return CMClass.getMOB("Buffalo");
+			case 8:
+			case 9:
+				return CMClass.getMOB("BrownBear");
+			case 10:
+				return CMClass.getMOB("BlackBear");
+			}
+			break;
+		case RawMaterial.RESOURCE_SCALES:
+			switch(CMLib.dice().roll(1,10,0))
+			{
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+				return CMClass.getMOB("Lizard");
+			case 5:
+			case 6:
+			case 7:
+				return CMClass.getMOB("GardenSnake");
+			case 8:
+			case 9:
+				return CMClass.getMOB("Cobra");
+			case 10:
+				return CMClass.getMOB("Python");
+			}
+			break;
+		case RawMaterial.RESOURCE_POULTRY:
+		case RawMaterial.RESOURCE_EGGS:
+			return CMClass.getMOB("Chicken");
+		case RawMaterial.RESOURCE_BEEF:
+			switch(CMLib.dice().roll(1,5,0))
+			{
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+				return CMClass.getMOB("Cow");
+			case 5:
+				return CMClass.getMOB("Bull");
+			}
+			break;
+		case RawMaterial.RESOURCE_FEATHERS:
+			switch(CMLib.dice().roll(1,4,0))
+			{
+			case 1:
+				return CMClass.getMOB("WildEagle");
+			case 2:
+				return CMClass.getMOB("Falcon");
+			case 3:
+				return CMClass.getMOB("Chicken");
+			case 4:
+				return CMClass.getMOB("Parakeet");
+			}
+			break;
+		}
+		return null;
+	}
 
+	protected Item makeItemResource(final int myResource, final String localeCode, final boolean noAnimals, final String fullName, final String subType)
+	{
 		RawMaterial I=null;
+		int material=(myResource&RawMaterial.MATERIAL_MASK);
 		if(!noAnimals)
 		{
 			if((myResource==RawMaterial.RESOURCE_WOOL)
@@ -515,121 +644,6 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			   material=RawMaterial.MATERIAL_LEATHER;
 			if(CMParms.contains(RawMaterial.CODES.FISHES(), myResource))
 				material=RawMaterial.MATERIAL_VEGETATION;
-			switch(myResource)
-			{
-			case RawMaterial.RESOURCE_MUTTON:
-			case RawMaterial.RESOURCE_WOOL:
-				return CMClass.getMOB("Sheep");
-			case RawMaterial.RESOURCE_LEATHER:
-				switch(CMLib.dice().roll(1,10,0))
-				{
-				case 1:
-				case 2:
-				case 3:
-					return CMClass.getMOB("Cow");
-				case 4:
-					return CMClass.getMOB("Bull");
-				case 5:
-				case 6:
-				case 7:
-					return CMClass.getMOB("Doe");
-				case 8:
-				case 9:
-				case 10:
-					return CMClass.getMOB("Buck");
-				}
-				break;
-			case RawMaterial.RESOURCE_HIDE:
-				switch(CMLib.dice().roll(1,10,0))
-				{
-				case 1:
-				case 2:
-					return CMClass.getMOB("Gorilla");
-				case 3:
-					return CMClass.getMOB("Lion");
-				case 4:
-					return CMClass.getMOB("Cheetah");
-				case 5:
-				case 6:
-					return CMClass.getMOB("Ape");
-				case 7:
-				case 8:
-					return CMClass.getMOB("Fox");
-				case 9:
-				case 10:
-					return CMClass.getMOB("Monkey");
-				}
-				break;
-			case RawMaterial.RESOURCE_PORK:
-				return CMClass.getMOB("Pig");
-			case RawMaterial.RESOURCE_FUR:
-			case RawMaterial.RESOURCE_MEAT:
-				switch(CMLib.dice().roll(1,10,0))
-				{
-				case 1:
-				case 2:
-				case 3:
-				case 4:
-					return CMClass.getMOB("Wolf");
-				case 5:
-				case 6:
-				case 7:
-					return CMClass.getMOB("Buffalo");
-				case 8:
-				case 9:
-					return CMClass.getMOB("BrownBear");
-				case 10:
-					return CMClass.getMOB("BlackBear");
-				}
-				break;
-			case RawMaterial.RESOURCE_SCALES:
-				switch(CMLib.dice().roll(1,10,0))
-				{
-				case 1:
-				case 2:
-				case 3:
-				case 4:
-					return CMClass.getMOB("Lizard");
-				case 5:
-				case 6:
-				case 7:
-					return CMClass.getMOB("GardenSnake");
-				case 8:
-				case 9:
-					return CMClass.getMOB("Cobra");
-				case 10:
-					return CMClass.getMOB("Python");
-				}
-				break;
-			case RawMaterial.RESOURCE_POULTRY:
-			case RawMaterial.RESOURCE_EGGS:
-				return CMClass.getMOB("Chicken");
-			case RawMaterial.RESOURCE_BEEF:
-				switch(CMLib.dice().roll(1,5,0))
-				{
-				case 1:
-				case 2:
-				case 3:
-				case 4:
-					return CMClass.getMOB("Cow");
-				case 5:
-					return CMClass.getMOB("Bull");
-				}
-				break;
-			case RawMaterial.RESOURCE_FEATHERS:
-				switch(CMLib.dice().roll(1,4,0))
-				{
-				case 1:
-					return CMClass.getMOB("WildEagle");
-				case 2:
-					return CMClass.getMOB("Falcon");
-				case 3:
-					return CMClass.getMOB("Chicken");
-				case 4:
-					return CMClass.getMOB("Parakeet");
-				}
-				break;
-			}
 		}
 		switch(material)
 		{
@@ -711,7 +725,21 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public String genericType(final Item I)
+	public PhysicalAgent makeResource(final int myResource, final String localeCode, final boolean noAnimals, final String fullName, final String subType)
+	{
+		if(myResource<0)
+			return null;
+		if(!noAnimals)
+		{
+			final MOB M = makeMOBResource(myResource);
+			if(M!=null)
+				return M;
+		}
+		return this.makeItemResource(myResource, localeCode, noAnimals, fullName, subType);
+	}
+
+	@Override
+	public String getGeneralItemType(final Item I)
 	{
 		if(I instanceof RawMaterial)
 			return CMStrings.capitalizeAndLower(getMaterialDesc(I.material()));
@@ -747,7 +775,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public String makeResourceDescriptiveName(final int rscCode, String subType, final boolean plural)
+	public String makeResourceBetterName(final int rscCode, String subType, final boolean plural)
 	{
 		String name=RawMaterial.CODES.NAME(rscCode).toLowerCase();
 		final int iMat = rscCode&RawMaterial.MATERIAL_MASK;
@@ -994,17 +1022,14 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				{
 					if(I.basePhyStats().weight()>1)
 					{
-						final List<Environmental> set=disBundle(I,1,1,C);
+						final List<Item> set=disBundle(I,1,1,C);
 						if((set==null)||(set.size()==0))
 							continue;
-						final Environmental E=set.get(0);
-						if(E instanceof Item)
-						{
-							lostValue+=((Item)E).value();
-							lostProps.addAll(((Item)E).effects());
-							lostProps.addAll(((Item)E).behaviors());
-						}
-						E.destroy();
+						final Item uI=set.get(0);
+						lostValue+=uI.value();
+						lostProps.addAll(uI.effects());
+						lostProps.addAll(uI.behaviors());
+						uI.destroy();
 					}
 					else
 					{
@@ -1029,20 +1054,17 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				{
 					if(I.basePhyStats().weight()>howMuch)
 					{
-						final List<Environmental> set=disBundle(I,1,howMuch,C);
+						final List<Item> set=disBundle(I,1,howMuch,C);
 						if((set==null)||(set.size()==0))
 							continue;
-						final Environmental E=set.get(0);
+						final Item uI=set.get(0);
 						lostAmt+=howMuch;
 						resCode=I.material();
-						if(E instanceof Item)
-						{
-							lostValue+=(((Item)E).value());
-							subType=rI.getSubType();
-							lostProps.addAll(((Item)E).effects());
-							lostProps.addAll(((Item)E).behaviors());
-						}
-						E.destroy();
+						lostValue+=(uI.value());
+						subType=rI.getSubType();
+						lostProps.addAll(uI.effects());
+						lostProps.addAll(uI.behaviors());
+						uI.destroy();
 						howMuch=0;
 					}
 					else
@@ -1314,98 +1336,13 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		return false;
 	}
 
-	@Override
-	public List<Item> getAllFarmables(final int materialType)
-	{
-		final Integer mat=Integer.valueOf(materialType);
-		synchronized(farmablesCache)
-		{
-			if(farmablesCache.containsKey(mat))
-				return farmablesCache.get(mat);
-		}
-		final List<Item> coll = new ArrayList<Item>();
-		final Collection<Integer> useThese;
-		if(materialType > 0)
-			useThese = RawMaterial.CODES.COMPOSE_RESOURCES(materialType);
-		else
-		if(materialType == 0)
-			useThese = Arrays.asList(new Integer[0]);
-		else
-		{
-			useThese = new ArrayList<Integer>(RawMaterial.CODES.ALL().length);
-			for(final int r : RawMaterial.CODES.ALL())
-			{
-				if(r != 0)
-					useThese.add(Integer.valueOf(r));
-			}
-		}
-		for(final Integer rsc : useThese)
-		{
-			for(final Enumeration<Room> e=CMClass.locales();e.hasMoreElements();)
-			{
-				final Room R=e.nextElement();
-				if(!(R instanceof GridLocale))
-				{
-					if((R.resourceChoices()!=null)&&(R.resourceChoices().contains(rsc)))
-					{
-						final Physical P=CMLib.materials().makeResource(rsc.intValue(),Integer.toString(R.domainType()),false,null, "");
-						if(P instanceof Item)
-						{
-							final Item I=(Item)P;
-							if((I.numBehaviors()>0)||(I.numScripts()>0))
-								CMLib.threads().deleteAllTicks(I);
-							coll.add(I);
-						}
-						else
-						if(P instanceof MOB)
-						{
-							final MOB M=(MOB)P;
-							final Race raceR=M.baseCharStats().getMyRace();
-							if(raceR.myResources()!=null)
-							{
-								for(final RawMaterial I : raceR.myResources())
-								{
-									final Item I2=(Item)I.copyOf();
-									if((I2.numBehaviors()>0)||(I2.numScripts()>0))
-										CMLib.threads().deleteAllTicks(I2);
-									coll.add(I2);
-								}
-							}
-						}
-						break;
-					}
-				}
-			}
-		}
-		synchronized(farmablesCache)
-		{
-			farmablesCache.put(mat, new ReadOnlyVector<Item>(coll));
-		}
-		return coll;
-	}
-
-	protected List<Item> getAllItems(final Room R)
-	{
-		final List<Item> V=new Vector<Item>();
-		Item I=null;
-		if(R!=null)
-		{
-			for(int r=0;r<R.numItems();r++)
-			{
-				I=R.getItem(r);
-				if(I!=null)
-					V.add(I);
-			}
-		}
-		return V;
-	}
-
 	protected List<Item> getSomeRawMaterial(final Room R, final int material1, final int subTypeHash1, final int material2, final int subTypeHash2)
 	{
-		final List<Item> V=new Vector<Item>();
+		final List<Item> V;
 		Item I=null;
 		if(R!=null)
 		{
+			V=new ArrayList<Item>(R.numItems());
 			for(int r=0;r<R.numItems();r++)
 			{
 				I=R.getItem(r);
@@ -1425,15 +1362,18 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				}
 			}
 		}
+		else
+			V=new ArrayList<Item>(1);
 		return V;
 	}
 
 	protected List<Item> getAllRawMaterial(final Room R, final int material1, final int material2)
 	{
-		final List<Item> V=new Vector<Item>();
+		final List<Item> V;
 		Item I=null;
 		if(R!=null)
 		{
+			V=new ArrayList<Item>(R.numItems());
 			for(int r=0;r<R.numItems();r++)
 			{
 				I=R.getItem(r);
@@ -1450,22 +1390,27 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				}
 			}
 		}
+		else
+			V=new ArrayList<Item>(1);
 		return V;
 	}
 
-	protected List<Item> getAllItems(final MOB M)
+	protected List<Item> getAllItems(final ItemPossessor P)
 	{
-		final List<Item> V=new Vector<Item>();
+		final List<Item> V;
 		Item I=null;
-		if(M!=null)
+		if(P!=null)
 		{
-			for(int i=0;i<M.numItems();i++)
+			V=new ArrayList<Item>(P.numItems());
+			for(int i=0;i<P.numItems();i++)
 			{
-				I=M.getItem(i);
+				I=P.getItem(i);
 				if(I!=null)
 					V.add(I);
 			}
 		}
+		else
+			V=new ArrayList<Item>(1);
 		return V;
 	}
 

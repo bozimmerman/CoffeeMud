@@ -114,13 +114,19 @@ public class SLinkedHashtable<K, F> implements java.util.Map<K, F>, java.io.Seri
 		return H.containsValue(arg0);
 	}
 
+	@SuppressWarnings("unchecked")
 	public synchronized Enumeration<F> elements()
 	{
+		if(size()==0)
+			return EmptyEnumeration.INSTANCE;
 		return new IteratorEnumeration<F>(H.values().iterator());
 	}
 
+	@SuppressWarnings("unchecked")
 	public synchronized Enumeration<Map.Entry<K, F>> entries()
 	{
+		if(size()==0)
+			return EmptyEnumeration.INSTANCE;
 		return new IteratorEnumeration<Map.Entry<K, F>>(H.entrySet().iterator());
 	}
 

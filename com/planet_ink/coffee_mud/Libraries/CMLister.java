@@ -230,7 +230,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 			I=(Item)things.get(v);
 			if(CMLib.flags().canBeSeenBy(I,viewerM)&&(I.displayText(viewerM).length()>0))
 			{
-				name=CMLib.materials().genericType(I).toLowerCase();
+				name=CMLib.materials().getGeneralItemType(I).toLowerCase();
 				if(name.startsWith("item"))
 				{
 					if(!otherItemsHere)
