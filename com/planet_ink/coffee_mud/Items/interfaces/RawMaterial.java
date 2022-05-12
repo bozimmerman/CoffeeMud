@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeSet;
 import java.util.Vector;
 
@@ -942,11 +943,11 @@ public interface RawMaterial extends Item
 				final Hashtable<String, Integer> previousIndexes = new Hashtable<String, Integer>();
 				for (int ndex = 0; ndex < descs.length; ndex++)
 					previousIndexes.put(descs[ndex], Integer.valueOf(ndex));
-				allCodesSortedByName = new int[allCodes.length];
+				allCodesByName = new int[allCodes.length];
 				for (int ndex = 0; ndex < sortedNames.length; ndex++)
 				{
 					final int previousIndex = previousIndexes.get(sortedNames[ndex]).intValue();
-					allCodesSortedByName[ndex] = allCodes[previousIndex];
+					allCodesByName[ndex] = allCodes[previousIndex];
 				}
 			}
 		}
@@ -991,19 +992,20 @@ public interface RawMaterial extends Item
 			instance();
 		}
 
-		private static CODES[]				insts					= new CODES[256];
+		private static CODES[] insts = new CODES[256];
 
-		private int[]						allCodes				= new int[0];
-		private int[]						allCodesSortedByName	= new int[0];
-		private int[]						berries					= new int[0];
-		private int[]						woodies					= new int[0];
-		private int[]						fishes					= new int[0];
-		private int[][]						data					= new int[0][0];
-		private String[]					smells					= new String[0];
-		private String[]					descs					= new String[0];
-		private String[]					effects					= new String[0];
-		private Ability[][]					effectAs				= new Ability[0][];
-		private PairList<Integer, Double>[]	buckets					= null;
+		private int[]		allCodes		= new int[0];
+		private int[]		allCodesByName	= new int[0];
+		private int[]		berries			= new int[0];
+		private int[]		woodies			= new int[0];
+		private int[]		fishes			= new int[0];
+		private int[][]		data			= new int[0][0];
+		private String[]	smells			= new String[0];
+		private String[]	descs			= new String[0];
+		private String[]	effects			= new String[0];
+		private Ability[][]	effectAs		= new Ability[0][];
+
+		private PairList<Integer, Double>[]	buckets	= null;
 
 		/**
 		 * Returns an array of the numeric codes for the berry resources
@@ -1092,7 +1094,7 @@ public interface RawMaterial extends Item
 		 */
 		public static int[] ALL_SBN()
 		{
-			return c().allCodesSortedByName;
+			return c().allCodesByName;
 		}
 
 		/**
@@ -1537,7 +1539,7 @@ public interface RawMaterial extends Item
 		 * @return the value-sorted list of resources and values
 		 */
 		@SuppressWarnings("unchecked")
-		public PairList<Integer, Double> getValueSortedBucket(int material)
+		public PairList<Integer, Double> getValueSortedResources(int material)
 		{
 			material = (material & RawMaterial.MATERIAL_MASK) >> 8;
 			final int numMaterials = Material.values().length;

@@ -533,7 +533,7 @@ public interface LegalLibrary extends CMLibrary
 	 * Either way, this may cause a player to be loaded permanently.
 	 *
 	 * @param record the property record
-	 * @return
+	 * @return the property owner mob
 	 */
 	public MOB getPropertyOwner(PrivateProperty record);
 

@@ -67,7 +67,7 @@ public interface LanguageLibrary extends CMLibrary
 	 * locale before a lot of those strings get loaded by
 	 * Java is probably a problem.
 	 *
-	 * @param str the static string
+	 * @param item the static string
 	 * @return the translated static string
 	 */
 	public String sessionTranslation(String item);

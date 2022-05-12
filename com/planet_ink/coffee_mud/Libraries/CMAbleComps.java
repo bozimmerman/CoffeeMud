@@ -311,12 +311,12 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		comp.setAmount(CMath.s_int(s[3]));
 		final String compType=s[4];
 		final String subType=s[5];
-		int depth=CMLib.materials().getResourceCode(compType,false);
+		int depth=CMLib.materials().findResourceCode(compType,false);
 		if(depth>=0)
 			comp.setType(AbilityComponent.CompType.RESOURCE, Integer.valueOf(depth), subType);
 		else
 		{
-			depth=CMLib.materials().getMaterialCode(compType,false);
+			depth=CMLib.materials().findMaterialCode(compType,false);
 			if(depth>=0)
 				comp.setType(AbilityComponent.CompType.MATERIAL, Integer.valueOf(depth), subType);
 			else
@@ -618,12 +618,12 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 					subType=rsc.substring(y+1,rsc.length()-1);
 				}
 			}
-			depth=CMLib.materials().getResourceCode(compType,false);
+			depth=CMLib.materials().findResourceCode(compType,false);
 			if(depth>=0)
 				build.setType(AbilityComponent.CompType.RESOURCE, Long.valueOf(depth), subType);
 			else
 			{
-				depth=CMLib.materials().getMaterialCode(compType,false);
+				depth=CMLib.materials().findMaterialCode(compType,false);
 				if(depth>=0)
 					build.setType(AbilityComponent.CompType.MATERIAL, Long.valueOf(depth), subType);
 				else

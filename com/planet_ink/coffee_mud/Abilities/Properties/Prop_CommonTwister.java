@@ -157,10 +157,10 @@ public class Prop_CommonTwister extends Property
 					newMatCode=randomResource;
 				else
 				{
-					newMatCode=CMLib.materials().getResourceCode(newmat,false);
+					newMatCode=CMLib.materials().findResourceCode(newmat,false);
 					if(newMatCode<0)
 					{
-						newMatCode=CMLib.materials().getMaterialCode(newmat,false);
+						newMatCode=CMLib.materials().findMaterialCode(newmat,false);
 						if(newMatCode>0)
 							newMatCode=CMLib.materials().getRandomResourceOfMaterial(newMatCode);
 					}

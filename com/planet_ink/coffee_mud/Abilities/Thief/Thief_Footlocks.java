@@ -157,10 +157,10 @@ public class Thief_Footlocks extends ThiefSkill
 			if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
 				return Ability.QUALITY_INDIFFERENT;
 			final Item cloth=CMLib.materials().findMostOfMaterial(mob,RawMaterial.MATERIAL_CLOTH);
-			if((cloth==null)||CMLib.materials().findNumberOfResource(mob,(RawMaterial)cloth)<1)
+			if((cloth==null)||CMLib.materials().findNumberOfResourceLike(mob,(RawMaterial)cloth)<1)
 				return Ability.QUALITY_INDIFFERENT;
 			final Item wood=CMLib.materials().findMostOfMaterial(mob,RawMaterial.MATERIAL_WOODEN);
-			if((wood==null)||CMLib.materials().findNumberOfResource(mob,(RawMaterial)wood)<2)
+			if((wood==null)||CMLib.materials().findNumberOfResourceLike(mob,(RawMaterial)wood)<2)
 				return Ability.QUALITY_INDIFFERENT;
 		}
 		return super.castingQuality(mob,target);
@@ -185,13 +185,13 @@ public class Thief_Footlocks extends ThiefSkill
 		if(!auto)
 		{
 			cloth=CMLib.materials().findMostOfMaterial(mob,RawMaterial.MATERIAL_CLOTH);
-			if((cloth==null)||CMLib.materials().findNumberOfResource(mob,cloth)<1)
+			if((cloth==null)||CMLib.materials().findNumberOfResourceLike(mob,cloth)<1)
 			{
 				mob.tell(L("You need a pound of cloth to use this skill."));
 				return false;
 			}
 			wood=CMLib.materials().findMostOfMaterial(mob,RawMaterial.MATERIAL_WOODEN);
-			if((wood==null)||CMLib.materials().findNumberOfResource(mob,wood)<2)
+			if((wood==null)||CMLib.materials().findNumberOfResourceLike(mob,wood)<2)
 			{
 				mob.tell(L("You need two pounds of wood to use this skill."));
 				return false;

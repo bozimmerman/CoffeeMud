@@ -75,7 +75,7 @@ public interface MoneyLibrary extends CMLibrary
 	public void giveSomeoneMoney(MOB recipient, String currency, double absoluteValue);
 	public void giveSomeoneMoney(MOB banker, MOB customer, double absoluteValue);
 	public void giveSomeoneMoney(MOB banker, MOB customer, String currency, double absoluteValue);
-	public void bankLedger(String bankName, String owner, String explanation);
+	public void addToBankLedger(String bankName, String owner, String explanation);
 	public Set<String> getBankAccountChains(final String owner);
 	public Pair<String,Double> getBankBalance(final String bankName, final String owner, final String optionalCurrency);
 	public boolean modifyBankGold(String bankName,  String owner, String explanation, String currency, double absoluteAmount);

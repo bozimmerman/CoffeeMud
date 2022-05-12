@@ -323,7 +323,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 			resource=CMLib.materials().findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_MITHRIL);
 		int amount=0;
 		if(resource!=null)
-			amount=CMLib.materials().findNumberOfResource(mob.location(),resource);
+			amount=CMLib.materials().findNumberOfResourceLike(mob.location(),resource);
 		if((amount<100)||(resource==null))
 		{
 			mob.tell(L("You need 100 pounds of raw metal to build this trap."));

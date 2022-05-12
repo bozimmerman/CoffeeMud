@@ -258,7 +258,7 @@ public class Composting extends GatheringSkill
 			if(firstWood instanceof RawMaterial)
 			{
 				subType = ((RawMaterial)first).getSubType();
-				data[0][CraftingSkill.FOUND_AMT]=CMLib.materials().findNumberOfResource(mob.location(),(RawMaterial)firstWood);
+				data[0][CraftingSkill.FOUND_AMT]=CMLib.materials().findNumberOfResourceLike(mob.location(),(RawMaterial)firstWood);
 			}
 			else
 				data[0][CraftingSkill.FOUND_AMT]=1;

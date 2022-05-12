@@ -1641,7 +1641,7 @@ public class Clans extends StdLibrary implements ClanManager
 					{
 						final Item oldCoins=clanBank.findDepositInventory(winnerC.clanID(),""+Integer.MAX_VALUE);
 						final String date=CMLib.utensils().getFormattedDate(clanBank);
-						CMLib.beanCounter().bankLedger(clanBank.bankChain(),winnerC.clanID(),date+": Deposit of "+CMLib.beanCounter().nameCurrencyShort(currency,money)+": CoffeeMud");
+						CMLib.beanCounter().addToBankLedger(clanBank.bankChain(),winnerC.clanID(),date+": Deposit of "+CMLib.beanCounter().nameCurrencyShort(currency,money)+": CoffeeMud");
 						final double oldValue = (oldCoins != null) ? ((Coins)oldCoins).getTotalValue() : 0.0;
 						if(oldCoins!=null)
 							clanBank.delDepositInventory(winnerC.clanID(),oldCoins);

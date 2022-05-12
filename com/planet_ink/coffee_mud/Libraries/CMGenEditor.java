@@ -6183,9 +6183,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 			if(newName.length()>0)
 			{
-				int foundCode=CMLib.materials().getMaterialCode(newName,true);
+				int foundCode=CMLib.materials().findMaterialCode(newName,true);
 				if(foundCode<0)
-					foundCode=CMLib.materials().getMaterialCode(newName,false);
+					foundCode=CMLib.materials().findMaterialCode(newName,false);
 				if(foundCode<0)
 				{
 					mob.tell(L("'@x1' is not recognized.  Try '?'.",newName));

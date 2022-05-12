@@ -691,7 +691,7 @@ public class StdTrap extends StdAbility implements Trap
 
 	protected int findNumberOfResource(final Room room, final RawMaterial resource)
 	{
-		return CMLib.materials().findNumberOfResource(room, resource);
+		return CMLib.materials().findNumberOfResourceLike(room, resource);
 	}
 
 	@Override

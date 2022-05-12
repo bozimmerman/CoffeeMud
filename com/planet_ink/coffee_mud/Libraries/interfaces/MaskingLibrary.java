@@ -101,7 +101,7 @@ public interface MaskingLibrary extends CMLibrary
 	 *
 	 * @see MaskingLibrary#getPreCompiledMask(String)
 	 *
-	 * @param str the zappermask string
+	 * @param text the zappermask string
 	 * @return the compiled zappermask
 	 */
 	public CompiledZMask maskCompile(final String text);
@@ -438,7 +438,7 @@ public interface MaskingLibrary extends CMLibrary
 		/**
 		 * Returns the type of value to check for.
 		 *
-		 * @see MaskingLibrary.Zapperkey
+		 * @see MaskingLibrary.ZapperKey
 		 *
 		 * @return the type of value to check for.
 		 */

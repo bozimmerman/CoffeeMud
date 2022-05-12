@@ -1259,7 +1259,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								break;
 							if(str2.startsWith("+"))
 							{
-								final int code=CMLib.materials().getMaterialCode(str2.substring(1),false);
+								final int code=CMLib.materials().findMaterialCode(str2.substring(1),false);
 								if(code>=0)
 									buf.append(RawMaterial.Material.findByMask(code).noun()+", ");
 							}
@@ -1279,7 +1279,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								break;
 							if(str2.startsWith("-"))
 							{
-								final int code=CMLib.materials().getMaterialCode(str2.substring(1),false);
+								final int code=CMLib.materials().findMaterialCode(str2.substring(1),false);
 								if(code>=0)
 									buf.append(RawMaterial.Material.findByMask(code).noun()+", ");
 							}
@@ -1673,7 +1673,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								break;
 							if(str2.startsWith("+"))
 							{
-								final int code=CMLib.materials().getResourceCode(str2.substring(1),false);
+								final int code=CMLib.materials().findResourceCode(str2.substring(1),false);
 								if(code>=0)
 									buf.append(CMStrings.capitalizeAndLower(RawMaterial.CODES.NAME(code))+", ");
 							}
@@ -1693,7 +1693,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								break;
 							if(str2.startsWith("-"))
 							{
-								final int code=CMLib.materials().getResourceCode(str2.substring(1),false);
+								final int code=CMLib.materials().findResourceCode(str2.substring(1),false);
 								if(code>=0)
 									buf.append(CMStrings.capitalizeAndLower(RawMaterial.CODES.NAME(code))+", ");
 							}
@@ -3642,7 +3642,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							else
 							if((str2.startsWith("-"))||(str2.startsWith("+")))
 							{
-								final int code=CMLib.materials().getMaterialCode(str2.substring(1),false);
+								final int code=CMLib.materials().findMaterialCode(str2.substring(1),false);
 								if(code>=0)
 									parms.add(RawMaterial.Material.findByMask(code&RawMaterial.MATERIAL_MASK).desc());
 							}
@@ -3958,7 +3958,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							else
 							if((str2.startsWith("-"))||(str2.startsWith("+")))
 							{
-								final int code=CMLib.materials().getResourceCode(str2.substring(1),false);
+								final int code=CMLib.materials().findResourceCode(str2.substring(1),false);
 								if(code>=0)
 									parms.add(RawMaterial.CODES.NAME(code));
 							}

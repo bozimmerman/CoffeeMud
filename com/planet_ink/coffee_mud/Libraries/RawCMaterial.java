@@ -50,18 +50,11 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		if((material<0)||(material>=RawMaterial.Material.values().length))
 			return -1;
 		final RawMaterial.CODES codes = RawMaterial.CODES.instance();
-		int countDown=codes.total();
-		int rscIndex=CMLib.dice().roll(1,countDown,-1);
-		int rsc=0;
-		while(--countDown>=0)
-		{
-			rsc=codes.get(rscIndex);
-			if((rsc&RawMaterial.MATERIAL_MASK)==material)
-				return rsc;
-			if((--rscIndex)<0)
-				rscIndex=codes.total()-1;
-		}
-		return -1;
+		final PairList<Integer, Double> rscs = codes.getValueSortedResources(material);
+		if((rscs == null)||(rscs.size()==0))
+			return -1;
+		final int rscIndex=CMLib.dice().roll(1,rscs.size(),-1);
+		return rscs.getFirst(rscIndex).intValue();
 	}
 
 	@Override
@@ -440,24 +433,24 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public String getMaterialDesc(final int MASK)
+	public String getMaterialDesc(final int materialCode)
 	{
-		final RawMaterial.Material m=RawMaterial.Material.findByMask(MASK);
+		final RawMaterial.Material m=RawMaterial.Material.findByMask(materialCode);
 		if(m!=null)
 			return m.desc();
 		return "";
 	}
 
 	@Override
-	public String getResourceDesc(final int MASK)
+	public String getResourceDesc(final int resourceCode)
 	{
-		if(RawMaterial.CODES.IS_VALID(MASK))
-			return RawMaterial.CODES.NAME(MASK);
+		if(RawMaterial.CODES.IS_VALID(resourceCode))
+			return RawMaterial.CODES.NAME(resourceCode);
 		return "";
 	}
 
 	@Override
-	public int getMaterialRelativeInt(final String s)
+	public int findMaterialRelativeInt(final String s)
 	{
 		final RawMaterial.Material m=RawMaterial.Material.findIgnoreCase(s);
 		if(m!=null)
@@ -466,7 +459,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public int getMaterialCode(String s, final boolean exact)
+	public int findMaterialCode(String s, final boolean exact)
 	{
 		RawMaterial.Material m=RawMaterial.Material.findIgnoreCase(s);
 		if(m!=null)
@@ -481,7 +474,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public int getResourceCode(String s, final boolean exact)
+	public int findResourceCode(String s, final boolean exact)
 	{
 		int code = RawMaterial.CODES.FIND_IgnoreCase(s);
 		if(code>=0)
@@ -948,14 +941,14 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public int destroyResourcesAmt(final List<Item> V, final int howMuch, final int finalMaterial, final String subType, final Container C)
+	public int destroyResourcesAmt(final List<Item> V, final int howMuch, final int resourceCode, final String subType, final Container C)
 	{
 		if((V==null)||(V.size()==0))
 			return 0;
 		if(howMuch<=0)
 			return 0;
-		final RawMaterial firstMaterialI = (finalMaterial>0)?this.findFirstResource(V, finalMaterial, C, subType):null;
-		return destroyResources(V, howMuch, finalMaterial, -1, null, C, firstMaterialI, null).getLostAmt();
+		final RawMaterial firstMaterialI = (resourceCode>0)?this.findFirstResource(V, resourceCode, C, subType):null;
+		return destroyResources(V, howMuch, resourceCode, -1, null, C, firstMaterialI, null).getLostAmt();
 	}
 
 	@Override
@@ -993,6 +986,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		int resCode=-1;
 		String subType="";
 		XVector<CMObject> lostProps = null;
+		final CMFlagLibrary flags=CMLib.flags();
 		if((V!=null)
 		&&(V.size()>0)
 		&&((howMuch>0)||(otherMaterial>0)))
@@ -1014,11 +1008,11 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				if((otherResourceType>0)
 				&&(rI.material()==otherResourceType)
 				&&(rI.container()==C)
-				&&(!CMLib.flags().isOnFire(I))
-				&&(!CMLib.flags().isEnchanted(I))
 				&&(otherMaterialI!=null)
 				&&(rI.getSubType().equals(otherMaterialI.getSubType()))
-				&&(rI.rawSecretIdentity().equals(otherMaterialI.rawSecretIdentity())))
+				&&(rI.rawSecretIdentity().equals(otherMaterialI.rawSecretIdentity()))
+				&&(!flags.isOnFire(I))
+				&&(!flags.isEnchanted(I)))
 				{
 					if(I.basePhyStats().weight()>1)
 					{
@@ -1046,11 +1040,11 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				if((rI.material()==firstResourceType)
 				&&(howMuch>0)
 				&&(I.container()==C)
-				&&(!CMLib.flags().isOnFire(I))
-				&&(!CMLib.flags().isEnchanted(I))
 				&&(firstMaterialI!=null)
 				&&(rI.getSubType().equals(firstMaterialI.getSubType()))
-				&&(rI.rawSecretIdentity().equals(firstMaterialI.rawSecretIdentity())))
+				&&(rI.rawSecretIdentity().equals(firstMaterialI.rawSecretIdentity()))
+				&&(!flags.isOnFire(I))
+				&&(!flags.isEnchanted(I)))
 				{
 					if(I.basePhyStats().weight()>howMuch)
 					{
@@ -1179,15 +1173,16 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 
 	protected RawMaterial findFirstResource(final List<Item> V, final int resource, final Container C, final String subType)
 	{
+		final CMFlagLibrary flags=CMLib.flags();
 		for(int i=0;i<V.size();i++)
 		{
 			final Item I=V.get(i);
 			if((I instanceof RawMaterial)
 			&&(I.material()==resource)
 			&&((subType==null)||(((RawMaterial)I).getSubType().equalsIgnoreCase(subType)))
-			&&(!CMLib.flags().isOnFire(I))
-			&&(!CMLib.flags().isEnchanted(I))
-			&&(I.container()==C))
+			&&(I.container()==C)
+			&&(!flags.isOnFire(I))
+			&&(!flags.isEnchanted(I)))
 				return (RawMaterial)I;
 		}
 		return null;
@@ -1198,17 +1193,18 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		int most=0;
 		int mostMaterial=-1;
 		RawMaterial mostItem=null;
+		final CMFlagLibrary flags=CMLib.flags();
 		for(int i=0;i<V.size();i++)
 		{
 			final Item I=V.get(i);
 			if((I instanceof RawMaterial)
 			&&(I.material()==resource)
 			&&(I.material()!=mostMaterial)
-			&&(!CMLib.flags().isOnFire(I))
-			&&(!CMLib.flags().isEnchanted(I))
-			&&(I.container()==C))
+			&&(I.container()==C)
+			&&(!flags.isOnFire(I))
+			&&(!flags.isEnchanted(I)))
 			{
-				final int num=findNumberOfResource(V,(RawMaterial)I);
+				final int num=findNumberOfResource(V,i,(RawMaterial)I);
 				if(num>most)
 				{
 					mostItem=(RawMaterial)I;
@@ -1250,30 +1246,31 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public int findNumberOfResource(final Room E, final RawMaterial resource)
+	public int findNumberOfResourceLike(final Room E, final RawMaterial resource)
 	{
-		return findNumberOfResource(getAllItems(E), resource);
+		return findNumberOfResource(getAllItems(E), 0, resource);
 	}
 
 	@Override
-	public int findNumberOfResource(final MOB E, final RawMaterial resource)
+	public int findNumberOfResourceLike(final MOB E, final RawMaterial resource)
 	{
-		return findNumberOfResource(getAllItems(E), resource);
+		return findNumberOfResource(getAllItems(E), 0, resource);
 	}
 
-	protected int findNumberOfResource(final List<Item> V, final RawMaterial resource)
+	protected int findNumberOfResource(final List<Item> V, final int startAt, final RawMaterial resource)
 	{
 		int foundWood=0;
-		for(int i=0;i<V.size();i++)
+		final CMFlagLibrary flags=CMLib.flags();
+		for(int i=startAt;i<V.size();i++)
 		{
 			final Item I=V.get(i);
 			if((I instanceof RawMaterial)
 			&&(I.material()==resource.material())
-			&&(!CMLib.flags().isOnFire(I))
-			&&(!CMLib.flags().isEnchanted(I))
 			&&(((RawMaterial)I).getSubType().equals(resource.getSubType()))
 			&&(I.rawSecretIdentity().equals(resource.rawSecretIdentity()))
-			&&(I.container()==null))
+			&&(I.container()==null)
+			&&(!flags.isOnFire(I))
+			&&(!flags.isEnchanted(I)))
 				foundWood+=I.phyStats().weight();
 		}
 		return foundWood;
@@ -1296,6 +1293,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		int most=0;
 		int mostMaterial=-1;
 		RawMaterial mostItem=null;
+		final CMFlagLibrary flags=CMLib.flags();
 		for(int i=0;i<V.size();i++)
 		{
 			final Item I=V.get(i);
@@ -1304,11 +1302,11 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				||(I.material()==material))
 			&&(I.material()!=mostMaterial)
 			&&((subType==null)||(((RawMaterial)I).getSubType().equalsIgnoreCase(subType)))
-			&&(!CMLib.flags().isOnFire(I))
-			&&(!CMLib.flags().isEnchanted(I))
-			&&(I.container()==null))
+			&&(I.container()==null)
+			&&(!flags.isOnFire(I))
+			&&(!flags.isEnchanted(I)))
 			{
-				final int num=findNumberOfResource(V,(RawMaterial)I);
+				final int num=findNumberOfResource(V,i,(RawMaterial)I);
 				if(num>most)
 				{
 					mostItem=(RawMaterial)I;
@@ -1470,14 +1468,19 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	{
 		if((otherRequired==null)||(otherRequired.trim().length()==0))
 			return null;
-		RawMaterial firstOther=null;
 		final boolean resourceOther=otherRequired.startsWith("!");
 		if(resourceOther)
 			otherRequired=otherRequired.substring(1);
-		if((otherRequired.length()>0)&&(!resourceOther))
-			firstOther=findMostOfMaterial(V,otherRequired);
-		if((firstOther==null)&&(otherRequired.length()>0))
-			firstOther=findFirstResource(V,otherRequired);
+		final RawMaterial firstOther;
+		if(otherRequired.length()>0)
+		{
+			if(!resourceOther)
+				firstOther=findMostOfMaterial(V,otherRequired);
+			else
+				firstOther=findFirstResource(V,otherRequired);
+		}
+		else
+			firstOther=null;
 		return firstOther;
 	}
 

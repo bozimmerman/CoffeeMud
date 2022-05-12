@@ -63,8 +63,8 @@ public interface JournalsLibrary extends CMLibrary
 	 * @see JournalsLibrary#getArchonJournalNames()
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.ArchonOnly
 	 *
-	 * @param journal
-	 * @return
+	 * @param journal the journal name
+	 * @return true if its an archon only item name, false otherwise
 	 */
 	public boolean isArchonJournalName(String journal);
 
@@ -642,7 +642,7 @@ public interface JournalsLibrary extends CMLibrary
 
 		/**
 		 * Returns whether the journal supports message expiration deletions
-		 * @return
+		 * @return whether the journal supports message expiration deletions
 		 */
 		public boolean keepAll();
 

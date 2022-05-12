@@ -875,7 +875,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		final int myBucket = getAppropriateResourceBucket(I,A);
 		if(myBucket != RawMaterial.RESOURCE_NOTHING)
 		{
-			final PairList<Integer,Double> bucket = RawMaterial.CODES.instance().getValueSortedBucket(myBucket);
+			final PairList<Integer,Double> bucket = RawMaterial.CODES.instance().getValueSortedResources(myBucket);
 			Integer resourceCode = (bucket.size()==0)
 					? Integer.valueOf(CMLib.dice().pick( RawMaterial.CODES.ALL(), I.material() ))
 					: bucket.get( (weight>=.99) ? bucket.size()-1 : 0 ).first;

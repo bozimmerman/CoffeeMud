@@ -340,7 +340,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	protected void bankLedger(final String depositorName, final String msg)
 	{
 		final String date=CMLib.utensils().getFormattedDate(this);
-		CMLib.beanCounter().bankLedger(bankChain(),depositorName,date+": "+msg);
+		CMLib.beanCounter().addToBankLedger(bankChain(),depositorName,date+": "+msg);
 	}
 
 	@Override
@@ -509,7 +509,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							final double amtDueNow=(timeRemaining<0)?(dueAmount+intDue):CMath.div((dueAmount+intDue),(timeRemaining/timeInterval));
 							if(newBalance>=amtDueNow)
 							{
-								CMLib.beanCounter().bankLedger(bankChain(),name,CMLib.utensils().getFormattedDate(this)+": Withdrawal of "+CMLib.beanCounter().nameCurrencyShort(this,amtDueNow)+": Loan payment made.");
+								CMLib.beanCounter().addToBankLedger(bankChain(),name,CMLib.utensils().getFormattedDate(this)+": Withdrawal of "+CMLib.beanCounter().nameCurrencyShort(this,amtDueNow)+": Loan payment made.");
 								CMLib.beanCounter().adjustDebt(debtor,bankChain(),intDue-amtDueNow,reason,intRate,debtDueAt);
 								newBalance-=amtDueNow;
 							}
@@ -542,9 +542,9 @@ public class StdBanker extends StdShopKeeper implements Banker
 					if(coinItem!=null)
 					{
 						if(newBalance>coinItem.getTotalValue())
-							CMLib.beanCounter().bankLedger(bankChain(),name,CMLib.utensils().getFormattedDate(this)+": Deposit of "+CMLib.beanCounter().nameCurrencyShort(this,newBalance-coinItem.getTotalValue())+": Interest paid.");
+							CMLib.beanCounter().addToBankLedger(bankChain(),name,CMLib.utensils().getFormattedDate(this)+": Deposit of "+CMLib.beanCounter().nameCurrencyShort(this,newBalance-coinItem.getTotalValue())+": Interest paid.");
 						else
-							CMLib.beanCounter().bankLedger(bankChain(),name,CMLib.utensils().getFormattedDate(this)+": Withdrawl of "+CMLib.beanCounter().nameCurrencyShort(this,coinItem.getTotalValue()-newBalance)+": Interest charged.");
+							CMLib.beanCounter().addToBankLedger(bankChain(),name,CMLib.utensils().getFormattedDate(this)+": Withdrawl of "+CMLib.beanCounter().nameCurrencyShort(this,coinItem.getTotalValue()-newBalance)+": Interest charged.");
 						delDepositInventory(name,coinItem);
 					}
 					final String currency=CMLib.beanCounter().getCurrency(this);

@@ -2623,7 +2623,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		try
 		{
-			
+
 			final List<Pair<Room,Integer>> roomsToDo=new LinkedList<Pair<Room,Integer>>();
 			final Enumeration<Room> r;
 			if(linkInRooms != null)
@@ -3016,7 +3016,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				}
 			}
 		}
-		
+
 		for(final Room R : allRooms)
 			obliterateRoom(R,linkInRooms,includeDB);
 		delArea(A);

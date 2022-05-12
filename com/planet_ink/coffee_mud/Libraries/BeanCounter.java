@@ -1016,7 +1016,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	}
 
 	@Override
-	public void bankLedger(final String bankName, final String owner, final String explanation)
+	public void addToBankLedger(final String bankName, final String owner, final String explanation)
 	{
 		synchronized((this+"LEDGER"+bankName).intern())
 		{
@@ -1110,7 +1110,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 							CMLib.database().DBReCreatePlayerData(owner,D.section(),D.key(),"COINS;"+CMLib.coffeeMaker().getEnvironmentalMiscTextXML(C,true));
 						else
 							CMLib.database().DBDeletePlayerData(owner,D.section(),D.key());
-						bankLedger(bankName,owner,explanation);
+						addToBankLedger(bankName,owner,explanation);
 						return true;
 					}
 				}

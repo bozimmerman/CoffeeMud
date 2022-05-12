@@ -682,7 +682,7 @@ public class CraftingSkill extends GatheringSkill
 		data[0][FOUND_AMT]=0;
 		if(firstWood!=null)
 		{
-			data[0][FOUND_AMT]=CMLib.materials().findNumberOfResource(mob.location(),firstWood);
+			data[0][FOUND_AMT]=CMLib.materials().findNumberOfResourceLike(mob.location(),firstWood);
 			data[0][FOUND_CODE]=firstWood.material();
 			data[0][FOUND_SUB]=firstWood.getSubType().hashCode();
 		}
@@ -710,7 +710,7 @@ public class CraftingSkill extends GatheringSkill
 		data[1][FOUND_AMT]=0;
 		if(firstOther!=null)
 		{
-			data[1][FOUND_AMT]=CMLib.materials().findNumberOfResource(mob.location(),firstOther);
+			data[1][FOUND_AMT]=CMLib.materials().findNumberOfResourceLike(mob.location(),firstOther);
 			data[1][FOUND_CODE]=firstOther.material();
 			data[1][FOUND_SUB]=firstOther.getSubType().hashCode();
 		}
