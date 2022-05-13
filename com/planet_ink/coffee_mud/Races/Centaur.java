@@ -288,6 +288,53 @@ public class Centaur extends StdRace
 	}
 
 	@Override
+	public List<Item> outfit(final MOB myChar)
+	{
+		if(outfitChoices==null)
+		{
+			// Have to, since it requires use of special constructor
+			final Armor s1=CMClass.getArmor("GenShirt");
+			if(s1 == null)
+				return new Vector<Item>();
+			outfitChoices=new Vector<Item>();
+			s1.setName(L("a woven battleharness"));
+			s1.setDisplayText(L("a woven battleharness lies here."));
+			s1.setMaterial(RawMaterial.RESOURCE_COTTON);
+			s1.setDescription(L("There are lots of little loops and folks for hanging tools about it."));
+			((Container)s1).setCapacity(100);
+			((Container)s1).setContainTypes(Container.CONTAIN_ONEHANDWEAPONS|Container.CONTAIN_OTHERWEAPONS|Container.CONTAIN_SWORDS);
+			s1.text();
+			outfitChoices.add(s1);
+
+			final Armor s2=CMClass.getArmor("GenShoes");
+			s2.setName(L("a pair of horseshoes"));
+			s2.setMaterial(RawMaterial.RESOURCE_IRONWOOD);
+			s2.setDisplayText(L("a pair of horseshoes have been left here."));
+			final Ability a1=CMClass.getAbility("Prop_WearOverride");
+			if(a1!=null)
+				a1.setMiscText("-RACE +HORSE +CENTAUR");
+			s2.addNonUninvokableEffect(a1);
+			s2.text();
+			outfitChoices.add(s2);
+			final Armor s2a = (Armor)s2.copyOf();
+			outfitChoices.add(s2a);
+
+			final Armor s3=CMClass.getArmor("GenArmor");
+			s3.setName(L("some saddlebags"));
+			s3.setDisplayText(L("some saddlebags lay here."));
+			s3.setDescription(L("These simple leather saddlebags are common amongst centaurs."));
+			((Container)s3).setCapacity(252);
+			s3.setRawProperLocationBitmap(Wearable.WORN_BACK);
+			final Ability a2=CMClass.getAbility("Prop_WearOverride");
+			if(a2!=null)
+				a2.setMiscText("-racecat +equine");
+			s3.addNonUninvokableEffect(a1);
+			s3.text();
+			outfitChoices.add(s3);
+		}
+		return outfitChoices;
+	}
+	@Override
 	public String healthText(final MOB viewer, final MOB mob)
 	{
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));

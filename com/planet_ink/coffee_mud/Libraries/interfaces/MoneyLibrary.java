@@ -131,19 +131,6 @@ public interface MoneyLibrary extends CMLibrary
 		public String abbr();
 	}
 
-	public static final String defaultCurrencyDefinition=
-		"=1 gold coin(s);100 golden note(s);10000 whole note(s);1000000 Archon note(s)";
-	public static final String goldStandard=
-		"GOLD=0.01 copper piece(s) (cp);0.1 silver piece(s) (sp);1.0 gold piece(s) (gp);5.0 platinum piece(s) (pp)";
-	public static final String copperStandard=
-		"COPPER=1 copper bit(s) (cb);10 silver bit(s) (sb);100 gold bit(s) (gb);500 platinum bit(s) (pb);10000 aluminum bit(s) (ab)";
-	public static final String creditStandard=
-		"CREDIT=1 credit(s) (c);1000 megacredit(s) (mc);1000000 gigacredit(s) (gc)";
-	public static final String dollarStandard=
-		"DOLLAR=1 cent(s) (c);100 dollar(s) ($);100000 grand (k$)";
-	public static final String victoryStandard=
-		"VICTORY=notrade;1 victory point(s) (v)";
-
 	public static interface DebtItem
 	{
 		public String debtor();

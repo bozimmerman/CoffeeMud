@@ -160,17 +160,27 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	{
 		if((mob==null)||(items==null)||(items.size()==0))
 			return;
+		final CMMsg msg = CMClass.getMsg(mob, null, CMMsg.MSG_WEAR|CMMsg.MASK_ALWAYS, null);
+		Item prevItem=null;
+		int prevCount=0;
 		for(int i=0;i<items.size();i++)
 		{
 			Item I=items.get(i);
-			if((mob.findItem("$"+I.name()+"$")==null)
-			||((!I.rawLogicalAnd())&&(mob.findItems("$"+I.name()+"$").size()<2)))
+			if((prevItem != null)&&(prevItem.sameAs(I)))
+				prevCount=prevCount+1;
+			else
+				prevCount=0;
+			if((mob.findItems("$"+I.name()+"$").size()<=prevCount)
+			||((!I.rawLogicalAnd())&&(mob.findItems("$"+I.name()+"$").size()<=3+prevCount)))
 			{
+				prevItem=I;
 				I=(Item)I.copyOf();
 				I.text();
 				I.recoverPhyStats();
 				mob.addItem(I);
-				if(I.whereCantWear(mob)<=0)
+				msg.setTarget(I);
+				if(mob.okMessage(mob, msg) // required for prop_wearadjuster
+				&&(I.whereCantWear(mob)<=0))
 				{
 					I.wearIfPossible(mob);
 					if(I.rawWornCode()!=0)

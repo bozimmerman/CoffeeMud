@@ -543,7 +543,7 @@ QUICKCOOK@x1=Quick Cooking @x2,10,TIME,-SKILLFLAG "+EPICUREAN",,+WIS {10+@x1},0,
 HELP_=<EXPERTISE>The ability to cook items more quickly and efficiently.
 
 QUICKWORK@x1=Quick Working @x2,10,TIME,-SKILLFLAG "+COMMON SKILL&!EPICUREAN&!CRAFTING&!BUILDING" +JAVACLASS -DiligentStudying,,+WIS {10+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to craft items more quickly and efficiently.
+HELP_=<EXPERTISE>The ability to complete certain tasks more quickly and efficiently.
 
 QUICKCRFT@x1=Quick Crafting @x2,10,TIME,-SKILLFLAG "+CRAFTING&!NATURE_LORE",,+WIS {10+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to craft items more quickly and efficiently.

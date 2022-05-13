@@ -49,6 +49,14 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public List<String>						allCurrencyNames				= new Vector<String>();
 	public Map<String, List<String>>		allCurrencyDenominationNames	= new Hashtable<String, List<String>>();
 
+	public final String defaultCurrency="=1 gold coin(s);100 golden note(s);10000 whole note(s);1000000 Archon note(s)";
+	public final String goldStandard=	"GOLD=0.01 copper piece(s) (cp);0.1 silver piece(s) (sp);1.0 gold piece(s) (gp);5.0 platinum piece(s) (pp)";
+	public final String copperStandard=	"COPPER=1 copper bit(s) (cb);10 silver bit(s) (sb);100 gold bit(s) (gb);500 platinum bit(s) (pb);10000 aluminum bit(s) (ab)";
+	public final String creditStandard=	"CREDIT=1 credit(s) (c);1000 megacredit(s) (mc);1000000 gigacredit(s) (gc)";
+	public final String dollarStandard=	"DOLLAR=1 cent(s) (c);100 dollar(s) ($);100000 grand (k$)";
+	public final String victoryStandard="VICTORY=notrade;1 victory point(s) (v)";
+
+
 	private class MoneyDenominationImpl implements MoneyDenomination
 	{
 		private final double value;
@@ -238,7 +246,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 				return currencies.get(code);
 			if(defaultCurrencies.size()==0)
 			{
-				createCurrencySet(defaultCurrencies,defaultCurrencyDefinition);
+				createCurrencySet(defaultCurrencies,defaultCurrency);
 				createCurrencySet(defaultCurrencies,goldStandard);
 				createCurrencySet(defaultCurrencies,copperStandard);
 				createCurrencySet(defaultCurrencies,creditStandard);
@@ -1037,7 +1045,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 				CMLib.database().DBCreatePlayerData(owner,"LEDGER-"+bankName,"LEDGER-"+bankName+"/"+owner,explanation+";|;");
 		}
 	}
-	
+
 	@Override
 	public Set<String> getBankAccountChains(final String owner)
 	{
@@ -1066,7 +1074,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			{
 				if(bankName.equals(D.section()))
 				{
-					Coins C=(Coins)CMClass.getItem("StdCoins");
+					final Coins C=(Coins)CMClass.getItem("StdCoins");
 					CMLib.coffeeMaker().unpackEnvironmentalMiscTextXML(C,last.substring(6),true);
 					if((C.getDenomination()==0.0)&&(C.getNumberOfCoins()>0))
 						C.setDenomination(1.0);
@@ -1447,7 +1455,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			return ((Coins)E).getCurrency();
 		return "";
 	}
-	
+
 	@Override
 	public String getBankChainCurrency(final String bankChain)
 	{
@@ -1464,7 +1472,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			}
 		}
 		String winningCur=null;
-		int mostAmt = 0;
+		final int mostAmt = 0;
 		for(final String curr : currencies.keySet())
 		{
 			final int amt = currencies.get(curr)[0];
