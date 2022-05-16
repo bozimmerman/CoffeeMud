@@ -1107,7 +1107,7 @@ public class StdArea implements Area
 			|| (msg.sourceMinor() == CMMsg.TYP_FLEE))
 				return false;
 		}
-		if (parents != null)
+		if(parents != null)
 		{
 			for (final Area area : parents)
 			{
@@ -1115,72 +1115,68 @@ public class StdArea implements Area
 					return false;
 			}
 		}
-
-		if ((getThemeCode() > 0) && (!CMath.bset(getThemeCode(), Area.THEME_FANTASY)))
+		if(getTheme()>0)
 		{
-			if ((CMath.bset(msg.sourceMajor(), CMMsg.MASK_MAGIC))
-			|| (CMath.bset(msg.targetMajor(), CMMsg.MASK_MAGIC))
-			|| (CMath.bset(msg.othersMajor(), CMMsg.MASK_MAGIC)))
+			if (!CMath.bset(getTheme(), Area.THEME_FANTASY))
 			{
-				Room room = null;
-				if ((msg.target() instanceof MOB)
-				&& (((MOB) msg.target()).location() != null))
-					room = ((MOB) msg.target()).location();
-				else
-				if (msg.source().location() != null)
-					room = msg.source().location();
-				if (room != null)
+				if ((CMath.bset(msg.sourceMajor(), CMMsg.MASK_MAGIC))
+				|| (CMath.bset(msg.targetMajor(), CMMsg.MASK_MAGIC))
+				|| (CMath.bset(msg.othersMajor(), CMMsg.MASK_MAGIC)))
 				{
-					if (room.getArea() == this)
-						room.showHappens(CMMsg.MSG_OK_ACTION, L("Magic doesn't seem to work here."));
-					else
-						room.showHappens(CMMsg.MSG_OK_ACTION, L("Magic doesn't seem to work there."));
-				}
-
-				return false;
-			}
-		}
-		else
-		if ((getTheme() > 0) && (!CMath.bset(getTheme(), Area.THEME_TECHNOLOGY)))
-		{
-			switch (msg.sourceMinor())
-			{
-			case CMMsg.TYP_BUY:
-			case CMMsg.TYP_BID:
-			case CMMsg.TYP_CLOSE:
-			case CMMsg.TYP_DEPOSIT:
-			case CMMsg.TYP_DROP:
-			case CMMsg.TYP_LOOK:
-			case CMMsg.TYP_EXAMINE:
-			case CMMsg.TYP_GET:
-			case CMMsg.TYP_PUSH:
-			case CMMsg.TYP_PULL:
-			case CMMsg.TYP_GIVE:
-			case CMMsg.TYP_OPEN:
-			case CMMsg.TYP_PUT:
-			case CMMsg.TYP_SELL:
-			case CMMsg.TYP_VALUE:
-			case CMMsg.TYP_REMOVE:
-			case CMMsg.TYP_VIEW:
-			case CMMsg.TYP_WITHDRAW:
-			case CMMsg.TYP_BORROW:
-				break;
-			case CMMsg.TYP_POWERCURRENT:
-				return false;
-			default:
-				if (msg.tool() instanceof Technical)
-				{
-					Room room = null;
-					if ((msg.target() instanceof MOB) && (((MOB) msg.target()).location() != null))
+					Room room = msg.source().location();
+					if ((msg.target() instanceof MOB)
+					&& (((MOB) msg.target()).location() != null))
 						room = ((MOB) msg.target()).location();
-					else
-					if (msg.source().location() != null)
-						room = msg.source().location();
-					if (room != null)
-						room.showHappens(CMMsg.MSG_OK_VISUAL, L("Technology doesn't seem to work here."));
-					return false;
+					if((room != null)
+					&&(room.getArea() == this))
+					{
+						room.showHappens(CMMsg.MSG_OK_ACTION, L("Magic doesn't seem to work here."));
+						return false;
+					}
 				}
-				break;
+			}
+			else
+			if (!CMath.bset(getTheme(), Area.THEME_TECHNOLOGY))
+			{
+				switch (msg.sourceMinor())
+				{
+				case CMMsg.TYP_BUY:
+				case CMMsg.TYP_BID:
+				case CMMsg.TYP_CLOSE:
+				case CMMsg.TYP_DEPOSIT:
+				case CMMsg.TYP_DROP:
+				case CMMsg.TYP_LOOK:
+				case CMMsg.TYP_EXAMINE:
+				case CMMsg.TYP_GET:
+				case CMMsg.TYP_PUSH:
+				case CMMsg.TYP_PULL:
+				case CMMsg.TYP_GIVE:
+				case CMMsg.TYP_OPEN:
+				case CMMsg.TYP_PUT:
+				case CMMsg.TYP_SELL:
+				case CMMsg.TYP_VALUE:
+				case CMMsg.TYP_REMOVE:
+				case CMMsg.TYP_VIEW:
+				case CMMsg.TYP_WITHDRAW:
+				case CMMsg.TYP_BORROW:
+					break;
+				case CMMsg.TYP_POWERCURRENT:
+					return false;
+				default:
+					if (msg.tool() instanceof Technical)
+					{
+						Room room = msg.source().location();
+						if ((msg.target() instanceof MOB) && (((MOB) msg.target()).location() != null))
+							room = ((MOB) msg.target()).location();
+						if((room != null)
+						&&(room.getArea() == this))
+						{
+							room.showHappens(CMMsg.MSG_OK_VISUAL, L("Technology doesn't seem to work here."));
+							return false;
+						}
+					}
+					break;
+				}
 			}
 		}
 		return true;
