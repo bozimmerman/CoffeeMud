@@ -149,7 +149,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			&&(inhab!=mob)
 			&&(!h1.contains(inhab))
 			&&(CMLib.flags().isSeeable(inhab)||(CMLib.flags().canMove(inhab)&&(!CMLib.flags().isCloaked(inhab))))
-			&&((includePlayers)||(!mob.isMonster())||(!inhab.isMonster())))
+			&&((includePlayers)||inhab.isMonster()))
 				h.addUnsafe(inhab);
 		}
 		return h;
@@ -2796,7 +2796,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		else
 			return maxRangeWith(source,tool);
 	}
-	
+
 	@Override
 	public void establishRange(final MOB source, final MOB target, final Environmental tool)
 	{
