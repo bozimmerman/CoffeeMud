@@ -3192,12 +3192,29 @@ public class Test extends StdCommand
 					{{9735, -1357, 707161},{29979245},{5,0},{2000, 1000, 0},{0}}, // 73
 					{{9735, -1357, 707161},{29979245},{0,0},{20000, 10000, 5030},{1}}, // 74
 				};
+				final long[] lt1= new long[]{5, 2, 1};
+				final long[] lt2= new long[]{3, 1, -1};
+				final long[] lt3= new long[]{0, 2, 3};
+				if(CMLib.map().getMinDistanceFrom(lt1,lt2,lt3)<1)
+				{
+					mob.tell(L("Error: Straight line test failed: "+CMLib.map().getMinDistanceFrom(lt1,lt2,lt3)));
+					return false;
+				}
+				final long[] ld1 = new long[] {175, 193, 117};
+				final long[] ld2 = new long[] {197, 218, 134};
+				final long[] ld3 = new long[] {0, 0, 0};
+				if(CMLib.map().getMinDistanceFrom(ld1,ld2,ld3)<286)
+				{
+					mob.tell(L("Error: Short line test failed: "+CMLib.map().getMinDistanceFrom(ld1,ld2,ld3)));
+					return false;
+				}
+
 				final long[] l1= new long[]{3515255, 3877051, -239069815};
 				final long[] l2= new long[]{3953445, 4361852, -269041937};
 				final long[] l3= new long[]{9734, -1358, 707222};
 				if(CMLib.map().getMinDistanceFrom(l1,l2,l3)<239834022)
 				{
-					mob.tell(L("Error: Straight line test failed."));
+					mob.tell(L("Error: Straight line test failed: "+CMLib.map().getMinDistanceFrom(l1,l2,l3)));
 					return false;
 				}
 				for(int li=0;li<tests.length;li++)

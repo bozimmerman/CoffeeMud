@@ -4470,6 +4470,49 @@ public class CMMap extends StdLibrary implements WorldMap
 		return sum1>sum2?(sum2+sum3):(sum1+sum3);
 	}
 
+
+	protected BigDecimal calcDotProduct(final long[] p1, final long[] p2)
+	{
+		final BigDecimal B1 = new BigDecimal(p1[0]).multiply(new BigDecimal(p2[0]));
+		final BigDecimal B2 = new BigDecimal(p1[1]).multiply(new BigDecimal(p2[1]));
+		final BigDecimal B3 = new BigDecimal(p1[2]).multiply(new BigDecimal(p2[2]));
+		return B1.add(B2).add(B3);
+	}
+
+
+
+	/*
+	@Override
+	public double getMinDistanceFrom(final long[] prevPos, final double speed, final double[] dir, final long[] curPosition, final double[] directionTo, final long[] objPos)
+	{
+		if(Arrays.equals(prevPos, curPosition))
+			return this.getDistanceFrom(curPosition, objPos);
+		final BigVector bl1 = new BigVector(prevPos);
+		final BigVector bl2 = new BigVector(curPosition);
+		final BigVector bp0 = new BigVector(objPos);
+		final BigVector d=bl2.subtract(bl1);
+		final BigVector ac=bp0.subtract(bl1);
+		final BigDecimal vp = ac.vectorProduct(d).magnitude();
+		return vp.divide(d.magnitude(), 30, RoundingMode.UP).doubleValue();
+	}
+
+	@Override
+	public double getMinDistanceFrom(final long[] prevPos, final double speed, final double[] dir, final long[] curPosition, final double[] directionTo, final long[] objPos)
+	{
+		if(Arrays.equals(prevPos, curPosition))
+			return this.getDistanceFrom(curPosition, objPos);
+		final BigVector bl1 = new BigVector(prevPos);
+		final BigVector bl2 = new BigVector(curPosition);
+		final BigVector bp0 = new BigVector(objPos);
+
+		final BigVector d = bl1.subtract(bl2);
+		d.unitVectorFrom();
+		final BigDecimal t = bp0.subtract(bl2).dotProduct(d);
+		return bl2.add(d.scalarProduct(t)).subtract(bp0).magnitude().doubleValue();
+	}
+	 *
+	 */
+
 	@Override
 	public double getMinDistanceFrom(final long[] prevPos, final double speed, final double[] dir, final long[] curPosition, final double[] directionTo, final long[] objPos)
 	{
