@@ -143,7 +143,7 @@ public class Spell_RepairingAura extends Spell
 		if((target instanceof Item)
 		&&(target.phyStats().weight()>500))
 		{
-			mob.tell(L("@x1 is too large to be affected by this magic."));
+			mob.tell(L("@x1 is too large to be affected by this magic.",target.name(mob)));
 			return false;
 		}
 

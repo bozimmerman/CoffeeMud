@@ -3203,7 +3203,7 @@ public class Test extends StdCommand
 				final long[] ld1 = new long[] {175, 193, 117};
 				final long[] ld2 = new long[] {197, 218, 134};
 				final long[] ld3 = new long[] {0, 0, 0};
-				if(CMLib.map().getMinDistanceFrom(ld1,ld2,ld3)<286)
+				if(CMLib.map().getMinDistanceFrom(ld1,ld2,ld3)<285)
 				{
 					mob.tell(L("Error: Short line test failed: "+CMLib.map().getMinDistanceFrom(ld1,ld2,ld3)));
 					return false;

@@ -100,7 +100,7 @@ public class BigVector
 		BigDecimal x0 = ZERO;
 		BigDecimal x1 = new BigDecimal(Math.sqrt(A.doubleValue()));
 		int times=0;
-		while ((!x0.equals(x1))&&(++times<20))
+		while ((!x0.equals(x1))&&(!x0.equals(ZERO))&&(++times<20))
 		{
 			x0 = x1;
 			x1 = A.divide(x0, SCALE, RoundingMode.UP);
@@ -168,7 +168,6 @@ public class BigVector
 		ab.b[1] = b[2].multiply(v.b[0]).subtract(b[0].multiply(v.b[2]));
 		ab.b[2] = b[0].multiply(v.b[1]).subtract(b[1].multiply(v.b[0]));
 		return ab;
-
 	}
 
 	public void vectorProductFrom(final BigVector v)

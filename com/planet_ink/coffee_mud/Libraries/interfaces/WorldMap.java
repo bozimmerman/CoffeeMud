@@ -194,7 +194,6 @@ public interface WorldMap extends CMLibrary
 	public double getAngleDelta(final double[] fromAngle, final double[] toAngle);
 	public double[] getFacingAngleDiff(final double[] fromAngle, final double[] toAngle);
 	public double getMinDistanceFrom(final long[] prevPos, final long[] curPosition, final long[] objPos);
-	public double getMinDistanceFrom(final long[] prevPos, final double speed, final double[] dir, final long[] curPosition, final double[] directionTo, final long[] objPos);
 	public double[] getDirection(SpaceObject fromObj, SpaceObject toObj);
 	public double[] getDirection(final long[] fromCoords, final long[] toCoords);
 	public ShipDirComponent.ShipDir getDirectionFromDir(double[] facing, double roll, double[] direction);
