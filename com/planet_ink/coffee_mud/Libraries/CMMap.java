@@ -1019,8 +1019,8 @@ public class CMMap extends StdLibrary implements WorldMap
 				final long distanceFrom=0;
 				if(ship != null)
 				{
-					final long distanceFrom1=CMLib.map().getDistanceFrom(ship.coordinates(), o1.coordinates());
-					final long distanceFrom2=CMLib.map().getDistanceFrom(ship.coordinates(), o1.coordinates());
+					final long distanceFrom1=getDistanceFrom(ship.coordinates(), o1.coordinates());
+					final long distanceFrom2=getDistanceFrom(ship.coordinates(), o1.coordinates());
 					if(distanceFrom1 > distanceFrom2)
 						return -1;
 					if(distanceFrom < distanceFrom2)
@@ -2955,7 +2955,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public void obliterateMapArea(final Area A)
 	{
 		obliterateArea(A,true);
-		for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+		for(final Enumeration<Area> a=areas();a.hasMoreElements();)
 		{
 			final Area A2=a.nextElement();
 			if((A2!=null)
@@ -3620,7 +3620,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			&&(ship instanceof Item))
 			{
 				R.delItem((Item)ship);
-				propertyHere.add((PrivateProperty)ship,CMLib.map().getExtendedRoomID(R));
+				propertyHere.add((PrivateProperty)ship,getExtendedRoomID(R));
 			}
 		}
 
@@ -4181,20 +4181,20 @@ public class CMMap extends StdLibrary implements WorldMap
 								if(ticked)
 								{
 									// we have a dead group.. let the group handler deal with it.
-									Log.errOut(serviceClient.getName(),mob.name()+" in room "+CMLib.map().getDescriptiveExtendedRoomID(R)
+									Log.errOut(serviceClient.getName(),mob.name()+" in room "+getDescriptiveExtendedRoomID(R)
 											+" unticked in dead group (Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+".");
 									continue;
 								}
 								else
 								{
-									Log.errOut(serviceClient.getName(),mob.name()+" in room "+CMLib.map().getDescriptiveExtendedRoomID(R)
+									Log.errOut(serviceClient.getName(),mob.name()+" in room "+getDescriptiveExtendedRoomID(R)
 											+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been destroyed. May he rest in peace."));
 									mob.destroy();
 								}
 							}
 							else
 							{
-								Log.errOut(serviceClient.getName(),"Player "+mob.name()+" in room "+CMLib.map().getDescriptiveExtendedRoomID(R)
+								Log.errOut(serviceClient.getName(),"Player "+mob.name()+" in room "+getDescriptiveExtendedRoomID(R)
 										+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been put aside."));
 							}
 							R.delInhabitant(mob);//keeps it from happening again.
@@ -4295,7 +4295,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			protected CMFile.CMVFSFile[] getFiles()
 			{
 				final List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>(numAreas());
-				for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+				for(final Enumeration<Area> a=areas();a.hasMoreElements();)
 				{
 					final Area A=a.nextElement();
 					myFiles.add(new CMFile.CMVFSFile(this.getPath()+cmfsFilenameify(A.Name())+".cmare",48,System.currentTimeMillis(),"SYS")
@@ -4470,20 +4470,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return sum1>sum2?(sum2+sum3):(sum1+sum3);
 	}
 
-
-	protected BigDecimal calcDotProduct(final long[] p1, final long[] p2)
-	{
-		final BigDecimal B1 = new BigDecimal(p1[0]).multiply(new BigDecimal(p2[0]));
-		final BigDecimal B2 = new BigDecimal(p1[1]).multiply(new BigDecimal(p2[1]));
-		final BigDecimal B3 = new BigDecimal(p1[2]).multiply(new BigDecimal(p2[2]));
-		return B1.add(B2).add(B3);
-	}
-
-
-
-	/*
-	@Override
-	public double getMinDistanceFrom(final long[] prevPos, final double speed, final double[] dir, final long[] curPosition, final double[] directionTo, final long[] objPos)
+	protected double getMinDistanceFrom1(final long[] prevPos, final long[] curPosition, final long[] objPos)
 	{
 		if(Arrays.equals(prevPos, curPosition))
 			return this.getDistanceFrom(curPosition, objPos);
@@ -4496,8 +4483,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return vp.divide(d.magnitude(), 30, RoundingMode.UP).doubleValue();
 	}
 
-	@Override
-	public double getMinDistanceFrom(final long[] prevPos, final double speed, final double[] dir, final long[] curPosition, final double[] directionTo, final long[] objPos)
+	protected double getMinDistanceFrom2(final long[] prevPos, final long[] curPosition, final long[] objPos)
 	{
 		if(Arrays.equals(prevPos, curPosition))
 			return this.getDistanceFrom(curPosition, objPos);
@@ -4510,8 +4496,32 @@ public class CMMap extends StdLibrary implements WorldMap
 		final BigDecimal t = bp0.subtract(bl2).dotProduct(d);
 		return bl2.add(d.scalarProduct(t)).subtract(bp0).magnitude().doubleValue();
 	}
-	 *
-	 */
+
+	protected double getMinDistanceFrom3(final long[] prevPos, final long[] curPosition, final long[] objPos)
+	{
+		if(Arrays.equals(prevPos, curPosition))
+			return this.getDistanceFrom(curPosition, objPos);
+		final BigVector bl1 = new BigVector(prevPos);
+		final BigVector bl2 = new BigVector(curPosition);
+		final BigVector bp0 = new BigVector(objPos);
+
+		final BigVector AB = bl2.subtract(bl1);
+		final BigVector BE = bp0.subtract(bl2);
+		final BigVector AE = bp0.subtract(bl1);
+
+		if(AB.dotProduct(BE).doubleValue() > 0)
+			return BE.magnitude().doubleValue();
+		else
+		if(AB.dotProduct(AE).doubleValue() < 0)
+			return AE.magnitude().doubleValue();
+		else
+		{
+			final BigVector d = bl1.subtract(bl2);
+			d.unitVectorFrom();
+			final BigDecimal t = BE.dotProduct(d);
+			return bl2.add(d.scalarProduct(t)).subtract(bp0).magnitude().doubleValue();
+		}
+	}
 
 	@Override
 	public double getMinDistanceFrom(final long[] prevPos, final double speed, final double[] dir, final long[] curPosition, final double[] directionTo, final long[] objPos)
@@ -4573,10 +4583,12 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public double getMinDistanceFrom(final long[] prevPos, final long[] curPosition, final long[] objPos)
 	{
-
+		/*
 		final double speed=this.getDistanceFrom(prevPos, curPosition);
 		final double[] dir=getDirection(prevPos, curPosition);
 		final double[] dirTo=getDirection(curPosition, objPos);
 		return getMinDistanceFrom(prevPos, speed, dir, curPosition, dirTo, objPos);
+		*/
+		return getMinDistanceFrom3(prevPos, curPosition, objPos);
 	}
 }
