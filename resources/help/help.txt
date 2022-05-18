@@ -14,7 +14,7 @@ inventory equipment look compare
 get put drop give wear wield hold   ^HOTHER^?
 eat drink fill sniff examine push   ! quit password switch config ansi
 pull lock unlock open close list    autoinvoke logout prompt colorset
-buy sell deposit withdraw value     typo bug assist
+buy sell deposit withdraw value     typo bug stuck
 
 ^HBASE CLASSES^?
 fighter bard druid mage thief cleric commoner/artisan
