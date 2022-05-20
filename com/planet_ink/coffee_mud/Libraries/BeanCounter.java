@@ -1012,7 +1012,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public void removeMoney(final Room R, final Container container, final String currency, final double absoluteValue)
 	{
 		double myMoney=getTotalAbsoluteValue(R,container,currency);
-		final List<Coins> V=getStandardCurrency(R,container,currency);
+		final List<Coins> V=getMoneyItems(R,container,currency);
 		for(int v=0;v<V.size();v++)
 			((Item)V.get(v)).destroy();
 		if(myMoney>=absoluteValue)
@@ -1191,7 +1191,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		if(mob==null)
 			return;
 		double myMoney=getTotalAbsoluteValue(mob,currency);
-		final List<Coins> V=getStandardCurrency(mob,currency);
+		final List<Coins> V=getMoneyItems(mob,currency);
 		for(int v=0;v<V.size();v++)
 			((Item)V.get(v)).destroy();
 		if(myMoney>=absoluteAmount)
@@ -1234,7 +1234,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		if(mob==null)
 			return;
 		double myMoney=getTotalAbsoluteValue(mob,container,currency);
-		final List<Coins> V=getStandardCurrency(mob,container,currency);
+		final List<Coins> V=getMoneyItems(mob,container,currency);
 		for(int v=0;v<V.size();v++)
 			((Item)V.get(v)).destroy();
 		if(myMoney>=absoluteAmount)
@@ -1253,7 +1253,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		long money=mob.getMoney();
 		if(money>0)
 			return mob.getMoney();
-		final List<Coins> V=getStandardCurrency(mob,null);
+		final List<Coins> V=getMoneyItems(mob,null);
 		for(int i=0;i<V.size();i++)
 			money+=Math.round(V.get(i).getTotalValue());
 		if(money>Integer.MAX_VALUE/2)
@@ -1319,7 +1319,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	{
 		if(mob==null)
 			return;
-		final List<Coins> V=getStandardCurrency(mob,currency);
+		final List<Coins> V=getMoneyItems(mob,currency);
 		Coins C=null;
 		for(int v=0;v<V.size();v++)
 		{
@@ -1339,7 +1339,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	}
 
 	@Override
-	public List<Coins> getStandardCurrency(final Room R, final Item container, final String currency)
+	public List<Coins> getMoneyItems(final Room R, final Item container, final String currency)
 	{
 		final Vector<Coins> V=new Vector<Coins>();
 		if(R==null)
@@ -1357,9 +1357,9 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	}
 
 	@Override
-	public List<Coins> getStandardCurrency(final MOB mob, final String currency)
+	public List<Coins> getMoneyItems(final MOB mob, final String currency)
 	{
-		return getStandardCurrency(mob, null, currency);
+		return getMoneyItems(mob, null, currency);
 	}
 
 	@Override
@@ -1382,7 +1382,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	}
 
 	@Override
-	public List<Coins> getStandardCurrency(final MOB mob, final Item container, final String currency)
+	public List<Coins> getMoneyItems(final MOB mob, final Item container, final String currency)
 	{
 		final Vector<Coins> V=new Vector<Coins>();
 		if(mob==null)
@@ -1409,7 +1409,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public long getNumberOfCoins(final MOB mob, final String currency, final double denomination)
 	{
-		final List<Coins> V=getStandardCurrency(mob,currency);
+		final List<Coins> V=getMoneyItems(mob,currency);
 		long gold=0;
 		for(int v=0;v<V.size();v++)
 		{
@@ -1486,7 +1486,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public double getTotalAbsoluteValue(final Room R, final Item container, final String currency)
 	{
 		double money=0.0;
-		final List<Coins> V=getStandardCurrency(R,container,currency);
+		final List<Coins> V=getMoneyItems(R,container,currency);
 		for(int v=0;v<V.size();v++)
 			money+=V.get(v).getTotalValue();
 		return money;
@@ -1502,7 +1502,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public double getTotalAbsoluteValue(final MOB mob, final Item container, final String currency)
 	{
 		double money=0.0;
-		final List<Coins> V=getStandardCurrency(mob,container,currency);
+		final List<Coins> V=getMoneyItems(mob,container,currency);
 		for(int v=0;v<V.size();v++)
 			money+=V.get(v).getTotalValue();
 		return money;
@@ -1512,7 +1512,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public double getTotalAbsoluteNativeValue(final MOB mob)
 	{
 		double money=0.0;
-		final List<Coins> V=getStandardCurrency(mob,getCurrency(mob));
+		final List<Coins> V=getMoneyItems(mob,getCurrency(mob));
 		for(int v=0;v<V.size();v++)
 			money+=V.get(v).getTotalValue();
 		return money;
@@ -1522,7 +1522,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public double getTotalAbsoluteShopKeepersValue(final MOB mob, final MOB shopkeeper)
 	{
 		double money=0.0;
-		final List<Coins> V=getStandardCurrency(mob,getCurrency(shopkeeper));
+		final List<Coins> V=getMoneyItems(mob,getCurrency(shopkeeper));
 		for(int v=0;v<V.size();v++)
 			money+=V.get(v).getTotalValue();
 		return money;

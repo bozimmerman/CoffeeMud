@@ -1733,13 +1733,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			final long num=CMath.s_long(moneyStr);
 			if(mine instanceof MOB)
 			{
-				List<Coins> V=CMLib.beanCounter().getStandardCurrency((MOB)mine,CMLib.beanCounter().getCurrency(mine));
+				List<Coins> V=CMLib.beanCounter().getMoneyItems((MOB)mine,CMLib.beanCounter().getCurrency(mine));
 				for(int v=0;v<V.size();v++)
 				{
 					if(V.get(v).getNumberOfCoins()>=num)
 						return num;
 				}
-				V=CMLib.beanCounter().getStandardCurrency((MOB)mine,null);
+				V=CMLib.beanCounter().getMoneyItems((MOB)mine,null);
 				for(int v=0;v<V.size();v++)
 				{
 					if(V.get(v).getNumberOfCoins()>=num)
@@ -1761,7 +1761,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			{
 				if(mine instanceof MOB)
 				{
-					final List<Coins> V2=CMLib.beanCounter().getStandardCurrency((MOB)mine,currency);
+					final List<Coins> V2=CMLib.beanCounter().getMoneyItems((MOB)mine,currency);
 					final double denomination=matchAnyDenomination(currency,CMParms.combine(V,1));
 					Coins C=null;
 					for(int v2=0;v2<V2.size();v2++)
@@ -1790,13 +1790,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			final long num=CMath.s_long(moneyStr);
 			if(mine instanceof MOB)
 			{
-				List<Coins> V=CMLib.beanCounter().getStandardCurrency((MOB)mine,CMLib.beanCounter().getCurrency(mine));
+				List<Coins> V=CMLib.beanCounter().getMoneyItems((MOB)mine,CMLib.beanCounter().getCurrency(mine));
 				for(int v=0;v<V.size();v++)
 				{
 					if(V.get(v).getNumberOfCoins()>=num)
 						return V.get(v).getCurrency();
 				}
-				V=CMLib.beanCounter().getStandardCurrency((MOB)mine,null);
+				V=CMLib.beanCounter().getMoneyItems((MOB)mine,null);
 				for(int v=0;v<V.size();v++)
 				{
 					if(V.get(v).getNumberOfCoins()>=num)
@@ -1852,7 +1852,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			final long num=CMath.s_long(moneyStr);
 			if(mine instanceof MOB)
 			{
-				final List<Coins> V=CMLib.beanCounter().getStandardCurrency((MOB)mine,currency);
+				final List<Coins> V=CMLib.beanCounter().getMoneyItems((MOB)mine,currency);
 				for(int v=0;v<V.size();v++)
 				{
 					if(V.get(v).getNumberOfCoins()>=num)
@@ -2096,7 +2096,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				return C;
 			}
 			mob.tell(L("You don't have that much @x1.",CMLib.beanCounter().getDenominationName(currency,denomination)));
-			final List<Coins> V=CMLib.beanCounter().getStandardCurrency(mob,currency);
+			final List<Coins> V=CMLib.beanCounter().getMoneyItems(mob,currency);
 			for(int v=0;v<V.size();v++)
 			{
 				if(V.get(v).getDenomination()==denomination)
