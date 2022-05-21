@@ -309,16 +309,16 @@ public class JournalFunction extends StdWebMacro
 					else
 					{
 						final String toName=entry.from();
-						final MOB toM=CMLib.players().getLoadPlayer(toName);
-						if((toM==null)||(toM.playerStats()==null))
+						final PlayerLibrary.ThinPlayer toTP = CMLib.players().getThinPlayer(toName);
+						if(toTP==null)
 							messages.append("Player '"+toName+"' does not exist.<BR>");
 						else
 						{
-							if(toM.playerStats().getEmail().indexOf('@')<0)
+							if(toTP.email().indexOf('@')<0)
 								messages.append("Warning: Player '"+toName+"' has no email address..<BR>");
 							CMLib.smtp().emailOrJournal(M.Name(),
 														M.Name(),
-														toM.Name(),
+														toTP.name(),
 														"RE: "+entry.subj(),
 														clearWebMacros(replyMsg));
 							JournalInfo.clearJournalCache(httpReq, journalName);
