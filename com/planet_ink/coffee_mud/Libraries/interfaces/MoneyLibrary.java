@@ -29,69 +29,777 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * This library manages the official list of all currencies used
+ * in the game, including the built-in default currencies:
+ * "" (DEFAULT), GOLD, COPPER, CREDIT, DOLLAR, and VICTORY
+ *
+ * This also manages the creation and distribution of actual
+ * money items in the known currencies.
+ *
+ * @author Bo Zimmerman
+ *
+ */
 public interface MoneyLibrary extends CMLibrary
 {
+	/**
+	 * Unregisters the given currency
+	 *
+	 * @param currency the currency to kill
+	 */
 	public void unloadCurrencySet(String currency);
+
+	/**
+	 * Creates and registers a new currency definition.
+	 * This will be an encoded form like: NAME=DEFINITION
+	 * DEFINITION=DENOMINATION,DENOMINATION,etc
+	 * DENOMINATION=AMOUNT FULL_NAME (ABBREVIATION)
+	 * AMOUNT=amount of base value for the denomination
+	 * FULL_NAME=full name of the denomination with (s)
+	 * ABBRECIATION=short code char of the denom
+	 *
+	 * @param currency the encoded currency definition
+	 * @return null, or the definition of the currency
+	 */
 	public MoneyDefinition createCurrencySet(String currency);
+
+	/**
+	 * Returns the official MoneyDefinition object for the
+	 * given currency.
+	 *
+	 * @param currency the currency
+	 * @return the definition of the currency
+	 */
 	public MoneyDefinition getCurrencySet(String currency);
+
+	/**
+	 * Returns the list of all known currency names.
+	 * This could change over time.
+	 *
+	 * @return the list of all known currencies
+	 */
 	public List<String> getAllCurrencies();
 
+	/**
+	 * Given a mob to get a currency from and a total money value, this
+	 * will return final value of the given value after finding a single
+	 * denomination of the currency that best matches.
+	 *
+	 * @see MoneyLibrary#lowestAbbreviatedDenomination(String, double)
+	 * @see MoneyLibrary#abbreviatedPrice(MOB, double)
+	 * @see MoneyLibrary#abbreviatedPrice(String, double)
+	 * @see MoneyLibrary#abbreviatedRePrice(MOB, double)
+	 * @see MoneyLibrary#abbreviatedRePrice(String, double)
+	 *
+	 * @param shopkeeper the mob to get a currency from to use
+	 * @param absoluteAmount the total amount of value to use
+	 * @return the best total value when converting to a single denomination
+	 */
 	public double abbreviatedRePrice(MOB shopkeeper, double absoluteAmount);
+
+	/**
+	 * Given a currency and a total money value, this will return the
+	 * final value of the given value after finding a single denomination
+	 * of the currency that best matches.
+	 *
+	 * @see MoneyLibrary#lowestAbbreviatedDenomination(String, double)
+	 * @see MoneyLibrary#abbreviatedPrice(MOB, double)
+	 * @see MoneyLibrary#abbreviatedPrice(String, double)
+	 * @see MoneyLibrary#abbreviatedRePrice(MOB, double)
+	 * @see MoneyLibrary#abbreviatedRePrice(String, double)
+	 *
+	 * @param currency the currency to use
+	 * @param absoluteAmount the total amount of value to use
+	 * @return the best total value when converting to a single denomination
+	 */
 	public double abbreviatedRePrice(String currency, double absoluteAmount);
+
+	/**
+	 * Given a mob to get a currency from and a total money value, this
+	 * will return a very brief representation of the money in a single
+	 * denomination of the currency that best matches.
+	 *
+	 * @see MoneyLibrary#lowestAbbreviatedDenomination(String, double)
+	 * @see MoneyLibrary#abbreviatedPrice(MOB, double)
+	 * @see MoneyLibrary#abbreviatedPrice(String, double)
+	 * @see MoneyLibrary#abbreviatedRePrice(MOB, double)
+	 * @see MoneyLibrary#abbreviatedRePrice(String, double)
+	 *
+	 * @param shopkeeper the mob to get a currency from to use
+	 * @param absoluteAmount the total amount of value to name
+	 * @return the best tiny price to show in a single denomination
+	 */
 	public String abbreviatedPrice(MOB shopkeeper, double absoluteAmount);
+
+	/**
+	 * Given a currency and a total money value, this will return a very
+	 * brief representation of the money in a single denomination of the
+	 * currency that best matches.
+	 *
+	 * @see MoneyLibrary#lowestAbbreviatedDenomination(String, double)
+	 * @see MoneyLibrary#abbreviatedPrice(MOB, double)
+	 * @see MoneyLibrary#abbreviatedPrice(String, double)
+	 * @see MoneyLibrary#abbreviatedRePrice(MOB, double)
+	 * @see MoneyLibrary#abbreviatedRePrice(String, double)
+	 *
+	 * @param currency the currency to use
+	 * @param absoluteAmount the total amount of value to name
+	 * @return the best tiny price to show in a single denomination
+	 */
 	public String abbreviatedPrice(String currency, double absoluteAmount);
 
+	/**
+	 * Returns the ordinal index of the given denomination value in the
+	 * given currency definitions list of denominations.
+	 *
+	 * @param currency the currency to use
+	 * @param value the denomination value
+	 * @return -1, or the index of the denom value
+	 */
 	public int getDenominationIndex(String currency, double value);
+
+	/**
+	 * Returns the names of all the denominations in the given currency.
+	 *
+	 * @param currency the currency to get denominations for
+	 * @return the list of all denomination names
+	 */
 	public List<String> getDenominationNameSet(String currency);
+
+	/**
+	 * Returns the value of the lowest denomination in the given
+	 * currency.
+	 *
+	 * @see MoneyLibrary#lowestAbbreviatedDenomination(String, double)
+	 * @see MoneyLibrary#lowestAbbreviatedDenomination(String)
+	 *
+	 * @param currency the currency to use
+	 * @return the lowest denomination value in the currency
+	 */
 	public double getLowestDenomination(String currency);
 
+	/**
+	 * Returns the lowest denomination in the given currency that
+	 * has an abbreviation char/code.
+	 *
+	 * @see MoneyLibrary#lowestAbbreviatedDenomination(String, double)
+	 * @see MoneyLibrary#getLowestDenomination(String)
+	 *
+	 * @param currency the currency to find a denomination for
+	 * @return the lowest denomination with an abbreviation char
+	 */
 	public double lowestAbbreviatedDenomination(String currency);
+
+	/**
+	 * Given a currency type and an absolute value, this will return the lowest
+	 * denomination that best divides into the given absolute amount AND which
+	 * has a abbreviation char/code.
+	 *
+	 * @see MoneyLibrary#lowestAbbreviatedDenomination(String)
+	 * @see MoneyLibrary#getLowestDenomination(String)
+	 * @see MoneyLibrary#getDenominationName(String)
+	 *
+	 * @param currency the currency type
+	 * @param absoluteAmount the total amount to divide into
+	 * @return the lowest denomination to use that is abbreviated
+	 */
 	public double lowestAbbreviatedDenomination(String currency, double absoluteAmount);
 
+	/**
+	 * Given a currency and a denomination value, this will return the short
+	 * code/char of the denomination.
+	 *
+	 * @see MoneyLibrary#getDenominationName(String, double)
+	 *
+	 * @param currency the currency to use
+	 * @param denomination the denomination value
+	 * @return the name of the denominations short code
+	 */
 	public String getDenominationShortCode(String currency, double denomination);
 
+	/**
+	 * Returns the name of the lowest denomination in the given currency.
+	 *
+	 * @see MoneyLibrary#getDenominationName(String, double, long)
+	 * @see MoneyLibrary#getDenominationName(String, double)
+	 * @see MoneyLibrary#getDenominationName(MOB, double)
+	 * @see MoneyLibrary#getLowestDenomination(String)
+	 *
+	 * @param currency the currency to use
+	 * @return the name of the lowest denomination in that currency
+	 */
 	public String getDenominationName(String currency);
+
+	/**
+	 * Returns the amount and name of the denomination that matches the given
+	 * currency and the given denomination value, in the given amount.
+	 * This handles plurals!
+	 *
+	 * @see MoneyLibrary#getDenominationName(String)
+	 * @see MoneyLibrary#getDenominationName(String, double)
+	 * @see MoneyLibrary#getDenominationName(MOB, double)
+	 *
+	 * @param currency the currency type to use
+	 * @param denomination the denomination value to match
+	 * @param number the amount of the denomination to name
+	 * @return the amount and name of the denomination
+	 */
 	public String getDenominationName(String currency,  double denomination, long number);
+
+	/**
+	 * Returns the name of the denomination that matches the given
+	 * currency and the given denomination value.
+	 *
+	 * @see MoneyLibrary#getDenominationName(String)
+	 * @see MoneyLibrary#getDenominationName(String, double, long)
+	 * @see MoneyLibrary#getDenominationName(MOB, double)
+	 * @see MoneyLibrary#getDenominationShortCode(String, double)
+	 *
+	 * @param currency the currency type to use
+	 * @param denomination the denomination value to match
+	 * @return the name of the denomination
+	 */
 	public String getDenominationName(String currency, double denomination);
+
+	/**
+	 * Returns the name of the denomination that matches the given mobs
+	 * currency, and the given denomination value
+	 *
+	 * @see MoneyLibrary#getDenominationName(String)
+	 * @see MoneyLibrary#getDenominationName(String, double, long)
+	 * @see MoneyLibrary#getDenominationName(String, double)
+	 *
+	 * @param mob the mob to get a currency from
+	 * @param denomination the denomination value to match
+	 * @return the name of the denomination
+	 */
 	public String getDenominationName(final MOB mob, double denomination);
 
+	/**
+	 * Given a currency and a total money value in that currency, this will return
+	 * the denomination which will most evenly divide into the given value.
+	 *
+	 * @see MoneyLibrary#getBestDenomination(String, int, double)
+	 * @see MoneyLibrary#getBestDenominations(String, double)
+	 *
+	 * @param currency the currency to get denominations from
+	 * @param absoluteValue the total value to parse out
+	 * @return the best denomination to use to represent the given value
+	 */
 	public double getBestDenomination(String currency, double absoluteValue);
+
+	/**
+	 * Given a currency, a total money value, and a number of currency coins, this
+	 * will find the denomination that is closest to the total money value in that
+	 * given number of coins
+	 *
+	 * @see MoneyLibrary#getBestDenomination(String, double)
+	 * @see MoneyLibrary#getBestDenominations(String, double)
+	 *
+	 * @param currency the currency to use
+	 * @param numberOfCoins the number of coins that MUST be used
+	 * @param absoluteValue the total value to get cloest to
+	 * @return the denomination value that matches best
+	 */
 	public double getBestDenomination(String currency, int numberOfCoins, double absoluteValue);
+
+	/**
+	 * Given a currency and a total money value in that currency, this will return
+	 * the denominations whose combination will produce the total value evenly.
+	 *
+	 * @see MoneyLibrary#getBestDenomination(String, double)
+	 * @see MoneyLibrary#getBestDenomination(String, int, double)
+	 *
+	 * @param currency the currency to get denominations from
+	 * @param absoluteValue the total value to parse out
+	 * @return the set of denominations that will make up the value
+	 */
 	public double[] getBestDenominations(String currency, double absoluteValue);
 
+	/**
+	 * Given a currency, returns the string "Equal to" followed by the conversion
+	 * of the given duration into the lowest denomination in the currency.  If the
+	 * given denomination is already the lowest, it returns ""
+	 *
+	 * @param currency the currency to get a conversion for
+	 * @param denomination the denomination to get a conversion to lowest for
+	 * @return the conversion Equal to string
+	 */
 	public String getConvertableDescription(String currency, double denomination);
+
+	/**
+	 * Given a mob to get a currency, this will determine the denomination in
+	 * that currency closest to the given total value, and return a string
+	 * denoting that denomination and the amount, in x.xx form, of that
+	 * denomination.  This is for display purposes only.
+	 *
+	 * @see MoneyLibrary#nameCurrencyLong(String, double)
+	 * @see MoneyLibrary#nameCurrencyShort(String, double)
+	 * @see MoneyLibrary#nameCurrencyShort(MOB, int)
+	 *
+	 * @param currency the currency to use
+	 * @param absoluteValue the total value to show
+	 * @return the close denomination with of a short form of the value
+	 */
 	public String nameCurrencyShort(MOB mob, double absoluteValue);
+
+	/**
+	 * Given a mob to get a currency, this will determine the denomination in
+	 * that currency closest to the given total value, and return a string
+	 * denoting that denomination and the amount, in x.xx form, of that
+	 * denomination.  This is for display purposes only.
+	 *
+	 * @see MoneyLibrary#nameCurrencyLong(String, double)
+	 * @see MoneyLibrary#nameCurrencyShort(String, double)
+	 * @see MoneyLibrary#nameCurrencyShort(MOB, double)
+	 *
+	 * @param currency the currency to use
+	 * @param absoluteValue the total value to show
+	 * @return the close denomination with of a short form of the value
+	 */
 	public String nameCurrencyShort(MOB mob, int absoluteValue);
+
+	/**
+	 * Given a particular currency, this will determine the denomination in
+	 * that currency closest to the given total value, and return a string
+	 * denoting that denomination and the amount, in x.xx form, of that
+	 * denomination.  This is for display purposes only.
+	 *
+	 * @see MoneyLibrary#nameCurrencyLong(String, double)
+	 * @see MoneyLibrary#nameCurrencyShort(MOB, double)
+	 * @see MoneyLibrary#nameCurrencyShort(MOB, int)
+	 *
+	 * @param currency the currency to use
+	 * @param absoluteValue the total value to show
+	 * @return the close denomination with of a short form of the value
+	 */
 	public String nameCurrencyShort(String currency, double absoluteValue);
+
+	/**
+	 * Given a mob whose currency to use, this will split the given
+	 * amount of value into denominations of that currency and
+	 * return a string with the number and denoms, comma delimited,
+	 * necessary to produce the value.
+	 *
+	 * @see MoneyLibrary#nameCurrencyLong(MOB, int)
+	 * @see MoneyLibrary#nameCurrencyLong(String, double)
+	 * @see MoneyLibrary#nameCurrencyShort(String, double)
+	 *
+	 * @param mob the mob whose currency to use
+	 * @param absoluteValue the total value of the money
+	 * @return the long form of all the denominations to make up the value
+	 */
 	public String nameCurrencyLong(MOB mob, double absoluteValue);
+
+	/**
+	 * Given a mob whose currency to use, this will split the given
+	 * amount of value into denominations of that currency and
+	 * return a string with the number and denoms, comma delimited,
+	 * necessary to produce the value.
+	 *
+	 * @see MoneyLibrary#nameCurrencyLong(MOB, double)
+	 * @see MoneyLibrary#nameCurrencyLong(String, double)
+	 * @see MoneyLibrary#nameCurrencyShort(String, double)
+	 *
+	 * @param mob the mob whose currency to use
+	 * @param absoluteValue the total value of the money
+	 * @return the long form of all the denominations to make up the value
+	 */
 	public String nameCurrencyLong(MOB mob, int absoluteValue);
+
+	/**
+	 * Given a currency, this will split the given amount of value into
+	 * denominations and return a string with the number and denoms,
+	 * comma delimited, necessary to produce the value.
+	 *
+	 * @see MoneyLibrary#nameCurrencyLong(MOB, double)
+	 * @see MoneyLibrary#nameCurrencyLong(MOB, int)
+	 * @see MoneyLibrary#nameCurrencyShort(String, double)
+	 *
+	 * @param currency the currency to use
+	 * @param absoluteValue the total value of the money
+	 * @return the long form of all the denominations to make up the value
+	 */
 	public String nameCurrencyLong(String currency, double absoluteValue);
 
-	public Coins makeBestCurrency(MOB mob,  double absoluteValue, Environmental owner, Container container);
-	public Coins makeBestCurrency(String currency,  double absoluteValue, Environmental owner, Container container);
+	/**
+	 * Given a mob to derive a currency from, this will find the denomination
+	 * in that currency which is capable to generating a stack of money closest
+	 * to the given value. It will then give that money to the given owner
+	 * in the given container.
+	 *
+	 * @see MoneyLibrary#makeBestCurrency(MOB, double)
+	 * @see MoneyLibrary#makeBestCurrency(String, double)
+	 * @see MoneyLibrary#makeBestCurrency(String, double, ItemPossessor, Container)
+	 * @see MoneyLibrary#makeAllCurrency(String, double)
+	 * @see MoneyLibrary#makeCurrency(String, double, long)
+	 *
+	 * @param currency the currency to use
+	 * @param absoluteValue the amount to approximate
+	 * @param owner the new owner of the returned item
+	 * @param container the container to put the item in
+	 * @return the stack of currency whose value is closest to the value
+	 */
+	public Coins makeBestCurrency(MOB mob,  double absoluteValue, ItemPossessor owner, Container container);
+
+	/**
+	 * Given a currency type, this will find the denomination in that currency which
+	 * is capable to generating a stack of money closest to the given value.
+	 * It will then give that money to the given owner in the given container.
+	 *
+	 * @see MoneyLibrary#makeBestCurrency(MOB, double)
+	 * @see MoneyLibrary#makeBestCurrency(String, double)
+	 * @see MoneyLibrary#makeBestCurrency(MOB, double, ItemPossessor, Container)
+	 * @see MoneyLibrary#makeAllCurrency(String, double)
+	 * @see MoneyLibrary#makeCurrency(String, double, long)
+	 *
+	 * @param currency the currency to use
+	 * @param absoluteValue the amount to approximate
+	 * @param owner the new owner of the returned item
+	 * @param container the container to put the item in
+	 * @return the stack of currency whose value is closest to the value
+	 */
+	public Coins makeBestCurrency(String currency,  double absoluteValue, ItemPossessor owner, Container container);
+
+	/**
+	 * Given a mob to derive a currency from, this will find the denomination
+	 * in that currency which is capable to generating a stack of money closest
+	 * to the given value.
+	 *
+	 * @see MoneyLibrary#makeBestCurrency(String, double)
+	 * @see MoneyLibrary#makeBestCurrency(MOB, double, ItemPossessor, Container)
+	 * @see MoneyLibrary#makeBestCurrency(String, double, ItemPossessor, Container)
+	 * @see MoneyLibrary#makeAllCurrency(String, double)
+	 * @see MoneyLibrary#makeCurrency(String, double, long)
+	 *
+	 * @param mob the mob to get the native currency from
+	 * @param absoluteValue the amount to approximate
+	 * @return the stack of currency whose value is closest to the value
+	 */
 	public Coins makeBestCurrency(MOB mob, double absoluteValue);
-	public Coins makeCurrency(String currency, double denomination, long numberOfCoins);
+
+	/**
+	 * Given a currency type, this will find the denomination in that currency which
+	 * is capable to generating a stack of money closest to the given value.
+	 *
+	 * @see MoneyLibrary#makeBestCurrency(MOB, double)
+	 * @see MoneyLibrary#makeBestCurrency(MOB, double, ItemPossessor, Container)
+	 * @see MoneyLibrary#makeBestCurrency(String, double, ItemPossessor, Container)
+	 * @see MoneyLibrary#makeAllCurrency(String, double)
+	 * @see MoneyLibrary#makeCurrency(String, double, long)
+	 *
+	 * @param currency the currency to use
+	 * @param absoluteValue the amount to approximate
+	 * @return the stack of currency whose value is closest to the value
+	 */
 	public Coins makeBestCurrency(String currency, double absoluteValue);
+
+	/**
+	 * Generates an individual currency item of the given type, denomination, and
+	 * number, as an item stack of currency item.
+	 *
+	 * @see MoneyLibrary#makeAllCurrency(String, double)
+	 * @see MoneyLibrary#makeBestCurrency(String, double)
+	 *
+	 * @param currency the currency of the money
+	 * @param denomination the denomination of that money
+	 * @param numberOfCoins the number of coins of that denomination in the stack
+	 * @return the currency item representing the currency stack
+	 */
+	public Coins makeCurrency(String currency, double denomination, long numberOfCoins);
+
+	/**
+	 * This great workhorse generates the individual denomination coins necessary
+	 * to properly represent the given absolute value in the given currency.
+	 *
+	 * @see MoneyLibrary#makeCurrency(String, double, long)
+	 * @see MoneyLibrary#makeBestCurrency(String, double)
+	 *
+	 * @param currency the currency to make the money in
+	 * @param absoluteValue the absolute value of all the money to make combined
+	 * @return individual denomination coin items that add up to the value
+	 */
 	public List<Coins> makeAllCurrency(String currency, double absoluteValue);
 
-	public void addMoney(MOB customer, int absoluteValue);
-	public void addMoney(MOB customer, double absoluteValue);
-	public void addMoney(MOB customer, String currency, int absoluteValue);
-	public void addMoney(MOB mob, String currency, double absoluteValue);
-	public void addMoney(MOB customer, Container container, String currency, int absoluteValue);
-	public void addMoney(MOB mob, Container container, String currency, double absoluteValue);
+	/**
+	 * Adds the given amount of money to the given mobs inventory in their native currency.
+	 *
+	 * @see MoneyLibrary#addMoney(MOB, double)
+	 * @see MoneyLibrary#addMoney(MOB, String, double)
+	 * @see MoneyLibrary#addMoney(MOB, String, int)
+	 * @see MoneyLibrary#addMoney(MOB, Container, String, double)
+	 * @see MoneyLibrary#addMoney(MOB, Container, String, int)
+	 *
+	 * @param mob the mob to have more money
+	 * @param deltaValue the amount of total value to add
+	 */
+	public void addMoney(MOB customer, int deltaValue);
 
+	/**
+	 * Adds the given amount of money to the given mobs inventory in their native currency.
+	 *
+	 * @see MoneyLibrary#addMoney(MOB, int)
+	 * @see MoneyLibrary#addMoney(MOB, String, double)
+	 * @see MoneyLibrary#addMoney(MOB, String, int)
+	 * @see MoneyLibrary#addMoney(MOB, Container, String, double)
+	 * @see MoneyLibrary#addMoney(MOB, Container, String, int)
+	 *
+	 * @param mob the mob to have more money
+	 * @param deltaValue the amount of total value to add
+	 */
+	public void addMoney(MOB customer, double deltaValue);
+
+	/**
+	 * Adds the given amount of money, in the given currency, to the given mobs inventory.
+	 *
+	 * @see MoneyLibrary#addMoney(MOB, double)
+	 * @see MoneyLibrary#addMoney(MOB, int)
+	 * @see MoneyLibrary#addMoney(MOB, String, double)
+	 * @see MoneyLibrary#addMoney(MOB, Container, String, double)
+	 * @see MoneyLibrary#addMoney(MOB, Container, String, int)
+	 *
+	 * @param mob the mob to have more money
+	 * @param currency the currency of the money to make
+	 * @param deltaValue the amount of total value to add
+	 */
+	public void addMoney(MOB customer, String currency, int deltaValue);
+
+	/**
+	 * Adds the given amount of money, in the given currency, to the given mobs inventory.
+	 *
+	 * @see MoneyLibrary#addMoney(MOB, double)
+	 * @see MoneyLibrary#addMoney(MOB, int)
+	 * @see MoneyLibrary#addMoney(MOB, String, int)
+	 * @see MoneyLibrary#addMoney(MOB, Container, String, double)
+	 * @see MoneyLibrary#addMoney(MOB, Container, String, int)
+	 *
+	 * @param mob the mob to have more money
+	 * @param currency the currency of the money to make
+	 * @param deltaValue the amount of total value to add
+	 */
+	public void addMoney(MOB mob, String currency, double deltaValue);
+
+	/**
+	 * Adds the given amount of money, in the given currency, to the given mobs inventory,
+	 * in the given container.
+	 *
+	 * @see MoneyLibrary#addMoney(MOB, double)
+	 * @see MoneyLibrary#addMoney(MOB, int)
+	 * @see MoneyLibrary#addMoney(MOB, String, double)
+	 * @see MoneyLibrary#addMoney(MOB, String, int)
+	 * @see MoneyLibrary#addMoney(MOB, Container, String, double)
+	 *
+	 * @param mob the mob to have more money
+	 * @param container null, or the container to put the money in
+	 * @param currency the currency of the money to make
+	 * @param deltaValue the amount of total value to add
+	 */
+	public void addMoney(MOB customer, Container container, String currency, int deltaValue);
+
+	/**
+	 * Adds the given amount of money, in the given currency, to the given mobs inventory,
+	 * in the given container.
+	 *
+	 * @see MoneyLibrary#addMoney(MOB, double)
+	 * @see MoneyLibrary#addMoney(MOB, int)
+	 * @see MoneyLibrary#addMoney(MOB, String, double)
+	 * @see MoneyLibrary#addMoney(MOB, String, int)
+	 * @see MoneyLibrary#addMoney(MOB, Container, String, int)
+	 *
+	 * @param mob the mob to have more money
+	 * @param container null, or the container to put the money in
+	 * @param currency the currency of the money to make
+	 * @param deltaValue the amount of total value to add
+	 */
+	public void addMoney(MOB mob, Container container, String currency, double deltaValue);
+
+	/**
+	 * Generates a visible message of the given recipient receiving the given amount
+	 * of money in their native currency from themselves.  Yea, it's weird.
+	 *
+	 * @see MoneyLibrary#giveSomeoneMoney(MOB, MOB, double)
+	 * @see MoneyLibrary#giveSomeoneMoney(MOB, String, double)
+	 * @see MoneyLibrary#giveSomeoneMoney(MOB, MOB, String, double)
+	 *
+	 * @param recipient the recipient of the money
+	 * @param absoluteValue the absolute amount of the money to give
+	 */
 	public void giveSomeoneMoney(MOB recipient, double absoluteValue);
+
+	/**
+	 * Generates a visible message of the given recipient receiving the given amount
+	 * of money in the given currency from themselves.  Yea, it's weird.
+	 *
+	 * @see MoneyLibrary#giveSomeoneMoney(MOB, double)
+	 * @see MoneyLibrary#giveSomeoneMoney(MOB, MOB, double)
+	 * @see MoneyLibrary#giveSomeoneMoney(MOB, MOB, String, double)
+	 *
+	 * @param recipient the recipient of the money
+	 * @param currency the currency the money is in
+	 * @param absoluteValue the absolute amount of the money to give
+	 */
 	public void giveSomeoneMoney(MOB recipient, String currency, double absoluteValue);
+
+	/**
+	 * Generates a visible message of the given recipient receiving the given amount
+	 * of money in the banker's currency from the given banker/giver.  The money is created,
+	 * given to the banker, who gives it to the recipient.
+	 *
+	 * @see MoneyLibrary#giveSomeoneMoney(MOB, double)
+	 * @see MoneyLibrary#giveSomeoneMoney(MOB, String, double)
+	 * @see MoneyLibrary#giveSomeoneMoney(MOB, MOB, String, double)
+	 *
+	 * @param banker the giver of the money
+	 * @param customer the recipient of the money
+	 * @param absoluteValue the absolute amount of the money to give
+	 */
 	public void giveSomeoneMoney(MOB banker, MOB customer, double absoluteValue);
+
+	/**
+	 * Generates a visible message of the given recipient receiving the given amount
+	 * of money in the given currency from the given banker/giver.  The money is created,
+	 * given to the banker, who gives it to the recipient.
+	 *
+	 * @see MoneyLibrary#giveSomeoneMoney(MOB, double)
+	 * @see MoneyLibrary#giveSomeoneMoney(MOB, MOB, double)
+	 * @see MoneyLibrary#giveSomeoneMoney(MOB, String, double)
+	 *
+	 * @param banker the giver of the money
+	 * @param customer the recipient of the money
+	 * @param currency the currency the money is in
+	 * @param absoluteValue the absolute amount of the money to give
+	 */
 	public void giveSomeoneMoney(MOB banker, MOB customer, String currency, double absoluteValue);
 
+	/**
+	 * Adds a new record to the bank account ledger, which is an accounting of deposits
+	 * and withdrawls.
+	 *
+	 * @see MoneyLibrary#getBankAccountChains(String)
+	 * @see MoneyLibrary#getBankBalance(String, String, String)
+	 * @see MoneyLibrary#modifyBankGold(String, String, String, String, double)
+	 * @see MoneyLibrary#modifyThisAreaBankGold(Area, Set, String, String, double)
+	 * @see MoneyLibrary#modifyLocalBankGold(Area, String, String, double)
+	 * @see MoneyLibrary#getBankChainCurrency(String)
+	 *
+	 * @param bankName the bank chain name
+	 * @param owner the account owner name (a player usually)
+	 * @param explanation a brief explanation of what happened
+	 */
 	public void addToBankLedger(String bankName, String owner, String explanation);
+
+	/**
+	 * Returns the set of all bank chains that have accounts for the
+	 * given bank account owner.
+	 *
+	 * @see MoneyLibrary#addToBankLedger(String, String, String)
+	 * @see MoneyLibrary#getBankBalance(String, String, String)
+	 * @see MoneyLibrary#modifyBankGold(String, String, String, String, double)
+	 * @see MoneyLibrary#modifyThisAreaBankGold(Area, Set, String, String, double)
+	 * @see MoneyLibrary#modifyLocalBankGold(Area, String, String, double)
+	 * @see MoneyLibrary#getBankChainCurrency(String)
+	 *
+	 * @param owner the bank account owner, typically a player
+	 * @return a set of all bank chains found, could be empty
+	 */
 	public Set<String> getBankAccountChains(final String owner);
+
+	/**
+	 * For the given bank chain and given bank account owner name, and optionally a
+	 * currency, this will return the found currency and bank balance.
+	 *
+	 * @see MoneyLibrary#addToBankLedger(String, String, String)
+	 * @see MoneyLibrary#getBankAccountChains(String)
+	 * @see MoneyLibrary#modifyBankGold(String, String, String, String, double)
+	 * @see MoneyLibrary#modifyThisAreaBankGold(Area, Set, String, String, double)
+	 * @see MoneyLibrary#modifyLocalBankGold(Area, String, String, double)
+	 * @see MoneyLibrary#getBankChainCurrency(String)
+	 *
+	 * @param bankName the bank chain name
+	 * @param owner the account owner name (usually a player)
+	 * @param optionalCurrency null, or a currency to ensure is returned
+	 * @return NULL, or the currency and total amount of the bank balance
+	 */
 	public Pair<String,Double> getBankBalance(final String bankName, final String owner, final String optionalCurrency);
-	public boolean modifyBankGold(String bankName,  String owner, String explanation, String currency, double absoluteAmount);
-	public boolean modifyThisAreaBankGold(Area A,  Set<String> triedBanks, String owner, String explanation, double absoluteAmount);
-	public boolean modifyLocalBankGold(Area A, String owner, String explanation, double absoluteAmount);
+
+	/**
+	 * Modifies the amount of money in the bank account of the given
+	 * account name owner and the given bank name.
+	 *
+	 * @see MoneyLibrary#addToBankLedger(String, String, String)
+	 * @see MoneyLibrary#getBankAccountChains(String)
+	 * @see MoneyLibrary#getBankBalance(String, String, String)
+	 * @see MoneyLibrary#modifyThisAreaBankGold(Area, Set, String, String, double)
+	 * @see MoneyLibrary#modifyLocalBankGold(Area, String, String, double)
+	 * @see MoneyLibrary#getBankChainCurrency(String)
+	 *
+	 * @param bankName the name of the bank chain
+	 * @param owner the account name (player) to alter money in
+	 * @param explanation the reason for the change, for the ledger
+	 * @param currency the currency to use
+	 * @param deltaAmount an amount to change local money by
+	 * @return true if money was successfully changed at a chain here
+	 */
+	public boolean modifyBankGold(String bankName,  String owner, String explanation, String currency, double deltaAmount);
+
+	/**
+	 * Loops through all bank chains in the given area and attempts to
+	 * find an account for the given account name owner and modify the
+	 * amount of money in the bank account.
+	 *
+	 * @see MoneyLibrary#addToBankLedger(String, String, String)
+	 * @see MoneyLibrary#getBankAccountChains(String)
+	 * @see MoneyLibrary#getBankBalance(String, String, String)
+	 * @see MoneyLibrary#modifyBankGold(String, String, String, String, double)
+	 * @see MoneyLibrary#modifyLocalBankGold(Area, String, String, double)
+	 * @see MoneyLibrary#getBankChainCurrency(String)
+	 *
+	 * @param A null or the area to find chains in
+	 * @param triedBanks set of bank chains already tried (don't try again)
+	 * @param owner the account name (player) to alter money in
+	 * @param explanation the reason for the change, for the ledger
+	 * @param deltaAmount an amount to change local money by
+	 * @return true if money was successfully changed at a chain here
+	 */
+	public boolean modifyThisAreaBankGold(Area A,  Set<String> triedBanks, String owner, String explanation, double deltaAmount);
+
+	/**
+	 * Starting with the given area, and proceeding to parent areas,
+	 * this will attempt to alter the amount of money in any bank chains
+	 * account associated with the given account name owner.  If no chains
+	 * associated with the area are found, it will end up just taking any
+	 * chain it can find.
+	 *
+	 * @see MoneyLibrary#addToBankLedger(String, String, String)
+	 * @see MoneyLibrary#getBankAccountChains(String)
+	 * @see MoneyLibrary#getBankBalance(String, String, String)
+	 * @see MoneyLibrary#modifyBankGold(String, String, String, String, double)
+	 * @see MoneyLibrary#modifyThisAreaBankGold(Area, Set, String, String, double)
+	 * @see MoneyLibrary#getBankChainCurrency(String)
+	 *
+	 * @param A the area to start finding chains in
+	 * @param owner the account name (player) to alter money in
+	 * @param explanation the reason for the change, for the ledger
+	 * @param deltaAmount an amount to change local money by
+	 * @return true if money was successfully changed somewhere
+	 */
+	public boolean modifyLocalBankGold(Area A, String owner, String explanation, double deltaAmount);
+
+	/**
+	 * Given a bank chain, which may deal in many currencies due to having
+	 * branches in many areas, this method will return the chains most
+	 * popular currency.
+	 *
+	 * @see MoneyLibrary#addToBankLedger(String, String, String)
+	 * @see MoneyLibrary#getBankAccountChains(String)
+	 * @see MoneyLibrary#getBankBalance(String, String, String)
+	 * @see MoneyLibrary#modifyBankGold(String, String, String, String, double)
+	 * @see MoneyLibrary#modifyThisAreaBankGold(Area, Set, String, String, double)
+	 * @see MoneyLibrary#modifyLocalBankGold(Area, String, String, double)
+	 *
+	 * @param bankChain the bank chain name
+	 * @return null, or a currency
+	 */
 	public String getBankChainCurrency(final String bankChain);
 
 	/**
@@ -105,9 +813,9 @@ public interface MoneyLibrary extends CMLibrary
 	 *
 	 * @param banker the banker who gives change
 	 * @param mob the mob losing their money, but maybe getting some back
-	 * @param absoluteAmount the amount to NOT give back
+	 * @param positiveDeltaAmount the amount to NOT give back
 	 */
-	public void subtractMoneyGiveChange(MOB banker, MOB mob, int absoluteAmount);
+	public void subtractMoneyGiveChange(MOB banker, MOB mob, int positiveDeltaAmount);
 
 	/**
 	 * This strange method takes away all the money from the given mob, of the bankers
@@ -120,9 +828,9 @@ public interface MoneyLibrary extends CMLibrary
 	 *
 	 * @param banker the banker who gives change
 	 * @param mob the mob losing their money, but maybe getting some back
-	 * @param absoluteAmount the amount to NOT give back
+	 * @param positiveDeltaAmount the amount to NOT give back
 	 */
-	public void subtractMoneyGiveChange(MOB banker, MOB mob, double absoluteAmount);
+	public void subtractMoneyGiveChange(MOB banker, MOB mob, double positiveDeltaAmount);
 
 	/**
 	 * This strange method takes away all the money from the given mob, of the given
@@ -136,9 +844,9 @@ public interface MoneyLibrary extends CMLibrary
 	 * @param banker the banker who gives change
 	 * @param mob the mob losing their money, but maybe getting some back
 	 * @param currency the currency of the money to lose
-	 * @param absoluteAmount the amount to NOT give back
+	 * @param positiveDeltaAmount the amount to NOT give back
 	 */
-	public void subtractMoneyGiveChange(MOB banker, MOB mob, String currency, double absoluteAmount);
+	public void subtractMoneyGiveChange(MOB banker, MOB mob, String currency, double positiveDeltaAmount);
 
 	/**
 	 * Removes the given total amount of money from the given mob.
@@ -150,9 +858,9 @@ public interface MoneyLibrary extends CMLibrary
 	 * @see MoneyLibrary#subtractMoney(MOB, String, double, double)
 	 *
 	 * @param mob the mob losing money
-	 * @param absoluteAmount the total value to remove
+	 * @param positiveDeltaAmount the total value to remove
 	 */
-	public void subtractMoney(MOB mob, double absoluteAmount);
+	public void subtractMoney(MOB mob, double positiveDeltaAmount);
 
 	/**
 	 * Removes the given total amount of money from the given mob, in the given
@@ -165,9 +873,9 @@ public interface MoneyLibrary extends CMLibrary
 	 *
 	 * @param mob the mob losing money
 	 * @param currency the type of currency to remove
-	 * @param absoluteAmount the total value to remove
+	 * @param positiveDeltaAmount the total value to remove
 	 */
-	public void subtractMoney(MOB mob, String currency, double absoluteAmount);
+	public void subtractMoney(MOB mob, String currency, double positiveDeltaAmount);
 
 	/**
 	 * Removes the given total amount of money from the given mob, in the given
@@ -182,9 +890,9 @@ public interface MoneyLibrary extends CMLibrary
 	 * @param mob the mob losing money
 	 * @param container null, or the container with the money in it
 	 * @param currency the type of currency to remove
-	 * @param absoluteAmount the total value to remove
+	 * @param positiveDeltaAmount the total value to remove
 	 */
-	public void subtractMoney(MOB mob, Container container, String currency, double absoluteAmount);
+	public void subtractMoney(MOB mob, Container container, String currency, double positiveDeltaAmount);
 
 	/**
 	 * Removes the given total amount of money from the given mob, in their native
@@ -198,9 +906,9 @@ public interface MoneyLibrary extends CMLibrary
 	 *
 	 * @param mob the mob losing money
 	 * @param denomination the denomination of the currency to remove
-	 * @param absoluteAmount the total value to remove
+	 * @param positiveDeltaAmount the total value to remove
 	 */
-	public void subtractMoney(MOB mob, double denomination, double absoluteAmount);
+	public void subtractMoney(MOB mob, double denomination, double positiveDeltaAmount);
 
 	/**
 	 * Removes the given total amount of money from the given mob, in the given currency and the given
@@ -214,9 +922,9 @@ public interface MoneyLibrary extends CMLibrary
 	 * @param mob the mob losing money
 	 * @param currency the type of currency to remove
 	 * @param denomination the denomination of the currency to remove
-	 * @param absoluteAmount the total value to remove
+	 * @param positiveDeltaAmount the total value to remove
 	 */
-	public void subtractMoney(MOB mob, String currency, double denomination, double absoluteAmount);
+	public void subtractMoney(MOB mob, String currency, double denomination, double positiveDeltaAmount);
 
 	/**
 	 * If the given mob is an npc with native parameter-value

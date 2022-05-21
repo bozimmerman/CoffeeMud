@@ -9725,7 +9725,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				E.setMinThrust(prompt(mob, E.getMinThrust(), ++showNumber, showFlag, "Min thrust"));
 				E.setMaxThrust(prompt(mob, E.getMaxThrust(), ++showNumber, showFlag, "Max thrust"));
 				E.setConstantThruster(prompt(mob, E.isConstantThruster(), ++showNumber, showFlag, "Constant thrust"));
-				E.setSpecificImpulse(prompt(mob, E.getSpecificImpulse(), ++showNumber, showFlag, "Spec Impulse"));
+				E.setSpecificImpulse(prompt(mob, E.getSpecificImpulse(), ++showNumber, showFlag, "Fuel Spec Impulse"));
 				E.setFuelEfficiency(prompt(mob, E.getFuelEfficiency()*100.0, ++showNumber, showFlag, "Fuel Effic. %")/100.0);
 				E.setAvailPorts(CMParms.parseEnumList(ShipDirComponent.ShipDir.class,prompt(mob, CMParms.toListString(E.getAvailPorts()), ++showNumber, showFlag, "Avail. ports").toUpperCase(),',').toArray(new ShipDirComponent.ShipDir[0]));
 			}
@@ -10141,7 +10141,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				E.setMinThrust(prompt(mob, E.getMinThrust(), ++showNumber, showFlag, "Min thrust"));
 				E.setMaxThrust(prompt(mob, E.getMaxThrust(), ++showNumber, showFlag, "Max thrust"));
 				E.setConstantThruster(prompt(mob, E.isConstantThruster(), ++showNumber, showFlag, "Constant thrust"));
-				E.setSpecificImpulse(prompt(mob, E.getSpecificImpulse(), ++showNumber, showFlag, "Spec Impulse"));
+				E.setSpecificImpulse(prompt(mob, E.getSpecificImpulse(), ++showNumber, showFlag, "Fuel Spec Impulse"));
 				E.setFuelEfficiency(prompt(mob, E.getFuelEfficiency()*100.0, ++showNumber, showFlag, "Fuel Effic. %")/100.0);
 				E.setAvailPorts(CMParms.parseEnumList(ShipDirComponent.ShipDir.class,prompt(mob, CMParms.toListString(E.getAvailPorts()), ++showNumber, showFlag, "Avail. ports").toUpperCase(),',').toArray(new ShipDirComponent.ShipDir[0]));
 			}
