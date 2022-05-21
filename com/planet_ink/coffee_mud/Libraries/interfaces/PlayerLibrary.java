@@ -33,48 +33,70 @@ import java.util.*;
 */
 public interface PlayerLibrary extends CMLibrary
 {
+	public PlayerAccount getLoadAccount(String calledThis);
+	public PlayerAccount getLoadAccountByEmail(String email);
+
+	public PlayerAccount getAccount(String calledThis);
+	public PlayerAccount getAccountAllHosts(String calledThis);
+
+	public void addAccount(PlayerAccount acct);
+
+	public boolean accountExists(String name);
+	public boolean accountExistsAllHosts(String name);
+
+	public Enumeration<PlayerAccount> accounts();
+	public Enumeration<PlayerAccount> accounts(String sort, Map<String, Object> cache);
+
+	public boolean isSameAccount(final MOB player1, final MOB player2);
+	public boolean isSameAccountIP(final MOB player1, final MOB player2);
+
+	public void obliterateAccountOnly(PlayerAccount deadAccount);
+
 	public int numPlayers();
 	public void addPlayer(MOB newOne);
 	public void delPlayer(MOB oneToDel);
+	public Enumeration<MOB> players();
+
 	public MOB getPlayer(String calledThis);
-	public ThinPlayer getThinPlayer(final String mobName);
 	public MOB getPlayerAllHosts(String calledThis);
+
 	public MOB getLoadPlayer(String last);
 	public MOB getLoadPlayerByEmail(String email);
+
 	public List<String> getPlayerLists();
 	public List<String> getPlayerListsAllHosts();
+
 	public boolean isLoadedPlayer(final MOB M);
 	public boolean isLoadedPlayer(final String mobName);
-	public String getLiegeOfUserAllHosts(final String userName);
-	public MOB findPlayerOnline(final String srchStr, final boolean exactOnly);
-	public PlayerAccount getLoadAccount(String calledThis);
-	public PlayerAccount getLoadAccountByEmail(String email);
-	public PlayerAccount getAccount(String calledThis);
-	public PlayerAccount getAccountAllHosts(String calledThis);
-	public PlayerLibrary.ThinnerPlayer newThinnerPlayer();
-	public void addAccount(PlayerAccount acct);
-	public boolean accountExists(String name);
-	public boolean accountExistsAllHosts(String name);
-	public Enumeration<MOB> players();
-	public Enumeration<PlayerAccount> accounts();
-	public Enumeration<PlayerAccount> accounts(String sort, Map<String, Object> cache);
-	public boolean isSameAccount(final MOB player1, final MOB player2);
-	public boolean isSameAccountIP(final MOB player1, final MOB player2);
-	public void obliteratePlayer(MOB deadMOB, boolean deleteAssets, boolean quiet);
-	public void obliterateAccountOnly(PlayerAccount deadAccount);
-	public void renamePlayer(MOB mob, String oldName);
+
 	public boolean playerExists(String name);
 	public boolean playerExistsAllHosts(String name);
+
+	public String getLiegeOfUserAllHosts(final String userName);
+
+	public MOB findPlayerOnline(final String srchStr, final boolean exactOnly);
+
+	public void obliteratePlayer(MOB deadMOB, boolean deleteAssets, boolean quiet);
+
+	public void renamePlayer(MOB mob, String oldName);
+
 	public void unloadOfflinePlayer(final MOB mob);
+
 	public void forceTick();
-	public void resetAllPrideStats();
 	public int savePlayers();
+
+	public ThinPlayer getThinPlayer(final String mobName);
+	public PlayerLibrary.ThinnerPlayer newThinnerPlayer();
 	public Enumeration<ThinPlayer> thinPlayers(String sort, Map<String, Object> cache);
+
 	public CharThinSortCode getCharThinSortCode(String codeName, boolean loose);
 	public String getThinSortValue(ThinPlayer player, CharThinSortCode code);
 	public String getSortValue(MOB player, CharThinSortCode code);
+
 	public Set<MOB> getPlayersHere(Room room);
 	public void changePlayersLocation(MOB mob, Room room);
+
+	public void resetAllPrideStats();
 	public Pair<Long,int[]>[] parsePrideStats(final String[] nextPeriods, final String[] prideStats);
 	public int bumpPrideStat(final MOB mob, final AccountStats.PrideStat stat, final int amt);
 	public List<Pair<String,Integer>> getTopPridePlayers(TimeClock.TimePeriod period, AccountStats.PrideStat stat);
