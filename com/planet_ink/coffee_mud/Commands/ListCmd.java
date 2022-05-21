@@ -26,6 +26,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.StatAwa
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.TitleAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.CommandJournalFlags;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.CharThinSortCode;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.*;
@@ -1549,12 +1550,12 @@ public class ListCmd extends StdCommand
 			}
 		}
 		commands.remove(0);
-		int sortBy=-1;
+		CharThinSortCode sortBy=null;
 		if(commands.size()>0)
 		{
 			final String rest=CMParms.combine(commands,0).toUpperCase();
 			sortBy = CMLib.players().getCharThinSortCode(rest,true);
-			if(sortBy<0)
+			if(sortBy==null)
 			{
 				mob.tell(L("Unrecognized sort criteria: @x1",rest));
 				return;
@@ -1573,12 +1574,15 @@ public class ListCmd extends StdCommand
 		head.append(CMStrings.padRight(L("Class"),COL_LEN2)+" ");
 		head.append(CMStrings.padRight(L("Lvl"),COL_LEN3)+" ");
 		head.append(CMStrings.padRight(L("Hours"),COL_LEN4)+" ");
+		if(sortBy == null)
+			head.append(CMStrings.padRight(L("E-Mail"), COL_LEN5) + " ");
+		else
 		switch(sortBy)
 		{
-		case 6:
+		case EMAIL:
 			head.append(CMStrings.padRight(L("E-Mail"), COL_LEN5) + " ");
 			break;
-		case 7:
+		case IP:
 			head.append(CMStrings.padRight(L("IP Address"), COL_LEN5) + " ");
 			break;
 		default:
@@ -1589,13 +1593,13 @@ public class ListCmd extends StdCommand
 		head.append("] Character name\n\r");
 		java.util.List<PlayerLibrary.ThinPlayer> allUsers=CMLib.database().getExtendedUserList();
 		final java.util.List<PlayerLibrary.ThinPlayer> oldSet=allUsers;
-		final int showBy=sortBy;
+		final CharThinSortCode showBy=sortBy;
 		final PlayerLibrary lib=CMLib.players();
-		while((oldSet.size()>0)&&(sortBy>=0)&&(sortBy<=7))
+		while((oldSet.size()>0)&&(sortBy!=null)&&(sortBy!=CharThinSortCode.IP))
 		{
 			if(oldSet==allUsers)
 				allUsers=new ArrayList<PlayerLibrary.ThinPlayer>();
-			if((sortBy<3)||(sortBy>4))
+			if((sortBy!=CharThinSortCode.LEVEL)||(sortBy!=CharThinSortCode.AGE))
 			{
 				PlayerLibrary.ThinPlayer selected=oldSet.get(0);
 				for(int u=1;u<oldSet.size();u++)
@@ -1637,12 +1641,15 @@ public class ListCmd extends StdCommand
 			head.append(CMStrings.padRight(""+U.level(),COL_LEN3)+" ");
 			final long age=Math.round(CMath.div(CMath.s_long(""+U.age()),60.0));
 			head.append(CMStrings.padRight(""+age,COL_LEN4)+" ");
+			if(showBy == null)
+				head.append(CMStrings.padRight(U.email(), COL_LEN5) + " ");
+			else
 			switch(showBy)
 			{
-			case 6:
+			case EMAIL:
 				head.append(CMStrings.padRight(U.email(), COL_LEN5) + " ");
 				break;
-			case 7:
+			case IP:
 				head.append(CMStrings.padRight(U.ip(), COL_LEN5) + " ");
 				break;
 			default:
@@ -1660,12 +1667,12 @@ public class ListCmd extends StdCommand
 		if(commands.size()==0)
 			return;
 		commands.remove(0);
-		int sortBy=-1;
+		CharThinSortCode sortBy=null;
 		if(commands.size()>0)
 		{
 			final String rest=CMParms.combine(commands,0).toUpperCase();
 			sortBy = CMLib.players().getCharThinSortCode(rest,true);
-			if(sortBy<0)
+			if(sortBy==null)
 			{
 				mob.tell(L("Unrecognized sort criteria: @x1",rest));
 				return;
@@ -1684,12 +1691,15 @@ public class ListCmd extends StdCommand
 		head.append(CMStrings.padRight(L("Class"),COL_LEN2)+" ");
 		head.append(CMStrings.padRight(L("Lvl"),COL_LEN3)+" ");
 		head.append(CMStrings.padRight(L("Hours"),COL_LEN4)+" ");
+		if(sortBy == null)
+			head.append(CMStrings.padRight(L("E-Mail"), COL_LEN5) + " ");
+		else
 		switch(sortBy)
 		{
-		case 6:
+		case EMAIL:
 			head.append(CMStrings.padRight(L("E-Mail"), COL_LEN5) + " ");
 			break;
-		case 7:
+		case IP:
 			head.append(CMStrings.padRight(L("IP Address"), COL_LEN5) + " ");
 			break;
 		default:
@@ -1701,13 +1711,13 @@ public class ListCmd extends StdCommand
 
 		java.util.List<MOB> allUsers=new XVector<MOB>(CMLib.players().players());
 		final java.util.List<MOB> oldSet=allUsers;
-		final int showBy=sortBy;
+		final CharThinSortCode showBy=sortBy;
 		final PlayerLibrary lib=CMLib.players();
-		while((oldSet.size()>0)&&(sortBy>=0)&&(sortBy<=7))
+		while((oldSet.size()>0)&&(sortBy!=null)&&(sortBy!=CharThinSortCode.IP))
 		{
 			if(oldSet==allUsers)
 				allUsers=new ArrayList<MOB>();
-			if((sortBy<3)||(sortBy>4))
+			if((sortBy!=CharThinSortCode.AGE)&&(sortBy!=CharThinSortCode.LEVEL))
 			{
 				MOB selected=oldSet.get(0);
 				for(int u=1;u<oldSet.size();u++)
@@ -1744,21 +1754,24 @@ public class ListCmd extends StdCommand
 			final MOB U=allUsers.get(u);
 
 			head.append("[");
-			head.append(CMStrings.padRight(lib.getSortValue(U,2),COL_LEN1)+" ");
-			head.append(CMStrings.padRight(lib.getSortValue(U,1),COL_LEN2)+" ");
-			head.append(CMStrings.padRight(lib.getSortValue(U,3),COL_LEN3)+" ");
-			final long age=Math.round(CMath.div(CMath.s_long(""+lib.getSortValue(U,4)),60.0));
+			head.append(CMStrings.padRight(lib.getSortValue(U,CharThinSortCode.RACE),COL_LEN1)+" ");
+			head.append(CMStrings.padRight(lib.getSortValue(U,CharThinSortCode.CLASS),COL_LEN2)+" ");
+			head.append(CMStrings.padRight(lib.getSortValue(U,CharThinSortCode.LEVEL),COL_LEN3)+" ");
+			final long age=Math.round(CMath.div(CMath.s_long(""+lib.getSortValue(U,CharThinSortCode.AGE)),60.0));
 			head.append(CMStrings.padRight(""+age,COL_LEN4)+" ");
+			if(showBy == null)
+				head.append(CMStrings.padRight(lib.getSortValue(U,showBy), COL_LEN5) + " ");
+			else
 			switch(showBy)
 			{
-			case 6:
+			case EMAIL:
 				head.append(CMStrings.padRight(lib.getSortValue(U,showBy), COL_LEN5) + " ");
 				break;
-			case 7:
+			case IP:
 				head.append(CMStrings.padRight(lib.getSortValue(U,showBy), COL_LEN5) + " ");
 				break;
 			default:
-				head.append(CMStrings.padRight(CMLib.time().date2String(CMath.s_long(lib.getSortValue(U,5))), COL_LEN6) + " ");
+				head.append(CMStrings.padRight(CMLib.time().date2String(CMath.s_long(lib.getSortValue(U,CharThinSortCode.LAST))), COL_LEN6) + " ");
 				break;
 			}
 			head.append("] "+CMStrings.padRight("^<LSTUSER^>"+U.Name()+"^</LSTUSER^>",COL_LEN7));
@@ -1772,12 +1785,12 @@ public class ListCmd extends StdCommand
 		if(commands.size()==0)
 			return;
 		commands.remove(0);
-		int sortBy=-1;
+		CharThinSortCode sortBy=null;
 		if(commands.size()>0)
 		{
 			final String rest=CMParms.combine(commands,0).toUpperCase();
 			sortBy = CMLib.players().getCharThinSortCode(rest,true);
-			if(sortBy<0)
+			if(sortBy==null)
 			{
 				mob.tell(L("Unrecognized sort criteria: @x1",rest));
 				return;
@@ -1791,12 +1804,15 @@ public class ListCmd extends StdCommand
 		head.append("[");
 		head.append(CMStrings.padRight(L("Account"),COL_LEN1)+" ");
 		head.append(CMStrings.padRight(L("Last"),COL_LEN2)+" ");
+		if(sortBy == null)
+			head.append(CMStrings.padRight(L("E-Mail"), COL_LEN3) + " ");
+		else
 		switch(sortBy)
 		{
 		default:
 			head.append(CMStrings.padRight(L("E-Mail"), COL_LEN3) + " ");
 			break;
-		case 7:
+		case IP:
 			head.append(CMStrings.padRight(L("IP Address"), COL_LEN3) + " ");
 			break;
 		}
@@ -1884,13 +1900,13 @@ public class ListCmd extends StdCommand
 			};
 			thinAcctHash.put(acct.getAccountName(), selectedU);
 		}
-		final int showBy=sortBy;
+		final CharThinSortCode showBy=sortBy;
 		final PlayerLibrary lib=CMLib.players();
-		while((oldSet.size()>0)&&(sortBy>=0)&&(sortBy<=7))
+		while((oldSet.size()>0)&&(sortBy!=null)&&(sortBy!=CharThinSortCode.IP))
 		{
 			if(oldSet==allAccounts)
 				allAccounts=new ArrayList<PlayerAccount>();
-			if((sortBy<3)||(sortBy>4))
+			if((sortBy!=CharThinSortCode.LEVEL)||(sortBy!=CharThinSortCode.AGE))
 			{
 				PlayerAccount selected = oldSet.get(0);
 				if(selected != null)
@@ -1955,12 +1971,15 @@ public class ListCmd extends StdCommand
 				if(players.startsWith(","))
 					players=players.substring(1).trim();
 			}
+			if(showBy == null)
+				line.append(CMStrings.padRight(U.getEmail(), COL_LEN3) + " ");
+			else
 			switch(showBy)
 			{
 			default:
 				line.append(CMStrings.padRight(U.getEmail(), COL_LEN3) + " ");
 				break;
-			case 7:
+			case IP:
 				line.append(CMStrings.padRight(U.getLastIP(), COL_LEN3) + " ");
 				break;
 			}

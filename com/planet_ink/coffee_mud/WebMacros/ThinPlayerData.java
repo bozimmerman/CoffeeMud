@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.CharThinSortCode;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -72,14 +73,14 @@ public class ThinPlayerData extends StdWebMacro
 				return " @break@";
 			for(final String key : parms.keySet())
 			{
-				final int x=CMLib.players().getCharThinSortCode(key.toUpperCase().trim(),false);
-				if(x>=0)
+				final CharThinSortCode x=CMLib.players().getCharThinSortCode(key.toUpperCase().trim(),false);
+				if(x!=null)
 				{
 					String value = CMLib.players().getThinSortValue(player, x);
-					if(PlayerLibrary.CHAR_THIN_SORT_CODES[x].equals("LAST"))
+					if(x==CharThinSortCode.LAST)
 						value=CMLib.time().date2String(CMath.s_long(value));
 					else
-					if(PlayerLibrary.CHAR_THIN_SORT_CODES[x].equals("HOURS"))
+					if(x==CharThinSortCode.AGE)
 						value=""+(CMath.s_long(value)/60);
 					str.append(value+", ");
 				}

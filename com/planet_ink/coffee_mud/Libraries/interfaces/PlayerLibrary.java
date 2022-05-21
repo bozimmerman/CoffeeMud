@@ -70,9 +70,9 @@ public interface PlayerLibrary extends CMLibrary
 	public void resetAllPrideStats();
 	public int savePlayers();
 	public Enumeration<ThinPlayer> thinPlayers(String sort, Map<String, Object> cache);
-	public int getCharThinSortCode(String codeName, boolean loose);
-	public String getThinSortValue(ThinPlayer player, int code);
-	public String getSortValue(MOB player, int code);
+	public CharThinSortCode getCharThinSortCode(String codeName, boolean loose);
+	public String getThinSortValue(ThinPlayer player, CharThinSortCode code);
+	public String getSortValue(MOB player, CharThinSortCode code);
 	public Set<MOB> getPlayersHere(Room room);
 	public void changePlayersLocation(MOB mob, Room room);
 	public Pair<Long,int[]>[] parsePrideStats(final String[] nextPeriods, final String[] prideStats);
@@ -80,10 +80,23 @@ public interface PlayerLibrary extends CMLibrary
 	public List<Pair<String,Integer>> getTopPridePlayers(TimeClock.TimePeriod period, AccountStats.PrideStat stat);
 	public List<Pair<String,Integer>> getTopPrideAccounts(TimeClock.TimePeriod period, AccountStats.PrideStat stat);
 
-	public static final String[] CHAR_THIN_SORT_CODES={ "NAME","CLASS","RACE","LEVEL","AGE","LAST","EMAIL","IP"};
-	public static final String[] CHAR_THIN_SORT_CODES2={ "CHARACTER","CHARCLASS","RACE","LVL","HOURS","DATE","EMAILADDRESS","LASTIP"};
-
-	public static final String[] ACCOUNT_THIN_SORT_CODES={ "NAME","LAST","EMAIL","IP","NUMPLAYERS","EXPIRATION"};
+	public enum CharThinSortCode
+	{
+		NAME("CHARACTER"),
+		CLASS("CHARCLASS"),
+		RACE("RACE"),
+		LEVEL("LVL"),
+		AGE("HOURS"),
+		LAST("DATE"),
+		EMAIL("EMAILADDRESS"),
+		IP("LASTIP")
+		;
+		public String altName;
+		private CharThinSortCode(final String ln)
+		{
+			this.altName=ln;
+		}
+	}
 
 	public static interface ThinPlayer
 	{

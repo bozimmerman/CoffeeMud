@@ -63,7 +63,26 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	@SuppressWarnings("unchecked")
 	protected final List<Pair<String,Integer>>[][] topAccounts	 = new List[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
 
-	protected final static List<Pair<String,Integer>> emptyPride = new ReadOnlyVector<Pair<String,Integer>>(1);
+	protected final static List<Pair<String,Integer>>	emptyPride	= new ReadOnlyVector<Pair<String,Integer>>(1);
+	protected final static Map<String,CharThinSortCode>	charThinMap	= new Hashtable<String,CharThinSortCode>();
+	static
+	{
+		for(final CharThinSortCode c : CharThinSortCode.values())
+		{
+			charThinMap.put(c.name(), c);
+			charThinMap.put(c.altName.toUpperCase().trim(), c);
+		}
+	}
+
+	protected enum AcctThinSortCode
+	{
+		NAME,
+		LAST,
+		EMAIL,
+		IP,
+		NUMPLAYERS,
+		EXPIRATION
+	};
 
 	@Override
 	public int numPlayers()
@@ -1007,29 +1026,31 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public String getSortValue(final MOB player, final int code)
+	public String getSortValue(final MOB player, final CharThinSortCode code)
 	{
+		if(code == null)
+			return player.Name();
 		switch(code)
 		{
-		case 0:
+		case NAME:
 			return player.Name();
-		case 1:
+		case CLASS:
 			return player.baseCharStats().getCurrentClass().name();
-		case 2:
+		case RACE:
 			return player.baseCharStats().getMyRace().name();
-		case 3:
+		case LEVEL:
 			return Integer.toString(player.basePhyStats().level());
-		case 4:
+		case AGE:
 			return Integer.toString(player.baseCharStats().getStat(CharStats.STAT_AGE));
-		case 5:
+		case LAST:
 			if(!player.isPlayer())
 				return "";
 			return Long.toString(player.playerStats().getLastDateTime());
-		case 6:
+		case EMAIL:
 			if(!player.isPlayer())
 				return "";
 			return player.playerStats().getEmail();
-		case 7:
+		case IP:
 			if(!player.isPlayer())
 				return "";
 			return player.playerStats().getLastIP();
@@ -1038,93 +1059,81 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public String getThinSortValue(final ThinPlayer player, final int code)
+	public String getThinSortValue(final ThinPlayer player, final CharThinSortCode code)
 	{
 		switch(code)
 		{
-		case 0:
+		case NAME:
 			return player.name();
-		case 1:
+		case CLASS:
 			return player.charClass();
-		case 2:
+		case RACE:
 			return player.race();
-		case 3:
+		case LEVEL:
 			return Integer.toString(player.level());
-		case 4:
+		case AGE:
 			return Integer.toString(player.age());
-		case 5:
+		case LAST:
 			return Long.toString(player.last());
-		case 6:
+		case EMAIL:
 			return player.email();
-		case 7:
+		case IP:
 			return player.ip();
 		}
 		return player.name();
 	}
 
-	public String getThinSortValue(final PlayerAccount account, final int code)
+	protected String getThinSortValue(final PlayerAccount account, final AcctThinSortCode code)
 	{
 		switch(code)
 		{
-		case 0:
+		case NAME:
 			return account.getAccountName();
-		case 1:
+		case LAST:
 			return Long.toString(account.getLastDateTime());
-		case 2:
+		case EMAIL:
 			return account.getEmail();
-		case 3:
+		case IP:
 			return account.getLastIP();
-		case 4:
+		case NUMPLAYERS:
 			return Integer.toString(account.numPlayers());
-		case 5:
+		case EXPIRATION:
 			return Long.toString(account.getAccountExpiration());
 		}
 		return account.getAccountName();
 	}
 
 	@Override
-	public int getCharThinSortCode(final String codeName, final boolean loose)
+	public CharThinSortCode getCharThinSortCode(String codeName, final boolean loose)
 	{
-		int x=CMParms.indexOf(CHAR_THIN_SORT_CODES,codeName);
-		if(x<0)
-			x=CMParms.indexOf(CHAR_THIN_SORT_CODES2,codeName);
-		if(!loose)
-			return x;
-		if(x<0)
+		if(codeName == null)
+			return null;
+		codeName=codeName.toUpperCase().trim();
+		if(!loose || charThinMap.containsKey(codeName))
+			return charThinMap.get(codeName);
+		for(final String key : charThinMap.keySet())
 		{
-			for(int s=0;s<CHAR_THIN_SORT_CODES.length;s++)
-			{
-				if(CHAR_THIN_SORT_CODES[s].startsWith(codeName))
-					x=s;
-			}
+			if(key.startsWith(codeName))
+				return charThinMap.get(key);
 		}
-		if(x<0)
-		{
-			for(int s=0;s<CHAR_THIN_SORT_CODES2.length;s++)
-			{
-				if(CHAR_THIN_SORT_CODES2[s].startsWith(codeName))
-					x=s;
-			}
-		}
-		return x;
+		return null;
 	}
 
-	public int getAccountThinSortCode(final String codeName, final boolean loose)
+	protected AcctThinSortCode getAccountThinSortCode(String codeName, final boolean loose)
 	{
-		if((codeName == null)||(codeName.length()==0))
-			return -1;
-		int x=CMParms.indexOf(ACCOUNT_THIN_SORT_CODES,codeName);
+		if(codeName == null)
+			return null;
+		codeName=codeName.toUpperCase().trim();
+		if(CMParms.containsAsString(AcctThinSortCode.values(), codeName))
+			return AcctThinSortCode.valueOf(codeName);
 		if(!loose)
-			return x;
-		if(x<0)
+			return null;
+		for(final AcctThinSortCode a : AcctThinSortCode.values())
 		{
-			for(int s=0;s<ACCOUNT_THIN_SORT_CODES.length;s++)
-			{
-				if(ACCOUNT_THIN_SORT_CODES[s].startsWith(codeName))
-					x=s;
-			}
+			if(a.name().startsWith(codeName))
+				return a;
 		}
-		return x;
+		return null;
 	}
 
 	@Override
@@ -1136,9 +1145,9 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		{
 			V=new Vector<PlayerLibrary.ThinPlayer>();
 			V.addAll(CMLib.database().getExtendedUserList());
-			final int code=getCharThinSortCode(sort,false);
+			final CharThinSortCode code=getCharThinSortCode(sort,false);
 			if((sort.length()>0)
-			&&(code>=0)
+			&&(code != null)
 			&&(V.size()>1))
 			{
 				final List<PlayerLibrary.ThinPlayer> unV=V;
@@ -1361,8 +1370,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			}
 			else
 				V.addAll(accountsList);
-			final int code=getAccountThinSortCode(sort,false);
-			if(code<0)
+			final AcctThinSortCode code=getAccountThinSortCode(sort,false);
+			if(code==null)
 				return V.elements();
 			else
 			if(V.size()>1)
