@@ -27,6 +27,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.AckRecord;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.AckStats;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.ReadRoomDisableFlag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerCode;
 /*
    Copyright 2004-2022 Bo Zimmerman
 
@@ -875,6 +876,12 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public Object DBReadPlayerValue(final String name, final PlayerCode code)
+	{
+		return MOBloader.DBReadPlayerValue(name, code);
+	}
+
+	@Override
 	public int DBReadPlayerBitmap(final String name)
 	{
 		return MOBloader.DBReadPlayerBitmap(name);
@@ -1011,7 +1018,7 @@ public class DBInterface implements DatabaseEngine
 	{
 		return DataLoader.DBReadSections(name);
 	}
-	
+
 	@Override
 	public void DBDeletePlayerData(final String playerID, final String section)
 	{

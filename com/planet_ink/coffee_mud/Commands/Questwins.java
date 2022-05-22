@@ -68,11 +68,16 @@ public class Questwins extends StdCommand
 
 	public String getQuestsWonList(final MOB mob, final String pronoun)
 	{
+		return getQuestsWonList(mob.Name(), pronoun);
+	}
+
+	protected String getQuestsWonList(final String mobName, final String pronoun)
+	{
 		final ArrayList<Quest> qVec=new ArrayList<Quest>();
 		for(int q=0;q<CMLib.quests().numQuests();q++)
 		{
 			final Quest Q=CMLib.quests().fetchQuest(q);
-			if(Q.wasWinner(mob.Name()))
+			if(Q.wasWinner(mobName))
 			{
 				if(!qVec.contains(Q))
 					qVec.add(Q);
@@ -83,7 +88,7 @@ public class Questwins extends StdCommand
 		for(final Quest Q : qVec)
 		{
 			final String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
-			final String time = CMLib.time().date2String(Q.whenLastWon(mob.Name()).longValue());
+			final String time = CMLib.time().date2String(Q.whenLastWon(mobName).longValue());
 			msg.append(CMStrings.padRight(time,20)+name+"^N\n\r");
 		}
 		return msg.toString();

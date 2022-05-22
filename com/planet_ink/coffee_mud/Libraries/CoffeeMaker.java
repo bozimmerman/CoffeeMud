@@ -5797,8 +5797,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	}
 
 	@Override
-	public void unpackFactionFromXML(final MOB mob, final List<XMLTag> xml)
+	public List<Pair<String, Integer>> unpackFactionFromXML(final MOB mob, final List<XMLTag> xml)
 	{
+		final List<Pair<String, Integer>> V = new XVector<Pair<String, Integer>>();
 		if(xml!=null)
 		{
 			final List<XMLLibrary.XMLTag> mV = CMLib.xml().getContentsFromPieces(xml,"FACTIONS");
@@ -5807,9 +5808,14 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				for (int m=0;m<mV.size();m++)
 				{
 					final XMLTag mblk=mV.get(m);
-					mob.addFaction(mblk.getParmValue("ID"),Integer.valueOf(mblk.value()).intValue());
+					final Integer amt = Integer.valueOf(mblk.value());
+					final String ID = mblk.getParmValue("ID");
+					if(mob != null)
+						mob.addFaction(ID,amt.intValue());
+					V.add(new Pair<String,Integer>(ID,amt));
 				}
 			}
 		}
+		return V;
 	}
 }

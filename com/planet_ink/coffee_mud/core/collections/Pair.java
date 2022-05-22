@@ -56,7 +56,7 @@ public class Pair<T, K> implements Map.Entry<T, K>
 	{
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		@Override
-		public int compare(Pair<T, K> arg0, Pair<T, K> arg1)
+		public int compare(final Pair<T, K> arg0, final Pair<T, K> arg1)
 		{
 			if(arg0==null)
 			{
@@ -77,7 +77,7 @@ public class Pair<T, K> implements Map.Entry<T, K>
 			if(arg1.first==null)
 				return 1;
 			if((arg0.first instanceof Comparable)&&(arg1.first instanceof Comparable))
-				return ((Comparable)arg0.first).compareTo((Comparable)arg1.first);
+				return ((Comparable)arg0.first).compareTo(arg1.first);
 			return Integer.valueOf(arg0.first.hashCode()).compareTo(Integer.valueOf(arg1.first.hashCode()));
 		}
 	}
@@ -86,7 +86,7 @@ public class Pair<T, K> implements Map.Entry<T, K>
 	{
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		@Override
-		public int compare(Pair<T, K> arg0, Pair<T, K> arg1)
+		public int compare(final Pair<T, K> arg0, final Pair<T, K> arg1)
 		{
 			if(arg0==null)
 			{
@@ -107,8 +107,23 @@ public class Pair<T, K> implements Map.Entry<T, K>
 			if(arg1.second==null)
 				return 1;
 			if((arg0.second instanceof Comparable)&&(arg1.second instanceof Comparable))
-				return ((Comparable)arg0.second).compareTo((Comparable)arg1.second);
+				return ((Comparable)arg0.second).compareTo(arg1.second);
 			return Integer.valueOf(arg0.second.hashCode()).compareTo(Integer.valueOf(arg1.second.hashCode()));
+		}
+	}
+
+	public static final class FullComparator<T, K> implements Comparator<Pair<T, K>>
+	{
+		final FirstComparator<T, K>		fc	= new FirstComparator<T, K>();
+		final SecondComparator<T, K>	sc	= new SecondComparator<T, K>();
+
+		@Override
+		public int compare(final Pair<T, K> arg0, final Pair<T, K> arg1)
+		{
+			final int f=fc.compare(arg0, arg1);
+			if(f!=0)
+				return f;
+			return sc.compare(arg0, arg1);
 		}
 	}
 

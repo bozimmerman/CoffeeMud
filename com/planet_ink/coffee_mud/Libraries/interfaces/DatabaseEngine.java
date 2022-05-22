@@ -28,6 +28,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerCode;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -810,6 +811,16 @@ public interface DatabaseEngine extends CMLibrary
 	 * @return the list of clan names and roles
 	 */
 	public PairList<String,Integer> DBReadPlayerClans(String name);
+
+	/**
+	 * Table category: DBPLAYERS
+	 * Returns a specific piece of player data from the database.
+	 * @see PlayerLibrary.PlayerCode
+	 * @param name the player to read clan info for
+	 * @param code the piece of data to return
+	 * @return the specific data, usually a string, Integer, or list of pairs
+	 */
+	public Object DBReadPlayerValue(final String name, final PlayerCode code);
 
 	/**
 	 * Table category: DBPLAYERS

@@ -10,6 +10,8 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder.GenItemCode;
+import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder.GenMOBCode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -89,9 +91,12 @@ public interface PlayerLibrary extends CMLibrary
 	public PlayerLibrary.ThinnerPlayer newThinnerPlayer();
 	public Enumeration<ThinPlayer> thinPlayers(String sort, Map<String, Object> cache);
 
-	public CharThinSortCode getCharThinSortCode(String codeName, boolean loose);
-	public String getThinSortValue(ThinPlayer player, CharThinSortCode code);
-	public String getSortValue(MOB player, CharThinSortCode code);
+	public PlayerSortCode getCharThinSortCode(String codeName, boolean loose);
+	public String getThinSortValue(ThinPlayer player, PlayerSortCode code);
+	public String getSortValue(MOB player, PlayerSortCode code);
+
+	public Object getPlayerValue(final String playerName, final PlayerCode code);
+	public void setPlayerValue(final String playerName, final PlayerCode code, final Object value);
 
 	public Set<MOB> getPlayersHere(Room room);
 	public void changePlayersLocation(MOB mob, Room room);
@@ -102,7 +107,7 @@ public interface PlayerLibrary extends CMLibrary
 	public List<Pair<String,Integer>> getTopPridePlayers(TimeClock.TimePeriod period, AccountStats.PrideStat stat);
 	public List<Pair<String,Integer>> getTopPrideAccounts(TimeClock.TimePeriod period, AccountStats.PrideStat stat);
 
-	public enum CharThinSortCode
+	public enum PlayerSortCode
 	{
 		NAME("CHARACTER"),
 		CLASS("CHARCLASS"),
@@ -114,10 +119,54 @@ public interface PlayerLibrary extends CMLibrary
 		IP("LASTIP")
 		;
 		public String altName;
-		private CharThinSortCode(final String ln)
+		private PlayerSortCode(final String ln)
 		{
 			this.altName=ln;
 		}
+	}
+
+	public enum PlayerCode
+	{
+		NAME,
+		PASSWORD,
+		CHARCLASS,
+		RACE,
+		HITPOINTS,
+		LEVEL,
+		MANA,
+		MOVES,
+		DESCRIPTION,
+		ALIGNMENT,
+		EXPERIENCE,
+		DEITY,
+		PRACTICES,
+		TRAINS,
+		AGE,
+		MONEY,
+		WIMP,
+		QUESTPOINTS,
+		LOCATION,
+		STARTROOM,
+		LASTDATE,
+		CHANNELMASK,
+		ATTACK,
+		ARMOR,
+		DAMAGE,
+		MATTRIB,
+		LEIGE,
+		HEIGHT,
+		WEIGHT,
+		COLOR,
+		LASTIP,
+		EMAIL,
+		TATTS,
+		EXPERS,
+		ACCOUNT,
+		FACTIONS,
+		INVENTORY,
+		ABLES,
+		AFFBEHAV,
+		CLANS
 	}
 
 	public static interface ThinPlayer

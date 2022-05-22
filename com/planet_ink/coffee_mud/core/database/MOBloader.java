@@ -20,6 +20,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.PlayerStats.PlayerFlag;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerCode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinnerPlayer;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -232,6 +233,265 @@ public class MOBloader
 			mob.recoverPhyStats();
 		}
 		return mob;
+	}
+
+	public Object DBReadPlayerValue(final String name, final PlayerCode code)
+	{
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+
+			final ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMUSERID='"+name+"'");
+			if(R.next())
+				return getPlayerValue(R,name,code);
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("MOB",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return null;
+	}
+
+	public Object getPlayerValue(final ResultSet R, final String name, final PlayerCode code)
+	{
+		switch(code)
+		{
+		case ABLES:
+		{
+			final XVector<Ability> V=new XVector<Ability>();
+			DBConnection D=null;
+			try
+			{
+				D=DB.DBFetch();
+				final ResultSet R2=D.query("SELECT * FROM CMCHAB WHERE CMUSERID='"+name+"'");
+				while(R2.next())
+				{
+					final String abilityID=DBConnections.getRes(R2,"CMABID");
+					int proficiency=(int)DBConnections.getLongRes(R2,"CMABPF");
+					if(proficiency>Integer.MIN_VALUE+1)
+					{
+						if(proficiency<0)
+							proficiency+=200;
+						final Ability A=CMClass.getAbility(abilityID);
+						if(A!=null)
+						{
+							A.setProficiency(proficiency);
+							A.setMiscText(DBConnections.getRes(R2,"CMABTX"));
+							V.add(A);
+						}
+					}
+				}
+			}
+			catch(final Exception sqle)
+			{
+				Log.errOut("MOB",sqle);
+			}
+			finally
+			{
+				DB.DBDone(D);
+			}
+			return V;
+		}
+		case AFFBEHAV:
+		{
+			final XVector<CMObject> V=new XVector<CMObject>();
+			DBConnection D=null;
+			try
+			{
+				D=DB.DBFetch();
+				final ResultSet R2=D.query("SELECT * FROM CMCHAB WHERE CMUSERID='"+name+"'");
+				while(R2.next())
+				{
+					final String abilityID=DBConnections.getRes(R2,"CMABID");
+					final int proficiency=(int)DBConnections.getLongRes(R2,"CMABPF");
+					if(proficiency<=Integer.MIN_VALUE+1)
+					{
+						final Behavior newBehavior=CMClass.getBehavior(abilityID);
+						if(newBehavior!=null)
+						{
+							newBehavior.setParms(DBConnections.getRes(R,"CMABTX"));
+							V.add(newBehavior);
+						}
+					}
+					else
+					{
+						final Ability A=CMClass.getAbility(abilityID);
+						if(A!=null)
+						{
+							A.setMiscText(DBConnections.getRes(R2,"CMABTX"));
+							if(proficiency==Integer.MAX_VALUE)
+								V.add(A);
+							else
+							if(proficiency<0)
+							{
+								A.setProficiency(proficiency+200);
+								V.add(A);
+							}
+						}
+					}
+				}
+			}
+			catch(final Exception sqle)
+			{
+				Log.errOut("MOB",sqle);
+			}
+			finally
+			{
+				DB.DBDone(D);
+			}
+			return V;
+		}
+		case ALIGNMENT:
+		{
+			final String alignmentID=CMLib.factions().getAlignmentID();
+			final List<XMLLibrary.XMLTag> CleanXML=CMLib.xml().parseAllXML(DBConnections.getRes(R,"CMMXML"));
+			for(final Pair<String,Integer> p : CMLib.coffeeMaker().unpackFactionFromXML(null,CleanXML))
+				if(p.first.equalsIgnoreCase(alignmentID))
+					return p.second;
+			return Integer.valueOf(Integer.MAX_VALUE);
+		}
+		case ARMOR:
+			return Integer.valueOf((int)DBConnections.getLongRes(R,"CMAMOR"));
+		case ATTACK:
+			return Integer.valueOf((int)DBConnections.getLongRes(R,"CMATTA"));
+		case CHARCLASS:
+		{
+			final CharStats stats = (CharStats)CMClass.getCommon("DefaultCharStats");
+			stats.setMyClasses(DBConnections.getRes(R,"CMCLAS"));
+			return stats.getCurrentClass();
+		}
+		case DAMAGE:
+			return Integer.valueOf((int)DBConnections.getLongRes(R,"CMDAMG"));
+		case DESCRIPTION:
+			return DBConnections.getRes(R,"CMDESC");
+		case EXPERS:
+		{
+			final String buf=DBConnections.getRes(R,"CMPFIL");
+			return CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"EDUS"),true);
+		}
+		case FACTIONS:
+		{
+			final List<XMLLibrary.XMLTag> CleanXML=CMLib.xml().parseAllXML(DBConnections.getRes(R,"CMMXML"));
+			return CMLib.coffeeMaker().unpackFactionFromXML(null,CleanXML);
+		}
+		case INVENTORY:
+			return new XVector<Pair<String,String>>(DBReadPlayerItemData(name, null).iterator());
+		case LEVEL:
+		{
+			final CharStats stats = (CharStats)CMClass.getCommon("DefaultCharStats");
+			stats.setMyClasses(DBConnections.getRes(R,"CMCLAS"));
+			stats.setMyLevels(DBConnections.getRes(R,"CMLEVL"));
+			int level=0;
+			for(int i=0;i<stats.numClasses();i++)
+				level+=stats.getClassLevel(stats.getMyClass(i));
+			return Integer.valueOf(level);
+		}
+		case MONEY:
+			return Integer.valueOf((int)DBConnections.getLongRes(R,"CMGOLD"));
+		case NAME:
+			return name;
+		case RACE:
+			return CMClass.getRace(DBConnections.getRes(R,"CMRACE"));
+		case TATTS:
+		{
+			final List<Tattoo> T=new ArrayList<Tattoo>();
+			final String buf=DBConnections.getRes(R,"CMPFIL");
+			final List<String> V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"TATTS"),true);
+			for(final String tatt : V9)
+				T.add(((Tattoo)CMClass.getCommon("DefaultTattoo")).parse(tatt));
+			return T;
+		}
+		case ACCOUNT:
+		{
+			if(CMProps.isUsingAccountSystem())
+			{
+				for(final Enumeration<PlayerAccount> a = CMLib.players().accounts(); a.hasMoreElements();)
+				{
+					final PlayerAccount pA=a.nextElement();
+					if(pA.findPlayer(name)!=null)
+						return pA.getAccountName();
+				}
+			}
+			return "";
+		}
+		case AGE:
+			return Long.valueOf((int)DBConnections.getLongRes(R,"CMAGEH"));
+		case CHANNELMASK:
+			return Integer.valueOf((int)DBConnections.getLongRes(R,"CMCHAN"));
+		case CLANS:
+		{
+			final XVector<Pair<Clan,Integer>> V=new XVector<Pair<Clan,Integer>>();
+			for(final Pair<String,Integer> p : DBReadPlayerClans(name))
+			{
+				final Clan C=CMLib.clans().getClan(p.first);
+				if(C!=null)
+					V.add(new Pair<Clan,Integer>(C,p.second));
+			}
+			return V;
+		}
+		case COLOR:
+			return DBConnections.getRes(R, "CMCOLR");
+		case DEITY:
+			return DBConnections.getRes(R,"CMWORS");
+		case EMAIL:
+			return DBConnections.getRes(R, "CMEMAL");
+		case EXPERIENCE:
+			return Integer.valueOf((int)DBConnections.getLongRes(R,"CMEXPE"));
+		case HEIGHT:
+			return Integer.valueOf((int)DBConnections.getLongRes(R,"CMHEIT"));
+		case HITPOINTS:
+			return Integer.valueOf((int)DBConnections.getLongRes(R,"CMHITP"));
+		case LASTDATE:
+			return Long.valueOf(DBConnections.getLongRes(R,"CMDATE"));
+		case LASTIP:
+			return DBConnections.getRes(R, "CMLSIP");
+		case LEIGE:
+			return DBConnections.getRes(R, "CMLEIG");
+		case LOCATION:
+		{
+			String roomID=DBConnections.getRes(R,"CMROID");
+			if(roomID==null)
+				roomID="";
+			final int x=roomID.indexOf("||");
+			if(x>=0)
+				return roomID.substring(x+2);
+			return roomID;
+		}
+		case MANA:
+			return Integer.valueOf((int)DBConnections.getLongRes(R,"CMMANA"));
+		case MATTRIB:
+			return Integer.valueOf((int)DBConnections.getLongRes(R,"CMBTMP"));
+		case MOVES:
+			return Integer.valueOf((int)DBConnections.getLongRes(R,"CMMOVE"));
+		case PASSWORD:
+			break;
+		case PRACTICES:
+			return Integer.valueOf((int)DBConnections.getLongRes(R,"CMPRAC"));
+		case QUESTPOINTS:
+			return Integer.valueOf((int)DBConnections.getLongRes(R,"CMQUES"));
+		case STARTROOM:
+		{
+			String roomID=DBConnections.getRes(R,"CMROID");
+			if(roomID==null)
+				roomID="";
+			final int x=roomID.indexOf("||");
+			if(x>=0)
+				return roomID.substring(0,x);
+			return roomID;
+		}
+		case TRAINS:
+			return Integer.valueOf((int)DBConnections.getLongRes(R,"CMTRAI"));
+		case WEIGHT:
+			return Integer.valueOf((int)DBConnections.getLongRes(R,"CMWEIT"));
+		case WIMP:
+			return Integer.valueOf((int)DBConnections.getLongRes(R,"CMWIMP"));
+		}
+		return null;
 	}
 
 	public PairList<String,Integer> DBReadPlayerClans(String name)

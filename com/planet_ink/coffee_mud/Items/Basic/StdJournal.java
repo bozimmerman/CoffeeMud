@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.CommandJournalFlags;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrCallback;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrResolution;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -421,20 +422,20 @@ public class StdJournal extends StdItem implements Book
 									else
 									if(s.equalsIgnoreCase("E"))
 									{
-										final MOB M=CMLib.players().getLoadPlayer(from);
-										if((M==null)||(M.playerStats()==null)||(M.playerStats().getEmail().indexOf('@')<0))
+										final ThinPlayer fromTP=CMLib.players().getThinPlayer(from);
+										if((fromTP==null)||(fromTP.email().indexOf('@')<0))
 										{
 											mob.tell(L("Player '@x1' does not exist, or has no email address.",from));
 											repeat=true;
 										}
 										else
-										if(!mob.session().choose(L("Send email to @x1 (Y/n)?",M.Name()),L("YN\n"),"Y").equalsIgnoreCase("N"))
+										if(!mob.session().choose(L("Send email to @x1 (Y/n)?",fromTP.name()),L("YN\n"),"Y").equalsIgnoreCase("N"))
 										{
 											final String replyMsg=mob.session().prompt(L("Enter your email response\n\r: "));
 											if((replyMsg.trim().length()>0) && (read != null))
 											{
 												CMLib.smtp().emailOrJournal(mob.Name(),
-																			 mob.Name(), M.Name(),
+																			 mob.Name(), fromTP.name(),
 																			 "RE: "+read.subj(),
 																			 replyMsg);
 												mob.tell(L("Email queued."));

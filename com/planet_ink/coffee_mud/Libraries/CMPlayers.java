@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder.GenMOBCode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -64,10 +65,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	protected final List<Pair<String,Integer>>[][] topAccounts	 = new List[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
 
 	protected final static List<Pair<String,Integer>>	emptyPride	= new ReadOnlyVector<Pair<String,Integer>>(1);
-	protected final static Map<String,CharThinSortCode>	charThinMap	= new Hashtable<String,CharThinSortCode>();
+	protected final static Map<String,PlayerSortCode>	charThinMap	= new Hashtable<String,PlayerSortCode>();
 	static
 	{
-		for(final CharThinSortCode c : CharThinSortCode.values())
+		for(final PlayerSortCode c : PlayerSortCode.values())
 		{
 			charThinMap.put(c.name(), c);
 			charThinMap.put(c.altName.toUpperCase().trim(), c);
@@ -1026,7 +1027,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public String getSortValue(final MOB player, final CharThinSortCode code)
+	public String getSortValue(final MOB player, final PlayerSortCode code)
 	{
 		if(code == null)
 			return player.Name();
@@ -1059,7 +1060,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public String getThinSortValue(final ThinPlayer player, final CharThinSortCode code)
+	public String getThinSortValue(final ThinPlayer player, final PlayerSortCode code)
 	{
 		switch(code)
 		{
@@ -1104,7 +1105,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public CharThinSortCode getCharThinSortCode(String codeName, final boolean loose)
+	public PlayerSortCode getCharThinSortCode(String codeName, final boolean loose)
 	{
 		if(codeName == null)
 			return null;
@@ -1145,7 +1146,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		{
 			V=new Vector<PlayerLibrary.ThinPlayer>();
 			V.addAll(CMLib.database().getExtendedUserList());
-			final CharThinSortCode code=getCharThinSortCode(sort,false);
+			final PlayerSortCode code=getCharThinSortCode(sort,false);
 			if((sort.length()>0)
 			&&(code != null)
 			&&(V.size()>1))
@@ -1723,6 +1724,465 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 
 		});
 	}
+
+	@Override
+	public Object getPlayerValue(final String playerName, final PlayerCode code)
+	{
+		final MOB M = getPlayer(playerName);
+		if(M!=null)
+		{
+			switch(code)
+			{
+			case ABLES:
+				return new XVector<Ability>(M.abilities());
+			case AFFBEHAV:
+			{
+				final XVector<CMObject> affBehav=new XVector<CMObject>();
+				affBehav.addAll(M.behaviors());
+				for(final Enumeration<Ability> a=M.effects();a.hasMoreElements();)
+				{
+					final Ability eA=a.nextElement();
+					if((eA!=null)&&(!eA.canBeUninvoked()))
+						affBehav.add(eA);
+				}
+				return affBehav;
+			}
+			case ALIGNMENT:
+				return Integer.valueOf(M.fetchFaction(CMLib.factions().getAlignmentID()));
+			case ARMOR:
+				return Integer.valueOf(M.basePhyStats().armor());
+			case ATTACK:
+				return Integer.valueOf(M.basePhyStats().attackAdjustment());
+			case CHARCLASS:
+				return M.baseCharStats().getCurrentClass();
+			case DAMAGE:
+				return Integer.valueOf(M.basePhyStats().damage());
+			case DESCRIPTION:
+				return M.description();
+			case EXPERS:
+				return new XVector<String>(M.expertises());
+			case FACTIONS:
+			{
+				final Vector<Pair<String,Integer>> fdata=new Vector<Pair<String,Integer>>();
+				for(final Enumeration<String> f=M.factions();f.hasMoreElements();)
+				{
+					final String ID = f.nextElement();
+					fdata.add(new Pair<String,Integer>(ID,Integer.valueOf(M.fetchFaction(ID))));
+				}
+				return fdata;
+			}
+			case INVENTORY:
+			{
+				final Vector<Pair<String,String>> items=new Vector<Pair<String,String>>();
+				for(final Enumeration<Item> i= M.items();i.hasMoreElements();)
+				{
+					final Item I=i.nextElement();
+					items.add(new Pair<String,String>(I.ID(),I.text()));
+				}
+				return items;
+			}
+			case LEVEL:
+				return Integer.valueOf(M.basePhyStats().level());
+			case MONEY:
+				return Integer.valueOf(M.getMoney());
+			case NAME:
+				return M.name();
+			case RACE:
+				return M.baseCharStats().getMyRace();
+			case TATTS:
+				return new XVector<Tattoo>(M.tattoos());
+			case ACCOUNT:
+				if((M.playerStats()!=null)
+				&&(M.playerStats().getAccount()!=null))
+					return M.playerStats().getAccount().getAccountName();
+				return "";
+			case AGE:
+				return Long.valueOf(M.getAgeMinutes());
+			case CHANNELMASK:
+				return Integer.valueOf((M.playerStats()!=null)?M.playerStats().getChannelMask():0);
+			case CLANS:
+				return new XVector<Pair<Clan, Integer>>(M.clans().iterator());
+			case COLOR:
+				return M.playerStats()!=null?M.playerStats().getColorStr():"";
+			case DEITY:
+				return M.baseCharStats().getWorshipCharID();
+			case EMAIL:
+				return M.playerStats()!=null?M.playerStats().getEmail():"";
+			case EXPERIENCE:
+				return Integer.valueOf(M.getExperience());
+			case HEIGHT:
+				return Integer.valueOf(M.basePhyStats().height());
+			case HITPOINTS:
+				return Integer.valueOf(M.baseState().getHitPoints());
+			case LASTDATE:
+				return Long.valueOf(M.playerStats()!=null?M.playerStats().getLastDateTime():0);
+			case LASTIP:
+				return M.playerStats()!=null?M.playerStats().getLastIP():"";
+			case LEIGE:
+				return M.getLiegeID();
+			case LOCATION:
+				return CMLib.map().getExtendedRoomID(M.location());
+			case MANA:
+				return Integer.valueOf(M.baseState().getMana());
+			case MATTRIB:
+				return Integer.valueOf(M.getAttributesBitmap());
+			case MOVES:
+				return Integer.valueOf(M.baseState().getMovement());
+			case PASSWORD:
+				break;
+			case PRACTICES:
+				return Integer.valueOf(M.getPractices());
+			case QUESTPOINTS:
+				return Integer.valueOf(M.getQuestPoint());
+			case STARTROOM:
+				return CMLib.map().getExtendedRoomID(M.getStartRoom());
+			case TRAINS:
+				return Integer.valueOf(M.getTrains());
+			case WEIGHT:
+				return Integer.valueOf(M.basePhyStats().weight());
+			case WIMP:
+				return Integer.valueOf(M.getWimpHitPoint());
+			}
+		}
+		else
+		if(CMLib.players().playerExists(playerName))
+			return CMLib.database().DBReadPlayerValue(CMStrings.capitalizeAndLower(playerName), code);
+		return null;
+	}
+
+	@Override
+	public void setPlayerValue(final String playerName, final PlayerCode code, final Object value)
+	{
+		final MOB M = getPlayer(playerName);
+		if(M!=null)
+		{
+			switch(code)
+			{
+			case ABLES:
+			{
+				@SuppressWarnings("unchecked")
+				final XVector<Ability> newfdata=new XVector<Ability>((List<Ability>)value);
+				final XVector<Ability> oldfdata=new XVector<Ability>(M.abilities());
+				final List<Ability>[] deltas = newfdata.makeDeltas(oldfdata, new Comparator<Ability>()
+				{
+					@Override
+					public int compare(final Ability o1, final Ability o2)
+					{
+						return o1.ID().compareTo(o2.ID());
+					}
+				});
+				for(final Ability p : deltas[1])
+					M.delAbility(M.fetchAbility(p.ID()));
+				for(final Ability p : deltas[0])
+					M.addAbility(p);
+				for(final Ability p : newfdata)
+				{
+					final Ability oldA=M.fetchAbility(p.ID());
+					if(oldA!=null)
+					{
+						oldA.setProficiency(p.proficiency());
+						if((oldA!=p)
+						&&(!oldA.text().equals(p.text())))
+							oldA.setMiscText(p.text());
+					}
+				}
+				break;
+			}
+			case AFFBEHAV:
+			{
+				@SuppressWarnings("unchecked")
+				final XVector<CMObject> newodata=new XVector<CMObject>((List<CMObject>)value);
+				@SuppressWarnings("unchecked")
+				final XVector<CMObject> oldodata=new XVector<CMObject>((List<CMObject>)getPlayerValue(playerName,code));
+				final List<CMObject>[] deltas = newodata.makeDeltas(oldodata, new Comparator<CMObject>()
+				{
+					@Override
+					public int compare(final CMObject o1, final CMObject o2)
+					{
+						final String o1id = (o1 instanceof Ability)?("A"+o1.ID()):("B"+o1.ID());
+						final String o2id = (o2 instanceof Ability)?("A"+o2.ID()):("B"+o2.ID());
+						return o1id.compareTo(o2id);
+					}
+				});
+				for(final CMObject o : deltas[1])
+				{
+					if(o instanceof Behavior)
+						M.delBehavior((Behavior)o);
+					else
+						M.delEffect((Ability)o);
+				}
+				for(final CMObject o : deltas[0])
+				{
+					if(o instanceof Behavior)
+						M.addBehavior((Behavior)o);
+					else
+						M.addNonUninvokableEffect((Ability)o);
+				}
+				for(final CMObject o : newodata)
+				{
+					if(o instanceof Behavior)
+					{
+						final Behavior oldB=M.fetchBehavior(o.ID());
+						if(oldB!=null)
+						if((oldB!=o)
+						&&(!oldB.getParms().equals(((Behavior)o).getParms())))
+							oldB.setParms(((Behavior)o).getParms());
+					}
+					else
+					{
+						final Ability oldA=M.fetchEffect(o.ID());
+						if(oldA!=null)
+						{
+							oldA.setProficiency(((Ability)o).proficiency());
+							if((oldA!=o)
+							&&(!oldA.text().equals(((Ability)o).text())))
+								oldA.setMiscText(((Ability)o).text());
+						}
+					}
+				}
+				break;
+			}
+			case ALIGNMENT:
+				if(CMath.s_int((String)value)==Integer.MAX_VALUE)
+					M.removeFaction(CMLib.factions().getAlignmentID());
+				else
+					M.addFaction(CMLib.factions().getAlignmentID(), CMath.s_int((String)value));
+				break;
+			case ARMOR:
+				M.basePhyStats().setArmor(CMath.s_int((String)value));
+				M.recoverPhyStats();
+				break;
+			case ATTACK:
+				M.basePhyStats().setAttackAdjustment(CMath.s_int((String)value));
+				M.recoverPhyStats();
+				break;
+			case CHARCLASS:
+			{
+				final CharClass newClass = CMClass.getCharClass((String)value);
+				if(newClass!=null)
+					M.baseCharStats().setCurrentClass(newClass);
+				break;
+			}
+			case DAMAGE:
+				M.basePhyStats().setDamage(CMath.s_int((String)value));
+				M.recoverPhyStats();
+				break;
+			case DESCRIPTION:
+				M.setDescription((String)value);
+				break;
+			case EXPERS:
+			{
+				@SuppressWarnings("unchecked")
+				final XVector<String> newList = new XVector<String>((List<String>)value);
+				final XVector<String> oldList = new XVector<String>(M.expertises());
+				final List<String>[] deltas = newList.makeDeltas(oldList, newList.anyComparator);
+				for(final String s : deltas[0])
+					M.addExpertise(s);
+				for(final String s : deltas[1])
+					M.delExpertise(s);
+				break;
+			}
+			case FACTIONS:
+			{
+				@SuppressWarnings("unchecked")
+				final XVector<Pair<String,Integer>> newfdata=new XVector<Pair<String,Integer>>((List<Pair<String,Integer>>)value);
+				@SuppressWarnings("unchecked")
+				final XVector<Pair<String,Integer>> oldfdata=new XVector<Pair<String,Integer>>((List<Pair<String,Integer>>)getPlayerValue(playerName,code));
+				final List<Pair<String, Integer>>[] deltas = newfdata.makeDeltas(oldfdata, new Comparator<Pair<String, Integer>>()
+				{
+					@Override
+					public int compare(final Pair<String, Integer> o1, final Pair<String, Integer> o2)
+					{
+						return o1.first.compareTo(o2.first);
+					}
+				});
+				for(final Pair<String, Integer> p : deltas[1])
+					M.removeFaction(p.first);
+				for(final Pair<String, Integer> p : newfdata)
+					M.addFaction(p.first, p.second.intValue());
+				break;
+			}
+			case INVENTORY:
+			{
+				@SuppressWarnings("unchecked")
+				final XVector<Pair<String,String>> newList = new XVector<Pair<String,String>>((List<Pair<String,String>>)value);
+				@SuppressWarnings("unchecked")
+				final XVector<Pair<String,String>> oldList = new XVector<Pair<String,String>>((List<Pair<String,String>>)getPlayerValue(playerName, code));
+				final List<Pair<String,String>>[] deltas = newList.makeDeltas(oldList, new Pair.FullComparator<String,String>());
+				for(final Pair<String,String> s : deltas[1])
+				{
+					for(final Enumeration<Item> i= M.items();i.hasMoreElements();)
+					{
+						final Item I=i.nextElement();
+						if((I.ID().equals(s.first))&&(I.text().equals(s.second)))
+						{
+							M.delItem(I);
+							break;
+						}
+					}
+				}
+				for(final Pair<String,String> s : deltas[0])
+				{
+					final Item I=CMClass.getItem(s.first);
+					if(I!=null)
+					{
+						I.setMiscText(I.text());
+						M.addItem(I);
+					}
+				}
+				break;
+			}
+			case LEVEL:
+			{
+				final int newLevel=CMath.s_int((String)value);
+				M.basePhyStats().setLevel(newLevel);
+				M.recoverPhyStats();
+				M.baseCharStats().setClassLevel(M.baseCharStats().getCurrentClass(), M.basePhyStats().level() - M.baseCharStats().combinedSubLevels());
+				M.recoverCharStats();
+				break;
+			}
+			case MONEY:
+				M.setMoney(CMath.s_int((String)value));
+				break;
+			case NAME:
+				return;
+			case RACE:
+				M.baseCharStats().setMyRace(CMClass.getRace((String)value));
+				M.recoverCharStats();
+				break;
+			case TATTS:
+			{
+				@SuppressWarnings("unchecked")
+				final XVector<Tattoo> newTatts = new XVector<Tattoo>((List<Tattoo>)value);
+				final XVector<Tattoo> oldTatts = new XVector<Tattoo>(M.tattoos());
+				final List<Tattoo>[] deltas = newTatts.makeDeltas(oldTatts, new Comparator<Tattoo>()
+				{
+					@Override
+					public int compare(final Tattoo o1, final Tattoo o2)
+					{
+						return o1.name().compareTo(o2.name());
+					}
+				});
+				for(final Tattoo t : deltas[0])
+					M.addTattoo(t);
+				for(final Tattoo t : deltas[1])
+					M.delTattoo(t);
+				break;
+			}
+			case ACCOUNT:
+				return;
+			case AGE:
+				M.setAgeMinutes(CMath.s_long((String)value));
+				break;
+			case CHANNELMASK:
+				if(M.playerStats()!=null)
+					M.playerStats().setChannelMask(CMath.s_int((String)value));
+				break;
+			case CLANS:
+			{
+				@SuppressWarnings("unchecked")
+				final XVector<Pair<Clan, Integer>> newTatts = new XVector<Pair<Clan, Integer>>((List<Pair<Clan, Integer>>)value);
+				final XVector<Pair<Clan, Integer>> oldTatts = new XVector<Pair<Clan, Integer>>(M.clans().iterator());
+				final List<Pair<Clan, Integer>>[] deltas = newTatts.makeDeltas(oldTatts, new Comparator<Pair<Clan, Integer>>()
+				{
+					@Override
+					public int compare(final Pair<Clan, Integer> o1, final Pair<Clan, Integer> o2)
+					{
+						return o1.first.clanID().compareTo(o2.first.clanID());
+					}
+				});
+				for(final Pair<Clan, Integer> p : deltas[1])
+					M.setClan(p.first.clanID(), -1);
+				for(final Pair<Clan, Integer> p : newTatts)
+					M.setClan(p.first.clanID(), p.second.intValue());
+				break;
+			}
+			case COLOR:
+				if(M.playerStats()!=null)
+					M.playerStats().setColorStr((String)value);
+				break;
+			case DEITY:
+				M.baseCharStats().setWorshipCharID((String)value);
+				M.recoverCharStats();
+				break;
+			case EMAIL:
+				if(M.playerStats()!=null)
+					M.playerStats().setEmail((String)value);
+				break;
+			case EXPERIENCE:
+				M.setExperience(CMath.s_int((String)value));
+				break;
+			case HEIGHT:
+				M.basePhyStats().setHeight(CMath.s_int((String)value));
+				M.recoverPhyStats();
+				break;
+			case HITPOINTS:
+				M.baseState().setHitPoints(CMath.s_int((String)value));
+				M.recoverMaxState();
+				break;
+			case LASTDATE:
+				if(M.playerStats()!=null)
+					M.playerStats().setLastDateTime(CMath.s_long((String)value));
+				break;
+			case LASTIP:
+				if(M.playerStats()!=null)
+					M.playerStats().setLastIP((String)value);
+				break;
+			case LEIGE:
+				M.setLiegeID((String)value);
+				break;
+			case LOCATION:
+			{
+				final Room R=CMLib.map().getRoom((String)value);
+				if(R!=null)
+					R.bringMobHere(M, true);
+				break;
+			}
+			case MANA:
+				M.baseState().setMana(CMath.s_int((String)value));
+				M.recoverMaxState();
+				break;
+			case MATTRIB:
+				M.setAttributesBitmap(CMath.s_int((String)value));
+				break;
+			case MOVES:
+				M.baseState().setMovement(CMath.s_int((String)value));
+				M.recoverMaxState();
+				break;
+			case PASSWORD:
+				break;
+			case PRACTICES:
+				M.setPractices(CMath.s_int((String)value));
+				break;
+			case QUESTPOINTS:
+				M.setQuestPoint(CMath.s_int((String)value));
+				break;
+			case STARTROOM:
+			{
+				final Room R=CMLib.map().getRoom((String)value);
+				if(R!=null)
+					M.setStartRoom(R);
+				break;
+			}
+			case TRAINS:
+				M.setTrains(CMath.s_int((String)value));
+				break;
+			case WEIGHT:
+				M.basePhyStats().setWeight(CMath.s_int((String)value));
+				M.recoverPhyStats();
+				break;
+			case WIMP:
+				M.setWimpHitPoint(CMath.s_int((String)value));
+				break;
+			}
+		}
+		else
+		if(CMLib.players().playerExists(playerName))
+		{
+			//CMLib.database().DBSetPlayerValue(CMStrings.capitalizeAndLower(playerName), code, value);
+		}
+	}
+
 	@Override
 	public boolean activate()
 	{

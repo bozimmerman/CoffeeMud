@@ -106,7 +106,7 @@ ALTER TABLE CMPOLL
   CMWORS  : Deity/Worshipped ID
   CMPRAC  : Practice points
   CMTRAI  : Training points
-  CMAGEH  : Hours played
+  CMAGEH  : Minutes played
   CMGOLD  : (Deprecated) Amount of gold
   CMWIMP  : Wimpy points 
   CMQUES  : Quest points

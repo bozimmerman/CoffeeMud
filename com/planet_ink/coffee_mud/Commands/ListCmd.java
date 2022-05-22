@@ -26,7 +26,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.StatAwa
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.TitleAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.CommandJournalFlags;
-import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.CharThinSortCode;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerSortCode;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.*;
@@ -1550,7 +1550,7 @@ public class ListCmd extends StdCommand
 			}
 		}
 		commands.remove(0);
-		CharThinSortCode sortBy=null;
+		PlayerSortCode sortBy=null;
 		if(commands.size()>0)
 		{
 			final String rest=CMParms.combine(commands,0).toUpperCase();
@@ -1593,13 +1593,13 @@ public class ListCmd extends StdCommand
 		head.append("] Character name\n\r");
 		java.util.List<PlayerLibrary.ThinPlayer> allUsers=CMLib.database().getExtendedUserList();
 		final java.util.List<PlayerLibrary.ThinPlayer> oldSet=allUsers;
-		final CharThinSortCode showBy=sortBy;
+		final PlayerSortCode showBy=sortBy;
 		final PlayerLibrary lib=CMLib.players();
-		while((oldSet.size()>0)&&(sortBy!=null)&&(sortBy!=CharThinSortCode.IP))
+		while((oldSet.size()>0)&&(sortBy!=null)&&(sortBy!=PlayerSortCode.IP))
 		{
 			if(oldSet==allUsers)
 				allUsers=new ArrayList<PlayerLibrary.ThinPlayer>();
-			if((sortBy!=CharThinSortCode.LEVEL)||(sortBy!=CharThinSortCode.AGE))
+			if((sortBy!=PlayerSortCode.LEVEL)||(sortBy!=PlayerSortCode.AGE))
 			{
 				PlayerLibrary.ThinPlayer selected=oldSet.get(0);
 				for(int u=1;u<oldSet.size();u++)
@@ -1667,7 +1667,7 @@ public class ListCmd extends StdCommand
 		if(commands.size()==0)
 			return;
 		commands.remove(0);
-		CharThinSortCode sortBy=null;
+		PlayerSortCode sortBy=null;
 		if(commands.size()>0)
 		{
 			final String rest=CMParms.combine(commands,0).toUpperCase();
@@ -1711,13 +1711,13 @@ public class ListCmd extends StdCommand
 
 		java.util.List<MOB> allUsers=new XVector<MOB>(CMLib.players().players());
 		final java.util.List<MOB> oldSet=allUsers;
-		final CharThinSortCode showBy=sortBy;
+		final PlayerSortCode showBy=sortBy;
 		final PlayerLibrary lib=CMLib.players();
-		while((oldSet.size()>0)&&(sortBy!=null)&&(sortBy!=CharThinSortCode.IP))
+		while((oldSet.size()>0)&&(sortBy!=null)&&(sortBy!=PlayerSortCode.IP))
 		{
 			if(oldSet==allUsers)
 				allUsers=new ArrayList<MOB>();
-			if((sortBy!=CharThinSortCode.AGE)&&(sortBy!=CharThinSortCode.LEVEL))
+			if((sortBy!=PlayerSortCode.AGE)&&(sortBy!=PlayerSortCode.LEVEL))
 			{
 				MOB selected=oldSet.get(0);
 				for(int u=1;u<oldSet.size();u++)
@@ -1754,10 +1754,10 @@ public class ListCmd extends StdCommand
 			final MOB U=allUsers.get(u);
 
 			head.append("[");
-			head.append(CMStrings.padRight(lib.getSortValue(U,CharThinSortCode.RACE),COL_LEN1)+" ");
-			head.append(CMStrings.padRight(lib.getSortValue(U,CharThinSortCode.CLASS),COL_LEN2)+" ");
-			head.append(CMStrings.padRight(lib.getSortValue(U,CharThinSortCode.LEVEL),COL_LEN3)+" ");
-			final long age=Math.round(CMath.div(CMath.s_long(""+lib.getSortValue(U,CharThinSortCode.AGE)),60.0));
+			head.append(CMStrings.padRight(lib.getSortValue(U,PlayerSortCode.RACE),COL_LEN1)+" ");
+			head.append(CMStrings.padRight(lib.getSortValue(U,PlayerSortCode.CLASS),COL_LEN2)+" ");
+			head.append(CMStrings.padRight(lib.getSortValue(U,PlayerSortCode.LEVEL),COL_LEN3)+" ");
+			final long age=Math.round(CMath.div(CMath.s_long(""+lib.getSortValue(U,PlayerSortCode.AGE)),60.0));
 			head.append(CMStrings.padRight(""+age,COL_LEN4)+" ");
 			if(showBy == null)
 				head.append(CMStrings.padRight(lib.getSortValue(U,showBy), COL_LEN5) + " ");
@@ -1771,7 +1771,7 @@ public class ListCmd extends StdCommand
 				head.append(CMStrings.padRight(lib.getSortValue(U,showBy), COL_LEN5) + " ");
 				break;
 			default:
-				head.append(CMStrings.padRight(CMLib.time().date2String(CMath.s_long(lib.getSortValue(U,CharThinSortCode.LAST))), COL_LEN6) + " ");
+				head.append(CMStrings.padRight(CMLib.time().date2String(CMath.s_long(lib.getSortValue(U,PlayerSortCode.LAST))), COL_LEN6) + " ");
 				break;
 			}
 			head.append("] "+CMStrings.padRight("^<LSTUSER^>"+U.Name()+"^</LSTUSER^>",COL_LEN7));
@@ -1785,7 +1785,7 @@ public class ListCmd extends StdCommand
 		if(commands.size()==0)
 			return;
 		commands.remove(0);
-		CharThinSortCode sortBy=null;
+		PlayerSortCode sortBy=null;
 		if(commands.size()>0)
 		{
 			final String rest=CMParms.combine(commands,0).toUpperCase();
@@ -1900,13 +1900,13 @@ public class ListCmd extends StdCommand
 			};
 			thinAcctHash.put(acct.getAccountName(), selectedU);
 		}
-		final CharThinSortCode showBy=sortBy;
+		final PlayerSortCode showBy=sortBy;
 		final PlayerLibrary lib=CMLib.players();
-		while((oldSet.size()>0)&&(sortBy!=null)&&(sortBy!=CharThinSortCode.IP))
+		while((oldSet.size()>0)&&(sortBy!=null)&&(sortBy!=PlayerSortCode.IP))
 		{
 			if(oldSet==allAccounts)
 				allAccounts=new ArrayList<PlayerAccount>();
-			if((sortBy!=CharThinSortCode.LEVEL)||(sortBy!=CharThinSortCode.AGE))
+			if((sortBy!=PlayerSortCode.LEVEL)||(sortBy!=PlayerSortCode.AGE))
 			{
 				PlayerAccount selected = oldSet.get(0);
 				if(selected != null)

@@ -198,7 +198,58 @@ public class XVector<T> extends Vector<T>
 		this.comparator = comparator;
 	}
 
-	protected final Comparator<T> anyComparator = new Comparator<T>()
+	/**
+	 * Called from a new version of the list, this will return a set of
+	 * two lists, the first being things that need adding, because they
+	 * are missing from the old one, and the second list being things that
+	 * need removing, because they are missing from this one.
+	 *
+	 * @param target the old version of the list
+	 * @param comp a comparator to use for the object,
+	 * @return the list pair
+	 */
+	public final List<T>[] makeDeltas(final List<T> target, final Comparator<T> comp)
+	{
+		@SuppressWarnings("unchecked")
+		final List<T>[] deltas = new List[]{ new ArrayList<T>(), new ArrayList<T>() };
+		final Set<T> matched = new HashSet<T>();
+		for(final T t : this)
+		{
+			boolean found=false;
+			for(final T tt : target)
+			{
+				if((comp.compare(t, tt)==0)
+				&&(!matched.contains(tt)))
+				{
+					matched.add(tt);
+					found=true;
+					break;
+				}
+			}
+			if(!found)
+				deltas[0].add(t);
+		}
+		matched.clear();
+		for(final T t : target)
+		{
+			boolean found=false;
+			for(final T tt : this)
+			{
+				if((comp.compare(t, tt)==0)
+				&&(!matched.contains(tt)))
+				{
+					matched.add(tt);
+					found=true;
+					break;
+				}
+			}
+			if(!found)
+				deltas[1].add(t);
+		}
+		return deltas;
+	}
+
+	public final Comparator<T> anyComparator = new Comparator<T>()
 	{
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@Override
