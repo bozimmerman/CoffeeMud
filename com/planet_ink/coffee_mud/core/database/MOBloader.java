@@ -519,7 +519,7 @@ public class MOBloader
 
 	public void updateCMCHARString(final String name, final String fieldName, Object value)
 	{
-		DB.updateWithClobs("UPDATE CMCHAR SET "+fieldName+"=? WHERE CMUSERID=?", name, value.toString()); 
+		DB.updateWithClobs("UPDATE CMCHAR SET "+fieldName+"=? WHERE CMUSERID=?", value.toString(), name); 
 	}
 	
 	public void updateCMCHARLong(final String name, final String fieldName, Object value)
@@ -642,6 +642,7 @@ public class MOBloader
 		{
 			final CharStats stats = (CharStats)CMClass.getCommon("DefaultCharStats");
 			stats.setMyClasses(queryCMCHARStr(name,"CMCLAS"));
+			stats.setMyLevels(queryCMCHARStr(name,"CMLEVL"));
 			stats.setCurrentClass((CharClass)value);
 			updateCMCHARString(name, "CMCLAS", stats.getMyClassesStr());
 			break;
@@ -678,7 +679,8 @@ public class MOBloader
 		case FACTIONS:
 		{
 			final List<XMLLibrary.XMLTag> xmlTags=CMLib.xml().parseAllXML(queryCMCHARStr(name,"CMMXML"));
-			final XVector<Pair<String,Integer>> newPack = new XVector<Pair<String,Integer>>(CMLib.coffeeMaker().unpackFactionFromXML(null,xmlTags));
+			@SuppressWarnings("unchecked")
+			final XVector<Pair<String,Integer>> newPack = new XVector<Pair<String,Integer>>((List<Pair<String,Integer>>)value);
 			final String newXML = CMLib.coffeeMaker().getFactionXML(null, newPack);
 			final XMLLibrary.XMLTag newFactionsTag=CMLib.xml().parseAllXML(newXML).get(0);
 			StringBuilder newXMLStr = new StringBuilder("");
@@ -704,9 +706,19 @@ public class MOBloader
 				if(I!=null)
 				{
 					final String itemID=((p.first!=null)&&(p.first.length()>0))?p.first:getShortID(I);
+					final List<XMLLibrary.XMLTag> itemTags=CMLib.xml().parseAllXML(p.third);
+					final XMLLibrary.XMLTag props=CMLib.xml().getPieceFromPieces(itemTags, "PROP");
+					final PhyStats pStats = (PhyStats)CMClass.getCommon("DefaultPhyStats");
+					if(props!=null)
+						CMLib.coffeeMaker().setPhyStats(pStats,props.value());
 					DB.updateWithClobs("INSERT INTO CMCHIT (CMUSERID, CMITNM, CMITID, CMITTX, CMITLO, CMITWO, "
 									  +"CMITUR, CMITLV, CMITAB, CMHEIT"
-									  +") values (?,?,?,?,'',0,0,0,0,0)",name,itemID,p.second,p.third);
+									  +") values (?,?,?,?,'',"
+									  + "0,"
+									  + "0,"
+									  + pStats.level()+","
+									  + pStats.ability()+","
+									  + pStats.height()+")",name,itemID,p.second,p.third);
 				}
 			}
 			for(final Triad<String,String,String> p : deltas[1])
@@ -766,24 +778,35 @@ public class MOBloader
 			break;
 		case CLANS:
 		{
-			final XVector<Pair<String,Integer>> oldClans = new XVector<Pair<String,Integer>>(DBReadPlayerClans(name));
+			final XVector<Pair<Clan,Integer>> oldClans = new XVector<Pair<Clan,Integer>>();
+			for(final Pair<String,Integer> p : DBReadPlayerClans(name))
+			{
+				final Clan C=CMLib.clans().getClan(p.first);
+				oldClans.add(new Pair<Clan,Integer>(C,p.second));
+			}
 			@SuppressWarnings("unchecked")
-			final XVector<Pair<String,Integer>> newClans = new XVector<Pair<String,Integer>>((List<Pair<String,Integer>>)value);
-			final List<Pair<String,Integer>>[] deltas = newClans.makeDeltas(oldClans, new Pair.FirstComparator<String, Integer>());
-			for(Pair<String,Integer> p : deltas[0])
+			final XVector<Pair<Clan,Integer>> newClans = new XVector<Pair<Clan,Integer>>((List<Pair<Clan,Integer>>)value);
+			final List<Pair<Clan,Integer>>[] deltas = newClans.makeDeltas(oldClans, new Comparator<Pair<Clan, Integer>>(){
+				@Override
+				public int compare(Pair<Clan, Integer> o1, Pair<Clan, Integer> o2)
+				{
+					return o1.first.clanID().compareTo(o2.first.clanID());
+				}
+			});
+			for(Pair<Clan,Integer> p : deltas[0])
 			{
 				DB.updateWithClobs("INSERT INTO CMCHCL (CMUSERID, CMCLAN, CMCLRO, CMCLSTS) "
-								+ "values (?,?,?,?)",name,p.first,p.second.toString(),"");
+								+ "values (?,?,?,?)",name,p.first.clanID(),p.second.toString(),"");
 			}
-			for(Pair<String,Integer> p : deltas[1])
-				DB.updateWithClobs("DELETE FROM CMCHCL WHERE CMUSERID=? AND CMCLAN=?",name,p.first);
-			for(Pair<String,Integer> np : newClans)
+			for(Pair<Clan,Integer> p : deltas[1])
+				DB.updateWithClobs("DELETE FROM CMCHCL WHERE CMUSERID=? AND CMCLAN=?",name,p.first.clanID());
+			for(Pair<Clan,Integer> np : newClans)
 			{
-				for(Pair<String,Integer> op : oldClans)
+				for(Pair<Clan,Integer> op : oldClans)
 				{
-					if(np.first.equalsIgnoreCase(op.first)
+					if(np.first.clanID().equalsIgnoreCase(op.first.clanID())
 					&&(np.second.intValue()!=op.second.intValue()))
-						DB.updateWithClobs("UPDATE CMCHCL SET CMCLRO=? WHERE CMUSERID=? AND CMCLAN=?",np.second.toString(),name,np.first);
+						DB.updateWithClobs("UPDATE CMCHCL SET CMCLRO=? WHERE CMUSERID=? AND CMCLAN=?",np.second.toString(),name,np.first.clanID());
 				}
 			}
 			break;
@@ -825,7 +848,7 @@ public class MOBloader
 				roomID = roomID.substring(0,x)+"||"+(String)value;
 			else
 				roomID=(String)value;
-			updateCMCHARString(name, "CMROID", value);
+			updateCMCHARString(name, "CMROID", roomID);
 			break;
 		}
 		case MANA:
@@ -855,7 +878,7 @@ public class MOBloader
 				roomID = ((String)value)+"||"+roomID.substring(x+2);
 			else
 				roomID=(String)value;
-			updateCMCHARString(name, "CMROID", value);
+			updateCMCHARString(name, "CMROID", roomID);
 			break;
 		}
 		case TRAINS:
@@ -2051,6 +2074,7 @@ public class MOBloader
 		final String container=((thisItem.container()!=null)?(""+getShortID(thisItem.container())):"");
 		final String name=DB.injectionClean(mob.Name());
 		final String itemID=getShortID(thisItem);
+		thisItem.setDatabaseID(itemID);
 		return "INSERT INTO CMCHIT (CMUSERID, CMITNM, CMITID, CMITTX, CMITLO, CMITWO, "
 			+"CMITUR, CMITLV, CMITAB, CMHEIT"
 			+") values ('"+name+"','"+(itemID)+"','"+thisItem.ID()+"',?,'"+container+"',"+thisItem.rawWornCode()+","

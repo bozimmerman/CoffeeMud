@@ -895,6 +895,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			CMLib.database().DBUpdateFollowers(deadMOB);
 		}
 		deadMOB.delAllAbilities();
+		deadMOB.delAllEffects(false);
 		CMLib.database().DBUpdatePlayerAbilities(deadMOB);
 		if(deleteAssets)
 		{
@@ -1943,32 +1944,32 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				break;
 			}
 			case ALIGNMENT:
-				if(CMath.s_int((String)value)==Integer.MAX_VALUE)
+				if(CMath.s_int(""+value)==Integer.MAX_VALUE)
 					M.removeFaction(CMLib.factions().getAlignmentID());
 				else
-					M.addFaction(CMLib.factions().getAlignmentID(), CMath.s_int((String)value));
+					M.addFaction(CMLib.factions().getAlignmentID(), CMath.s_int(""+value));
 				break;
 			case ARMOR:
-				M.basePhyStats().setArmor(CMath.s_int((String)value));
+				M.basePhyStats().setArmor(CMath.s_int(""+value));
 				M.recoverPhyStats();
 				break;
 			case ATTACK:
-				M.basePhyStats().setAttackAdjustment(CMath.s_int((String)value));
+				M.basePhyStats().setAttackAdjustment(CMath.s_int(""+value));
 				M.recoverPhyStats();
 				break;
 			case CHARCLASS:
 			{
-				final CharClass newClass = CMClass.getCharClass((String)value);
+				final CharClass newClass = (CharClass)value;
 				if(newClass!=null)
 					M.baseCharStats().setCurrentClass(newClass);
 				break;
 			}
 			case DAMAGE:
-				M.basePhyStats().setDamage(CMath.s_int((String)value));
+				M.basePhyStats().setDamage(CMath.s_int(""+value));
 				M.recoverPhyStats();
 				break;
 			case DESCRIPTION:
-				M.setDescription((String)value);
+				M.setDescription(""+value);
 				break;
 			case EXPERS:
 			{
@@ -2037,7 +2038,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			}
 			case LEVEL:
 			{
-				final int newLevel=CMath.s_int((String)value);
+				final int newLevel=CMath.s_int(""+value);
 				M.basePhyStats().setLevel(newLevel);
 				M.recoverPhyStats();
 				M.baseCharStats().setClassLevel(M.baseCharStats().getCurrentClass(), M.basePhyStats().level() - M.baseCharStats().combinedSubLevels());
@@ -2045,12 +2046,13 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				break;
 			}
 			case MONEY:
-				M.setMoney(CMath.s_int((String)value));
+				M.setMoney(CMath.s_int(""+value));
 				break;
 			case NAME:
 				return;
 			case RACE:
-				M.baseCharStats().setMyRace(CMClass.getRace((String)value));
+				if(value instanceof Race)
+					M.baseCharStats().setMyRace((Race)value);
 				M.recoverCharStats();
 				break;
 			case TATTS:
@@ -2075,11 +2077,11 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			case ACCOUNT:
 				return;
 			case AGE:
-				M.setAgeMinutes(CMath.s_long((String)value));
+				M.setAgeMinutes(CMath.s_long(""+value));
 				break;
 			case CHANNELMASK:
 				if(M.playerStats()!=null)
-					M.playerStats().setChannelMask(CMath.s_int((String)value));
+					M.playerStats().setChannelMask(CMath.s_int(""+value));
 				break;
 			case CLANS:
 			{
@@ -2102,80 +2104,80 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			}
 			case COLOR:
 				if(M.playerStats()!=null)
-					M.playerStats().setColorStr((String)value);
+					M.playerStats().setColorStr(""+value);
 				break;
 			case DEITY:
-				M.baseCharStats().setWorshipCharID((String)value);
+				M.baseCharStats().setWorshipCharID(""+value);
 				M.recoverCharStats();
 				break;
 			case EMAIL:
 				if(M.playerStats()!=null)
-					M.playerStats().setEmail((String)value);
+					M.playerStats().setEmail(""+value);
 				break;
 			case EXPERIENCE:
-				M.setExperience(CMath.s_int((String)value));
+				M.setExperience(CMath.s_int(""+value));
 				break;
 			case HEIGHT:
-				M.basePhyStats().setHeight(CMath.s_int((String)value));
+				M.basePhyStats().setHeight(CMath.s_int(""+value));
 				M.recoverPhyStats();
 				break;
 			case HITPOINTS:
-				M.baseState().setHitPoints(CMath.s_int((String)value));
+				M.baseState().setHitPoints(CMath.s_int(""+value));
 				M.recoverMaxState();
 				break;
 			case LASTDATE:
 				if(M.playerStats()!=null)
-					M.playerStats().setLastDateTime(CMath.s_long((String)value));
+					M.playerStats().setLastDateTime(CMath.s_long(""+value));
 				break;
 			case LASTIP:
 				if(M.playerStats()!=null)
-					M.playerStats().setLastIP((String)value);
+					M.playerStats().setLastIP(""+value);
 				break;
 			case LEIGE:
-				M.setLiegeID((String)value);
+				M.setLiegeID(""+value);
 				break;
 			case LOCATION:
 			{
-				final Room R=CMLib.map().getRoom((String)value);
+				final Room R=CMLib.map().getRoom(""+value);
 				if(R!=null)
 					R.bringMobHere(M, true);
 				break;
 			}
 			case MANA:
-				M.baseState().setMana(CMath.s_int((String)value));
+				M.baseState().setMana(CMath.s_int(""+value));
 				M.recoverMaxState();
 				break;
 			case MATTRIB:
-				M.setAttributesBitmap(CMath.s_int((String)value));
+				M.setAttributesBitmap(CMath.s_int(""+value));
 				break;
 			case MOVES:
-				M.baseState().setMovement(CMath.s_int((String)value));
+				M.baseState().setMovement(CMath.s_int(""+value));
 				M.recoverMaxState();
 				break;
 			case PASSWORD:
 				break;
 			case PRACTICES:
-				M.setPractices(CMath.s_int((String)value));
+				M.setPractices(CMath.s_int(""+value));
 				break;
 			case QUESTPOINTS:
-				M.setQuestPoint(CMath.s_int((String)value));
+				M.setQuestPoint(CMath.s_int(""+value));
 				break;
 			case STARTROOM:
 			{
-				final Room R=CMLib.map().getRoom((String)value);
+				final Room R=CMLib.map().getRoom(""+value);
 				if(R!=null)
 					M.setStartRoom(R);
 				break;
 			}
 			case TRAINS:
-				M.setTrains(CMath.s_int((String)value));
+				M.setTrains(CMath.s_int(""+value));
 				break;
 			case WEIGHT:
-				M.basePhyStats().setWeight(CMath.s_int((String)value));
+				M.basePhyStats().setWeight(CMath.s_int(""+value));
 				M.recoverPhyStats();
 				break;
 			case WIMP:
-				M.setWimpHitPoint(CMath.s_int((String)value));
+				M.setWimpHitPoint(CMath.s_int(""+value));
 				break;
 			}
 		}

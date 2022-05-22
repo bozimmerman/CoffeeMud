@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.Color;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerCode;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -70,6 +71,47 @@ public class Test extends StdCommand
 	public static final String[]	spells			= { "Spell_Blur", "Spell_ResistMagicMissiles" };
 	public static String			semiSpellList	= null;
 
+	final Comparator<Object> comp=new Comparator<Object>()
+	{
+		@Override
+		public int compare(Object o1, Object o2)
+		{
+			if(o1 == null)
+				return (o2==null)?0:-1;
+			if(o2==null)
+				return 1;
+			if(o1 instanceof Ability)
+			{
+				if(!(o2 instanceof Ability))
+					return -1;
+				if((((CMObject)o1).ID().equals(((CMObject)o2).ID()))
+				&&(((Ability)o1).text().equals(((Ability)o2).text())))
+					return 0;
+			}
+			else
+			if(o1 instanceof Behavior)
+			{
+				if(!(o2 instanceof Behavior))
+					return -1;
+				if((((CMObject)o1).ID().equals(((CMObject)o2).ID()))
+				&&(((Behavior)o1).getParms().equals(((Behavior)o2).getParms())))
+					return 0;
+			}
+			else
+			if(o1 instanceof CMObject)
+			{
+				if(!(o2 instanceof CMObject))
+					return -1;
+				if(((CMObject)o1).ID().compareTo(((CMObject)o2).ID())==0)
+					return 0;
+			}
+			else
+			if(o1.equals(o2))
+				return 0;
+			return -1;
+		}
+	};
+	
 	public static String semiSpellList()
 	{
 		if(semiSpellList!=null)
@@ -198,6 +240,70 @@ public class Test extends StdCommand
 		return html;
 	}
 
+	@SuppressWarnings("rawtypes")
+	public void compareObjectsAndReport(final String rep, final MOB mob, final String var, final Object val1, final Object val2)
+	{
+		if(val1 == null)
+			mob.tell(rep+"-NFAIL: "+var+"="+val1);
+		else
+		if(val1 instanceof Object[])
+		{
+			if(!Arrays.deepEquals((Object[])val1, (Object[])val2))
+			{
+				mob.tell(rep+"-FAIL: "+var+"="+val1);
+				mob.tell(rep+"-WAS : "+var+"="+val2);
+			}
+		}
+		else
+		if(val1 instanceof List)
+		{
+			List l=(List)val1;
+			if((l.size()==0)||(((List)val2).size()!=l.size()))
+				mob.tell(rep+"-FAIL: "+var+"="+l.size()+"!="+((List)val2).size());
+			else
+			{
+				for(final Object o1 : l)
+				{
+					boolean found=false;
+					for(final Object o2 : ((List)val2))
+					{
+						if(o1 instanceof Triad)
+						{
+							Triad t1=(Triad)o1;
+							Triad t2=(Triad)o2;
+							if((comp.compare(t1.second, t2.second)==0)
+							&&((comp.compare(t1.third, t2.third)==0)))
+								found=true;
+						}
+						else
+						if(o1 instanceof Pair)
+						{
+							Pair t1=(Pair)o1;
+							Pair t2=(Pair)o2;
+							if((comp.compare(t1.second, t2.second)==0)
+							&&((comp.compare(t1.first, t2.first)==0)))
+								found=true;
+						}
+						else
+						if(comp.compare(o1, o2)==0)
+							found=true;
+					}
+					if(!found)
+					{
+						mob.tell(rep+"-FAIL: "+var+"~="+o1);
+						break;
+					}
+				}
+			}
+		}
+		else
+		if(!val1.equals(val2))
+		{
+			mob.tell(rep+"-FAIL: "+var+"="+val1);
+			mob.tell(rep+"-WAS : "+var+"="+val2);
+		}
+	}
+	
 	public String copyYahooGroupMsg(final MOB mob, int lastMsgNum) throws Exception
 	{
 		long numTimes = 9999999;
@@ -736,7 +842,6 @@ public class Test extends StdCommand
 		return v;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
@@ -1243,15 +1348,25 @@ public class Test extends StdCommand
 					case INVENTORY:
 					{
 						Item I=CMClass.getItem("GenShirt");
+						I.basePhyStats().setLevel(1);
+						I.text();
 						M.addItem(I);
 						I=CMClass.getItem("GenWeapon");
+						I.basePhyStats().setLevel(1);
 						M.addItem(I);
+						I.text();
 						I=CMClass.getItem("GenArmor");
+						I.basePhyStats().setLevel(1);
 						M.addItem(I);
+						I.text();
 						I=CMClass.getItem("GenShirt");
+						I.basePhyStats().setLevel(1);
 						M.addItem(I);
+						I.text();
 						I=CMClass.getItem("GenWeapon");
+						I.basePhyStats().setLevel(1);
 						M.addItem(I);
+						I.text();
 						break;
 					}
 					case LASTDATE:
@@ -1319,6 +1434,7 @@ public class Test extends StdCommand
 				}
 				CMLib.players().savePlayers();
 				Object[] saved = new Object[PlayerLibrary.PlayerCode.values().length];
+				Object[] saved2 = new Object[PlayerLibrary.PlayerCode.values().length];
 				int s=0;
 				for(final PlayerLibrary.PlayerCode c : PlayerLibrary.PlayerCode.values())
 				{
@@ -1329,109 +1445,209 @@ public class Test extends StdCommand
 					//mob.tell(c.name()+"="+val);
 				}
 				CMLib.players().unloadOfflinePlayer(M);
-				final Comparator<Object> comp=new Comparator<Object>()
-				{
-					@Override
-					public int compare(Object o1, Object o2)
-					{
-						if(o1 == null)
-							return (o2==null)?0:-1;
-						if(o2==null)
-							return 1;
-						if(o1 instanceof Ability)
-						{
-							if(!(o2 instanceof Ability))
-								return -1;
-							if((((CMObject)o1).ID().equals(((CMObject)o2).ID()))
-							&&(((Ability)o1).text().equals(((Ability)o2).text())))
-								return 0;
-						}
-						else
-						if(o1 instanceof Behavior)
-						{
-							if(!(o2 instanceof Behavior))
-								return -1;
-							if((((CMObject)o1).ID().equals(((CMObject)o2).ID()))
-							&&(((Behavior)o1).getParms().equals(((Behavior)o2).getParms())))
-								return 0;
-						}
-						else
-						if(o1 instanceof CMObject)
-						{
-							if(!(o2 instanceof CMObject))
-								return -1;
-							if(((CMObject)o1).ID().compareTo(((CMObject)o2).ID())==0)
-								return 0;
-						}
-						else
-						if(o1.equals(o2))
-							return 0;
-						return -1;
-					}
-				};
 				s=0;
 				for(final PlayerLibrary.PlayerCode c : PlayerLibrary.PlayerCode.values())
 				{
 					final Object val=CMLib.players().getPlayerValue("Testplayeredit", c);
+					this.compareObjectsAndReport("0",mob, c.name(), val, saved[s]);
+					s++;
+				}
+				M=CMLib.players().getLoadPlayer("Testplayeredit");
+				s=0;
+				for(final PlayerLibrary.PlayerCode c : PlayerLibrary.PlayerCode.values())
+				{
+					final Object val=CMLib.players().getPlayerValue("Testplayeredit", c);
+					saved[s++]=val; // now they have db ids!
 					if(val == null)
-						mob.tell("NFAIL: "+c.name()+"="+val);
-					else
-					if(val instanceof Object[])
+						mob.tell("2PREFAIL: "+c.name()+"="+val);
+					//mob.tell(c.name()+"="+val);
+				}
+				// test writing to a mob in ram
+				s=0;
+				for(final PlayerLibrary.PlayerCode c : PlayerLibrary.PlayerCode.values())
+				{
+					Object oldValue = CMLib.players().getPlayerValue("Testplayeredit", c);
+					Object newValue = null;
+					switch(c)
 					{
-						if(!Arrays.deepEquals((Object[])val, (Object[])saved[s]))
+					case ABLES:
+					{
+						@SuppressWarnings("unchecked")
+						final List<Ability> l=(List<Ability>)oldValue;
+						l.remove(1);
+						Ability A=CMClass.getAbility("Spell_Blink");
+						A.setMiscText("eye");
+						A.setProficiency(22);
+						l.add(A);
+						newValue = new XVector<Object>(l);
+						break;
+					}
+					case ACCOUNT:
+						break;
+					case AFFBEHAV:
+					{
+						@SuppressWarnings("unchecked")
+						final List<CMObject> l=(List<CMObject>)oldValue;
+						l.remove(1);
+						Ability A=CMClass.getAbility("Skill_Stonecunning");
+						A.setMiscText("eye");
+						A.makeNonUninvokable();
+						l.add(A);
+						newValue = new XVector<CMObject>(l);
+						break;
+					}
+					case ALIGNMENT: case ARMOR: case ATTACK: case CHANNELMASK:
+					case DAMAGE: case EXPERIENCE: case HEIGHT: case HITPOINTS:
+					case MANA: case MATTRIB: case MOVES: case PRACTICES: case QUESTPOINTS:
+					case TRAINS: case WEIGHT: case WIMP:
+						newValue=new Integer(((Integer)oldValue).intValue()-1);
+						break;
+					case CHARCLASS:
+						newValue = CMClass.getCharClass("Apprentice");
+						break;
+					case CLANS:
+					{
+						@SuppressWarnings("unchecked")
+						final List<Pair<Clan,Integer>> l=(List<Pair<Clan,Integer>>)oldValue;
+						l.remove(0);
+						final Enumeration<Clan> e=CMLib.clans().clans();
+						e.nextElement();
+						final Clan C=e.nextElement();
+						l.add(new Pair<Clan,Integer>(C, Integer.valueOf(2)));
+						newValue = new XVector<Object>(l);
+						break;
+					}
+					case COLOR:
+					case DEITY:
+						newValue="";
+						break;
+					case DESCRIPTION:
+					case EMAIL:
+						newValue=oldValue.toString()+"2";
+						break;
+					case EXPERS:
+					{
+						@SuppressWarnings("unchecked")
+						final List<String> l=(List<String>)oldValue;
+						l.remove(1);
+						for(int i=0;i<3;i++)
 						{
-							mob.tell("FAIL: "+c.name()+"="+val);
-							mob.tell("WAS : "+c.name()+"="+saved[s]);
+							int r=CMLib.dice().roll(1, CMLib.expertises().numExpertises(), -1);
+							final Enumeration<ExpertiseLibrary.ExpertiseDefinition> defs=CMLib.expertises().definitions();
+							for(int x=0;x<r;x++)
+								defs.nextElement();
+							final String new1=defs.nextElement().ID();
+							boolean found=false;
+							for(int d=0;d<l.size();d++)
+								if(l.get(d).startsWith(new1.substring(0,new1.length()-2)))
+									found=true;
+							if(!found)
+								l.add(new1);
 						}
+						newValue = new XVector<Object>(l);
+						break;
 					}
-					else
-					if(val instanceof List)
+					case FACTIONS:
 					{
-						List l=(List)val;
-						if((l.size()==0)||(((List)saved[s]).size()!=l.size()))
-							mob.tell("FAIL: "+c.name()+"="+l.size()+"!="+((List)saved[s]).size());
-						else
-						{
-							for(final Object o1 : l)
-							{
-								boolean found=false;
-								for(final Object o2 : ((List)saved[s]))
-								{
-									if(o1 instanceof Triad)
-									{
-										Triad t1=(Triad)o1;
-										Triad t2=(Triad)o2;
-										if((comp.compare(t1.second, t2.second)==0)
-										&&((comp.compare(t1.third, t2.third)==0)))
-											found=true;
-									}
-									else
-									if(o1 instanceof Pair)
-									{
-										Pair t1=(Pair)o1;
-										Pair t2=(Pair)o2;
-										if((comp.compare(t1.second, t2.second)==0)
-										&&((comp.compare(t1.first, t2.first)==0)))
-											found=true;
-									}
-									else
-									if(comp.compare(o1, o2)==0)
-										found=true;
-								}
-								if(!found)
-								{
-									mob.tell("FAIL: "+c.name()+"~="+o1);
-									break;
-								}
-							}
-						}
+						@SuppressWarnings("unchecked")
+						final List<Pair<String,Integer>> l=(List<Pair<String,Integer>>)oldValue;
+						l.remove(1);
+						final Enumeration<Faction> fs = CMLib.factions().factions();
+						for(int i=0;i<3;i++)
+							fs.nextElement();
+						l.add(new Pair<String,Integer>(fs.nextElement().factionID(),Integer.valueOf(9999)));
+						newValue = new XVector<Object>(l);
+						break;
 					}
-					else
-					if(!val.equals(saved[s]))
+					case INVENTORY:
 					{
-						mob.tell("FAIL: "+c.name()+"="+val);
-						mob.tell("WAS : "+c.name()+"="+saved[s]);
+						@SuppressWarnings("unchecked")
+						final List<Triad<String,String,String>> l=(List<Triad<String,String,String>>)oldValue;
+						l.remove(0); // remove a shirt
+						Item I=CMClass.getItem("GenBow");
+						I.basePhyStats().setLevel(1);
+						I.text();
+						l.add(new Triad<String,String,String>(I.databaseID(),I.ID(),I.text()));
+						I=CMClass.getItem("GenWeapon");
+						I.basePhyStats().setLevel(1);
+						I.text();
+						l.add(new Triad<String,String,String>(I.databaseID(),I.ID(),I.text()));
+						newValue = new XVector<Object>(l);
+						break;
 					}
+					case LASTDATE: case AGE: 
+						newValue=Long.valueOf(((Long)oldValue).longValue()+1);
+						break;
+					case LASTIP:
+						newValue="10.10.10.2";
+						break;
+					case LEIGE:
+						newValue="Fred";
+						break;
+					case LOCATION:
+					case STARTROOM:
+						newValue=CMLib.map().getExtendedRoomID(CMLib.map().getRandomRoom());
+						break;
+					case MONEY: case NAME: case PASSWORD: 
+						break;
+					case LEVEL: 
+						newValue=Integer.valueOf(5);
+						break;
+					case RACE:
+						newValue=CMClass.getRace("Unique");
+						break;
+					case TATTS:
+					{
+						@SuppressWarnings("unchecked")
+						final List<Tattoo> l=(List<Tattoo>)oldValue;
+						final Tattoo t = l.remove(2);
+						t.set("TATTEE6");
+						l.add(t);
+						newValue = new XVector<Object>(l);
+						break;
+					}
+					default:
+						break;
+					}
+					saved2[s]=newValue; // new clean value
+					if(newValue != null)
+						CMLib.players().setPlayerValue("Testplayeredit", c, newValue);
+					else
+						saved2[s]=oldValue;
+					s++;
+				}
+				s=0;
+				for(final PlayerLibrary.PlayerCode c : PlayerLibrary.PlayerCode.values())
+				{
+					final Object val=CMLib.players().getPlayerValue("Testplayeredit", c);
+					compareObjectsAndReport("1",mob, c.name(), val, saved2[s]);
+					s++;
+				}
+				CMLib.players().savePlayers();
+				CMLib.players().unloadOfflinePlayer(M); // now the player is offline again
+				s=0;
+				for(final PlayerLibrary.PlayerCode c : PlayerLibrary.PlayerCode.values())
+				{
+					final Object val=CMLib.players().getPlayerValue("Testplayeredit", c);
+					compareObjectsAndReport("2",mob, c.name(), val, saved2[s]);
+					s++;
+				}
+				s=0;
+				for(final PlayerLibrary.PlayerCode c : PlayerLibrary.PlayerCode.values())
+					CMLib.players().setPlayerValue("Testplayeredit", c, saved[s++]);
+				s=0;
+				for(final PlayerLibrary.PlayerCode c : PlayerLibrary.PlayerCode.values())
+				{
+					final Object val=CMLib.players().getPlayerValue("Testplayeredit", c);
+					compareObjectsAndReport("3",mob, c.name(), val, saved[s]);
+					s++;
+				}
+				M=CMLib.players().getLoadPlayer("Testplayeredit");
+				s=0;
+				for(final PlayerLibrary.PlayerCode c : PlayerLibrary.PlayerCode.values())
+				{
+					final Object val=CMLib.players().getPlayerValue("Testplayeredit", c);
+					compareObjectsAndReport("4",mob, c.name(), val, saved[s]);
 					s++;
 				}
 			}
