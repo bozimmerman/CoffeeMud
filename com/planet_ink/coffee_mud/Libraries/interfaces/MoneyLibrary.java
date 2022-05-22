@@ -337,7 +337,7 @@ public interface MoneyLibrary extends CMLibrary
 	 * @see MoneyLibrary#nameCurrencyShort(String, double)
 	 * @see MoneyLibrary#nameCurrencyShort(MOB, int)
 	 *
-	 * @param currency the currency to use
+	 * @param mob the mob from whom to get a currency to use
 	 * @param absoluteValue the total value to show
 	 * @return the close denomination with of a short form of the value
 	 */
@@ -353,7 +353,7 @@ public interface MoneyLibrary extends CMLibrary
 	 * @see MoneyLibrary#nameCurrencyShort(String, double)
 	 * @see MoneyLibrary#nameCurrencyShort(MOB, double)
 	 *
-	 * @param currency the currency to use
+	 * @param mob the mob from which to get the currency to use
 	 * @param absoluteValue the total value to show
 	 * @return the close denomination with of a short form of the value
 	 */
@@ -434,7 +434,7 @@ public interface MoneyLibrary extends CMLibrary
 	 * @see MoneyLibrary#makeAllCurrency(String, double)
 	 * @see MoneyLibrary#makeCurrency(String, double, long)
 	 *
-	 * @param currency the currency to use
+	 * @param mob the mob from whom to get a currency to use
 	 * @param absoluteValue the amount to approximate
 	 * @param owner the new owner of the returned item
 	 * @param container the container to put the item in
@@ -530,7 +530,7 @@ public interface MoneyLibrary extends CMLibrary
 	 * @see MoneyLibrary#addMoney(MOB, Container, String, double)
 	 * @see MoneyLibrary#addMoney(MOB, Container, String, int)
 	 *
-	 * @param mob the mob to have more money
+	 * @param customer the mob to have more money
 	 * @param deltaValue the amount of total value to add
 	 */
 	public void addMoney(MOB customer, int deltaValue);
@@ -544,7 +544,7 @@ public interface MoneyLibrary extends CMLibrary
 	 * @see MoneyLibrary#addMoney(MOB, Container, String, double)
 	 * @see MoneyLibrary#addMoney(MOB, Container, String, int)
 	 *
-	 * @param mob the mob to have more money
+	 * @param customer the mob to have more money
 	 * @param deltaValue the amount of total value to add
 	 */
 	public void addMoney(MOB customer, double deltaValue);
@@ -558,7 +558,7 @@ public interface MoneyLibrary extends CMLibrary
 	 * @see MoneyLibrary#addMoney(MOB, Container, String, double)
 	 * @see MoneyLibrary#addMoney(MOB, Container, String, int)
 	 *
-	 * @param mob the mob to have more money
+	 * @param customer the mob to have more money
 	 * @param currency the currency of the money to make
 	 * @param deltaValue the amount of total value to add
 	 */
@@ -589,7 +589,7 @@ public interface MoneyLibrary extends CMLibrary
 	 * @see MoneyLibrary#addMoney(MOB, String, int)
 	 * @see MoneyLibrary#addMoney(MOB, Container, String, double)
 	 *
-	 * @param mob the mob to have more money
+	 * @param customer the mob to have more money
 	 * @param container null, or the container to put the money in
 	 * @param currency the currency of the money to make
 	 * @param deltaValue the amount of total value to add
