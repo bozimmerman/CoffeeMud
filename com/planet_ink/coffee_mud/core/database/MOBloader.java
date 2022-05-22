@@ -295,7 +295,8 @@ public class MOBloader
 				{
 					final String abilityID=DBConnections.getRes(R2,"CMABID");
 					int proficiency=(int)DBConnections.getLongRes(R2,"CMABPF");
-					if(proficiency>Integer.MIN_VALUE+1)
+					if((proficiency>Integer.MIN_VALUE+1)
+					&&(proficiency!=Integer.MAX_VALUE))
 					{
 						if(proficiency<0)
 							proficiency+=200;
@@ -491,7 +492,7 @@ public class MOBloader
 		case MOVES:
 			return Integer.valueOf((queryCMCHARLong(name, "CMMOVE")).intValue());
 		case PASSWORD:
-			break;
+			return "";
 		case PRACTICES:
 			return Integer.valueOf((queryCMCHARLong(name, "CMPRAC")).intValue());
 		case QUESTPOINTS:

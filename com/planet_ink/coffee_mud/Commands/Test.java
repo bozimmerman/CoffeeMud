@@ -4,10 +4,8 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMath.CompiledFormula;
 import com.planet_ink.coffee_mud.core.CMath.CompiledOperation;
 import com.planet_ink.coffee_mud.core.collections.*;
-import com.planet_ink.coffee_mud.core.interfaces.BoundedObject;
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
-import com.planet_ink.coffee_mud.core.exceptions.CMException;
-import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
+import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -16,15 +14,12 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityParameters;
-import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.Color;
-import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary;
-import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-import com.planet_ink.coffee_mud.WebMacros.interfaces.WebMacro;
+import com.planet_ink.coffee_mud.WebMacros.interfaces.*;
 import com.planet_ink.coffee_web.http.HTTPMethod;
 import com.planet_ink.coffee_web.http.MultiPartData;
 import com.planet_ink.coffee_web.interfaces.HTTPRequest;
@@ -741,6 +736,7 @@ public class Test extends StdCommand
 		return v;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
@@ -1116,6 +1112,328 @@ public class Test extends StdCommand
 				final long millidiff=C.deriveMillisAfter(NOW);
 				mob.tell(L("MilliDiff=@x1",""+millidiff));
 				return true;
+			}
+			else
+			if(what.equalsIgnoreCase("playeredit"))
+			{
+				MOB M=CMLib.players().getLoadPlayer("Testplayeredit");
+				if(M!=null)
+					CMLib.players().obliteratePlayer(M, true, true);
+				M=CMClass.getMOB("StdMOB");
+				M.setName("Testplayeredit");
+				M.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
+				M.setBaseCharStats((CharStats)CMClass.getCommon("DefaultCharStats"));
+				CMLib.database().DBCreateCharacter(M);
+				M=CMLib.players().getLoadPlayer("Testplayeredit");
+				// first test the normal stuff
+				for(final PlayerLibrary.PlayerCode c : PlayerLibrary.PlayerCode.values())
+				{
+					switch(c)
+					{
+					case ABLES:
+					{
+						Ability A=CMClass.getAbility("Spell_Web");
+						A.setMiscText("web");
+						A.setProficiency(54);
+						M.addAbility(A);
+						A=CMClass.getAbility("Spell_Fireball");
+						A.setMiscText("fire");
+						A.setProficiency(94);
+						M.addAbility(A);
+						A=CMClass.getAbility("Spell_GustOfWind");
+						A.setMiscText("wind");
+						A.setProficiency(24);
+						M.addAbility(A);
+						break;
+					}
+					case ACCOUNT:
+						break;
+					case AFFBEHAV:
+						Behavior B=CMClass.getBehavior("Mobile");
+						B.setParms("1");
+						M.addBehavior(B);
+						B=CMClass.getBehavior("Mime");
+						B.setParms("2");
+						M.addBehavior(B);
+						B=CMClass.getBehavior("Emoter");
+						B.setParms("3");
+						M.addBehavior(B);
+						B=CMClass.getBehavior("CorpseEater");
+						B.setParms("4");
+						M.addBehavior(B);
+						Ability A=CMClass.getAbility("Prop_AbilityImmunity");
+						A.setMiscText("web");
+						M.addNonUninvokableEffect(A);
+						A=CMClass.getAbility("Prop_SafePet");
+						A.setMiscText("inv");
+						M.addNonUninvokableEffect(A);
+						A=CMClass.getAbility("Prop_Smell");
+						A.setMiscText("smell");
+						M.addNonUninvokableEffect(A);
+						break;
+					case AGE:
+						M.setAgeMinutes(123456);
+						break;
+					case ALIGNMENT:
+						M.addFaction(CMLib.factions().getAlignmentID(), 2345);
+						break;
+					case ARMOR:
+						M.basePhyStats().setArmor(404);
+						break;
+					case ATTACK:
+						M.basePhyStats().setAttackAdjustment(111);
+						break;
+					case CHANNELMASK:
+						M.playerStats().setChannelMask(11);
+						break;
+					case CHARCLASS:
+						M.baseCharStats().setCurrentClass(CMClass.getCharClass("Apprentice"));
+						M.baseCharStats().setCurrentClassLevel(1);
+						M.baseCharStats().setCurrentClass(CMClass.getCharClass("Fighter"));
+						M.baseCharStats().setCurrentClassLevel(3);
+						M.basePhyStats().setLevel(4);
+						break;
+					case CLANS:
+						M.setClan(CMLib.clans().clans().nextElement().clanID(), 1);
+						break;
+					case COLOR:
+						M.playerStats().setColorStr(CMLib.database().DBReadPlayerValue("Zac", c).toString());
+						break;
+					case DAMAGE:
+						M.basePhyStats().setDamage(99);
+						break;
+					case DEITY:
+						M.baseCharStats().setWorshipCharID(CMLib.map().deities().nextElement().Name());
+						break;
+					case DESCRIPTION:
+						M.setDescription("My Desc");
+						break;
+					case EMAIL:
+						M.playerStats().setEmail("my@email.com");
+						break;
+					case EXPERIENCE:
+						M.setExperience(4321);
+						break;
+					case EXPERS:
+					{
+						for(int i=0;i<10;i++)
+						{
+							int r=CMLib.dice().roll(1, CMLib.expertises().numExpertises(), -1);
+							final Enumeration<ExpertiseLibrary.ExpertiseDefinition> defs=CMLib.expertises().definitions();
+							for(int x=0;x<r;x++)
+								defs.nextElement();
+							M.addExpertise(defs.nextElement().ID());
+						}
+						break;
+					}
+					case FACTIONS:
+					{
+						final Enumeration<Faction> fs = CMLib.factions().factions();
+						M.addFaction(fs.nextElement().factionID(), 10);
+						M.addFaction(fs.nextElement().factionID(), 100);
+						M.addFaction(fs.nextElement().factionID(), 1000);
+						break;
+					}
+					case HEIGHT:
+						M.basePhyStats().setHeight(121);
+						break;
+					case HITPOINTS:
+						M.baseState().setHitPoints(10);
+						break;
+					case INVENTORY:
+					{
+						Item I=CMClass.getItem("GenShirt");
+						M.addItem(I);
+						I=CMClass.getItem("GenWeapon");
+						M.addItem(I);
+						I=CMClass.getItem("GenArmor");
+						M.addItem(I);
+						I=CMClass.getItem("GenShirt");
+						M.addItem(I);
+						I=CMClass.getItem("GenWeapon");
+						M.addItem(I);
+						break;
+					}
+					case LASTDATE:
+						M.playerStats().setLastDateTime(123123123);
+						break;
+					case LASTIP:
+						M.playerStats().setLastIP("10.10.10.1");
+						break;
+					case LEIGE:
+						M.setLiegeID("Zac");
+						break;
+					case LEVEL:
+						M.basePhyStats().setLevel(4);
+						break;
+					case LOCATION:
+						M.setLocation(CMLib.map().getRandomRoom());
+						break;
+					case MANA:
+						M.baseState().setMana(101);
+						break;
+					case MATTRIB:
+						M.setAttributesBitmap(543);
+						break;
+					case MONEY:
+						break;
+					case MOVES:
+						M.baseState().setMovement(110);
+						break;
+					case NAME:
+						break;
+					case PASSWORD:
+						M.playerStats().setPassword("newpass");
+						break;
+					case PRACTICES:
+						M.setPractices(77);
+						break;
+					case QUESTPOINTS:
+						M.setQuestPoint(88);
+						break;
+					case RACE:
+						M.baseCharStats().setMyRace(CMClass.getRace("Elf"));
+						break;
+					case STARTROOM:
+						M.setStartRoom(CMLib.map().getRandomRoom());
+						break;
+					case TATTS:
+						M.addTattoo("TATTEE1");
+						M.addTattoo("TATTEE2");
+						M.addTattoo("TATTEE3");
+						M.addTattoo("TATTEE4");
+						M.addTattoo("TATTEE5");
+						break;
+					case TRAINS:
+						M.setTrains(99);
+						break;
+					case WEIGHT:
+						M.basePhyStats().setWeight(927);
+						break;
+					case WIMP:
+						M.setWimpHitPoint(123);
+						break;
+					default:
+						break;
+					}
+				}
+				CMLib.players().savePlayers();
+				Object[] saved = new Object[PlayerLibrary.PlayerCode.values().length];
+				int s=0;
+				for(final PlayerLibrary.PlayerCode c : PlayerLibrary.PlayerCode.values())
+				{
+					final Object val=CMLib.players().getPlayerValue("Testplayeredit", c);
+					saved[s++]=val;
+					if(val == null)
+						mob.tell("PREFAIL: "+c.name()+"="+val);
+					//mob.tell(c.name()+"="+val);
+				}
+				CMLib.players().unloadOfflinePlayer(M);
+				final Comparator<Object> comp=new Comparator<Object>()
+				{
+					@Override
+					public int compare(Object o1, Object o2)
+					{
+						if(o1 == null)
+							return (o2==null)?0:-1;
+						if(o2==null)
+							return 1;
+						if(o1 instanceof Ability)
+						{
+							if(!(o2 instanceof Ability))
+								return -1;
+							if((((CMObject)o1).ID().equals(((CMObject)o2).ID()))
+							&&(((Ability)o1).text().equals(((Ability)o2).text())))
+								return 0;
+						}
+						else
+						if(o1 instanceof Behavior)
+						{
+							if(!(o2 instanceof Behavior))
+								return -1;
+							if((((CMObject)o1).ID().equals(((CMObject)o2).ID()))
+							&&(((Behavior)o1).getParms().equals(((Behavior)o2).getParms())))
+								return 0;
+						}
+						else
+						if(o1 instanceof CMObject)
+						{
+							if(!(o2 instanceof CMObject))
+								return -1;
+							if(((CMObject)o1).ID().compareTo(((CMObject)o2).ID())==0)
+								return 0;
+						}
+						else
+						if(o1.equals(o2))
+							return 0;
+						return -1;
+					}
+				};
+				s=0;
+				for(final PlayerLibrary.PlayerCode c : PlayerLibrary.PlayerCode.values())
+				{
+					final Object val=CMLib.players().getPlayerValue("Testplayeredit", c);
+					if(val == null)
+						mob.tell("NFAIL: "+c.name()+"="+val);
+					else
+					if(val instanceof Object[])
+					{
+						if(!Arrays.deepEquals((Object[])val, (Object[])saved[s]))
+						{
+							mob.tell("FAIL: "+c.name()+"="+val);
+							mob.tell("WAS : "+c.name()+"="+saved[s]);
+						}
+					}
+					else
+					if(val instanceof List)
+					{
+						List l=(List)val;
+						if((l.size()==0)||(((List)saved[s]).size()!=l.size()))
+							mob.tell("FAIL: "+c.name()+"="+l.size()+"!="+((List)saved[s]).size());
+						else
+						{
+							for(final Object o1 : l)
+							{
+								boolean found=false;
+								for(final Object o2 : ((List)saved[s]))
+								{
+									if(o1 instanceof Triad)
+									{
+										Triad t1=(Triad)o1;
+										Triad t2=(Triad)o2;
+										if((comp.compare(t1.second, t2.second)==0)
+										&&((comp.compare(t1.third, t2.third)==0)))
+											found=true;
+									}
+									else
+									if(o1 instanceof Pair)
+									{
+										Pair t1=(Pair)o1;
+										Pair t2=(Pair)o2;
+										if((comp.compare(t1.second, t2.second)==0)
+										&&((comp.compare(t1.first, t2.first)==0)))
+											found=true;
+									}
+									else
+									if(comp.compare(o1, o2)==0)
+										found=true;
+								}
+								if(!found)
+								{
+									mob.tell("FAIL: "+c.name()+"~="+o1);
+									break;
+								}
+							}
+						}
+					}
+					else
+					if(!val.equals(saved[s]))
+					{
+						mob.tell("FAIL: "+c.name()+"="+val);
+						mob.tell("WAS : "+c.name()+"="+saved[s]);
+					}
+					s++;
+				}
 			}
 			else
 			if(what.equalsIgnoreCase("horsedraggers"))

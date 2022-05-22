@@ -1829,7 +1829,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			case MOVES:
 				return Integer.valueOf(M.baseState().getMovement());
 			case PASSWORD:
-				break;
+				return "";
 			case PRACTICES:
 				return Integer.valueOf(M.getPractices());
 			case QUESTPOINTS:

@@ -137,6 +137,14 @@ public class DefaultTattoo implements Tattoo
 	}
 
 	@Override
+	public boolean equals(Object o)
+	{
+		if(o instanceof Tattoo)
+			return this.tattooName.equals(((Tattoo)o).getTattooName());
+		return false;
+	}
+	
+	@Override
 	public Tattoo parse(final String tattooCode)
 	{
 		if((tattooCode==null)
