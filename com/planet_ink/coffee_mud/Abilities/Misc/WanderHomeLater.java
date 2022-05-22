@@ -176,7 +176,7 @@ public class WanderHomeLater extends StdAbility
 			return false;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		this.startTickDown(mob, givenTarget, Integer.MAX_VALUE/2);;
+		this.startTickDown(mob, givenTarget, Integer.MAX_VALUE/2);
 		return true;
 	}
 }

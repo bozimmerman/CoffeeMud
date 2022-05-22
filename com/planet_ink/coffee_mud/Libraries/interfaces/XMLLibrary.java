@@ -410,6 +410,13 @@ public interface XMLLibrary extends CMLibrary
 		public String value();
 
 		/**
+		 * Sets new value
+		 * Be very careful with this
+		 * @param newVal the new value
+		 */
+		public void setValue(final String newVal);
+
+		/**
 		 * @return the contents
 		 */
 		public List<XMLTag> contents();

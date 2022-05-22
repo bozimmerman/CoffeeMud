@@ -1148,13 +1148,14 @@ public interface GenericBuilder extends CMLibrary
 
 	/**
 	 * Converts all the faction values and associations on the given
-	 * mob into a complete xml doc for storage in the db.
+	 * mob or list into a complete xml doc for storage in the db.
 	 * @see GenericBuilder#unpackFactionFromXML(MOB, List)
 	 *
 	 * @param mob the mob to grab faction associations from
-	 * @return the xml doc of all factions on the mob
+	 * @param lst optional list to grab faction info from
+	 * @return the xml doc of all factions on the mob or list
 	 */
-	public String getFactionXML(MOB mob);
+	public String getFactionXML(MOB mob, List<Pair<String, Integer>> lst);
 
 	/**
 	 * Sets the faction values and associations on the given
@@ -1162,7 +1163,7 @@ public interface GenericBuilder extends CMLibrary
 	 * must include one called "FACTIONS".
 	 * @return TODO
 	 *
-	 * @see GenericBuilder#getFactionXML(MOB)
+	 * @see GenericBuilder#getFactionXML(MOB, List)
 	 *
 	 * @param mob the mob to set faction associations on
 	 * @param xml the list of pre-parsed xml tags

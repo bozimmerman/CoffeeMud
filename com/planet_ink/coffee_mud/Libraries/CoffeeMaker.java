@@ -802,7 +802,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				text.append("<CLAN ROLE=").append(p.second.toString()).append(">").append(p.first.clanID()).append("</CLAN>");
 			text.append(xmlLib.convertXMLtoTag("GENDER",""+(char)((MOB)E).baseCharStats().getStat(CharStats.STAT_GENDER)));
 			text.append(xmlLib.convertXMLtoTag("MRACE",""+((MOB)E).baseCharStats().getMyRace().ID()));
-			text.append(getFactionXML((MOB)E));
+			text.append(getFactionXML((MOB)E, null));
 			text.append(getGenMobInventoryXML((MOB)E));
 			text.append(getGenMobAbilitiesXML((MOB)E));
 
@@ -4416,7 +4416,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 		str.append(getPlayerExtraInventory(mob));
 
-		str.append(getFactionXML(mob));
+		str.append(getFactionXML(mob, null));
 
 		final StringBuilder fols=new StringBuilder("");
 		for(int f=0;f<mob.numFollowers();f++)
@@ -5686,24 +5686,32 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	}
 
 	@Override
-	public String getFactionXML(final MOB mob)
+	public String getFactionXML(final MOB mob, final List<Pair<String, Integer>> lst)
 	{
-		final boolean isPlayer=mob.isPlayer();
 		final StringBuilder facts=new StringBuilder();
-		for(final Enumeration<String> e=mob.factions();e.hasMoreElements();)
+		if(mob != null)
 		{
-			final String name=e.nextElement();
-			final int val=mob.fetchFaction(name);
-			if(val!=Integer.MAX_VALUE)
+			final boolean isPlayer=mob.isPlayer();
+			for(final Enumeration<String> e=mob.factions();e.hasMoreElements();)
 			{
-				if(!isPlayer)
+				final String name=e.nextElement();
+				final int val=mob.fetchFaction(name);
+				if(val!=Integer.MAX_VALUE)
 				{
-					final Faction F=CMLib.factions().getFaction(name);
-					if((F==null)||(!F.isSavable()))
-						continue;
+					if(!isPlayer)
+					{
+						final Faction F=CMLib.factions().getFaction(name);
+						if((F==null)||(!F.isSavable()))
+							continue;
+					}
+					facts.append("<FCTN ID=\""+name+"\">"+val+"</FCTN>");
 				}
-				facts.append("<FCTN ID=\""+name+"\">"+val+"</FCTN>");
 			}
+		}
+		if(lst != null)
+		{
+			for(final Pair<String, Integer> p : lst)
+				facts.append("<FCTN ID=\""+p.first+"\">"+p.second.toString()+"</FCTN>");
 		}
 		return CMLib.xml().convertXMLtoTag("FACTIONS",facts.toString());
 	}

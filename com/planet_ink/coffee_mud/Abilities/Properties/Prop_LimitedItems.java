@@ -285,11 +285,11 @@ public class Prop_LimitedItems extends Property
 								MOB M=CMLib.players().getPlayer(name);
 								if(M==null)
 								{
-									final PairList<String,String> matchingItems = CMLib.database().DBReadPlayerItemData(name,ID());
-									for(final Pair<String,String> p : matchingItems)
+									final List<Triad<String,String,String>> matchingItems = CMLib.database().DBReadPlayerItemData(name,ID());
+									for(final Triad<String,String,String> p : matchingItems)
 									{
-										if(p.first.equalsIgnoreCase(affected.ID())
-										&&(p.second.indexOf(affId)>0))
+										if(p.second.equalsIgnoreCase(affected.ID())
+										&&(p.third.indexOf(affId)>0))
 										{
 											M=CMLib.players().getLoadPlayer(name);
 											break;

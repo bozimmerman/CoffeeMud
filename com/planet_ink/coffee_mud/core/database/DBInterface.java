@@ -882,13 +882,19 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public void DBSetPlayerValue(final String name, final PlayerCode code, final Object value)
+	{
+		MOBloader.DBSetPlayerValue(name, code, value);
+	}
+
+	@Override
 	public int DBReadPlayerBitmap(final String name)
 	{
 		return MOBloader.DBReadPlayerBitmap(name);
 	}
 
 	@Override
-	public PairList<String,String> DBReadPlayerItemData(final String name, final String searchStr)
+	public List<Triad<String,String,String>> DBReadPlayerItemData(final String name, final String searchStr)
 	{
 		return MOBloader.DBReadPlayerItemData(name, searchStr);
 	}

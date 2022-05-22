@@ -83,7 +83,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		IP,
 		NUMPLAYERS,
 		EXPIRATION
-	};
+	}
 
 	@Override
 	public int numPlayers()
@@ -1773,11 +1773,11 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			}
 			case INVENTORY:
 			{
-				final Vector<Pair<String,String>> items=new Vector<Pair<String,String>>();
+				final Vector<Triad<String,String,String>> items=new Vector<Triad<String,String,String>>();
 				for(final Enumeration<Item> i= M.items();i.hasMoreElements();)
 				{
 					final Item I=i.nextElement();
-					items.add(new Pair<String,String>(I.ID(),I.text()));
+					items.add(new Triad<String,String,String>(I.databaseID(),I.ID(),I.text()));
 				}
 				return items;
 			}
@@ -2005,28 +2005,31 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			case INVENTORY:
 			{
 				@SuppressWarnings("unchecked")
-				final XVector<Pair<String,String>> newList = new XVector<Pair<String,String>>((List<Pair<String,String>>)value);
+				final XVector<Triad<String,String,String>> newList = new XVector<Triad<String,String,String>>((List<Triad<String,String,String>>)value);
 				@SuppressWarnings("unchecked")
-				final XVector<Pair<String,String>> oldList = new XVector<Pair<String,String>>((List<Pair<String,String>>)getPlayerValue(playerName, code));
-				final List<Pair<String,String>>[] deltas = newList.makeDeltas(oldList, new Pair.FullComparator<String,String>());
-				for(final Pair<String,String> s : deltas[1])
+				final XVector<Triad<String,String,String>> oldList = new XVector<Triad<String,String,String>>((List<Triad<String,String,String>>)getPlayerValue(playerName, code));
+				final List<Triad<String,String,String>>[] deltas = newList.makeDeltas(oldList, new Triad.TripleComparator<String,String,String>());
+				for(final Triad<String,String, String> s : deltas[1])
 				{
 					for(final Enumeration<Item> i= M.items();i.hasMoreElements();)
 					{
 						final Item I=i.nextElement();
-						if((I.ID().equals(s.first))&&(I.text().equals(s.second)))
+						if((I.ID().equals(s.second))
+						&&(I.databaseID().equals(s.first))
+						&&(I.text().equals(s.third)))
 						{
 							M.delItem(I);
 							break;
 						}
 					}
 				}
-				for(final Pair<String,String> s : deltas[0])
+				for(final Triad<String,String, String> s : deltas[0])
 				{
-					final Item I=CMClass.getItem(s.first);
+					final Item I=CMClass.getItem(s.second);
 					if(I!=null)
 					{
-						I.setMiscText(I.text());
+						I.setMiscText(s.third);
+						I.setDatabaseID(s.first);
 						M.addItem(I);
 					}
 				}
@@ -2179,7 +2182,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		else
 		if(CMLib.players().playerExists(playerName))
 		{
-			//CMLib.database().DBSetPlayerValue(CMStrings.capitalizeAndLower(playerName), code, value);
+			CMLib.database().DBSetPlayerValue(CMStrings.capitalizeAndLower(playerName), code, value);
 		}
 	}
 

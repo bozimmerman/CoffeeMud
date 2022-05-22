@@ -816,7 +816,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * Table category: DBPLAYERS
 	 * Returns a specific piece of player data from the database.
 	 * @see PlayerLibrary.PlayerCode
-	 * @param name the player to read clan info for
+	 * @param name the player to read info for
 	 * @param code the piece of data to return
 	 * @return the specific data, usually a string, Integer, or list of pairs
 	 */
@@ -824,13 +824,24 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERS
-	 * Reads the item class and misc text of each item in the given
+	 * Sets a specific piece of player data in the database.
+	 * @see PlayerLibrary.PlayerCode
+	 * @param name the player to set info for
+	 * @param code the piece of data to set
+	 * @param value the value of the data to set
+	 * @return the specific data, usually a string, Integer, or list of pairs
+	 */
+	public void DBSetPlayerValue(final String name, final PlayerCode code, final Object value);
+	
+	/**
+	 * Table category: DBPLAYERS
+	 * Reads the item dbid, class and misc text of each item in the given
 	 * players inventory.
 	 * @param name the name of the player
 	 * @param searchStr a string to search the misctext for, or nothing
 	 * @return the list of matching items
 	 */
-	public PairList<String,String> DBReadPlayerItemData(String name, final String searchStr);
+	public List<Triad<String,String,String>> DBReadPlayerItemData(String name, final String searchStr);
 
 	/**
 	 * Table category: DBPLAYERS

@@ -2143,11 +2143,11 @@ public class ListCmd extends StdCommand
 						if((wearLoc!=0)&&((R.forbiddenWornBits()&wearLoc)==0))
 							wearLocs += " " + Wearable.CODES.NAME(wearLoc);
 					}
-					final String helpEOL=CMStrings.getEOL(help.toString(),"\n\r");
+					final String helpEOL=CMStrings.getEOL((help!=null)?help.toString():"","\n\r");
 					lines.append("\n\r=="+R.name()+"==\n\r");
 					lines.append("{{RaceTemplate"
 							+ "|Name="+R.name()
-							+ "|Description="+CMStrings.replaceAll(help.toString(),helpEOL,helpEOL+helpEOL)
+							+ "|Description="+CMStrings.replaceAll((help!=null)?help.toString():"",helpEOL,helpEOL+helpEOL)
 							+ "|Statadj="+statAdj
 							+ "|RacialAbilities="+rableStr
 							+ "|CulturalAbilities="+cultStr
@@ -2264,11 +2264,11 @@ public class ListCmd extends StdCommand
 					&&(CMLib.ableMapper().getSecretSkill(C.ID(),false,A.ID())!=SecretFlag.PUBLIC))
 						langStr.append("[["+A.ID()+"|"+A.name()+"]] ");
 				}
-				final String helpEOL=CMStrings.getEOL(help.toString(),"\n\r");
+				final String helpEOL=CMStrings.getEOL((help!=null)?help.toString():"","\n\r");
 				lines.append("\n\r=="+C.name()+"==\n\r");
 				lines.append("{{ClassTemplate"
 						+ "|Name="+C.name()
-						+ "|Description="+CMStrings.replaceAll(help.toString(),helpEOL,helpEOL+helpEOL)
+						+ "|Description="+CMStrings.replaceAll((help!=null)?help.toString():"",helpEOL,helpEOL+helpEOL)
 						+ "|PrimeStat="+C.getPrimeStatDesc()
 						+ "|Qualifications="+C.getStatQualDesc()
 						+ "|Practices="+C.getPracticeDesc()

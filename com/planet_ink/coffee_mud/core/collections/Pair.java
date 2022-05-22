@@ -112,7 +112,7 @@ public class Pair<T, K> implements Map.Entry<T, K>
 		}
 	}
 
-	public static final class FullComparator<T, K> implements Comparator<Pair<T, K>>
+	public static final class DoubleComparator<T, K> implements Comparator<Pair<T, K>>
 	{
 		final FirstComparator<T, K>		fc	= new FirstComparator<T, K>();
 		final SecondComparator<T, K>	sc	= new SecondComparator<T, K>();
