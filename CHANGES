@@ -15,6 +15,7 @@
  14. New base materials/raw env resources: NICKEL and PALLADIUM (nos 207 and 208)
  15. New thief skills: silent wear, silent hold, silent wield
  16. ResourceOverride now has more options and applications
+ 17. New Zappermask flags: +-RIDE, +-FOLLOW
 
 # Build 5.9.12 Release 1/17/2022
   *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG

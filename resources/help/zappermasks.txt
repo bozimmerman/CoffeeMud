@@ -103,3 +103,5 @@
 +SKILLFLAG -ENCHANTMENT etc.. (<WORD> only those with listed skillflag)
 -ACCCHIEVES +mytatto etc..  (<WORD> all except those with achievements)
 +ACCCHIEVES -mytattoo etc.. (<WORD> only those with listed achievements)
+-RIDE +RIDE zappermask (Apply remainder of criteria to ridden)
+-FOLLOW +FOLLOW zappermask (Apply remainder of criteria to followed)

@@ -320,6 +320,22 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return copy;
 	}
 
+	protected CompiledZMaskEntry[] fixEntrySet(final CompiledZMaskEntry entry)
+	{
+		final CompiledZMaskEntry[] sset;
+		if(entry.parms()[0] instanceof List)
+		{
+			@SuppressWarnings("unchecked")
+			final
+			ArrayList<CompiledZMaskEntry> subSet = (ArrayList<CompiledZMaskEntry>)entry.parms()[0];
+			sset=subSet.toArray(new CompiledZMaskEntry[subSet.size()]);
+			entry.parms()[0] = sset;
+		}
+		else
+			sset = (CompiledZMaskEntry[])entry.parms();
+		return sset;
+	}
+
 	protected Object makeSkillFlagObject(final String str)
 	{
 		Object o=null;
@@ -1086,6 +1102,18 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case OR: // -or
 					buf.append(L("-OR-  "));
+					break;
+				case _RIDE: // -ride
+					buf.append(L((skipFirstWord?"The":"Requires")+" followed matches: "));
+					break;
+				case RIDE: // +ride
+					buf.append(L("Disallows riding matches: "));
+					break;
+				case _FOLLOW: // -follow
+					buf.append(L((skipFirstWord?"The":"Requires")+" followed matches: "));
+					break;
+				case FOLLOW: // +follow
+					buf.append(L("Disallows riding matches: "));
 					break;
 				case EXPERTISE: // +expertises
 					{
@@ -3904,6 +3932,18 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					buf.add(new CompiledZapperMaskEntryImpl(entryType,new Object[0]));
 					break;
 				}
+				case RIDE: // +ride
+				case _RIDE: // -ride
+				case FOLLOW: // +follow
+				case _FOLLOW: // -follow
+				{
+					final Object[] subSet = new Object[] { new ArrayList<CompiledZMaskEntry>() };
+					buf.add(new CompiledZapperMaskEntryImpl(entryType,subSet));
+					@SuppressWarnings("unchecked")
+					final ArrayList<CompiledZMaskEntry> newBuf = (ArrayList<CompiledZMaskEntry>)subSet[0];
+					buf = newBuf;
+					break;
+				}
 				case OR: // +or
 				case _OR: // -or
 				{
@@ -4338,6 +4378,20 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	public boolean maskCheck(final String text, final Environmental E, final boolean actual)
 	{
 		return maskCheck(getPreCompiledMask(text), E, actual);
+	}
+
+	protected boolean maskCheck(final CompiledZMaskEntry[] cset, final Environmental E, final boolean actual)
+	{
+		if(E==null)
+			return true;
+		if((cset==null)||(cset.length<1))
+			return true;
+		getMaskCodes();
+		final MOB mob=(E instanceof MOB)?(MOB)E:nonCrashingMOB();
+		final Item item=((E instanceof Item)?(Item)E:nonCrashingItem(mob));
+		final Room room =((E instanceof Area)?outdoorRoom((Area)E):CMLib.map().roomLocation(E));
+		final Physical P = (E instanceof Physical)?(Physical)E:null;
+		return maskCheckSubEntries(cset,E,actual,mob,item,room,P);
 	}
 
 	@Override
@@ -5841,6 +5895,38 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							return false;
 					}
 					break;
+				case _RIDE: // -ride
+					if((!(E instanceof Rider))||(((Rider)E).riding()==null)||(entry.parms().length==0))
+						return false;
+					else
+					{
+						final CompiledZMaskEntry[] sset = fixEntrySet(entry);
+						return maskCheck(sset, ((Rider)E).riding(), actual);
+					}
+				case RIDE: // +ride
+					if((!(E instanceof Rider))||(((Rider)E).riding()==null)||(entry.parms().length==0))
+						return true;
+					else
+					{
+						final CompiledZMaskEntry[] sset = fixEntrySet(entry);
+						return !maskCheck(sset, ((Rider)E).riding(), actual);
+					}
+				case _FOLLOW: // -follow
+					if((mob.amFollowing()==null)||(entry.parms().length==0))
+						return false;
+					else
+					{
+						final CompiledZMaskEntry[] sset = fixEntrySet(entry);
+						return maskCheck(sset, mob.amFollowing(), actual);
+					}
+				case FOLLOW: //+follow
+					if((mob.amFollowing()==null)||(entry.parms().length==0))
+						return true;
+					else
+					{
+						final CompiledZMaskEntry[] sset = fixEntrySet(entry);
+						return !maskCheck(sset, mob.amFollowing(), actual);
+					}
 				case _DEITY: // -deity
 					{
 						final String worshipCharID=(actual?mob.charStats():mob.baseCharStats()).getWorshipCharID();
@@ -7099,6 +7185,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						}
 					}
 					break;
+				case _RIDE: //-ride
+				case _FOLLOW: //-follow
+					return true; // always the end of the line
+				case RIDE: // +ride
+				case FOLLOW: //+follow
+					return false; // always the end of the line
 				case ACCOUNT:// +accounts
 				case _ACCOUNT:// -accounts
 				case _ALIGNMENT: // -alignment

@@ -403,6 +403,10 @@ public interface MaskingLibrary extends CMLibrary
 		PORT,
 		_PLANE,
 		PLANE,
+		_RIDE,
+		RIDE,
+		_FOLLOW,
+		FOLLOW,
 		;
 		private final String[] keys;
 		private ZapperKey(final String... exts)
