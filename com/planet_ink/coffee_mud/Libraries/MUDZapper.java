@@ -7187,10 +7187,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case _RIDE: //-ride
 				case _FOLLOW: //-follow
-					return true; // always the end of the line
+					return false; // always the end of the line
 				case RIDE: // +ride
 				case FOLLOW: //+follow
-					return false; // always the end of the line
+					return true; // always the end of the line
 				case ACCOUNT:// +accounts
 				case _ACCOUNT:// -accounts
 				case _ALIGNMENT: // -alignment
