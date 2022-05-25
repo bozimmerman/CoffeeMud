@@ -188,18 +188,18 @@ public class StdTitle extends StdItem implements LandTitle
 	}
 
 	@Override
-	public CMObject getOwnerObject()
+	public boolean isProperlyOwned()
 	{
 		final PrivateProperty P=fetchAPropertyRecord();
 		if(P==null)
-			return null;
+			return false;
 		final String owner=P.getOwnerName();
 		if(owner.length()==0)
-			return null;
-		final Clan C=CMLib.clans().getClanExact(owner);
+			return false;
+		final Clan C=CMLib.clans().fetchClanAnyHost(owner);
 		if(C!=null)
-			return C;
-		return CMLib.players().getLoadPlayer(owner);
+			return true;
+		return CMLib.players().playerExistsAllHosts(owner);
 	}
 
 	@Override
@@ -449,9 +449,10 @@ public class StdTitle extends StdItem implements LandTitle
 		if(P instanceof Boardable)
 		{
 			final Item I=((Boardable)P).getBoardableItem();
-			if(I!=null)
+			if((I!=null)
+			&&(isProperlyOwned()))
 			{
-				final CMObject owner = this.getOwnerObject();
+				CMObject owner = CMLib.clans().getClanExact(getOwnerName());
 				if(owner instanceof Clan)
 				{
 					final Clan C=(Clan)owner;
@@ -464,11 +465,14 @@ public class StdTitle extends StdItem implements LandTitle
 					}
 				}
 				else
-				if(owner instanceof MOB)
 				{
-					final PlayerStats pStats = ((MOB)owner).playerStats();
-					if(pStats != null)
-						pStats.getExtItems().delItem(I);
+					owner = CMLib.players().getLoadPlayer(getOwnerName());
+					if(owner instanceof MOB)
+					{
+						final PlayerStats pStats = ((MOB)owner).playerStats();
+						if(pStats != null)
+							pStats.getExtItems().delItem(I);
+					}
 				}
 			}
 		}

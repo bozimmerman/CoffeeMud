@@ -214,10 +214,10 @@ public class Thief_Squatting extends ThiefSkill
 		MOB warnMOB=null;
 		if((T.getOwnerName().length()>0)&&(!T.getOwnerName().startsWith("#")))
 		{
-			final Clan C=CMLib.clans().getClanExact(T.getOwnerName());
+			final Clan C=CMLib.clans().fetchClanAnyHost(T.getOwnerName());
 			if(C==null)
 			{
-				final MOB M=CMLib.players().getLoadPlayer(T.getOwnerName());
+				final MOB M=CMLib.players().getLoadPlayerAllHosts(T.getOwnerName());
 				if(M!=null)
 					warnMOB=M;
 			}

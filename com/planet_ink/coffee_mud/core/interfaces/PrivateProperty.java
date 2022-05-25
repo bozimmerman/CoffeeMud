@@ -62,10 +62,10 @@ public interface PrivateProperty extends Environmental
 	public void setOwnerName(String owner);
 
 	/**
-	 * Get the actual clan or mob owner of the property, or null if it can not.
-	 * @return the owner of the property
+	 * Returns whether the owner actually exists.
+	 * @return true if this property is owned.
 	 */
-	public CMObject getOwnerObject();
+	public boolean isProperlyOwned();
 
 	/**
 	 * Returns a unique id for this particular title and the rooms is represents, even if the contents change.

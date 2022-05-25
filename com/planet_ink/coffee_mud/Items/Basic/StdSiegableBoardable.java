@@ -571,8 +571,12 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 	{
 		final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),thisRoom);
 		mob.setRiding(this);
-		if(getOwnerObject() instanceof Clan)
-			mob.setClan(getOwnerObject().name(), ((Clan)getOwnerObject()).getAutoPosition());
+		if((getOwnerName()!=null)&&(getOwnerName().length()>0))
+		{
+			final Clan clan = CMLib.clans().fetchClanAnyHost(getOwnerName());
+			if(clan != null)
+				mob.setClan(clan.name(), clan.getAutoPosition());
+		}
 		return mob;
 	}
 
@@ -921,7 +925,7 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 							msg.source().tell(L("@x1 is already aimed.",weapon.Name()));
 							return false;
 						}
-						final CMMsg msg2=CMClass.getMsg(msg.source(), siegeTarget, weapon, 
+						final CMMsg msg2=CMClass.getMsg(msg.source(), siegeTarget, weapon,
 														CMMsg.MSG_NOISYMOVEMENT, msgStr,
 														CMMsg.MSG_NOISYMOVEMENT, SiegableItem.SiegeCommand.AIM.name(),
 														CMMsg.MSG_NOISYMOVEMENT, msgStr);

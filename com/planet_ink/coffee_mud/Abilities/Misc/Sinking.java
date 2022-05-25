@@ -268,8 +268,13 @@ public class Sinking extends StdAbility
 					mob = CMClass.getFactoryMOB(item.name(),item.phyStats().level(),room);
 					if(item instanceof PrivateProperty)
 					{
-						if(((PrivateProperty)item).getOwnerObject() instanceof Clan)
-							mob.setClan(((PrivateProperty)item).getOwnerObject().name(), ((Clan)((PrivateProperty)item).getOwnerObject()).getAutoPosition());
+						final PrivateProperty P=(PrivateProperty)item;
+						if((P.getOwnerName()!=null)&&(P.getOwnerName().length()>0))
+						{
+							final Clan clan = CMLib.clans().getClanExact(P.getOwnerName());
+							if(clan != null)
+								mob.setClan(clan.name(), clan.getAutoPosition());
+						}
 					}
 					mob.setRiding((Rideable)item);
 				}

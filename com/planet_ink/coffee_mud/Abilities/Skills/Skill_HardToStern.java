@@ -219,10 +219,12 @@ public class Skill_HardToStern extends StdSkill
 						try
 						{
 							smob.setRiding(myShipItem);
-							if(myShipItem instanceof PrivateProperty)
+							if((myShipItem instanceof PrivateProperty)
+							&&(((PrivateProperty)myShipItem).isProperlyOwned()))
 							{
-								if(((PrivateProperty)myShipItem).getOwnerObject() instanceof Clan)
-									smob.setClan(((PrivateProperty)myShipItem).getOwnerObject().name(), ((Clan)((PrivateProperty)myShipItem).getOwnerObject()).getAutoPosition());
+								final Clan clan = CMLib.clans().fetchClanAnyHost(((PrivateProperty)myShipItem).getOwnerName());
+								if(clan != null)
+									smob.setClan(clan.name(), clan.getAutoPosition());
 							}
 							smob.basePhyStats().setDisposition(smob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
 							smob.phyStats().setDisposition(smob.phyStats().disposition()|PhyStats.IS_SWIMMING);

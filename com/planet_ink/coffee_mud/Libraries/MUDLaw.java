@@ -566,12 +566,12 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			return null;
 		if(record.getOwnerName().startsWith("#"))
 			return null;
-		final Clan clan = CMLib.clans().getClanExact(record.getOwnerName());
+		final Clan clan = CMLib.clans().fetchClanAnyHost(record.getOwnerName());
 		if(clan != null)
 			return CMLib.players().getLoadPlayer(clan.getResponsibleMemberName());
 		final MOB M=CMLib.players().getPlayerAllHosts(record.getOwnerName());
 		if(M == null)
-			return CMLib.players().getLoadPlayer(record.getOwnerName());
+			return CMLib.players().getLoadPlayerAllHosts(record.getOwnerName());
 		return M;
 	}
 
@@ -588,13 +588,13 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			return true;
 		if((record.getOwnerName().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
 			return true;
-		final Clan clan = CMLib.clans().getClanExact(record.getOwnerName());
+		final Clan clan = CMLib.clans().fetchClanAnyHost(record.getOwnerName());
 		if(clan != null)
 		{
 			final Pair<Clan,Integer> clanRole=mob.getClanRole(record.getOwnerName());
 			if((clanRole!=null)&&(clanRole.first.getAuthority(clanRole.second.intValue(),Clan.Function.PROPERTY_OWNER)!=Clan.Authority.CAN_NOT_DO))
 				return true;
-			final MOB cM=CMLib.players().getLoadPlayer(clan.getResponsibleMemberName());
+			final MOB cM=CMLib.players().getLoadPlayerAllHosts(clan.getResponsibleMemberName());
 			if(cM != null)
 				return mob.mayIFight(cM);
 		}

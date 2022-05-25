@@ -942,7 +942,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						if(V.get(v) instanceof LandTitle)
 						{
 							final LandTitle L=(LandTitle)V.get(v);
-							if(L.getOwnerObject()==null)
+							if(!L.isProperlyOwned())
 							{
 								final Item I=(Item)L;
 								delDepositInventory(listerName,I);

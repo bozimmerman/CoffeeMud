@@ -1339,8 +1339,12 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 	{
 		final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),thisRoom);
 		mob.setRiding(this);
-		if(getOwnerObject() instanceof Clan)
-			mob.setClan(getOwnerObject().name(), ((Clan)getOwnerObject()).getAutoPosition());
+		if((getOwnerName()!=null)&&(getOwnerName().length()>0))
+		{
+			final Clan clan = CMLib.clans().fetchClanAnyHost(getOwnerName());
+			if(clan != null)
+				mob.setClan(clan.name(), clan.getAutoPosition());
+		}
 		return mob;
 	}
 

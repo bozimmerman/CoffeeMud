@@ -179,11 +179,29 @@ public interface PlayerLibrary extends CMLibrary
 	 * the cache and then returns it.
 	 *
 	 * @see PlayerLibrary#getLoadPlayerByEmail(String)
+	 * @see PlayerLibrary#getLoadPlayerAllHosts(String)
 	 *
 	 * @param last the character name
 	 * @return null, or the character found
 	 */
 	public MOB getLoadPlayer(String last);
+
+
+	/**
+	 * Finds a player character who has the given unique name,
+	 * first checking the manager cache, and if not found, goes
+	 * to the associated database and loads the character into
+	 * the cache and then returns it.  If not found there, it
+	 * checks all other player managers who share a map with
+	 * this one.
+	 *
+	 * @see PlayerLibrary#getLoadPlayerByEmail(String)
+	 * @see PlayerLibrary#getLoadPlayer(String)
+	 *
+	 * @param last the character name
+	 * @return null, or the character found
+	 */
+	public MOB getLoadPlayerAllHosts(final String last);
 
 	/**
 	 * Finds a player character who has the given email address
@@ -192,6 +210,7 @@ public interface PlayerLibrary extends CMLibrary
 	 * will check the cache first, of course.
 	 *
 	 * @see PlayerLibrary#getLoadPlayer(String)
+	 * @see PlayerLibrary#getLoadPlayerAllHosts(String)
 	 *
 	 * @param email email address to find a player for
 	 * @return null, or the player char mob found

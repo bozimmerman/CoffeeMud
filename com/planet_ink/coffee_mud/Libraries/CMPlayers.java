@@ -443,6 +443,43 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
+	public MOB getLoadPlayerAllHosts(final String last)
+	{
+		final MOB M = getPlayerAllHosts(last);
+		if(M!=null)
+			return M;
+		final Set<DatabaseEngine> dbset=new HashSet<DatabaseEngine>();
+		dbset.add(CMLib.database());
+		for(final PlayerLibrary pLib2 : getOtherPlayerLibAllHosts())
+		{
+			if(pLib2 != this)
+			{
+				final char threadId = CMLib.getLibraryThreadID(pLib2);
+				final DatabaseEngine otherEngine = CMLib.get(threadId)._database();
+				if((!dbset.contains(otherEngine))
+				&&(otherEngine.DBUserSearch(last)!=null))
+				{
+					dbset.add(otherEngine);
+					final MOB[] outerMob = new MOB[1];
+					CMLib.threads().executeRunnable(threadId, new Runnable() {
+						final MOB[] innerMob = outerMob;
+						final String name = last;
+						@Override
+						public void run()
+						{
+							innerMob[0] = pLib2.getLoadPlayer(name);
+						}
+
+					});
+					if(outerMob[0]!=null)
+						return outerMob[0];
+				}
+			}
+		}
+		return null;
+	}
+
+	@Override
 	public MOB getLoadPlayer(final String last)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))

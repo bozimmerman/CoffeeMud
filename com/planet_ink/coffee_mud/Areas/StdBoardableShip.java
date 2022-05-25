@@ -2195,11 +2195,11 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 	}
 
 	@Override
-	public CMObject getOwnerObject()
+	public boolean isProperlyOwned()
 	{
 		if( getBoardableItem() instanceof PrivateProperty)
-			return ((PrivateProperty)getBoardableItem()).getOwnerObject();
-		return null;
+			return ((PrivateProperty)getBoardableItem()).isProperlyOwned();
+		return false;
 	}
 
 	@Override

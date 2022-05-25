@@ -211,7 +211,7 @@ public class Skill_FindClanHome extends StdAbility
 		if(CMLib.law().doesHaveWeakPriviledgesHere(mob, room))
 		{
 			final String ownerName=CMLib.law().getLandOwnerName(room);
-			if(CMLib.clans().getClanExact(ownerName)!=null)
+			if(CMLib.clans().fetchClanAnyHost(ownerName)!=null)
 				return true;
 		}
 		return false;

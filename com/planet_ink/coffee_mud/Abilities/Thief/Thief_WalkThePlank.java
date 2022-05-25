@@ -147,7 +147,7 @@ public class Thief_WalkThePlank extends ThiefSkill
 				if(R2!=null)
 				{
 					final String owner = CMLib.law().getPropertyOwnerName(R2);
-					final Clan C=CMLib.clans().getClanExact(owner);
+					final Clan C=CMLib.clans().fetchClanAnyHost(owner);
 					for(final Enumeration<MOB> m=R2.inhabitants();m.hasMoreElements();)
 					{
 						final MOB M=m.nextElement();

@@ -372,15 +372,18 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	@Override
 	public void destroy()
 	{
-		final CMObject propOwner=getOwnerObject();
-		if(propOwner != null)
+		final String ownerName=getOwnerName();
+		if((ownerName!=null) && (ownerName.length()>0))
 		{
-			if((propOwner instanceof MOB)
-			&&(((MOB)propOwner).playerStats()!=null))
-				((MOB)propOwner).playerStats().getExtItems().delItem(this);
+			final Clan clan = CMLib.clans().fetchClanAnyHost(ownerName);
+			if(clan != null)
+				clan.getExtItems().delItem(this);
 			else
-			if(propOwner instanceof Clan)
-				((Clan)propOwner).getExtItems().delItem(this);
+			{
+				final MOB mob=CMLib.players().getLoadPlayerAllHosts(ownerName);
+				if((mob != null) && (mob.playerStats()!=null))
+					mob.playerStats().getExtItems().delItem(this);
+			}
 		}
 		if(area!=null)
 		{
@@ -441,15 +444,15 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	}
 
 	@Override
-	public CMObject getOwnerObject()
+	public boolean isProperlyOwned()
 	{
 		final String owner=getOwnerName();
 		if(owner.length()==0)
-			return null;
-		final Clan C=CMLib.clans().getClanExact(owner);
+			return false;
+		final Clan C=CMLib.clans().fetchClanAnyHost(owner);
 		if(C!=null)
-			return C;
-		return CMLib.players().getLoadPlayer(owner);
+			return true;
+		return CMLib.players().playerExistsAllHosts(owner);
 	}
 
 	@Override
@@ -521,7 +524,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	{
 		if((this.getOwnerName().length()>0)&&(!this.getOwnerName().startsWith("#")))
 		{
-			final Clan clan = CMLib.clans().getClanExact(this.getOwnerName());
+			final Clan clan = CMLib.clans().fetchClanAnyHost(this.getOwnerName());
 			if(clan != null)
 				clan.getExtItems().delItem(this);
 			else
@@ -1005,12 +1008,12 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			}
 			else
 			{
-				final Clan C=CMLib.clans().getClanExact(getOwnerName());
+				final Clan C=CMLib.clans().fetchClanAnyHost(getOwnerName());
 				if(C!=null)
 				{
 					C.getExtItems().delItem(this);
 					CMLib.database().DBUpdateClanItems(C);
-					final MOB cM=CMLib.players().getLoadPlayer(C.getResponsibleMemberName());
+					final MOB cM=CMLib.players().getLoadPlayerAllHosts(C.getResponsibleMemberName());
 					if(cM != null)
 						CMLib.achievements().possiblyBumpAchievement(cM, AchievementLibrary.Event.CLANPROPERTY, -1, C, getArea());
 				}
