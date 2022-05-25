@@ -56,6 +56,51 @@ public class MOBloader
 
 	protected Room emptyRoom=null;
 
+	protected Comparator<String[]> itemComparator = new Comparator<String[]>() {
+		@Override
+		public int compare(final String[] o1, final String[] o2)
+		{
+			if(o2.length>o1.length)
+				return -1;
+			if(o1.length>o2.length)
+				return 1;
+			for(int i=0;i<o1.length;i++)
+			{
+				final int c=o1[i].compareTo(o2[i]);
+				if(c!=0)
+					return c;
+			}
+			return 0;
+		}
+
+	};
+
+	protected final Filterer<String> normalInventoryFilter = new Filterer<String>()
+	{
+
+		@Override
+		public boolean passesFilter(final String obj)
+		{
+			return (obj != null) && !(obj.startsWith("<ROOM") && (obj.indexOf("/>")>=0));
+		}
+
+	};
+
+	protected final Filterer<Pair<String,String>> normalMoneyFilter = new Filterer<Pair<String,String>>()
+	{
+		@Override
+		public boolean passesFilter(final Pair<String, String> obj)
+		{
+			if (obj!=null && (obj.second==null || obj.second.trim().length()==0))
+			{
+				final Item I=CMClass.getBasicItem(obj.first);
+				if((I!=null)&&(I instanceof Coins))
+					return true;
+			}
+			return false;
+		}
+	};
+
 	public MOB DBReadUserOnly(String name, final String[] locationID)
 	{
 		if((name==null)||(name.length()==0))
@@ -257,6 +302,28 @@ public class MOBloader
 		return null;
 	}
 
+	public String queryCMACCTStr(final String name, final String fieldName)
+	{
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+
+			final ResultSet R=D.query("SELECT "+fieldName+" FROM CMACCT WHERE CMANAM='"+name+"'");
+			if(R.next())
+				return DBConnections.getRes(R, fieldName);
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("MOB",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return null;
+	}
+
 	public Long queryCMCHARLong(final String name, final String fieldName)
 	{
 		DBConnection D=null;
@@ -403,7 +470,7 @@ public class MOBloader
 			return CMLib.coffeeMaker().unpackFactionFromXML(null,CleanXML);
 		}
 		case INVENTORY:
-			return new XVector<Triad<String,String,String>>(DBReadPlayerItemData(name, null).iterator());
+			return new XVector<String[]>(DBReadPlayerItemData(name, null, normalInventoryFilter).iterator());
 		case LEVEL:
 		{
 			final CharStats stats = (CharStats)CMClass.getCommon("DefaultCharStats");
@@ -415,7 +482,25 @@ public class MOBloader
 			return Integer.valueOf(level);
 		}
 		case MONEY:
-			return Integer.valueOf((queryCMCHARLong(name, "CMGOLD")).intValue());
+		{
+			final List<String[]> items = DBReadPlayerItemData(name, normalMoneyFilter, null);
+			final List<Coins> coins = new Vector<Coins>();
+			for(final String[] i : items)
+			{
+				Item I=CMClass.getItemPrototype(i[1]);
+				if(I instanceof Coins)
+				{
+					I=DBBuildItemFromData(i);
+					coins.add((Coins)I);
+				}
+			}
+			final int oldmoney = queryCMCHARLong(name, "CMGOLD").intValue();
+			if(oldmoney != 0)
+			{
+				//TODO: query the start room, get the currency, use that to add coins
+			}
+			return coins;
+		}
 		case NAME:
 			return name;
 		case RACE:
@@ -492,7 +577,17 @@ public class MOBloader
 		case MOVES:
 			return Integer.valueOf((queryCMCHARLong(name, "CMMOVE")).intValue());
 		case PASSWORD:
-			return "";
+		{
+			if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
+			{
+				final String accountName = DBGetAccountNameFromPlayer(name);
+				if(accountName != null)
+					return queryCMACCTStr(accountName, "CMPASS");
+				return "";
+			}
+			else
+				return queryCMCHARStr(name, "CMPASS");
+		}
 		case PRACTICES:
 			return Integer.valueOf((queryCMCHARLong(name, "CMPRAC")).intValue());
 		case QUESTPOINTS:
@@ -517,17 +612,17 @@ public class MOBloader
 		return null;
 	}
 
-	public void updateCMCHARString(final String name, final String fieldName, Object value)
+	public void updateCMCHARString(final String name, final String fieldName, final Object value)
 	{
-		DB.updateWithClobs("UPDATE CMCHAR SET "+fieldName+"=? WHERE CMUSERID=?", value.toString(), name); 
+		DB.updateWithClobs("UPDATE CMCHAR SET "+fieldName+"=? WHERE CMUSERID=?", value.toString(), name);
 	}
-	
+
 	public void updateCMCHARLong(final String name, final String fieldName, Object value)
 	{
 		value = "" + CMath.s_long(value.toString()); // poor man's sql injection fix
-		DB.updateWithClobs("UPDATE CMCHAR SET "+fieldName+"="+value.toString()+" WHERE CMUSERID=?", name); 
+		DB.updateWithClobs("UPDATE CMCHAR SET "+fieldName+"="+value.toString()+" WHERE CMUSERID=?", name);
 	}
-	
+
 	public void DBSetPlayerValue(final String name, final PlayerCode code, final Object value)
 	{
 		switch(code)
@@ -540,21 +635,21 @@ public class MOBloader
 			final XVector<Ability> oldAbles=new XVector<Ability>((List<Ability>)this.DBReadPlayerValue(name, code));
 			final List<Ability>[] deltas = newAbles.makeDeltas(oldAbles, new Comparator<Ability>() {
 				@Override
-				public int compare(Ability o1, Ability o2)
+				public int compare(final Ability o1, final Ability o2)
 				{
 					return o1.ID().compareTo(o2.ID());
 				}
 			});
-			for(Ability p : deltas[0])
+			for(final Ability p : deltas[0])
 			{
 				DB.updateWithClobs("INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX) "
 								+ "values (?,?,"+p.proficiency()+",?)",name,p.ID(),p.text());
 			}
-			for(Ability p : deltas[1])
+			for(final Ability p : deltas[1])
 				DB.updateWithClobs("DELETE FROM CMCHAB WHERE CMUSERID=? AND CMABID=?",name,p.ID());
-			for(Ability np : newAbles)
+			for(final Ability np : newAbles)
 			{
-				for(Ability op : oldAbles)
+				for(final Ability op : oldAbles)
 				{
 					if(np.ID().equalsIgnoreCase(op.ID())
 					&&(!np.text().equalsIgnoreCase(op.text())))
@@ -571,14 +666,14 @@ public class MOBloader
 			final XVector<CMObject> oldAffBs=new XVector<CMObject>((List<CMObject>)this.DBReadPlayerValue(name, code));
 			final List<CMObject>[] deltas = newAffBs.makeDeltas(oldAffBs, new Comparator<CMObject>() {
 				@Override
-				public int compare(CMObject o1, CMObject o2)
+				public int compare(final CMObject o1, final CMObject o2)
 				{
 					final String o1id = (o1 instanceof Behavior) ? ("B"+o1.ID()) : ("A"+o1.ID());
 					final String o2id = (o2 instanceof Behavior) ? ("B"+o2.ID()) : ("A"+o2.ID());
 					return o1id.compareTo(o2id);
 				}
 			});
-			for(CMObject p : deltas[0])
+			for(final CMObject p : deltas[0])
 			{
 				if(p instanceof Behavior)
 					DB.updateWithClobs("INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX) "
@@ -586,13 +681,13 @@ public class MOBloader
 				else
 					DB.updateWithClobs("INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX) "
 							+ "values (?,?,"+Integer.MAX_VALUE+",?)",name,p.ID(),((Ability)p).text());
-				
+
 			}
-			for(CMObject p : deltas[1])
+			for(final CMObject p : deltas[1])
 				DB.updateWithClobs("DELETE FROM CMCHAB WHERE CMUSERID=? AND CMABID=?",name,p.ID());
-			for(CMObject np : newAffBs)
+			for(final CMObject np : newAffBs)
 			{
-				for(CMObject op : oldAffBs)
+				for(final CMObject op : oldAffBs)
 				{
 					if(np.ID().equalsIgnoreCase(op.ID())
 					&&(np instanceof Behavior)
@@ -621,8 +716,8 @@ public class MOBloader
 			}
 			final String newXML = CMLib.coffeeMaker().getFactionXML(null, oldPack);
 			final XMLLibrary.XMLTag newFactionsTag=CMLib.xml().parseAllXML(newXML).get(0);
-			StringBuilder newXMLStr = new StringBuilder("");
-			for(XMLLibrary.XMLTag tag : xmlTags)
+			final StringBuilder newXMLStr = new StringBuilder("");
+			for(final XMLLibrary.XMLTag tag : xmlTags)
 			{
 				if(tag.tag().equalsIgnoreCase("FACTIONS"))
 					newXMLStr.append(newFactionsTag.toString());
@@ -656,7 +751,7 @@ public class MOBloader
 		case EXPERS:
 		{
 			final String buf=queryCMCHARStr(name, "CMPFIL");
-			List<XMLLibrary.XMLTag> tags=CMLib.xml().parseAllXML(buf);
+			final List<XMLLibrary.XMLTag> tags=CMLib.xml().parseAllXML(buf);
 			@SuppressWarnings("unchecked")
 			final List<String> Ts=(List<String>)value;
 			final StringBuilder tbuf=new StringBuilder("");
@@ -683,8 +778,8 @@ public class MOBloader
 			final XVector<Pair<String,Integer>> newPack = new XVector<Pair<String,Integer>>((List<Pair<String,Integer>>)value);
 			final String newXML = CMLib.coffeeMaker().getFactionXML(null, newPack);
 			final XMLLibrary.XMLTag newFactionsTag=CMLib.xml().parseAllXML(newXML).get(0);
-			StringBuilder newXMLStr = new StringBuilder("");
-			for(XMLLibrary.XMLTag tag : xmlTags)
+			final StringBuilder newXMLStr = new StringBuilder("");
+			for(final XMLLibrary.XMLTag tag : xmlTags)
 			{
 				if(tag.tag().equalsIgnoreCase("FACTIONS"))
 					newXMLStr.append(newFactionsTag.toString());
@@ -696,35 +791,31 @@ public class MOBloader
 		}
 		case INVENTORY:
 		{
-			final XVector<Triad<String,String,String>> oldInv = new XVector<Triad<String,String,String>>(DBReadPlayerItemData(name, null).iterator()); 
+			final XVector<String[]> oldInv = new XVector<String[]>(DBReadPlayerItemData(name, null, normalInventoryFilter).iterator());
 			@SuppressWarnings("unchecked")
-			final XVector<Triad<String,String,String>> newInv = new XVector<Triad<String,String,String>>((List<Triad<String,String,String>>)value); 
-			final List<Triad<String,String,String>>[] deltas = newInv.makeDeltas(oldInv, new Triad.TripleComparator<String, String, String>());
-			for(final Triad<String,String,String> p : deltas[0])
+			final XVector<String[]> newInv = new XVector<String[]>((List<String[]>)value);
+			final List<String[]>[] deltas = newInv.makeDeltas(oldInv, itemComparator);
+			for(final String[] p : deltas[1]) // must be done first, because deleted might just be changed
 			{
-				final Item I=CMClass.getItem(p.second);
+				if((p[0]!=null)&&(p[0].length()>0))
+					DB.updateWithClobs("DELETE FROM CMCHIT WHERE CMUSERID=? AND CMITID=? AND CMITNM=?",name,p[1],p[0]);
+			}
+			for(final String[] p : deltas[0])
+			{
+				final Item I=CMClass.getItem(p[1]);
 				if(I!=null)
 				{
-					final String itemID=((p.first!=null)&&(p.first.length()>0))?p.first:getShortID(I);
-					final List<XMLLibrary.XMLTag> itemTags=CMLib.xml().parseAllXML(p.third);
-					final XMLLibrary.XMLTag props=CMLib.xml().getPieceFromPieces(itemTags, "PROP");
-					final PhyStats pStats = (PhyStats)CMClass.getCommon("DefaultPhyStats");
-					if(props!=null)
-						CMLib.coffeeMaker().setPhyStats(pStats,props.value());
+					final String itemID=((p[0]!=null)&&(p[0].length()>0))?p[0]:getShortID(I);
+					 // String[] (dbid, item class, item txt, loID, worn, uses, lvl, abilty, heit)
 					DB.updateWithClobs("INSERT INTO CMCHIT (CMUSERID, CMITNM, CMITID, CMITTX, CMITLO, CMITWO, "
 									  +"CMITUR, CMITLV, CMITAB, CMHEIT"
-									  +") values (?,?,?,?,'',"
-									  + "0,"
-									  + "0,"
-									  + pStats.level()+","
-									  + pStats.ability()+","
-									  + pStats.height()+")",name,itemID,p.second,p.third);
+									  +") values (?,?,?,?,?,"
+									  + Integer.valueOf(CMath.s_int(p[5]))+","
+									  + Integer.valueOf(CMath.s_int(p[6]))+","
+									  + Integer.valueOf(CMath.s_int(p[7]))+","
+									  + Integer.valueOf(CMath.s_int(p[8]))+","
+									  + Integer.valueOf(CMath.s_int(p[9]))+")",name,itemID,p[1],p[2],p[3]);
 				}
-			}
-			for(final Triad<String,String,String> p : deltas[1])
-			{
-				if((p.first!=null)&&(p.first.length()>0))
-					DB.updateWithClobs("DELETE FROM CMCHIT WHERE CMUSERID=? AND CMITID=? AND CMITNM=?",name,p.second,p.first);
 			}
 			return ;
 		}
@@ -738,8 +829,64 @@ public class MOBloader
 			break;
 		}
 		case MONEY:
-			updateCMCHARLong(name, "CMGOLD", value);
+		{
+			final XVector<String[]> oldInv = new XVector<String[]>(DBReadPlayerItemData(name, normalMoneyFilter, null).iterator());
+			final XVector<Coins> oldCoins = new XVector<Coins>();
+			for(final Iterator<String[]> i=oldInv.iterator();i.hasNext();)
+			{
+				final String[] t=i.next();
+				Item I=CMClass.getItemPrototype(t[1]);
+				if(I instanceof Coins)
+				{
+					I=DBBuildItemFromData(t);
+					oldCoins.add((Coins)I);
+				}
+			}
+			oldInv.clear();
+			@SuppressWarnings("unchecked")
+			final XVector<Coins> newInv = new XVector<Coins>((List<Coins>)value);
+			final List<Coins>[] deltas = newInv.makeDeltas(oldCoins, new Comparator<Coins>() {
+				@Override
+				public int compare(final Coins o1, final Coins o2)
+				{
+					int cv = o1.ID().compareTo(o2.ID());
+					if(cv == 0)
+					{
+						cv = o1.text().compareTo(o2.text());
+						if(cv == 0)
+						{
+							cv = o1.getCurrency().compareTo(o2.getCurrency());
+							if(cv == 0)
+							{
+								cv = Long.valueOf(o1.getNumberOfCoins()).compareTo(Long.valueOf(o2.getNumberOfCoins()));
+								if(cv == 0)
+									cv = Double.valueOf(o1.getDenomination()).compareTo(Double.valueOf(o2.getDenomination()));
+							}
+						}
+					}
+					return cv;
+				}
+			});
+			for(final Coins p : deltas[0])
+			{
+				final Item I=p;
+				final String itemID=((I.databaseID()!=null)&&(I.databaseID().length()>0))?I.databaseID():getShortID(I);
+				DB.updateWithClobs("INSERT INTO CMCHIT (CMUSERID, CMITNM, CMITID, CMITTX, CMITLO, CMITWO, "
+								  +"CMITUR, CMITLV, CMITAB, CMHEIT"
+								  +") values (?,?,?,?,'',"
+								  + I.rawProperLocationBitmap()+","
+								  + I.usesRemaining()+","
+								  + I.basePhyStats().level()+","
+								  + I.basePhyStats().ability()+","
+								  + I.basePhyStats().height()+")",name,itemID,p.ID(),p.text());
+			}
+			for(final Coins p : deltas[1])
+			{
+				if((p.databaseID()!=null)&&(p.databaseID().length()>0))
+					DB.updateWithClobs("DELETE FROM CMCHIT WHERE CMUSERID=? AND CMITID=? AND CMITNM=?",name,p.ID(),p.databaseID());
+			}
 			break;
+		}
 		case NAME:
 			break; // just no
 		case RACE:
@@ -748,7 +895,7 @@ public class MOBloader
 		case TATTS:
 		{
 			final String buf=queryCMCHARStr(name, "CMPFIL");
-			List<XMLLibrary.XMLTag> tags=CMLib.xml().parseAllXML(buf);
+			final List<XMLLibrary.XMLTag> tags=CMLib.xml().parseAllXML(buf);
 			@SuppressWarnings("unchecked")
 			final List<Tattoo> Ts=(List<Tattoo>)value;
 			final StringBuilder tbuf=new StringBuilder("");
@@ -788,21 +935,21 @@ public class MOBloader
 			final XVector<Pair<Clan,Integer>> newClans = new XVector<Pair<Clan,Integer>>((List<Pair<Clan,Integer>>)value);
 			final List<Pair<Clan,Integer>>[] deltas = newClans.makeDeltas(oldClans, new Comparator<Pair<Clan, Integer>>(){
 				@Override
-				public int compare(Pair<Clan, Integer> o1, Pair<Clan, Integer> o2)
+				public int compare(final Pair<Clan, Integer> o1, final Pair<Clan, Integer> o2)
 				{
 					return o1.first.clanID().compareTo(o2.first.clanID());
 				}
 			});
-			for(Pair<Clan,Integer> p : deltas[0])
+			for(final Pair<Clan,Integer> p : deltas[0])
 			{
 				DB.updateWithClobs("INSERT INTO CMCHCL (CMUSERID, CMCLAN, CMCLRO, CMCLSTS) "
 								+ "values (?,?,?,?)",name,p.first.clanID(),p.second.toString(),"");
 			}
-			for(Pair<Clan,Integer> p : deltas[1])
+			for(final Pair<Clan,Integer> p : deltas[1])
 				DB.updateWithClobs("DELETE FROM CMCHCL WHERE CMUSERID=? AND CMCLAN=?",name,p.first.clanID());
-			for(Pair<Clan,Integer> np : newClans)
+			for(final Pair<Clan,Integer> np : newClans)
 			{
-				for(Pair<Clan,Integer> op : oldClans)
+				for(final Pair<Clan,Integer> op : oldClans)
 				{
 					if(np.first.clanID().equalsIgnoreCase(op.first.clanID())
 					&&(np.second.intValue()!=op.second.intValue()))
@@ -950,9 +1097,24 @@ public class MOBloader
 		return bitmap;
 	}
 
-	public List<Triad<String,String,String>> DBReadPlayerItemData(String name, final String searchStr)
+	protected Item DBBuildItemFromData(final String[] data)
 	{
-		final List<Triad<String,String,String>> items=new Vector<Triad<String,String,String>>();
+		 //String[] (dbid, item class, item txt, loID, worn, uses, lvl, abilty, heit)
+		final Item I=CMClass.getItem(data[1]);
+		I.setDatabaseID(data[0]);
+		I.setMiscText(data[2]);
+		I.wearAt(CMath.s_int(data[4]));
+		I.setUsesRemaining(CMath.s_int(data[5]));
+		I.basePhyStats().setLevel(CMath.s_int(data[6]));
+		I.basePhyStats().setAbility(CMath.s_int(data[7]));
+		I.basePhyStats().setHeight(CMath.s_int(data[8]));
+		I.recoverPhyStats();
+		return I;
+	}
+
+	public List<String[]> DBReadPlayerItemData(String name, final Filterer<Pair<String,String>> classLocFilter, final Filterer<String> textFilter)
+	{
+		final List<String[]> items=new Vector<String[]>();
 		if((name==null)||(name.length()==0))
 			return items;
 		name=CMStrings.capitalizeAndLower(DB.injectionClean(name));
@@ -964,19 +1126,26 @@ public class MOBloader
 			final ResultSet R=D.query("SELECT * FROM CMCHIT WHERE CMUSERID='"+name+"'");
 			while(R.next())
 			{
+				final String loID=DBConnections.getRes(R,"CMITLO");
 				final String itemID=DBConnections.getRes(R,"CMITID");
-				final String dbID=DBConnections.getRes(R,"CMITNM");
 				final Item newItem=CMClass.getItemPrototype(itemID);
 				if(newItem==null)
 					Log.errOut("MOB","Couldn't find item '"+itemID+"'");
 				else
+				if((classLocFilter==null)||(classLocFilter.passesFilter(new Pair<String,String>(itemID,loID))))
 				{
+					final String dbID=DBConnections.getRes(R,"CMITNM");
 					final String text=DBConnections.getResQuietly(R,"CMITTX");
-					if(text != null)
+					if((text != null)
+					&&((textFilter==null)||(textFilter.passesFilter(text))))
 					{
-						if((searchStr == null)
-						||(text.indexOf(searchStr)>=0))
-							items.add(new Triad<String,String,String>(dbID, itemID, text));
+						items.add(new String[]
+							{dbID, itemID, text, loID,
+							""+DBConnections.getLongRes(R, "CMITWO"),
+							""+DBConnections.getLongRes(R, "CMITUR"),
+							""+DBConnections.getLongRes(R, "CMITLV"),
+							""+DBConnections.getLongRes(R, "CMITAB"),
+							""+DBConnections.getLongRes(R, "CMHEIT")});
 					}
 				}
 			}
@@ -2888,6 +3057,55 @@ public class MOBloader
 				final int btmp=CMath.s_int(DB.getRes(R,"CMBTMP"));
 				final String temail=DB.getRes(R,"CMEMAL");
 				return new Pair<String,Boolean>(temail,Boolean.valueOf((btmp&MOB.Attrib.AUTOFORWARD.getBitCode())!=0));
+			}
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("MOB",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return null;
+	}
+
+	public String DBGetAccountNameFromPlayer(String player)
+	{
+		if(player==null)
+			return null;
+		DBConnection D=null;
+		player=CMStrings.capitalizeAndLower(player);
+		final MOB M = CMLib.players().getPlayer(player);
+		if((M!=null)
+		&&(M.Name().equalsIgnoreCase(player))
+		&&(M.playerStats()!=null)
+		&&(M.playerStats().getAccount()!=null))
+			return M.playerStats().getAccount().getAccountName();
+		for(final Enumeration<PlayerAccount> a=CMLib.players().accounts();a.hasMoreElements();)
+		{
+			final PlayerAccount A = a.nextElement();
+			if(A.findPlayer(player)!=null)
+				return A.getAccountName();
+		}
+		try
+		{
+			D=DB.DBFetch();
+			player=DB.injectionClean(player.trim());
+			final ResultSet R=D.query("SELECT CMCHRS, CMANAM FROM CMACCT WHERE CMCHRS LIKE '%"+player+"%'");
+			if(R!=null)
+			{
+				while(R.next())
+				{
+					final String charStrs=DB.getRes(R,"CMUSERID");
+					final String aname=DB.getRes(R,"CMANAM");
+					final List<String> chars = CMParms.parseSemicolons(charStrs, true);
+					for(final String c : chars)
+					{
+						if(c.equalsIgnoreCase(player))
+							return aname;
+					}
+				}
 			}
 		}
 		catch(final Exception sqle)

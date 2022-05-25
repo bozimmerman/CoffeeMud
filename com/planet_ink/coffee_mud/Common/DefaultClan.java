@@ -26,6 +26,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Award;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.ForumJournal;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerCode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -608,7 +609,7 @@ public class DefaultClan implements Clan
 					setClanLevel(getClanLevel()+1);
 					bumpTrophyData(Trophy.MonthlyClanLevels, 1);
 					clanAnnounce(""+getGovernmentName()+" "+name()+" has attained clan level "+getClanLevel()+"!");
-					CMLib.achievements().possiblyBumpAchievement(getResponsibleMember(), AchievementLibrary.Event.CLANLEVELSGAINED, 1, this);
+					CMLib.achievements().possiblyBumpAchievement(getLoadResponsibleMember(), AchievementLibrary.Event.CLANLEVELSGAINED, 1, this);
 					update();
 					nextLevelXP = CMath.parseMathExpression(form, new double[]{getClanLevel()}, 0.0);
 				}
@@ -620,7 +621,7 @@ public class DefaultClan implements Clan
 				while(exp < prevLevelXP)
 				{
 					setClanLevel(getClanLevel()-1);
-					CMLib.achievements().possiblyBumpAchievement(getResponsibleMember(), AchievementLibrary.Event.CLANLEVELSGAINED, -1, this);
+					CMLib.achievements().possiblyBumpAchievement(getLoadResponsibleMember(), AchievementLibrary.Event.CLANLEVELSGAINED, -1, this);
 					clanAnnounce(""+getGovernmentName()+" "+name()+" has reverted to clan level "+getClanLevel()+"!");
 					update();
 					prevLevelXP = CMath.parseMathExpression(form, new double[]{getClanLevel()-1}, 0.0);
@@ -1324,7 +1325,7 @@ public class DefaultClan implements Clan
 		final StringBuilder mask=new StringBuilder(oldMask.trim());
 		if(mask.length()==0)
 			return "";
-		final MOB M=getResponsibleMember();
+		final MOB M=getLoadResponsibleMember();
 		int x=mask.indexOf("%[");
 		while(x>=0)
 		{
@@ -2624,24 +2625,29 @@ public class DefaultClan implements Clan
 		return exp;
 	}
 
+	protected MOB getLoadResponsibleMember()
+	{
+		return CMLib.players().getLoadPlayer(getResponsibleMemberName());
+	}
+
 	@Override
-	public MOB getResponsibleMember()
+	public String getResponsibleMemberName()
 	{
 		final List<MemberRecord> members=getMemberList();
 		final List<Integer> topRoles=getTopRankedRoles(null);
-		MOB respMember = null;
+		String respMemberName = null;
 		final int level = -1;
 		for(final MemberRecord member : members)
 		{
 			if(topRoles.contains(Integer.valueOf(member.role)))
 			{
-				final MOB M=CMLib.players().getLoadPlayer(member.name);
-				if((M!=null)&&(M.basePhyStats().level() > level))
-					respMember = M;
+				final Integer mLevel=(Integer)CMLib.players().getPlayerValue(member.name, PlayerCode.LEVEL);
+				if((mLevel!=null)&&(mLevel.intValue() > level))
+					respMemberName = member.name;
 			}
 		}
-		if(respMember != null)
-			return respMember;
+		if(respMemberName != null)
+			return respMemberName;
 		String memberName = null;
 		ClanPosition newPos=null;
 		for(final MemberRecord member : members)
@@ -2654,9 +2660,7 @@ public class DefaultClan implements Clan
 				memberName = member.name;
 			}
 		}
-		if(memberName != null)
-			return CMLib.players().getLoadPlayer(memberName);
-		return null;
+		return memberName == null?"":memberName;
 	}
 
 	@Override
@@ -2905,10 +2909,8 @@ public class DefaultClan implements Clan
 		}
 		case 16:
 		{
-			final MOB M = getResponsibleMember();
-			if (M != null)
-				return M.Name();
-			return "";
+			final String name = getResponsibleMemberName();
+			return (name==null)?"":name;
 		}
 		case 17:
 			return Integer.toString(getClanLevel());

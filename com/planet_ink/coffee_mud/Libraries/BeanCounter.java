@@ -575,13 +575,13 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	}
 
 	@Override
-	public Coins makeBestCurrency(final MOB mob, final double absoluteValue, final ItemPossessor owner, final Container container)
+	public Coins makeBestCurrency(final MOB mob, final double absoluteValue, final ItemCollection owner, final Container container)
 	{
 		return makeBestCurrency(getCurrency(mob),absoluteValue,owner,container);
 	}
 
 	@Override
-	public Coins makeBestCurrency(final String currency, final double absoluteValue, final ItemPossessor owner, final Container container)
+	public Coins makeBestCurrency(final String currency, final double absoluteValue, final ItemCollection owner, final Container container)
 	{
 		final Coins C=makeBestCurrency(currency,absoluteValue);
 		if(C!=null)
@@ -904,49 +904,50 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	}
 
 	@Override
-	public void addMoney(final MOB customer, final int deltaValue)
+	public void addMoney(final ItemCollection IP, final int deltaValue)
 	{
-		addMoney(customer,getCurrency(customer),(double)deltaValue);
+		addMoney(IP,getCurrency(IP),(double)deltaValue);
 	}
 
 	@Override
-	public void addMoney(final MOB customer, final double deltaValue)
+	public void addMoney(final ItemCollection IP, final double deltaValue)
 	{
-		addMoney(customer,getCurrency(customer),deltaValue);
+		addMoney(IP,getCurrency(IP),deltaValue);
 	}
 
 	@Override
-	public void addMoney(final MOB customer, final String currency,final int deltaValue)
+	public void addMoney(final ItemCollection IP, final String currency,final int deltaValue)
 	{
-		addMoney(customer,currency,(double)deltaValue);
+		addMoney(IP,currency,(double)deltaValue);
 	}
 
 	@Override
-	public void addMoney(final MOB customer, final Container container, final String currency,final int deltaValue)
+	public void addMoney(final ItemCollection IP, final Container container, final String currency,final int deltaValue)
 	{
-		addMoney(customer,container,currency,(double)deltaValue);
+		addMoney(IP,container,currency,(double)deltaValue);
 	}
 
 	@Override
-	public void addMoney(final MOB mob, final String currency, final double deltaValue)
+	public void addMoney(final ItemCollection IP, final String currency, final double deltaValue)
 	{
-		addMoney(mob,null,currency,deltaValue);
+		addMoney(IP,null,currency,deltaValue);
 	}
 
 	@Override
-	public void addMoney(final MOB mob, final Container container, final String currency, final double deltaValue)
+	public void addMoney(final ItemCollection IP, final Container container, final String currency, final double deltaValue)
 	{
-		if(mob==null)
+		if(IP==null)
 			return;
 		final List<Coins> V=makeAllCurrency(currency,deltaValue);
 		for(int i=0;i<V.size();i++)
 		{
 			final Coins C=V.get(i);
 			C.setContainer(container);
-			mob.addItem(C);
-			C.putCoinsBack();
+			IP.addItem(C);
+			putCoinsBack(C,IP);
 		}
-		mob.recoverPhyStats();
+		if(IP instanceof Physical)
+			((Physical)IP).recoverPhyStats();
 	}
 
 	@Override
@@ -965,6 +966,34 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public void giveSomeoneMoney(final MOB banker, final MOB customer, final double absoluteValue)
 	{
 		giveSomeoneMoney(banker,customer,getCurrency(banker),absoluteValue);
+	}
+
+	@Override
+	public boolean putCoinsBack(final Coins C, final ItemCollection coll)
+	{
+		Coins alternative=null;
+		for(int i=0;i<coll.numItems();i++)
+		{
+			final Item I=coll.getItem(i);
+			if((I!=null)
+			&&(I!=C)
+			&&(I instanceof Coins)
+			&&(!I.amDestroyed())
+			&&(((Coins)I).getDenomination()==C.getDenomination())
+			&&(CMLib.beanCounter().isCurrencyMatch(((Coins)I).getCurrency(),C.getCurrency()))
+			&&(I.container()==C.container()))
+			{
+				alternative=(Coins)I;
+				break;
+			}
+		}
+		if((alternative!=null)&&(alternative!=this))
+		{
+			alternative.setNumberOfCoins(alternative.getNumberOfCoins()+C.getNumberOfCoins());
+			C.destroy();
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -1014,7 +1043,11 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		double myMoney=getTotalAbsoluteValue(R,container,currency);
 		final List<Coins> V=getMoneyItems(R,container,currency);
 		for(int v=0;v<V.size();v++)
-			((Item)V.get(v)).destroy();
+		{
+			final Item I=V.get(v);
+			I.destroy();
+			R.delItem(I);
+		}
 		if(myMoney>=absoluteValue)
 			myMoney-=absoluteValue;
 		else
@@ -1193,7 +1226,11 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		double myMoney=getTotalAbsoluteValue(mob,currency);
 		final List<Coins> V=getMoneyItems(mob,currency);
 		for(int v=0;v<V.size();v++)
-			((Item)V.get(v)).destroy();
+		{
+			final Item I=V.get(v);
+			I.destroy();
+			mob.delItem(I);
+		}
 		if(myMoney>=positiveDeltaAmount)
 			myMoney-=positiveDeltaAmount;
 		else
@@ -1217,32 +1254,36 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	}
 
 	@Override
-	public void subtractMoney(final MOB mob, final double positiveDeltaAmount)
+	public void subtractMoney(final ItemCollection IP, final double positiveDeltaAmount)
 	{
-		subtractMoney(mob,getCurrency(mob),positiveDeltaAmount);
+		subtractMoney(IP,getCurrency(IP),positiveDeltaAmount);
 	}
 
 	@Override
-	public void subtractMoney(final MOB mob, final String currency, final double positiveDeltaAmount)
+	public void subtractMoney(final ItemCollection IP, final String currency, final double positiveDeltaAmount)
 	{
-		subtractMoney(mob,null,currency,positiveDeltaAmount);
+		subtractMoney(IP,null,currency,positiveDeltaAmount);
 	}
 
 	@Override
-	public void subtractMoney(final MOB mob, final Container container, final String currency, final double positiveDeltaAmount)
+	public void subtractMoney(final ItemCollection IP, final Container container, final String currency, final double positiveDeltaAmount)
 	{
-		if(mob==null)
+		if(IP==null)
 			return;
-		double myMoney=getTotalAbsoluteValue(mob,container,currency);
-		final List<Coins> V=getMoneyItems(mob,container,currency);
+		double myMoney=getTotalAbsoluteValue(IP,container,currency);
+		final List<Coins> V=getMoneyItems(IP,container,currency);
 		for(int v=0;v<V.size();v++)
-			((Item)V.get(v)).destroy();
+		{
+			final Item delItem=V.get(v);
+			delItem.destroy();
+			IP.delItem(delItem);
+		}
 		if(myMoney>=positiveDeltaAmount)
 			myMoney-=positiveDeltaAmount;
 		else
 			myMoney=0.0;
 		if(myMoney>0.0)
-			addMoney(mob,container,currency,myMoney);
+			addMoney(IP,container,currency,myMoney);
 	}
 
 	@Override
@@ -1309,17 +1350,17 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	}
 
 	@Override
-	public void subtractMoney(final MOB mob, final double denomination, final double deltaAmount)
+	public void subtractMoney(final ItemCollection IP, final double denomination, final double deltaAmount)
 	{
-		subtractMoney(mob,getCurrency(mob),denomination,deltaAmount);
+		subtractMoney(IP,getCurrency(IP),denomination,deltaAmount);
 	}
 
 	@Override
-	public void subtractMoney(final MOB mob, final String currency, final double denomination, double deltaAmount)
+	public void subtractMoney(final ItemCollection IP, final String currency, final double denomination, double deltaAmount)
 	{
-		if(mob==null)
+		if(IP==null)
 			return;
-		final List<Coins> V=getMoneyItems(mob,currency);
+		final List<Coins> V=getMoneyItems(IP,currency);
 		Coins C=null;
 		for(int v=0;v<V.size();v++)
 		{
@@ -1339,27 +1380,9 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	}
 
 	@Override
-	public List<Coins> getMoneyItems(final Room R, final Item container, final String currency)
+	public List<Coins> getMoneyItems(final ItemCollection IP, final String currency)
 	{
-		final Vector<Coins> V=new Vector<Coins>();
-		if(R==null)
-			return V;
-		for(int i=0;i<R.numItems();i++)
-		{
-			final Item I=R.getItem(i);
-			if((I!=null)
-			&&(I instanceof Coins)
-			&&((currency==null)||this.isCurrencyMatch(((Coins)I).getCurrency(),currency))
-			&&(I.container()==container))
-				V.addElement((Coins)I);
-		}
-		return V;
-	}
-
-	@Override
-	public List<Coins> getMoneyItems(final MOB mob, final String currency)
-	{
-		return getMoneyItems(mob, null, currency);
+		return getMoneyItems(IP, null, currency);
 	}
 
 	@Override
@@ -1382,21 +1405,22 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	}
 
 	@Override
-	public List<Coins> getMoneyItems(final MOB mob, final Item container, final String currency)
+	public List<Coins> getMoneyItems(final ItemCollection IP, final Item container, final String currency)
 	{
 		final Vector<Coins> V=new Vector<Coins>();
-		if(mob==null)
+		if(IP==null)
 			return V;
-		if(((currency==null)||(isCurrencyMatch(currency,getCurrency(mob))))
-		&&(mob.getMoney()>0)
+		if((IP instanceof MOB)
+		&&((currency==null)||(isCurrencyMatch(currency,getCurrency(IP))))
+		&&(((MOB)IP).getMoney()>0)
 		&&(container==null))
 		{
-			addMoney(mob,getCurrency(mob),(double)mob.getMoney());
-			mob.setMoney(0);
+			addMoney((MOB)IP,getCurrency(IP),(double)((MOB)IP).getMoney());
+			((MOB)IP).setMoney(0);
 		}
-		for(int i=0;i<mob.numItems();i++)
+		for(int i=0;i<IP.numItems();i++)
 		{
-			final Item I=mob.getItem(i);
+			final Item I=IP.getItem(i);
 			if((I!=null)
 			&&(I instanceof Coins)
 			&&((currency==null)||isCurrencyMatch(((Coins)I).getCurrency(),currency))
@@ -1420,7 +1444,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	}
 
 	@Override
-	public String getCurrency(Environmental E)
+	public String getCurrency(CMObject E)
 	{
 		if(E instanceof ShopKeeper)
 		{
@@ -1483,26 +1507,16 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	}
 
 	@Override
-	public double getTotalAbsoluteValue(final Room R, final Item container, final String currency)
+	public double getTotalAbsoluteValue(final ItemCollection IP, final String currency)
 	{
-		double money=0.0;
-		final List<Coins> V=getMoneyItems(R,container,currency);
-		for(int v=0;v<V.size();v++)
-			money+=V.get(v).getTotalValue();
-		return money;
+		return getTotalAbsoluteValue(IP, null, currency);
 	}
 
 	@Override
-	public double getTotalAbsoluteValue(final MOB mob, final String currency)
-	{
-		return getTotalAbsoluteValue(mob, null, currency);
-	}
-
-	@Override
-	public double getTotalAbsoluteValue(final MOB mob, final Item container, final String currency)
+	public double getTotalAbsoluteValue(final ItemCollection IP, final Item container, final String currency)
 	{
 		double money=0.0;
-		final List<Coins> V=getMoneyItems(mob,container,currency);
+		final List<Coins> V=getMoneyItems(IP,container,currency);
 		for(int v=0;v<V.size();v++)
 			money+=V.get(v).getTotalValue();
 		return money;
@@ -1529,9 +1543,9 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	}
 
 	@Override
-	public double getTotalAbsoluteValueAllCurrencies(final MOB mob)
+	public double getTotalAbsoluteValueAllCurrencies(final ItemCollection IP)
 	{
-		return getTotalAbsoluteValue(mob,null);
+		return getTotalAbsoluteValue(IP,null);
 	}
 
 }

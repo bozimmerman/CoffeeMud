@@ -430,7 +430,7 @@ public interface MoneyLibrary extends CMLibrary
 	 *
 	 * @see MoneyLibrary#makeBestCurrency(MOB, double)
 	 * @see MoneyLibrary#makeBestCurrency(String, double)
-	 * @see MoneyLibrary#makeBestCurrency(String, double, ItemPossessor, Container)
+	 * @see MoneyLibrary#makeBestCurrency(String, double, ItemCollection, Container)
 	 * @see MoneyLibrary#makeAllCurrency(String, double)
 	 * @see MoneyLibrary#makeCurrency(String, double, long)
 	 *
@@ -440,7 +440,7 @@ public interface MoneyLibrary extends CMLibrary
 	 * @param container the container to put the item in
 	 * @return the stack of currency whose value is closest to the value
 	 */
-	public Coins makeBestCurrency(MOB mob,  double absoluteValue, ItemPossessor owner, Container container);
+	public Coins makeBestCurrency(MOB mob,  double absoluteValue, ItemCollection owner, Container container);
 
 	/**
 	 * Given a currency type, this will find the denomination in that currency which
@@ -449,7 +449,7 @@ public interface MoneyLibrary extends CMLibrary
 	 *
 	 * @see MoneyLibrary#makeBestCurrency(MOB, double)
 	 * @see MoneyLibrary#makeBestCurrency(String, double)
-	 * @see MoneyLibrary#makeBestCurrency(MOB, double, ItemPossessor, Container)
+	 * @see MoneyLibrary#makeBestCurrency(MOB, double, ItemCollection, Container)
 	 * @see MoneyLibrary#makeAllCurrency(String, double)
 	 * @see MoneyLibrary#makeCurrency(String, double, long)
 	 *
@@ -459,7 +459,7 @@ public interface MoneyLibrary extends CMLibrary
 	 * @param container the container to put the item in
 	 * @return the stack of currency whose value is closest to the value
 	 */
-	public Coins makeBestCurrency(String currency,  double absoluteValue, ItemPossessor owner, Container container);
+	public Coins makeBestCurrency(String currency,  double absoluteValue, ItemCollection owner, Container container);
 
 	/**
 	 * Given a mob to derive a currency from, this will find the denomination
@@ -467,8 +467,8 @@ public interface MoneyLibrary extends CMLibrary
 	 * to the given value.
 	 *
 	 * @see MoneyLibrary#makeBestCurrency(String, double)
-	 * @see MoneyLibrary#makeBestCurrency(MOB, double, ItemPossessor, Container)
-	 * @see MoneyLibrary#makeBestCurrency(String, double, ItemPossessor, Container)
+	 * @see MoneyLibrary#makeBestCurrency(MOB, double, ItemCollection, Container)
+	 * @see MoneyLibrary#makeBestCurrency(String, double, ItemCollection, Container)
 	 * @see MoneyLibrary#makeAllCurrency(String, double)
 	 * @see MoneyLibrary#makeCurrency(String, double, long)
 	 *
@@ -483,8 +483,8 @@ public interface MoneyLibrary extends CMLibrary
 	 * is capable to generating a stack of money closest to the given value.
 	 *
 	 * @see MoneyLibrary#makeBestCurrency(MOB, double)
-	 * @see MoneyLibrary#makeBestCurrency(MOB, double, ItemPossessor, Container)
-	 * @see MoneyLibrary#makeBestCurrency(String, double, ItemPossessor, Container)
+	 * @see MoneyLibrary#makeBestCurrency(MOB, double, ItemCollection, Container)
+	 * @see MoneyLibrary#makeBestCurrency(String, double, ItemCollection, Container)
 	 * @see MoneyLibrary#makeAllCurrency(String, double)
 	 * @see MoneyLibrary#makeCurrency(String, double, long)
 	 *
@@ -522,96 +522,96 @@ public interface MoneyLibrary extends CMLibrary
 	public List<Coins> makeAllCurrency(String currency, double absoluteValue);
 
 	/**
-	 * Adds the given amount of money to the given mobs inventory in their native currency.
+	 * Adds the given amount of money to the given holders items in their native currency.
 	 *
-	 * @see MoneyLibrary#addMoney(MOB, double)
-	 * @see MoneyLibrary#addMoney(MOB, String, double)
-	 * @see MoneyLibrary#addMoney(MOB, String, int)
-	 * @see MoneyLibrary#addMoney(MOB, Container, String, double)
-	 * @see MoneyLibrary#addMoney(MOB, Container, String, int)
+	 * @see MoneyLibrary#addMoney(ItemCollection, double)
+	 * @see MoneyLibrary#addMoney(ItemCollection, String, double)
+	 * @see MoneyLibrary#addMoney(ItemCollection, String, int)
+	 * @see MoneyLibrary#addMoney(ItemCollection, Container, String, double)
+	 * @see MoneyLibrary#addMoney(ItemCollection, Container, String, int)
 	 *
-	 * @param customer the mob to have more money
+	 * @param IP the holder to have more money
 	 * @param deltaValue the amount of total value to add
 	 */
-	public void addMoney(MOB customer, int deltaValue);
+	public void addMoney(ItemCollection IP, int deltaValue);
 
 	/**
-	 * Adds the given amount of money to the given mobs inventory in their native currency.
+	 * Adds the given amount of money to the given holders items in their native currency.
 	 *
-	 * @see MoneyLibrary#addMoney(MOB, int)
-	 * @see MoneyLibrary#addMoney(MOB, String, double)
-	 * @see MoneyLibrary#addMoney(MOB, String, int)
-	 * @see MoneyLibrary#addMoney(MOB, Container, String, double)
-	 * @see MoneyLibrary#addMoney(MOB, Container, String, int)
+	 * @see MoneyLibrary#addMoney(ItemCollection, int)
+	 * @see MoneyLibrary#addMoney(ItemCollection, String, double)
+	 * @see MoneyLibrary#addMoney(ItemCollection, String, int)
+	 * @see MoneyLibrary#addMoney(ItemCollection, Container, String, double)
+	 * @see MoneyLibrary#addMoney(ItemCollection, Container, String, int)
 	 *
-	 * @param customer the mob to have more money
+	 * @param IP the mob to have more money
 	 * @param deltaValue the amount of total value to add
 	 */
-	public void addMoney(MOB customer, double deltaValue);
+	public void addMoney(ItemCollection IP, double deltaValue);
 
 	/**
-	 * Adds the given amount of money, in the given currency, to the given mobs inventory.
+	 * Adds the given amount of money, in the given currency, to the given holders items.
 	 *
-	 * @see MoneyLibrary#addMoney(MOB, double)
-	 * @see MoneyLibrary#addMoney(MOB, int)
-	 * @see MoneyLibrary#addMoney(MOB, String, double)
-	 * @see MoneyLibrary#addMoney(MOB, Container, String, double)
-	 * @see MoneyLibrary#addMoney(MOB, Container, String, int)
+	 * @see MoneyLibrary#addMoney(ItemCollection, double)
+	 * @see MoneyLibrary#addMoney(ItemCollection, int)
+	 * @see MoneyLibrary#addMoney(ItemCollection, String, double)
+	 * @see MoneyLibrary#addMoney(ItemCollection, Container, String, double)
+	 * @see MoneyLibrary#addMoney(ItemCollection, Container, String, int)
 	 *
-	 * @param customer the mob to have more money
+	 * @param IP the mob to have more money
 	 * @param currency the currency of the money to make
 	 * @param deltaValue the amount of total value to add
 	 */
-	public void addMoney(MOB customer, String currency, int deltaValue);
+	public void addMoney(ItemCollection IP, String currency, int deltaValue);
 
 	/**
-	 * Adds the given amount of money, in the given currency, to the given mobs inventory.
+	 * Adds the given amount of money, in the given currency, to the given holders items.
 	 *
-	 * @see MoneyLibrary#addMoney(MOB, double)
-	 * @see MoneyLibrary#addMoney(MOB, int)
-	 * @see MoneyLibrary#addMoney(MOB, String, int)
-	 * @see MoneyLibrary#addMoney(MOB, Container, String, double)
-	 * @see MoneyLibrary#addMoney(MOB, Container, String, int)
+	 * @see MoneyLibrary#addMoney(ItemCollection, double)
+	 * @see MoneyLibrary#addMoney(ItemCollection, int)
+	 * @see MoneyLibrary#addMoney(ItemCollection, String, int)
+	 * @see MoneyLibrary#addMoney(ItemCollection, Container, String, double)
+	 * @see MoneyLibrary#addMoney(ItemCollection, Container, String, int)
 	 *
-	 * @param mob the mob to have more money
+	 * @param IP the mob to have more money
 	 * @param currency the currency of the money to make
 	 * @param deltaValue the amount of total value to add
 	 */
-	public void addMoney(MOB mob, String currency, double deltaValue);
+	public void addMoney(ItemCollection IP, String currency, double deltaValue);
 
 	/**
-	 * Adds the given amount of money, in the given currency, to the given mobs inventory,
+	 * Adds the given amount of money, in the given currency, to the given holders items,
 	 * in the given container.
 	 *
-	 * @see MoneyLibrary#addMoney(MOB, double)
-	 * @see MoneyLibrary#addMoney(MOB, int)
-	 * @see MoneyLibrary#addMoney(MOB, String, double)
-	 * @see MoneyLibrary#addMoney(MOB, String, int)
-	 * @see MoneyLibrary#addMoney(MOB, Container, String, double)
+	 * @see MoneyLibrary#addMoney(ItemCollection, double)
+	 * @see MoneyLibrary#addMoney(ItemCollection, int)
+	 * @see MoneyLibrary#addMoney(ItemCollection, String, double)
+	 * @see MoneyLibrary#addMoney(ItemCollection, String, int)
+	 * @see MoneyLibrary#addMoney(ItemCollection, Container, String, double)
 	 *
-	 * @param customer the mob to have more money
+	 * @param IP the mob to have more money
 	 * @param container null, or the container to put the money in
 	 * @param currency the currency of the money to make
 	 * @param deltaValue the amount of total value to add
 	 */
-	public void addMoney(MOB customer, Container container, String currency, int deltaValue);
+	public void addMoney(ItemCollection IP, Container container, String currency, int deltaValue);
 
 	/**
-	 * Adds the given amount of money, in the given currency, to the given mobs inventory,
+	 * Adds the given amount of money, in the given currency, to the given holders items,
 	 * in the given container.
 	 *
-	 * @see MoneyLibrary#addMoney(MOB, double)
-	 * @see MoneyLibrary#addMoney(MOB, int)
-	 * @see MoneyLibrary#addMoney(MOB, String, double)
-	 * @see MoneyLibrary#addMoney(MOB, String, int)
-	 * @see MoneyLibrary#addMoney(MOB, Container, String, int)
+	 * @see MoneyLibrary#addMoney(ItemCollection, double)
+	 * @see MoneyLibrary#addMoney(ItemCollection, int)
+	 * @see MoneyLibrary#addMoney(ItemCollection, String, double)
+	 * @see MoneyLibrary#addMoney(ItemCollection, String, int)
+	 * @see MoneyLibrary#addMoney(ItemCollection, Container, String, int)
 	 *
-	 * @param mob the mob to have more money
+	 * @param IP the mob to have more money
 	 * @param container null, or the container to put the money in
 	 * @param currency the currency of the money to make
 	 * @param deltaValue the amount of total value to add
 	 */
-	public void addMoney(MOB mob, Container container, String currency, double deltaValue);
+	public void addMoney(ItemCollection IP, Container container, String currency, double deltaValue);
 
 	/**
 	 * Generates a visible message of the given recipient receiving the given amount
@@ -849,85 +849,99 @@ public interface MoneyLibrary extends CMLibrary
 	public void subtractMoneyGiveChange(MOB banker, MOB mob, String currency, double positiveDeltaAmount);
 
 	/**
-	 * Removes the given total amount of money from the given mob.
+	 * Removes the given total amount of money from the given mob/room.
 	 * This deals in currency items.
 	 *
-	 * @see MoneyLibrary#subtractMoney(MOB, double, double)
-	 * @see MoneyLibrary#subtractMoney(MOB, String, double)
-	 * @see MoneyLibrary#subtractMoney(MOB, Container, String, double)
-	 * @see MoneyLibrary#subtractMoney(MOB, String, double, double)
+	 * @see MoneyLibrary#subtractMoney(ItemCollection, double, double)
+	 * @see MoneyLibrary#subtractMoney(ItemCollection, String, double)
+	 * @see MoneyLibrary#subtractMoney(ItemCollection, Container, String, double)
+	 * @see MoneyLibrary#subtractMoney(ItemCollection, String, double, double)
 	 *
-	 * @param mob the mob losing money
+	 * @param IP the mob/room/item holder losing money
 	 * @param positiveDeltaAmount the total value to remove
 	 */
-	public void subtractMoney(MOB mob, double positiveDeltaAmount);
+	public void subtractMoney(ItemCollection IP, double positiveDeltaAmount);
 
 	/**
-	 * Removes the given total amount of money from the given mob, in the given
+	 * Removes the given total amount of money from the given IP, in the given
 	 * currency.  This deals in currency items.
 	 *
-	 * @see MoneyLibrary#subtractMoney(MOB, double)
-	 * @see MoneyLibrary#subtractMoney(MOB, double, double)
-	 * @see MoneyLibrary#subtractMoney(MOB, Container, String, double)
-	 * @see MoneyLibrary#subtractMoney(MOB, String, double, double)
+	 * @see MoneyLibrary#subtractMoney(ItemCollection, double)
+	 * @see MoneyLibrary#subtractMoney(ItemCollection, double, double)
+	 * @see MoneyLibrary#subtractMoney(ItemCollection, Container, String, double)
+	 * @see MoneyLibrary#subtractMoney(ItemCollection, String, double, double)
 	 *
-	 * @param mob the mob losing money
+	 * @param IP the mob/room/item holder losing money
 	 * @param currency the type of currency to remove
 	 * @param positiveDeltaAmount the total value to remove
 	 */
-	public void subtractMoney(MOB mob, String currency, double positiveDeltaAmount);
+	public void subtractMoney(ItemCollection IP, String currency, double positiveDeltaAmount);
 
 	/**
-	 * Removes the given total amount of money from the given mob, in the given
+	 * Removes the given total amount of money from the given IP, in the given
 	 * currency and the given container of that currency.  This deals in
 	 * currency items.
 	 *
-	 * @see MoneyLibrary#subtractMoney(MOB, double)
-	 * @see MoneyLibrary#subtractMoney(MOB, double, double)
-	 * @see MoneyLibrary#subtractMoney(MOB, String, double)
-	 * @see MoneyLibrary#subtractMoney(MOB, String, double, double)
+	 * @see MoneyLibrary#subtractMoney(ItemCollection, double)
+	 * @see MoneyLibrary#subtractMoney(ItemCollection, double, double)
+	 * @see MoneyLibrary#subtractMoney(ItemCollection, String, double)
+	 * @see MoneyLibrary#subtractMoney(ItemCollection, String, double, double)
 	 *
-	 * @param mob the mob losing money
+	 * @param IP the mob/room/item holder losing money
 	 * @param container null, or the container with the money in it
 	 * @param currency the type of currency to remove
 	 * @param positiveDeltaAmount the total value to remove
 	 */
-	public void subtractMoney(MOB mob, Container container, String currency, double positiveDeltaAmount);
+	public void subtractMoney(ItemCollection IP, Container container, String currency, double positiveDeltaAmount);
 
 	/**
-	 * Removes the given total amount of money from the given mob, in their native
+	 * Removes the given total amount of money from the given IP, in their native
 	 * currency and the given denomination of that currency.  This deals in
 	 * currency items.
 	 *
-	 * @see MoneyLibrary#subtractMoney(MOB, double)
-	 * @see MoneyLibrary#subtractMoney(MOB, String, double)
-	 * @see MoneyLibrary#subtractMoney(MOB, Container, String, double)
-	 * @see MoneyLibrary#subtractMoney(MOB, String, double, double)
+	 * @see MoneyLibrary#subtractMoney(ItemCollection, double)
+	 * @see MoneyLibrary#subtractMoney(ItemCollection, String, double)
+	 * @see MoneyLibrary#subtractMoney(ItemCollection, Container, String, double)
+	 * @see MoneyLibrary#subtractMoney(ItemCollection, String, double, double)
 	 *
-	 * @param mob the mob losing money
+	 * @param IP the mob/room/item holder losing money
 	 * @param denomination the denomination of the currency to remove
 	 * @param positiveDeltaAmount the total value to remove
 	 */
-	public void subtractMoney(MOB mob, double denomination, double positiveDeltaAmount);
+	public void subtractMoney(ItemCollection IP, double denomination, double positiveDeltaAmount);
 
 	/**
-	 * Removes the given total amount of money from the given mob, in the given currency and the given
-	 * denomination of that currency.  This deals in currency items.
+	 * Removes the given total amount of money from the given IP, in the given
+	 * currency and the given denomination of that currency.
+	 * This deals in currency items.
 	 *
-	 * @see MoneyLibrary#subtractMoney(MOB, double)
-	 * @see MoneyLibrary#subtractMoney(MOB, double, double)
-	 * @see MoneyLibrary#subtractMoney(MOB, String, double)
-	 * @see MoneyLibrary#subtractMoney(MOB, Container, String, double)
+	 * @see MoneyLibrary#subtractMoney(ItemCollection, double)
+	 * @see MoneyLibrary#subtractMoney(ItemCollection, double, double)
+	 * @see MoneyLibrary#subtractMoney(ItemCollection, String, double)
+	 * @see MoneyLibrary#subtractMoney(ItemCollection, Container, String, double)
 	 *
-	 * @param mob the mob losing money
+	 * @param IP the mob/room/item holder losing money
 	 * @param currency the type of currency to remove
 	 * @param denomination the denomination of the currency to remove
 	 * @param positiveDeltaAmount the total value to remove
 	 */
-	public void subtractMoney(MOB mob, String currency, double denomination, double positiveDeltaAmount);
+	public void subtractMoney(ItemCollection IP, String currency, double denomination, double positiveDeltaAmount);
 
 	/**
-	 * If the given mob is an npc with native parameter-value
+	 * When a Coins item is dropped into a new collection,
+	 * this method will seek out a similar denominated pile
+	 * and update it, thus destroying the given coins, and
+	 * return true, otherwise it does nothing and returns false.
+	 *
+	 * @param C the coins already dropped
+	 * @param coll the collection that might have a dup
+	 * @return true if the coins were destroyed, false otherwise
+	 */
+	public boolean putCoinsBack(Coins C, ItemCollection coll);
+
+
+	/**
+	 * If the given mob/room is an npc with native parameter-value
 	 * money set, this will return that value.  Otherwise, the total
 	 * absolute value of all currency items on the given mob are
 	 * counted up, rounded to an int, and returned.
@@ -1031,44 +1045,27 @@ public interface MoneyLibrary extends CMLibrary
 	 * currency and NOT in a container.
 	 *
 	 * @see MoneyLibrary#getMoney(MOB)
-	 * @see MoneyLibrary#getMoneyItems(Room, Item, String)
-	 * @see MoneyLibrary#getMoneyItems(MOB, Item, String)
+	 * @see MoneyLibrary#getMoneyItems(ItemCollection, Item, String)
 	 *
-	 * @param mob the mob to scan
+	 * @param IP the mob/room to scan
 	 * @param currency null, or the currency the money must be in
 	 * @return a list of the coin items found
 	 */
-	public List<Coins> getMoneyItems(MOB mob, String currency);
+	public List<Coins> getMoneyItems(ItemCollection IP, String currency);
 
 	/**
-	 * Scans the given mob and returns any money items in the given
+	 * Scans the given mob/room and returns any money items in the given
 	 * currency and given container.
 	 *
 	 * @see MoneyLibrary#getMoney(MOB)
-	 * @see MoneyLibrary#getMoneyItems(MOB, String)
-	 * @see MoneyLibrary#getMoneyItems(Room, Item, String)
+	 * @see MoneyLibrary#getMoneyItems(ItemCollection, String)
 	 *
-	 * @param mob the mob to scan
+	 * @param IP the mob/room to scan
 	 * @param container null, or the container the money must be in
 	 * @param currency null, or the currency the money must be in
 	 * @return a list of the coin items found
 	 */
-	public List<Coins> getMoneyItems(MOB mob, Item container, String currency);
-
-	/**
-	 * Scans the given room and returns any money items in the given
-	 * currency and given container.
-	 *
-	 * @see MoneyLibrary#getMoney(MOB)
-	 * @see MoneyLibrary#getMoneyItems(MOB, String)
-	 * @see MoneyLibrary#getMoneyItems(MOB, Item, String)
-	 *
-	 * @param R the room to scan
-	 * @param container null, or the container the money must be in
-	 * @param currency null, or the currency the money must be in
-	 * @return a list of the coin items found
-	 */
-	public List<Coins> getMoneyItems(Room R, Item container, String currency);
+	public List<Coins> getMoneyItems(ItemCollection IP, Item container, String currency);
 
 	/**
 	 * Because a currency code could include an entire definition, or maybe
@@ -1088,7 +1085,7 @@ public interface MoneyLibrary extends CMLibrary
 	 * @param E the object to find a currency for
 	 * @return the currency code/name
 	 */
-	public String getCurrency(Environmental E);
+	public String getCurrency(CMObject E);
 
 	/**
 	 * Returns the number of coins that the given mob has in the given currency
@@ -1103,63 +1100,43 @@ public interface MoneyLibrary extends CMLibrary
 
 	/**
 	 * Returns the accumulated total value of the money of the given
-	 * currency, in the given container, in the given room.
+	 * currency, in the given container, on the given mob/room.
 	 *
 	 * @see MoneyLibrary#getTotalAbsoluteNativeValue(MOB)
 	 * @see MoneyLibrary#getTotalAbsoluteShopKeepersValue(MOB, MOB)
-	 * @see MoneyLibrary#getTotalAbsoluteValue(MOB, String)
-	 * @see MoneyLibrary#getTotalAbsoluteValue(MOB, Item, String)
-	 * @see MoneyLibrary#getTotalAbsoluteValueAllCurrencies(MOB)
+	 * @see MoneyLibrary#getTotalAbsoluteValue(ItemCollection, String)
+	 * @see MoneyLibrary#getTotalAbsoluteValueAllCurrencies(ItemCollection)
 	 *
-	 * @param R  the room to count the money in
-	 * @param container null, or the container that the currency must be in
-	 * @param currency the current type to filter the money through
-	 * @return the absolute money value
-	 */
-	public double getTotalAbsoluteValue(Room R, Item container, String currency);
-
-	/**
-	 * Returns the accumulated total value of the money of the given
-	 * currency, in the given container, on the given mob.
-	 *
-	 * @see MoneyLibrary#getTotalAbsoluteNativeValue(MOB)
-	 * @see MoneyLibrary#getTotalAbsoluteShopKeepersValue(MOB, MOB)
-	 * @see MoneyLibrary#getTotalAbsoluteValue(MOB, String)
-	 * @see MoneyLibrary#getTotalAbsoluteValue(Room, Item, String)
-	 * @see MoneyLibrary#getTotalAbsoluteValueAllCurrencies(MOB)
-	 *
-	 * @param mob the mob to count the money of
+	 * @param IP the money holder to count the money of
 	 * @param container null, or the container that the currency must be in
 	 * @param currency null for all, or the current type to filter the money through
 	 * @return the absolute money value
 	 */
-	public double getTotalAbsoluteValue(MOB mob, Item container, String currency);
+	public double getTotalAbsoluteValue(ItemCollection IP, Item container, String currency);
 
 	/**
 	 * Returns the accumulated total value of the money of the given
-	 * currency, on the given mob.
+	 * currency, on the given mob/room.
 	 *
 	 * @see MoneyLibrary#getTotalAbsoluteNativeValue(MOB)
 	 * @see MoneyLibrary#getTotalAbsoluteShopKeepersValue(MOB, MOB)
-	 * @see MoneyLibrary#getTotalAbsoluteValue(MOB, Item, String)
-	 * @see MoneyLibrary#getTotalAbsoluteValue(Room, Item, String)
-	 * @see MoneyLibrary#getTotalAbsoluteValueAllCurrencies(MOB)
+	 * @see MoneyLibrary#getTotalAbsoluteValue(ItemCollection, Item, String)
+	 * @see MoneyLibrary#getTotalAbsoluteValueAllCurrencies(ItemCollection)
 	 *
-	 * @param mob the mob to count the money of
+	 * @param IP the money holder to count the money of
 	 * @param currency null for all, or the current type to filter the money through
 	 * @return the absolute money value
 	 */
-	public double getTotalAbsoluteValue(MOB mob, String currency);
+	public double getTotalAbsoluteValue(ItemCollection IP, String currency);
 
 	/**
 	 * Returns the accumulated total value of the money on the given
 	 * mob, in that mobs native currency.
 	 *
 	 * @see MoneyLibrary#getTotalAbsoluteShopKeepersValue(MOB, MOB)
-	 * @see MoneyLibrary#getTotalAbsoluteValue(MOB, String)
-	 * @see MoneyLibrary#getTotalAbsoluteValue(MOB, Item, String)
-	 * @see MoneyLibrary#getTotalAbsoluteValue(Room, Item, String)
-	 * @see MoneyLibrary#getTotalAbsoluteValueAllCurrencies(MOB)
+	 * @see MoneyLibrary#getTotalAbsoluteValue(ItemCollection, String)
+	 * @see MoneyLibrary#getTotalAbsoluteValue(ItemCollection, Item, String)
+	 * @see MoneyLibrary#getTotalAbsoluteValueAllCurrencies(ItemCollection)
 	 *
 	 * @param mob the mob to count the money of
 	 * @return the absolute money value
@@ -1171,10 +1148,9 @@ public interface MoneyLibrary extends CMLibrary
 	 * mob, in the given shopkeepers native currency.
 	 *
 	 * @see MoneyLibrary#getTotalAbsoluteNativeValue(MOB)
-	 * @see MoneyLibrary#getTotalAbsoluteValue(MOB, String)
-	 * @see MoneyLibrary#getTotalAbsoluteValue(MOB, Item, String)
-	 * @see MoneyLibrary#getTotalAbsoluteValue(Room, Item, String)
-	 * @see MoneyLibrary#getTotalAbsoluteValueAllCurrencies(MOB)
+	 * @see MoneyLibrary#getTotalAbsoluteValue(ItemCollection, String)
+	 * @see MoneyLibrary#getTotalAbsoluteValue(ItemCollection, Item, String)
+	 * @see MoneyLibrary#getTotalAbsoluteValueAllCurrencies(ItemCollection)
 	 *
 	 * @param mob the mob to count the money of
 	 * @param shopkeeper the shopkeeper to get the currency type from
@@ -1184,18 +1160,17 @@ public interface MoneyLibrary extends CMLibrary
 
 	/**
 	 * Returns the accumulated total value of the money on the given
-	 * mob, counting all currencies.
+	 * holder, counting all currencies.
 	 *
 	 * @see MoneyLibrary#getTotalAbsoluteNativeValue(MOB)
 	 * @see MoneyLibrary#getTotalAbsoluteShopKeepersValue(MOB, MOB)
-	 * @see MoneyLibrary#getTotalAbsoluteValue(MOB, String)
-	 * @see MoneyLibrary#getTotalAbsoluteValue(MOB, Item, String)
-	 * @see MoneyLibrary#getTotalAbsoluteValue(Room, Item, String)
+	 * @see MoneyLibrary#getTotalAbsoluteValue(ItemCollection, String)
+	 * @see MoneyLibrary#getTotalAbsoluteValue(ItemCollection, Item, String)
 	 *
-	 * @param mob the mob to count the money of
+	 * @param IP the holder to count the money of
 	 * @return the absolute money value
 	 */
-	public double getTotalAbsoluteValueAllCurrencies(MOB mob);
+	public double getTotalAbsoluteValueAllCurrencies(ItemCollection IP);
 
 	/**
 	 * Returns all debt records owed by the given debtor.

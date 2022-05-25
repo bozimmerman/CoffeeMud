@@ -7395,14 +7395,14 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								break;
 							}
 						}
+						final MOB cM=CMLib.players().getLoadPlayer(clan.getResponsibleMemberName());
 						if(clanBank == null)
-							CMLib.clans().clanAnnounce(clan.getResponsibleMember(),L("Your @x2 @x3 would have had @x1 deposited in its account, if it had one.",CMLib.beanCounter().getDenominationName(currency, denomination, aaward.getAmount()),clan.getGovernmentName(),clan.name()));
+							CMLib.clans().clanAnnounce(cM,L("Your @x2 @x3 would have had @x1 deposited in its account, if it had one.",CMLib.beanCounter().getDenominationName(currency, denomination, aaward.getAmount()),clan.getGovernmentName(),clan.name()));
 						else
 						{
-							final MOB M=clan.getResponsibleMember();
-							CMLib.clans().clanAnnounce(clan.getResponsibleMember(),L("Your @x2 @x3 has @x1 deposited in its account.",CMLib.beanCounter().getDenominationName(currency, denomination, aaward.getAmount()),clan.getGovernmentName(),clan.name()));
+							CMLib.clans().clanAnnounce(cM,L("Your @x2 @x3 has @x1 deposited in its account.",CMLib.beanCounter().getDenominationName(currency, denomination, aaward.getAmount()),clan.getGovernmentName(),clan.name()));
 							CMLib.beanCounter().modifyBankGold(clanBank.bankChain(), clan.clanID(),
-									CMLib.utensils().getFormattedDate(M)
+									CMLib.utensils().getFormattedDate(cM)
 									+": Deposit of "+CMLib.beanCounter().nameCurrencyShort(currency,money)
 									+": Achievement award",
 									currency, money);
@@ -7429,7 +7429,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			case CLANXP:
 			{
 				final AmountAward aaward=(AmountAward)award;
-				CMLib.clans().clanAnnounce(clan.getResponsibleMember(),L("Your @x2 @x3 has been granted @x1 experience.",""+aaward.getAmount(),clan.getGovernmentName(),clan.name()));
+				final MOB cM=CMLib.players().getLoadPlayer(clan.getResponsibleMemberName());
+				CMLib.clans().clanAnnounce(cM,L("Your @x2 @x3 has been granted @x1 experience.",""+aaward.getAmount(),clan.getGovernmentName(),clan.name()));
 				clan.adjExp(null, aaward.getAmount());
 				break;
 			}
@@ -8273,7 +8274,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		return false;
 	}
 
-	private boolean evaluateClanAchievement(final Achievement A, final Clan C, final MOB mob)
+	private boolean evaluateClanAchievement(final Achievement A, final Clan C, MOB mob)
 	{
 		if(C != null)
 		{
@@ -8282,6 +8283,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				final Tracker T=C.getAchievementTracker(A, C, mob);
 				if(T.isAchieved(C))
 				{
+					if(mob == null)
+						mob = CMLib.players().getLoadPlayer(C.getResponsibleMemberName());
 					return giveAwards(A, C, C, mob, AchievementLoadFlag.NORMAL);
 				}
 			}
@@ -8337,15 +8340,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		for(final Enumeration<Clan> c=CMLib.clans().clans();c.hasMoreElements();)
 		{
 			final Clan C=c.nextElement();
-			final MOB mob=C.getResponsibleMember();
-			if(mob != null)
+			for(final Enumeration<Achievement> a=achievements(Agent.CLAN);a.hasMoreElements();)
 			{
-				for(final Enumeration<Achievement> a=achievements(Agent.CLAN);a.hasMoreElements();)
-				{
-					final Achievement A=a.nextElement();
-					if(evaluateClanAchievement(A, C, mob))
-						somethingDone = true;
-				}
+				final Achievement A=a.nextElement();
+				if(evaluateClanAchievement(A, C, null)) // the mob is loaded later, if necc
+					somethingDone = true;
 			}
 		}
 		return somethingDone;

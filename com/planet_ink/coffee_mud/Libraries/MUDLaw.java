@@ -568,7 +568,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			return null;
 		final Clan clan = CMLib.clans().getClanExact(record.getOwnerName());
 		if(clan != null)
-			return clan.getResponsibleMember();
+			return CMLib.players().getLoadPlayer(clan.getResponsibleMemberName());
 		final MOB M=CMLib.players().getPlayerAllHosts(record.getOwnerName());
 		if(M == null)
 			return CMLib.players().getLoadPlayer(record.getOwnerName());
@@ -594,9 +594,9 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			final Pair<Clan,Integer> clanRole=mob.getClanRole(record.getOwnerName());
 			if((clanRole!=null)&&(clanRole.first.getAuthority(clanRole.second.intValue(),Clan.Function.PROPERTY_OWNER)!=Clan.Authority.CAN_NOT_DO))
 				return true;
-			final MOB M=clan.getResponsibleMember();
-			if(M!=null)
-				return mob.mayIFight(M);
+			final MOB cM=CMLib.players().getLoadPlayer(clan.getResponsibleMemberName());
+			if(cM != null)
+				return mob.mayIFight(cM);
 		}
 		else
 		{

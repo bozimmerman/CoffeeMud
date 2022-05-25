@@ -1010,7 +1010,9 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 				{
 					C.getExtItems().delItem(this);
 					CMLib.database().DBUpdateClanItems(C);
-					CMLib.achievements().possiblyBumpAchievement(C.getResponsibleMember(), AchievementLibrary.Event.CLANPROPERTY, -1, C, getArea());
+					final MOB cM=CMLib.players().getLoadPlayer(C.getResponsibleMemberName());
+					if(cM != null)
+						CMLib.achievements().possiblyBumpAchievement(cM, AchievementLibrary.Event.CLANPROPERTY, -1, C, getArea());
 				}
 			}
 			setOwnerName("");

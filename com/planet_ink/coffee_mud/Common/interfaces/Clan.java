@@ -720,7 +720,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooa
 	 * Returns the highest ranking member of this
 	 * @return the mob object for the highest ranking member.
 	 */
-	public MOB getResponsibleMember();
+	public String getResponsibleMemberName();
 
 	/**
 	 * Returns a REL_* constant denoting the relationship

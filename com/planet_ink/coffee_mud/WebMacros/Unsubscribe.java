@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerCode;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
@@ -52,38 +53,20 @@ public class Unsubscribe extends StdWebMacro
 		return true;
 	}
 
-	protected void unsubScribePlayer(final MOB M, final boolean unload)
-	{
-		M.setAttribute(Attrib.AUTOFORWARD, true);
-		CMLib.database().DBUpdatePlayerMOBOnly(M);
-		if(unload)
-			CMLib.players().unloadOfflinePlayer(M);
-	}
-
 	protected void unsubScribePlayer(final String playerName)
 	{
-		if(playerName != null)
+		Integer attributes = (Integer)CMLib.players().getPlayerValue(playerName, PlayerCode.MATTRIB);
+		if(attributes != null)
 		{
-			{
-				final MOB M=CMLib.players().getPlayer(playerName);
-				if(M != null)
-				{
-					unsubScribePlayer(M, false);
-					return;
-				}
-			}
-			{
-				final MOB M=CMLib.players().getLoadPlayer(playerName);
-				if(M != null) // load, set flag, unload, thank you.
-					unsubScribePlayer(M, true);
-			}
+			attributes = Integer.valueOf(attributes.intValue() |  Attrib.AUTOFORWARD.getBitCode());
+			CMLib.players().setPlayerValue(playerName, PlayerCode.MATTRIB, attributes);
 		}
 	}
 
 	@Override
 	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp) throws HTTPServerException
 	{
-		final String last=httpReq.getUrlParameter("USER");
+		String last=httpReq.getUrlParameter("USER");
 		if(last==null)
 			throw new HTTPServerException(new HTTPException(HTTPStatus.S404_NOT_FOUND));
 		final String key=httpReq.getUrlParameter("UNSUBKEY");
@@ -112,19 +95,17 @@ public class Unsubscribe extends StdWebMacro
 					throw new HTTPServerException(new HTTPException(HTTPStatus.S202_ACCEPTED,L("You are now unsubscribed from future emails.")));
 				}
 			}
-			final boolean unloadPlayer = CMLib.players().getPlayer(last) == null;
-			MOB M=CMLib.players().getLoadPlayer(last);
-			if((M == null)&&(CMLib.players().playerExistsAllHosts(last)))
-				M=CMLib.players().getPlayerAllHosts(last);
-			if((M == null) || (M.playerStats()==null))
+			last=CMStrings.capitalizeAndLower(last);
+			final Integer attrib = (Integer)CMLib.players().getPlayerValue(last, PlayerCode.MATTRIB);
+			if(attrib == null)
 				throw new HTTPServerException(new HTTPException(HTTPStatus.S202_ACCEPTED,L("You are already completely and totally unsubscribed from all emails forever.")));
-			if(M.isAttributeSet(Attrib.AUTOFORWARD))
+			if(CMath.bset(attrib.intValue(), Attrib.AUTOFORWARD.getBitCode()))
 				throw new HTTPServerException(new HTTPException(HTTPStatus.S202_ACCEPTED,L("You are already unsubscribed from future emails.")));
-			final String passwordOfAnyKind = M.playerStats().getPasswordStr();
-			final String b64repeatedHash = CMLib.encoder().makeRepeatableHashString(M.Name()+"_"+passwordOfAnyKind);
+			final String passwordOfAnyKind = (String)CMLib.players().getPlayerValue(last, PlayerCode.PASSWORD);
+			final String b64repeatedHash = CMLib.encoder().makeRepeatableHashString(last+"_"+passwordOfAnyKind);
 			if(!b64repeatedHash.equals(key))
 				throw new HTTPServerException(new HTTPException(HTTPStatus.S202_ACCEPTED,L("The link you followed is corrupt, or out of date. Please contact administrators.")));
-			unsubScribePlayer(M, unloadPlayer);
+			unsubScribePlayer(last);
 			throw new HTTPServerException(new HTTPException(HTTPStatus.S202_ACCEPTED,L("You are now unsubscribed from future emails.")));
 		}
 		throw new HTTPServerException(new HTTPException(HTTPStatus.S404_NOT_FOUND));

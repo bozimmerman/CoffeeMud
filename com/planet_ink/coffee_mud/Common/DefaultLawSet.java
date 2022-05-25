@@ -422,12 +422,7 @@ public class DefaultLawSet implements Law
 
 			for(final String owner : owners.keySet())
 			{
-				MOB responsibleMob=null;
 				final Clan C=CMLib.clans().getClanExact(owner);
-				if(C!=null)
-					responsibleMob=C.getResponsibleMember();
-				else
-					responsibleMob=CMLib.players().getLoadPlayer(owner);
 				final List<LandTitle> particulars=owners.get(owner);
 
 				double totalValue=0;
@@ -500,7 +495,7 @@ public class DefaultLawSet implements Law
 									final Clan clanC=CMLib.clans().getClanExact(T.getOwnerName());
 									if(clanC!=null)
 									{
-										final MOB M=clanC.getResponsibleMember();
+										final MOB M=CMLib.players().getLoadPlayer(C.getResponsibleMemberName());
 										final List<Pair<Clan,Integer>> clanSet=new ArrayList<Pair<Clan,Integer>>();
 										clanSet.add(new Pair<Clan,Integer>(C,Integer.valueOf(0)));
 										final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO, M);
@@ -538,7 +533,7 @@ public class DefaultLawSet implements Law
 							final Clan clanC=CMLib.clans().getClanExact(owner);
 							if(clanC!=null)
 							{
-								final MOB M=clanC.getResponsibleMember();
+								final MOB M=CMLib.players().getLoadPlayer(C.getResponsibleMemberName());
 								final String amountOwed = CMLib.beanCounter().nameCurrencyLong(M, owed);
 								final List<Pair<Clan,Integer>> clanSet=new ArrayList<Pair<Clan,Integer>>();
 								clanSet.add(new Pair<Clan,Integer>(C,Integer.valueOf(0)));
@@ -563,18 +558,19 @@ public class DefaultLawSet implements Law
 												+ "Failure to pay could result in loss of property.");
 							}
 							if((evasionBits!=null)
-							&&(evasionBits[Law.BIT_CRIMENAME].length()>0)
-							&&(responsibleMob!=null))
+							&&(evasionBits[Law.BIT_CRIMENAME].length()>0))
 							{
-								legalDetails.fillOutWarrant(responsibleMob,
-															this,
-															A,
-															null,
-															evasionBits[Law.BIT_CRIMELOCS],
-															evasionBits[Law.BIT_CRIMEFLAGS],
-															evasionBits[Law.BIT_CRIMENAME],
-															evasionBits[Law.BIT_SENTENCE],
-															evasionBits[Law.BIT_WARNMSG]);
+								final MOB responsibleMob=(C!=null)?CMLib.players().getLoadPlayer(C.getResponsibleMemberName()):CMLib.players().getLoadPlayer(owner);
+								if(responsibleMob != null)
+									legalDetails.fillOutWarrant(responsibleMob,
+																this,
+																A,
+																null,
+																evasionBits[Law.BIT_CRIMELOCS],
+																evasionBits[Law.BIT_CRIMEFLAGS],
+																evasionBits[Law.BIT_CRIMENAME],
+																evasionBits[Law.BIT_SENTENCE],
+																evasionBits[Law.BIT_WARNMSG]);
 							}
 						}
 					}
@@ -603,12 +599,14 @@ public class DefaultLawSet implements Law
 							}
 						}
 						if((evasionBits!=null)
-						&&(evasionBits[Law.BIT_CRIMENAME].length()>0)
-						&&(responsibleMob!=null))
+						&&(evasionBits[Law.BIT_CRIMENAME].length()>0))
 						{
-							while(removeWarrant(responsibleMob,evasionBits[Law.BIT_CRIMENAME],debugging)!=null)
-							{
-							}
+							// if they aren't cached, they can't have a warrant!
+							final MOB responsibleMob=(C!=null)?CMLib.players().getPlayer(C.getResponsibleMemberName()):CMLib.players().getPlayer(owner);
+							if(responsibleMob != null)
+								while(removeWarrant(responsibleMob,evasionBits[Law.BIT_CRIMENAME],debugging)!=null)
+								{
+								}
 						}
 					}
 				}

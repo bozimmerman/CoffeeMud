@@ -74,7 +74,7 @@ public class Test extends StdCommand
 	final Comparator<Object> comp=new Comparator<Object>()
 	{
 		@Override
-		public int compare(Object o1, Object o2)
+		public int compare(final Object o1, final Object o2)
 		{
 			if(o1 == null)
 				return (o2==null)?0:-1;
@@ -111,7 +111,7 @@ public class Test extends StdCommand
 			return -1;
 		}
 	};
-	
+
 	public static String semiSpellList()
 	{
 		if(semiSpellList!=null)
@@ -257,7 +257,7 @@ public class Test extends StdCommand
 		else
 		if(val1 instanceof List)
 		{
-			List l=(List)val1;
+			final List l=(List)val1;
 			if((l.size()==0)||(((List)val2).size()!=l.size()))
 				mob.tell(rep+"-FAIL: "+var+"="+l.size()+"!="+((List)val2).size());
 			else
@@ -269,8 +269,8 @@ public class Test extends StdCommand
 					{
 						if(o1 instanceof Triad)
 						{
-							Triad t1=(Triad)o1;
-							Triad t2=(Triad)o2;
+							final Triad t1=(Triad)o1;
+							final Triad t2=(Triad)o2;
 							if((comp.compare(t1.second, t2.second)==0)
 							&&((comp.compare(t1.third, t2.third)==0)))
 								found=true;
@@ -278,8 +278,8 @@ public class Test extends StdCommand
 						else
 						if(o1 instanceof Pair)
 						{
-							Pair t1=(Pair)o1;
-							Pair t2=(Pair)o2;
+							final Pair t1=(Pair)o1;
+							final Pair t2=(Pair)o2;
 							if((comp.compare(t1.second, t2.second)==0)
 							&&((comp.compare(t1.first, t2.first)==0)))
 								found=true;
@@ -303,7 +303,7 @@ public class Test extends StdCommand
 			mob.tell(rep+"-WAS : "+var+"="+val2);
 		}
 	}
-	
+
 	public String copyYahooGroupMsg(final MOB mob, int lastMsgNum) throws Exception
 	{
 		long numTimes = 9999999;
@@ -1229,6 +1229,7 @@ public class Test extends StdCommand
 				M.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
 				M.setBaseCharStats((CharStats)CMClass.getCommon("DefaultCharStats"));
 				CMLib.database().DBCreateCharacter(M);
+				CMLib.database().DBUpdatePlayerPlayerStats(M);
 				M=CMLib.players().getLoadPlayer("Testplayeredit");
 				// first test the normal stuff
 				for(final PlayerLibrary.PlayerCode c : PlayerLibrary.PlayerCode.values())
@@ -1323,7 +1324,7 @@ public class Test extends StdCommand
 					{
 						for(int i=0;i<10;i++)
 						{
-							int r=CMLib.dice().roll(1, CMLib.expertises().numExpertises(), -1);
+							final int r=CMLib.dice().roll(1, CMLib.expertises().numExpertises(), -1);
 							final Enumeration<ExpertiseLibrary.ExpertiseDefinition> defs=CMLib.expertises().definitions();
 							for(int x=0;x<r;x++)
 								defs.nextElement();
@@ -1391,6 +1392,7 @@ public class Test extends StdCommand
 						M.setAttributesBitmap(543);
 						break;
 					case MONEY:
+						CMLib.beanCounter().addMoney(M, 1000);
 						break;
 					case MOVES:
 						M.baseState().setMovement(110);
@@ -1407,7 +1409,7 @@ public class Test extends StdCommand
 						M.setQuestPoint(88);
 						break;
 					case RACE:
-						M.baseCharStats().setMyRace(CMClass.getRace("Elf"));
+						M.baseCharStats().setMyRace(CMClass.getRace("Toadstool"));
 						break;
 					case STARTROOM:
 						M.setStartRoom(CMLib.map().getRandomRoom());
@@ -1433,8 +1435,8 @@ public class Test extends StdCommand
 					}
 				}
 				CMLib.players().savePlayers();
-				Object[] saved = new Object[PlayerLibrary.PlayerCode.values().length];
-				Object[] saved2 = new Object[PlayerLibrary.PlayerCode.values().length];
+				final Object[] saved = new Object[PlayerLibrary.PlayerCode.values().length];
+				final Object[] saved2 = new Object[PlayerLibrary.PlayerCode.values().length];
 				int s=0;
 				for(final PlayerLibrary.PlayerCode c : PlayerLibrary.PlayerCode.values())
 				{
@@ -1466,7 +1468,7 @@ public class Test extends StdCommand
 				s=0;
 				for(final PlayerLibrary.PlayerCode c : PlayerLibrary.PlayerCode.values())
 				{
-					Object oldValue = CMLib.players().getPlayerValue("Testplayeredit", c);
+					final Object oldValue = CMLib.players().getPlayerValue("Testplayeredit", c);
 					Object newValue = null;
 					switch(c)
 					{
@@ -1475,7 +1477,7 @@ public class Test extends StdCommand
 						@SuppressWarnings("unchecked")
 						final List<Ability> l=(List<Ability>)oldValue;
 						l.remove(1);
-						Ability A=CMClass.getAbility("Spell_Blink");
+						final Ability A=CMClass.getAbility("Spell_Blink");
 						A.setMiscText("eye");
 						A.setProficiency(22);
 						l.add(A);
@@ -1489,7 +1491,7 @@ public class Test extends StdCommand
 						@SuppressWarnings("unchecked")
 						final List<CMObject> l=(List<CMObject>)oldValue;
 						l.remove(1);
-						Ability A=CMClass.getAbility("Skill_Stonecunning");
+						final Ability A=CMClass.getAbility("Skill_Stonecunning");
 						A.setMiscText("eye");
 						A.makeNonUninvokable();
 						l.add(A);
@@ -1532,7 +1534,7 @@ public class Test extends StdCommand
 						l.remove(1);
 						for(int i=0;i<3;i++)
 						{
-							int r=CMLib.dice().roll(1, CMLib.expertises().numExpertises(), -1);
+							final int r=CMLib.dice().roll(1, CMLib.expertises().numExpertises(), -1);
 							final Enumeration<ExpertiseLibrary.ExpertiseDefinition> defs=CMLib.expertises().definitions();
 							for(int x=0;x<r;x++)
 								defs.nextElement();
@@ -1575,7 +1577,7 @@ public class Test extends StdCommand
 						newValue = new XVector<Object>(l);
 						break;
 					}
-					case LASTDATE: case AGE: 
+					case LASTDATE: case AGE:
 						newValue=Long.valueOf(((Long)oldValue).longValue()+1);
 						break;
 					case LASTIP:
@@ -1588,9 +1590,24 @@ public class Test extends StdCommand
 					case STARTROOM:
 						newValue=CMLib.map().getExtendedRoomID(CMLib.map().getRandomRoom());
 						break;
-					case MONEY: case NAME: case PASSWORD: 
+					case MONEY:
+					{
+						final XVector<Coins> nv = new XVector<Coins>();
+						@SuppressWarnings("unchecked")
+						final List<Coins> ov = (List<Coins>)oldValue;
+						for(final Coins C : ov)
+						{
+							final Coins C2=(Coins)C.copyOf();
+							C2.setDatabaseID(C.databaseID());
+							C2.setNumberOfCoins(C2.getNumberOfCoins()+1);
+							nv.add(C2);
+						}
+						newValue=nv;
 						break;
-					case LEVEL: 
+					}
+					case NAME: case PASSWORD:
+						break;
+					case LEVEL:
 						newValue=Integer.valueOf(5);
 						break;
 					case RACE:

@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.database.DBConnections;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -61,6 +62,7 @@ public interface PlayerLibrary extends CMLibrary
 
 	public MOB getPlayer(String calledThis);
 	public MOB getPlayerAllHosts(String calledThis);
+	public MOB findPlayerOnline(final String srchStr, final boolean exactOnly);
 
 	public MOB getLoadPlayer(String last);
 	public MOB getLoadPlayerByEmail(String email);
@@ -76,19 +78,54 @@ public interface PlayerLibrary extends CMLibrary
 
 	public String getLiegeOfUserAllHosts(final String userName);
 
-	public MOB findPlayerOnline(final String srchStr, final boolean exactOnly);
-
 	public void obliteratePlayer(MOB deadMOB, boolean deleteAssets, boolean quiet);
 
 	public void renamePlayer(MOB mob, String oldName);
 
+	/**
+	 * Given a player char mob object, this will ensure that
+	 * the char is indeed not currently in the game and, if
+	 * so, remove them from the player cache without saving
+	 * them.
+	 *
+	 * @param mob the player char to unload
+	 */
 	public void unloadOfflinePlayer(final MOB mob);
 
-	public void forceTick();
+	/**
+	 * Saves all cached players.  If the INI file does not
+	 * support the player cache, this will throw out players who
+	 * are offline, but otherwise leave them cached.
+	 *
+	 * @return the number of players saved
+	 */
 	public int savePlayers();
 
-	public ThinPlayer getThinPlayer(final String mobName);
+
+	/**
+	 * Factory method for a ThinnerPlayer object, so that
+	 * new features can be added in the future w/o having
+	 * to change many files.
+	 *
+	 * @see PlayerLibrary.ThinnerPlayer
+	 *
+	 * @return a ThinnerPlayer object you can modify
+	 */
 	public PlayerLibrary.ThinnerPlayer newThinnerPlayer();
+
+	/**
+	 * Given a player name, this will construct a ThinPlayer
+	 * object if the player char is already cached, or
+	 * a new one from the database if not.
+	 *
+	 * @see PlayerLibrary.ThinPlayer
+	 * @see PlayerLibrary#newThinnerPlayer()
+	 * @see PlayerLibrary#thinPlayers(String, Map)
+	 *
+	 * @param mobName the char name
+	 * @return the ThinPlayer
+	 */
+	public ThinPlayer getThinPlayer(final String mobName);
 
 	/**
 	 * Given a possible player sort code string, and an optional cache of
@@ -381,7 +418,7 @@ public interface PlayerLibrary extends CMLibrary
 		 */
 		AGE,
 		/**
-		 * Integer
+		 * List&lt;Coin&gt;
 		 */
 		MONEY,
 		/**
@@ -449,11 +486,11 @@ public interface PlayerLibrary extends CMLibrary
 		 */
 		EMAIL,
 		/**
-		 * List<Tattoo>
+		 * List&lt;Tattoo&gt;
 		 */
 		TATTS,
 		/**
-		 * List<String>
+		 * List&lt;String&gt;
 		 */
 		EXPERS,
 		/**
@@ -461,23 +498,23 @@ public interface PlayerLibrary extends CMLibrary
 		 */
 		ACCOUNT,
 		/**
-		 * List<Pair<String,Integer>> (factionid, value)
+		 * List&lt;Pair&lt;String,Integer&gt;&gt; (factionid, value)
 		 */
 		FACTIONS,
 		/**
-		 * List<Triad<String,String,String>> (dbid, item class, item txt)
+		 * String[] (dbid, item class, item txt, loID, worn, uses, lvl, abilty, heit)
 		 */
 		INVENTORY,
 		/**
-		 * List<Ability>
+		 * List&lt;Ability&gt;
 		 */
 		ABLES,
 		/**
-		 * List<CMObject> (behavior and ability objects)
+		 * List&lt;CMObject&gt; (behavior and ability objects)
 		 */
 		AFFBEHAV,
 		/**
-		 * List<Clan,Integer>
+		 * List&lt;Clan,Integer&gt;
 		 */
 		CLANS
 	}

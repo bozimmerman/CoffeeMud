@@ -894,9 +894,9 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public List<Triad<String,String,String>> DBReadPlayerItemData(final String name, final String searchStr)
+	public List<String[]> DBReadPlayerItemData(final String name, final Filterer<Pair<String,String>> classLocFilter, final Filterer<String> textFilter)
 	{
-		return MOBloader.DBReadPlayerItemData(name, searchStr);
+		return MOBloader.DBReadPlayerItemData(name, classLocFilter, textFilter);
 	}
 
 	@Override

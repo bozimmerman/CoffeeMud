@@ -225,52 +225,6 @@ public class StdCoins extends StdItem implements Coins
 	{
 		if(amDestroyed())
 			return false;
-		Coins alternative=null;
-		if(owner() instanceof Room)
-		{
-			final Room R=(Room)owner();
-			for(int i=0;i<R.numItems();i++)
-			{
-				final Item I=R.getItem(i);
-				if((I!=null)
-				&&(I!=this)
-				&&(I instanceof Coins)
-				&&(!I.amDestroyed())
-				&&(((Coins)I).getDenomination()==getDenomination())
-				&&(CMLib.beanCounter().isCurrencyMatch(((Coins)I).getCurrency(),getCurrency()))
-				&&(I.container()==container()))
-				{
-					alternative=(Coins)I;
-					break;
-				}
-			}
-		}
-		else
-		if(owner() instanceof MOB)
-		{
-			final MOB M=(MOB)owner();
-			for(int i=0;i<M.numItems();i++)
-			{
-				final Item I=M.getItem(i);
-				if((I!=null)
-				&&(I!=this)
-				&&(I instanceof Coins)
-				&&(!I.amDestroyed())
-				&&(((Coins)I).getDenomination()==getDenomination())
-				&&(CMLib.beanCounter().isCurrencyMatch(((Coins)I).getCurrency(),getCurrency()))
-				&&(I.container()==container()))
-				{
-					alternative=(Coins)I;
-					break;
-				}
-			}
-		}
-		if((alternative!=null)&&(alternative!=this))
-		{
-			alternative.setNumberOfCoins(alternative.getNumberOfCoins()+getNumberOfCoins());
-			destroy();
-			return true;
-		}
-		return false;
+		return CMLib.beanCounter().putCoinsBack(this, owner());
 	}
 }

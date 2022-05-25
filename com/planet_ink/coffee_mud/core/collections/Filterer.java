@@ -28,4 +28,27 @@ public interface Filterer<K>
 			return true;
 		}
 	};
+
+	public static class TextFilter implements Filterer<String>
+	{
+		final String filter;
+		final boolean caseInsensitive;
+		public TextFilter(final String str, final boolean caseInsensitive)
+		{
+			this.caseInsensitive=caseInsensitive;
+			if(this.caseInsensitive)
+				this.filter=str.toLowerCase();
+			else
+				this.filter=str;
+		}
+		@Override
+		public boolean passesFilter(final String obj)
+		{
+			if(caseInsensitive)
+				return obj.toLowerCase().indexOf(obj)>=0;
+			else
+				return obj.indexOf(obj)>=0;
+		}
+	};
+
 }

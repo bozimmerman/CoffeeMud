@@ -828,22 +828,22 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see PlayerLibrary.PlayerCode
 	 * @param name the player to set info for
 	 * @param code the piece of data to set
-	 * @param value the value of the data to set
-	 * @return the specific data, usually a string, Integer, or list of pairs
+	 * @param value the specific data, usually a string, Integer, or list of pairs
 	 */
 	public void DBSetPlayerValue(final String name, final PlayerCode code, final Object value);
-	
+
 	/**
 	 * Table category: DBPLAYERS
 	 * Reads the item dbid, class and misc text of each item in the given
-	 * players inventory.
+	 * players inventory, along with all 9 fields a growing item needs.
 	 * @param name the name of the player
-	 * @param searchStr a string to search the misctext for, or nothing
+	 * @param classLocFilter null, or a filter for the itemid and/or location string
+	 * @param textFilter null, or a filter for the misctext
 	 * @return the list of matching items
 	 */
-	public List<Triad<String,String,String>> DBReadPlayerItemData(String name, final String searchStr);
+	public List<String[]> DBReadPlayerItemData(final String name, final Filterer<Pair<String,String>> classLocFilter, final Filterer<String> textFilter);
 
-	/**
+	/**new Filterer<Pair<String,String>>, new Filterer.TextFilter(searchStr, false)
 	 * Table category: DBPLAYERS
 	 * Renames all player records belonging to the old
 	 * name to the new name.  Does nothing to existing

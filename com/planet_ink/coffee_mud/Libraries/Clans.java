@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerCode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.core.threads.ServiceEngine;
 import com.planet_ink.coffee_mud.core.*;
@@ -1720,10 +1721,11 @@ public class Clans extends StdLibrary implements ClanManager
 
 	public void clanDues()
 	{
+		final TimeClock clock = CMLib.time().globalClock();
 		final long lastDuesPaid = CMath.s_long(Resources.getPropResource(this.name, "LAST_DUES_PAID"));
-		final long hoursPerYear = 0;//clock.getHoursInDay() * clock.getDaysInYear();
+		final long hoursPerYear = clock.getHoursInDay() * clock.getDaysInYear();
 		final long nextDuesPaid = lastDuesPaid + (CMProps.getMillisPerMudHour() * hoursPerYear);
-		if((System.currentTimeMillis() > nextDuesPaid)
+		if((System.currentTimeMillis() >  nextDuesPaid)
 		&&(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
 		&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
 		{
@@ -1745,57 +1747,49 @@ public class Clans extends StdLibrary implements ClanManager
 				final List<Clan.MemberRecord> membList = C.getMemberList();
 				final Set<Clan.MemberRecord> paidList = new HashSet<Clan.MemberRecord>();
 				final Set<Clan.MemberRecord> unpaidList = new HashSet<Clan.MemberRecord>();
+				final Map<String,ItemCollection> updatePlayerItems = new HashMap<String,ItemCollection>();
 				for(final Clan.MemberRecord rec : membList)
 				{
 					double duesDue = C.getDues() + rec.dues;
-					final Set<MOB> unloadMobs = new HashSet<MOB>();
-					final Set<MOB> updatePlayerItems = new HashSet<MOB>();
 					try
 					{
 						final List<String> memberNames = new ArrayList<String>();
 						memberNames.add(rec.name);
-						MOB M=CMLib.players().getPlayer(rec.name); // not all hosts, we want the RIGHT one
-						if(M==null)
+						if(!CMLib.players().playerExists(rec.name))
+							continue;
+						final String liegeID = (String)CMLib.players().getPlayerValue(rec.name, PlayerCode.LEIGE);
+						if((liegeID!=null)
+						&&(liegeID.length()>0))
 						{
-							M=CMLib.players().getLoadPlayer(rec.name);
-							if(M!=null)
-								unloadMobs.add(M);
-							else
-							{
-								//?!
-								continue;
-							}
+							final String cliegeID = (String)CMLib.players().getPlayerValue(liegeID, PlayerCode.LEIGE);
+							if(rec.name.equalsIgnoreCase(cliegeID))
+								memberNames.add(liegeID);
 						}
-						if((M.getLiegeID()!=null)&&(M.getLiegeID().length()>0)&&(M.isMarriedToLiege()))
-							memberNames.add(M.getLiegeID());
 						for(final String payerName : memberNames)
 						{
 							if(duesDue == 0)
 								break;
-							M=CMLib.players().getPlayer(payerName);
-							if(M==null)
+							if(!CMLib.players().playerExists(payerName))
+								continue;
+							ItemCollection IP=CMLib.players().getPlayer(payerName);
+							if(IP == null)
 							{
-								M=CMLib.players().getLoadPlayer(payerName);
-								if(M!=null)
-									unloadMobs.add(M);
-								else
-								{
-									//?!
-									continue;
-								}
+								IP=(ItemCollection)CMClass.getCommon("DefaultItemCollection");
+								@SuppressWarnings("unchecked")
+								final List<Coins> CS = (List<Coins>)CMLib.players().getPlayerValue(payerName, PlayerLibrary.PlayerCode.MONEY);
+								for(final Coins coin : CS)
+									IP.addItem(coin);
 							}
-							final double amtOnHand = CMLib.beanCounter().getTotalAbsoluteValue(M, currency);
+							final double amtOnHand = CMLib.beanCounter().getTotalAbsoluteValue(IP, currency);
 							if(amtOnHand > 0.0)
 							{
 								double amtToTake = duesDue;
 								if(amtToTake > amtOnHand)
 									amtToTake = amtOnHand;
-								CMLib.beanCounter().subtractMoney(M, currency, amtToTake);
+								CMLib.beanCounter().subtractMoney(IP, currency, amtToTake);
 								duesDue -= amtToTake;
 								totalAmtToDeposit += amtToTake;
-								final Session S=M.session();
-								if((S==null)||(S.isStopped())||unloadMobs.contains(M))
-									updatePlayerItems.add(M);
+								updatePlayerItems.put(payerName,IP);
 							}
 							if(duesDue > 0.0)
 							{
@@ -1816,10 +1810,6 @@ public class Clans extends StdLibrary implements ClanManager
 								}
 							}
 						}
-						for(final MOB M2 : updatePlayerItems)
-							CMLib.database().DBUpdatePlayerItems(M2);
-						for(final MOB M2 : unloadMobs)
-							CMLib.players().unloadOfflinePlayer(M2);
 						if(rec.dues != duesDue)
 						{
 							CMLib.database().DBUpdateClanDonates(C.clanID(), rec.name, 0,0, duesDue-rec.dues);
@@ -1833,6 +1823,17 @@ public class Clans extends StdLibrary implements ClanManager
 					catch(final Exception e)
 					{
 						Log.errOut(e);
+					}
+				}
+				for(final String M2 : updatePlayerItems.keySet())
+				{
+					final ItemCollection MIP2 = updatePlayerItems.get(M2);
+					if(!(MIP2 instanceof MOB)) // skip actual cached player -- they save later
+					{
+						final List<Coins> Cs = new XVector<Coins>();
+						for(final Enumeration<Item> cs = MIP2.items();cs.hasMoreElements();)
+							Cs.add((Coins)cs.nextElement());
+						CMLib.players().setPlayerValue(M2, PlayerLibrary.PlayerCode.MONEY, Cs);
 					}
 				}
 				if(totalAmtToDeposit>0)

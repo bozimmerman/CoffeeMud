@@ -244,27 +244,31 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	@Override
 	public void unloadOfflinePlayer(final MOB mob)
 	{
-		final PlayerStats pStats = mob.playerStats();
-		if(pStats != null)
+		if((mob!=null)
+		&&(!CMLib.flags().isInTheGame(mob, false))
+		&&((mob.session()==null)||(mob.session().isStopped())))
 		{
-			pStats.getExtItems().delAllItems(true);
-			if(getPlayer(mob.Name())==mob)
+			final PlayerStats pStats = mob.playerStats();
+			if(pStats != null)
 			{
-				delPlayer(mob);
-				mob.destroy();
-			}
-			else // check other hosts
-			{
-				for(final PlayerLibrary pLib2 : getOtherPlayerLibAllHosts())
+				pStats.getExtItems().delAllItems(true);
+				if(getPlayer(mob.Name())==mob)
 				{
-					if(pLib2.getPlayer(mob.Name())==mob)
+					delPlayer(mob);
+					mob.destroy();
+				}
+				else // check other hosts
+				{
+					for(final PlayerLibrary pLib2 : getOtherPlayerLibAllHosts())
 					{
-						delPlayer(mob);
-						mob.destroy();
+						if(pLib2.getPlayer(mob.Name())==mob)
+						{
+							delPlayer(mob);
+							mob.destroy();
+						}
 					}
 				}
 			}
-
 		}
 	}
 
@@ -896,6 +900,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 		deadMOB.delAllAbilities();
 		deadMOB.delAllEffects(false);
+		deadMOB.delAllBehaviors(); // this can happen too
 		CMLib.database().DBUpdatePlayerAbilities(deadMOB);
 		if(deleteAssets)
 		{
@@ -1727,9 +1732,12 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public Object getPlayerValue(final String playerName, final PlayerCode code)
+	public Object getPlayerValue(String playerName, final PlayerCode code)
 	{
-		final MOB M = getPlayer(playerName);
+		playerName=CMStrings.capitalizeAndLower(playerName);
+		MOB M = getPlayer(playerName);
+		if(M==null)
+			M=getPlayerAllHosts(playerName);
 		if(M!=null)
 		{
 			switch(code)
@@ -1785,7 +1793,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			case LEVEL:
 				return Integer.valueOf(M.basePhyStats().level());
 			case MONEY:
-				return Integer.valueOf(M.getMoney());
+				return CMLib.beanCounter().getMoneyItems(M, null);
 			case NAME:
 				return M.name();
 			case RACE:
@@ -1830,7 +1838,18 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			case MOVES:
 				return Integer.valueOf(M.baseState().getMovement());
 			case PASSWORD:
+			{
+				final PlayerStats pStats = M.playerStats();
+				if(pStats != null)
+				{
+					if((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
+					&&(pStats.getAccount()!=null))
+						return pStats.getAccount().getPasswordStr();
+					else
+						return pStats.getPasswordStr();
+				}
 				return "";
+			}
 			case PRACTICES:
 				return Integer.valueOf(M.getPractices());
 			case QUESTPOINTS:
@@ -1847,14 +1866,34 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 		else
 		if(CMLib.players().playerExists(playerName))
-			return CMLib.database().DBReadPlayerValue(CMStrings.capitalizeAndLower(playerName), code);
+			return CMLib.database().DBReadPlayerValue(playerName, code);
+		else
+		if(CMLib.players().playerExistsAllHosts(playerName))
+		{
+			for(final PlayerLibrary pLib : getOtherPlayerLibAllHosts())
+			{
+				if(pLib.playerExists(playerName))
+				{
+					final DatabaseEngine db = (DatabaseEngine)CMLib.library(CMLib.getLibraryThreadID(Library.PLAYERS, pLib), Library.DATABASE);
+					if(db != CMLib.database())
+					{
+						final Object tryVal=db.DBReadPlayerValue(playerName, code);
+						if(tryVal!=null)
+							return tryVal;
+					}
+				}
+			}
+		}
 		return null;
 	}
 
 	@Override
-	public void setPlayerValue(final String playerName, final PlayerCode code, final Object value)
+	public void setPlayerValue(String playerName, final PlayerCode code, final Object value)
 	{
-		final MOB M = getPlayer(playerName);
+		playerName=CMStrings.capitalizeAndLower(playerName);
+		MOB M = getPlayer(playerName);
+		if(M==null)
+			M=getPlayerAllHosts(playerName);
 		if(M!=null)
 		{
 			switch(code)
@@ -2046,8 +2085,16 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				break;
 			}
 			case MONEY:
-				M.setMoney(CMath.s_int(""+value));
+			{
+				final List<Coins> old=CMLib.beanCounter().getMoneyItems(M, null);
+				for(final Coins C : old)
+					M.delItem(C);
+				@SuppressWarnings("unchecked")
+				final List<Coins> newCs=(List<Coins>)value;
+				for(final Coins C : newCs)
+					M.addItem(C);
 				break;
+			}
 			case NAME:
 				return;
 			case RACE:
@@ -2155,6 +2202,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				M.recoverMaxState();
 				break;
 			case PASSWORD:
+				// nopenope
 				break;
 			case PRACTICES:
 				M.setPractices(CMath.s_int(""+value));
@@ -2183,8 +2231,22 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 		else
 		if(CMLib.players().playerExists(playerName))
+			CMLib.database().DBSetPlayerValue(playerName, code, value);
+		else
+		if(CMLib.players().playerExistsAllHosts(playerName))
 		{
-			CMLib.database().DBSetPlayerValue(CMStrings.capitalizeAndLower(playerName), code, value);
+			for(final PlayerLibrary pLib : getOtherPlayerLibAllHosts())
+			{
+				if(pLib.playerExists(playerName))
+				{
+					final DatabaseEngine db = (DatabaseEngine)CMLib.library(CMLib.getLibraryThreadID(Library.PLAYERS, pLib), Library.DATABASE);
+					if(db != CMLib.database())
+					{
+						db.DBSetPlayerValue(playerName, code, value);
+						break;
+					}
+				}
+			}
 		}
 	}
 
@@ -2352,11 +2414,5 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			serviceClient=null;
 		}
 		return true;
-	}
-
-	@Override
-	public void forceTick()
-	{
-		serviceClient.tickTicker(false);
 	}
 }

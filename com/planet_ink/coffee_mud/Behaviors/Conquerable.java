@@ -20,6 +20,7 @@ import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerCode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 
 /*
@@ -357,7 +358,11 @@ public class Conquerable extends Arrest
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST))
 					Log.debugOut("Conquest",holdingClan+" has lost control of "+myArea.name()+reason+".");
 				if(C!=null)
-					CMLib.achievements().possiblyBumpAchievement(C.getResponsibleMember(), AchievementLibrary.Event.CONQUEREDAREAS, -1, C, myArea);
+				{
+					final MOB cM=CMLib.players().getLoadPlayer(C.getResponsibleMemberName());
+					if(cM != null)
+						CMLib.achievements().possiblyBumpAchievement(cM, AchievementLibrary.Event.CONQUEREDAREAS, -1, C, myArea);
+				}
 				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS, null);
 				for(int i=0;i<channels.size();i++)
 					CMLib.commands().postChannel(channels.get(i),CMLib.clans().clanRoles(),L("@x1 has lost control of @x2@x3.",holdingClan,myArea.name(),reason),false);
@@ -451,7 +456,11 @@ public class Conquerable extends Arrest
 	{
 		final Clan C=CMLib.clans().getClanExact(clanID);
 		if(C!=null)
-			CMLib.achievements().possiblyBumpAchievement(C.getResponsibleMember(), AchievementLibrary.Event.CONQUESTPOINTS, amount, C, myArea);
+		{
+			final MOB cM=CMLib.players().getLoadPlayer(C.getResponsibleMemberName());
+			if(cM != null)
+				CMLib.achievements().possiblyBumpAchievement(cM, AchievementLibrary.Event.CONQUESTPOINTS, amount, C, myArea);
+		}
 		for(final Session S : CMLib.sessions().localOnlineIterable())
 		{
 			if((S.mob()!=null)
@@ -795,9 +804,9 @@ public class Conquerable extends Arrest
 			return null;
 		if(C.isWorshipConquest())
 		{
-			final MOB M=C.getResponsibleMember();
-			if((M!=null)&&(M.charStats().getWorshipCharID().length()>0))
-				return M.charStats().getWorshipCharID();
+			final String rName = (String)CMLib.players().getPlayerValue(C.getResponsibleMemberName(), PlayerCode.DEITY);
+			if((rName!=null)&&(rName.length()>0))
+				return rName;
 		}
 		return null;
 	}
@@ -1061,7 +1070,9 @@ public class Conquerable extends Arrest
 			if(C!=null)
 			{
 				C.bumpTrophyData(Clan.Trophy.MonthlyConquests, 1);
-				CMLib.achievements().possiblyBumpAchievement(C.getResponsibleMember(), AchievementLibrary.Event.CONQUEREDAREAS, 1, C, myArea);
+				final MOB cM=CMLib.players().getLoadPlayer(C.getResponsibleMemberName());
+				if(cM != null)
+					CMLib.achievements().possiblyBumpAchievement(cM, AchievementLibrary.Event.CONQUEREDAREAS, 1, C, myArea);
 			}
 			if(worship!=null)
 				Resources.removeResource("PIETY_"+myArea.Name().toUpperCase());
