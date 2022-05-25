@@ -1048,7 +1048,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		case LEVEL:
 			return Integer.toString(player.basePhyStats().level());
 		case AGE:
-			return Integer.toString(player.baseCharStats().getStat(CharStats.STAT_AGE));
+			return Long.toString(player.getAgeMinutes());
 		case LAST:
 			if(!player.isPlayer())
 				return "";
