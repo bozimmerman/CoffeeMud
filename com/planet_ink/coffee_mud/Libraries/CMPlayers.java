@@ -452,6 +452,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			return M;
 		if(playerExists(last))
 		{
+//TODO: DELME
+System.out.println(last);
+new Exception().printStackTrace(System.out);
+System.out.flush();
 			M=CMLib.database().DBReadPlayer(CMStrings.capitalizeAndLower(last));
 			CMLib.database().DBReadFollowers(M,false);
 			if(M.playerStats()!=null)

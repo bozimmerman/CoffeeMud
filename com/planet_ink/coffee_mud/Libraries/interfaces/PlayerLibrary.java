@@ -50,36 +50,253 @@ public interface PlayerLibrary extends CMLibrary
 	public Enumeration<PlayerAccount> accounts();
 	public Enumeration<PlayerAccount> accounts(String sort, Map<String, Object> cache);
 
+	/**
+	 * Given two player characters, this will return whether they either
+	 * share an account.
+	 *
+	 * @see PlayerLibrary#isSameAccount(MOB, MOB)
+	 * @see PlayerLibrary#isSameAccountIP(MOB, MOB)
+	 *
+	 * @param player1 the first player mob
+	 * @param player2 the second player mob
+	 * @return whether they are on the same account
+	 */
 	public boolean isSameAccount(final MOB player1, final MOB player2);
+
+	/**
+	 * Given two player characters, this will return whether they either
+	 * share an account, or the same ip address.
+	 *
+	 * @see PlayerLibrary#isSameAccount(MOB, MOB)
+	 * @see PlayerLibrary#isSameAccountIP(MOB, MOB)
+	 *
+	 * @param player1 the first player mob
+	 * @param player2 the second player mob
+	 * @return whether they are probably the same person
+	 */
 	public boolean isSameAccountIP(final MOB player1, final MOB player2);
 
+	/**
+	 * Removes the given player account from the list of protected
+	 * names, and then deletes the account from the manager cache, from
+	 * the database, and from the world.  It does not delete the
+	 * players in the account, like, at all, so it should be done
+	 * last in that process.
+	 *
+	 * @param deadAccount the account to obliterate
+	 */
 	public void obliterateAccountOnly(PlayerAccount deadAccount);
 
+	/**
+	 * Returns the number of player character mobs currently
+	 * cached by this manager.
+	 *
+	 * @see PlayerLibrary#delPlayer(MOB)
+	 * @see PlayerLibrary#addPlayer(MOB)
+	 * @see PlayerLibrary#players()
+	 *
+	 * @return the number of cached players
+	 */
 	public int numPlayers();
+
+	/**
+	 * Adds a reference to the given player char mob to this
+	 * manager cache.
+	 *
+	 * @see PlayerLibrary#delPlayer(MOB)
+	 * @see PlayerLibrary#numPlayers()
+	 * @see PlayerLibrary#players()
+	 *
+	 * @param newOne the player mob to add
+	 */
 	public void addPlayer(MOB newOne);
+
+	/**
+	 * Deletes a reference to a player character mob from the
+	 * cache.  This does not completely remove the mob from
+	 * the game itself, or all their stuff, and is thus
+	 * somewhat dangerous to call.
+	 *
+	 * @see PlayerLibrary#addPlayer(MOB)
+	 * @see PlayerLibrary#numPlayers()
+	 * @see PlayerLibrary#players()
+	 *
+	 * @param oneToDel the player char mob to remove from the cache
+	 */
 	public void delPlayer(MOB oneToDel);
+
+	/**
+	 * Returns an enumeration of all cached players in this
+	 * manager.
+	 *
+	 * @see PlayerLibrary#delPlayer(MOB)
+	 * @see PlayerLibrary#addPlayer(MOB)
+	 * @see PlayerLibrary#numPlayers()
+	 *
+	 * @return the enumeration of cached player mobs
+	 */
 	public Enumeration<MOB> players();
 
+	/**
+	 * Given a player character name, this will search the list
+	 * of cached player mobs and return the one with that name.
+	 *
+	 *  @see PlayerLibrary#getPlayerAllHosts(String)
+	 *
+	 * @param calledThis the cached player to get
+	 * @return null if not cached, or the player char mob
+	 */
 	public MOB getPlayer(String calledThis);
+
+	/**
+	 * Given a player character name, this will search the list
+	 * of cached player mobs and return the one with that name.
+	 * If not found in this player manager, it will search all
+	 * others that share the same map.
+	 *
+	 *  @see PlayerLibrary#getPlayer(String)
+	 *
+	 * @param calledThis the cached player to get
+	 * @return null if not cached, or the player char mob
+	 */
 	public MOB getPlayerAllHosts(String calledThis);
+
+	/**
+	 * Given a player name, or substring for searching,
+	 * this will return a player character object that is presently
+	 * online and in the game.
+	 *
+	 * @param srchStr the name, or substring if Not exact only
+	 * @param exactOnly true to only search full names, false for substring
+	 * @return null, or the found online player
+	 */
 	public MOB findPlayerOnline(final String srchStr, final boolean exactOnly);
 
+	/**
+	 * Finds a player character who has the given unique name,
+	 * first checking the manager cache, and if not found, goes
+	 * to the associated database and loads the character into
+	 * the cache and then returns it.
+	 *
+	 * @see PlayerLibrary#getLoadPlayerByEmail(String)
+	 *
+	 * @param last the character name
+	 * @return null, or the character found
+	 */
 	public MOB getLoadPlayer(String last);
+
+	/**
+	 * Finds a player character who has the given email address
+	 * (possibly from their account), and loads that character
+	 * into the player manager cache and then returns it.  It
+	 * will check the cache first, of course.
+	 *
+	 * @see PlayerLibrary#getLoadPlayer(String)
+	 *
+	 * @param email email address to find a player for
+	 * @return null, or the player char mob found
+	 */
 	public MOB getLoadPlayerByEmail(String email);
 
+	/**
+	 * Returns a list of all player char names
+	 * in the database.
+	 *
+	 * @see PlayerLibrary#getPlayerListsAllHosts()
+	 *
+	 * @return list of all player names
+	 */
 	public List<String> getPlayerLists();
+
+	/**
+	 * Returns a list of all player char names from all
+	 * databases connected to the same map as this
+	 * player manager.
+	 *
+	 * @see PlayerLibrary#getPlayerLists()
+	 *
+	 * @return list of all player names
+	 */
 	public List<String> getPlayerListsAllHosts();
 
+	/**
+	 * Returns whether the given player char mob is currently
+	 * cached by this player manager.
+	 *
+	 * @see PlayerLibrary#isLoadedPlayer(String)
+	 *
+	 * @param M the player char
+	 * @return true if cached, false otherwise
+	 */
 	public boolean isLoadedPlayer(final MOB M);
+
+	/**
+	 * Returns whether the given player char name is currently
+	 * cached by this player manager.
+	 *
+	 * @see PlayerLibrary#isLoadedPlayer(MOB)
+	 *
+	 * @param mobName the player char name
+	 * @return true if cached, false otherwise
+	 */
 	public boolean isLoadedPlayer(final String mobName);
 
+	/**
+	 * Given a player name, this will attempt to find them and
+	 * return whether they actually exist regardless of whether
+	 * they've been cached or not.
+	 *
+	 * @see PlayerLibrary#playerExistsAllHosts(String)
+	 *
+	 * @param name the player name
+	 * @return true if the player exists anywhere
+	 */
 	public boolean playerExists(String name);
+
+	/**
+	 * Given a player name, this will attempt to find them and
+	 * return whether they actually exist regardless of whether
+	 * they've been cached or not, and checking all user
+	 * databases that share a map with the caller.
+	 *
+	 * @see PlayerLibrary#playerExists(String)
+	 *
+	 * @param name the player name
+	 * @return true if the player exists anywhere
+	 */
 	public boolean playerExistsAllHosts(String name);
 
+	/**
+	 * Given a player name, this will attempt to find the name of the
+	 * liege of this player, regardless of whether they've been cached
+	 * or not, and checking all user databases that share a map with
+	 * the caller.
+	 *
+	 * @param userName the player char name
+	 * @return "", or the name of the player's liege
+	 */
 	public String getLiegeOfUserAllHosts(final String userName);
 
+	/**
+	 * Obliterates a cached loaded player character from the
+	 * database, from the cache, from everything.  Deletes a character
+	 * completely and forever.
+	 *
+	 * @param deadMOB the player char mob object
+	 * @param deleteAssets true to send retirement msg to the world and kill player data
+	 * @param quiet true to do this silently, false otherwise
+	 */
 	public void obliteratePlayer(MOB deadMOB, boolean deleteAssets, boolean quiet);
 
+	/**
+	 * Renaming a player is quite involved, as there are so many tables and
+	 * objects index by the players names.  Calling this method attempts
+	 * to take care of as much as possible.  To use it, first set the mob
+	 * objects new name, then call this with the old one.
+	 *
+	 * @param mob the player char who has been renamed
+	 * @param oldName the previous name
+	 */
 	public void renamePlayer(MOB mob, String oldName);
 
 	/**
@@ -100,7 +317,6 @@ public interface PlayerLibrary extends CMLibrary
 	 * @return the number of players saved
 	 */
 	public int savePlayers();
-
 
 	/**
 	 * Factory method for a ThinnerPlayer object, so that

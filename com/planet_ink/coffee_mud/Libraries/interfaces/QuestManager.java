@@ -56,6 +56,7 @@ public interface QuestManager extends CMLibrary
 	public StringBuffer getDefaultHoliData(String named, String area);
 	public Object getHolidayFile();
 	public HolidayData getEncodedHolidayData(String dataFromStepsFile);
+
 	public List<List<String>> breakOutMudChatVs(String MUDCHAT, TriadList<String,String,Integer> behaviors);
 	public String breakOutMaskString(String s, List<String> p);
 
