@@ -843,7 +843,7 @@ public interface DatabaseEngine extends CMLibrary
 	 */
 	public List<String[]> DBReadPlayerItemData(final String name, final Filterer<Pair<String,String>> classLocFilter, final Filterer<String> textFilter);
 
-	/**new Filterer<Pair<String,String>>, new Filterer.TextFilter(searchStr, false)
+	/**
 	 * Table category: DBPLAYERS
 	 * Renames all player records belonging to the old
 	 * name to the new name.  Does nothing to existing

@@ -34,20 +34,119 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * The Player Manager is primarily a cache and lookup
+ * utility library for player character mobs and player
+ * accounts if the account system is enabled.  It is mostly
+ * optimized to cache as few players as possible, providing
+ * many methods of getting and changing player character
+ * information w/o a permanent load.
+ *
+ * @author Bo Zimmerman
+ *
+ */
 public interface PlayerLibrary extends CMLibrary
 {
+	/**
+	 * Returns null or an account of the given name if it
+	 * exists in the database managed by this player lib.
+	 *
+	 * @see PlayerLibrary#getLoadAccountByEmail(String)
+	 *
+	 * @param calledThis the name of the account
+	 * @return the account found, or null
+	 */
 	public PlayerAccount getLoadAccount(String calledThis);
+	/**
+	 * Returns null or an account of the given email addy if it
+	 * exists in the database managed by this player lib.
+	 *
+	 * @see PlayerLibrary#getLoadAccount(String)
+	 *
+	 * @param email the email of the account
+	 * @return the account found, or null
+	 */
 	public PlayerAccount getLoadAccountByEmail(String email);
 
+	/**
+	 * Returns null or an account of the given name if it
+	 * exists in the cache managed by this player lib.
+	 *
+	 * @see PlayerLibrary#getAccountAllHosts(String)
+	 *
+	 * @param calledThis the name of the account
+	 * @return the account found, or null
+	 */
 	public PlayerAccount getAccount(String calledThis);
+
+	/**
+	 * Returns null or an account of the given name if it
+	 * exists in the cache managed by this player lib. If
+	 * not found, all other player libraries are consulted
+	 * if they share the same map as this one.
+	 *
+	 * @see PlayerLibrary#getAccount(String)
+	 *
+	 * @param calledThis the name of the account
+	 * @return the account found, or null
+	 */
 	public PlayerAccount getAccountAllHosts(String calledThis);
 
+	/**
+	 * Adds a new account to this player manager, for
+	 * caching only.
+	 *
+	 * @param acct the new account
+	 */
 	public void addAccount(PlayerAccount acct);
 
+	/**
+	 * Returns whether an account of the given name exists
+	 * in the database managed by this player lib.
+	 *
+	 * @see PlayerLibrary#accountExistsAllHosts(String)
+	 *
+	 * @param name the name of the account
+	 * @return true if the account exists
+	 */
 	public boolean accountExists(String name);
+
+	/**
+	 * Returns whether an account of the given name exists
+	 * in the database managed by this player lib.  If
+	 * not found, all other player libraries are consulted
+	 * if they share the same map as this one.
+	 *
+	 * @see PlayerLibrary#accountExists(String)
+	 *
+	 * @param name the name of the account
+	 * @return true if the account exists
+	 */
 	public boolean accountExistsAllHosts(String name);
 
+	/**
+	 * Returns an enumeration of all player account objects
+	 *
+	 * @see PlayerLibrary#accounts(String, Map)
+	 *
+	 * @return an enumeration of all player account objects
+	 */
 	public Enumeration<PlayerAccount> accounts();
+
+	/**
+	 * Returns an enumeration of all account objects, with optional sort field,
+	 * and optional cache so that subsequent calls are faster.
+	 * The sort field is a AcctThinSortCode name.
+	 * The cache is a map that can contain a field called "ACCOUNTLISTVECTOR" plus
+	 * the sort field, and would be the vector of accounts that can be
+	 * enumerated over again.
+	 *
+	 * @see PlayerLibrary#accounts()
+	 *
+	 * @param sort null, or AcctThinSortCode name
+	 * @param cache map that can contain a cashed enum vector
+	 * @return the enum of ALL player accounts
+	 */
 	public Enumeration<PlayerAccount> accounts(String sort, Map<String, Object> cache);
 
 	/**
