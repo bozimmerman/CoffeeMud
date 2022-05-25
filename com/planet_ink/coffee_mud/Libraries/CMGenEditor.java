@@ -5354,9 +5354,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 				else
 				{
-					final MOB M=CMLib.players().getLoadPlayer(behave);
-					if(M!=null)
+					if(CMLib.players().playerExistsAllHosts(behave))
 					{
+						final String beName = CMStrings.capitalizeAndLower(behave);
 						int oldNum=-1;
 						for(int m=0;m<membersCopy.size();m++)
 						{
@@ -5371,7 +5371,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						if(index<0)
 						{
 							index=members.size();
-							members.add(new MemberRecord(M.name(),C.getGovernment().getAcceptPos()));
+							members.add(new MemberRecord(beName,C.getGovernment().getAcceptPos()));
 						}
 
 						int newRole=-1;
@@ -5385,9 +5385,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 								break;
 						}
 						if(oldNum<0)
-							mob.tell(L("@x1 added.",M.Name()));
+							mob.tell(L("@x1 added.",beName));
 						else
-							mob.tell(L("@x1 re-added.",M.Name()));
+							mob.tell(L("@x1 re-added.",beName));
 						if(newRole>=0)
 							members.get(index).role=newRole;
 					}

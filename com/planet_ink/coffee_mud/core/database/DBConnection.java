@@ -488,7 +488,7 @@ public class DBConnection
 				if((""+sqle).equals("null"))
 					Log.errOut("Query error: null");
 				else
-					Log.errOut("Query error: "+sqle.getMessage());
+					Log.errOut("Query error: "+sqle.getMessage()+": "+queryString);
 				sqlserver=false;
 				failuresInARow++;
 				lastError=""+sqle;

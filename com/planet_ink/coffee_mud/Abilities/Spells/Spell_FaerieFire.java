@@ -78,11 +78,12 @@ public class Spell_FaerieFire extends Spell
 	@Override
 	public void unInvoke()
 	{
-		if(!(affected instanceof MOB))
-			return;
-		final MOB mob=(MOB)affected;
-		if(canBeUninvoked())
-			mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL, L("The faerie fire around <S-NAME> fades."));
+		if(affected instanceof MOB)
+		{
+			final MOB mob=(MOB)affected;
+			if(canBeUninvoked() && (mob.location() != null))
+				mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL, L("The faerie fire around <S-NAME> fades."));
+		}
 		super.unInvoke();
 	}
 

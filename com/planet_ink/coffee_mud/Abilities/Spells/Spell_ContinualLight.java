@@ -94,14 +94,15 @@ public class Spell_ContinualLight extends Spell
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if(!(affected instanceof MOB))
-			return;
-		final MOB mob=(MOB)affected;
-		final Room room=((MOB)affected).location();
-		if(canBeUninvoked())
-			room.show(mob,null,CMMsg.MSG_OK_VISUAL,L("The light above <S-NAME> dims."));
+		final Room room=CMLib.map().roomLocation(affected);
+		if(affected instanceof MOB)
+		{
+			final MOB mob=(MOB)affected;
+			if(canBeUninvoked() && (room != null))
+				room.show(mob,null,CMMsg.MSG_OK_VISUAL,L("The light above <S-NAME> dims."));
+		}
 		super.unInvoke();
-		if(canBeUninvoked())
+		if(canBeUninvoked() && (room!=null))
 			room.recoverRoomStats();
 	}
 

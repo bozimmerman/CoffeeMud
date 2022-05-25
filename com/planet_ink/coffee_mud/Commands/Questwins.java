@@ -66,11 +66,6 @@ public class Questwins extends StdCommand
 
 	};
 
-	public String getQuestsWonList(final MOB mob, final String pronoun)
-	{
-		return getQuestsWonList(mob.Name(), pronoun);
-	}
-
 	protected String getQuestsWonList(final String mobName, final String pronoun)
 	{
 		final ArrayList<Quest> qVec=new ArrayList<Quest>();
@@ -94,9 +89,9 @@ public class Questwins extends StdCommand
 		return msg.toString();
 	}
 
-	public String getQuestsDoingList(final MOB mob, final String pronoun)
+	public String getQuestsDoingList(final String mobName, final String pronoun)
 	{
-		final List<Quest> qVec=getQuestsDoingList(mob);
+		final List<Quest> qVec=getQuestsDoingList(mobName);
 		final StringBuffer msg=new StringBuffer(L("^HQuests @x1 listed as having accepted:^?^N\n\r",pronoun));
 		for(int i=0;i<qVec.size();i++)
 		{
@@ -107,27 +102,31 @@ public class Questwins extends StdCommand
 		return msg.toString();
 	}
 
-	public List<Quest> getQuestsDoingList(final MOB mob)
+	public List<Quest> getQuestsDoingList(final String mobName)
 	{
-		final List<Quest> qQVec=CMLib.quests().getPlayerPersistentQuests(mob);
-		final Set<String> namesDone = new HashSet<String>();
 		final Vector<Quest> qVec = new Vector<Quest>();
-		for(final Quest Q : qQVec)
+		final MOB mob = CMLib.players().getPlayerAllHosts(mobName);
+		if(mob != null)
 		{
-			final String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
-			if(!namesDone.contains(name))
+			final List<Quest> qQVec=CMLib.quests().getPlayerPersistentQuests(mob);
+			final Set<String> namesDone = new HashSet<String>();
+			for(final Quest Q : qQVec)
 			{
-				namesDone.add(name);
-				qVec.add(Q);
+				final String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
+				if(!namesDone.contains(name))
+				{
+					namesDone.add(name);
+					qVec.add(Q);
+				}
 			}
+			Collections.sort(qVec, questNameSorter);
 		}
-		Collections.sort(qVec, questNameSorter);
 		return qVec;
 	}
 
-	public Quest findScriptedQuest(final MOB mob, final String rest)
+	public Quest findScriptedQuest(final String mobName, final String rest)
 	{
-		final List<Quest> quests = getQuestsDoingList(mob);
+		final List<Quest> quests = getQuestsDoingList(mobName);
 		if(CMath.isInteger(rest))
 		{
 			final int x=CMath.s_int(rest)-1;
@@ -214,7 +213,7 @@ public class Questwins extends StdCommand
 
 		if((commands.size()>1)&&(commands.get(commands.size()-1).equalsIgnoreCase("WON")))
 		{
-			final String msg=this.getQuestsWonList(mob, L("you are"));
+			final String msg=this.getQuestsWonList(mob.Name(), L("you are"));
 			if(!mob.isMonster())
 				mob.tell(msg);
 		}
@@ -240,7 +239,7 @@ public class Questwins extends StdCommand
 			foundS=null;
 
 			final String rest=CMParms.combine(commands,2);
-			final Quest Q=findScriptedQuest(mob, rest);
+			final Quest Q=findScriptedQuest(mob.Name(), rest);
 			if(Q==null)
 			{
 				mob.tell(L("There is no such quest as '@x1'.",rest));
@@ -273,7 +272,7 @@ public class Questwins extends StdCommand
 		else
 		if(commands.size()==1)
 		{
-			final String msg=getQuestsDoingList(mob, L("you are"));
+			final String msg=getQuestsDoingList(mob.Name(), L("you are"));
 			if(!mob.isMonster())
 				mob.tell(L("@x1\n\r^HEnter QUEST [QUEST NAME] for more information.^N^.",msg.toString()));
 
@@ -285,18 +284,18 @@ public class Questwins extends StdCommand
 			final String rest=CMParms.combine(commands,1);
 			if(admin)
 			{
-				final MOB M=CMLib.players().getLoadPlayer(rest);
-				if(M!=null)
+				if(CMLib.players().playerExistsAllHosts(rest))
 				{
-					String msg=getQuestsWonList(M, M.Name()+" is");
+					final String name = CMStrings.capitalizeAndLower(rest);
+					String msg=getQuestsWonList(name, name+" is");
 					msg += "\n\r";
-					msg += getQuestsDoingList(M, M.Name()+" is");
+					msg += getQuestsDoingList(name, name+" is");
 					if(!mob.isMonster())
 						mob.tell(msg);
 					return false;
 				}
 			}
-			Quest Q=findScriptedQuest(mob, rest);
+			Quest Q=findScriptedQuest(mob.Name(), rest);
 			if(Q==null)
 				Q=findQuest(new XVector<Quest>(CMLib.quests().enumQuests()),rest);
 			if(Q==null)
