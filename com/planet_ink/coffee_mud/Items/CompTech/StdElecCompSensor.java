@@ -336,7 +336,7 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 				@Override
 				public BoundedCube getBounds()
 				{
-					final SpaceObject sobj=CMLib.map().getSpaceObject(obj, false);
+					final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
 					if(sobj!=null)
 						return sobj.getBounds();
 					return smallCube;
@@ -345,7 +345,7 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 				@Override
 				public long[] coordinates()
 				{
-					final SpaceObject sobj=CMLib.map().getSpaceObject(obj, false);
+					final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
 					if(sobj!=null)
 						return Arrays.copyOf(sobj.coordinates(), sobj.coordinates().length);
 					return Arrays.copyOf(emptyCoords, emptyCoords.length);
@@ -359,7 +359,7 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 				@Override
 				public long radius()
 				{
-					final SpaceObject sobj=CMLib.map().getSpaceObject(obj, false);
+					final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
 					if(sobj!=null)
 						return sobj.radius();
 					return 1;
@@ -373,7 +373,7 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 				@Override
 				public double[] direction()
 				{
-					final SpaceObject sobj=CMLib.map().getSpaceObject(obj, false);
+					final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
 					if(sobj!=null)
 						return sobj.direction();
 					return emptyDirection;
@@ -387,7 +387,7 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 				@Override
 				public double speed()
 				{
-					final SpaceObject sobj=CMLib.map().getSpaceObject(obj, false);
+					final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
 					if(sobj!=null)
 						return sobj.speed();
 					return 0;
@@ -401,7 +401,7 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 				@Override
 				public SpaceObject knownTarget()
 				{
-					final SpaceObject sobj=CMLib.map().getSpaceObject(obj, false);
+					final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
 					if(sobj!=null)
 						return sobj.knownTarget();
 					return null;
@@ -415,7 +415,7 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 				@Override
 				public SpaceObject knownSource()
 				{
-					final SpaceObject sobj=CMLib.map().getSpaceObject(obj, false);
+					final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
 					if(sobj!=null)
 						return sobj.knownSource();
 					return null;
@@ -429,7 +429,7 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 				@Override
 				public long getMass()
 				{
-					final SpaceObject sobj=CMLib.map().getSpaceObject(obj, false);
+					final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
 					if(sobj!=null)
 						return sobj.getMass();
 					return 1;
@@ -472,11 +472,11 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 
 	protected List<? extends Environmental> getAllSensibleObjects()
 	{
-		final SpaceObject O=CMLib.map().getSpaceObject(this, true);
+		final SpaceObject O=CMLib.space().getSpaceObject(this, true);
 		if((O!=null)&&(this.powerRemaining() > this.powerNeeds()))
 		{
 			final long maxRange = Math.round(getSensorMaxRange() * this.getComputedEfficiency());
-			final List<? extends Environmental> found = CMLib.map().getSpaceObjectsWithin(O, O.radius()+1, maxRange);
+			final List<? extends Environmental> found = CMLib.space().getSpaceObjectsWithin(O, O.radius()+1, maxRange);
 			found.remove(O);
 			if(found.size() > 1)
 			{

@@ -64,7 +64,7 @@ public class StdSpaceTech extends StdTechItem implements SpaceObject
 	@Override
 	public void destroy()
 	{
-		CMLib.map().delObjectInSpace(this);
+		CMLib.space().delObjectInSpace(this);
 		super.destroy();
 	}
 
@@ -84,7 +84,7 @@ public class StdSpaceTech extends StdTechItem implements SpaceObject
 	public void setCoords(final long[] coords)
 	{
 		if((coords!=null)&&(coords.length==3))
-			CMLib.map().moveSpaceObject(this,coords);
+			CMLib.space().moveSpaceObject(this,coords);
 	}
 
 	@Override

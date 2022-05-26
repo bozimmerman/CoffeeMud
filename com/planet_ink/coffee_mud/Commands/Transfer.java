@@ -261,7 +261,7 @@ public class Transfer extends At
 			try
 			{
 				final ConvertingEnumeration<SpaceObject,Item> spaceItems=new ConvertingEnumeration<SpaceObject,Item>(
-					new FilteredEnumeration<SpaceObject>(CMLib.map().getSpaceObjects(),new Filterer<SpaceObject>()
+					new FilteredEnumeration<SpaceObject>(CMLib.space().getSpaceObjects(),new Filterer<SpaceObject>()
 					{
 						@Override
 						public boolean passesFilter(final SpaceObject obj)
@@ -291,7 +291,7 @@ public class Transfer extends At
 			try
 			{
 				final ConvertingEnumeration<SpaceObject,Item> spaceItems=new ConvertingEnumeration<SpaceObject,Item>(
-					new FilteredEnumeration<SpaceObject>(CMLib.map().getSpaceObjects(),new Filterer<SpaceObject>()
+					new FilteredEnumeration<SpaceObject>(CMLib.space().getSpaceObjects(),new Filterer<SpaceObject>()
 					{
 						@Override
 						public boolean passesFilter(final SpaceObject obj)

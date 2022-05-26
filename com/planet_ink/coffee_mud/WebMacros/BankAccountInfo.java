@@ -106,7 +106,7 @@ public class BankAccountInfo extends StdWebMacro
 			String player=httpReq.getUrlParameter("PLAYER");
 			if((player==null)||(player.length()==0))
 				player=httpReq.getUrlParameter("CLAN");
-			final Banker B=CMLib.map().getBank(last,last);
+			final Banker B=CMLib.city().getBank(last,last);
 			if(B==null)
 				return "BANKER not found?!";
 			if((player!=null)&&(player.length()>0))

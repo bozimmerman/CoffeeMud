@@ -7380,7 +7380,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					{
 						final double money=CMath.mul(aaward.getAmount(),  denomination);
 						Banker clanBank=null;
-						for(final Enumeration<Banker> b = CMLib.map().banks();b.hasMoreElements();)
+						for(final Enumeration<Banker> b = CMLib.city().banks();b.hasMoreElements();)
 						{
 							final Banker B=b.nextElement();
 							if((B!=null)

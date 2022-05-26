@@ -125,9 +125,9 @@ public class Modify extends StdCommand
 		}
 		if(modE==null)
 		{
-			Environmental E=CMLib.map().findSpaceObject(itemID,true);
+			Environmental E=CMLib.space().findSpaceObject(itemID,true);
 			if(!(E instanceof Item))
-				E=CMLib.map().findSpaceObject(itemID,false);
+				E=CMLib.space().findSpaceObject(itemID,false);
 			if(E instanceof Item)
 				modE=E;
 		}
@@ -2531,7 +2531,7 @@ public class Modify extends StdCommand
 				execute(mob,commands,metaFlags);
 			}
 			else
-			if((thang=CMLib.map().findSpaceObject(allWord,true))!=null)
+			if((thang=CMLib.space().findSpaceObject(allWord,true))!=null)
 			{
 				commands=new Vector<String>();
 				commands.add("MODIFY");
@@ -2553,7 +2553,7 @@ public class Modify extends StdCommand
 				execute(mob,commands,metaFlags);
 			}
 			else
-			if((thang=CMLib.map().findSpaceObject(allWord,false))!=null)
+			if((thang=CMLib.space().findSpaceObject(allWord,false))!=null)
 			{
 				if(thang instanceof Area)
 					commands.add(1,"AREA");

@@ -160,9 +160,9 @@ public class Create extends StdCommand
 			SpaceObject O=null;
 			if(objName.trim().length()>0)
 			{
-				O=CMLib.map().findSpaceObject(objName, true);
+				O=CMLib.space().findSpaceObject(objName, true);
 				if(O==null)
-					O=CMLib.map().findSpaceObject(objName, false);
+					O=CMLib.space().findSpaceObject(objName, false);
 			}
 			if(O==null)
 			{
@@ -170,7 +170,7 @@ public class Create extends StdCommand
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 				return null;
 			}
-			rest=CMParms.toListString(CMLib.map().getLocation(O.coordinates(), direction, dist.longValue()));
+			rest=CMParms.toListString(CMLib.space().getLocation(O.coordinates(), direction, dist.longValue()));
 		}
 		final List<String> valsL=CMParms.parseCommas(rest,true);
 		if(valsL.size()!=3)
@@ -315,7 +315,7 @@ public class Create extends StdCommand
 		if(newItem instanceof SpaceObject)
 		{
 			int i=21;
-			while((--i>0)&&(CMLib.map().getSpaceObjectsByCenterpointWithin(coordinates, 0, SpaceObject.Distance.SolarSystemDiameter.dm).size()>0))
+			while((--i>0)&&(CMLib.space().getSpaceObjectsByCenterpointWithin(coordinates, 0, SpaceObject.Distance.SolarSystemDiameter.dm).size()>0))
 			{
 				coordinates=new long[]{
 					CMLib.dice().getRandomizer().nextLong(),
@@ -329,7 +329,7 @@ public class Create extends StdCommand
 			newItem.setUsesRemaining(100);
 		if(newItem instanceof SpaceObject)
 		{
-			CMLib.map().addObjectToSpace(((SpaceObject)newItem), coordinates);
+			CMLib.space().addObjectToSpace(((SpaceObject)newItem), coordinates);
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 appears in the sky.",newItem.name()));
 		}
 		else
@@ -951,7 +951,7 @@ public class Create extends StdCommand
 					return;
 				}
 			}
-			CMLib.map().addObjectToSpace(((SpaceObject)A), coordinates);
+			CMLib.space().addObjectToSpace(((SpaceObject)A), coordinates);
 		}
 		A.setName(areaName);
 		CMLib.map().addArea(A);

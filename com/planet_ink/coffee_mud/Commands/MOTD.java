@@ -160,7 +160,7 @@ public class MOTD extends StdCommand
 				final List<String> postalChains=new ArrayList<String>();
 				final List<String> postalBranches=new ArrayList<String>();
 				PostOffice P=null;
-				for(final Enumeration<PostOffice> e=CMLib.map().postOffices();e.hasMoreElements();)
+				for(final Enumeration<PostOffice> e=CMLib.city().postOffices();e.hasMoreElements();)
 				{
 					P=e.nextElement();
 					if(!postalChains.contains(P.postalChain()))
@@ -485,7 +485,7 @@ public class MOTD extends StdCommand
 			if(x<0)
 				continue;
 			branch=branch.substring(0,x);
-			P=CMLib.map().getPostOffice(chain,branch);
+			P=CMLib.city().getPostOffice(chain,branch);
 			if(P==null)
 				continue;
 			final PostOffice.MailPiece pieces=P.parsePostalItemData(letter.xml());

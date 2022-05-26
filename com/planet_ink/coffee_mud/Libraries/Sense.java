@@ -1197,7 +1197,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			if(owner == null)
 			{
 				if((I instanceof SpaceObject)
-				&&(CMLib.map().isObjectInSpace((SpaceObject)I)))
+				&&(CMLib.space().isObjectInSpace((SpaceObject)I)))
 					return null;
 				return I.name()+" is unowned.";
 			}

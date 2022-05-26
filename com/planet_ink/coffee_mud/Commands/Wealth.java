@@ -53,10 +53,10 @@ public class Wealth extends Inventory
 			msg.append(L("\n\r^HMoney:^N None!\n\r"));
 		else
 			msg.append(getShowableMoney(list));
-		for(final Iterator<String> j=CMLib.map().bankChains(null);j.hasNext();)
+		for(final Iterator<String> j=CMLib.city().bankChains(null);j.hasNext();)
 		{
 			final String bankChain=j.next();
-			final Banker bankerM=CMLib.map().getBank(bankChain,bankChain);
+			final Banker bankerM=CMLib.city().getBank(bankChain,bankChain);
 			if(bankerM instanceof MOB)
 			{
 				if(!bankerM.isSold(ShopKeeper.DEAL_CLANBANKER))

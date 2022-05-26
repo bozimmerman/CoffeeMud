@@ -295,7 +295,7 @@ public class MUDGrinder extends StdWebMacro
 				return "@break@";
 			final Area pickedA=getLoggedArea(httpReq,mob);
 			final boolean noInstances=parms.containsKey("NOINSTANCE");
-			return GrinderAreas.getAreaList(CMLib.map().spaceAreas(),pickedA,mob,noInstances,false);
+			return GrinderAreas.getAreaList(CMLib.space().spaceAreas(),pickedA,mob,noInstances,false);
 		}
 		else
 		if(parms.containsKey("TREELIST"))
@@ -310,7 +310,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("ISSPACE"))
 		{
-			return ""+CMLib.map().spaceAreas().hasMoreElements();
+			return ""+CMLib.space().spaceAreas().hasMoreElements();
 		}
 		else
 		if(parms.containsKey("DELAREA"))

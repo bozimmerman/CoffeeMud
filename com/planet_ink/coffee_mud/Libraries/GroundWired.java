@@ -418,8 +418,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	@Override
 	public double getGravityForce(final SpaceObject S, final SpaceObject cO)
 	{
-		final WorldMap map=CMLib.map();
-		final long distance=map.getDistanceFrom(S.coordinates(), cO.coordinates()) - cO.radius();
+		final GalacticMap space=CMLib.space();
+		final long distance=space.getDistanceFrom(S.coordinates(), cO.coordinates()) - cO.radius();
 		final long oMass = S.getMass();
 		if(((cO instanceof Area)||(cO.getMass() >= SpaceObject.ASTEROID_MASS))
 		&&(distance > 0)
@@ -443,11 +443,11 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	@Override
 	public boolean sendSpaceEmissionEvent(final SpaceObject srcP, final Environmental tool, final long range, final int emissionType, final String msgStr)
 	{
-		final WorldMap map = CMLib.map();
-		final List<SpaceObject> cOs=map.getSpaceObjectsWithin(srcP, 0, range);
+		final GalacticMap space = CMLib.space();
+		final List<SpaceObject> cOs=space.getSpaceObjectsWithin(srcP, 0, range);
 		if(cOs.size()==0)
 			return false;
-		final MOB deityM=map.deity();
+		final MOB deityM=CMLib.map().deity();
 		final CMMsg msg=CMClass.getMsg(deityM, srcP, tool, CMMsg.MSG_EMISSION, null, CMMsg.MSG_EMISSION, null, emissionType, msgStr);
 		if(srcP.okMessage(srcP, msg))
 		{
@@ -462,9 +462,9 @@ public class GroundWired extends StdLibrary implements TechLibrary
 
 	public void runSpace()
 	{
-		final WorldMap map = CMLib.map();
+		final GalacticMap space = CMLib.space();
 		final boolean isDebugging=CMSecurity.isDebugging(DbgFlag.SPACESHIP);
-		for(final Enumeration<SpaceObject> o = map.getSpaceObjects(); o.hasMoreElements(); )
+		for(final Enumeration<SpaceObject> o = space.getSpaceObjects(); o.hasMoreElements(); )
 		{
 			final SpaceObject O=o.nextElement();
 			if(!(O instanceof Area))
@@ -480,12 +480,12 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				if(speed>=1)
 				{
 					cube=cube.expand(O.direction(),(long)speed);
-					map.moveSpaceObject(O);
+					space.moveSpaceObject(O);
 				}
 				// why are we doing all this for an object that's not even moving?!  Because gravity?
 				//TODO: passify stellar objects that never show up on each others gravitational map, for a period of time
 				boolean inAirFlag = false;
-				final List<SpaceObject> cOs=map.getSpaceObjectsWithin(O, 0, Math.max(4*SpaceObject.Distance.LightSecond.dm,Math.round(speed)));
+				final List<SpaceObject> cOs=space.getSpaceObjectsWithin(O, 0, Math.max(4*SpaceObject.Distance.LightSecond.dm,Math.round(speed)));
 				final long oMass = O.getMass();
 				for(final SpaceObject cO : cOs)
 				{
@@ -493,14 +493,14 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					&&(!cO.amDestroyed())
 					&&(!O.amDestroyed()))
 					{
-						final double minDistance=map.getMinDistanceFrom(startCoords, O.coordinates(), cO.coordinates());
+						final double minDistance=space.getMinDistanceFrom(startCoords, O.coordinates(), cO.coordinates());
 						final double gravitationalMove=getGravityForce(O, cO);
 						if(gravitationalMove > 0)
 						{
 							if(isDebugging)
 								Log.debugOut("SpaceShip "+O.name()+" is gravitating "+gravitationalMove+" towards " +cO.Name());
-							final double[] directionTo=map.getDirection(O, cO);
-							map.moveSpaceObject(O, directionTo, gravitationalMove);
+							final double[] directionTo=space.getDirection(O, cO);
+							space.moveSpaceObject(O, directionTo, gravitationalMove);
 							inAirFlag = true;
 						}
 						/*
@@ -510,21 +510,21 @@ public class GroundWired extends StdLibrary implements TechLibrary
 							System.out.println("-------");
 							System.out.println(O.name()+"->"+cO.Name()+": speed="+speed+", radius="+cO.radius()+", dir="+Math.toDegrees(O.direction()[0])+","+Math.toDegrees(O.direction()[1]));
 							System.out.println("Moved from:   ("+CMParms.toListString(startCoords)+"  to  "+CMParms.toListString(O.coordinates())+")");
-							final double[] exactDir=CMLib.map().getDirection(startCoords, cO.coordinates());
+							final double[] exactDir=CMLib.space().getDirection(startCoords, cO.coordinates());
 							System.out.println("Closest distance is "+minDistance+" to  object@("+CMParms.toListString(cO.coordinates())+"): Exact dir="+Math.toDegrees(exactDir[0])+","+Math.toDegrees(exactDir[1]));
 						}
 						*/
 
 						if (O instanceof Weapon)
 						{
-							final long dist = CMLib.map().getDistanceFrom(O, cO);
+							final long dist = CMLib.space().getDistanceFrom(O, cO);
 							System.out.println(O.Name()+"/"+cO.Name()+"="+minDistance+"<"+(O.radius()+cO.radius())+"/"+dist);
 						}
 						if ((minDistance<(O.radius()+cO.radius()))
 						&&((speed>0)||(cO.speed()>0))
 						&&((oMass < SpaceObject.MOONLET_MASS)||(cO.getMass() < SpaceObject.MOONLET_MASS)))
 						{
-							final MOB host=map.deity();
+							final MOB host=CMLib.map().deity();
 							CMMsg msg;
 							if(O instanceof Weapon)
 							{

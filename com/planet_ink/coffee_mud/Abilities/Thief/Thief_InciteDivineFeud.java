@@ -122,7 +122,7 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 	protected List<Area> findDeityAreas(final Deity D)
 	{
 		final List<Area> deityAreas = new ArrayList<Area>();
-		for(final Enumeration<Places> p=CMLib.map().holyPlaces(D.Name());p.hasMoreElements();)
+		for(final Enumeration<Places> p=CMLib.city().holyPlaces(D.Name());p.hasMoreElements();)
 		{
 			final Places P=p.nextElement();
 			final String deityName=CMLib.law().getClericInfused(P);

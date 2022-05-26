@@ -3746,26 +3746,26 @@ public class Test extends StdCommand
 				final long[] lt1= new long[]{5, 2, 1};
 				final long[] lt2= new long[]{3, 1, -1};
 				final long[] lt3= new long[]{0, 2, 3};
-				if(CMLib.map().getMinDistanceFrom(lt1,lt2,lt3)<1)
+				if(CMLib.space().getMinDistanceFrom(lt1,lt2,lt3)<1)
 				{
-					mob.tell(L("Error: Straight line test failed: "+CMLib.map().getMinDistanceFrom(lt1,lt2,lt3)));
+					mob.tell(L("Error: Straight line test failed: "+CMLib.space().getMinDistanceFrom(lt1,lt2,lt3)));
 					return false;
 				}
 				final long[] ld1 = new long[] {175, 193, 117};
 				final long[] ld2 = new long[] {197, 218, 134};
 				final long[] ld3 = new long[] {0, 0, 0};
-				if(CMLib.map().getMinDistanceFrom(ld1,ld2,ld3)<285)
+				if(CMLib.space().getMinDistanceFrom(ld1,ld2,ld3)<285)
 				{
-					mob.tell(L("Error: Short line test failed: "+CMLib.map().getMinDistanceFrom(ld1,ld2,ld3)));
+					mob.tell(L("Error: Short line test failed: "+CMLib.space().getMinDistanceFrom(ld1,ld2,ld3)));
 					return false;
 				}
 
 				final long[] l1= new long[]{3515255, 3877051, -239069815};
 				final long[] l2= new long[]{3953445, 4361852, -269041937};
 				final long[] l3= new long[]{9734, -1358, 707222};
-				if(CMLib.map().getMinDistanceFrom(l1,l2,l3)<239834022)
+				if(CMLib.space().getMinDistanceFrom(l1,l2,l3)<239834022)
 				{
-					mob.tell(L("Error: Straight line test failed: "+CMLib.map().getMinDistanceFrom(l1,l2,l3)));
+					mob.tell(L("Error: Straight line test failed: "+CMLib.space().getMinDistanceFrom(l1,l2,l3)));
 					return false;
 				}
 				for(int li=0;li<tests.length;li++)
@@ -3776,7 +3776,7 @@ public class Test extends StdCommand
 						final long[] shipCoord1 = l[0];
 						final long speed = l[1][0];
 						final long[] targetCoord=l[3];
-						final double[] dir=CMLib.map().getDirection(shipCoord1, targetCoord);
+						final double[] dir=CMLib.space().getDirection(shipCoord1, targetCoord);
 						if(l[2].length>0)
 						{
 							dir[0]+=Math.toRadians(l[2][0]);
@@ -3797,18 +3797,18 @@ public class Test extends StdCommand
 						}
 						//System.out.println(dir[0]+","+dir[1]);
 						final boolean expectHit=l[4][0]>0;
-						final long[] shipCoord2=CMLib.map().moveSpaceObject(shipCoord1, dir, speed);
-						final double swish=CMLib.map().getMinDistanceFrom(shipCoord1, shipCoord2, targetCoord);
+						final long[] shipCoord2=CMLib.space().moveSpaceObject(shipCoord1, dir, speed);
+						final double swish=CMLib.space().getMinDistanceFrom(shipCoord1, shipCoord2, targetCoord);
 						if(expectHit != (swish < 10))
 						{
-							mob.tell(L("Error:"+expectHit+"!="+li+"A: minDist="+swish+"/"+(CMLib.map().getDistanceFrom(shipCoord1, targetCoord))));
+							mob.tell(L("Error:"+expectHit+"!="+li+"A: minDist="+swish+"/"+(CMLib.space().getDistanceFrom(shipCoord1, targetCoord))));
 							Log.debugOut(li+"A) orig coords="+shipCoord1[0]+","+shipCoord1[1]+","+shipCoord1[2]);
 							Log.debugOut(li+"A) target coords="+targetCoord[0]+","+targetCoord[1]+","+targetCoord[2]);
 							Log.debugOut(li+"A) original direction to target="+dir[0]+","+dir[1]);
 							Log.debugOut(li+"A) adjusted direction to target="+dir[0]+","+dir[1]);
 							Log.debugOut(li+"A) moved coords="+shipCoord2[0]+","+shipCoord2[1]+","+shipCoord2[2]);
-							Log.debugOut(li+"A) original distance="+CMLib.map().getDistanceFrom(shipCoord1, targetCoord));
-							Log.debugOut(li+"A) current distance="+CMLib.map().getDistanceFrom(shipCoord2, targetCoord));
+							Log.debugOut(li+"A) original distance="+CMLib.space().getDistanceFrom(shipCoord1, targetCoord));
+							Log.debugOut(li+"A) current distance="+CMLib.space().getDistanceFrom(shipCoord2, targetCoord));
 							Log.debugOut(li+"A) switsh="+swish);
 							//return false;
 						}
@@ -3818,7 +3818,7 @@ public class Test extends StdCommand
 						final long[] shipCoord1 = l[3];
 						final long speed = l[1][0];
 						final long[] targetCoord=l[0];
-						final double[] dir=CMLib.map().getDirection(shipCoord1, targetCoord);
+						final double[] dir=CMLib.space().getDirection(shipCoord1, targetCoord);
 						if(l[2].length>0)
 						{
 							dir[0]+=Math.toRadians(l[2][0]);
@@ -3839,11 +3839,11 @@ public class Test extends StdCommand
 						}
 						//System.out.println(dir[0]+","+dir[1]);
 						final boolean expectHit=l[4][0]>0;
-						final long[] shipCoord2=CMLib.map().moveSpaceObject(shipCoord1, dir, speed);
-						final double swish=CMLib.map().getMinDistanceFrom(shipCoord1, shipCoord2, targetCoord);
+						final long[] shipCoord2=CMLib.space().moveSpaceObject(shipCoord1, dir, speed);
+						final double swish=CMLib.space().getMinDistanceFrom(shipCoord1, shipCoord2, targetCoord);
 						if(expectHit != (swish < 10))
 						{
-							mob.tell(L("Error:"+expectHit+"!="+li+"B: minDist="+swish+"/"+(CMLib.map().getDistanceFrom(shipCoord1, targetCoord))));
+							mob.tell(L("Error:"+expectHit+"!="+li+"B: minDist="+swish+"/"+(CMLib.space().getDistanceFrom(shipCoord1, targetCoord))));
 							Log.debugOut(li+"B) orig coords="+shipCoord1[0]+","+shipCoord1[1]+","+shipCoord1[2]);
 							Log.debugOut(li+"B) target coords="+targetCoord[0]+","+targetCoord[1]+","+targetCoord[2]);
 							Log.debugOut(li+"B) original direction to target="+dir[0]+","+dir[1]);
@@ -3862,20 +3862,20 @@ public class Test extends StdCommand
 				for(long x = -SpaceObject.Distance.GalaxyRadius.dm; x<= SpaceObject.Distance.GalaxyRadius.dm; x+= (SpaceObject.Distance.GalaxyRadius.dm / 88))
 				{
 					coordinates[0] = x;
-					final long [] in = CMLib.map().getInSectorCoords(coordinates);
-					mob.tell(CMLib.map().getSectorName(coordinates) + ": "+in[0]+","+in[1]+","+in[2]);
+					final long [] in = CMLib.space().getInSectorCoords(coordinates);
+					mob.tell(CMLib.space().getSectorName(coordinates) + ": "+in[0]+","+in[1]+","+in[2]);
 				}
 				for(long x = -SpaceObject.Distance.GalaxyRadius.dm; x<= SpaceObject.Distance.GalaxyRadius.dm; x+= (SpaceObject.Distance.GalaxyRadius.dm / 88))
 				{
 					coordinates[1] = x;
-					final long [] in = CMLib.map().getInSectorCoords(coordinates);
-					mob.tell(CMLib.map().getSectorName(coordinates) + ": "+in[0]+","+in[1]+","+in[2]);
+					final long [] in = CMLib.space().getInSectorCoords(coordinates);
+					mob.tell(CMLib.space().getSectorName(coordinates) + ": "+in[0]+","+in[1]+","+in[2]);
 				}
 				for(long x = -SpaceObject.Distance.GalaxyRadius.dm; x<= SpaceObject.Distance.GalaxyRadius.dm; x+= (SpaceObject.Distance.GalaxyRadius.dm / 88))
 				{
 					coordinates[2] = x;
-					final long [] in = CMLib.map().getInSectorCoords(coordinates);
-					mob.tell(CMLib.map().getSectorName(coordinates) + ": "+in[0]+","+in[1]+","+in[2]);
+					final long [] in = CMLib.space().getInSectorCoords(coordinates);
+					mob.tell(CMLib.space().getSectorName(coordinates) + ": "+in[0]+","+in[1]+","+in[2]);
 				}
 			}
 			if((what.equalsIgnoreCase("all"))
@@ -3899,7 +3899,7 @@ public class Test extends StdCommand
 								//double curSpeed = 1000;
 								//long newAcceleration = 200;
 								//int steps = 0;
-								final double totDirDiff = CMLib.map().getAngleDelta(curDir, accelDir);
+								final double totDirDiff = CMLib.space().getAngleDelta(curDir, accelDir);
 								//System.out.print("Interesting: ");
 								Log.debugOut("Andgle diff between "+Math.round(Math.toDegrees(curDir[0]))+"mk"+Math.round(Math.toDegrees(curDir[1]))
 								+"   and   "+Math.round(Math.toDegrees(accelDir[0]))+"mk"+Math.round(Math.toDegrees(accelDir[1]))
@@ -3909,10 +3909,10 @@ public class Test extends StdCommand
 								while(!Arrays.equals(curDir, accelDir))
 								{
 									double oldCurSpeed = curSpeed;
-									double curDirDiff = CMLib.map().getAngleDelta(curDir, accelDir);
+									double curDirDiff = CMLib.space().getAngleDelta(curDir, accelDir);
 									double[] oldCurDir=new double[]{curDir[0],curDir[1]};
-									curSpeed = CMLib.map().moveSpaceObject(curDir,curSpeed,accelDir, newAcceleration);
-									double newDirDiff = CMLib.map().getAngleDelta(curDir, accelDir);
+									curSpeed = CMLib.space().moveSpaceObject(curDir,curSpeed,accelDir, newAcceleration);
+									double newDirDiff = CMLib.space().getAngleDelta(curDir, accelDir);
 									if((curDirDiff > halfPI)
 									&&(newDirDiff > halfPI))
 									{
@@ -3923,8 +3923,8 @@ public class Test extends StdCommand
 													+" -> "
 													+Math.round(Math.toDegrees(accelDir[0]))+"@"+Math.round(Math.toDegrees(accelDir[1]))
 													+" (angle Diff "+curDirDiff+") went from speed "+oldCurSpeed+" to "+curSpeed);
-											//CMLib.map().moveSpaceObject(oldCurDir,oldCurSpeed,accelDir, newAcceleration);
-											//curDirDiff = CMLib.map().getAngleDelta(oldCurDir, accelDir);
+											//CMLib.space().moveSpaceObject(oldCurDir,oldCurSpeed,accelDir, newAcceleration);
+											//curDirDiff = CMLib.space().getAngleDelta(oldCurDir, accelDir);
 										}
 									}
 									else

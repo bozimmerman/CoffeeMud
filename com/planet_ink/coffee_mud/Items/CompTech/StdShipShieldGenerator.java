@@ -190,8 +190,8 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 					else
 					if(weaponO.knownSource() != null)
 					{
-						final double[] directionToMe = CMLib.map().getDirection(weaponO.knownSource(), ship);
-						final ShipDir dir = CMLib.map().getDirectionFromDir(ship.facing(), ship.roll(), directionToMe);
+						final double[] directionToMe = CMLib.space().getDirection(weaponO.knownSource(), ship);
+						final ShipDir dir = CMLib.space().getDirectionFromDir(ship.facing(), ship.roll(), directionToMe);
 						absorbs = CMParms.contains(getCurrentCoveredDirections(), dir);
 					}
 

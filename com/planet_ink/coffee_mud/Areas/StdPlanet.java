@@ -67,7 +67,7 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 	public void setCoords(final long[] coords)
 	{
 		if((coords!=null)&&(coords.length==3))
-			CMLib.map().moveSpaceObject(this,coords);
+			CMLib.space().moveSpaceObject(this,coords);
 	}
 
 	@Override

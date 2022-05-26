@@ -219,7 +219,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 						else
 						if(command == TechCommand.WEAPONTARGETSET)
 						{
-							final SpaceObject ship = CMLib.map().getSpaceObject(this, true);
+							final SpaceObject ship = CMLib.space().getSpaceObject(this, true);
 							if(ship == null)
 								reportError(this, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control syntax failure.",me.name(mob)));
 							else
@@ -227,7 +227,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 								if(ship instanceof SpaceShip)
 								{
 									final double[] proposedDirection=new double[] {((Double)parms[0]).doubleValue(),((Double)parms[1]).doubleValue()};
-									final ShipDir dir = CMLib.map().getDirectionFromDir(((SpaceShip)ship).facing(), ((SpaceShip)ship).roll(), proposedDirection);
+									final ShipDir dir = CMLib.space().getDirectionFromDir(((SpaceShip)ship).facing(), ((SpaceShip)ship).roll(), proposedDirection);
 									if(!CMParms.contains(getCurrentBattleCoveredDirections(), dir))
 										reportError(this, controlI, mob, null, lang.L("Failure: @x1: weapon is not facing correctly for that target direction.",me.name(mob)));
 									else
@@ -246,7 +246,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 						else
 						if(command == TechCommand.WEAPONFIRE)
 						{
-							final SpaceObject ship = CMLib.map().getSpaceObject(this, true);
+							final SpaceObject ship = CMLib.space().getSpaceObject(this, true);
 							if(ship == null)
 								reportError(this, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control syntax failure.",me.name(mob)));
 							else
@@ -256,7 +256,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 							{
 								if(ship instanceof SpaceShip)
 								{
-									final ShipDir dir = CMLib.map().getDirectionFromDir(((SpaceShip)ship).facing(), ((SpaceShip)ship).roll(), targetDirection);
+									final ShipDir dir = CMLib.space().getDirectionFromDir(((SpaceShip)ship).facing(), ((SpaceShip)ship).roll(), targetDirection);
 									if(!CMParms.contains(getCurrentBattleCoveredDirections(), dir))
 									{
 										reportError(this, controlI, mob, null, lang.L("Failure: @x1: weapon is not targeted correctly for its field of fire.",me.name(mob)));
@@ -326,7 +326,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 								}
 								weaponO.setKnownSource(ship);
 								final int weaponRadius = 10;
-								final long[] firstCoords = CMLib.map().moveSpaceObject(ship.coordinates(), targetDirection, ship.radius()+weaponRadius+1);
+								final long[] firstCoords = CMLib.space().moveSpaceObject(ship.coordinates(), targetDirection, ship.radius()+weaponRadius+1);
 								//TODO: adjust targeting based on tech, efficiency, installed, etc, etc.
 								weaponO.setCoords(firstCoords);
 								weaponO.setRadius(weaponRadius);
@@ -338,7 +338,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 								((Technical)weaponO).basePhyStats().setDamage(phyStats().damage());
 								((Technical)weaponO).phyStats().setDamage(phyStats().damage());
 								CMLib.threads().startTickDown(weaponO, Tickable.TICKID_BEAMWEAPON, 10);
-								CMLib.map().addObjectToSpace(weaponO, firstCoords);
+								CMLib.space().addObjectToSpace(weaponO, firstCoords);
 								setPowerRemaining(0);
 							}
 						}

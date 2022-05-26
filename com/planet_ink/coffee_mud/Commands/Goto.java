@@ -100,9 +100,9 @@ public class Goto extends At
 		}
 		if(room==null)
 		{
-			SpaceObject o = CMLib.map().findSpaceObject(cmd.toString(), true);
+			SpaceObject o = CMLib.space().findSpaceObject(cmd.toString(), true);
 			if(o == null)
-				o = CMLib.map().findSpaceObject(cmd.toString(), false);
+				o = CMLib.space().findSpaceObject(cmd.toString(), false);
 			if(o instanceof Area)
 			{
 				room=((Area)o).getRandomProperRoom();

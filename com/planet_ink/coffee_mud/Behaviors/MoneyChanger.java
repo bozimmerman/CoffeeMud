@@ -77,7 +77,7 @@ public class MoneyChanger extends StdBehavior
 			rates.put(currency, Double.valueOf(cut));
 			return rates;
 		}
-		final SpaceObject homeO=CMLib.map().getSpaceObject(affecting, false);
+		final SpaceObject homeO=CMLib.space().getSpaceObject(affecting, false);
 		if(homeO!=null)
 		{
 			myCurrency=CMLib.beanCounter().getCurrency(homeO);
@@ -97,7 +97,7 @@ public class MoneyChanger extends StdBehavior
 			}
 			return rates;
 		}
-		for(final Enumeration<Area> a=CMLib.map().spaceAreas();a.hasMoreElements();)
+		for(final Enumeration<Area> a=CMLib.space().spaceAreas();a.hasMoreElements();)
 		{
 			final Area A=a.nextElement();
 			if((A!=null)&&(A!=homeO))
@@ -106,7 +106,7 @@ public class MoneyChanger extends StdBehavior
 				if(CMLib.beanCounter().isCurrencyMatch(myCurrency,currency))
 				{
 					final SpaceObject oA=(SpaceObject)A;
-					final long distance=CMLib.map().getDistanceFrom(homeO, oA);
+					final long distance=CMLib.space().getDistanceFrom(homeO, oA);
 					if((distance<0)||(distance>spaceMaxDistance))
 					{
 						rates.put(currency, Double.valueOf(spaceMaxCut));

@@ -266,7 +266,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 	public static boolean executeThrust(final ShipEngine me, final String circuitKey, final MOB mob, final Software controlI, final ShipDirComponent.ShipDir portDir, final double amount)
 	{
 		final LanguageLibrary lang=CMLib.lang();
-		final SpaceObject obj=CMLib.map().getSpaceObject(me, true);
+		final SpaceObject obj=CMLib.space().getSpaceObject(me, true);
 		final Manufacturer manufacturer=me.getFinalManufacturer();
 		final String rumbleWord = (me instanceof FuelConsumer) ? "rumble" : "hum";
 		if(!(obj instanceof SpaceShip))
@@ -390,7 +390,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 				if(me.activated())
 				{
 					// when a constant thruster deactivates, all speed stops
-					final SpaceObject obj=CMLib.map().getSpaceObject(me, true);
+					final SpaceObject obj=CMLib.space().getSpaceObject(me, true);
 					if(obj instanceof SpaceShip)
 					{
 						final MOB mob=msg.source();
@@ -417,7 +417,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 						final int fuelToConsume=(int)Math.round(CMath.ceiling(me.getThrust()*me.getFuelEfficiency()*Math.max(.33, Math.abs(2.0-manufacturer.getEfficiencyPct()))/getFuelDivisor()));
 						if(me.consumeFuel(fuelToConsume))
 						{
-							final SpaceObject obj=CMLib.map().getSpaceObject(me, true);
+							final SpaceObject obj=CMLib.space().getSpaceObject(me, true);
 							if(obj instanceof SpaceShip)
 							{
 								final SpaceObject ship=((SpaceShip)obj).getShipSpaceObject();

@@ -2392,7 +2392,7 @@ public class ListCmd extends StdCommand
 	public StringBuilder listPostOffices(final MOB mob, final Session viewerS, final List<String> commands)
 	{
 		final StringBuilder buf=new StringBuilder("");
-		if(!CMLib.map().postOffices().hasMoreElements())
+		if(!CMLib.city().postOffices().hasMoreElements())
 			buf.append(L("No post offices exist."));
 		else
 		{
@@ -2402,7 +2402,7 @@ public class ListCmd extends StdCommand
 			final int COL_LEN3=CMLib.lister().fixColWidth(25.0,viewerS);
 			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1)+CMStrings.padRight(L("Chain"),COL_LEN2)+CMStrings.padRight(L("Branch"),COL_LEN3)+" Name^.^N\n\r");
 			int num=1;
-			for(final Enumeration<PostOffice> p=CMLib.map().postOffices();p.hasMoreElements();)
+			for(final Enumeration<PostOffice> p=CMLib.city().postOffices();p.hasMoreElements();)
 			{
 				final PostOffice P=p.nextElement();
 				buf.append(CMStrings.padRight(""+num,COL_LEN1)+CMStrings.padRight(P.postalChain(),COL_LEN2)+CMStrings.padRight(P.postalBranch(),COL_LEN3)+" "+P.name()+"^.^N\n\r");
@@ -2415,7 +2415,7 @@ public class ListCmd extends StdCommand
 	public StringBuilder listBanks(final MOB mob, final Session viewerS, final List<String> commands)
 	{
 		final StringBuilder buf=new StringBuilder("");
-		if(!CMLib.map().banks().hasMoreElements())
+		if(!CMLib.city().banks().hasMoreElements())
 			buf.append(L("No banks exist."));
 		else
 		{
@@ -2425,7 +2425,7 @@ public class ListCmd extends StdCommand
 			final int COL_LEN3=CMLib.lister().fixColWidth(25.0,viewerS);
 			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1)+CMStrings.padRight(L("Chain"),COL_LEN2)+CMStrings.padRight(L("Branch"),COL_LEN3)+" Name^.^N\n\r");
 			int num=1;
-			for(final Enumeration<Banker> b=CMLib.map().banks();b.hasMoreElements();)
+			for(final Enumeration<Banker> b=CMLib.city().banks();b.hasMoreElements();)
 			{
 				final Banker B=b.nextElement();
 				final String branch=(B instanceof MOB)?CMLib.map().getExtendedRoomID(((MOB)B).getStartRoom()):"";
@@ -2439,7 +2439,7 @@ public class ListCmd extends StdCommand
 	public StringBuilder listLibraries(final MOB mob, final Session viewerS, final List<String> commands)
 	{
 		final StringBuilder buf=new StringBuilder("");
-		if(!CMLib.map().libraries().hasMoreElements())
+		if(!CMLib.city().libraries().hasMoreElements())
 			buf.append(L("No libraries exist."));
 		else
 		{
@@ -2449,7 +2449,7 @@ public class ListCmd extends StdCommand
 			final int COL_LEN3=CMLib.lister().fixColWidth(25.0,viewerS);
 			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1)+CMStrings.padRight(L("Chain"),COL_LEN2)+CMStrings.padRight(L("Branch"),COL_LEN3)+" Name^.^N\n\r");
 			int num=1;
-			for(final Enumeration<Librarian> l=CMLib.map().libraries();l.hasMoreElements();)
+			for(final Enumeration<Librarian> l=CMLib.city().libraries();l.hasMoreElements();)
 			{
 				final Librarian L=l.nextElement();
 				final String branch=(L instanceof MOB)?CMLib.map().getExtendedRoomID(((MOB)L).getStartRoom()):"";
@@ -3201,7 +3201,7 @@ public class ListCmd extends StdCommand
 			return str.toString();
 		}
 		final List<SpaceObject> objs=new ArrayList<SpaceObject>();
-		for(final Enumeration<SpaceObject> objEnum=CMLib.map().getSpaceObjects();objEnum.hasMoreElements();)
+		for(final Enumeration<SpaceObject> objEnum=CMLib.space().getSpaceObjects();objEnum.hasMoreElements();)
 		{
 			final SpaceObject obj=objEnum.nextElement();
 			if(!filter.passesFilter(obj))
@@ -3212,7 +3212,7 @@ public class ListCmd extends StdCommand
 		final String[] sortcols=CMLib.lang().sessionTranslation(new String[]{"TYPE","RADIUS","COORDINATES","SPEED","MASS","NAME","COORDSX","COORDSY","COORDSZ"});
 		Long withinDistance=null;
 		long[] centerPoint=null;
-		final SpaceObject SO=CMLib.map().getSpaceObject(mob, false);
+		final SpaceObject SO=CMLib.space().getSpaceObject(mob, false);
 		for(int i=1;i<commands.size();i++)
 		{
 			String s=commands.get(i).toUpperCase();
@@ -3254,9 +3254,9 @@ public class ListCmd extends StdCommand
 						}
 						if(coords==null)
 						{
-							SpaceObject SO2=CMLib.map().findSpaceObject(around, true);
+							SpaceObject SO2=CMLib.space().findSpaceObject(around, true);
 							if(SO2==null)
-								SO2=CMLib.map().findSpaceObject(around, true);
+								SO2=CMLib.space().findSpaceObject(around, true);
 							if(SO2!=null)
 								coords=SO2.coordinates();
 						}
@@ -3426,7 +3426,7 @@ public class ListCmd extends StdCommand
 			}
 			if(withinDistance==null)
 				withinDistance=Long.valueOf(SpaceObject.Distance.SolarSystemRadius.dm+1000000);
-			final List<SpaceObject> objs2=CMLib.map().getSpaceObjectsByCenterpointWithin(centerPoint, 0, withinDistance.longValue());
+			final List<SpaceObject> objs2=CMLib.space().getSpaceObjectsByCenterpointWithin(centerPoint, 0, withinDistance.longValue());
 			for(final Iterator<SpaceObject> i=objs.iterator();i.hasNext();)
 			{
 				final SpaceObject obj=i.next();
@@ -4422,7 +4422,7 @@ public class ListCmd extends StdCommand
 					{
 						final Deity D=d.nextElement();
 						int holyMarkers = 0;
-						for(final Enumeration<Places> p=CMLib.map().holyPlaces(D.Name());p.hasMoreElements();)
+						for(final Enumeration<Places> p=CMLib.city().holyPlaces(D.Name());p.hasMoreElements();)
 						{
 							final Places P=p.nextElement();
 							if((A==P)||((P instanceof Room)&&(((Room)P).getArea()==A)))

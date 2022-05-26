@@ -72,7 +72,7 @@ public class PostalBoxInfo extends StdWebMacro
 			mailPieces = (List<MailPiece>)httpReq.getRequestObjects().get("MAIL_PIECES_"+chain+"_"+box);
 		else
 		{
-			final PostOffice P=CMLib.map().getPostOffice(chain, "*");
+			final PostOffice P=CMLib.city().getPostOffice(chain, "*");
 			if(P!=null)
 			{
 				final List<DatabaseEngine.PlayerData> data = CMLib.database().DBReadPlayerData(box, chain);

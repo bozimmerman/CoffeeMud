@@ -5839,16 +5839,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				SpaceObject O=null;
 				if(objName.trim().length()>0)
 				{
-					O=CMLib.map().findSpaceObject(objName, true);
+					O=CMLib.space().findSpaceObject(objName, true);
 					if(O==null)
-						O=CMLib.map().findSpaceObject(objName, false);
+						O=CMLib.space().findSpaceObject(objName, false);
 				}
 				if(O==null)
 				{
 					mob.tell(L("Unknown relative space object")+" '"+objName+"'.\n\r"+coordHelp2);
 					continue;
 				}
-				val=CMParms.toListString(CMLib.map().getLocation(O.coordinates(), direction, dist.longValue()));
+				val=CMParms.toListString(CMLib.space().getLocation(O.coordinates(), direction, dist.longValue()));
 			}
 
 			final List<String> valsL=CMParms.parseCommas(val,true);

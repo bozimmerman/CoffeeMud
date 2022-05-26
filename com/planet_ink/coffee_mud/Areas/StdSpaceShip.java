@@ -306,7 +306,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	@Override
 	public void destroy()
 	{
-		CMLib.map().delObjectInSpace(this);
+		CMLib.space().delObjectInSpace(this);
 		super.destroy();
 		spaceSource=null;
 		climateObj=null;
@@ -793,7 +793,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 		super.dockHere(roomR);
 		if(roomR==null)
 			return;
-		CMLib.map().delObjectInSpace(getShipSpaceObject());
+		CMLib.space().delObjectInSpace(getShipSpaceObject());
 	}
 
 	@Override

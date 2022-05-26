@@ -144,8 +144,8 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 		if((CMSecurity.isDebugging(DbgFlag.SPACESHIP))&&(getIsDocked()==null))
 			Log.debugOut("SpaceShip "+name()+" is docking at '"+R.displayText()+"' ("+R.roomID()+")");
 		if(R instanceof LocationRoom)
-			setCoords(CMLib.map().moveSpaceObject(((LocationRoom)R).coordinates(), ((LocationRoom)R).getDirectionFromCore(), radius()));
-		CMLib.map().delObjectInSpace(getShipSpaceObject());
+			setCoords(CMLib.space().moveSpaceObject(((LocationRoom)R).coordinates(), ((LocationRoom)R).getDirectionFromCore(), radius()));
+		CMLib.space().delObjectInSpace(getShipSpaceObject());
 		setSpeed(0);
 		super.dockHere(R);
 	}
@@ -173,11 +173,11 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 		if(moveToOutside)
 		{
 			final SpaceObject o = getShipSpaceObject();
-			final SpaceObject planetO = CMLib.map().getSpaceObject(R, true);
-			final long[] newCoordinates = CMLib.map().moveSpaceObject(((LocationRoom)R).coordinates(), direction(), radius()+radius());
+			final SpaceObject planetO = CMLib.space().getSpaceObject(R, true);
+			final long[] newCoordinates = CMLib.space().moveSpaceObject(((LocationRoom)R).coordinates(), direction(), radius()+radius());
 			if((o != null)&&(R instanceof LocationRoom))
 			{
-				CMLib.map().addObjectToSpace(o,newCoordinates);
+				CMLib.space().addObjectToSpace(o,newCoordinates);
 				final double gravity = CMLib.tech().getGravityForce(o, planetO);
 				setShipFlag(SpaceShip.ShipFlag.IN_THE_AIR,(gravity > 0.0));
 			}
@@ -335,8 +335,8 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 										if((dockR==null) && ((finalAcceleration-this.speedTick) > 0))
 										{
 											final double prevSpeed = speed();
-											final double[] moveDir = (dir == ShipDir.FORWARD) ? facing() : CMLib.map().getOppositeDir(facing());
-											CMLib.map().moveSpaceObject(this,moveDir,finalAcceleration-this.speedTick); // have to do this to know new speed
+											final double[] moveDir = (dir == ShipDir.FORWARD) ? facing() : CMLib.space().getOppositeDir(facing());
+											CMLib.space().moveSpaceObject(this,moveDir,finalAcceleration-this.speedTick); // have to do this to know new speed
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 												Log.debugOut("SpaceShip "+name()+" accelerates "+dir.toString()+" " +(finalAcceleration-this.speedTick));
 											this.speedTick += (finalAcceleration-this.speedTick);
@@ -497,7 +497,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 
 				if((!amDestroyed()) && (msg.tool() instanceof Area))
 				{
-					final List<LocationRoom> landingPoints=CMLib.map().getLandingPoints(this, msg.tool());
+					final List<LocationRoom> landingPoints=CMLib.space().getLandingPoints(this, msg.tool());
 					final LocationRoom LR = landingPoints.size()==0 ? null : landingPoints.get(0);
 					stopThisShip(mob);
 					if(LR!=null)
@@ -802,7 +802,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 	public void setCoords(final long[] coords)
 	{
 		if((coords!=null)&&(coords.length==3))
-			CMLib.map().moveSpaceObject(this,coords);
+			CMLib.space().moveSpaceObject(this,coords);
 	}
 
 	@Override

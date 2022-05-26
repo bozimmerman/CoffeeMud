@@ -440,9 +440,9 @@ public class Destroy extends StdCommand
 			deadItem=(srchMob==null)?null:srchMob.findItem(null,itemID);
 		if(deadItem==null)
 		{
-			Environmental E=CMLib.map().findSpaceObject(itemID,true);
+			Environmental E=CMLib.space().findSpaceObject(itemID,true);
 			if(!(E instanceof Item))
-				E=CMLib.map().findSpaceObject(itemID,false);
+				E=CMLib.space().findSpaceObject(itemID,false);
 			if(E instanceof Item)
 				deadItem=(Item)E;
 		}
@@ -541,7 +541,7 @@ public class Destroy extends StdCommand
 			{
 				CMLib.database().DBDeleteItem("SPACE", deadItem);
 				deadItem.destroy();
-				CMLib.map().delObjectInSpace((SpaceObject)deadItem);
+				CMLib.space().delObjectInSpace((SpaceObject)deadItem);
 				deadItem=null;
 			}
 			else
@@ -1906,7 +1906,7 @@ public class Destroy extends StdCommand
 						execute(mob,commands,metaFlags);
 					}
 					else
-					if((thang=CMLib.map().findSpaceObject(allWord,true))!=null)
+					if((thang=CMLib.space().findSpaceObject(allWord,true))!=null)
 					{
 						commands=new Vector<String>();
 						commands.add("DESTROY");

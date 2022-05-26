@@ -60,7 +60,7 @@ public class GenSolarGenerator extends GenFuellessGenerator
 				if(dockRoom!=null)
 					return (dockRoom.getArea()!=null) && (dockRoom.getArea().getClimateObj().canSeeTheSun(dockRoom));
 				final SpaceObject obj = ((SpaceShip)A).getShipSpaceObject();
-				final List<SpaceObject> objs = CMLib.map().getSpaceObjectsWithin(obj, obj.radius(), SpaceObject.Distance.SolarSystemDiameter.dm);
+				final List<SpaceObject> objs = CMLib.space().getSpaceObjectsWithin(obj, obj.radius(), SpaceObject.Distance.SolarSystemDiameter.dm);
 				for(final SpaceObject o : objs)
 				{
 					if((o instanceof Physical)

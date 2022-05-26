@@ -103,7 +103,7 @@ public class PostOfficeNext extends StdWebMacro
 			else
 			{
 				postalChains=new TreeMap<String,PostOffice>();
-				for(final Enumeration<PostOffice> p=CMLib.map().postOffices();p.hasMoreElements();)
+				for(final Enumeration<PostOffice> p=CMLib.city().postOffices();p.hasMoreElements();)
 				{
 					final PostOffice P = p.nextElement();
 					if(!postalChains.containsKey(P.postalChain()))

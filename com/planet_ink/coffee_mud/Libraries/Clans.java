@@ -1614,7 +1614,7 @@ public class Clans extends StdLibrary implements ClanManager
 				{
 					Banker clanBank=null;
 					String currency="";
-					for(final Enumeration<Banker> b = CMLib.map().banks();b.hasMoreElements();)
+					for(final Enumeration<Banker> b = CMLib.city().banks();b.hasMoreElements();)
 					{
 						final Banker B=b.nextElement();
 						if((B!=null)

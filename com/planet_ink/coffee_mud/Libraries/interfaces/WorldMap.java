@@ -50,8 +50,8 @@ public interface WorldMap extends CMLibrary
 	public Area getDefaultParentArea();
 	public Enumeration<Area> areas();
 	public Enumeration<Area> mundaneAreas();
-	public Enumeration<Area> spaceAreas();
 	public Enumeration<Area> topAreas();
+	public Enumeration<Area> areasPlusShips();
 	public Area getFirstArea();
 	public Area getModelArea(Area A);
 	public Area getRandomArea();
@@ -133,93 +133,25 @@ public interface WorldMap extends CMLibrary
 	/* ***********************************************************************/
 	public void registerWorldObjectLoaded(Area area, Room room, CMObject o);
 	public void registerWorldObjectDestroyed(Area area, Room room, CMObject o);
-	public Enumeration<LocatedPair> scriptHosts(Area area);
-	public Deity getDeity(String calledThis);
-	public Enumeration<Deity> deities();
-	public PostOffice getPostOffice(String chain, String areaNameOrBranch);
-	public Enumeration<PostOffice> postOffices();
-	public Banker getBank(String chain, String areaNameOrBranch);
-	public Enumeration<Banker> banks();
-	public Iterator<String> bankChains(Area AreaOrNull);
-	public int numLibraries();
-	public Librarian getLibrary(String chain, String areaNameOrBranch);
-	public Enumeration<Librarian> libraries();
-	public Iterator<String> libraryChains(Area AreaOrNull);
 
-	/**
-	 * Register a particular room as infused to the given deity.
-	 * @see WorldMap#deregisterHolyPlace(String, Places)
-	 * @see WorldMap#holyPlaces(String)
-	 * @param deityName the deity to register
-	 * @param newOne the new holy place
-	 */
-	public void registerHolyPlace(final String deityName, final Places newOne);
-	/**
-	 * De-register a particular room that was probably infused
-	 * to the given deity.
-	 * @see WorldMap#registerHolyPlace(String, Places)
-	 * @param deityName the deity to de-register
-	 * @param oldOne the old holy place for this deity
-	 */
-	public void deregisterHolyPlace(final String deityName, final Places oldOne);
-
-	/**
-	 * Enumerate the holy places for the given deity.
-	 * @see WorldMap#registerHolyPlace(String, Places)
-	 * @see WorldMap#deregisterHolyPlace(String, Places)
-	 * @param deityName the deity to list for
-	 * @return the holy places for the deity.
-	 */
-	public Enumeration<Places> holyPlaces(final String deityName);
-
-	public Auctioneer getAuctionHouse(String chain, String areaNameOrBranch);
-	public Enumeration<Auctioneer> auctionHouses();
 	public Boardable getShip(String calledThis);
 	public Boardable findShip(final String s, final boolean exactOnly);
 	public Enumeration<Boardable> ships();
 	public int numShips();
+
 	public Room getSafeRoomToMovePropertyTo(Room room, PrivateProperty I);
 
-	/* ***********************************************************************/
-	/* *							 SPACE METHODS 								*/
-	/* ***********************************************************************/
-	public Enumeration<Area> areasPlusShips();
-	public long getRelativeSpeed(SpaceObject O1, SpaceObject O2);
-	public int numSpaceObjects();
-	public boolean isObjectInSpace(SpaceObject O);
-	public void delObjectInSpace(SpaceObject O);
-	public void addObjectToSpace(SpaceObject O, long[] coords);
-	public long getDistanceFrom(SpaceObject O1, SpaceObject O2);
-	public long getDistanceFrom(final long[] coord1, final long[] coord2);
-	public double getAngleDelta(final double[] fromAngle, final double[] toAngle);
-	public double[] getFacingAngleDiff(final double[] fromAngle, final double[] toAngle);
-	public double getMinDistanceFrom(final long[] prevPos, final long[] curPosition, final long[] objPos);
-	public double[] getDirection(SpaceObject fromObj, SpaceObject toObj);
-	public double[] getDirection(final long[] fromCoords, final long[] toCoords);
-	public ShipDirComponent.ShipDir getDirectionFromDir(double[] facing, double roll, double[] direction);
-	public double[] getOppositeDir(final double[] dir);
-	public long[] getLocation(long[] oldLocation, double[] direction, long distance);
-	public void moveSpaceObject(SpaceObject O);
-	public void moveSpaceObject(SpaceObject O, long[] coords);
-	public void moveSpaceObject(final SpaceObject O, final double[] accelDirection, final double newAcceleration);
-	public double moveSpaceObject(final double[] curDirection, final double curSpeed, final double[] accelDirection, final double newAcceleration);
-	public long[] moveSpaceObject(final long[] coordinates, final double[] direction, long speed);
-	public SpaceObject getSpaceObject(CMObject o, boolean ignoreMobs);
-	public Enumeration<SpaceObject> getSpaceObjects();
-	public Enumeration<Entry<SpaceObject, List<WeakReference<TrackingVector<SpaceObject>>>>>  getSpaceObjectEntries();
-	public List<SpaceObject> getSpaceObjectsWithin(SpaceObject ofObj, long minDistance, long maxDistance);
-	public List<SpaceObject> getSpaceObjectsByCenterpointWithin(final long[] centerCoordinates, long minDistance, long maxDistance);
-	public SpaceObject findSpaceObject(String s, boolean exactOnly);
-	public String getSectorName(long[] coordinates);
-	public long[] getInSectorCoords(long[] coordinates);
-	public List<LocationRoom> getLandingPoints(final SpaceObject ship, final Environmental O);
+	public Enumeration<LocatedPair> scriptHosts(Area area);
+
+	public MOB deity();
+	public Deity getDeity(String calledThis);
+	public Enumeration<Deity> deities();
 
 	/* ***********************************************************************/
 	/* *							 MESSAGES	 								*/
 	/* ***********************************************************************/
 	public void addGlobalHandler(MsgListener E, int category);
 	public void delGlobalHandler(MsgListener E, int category);
-	public MOB deity();
 	public MOB getFactoryMOBInAnyRoom();
 	public MOB getFactoryMOB(Room R);
 	public boolean sendGlobalMessage(MOB host, int category, CMMsg msg);

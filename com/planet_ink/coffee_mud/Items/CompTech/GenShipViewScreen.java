@@ -333,7 +333,7 @@ public class GenShipViewScreen extends GenElecCompSensor implements ShipDirCompo
 					@Override
 					public long[] coordinates()
 					{
-						final SpaceObject sobj =CMLib.map().getSpaceObject(obj, false);
+						final SpaceObject sobj =CMLib.space().getSpaceObject(obj, false);
 						if(sobj!=null)
 							return Arrays.copyOf(sobj.coordinates(), sobj.coordinates().length);
 						return emptyCoords;
@@ -347,7 +347,7 @@ public class GenShipViewScreen extends GenElecCompSensor implements ShipDirCompo
 					@Override
 					public long radius()
 					{
-						final SpaceObject sobj =CMLib.map().getSpaceObject(obj, false);
+						final SpaceObject sobj =CMLib.space().getSpaceObject(obj, false);
 						if(sobj!=null)
 							return sobj.radius();
 						return 1;
@@ -361,7 +361,7 @@ public class GenShipViewScreen extends GenElecCompSensor implements ShipDirCompo
 					@Override
 					public double[] direction()
 					{
-						final SpaceObject sobj =CMLib.map().getSpaceObject(obj, false);
+						final SpaceObject sobj =CMLib.space().getSpaceObject(obj, false);
 						if(sobj!=null)
 							return sobj.direction();
 						return  emptyDirection;
@@ -397,7 +397,7 @@ public class GenShipViewScreen extends GenElecCompSensor implements ShipDirCompo
 					@Override
 					public SpaceObject knownSource()
 					{
-						final SpaceObject sobj=CMLib.map().getSpaceObject(obj, false);
+						final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
 						if(sobj!=null)
 							return sobj;
 						return null;
@@ -442,9 +442,9 @@ public class GenShipViewScreen extends GenElecCompSensor implements ShipDirCompo
 
 	protected boolean isInSpace()
 	{
-		final SpaceObject O=CMLib.map().getSpaceObject(this, true);
+		final SpaceObject O=CMLib.space().getSpaceObject(this, true);
 		if(O != null)//&&(this.powerRemaining() > this.powerNeeds()))
-			return CMLib.map().isObjectInSpace(O);
+			return CMLib.space().isObjectInSpace(O);
 		return false;
 	}
 
@@ -521,7 +521,7 @@ public class GenShipViewScreen extends GenElecCompSensor implements ShipDirCompo
 		return new Filterer<Environmental>()
 		{
 			final GenShipViewScreen	me		= meScreen;
-			final SpaceObject		spaceMe	= CMLib.map().getSpaceObject(me, true);
+			final SpaceObject		spaceMe	= CMLib.space().getSpaceObject(me, true);
 
 			@Override
 			public boolean passesFilter(final Environmental obj)
@@ -532,11 +532,11 @@ public class GenShipViewScreen extends GenElecCompSensor implements ShipDirCompo
 				{
 					final SpaceShip ship=(SpaceShip)spaceMe;
 					final SpaceObject sobj = (SpaceObject)obj;
-					final double[] proposedDirection=CMLib.map().getDirection(ship, sobj);
-					final ShipDir dir = CMLib.map().getDirectionFromDir(ship.facing(), ship.roll(), proposedDirection);
+					final double[] proposedDirection=CMLib.space().getDirection(ship, sobj);
+					final ShipDir dir = CMLib.space().getDirectionFromDir(ship.facing(), ship.roll(), proposedDirection);
 					if (CMParms.contains(me.getFacingDirs(), dir))
 					{
-						final double distanceDm = CMLib.map().getDistanceFrom(spaceMe.coordinates(), sobj.coordinates());
+						final double distanceDm = CMLib.space().getDistanceFrom(spaceMe.coordinates(), sobj.coordinates());
 						final double objSize = sobj.radius();
 						final double viewSize = Math.atan(objSize/distanceDm);
 						return viewSize >= 0.0015;

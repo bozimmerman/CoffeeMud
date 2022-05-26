@@ -147,7 +147,7 @@ public class Prayer_InfuseDiscipline extends Prayer implements Deity.DeityWorshi
 	{
 		final Physical affected=this.affected;
 		if((affected instanceof Places)&&(text().length()>0))
-			CMLib.map().deregisterHolyPlace(text(),(Places)affected);
+			CMLib.city().deregisterHolyPlace(text(),(Places)affected);
 		this.affected=null;
 		super.finalize();
 	}
@@ -157,10 +157,10 @@ public class Prayer_InfuseDiscipline extends Prayer implements Deity.DeityWorshi
 		if(text().length()>0)
 		{
 			if((affected == null)&&(this.affected instanceof Places))
-				CMLib.map().deregisterHolyPlace(text(),(Places)this.affected);
+				CMLib.city().deregisterHolyPlace(text(),(Places)this.affected);
 			else
 			if(affected instanceof Places)
-				CMLib.map().registerHolyPlace(text(),(Places)affected);
+				CMLib.city().registerHolyPlace(text(),(Places)affected);
 		}
 	}
 

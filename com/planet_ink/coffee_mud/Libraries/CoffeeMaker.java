@@ -443,7 +443,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			{
 				CMLib.catalog().updateCatalogIntegrity(thisItem);
 				final Item cont=thisItem.ultimateContainer(null);
-				final String roomID=((cont.owner()==null)&&(thisItem instanceof SpaceObject)&&(CMLib.map().isObjectInSpace((SpaceObject)thisItem)))?
+				final String roomID=((cont.owner()==null)&&(thisItem instanceof SpaceObject)&&(CMLib.space().isObjectInSpace((SpaceObject)thisItem)))?
 						("SPACE."+CMParms.toListString(((SpaceObject)thisItem).coordinates())):CMLib.map().getExtendedRoomID((Room)cont.owner());
 				itemstr.append("<ITEM>");
 				itemstr.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.classID(thisItem)));
@@ -503,7 +503,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			final String roomID=irm.parms().get("ID");
 			final long expirationDate=CMath.s_long(irm.parms().get("EXPIRE"));
 			if(roomID.startsWith("SPACE.") && (newOne instanceof SpaceObject))
-				CMLib.map().addObjectToSpace((SpaceObject)newOne,CMParms.toLongArray(CMParms.parseCommas(roomID.substring(6), true)));
+				CMLib.space().addObjectToSpace((SpaceObject)newOne,CMParms.toLongArray(CMParms.parseCommas(roomID.substring(6), true)));
 			else
 			{
 				final Room itemR=CMLib.map().getRoom(roomID);

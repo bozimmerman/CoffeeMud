@@ -429,7 +429,7 @@ public class GravityFloat extends StdAbility
 				if(A instanceof SpaceObject)
 					o=(SpaceObject)A;
 				else
-					o=CMLib.map().getSpaceObject(A,true);
+					o=CMLib.space().getSpaceObject(A,true);
 				if(o==null)
 					hasGravity=true;
 				else

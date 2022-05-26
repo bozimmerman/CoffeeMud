@@ -104,12 +104,12 @@ public class RocketShipProgram extends GenShipProgram
 
 	private static class DistanceSorter implements Comparator<SpaceObject>
 	{
-		private final WorldMap map;
+		private final GalacticMap space;
 		private final SpaceObject spaceObject;
 
 		private DistanceSorter(final SpaceObject me)
 		{
-			map=CMLib.map();
+			space=CMLib.space();
 			spaceObject=me;
 		}
 
@@ -124,8 +124,8 @@ public class RocketShipProgram extends GenShipProgram
 				return (o2.coordinates() == null) ? 0 : 1;
 			if(o2.coordinates() == null)
 				return -1;
-			final long distance1 = map.getDistanceFrom(spaceObject, o1) - o1.radius();
-			final long distance2 = map.getDistanceFrom(spaceObject, o2) - o2.radius();
+			final long distance1 = space.getDistanceFrom(spaceObject, o1) - o1.radius();
+			final long distance2 = space.getDistanceFrom(spaceObject, o2) - o2.radius();
 			if(distance1 < distance2)
 				return -1;
 			if(distance1 > distance2)
@@ -408,7 +408,7 @@ public class RocketShipProgram extends GenShipProgram
 	{
 		final StringBuilder str=new StringBuilder();
 		str.append("^X").append(CMStrings.centerPreserve(L(" -- Flight Status -- "),60)).append("^.^N\n\r");
-		final SpaceObject spaceObject=CMLib.map().getSpaceObject(this,true);
+		final SpaceObject spaceObject=CMLib.space().getSpaceObject(this,true);
 		final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
 		final SpaceObject shipSpaceObject=(ship==null)?null:ship.getShipSpaceObject();
 		if(ship==null)
@@ -417,23 +417,23 @@ public class RocketShipProgram extends GenShipProgram
 		if(ship.getIsDocked() != null)
 		{
 			str.append("^H").append(CMStrings.padRight(L("Docked at ^w@x1",ship.getIsDocked().displayText(null)),60)).append("^.^N\n\r");
-			final SpaceObject planet=CMLib.map().getSpaceObject(ship.getIsDocked(), true);
+			final SpaceObject planet=CMLib.space().getSpaceObject(ship.getIsDocked(), true);
 			if(planet!=null)
 				str.append("^H").append(CMStrings.padRight(L("On Planet ^w@x1",planet.Name()),60)).append("^.^N\n\r");
 		}
 		else
-		if((shipSpaceObject==null)||(!CMLib.map().isObjectInSpace(shipSpaceObject)))
+		if((shipSpaceObject==null)||(!CMLib.space().isObjectInSpace(shipSpaceObject)))
 			str.append("^Z").append(CMStrings.centerPreserve(L(" -- System Malfunction-- "),60)).append("^.^N\n\r");
 		else
 		{
-			final List<SpaceObject> orbs=CMLib.map().getSpaceObjectsWithin(shipSpaceObject,0,SpaceObject.Distance.LightMinute.dm);
+			final List<SpaceObject> orbs=CMLib.space().getSpaceObjectsWithin(shipSpaceObject,0,SpaceObject.Distance.LightMinute.dm);
 			SpaceObject orbitingPlanet=null;
 			SpaceObject altitudePlanet=null;
 			for(final SpaceObject orb : orbs)
 			{
 				if(orb instanceof Area)
 				{
-					final long distance=CMLib.map().getDistanceFrom(shipSpaceObject, orb);
+					final long distance=CMLib.space().getDistanceFrom(shipSpaceObject, orb);
 					if((distance > orb.radius())&&(distance < (orb.radius()*SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)))
 						altitudePlanet=orb; // since they are sorted, this would be the nearest.
 					if((distance > orb.radius()*SpaceObject.MULTIPLIER_ORBITING_RADIUS_MIN)&&(distance<orb.radius()*SpaceObject.MULTIPLIER_ORBITING_RADIUS_MAX))
@@ -458,16 +458,16 @@ public class RocketShipProgram extends GenShipProgram
 			{
 				str.append("\n\r");
 				str.append("^H").append(CMStrings.padRight(L("Altitude"),10));
-				str.append("^N").append(CMStrings.padRight(display(CMLib.map().getDistanceFrom(shipSpaceObject, altitudePlanet)-shipSpaceObject.radius()-altitudePlanet.radius()),25));
+				str.append("^N").append(CMStrings.padRight(display(CMLib.space().getDistanceFrom(shipSpaceObject, altitudePlanet)-shipSpaceObject.radius()-altitudePlanet.radius()),25));
 			}
 			else
 			{
 				str.append("\n\r");
 				str.append("^H").append(CMStrings.padRight(L("Sector"),10));
-				str.append("^N").append(CMStrings.padRight(CMLib.map().getSectorName(ship.coordinates()),50));
+				str.append("^N").append(CMStrings.padRight(CMLib.space().getSectorName(ship.coordinates()),50));
 				str.append("\n\r");
 				str.append("^H").append(CMStrings.padRight(L("Location"),10));
-				str.append("^N").append(CMStrings.padRight(CMLib.english().coordDescShort(CMLib.map().getInSectorCoords(shipSpaceObject.coordinates())),25));
+				str.append("^N").append(CMStrings.padRight(CMLib.english().coordDescShort(CMLib.space().getInSectorCoords(shipSpaceObject.coordinates())),25));
 			}
 			str.append("^H").append(CMStrings.padRight(L("Facing"),10));
 			final String facStr=display(ship.facing());
@@ -505,8 +505,8 @@ public class RocketShipProgram extends GenShipProgram
 						{
 							final SpaceObject spaceMe = ship;
 							final SpaceObject obj = (SpaceObject)o;
-							final long distance = CMLib.map().getDistanceFrom(spaceMe.coordinates(), obj.coordinates()) - spaceMe.radius() - obj.radius();
-							final double[] direction = CMLib.map().getDirection(spaceMe, obj);
+							final long distance = CMLib.space().getDistanceFrom(spaceMe.coordinates(), obj.coordinates()) - spaceMe.radius() - obj.radius();
+							final double[] direction = CMLib.space().getDirection(spaceMe, obj);
 							final String mass = CMath.abbreviateLong(obj.getMass());
 							final String dirStr = CMLib.english().directionDescShortest(direction);
 							final String distStr = CMLib.english().distanceDescShort(distance);
@@ -762,7 +762,7 @@ public class RocketShipProgram extends GenShipProgram
 		RocketShipProgram.RocketStateMachine state=this.rocketState;
 		if(state == null)
 			return super.checkPowerCurrent(value);
-		final SpaceObject spaceObj=CMLib.map().getSpaceObject(this,true);
+		final SpaceObject spaceObj=CMLib.space().getSpaceObject(this,true);
 		final SpaceShip ship = (spaceObj instanceof SpaceShip) ? (SpaceShip)spaceObj : null;
 		final List<ShipEngine> programEngines=this.programEngines;
 		final SpaceObject programPlanet=this.programPlanet;
@@ -816,7 +816,7 @@ public class RocketShipProgram extends GenShipProgram
 			else
 			if(this.rocketState!=RocketStateMachine.LANDING)
 			{
-				final long distance=CMLib.map().getDistanceFrom(ship.coordinates(),programPlanet.coordinates());
+				final long distance=CMLib.space().getDistanceFrom(ship.coordinates(),programPlanet.coordinates());
 				if(distance < (ship.radius() + Math.round(programPlanet.radius() * SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)))
 					this.rocketState=RocketStateMachine.LANDING;
 			}
@@ -847,8 +847,8 @@ public class RocketShipProgram extends GenShipProgram
 			}
 			else
 			{
-				final double[] stopFacing = CMLib.map().getOppositeDir(ship.direction());
-				final double[] angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), stopFacing); // starboard is -, port is +
+				final double[] stopFacing = CMLib.space().getOppositeDir(ship.direction());
+				final double[] angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), stopFacing); // starboard is -, port is +
 				if((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))>.02)
 				{
 					if(!flipForAllStop(ship))
@@ -874,10 +874,10 @@ public class RocketShipProgram extends GenShipProgram
 		case APPROACH:
 		case DEPROACH:
 		{
-			final long distance = (CMLib.map().getDistanceFrom(ship, approachTarget)-ship.radius()-approachTarget.radius());
+			final long distance = (CMLib.space().getDistanceFrom(ship, approachTarget)-ship.radius()-approachTarget.radius());
 			int safeDistance=100 + (int)Math.round(ship.speed());
-			final double[] dirTo = CMLib.map().getDirection(ship, this.approachTarget);
-			final double[] diffDelta = CMLib.map().getFacingAngleDiff(ship.direction(), dirTo); // starboard is -, port is +
+			final double[] dirTo = CMLib.space().getDirection(ship, this.approachTarget);
+			final double[] diffDelta = CMLib.space().getFacingAngleDiff(ship.direction(), dirTo); // starboard is -, port is +
 			if((Math.abs(diffDelta[0])+Math.abs(diffDelta[1]))<.05)
 				safeDistance += (int)Math.round(ship.speed());
 			if(distance < safeDistance)
@@ -898,10 +898,10 @@ public class RocketShipProgram extends GenShipProgram
 					state=RocketStateMachine.DEPROACH;
 				final double[] desiredFacing;
 				if(state == RocketStateMachine.APPROACH)
-					desiredFacing = CMLib.map().getDirection(ship, this.approachTarget);
+					desiredFacing = CMLib.space().getDirection(ship, this.approachTarget);
 				else
-					desiredFacing = CMLib.map().getOppositeDir(ship.direction());
-				final double[] angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), desiredFacing); // starboard is -, port is +
+					desiredFacing = CMLib.space().getOppositeDir(ship.direction());
+				final double[] angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), desiredFacing); // starboard is -, port is +
 				if((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))>.02)
 				{
 					if(!changeFacing(ship, desiredFacing))
@@ -944,7 +944,7 @@ public class RocketShipProgram extends GenShipProgram
 			}
 			else
 			{
-				final long distance=CMLib.map().getDistanceFrom(ship, programPlanet);
+				final long distance=CMLib.space().getDistanceFrom(ship, programPlanet);
 				if(distance > (programPlanet.radius()*SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS))
 				{
 					this.lastInject = null;
@@ -1005,20 +1005,20 @@ public class RocketShipProgram extends GenShipProgram
 		}
 		case LANDING_APPROACH:
 		{
-			final double[] dirToPlanet = CMLib.map().getDirection(ship, programPlanet);
-			//final long distance=CMLib.map().getDistanceFrom(ship, programPlanet)
+			final double[] dirToPlanet = CMLib.space().getDirection(ship, programPlanet);
+			//final long distance=CMLib.space().getDistanceFrom(ship, programPlanet)
 			//		- Math.round(CMath.mul(programPlanet.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS))
 			//		- ship.radius();
 			final double atmoWidth = CMath.mul(programPlanet.radius(), SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS) - programPlanet.radius();
 			final long critRadius = Math.round(programPlanet.radius() + (atmoWidth / 2.0));
-			final long distanceToCritRadius=CMLib.map().getDistanceFrom(ship, programPlanet)
+			final long distanceToCritRadius=CMLib.space().getDistanceFrom(ship, programPlanet)
 					- critRadius
 					- ship.radius();
 			if(distanceToCritRadius <= 0)
 				this.rocketState = RocketStateMachine.LANDING;
 			else
 			{
-				//final double angleDiff = CMLib.map().getAngleDelta(ship.direction(), dirToPlanet);
+				//final double angleDiff = CMLib.space().getAngleDelta(ship.direction(), dirToPlanet);
 				for(final ShipEngine engineE : programEngines)
 				{
 					final double ticksToDecellerate = CMath.div(ship.speed(),CMath.div(this.targetAcceleration.doubleValue(),2.0));
@@ -1038,7 +1038,7 @@ public class RocketShipProgram extends GenShipProgram
 					if(ticksToDecellerate > ticksToDestinationAtCurrentSpeed)
 					{
 						//System.out.println("** Decelerate: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()); //BZ:COMMENTMEOUT
-						this.changeFacing(ship, CMLib.map().getOppositeDir(dirToPlanet));
+						this.changeFacing(ship, CMLib.space().getOppositeDir(dirToPlanet));
 					}
 					else
 					if((ticksToDecellerate<50)||(diff > 10.0))
@@ -1061,8 +1061,8 @@ public class RocketShipProgram extends GenShipProgram
 		//$FALL-THROUGH$
 		case LANDING:
 		{
-			final double[] dirToPlanet = CMLib.map().getDirection(ship, programPlanet);
-			if(CMLib.map().getAngleDelta(dirToPlanet, ship.direction()) > 1)
+			final double[] dirToPlanet = CMLib.space().getDirection(ship, programPlanet);
+			if(CMLib.space().getAngleDelta(dirToPlanet, ship.direction()) > 1)
 			{
 				this.changeFacing(ship, dirToPlanet);
 				if(ship.speed() > this.targetAcceleration.doubleValue())
@@ -1075,13 +1075,13 @@ public class RocketShipProgram extends GenShipProgram
 			}
 			else
 			{
-				final long distance=CMLib.map().getDistanceFrom(ship, programPlanet)
+				final long distance=CMLib.space().getDistanceFrom(ship, programPlanet)
 						- programPlanet.radius()
 						- ship.radius()
 						-10; // margin for soft landing
 				final double atmoWidth = CMath.mul(programPlanet.radius(), SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS) - programPlanet.radius();
 				final long critRadius = Math.round(programPlanet.radius() + (atmoWidth / 2.0));
-				final long distanceToCritRadius=CMLib.map().getDistanceFrom(ship, programPlanet)
+				final long distanceToCritRadius=CMLib.space().getDistanceFrom(ship, programPlanet)
 						- critRadius
 						- ship.radius();
 				final double ticksToDestinationAtCurrentSpeed = Math.abs(CMath.div(distance, ship.speed()));
@@ -1098,14 +1098,14 @@ public class RocketShipProgram extends GenShipProgram
 							targetAcceleration = this.targetAcceleration.doubleValue();
 					}
 					else
-					if(ship.speed()>CMLib.map().getDistanceFrom(ship, programPlanet)/4)
+					if(ship.speed()>CMLib.space().getDistanceFrom(ship, programPlanet)/4)
 						targetAcceleration = ship.speed() - 1.0;
 					else
 					if(ship.speed()>2.0)
 						targetAcceleration = 1.0;
 					else
 						targetAcceleration = 0.5;
-					this.changeFacing(ship, CMLib.map().getOppositeDir(dirToPlanet));
+					this.changeFacing(ship, CMLib.space().getOppositeDir(dirToPlanet));
 					newInject=calculateMarginalTargetInjection(newInject, targetAcceleration);
 					if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 						Log.debugOut("Landing Deccelerating @ "+  targetAcceleration +" because "+ticksToDecellerate+">"+ticksToDestinationAtCurrentSpeed+"  or "+distance+" < "+(ship.speed()*20));
@@ -1133,7 +1133,7 @@ public class RocketShipProgram extends GenShipProgram
 				}
 				else
 				{
-					//this.changeFacing(ship, CMLib.map().getOppositeDir(dirToPlanet));
+					//this.changeFacing(ship, CMLib.space().getOppositeDir(dirToPlanet));
 					newInject=Double.valueOf(0.0);
 				}
 			}
@@ -1152,7 +1152,7 @@ public class RocketShipProgram extends GenShipProgram
 
 	public boolean flipForAllStop(final SpaceShip ship)
 	{
-		final double[] stopFacing = CMLib.map().getOppositeDir(ship.direction());
+		final double[] stopFacing = CMLib.space().getOppositeDir(ship.direction());
 		return changeFacing(ship, stopFacing);
 	}
 
@@ -1164,7 +1164,7 @@ public class RocketShipProgram extends GenShipProgram
 		final boolean isDebugging = CMSecurity.isDebugging(DbgFlag.SPACESHIP);
 		try
 		{
-			final double angleDiff = CMLib.map().getAngleDelta(ship.facing(), newFacing);
+			final double angleDiff = CMLib.space().getAngleDelta(ship.facing(), newFacing);
 			if(angleDiff < 0.0001)
 				return true;
 			// step one, face opposite direction of motion
@@ -1187,7 +1187,7 @@ public class RocketShipProgram extends GenShipProgram
 					if(isDebugging)
 						Log.debugOut("Thrusting 1 to PORT to achieve DELTA, and got a delta of "+this.lastAngle.doubleValue());
 					final double angleAchievedPerPt = Math.abs(this.lastAngle.doubleValue()); //
-					double[] angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
+					double[] angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
 					for(int i=0;i<100;i++)
 					{
 						if(Math.abs(angleDelta[0]) > 0.00001)
@@ -1207,13 +1207,13 @@ public class RocketShipProgram extends GenShipProgram
 						}
 						else
 							break;
-						angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
+						angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
 						if(isDebugging)
 							Log.debugOut("* Total Deltas now: "+angleDelta[0]+" + "+angleDelta[1] +"=="+((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))));
 						if((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))<.01)
 							return true;
 					}
-					angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
+					angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
 					for(int i=0;i<100;i++)
 					{
 						if(Math.abs(angleDelta[1]) > 0.00001)
@@ -1233,7 +1233,7 @@ public class RocketShipProgram extends GenShipProgram
 						}
 						else
 							break;
-						angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
+						angleDelta = CMLib.space().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
 						if(isDebugging)
 							Log.debugOut("* Total Deltas now: "+angleDelta[0]+" + "+angleDelta[1] +"=="+((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))));
 					}
@@ -1597,7 +1597,7 @@ public class RocketShipProgram extends GenShipProgram
 			else
 			if(uword.equalsIgnoreCase("LAUNCH") || uword.equalsIgnoreCase("ORBIT"))
 			{
-				final SpaceObject spaceObject=CMLib.map().getSpaceObject(this,true);
+				final SpaceObject spaceObject=CMLib.space().getSpaceObject(this,true);
 				final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
 				if(ship==null)
 				{
@@ -1615,7 +1615,7 @@ public class RocketShipProgram extends GenShipProgram
 					this.rocketState=null;
 					this.programEngines=null;
 				}
-				this.programPlanet=CMLib.map().getSpaceObject(ship.getIsDocked(), true);
+				this.programPlanet=CMLib.space().getSpaceObject(ship.getIsDocked(), true);
 				final ShipEngine engineE =this.primeMainThrusters(ship,true);
 				if(engineE==null)
 				{
@@ -1635,7 +1635,7 @@ public class RocketShipProgram extends GenShipProgram
 			else
 			if(uword.equalsIgnoreCase("STOP"))
 			{
-				final SpaceObject spaceObject=CMLib.map().getSpaceObject(this,true);
+				final SpaceObject spaceObject=CMLib.space().getSpaceObject(this,true);
 				final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
 				if(ship==null)
 				{
@@ -1679,7 +1679,7 @@ public class RocketShipProgram extends GenShipProgram
 			else
 			if(uword.equalsIgnoreCase("LAND"))
 			{
-				final SpaceObject spaceObject=CMLib.map().getSpaceObject(this,true);
+				final SpaceObject spaceObject=CMLib.space().getSpaceObject(this,true);
 				final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
 				if(ship==null)
 				{
@@ -1705,7 +1705,7 @@ public class RocketShipProgram extends GenShipProgram
 				{
 					if((O.coordinates()!=null)&&(O.radius()!=0))
 					{
-						final List<LocationRoom> rooms=CMLib.map().getLandingPoints(ship, O);
+						final List<LocationRoom> rooms=CMLib.space().getLandingPoints(ship, O);
 						if(rooms.size()>0)
 						{
 							landingPlanet=O;
@@ -1763,7 +1763,7 @@ public class RocketShipProgram extends GenShipProgram
 				// this lands you at the nearest point, which will pick the nearest location room, if any
 				//TODO: picking the nearest landing zone, orbiting to it, and THEN landing would be better.
 				this.rocketState = RocketShipProgram.RocketStateMachine.PRE_LANDING_STOP;
-				final long distance=CMLib.map().getDistanceFrom(ship.coordinates(),landingPlanet.coordinates());
+				final long distance=CMLib.space().getDistanceFrom(ship.coordinates(),landingPlanet.coordinates());
 				if(distance > (ship.radius() + Math.round(landingPlanet.radius() * SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)))
 					super.addScreenMessage(L("Landing approach procedure initialized."));
 				else
@@ -1773,7 +1773,7 @@ public class RocketShipProgram extends GenShipProgram
 			else
 			if(uword.equalsIgnoreCase("TARGET"))
 			{
-				final SpaceObject spaceObject=CMLib.map().getSpaceObject(this,true);
+				final SpaceObject spaceObject=CMLib.space().getSpaceObject(this,true);
 				final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
 				if(ship==null)
 				{
@@ -1815,7 +1815,7 @@ public class RocketShipProgram extends GenShipProgram
 			else
 			if(uword.equalsIgnoreCase("FACE"))
 			{
-				final SpaceObject spaceObject=CMLib.map().getSpaceObject(this,true);
+				final SpaceObject spaceObject=CMLib.space().getSpaceObject(this,true);
 				final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
 				if(ship==null)
 				{
@@ -1851,13 +1851,13 @@ public class RocketShipProgram extends GenShipProgram
 					return;
 				}
 				final double[] facing=ship.facing();
-				final double[] dirTo = CMLib.map().getDirection(spaceObject, targetObj);
+				final double[] dirTo = CMLib.space().getDirection(spaceObject, targetObj);
 				double fdist1=(facing[0]>dirTo[0])?facing[0]-dirTo[0]:dirTo[0]-facing[0];
 				final double fdist2=(facing[1]>dirTo[1])?facing[1]-dirTo[1]:dirTo[1]-facing[1];
 				if(fdist1>Math.PI)
 					fdist1=(Math.PI*2)-fdist1;
 				final double deltaTo=fdist1+fdist2;
-				//final double deltaTo = CMLib.map().getAngleDelta(ship.facing(), dirTo);
+				//final double deltaTo = CMLib.space().getAngleDelta(ship.facing(), dirTo);
 				if(deltaTo < 0.02)
 					super.addScreenMessage(L("Already facing @x1.",targetObj.Name()));
 				else
@@ -1969,7 +1969,7 @@ public class RocketShipProgram extends GenShipProgram
 			else
 			if(uword.equalsIgnoreCase("APPROACH"))
 			{
-				final SpaceObject spaceObject=CMLib.map().getSpaceObject(this,true);
+				final SpaceObject spaceObject=CMLib.space().getSpaceObject(this,true);
 				final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
 				if(ship==null)
 				{
@@ -2005,7 +2005,7 @@ public class RocketShipProgram extends GenShipProgram
 					return;
 				}
 				this.approachTarget = targetObj;
-				final long distance = CMLib.map().getDistanceFrom(ship, targetObj);
+				final long distance = CMLib.space().getDistanceFrom(ship, targetObj);
 				this.deproachDistance = (distance - ship.radius() - targetObj.radius())/2;
 				if(deproachDistance < 100)
 				{
@@ -2013,7 +2013,7 @@ public class RocketShipProgram extends GenShipProgram
 					return;
 				}
 				ShipEngine engineE=null;
-				final double[] dirTo = CMLib.map().getDirection(ship, targetObj);
+				final double[] dirTo = CMLib.space().getDirection(ship, targetObj);
 				if(!this.changeFacing(ship, dirTo))
 				{
 					super.addScreenMessage(L("Warning. Approach program cancelled due to engine failure."));
@@ -2038,7 +2038,7 @@ public class RocketShipProgram extends GenShipProgram
 			else
 			if(uword.equalsIgnoreCase("MOON"))
 			{
-				final SpaceObject spaceObject=CMLib.map().getSpaceObject(this,true);
+				final SpaceObject spaceObject=CMLib.space().getSpaceObject(this,true);
 				final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
 				if(ship==null)
 				{
@@ -2074,14 +2074,14 @@ public class RocketShipProgram extends GenShipProgram
 					return;
 				}
 				final double[] facing=ship.facing();
-				final double[] notDirTo=CMLib.map().getDirection(spaceObject, targetObj);
-				final double[] dirTo = CMLib.map().getOppositeDir(notDirTo);
+				final double[] notDirTo=CMLib.space().getDirection(spaceObject, targetObj);
+				final double[] dirTo = CMLib.space().getOppositeDir(notDirTo);
 				double fdist1=(facing[0]>dirTo[0])?facing[0]-dirTo[0]:dirTo[0]-facing[0];
 				final double fdist2=(facing[1]>dirTo[1])?facing[1]-dirTo[1]:dirTo[1]-facing[1];
 				if(fdist1>Math.PI)
 					fdist1=(Math.PI*2)-fdist1;
 				final double deltaTo=fdist1+fdist2;
-				//final double deltaTo = CMLib.map().getAngleDelta(ship.facing(), dirTo);
+				//final double deltaTo = CMLib.space().getAngleDelta(ship.facing(), dirTo);
 				if(deltaTo < 0.02)
 					super.addScreenMessage(L("Already mooning @x1.",targetObj.Name()));
 				else
@@ -2158,7 +2158,7 @@ public class RocketShipProgram extends GenShipProgram
 			if(uword.equalsIgnoreCase("FIRE"))
 			{
 				final String rest = CMParms.combine(parsed,1).toUpperCase();
-				final SpaceObject spaceObject=CMLib.map().getSpaceObject(this,true);
+				final SpaceObject spaceObject=CMLib.space().getSpaceObject(this,true);
 				final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
 				if(ship==null)
 				{
@@ -2185,8 +2185,8 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Unable to determine target direction and range."));
 					return;
 				}
-				//final double[] targetDirection = CMLib.map().getDirection(ship.coordinates(), CMLib.map().moveSpaceObject(targetObj.coordinates(), targetObj.direction(), (long)targetObj.speed()));
-				final double[] targetDirection = CMLib.map().getDirection(ship.coordinates(), targetObj.coordinates());
+				//final double[] targetDirection = CMLib.space().getDirection(ship.coordinates(), CMLib.space().moveSpaceObject(targetObj.coordinates(), targetObj.direction(), (long)targetObj.speed()));
+				final double[] targetDirection = CMLib.space().getDirection(ship.coordinates(), targetObj.coordinates());
 				if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 					Log.debugOut("Fire: "+ship.Name()+" -> "+targetObj.Name()+"@"+Math.toDegrees(targetDirection[0])+","+Math.toDegrees(targetDirection[1]));
 				TechComponent finalWeaponToFire = null;
@@ -2208,7 +2208,7 @@ public class RocketShipProgram extends GenShipProgram
 						if(T instanceof ShipDirComponent)
 						{
 
-							final ShipDir dir = CMLib.map().getDirectionFromDir(ship.facing(), ship.roll(), targetDirection);
+							final ShipDir dir = CMLib.space().getDirectionFromDir(ship.facing(), ship.roll(), targetDirection);
 							if(CMParms.contains(CMLib.tech().getCurrentBattleCoveredDirections((ShipDirComponent)T), dir))
 							{
 								finalWeaponToFire = T;

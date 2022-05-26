@@ -90,7 +90,7 @@ public class GenCompEnviroSystem extends GenElecCompItem
 					if(--tickDown <=0)
 					{
 						tickDown=ENVIRO_TICKS;
-						final SpaceObject obj=CMLib.map().getSpaceObject(this, true);
+						final SpaceObject obj=CMLib.space().getSpaceObject(this, true);
 						if(obj instanceof SpaceShip)
 						{
 							final SpaceShip ship=(SpaceShip)obj;

@@ -1083,7 +1083,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public Set<String> getBankAccountChains(final String owner)
 	{
 		final Set<String> chains = new HashSet<String>();
-		final Set<String> bankChains = new XHashSet<String>(CMLib.map().bankChains(null));
+		final Set<String> bankChains = new XHashSet<String>(CMLib.city().bankChains(null));
 		final Set<String> sections = CMLib.database().DBReadUniqueSections(owner);
 		for(final String sect : sections)
 		{
@@ -1169,7 +1169,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	{
 		Banker B=null;
 		Room R=null;
-		for(final Enumeration<Banker> e=CMLib.map().banks();e.hasMoreElements();)
+		for(final Enumeration<Banker> e=CMLib.city().banks();e.hasMoreElements();)
 		{
 			B=e.nextElement();
 			R=CMLib.map().roomLocation(B);
@@ -1484,7 +1484,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public String getBankChainCurrency(final String bankChain)
 	{
 		final Map<String,int[]> currencies = new HashMap<String,int[]>();
-		for(final Enumeration<Banker> b=CMLib.map().banks();b.hasMoreElements();)
+		for(final Enumeration<Banker> b=CMLib.city().banks();b.hasMoreElements();)
 		{
 			final Banker B=b.nextElement();
 			if((bankChain == null)||(B.bankChain().equalsIgnoreCase(bankChain)))

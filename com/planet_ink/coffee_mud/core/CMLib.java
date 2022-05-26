@@ -146,7 +146,9 @@ public class CMLib
 		TECH(TechLibrary.class),
 		PROTOCOL(ProtocolLibrary.class),
 		ACHIEVEMENTS(AchievementLibrary.class),
-		ABLECOMP(AbilityComponents.class)
+		ABLECOMP(AbilityComponents.class),
+		GALACTIC(GalacticMap.class),
+		CITY(CityMap.class),
 		;
 
 		public final Class<?> ancestor;
@@ -546,6 +548,26 @@ public class CMLib
 	public static final SlaveryLibrary slavery()
 	{
 		return (SlaveryLibrary)l().libraries[Library.SLAVERY.ordinal()];
+	}
+
+	/**
+	 * Returns a reference to this threads space mapping library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.GalacticMap
+	 * @return a reference to this threads space mapping library.
+	 */
+	public static final GalacticMap space()
+	{
+		return (GalacticMap)l().libraries[Library.GALACTIC.ordinal()];
+	}
+
+	/**
+	 * Returns a reference to this threads city objects library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CityMap
+	 * @return a reference to this threads city objects library.
+	 */
+	public static final CityMap city()
+	{
+		return (CityMap)l().libraries[Library.CITY.ordinal()];
 	}
 
 	/**
@@ -1097,6 +1119,26 @@ public class CMLib
 	public final GenericBuilder _coffeeMaker()
 	{
 		return (GenericBuilder)libraries[Library.OBJBUILDERS.ordinal()];
+	}
+
+	/**
+	 * Returns a reference to this instances space mapping library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.GalacticMap
+	 * @return a reference to this instances space mapping library.
+	 */
+	public final GalacticMap _space()
+	{
+		return (GalacticMap)libraries[Library.GALACTIC.ordinal()];
+	}
+
+	/**
+	 * Returns a reference to this instances city objects library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CityMap
+	 * @return a reference to this instances city objects library.
+	 */
+	public final CityMap _city()
+	{
+		return (CityMap)libraries[Library.CITY.ordinal()];
 	}
 
 	/**

@@ -96,7 +96,7 @@ public class BankChainNext extends StdWebMacro
 			if(!CMSecurity.isAllowedEverywhere(M,CMSecurity.SecFlag.CMDPLAYERS))
 				return "";
 
-			for(final Iterator<String> j=CMLib.map().bankChains(null);j.hasNext();)
+			for(final Iterator<String> j=CMLib.city().bankChains(null);j.hasNext();)
 			{
 				final String bankChain=j.next();
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!bankChain.equals(lastID))))
@@ -105,7 +105,7 @@ public class BankChainNext extends StdWebMacro
 					last=bankChain;
 					if(playerM!=null)
 					{
-						final Banker bankerM=CMLib.map().getBank(bankChain,bankChain);
+						final Banker bankerM=CMLib.city().getBank(bankChain,bankChain);
 						if((bankerM==null)
 						||((bankerM.isSold(ShopKeeper.DEAL_CLANBANKER))&&(playerM.getClanRole(playerM.Name())==null))
 						||(BankAccountInfo.getAccountInfoBalance(httpReq,bankerM,playerM)<=0.0))

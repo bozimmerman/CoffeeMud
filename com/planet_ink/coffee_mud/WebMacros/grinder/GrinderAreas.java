@@ -244,11 +244,11 @@ public class GrinderAreas
 					if(i<parts.size())
 						SO.coordinates()[i]=CMath.s_long(parts.get(i));
 				}
-				if(CMLib.map().isObjectInSpace(SO))
+				if(CMLib.space().isObjectInSpace(SO))
 				{
-					CMLib.map().delObjectInSpace(SO);
-					CMLib.map().addObjectToSpace(SO, SO.coordinates());
-					CMLib.map().moveSpaceObject(SO);
+					CMLib.space().delObjectInSpace(SO);
+					CMLib.space().addObjectToSpace(SO, SO.coordinates());
+					CMLib.space().moveSpaceObject(SO);
 				}
 			}
 
@@ -259,11 +259,11 @@ public class GrinderAreas
 			if(httpReq.isUrlParameter("COORDINATES2"))
 			{
 				SO.coordinates()[2]=CMath.s_long(httpReq.getUrlParameter("COORDINATES2"));
-				if(CMLib.map().isObjectInSpace(SO))
+				if(CMLib.space().isObjectInSpace(SO))
 				{
-					CMLib.map().delObjectInSpace(SO);
-					CMLib.map().addObjectToSpace(SO, SO.coordinates());
-					CMLib.map().moveSpaceObject(SO);
+					CMLib.space().delObjectInSpace(SO);
+					CMLib.space().addObjectToSpace(SO, SO.coordinates());
+					CMLib.space().moveSpaceObject(SO);
 				}
 			}
 

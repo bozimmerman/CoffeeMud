@@ -312,7 +312,7 @@ public class GenGraviticSensor extends GenElecCompSensor
 					@Override
 					public long[] coordinates()
 					{
-						final SpaceObject sobj =CMLib.map().getSpaceObject(obj, false);
+						final SpaceObject sobj =CMLib.space().getSpaceObject(obj, false);
 						if(sobj!=null)
 							return Arrays.copyOf(sobj.coordinates(), sobj.coordinates().length);
 						return emptyCoords;
@@ -326,7 +326,7 @@ public class GenGraviticSensor extends GenElecCompSensor
 					@Override
 					public long radius()
 					{
-						final SpaceObject sobj =CMLib.map().getSpaceObject(obj, false);
+						final SpaceObject sobj =CMLib.space().getSpaceObject(obj, false);
 						if(sobj!=null)
 							return sobj.radius();
 						return 1;
@@ -373,7 +373,7 @@ public class GenGraviticSensor extends GenElecCompSensor
 					@Override
 					public SpaceObject knownSource()
 					{
-						final SpaceObject sobj=CMLib.map().getSpaceObject(obj, false);
+						final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
 						if(sobj!=null)
 							return sobj;
 						return null;
@@ -387,7 +387,7 @@ public class GenGraviticSensor extends GenElecCompSensor
 					@Override
 					public long getMass()
 					{
-						final SpaceObject sobj=CMLib.map().getSpaceObject(obj, false);
+						final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
 						if(sobj!=null)
 							return sobj.getMass();
 						return 1;
@@ -413,7 +413,7 @@ public class GenGraviticSensor extends GenElecCompSensor
 	{
 		return new Filterer<Environmental>()
 		{
-			final SpaceObject spaceMe = CMLib.map().getSpaceObject(me, true);
+			final SpaceObject spaceMe = CMLib.space().getSpaceObject(me, true);
 
 			@Override
 			public boolean passesFilter(final Environmental obj)
@@ -423,7 +423,7 @@ public class GenGraviticSensor extends GenElecCompSensor
 				if(!(obj instanceof SpaceObject))
 					return false;
 				final SpaceObject sobj = (SpaceObject)obj;
-				final long distance = CMLib.map().getDistanceFrom(spaceMe.coordinates(), sobj.coordinates());
+				final long distance = CMLib.space().getDistanceFrom(spaceMe.coordinates(), sobj.coordinates());
 				final long adjustedMax = Math.round(sobj.getMass() * (1.0 - CMath.div(distance, getSensorMaxRange())));
 				// tiny objects are not detected, nor ships at great distance, nor things inside us
 				return (adjustedMax > 100) && (distance > sobj.radius() + spaceMe.radius());

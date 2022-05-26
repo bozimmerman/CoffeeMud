@@ -2046,7 +2046,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 						case 'o':
 						case 'O':
 						{
-							final SpaceObject O=CMLib.map().getSpaceObject(R,true);
+							final SpaceObject O=CMLib.space().getSpaceObject(R,true);
 							if ( O != null)
 								buf.append(O.name());
 							c+=2;

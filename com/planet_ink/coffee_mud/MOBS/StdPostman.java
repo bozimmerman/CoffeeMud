@@ -461,7 +461,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 			return null;
 		if(forward.equalsIgnoreCase(toWhom))
 			return branch;
-		final PostOffice P=CMLib.map().getPostOffice(postalChain(),forward);
+		final PostOffice P=CMLib.city().getPostOffice(postalChain(),forward);
 		if(P!=null)
 		{
 			forward=allBranchBoxes.get(P.postalBranch());
@@ -480,7 +480,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 			if(M.getStartRoom()!=null)
 			{
 				final Map<String,String> allBranchBoxes=getOurOpenBoxes(toWhom);
-				final PostOffice P=CMLib.map().getPostOffice(postalChain(), M.getStartRoom().getArea().Name());
+				final PostOffice P=CMLib.city().getPostOffice(postalChain(), M.getStartRoom().getArea().Name());
 				String branch=null;
 				if(P!=null)
 				{
@@ -586,7 +586,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 					String deliveryBranch=findProperBranch(toWhom);
 					if(deliveryBranch!=null)
 					{
-						P=CMLib.map().getPostOffice(postalChain(),deliveryBranch);
+						P=CMLib.city().getPostOffice(postalChain(),deliveryBranch);
 						final Item I=makeItem(V2);
 						if((P!=null)&&(I!=null))
 						{
@@ -598,7 +598,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 					deliveryBranch=findProperBranch(fromWhom);
 					if(deliveryBranch!=null)
 					{
-						P=CMLib.map().getPostOffice(postalChain(),deliveryBranch);
+						P=CMLib.city().getPostOffice(postalChain(),deliveryBranch);
 						final Item I=makeItem(V2);
 						if((P!=null)&&(I!=null))
 							P.addToBox(fromWhom,I,V2.to,"POSTMASTER",System.currentTimeMillis(),0.0);
@@ -932,7 +932,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 						}
 						else
 						{
-							final PostOffice P=CMLib.map().getPostOffice(postalChain(),A.Name());
+							final PostOffice P=CMLib.city().getPostOffice(postalChain(),A.Name());
 							if(P==null)
 								CMLib.commands().postSay(this,mob,L("I'm sorry, we don't have a branch in @x1.",A.name()),true,false);
 							else

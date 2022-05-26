@@ -89,7 +89,7 @@ public class ClanLoader
 								final String roomID=xml.get(0).parms().get("ID");
 								final long expirationDate=CMath.s_long(xml.get(0).parms().get("EXPIRE"));
 								if(roomID.startsWith("SPACE.") && (newItem instanceof SpaceObject))
-									CMLib.map().addObjectToSpace((SpaceObject)newItem,CMParms.toLongArray(CMParms.parseCommas(roomID.substring(6), true)));
+									CMLib.space().addObjectToSpace((SpaceObject)newItem,CMParms.toLongArray(CMParms.parseCommas(roomID.substring(6), true)));
 								else
 								{
 									final Room itemR=CMLib.map().getRoom(roomID);
@@ -236,7 +236,7 @@ public class ClanLoader
 				CMLib.catalog().updateCatalogIntegrity(thisItem);
 				final Item cont=thisItem.ultimateContainer(null);
 				final String sql=getDBItemUpdateString(C,thisItem);
-				final String roomID=((cont.owner()==null)&&(thisItem instanceof SpaceObject)&&(CMLib.map().isObjectInSpace((SpaceObject)thisItem)))?
+				final String roomID=((cont.owner()==null)&&(thisItem instanceof SpaceObject)&&(CMLib.space().isObjectInSpace((SpaceObject)thisItem)))?
 						("SPACE."+CMParms.toListString(((SpaceObject)thisItem).coordinates())):CMLib.map().getExtendedRoomID((Room)cont.owner());
 				final String text="<ROOM ID=\""+roomID+"\" EXPIRE="+thisItem.expirationDate()+" />"+thisItem.text();
 				strings.add(new DBPreparedBatchEntry(sql,text));

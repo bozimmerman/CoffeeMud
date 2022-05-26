@@ -1180,7 +1180,7 @@ public class RoomLoader
 								newItem.setMiscText(DBConnections.getResQuietly(R,"CMITTX"));
 							if(newItem instanceof SpaceObject)
 							{
-								CMLib.map().addObjectToSpace((SpaceObject)newItem, ((SpaceObject) newItem).coordinates());
+								CMLib.space().addObjectToSpace((SpaceObject)newItem, ((SpaceObject) newItem).coordinates());
 							}
 							newItem.basePhyStats().setRejuv((int)DBConnections.getLongRes(R,"CMITRE"));
 							newItem.setUsesRemaining((int)DBConnections.getLongRes(R,"CMITUR"));
@@ -1295,7 +1295,7 @@ public class RoomLoader
 								mobRides.put(newMOB,ride);
 							if(newMOB instanceof SpaceObject)
 							{
-								CMLib.map().addObjectToSpace((SpaceObject)newMOB, ((SpaceObject) newMOB).coordinates());
+								CMLib.space().addObjectToSpace((SpaceObject)newMOB, ((SpaceObject) newMOB).coordinates());
 							}
 							newMOB.recoverCharStats();
 							newMOB.recoverPhyStats();
