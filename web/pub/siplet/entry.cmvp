@@ -73,8 +73,14 @@
 		}
 	}
 
-	function sendTextField() 
+	var stopDups = false;
+	function sendTextField(e)
 	{
+		if(e)
+			stopDups=true;
+		else
+		if(stopDups)
+			return;
 		var textEl = document.getElementById("TEXT");
 		sendText(textEl.value);
 		textEl.value = '';
