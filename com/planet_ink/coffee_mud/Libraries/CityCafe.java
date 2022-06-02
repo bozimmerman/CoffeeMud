@@ -200,7 +200,7 @@ public class CityCafe extends StdLibrary implements CityMap
 	}
 
 	@Override
-	public Iterator<String> bankChains(final Area AreaOrNull)
+	public Enumeration<String> bankChains(final Area AreaOrNull)
 	{
 		final HashSet<String> H=new HashSet<String>();
 		for (final Banker B : bankList)
@@ -214,7 +214,7 @@ public class CityCafe extends StdLibrary implements CityMap
 					H.add(B.bankChain());
 			}
 		}
-		return H.iterator();
+		return new IteratorEnumeration<String>(H.iterator());
 	}
 
 	protected Set<Places> getHolyPlaces(final String deityName)
@@ -316,7 +316,7 @@ public class CityCafe extends StdLibrary implements CityMap
 	}
 
 	@Override
-	public Iterator<String> libraryChains(final Area AreaOrNull)
+	public Enumeration<String> libraryChains(final Area areaOrNull)
 	{
 		final HashSet<String> H=new HashSet<String>();
 		for (final Librarian B : libraryList)
@@ -324,13 +324,13 @@ public class CityCafe extends StdLibrary implements CityMap
 			if(!H.contains(B.libraryChain()))
 			{
 				final Area sA=CMLib.map().getStartArea(B);
-				if((AreaOrNull==null)
-				||(sA==AreaOrNull)
-				||(AreaOrNull.isChild(sA)))
+				if((areaOrNull==null)
+				||(sA==areaOrNull)
+				||(areaOrNull.isChild(sA)))
 					H.add(B.libraryChain());
 			}
 		}
-		return H.iterator();
+		return new IteratorEnumeration<String>(H.iterator());
 	}
 
 }

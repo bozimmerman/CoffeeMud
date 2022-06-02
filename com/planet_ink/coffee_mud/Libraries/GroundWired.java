@@ -500,7 +500,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 							if(isDebugging)
 								Log.debugOut("SpaceShip "+O.name()+" is gravitating "+gravitationalMove+" towards " +cO.Name());
 							final double[] directionTo=space.getDirection(O, cO);
-							space.moveSpaceObject(O, directionTo, gravitationalMove);
+							space.accelSpaceObject(O, directionTo, gravitationalMove);
 							inAirFlag = true;
 						}
 						/*

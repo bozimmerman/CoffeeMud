@@ -201,9 +201,9 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
-	public void moveSpaceObject(final SpaceObject O, final double[] accelDirection, final double newAcceleration)
+	public void accelSpaceObject(final SpaceObject O, final double[] accelDirection, final double newAcceleration)
 	{
-		final double newSpeed = moveSpaceObject(O.direction(),O.speed(),accelDirection,newAcceleration);
+		final double newSpeed = accelSpaceObject(O.direction(),O.speed(),accelDirection,newAcceleration);
 		O.setSpeed(newSpeed);
 	}
 
@@ -260,7 +260,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
-	public double moveSpaceObject(final double[] curDirection, final double curSpeed, final double[] accelDirection, final double newAcceleration)
+	public double accelSpaceObject(final double[] curDirection, final double curSpeed, final double[] accelDirection, final double newAcceleration)
 	{
 		if(newAcceleration <= 0.0)
 			return curSpeed;
@@ -620,6 +620,8 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		}
 		Collections.sort(rooms,new Comparator<LocationRoom>()
 		{
+			final SpaceObject sship = ship;
+
 			@Override
 			public int compare(final LocationRoom o1, final LocationRoom o2)
 			{
@@ -631,15 +633,14 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 				else
 				if(o2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
 					return 1;
-				final long distanceFrom=0;
 				if(ship != null)
 				{
-					final long distanceFrom1=getDistanceFrom(ship.coordinates(), o1.coordinates());
-					final long distanceFrom2=getDistanceFrom(ship.coordinates(), o1.coordinates());
+					final long distanceFrom1=getDistanceFrom(sship.coordinates(), o1.coordinates());
+					final long distanceFrom2=getDistanceFrom(sship.coordinates(), o2.coordinates());
 					if(distanceFrom1 > distanceFrom2)
-						return -1;
-					if(distanceFrom < distanceFrom2)
 						return 1;
+					if(distanceFrom1 < distanceFrom2)
+						return -1;
 					return 0;
 				}
 				else

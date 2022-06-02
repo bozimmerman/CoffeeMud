@@ -336,7 +336,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 										{
 											final double prevSpeed = speed();
 											final double[] moveDir = (dir == ShipDir.FORWARD) ? facing() : CMLib.space().getOppositeDir(facing());
-											CMLib.space().moveSpaceObject(this,moveDir,finalAcceleration-this.speedTick); // have to do this to know new speed
+											CMLib.space().accelSpaceObject(this,moveDir,finalAcceleration-this.speedTick); // have to do this to know new speed
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 												Log.debugOut("SpaceShip "+name()+" accelerates "+dir.toString()+" " +(finalAcceleration-this.speedTick));
 											this.speedTick += (finalAcceleration-this.speedTick);
