@@ -96,9 +96,9 @@ public class BankChainNext extends StdWebMacro
 			if(!CMSecurity.isAllowedEverywhere(M,CMSecurity.SecFlag.CMDPLAYERS))
 				return "";
 
-			for(final Iterator<String> j=CMLib.city().bankChains(null);j.hasNext();)
+			for(final Enumeration<String> j=CMLib.city().bankChains(null);j.hasMoreElements();)
 			{
-				final String bankChain=j.next();
+				final String bankChain=j.nextElement();
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!bankChain.equals(lastID))))
 				{
 					httpReq.addFakeUrlParameter("BANKCHAIN",bankChain);
