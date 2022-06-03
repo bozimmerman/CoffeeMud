@@ -2355,7 +2355,9 @@ public class DefaultSession implements Session
 
 	protected boolean sessionMCPCheck(final StringBuilder inStr)
 	{
-		if((inStr.length()>3)&&(inStr.substring(0, 2).equals("#$")))
+		if((inStr.length()>3)
+		&&(inStr.charAt(0)=='#')
+		&&(inStr.substring(0, 2).equals("#$")))
 		{
 			if(inStr.substring(0, 3).equals("#$#"))
 			{

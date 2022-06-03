@@ -148,22 +148,31 @@ public class Polls extends StdLibrary implements PollManager
 	@Override
 	public Iterator<Poll> getPollList()
 	{
+		final Map<String,Poll> cached=new HashMap<String, Poll>();
 		final List<Poll> L=getCache();
 		if(L!=null)
-			return L.iterator();
+		{
+			for(final Poll P : L)
+				cached.put(P.name(), P);
+		}
+		final Map<String,Poll> list=new OrderedMap<String, Poll>();
 		final List<DatabaseEngine.PollData> V=CMLib.database().DBReadPollList();
-		final List<Poll> list=new Vector<Poll>();
 		for(final DatabaseEngine.PollData data : V)
 		{
-			final Poll P=(Poll)CMClass.getCommon("DefaultPoll");
-			P.setName(data.name());
-			P.setFlags(data.flag());
-			P.setQualZapper(data.qualifyingMask());
-			P.setExpiration(data.expiration());
-			P.setLoaded(false);
-			list.add(P);
+			if(cached.containsKey(data.name()))
+				list.put(data.name(), cached.get(data.name()));
+			else
+			{
+				final Poll P=(Poll)CMClass.getCommon("DefaultPoll");
+				P.setName(data.name());
+				P.setFlags(data.flag());
+				P.setQualZapper(data.qualifyingMask());
+				P.setExpiration(data.expiration());
+				P.setLoaded(false);
+				list.put(data.name(), P);
+			}
 		}
-		return list.iterator();
+		return list.values().iterator();
 	}
 
 	@Override

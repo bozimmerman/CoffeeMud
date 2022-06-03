@@ -597,7 +597,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	}
 
 	@Override
-	public String getDefaultMXPImage(final Object O)
+	public String getDefaultMXPImage(final CMObject O)
 	{
 		if((CMProps.getVar(Str.MXPIMAGEPATH).length()==0)
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
@@ -1756,8 +1756,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		}
 	}
 
-	@Override
-	public byte[] buildGmcpResponse(final String json)
+	protected byte[] buildGmcpResponse(final String json)
 	{
 		final ByteArrayOutputStream bout=new ByteArrayOutputStream();
 		try
@@ -2686,7 +2685,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						bout.write(buf);
 				}
 			}
-			final byte[] roomStuff = this.invokeRoomChangeGmcp(session, reporteds, supportables);
+			final byte[] roomStuff = invokeRoomChangeGmcp(session, reporteds, supportables);
 			if(roomStuff != null)
 				bout.write(roomStuff);
 			return (bout.size()==0) ? null: bout.toByteArray();
