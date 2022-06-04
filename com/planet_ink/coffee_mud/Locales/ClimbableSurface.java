@@ -45,7 +45,7 @@ public class ClimbableSurface extends StdRoom
 	{
 		super();
 		name="the surface";
-		basePhyStats.setWeight(4);
+		setMovementCost(4);
 		climbA=CMClass.getAbility("Prop_Climbable");
 		if(climbA!=null)
 		{

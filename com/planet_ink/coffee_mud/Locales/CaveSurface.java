@@ -44,8 +44,8 @@ public class CaveSurface extends ClimbableSurface
 	{
 		super();
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_DARK);
-		basePhyStats.setWeight(4);
-		basePhyStats.setHeight(5);
+		setMovementCost(4);
+		setRoomSize(5);
 		recoverPhyStats();
 		climask=Places.CLIMASK_NORMAL;
 	}

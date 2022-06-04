@@ -43,8 +43,8 @@ public class LargeWoodRoom extends WoodRoom
 	public LargeWoodRoom()
 	{
 		super();
-		basePhyStats.setWeight(3);
-		basePhyStats.setHeight(5);
+		setMovementCost(3);
+		setRoomSize(5);
 		recoverPhyStats();
 	}
 }

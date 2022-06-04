@@ -44,7 +44,7 @@ public class SwampGrid extends StdGrid
 	{
 		super();
 		name="the swamp";
-		basePhyStats.setWeight(3);
+		setMovementCost(3);
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}

@@ -43,8 +43,8 @@ public class LargeCaveRoom extends CaveRoom
 	public LargeCaveRoom()
 	{
 		super();
-		basePhyStats.setWeight(4);
-		basePhyStats.setHeight(8);
+		setMovementCost(4);
+		setRoomSize(8);
 		recoverPhyStats();
 	}
 }

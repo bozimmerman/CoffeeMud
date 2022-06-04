@@ -45,7 +45,7 @@ public class EndlessSky extends StdGrid
 	public EndlessSky()
 	{
 		super();
-		basePhyStats.setWeight(1);
+		setMovementCost(1);
 		recoverPhyStats();
 		setDisplayText("Up in the sky");
 		setDescription("");

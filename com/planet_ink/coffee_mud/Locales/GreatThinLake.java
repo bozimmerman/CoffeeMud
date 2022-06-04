@@ -44,7 +44,7 @@ public class GreatThinLake extends StdThinGrid
 	{
 		super();
 		name="the lake";
-		basePhyStats.setWeight(2);
+		setMovementCost(2);
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}

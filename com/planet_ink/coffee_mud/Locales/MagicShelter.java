@@ -45,7 +45,7 @@ public class MagicShelter extends StdRoom
 		name="the shelter";
 		displayText=L("Magic Shelter");
 		setDescription("You are in a domain of complete void and peace.");
-		basePhyStats.setWeight(0);
+		setMovementCost(0);
 		recoverPhyStats();
 		Ability A=CMClass.getAbility("Prop_PeaceMaker");
 		if(A!=null)

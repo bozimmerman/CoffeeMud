@@ -44,7 +44,7 @@ public class Mountains extends StdRoom
 	{
 		super();
 		name="the mountain";
-		basePhyStats.setWeight(5);
+		setMovementCost(5);
 		recoverPhyStats();
 	}
 

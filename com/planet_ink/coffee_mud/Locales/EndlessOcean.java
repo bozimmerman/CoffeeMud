@@ -44,7 +44,7 @@ public class EndlessOcean extends StdGrid
 	{
 		super();
 		name = "the ocean";
-		basePhyStats.setWeight(2);
+		setMovementCost(2);
 		recoverPhyStats();
 		climask = CLIMASK_WET;
 	}

@@ -1281,6 +1281,8 @@ public class StdArea implements Area
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
+		// rooms are affected by areas, so affected is always a room
+		// anything affected by a room is also affected by the area, so, well, that's a lot of things
 		final int senses = phyStats.sensesMask() & (~(PhyStats.SENSE_UNLOCATABLE | PhyStats.CAN_NOT_SEE));
 		if (senses > 0)
 			affectableStats.setSensesMask(affectableStats.sensesMask() | senses);
@@ -1298,9 +1300,7 @@ public class StdArea implements Area
 		}
 		if (disposition > 0)
 			affectableStats.setDisposition(affectableStats.disposition() | disposition);
-		affectableStats.setWeight(affectableStats.weight() + phyStats().weight()); // well,
-																					// that's
-																					// weird
+		affectableStats.setWeight(affectableStats.weight() + phyStats().weight()); // well, that's weird
 		eachEffect(new EachApplicable<Ability>()
 		{
 			@Override

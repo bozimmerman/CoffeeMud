@@ -44,7 +44,7 @@ public class IcePlains extends StdRoom
 	{
 		super();
 		name="the snow";
-		basePhyStats.setWeight(2);
+		setMovementCost(2);
 		recoverPhyStats();
 		climask=Places.CLIMASK_COLD|Places.CLIMASK_WET;
 	}

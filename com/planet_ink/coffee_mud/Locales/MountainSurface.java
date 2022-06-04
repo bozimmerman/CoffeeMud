@@ -43,7 +43,7 @@ public class MountainSurface extends ClimbableSurface
 	public MountainSurface()
 	{
 		super();
-		basePhyStats.setWeight(6);
+		setMovementCost(6);
 		recoverPhyStats();
 	}
 

@@ -45,7 +45,7 @@ public class EndlessThinSky extends StdThinGrid
 	public EndlessThinSky()
 	{
 		super();
-		basePhyStats.setWeight(1);
+		setMovementCost(1);
 		recoverPhyStats();
 		setDisplayText("Up in the sky");
 		setDescription("");

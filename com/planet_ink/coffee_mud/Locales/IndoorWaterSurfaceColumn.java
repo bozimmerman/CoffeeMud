@@ -44,7 +44,7 @@ public class IndoorWaterSurfaceColumn extends WaterSurfaceColumn implements Drin
 	{
 		super();
 		name="the water";
-		basePhyStats.setHeight(5);
+		setRoomSize(5);
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}

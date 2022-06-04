@@ -45,7 +45,7 @@ public class SewerMaze extends StdMaze
 		super();
 		_roomID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_DARK);
-		basePhyStats.setWeight(2);
+		setMovementCost(2);
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}

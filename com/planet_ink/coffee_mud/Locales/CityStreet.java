@@ -44,7 +44,7 @@ public class CityStreet extends StdRoom
 	{
 		super();
 		name="the street";
-		basePhyStats.setWeight(1);
+		setMovementCost(1);
 		recoverPhyStats();
 	}
 

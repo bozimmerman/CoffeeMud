@@ -44,7 +44,7 @@ public class StoneRoom extends StdRoom
 	{
 		super();
 		recoverPhyStats();
-		basePhyStats.setWeight(1);
+		setMovementCost(1);
 		recoverPhyStats();
 		climask=Places.CLIMASK_NORMAL;
 	}

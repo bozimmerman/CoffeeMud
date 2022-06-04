@@ -44,8 +44,8 @@ public class IndoorWaterThinSurface extends IndoorWaterSurface
 	{
 		super();
 		name="the water";
-		basePhyStats.setWeight(2);
-		basePhyStats.setHeight(5);
+		setMovementCost(2);
+		setRoomSize(5);
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}

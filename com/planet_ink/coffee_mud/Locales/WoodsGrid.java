@@ -43,7 +43,7 @@ public class WoodsGrid extends StdGrid
 	public WoodsGrid()
 	{
 		super();
-		basePhyStats.setWeight(3);
+		setMovementCost(3);
 		recoverPhyStats();
 	}
 

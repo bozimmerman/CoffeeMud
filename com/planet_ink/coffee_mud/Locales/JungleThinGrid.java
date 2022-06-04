@@ -44,7 +44,7 @@ public class JungleThinGrid extends StdThinGrid
 	{
 		super();
 		name="the jungle";
-		basePhyStats.setWeight(3);
+		setMovementCost(3);
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET|CLIMASK_HOT;
 	}

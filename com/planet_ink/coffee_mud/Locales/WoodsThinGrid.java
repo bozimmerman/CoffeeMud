@@ -43,7 +43,7 @@ public class WoodsThinGrid extends StdThinGrid
 	public WoodsThinGrid()
 	{
 		super();
-		basePhyStats.setWeight(3);
+		setMovementCost(3);
 		recoverPhyStats();
 	}
 

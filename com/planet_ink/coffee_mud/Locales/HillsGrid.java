@@ -44,7 +44,7 @@ public class HillsGrid extends StdGrid
 	{
 		super();
 		name="the hills";
-		basePhyStats.setWeight(3);
+		setMovementCost(3);
 		recoverPhyStats();
 	}
 

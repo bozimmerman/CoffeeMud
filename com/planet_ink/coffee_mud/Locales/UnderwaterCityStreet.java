@@ -44,8 +44,8 @@ public class UnderwaterCityStreet extends UnderWater
 	{
 		super();
 		name="the street";
-		basePhyStats.setWeight(3);
-		basePhyStats.setHeight(5);
+		setMovementCost(3);
+		setRoomSize(5);
 		recoverPhyStats();
 	}
 }

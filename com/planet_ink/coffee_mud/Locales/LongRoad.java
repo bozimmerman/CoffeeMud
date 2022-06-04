@@ -43,7 +43,7 @@ public class LongRoad extends Road
 	public LongRoad()
 	{
 		super();
-		basePhyStats.setWeight(5);
+		setMovementCost(5);
 		recoverPhyStats();
 	}
 }

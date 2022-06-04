@@ -44,7 +44,7 @@ public class UnderWaterThinGrid extends StdThinGrid
 	{
 		super();
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_SWIMMING);
-		basePhyStats.setWeight(3);
+		setMovementCost(3);
 		recoverPhyStats();
 		setDisplayText("Under the water");
 		setDescription("");

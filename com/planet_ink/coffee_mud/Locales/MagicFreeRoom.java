@@ -43,7 +43,7 @@ public class MagicFreeRoom extends StdRoom
 	public MagicFreeRoom()
 	{
 		super();
-		basePhyStats.setWeight(1);
+		setMovementCost(1);
 		recoverPhyStats();
 		addEffect(CMClass.getAbility("Prop_MagicFreedom"));
 		climask=Places.CLIMASK_NORMAL;

@@ -62,9 +62,9 @@ public class StdItem implements Item
 	protected String	databaseID			= "";
 	protected boolean	destroyed			= false;
 	protected Item		me					= this;
-
-	protected PhyStats					phyStats		= (PhyStats) CMClass.getCommon("DefaultPhyStats");
-	protected PhyStats					basePhyStats	= (PhyStats) CMClass.getCommon("DefaultPhyStats");
+	protected PhyStats	phyStats			= (PhyStats) CMClass.getCommon("DefaultPhyStats");
+	protected PhyStats	basePhyStats		= (PhyStats) CMClass.getCommon("DefaultPhyStats");
+	
 	protected volatile Container		myContainer		= null;
 	protected volatile ItemPossessor	owner			= null;
 	protected SVector<Ability>			affects			= null;
@@ -209,7 +209,7 @@ public class StdItem implements Item
 		eachEffect(affectPhyStats);
 		if((owner()!=null)
 		&&(owner() instanceof MOB)
-		&&(CMLib.flags().isHidden(this)))
+		&&(CMath.bset(phyStats().disposition(), PhyStats.IS_HIDDEN)))
 			phyStats().setDisposition((int)(phyStats().disposition()&(PhyStats.ALLMASK-PhyStats.IS_HIDDEN)));
 	}
 

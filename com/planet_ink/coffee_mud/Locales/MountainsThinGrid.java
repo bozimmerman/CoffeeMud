@@ -44,7 +44,7 @@ public class MountainsThinGrid extends StdThinGrid
 	{
 		super();
 		name="the mountains";
-		basePhyStats.setWeight(5);
+		setMovementCost(5);
 		recoverPhyStats();
 	}
 

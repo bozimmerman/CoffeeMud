@@ -85,8 +85,8 @@ public class StdRoom implements Room
 		super();
 		//CMClass.bumpCounter(this,CMClass.CMObjectType.LOCALE);//removed for mem & perf
 		xtraValues=CMProps.getExtraStatCodesHolder(this);
-		basePhyStats.setWeight(2); // movement consumption
-		basePhyStats.setHeight(((domainType()&Room.INDOORS)>0)?1:10);
+		setMovementCost(2); // movement consumption
+		setRoomSize(((domainType()&Room.INDOORS)>0)?1:10);
 		recoverPhyStats();
 	}
 
@@ -147,7 +147,29 @@ public class StdRoom implements Room
 	{
 		return name();
 	}
+	
+	protected void setMovementCost(final int newCost)
+	{
+		basePhyStats().setWeight(newCost); // movement consumption
+		recoverPhyStats();
+	}
 
+	protected int getMovementCost()
+	{
+		return phyStats().weight(); // movement consumption
+	}
+
+	protected void setRoomSize(final int newSize)
+	{
+		basePhyStats().setHeight(newSize);
+		recoverPhyStats();
+	}
+	
+	protected int getRoomSize()
+	{
+		return phyStats().height();
+	}
+	
 	@Override
 	public int getAtmosphereCode()
 	{
@@ -2750,7 +2772,7 @@ public class StdRoom implements Room
 	@Override
 	public int pointsPerMove()
 	{
-		return getArea().getClimateObj().adjustMovement(phyStats().weight(),this);
+		return getArea().getClimateObj().adjustMovement(getMovementCost(),this);
 	}
 
 	protected int baseThirst()

@@ -45,7 +45,7 @@ public class HideoutShelter extends MagicShelter
 		name="the hideout";
 		displayText=L("Secret Hideout");
 		setDescription("You are in a small dark room.");
-		basePhyStats.setWeight(0);
+		setMovementCost(0);
 		basePhyStats.setDisposition(PhyStats.IS_DARK);
 		recoverPhyStats();
 		Ability A=CMClass.getAbility("Prop_PeaceMaker");

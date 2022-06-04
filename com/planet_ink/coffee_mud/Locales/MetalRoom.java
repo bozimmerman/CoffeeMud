@@ -44,7 +44,7 @@ public class MetalRoom extends StdRoom
 	{
 		super();
 		name="the room";
-		basePhyStats.setWeight(1);
+		setMovementCost(1);
 		recoverPhyStats();
 		climask=Places.CLIMASK_NORMAL;
 	}

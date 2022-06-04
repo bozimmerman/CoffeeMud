@@ -43,7 +43,7 @@ public class MountainsMaze extends StdMaze
 	public MountainsMaze()
 	{
 		super();
-		basePhyStats.setWeight(5);
+		setMovementCost(5);
 		recoverPhyStats();
 	}
 

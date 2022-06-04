@@ -37,7 +37,7 @@ public class IndoorUnderWaterGrid extends UnderWaterGrid
 	public IndoorUnderWaterGrid()
 	{
 		super();
-		basePhyStats.setHeight(5);
+		setRoomSize(5);
 		recoverPhyStats();
 	}
 

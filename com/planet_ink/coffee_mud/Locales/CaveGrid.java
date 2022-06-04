@@ -44,7 +44,7 @@ public class CaveGrid extends StdGrid
 	{
 		super();
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_DARK);
-		basePhyStats.setHeight(5);
+		setRoomSize(5);
 		recoverPhyStats();
 		climask=Places.CLIMASK_NORMAL;
 	}

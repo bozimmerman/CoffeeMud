@@ -43,7 +43,7 @@ public class OceanThinGrid extends StdThinGrid
 	public OceanThinGrid()
 	{
 		super();
-		basePhyStats.setWeight(2);
+		setMovementCost(2);
 		recoverPhyStats();
 	}
 

@@ -43,8 +43,8 @@ public class LargeStoneRoom extends StoneRoom
 	public LargeStoneRoom()
 	{
 		super();
-		basePhyStats.setWeight(3);
-		basePhyStats.setHeight(5);
+		setMovementCost(3);
+		setRoomSize(5);
 		recoverPhyStats();
 	}
 }

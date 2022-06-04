@@ -43,7 +43,7 @@ public class DesertMaze extends StdMaze
 	public DesertMaze()
 	{
 		super();
-		basePhyStats.setWeight(2);
+		setMovementCost(2);
 		recoverPhyStats();
 		climask=Places.CLIMASK_HOT|CLIMASK_DRY;
 	}

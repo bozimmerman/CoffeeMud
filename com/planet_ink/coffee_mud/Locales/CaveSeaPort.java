@@ -44,7 +44,7 @@ public class CaveSeaPort extends CaveRoom
 	{
 		super();
 		name="the cave sea port";
-		basePhyStats.setWeight(2);
+		setMovementCost(2);
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}

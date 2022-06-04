@@ -44,7 +44,7 @@ public class UnderSaltWaterGrid extends UnderWaterGrid
 	{
 		super();
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_SWIMMING);
-		basePhyStats.setWeight(3);
+		setMovementCost(3);
 		setDisplayText("Under the water");
 		setDescription("");
 		recoverPhyStats();

@@ -43,7 +43,7 @@ public class WoodRoomGrid extends StdGrid
 	public WoodRoomGrid()
 	{
 		super();
-		basePhyStats.setWeight(1);
+		setMovementCost(1);
 		recoverPhyStats();
 		climask=Places.CLIMASK_NORMAL;
 	}

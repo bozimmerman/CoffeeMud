@@ -44,7 +44,7 @@ public class WoodSeaPort extends WoodRoom
 	{
 		super();
 		name="the wooden sea port";
-		basePhyStats.setWeight(2);
+		setMovementCost(2);
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}

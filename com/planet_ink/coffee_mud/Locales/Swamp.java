@@ -46,7 +46,7 @@ public class Swamp extends StdRoom implements Drink
 	{
 		super();
 		name="the swamp";
-		basePhyStats.setWeight(3);
+		setMovementCost(3);
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}

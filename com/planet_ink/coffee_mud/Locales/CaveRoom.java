@@ -45,8 +45,8 @@ public class CaveRoom extends StdRoom
 		super();
 		name="the cave";
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_DARK);
-		basePhyStats.setWeight(2);
-		basePhyStats.setHeight(5);
+		setMovementCost(2);
+		setRoomSize(5);
 		recoverPhyStats();
 		climask=Places.CLIMASK_NORMAL;
 	}

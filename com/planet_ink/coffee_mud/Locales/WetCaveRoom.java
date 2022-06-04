@@ -43,7 +43,7 @@ public class WetCaveRoom extends CaveRoom
 	public WetCaveRoom()
 	{
 		super();
-		basePhyStats.setHeight(5);
+		setRoomSize(5);
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}

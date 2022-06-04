@@ -44,8 +44,8 @@ public class IndoorInTheAir extends StdRoom
 	{
 		super();
 		name="the space";
-		basePhyStats.setWeight(1);
-		basePhyStats.setHeight(5);
+		setMovementCost(1);
+		setRoomSize(5);
 		recoverPhyStats();
 	}
 

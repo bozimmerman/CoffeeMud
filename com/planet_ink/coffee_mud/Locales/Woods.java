@@ -44,7 +44,7 @@ public class Woods extends StdRoom
 	{
 		super();
 		name="the woods";
-		basePhyStats.setWeight(3);
+		setMovementCost(3);
 		recoverPhyStats();
 	}
 

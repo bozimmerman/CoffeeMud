@@ -43,7 +43,7 @@ public class OceanGrid extends StdGrid
 	public OceanGrid()
 	{
 		super();
-		basePhyStats.setWeight(2);
+		setMovementCost(2);
 		recoverPhyStats();
 	}
 

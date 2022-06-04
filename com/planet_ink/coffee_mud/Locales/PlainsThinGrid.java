@@ -43,7 +43,7 @@ public class PlainsThinGrid extends StdThinGrid
 	public PlainsThinGrid()
 	{
 		super();
-		basePhyStats.setWeight(2);
+		setMovementCost(2);
 		recoverPhyStats();
 	}
 

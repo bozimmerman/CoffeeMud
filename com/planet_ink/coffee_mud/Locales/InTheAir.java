@@ -43,7 +43,7 @@ public class InTheAir extends StdRoom
 	public InTheAir()
 	{
 		super();
-		basePhyStats.setWeight(1);
+		setMovementCost(1);
 		name="the sky";
 		recoverPhyStats();
 	}

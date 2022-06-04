@@ -44,10 +44,10 @@ public class IndoorUnderWater extends StdRoom implements Drink
 	public IndoorUnderWater()
 	{
 		super();
-		basePhyStats.setWeight(3);
+		setMovementCost(3);
 		name="the water";
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_SWIMMING);
-		basePhyStats.setHeight(5);
+		setRoomSize(5);
 		recoverPhyStats();
 		atmosphere=RawMaterial.RESOURCE_FRESHWATER;
 	}

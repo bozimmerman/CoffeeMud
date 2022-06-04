@@ -43,7 +43,7 @@ public class WoodsMaze extends StdMaze
 	public WoodsMaze()
 	{
 		super();
-		basePhyStats.setWeight(3);
+		setMovementCost(3);
 		recoverPhyStats();
 	}
 

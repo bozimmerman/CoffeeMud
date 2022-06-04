@@ -44,7 +44,7 @@ public class Desert extends StdRoom
 	{
 		super();
 		name="the desert";
-		basePhyStats.setWeight(2);
+		setMovementCost(2);
 		recoverPhyStats();
 		climask=Places.CLIMASK_HOT|CLIMASK_DRY;
 	}

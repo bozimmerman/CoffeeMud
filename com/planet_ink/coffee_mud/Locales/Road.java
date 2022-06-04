@@ -44,7 +44,7 @@ public class Road extends StdRoom
 	{
 		super();
 		name="a road";
-		basePhyStats.setWeight(1);
+		setMovementCost(1);
 		recoverPhyStats();
 	}
 

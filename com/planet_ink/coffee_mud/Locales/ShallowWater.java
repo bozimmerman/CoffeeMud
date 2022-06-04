@@ -46,7 +46,7 @@ public class ShallowWater extends StdRoom implements Drink
 	{
 		super();
 		name = "the water";
-		basePhyStats.setWeight(2);
+		setMovementCost(2);
 		recoverPhyStats();
 		climask = Places.CLIMASK_WET;
 	}

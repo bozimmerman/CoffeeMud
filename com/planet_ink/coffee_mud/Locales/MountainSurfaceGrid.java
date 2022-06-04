@@ -44,7 +44,7 @@ public class MountainSurfaceGrid extends StdGrid
 	{
 		super();
 		name="the mountains";
-		basePhyStats.setWeight(5);
+		setMovementCost(5);
 		recoverPhyStats();
 	}
 

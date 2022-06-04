@@ -44,7 +44,7 @@ public class TreeSurface extends ClimbableSurface
 	{
 		super();
 		name="the tree";
-		basePhyStats.setWeight(4);
+		setMovementCost(4);
 		recoverPhyStats();
 	}
 

@@ -47,7 +47,7 @@ public class WaterSurface extends StdRoom implements Drink
 		super();
 		name="the water";
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_SWIMMING);
-		basePhyStats.setWeight(2);
+		setMovementCost(2);
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}

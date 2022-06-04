@@ -43,7 +43,7 @@ public class Whirlpool extends StdGrid
 	public Whirlpool()
 	{
 		super();
-		basePhyStats.setWeight(30);
+		setMovementCost(30);
 		recoverPhyStats();
 		climask=Places.CLIMASK_NORMAL;
 	}

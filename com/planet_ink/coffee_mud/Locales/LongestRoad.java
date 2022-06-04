@@ -43,7 +43,7 @@ public class LongestRoad extends Road
 	public LongestRoad()
 	{
 		super();
-		basePhyStats.setWeight(20);
+		setMovementCost(20);
 		recoverPhyStats();
 	}
 }

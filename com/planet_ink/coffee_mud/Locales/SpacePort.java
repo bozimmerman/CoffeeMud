@@ -46,7 +46,7 @@ public class SpacePort extends StdRoom implements LocationRoom
 	{
 		super();
 		name="the space port";
-		basePhyStats.setWeight(1);
+		setMovementCost(1);
 		recoverPhyStats();
 	}
 

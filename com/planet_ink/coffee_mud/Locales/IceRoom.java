@@ -43,7 +43,7 @@ public class IceRoom extends StdRoom
 	public IceRoom()
 	{
 		super();
-		basePhyStats.setWeight(1);
+		setMovementCost(1);
 		recoverPhyStats();
 		climask=Places.CLIMASK_COLD;
 	}

@@ -46,7 +46,7 @@ public class UnderWater extends StdRoom implements Drink
 		super();
 		name="the water";
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_SWIMMING);
-		basePhyStats.setWeight(3);
+		setMovementCost(3);
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 		atmosphere=liquidType;
