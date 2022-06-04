@@ -81,7 +81,7 @@ Prayer_CauseCritical	EMERALD
 Prayer_CauseExhaustion	ONYX
 Prayer_CauseFatigue	OPAL
 Prayer_CauseLight	PERIDOT
-Prayer_CauseSerious	CRYSOBERYL
+Prayer_CauseSerious	CHRYSOBERYL
 Prayer_Cleanliness	SOAP
 Prayer_CreateFood	WHEAT
 Prayer_CreateWater	STONE

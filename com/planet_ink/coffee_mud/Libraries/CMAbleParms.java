@@ -625,7 +625,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		for(int i=0;i<headers.length;i++)
 		{
 			if(numRows[i]>0)
+			{
 				lengths[i] /= numRows[i];
+				if(lengths[i]+headers.length>50)
+					lengths[i]=50-headers.length;
+			}
 			if(headers[i]==null)
 				headers[i]="*Add*";
 		}
