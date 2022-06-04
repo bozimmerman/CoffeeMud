@@ -84,6 +84,13 @@ public class ResourceOverride extends ActiveTicker
 			if(m!=null)
 				code=RawMaterial.CODES.COMPOSE_RESOURCES(m.mask()).get(0).intValue();
 		}
+		if((code<0)&&(which.endsWith("S")||which.endsWith("s"))&&(which.length()>1))
+		{
+			final Integer I=getRscTypeIfAny(which.substring(0,which.length()-1));
+			if(I!=null)
+				code=I.intValue();
+			
+		}
 		if(code < 0)
 			return null;
 		return Integer.valueOf(code);
