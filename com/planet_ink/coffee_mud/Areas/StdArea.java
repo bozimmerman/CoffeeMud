@@ -2335,22 +2335,14 @@ public class StdArea implements Area
 		@Override
 		public int compare(final Room o1, final Room o2)
 		{
-			if(o1 == null)
-			{
-				if(o2 == null)
-					return 0;
+			final int o1h = (o1 == null)?Integer.MIN_VALUE:o1.hashCode();
+			final int o2h = (o2 == null)?Integer.MIN_VALUE:o2.hashCode();
+			if(o1h > o2h)
 				return 1;
-			}
-			else
-			if(o2 == null)
+			if(o1h < o2h)
 				return -1;
-			if(o1.hashCode() == o2.hashCode())
-				return 0;
-			if(o1.hashCode() > o2.hashCode())
-				return 1;
-			return -1;
+			return 0;
 		}
-
 	};
 
 	@Override
