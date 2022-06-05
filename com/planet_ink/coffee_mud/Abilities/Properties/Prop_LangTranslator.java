@@ -258,7 +258,8 @@ public class Prop_LangTranslator extends Property implements Language
 			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			&&(msg.target()==affected)
 			&&(affected instanceof MOB)
-			&&(trusted.contains(msg.source().Name().toUpperCase().trim()))
+			&&((trusted.contains(msg.source().Name().toUpperCase().trim()))
+				||(trusted.size()==0))
 			&&(msg.sourceMessage()!=null))
 			{
 				Language langL;

@@ -155,7 +155,7 @@ public class AnimalTraining extends CommonSkill
 								}
 								else
 									skill.setStat("+"+lang.ID(), "`^"+skillto);
-								skill.setStat("+TRUSTED", mob.Name());
+								//skill.setStat("+TRUSTED", mob.Name());
 							}
 							else
 							{
@@ -304,7 +304,7 @@ public class AnimalTraining extends CommonSkill
 			if(M.fetchEffect(skill.ID())!=null)
 				skill=M.fetchEffect(skill.ID());
 			if(CMath.s_bool(skill.getStat("EXISTS:"+lang.ID()+" `^"+skillto))
-			&&CMath.s_bool(skill.getStat("EXISTS:#"+mob.Name())))
+			)//&&CMath.s_bool(skill.getStat("EXISTS:#"+mob.Name())))
 			{
 				commonTell(mob,L("@x1 already knows how to do that for you.",M.name(mob)));
 				return false;
