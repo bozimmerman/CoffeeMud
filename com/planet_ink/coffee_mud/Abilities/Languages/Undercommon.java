@@ -79,7 +79,7 @@ public class Undercommon extends StdLanguage
 	}
 
 	@Override
-	public boolean translatesLanguage(final String language)
+	public boolean translatesLanguage(final String language, String words)
 	{
 		return ID().equalsIgnoreCase(language)
 				|| "Dwarven".equalsIgnoreCase(language)
@@ -93,7 +93,7 @@ public class Undercommon extends StdLanguage
 	{
 		if(ID().equalsIgnoreCase(language))
 			return proficiency();
-		if(translatesLanguage(language))
+		if(translatesLanguage(language, null))
 			return proficiency() / 5;
 		return 0;
 	}

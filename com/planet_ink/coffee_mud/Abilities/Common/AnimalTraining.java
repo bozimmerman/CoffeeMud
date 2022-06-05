@@ -61,10 +61,27 @@ public class AnimalTraining extends CommonSkill
 		return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY;
 	}
 
-	protected Physical taming=null;
-	protected String skillto="";
-	protected Object skill=null;
-	protected boolean messedUp=false;
+	protected Physical	 taming		= null;
+	protected String	 skillto		= "";
+	protected Modifiable skill		= null;
+	protected boolean	 messedUp	= false;
+
+	private enum Trainables
+	{
+		WANDER, //0
+		HUNT, //1
+		ASSAULT, //2
+		DOORGUARD, //3
+		KILL,
+		SIT,
+		SLEEP, 
+		STAND, 
+		FLEE, 
+		GET, 
+		FOLLOW,
+		NOFOLLOW, 
+	}
+	
 	public AnimalTraining()
 	{
 		super();
@@ -126,8 +143,25 @@ public class AnimalTraining extends CommonSkill
 						else
 						if(skill instanceof Ability)
 						{
-							((Ability)skill).setProficiency(100);
-							animal.addAbility((Ability)skill);
+							if(skill.ID().equalsIgnoreCase("Prop_LangTranslator"))
+							{
+								Language lang = CMLib.utensils().getLanguageSpoken(mob);
+								if(lang == null)
+									lang = (Language)CMClass.getAbility("Common");
+								if(animal.fetchEffect(skill.ID())==null)
+								{
+									animal.addNonUninvokableEffect((Ability)skill);
+									((Ability)skill).setMiscText("NOTRANSLATE `"+skillto+" "+lang.ID());
+								}
+								else
+									skill.setStat("+"+lang.ID(), "`"+skillto);
+								skill.setStat("+TRUSTED", mob.Name());
+							}
+							else
+							{
+								((Ability)skill).setProficiency(100);
+								animal.addAbility((Ability)skill);
+							}
 						}
 						animal.recoverCharStats();
 						animal.recoverPhyStats();
@@ -153,14 +187,9 @@ public class AnimalTraining extends CommonSkill
 		verb=L("training");
 		taming=null;
 		Item cage=null;
-		final String[] skills={"WANDER", //0
-								 "HUNT", //1
-								 "KILL", //2
-								 "DOORGUARD" //3
-							};
 		String valid="Skills include:";
-		for (final String skill2 : skills)
-			valid+=" "+skill2;
+		for (final String skill2 : CMParms.toStringArray(Trainables.values()))
+			valid+=" "+skill2.toLowerCase();
 		valid+=".";
 		if(commands.size()<2)
 		{
@@ -170,27 +199,30 @@ public class AnimalTraining extends CommonSkill
 		skill=null;
 		final String what=commands.get(commands.size()-1);
 		commands.remove(commands.size()-1);
-		for(int i=0;i<skills.length;i++)
+		for(final Trainables T : Trainables.values())
 		{
-			if(skills[i].startsWith(what.toUpperCase()))
+			if(T.name().startsWith(what.toUpperCase()))
 			{
-				switch(i)
+				skillto=T.name().toLowerCase();
+				switch(T)
 				{
-				case 0:
+				case WANDER:
 					skill=CMClass.getBehavior("Mobile");
 					break;
-				case 1:
+				case HUNT:
 					skill=CMClass.getAbility("Hunting");
 					break;
-				case 2:
+				case ASSAULT:
 					skill=CMClass.getBehavior("Aggressive");
 					break;
-				case 3:
+				case DOORGUARD:
 					skill=CMClass.getBehavior("DoorwayGuardian");
 					break;
+				default:
+					skill=CMClass.getAbility("Prop_LangTranslator");
+					break;
 				}
-				if(skill!=null)
-					skillto=skills[i].toLowerCase();
+				break;
 			}
 		}
 		if(skill==null)
@@ -263,7 +295,22 @@ public class AnimalTraining extends CommonSkill
 		}
 		else
 			return false;
-
+		
+		Language lang = CMLib.utensils().getLanguageSpoken(mob);
+		if(lang == null)
+			lang = (Language)CMClass.getAbility("Common");
+		if(skill.ID().equalsIgnoreCase("Prop_LangTranslator"))
+		{
+			if(M.fetchEffect(skill.ID())!=null)
+				skill=M.fetchEffect(skill.ID());
+			if(CMath.s_bool(skill.getStat("EXISTS:"+lang.ID()+" `"+skillto))
+			&&CMath.s_bool(skill.getStat("EXISTS:#"+mob.Name())))
+			{
+				commonTell(mob,L("@x1 already knows how to do that for you.",M.name(mob)));
+				return false;
+			}
+		}
+		else
 		if(((skill instanceof Behavior)&&(M.fetchBehavior(((Behavior)skill).ID())!=null))
 		||(skill instanceof Ability)&&(M.fetchAbility(((Ability)skill).ID())!=null))
 		{

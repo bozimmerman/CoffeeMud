@@ -166,7 +166,7 @@ public class StdLanguage extends StdAbility implements Language
 	}
 
 	@Override
-	public boolean translatesLanguage(final String language)
+	public boolean translatesLanguage(final String language, String words)
 	{
 		return ID().equalsIgnoreCase(language);
 	}
@@ -367,7 +367,7 @@ public class StdLanguage extends StdAbility implements Language
 		return newStr.toString();
 	}
 
-	protected Language getMyTranslator(final String id, final Physical P, Language winner)
+	protected Language getMyTranslator(final String id, final Physical P, Language winner, final String words)
 	{
 		if(P==null)
 			return winner;
@@ -375,7 +375,7 @@ public class StdLanguage extends StdAbility implements Language
 		{
 			final Ability A=a.nextElement();
 			if((A instanceof Language)
-			&& ((Language)A).translatesLanguage(id)
+			&& ((Language)A).translatesLanguage(id, words)
 			&& ((winner==null)
 				||((Language)A).getProficiency(id) > winner.getProficiency(id)))
 			{
@@ -385,22 +385,23 @@ public class StdLanguage extends StdAbility implements Language
 		return winner;
 	}
 
-	protected Language getAnyTranslator(final String id, final MOB mob)
+	protected Language getAnyTranslator(final String id, final MOB mob, final String words)
 	{
 		Language winner = null;
-		winner = getMyTranslator(id,mob,winner);
+		winner = getMyTranslator(id, mob, winner, words);
 		if(winner == null)
-			winner = getMyTranslator(id,mob.location(),winner);
+			winner = getMyTranslator(id, mob.location(), winner, words);
 		if(winner == null)
 		{
 			for(int i=0;i<mob.numItems();i++)
 			{
-				winner=getMyTranslator(id,mob.getItem(i),winner);
+				winner=getMyTranslator(id, mob.getItem(i), winner, words);
 				if(winner != null)
 					break;
 			}
 		}
-		if((winner == null)&&(languagesSupported().contains(id)))
+		if((winner == null)
+		&&(languagesSupported().contains(id)))
 			return this;
 		return winner;
 	}
@@ -537,14 +538,20 @@ public class StdLanguage extends StdAbility implements Language
 								spokenL.setProficiency(100);
 							}
 						}
+						
+						final String heardMsg;
+						if(msg.targetMinor()==CMMsg.TYP_ORDER)
+							heardMsg = CMStrings.getSayFromMessage(msg.sourceMessage());
+						else
+							heardMsg = CMMsg.TYPE_DESCS[msg.targetMinor()];
 						final Language heardL; // this is the language as heard
 						if(spokenL.ID().equals(ID()))
 							heardL=this;
 						else
 						if(affected instanceof MOB)
-							heardL=getAnyTranslator(spokenL.ID(),(MOB)affected);
+							heardL=getAnyTranslator(spokenL.ID(), (MOB)affected, heardMsg);
 						else
-							heardL=getAnyTranslator(spokenL.ID(),msg.source());
+							heardL=getAnyTranslator(spokenL.ID(), msg.source(), heardMsg);
 						if((heardL==null)
 						||((CMLib.dice().rollPercentage()*2)>(spokenL.getProficiency(spokenL.ID())+heardL.getProficiency(heardL.ID()))))
 						{

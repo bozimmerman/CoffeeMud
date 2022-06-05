@@ -58,12 +58,16 @@ public interface Language extends Ability
 	public Set<String> languagesSupported();
 
 	/**
-	 * Returns whether the given language is translated by this one.
+	 * Returns whether the given language is translated by this one, possibly
+	 * given the words that would be translated.
+	 * 
 	 * Does not use {@link Language#languagesSupported()}
+	 * 
 	 * @param language the language to test
+	 * @param words null, or the words to be translated
 	 * @return true if this language translates (usually ID() == language)
 	 */
-	public boolean translatesLanguage(String language);
+	public boolean translatesLanguage(String language, String words);
 
 	/**
 	 * Returns the understanding proficiency in the given supported language

@@ -49,6 +49,5 @@ public interface Filterer<K>
 			else
 				return obj.indexOf(obj)>=0;
 		}
-	};
-
+	}
 }

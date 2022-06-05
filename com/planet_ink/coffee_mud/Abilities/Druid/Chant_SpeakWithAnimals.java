@@ -439,7 +439,7 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 	}
 
 	@Override
-	public boolean translatesLanguage(final String language)
+	public boolean translatesLanguage(final String language, String words)
 	{
 		return myLanguages.containsKey(language);
 	}

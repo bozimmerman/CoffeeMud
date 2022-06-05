@@ -163,4 +163,10 @@ public class DefaultTattoo implements Tattoo
 		}
 		return this;
 	}
+
+	@Override
+	public int hashCode()
+	{
+		return tattooName.hashCode();
+	}
 }
