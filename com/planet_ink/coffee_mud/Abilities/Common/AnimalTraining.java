@@ -156,6 +156,7 @@ public class AnimalTraining extends CommonSkill
 								else
 									skill.setStat("+"+lang.ID(), "`^"+skillto);
 								skill.setStat("+TRUSTED", "*");
+								skill.setStat("+NOTRANSLATE", "");
 							}
 							else
 							{

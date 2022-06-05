@@ -429,10 +429,13 @@ public class Prop_LangTranslator extends Property implements Language
 		if(code.startsWith("+"))
 		{
 			String[] args = parseParms(code,val);
-			if(args[0].equalsIgnoreCase("PASSIVE")&& (!passive))
+			if(args[0].equalsIgnoreCase("PASSIVE")||args[0].equalsIgnoreCase("NOTRANSLATE"))
 			{
-				passive=true;
-				rebuildMiscText();
+				if (!passive)
+				{
+					passive=true;
+					rebuildMiscText();
+				}
 			}
 			else
 			if(args[0].equalsIgnoreCase("TRUSTED"))
@@ -468,10 +471,13 @@ public class Prop_LangTranslator extends Property implements Language
 		if(code.startsWith("-"))
 		{
 			String[] args = parseParms(code,val);
-			if(args[0].equalsIgnoreCase("PASSIVE")&& (passive))
+			if(args[0].equalsIgnoreCase("PASSIVE")||args[0].equalsIgnoreCase("NOTRANSLATE"))
 			{
-				passive=false;
-				rebuildMiscText();
+				if (passive)
+				{
+					passive=false;
+					rebuildMiscText();
+				}
 			}
 			else
 			if(args[0].equalsIgnoreCase("TRUSTED"))
