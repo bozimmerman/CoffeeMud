@@ -34,7 +34,6 @@ import java.util.*;
 */
 public interface QuestManager extends CMLibrary
 {
-	public Quest objectInUse(Environmental E);
 	public int numQuests();
 	public Enumeration<Quest> enumQuests();
 	public Quest fetchQuest(int i);
@@ -42,10 +41,7 @@ public interface QuestManager extends CMLibrary
 	public Quest findQuest(String qname);
 	public void addQuest(Quest Q);
 	public void delQuest(Quest Q);
-	public void save();
-	public List<String> parseQuestSteps(List<String> script, int startLine, boolean rawLineInput);
-	public List<List<String>> parseQuestCommandLines(List<?> script, String cmdOnly, int startLine);
-
+	
 	public int getHolidayIndex(String named);
 	public String getHolidayName(int index);
 	public String listHolidays(Area A, String otherParms);
@@ -60,25 +56,135 @@ public interface QuestManager extends CMLibrary
 	public List<List<String>> breakOutMudChatVs(String MUDCHAT, TriadList<String,String,Integer> behaviors);
 	public String breakOutMaskString(String s, List<String> p);
 
+	/**
+	 * Parses a Quest Template file into a data structure which no
+	 * human, not even me, will ever fully unravel again.  I mean,
+	 * it is unravelable, but the risk to breaking the codebase is
+	 * enormous, so just trust me, leave it alone.
+	 * 
+	 * The DVector is 5-part, consisting of:
+	 * 1. name
+	 * 2. description
+	 * 3. filename
+	 * 4. DVector list of pages
+	 *    -- Page is 4-part list, each representing a variable,
+	 *    except the first entry, which is page type, name, description
+	 *    Variables are: 1. var type code (Integer), 
+	 *    				 2. name, 
+	 *    				 3. default value, 
+	 *    				 4. final value
+	 * 5. Final Quest Script as a StringBuffer
+	 * 
+	 * @param mob player mob, for file permission reasons
+	 * @param fileToGet the template filename to load
+	 * @return the evil data structure
+	 */
 	public DVector getQuestTemplate(MOB mob, String fileToGet);
+
 	public Quest questMaker(MOB mob);
+	
 	public List<Quest> getPlayerPersistentQuests(MOB player);
 
 	public GenericEditor.CMEval getQuestCommandEval(QMCommand command);
 
+	public Quest objectInUse(Environmental E);
+	public void save();
+	public List<String> parseQuestSteps(List<String> script, int startLine, boolean rawLineInput);
+	public List<List<String>> parseQuestCommandLines(List<?> script, String cmdOnly, int startLine);
+	
+	/**
+	 * Interface for the raw definition data for a Holiday
+	 * 
+	 * @author Bo Zimmerman
+	 */
 	public interface HolidayData
 	{
+		/**
+		 * Returns the list of basic settings, stuff like
+		 * NAME, DURATION, MUDDAY, WAIT, etc.  The first
+		 * entry is the variable name, the second is the
+		 * value, and the third is -1 (maybe Int value
+		 * expansion?)
+		 * 
+		 * @return the list of basic settings
+		 */
 		public TriadList<String,String,Integer> settings();
+		
+		/**
+		 * Returns the list of behaviors to give mobs 
+		 * during a holiday.  The first entry is the ID()
+		 * of the behavior, the second the parms, and the
+		 * third - I don't know.
+		 * 
+		 * @return the list of behaviors
+		 */
 		public TriadList<String,String,Integer> behaviors();
+		
+		/**
+		 * Returns the list of properties to give mobs
+		 * during a holiday.  The first entry is the ID()
+		 * of the property, the second the parms, and the
+		 * third, I still don't know.
+		 * 
+		 * @return the list of properties
+		 */
 		public TriadList<String,String,Integer> properties();
+		
+		/**
+		 * Stat changes to apply to mobs during a holiday.
+		 * The first entry is the stat name, the second is 
+		 * the value, and the third, might be used?
+		 * 
+		 * @see QuestManager.HolidayData#pricingMobIndex()
+		 * @see QuestManager.HolidayData#stepV()
+		 * 
+		 * @return stat changes to apply to mobs
+		 */
 		public TriadList<String,String,Integer> stats();
+		
+		/**
+		 * This is a listing of a cache of the actual Quest 
+		 * Script built from the Holiday.  This is then
+		 * modified when the various variables in this Holiday
+		 * are.
+		 * 
+		 * @see QuestManager.HolidayData#pricingMobIndex()
+		 * @see QuestManager.HolidayData#stats()
+		 * 
+		 * @return the Quest Script
+		 */
 		public List<String> stepV();
+		
+		/**
+		 * Returns an integer index into the stepV list,
+		 * and is related to the PRICEMASKS quest script
+		 * command from the stats data.
+		 * 
+		 * @see QuestManager.HolidayData#stepV()
+		 * @see QuestManager.HolidayData#stats()
+		 * 
+		 * @return index into the stepV list
+		 */
 		public Integer pricingMobIndex();
 	}
 
-	public final static int QM_COMMAND_MASK=127;
-	public final static int QM_COMMAND_OPTIONAL=128;
+	/**
+	 * MASK for QuestMaker QM COMMAND ORDINAL
+	 */
+	public final static int	QM_COMMAND_MASK		= 127;
+	
+	/**
+	 * MASK for QuestMaker QM COMMAND to mark it Optional
+	 */
+	public final static int	QM_COMMAND_OPTIONAL	= 128;
 
+	/**
+	 * Enum of official data types for the QuestMaker Wizard
+	 * templates.
+	 * 
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public enum QMCommand
 	{
 		$TITLE,
@@ -104,5 +210,4 @@ public interface QuestManager extends CMLibrary
 		$FACTION,
 		$TIMEEXPRESSION
 	}
-
 }

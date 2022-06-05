@@ -259,7 +259,7 @@ public class Prop_LangTranslator extends Property implements Language
 			&&(msg.target()==affected)
 			&&(affected instanceof MOB)
 			&&((trusted.contains(msg.source().Name().toUpperCase().trim()))
-				||(trusted.size()==0))
+				||(trusted.contains("*")))
 			&&(msg.sourceMessage()!=null))
 			{
 				Language langL;
