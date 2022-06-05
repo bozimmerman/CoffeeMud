@@ -18,6 +18,7 @@
  17. New Zappermask flags: +-RIDE, +-FOLLOW
  18. Prop_LangTranslator now has a rediculously expanded functionality
  19. AnimalTraining now supports mundane things like sit, kill, etc.
+ 20. AREAS now supports EXPLORED argument
 
 # Build 5.9.12 Release 1/17/2022
   *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG

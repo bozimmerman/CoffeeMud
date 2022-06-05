@@ -56,6 +56,7 @@ public class Areas extends StdCommand
 		int addStat=-1;
 		String append="";
 		int numCols=3;
+		boolean explored=false;
 
 		for(int i=1;i<commands.size();i++)
 		{
@@ -65,6 +66,20 @@ public class Areas extends StdCommand
 				append = " (sorted by name)";
 				commands.remove(i);
 				i--;
+			}
+			else
+			if(s.toUpperCase().startsWith("EXPLORED"))
+			{
+				if((!CMSecurity.isDisabled(CMSecurity.DisFlag.ROOMVISITS))
+				&&(mob!=null)
+				&&(mob.playerStats()!=null))
+				{
+					append = " (with explored %)";
+					commands.remove(i);
+					i--;
+					explored=true;
+					numCols=2;
+				}
 			}
 			else
 			if(s.toUpperCase().startsWith("SORT=REV"))
@@ -172,7 +187,7 @@ public class Areas extends StdCommand
 			expression=CMParms.combineQuoted(commands,1);
 			msg=new StringBuffer(L("^HFiltered areas list@x1:^?^N\n\r",append));
 		}
-		final Vector<String> areasVec=new Vector<String>();
+		final List<String> areasVec=new ArrayList<String>();
 		final boolean sysop=(mob!=null)&&CMSecurity.isASysOp(mob);
 		final int colWidth=CMLib.lister().fixColWidth(66.0/numCols,mob);
 		for(;a.hasMoreElements();)
@@ -187,20 +202,22 @@ public class Areas extends StdCommand
 					levelStr=CMStrings.padRight(A.getAuthorID(),10)+":";
 				String name=levelStr+((!CMLib.flags().isHidden(A))?" "+A.name():"("+A.name()+")");
 				if(sysop)
-				switch(A.getAreaState())
 				{
-				case ACTIVE:
-					name = "^w" + name + "^?";
-					break;
-				case PASSIVE:
-					name = "^W" + name + "^?";
-					break;
-				case FROZEN:
-					name = "^b" + name + "^?";
-					break;
-				case STOPPED:
-					name = "^r" + name + "^?";
-					break;
+					switch(A.getAreaState())
+					{
+					case ACTIVE:
+						name = "^w" + name + "^?";
+						break;
+					case PASSIVE:
+						name = "^W" + name + "^?";
+						break;
+					case FROZEN:
+						name = "^b" + name + "^?";
+						break;
+					case STOPPED:
+						name = "^r" + name + "^?";
+						break;
+					}
 				}
 				if(expression!=null)
 				{
@@ -223,6 +240,8 @@ public class Areas extends StdCommand
 						}
 					}
 				}
+				if(explored && (mob!=null) && (mob.playerStats()!=null))
+					name+=" ("+mob.playerStats().percentVisited(mob, A)+"%)";
 				areasVec.add(name);
 			}
 		}
@@ -238,6 +257,11 @@ public class Areas extends StdCommand
 				col=1;
 			}
 			msg.append(CMStrings.padRight(areasVec.get(i),colWidth)+"^N");
+		}
+		if(explored && (mob!=null))
+		{
+			msg.append(L("\n\rYou have explored @x1% of the world.",
+					""+mob.playerStats().percentVisited(mob,null)));
 		}
 		msg.append(L("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?"));
 		if((mob!=null)&&(!mob.isMonster()))
