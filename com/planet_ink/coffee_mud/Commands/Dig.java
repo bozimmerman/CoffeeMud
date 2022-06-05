@@ -167,13 +167,13 @@ public class Dig extends StdCommand
 	@Override
 	public double combatActionsCost(final MOB mob, final List<String> cmds)
 	{
-		return 30.0 * mob.phyStats().speed();
+		return 30.0 / mob.phyStats().speed();
 	}
 
 	@Override
 	public double actionsCost(final MOB mob, final List<String> cmds)
 	{
-		return 10.0 * mob.phyStats().speed();
+		return 10.0 / mob.phyStats().speed();
 	}
 
 	@Override
