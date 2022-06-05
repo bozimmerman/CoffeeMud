@@ -151,10 +151,10 @@ public class AnimalTraining extends CommonSkill
 								if(animal.fetchEffect(skill.ID())==null)
 								{
 									animal.addNonUninvokableEffect((Ability)skill);
-									((Ability)skill).setMiscText("NOTRANSLATE `"+skillto+" "+lang.ID());
+									((Ability)skill).setMiscText("NOTRANSLATE `^"+skillto+" "+lang.ID());
 								}
 								else
-									skill.setStat("+"+lang.ID(), "`"+skillto);
+									skill.setStat("+"+lang.ID(), "`^"+skillto);
 								skill.setStat("+TRUSTED", mob.Name());
 							}
 							else
@@ -303,7 +303,7 @@ public class AnimalTraining extends CommonSkill
 		{
 			if(M.fetchEffect(skill.ID())!=null)
 				skill=M.fetchEffect(skill.ID());
-			if(CMath.s_bool(skill.getStat("EXISTS:"+lang.ID()+" `"+skillto))
+			if(CMath.s_bool(skill.getStat("EXISTS:"+lang.ID()+" `^"+skillto))
 			&&CMath.s_bool(skill.getStat("EXISTS:#"+mob.Name())))
 			{
 				commonTell(mob,L("@x1 already knows how to do that for you.",M.name(mob)));
