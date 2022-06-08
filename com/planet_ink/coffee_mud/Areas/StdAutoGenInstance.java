@@ -470,7 +470,11 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 			}
 			if(myDex<0)
 			{
+				System.out.println("hi");
 				final StdAutoGenInstance newA=(StdAutoGenInstance)this.copyOf();
+				newA.derivedAtmo=getAtmosphere();
+				newA.derivedClimate=getClimateType();
+				newA.derivedTheme=getTheme();
 				newA.properRooms=new STreeMap<String, Room>(new Area.RoomIDComparator());
 				newA.properRoomIDSet = null;
 				newA.metroRoomIDSet = null;

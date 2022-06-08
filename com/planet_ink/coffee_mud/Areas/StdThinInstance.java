@@ -669,6 +669,9 @@ public class StdThinInstance extends StdThinArea implements SubArea
 		final StdThinInstance newA=(StdThinInstance)this.copyOf();
 		newA.setTimeObj((TimeClock)getTimeObj().copyOf());
 		newA.properRooms=new STreeMap<String, Room>(new Area.RoomIDComparator());
+		newA.derivedAtmo=getAtmosphere();
+		newA.derivedClimate=getClimateType();
+		newA.derivedTheme=getTheme();
 		newA.parentArea=null;
 		newA.properRoomIDSet = null;
 		newA.metroRoomIDSet = null;
