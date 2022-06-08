@@ -4,6 +4,7 @@ import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -43,7 +44,6 @@ public class HolidayData extends StdWebMacro
 		return "HolidayData";
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
@@ -62,9 +62,14 @@ public class HolidayData extends StdWebMacro
 				List<String> steps=null;
 				if(index>=0)
 				{
-					final Object resp=CMLib.quests().getHolidayFile();
-					if(resp instanceof List)
-						steps=(List<String>)resp;
+					try
+					{
+						steps=CMLib.quests().getHolidayFile();
+					}
+					catch(final CMException e)
+					{
+						steps = null;
+					}
 					if(steps!=null)
 						encodedData=CMLib.quests().getEncodedHolidayData(steps.get(index));
 				}

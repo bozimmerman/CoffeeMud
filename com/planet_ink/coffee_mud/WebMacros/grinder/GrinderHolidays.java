@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.WebMacros.RoomData;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -58,7 +59,6 @@ public class GrinderHolidays
 		return newVAL;
 	}
 
-	@SuppressWarnings("unchecked")
 	public static String createModifyHoliday(final HTTPRequest httpReq, final java.util.Map<String,String> parms, final String holidayName)
 	{
 		int index=CMLib.quests().getHolidayIndex(holidayName);
@@ -71,18 +71,20 @@ public class GrinderHolidays
 			if(index < 0)
 				return "Error creating holiday file.";
 		}
-		List<String> steps=null;
 		QuestManager.HolidayData encodedData = null;
-		final Object resp=CMLib.quests().getHolidayFile();
-		if(resp instanceof List)
-			steps=(List<String>)resp;
-		else
-		if(resp instanceof String)
-			return (String)resp;
+		final List<String> steps;
+		try
+		{
+			steps=CMLib.quests().getHolidayFile();
+		}
+		catch(final CMException e)
+		{
+			return e.getMessage();
+		}
 		if(steps!=null)
 			encodedData=CMLib.quests().getEncodedHolidayData(steps.get(index));
 		if((encodedData==null)||(steps==null))
-			return "Error reading holiday data (code: "+((resp instanceof List)?"T":"F")+":"+((steps==null)?"F":"T")+":"+((encodedData==null)?"F":"T")+")";
+			return "Error reading holiday data (code: T:"+((steps==null)?"F":"T")+":"+((encodedData==null)?"F":"T")+")";
 		final TriadList<String,String,Integer> settings=encodedData.settings();
 		final TriadList<String,String,Integer> behaviors=encodedData.behaviors();
 		final TriadList<String,String,Integer> properties=encodedData.properties();

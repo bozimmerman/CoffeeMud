@@ -1781,7 +1781,7 @@ public class Create extends StdCommand
 			if(commands.size()<3)
 			{
 				if((mob.session()!=null)&&(mob.session().confirm(L("Create a new Quest using the Quest Maker Wizard (y/N)? "),"N")))
-					CMLib.quests().questMaker(mob);
+					CMLib.quests().questMakerCommandLine(mob);
 				else
 				{
 					mob.tell(L("You must specify a valid quest string.  Try AHELP QUESTS."));

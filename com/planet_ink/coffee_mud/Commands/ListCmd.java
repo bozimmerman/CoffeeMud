@@ -5785,8 +5785,13 @@ public class ListCmd extends StdCommand
 			s.wraplessPrintln(areaConquests(mob.session(), CMLib.map().areas()).toString());
 			break;
 		case HOLIDAYS:
-			s.wraplessPrintln(CMLib.quests().listHolidays(mob.location().getArea(), CMParms.combine(commands, 1)));
+		{
+			String areaName=null;
+			if(!CMParms.combine(commands, 1).equalsIgnoreCase("ALL"))
+				areaName=mob.location().getArea().Name().toUpperCase().trim();
+			s.wraplessPrintln(CMLib.quests().listHolidays(areaName));
 			break;
+		}
 		case RECIPES:
 			s.wraplessPrintln(listRecipes(mob, CMParms.combine(commands, 1)));
 			break;

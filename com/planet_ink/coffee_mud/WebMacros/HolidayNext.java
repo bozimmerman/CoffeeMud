@@ -4,6 +4,7 @@ import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -47,7 +48,6 @@ public class HolidayNext extends StdWebMacro
 		return true;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
@@ -59,15 +59,15 @@ public class HolidayNext extends StdWebMacro
 				httpReq.removeUrlParameter("HOLIDAY");
 			return "";
 		}
-		final Object resp=CMLib.quests().getHolidayFile();
-		List<String> steps=null;
-		if(resp instanceof List)
-			steps=(List<String>)resp;
-		else
-		if(resp instanceof String)
-			return (String)resp;
-		else
-			return "[Unknown error.]";
+		final List<String> steps;
+		try
+		{
+			steps=CMLib.quests().getHolidayFile();
+		}
+		catch(final CMException e)
+		{
+			return e.getMessage();
+		}
 		final Vector<String> holidays=new Vector<String>();
 		List<String> line=null;
 		String var=null;
@@ -76,7 +76,7 @@ public class HolidayNext extends StdWebMacro
 		{
 			final String step=steps.get(s);
 			V=Resources.getFileLineVector(new StringBuffer(step));
-			final List<List<String>> cmds=CMLib.quests().parseQuestCommandLines(V,"SET",0);
+			final List<List<String>> cmds=CMLib.quests().getNextQuestScriptCommands(V,"SET",0);
 			//Vector<String> areaLine=null;
 			List<String> nameLine=null;
 			for(int v=0;v<cmds.size();v++)

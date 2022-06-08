@@ -167,7 +167,7 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@Override
-	public Object getHolidayFile()
+	public List<String> getHolidayFile() throws CMException
 	{
 		Quest Q=fetchQuest("holidays");
 		if((Q==null)
@@ -187,35 +187,33 @@ public class Quests extends StdLibrary implements QuestManager
 			CMLib.database().DBUpdateQuest(Q);
 			Q=fetchQuest("holidays");
 			if(Q==null)
-				return "A quest named 'holidays', with the script definition '"+holidayDefinition+"' has not been created.  Enter the following to create this quest:\n\r"
+			{
+				throw new CMException(
+					"A quest named 'holidays', with the script definition '"+holidayDefinition+"' has not been created.  Enter the following to create this quest:\n\r"
 					  +"CREATE QUEST "+holidayDefinition+"\n\r"
-					  +"SAVE QUESTS";
+					  +"SAVE QUESTS");
+			}
 		}
 		final CMFile F=new CMFile(Resources.makeFileResourceName(holidayFilename),null);
 		if((!F.exists())||(!F.canRead())||(!F.canWrite()))
-		{
-			return "The file '"+Resources.makeFileResourceName(holidayFilename)+"' does not exist, and is required for this feature.";
-		}
+			throw new CMException("The file '"+Resources.makeFileResourceName(holidayFilename)+"' does not exist, and is required for this feature.");
 		final List<String> V=Resources.getFileLineVector(F.text());
 		final List<String> steps=parseQuestSteps(V,0,true);
 		return steps;
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public String listHolidays(final Area A, final String otherParms)
+	public String listHolidays(final String areaName)
 	{
-		final Object resp=getHolidayFile();
-		if(resp instanceof String)
-			return (String)resp;
-		List<String> steps=null;
-		if(resp instanceof List)
-			steps=(List<String>)resp;
-		else
-			return "Unknown error.";
-		String areaName=A.Name().toUpperCase().trim();
-		if(otherParms.equalsIgnoreCase("ALL"))
-			areaName=null;
+		final List<String> steps;
+		try
+		{
+			steps=getHolidayFile();
+		}
+		catch(final CMException e)
+		{
+			return e.getMessage();
+		}
 		final StringBuffer str=new StringBuffer(L("^xDefined Quest Holidays^?\n\r"));
 		List<String> line=null;
 		String var=null;
@@ -225,7 +223,7 @@ public class Quests extends StdLibrary implements QuestManager
 		{
 			final String step=steps.get(s);
 			V=Resources.getFileLineVector(new StringBuffer(step));
-			final List<List<String>> cmds=parseQuestCommandLines(V,"SET",0);
+			final List<List<String>> cmds=getNextQuestScriptCommands(V,"SET",0);
 			List<String> areaLine=null;
 			List<String> nameLine=null;
 			for(int v=0;v<cmds.size();v++)
@@ -298,17 +296,17 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public String createHoliday(final String named, final String areaName, final boolean save)
 	{
-		final Object resp=getHolidayFile();
-		if(resp instanceof String)
-			return (String)resp;
-		List<String> steps=null;
-		if(resp instanceof List)
-			steps=(List<String>)resp;
-		else
-			return "Unknown error.";
+		final List<String> steps;
+		try
+		{
+			steps=getHolidayFile();
+		}
+		catch(final CMException e)
+		{
+			return e.getMessage();
+		}
 		if(fetchQuest(named)!=null)
 			return "A quest called '"+named+"' already exists.  Better to pick a new name.";
 		Vector<String> lineV=null;
@@ -368,17 +366,17 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public String deleteHoliday(final int holidayNumber)
 	{
-		final Object resp=getHolidayFile();
-		if(resp instanceof String)
-			return (String)resp;
-		List<String> steps=null;
-		if(resp instanceof List)
-			steps=(List<String>)resp;
-		else
-			return "Unknown error.";
+		final List<String> steps;
+		try
+		{
+			steps=getHolidayFile();
+		}
+		catch(final CMException e)
+		{
+			return e.getMessage();
+		}
 
 		if((holidayNumber<=0)||(holidayNumber>=steps.size()))
 			return holidayNumber+" does not exist as a holiday -- enter LIST HOLIDAYS.";
@@ -400,19 +398,17 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public String getHolidayName(final int index)
 	{
-		final Object resp=getHolidayFile();
-		if(resp instanceof String)
+		final List<String> steps;
+		try
+		{
+			steps=getHolidayFile();
+		}
+		catch(final CMException e)
 		{
 			return "";
 		}
-		List<String> steps=null;
-		if(resp instanceof List)
-			steps=(List<String>)resp;
-		else
-			return "";
 
 		if((index<0)||(index>=steps.size()))
 			return "";
@@ -440,19 +436,17 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public int getHolidayIndex(final String named)
 	{
-		final Object resp=getHolidayFile();
-		if(resp instanceof String)
+		final List<String> steps;
+		try
+		{
+			steps=getHolidayFile();
+		}
+		catch(final CMException e)
 		{
 			return -1;
 		}
-		List<String> steps=null;
-		if(resp instanceof List)
-			steps=(List<String>)resp;
-		else
-			return -1;
 
 		Vector<String> lineV=null;
 		String line=null;
@@ -597,21 +591,16 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public void modifyHoliday(final MOB mob, final int holidayNumber)
 	{
-		final Object resp=getHolidayFile();
-		if(resp instanceof String)
+		final List<String> steps;
+		try
 		{
-			mob.tell((String)resp);
-			return;
+			steps=getHolidayFile();
 		}
-		List<String> steps=null;
-		if(resp instanceof List)
-			steps=(List<String>)resp;
-		else
+		catch(final CMException e)
 		{
-			mob.tell(L("Unknown error."));
+			mob.tell(L(e.getMessage()));
 			return;
 		}
 		if((holidayNumber<=0)||(holidayNumber>=steps.size()))
@@ -685,7 +674,6 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public String alterHoliday(final String oldName, final HolidayData newData)
 	{
 		final TriadList<String,String,Integer> settings=newData.settings();
@@ -696,14 +684,15 @@ public class Quests extends StdLibrary implements QuestManager
 		final int pricingMobIndex=newData.pricingMobIndex().intValue();
 
 		final int holidayNumber=getHolidayIndex(oldName);
-		final Object resp=getHolidayFile();
-		if(resp instanceof String)
-			return (String)resp;
-		List<String> steps=null;
-		if(resp instanceof List)
-			steps=(List<String>)resp;
-		else
-			return "Unknown error.";
+		final List<String> steps;
+		try
+		{
+			steps=getHolidayFile();
+		}
+		catch(final CMException e)
+		{
+			return e.getMessage();
+		}
 
 		String step = null;
 		List<String> stepV = null;
@@ -1188,33 +1177,6 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@Override
-	public String breakOutMaskString(final String s, final List<String> p)
-	{
-		String mask="";
-		int x=s.toUpperCase().lastIndexOf("MASK=");
-		if(x>=0)
-		{
-			mask=s.substring(x+5).trim();
-			int i=0;
-			while((i<p.size())&&(p.get(i).toUpperCase().indexOf("MASK=")<0))
-				i++;
-			if(i<=p.size())
-			{
-				final String pp=p.get(i);
-				x=pp.toUpperCase().indexOf("MASK=");
-				if((x>0)&&(pp.substring(0,x).trim().length()>0))
-				{
-					p.set(i,pp.substring(0,x).trim());
-					i++;
-				}
-				while(i<p.size())
-					p.remove(i);
-			}
-		}
-		return mask.trim();
-	}
-
-	@Override
 	public List<List<String>> breakOutMudChatVs(final String MUDCHAT, final TriadList<String,String,Integer> behaviors)
 	{
 		final int mndex=behaviors.indexOfFirst(MUDCHAT);
@@ -1245,7 +1207,9 @@ public class Quests extends StdLibrary implements QuestManager
 		return mudChatV;
 	}
 
-	protected int genMudChat(final MOB mob, final String var, final TriadList<String,String,Integer> behaviors, int showNumber, final int showFlag)
+	protected int genMudChat(final MOB mob, final String var,
+							 final TriadList<String,String,Integer> behaviors,
+							 int showNumber, final int showFlag)
 	throws IOException
 	{
 		final int mndex=behaviors.indexOfFirst(var);
@@ -1348,7 +1312,7 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@Override
-	public List<List<String>> parseQuestCommandLines(final List<?> script, String cmdOnly, final int startLine)
+	public List<List<String>> getNextQuestScriptCommands(final List<?> script, String cmdOnly, final int startLine)
 	{
 		Vector<String> line=null;
 		String cmd=null;
@@ -1358,7 +1322,10 @@ public class Quests extends StdLibrary implements QuestManager
 			cmdOnly=cmdOnly.toUpperCase().trim();
 		for(int v=startLine;v<script.size();v++)
 		{
-			line=CMParms.parse(((String)script.get(v)));
+			final Object o=script.get(v);
+			if(!(o instanceof String))
+				continue;
+			line=CMParms.parse(((String)o));
 			if(line.size()==0)
 				continue;
 			cmd=line.firstElement().toUpperCase().trim();
@@ -1372,10 +1339,13 @@ public class Quests extends StdLibrary implements QuestManager
 				inScript=true;
 				continue;
 			}
-			if(cmd.equals("STEP"))
-				return lines;
-			if((cmdOnly==null)||(cmdOnly.equalsIgnoreCase(cmd)))
-				lines.add(line);
+			if(!inScript)
+			{
+				if(cmd.equals("STEP"))
+					return lines;
+				if((cmdOnly==null)||(cmdOnly.equalsIgnoreCase(cmd)))
+					lines.add(line);
+			}
 		}
 		return lines;
 	}
@@ -1419,7 +1389,7 @@ public class Quests extends StdLibrary implements QuestManager
 				inScript=true;
 				continue;
 			}
-			if(cmd.equals("STEP"))
+			if(cmd.equals("STEP")&&(!inScript))
 			{
 				parsed.addElement(scr.toString());
 				scr=new StringBuffer("");
@@ -1763,7 +1733,7 @@ public class Quests extends StdLibrary implements QuestManager
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public Quest questMaker(final MOB mob)
+	public Quest questMakerCommandLine(final MOB mob)
 	{
 		if(mob.isMonster())
 			return null;
