@@ -3464,11 +3464,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(newType.equals("?"))
 			{
 				final StringBuilder say=new StringBuilder("");
-				for(int i=1;i<Area.THEME_PHRASE.length;i++)
+				for(int i=0;i<Area.THEME_PHRASE.length;i++)
 					say.append(i+") "+Area.THEME_PHRASE[i]+"\n\r");
 				mob.tell(say.toString());
 				q=false;
 			}
+			else
+			if(newType.trim().length()==0)
+				mob.tell(L("(no change)"));
 			else
 			{
 				q=true;
