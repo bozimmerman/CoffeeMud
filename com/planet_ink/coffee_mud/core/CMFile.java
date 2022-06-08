@@ -606,6 +606,16 @@ public class CMFile extends File
 				return dir;
 			return dir.get(fileName);
 		}
+
+		public final synchronized String fetchBestTargetDir(final String dirPath)
+		{
+			final CMVFSDir dir = fetchSubDir(dirPath, true);
+			if(dir==null)
+				return null;
+			if(dir.path.endsWith("/"))
+				return dir.path.substring(0,dir.path.length()-1);
+			return dir.path;
+		}
 	}
 
 	public static final void unloadVFS()
@@ -1423,10 +1433,12 @@ public class CMFile extends File
 			O=new StringBuffer(CMStrings.bytesToStr((byte[])data));
 		else
 			O=new StringBuffer(data.toString());
-		if((!isLocalFile())||(isVFSOnlyPathFile()))
+		if((!isLocalFile())
+		||(isVFSOnlyPathFile()))
 		{
 			if(append)
 				O=new StringBuffer(text().append(O).toString());
+			path = getBestVFSTargetDir(path);
 			String filename=getVFSPathAndName();
 			CMVFSFile info=getVFSInfo(filename);
 			if(info!=null)
@@ -1443,6 +1455,7 @@ public class CMFile extends File
 				info.saveData(filename,vfsBits,author(),O);
 			else
 			{
+
 				info = new CMVFSFile(filename,vfsBits&VFS_MASK_MASKSAVABLE,System.currentTimeMillis(),author);
 				getVFSDirectory().add(info);
 				CMLib.database().DBUpSertVFSFile(filename,vfsBits,author,System.currentTimeMillis(),O);
@@ -1577,6 +1590,15 @@ public class CMFile extends File
 		return vfs.fetch(vfsFilename);
 	}
 
+	private static final String getBestVFSTargetDir(final String path)
+	{
+		final CMVFSDir vfs=getVFSDirectory();
+		if(vfs==null)
+			return null;
+		final String vfsFilename=vfsifyFilename(path);
+		return vfs.fetchBestTargetDir(vfsFilename);
+	}
+
 	private static final Object getVFSData(final String filename)
 	{
 		final CMVFSFile file=getVFSInfo(filename);
@@ -1615,10 +1637,17 @@ public class CMFile extends File
 			return false;
 		if(demandVFS)
 			return true;
-		final int x=dir.lastIndexOf('/');
+		int x=dir.lastIndexOf('/');
 		if(x<0)
 			return false;
-		final CMVFSFile file=getVFSInfo(dir.substring(0,x+1));
+		CMVFSFile file=getVFSInfo(dir.substring(0,x+1));
+		while((file == null)&&(x>0))
+		{
+			x=dir.lastIndexOf('/',x-1);
+			if(x<0)
+				return false;
+			file=getVFSInfo(dir.substring(0,x+1));
+		}
 		if(file instanceof CMVFSDir)
 		{
 			final CMFile localFile = new CMFile(dir.substring(0,x+1),this.accessor,this.vfsBits);
