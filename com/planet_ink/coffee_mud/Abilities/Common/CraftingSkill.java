@@ -543,7 +543,11 @@ public class CraftingSkill extends GatheringSkill
 					{
 						if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)
 						||(((Wand)P).getSpell()!=null))
+						{
+							if(P instanceof RawMaterial)
+								P.delEffect(P.fetchEffect(A.ID()));
 							P.addNonUninvokableEffect(A);
+						}
 						else
 							((Wand)P).setSpell(A);
 					}
@@ -551,7 +555,11 @@ public class CraftingSkill extends GatheringSkill
 					if(P instanceof SpellHolder)
 					{
 						if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)
+						{
+							if(P instanceof RawMaterial)
+								P.delEffect(P.fetchEffect(A.ID()));
 							P.addNonUninvokableEffect(A);
+						}
 						else
 						if(((SpellHolder)P).getSpells().size()==0)
 							((SpellHolder)P).setSpellList(A.ID()+((A.text().length()==0)?"":("("+A.text()+")")));
@@ -559,12 +567,18 @@ public class CraftingSkill extends GatheringSkill
 							((SpellHolder)P).setSpellList(((SpellHolder)P).getSpellList()+";"+A.ID()+((A.text().length()==0)?"":("("+A.text()+")")));
 					}
 					else
+					{
+						if(P instanceof RawMaterial)
+							P.delEffect(P.fetchEffect(A.ID()));
 						P.addNonUninvokableEffect(A);
+					}
 				}
 				else
 				if(O instanceof Behavior)
 				{
 					final Behavior B=(Behavior)O;
+					if(P instanceof RawMaterial)
+						P.delBehavior(P.fetchBehavior(B.ID()));
 					P.addBehavior(B);
 				}
 			}
