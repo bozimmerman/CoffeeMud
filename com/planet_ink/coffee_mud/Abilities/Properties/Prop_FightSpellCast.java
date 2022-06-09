@@ -72,12 +72,16 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 
 	protected boolean allMobs = false;
 	protected boolean allItems = false;
+	protected boolean onlyMobs = false;
+	protected boolean onlyItems = false;
 
 	@Override
 	public void setMiscText(final String text)
 	{
 		allMobs = false;
 		allItems = false;
+		onlyMobs = false;
+		onlyItems = false;
 		super.setMiscText(text);
 	}
 
@@ -92,6 +96,16 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 		if(var.startsWith("ALLITEM"))
 		{
 			allItems=true;
+			return true;
+		}
+		if(var.startsWith("ONLYMOB"))
+		{
+			onlyMobs=true;
+			return true;
+		}
+		if(var.startsWith("ONLYITEM"))
+		{
+			onlyItems=true;
 			return true;
 		}
 		return false;
@@ -162,10 +176,10 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 								if((R!=null)&&((R.domainType()&Room.INDOORS)==0))
 								{
 									final Item I2=R.getRandomItem();
-									if(I2!=null)
+									if((I2!=null)&&(!onlyMobs))
 										stuff.add(I2);
 									final MOB M=R.fetchRandomInhabitant();
-									if(M!=null)
+									if((M!=null)&&(!onlyItems))
 										stuff.add(M);
 								}
 							}
