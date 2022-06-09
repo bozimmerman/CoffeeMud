@@ -118,6 +118,11 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			compiledMask=CMLib.masking().getPreCompiledMask(maskString);
 	}
 
+	protected boolean setOtherField(final String var)
+	{
+		return false;
+	}
+
 	protected final PairList<Ability, Integer> getMySpellsV()
 	{
 		if(spellV!=null)
@@ -152,6 +157,8 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 				ticks = Integer.valueOf(CMParms.getParmInt(thisOne,"TICKS",-1));
 				continue;
 			}
+			if(setOtherField(thisOne))
+				continue;
 			final int pctDex=thisOne.indexOf("% ");
 			if((pctDex>0) && (thisOne.substring(pctDex+1).trim().length()>0))
 				thisOne=thisOne.substring(pctDex+1).trim();

@@ -70,6 +70,33 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 		return TriggeredAffect.TRIGGER_HITTING_WITH;
 	}
 
+	protected boolean allMobs = false;
+	protected boolean allItems = false;
+
+	@Override
+	public void setMiscText(final String text)
+	{
+		allMobs = false;
+		allItems = false;
+		super.setMiscText(text);
+	}
+
+	@Override
+	protected boolean setOtherField(final String var)
+	{
+		if(var.startsWith("ALLMOB"))
+		{
+			allMobs=true;
+			return true;
+		}
+		if(var.startsWith("ALLITEM"))
+		{
+			allItems=true;
+			return true;
+		}
+		return false;
+	}
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
@@ -144,9 +171,34 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 							}
 							if(stuff.size()>0)
 							{
-								final Physical P=stuff.get(CMLib.dice().roll(1, stuff.size(), -1));
-								if(P!=null)
+								if(allMobs && allItems)
+								{
+									for(final Physical P : stuff)
+										addMeIfNeccessary(msg.source(),P,true,0,maxTicks);
+								}
+								else
+								if(allMobs)
+								{
+									for(final Physical P : stuff)
+									{
+										if(P instanceof MOB)
+											addMeIfNeccessary(msg.source(),P,true,0,maxTicks);
+									}
+								}
+								else
+								if(allItems)
+								{
+									for(final Physical P : stuff)
+									{
+										if(P instanceof Item)
+											addMeIfNeccessary(msg.source(),P,true,0,maxTicks);
+									}
+								}
+								else
+								{
+									final Physical P=stuff.get(CMLib.dice().roll(1, stuff.size(), -1));
 									addMeIfNeccessary(msg.source(),P,true,0,maxTicks);
+								}
 							}
 						}
 					}
