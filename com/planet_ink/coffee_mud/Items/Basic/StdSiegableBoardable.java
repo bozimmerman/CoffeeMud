@@ -1138,6 +1138,10 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 				if(weapons.size()>0)
 				{
 					final MOB mob = getFactoryAttacker(null);
+					mob.basePhyStats().setLevel(1);
+					mob.phyStats().setLevel(1);
+					mob.setName(name());
+					mob.setRiding(this);
 					final int[] coordsToHit;
 					final SiegableItem siegeTarget;
 					synchronized(this)
@@ -1363,22 +1367,23 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 								while(shotsRemaining-- > 0)
 								{
 									final Pair<MOB,Room> randomPair = (targets.size()>0)? targets.get(CMLib.dice().roll(1,targets.size(),-1)) : null;
+									if(randomPair != null)
+									{
+										// assume msg.source() is a factory mob
+										msg.source().basePhyStats().setLevel(randomPair.first.basePhyStats().level());
+										msg.source().phyStats().setLevel(randomPair.first.phyStats().level());
+										msg.source().setLocation(baseRoom);
+									}
 									if((CMLib.dice().rollPercentage() < chanceToHit)&&(randomPair != null))
 									{
-										msg.source().setLocation(baseRoom);
-										final int pointsLost = (int)Math.round(pctLoss * msg.source().maxState().getHitPoints());
+										final int pointsLost = (int)Math.round(pctLoss * randomPair.first.maxState().getHitPoints());
 										CMLib.combat().postWeaponDamage(msg.source(), randomPair.first, weapon, pointsLost);
 									}
 									else
 									if(randomPair != null)
-									{
-										msg.source().setLocation(baseRoom);
 										CMLib.combat().postWeaponAttackResult(msg.source(), randomPair.first, weapon, false);
-									}
 									else
-									{
 										this.announceToOuterViewers(msg.source(), msg.target(), weapon, weapon.missString());
-									}
 								}
 							}
 							finally

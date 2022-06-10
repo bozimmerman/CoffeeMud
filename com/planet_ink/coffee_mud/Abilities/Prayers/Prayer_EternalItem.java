@@ -93,7 +93,7 @@ public class Prayer_EternalItem extends Prayer
 		super.affectPhyStats(affected, affectableStats);
 		if(!(affected instanceof Item))
 			return;
-		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ITEMNORUIN);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ITEMNORUIN|PhyStats.SENSE_ITEMNOWISH);
 		if(((Item)affected).subjectToWearAndTear())
 			((Item)affected).setUsesRemaining(100);
 	}
@@ -127,9 +127,9 @@ public class Prayer_EternalItem extends Prayer
 	}
 
 	/**
-	Description	This prayer will make a holy item of the Reliquists deity protected from damage and destruction. This prayer is very draining on the caster, however, 
+	Description	This prayer will make a holy item of the Reliquists deity protected from damage and destruction. This prayer is very draining on the caster, however,
 	causing the caster to lose 100 maximum mana points.  The caster must also be at full mana to cast.
-	Builders Notes	The target item must already have a zapper mask restricting item use to the casters deity, 
+	Builders Notes	The target item must already have a zapper mask restricting item use to the casters deity,
 	and any alignment restrictions on the item must allow for the casters alignment.
 //	The item maintains its current level.
 	The item gains of (deitys name) to its name (if it doesnt already have the name of the deity in its name).
@@ -151,7 +151,8 @@ public class Prayer_EternalItem extends Prayer
 			mob.tell(L("You don't see '@x1' here.",(commands.get(commands.size()-1))));
 			return false;
 		}
-		if(!(target instanceof Wand))
+		if((target instanceof Boardable)
+		||(target instanceof Wand))
 		{
 			mob.tell(mob,target,null,L("You can't protect <T-NAME> eternally."));
 			return false;
