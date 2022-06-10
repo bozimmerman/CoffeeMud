@@ -2031,6 +2031,21 @@ public class StdMOB implements MOB
 	}
 
 	@Override
+	public Pair<Object, List<String>> getTopCommand()
+	{
+		Pair<Object, List<String>> top = null;
+		synchronized(commandQue)
+		{
+			if(!commandQue.isEmpty())
+			{
+				final QMCommand QM=commandQue.peekFirst();
+				top=new Pair<Object, List<String>>(QM.commandObj, QM.commandVector);
+			}
+		}
+		return top;
+	}
+
+	@Override
 	public boolean dequeCommand()
 	{
 		while ((!removeFromGame)
@@ -2200,6 +2215,31 @@ public class StdMOB implements MOB
 		return overrideActionCost;
 	}
 
+	protected void checkCommandCancel()
+	{
+		synchronized (commandQue)
+		{
+			if(!commandQue.isEmpty())
+			{
+				final QMCommand cmd = commandQue.peekFirst();
+				if((cmd.commandObj instanceof Command)
+				&&(((Command)cmd.commandObj).canBeCancelled()))
+				{
+					try
+					{
+						((Command)cmd.commandObj).preExecute(me, cmd.commandVector, cmd.metaFlags, -1, cmd.actionCost);
+					}
+					catch(final Exception e)
+					{
+						Log.errOut(e);
+					}
+					if((!commandQue.isEmpty())&&(commandQue.peekFirst() == cmd))
+						commandQue.removeFirst();
+				}
+			}
+		}
+	}
+
 	@Override
 	public void prequeCommand(final List<String> commands, final int metaFlags, double actionCost)
 	{
@@ -2218,6 +2258,7 @@ public class StdMOB implements MOB
 			doCommand(O, commands, metaFlags);
 		else
 		{
+			checkCommandCancel();
 			synchronized (commandQue)
 			{
 				final QMCommand cmd = new QMCommand();
@@ -2292,6 +2333,8 @@ public class StdMOB implements MOB
 		if ((actionCost == 0.0) && (!CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_INORDER)))
 			doCommand(commands, metaFlags);
 		else
+		{
+			checkCommandCancel();
 			synchronized (commandQue)
 			{
 				final QMCommand cmd = new QMCommand();
@@ -2303,6 +2346,7 @@ public class StdMOB implements MOB
 				cmd.commandVector = commands;
 				commandQue.addLast(cmd);
 			}
+		}
 		dequeCommand();
 	}
 

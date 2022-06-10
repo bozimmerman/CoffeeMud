@@ -46,18 +46,16 @@ public class Pull extends Go
 		return access;
 	}
 
-	@Override
-	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
-		throws java.io.IOException
+	public Quad<Physical,String,Integer,Environmental> getArgs(final MOB mob, final List<String> commands, final boolean quiet)
 	{
-		final Vector<String> origCmds=new XVector<String>(commands);
+		final Vector<String> workCmds=new XVector<String>(commands);
 		Physical pullThis=null;
 		String dir="";
 		int dirCode=-1;
 		Environmental E=null;
-		if(commands.size()>1)
+		if(workCmds.size()>1)
 		{
-			dirCode=CMLib.directions().getGoodDirectionCode(commands.get(commands.size()-1));
+			dirCode=CMLib.directions().getGoodDirectionCode(workCmds.get(workCmds.size()-1));
 			if(dirCode>=0)
 			{
 				final Room nextR=mob.location().getRoomInDir(dirCode);
@@ -66,29 +64,34 @@ public class Pull extends Go
 				||(nextE==null)
 				||(!nextE.isOpen()))
 				{
-					// checked later
+					if(CMLib.flags().isFloatingFreely(mob))
+						E=mob.location();
+					else
+						E=null;
 				}
 				else
 					E=nextR;
 				dir=" "+CMLib.directions().getDirectionName(dirCode, CMLib.flags().getInDirType(mob));
-				commands.remove(commands.size()-1);
+				workCmds.remove(workCmds.size()-1);
 			}
 		}
 		if(dir.length()==0)
 		{
-			dirCode=CMLib.directions().getGoodDirectionCode(commands.get(commands.size()-1));
+			dirCode=CMLib.directions().getGoodDirectionCode(workCmds.get(workCmds.size()-1));
 			if(dirCode>=0)
 				pullThis=mob.location().getExitInDir(dirCode);
 		}
-		final String itemName=CMParms.combine(commands,1);
+		final String itemName=CMParms.combine(workCmds,1);
 		if(pullThis==null)
 			pullThis=mob.location().fetchFromRoomFavorItems(null,itemName);
 		if(pullThis==null)
 			pullThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,itemName,Wearable.FILTER_ANY);
+
 		if((pullThis==null)||(!CMLib.flags().canBeSeenBy(pullThis,mob)))
 		{
-			CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",itemName));
-			return false;
+			if(!quiet)
+				CMLib.commands().postCommandFail(mob,commands,L("You don't see '@x1' here.",itemName));
+			return null;
 		}
 		if((E==null)
 		&&(dirCode>=0))
@@ -98,10 +101,115 @@ public class Pull extends Go
 				E=mob.location();
 			else
 			{
-				CMLib.commands().postCommandFail(mob,origCmds,L("You can't pull anything that way."));
-				return false;
+				if(!quiet)
+					CMLib.commands().postCommandFail(mob,commands,L("You can't pull anything that way."));
+				return null;
 			}
 		}
+		if(super.isOccupiedWithOtherWork(mob))
+		{
+			if(!quiet)
+				CMLib.commands().postCommandFail(mob,new StringXVector(commands),L("You are too busy to pull anything right now."));
+			return null;
+		}
+		if(mob.isInCombat() && (!(pullThis instanceof MOB)))
+		{
+			if(!quiet)
+				CMLib.commands().postCommandFail(mob,new StringXVector(commands),L("You are too busy fighting right now."));
+			return null;
+		}
+		return new Quad<Physical,String,Integer,Environmental>(pullThis, dir, Integer.valueOf(dirCode), E);
+	}
+
+	@Override
+	public boolean preExecute(final MOB mob, final List<String> commands, final int metaFlags, final int secondsElapsed, final double actionsRemaining)
+	throws java.io.IOException
+	{
+		final Quad<Physical,String,Integer,Environmental> args=getArgs(mob,commands,false);
+		if(args == null)
+			return false;
+
+		final boolean stop = secondsElapsed == -1;
+		if(stop)
+		{
+			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> stop(s) pulling @x1.",args.first.name(mob)));
+			if(mob.location().okMessage(mob,msg))
+			{
+				mob.location().send(mob,msg);
+				mob.clearCommandQueue();
+			}
+			return false;
+		}
+		final int malmask=(args.first instanceof MOB)?CMMsg.MASK_MALICIOUS:0;
+		if(secondsElapsed==0)
+		{
+			final String msgStr = "<S-NAME> start(s) pulling <T-NAME>"+args.second+".";
+			final CMMsg msg=CMClass.getMsg(mob,args.first,args.fourth,CMMsg.MSG_PULL|malmask,msgStr);
+			msg.setValue(args.third.intValue());
+			if(mob.location().okMessage(mob,msg))
+				mob.location().send(mob,msg);
+			else
+				return false;
+		}
+		else
+		if((secondsElapsed % 8)==0)
+		{
+			final String msgStr = "<S-NAME> continue(s) pulling <T-NAME>"+args.second+".";
+			final CMMsg msg=CMClass.getMsg(mob,args.first,args.fourth,CMMsg.MSG_PULL|malmask,msgStr);
+			msg.setValue(args.third.intValue());
+			if(mob.location().okMessage(mob,msg))
+				mob.location().send(mob,msg);
+			else
+				return false;
+		}
+		return true;
+	}
+
+	protected Pair<Integer,Integer> getClearHelpers(final MOB mob, final Physical targetObj)
+	{
+		final Room R=(mob==null)?null:mob.location();
+		if(R==null)
+			return null;
+		int totalHelpers = 0;
+		int maxCarry = 0;
+		for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+		{
+			final MOB M=m.nextElement();
+			if(M!=null)
+			{
+				final Pair<Object, List<String>> qm = M.getTopCommand();
+				if((qm != null)
+				&&(qm.first == this))
+				{
+					final Quad<Physical,String,Integer,Environmental> args=getArgs(M, qm.second, true);
+					if(args != null)
+					{
+						if(args.first == targetObj)
+						{
+							totalHelpers++;
+							maxCarry += M.maxCarry();
+							M.clearCommandQueue();
+						}
+					}
+				}
+			}
+		}
+		return new Pair<Integer,Integer>(Integer.valueOf(totalHelpers), Integer.valueOf(maxCarry));
+	}
+
+	@Override
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
+		throws java.io.IOException
+	{
+		final Quad<Physical,String,Integer,Environmental> args=getArgs(mob,commands,false);
+		if(args == null)
+			return false;
+
+		final Physical pullThis=args.first;
+		final String dir=args.second;
+		int dirCode=args.third.intValue();
+		final Environmental E=args.fourth;
+
 		final CMMsg msg=CMClass.getMsg(mob,pullThis,E,CMMsg.MSG_PULL,L("<S-NAME> pull(s) <T-NAME>@x1.",dir));
 		msg.setValue(dirCode);
 		if(mob.location().okMessage(mob,msg))
@@ -116,19 +224,25 @@ public class Pull extends Go
 				&&(R!=mob.location())
 				&&(CMLib.tracking().walk(mob,dirCode,false,false,false,false)))
 				{
-					int expense = Math.round(CMath.sqrt(pullThis.phyStats().weight()));
+					final Pair<Integer,Integer> helpers = getClearHelpers(mob, pullThis);
+					final int movesRequired = pullThis.phyStats().movesReqToPush() - ((mob.maxCarry()+helpers.second.intValue()) / 3);
+					if(movesRequired > 0)
+						mob.curState().adjMovement(-movesRequired, mob.maxState());
+					int expense = Math.round(CMath.sqrt(pullThis.phyStats().weight()/(1+helpers.first.intValue())));
 					if(expense < CMProps.getIntVar(CMProps.Int.RUNCOST))
 						expense = CMProps.getIntVar(CMProps.Int.RUNCOST);
 					for(int i=0;i<expense;i++)
 						CMLib.combat().expendEnergy(mob,true);
+					if(mob.curState().getMovement()<=0)
+					{
+						mob.location().show(mob, pullThis, CMMsg.MSG_OK_ACTION, L("<S-NAME> fail(s) to pull <T-NAME> due to <T-HIS-HER> weight."));
+						return false;
+					}
 					if(pullThis instanceof Item)
 						R.moveItemTo((Item)pullThis,ItemPossessor.Expire.Player_Drop,ItemPossessor.Move.Followers);
 					else
 					if(pullThis instanceof MOB)
 						CMLib.tracking().walk((MOB)pullThis,dirCode,((MOB)pullThis).isInCombat(),false,true,true);
-					final int movesRequired = pullThis.phyStats().movesReqToPull() - (mob.maxCarry() / 3);
-					if(movesRequired > 0)
-						mob.curState().adjMovement(-movesRequired, mob.maxState());
 				}
 			}
 		}
@@ -138,17 +252,29 @@ public class Pull extends Go
 	@Override
 	public double combatActionsCost(final MOB mob, final List<String> cmds)
 	{
-		return CMProps.getCommandCombatActionCost(ID());
+		final double cost=CMProps.getCommandCombatActionCost(ID());
+		if(mob == null)
+			return cost;
+		return cost + mob.actions() + mob.phyStats().speed();
 	}
 
 	@Override
 	public double actionsCost(final MOB mob, final List<String> cmds)
 	{
-		return CMProps.getCommandActionCost(ID());
+		final double cost = CMProps.getCommandActionCost(ID());
+		if(mob == null)
+			return cost;
+		return cost + mob.actions() + mob.phyStats().speed();
 	}
 
 	@Override
 	public boolean canBeOrdered()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeCancelled()
 	{
 		return true;
 	}

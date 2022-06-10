@@ -786,6 +786,12 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	}
 
 	@Override
+	public Pair<Object, List<String>> getTopCommand()
+	{
+		return null;
+	}
+
+	@Override
 	public int commandQueSize()
 	{
 		return 0;
@@ -1496,6 +1502,5 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	{
 		return new EmptyEnumeration<String>();
 	}
-
 
 }

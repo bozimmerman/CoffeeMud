@@ -167,6 +167,21 @@ public class StdCommand implements Command
 		return false;
 	}
 
+	protected boolean isOccupiedWithOtherWork(final MOB mob)
+	{
+		if(mob==null)
+			return false;
+		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
+			if((A!=null)
+			&&(!A.isAutoInvoked())
+			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
+				return true;
+		}
+		return false;
+	}
+
 	@Override
 	public double actionsCost(final MOB mob, final List<String> cmds)
 	{
@@ -177,6 +192,12 @@ public class StdCommand implements Command
 	public double combatActionsCost(final MOB mob, final List<String> cmds)
 	{
 		return CMProps.getCommandCombatActionCost(ID(), 0.0);
+	}
+
+	@Override
+	public boolean canBeCancelled()
+	{
+		return false;
 	}
 
 	@Override

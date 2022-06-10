@@ -131,8 +131,12 @@ public interface Command extends CMObject
 	 * does not have enough actions to complete it immediately.  The
 	 * method is called when the command is entered, and every second
 	 * afterwards until the invoker has enough actions to complete it.
-	 * At completion time, execute is called.
+	 * At completion time, execute is called.  It is called with -1
+	 * seconds elapsed if it is cancelled.
+	 *
 	 * @see Command#execute(MOB, List, int)
+	 * @see Command#canBeCancelled()
+	 *
 	 * @param mob the player or mob invoking the command
 	 * @param commands the parameters entered for the command (including the trigger word)
 	 * @param metaFlags flags denoting how the command is being executed
@@ -143,6 +147,18 @@ public interface Command extends CMObject
 	 */
 	public boolean preExecute(MOB mob, List<String> commands, int metaFlags, int secondsElapsed, double actionsRemaining)
 		throws java.io.IOException;
+
+	/**
+	 * Returns true if the command will not be executed if all are true:
+	 * 1. the player lacks the actions to complete the command in one tick
+	 * 2. the player has an queued command whose action cost > 0.0
+	 * When cancelled, preExecute is called with a secondsElapsed of -1
+	 *
+	 * @see Command#preExecute(MOB, List, int, int, double)
+	 *
+	 * @return true if the command can be cancelled, false otherwise
+	 */
+	public boolean canBeCancelled();
 
 	/**
 	 * This method is used for making "insider" calls to the command.  It's parameters

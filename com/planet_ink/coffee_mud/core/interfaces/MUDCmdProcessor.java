@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior;
 import com.planet_ink.coffee_mud.Common.interfaces.PhyStats;
 import com.planet_ink.coffee_mud.Common.interfaces.Tattoo;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
+import com.planet_ink.coffee_mud.core.collections.Pair;
 
 /*
    Copyright 2015-2022 Bo Zimmerman
@@ -62,6 +63,7 @@ public interface MUDCmdProcessor
 	 * @see MUDCmdProcessor#dequeCommand()
 	 * @see MUDCmdProcessor#clearCommandQueue()
 	 * @see MUDCmdProcessor#doCommand(List, int)
+	 * @see MUDCmdProcessor#getTopCommand()
 	 * @see MUDCmdProcessor#actions()
 	 * @param commands the parsed command string tokens
 	 * @param metaFlags meta-command flags to send to the command, if any
@@ -77,11 +79,23 @@ public interface MUDCmdProcessor
 	 * @see MUDCmdProcessor#dequeCommand()
 	 * @see MUDCmdProcessor#clearCommandQueue()
 	 * @see MUDCmdProcessor#doCommand(List, int)
+	 * @see MUDCmdProcessor#getTopCommand()
 	 * @see MUDCmdProcessor#actions()
 	 * @param commands the parsed commands string tokens
 	 * @param metaFlags meta-command flags to send to the command, if any
 	 */
 	public void enqueCommands(List<List<String>> commands, int metaFlags);
+
+	/**
+	 * Returns the command at the top of this processors que, which
+	 * might be in an action wait state.
+	 *
+	 * @see MUDCmdProcessor#dequeCommand()
+	 * @see MUDCmdProcessor#doCommand(List, int)
+	 *
+	 * @return the top command and their arguments.
+	 */
+	public Pair<Object,List<String>> getTopCommand();
 
 	/**
 	 * Parses the given command string tokens to determine what kind of command is
@@ -90,6 +104,7 @@ public interface MUDCmdProcessor
 	 * execution once sufficient actions are available.
 	 * @see MUDCmdProcessor#dequeCommand()
 	 * @see MUDCmdProcessor#clearCommandQueue()
+	 * @see MUDCmdProcessor#getTopCommand()
 	 * @see MUDCmdProcessor#doCommand(List, int)
 	 * @see MUDCmdProcessor#actions()
 	 * @param commands the parsed command string tokens
@@ -105,6 +120,7 @@ public interface MUDCmdProcessor
 	 * execution once sufficient actions are available.
 	 * @see MUDCmdProcessor#dequeCommand()
 	 * @see MUDCmdProcessor#clearCommandQueue()
+	 * @see MUDCmdProcessor#getTopCommand()
 	 * @see MUDCmdProcessor#doCommand(List, int)
 	 * @param commands the parsed command string tokens
 	 * @param metaFlags meta-command flags to send to the command, if any
@@ -128,6 +144,7 @@ public interface MUDCmdProcessor
 	 * Cancels and empties the command que of this processor.
 	 * @see MUDCmdProcessor#dequeCommand()
 	 * @see MUDCmdProcessor#enqueCommand(List, int, double)
+	 * @see MUDCmdProcessor#getTopCommand()
 	 * @see MUDCmdProcessor#doCommand(List, int)
 	 * @see MUDCmdProcessor#commandQueSize()
 	 * @see MUDCmdProcessor#actions()
@@ -139,6 +156,7 @@ public interface MUDCmdProcessor
 	 * @see MUDCmdProcessor#dequeCommand()
 	 * @see MUDCmdProcessor#clearCommandQueue()
 	 * @see MUDCmdProcessor#doCommand(List, int)
+	 * @see MUDCmdProcessor#getTopCommand()
 	 * @see MUDCmdProcessor#enqueCommand(List, int, double)
 	 * @see MUDCmdProcessor#actions()
 	 * @return the number of commands on this processors que
