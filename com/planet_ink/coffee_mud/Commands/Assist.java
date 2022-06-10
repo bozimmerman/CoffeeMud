@@ -99,7 +99,17 @@ public class Assist extends StdCommand
 			final String recipientName=mob.location().getContextName(recipientM);
 			return commonA.invoke(mob, new XVector<String>("HELP",recipientName), null, false, 0);
 		}
-		
+
+		final Pair<Object, List<String>> cmd = recipientM.getTopCommand();
+		if((cmd != null)
+		&&(cmd.first instanceof Command)
+		&&(((Command)cmd.first).ID().equals("Push")||((Command)cmd.first).ID().equals("Pull")))
+		{
+			mob.clearCommandQueue();
+			mob.enqueCommand(cmd.second, metaFlags, 0.0);
+			return true;
+		}
+
 		CMLib.commands().postCommandFail(mob,origCmds,L("@x1 doesn't seem to be doing anything you can assist @x2 with.",recipientM.name(mob),recipientM.charStats().himher()));
 		return false;
 	}
