@@ -19,7 +19,8 @@
  18. Prop_LangTranslator now has a ridiculously expanded functionality
  19. AnimalTraining now supports mundane things like sit, kill, etc.
  20. AREAS now supports EXPLORED argument
- 21. PUSH and PULL now take a tick, and can fail from weight, but supports help
+ 21. New command: ASSIST 
+ 22. PUSH and PULL now take a tick, and can fail from weight, but supports assist
 
 # Build 5.9.12 Release 1/17/2022
   *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG
