@@ -180,16 +180,16 @@ HELP_=<EXPERTISE>The ability to do more damage when using a piercing-type edged-
 EDGEFOCUS@x1=Edged Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_EdgedWeapon +Specialization_Dagger,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability for fighters to wield higher level edged-class weapon.
 
-FLAILEDSTRIKE@x1=Flailed Striking @x2,10,LEVEL,-SKILL +Specialization_FlailedWeapon,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
+FLAILEDSTRIKE@x1=Flailed Striking @x2,10,LEVEL,-SKILL +Specialization_FlailedWeapon +Specialization_Whip,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using a flail-class weapon.
 
-FLAILEDSLASH@x1=Flailed Slicing @x2,10,X1,-SKILL +Specialization_FlailedWeapon,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
+FLAILEDSLASH@x1=Flailed Slicing @x2,10,X1,-SKILL +Specialization_FlailedWeapon +Specialization_Whip,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to do more damage when using a slashing/slicing-type flail-class weapon.
 
-FLAILEDBASH@x1=Flailed Bashing @x2,10,X3,-SKILL +Specialization_FlailedWeapon,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
+FLAILEDBASH@x1=Flailed Bashing @x2,10,X3,-SKILL +Specialization_FlailedWeapon +Specialization_Whip,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to do more damage when using a bashing-type flail-class weapon.
 
-FLAILEDFOCUS@x1=Flailed Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_FlailedWeapon,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
+FLAILEDFOCUS@x1=Flailed Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_FlailedWeapon +Specialization_Whip,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability for fighters to wield higher level flail-class weapons.
 
 SIEGEBASH@x1=Siege Bashing @x2,10,X3,-SKILL +Specialization_SiegeWeapon,-MAXCLASSLEVEL +>={27+(5*@x1)},+INT {15+@x1},0,1,0,0,0
