@@ -116,7 +116,7 @@ public class Prayer_EternalItem extends Prayer
 				if(CMStrings.containsWord(affected.Name().toLowerCase(), text().toLowerCase()))
 					newName = affected.Name();
 				else
-					newName = affected.Name()+L("of @x1",text());
+					newName = affected.Name()+L(" of @x1",text());
 			}
 			else
 				newName = affected.Name();
@@ -159,12 +159,12 @@ public class Prayer_EternalItem extends Prayer
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		if(commands.size()<2)
+		if((commands.size()<1)&&(givenTarget == null))
 		{
 			mob.tell(L("Protect what eternally?"));
 			return false;
 		}
-		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,commands.get(commands.size()-1),Wearable.FILTER_UNWORNONLY);
+		final Physical target=super.getTarget(mob, mob.location(), givenTarget, commands, Wearable.FILTER_ANY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell(L("You don't see '@x1' here.",(commands.get(commands.size()-1))));
@@ -188,7 +188,7 @@ public class Prayer_EternalItem extends Prayer
 		}
 		if(!checkRequiredInfusion(mob, target))
 		{
-			mob.tell(L("@x1 cannot be imbued until it has been empowered by your deity.",target.name(mob)));
+			mob.tell(L("@x1 cannot be made eternal until it has been empowered by your deity.",target.name(mob)));
 			return false;
 		}
 
@@ -210,7 +210,8 @@ public class Prayer_EternalItem extends Prayer
 				mob.baseState().setMana(mob.baseState().getMana()-100);
 				final Prayer_EternalItem pA=(Prayer_EternalItem)copyOf();
 				pA.setMiscText(mob.baseCharStats().getWorshipCharID());
-				target.addNonUninvokableEffect(this);
+				target.addNonUninvokableEffect(pA);
+				target.recoverPhyStats();
 			}
 		}
 		else
