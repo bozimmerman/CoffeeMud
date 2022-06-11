@@ -2606,18 +2606,12 @@ public class StdMOB implements MOB
 						final int totalWeight = CMLib.utensils().getPullWeight((Physical) msg.target());
 						if ((maxCarry() * 10) < totalWeight)
 						{
-							tell(L("That's way too heavy."));
+							if(msg.targetMinor() == CMMsg.TYP_PUSH)
+								tell(L("That's way too heavy to push."));
+							else
+								tell(L("That's way too heavy to pull."));
 							return false;
 						}
-					}
-					final int movesReq = ((msg.targetMinor() == CMMsg.TYP_PUSH) ?
-							((Physical) msg.target()).phyStats().movesReqToPush() :
-							((Physical) msg.target()).phyStats().movesReqToPull()) - ((maxCarry() - phyStats().weight()) / 3);
-					if ((curState.getMovement() < movesReq)
-					&& (curState.getMovement() < maxState.getMovement()))
-					{
-						tell(L("You don't have enough movement."));
-						return false;
 					}
 				}
 				//$FALL-THROUGH$

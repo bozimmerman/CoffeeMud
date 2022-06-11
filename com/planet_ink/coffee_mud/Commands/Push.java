@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.ExtAbility;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -44,6 +45,29 @@ public class Push extends Go
 	public String[] getAccessWords()
 	{
 		return access;
+	}
+
+	public Ability getStrAdjuster(final int adjustment)
+	{
+		ExtAbility A=(ExtAbility)CMClass.getAbility("ExtAbility");
+		return A.setStatsAffector(new StatsAffecting() {
+			private final int strAdj = adjustment;
+			@Override
+			public void affectPhyStats(Physical affected, PhyStats affectableStats)
+			{
+			}
+
+			@Override
+			public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+			{
+				affectableStats.adjStat(CharStats.STAT_STRENGTH, strAdj);
+			}
+
+			@Override
+			public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+			{
+			}
+		});
 	}
 
 	public Quad<Physical,String,Integer,Environmental> getArgs(final MOB mob, final List<String> commands, final boolean quiet)
@@ -120,6 +144,81 @@ public class Push extends Go
 		}
 		return new Quad<Physical,String,Integer,Environmental>(pushThis, dir, Integer.valueOf(dirCode), E);
 	}
+	
+	protected List<Pair<MOB,Quad<Physical,String,Integer,Environmental>>> getHelpers(final MOB mob, final Physical targetObj)
+	{
+		final List<Pair<MOB,Quad<Physical,String,Integer,Environmental>>> lst = new ArrayList<Pair<MOB,Quad<Physical,String,Integer,Environmental>>>();
+		final Room R=(mob==null)?null:mob.location();
+		if(R!=null)
+		{
+			for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+			{
+				final MOB M=m.nextElement();
+				if((M!=null)
+				&&(M != mob))
+				{
+					final Pair<Object, List<String>> qm = M.getTopCommand();
+					if((qm != null)
+					&&(qm.first == this))
+					{
+						final Quad<Physical,String,Integer,Environmental> args=getArgs(M, qm.second, true);
+						if(args != null)
+						{
+							if(args.first == targetObj)
+								lst.add(new Pair<MOB,Quad<Physical,String,Integer,Environmental>>(M,args));
+						}
+					}
+				}
+			}
+		}
+		return lst;
+	}
+	
+	protected Pair<Integer,Integer> getHelpAmounts(final MOB mob, final Physical targetObj, final Environmental targetDir)
+	{
+		final Room R=(mob==null)?null:mob.location();
+		if(R==null)
+			return null;
+		int totalHelpers = 0;
+		int extraStrength = 0;
+		for(final Pair<MOB,Quad<Physical,String,Integer,Environmental>> p : getHelpers(mob, targetObj))
+		{
+			totalHelpers++;
+			if(p.second.fourth == targetDir)
+				extraStrength += p.first.charStats().getStat(CharStats.STAT_STRENGTH);
+			else
+				extraStrength -= p.first.charStats().getStat(CharStats.STAT_STRENGTH);
+		}
+		return new Pair<Integer,Integer>(Integer.valueOf(totalHelpers), Integer.valueOf(extraStrength));
+	}
+
+	public Ability applyAnyAdjustment(final MOB mob, final Quad<Physical,String,Integer,Environmental> args)
+	{
+		if(args == null)
+			return null;
+		final Pair<Integer,Integer> helpers = getHelpAmounts(mob, args.first, args.fourth);
+		Ability adj = null;
+		if(helpers.second.intValue() != 0)
+		{
+			adj = getStrAdjuster(helpers.second.intValue());
+			if(adj != null)
+			{
+				mob.addNonUninvokableEffect(adj);
+				mob.recoverCharStats();
+			}
+		}
+		return adj;
+	}
+	
+	public void clearAdjustment(final MOB mob, final Ability adjA)
+	{
+		if(adjA != null)
+		{
+			mob.delEffect(adjA);
+			mob.recoverCharStats();
+		}
+	}
+	
 
 	@Override
 	public boolean preExecute(final MOB mob, final List<String> commands, final int metaFlags, final int secondsElapsed, final double actionsRemaining)
@@ -144,57 +243,41 @@ public class Push extends Go
 		if(secondsElapsed==0)
 		{
 			final String msgStr = "<S-NAME> start(s) pushing <T-NAME>"+args.second+".";
-			final CMMsg msg=CMClass.getMsg(mob,args.first,args.fourth,CMMsg.MSG_PUSH|malmask,msgStr);
-			msg.setValue(args.third.intValue());
-			if(mob.location().okMessage(mob,msg))
-				mob.location().send(mob,msg);
-			else
-				return false;
+			final Ability adjA = applyAnyAdjustment(mob, args);
+			try
+			{
+				final CMMsg msg=CMClass.getMsg(mob,args.first,args.fourth,CMMsg.MSG_PUSH|malmask,msgStr);
+				msg.setValue(args.third.intValue());
+				if(mob.location().okMessage(mob,msg))
+					mob.location().show(mob, args.first, args.fourth, CMMsg.MSG_NOISYMOVEMENT|malmask, msgStr);
+				else
+					return false;
+			}
+			finally
+			{
+				clearAdjustment(mob, adjA);
+			}
 		}
 		else
 		if((secondsElapsed % 8)==0)
 		{
 			final String msgStr = "<S-NAME> continue(s) pushing <T-NAME>"+args.second+".";
-			final CMMsg msg=CMClass.getMsg(mob,args.first,args.fourth,CMMsg.MSG_PUSH|malmask,msgStr);
-			msg.setValue(args.third.intValue());
-			if(mob.location().okMessage(mob,msg))
-				mob.location().send(mob,msg);
-			else
-				return false;
-		}
-		return true;
-	}
-
-	protected Pair<Integer,Integer> getClearHelpers(final MOB mob, final Physical targetObj)
-	{
-		final Room R=(mob==null)?null:mob.location();
-		if(R==null)
-			return null;
-		int totalHelpers = 0;
-		int maxCarry = 0;
-		for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
-		{
-			final MOB M=m.nextElement();
-			if(M!=null)
+			final Ability adjA = applyAnyAdjustment(mob, args);
+			try
 			{
-				final Pair<Object, List<String>> qm = M.getTopCommand();
-				if((qm != null)
-				&&(qm.first == this))
-				{
-					final Quad<Physical,String,Integer,Environmental> args=getArgs(M, qm.second, true);
-					if(args != null)
-					{
-						if(args.first == targetObj)
-						{
-							totalHelpers++;
-							maxCarry += M.maxCarry();
-							M.clearCommandQueue();
-						}
-					}
-				}
+				final CMMsg msg=CMClass.getMsg(mob,args.first,args.fourth,CMMsg.MSG_PUSH|malmask,msgStr);
+				msg.setValue(args.third.intValue());
+				if(mob.location().okMessage(mob,msg))
+					mob.location().show(mob, args.first, args.fourth, CMMsg.MSG_NOISYMOVEMENT|malmask, msgStr);
+				else
+					return false;
+			}
+			finally
+			{
+				clearAdjustment(mob, adjA);
 			}
 		}
-		return new Pair<Integer,Integer>(Integer.valueOf(totalHelpers), Integer.valueOf(maxCarry));
+		return true;
 	}
 
 	@Override
@@ -214,45 +297,60 @@ public class Push extends Go
 		final String msgStr = "<S-NAME> push(es) <T-NAME>"+dir+".";
 		final CMMsg msg=CMClass.getMsg(mob,pushThis,E,CMMsg.MSG_PUSH|malmask,msgStr);
 		msg.setValue(dirCode);
-		if(mob.location().okMessage(mob,msg))
+		final Ability adjA = applyAnyAdjustment(mob, args);
+		try
 		{
-			mob.location().send(mob,msg);
-			if((dir.length()>0)
-			&&(msg.tool() instanceof Room)
-			&&(msg.tool()!=mob.location()))
+			if(mob.location().okMessage(mob,msg))
 			{
-				final Room R=(Room)msg.tool();
-				if(R.okMessage(mob,msg))
+				mob.location().send(mob,msg);
+				if((dir.length()>0)
+				&&(msg.tool() instanceof Room)
+				&&(msg.tool()!=mob.location()))
 				{
-					dirCode=CMLib.tracking().findRoomDir(mob,R);
-					if(dirCode>=0)
+					final Room R=(Room)msg.tool();
+					if(R.okMessage(mob,msg))
 					{
-						if(msg.othersMessage().equals(msgStr))
-							msg.setOthersMessage("<S-NAME> push(es) <T-NAME> into here.");
-						final Pair<Integer,Integer> helpers = getClearHelpers(mob, pushThis);
-						final int movesRequired = pushThis.phyStats().movesReqToPush() - ((mob.maxCarry()+helpers.second.intValue()) / 3);
-						if(movesRequired > 0)
-							mob.curState().adjMovement(-movesRequired, mob.maxState());
-						int expense = Math.round(CMath.sqrt(pushThis.phyStats().weight()/(1+helpers.first.intValue())));
-						if(expense < CMProps.getIntVar(CMProps.Int.RUNCOST))
-							expense = CMProps.getIntVar(CMProps.Int.RUNCOST);
-						for(int i=0;i<expense;i++)
-							CMLib.combat().expendEnergy(mob,true);
-						if(mob.curState().getMovement()<=0)
+						final List<Pair<MOB,Quad<Physical,String,Integer,Environmental>>> helpers= getHelpers(mob, args.first);
+						dirCode=CMLib.tracking().findRoomDir(mob,R);
+						if(dirCode>=0)
 						{
-							mob.location().show(mob, pushThis, CMMsg.MSG_OK_ACTION, L("<S-NAME> fail(s) to push <T-NAME> due to <T-HIS-HER> weight."));
-							return false;
+							if(msg.othersMessage().equals(msgStr))
+								msg.setOthersMessage("<S-NAME> push(es) <T-NAME> into here.");
+							final int movesRequired = pushThis.phyStats().movesReqToPush() - (mob.maxCarry() / 3);
+							if(movesRequired > 0)
+								mob.curState().adjMovement(-movesRequired, mob.maxState());
+							int expense = Math.round(CMath.sqrt(pushThis.phyStats().weight()));
+							if(expense < CMProps.getIntVar(CMProps.Int.RUNCOST))
+								expense = CMProps.getIntVar(CMProps.Int.RUNCOST);
+							for(int i=0;i<expense;i++)
+								CMLib.combat().expendEnergy(mob,true);
+							for(Pair<MOB,Quad<Physical,String,Integer,Environmental>> p : helpers)
+							{
+								p.first.clearCommandQueue();
+								if(movesRequired > 0)
+									p.first.curState().adjMovement(-movesRequired, p.first.maxState());
+								for(int i=0;i<expense;i++)
+									CMLib.combat().expendEnergy(p.first,true);
+							}
+							if(mob.curState().getMovement()<=0)
+							{
+								mob.location().show(mob, pushThis, CMMsg.MSG_OK_ACTION, L("<S-NAME> fail(s) to push <T-NAME> due to <T-HIS-HER> weight."));
+								return false;
+							}
+							R.sendOthers(mob,msg);
+							if(pushThis instanceof Item)
+								R.moveItemTo((Item)pushThis,ItemPossessor.Expire.Player_Drop,ItemPossessor.Move.Followers);
+							else
+							if(pushThis instanceof MOB)
+								CMLib.tracking().walk((MOB)pushThis,dirCode,((MOB)pushThis).isInCombat(),false,true,true);
 						}
-						R.sendOthers(mob,msg);
-						if(pushThis instanceof Item)
-							R.moveItemTo((Item)pushThis,ItemPossessor.Expire.Player_Drop,ItemPossessor.Move.Followers);
-						else
-						if(pushThis instanceof MOB)
-							CMLib.tracking().walk((MOB)pushThis,dirCode,((MOB)pushThis).isInCombat(),false,true,true);
 					}
 				}
 			}
-
+		}
+		finally
+		{
+			clearAdjustment(mob, adjA);
 		}
 		return false;
 	}
@@ -261,18 +359,30 @@ public class Push extends Go
 	public double combatActionsCost(final MOB mob, final List<String> cmds)
 	{
 		final double cost=CMProps.getCommandCombatActionCost(ID());
-		if(mob == null)
+		if((mob == null)||(cmds==null)||(cmds.size()<3))
 			return cost;
-		return cost + mob.actions() + mob.phyStats().speed();
+		final Quad<Physical,String,Integer,Environmental> args=getArgs(mob,cmds,true);
+		if(args == null)
+			return cost;
+		final double time = CMath.div(args.first.phyStats().movesReqToPush(),mob.maxCarry()/3);
+		if(time <=1)
+			return cost + mob.actions();
+		return time * (cost + mob.actions() + mob.phyStats().speed() + mob.phyStats().speed());
 	}
 
 	@Override
 	public double actionsCost(final MOB mob, final List<String> cmds)
 	{
 		final double cost = CMProps.getCommandActionCost(ID());
-		if(mob == null)
+		if((mob == null)||(cmds==null)||(cmds.size()<3))
 			return cost;
-		return cost + mob.actions() + mob.phyStats().speed();
+		final Quad<Physical,String,Integer,Environmental> args=getArgs(mob,cmds,true);
+		if(args == null)
+			return cost;
+		final double time = CMath.div(args.first.phyStats().movesReqToPush(),mob.maxCarry()/3);
+		if(time <=1)
+			return cost + mob.actions();
+		return time * (cost + mob.actions() + mob.phyStats().speed() + mob.phyStats().speed());
 	}
 
 	@Override
