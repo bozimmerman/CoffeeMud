@@ -264,6 +264,8 @@ public class Reliquist extends Thief
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
 			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_ImbueFoulWeapon",false,"+SKILLS -Prayer_ImbueModestWeapon -Prayer_ImbueJustWeapon"); // special A
 
+		CMLib.ableMapper().addCharAbilityMapping(ID(),27,"Prayer_EternalItem",0,false);
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_SacredImbuingQuest",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Prayer_PlanarPilgrimage", 0, "", false,

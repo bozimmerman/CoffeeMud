@@ -80,6 +80,12 @@ public class Prayer_EternalItem extends Prayer
 	}
 
 	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_ALL;
+	}
+
+	@Override
 	public boolean appropriateToMyFactions(final MOB mob)
 	{
 		if(mob == null)
@@ -87,27 +93,38 @@ public class Prayer_EternalItem extends Prayer
 		return true;
 	}
 
+	private String newName = null;
+
+	@Override
+	public void setMiscText(final String newText)
+	{
+		super.setMiscText(newText.trim());
+		newName = null;
+	}
+
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected, affectableStats);
 		if(!(affected instanceof Item))
 			return;
+		if(newName == null)
+		{
+			if(text().length()>0)
+			{
+				if(CMStrings.containsWord(affected.Name().toLowerCase(), text().toLowerCase()))
+					newName = affected.Name();
+				else
+					newName = affected.Name()+L("of @x1",text());
+			}
+			else
+				newName = affected.Name();
+		}
+		affected.setName(newName);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ITEMNORUIN|PhyStats.SENSE_ITEMNOWISH);
 		if(((Item)affected).subjectToWearAndTear())
 			((Item)affected).setUsesRemaining(100);
-	}
-
-	@Override
-	public boolean tick(final Tickable ticking, final int tickID)
-	{
-		if(!super.tick(ticking,tickID))
-			return false;
-		if(!(affected instanceof Item))
-			return true;
-		if(((Item)affected).subjectToWearAndTear())
-			((Item)affected).setUsesRemaining(100);
-		return true;
 	}
 
 	@Override
@@ -115,6 +132,9 @@ public class Prayer_EternalItem extends Prayer
 	{
 		if(!super.okMessage(host,msg))
 			return false;
+		final Physical affected=this.affected;
+		if(affected == null)
+			return true;
 		if((msg.target()==affected)
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS)
 		   ||((msg.tool() instanceof Ability)&&(((Ability)msg.tool()).abstractQuality()==Ability.QUALITY_MALICIOUS)))
@@ -123,19 +143,18 @@ public class Prayer_EternalItem extends Prayer
 			msg.source().tell(L("@x1 is eternally protected!",affected.name()));
 			return false;
 		}
+		if((msg.target()==affected)||(msg.tool()==affected))
+		{
+			if(((Item)affected).subjectToWearAndTear())
+				((Item)affected).setUsesRemaining(100);
+		}
 		return true;
 	}
 
 	/**
-	Description	This prayer will make a holy item of the Reliquists deity protected from damage and destruction. This prayer is very draining on the caster, however,
-	causing the caster to lose 100 maximum mana points.  The caster must also be at full mana to cast.
+	Description
 	Builders Notes	The target item must already have a zapper mask restricting item use to the casters deity,
 	and any alignment restrictions on the item must allow for the casters alignment.
-//	The item maintains its current level.
-	The item gains of (deitys name) to its name (if it doesnt already have the name of the deity in its name).
-	Protects against combat damage, rust, spell damage, disintegrate, weapon break and any other ability that would damage
-	 or destroy an object.  This will also protect the item from ruin (grants prop_itemnoruin).
-	This prayer cannot be cast upon a GenSailingShip.
 	 */
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
@@ -157,6 +176,21 @@ public class Prayer_EternalItem extends Prayer
 			mob.tell(mob,target,null,L("You can't protect <T-NAME> eternally."));
 			return false;
 		}
+		if(mob.baseState().getMana()<100)
+		{
+			mob.tell(L("You lack the power to spend on eternal protection."));
+			return false;
+		}
+		if(mob.baseCharStats().getWorshipCharID().length()==0)
+		{
+			mob.tell(L("You must worship a deity to use this prayer."));
+			return false;
+		}
+		if(!checkRequiredInfusion(mob, target))
+		{
+			mob.tell(L("@x1 cannot be imbued until it has been empowered by your deity.",target.name(mob)));
+			return false;
+		}
 
 		commands.remove(commands.size()-1);
 
@@ -173,6 +207,10 @@ public class Prayer_EternalItem extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
+				mob.baseState().setMana(mob.baseState().getMana()-100);
+				final Prayer_EternalItem pA=(Prayer_EternalItem)copyOf();
+				pA.setMiscText(mob.baseCharStats().getWorshipCharID());
+				target.addNonUninvokableEffect(this);
 			}
 		}
 		else
