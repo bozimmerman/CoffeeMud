@@ -221,9 +221,11 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 			{
 			case CMMsg.TYP_DAMAGE:
 			{
-				final double myMass=getMass();
-				final double hardness = RawMaterial.CODES.HARDNESS(material()) * SpaceObject.Distance.Kilometer.dm;
-				msg.setValue((int)Math.round((usesRemaining() * (msg.value() / myMass)) / hardness));
+				double hardness = RawMaterial.CODES.HARDNESS(material());
+				if(hardness < 1.0)
+					hardness = 1.0;
+				// natural hull resistance is the hardness of the material
+				msg.setValue((int)Math.round(msg.value() / hardness));
 				if(!okAreaMessage(msg,false))
 					return false;
 				return true;

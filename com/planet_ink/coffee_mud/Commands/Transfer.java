@@ -66,11 +66,42 @@ public class Transfer extends At
 		return s;
 	}
 
+	protected long[] fixSpaceCoords(final List<Physical> xferObjV, final long distanceDm, long[] targetSpace)
+	{
+		long baseDist = 1;
+		for(final Environmental e : xferObjV)
+		{
+			if((e instanceof SpaceObject)
+			&&(((SpaceObject)e).radius()>baseDist))
+				baseDist=((SpaceObject)e).radius();
+		}
+		boolean somethingDone = true;
+		final Random rand = CMLib.dice().getRandomizer();
+		while(somethingDone)
+		{
+			somethingDone = false;
+			for(final SpaceObject sO : CMLib.space().getSpaceObjectsByCenterpointWithin(targetSpace, 0, SpaceObject.Distance.AstroUnit.dm))
+			{
+				final long minDistance = baseDist+sO.radius()+distanceDm;
+				while(CMLib.space().getDistanceFrom(sO.coordinates(), targetSpace) < minDistance)
+				{
+					long distanceDiff = minDistance - CMLib.space().getDistanceFrom(sO.coordinates(), targetSpace);
+					somethingDone=true;
+					double[] randomDir = new double[] { rand.nextDouble() * Math.PI * 2.0, rand.nextDouble() * Math.PI };
+					targetSpace = CMLib.space().moveSpaceObject(targetSpace, randomDir, distanceDiff);
+				}
+			}
+		}
+		return targetSpace;
+	}
+	
 	@Override
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		Room room=null;
+		Room targetRoom=null;
+		long[] targetSpace=null;
+		long distanceDm = 1000;
 		if(commands.size()<3)
 		{
 			mob.tell(L("Transfer whom where? Try all or a mob name or item followed by item name, followerd by a Room ID, target player name, inventory, area name, or room text!"));
@@ -80,7 +111,7 @@ public class Transfer extends At
 		commands.remove(0);
 		String searchName=commands.get(0);
 		final Room curRoom=mob.location();
-		final Vector<Physical> V=new Vector<Physical>();
+		final Vector<Physical> xferObjV=new Vector<Physical>();
 		final StringBuffer cmd = new StringBuffer(CMParms.combine(commands,1));
 		boolean allFlag=false;
 		if(searchName.equalsIgnoreCase("ALL"))
@@ -111,14 +142,14 @@ public class Transfer extends At
 			if(itemFlag)
 			{
 				for(int i=0;i<curRoom.numItems();i++)
-					V.add(curRoom.getItem(i));
+					xferObjV.add(curRoom.getItem(i));
 			}
 			else
 			for(int i=0;i<curRoom.numInhabitants();i++)
 			{
 				final MOB M=curRoom.fetchInhabitant(i);
 				if(M!=null)
-					V.add(M);
+					xferObjV.add(M);
 			}
 		}
 		else
@@ -128,7 +159,7 @@ public class Transfer extends At
 			{
 				final Environmental E=curRoom.fetchFromMOBRoomFavorsItems(mob,null,searchName,Wearable.FILTER_UNWORNONLY);
 				if(E instanceof Item)
-					V.add((Item)E);
+					xferObjV.add((Item)E);
 			}
 			if((searchName.length()>0)
 			&&(!cmd.toString().equals("here"))
@@ -138,10 +169,10 @@ public class Transfer extends At
 				{
 					final Item I=curRoom.getItem(i);
 					if((I!=null)&&(CMLib.english().containsString(I.name(),searchName)))
-						V.add(I);
+						xferObjV.add(I);
 				}
 			}
-			if(V.size()==0)
+			if(xferObjV.size()==0)
 			{
 				for(final Enumeration<Room> r=mob.location().getArea().getProperMap();r.hasMoreElements();)
 				{
@@ -151,17 +182,17 @@ public class Transfer extends At
 					while((num<=1)||(I!=null))
 					{
 						I=R.findItem(searchName+"."+num);
-						if((I!=null)&&(!V.contains(I)))
-							V.add(I);
+						if((I!=null)&&(!xferObjV.contains(I)))
+							xferObjV.add(I);
 						num++;
-						if((!allFlag)&&(V.size()>0))
+						if((!allFlag)&&(xferObjV.size()>0))
 							break;
 					}
-					if((!allFlag)&&(V.size()>0))
+					if((!allFlag)&&(xferObjV.size()>0))
 						break;
 				}
 			}
-			if(V.size()==0)
+			if(xferObjV.size()==0)
 			{
 				try
 				{
@@ -173,13 +204,13 @@ public class Transfer extends At
 						while((num<=1)||(I!=null))
 						{
 							I=R.findItem(searchName+"."+num);
-							if((I!=null)&&(!V.contains(I)))
-								V.add(I);
+							if((I!=null)&&(!xferObjV.contains(I)))
+								xferObjV.add(I);
 							num++;
-							if((!allFlag)&&(V.size()>0))
+							if((!allFlag)&&(xferObjV.size()>0))
 								break;
 						}
-						if((!allFlag)&&(V.size()>0))
+						if((!allFlag)&&(xferObjV.size()>0))
 							break;
 					}
 				}
@@ -194,15 +225,15 @@ public class Transfer extends At
 			{
 				final MOB M=CMLib.sessions().findPlayerOnline(searchName,true);
 				if(M!=null)
-					V.add(M);
+					xferObjV.add(M);
 			}
-			if(V.size()==0)
+			if(xferObjV.size()==0)
 			{
 				final MOB M=mob.location().fetchInhabitant(searchName);
 				if(M!=null)
-					V.add(M);
+					xferObjV.add(M);
 			}
-			if(V.size()==0)
+			if(xferObjV.size()==0)
 			{
 				for(final Enumeration<Room> r=mob.location().getArea().getProperMap();r.hasMoreElements();)
 				{
@@ -212,17 +243,17 @@ public class Transfer extends At
 					while((num<=1)||(M!=null))
 					{
 						M=R.fetchInhabitant(searchName+"."+num);
-						if((M!=null)&&(!V.contains(M)))
-							V.add(M);
+						if((M!=null)&&(!xferObjV.contains(M)))
+							xferObjV.add(M);
 						num++;
-						if((!allFlag)&&(V.size()>0))
+						if((!allFlag)&&(xferObjV.size()>0))
 							break;
 					}
-					if((!allFlag)&&(V.size()>0))
+					if((!allFlag)&&(xferObjV.size()>0))
 						break;
 				}
 			}
-			if(V.size()==0)
+			if(xferObjV.size()==0)
 			{
 				try
 				{
@@ -234,13 +265,13 @@ public class Transfer extends At
 						while((num<=1)||(M!=null))
 						{
 							M=R.fetchInhabitant(searchName+"."+num);
-							if((M!=null)&&(!V.contains(M)))
-								V.add(M);
+							if((M!=null)&&(!xferObjV.contains(M)))
+								xferObjV.add(M);
 							num++;
-							if((!allFlag)&&(V.size()>0))
+							if((!allFlag)&&(xferObjV.size()>0))
 								break;
 						}
-						if((!allFlag)&&(V.size()>0))
+						if((!allFlag)&&(xferObjV.size()>0))
 							break;
 					}
 				}
@@ -248,15 +279,15 @@ public class Transfer extends At
 				{
 				}
 			}
-			if((!allFlag)&&(V.size()==0))
+			if((!allFlag)&&(xferObjV.size()==0))
 			{
 				final MOB M=CMLib.players().getLoadPlayer(searchName);
 				if(M!=null)
-					V.add(M);
+					xferObjV.add(M);
 			}
 		}
 
-		if(V.size()==0)
+		if(xferObjV.size()==0)
 		{
 			try
 			{
@@ -280,13 +311,13 @@ public class Transfer extends At
 				);
 				final Environmental E=CMLib.english().fetchEnvironmental(spaceItems, searchName, true);
 				if(E instanceof Item)
-					V.add((Item)E);
+					xferObjV.add((Item)E);
 			}
 			catch (final NoSuchElementException nse)
 			{
 			}
 		}
-		if(V.size()==0)
+		if(xferObjV.size()==0)
 		{
 			try
 			{
@@ -310,13 +341,13 @@ public class Transfer extends At
 				);
 				final Environmental E=CMLib.english().fetchEnvironmental(spaceItems, searchName, false);
 				if(E instanceof Item)
-					V.add((Item)E);
+					xferObjV.add((Item)E);
 			}
 			catch (final NoSuchElementException nse)
 			{
 			}
 		}
-		if(V.size()==0)
+		if(xferObjV.size()==0)
 		{
 			try
 			{
@@ -340,13 +371,13 @@ public class Transfer extends At
 				);
 				final Environmental E=CMLib.english().fetchEnvironmental(shipItems, searchName, false);
 				if(E instanceof Item)
-					V.add((Item)E);
+					xferObjV.add((Item)E);
 			}
 			catch (final NoSuchElementException nse)
 			{
 			}
 		}
-		if(V.size()==0)
+		if(xferObjV.size()==0)
 		{
 			if((!itemFlag)&&(commands.size()>1))
 			{
@@ -360,12 +391,12 @@ public class Transfer extends At
 		boolean inventoryFlag=false;
 		if(cmd.toString().equalsIgnoreCase("inventory"))
 		{
-			room=mob.location();
+			targetRoom=mob.location();
 			inventoryFlag=true;
 		}
 		else
 		if(cmd.toString().equalsIgnoreCase("here")||cmd.toString().equalsIgnoreCase("."))
-			room=mob.location();
+			targetRoom=mob.location();
 		else
 		if(cmd.toString().indexOf('@')>0)
 		{
@@ -420,15 +451,14 @@ public class Transfer extends At
 					mob.tell(L("Communication failure."));
 					return false;
 				}
-				for(int i=0;i<V.size();i++)
+				for(int i=0;i<xferObjV.size();i++)
 				{
-					if(V.get(i) instanceof Item)
+					if(xferObjV.get(i) instanceof Item)
 					{
-						final Item I=(Item)V.get(i);
+						final Item I=(Item)xferObjV.get(i);
 						final Room itemRoom=CMLib.map().roomLocation(I);
-						if((itemRoom!=null)
-						&&(CMSecurity.isAllowed(mob, itemRoom, CMSecurity.SecFlag.TRANSFER))
-						&&(CMSecurity.isAllowed(mob, room, CMSecurity.SecFlag.TRANSFER)))
+						if((CMSecurity.isAllowed(mob, itemRoom, CMSecurity.SecFlag.TRANSFER))
+						&&(CMSecurity.isAllowed(mob, targetRoom, CMSecurity.SecFlag.TRANSFER)))
 						{
 							final String itemXML=CMLib.coffeeMaker().getItemXML(I);
 							writer.write("IMPORT <ITEMS>"+itemXML+"</ITEMS>"+blockEnd);
@@ -436,13 +466,13 @@ public class Transfer extends At
 						}
 					}
 					else
-					if(V.get(i) instanceof MOB)
+					if(xferObjV.get(i) instanceof MOB)
 					{
-						final MOB M=(MOB)V.get(i);
+						final MOB M=(MOB)xferObjV.get(i);
 						final Room mobRoom=CMLib.map().roomLocation(M);
 						if((mobRoom!=null)
 						&&(CMSecurity.isAllowed(mob, mobRoom, CMSecurity.SecFlag.TRANSFER))
-						&&(CMSecurity.isAllowed(mob, room, CMSecurity.SecFlag.TRANSFER)))
+						&&(CMSecurity.isAllowed(mob, targetRoom, CMSecurity.SecFlag.TRANSFER)))
 						{
 							final String mobXML=CMLib.coffeeMaker().getMobXML(M);
 							writer.write("IMPORT <MOBS>"+mobXML+"</MOBS>"+blockEnd);
@@ -466,64 +496,122 @@ public class Transfer extends At
 			}
 		}
 		else
+		if(cmd.toString().toLowerCase().startsWith("space:"))
+		{
+			String rest = cmd.toString().substring(6).trim();
+			final List<String> rV=CMParms.parseSpaces(rest,true);
+			if(rV.size()>1)
+			{
+				final String last=rV.remove(rV.size()-1);
+				final Long distl = CMLib.english().parseSpaceDistance(last);
+				if(distl != null)
+				{
+					distanceDm = distl.longValue();
+					rest = CMParms.combine(rV);
+				}
+			}
+			if((rest.length()>0)&&(Character.isDigit(rest.charAt(0))))
+			{
+				List<String> bits=CMParms.parseAny(rest,',',true);
+				if(bits.size()==3)
+					targetSpace=new long[] { CMath.s_long(bits.get(0)), CMath.s_long(bits.get(1)), CMath.s_long(bits.get(2))};
+			}
+			else
+			{
+				SpaceObject o = CMLib.space().findSpaceObject(rest, true);
+				if(o == null)
+					o = CMLib.space().findSpaceObject(rest, false);
+				if(o != null)
+					targetSpace=Arrays.copyOf(o.coordinates(),o.coordinates().length);
+			}
+			if(targetSpace != null)
+				targetSpace=fixSpaceCoords(xferObjV, distanceDm, targetSpace);
+		}
+		else
 		if(CMLib.map().getRoom(cmd.toString())!=null)
-			room=CMLib.map().getRoom(cmd.toString());
+			targetRoom=CMLib.map().getRoom(cmd.toString());
 		else
 		if(CMLib.directions().getDirectionCode(cmd.toString())>=0)
-			room=mob.location().getRoomInDir(CMLib.directions().getDirectionCode(cmd.toString()));
+			targetRoom=mob.location().getRoomInDir(CMLib.directions().getDirectionCode(cmd.toString()));
 		else
-			room=CMLib.map().findWorldRoomLiberally(mob,cmd.toString(),"RIPME",100,120000);
+			targetRoom=CMLib.map().findWorldRoomLiberally(mob,cmd.toString(),"RIPME",100,120000);
 
-		if(room==null)
+		if((targetRoom==null)&&(targetSpace==null))
 		{
 			mob.tell(L("Transfer where? '@x1' is unknown.  Enter a Room ID, player name, area name, or room text!",cmd.toString()));
 			return false;
 		}
-		for(int i=0;i<V.size();i++)
+		while(xferObjV.size()>0)
 		{
-			if(V.get(i) instanceof Item)
+			final Environmental E=xferObjV.remove(0);
+			if(E instanceof Item)
 			{
-				final Item I=(Item)V.get(i);
+				final Item I=(Item)E;
 				final Room itemRoom=CMLib.map().roomLocation(I);
-				if((itemRoom!=null)
-				&&((!room.isContent(I))||(inventoryFlag))
+				if((targetRoom != null)
+				&&((!targetRoom.isContent(I))||(inventoryFlag))
 				&&(CMSecurity.isAllowed(mob, itemRoom, CMSecurity.SecFlag.TRANSFER))
-				&&(CMSecurity.isAllowed(mob, room, CMSecurity.SecFlag.TRANSFER)))
+				&&(CMSecurity.isAllowed(mob, targetRoom, CMSecurity.SecFlag.TRANSFER)))
 				{
 					if(inventoryFlag)
 						mob.moveItemTo(I,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
 					else
 					{
-						room.moveItemTo(I,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
+						targetRoom.moveItemTo(I,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
 						if(I instanceof SpaceObject)
 							((SpaceObject)I).setSpeed(0);
 						if(I instanceof SpaceShip)
-							((SpaceShip)I).dockHere(room);
+							((SpaceShip)I).dockHere(targetRoom);
+					}
+				}
+				else
+				if(targetSpace != null)
+				{
+					if(!(I instanceof SpaceObject))
+						mob.tell(L("@x1 can't be put into space, as its not a space object.",I.name(mob)));
+					else
+					{
+						final List<Physical> temp=new XVector<Physical>(xferObjV);
+						if(!temp.contains(I))
+							temp.add(I);
+						targetSpace=fixSpaceCoords(xferObjV, distanceDm, targetSpace);
+						final SpaceObject o = (SpaceObject)I;
+						if(!CMLib.space().isObjectInSpace(o))
+							CMLib.space().addObjectToSpace(o, targetSpace);
+						else
+							o.setCoords(targetSpace);
+						o.setSpeed(0.0); // bring to a stop
 					}
 				}
 			}
 			else
-			if(V.get(i) instanceof MOB)
+			if(E instanceof MOB)
 			{
-				final MOB M=(MOB)V.get(i);
+				final MOB M=(MOB)E;
 				final Room mobRoom=CMLib.map().roomLocation(M);
 				if((mobRoom!=null)
-				&&(!room.isInhabitant(M))
+				&&(targetRoom != null)
+				&&(!targetRoom.isInhabitant(M))
 				&&(CMSecurity.isAllowed(mob, mobRoom, CMSecurity.SecFlag.TRANSFER))
-				&&(CMSecurity.isAllowed(mob, room, CMSecurity.SecFlag.TRANSFER)))
+				&&(CMSecurity.isAllowed(mob, targetRoom, CMSecurity.SecFlag.TRANSFER)))
 				{
 					if(M.isPlayer() && (!CMLib.flags().isInTheGame(M, true)))
-						M.setLocation(room);
+						M.setLocation(targetRoom);
 					else
 					{
 						if((mob.playerStats().getTranPoofOut().length()>0)&&(mob.location()!=null))
 							M.location().show(M,M.location(),CMMsg.MSG_LEAVE|CMMsg.MASK_ALWAYS,mob.playerStats().getTranPoofOut());
-						room.bringMobHere(M,true);
+						targetRoom.bringMobHere(M,true);
 					}
 					if(mob.playerStats().getTranPoofIn().length()>0)
 						M.location().show(M,M.location(),CMMsg.MSG_ENTER|CMMsg.MASK_ALWAYS,mob.playerStats().getTranPoofIn());
-					if(!M.isMonster() && (room.isInhabitant(M)))
+					if(!M.isMonster() && (targetRoom.isInhabitant(M)))
 						CMLib.commands().postLook(M,true);
+				}
+				else
+				if(targetSpace != null)
+				{
+					mob.tell(L("@x1 can't be put into space, as its not a space object.",M.name(mob)));
 				}
 			}
 		}

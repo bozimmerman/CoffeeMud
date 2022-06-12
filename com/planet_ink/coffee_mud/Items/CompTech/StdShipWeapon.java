@@ -192,9 +192,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 				final Software controlI=(msg.tool() instanceof Software)?((Software)msg.tool()):null;
 				final MOB mob=msg.source();
 				if(msg.targetMessage()==null)
-				{
 					powerSetting = powerCapacity();
-				}
 				else
 				{
 					final String[] parts=msg.targetMessage().split(" ");
@@ -326,7 +324,9 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 								}
 								weaponO.setKnownSource(ship);
 								final int weaponRadius = 10;
-								final long[] firstCoords = CMLib.space().moveSpaceObject(ship.coordinates(), targetDirection, ship.radius()+weaponRadius+1);
+								final int accellerationOfShipInSameDirectionAsWeapon = 4;
+								final long[] firstCoords = CMLib.space().moveSpaceObject(ship.coordinates(), targetDirection, 
+										(int)Math.round(ship.radius()+weaponRadius+ship.speed()+accellerationOfShipInSameDirectionAsWeapon));
 								//TODO: adjust targeting based on tech, efficiency, installed, etc, etc.
 								weaponO.setCoords(firstCoords);
 								weaponO.setRadius(weaponRadius);

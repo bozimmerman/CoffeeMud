@@ -3564,7 +3564,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					str.append(", ");
 				str.append(CMMsg.TYPE_DESCS[E.getDamageMsgTypes()[i]]);
 			}
-			mob.tell(L("@x1. Shielded Types: '@x2'.",""+showNumber,str.toString()));
+			if((E.getTechType()==Technical.TechType.SHIP_WEAPON)||(E.getTechType()==Technical.TechType.PERSONAL_WEAPON))
+				mob.tell(L("@x1. Weapon Types: '@x2'.",""+showNumber,str.toString()));
+			else
+				mob.tell(L("@x1. Shielded Types: '@x2'.",""+showNumber,str.toString()));
 			if((showFlag!=showNumber)&&(showFlag>-999))
 				return;
 			final String newType=mob.session().prompt(L("Enter a type to add/remove (?)\n\r:"),"");

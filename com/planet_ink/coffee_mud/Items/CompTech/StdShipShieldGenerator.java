@@ -90,7 +90,7 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 		{
 			final Area area = CMLib.map().areaLocation(this);
 			if(area instanceof SpaceShip)
-				myShip = new WeakReference<SpaceShip>((SpaceShip)area);
+				myShip = new WeakReference<SpaceShip>((SpaceShip)((SpaceShip)area).getBoardableItem());
 			else
 				myShip = new WeakReference<SpaceShip>(null);
 		}
@@ -168,11 +168,12 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 	{
 		if(!super.okMessage(host, msg))
 			return false;
-		final SpaceShip ship = getMyShip();
-		if((msg.target() == ship)
+		if((msg.target() instanceof SpaceShip)
 		&&(activated())
-		&&(CMParms.contains(this.getDamageMsgTypes(), msg.sourceMinor())))
+		&&(msg.target()==getMyShip())
+		&&(CMParms.contains(getDamageMsgTypes(), msg.sourceMinor())))
 		{
+			final SpaceShip ship = getMyShip();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_DAMAGE: // laser, energy, some other kind of directed damage

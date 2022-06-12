@@ -87,7 +87,8 @@ public class StdElecPanel extends StdElecContainer implements ElecPanel
 	{
 		if(!super.canContain(I))
 			return false;
-		if((I instanceof Technical)&&(panelType()==((Technical)I).getTechType()))
+		if((I instanceof Technical)
+		&&(((panelType()==((Technical)I).getTechType()))||(panelType()==TechType.ANY)))
 			return true;
 		return false;
 	}

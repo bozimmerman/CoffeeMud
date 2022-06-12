@@ -2,8 +2,7 @@ BUGS/UNTESTED STUFF:
   *.
 
 TECH TODO:
-   *. keep working on targeting and collision detection until it works
-   *. test ship phaser, laser systems against shield types - murder motel
+   *. sensors during combat -- detect hits, misses, and shield absorbs and report them all
    *. make ship torpedo launchers and torpedo containers-- see tech doc
    *. make ship impulse and warp engines -- see tech doc
    *. make tractor beam system -- esp important for pirates!

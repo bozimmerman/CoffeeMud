@@ -460,10 +460,18 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		return false;
 	}
 
+	protected void swapTargetTool(final CMMsg msg)
+	{
+		final Environmental E=msg.target();
+		msg.setTarget(msg.tool());
+		msg.setTool(E);
+	}
+	
 	public void runSpace()
 	{
 		final GalacticMap space = CMLib.space();
-		final boolean isDebugging=CMSecurity.isDebugging(DbgFlag.SPACESHIP);
+		final boolean isDebuggingHARD=CMSecurity.isDebugging(DbgFlag.SPACEMOVES);
+		final boolean isDebugging=CMSecurity.isDebugging(DbgFlag.SPACESHIP)||isDebuggingHARD;
 		for(final Enumeration<SpaceObject> o = space.getSpaceObjects(); o.hasMoreElements(); )
 		{
 			final SpaceObject O=o.nextElement();
@@ -487,6 +495,10 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				boolean inAirFlag = false;
 				final List<SpaceObject> cOs=space.getSpaceObjectsWithin(O, 0, Math.max(4*SpaceObject.Distance.LightSecond.dm,Math.round(speed)));
 				final long oMass = O.getMass();
+				// objects should already be sorted by closeness for good collision detection
+				if(isDebuggingHARD)
+					Log.debugOut("Space Object "+O.name()+" moved "+speed+" in dir " +CMLib.english().directionDescShort(O.direction())+" to "+CMLib.english().coordDescShort(O.coordinates()));
+					
 				for(final SpaceObject cO : cOs)
 				{
 					if((cO != O)
@@ -494,6 +506,11 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					&&(!O.amDestroyed()))
 					{
 						final double minDistance=space.getMinDistanceFrom(startCoords, O.coordinates(), cO.coordinates());
+						if(isDebuggingHARD)
+						{
+							final long dist = CMLib.space().getDistanceFrom(O, cO);
+							Log.debugOut("Space Object "+O.name()+" is "+CMLib.english().distanceDescShort(dist)+" from "+cO.Name()+", minDistance="+CMLib.english().distanceDescShort(Math.round(minDistance)));
+						}
 						final double gravitationalMove=getGravityForce(O, cO);
 						if(gravitationalMove > 0)
 						{
@@ -503,56 +520,50 @@ public class GroundWired extends StdLibrary implements TechLibrary
 							space.accelSpaceObject(O, directionTo, gravitationalMove);
 							inAirFlag = true;
 						}
-						/*
-						if((O instanceof Weapon)
-						&&(cO.Name().toLowerCase().indexOf("joob")>=0))
-						{
-							System.out.println("-------");
-							System.out.println(O.name()+"->"+cO.Name()+": speed="+speed+", radius="+cO.radius()+", dir="+Math.toDegrees(O.direction()[0])+","+Math.toDegrees(O.direction()[1]));
-							System.out.println("Moved from:   ("+CMParms.toListString(startCoords)+"  to  "+CMParms.toListString(O.coordinates())+")");
-							final double[] exactDir=CMLib.space().getDirection(startCoords, cO.coordinates());
-							System.out.println("Closest distance is "+minDistance+" to  object@("+CMParms.toListString(cO.coordinates())+"): Exact dir="+Math.toDegrees(exactDir[0])+","+Math.toDegrees(exactDir[1]));
-						}
-						*/
-
-						if (O instanceof Weapon)
+						if((O instanceof Weapon)&&(isDebugging))
 						{
 							final long dist = CMLib.space().getDistanceFrom(O, cO);
-							System.out.println(O.Name()+"/"+cO.Name()+"="+minDistance+"<"+(O.radius()+cO.radius())+"/"+dist);
+							Log.debugOut("SpaceShip Weapon "+O.Name()+" closest distance is "+minDistance+" to  object@("+CMParms.toListString(cO.coordinates())+"):<"+(O.radius()+cO.radius())+"/"+dist);
 						}
 						if ((minDistance<(O.radius()+cO.radius()))
 						&&((speed>0)||(cO.speed()>0))
 						&&((oMass < SpaceObject.MOONLET_MASS)||(cO.getMass() < SpaceObject.MOONLET_MASS)))
 						{
 							final MOB host=CMLib.map().deity();
-							CMMsg msg;
+							final CMMsg msg;
 							if(O instanceof Weapon)
 							{
-								msg=CMClass.getMsg(host, O, cO, CMMsg.MSG_COLLISION,CMMsg.MSG_DAMAGE,CMMsg.MSG_COLLISION,null);
+								if(isDebugging) Log.debugOut("Weapon "+O.name()+" collided with "+cO.Name());
+								final Integer weaponDamageType = Weapon.MSG_TYPE_MAP.get(Integer.valueOf(((Weapon)O).weaponDamageType()));
+								final int srcMinor = CMMsg.MASK_MOVE|CMMsg.MASK_SOUND|(weaponDamageType!=null?weaponDamageType.intValue():CMMsg.TYP_COLLISION);
+								msg=CMClass.getMsg(host, O, cO, srcMinor,CMMsg.MSG_DAMAGE,CMMsg.MSG_COLLISION,null);
 								msg.setValue(((Weapon)O).phyStats().damage());
 							}
 							else
 							if(cO instanceof Weapon)
 							{
-								msg=CMClass.getMsg(host, O, cO, CMMsg.MSG_COLLISION,CMMsg.MSG_DAMAGE,CMMsg.MSG_COLLISION,null);
+								if(cO.knownSource() == O) // a ship can run into its weapon?!
+									continue;
+								if(isDebugging) Log.debugOut("Space Object "+O.name()+" collided with weapon "+cO.Name());
+								final Integer weaponDamageType = Weapon.MSG_TYPE_MAP.get(Integer.valueOf(((Weapon)cO).weaponDamageType()));
+								final int srcMinor = CMMsg.MASK_MOVE|CMMsg.MASK_SOUND|(weaponDamageType!=null?weaponDamageType.intValue():CMMsg.TYP_COLLISION);
+								msg=CMClass.getMsg(host, cO, O, srcMinor,CMMsg.MSG_DAMAGE,CMMsg.MSG_COLLISION,null);
 								msg.setValue(((Weapon)cO).phyStats().damage());
 							}
 							else
-								msg=CMClass.getMsg(host, O, cO, CMMsg.MSG_COLLISION,null);
-							if(isDebugging)
-								Log.debugOut("SpaceShip "+O.name()+" collided with "+cO.Name());
-							if(O.okMessage(host, msg))
 							{
-								msg.setTarget(cO);
-								msg.setTool(O);
-								if(cO.okMessage(host, msg))
+								if(isDebugging) Log.debugOut("Space Object "+O.name()+" collided with "+cO.Name());
+								msg=CMClass.getMsg(host, O, cO, CMMsg.MSG_COLLISION,null);
+							}
+							if(msg.target().okMessage(host, msg))
+							{
+								swapTargetTool(msg);
+								if(msg.target().okMessage(host, msg))
 								{
-									msg.setTarget(O);
-									msg.setTool(cO);
-									O.executeMsg(host, msg);
-									msg.setTarget(cO);
-									msg.setTool(O);
-									cO.executeMsg(host, msg);
+									swapTargetTool(msg);
+									msg.target().executeMsg(host, msg);
+									swapTargetTool(msg);
+									msg.target().executeMsg(host, msg);
 								}
 							}
 						}
