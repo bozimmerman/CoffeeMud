@@ -1138,10 +1138,6 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 				if(weapons.size()>0)
 				{
 					final MOB mob = getFactoryAttacker(null);
-					mob.basePhyStats().setLevel(1);
-					mob.phyStats().setLevel(1);
-					mob.setName(name());
-					mob.setRiding(this);
 					final int[] coordsToHit;
 					final SiegableItem siegeTarget;
 					synchronized(this)
