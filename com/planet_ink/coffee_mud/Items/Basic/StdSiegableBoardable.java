@@ -1359,7 +1359,7 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 							final Room oldRoom=msg.source().location();
 							try
 							{
-								final double pctLoss = CMath.div(msg.value(), 100.0);
+								final double pctLoss = CMath.div(CMLib.dice().roll(1, weapon.phyStats().damage(),0), 100.0);
 								while(shotsRemaining-- > 0)
 								{
 									final Pair<MOB,Room> randomPair = (targets.size()>0)? targets.get(CMLib.dice().roll(1,targets.size(),-1)) : null;
