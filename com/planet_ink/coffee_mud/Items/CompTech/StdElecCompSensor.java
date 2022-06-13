@@ -84,6 +84,14 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 
 	protected boolean canPassivelySense(final CMMsg msg)
 	{
+		// don't sense the things people in the room do
+		if((msg.source().location()!=null)
+		&&(msg.source().location()==owner()))
+			return false;
+		if((msg.source().location()!=null)
+		&&(owner() instanceof Room)
+		&&(msg.source().location().getArea()==((Room)owner()).getArea()))
+			return false;
 		return true;
 	}
 
