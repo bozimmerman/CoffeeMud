@@ -405,7 +405,8 @@ public class StdClanItem extends StdItem implements ClanItem
 								}
 							}
 							else
-							if (relation != Clan.REL_WAR)
+							if((relation != Clan.REL_WAR)
+							&&(!CMSecurity.isAllowed(msg.source(), msg.source().location(), CMSecurity.SecFlag.CMDITEMS)))
 							{
 								msg.source().tell(CMLib.lang().L("You must be at war with this clan to take one of their items."));
 								return false;

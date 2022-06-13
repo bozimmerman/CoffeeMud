@@ -327,7 +327,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 							return false;
 						}
 						relation = C.getClanRelations(rulingClan);
-						if (relation != Clan.REL_WAR)
+						if(relation != Clan.REL_WAR)
 						{
 							msg.source().tell(L("You must be at war with this clan to put down your flag on their area."));
 							return false;
