@@ -230,6 +230,13 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized K get(final int arg0)
 	{
+		if((arg0>=0)&&(arg0<L.size()))
+		{
+			if(arg0==0)
+				return L.getFirst();
+			if(arg0==L.size()-1)
+				return L.getLast();
+		}
 		Log.errOut("SLinkedList", new Exception());
 		return L.get(arg0);
 	}
