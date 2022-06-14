@@ -121,21 +121,21 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					{
 					case 0:
 						if(req1Required>0)
-							req1Required=atLeast1(req1Required,-0.1);
+							req1Required=multiplyMinResult1(req1Required,-0.1);
 						if(req2Required>0)
-							req2Required=atLeast1(req2Required,-0.1);
+							req2Required=multiplyMinResult1(req2Required,-0.1);
 						break;
 					case 1:
 						if(req1Required>0)
-							req1Required=atLeast1(req1Required,-0.25);
+							req1Required=multiplyMinResult1(req1Required,-0.25);
 						if(req2Required>0)
-							req2Required=atLeast1(req2Required,-0.25);
+							req2Required=multiplyMinResult1(req2Required,-0.25);
 						break;
 					case 2:
 						if(req1Required>0)
-							req1Required=atLeast1(req1Required,-0.5);
+							req1Required=multiplyMinResult1(req1Required,-0.5);
 						if(req2Required>0)
-							req2Required=atLeast1(req2Required,-0.5);
+							req2Required=multiplyMinResult1(req2Required,-0.5);
 						break;
 					}
 					break;
@@ -144,21 +144,44 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					{
 					case 0:
 						if(req1Required>0)
-							req1Required=atLeast1(req1Required,0.1);
+							req1Required=multiplyMinResult1(req1Required,0.1);
 						if(req2Required>0)
-							req2Required=atLeast1(req2Required,0.1);
+							req2Required=multiplyMinResult1(req2Required,0.1);
 						break;
 					case 1:
 						if(req1Required>0)
-							req1Required=atLeast1(req1Required,0.2);
+							req1Required=multiplyMinResult1(req1Required,0.2);
 						if(req2Required>0)
-							req2Required=atLeast1(req2Required,0.2);
+							req2Required=multiplyMinResult1(req2Required,0.2);
 						break;
 					case 2:
 						if(req1Required>0)
-							req1Required=atLeast1(req1Required,0.25);
+							req1Required=multiplyMinResult1(req1Required,0.25);
 						if(req2Required>0)
-							req2Required=atLeast1(req2Required,0.25);
+							req2Required=multiplyMinResult1(req2Required,0.25);
+						break;
+					}
+					break;
+				case RUSHCRAFT:
+					switch(stage)
+					{
+					case 0:
+						if(req1Required>0)
+							req1Required=multiplyMinResult1(req1Required,0.05);
+						if(req2Required>0)
+							req2Required=multiplyMinResult1(req2Required,0.05);
+						break;
+					case 1:
+						if(req1Required>0)
+							req1Required=multiplyMinResult1(req1Required,0.1);
+						if(req2Required>0)
+							req2Required=multiplyMinResult1(req2Required,0.1);
+						break;
+					case 2:
+						if(req1Required>0)
+							req1Required=multiplyMinResult1(req1Required,0.15);
+						if(req2Required>0)
+							req2Required=multiplyMinResult1(req2Required,0.15);
 						break;
 					}
 					break;
@@ -191,15 +214,15 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 						break;
 					case 1:
 						if(req1Required>0)
-							req1Required=atLeast1(req1Required,0.05);
+							req1Required=multiplyMinResult1(req1Required,0.05);
 						if(req2Required>0)
-							req2Required=atLeast1(req2Required,0.05);
+							req2Required=multiplyMinResult1(req2Required,0.05);
 						break;
 					case 2:
 						if(req1Required>0)
-							req1Required=atLeast1(req1Required,0.10);
+							req1Required=multiplyMinResult1(req1Required,0.10);
 						if(req2Required>0)
-							req2Required=atLeast1(req2Required,0.10);
+							req2Required=multiplyMinResult1(req2Required,0.10);
 						break;
 					}
 					break;
@@ -251,7 +274,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	}
 
 
-	private final static int atLeast1(int value, final double pct)
+	private final static int multiplyMinResult1(int value, final double pct)
 	{
 		int change=(int)Math.round(CMath.mul(value,pct));
 		if(pct<0.0)
@@ -382,10 +405,12 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 			final EnhancedExpertise code=getLocalExpCode(key);
 			if(code != null)
 			{
-				final Pair<String,Integer> X=mob.fetchExpertise(key);
+				Pair<String,Integer> mobExp=mob.fetchExpertise(key);
+				if((mobExp == null)&&(code==EnhancedExpertise.RUSHCRAFT))
+					mobExp=new Pair<String,Integer>(key,Integer.valueOf(CMLib.expertises().getStageCodes(key).size()));
 				for(int s=stages-1;s>=0;s--)
 				{
-					if((X!=null)&&(X.getValue().intValue()>=(s+1)))
+					if((mobExp!=null)&&(mobExp.getValue().intValue()>=(s+1)))
 					{
 						stage=CMath.convertToRoman(s+1);
 						ExpertiseLibrary.ExpertiseDefinition def = CMLib.expertises().getDefinition(key+stage);
@@ -486,10 +511,12 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 						final EnhancedExpertise code=getLocalExpCode(key);
 						if(code != null)
 						{
-							final Pair<String,Integer> X=mob.fetchExpertise(key);
+							Pair<String, Integer> mobExp=mob.fetchExpertise(key);
+							if((mobExp == null)&&(code==EnhancedExpertise.RUSHCRAFT))
+								mobExp=new Pair<String,Integer>(key,Integer.valueOf(CMLib.expertises().getStageCodes(key).size()));
 							for(int s=stages-1;s>=0;s--)
 							{
-								if((X==null)||(X.getValue().intValue()<(s+1)))
+								if((mobExp==null)||(mobExp.getValue().intValue()<(s+1)))
 									continue;
 								stage=CMath.convertToRoman(s+1);
 								ExpertiseLibrary.ExpertiseDefinition def = CMLib.expertises().getDefinition(key+stage);
@@ -605,6 +632,64 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		return name.trim();
 	}
 
+	protected void affectLevelBy(final Item item, final int stage)
+	{
+		item.basePhyStats().setLevel(item.basePhyStats().level()+stage+1);
+		item.phyStats().setLevel(item.basePhyStats().level()+stage+1);
+		if((item instanceof Weapon)
+		&&(item.basePhyStats().damage()>0))
+		{
+			final Item itemCopy=(Item)item.copyOf();
+			final int level=CMLib.itemBuilder().timsLevelCalculator(itemCopy);
+			itemCopy.basePhyStats().setLevel(level);
+			itemCopy.phyStats().setLevel(level);
+			CMLib.itemBuilder().balanceItemByLevel(itemCopy);
+			final int oldDamage=itemCopy.basePhyStats().damage();
+			itemCopy.basePhyStats().setLevel(level+stage+1);
+			itemCopy.phyStats().setLevel(level+stage+1);
+			CMLib.itemBuilder().balanceItemByLevel(itemCopy);
+			final int damDiff = itemCopy.basePhyStats().damage() - oldDamage;
+			item.basePhyStats().setDamage(item.basePhyStats().damage() + damDiff);
+			item.phyStats().setDamage(item.phyStats().damage() + damDiff);
+			itemCopy.destroy();
+		}
+		else
+		if((item instanceof Armor)
+		&&(item.basePhyStats().armor()>0))
+		{
+			final Item itemCopy=(Item)item.copyOf();
+			final int level=CMLib.itemBuilder().timsLevelCalculator(itemCopy);
+			itemCopy.basePhyStats().setLevel(level);
+			itemCopy.phyStats().setLevel(level);
+			CMLib.itemBuilder().balanceItemByLevel(itemCopy);
+			final int oldArmor=itemCopy.basePhyStats().armor();
+			itemCopy.basePhyStats().setLevel(level+stage+1);
+			itemCopy.phyStats().setLevel(level+stage+1);
+			CMLib.itemBuilder().balanceItemByLevel(itemCopy);
+			final int damDiff = itemCopy.basePhyStats().armor() - oldArmor;
+			item.basePhyStats().setArmor(item.basePhyStats().armor() + damDiff);
+			item.phyStats().setArmor(item.phyStats().armor() + damDiff);
+			itemCopy.destroy();
+		}
+		else
+		if((item instanceof Container)
+		&&(((Container)item).capacity()>0)
+		&&(((Container)item).capacity()<Integer.MAX_VALUE/2))
+			((Container)item).setCapacity(multiplyMinResult1(((Container)item).capacity(),0.1*(stage+1)));
+		else
+		if((item instanceof Food)
+		||((item instanceof Drink)&&(CMath.bset(item.material(), RawMaterial.MATERIAL_LIQUID))))
+		{
+			if(item instanceof Food)
+				((Food)item).setNourishment((int)Math.round(((Food)item).nourishment()*(1+(.5*(stage+1)))));
+			else
+			{
+				((Drink)item).setLiquidHeld((int)Math.round(((Drink)item).liquidHeld()*(1+(.5*(stage+1)))));
+				((Drink)item).setLiquidRemaining((int)Math.round(((Drink)item).liquidRemaining()*(1+(.5*stage))));
+			}
+		}
+	}
+
 	public void enhanceItem(final MOB mob, final Item item, int recipeLevel, final PairVector<EnhancedExpertise,Integer> types)
 	{
 		if(types==null)
@@ -637,18 +722,43 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					{
 					case 0:
 						applyName(item,def.getStageNames()[stage], hide);
-						item.setBaseValue(atLeast1(item.baseGoldValue(),0.1));
+						item.setBaseValue(multiplyMinResult1(item.baseGoldValue(),0.1));
 						break;
 					case 1:
 						applyName(item,def.getStageNames()[stage], hide);
-						item.setBaseValue(atLeast1(item.baseGoldValue(),0.2));
+						item.setBaseValue(multiplyMinResult1(item.baseGoldValue(),0.2));
 						affect.bumpTickDown(Math.round(0.25 * affect.tickDown));
 						break;
 					case 2:
 						applyName(item,def.getStageNames()[stage], hide);
-						item.setBaseValue(atLeast1(item.baseGoldValue(),0.3));
+						item.setBaseValue(multiplyMinResult1(item.baseGoldValue(),0.3));
 						//addStatAdjustment(item,"DEX","+1");
 						affect.bumpTickDown(Math.round(0.5 * affect.tickDown));
+						break;
+					}
+					break;
+				}
+				case RUSHCRAFT:
+				{
+					switch(stage)
+					{
+					case 0:
+						applyName(item,def.getStageNames()[stage], hide);
+						item.setBaseValue(multiplyMinResult1(item.baseGoldValue(),-0.1));
+						affect.bumpTickDown(Math.round(-0.10 * affect.tickDown));
+						affectLevelBy(item, -2);
+						break;
+					case 1:
+						applyName(item,def.getStageNames()[stage], hide);
+						item.setBaseValue(multiplyMinResult1(item.baseGoldValue(),-0.2));
+						affect.bumpTickDown(Math.round(-0.20 * affect.tickDown));
+						affectLevelBy(item, -3);
+						break;
+					case 2:
+						applyName(item,def.getStageNames()[stage], hide);
+						item.setBaseValue(multiplyMinResult1(item.baseGoldValue(),-0.3));
+						affect.bumpTickDown(Math.round(-0.30 * affect.tickDown));
+						affectLevelBy(item, -4);
 						break;
 					}
 					break;
@@ -658,60 +768,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					if(stage >= 0)
 					{
 						applyName(item,def.getStageNames()[stage], hide);
-						item.basePhyStats().setLevel(item.basePhyStats().level()+stage+1);
-						item.phyStats().setLevel(item.basePhyStats().level()+stage+1);
-						if((item instanceof Weapon)
-						&&(item.basePhyStats().damage()>0))
-						{
-							final Item itemCopy=(Item)item.copyOf();
-							final int level=CMLib.itemBuilder().timsLevelCalculator(itemCopy);
-							itemCopy.basePhyStats().setLevel(level);
-							itemCopy.phyStats().setLevel(level);
-							CMLib.itemBuilder().balanceItemByLevel(itemCopy);
-							final int oldDamage=itemCopy.basePhyStats().damage();
-							itemCopy.basePhyStats().setLevel(level+stage+1);
-							itemCopy.phyStats().setLevel(level+stage+1);
-							CMLib.itemBuilder().balanceItemByLevel(itemCopy);
-							final int damDiff = itemCopy.basePhyStats().damage() - oldDamage;
-							item.basePhyStats().setDamage(item.basePhyStats().damage() + damDiff);
-							item.phyStats().setDamage(item.phyStats().damage() + damDiff);
-							itemCopy.destroy();
-						}
-						else
-						if((item instanceof Armor)
-						&&(item.basePhyStats().armor()>0))
-						{
-							final Item itemCopy=(Item)item.copyOf();
-							final int level=CMLib.itemBuilder().timsLevelCalculator(itemCopy);
-							itemCopy.basePhyStats().setLevel(level);
-							itemCopy.phyStats().setLevel(level);
-							CMLib.itemBuilder().balanceItemByLevel(itemCopy);
-							final int oldArmor=itemCopy.basePhyStats().armor();
-							itemCopy.basePhyStats().setLevel(level+stage+1);
-							itemCopy.phyStats().setLevel(level+stage+1);
-							CMLib.itemBuilder().balanceItemByLevel(itemCopy);
-							final int damDiff = itemCopy.basePhyStats().armor() - oldArmor;
-							item.basePhyStats().setArmor(item.basePhyStats().armor() + damDiff);
-							item.phyStats().setArmor(item.phyStats().armor() + damDiff);
-							itemCopy.destroy();
-						}
-						else
-						if((item instanceof Container)
-						&&(((Container)item).capacity()>0)
-						&&(((Container)item).capacity()<Integer.MAX_VALUE/2))
-							((Container)item).setCapacity(atLeast1(((Container)item).capacity(),0.1*(stage+1)));
-						else
-						if((item instanceof Food)
-						||((item instanceof Drink)&&(CMath.bset(item.material(), RawMaterial.MATERIAL_LIQUID))))
-						{
-							if(item instanceof Food)
-								((Food)item).setNourishment((int)Math.round(((Food)item).nourishment()*(1+(.5*(stage+1)))));
-							else
-							{
-								((Drink)item).setLiquidHeld((int)Math.round(((Drink)item).liquidHeld()*(1+(.5*(stage+1)))));
-								((Drink)item).setLiquidRemaining((int)Math.round(((Drink)item).liquidRemaining()*(1+(.5*stage))));
-							}
-						}
+						affectLevelBy(item, stage);
 					}
 					break;
 				}
@@ -725,18 +782,18 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					case 0:
 						applyName(item,def.getStageNames()[stage], hide);
 						item.basePhyStats().setArmor(item.basePhyStats().armor()+1);
-						item.setBaseValue(atLeast1(item.baseGoldValue(),0.1));
+						item.setBaseValue(multiplyMinResult1(item.baseGoldValue(),0.1));
 						break;
 					case 1:
 						applyName(item,def.getStageNames()[stage], hide);
-						item.basePhyStats().setArmor(atLeast1(item.basePhyStats().armor(),0.1)+1);
-						item.setBaseValue(atLeast1(item.baseGoldValue(),0.2));
+						item.basePhyStats().setArmor(multiplyMinResult1(item.basePhyStats().armor(),0.1)+1);
+						item.setBaseValue(multiplyMinResult1(item.baseGoldValue(),0.2));
 						affect.bumpTickDown(Math.round(0.25 * affect.tickDown));
 						break;
 					case 2:
 						applyName(item,def.getStageNames()[stage], hide);
-						item.basePhyStats().setArmor(atLeast1(item.basePhyStats().armor(),0.25)+1);
-						item.setBaseValue(atLeast1(item.baseGoldValue(),0.3));
+						item.basePhyStats().setArmor(multiplyMinResult1(item.basePhyStats().armor(),0.25)+1);
+						item.setBaseValue(multiplyMinResult1(item.baseGoldValue(),0.3));
 						//addStatAdjustment(item,"CON","+1");
 						affect.bumpTickDown(Math.round(0.5 * affect.tickDown));
 						break;
@@ -749,17 +806,17 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					{
 					case 0:
 						applyName(item,def.getStageNames()[stage], hide);
-						item.setBaseValue(atLeast1(item.baseGoldValue(),0.5));
+						item.setBaseValue(multiplyMinResult1(item.baseGoldValue(),0.5));
 						affect.bumpTickDown(Math.round(0.25 * affect.tickDown));
 						break;
 					case 1:
 						applyName(item,def.getStageNames()[stage], hide);
-						item.setBaseValue(atLeast1(item.baseGoldValue(),1.5));
+						item.setBaseValue(multiplyMinResult1(item.baseGoldValue(),1.5));
 						affect.bumpTickDown(Math.round(0.5 * affect.tickDown));
 						break;
 					case 2:
 						applyName(item,def.getStageNames()[stage], hide);
-						item.setBaseValue(atLeast1(item.baseGoldValue(),2.5));
+						item.setBaseValue(multiplyMinResult1(item.baseGoldValue(),2.5));
 						if((item instanceof Armor)
 						&&(!CMath.bset(((Armor)item).getLayerAttributes(),Armor.LAYERMASK_MULTIWEAR)))
 							addSpellAdjustment(item,"Spell_WellDressed","1");
@@ -777,22 +834,22 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					{
 					case 0:
 						applyName(item,def.getStageNames()[stage], hide);
-						item.basePhyStats().setDamage(atLeast1(item.basePhyStats().damage(),0.05));
-						item.setBaseValue(atLeast1(item.baseGoldValue(),0.1));
+						item.basePhyStats().setDamage(multiplyMinResult1(item.basePhyStats().damage(),0.05));
+						item.setBaseValue(multiplyMinResult1(item.baseGoldValue(),0.1));
 						affect.bumpTickDown(Math.round(0.25 * affect.tickDown));
 						break;
 					case 1:
 						applyName(item,def.getStageNames()[stage], hide);
-						item.basePhyStats().setDamage(atLeast1(item.basePhyStats().damage(),0.1));
-						item.setBaseValue(atLeast1(item.baseGoldValue(),0.2));
-						item.basePhyStats().setWeight(atLeast1(item.basePhyStats().weight(),0.1));
+						item.basePhyStats().setDamage(multiplyMinResult1(item.basePhyStats().damage(),0.1));
+						item.setBaseValue(multiplyMinResult1(item.baseGoldValue(),0.2));
+						item.basePhyStats().setWeight(multiplyMinResult1(item.basePhyStats().weight(),0.1));
 						affect.bumpTickDown(Math.round(0.5 * affect.tickDown));
 						break;
 					case 2:
 						applyName(item,def.getStageNames()[stage], hide);
-						item.basePhyStats().setDamage(atLeast1(item.basePhyStats().damage(),0.15)+1);
-						item.setBaseValue(atLeast1(item.baseGoldValue(),0.3));
-						item.basePhyStats().setWeight(atLeast1(item.basePhyStats().weight(),0.1));
+						item.basePhyStats().setDamage(multiplyMinResult1(item.basePhyStats().damage(),0.15)+1);
+						item.setBaseValue(multiplyMinResult1(item.baseGoldValue(),0.3));
+						item.basePhyStats().setWeight(multiplyMinResult1(item.basePhyStats().weight(),0.1));
 						affect.bumpTickDown(Math.round(0.75 * affect.tickDown));
 						break;
 					}
@@ -808,21 +865,21 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					case 0:
 						applyName(item,def.getStageNames()[stage], hide);
 						item.basePhyStats().setAttackAdjustment(item.basePhyStats().attackAdjustment()+3);
-						item.setBaseValue(atLeast1(item.baseGoldValue(),0.1));
+						item.setBaseValue(multiplyMinResult1(item.baseGoldValue(),0.1));
 						affect.bumpTickDown(Math.round(0.25 * affect.tickDown));
 						break;
 					case 1:
 						applyName(item,def.getStageNames()[stage], hide);
 						item.basePhyStats().setAttackAdjustment(item.basePhyStats().attackAdjustment()+6);
-						item.setBaseValue(atLeast1(item.baseGoldValue(),0.2));
-						item.basePhyStats().setWeight(atLeast1(item.basePhyStats().weight(),0.05));
+						item.setBaseValue(multiplyMinResult1(item.baseGoldValue(),0.2));
+						item.basePhyStats().setWeight(multiplyMinResult1(item.basePhyStats().weight(),0.05));
 						affect.bumpTickDown(Math.round(0.5 * affect.tickDown));
 						break;
 					case 2:
 						applyName(item,def.getStageNames()[stage], hide);
 						item.basePhyStats().setAttackAdjustment(item.basePhyStats().attackAdjustment()+9);
-						item.setBaseValue(atLeast1(item.baseGoldValue(),0.3));
-						item.basePhyStats().setWeight(atLeast1(item.basePhyStats().weight(),0.1));
+						item.setBaseValue(multiplyMinResult1(item.baseGoldValue(),0.3));
+						item.basePhyStats().setWeight(multiplyMinResult1(item.basePhyStats().weight(),0.1));
 						affect.bumpTickDown(Math.round(1.25 * affect.tickDown));
 						break;
 					}
@@ -847,7 +904,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 							recipeLevel = 1;
 						propA.setMiscText(statName+"+"+((stage+1)*recipeLevel));
 						affect.bumpTickDown(Math.round((1.1 + (0.1 * stage)) * affect.tickDown));
-						item.setBaseValue(atLeast1(item.baseGoldValue(),0.25));
+						item.setBaseValue(multiplyMinResult1(item.baseGoldValue(),0.25));
 						item.addNonUninvokableEffect(propA);
 					}
 					break;

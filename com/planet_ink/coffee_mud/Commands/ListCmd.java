@@ -3616,7 +3616,7 @@ public class ListCmd extends StdCommand
 	{
 		final WikiFlag wiki = getWikiFlagRemoved(commands);
 		final StringBuilder buf=new StringBuilder("^xAll Defined Expertise Codes: ^N\n\r");
-		final String rest=CMParms.combine(commands,0).toUpperCase();
+		final String rest=(commands.size()<2)?"":CMParms.combine(commands,1).toUpperCase();
 		final int COL_LEN=CMLib.lister().fixColWidth(20.0,viewerS);
 		if(wiki==WikiFlag.WIKILIST)
 		{
@@ -3675,12 +3675,38 @@ public class ListCmd extends StdCommand
 		}
 		else
 		{
-			for(final Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
+			if(rest.length()==0)
 			{
-				final ExpertiseLibrary.ExpertiseDefinition def=e.nextElement();
-				if((rest.length()==0)
-				||(def.name().toUpperCase().indexOf(rest)>0)
-				||(def.ID().toUpperCase().indexOf(rest)>0))
+				final XVector<ExpertiseDefinition> defs = new XVector<ExpertiseDefinition>(CMLib.expertises().definitions());
+				final FilteredEnumeration<ExpertiseDefinition> e=new FilteredEnumeration<ExpertiseDefinition>(defs.elements(), new Filterer<ExpertiseDefinition>() {
+					final HashSet<String> baseDone =  new HashSet<String>();
+					@Override
+					public boolean passesFilter(final ExpertiseDefinition obj)
+					{
+						if(!baseDone.contains(obj.getBaseName()))
+						{
+							baseDone.add(obj.getBaseName());
+							return true;
+						}
+						return false;
+					}
+
+				});
+				final List<String> finalList=new XVector<String>(new ConvertingEnumeration<ExpertiseDefinition,String>(e,new Converter<ExpertiseDefinition,String>(){
+					@Override
+					public String convert(final ExpertiseDefinition obj)
+					{
+						return obj.getBaseName();
+					}
+				}));
+				viewerS.rawPrintln(CMLib.lister().build4ColTable(viewerS.mob(), finalList));
+			}
+			else
+			for(final Enumeration<ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
+			{
+				final ExpertiseDefinition def=e.nextElement();
+				if((def.name().toUpperCase().indexOf(rest)>=0)
+				||(def.ID().toUpperCase().indexOf(rest)>=0))
 				{
 					buf.append(CMStrings.padRight("^Z"+def.ID(),COL_LEN)+"^?: "
 							  +CMStrings.padRight(def.name(),COL_LEN)+": "

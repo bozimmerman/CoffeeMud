@@ -134,6 +134,7 @@ public class CraftingSkill extends GatheringSkill
 		FORTCRAFT("FORT",ExpertiseLibrary.XType.X4),
 		IMBUCRAFT("IMBU",ExpertiseLibrary.XType.X4),
 		VIGOCRAFT("VIGO",ExpertiseLibrary.XType.X4),
+		RUSHCRAFT("RUSH",ExpertiseLibrary.XType.X6),
 		;
 
 		public final String stageKey;
@@ -933,8 +934,8 @@ public class CraftingSkill extends GatheringSkill
 		}
 		int duration=0;
 		while(((building==null)
-			||(building.name().endsWith(" bundle")&&(!isThereANonBundleChoice(recipes))))
-		&&(((++tries)<100)))
+			||(building.name().endsWith(" bundle")&&(isThereANonBundleChoice(recipes))))
+		&&(((++tries)<20)))
 		{
 			final List<CraftedItem> V=new ArrayList<CraftedItem>(1);
 			autoGenInvoke(mob,recipes,null,true,-1,material,forceLevels,V);

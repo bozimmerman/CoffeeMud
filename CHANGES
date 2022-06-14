@@ -22,6 +22,7 @@
  21. New command: ASSIST 
  22. PUSH and PULL now take a tick, and can fail from weight, but supports assist
  23. New Prayer: Eternal Item
+ 24. Players can now rush thier crafting, as per the new expertise, w/o learning it
 
 # Build 5.9.12 Release 1/17/2022
   *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG

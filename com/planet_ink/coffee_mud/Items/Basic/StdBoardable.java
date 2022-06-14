@@ -744,10 +744,12 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		final Area boardedArea=getArea();
 		if(boardedArea!=null)
 		{
-			final Boolean oldValue = Boolean.valueOf(msg.suspendResumeTrailers(null));
+			// suspendResumeTrailers is disabled to have NO EFFECT, until I figure out why this is here
+			// it was preventing death from trailing damage.
+			//final Boolean oldValue = Boolean.valueOf(msg.suspendResumeTrailers(null));
 			try
 			{
-				msg.suspendResumeTrailers(Boolean.TRUE);
+				//msg.suspendResumeTrailers(Boolean.TRUE);
 				for(final Enumeration<Room> r = boardedArea.getProperMap(); r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();
@@ -758,7 +760,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			}
 			finally
 			{
-				msg.suspendResumeTrailers(oldValue);
+				//msg.suspendResumeTrailers(oldValue);
 			}
 		}
 	}

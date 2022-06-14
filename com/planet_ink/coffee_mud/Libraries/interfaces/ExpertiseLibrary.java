@@ -428,6 +428,7 @@ public interface ExpertiseLibrary extends CMLibrary
 		X3,
 		X4,
 		X5,
+		X6,
 		LEVEL,
 		TIME,
 		MAXRANGE,
