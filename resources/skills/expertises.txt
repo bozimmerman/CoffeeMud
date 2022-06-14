@@ -439,7 +439,7 @@ HELP_ADVNCOOK3=<EXPERTISE>The ability to cook items of higher level. Items cooke
 DATA_=Improved,Enhanced,Superior
 
 RUSHCRAFT@x1=Rushed Crafting @x2,3,X6,-SKILLFLAG "+COMMON SKILL&CRAFTING",,+DEX {5+(4*@x1)},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to rush lower leveled crafted items using more material and sacrificed quality.
+HELP_=<EXPERTISE>The ability to rush lower leveled crafted items with sacrificed quality.
 HELP_RUSHCRAFT1=<EXPERTISE>The ability to rush lower leveled crafted items using more material and sacrificed quality.. Items crafted "Hurried" are a little lower level, and worth a little less.
 HELP_RUSHCRAFT2=<EXPERTISE>The ability to rush lower leveled crafted items using more material and sacrificed quality.. Items crafted "Rushed" are lower level, and worth less.
 HELP_RUSHCRAFT3=<EXPERTISE>The ability to rush lower leveled crafted items using more material and sacrificed quality.. Items crafted "Crudy" are much lower level, and worth much less.

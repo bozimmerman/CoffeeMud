@@ -166,22 +166,10 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					switch(stage)
 					{
 					case 0:
-						if(req1Required>0)
-							req1Required=multiplyMinResult1(req1Required,0.05);
-						if(req2Required>0)
-							req2Required=multiplyMinResult1(req2Required,0.05);
 						break;
 					case 1:
-						if(req1Required>0)
-							req1Required=multiplyMinResult1(req1Required,0.1);
-						if(req2Required>0)
-							req2Required=multiplyMinResult1(req2Required,0.1);
 						break;
 					case 2:
-						if(req1Required>0)
-							req1Required=multiplyMinResult1(req1Required,0.15);
-						if(req2Required>0)
-							req2Required=multiplyMinResult1(req2Required,0.15);
 						break;
 					}
 					break;
