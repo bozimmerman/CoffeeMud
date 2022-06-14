@@ -895,6 +895,10 @@ public class RoomLoader
 			final Item keyItem=e.nextElement();
 			final String location=itemLocs.get(keyItem);
 			final Environmental container=itemNums.get(location);
+			if((keyItem instanceof SpaceObject.SpaceGateway)
+			&&(container instanceof SpaceObject))
+				((SpaceObject)keyItem).setKnownTarget((SpaceObject)container);
+			else
 			if((container instanceof Container)&&(((Container)container).capacity()>0))
 				keyItem.setContainer((Container)container);
 			else
@@ -1152,6 +1156,10 @@ public class RoomLoader
 						if(loc.length()>0)
 						{
 							final PhysicalAgent container=itemNums.get(loc);
+							if((newItem instanceof SpaceObject.SpaceGateway)
+							&&(container instanceof SpaceObject))
+								((SpaceObject)newItem).setKnownTarget((SpaceObject)container);
+							else
 							if(container instanceof Container)
 								newItem.setContainer((Container)container);
 							else
