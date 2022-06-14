@@ -227,19 +227,38 @@ public interface GalacticMap extends CMLibrary
 	 * the ships relationship to the other object.  This is mostly for combat, where you need to
 	 * know when a missile his the belly or ass, or whether you can fire a forward missile at it.
 	 *
-	 * @see com.planet_ink.coffee_mud.Items.interfaces.ShipDirComponent.ShipDir
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.ShipDirectional.ShipDir
 	 *
 	 * @see GalacticMap#getDirection(long[], long[])
 	 * @see GalacticMap#getDirection(SpaceObject, SpaceObject)
 	 * @see GalacticMap#getDirectionFromDir(double[], double, double[])
 	 * @see GalacticMap#getOppositeDir(double[])
+	 * @see GalacticMap#getAbsoluteDirectionalFromDir(double[])
 	 *
 	 * @param facing the direction of facing
 	 * @param roll the roll angle
 	 * @param direction the direction to the other object
 	 * @return the relative direction code
 	 */
-	public ShipDirComponent.ShipDir getDirectionFromDir(double[] facing, double roll, double[] direction);
+	public ShipDirectional.ShipDir getDirectionFromDir(double[] facing, double roll, double[] direction);
+
+	/**
+	 * Given a direction this will return a relative direction object describing
+	 * the directions absolute facing.  This is arbitrary, and just allows zones
+	 * of direction to be described more easily.
+	 *
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.ShipDirectional.ShipDir
+	 *
+	 * @see GalacticMap#getDirection(long[], long[])
+	 * @see GalacticMap#getDirection(SpaceObject, SpaceObject)
+	 * @see GalacticMap#getDirectionFromDir(double[], double, double[])
+	 * @see GalacticMap#getOppositeDir(double[])
+	 * @see GalacticMap#getDirectionFromDir(double[], double, double[])
+	 *
+	 * @param direction the direction to the other object
+	 * @return the absolute direction code
+	 */
+	public ShipDirectional.ShipDir getAbsoluteDirectionalFromDir(final double[] direction);
 
 	/**
 	 * Given a direction, this will return its opposite

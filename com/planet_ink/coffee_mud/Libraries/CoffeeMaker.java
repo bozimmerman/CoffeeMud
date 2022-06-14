@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.ShipDirComponent.ShipDir;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipDirectional.ShipDir;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -625,10 +625,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			text.append(xmlLib.convertXMLtoTag("SSCONST",""+((ShipEngine)E).isConstantThruster()));
 			text.append(xmlLib.convertXMLtoTag("SSAPORTS",CMParms.toListString(((ShipEngine)E).getAvailPorts())));
 		}
-		if(E instanceof ShipDirComponent)
+		if(E instanceof ShipDirectional)
 		{
-			text.append(xmlLib.convertXMLtoTag("SSPDIRS",""+((ShipDirComponent)E).getPermittedNumDirections()));
-			text.append(xmlLib.convertXMLtoTag("SSAPORTS",""+CMParms.toListString(((ShipDirComponent)E).getPermittedDirections())));
+			text.append(xmlLib.convertXMLtoTag("SSPDIRS",""+((ShipDirectional)E).getPermittedNumDirections()));
+			text.append(xmlLib.convertXMLtoTag("SSAPORTS",""+CMParms.toListString(((ShipDirectional)E).getPermittedDirections())));
 		}
 		if(E instanceof ShipWarComponent)
 		{
@@ -3940,14 +3940,14 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			((ShipEngine)E).setConstantThruster(xml.getBoolFromPieces(buf,"SSCONST",true));
 			final String portsStr = xml.getValFromPieces(buf, "SSAPORTS", "");
 			if(portsStr.length()==0)
-				((ShipEngine)E).setAvailPorts(ShipDirComponent.ShipDir.values());
+				((ShipEngine)E).setAvailPorts(ShipDirectional.ShipDir.values());
 			else
-				((ShipEngine)E).setAvailPorts(CMParms.parseEnumList(ShipDirComponent.ShipDir.class, portsStr, ',').toArray(new ShipDirComponent.ShipDir[0]));
+				((ShipEngine)E).setAvailPorts(CMParms.parseEnumList(ShipDirectional.ShipDir.class, portsStr, ',').toArray(new ShipDirectional.ShipDir[0]));
 		}
-		if(E instanceof ShipDirComponent)
+		if(E instanceof ShipDirectional)
 		{
-			((ShipDirComponent)E).setPermittedNumDirections(xml.getIntFromPieces(buf,"SSPDIRS"));
-			((ShipDirComponent)E).setPermittedDirections(CMParms.parseEnumList(ShipDirComponent.ShipDir.class, xml.getValFromPieces(buf,"SSAPORTS"), ',').toArray(new ShipDirComponent.ShipDir[0]));
+			((ShipDirectional)E).setPermittedNumDirections(xml.getIntFromPieces(buf,"SSPDIRS"));
+			((ShipDirectional)E).setPermittedDirections(CMParms.parseEnumList(ShipDirectional.ShipDir.class, xml.getValFromPieces(buf,"SSAPORTS"), ',').toArray(new ShipDirectional.ShipDir[0]));
 		}
 		if(E instanceof ShipWarComponent)
 		{

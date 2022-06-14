@@ -10,7 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.ShipDirComponent.ShipDir;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipDirectional.ShipDir;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -32,14 +32,14 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    limitations under the License.
 */
 /**
- * A ship dir component is any ship component that can be directed
+ * A ship dir item is any ship or space object that can be directed
  * in a particular ship direction, such as a beam, launcher, sensor,
  * or whatever.
  *
  * @author Bo Zimmerman
  *
  */
-public interface ShipDirComponent extends TechComponent
+public interface ShipDirectional extends Item
 {
 	/**
 	/**
@@ -84,7 +84,7 @@ public interface ShipDirComponent extends TechComponent
 	 * of the ship.  This tells the system the complete set of
 	 * coverage by the shield or weapon, even if it is
 	 * incapable of covering them all at once.
-	 * @see ShipDirComponent#getPermittedDirections()
+	 * @see ShipDirectional#getPermittedDirections()
 	 * @param newPossDirs the total set of ship directions
 	 */
 	public void setPermittedDirections(ShipDir[] newPossDirs);
@@ -108,7 +108,7 @@ public interface ShipDirComponent extends TechComponent
 	 * centered on a particular section, and moving outward
 	 * as per the ShipDir list order.
 	 * @see ShipDir
-	 * @see ShipDirComponent#getPermittedDirections()
+	 * @see ShipDirectional#getPermittedDirections()
 	 * @see #setPermittedNumDirections(int)
 	 * @param numDirs the total number of sections covered
 	 */
@@ -121,8 +121,8 @@ public interface ShipDirComponent extends TechComponent
 	 * centered on a particular section, and moving outward
 	 * as per the ShipDir list order.
 	 * @see ShipDir
-	 * @see ShipDirComponent#getPermittedDirections()
-	 * @see ShipDirComponent#setPermittedNumDirections(int)
+	 * @see ShipDirectional#getPermittedDirections()
+	 * @see ShipDirectional#setPermittedNumDirections(int)
 	 * @return the total number of sections covered
 	 */
 	public int getPermittedNumDirections();

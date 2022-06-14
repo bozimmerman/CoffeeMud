@@ -137,7 +137,7 @@ public class GenShipShieldGenerator extends StdShipShieldGenerator
 			setPermittedNumDirections(CMath.s_int(val));
 			break;
 		case 6:
-			this.setPermittedDirections(CMParms.parseEnumList(ShipDirComponent.ShipDir.class, val, ',').toArray(new ShipDirComponent.ShipDir[0]));
+			this.setPermittedDirections(CMParms.parseEnumList(ShipDirectional.ShipDir.class, val, ',').toArray(new ShipDirectional.ShipDir[0]));
 			break;
 		case 7:
 		{

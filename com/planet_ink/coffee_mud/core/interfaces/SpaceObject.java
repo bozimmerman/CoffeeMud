@@ -120,6 +120,20 @@ public interface SpaceObject extends Environmental, BoundedObject
 	public long getMass();
 
 	/**
+	 * A GateWay is a type of space object that connects to another
+	 * space object as a gateway or wormhole.  These are accessed
+	 * using the knownTarget field.
+	 *
+	 *  @see SpaceObject#knownTarget()
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static interface SpaceGateway extends SpaceObject, ShipDirectional
+	{
+	};
+
+	/**
 	 * Some distance constants.  Not really proper enumerations, but
 	 * it's a nice way to create custom objects cleanly.
 	 * @author Bo Zimmerman

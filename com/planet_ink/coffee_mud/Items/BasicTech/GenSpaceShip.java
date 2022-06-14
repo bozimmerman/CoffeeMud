@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.ShipDirComponent.ShipDir;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipDirectional.ShipDir;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -262,7 +262,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 						{
 							if(command==Technical.TechCommand.ACCELERATION)
 							{
-								final ShipDirComponent.ShipDir dir=(ShipDirComponent.ShipDir)parms[0];
+								final ShipDirectional.ShipDir dir=(ShipDirectional.ShipDir)parms[0];
 								final double amount=((Double)parms[1]).doubleValue();
 								final boolean isConst = ((Boolean)parms[2]).booleanValue();
 								double finalAcceleration = 0;

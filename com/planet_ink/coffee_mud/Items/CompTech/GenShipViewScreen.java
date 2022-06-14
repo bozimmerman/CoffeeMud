@@ -11,7 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.ShipDirComponent.ShipDir;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipDirectional.ShipDir;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
 import com.planet_ink.coffee_mud.Libraries.interfaces.LanguageLibrary;
@@ -36,7 +36,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenShipViewScreen extends GenElecCompSensor implements ShipDirComponent
+public class GenShipViewScreen extends GenElecCompSensor implements ShipDirectional
 {
 	@Override
 	public String ID()
@@ -667,7 +667,7 @@ public class GenShipViewScreen extends GenElecCompSensor implements ShipDirCompo
 			setPermittedNumDirections(CMath.s_int(val));
 			break;
 		case 1:
-			this.setPermittedDirections(CMParms.parseEnumList(ShipDirComponent.ShipDir.class, val, ',').toArray(new ShipDirComponent.ShipDir[0]));
+			this.setPermittedDirections(CMParms.parseEnumList(ShipDirectional.ShipDir.class, val, ',').toArray(new ShipDirectional.ShipDir[0]));
 			break;
 		default:
 			super.setStat(code, val);

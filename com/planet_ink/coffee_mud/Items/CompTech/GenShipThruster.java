@@ -223,7 +223,7 @@ public class GenShipThruster extends StdShipThruster
 			this.setConstantThruster(CMath.s_bool(val));
 			break;
 		case 18:
-			this.setAvailPorts(CMParms.parseEnumList(ShipDirComponent.ShipDir.class, val, ',').toArray(new ShipDirComponent.ShipDir[0]));
+			this.setAvailPorts(CMParms.parseEnumList(ShipDirectional.ShipDir.class, val, ',').toArray(new ShipDirectional.ShipDir[0]));
 			break;
 		case 19:
 			setRechargeRate(CMath.s_parseLongExpression(val));

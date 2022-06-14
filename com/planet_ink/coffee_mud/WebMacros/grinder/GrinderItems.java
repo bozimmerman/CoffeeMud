@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.ShipDirComponent.ShipDir;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipDirectional.ShipDir;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -797,12 +797,12 @@ public class GrinderItems
 						((Electronics)I).activate(old.equalsIgnoreCase("on"));
 					break;
 				case SDIRNUMPORTS:
-					if(I instanceof ShipDirComponent)
-						((ShipDirComponent)I).setPermittedNumDirections(CMath.s_int(old));
+					if(I instanceof ShipDirectional)
+						((ShipDirectional)I).setPermittedNumDirections(CMath.s_int(old));
 					break;
 				case SDIRPORTS:
-					if(I instanceof ShipDirComponent)
-						((ShipDirComponent)I).setPermittedDirections(CMParms.parseEnumList(ShipDirComponent.ShipDir.class,old.toUpperCase(),',').toArray(new ShipDirComponent.ShipDir[0]));
+					if(I instanceof ShipDirectional)
+						((ShipDirectional)I).setPermittedDirections(CMParms.parseEnumList(ShipDirectional.ShipDir.class,old.toUpperCase(),',').toArray(new ShipDirectional.ShipDir[0]));
 					break;
 				case SWARMTYPES:
 					if(I instanceof ShipWarComponent)
@@ -840,7 +840,7 @@ public class GrinderItems
 					break;
 				case AVAILPORTS:
 					if(I instanceof ShipEngine)
-						((ShipEngine)I).setAvailPorts(CMParms.parseEnumList(ShipDirComponent.ShipDir.class,old.toUpperCase(),',').toArray(new ShipDirComponent.ShipDir[0]));
+						((ShipEngine)I).setAvailPorts(CMParms.parseEnumList(ShipDirectional.ShipDir.class,old.toUpperCase(),',').toArray(new ShipDirectional.ShipDir[0]));
 					break;
 				case SPECIMPULSE:
 					if(I instanceof ShipEngine)

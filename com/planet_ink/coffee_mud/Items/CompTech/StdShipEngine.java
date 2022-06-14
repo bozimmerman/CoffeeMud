@@ -10,7 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.ShipDirComponent.ShipDir;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipDirectional.ShipDir;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -50,7 +50,7 @@ public class StdShipEngine extends StdCompGenerator implements ShipEngine
 	protected boolean		constantThrust	= true;
 	protected final long[]	lastThrustMs	= new long[] { 0 };
 
-	protected ShipDirComponent.ShipDir[] ports = ShipDirComponent.ShipDir.values();
+	protected ShipDirectional.ShipDir[] ports = ShipDirectional.ShipDir.values();
 
 	public StdShipEngine()
 	{
@@ -172,11 +172,11 @@ public class StdShipEngine extends StdCompGenerator implements ShipEngine
 
 	/**
 	 * Gets set of available thrust ports on this engine.
-	 * @see ShipEngine#setAvailPorts(ShipDirComponent.ShipDir[])
+	 * @see ShipEngine#setAvailPorts(ShipDirectional.ShipDir[])
 	 * @return the set of available thrust ports.
 	 */
 	@Override
-	public ShipDirComponent.ShipDir[] getAvailPorts()
+	public ShipDirectional.ShipDir[] getAvailPorts()
 	{
 		return ports;
 	}
@@ -187,7 +187,7 @@ public class StdShipEngine extends StdCompGenerator implements ShipEngine
 	 * @param ports the set of available thrust ports.
 	 */
 	@Override
-	public void setAvailPorts(final ShipDirComponent.ShipDir[] ports)
+	public void setAvailPorts(final ShipDirectional.ShipDir[] ports)
 	{
 		this.ports = ports;
 	}

@@ -1,7 +1,9 @@
-package com.planet_ink.coffee_mud.Items.CompTech;
+package com.planet_ink.coffee_mud.Items.Basic;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.interfaces.BoundedObject;
+import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -18,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2016-2022 Bo Zimmerman
+   Copyright 2022-2022 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,19 +34,21 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenShipWeapon extends StdShipWeapon
+public class GenWormhole extends StdWormhole
 {
 	@Override
 	public String ID()
 	{
-		return "GenShipWeapon";
+		return "GenWormhole";
 	}
 
-	public GenShipWeapon()
+	protected String readableText="";
+
+	public GenWormhole()
 	{
 		super();
-		setName("a generic ship weapon");
-		setDisplayText("a generic ship weapon.");
+		setName("a generic wormhole");
+		setDisplayText("a generic wormhole is here.");
 		setDescription("");
 	}
 
@@ -61,6 +65,18 @@ public class GenShipWeapon extends StdShipWeapon
 	}
 
 	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setReadableText(final String text)
+	{
+		readableText = text;
+	}
+
+	@Override
 	public void setMiscText(final String newText)
 	{
 		miscText="";
@@ -68,8 +84,7 @@ public class GenShipWeapon extends StdShipWeapon
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","INSTFACT",
-										   "SDIRNUMPORTS","SDIRPORTS","SWARMTYPES","RECHRATE"};
+	private final static String[] MYCODES={"DIRECTION","SPEED","RADIUS","COORDINATES","SDIRNUMPORTS","SDIRPORTS"};
 
 	@Override
 	public String getStat(final String code)
@@ -79,32 +94,17 @@ public class GenShipWeapon extends StdShipWeapon
 		switch(getInternalCodeNum(code))
 		{
 		case 0:
-			return "" + powerCapacity();
+			return "" + CMParms.toListString(direction());
 		case 1:
-			return "" + activated();
+			return "" + speed();
 		case 2:
-			return "" + powerRemaining();
+			return "" + radius();
 		case 3:
-			return "" + getManufacturerName();
+			return "" + CMParms.toListString(coordinates());
 		case 4:
-			return "" + getInstalledFactor();
-		case 5:
 			return "" + getPermittedNumDirections();
-		case 6:
+		case 5:
 			return CMParms.toListString(getPermittedDirections());
-		case 7:
-		{
-			final StringBuilder str=new StringBuilder("");
-			for(int i=0;i<this.getDamageMsgTypes().length;i++)
-			{
-				if(i>0)
-					str.append(", ");
-				str.append(CMMsg.TYPE_DESCS[getDamageMsgTypes()[i]]);
-			}
-			return str.toString();
-		}
-		case 8:
-			return "" + getRechargeRate();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -119,41 +119,25 @@ public class GenShipWeapon extends StdShipWeapon
 		switch(getInternalCodeNum(code))
 		{
 		case 0:
-			setPowerCapacity(CMath.s_parseLongExpression(val));
+			setDirection(CMParms.toDoubleArray(CMParms.parseCommas(val, true)));
 			break;
 		case 1:
-			activate(CMath.s_bool(val));
+			setSpeed(CMath.s_parseMathExpression(val));
 			break;
 		case 2:
-			setPowerRemaining(CMath.s_parseLongExpression(val));
+			setRadius(CMath.s_parseLongExpression(val));
 			break;
 		case 3:
-			setManufacturerName(val);
+			setCoords(CMParms.toLongArray(CMParms.parseCommas(val, true)));
+			coordinates[0] = coordinates[0] % SpaceObject.Distance.GalaxyRadius.dm;
+			coordinates[1] = coordinates[1] % SpaceObject.Distance.GalaxyRadius.dm;
+			coordinates[2] = coordinates[2] % SpaceObject.Distance.GalaxyRadius.dm;
 			break;
 		case 4:
-			setInstalledFactor((float)CMath.s_parseMathExpression(val));
-			break;
-		case 5:
 			setPermittedNumDirections(CMath.s_int(val));
 			break;
-		case 6:
+		case 5:
 			this.setPermittedDirections(CMParms.parseEnumList(ShipDirectional.ShipDir.class, val, ',').toArray(new ShipDirectional.ShipDir[0]));
-			break;
-		case 7:
-		{
-			final List<String> types = CMParms.parseCommas(val.toUpperCase(),true);
-			final int[] newTypes = new int[types.size()];
-			for(int x=0;x<types.size();x++)
-			{
-				final int typCode = CMParms.indexOf(CMMsg.TYPE_DESCS, types.get(x).trim());
-				if(typCode > 0)
-					newTypes[x] = typCode;
-			}
-			super.setDamageMsgTypes(newTypes);
-			break;
-		}
-		case 8:
-			setRechargeRate((float)CMath.s_parseMathExpression(val));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
@@ -178,7 +162,7 @@ public class GenShipWeapon extends StdShipWeapon
 	{
 		if(codes!=null)
 			return codes;
-		final String[] MYCODES=CMProps.getStatCodesList(GenShipWeapon.MYCODES,this);
+		final String[] MYCODES=CMProps.getStatCodesList(GenWormhole.MYCODES,this);
 		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -192,7 +176,7 @@ public class GenShipWeapon extends StdShipWeapon
 	@Override
 	public boolean sameAs(final Environmental E)
 	{
-		if(!(E instanceof GenShipWeapon))
+		if(!(E instanceof GenSpaceBody))
 			return false;
 		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)

@@ -11,7 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.ShipDirComponent.ShipDir;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipDirectional.ShipDir;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -145,14 +145,14 @@ public interface Technical extends Item
 	 */
 	public static enum TechCommand
 	{
-		THRUST(ShipDirComponent.ShipDir.class, Double.class),
-		ACCELERATED(ShipDirComponent.ShipDir.class, Double.class),
-		ACCELERATION(ShipDirComponent.ShipDir.class, Double.class, Boolean.class),
+		THRUST(ShipDirectional.ShipDir.class, Double.class),
+		ACCELERATED(ShipDirectional.ShipDir.class, Double.class),
+		ACCELERATION(ShipDirectional.ShipDir.class, Double.class, Boolean.class),
 		COMPONENTFAILURE(Technical.TechType.class, String[].class),
 		SENSE(TechComponent.class, Boolean.class),
 		AIRREFRESH(Double.class, Integer.class),
 		POWERSET(Long.class),
-		DIRSET(ShipDirComponent.ShipDir.class),
+		DIRSET(ShipDirectional.ShipDir.class),
 		WEAPONTARGETSET(Double.class,Double.class),
 		WEAPONFIRE(),
 		SHIELDSET(ShipDir.class,Integer.class),

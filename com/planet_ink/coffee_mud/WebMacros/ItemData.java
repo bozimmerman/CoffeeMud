@@ -13,7 +13,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomina
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.ShipDirComponent.ShipDir;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipDirectional.ShipDir;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Items.interfaces.MusicalInstrument.InstrumentType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -1330,12 +1330,12 @@ public class ItemData extends StdWebMacro
 							str.append((firstTime) ? (((Electronics)I).activated()?"CHECKED":"") : (old.equalsIgnoreCase("on")?"CHECKED":"")).append(", ");
 						break;
 					case SDIRNUMPORTS:
-						if(I instanceof ShipWarComponent)
-							str.append((firstTime) ? (""+((ShipWarComponent)I).getPermittedNumDirections()) : old).append(", ");
+						if(I instanceof ShipDirectional)
+							str.append((firstTime) ? (""+((ShipDirectional)I).getPermittedNumDirections()) : old).append(", ");
 						break;
 					case SDIRPORTS:
-						if(I instanceof ShipWarComponent)
-							str.append((firstTime) ? (""+CMParms.toListString(((ShipWarComponent)I).getPermittedDirections())) : old).append(", ");
+						if(I instanceof ShipDirectional)
+							str.append((firstTime) ? (""+CMParms.toListString(((ShipDirectional)I).getPermittedDirections())) : old).append(", ");
 						break;
 					case SWARMTYPES:
 						if(I instanceof ShipWarComponent)

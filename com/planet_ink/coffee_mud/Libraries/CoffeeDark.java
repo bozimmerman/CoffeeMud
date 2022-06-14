@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.ShipDirComponent.ShipDir;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipDirectional.ShipDir;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -336,7 +336,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
-	public ShipDirComponent.ShipDir getDirectionFromDir(final double[] facing, final double roll, final double[] direction)
+	public ShipDirectional.ShipDir getDirectionFromDir(final double[] facing, final double roll, final double[] direction)
 	{
 		//Log.debugOut("facing="+(Math.toDegrees(facing[0]) % 360.0)+","+(Math.toDegrees(facing[1]) % 180.0));
 		//Log.debugOut("direction="+(Math.toDegrees(direction[0]) % 360.0)+","+(Math.toDegrees(direction[1]) % 180.0));
@@ -363,6 +363,30 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		if(rD >= 135.0 && rD <225.0)
 			return ShipDir.VENTRAL;
 		if(rD >= 225.0 && rD <315.0)
+			return ShipDir.STARBOARD;
+		return ShipDir.AFT;
+	}
+
+	@Override
+	public ShipDirectional.ShipDir getAbsoluteDirectionalFromDir(final double[] direction)
+	{
+		double yD = Math.toDegrees(direction[0]) % 360.0;
+		if(yD < 0)
+			yD = 360.0 + yD;
+		double rD = Math.toDegrees(direction[1]) % 180.0;
+		if(rD < 0)
+			rD = 180.0 + rD;
+		if(rD<45)
+			return ShipDir.DORSEL;
+		if(rD>135)
+			return ShipDir.VENTRAL;
+		if(yD >= 315.0 || yD<45.0)
+			return ShipDir.FORWARD;
+		if(yD >= 135.0 && yD <225.0)
+			return ShipDir.VENTRAL;
+		if(yD >= 45.0 && yD <135.0)
+			return ShipDir.PORT;
+		if(yD >= 225.0 && yD <315.0)
 			return ShipDir.STARBOARD;
 		return ShipDir.AFT;
 	}

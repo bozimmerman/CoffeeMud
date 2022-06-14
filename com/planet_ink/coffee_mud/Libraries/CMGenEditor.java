@@ -26,7 +26,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.ClanItem.ClanItemType;
 import com.planet_ink.coffee_mud.Items.interfaces.MusicalInstrument.InstrumentType;
-import com.planet_ink.coffee_mud.Items.interfaces.ShipDirComponent.ShipDir;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipDirectional.ShipDir;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -5760,6 +5760,51 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		E.setDirectionFromCore(newDir);
 	}
 
+	public void genSpaceGate(final MOB mob, final SpaceObject.SpaceGateway E, final int showNumber, final int showFlag) throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
+		final StringBuilder buf=new StringBuilder();
+		buf.append(showNumber+". ");
+		final String targetName = E.knownTarget() == null ? "NONE" : E.knownTarget().Name();
+		final String targetLoc = E.knownTarget() == null ? "N/A" : CMLib.english().coordDescShort(E.knownTarget().coordinates());
+		buf.append(L("Target: @x1  (Coords in space: @x2)",targetName,targetLoc));
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
+		boolean continueThis=true;
+		while((mob.session()!=null)
+		&&(!mob.session().isStopped())
+		&&(continueThis))
+		{
+			continueThis=false;
+			final String newName=mob.session().prompt(L("Enter a new target in space\n\r:"),"");
+			if(newName.trim().length()>0)
+			{
+				SpaceObject O=null;
+				if(newName.trim().length()>0)
+				{
+					if(newName.equalsIgnoreCase("none")||newName.equalsIgnoreCase("null"))
+						O=null;
+					else
+					{
+						O=CMLib.space().findSpaceObject(newName, true);
+						if(O==null)
+							O=CMLib.space().findSpaceObject(newName, false);
+						if(O==null)
+						{
+							mob.tell(L("Space object '@x1' not found.",newName));
+							continueThis=true;
+							continue;
+						}
+					}
+					E.setKnownTarget(O);
+				}
+			}
+			else
+				mob.tell(L("(no change)"));
+		}
+	}
+
 	public void genSpaceStuff(final MOB mob, final SpaceObject E, final int showNumber, final int showFlag) throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -5771,7 +5816,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			buf.append(L("Radius: @x1, Coords in space: @x2\n\r",CMLib.english().sizeDescShort(E.radius()),CMLib.english().coordDescShort(E.coordinates())));
 			buf.append(showNumber+". Moving: ");
 			if(E.speed()<=0)
-				buf.append("no");
+				buf.append("no\n\r");
 			else
 				buf.append(CMLib.english().speedDescShort(E.speed())+", Direction: "+CMLib.english().directionDescShort(E.direction())+"\n\r");
 			mob.tell(buf.toString());
@@ -9733,13 +9778,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				E.setConstantThruster(prompt(mob, E.isConstantThruster(), ++showNumber, showFlag, "Constant thrust"));
 				E.setSpecificImpulse(prompt(mob, E.getSpecificImpulse(), ++showNumber, showFlag, "Fuel Spec Impulse"));
 				E.setFuelEfficiency(prompt(mob, E.getFuelEfficiency()*100.0, ++showNumber, showFlag, "Fuel Effic. %")/100.0);
-				E.setAvailPorts(CMParms.parseEnumList(ShipDirComponent.ShipDir.class,prompt(mob, CMParms.toListString(E.getAvailPorts()), ++showNumber, showFlag, "Avail. ports").toUpperCase(),',').toArray(new ShipDirComponent.ShipDir[0]));
+				E.setAvailPorts(CMParms.parseEnumList(ShipDirectional.ShipDir.class,prompt(mob, CMParms.toListString(E.getAvailPorts()), ++showNumber, showFlag, "Avail. ports").toUpperCase(),',').toArray(new ShipDirectional.ShipDir[0]));
 			}
-			if(me instanceof ShipDirComponent)
+			if(me instanceof ShipDirectional)
 			{
-				final ShipDirComponent E=(ShipDirComponent)me;
+				final ShipDirectional E=(ShipDirectional)me;
 				E.setPermittedNumDirections(prompt(mob, E.getPermittedNumDirections(), ++showNumber, showFlag, "Max Ports"));
-				E.setPermittedDirections(CMParms.parseEnumList(ShipDirComponent.ShipDir.class,prompt(mob, CMParms.toListString(E.getPermittedDirections()), ++showNumber, showFlag, "Avail. ports").toUpperCase(),',').toArray(new ShipDirComponent.ShipDir[0]));
+				E.setPermittedDirections(CMParms.parseEnumList(ShipDirectional.ShipDir.class,prompt(mob, CMParms.toListString(E.getPermittedDirections()), ++showNumber, showFlag, "Avail. ports").toUpperCase(),',').toArray(new ShipDirectional.ShipDir[0]));
 			}
 			if(me instanceof ShipWarComponent)
 			{
@@ -9782,6 +9827,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				final SpaceObject spaceArea=(SpaceObject)me;
 				genSpaceStuff(mob,spaceArea,++showNumber,showFlag);
+				if(me instanceof SpaceObject.SpaceGateway)
+					genSpaceGate(mob,(SpaceObject.SpaceGateway)me,++showNumber,showFlag);
 			}
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
@@ -10149,7 +10196,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				E.setConstantThruster(prompt(mob, E.isConstantThruster(), ++showNumber, showFlag, "Constant thrust"));
 				E.setSpecificImpulse(prompt(mob, E.getSpecificImpulse(), ++showNumber, showFlag, "Fuel Spec Impulse"));
 				E.setFuelEfficiency(prompt(mob, E.getFuelEfficiency()*100.0, ++showNumber, showFlag, "Fuel Effic. %")/100.0);
-				E.setAvailPorts(CMParms.parseEnumList(ShipDirComponent.ShipDir.class,prompt(mob, CMParms.toListString(E.getAvailPorts()), ++showNumber, showFlag, "Avail. ports").toUpperCase(),',').toArray(new ShipDirComponent.ShipDir[0]));
+				E.setAvailPorts(CMParms.parseEnumList(ShipDirectional.ShipDir.class,prompt(mob, CMParms.toListString(E.getAvailPorts()), ++showNumber, showFlag, "Avail. ports").toUpperCase(),',').toArray(new ShipDirectional.ShipDir[0]));
 			}
 			if(me instanceof TechComponent)
 			{
