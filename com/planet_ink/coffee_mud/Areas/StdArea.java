@@ -1165,9 +1165,11 @@ public class StdArea implements Area
 				default:
 					if (msg.tool() instanceof Technical)
 					{
-						Room room = msg.source().location();
-						if ((msg.target() instanceof MOB) && (((MOB) msg.target()).location() != null))
+						final Room room;
+						if (msg.target() instanceof MOB)
 							room = ((MOB) msg.target()).location();
+						else
+							room = msg.source().location();
 						if((room != null)
 						&&(room.getArea() == this))
 						{
