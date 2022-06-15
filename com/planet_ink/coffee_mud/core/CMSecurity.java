@@ -2844,7 +2844,8 @@ public class CMSecurity
 		DIS955RULE("no 5% failure chance"),
 		ITEMREJUV("item rejuv"),
 		RANDOMQUESTS("random quests"),
-		BADEXITS("unlinked exits")
+		BADEXITS("unlinked exits"),
+		SPACETHREAD("space thread")
 		;
 		private final String desc;
 

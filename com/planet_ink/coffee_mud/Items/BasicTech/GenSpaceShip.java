@@ -178,7 +178,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 			if((o != null)&&(R instanceof LocationRoom))
 			{
 				CMLib.space().addObjectToSpace(o,newCoordinates);
-				final double gravity = CMLib.tech().getGravityForce(o, planetO);
+				final double gravity = CMLib.space().getGravityForce(o, planetO);
 				setShipFlag(SpaceShip.ShipFlag.IN_THE_AIR,(gravity > 0.0));
 			}
 		}

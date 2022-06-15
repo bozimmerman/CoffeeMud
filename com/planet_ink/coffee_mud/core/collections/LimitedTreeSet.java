@@ -87,28 +87,28 @@ public class LimitedTreeSet<K> extends TreeSet<K>
 
 	@SuppressWarnings("unchecked")
 	@Override
-    public boolean add(K key)
+	public boolean add(K key)
 	{
 		if(key instanceof String)
 			key = (K)(caseLess?((String)key).toLowerCase():key);
 		check();
 		synchronized(expirations)
 		{
-	    	final boolean k = super.add(key);
+			final boolean k = super.add(key);
 			expirations.put(key, new long[] {System.currentTimeMillis()});
-	    	return k;
+			return k;
 		}
-    }
+	}
 
 	@Override
-    public boolean addAll(final Collection<? extends K> map)
+	public boolean addAll(final Collection<? extends K> map)
 	{
 		// this long put ensures the case insensitivity
 		boolean ok=true;
 		for(final K e : map)
 			ok=this.add(e) && ok;
 		return ok;
-    }
+	}
 
 	protected void check()
 	{
@@ -143,19 +143,19 @@ public class LimitedTreeSet<K> extends TreeSet<K>
 
 	@SuppressWarnings("unchecked")
 	@Override
-    public boolean contains(Object key)
-    {
+	public boolean contains(Object key)
+	{
 		if(key instanceof String)
 			key = caseLess?(K)((String)key).toLowerCase():key;
 		check();
 		synchronized(expirations)
 		{
-	    	final boolean c=super.contains(key);
-	    	if(c)
-	    		expirations.put((K)key, new long[] {System.currentTimeMillis()});
-	    	return c;
-    	}
-    }
+			final boolean c=super.contains(key);
+			if(c)
+				expirations.put((K)key, new long[] {System.currentTimeMillis()});
+			return c;
+		}
+	}
 
 	@Override
 	public Iterator<K> iterator()
@@ -164,15 +164,15 @@ public class LimitedTreeSet<K> extends TreeSet<K>
 	}
 
 	@Override
-    public void clear()
-    {
+	public void clear()
+	{
 		check();
 		super.clear();
 		synchronized(expirations)
 		{
-	    	expirations.clear();
+			expirations.clear();
 		}
-    }
+	}
 
 	protected boolean internalRemove(Object key)
 	{
@@ -180,14 +180,14 @@ public class LimitedTreeSet<K> extends TreeSet<K>
 			key = caseLess?((String)key).toLowerCase():key;
 		synchronized(expirations)
 		{
-	    	final boolean obj=super.remove(key);
-    		expirations.remove(key);
-        	return obj;
+			final boolean obj=super.remove(key);
+			expirations.remove(key);
+			return obj;
 		}
 	}
 
 	@Override
-    public boolean remove(final Object key)
+	public boolean remove(final Object key)
 	{
 		check();
 		return internalRemove(key);

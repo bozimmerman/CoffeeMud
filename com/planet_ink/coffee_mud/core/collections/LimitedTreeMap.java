@@ -74,26 +74,26 @@ public class LimitedTreeMap<L,K> extends TreeMap<L,K>
 
 	@SuppressWarnings("unchecked")
 	@Override
-    public K put(L key, final K value)
+	public K put(L key, final K value)
 	{
 		if(key instanceof String)
 			key = caseLess?(L)((String)key).toLowerCase():key;
 		check();
 		synchronized(expirations)
 		{
-	    	final K k = super.put(key, value);
+			final K k = super.put(key, value);
 			expirations.put(key, new long[] {System.currentTimeMillis()});
-	    	return k;
+			return k;
 		}
-    }
+	}
 
 	@Override
-    public void putAll(final Map<? extends L, ? extends K> map)
+	public void putAll(final Map<? extends L, ? extends K> map)
 	{
 		// this long put ensures the case insensitivity
 		for(final Map.Entry<? extends L, ? extends K> e : map.entrySet())
 			this.put(e.getKey(),e.getValue());
-    }
+	}
 
 	protected void check()
 	{
@@ -122,8 +122,8 @@ public class LimitedTreeMap<L,K> extends TreeMap<L,K>
 	}
 
 	@Override
-    public boolean containsKey(Object key)
-    {
+	public boolean containsKey(Object key)
+	{
 		if(key instanceof String)
 			key = caseLess?((String)key).toLowerCase():key;
 		check();
@@ -131,42 +131,42 @@ public class LimitedTreeMap<L,K> extends TreeMap<L,K>
 		{
 			@SuppressWarnings("unchecked")
 			final L l=(L)key;
-	    	final boolean c=super.containsKey(key);
-	    	if(c)
-	    		expirations.put(l, new long[] {System.currentTimeMillis()});
-	    	return c;
-    	}
-    }
+			final boolean c=super.containsKey(key);
+			if(c)
+				expirations.put(l, new long[] {System.currentTimeMillis()});
+			return c;
+		}
+	}
 
 	@Override
-    public K get(Object key)
-    {
+	public K get(Object key)
+	{
 		if(key instanceof String)
 			key = caseLess?((String)key).toLowerCase():key;
 		check();
 		synchronized(expirations)
 		{
-	    	final K obj=super.get(key);
-	    	if(super.containsKey(key))
-	    	{
+			final K obj=super.get(key);
+			if(super.containsKey(key))
+			{
 				@SuppressWarnings("unchecked")
 				final L l=(L)key;
-	    		expirations.put(l, new long[] {System.currentTimeMillis()});
-    		}
-	    	return obj;
-    	}
-    }
+				expirations.put(l, new long[] {System.currentTimeMillis()});
+			}
+			return obj;
+		}
+	}
 
 	@Override
-    public void clear()
-    {
+	public void clear()
+	{
 		check();
 		super.clear();
 		synchronized(expirations)
 		{
-	    	expirations.clear();
+			expirations.clear();
 		}
-    }
+	}
 
 	protected K internalRemove(Object key)
 	{
@@ -174,14 +174,14 @@ public class LimitedTreeMap<L,K> extends TreeMap<L,K>
 			key = caseLess?((String)key).toLowerCase():key;
 		synchronized(expirations)
 		{
-	    	final K obj=super.remove(key);
-    		expirations.remove(key);
-        	return obj;
+			final K obj=super.remove(key);
+			expirations.remove(key);
+			return obj;
 		}
 	}
 
 	@Override
-    public K remove(final Object key)
+	public K remove(final Object key)
 	{
 		check();
 		return internalRemove(key);

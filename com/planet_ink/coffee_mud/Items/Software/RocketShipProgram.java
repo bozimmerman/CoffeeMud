@@ -2209,7 +2209,7 @@ public class RocketShipProgram extends GenShipProgram
 						{
 
 							final ShipDir dir = CMLib.space().getDirectionFromDir(ship.facing(), ship.roll(), targetDirection);
-							if(CMParms.contains(CMLib.tech().getCurrentBattleCoveredDirections((ShipDirectional)T), dir))
+							if(CMParms.contains(CMLib.space().getCurrentBattleCoveredDirections((ShipDirectional)T), dir))
 							{
 								finalWeaponToFire = T;
 								break;

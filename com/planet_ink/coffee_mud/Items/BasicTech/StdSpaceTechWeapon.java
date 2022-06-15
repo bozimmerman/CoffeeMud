@@ -85,7 +85,7 @@ public class StdSpaceTechWeapon extends StdSpaceTech implements SpaceObject, Wea
 				else
 					srcP=null;
 				if(srcP!=null)
-					CMLib.tech().sendSpaceEmissionEvent(srcP, this, weaponDamageType(), L("<S-NAME> is hit by <O-NAME>"));
+					CMLib.space().sendSpaceEmissionEvent(srcP, this, weaponDamageType(), L("<S-NAME> is hit by <O-NAME>"));
 
 				if (!amDestroyed())
 				{

@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.exceptions.BadEmailAddressException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
@@ -21,7 +22,6 @@ import com.planet_ink.coffee_mud.Items.interfaces.ShipDirectional.ShipDir;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-import com.planet_ink.coffee_mud.core.MiniJSON;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -63,7 +63,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	protected static final double		PI_TIMES_1ANDAHALF		= Math.PI * 1.5;
 	protected final int					QUADRANT_WIDTH			= 10;
 
-	protected RTree<SpaceObject>		space					= new RTree<SpaceObject>();
+	protected RTree<SpaceObject>	space	= new RTree<SpaceObject>();
 
 	private static Filterer<Area> planetsAreaFilter=new Filterer<Area>()
 	{
@@ -734,9 +734,233 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
+	public ShipDir[] getCurrentBattleCoveredDirections(final ShipDirectional comp)
+	{
+		final ShipDir[] currCoverage;
+		final ShipDir[] permitted = comp.getPermittedDirections();
+		final int numDirs = comp.getPermittedNumDirections();
+		if(numDirs >= permitted.length)
+			currCoverage = comp.getPermittedDirections();
+		else
+		{
+			final int centralIndex = CMLib.dice().roll(1, numDirs, -1);
+			final List<ShipDir> theDirs = new ArrayList<ShipDir>(numDirs);
+			int offset = 0;
+			final List<ShipDir> permittedDirs = new XVector<ShipDir>(permitted);
+			permittedDirs.addAll(Arrays.asList(permitted));
+			permittedDirs.addAll(Arrays.asList(permitted));
+			while(theDirs.size() < numDirs)
+			{
+				if(!theDirs.contains(permittedDirs.get(centralIndex+offset)))
+					theDirs.add(permittedDirs.get(centralIndex+offset));
+				if(!theDirs.contains(permittedDirs.get(centralIndex-offset)))
+					theDirs.add(permittedDirs.get(centralIndex-offset));
+				offset+=1;
+			}
+			currCoverage = theDirs.toArray(new ShipDir[theDirs.size()]);
+		}
+		return currCoverage;
+	}
+
+	@Override
+	public double getGravityForce(final SpaceObject S, final SpaceObject cO)
+	{
+		final long distance=getDistanceFrom(S.coordinates(), cO.coordinates()) - cO.radius();
+		final long oMass = S.getMass();
+		if(((cO instanceof Area)||(cO.getMass() >= SpaceObject.ASTEROID_MASS))
+		&&(distance > 0)
+		&&(oMass < SpaceObject.MOONLET_MASS))
+		{
+			final double graviRadiusMax=(cO.radius()*(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS-1.0));
+			if(distance<graviRadiusMax)
+			{
+				return 1.0-(distance/graviRadiusMax);
+			}
+		}
+		return 0;
+	}
+
+	@Override
+	public boolean sendSpaceEmissionEvent(final SpaceObject srcP, final Environmental tool, final int emissionType, final String msgStr)
+	{
+		return sendSpaceEmissionEvent(srcP, tool, 30L*SpaceObject.Distance.LightSecond.dm, emissionType, msgStr);
+	}
+
+	@Override
+	public boolean sendSpaceEmissionEvent(final SpaceObject srcP, final Environmental tool, final long range, final int emissionType, final String msgStr)
+	{
+		final List<SpaceObject> cOs=getSpaceObjectsWithin(srcP, 0, range);
+		if(cOs.size()==0)
+			return false;
+		final MOB deityM=CMLib.map().deity();
+		final CMMsg msg=CMClass.getMsg(deityM, srcP, tool, CMMsg.MSG_EMISSION, null, CMMsg.MSG_EMISSION, null, emissionType, msgStr);
+		if(srcP.okMessage(srcP, msg))
+		{
+			for(final SpaceObject cO : cOs)
+				cO.executeMsg(srcP, msg);
+			if(!cOs.contains(srcP))
+				srcP.executeMsg(srcP, msg);
+			return true;
+		}
+		return false;
+	}
+
+	protected void swapTargetTool(final CMMsg msg)
+	{
+		final Environmental E=msg.target();
+		msg.setTarget(msg.tool());
+		msg.setTool(E);
+	}
+
+	public void runSpace()
+	{
+		final boolean isDebuggingHARD=CMSecurity.isDebugging(DbgFlag.SPACEMOVES);
+		final boolean isDebugging=CMSecurity.isDebugging(DbgFlag.SPACESHIP)||isDebuggingHARD;
+		for(final Enumeration<SpaceObject> o = getSpaceObjects(); o.hasMoreElements(); )
+		{
+			final SpaceObject O=o.nextElement();
+			if(!(O instanceof Area))
+			{
+				final SpaceShip S=(O instanceof SpaceShip)?(SpaceShip)O:null;
+				if((S!=null)
+				&&(S.getArea()!=null)
+				&&(S.getArea().getAreaState()!=Area.State.ACTIVE))
+					continue;
+				BoundedCube cube=O.getBounds();
+				final double speed=O.speed();
+				final long[] startCoords=Arrays.copyOf(O.coordinates(),3);
+				if(speed>=1)
+				{
+					cube=cube.expand(O.direction(),(long)speed);
+					moveSpaceObject(O);
+				}
+				// why are we doing all this for an object that's not even moving?!  Because gravity?
+				//TODO: passify stellar objects that never show up on each others gravitational map, for a period of time
+				boolean inAirFlag = false;
+				final List<SpaceObject> cOs=getSpaceObjectsWithin(O, 0, Math.max(4*SpaceObject.Distance.LightSecond.dm,Math.round(speed)));
+				final long oMass = O.getMass();
+				// objects should already be sorted by closeness for good collision detection
+				if(isDebuggingHARD)
+					Log.debugOut("Space Object "+O.name()+" moved "+speed+" in dir " +CMLib.english().directionDescShort(O.direction())+" to "+CMLib.english().coordDescShort(O.coordinates()));
+
+				for(final SpaceObject cO : cOs)
+				{
+					if((cO != O)
+					&&(!cO.amDestroyed())
+					&&(!O.amDestroyed()))
+					{
+						final double minDistance=getMinDistanceFrom(startCoords, O.coordinates(), cO.coordinates());
+						if(isDebuggingHARD)
+						{
+							final long dist = CMLib.space().getDistanceFrom(O, cO);
+							Log.debugOut("Space Object "+O.name()+" is "+CMLib.english().distanceDescShort(dist)+" from "+cO.Name()+", minDistance="+CMLib.english().distanceDescShort(Math.round(minDistance)));
+						}
+						final double gravitationalMove=getGravityForce(O, cO);
+						if(gravitationalMove > 0)
+						{
+							if(isDebugging)
+								Log.debugOut("SpaceShip "+O.name()+" is gravitating "+gravitationalMove+" towards " +cO.Name());
+							final double[] directionTo=getDirection(O, cO);
+							accelSpaceObject(O, directionTo, gravitationalMove);
+							inAirFlag = true;
+						}
+						if((O instanceof Weapon)&&(isDebugging))
+						{
+							final long dist = CMLib.space().getDistanceFrom(O, cO);
+							Log.debugOut("SpaceShip Weapon "+O.Name()+" closest distance is "+minDistance+" to  object@("+CMParms.toListString(cO.coordinates())+"):<"+(O.radius()+cO.radius())+"/"+dist);
+						}
+						if ((minDistance<(O.radius()+cO.radius()))
+						&&((speed>0)||(cO.speed()>0))
+						&&((oMass < SpaceObject.MOONLET_MASS)||(cO.getMass() < SpaceObject.MOONLET_MASS)))
+						{
+							final MOB host=CMLib.map().deity();
+							final CMMsg msg;
+							if(O instanceof Weapon)
+							{
+								if(isDebugging) Log.debugOut("Weapon "+O.name()+" collided with "+cO.Name());
+								final Integer weaponDamageType = Weapon.MSG_TYPE_MAP.get(Integer.valueOf(((Weapon)O).weaponDamageType()));
+								final int srcMinor = CMMsg.MASK_MOVE|CMMsg.MASK_SOUND|(weaponDamageType!=null?weaponDamageType.intValue():CMMsg.TYP_COLLISION);
+								msg=CMClass.getMsg(host, O, cO, srcMinor,CMMsg.MSG_DAMAGE,CMMsg.MSG_COLLISION,null);
+								msg.setValue(((Weapon)O).phyStats().damage());
+							}
+							else
+							if(cO instanceof Weapon)
+							{
+								if(cO.knownSource() == O) // a ship can run into its weapon?!
+									continue;
+								if(isDebugging) Log.debugOut("Space Object "+O.name()+" collided with weapon "+cO.Name());
+								final Integer weaponDamageType = Weapon.MSG_TYPE_MAP.get(Integer.valueOf(((Weapon)cO).weaponDamageType()));
+								final int srcMinor = CMMsg.MASK_MOVE|CMMsg.MASK_SOUND|(weaponDamageType!=null?weaponDamageType.intValue():CMMsg.TYP_COLLISION);
+								msg=CMClass.getMsg(host, cO, O, srcMinor,CMMsg.MSG_DAMAGE,CMMsg.MSG_COLLISION,null);
+								msg.setValue(((Weapon)cO).phyStats().damage());
+							}
+							else
+							{
+								if(isDebugging) Log.debugOut("Space Object "+O.name()+" collided with "+cO.Name());
+								msg=CMClass.getMsg(host, O, cO, CMMsg.MSG_COLLISION,null);
+							}
+							if(msg.target().okMessage(host, msg))
+							{
+								swapTargetTool(msg);
+								if(msg.target().okMessage(host, msg))
+								{
+									swapTargetTool(msg);
+									msg.target().executeMsg(host, msg);
+									swapTargetTool(msg);
+									msg.target().executeMsg(host, msg);
+								}
+							}
+						}
+					}
+				}
+				if(S!=null)
+				{
+					S.setShipFlag(SpaceShip.ShipFlag.IN_THE_AIR,inAirFlag);
+				}
+			}
+		}
+	}
+
+	@Override
+	public boolean activate()
+	{
+		if(serviceClient==null)
+		{
+			name="THSpace"+Thread.currentThread().getThreadGroup().getName().charAt(0);
+			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, CMProps.getTickMillis(), 1);
+		}
+		return true;
+	}
+
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		try
+		{
+			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.SPACETHREAD))
+			{
+				isDebugging=CMSecurity.isDebugging(DbgFlag.UTILITHREAD);
+				tickStatus=Tickable.STATUS_ALIVE;
+				runSpace();
+			}
+		}
+		finally
+		{
+			tickStatus=Tickable.STATUS_NOT;
+			setThreadStatus(serviceClient,"sleeping");
+		}
+		return true;
+	}
+
+	@Override
 	public boolean shutdown()
 	{
 		space.clear();
+		if(CMLib.threads().isTicking(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK))
+		{
+			CMLib.threads().deleteTick(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
+			serviceClient=null;
+		}
 		return true;
 	}
 

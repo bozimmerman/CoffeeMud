@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipDirectional.ShipDir;
 import com.planet_ink.coffee_mud.Libraries.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -496,4 +497,48 @@ public interface GalacticMap extends CMLibrary
 	 * @return a list of LocationRoom objects, best on top
 	 */
 	public List<LocationRoom> getLandingPoints(final SpaceObject ship, final Environmental O);
+
+	/**
+	 * If the two given objects are within an appropriate distance
+	 * from each other, this will return the correct amount of
+	 * acceleration g-force applied by the second object to the
+	 * first. typically &lt;= 1G
+	 *
+	 * @param S the object being pulled
+	 * @param cO the object pulling
+	 * @return the amount of gravity force, or 0
+	 */
+	public double getGravityForce(SpaceObject S, SpaceObject cO);
+
+	/**
+	 * Given a ship war component, returns the directions in which it is
+	 * currently covering.
+	 *
+	 * @param comp the war component
+	 * @return the directions being covered
+	 */
+	public ShipDir[] getCurrentBattleCoveredDirections(final ShipDirectional comp);
+
+	/**
+	 * Generates an sends a message representing an emission in space,
+	 * which might be picked up by various sensors.  Includes broadcast messages.
+	 * @param srcP the generator of the event/the center
+	 * @param tool the means by which the event was generated
+	 * @param emissionType the CMMsg type of the event
+	 * @param msgStr a description of the sensory message
+	 * @return true if the event was propogated
+	 */
+	public boolean sendSpaceEmissionEvent(final SpaceObject srcP, final Environmental tool, final int emissionType, final String msgStr);
+
+	/**
+	 * Generates an sends a message representing an emission in space,
+	 * which might be picked up by various sensors.  Includes broadcast messages.
+	 * @param srcP the generator of the event/the center
+	 * @param tool the means by which the event was generated
+	 * @param range the range at which the emission can be detected
+	 * @param emissionType the CMMsg type of the event
+	 * @param msgStr a description of the sensory message
+	 * @return true if the event was propogated
+	 */
+	public boolean sendSpaceEmissionEvent(final SpaceObject srcP, final Environmental tool, final long range, final int emissionType, final String msgStr);
 }

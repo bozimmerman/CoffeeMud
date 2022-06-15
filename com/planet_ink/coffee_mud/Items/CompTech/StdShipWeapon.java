@@ -157,7 +157,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 	protected ShipDir[] getCurrentBattleCoveredDirections()
 	{
 		if(this.currCoverage == null)
-			this.currCoverage = CMLib.tech().getCurrentBattleCoveredDirections(this);
+			this.currCoverage = CMLib.space().getCurrentBattleCoveredDirections(this);
 		return this.currCoverage;
 	}
 
@@ -325,7 +325,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 								weaponO.setKnownSource(ship);
 								final int weaponRadius = 10;
 								final int accellerationOfShipInSameDirectionAsWeapon = 4;
-								final long[] firstCoords = CMLib.space().moveSpaceObject(ship.coordinates(), targetDirection, 
+								final long[] firstCoords = CMLib.space().moveSpaceObject(ship.coordinates(), targetDirection,
 										(int)Math.round(ship.radius()+weaponRadius+ship.speed()+accellerationOfShipInSameDirectionAsWeapon));
 								//TODO: adjust targeting based on tech, efficiency, installed, etc, etc.
 								weaponO.setCoords(firstCoords);
