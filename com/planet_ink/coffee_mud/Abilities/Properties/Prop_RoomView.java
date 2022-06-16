@@ -100,7 +100,7 @@ public class Prop_RoomView extends Property
 				{
 					if(hereR.getArea() instanceof Boardable)
 					{
-						final Room thereR=CMLib.map().roomLocation(((Boardable)hereR).getBoardableItem());
+						final Room thereR=CMLib.map().roomLocation(((Boardable)hereR.getArea()).getBoardableItem());
 						if(thereR!=null)
 							newRoom=thereR;
 					}

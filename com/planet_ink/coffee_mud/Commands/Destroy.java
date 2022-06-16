@@ -1919,11 +1919,19 @@ public class Destroy extends StdCommand
 						execute(mob,commands,metaFlags);
 					}
 					else
-					mob.tell(
-						L("\n\rYou cannot destroy a '@x1'. However, you might try an EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, "
-								+ "SESSION, TICKS, THREAD, HOLIDAY, JOURNAL, SOCIAL, ACHIEVEMENT, CLASS, ABILITY, MANUFACTURER, "
-								+ "LANGUAGE, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, GOVERNMENT, NOPURGE, BUG, TYPO, IDEA, "
-								+ "WEBSERVER, POLL, DEBUGFLAG, DISABLEFLAG, ENABLEFLAG, or a ROOM.",commandType));
+					if(allWord.indexOf('@')>=0)
+					{
+						commands.add(1,"ITEM");
+						execute(mob,commands,metaFlags);
+					}
+					else
+					{
+						mob.tell(
+							L("\n\rYou cannot destroy a '@x1'. However, you might try an EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, "
+							+ "SESSION, TICKS, THREAD, HOLIDAY, JOURNAL, SOCIAL, ACHIEVEMENT, CLASS, ABILITY, MANUFACTURER, "
+							+ "LANGUAGE, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, GOVERNMENT, NOPURGE, BUG, TYPO, IDEA, "
+							+ "WEBSERVER, POLL, DEBUGFLAG, DISABLEFLAG, ENABLEFLAG, or a ROOM.",commandType));
+					}
 				}
 			}
 		}

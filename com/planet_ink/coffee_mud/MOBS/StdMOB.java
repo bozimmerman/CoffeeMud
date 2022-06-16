@@ -2431,15 +2431,16 @@ public class StdMOB implements MOB
 
 			if (!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 			{
-				final int srcCode = msg.sourceMajor();
+				final int srcMajor = msg.sourceMajor();
 				final int srcMinor = msg.sourceMinor();
+				final CMFlagLibrary flags = CMLib.flags();
 				if (amDead())
 				{
 					tell(L("You are DEAD!"));
 					return false;
 				}
 
-				if (CMath.bset(srcCode, CMMsg.MASK_MALICIOUS))
+				if (CMath.bset(srcMajor, CMMsg.MASK_MALICIOUS))
 				{
 					if (msg.target() instanceof MOB)
 					{
@@ -2461,16 +2462,16 @@ public class StdMOB implements MOB
 					}
 				}
 
-				if (CMath.bset(srcCode, CMMsg.MASK_EYES))
+				if (CMath.bset(srcMajor, CMMsg.MASK_EYES))
 				{
-					if (CMLib.flags().isSleeping(this))
+					if (flags.isSleeping(this))
 					{
 						tell(L("Not while you are sleeping."));
 						return false;
 					}
 					if (!(msg.target() instanceof Room))
 					{
-						if (!CMLib.flags().canBeSeenBy(msg.target(), this))
+						if (!flags.canBeSeenBy(msg.target(), this))
 						{
 							if (msg.target() instanceof Item)
 								tell(L("You don't see @x1 here.", ((Item) msg.target()).name(this)));
@@ -2480,30 +2481,30 @@ public class StdMOB implements MOB
 						}
 					}
 				}
-				if (CMath.bset(srcCode, CMMsg.MASK_MOUTH))
+				if (CMath.bset(srcMajor, CMMsg.MASK_MOUTH))
 				{
 					if (((srcMinor != CMMsg.TYP_LIST)
 						|| srcM.amDead()
-						|| CMLib.flags().isSleeping(srcM))
-					&& (!CMLib.flags().isAliveAwakeMobile(this, false)))
+						|| flags.isSleeping(srcM))
+					&& (!flags.isAliveAwakeMobile(this, false)))
 						return false;
-					if (CMath.bset(srcCode, CMMsg.MASK_SOUND))
+					if (CMath.bset(srcMajor, CMMsg.MASK_SOUND))
 					{
 						if ((msg.tool() == null)
 						|| (!(msg.tool() instanceof Ability))
 						|| (!((Ability) msg.tool()).isNowAnAutoEffect()))
 						{
-							if (CMLib.flags().isSleeping(this))
+							if (flags.isSleeping(this))
 							{
 								tell(L("Not while you are sleeping."));
 								return false;
 							}
-							if (!CMLib.flags().canSpeak(this))
+							if (!flags.canSpeak(this))
 							{
 								tell(L("You can't make sounds!"));
 								return false;
 							}
-							if ((CMLib.flags().isAnimalIntelligence(this)) && (!CMath.bset(phyStats().sensesMask(), PhyStats.CAN_GRUNT_WHEN_STUPID)))
+							if ((flags.isAnimalIntelligence(this)) && (!CMath.bset(phyStats().sensesMask(), PhyStats.CAN_GRUNT_WHEN_STUPID)))
 							{
 								tell(L("You aren't smart enough to speak."));
 								return false;
@@ -2512,16 +2513,16 @@ public class StdMOB implements MOB
 					}
 					else
 					{
-						if ((!CMLib.flags().canBeSeenBy(msg.target(), this))
+						if ((!flags.canBeSeenBy(msg.target(), this))
 						&& (!isMine(msg.target()))
 						&& (msg.target() instanceof Item))
 						{
 							srcM.tell(L("You don't see '@x1' here.", ((Item) msg.target()).name(this)));
 							return false;
 						}
-						if (!CMLib.flags().canTaste(this))
+						if (!flags.canTaste(this))
 						{
-							if ((msg.sourceMinor() == CMMsg.TYP_EAT) || (msg.sourceMinor() == CMMsg.TYP_DRINK))
+							if ((srcMinor == CMMsg.TYP_EAT) || (srcMinor == CMMsg.TYP_DRINK))
 								tell(L("You can't eat or drink."));
 							else
 								tell(L("Your mouth is out of order."));
@@ -2529,9 +2530,9 @@ public class StdMOB implements MOB
 						}
 					}
 				}
-				if (CMath.bset(srcCode, CMMsg.MASK_HANDS))
+				if (CMath.bset(srcMajor, CMMsg.MASK_HANDS))
 				{
-					if ((!CMLib.flags().canBeSeenBy(msg.target(), this))
+					if ((!flags.canBeSeenBy(msg.target(), this))
 					&& (!(isMine(msg.target()) && (msg.target() instanceof Item)))
 					&& ((!(msg.target() instanceof Boardable))
 						|| (((Boardable) msg.target()).getArea() != location().getArea()))
@@ -2550,13 +2551,13 @@ public class StdMOB implements MOB
 							srcM.tell(L("You don't see that here."));
 						return false;
 					}
-					if (!CMLib.flags().isAliveAwakeMobile(this, false))
+					if (!flags.isAliveAwakeMobile(this, false))
 						return false;
 
-					if ((CMLib.flags().isSitting(this))
-					&& (msg.sourceMinor() != CMMsg.TYP_SITMOVE)
-					&& (msg.sourceMinor() != CMMsg.TYP_BUY)
-					&& (msg.sourceMinor() != CMMsg.TYP_BID)
+					if ((flags.isSitting(this))
+					&& (srcMinor != CMMsg.TYP_SITMOVE)
+					&& (srcMinor != CMMsg.TYP_BUY)
+					&& (srcMinor != CMMsg.TYP_BID)
 					&& (msg.targetMinor() != CMMsg.TYP_OK_VISUAL)
 					&& ((msg.sourceMessage() != null) || (msg.othersMessage() != null))
 					&& (((!CMLib.utensils().reachableItem(this, msg.target())) || (!CMLib.utensils().reachableItem(this, msg.tool())))
@@ -2568,27 +2569,29 @@ public class StdMOB implements MOB
 					}
 				}
 
-				if (CMath.bset(srcCode, CMMsg.MASK_MOVE))
+				if (CMath.bset(srcMajor, CMMsg.MASK_MOVE))
 				{
-					final boolean sleeping = CMLib.flags().isSleeping(this);
-					final boolean sitting = ((CMLib.flags().isSitting(this))
-											&& (msg.sourceMinor() != CMMsg.TYP_LEAVE)
-											&& (msg.sourceMinor() != CMMsg.TYP_ENTER));
+					final boolean sleeping = flags.isSleeping(this);
+					final boolean sitting = ((flags.isSitting(this))
+											&& (srcMinor != CMMsg.TYP_LEAVE)
+											&& (srcMinor != CMMsg.TYP_ENTER)
+											&& ((msg.targetMinor() != CMMsg.NO_EFFECT)||(srcMinor!=CMMsg.TYP_DELICATE_HANDS_ACT))
+											);
 
 					if ((sleeping || sitting)
-					&& (msg.sourceMinor() != CMMsg.TYP_STAND)
-					&& (msg.sourceMinor() != CMMsg.TYP_SITMOVE)
-					&& (msg.sourceMinor() != CMMsg.TYP_SIT)
-					&& (msg.sourceMinor() != CMMsg.TYP_SLEEP))
+					&& (srcMinor != CMMsg.TYP_STAND)
+					&& (srcMinor != CMMsg.TYP_SITMOVE)
+					&& (srcMinor != CMMsg.TYP_SIT)
+					&& (srcMinor != CMMsg.TYP_SLEEP))
 					{
 						if (sleeping)
 							tell(L("You need to wake up!"));
 						else
 							tell(L("You need to stand up!"));
-						if ((msg.sourceMinor() != CMMsg.TYP_WEAPONATTACK) && (msg.sourceMinor() != CMMsg.TYP_THROW))
+						if ((srcMinor != CMMsg.TYP_WEAPONATTACK) && (srcMinor != CMMsg.TYP_THROW))
 							return false;
 					}
-					if (!CMLib.flags().canMove(this))
+					if (!flags.canMove(this))
 					{
 						tell(L("You can't move!"));
 						return false;
@@ -2726,15 +2729,15 @@ public class StdMOB implements MOB
 					if ((isInCombat())
 					&& (location() != null)
 					&& (!msg.sourceMajor(CMMsg.MASK_MAGIC))
-					&& (!CMLib.flags().isFalling(this)))
+					&& (!flags.isFalling(this)))
 					{
 						for (final Enumeration<MOB> m = location().inhabitants(); m.hasMoreElements();)
 						{
 							final MOB M = m.nextElement();
 							if ((M != this)
 							&& (M.getVictim() == this)
-							&& (CMLib.flags().isAliveAwakeMobile(M, true))
-							&& (CMLib.flags().canSenseEnteringLeaving(srcM, M))
+							&& (flags.isAliveAwakeMobile(M, true))
+							&& (flags.canSenseEnteringLeaving(srcM, M))
 							&& (CMProps.getVar(CMProps.Str.PLAYERFLEE) != null)
 							&& (CMProps.getVar(CMProps.Str.PLAYERFLEE).length() > 0))
 							{
@@ -2754,7 +2757,7 @@ public class StdMOB implements MOB
 					}
 					break;
 				case CMMsg.TYP_SIT: // SIT is waking!
-					if (CMLib.flags().isSleeping(this))
+					if (flags.isSleeping(this))
 						break;
 					//$FALL-THROUGH$
 				case CMMsg.TYP_BUY:
@@ -2781,7 +2784,7 @@ public class StdMOB implements MOB
 						if (msg.target() != null)
 						{
 							if ((msg.target() instanceof MOB)
-							&& (!CMLib.flags().canBeHeardSpeakingBy(this, (MOB) msg.target())))
+							&& (!flags.canBeHeardSpeakingBy(this, (MOB) msg.target())))
 							{
 								tell(L("@x1 can't hear you!", ((Physical) msg.target()).name(this)));
 								return false;
@@ -2835,7 +2838,7 @@ public class StdMOB implements MOB
 					if (msg.target() instanceof Deity)
 						break;
 					if ((msg.target() instanceof MOB)
-					&& (!CMLib.flags().canBeHeardSpeakingBy(this, (MOB) msg.target())))
+					&& (!flags.canBeHeardSpeakingBy(this, (MOB) msg.target())))
 					{
 						tell(L("@x1 can't hear you!", ((Physical) msg.target()).name(this)));
 						return false;
@@ -2873,10 +2876,11 @@ public class StdMOB implements MOB
 		&& (location() == ((MOB) msg.target()).location()))
 		{
 			final MOB trgM = (MOB) msg.target();
+			final int srcMinor = msg.sourceMinor();
 			// and now, the consequences of range
 			if (((msg.targetMinor() == CMMsg.TYP_WEAPONATTACK)
 				&& (rangeToTarget() > maxRangeWith(msg.tool())))
-			|| ((msg.sourceMinor() == CMMsg.TYP_THROW)
+			|| ((srcMinor == CMMsg.TYP_THROW)
 				&& (rangeToTarget() > 2)
 				&& (maxRangeWith(msg.tool()) <= 0)))
 			{
@@ -2921,10 +2925,10 @@ public class StdMOB implements MOB
 			}
 			else
 			if ((msg.tool() != null)
-			&& (msg.sourceMinor() != CMMsg.TYP_BUY)
-			&& (msg.sourceMinor() != CMMsg.TYP_BID)
-			&& (msg.sourceMinor() != CMMsg.TYP_SELL)
-			&& (msg.sourceMinor() != CMMsg.TYP_VIEW))
+			&& (srcMinor != CMMsg.TYP_BUY)
+			&& (srcMinor != CMMsg.TYP_BID)
+			&& (srcMinor != CMMsg.TYP_SELL)
+			&& (srcMinor != CMMsg.TYP_VIEW))
 			{
 				// this reason this is here and not in stdability protecting
 				// mana usage is because the target must be determined for

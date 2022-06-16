@@ -39,7 +39,7 @@ public class GenCannon extends GenSiegeWeapon implements Technical
 	@Override
 	public String ID()
 	{
-		return "GenSiegeWeapon";
+		return "GenCannon";
 	}
 
 	public GenCannon()

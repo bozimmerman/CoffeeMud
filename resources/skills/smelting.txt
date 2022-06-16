@@ -10,7 +10,7 @@ electrum	13	50	(onground:consumed:1:GOLD:)&&(onground:consumed:1:SILVER:)	90	Gen
 cold iron	14	100	(onground:consumed:3:ELINVAR:)&&(onground:consumed:1:MOLYBDOCHALKOS:)	50	GenResource	IRON	COLD IRON	
 steel	15	120	(onground:consumed:1:IRON:)&&(onground:consumed:1:COAL:)	75	GenResource	STEEL		
 corinthiacum	16	120	(onground:consumed:1:GOLD:)&&(onground:consumed:1:SILVER:)&&(onground:consumed:1:COPPER:)	65	GenResource	BRONZE	CORINTHIACUM	
-illuminum	17	150	(onground:consumed:1:TIN:)&&(onground:consumed:1:MITHRIL:)	75	GenResource	TIN	ILLUMINUM	Prop_Adjuster;ISLIGHT DAM-1 ARMOR-1
+illuminum	17	150	(onground:consumed:1:TIN:)&&(onground:consumed:1:MITHRIL:)	75	GenResource	TIN	ILLUMINUM	Prop_Adjuster;disposition+ISLIGHT DAM-1 ARMOR-1
 hepatizon	18	55	(onground:consumed:1:ELECTRUM:)&&(onground:consumed:1:COPPER:)	50	GenResource	BRONZE	HEPATIZON	
 monel	19	60	(onground:consumed:2:NICKEL:)&&(onground:consumed:1:COPPER:)	24	GenResource	BRASS	MONEL	
 stainless steel	20	120	(onground:consumed:9:IRON:)&&(onground:consumed:2:COAL:)&&(onground:consumed:2:CHROMIUM:)&&(onground:consumed:1:NICKEL:)	85	GenResource	STEEL	STAINLESS STEEL	Prop_Adjuster;SAVEWAT+100
@@ -25,8 +25,8 @@ incoloy	31	175	(onground:consumed:3:IRON:)&&(onground:consumed:3:NICKEL:)&&(ongr
 darksteel	33	90	(onground:consumed:2:IRON:)&&(onground:consumed:2:COAL:)&&(onground:consumed:1:HEPATIZON:)	90	GenResource	STEEL	DARKSTEEL	Prop_Adjuster;disposition+ISHIDDEN
 tungstabidium	35	180	(onground:consumed:2:MITHRIL:)&&(onground:consumed:1:BRASS:)	80	GenResource	STEEL	TUNGSTABIDIUM	
 invar	36	80	(onground:consumed:2:IRON:)&&(onground:consumed:1:NICKEL:)	35	GenResource	BRASS	INVAR	Prop_Adjuster;SAVEFIRE+100
-blacksteel	37	120	(onground:consumed:3:IRON:)&&(onground:consumed:2:COAL:)&&(onground:consumed:1:MOLYBDOCHALKOS:)	90	GenResource	STEEL	BLACKSTEEL	Prop_Adjuster;disposition+ISEVIL DAM+2
-damascus steel	38	120	(onground:consumed:2:IRON:)&&(onground:consumed:2:COAL:)&&(onground:consumed:1:CORINTHIACUM:)	90	GenResource	STEEL	DAMASCUS STEEL	Prop_Adjuster;disposition+ISGOOD DAM+2
+blacksteel	37	120	(onground:consumed:3:IRON:)&&(onground:consumed:2:COAL:)&&(onground:consumed:1:MOLYBDOCHALKOS:)	90	GenResource	STEEL	BLACKSTEEL	*Prop_Adjuster;DAM+2 disposition+ISEVIL
+damascus steel	38	120	(onground:consumed:2:IRON:)&&(onground:consumed:2:COAL:)&&(onground:consumed:1:CORINTHIACUM:)	90	GenResource	STEEL	DAMASCUS STEEL	*Prop_Adjuster;DAM+2 disposition+ISGOOD
 atlantite	40	200	(onground:consumed:1:MITHRIL:)&&(onground:consumed:1:SEAWEED:)	200	GenResource	ATLANTITE		
 truesilver	43	130	(onground:consumed:1:MITHRIL:)&&(onground:consumed:1:STERLING:)	300	GenResource	SILVER	TRUESILVER	Prop_Adjuster;ATTACK+20
 galvorn	45	300	(onground:consumed:1:PLATINUM:)&&(onground:consumed:2:MITHRIL:)&&(onground:consumed:1:STEEL:)&&(onground:consumed:1:DIAMOND:)	1000	GenResource	ADAMANTITE	GALVORN	
@@ -38,10 +38,10 @@ dwarfstar iron	58	200	(onground:consumed:2:MITHRIL:)&&(onground:consumed:1:IRON:
 sky-iron	60	200	(onground:consumed:2:IRON:)&&(onground:consumed:1:MITHRIL:)&&(onground:consumed:1:COAL:)	150	GenResource	STEEL	SKY-IRON	Prop_Adjuster;ARMOR+110 MULTIPLYPH=TRUE
 magesteel	62	300	(onground:consumed:3:IRON:)&&(onground:consumed:1:COAL:)&&(onground:consumed:1:DRAGONSCALES:)	125	GenResource	STEEL	MAGESTEEL	Prop_Adjuster;disposition+ISFLYING
 sunglass	64	300	(onground:consumed:1:DRAGONSCALES:)&&(onground:consumed:1:PLATINUM:)	260	GenResource	PLATINUM	SUNGLASS	Prop_Adjuster;disposition+ISINVISIBLE
-demonsteel	66	666	(onground:consumed:9:ADAMANTITE:)&&(onground:consumed:1:A DEMON INTERNAL ORGAN:)	666	GenResource	DURANIUM	DEMONSTEEL	Prop_Adjuster;disposition+ISEVIL ABILITY+1 disposition+ISGLOWING
+demonsteel	66	666	(onground:consumed:9:ADAMANTITE:)&&(onground:consumed:1:A DEMON INTERNAL ORGAN:)	666	GenResource	DURANIUM	DEMONSTEEL	*Prop_Adjuster;ABILITY+1 disposition+ISGLOWING disposition+ISEVIL 
 orichalcum	70	210	(onground:consumed:1:MITHRIL:)&&(onground:consumed:1:SEAWEED:)&&(onground:consumed:1:COPPER:)	200	GenResource	ATLANTITE	ORICHALCUM	Prop_Adjuster;ABILITY+1 disposition+ISGLOWING
 celenegil	75	180	(onground:consumed:1:ORICHALCUM:)&&(onground:consumed:1:PLATINUM:)	300	GenResource	ATLANTITE	CELENEGIL	Prop_Adjuster;ABILITY+1 disposition+ISGLOWING
-celesteel	77	777	(onground:consumed:9:ADAMANTITE:)&&(onground:consumed:1:SOME DEVA BLOOD:)	777	GenResource	DURANIUM	CELESTEEL	Prop_Adjuster;disposition+ISGOOD ABILITY+1 disposition+ISGLOWING
+celesteel	77	777	(onground:consumed:9:ADAMANTITE:)&&(onground:consumed:1:SOME DEVA BLOOD:)	777	GenResource	DURANIUM	CELESTEEL	*Prop_Adjuster;ABILITY+1 disposition+ISGLOWING disposition+ISGOOD
 yautjavian	78	440	(onground:consumed:2:ADAMANTITE:)&&(onground:consumed:1:BRONZE:)&&(onground:consumed:1:MITHRIL:)	280	GenResource	MITHRIL	YAUTJAVIAN	*Prop_Adjuster;CRITPCTWEAPONS+5
 ithildin	80	400	(onground:consumed:2:ADAMANTITE:)&&(onground:consumed:1:DRAGONSCALES:)&&(onground:kept:1:PLATINUM:)	300	GenResource	MITHRIL	ITHILDIN	*Prop_Adjuster;disposition+ISINVISIBLE
 quicksilver	85	400	(onground:consumed:4:SILVER:)&&(onground:consumed:2:IRON:)&&(onground:consumed:1:MITHRIL:)&&(onground:consumed:1:COAL:)	320	GenResource	MITHRIL	QUICKSILVER	*Prop_Adjuster;attack+200 MULTIPLYPH=TRUE

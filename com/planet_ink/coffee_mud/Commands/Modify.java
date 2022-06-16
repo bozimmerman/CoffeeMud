@@ -2563,6 +2563,12 @@ public class Modify extends StdCommand
 				execute(mob,commands,metaFlags);
 			}
 			else
+			if(allWord.indexOf('@')>=0)
+			{
+				commands.add(1,"ITEM");
+				execute(mob,commands,metaFlags);
+			}
+			else
 				mob.tell(L("\n\rYou cannot modify a '@x1'. However, you might try an "+listOfThings()+".",allWord));
 		}
 		return false;

@@ -45,18 +45,10 @@ public class Group extends StdCommand
 		return access;
 	}
 
-	public static StringBuffer showWhoLong(final MOB seer, final MOB who)
+	public static StringBuffer showWhoLong(final MOB seer, final MOB who, final int[] cols, final int statShortLevel)
 	{
 		final StringBuffer msg=new StringBuffer("^N");
 		msg.append("[^w");
-		final int[] cols={
-			CMLib.lister().fixColWidth(7,seer.session()),
-			CMLib.lister().fixColWidth(7,seer.session()),
-			CMLib.lister().fixColWidth(5,seer.session()),
-			CMLib.lister().fixColWidth(13,seer.session()),
-			CMLib.lister().fixColWidth(3,seer.session()),
-			CMLib.lister().fixColWidth(12,seer.session())
-		};
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 		{
 			if(who.charStats().getCurrentClass().raceless())
@@ -91,11 +83,83 @@ public class Group extends StdCommand
 		final String mnColor = (mnPct < .25) ? "^r" : (mnPct < .5) ? "^y" : "^w";
 		final String mvColor = (mvPct < .25) ? "^r" : (mvPct < .5) ? "^y" : "^w";
 		msg.append("^N] ^H" + CMStrings.padRight(who.name(),cols[3])+"^N ");
-		msg.append(CMStrings.padRightPreserve(CMLib.lang().L("hp(@x1@x2^N/^w@x3^N)",hpColor,CMStrings.padRightPreserve(""+who.curState().getHitPoints(),cols[4]),CMStrings.padRightPreserve(""+who.maxState().getHitPoints(),cols[4])),cols[5]));
-		msg.append(CMStrings.padRightPreserve(CMLib.lang().L("mn(@x1@x2^N/^w@x3^N)",mnColor,CMStrings.padRightPreserve(""+who.curState().getMana(),cols[4]),CMStrings.padRightPreserve(""+who.maxState().getMana(),cols[4])),cols[5]));
-		msg.append(CMStrings.padRightPreserve(CMLib.lang().L("mv(@x1@x2^N/^w@x3^N)",mvColor,CMStrings.padRightPreserve(""+who.curState().getMovement(),cols[4]),CMStrings.padRightPreserve(""+who.maxState().getMovement(),cols[4])),cols[5]));
+		final String hpCur = CMStrings.padRightPreserve(""+who.curState().getHitPoints(),cols[4]);
+		final String hpMax = CMStrings.padRightPreserve(""+who.maxState().getHitPoints(),cols[4]);
+		final String mnCur = CMStrings.padRightPreserve(""+who.curState().getMana(),cols[4]);
+		final String mnMax = CMStrings.padRightPreserve(""+who.maxState().getMana(),cols[4]);
+		final String mvCur = CMStrings.padRightPreserve(""+who.curState().getMovement(),cols[4]);
+		final String mvMax = CMStrings.padRightPreserve(""+who.maxState().getMovement(),cols[4]);
+		if(statShortLevel == 0)
+		{
+			msg.append(CMStrings.padRightPreserve(CMLib.lang().L("hp(@x1@x2^N/^w@x3^N)",hpColor,hpCur,hpMax),cols[5]));
+			msg.append(CMStrings.padRightPreserve(CMLib.lang().L("mn(@x1@x2^N/^w@x3^N)",mnColor,mnCur,mnMax),cols[5]));
+			msg.append(CMStrings.padRightPreserve(CMLib.lang().L("mv(@x1@x2^N/^w@x3^N)",mvColor,mvCur,mvMax),cols[5]));
+		}
+		else
+		if(statShortLevel == 1)
+		{
+			msg.append(CMStrings.padRightPreserve(CMLib.lang().L("@x1@x2hp^N ",hpColor,hpCur,hpMax),cols[5]));
+			msg.append(CMStrings.padRightPreserve(CMLib.lang().L("@x1@x2mn^N ",mnColor,mnCur,mnMax),cols[5]));
+			msg.append(CMStrings.padRightPreserve(CMLib.lang().L("@x1@x2mv^N",mvColor,mvCur,mvMax),cols[5]));
+		}
+		else
+		{
+			msg.append(CMStrings.padRightPreserve(CMLib.lang().L("@x1@x2^N/",hpColor,hpCur.trim(),hpMax.trim()),cols[5]));
+			msg.append(CMStrings.padRightPreserve(CMLib.lang().L("@x1@x2^N/",mnColor,mnCur.trim(),mnMax.trim()),cols[5]));
+			msg.append(CMStrings.padRightPreserve(CMLib.lang().L("@x1@x2^N",mvColor,mvCur.trim(),mvMax.trim()),cols[5]));
+		}
 		msg.append("\n\r");
 		return msg;
+	}
+
+	public int fixCols(final MOB mob, final int[] cols, final List<MOB> orderedGroup)
+	{
+		int longestName = 0;
+		for (final MOB follower : orderedGroup)
+		{
+			if(follower.name().length()>=longestName)
+				longestName=follower.name().length()+1;
+		}
+
+		int statLen=12;
+		int shortCode = 0;
+		if(longestName < 13)
+			longestName = 13;
+		else
+		{
+			if(longestName < 19)
+			{
+				longestName=18;
+				shortCode=1;
+				statLen=7;
+			}
+			else
+			if(longestName < 21)
+			{
+				longestName=20;
+				shortCode=2;
+				statLen=5;
+			}
+			else
+			if(longestName < 35)
+			{
+				shortCode=2;
+				statLen=5;
+			}
+			else
+			{
+				longestName=35;
+				shortCode=2;
+				statLen=5;
+			}
+		}
+		cols[0]=CMLib.lister().fixColWidth(7,mob.session()); // race
+		cols[1]=CMLib.lister().fixColWidth(7,mob.session()); // class
+		cols[2]=CMLib.lister().fixColWidth(5,mob.session());// level
+		cols[3]=CMLib.lister().fixColWidth(longestName,mob.session());//name
+		cols[4]=CMLib.lister().fixColWidth(3,mob.session()); // one digit
+		cols[5]=CMLib.lister().fixColWidth(statLen,mob.session()); // one stat
+		return shortCode;
 	}
 
 	@Override
@@ -118,6 +182,9 @@ public class Group extends StdCommand
 		orderedGroup.addAll(group);
 		group.clear();
 		final StringBuffer msg=new StringBuffer("");
+		final int[] cols=new int[6];
+		final int statShortLevel = fixCols(mob, cols, orderedGroup);
+
 		for (final MOB follower : orderedGroup)
 		{
 			if((follower!=null)
@@ -137,7 +204,7 @@ public class Group extends StdCommand
 					}
 				}
 			}
-			msg.append(showWhoLong(mob,follower));
+			msg.append(showWhoLong(mob,follower,cols,statShortLevel));
 		}
 		mob.tell(msg.toString());
 		mob.tell(L("You have @x1/@x2 followers.",""+mob.totalFollowers(),""+mob.maxFollowers()));
