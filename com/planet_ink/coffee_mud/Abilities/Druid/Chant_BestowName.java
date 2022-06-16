@@ -82,16 +82,30 @@ public class Chant_BestowName extends Chant
 	public void affectPhyStats(final Physical affected, final PhyStats affectedStats)
 	{
 		super.affectPhyStats(affected,affectedStats);
-		if((affected instanceof MOB)
-		&&(((MOB)affected).amFollowing()==null)
-		&&(CMLib.flags().isInTheGame((MOB)affected,true)))
-		{
-			affected.delEffect(affected.fetchEffect(ID()));
-			affectedStats.setName(null);
-		}
-		else
-		if((text().length()>0))
+		if(text().length()>0)
 			affectedStats.setName(text());
+	}
+
+	public volatile int nameCheckCtr = 0;
+
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if(++nameCheckCtr > 10)
+		{
+			nameCheckCtr = 0;
+			if((affected instanceof MOB)
+			&&(((MOB)affected).amFollowing()==null)
+			&&(CMLib.flags().isInTheGame((MOB)affected,true)))
+			{
+				affected.delEffect(affected.fetchEffect(ID()));
+				affected.recoverPhyStats();
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override

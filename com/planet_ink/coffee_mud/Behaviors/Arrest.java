@@ -762,7 +762,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 								  final MOB victim)
 	{
 		final Room R=criminal.location();
-		if(R==null)
+		if((R==null)||(!R.isInhabitant(criminal)))
 			return null;
 		if((myArea!=null)&&(!myArea.inMyMetroArea(R.getArea())))
 			return null;
@@ -2580,7 +2580,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		final HashSet<String> handled=new HashSet<String>();
 		for(final LegalWarrant W : laws.warrants())
 		{
-			if((W.criminal()==null)||(W.criminal().location()==null))
+			if((W.criminal()==null)
+			||(W.criminal().location()==null))
 			{
 				if(debugging)
 					Log.debugOut("Arrest","("+lastAreaName+"): Tick: "+W.crime()+": Criminal or Location is null. Skipping.");
@@ -2674,7 +2675,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		{
 		case Law.STATE_SEEKING:
 			{
-				if((officer==null)||(!W.criminal().location().isInhabitant(officer)))
+				final Room criminR = W.criminal().location();
+				if((criminR==null)||(!criminR.isInhabitant(W.criminal())))
+					break; // they are offline right now
+				if((officer==null)||(!criminR.isInhabitant(officer)))
 					officer=null;
 				if(officer==null)
 					officer=getEligibleOfficer(laws,myArea,W.criminal(),W.victim());
