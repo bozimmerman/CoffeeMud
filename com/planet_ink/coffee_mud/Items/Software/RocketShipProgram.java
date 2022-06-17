@@ -47,7 +47,10 @@ public class RocketShipProgram extends GenShipProgram
 		return "RocketShipProgram";
 	}
 
+	protected static final int DEFAULT_ACT_8_SEC_COUNTDOWN = 100;
+
 	protected volatile long nextPowerCycleTmr = System.currentTimeMillis()+(8*1000);
+	protected volatile int	activationCounter = DEFAULT_ACT_8_SEC_COUNTDOWN;
 
 	protected String noActivationMenu="^rNo engine systems found.\n\r";
 
@@ -56,6 +59,7 @@ public class RocketShipProgram extends GenShipProgram
 	protected volatile List<TechComponent>	weapons		= null;
 	protected volatile List<TechComponent>	components	= null;
 	protected volatile List<TechComponent>	dampers		= null;
+	protected volatile Set<TechComponent>	activated	= Collections.synchronizedSet(new HashSet<TechComponent>());
 
 	protected volatile Double				lastAcceleration	= null;
 	protected volatile Double				lastAngle			= null;
@@ -476,7 +480,7 @@ public class RocketShipProgram extends GenShipProgram
 		}
 		str.append("^N\n\r");
 
-		final List<TechComponent> sensors = this.getShipSensors();
+		final List<TechComponent> sensors = getShipSensors();
 		if(sensors.size()>0)
 		{
 			str.append("^X").append(CMStrings.centerPreserve(L(" -- Sensors -- "),60)).append("^.^N\n\r");
@@ -2434,7 +2438,47 @@ public class RocketShipProgram extends GenShipProgram
 		{
 			engines = null;
 			nextPowerCycleTmr = System.currentTimeMillis() + (8 * 1000);
+			if(--activationCounter <= 0)
+			{
+				activationCounter = DEFAULT_ACT_8_SEC_COUNTDOWN;
+				sensors = null;
+			}
+			else // periodically take a new sensor report
+			{
+				for(final TechComponent sensor : getShipSensors())
+					takeNewSensorReport(sensor);
+			}
 		}
+		if(sensors == null)
+		{
+			for(final TechComponent sensor : getShipSensors())
+			{
+				if(sensor.activated()
+				&&(!activated.contains(sensor)))
+				{
+					// make sure sensors are activated BY this software, so it has a feedback mech
+					final MOB mob=CMClass.getFactoryMOB();
+					try
+					{
+						final CMMsg msg=CMClass.getMsg(mob, sensor, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE, null, CMMsg.NO_EFFECT,null);
+						if(sensor.owner() instanceof Room)
+						{
+							if(((Room)sensor.owner()).okMessage(mob, msg))
+								((Room)sensor.owner()).send(mob, msg);
+						}
+						else
+						if(sensor.okMessage(mob, msg))
+							sensor.executeMsg(mob, msg);
+					}
+					finally
+					{
+						mob.destroy();
+					}
+					activated.add(sensor);
+				}
+			}
+		}
+
 	}
 
 	@Override
@@ -2510,6 +2554,14 @@ public class RocketShipProgram extends GenShipProgram
 					}
 				}
 			}
+		}
+		else
+		if((msg.targetMinor()==CMMsg.TYP_ACTIVATE)
+		&&(msg.target() instanceof TechComponent)
+		&&(((TechComponent)msg.target()).getTechType() == TechType.SHIP_SENSOR))
+		{
+			if(!activated.contains(msg.target()))
+				activationCounter=0;
 		}
 
 		if((container() instanceof Computer)

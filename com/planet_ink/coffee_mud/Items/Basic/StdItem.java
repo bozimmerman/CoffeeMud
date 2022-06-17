@@ -64,7 +64,7 @@ public class StdItem implements Item
 	protected Item		me					= this;
 	protected PhyStats	phyStats			= (PhyStats) CMClass.getCommon("DefaultPhyStats");
 	protected PhyStats	basePhyStats		= (PhyStats) CMClass.getCommon("DefaultPhyStats");
-	
+
 	protected volatile Container		myContainer		= null;
 	protected volatile ItemPossessor	owner			= null;
 	protected SVector<Ability>			affects			= null;
@@ -1154,6 +1154,7 @@ public class StdItem implements Item
 		case CMMsg.TYP_SPEAK:
 		case CMMsg.TYP_OK_ACTION:
 		case CMMsg.TYP_OK_VISUAL:
+		case CMMsg.TYP_EMISSION:
 		case CMMsg.TYP_DEATH:
 		case CMMsg.TYP_NOISE:
 		case CMMsg.TYP_EMOTE:

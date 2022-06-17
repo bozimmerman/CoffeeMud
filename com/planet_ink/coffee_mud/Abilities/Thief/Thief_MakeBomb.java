@@ -95,8 +95,8 @@ public class Thief_MakeBomb extends ThiefSkill
 		{
 			final Ability A=a.nextElement();
 			if((A instanceof Trap)
-			   &&(((Trap)A).isABomb())
-			   &&(((Trap)A).maySetTrap(mob,qualifyingClassLevel)))
+			&&(((Trap)A).isABomb())
+			&&(((Trap)A).maySetTrap(mob,qualifyingClassLevel)))
 				traps.addElement((Trap)A);
 		}
 		final int colWidth=CMLib.lister().fixColWidth(15,mob.session());
@@ -138,10 +138,11 @@ public class Thief_MakeBomb extends ThiefSkill
 				return false;
 			}
 
-			trapThis=this.getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
+			trapThis=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 			if(trapThis==null)
 				return false;
-			if((!auto)&&(!theTrap.canSetTrapOn(mob,trapThis)))
+			if((!auto)
+			&&(!theTrap.canSetTrapOn(mob,trapThis)))
 				return false;
 		}
 

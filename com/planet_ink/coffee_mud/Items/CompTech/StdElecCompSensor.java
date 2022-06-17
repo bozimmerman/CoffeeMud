@@ -53,7 +53,7 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 	protected final static double[] emptyDirection = new double[] {0,0};
 	protected final static BoundedCube smallCube = new BoundedCube(1,1,1,1,1,1);
 	protected Map<Software,Room> feedbackObjects = new TreeMap<Software,Room>(XTreeSet.comparator);
-	protected Set<Environmental> lastSensedObjects = new TreeSet<Environmental>(XTreeSet.comparator);
+	protected Map<Environmental,Environmental> lastSensedObjects = new TreeMap<Environmental,Environmental>(XTreeSet.comparator);
 
 	private static final Filterer<Environmental> acceptEverythingFilter = new Filterer<Environmental>()
 	{
@@ -72,8 +72,7 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 			for(final Iterator<Software> i=feedbackObjects.keySet().iterator();i.hasNext();)
 			{
 				final Software S=i.next();
-				if((!S.amDestroyed())
-				&&(CMLib.map().roomLocation(S) != feedbackObjects.get(S)))
+				if(!S.amDestroyed())
 					fbList.add(S);
 				else
 					i.remove();
@@ -93,6 +92,13 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 		&&(msg.source().location().getArea()==((Room)owner()).getArea()))
 			return false;
 		return true;
+	}
+
+	protected String renderMessageForComputer(final CMMsg msg)
+	{
+		// this should reflect the visibility of the various objects involved, not simply
+		// render them all directly.
+		return CMLib.coffeeFilter().fullOutFilter(null, msg.source(), msg.source(), msg.target(), msg.tool(), msg.othersMessage(), false);
 	}
 
 	private static final Converter<Environmental, Environmental> directConverter = new Converter<Environmental, Environmental>()
@@ -525,14 +531,18 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 	{
 		final List<? extends Environmental> found= getSensedObjects();
 		final Converter<Environmental, Environmental> converter = this.getSensedObjectConverter();
+		final Set<Environmental> newlySensed = new TreeSet<Environmental>();
 		for(final Environmental obj : found)
 		{
+			final Environmental sensedObject = converter.convert(obj);
 			synchronized(lastSensedObjects)
 			{
-				if(!lastSensedObjects.contains(obj))
-					lastSensedObjects.add(obj);
+				if(!lastSensedObjects.containsKey(obj))
+				{
+					newlySensed.add(sensedObject);
+					lastSensedObjects.put(obj,sensedObject);
+				}
 			}
-			final Environmental sensedObject = converter.convert(obj);
 			final String code=Technical.TechCommand.SENSE.makeCommand(this,Boolean.TRUE);
 			final CMMsg msg=CMClass.getMsg(mob, controlI, sensedObject, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 			if(controlI.owner() instanceof Room)
@@ -547,16 +557,20 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 		final Set<Environmental> prevSensedObjects = new TreeSet<Environmental>(XTreeSet.comparator);
 		synchronized(lastSensedObjects)
 		{
-			for(final Iterator<Environmental> i=lastSensedObjects.iterator();i.hasNext();)
+			for(final Iterator<Environmental> i=lastSensedObjects.keySet().iterator();i.hasNext();)
 			{
 				final Environmental nobj = i.next();
 				if(!found.contains(nobj))
 				{
+					final Environmental sensedObj = lastSensedObjects.get(nobj);
 					i.remove();
-					prevSensedObjects.add(nobj);
+					prevSensedObjects.add(sensedObj);
 				}
 			}
 		}
+		// newlySensed contains the new things
+		// prevSensedObjects things we no longer sense
+		// should these be converted?  i kinda think so...
 		for(final Environmental sensedObject : prevSensedObjects)
 		{
 			final String code=Technical.TechCommand.SENSE.makeCommand(this,Boolean.FALSE);
@@ -569,6 +583,19 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 			else
 			if(controlI.okMessage(mob, msg))
 				controlI.executeMsg(mob, msg);
+			final CMMsg lostMsg = CMClass.getMsg(mob, sensedObject,null,CMMsg.MSG_EMISSION,null,CMMsg.MSG_EMISSION,null,CMMsg.MSG_EMISSION,
+					L("@x1: <T-NAME> is no longer detected.",name()));
+			final String renderedMsg = renderMessageForComputer(lostMsg);
+			for(final Software controlSW : getFeedbackers())
+				controlSW.addScreenMessage(renderedMsg);
+		}
+		for(final Environmental newSensedObject : newlySensed)
+		{
+			final CMMsg lostMsg = CMClass.getMsg(mob, newSensedObject,null,CMMsg.MSG_EMISSION,null,CMMsg.MSG_EMISSION,null,CMMsg.MSG_EMISSION,
+					L("@x1: <T-NAME> has been detected.",name()));
+			final String renderedMsg = renderMessageForComputer(lostMsg);
+			for(final Software controlSW : getFeedbackers())
+				controlSW.addScreenMessage(renderedMsg);
 		}
 		return true;
 	}
@@ -590,6 +617,16 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 					final String[] parts=msg.targetMessage().split(" ");
 					final TechCommand command=TechCommand.findCommand(parts);
 					final Software controlI=(msg.tool() instanceof Software)?((Software)msg.tool()):null;
+					synchronized(feedbackObjects)
+					{
+						if((!feedbackObjects.containsKey(controlI))
+						&&(controlI.owner() instanceof Room))
+						{
+							final Room R=(Room)controlI.owner();
+							if(R!=null)
+								feedbackObjects.put(controlI,R);
+						}
+					}
 					final MOB mob=msg.source();
 					if(command==null)
 						reportError(this, controlI, mob, lang.L("@x1 does not respond.",me.name(mob)), lang.L("Failure: @x1: control failure.",me.name(mob)));
@@ -613,20 +650,42 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 				}
 				else
 				{
+					synchronized(feedbackObjects)
+					{
+						if((msg.tool() instanceof Software)
+						&&(!feedbackObjects.containsKey(msg.tool()))
+						&&(((Item)msg.tool()).owner() instanceof Room))
+						{
+							final Room R=(Room)((Item)msg.tool()).owner();
+							if(R!=null)
+								feedbackObjects.put((Software)msg.tool(),R);
+						}
+					}
 					this.activate(true);
 				}
 				break;
 			}
 			case CMMsg.TYP_DEACTIVATE:
+			{
+				synchronized(feedbackObjects)
+				{
+					if((msg.tool() instanceof Software)
+					&&(feedbackObjects.containsKey(msg.tool())))
+						feedbackObjects.remove(msg.tool());
+				}
 				this.activate(false);
 				break;
 			}
+			}
 		}
 		else
-		if((msg.othersMessage() != null) && canPassivelySense(msg))
+		// all sensor messages go through here.  act/deact messages targeting me are never emissions
+		if((msg.othersMessage() != null)
+		&& canPassivelySense(msg))
 		{
-			for(final Software controlI : this.getFeedbackers())
-				controlI.addScreenMessage(msg.othersMessage());
+			final String renderedMsg = L("@x1 detects: ",name())+this.renderMessageForComputer(msg);
+			for(final Software controlI : getFeedbackers())
+				controlI.addScreenMessage(renderedMsg);
 		}
 	}
 

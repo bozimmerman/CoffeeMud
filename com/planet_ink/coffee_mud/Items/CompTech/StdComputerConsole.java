@@ -634,8 +634,8 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 									sw.executeMsg(host, msg2);
 							}
 						}
+						forceReadersSeeNew();
 					}
-					forceReadersSeeNew();
 					if(System.currentTimeMillis()>nextPowerCycleTmr)
 					{
 						deactivateSystem();

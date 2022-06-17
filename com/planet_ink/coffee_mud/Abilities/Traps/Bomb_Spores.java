@@ -121,9 +121,9 @@ public class Bomb_Spores extends StdBomb
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) the poison gas!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) the disease gas!"));
 			else
-			if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("@x1 spews poison gas all over <T-NAME>!",affected.name())))
+			if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("@x1 spews disease gas all over <T-NAME>!",affected.name())))
 			{
 				super.spring(target);
 				Ability A=CMClass.getAbility(text());
