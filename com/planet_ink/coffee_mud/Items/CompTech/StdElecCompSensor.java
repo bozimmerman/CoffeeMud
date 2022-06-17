@@ -527,6 +527,24 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 		return found;
 	}
 
+	protected void sendDetectionAnnouncement(final MOB mob, final Environmental sensedObject)
+	{
+		final CMMsg detMsg = CMClass.getMsg(mob, sensedObject,null,CMMsg.MSG_EMISSION,null,CMMsg.MSG_EMISSION,null,CMMsg.MSG_EMISSION,
+				L("@x1: <T-NAME> has been detected.",name()));
+		final String renderedMsg = renderMessageForComputer(detMsg);
+		for(final Software controlSW : getFeedbackers())
+			controlSW.addScreenMessage(renderedMsg);
+	}
+
+	protected void sendLostDetectionAnnouncement(final MOB mob, final Environmental sensedObject)
+	{
+		final CMMsg lostMsg = CMClass.getMsg(mob, sensedObject,null,CMMsg.MSG_EMISSION,null,CMMsg.MSG_EMISSION,null,CMMsg.MSG_EMISSION,
+				L("@x1: <T-NAME> is no longer detected.",name()));
+		final String renderedMsg = renderMessageForComputer(lostMsg);
+		for(final Software controlSW : getFeedbackers())
+			controlSW.addScreenMessage(renderedMsg);
+	}
+
 	protected boolean doSensing(final MOB mob, final Software controlI)
 	{
 		final List<? extends Environmental> found= getSensedObjects();
@@ -583,20 +601,10 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 			else
 			if(controlI.okMessage(mob, msg))
 				controlI.executeMsg(mob, msg);
-			final CMMsg lostMsg = CMClass.getMsg(mob, sensedObject,null,CMMsg.MSG_EMISSION,null,CMMsg.MSG_EMISSION,null,CMMsg.MSG_EMISSION,
-					L("@x1: <T-NAME> is no longer detected.",name()));
-			final String renderedMsg = renderMessageForComputer(lostMsg);
-			for(final Software controlSW : getFeedbackers())
-				controlSW.addScreenMessage(renderedMsg);
+			sendLostDetectionAnnouncement(mob, sensedObject);
 		}
 		for(final Environmental newSensedObject : newlySensed)
-		{
-			final CMMsg lostMsg = CMClass.getMsg(mob, newSensedObject,null,CMMsg.MSG_EMISSION,null,CMMsg.MSG_EMISSION,null,CMMsg.MSG_EMISSION,
-					L("@x1: <T-NAME> has been detected.",name()));
-			final String renderedMsg = renderMessageForComputer(lostMsg);
-			for(final Software controlSW : getFeedbackers())
-				controlSW.addScreenMessage(renderedMsg);
-		}
+			sendDetectionAnnouncement(mob, newSensedObject);
 		return true;
 	}
 

@@ -504,6 +504,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 					stopThisShip(mob);
 					if(LR!=null)
 					{
+						CMLib.space().sendSpaceEmissionEvent(this,msg.tool(), CMMsg.TYP_COLLISION, L("<T-NAME> has landed on <O-NAME>"));
 						if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 							Log.debugOut(Name()+" Landed and Stopped, and docking at "+CMLib.map().getExtendedRoomID(LR));
 						//final CMMsg kMsg=CMClass.getMsg(msg.source(),getShipArea(),this,CMMsg.MSG_OK_ACTION,L("The ship comes to a resting stop."));
@@ -511,6 +512,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 					}
 					else
 					{
+						CMLib.space().sendSpaceEmissionEvent(this,msg.tool(), CMMsg.TYP_COLLISION, L("<T-NAME> has hit <O-NAME>"));
 						if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 							Log.debugOut(Name()+" Landed and Stopped, but nowhere to dock. :(");
 						// we landed, but there was nowhere to dock!
@@ -519,12 +521,18 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 				else
 				if(!amDestroyed())
 				{
+					if(!(msg.tool() instanceof Weapon))
+						CMLib.space().sendSpaceEmissionEvent(this,msg.tool(), CMMsg.TYP_COLLISION, L("<T-NAME> has hit <O-NAME>"));
 					if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 						Log.debugOut(Name()+" Collided with weird thing: "+msg.tool().ID());
 				}
 				else
-				if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-					Log.debugOut(Name()+" was destroyed.");
+				{
+					if(!(msg.tool() instanceof Weapon))
+						CMLib.space().sendSpaceEmissionEvent(this,msg.tool(), CMMsg.TYP_COLLISION, L("<T-NAME> has hit <O-NAME>, and was destroyed."));
+					if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+						Log.debugOut(Name()+" was destroyed.");
+				}
 				sendComputerMessage(mob,msg);
 				break;
 			}

@@ -875,6 +875,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 						{
 							final MOB host=CMLib.map().deity();
 							final CMMsg msg;
+							O.setCoords(cO.coordinates()); // during a collision, the moving thing stops!
 							if(O instanceof Weapon)
 							{
 								if(isDebugging) Log.debugOut("Weapon "+O.name()+" collided with "+cO.Name());
