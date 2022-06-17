@@ -68,24 +68,51 @@ public class GenShipViewScreen extends GenElecCompSensor implements ShipDirectio
 	{
 		if(owner() instanceof Room)
 		{
-			final CMMsg msg = CMClass.getMsg(mob, sensedObject,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MSG_OK_VISUAL,
-					L("<T-NAME> appears on @x1.",name()));
-			final String renderedMsg = renderMessageForComputer(msg);
-			msg.setOthersMessage(renderedMsg);
-			if(((Room)owner()).okMessage(mob, msg))
-				((Room)owner()).send(mob, msg);
+			final Room R=(Room)owner();
+			if(R.numInhabitants()>0)
+			{
+				final MOB seerM=CMClass.getFactoryMOB(name(),1,R);
+				try
+				{
+					final CMMsg msg = CMClass.getMsg(seerM, sensedObject,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MSG_OK_VISUAL,
+							L("<T-NAME> appears on @x1.",name()));
+					final String renderedMsg = renderMessageForComputer(msg);
+					msg.setOthersMessage(renderedMsg);
+					if(R.okMessage(mob, msg))
+						R.send(mob, msg);
+				}
+				finally
+				{
+					seerM.destroy();
+				}
+			}
 		}
 	}
 
 	@Override
 	protected void sendLostDetectionAnnouncement(final MOB mob, final Environmental sensedObject)
 	{
-		final CMMsg msg = CMClass.getMsg(mob, sensedObject,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MSG_OK_VISUAL,
-				L("<T-NAME> is no longer on @x1.",name()));
-		final String renderedMsg = renderMessageForComputer(msg);
-		msg.setOthersMessage(renderedMsg);
-		if(((Room)owner()).okMessage(mob, msg))
-			((Room)owner()).send(mob, msg);
+		if(owner() instanceof Room)
+		{
+			final Room R=(Room)owner();
+			if(R.numInhabitants()>0)
+			{
+				final MOB seerM=CMClass.getFactoryMOB(name(),1,R);
+				try
+				{
+					final CMMsg msg = CMClass.getMsg(seerM, sensedObject,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MSG_OK_VISUAL,
+							L("<T-NAME> is no longer on @x1.",name()));
+					final String renderedMsg = renderMessageForComputer(msg);
+					msg.setOthersMessage(renderedMsg);
+					if(R.okMessage(mob, msg))
+						R.send(mob, msg);
+				}
+				finally
+				{
+					seerM.destroy();
+				}
+			}
+		}
 	}
 
 	protected volatile ShipDir[] facingDirs = null;
