@@ -222,7 +222,10 @@ public class StdCompPanel extends StdElecCompContainer implements ElecPanel, Tec
 				{
 					final Item I=contents.get(i);
 					if((I instanceof Electronics)&&(!(I instanceof PowerSource))&&(!(I instanceof PowerGenerator)))
-						totalPowerReq+=((((Electronics)I).powerNeeds()<=0)?1.0:((Electronics)I).powerNeeds());
+					{
+						final double needs = ((Electronics)I).powerNeeds();
+						totalPowerReq+=(needs<=0)?1.0:needs;
+					}
 				}
 				for(int i=contents.size()-1;i>=0;i--)
 				{
@@ -232,7 +235,8 @@ public class StdCompPanel extends StdElecCompContainer implements ElecPanel, Tec
 						int powerToTake=0;
 						if(powerRemaining>0)
 						{
-							final double pctToTake=CMath.div(((((Electronics)I).powerNeeds()<=0)?1:((Electronics)I).powerNeeds()),totalPowerReq);
+							final double needs = ((Electronics)I).powerNeeds();
+							final double pctToTake=CMath.div(((needs<=0)?1:needs),totalPowerReq);
 							powerToTake=(int)Math.round(pctToTake * powerRemaining);
 							if(powerToTake<1)
 								powerToTake=1;

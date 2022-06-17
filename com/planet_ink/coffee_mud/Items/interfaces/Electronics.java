@@ -85,6 +85,26 @@ public interface Electronics extends Item, Technical
 	public void setPowerRemaining(long remaining);
 
 	/**
+	 * Gets the amount of power capacitance to allow this
+	 * electrical item to charge up to.  It should always
+	 * be less than powerCapacity.
+	 *
+	 * @see Electronics#setPowerTarget(long)
+	 * @return the amount of power capacitance max to draw
+	 */
+	public long powerTarget();
+
+	/**
+	 * Sets the amount of power capacitance to allow this
+	 * electrical item to charge up to.  It should always
+	 * be less than powerCapacity.
+	 *
+	 * @see Electronics#powerTarget()
+	 * @param remaining the amount of power capacitance remaining
+	 */
+	public void setPowerTarget(long remaining);
+
+	/**
 	 * Returns the immediate power needs of this electrical item.
 	 * Typically powerCapacity - powerAvailable
 	 * @see Electronics#powerRemaining()

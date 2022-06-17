@@ -54,6 +54,8 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 	protected final static BoundedCube smallCube = new BoundedCube(1,1,1,1,1,1);
 	protected Map<Software,Room> feedbackObjects = new TreeMap<Software,Room>(XTreeSet.comparator);
 	protected Map<Environmental,Environmental> lastSensedObjects = new TreeMap<Environmental,Environmental>(XTreeSet.comparator);
+	protected volatile long nextFailureCheck = System.currentTimeMillis();
+	protected volatile Set<Environmental> lastFailures = Collections.synchronizedSet(new HashSet<Environmental>());
 
 	private static final Filterer<Environmental> acceptEverythingFilter = new Filterer<Environmental>()
 	{
@@ -484,6 +486,40 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 
 	protected static final List<? extends Environmental> empty=new ReadOnlyVector<Environmental>();
 
+	private static class DistanceSorter implements Comparator<Environmental>
+	{
+		private final GalacticMap space;
+		private final SpaceObject spaceObject;
+
+		private DistanceSorter(final SpaceObject me)
+		{
+			space=CMLib.space();
+			spaceObject=me;
+		}
+
+		@Override
+		public int compare(final Environmental o1, final Environmental o2)
+		{
+			if((o1 == null)||(!(o1 instanceof SpaceObject)))
+				return ((o2 == null)||(!(o2 instanceof SpaceObject))) ? 0 : 1;
+			if((o2 == null)||(!(o2 instanceof SpaceObject)))
+				return -1;
+			final SpaceObject s1=(SpaceObject)o1;
+			final SpaceObject s2=(SpaceObject)o2;
+			if(s1.coordinates() == null)
+				return (s2.coordinates() == null) ? 0 : 1;
+			if(s2.coordinates() == null)
+				return -1;
+			final long distance1 = space.getDistanceFrom(spaceObject, s1) - s1.radius();
+			final long distance2 = space.getDistanceFrom(spaceObject, s2) - s2.radius();
+			if(distance1 < distance2)
+				return -1;
+			if(distance1 > distance2)
+				return 1;
+			return 0;
+		}
+	}
+
 	protected List<? extends Environmental> getAllSensibleObjects()
 	{
 		final SpaceObject O=CMLib.space().getSpaceObject(this, true);
@@ -494,17 +530,26 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 			found.remove(O);
 			if(found.size() > 1)
 			{
-				if(CMLib.dice().rollPercentage() > (100*this.getFinalManufacturer().getReliabilityPct()))
+				if(System.currentTimeMillis() > this.nextFailureCheck)
 				{
-					//TODO: better to filter out the most distant!
-					int num = found.size() / 10; // failing reliability check always loses 10% of found things
-					if(num <= 0)
-						num = 1;
-					for(int i=0;i<num && (found.size() > 0);i++)
+					lastFailures.clear();
+					if(CMLib.dice().rollPercentage() > (100*this.getFinalManufacturer().getReliabilityPct()))
 					{
-						found.remove(CMLib.dice().roll(1, found.size(), -1));
+						Collections.sort(found, new DistanceSorter(O));
+						nextFailureCheck = System.currentTimeMillis() + 360000;
+						int num = found.size() / 10; // failing reliability check always loses 10% of distant found things
+						if(num <= 0)
+							num = 1;
+						for(int i=0;i<num && (found.size() > 0);i++)
+						{
+							final Environmental E =  found.remove(found.size()-1);
+							if(E instanceof SpaceObject)
+								lastFailures.add(E);
+						}
 					}
 				}
+				else
+					found.removeAll(lastFailures);
 			}
 			return found;
 		}

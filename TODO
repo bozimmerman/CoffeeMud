@@ -2,9 +2,11 @@ BUGS/UNTESTED STUFF:
   *.
 
 TECH TODO:
-   *. sensors during combat -- detect hits, misses, and shield absorbs and report them all
    *. make ship torpedo launchers and torpedo containers-- see tech doc
+   *. do damage control system for software
+   *. do diagnostic system for software that reveals ALL
    *. make ship impulse and warp engines -- see tech doc
+   *. make ship active scanners
    *. make tractor beam system -- esp important for pirates!
    *. make communication system
    *. When it's time to make the Real Software, good categories in tech docs

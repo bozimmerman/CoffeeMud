@@ -452,6 +452,10 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			dir[1]=Math.acos(z/Math.sqrt((z*z)+(y*y)+(x*x)));
 		if(dir[1] > Math.PI)
 			dir[1] = Math.abs(Math.PI-dir[1]);
+		if(dir[0] < 0)
+			dir[0] = Math.abs((Math.PI*2)+dir[0]);
+		if(dir[1] < 0)
+			dir[1] = Math.abs(Math.PI*+dir[1]);
 		return dir;
 	}
 

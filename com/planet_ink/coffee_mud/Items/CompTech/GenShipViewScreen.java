@@ -36,7 +36,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenShipViewScreen extends GenElecCompSensor implements ShipDirectional
+public class GenShipViewScreen extends GenShipOpticalSensor implements ShipDirectional
 {
 	@Override
 	public String ID()
@@ -492,14 +492,6 @@ public class GenShipViewScreen extends GenElecCompSensor implements ShipDirectio
 		return R;
 	}
 
-	protected boolean isInSpace()
-	{
-		final SpaceObject O=CMLib.space().getSpaceObject(this, true);
-		if(O != null)//&&(this.powerRemaining() > this.powerNeeds()))
-			return CMLib.space().isObjectInSpace(O);
-		return false;
-	}
-
 	@Override
 	public void setPermittedDirections(final ShipDir[] newPossDirs)
 	{
@@ -522,48 +514,6 @@ public class GenShipViewScreen extends GenElecCompSensor implements ShipDirectio
 	public int getPermittedNumDirections()
 	{
 		return numPermitDirs;
-	}
-
-	@Override
-	protected List<? extends Environmental> getAllSensibleObjects()
-	{
-		if(isInSpace())
-			return super.getAllSensibleObjects();
-		Room R=null;
-		final Area A=CMLib.map().areaLocation(this);
-		if(A instanceof Boardable)
-		{
-			final Boardable shipO = (Boardable)A;
-			final Room dockR = shipO.getIsDocked();
-			if(dockR != null)
-				R=dockR;
-			else
-			{
-				final Item shipI=shipO.getBoardableItem();
-				if(shipI != null)
-					R=CMLib.map().roomLocation(shipI);
-			}
-		}
-		else
-			R=CMLib.map().roomLocation(this);
-		if(R==null)
-			return empty;
-		final List<Environmental> found = new LinkedList<Environmental>();
-		found.add(R);
-		for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
-		{
-			final MOB M=m.nextElement();
-			if(CMLib.flags().isSeeable(M))
-				found.add(M);
-		}
-		for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
-		{
-			final Item I=i.nextElement();
-			if(CMLib.flags().isSeeable(I)
-			&&(I.displayText().length()>0))
-				found.add(I);
-		}
-		return found;
 	}
 
 	@Override
@@ -593,6 +543,7 @@ public class GenShipViewScreen extends GenElecCompSensor implements ShipDirectio
 						final double viewSize = Math.atan(objSize/distanceDm);
 						return viewSize >= 0.0015;
 					}
+					else
 					return false;
 				}
 				return true;

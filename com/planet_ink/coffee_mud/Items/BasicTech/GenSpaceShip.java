@@ -632,6 +632,17 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 	}
 
 	@Override
+	public long powerTarget()
+	{
+		return 0;
+	}
+
+	@Override
+	public void setPowerTarget(final long capacity)
+	{
+	}
+
+	@Override
 	public long powerRemaining()
 	{
 		return 0;

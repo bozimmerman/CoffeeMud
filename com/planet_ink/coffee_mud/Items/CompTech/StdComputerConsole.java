@@ -100,6 +100,17 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	}
 
 	@Override
+	public long powerTarget()
+	{
+		return 1;
+	}
+
+	@Override
+	public void setPowerTarget(final long capacity)
+	{
+	}
+
+	@Override
 	public int powerNeeds()
 	{
 		return 1;
@@ -603,22 +614,22 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 				else
 				if(activated())
 				{
-					activate(false);
 					if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 						msg.source().location().show(msg.source(),this,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> shut(s) down <T-NAME>."));
 					deactivateSystem();
+					activate(false); // do last
 				}
 				break;
 			case CMMsg.TYP_POWERCURRENT:
 				{
 					if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
-						nextPowerCycleTmr=System.currentTimeMillis()+(8*1000);
+						nextPowerCycleTmr=System.currentTimeMillis()+(12*1000);
 					final int powerToGive=msg.value();
 					if(powerToGive>0)
 					{
 						if(powerRemaining()==0)
 							setPowerRemaining(1);
-						nextPowerCycleTmr=System.currentTimeMillis()+(8*1000);
+						nextPowerCycleTmr=System.currentTimeMillis()+(12*1000);
 					}
 					if(activated())
 					{

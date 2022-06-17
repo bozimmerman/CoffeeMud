@@ -57,9 +57,10 @@ public class RocketShipProgram extends GenShipProgram
 	protected volatile List<ShipEngine>		engines		= null;
 	protected volatile List<TechComponent>	sensors		= null;
 	protected volatile List<TechComponent>	weapons		= null;
+	protected volatile List<TechComponent>	shields		= null;
 	protected volatile List<TechComponent>	components	= null;
 	protected volatile List<TechComponent>	dampers		= null;
-	protected volatile Set<TechComponent>	activated	= Collections.synchronizedSet(new HashSet<TechComponent>());
+	protected final  Set<TechComponent>		activated	= Collections.synchronizedSet(new HashSet<TechComponent>());
 
 	protected volatile Double				lastAcceleration	= null;
 	protected volatile Double				lastAngle			= null;
@@ -73,9 +74,29 @@ public class RocketShipProgram extends GenShipProgram
 	protected volatile List<ShipEngine>		programEngines		= null;
 
 	protected final	   Map<Technical, Set<SpaceObject>>	sensorReports	= new SHashtable<Technical, Set<SpaceObject>>();
-	protected volatile Map<ShipEngine, Double[]>		primeInjects	= new Hashtable<ShipEngine, Double[]>();
+	protected final Map<ShipEngine, Double[]>			primeInjects	= new Hashtable<ShipEngine, Double[]>();
 
 	protected final static PrioritizingLimitedMap<String,TechComponent> cachedComponents = new PrioritizingLimitedMap<String,TechComponent>(1000,60000,600000,0);
+
+	protected void decache()
+	{
+		engines = null;
+		sensors		= null;
+		weapons		= null;
+		shields		= null;
+		components	= null;
+		dampers		= null;
+		activated.clear();
+
+		approachTarget = null;
+		deproachDistance = 0;
+		rocketState = null;
+		currentTarget = null;
+		programPlanet = null;
+		programEngines = null;
+		sensorReports.clear();
+		primeInjects.clear();
+	}
 
 	protected enum RocketStateMachine
 	{
@@ -241,6 +262,21 @@ public class RocketShipProgram extends GenShipProgram
 		return weapons;
 	}
 
+	protected synchronized List<TechComponent> getShipShields()
+	{
+		if(shields == null)
+		{
+			final List<TechComponent> stuff=getTechComponents();
+			shields=new Vector<TechComponent>(1);
+			for(final TechComponent E : stuff)
+			{
+				if(E.getTechType()==TechType.SHIP_SHIELD)
+					shields.add(E);
+			}
+		}
+		return shields;
+	}
+
 	protected synchronized List<TechComponent> getDampeners()
 	{
 		if(dampers == null)
@@ -323,7 +359,7 @@ public class RocketShipProgram extends GenShipProgram
 
 	protected ShipWarComponent findShieldByName(final String name)
 	{
-		return (ShipWarComponent)findComponentByName(getEngines(), "SHIELD", name);
+		return (ShipWarComponent)findComponentByName(getShipShields(), "SHIELD", name);
 	}
 
 	protected ShipEngine findEngineByPort(final ShipDirectional.ShipDir portdir)
@@ -355,6 +391,7 @@ public class RocketShipProgram extends GenShipProgram
 		||uword.equals("CANCEL")
 		||uword.equals("MOON")
 		||uword.equals("FIRE")
+		||(uword.startsWith("SHIELD"))
 		||(uword.startsWith("WEAPON")&&(CMath.isInteger(uword.substring(6))))
 		||(uword.startsWith("ENGINE")&&(CMath.isInteger(uword.substring(6))))
 		||(uword.startsWith("SENSOR")&&(CMath.isInteger(uword.substring(6))))
@@ -531,6 +568,7 @@ public class RocketShipProgram extends GenShipProgram
 
 		final List<ShipEngine> engines = getEngines();
 		final List<TechComponent> weapons = getShipWeapons();
+		final List<TechComponent> shields = getShipShields();
 		final List<TechComponent> components = getTechComponents();
 		if(components.size()> engines.size() + sensors.size())
 		{
@@ -565,12 +603,24 @@ public class RocketShipProgram extends GenShipProgram
 				str.append("^.^N\n\r");
 				weaponNumber++;
 			}
+			int shieldNumber=1;
+			for(final TechComponent shield : shields)
+			{
+				str.append("^H").append(CMStrings.padRight(L("SHIELD@x1",""+shieldNumber),9));
+				str.append(CMStrings.padRight(shield.activated()?L("^gA"):L("^rI"),2));
+				str.append("^H").append(CMStrings.padRight(L("Pow."),5));
+				str.append("^N").append(CMStrings.padRight(Long.toString(shield.powerTarget()),11));
+				str.append("^H").append(CMStrings.padRight(shield.Name(),31));
+				str.append("^.^N\n\r");
+				shieldNumber++;
+			}
 			int systemNumber=1;
 			for(final TechComponent component : components)
 			{
 				if((!engines.contains(component))
 				&&(!sensors.contains(component))
-				&&(!weapons.contains(component)))
+				&&(!weapons.contains(component))
+				&&(!shields.contains(component)))
 				{
 					str.append("^H").append(CMStrings.padRight(L("SYSTEM@x1",""+systemNumber),9));
 					str.append(CMStrings.padRight(component.activated()?L("^gA"):L("^rI"),2));
@@ -609,6 +659,7 @@ public class RocketShipProgram extends GenShipProgram
 	@Override
 	public boolean checkDeactivate(final MOB mob, final String message)
 	{
+
 		return true;
 	}
 
@@ -2277,9 +2328,85 @@ public class RocketShipProgram extends GenShipProgram
 				}
 				E=weapon;
 				String code;
-
-				code=TechCommand.POWERSET.makeCommand(Long.valueOf(Math.round(pct * 100.0)));
+				code=TechCommand.POWERSET.makeCommand(Long.valueOf(Math.round(pct * weapon.powerCapacity())));
 				msg=CMClass.getMsg(mob, weapon, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+			}
+			else
+			if(uword.startsWith("SHIELD"))
+			{
+				if(uword.startsWith("SHIELDS"))
+				{
+					if(parsed.size()==1)
+					{
+						super.addScreenMessage(L("Error: No UP or DOWN instruction."));
+						return;
+					}
+					if(getShipShields().size()==0)
+					{
+						super.addScreenMessage(L("Error: No shields found."));
+						return;
+					}
+					if(parsed.get(1).equalsIgnoreCase("UP"))
+					{
+						for(int s=0;s<getShipShields().size();s++)
+						{
+							final TechComponent shield = getShipShields().get(s);
+							E=shield;
+							final String code=TechCommand.POWERSET.makeCommand(Long.valueOf(Math.round(shield.powerCapacity())));
+							msg=CMClass.getMsg(mob, shield, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+							if(s<getShipShields().size()-1)
+								sendMessage(mob,E,msg,message);
+						}
+					}
+					else
+					if(parsed.get(1).equalsIgnoreCase("DOWN"))
+					{
+						for(int s=0;s<getShipShields().size();s++)
+						{
+							final TechComponent shield = getShipShields().get(s);
+							E=shield;
+							msg=CMClass.getMsg(mob, shield, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE, null, CMMsg.NO_EFFECT,null);
+							if(s<getShipShields().size()-1)
+								sendMessage(mob,E,msg,message);
+						}
+					}
+					else
+					{
+						super.addScreenMessage(L("Error: No UP or DOWN instruction."));
+						return;
+					}
+				}
+				else
+				{
+					final ShipWarComponent shield = this.findShieldByName(uword);
+					if(shield == null)
+					{
+						super.addScreenMessage(L("Error: Unknown shield name or command word '"+uword+"'.   Try HELP."));
+						return;
+					}
+					if(parsed.size()==1)
+					{
+						super.addScreenMessage(L("Error: No power percentage given."));
+						return;
+					}
+					final String emission=parsed.get(1);
+					if(!CMath.isPct(emission))
+					{
+						super.addScreenMessage(L("Error: Invalid power percentage given."));
+						return;
+					}
+					final double pct=CMath.s_pct(emission);
+					if((pct < 0)||(pct > 1))
+					{
+						super.addScreenMessage(L("Error: Invalid power percentage given."));
+						return;
+					}
+					E=shield;
+					String code;
+
+					code=TechCommand.POWERSET.makeCommand(Long.valueOf(Math.round(pct * shield.powerCapacity())));
+					msg=CMClass.getMsg(mob, shield, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+				}
 			}
 			else
 			if(uword.startsWith("SENSOR"))
@@ -2399,6 +2526,12 @@ public class RocketShipProgram extends GenShipProgram
 	@Override
 	public void onDeactivate(final MOB mob, final String message)
 	{
+		if(message == null)
+		{
+			// whole system shutdown
+			this.decache();
+			return;
+		}
 		final Vector<String> parsed=CMParms.parse(message);
 		if(parsed.size()==0)
 		{

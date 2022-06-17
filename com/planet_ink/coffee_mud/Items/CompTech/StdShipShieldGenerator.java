@@ -133,6 +133,18 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 		return shieldedMsgTypes;
 	}
 
+	@Override
+	public long powerTarget()
+	{
+		return powerSetting > powerCapacity ? powerCapacity : powerSetting;
+	}
+
+	@Override
+	public void setPowerTarget(final long capacity)
+	{
+		powerSetting = capacity;
+	}
+
 	protected ShipDir[] getCurrentCoveredDirections()
 	{
 		if(this.currCoverage == null)
@@ -237,6 +249,7 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 							}
 							msg.setValue(newVal);
 						}
+						CMLib.space().sendSpaceEmissionEvent(ship, weaponO, CMMsg.TYP_OK_VISUAL,L("<T-YOUPOSS> shields are struck by <O-NAME>"));
 					}
 				}
 				break;

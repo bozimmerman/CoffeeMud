@@ -601,6 +601,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(E instanceof Electronics)
 		{
 			text.append(xmlLib.convertXMLtoTag("POWC",""+((Electronics)E).powerCapacity()));
+			text.append(xmlLib.convertXMLtoTag("POWT",""+((Electronics)E).powerTarget()));
 			text.append(xmlLib.convertXMLtoTag("POWR",""+((Electronics)E).powerRemaining()));
 			text.append(xmlLib.convertXMLtoTag("EACT", ""+((Electronics)E).activated()));
 			text.append(xmlLib.convertXMLtoTag("MANUFACT", ((Electronics)E).getManufacturerName()));
@@ -3915,6 +3916,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(E instanceof Electronics)
 		{
 			((Electronics)E).setPowerCapacity(xml.getIntFromPieces(buf,"POWC"));
+			if(xml.getPieceFromPieces(buf, "POWT")!=null)
+				((Electronics)E).setPowerTarget(xml.getIntFromPieces(buf,"POWT"));
 			((Electronics)E).setPowerRemaining(xml.getIntFromPieces(buf,"POWR"));
 			((Electronics)E).activate(xml.getBoolFromPieces(buf, "EACT"));
 			((Electronics)E).setManufacturerName(xml.getValFromPieces(buf, "MANUFACT"));

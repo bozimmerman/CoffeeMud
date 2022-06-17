@@ -74,6 +74,18 @@ public class StdElecItem extends StdItem implements Electronics
 	}
 
 	@Override
+	public long powerTarget()
+	{
+		return powerCapacity;
+	}
+
+	@Override
+	public void setPowerTarget(final long capacity)
+	{
+		powerCapacity = capacity;
+	}
+
+	@Override
 	public long powerRemaining()
 	{
 		return power;
