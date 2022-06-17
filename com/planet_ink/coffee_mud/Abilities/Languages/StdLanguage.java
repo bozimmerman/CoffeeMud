@@ -166,7 +166,7 @@ public class StdLanguage extends StdAbility implements Language
 	}
 
 	@Override
-	public boolean translatesLanguage(final String language, String words)
+	public boolean translatesLanguage(final String language, final String words)
 	{
 		return ID().equalsIgnoreCase(language);
 	}
@@ -228,6 +228,8 @@ public class StdLanguage extends StdAbility implements Language
 			}
 			if(choices==null)
 				choices=translationVector.get(translationVector.size()-1);
+			if(choices.length==0)
+				return word;
 			return choices[CMath.abs(word.toLowerCase().hashCode()) % choices.length];
 		}
 		return word;
@@ -538,7 +540,7 @@ public class StdLanguage extends StdAbility implements Language
 								spokenL.setProficiency(100);
 							}
 						}
-						
+
 						final String heardMsg;
 						if(msg.targetMinor()==CMMsg.TYP_ORDER)
 							heardMsg = CMStrings.getSayFromMessage(msg.sourceMessage());
