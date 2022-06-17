@@ -2403,6 +2403,7 @@ public class RocketShipProgram extends GenShipProgram
 		if(parsed.size()==0)
 		{
 			super.addScreenMessage(L("Syntax Error!"));
+			Log.debugOut("Strange program deactivation: ",new Exception());
 			return;
 		}
 		String uword=parsed.get(0).toUpperCase();
