@@ -249,7 +249,8 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 							}
 							msg.setValue(newVal);
 						}
-						CMLib.space().sendSpaceEmissionEvent(ship, weaponO, CMMsg.TYP_OK_VISUAL,L("<T-YOUPOSS> shields are struck by <O-NAME>"));
+						CMLib.space().sendSpaceEmissionEvent(ship, weaponO, CMMsg.TYP_OK_VISUAL|CMMsg.MASK_EYES
+															,L("<T-YOUPOSS> shields are struck by <O-NAME>"));
 					}
 				}
 				break;

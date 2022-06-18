@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Items.CompTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -10,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.GalacticMap;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -431,6 +433,70 @@ public class GenGraviticSensor extends GenElecCompSensor
 		};
 	}
 
+	@Override
+	protected List<? extends Environmental> getAllSensibleObjects()
+	{
+		if(!isInSpace())
+		{
+			final SpaceObject O=CMLib.space().getSpaceObject(this, true);
+			if(O instanceof SpaceShip)
+			{
+				SpaceShip ship=(SpaceShip)O;
+				if(ship.getIsDocked() !=null)
+				{
+					final SpaceObject shipO=CMLib.space().getSpaceObject(ship.getIsDocked(), true);
+					if(shipO != null)
+						return new XVector<Environmental>(shipO);
+				}
+			}
+			if(O !=null)
+				return new XVector<Environmental>(O);
+			else
+				return new XVector<Environmental>();
+		}
+		final GalacticMap space=CMLib.space();
+		final SpaceObject O=space.getSpaceObject(this, true);
+		final List<? extends Environmental> objs = super.getAllSensibleObjects();
+		final LinkedList<Environmental> revList = new LinkedList<Environmental>();
+		revList.addAll(objs);
+		for(final Iterator<Environmental> rh=revList.descendingIterator();rh.hasNext();)
+		{
+			final Environmental hE=rh.next();
+			if((hE instanceof SpaceObject)
+			&&(hE != O))
+			{
+				final SpaceObject hO=(SpaceObject)hE;
+				final double[] hDirTo = space.getDirection(O, hO);
+				final long hDistance = space.getDistanceFrom(O, hO);
+				final BoundedCube hCube=O.getBounds().expand(hDirTo,hDistance);
+				for(final Iterator<Environmental> rb=revList.descendingIterator();rb.hasNext();)
+				{
+					final Environmental bE=rb.next();
+					if((bE instanceof SpaceObject)
+					&&(bE != hE)
+					&&(bE != O))
+					{
+						final SpaceObject bO=(SpaceObject)bE;
+						final long hL=hO.getMass();
+						final long bL=bO.getMass();
+						if(hL < bL) // if moon is lighter than then planet, proceed with hide check
+						{
+							if(hCube.intersects(bO.getBounds()))
+							{
+								// the projection from the ship to prospect hidden object, which we know
+								// appears lighter than the tested bO object, is also blocked BY
+								// the bO object.  Therefore, the prospect object IS hidden
+								rh.remove();
+								break; // hidden by one thing is enough
+							}
+						}
+					}
+				}
+			}
+		}
+		objs.retainAll(revList);
+		return objs;
+	}
 	@Override
 	public boolean sameAs(final Environmental E)
 	{

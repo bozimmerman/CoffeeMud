@@ -59,14 +59,6 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 		return SpaceObject.Distance.Parsec.dm;
 	}
 
-	protected boolean isInSpace()
-	{
-		final SpaceObject O=CMLib.space().getSpaceObject(this, true);
-		if(O != null)//&&(this.powerRemaining() > this.powerNeeds()))
-			return CMLib.space().isObjectInSpace(O);
-		return false;
-	}
-
 	@Override
 	protected List<? extends Environmental> getAllSensibleObjects()
 	{

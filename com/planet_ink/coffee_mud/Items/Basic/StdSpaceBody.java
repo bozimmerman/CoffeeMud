@@ -65,6 +65,7 @@ public class StdSpaceBody extends StdItem implements SpaceObject
 		setMaterial(RawMaterial.RESOURCE_STONE);
 	}
 
+	@Override
 	public void destroy()
 	{
 		CMLib.space().delObjectInSpace(this);
@@ -204,7 +205,8 @@ public class StdSpaceBody extends StdItem implements SpaceObject
 						if((msg.tool() == this) && (msg.target() instanceof SpaceObject))
 						{
 							srcP=(SpaceObject)msg.target();
-							CMLib.space().sendSpaceEmissionEvent(srcP, this, CMMsg.TYP_WEAPONATTACK, L("<S-NAME> is hit by <O-NAME>"));
+							CMLib.space().sendSpaceEmissionEvent(srcP, this, CMMsg.TYP_COLLISION|CMMsg.MASK_MOVE|CMMsg.MASK_EYES, 
+																L("<S-NAME> is hit by <O-NAME>"));
 						}
 					}
 				}

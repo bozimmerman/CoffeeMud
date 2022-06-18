@@ -83,6 +83,14 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 		return fbList;
 	}
 
+	protected boolean isInSpace()
+	{
+		final SpaceObject O=CMLib.space().getSpaceObject(this, true);
+		if(O != null)//&&(this.powerRemaining() > this.powerNeeds()))
+			return CMLib.space().isObjectInSpace(O);
+		return false;
+	}
+
 	protected boolean canPassivelySense(final CMMsg msg)
 	{
 		// don't sense the things people in the room do
@@ -673,6 +681,7 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 					synchronized(feedbackObjects)
 					{
 						if((!feedbackObjects.containsKey(controlI))
+						&&(controlI!=null)
 						&&(controlI.owner() instanceof Room))
 						{
 							final Room R=(Room)controlI.owner();

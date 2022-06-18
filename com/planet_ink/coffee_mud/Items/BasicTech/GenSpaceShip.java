@@ -359,10 +359,14 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 									{
 										mob.destroy();
 									}
-									facing[0]=Math.abs(facing[0]%(2*Math.PI));
-									facing[1]=Math.abs(facing[1]);
-									if(facing[1] > Math.PI)
+									while(facing[0] > (2*Math.PI))
+										facing[0] -= 2.0*Math.PI;
+									while(facing[0] < 0)
+										facing[0] += (2*Math.PI);
+									while(facing[1] > Math.PI)
 										facing[1] -= Math.PI;
+									while(facing[1] < 0)
+										facing[1] += Math.PI;
 								}
 							}
 						}
@@ -504,7 +508,8 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 					stopThisShip(mob);
 					if(LR!=null)
 					{
-						CMLib.space().sendSpaceEmissionEvent(this,msg.tool(), CMMsg.TYP_COLLISION, L("<T-NAME> has landed on <O-NAME>"));
+						CMLib.space().sendSpaceEmissionEvent(this,msg.tool(), CMMsg.TYP_COLLISION|CMMsg.MASK_MOVE|CMMsg.MASK_EYES
+															, L("<T-NAME> has landed on <O-NAME>"));
 						if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 							Log.debugOut(Name()+" Landed and Stopped, and docking at "+CMLib.map().getExtendedRoomID(LR));
 						//final CMMsg kMsg=CMClass.getMsg(msg.source(),getShipArea(),this,CMMsg.MSG_OK_ACTION,L("The ship comes to a resting stop."));
@@ -512,7 +517,8 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 					}
 					else
 					{
-						CMLib.space().sendSpaceEmissionEvent(this,msg.tool(), CMMsg.TYP_COLLISION, L("<T-NAME> has hit <O-NAME>"));
+						CMLib.space().sendSpaceEmissionEvent(this,msg.tool(), CMMsg.TYP_COLLISION|CMMsg.MASK_MOVE|CMMsg.MASK_EYES
+															, L("<T-NAME> has hit <O-NAME>"));
 						if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 							Log.debugOut(Name()+" Landed and Stopped, but nowhere to dock. :(");
 						// we landed, but there was nowhere to dock!
@@ -522,14 +528,16 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 				if(!amDestroyed())
 				{
 					if(!(msg.tool() instanceof Weapon))
-						CMLib.space().sendSpaceEmissionEvent(this,msg.tool(), CMMsg.TYP_COLLISION, L("<T-NAME> has hit <O-NAME>"));
+						CMLib.space().sendSpaceEmissionEvent(this,msg.tool(), CMMsg.TYP_COLLISION|CMMsg.MASK_MOVE|CMMsg.MASK_EYES
+															, L("<T-NAME> has hit <O-NAME>"));
 					if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 						Log.debugOut(Name()+" Collided with weird thing: "+msg.tool().ID());
 				}
 				else
 				{
 					if(!(msg.tool() instanceof Weapon))
-						CMLib.space().sendSpaceEmissionEvent(this,msg.tool(), CMMsg.TYP_COLLISION, L("<T-NAME> has hit <O-NAME>, and was destroyed."));
+						CMLib.space().sendSpaceEmissionEvent(this,msg.tool(), CMMsg.TYP_COLLISION|CMMsg.MASK_MOVE|CMMsg.MASK_EYES
+															, L("<T-NAME> has hit <O-NAME>, and was destroyed."));
 					if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 						Log.debugOut(Name()+" was destroyed.");
 				}
