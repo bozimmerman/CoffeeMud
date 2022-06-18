@@ -275,6 +275,25 @@ public interface GalacticMap extends CMLibrary
 	public double[] getOppositeDir(final double[] dir);
 
 	/**
+	 * Changes the given direction by the given delta variables.  Corrects any
+	 * crossover bounds, and checks the delta bounds.
+	 * 
+	 * @param dir the current direction to change
+	 * @param delta0 the port/starboard delta
+	 * @param delta1 the ventral/dorsel delta
+	 */
+	public void changeDirection(final double[] dir, final double delta0, final double delta1);
+	
+	/**
+	 * Changes the given direction by the given delta variable.  Corrects any
+	 * crossover bounds, and checks the delta bounds.
+	 * 
+	 * @param dir the current direction to change
+	 * @param delta the delta to change it by, + or -
+	 */
+	public void changeDirection(final double[] dir, final double[] delta);
+	
+	/**
 	 * Calculates the relative speed of two SpaceObjects to each other.
 	 * The math is based entirely on coordinates and speed, not direction,
 	 * so take it for what you will.  Do they both need to be going the

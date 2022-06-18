@@ -275,7 +275,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 										if(dockR==null)
 										{
 											finalAcceleration = -CMath.mul(amount,0.017);
-											facing[0] += finalAcceleration;
+											CMLib.space().changeDirection(facing, finalAcceleration, 0.0);
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing[0]);
 										}
@@ -284,7 +284,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 										if(dockR==null)
 										{
 											finalAcceleration = CMath.mul(amount,0.017);
-											facing[0] += finalAcceleration;
+											CMLib.space().changeDirection(facing, finalAcceleration, 0.0);
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing[0]);
 										}
@@ -293,7 +293,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 										if(dockR==null)
 										{
 											finalAcceleration = -CMath.mul(amount,0.017);
-											facing[1] += finalAcceleration;
+											CMLib.space().changeDirection(facing, 0.0, finalAcceleration);
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing[1]);
 										}
@@ -302,7 +302,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 										if(dockR==null)
 										{
 											finalAcceleration = CMath.mul(amount,0.017);
-											facing[1] += finalAcceleration;
+											CMLib.space().changeDirection(facing, 0.0, finalAcceleration);
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing[1]);
 										}
@@ -359,14 +359,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 									{
 										mob.destroy();
 									}
-									while(facing[0] > (2*Math.PI))
-										facing[0] -= 2.0*Math.PI;
-									while(facing[0] < 0)
-										facing[0] += (2*Math.PI);
-									while(facing[1] > Math.PI)
-										facing[1] -= Math.PI;
-									while(facing[1] < 0)
-										facing[1] += Math.PI;
+									CMLib.space().changeDirection(facing, 0.0, 0.0);
 								}
 							}
 						}

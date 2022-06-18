@@ -256,6 +256,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			}
 		}
 		delta[1]=(toPitch-fromPitch);
+		fixDirectionBounds(delta);
 		return delta;
 	}
 
@@ -265,11 +266,13 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		if(newAcceleration <= 0.0)
 			return curSpeed;
 
+		fixDirectionBounds(curDirection);
 		final double curDirectionYaw = curDirection[0];
-		final double curDirectionPitch = (curDirection[1] > Math.PI) ? Math.abs(Math.PI-curDirection[1]) : curDirection[1];
+		final double curDirectionPitch = curDirection[1];
 
+		fixDirectionBounds(accelDirection);
 		final double accelDirectionYaw = accelDirection[0];
-		final double accelDirectionPitch = (accelDirection[1] > Math.PI) ? Math.abs(Math.PI-accelDirection[1]) : accelDirection[1];
+		final double accelDirectionPitch = accelDirection[1];
 
 		final double currentSpeed = curSpeed;
 		final double acceleration = newAcceleration;
@@ -316,6 +319,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		}
 		curDirection[0]=newDirectionYaw;
 		curDirection[1]=newDirectionPitch;
+		fixDirectionBounds(curDirection);
 		if(Double.isInfinite(newSpeed) || Double.isNaN(newSpeed))
 		{
 			Log.errOut("Invalid new speed: "+newSpeed + "("+currentSpeed+"+"+"("+acceleration+"*Math.cos("+anglesDelta+"))");
@@ -324,17 +328,44 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		return newSpeed;
 	}
 
+	protected void fixDirectionBounds(final double[] dir)
+	{
+		while(dir[0] >= PI_TIMES_2)
+			dir[0] -= PI_TIMES_2;
+		while(dir[0] < 0)
+			dir[0] += PI_TIMES_2;
+		while(dir[1] >= Math.PI)
+			dir[1] -= Math.PI;
+		while(dir[1] < 0)
+			dir[0] += Math.PI;
+	}
+	
+	@Override
+	public void changeDirection(final double[] dir, final double delta0, final double delta1)
+	{
+		dir[0] += delta0 % PI_TIMES_2;
+		dir[1] += delta1 % Math.PI;
+		fixDirectionBounds(dir);
+	}
+	
+	@Override
+	public void changeDirection(final double[] dir, final double[] delta)
+	{
+		changeDirection(dir, delta[0], delta[1]);
+	}
+	
 	@Override
 	public double[] getOppositeDir(final double[] dir)
 	{
 		if((dir[1]<ZERO_ALMOST)||(dir[1]>PI_ALMOST))
 			return new double[]{dir[0], Math.PI-dir[1]};
 		final double[] newDir = new double[]{Math.PI+dir[0],Math.PI-dir[1]};
-		if(newDir[0] >= PI_TIMES_2)
-			newDir[0] -= PI_TIMES_2;
+		fixDirectionBounds(newDir);
 		return newDir;
 	}
 
+	
+	
 	@Override
 	public ShipDirectional.ShipDir getDirectionFromDir(final double[] facing, final double roll, final double[] direction)
 	{
@@ -445,17 +476,10 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 				dir[0]=Math.PI-Math.asin(y/Math.sqrt((x*x)+(y*y)));
 			else
 				dir[0]=Math.asin(y/Math.sqrt((x*x)+(y*y)));
-			if(dir[0] > 2*Math.PI)
-				dir[0] = Math.abs(2*Math.PI-dir[0]);
 		}
 		if((x!=0)||(y!=0)||(z!=0))
 			dir[1]=Math.acos(z/Math.sqrt((z*z)+(y*y)+(x*x)));
-		if(dir[1] > Math.PI)
-			dir[1] = Math.abs(Math.PI-dir[1]);
-		if(dir[0] < 0)
-			dir[0] = Math.abs((Math.PI*2)+dir[0]);
-		if(dir[1] < 0)
-			dir[1] = Math.abs(Math.PI*+dir[1]);
+		fixDirectionBounds(dir);
 		return dir;
 	}
 
