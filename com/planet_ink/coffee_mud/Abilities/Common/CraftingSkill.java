@@ -205,7 +205,12 @@ public class CraftingSkill extends GatheringSkill
 		List<List<String>> V=(List<List<String>>)Resources.getResource("PARSED_RECIPE: "+filename);
 		if(V==null)
 		{
-			final StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,CMFile.FLAG_LOGERRORS).text();
+			final String recipePath;
+			if((filename.indexOf('/')>=0)||(filename.indexOf('\\')>=0))
+				recipePath = filename;
+			else
+				recipePath = Resources.buildResourcePath("skills")+filename;
+			final StringBuffer str=new CMFile(recipePath,null,CMFile.FLAG_LOGERRORS).text();
 			V=loadList(str);
 			Collections.sort(V,new Comparator<List<String>>()
 			{
@@ -223,6 +228,7 @@ public class CraftingSkill extends GatheringSkill
 			});
 			if((V.size()==0)
 			&&(!ID().equals("GenCraftSkill"))
+			&&(!ID().equals("GenWrightSkill"))
 			&&(!ID().endsWith("Costuming")))
 				Log.errOut(ID(),"Recipes not found!");
 			V=new ReadOnlyList<List<String>>(V);

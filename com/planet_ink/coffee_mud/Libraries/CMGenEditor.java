@@ -9013,6 +9013,50 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	@Override
+	public void modifyGenWrightSkill(final MOB mob, final Ability me, int showFlag) throws IOException
+	{
+		if(mob.isMonster())
+			return;
+		boolean ok=false;
+		if((showFlag == -1) && (CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0))
+			showFlag=-999;
+		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
+		{
+			int showNumber=0;
+			// id is bad to change.. make them delete it.
+			//genText(mob,me,null,++showNumber,showFlag,"Enter the class","CLASS");
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Skill name","NAME",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Skill verb","VERB",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Command Words (comma sep)","TRIGSTR",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Recipe filename","FILENAME",false);
+			genRawMaterials(mob, me, ++showNumber, showFlag);
+			promptStatBool(mob,me,null,++showNumber,showFlag,"Can mend","CANMEND");
+			promptStatBool(mob,me,null,++showNumber,showFlag,"Can make doors","CANDOOR");
+			promptStatBool(mob,me,null,++showNumber,showFlag,"Can re-title","CANTITLE");
+			promptStatBool(mob,me,null,++showNumber,showFlag,"Can re-desc","CANDESC");
+			promptStatStr(mob,me,null,++showNumber,showFlag,"MSP file","SOUND",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Help Text","HELP",true);
+
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
+			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
+			if(showFlag<=0)
+			{
+				showFlag=-1;
+				ok=true;
+			}
+		}
+	}
+
+	@Override
 	public void modifyGenGatheringSkill(final MOB mob, final Ability me, int showFlag) throws IOException
 	{
 		if(mob.isMonster())

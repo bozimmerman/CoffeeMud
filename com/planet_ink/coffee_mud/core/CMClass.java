@@ -3140,7 +3140,8 @@ public class CMClass extends ClassLoader
 								type="GenAbility";
 							final Ability A=(Ability)(CMClass.getAbility(type).copyOf());
 							A.setStat("ALLXML",rec.data());
-							if((!A.ID().equals("GenAbility"))&&(!A.ID().equals(type)))
+							if((!A.ID().equals("GenAbility"))
+							&&(!A.ID().equals(type)))
 							{
 								c.abilities.addElement(A);
 								loaded++;

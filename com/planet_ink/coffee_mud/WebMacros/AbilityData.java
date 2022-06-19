@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.CraftorType;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -167,6 +168,7 @@ public class AbilityData extends StdWebMacro
 		final String newAbilityID=httpReq.getUrlParameter("NEWABILITY");
 		final String newLanguageID=httpReq.getUrlParameter("NEWLANGUAGE");
 		final String newCraftSkillID=httpReq.getUrlParameter("NEWCRAFTSKILL");
+		final String newWrightSkillID=httpReq.getUrlParameter("NEWWRIGHTSKILL");
 		final String newGatheringSkillID=httpReq.getUrlParameter("NEWGATHERINGSKILL");
 		A=(Ability)httpReq.getRequestObjects().get("ABILITY-"+last);
 		if((A==null)
@@ -200,6 +202,16 @@ public class AbilityData extends StdWebMacro
 			httpReq.addFakeUrlParameter("ABILITY",newCraftSkillID);
 		}
 		if((A==null)
+		&&(newWrightSkillID!=null)
+		&&(newWrightSkillID.length()>0)
+		&&(CMClass.getAbility(newWrightSkillID)==null))
+		{
+			A=(Ability)CMClass.getAbility("GenWrightSkill").copyOf();
+			A.setStat("CLASS9",newWrightSkillID);
+			last=newWrightSkillID;
+			httpReq.addFakeUrlParameter("ABILITY",newWrightSkillID);
+		}
+		if((A==null)
 		&&(newGatheringSkillID!=null)
 		&&(newGatheringSkillID.length()>0)
 		&&(CMClass.getAbility(newGatheringSkillID)==null))
@@ -230,7 +242,15 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("ISCRAFTSKILL"))
 				{
 					return Boolean.toString((A instanceof ItemCraftor)
-							&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL));
+							&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
+							&&(((ItemCraftor)A).getCraftorType()!=CraftorType.LargeConstructions))
+							;
+				}
+				if(parms.containsKey("ISWRIGHTSKILL"))
+				{
+					return Boolean.toString((A instanceof ItemCraftor)
+							&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
+							&&(((ItemCraftor)A).getCraftorType()==CraftorType.LargeConstructions));
 				}
 				if(parms.containsKey("ISGATHERSKILL"))
 				{
@@ -776,6 +796,33 @@ public class AbilityData extends StdWebMacro
 					String old=httpReq.getUrlParameter("CANMEND");
 					if(old==null)
 						old=A.getStat("CANMEND");
+					else
+						old=old.equalsIgnoreCase("on")?"true":"false";
+					str.append(old.equalsIgnoreCase("true")?"checked":"");
+				}
+				if(parms.containsKey("CANDOOR"))
+				{
+					String old=httpReq.getUrlParameter("CANDOOR");
+					if(old==null)
+						old=A.getStat("CANDOOR");
+					else
+						old=old.equalsIgnoreCase("on")?"true":"false";
+					str.append(old.equalsIgnoreCase("true")?"checked":"");
+				}
+				if(parms.containsKey("CANTITLE"))
+				{
+					String old=httpReq.getUrlParameter("CANTITLE");
+					if(old==null)
+						old=A.getStat("CANTITLE");
+					else
+						old=old.equalsIgnoreCase("on")?"true":"false";
+					str.append(old.equalsIgnoreCase("true")?"checked":"");
+				}
+				if(parms.containsKey("CANDESC"))
+				{
+					String old=httpReq.getUrlParameter("CANDESC");
+					if(old==null)
+						old=A.getStat("CANDESC");
 					else
 						old=old.equalsIgnoreCase("on")?"true":"false";
 					str.append(old.equalsIgnoreCase("true")?"checked":"");

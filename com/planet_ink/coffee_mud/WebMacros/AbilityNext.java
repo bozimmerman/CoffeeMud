@@ -136,7 +136,9 @@ public class AbilityNext extends StdWebMacro
 			boolean okToShow=true;
 			final int classType=A.classificationCode()&Ability.ALL_ACODES;
 			if(genericOnly)
+			{
 				okToShow=A.isGeneric();
+			}
 			else
 			if(parmsEditable)
 			{

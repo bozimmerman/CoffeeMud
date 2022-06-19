@@ -470,7 +470,6 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 			}
 			if(myDex<0)
 			{
-				System.out.println("hi");
 				final StdAutoGenInstance newA=(StdAutoGenInstance)this.copyOf();
 				newA.derivedAtmo=getAtmosphere();
 				newA.derivedClimate=getClimateType();

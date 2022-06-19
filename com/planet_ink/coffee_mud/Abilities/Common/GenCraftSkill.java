@@ -762,7 +762,8 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			final String misctype=foundRecipe.get(RCP_MISCTYPE);
 			final Integer[] ipm=super.supportedResourcesMap();
 			final int[] pm=new int[ipm.length];
-			for(int i=0;i<ipm.length;i++) pm[i]=ipm[i].intValue();
+			for(int i=0;i<ipm.length;i++) 
+				pm[i]=ipm[i].intValue();
 			bundling=misctype.equalsIgnoreCase("BUNDLE");
 			final int[][] data=fetchFoundResourceData(mob,
 													numRequired,"material",pm,

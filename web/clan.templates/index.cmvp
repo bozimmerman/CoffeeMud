@@ -186,7 +186,7 @@
 		<TABLE WIDTH=100% BORDER=1>
 		@loop@
 			@ClanData?membernext@ @AddRequestParameter?COUNTER=++@
-			@if?CheckReqParm?COUNTER=10&||COUNTER=11&||COUNTER=12@ @break@ @endif@
+			@if?CheckReqParm?COUNTER=10&|/0/|COUNTER=11&|/1/|COUNTER=12@ @break@ @endif@
 			<TR>
 			<TD><FONT SIZE=-1>@RequestParameter?COUNTER@. @RequestParameter?CLANMEMBER@ (@ClanData?MEMBERPVPKILLS@)</FONT></TD>
 			@ClanData?membernext&emptyok@ @AddRequestParameter?COUNTER=++@
@@ -209,7 +209,7 @@
 		<TABLE WIDTH=100% BORDER=1>
 		@loop@
 			@ClanData?membernext@ @AddRequestParameter?COUNTER=++@
-			@if?CheckReqParm?COUNTER=10&||COUNTER=11&||COUNTER=12@ @break@ @endif@
+			@if?CheckReqParm?COUNTER=10&|/0/|COUNTER=11&|/1/|COUNTER=12@ @break@ @endif@
 			<TR>
 			<TD><FONT SIZE=-1>@RequestParameter?COUNTER@. @RequestParameter?CLANMEMBER@ (@ClanData?MEMBERMOBKILLS@)</FONT></TD>
 			@ClanData?membernext&emptyok@ @AddRequestParameter?COUNTER=++@

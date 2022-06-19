@@ -58,6 +58,8 @@ public class CheckReqParm extends StdWebMacro
 			boolean endswith=false;
 			if(key.startsWith("||"))
 				key=key.substring(2);
+			if(key.startsWith("|/")&&(key.indexOf("/|")>0))
+				key=key.substring(key.indexOf("/|")+2);
 			if(key.startsWith("<"))
 			{
 				startswith=true;

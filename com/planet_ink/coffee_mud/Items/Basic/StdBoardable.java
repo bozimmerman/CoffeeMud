@@ -473,19 +473,19 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			setArea(CMLib.coffeeMaker().getAreaObjectXML(area, null, null, null, true).toString());
 		}
 		boolean wouldRecurse=false;
-		for(final String word : new String[]{"NAME","NEWNAME","SHIPNAME","SHIP","name","newname","shipname","ship"})
-			for(final String rubs : new String[]{"<>","[]","{}","()"})
+		for(final String word : Boardable.NAME_REPL_STRINGS)
+			for(final String rubs : Boardable.NAME_REPL_MARKERS)
 				wouldRecurse=wouldRecurse || newName.indexOf(rubs.charAt(0)+word+rubs.charAt(1))>=0;
 		if(!wouldRecurse)
 		{
-			for(final String word : new String[]{"NAME","NEWNAME","SHIPNAME","SHIP","name","newname","shipname","ship"})
+			for(final String word : Boardable.NAME_REPL_STRINGS)
 			{
-				for(final String rubs : new String[]{"<>","[]","{}","()"})
+				for(final String rubs : Boardable.NAME_REPL_MARKERS)
 				{
 					if(Name().indexOf(rubs.charAt(0)+word+rubs.charAt(1))>=0)
 						setName(CMStrings.replaceAll(Name(), rubs.charAt(0)+word+rubs.charAt(1), newName));
 				}
-				for(final String rubs : new String[]{"<>","[]","{}","()"})
+				for(final String rubs : Boardable.NAME_REPL_MARKERS)
 				{
 					if(displayText().indexOf(rubs.charAt(0)+word+rubs.charAt(1))>=0)
 						setDisplayText(CMStrings.replaceAll(displayText(), rubs.charAt(0)+word+rubs.charAt(1), newName));

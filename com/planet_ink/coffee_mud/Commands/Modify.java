@@ -1403,6 +1403,12 @@ public class Modify extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
+		if(((ItemCraftor)A).getCraftorType()==ItemCraftor.CraftorType.LargeConstructions)
+		{
+			mob.tell(L("'@x1' is a building/wrighting skill.  Try MODIFY WRIGHTSKILL.",A.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around all @x1s.",A.name()));
 		CMLib.genEd().modifyGenCraftSkill(mob,A,-1);
 		CMLib.database().DBDeleteAbility(A.ID());
@@ -1457,6 +1463,59 @@ public class Modify extends StdCommand
 		CMLib.genEd().modifyGenGatheringSkill(mob,A,-1);
 		CMLib.database().DBDeleteAbility(A.ID());
 		CMLib.database().DBCreateAbility(A.ID(),"GenGatheringSkill",A.getStat("ALLXML"));
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("@x1's everywhere shake under the transforming power!",A.name()));
+		return true;
+	}
+
+	public boolean wrightSkills(final MOB mob, final List<String> commands)
+	throws IOException
+	{
+		if(commands.size()<3)
+		{
+			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is MODIFY WRIGHTSKILL [SKILL ID]\n\r"));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+
+		final String classID=CMParms.combine(commands,2);
+		final Ability A=CMClass.getAbility(classID);
+		if(A==null)
+		{
+			mob.tell(L("'@x1' is an invalid ability id.",classID));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		if(!(A.isGeneric()))
+		{
+			mob.tell(L("'@x1' is not generic, and may not be modified.",A.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		if(A instanceof Language)
+		{
+			mob.tell(L("'@x1' is a crafting skill.  Try MODIFY LANGUAGE.",A.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		if(!(A instanceof ItemCraftor))
+		{
+			if(A instanceof ItemCollection)
+				mob.tell(L("'@x1' is a gathering skill.  Try MODIFY GATHERSKILL.",A.ID()));
+			else
+				mob.tell(L("'@x1' is not a crafting skill.  Try MODIFY ABILITY.",A.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		if(((ItemCraftor)A).getCraftorType()!=ItemCraftor.CraftorType.LargeConstructions)
+		{
+			mob.tell(L("'@x1' is a crafting skill.  Try MODIFY CRAFTSKILL.",A.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around all @x1s.",A.name()));
+		CMLib.genEd().modifyGenWrightSkill(mob,A,-1);
+		CMLib.database().DBDeleteAbility(A.ID());
+		CMLib.database().DBCreateAbility(A.ID(),"GenWrightSkill",A.getStat("ALLXML"));
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("@x1's everywhere shake under the transforming power!",A.name()));
 		return true;
 	}
@@ -1878,7 +1937,7 @@ public class Modify extends StdCommand
 
 	protected String listOfThings()
 	{
-		return "ITEM, RACE, CLASS, ABILITY, LANGUAGE, CRAFTSKILL, GATHERSKILL, "
+		return "ITEM, RACE, CLASS, ABILITY, LANGUAGE, CRAFTSKILL, GATHERSKILL, WRIGHTSKILL, "
 			+ "ALLQUALIFY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, TITLE, QUEST, "
 			+ "MOB, USER, HOLIDAY, ACHIEVEMENT, MANUFACTURER, EXPERTISE, "
 			+ "GOVERNMENT, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, NEWS, DAY, MONTH, YEAR, TIME, HOUR, or ROOM";
@@ -1990,6 +2049,13 @@ public class Modify extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES))
 				return errorOut(mob);
 			craftSkills(mob,commands);
+		}
+		else
+		if(commandType.equals("WRIGHTSKILL"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES))
+				return errorOut(mob);
+			wrightSkills(mob,commands);
 		}
 		else
 		if(commandType.equals("GATHERSKILL"))

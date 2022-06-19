@@ -276,6 +276,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				final List<String> V=(List<String>)dataRow.elementAt(d,1);
 				if(V.contains("ITEM_CLASS_ID")
 				||V.contains("FOOD_DRINK")
+				||V.contains("ITEM_CMARE")
 				||V.contains("BUILDING_CODE"))
 					return d;
 			}
@@ -285,6 +286,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				final String s=(String)dataRow.elementAt(d,1);
 				if(s.equalsIgnoreCase("ITEM_CLASS_ID")
 				||s.equalsIgnoreCase("FOOD_DRINK")
+				||s.equalsIgnoreCase("ITEM_CMARE")
 				||s.equalsIgnoreCase("BUILDING_CODE"))
 					return d;
 			}
@@ -5149,6 +5151,65 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					if(oldRsc.length()>0)
 						return oldRsc+"/"+CMLib.genEd().prompt(mob,oldAmt,++showNumber[0],showFlag,prompt());
 					return "";
+				}
+			},
+			new AbilityParmEditorImpl("ITEM_CMARE","A New Item",ParmType.SPECIAL)
+			{
+				@Override
+				public void createChoices()
+				{
+					int x=0;
+				}
+
+				@Override
+				public String defaultValue()
+				{
+					return "<ITEM></ITEM>";
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "";
+				}
+				
+				@Override
+				public boolean confirmValue(final String oldVal)
+				{
+					return true;
+				}
+
+				@Override
+				public String webValue(final HTTPRequest httpReq, final java.util.Map<String,String> parms, final String oldVal, final String fieldName)
+				{
+					if(httpReq.isUrlParameter(fieldName+"_WHICH"))
+					{
+					}
+					return oldVal;
+				}
+
+				@Override
+				public String webField(final HTTPRequest httpReq, final java.util.Map<String,String> parms, final String oldVal, final String fieldName)
+				{
+					String value=webValue(httpReq,parms,oldVal,fieldName);
+					if(value.endsWith("$"))
+						value = value.substring(0,oldVal.length()-1);
+					value = value.trim();
+					return value.toString();
+				}
+
+				@Override
+				public String[] fakeUserInput(final String oldVal)
+				{
+					return new String[] { oldVal };
+				}
+
+				@Override
+				public String commandLinePrompt(final MOB mob, final String oldVal, final int[] showNumber, final int showFlag) throws java.io.IOException
+				{
+					++showNumber[0];
+					String str = oldVal;
+					return str;
 				}
 			},
 		});

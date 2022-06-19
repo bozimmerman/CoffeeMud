@@ -106,4 +106,17 @@ public interface Boardable extends Environmental
 	 * @return the official space version of this ship
 	 */
 	public Item getBoardableItem();
+	
+	/**
+	 * Strings which can appear between markers in a boardable name to designate that it
+	 * can be renamed by the player.
+	 */
+	public static final String[] NAME_REPL_STRINGS=
+			new String[] { "NAME","NEWNAME","SHIPNAME","SHIP","name","newname","shipname","ship" };
+	
+	/**
+	 * Strings which can around replacement strings in a boardable name to designate that it
+	 * can be renamed by the player.
+	 */
+	public static final String[] NAME_REPL_MARKERS=new String[] {"<>","[]","{}","()"};
 }

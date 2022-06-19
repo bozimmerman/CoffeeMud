@@ -133,6 +133,7 @@
 <INPUT TYPE=HIDDEN NAME=NEWABILITY VALUE="@RequestParameter?NEWABILITY@">
 <INPUT TYPE=HIDDEN NAME=NEWLANGUAGE VALUE="@RequestParameter?NEWLANGUAGE@">
 <INPUT TYPE=HIDDEN NAME=NEWCRAFTSKILL VALUE="@RequestParameter?NEWCRAFTSKILL@">
+<INPUT TYPE=HIDDEN NAME=NEWWRIGHTSKILL VALUE="@RequestParameter?NEWWRIGHTSKILL@">
 <INPUT TYPE=HIDDEN NAME=NEWGATHERINGSKILL VALUE="@RequestParameter?NEWGATHERINGSKILL@">
 <CENTER>
 @if?CheckReqParm?ABILITY=@
@@ -244,6 +245,79 @@
                 </TD>
                 <TD>
                     <INPUT TYPE=CHECKBOX NAME=CANSIT @AbilityData?CANSIT@>
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Raw Resources / Material Types: </FONT></TD>
+                <TD>
+                    <SELECT NAME=MATLIST MULTIPLE>@AbilityData?MATLIST@</SELECT>
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Recipes Filename: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=30 MAXLENGTH=100 NAME=FILENAME VALUE="@AbilityData?FILENAME@">
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>MSP Sound Filename: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=30 MAXLENGTH=100 NAME=SOUND VALUE="@AbilityData?SOUND@">
+                </TD>
+            </TR>
+        @else@
+        @if?AbilityData?ISWRIGHTSKILL@
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Skill Verb: </FONT><BR>
+                    <INPUT TYPE=HIDDEN NAME=CLASSIFICATION_ACODE VALUE=9>
+                </TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=10 MAXLENGTH=20 NAME=VERB VALUE="@AbilityData?VERB@">
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Command Words: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=30 MAXLENGTH=100 NAME=TRIGSTR VALUE="@AbilityData?TRIGSTR@">
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Allowed to Mend: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=CHECKBOX NAME=CANMEND @AbilityData?CANMEND@>
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Allowed to make Doors: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=CHECKBOX NAME=CANDOOR @AbilityData?CANDOOR@>
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Allowed to re-Title: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=CHECKBOX NAME=CANTITLE @AbilityData?CANTITLE@>
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Allowed to re-Desc: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=CHECKBOX NAME=CANDESC @AbilityData?CANDESC@>
                 </TD>
             </TR>
             <TR>
@@ -611,6 +685,7 @@
                     <FONT SIZE=-1 COLOR=WHITE>@x1=caster level, @x2=target level, @x3=level expertise, @x4-@x8=x1-x5 expertise</FONT>
                 </TD>
             </TR>
+        @endif@
         @endif@
         @endif@
         @endif@

@@ -67,11 +67,8 @@
     @AbilityNext?RESET@
     @loop@
     @AbilityNext?ALL&GENERIC@
-        @if?CheckReqParm?ABILITY=GenAbility&||ABILITY=GenLanguage&||ABILITY=GenCraftSkill&||ABILITY=GenGatheringSkill@
-        @else@
-        @if?CheckReqParm?ABILITY=GenLanguage&||ABILITY=GenCraftSkill&||ABILITY=GenAbility&||ABILITY=GenGatheringSkill@
-        @else@
-        @if?CheckReqParm?ABILITY=GenCraftSkill&||ABILITY=GenAbility&||ABILITY=GenLanguage&||ABILITY=GenGatheringSkill@
+        @if?CheckReqParm?ABILITY=GenAbility&|/0/|ABILITY=GenLanguage&|/1/|ABILITY=GenCraftSkill&|/2/|ABILITY=GenGatheringSkill&|/3/|ABILITY=GenWrightSkill@
+        <!--  no nothing -->
         @else@
             <TR>
             <TD><a href="javascript:Ability('@AbilityID@','')"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
@@ -81,20 +78,21 @@
             <TD><FONT COLOR=WHITE><B>@AbilityData?TRIGSTR@</B></FONT></a></TD>
             </TR>
        @endif@
-       @endif@
-       @endif@
     @back@
     <TR>
-    <TD COLSPAN=4><a href="javascript:if(document.RESOURCES.NEWABILITY.value!='')Ability(document.RESOURCES.NEWABILITY.value,'&NEWABILITY='+document.RESOURCES.NEWABILITY.value)"><FONT COLOR=WHITE><B>Create new Ability/Skill:</a> <INPUT TYPE=TEXT NAME=NEWABILITY SIZE=20 ONCHANGE="document.RESOURCES.NEWLANGUAGE.value='';document.RESOURCES.NEWCRAFTSKILL.value='';document.RESOURCES.NEWGATHERINGSKILL.value='';"></B></FONT></TD>
+    <TD COLSPAN=4><a href="javascript:if(document.RESOURCES.NEWABILITY.value!='')Ability(document.RESOURCES.NEWABILITY.value,'&NEWABILITY='+document.RESOURCES.NEWABILITY.value)"><FONT COLOR=WHITE><B>Create new Ability/Skill:</a> <INPUT TYPE=TEXT NAME=NEWABILITY SIZE=20 ONCHANGE="document.RESOURCES.NEWLANGUAGE.value='';document.RESOURCES.NEWCRAFTSKILL.value='';document.RESOURCES.NEWGATHERINGSKILL.value='';document.RESOURCES.NEWWRIGHTSKILL.value='';"></B></FONT></TD>
     </TR>
     <TR>
-    <TD COLSPAN=4><a href="javascript:if(document.RESOURCES.NEWLANGUAGE.value!='')Ability(document.RESOURCES.NEWLANGUAGE.value,'&NEWLANGUAGE='+document.RESOURCES.NEWLANGUAGE.value)"><FONT COLOR=WHITE><B>Create new Language:</a> <INPUT TYPE=TEXT NAME=NEWLANGUAGE SIZE=20 ONCHANGE="document.RESOURCES.NEWABILITY.value='';document.RESOURCES.NEWCRAFTSKILL.value='';document.RESOURCES.NEWGATHERINGSKILL.value='';"></B></FONT></TD>
+    <TD COLSPAN=4><a href="javascript:if(document.RESOURCES.NEWLANGUAGE.value!='')Ability(document.RESOURCES.NEWLANGUAGE.value,'&NEWLANGUAGE='+document.RESOURCES.NEWLANGUAGE.value)"><FONT COLOR=WHITE><B>Create new Language:</a> <INPUT TYPE=TEXT NAME=NEWLANGUAGE SIZE=20 ONCHANGE="document.RESOURCES.NEWABILITY.value='';document.RESOURCES.NEWCRAFTSKILL.value='';document.RESOURCES.NEWGATHERINGSKILL.value='';document.RESOURCES.NEWWRIGHTSKILL.value='';"></B></FONT></TD>
     </TR>
     <TR>
-    <TD COLSPAN=4><a href="javascript:if(document.RESOURCES.NEWCRAFTSKILL.value!='')Ability(document.RESOURCES.NEWCRAFTSKILL.value,'&NEWCRAFTSKILL='+document.RESOURCES.NEWCRAFTSKILL.value)"><FONT COLOR=WHITE><B>Create new Crafting Skill:</a> <INPUT TYPE=TEXT NAME=NEWCRAFTSKILL SIZE=20 ONCHANGE="document.RESOURCES.NEWABILITY.value='';document.RESOURCES.NEWLANGUAGE.value='';document.RESOURCES.NEWGATHERINGSKILL.value='';"></B></FONT></TD>
+    <TD COLSPAN=4><a href="javascript:if(document.RESOURCES.NEWCRAFTSKILL.value!='')Ability(document.RESOURCES.NEWCRAFTSKILL.value,'&NEWCRAFTSKILL='+document.RESOURCES.NEWCRAFTSKILL.value)"><FONT COLOR=WHITE><B>Create new Crafting Skill:</a> <INPUT TYPE=TEXT NAME=NEWCRAFTSKILL SIZE=20 ONCHANGE="document.RESOURCES.NEWABILITY.value='';document.RESOURCES.NEWLANGUAGE.value='';document.RESOURCES.NEWGATHERINGSKILL.value='';document.RESOURCES.NEWWRIGHTSKILL.value='';"></B></FONT></TD>
     </TR>
     <TR>
-    <TD COLSPAN=4><a href="javascript:if(document.RESOURCES.NEWGATHERINGSKILL.value!='')Ability(document.RESOURCES.NEWGATHERINGSKILL.value,'&NEWGATHERINGSKILL='+document.RESOURCES.NEWGATHERINGSKILL.value)"><FONT COLOR=WHITE><B>Create new Gathering Skill:</a> <INPUT TYPE=TEXT NAME=NEWGATHERINGSKILL SIZE=20 ONCHANGE="document.RESOURCES.NEWABILITY.value='';document.RESOURCES.NEWLANGUAGE.value='';document.RESOURCES.NEWCRAFTSKILL.value='';"></B></FONT></TD>
+    <TD COLSPAN=4><a href="javascript:if(document.RESOURCES.NEWGATHERINGSKILL.value!='')Ability(document.RESOURCES.NEWGATHERINGSKILL.value,'&NEWGATHERINGSKILL='+document.RESOURCES.NEWGATHERINGSKILL.value)"><FONT COLOR=WHITE><B>Create new Gathering Skill:</a> <INPUT TYPE=TEXT NAME=NEWGATHERINGSKILL SIZE=20 ONCHANGE="document.RESOURCES.NEWABILITY.value='';document.RESOURCES.NEWLANGUAGE.value='';document.RESOURCES.NEWCRAFTSKILL.value='';document.RESOURCES.NEWWRIGHTSKILL.value='';"></B></FONT></TD>
+    </TR>
+    <TR>
+    <TD COLSPAN=4><a href="javascript:if(document.RESOURCES.NEWWRIGHTSKILL.value!='')Ability(document.RESOURCES.NEWWRIGHTSKILL.value,'&NEWWRITESKILL='+document.RESOURCES.NEWWRITESKILL.value)"><FONT COLOR=WHITE><B>Create new Wrighting Skill:</a> <INPUT TYPE=TEXT NAME=NEWWRITESKILL SIZE=20 ONCHANGE="document.RESOURCES.NEWABILITY.value='';document.RESOURCES.NEWLANGUAGE.value='';document.RESOURCES.NEWGATHERINGSKILL.value='';document.RESOURCES.NEWCRAFTSKILL.value='';"></B></FONT></TD>
     </TR>
     </TABLE>
     <P>
