@@ -163,7 +163,7 @@ public class DeityData extends StdWebMacro
 								if(M.isSavable())
 									classes.add(M);
 							}
-							RoomData.contributeMOBs(classes);
+							CMLib.webMacroFilter().contributeMOBsToWebCache(classes);
 						}
 						httpReq.getRequestObjects().put("DEITYLIST-"+roomID,classes);
 					}
@@ -171,14 +171,14 @@ public class DeityData extends StdWebMacro
 					{
 						try
 						{
-							str.append(URLEncoder.encode(RoomData.getMOBCode(classes,D),"UTF-8")+", ");
+							str.append(URLEncoder.encode(CMLib.webMacroFilter().findMOBWebCacheCode(classes,D),"UTF-8")+", ");
 						}
 						catch(final Exception e)
 						{
 						}
 					}
 					else
-						str.append(RoomData.getMOBCode(classes,D)+", ");
+						str.append(CMLib.webMacroFilter().findMOBWebCacheCode(classes,D)+", ");
 				}
 				if(parms.containsKey("WORSHIPREQ"))
 					str.append(D.getWorshipRequirementsDesc()+", ");

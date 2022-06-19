@@ -36,14 +36,22 @@
 	<!--
 	    var responsefield = '@RequestParameter?RESPONSEFIELD@';
         var replacefield = '@RequestParameter?REPLACEFIELD@';
+        var redirectfield = '@RequestParameter?FINISHEDREDIRECT@';
 	    if(responsefield != '') 
 	    {
 	       var newitemid = '@RequestParameter?ITEM@'; 
 	       var responsecommand = 'opener.document.' + responsefield + '.value = "' + replacefield + '=' + newitemid +'"';
 	       eval(responsecommand);
 	    }
-		opener.EditItemDone();
-		window.close();
+	    if(redirectfield && redirectfield != '')
+    	{
+    		document.location.href=redirectfield+'&@RequestParametersEncoded@';
+    	}
+	    else
+	    {
+			opener.EditItemDone();
+			window.close();
+	    }
 	//-->
 	</SCRIPT>
 @else@

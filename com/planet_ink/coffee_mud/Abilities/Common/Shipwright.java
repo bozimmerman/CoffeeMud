@@ -77,10 +77,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 	@Override
 	public String parametersFormat()
 	{
-		return "";
-		//"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
-		//+"ITEM_CLASS_ID\tRIDE_BASIS\tRIDE_CAPACITY\tCONTAINER_CAPACITY\t"
-		//+"RIDE_OVERRIDE_STRS\tCODED_SPELL_LIST";
+		return "ITEM_CMARE";
 	}
 
 	private int					doorDir			= -1;
@@ -140,31 +137,50 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 	@Override
 	public String parametersFile()
 	{
-		final CMFile F=new CMFile(Resources.makeFileResourceName("::skills/shipwright.txt"),null);
-		if(F.exists())
-			return "shipwright.txt";
-		final List<Item> ships = getShips();
-		if(ships == null)
-			return "";
-		final StringBuilder recipes = new StringBuilder("");
-		int x=0;
-		for(final Item I : getShips())
-		{
-			recipes.append(I.Name()).append("\t")
-					.append(""+I.basePhyStats().level()).append("\t")
-					.append(""+I.basePhyStats().weight()/10).append("\t")
-					.append(""+I.basePhyStats().weight()).append("\t")
-					.append(""+I.baseGoldValue()).append("\t")
-					.append(""+(x++)).append("\r\n");
-		}
-		F.saveText(recipes.toString());
-		return "shipwright.txt";
+		return "shipbuilding.cmare";
+	}
+
+	protected String getTempRecipeName()
+	{
+		final String cmareName = parametersFile();
+		int x=cmareName.lastIndexOf('.');
+		if(x<=0)
+			return cmareName+".txt";
+		else
+			return cmareName.subSequence(0, x)+".txt";
 	}
 
 	@Override
 	protected List<List<String>> loadRecipes()
 	{
-		return super.loadRecipes(parametersFile());
+		if((!Resources.isResource("PARSED_RECIPE: "+parametersFile()))
+		||(!Resources.isResource("PARSED_RECIPE: "+getTempRecipeName())))
+		{
+			Resources.removeResource(ID().toUpperCase()+"_PARSED");
+			final CMFile F=new CMFile(Resources.makeFileResourceName("::skills/"+getTempRecipeName()),null);
+			final List<Item> ships = getShips();
+			if(ships != null)
+			{
+				final StringBuilder recipes = new StringBuilder("");
+				int x=0;
+				for(final Item I : ships)
+				{
+					recipes.append(I.Name()).append("\t")
+							.append(""+I.basePhyStats().level()).append("\t")
+							.append(""+I.basePhyStats().weight()/10).append("\t")
+							.append(""+I.basePhyStats().weight()).append("\t")
+							.append(""+I.baseGoldValue()).append("\t")
+							.append(""+(x++)).append("\r\n");
+				}
+				F.saveText(recipes.toString());
+			}
+			else
+			if(F.exists())
+				F.delete();
+		}
+		final List<List<String>> recipes = super.loadRecipes(getTempRecipeName());
+		Resources.submitResource("PARSED_RECIPE: "+parametersFile(), Resources.getResource("PARSED_RECIPE: "+getTempRecipeName()));
+		return recipes;
 	}
 
 	protected void buildDoor(Room room, final int dir)

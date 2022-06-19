@@ -42,4 +42,36 @@ public interface WebMacroLibrary extends CMLibrary, HTTPOutputConverter
 	public String clearWebMacros(StringBuffer s);
 	public String parseFoundMacro(StringBuffer s, int i, boolean lookOnly);
 	public String clearWebMacros(String s);
+	
+	public String getWebCacheSuffix(final Environmental E);
+	public Collection<Item> contributeItemsToWebCache(final Collection<Item> items);
+	public boolean isAllNum(final String str);
+	public Item findItemMatchInWebCache(final Item I);
+	public Item findItemInWebCache(final String MATCHING);
+	public Item findItemInAnything(final Object allitems, final String MATCHING);
+	public String getAppropriateCode(final PhysicalAgent E, final Physical RorM, final Collection<? extends Physical> classes);
+	public Item getItemFromCatalog(final String MATCHING);
+	public Item getItemFromWebCache(final Collection<Item> allitems, String code);
+	public Item getItemFromWebCache(final String code);
+	public Item getItemFromWebCache(final Room R, String code);
+	public Item getItemFromWebCache(final MOB M, String code);
+	public String findItemWebCacheCode(final MOB M, final Item I);
+	public String findItemWebCacheCode(final Collection<Item> allitems, final Item I);
+	public String findItemWebCacheCode(final Item I);
+	public String findItemWebCacheCode(final Room R, final Item I);
+	public boolean isWebCachedItem(final Object I);
+	public Iterable<Item> getItemWebCacheIterable();
+	
+	public Collection<MOB> contributeMOBsToWebCache(final Collection<MOB> inhabs);
+	public MOB findMOBMatchInWebCache(final MOB M);
+	public MOB getMOBFromAnywhere(final Object allitems, final String MATCHING);
+	public MOB getMOBFromCatalog(final String MATCHING);
+	public MOB getMOBFromWebCache(final Collection<MOB> allmobs, String code);
+	public MOB getMOBFromWebCache(final String code);
+	public MOB getMOBFromWebCache(final Room R, String code);
+	public String findMOBWebCacheCode(final Collection<MOB> mobs, final MOB M);
+	public String findMOBWebCacheCode(final MOB M);
+	public String findMOBWebCacheCode(final Room R, final MOB M);
+	public boolean isWebCachedMOB(final Object M);
+	public Iterable<MOB> getMOBWebCacheIterable();
 }

@@ -49,502 +49,6 @@ public class RoomData extends StdWebMacro
 	}
 	static final String[][] STAT_CHECKS={{"DISPLAY","NAME"},{"CLASS","CLASSES"},{"DESCRIPTION","DESCRIPTION"},{"XSIZE","XGRID"},{"YSIZE","XGRID"},{"IMAGE","IMAGE"}};
 
-	private static Collection<MOB> getMOBCache()
-	{
-		@SuppressWarnings("unchecked")
-		Collection<MOB> mobSet=(Collection<MOB>)Resources.getResource("SYSTEM_WEB_MOB_CACHE");
-		if(mobSet==null)
-		{
-			mobSet=new SLinkedList<MOB>();
-			Resources.submitResource("SYSTEM_WEB_MOB_CACHE", mobSet);
-		}
-		return mobSet;
-	}
-
-	public static Iterable<MOB> getMOBCacheIterable()
-	{
-		return getMOBCache();
-	}
-
-	public static boolean isCachedMOB(final Object M)
-	{
-		if(M!=null)
-			return getMOBCache().contains(M);
-		return false;
-	}
-
-	private static Collection<Item> getItemCache()
-	{
-		@SuppressWarnings("unchecked")
-		Collection<Item> itemSet=(Collection<Item>)Resources.getResource("SYSTEM_WEB_ITEM_CACHE");
-		if(itemSet==null)
-		{
-			itemSet=new SLinkedList<Item>();
-			Resources.submitResource("SYSTEM_WEB_ITEM_CACHE", itemSet);
-		}
-		return itemSet;
-	}
-
-	public static Iterable<Item> getItemCacheIterable()
-	{
-		return getItemCache();
-	}
-
-	public static boolean isCachedItem(final Object I)
-	{
-		if(I!=null)
-			return getItemCache().contains(I);
-		return false;
-	}
-
-	public static String getItemCode(final Room R, final Item I)
-	{
-		if(I==null)
-			return "";
-		for(int i=0;i<R.numItems();i++)
-		{
-			if(R.getItem(i)==I)
-				return Long.toString((I.ID()+"/"+I.Name()+"/"+I.displayText()).hashCode()<<5)+i;
-		}
-		return "";
-	}
-
-	public static String getItemCode(final Item I)
-	{
-		return getItemCode(getItemCache(), I);
-	}
-
-	public static String getItemCode(final Collection<Item> allitems, final Item I)
-	{
-		if(I==null)
-			return "";
-		int x=0;
-		for (final Item I2 : allitems)
-		{
-			if(I2==I)
-				return Long.toString((I.ID()+"/"+I.Name()+"/"+I.displayText()).hashCode()<<5)+x;
-			x++;
-		}
-		x=0;
-		for (final Item I2 : allitems)
-		{
-			if(I2.sameAs(I))
-				return Long.toString((I.ID()+"/"+I.Name()+"/"+I.displayText()).hashCode()<<5)+x;
-			x++;
-		}
-		return "";
-	}
-
-	public static String getItemCode(final MOB M, final Item I)
-	{
-		if(I==null)
-			return "";
-		for(int i=0;i<M.numItems();i++)
-		{
-			if(M.getItem(i)==I)
-				return Long.toString( ( I.ID() + "/" + I.Name() + "/" + I.displayText() ).hashCode() << 5 ) + i;
-		}
-		if(M instanceof ShopKeeper)
-		{
-			final ShopKeeper shopK=(ShopKeeper)M;
-			final CoffeeShop shop=shopK.getShop();
-			int x=0;
-			for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
-			{
-				final Environmental E=i.next();
-				if(E==I)
-					return Long.toString( ( I.ID() + "/" + I.Name() + "/" + I.displayText() ).hashCode() << 5 ) + x;
-				x++;
-			}
-		}
-		return "";
-	}
-
-	public static String getMOBCode(final Room R, final MOB M)
-	{
-		if(M==null)
-			return "";
-		int code=0;
-		for(int i=0;i<R.numInhabitants();i++)
-		{
-			final MOB M2=R.fetchInhabitant(i);
-			if(M==M2)
-				return Long.toString( ( M.ID() + "/" + M.Name() + "/" + M.displayText() ).hashCode() << 5 ) + code;
-			else
-			if((M2!=null)
-			&&(M2.isSavable()||(!R.isSavable())))
-				code++;
-		}
-		return "";
-	}
-
-	public static String getMOBCode(final MOB M)
-	{
-		final String code = getMOBCode(getMOBCache(), M);
-		return code;
-	}
-
-	public static String getMOBCode(final Collection<MOB> mobs, final MOB M)
-	{
-		if(M==null)
-			return "";
-		int i=0;
-		for (final MOB M2 : mobs)
-		{
-			if(M2==M)
-				return Long.toString( ( M.ID() + "/" + M.Name() + "/" + M.displayText() ).hashCode() << 5 ) + i;
-			i++;
-		}
-		i=0;
-		for (final MOB M2 : mobs)
-		{
-			if(M2.sameAs(M))
-				return Long.toString( ( M.ID() + "/" + M.Name() + "/" + M.displayText() ).hashCode() << 5 ) + i;
-			i++;
-		}
-		return "";
-	}
-
-	public static Item getItemFromCode(final MOB M, String code)
-	{
-		if(M==null)
-			return getItemFromCode(getItemCache(),code);
-		final String origCode=code;
-		for(int i=0;i<M.numItems();i++)
-		{
-			final Item I=M.getItem(i);
-			if((I!=null)&&(getItemCode(M,I).equals(code)))
-				return I;
-		}
-		if(code.length()>2)
-			code=code.substring(0,code.length()-2);
-		for(int i=0;i<M.numItems();i++)
-		{
-			final Item I=M.getItem(i);
-			if((I!=null)&&(getItemCode(M,I).startsWith(code)))
-				return I;
-		}
-		if(M instanceof ShopKeeper)
-		{
-			final CoffeeShop shop=((ShopKeeper)M).getShop();
-			code=origCode;
-			for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
-			{
-				final Environmental E=i.next();
-				if(E instanceof Item)
-				{
-					if(getItemCode(M,(Item)E).equals(code))
-						return (Item)E;
-				}
-			}
-			if(code.length()>2)
-				code=code.substring(0,code.length()-2);
-			for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
-			{
-				final Environmental E=i.next();
-				if(E instanceof Item)
-				{
-					if(getItemCode(M,(Item)E).startsWith(code))
-						return (Item)E;
-				}
-			}
-		}
-		return null;
-	}
-
-	public static Item getItemFromCode(final Room R, String code)
-	{
-		if(R==null)
-			return getItemFromCode(getItemCache(),code);
-		for(int i=0;i<R.numItems();i++)
-		{
-			if(getItemCode(R,R.getItem(i)).equals(code))
-				return R.getItem(i);
-		}
-		if(code.length()>2)
-			code=code.substring(0,code.length()-2);
-		for(int i=0;i<R.numItems();i++)
-		{
-			if(getItemCode(R,R.getItem(i)).startsWith(code))
-				return R.getItem(i);
-		}
-		return null;
-	}
-
-	public static Item getItemFromCode(final String code)
-	{
-		return getItemFromCode(getItemCache(), code);
-	}
-
-	public static Item getItemFromCode(final Collection<Item> allitems, String code)
-	{
-		if(code.startsWith("CATALOG-"))
-			return getItemFromCatalog(code);
-		for (final Item I : allitems)
-		{
-			if(getItemCode(allitems,I).equals(code))
-				return I;
-		}
-		if(code.length()>2)
-			code=code.substring(0,code.length()-2);
-		for (final Item I : allitems)
-		{
-			if(getItemCode(allitems,I).startsWith(code))
-				return I;
-		}
-		return null;
-	}
-
-	public static MOB getMOBFromCode(final Room R, String code)
-	{
-		if(R==null)
-			return getMOBFromCode(code);
-		for(int i=0;i<R.numInhabitants();i++)
-		{
-			if(getMOBCode(R,R.fetchInhabitant(i)).equals(code))
-				return R.fetchInhabitant(i);
-		}
-		if(code.length()>2)
-			code=code.substring(0,code.length()-2);
-		for(int i=0;i<R.numInhabitants();i++)
-		{
-			if(getMOBCode(R,R.fetchInhabitant(i)).startsWith(code))
-				return R.fetchInhabitant(i);
-		}
-		return null;
-	}
-
-	public static MOB getMOBFromCode(final String code)
-	{
-		return getMOBFromCode(getMOBCache(), code);
-	}
-
-	public static MOB getMOBFromCode(final Collection<MOB> allmobs, String code)
-	{
-		if(code.startsWith("CATALOG-"))
-			return getMOBFromCatalog(code);
-		for (final MOB M2 : allmobs)
-		{
-			if(getMOBCode(allmobs,M2).equals(code))
-				return M2;
-		}
-		if(code.length()>2)
-			code=code.substring(0,code.length()-2);
-		for (final MOB M2 : allmobs)
-		{
-			if(getMOBCode(allmobs,M2).startsWith(code))
-				return M2;
-		}
-		return null;
-	}
-
-	public static MOB getMOBFromCatalog(final String MATCHING)
-	{
-		if(!MATCHING.startsWith("CATALOG-"))
-			return null;
-		MOB M2=CMLib.catalog().getCatalogMob(MATCHING.substring(8));
-		if(M2!=null)
-		{
-			M2=(MOB)M2.copyOf();
-			CMLib.catalog().changeCatalogUsage(M2,true);
-		}
-		return M2;
-	}
-
-	public static Item getItemFromCatalog(final String MATCHING)
-	{
-		if(!MATCHING.startsWith("CATALOG-"))
-			return null;
-		Item I=CMLib.catalog().getCatalogItem(MATCHING.substring(8));
-		if(I!=null)
-		{
-			I=(Item)I.copyOf();
-			CMLib.catalog().changeCatalogUsage(I,true);
-		}
-		return I;
-	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static String getAppropriateCode(final Environmental E, final Environmental RorM, final Collection classes)
-	{
-		if(CMLib.flags().isCataloged(E))
-			return "CATALOG-"+E.Name();
-		else
-		if(isCachedItem(E)||isCachedMOB(E))
-			return ""+E;
-		else
-		if(((RorM instanceof Room)&&(((Room)RorM).isHere(E)))
-		||((RorM instanceof MOB)&&(((MOB)RorM).isMine(E))))
-			return (E instanceof Item)?getItemCode(classes,(Item)E):getMOBCode(classes,(MOB)E);
-		return E.ID();
-	}
-
-	public static Item getItemFromAnywhere(final String MATCHING)
-	{
-		return getItemFromAnywhere(getItemCache(), MATCHING);
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static Item getItemFromAnywhere(final Object allitems, final String MATCHING)
-	{
-		if(isAllNum(MATCHING))
-		{
-			if(allitems instanceof Room)
-				return getItemFromCode((Room)allitems,MATCHING);
-			else
-			if(allitems instanceof MOB)
-				return getItemFromCode((MOB)allitems,MATCHING);
-			else
-			if(allitems instanceof Collection)
-				return getItemFromCode((Collection)allitems,MATCHING);
-		}
-		else
-		if(MATCHING.startsWith("CATALOG-"))
-			return getItemFromCatalog(MATCHING);
-		else
-		if(MATCHING.indexOf('@')>0)
-		{
-			for (final Item I2 : getItemCache())
-			{
-				if(MATCHING.equals(""+I2))
-					return I2;
-			}
-		}
-		else
-		{
-			final Item I=CMClass.getItem(MATCHING);
-			if((I!=null)
-			&&(!(I instanceof ArchonOnly)))
-				return I;
-		}
-		return null;
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static MOB getMOBFromAnywhere(final Object allitems, final String MATCHING)
-	{
-		if(isAllNum(MATCHING))
-			return getMOBFromCode((Collection)allitems,MATCHING);
-		else
-		if(MATCHING.startsWith("CATALOG-"))
-			return getMOBFromCatalog(MATCHING);
-		else
-		if(MATCHING.indexOf('@')>0)
-		{
-			for (final MOB M2 : getMOBCache())
-			{
-				if(MATCHING.equals(""+M2))
-					return M2;
-			}
-		}
-		return CMClass.getMOB(MATCHING);
-	}
-
-	public static MOB getReferenceMOB(final MOB M)
-	{
-		if(M==null)
-			return null;
-		for (final MOB M2 : getMOBCache())
-		{
-			if(M.sameAs(M2))
-				return M2;
-		}
-		return null;
-	}
-
-	public static Item getReferenceItem(final Item I)
-	{
-		if(I==null)
-			return null;
-		for (final Item I2 : getItemCache())
-		{
-			if(I.sameAs(I2))
-				return I2;
-		}
-		return null;
-	}
-
-	public static Collection<MOB> contributeMOBs(final Collection<MOB> inhabs)
-	{
-		for (final MOB M : inhabs)
-		{
-			if(M.isGeneric() || true)
-			{
-				if((getReferenceMOB(M)==null)
-				&&((M.isSavable())||((M.location()!=null)&&(!M.location().isSavable()))))
-				{
-					final MOB M3=(MOB)M.copyOf();
-					M3.setExpirationDate(System.currentTimeMillis());
-					getMOBCache().add(M3);
-					for(int i3=0;i3<M3.numItems();i3++)
-					{
-						final Item I3=M3.getItem(i3);
-						if(I3!=null)
-							I3.stopTicking();
-					}
-				}
-			}
-		}
-		return getMOBCache();
-	}
-
-	public static boolean isAllNum(final String str)
-	{
-		if(str.length()==0)
-			return false;
-		for(int c=0;c<str.length();c++)
-		{
-			if((!Character.isDigit(str.charAt(c)))
-			&&(str.charAt(c)!='-'))
-				return false;
-		}
-		return true;
-	}
-
-	public static Collection<Item> contributeItems(final Collection<Item> inhabs)
-	{
-		for (final Item I : inhabs)
-		{
-			if(I.isGeneric())
-			{
-				boolean found=false;
-				for (final Item I2 : getItemCache())
-				{
-					if(I.sameAs(I2))
-					{
-						found = true;
-						break;
-					}
-				}
-				if(!found)
-				{
-					final Item I2=(Item)I.copyOf();
-					I.sameAs(I2);
-					I2.setContainer(null);
-					I2.wearAt(Wearable.IN_INVENTORY);
-					I2.setExpirationDate(System.currentTimeMillis());
-					getItemCache().add(I2);
-					I2.stopTicking();
-				}
-			}
-		}
-		return getItemCache();
-	}
-
-	public static final String getObjIDSuffix(final Environmental E)
-	{
-		if((E.expirationDate() > (System.currentTimeMillis() - TimeManager.MILI_DAY))
-		&&(E.expirationDate() < System.currentTimeMillis()))
-		{
-			final String time = CMLib.time().date2EllapsedTime(System.currentTimeMillis() - E.expirationDate(),TimeUnit.MINUTES, true);
-			if(time.length()==0)
-				return " (cached new)";
-			else
-				return " (cached "+time+")";
-		}
-		else
-			return " ("+E.ID()+")";
-	}
 
 	private static class RoomStuff
 	{
@@ -662,7 +166,7 @@ public class RoomData extends StdWebMacro
 		{
 			if(s.length()>0)
 			{
-				final Item I=getItemFromCode(R, s);
+				final Item I=CMLib.webMacroFilter().getItemFromWebCache(R, s);
 				stuff.items.add(I);
 			}
 			x++;
@@ -673,7 +177,7 @@ public class RoomData extends StdWebMacro
 		{
 			if(s.length()>0)
 			{
-				final MOB M=getMOBFromCode(R, s);
+				final MOB M=CMLib.webMacroFilter().getMOBFromWebCache(R, s);
 				stuff.inhabs.add(M);
 			}
 			x++;
@@ -709,11 +213,11 @@ public class RoomData extends StdWebMacro
 	@SuppressWarnings("unchecked")
 	public static Pair<String,String>[] makePairs(final RoomStuff stuff, final List<Pair<String,String>> fixtures)
 	{
-		contributeItems(stuff.items);
+		CMLib.webMacroFilter().contributeItemsToWebCache(stuff.items);
 		for(int i=0;i<stuff.items.size();i++)
 		{
 			final Item I=stuff.items.get(i);
-			final Item I2=RoomData.getReferenceItem(I);
+			final Item I2=CMLib.webMacroFilter().findItemMatchInWebCache(I);
 			final String code=""+I2;
 			fixtures.add(new Pair<String,String>("ITEM"+(i+1), code));
 			fixtures.add(new Pair<String,String>("ITEMWORN"+(i+1),""));
@@ -723,11 +227,11 @@ public class RoomData extends StdWebMacro
 			fixtures.add(new Pair<String,String>("ITEMCONT"+(i+1),containerName));
 		}
 		fixtures.add(new Pair<String,String>("ITEM"+(stuff.items.size()+1),null));
-		contributeMOBs(stuff.inhabs);
+		CMLib.webMacroFilter().contributeMOBsToWebCache(stuff.inhabs);
 		for(int m=0;m<stuff.inhabs.size();m++)
 		{
 			final MOB M=stuff.inhabs.get(m);
-			final MOB M2=RoomData.getReferenceMOB(M);
+			final MOB M2=CMLib.webMacroFilter().findMOBMatchInWebCache(M);
 			final String code=""+M2;
 			fixtures.add(new Pair<String,String>("MOB"+(m+1),code));
 		}
@@ -1365,9 +869,9 @@ public class RoomData extends StdWebMacro
 						if(MATCHING==null)
 							break;
 						else
-						if(isAllNum(MATCHING))
+						if(CMLib.webMacroFilter().isAllNum(MATCHING))
 						{
-							final MOB M2=getMOBFromCode(R,MATCHING);
+							final MOB M2=CMLib.webMacroFilter().getMOBFromWebCache(R,MATCHING);
 							if(M2!=null)
 								classes.add(M2);
 						}
@@ -1385,7 +889,7 @@ public class RoomData extends StdWebMacro
 						else
 						if(MATCHING.indexOf('@')>0)
 						{
-							final MOB M2=RoomData.getMOBFromAnywhere(null,MATCHING);
+							final MOB M2=CMLib.webMacroFilter().getMOBFromAnywhere(null,MATCHING);
 							if(M2 != null)
 								classes.add(M2);
 						}
@@ -1414,7 +918,7 @@ public class RoomData extends StdWebMacro
 								classes.add(M);
 						}
 					}
-					contributeMOBs(classes);
+					CMLib.webMacroFilter().contributeMOBsToWebCache(classes);
 				}
 				str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
 				for(int i=0;i<classes.size();i++)
@@ -1424,22 +928,23 @@ public class RoomData extends StdWebMacro
 					str.append("<TD WIDTH=90%>");
 					str.append("<SELECT ONCHANGE=\"DelMOB(this);\" NAME=MOB"+(i+1)+">");
 					str.append("<OPTION VALUE=\"\">Delete!");
-					final String code=getAppropriateCode(M,R,useRoomItems?classes:new ArrayList<MOB>());
+					final String code=CMLib.webMacroFilter().getAppropriateCode(M,R,useRoomItems?classes:new ArrayList<MOB>());
 					str.append("<OPTION SELECTED VALUE=\""+code+"\">"+M.Name()+" ("+M.ID()+")");
 					str.append("</SELECT>");
 					str.append("</TD>");
 					str.append("<TD WIDTH=10%>");
 					if(!CMLib.flags().isCataloged(M))
-						str.append("<INPUT TYPE=BUTTON NAME=EDITMOB"+(i+1)+" VALUE=EDIT ONCLICK=\"EditMOB('"+getMOBCode(classes,M)+"');\">");
+						str.append("<INPUT TYPE=BUTTON NAME=EDITMOB"+(i+1)+" VALUE=EDIT "
+								+ "ONCLICK=\"EditMOB('"+CMLib.webMacroFilter().findMOBWebCacheCode(classes,M)+"');\">");
 					str.append("</TD></TR>");
 				}
 				str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
 				str.append("<SELECT ONCHANGE=\"AddMOB(this);\" NAME=MOB"+(classes.size()+1)+">");
 				str.append("<OPTION SELECTED VALUE=\"\">Select a new MOB");
-				for(final Iterator<MOB> m=getMOBCacheIterable().iterator(); m.hasNext();)
+				for(final Iterator<MOB> m=CMLib.webMacroFilter().getMOBWebCacheIterable().iterator(); m.hasNext();)
 				{
 					final MOB M=m.next();
-					str.append("<OPTION VALUE=\""+M+"\">"+M.Name()+getObjIDSuffix(M));
+					str.append("<OPTION VALUE=\""+M+"\">"+M.Name()+CMLib.webMacroFilter().getWebCacheSuffix(M));
 				}
 				StringBuffer mlist=(StringBuffer)Resources.getResource("MUDGRINDER-MOBLIST");
 				if(mlist==null)
@@ -1479,7 +984,7 @@ public class RoomData extends StdWebMacro
 						final String WORN=httpReq.getUrlParameter("ITEMWORN"+i);
 						if(MATCHING==null)
 							break;
-						final Item I2=getItemFromAnywhere(R,MATCHING);
+						final Item I2=CMLib.webMacroFilter().findItemInAnything(R,MATCHING);
 						if(I2!=null)
 						{
 							classes.add(I2);
@@ -1510,7 +1015,7 @@ public class RoomData extends StdWebMacro
 							beingWorn.add(Boolean.valueOf(!I2.amWearingAt(Wearable.IN_INVENTORY)));
 						}
 					}
-					contributeItems(classes);
+					CMLib.webMacroFilter().contributeItemsToWebCache(classes);
 				}
 				str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
 				final Map<Container,String> classesContainers = new HashMap<Container,String>();
@@ -1539,7 +1044,7 @@ public class RoomData extends StdWebMacro
 					str.append("<TD WIDTH=90%>");
 					str.append("<SELECT ONCHANGE=\"DelItem(this);\" NAME=ITEM"+(i+1)+">");
 					str.append("<OPTION VALUE=\"\">Delete!");
-					final String code=getAppropriateCode(I,R,useRoomItems?classes:new ArrayList<Item>());
+					final String code=CMLib.webMacroFilter().getAppropriateCode(I,R,useRoomItems?classes:new ArrayList<Item>());
 					str.append("<OPTION SELECTED VALUE=\""+code+"\">"+I.Name()+" ("+I.ID()+")");
 					str.append("</SELECT><BR>");
 					str.append("<FONT COLOR=WHITE SIZE=-1>");
@@ -1559,14 +1064,15 @@ public class RoomData extends StdWebMacro
 					str.append("</FONT></TD>");
 					str.append("<TD WIDTH=10%>");
 					if(!CMLib.flags().isCataloged(I))
-						str.append("<INPUT TYPE=BUTTON NAME=EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+getItemCode(classes,I)+"');\">");
+						str.append("<INPUT TYPE=BUTTON NAME=EDITITEM"+(i+1)+" VALUE=EDIT "
+								+ "ONCLICK=\"EditItem('"+CMLib.webMacroFilter().findItemWebCacheCode(classes,I)+"');\">");
 					str.append("</TD></TR>");
 				}
 				str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
 				str.append("<SELECT ONCHANGE=\"AddItem(this);\" NAME=ITEM"+(classes.size()+1)+">");
 				str.append("<OPTION SELECTED VALUE=\"\">Select a new Item");
-				for (final Item I : getItemCacheIterable())
-					str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+getObjIDSuffix(I));
+				for (final Item I : CMLib.webMacroFilter().getItemWebCacheIterable())
+					str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+CMLib.webMacroFilter().getWebCacheSuffix(I));
 				StringBuffer ilist=(StringBuffer)Resources.getResource("MUDGRINDER-ITEMLIST"+theme);
 				if(ilist==null)
 				{

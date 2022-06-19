@@ -46,14 +46,14 @@ public class AbilityData extends StdWebMacro
 	{
 		final StringBuffer list=new StringBuffer("");
 		if(oldItem==null)
-			oldItem=RoomData.getItemFromCatalog(oldValue);
+			oldItem=CMLib.webMacroFilter().getItemFromCatalog(oldValue);
 		for (final Item I : itemList)
 		{
-			list.append("<OPTION VALUE=\""+RoomData.getItemCode(itemList, I)+"\" ");
+			list.append("<OPTION VALUE=\""+CMLib.webMacroFilter().findItemWebCacheCode(itemList, I)+"\" ");
 			if((oldItem!=null)&&(oldItem.sameAs(I)))
 				list.append("SELECTED");
 			list.append(">");
-			list.append(I.Name()+RoomData.getObjIDSuffix(I));
+			list.append(I.Name()+CMLib.webMacroFilter().getWebCacheSuffix(I));
 		}
 		list.append("<OPTION VALUE=\"\">------ CATALOGED -------");
 		final String[] names=CMLib.catalog().getCatalogItemNames();
@@ -893,7 +893,7 @@ public class AbilityData extends StdWebMacro
 					if(oldValue == null)
 					{
 						for(final Item I : itemList)
-							oldValues.add(RoomData.getItemCode(itemList, I));
+							oldValues.add(CMLib.webMacroFilter().findItemWebCacheCode(itemList, I));
 					}
 					else
 					{
@@ -911,7 +911,7 @@ public class AbilityData extends StdWebMacro
 						final int x=newKey.indexOf('=');
 						if(x > 0)
 							newKey = newKey.substring(x+1).trim();
-						final Item newItem = RoomData.getItemFromAnywhere(newKey);
+						final Item newItem = CMLib.webMacroFilter().findItemInWebCache(newKey);
 						if(newItem != null)
 						{
 							itemList.add(newItem);
@@ -923,7 +923,7 @@ public class AbilityData extends StdWebMacro
 					for(int i=0;i<oldValues.size();i++)
 					{
 						oldValue=oldValues.get(i);
-						final Item oldItem=(oldValue.length()>0)?RoomData.getItemFromAnywhere(itemList,oldValue):null;
+						final Item oldItem=(oldValue.length()>0)?CMLib.webMacroFilter().findItemInAnything(itemList,oldValue):null;
 						str.append("<TR><TD><SELECT NAME="+httpKeyName+"_"+(i+1)+" ONCHANGE=\"ReShow();\">");
 						if(i<oldValues.size()-1)
 							str.append("<OPTION VALUE=\"DELETE\">Delete!");

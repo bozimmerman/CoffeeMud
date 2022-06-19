@@ -311,14 +311,44 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			classID=(String)dataRow.elementAt(fieldIndex,2);
 		if((classID!=null)&&(classID.length()>0))
 		{
-			if(classID.equalsIgnoreCase("FOOD"))
+			final String uClassID=classID.toUpperCase();
+			if(uClassID.equalsIgnoreCase("FOOD"))
 				return CMClass.getItemPrototype("GenFood");
 			else
-			if(classID.equalsIgnoreCase("SOAP"))
+			if(uClassID.equalsIgnoreCase("SOAP"))
 				return CMClass.getItemPrototype("GenItem");
 			else
-			if(classID.equalsIgnoreCase("DRINK"))
+			if(uClassID.equalsIgnoreCase("DRINK"))
 				return CMClass.getItemPrototype("GenDrink");
+			else
+			if(uClassID.startsWith("<ITEM>")
+			||uClassID.startsWith("<MOB>")
+			||uClassID.startsWith("<AREA>")
+			||uClassID.startsWith("<ROOM>"))
+			{
+				final List<XMLLibrary.XMLTag> pieces=CMLib.xml().parseAllXML(classID);
+				if(pieces.size()>0)
+				{
+					final XMLLibrary.XMLTag tag = CMLib.xml().getPieceFromPieces(pieces, "ITEM");
+					if(tag != null)
+					{
+						final String realClassID=CMLib.xml().getValFromPieces(tag.contents(), "CLASSID");
+						if((realClassID!=null)
+						&&(realClassID.length()>0))
+						{
+							if(uClassID.startsWith("<ITEM>"))
+								return CMClass.getItemPrototype(realClassID);
+							if(uClassID.startsWith("<MOB>"))
+								return CMClass.getMOBPrototype(realClassID);
+							if(uClassID.startsWith("<AREA>"))
+								return CMClass.getAreaType(realClassID);
+							if(uClassID.startsWith("<ROOM>"))
+								return CMClass.getLocalePrototype(realClassID);
+						}
+					}
+				}
+				return CMClass.getItemPrototype("GenDrink");
+			}
 			else
 			{
 				final PhysicalAgent I=CMClass.getItemPrototype(classID);
@@ -378,6 +408,38 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		DVector dataRow = new DVector(2);
 		List<String> currCol = null;
 		String lastDiv = null;
+		
+		// detect item xml, and to special line parse
+		{
+			int openTagDex=str.indexOf("<");
+			if((openTagDex>=0)
+			&&(str.substring(0,openTagDex).trim().length()==0)
+			&&(columnsV.size()==1))
+			{
+				String xml = str.toString().trim();
+				String uxml = xml.toUpperCase();
+				if(uxml.startsWith("<ITEMS>")&&(uxml.endsWith("</ITEMS>")))
+				{
+					currCol=(List<String>)columnsV.get(0);
+					str.setLength(0);
+					xml = xml.substring(7,xml.length()-8).trim();
+					uxml = uxml.substring(7,uxml.length()-8).trim();
+					
+					while(uxml.startsWith("<ITEM>"))
+					{
+						int closeTagDex=uxml.indexOf("</ITEM>");
+						String itemRow = xml.substring(0,closeTagDex+7);
+						uxml=uxml.substring(closeTagDex+7).trim();
+						xml=xml.substring(closeTagDex+7).trim();
+						dataRow.addElement(currCol,itemRow);
+						rowsV.addElement(dataRow);
+						dataRow = new DVector(2);
+					}
+					str.setLength(0);
+					str.append(xml);
+				}
+			}
+		}
 
 		int lastLen = str.length();
 		while(str.length() > 0)
@@ -678,6 +740,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 
 	private StringBuffer getRecipeList(final AbilityRecipeData recipe)
 	{
+		final Map<String,AbilityParmEditor> editors = getEditors();
 		final StringBuffer list=new StringBuffer("");
 		DVector dataRow = null;
 		list.append("### ");
@@ -689,7 +752,15 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			dataRow=recipe.dataRows().get(r);
 			list.append(CMStrings.padRight(""+(r+1),3)+" ");
 			for(int c=0;c<dataRow.size();c++)
-				list.append(CMStrings.padRight(CMStrings.limit((String)dataRow.elementAt(c,2),recipe.columnLengths()[c]),recipe.columnLengths()[c])+" ");
+			{
+				final Object fieldType = dataRow.elementAt(c, 1);
+				final AbilityParmEditor A = editors.get(fieldType);
+				String value=(String)dataRow.elementAt(c,2);
+				if(A!=null)
+					value=A.commandLineValue(value);
+				final String colVal = CMStrings.limit(value,recipe.columnLengths()[c]);
+				list.append(CMStrings.padRight(colVal,recipe.columnLengths()[c])+" ");
+			}
 			list.append("\n\r");
 		}
 		return list;
@@ -759,9 +830,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					final int keyIndex = getClassFieldIndex(editRow);
 					for(int a=0;a<editRow.size();a++)
 					{
-						if(a!=keyIndex)
+						final Object editorName = editRow.elementAt(a,1);
+						if((a!=keyIndex)
+						||(editors.containsKey(editorName)))
 						{
-							final AbilityParmEditor A = editors.get(editRow.elementAt(a,1));
+							final AbilityParmEditor A = editors.get(editorName);
 							final String newVal = A.commandLinePrompt(mob,(String)editRow.elementAt(a,2),showNumber,showFlag);
 							editRow.setElementAt(a,2,newVal);
 						}
@@ -809,12 +882,20 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			int dataDex = 0;
 			for(int c=0;c<columnsV.size();c++)
 			{
+				final String newRowVal;
 				if(columnsV.get(c) instanceof String)
-					saveBuf.append(columnsV.get(c));
+					newRowVal = (String)columnsV.get(c);
 				else
-					saveBuf.append(dataRow.elementAt(dataDex++,2));
+					newRowVal = dataRow.elementAt(dataDex++,2).toString();
+				saveBuf.append(newRowVal);
 			}
 			saveBuf.append("\n");
+		}
+		if((saveBuf.length()>10)
+		&&(saveBuf.substring(0,8).trim().toUpperCase().startsWith("<ITEM>")))
+		{
+			saveBuf.insert(0, "<ITEMS>");
+			saveBuf.append("</ITEMS>");
 		}
 		CMFile file = new CMFile((saveToVFS?"::":"//")+Resources.buildResourcePath("skills")+recipeFilename,null,CMFile.FLAG_LOGERRORS);
 		if(!file.canWrite())
@@ -5153,14 +5234,31 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return "";
 				}
 			},
-			new AbilityParmEditorImpl("ITEM_CMARE","A New Item",ParmType.SPECIAL)
+			new AbilityParmEditorImpl("ITEM_CMARE","Items",ParmType.SPECIAL)
 			{
 				@Override
 				public void createChoices()
 				{
-					int x=0;
 				}
 
+				@Override
+				public String commandLineValue(final String oldVal)
+				{
+					if(oldVal.trim().startsWith("<"))
+					{
+						final List<XMLLibrary.XMLTag> xml = CMLib.xml().parseAllXML(oldVal);
+						if(xml.size()>0)
+						{
+							final String nameXML=CMLib.xml().getValFromPieces(xml.get(0).contents(), "ITEXT");
+							final List<XMLLibrary.XMLTag> nameTags=CMLib.xml().parseAllXML(CMLib.xml().restoreAngleBrackets(nameXML));
+							final String name=CMLib.xml().getValFromPieces(nameTags, "NAME");
+							final String classID=CMLib.xml().getValFromPieces(xml.get(0).contents(), "ICLAS");
+							return name+" ("+classID+")";
+						}
+					}
+					return oldVal;
+				}
+				
 				@Override
 				public String defaultValue()
 				{
@@ -5170,21 +5268,119 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public String convertFromItem(final ItemCraftor A, final Item I)
 				{
-					return "";
+					if(I==null)
+						return defaultValue();
+					return CMLib.coffeeMaker().getItemXML(I);
+				}
+				
+				@Override
+				public String prompt()
+				{
+					return "Item";
 				}
 				
 				@Override
 				public boolean confirmValue(final String oldVal)
 				{
+					//TODO: do this
 					return true;
+				}
+
+				@Override
+				public String webTableField(final HTTPRequest httpReq, final java.util.Map<String, String> parms, final String oldVal)
+				{
+					String val=oldVal;
+					
+					if((val != null)
+					&&(val.length()>0)
+					&&(val.trim().startsWith("<")))
+					{
+						final List<XMLLibrary.XMLTag> xml = CMLib.xml().parseAllXML(oldVal);
+						if(xml.size()>0)
+						{
+							final String nameXML=CMLib.xml().getValFromPieces(xml.get(0).contents(), "ITEXT");
+							final List<XMLLibrary.XMLTag> nameTags=CMLib.xml().parseAllXML(CMLib.xml().restoreAngleBrackets(nameXML));
+							final String name=CMLib.xml().getValFromPieces(nameTags, "NAME");
+							final String classID=CMLib.xml().getValFromPieces(xml.get(0).contents(), "ICLAS");
+							return name+" ("+classID+")";
+						}
+					}
+					return oldVal;
 				}
 
 				@Override
 				public String webValue(final HTTPRequest httpReq, final java.util.Map<String,String> parms, final String oldVal, final String fieldName)
 				{
-					if(httpReq.isUrlParameter(fieldName+"_WHICH"))
+					if(fieldName.equalsIgnoreCase("NEWCLASSFIELD"))
 					{
+						return "";
 					}
+					else
+					if(fieldName.equalsIgnoreCase("CLASSFIELD"))
+					{
+						if(oldVal.trim().startsWith("<"))
+						{
+							final List<XMLLibrary.XMLTag> pieces=CMLib.xml().parseAllXML(oldVal);
+							if(pieces.size()>0)
+							{
+								final XMLLibrary.XMLTag tag = CMLib.xml().getPieceFromPieces(pieces, "ITEM");
+								if(tag != null)
+								{
+									String realClassID=CMLib.xml().getValFromPieces(tag.contents(), "ICLAS");
+									if(realClassID == null)
+										realClassID=CMLib.xml().getValFromPieces(tag.contents(), "CLASSID");
+									if((realClassID!=null)
+									&&(realClassID.length()>0))
+										return realClassID;
+								}
+							}
+						}
+						return oldVal;
+					}
+					else
+					if(fieldName.startsWith("DATA_"))
+					{
+						if(httpReq.isUrlParameter("ITEM"))
+						{
+							final String itemID = httpReq.getUrlParameter("ITEM");
+							final Item I=CMLib.webMacroFilter().getItemFromWebCache(itemID);
+							if(I!=null)
+								return CMLib.coffeeMaker().getItemXML(I);
+						}
+						String rowNum=fieldName.substring(5);
+						int x=rowNum.indexOf('_');
+						if(x>0)
+							rowNum=rowNum.substring(0,x);
+						Item I=null;
+						if(oldVal.trim().startsWith("<"))
+						{
+							final List<Item> madeItem=new ArrayList<Item>(1);
+							final String error=CMLib.coffeeMaker().addItemsFromXML("<ITEMS>"+oldVal+"</ITEMS>", madeItem, null);
+							if(((error == null)||(error.length()==0))
+							&&(madeItem.size()>0))
+							{
+								I=madeItem.get(0);
+								CMLib.threads().deleteAllTicks(I);
+							}
+						}
+						else
+							I=CMClass.getItem(oldVal);
+						if(I!=null)
+						{
+							CMLib.webMacroFilter().contributeItemsToWebCache(new XVector<Item>(I));
+							final String cachedID = CMLib.webMacroFilter().findItemWebCacheCode(I);
+							final StringBuilder data = new StringBuilder("");
+							data.append("<FONT COLOR=WHITE>"+I.Name()+" ("+I.ID()+")</FONT>&nbsp;&nbsp;");
+							data.append("<INPUT TYPE=HIDDEN NAME=\""+fieldName+"\" VALUE=\""+cachedID+"\">");
+							httpReq.addFakeUrlParameter("ONMODIFY", "SwitchToItemEditor('"+cachedID+"','"+rowNum+"')");
+							httpReq.addFakeUrlParameter("HIDESAVEOPTION", "true");
+							//data.append("<a href=\"javascript:SwitchToItemEditor('"+cachedID+"','"+rowNum+"');\">Edit Item</a>\n\r ");
+							I.destroy();
+							return data.toString();
+						}
+					}
+					
+					Log.debugOut("AbilityEditor:ITEM_CMARE:webValue: "+fieldName+": "+oldVal);
 					return oldVal;
 				}
 
@@ -5195,6 +5391,24 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					if(value.endsWith("$"))
 						value = value.substring(0,oldVal.length()-1);
 					value = value.trim();
+					if(fieldName.equalsIgnoreCase("NEWCLASSFIELD"))
+					{
+						final StringBuilder html = new StringBuilder("");
+						final List<String> sortMe=new Vector<String>();
+						CMClass.addAllItemClassNames(sortMe,true,false,true,Area.THEME_ALLTHEMES);
+						Collections.sort(sortMe);
+						html.append("<SELECT NAME="+fieldName+" ID="+fieldName+">");
+						for (final Object element : sortMe)
+							html.append("<OPTION VALUE=\""+(String)element+"\">"+(String)element);
+						html.append("</SELECT>");
+						return html.toString();
+					}
+					else
+					if(fieldName.equalsIgnoreCase("CLASSFIELD"))
+					{
+						return "*dunno*";
+					}
+					Log.debugOut("AbilityEditor:ITEM_CMARE:webField: "+fieldName+": "+oldVal);
 					return value.toString();
 				}
 
@@ -5209,6 +5423,34 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				{
 					++showNumber[0];
 					String str = oldVal;
+					Item I = null;
+					if(oldVal.trim().startsWith("<"))
+					{
+						final List<Item> madeItem=new ArrayList<Item>(1);
+						final String error=CMLib.coffeeMaker().addItemsFromXML("<ITEMS>"+oldVal+"</ITEMS>", madeItem, null);
+						if(((error == null)||(error.length()==0))
+						&&(madeItem.size()>0))
+						{
+							I=madeItem.get(0);
+							CMLib.threads().deleteAllTicks(I);
+						}
+					}
+					else
+						I=CMClass.getItem(oldVal);
+					while(!mob.session().isStopped())
+					{
+						String showVal = (I==null)?"None?!":(I.Name()+" ("+I.ID()+")");
+						str=CMLib.genEd().prompt(mob,showVal,showNumber[0],showFlag,prompt(),true,"").trim();
+						if(str.equals(oldVal)||(str.equals(showVal))||(str.trim().length()==0))
+							return oldVal;
+						final Item newI = mob.location().findItem(str);
+						if(newI == null)
+							mob.tell(L("No item '"+str+"' found in "+mob.location().displayText(mob)));
+						else
+							return CMLib.coffeeMaker().getItemXML(newI);
+					}
+					if(I!=null)
+						I.destroy();
 					return str;
 				}
 			},
@@ -5418,7 +5660,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		{
 			return prompt;
 		}
-
+		
 		@Override
 		public String colHeader()
 		{
@@ -5663,6 +5905,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			return oldVal;
 		}
 
+		@Override
+		public String commandLineValue(final String oldVal)
+		{
+			return oldVal;
+		}
+		
 		@Override
 		public String webField(final HTTPRequest httpReq, final java.util.Map<String,String> parms, final String oldVal, final String fieldName)
 		{

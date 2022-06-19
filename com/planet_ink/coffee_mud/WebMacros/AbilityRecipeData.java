@@ -60,7 +60,7 @@ public class AbilityRecipeData extends StdWebMacro
 			httpReq.addFakeUrlParameter("REPLACE","");
 		}
 
-		final String last=httpReq.getUrlParameter("ABILITY");
+		final String last=httpReq.getUrlParameter("RECIPEABILITY");
 		if(last==null)
 			return " @break@";
 
@@ -167,7 +167,8 @@ public class AbilityRecipeData extends StdWebMacro
 						str.append(classFieldEditor.webField(httpReq,parms,classFieldEditor.defaultValue(),"NEWCLASSFIELD"));
 				}
 				else
-				if(parms.containsKey("SAVEROW")&&(CMath.isInteger(rownum)))
+				if(parms.containsKey("SAVEROW")
+				&&(CMath.isInteger(rownum)))
 				{
 					DVector dataRow = null;
 					final int row = CMath.s_int(rownum);

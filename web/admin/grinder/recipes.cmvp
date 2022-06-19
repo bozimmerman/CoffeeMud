@@ -13,7 +13,7 @@
 		{
 			if(rownum>=0 || window.confirm('Create a new recipe?'))
 			{
-				var recipeid=document.RESOURCES.ABILITY.value+'&ABILITYRECIPEROW='+rownum;
+				var recipeid=document.RESOURCES.RECIPEABILITY.value+'&ABILITYRECIPEROW='+rownum;
 				if(rownum<0)
 				{
 					if((document.RESOURCES.NEWCLASSFIELD) && (document.RESOURCES.NEWCLASSFIELD.value != ''))
@@ -22,7 +22,7 @@
 						recipeid +='&CLASSFIELD='+document.RESOURCES.NEWCLASSFIELD1.value;
 				}
 				var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=550,width=750,alwaysRaised=yes,dependent=yes";
-				w=window.open("recipe.cmvp?AUTH=@Authenticate?AUTH@&ABILITY="+recipeid,
+				w=window.open("recipe.cmvp?AUTH=@Authenticate?AUTH@&RECIPEABILITY="+recipeid,
 					"Recipe",strFeatures, false);
 			}
 		}
@@ -32,7 +32,7 @@
 		}
 		function AddRecipe() 
 		{
-			if(document.RESOURCES.ABILITY.selectedIndex<=0)
+			if(document.RESOURCES.RECIPEABILITY.selectedIndex<=0)
 			{
 				if(window.alert) alert('You must select a skill first.');
 				return;
@@ -49,6 +49,11 @@
 			document.RESOURCES.action='recipes.cmvp';
 			document.RESOURCES.submit();
 		}
+		
+        function EditItemDone()
+        {
+        	// sadly, nothing to do
+        }
 	//-->
 	</script>
 </head>
@@ -73,22 +78,21 @@
 	</TABLE>
 	<FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="recipes.cmvp">
 	<INPUT TYPE=HIDDEN NAME=NEWCLASSFIELD1 VALUE="">
+	<INPUT TYPE=HIDDEN NAME="ITEM_NUM" VALUE="">
 	<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
-	@AddRequestParameter?THISABILITY=@@AbilityID@@ @
 	<FONT COLOR=YELLOW><B>Common Skill:
-		<SELECT NAME=ABILITY ONCHANGE="Refresh();">
+		<SELECT NAME=RECIPEABILITY ONCHANGE="Refresh();">
 			<OPTION @if?CheckReqParm?THISABILITY=@SELECTED@endif@ VALUE="">Select a skill
 			@AbilityNext?RESET@	
 			@loop@ 
 				@AbilityNext?PARMSEDITABLE&UNQUALIFIEDOK@ 
-				<OPTION VALUE=@AbilityID@ @if?CheckReqParm?THISABILITY=@@AbilityID@@ @SELECTED@endif@>@AbilityName@ 
+				<OPTION VALUE=@AbilityID@ @if?CheckReqParm?RECIPEABILITY=@@AbilityID@@ @SELECTED@endif@>@AbilityName@ 
 			@back@
 		</SELECT>
 	</B></FONT>
 	<CENTER>
-	@AddRequestParameter?ABILITY=@@RequestParameter?THISABILITY@@ @
-	@RequestParameter?ABILITY@
-	@if?CheckReqParm?ABILITY=@ @else@
+	@RequestParameter?RECIPEABILITY@
+	@if?CheckReqParm?RECIPEABILITY=@ @else@
 		<TABLE WIDTH=100% BORDER=1>
 			<TR><TD WIDTH=100% BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Recipe Manager</H2></FONT></TD></TR>
 			<TR>

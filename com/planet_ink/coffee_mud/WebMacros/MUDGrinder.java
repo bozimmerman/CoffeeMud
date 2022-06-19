@@ -119,29 +119,29 @@ public class MUDGrinder extends StdWebMacro
 
 				if((playerM!=null)&&(R==null))
 				{
-					I=RoomData.getItemFromCode(playerM,itemCode);
+					I=CMLib.webMacroFilter().getItemFromWebCache(playerM,itemCode);
 					M=playerM;
 				}
 				else
 				if((mobCode!=null)&&(mobCode.length()>0))
 				{
 					if(R!=null)
-						M=RoomData.getMOBFromCode(R,mobCode);
+						M=CMLib.webMacroFilter().getMOBFromWebCache(R,mobCode);
 					else
-						M=RoomData.getMOBFromCode(mobCode);
+						M=CMLib.webMacroFilter().getMOBFromWebCache(mobCode);
 					if(M!=null)
 					{
-						I=RoomData.getItemFromCode(M,itemCode);
+						I=CMLib.webMacroFilter().getItemFromWebCache(M,itemCode);
 						if(I==null)
-							I=RoomData.getItemFromCode((MOB)null,itemCode);
+							I=CMLib.webMacroFilter().getItemFromWebCache((MOB)null,itemCode);
 					}
 				}
 				else
 				if(R!=null)
 				{
-					I=RoomData.getItemFromCode(R,itemCode);
+					I=CMLib.webMacroFilter().getItemFromWebCache(R,itemCode);
 					if(I==null)
-						I=RoomData.getItemFromCode((Room)null,itemCode);
+						I=CMLib.webMacroFilter().getItemFromWebCache((Room)null,itemCode);
 				}
 				if(I==null)
 				{
@@ -154,7 +154,7 @@ public class MUDGrinder extends StdWebMacro
 							I=(Item)I.copyOf();
 					}
 					else
-						I=RoomData.getItemFromAnywhere(itemCode);
+						I=CMLib.webMacroFilter().findItemInWebCache(itemCode);
 				}
 			}
 			if(I instanceof Boardable)

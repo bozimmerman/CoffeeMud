@@ -806,18 +806,18 @@ public class MobData extends StdWebMacro
 					else
 					if(MATCHING.startsWith("CATALOG-"))
 					{
-						Environmental O=RoomData.getMOBFromCatalog(MATCHING);
+						Environmental O=CMLib.webMacroFilter().getMOBFromCatalog(MATCHING);
 						if(O==null)
-							O=RoomData.getItemFromAnywhere(null,MATCHING);
+							O=CMLib.webMacroFilter().findItemInAnything(null,MATCHING);
 						if(O!=null)
 							theclasses.add(O);
 					}
 					else
 					if(MATCHING.indexOf('@')>0)
 					{
-						Environmental O=RoomData.getMOBFromAnywhere(null,MATCHING);
+						Environmental O=CMLib.webMacroFilter().getMOBFromAnywhere(null,MATCHING);
 						if(O==null)
-							O=RoomData.getItemFromAnywhere(null,MATCHING);
+							O=CMLib.webMacroFilter().findItemInAnything(null,MATCHING);
 						if(O!=null)
 							theclasses.add(O);
 					}
@@ -846,7 +846,7 @@ public class MobData extends StdWebMacro
 							}
 						}
 						if(O==null)
-							O=RoomData.getItemFromAnywhere(null,MATCHING);
+							O=CMLib.webMacroFilter().findItemInAnything(null,MATCHING);
 						if(O!=null)
 							theclasses.add(O);
 					}
@@ -877,8 +877,8 @@ public class MobData extends StdWebMacro
 					theparms.add(""+shop.numberInStock(O));
 					theprices.add(""+shop.stockPrice(O));
 				}
-				RoomData.contributeItems(itemClasses);
-				RoomData.contributeMOBs(mobClasses);
+				CMLib.webMacroFilter().contributeItemsToWebCache(itemClasses);
+				CMLib.webMacroFilter().contributeMOBsToWebCache(mobClasses);
 			}
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
@@ -896,11 +896,11 @@ public class MobData extends StdWebMacro
 				if(CMLib.flags().isCataloged(O))
 					str.append("<OPTION SELECTED VALUE=\"CATALOG-"+O.Name()+"\">"+O.Name()+" (Cataloged)");
 				else
-				if(RoomData.isCachedItem(O))
-					str.append("<OPTION SELECTED VALUE=\""+O+"\">"+O.Name()+RoomData.getObjIDSuffix(O));
+				if(CMLib.webMacroFilter().isWebCachedItem(O))
+					str.append("<OPTION SELECTED VALUE=\""+O+"\">"+O.Name()+CMLib.webMacroFilter().getWebCacheSuffix(O));
 				else
-				if(RoomData.isCachedMOB(O))
-					str.append("<OPTION SELECTED VALUE=\""+O+"\">"+O.Name()+RoomData.getObjIDSuffix(O));
+				if(CMLib.webMacroFilter().isWebCachedMOB(O))
+					str.append("<OPTION SELECTED VALUE=\""+O+"\">"+O.Name()+CMLib.webMacroFilter().getWebCacheSuffix(O));
 				else
 					str.append("<OPTION SELECTED VALUE=\""+O.ID()+"\">"+O.Name()+" ("+O.ID()+")");
 				str.append("</SELECT>");
@@ -916,25 +916,25 @@ public class MobData extends StdWebMacro
 				{
 					if(O instanceof MOB)
 					{
-						final String s=RoomData.getMOBCode((MOB)O);
+						final String s=CMLib.webMacroFilter().findMOBWebCacheCode((MOB)O);
 						str.append("<INPUT TYPE=BUTTON NAME=EDITSHOPMOB"+(i+1)+" VALUE=EDIT ONCLICK=\"EditShopMob('"+s+"');\">");
 					}
 					else
 					if(O instanceof Item)
-						str.append("<INPUT TYPE=BUTTON NAME=EDITSHOPITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditShopItem('"+RoomData.getItemCode((Item)O)+"');\">");
+						str.append("<INPUT TYPE=BUTTON NAME=EDITSHOPITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditShopItem('"+CMLib.webMacroFilter().findItemWebCacheCode((Item)O)+"');\">");
 				}
 				str.append("</TD></TR>");
 			}
 			str.append("<TR><TD WIDTH=90%>");
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=SHP"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select an item");
-			for (final Item I : RoomData.getItemCacheIterable())
+			for (final Item I : CMLib.webMacroFilter().getItemWebCacheIterable())
 			{
-				str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+RoomData.getObjIDSuffix(I));
+				str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+CMLib.webMacroFilter().getWebCacheSuffix(I));
 			}
-			for (final MOB M : RoomData.getMOBCacheIterable())
+			for (final MOB M : CMLib.webMacroFilter().getMOBWebCacheIterable())
 			{
-				str.append("<OPTION VALUE=\""+M+"\">"+M.Name()+RoomData.getObjIDSuffix(M));
+				str.append("<OPTION VALUE=\""+M+"\">"+M.Name()+CMLib.webMacroFilter().getWebCacheSuffix(M));
 			}
 			StringBuffer bufA=(StringBuffer)Resources.getResource("MUDGRINDER-STORESTUFF"+theme);
 			if(bufA==null)
@@ -1005,7 +1005,7 @@ public class MobData extends StdWebMacro
 					final String WORN=httpReq.getUrlParameter("ITEMWORN"+i);
 					if(MATCHING==null)
 						break;
-					final Item I2=RoomData.getItemFromAnywhere(M,MATCHING);
+					final Item I2=CMLib.webMacroFilter().findItemInAnything(M,MATCHING);
 					if(I2!=null)
 					{
 						classes.add(I2);
@@ -1036,7 +1036,7 @@ public class MobData extends StdWebMacro
 						beingWorn.add(Boolean.valueOf(!I2.amWearingAt(Wearable.IN_INVENTORY)));
 					}
 				}
-				RoomData.contributeItems(classes);
+				CMLib.webMacroFilter().contributeItemsToWebCache(classes);
 			}
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<classes.size();i++)
@@ -1048,7 +1048,7 @@ public class MobData extends StdWebMacro
 				str.append("<TD WIDTH=90%>");
 				str.append("<SELECT ONCHANGE=\"DelItem(this);\" NAME=ITEM"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
-				final String code=RoomData.getAppropriateCode(I,M,classes);
+				final String code=CMLib.webMacroFilter().getAppropriateCode(I,M,classes);
 				str.append("<OPTION SELECTED VALUE=\""+code+"\">"+I.Name()+" ("+I.ID()+")");
 				str.append("</SELECT><BR>");
 				str.append("<FONT COLOR=WHITE SIZE=-1>");
@@ -1069,14 +1069,14 @@ public class MobData extends StdWebMacro
 				str.append("</FONT></TD>");
 				str.append("<TD WIDTH=10%>");
 				if(!CMLib.flags().isCataloged(I))
-					str.append("<INPUT TYPE=BUTTON NAME=EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+RoomData.getItemCode(classes,I)+"');\">");
+					str.append("<INPUT TYPE=BUTTON NAME=EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+CMLib.webMacroFilter().findItemWebCacheCode(classes,I)+"');\">");
 				str.append("</TD></TR>");
 			}
 			str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
 			str.append("<SELECT ONCHANGE=\"AddItem(this);\" NAME=ITEM"+(classes.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select a new Item");
-			for (final Item I : RoomData.getItemCacheIterable())
-				str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+RoomData.getObjIDSuffix(I));
+			for (final Item I : CMLib.webMacroFilter().getItemWebCacheIterable())
+				str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+CMLib.webMacroFilter().getWebCacheSuffix(I));
 			StringBuffer mposs=(StringBuffer)Resources.getResource("MUDGRINDER-MOBPOSS"+theme);
 			if(mposs==null)
 			{
@@ -1167,9 +1167,9 @@ public class MobData extends StdWebMacro
 				else
 				{
 					if(R!=null)
-						M=RoomData.getMOBFromCode(R,mobCode);
+						M=CMLib.webMacroFilter().getMOBFromWebCache(R,mobCode);
 					else
-						M=RoomData.getMOBFromCode(mobCode);
+						M=CMLib.webMacroFilter().getMOBFromWebCache(mobCode);
 					if((shopMobCode != null)
 					&&(shopMobCode.length()>0)
 					&&(M instanceof ShopKeeper))
@@ -1186,7 +1186,7 @@ public class MobData extends StdWebMacro
 						if(shopMobCode.equals("NEW"))
 							M=CMClass.getMOB("GenMob");
 						else
-							M=RoomData.getMOBFromCode(shopMobCode);
+							M=CMLib.webMacroFilter().getMOBFromWebCache(shopMobCode);
 					}
 				}
 
@@ -1201,7 +1201,7 @@ public class MobData extends StdWebMacro
 					{
 						final MOB M2=R.fetchInhabitant(m);
 						if((M2!=null)&&(M2.isSavable()))
-							str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2)+"<BR>\n\r");
+							str.append(M2.Name()+"="+CMLib.webMacroFilter().findMOBWebCacheCode(R,M2)+"<BR>\n\r");
 					}
 					return clearWebMacros(str);
 				}

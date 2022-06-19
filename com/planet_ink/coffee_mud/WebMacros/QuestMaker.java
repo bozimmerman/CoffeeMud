@@ -157,14 +157,14 @@ public class QuestMaker extends StdWebMacro
 	{
 		final StringBuffer list=new StringBuffer("");
 		if(oldItem==null)
-			oldItem=RoomData.getItemFromCatalog(oldValue);
+			oldItem=CMLib.webMacroFilter().getItemFromCatalog(oldValue);
 		for (final Item I : itemList)
 		{
-			list.append("<OPTION VALUE=\""+RoomData.getItemCode(itemList, I)+"\" ");
+			list.append("<OPTION VALUE=\""+CMLib.webMacroFilter().findItemWebCacheCode(itemList, I)+"\" ");
 			if((oldItem!=null)&&(oldItem.sameAs(I)))
 				list.append("SELECTED");
 			list.append(">");
-			list.append(I.Name()+RoomData.getObjIDSuffix(I));
+			list.append(I.Name()+CMLib.webMacroFilter().getWebCacheSuffix(I));
 		}
 		list.append("<OPTION VALUE=\"\">------ CATALOGED -------");
 		final String[] names=CMLib.catalog().getCatalogItemNames();
@@ -210,14 +210,14 @@ public class QuestMaker extends StdWebMacro
 	{
 		final StringBuffer list=new StringBuffer("");
 		if(oldMob==null)
-			oldMob=RoomData.getMOBFromCatalog(oldValue);
+			oldMob=CMLib.webMacroFilter().getMOBFromCatalog(oldValue);
 		for (final MOB M2 : mobList)
 		{
-			list.append("<OPTION VALUE=\""+RoomData.getMOBCode(mobList, M2)+"\" ");
+			list.append("<OPTION VALUE=\""+CMLib.webMacroFilter().findMOBWebCacheCode(mobList, M2)+"\" ");
 			if((oldMob!=null)&&(oldMob.sameAs(M2)))
 				list.append("SELECTED");
 			list.append(">");
-			list.append(M2.Name()+RoomData.getObjIDSuffix(M2));
+			list.append(M2.Name()+CMLib.webMacroFilter().getWebCacheSuffix(M2));
 		}
 		list.append("<OPTION VALUE=\"\">------ CATALOGED -------");
 		final String[] names=CMLib.catalog().getCatalogMobNames();
@@ -532,8 +532,8 @@ public class QuestMaker extends StdWebMacro
 					if(oldValue==null)
 						oldValue="";
 					Collection<Item> itemList=new Vector<Item>();
-					itemList=RoomData.contributeItems(itemList);
-					final Item oldItem=RoomData.getItemFromAnywhere(itemList,oldValue);
+					itemList=CMLib.webMacroFilter().contributeItemsToWebCache(itemList);
+					final Item oldItem=CMLib.webMacroFilter().findItemInAnything(itemList,oldValue);
 					list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
 					list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
 					list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
@@ -552,7 +552,7 @@ public class QuestMaker extends StdWebMacro
 					if(oldValue==null)
 						oldValue=defValue;
 					Collection<Item> itemList=new Vector<Item>();
-					itemList=RoomData.contributeItems(itemList);
+					itemList=CMLib.webMacroFilter().contributeItemsToWebCache(itemList);
 					final Vector<String> oldValues=new Vector<String>();
 					int which=1;
 					oldValue=httpReq.getUrlParameter(httpKeyName+"_"+which);
@@ -567,7 +567,7 @@ public class QuestMaker extends StdWebMacro
 					for(int i=0;i<oldValues.size();i++)
 					{
 						oldValue=oldValues.elementAt(i);
-						final Item oldItem=(oldValue.length()>0)?RoomData.getItemFromAnywhere(itemList,oldValue):null;
+						final Item oldItem=(oldValue.length()>0)?CMLib.webMacroFilter().findItemInAnything(itemList,oldValue):null;
 						if(i==0)
 						{
 							list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
@@ -594,8 +594,8 @@ public class QuestMaker extends StdWebMacro
 					if(oldValue != null)
 					{
 						Collection<MOB> mobList=new Vector<MOB>();
-						mobList=RoomData.contributeMOBs(mobList);
-						final MOB oldMob=RoomData.getMOBFromCode(mobList,oldValue);
+						mobList=CMLib.webMacroFilter().contributeMOBsToWebCache(mobList);
+						final MOB oldMob=CMLib.webMacroFilter().getMOBFromWebCache(mobList,oldValue);
 						list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
 						list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
 						list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
@@ -613,7 +613,7 @@ public class QuestMaker extends StdWebMacro
 				{
 					if(oldValue==null)
 						oldValue=defValue;
-					final Collection<MOB>mobList=RoomData.contributeMOBs(new Vector<MOB>());
+					final Collection<MOB>mobList=CMLib.webMacroFilter().contributeMOBsToWebCache(new Vector<MOB>());
 					final Vector<String> oldValues=new Vector<String>();
 					int which=1;
 					oldValue=httpReq.getUrlParameter(httpKeyName+"_"+which);
@@ -628,7 +628,7 @@ public class QuestMaker extends StdWebMacro
 					for(int i=0;i<oldValues.size();i++)
 					{
 						oldValue=oldValues.elementAt(i);
-						final MOB oldMob=(oldValue.length()>0)?RoomData.getMOBFromCode(mobList,oldValue):null;
+						final MOB oldMob=(oldValue.length()>0)?CMLib.webMacroFilter().getMOBFromWebCache(mobList,oldValue):null;
 						if(i==0)
 						{
 							list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
@@ -748,7 +748,7 @@ public class QuestMaker extends StdWebMacro
 					case $ITEMXML_ZEROORMORE:
 					case $ITEMXML_ONEORMORE:
 					{
-						final Collection<Item> rawitemlist=RoomData.contributeItems(new Vector<Item>());
+						final Collection<Item> rawitemlist=CMLib.webMacroFilter().contributeItemsToWebCache(new Vector<Item>());
 						rawitemlist.addAll(getCatalogItemsForList(CMLib.catalog().getCatalogItems()));
 						final Vector<String> oldValues=new Vector<String>();
 						int which=1;
@@ -766,9 +766,9 @@ public class QuestMaker extends StdWebMacro
 						for(int i=0;i<oldValues.size();i++)
 						{
 							oldValue=oldValues.elementAt(i);
-							Item I2=oldValue.length()>0?RoomData.getItemFromAnywhere(rawitemlist,oldValue):null;
+							Item I2=oldValue.length()>0?CMLib.webMacroFilter().findItemInAnything(rawitemlist,oldValue):null;
 							if(I2==null)
-								I2=oldValue.length()>0?RoomData.getItemFromCatalog(oldValue):null;
+								I2=oldValue.length()>0?CMLib.webMacroFilter().getItemFromCatalog(oldValue):null;
 							if(I2!=null)
 							{
 								if(CMLib.flags().isCataloged(I2))
@@ -786,7 +786,7 @@ public class QuestMaker extends StdWebMacro
 									if(CMLib.flags().isCataloged(I3))
 										newVal+="CATALOG-"+I3.Name()+";";
 									else
-										newVal+=RoomData.getItemCode(rawitemlist, I3)+";";
+										newVal+=CMLib.webMacroFilter().findItemWebCacheCode(rawitemlist, I3)+";";
 								}
 							}
 						}
@@ -795,13 +795,13 @@ public class QuestMaker extends StdWebMacro
 					}
 					case $ITEMXML:
 					{
-						final Collection<Item> rawitemlist=RoomData.contributeItems(new Vector<Item>());
+						final Collection<Item> rawitemlist=CMLib.webMacroFilter().contributeItemsToWebCache(new Vector<Item>());
 						rawitemlist.addAll(getCatalogItemsForList(CMLib.catalog().getCatalogItems()));
 						if(oldValue==null)
 							oldValue="";
-						Item I2=oldValue.length()>0?RoomData.getItemFromAnywhere(rawitemlist,oldValue):null;
+						Item I2=oldValue.length()>0?CMLib.webMacroFilter().findItemInAnything(rawitemlist,oldValue):null;
 						if(I2==null)
-							I2=oldValue.length()>0?RoomData.getItemFromCatalog(oldValue):null;
+							I2=oldValue.length()>0?CMLib.webMacroFilter().getItemFromCatalog(oldValue):null;
 						if(I2!=null)
 						{
 							if(CMLib.flags().isCataloged(I2))
@@ -819,7 +819,7 @@ public class QuestMaker extends StdWebMacro
 								if(CMLib.flags().isCataloged(I3))
 									newVal="CATALOG-"+I3.Name()+";";
 								else
-									newVal=RoomData.getItemCode(rawitemlist, I3)+";";
+									newVal=CMLib.webMacroFilter().findItemWebCacheCode(rawitemlist, I3)+";";
 							}
 						}
 						httpReq.addFakeUrlParameter(httpKeyName,newVal);
@@ -827,7 +827,7 @@ public class QuestMaker extends StdWebMacro
 					}
 					case $MOBXML_ONEORMORE:
 					{
-						final Collection<MOB> rawmoblist=RoomData.contributeMOBs(new Vector<MOB>());
+						final Collection<MOB> rawmoblist=CMLib.webMacroFilter().contributeMOBsToWebCache(new Vector<MOB>());
 						rawmoblist.addAll(getCatalogMobsForList(CMLib.catalog().getCatalogMobs()));
 						final Vector<String> oldValues=new Vector<String>();
 						int which=1;
@@ -845,9 +845,9 @@ public class QuestMaker extends StdWebMacro
 						for(int i=0;i<oldValues.size();i++)
 						{
 							oldValue=oldValues.elementAt(i);
-							MOB M2=oldValue.length()>0?RoomData.getMOBFromCode(rawmoblist,oldValue):null;
+							MOB M2=oldValue.length()>0?CMLib.webMacroFilter().getMOBFromWebCache(rawmoblist,oldValue):null;
 							if(M2==null)
-								M2=oldValue.length()>0?RoomData.getMOBFromCatalog(oldValue):null;
+								M2=oldValue.length()>0?CMLib.webMacroFilter().getMOBFromCatalog(oldValue):null;
 							if(M2!=null)
 							{
 								if(CMLib.flags().isCataloged(M2))
@@ -865,7 +865,7 @@ public class QuestMaker extends StdWebMacro
 									if(CMLib.flags().isCataloged(M3))
 										newVal+="CATALOG-"+M3.Name()+";";
 									else
-										newVal+=RoomData.getMOBCode(rawmoblist, M3)+";";
+										newVal+=CMLib.webMacroFilter().findMOBWebCacheCode(rawmoblist, M3)+";";
 								}
 							}
 						}
@@ -874,13 +874,13 @@ public class QuestMaker extends StdWebMacro
 					}
 					case $MOBXML:
 					{
-						final Collection<MOB> rawmoblist=RoomData.contributeMOBs(new Vector<MOB>());
+						final Collection<MOB> rawmoblist=CMLib.webMacroFilter().contributeMOBsToWebCache(new Vector<MOB>());
 						rawmoblist.addAll(getCatalogMobsForList(CMLib.catalog().getCatalogMobs()));
 						if(oldValue==null)
 							oldValue="";
-						MOB M2=oldValue.length()>0?RoomData.getMOBFromCode(rawmoblist,oldValue):null;
+						MOB M2=oldValue.length()>0?CMLib.webMacroFilter().getMOBFromWebCache(rawmoblist,oldValue):null;
 						if(M2==null)
-							M2=oldValue.length()>0?RoomData.getMOBFromCatalog(oldValue):null;
+							M2=oldValue.length()>0?CMLib.webMacroFilter().getMOBFromCatalog(oldValue):null;
 						if(M2!=null)
 						{
 							if(CMLib.flags().isCataloged(M2))
@@ -898,7 +898,7 @@ public class QuestMaker extends StdWebMacro
 								if(CMLib.flags().isCataloged(M3))
 									newVal="CATALOG-"+M3.Name()+";";
 								else
-									newVal=RoomData.getMOBCode(rawmoblist, M3)+";";
+									newVal=CMLib.webMacroFilter().findMOBWebCacheCode(rawmoblist, M3)+";";
 							}
 						}
 						httpReq.addFakeUrlParameter(httpKeyName,newVal);
@@ -970,11 +970,11 @@ public class QuestMaker extends StdWebMacro
 								val="";
 								for(int v1=0;v1<V.size();v1++)
 								{
-									Item I=RoomData.getItemFromCode(V.get(v1));
+									Item I=CMLib.webMacroFilter().getItemFromWebCache(V.get(v1));
 									if(I==null)
-										I=RoomData.getItemFromAnywhere(V.get(v1));
+										I=CMLib.webMacroFilter().findItemInWebCache(V.get(v1));
 									if(I==null)
-										I=RoomData.getItemFromCatalog(V.get(v1));
+										I=CMLib.webMacroFilter().getItemFromCatalog(V.get(v1));
 									if(I!=null)
 										val+=CMLib.coffeeMaker().getItemXML(I).toString();
 								}
@@ -987,9 +987,9 @@ public class QuestMaker extends StdWebMacro
 								val="";
 								for(int v1=0;v1<V.size();v1++)
 								{
-									MOB M2=RoomData.getMOBFromCode(V.get(v1));
+									MOB M2=CMLib.webMacroFilter().getMOBFromWebCache(V.get(v1));
 									if(M2==null)
-										M2=RoomData.getMOBFromCatalog(V.get(v1));
+										M2=CMLib.webMacroFilter().getMOBFromCatalog(V.get(v1));
 									if(M2!=null)
 										val+=CMLib.coffeeMaker().getMobXML(M2).toString();
 								}

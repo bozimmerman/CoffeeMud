@@ -113,11 +113,11 @@ public class AreaItemNext extends StdWebMacro
 				if(itemID!=null)
 				{
 					final Item I=CMLib.database().DBReadRoomItem(roomID, itemID);
-					String s=RoomData.getItemCode(I);
+					String s=CMLib.webMacroFilter().findItemWebCacheCode(I);
 					if(s.length()==0)
 					{
-						RoomData.contributeItems(new XVector<Item>(I));
-						s=RoomData.getItemCode(I);
+						CMLib.webMacroFilter().contributeItemsToWebCache(new XVector<Item>(I));
+						s=CMLib.webMacroFilter().findItemWebCacheCode(I);
 					}
 					if(s.length()>0)
 					{

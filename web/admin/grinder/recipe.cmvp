@@ -71,6 +71,16 @@
             document.RESOURCES.action=action;
             document.RESOURCES.submit();
         }
+        function SwitchToItemEditor(itemId,rownum)
+        {
+        	var editorData = 'AUTH=@Authenticate?AUTH@';
+        	editorData += '&ITEM='+itemId;
+        	editorData += '&ROOM=ANY';
+        	editorData += '&RESPONSEFIELD=RESOURCES.ITEM_NUM';
+        	editorData += '&REPLACEFIELD=';
+        	editorData += '&FINISHEDREDIRECT=recipedo.cmvp%3FFUNCTION%3DSAVE%26RECIPEABILITY%3D@RequestParameter?RECIPEABILITY@%26ABILITYRECIPEROW%3D'+rownum;
+            document.location.href='/grinder/edititemform.cmvp?'+editorData;
+        }
     //-->
     </script>
 </head>
@@ -79,10 +89,11 @@
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=REPLACE VALUE="">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
-<INPUT TYPE=HIDDEN NAME=ABILITY VALUE="@RequestParameter?ABILITY@">
+<INPUT TYPE=HIDDEN NAME=RECIPEABILITY VALUE="@RequestParameter?RECIPEABILITY@">
 <INPUT TYPE=HIDDEN NAME=ABILITYRECIPEROW VALUE="@RequestParameter?ABILITYRECIPEROW@">
+@AddRequestParameter?ONMODIFY=EditDone();@
 <CENTER>
-@if?CheckReqParm?ABILITY=@
+@if?CheckReqParm?RECIPEABILITY=@
     Select a common skill to modify.
 @else@
 @if?CheckReqParm?ABILITYRECIPEROW=@
@@ -98,18 +109,22 @@
 </CENTER>
 <TABLE WIDTH=100% BORDER=0>
 <TR>
-    @if?!CheckReqParm?ABILITY=@
+    @if?!CheckReqParm?RECIPEABILITY=@
 	    @if?CheckReqParm?ABILITYRECIPEROW=-1@
         <TD ALIGN=CENTER>
+        	@if?CheckReqParm?HIDESAVEOPTION=@
 	        <FONT COLOR=YELLOW><INPUT TYPE=CHECKBOX NAME=SAVETOVFS VALUE=TRUE @AbilityRecipeData?SAVETOVFS@>Save to VFS</FONT>
 	        <BR>
-	        <INPUT TYPE=BUTTON NAME=FINISHED VALUE="Create" ONCLICK="EditDone();">
+	        @endif@
+	        <INPUT TYPE=BUTTON NAME=FINISHED VALUE="Create" ONCLICK="@RequestParameter?ONMODIFY@">
         </TD>
         @else@
         <TD ALIGN=CENTER>
+        	@if?CheckReqParm?HIDESAVEOPTION=@
 	        <FONT COLOR=YELLOW><INPUT TYPE=CHECKBOX NAME=SAVETOVFS VALUE=TRUE @AbilityRecipeData?SAVETOVFS@>Save to VFS</FONT>
 	        <BR>
-        	<INPUT TYPE=BUTTON NAME=FINISHED VALUE="Modify" ONCLICK="EditDone();">
+	        @endif@
+        	<INPUT TYPE=BUTTON NAME=FINISHED VALUE="Modify" ONCLICK="@RequestParameter?ONMODIFY@">
         </TD>
         <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();"></TD>
         @endif@

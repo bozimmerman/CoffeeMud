@@ -151,6 +151,15 @@ public interface AbilityParameters extends CMLibrary
 		public String[] fakeUserInput(String oldVal);
 
 		/**
+		 * When building a display table for the command line interface, this will
+		 * return the desired display value for the desired field and old value.
+		 * 
+		 * @param oldVal the current value
+		 * @return the desired value, usually oldVal
+		 */
+		public String commandLineValue(final String oldVal);
+		
+		/**
 		 * Presents the given mob player the official command line prompt for this editor and
 		 * lets them enter a value or values before returning the final value as a result.
 		 * @param mob the player who is being prompted

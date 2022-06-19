@@ -123,9 +123,9 @@ public class GrinderItems
 			if((mobNum!=null)&&(mobNum.length()>0))
 			{
 				if(R!=null)
-					M=RoomData.getMOBFromCode(R,mobNum);
+					M=CMLib.webMacroFilter().getMOBFromWebCache(R,mobNum);
 				else
-					M=RoomData.getMOBFromCode(mobNum);
+					M=CMLib.webMacroFilter().getMOBFromWebCache(mobNum);
 				if(M==null)
 				{
 					final StringBuffer str=new StringBuffer("No MOB?!");
@@ -136,7 +136,7 @@ public class GrinderItems
 					{
 						final MOB M2=R.fetchInhabitant(m);
 						if((M2!=null)&&(M2.isSavable()))
-							str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2)+"<BR>\n\r");
+							str.append(M2.Name()+"="+CMLib.webMacroFilter().findMOBWebCacheCode(R,M2)+"<BR>\n\r");
 					}
 					return str.toString();
 				}
@@ -148,9 +148,9 @@ public class GrinderItems
 				I=CMClass.getItem(newClassID);
 			else
 			if(M!=null)
-				I=RoomData.getItemFromCode(M,itemCode);
+				I=CMLib.webMacroFilter().getItemFromWebCache(M,itemCode);
 			else
-				I=RoomData.getItemFromCode(R,itemCode);
+				I=CMLib.webMacroFilter().getItemFromWebCache(R,itemCode);
 
 			if(I==null)
 			{
@@ -163,7 +163,7 @@ public class GrinderItems
 					{
 						final Item I2=M.getItem(i);
 						if(I2!=null)
-							str.append(I2.Name()+"="+RoomData.getItemCode(M,I2)+"<BR>\n\r");
+							str.append(I2.Name()+"="+CMLib.webMacroFilter().findItemWebCacheCode(M,I2)+"<BR>\n\r");
 					}
 					if(M instanceof ShopKeeper)
 					{
@@ -172,7 +172,7 @@ public class GrinderItems
 						{
 							final Environmental E=i.next();
 							if(E instanceof Item)
-								str.append(E.Name()+"="+RoomData.getItemCode(M,(Item)E)+"<BR>\n\r");
+								str.append(E.Name()+"="+CMLib.webMacroFilter().findItemWebCacheCode(M,(Item)E)+"<BR>\n\r");
 						}
 					}
 				}
@@ -183,7 +183,7 @@ public class GrinderItems
 					{
 						final Item I2=R.getItem(i);
 						if(I2!=null)
-							str.append(I2.Name()+"="+RoomData.getItemCode(R,I2));
+							str.append(I2.Name()+"="+CMLib.webMacroFilter().findItemWebCacheCode(R,I2));
 					}
 				}
 				else
@@ -494,9 +494,9 @@ public class GrinderItems
 						I.setContainer(null);
 					else
 					if(M==null)
-						I.setContainer(RoomData.getItemFromCode(R,old));
+						I.setContainer(CMLib.webMacroFilter().getItemFromCode(R,old));
 					else
-						I.setContainer(RoomData.getItemFromCode(M,old));
+						I.setContainer(CMLib.webMacroFilter().getItemFromCode(M,old));
 					*/
 					break;
 				case ISLIGHTSOURCE: // is light
@@ -1065,14 +1065,14 @@ public class GrinderItems
 					if((!itemCode.startsWith("CATALOG-"))
 					&&(!itemCode.startsWith("NEWCATA-")))
 					{
-						RoomData.contributeItems(new XVector<Item>(I));
-						httpReq.addFakeUrlParameter("ITEM",RoomData.getItemCode(I));
+						CMLib.webMacroFilter().contributeItemsToWebCache(new XVector<Item>(I));
+						httpReq.addFakeUrlParameter("ITEM",CMLib.webMacroFilter().findItemWebCacheCode(I));
 					}
 				}
 				else
 				{
 					CMLib.database().DBUpdateItems(R);
-					httpReq.addFakeUrlParameter("ITEM",RoomData.getItemCode(R,I));
+					httpReq.addFakeUrlParameter("ITEM",CMLib.webMacroFilter().findItemWebCacheCode(R,I));
 					CMLib.threads().rejuv(R, Tickable.TICKID_ROOM_ITEM_REJUV);
 					R.startItemRejuv();
 				}
@@ -1090,9 +1090,9 @@ public class GrinderItems
 				if((R!=null)&&(playerM==null))
 				{
 					CMLib.database().DBUpdateMOBs(R);
-					httpReq.addFakeUrlParameter("MOB",RoomData.getMOBCode(R,M));
+					httpReq.addFakeUrlParameter("MOB",CMLib.webMacroFilter().findMOBWebCacheCode(R,M));
 				}
-				httpReq.addFakeUrlParameter("ITEM",RoomData.getItemCode(M,I));
+				httpReq.addFakeUrlParameter("ITEM",CMLib.webMacroFilter().findItemWebCacheCode(M,I));
 				if((mobNum==null)||(mobNum.startsWith("CATALOG-"))||(mobNum.startsWith("NEWCATA-")))
 				{
 					CMLib.catalog().updateCatalog(M);

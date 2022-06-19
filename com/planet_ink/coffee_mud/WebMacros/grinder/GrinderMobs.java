@@ -318,7 +318,7 @@ public class GrinderMobs
 				final String WORN=httpReq.getUrlParameter("ITEMWORN"+i);
 				if(MATCHING==null)
 					break;
-				Item I2=RoomData.getItemFromAnywhere(allitems,MATCHING);
+				Item I2=CMLib.webMacroFilter().findItemInAnything(allitems,MATCHING);
 				if(I2!=null)
 				{
 					if(!CMath.isNumber(MATCHING))
@@ -423,7 +423,7 @@ public class GrinderMobs
 			if(mobCode.equals("NEW")||mobCode.equals("NEWDEITY")||mobCode.startsWith("NEWCATA-"))
 				M=CMClass.getMOB(newClassID);
 			else
-				M=RoomData.getMOBFromCode(R,mobCode);
+				M=CMLib.webMacroFilter().getMOBFromWebCache(R,mobCode);
 
 			MOB shopM=null;
 
@@ -436,7 +436,7 @@ public class GrinderMobs
 					M=CMClass.getMOB(newClassID);
 				else
 				{
-					final MOB chkM=RoomData.getMOBFromCode((Room)null,shopMobCode);
+					final MOB chkM=CMLib.webMacroFilter().getMOBFromWebCache((Room)null,shopMobCode);
 					if(chkM != null)
 						M=(MOB)((ShopKeeper)M).getShop().getStock(chkM.Name(), null);
 				}
@@ -453,7 +453,7 @@ public class GrinderMobs
 					{
 						final MOB M2=R.fetchInhabitant(m);
 						if((M2!=null)&&(M2.isSavable()))
-							str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2)+"<BR>\n\r");
+							str.append(M2.Name()+"="+CMLib.webMacroFilter().findMOBWebCacheCode(R,M2)+"<BR>\n\r");
 					}
 				}
 				return str.toString();
@@ -977,18 +977,18 @@ public class GrinderMobs
 						else
 						if(MATCHING.startsWith("CATALOG-"))
 						{
-							Environmental O=RoomData.getMOBFromCatalog(MATCHING);
+							Environmental O=CMLib.webMacroFilter().getMOBFromCatalog(MATCHING);
 							if(O==null)
-								O=RoomData.getItemFromAnywhere(null,MATCHING);
+								O=CMLib.webMacroFilter().findItemInAnything(null,MATCHING);
 							if(O!=null)
 								shop.addStoreInventory((Environmental)O.copyOf(),CMath.s_int(theparm),CMath.s_int(theprice));
 						}
 						else
 						if(MATCHING.indexOf('@')>0)
 						{
-							Environmental O=RoomData.getMOBFromAnywhere(null,MATCHING);
+							Environmental O=CMLib.webMacroFilter().getMOBFromAnywhere(null,MATCHING);
 							if(O==null)
-								O=RoomData.getItemFromAnywhere(null,MATCHING);
+								O=CMLib.webMacroFilter().findItemInAnything(null,MATCHING);
 							if(O!=null)
 								shop.addStoreInventory((Environmental)O.copyOf(),CMath.s_int(theparm),CMath.s_int(theprice));
 						}
@@ -1015,7 +1015,7 @@ public class GrinderMobs
 								}
 							}
 							if(O==null)
-								O=RoomData.getItemFromAnywhere(null,MATCHING);
+								O=CMLib.webMacroFilter().findItemInAnything(null,MATCHING);
 							if(O!=null)
 								shop.addStoreInventory((Environmental)O.copyOf(),CMath.s_int(theparm),CMath.s_int(theprice));
 						}
@@ -1082,9 +1082,9 @@ public class GrinderMobs
 				}
 				else
 				{
-					RoomData.contributeMOBs(new XVector<MOB>(M));
-					final MOB M2=RoomData.getReferenceMOB(M);
-					newMobCode=RoomData.getMOBCode(M2);
+					CMLib.webMacroFilter().contributeMOBsToWebCache(new XVector<MOB>(M));
+					final MOB M2=CMLib.webMacroFilter().findMOBMatchInWebCache(M);
+					newMobCode=CMLib.webMacroFilter().findMOBWebCacheCode(M2);
 				}
 			}
 			else
@@ -1094,11 +1094,11 @@ public class GrinderMobs
 			{
 				if(shopMobCode.equals("NEW")||shopMobCode.equals("NEWDEITY"))
 					((ShopKeeper)shopM).getShop().addStoreInventory(M);
-				RoomData.contributeMOBs(new XVector<MOB>(M));
-				final MOB M2=RoomData.getReferenceMOB(M);
-				newShopMobCode=RoomData.getMOBCode(M2);
+				CMLib.webMacroFilter().contributeMOBsToWebCache(new XVector<MOB>(M));
+				final MOB M2=CMLib.webMacroFilter().findMOBMatchInWebCache(M);
+				newShopMobCode=CMLib.webMacroFilter().findMOBWebCacheCode(M2);
 				CMLib.database().DBUpdateMOBs(R);
-				newMobCode=RoomData.getMOBCode(R,shopM);
+				newMobCode=CMLib.webMacroFilter().findMOBWebCacheCode(R,shopM);
 			}
 			else
 			{
@@ -1120,7 +1120,7 @@ public class GrinderMobs
 				}
 				R.recoverRoomStats();
 				CMLib.database().DBUpdateMOBs(R);
-				newMobCode=RoomData.getMOBCode(R,M);
+				newMobCode=CMLib.webMacroFilter().findMOBWebCacheCode(R,M);
 			}
 			if((newShopMobCode!=null)&&(newShopMobCode.length()>0))
 			{

@@ -101,7 +101,7 @@ public class ItemData extends StdWebMacro
 					if(itemCode.equals("NEW"))
 						I=CMClass.getItem("GenItem");
 					else
-						I=RoomData.getItemFromCode(playerM,itemCode);
+						I=CMLib.webMacroFilter().getItemFromWebCache(playerM,itemCode);
 					if(I!=null)
 						httpReq.getRequestObjects().put("PLAYER/"+player+"/"+itemCode,I);
 				}
@@ -117,9 +117,9 @@ public class ItemData extends StdWebMacro
 				if(M==null)
 				{
 					if(R!=null)
-						M=RoomData.getMOBFromCode(R,mobNum);
+						M=CMLib.webMacroFilter().getMOBFromWebCache(R,mobNum);
 					else
-						M=RoomData.getMOBFromCode(mobNum);
+						M=CMLib.webMacroFilter().getMOBFromWebCache(mobNum);
 					if(M==null)
 					{
 						final StringBuffer str=new StringBuffer("No MOB?!");
@@ -130,7 +130,7 @@ public class ItemData extends StdWebMacro
 						{
 							final MOB M2=R.fetchInhabitant(m);
 							if((M2!=null)&&(M2.isSavable()))
-								str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2)+"<BR>\n\r");
+								str.append(M2.Name()+"="+CMLib.webMacroFilter().findMOBWebCacheCode(R,M2)+"<BR>\n\r");
 						}
 						return clearWebMacros(str);
 					}
@@ -149,9 +149,9 @@ public class ItemData extends StdWebMacro
 						I=CMClass.getItem("GenItem");
 					else
 					{
-						I=RoomData.getItemFromCode(M,itemCode);
+						I=CMLib.webMacroFilter().getItemFromWebCache(M,itemCode);
 						if(I==null)
-							I=RoomData.getItemFromCode((MOB)null,itemCode);
+							I=CMLib.webMacroFilter().getItemFromWebCache((MOB)null,itemCode);
 					}
 					if(I!=null)
 					{
@@ -172,9 +172,9 @@ public class ItemData extends StdWebMacro
 						I=CMClass.getItem("GenItem");
 					else
 					{
-						I=RoomData.getItemFromCode(R,itemCode);
+						I=CMLib.webMacroFilter().getItemFromWebCache(R,itemCode);
 						if(I==null)
-							I=RoomData.getItemFromCode((Room)null,itemCode);
+							I=CMLib.webMacroFilter().getItemFromWebCache((Room)null,itemCode);
 					}
 					if(I!=null)
 						httpReq.getRequestObjects().put(R.roomID()+"/"+itemCode,I);
@@ -197,7 +197,7 @@ public class ItemData extends StdWebMacro
 					if(itemCode.equals("NEW"))
 						I=CMClass.getItem("GenItem");
 					else
-						I=RoomData.getItemFromAnywhere(itemCode);
+						I=CMLib.webMacroFilter().findItemInWebCache(itemCode);
 					if(I!=null)
 						httpReq.getRequestObjects().put(itemCode,I);
 				}
@@ -216,7 +216,7 @@ public class ItemData extends StdWebMacro
 				{
 					final Item I2=R.getItem(i);
 					if(I2!=null)
-						str.append(I2.Name()+"="+RoomData.getItemCode(R,I2)+"<BR>\n\r");
+						str.append(I2.Name()+"="+CMLib.webMacroFilter().findItemWebCacheCode(R,I2)+"<BR>\n\r");
 				}
 			}
 			else
@@ -225,7 +225,7 @@ public class ItemData extends StdWebMacro
 				{
 					final Item I2=M.getItem(i);
 					if(I2!=null)
-						str.append(RoomData.getItemCode(M,I2)+"<BR>\n\r");
+						str.append(CMLib.webMacroFilter().findItemWebCacheCode(M,I2)+"<BR>\n\r");
 				}
 			}
 			return clearWebMacros(str);

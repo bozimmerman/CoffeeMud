@@ -196,14 +196,14 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 			return cmareName.subSequence(0, x)+".txt";
 	}
 
-	protected List<Item> getWriteables()
+	protected List<Item> getWrightables()
 	{
 		final String allItemID = ID().toUpperCase()+"_PARSED";
 		@SuppressWarnings("unchecked")
 		List<Item> itemPrototypes = (List<Item>)Resources.getResource(allItemID);
 		if(itemPrototypes == null)
 		{
-			final CMFile F=new CMFile((String)V(ID,V_FNAM),null);
+			final CMFile F=new CMFile(Resources.makeFileResourceName("skills/"+(String)V(ID,V_FNAM)),null);
 			if(F.exists())
 			{
 				final String xml = F.textUnformatted().toString().trim();
@@ -230,34 +230,40 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 	@Override
 	public String parametersFile()
 	{
-		final String cmareName = (String)V(ID,V_FNAM);
-		CMFile F=new CMFile(getTempRecipeName(),null);
-		if(F.exists())
-			return cmareName;
-		F=new CMFile("::"+getTempRecipeName(),null);
-		final List<Item> ships = getWriteables();
-		if(ships == null)
-			return cmareName;
-		final StringBuilder recipes = new StringBuilder("");
-		int x=0;
-		for(final Item I : getWriteables())
-		{
-			recipes.append(I.Name()).append("\t")
-					.append(""+I.basePhyStats().level()).append("\t")
-					.append(""+I.basePhyStats().weight()/10).append("\t")
-					.append(""+I.basePhyStats().weight()).append("\t")
-					.append(""+I.baseGoldValue()).append("\t")
-					.append(""+(x++)).append("\r\n");
-		}
-		F.saveText(recipes.toString());
-		return cmareName;
+		return (String)V(ID,V_FNAM);
 	}
 
 	@Override
 	protected List<List<String>> loadRecipes()
 	{
-		parametersFile(); // generate temp recipe file
-		return super.loadRecipes(getTempRecipeName());
+		if((!Resources.isResource("PARSED_RECIPE: "+parametersFile()))
+		||(!Resources.isResource("PARSED_RECIPE: "+getTempRecipeName())))
+		{
+			Resources.removeResource(ID().toUpperCase()+"_PARSED");
+			final CMFile F=new CMFile(Resources.makeFileResourceName("::skills/"+getTempRecipeName()),null);
+			final List<Item> ships = getWrightables();
+			if(ships != null)
+			{
+				final StringBuilder recipes = new StringBuilder("");
+				int x=0;
+				for(final Item I : ships)
+				{
+					recipes.append(I.Name()).append("\t")
+							.append(""+I.basePhyStats().level()).append("\t")
+							.append(""+I.basePhyStats().weight()/10).append("\t")
+							.append(""+I.basePhyStats().weight()).append("\t")
+							.append(""+I.baseGoldValue()).append("\t")
+							.append(""+(x++)).append("\r\n");
+				}
+				F.saveText(recipes.toString());
+			}
+			else
+			if(F.exists())
+				F.delete();
+		}
+		final List<List<String>> recipes = super.loadRecipes(getTempRecipeName());
+		Resources.submitResource("PARSED_RECIPE: "+parametersFile(), Resources.getResource("PARSED_RECIPE: "+getTempRecipeName()));
+		return recipes;
 	}
 
 	protected void buildDoor(Room room, final int dir)
@@ -1256,7 +1262,7 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 			final MaterialLibrary.DeadResourceRecord deadComps = CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
 			final int lostValue=autoGenerate>0?0:(deadMats.getLostValue() + deadComps.getLostValue());
 			final String shipIndexStr = foundRecipe.get(RCP_SHIPINDEX);
-			final List<Item> shipPrototypes = getWriteables();
+			final List<Item> shipPrototypes = getWrightables();
 			if(shipPrototypes != null)
 			{
 				if(CMath.isInteger(shipIndexStr))

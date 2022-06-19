@@ -214,7 +214,7 @@ public class GrinderAbilities
 			{
 				if((!oldValue.equalsIgnoreCase("DELETE"))&&(oldValue.length()>0))
 				{
-					final Item oldItem=(oldValue.length()>0)?RoomData.getItemFromAnywhere(itemList,oldValue):null;
+					final Item oldItem=(oldValue.length()>0)?CMLib.webMacroFilter().findItemInAnything(itemList,oldValue):null;
 					if(oldItem != null)
 						str.append(CMLib.coffeeMaker().getItemXML(oldItem));
 				}

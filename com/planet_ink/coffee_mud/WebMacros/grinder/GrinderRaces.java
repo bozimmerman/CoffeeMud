@@ -144,12 +144,12 @@ public class GrinderRaces
 				final String MATCHING=httpReq.getUrlParameter(c+"ITEM"+i);
 				if(MATCHING==null)
 					break;
-				Item I2=RoomData.getItemFromAnywhere(MATCHING);
+				Item I2=CMLib.webMacroFilter().findItemInWebCache(MATCHING);
 				if(I2==null)
 				{
-					I2=RoomData.getItemFromAnywhere(items,MATCHING);
+					I2=CMLib.webMacroFilter().findItemInAnything(items,MATCHING);
 					if(I2!=null)
-						RoomData.contributeItems(new XVector<Item>(I2));
+						CMLib.webMacroFilter().contributeItemsToWebCache(new XVector<Item>(I2));
 				}
 				if(I2!=null)
 					classes.addElement(I2);

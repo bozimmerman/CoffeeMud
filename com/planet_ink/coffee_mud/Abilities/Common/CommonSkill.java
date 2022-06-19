@@ -876,7 +876,8 @@ public class CommonSkill extends StdAbility
 			return false;
 		for(final Integer R : supportedResourcesMap())
 		{
-			if((R.intValue() & RawMaterial.MATERIAL_MASK)==0)
+			// basically check if lower 8 bits are 0, therefore its a raw mat
+			if((R.intValue() & RawMaterial.MATERIAL_MASK)==R.intValue()) 
 			{
 				if((I.material()& RawMaterial.MATERIAL_MASK)==R.intValue())
 					return true;

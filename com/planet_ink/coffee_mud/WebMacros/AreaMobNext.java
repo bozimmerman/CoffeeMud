@@ -113,11 +113,11 @@ public class AreaMobNext extends StdWebMacro
 				if(mobID!=null)
 				{
 					final MOB M=CMLib.database().DBReadRoomMOB(roomID, mobID);
-					String s=RoomData.getMOBCode(M);
+					String s=CMLib.webMacroFilter().findMOBWebCacheCode(M);
 					if(s.length()==0)
 					{
-						RoomData.contributeMOBs(new XVector<MOB>(M));
-						s=RoomData.getMOBCode(M);
+						CMLib.webMacroFilter().contributeMOBsToWebCache(new XVector<MOB>(M));
+						s=CMLib.webMacroFilter().findMOBWebCacheCode(M);
 					}
 					if(s.length()>0)
 					{

@@ -131,7 +131,7 @@ public interface SpaceObject extends Environmental, BoundedObject
 	 */
 	public static interface SpaceGateway extends SpaceObject, ShipDirectional
 	{
-	};
+	}
 
 	/**
 	 * Some distance constants.  Not really proper enumerations, but

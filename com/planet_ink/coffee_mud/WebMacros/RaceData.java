@@ -278,12 +278,12 @@ public class RaceData extends StdWebMacro
 				final String MATCHING=httpReq.getUrlParameter(c+"ITEM"+i);
 				if(MATCHING==null)
 					break;
-				Item I2=RoomData.getItemFromAnywhere(MATCHING);
+				Item I2=CMLib.webMacroFilter().findItemInWebCache(MATCHING);
 				if(I2==null)
 				{
-					I2=RoomData.getItemFromAnywhere(items,MATCHING);
+					I2=CMLib.webMacroFilter().findItemInAnything(items,MATCHING);
 					if(I2!=null)
-						RoomData.contributeItems(new XVector<Item>(I2));
+						CMLib.webMacroFilter().contributeItemsToWebCache(new XVector<Item>(I2));
 				}
 				if(I2!=null)
 					classes.add(I2);
@@ -294,7 +294,7 @@ public class RaceData extends StdWebMacro
 		else
 		{
 			classes.addAll(items);
-			RoomData.contributeItems(classes);
+			CMLib.webMacroFilter().contributeItemsToWebCache(classes);
 		}
 		str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 		int numItems=0;
@@ -309,33 +309,33 @@ public class RaceData extends StdWebMacro
 			if(!one)
 				str.append("<OPTION VALUE=\"\">Delete!");
 			if(items.contains(I))
-				str.append("<OPTION SELECTED VALUE=\""+RoomData.getItemCode(classes,I)+"\">"+I.Name()+" ("+I.ID()+")");
+				str.append("<OPTION SELECTED VALUE=\""+CMLib.webMacroFilter().findItemWebCacheCode(classes,I)+"\">"+I.Name()+" ("+I.ID()+")");
 			else
-			if(RoomData.isCachedItem(I))
+			if(CMLib.webMacroFilter().isWebCachedItem(I))
 				str.append("<OPTION SELECTED VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
 			else
 				str.append("<OPTION SELECTED VALUE=\""+I.ID()+"\">"+I.Name()+" ("+I.ID()+")");
 			str.append("</SELECT>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=10%>");
-			str.append("<INPUT TYPE=BUTTON NAME="+c+"EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+RoomData.getItemCode(classes,I)+"','"+c+"ITEM"+(numItems)+"');\">");
+			str.append("<INPUT TYPE=BUTTON NAME="+c+"EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+CMLib.webMacroFilter().findItemWebCacheCode(classes,I)+"','"+c+"ITEM"+(numItems)+"');\">");
 			str.append("</TD></TR>");
 		}
 		str.append("<TR><TD WIDTH=90%>");
 		str.append("<SELECT ONCHANGE=\"AddItem(this);\" NAME="+c+"ITEM"+(numItems+1)+">");
 		if(!one)
 			str.append("<OPTION SELECTED VALUE=\"\">Select a new Item");
-		for(final Item I : RoomData.getItemCacheIterable())
+		for(final Item I : CMLib.webMacroFilter().getItemWebCacheIterable())
 		{
 			if(one&&(classes.contains(I)))
 			{
 				if(items.contains(I))
-					str.append("<OPTION SELECTED VALUE=\""+RoomData.getItemCode(classes,I)+"\">"+I.Name()+" ("+I.ID()+")");
+					str.append("<OPTION SELECTED VALUE=\""+CMLib.webMacroFilter().findItemWebCacheCode(classes,I)+"\">"+I.Name()+" ("+I.ID()+")");
 				else
 					str.append("<OPTION SELECTED VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
 			}
 			else
-				str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+RoomData.getObjIDSuffix(I));
+				str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+CMLib.webMacroFilter().getWebCacheSuffix(I));
 		}
 		if(one)
 		{

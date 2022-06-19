@@ -75,49 +75,9 @@ public class CaravanBuilding extends Shipwright
 	}
 
 	@Override
-	protected List<Item> getShips()
-	{
-		final String allItemID = "CARAVANBUILD_PARSED";
-		@SuppressWarnings("unchecked")
-		List<Item> shipPrototypes = (List<Item>)Resources.getResource(allItemID);
-		if(shipPrototypes == null)
-		{
-			final CMFile F=new CMFile(Resources.makeFileResourceName("skills/caravanbuilding.cmare"),null);
-			if(F.exists())
-			{
-				shipPrototypes=new Vector<Item>();
-				CMLib.coffeeMaker().addItemsFromXML(F.textUnformatted().toString(), shipPrototypes, null);
-				for(final Item I : shipPrototypes)
-					CMLib.threads().deleteAllTicks(I);
-				if(shipPrototypes.size()>0)
-					Resources.submitResource(allItemID, shipPrototypes);
-			}
-		}
-		return shipPrototypes;
-	}
-
-	@Override
 	public String parametersFile()
 	{
-		final CMFile F=new CMFile(Resources.makeFileResourceName("::skills/caravanbuilding.txt"),null);
-		if(F.exists())
-			return "caravanbuilding.txt";
-		final List<Item> ships = getShips();
-		if(ships == null)
-			return "";
-		final StringBuilder recipes = new StringBuilder("");
-		int x=0;
-		for(final Item I : getShips())
-		{
-			recipes.append(I.Name()).append("\t")
-					.append(""+I.basePhyStats().level()).append("\t")
-					.append(""+I.basePhyStats().weight()/10).append("\t")
-					.append(""+I.basePhyStats().weight()).append("\t")
-					.append(""+I.baseGoldValue()).append("\t")
-					.append(""+(x++)).append("\r\n");
-		}
-		F.saveText(recipes.toString());
-		return "caravanbuilding.txt";
+		return "caravanbuilding.cmare";
 	}
 
 	@Override
@@ -138,6 +98,7 @@ public class CaravanBuilding extends Shipwright
 		return false;
 	}
 
+	@Override
 	protected String getIdentifierCommandWord()
 	{
 		return "caravanbuild";

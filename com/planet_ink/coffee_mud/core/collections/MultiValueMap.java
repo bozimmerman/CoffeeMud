@@ -72,6 +72,7 @@ public class MultiValueMap<K,J> implements Map<K,J>
 		this.collectionClass = collectionClass;
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public synchronized J put(final K key, final J value)
 	{
@@ -170,7 +171,7 @@ public class MultiValueMap<K,J> implements Map<K,J>
 				if(lst != null)
 					factory.addLast(lst);
 			}
-			if(lst.size()>0)
+			if((lst!=null)&&(lst.size()>0))
 				return lst.get(0);
 		}
 		return null;

@@ -221,9 +221,9 @@ public class GrinderRooms
 					if(MATCHING==null)
 						break;
 					else
-					if(RoomData.isAllNum(MATCHING))
+					if(CMLib.webMacroFilter().isAllNum(MATCHING))
 					{
-						final MOB M=RoomData.getMOBFromCode(allmobs,MATCHING);
+						final MOB M=CMLib.webMacroFilter().getMOBFromWebCache(allmobs,MATCHING);
 						if(M!=null)
 						{
 							if(MATCHING.equalsIgnoreCase(delMOB))
@@ -239,14 +239,14 @@ public class GrinderRooms
 					else
 					if(MATCHING.startsWith("CATALOG-"))
 					{
-						final MOB M=RoomData.getMOBFromCatalog(MATCHING);
+						final MOB M=CMLib.webMacroFilter().getMOBFromCatalog(MATCHING);
 						if(M!=null)
 							happilyAddMob((MOB)M.copyOf(),R);
 					}
 					else
 					if(MATCHING.indexOf('@')>0)
 					{
-						final MOB M2=RoomData.getMOBFromAnywhere(null,MATCHING);
+						final MOB M2=CMLib.webMacroFilter().getMOBFromAnywhere(null,MATCHING);
 						if(M2 != null)
 							happilyAddMob((MOB)M2.copyOf(),R);
 					}
@@ -274,10 +274,10 @@ public class GrinderRooms
 					final String MATCHING=httpReq.getUrlParameter("ITEM"+i);
 					if(MATCHING==null)
 						break;
-					Item I2=RoomData.getItemFromAnywhere(allitems,MATCHING);
+					Item I2=CMLib.webMacroFilter().findItemInAnything(allitems,MATCHING);
 					if(I2!=null)
 					{
-						if(!RoomData.isAllNum(MATCHING))
+						if(!CMLib.webMacroFilter().isAllNum(MATCHING))
 							I2=(Item)I2.copyOf();
 						if(I2!=null)
 						{
