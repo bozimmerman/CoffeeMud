@@ -435,6 +435,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 						}
 					}
 					else
+					if(!(me instanceof PowerGenerator))
 					{
 						final CMMsg msg2=CMClass.getMsg(msg.source(), me, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, "", CMMsg.NO_EFFECT,null);
 						if(me.owner() instanceof Room)

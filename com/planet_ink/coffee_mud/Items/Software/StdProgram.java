@@ -56,10 +56,10 @@ public class StdProgram extends StdItem implements Software
 		setDisplayText("a small disk sits here.");
 		setDescription("It appears to be a general software program.");
 
-		basePhyStats.setWeight(1);
+		basePhyStats().setWeight(1);
+		phyStats().setWeight(1);
 		material=RawMaterial.RESOURCE_STEEL;
 		baseGoldValue=1000;
-		recoverPhyStats();
 	}
 
 	@Override

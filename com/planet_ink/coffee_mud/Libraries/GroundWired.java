@@ -181,7 +181,9 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				set=new LinkedList<WeakReference<Electronics>>();
 				sets.put(newKey, set);
 			}
-			set.add(new WeakReference<Electronics>(E));
+			final WeakReference<Electronics> ref = new WeakReference<Electronics>(E);
+			if(!set.contains(ref))
+				set.add(ref);
 			if(debugging)
 				Log.debugOut("GroundWired","Registered: "+E.Name()+": "+newKey+", was: "+oldKey);
 			return newKey;

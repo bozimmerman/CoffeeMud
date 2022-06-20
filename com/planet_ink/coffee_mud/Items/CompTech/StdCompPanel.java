@@ -106,23 +106,6 @@ public class StdCompPanel extends StdElecCompContainer implements ElecPanel, Tec
 	}
 
 	@Override
-	public void setOwner(final ItemPossessor newOwner)
-	{
-		final ItemPossessor prevOwner=super.owner;
-		super.setOwner(newOwner);
-		if(prevOwner != newOwner)
-		{
-			if(newOwner instanceof Room)
-				circuitKey=CMLib.tech().registerElectrics(this,circuitKey);
-			else
-			{
-				CMLib.tech().unregisterElectronics(this,circuitKey);
-				circuitKey=null;
-			}
-		}
-	}
-
-	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

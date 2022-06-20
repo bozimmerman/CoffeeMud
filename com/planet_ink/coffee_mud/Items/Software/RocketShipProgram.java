@@ -121,7 +121,6 @@ public class RocketShipProgram extends GenShipProgram
 		setDisplayText("a small software disk sits here.");
 		setDescription("It appears to be a program to operate a small shuttle or rocket.");
 
-		basePhyStats.setWeight(100);
 		material=RawMaterial.RESOURCE_STEEL;
 		baseGoldValue=1000;
 		recoverPhyStats();
@@ -188,7 +187,8 @@ public class RocketShipProgram extends GenShipProgram
 			components=new Vector<TechComponent>(1);
 			for(final Electronics E : electronics)
 			{
-				if ((E instanceof TechComponent) && (E.getTechType()== type))
+				if ((E instanceof TechComponent)
+				&& (E.getTechType()== type))
 					components.add((TechComponent)E);
 			}
 		}
