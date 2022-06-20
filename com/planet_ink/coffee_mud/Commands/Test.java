@@ -3779,21 +3779,11 @@ public class Test extends StdCommand
 						final double[] dir=CMLib.space().getDirection(shipCoord1, targetCoord);
 						if(l[2].length>0)
 						{
-							dir[0]+=Math.toRadians(l[2][0]);
-							if(dir[0]>2*Math.PI)
-								dir[0]=Math.abs(2*Math.PI-dir[0]);
-							else
-							if(dir[0]<0)
-								dir[0]+=(2*Math.PI);
+							CMLib.space().changeDirection(dir, Math.toRadians(l[2][0]), 0);
 						}
 						if(l[2].length==2)
 						{
-							dir[1]+=Math.toRadians(l[2][1]);
-							if(dir[1]>Math.PI)
-								dir[1]=Math.abs(Math.PI-dir[1]);
-							else
-							if(dir[1]<0)
-								dir[1]+=Math.PI;
+							CMLib.space().changeDirection(dir, Math.toRadians(l[2][1]), 0);
 						}
 						//System.out.println(dir[0]+","+dir[1]);
 						final boolean expectHit=l[4][0]>0;
@@ -3821,21 +3811,11 @@ public class Test extends StdCommand
 						final double[] dir=CMLib.space().getDirection(shipCoord1, targetCoord);
 						if(l[2].length>0)
 						{
-							dir[0]+=Math.toRadians(l[2][0]);
-							if(dir[0]>2*Math.PI)
-								dir[0]=Math.abs(2*Math.PI-dir[0]);
-							else
-							if(dir[0]<0)
-								dir[0]+=(2*Math.PI);
+							CMLib.space().changeDirection(dir, Math.toRadians(l[2][0]), 0);
 						}
 						if(l[2].length==2)
 						{
-							dir[1]+=Math.toRadians(l[2][1]);
-							if(dir[1]>Math.PI)
-								dir[1]=Math.abs(Math.PI-dir[1]);
-							else
-							if(dir[1]<0)
-								dir[1]+=Math.PI;
+							CMLib.space().changeDirection(dir, Math.toRadians(l[2][1]), 0);
 						}
 						//System.out.println(dir[0]+","+dir[1]);
 						final boolean expectHit=l[4][0]>0;

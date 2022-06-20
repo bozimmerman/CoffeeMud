@@ -279,7 +279,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 
 		double yawDelta = (curDirectionYaw >  accelDirectionYaw) ? (curDirectionYaw - accelDirectionYaw) : (accelDirectionYaw - curDirectionYaw);
 		// 350 and 10, diff = 340 + -360 = 20
-		if(yawDelta > Math.PI)
+		if(yawDelta > Math.PI) // a delta is never more than 180 degrees
 			yawDelta=PI_TIMES_2-yawDelta;
 
 		double pitchDelta = (curDirectionPitch >  accelDirectionPitch) ? (curDirectionPitch - accelDirectionPitch) : (accelDirectionPitch - curDirectionPitch);
@@ -300,15 +300,11 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			if((newDirectionYaw > 0.0) && ((PI_TIMES_2 - newDirectionYaw) < ZERO_ALMOST))
 				newDirectionYaw=0.0;
 		}
-		if (newDirectionYaw < 0.0)
-			newDirectionYaw = PI_TIMES_2 + newDirectionYaw;
 		double newDirectionPitch;
 		if(pitchDelta < 0.1)
 			newDirectionPitch = accelDirectionPitch;
 		else
 			newDirectionPitch = curDirectionPitch + ((curDirectionPitch > accelDirectionPitch) ? -(accelerationMultiplier * Math.sin(pitchDelta)) : (accelerationMultiplier * Math.sin(pitchDelta)));
-		if (newDirectionPitch < 0.0)
-			newDirectionPitch = PI_TIMES_2 + newDirectionPitch;
 
 		double newSpeed = currentSpeed + (acceleration * Math.cos(anglesDelta));
 		if(newSpeed < 0)
@@ -335,11 +331,17 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		while(dir[0] < 0)
 			dir[0] += PI_TIMES_2;
 		while(dir[1] >= Math.PI)
-			dir[1] -= Math.PI;
+		{
+			dir[1] = Math.PI - dir[1] - Math.PI;
+			dir[0] = dir[0] + ((dir[0] <= Math.PI)?Math.PI:(-Math.PI));
+		}
 		while(dir[1] < 0)
-			dir[0] += Math.PI;
+		{
+			dir[1] = Math.abs(dir[1]);
+			dir[0] = dir[0] + ((dir[0] <= Math.PI)?Math.PI:(-Math.PI));
+		}
 	}
-	
+
 	@Override
 	public void changeDirection(final double[] dir, final double delta0, final double delta1)
 	{
@@ -347,13 +349,13 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		dir[1] += delta1 % Math.PI;
 		fixDirectionBounds(dir);
 	}
-	
+
 	@Override
 	public void changeDirection(final double[] dir, final double[] delta)
 	{
 		changeDirection(dir, delta[0], delta[1]);
 	}
-	
+
 	@Override
 	public double[] getOppositeDir(final double[] dir)
 	{
@@ -364,8 +366,8 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		return newDir;
 	}
 
-	
-	
+
+
 	@Override
 	public ShipDirectional.ShipDir getDirectionFromDir(final double[] facing, final double roll, final double[] direction)
 	{
