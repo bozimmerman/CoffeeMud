@@ -96,11 +96,14 @@ public class Chant_ResuscitateCompanion extends Chant implements MendingSkill
 
 	private boolean isCompanionBody(final DeadBody body)
 	{
-		for(final Iterator<WeakReference<DeadBody>> m=companionMobs.iterator();m.hasNext();)
+		synchronized(companionMobs)
 		{
-			final WeakReference<DeadBody> wM=m.next();
-			if(wM.get()==body)
-				return true;
+			for(final Iterator<WeakReference<DeadBody>> m=companionMobs.iterator();m.hasNext();)
+			{
+				final WeakReference<DeadBody> wM=m.next();
+				if((wM!=null)&&(wM.get()==body))
+					return true;
+			}
 		}
 		return false;
 	}
@@ -141,11 +144,14 @@ public class Chant_ResuscitateCompanion extends Chant implements MendingSkill
 							&&(!aniM.amDestroyed())
 							&&(aniM.amDead()))
 							{
-								for(final Iterator<WeakReference<DeadBody>> m=companionMobs.iterator();m.hasNext();)
+								synchronized(companionMobs)
 								{
-									final WeakReference<DeadBody> wM=m.next();
-									if(wM.get()==null)
-										m.remove();
+									for(final Iterator<WeakReference<DeadBody>> m=companionMobs.iterator();m.hasNext();)
+									{
+										final WeakReference<DeadBody> wM=m.next();
+										if((wM==null)||(wM.get()==null))
+											m.remove();
+									}
 								}
 								for(int i=room.numItems()-1;i>=0;i--)
 								{
@@ -154,10 +160,13 @@ public class Chant_ResuscitateCompanion extends Chant implements MendingSkill
 									&&(((DeadBody)I).getMobName().equals(aniM.Name()))
 									&&(!isCompanionBody((DeadBody)I)))
 									{
-										final List<WeakReference<DeadBody>> companionMobs=A.companionMobs;
-										while(companionMobs.size()>10)
-											companionMobs.remove(companionMobs.iterator().next());
-										companionMobs.add(new WeakReference<DeadBody>((DeadBody)I));
+										synchronized(A.companionMobs)
+										{
+											final List<WeakReference<DeadBody>> companionMobs=A.companionMobs;
+											while(companionMobs.size()>10)
+												companionMobs.remove(companionMobs.iterator().next());
+											companionMobs.add(new WeakReference<DeadBody>((DeadBody)I));
+										}
 									}
 								}
 							}
@@ -227,11 +236,14 @@ public class Chant_ResuscitateCompanion extends Chant implements MendingSkill
 						}
 						return true;
 					}
-					for(final Iterator<WeakReference<DeadBody>> m=companionMobs.iterator();m.hasNext();)
+					synchronized(companionMobs)
 					{
-						final WeakReference<DeadBody> wM=m.next();
-						if(wM.get()==body)
-							m.remove();
+						for(final Iterator<WeakReference<DeadBody>> m=companionMobs.iterator();m.hasNext();)
+						{
+							final WeakReference<DeadBody> wM=m.next();
+							if((wM!=null)&&(wM.get()==body))
+								m.remove();
+						}
 					}
 					((DeadBody)body).setSavedMOB(null, true); // revived, so don't destroy when body goes
 					rejuvedMOB.recoverCharStats();
