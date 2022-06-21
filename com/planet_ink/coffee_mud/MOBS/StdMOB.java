@@ -2187,6 +2187,8 @@ public class StdMOB implements MOB
 		catch (final Exception e)
 		{
 			Log.errOut("StdMOB", Name() + " did '" + CMParms.toListString(commands) + "' in " + CMLib.map().getExtendedRoomID(location()));
+			if ((e!=null)&&(e.getMessage() != null))
+				Log.errOut("StdMOB", e.getMessage());
 			Log.errOut("StdMOB", e);
 			tell(L("Oops!"));
 		}

@@ -185,11 +185,11 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
 	protected String getTempRecipeName()
 	{
 		final String cmareName = (String)V(ID,V_FNAM);
-		int x=cmareName.lastIndexOf('.');
+		final int x=cmareName.lastIndexOf('.');
 		if(x<=0)
 			return cmareName+".txt";
 		else
@@ -236,6 +236,8 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 	@Override
 	protected List<List<String>> loadRecipes()
 	{
+		if(ID().equals("GenWrightSkill")||(parametersFile().length()==0))
+			return new ArrayList<List<String>>();
 		if((!Resources.isResource("PARSED_RECIPE: "+parametersFile()))
 		||(!Resources.isResource("PARSED_RECIPE: "+getTempRecipeName())))
 		{
@@ -536,7 +538,7 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 	{
 		return super.getComponentDescription( mob, recipe, RCP_AMOUNTMATS );
 	}
-	
+
 	@Override
 	public boolean isGeneric()
 	{
@@ -788,9 +790,9 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 				cmdsList.append("\"@x2 desc <text>\", ");
 			if(canDoorB.booleanValue())
 				cmdsList.append(" \"@x2 door <dir>\", \"@x2 demolish <dir>\", ");
-			
+
 			cmdsList.append("or \"@x2 stop\" to cancel.");
-			
+
 			commonTell(mob,L(cmdsList.toString(), CMStrings.capitalizeFirstLetter(getIdentifierCommandWord()),getIdentifierCommandWord()));
 			return false;
 		}
@@ -884,7 +886,7 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 				final int hullPointsDamage = (int)Math.round(CMath.mul(pctDamage,((SiegableItem)buildingI).getMaxHullPoints()));
 				final Integer[] ipm=super.supportedResourcesMap();
 				final int[] pm=new int[ipm.length];
-				for(int i=0;i<ipm.length;i++) 
+				for(int i=0;i<ipm.length;i++)
 					pm[i]=ipm[i].intValue();
 				int matRequired=hullPointsDamage * 10;
 				matRequired=adjustWoodRequired(matRequired,mob);
@@ -1100,7 +1102,7 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 			matsRequired=adjustWoodRequired(matsRequired,mob);
 			final Integer[] ipm=super.supportedResourcesMap();
 			final int[] pm=new int[ipm.length];
-			for(int i=0;i<ipm.length;i++) 
+			for(int i=0;i<ipm.length;i++)
 				pm[i]=ipm[i].intValue();
 			final int[][] data=fetchFoundResourceData(mob,
 													matsRequired,"material",pm,
@@ -1201,7 +1203,7 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 			}
 			final Integer[] ipm=super.supportedResourcesMap();
 			int[] pm=new int[ipm.length];
-			for(int i=0;i<ipm.length;i++) 
+			for(int i=0;i<ipm.length;i++)
 				pm[i]=ipm[i].intValue();
 			pm=checkMaterialFrom(mob,commands,pm);
 			if(pm==null)

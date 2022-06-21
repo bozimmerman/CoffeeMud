@@ -65,4 +65,50 @@ With a Yo-Heave-Ho! and a fare-you-well
 And a sudden plunge in the sullen swell
 Ten fathoms deep on the road to hell,
 Yo ho ho and a bottle of rum!
-				
+PAUSE 60
+
+[Song_Death]
+Upon your life the night falls down
+In misery and blood you'll drown
+Reach out now, you hope for naught
+For my reaper's voice is a rope grown taught
+Please let me hear your final sigh
+The sunset of your life is nigh
+PAUSE 10
+	
+[Song_Seeing]
+Come out of the darkness yon hiders and sneakers
+Reveal yourselves to me
+Let me see the traces of living and bleaker
+As I sing this song for thee
+Run in the dark, run within stealth
+Come to me, hark, and accumulate wealth
+In silence, darkness or death you will be
+But know for certain that I can see ye
+PAUSE 10
+
+[Song_Valor]
+Sharpen your steel, load your bow!
+Prepare for battle! It'll be a show!
+Know no fear and trust in this.
+I'll help you lower your chances to miss.
+When you find your urge to wander the field,
+Let all of these notes help you hit through each shield!
+PAUSE 10
+
+[Song_Charm]
+Hey lovely ladies and all of you men.
+You see me now, but remember me then?
+Listen to me and these words so smooth.
+I can tell you accept this fantastic new groove.
+Walk with me, talk with me. We'll go where we may.
+I don't care where. It's a wonderful day.
+PAUSE 10
+
+[Song_Babble]
+Look at all of this rabble
+In gossip they would all dabble
+But what if instead
+I messed with each head
+And forced them all to babble?
+PAUSE 10

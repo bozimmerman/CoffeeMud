@@ -70,6 +70,7 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 		{
 			final Environmental bE=rb.next();
 			if((bE instanceof SpaceObject)
+			&&((!(bE instanceof Physical))||(CMLib.flags().isSeeable((Physical)bE)))
 			&&(bE != hO)
 			&&(bE != O))
 			{
@@ -179,7 +180,8 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 		if((O!=null)
 		&&(msg.target()==O))
 			return true;
-		if(!msg.isOthers(CMMsg.MASK_EYES))
+		if((!msg.isOthers(CMMsg.MASK_EYES))
+		&&((!(msg.target() instanceof Physical))||(!CMLib.flags().isSeeable((Physical)msg.target()))))
 			return false;
 		if((!(msg.target() instanceof SpaceObject))
 		||(!isInSpace()))

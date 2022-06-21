@@ -76,16 +76,21 @@ public class StdSpaceTechWeapon extends StdSpaceTech implements SpaceObject, Wea
 		{
 			if((msg.tool()==this) || (msg.target()==this))
 			{
-				final SpaceObject srcP;
+				SpaceObject srcP = null;
+				SpaceObject tgtP = null;
 				if((msg.tool() instanceof SpaceObject) && (msg.target()==this))
-					srcP=(SpaceObject)msg.tool();
+				{
+					tgtP=(SpaceObject)msg.tool();
+					srcP=(SpaceObject)msg.target();
+				}
 				else
 				if((msg.tool() == this) && (msg.target() instanceof SpaceObject))
-					srcP=(SpaceObject)msg.target();
-				else
-					srcP=null;
+				{
+					tgtP=(SpaceObject)msg.target();
+					srcP=this;
+				}
 				if(srcP!=null)
-					CMLib.space().sendSpaceEmissionEvent(srcP, this, weaponDamageType()|CMMsg.MASK_MOVE|CMMsg.MASK_EYES
+					CMLib.space().sendSpaceEmissionEvent(tgtP, srcP, weaponDamageType()|CMMsg.MASK_MOVE|CMMsg.MASK_EYES
 														, L("<T-NAME> is hit by <O-NAME>"));
 
 				if (!amDestroyed())

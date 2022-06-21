@@ -126,6 +126,8 @@ public class Song extends StdAbility
 	protected volatile List<Room>	commonRoomSet	= null;
 	protected volatile Room			originRoom		= null;
 	protected volatile int			songDepth		= 0;
+	protected volatile int			lyricCtr		= 0;
+	protected volatile int			lyricPauseCtdn	= 0;
 
 	@Override
 	public int adjustedLevel(final MOB mob, final int asLevel)
@@ -291,13 +293,27 @@ public class Song extends StdAbility
 		{
 			final List<String> lyrics=this.getLyrics();
 			final MOB invoker=this.invoker;
-			if((lyrics!=null) && (invoker==affected))
+			if((lyrics!=null)
+			&& (invoker==affected))
 			{
-				final String line = lyrics.get((int)((System.currentTimeMillis()/CMProps.getTickMillis()) % (lyrics.size())));
-				final Room R=invoker.location();
-				if(R!=null)
+				if(lyricPauseCtdn>0)
+					lyricPauseCtdn--;
+				else
 				{
-					R.show(invoker, null, this, CMMsg.MSG_SPEAK, L("<S-NAME> sing(s) '@x1'",line));
+					if(lyricCtr >= lyrics.size())
+						lyricCtr = 0;
+					final String line = lyrics.get(lyricCtr++);
+					final Room R=invoker.location();
+					if((R!=null)
+					&&(line.length()>0))
+					{
+						if((line.length()>=7)
+						&&(line.substring(0,6).toUpperCase().startsWith("PAUSE "))
+						&&(CMath.isInteger(line.substring(6))))
+							lyricPauseCtdn = CMath.s_int(line.substring(6));
+						else
+							R.show(invoker, null, this, CMMsg.MSG_SPEAK, L("<S-NAME> sing(s) '@x1'",line));
+					}
 				}
 			}
 		}
@@ -468,7 +484,9 @@ public class Song extends StdAbility
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		timeOut=0;
+		timeOut = 0;
+		lyricCtr = 0;
+		lyricPauseCtdn = 0;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
