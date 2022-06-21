@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.coffee_mud.Items.Software.GenSoftware;
 import com.planet_ink.coffee_mud.Items.Weapons.GenSiegeWeapon;
 
 import java.util.*;
@@ -42,6 +43,9 @@ public class GenCannon extends GenSiegeWeapon implements Technical
 		return "GenCannon";
 	}
 
+	protected String 		manufacturer	= "RANDOM";
+	protected Manufacturer  cachedManufact  = null;
+
 	public GenCannon()
 	{
 		super();
@@ -70,5 +74,94 @@ public class GenCannon extends GenSiegeWeapon implements Technical
 	public TechType getTechType()
 	{
 		return TechType.PERSONAL_WEAPON;
+	}
+
+	@Override
+	public String getManufacturerName()
+	{
+		return manufacturer;
+	}
+
+	@Override
+	public void setManufacturerName(final String name)
+	{
+		cachedManufact = null;
+		if (name != null)
+			manufacturer = name;
+	}
+
+	@Override
+	public Manufacturer getFinalManufacturer()
+	{
+		if(cachedManufact==null)
+		{
+			cachedManufact=CMLib.tech().getManufacturerOf(this,manufacturer.toUpperCase().trim());
+			if(cachedManufact==null)
+				cachedManufact=CMLib.tech().getDefaultManufacturer();
+		}
+		return cachedManufact;
+	}
+
+	@Override
+	public String getStat(final String code)
+	{
+		if(CMParms.contains(super.getStatCodes(),code))
+			return super.getStat(code);
+		else
+		switch(getInternalCodeNum(code))
+		{
+		case 0:
+			return getManufacturerName();
+		default:
+			break;
+		}
+		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+	}
+
+	@Override
+	public void setStat(final String code, final String val)
+	{
+		if(CMParms.contains(super.getStatCodes(),code))
+			super.setStat(code, val);
+		else
+		switch(getInternalCodeNum(code))
+		{
+		case 0:
+			setManufacturerName(val);
+			break;
+		default:
+			break;
+		}
+		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+	}
+
+	private final static String[] MYCODES={"MANUFACTURER"};
+
+	private static String[] codes=null;
+
+	private int getInternalCodeNum(final String code)
+	{
+		for(int i=0;i<MYCODES.length;i++)
+		{
+			if(code.equalsIgnoreCase(MYCODES[i]))
+				return i;
+		}
+		return -1;
+	}
+
+	@Override
+	public String[] getStatCodes()
+	{
+		if(codes!=null)
+			return codes;
+		final String[] MYCODES=CMProps.getStatCodesList(GenCannon.MYCODES,this);
+		final String[] superCodes=super.getStatCodes();
+		codes=new String[superCodes.length+MYCODES.length];
+		int i=0;
+		for(;i<superCodes.length;i++)
+			codes[i]=superCodes[i];
+		for(int x=0;x<MYCODES.length;i++,x++)
+			codes[i]=MYCODES[x];
+		return codes;
 	}
 }

@@ -43,6 +43,9 @@ public class StdTechItem extends StdItem implements Technical
 		return "StdTechItem";
 	}
 
+	protected String 		manufacturer	= "RANDOM";
+	protected Manufacturer  cachedManufact  = null;
+
 	public StdTechItem()
 	{
 		super();
@@ -74,4 +77,29 @@ public class StdTechItem extends StdItem implements Technical
 		return TechType.GIZMO;
 	}
 
+	@Override
+	public String getManufacturerName()
+	{
+		return manufacturer;
+	}
+
+	@Override
+	public void setManufacturerName(final String name)
+	{
+		cachedManufact = null;
+		if (name != null)
+			manufacturer = name;
+	}
+
+	@Override
+	public Manufacturer getFinalManufacturer()
+	{
+		if(cachedManufact==null)
+		{
+			cachedManufact=CMLib.tech().getManufacturerOf(this,manufacturer.toUpperCase().trim());
+			if(cachedManufact==null)
+				cachedManufact=CMLib.tech().getDefaultManufacturer();
+		}
+		return cachedManufact;
+	}
 }

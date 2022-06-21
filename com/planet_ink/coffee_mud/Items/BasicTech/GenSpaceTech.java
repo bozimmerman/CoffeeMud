@@ -82,7 +82,7 @@ public class GenSpaceTech extends StdSpaceTech
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={ "TECHLEVEL","COORDS","RADIUS","DIRECTION","SPEED"};
+	private final static String[] MYCODES={ "TECHLEVEL","COORDS","RADIUS","DIRECTION","SPEED","MANUFACTURER"};
 
 	@Override
 	public String getStat(final String code)
@@ -101,6 +101,8 @@ public class GenSpaceTech extends StdSpaceTech
 			return CMParms.toListString(direction());
 		case 4:
 			return "" + speed();
+		case 5:
+			return getManufacturerName();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -131,6 +133,9 @@ public class GenSpaceTech extends StdSpaceTech
 			break;
 		case 4:
 			setSpeed(CMath.s_double(val));
+			break;
+		case 5:
+			setManufacturerName(val);
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

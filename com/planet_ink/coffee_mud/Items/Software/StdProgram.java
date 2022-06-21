@@ -46,8 +46,10 @@ public class StdProgram extends StdItem implements Software
 		return "StdProgram";
 	}
 
-	protected StringBuilder nextMsg = new StringBuilder("");
-	protected String currentScreen="";
+	protected StringBuilder	nextMsg			= new StringBuilder("");
+	protected String		currentScreen	= "";
+	protected String		manufacturer	= "RANDOM";
+	protected Manufacturer	cachedManufact	= null;
 
 	public StdProgram()
 	{
@@ -282,5 +284,31 @@ public class StdProgram extends StdItem implements Software
 	public String displayPerSec(final long speed)
 	{
 		return CMLib.english().speedDescShort(speed);
+	}
+
+	@Override
+	public String getManufacturerName()
+	{
+		return manufacturer;
+	}
+
+	@Override
+	public void setManufacturerName(final String name)
+	{
+		cachedManufact = null;
+		if (name != null)
+			manufacturer = name;
+	}
+
+	@Override
+	public Manufacturer getFinalManufacturer()
+	{
+		if(cachedManufact==null)
+		{
+			cachedManufact=CMLib.tech().getManufacturerOf(this,manufacturer.toUpperCase().trim());
+			if(cachedManufact==null)
+				cachedManufact=CMLib.tech().getDefaultManufacturer();
+		}
+		return cachedManufact;
 	}
 }

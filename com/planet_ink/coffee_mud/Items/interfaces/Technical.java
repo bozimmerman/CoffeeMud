@@ -71,7 +71,10 @@ public interface Technical extends Item
 		SHIP_DAMPENER("Ship Inertial Dampener", "Inertial"),
 		SHIP_GRAVGEN("Ship Gravity Generator", "Grav. Gen"),
 		SHIP_TRACTOR("Ship Tractor", "Tractor"),
-		SHIP_REPLICATOR("Ship Food Replicator", "Replicat.")
+		SHIP_REPLICATOR("Ship Food Replicator", "Replicat."),
+		SHIP_LAUNCHER("Ship Launcher", "Launcher"),
+		COMP_TORPEDO("Launchable Torpedo", "Torpedo"),
+		COMP_PROBE("Launchable Probe", "Probe"),
 		;
 		private final String	friendlyName;
 		private final String	shortFriendlyName;
@@ -137,6 +140,38 @@ public interface Technical extends Item
 	public TechType getTechType();
 
 	/**
+	 * Gets the Manufacturer ID/Name that made this electrical
+	 * item.  This is important because benefits and detriments
+	 * can come along with the manufacturer.
+	 * @see Technical#setManufacturerName(String)
+	 * @see Manufacturer
+	 * @return the Manufacturer ID/Name that made this
+	 */
+	public String getManufacturerName();
+
+	/**
+	 * Sets the Manufacturer ID/Name that made this electrical
+	 * item.  This is important because benefits and detriments
+	 * can come along with the manufacturer.
+	 * @see Technical#getManufacturerName()
+	 * @see Technical#getFinalManufacturer()
+	 * @see Manufacturer
+	 * @param name the Manufacturer ID/Name that made this
+	 */
+	public void setManufacturerName(String name);
+
+	/**
+	 * Returns the Manufacturer object of the manufacturer that
+	 * made this electrical item.  This is important because
+	 * benefits and detriments can come along with the manufacturer.
+	 * @see Technical#getManufacturerName()
+	 * @see Technical#setManufacturerName(String)
+	 * @see Manufacturer
+	 * @return the Manufacturer that made this electrical item
+	 */
+	public Manufacturer getFinalManufacturer();
+
+	/**
 	 * A TechCommand is an internal message that is only understood between electrical
 	 * objects, typically ship components, but potentially between computer components
 	 * of all sorts.
@@ -153,8 +188,8 @@ public interface Technical extends Item
 		AIRREFRESH(Double.class, Integer.class),
 		POWERSET(Long.class),
 		DIRSET(ShipDirectional.ShipDir.class),
-		WEAPONTARGETSET(Double.class,Double.class),
-		WEAPONFIRE(),
+		TARGETSET(Double.class,Double.class),
+		FIRE(),
 		SHIELDSET(ShipDir.class,Integer.class),
 		GRAVITYCHANGE(Boolean.class);
 		private final Class<?>[]	parms;

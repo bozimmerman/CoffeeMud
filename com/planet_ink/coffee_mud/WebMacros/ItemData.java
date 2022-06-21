@@ -1294,10 +1294,10 @@ public class ItemData extends StdWebMacro
 						str.append(I instanceof PowerGenerator);
 						break;
 					case MANUFACTURER:
-						if(I instanceof Electronics)
+						if(I instanceof Technical)
 						{
 							if(firstTime)
-								old=((Electronics)I).getManufacturerName();
+								old=((Technical)I).getManufacturerName();
 							str.append("<OPTION VALUE=\"RANDOM");
 							if(old.equalsIgnoreCase("RANDOM"))
 								str.append("\" SELECTED>Random");

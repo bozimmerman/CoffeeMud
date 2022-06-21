@@ -130,37 +130,4 @@ public interface Electronics extends Item, Technical
 	 * @param truefalse true to activate, false to deactivate
 	 */
 	public void activate(boolean truefalse);
-
-	/**
-	 * Gets the Manufacturer ID/Name that made this electrical
-	 * item.  This is important because benefits and detriments
-	 * can come along with the manufacturer.
-	 * @see Electronics#setManufacturerName(String)
-	 * @see Manufacturer
-	 * @return the Manufacturer ID/Name that made this
-	 */
-	public String getManufacturerName();
-
-	/**
-	 * Sets the Manufacturer ID/Name that made this electrical
-	 * item.  This is important because benefits and detriments
-	 * can come along with the manufacturer.
-	 * @see Electronics#getManufacturerName()
-	 * @see Electronics#getFinalManufacturer()
-	 * @see Manufacturer
-	 * @param name the Manufacturer ID/Name that made this
-	 */
-	public void setManufacturerName(String name);
-
-	/**
-	 * Returns the Manufacturer object of the manufacturer that
-	 * made this electrical item.  This is important because
-	 * benefits and detriments can come along with the manufacturer.
-	 * @see Electronics#getManufacturerName()
-	 * @see Electronics#setManufacturerName(String)
-	 * @see Manufacturer
-	 * @return the Manufacturer that made this electrical item
-	 */
-	public Manufacturer getFinalManufacturer();
-
 }

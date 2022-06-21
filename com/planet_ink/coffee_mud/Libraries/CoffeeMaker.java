@@ -379,11 +379,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 	protected void possibleAddElectronicsManufacturers(final Item I, final Set<CMObject> custom)
 	{
-		if((I instanceof Electronics)
+		if((I instanceof Technical)
 		&&(custom!=null)
-		&&(!((Electronics)I).getManufacturerName().equalsIgnoreCase("RANDOM"))
-		&&(!custom.contains(((Electronics)I).getFinalManufacturer())))
-			custom.add(((Electronics)I).getFinalManufacturer());
+		&&(!((Technical)I).getManufacturerName().equalsIgnoreCase("RANDOM"))
+		&&(!custom.contains(((Technical)I).getFinalManufacturer())))
+			custom.add(((Technical)I).getFinalManufacturer());
 	}
 
 	protected void possibleAddElectronicsManufacturers(final MOB M, final Set<CMObject> custom)
@@ -604,8 +604,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			text.append(xmlLib.convertXMLtoTag("POWT",""+((Electronics)E).powerTarget()));
 			text.append(xmlLib.convertXMLtoTag("POWR",""+((Electronics)E).powerRemaining()));
 			text.append(xmlLib.convertXMLtoTag("EACT", ""+((Electronics)E).activated()));
-			text.append(xmlLib.convertXMLtoTag("MANUFACT", ((Electronics)E).getManufacturerName()));
-
+		}
+		if(E instanceof Technical)
+		{
+			text.append(xmlLib.convertXMLtoTag("MANUFACT", ((Technical)E).getManufacturerName()));
+			// tech level comes from ability
 		}
 		if(E instanceof ElecPanel)
 		{
@@ -3920,7 +3923,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				((Electronics)E).setPowerTarget(xml.getIntFromPieces(buf,"POWT"));
 			((Electronics)E).setPowerRemaining(xml.getIntFromPieces(buf,"POWR"));
 			((Electronics)E).activate(xml.getBoolFromPieces(buf, "EACT"));
-			((Electronics)E).setManufacturerName(xml.getValFromPieces(buf, "MANUFACT"));
+		}
+		if(E instanceof Technical)
+		{
+			((Technical)E).setManufacturerName(xml.getValFromPieces(buf, "MANUFACT"));
+			// techlevel comes from ability
 		}
 		if(E instanceof ElecPanel)
 		{

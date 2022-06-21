@@ -153,7 +153,7 @@ public interface TechLibrary extends CMLibrary
 	 * @param name the manufacturer to fetch
 	 * @return the manufacturer found, or null
 	 */
-	public Manufacturer getManufacturerOf(Electronics E, String name);
+	public Manufacturer getManufacturerOf(Technical E, String name);
 
 	/**
 	 * Returns an iterator of manufacturers
@@ -199,6 +199,6 @@ public interface TechLibrary extends CMLibrary
 	 * @param I An electronics item that needs fixing
 	 * @param newTechLevel the new tech level
 	 */
-	public void fixItemTechLevel(Electronics I, int newTechLevel);
+	public void fixItemTechLevel(Technical I, int newTechLevel);
 
 }

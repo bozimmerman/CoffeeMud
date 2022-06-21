@@ -87,7 +87,7 @@ public class GenTechItem extends StdTechItem
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"TECHLEVEL"};
+	private final static String[] MYCODES={"TECHLEVEL","MANUFACTURER"};
 	@Override
 	public String getStat(final String code)
 	{
@@ -97,6 +97,8 @@ public class GenTechItem extends StdTechItem
 		{
 		case 0:
 			return "" + techLevel();
+		case 1:
+			return getManufacturerName();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -112,6 +114,9 @@ public class GenTechItem extends StdTechItem
 		{
 		case 0:
 			setTechLevel(CMath.s_parseIntExpression(val));
+			break;
+		case 1:
+			this.setManufacturerName(val);
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Items.Software;
 import com.planet_ink.coffee_mud.Items.Basic.StdItem;
+import com.planet_ink.coffee_mud.Items.BasicTech.GenElecContainer;
 import com.planet_ink.coffee_mud.Items.BasicTech.GenElecItem;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -94,6 +95,14 @@ public class GenSoftware extends StdProgram
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
+		else
+		switch(getInternalCodeNum(code))
+		{
+		case 0:
+			return getManufacturerName();
+		default:
+			break;
+		}
 		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 	}
 
@@ -102,16 +111,45 @@ public class GenSoftware extends StdProgram
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
+		else
+		switch(getInternalCodeNum(code))
+		{
+		case 0:
+			setManufacturerName(val);
+			break;
+		default:
+			break;
+		}
 		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 	}
 
+	private final static String[] MYCODES={"MANUFACTURER"};
+
 	private static String[] codes=null;
+
+	private int getInternalCodeNum(final String code)
+	{
+		for(int i=0;i<MYCODES.length;i++)
+		{
+			if(code.equalsIgnoreCase(MYCODES[i]))
+				return i;
+		}
+		return -1;
+	}
 
 	@Override
 	public String[] getStatCodes()
 	{
-		if(codes==null)
-			codes=CMProps.getStatCodesList(CMParms.toStringArray(GenericBuilder.GenItemCode.values()),this);
+		if(codes!=null)
+			return codes;
+		final String[] MYCODES=CMProps.getStatCodesList(GenSoftware.MYCODES,this);
+		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
+		codes=new String[superCodes.length+MYCODES.length];
+		int i=0;
+		for(;i<superCodes.length;i++)
+			codes[i]=superCodes[i];
+		for(int x=0;x<MYCODES.length;i++,x++)
+			codes[i]=MYCODES[x];
 		return codes;
 	}
 

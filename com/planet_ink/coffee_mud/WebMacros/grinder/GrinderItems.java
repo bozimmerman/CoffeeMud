@@ -781,8 +781,8 @@ public class GrinderItems
 				case ISCLOAK:
 					break;
 				case MANUFACTURER:
-					if(I instanceof Electronics)
-						((Electronics)I).setManufacturerName(old);
+					if(I instanceof Technical)
+						((Technical)I).setManufacturerName(old);
 					break;
 				case POWCAPACITY:
 					if(I instanceof Electronics)

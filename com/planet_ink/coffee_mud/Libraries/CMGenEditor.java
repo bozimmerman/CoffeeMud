@@ -9796,10 +9796,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			if(me instanceof ClanItem)
 				genClanItem(mob,(ClanItem)me,++showNumber,showFlag);
+			if(me instanceof Technical)
+			{
+				final Technical E=(Technical)me;
+				E.setManufacturerName(prompt(mob, E.getManufacturerName(), ++showNumber, showFlag, "Manufacturer"));
+			}
 			if(me instanceof Electronics)
 			{
 				final Electronics E=(Electronics)me;
-				E.setManufacturerName(prompt(mob, E.getManufacturerName(), ++showNumber, showFlag, "Manufacturer"));
 				E.setPowerCapacity(prompt(mob, E.powerCapacity(), ++showNumber, showFlag, "Pow Capacity"));
 				E.setPowerRemaining(prompt(mob, E.powerRemaining(), ++showNumber, showFlag, "Pow Remaining"));
 				E.activate(prompt(mob, E.activated(), ++showNumber, showFlag, "Activated"));
@@ -10212,10 +10216,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genLevel(mob,me,++showNumber,showFlag);
 			genRejuv(mob,me,++showNumber,showFlag);
 			genCapacity(mob,me,++showNumber,showFlag);
+			if(me instanceof Technical)
+			{
+				final Technical E=(Technical)me;
+				E.setManufacturerName(prompt(mob, E.getManufacturerName(), ++showNumber, showFlag, "Manufacturer"));
+			}
 			if(me instanceof Electronics)
 			{
 				final Electronics E=(Electronics)me;
-				E.setManufacturerName(prompt(mob, E.getManufacturerName(), ++showNumber, showFlag, "Manufacturer"));
 				E.setPowerCapacity(prompt(mob, E.powerCapacity(), ++showNumber, showFlag, "Pow Capacity"));
 				E.setPowerRemaining(prompt(mob, E.powerRemaining(), ++showNumber, showFlag, "Pow Remaining"));
 				E.activate(prompt(mob, E.activated(), ++showNumber, showFlag, "Activated"));
@@ -10370,10 +10378,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 			if(me instanceof AmmunitionWeapon)
 				genWeaponAmmo(mob,me,++showNumber,showFlag);
+			if(me instanceof Technical)
+			{
+				final Technical E=(Technical)me;
+				E.setManufacturerName(prompt(mob, E.getManufacturerName(), ++showNumber, showFlag, "Manufacturer"));
+			}
 			if(me instanceof Electronics)
 			{
 				final Electronics E=(Electronics)me;
-				E.setManufacturerName(prompt(mob, E.getManufacturerName(), ++showNumber, showFlag, "Manufacturer"));
 				E.setPowerCapacity(prompt(mob, E.powerCapacity(), ++showNumber, showFlag, "Pow Capacity"));
 				E.setPowerRemaining(prompt(mob, E.powerRemaining(), ++showNumber, showFlag, "Pow Remaining"));
 				E.activate(prompt(mob, E.activated(), ++showNumber, showFlag, "Activated"));

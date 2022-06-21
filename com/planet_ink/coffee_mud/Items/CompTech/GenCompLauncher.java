@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.BasicTech;
+package com.planet_ink.coffee_mud.Items.CompTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -9,18 +9,16 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
-import com.planet_ink.coffee_mud.Items.Weapons.StdWeapon;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-
 /*
-   Copyright 221-2022 Bo Zimmerman
+   Copyright 2022-2022 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -34,18 +32,19 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenGun extends StdGun
+public class GenCompLauncher extends StdShipWeapon
 {
 	@Override
 	public String ID()
 	{
-		return "GenGun";
+		return "GenCompLauncher";
 	}
 
-	protected String	readableText="";
-	public GenGun()
+	public GenCompLauncher()
 	{
 		super();
+		setName("a generic launcher");
+		setDisplayText("a generic launcher is mounted here.");
 	}
 
 	@Override
@@ -57,19 +56,7 @@ public class GenGun extends StdGun
 	@Override
 	public String text()
 	{
-		return CMLib.coffeeMaker().getEnvironmentalMiscTextXML(this, false);
-	}
-
-	@Override
-	public String readableText()
-	{
-		return readableText;
-	}
-
-	@Override
-	public void setReadableText(final String text)
-	{
-		readableText = text;
+		return CMLib.coffeeMaker().getEnvironmentalMiscTextXML(this,false);
 	}
 
 	@Override
@@ -80,8 +67,8 @@ public class GenGun extends StdGun
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"MINRANGE","MAXRANGE","WEAPONTYPE","WEAPONCLASS",
-										   "TECHLEVEL", "AMMOTYPE","AMMOCAPACITY","MANUFACTURER"};
+	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","INSTFACT",
+										   "SDIRNUMPORTS","SDIRPORTS","RECHRATE"};
 
 	@Override
 	public String getStat(final String code)
@@ -91,21 +78,21 @@ public class GenGun extends StdGun
 		switch(getInternalCodeNum(code))
 		{
 		case 0:
-			return "" + minRange();
+			return "" + powerCapacity();
 		case 1:
-			return "" + maxRange();
+			return "" + activated();
 		case 2:
-			return "" + weaponDamageType();
+			return "" + powerRemaining();
 		case 3:
-			return "" + weaponClassification();
+			return "" + getManufacturerName();
 		case 4:
-			return "" + techLevel();
+			return "" + getInstalledFactor();
 		case 5:
-			return "" + this.ammunitionType();
+			return "" + getPermittedNumDirections();
 		case 6:
-			return "" + this.ammunitionCapacity();
+			return CMParms.toListString(getPermittedDirections());
 		case 7:
-			return getManufacturerName();
+			return "" + getRechargeRate();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -120,28 +107,28 @@ public class GenGun extends StdGun
 		switch(getInternalCodeNum(code))
 		{
 		case 0:
-			setRanges(CMath.s_parseIntExpression(val), maxRange());
+			setPowerCapacity(CMath.s_parseLongExpression(val));
 			break;
 		case 1:
-			setRanges(minRange(), CMath.s_parseIntExpression(val));
+			activate(CMath.s_bool(val));
 			break;
 		case 2:
-			setWeaponDamageType(CMath.s_parseListIntExpression(Weapon.TYPE_DESCS, val));
+			setPowerRemaining(CMath.s_parseLongExpression(val));
 			break;
 		case 3:
-			setWeaponClassification(CMath.s_parseListIntExpression(Weapon.CLASS_DESCS, val));
+			setManufacturerName(val);
 			break;
 		case 4:
-			setTechLevel(CMath.s_parseIntExpression(val));
+			setInstalledFactor((float)CMath.s_parseMathExpression(val));
 			break;
 		case 5:
-			setAmmunitionType(val);
+			setPermittedNumDirections(CMath.s_int(val));
 			break;
 		case 6:
-			setAmmoCapacity(CMath.s_parseIntExpression(val));
+			this.setPermittedDirections(CMParms.parseEnumList(ShipDirectional.ShipDir.class, val, ',').toArray(new ShipDirectional.ShipDir[0]));
 			break;
 		case 7:
-			setManufacturerName(val);
+			setRechargeRate((float)CMath.s_parseMathExpression(val));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
@@ -166,7 +153,7 @@ public class GenGun extends StdGun
 	{
 		if(codes!=null)
 			return codes;
-		final String[] MYCODES=CMProps.getStatCodesList(GenGun.MYCODES,this);
+		final String[] MYCODES=CMProps.getStatCodesList(GenCompLauncher.MYCODES,this);
 		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -180,15 +167,14 @@ public class GenGun extends StdGun
 	@Override
 	public boolean sameAs(final Environmental E)
 	{
-		if(!(E instanceof GenGun))
+		if(!(E instanceof GenCompLauncher))
 			return false;
-		final String[] codes=getStatCodes();
-		for(int i=0;i<codes.length;i++)
+		final String[] theCodes=getStatCodes();
+		for(int i=0;i<theCodes.length;i++)
 		{
-			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
+			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))
 				return false;
 		}
 		return true;
 	}
 }
-

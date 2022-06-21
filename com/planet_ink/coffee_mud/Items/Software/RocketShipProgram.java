@@ -2289,11 +2289,11 @@ public class RocketShipProgram extends GenShipProgram
 					E=finalWeaponToFire;
 					String code;
 
-					code=TechCommand.WEAPONTARGETSET.makeCommand(Double.valueOf(targetDirection[0]), Double.valueOf(targetDirection[1]));
+					code=TechCommand.TARGETSET.makeCommand(Double.valueOf(targetDirection[0]), Double.valueOf(targetDirection[1]));
 					msg=CMClass.getMsg(mob, finalWeaponToFire, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 					if(sendMessage(mob, finalWeaponToFire, msg, message))
 					{
-						code = TechCommand.WEAPONFIRE.makeCommand();
+						code = TechCommand.FIRE.makeCommand();
 						msg=CMClass.getMsg(mob, finalWeaponToFire, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 					}
 					else
