@@ -255,7 +255,10 @@ public class RocketShipProgram extends GenShipProgram
 			weapons=new Vector<TechComponent>(1);
 			for(final TechComponent E : stuff)
 			{
-				if(E.getTechType()==TechType.SHIP_WEAPON)
+				if((E.getTechType()==TechType.SHIP_WEAPON)
+				||((E.getTechType()==TechType.SHIP_LAUNCHER)
+					&&(E instanceof ElecPanel)
+					&&(((ElecPanel)E).panelType()==TechType.SHIP_WEAPON)))
 					weapons.add(E);
 			}
 		}
@@ -2260,18 +2263,21 @@ public class RocketShipProgram extends GenShipProgram
 				{
 					for(final TechComponent T : getShipWeapons())
 					{
-						if(T instanceof ShipDirectional)
+						if(T.activated())
 						{
-
-							final ShipDir dir = CMLib.space().getDirectionFromDir(ship.facing(), ship.roll(), targetDirection);
-							if(CMParms.contains(CMLib.space().getCurrentBattleCoveredDirections((ShipDirectional)T), dir))
+							if(T instanceof ShipDirectional)
 							{
-								finalWeaponToFire = T;
-								break;
+
+								final ShipDir dir = CMLib.space().getDirectionFromDir(ship.facing(), ship.roll(), targetDirection);
+								if(CMParms.contains(CMLib.space().getCurrentBattleCoveredDirections((ShipDirectional)T), dir))
+								{
+									finalWeaponToFire = T;
+									break;
+								}
 							}
+							else
+								finalWeaponToFire = T;
 						}
-						else
-							finalWeaponToFire = T;
 					}
 					if(finalWeaponToFire == null)
 					{
@@ -2288,13 +2294,22 @@ public class RocketShipProgram extends GenShipProgram
 				{
 					E=finalWeaponToFire;
 					String code;
-
-					code=TechCommand.TARGETSET.makeCommand(Double.valueOf(targetDirection[0]), Double.valueOf(targetDirection[1]));
+					code=TechCommand.TARGETSET.makeCommand(Long.valueOf(targetObj.coordinates()[0]),
+														   Long.valueOf(targetObj.coordinates()[1]),
+														   Long.valueOf(targetObj.coordinates()[2]));
 					msg=CMClass.getMsg(mob, finalWeaponToFire, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
-					if(sendMessage(mob, finalWeaponToFire, msg, message))
+					if((finalWeaponToFire.getTechType()!=Technical.TechType.SHIP_LAUNCHER)
+					||sendMessage(mob, finalWeaponToFire, msg, message))
 					{
-						code = TechCommand.FIRE.makeCommand();
+						code=TechCommand.AIMSET.makeCommand(Double.valueOf(targetDirection[0]), Double.valueOf(targetDirection[1]));
 						msg=CMClass.getMsg(mob, finalWeaponToFire, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+						if(sendMessage(mob, finalWeaponToFire, msg, message))
+						{
+							code = TechCommand.FIRE.makeCommand();
+							msg=CMClass.getMsg(mob, finalWeaponToFire, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+						}
+						else
+							msg=null;
 					}
 					else
 						msg=null;

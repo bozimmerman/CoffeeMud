@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenCompLauncher extends StdShipWeapon
+public class GenCompLauncher extends StdCompLauncher
 {
 	@Override
 	public String ID()

@@ -433,6 +433,37 @@ public class GenGraviticSensor extends GenElecCompSensor
 		};
 	}
 
+	protected boolean isHiddenFromSensors(final GalacticMap space, final LinkedList<Environmental> revList,
+										  final SpaceObject O, final SpaceObject hO)
+	{
+		final double[] hDirTo = space.getDirection(O, hO);
+		final long hDistance = space.getDistanceFrom(O, hO);
+		final BoundedCube hCube=O.getBounds().expand(hDirTo,hDistance);
+		for(final Iterator<Environmental> rb=revList.descendingIterator();rb.hasNext();)
+		{
+			final Environmental bE=rb.next();
+			if((bE instanceof SpaceObject)
+			&&(bE != hO)
+			&&(bE != O))
+			{
+				final SpaceObject bO=(SpaceObject)bE;
+				final long hL=hO.getMass();
+				final long bL=bO.getMass();
+				if(hL < bL) // if moon is lighter than then planet, proceed with hide check
+				{
+					if(hCube.intersects(bO.getBounds()))
+					{
+						// the projection from the ship to prospect hidden object, which we know
+						// appears lighter than the tested bO object, is also blocked BY
+						// the bO object.  Therefore, the prospect object IS hidden
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
 	@Override
 	protected List<? extends Environmental> getAllSensibleObjects()
 	{
@@ -441,7 +472,7 @@ public class GenGraviticSensor extends GenElecCompSensor
 			final SpaceObject O=CMLib.space().getSpaceObject(this, true);
 			if(O instanceof SpaceShip)
 			{
-				SpaceShip ship=(SpaceShip)O;
+				final SpaceShip ship=(SpaceShip)O;
 				if(ship.getIsDocked() !=null)
 				{
 					final SpaceObject shipO=CMLib.space().getSpaceObject(ship.getIsDocked(), true);
@@ -466,37 +497,40 @@ public class GenGraviticSensor extends GenElecCompSensor
 			&&(hE != O))
 			{
 				final SpaceObject hO=(SpaceObject)hE;
-				final double[] hDirTo = space.getDirection(O, hO);
-				final long hDistance = space.getDistanceFrom(O, hO);
-				final BoundedCube hCube=O.getBounds().expand(hDirTo,hDistance);
-				for(final Iterator<Environmental> rb=revList.descendingIterator();rb.hasNext();)
-				{
-					final Environmental bE=rb.next();
-					if((bE instanceof SpaceObject)
-					&&(bE != hE)
-					&&(bE != O))
-					{
-						final SpaceObject bO=(SpaceObject)bE;
-						final long hL=hO.getMass();
-						final long bL=bO.getMass();
-						if(hL < bL) // if moon is lighter than then planet, proceed with hide check
-						{
-							if(hCube.intersects(bO.getBounds()))
-							{
-								// the projection from the ship to prospect hidden object, which we know
-								// appears lighter than the tested bO object, is also blocked BY
-								// the bO object.  Therefore, the prospect object IS hidden
-								rh.remove();
-								break; // hidden by one thing is enough
-							}
-						}
-					}
-				}
+				if(isHiddenFromSensors(space, revList, O, hO))
+					rh.remove();
 			}
 		}
 		objs.retainAll(revList);
 		return objs;
 	}
+
+	@Override
+	protected boolean canPassivelySense(final CMMsg msg)
+	{
+		if(!super.canPassivelySense(msg))
+			return false;
+		final SpaceObject O = CMLib.space().getSpaceObject(this, true);
+		if((O!=null)
+		&&(msg.target()==O))
+			return true;
+		if(!msg.isOthers(CMMsg.MASK_MOVE))
+			return false;
+		if((!(msg.target() instanceof SpaceObject))
+		||(!isInSpace()))
+			return true;
+		final SpaceObject hO = (SpaceObject)msg.target();
+		final List<? extends Environmental> objs = super.getAllSensibleObjects();
+		if(!objs.contains(hO))
+			return false; // covers range and filters!
+		final LinkedList<Environmental> revList = new LinkedList<Environmental>();
+		revList.addAll(objs);
+		final GalacticMap space=CMLib.space();
+		if(isHiddenFromSensors(space, revList, O, hO))
+			return false;
+		return true;
+	}
+
 	@Override
 	public boolean sameAs(final Environmental E)
 	{

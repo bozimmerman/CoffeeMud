@@ -49,7 +49,7 @@ public class StdSmartTorpedo extends StdTorpedo
 		if(!super.tick(ticking, tickID))
 			return false;
 		if((ticking == this)
-		&& (tickID == Tickable.TICKID_SPACEWEAPON))
+		&& (tickID == Tickable.TICKID_BALLISTICK))
 		{
 			if((knownTarget() != null)
 			&& (isInSpace()))
@@ -58,8 +58,10 @@ public class StdSmartTorpedo extends StdTorpedo
 				final double[] diffDelta = CMLib.space().getFacingAngleDiff(direction(), dirTo); // starboard is -, port is +
 				if((Math.abs(diffDelta[0])+Math.abs(diffDelta[1]))>.02)
 				{
-					//CMLib.space().moveSpaceObject(coordinates, dirTo, tickID);
-					//TODO: do a thrust to change direction
+					double speed=this.speed()/2.0;
+					if(speed < 1)
+						speed = 1;
+					speed = CMLib.space().accelSpaceObject(dirTo, this.speed(), dirTo, speed);
 				}
 			}
 			return true;

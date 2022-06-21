@@ -34,6 +34,8 @@ public class StdTorpedo extends StdSpaceTechWeapon
 		super.properWornBitmap=0;
 		super.weaponClass=Weapon.CLASS_BLUNT;
 		super.weaponType=Weapon.TYPE_BURNING;
+		super.basePhyStats.setDamage(100);
+		super.phyStats.setDamage(100);
 		super.basePhyStats.setWeight(1000);
 		super.phyStats.setWeight(1000);
 	}
@@ -44,7 +46,7 @@ public class StdTorpedo extends StdSpaceTechWeapon
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((ticking == this)
-		&& (tickID == Tickable.TICKID_SPACEWEAPON))
+		&& (tickID == Tickable.TICKID_BALLISTICK))
 		{
 			if(timeTicking == null)
 				timeTicking = Long.valueOf(System.currentTimeMillis());

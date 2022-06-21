@@ -166,11 +166,9 @@ public class StdElecCompContainer extends StdElecContainer implements TechCompon
 
 	public static final boolean isAllWiringHot(final Electronics E)
 	{
-		if(E instanceof ElecPanel)
-			return isThisPanelActivated((ElecPanel)E);
 		if(E.container() instanceof ElecPanel)
 			return isThisPanelActivated((ElecPanel)E.container());
-		return E instanceof ShipEngine; // the only thing allowed to be non-paneled
+		return (E instanceof ShipEngine) || (E instanceof ElecPanel); // the only thing allowed to be non-paneled
 	}
 
 	@Override

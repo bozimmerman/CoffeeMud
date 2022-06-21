@@ -56,7 +56,7 @@ public class StdSpaceTechWeapon extends StdSpaceTech implements SpaceObject, Wea
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		if((ticking == this) && (tickID == Tickable.TICKID_SPACEWEAPON))
+		if((ticking == this) && (tickID == Tickable.TICKID_BALLISTICK))
 		{
 			this.destroy();
 			return false;

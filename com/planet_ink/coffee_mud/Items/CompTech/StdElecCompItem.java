@@ -195,7 +195,9 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 					return false;
 				}
 				else
-				if((!isAllWiringHot(this))&&(!(this instanceof ElecPanel)))
+				if((!isAllWiringHot(this))
+				&&(!(this instanceof ElecPanel))
+				&&(!(this instanceof Weapon)))
 				{
 					if(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
 						msg.source().tell(L("The panel containing @x1 is not activated or connected.",name()));

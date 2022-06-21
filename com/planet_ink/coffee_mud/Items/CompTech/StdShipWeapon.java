@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Thief.Thief_Superstition;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -215,7 +216,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 								powerSetting = powerCapacity();
 						}
 						else
-						if(command == TechCommand.TARGETSET)
+						if(command == TechCommand.AIMSET)
 						{
 							final SpaceObject ship = CMLib.space().getSpaceObject(this, true);
 							if(ship == null)
@@ -335,9 +336,9 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 								((Technical)weaponO).setTechLevel(techLevel());
 								((Technical)weaponO).basePhyStats().setWeight(0);
 								((Technical)weaponO).phyStats().setWeight(0);
-								((Technical)weaponO).basePhyStats().setDamage(phyStats().damage());
-								((Technical)weaponO).phyStats().setDamage(phyStats().damage());
-								CMLib.threads().startTickDown(weaponO, Tickable.TICKID_SPACEWEAPON, 10);
+								((Technical)weaponO).basePhyStats().setDamage((int)Math.round(CMath.mul(phyStats().damage(),super.getComputedEfficiency())));
+								((Technical)weaponO).phyStats().setDamage((int)Math.round(CMath.mul(phyStats().damage(),super.getComputedEfficiency())));
+								CMLib.threads().startTickDown(weaponO, Tickable.TICKID_BALLISTICK, 10);
 								CMLib.space().addObjectToSpace(weaponO, firstCoords);
 								setPowerRemaining(0);
 							}

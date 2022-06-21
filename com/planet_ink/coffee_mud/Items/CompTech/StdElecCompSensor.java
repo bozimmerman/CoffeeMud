@@ -83,6 +83,24 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 		return fbList;
 	}
 
+	protected Item getHostItem()
+	{
+		final SpaceObject O=CMLib.space().getSpaceObject(this, true);
+		if(O instanceof Boardable)
+			return ((Boardable)O).getBoardableItem();
+		if(O instanceof Item)
+			return (Item)O;
+		return null;
+	}
+
+	protected SpaceShip getSpaceShip()
+	{
+		final Item I=getHostItem();
+		if(I instanceof SpaceShip)
+			return (SpaceShip)I;
+		return null;
+	}
+
 	protected boolean isInSpace()
 	{
 		final SpaceObject O=CMLib.space().getSpaceObject(this, true);

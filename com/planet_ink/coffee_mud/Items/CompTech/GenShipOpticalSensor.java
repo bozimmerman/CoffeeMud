@@ -59,6 +59,55 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 		return SpaceObject.Distance.Parsec.dm;
 	}
 
+	protected boolean isHiddenFromSensors(final GalacticMap space, final LinkedList<Environmental> revList,
+										  final SpaceObject O, final SpaceObject hO,
+											final Map<Environmental, Double> visualRadiuses)
+	{
+		final double[] hDirTo = space.getDirection(O, hO);
+		final long hDistance = space.getDistanceFrom(O, hO);
+		final BoundedCube hCube=O.getBounds().expand(hDirTo,hDistance);
+		for(final Iterator<Environmental> rb=revList.descendingIterator();rb.hasNext();)
+		{
+			final Environmental bE=rb.next();
+			if((bE instanceof SpaceObject)
+			&&(bE != hO)
+			&&(bE != O))
+			{
+				final Double hL=visualRadiuses.get(hO);
+				final Double bL=visualRadiuses.get(bE);
+				if(hL.doubleValue() < bL.doubleValue()) // if moon is smaller than planet, proceed with hide check
+				{
+					final SpaceObject bO=(SpaceObject)bE;
+					if(hCube.intersects(bO.getBounds()))
+						return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	protected Map<Environmental, Double> makeVisualRadiusMap(final GalacticMap space, final SpaceObject O, final LinkedList<Environmental> revList)
+	{
+		final Map<Environmental, Double> visualRadiuses=new HashMap<Environmental, Double>();
+		for(final Environmental E : revList)
+		{
+			if(E instanceof SpaceObject)
+			{
+				if(E == O)
+					visualRadiuses.put(O,Double.valueOf(0));
+				else
+				{
+					final SpaceObject sO=(SpaceObject)E;
+					final double objSize = sO.radius();
+					final double distanceDm = space.getDistanceFrom(O, sO);
+					final Double viewSize = Double.valueOf(Math.atan(objSize/distanceDm));
+					visualRadiuses.put(sO,viewSize);
+				}
+			}
+		}
+		return visualRadiuses;
+	}
+
 	@Override
 	protected List<? extends Environmental> getAllSensibleObjects()
 	{
@@ -67,25 +116,9 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 			final GalacticMap space=CMLib.space();
 			final SpaceObject O=space.getSpaceObject(this, true);
 			final List<? extends Environmental> objs = super.getAllSensibleObjects();
-			final Map<Environmental, Double> visualRadiuses=new HashMap<Environmental, Double>();
 			final LinkedList<Environmental> revList = new LinkedList<Environmental>();
 			revList.addAll(objs);
-			for(final Environmental E : revList)
-			{
-				if(E instanceof SpaceObject)
-				{
-					if(E == O)
-						visualRadiuses.put(O,Double.valueOf(0));
-					else
-					{
-						final SpaceObject sO=(SpaceObject)E;
-						final double objSize = sO.radius();
-						final double distanceDm = space.getDistanceFrom(O, sO);
-						final Double viewSize = Double.valueOf(Math.atan(objSize/distanceDm));
-						visualRadiuses.put(sO,viewSize);
-					}
-				}
-			}
+			final Map<Environmental, Double> visualRadiuses=this.makeVisualRadiusMap(space, O, revList);
 			for(final Iterator<Environmental> rh=revList.descendingIterator();rh.hasNext();)
 			{
 				final Environmental hE=rh.next();
@@ -93,32 +126,8 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 				&&(hE != O))
 				{
 					final SpaceObject hO=(SpaceObject)hE;
-					final double[] hDirTo = space.getDirection(O, hO);
-					final long hDistance = space.getDistanceFrom(O, hO);
-					final BoundedCube hCube=O.getBounds().expand(hDirTo,hDistance);
-					for(final Iterator<Environmental> rb=revList.descendingIterator();rb.hasNext();)
-					{
-						final Environmental bE=rb.next();
-						if((bE instanceof SpaceObject)
-						&&(bE != hE)
-						&&(bE != O))
-						{
-							final Double hL=visualRadiuses.get(hE);
-							final Double bL=visualRadiuses.get(bE);
-							if(hL.doubleValue() < bL.doubleValue()) // if moon is smaller than planet, proceed with hide check
-							{
-								final SpaceObject bO=(SpaceObject)bE;
-								if(hCube.intersects(bO.getBounds()))
-								{
-									// the projection from the ship the prospect hidden object, which we know
-									// appears smaller than the tested bO object, is also blocked BY
-									// the bO object.  Therefore, the prospect object IS hidden
-									rh.remove();
-									break; // hidden by one thing is enough
-								}
-							}
-						}
-					}
+					if(isHiddenFromSensors(space, revList, O, hO, visualRadiuses))
+						rh.remove();
 				}
 			}
 			objs.retainAll(revList);
@@ -159,6 +168,33 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 				found.add(I);
 		}
 		return found;
+	}
+
+	@Override
+	protected boolean canPassivelySense(final CMMsg msg)
+	{
+		if(!super.canPassivelySense(msg))
+			return false;
+		final SpaceObject O = CMLib.space().getSpaceObject(this, true);
+		if((O!=null)
+		&&(msg.target()==O))
+			return true;
+		if(!msg.isOthers(CMMsg.MASK_EYES))
+			return false;
+		if((!(msg.target() instanceof SpaceObject))
+		||(!isInSpace()))
+			return true;
+		final SpaceObject hO = (SpaceObject)msg.target();
+		final List<? extends Environmental> objs = super.getAllSensibleObjects();
+		if(!objs.contains(hO))
+			return false; // covers range and filters!
+		final GalacticMap space=CMLib.space();
+		final LinkedList<Environmental> revList = new LinkedList<Environmental>();
+		revList.addAll(objs);
+		final Map<Environmental, Double> visualRadiuses=makeVisualRadiusMap(space, O, revList);
+		if(isHiddenFromSensors(space, revList, O, hO, visualRadiuses))
+			return false;
+		return true;
 	}
 
 	@Override

@@ -188,7 +188,8 @@ public interface Technical extends Item
 		AIRREFRESH(Double.class, Integer.class),
 		POWERSET(Long.class),
 		DIRSET(ShipDirectional.ShipDir.class),
-		TARGETSET(Double.class,Double.class),
+		AIMSET(Double.class,Double.class),
+		TARGETSET(Long.class,Long.class,Long.class),
 		FIRE(),
 		SHIELDSET(ShipDir.class,Integer.class),
 		GRAVITYCHANGE(Boolean.class);

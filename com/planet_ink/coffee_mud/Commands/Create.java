@@ -327,7 +327,9 @@ public class Create extends StdCommand
 
 		if(newItem.subjectToWearAndTear())
 			newItem.setUsesRemaining(100);
-		if(newItem instanceof SpaceObject)
+		if((newItem instanceof SpaceObject)
+		&&(!(newItem instanceof Weapon))
+		&&(!(newItem instanceof SpaceShip)))
 		{
 			CMLib.space().addObjectToSpace(((SpaceObject)newItem), coordinates);
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 appears in the sky.",newItem.name()));

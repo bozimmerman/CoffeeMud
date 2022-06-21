@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Items.CompTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -53,6 +54,7 @@ public class StdCompLauncher extends StdElecCompContainer implements ElecPanel, 
 	private volatile Reference<SpaceShip>	myShip			= null;
 	private volatile long					powerSetting	= Integer.MAX_VALUE;
 	private final double[]					targetDirection	= new double[] { 0.0, 0.0 };
+	private volatile SpaceObject			targetSet		= null;
 
 	public StdCompLauncher()
 	{
@@ -259,6 +261,39 @@ public class StdCompLauncher extends StdElecCompContainer implements ElecPanel, 
 						else
 						if(command == TechCommand.TARGETSET)
 						{
+							targetSet=null;
+							final SpaceObject ship = CMLib.space().getSpaceObject(this, true);
+							if(ship == null)
+							{
+								reportError(this, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control syntax failure.",me.name(mob)));
+								return;
+							}
+							final long[] proposedLoc=new long[] {((Long)parms[0]).longValue(), ((Long)parms[1]).longValue(), ((Long)parms[2]).longValue()};
+							final List<SpaceObject> nearbies = CMLib.space().getSpaceObjectsByCenterpointWithin(proposedLoc, 0, 1000);
+							SpaceObject nearestObj = null;
+							long closest = Long.MAX_VALUE;
+							for(final SpaceObject obj : nearbies)
+							{
+								if(obj != ship)
+								{
+									final long dist=CMLib.space().getDistanceFrom(proposedLoc, obj.coordinates());
+									if(dist < closest)
+									{
+										nearestObj = obj;
+										closest = dist;
+									}
+								}
+							}
+							if(nearestObj == null)
+							{
+								reportError(this, controlI, mob, null, lang.L("@x1 did not lock on.",me.name(mob)));
+								return;
+							}
+							targetSet=nearestObj;
+						}
+						else
+						if(command == TechCommand.AIMSET)
+						{
 							final SpaceObject ship = CMLib.space().getSpaceObject(this, true);
 							if(ship == null)
 								reportError(this, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control syntax failure.",me.name(mob)));
@@ -291,6 +326,12 @@ public class StdCompLauncher extends StdElecCompContainer implements ElecPanel, 
 								reportError(this, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control syntax failure.",me.name(mob)));
 							else
 							{
+								final List<Item> contents=getContents();
+								if(contents.size()==0)
+								{
+									reportError(this, controlI, mob, null, lang.L("Failure: @x1: empty.",me.name(mob)));
+									return;
+								}
 								if(ship instanceof SpaceShip)
 								{
 									final ShipDir dir = CMLib.space().getDirectionFromDir(((SpaceShip)ship).facing(), ((SpaceShip)ship).roll(), targetDirection);
@@ -300,9 +341,62 @@ public class StdCompLauncher extends StdElecCompContainer implements ElecPanel, 
 										return;
 									}
 								}
-								//CMLib.threads().startTickDown(weaponO, Tickable.TICKID_BEAMWEAPON, 10);
-								//CMLib.space().addObjectToSpace(weaponO, firstCoords);
+								final Item launchedI=contents.get(0);
+								if(launchedI.owner() != null)
+								{
+									launchedI.owner().delItem(launchedI);
+									launchedI.setOwner(null);
+								}
+								CMLib.threads().startTickDown(launchedI, Tickable.TICKID_BALLISTICK, 1000, 1);
+								final boolean inSpace = CMLib.space().isObjectInSpace(ship);
+								if(inSpace)
+								{
+									if(launchedI instanceof SpaceObject)
+									{
+										final SpaceObject launchedO=(SpaceObject)launchedI;
+										launchedO.setKnownSource(ship);
+										launchedO.setKnownTarget(targetSet);
+										double launchSpeed = SpaceObject.VELOCITY_SOUND;
+										if(launchedI.phyStats().speed()>launchSpeed)
+											launchSpeed = launchedI.phyStats().speed();
+										if(launchedO.speed() > launchSpeed)
+											launchSpeed = launchedO.speed();
+										final int accellerationOfShipInSameDirectionAsWeapon = 4;
+										final long[] firstCoords = CMLib.space().moveSpaceObject(ship.coordinates(), targetDirection,
+												(int)Math.round(ship.radius()+launchedO.radius()+ship.speed()+accellerationOfShipInSameDirectionAsWeapon));
+										launchedO.setCoords(firstCoords);
+										launchSpeed = (powerSetting/100.0) * launchSpeed * getComputedEfficiency();
+										launchedO.setSpeed(launchSpeed);
+										CMLib.space().addObjectToSpace(launchedO, firstCoords);
+									}
+									else
+									{
+										launchedI.destroy();
+									}
+								}
+								else
+								if(ship instanceof SpaceShip)
+								{
+									Room R=((SpaceShip)ship).getIsDocked();
+									if(R==null)
+										R=CMLib.map().roomLocation(((SpaceShip)ship).getBoardableItem());
+									if(R==null)
+									{
+										launchedI.destroy();
+										reportError(this, controlI, mob, null, lang.L("Failure: @x1: Could not launch @x2",me.name(mob),launchedI.name(mob)));
+										return;
+									}
+									R.showHappens(CMMsg.MSG_OK_VISUAL, L("@x1 flies out of @x2.",launchedI.name(mob),ship.name()));
+									R.addItem(launchedI, Expire.Player_Drop);
+								}
+								else
+								{
+									launchedI.destroy();
+									reportError(this, controlI, mob, null, lang.L("Failure: @x1: Could not launch @x2",me.name(mob),launchedI.name(mob)));
+									return;
+								}
 								setPowerRemaining(0);
+								targetSet=null;
 							}
 						}
 						else

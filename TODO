@@ -2,7 +2,6 @@ BUGS/UNTESTED STUFF:
   *.
 
 TECH TODO:
-   *. make ship (torpedo) launchers and (torpedo) containers-- see tech doc
    *. do damage control system for software
    *. do diagnostic system for software that reveals ALL
    *. make ship impulse and warp engines -- see tech doc
