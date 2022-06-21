@@ -130,12 +130,16 @@ public class ColorSet extends StdCommand
 			final int c=element.second.intValue();
 			if(c<128)
 			{
-				if(!clookup[0][c].equals(common[c]))
+				if((clookup[0]==null)
+				||(clookup[0][c]==null)
+				||(!clookup[0][c].equals(common[c])))
 					newChanges+=((char)c)+CMLib.color().translateANSItoCMCode(clookup[0][c])+"#";
 			}
 			else
 			{
-				if(!clookup[0][c].equals(common['Q']))
+				if((clookup[0]==null)
+				||(clookup[0][c]==null)
+				||(!clookup[0][c].equals(common['Q'])))
 					newChanges+="("+c+")"+CMLib.color().translateANSItoCMCode(clookup[0][c])+"#";
 			}
 		}
