@@ -3330,7 +3330,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genSpeed(final MOB mob, final Physical P, final int showNumber, final int showFlag) throws IOException
 	{
-		P.basePhyStats().setSpeed(prompt(mob, P.basePhyStats().speed(), showNumber, showFlag, "Actions/Attacks per tick"));
+		if(P instanceof SpaceObject)
+			P.basePhyStats().setSpeed(prompt(mob, P.basePhyStats().speed(), showNumber, showFlag, "Launch Speed (dm/tick)"));
+		else
+			P.basePhyStats().setSpeed(prompt(mob, P.basePhyStats().speed(), showNumber, showFlag, "Actions/Attacks per tick"));
 	}
 
 	protected void genArmor(final MOB mob, final Physical P, final int showNumber, final int showFlag) throws IOException
@@ -5814,11 +5817,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			final StringBuilder buf=new StringBuilder();
 			buf.append(showNumber+". ");
 			buf.append(L("Radius: @x1, Coords in space: @x2\n\r",CMLib.english().sizeDescShort(E.radius()),CMLib.english().coordDescShort(E.coordinates())));
-			buf.append(showNumber+". Moving: ");
+			buf.append(L("@x1. Moving: ",CMStrings.SPACES.substring(0,(""+showNumber).length())));
 			if(E.speed()<=0)
-				buf.append("no\n\r");
+				buf.append("no");
 			else
-				buf.append(CMLib.english().speedDescShort(E.speed())+", Direction: "+CMLib.english().directionDescShort(E.direction())+"\n\r");
+				buf.append(CMLib.english().speedDescShort(E.speed())+", Direction: "+CMLib.english().directionDescShort(E.direction()));
 			mob.tell(buf.toString());
 			return;
 		}
@@ -9877,6 +9880,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				genSpaceStuff(mob,spaceArea,++showNumber,showFlag);
 				if(me instanceof SpaceObject.SpaceGateway)
 					genSpaceGate(mob,(SpaceObject.SpaceGateway)me,++showNumber,showFlag);
+				if(me instanceof Weapon)
+					genSpeed(mob,me,++showNumber,showFlag);
 			}
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
@@ -10389,6 +10394,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				E.setPowerCapacity(prompt(mob, E.powerCapacity(), ++showNumber, showFlag, "Pow Capacity"));
 				E.setPowerRemaining(prompt(mob, E.powerRemaining(), ++showNumber, showFlag, "Pow Remaining"));
 				E.activate(prompt(mob, E.activated(), ++showNumber, showFlag, "Activated"));
+			}
+			if(me instanceof SpaceObject)
+			{
+				genSpaceStuff(mob,(SpaceObject)me,++showNumber,showFlag);
+				if(me instanceof SpaceObject.SpaceGateway)
+					genSpaceGate(mob,(SpaceObject.SpaceGateway)me,++showNumber,showFlag);
+				genSpeed(mob,me,++showNumber,showFlag);
 			}
 			genRejuv(mob,me,++showNumber,showFlag);
 			if(((!(me instanceof AmmunitionWeapon)) || (!((AmmunitionWeapon)me).requiresAmmunition()))

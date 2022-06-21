@@ -38,6 +38,8 @@ public class StdTorpedo extends StdSpaceTechWeapon
 		super.phyStats.setDamage(100);
 		super.basePhyStats.setWeight(1000);
 		super.phyStats.setWeight(1000);
+		super.basePhyStats.setSpeed(1000);
+		super.phyStats.setSpeed(1000);
 	}
 
 	protected volatile Long timeTicking = null;
