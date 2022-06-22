@@ -359,7 +359,8 @@ public class CommonSkill extends StdAbility
 		{
 			I=mob.getItem(i);
 			if((I instanceof Recipe)
-			&&(((Recipe)I).getCommonSkillID().equalsIgnoreCase(ID())))
+			&&(((Recipe)I).getCommonSkillID().equalsIgnoreCase(ID()))
+			&&(CMLib.flags().flaggedAffects(I, Ability.FLAG_UNCRAFTABLE).size()==0))
 			{
 				if(!clonedYet)
 				{
@@ -877,7 +878,7 @@ public class CommonSkill extends StdAbility
 		for(final Integer R : supportedResourcesMap())
 		{
 			// basically check if lower 8 bits are 0, therefore its a raw mat
-			if((R.intValue() & RawMaterial.MATERIAL_MASK)==R.intValue()) 
+			if((R.intValue() & RawMaterial.MATERIAL_MASK)==R.intValue())
 			{
 				if((I.material()& RawMaterial.MATERIAL_MASK)==R.intValue())
 					return true;

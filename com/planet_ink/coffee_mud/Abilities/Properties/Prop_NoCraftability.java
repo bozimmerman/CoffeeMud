@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -58,9 +59,40 @@ public class Prop_NoCraftability extends Property
 		return "Uncraftable";
 	}
 
+	protected CompiledZMask		mask	= null;
+	protected volatile Boolean	active	= null;
+
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_UNCRAFTABLE|Ability.FLAG_NODISENCHANT;
+		if((active == null)
+		||(active.booleanValue()))
+			return Ability.FLAG_UNCRAFTABLE|Ability.FLAG_NODISENCHANT;
+		else
+			return 0;
+	}
+
+	@Override
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected, affectableStats);
+		if(active == null)
+		{
+			if(mask != null)
+				active=Boolean.valueOf(!CMLib.masking().maskCheck(mask, affected, false)); // yes, the false is intentional
+			else
+				active=Boolean.TRUE;
+		}
+	}
+
+	@Override
+	public void setMiscText(final String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		// in the future, ;
+		active = null;
+		mask = null;
+		if(newMiscText.trim().length()>0)
+			mask = CMLib.masking().maskCompile(newMiscText);
 	}
 }

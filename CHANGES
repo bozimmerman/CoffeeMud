@@ -25,6 +25,7 @@
  24. Players can now rush thier crafting, as per the new expertise, w/o learning it
  25. New Generic ability type: GenWrightSkill - for making large construction skills
  26. ShipWright, Caravan Building, and Clan Caravan Building now have editable recipes
+ 27. Prop_NoCraftability can now be applies to recipes, and has a zappermask.
 
 # Build 5.9.12 Release 1/17/2022
   *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG

@@ -1767,19 +1767,13 @@ public class CraftingSkill extends GatheringSkill
 		||(!CMLib.flags().isRemovable(I))
 		||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ITEMNORUIN))
 		||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ITEMNOWISH))
-		||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_UNLOCATABLE)))
+		||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_UNLOCATABLE))
+		||(CMLib.flags().flaggedAffects(I, Ability.FLAG_UNCRAFTABLE).size()>0))
 			return false;
-		for(int i=0;i<I.numEffects();i++)
+		for(final Ability flagA : CMLib.flags().flaggedAffects(I, Ability.FLAG_ZAPPER))
 		{
-			final Ability A=I.fetchEffect(i);
-			if(A!=null)
-			{
-				if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)
-				&&(CMath.bset( A.flags(), Ability.FLAG_ZAPPER )))
-					return false;
-				if(CMath.bset( A.flags(), Ability.FLAG_UNCRAFTABLE ))
-					return false;
-			}
+			if((flagA.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)
+				return false;
 		}
 		for(int i=0;i<I.numBehaviors();i++)
 		{
