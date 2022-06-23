@@ -2,6 +2,7 @@ BUGS/UNTESTED STUFF:
   *.
 
 TECH TODO:
+   *. test smart torpedos against moving targets
    *. do damage control system for software
    *. do diagnostic system for software that reveals ALL
    *. make ship impulse and warp engines -- see tech doc
@@ -27,6 +28,7 @@ TECH TODO:
    *. Giant Space Mobs! Including Space Mobs that have rooms inside.
    *. Droids! Powered slave mobs.
    *. Radiation Props: Alpha (damage), Beta (?!), Gamma (Mutation if in too long)
+   *. make course plotter that goes around things in the way, and also give to smart torpedos
 
 NON-TECH (Long Term) TODO:
    *. Builder Achievements, Archon Achievements

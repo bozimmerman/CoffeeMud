@@ -510,7 +510,8 @@ public class GenGraviticSensor extends GenElecCompSensor
 	{
 		if(!super.canPassivelySense(msg))
 			return false;
-		final SpaceObject O = CMLib.space().getSpaceObject(this, true);
+		final GalacticMap space=CMLib.space();
+		final SpaceObject O = space.getSpaceObject(this, true);
 		if((O!=null)
 		&&(msg.target()==O))
 			return true;
@@ -520,14 +521,25 @@ public class GenGraviticSensor extends GenElecCompSensor
 		||(!isInSpace()))
 			return true;
 		final SpaceObject hO = (SpaceObject)msg.target();
-		final List<? extends Environmental> objs = super.getAllSensibleObjects();
-		if(!objs.contains(hO))
-			return false; // covers range and filters!
-		final LinkedList<Environmental> revList = new LinkedList<Environmental>();
-		revList.addAll(objs);
-		final GalacticMap space=CMLib.space();
-		if(isHiddenFromSensors(space, revList, O, hO))
+		final long hDistance = space.getDistanceFrom(O, hO);
+		if(hDistance > getSensorMaxRange())
 			return false;
+		final Filterer<Environmental> filter = this.getSensedObjectFilter();
+		if(!filter.passesFilter(hO))
+			return false;
+		final double[] hDirTo = space.getDirection(O, hO);
+		final BoundedCube hCube=O.getBounds().expand(hDirTo,hDistance);
+		final List<SpaceObject> objs = space.getSpaceObjectsInBound(hCube);
+		for(final SpaceObject cO : objs)
+		{
+			if((cO != O)
+			&& (cO != hO)
+			&&(hCube.intersects(cO.getBounds())))
+			{
+				if(cO.getMass() >= hO.getMass()) // an object is hiding the target object
+					return false;
+			}
+		}
 		return true;
 	}
 

@@ -26,7 +26,6 @@ public class WeakLinkSetList<T> implements List<T>
 	private final AtomicLong					lastCleaning	= new AtomicLong(0);
 	private static final long					cleanIntervalMs	= 30000;
 
-	private static final long serialVersionUID = 2104498926040660576L;
 	private final TreeMap<Integer,List<WeakReference<T>>> set;
 
 	public WeakLinkSetList()

@@ -38,7 +38,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdCompLauncher extends StdElecCompContainer implements ElecPanel, TechComponent, ShipDirectional
+public class StdCompLauncher extends StdElecCompContainer implements TechComponent, ShipDirectional
 {
 	@Override
 	public String ID()
@@ -48,7 +48,6 @@ public class StdCompLauncher extends StdElecCompContainer implements ElecPanel, 
 
 	private ShipDir[]						allPossDirs		= new ShipDir[] { ShipDir.FORWARD };
 	private int								numPermitDirs	= 1;
-	protected volatile int					powerNeeds		= 0;
 	protected volatile String				circuitKey		= null;
 	private volatile ShipDir[]				currCoverage	= null;
 	private volatile Reference<SpaceShip>	myShip			= null;
@@ -65,6 +64,7 @@ public class StdCompLauncher extends StdElecCompContainer implements ElecPanel, 
 		super.setDoorsNLocks(true, true, true,false, false,false);
 		basePhyStats().setSensesMask(basePhyStats().sensesMask()|PhyStats.SENSE_ALWAYSCOMPRESSED|PhyStats.SENSE_ITEMNOTGET);
 		this.openDelayTicks=0;
+		super.containType=Container.CONTAIN_SSCOMPONENTS;
 		this.recoverPhyStats();
 	}
 
@@ -84,21 +84,21 @@ public class StdCompLauncher extends StdElecCompContainer implements ElecPanel, 
 	protected TechType	panelType	= TechType.ANY;
 
 	@Override
-	public TechType panelType()
+	public long powerTarget()
 	{
-		return panelType;
+		return powerSetting > powerCapacity ? powerCapacity : powerSetting;
 	}
 
 	@Override
-	public void setPanelType(final TechType type)
+	public void setPowerTarget(final long capacity)
 	{
-		panelType = type;
+		powerSetting = capacity;
 	}
 
 	@Override
 	public int powerNeeds()
 	{
-		return powerNeeds;
+		return (int) Math.min((int) Math.min(powerCapacity,powerSetting) - power, (int)Math.round((double)powerCapacity*getRechargeRate()));
 	}
 
 	protected synchronized SpaceShip getMyShip()
@@ -112,6 +112,12 @@ public class StdCompLauncher extends StdElecCompContainer implements ElecPanel, 
 				myShip = new WeakReference<SpaceShip>(null);
 		}
 		return myShip.get();
+	}
+
+	@Override
+	public boolean canContain(final Item I)
+	{
+		return (I instanceof SpaceObject)||(I instanceof Ammunition);
 	}
 
 	@Override
@@ -143,7 +149,8 @@ public class StdCompLauncher extends StdElecCompContainer implements ElecPanel, 
 		for(final Iterator<Computer> c=CMLib.tech().getComputers(circuitKey);c.hasNext();)
 		{
 			final Computer C=c.next();
-			if((controlI==null)||(C!=controlI.owner()))
+			if((controlI==null)
+			||(C!=controlI.owner()))
 			{
 				final CMMsg msg2=CMClass.getMsg(mob, C, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 				if(C.okMessage(mob, msg2))
@@ -165,17 +172,6 @@ public class StdCompLauncher extends StdElecCompContainer implements ElecPanel, 
 		if(!super.tick(ticking, tickID))
 			return false;
 		return true;
-	}
-
-	@Override
-	public boolean canContain(final Item I)
-	{
-		if(!super.canContain(I))
-			return false;
-		if((I instanceof Technical)
-		&&((panelType()==((Technical)I).getTechType()))||(panelType()==Technical.TechType.ANY))
-			return true;
-		return false;
 	}
 
 	@Override
@@ -236,7 +232,10 @@ public class StdCompLauncher extends StdElecCompContainer implements ElecPanel, 
 				final Software controlI=(msg.tool() instanceof Software)?((Software)msg.tool()):null;
 				final MOB mob=msg.source();
 				if(msg.targetMessage()==null)
+				{
+					powerSetting = powerCapacity();
 					this.activate(true);
+				}
 				else
 				{
 					final String[] parts=msg.targetMessage().split(" ");
@@ -357,15 +356,14 @@ public class StdCompLauncher extends StdElecCompContainer implements ElecPanel, 
 										launchedO.setKnownSource(ship);
 										launchedO.setKnownTarget(targetSet);
 										double launchSpeed = SpaceObject.VELOCITY_SOUND;
-										if(launchedI.phyStats().speed()>launchSpeed)
-											launchSpeed = launchedI.phyStats().speed();
-										if(launchedO.speed() > launchSpeed)
+										if(launchedO.speed() > 0)
 											launchSpeed = launchedO.speed();
 										final int accellerationOfShipInSameDirectionAsWeapon = 4;
 										final long[] firstCoords = CMLib.space().moveSpaceObject(ship.coordinates(), targetDirection,
 												(int)Math.round(ship.radius()+launchedO.radius()+ship.speed()+accellerationOfShipInSameDirectionAsWeapon));
 										launchedO.setCoords(firstCoords);
-										launchSpeed = (powerSetting/100.0) * launchSpeed * getComputedEfficiency();
+										launchedO.setDirection(targetDirection);
+										launchSpeed = (power/100.0) * launchSpeed * getComputedEfficiency();
 										launchedO.setSpeed(launchSpeed);
 										CMLib.space().addObjectToSpace(launchedO, firstCoords);
 									}

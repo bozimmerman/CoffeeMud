@@ -613,6 +613,17 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
+	public List<SpaceObject> getSpaceObjectsInBound(final BoundedCube cube)
+	{
+		final List<SpaceObject> within=new ArrayList<SpaceObject>(1);
+		synchronized(space)
+		{
+			space.query(within, cube);
+		}
+		return within;
+	}
+
+	@Override
 	public List<SpaceObject> getSpaceObjectsWithin(final SpaceObject ofObj, final long minDistance, final long maxDistance)
 	{
 		final List<SpaceObject> within=new ArrayList<SpaceObject>(1);
@@ -715,8 +726,8 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		if(A.doubleValue()<0)
 			return ZERO;
 		final int SCALE=0;
-		BigDecimal x0 = new BigDecimal("0");
-		BigDecimal x1 = new BigDecimal(Math.sqrt(A.doubleValue()));
+		BigDecimal x0 = BigDecimal.valueOf(0);
+		BigDecimal x1 = BigDecimal.valueOf(Math.sqrt(A.doubleValue()));
 		int times=0;
 		while ((!x0.equals(x1))&&(++times<20))
 		{
@@ -726,6 +737,58 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			x1 = x1.divide(TWO, SCALE, RoundingMode.UP);
 		}
 		return x1;
+	}
+
+	@Override
+	public boolean canMaybeIntercept(final SpaceObject chaserO, final SpaceObject runnerO, final int maxTicks, final double maxSpeed)
+	{
+		final BoundedCube runB = runnerO.getBounds();
+		runB.expand(runnerO.direction(), Math.round(CMath.mul(runnerO.speed(),maxTicks)));
+		final BoundedCube chaB = runnerO.getBounds();
+		chaB.expand(chaserO.direction(), Math.round(CMath.mul(maxSpeed,maxTicks)));
+		return runB.intersects(chaB);
+	}
+
+	@Override
+	public Pair<double[],Long> calculateIntercept(final SpaceObject chaserO, final SpaceObject runnerO, final long maxChaserSpeed, final int maxTicks)
+	{
+		if(maxTicks < 1)
+			return null; // not possible, too late
+		double[] dirTo = getDirection(chaserO, runnerO);
+		long distance = getDistanceFrom(chaserO, runnerO);
+		if((maxChaserSpeed>0)
+		&&(runnerO.speed()>0))
+		{
+			long speedToUse = maxChaserSpeed;
+			if(distance < maxChaserSpeed)
+			{
+				speedToUse = distance;
+				return new Pair<double[], Long>(dirTo,Long.valueOf(speedToUse));
+			}
+			long[] runnerCoords = runnerO.coordinates();
+			long curTicks = Math.round(Math.ceil(CMath.div(distance, speedToUse)));
+			if(curTicks > maxTicks)
+				return null; // not enough time
+			long newTicks = curTicks;
+			curTicks = 0;
+			long tries = maxTicks;
+			while((curTicks != newTicks)
+			&&(--tries > 0))
+			{
+				curTicks = newTicks;
+				runnerCoords = moveSpaceObject(runnerO.coordinates(), runnerO.direction(), Math.round(runnerO.speed()) * curTicks);
+				dirTo = getDirection(chaserO.coordinates(), runnerCoords);
+				distance = getDistanceFrom(chaserO.coordinates(), runnerCoords);
+				newTicks = Math.round(Math.ceil(CMath.div(distance, speedToUse)));
+				if(newTicks > maxTicks)
+					return null; // not enough time
+			}
+			return new Pair<double[], Long>(dirTo,Long.valueOf(speedToUse));
+		}
+		else
+		if(chaserO.speed()>0) // runner isn't moving, so straight shot
+			return new Pair<double[], Long>(dirTo,Long.valueOf(maxChaserSpeed));
+		return null; // something is not
 	}
 
 	protected final double getDirDiffSum(final double[] d1, final double d2[])
@@ -842,11 +905,24 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		msg.setTool(E);
 	}
 
+	private static final Comparator<SpaceObject> speedSorter = new Comparator<SpaceObject>() {
+
+		@Override
+		public int compare(final SpaceObject o1, final SpaceObject o2)
+		{
+			if(o1.speed()==o2.speed())
+				return 0;
+			return (o1.speed()>o2.speed())?-1:1;
+		}
+	};
+
 	public void runSpace()
 	{
 		final boolean isDebuggingHARD=CMSecurity.isDebugging(DbgFlag.SPACEMOVES);
 		final boolean isDebugging=CMSecurity.isDebugging(DbgFlag.SPACESHIP)||isDebuggingHARD;
-		for(final Enumeration<SpaceObject> o = getSpaceObjects(); o.hasMoreElements(); )
+		final Vector<SpaceObject> space = new XVector<SpaceObject>(getSpaceObjects());
+		Collections.sort(space, speedSorter);
+		for(final Enumeration<SpaceObject> o = space.elements(); o.hasMoreElements(); )
 		{
 			final SpaceObject O=o.nextElement();
 			if(!(O instanceof Area))
@@ -859,18 +935,22 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 				BoundedCube cube=O.getBounds();
 				final double speed=O.speed();
 				final long[] startCoords=Arrays.copyOf(O.coordinates(),3);
+				final boolean moving;
 				if(speed>=1)
 				{
 					cube=cube.expand(O.direction(),(long)speed);
 					moveSpaceObject(O);
+					moving=true;
 				}
-				// why are we doing all this for an object that's not even moving?!  Because gravity?
+				else
+					moving=false;
+				// why are we doing all this for an object that's not even moving?!  Because gravity!
 				//TODO: passify stellar objects that never show up on each others gravitational map, for a period of time
 				boolean inAirFlag = false;
-				final List<SpaceObject> cOs=getSpaceObjectsWithin(O, 0, Math.max(4*SpaceObject.Distance.LightSecond.dm,Math.round(speed)));
+				final List<SpaceObject> cOs=getSpaceObjectsWithin(O, 0, Math.max(4*SpaceObject.Distance.LightSecond.dm,2*Math.round(speed)));
 				final long oMass = O.getMass();
 				// objects should already be sorted by closeness for good collision detection
-				if(isDebuggingHARD)
+				if(isDebuggingHARD && moving)
 					Log.debugOut("Space Object "+O.name()+" moved "+speed+" in dir " +CMLib.english().directionDescShort(O.direction())+" to "+CMLib.english().coordDescShort(O.coordinates()));
 
 				for(final SpaceObject cO : cOs)
@@ -880,7 +960,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 					&&(!O.amDestroyed()))
 					{
 						final double minDistance=getMinDistanceFrom(startCoords, O.coordinates(), cO.coordinates());
-						if(isDebuggingHARD)
+						if(isDebuggingHARD && moving)
 						{
 							final long dist = CMLib.space().getDistanceFrom(O, cO);
 							Log.debugOut("Space Object "+O.name()+" is "+CMLib.english().distanceDescShort(dist)+" from "+cO.Name()+", minDistance="+CMLib.english().distanceDescShort(Math.round(minDistance)));
@@ -894,10 +974,10 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 							accelSpaceObject(O, directionTo, gravitationalMove);
 							inAirFlag = true;
 						}
-						if((O instanceof Weapon)&&(isDebugging))
+						if((O instanceof Weapon)&&(isDebugging) && moving)
 						{
 							final long dist = CMLib.space().getDistanceFrom(O, cO);
-							Log.debugOut("SpaceShip Weapon "+O.Name()+" closest distance is "+minDistance+" to  object@("+CMParms.toListString(cO.coordinates())+"):<"+(O.radius()+cO.radius())+"/"+dist);
+							Log.debugOut("SpaceShip Weapon "+O.Name()+" closest distance is "+minDistance+" to "+cO.name()+"@("+CMParms.toListString(cO.coordinates())+"):<"+(O.radius()+cO.radius())+"/"+dist);
 						}
 						if ((minDistance<(O.radius()+cO.radius()))
 						&&((speed>0)||(cO.speed()>0))

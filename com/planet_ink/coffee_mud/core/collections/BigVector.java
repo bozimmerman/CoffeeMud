@@ -96,7 +96,7 @@ public class BigVector
 		if(A.doubleValue()<0)
 			return ZERO;
 		BigDecimal x0 = ZERO;
-		BigDecimal x1 = new BigDecimal(Math.sqrt(A.doubleValue()));
+		BigDecimal x1 = BigDecimal.valueOf(Math.sqrt(A.doubleValue()));
 		int times=0;
 		while ((!x0.equals(x1))&&(!x0.equals(ZERO))&&(++times<20))
 		{

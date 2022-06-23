@@ -3331,7 +3331,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genSpeed(final MOB mob, final Physical P, final int showNumber, final int showFlag) throws IOException
 	{
 		if(P instanceof SpaceObject)
-			P.basePhyStats().setSpeed(prompt(mob, P.basePhyStats().speed(), showNumber, showFlag, "Launch Speed (dm/tick)"));
+		{
+			if(P instanceof Weapon)
+				P.basePhyStats().setSpeed(prompt(mob, P.basePhyStats().speed(), showNumber, showFlag, "Max Speed (% of Light)"));
+		}
 		else
 			P.basePhyStats().setSpeed(prompt(mob, P.basePhyStats().speed(), showNumber, showFlag, "Actions/Attacks per tick"));
 	}

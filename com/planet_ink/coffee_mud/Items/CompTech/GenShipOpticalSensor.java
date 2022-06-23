@@ -61,7 +61,7 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 
 	protected boolean isHiddenFromSensors(final GalacticMap space, final LinkedList<Environmental> revList,
 										  final SpaceObject O, final SpaceObject hO,
-											final Map<Environmental, Double> visualRadiuses)
+										  final Map<Environmental, Double> visualRadiuses)
 	{
 		final double[] hDirTo = space.getDirection(O, hO);
 		final long hDistance = space.getDistanceFrom(O, hO);
@@ -176,7 +176,8 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 	{
 		if(!super.canPassivelySense(msg))
 			return false;
-		final SpaceObject O = CMLib.space().getSpaceObject(this, true);
+		final GalacticMap space = CMLib.space();
+		final SpaceObject O = space.getSpaceObject(this, true);
 		if((O!=null)
 		&&(msg.target()==O))
 			return true;
@@ -187,15 +188,28 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 		||(!isInSpace()))
 			return true;
 		final SpaceObject hO = (SpaceObject)msg.target();
-		final List<? extends Environmental> objs = super.getAllSensibleObjects();
-		if(!objs.contains(hO))
-			return false; // covers range and filters!
-		final GalacticMap space=CMLib.space();
-		final LinkedList<Environmental> revList = new LinkedList<Environmental>();
-		revList.addAll(objs);
-		final Map<Environmental, Double> visualRadiuses=makeVisualRadiusMap(space, O, revList);
-		if(isHiddenFromSensors(space, revList, O, hO, visualRadiuses))
+		final long hDistance = space.getDistanceFrom(O, hO);
+		if(hDistance > this.getSensorMaxRange())
 			return false;
+		final Filterer<Environmental> filter = this.getSensedObjectFilter();
+		if(!filter.passesFilter(hO))
+			return false;
+		final double[] hDirTo = space.getDirection(O, hO);
+		final BoundedCube hCube=O.getBounds().expand(hDirTo,hDistance);
+		final List<SpaceObject> objs = space.getSpaceObjectsInBound(hCube);
+		final double vO = Math.atan(hO.radius()/hDistance);
+		for(final SpaceObject cO : objs)
+		{
+			if((cO != O)
+			&& (cO != hO)
+			&&(hCube.intersects(cO.getBounds())))
+			{
+				final long cDistance = space.getDistanceFrom(O, cO);
+				final double vC = Math.atan(cO.radius()/cDistance);
+				if(vC >= vO) // an object is hiding the target object
+					return false;
+			}
+		}
 		return true;
 	}
 

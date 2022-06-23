@@ -168,7 +168,7 @@ public class StdElecCompContainer extends StdElecContainer implements TechCompon
 	{
 		if(E.container() instanceof ElecPanel)
 			return isThisPanelActivated((ElecPanel)E.container());
-		return (E instanceof ShipEngine) || (E instanceof ElecPanel); // the only thing allowed to be non-paneled
+		return !CMLib.flags().isGettable(E); // the only thing allowed to be non-paneled
 	}
 
 	@Override

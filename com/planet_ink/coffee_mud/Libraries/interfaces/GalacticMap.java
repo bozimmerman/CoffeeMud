@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -277,22 +278,22 @@ public interface GalacticMap extends CMLibrary
 	/**
 	 * Changes the given direction by the given delta variables.  Corrects any
 	 * crossover bounds, and checks the delta bounds.
-	 * 
+	 *
 	 * @param dir the current direction to change
 	 * @param delta0 the port/starboard delta
 	 * @param delta1 the ventral/dorsel delta
 	 */
 	public void changeDirection(final double[] dir, final double delta0, final double delta1);
-	
+
 	/**
 	 * Changes the given direction by the given delta variable.  Corrects any
 	 * crossover bounds, and checks the delta bounds.
-	 * 
+	 *
 	 * @param dir the current direction to change
 	 * @param delta the delta to change it by, + or -
 	 */
 	public void changeDirection(final double[] dir, final double[] delta);
-	
+
 	/**
 	 * Calculates the relative speed of two SpaceObjects to each other.
 	 * The math is based entirely on coordinates and speed, not direction,
@@ -388,6 +389,33 @@ public interface GalacticMap extends CMLibrary
 	public long[] moveSpaceObject(final long[] coordinates, final double[] direction, long speed);
 
 	/**
+	 * Returns the proper direction and speed to allow the given chaser to intercept the given runner.
+	 *
+	 * @see GalacticMap#canMaybeIntercept(SpaceObject, SpaceObject, int, double)
+	 *
+	 * @param chaserO the chasing object
+	 * @param runnerO the running object
+	 * @param maxChaserSpeed the max chasing speed
+	 * @param maxTicks the maximum number of movements
+	 * @return null if no intercept possible, or the new dir and speed
+	 */
+	public Pair<double[],Long> calculateIntercept(final SpaceObject chaserO, final SpaceObject runnerO, final long maxChaserSpeed, final int maxTicks);
+
+	/**
+	 * Returns whether the vectors described by the chaser and runners, their speeds, and the amount of time in
+	 * movement can even POSSIBLY intercept, because the two vectors overlap
+	 *
+	 * @see GalacticMap#calculateIntercept(SpaceObject, SpaceObject, long, long)
+	 *
+	 * @param chaserO the chasing object
+	 * @param runnerO the running object
+	 * @param maxTicks the maximum number of movements
+	 * @param maxSpeed the max speed of the chaser
+	 * @return true if there is a possible intercept, false otherwise
+	 */
+	public boolean canMaybeIntercept(final SpaceObject chaserO, final SpaceObject runnerO, final int maxTicks, double maxSpeed);
+
+	/**
 	 * Returns an enumeration of all object in the galactic space map.
 	 *
 	 * @see GalacticMap#getSpaceObjectEntries()
@@ -410,6 +438,7 @@ public interface GalacticMap extends CMLibrary
 	 * @see GalacticMap#getSpaceObjectsByCenterpointWithin(long[], long, long)
 	 * @see GalacticMap#findSpaceObject(String, boolean)
 	 * @see GalacticMap#getSpaceObject(CMObject, boolean)
+	 * @see GalacticMap#getSpaceObjectsInBound(BoundedCube)
 	 *
 	 * @return returns all of the objects in space
 	 */
@@ -424,6 +453,7 @@ public interface GalacticMap extends CMLibrary
 	 * @see GalacticMap#getSpaceObjectsByCenterpointWithin(long[], long, long)
 	 * @see GalacticMap#findSpaceObject(String, boolean)
 	 * @see GalacticMap#getSpaceObject(CMObject, boolean)
+	 * @see GalacticMap#getSpaceObjectsInBound(BoundedCube)
 	 *
 	 * @param ofObj the space object to use as a center point
 	 * @param minDistance the minimum distance to return
@@ -431,6 +461,20 @@ public interface GalacticMap extends CMLibrary
 	 * @return all objects matching the distance scan
 	 */
 	public List<SpaceObject> getSpaceObjectsWithin(SpaceObject ofObj, long minDistance, long maxDistance);
+
+	/**
+	 * Given a bounded cube, this will return all space objects within that cube.
+	 *
+	 * @see GalacticMap#getSpaceObjects()
+	 * @see GalacticMap#getSpaceObjectEntries()
+	 * @see GalacticMap#getSpaceObjectsByCenterpointWithin(long[], long, long)
+	 * @see GalacticMap#findSpaceObject(String, boolean)
+	 * @see GalacticMap#getSpaceObject(CMObject, boolean)
+	 *
+	 * @param cube the cube to look within
+	 * @return the objects in space in that cube
+	 */
+	public List<SpaceObject> getSpaceObjectsInBound(final BoundedCube cube);
 
 	/**
 	 * Given a center galactic coordinates, and a minimum and maximum distance from that coordinate, this will
@@ -441,6 +485,7 @@ public interface GalacticMap extends CMLibrary
 	 * @see GalacticMap#getSpaceObjectsWithin(SpaceObject, long, long)
 	 * @see GalacticMap#findSpaceObject(String, boolean)
 	 * @see GalacticMap#getSpaceObject(CMObject, boolean)
+	 * @see GalacticMap#getSpaceObjectsInBound(BoundedCube)
 	 *
 	 * @param centerCoordinates the full galactic coordinates of the center point
 	 * @param minDistance the minimum distance to return
@@ -458,6 +503,7 @@ public interface GalacticMap extends CMLibrary
 	 * @see GalacticMap#getSpaceObjectsWithin(SpaceObject, long, long)
 	 * @see GalacticMap#getSpaceObjectsByCenterpointWithin(long[], long, long)
 	 * @see GalacticMap#findSpaceObject(String, boolean)
+	 * @see GalacticMap#getSpaceObjectsInBound(BoundedCube)
 	 *
 	 * @param o the game object, of almost any sort (item, area, room, mob)
 	 * @param ignoreMobs true to return null on mobs, false otherwise
@@ -475,6 +521,7 @@ public interface GalacticMap extends CMLibrary
 	 * @see GalacticMap#getSpaceObjectsWithin(SpaceObject, long, long)
 	 * @see GalacticMap#getSpaceObjectsByCenterpointWithin(long[], long, long)
 	 * @see GalacticMap#getSpaceObject(CMObject, boolean)
+	 * @see GalacticMap#getSpaceObjectsInBound(BoundedCube)
 	 *
 	 * @param s the search string
 	 * @param exactOnly true to only match full terms, false for partial matches

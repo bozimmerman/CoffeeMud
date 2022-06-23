@@ -1,9 +1,24 @@
 package com.planet_ink.coffee_mud.Items.BasicTech;
 
-import com.planet_ink.coffee_mud.Items.interfaces.Weapon;
-import com.planet_ink.coffee_mud.core.CMLib;
-import com.planet_ink.coffee_mud.core.interfaces.SpaceObject;
-import com.planet_ink.coffee_mud.core.interfaces.Tickable;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
+import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.math.BigDecimal;
+import java.util.*;
 
 /*
 Copyright 2016-2022 Bo Zimmerman
@@ -35,13 +50,7 @@ public class StdSmartTorpedo extends StdTorpedo
 		setDisplayText("a smart torpedo is sitting here");
 	}
 
-	protected boolean isInSpace()
-	{
-		final SpaceObject O=CMLib.space().getSpaceObject(this, true);
-		if(O != null)//&&(this.powerRemaining() > this.powerNeeds()))
-			return CMLib.space().isObjectInSpace(O);
-		return false;
-	}
+	public volatile double[] targetDir = null;
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
@@ -51,17 +60,37 @@ public class StdSmartTorpedo extends StdTorpedo
 		if((ticking == this)
 		&& (tickID == Tickable.TICKID_BALLISTICK))
 		{
-			if((knownTarget() != null)
-			&& (isInSpace()))
+			final SpaceObject targetO=knownTarget();
+			if((targetO != null)
+			&& (isInSpace())
+			&&(super.timeTicking != null))
 			{
-				final double[] dirTo = CMLib.space().getDirection(this, knownTarget());
-				final double[] diffDelta = CMLib.space().getFacingAngleDiff(direction(), dirTo); // starboard is -, port is +
+				final GalacticMap space=CMLib.space();
+				final int maxTicks = (int)((maxChaseTimeMs-super.timeTicking.longValue())/CMProps.getTickMillis());
+				if((targetDir==null)
+					|| (!space.canMaybeIntercept(this, targetO, maxTicks, speed())))
+				{
+					final double maxSpeed = CMath.mul((phyStats().speed()/100.0), SpaceObject.VELOCITY_LIGHT);
+					final Pair<double[], Long> intercept = space.calculateIntercept(this, targetO, Math.round(maxSpeed), maxTicks);
+					if(intercept == null)
+					{
+						targetDir = this.direction;
+						if(speed()<maxSpeed)
+							this.setSpeed(space.accelSpaceObject(direction, this.speed(), targetDir, maxSpeed/8.0)); //TODO: acceleration!
+					}
+					else
+					{
+						this.setSpeed(intercept.second.longValue()); //TODO: acceleration?
+						this.targetDir = intercept.first;
+					}
+				}
+				final double[] diffDelta = space.getFacingAngleDiff(direction(), targetDir); // starboard is -, port is +
 				if((Math.abs(diffDelta[0])+Math.abs(diffDelta[1]))>.02)
 				{
-					double speed=this.speed()/2.0;
-					if(speed < 1)
-						speed = 1;
-					speed = CMLib.space().accelSpaceObject(dirTo, this.speed(), dirTo, speed);
+					double accel=this.speed()/8.0; // try to turn by accel 1/8 current speed
+					if(accel < 1)
+						accel = 1;
+					this.setSpeed(space.accelSpaceObject(direction, speed(), targetDir, accel));
 				}
 			}
 			return true;

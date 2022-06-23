@@ -247,6 +247,22 @@ public class RocketShipProgram extends GenShipProgram
 		return sensors;
 	}
 
+	protected boolean isWeaponLauncher(final TechComponent E)
+	{
+		if(E.getTechType()==TechType.SHIP_LAUNCHER)
+		{
+			if(!(E instanceof Container))
+				return false;
+			final List<Item> contents = ((Container)E).getContents();
+			if(contents.size()==0)
+				return true;
+			if(contents.get(0) instanceof Weapon)
+				return true;
+			return false;
+		}
+		return false;
+	}
+
 	protected synchronized List<TechComponent> getShipWeapons()
 	{
 		if(weapons == null)
@@ -256,9 +272,7 @@ public class RocketShipProgram extends GenShipProgram
 			for(final TechComponent E : stuff)
 			{
 				if((E.getTechType()==TechType.SHIP_WEAPON)
-				||((E.getTechType()==TechType.SHIP_LAUNCHER)
-					&&(E instanceof ElecPanel)
-					&&(((ElecPanel)E).panelType()==TechType.SHIP_WEAPON)))
+				||(isWeaponLauncher(E)))
 					weapons.add(E);
 			}
 		}
@@ -355,9 +369,9 @@ public class RocketShipProgram extends GenShipProgram
 		return findComponentByName(getShipSensors(), "SENSOR", name);
 	}
 
-	protected ShipWarComponent findWeaponByName(final String name)
+	protected TechComponent findWeaponByName(final String name)
 	{
-		return (ShipWarComponent)findComponentByName(getShipWeapons(), "WEAPON", name);
+		return findComponentByName(getShipWeapons(), "WEAPON", name);
 	}
 
 	protected ShipWarComponent findShieldByName(final String name)
@@ -1084,7 +1098,6 @@ public class RocketShipProgram extends GenShipProgram
 					final double diff = Math.abs(ticksToDecellerate-ticksToDestinationAtCurrentSpeed);
 					if((diff < 1) || (diff < Math.sqrt(ticksToDecellerate)))
 					{
-						//System.out.println("** Coast: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()+"/"+this.lastInject); //BZ:COMMENTMEOUT
 						final Double oldInject=this.lastInject;
 						final Double oldAccel=this.lastAcceleration;
 						performSimpleThrust(engineE,Double.valueOf(0.0), false);
@@ -1094,16 +1107,10 @@ public class RocketShipProgram extends GenShipProgram
 					}
 					else
 					if(ticksToDecellerate > ticksToDestinationAtCurrentSpeed)
-					{
-						//System.out.println("** Decelerate: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()); //BZ:COMMENTMEOUT
 						this.changeFacing(ship, CMLib.space().getOppositeDir(dirToPlanet));
-					}
 					else
 					if((ticksToDecellerate<50)||(diff > 10.0))
-					{
-						//System.out.println("** Accelerate: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()); //BZ:COMMENTMEOUT
 						this.changeFacing(ship, dirToPlanet);
-					}
 					final double targetAcceleration = this.targetAcceleration.doubleValue(); //
 					newInject=calculateMarginalTargetInjection(newInject, targetAcceleration);
 					if((targetAcceleration > 1.0) && (newInject.doubleValue()==0.0))
@@ -2251,7 +2258,7 @@ public class RocketShipProgram extends GenShipProgram
 				final String weapName = CMParms.combine(parsed,1);
 				if(weapName.length()>0)
 				{
-					final ShipWarComponent weapon = this.findWeaponByName(rest);
+					final TechComponent weapon = this.findWeaponByName(rest);
 					if(weapon == null)
 					{
 						super.addScreenMessage(L("Error: Unknown weapon name or command word '"+rest+"'.   Try HELP."));
@@ -2318,7 +2325,7 @@ public class RocketShipProgram extends GenShipProgram
 			else
 			if(uword.startsWith("WEAPON"))
 			{
-				final ShipWarComponent weapon = this.findWeaponByName(uword);
+				final TechComponent weapon = this.findWeaponByName(uword);
 				if(weapon == null)
 				{
 					super.addScreenMessage(L("Error: Unknown weapon name or command word '"+uword+"'.   Try HELP."));
