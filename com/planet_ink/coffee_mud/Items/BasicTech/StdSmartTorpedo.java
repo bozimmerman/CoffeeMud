@@ -66,7 +66,7 @@ public class StdSmartTorpedo extends StdTorpedo
 			&&(super.timeTicking != null))
 			{
 				final GalacticMap space=CMLib.space();
-				final int maxTicks = (int)((maxChaseTimeMs-super.timeTicking.longValue())/CMProps.getTickMillis());
+				final int maxTicks = (int)((maxChaseTimeMs-(System.currentTimeMillis()-super.timeTicking.longValue()))/CMProps.getTickMillis());
 				if((targetDir==null)
 					|| (!space.canMaybeIntercept(this, targetO, maxTicks, speed())))
 				{
@@ -80,12 +80,15 @@ public class StdSmartTorpedo extends StdTorpedo
 					}
 					else
 					{
-						this.setSpeed(intercept.second.longValue()); //TODO: acceleration?
+						if(speed()<intercept.second.longValue())
+							this.setSpeed(space.accelSpaceObject(direction, this.speed(), targetDir, maxSpeed/8.0)); //TODO: acceleration!
+						else
+							this.setSpeed(intercept.second.longValue());
 						this.targetDir = intercept.first;
 					}
 				}
 				final double[] diffDelta = space.getFacingAngleDiff(direction(), targetDir); // starboard is -, port is +
-				if((Math.abs(diffDelta[0])+Math.abs(diffDelta[1]))>.02)
+				if((Math.abs(diffDelta[0])+Math.abs(diffDelta[1]))>.0001)
 				{
 					double accel=this.speed()/8.0; // try to turn by accel 1/8 current speed
 					if(accel < 1)

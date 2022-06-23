@@ -74,7 +74,7 @@ public class StdTorpedo extends StdSpaceTechWeapon implements Ammunition
 				timeTicking = Long.valueOf(System.currentTimeMillis());
 				// first out of the toob is well directioned
 				final SpaceObject targetO=knownTarget();
-				if(targetO != null)
+				if(targetO != null) //TODO: this stuff belongs in rocket ship program, NOT HERE
 				{
 					final int maxTicks = (int)(maxChaseTimeMs/CMProps.getTickMillis());
 					final double maxSpeed = CMath.mul((phyStats().speed()/100.0), SpaceObject.VELOCITY_LIGHT);
@@ -82,8 +82,8 @@ public class StdTorpedo extends StdSpaceTechWeapon implements Ammunition
 					if(intercept != null)
 					{
 						//TODO:delme
-						Log.debugOut("Setting "+name()+" to speed "+intercept.second.longValue()+" in dir " +CMLib.english().directionDescShort(intercept.first)+" to target "+CMLib.english().directionDescShort(CMLib.space().getDirection(this, targetO)));
-						Log.debugOut(name()+" is "+CMLib.space().getDistanceFrom(this, targetO)+" away now.");
+						//Log.debugOut("Setting "+name()+" to speed "+intercept.second.longValue()+" in dir " +CMLib.english().directionDescShort(intercept.first)+" to target "+CMLib.english().directionDescShort(CMLib.space().getDirection(this, targetO)));
+						//Log.debugOut(name()+" is "+CMLib.space().getDistanceFrom(this, targetO)+" away now.");
 						this.setSpeed(intercept.second.longValue());
 						this.setDirection(intercept.first);
 					}

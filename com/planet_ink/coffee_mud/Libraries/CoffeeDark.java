@@ -776,10 +776,10 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			&&(--tries > 0))
 			{
 				curTicks = newTicks;
-				runnerCoords = moveSpaceObject(runnerO.coordinates(), runnerO.direction(), Math.round(runnerO.speed()) * curTicks);
+				runnerCoords = moveSpaceObject(runnerO.coordinates(), runnerO.direction(), (Math.round(runnerO.speed()) * curTicks));
 				dirTo = getDirection(chaserO.coordinates(), runnerCoords);
 				distance = getDistanceFrom(chaserO.coordinates(), runnerCoords);
-				newTicks = Math.round(Math.ceil(CMath.div(distance, speedToUse)));
+				newTicks = Math.round(CMath.div(distance, speedToUse))-1; // this is the absolute best I can do
 				if(newTicks > maxTicks)
 					return null; // not enough time
 			}
