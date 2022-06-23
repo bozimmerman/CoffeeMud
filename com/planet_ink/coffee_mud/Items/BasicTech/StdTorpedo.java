@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Items.BasicTech;
 
 import com.planet_ink.coffee_mud.Items.interfaces.Ammunition;
 import com.planet_ink.coffee_mud.Items.interfaces.Weapon;
+import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.CMProps;
 import com.planet_ink.coffee_mud.core.CMath;
@@ -41,6 +42,7 @@ public class StdTorpedo extends StdSpaceTechWeapon implements Ammunition
 		setName("a torpedo");
 		setDisplayText("a torpedo is sitting here");
 		super.properWornBitmap=0;
+		super.radius=2;
 		super.weaponClass=Weapon.CLASS_BLUNT;
 		super.weaponType=Weapon.TYPE_BURNING;
 		super.basePhyStats.setDamage(100);
@@ -49,6 +51,12 @@ public class StdTorpedo extends StdSpaceTechWeapon implements Ammunition
 		super.phyStats.setWeight(1000);
 		super.basePhyStats.setSpeed(0.3);
 		super.phyStats.setSpeed(0.3);
+	}
+
+	@Override
+	public TechType getTechType()
+	{
+		return TechType.COMP_TORPEDO;
 	}
 
 	protected boolean isInSpace()
@@ -60,6 +68,12 @@ public class StdTorpedo extends StdSpaceTechWeapon implements Ammunition
 	}
 
 	protected volatile Long timeTicking = null;
+
+	@Override
+	public void setSpeed(final double speed)
+	{
+		super.setSpeed(speed);
+	}
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)

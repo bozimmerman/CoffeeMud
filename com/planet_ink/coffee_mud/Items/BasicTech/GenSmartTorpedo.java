@@ -46,8 +46,8 @@ public class GenSmartTorpedo extends StdSmartTorpedo
 	public GenSmartTorpedo()
 	{
 		super();
-		setName("a generic torpedo");
-		setDisplayText("a generic torpedo is sitting here");
+		setName("a generic smart torpedo");
+		setDisplayText("a generic smart torpedo is sitting here");
 	}
 
 	@Override

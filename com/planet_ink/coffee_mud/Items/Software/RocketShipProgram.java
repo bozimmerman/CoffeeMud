@@ -2325,7 +2325,7 @@ public class RocketShipProgram extends GenShipProgram
 									final double futureAccellerationInSameDirectionAsAmmo = 4.0; //TODO: magic number
 									//TODO: adding ship.speed() is wrong because you could be firing aft.
 									//The initial position of a launched object is tricky.
-									targetO.setCoords(CMLib.space().moveSpaceObject(ship.coordinates(), targetDirection,
+									ammoO.setCoords(CMLib.space().moveSpaceObject(ship.coordinates(), targetDirection,
 											(int)Math.round(ship.radius()+ammoO.radius()+ship.speed()
 											+futureAccellerationInSameDirectionAsAmmo)));
 									final long maxChaseTimeMs = 300000; //TODO: magic numbers suck

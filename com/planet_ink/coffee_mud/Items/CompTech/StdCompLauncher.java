@@ -38,7 +38,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdCompLauncher extends StdElecCompContainer implements TechComponent, ShipDirectional
+public class StdCompLauncher extends StdElecCompContainer implements TechComponent, ElecPanel, ShipDirectional
 {
 	@Override
 	public String ID()
@@ -54,6 +54,7 @@ public class StdCompLauncher extends StdElecCompContainer implements TechCompone
 	private volatile long					powerSetting	= Integer.MAX_VALUE;
 	private final double[]					targetDirection	= new double[] { 0.0, 0.0 };
 	private volatile SpaceObject			targetSet		= null;
+	private TechType						techType		= TechType.ANY;
 
 	public StdCompLauncher()
 	{
@@ -66,6 +67,7 @@ public class StdCompLauncher extends StdElecCompContainer implements TechCompone
 		this.openDelayTicks=0;
 		super.containType=Container.CONTAIN_SSCOMPONENTS;
 		this.recoverPhyStats();
+		super.maxRechargePer=10;
 	}
 
 	@Override
@@ -117,7 +119,12 @@ public class StdCompLauncher extends StdElecCompContainer implements TechCompone
 	@Override
 	public boolean canContain(final Item I)
 	{
-		return (I instanceof SpaceObject)||(I instanceof Ammunition);
+		if(!super.canContain(I))
+			return false;
+		if((I instanceof Technical)
+		&&((panelType()==((Technical)I).getTechType()))||(panelType()==Technical.TechType.ANY))
+			return true;
+		return false;
 	}
 
 	@Override
@@ -340,6 +347,16 @@ public class StdCompLauncher extends StdElecCompContainer implements TechCompone
 										return;
 									}
 								}
+								if(power == 0.0)
+								{
+									reportError(this, controlI, mob, null, lang.L("Failure: @x1: launcher is not charged up.",me.name(mob)));
+									return;
+								}
+								if(super.getComputedEfficiency()==0.0)
+								{
+									reportError(this, controlI, mob, null, lang.L("Failure: @x1: launcher is defective.",me.name(mob)));
+									return;
+								}
 								final Item launchedI=contents.get(0);
 								if(launchedI.owner() != null)
 								{
@@ -430,5 +447,17 @@ public class StdCompLauncher extends StdElecCompContainer implements TechCompone
 		if(!(E instanceof StdCompLauncher))
 			return false;
 		return super.sameAs(E);
+	}
+
+	@Override
+	public TechType panelType()
+	{
+		return techType;
+	}
+
+	@Override
+	public void setPanelType(final TechType type)
+	{
+		techType = type;
 	}
 }
