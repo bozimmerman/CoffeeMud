@@ -2251,7 +2251,7 @@ public class RocketShipProgram extends GenShipProgram
 					return;
 				}
 				//final double[] targetDirection = CMLib.space().getDirection(ship.coordinates(), CMLib.space().moveSpaceObject(targetObj.coordinates(), targetObj.direction(), (long)targetObj.speed()));
-				final double[] targetDirection = CMLib.space().getDirection(ship.coordinates(), targetObj.coordinates());
+				double[] targetDirection = CMLib.space().getDirection(ship.coordinates(), targetObj.coordinates());
 				if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 					Log.debugOut("Fire: "+ship.Name()+" -> "+targetObj.Name()+"@"+Math.toDegrees(targetDirection[0])+","+Math.toDegrees(targetDirection[1]));
 				TechComponent finalWeaponToFire = null;
@@ -2308,6 +2308,38 @@ public class RocketShipProgram extends GenShipProgram
 					if((finalWeaponToFire.getTechType()!=Technical.TechType.SHIP_LAUNCHER)
 					||sendMessage(mob, finalWeaponToFire, msg, message))
 					{
+						if((finalWeaponToFire.getTechType()==Technical.TechType.SHIP_LAUNCHER)
+						&&(finalWeaponToFire instanceof Container))
+						{
+							final List<Item> ammo = ((Container)finalWeaponToFire).getContents();
+							if((ammo.size()>0)&&(ammo.get(0) instanceof SpaceObject))
+							{
+								final Item ammoI=ammo.get(0);
+								final SpaceObject ammoO=(SpaceObject)ammoI;
+								// expect the weapon to be slow.
+								// first out of the toob is well directioned
+								final SpaceObject targetO=targetObj;
+								if(targetO != null)
+								{
+									// use initial direction to calculate starting position
+									final double futureAccellerationInSameDirectionAsAmmo = 4.0; //TODO: magic number
+									//TODO: adding ship.speed() is wrong because you could be firing aft.
+									//The initial position of a launched object is tricky.
+									targetO.setCoords(CMLib.space().moveSpaceObject(ship.coordinates(), targetDirection,
+											(int)Math.round(ship.radius()+ammoO.radius()+ship.speed()
+											+futureAccellerationInSameDirectionAsAmmo)));
+									final long maxChaseTimeMs = 300000; //TODO: magic numbers suck
+									final int maxTicks = (int)(maxChaseTimeMs/CMProps.getTickMillis());
+									final double maxSpeed = CMath.mul((ammoI.phyStats().speed()/100.0), SpaceObject.VELOCITY_LIGHT);
+									final Pair<double[], Long> intercept = CMLib.space().calculateIntercept(ammoO, targetO, Math.round(maxSpeed), maxTicks);
+									if(intercept != null)
+									{
+										ammoO.setSpeed(intercept.second.longValue());
+										targetDirection=intercept.first;
+									}
+								}
+							}
+						}
 						code=TechCommand.AIMSET.makeCommand(Double.valueOf(targetDirection[0]), Double.valueOf(targetDirection[1]));
 						msg=CMClass.getMsg(mob, finalWeaponToFire, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 						if(sendMessage(mob, finalWeaponToFire, msg, message))
