@@ -468,19 +468,47 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	@Override
 	public double[] getDirection(final long[] fromCoords, final long[] toCoords)
 	{
+		return getBigDirection(fromCoords, toCoords);
+		/*
 		final double[] dir=new double[2];
 		final double x=toCoords[0]-fromCoords[0];
 		final double y=toCoords[1]-fromCoords[1];
 		final double z=toCoords[2]-fromCoords[2];
+		final double xy = (x*x)+(y*y);
 		if((x!=0)||(y!=0))
 		{
+			final double sqrtxy = Math.sqrt(xy);
+			final double ybysqrtxy=y/sqrtxy;
 			if(x<0)
-				dir[0]=Math.PI-Math.asin(y/Math.sqrt((x*x)+(y*y)));
+				dir[0]=Math.PI-Math.asin(ybysqrtxy);
 			else
-				dir[0]=Math.asin(y/Math.sqrt((x*x)+(y*y)));
+				dir[0]=Math.asin(ybysqrtxy);
 		}
 		if((x!=0)||(y!=0)||(z!=0))
-			dir[1]=Math.acos(z/Math.sqrt((z*z)+(y*y)+(x*x)));
+			dir[1]=Math.acos(z/Math.sqrt((z*z)+xy));
+		fixDirectionBounds(dir);
+		return dir;
+		*/
+	}
+
+	protected double[] getBigDirection(final long[] fromCoords, final long[] toCoords)
+	{
+		final double[] dir=new double[2];
+		final BigDecimal x=BigDecimal.valueOf(toCoords[0]-fromCoords[0]);
+		final BigDecimal y=BigDecimal.valueOf(toCoords[1]-fromCoords[1]);
+		final BigDecimal z=BigDecimal.valueOf(toCoords[2]-fromCoords[2]);
+		final BigDecimal xy = x.multiply(x).add(y.multiply(y));
+		if((x.doubleValue()!=0)||(y.doubleValue()!=0))
+		{
+			final BigDecimal sqrtxy = bigSqrt(xy);
+			final BigDecimal ybysqrtxy=y.divide(sqrtxy,50,RoundingMode.HALF_EVEN);
+			if(x.doubleValue()<0)
+				dir[0]=Math.PI-Math.asin(ybysqrtxy.doubleValue());
+			else
+				dir[0]=Math.asin(ybysqrtxy.doubleValue());
+		}
+		if((x.doubleValue()!=0)||(y.doubleValue()!=0)||(z.doubleValue()!=0))
+			dir[1]=Math.acos(z.divide(bigSqrt(z.multiply(z).add(xy)),50,RoundingMode.HALF_EVEN).doubleValue());
 		fixDirectionBounds(dir);
 		return dir;
 	}
@@ -725,7 +753,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	{
 		if(A.doubleValue()<0)
 			return ZERO;
-		final int SCALE=0;
+		final int SCALE=50;
 		BigDecimal x0 = BigDecimal.valueOf(0);
 		BigDecimal x1 = BigDecimal.valueOf(Math.sqrt(A.doubleValue()));
 		int times=0;
@@ -755,33 +783,41 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		if(maxTicks < 1)
 			return null; // not possible, too late
 		double[] dirTo = getDirection(chaserO, runnerO);
-		long distance = getDistanceFrom(chaserO, runnerO);
 		if((maxChaserSpeed>0)
 		&&(runnerO.speed()>0))
 		{
+			long distance = getDistanceFrom(chaserO, runnerO);
 			long speedToUse = maxChaserSpeed;
 			if(distance < maxChaserSpeed)
 			{
 				speedToUse = distance;
-				return new Pair<double[], Long>(dirTo,Long.valueOf(speedToUse));
+				return new Pair<double[], Long>(dirTo, Long.valueOf(speedToUse));
 			}
-			long[] runnerCoords = runnerO.coordinates();
-			long curTicks = Math.round(Math.ceil(CMath.div(distance, speedToUse)));
-			if(curTicks > maxTicks)
+			long curTicks = Math.round(CMath.div(distance, speedToUse));
+			if((curTicks > maxTicks)||(curTicks==0))
 				return null; // not enough time
 			long newTicks = curTicks;
 			curTicks = 0;
-			long tries = maxTicks;
-			while((curTicks != newTicks)
-			&&(--tries > 0))
+			long tries = 0;
+			final long radius = runnerO.radius() + chaserO.radius();
+			while(++tries < maxTicks)
 			{
 				curTicks = newTicks;
-				runnerCoords = moveSpaceObject(runnerO.coordinates(), runnerO.direction(), (Math.round(runnerO.speed()) * curTicks));
+				long[] runnerCoords = runnerO.coordinates().clone();
+				long[] chaserCoords = chaserO.coordinates().clone();
+				chaserCoords=moveSpaceObject(chaserCoords, dirTo, speedToUse*(newTicks-1));
+				runnerCoords=moveSpaceObject(runnerCoords, runnerO.direction(), Math.round(runnerO.speed())*newTicks-1);
+				final long[] oldCoords = chaserCoords.clone();
+				chaserCoords=moveSpaceObject(chaserCoords, dirTo, speedToUse);
+				if(getMinDistanceFrom(oldCoords, chaserCoords, runnerCoords)<radius)
+					return new Pair<double[], Long>(dirTo, Long.valueOf(speedToUse));
 				dirTo = getDirection(chaserO.coordinates(), runnerCoords);
 				distance = getDistanceFrom(chaserO.coordinates(), runnerCoords);
 				newTicks = Math.round(CMath.div(distance, speedToUse))-1; // this is the absolute best I can do
 				if(newTicks > maxTicks)
 					return null; // not enough time
+				if(newTicks == curTicks)
+					newTicks = newTicks+1;
 			}
 			return new Pair<double[], Long>(dirTo,Long.valueOf(speedToUse));
 		}
@@ -934,7 +970,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 					continue;
 				BoundedCube cube=O.getBounds();
 				final double speed=O.speed();
-				final long[] startCoords=Arrays.copyOf(O.coordinates(),3);
+				final long[] startCoords=O.coordinates().clone();
 				final boolean moving;
 				if(speed>=1)
 				{
