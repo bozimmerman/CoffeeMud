@@ -787,18 +787,16 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		&&(runnerO.speed()>0))
 		{
 			final long distance = getDistanceFrom(chaserO, runnerO);
-			long speedToUse = maxChaserSpeed;
+			final long speedToUse = maxChaserSpeed;
 			if(distance < maxChaserSpeed)
 			{
-				speedToUse = distance;
 				final double[] dirTo = getDirection(chaserO, runnerO);
-				return new Pair<double[], Long>(dirTo, Long.valueOf(speedToUse));
+				return new Pair<double[], Long>(dirTo, Long.valueOf(distance));
 			}
 			final BigVector P0=new BigVector(runnerO.coordinates()); // runners position
 			final BigVector P1=new BigVector(chaserO.coordinates()); // chasers position (torpedo/ship/whatever)
 			final BigVector P0S=new BigVector(moveSpaceObject(runnerO.coordinates(), runnerO.direction(), Math.round(runnerO.speed())));
 			final BigVector V0=P0S.subtract(P0);
-			final BigDecimal S0=BigDecimal.valueOf(runnerO.speed());
 			final BigDecimal S1=BigDecimal.valueOf(speedToUse);
 			BigDecimal A=V0.dotProduct(V0).subtract(S1.multiply(S1));
 			if(A.doubleValue()==0.0)
@@ -810,25 +808,16 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			final BigDecimal C=P0.dotProduct(P0).add(P1.dotProduct(P1)).add(P1.scalarProduct(TWO.negate()).dotProduct(P0));
 			final BigDecimal T1 = B.negate().add(bigSqrt(B.multiply(B).subtract(FOUR.multiply(A).multiply(C)))).divide(TWO.multiply(A),BigVector.SCALE,RoundingMode.UP);
 			final BigDecimal T2 = B.negate().subtract(bigSqrt(B.multiply(B).subtract(FOUR.multiply(A).multiply(C)))).divide(TWO.multiply(A),BigVector.SCALE,RoundingMode.UP);
-			BigDecimal T = T1;
-			if((T.doubleValue() < 0)
-			|| ((T2.doubleValue() < T.doubleValue()) && (T2.doubleValue() >= 0)))
+			final BigDecimal T;
+			if((T1.doubleValue() < 0)
+			|| ((T2.doubleValue() < T1.doubleValue()) && (T2.doubleValue() >= 0)))
 				T = T2;
+			else
+				T = T1;
 			if(T.doubleValue()<=0)
 				return null;
-			final BigDecimal TtimesS0 = T.multiply(S0);
-			final BigDecimal TtimesS1 = T.multiply(S1);
-			final BigVector V1 = new BigVector(
-				P0.x().subtract(P1.x()).add(TtimesS0.multiply(V0.x())).divide(TtimesS1,BigVector.SCALE,RoundingMode.UP),
-				P0.y().subtract(P1.y()).add(TtimesS0.multiply(V0.y())).divide(TtimesS1,BigVector.SCALE,RoundingMode.UP),
-				P0.x().subtract(P1.z()).add(TtimesS0.multiply(V0.z())).divide(TtimesS1,BigVector.SCALE,RoundingMode.UP)
-			);
-			final double[] finalDir = getDirection(chaserO.coordinates(), V1.toLongs());
-			/**
-			 * compare with prev algorithm
-			final Pair<double[], Long> p = this.calculateIntercept2(chaserO, runnerO, maxChaserSpeed, maxTicks);
-			System.out.println(p.first[0]+"/"+finalDir[0]+", "+p.first[1]+"/"+finalDir[1]);
-			 */
+			final BigVector P0T = P0.add(V0.scalarProduct(T));
+			final double[] finalDir = getDirection(chaserO.coordinates(),P0T.toLongs());
 			return new Pair<double[], Long>(finalDir,Long.valueOf(maxChaserSpeed));
 		}
 		else
@@ -863,7 +852,8 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			curTicks = 0;
 			long tries = 0;
 			final long radius = runnerO.radius() + chaserO.radius();
-			while(++tries < maxTicks)
+			final long maxTries = (curTicks<100)?100:curTicks+1;
+			while(++tries < maxTries)
 			{
 				curTicks = newTicks;
 				long[] runnerCoords = runnerO.coordinates().clone();
@@ -872,20 +862,23 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 				runnerCoords=moveSpaceObject(runnerCoords, runnerO.direction(), Math.round(runnerO.speed())*newTicks-1);
 				final long[] oldCoords = chaserCoords.clone();
 				chaserCoords=moveSpaceObject(chaserCoords, dirTo, speedToUse);
+				if(getMinDistanceFrom(oldCoords, chaserCoords, runnerCoords)<radius)
+				{
+					System.out.println(tries);
+					return new Pair<double[], Long>(dirTo, Long.valueOf(speedToUse));
+				}
+
 				dirTo = getDirection(chaserO.coordinates(), runnerCoords);
 				distance = getDistanceFrom(chaserO.coordinates(), runnerCoords);
 				newTicks = Math.round(CMath.div(distance, speedToUse))-1; // this is the absolute best I can do
+				if(newTicks<2)
+					newTicks=2;
 				if(newTicks > maxTicks)
 					return null; // not enough time
-				if(getMinDistanceFrom(oldCoords, chaserCoords, runnerCoords)<radius)
-				{
-					//System.out.println(newTicks+"/"+Math.round(CMath.div(getDistanceFrom(chaserO.coordinates(), runnerCoords), speedToUse)));
-					return new Pair<double[], Long>(dirTo, Long.valueOf(speedToUse));
-				}
 				if(newTicks == curTicks)
-					//return new Pair<double[], Long>(dirTo, Long.valueOf(speedToUse));
 					newTicks = newTicks+1;
 			}
+			System.out.println("Fail: "+tries);
 			return new Pair<double[], Long>(dirTo,Long.valueOf(speedToUse));
 		}
 		else
