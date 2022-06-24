@@ -51,6 +51,7 @@ public class StdSmartTorpedo extends StdTorpedo
 	}
 
 	public volatile double[] targetDir = null;
+	public volatile int rescanCtr = 0;
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
@@ -68,8 +69,11 @@ public class StdSmartTorpedo extends StdTorpedo
 				final GalacticMap space=CMLib.space();
 				final int maxTicks = (int)((maxChaseTimeMs-(System.currentTimeMillis()-super.timeTicking.longValue()))/CMProps.getTickMillis());
 				if((targetDir==null)
-					|| (!space.canMaybeIntercept(this, targetO, maxTicks, speed())))
+				||(speed()==0)
+				||((++rescanCtr>2) && (space.getMinDistanceFrom(this.coordinates,
+						space.moveSpaceObject(this.coordinates, direction(), space.getDistanceFrom(this, targetO)+Math.round(speed())), targetO.coordinates())>radius()+targetO.radius())))
 				{
+					rescanCtr=0;
 					final double maxSpeed = CMath.mul((phyStats().speed()/100.0), SpaceObject.VELOCITY_LIGHT);
 					final Pair<double[], Long> intercept = space.calculateIntercept(this, targetO, Math.round(maxSpeed), maxTicks);
 					if(intercept == null)
@@ -80,11 +84,11 @@ public class StdSmartTorpedo extends StdTorpedo
 					}
 					else
 					{
+						this.targetDir = intercept.first;
 						if(speed()<intercept.second.longValue())
 							this.setSpeed(space.accelSpaceObject(direction, this.speed(), targetDir, maxSpeed/8.0)); //TODO: acceleration!
 						else
 							this.setSpeed(intercept.second.longValue());
-						this.targetDir = intercept.first;
 					}
 				}
 				final double[] diffDelta = space.getFacingAngleDiff(direction(), targetDir); // starboard is -, port is +

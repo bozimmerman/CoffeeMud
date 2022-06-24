@@ -3785,8 +3785,9 @@ public class Test extends StdCommand
 							if(x<radius)
 								break;
 							obj2.setCoords(space.moveSpaceObject(obj2.coordinates(), obj2.direction(), Math.round(obj2.speed())));
-							//space.changeDirection(obj2.direction(), (Math.abs(rand.nextDouble()*.01)),0);
-							obj2.setSpeed(obj2.speed()+50);
+							space.changeDirection(obj2.direction(), (Math.abs(rand.nextDouble()*.1)),0);
+							if(rand.nextBoolean() && (obj2.speed()<500))
+								obj2.setSpeed(obj2.speed()+25);
 						}
 						if(atti>=maxTicks)
 						{

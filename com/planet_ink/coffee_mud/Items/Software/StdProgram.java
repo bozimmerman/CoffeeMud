@@ -311,4 +311,14 @@ public class StdProgram extends StdItem implements Software
 		}
 		return cachedManufact;
 	}
+
+	protected String trimColorsAndTrim(String s)
+	{
+		s=s.trim();
+		while((s.length()>1)
+		&&(s.charAt(s.length()-2)=='^'))
+			s=s.substring(0,s.length()-2).trim();
+		return s;
+	}
+
 }

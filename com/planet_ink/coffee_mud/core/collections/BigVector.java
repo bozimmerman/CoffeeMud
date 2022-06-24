@@ -164,17 +164,6 @@ public class BigVector
 		return BigVector.bigSqrt(x0);
 	}
 
-	public BigVector directionalVector(final BigVector v)
-	{
-		if(b.length != v.length())
-			throw new IllegalArgumentException("Different dimensions");
-		final BigDecimal unitDistance = unitDistanceFrom(v);
-		final BigVector ab=new BigVector(b.length);
-		for(int i=0;i<b.length;i++)
-			ab.b[i]=v.b[i].subtract(b[i]).divide(unitDistance,SCALE,RoundingMode.UP);
-		return ab;
-	}
-
 	public void unitVectorFrom()
 	{
 		final BigDecimal mag = magnitude();

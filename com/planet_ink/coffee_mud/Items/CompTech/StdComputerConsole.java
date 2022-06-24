@@ -313,7 +313,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 					if(S.getInternalName().equals(currentMenu))
 					{
 						str.append(S.getCurrentScreenDisplay());
-						isInternal=true;
+						isInternal=(S.getInternalName().equals(getActiveMenu()));
 					}
 					else
 					if(S.getParentMenu().equals(currentMenu))
@@ -438,19 +438,22 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 							{
 								if(msg.targetMessage().trim().equals("<"))
 								{
-									msgs.add(CMClass.getMsg(msg.source(),S,null,CMMsg.NO_EFFECT,CMMsg.MASK_ALWAYS|CMMsg.TYP_DEACTIVATE,CMMsg.NO_EFFECT,null));
+									msgs.add(CMClass.getMsg(msg.source(),S,null,CMMsg.NO_EFFECT,
+											CMMsg.MASK_ALWAYS|CMMsg.TYP_DEACTIVATE,CMMsg.NO_EFFECT,null));
 								}
 								else
 								if(S.isCommandString(msg.targetMessage(), true))
 								{
-									msgs.add(CMClass.getMsg(msg.source(),S,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WRITE,msg.targetMessage(),CMMsg.NO_EFFECT,null));
+									msgs.add(CMClass.getMsg(msg.source(),S,null,CMMsg.NO_EFFECT,null,
+											CMMsg.MASK_ALWAYS|CMMsg.TYP_WRITE,msg.targetMessage(),CMMsg.NO_EFFECT,null));
 								}
 							}
 							else
 							if((S.getParentMenu().equals(currentMenu))
 							&&(S.isCommandString(msg.targetMessage(), false)))
 							{
-								msgs.add(CMClass.getMsg(msg.source(),S,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACTIVATE,msg.targetMessage(),CMMsg.NO_EFFECT,null));
+								msgs.add(CMClass.getMsg(msg.source(),S,null,CMMsg.NO_EFFECT,null,
+										CMMsg.MASK_ALWAYS|CMMsg.TYP_ACTIVATE,msg.targetMessage(),CMMsg.NO_EFFECT,null));
 							}
 						}
 					}
@@ -458,7 +461,11 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 					boolean menuRead=false;
 					final MOB M=msg.source();
 					if(msgs.size()==0)
-						M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, L("<T-NAME> says '^N\n\rUnknown command. Please read the screen for a menu.\n\r^.^N'"));
+					{
+						M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL,
+								CMMsg.NO_EFFECT, CMMsg.NO_EFFECT,
+								L("<T-NAME> says '^N\n\rUnknown command. Please read the screen for a menu.\n\r^.^N'"));
+					}
 					else
 					{
 						if((!subjectToWearAndTear()) || (Math.random() < CMath.div(usesRemaining(), 100)))
@@ -496,7 +503,8 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 							for(final MOB M2 : readers)
 							{
 								if(CMLib.flags().canBeSeenBy(this, M2))
-									M2.location().show(M2, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, L("<T-NAME> blue screens!!\n\r^.^N'"));
+									M2.location().show(M2, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL,
+											CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, L("<T-NAME> blue screens!!\n\r^.^N'"));
 							}
 							deactivateSystem();
 						}
@@ -517,7 +525,10 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 			case CMMsg.TYP_LOOK:
 				super.executeMsg(host, msg);
 				if(CMLib.flags().canBeSeenBy(this, msg.source()))
-					msg.source().tell(L("@x1 is currently @x2",name(),(activated()?"booted up and the screen ready to be read.\n\r":"deactivated.\n\r")));
+				{
+					msg.source().tell(L("@x1 is currently @x2",name(),
+							(activated()?"booted up and the screen ready to be read.\n\r":"deactivated.\n\r")));
+				}
 				return;
 			case CMMsg.TYP_ACTIVATE:
 				if(!activated())
@@ -540,7 +551,8 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 						{
 							if(S.isActivationString(msg.targetMessage()))
 							{
-								msgs.add(CMClass.getMsg(msg.source(),S,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACTIVATE,msg.targetMessage(),CMMsg.NO_EFFECT,null));
+								msgs.add(CMClass.getMsg(msg.source(),S,null,CMMsg.NO_EFFECT,null,
+										CMMsg.MASK_ALWAYS|CMMsg.TYP_ACTIVATE,msg.targetMessage(),CMMsg.NO_EFFECT,null));
 							}
 						}
 					}
@@ -550,7 +562,10 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 					{
 						final Room R=M.location();
 						if(R!=null)
-							R.show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, L("<T-NAME> says '^N\n\rUnknown activation command. Please read the screen for a menu of TYPEable commands.\n\r^.^N'"));
+						{
+							R.show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT,
+									L("<T-NAME> says '^N\n\rUnknown activation command. Please read the screen for a menu of TYPEable commands.\n\r^.^N'"));
+						}
 					}
 					else
 					{
@@ -574,7 +589,8 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 							for(final MOB M2 : readers)
 							{
 								if(CMLib.flags().canBeSeenBy(this, M2))
-									M2.location().show(M2, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, L("<T-NAME> blue screens!!\n\r^.^N'"));
+									M2.location().show(M2, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT,
+											CMMsg.NO_EFFECT, L("<T-NAME> blue screens!!\n\r^.^N'"));
 							}
 							deactivateSystem();
 						}
@@ -594,14 +610,16 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 						{
 							if(S.isActivationString(msg.targetMessage()))
 							{
-								msgs.add(CMClass.getMsg(msg.source(),S,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_DEACTIVATE,msg.targetMessage(),CMMsg.NO_EFFECT,null));
+								msgs.add(CMClass.getMsg(msg.source(),S,null,CMMsg.NO_EFFECT,null,
+										CMMsg.MASK_ALWAYS|CMMsg.TYP_DEACTIVATE,msg.targetMessage(),CMMsg.NO_EFFECT,null));
 							}
 						}
 					}
 					final boolean readFlag=false;
 					final MOB M=msg.source();
 					if(msgs.size()==0)
-						M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, L("<T-NAME> says '^N\n\rUnknown deactivation command. Please read the screen for a menu of TYPEable commands.\n\r^.^N'"));
+						M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT,
+								L("<T-NAME> says '^N\n\rUnknown deactivation command. Please read the screen for a menu of TYPEable commands.\n\r^.^N'"));
 					else
 					for(final CMMsg msg2 : msgs)
 					{
@@ -680,7 +698,10 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 					for(final MOB M : readers)
 					{
 						if(CMLib.flags().canBeSeenBy(this, M))
-							M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, L("<T-NAME> says '^N\n\r@x1\n\r^.^N'",newMsgs.toString()));
+						{
+							M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT,
+									L("<T-NAME> says '^N\n\r@x1\n\r^.^N'",newMsgs.toString()));
+						}
 					}
 				}
 			}
@@ -729,7 +750,8 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 		{
 			final List<Software> software=getSoftware();
 			final Room locR=CMLib.map().roomLocation(this);
-			final CMMsg msg2=CMClass.getMsg(CMLib.map().getFactoryMOB(locR), null, null, CMMsg.NO_EFFECT,null,CMMsg.MSG_DEACTIVATE,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg2=CMClass.getMsg(CMLib.map().getFactoryMOB(locR), null, null,
+					CMMsg.NO_EFFECT,null,CMMsg.MSG_DEACTIVATE,null,CMMsg.NO_EFFECT,null);
 			synchronized(software)
 			{
 				for(final Software sw : software)

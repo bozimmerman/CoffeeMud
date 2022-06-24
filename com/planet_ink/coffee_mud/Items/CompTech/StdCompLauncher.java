@@ -63,7 +63,7 @@ public class StdCompLauncher extends StdElecCompContainer implements TechCompone
 		setDisplayText("a launcher tube is mounted here");
 		setDescription("Probably requires particular things to launcher out of it.");
 		super.setDoorsNLocks(true, true, true,false, false,false);
-		basePhyStats().setSensesMask(basePhyStats().sensesMask()|PhyStats.SENSE_ALWAYSCOMPRESSED|PhyStats.SENSE_ITEMNOTGET);
+		basePhyStats().setSensesMask(basePhyStats().sensesMask()|PhyStats.SENSE_ITEMNOTGET);
 		this.openDelayTicks=0;
 		super.containType=Container.CONTAIN_SSCOMPONENTS;
 		this.recoverPhyStats();

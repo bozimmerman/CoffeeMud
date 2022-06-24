@@ -52,8 +52,6 @@ public class RocketShipProgram extends GenShipProgram
 	protected volatile long nextPowerCycleTmr = System.currentTimeMillis()+(8*1000);
 	protected volatile int	activationCounter = DEFAULT_ACT_8_SEC_COUNTDOWN;
 
-	protected String noActivationMenu="^rNo engine systems found.\n\r";
-
 	protected volatile List<ShipEngine>		engines		= null;
 	protected volatile List<TechComponent>	sensors		= null;
 	protected volatile List<TechComponent>	weapons		= null;
@@ -173,7 +171,14 @@ public class RocketShipProgram extends GenShipProgram
 	@Override
 	public String getCurrentScreenDisplay()
 	{
-		return this.getActivationMenu();
+		if((container() instanceof Computer)
+		&&((Computer)container()).getActiveMenu().equals(getInternalName()))
+		{
+			super.forceUpMenu();
+			return this.getActivationMenu()+"\n\r";
+		}
+		else
+			return this.getActivationMenu();
 	}
 
 	protected synchronized List<TechComponent> getComponent(final TechType type)
@@ -461,27 +466,26 @@ public class RocketShipProgram extends GenShipProgram
 		return localSensorReport;
 	}
 
-	@Override
-	public String getActivationMenu()
+	public String getFlightStatus()
 	{
 		final StringBuilder str=new StringBuilder();
-		str.append("^X").append(CMStrings.centerPreserve(L(" -- Flight Status -- "),60)).append("^.^N\n\r");
 		final SpaceObject spaceObject=CMLib.space().getSpaceObject(this,true);
 		final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
 		final SpaceObject shipSpaceObject=(ship==null)?null:ship.getShipSpaceObject();
+		str.append("^X").append(CMStrings.centerPreserve(L(" -- Flight Status -- "),60)).append("^.^N\n\r");
 		if(ship==null)
-			str.append("^Z").append(CMStrings.centerPreserve(L(" -- Can Not Determine -- "),60)).append("^.^N\n\r");
+			str.append("^Z").append(CMStrings.centerPreserve(L(" -- Can Not Determine -- "),60));
 		else
 		if(ship.getIsDocked() != null)
 		{
-			str.append("^H").append(CMStrings.padRight(L("Docked at ^w@x1",ship.getIsDocked().displayText(null)),60)).append("^.^N\n\r");
+			str.append("^H").append(CMStrings.padRight(L("Docked at ^w@x1",ship.getIsDocked().displayText(null)),60));
 			final SpaceObject planet=CMLib.space().getSpaceObject(ship.getIsDocked(), true);
 			if(planet!=null)
-				str.append("^H").append(CMStrings.padRight(L("On Planet ^w@x1",planet.Name()),60)).append("^.^N\n\r");
+				str.append("^.^N\n\r^H").append(CMStrings.padRight(L("On Planet ^w@x1",planet.Name()),60));
 		}
 		else
 		if((shipSpaceObject==null)||(!CMLib.space().isObjectInSpace(shipSpaceObject)))
-			str.append("^Z").append(CMStrings.centerPreserve(L(" -- System Malfunction-- "),60)).append("^.^N\n\r");
+			str.append("^Z").append(CMStrings.centerPreserve(L(" -- System Malfunction-- "),60));
 		else
 		{
 			final List<SpaceObject> orbs=CMLib.space().getSpaceObjectsWithin(shipSpaceObject,0,SpaceObject.Distance.LightMinute.dm);
@@ -530,10 +534,16 @@ public class RocketShipProgram extends GenShipProgram
 			str.append("^H").append(CMStrings.padRight(L("Facing"),10));
 			final String facStr=display(ship.facing());
 			str.append("^N").append(CMStrings.padRight(facStr,15));
-			str.append("\n\r");
 		}
-		str.append("^N\n\r");
+		str.append("^.^N\n\r");
+		return trimColorsAndTrim(str.toString());
+	}
 
+	public String getSensorMenu()
+	{
+		final StringBuilder str=new StringBuilder();
+		final SpaceObject spaceObject=CMLib.space().getSpaceObject(this,true);
+		final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
 		final List<TechComponent> sensors = getShipSensors();
 		if(sensors.size()>0)
 		{
@@ -582,7 +592,13 @@ public class RocketShipProgram extends GenShipProgram
 				sensorNumber++;
 			}
 		}
+		return trimColorsAndTrim(str.toString());
+	}
 
+	public String getShipSystemsMenu()
+	{
+		final StringBuilder str=new StringBuilder();
+		final List<TechComponent> sensors = getShipSensors();
 		final List<ShipEngine> engines = getEngines();
 		final List<TechComponent> weapons = getShipWeapons();
 		final List<TechComponent> shields = getShipShields();
@@ -650,9 +666,24 @@ public class RocketShipProgram extends GenShipProgram
 			}
 			str.append("^.^N\n\r");
 		}
+		return trimColorsAndTrim(str.toString());
+	}
 
+	@Override
+	public String getActivationMenu()
+	{
+		final StringBuilder str=new StringBuilder();
+		final String flightStatusMenu = getFlightStatus();
+		str.append(flightStatusMenu);
+		final String sensorReportMenu = getSensorMenu();
+		if(sensorReportMenu.length()>0)
+			str.append("\n\r^.^N"+sensorReportMenu);
+		final String systemsReportMenu = this.getShipSystemsMenu();
+		if(systemsReportMenu.length()>0)
+			str.append("\n\r^.^N"+systemsReportMenu);
+		str.append("\n\r^.^N");
 		if(engines.size()==0)
-			str.append(noActivationMenu);
+			str.append("^rNo engine systems found.");
 		else
 		{
 			str.append("^X").append(CMStrings.centerPreserve(L(" -- Commands -- "),60)).append("^.^N\n\r");
@@ -661,10 +692,9 @@ public class RocketShipProgram extends GenShipProgram
 			&&(((Rideable)container()).rideBasis()==Rideable.Basis.FURNITURE_TABLE)
 			&&(((Rideable)container()).numRiders()==0))
 				str.append("^H").append(CMStrings.padRight(L("* Sit at "+container().name()+" to shorten commands *"),60)).append("\n\r");
-			str.append("^X").append(CMStrings.centerPreserve("",60)).append("^.^N\n\r");
-			str.append("^N\n\r");
+			str.append("^X").append(CMStrings.centerPreserve("",60));
 		}
-		return str.toString();
+		return trimColorsAndTrim(str.toString())+"^.^N";
 	}
 
 	@Override
@@ -1419,6 +1449,7 @@ public class RocketShipProgram extends GenShipProgram
 	{
 		synchronized(this)
 		{
+			super.forceUpMenu();
 			Electronics E  = null;
 			final Vector<String> parsed=CMParms.parse(message);
 			if(parsed.size()==0)
