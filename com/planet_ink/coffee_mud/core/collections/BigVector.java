@@ -22,7 +22,7 @@ public class BigVector
 {
 	private static final BigDecimal	ZERO	= BigDecimal.valueOf(0.0);
 	private static final BigDecimal	TWO		= BigDecimal.valueOf(2L);
-	private final static int		SCALE	= 15;
+	public final static int			SCALE	= 25;
 
 	protected final BigDecimal[] b;
 
@@ -50,9 +50,35 @@ public class BigVector
 		b=v.b.clone();
 	}
 
+	public BigVector(final BigDecimal... vs)
+	{
+		b=vs.clone();
+	}
+
 	public final int length()
 	{
 		return b.length;
+	}
+
+	public BigDecimal x()
+	{
+		if(b.length>0)
+			return b[0];
+		return null;
+	}
+
+	public BigDecimal y()
+	{
+		if(b.length>1)
+			return b[1];
+		return null;
+	}
+
+	public BigDecimal z()
+	{
+		if(b.length>2)
+			return b[2];
+		return null;
 	}
 
 	public BigVector subtract(final BigVector v)
@@ -125,6 +151,30 @@ public class BigVector
 		return ab;
 	}
 
+	public BigDecimal unitDistanceFrom(final BigVector v)
+	{
+		if(b.length != v.length())
+			throw new IllegalArgumentException("Different dimensions");
+		BigDecimal x0 = ZERO;
+		for(int i=0;i<b.length;i++)
+		{
+			final BigDecimal p=v.b[i].subtract(b[i]);
+			x0=x0.add(p.multiply(p));
+		}
+		return BigVector.bigSqrt(x0);
+	}
+
+	public BigVector directionalVector(final BigVector v)
+	{
+		if(b.length != v.length())
+			throw new IllegalArgumentException("Different dimensions");
+		final BigDecimal unitDistance = unitDistanceFrom(v);
+		final BigVector ab=new BigVector(b.length);
+		for(int i=0;i<b.length;i++)
+			ab.b[i]=v.b[i].subtract(b[i]).divide(unitDistance,SCALE,RoundingMode.UP);
+		return ab;
+	}
+
 	public void unitVectorFrom()
 	{
 		final BigDecimal mag = magnitude();
@@ -157,6 +207,17 @@ public class BigVector
 
 	}
 
+	public BigDecimal dotRemainder(final BigVector v)
+	{
+		if(b.length != v.length())
+			throw new IllegalArgumentException("Different dimensions");
+		BigDecimal d=ZERO;
+		for(int i=0;i<b.length;i++)
+			d=d.subtract(b[i].multiply(v.b[i]));
+		return d;
+
+	}
+
 	public BigVector vectorProduct(final BigVector v)
 	{
 		if((b.length != 3)||(v.length()!=3))
@@ -175,6 +236,22 @@ public class BigVector
 		b[0] = b[1].multiply(v.b[2]).subtract(b[2].multiply(v.b[1]));
 		b[1] = b[2].multiply(v.b[0]).subtract(b[0].multiply(v.b[2]));
 		b[2] = b[0].multiply(v.b[1]).subtract(b[1].multiply(v.b[0]));
+	}
+
+	public double[] toDoubles()
+	{
+		final double[] res=new double[b.length];
+		for(int i=0;i<res.length;i++)
+			res[i]=b[i].doubleValue();
+		return res;
+	}
+
+	public long[] toLongs()
+	{
+		final long[] res=new long[b.length];
+		for(int i=0;i<res.length;i++)
+			res[i]=Math.round(b[i].doubleValue());
+		return res;
 	}
 
 	@Override

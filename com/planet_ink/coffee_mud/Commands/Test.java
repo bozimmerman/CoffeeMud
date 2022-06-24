@@ -3662,7 +3662,8 @@ public class Test extends StdCommand
 				final Random rand=new Random(System.currentTimeMillis());
 				final GalacticMap space=CMLib.space();
 				int passed=0;
-				final int numTests=1000;
+				final int numTests=100;
+				final int maxTicks=10000;
 				for(int tests=0;tests<numTests;tests++)
 				{
 					final SpaceObject obj1 = (SpaceObject)CMClass.getItem("StdSpaceBody");
@@ -3674,13 +3675,13 @@ public class Test extends StdCommand
 						obj1.coordinates()[i]=rand.nextInt(50000);
 						obj2.coordinates()[i]=rand.nextInt(50000);
 					}
-					obj2.direction()[0]=rand.nextDouble() * Math.PI * 2;
-					obj2.direction()[1]=rand.nextDouble() * Math.PI;
+					obj2.direction()[0]=Math.abs(rand.nextDouble() * Math.PI * 2.0);
+					obj2.direction()[1]=Math.abs(rand.nextDouble() * Math.PI);
 					obj2.setSpeed(300+rand.nextInt(300));
-					final Pair<double[], Long> pair = space.calculateIntercept(obj1, obj2, 1000, 200);
+					final Pair<double[], Long> pair = space.calculateIntercept(obj1, obj2, 1000, maxTicks);
 					if(pair == null)
 					{
-						mob.tell("Failed #"+tests+": "+CMLib.english().coordDescShort(obj2.coordinates())
+						mob.tell("FAILED! #"+tests+": "+CMLib.english().coordDescShort(obj2.coordinates())
 								+": "+CMLib.english().directionDescShort(obj2.direction())
 								+": "+obj2.speed());
 					}
@@ -3689,7 +3690,7 @@ public class Test extends StdCommand
 						final SpaceObject orig2=(SpaceObject)obj2.copyOf();
 						obj1.setDirection(pair.first);
 						obj1.setSpeed(pair.second.longValue());
-						if(!space.canMaybeIntercept(obj1, obj2, 200, pair.second.longValue()))
+						if(!space.canMaybeIntercept(obj1, obj2, maxTicks, pair.second.longValue()))
 						{
 							mob.tell("Stupid #"+tests+": "+CMLib.english().coordDescShort(obj2.coordinates())
 									+": "+CMLib.english().directionDescShort(obj2.direction())
@@ -3697,19 +3698,22 @@ public class Test extends StdCommand
 							continue;
 						}
 						int atti=0;
-						for(;atti<200;atti++)
+						final long radius = obj1.radius()+obj2.radius();
+						final double orig = space.getDistanceFrom(obj1, obj2);
+						for(;atti<maxTicks;atti++)
 						{
-							final long[] oldCoords1=obj1.coordinates();
+							final long[] oldCoords1=obj1.coordinates().clone();
 							obj1.setCoords(space.moveSpaceObject(oldCoords1, obj1.direction(), Math.round(obj1.speed())));
-							if(space.getMinDistanceFrom(oldCoords1, obj1.coordinates(), obj2.coordinates())<200)
+							final double x=space.getMinDistanceFrom(oldCoords1, obj1.coordinates(), obj2.coordinates());
+							if(x<radius)
 								break;
 							obj2.setCoords(space.moveSpaceObject(obj2.coordinates(), obj2.direction(), Math.round(obj2.speed())));
 						}
-						if(atti>=200)
+						if(atti>=maxTicks)
 						{
-							//mob.tell("Failed #"+tests+": "+CMLib.english().coordDescShort(obj2.coordinates())
-							//		+": "+CMLib.english().directionDescShort(obj2.direction())
-							//		+": "+obj2.speed());
+							mob.tell("Failed #"+tests+": "+CMLib.english().coordDescShort(obj2.coordinates())
+									+": "+CMLib.english().directionDescShort(obj2.direction())
+									+": "+obj2.speed());
 						}
 						else
 							passed++;
@@ -3722,7 +3726,8 @@ public class Test extends StdCommand
 				final Random rand=new Random(System.currentTimeMillis());
 				final GalacticMap space=CMLib.space();
 				int passed=0;
-				final int numTests=1000;
+				final int numTests=100;
+				final int maxTicks=10000;
 				for(int tests=0;tests<numTests;tests++)
 				{
 					final SpaceObject obj1 = (SpaceObject)CMClass.getItem("StdSmartTorpedo");
@@ -3732,15 +3737,16 @@ public class Test extends StdCommand
 					final SpaceObject obj2 = (SpaceObject)CMClass.getItem("StdSpaceBody");
 					obj2.setRadius(100);
 					obj1.setKnownTarget(obj2);
+					final long radius=obj1.radius()+obj2.radius();
 					for(int i=0;i<3;i++)
 					{
-						obj1.coordinates()[i]=Math.abs(rand.nextInt(5000));
-						obj2.coordinates()[i]=Math.abs(rand.nextInt(5000));
+						obj1.coordinates()[i]=Math.abs(rand.nextInt(50000));
+						obj2.coordinates()[i]=Math.abs(rand.nextInt(50000));
 					}
-					obj2.direction()[0]=rand.nextDouble() * Math.PI * 2;
-					obj2.direction()[1]=rand.nextDouble() * Math.PI;
+					obj2.direction()[0]=Math.abs(rand.nextDouble() * Math.PI * 2);
+					obj2.direction()[1]=Math.abs(rand.nextDouble() * Math.PI);
 					obj2.setSpeed(300+rand.nextInt(300));
-					final Pair<double[], Long> pair = space.calculateIntercept(obj1, obj2, 1000, 200);
+					final Pair<double[], Long> pair = space.calculateIntercept(obj1, obj2, 1000, maxTicks);
 					if(pair == null)
 					{
 						mob.tell("Failed #"+tests+": "+CMLib.english().coordDescShort(obj2.coordinates())
@@ -3752,7 +3758,7 @@ public class Test extends StdCommand
 						final SpaceObject orig2=(SpaceObject)obj2.copyOf();
 						obj1.setDirection(pair.first);
 						obj1.setSpeed(pair.second.longValue());
-						if(!space.canMaybeIntercept(obj1, obj2, 200, pair.second.longValue()))
+						if(!space.canMaybeIntercept(obj1, obj2, maxTicks, pair.second.longValue()))
 						{
 							mob.tell("Stupid #"+tests+": "+CMLib.english().coordDescShort(obj2.coordinates())
 									+": "+CMLib.english().directionDescShort(obj2.direction())
@@ -3760,7 +3766,7 @@ public class Test extends StdCommand
 							continue;
 						}
 						int atti=0;
-						for(;atti<200;atti++)
+						for(;atti<maxTicks;atti++)
 						{
 							CMLib.space().addObjectToSpace(obj1);
 							try
@@ -3773,19 +3779,20 @@ public class Test extends StdCommand
 								CMLib.space().delObjectInSpace(obj1);
 							}
 
-							final long[] oldCoords1=obj1.coordinates();
+							final long[] oldCoords1=obj1.coordinates().clone();
 							obj1.setCoords(space.moveSpaceObject(oldCoords1, obj1.direction(), Math.round(obj1.speed())));
-							if(space.getMinDistanceFrom(oldCoords1, obj1.coordinates(), obj2.coordinates())<200)
+							final double x=space.getMinDistanceFrom(oldCoords1, obj1.coordinates(), obj2.coordinates());
+							if(x<radius)
 								break;
 							obj2.setCoords(space.moveSpaceObject(obj2.coordinates(), obj2.direction(), Math.round(obj2.speed())));
-							space.changeDirection(obj2.direction(), (rand.nextDouble()*.01),0);
+							//space.changeDirection(obj2.direction(), (Math.abs(rand.nextDouble()*.01)),0);
 							obj2.setSpeed(obj2.speed()+50);
 						}
-						if(atti>=200)
+						if(atti>=maxTicks)
 						{
-							//mob.tell("Failed #"+tests+": "+CMLib.english().coordDescShort(obj2.coordinates())
-							//		+": "+CMLib.english().directionDescShort(obj2.direction())
-							//		+": "+obj2.speed());
+							mob.tell("Failed #"+tests+": "+CMLib.english().coordDescShort(obj2.coordinates())
+									+": "+CMLib.english().directionDescShort(obj2.direction())
+									+": "+obj2.speed());
 						}
 						else
 						{

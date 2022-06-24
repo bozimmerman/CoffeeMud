@@ -383,6 +383,8 @@ public class StdCompLauncher extends StdElecCompContainer implements TechCompone
 										launchedO.setDirection(targetDirection);
 										launchSpeed = (power/100.0) * launchSpeed * getComputedEfficiency();
 										launchedO.setSpeed(launchSpeed);
+										if(launchedI instanceof Ammunition)
+											launchedI.setSavable(false);
 										CMLib.space().addObjectToSpace(launchedO, firstCoords);
 									}
 									else
