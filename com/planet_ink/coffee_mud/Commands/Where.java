@@ -89,19 +89,18 @@ public class Where extends StdCommand
 
 	public String getRoomDesc(final MOB mob, final Room R, final Environmental E)
 	{
-		if((mob!=null)&&(mob.location()==R))
+		if((mob!=null)
+		&&(mob.location()==R)
+		&&(E instanceof Item)
+		&&(((Item)E).container()!=null))
 		{
 			String msg = "^H*HERE*^?";
-			if((E instanceof Item)
-			&&(((Item)E).container()!=null))
+			Container C=((Item)E).container();
+			int tries=99;
+			while((C!=null)&&((--tries)>0))
 			{
-				Container C=((Item)E).container();
-				int tries=99;
-				while((C!=null)&&((--tries)>0))
-				{
-					msg += "@"+C.name();
-					C=C.container();
-				}
+				msg += "@"+C.name();
+				C=C.container();
 			}
 			return msg;
 		}
