@@ -797,7 +797,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			final BigVector P0=new BigVector(runnerO.coordinates()); // runners position
 			final BigVector P1=new BigVector(chaserO.coordinates()); // chasers position (torpedo/ship/whatever)
 			final BigVector P0S=new BigVector(moveSpaceObject(runnerO.coordinates(), runnerO.direction(), Math.round(runnerO.speed())));
-			final BigVector V0=P0.directionalVector(P0S);
+			final BigVector V0=P0S.subtract(P0);
 			final BigDecimal S0=BigDecimal.valueOf(runnerO.speed());
 			final BigDecimal S1=BigDecimal.valueOf(speedToUse);
 			BigDecimal A=V0.dotProduct(V0).subtract(S1.multiply(S1));
@@ -823,7 +823,13 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 				P0.y().subtract(P1.y()).add(TtimesS0.multiply(V0.y())).divide(TtimesS1,BigVector.SCALE,RoundingMode.UP),
 				P0.x().subtract(P1.z()).add(TtimesS0.multiply(V0.z())).divide(TtimesS1,BigVector.SCALE,RoundingMode.UP)
 			);
-			return new Pair<double[], Long>(getDirection(chaserO.coordinates(), V1.toLongs()),Long.valueOf(maxChaserSpeed));
+			final double[] finalDir = getDirection(chaserO.coordinates(), V1.toLongs());
+			/**
+			 * compare with prev algorithm
+			final Pair<double[], Long> p = this.calculateIntercept2(chaserO, runnerO, maxChaserSpeed, maxTicks);
+			System.out.println(p.first[0]+"/"+finalDir[0]+", "+p.first[1]+"/"+finalDir[1]);
+			 */
+			return new Pair<double[], Long>(finalDir,Long.valueOf(maxChaserSpeed));
 		}
 		else
 		if(chaserO.speed()>0) // runner isn't moving, so straight shot
@@ -834,7 +840,8 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		return null; // something is not
 	}
 
-	protected Pair<double[],Long> calculateIntercept2(final SpaceObject chaserO, final SpaceObject runnerO, final long maxChaserSpeed, final int maxTicks)
+	//@Override
+	public Pair<double[],Long> calculateIntercept2(final SpaceObject chaserO, final SpaceObject runnerO, final long maxChaserSpeed, final int maxTicks)
 	{
 		if(maxTicks < 1)
 			return null; // not possible, too late
