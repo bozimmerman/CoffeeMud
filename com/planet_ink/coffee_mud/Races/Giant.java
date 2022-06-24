@@ -228,7 +228,7 @@ public class Giant extends StdRace
 		if(pct<.99)
 			return L("^g@x1^g has a few small(?) bruises.^N",mob.name(viewer));
 		else
-			return L("^c@x1^c is in towering health^N",mob.name(viewer));
+			return L("^c@x1^c is in towering health.^N",mob.name(viewer));
 	}
 
 	@Override
