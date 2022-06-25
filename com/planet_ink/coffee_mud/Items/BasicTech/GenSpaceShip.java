@@ -690,22 +690,28 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 	@Override
 	public void setShipFlag(final ShipFlag flag, final boolean setFlag)
 	{
-		if(shipFlags.contains(flag))
+		synchronized(shipFlags)
 		{
-			if(!setFlag)
-				shipFlags.remove(flag);
-		}
-		else
-		{
-			if(setFlag)
-				shipFlags.add(flag);
+			if(shipFlags.contains(flag))
+			{
+				if(!setFlag)
+					shipFlags.remove(flag);
+			}
+			else
+			{
+				if(setFlag)
+					shipFlags.add(flag);
+			}
 		}
 	}
 
 	@Override
 	public boolean getShipFlag(final ShipFlag flag)
 	{
-		return shipFlags.contains(flag);
+		synchronized(shipFlags)
+		{
+			return shipFlags.contains(flag);
+		}
 	}
 
 	@Override

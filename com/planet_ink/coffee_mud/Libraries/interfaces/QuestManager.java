@@ -217,7 +217,7 @@ public interface QuestManager extends CMLibrary
 	 * @see QuestManager#getDefaultHoliData(String, String)
 	 *
 	 * @param named the name of the holiday, unique plz
-	 * @param area the name of the area (or ANY) the holiday occurs in
+	 * @param areaName the name of the area (or ANY) the holiday occurs in
 	 * @param save true to append to the official holiday file
 	 * @return "", or any error message from the creation
 	 */

@@ -151,7 +151,7 @@ public interface Command extends CMObject
 	/**
 	 * Returns true if the command will not be executed if all are true:
 	 * 1. the player lacks the actions to complete the command in one tick
-	 * 2. the player has an queued command whose action cost > 0.0
+	 * 2. the player has an queued command whose action cost gr. 0.0
 	 * When cancelled, preExecute is called with a secondsElapsed of -1
 	 *
 	 * @see Command#preExecute(MOB, List, int, int, double)

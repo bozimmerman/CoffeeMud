@@ -59,6 +59,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	protected volatile long	nextStaleWarn	= System.currentTimeMillis() + STALE_WARN_INTERVAL;
 	protected Set<String> 	staleAirList	= new HashSet<String>();
 	protected Ability 		gravityFloaterA = null;
+	protected volatile int	gravLossDown	= 0;
 
 
 	@Override
@@ -610,7 +611,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 		return gravityFloaterA;
 	}
 
-	protected void doGravityChanges()
+	protected void doGravityChangesTick()
 	{
 		if((lastEngine != null)
 		&&(!lastEngine.amDestroyed())
@@ -639,7 +640,11 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 			|| (getIsDocked() != null)
 			|| (lastEThrust > 0.2);
 
-		setShipFlag(ShipFlag.ARTI_GRAV, false);
+		if(--gravLossDown<=0)
+		{
+			gravLossDown=2;
+			setShipFlag(ShipFlag.ARTI_GRAV, false);
+		}
 		if(gravExistsNow == getShipFlag(ShipFlag.NO_GRAVITY)) // opposite, so it needs changing
 		{
 			final Ability floater = getGravityFloat();
@@ -778,7 +783,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 		if(tickID==Tickable.TICKID_AREA)
 		{
 			doAtmosphereChanges();
-			doGravityChanges();
+			doGravityChangesTick();
 			final Boardable item=this.shipItem;
 			if(item != null)
 				item.tick(ticking, tickID);

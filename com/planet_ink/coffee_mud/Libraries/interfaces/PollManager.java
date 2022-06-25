@@ -51,7 +51,6 @@ public interface PollManager extends CMLibrary
 	 * @see PollManager#getPoll(String)
 	 * @see PollManager#getPoll(int)
 	 * @see PollManager#getPollList()
-	 * @see PollManager#getMyPollTypes(MOB, String)
 	 *
 	 * @param mob the player for whom polls are required
 	 * @param login true if requested during login, false otherwise
@@ -67,7 +66,7 @@ public interface PollManager extends CMLibrary
 	 * @see PollManager#getPoll(String)
 	 * @see PollManager#getPoll(int)
 	 * @see PollManager#getPollList()
-	 * @see PollManager#getMyPollTypes(MOB, String)
+	 * @see PollManager#getMyPollTypes(MOB, boolean)
 	 *
 	 * @param named the name of the poll
 	 * @return null, or the Poll object
@@ -81,7 +80,7 @@ public interface PollManager extends CMLibrary
 	 * @see PollManager#getPoll(String)
 	 * @see PollManager#getPoll(int)
 	 * @see PollManager#getPollList()
-	 * @see PollManager#getMyPollTypes(MOB, String)
+	 * @see PollManager#getMyPollTypes(MOB, boolean)
 	 *
 	 * @param x the 0 based ordinal
 	 * @return the Poll object or null
@@ -96,7 +95,7 @@ public interface PollManager extends CMLibrary
 	 * @see PollManager#getPoll(String)
 	 * @see PollManager#getPoll(int)
 	 * @see PollManager#getPollList()
-	 * @see PollManager#getMyPollTypes(MOB, String)
+	 * @see PollManager#getMyPollTypes(MOB, boolean)
 	 *
 	 * @return an iterator of all poll objects
 	 */
@@ -125,6 +124,7 @@ public interface PollManager extends CMLibrary
 	 *
 	 * @param P the Poll object
 	 * @param mob the player who can edit it
+	 * @throws java.io.IOException the ioexception from the mob interaction
 	 */
 	public void modifyVote(Poll P, MOB mob) throws java.io.IOException;
 

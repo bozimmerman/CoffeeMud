@@ -37,7 +37,7 @@ import java.util.*;
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-public class ShipDiagProgram extends GenShipProgram implements ArchonOnly
+public class ShipDiagProgram extends GenShipProgram
 {
 	@Override
 	public String ID()
@@ -69,6 +69,9 @@ public class ShipDiagProgram extends GenShipProgram implements ArchonOnly
 	{
 		components	= null;
 		showUpdatedDamage = false;
+		diagTargetT = null;
+		diagTargetL = null;
+		diagCompletionMs = 0;
 		scr.setLength(0);
 	}
 
@@ -139,10 +142,7 @@ public class ShipDiagProgram extends GenShipProgram implements ArchonOnly
 
 	protected void shutdown()
 	{
-		currentScreen = "";
-		synchronized (this)
-		{
-		}
+		decache();
 	}
 
 	@Override
@@ -271,9 +271,28 @@ public class ShipDiagProgram extends GenShipProgram implements ArchonOnly
 				if((!CMath.isInteger(word2))
 				||(level > 3))
 				{
-					super.addScreenMessage(L("Diag error: Invalid diagnostics level '@x1'",word2));
+					super.addScreenMessage(L("Diag syntax error: Invalid diagnostics level '@x1'",word2));
 					return;
 				}
+				TechComponent T=null;
+				if(system.length()>0)
+				{
+					final List<TechComponent> all=this.getTechComponents();
+					T=(TechComponent)CMLib.english().fetchEnvironmental(all, system, true);
+					if(T==null)
+						T=(TechComponent)CMLib.english().fetchEnvironmental(all, system, false);
+					if(T==null)
+					{
+						super.addScreenMessage(L("Diag syntax error: Invalid system '@x1'",system));
+						return;
+					}
+				}
+				//TODO: should damage be inaccurate? does that explain the diag levels?
+				/*
+				 * 1: show recent power consumption vs needs, and damage
+				 * 2. #1, and installation factors
+				 * 3. #2, and efficiency?
+				 */
 			}
 		}
 	}

@@ -141,7 +141,7 @@ public interface ProtocolLibrary extends CMLibrary
 	 * @param session the session of the mob to report to
 	 * @param data the users MSDP sending
 	 * @param dataSize the size of the sending?
-	 * @param reporteds the 'subscriptions' of the given session
+	 * @param reportables the 'subscriptions' of the given session
 	 * @return null, or bytes to send to the user
 	 */
 	public byte[] processMsdp(final Session session, final char[] data, final int dataSize, final Map<Object,Object> reportables);
@@ -153,7 +153,7 @@ public interface ProtocolLibrary extends CMLibrary
 	 * @see ProtocolLibrary#processMsdp(Session, char[], int, Map)
 	 *
 	 * @param session the session of the mob to report to
-	 * @param reporteds the 'subscriptions' of the given session
+	 * @param reportables the 'subscriptions' of the given session
 	 * @return null, or bytes to send to the user
 	 */
 	public byte[] pingMsdp(final Session session, final Map<Object,Object> reportables);

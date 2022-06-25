@@ -405,7 +405,7 @@ public interface GalacticMap extends CMLibrary
 	 * Returns whether the vectors described by the chaser and runners, their speeds, and the amount of time in
 	 * movement can even POSSIBLY intercept, because the two vectors overlap
 	 *
-	 * @see GalacticMap#calculateIntercept(SpaceObject, SpaceObject, long, long)
+	 * @see GalacticMap#calculateIntercept(SpaceObject, SpaceObject, long, int)
 	 *
 	 * @param chaserO the chasing object
 	 * @param runnerO the running object
