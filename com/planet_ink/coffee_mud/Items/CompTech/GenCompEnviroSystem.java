@@ -89,7 +89,7 @@ public class GenCompEnviroSystem extends GenElecCompItem
 						setPowerRemaining(this.powerRemaining()-1);
 					if(--tickDown <=0)
 					{
-						tickDown=ENVIRO_TICKS/2;
+						tickDown=ENVIRO_TICKS;
 						final SpaceObject obj=CMLib.space().getSpaceObject(this, true);
 						if(obj instanceof SpaceShip)
 						{

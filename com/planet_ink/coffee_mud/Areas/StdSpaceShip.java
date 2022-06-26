@@ -593,6 +593,8 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 			else
 				R.setAtmosphere(RawMaterial.RESOURCE_NOTHING); // WE NOW HAVE A VACUUM HERE!!!
 		}
+		//if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+		//	Log.debugOut("Stale check happening in "+name()+", stale rooms: "+staleAirList.size());
 	}
 
 	protected Ability getGravityFloat()
@@ -768,9 +770,9 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 			doStaleCheck();
 			if(staleAirList.size()>numStaleRooms)
 				nextStaleWarn = System.currentTimeMillis() + STALE_WARN_INTERVAL;
-			if(CMSecurity.isDebugging(DbgFlag.SPACESHIP) && (staleAirList.size()>0))
-				Log.debugOut("Used up the air in "+Name()+", stale rooms: "+staleAirList.size());
-
+			// the following message is uninteresting, because doStaleCheck ALWAYS generates rooms
+			//if(CMSecurity.isDebugging(DbgFlag.SPACESHIP) && (staleAirList.size()>0))
+			//	Log.debugOut("Used up the air in "+Name()+", stale rooms: "+staleAirList.size());
 		}
 	}
 
