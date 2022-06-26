@@ -529,7 +529,11 @@ public class CMFile extends File
 			final CMVFSDir dir = vfsV();
 			if(dir==null)
 				return false;
-			final int x=file.path.lastIndexOf('/');
+			int x;
+			if(file.path.endsWith("/"))
+				x=file.path.substring(0,file.path.length()-1).lastIndexOf('/');
+			else
+				x=file.path.lastIndexOf('/');
 			CMVFSDir subDir=dir;
 			if(x>0)
 				subDir=dir.fetchSubDir(file.path.substring(0,x),true);
