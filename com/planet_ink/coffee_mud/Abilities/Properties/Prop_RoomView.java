@@ -153,6 +153,9 @@ public class Prop_RoomView extends Property
 					});
 				}
 				else
+				if(longlook && (msg.targetMinor()==CMMsg.TYP_LOOK))
+					return super.okMessage(myHost,msg);
+				else
 				{
 					if((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 					{
