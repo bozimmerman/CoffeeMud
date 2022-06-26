@@ -255,12 +255,23 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 					{
 						final Room R=CMLib.map().roomLocation(this);
 						final CMMsg msg2=CMClass.getMsg(msg.source(), CMMsg.MSG_DEACTIVATE, L("@x1 sparks and fizzes out.",name()));
-						if((R!=null)&&(R.okMessage(msg.source(), msg2)))
+						if((R!=null)
+						&&(R.okMessage(msg.source(), msg2)))
+						{
 							R.send(msg.source(), msg2);
+							setUsesRemaining(0);
+						}
 					}
 					else
 					{
-						this.setUsesRemaining(this.usesRemaining()-msg.value());
+						final Room R=CMLib.map().roomLocation(this);
+						final CMMsg msg2=CMClass.getMsg(msg.source(), CMMsg.MSG_OK_VISUAL, L("@x1 sparks.",name()));
+						if((R!=null)
+						&&(R.okMessage(msg.source(), msg2)))
+						{
+							R.send(msg.source(), msg2);
+							setUsesRemaining(this.usesRemaining()-msg.value());
+						}
 					}
 				}
 				break;

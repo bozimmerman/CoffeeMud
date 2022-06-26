@@ -286,6 +286,33 @@ public class StdElecCompContainer extends StdElecContainer implements TechCompon
 					msg.source().tell(msg.source(),this,null,L("Your attempt to enhance <T-NAME> has failed.\n\r"));
 				}
 				break;
+			case CMMsg.TYP_DAMAGE:
+				if(subjectToWearAndTear() && (usesRemaining()>0))
+				{
+					if(msg.value()>usesRemaining())
+					{
+						final Room R=CMLib.map().roomLocation(this);
+						final CMMsg msg2=CMClass.getMsg(msg.source(), CMMsg.MSG_DEACTIVATE, L("@x1 sparks and fizzes out.",name()));
+						if((R!=null)
+						&&(R.okMessage(msg.source(), msg2)))
+						{
+							R.send(msg.source(), msg2);
+							setUsesRemaining(0);
+						}
+					}
+					else
+					{
+						final Room R=CMLib.map().roomLocation(this);
+						final CMMsg msg2=CMClass.getMsg(msg.source(), CMMsg.MSG_OK_VISUAL, L("@x1 sparks.",name()));
+						if((R!=null)
+						&&(R.okMessage(msg.source(), msg2)))
+						{
+							R.send(msg.source(), msg2);
+							setUsesRemaining(this.usesRemaining()-msg.value());
+						}
+					}
+				}
+				break;
 			}
 		}
 		super.executeMsg(host, msg);

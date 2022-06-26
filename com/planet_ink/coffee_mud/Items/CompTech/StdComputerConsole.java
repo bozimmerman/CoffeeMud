@@ -91,7 +91,10 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	@Override
 	public long powerCapacity()
 	{
-		return 1+getSoftware().size()+((this.getActiveMenu().length()>0)?1:0);
+		final List<Software> sw = getSoftware();
+		if(sw == null)
+			return 1;
+		return 1+sw.size()+((this.getActiveMenu().length()>0)?1:0);
 	}
 
 	@Override

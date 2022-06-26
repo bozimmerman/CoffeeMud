@@ -384,6 +384,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 					case CMMsg.TYP_SONIC:
 					case CMMsg.TYP_UNDEAD:
 					case CMMsg.TYP_WATER:
+					{
 						if(CMLib.dice().getRandomizer().nextDouble() + CMath.div(baseDamage,100) > this.getFinalManufacturer().getReliabilityPct())
 							hullDamage=1;
 						if(hullDamage < usesRemaining())
@@ -393,7 +394,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 							{
 								final Electronics E=i.next();
 								if((E.amDestroyed())
-								||(((E.subjectToWearAndTear())&&(E.usesRemaining()>0)))
+								//||(((E.subjectToWearAndTear())&&(E.usesRemaining()>0)))
 								||(E instanceof ElecPanel)
 								||(E instanceof Software)
 								||((E instanceof TechComponent) && (!((TechComponent)E).isInstalled()))
@@ -405,10 +406,18 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 								final Electronics damagedE = list.get(CMLib.dice().roll(1, list.size(), -1));
 								final Room R=CMLib.map().roomLocation(damagedE);
 								final CMMsg msg2=(CMMsg)msg.copyOf();
-								if((R!=null)&&(R.okMessage(msg.source(), msg2)))
+								msg2.setTarget(damagedE);
+								if((R!=null)
+								&&(R.okMessage(msg.source(), msg2)))
+								{
 									R.send(msg.source(), msg2);
+									//hullDamage=(hullDamage>1)?1:0;
+								}
 							}
 						}
+						break;
+					}
+					default:
 						break;
 					}
 					if(hullDamage >= usesRemaining())
