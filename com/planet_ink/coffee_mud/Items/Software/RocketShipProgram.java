@@ -1615,13 +1615,18 @@ public class RocketShipProgram extends GenShipProgram
 					if(E!=null)
 						code=TechCommand.THRUST.makeCommand(ShipDirectional.ShipDir.AFT,Double.valueOf(.0000001));
 					else
+					{
 						E=findSensorByName(rest);
+						if(E==null)
+							E=findShieldByName(rest);
+					}
 					if(E==null)
 					{
 						final List<TechComponent> others = new ArrayList<TechComponent>();
 						for(final TechComponent component : getTechComponents())
 						{
 							if((!getEngines().contains(component))
+							&&(!getShipShields().contains(component))
 							&&(!getShipSensors().contains(component)))
 								others.add(component);
 						}

@@ -549,7 +549,8 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 	protected List<? extends Environmental> getAllSensibleObjects()
 	{
 		final SpaceObject O=CMLib.space().getSpaceObject(this, true);
-		if((O!=null)&&(this.powerRemaining() > this.powerNeeds()))
+		if((O!=null)
+		&&(this.powerRemaining() > this.powerNeeds()))
 		{
 			final long maxRange = Math.round(getSensorMaxRange() * this.getComputedEfficiency());
 			final List<? extends Environmental> found = CMLib.space().getSpaceObjectsWithin(O, O.radius()+1, maxRange);
@@ -720,9 +721,14 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 						*/
 						if(command == TechCommand.SENSE)
 						{
-							if(doSensing(mob, controlI))
-								this.activate(true);
-
+							if(powerRemaining()>0)
+							{
+								if(doSensing(mob, controlI))
+								{
+									this.setPowerRemaining(powerRemaining()-1);
+									this.activate(true);
+								}
+							}
 						}
 						else
 							reportError(this, controlI, mob, lang.L("@x1 refused to respond.",me.name(mob)), lang.L("Failure: @x1: control command failure.",me.name(mob)));

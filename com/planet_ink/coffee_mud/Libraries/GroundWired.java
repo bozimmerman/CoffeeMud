@@ -431,8 +431,12 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			powerMsg.setTarget(E);
 			powerMsg.setValue(0);
 			final Room R=CMLib.map().roomLocation(E);
-			if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
-				R.send(powerMsg.source(), powerMsg);
+			if(R!=null)
+			{
+				powerMsg.source().setLocation(R);
+				if(R.okMessage(powerMsg.source(), powerMsg))
+					R.send(powerMsg.source(), powerMsg);
+			}
 		}
 		long remainingPowerToDistribute=0;
 		long availablePowerToDistribute=0;
@@ -465,11 +469,15 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				powerMsg.setTarget(E);
 				powerMsg.setValue(0);
 				final Room R=CMLib.map().roomLocation(E);
-				if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
+				if(R!=null)
 				{
-					R.send(powerMsg.source(), powerMsg);
-					if(debugging)
-						Log.debugOut("Current "+key+": Panel: "+E.Name()+" emer current "+powerMsg.value());
+					powerMsg.source().setLocation(R);
+					if(R.okMessage(powerMsg.source(), powerMsg))
+					{
+						R.send(powerMsg.source(), powerMsg);
+						if(debugging)
+							Log.debugOut("Current "+key+": Panel: "+E.Name()+" emer current "+powerMsg.value());
+					}
 				}
 			}
 			for(final PowerSource E : batteries)
@@ -477,11 +485,15 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				powerMsg.setTarget(E);
 				powerMsg.setValue(0);
 				final Room R=CMLib.map().roomLocation(E);
-				if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
+				if(R!=null)
 				{
-					R.send(powerMsg.source(), powerMsg);
-					if(debugging)
-						Log.debugOut("Current "+key+": PowerSource: "+E.Name()+" emer current "+powerMsg.value());
+					powerMsg.source().setLocation(R);
+					if(R.okMessage(powerMsg.source(), powerMsg))
+					{
+						R.send(powerMsg.source(), powerMsg);
+						if(debugging)
+							Log.debugOut("Current "+key+": PowerSource: "+E.Name()+" emer current "+powerMsg.value());
+					}
 				}
 			}
 		}
@@ -508,11 +520,15 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					}
 					powerMsg.setValue(powerToTake);
 					final Room R=CMLib.map().roomLocation(E);
-					if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
+					if(R!=null)
 					{
-						R.send(powerMsg.source(), powerMsg);
-						if(debugging)
-							Log.debugOut("Current "+key+": Panel: "+E.Name()+": Power taken: "+(powerToTake -powerMsg.value()));
+						powerMsg.source().setLocation(R);
+						if(R.okMessage(powerMsg.source(), powerMsg))
+						{
+							R.send(powerMsg.source(), powerMsg);
+							if(debugging)
+								Log.debugOut("Current "+key+": Panel: "+E.Name()+": Power taken: "+(powerToTake -powerMsg.value()));
+						}
 					}
 					remainingPowerToDistribute-=(powerMsg.value()<0)?powerToTake:(powerToTake-powerMsg.value());
 				}
@@ -564,11 +580,15 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				final int amountToDistribute=(int)(remainingPowerToDistribute/batteriesLeft);
 				powerMsg.setValue(amountToDistribute<0?0:amountToDistribute);
 				final Room R=CMLib.map().roomLocation(E);
-				if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
+				if(R!=null)
 				{
-					R.send(powerMsg.source(), powerMsg);
-					if(debugging)
-						Log.debugOut("Current "+key+": Battery: "+E.Name()+": Power charged: "+amountToDistribute+": "+powerMsg.value()+", now="+E.powerRemaining());
+					powerMsg.source().setLocation(R);
+					if(R.okMessage(powerMsg.source(), powerMsg))
+					{
+						R.send(powerMsg.source(), powerMsg);
+						if(debugging)
+							Log.debugOut("Current "+key+": Battery: "+E.Name()+": Power charged: "+amountToDistribute+": "+powerMsg.value()+", now="+E.powerRemaining());
+					}
 				}
 				batteriesLeft--;
 				remainingPowerToDistribute-=(powerMsg.value()<0)?amountToDistribute:(amountToDistribute-powerMsg.value());

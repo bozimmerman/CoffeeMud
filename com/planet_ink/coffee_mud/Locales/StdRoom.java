@@ -1708,14 +1708,12 @@ public class StdRoom implements Room
 					}
 				}
 			}
-			if(msg.trailerRunnables()!=null)
+			final List<Runnable> trails=msg.trailerRunnables();
+			if((trails!=null)
+			&&(trails.size()>0))
 			{
-				final List<Runnable> trails=msg.trailerRunnables();
-				if((trails!=null)&&(trails.size()>0))
-				{
-					for(final Runnable r : trails)
-						CMLib.threads().executeRunnable(r);
-				}
+				for(final Runnable r : trails)
+					CMLib.threads().executeRunnable(r);
 			}
 		}
 	}

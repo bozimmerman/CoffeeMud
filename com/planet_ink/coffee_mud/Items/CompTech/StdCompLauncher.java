@@ -88,7 +88,7 @@ public class StdCompLauncher extends StdElecCompContainer implements TechCompone
 	@Override
 	public long powerTarget()
 	{
-		return powerSetting > powerCapacity ? powerCapacity : powerSetting;
+		return powerSetting > powerCapacity() ? powerCapacity() : powerSetting;
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class StdCompLauncher extends StdElecCompContainer implements TechCompone
 	@Override
 	public int powerNeeds()
 	{
-		return (int) Math.min((int) Math.min(powerCapacity,powerSetting) - power, (int)Math.round((double)powerCapacity*getRechargeRate()));
+		return (int) Math.min((int) Math.min(powerCapacity(),powerTarget()) - power, (int)Math.round((double)powerCapacity*getRechargeRate()));
 	}
 
 	protected synchronized SpaceShip getMyShip()

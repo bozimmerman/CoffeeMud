@@ -81,7 +81,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 	@Override
 	public int powerNeeds()
 	{
-		return (int) Math.min((int) Math.min(powerCapacity,powerSetting) - power, (int)Math.round((double)powerCapacity*getRechargeRate()*this.getComputedEfficiency()));
+		return (int) Math.min((int) Math.min(powerCapacity(),powerTarget()) - power, (int)Math.round((double)powerCapacity*getRechargeRate()*this.getComputedEfficiency()));
 	}
 
 	protected synchronized SpaceShip getMyShip()
@@ -95,6 +95,20 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 				myShip = new WeakReference<SpaceShip>(null);
 		}
 		return myShip.get();
+	}
+
+	@Override
+	public long powerTarget()
+	{
+		if(powerSetting<0)
+			return 0;
+		return powerSetting>powerCapacity()?powerCapacity():powerSetting;
+	}
+
+	@Override
+	public void setPowerTarget(final long capacity)
+	{
+		powerSetting = capacity;
 	}
 
 	@Override
@@ -249,7 +263,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 							if(ship == null)
 								reportError(this, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control syntax failure.",me.name(mob)));
 							else
-							if(this.power < Math.min(powerCapacity,powerSetting) - getBleedAmount())
+							if(this.power < Math.min(powerCapacity(),powerTarget()) - getBleedAmount())
 								reportError(this, controlI, mob, lang.L("@x1 is not charged up.",me.name(mob)), lang.L("Failure: @x1: weapon is not charged.",me.name(mob)));
 							else
 							{

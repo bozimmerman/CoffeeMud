@@ -50,8 +50,13 @@ public class ShipDiagProgram extends GenShipProgram
 	protected volatile boolean				showUpdatedDamage	= false;
 	protected volatile TechComponent		diagTargetT			= null;
 	protected volatile Integer				diagTargetL			= null;
+	protected volatile long					diagMasterMs		= 0;
 	protected volatile long					diagCompletionMs	= 0;
+	protected volatile Pair<Area,Ability>	diagWatcherA		= null;
 	protected final StringBuffer			scr					= new StringBuffer("");
+	
+	protected final Map<Electronics, Pair<CMMsg, Long>>		last= new Hashtable<Electronics, Pair<CMMsg, Long>>();
+	protected final Map<Electronics, Pair<long[], long[]>>	rpt	= new Hashtable<Electronics, Pair<long[], long[]>>();
 
 	public ShipDiagProgram()
 	{
@@ -65,16 +70,95 @@ public class ShipDiagProgram extends GenShipProgram
 		recoverPhyStats();
 	}
 
+	protected boolean isDiagRunning()
+	{
+		if((diagTargetL!=null)
+		&&(diagCompletionMs>0)
+		&&(System.currentTimeMillis()<diagCompletionMs))
+			return true;
+		return false;
+	}
+	
+	protected boolean isDiagAvailable()
+	{
+		if((diagTargetL!=null)
+		&&(!isDiagRunning()))
+			return true;
+		return false;
+	}
+	
+	protected void cancelRunningDiag()
+	{
+		if(diagWatcherA!=null)
+		{
+			final ExtendableAbility xA=(ExtendableAbility)diagWatcherA.second;
+			diagWatcherA.first.delEffect(xA);
+			diagWatcherA=null;
+		}
+		this.last.clear();
+		this.rpt.clear();
+		diagCompletionMs = 0;
+	}
+	
 	protected void decache()
 	{
 		components	= null;
 		showUpdatedDamage = false;
+		cancelRunningDiag();
+		scr.setLength(0);
 		diagTargetT = null;
 		diagTargetL = null;
-		diagCompletionMs = 0;
-		scr.setLength(0);
 	}
 
+	protected final MsgListener listener = new MsgListener()
+	{
+		@Override
+		public void executeMsg(final Environmental myHost, final CMMsg msg)
+		{
+			if((msg.targetMinor()==CMMsg.TYP_POWERCURRENT)
+			&&(msg.target() instanceof Electronics)
+			&&(last.containsKey(msg.target())))
+			{
+				final Pair<CMMsg,Long> prevValue=last.get(msg.target());
+				if(prevValue.first==msg)
+				{
+					final long amountTaken = prevValue.second.longValue() - msg.value();
+					if(!rpt.containsKey(msg.target()))
+						rpt.put((Electronics)msg.target(), new Pair<long[],long[]>(new long[] {0},new long[] {0}));
+					final Pair<long[],long[]> p = rpt.get(msg.target());
+					p.first[0]++;
+					p.second[0]+=amountTaken;
+				}
+			}
+		}
+
+		@Override
+		public boolean okMessage(Environmental myHost, CMMsg msg)
+		{
+			if((msg.targetMinor()==CMMsg.TYP_POWERCURRENT)
+			&&(msg.target() instanceof Electronics))
+			{
+				Long value=Long.valueOf(msg.value());
+				last.put((Electronics)msg.target(), new Pair<CMMsg,Long>(msg,value));
+			}
+			return true;
+		}
+	};
+	
+	protected ExtendableAbility makePowerWatcher()
+	{
+		ExtendableAbility A=(ExtendableAbility)CMClass.getAbility("ExtAbility");
+		if(A!=null)
+		{
+			A.setSavable(false);
+			A.setExpirationDate(System.currentTimeMillis()+600000L);
+			this.last.clear();
+			this.rpt.clear();
+			A.setMsgListener(this.listener);
+		}
+		return A;
+	}
+	
 	protected synchronized List<TechComponent> getTechComponents()
 	{
 		if(components == null)
@@ -130,7 +214,7 @@ public class ShipDiagProgram extends GenShipProgram
 	public boolean isCommandString(String word, final boolean isActive)
 	{
 		word = word.toUpperCase();
-		return (word.startsWith("DIAG ") || word.equals("DAMAGE"));
+		return (word.startsWith("DIAG") || word.equals("DAMAGE"));
 	}
 
 	@Override
@@ -165,70 +249,295 @@ public class ShipDiagProgram extends GenShipProgram
 		return true;
 	}
 
+	public String getConditionStr(final int cond)
+	{
+		if(cond>=100)
+			return "*****";
+		else
+		if(cond>=90)
+			return "****-";
+		else
+		if(cond>=75)
+			return "**** ";
+		else
+		if(cond>=50)
+			return "***  ";
+		else
+		if(cond>=25)
+			return "**   ";
+		else
+			return "*    ";
+	}
+
 	public char getConditionColor(final int cond)
 	{
 		if(cond>=100)
+			return 'g';
+		else
+		if(cond>=90)
 			return 'G';
 		else
-		if(cond>=65)
+		if(cond>=75)
+			return 'y';
+		else
+		if(cond>=50)
 			return 'Y';
 		else
-		if(cond>=35)
+		if(cond>=25)
 			return 'r';
 		else
 			return 'R';
 	}
 
+	public String getDamageControl()
+	{
+		final StringBuilder scr=new StringBuilder("");
+		final boolean damageFound=false;
+		final SpaceObject spaceObject=CMLib.space().getSpaceObject(this,true);
+		final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+		final SpaceObject shipSpaceObject=(ship==null)?null:ship.getShipSpaceObject();
+		if(shipSpaceObject instanceof Item)
+		{
+			int condPct=100;
+			if(((Item)shipSpaceObject).subjectToWearAndTear())
+				condPct = ((Item)shipSpaceObject).usesRemaining();
+			scr.append("^H");
+			scr.append(CMStrings.padRight(L("^gA"),2));
+			scr.append("^W").append(CMStrings.padRight(L("  "),6));
+			scr.append('^').append(getConditionColor(condPct));
+			scr.append(CMStrings.padRight(getConditionStr(condPct),8));
+			scr.append("^H").append(CMStrings.padRight(L("Ship Hull"),48));
+			scr.append("^.^N\n\r");
+		}
+		for(final TechComponent C : this.getTechComponents())
+		{
+			if(C instanceof Item)
+			{
+				int condPct=100;
+				if(((Item)C).subjectToWearAndTear())
+					condPct = ((Item)C).usesRemaining();
+				scr.append("^H");
+				scr.append(CMStrings.padRight(C.activated()?L("^gA"):L("^rI"),2));
+				scr.append("^W").append(CMStrings.padRight(L("  "),6));
+				scr.append('^').append(getConditionColor(condPct));
+				scr.append(CMStrings.padRight(getConditionStr(condPct),8));
+				scr.append("^H").append(CMStrings.padRight(L(C.name()),48));
+				scr.append("^.^N\n\r");
+			}
+		}
+
+		final StringBuilder header=new StringBuilder("^.^N");
+		if(damageFound)
+			header.append("^~r");
+		else
+			header.append("^X");
+		header.append(CMStrings.centerPreserve(L(" -- Damage Control -- "),60)).append("^.^N\n\r");
+		scr.insert(0, header.toString());
+		return scr.toString();
+	}
+
+	public String getDiagLevel1()
+	{
+		final StringBuilder scr=new StringBuilder("");
+		final boolean damageFound=false;
+		final SpaceObject spaceObject=CMLib.space().getSpaceObject(this,true);
+		final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+		final SpaceObject shipSpaceObject=(ship==null)?null:ship.getShipSpaceObject();
+		if((shipSpaceObject instanceof Item)
+		&&((diagTargetT==null)||(diagTargetT==shipSpaceObject)))
+		{
+			int condPct=100;
+			if(((Item)shipSpaceObject).subjectToWearAndTear())
+				condPct = ((Item)shipSpaceObject).usesRemaining();
+			scr.append("^H");
+			scr.append(CMStrings.padRight(L("^gA"),2));
+			scr.append("^W").append(CMStrings.padRight(L("  "),6));
+			scr.append('^').append(getConditionColor(condPct));
+			scr.append(CMStrings.padRight(""+condPct+"%",8));
+			scr.append("^H").append(CMStrings.padRight(L("Ship Hull"),48));
+			scr.append("^.^N\n\r");
+		}
+		for(final TechComponent C : this.getTechComponents())
+		{
+			if((C instanceof Item)
+			&&((diagTargetT==null)||(diagTargetT==C)))
+			{
+				int condPct=100;
+				if(((Item)C).subjectToWearAndTear())
+					condPct = ((Item)C).usesRemaining();
+				scr.append("^H");
+				scr.append(CMStrings.padRight(C.activated()?L("^gA"):L("^rI"),2));
+				scr.append("^W").append(CMStrings.padRight(L("  "),6));
+				scr.append('^').append(getConditionColor(condPct));
+				scr.append(CMStrings.padRight(""+condPct+"%",8));
+				scr.append("^H").append(CMStrings.padRight(L(C.name()),48));
+				scr.append("^.^N\n\r");
+			}
+		}
+
+		final StringBuilder header=new StringBuilder("^.^N");
+		if(damageFound)
+			header.append("^~r");
+		else
+			header.append("^X");
+		TimeClock C = CMLib.time().localClock(this);
+		String time = C.getShortestTimeDescription();
+		header.append(CMStrings.centerPreserve(L(" -- Level 1 Diagnostic Report " + time+" -- "),60)).append("^.^N\n\r");
+		scr.insert(0, header.toString());
+		return scr.toString();
+	}
+	
+	public String getDiagLevel2()
+	{
+		final StringBuilder scr=new StringBuilder("");
+		final boolean damageFound=false;
+		final SpaceObject spaceObject=CMLib.space().getSpaceObject(this,true);
+		final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+		final SpaceObject shipSpaceObject=(ship==null)?null:ship.getShipSpaceObject();
+		if((shipSpaceObject instanceof Item)
+		&&((diagTargetT==null)||(diagTargetT==shipSpaceObject)))
+		{
+			int condPct=100;
+			if(((Item)shipSpaceObject).subjectToWearAndTear())
+				condPct = ((Item)shipSpaceObject).usesRemaining();
+			scr.append("^H");
+			scr.append(CMStrings.padRight(L("^gA"),2));
+			scr.append("^W").append(CMStrings.padRight(L("Cond: "),6));
+			scr.append('^').append(getConditionColor(condPct));
+			scr.append(CMStrings.padRight(""+condPct+"%",5));
+			final int powerPerTick = 0;
+			scr.append("^W").append(CMStrings.padRight(L("Pow: "),5));
+			scr.append(CMStrings.padRight(""+powerPerTick,5));
+			scr.append(" ");
+			scr.append("^H").append(CMStrings.padRight(L("Ship Hull"),41));
+			scr.append("^.^N\n\r");
+		}
+		for(final TechComponent C : this.getTechComponents())
+		{
+			if((C instanceof Item)
+			&&((diagTargetT==null)||(diagTargetT==C)))
+			{
+				int condPct=100;
+				if(((Item)C).subjectToWearAndTear())
+					condPct = ((Item)C).usesRemaining();
+				scr.append("^H");
+				scr.append(CMStrings.padRight(C.activated()?L("^gA"):L("^rI"),2));
+				scr.append("^W").append(CMStrings.padRight(L("Cond: "),6));
+				scr.append('^').append(getConditionColor(condPct));
+				scr.append(CMStrings.padRight(""+condPct+"%",5));
+				int powerPerTick = 0;
+				if(rpt.containsKey(C))
+				{
+					Pair<long[],long[]> p=rpt.get(C);
+					powerPerTick = (int)Math.round(Math.ceil(CMath.div(p.second[0], p.first[0])));
+				}
+				scr.append("^W").append(CMStrings.padRight(L("Pow: "),5));
+				scr.append(CMStrings.padRight(""+powerPerTick,5));
+				scr.append(" ");
+				scr.append("^H").append(CMStrings.padRight(L(C.name()),41));
+				scr.append("^.^N\n\r");
+			}
+		}
+
+		final StringBuilder header=new StringBuilder("^.^N");
+		if(damageFound)
+			header.append("^~r");
+		else
+			header.append("^X");
+		TimeClock C = CMLib.time().localClock(this);
+		String time = C.getShortestTimeDescription();
+		header.append(CMStrings.centerPreserve(L(" -- Level 1 Diagnostic Report " + time+" -- "),60)).append("^.^N\n\r");
+		scr.insert(0, header.toString());
+		return scr.toString();
+	}
+	
+	public String getDiagLevel3()
+	{
+		final StringBuilder scr=new StringBuilder("");
+		final boolean damageFound=false;
+		final SpaceObject spaceObject=CMLib.space().getSpaceObject(this,true);
+		final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+		final SpaceObject shipSpaceObject=(ship==null)?null:ship.getShipSpaceObject();
+		if((shipSpaceObject instanceof Item)
+		&&((diagTargetT==null)||(diagTargetT==shipSpaceObject)))
+		{
+			int condPct=100;
+			if(((Item)shipSpaceObject).subjectToWearAndTear())
+				condPct = ((Item)shipSpaceObject).usesRemaining();
+			scr.append("^H");
+			scr.append(CMStrings.padRight(L("^gA"),2));
+			scr.append("^W").append(CMStrings.padRight(L("Cond: "),6));
+			scr.append('^').append(getConditionColor(condPct));
+			scr.append(CMStrings.padRight(""+condPct+"%",5));
+			final int powerPerTick = 0;
+			scr.append("^W").append(CMStrings.padRight(L("Pow: "),5));
+			scr.append(CMStrings.padRight("^w"+powerPerTick+"^N",5));
+			scr.append(" ");
+			final Manufacturer man = (shipSpaceObject instanceof Technical)?((Technical)shipSpaceObject).getFinalManufacturer():null;
+			final double installFactor = (shipSpaceObject instanceof TechComponent)?((TechComponent)shipSpaceObject).getInstalledFactor():1.0;
+			final int efficiencyPct = (int)Math.round(100.0 * installFactor
+													  * CMath.div(condPct, 100.0) 
+													  * (man==null?1.0:(man.getEfficiencyPct()*man.getReliabilityPct())));
+			scr.append("^W").append(CMStrings.padRight(L("Eff: "),5));
+			scr.append('^').append(getConditionColor(efficiencyPct));
+			scr.append(CMStrings.padRight(""+efficiencyPct+"%",5));
+			scr.append(" ");
+			scr.append("^H").append(CMStrings.padRight(L("Ship Hull"),41));
+			scr.append("^.^N\n\r");
+		}
+		for(final TechComponent C : this.getTechComponents())
+		{
+			if((C instanceof Item)
+			&&((diagTargetT==null)||(diagTargetT==C)))
+			{
+				int condPct=100;
+				if(((Item)C).subjectToWearAndTear())
+					condPct = ((Item)C).usesRemaining();
+				scr.append("^H");
+				scr.append(CMStrings.padRight(C.activated()?L("^gA"):L("^rI"),2));
+				scr.append("^W").append(CMStrings.padRight(L("Cond: "),6));
+				scr.append('^').append(getConditionColor(condPct));
+				scr.append(CMStrings.padRight(""+condPct+"%",5));
+				int powerPerTick = 0;
+				if(rpt.containsKey(C))
+				{
+					Pair<long[],long[]> p=rpt.get(C);
+					powerPerTick = (int)Math.round(Math.ceil(CMath.div(p.second[0], p.first[0])));
+				}
+				scr.append("^W").append(CMStrings.padRight(L("Pow: "),5));
+				scr.append(CMStrings.padRight("^w"+powerPerTick+"^N",5));
+				scr.append(" ");
+				final Manufacturer man = (C instanceof Technical)?((Technical)C).getFinalManufacturer():null;
+				final double installFactor = (C instanceof TechComponent)?C.getInstalledFactor():1.0;
+				final int efficiencyPct = (int)Math.round(100.0 * installFactor
+													* CMath.div(condPct, 100.0) 
+													* (man==null?1.0:(man.getEfficiencyPct()*man.getReliabilityPct())));
+				scr.append("^W").append(CMStrings.padRight(L("Eff: "),5));
+				scr.append('^').append(getConditionColor(efficiencyPct));
+				scr.append(CMStrings.padRight(""+efficiencyPct+"%",5));
+				scr.append(" ");
+				scr.append("^H").append(CMStrings.padRight(L(C.name()),41));
+				scr.append("^.^N\n\r");
+			}
+		}
+
+		final StringBuilder header=new StringBuilder("^.^N");
+		if(damageFound)
+			header.append("^~r");
+		else
+			header.append("^X");
+		TimeClock C = CMLib.time().localClock(this);
+		String time = C.getShortestTimeDescription();
+		header.append(CMStrings.centerPreserve(L(" -- Level 1 Diagnostic Report " + time+" -- "),60)).append("^.^N\n\r");
+		scr.insert(0, header.toString());
+		return scr.toString();
+	}
+	
 	@Override
 	public String getCurrentScreenDisplay()
 	{
 		if(showUpdatedDamage)
-		{
-			scr.setLength(0);
-			final StringBuilder scr=new StringBuilder("");
-			final boolean damageFound=false;
-			final SpaceObject spaceObject=CMLib.space().getSpaceObject(this,true);
-			final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
-			final SpaceObject shipSpaceObject=(ship==null)?null:ship.getShipSpaceObject();
-			if(shipSpaceObject instanceof Item)
-			{
-				int condPct=100;
-				if(((Item)shipSpaceObject).subjectToWearAndTear())
-					condPct = ((Item)shipSpaceObject).usesRemaining();
-				scr.append("^H");
-				scr.append(CMStrings.padRight(L("^gA"),2));
-				scr.append("^W").append(CMStrings.padRight(L("  "),6));
-				scr.append('^').append(getConditionColor(condPct));
-				scr.append(CMStrings.padRight(Long.toString(condPct)+"%",8));
-				scr.append("^H").append(CMStrings.padRight(L("Ship Hull"),48));
-				scr.append("^.^N\n\r");
-			}
-			for(final TechComponent C : this.getTechComponents())
-			{
-				if(C instanceof Item)
-				{
-					int condPct=100;
-					if(((Item)C).subjectToWearAndTear())
-						condPct = ((Item)C).usesRemaining();
-					scr.append("^H");
-					scr.append(CMStrings.padRight(C.activated()?L("^gA"):L("^rI"),2));
-					scr.append("^W").append(CMStrings.padRight(L("  "),6));
-					scr.append('^').append(getConditionColor(condPct));
-					scr.append(CMStrings.padRight(Long.toString(condPct)+"%",8));
-					scr.append("^H").append(CMStrings.padRight(L(C.name()),48));
-					scr.append("^.^N\n\r");
-				}
-			}
-
-			final StringBuilder header=new StringBuilder("^.^N");
-			if(damageFound)
-				header.append("^~r");
-			else
-				header.append("^X");
-			header.append(CMStrings.centerPreserve(L(" -- Damage Control -- "),60)).append("^.^N\n\r");
-			scr.insert(0, header.toString());
-			return scr.toString();
-		}
+			return getDamageControl();
 		else
 			return scr.toString();
 	}
@@ -266,6 +575,15 @@ public class ShipDiagProgram extends GenShipProgram
 			if(uword.startsWith("DIAG"))
 			{
 				final String word2=(parsed.size()>1)?parsed.get(1).toUpperCase():"";
+				if((diagTargetL!=null)
+				&&(word2.length()==0)
+				&&(scr.length()>0))
+				{
+					showUpdatedDamage = false;
+					super.addScreenMessage(getCurrentScreenDisplay());
+					super.forceNewMessageScan();
+					return;
+				}
 				final int level = CMath.s_int(word2);
 				final String system = (parsed.size()>2)?CMParms.combine(parsed,2):"";
 				if((!CMath.isInteger(word2))
@@ -274,10 +592,15 @@ public class ShipDiagProgram extends GenShipProgram
 					super.addScreenMessage(L("Diag syntax error: Invalid diagnostics level '@x1'",word2));
 					return;
 				}
+				if(isDiagRunning())
+					super.addScreenMessage(L("Notice: Previous diagnostic job cancelled."));
+				cancelRunningDiag();
+				diagTargetL=null;
+				diagTargetT=null;
 				TechComponent T=null;
+				final List<TechComponent> all=this.getTechComponents();
 				if(system.length()>0)
 				{
-					final List<TechComponent> all=this.getTechComponents();
 					T=(TechComponent)CMLib.english().fetchEnvironmental(all, system, true);
 					if(T==null)
 						T=(TechComponent)CMLib.english().fetchEnvironmental(all, system, false);
@@ -287,12 +610,51 @@ public class ShipDiagProgram extends GenShipProgram
 						return;
 					}
 				}
-				//TODO: should damage be inaccurate? does that explain the diag levels?
-				/*
-				 * 1: show recent power consumption vs needs, and damage
-				 * 2. #1, and installation factors
-				 * 3. #2, and efficiency?
-				 */
+				final long multiPlier = CMProps.getTickMillis();
+				diagTargetL = Integer.valueOf(level);
+				diagTargetT=T;
+				final long itemCt = (T!=null)?1:(1+all.size());
+				final SpaceObject myObj = CMLib.space().getSpaceObject(this, true);
+				switch(level)
+				{
+				case 1:
+					diagMasterMs=(itemCt *multiPlier);
+					diagCompletionMs=System.currentTimeMillis()+diagMasterMs;
+					break;
+				case 2:
+				{
+					if(myObj instanceof SpaceShip)
+					{
+						final Area A=((SpaceShip)myObj).getArea();
+						final ExtendableAbility xA=makePowerWatcher();
+						if((A!=null)&&(xA!=null))
+						{
+							A.addEffect(xA);
+							this.diagWatcherA=new Pair<Area,Ability>(A,xA);
+						}
+					}
+					diagMasterMs=(itemCt *multiPlier * 3);
+					diagCompletionMs=System.currentTimeMillis()+diagMasterMs;
+					break;
+				}
+				case 3:
+					if(myObj instanceof SpaceShip)
+					{
+						final Area A=((SpaceShip)myObj).getArea();
+						final ExtendableAbility xA=makePowerWatcher();
+						if((A!=null)&&(xA!=null))
+						{
+							A.addEffect(xA);
+							this.diagWatcherA=new Pair<Area,Ability>(A,xA);
+						}
+					}
+					diagMasterMs=(itemCt *multiPlier * 9);
+					diagCompletionMs=System.currentTimeMillis()+diagMasterMs;
+					break;
+				}
+				scr.setLength(0);
+				scr.append(L("Processing diagnostic level @x1",""+level));
+				super.addScreenMessage(L("Processing diagnostic level @x1",""+level));
 			}
 		}
 	}
@@ -303,6 +665,35 @@ public class ShipDiagProgram extends GenShipProgram
 		if (System.currentTimeMillis() > nextPowerCycleTmr)
 		{
 			this.shutdown();
+		}
+		if ((diagCompletionMs != 0) 
+		&& (diagTargetL != null)
+		&& (System.currentTimeMillis() >= diagCompletionMs))
+		{
+			scr.setLength(0);
+			switch(diagTargetL.intValue())
+			{
+			case 1:
+				scr.append(this.getDiagLevel1());
+				break;
+			case 2:
+				scr.append(this.getDiagLevel2());
+				break;
+			case 3:
+				scr.append(this.getDiagLevel3());
+				break;
+			}
+			this.cancelRunningDiag();
+			showUpdatedDamage=false;
+			super.addScreenMessage(L("Diagnostic level @x1 completed.",""+diagTargetL.intValue()));
+		}
+		else
+		if(this.isDiagRunning())
+		{
+			final long diff = diagCompletionMs - System.currentTimeMillis();
+			final long pct=Math.round(CMath.div(diagMasterMs-diff, diagMasterMs)*100.0);
+			scr.setLength(0);
+			scr.append(L("Processing diagnostic level @x1 (@x2%)",""+this.diagTargetL.intValue(),""+pct));
 		}
 	}
 }

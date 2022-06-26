@@ -45,7 +45,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 
 	protected volatile String	circuitKey			= null;
 	protected float				installedFactor		= 1.0F;
-	protected short				powerRemaining		= 0;
+	protected volatile long		powerRemaining		= 0;
 	protected boolean			activated			= false;
 	protected volatile long		nextPowerCycleTmr	= System.currentTimeMillis() + (8 * 1000);
 	protected MOB				lastReader			= null;
@@ -91,7 +91,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	@Override
 	public long powerCapacity()
 	{
-		return 1;
+		return 1+getSoftware().size()+((this.getActiveMenu().length()>0)?1:0);
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	@Override
 	public long powerTarget()
 	{
-		return 1;
+		return powerCapacity();
 	}
 
 	@Override
@@ -113,7 +113,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	@Override
 	public int powerNeeds()
 	{
-		return 1;
+		return (int)powerTarget() - (int)powerRemaining();
 	}
 
 	@Override
@@ -137,7 +137,9 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	@Override
 	public void setPowerRemaining(final long remaining)
 	{
-		powerRemaining = (remaining > 0) ? (short) 1 : (short) 0;
+		powerRemaining = remaining;
+		if(powerRemaining > powerCapacity())
+			powerRemaining = powerCapacity();
 	}
 
 	@Override
@@ -259,20 +261,24 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	@Override
 	public List<Software> getSoftware()
 	{
-		if((software==null)||(System.currentTimeMillis()>nextSoftwareCheck))
+		if((software==null)
+		||(System.currentTimeMillis()>nextSoftwareCheck))
 		{
-			final List<Item> list=getContents();
-			final LinkedList<Software> softwareList=new LinkedList<Software>();
-			for(final Item I : list)
+			if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			{
-				if(I instanceof Software)
+				final List<Item> list=getContents();
+				final LinkedList<Software> softwareList=new LinkedList<Software>();
+				for(final Item I : list)
 				{
-					((Software)I).setCircuitKey(circuitKey);
-					softwareList.add((Software)I);
+					if(I instanceof Software)
+					{
+						((Software)I).setCircuitKey(circuitKey);
+						softwareList.add((Software)I);
+					}
 				}
+				nextSoftwareCheck=System.currentTimeMillis()+(10*1000);
+				software=softwareList;
 			}
-			nextSoftwareCheck=System.currentTimeMillis()+(10*1000);
-			software=softwareList;
 		}
 		return software;
 	}
@@ -372,6 +378,16 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_POWERCURRENT:
+				if((powerNeeds()>0)
+				&& (msg.value()>0))
+				{
+					double amtToTake=Math.min((double)powerNeeds(), (double)msg.value());
+					msg.setValue(msg.value()-(int)Math.round(amtToTake));
+					amtToTake *= getFinalManufacturer().getEfficiencyPct();
+					if(subjectToWearAndTear() && (usesRemaining()<=200))
+						amtToTake *= CMath.div(usesRemaining(), 100.0);
+					setPowerRemaining(Math.min(powerCapacity(), Math.round(amtToTake) + powerRemaining()));
+				}
 				break;
 			case CMMsg.TYP_READ:
 			case CMMsg.TYP_WRITE:
@@ -642,15 +658,12 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 				{
 					if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 						nextPowerCycleTmr=System.currentTimeMillis()+(12*1000);
-					final int powerToGive=msg.value();
-					if(powerToGive>0)
-					{
-						if(powerRemaining()==0)
-							setPowerRemaining(1);
+					int amountToTake = 0;
+					if(powerRemaining()>0)
 						nextPowerCycleTmr=System.currentTimeMillis()+(12*1000);
-					}
 					if(activated())
 					{
+						amountToTake = 1;
 						final List<Software> software=getSoftware();
 						final CMMsg msg2=CMClass.getMsg(msg.source(), null, null, CMMsg.NO_EFFECT,null,CMMsg.MSG_POWERCURRENT,null,CMMsg.NO_EFFECT,null);
 						synchronized(software)
@@ -658,11 +671,15 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 							for(final Software sw : software)
 							{
 								msg2.setTarget(sw);
-								msg2.setValue(((powerToGive>0)?1:0)+(this.getActiveMenu().equals(sw.getInternalName())?1:0));
+								msg2.setValue(1+(this.getActiveMenu().equals(sw.getInternalName())?1:0));
 								if(sw.okMessage(host, msg2))
+								{
 									sw.executeMsg(host, msg2);
+									amountToTake += msg2.value();
+								}
 							}
 						}
+						setPowerRemaining(powerRemaining()-amountToTake);
 						forceReadersSeeNew();
 					}
 					if(System.currentTimeMillis()>nextPowerCycleTmr)

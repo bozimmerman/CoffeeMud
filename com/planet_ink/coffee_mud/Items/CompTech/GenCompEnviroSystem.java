@@ -44,7 +44,7 @@ public class GenCompEnviroSystem extends GenElecCompItem
 		return "GenCompEnviroSystem";
 	}
 
-	protected final static int ENVIRO_TICKS=7;
+	protected final static int ENVIRO_TICKS=6;
 	protected final static int ENVIRO_POWER_CONSUMED=10;
 
 	protected int	tickDown	= ENVIRO_TICKS;

@@ -178,6 +178,8 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 			return false;
 		final GalacticMap space = CMLib.space();
 		final SpaceObject O = space.getSpaceObject(this, true);
+		if(O==null)
+			return false;
 		if((O!=null)
 		&&(msg.target()==O))
 			return true;

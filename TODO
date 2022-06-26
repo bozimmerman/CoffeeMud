@@ -2,10 +2,9 @@ BUGS/UNTESTED STUFF:
   *.
 
 TECH TODO:
-   *. do damage control system for software
-   *. do diagnostic system for software that reveals ALL
+   *. make database for star charts, object identifiers for optics, etc
+   *. navigation course system.  easy!
    *. make ship impulse and warp engines -- see tech doc
-   *. navigation course system.  revisit smarttorpedos.
    *. make ship active scanners
    *. make tractor beam system -- esp important for pirates!
    *. make communication system
@@ -13,9 +12,9 @@ TECH TODO:
    *. make shuttle system, ship items areas have landing zones... might require opening if exit has door?
    *. powered rideables.  ability to mount heavy gear, like engines to things.
    *. entry systems for ships (default entry key card, voice code, identifying scanner)
+   *. Implement inertia/acceleration damage to the people on-board. (See StdSpaceShip gravity code)
    *. work on automatic component values ??
    *. Talk to Tim: Space Tech power consumption depends on tech level of generator, panel, or interaction damage?
-   *. Implement inertia/acceleration damage to the people on-board. (See StdSpaceShip gravity code)
    *. make food generators, and refrigerators, water recycler, 
    *. turbo lift -- moveable rooms
    *. make message bouey launcher
