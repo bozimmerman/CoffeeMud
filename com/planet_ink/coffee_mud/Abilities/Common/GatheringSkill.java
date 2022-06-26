@@ -64,6 +64,7 @@ public class GatheringSkill extends CommonSkill
 
 	protected static final Map<String, List<Integer>>	supportedResources	= new Hashtable<String, List<Integer>>();
 	protected static final Map<String, int[]>			supportedMaterials	= new Hashtable<String, int[]>();
+	protected static final Map<String, int[]>			supportedUseRscs	= new Hashtable<String, int[]>();
 
 	protected static TreeMap<Room,Quad<Room,Integer,short[],Long>> roomSpamCounter = new TreeMap<Room,Quad<Room,Integer,short[],Long>>();
 
@@ -198,6 +199,18 @@ public class GatheringSkill extends CommonSkill
 		return weightedRscs;
 	}
 
+	public int[] allSupportedResources()
+	{
+		if(supportedUseRscs.containsKey(ID()))
+			return supportedUseRscs.get(ID());
+		final List<Integer> realRscs = myResources();
+		final int[] mats = new int[realRscs.size()];
+		for(int i=0;i<realRscs.size();i++)
+			mats[i] = realRscs.get(i).intValue();
+		supportedUseRscs.put(ID(), mats);
+		return mats;
+	}
+	
 	public int[] myMaterials()
 	{
 		if(supportedMaterials.containsKey(ID()))

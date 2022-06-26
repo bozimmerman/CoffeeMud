@@ -72,7 +72,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 	@Override
 	public String supportedResourceString()
 	{
-		return "ROCK-BONE-DUST|STONE";
+		return "ROCK-BONE-DUST-IVORY-DIRT-SALT-SAND|STONE";
 	}
 
 	@Override
@@ -345,7 +345,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 				amount=CMath.s_int(commands.get(commands.size()-1));
 				commands.remove(commands.size()-1);
 			}
-			final int[] pm=checkMaterialFrom(mob,commands,new int[]{RawMaterial.MATERIAL_ROCK});
+			final int[] pm=checkMaterialFrom(mob,commands,super.allSupportedResources());
 			if(pm==null)
 				return false;
 			String recipeName=CMParms.combine(commands,0);
