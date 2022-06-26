@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -52,28 +53,62 @@ public class Channels extends StdCommand
 		final PlayerStats pstats=mob.playerStats();
 		if(pstats==null)
 			return false;
-		final StringBuffer buf=new StringBuffer(L("Available channels: \n\r"));
-		int col=0;
-		final String[] names=CMLib.channels().getChannelNames();
-		final int COL_LEN=CMLib.lister().fixColWidth(24.0,mob);
-		for(int x=0;x<names.length;x++)
+		final StringBuffer buf=new StringBuffer();
+		String wd = ((commands.size()>1)?commands.get(1):"").toUpperCase();
+		if(wd.equalsIgnoreCase("ON"))
 		{
-			if(CMLib.masking().maskCheck(CMLib.channels().getChannel(x).mask(),mob,true))
+			wd="";
+			if(pstats.getChannelMask() != Integer.MAX_VALUE)
+				buf.append(L("Channels were already turned on, so removed all filters.\n\r\n\r"));
+			else
+				buf.append(L("Channels are now turned back on.\n\r\n\r"));
+			pstats.setChannelMask(0);
+		}
+		else
+		if(wd.equalsIgnoreCase("OFF"))
+		{
+			if(pstats.getChannelMask() == Integer.MAX_VALUE)
+				buf.append(L("Channels were already turned off."));
+			else
+				buf.append(L("Channels are now all turned off."));
+			pstats.setChannelMask(Integer.MAX_VALUE);
+		}
+		else
+		if(wd.length()>0)
+			buf.append(L("\n\r'@x1' is an unknown argument.  Did you mean ON or OFF?\n\r\n\r",wd));
+		if(wd.length()==0)
+		{
+			buf.append(L("Available channels: \n\r"));
+			if(pstats.getChannelMask() == Integer.MAX_VALUE)
+				buf.append(L("None, because you turned them all off.  Use CHANNELS ON to turn them back on."));
+			else
+			if(mob.isAttributeSet(Attrib.QUIET))
+				buf.append(L("None, because you have QUIET mode on."));
+			else
 			{
-				if((++col)>3)
+				int col=0;
+				final String[] names=CMLib.channels().getChannelNames();
+				final int COL_LEN=CMLib.lister().fixColWidth(24.0,mob);
+				for(int x=0;x<names.length;x++)
 				{
-					buf.append("\n\r");
-					col=1;
+					if(CMLib.masking().maskCheck(CMLib.channels().getChannel(x).mask(),mob,true))
+					{
+						if((++col)>3)
+						{
+							buf.append("\n\r");
+							col=1;
+						}
+						final String channelName=names[x];
+						final boolean onoff=CMath.isSet(pstats.getChannelMask(),x);
+						buf.append(CMStrings.padRight("^<CHANNELS '"+(onoff?"":"NO")+"'^>"+channelName+"^</CHANNELS^>"+(onoff?" (OFF)":""),COL_LEN));
+					}
 				}
-				final String channelName=names[x];
-				final boolean onoff=CMath.isSet(pstats.getChannelMask(),x);
-				buf.append(CMStrings.padRight("^<CHANNELS '"+(onoff?"":"NO")+"'^>"+channelName+"^</CHANNELS^>"+(onoff?" (OFF)":""),COL_LEN));
+				if(names.length==0)
+					buf.append("None!");
+				else
+					buf.append("\n\rUse NOCHANNELNAME (ex: NOGOSSIP) to turn a channel off.");
 			}
 		}
-		if(names.length==0)
-			buf.append("None!");
-		else
-			buf.append("\n\rUse NOCHANNELNAME (ex: NOGOSSIP) to turn a channel off.");
 		mob.tell(buf.toString());
 		return false;
 	}

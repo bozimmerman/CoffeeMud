@@ -27,6 +27,7 @@
  26. ShipWright, Caravan Building, and Clan Caravan Building now have editable recipes
  27. Prop_NoCraftability can now be applies to recipes, and has a zappermask.
  28. Caravan Building now has a full complete recipe set.
+ 29. CHANNELS command can now be used to turn all on/off at once.
 
 # Build 5.9.12 Release 1/17/2022
   *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG
