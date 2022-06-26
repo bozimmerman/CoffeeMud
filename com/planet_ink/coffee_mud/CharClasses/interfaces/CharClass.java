@@ -146,6 +146,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return a generic version of this class.
 	 */
 	public CharClass makeGenCharClass();
+
 	/**
 	 * Returns a read only set of security flags granted to all mobs/players
 	 * who are this class, and the given class level or lower.
@@ -305,6 +306,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return usually, it just returns level again
 	 */
 	public int classLevelModifier(MOB myChar, Ability skill, int level);
+
 	/**
 	 * Returns the number of bonus practices received by members of
 	 * this class when they gain a level.  This is over and above
@@ -312,6 +314,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return the number of bonus practices to grant
 	 */
 	public int getBonusPracLevel();
+
 	/**
 	 * Returns the number of bonus attack points received by members of
 	 * this class when they gain a level.  This is over and above
@@ -319,6 +322,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return the number of bonus attack points to grant
 	 */
 	public int getBonusAttackLevel();
+
 	/**
 	 * Returns which of the CharStats.STAT_* constants should be
 	 * used to calculate the standard attack prowess points given
@@ -327,18 +331,21 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return a CharStats.STAT_* attribute constant code
 	 */
 	public int getAttackAttribute();
+
 	/**
 	 * Returns the number of practices received by members of
 	 * this class when they are first created.
 	 * @return the number of initial practices to grant
 	 */
 	public int getPracsFirstLevel();
+
 	/**
 	 * Returns the number of training points received by members of
 	 * this class when they are first created.
 	 * @return the number of initial trains to grant
 	 */
 	public int getTrainsFirstLevel();
+
 	/**
 	 * Returns the number of levels which must be gained by a member
 	 * of this class before they gain 1 more point of default damage
@@ -449,65 +456,76 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return a text description of weapon retrictions
 	 */
 	public String getWeaponLimitDesc();
+	
 	/**
 	 * Returns a text description of any armor restrictions
 	 * imposed by this class upon its members.
 	 * @return a text description of armor retrictions
 	 */
 	public String getArmorLimitDesc();
+
 	/**
 	 * Returns a text description of any misc restrictions
 	 * imposed by this class upon its members.
 	 * @return a text description of misc retrictions
 	 */
 	public String getOtherLimitsDesc();
+	
 	/**
 	 * Returns a text description of any bonus properties
 	 * granted by this class to its members.
 	 * @return a text description of bonus properties
 	 */
 	public String getOtherBonusDesc();
+
 	/**
 	 * Returns a text description of the stat qualifications
 	 * required to become a member of this character class
 	 * @return a txt description of stat qualifications
 	 */
 	public String getStatQualDesc();
+
 	/**
 	 * Returns a text description of the race requirements
 	 * required to become a member of this character class
 	 * @return a txt description of race requirements
 	 */
 	public String getRaceQualDesc();
+
 	/**
 	 * Returns a text description of the attack bonuses
 	 * gained by members of this class.
 	 * @return a text description of the attack bonuses
 	 */
 	public String getAttackDesc();
+
 	/**
 	 * Returns the prime statistic of this class
 	 * @return the prime statistic of this class
 	 */
 	public String getPrimeStatDesc();
+
 	/**
 	 * Returns a text description of the damage bonuses
 	 * gained by members of this class.
 	 * @return a text description of the damage bonuses
 	 */
 	public String getDamageDesc();
+
 	/**
 	 * Returns a text description of the train bonuses
 	 * gained by members of this class.
 	 * @return a text description of the train bonuses
 	 */
 	public String getTrainDesc();
+
 	/**
 	 * Returns a text description of the practice bonuses
 	 * gained by members of this class.
 	 * @return a text description of the practice bonuses
 	 */
 	public String getPracticeDesc();
+
 	/**
 	 * Returns the list of max stats for members of this
 	 * class.
@@ -548,11 +566,13 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return whether this class can have a class
 	 */
 	public boolean raceless();
+
 	/**
 	 * Whether players of this class can be associated with an experience level.
 	 * @return whether players of this class can have a level
 	 */
 	public boolean leveless();
+
 	/**
 	 * Whether players of this class can gain or lose experience points.
 	 * @return whether players of this class can gain or lose experience points
