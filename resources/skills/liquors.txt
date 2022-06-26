@@ -1,97 +1,97 @@
-ale	DRINK	Poison_Alcohol	1	Malt	1	WATER	1	SUGAR	1	hops	-1	HERBS	-1	SPICE	-1		
-beer	DRINK	Poison_Alcohol	1	MALT	1	WATER	1	SUGAR	1	YEAST	1						
-watered-beer	DRINK	Poison_Alcohol	2	beer	1	WATER	1										
+ale	DRINK	Poison_Alcohol	1	Malt	1	WATER	1	SUGAR	1	hops	1	HERBS	-1	SPICE	-1		
+watered beer	DRINK	Poison_Alcohol	1	MALT	1	WATER	1	SUGAR	1	YEAST	1						
+beer	DRINK	Poison_Alcohol	2	MALT	1	watered beer	1	SUGAR	1	YEAST	1						
 blood wine	DRINK	Poison_Alcohol	3	GRAPES	1	BLOOD	1	SUGAR	1	blood orange	-1						
-wine	DRINK	Poison_Alcohol	3	GRAPES	1	WATER	1	SUGAR	1								
-mead	DRINK	Poison_Alcohol	3	HONEY	1	WATER	1	YEAST	1								
+mead	DRINK	Poison_Alcohol	3	yeast	1	honey	1										
+watered wine	DRINK	Poison_Alcohol	3	GRAPES	1	WATER	1	SUGAR									
 whiskey	DRINK	Poison_Liquor	4	WHEAT	5	WATER	1	SUGAR	1	YEAST	1						
-watered-wine	DRINK	Poison_Alcohol	4	wine	1	WATER	1										
+wine	DRINK	Poison_Alcohol	4	GRAPES	1	watered wine	1	SUGAR	1	OAK	1						
 snake wine	DRINK	Poison_Alcohol	5	wine	1	snake blood	1										
 tequila	DRINK	Poison_Liquor	6	CACTUS	1	WATER	1	SUGAR	1	CLAY	-1						
 rum	DRINK	Poison_Liquor	7	molasses	1	WATER	1	YEAST	1	WOOD	-1	HERBS	-1	SPICE	-1		
 some hooch	DRINK	Poison_Liquor	8	CORN	1	WATER	1	SUGAR	1	YEAST	1	LEAD	1				
 gin	DRINK	Poison_Liquor	9	BERRIES	1	WATER	1	SUGAR	1	HERBS	-1	SPICE	-1				
-vodka	DRINK	Poison_Liquor	9	POTATOES	1	WATER	1	BARLEY	1	SUGAR	1						
-brandy	DRINK	Poison_Liquor	10	GRAPES	1	wine	1	SUGAR	1	WOOD	-1						
-calvados	DRINK	Poison_Alcohol	10	APPLES	1	WATER	1	SUGAR	1								
-cachaca	DRINK	Poison_Liquor	12	SUGAR	1	WATER	1	YEAST	1								
+vodka	DRINK	Poison_Liquor	9	POTATOES	1	WATER	1	SUGAR	1	BARLEY	1						
+brandy	DRINK	Poison_Liquor	10	GRAPES	1	red wine	1	SUGAR	1								
+calvados	DRINK	Poison_Alcohol	10	APPLES	1	WATER	1	SUGAR	1	WOOD	1						
 sake	DRINK	Poison_Alcohol	12	RICE	1	WATER	1	SUGAR	1								
-grain alcohol	DRINK	Poison_Liquor	13	BARLEY	1	WATER	1	COPPER	1								
-moonshine	DRINK	Poison_Liquor	14	CORN	1	WATER	1	SUGAR	1	YEAST	1	BARLEY	-1	COPPER	-1		
+cachaca	DRINK	Poison_Liquor	12	SUGAR	2	WATER	1	YEAST	1	COPPER	1						
+grain alcohol	DRINK	Poison_Liquor	13	BARLEY	1	WATER	1	METAL	1								
+moonshine	DRINK	Poison_Liquor	14	CORN	1	WATER	1	SUGAR	1	YEAST	1	COPPER	1				
 himbeergeist	DRINK	Poison_Liquor	15	RASPBERRIES	1	grain alcohol	1										
-peach schnaps	DRINK	Poison_Liquor	16	PEACHES	1	grain alcohol	1										
+peach schnapps	DRINK	Poison_Liquor	16	PEACHES	1	grain alcohol	1										
 White Lightning	DRINK	Poison_Liquor	17	CORN	1	WATER	1	SUGAR	1	YEAST	1	IRON	1				
 bitters	DRINK	Poison_Liquor	18	HERBS	1	grain alcohol	1										
-firebreather	DRINK	Poison_Firebreather	19	CORN	1	WATER	1	SOME DRAGON BLOOD	1	YEAST	1	BARLEY	1				
-schnaps	DRINK	Poison_Liquor	20	FRUIT	1	grain alcohol	1										
-everclear	DRINK	Poison_Liquor	20	WHEAT	1	WATER	1	SUGAR	1								
-cinnamon schnaps	DRINK	Poison_Liquor	21	cinnamon	1	grain alcohol	1										
-country wine	DRINK	Poison_Alcohol	22	FRUIT	1	grape juice	1	SUGAR	1								
+firebreather	DRINK	Poison_Firebreather	19	CORN	1	SOME DRAGON BLOOD	1	YEAST	1	BARLEY	1						
+schnapps	DRINK	Poison_Liquor	20	FRUIT	1	grain alcohol	1										
+everclear	DRINK	Poison_Liquor	20	WHEAT	1	WATER	1	SUGAR	1	GLASS	1						
+cinnamon schnapps	DRINK	Poison_Liquor	21	cinnamon	1	grain alcohol	1										
+country wine	DRINK	Poison_Alcohol	22	FRUIT	1	grape juice	1	SUGAR	1	APPLES	-1	BERRIES	-1				
 ginger beer	DRINK	Poison_Alcohol	23	MALT	1	WATER	1	SUGAR	1	YEAST	1	ginger	1				
 dwarven ale	DRINK	Poison_Liquor	24	black malt	1	WATER	1	SUGAR	1	top fermented yeast	1	hops	1	SALT	1		
 pale ale	DRINK	Poison_Alcohol	25	medium light roasted malt	1	WATER	1	SUGAR	1	top fermented yeast	1						
-corn whiskey	DRINK	Poison_Liquor	26	Corn	1	WATER	1	SUGAR	1	yeast	1						
-single malt whiskey	DRINK	Poison_Liquor	27	Malt	1	WATER	1	SUGAR	1	yeast	1	copper	1	wood	-1		
-ice wine	DRINK	Poison_Alcohol	28	winter grapes	1	WATER	1	SUGAR	2	WOOD	-1						
-plum brandy	DRINK	Poison_Liquor	29	PLUMS	1	wine	1	SUGAR	1	YEAST	1						
+corn whiskey	DRINK	Poison_Liquor	26	CORN	1	WATER	1	SUGAR	1	yeast	1	WOOD	1				
+single malt whiskey	DRINK	Poison_Liquor	27	Malt	1	whiskey	1	SUGAR	1	yeast	1	copper	1				
+ice wine	DRINK	Poison_Alcohol	28	winter grapes	1	watered wine	1	SUGAR	2	WOOD	-1						
+plum brandy	DRINK	Poison_Liquor	29	PLUMS	1	red wine	1	SUGAR	1	YEAST	1						
 barley wine	DRINK	Poison_Alcohol	30	BARLEY	1	grape juice	1	SUGAR	1	YEAST	1						
-sweet white wine	DRINK	Poison_Alcohol	31	skinless grapes	1	WATER	1	SUGAR	2	CHERRYWOOD	1						
-strawberry wine	DRINK	Poison_Alcohol	32	STRAWBERRIES	1	WATER	1	SUGAR	1								
-sweet red wine	DRINK	Poison_Alcohol	33	grape skins	1	WATER	1	SUGAR	2	CHERRYWOOD	1						
-dry white wine	DRINK	Poison_Alcohol	34	skinless grapes	1	WATER	1	SUGAR	1	CEDAR	-1						
-dry red wine	DRINK	Poison_Alcohol	35	grape skins	1	WATER	1	SUGAR	1	CEDAR	-1						
-chardonnay	DRINK	Poison_Alcohol	36	skinless grapes	1	WATER	1	SUGAR	1	VINE	1						
-fruit brandy	DRINK	Poison_Liquor	37	FRUIT	1	wine	1	SUGAR	1	WOOD	-1						
+sweet white wine	DRINK	Poison_Alcohol	31	skinless grapes	1	watered wine	1	SUGAR	2	CHERRYWOOD	1						
+strawberry wine	DRINK	Poison_Alcohol	32	STRAWBERRIES	1	watered wine	1	SUGAR	1								
+sweet red wine	DRINK	Poison_Alcohol	33	grape skins	1	watered wine	1	SUGAR	2	CHERRYWOOD	1						
+dry white wine	DRINK	Poison_Alcohol	34	skinless grapes	1	watered wine	1	SUGAR	1	CEDAR	1						
+dry red wine	DRINK	Poison_Alcohol	35	grape skins	1	watered wine	1	SUGAR	1	CEDAR	1						
+chardonnay	DRINK	Poison_Alcohol	36	skinless grapes	1	watered wine	1	SUGAR	1	VINE	1						
+fruit brandy	DRINK	Poison_Liquor	37	FRUIT	1	red wine	1	SUGAR	1	WOOD	1						
 wheat ale	DRINK	Poison_Alcohol	38	malted wheat	1	WATER	1	SUGAR	1	bottom fermented yeast	1						
-chambord	DRINK	Poison_Liquor	39	STRAWBERRIES	1	fruit schnaps	1	SUGAR	1								
+chambord	DRINK	Poison_Liquor	39	STRAWBERRIES	1	schnapps	1	SUGAR	1								
 pinot blanc	DRINK	Poison_Alcohol	40	skinless grapes	1	grape juice	1	SUGAR	1	VINE	1						
-cabernet sauvignon	DRINK	Poison_Alcohol	41	GRAPES	1	WATER	1	SUGAR	1	VINE	1						
-pale lager	DRINK	Poison_Alcohol	42	malt	1	WATER	1	SUGAR	1	bottom fermented yeast	1						
-merlot	DRINK	Poison_Alcohol	43	grape skins	1	WATER	1	SUGAR	1	VINE	1						
+cabernet sauvignon	DRINK	Poison_Alcohol	41	GRAPES	1	watered wine	1	SUGAR	1	VINE	1						
+pale lager	DRINK	Poison_Alcohol	42	malt	1	WATER	1	SUGAR	1	bottom fermented yeast	1	COAL	1				
+merlot	DRINK	Poison_Alcohol	43	grape skins	1	watered wine	1	SUGAR	1	VINE	1						
 lambic	DRINK	Poison_Liquor	44	malt	1	WATER	1	SUGAR	1	wild yeast	1						
 wit beer	DRINK	Poison_Alcohol	45	malt	1	beer	1	SUGAR	1	bottom fermented yeast	1						
-dessert wine	DRINK	Poison_Liquor	46	skinless grapes	1	grape juice	1	SUGAR	2								
+dessert wine	DRINK	Poison_Liquor	46	skinless grapes	1	honey	1	SUGAR	2								
 black lager	DRINK	Poison_Alcohol	47	black malt	1	WATER	1	SUGAR	1	bottom fermented yeast	1						
 coffee stout	DRINK	Poison_Alcohol	48	medium dark roasted malt	1	WATER	1	SUGAR	1	top fermented yeast	1	coffeebeans	1				
-earthy red wine	DRINK	Poison_Alcohol	49	grape skins	1	WATER	1	SUGAR	1	OAK	1						
-earthy white wine	DRINK	Poison_Alcohol	50	skinless grapes	1	WATER	1	SUGAR	1	OAK	1						
-creme de menthe	DRINK	Poison_Liquor	51	peppermint	1	wine	1	SUGAR	1								
+earthy red wine	DRINK	Poison_Alcohol	49	grape skins	1	watered wine	1	SUGAR	1	OAK	1						
+earthy white wine	DRINK	Poison_Alcohol	50	skinless grapes	1	watered wine	1	SUGAR	1	OAK	1						
+crème de menthe	DRINK	Poison_Liquor	51	peppermint	1	white wine	1	SUGAR	1								
 mezcal	DRINK	Poison_Liquor	52	CACTUS	1	WATER	1	SUGAR	1	YEAST	1	CLAY	1				
 midori	DRINK	Poison_Liquor	53	MELON	1	WATER	1	SUGAR	1	YEAST	1						
 cider	DRINK	Poison_Alcohol	54	FRUIT	1	WATER	1	SUGAR	1	HOPS	1	YEAST	1				
 apple cider	DRINK	Poison_Alcohol	55	APPLES	1	WATER	1	SUGAR	1	HOPS	1	YEAST	1				
-wheat whiskey	DRINK	Poison_Liquor	56	Wheat	1	WATER	1	SUGAR	1	yeast	1	wood	-1				
+wheat whiskey	DRINK	Poison_Liquor	56	Wheat	1	whiskey	1	SUGAR	1	yeast	1						
 standard APA	DRINK	Poison_Alcohol	57	medium light roasted malt	1	WATER	1	SUGAR	2	top fermented yeast	1	hops	1	WOOD	-1		
-rice liquor	DRINK	Poison_Liquor	58	RICE	1	WATER	1	SUGAR	1	YEAST	1	WOOD	-1				
+rice liquor	DRINK	Poison_Liquor	58	RICE	1	WATER	1	YEAST	1	WOOD	1						
 rose wine	DRINK	Poison_Alcohol	59	grape skins	1	grape juice	1	SUGAR	1	skinless grapes	1	WOOD	-1				
-blended red wine	DRINK	Poison_Alcohol	60	merlot	1	wine	1	sweet red wine	-1	dry red wine	-1						
+blended red wine	DRINK	Poison_Alcohol	60	GRAPES	1	red wine	1	SUGAR	1	grape skins	1	VINE	1	CEDAR	1	CHERRYWOOD	1
 bourbon	DRINK	Poison_Liquor	61	Barley	1	WATER	1	SUGAR	1	yeast	1	corn	1	wood	-1		
 standard IPA	DRINK	Poison_Alcohol	62	medium light roasted malt	1	WATER	1	SUGAR	1	top fermented yeast	1	hops	1				
-flavored vodka	DRINK	Poison_Liquor	63	POTATOES	1	WATER	1	SUGAR	1	BARLEY	1	SPICES	1				
-pinot noir	DRINK	Poison_Alcohol	64	GRAPES	1	WATER	1	SUGAR	1	top fermented yeast	1	VINE	1				
+flavored vodka	DRINK	Poison_Liquor	63	POTATOES	1	WATER	1	SUGAR	1	SPICES	1						
+pinot noir	DRINK	Poison_Alcohol	64	GRAPES	1	watered wine	1	SUGAR	1	top fermented yeast	1						
 mountain ale	DRINK	Poison_Alcohol	65	dark roasted malt	1	WATER	1	SUGAR	1	top fermented yeast	1	hops	1				
-creme de violette	DRINK	Poison_Liquor	66	FLOWERS	1	wine	1	SUGAR	1	violets	1						
+crème de violette	DRINK	Poison_Liquor	66	FLOWERS	1	red wine	1	SUGAR	1	violets	1						
 seaport lager	DRINK	Poison_Alcohol	67	medium dark roasted malt	1	WATER	1	SUGAR	1	bottom fermented yeast	1	SALT	1				
-champaigne	DRINK	Poison_Alcohol	68	GRAPES	1	WATER	1	SUGAR	1	SAND	1						
-rumple minze	DRINK	Poison_Liquor	69	schnaps	1	WATER	1	peppermint schnaps	1								
-creme de rose	DRINK	Poison_Liquor	70	rose	1	wine	1	SUGAR	1	vanilla	1						
-blended white wine	DRINK	Poison_Alcohol	71	chardonnay	1	wine	1	sweet white wine	-1	dry white wine	-1	pinot blanc	-1				
-fortified wine	DRINK	Poison_Alcohol	72	GRAPES	1	WATER	1	SUGAR	1	yeast	1	brandy	1	everclear	-1	wood	-1
+champaigne	DRINK	Poison_Alcohol	68	GRAPES	1	watered wine	1	SUGAR	1	SAND	1						
+rumple minze	DRINK	Poison_Liquor	69	FRUIT	1	schnapps	1	peppermint	1								
+crème de rose	DRINK	Poison_Liquor	70	rose	1	white wine	1	SUGAR	1	vanilla	1						
+blended white wine	DRINK	Poison_Alcohol	71	skinless grapes	1	white wine	1	SUGAR	1	CHERRYWOOD	1	CEDAR	1				
+fortified wine	DRINK	Poison_Alcohol	72	GRAPES	1	brandy	1	SUGAR	1	yeast	1	wood	-1				
 spicy lager	DRINK	Poison_Alcohol	73	malt	1	WATER	1	SUGAR	1	bottom fermented yeast	1	PEPPERS	1				
 pecan stout	DRINK	Poison_Alcohol	74	dark roasted malt	1	WATER	1	SUGAR	1	top fermented yeast	1	NUTS	1				
-overproof rum	DRINK	Poison_Liquor	75	yeast	1	WATER	1	SUGAR	2	molasses	1						
+overproof rum	DRINK	Poison_Liquor	75	yeast	1	rum	1	SUGAR	2	molasses	1						
 tripple sec	DRINK	Poison_Liquor	76	ORANGES	1	WATER	1	SUGAR	1	YEAST	1						
-vermouth	DRINK	Poison_Liquor	77	FLOWERS	1	wine	1	SUGAR	1	CINNAMON	1	HERBS	1				
+vermouth	DRINK	Poison_Liquor	77	FLOWERS	1	white wine	1	SUGAR	1	CINNAMON	1	HERBS	1				
 milk stout	DRINK	Poison_Alcohol	78	medium dark roasted malt	1	MILK	1	SUGAR	1	top fermented yeast	1						
-ginger wine	DRINK	Poison_Alcohol	79	ginger	1	brandy	1	SUGAR	1	grape juice	1						
-elven light lager	DRINK	Poison_Alcohol	80	malt	1	WATER	1	SUGAR	1	bottom fermented yeast	1	HERBS	-1				
+ginger wine	DRINK	Poison_Alcohol	79	GRAPES	1	brandy	1	SUGAR	1	ginger	1						
+elven light lager	DRINK	Poison_Alcohol	80	malt	1	WATER	1	SUGAR	1	bottom fermented yeast	1	HERBS	1				
 underdark beer	DRINK	Poison_Alcohol	81	medium dark roasted malt	1	WATER	1	SUGAR	1	top fermented yeast	1	MUSHROOMS	1				
 mushroom beer	DRINK	Poison_Alcohol	82	MUSHROOMS	1	WATER	1	SUGAR	1	YEAST	1	hops	1				
 armagnac	DRINK	Poison_Liquor	83	GRAPES	1	WATER	1	SUGAR	1	COPPER	1						
 grappa	DRINK	Poison_Alcohol	84	GRAPES	1	WATER	1	SUGAR	1	OAK	1						
 goblin grog	DRINK	Poison_Alcohol	85	black malt	1	BLOOD	1	SUGAR	1	top fermented yeast	1						
-blended whiskey	DRINK	Poison_Liquor	86	whiskey	1	single malt whiskey	-1	bourbon	-1	corn whiskey	-1	wheat whiskey	-1	rye whiskey	-1		
+blended whiskey	DRINK	Poison_Liquor	86	Wheat	1	single malt whiskey	1	SUGAR	1	yeast	1	corn	-1	rye	-1		
 jagermeister	DRINK	Poison_Liquor	87	BERRIES	1	grain alcohol	1	SUGAR	1	HERBS	1	ginger	1	OAK	1		
 sour ale	DRINK	Poison_Alcohol	88	medium light roasted malt	1	WATER	1	SUGAR	1	top fermented yeast	1	wild yeast	1	hops	1		
 chocolate stout	DRINK	Poison_Alcohol	89	black malt	1	WATER	1	SUGAR	1	top fermented yeast	1	hops	1	COCOA	1		
-goldschlager	DRINK	Poison_Liquor	90	cinnamon	1	cinnamon schnaps	1	SUGAR	1	GOLD	1						
+goldschlager	DRINK	Poison_Liquor	90	cinnamon	1	cinnamon schnapps	1	SUGAR	1	GOLD	1						
