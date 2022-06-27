@@ -545,9 +545,14 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 					{
 						final Room targetRoom=R.getRoomInDir(dir);
 						final Exit targetExit=R.getExitInDir(dir);
-						if((targetRoom==null)||(targetExit==null)||(!targetExit.isOpen()))
+						if((targetRoom==null)||(targetExit==null))
 						{
 							msg.source().tell(L("There doesn't look to be anything in that direction."));
+							return false;
+						}
+						if(!targetExit.isOpen())
+						{
+							msg.source().tell(L("@x1 blocks your way.",targetExit.closedText()));
 							return false;
 						}
 					}
