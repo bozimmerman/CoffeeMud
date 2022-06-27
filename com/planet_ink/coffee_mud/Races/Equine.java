@@ -81,7 +81,7 @@ public class Equine extends StdRace
 	@Override
 	public long forbiddenWornBits()
 	{
-		return ~(Wearable.WORN_HEAD | Wearable.WORN_EARS | Wearable.WORN_EYES | Wearable.WORN_NECK);
+		return ~(Wearable.WORN_HEAD | Wearable.WORN_EARS | Wearable.WORN_EYES | Wearable.WORN_NECK| Wearable.WORN_ABOUT_BODY);
 	}
 
 	private final static String localizedStaticRacialCat = CMLib.lang().L("Equine");
