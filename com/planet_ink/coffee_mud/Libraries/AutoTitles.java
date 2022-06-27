@@ -169,10 +169,8 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 				{
 					if(pdex<0)
 					{
-						if(ptV.size()>0)
-							ptV.add(0,title);
-						else
-							ptV.add(title);
+						P.addTitle(title);
+						P.addTitle(title); // put it on TOP!
 						somethingDone=true;
 					}
 				}
@@ -180,7 +178,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 				if(pdex>=0)
 				{
 					somethingDone=true;
-					ptV.remove(pdex);
+					P.delTitle(title);
 				}
 			}
 		}
@@ -226,9 +224,10 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 					if(pdex>=0)
 					{
 						final MOB M=CMLib.players().getLoadPlayer(playerName);
-						if((M!=null)&&(M.playerStats()!=null))
+						if((M!=null)
+						&&(M.playerStats()!=null))
 						{
-							M.playerStats().getTitles().remove(pdex);
+							M.playerStats().delTitle(title);
 							if(!CMLib.flags().isInTheGame(M,true))
 								CMLib.database().DBUpdatePlayerPlayerStats(M);
 						}

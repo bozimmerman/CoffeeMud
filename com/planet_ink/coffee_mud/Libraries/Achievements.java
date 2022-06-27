@@ -7304,7 +7304,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						titleStr = CMStrings.replaceAlls(titleStr, new String[][] {{"@1",forClan.getGovernmentName()},{"@2",forClan.clanID()}});
 					if(!pStats.getTitles().contains(titleStr))
 					{
-						pStats.getTitles().add(titleStr);
+						pStats.addTitle(titleStr);
 						awardMessage.append(L("^HYou are awarded the title: @x1!\n\r^?",CMStrings.replaceAll(titleStr,"*",mob.Name())));
 					}
 				}
@@ -7644,7 +7644,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					if((pStats.getTitles().contains(titleStr))
 					&&(!alsoAwardedElsewhere))
 					{
-						pStats.getTitles().remove(titleStr);
+						pStats.delTitle(titleStr);
 						awardMessage.append(L("^HYou have lost the title: @x1!\n\r^?",CMStrings.replaceAll(titleStr,"*",mob.Name())));
 					}
 				}

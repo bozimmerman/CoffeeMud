@@ -309,11 +309,11 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	{
 		final StringBuilder str=new StringBuilder("");
 		str.append("\n\r");
-		if(!activated())
+		final List<Software> software=getSoftware();
+		if((!activated())||(software==null))
 			str.append(L("The screen is blank.  Try activating/booting it first."));
 		else
 		{
-			final List<Software> software=getSoftware();
 			synchronized(software)
 			{
 				boolean isInternal=false;
@@ -345,7 +345,6 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 				}
 			}
 		}
-
 		return str.toString();
 	}
 

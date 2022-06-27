@@ -226,20 +226,47 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	public void setPrompt(String prompt);
 
 	/**
-	 * Returns a list of modifiable title definitions.  These are things
+	 * Returns a read-only list of title definitions.  These are things
 	 * like *, the bunny slayer and such.
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getActiveTitle()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#delTitle(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#addTitle(String)
 	 *
 	 * @return  a list of modifiable title definitions
 	 */
 	public List<String> getTitles();
 
 	/**
+	 * Adds a new title definition.  These are things like *, the bunny slayer
+	 * and such.  If the given title already exists, it is moved up to the top,
+	 * making it the active one.
+	 *
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getActiveTitle()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getTitles()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#delTitle(String)
+	 */
+	public void addTitle(String s);
+
+	/**
+	 * Removes new title definition.  These are things
+	 * like *, the bunny slayer and such.
+	 *
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getActiveTitle()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getTitles()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#addTitle(String)
+	 *
+	 * @return  whether a title of the name was removed
+	 */
+	public boolean delTitle(String s);
+
+	/**
 	 * Returns which of the player available titles is currently being used by
 	 * this player.  Its a string like *, the bunny slayer
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getTitles()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#addTitle(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#delTitle(String)
 	 *
 	 * @return a title being used by this player
 	 */

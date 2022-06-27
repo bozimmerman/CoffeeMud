@@ -949,9 +949,10 @@ public class Stat  extends Skills
 				final StringBuffer ttl=new StringBuffer("");
 				if(target.playerStats()!=null)
 				{
-					for(int t=0;t<target.playerStats().getTitles().size();t++)
+					final List<String> roTitles = target.playerStats().getTitles();
+					for(int t=0;t<roTitles.size();t++)
 					{
-						final String title = target.playerStats().getTitles().get(t);
+						final String title = roTitles.get(t);
 						ttl.append(" "+title+",");
 					}
 				}

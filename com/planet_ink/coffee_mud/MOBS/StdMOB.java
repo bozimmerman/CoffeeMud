@@ -518,7 +518,7 @@ public class StdMOB implements MOB
 	@Override
 	public String titledName()
 	{
-		if ((playerStats == null) || (playerStats.getTitles().isEmpty()))
+		if (playerStats == null)
 			return name();
 		return CMStrings.replaceAll(playerStats.getActiveTitle(), "*", Name());
 	}

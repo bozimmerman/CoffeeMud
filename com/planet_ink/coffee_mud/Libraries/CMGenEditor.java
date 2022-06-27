@@ -4181,12 +4181,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(M.playerStats().getTitles().contains(tattoo))
 				{
 					mob.tell(L("@x1 removed.",tattoo.trim().toUpperCase()));
-					M.playerStats().getTitles().remove(tattoo);
+					M.playerStats().delTitle(tattoo);
 				}
 				else
 				{
 					mob.tell(L("@x1 added.",behave.trim().toUpperCase()));
-					M.playerStats().getTitles().add(tattoo);
+					M.playerStats().addTitle(tattoo);
 				}
 			}
 			else

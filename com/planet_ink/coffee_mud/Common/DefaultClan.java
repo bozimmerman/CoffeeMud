@@ -896,7 +896,7 @@ public class DefaultClan implements Clan
 					for(final String title : myAllowedTitles)
 					{
 						if(!pStats.getTitles().contains(title))
-							pStats.getTitles().add(title);
+							pStats.addTitle(title);
 					}
 				}
 			}
@@ -913,7 +913,10 @@ public class DefaultClan implements Clan
 							for(final String titleCheck : pStats.getTitles())
 							{
 								if(titleCheck.equalsIgnoreCase(badTitle))
-									pStats.getTitles().remove(titleCheck);
+								{
+									pStats.delTitle(titleCheck);
+									break;
+								}
 
 							}
 						}
@@ -926,8 +929,10 @@ public class DefaultClan implements Clan
 							for(final String titleCheck : pStats.getTitles())
 							{
 								if(titleCheck.equalsIgnoreCase(badTitle))
-									pStats.getTitles().remove(titleCheck);
-
+								{
+									pStats.delTitle(titleCheck);
+									break;
+								}
 							}
 						}
 					}

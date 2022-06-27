@@ -87,6 +87,7 @@ public class DefaultPlayerStats implements PlayerStats
 	protected String		 announceMsg	= "";
 	protected String		 savedPose		= "";
 	protected String		 notes			= "";
+	private volatile String  actTitle		= null;
 	protected int   		 wrap			= 78;
 	protected int			 bonusCommonSk	= 0;
 	protected int			 bonusCraftSk	= 0;
@@ -702,18 +703,103 @@ public class DefaultPlayerStats implements PlayerStats
 	@Override
 	public String getActiveTitle()
 	{
-		if((titles==null)||(titles.size()==0))
-			return null;
+		if(titles.size()==0)
+			return "*";
+		synchronized(this)
+		{
+			final String oActiveTitle=actTitle;
+			if(oActiveTitle != null)
+				return oActiveTitle;
+		}
+
 		final String s=titles.get(0);
-		if((s.length()<2)||(s.charAt(0)!='{')||(s.charAt(s.length()-1)!='}'))
-			return s;
-		return s.substring(1,s.length()-1);
+		if((s.length()>2)&&(s.charAt(0)=='{')&&(s.charAt(s.length()-1)=='}'))
+			this.actTitle = s.substring(1,s.length()-1);
+		else
+		if((titles.size()==1)
+		||(s.equals("*"))
+		||(!s.endsWith("*"))
+		||(titles.get(1).length()==0)
+		||(titles.get(1).equals("*"))
+		||(!titles.get(1).startsWith("*")))
+			this.actTitle = s;
+		else
+			this.actTitle=s.substring(0,s.length()-1)+titles.get(1);
+		return this.actTitle;
 	}
 
 	@Override
 	public List<String> getTitles()
 	{
-		return titles;
+		return new ReadOnlyList<String>(titles);
+	}
+
+	@Override
+	public boolean delTitle(final String s)
+	{
+		synchronized(titles)
+		{
+			if((titles.size()==0)||(s.equals("*")))
+				return false;
+			if(titles.contains(s))
+			{
+				this.actTitle = null;
+				return titles.remove(s);
+			}
+			for(final Iterator<String> i=titles.iterator();i.hasNext();)
+			{
+				final String s1=i.next();
+				if(s1.equalsIgnoreCase(s))
+				{
+					i.remove();
+					this.actTitle = null;
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public void addTitle(final String s)
+	{
+		synchronized(titles)
+		{
+			if(titles.size()==0)
+			{
+				if(!s.equals("*"))
+					titles.add("*");
+				titles.add(s);
+				this.actTitle=null;
+			}
+			else
+			{
+				for(int i=0;i<titles.size();i++)
+				{
+					final String s1=titles.get(i);
+					if(s1.equalsIgnoreCase(s))
+					{
+						if(i==0)
+							return; // nothing changed!
+						this.actTitle = null;
+						titles.remove(i);
+						if(s.endsWith("*"))
+							titles.add(0, s);
+						else
+						if(s.startsWith("*")
+						&&(s.length()>1)
+						&&(titles.get(0).endsWith("*"))
+						&&(titles.get(0).length()>1))
+							titles.add(1, s);
+						else
+							titles.add(0, s);
+						return;
+					}
+				}
+				titles.add(s);
+				this.actTitle = null;
+			}
+		}
 	}
 
 	private String getTitleXML()
@@ -984,7 +1070,7 @@ public class DefaultPlayerStats implements PlayerStats
 				break;
 			titles.add(title);
 		}
-
+		this.actTitle = null;
 	}
 
 	@Override

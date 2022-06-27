@@ -47,7 +47,8 @@ public class GrinderPlayers extends GrinderMobs
 	{
 		if(E.playerStats()==null)
 			return "";
-		E.playerStats().getTitles().clear();
+		while(E.playerStats().getTitles().size()>0)
+			E.playerStats().delTitle(E.playerStats().getTitles().get(0));
 		if(httpReq.isUrlParameter("TITLE0"))
 		{
 			int num=0;
@@ -55,7 +56,7 @@ public class GrinderPlayers extends GrinderMobs
 			{
 				final String aff=httpReq.getUrlParameter("TITLE"+num);
 				if(aff.trim().length()>0)
-					E.playerStats().getTitles().add(aff.trim());
+					E.playerStats().addTitle(aff.trim());
 				num++;
 			}
 		}
@@ -372,13 +373,14 @@ public class GrinderPlayers extends GrinderMobs
 		if(M.playerStats()!=null)
 		{
 			int b=0;
-			M.playerStats().getTitles().clear();
+			while(M.playerStats().getTitles().size()>0)
+				M.playerStats().delTitle(M.playerStats().getTitles().get(0));
 			while(httpReq.isUrlParameter("TITLE"+b))
 			{
 				String old=httpReq.getUrlParameter("TITLE"+b);
 				if(old==null)
 					old="";
-				M.playerStats().getTitles().add(old);
+				M.playerStats().addTitle(old);
 				b++;
 			}
 		}

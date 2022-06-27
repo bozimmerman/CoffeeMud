@@ -11611,11 +11611,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(themob.playerStats().getTitles().contains(titleStr))
 						{
 							if(tattooMinus)
-								themob.playerStats().getTitles().remove(titleStr);
+								themob.playerStats().delTitle(titleStr);
 						}
 						else
 						if(!tattooMinus)
-							themob.playerStats().getTitles().add(0,titleStr);
+							themob.playerStats().addTitle(titleStr); // re-add moves it UP!
 					}
 				}
 				break;

@@ -62,16 +62,23 @@ public class Title extends StdCommand
 		final StringBuffer menu = new StringBuffer("^xTitles:^.^?\n\r");
 		CMLib.titles().evaluateAutoTitles(mob);
 		if (!ps.getTitles().contains("*"))
-			ps.getTitles().add("*");
+			ps.addTitle("*");
 		for (int i = 0; i < ps.getTitles().size(); i++)
 		{
 			String title = ps.getTitles().get(i);
 			if (title.startsWith("{") && title.endsWith("}"))
 				title = title.substring(1, title.length() - 1);
+			if((i==0)
+			||((i==1)
+				&&(title.length()>2)
+				&&(title.startsWith("*"))
+				&&(ps.getTitles().get(0).length()>2)
+				&&(ps.getTitles().get(0).endsWith("*"))))
+				menu.append("^H");
 			if (title.equalsIgnoreCase("*"))
-				menu.append(CMStrings.padRight("" + (i + 1), 2) + ": Do not use a title.\n\r");
+				menu.append(CMStrings.padRight("" + (i + 1), 2) + ": Do not use a title.^N\n\r");
 			else
-				menu.append(CMStrings.padRight("" + (i + 1), 2) + ": " + CMStrings.replaceAll(title, "*", mob.Name()) + "\n\r");
+				menu.append(CMStrings.padRight("" + (i + 1), 2) + ": " + CMStrings.replaceAll(title, "*", mob.Name()) + "^N\n\r");
 		}
 		final InputCallback[] IC = new InputCallback[1];
 		IC[0] = new InputCallback(InputCallback.Type.PROMPT, "")
@@ -96,8 +103,7 @@ public class Title extends StdCommand
 				if ((num > 0) && (num <= ps.getTitles().size()))
 				{
 					final String which = ps.getTitles().get(num - 1);
-					ps.getTitles().remove(num - 1);
-					ps.getTitles().add(0, which);
+					ps.addTitle(which); // a re-add just moves it up
 					mob.tell(L("Title change accepted."));
 				}
 				else

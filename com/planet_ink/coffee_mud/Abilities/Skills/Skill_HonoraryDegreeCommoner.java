@@ -204,7 +204,7 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 						}
 					}
 					final PlayerStats pStats = mob.playerStats();
-					if((pStats!=null)&&(pStats.getTitles()!=null))
+					if(pStats!=null)
 					{
 						for(int ci=0;ci<allDegrees.length;ci++)
 						{
@@ -214,12 +214,12 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 								if(!this.myClasses.contains(degree))
 								{
 									while(CMParms.numContains(pStats.getTitles(), degree[DEG_TITLE]) >= 1)
-										pStats.getTitles().remove(degree[DEG_TITLE]);
+										pStats.delTitle(degree[DEG_TITLE]);
 								}
 							}
 							else
 							if(this.myClasses.contains(degree))
-								pStats.getTitles().add(degree[DEG_TITLE]);
+								pStats.addTitle(degree[DEG_TITLE]);
 						}
 					}
 					this.lastTitle="";
