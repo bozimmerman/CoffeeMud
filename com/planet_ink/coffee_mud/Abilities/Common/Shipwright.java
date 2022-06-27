@@ -115,12 +115,12 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 
 	protected List<Item> getShips()
 	{
-		final String allItemID = "SHIPWRIGHT_PARSED";
+		final String allItemID = ID()+"_PARSED";
 		@SuppressWarnings("unchecked")
 		List<Item> shipPrototypes = (List<Item>)Resources.getResource(allItemID);
 		if(shipPrototypes == null)
 		{
-			final CMFile F=new CMFile(Resources.makeFileResourceName("skills/shipbuilding.cmare"),null);
+			final CMFile F=new CMFile(Resources.makeFileResourceName("skills/"+parametersFile()),null);
 			if(F.exists())
 			{
 				shipPrototypes=new Vector<Item>();
@@ -483,13 +483,16 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				mask="";
 			}
 			final int[] cols={
-				CMLib.lister().fixColWidth(40,mob.session()),
-				CMLib.lister().fixColWidth(10,mob.session()),
+				CMLib.lister().fixColWidth(55,mob.session()),
+				CMLib.lister().fixColWidth(5,mob.session()),
 				CMLib.lister().fixColWidth(10,mob.session())
 			};
-			final StringBuffer buf=new StringBuffer(L("@x1 @x2 Wood required\n\r",
-					CMStrings.padRight(L("Item"),cols[0]),
-					CMStrings.padRight(L("Level"),cols[1])));
+			final StringBuffer buf=new StringBuffer(
+				L("@x1 @x2 @x3\n\r",
+				CMStrings.padRight(L("Level"),cols[1]),
+				CMStrings.padRight(L("Item"),cols[0]),
+				CMStrings.padRight(L("Wood req."), cols[2])
+			));
 			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipeNames(recipes, mask, true);
 			for(int r=0;r<listRecipes.size();r++)
 			{
@@ -501,9 +504,12 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 					final String wood=getComponentDescription(mob,V,RCP_WOOD);
 					if((level<=xlevel(mob))||allFlag)
 					{
-						buf.append(CMStrings.padRight(item,cols[0])
-								+" "+CMStrings.padRight(""+level,cols[1])
-								+" "+wood+"\n\r");
+						buf.append(
+							CMStrings.padRight(""+level,cols[1])
+							+" "+CMStrings.padRight(item,cols[0])
+							+" "+CMStrings.padRight(wood,cols[2])
+							+"\n\r"
+						);
 					}
 				}
 			}

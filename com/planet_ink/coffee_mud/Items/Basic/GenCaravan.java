@@ -135,11 +135,10 @@ public class GenCaravan extends GenNavigableBoardable
 		case Room.DOMAIN_INDOORS_CAVE_SEAPORT:
 		case Room.DOMAIN_INDOORS_SEAPORT:
 		case Room.DOMAIN_OUTDOORS_CITY:
+		case Room.DOMAIN_OUTDOORS_PLAINS:
 			return true;
 		case Room.DOMAIN_INDOORS_CAVE:
 			return R.basePhyStats().weight()>3;
-		case Room.DOMAIN_OUTDOORS_PLAINS:
-			return R.resourceChoices().size()<10;
 		}
 		return false;
 	}
