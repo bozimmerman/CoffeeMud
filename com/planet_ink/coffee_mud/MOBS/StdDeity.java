@@ -10,7 +10,10 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityComponents.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.DatabaseTables;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -775,18 +778,66 @@ public class StdDeity extends StdMOB implements Deity
 		return false;
 	}
 
+	protected int getCMMsgCode(final RitualTriggerCode trig)
+	{
+		switch(trig)
+		{
+		case SAY:
+			return CMMsg.TYP_SPEAK;
+		case PUTTHING:
+			return CMMsg.TYP_PUT;
+		case BURNMATERIAL:
+			return CMMsg.TYP_FIRE;
+		case BURNTHING:
+			return CMMsg.TYP_FIRE;
+		case EAT:
+			return CMMsg.TYP_EAT;
+		case DRINK:
+			return CMMsg.TYP_DRINK;
+		case INROOM:
+			return CMMsg.TYP_LOOK;
+		case CAST:
+			return CMMsg.TYP_CAST_SPELL;
+		case EMOTE:
+			return CMMsg.TYP_EMOTE;
+		case PUTVALUE:
+			return CMMsg.TYP_PUT;
+		case PUTMATERIAL:
+			return CMMsg.TYP_PUT;
+		case BURNVALUE:
+			return CMMsg.TYP_FIRE;
+		case READING:
+			return CMMsg.TYP_READ;
+		case TIME:
+		case RIDING:
+		case SITTING:
+		case STANDING:
+		case SLEEPING:
+		case RANDOM:
+		case CHECK:
+		case WAIT:
+		case YOUSAY:
+		case OTHERSAY:
+		case ALLSAY:
+			return -999;
+		}
+		return -999;
+	}
+
 	public CMMsg generateNextTrigger(final MOB mob, final List<DeityTrigger> svcTriggsV, final Map<String, boolean[]> trigParts, final Map<String, Long> trigTimes)
 	{
 		final boolean[] checks=trigParts.get(mob.Name());
 		for(int v=0;v<svcTriggsV.size();v++)
 		{
-			if((checks!=null)&&(checks.length>=v)&&(checks[v]))
+			if((checks!=null)
+			&&(checks.length>=v)
+			&&(checks[v]))
 				continue;
 			final DeityTrigger DT=svcTriggsV.get(v);
 			switch(DT.triggerCode)
 			{
 			case SAY:
-				return CMClass.getMsg(mob, DT.triggerCode.getCMMsgCode(), L("^T<S-NAME> say(s) '@x1'.^N",DT.parm1));
+				return CMClass.getMsg(mob, DT.cmmsgCode, L("^T<S-NAME> say(s) '@x1'.^N",DT.parm1));
 			case TIME:
 				if(checks != null)
 					checks[v]=true;
@@ -832,7 +883,7 @@ public class StdDeity extends StdMOB implements Deity
 				final Item cI=CMClass.getBasicItem("GenContainer");
 				I.setName(DT.parm1);
 				cI.setName(DT.parm2);
-				return CMClass.getMsg(mob, cI, I, DT.triggerCode.getCMMsgCode(), L("<S-NAME> put(s) <O-NAME> into <T-NAME>."));
+				return CMClass.getMsg(mob, cI, I, DT.cmmsgCode, L("<S-NAME> put(s) <O-NAME> into <T-NAME>."));
 			}
 			case BURNTHING:
 			{
@@ -841,7 +892,7 @@ public class StdDeity extends StdMOB implements Deity
 					I.setName(L("Something"));
 				else
 					I.setName(DT.parm1);
-				return CMClass.getMsg(mob, I, null, DT.triggerCode.getCMMsgCode(), L("<S-NAME> burn(s) <T-NAME>."));
+				return CMClass.getMsg(mob, I, null, DT.cmmsgCode, L("<S-NAME> burn(s) <T-NAME>."));
 			}
 			case READING:
 			{
@@ -850,7 +901,7 @@ public class StdDeity extends StdMOB implements Deity
 					I.setName(L("Something"));
 				else
 					I.setName(DT.parm1);
-				return CMClass.getMsg(mob, I, null, DT.triggerCode.getCMMsgCode(), L("<S-NAME> read(s) <T-NAME>."));
+				return CMClass.getMsg(mob, I, null, DT.cmmsgCode, L("<S-NAME> read(s) <T-NAME>."));
 			}
 			case DRINK:
 			{
@@ -859,7 +910,7 @@ public class StdDeity extends StdMOB implements Deity
 					I.setName(L("Something"));
 				else
 					I.setName(DT.parm1);
-				return CMClass.getMsg(mob, I, null, DT.triggerCode.getCMMsgCode(), L("<S-NAME> drink(s) <T-NAME>."));
+				return CMClass.getMsg(mob, I, null, DT.cmmsgCode, L("<S-NAME> drink(s) <T-NAME>."));
 			}
 			case EAT:
 			{
@@ -868,7 +919,7 @@ public class StdDeity extends StdMOB implements Deity
 					I.setName(L("Something"));
 				else
 					I.setName(DT.parm1);
-				return CMClass.getMsg(mob, I, null, DT.triggerCode.getCMMsgCode(), L("<S-NAME> eat(s) <T-NAME>."));
+				return CMClass.getMsg(mob, I, null, DT.cmmsgCode, L("<S-NAME> eat(s) <T-NAME>."));
 			}
 			case INROOM:
 				if(checks != null)
@@ -882,11 +933,11 @@ public class StdDeity extends StdMOB implements Deity
 			{
 				final Ability A=CMClass.getAbility(DT.parm1);
 				if(A!=null)
-					return CMClass.getMsg(mob, null, A, DT.triggerCode.getCMMsgCode(), L("<S-NAME> do(es) '@x1'",A.name()));
+					return CMClass.getMsg(mob, null, A, DT.cmmsgCode, L("<S-NAME> do(es) '@x1'",A.name()));
 				return null;
 			}
 			case EMOTE:
-				return CMClass.getMsg(mob, null, null, DT.triggerCode.getCMMsgCode(), L("<S-NAME> do(es) '@x1'",DT.parm1));
+				return CMClass.getMsg(mob, null, null, DT.cmmsgCode, L("<S-NAME> do(es) '@x1'",DT.parm1));
 			case PUTVALUE:
 			{
 				final Item cI=CMClass.getBasicItem("GenContainer");
@@ -897,7 +948,7 @@ public class StdDeity extends StdMOB implements Deity
 				final Item I=CMClass.getBasicItem("GenItem");
 				I.setName(L("valuables"));
 				I.setBaseValue(CMath.s_int(DT.parm1));
-				return CMClass.getMsg(mob, cI, I, DT.triggerCode.getCMMsgCode(), L("<S-NAME> put(s) <O-NAME> in <T-NAME>."));
+				return CMClass.getMsg(mob, cI, I, DT.cmmsgCode, L("<S-NAME> put(s) <O-NAME> in <T-NAME>."));
 			}
 			case PUTMATERIAL:
 			case BURNMATERIAL:
@@ -908,14 +959,14 @@ public class StdDeity extends StdMOB implements Deity
 				else
 					cI.setName(DT.parm2);
 				final Item I=CMLib.materials().makeItemResource(CMath.s_int(DT.parm1));
-				return CMClass.getMsg(mob, cI, I, DT.triggerCode.getCMMsgCode(), L("<S-NAME> put(s) <O-NAME> in <T-NAME>."));
+				return CMClass.getMsg(mob, cI, I, DT.cmmsgCode, L("<S-NAME> put(s) <O-NAME> in <T-NAME>."));
 			}
 			case BURNVALUE:
 			{
 				final Item I=CMClass.getBasicItem("GenItem");
 				I.setName(L("valuables"));
 				I.setBaseValue(CMath.s_int(DT.parm1));
-				return CMClass.getMsg(mob, I, null, DT.triggerCode.getCMMsgCode(), L("<S-NAME> burn(s) <T-NAME>."));
+				return CMClass.getMsg(mob, I, null, DT.cmmsgCode, L("<S-NAME> burn(s) <T-NAME>."));
 			}
 			case SITTING:
 				if(!CMLib.flags().isSitting(mob))
@@ -941,8 +992,8 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			boolean yup=false;
 			final DeityTrigger DT=trigsV.get(v);
-			if((msg.sourceMinor()==DT.triggerCode.getCMMsgCode())
-			||(DT.triggerCode.getCMMsgCode()==-999))
+			if((msg.sourceMinor()==DT.cmmsgCode)
+			||(DT.cmmsgCode==-999))
 			{
 				switch(DT.triggerCode)
 				{
@@ -1157,7 +1208,7 @@ public class StdDeity extends StdMOB implements Deity
 					break;
 				}
 			}
-			if((yup)||(DT.triggerCode.getCMMsgCode()==-999))
+			if((yup)||(DT.cmmsgCode==-999))
 			{
 				boolean[] checks=trigParts.get(msg.source().Name());
 				if(yup)
@@ -1967,21 +2018,10 @@ public class StdDeity extends StdMOB implements Deity
 				{
 					final String cmd=V.firstElement();
 					DeityTrigger DT=new DeityTrigger();
-					RitualTrigger T = (RitualTrigger)CMath.s_valueOf(RitualTrigger.class, cmd);
+					RitualTriggerCode T = (RitualTriggerCode)CMath.s_valueOf(RitualTriggerCode.class, cmd);
 					if(T==null)
 					{
-						for(final RitualTrigger RT : RitualTrigger.values())
-						{
-							if(RT.getShortName().equals(cmd))
-							{
-								T=RT;
-								break;
-							}
-						}
-					}
-					if(T==null)
-					{
-						for(final RitualTrigger RT : RitualTrigger.values())
+						for(final RitualTriggerCode RT : RitualTriggerCode.values())
 						{
 							if(RT.name().startsWith(cmd))
 							{
@@ -1997,227 +2037,230 @@ public class StdDeity extends StdMOB implements Deity
 						break;
 					}
 					else
-					switch(T)
 					{
-					case SAY:
-					{
-						DT.triggerCode=T;
-						DT.parm1=CMParms.combine(V,1);
-					}
-					break;
-					case TIME:
-					{
-						DT.triggerCode=T;
-						DT.parm1=""+CMath.s_int(CMParms.combine(V,1));
-					}
-					break;
-					case WAIT:
-					{
-						DT.triggerCode=T;
-						DT.parm1=""+CMath.s_int(CMParms.combine(V,1));
-					}
-					break;
-					case YOUSAY:
-					{
-						DT.triggerCode=T;
-						DT.parm1=CMParms.combine(V,1);
-					}
-					break;
-					case OTHERSAY:
-					{
-						DT.triggerCode=T;
-						DT.parm1=CMParms.combine(V,1);
-					}
-					break;
-					case ALLSAY:
-					{
-						DT.triggerCode=T;
-						DT.parm1=CMParms.combine(V,1);
-					}
-					break;
-					case PUTTHING:
-					{
-						DT.triggerCode=T;
-						if(V.size()<3)
+						DT.cmmsgCode=this.getCMMsgCode(T);
+						switch(T)
 						{
-							Log.errOut("StdDeity",Name()+"- Illegal trigger: "+trig);
-							DT=null;
+						case SAY:
+						{
+							DT.triggerCode=T;
+							DT.parm1=CMParms.combine(V,1);
 							break;
 						}
-						DT.parm1=CMParms.combine(V,1,V.size()-2);
-						DT.parm2=V.lastElement();
-					}
-					break;
-					case BURNTHING:
-					{
-						DT.triggerCode=T;
-						DT.parm1=CMParms.combine(V,1);
-					}
-					break;
-					case PUTVALUE:
-					{
-						DT.triggerCode=T;
-						if(V.size()<3)
+						case TIME:
 						{
-							Log.errOut("StdDeity",Name()+"- Illegal trigger: "+trig);
-							DT=null;
+							DT.triggerCode=T;
+							DT.parm1=""+CMath.s_int(CMParms.combine(V,1));
 							break;
 						}
-						DT.parm1=""+CMath.s_int(V.elementAt(1));
-						DT.parm2=CMParms.combine(V,2);
-					}
-					break;
-					case BURNVALUE:
-					{
-						DT.triggerCode=T;
-						if(V.size()<3)
+						case WAIT:
 						{
-							Log.errOut("StdDeity",Name()+"- Illegal trigger: "+trig);
-							DT=null;
+							DT.triggerCode=T;
+							DT.parm1=""+CMath.s_int(CMParms.combine(V,1));
 							break;
 						}
-						DT.parm1=""+CMath.s_int(CMParms.combine(V,1));
-					}
-					break;
-					case BURNMATERIAL:
-					{
-						DT.triggerCode=T;
-						DT.parm1=CMParms.combine(V,1);
-						final int cd = RawMaterial.CODES.FIND_StartsWith(DT.parm1);
-						boolean found=cd>=0;
-						if(found)
-							DT.parm1=""+cd;
-						else
+						case YOUSAY:
 						{
-							final RawMaterial.Material m=RawMaterial.Material.startsWith(DT.parm1);
-							if(m!=null)
+							DT.triggerCode=T;
+							DT.parm1=CMParms.combine(V,1);
+							break;
+						}
+						case OTHERSAY:
+						{
+							DT.triggerCode=T;
+							DT.parm1=CMParms.combine(V,1);
+							break;
+						}
+						case ALLSAY:
+						{
+							DT.triggerCode=T;
+							DT.parm1=CMParms.combine(V,1);
+							break;
+						}
+						case PUTTHING:
+						{
+							DT.triggerCode=T;
+							if(V.size()<3)
 							{
-								DT.parm1=""+m.mask();
-								found=true;
+								Log.errOut("StdDeity",Name()+"- Illegal trigger: "+trig);
+								DT=null;
+								break;
 							}
-						}
-						if(!found)
-						{
-							Log.errOut("StdDeity",Name()+"- Unknown material: "+trig);
-							DT=null;
+							DT.parm1=CMParms.combine(V,1,V.size()-2);
+							DT.parm2=V.lastElement();
 							break;
 						}
-					}
-					break;
-					case PUTMATERIAL:
-					{
-						DT.triggerCode=T;
-						if(V.size()<3)
+						case BURNTHING:
 						{
-							Log.errOut("StdDeity",Name()+"- Illegal trigger: "+trig);
-							DT=null;
+							DT.triggerCode=T;
+							DT.parm1=CMParms.combine(V,1);
 							break;
 						}
-						DT.parm1=V.elementAt(1);
-						DT.parm2=CMParms.combine(V,2);
-						final int cd = RawMaterial.CODES.FIND_StartsWith(DT.parm1);
-						boolean found=cd>=0;
-						if(found)
-							DT.parm1=""+cd;
-						else
-						if(!found)
+						case PUTVALUE:
 						{
-							final RawMaterial.Material m=RawMaterial.Material.startsWith(DT.parm1);
-							if(m!=null)
+							DT.triggerCode=T;
+							if(V.size()<3)
 							{
-								DT.parm1=""+m.mask();
-								found=true;
+								Log.errOut("StdDeity",Name()+"- Illegal trigger: "+trig);
+								DT=null;
+								break;
 							}
+							DT.parm1=""+CMath.s_int(V.elementAt(1));
+							DT.parm2=CMParms.combine(V,2);
+							break;
 						}
-						if(!found)
+						case BURNVALUE:
 						{
-							Log.errOut("StdDeity",Name()+"- Unknown material: "+trig);
+							DT.triggerCode=T;
+							if(V.size()<3)
+							{
+								Log.errOut("StdDeity",Name()+"- Illegal trigger: "+trig);
+								DT=null;
+								break;
+							}
+							DT.parm1=""+CMath.s_int(CMParms.combine(V,1));
+							break;
+						}
+						case BURNMATERIAL:
+						{
+							DT.triggerCode=T;
+							DT.parm1=CMParms.combine(V,1);
+							final int cd = RawMaterial.CODES.FIND_StartsWith(DT.parm1);
+							boolean found=cd>=0;
+							if(found)
+								DT.parm1=""+cd;
+							else
+							{
+								final RawMaterial.Material m=RawMaterial.Material.startsWith(DT.parm1);
+								if(m!=null)
+								{
+									DT.parm1=""+m.mask();
+									found=true;
+								}
+							}
+							if(!found)
+							{
+								Log.errOut("StdDeity",Name()+"- Unknown material: "+trig);
+								DT=null;
+								break;
+							}
+							break;
+						}
+						case PUTMATERIAL:
+						{
+							DT.triggerCode=T;
+							if(V.size()<3)
+							{
+								Log.errOut("StdDeity",Name()+"- Illegal trigger: "+trig);
+								DT=null;
+								break;
+							}
+							DT.parm1=V.elementAt(1);
+							DT.parm2=CMParms.combine(V,2);
+							final int cd = RawMaterial.CODES.FIND_StartsWith(DT.parm1);
+							boolean found=cd>=0;
+							if(found)
+								DT.parm1=""+cd;
+							else
+							if(!found)
+							{
+								final RawMaterial.Material m=RawMaterial.Material.startsWith(DT.parm1);
+								if(m!=null)
+								{
+									DT.parm1=""+m.mask();
+									found=true;
+								}
+							}
+							if(!found)
+							{
+								Log.errOut("StdDeity",Name()+"- Unknown material: "+trig);
+								DT=null;
+								break;
+							}
+							break;
+						}
+						case EAT:
+						{
+							DT.triggerCode=T;
+							DT.parm1=CMParms.combine(V,1);
+							break;
+						}
+						case READING:
+						{
+							DT.triggerCode=T;
+							DT.parm1=CMParms.combine(V,1);
+							break;
+						}
+						case RANDOM:
+						{
+							DT.triggerCode=T;
+							DT.parm1=CMParms.combine(V,1);
+							break;
+						}
+						case CHECK:
+						{
+							DT.triggerCode=T;
+							DT.parm1=CMParms.combine(V,1);
+							break;
+						}
+						case DRINK:
+						{
+							DT.triggerCode=T;
+							DT.parm1=CMParms.combine(V,1);
+							break;
+						}
+						case INROOM:
+						{
+							DT.triggerCode=T;
+							DT.parm1=CMParms.combine(V,1);
+							break;
+						}
+						case RIDING:
+						{
+							DT.triggerCode=T;
+							DT.parm1=CMParms.combine(V,1);
+							break;
+						}
+						case CAST:
+						{
+							DT.triggerCode=T;
+							DT.parm1=CMParms.combine(V,1);
+							if(CMClass.findAbility(DT.parm1)==null)
+							{
+								Log.errOut("StdDeity",Name()+"- Illegal SPELL in: "+trig);
+								DT=null;
+								break;
+							}
+							break;
+						}
+						case EMOTE:
+						{
+							DT.triggerCode=T;
+							DT.parm1=CMParms.combine(V,1);
+							break;
+						}
+						case SITTING:
+						{
+							DT.triggerCode=T;
+							break;
+						}
+						case STANDING:
+						{
+							DT.triggerCode=T;
+							break;
+						}
+						case SLEEPING:
+						{
+							DT.triggerCode=T;
+							break;
+						}
+						default:
+						{
+							Log.errOut("StdDeity",Name()+"- Illegal trigger: '"+cmd+"','"+trig+"'");
 							DT=null;
 							break;
 						}
-					}
-					break;
-					case EAT:
-					{
-						DT.triggerCode=T;
-						DT.parm1=CMParms.combine(V,1);
-					}
-					break;
-					case READING:
-					{
-						DT.triggerCode=T;
-						DT.parm1=CMParms.combine(V,1);
-					}
-					break;
-					case RANDOM:
-					{
-						DT.triggerCode=T;
-						DT.parm1=CMParms.combine(V,1);
-					}
-					break;
-					case CHECK:
-					{
-						DT.triggerCode=T;
-						DT.parm1=CMParms.combine(V,1);
-					}
-					break;
-					case DRINK:
-					{
-						DT.triggerCode=T;
-						DT.parm1=CMParms.combine(V,1);
-					}
-					break;
-					case INROOM:
-					{
-						DT.triggerCode=T;
-						DT.parm1=CMParms.combine(V,1);
-					}
-					break;
-					case RIDING:
-					{
-						DT.triggerCode=T;
-						DT.parm1=CMParms.combine(V,1);
-					}
-					break;
-					case CAST:
-					{
-						DT.triggerCode=T;
-						DT.parm1=CMParms.combine(V,1);
-						if(CMClass.findAbility(DT.parm1)==null)
-						{
-							Log.errOut("StdDeity",Name()+"- Illegal SPELL in: "+trig);
-							DT=null;
-							break;
 						}
-					}
-					break;
-					case EMOTE:
-					{
-						DT.triggerCode=T;
-						DT.parm1=CMParms.combine(V,1);
-					}
-					break;
-					case SITTING:
-					{
-						DT.triggerCode=T;
-					}
-					break;
-					case STANDING:
-					{
-						DT.triggerCode=T;
-					}
-					break;
-					case SLEEPING:
-					{
-						DT.triggerCode=T;
-					}
-					break;
-					default:
-					{
-						Log.errOut("StdDeity",Name()+"- Illegal trigger: '"+cmd+"','"+trig+"'");
-						DT=null;
-						break;
-					}
 					}
 					if(DT==null)
 						break;
@@ -2238,7 +2281,8 @@ public class StdDeity extends StdMOB implements Deity
 
 	protected static class DeityTrigger
 	{
-		public RitualTrigger triggerCode=RitualTrigger.SAY;
+		public RitualTriggerCode triggerCode=RitualTriggerCode.SAY;
+		public int cmmsgCode = -999;
 		public RitualConnector previousConnect=RitualConnector.AND;
 		public String parm1=null;
 		public String parm2=null;

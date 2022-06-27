@@ -256,6 +256,54 @@ public interface AbilityComponents extends CMLibrary
 	public AbilityLimits getSpecialSkillRemainders(MOB studentM);
 
 	/**
+	 * The definition of the key words in the ritual definitions.
+	 * Most of these require a parameter of one sort or another,
+	 * depending on the code.  The command phrases
+	 * are separated by &amp; (for and) or | for or.
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public enum RitualTriggerCode
+	{
+		SAY,
+		TIME,
+		PUTTHING,
+		BURNTHING,
+		EAT,
+		DRINK,
+		INROOM,
+		RIDING,
+		CAST,
+		EMOTE,
+		PUTVALUE,
+		PUTMATERIAL,
+		BURNMATERIAL,
+		BURNVALUE,
+		SITTING,
+		STANDING,
+		SLEEPING,
+		READING,
+		RANDOM,
+		CHECK,
+		WAIT,
+		YOUSAY,
+		OTHERSAY,
+		ALLSAY,
+		;
+	}
+
+	/**
+	 * Separator enum constants for ritual definitions.
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public enum RitualConnector
+	{
+		AND,
+		OR
+	}
+
+	/**
 	 * Ability Limits object, denoting how many of different types
 	 * of common skills and langs that a player can learn, including an
 	 * entry for a specific skill.

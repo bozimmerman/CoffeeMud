@@ -2,6 +2,8 @@ package com.planet_ink.coffee_mud.Libraries;
 
 import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityComponents.RitualConnector;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityComponents.RitualTriggerCode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityParameters.AbilityParmEditor;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaterialLibrary.DeadResourceRecord;
@@ -48,6 +50,16 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	public String ID()
 	{
 		return "CMAbleComps";
+	}
+
+	protected RitualTrigger[] root = new RitualTrigger[0];
+
+	protected static class RitualTrigger
+	{
+		public RitualTriggerCode	triggerCode	= RitualTriggerCode.SAY;
+		public String				parm1		= null;
+		public String				parm2		= null;
+		public RitualTrigger[]		next		= new RitualTrigger[0];
 	}
 
 	protected final boolean isRightMaterial(final long type, final long itemMaterial, final boolean mithrilOK)
