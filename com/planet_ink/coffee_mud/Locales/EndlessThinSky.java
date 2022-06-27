@@ -207,7 +207,7 @@ public class EndlessThinSky extends StdThinGrid
 				linkRoom(R,R2,Directions.EAST,ox,ox);
 		}
 
-		if(Directions.NORTHEAST<Directions.NUM_DIRECTIONS())
+		if(Directions.NORTHEAST<doorsR.length)
 		{
 			if(((x==0)||(y==0))&&(doorsR[Directions.NORTHWEST]==null))
 			{

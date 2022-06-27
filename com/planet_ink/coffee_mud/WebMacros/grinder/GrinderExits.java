@@ -244,6 +244,8 @@ public class GrinderExits
 				R=CMLib.map().getRoom(R.roomID());
 			if(R==null)
 				return "Failed exit!";
+			if(dir>=R.rawDoors().length)
+				return "";
 			R.clearSky();
 			if(R instanceof GridLocale)
 				((GridLocale)R).clearGrid(null);
@@ -266,6 +268,8 @@ public class GrinderExits
 				R2=CMLib.map().getRoom(R.getRoomInDir(dir));
 			if(R2==null)
 				return "Failed exit2!";
+			if(dir2>=R2.rawDoors().length)
+				return "";
 			R2.clearSky();
 			if(R2 instanceof GridLocale)
 				((GridLocale)R2).clearGrid(null);

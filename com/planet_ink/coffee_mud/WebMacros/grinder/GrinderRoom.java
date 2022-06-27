@@ -63,7 +63,7 @@ public class GrinderRoom
 
 	public void fixExits(final Room R)
 	{
-		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+		for(int d=R.rawDoors().length-1;d>=0;d--)
 		{
 			final GrinderDir D=new GrinderDir();
 			R.clearSky();

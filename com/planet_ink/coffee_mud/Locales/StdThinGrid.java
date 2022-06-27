@@ -466,7 +466,9 @@ public class StdThinGrid extends StdRoom implements GridLocale
 					linkRoom(R,R2,Directions.NORTHWEST,ox,ox);
 			}
 			else
-			if((rawDoors()[Directions.NORTHWEST]!=null)&&(exits[Directions.NORTHWEST]!=null))
+			if((Directions.NORTHWEST<rawDoors().length)
+			&&(rawDoors()[Directions.NORTHWEST]!=null)
+			&&(exits[Directions.NORTHWEST]!=null))
 				linkRoom(R,rawDoors()[Directions.NORTHWEST],Directions.NORTHWEST,exits[Directions.NORTHWEST],exits[Directions.NORTHWEST]);
 
 			if((x>0)&&(y<(yGridSize()-1)))
@@ -476,7 +478,9 @@ public class StdThinGrid extends StdRoom implements GridLocale
 					linkRoom(R,R2,Directions.SOUTHWEST,ox,ox);
 			}
 			else
-			if((rawDoors()[Directions.SOUTHWEST]!=null)&&(exits[Directions.SOUTHWEST]!=null))
+			if((Directions.SOUTHWEST<rawDoors().length)
+			&&(rawDoors()[Directions.SOUTHWEST]!=null)
+			&&(exits[Directions.SOUTHWEST]!=null))
 				linkRoom(R,rawDoors()[Directions.SOUTHWEST],Directions.SOUTHWEST,exits[Directions.SOUTHWEST],exits[Directions.SOUTHWEST]);
 
 			if((x<(xGridSize()-1))&&(y>0))
@@ -486,7 +490,9 @@ public class StdThinGrid extends StdRoom implements GridLocale
 					linkRoom(R,R2,Directions.NORTHEAST,ox,ox);
 			}
 			else
-			if((rawDoors()[Directions.NORTHEAST]!=null)&&(exits[Directions.NORTHEAST]!=null))
+			if((Directions.NORTHEAST<rawDoors().length)
+			&&(rawDoors()[Directions.NORTHEAST]!=null)
+			&&(exits[Directions.NORTHEAST]!=null))
 				linkRoom(R,rawDoors()[Directions.NORTHEAST],Directions.NORTHEAST,exits[Directions.NORTHEAST],exits[Directions.NORTHEAST]);
 			if((x<(xGridSize()-1))&&(y<(yGridSize()-1)))
 			{
@@ -495,7 +501,9 @@ public class StdThinGrid extends StdRoom implements GridLocale
 					linkRoom(R,R2,Directions.SOUTHEAST,ox,ox);
 			}
 			else
-			if((rawDoors()[Directions.SOUTHEAST]!=null)&&(exits[Directions.SOUTHEAST]!=null))
+			if((Directions.SOUTHEAST<rawDoors().length)
+			&&(rawDoors()[Directions.SOUTHEAST]!=null)
+			&&(exits[Directions.SOUTHEAST]!=null))
 				linkRoom(R,rawDoors()[Directions.SOUTHEAST],Directions.SOUTHEAST,exits[Directions.SOUTHEAST],exits[Directions.SOUTHEAST]);
 		}
 
@@ -807,6 +815,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		if(loc==null)
 			return;
 		if(room==null)
+			return;
+		if(dirCode>=room.rawDoors().length)
 			return;
 		final int opCode=Directions.getOpDirectionCode(dirCode);
 		final Room dirR=room.rawDoors()[dirCode];

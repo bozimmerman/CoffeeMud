@@ -445,6 +445,8 @@ public class GrinderRooms
 
 	public static String createRoom(final Room R, final int dir, final boolean copyThisOne)
 	{
+		if(dir>=R.rawDoors().length)
+			return "";
 		R.clearSky();
 		if(R instanceof GridLocale)
 			((GridLocale)R).clearGrid(null);

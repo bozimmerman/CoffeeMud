@@ -147,7 +147,7 @@ public class StdRoom implements Room
 	{
 		return name();
 	}
-	
+
 	protected void setMovementCost(final int newCost)
 	{
 		basePhyStats().setWeight(newCost); // movement consumption
@@ -164,12 +164,12 @@ public class StdRoom implements Room
 		basePhyStats().setHeight(newSize);
 		recoverPhyStats();
 	}
-	
+
 	protected int getRoomSize()
 	{
 		return phyStats().height();
 	}
-	
+
 	@Override
 	public int getAtmosphereCode()
 	{
@@ -250,7 +250,7 @@ public class StdRoom implements Room
 		Arrays.fill(exits, null);
 		doors=new Room[doors.length];
 		Arrays.fill(doors, null);
-		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+		for(int d=R.rawDoors().length-1;d>=0;d--)
 		{
 			if(R.getRawExit(d)!=null)
 				exits[d]=(Exit)R.getRawExit(d).copyOf();
@@ -1929,12 +1929,12 @@ public class StdRoom implements Room
 		if((roomID().length()==0)&&(rawDoors()!=null))
 		{
 			Room roomDir=null;
-			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+			for(int d=rawDoors().length-1;d>=0;d--)
 			{
 				roomDir=rawDoors()[d];
 				if((roomDir!=null)&&(roomDir.rawDoors()!=null))
 				{
-					for(int d2=Directions.NUM_DIRECTIONS()-1;d2>=0;d2--)
+					for(int d2=roomDir.rawDoors().length-1;d2>=0;d2--)
 					{
 						if(roomDir.rawDoors()[d2]==this)
 						{

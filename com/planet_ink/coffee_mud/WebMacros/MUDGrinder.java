@@ -1336,11 +1336,15 @@ public class MUDGrinder extends StdWebMacro
 			final String copyThisOne=httpReq.getUrlParameter("COPYROOM");
 			final String errMsg=GrinderRooms.createRoom(R,dir,(copyThisOne!=null)&&(copyThisOne.equalsIgnoreCase("ON")));
 			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
-			R=R.rawDoors()[dir];
-			if(R!=null)
+			httpReq.addFakeUrlParameter("ROOM",R.roomID());
+			if(dir<R.rawDoors().length)
 			{
-				httpReq.addFakeUrlParameter("ROOM",R.roomID());
-				Log.sysOut("Grinder",mob.Name()+" added room "+R.roomID());
+				R=R.rawDoors()[dir];
+				if(R!=null)
+				{
+					httpReq.addFakeUrlParameter("ROOM",R.roomID());
+					Log.sysOut("Grinder",mob.Name()+" added room "+R.roomID());
+				}
 			}
 			httpReq.addFakeUrlParameter("LINK","");
 		}
