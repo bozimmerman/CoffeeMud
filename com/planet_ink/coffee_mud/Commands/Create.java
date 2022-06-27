@@ -495,12 +495,16 @@ public class Create extends StdCommand
 		if(CMLib.flags().isSavable(thisRoom))
 			CMLib.database().DBCreateRoom(thisRoom);
 
-		CMLib.map().createNewExit(mob.location(),thisRoom,direction);
-
-		mob.location().recoverRoomStats();
-		thisRoom.recoverRoomStats();
-		mob.location().getArea().fillInAreaRoom(mob.location());
-		mob.location().getArea().fillInAreaRoom(thisRoom);
+		final String err=CMLib.map().createNewExit(mob.location(),thisRoom,direction);
+		if(err.length()>0)
+			mob.tell(err);
+		else
+		{
+			mob.location().recoverRoomStats();
+			thisRoom.recoverRoomStats();
+			mob.location().getArea().fillInAreaRoom(mob.location());
+			mob.location().getArea().fillInAreaRoom(thisRoom);
+		}
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly a block of earth falls from the sky.\n\r"));
 		Log.sysOut("Rooms",mob.Name()+" created room "+thisRoom.roomID()+".");
 	}

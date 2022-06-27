@@ -443,6 +443,10 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public String createNewExit(Room from, Room room, final int direction)
 	{
+		if(direction >= from.rawDoors().length)
+			return "Bad direction";
+		if(direction >= room.rawDoors().length)
+			return "Bad direction";
 		Room opRoom=from.rawDoors()[direction];
 		if((opRoom!=null)&&(opRoom.roomID().length()==0))
 			opRoom=null;

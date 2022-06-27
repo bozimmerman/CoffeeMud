@@ -562,9 +562,10 @@ public class StdRoom implements Room
 
 			if(!(getArea() instanceof Boardable))
 			{
-				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+				for(int d=rawDoors().length-1;d>=0;d--)
 				{
-					if((d!=Directions.UP)&&(d!=Directions.DOWN))
+					if((d!=Directions.UP)
+					&&(d!=Directions.DOWN))
 					{
 						Room thatRoom=rawDoors()[d];
 						if((thatRoom!=null)&&(getRawExit(d)!=null))
@@ -636,7 +637,7 @@ public class StdRoom implements Room
 				((GridLocale)skyGridRoom).clearGrid(null);
 				rawDoors()[Directions.UP]=null;
 				setRawExit(Directions.UP,null);
-				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+				for(int d=0;d<skyGridRoom.rawDoors().length;d++)
 				{
 					final Room thatSky=skyGridRoom.rawDoors()[d];
 					final int opDir=Directions.getOpDirectionCode(d);

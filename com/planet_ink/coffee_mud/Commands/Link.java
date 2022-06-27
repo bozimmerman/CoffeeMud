@@ -87,7 +87,8 @@ public class Link extends At
 				return false;
 			}
 		}
-		exitifyNewPortal(mob,thisRoom,direction);
+		if(!exitifyNewPortal(mob,thisRoom,direction))
+			return false;
 		mob.location().getArea().fillInAreaRoom(mob.location());
 		mob.location().getArea().fillInAreaRoom(thisRoom);
 
@@ -97,15 +98,27 @@ public class Link extends At
 		return false;
 	}
 
-	protected void exitifyNewPortal(final MOB mob, final Room room, final int direction)
+	protected boolean exitifyNewPortal(final MOB mob, final Room room, final int direction)
 	{
+		if(direction>=mob.location().rawDoors().length)
+		{
+			mob.tell(L("Room was created without that possible direction."));
+			return false;
+		}
 		Room opRoom=mob.location().rawDoors()[direction];
 		if((opRoom!=null)&&(opRoom.roomID().length()==0))
 			opRoom=null;
 		Room reverseRoom=null;
 		final int opDir=Directions.getOpDirectionCode(direction);
 		if(opRoom!=null)
+		{
+			if(opDir>=opRoom.rawDoors().length)
+			{
+				mob.tell(L("The target room was created without that possible direction."));
+				return false;
+			}
 			reverseRoom=opRoom.rawDoors()[opDir];
+		}
 
 		if((reverseRoom!=null)
 		&&((reverseRoom==mob.location())||(reverseRoom==mob.location().getGridParent())))
@@ -222,6 +235,7 @@ public class Link extends At
 			CMLib.database().DBUpdateExits(thereGL);
 		else
 			CMLib.database().DBUpdateExits(room);
+		return true;
 	}
 
 	@Override
