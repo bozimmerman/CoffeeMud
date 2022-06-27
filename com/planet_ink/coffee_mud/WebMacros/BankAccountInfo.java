@@ -83,6 +83,14 @@ public class BankAccountInfo extends StdWebMacro
 			info.balance=bal.doubleValue();
 			info.debt=B.getDebtInfo(playerM.Name());
 			info.items=B.getDepositedItems(playerM.Name());
+			if((info.items!=null)&&(info.items.size()>0))
+			{
+				for(final Item I : info.items)
+				{
+					if(!(I instanceof Coins))
+						CMLib.threads().deleteAllTicks(I);
+				}
+			}
 		}
 		httpReq.getRequestObjects().put("BANKINFO: "+B.bankChain()+": "+playerM.Name(),info);
 		return info;
