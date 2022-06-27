@@ -2167,8 +2167,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				&&(testMOB.getStartRoom()!=null)
 				&&(testMOB.getStartRoom().getArea()!=R.getArea())
 				&&(CMLib.flags().isPossiblyAggressive(testMOB))
+				&&((!(testMOB instanceof Rideable))||(((Rideable)testMOB).numRiders()==0))
 				&&((testMOB.amFollowing()==null)
-						||((!testMOB.amFollowing().isMonster())&&(testMOB.amFollowing().location()==testMOB.location())))
+					||((!testMOB.amFollowing().isMonster())&&(testMOB.amFollowing().location()==testMOB.location())))
 				&&(!CMLib.masking().maskCheck(laws.getMessage(Law.MSG_PROTECTEDMASK),testMOB,false)))))
 		{
 			final String[] info=laws.basicCrimes().get("TRESPASSING");
