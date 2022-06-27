@@ -71,8 +71,12 @@ public class Link extends At
 		Room thisRoom=null;
 		final String roomID=CMParms.combine(commands,1);
 		thisRoom = mob.location().getArea().getRoom(roomID);
-		if(thisRoom != null)
+		if(thisRoom == null)
 			thisRoom=CMLib.map().getRoom(roomID);
+		if((thisRoom == null)
+		&&(mob.location().getArea() instanceof Boardable)
+		&&(roomID.equalsIgnoreCase("outside")))
+			thisRoom=CMLib.map().roomLocation(((Boardable)mob.location().getArea()).getBoardableItem());
 		if(thisRoom==null)
 		{
 			thisRoom=CMLib.map().findWorldRoomLiberally(mob,roomID,"R",100,120000);
