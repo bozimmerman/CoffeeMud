@@ -321,6 +321,14 @@
                 </TD>
             </TR>
             <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Clan Only: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=CHECKBOX NAME=CLANONLY @AbilityData?CLANONLY@>
+                </TD>
+            </TR>
+            <TR>
                 <TD><FONT COLOR=YELLOW>Raw Resources / Material Types: </FONT></TD>
                 <TD>
                     <SELECT NAME=MATLIST MULTIPLE>@AbilityData?MATLIST@</SELECT>

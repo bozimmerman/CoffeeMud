@@ -100,7 +100,8 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 	private static final int	V_CNTI			= 8;	// B
 	private static final int	V_SOND			= 9;	// S
 	private static final int	V_CNDE			= 10;	// B
-	private static final int	NUM_VS			= 11;	// S
+	private static final int	V_CLAN			= 11;	// B
+	private static final int	NUM_VS			= 12;	// S
 
 	@Override
 	public CraftorType getCraftorType()
@@ -134,6 +135,7 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 		O[V_CNTI]=Boolean.valueOf(true);
 		O[V_SOND]="sawing.wav";
 		O[V_CNDE]=Boolean.valueOf(false);
+		O[V_CLAN]=Boolean.valueOf(false);
 		return O;
 	}
 
@@ -312,7 +314,11 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 		final MOB shopKeeper = CMClass.getMOB("StdShopkeeper");
 		try
 		{
-			((ShopKeeper)shopKeeper).setWhatIsSoldMask(ShopKeeper.DEAL_SHIPSELLER);
+			final Boolean isClan=(Boolean)V(ID,V_CLAN);
+			if((isClan != null) && (isClan.booleanValue()))
+				((ShopKeeper)shopKeeper).setWhatIsSoldMask(ShopKeeper.DEAL_CSHIPSELLER);
+			else
+				((ShopKeeper)shopKeeper).setWhatIsSoldMask(ShopKeeper.DEAL_SHIPSELLER);
 			final CMMsg msg=CMClass.getMsg(buyer,buildingI,shopKeeper,CMMsg.MSG_GET,null);
 			buildingI.executeMsg(buyer, msg);
 		}
@@ -501,8 +507,7 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 		return canMend(null, item, true);
 	}
 
-	@Override
-	protected boolean canMend(final MOB mob, final Environmental E, final boolean quiet)
+	protected boolean baseMendTest(final MOB mob, final Environmental E, final boolean quiet)
 	{
 		final Boolean canMendB=(Boolean)V(ID,V_CNMN);
 		if(!canMendB.booleanValue())
@@ -521,6 +526,40 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 				commonTell(mob,L("That can't be mended with this skill."));
 			}
 			return false;
+		}
+		return true;
+	}
+	
+	@Override
+	protected boolean canMend(final MOB mob, final Environmental E, final boolean quiet)
+	{
+		if(!baseMendTest(mob,E,quiet))
+			return false;
+		final Boolean isClan=(Boolean)V(ID,V_CLAN);
+		if((isClan==null)||(!isClan.booleanValue()))
+			return true;
+		if(E instanceof PrivateProperty)
+		{
+			final PrivateProperty P=(PrivateProperty)E;
+			if(P.getOwnerName().length()>0)
+			{
+				if(mob!=null)
+				{
+					final Pair<Clan,Integer> role = mob.getClanRole(P.getOwnerName());
+					if(role == null)
+					{
+						if(!quiet)
+							commonTell(mob,L("You aren't authorized to do that."));
+						return false;
+					}
+				}
+				else
+				{
+					final Clan C=CMLib.clans().fetchClanAnyHost(P.getOwnerName());
+					if(C==null)
+						return false;
+				}
+			}
 		}
 		return true;
 	}
@@ -565,6 +604,7 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 										 "CANTITLE",//10S
 										 "SOUND",//11S
 										 "CANDESC",//12S
+										 "CLANONLY",//13B
 										};
 
 	@Override
@@ -626,6 +666,8 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 			return (String) V(ID, V_SOND);
 		case 12:
 			return Boolean.toString(((Boolean) V(ID, V_CNDE)).booleanValue());
+		case 13:
+			return Boolean.toString(((Boolean) V(ID, V_CLAN)).booleanValue());
 		default:
 			if (code.equalsIgnoreCase("javaclass"))
 				return "GenWrightSkill";
@@ -702,6 +744,9 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 		case 12:
 			SV(ID, V_CNDE, Boolean.valueOf(CMath.s_bool(val)));
 			break;
+		case 13:
+			SV(ID, V_CLAN, Boolean.valueOf(CMath.s_bool(val)));
+			break;
 		default:
 			if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenWrightSkill"))
 				parseAllXML(val);
@@ -769,6 +814,25 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 
 		if(super.checkInfo(mob, commands))
 			return true;
+
+		final Boolean isClanB=(Boolean)V(ID,V_CLAN);
+		if((isClanB!=null)&&(isClanB.booleanValue()))
+		{
+			if(!auto)
+			{
+				Clan foundC=null;
+				for(final Pair<Clan,Integer> pairC : mob.clans())
+				{
+					if(pairC.first.getAuthority(pairC.second.intValue(), Clan.Function.PROPERTY_OWNER) != Clan.Authority.CAN_NOT_DO)
+						foundC=pairC.first;
+				}
+				if(foundC==null)
+				{
+					commonTell(mob,L("You aren't authorized to build ships for a clan."));
+					return false;
+				}
+			}
+		}
 
 		@SuppressWarnings("unused")
 		int recipeLevel=1;
