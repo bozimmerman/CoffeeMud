@@ -50,10 +50,43 @@ public interface Software extends Item, Technical
 	public String getParentMenu();
 
 	/**
+	 * The parent menu that this software gets access from.
+	 * When Software is available from root, "" is set.
+	 * 
+	 * @param name parent menu that this software gets access from
+	 */
+	public void setParentMenu(String name);
+
+	/**
 	 * Returns the internal name of this software.
 	 * @return the internal name of this software.
 	 */
 	public String getInternalName();
+
+	/**
+	 * The the internal name of this software.
+	 * 
+	 * @param name the internal name of this software.
+	 */
+	public void setInternalName(String name);
+	
+	/**
+	 * Returns settings specific to this disk.
+	 * 
+	 * @see Software#setSettings(String)
+	 * 
+	 * @return settings
+	 */
+	public String getSettings();
+	
+	/**
+	 * Sets settings specific to this disk.
+	 * 
+	 * @see Software#getSettings()
+	 * 
+	 * @return settings
+	 */
+	public void setSettings(final String var);
 
 	/**
 	 * Returns whether the given computer-entry command

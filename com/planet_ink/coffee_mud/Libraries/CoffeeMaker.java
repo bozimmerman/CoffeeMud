@@ -569,9 +569,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			+xmlLib.convertXMLtoTag("VALUE",item.baseGoldValue())
 			//+xml.convertXMLtoTag("USES",item.usesRemaining()) // handled 'from top' & in db
 			+xmlLib.convertXMLtoTag("MTRAL",item.material())
-			+xmlLib.convertXMLtoTag("READ",item.readableText())
 			+xmlLib.convertXMLtoTag("WORNL",item.rawLogicalAnd())
 			+xmlLib.convertXMLtoTag("WORNB",item.rawProperLocationBitmap()));
+			if(!(E instanceof Software))
+				text.append(xmlLib.convertXMLtoTag("READ",xmlLib.parseOutAngleBrackets(item.readableText())));
 			if(E instanceof Container)
 			{
 				text.append(xmlLib.convertXMLtoTag("CAPA",((Container)item).capacity()));
@@ -609,6 +610,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			text.append(xmlLib.convertXMLtoTag("MANUFACT", ((Technical)E).getManufacturerName()));
 			// tech level comes from ability
+		}
+		if(E instanceof Software)
+		{
+			text.append(xmlLib.convertXMLtoTag("SOFTSETT", xmlLib.parseOutAngleBrackets(((Software)E).getSettings())));
+			text.append(xmlLib.convertXMLtoTag("PMENU", ((Software)E).getParentMenu()));
+			text.append(xmlLib.convertXMLtoTag("MNAME", ((Software)E).getInternalName()));
 		}
 		if(E instanceof ElecPanel)
 		{
@@ -3884,7 +3891,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				((AmmunitionWeapon)item).setAmmoCapacity(xml.getIntFromPieces(buf,"ACAPA"));
 			item.setRawLogicalAnd(xml.getBoolFromPieces(buf,"WORNL"));
 			item.setRawProperLocationBitmap(xml.getLongFromPieces(buf,"WORNB"));
-			item.setReadableText(xml.getValFromPieces(buf,"READ"));
+			item.setReadableText(xml.restoreAngleBrackets(xml.getValFromPieces(buf,"READ")));
 			if(item instanceof Boardable)
 			{
 				((Boardable)item).setArea(xml.restoreAngleBrackets(xml.getValFromPieces(buf,"SSAREA")));
@@ -3928,6 +3935,14 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			((Technical)E).setManufacturerName(xml.getValFromPieces(buf, "MANUFACT"));
 			// techlevel comes from ability
+		}
+		if(E instanceof Software)
+		{
+			((Software)E).setSettings(xml.restoreAngleBrackets(xml.getValFromPieces(buf, "SOFTSETT")));
+			((Software)E).setParentMenu(xml.getValFromPieces(buf, "PMENU"));
+			final XMLLibrary.XMLTag piece = xml.getPieceFromPieces(buf, "MNAME"); 
+			if(piece!=null)
+				((Software)E).setInternalName(piece.value());
 		}
 		if(E instanceof ElecPanel)
 		{

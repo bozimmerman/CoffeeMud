@@ -87,11 +87,22 @@ public class StdProgram extends StdItem implements Software
 	{
 		return "";
 	}
+	
+	@Override
+	public void setParentMenu(final String name)
+	{
+	}
 
 	@Override
 	public String getInternalName()
 	{
 		return "";
+	}
+	
+	@Override
+	public void setInternalName(final String name)
+	{
+		
 	}
 
 	@Override
@@ -116,6 +127,18 @@ public class StdProgram extends StdItem implements Software
 	public TechType getTechType()
 	{
 		return TechType.PERSONAL_SOFTWARE;
+	}
+
+	@Override
+	public String getSettings()
+	{
+		return miscText;
+	}
+
+	@Override
+	public void setSettings(final String var)
+	{
+		miscText=var;
 	}
 
 	@Override

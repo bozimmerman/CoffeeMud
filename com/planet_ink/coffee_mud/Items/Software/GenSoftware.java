@@ -48,7 +48,10 @@ public class GenSoftware extends StdProgram
 		return "GenSoftware";
 	}
 
-	protected String readableText="";
+	protected String	readableText	= "";
+	protected String	settings		= "";
+	protected String	name			= ID();
+	protected String	parent			= "";
 
 	public GenSoftware()
 	{
@@ -83,6 +86,18 @@ public class GenSoftware extends StdProgram
 	}
 
 	@Override
+	public String getSettings()
+	{
+		return settings;
+	}
+	
+	@Override
+	public void setSettings(final String var)
+	{
+		settings=var;
+	}
+
+	@Override
 	public void setMiscText(final String newText)
 	{
 		miscText="";
@@ -100,6 +115,12 @@ public class GenSoftware extends StdProgram
 		{
 		case 0:
 			return getManufacturerName();
+		case 1:
+			return getSettings();
+		case 2:
+			return getParentMenu();
+		case 3:
+			return getInternalName();
 		default:
 			break;
 		}
@@ -117,13 +138,47 @@ public class GenSoftware extends StdProgram
 		case 0:
 			setManufacturerName(val);
 			break;
+		case 1:
+			setSettings(val);
+			break;
+		case 2:
+			setParentMenu(val);
+			break;
+		case 3:
+			setInternalName(val);
+			break;
 		default:
 			break;
 		}
 		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 	}
 
-	private final static String[] MYCODES={"MANUFACTURER"};
+	@Override
+	public String getParentMenu()
+	{
+		return parent;
+	}
+
+	@Override
+	public void setParentMenu(final String name)
+	{
+		parent=name;
+	}
+
+	@Override
+	public String getInternalName()
+	{
+		return name;
+	}
+	
+	@Override
+	public void setInternalName(final String name)
+	{
+		this.name=name;
+	}
+
+	
+	private final static String[] MYCODES={"MANUFACTURER", "SETTINGS", "PMENU", "MNAME"};
 
 	private static String[] codes=null;
 

@@ -429,6 +429,20 @@ public class ItemData extends StdWebMacro
 						if(I.isGeneric())
 							return "true";
 						return "false";
+					case ISSOFT:
+						if(I instanceof Software)
+							return "true";
+						return "false";
+					case SOFTPARENT:
+						if((firstTime)&&(I instanceof Software))
+							old=""+((Software)I).getParentMenu();
+						str.append(old);
+						break;
+					case SOFTNAME:
+						if((firstTime)&&(I instanceof Software))
+							old=""+((Software)I).getInternalName();
+						str.append(old);
+						break;
 					case ISFOOD: // is food
 						if(I instanceof Food)
 							return "true";

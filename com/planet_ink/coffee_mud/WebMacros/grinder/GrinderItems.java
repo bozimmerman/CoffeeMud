@@ -75,7 +75,8 @@ public class GrinderItems
 		ISSHIPWARCOMP,SDIRNUMPORTS,SDIRPORTS,SWARMTYPES,
 		RECHARGERATE,OPENTICKS,ISCLOAK,ISBOOK,MAXPAGES,MAXCHARSPAGE,
 		STATESTR,STATESUBJSTR,RIDERSTR,ISRESOURCE,RSCSUBTYPE,
-		ISLIMB,RACEID,ENCHTYPE,ISAMMOWEAPON,ISSHIPDIRCOMP
+		ISLIMB,RACEID,ENCHTYPE,ISAMMOWEAPON,ISSHIPDIRCOMP,
+		ISSOFT,SOFTPARENT,SOFTNAME
 		;
 		public boolean isGenField;
 		private ItemDataField(final boolean isGeneric)
@@ -779,6 +780,15 @@ public class GrinderItems
 				case ISSHIPWARCOMP:
 				case ISSHIPDIRCOMP:
 				case ISCLOAK:
+				case ISSOFT:
+					break;
+				case SOFTPARENT:
+					if(I instanceof Software)
+						((Software)I).setParentMenu(old);
+					break;
+				case SOFTNAME:
+					if(I instanceof Software)
+						((Software)I).setInternalName(old);
 					break;
 				case MANUFACTURER:
 					if(I instanceof Technical)
