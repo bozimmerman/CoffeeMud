@@ -145,6 +145,8 @@ public class ThiefSkill extends StdAbility
 		if(dirCode[0]>=0)
 			unlockThis=room.getExitInDir(dirCode[0]);
 		if(unlockThis==null)
+			unlockThis=room.fetchFromRoomFavorExits(whatToOpen);
+		if(unlockThis==null)
 			unlockThis=getTarget(mob,room,givenTarget,commands,Wearable.FILTER_ANY);
 		else
 		if(givenTarget != null)
@@ -174,6 +176,7 @@ public class ThiefSkill extends StdAbility
 			}
 		}
 		else
+		if(unlockThis != null)
 		{
 			mob.tell(mob,unlockThis,null,L("You can't do that to <T-NAME>."));
 			return null;
