@@ -177,8 +177,6 @@ public class ExitData extends StdWebMacro
 			case 8: // closedtext
 				if(firstTime)
 					old=X.closedText();
-				if(old.length()==0)
-					old="a closed door";
 				str.append(old);
 				break;
 			case 9: // defaultsclosed
