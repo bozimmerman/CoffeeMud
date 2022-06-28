@@ -762,6 +762,12 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public void DBUpdatePlayerStartRooms(final String oldID, final String newID)
+	{
+		MOBloader.updatePlayerStartRooms(oldID, newID);
+	}
+
+	@Override
 	public List<String> DBExpiredCharNameSearch(final Set<String> skipNames)
 	{
 		return MOBloader.DBExpiredCharNameSearch(skipNames);

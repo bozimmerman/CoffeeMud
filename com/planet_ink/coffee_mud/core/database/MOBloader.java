@@ -612,6 +612,14 @@ public class MOBloader
 		return null;
 	}
 
+	public void updatePlayerStartRooms(final String oldID, final String newID)
+	{
+		DB.update(
+		"UPDATE CMCHAR SET "
+		+"CMROID='"+newID+"' "
+		+"WHERE CMROID='"+oldID+"'");
+	}
+
 	public void updateCMCHARString(final String name, final String fieldName, final Object value)
 	{
 		DB.updateWithClobs("UPDATE CMCHAR SET "+fieldName+"=? WHERE CMUSERID=?", value.toString(), name);

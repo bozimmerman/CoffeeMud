@@ -2017,10 +2017,8 @@ public class RoomLoader
 		+"CMROID='"+room.roomID()+"' "
 		+"WHERE CMROID='"+oldID+"'");
 
-		DB.update(
-		"UPDATE CMCHAR SET "
-		+"CMROID='"+room.roomID()+"' "
-		+"WHERE CMROID='"+oldID+"'");
+		CMLib.database().DBUpdatePlayerStartRooms(oldID, room.roomID());
+
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROOM)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Done recreating room "+room.roomID());
 	}

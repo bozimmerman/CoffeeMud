@@ -730,6 +730,15 @@ public interface DatabaseEngine extends CMLibrary
 	public void DBUpdatePlayer(MOB mob);
 
 	/**
+	 * Changes all player start from from the old to new room id, where
+	 * applicable.  This is called when a room's id number is changed.
+	 *
+	 * @param oldID the old room id
+	 * @param newID the new room id
+	 */
+	public void DBUpdatePlayerStartRooms(final String oldID, final String newID);
+
+	/**
 	 * Table category: DBPLAYERS
 	 * If this system uses the character expiration system, then
 	 * this method will scan all the players for expired characters,
