@@ -64,18 +64,6 @@ public class EmissionScanProgram extends GenSoftware
 		recoverPhyStats();
 	}
 
-	@Override
-	public String getParentMenu()
-	{
-		return "";
-	}
-
-	@Override
-	public String getInternalName()
-	{
-		return "";
-	}
-
 	public boolean isEmitting(final Item I)
 	{
 		return ((I instanceof Electronics)&&(((Electronics)I).activated()));

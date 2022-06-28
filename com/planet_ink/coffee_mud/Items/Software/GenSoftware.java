@@ -50,7 +50,7 @@ public class GenSoftware extends StdProgram
 
 	protected String	readableText	= "";
 	protected String	settings		= "";
-	protected String	name			= ID();
+	protected String	intName			= "";
 	protected String	parent			= "";
 
 	public GenSoftware()
@@ -90,7 +90,7 @@ public class GenSoftware extends StdProgram
 	{
 		return settings;
 	}
-	
+
 	@Override
 	public void setSettings(final String var)
 	{
@@ -162,22 +162,26 @@ public class GenSoftware extends StdProgram
 	@Override
 	public void setParentMenu(final String name)
 	{
-		parent=name;
+		if(name != null)
+			parent=name;
 	}
 
 	@Override
 	public String getInternalName()
 	{
-		return name;
+		if(intName==null || intName.length()==0)
+			return ID();
+		return intName;
 	}
-	
+
 	@Override
 	public void setInternalName(final String name)
 	{
-		this.name=name;
+		if(name != null)
+			this.intName=name;
 	}
 
-	
+
 	private final static String[] MYCODES={"MANUFACTURER", "SETTINGS", "PMENU", "MNAME"};
 
 	private static String[] codes=null;

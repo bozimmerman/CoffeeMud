@@ -72,18 +72,6 @@ public class GenShipProgram extends GenSoftware
 	}
 
 	@Override
-	public String getParentMenu()
-	{
-		return "";
-	}
-
-	@Override
-	public String getInternalName()
-	{
-		return "";
-	}
-
-	@Override
 	public boolean isActivationString(final String word)
 	{
 		return super.isActivationString(word);

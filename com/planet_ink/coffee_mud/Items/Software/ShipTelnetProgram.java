@@ -63,18 +63,6 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 	}
 
 	@Override
-	public String getParentMenu()
-	{
-		return "";
-	}
-
-	@Override
-	public String getInternalName()
-	{
-		return "TELNET";
-	}
-
-	@Override
 	public boolean isActivationString(final String word)
 	{
 		return isCommandString(word, false);

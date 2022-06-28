@@ -64,18 +64,6 @@ public class LifeScanProgram extends GenSoftware
 		recoverPhyStats();
 	}
 
-	@Override
-	public String getParentMenu()
-	{
-		return "";
-	}
-
-	@Override
-	public String getInternalName()
-	{
-		return "";
-	}
-
 	public boolean isAlive(final MOB M)
 	{
 		// there you have it, the definition of "life" -- is biological, and can reproduce

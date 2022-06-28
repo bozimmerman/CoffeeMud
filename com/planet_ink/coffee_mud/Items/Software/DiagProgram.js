@@ -17,16 +17,6 @@ function newInstance()
 	return newOne;
 }
  
-function getParentMenu() 
-{
-	return "";
-}
-
-function getInternalName() 
-{
-	return "SCRIPTDIAG";
-}
-
 function isActivationString(word)
 {
 	return this.isCommandString(word, false);

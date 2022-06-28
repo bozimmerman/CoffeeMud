@@ -157,18 +157,6 @@ public class RocketShipProgram extends GenShipProgram
 	}
 
 	@Override
-	public String getParentMenu()
-	{
-		return "";
-	}
-
-	@Override
-	public String getInternalName()
-	{
-		return "SHIP";
-	}
-
-	@Override
 	public String getCurrentScreenDisplay()
 	{
 		if((container() instanceof Computer)

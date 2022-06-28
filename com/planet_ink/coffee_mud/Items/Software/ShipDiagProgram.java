@@ -54,7 +54,7 @@ public class ShipDiagProgram extends GenShipProgram
 	protected volatile long					diagCompletionMs	= 0;
 	protected volatile Pair<Area,Ability>	diagWatcherA		= null;
 	protected final StringBuffer			scr					= new StringBuffer("");
-	
+
 	protected final Map<Electronics, Pair<CMMsg, Long>>		last= new Hashtable<Electronics, Pair<CMMsg, Long>>();
 	protected final Map<Electronics, Pair<long[], long[]>>	rpt	= new Hashtable<Electronics, Pair<long[], long[]>>();
 
@@ -78,7 +78,7 @@ public class ShipDiagProgram extends GenShipProgram
 			return true;
 		return false;
 	}
-	
+
 	protected boolean isDiagAvailable()
 	{
 		if((diagTargetL!=null)
@@ -86,7 +86,7 @@ public class ShipDiagProgram extends GenShipProgram
 			return true;
 		return false;
 	}
-	
+
 	protected void cancelRunningDiag()
 	{
 		if(diagWatcherA!=null)
@@ -99,7 +99,7 @@ public class ShipDiagProgram extends GenShipProgram
 		this.rpt.clear();
 		diagCompletionMs = 0;
 	}
-	
+
 	protected void decache()
 	{
 		components	= null;
@@ -133,21 +133,21 @@ public class ShipDiagProgram extends GenShipProgram
 		}
 
 		@Override
-		public boolean okMessage(Environmental myHost, CMMsg msg)
+		public boolean okMessage(final Environmental myHost, final CMMsg msg)
 		{
 			if((msg.targetMinor()==CMMsg.TYP_POWERCURRENT)
 			&&(msg.target() instanceof Electronics))
 			{
-				Long value=Long.valueOf(msg.value());
+				final Long value=Long.valueOf(msg.value());
 				last.put((Electronics)msg.target(), new Pair<CMMsg,Long>(msg,value));
 			}
 			return true;
 		}
 	};
-	
+
 	protected ExtendableAbility makePowerWatcher()
 	{
-		ExtendableAbility A=(ExtendableAbility)CMClass.getAbility("ExtAbility");
+		final ExtendableAbility A=(ExtendableAbility)CMClass.getAbility("ExtAbility");
 		if(A!=null)
 		{
 			A.setSavable(false);
@@ -158,7 +158,7 @@ public class ShipDiagProgram extends GenShipProgram
 		}
 		return A;
 	}
-	
+
 	protected synchronized List<TechComponent> getTechComponents()
 	{
 		if(components == null)
@@ -177,18 +177,6 @@ public class ShipDiagProgram extends GenShipProgram
 			}
 		}
 		return components;
-	}
-
-	@Override
-	public String getParentMenu()
-	{
-		return "";
-	}
-
-	@Override
-	public String getInternalName()
-	{
-		return "DIAGNOSTICS";
 	}
 
 	@Override
@@ -380,13 +368,13 @@ public class ShipDiagProgram extends GenShipProgram
 			header.append("^~r");
 		else
 			header.append("^X");
-		TimeClock C = CMLib.time().localClock(this);
-		String time = C.getShortestTimeDescription();
+		final TimeClock C = CMLib.time().localClock(this);
+		final String time = C.getShortestTimeDescription();
 		header.append(CMStrings.centerPreserve(L(" -- Level 1 Diagnostic Report " + time+" -- "),60)).append("^.^N\n\r");
 		scr.insert(0, header.toString());
 		return scr.toString();
 	}
-	
+
 	public String getDiagLevel2()
 	{
 		final StringBuilder scr=new StringBuilder("");
@@ -428,7 +416,7 @@ public class ShipDiagProgram extends GenShipProgram
 				int powerPerTick = 0;
 				if(rpt.containsKey(C))
 				{
-					Pair<long[],long[]> p=rpt.get(C);
+					final Pair<long[],long[]> p=rpt.get(C);
 					powerPerTick = (int)Math.round(Math.ceil(CMath.div(p.second[0], p.first[0])));
 				}
 				scr.append("^W").append(CMStrings.padRight(L("Pow: "),5));
@@ -444,13 +432,13 @@ public class ShipDiagProgram extends GenShipProgram
 			header.append("^~r");
 		else
 			header.append("^X");
-		TimeClock C = CMLib.time().localClock(this);
-		String time = C.getShortestTimeDescription();
+		final TimeClock C = CMLib.time().localClock(this);
+		final String time = C.getShortestTimeDescription();
 		header.append(CMStrings.centerPreserve(L(" -- Level 1 Diagnostic Report " + time+" -- "),60)).append("^.^N\n\r");
 		scr.insert(0, header.toString());
 		return scr.toString();
 	}
-	
+
 	public String getDiagLevel3()
 	{
 		final StringBuilder scr=new StringBuilder("");
@@ -476,7 +464,7 @@ public class ShipDiagProgram extends GenShipProgram
 			final Manufacturer man = (shipSpaceObject instanceof Technical)?((Technical)shipSpaceObject).getFinalManufacturer():null;
 			final double installFactor = (shipSpaceObject instanceof TechComponent)?((TechComponent)shipSpaceObject).getInstalledFactor():1.0;
 			final int efficiencyPct = (int)Math.round(100.0 * installFactor
-													  * CMath.div(condPct, 100.0) 
+													  * CMath.div(condPct, 100.0)
 													  * (man==null?1.0:(man.getEfficiencyPct()*man.getReliabilityPct())));
 			scr.append("^W").append(CMStrings.padRight(L("Eff: "),5));
 			scr.append('^').append(getConditionColor(efficiencyPct));
@@ -501,7 +489,7 @@ public class ShipDiagProgram extends GenShipProgram
 				int powerPerTick = 0;
 				if(rpt.containsKey(C))
 				{
-					Pair<long[],long[]> p=rpt.get(C);
+					final Pair<long[],long[]> p=rpt.get(C);
 					powerPerTick = (int)Math.round(Math.ceil(CMath.div(p.second[0], p.first[0])));
 				}
 				scr.append("^W").append(CMStrings.padRight(L("Pow: "),5));
@@ -510,7 +498,7 @@ public class ShipDiagProgram extends GenShipProgram
 				final Manufacturer man = (C instanceof Technical)?((Technical)C).getFinalManufacturer():null;
 				final double installFactor = (C instanceof TechComponent)?C.getInstalledFactor():1.0;
 				final int efficiencyPct = (int)Math.round(100.0 * installFactor
-													* CMath.div(condPct, 100.0) 
+													* CMath.div(condPct, 100.0)
 													* (man==null?1.0:(man.getEfficiencyPct()*man.getReliabilityPct())));
 				scr.append("^W").append(CMStrings.padRight(L("Eff: "),5));
 				scr.append('^').append(getConditionColor(efficiencyPct));
@@ -526,13 +514,13 @@ public class ShipDiagProgram extends GenShipProgram
 			header.append("^~r");
 		else
 			header.append("^X");
-		TimeClock C = CMLib.time().localClock(this);
-		String time = C.getShortestTimeDescription();
+		final TimeClock C = CMLib.time().localClock(this);
+		final String time = C.getShortestTimeDescription();
 		header.append(CMStrings.centerPreserve(L(" -- Level 1 Diagnostic Report " + time+" -- "),60)).append("^.^N\n\r");
 		scr.insert(0, header.toString());
 		return scr.toString();
 	}
-	
+
 	@Override
 	public String getCurrentScreenDisplay()
 	{
@@ -666,7 +654,7 @@ public class ShipDiagProgram extends GenShipProgram
 		{
 			this.shutdown();
 		}
-		if ((diagCompletionMs != 0) 
+		if ((diagCompletionMs != 0)
 		&& (diagTargetL != null)
 		&& (System.currentTimeMillis() >= diagCompletionMs))
 		{

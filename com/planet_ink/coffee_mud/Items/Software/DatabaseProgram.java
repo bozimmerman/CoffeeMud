@@ -52,7 +52,7 @@ public class DatabaseProgram extends GenShipProgram
 	protected final StringBuffer	scr					= new StringBuffer("");
 	protected JSONObject			data				= new JSONObject();
 	protected BoundedCube			spaceCube			= null;
-	
+
 	public DatabaseProgram()
 	{
 		super();
@@ -73,17 +73,11 @@ public class DatabaseProgram extends GenShipProgram
 	}
 
 	@Override
-	public String getParentMenu()
-	{
-		return "";
-	}
-
-	@Override
 	public String getSettings()
 	{
 		return data.toString();
 	}
-	
+
 	@Override
 	public void setSettings(final String var)
 	{
@@ -95,27 +89,21 @@ public class DatabaseProgram extends GenShipProgram
 				data=new MiniJSON().parseObject(var);
 				if(data.containsKey("SPACECUBE"))
 				{
-					JSONObject cubeData = data.getCheckedJSONObject("SPACECUBE");
-					String coordStr=cubeData.getCheckedString("COORDS");
-					String radiuStr=cubeData.getCheckedString("RADIUS");
+					final JSONObject cubeData = data.getCheckedJSONObject("SPACECUBE");
+					final String coordStr=cubeData.getCheckedString("COORDS");
+					final String radiuStr=cubeData.getCheckedString("RADIUS");
 					final long[] coords = convertStringToCoords(coordStr);
-					Long radiusL=CMLib.english().parseSpaceDistance(radiuStr);
+					final Long radiusL=CMLib.english().parseSpaceDistance(radiuStr);
 					if((coords!=null)&&(radiusL!=null))
 						spaceCube = new BoundedCube(coords,radiusL.longValue());
 				}
 			}
-			catch (MJSONException e)
+			catch (final MJSONException e)
 			{
 				Log.errOut(e);
 			}
 		}
 		settings=var;
-	}
-
-	@Override
-	public String getInternalName()
-	{
-		return "DATABASE"+this;
 	}
 
 	@Override
@@ -195,12 +183,12 @@ public class DatabaseProgram extends GenShipProgram
 		super.onActivate(mob, message);
 		onTyping(mob, message);
 	}
-	
+
 	protected void addLineToReadableScreen(final String s)
 	{
 		while(scr.length()>1024)
 		{
-			int x=scr.indexOf("\n\r");
+			final int x=scr.indexOf("\n\r");
 			if(x>0)
 				scr.delete(0, x+1);
 			else
@@ -227,7 +215,7 @@ public class DatabaseProgram extends GenShipProgram
 		}
 		return null;
 	}
-	
+
 	@Override
 	public String getStat(final String code)
 	{
@@ -266,7 +254,7 @@ public class DatabaseProgram extends GenShipProgram
 		}
 		return super.getStat(code);
 	}
-	
+
 	@Override
 	public void onTyping(final MOB mob, String message)
 	{
