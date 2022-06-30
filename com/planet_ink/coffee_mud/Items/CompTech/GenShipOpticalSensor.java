@@ -197,7 +197,7 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 				@Override
 				public String name()
 				{
-					return obj.name();
+					return Name();
 				}
 
 				@Override
