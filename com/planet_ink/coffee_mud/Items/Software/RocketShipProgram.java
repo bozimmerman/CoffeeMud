@@ -686,20 +686,20 @@ public class RocketShipProgram extends GenShipProgram
 	}
 
 	@Override
-	public boolean checkActivate(final MOB mob, final String message)
+	protected boolean checkActivate(final MOB mob, final String message)
 	{
 		return true;
 	}
 
 	@Override
-	public boolean checkDeactivate(final MOB mob, final String message)
+	protected boolean checkDeactivate(final MOB mob, final String message)
 	{
 
 		return true;
 	}
 
 	@Override
-	public boolean checkTyping(final MOB mob, final String message)
+	protected boolean checkTyping(final MOB mob, final String message)
 	{
 		return true;
 	}
@@ -847,7 +847,7 @@ public class RocketShipProgram extends GenShipProgram
 	}
 
 	@Override
-	public boolean checkPowerCurrent(final int value)
+	protected boolean checkPowerCurrent(final int value)
 	{
 		RocketShipProgram.RocketStateMachine state=this.rocketState;
 		if(state == null)
@@ -1433,7 +1433,7 @@ public class RocketShipProgram extends GenShipProgram
 	}
 
 	@Override
-	public void onTyping(final MOB mob, final String message)
+	protected void onTyping(final MOB mob, final String message)
 	{
 		synchronized(this)
 		{
@@ -2596,14 +2596,17 @@ public class RocketShipProgram extends GenShipProgram
 	}
 
 	@Override
-	public void onActivate(final MOB mob, final String message)
+	protected void onActivate(final MOB mob, final String message)
 	{
-		onTyping(mob,message);
+		super.onActivate(mob, message);
+		if((message!=null)&&(message.length()>0))
+			onTyping(mob,message);
 	}
 
 	@Override
-	public void onDeactivate(final MOB mob, final String message)
+	protected void onDeactivate(final MOB mob, final String message)
 	{
+		super.onDeactivate(mob, message);
 		if(message == null)
 		{
 			// whole system shutdown
@@ -2644,8 +2647,9 @@ public class RocketShipProgram extends GenShipProgram
 	}
 
 	@Override
-	public void onPowerCurrent(final int value)
+	protected void onPowerCurrent(final int value)
 	{
+		super.onPowerCurrent(value);
 		if (System.currentTimeMillis() > nextPowerCycleTmr)
 		{
 			engines = null;
@@ -2709,7 +2713,8 @@ public class RocketShipProgram extends GenShipProgram
 				break;
 			case CMMsg.TYP_ACTIVATE:
 			{
-				if(msg.isTarget(CMMsg.MASK_CNTRLMSG) && (msg.targetMessage()!=null))
+				if(msg.isTarget(CMMsg.MASK_CNTRLMSG)
+				&& (msg.targetMessage()!=null))
 				{
 					final String[] parts=msg.targetMessage().split(" ");
 					final TechCommand command=TechCommand.findCommand(parts);

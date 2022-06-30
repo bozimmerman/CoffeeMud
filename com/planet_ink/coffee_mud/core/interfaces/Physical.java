@@ -59,4 +59,13 @@ public interface Physical extends Environmental, Affectable
 	 * @return the description as seen by the viewer
 	 */
 	public String description(MOB viewerMob);
+
+	/**
+	 * Returns a generic name for this object, devoid of its particular
+	 * identifying details.  e.g. for a mob, this would return
+	 * the age-range and race of this mob, as if it were someone
+	 * spotted on the street that you didn't know.
+	 * @return the generic name of this thing
+	 */
+	public String genericName();
 }

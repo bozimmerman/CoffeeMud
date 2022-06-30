@@ -55,6 +55,14 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		recoverPhyStats();
 	}
 
+	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a map");
+	}
+
 	protected static class MapRoom
 	{
 		Room r=null;

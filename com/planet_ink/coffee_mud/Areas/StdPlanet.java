@@ -112,6 +112,21 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(radius >= SpaceObject.Distance.SaturnRadius.dm)
+			return L("a large planet");
+		else
+		if(radius <= SpaceObject.Distance.MoonRadius.dm)
+			return L("a tiny planet");
+		else
+		if(radius < SpaceObject.Distance.PlanetRadius.dm/2)
+			return L("a small planet");
+		else
+			return L("a planet");
+	}
+
+	@Override
 	public SpaceObject knownTarget()
 	{
 		return null;

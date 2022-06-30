@@ -61,6 +61,49 @@ public class StdClanItem extends StdItem implements ClanItem
 		material = RawMaterial.RESOURCE_OAK;
 		recoverPhyStats();
 	}
+	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name())
+		&&((this.clanID().length()==0)||(name().toLowerCase().indexOf(this.clanID().toLowerCase())<0)))
+			return CMStrings.removeColors(name());
+		switch(this.ciType)
+		{
+		case ANTI_PROPAGANDA:
+			return L("a paper");
+		case BANNER:
+			return L("a banner");
+		case CRAFTITEM:
+			return L("a clan thing");
+		case DONATIONJOURNAL:
+			return L("a journal");
+		case FLAG:
+			return L("a flat");
+		case GATHERITEM:
+			return L("a clan thing");
+		case GAVEL:
+			return L("a gavel");
+		case LEGALBADGE:
+			return L("a badge");
+		case PROPAGANDA:
+			return L("a paper");
+		case SAILORSCAP:
+			return L("a cap");
+		case SPECIALAPRON:
+			return L("an apron");
+		case SPECIALOTHER:
+			return L("a clan thing");
+		case SPECIALSCALES:
+			return L("some scales");
+		case SPECIALSCAVENGER:
+			return L("a clan thing");
+		case SPECIALTAXER:
+			return L("a clan thing");
+		case TABBARD:
+			return L("a tabbard");
+		}
+		return L("a clan thing");
+	}
 
 	@Override
 	public ClanItemType getClanItemType()

@@ -63,6 +63,15 @@ public class StdClanFlag extends StdItem implements ClanItem
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name())
+		&&((this.clanID().length()==0)||(name().toLowerCase().indexOf(this.clanID().toLowerCase())<0)))
+			return CMStrings.removeColors(name());
+		return L("a flag");
+	}
+
+	@Override
 	public Environmental rightfulOwner()
 	{
 		return riteOwner;

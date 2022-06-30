@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -50,6 +51,11 @@ public class StdProgram extends StdItem implements Software
 	protected String		currentScreen	= "";
 	protected String		manufacturer	= "RANDOM";
 	protected Manufacturer	cachedManufact	= null;
+	protected String		circuitKey		= "";
+
+	protected volatile boolean	isActivated	= false;
+
+	protected Map<SWServices,Set<Software>> svcs = new Hashtable<SWServices,Set<Software>>();
 
 	public StdProgram()
 	{
@@ -65,9 +71,19 @@ public class StdProgram extends StdItem implements Software
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a disk");
+	}
+
+	@Override
 	public void setCircuitKey(final String key)
 	{
+		circuitKey=(key==null)?"":key;
 	}
+
 
 	@Override
 	public int techLevel()
@@ -87,7 +103,7 @@ public class StdProgram extends StdItem implements Software
 	{
 		return "";
 	}
-	
+
 	@Override
 	public void setParentMenu(final String name)
 	{
@@ -98,11 +114,11 @@ public class StdProgram extends StdItem implements Software
 	{
 		return "";
 	}
-	
+
 	@Override
 	public void setInternalName(final String name)
 	{
-		
+
 	}
 
 	@Override
@@ -127,6 +143,21 @@ public class StdProgram extends StdItem implements Software
 	public TechType getTechType()
 	{
 		return TechType.PERSONAL_SOFTWARE;
+	}
+
+	protected SWServices[] getProvidedServices()
+	{
+		return new SWServices[0];
+	}
+
+	protected SWServices[] getRequiredServices()
+	{
+		return new SWServices[0];
+	}
+
+	protected SWServices[] getAppreciatedServices()
+	{
+		return new SWServices[0];
 	}
 
 	@Override
@@ -196,22 +227,22 @@ public class StdProgram extends StdItem implements Software
 			((Computer)container()).forceReadersMenu();
 	}
 
-	public boolean checkActivate(final MOB mob, final String message)
+	protected boolean checkActivate(final MOB mob, final String message)
 	{
 		return true;
 	}
 
-	public boolean checkDeactivate(final MOB mob, final String message)
+	protected boolean checkDeactivate(final MOB mob, final String message)
 	{
 		return true;
 	}
 
-	public boolean checkTyping(final MOB mob, final String message)
+	protected boolean checkTyping(final MOB mob, final String message)
 	{
 		return true;
 	}
 
-	public boolean checkPowerCurrent(final int value)
+	protected boolean checkPowerCurrent(final int value)
 	{
 		return true;
 	}
@@ -224,6 +255,9 @@ public class StdProgram extends StdItem implements Software
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_ACTIVATE:
+				if(msg.isTarget(CMMsg.MASK_CNTRLMSG))
+					return true;
+				else
 				if(!checkActivate(msg.source(),msg.targetMessage()))
 					return false;
 				break;
@@ -244,24 +278,202 @@ public class StdProgram extends StdItem implements Software
 		return super.okMessage(host,msg);
 	}
 
-	public void onActivate(final MOB mob, final String message)
+	protected Computer getMyComputer()
+	{
+		if((owner() instanceof Room)
+		&&(container() instanceof Computer))
+			return (Computer)container();
+		return null;
+	}
+
+	protected Set<Computer> getPeerComputers()
+	{
+		final Set<Computer> puters=new HashSet<Computer>();
+		final Computer cC=getMyComputer();
+		if((cC==null)||(circuitKey==null)||(circuitKey.length()==0))
+			return puters;
+		final List<Electronics> electronics=CMLib.tech().getMakeRegisteredElectronics(circuitKey);
+		for(final Electronics E : electronics)
+		{
+			if((E instanceof Computer)
+			&&(!puters.contains(E)))
+				puters.add((Computer)E);
+		}
+		return puters;
+	}
+
+	protected List<Room> getPeerComputingRooms()
+	{
+		final List<Room> rooms=new LinkedList<Room>();
+		final Set<Computer> puters = getPeerComputers();
+		if(puters.size()==0)
+			return rooms;
+		final WorldMap map=CMLib.map();
+		for(final Computer C : puters)
+		{
+			final Room R=map.roomLocation(C);
+			if((R!=null)
+			&&(!rooms.contains(R)))
+				rooms.add(R);
+		}
+		return rooms;
+	}
+
+	protected void sendServiceMsg(final MOB mob, final Set<Computer> puters, final CMMsg msg)
+	{
+		final WorldMap map = CMLib.map();
+		for(final Computer C : puters)
+		{
+			final Room R = map.roomLocation(C);
+			final CMMsg msg2=(CMMsg)msg.copyOf();
+			msg2.setTarget(C);
+			if((R!=null)
+			&&(R.okMessage(mob, msg2)))
+				R.send(mob, msg2);
+		}
+	}
+
+	protected void doServiceRequests(final MOB mob)
+	{
+		final CMMsg msg=CMClass.getMsg(mob, null, this,
+				CMMsg.NO_EFFECT, null,
+				CMMsg.MSG_ACTIVATE|CMMsg.MASK_ALWAYS|CMMsg.MASK_CNTRLMSG, null,
+				CMMsg.NO_EFFECT, null);
+		final Set<Computer> puters = this.getPeerComputers();
+		this.svcs.clear();
+		for(final SWServices service : getProvidedServices())
+		{
+			final String code=TechCommand.SWSVCALLOW.makeCommand(service,new String[0]);
+			msg.setTargetMessage(code);
+			sendServiceMsg(mob,puters,msg);
+		}
+		for(final SWServices service : getRequiredServices())
+		{
+			final String code=TechCommand.SWSVCNEED.makeCommand(service,new String[0]);
+			msg.setTargetMessage(code);
+			sendServiceMsg(mob,puters,msg);
+		}
+		for(final SWServices service : getAppreciatedServices())
+		{
+			final String code=TechCommand.SWSVCNEED.makeCommand(service,new String[0]);
+			msg.setTargetMessage(code);
+			sendServiceMsg(mob,puters,msg);
+		}
+		for(final SWServices service : getRequiredServices())
+		{
+			if(!svcs.containsKey(service))
+			{
+				addScreenMessage(L("Software @x1 failure: no @x2 service found.",name(),service.name().toLowerCase()));
+				forceNewMessageScan();
+				final CMMsg msg2=CMClass.getMsg(mob, this, null,
+						CMMsg.NO_EFFECT, null,
+						CMMsg.MSG_DEACTIVATE, null,
+						CMMsg.NO_EFFECT, null);
+				if(okMessage(mob, msg2))
+				{
+					executeMsg(mob, msg2);
+					if(owner() instanceof Computer)
+						((Computer)owner()).setActiveMenu("");
+				}
+				break;
+			}
+		}
+	}
+
+	protected void onActivate(final MOB mob, final String message)
+	{
+		doServiceRequests(mob);
+	}
+
+	protected void onDeactivate(final MOB mob, final String message)
 	{
 
 	}
 
-	public void onDeactivate(final MOB mob, final String message)
+	protected void onTyping(final MOB mob, final String message)
 	{
 
 	}
 
-	public void onTyping(final MOB mob, final String message)
+	protected void onPowerCurrent(final int value)
 	{
+		if((value > 0) // >0 means its getting power because its active
+		&&(!isActivated))
+		{
+			final MOB factoryMOB = CMClass.getFactoryMOB(name(), 1, CMLib.map().roomLocation(this));
+			try
+			{
+				isActivated=true;
+				onActivate(factoryMOB, null);
+			}
+			finally
+			{
+				factoryMOB.destroy();
+			}
+		}
+	}
+
+	protected void provideService(final SWServices service, final Software S, final String[] parms)
+	{
+		// if you get a request, and can provide, then provide
 
 	}
 
-	public void onPowerCurrent(final int value)
+	protected void handleServices(final Environmental host, final CMMsg msg)
 	{
-
+		if((!(msg.tool() instanceof Software))
+		||(msg.tool()==this))
+			return;
+		if((getProvidedServices().length==0)
+		&&(getRequiredServices().length==0)
+		&&(getAppreciatedServices().length==0))
+			return;
+		final Software SW = (Software)msg.tool();
+		final String[] parts=msg.targetMessage().split(" ");
+		final TechCommand command=TechCommand.findCommand(parts);
+		final Object[] parms=(command != null)?command.confirmAndTranslate(parts):null;
+		if((command!=null)
+		&&(parms!=null)
+		&&(parms.length>0)
+		&&(parms[0] instanceof SWServices))
+		{
+			final SWServices service = (SWServices)parms[0];
+			final String[] args=(parms.length>1)?(String[])parms[1]:new String[0];
+			switch(command)
+			{
+			case SWSVCALLOW:
+				if(CMParms.contains(getRequiredServices(), service)
+				||CMParms.contains(getAppreciatedServices(), service))
+				{
+					if(!svcs.containsKey(service))
+						svcs.put(service, new SHashSet<Software>());
+					svcs.get(service).add(SW);
+				}
+				break;
+			case SWSVCNEED:
+				if(CMParms.contains(getProvidedServices(), service))
+				{
+					final CMMsg msg2=((CMMsg)msg.copyOf()).setTool(this).setTarget(SW);
+					final String code=TechCommand.SWSVCALLOW.makeCommand(service,new String[0]);
+					msg2.setTargetMessage(code);
+					if(owner() == SW.owner())
+						msg.addTrailerMsg(msg2);
+					else
+					if((SW.owner() instanceof Room)
+					&&(((Room)SW.owner()).okMessage(host, msg2)))
+						((Room)SW.owner()).send(msg2.source(), msg2);
+					else
+					if(SW.okMessage(host, msg2))
+						SW.executeMsg(host, msg2);
+				}
+				break;
+			case SWSVCREQ: // request
+				provideService(service, SW, args);
+				break;
+			default:
+				break;
+			}
+		}
 	}
 
 	@Override
@@ -272,10 +484,21 @@ public class StdProgram extends StdItem implements Software
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_ACTIVATE:
-				onActivate(msg.source(),msg.targetMessage());
+				if(msg.isTarget(CMMsg.MASK_CNTRLMSG))
+					handleServices(host,msg);
+				else
+				if(!isActivated)
+				{
+					isActivated=true;
+					onActivate(msg.source(),msg.targetMessage());
+				}
 				break;
 			case CMMsg.TYP_DEACTIVATE:
-				onDeactivate(msg.source(),msg.targetMessage());
+				if(isActivated)
+				{
+					isActivated=false;
+					onDeactivate(msg.source(),msg.targetMessage());
+				}
 				break;
 			case CMMsg.TYP_WRITE:
 			case CMMsg.TYP_REWRITE:

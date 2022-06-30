@@ -143,13 +143,13 @@ public class StdTriCorder extends StdElecContainer implements Computer
 				boolean isInternal=false;
 				for(final Software S : software)
 				{
-					if(S.getInternalName().equals(currentMenu))
+					if(S.getInternalName().equals(getActiveMenu()))
 					{
 						str.append(S.getCurrentScreenDisplay());
 						isInternal=true;
 					}
 					else
-					if(S.getParentMenu().equals(currentMenu))
+					if(S.getParentMenu().equals(getActiveMenu()))
 					{
 						str.append(S.getActivationMenu()).append("\n\r");
 					}
@@ -274,9 +274,10 @@ public class StdTriCorder extends StdElecContainer implements Computer
 					{
 						for(final Software S : software)
 						{
-							if(S.getInternalName().equals(currentMenu))
+							if(S.getInternalName().equals(getActiveMenu()))
 							{
-								if(msg.targetMessage().trim().equals("<") && (currentMenu.length()>0))
+								if(msg.targetMessage().trim().equals("<")
+								&& (getActiveMenu().length()>0))
 								{
 									msgs.add(CMClass.getMsg(msg.source(),S,null,CMMsg.NO_EFFECT,CMMsg.MASK_ALWAYS|CMMsg.TYP_DEACTIVATE,CMMsg.NO_EFFECT,null));
 								}
@@ -287,7 +288,7 @@ public class StdTriCorder extends StdElecContainer implements Computer
 								}
 							}
 							else
-							if((S.getParentMenu().equals(currentMenu))
+							if((S.getParentMenu().equals(getActiveMenu()))
 							&&(S.isCommandString(msg.targetMessage(), false)))
 							{
 								msgs.add(CMClass.getMsg(msg.source(),S,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACTIVATE,msg.targetMessage(),CMMsg.NO_EFFECT,null));

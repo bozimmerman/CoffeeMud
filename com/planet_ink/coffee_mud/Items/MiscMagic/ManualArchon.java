@@ -56,6 +56,14 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
 		recoverPhyStats();
 	}
+	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a book");
+	}
+
 
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)

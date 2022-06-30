@@ -56,347 +56,356 @@ public class GenGraviticSensor extends GenElecCompSensor
 		return SpaceObject.Distance.Parsec.dm;
 	}
 
+	protected String getGenericGraviticName(final Environmental E)
+	{
+		// things like small object, enormous light object, small heavy, etc..
+		return L("Unknown");
+		//return E.name();
+	}
+
+	protected Converter<Environmental, Environmental> gravConverter = new Converter<Environmental, Environmental>()
+	{
+		@Override
+		public Environmental convert(final Environmental obj)
+		{
+			return new SpaceObject()
+			{
+				final String	name		= getGenericGraviticName(obj);
+				final String	displayText	= "";
+				final String	description	= "";
+
+				@Override
+				public String ID()
+				{
+					return ""+obj;
+				}
+
+				@Override
+				public String Name()
+				{
+					return name;
+				}
+
+				@Override
+				public void setName(final String newName)
+				{
+				}
+
+				@Override
+				public String displayText()
+				{
+					return displayText;
+				}
+
+				@Override
+				public void setDisplayText(final String newDisplayText)
+				{
+				}
+
+				@Override
+				public String description()
+				{
+					return description;
+				}
+
+				@Override
+				public void setDescription(final String newDescription)
+				{
+				}
+
+				@Override
+				public String image()
+				{
+					return "";
+				}
+
+				@Override
+				public String rawImage()
+				{
+					return "";
+				}
+
+				@Override
+				public void setImage(final String newImage)
+				{
+				}
+
+				@Override
+				public boolean isGeneric()
+				{
+					return false;
+				}
+
+				@Override
+				public void setMiscText(final String newMiscText)
+				{
+				}
+
+				@Override
+				public String text()
+				{
+					return "";
+				}
+
+				@Override
+				public String miscTextFormat()
+				{
+					return null;
+				}
+
+				@Override
+				public boolean sameAs(final Environmental E)
+				{
+					return E==this || E==obj;
+				}
+
+				@Override
+				public long expirationDate()
+				{
+					return 0;
+				}
+
+				@Override
+				public void setExpirationDate(final long dateTime)
+				{
+				}
+
+				@Override
+				public int maxRange()
+				{
+					return 0;
+				}
+
+				@Override
+				public int minRange()
+				{
+					return 0;
+				}
+
+				@Override
+				public String L(final String str, final String... xs)
+				{
+					return str;
+				}
+
+				@Override
+				public String name()
+				{
+					return Name();
+				}
+
+				@Override
+				public int getTickStatus()
+				{
+					return 0;
+				}
+
+				@Override
+				public boolean tick(final Tickable ticking, final int tickID)
+				{
+					return false;
+				}
+
+				@Override
+				public CMObject newInstance()
+				{
+					return obj.newInstance();
+				}
+
+				@Override
+				public CMObject copyOf()
+				{
+					return obj.copyOf();
+				}
+
+				@Override
+				public void initializeClass()
+				{
+				}
+
+				@Override
+				public int compareTo(final CMObject o)
+				{
+					return obj.compareTo(o);
+				}
+
+				@Override
+				public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+				{
+				}
+
+				@Override
+				public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
+				{
+				}
+
+				@Override
+				public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
+				{
+				}
+
+				@Override
+				public void executeMsg(final Environmental myHost, final CMMsg msg)
+				{
+				}
+
+				@Override
+				public boolean okMessage(final Environmental myHost, final CMMsg msg)
+				{
+					return true;
+				}
+
+				@Override
+				public void destroy()
+				{
+					// Nope!
+				}
+
+				@Override
+				public boolean isSavable()
+				{
+					return false;
+				}
+
+				@Override
+				public boolean amDestroyed()
+				{
+					return obj.amDestroyed();
+				}
+
+				@Override
+				public void setSavable(final boolean truefalse)
+				{
+				}
+
+				@Override
+				public String[] getStatCodes()
+				{
+					return new String[0];
+				}
+
+				@Override
+				public int getSaveStatIndex()
+				{
+					return 0;
+				}
+
+				@Override
+				public String getStat(final String code)
+				{
+					return "";
+				}
+
+				@Override
+				public boolean isStat(final String code)
+				{
+					return false;
+				}
+
+				@Override
+				public void setStat(final String code, final String val)
+				{
+				}
+
+				@Override
+				public BoundedCube getBounds()
+				{
+					if(obj instanceof SpaceObject)
+						return ((SpaceObject)obj).getBounds();
+					return smallCube;
+				}
+
+				@Override
+				public long[] coordinates()
+				{
+					final SpaceObject sobj =CMLib.space().getSpaceObject(obj, false);
+					if(sobj!=null)
+						return Arrays.copyOf(sobj.coordinates(), sobj.coordinates().length);
+					return emptyCoords;
+				}
+
+				@Override
+				public void setCoords(final long[] coords)
+				{
+				}
+
+				@Override
+				public long radius()
+				{
+					final SpaceObject sobj =CMLib.space().getSpaceObject(obj, false);
+					if(sobj!=null)
+						return sobj.radius();
+					return 1;
+				}
+
+				@Override
+				public void setRadius(final long radius)
+				{
+				}
+
+				@Override
+				public double[] direction()
+				{
+					return new double[]{0,0};
+				}
+
+				@Override
+				public void setDirection(final double[] dir)
+				{
+				}
+
+				@Override
+				public double speed()
+				{
+					return 0;
+				}
+
+				@Override
+				public void setSpeed(final double v)
+				{
+				}
+
+				@Override
+				public SpaceObject knownTarget()
+				{
+					return null;
+				}
+
+				@Override
+				public void setKnownTarget(final SpaceObject O)
+				{
+				}
+
+				@Override
+				public SpaceObject knownSource()
+				{
+					final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
+					if(sobj!=null)
+						return sobj;
+					return null;
+				}
+
+				@Override
+				public void setKnownSource(final SpaceObject O)
+				{
+				}
+
+				@Override
+				public long getMass()
+				{
+					final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
+					if(sobj!=null)
+						return sobj.getMass();
+					return 1;
+				}
+			};
+		}
+	};
+
 	@Override
 	protected Converter<Environmental, Environmental> getSensedObjectConverter()
 	{
-		return new Converter<Environmental, Environmental>()
-		{
-			@Override
-			public Environmental convert(final Environmental obj)
-			{
-				return new SpaceObject()
-				{
-					final String name = L("Unknown");
-					final String displayText = "";
-					final String description = "";
-
-					@Override
-					public String ID()
-					{
-						return ""+obj;
-					}
-
-					@Override
-					public String Name()
-					{
-						return name;
-					}
-
-					@Override
-					public void setName(final String newName)
-					{
-					}
-
-					@Override
-					public String displayText()
-					{
-						return displayText;
-					}
-
-					@Override
-					public void setDisplayText(final String newDisplayText)
-					{
-					}
-
-					@Override
-					public String description()
-					{
-						return description;
-					}
-
-					@Override
-					public void setDescription(final String newDescription)
-					{
-					}
-
-					@Override
-					public String image()
-					{
-						return "";
-					}
-
-					@Override
-					public String rawImage()
-					{
-						return "";
-					}
-
-					@Override
-					public void setImage(final String newImage)
-					{
-					}
-
-					@Override
-					public boolean isGeneric()
-					{
-						return false;
-					}
-
-					@Override
-					public void setMiscText(final String newMiscText)
-					{
-					}
-
-					@Override
-					public String text()
-					{
-						return "";
-					}
-
-					@Override
-					public String miscTextFormat()
-					{
-						return null;
-					}
-
-					@Override
-					public boolean sameAs(final Environmental E)
-					{
-						return E==this || E==obj;
-					}
-
-					@Override
-					public long expirationDate()
-					{
-						return 0;
-					}
-
-					@Override
-					public void setExpirationDate(final long dateTime)
-					{
-					}
-
-					@Override
-					public int maxRange()
-					{
-						return 0;
-					}
-
-					@Override
-					public int minRange()
-					{
-						return 0;
-					}
-
-					@Override
-					public String L(final String str, final String... xs)
-					{
-						return str;
-					}
-
-					@Override
-					public String name()
-					{
-						return Name();
-					}
-
-					@Override
-					public int getTickStatus()
-					{
-						return 0;
-					}
-
-					@Override
-					public boolean tick(final Tickable ticking, final int tickID)
-					{
-						return false;
-					}
-
-					@Override
-					public CMObject newInstance()
-					{
-						return obj.newInstance();
-					}
-
-					@Override
-					public CMObject copyOf()
-					{
-						return obj.copyOf();
-					}
-
-					@Override
-					public void initializeClass()
-					{
-					}
-
-					@Override
-					public int compareTo(final CMObject o)
-					{
-						return obj.compareTo(o);
-					}
-
-					@Override
-					public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
-					{
-					}
-
-					@Override
-					public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
-					{
-					}
-
-					@Override
-					public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
-					{
-					}
-
-					@Override
-					public void executeMsg(final Environmental myHost, final CMMsg msg)
-					{
-					}
-
-					@Override
-					public boolean okMessage(final Environmental myHost, final CMMsg msg)
-					{
-						return true;
-					}
-
-					@Override
-					public void destroy()
-					{
-						// Nope!
-					}
-
-					@Override
-					public boolean isSavable()
-					{
-						return false;
-					}
-
-					@Override
-					public boolean amDestroyed()
-					{
-						return obj.amDestroyed();
-					}
-
-					@Override
-					public void setSavable(final boolean truefalse)
-					{
-					}
-
-					@Override
-					public String[] getStatCodes()
-					{
-						return new String[0];
-					}
-
-					@Override
-					public int getSaveStatIndex()
-					{
-						return 0;
-					}
-
-					@Override
-					public String getStat(final String code)
-					{
-						return "";
-					}
-
-					@Override
-					public boolean isStat(final String code)
-					{
-						return false;
-					}
-
-					@Override
-					public void setStat(final String code, final String val)
-					{
-					}
-
-					@Override
-					public BoundedCube getBounds()
-					{
-						if(obj instanceof SpaceObject)
-							return ((SpaceObject)obj).getBounds();
-						return smallCube;
-					}
-
-					@Override
-					public long[] coordinates()
-					{
-						final SpaceObject sobj =CMLib.space().getSpaceObject(obj, false);
-						if(sobj!=null)
-							return Arrays.copyOf(sobj.coordinates(), sobj.coordinates().length);
-						return emptyCoords;
-					}
-
-					@Override
-					public void setCoords(final long[] coords)
-					{
-					}
-
-					@Override
-					public long radius()
-					{
-						final SpaceObject sobj =CMLib.space().getSpaceObject(obj, false);
-						if(sobj!=null)
-							return sobj.radius();
-						return 1;
-					}
-
-					@Override
-					public void setRadius(final long radius)
-					{
-					}
-
-					@Override
-					public double[] direction()
-					{
-						return new double[]{0,0};
-					}
-
-					@Override
-					public void setDirection(final double[] dir)
-					{
-					}
-
-					@Override
-					public double speed()
-					{
-						return 0;
-					}
-
-					@Override
-					public void setSpeed(final double v)
-					{
-					}
-
-					@Override
-					public SpaceObject knownTarget()
-					{
-						return null;
-					}
-
-					@Override
-					public void setKnownTarget(final SpaceObject O)
-					{
-					}
-
-					@Override
-					public SpaceObject knownSource()
-					{
-						final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
-						if(sobj!=null)
-							return sobj;
-						return null;
-					}
-
-					@Override
-					public void setKnownSource(final SpaceObject O)
-					{
-					}
-
-					@Override
-					public long getMass()
-					{
-						final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
-						if(sobj!=null)
-							return sobj.getMass();
-						return 1;
-					}
-				};
-			}
-		};
+		return gravConverter;
 	}
 
 	protected static SpaceObject star = null;

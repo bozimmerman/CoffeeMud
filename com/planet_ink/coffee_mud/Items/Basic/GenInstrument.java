@@ -76,6 +76,14 @@ public class GenInstrument extends GenItem implements MusicalInstrument
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return CMLib.english().startWithAorAn(this.getInstrumentTypeName());
+	}
+
+	@Override
 	public void setReadableText(final String text)
 	{
 		super.setReadableText(text);

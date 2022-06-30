@@ -73,6 +73,14 @@ public class GenCaravan extends GenNavigableBoardable
 	private volatile boolean isDriving=false;
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a caravan");
+	}
+
+	@Override
 	public Basis navBasis()
 	{
 		return Rideable.Basis.LAND_BASED;

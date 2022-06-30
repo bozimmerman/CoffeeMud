@@ -56,4 +56,13 @@ public class StdClanTabbard extends StdClanArmor
 		setRawLogicalAnd(false);
 		recoverPhyStats();
 	}
+
+	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name())
+		&&((this.clanID().length()==0)||(name().toLowerCase().indexOf(this.clanID().toLowerCase())<0)))
+			return CMStrings.removeColors(name());
+		return L("a tabbard");
+	}
 }

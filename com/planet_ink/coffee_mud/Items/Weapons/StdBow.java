@@ -61,4 +61,12 @@ public class StdBow extends StdWeapon
 		weaponClassification=Weapon.CLASS_RANGED;
 		setRawLogicalAnd(true);
 	}
+
+	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a bow");
+	}
 }

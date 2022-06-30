@@ -61,6 +61,14 @@ public class StdPaper extends StdItem implements Book
 	protected int	maxCharsPage	= 2048;	// 0=unlimited
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a paper");
+	}
+
+	@Override
 	public String readableText()
 	{
 		return text();

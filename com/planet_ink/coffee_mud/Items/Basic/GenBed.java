@@ -58,4 +58,11 @@ public class GenBed extends GenRideable
 		recoverPhyStats();
 	}
 
+	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a bed");
+	}
 }

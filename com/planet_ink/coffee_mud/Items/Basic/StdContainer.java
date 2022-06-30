@@ -63,6 +63,16 @@ public class StdContainer extends StdItem implements Container
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		if(this.capacity>0)
+			return L("a container");
+		return super.genericName();
+	}
+
+	@Override
 	public int capacity()
 	{
 		return capacity;

@@ -41,6 +41,7 @@ public class GenMirror extends GenItem
 	}
 
 	protected boolean oncePerRound=false;
+
 	public GenMirror()
 	{
 		super();

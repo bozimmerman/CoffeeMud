@@ -88,6 +88,14 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a siege weapon");
+	}
+
+	@Override
 	public int weaponDamageType()
 	{
 		return weaponDamageType;
@@ -1070,7 +1078,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 					msg.source().tell(L("@x1 is already aimed.",Name()));
 					return false;
 				}
-				final CMMsg msg2=CMClass.getMsg(msg.source(), siegeTarget, this, 
+				final CMMsg msg2=CMClass.getMsg(msg.source(), siegeTarget, this,
 												CMMsg.MSG_NOISYMOVEMENT, msgStr,
 												CMMsg.MSG_NOISYMOVEMENT, SiegableItem.SiegeCommand.AIM.name(),
 												CMMsg.MSG_NOISYMOVEMENT, msgStr);

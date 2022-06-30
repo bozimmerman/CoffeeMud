@@ -202,6 +202,36 @@ public class StdRideable extends StdContainer implements Rideable
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		switch(rideBasis)
+		{
+		case LAND_BASED:
+			return L("a ground conveiance");
+		case WATER_BASED:
+			return L("a boat");
+		case AIR_FLYING:
+			return L("a flying conveiance");
+		case FURNITURE_SIT:
+			return L("a chair");
+		case FURNITURE_SLEEP:
+			return L("a bed");
+		case FURNITURE_TABLE:
+			return L("a table");
+		case ENTER_IN:
+			return L("a thing to get in");
+		case LADDER:
+			return L("a ladder");
+		case WAGON:
+			return L("a wagon");
+		default:
+			return L("a ride-able");
+		}
+	}
+
+	@Override
 	public boolean mobileRideBasis()
 	{
 		switch(rideBasis)

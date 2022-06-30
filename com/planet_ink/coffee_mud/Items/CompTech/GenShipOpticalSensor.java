@@ -59,6 +59,370 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 		return SpaceObject.Distance.Parsec.dm;
 	}
 
+	protected String getGenericOpticalName(final Environmental E)
+	{
+		if(E instanceof Physical)
+			return ((Physical)E).genericName();
+		return E.name();
+	}
+
+	protected final Converter<Environmental, Environmental> opticalConverter = new Converter<Environmental, Environmental>()
+	{
+		@Override
+		public Environmental convert(final Environmental obj)
+		{
+			final Environmental me=obj;
+			return new SpaceObject()
+			{
+				final Environmental	obj			= me;
+				final String		name		= getGenericOpticalName(obj);
+				final String		displayText	= "";
+				final String		description	= "";
+
+				@Override
+				public String ID()
+				{
+					return ""+obj;
+				}
+
+				@Override
+				public String Name()
+				{
+					return name;
+				}
+
+				@Override
+				public void setName(final String newName)
+				{
+				}
+
+				@Override
+				public String displayText()
+				{
+					return displayText;
+				}
+
+				@Override
+				public void setDisplayText(final String newDisplayText)
+				{
+				}
+
+				@Override
+				public String description()
+				{
+					return description;
+				}
+
+				@Override
+				public void setDescription(final String newDescription)
+				{
+				}
+
+				@Override
+				public String image()
+				{
+					return obj.image();
+				}
+
+				@Override
+				public String rawImage()
+				{
+					return obj.rawImage();
+				}
+
+				@Override
+				public void setImage(final String newImage)
+				{
+				}
+
+				@Override
+				public boolean isGeneric()
+				{
+					return obj.isGeneric();
+				}
+
+				@Override
+				public void setMiscText(final String newMiscText)
+				{
+				}
+
+				@Override
+				public String text()
+				{
+					return obj.text();
+				}
+
+				@Override
+				public String miscTextFormat()
+				{
+					return obj.miscTextFormat();
+				}
+
+				@Override
+				public boolean sameAs(final Environmental E)
+				{
+					return E.ID().equals(ID()) || (ID().equals(""+E)) || obj.sameAs(E);
+				}
+
+				@Override
+				public long expirationDate()
+				{
+					return obj.expirationDate();
+				}
+
+				@Override
+				public void setExpirationDate(final long dateTime)
+				{
+				}
+
+				@Override
+				public int maxRange()
+				{
+					return obj.maxRange();
+				}
+
+				@Override
+				public int minRange()
+				{
+					return obj.minRange();
+				}
+
+				@Override
+				public String L(final String str, final String... xs)
+				{
+					return obj.L(str, xs);
+				}
+
+				@Override
+				public String name()
+				{
+					return obj.name();
+				}
+
+				@Override
+				public int getTickStatus()
+				{
+					return obj.getTickStatus();
+				}
+
+				@Override
+				public boolean tick(final Tickable ticking, final int tickID)
+				{
+					return false;
+				}
+
+				@Override
+				public CMObject newInstance()
+				{
+					return obj.newInstance();
+				}
+
+				@Override
+				public CMObject copyOf()
+				{
+					return obj.copyOf();
+				}
+
+				@Override
+				public void initializeClass()
+				{
+				}
+
+				@Override
+				public int compareTo(final CMObject o)
+				{
+					if((o != null)
+					&&((o.ID().equals(ID())||(ID().equals(""+o)))))
+						return 0;
+					return obj.compareTo(o);
+				}
+
+				@Override
+				public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+				{
+				}
+
+				@Override
+				public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
+				{
+				}
+
+				@Override
+				public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
+				{
+				}
+
+				@Override
+				public void executeMsg(final Environmental myHost, final CMMsg msg)
+				{
+				}
+
+				@Override
+				public boolean okMessage(final Environmental myHost, final CMMsg msg)
+				{
+					return true;
+				}
+
+				@Override
+				public void destroy()
+				{
+					// Nope!
+				}
+
+				@Override
+				public boolean isSavable()
+				{
+					return obj.isSavable();
+				}
+
+				@Override
+				public boolean amDestroyed()
+				{
+					return obj.amDestroyed();
+				}
+
+				@Override
+				public void setSavable(final boolean truefalse)
+				{
+				}
+
+				@Override
+				public String[] getStatCodes()
+				{
+					return obj.getStatCodes();
+				}
+
+				@Override
+				public int getSaveStatIndex()
+				{
+					return obj.getSaveStatIndex();
+				}
+
+				@Override
+				public String getStat(final String code)
+				{
+					return obj.getStat(code);
+				}
+
+				@Override
+				public boolean isStat(final String code)
+				{
+					return obj.isStat(code);
+				}
+
+				@Override
+				public void setStat(final String code, final String val)
+				{
+				}
+
+				@Override
+				public BoundedCube getBounds()
+				{
+					final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
+					if(sobj!=null)
+						return sobj.getBounds();
+					return smallCube;
+				}
+
+				@Override
+				public long[] coordinates()
+				{
+					final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
+					if(sobj!=null)
+						return Arrays.copyOf(sobj.coordinates(), sobj.coordinates().length);
+					return Arrays.copyOf(emptyCoords, emptyCoords.length);
+				}
+
+				@Override
+				public void setCoords(final long[] coords)
+				{
+				}
+
+				@Override
+				public long radius()
+				{
+					final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
+					if(sobj!=null)
+						return sobj.radius();
+					return 1;
+				}
+
+				@Override
+				public void setRadius(final long radius)
+				{
+				}
+
+				@Override
+				public double[] direction()
+				{
+					final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
+					if(sobj!=null)
+						return sobj.direction();
+					return emptyDirection;
+				}
+
+				@Override
+				public void setDirection(final double[] dir)
+				{
+				}
+
+				@Override
+				public double speed()
+				{
+					final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
+					if(sobj!=null)
+						return sobj.speed();
+					return 0;
+				}
+
+				@Override
+				public void setSpeed(final double v)
+				{
+				}
+
+				@Override
+				public SpaceObject knownTarget()
+				{
+					final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
+					if(sobj!=null)
+						return sobj.knownTarget();
+					return null;
+				}
+
+				@Override
+				public void setKnownTarget(final SpaceObject O)
+				{
+				}
+
+				@Override
+				public SpaceObject knownSource()
+				{
+					final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
+					if(sobj!=null)
+						return sobj.knownSource();
+					return null;
+				}
+
+				@Override
+				public void setKnownSource(final SpaceObject O)
+				{
+				}
+
+				@Override
+				public long getMass()
+				{
+					return 0;
+				}
+			};
+		}
+	};
+
+	@Override
+	protected Converter<Environmental, Environmental> getSensedObjectConverter()
+	{
+		return opticalConverter;
+	}
+
 	protected boolean isHiddenFromSensors(final GalacticMap space, final LinkedList<Environmental> revList,
 										  final SpaceObject O, final SpaceObject hO,
 										  final Map<Environmental, Double> visualRadiuses)

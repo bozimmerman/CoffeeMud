@@ -55,6 +55,14 @@ public class GenTitle extends StdTitle
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a paper");
+	}
+
+	@Override
 	public boolean isGeneric()
 	{
 		return true;

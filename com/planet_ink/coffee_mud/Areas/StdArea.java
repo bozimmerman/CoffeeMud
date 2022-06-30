@@ -1343,6 +1343,12 @@ public class StdArea implements Area
 	}
 
 	@Override
+	public String genericName()
+	{
+		return L("a place");
+	}
+
+	@Override
 	public void addNonUninvokableEffect(final Ability to)
 	{
 		if (to == null)
@@ -1418,7 +1424,6 @@ public class StdArea implements Area
 	}
 
 	@SuppressWarnings("unchecked")
-
 	@Override
 	public Enumeration<Ability> effects()
 	{

@@ -59,6 +59,14 @@ public class StdPotion extends StdDrink implements Potion
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a potion");
+	}
+
+	@Override
 	public boolean isDrunk()
 	{
 		return (getSpellList()!=null)

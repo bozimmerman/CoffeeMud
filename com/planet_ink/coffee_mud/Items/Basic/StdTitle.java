@@ -48,6 +48,14 @@ public class StdTitle extends StdItem implements LandTitle
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a title");
+	}
+
+	@Override
 	public int baseGoldValue()
 	{
 		return getPrice();

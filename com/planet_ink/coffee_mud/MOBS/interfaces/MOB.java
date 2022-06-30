@@ -101,14 +101,6 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 */
 	public String titledName(final MOB viewer);
 
-
-	/**
-	 * Returns the age-range and race of this mob, as if it were someone
-	 * spotted on the street that you didn't know.
-	 * @return the age-range and race of this mob
-	 */
-	public String genericName();
-
 	/* Some general statistics about MOBs.  See the CharStats class (in interfaces) for more info. */
 
 	/**

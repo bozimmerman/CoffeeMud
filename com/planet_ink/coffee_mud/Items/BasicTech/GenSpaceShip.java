@@ -74,6 +74,16 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(this.speed()>0)
+			return L("a ship");
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a ship");
+	}
+
+	@Override
 	public void recoverPhyStats()
 	{
 		super.recoverPhyStats();

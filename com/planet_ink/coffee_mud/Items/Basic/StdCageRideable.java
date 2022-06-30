@@ -56,6 +56,12 @@ public class StdCageRideable extends StdRideable
 	}
 
 	@Override
+	public String genericName()
+	{
+		return super.genericName() + L(" with a cage");
+	}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(this))

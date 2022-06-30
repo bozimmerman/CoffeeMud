@@ -89,6 +89,14 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 		return false;
 	}
 
+	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a deck of cards");
+	}
+
 	// makePlayingCard(int cardBitCode)
 	// this method creates a playing card object for
 	// population in the deck.  The card created is

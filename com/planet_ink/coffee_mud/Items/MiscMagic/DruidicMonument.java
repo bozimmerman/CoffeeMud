@@ -56,4 +56,10 @@ public class DruidicMonument extends StdItem implements MiscMagic
 		recoverPhyStats();
 	}
 
+	@Override
+	public String genericName()
+	{
+		return L("some large stones");
+	}
+
 }

@@ -62,6 +62,14 @@ public class StdPowder extends StdItem implements MagicDust
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a powder");
+	}
+
+	@Override
 	public void spreadIfAble(final MOB mob, final Physical target)
 	{
 		final List<Ability> spells = getSpells();

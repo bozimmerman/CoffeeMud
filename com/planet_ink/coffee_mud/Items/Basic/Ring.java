@@ -53,4 +53,11 @@ public class Ring extends StdItem
 		recoverPhyStats();
 	}
 
+	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a ring");
+	}
 }

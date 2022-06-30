@@ -156,6 +156,16 @@ public interface BoundedObject
 				  &&(z <= oz));
 		}
 
+		public boolean contains(final long[] c)
+		{
+			return ((c[0] >= lx)
+				  &&(c[0] <= rx)
+				  &&(c[1] >= ty)
+				  &&(c[1] <= by)
+				  &&(c[2] >= iz)
+				  &&(c[2] <= oz));
+		}
+
 		public long width()
 		{
 			return rx - lx;

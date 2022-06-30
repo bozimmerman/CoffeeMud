@@ -62,6 +62,14 @@ public class GenCoins extends GenItem implements Coins
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("some money");
+	}
+
+	@Override
 	public String Name()
 	{
 		return CMLib.beanCounter().getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins());

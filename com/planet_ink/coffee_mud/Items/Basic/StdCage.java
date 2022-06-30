@@ -55,6 +55,14 @@ public class StdCage extends StdContainer
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a cage");
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((tickID==Tickable.TICKID_EXIT_REOPEN)&&(isOpen()))

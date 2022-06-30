@@ -40,6 +40,14 @@ public class Torch extends LightSource
 		return "Torch";
 	}
 
+	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a torch");
+	}
+
 	public Torch()
 	{
 		super();

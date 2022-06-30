@@ -63,7 +63,7 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 	protected PhyStats  	phyStats		= (PhyStats)CMClass.getCommon("DefaultPhyStats");
 	protected PhyStats  	basePhyStats	= (PhyStats)CMClass.getCommon("DefaultPhyStats");
 	protected Area 			me			 	= this;
-	protected Boardable	shipItem		= null;
+	protected Boardable		shipItem		= null;
 
 	protected SVector<Ability>			affects			= new SVector<Ability>(1);
 	protected SVector<Behavior> 		behaviors		= new SVector<Behavior>(1);
@@ -168,6 +168,12 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 			currency = newCurrency;
 			CMLib.beanCounter().getCurrencySet(currency);
 		}
+	}
+
+	@Override
+	public String genericName()
+	{
+		return L("the inside");
 	}
 
 	@Override

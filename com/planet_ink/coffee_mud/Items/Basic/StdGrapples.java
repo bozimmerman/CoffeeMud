@@ -68,6 +68,14 @@ public class StdGrapples extends StdPortal
 	protected volatile Room targetR = null;
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("some grapples");
+	}
+
+	@Override
 	public int maxRange()
 	{
 		return 0;

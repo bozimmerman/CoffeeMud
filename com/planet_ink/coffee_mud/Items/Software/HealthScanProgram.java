@@ -154,13 +154,13 @@ public class HealthScanProgram extends GenSoftware
 	}
 
 	@Override
-	public boolean checkActivate(final MOB mob, final String message)
+	protected boolean checkActivate(final MOB mob, final String message)
 	{
 		return checkTyping(mob, message);
 	}
 
 	@Override
-	public boolean checkDeactivate(final MOB mob, final String message)
+	protected boolean checkDeactivate(final MOB mob, final String message)
 	{
 		return super.checkDeactivate(mob, message);
 	}
@@ -195,7 +195,7 @@ public class HealthScanProgram extends GenSoftware
 	}
 
 	@Override
-	public boolean checkTyping(final MOB mob, final String message)
+	protected boolean checkTyping(final MOB mob, final String message)
 	{
 		if(!super.checkTyping(mob, message))
 			return false;
@@ -225,25 +225,27 @@ public class HealthScanProgram extends GenSoftware
 	}
 
 	@Override
-	public boolean checkPowerCurrent(final int value)
+	protected boolean checkPowerCurrent(final int value)
 	{
 		return super.checkPowerCurrent(value);
 	}
 
 	@Override
-	public void onActivate(final MOB mob, final String message)
+	protected void onActivate(final MOB mob, final String message)
 	{
-		onTyping(mob, message);
+		super.onActivate(mob, message);
+		if((message!=null)&&(message.length()>0))
+			onTyping(mob, message);
 	}
 
 	@Override
-	public void onDeactivate(final MOB mob, final String message)
+	protected void onDeactivate(final MOB mob, final String message)
 	{
 		super.onDeactivate(mob, message);
 	}
 
 	@Override
-	public void onTyping(final MOB mob, final String message)
+	protected void onTyping(final MOB mob, final String message)
 	{
 		super.onTyping(mob, message);
 		MOB M=null;
@@ -258,7 +260,7 @@ public class HealthScanProgram extends GenSoftware
 	}
 
 	@Override
-	public void onPowerCurrent(final int value)
+	protected void onPowerCurrent(final int value)
 	{
 		super.onPowerCurrent(value);
 	}

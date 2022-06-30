@@ -148,6 +148,18 @@ public class StdRoom implements Room
 		return name();
 	}
 
+	@Override
+	public String genericName()
+	{
+		final String domainName;
+		if((domainType()&Room.INDOORS)==0)
+			domainName=CMLib.english().startWithAorAn(Room.DOMAIN_OUTDOOR_DESCS[domainType()].toLowerCase());
+		else
+			domainName=CMLib.english().startWithAorAn(Room.DOMAIN_INDOORS_DESCS[CMath.unsetb(domainType(),Room.INDOORS)].toLowerCase());
+		return L("@x1 place",domainName);
+
+	}
+
 	protected void setMovementCost(final int newCost)
 	{
 		basePhyStats().setWeight(newCost); // movement consumption

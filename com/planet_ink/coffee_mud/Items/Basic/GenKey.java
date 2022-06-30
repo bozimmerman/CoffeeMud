@@ -56,6 +56,14 @@ public class GenKey extends GenItem implements DoorKey
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a key");
+	}
+
+	@Override
 	public void setKey(final String keyName)
 	{
 		readableText=keyName;

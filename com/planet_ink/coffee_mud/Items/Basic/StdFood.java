@@ -57,6 +57,14 @@ public class StdFood extends StdItem implements Food
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("some food");
+	}
+
+	@Override
 	public int nourishment()
 	{
 		return amountOfNourishment;

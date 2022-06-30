@@ -59,6 +59,14 @@ public class LightSource extends StdItem implements Light
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a light source");
+	}
+
+	@Override
 	public void setDuration(final int duration)
 	{
 		durationTicks = duration;

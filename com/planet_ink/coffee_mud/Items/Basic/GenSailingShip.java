@@ -69,6 +69,14 @@ public class GenSailingShip extends GenNavigableBoardable
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a sailing ship");
+	}
+
+	@Override
 	public void recoverPhyStats()
 	{
 		super.recoverPhyStats();

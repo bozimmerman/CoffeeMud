@@ -3657,6 +3657,13 @@ public class Test extends StdCommand
 				}
 			}
 
+
+			if(what.equalsIgnoreCase("spacesectorsmap")||what.equalsIgnoreCase("all"))
+			{
+				final Map<String,BoundedCube> sectors = CMLib.space().getSectorMap();
+				for(final String key : sectors.keySet())
+					mob.tell(key+": "+sectors.get(key).toString());
+			}
 			if(what.equalsIgnoreCase("spaceinterception")||what.equalsIgnoreCase("all"))
 			{
 				final Random rand=new Random(System.currentTimeMillis());

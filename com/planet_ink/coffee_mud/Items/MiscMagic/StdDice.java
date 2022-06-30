@@ -58,6 +58,14 @@ public class StdDice extends StdItem implements MiscMagic
 		material=RawMaterial.RESOURCE_BONE;
 	}
 
+	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a die");
+	}
+
 	protected boolean rollTheBones(final CMMsg msg, final List<String> commands)
 	{
 		final MOB mob=msg.source();

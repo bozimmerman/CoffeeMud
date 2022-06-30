@@ -60,6 +60,14 @@ public class StdWand extends StdItem implements Wand
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a wand");
+	}
+
+	@Override
 	public int getCharges()
 	{
 		return usesRemaining();

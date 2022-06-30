@@ -87,6 +87,15 @@ public class StdExit implements Exit
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(this.hasADoor())
+			return L(CMLib.english().startWithAorAn(doorName()));
+		else
+			return L("an exit");
+	}
+
+	@Override
 	public boolean hasADoor()
 	{
 		return false;

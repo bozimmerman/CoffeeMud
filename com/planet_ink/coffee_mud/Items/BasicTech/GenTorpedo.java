@@ -57,6 +57,16 @@ public class GenTorpedo extends StdTorpedo
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(this.speed()>0)
+			return L("a moving object");
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a torpedo");
+	}
+
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getEnvironmentalMiscTextXML(this, false);

@@ -48,6 +48,14 @@ public class GenBoardable extends StdBoardable
 		return true;
 	}
 
+	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a thing you can board");
+	}
+
 	private final static String[] MYCODES=
 	{
 		"HASLOCK","HASLID","CAPACITY","CONTAINTYPES", "RESETTIME","RIDEBASIS","MOBSHELD",

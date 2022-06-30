@@ -105,6 +105,12 @@ public class StdThinItem implements Item
 	}
 
 	@Override
+	public String genericName()
+	{
+		return L("an item");
+	}
+
+	@Override
 	public String description()
 	{
 		return "";

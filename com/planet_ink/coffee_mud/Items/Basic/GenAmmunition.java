@@ -99,6 +99,15 @@ public class GenAmmunition extends StdItem implements Ammunition
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("some ammunition");
+	}
+
+
+	@Override
 	public int ammunitionRemaining()
 	{
 		return usesRemaining();

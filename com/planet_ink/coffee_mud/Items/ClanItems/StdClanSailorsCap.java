@@ -65,6 +65,15 @@ public class StdClanSailorsCap extends StdArmor implements ClanItem
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name())
+		&&((this.clanID().length()==0)||(name().toLowerCase().indexOf(this.clanID().toLowerCase())<0)))
+			return CMStrings.removeColors(name());
+		return L("a cap");
+	}
+
+	@Override
 	public Environmental rightfulOwner()
 	{
 		return riteOwner;

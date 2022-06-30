@@ -62,6 +62,14 @@ public class StdDrink extends StdContainer implements Drink,Item
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a drinkable");
+	}
+
+	@Override
 	public long decayTime()
 	{
 		return decayTime;

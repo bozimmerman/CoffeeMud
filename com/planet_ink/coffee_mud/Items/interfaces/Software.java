@@ -43,6 +43,20 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public interface Software extends Item, Technical
 {
 	/**
+	 * A list of services provided by software
+	 * This is used in signals and messages between
+	 * software.
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public enum SWServices
+	{
+		TARGETING,
+		IDENTIFICATION
+	}
+
+	/**
 	 * The parent menu that this software gets access from.
 	 * When Software is available from root, "" is returned.
 	 * @return parent menu that this software gets access from
@@ -52,7 +66,7 @@ public interface Software extends Item, Technical
 	/**
 	 * The parent menu that this software gets access from.
 	 * When Software is available from root, "" is set.
-	 * 
+	 *
 	 * @param name parent menu that this software gets access from
 	 */
 	public void setParentMenu(String name);
@@ -65,25 +79,25 @@ public interface Software extends Item, Technical
 
 	/**
 	 * The the internal name of this software.
-	 * 
+	 *
 	 * @param name the internal name of this software.
 	 */
 	public void setInternalName(String name);
-	
+
 	/**
 	 * Returns settings specific to this disk.
-	 * 
+	 *
 	 * @see Software#setSettings(String)
-	 * 
+	 *
 	 * @return settings
 	 */
 	public String getSettings();
-	
+
 	/**
 	 * Sets settings specific to this disk.
-	 * 
+	 *
 	 * @see Software#getSettings()
-	 * 
+	 *
 	 * @return settings
 	 */
 	public void setSettings(final String var);

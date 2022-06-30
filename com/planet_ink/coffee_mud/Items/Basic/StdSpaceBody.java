@@ -66,6 +66,39 @@ public class StdSpaceBody extends StdItem implements SpaceObject
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(radius >= SpaceObject.Distance.StarBRadius.dm/2)
+			return L("a B-type star");
+		else
+		if(radius >= SpaceObject.Distance.StarGRadius.dm/2)
+			return L("a G-type star");
+		else
+		if(radius >= SpaceObject.Distance.StarDRadius.dm)
+			return L("a D-type star");
+		else
+		if(radius >= SpaceObject.Distance.SaturnRadius.dm)
+			return L("an enormous planet");
+		else
+		if(radius >= SpaceObject.Distance.SaturnRadius.dm/2)
+			return L("a huge planet");
+		else
+		if(radius >= SpaceObject.Distance.PlanetRadius.dm*2)
+			return L("an large planet");
+		else
+		if(radius >= SpaceObject.Distance.PlanetRadius.dm/2)
+			return L("a planet");
+		else
+		if(radius >= SpaceObject.Distance.MoonRadius.dm/2)
+			return L("a moon");
+		else
+		if(radius >= SpaceObject.Distance.MoonRadius.dm/12)
+			return L("a moonlet");
+		else
+			return L("an asteroid");
+	}
+
+	@Override
 	public void destroy()
 	{
 		CMLib.space().delObjectInSpace(this);
@@ -205,7 +238,7 @@ public class StdSpaceBody extends StdItem implements SpaceObject
 						if((msg.tool() == this) && (msg.target() instanceof SpaceObject))
 						{
 							srcP=(SpaceObject)msg.target();
-							CMLib.space().sendSpaceEmissionEvent(srcP, this, CMMsg.TYP_COLLISION|CMMsg.MASK_MOVE|CMMsg.MASK_EYES, 
+							CMLib.space().sendSpaceEmissionEvent(srcP, this, CMMsg.TYP_COLLISION|CMMsg.MASK_MOVE|CMMsg.MASK_EYES,
 																L("<S-NAME> is hit by <O-NAME>"));
 						}
 					}

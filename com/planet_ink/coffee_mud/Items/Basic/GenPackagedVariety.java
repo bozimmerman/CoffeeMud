@@ -55,6 +55,14 @@ public class GenPackagedVariety extends GenItem implements PackagedItems
 		recoverPhyStats();
 	}
 
+	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a bunch of things");
+	}
+
 	protected byte[]	readableText=null;
 	protected int numberOfItemsInPackage = 0;
 

@@ -104,6 +104,12 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
+	public String genericName()
+	{
+		return L("a thing");
+	}
+
+	@Override
 	public void setDatabaseID(final String id)
 	{
 		// databaseID=id;

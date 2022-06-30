@@ -319,13 +319,13 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 				boolean isInternal=false;
 				for(final Software S : software)
 				{
-					if(S.getInternalName().equals(currentMenu))
+					if(S.getInternalName().equals(getActiveMenu()))
 					{
 						str.append(S.getCurrentScreenDisplay());
 						isInternal=(S.getInternalName().equals(getActiveMenu()));
 					}
 					else
-					if(S.getParentMenu().equals(currentMenu))
+					if(S.getParentMenu().equals(getActiveMenu()))
 					{
 						str.append(S.getActivationMenu()).append("\n\r");
 					}
@@ -400,7 +400,10 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 				}
 				return true;
 			case CMMsg.TYP_ACTIVATE:
-				if((msg.targetMessage()==null)&&(activated()))
+				if(msg.isTarget(CMMsg.MASK_CNTRLMSG))
+					break;
+				else
+				if(activated())
 				{
 					msg.source().tell(L("@x1 is already booted up.",name()));
 					return false;
@@ -417,7 +420,10 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 				}
 				break;
 			case CMMsg.TYP_DEACTIVATE:
-				if((msg.targetMessage()==null)&&(!activated()))
+				if(msg.isTarget(CMMsg.MASK_CNTRLMSG))
+					break;
+				else
+				if(!activated())
 				{
 					msg.source().tell(L("@x1 is already shut down.",name()));
 					return false;
@@ -452,7 +458,8 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 					{
 						for(final Software S : software)
 						{
-							if(S.getInternalName().equals(currentMenu) && (currentMenu.length()>0))
+							if(S.getInternalName().equals(getActiveMenu())
+							&& (getActiveMenu().length()>0))
 							{
 								if(msg.targetMessage().trim().equals("<"))
 								{
@@ -467,7 +474,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 								}
 							}
 							else
-							if((S.getParentMenu().equals(currentMenu))
+							if((S.getParentMenu().equals(getActiveMenu()))
 							&&(S.isCommandString(msg.targetMessage(), false)))
 							{
 								msgs.add(CMClass.getMsg(msg.source(),S,null,CMMsg.NO_EFFECT,null,
@@ -508,9 +515,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 											menuRead=true;
 										}
 										else
-										{
 											readFlag=true;
-										}
 									}
 								}
 							}
@@ -559,7 +564,8 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 						forceReadersMenu();
 					}
 				}
-				if((msg.targetMessage()!=null)&&(activated()))
+				if((msg.targetMessage()!=null)
+				&&(activated()))
 				{
 					final List<Software> software=getSoftware();
 					final List<CMMsg> msgs=new LinkedList<CMMsg>();
@@ -567,10 +573,15 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 					{
 						for(final Software S : software)
 						{
+							if(msg.isTarget(CMMsg.MASK_CNTRLMSG))
+								msgs.add(((CMMsg)msg.copyOf()).setTarget(S));
+							else
 							if(S.isActivationString(msg.targetMessage()))
 							{
-								msgs.add(CMClass.getMsg(msg.source(),S,null,CMMsg.NO_EFFECT,null,
-										CMMsg.MASK_ALWAYS|CMMsg.TYP_ACTIVATE,msg.targetMessage(),CMMsg.NO_EFFECT,null));
+								msgs.add(CMClass.getMsg(msg.source(),S,null,
+										CMMsg.NO_EFFECT,null,
+										CMMsg.MASK_ALWAYS|CMMsg.TYP_ACTIVATE,msg.targetMessage(),
+										CMMsg.NO_EFFECT,null));
 							}
 						}
 					}
@@ -593,12 +604,14 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 							damageFailChance = CMath.div(usesRemaining(), 100);
 							damageFailChance += (0.35 * getFinalManufacturer().getReliabilityPct());
 						}
-						if((Math.random()<getInstalledFactor()) && (Math.random()<damageFailChance))
+						if((Math.random()<getInstalledFactor())
+						&& (Math.random()<damageFailChance))
 						{
 							for(final CMMsg msg2 : msgs)
 							{
-								if(msg2.target().okMessage(M, msg2))
-									msg2.target().executeMsg(M, msg2);
+								final Room R=CMLib.map().roomLocation(msg2.target());
+								if((R!=null)&&(R.okMessage(M, msg2)))
+									R.send(M, msg2);
 							}
 						}
 						else
@@ -719,7 +732,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 						if(CMLib.flags().canBeSeenBy(this, M))
 						{
 							M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT,
-									L("<T-NAME> says '^N\n\r@x1\n\r^.^N'",newMsgs.toString()));
+									L("<T-NAME> says '^N\n\r@x1^.^N'",newMsgs.toString().trim()));
 						}
 					}
 				}

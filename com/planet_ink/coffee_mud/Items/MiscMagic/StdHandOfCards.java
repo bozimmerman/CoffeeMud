@@ -96,6 +96,14 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 		return new ReadOnlyList<Item>(backupContents);
 	}
 
+	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a hand of cards");
+	}
+
 	// shuffleDeck()
 	// Shuffles the deck by removing a random card from the
 	// middle of the deck and adding it to the bottom

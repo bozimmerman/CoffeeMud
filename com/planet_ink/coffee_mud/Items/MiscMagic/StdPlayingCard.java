@@ -73,6 +73,14 @@ public class StdPlayingCard extends StdItem implements MiscMagic, PlayingCard
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a card");
+	}
+
+	@Override
 	protected boolean abilityImbuesMagic()
 	{
 		return false;

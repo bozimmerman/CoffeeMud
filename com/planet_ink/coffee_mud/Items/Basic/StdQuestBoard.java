@@ -70,6 +70,14 @@ public class StdQuestBoard extends StdItem
 	protected final static String[]	MYCODES	= { "SAREAMASK", "TAREAMASK", "AAREAMASK", "GIVERMASK", "TYPFILTER", "CATFILTER" };
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a board");
+	}
+
+	@Override
 	public void setReadableText(final String text)
 	{
 		super.setReadableText(text);

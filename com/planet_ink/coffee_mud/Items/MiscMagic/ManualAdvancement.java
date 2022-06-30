@@ -57,6 +57,14 @@ public class ManualAdvancement extends StdItem implements MiscMagic,ArchonOnly
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
 		recoverPhyStats();
 	}
+	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a book");
+	}
+
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)

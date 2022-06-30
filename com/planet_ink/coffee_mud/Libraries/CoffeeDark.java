@@ -64,7 +64,8 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	protected static final double		PI_TIMES_1ANDAHALF		= Math.PI * 1.5;
 	protected final int					QUADRANT_WIDTH			= 10;
 
-	protected RTree<SpaceObject>	space	= new RTree<SpaceObject>();
+	protected final RTree<SpaceObject>			space		= new RTree<SpaceObject>();
+	protected final Map<String, BoundedCube>	sectorMap	= new Hashtable<String, BoundedCube>();
 
 	private static Filterer<Area> planetsAreaFilter=new Filterer<Area>()
 	{
@@ -153,52 +154,99 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
-	public String getSectorName(final long[] coordinates)
+	public String getSectorName(final long[] coords)
 	{
 		final String[] xsecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_X_NAMES);
 		final String[] ysecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_Y_NAMES);
 		final String[] zsecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_Z_NAMES);
 
-		final long dmsPerXSector = SpaceObject.Distance.GalaxyRadius.dm / xsecs.length;
-		final long dmsPerYSector = SpaceObject.Distance.GalaxyRadius.dm / ysecs.length;
-		final long dmsPerZSector = SpaceObject.Distance.GalaxyRadius.dm / zsecs.length;
+		final long dmsPerXSector = (SpaceObject.Distance.GalaxyRadius.dm / (xsecs.length)) * 2L;
+		final long dmsPerYSector = (SpaceObject.Distance.GalaxyRadius.dm / (ysecs.length)) * 2L;
+		final long dmsPerZSector = (SpaceObject.Distance.GalaxyRadius.dm / (zsecs.length)) * 2L;
 
-		final int secDeX = (int)((coordinates[0] % SpaceObject.Distance.GalaxyRadius.dm) / dmsPerXSector / 2);
-		final int secDeY = (int)((coordinates[1] % SpaceObject.Distance.GalaxyRadius.dm) / dmsPerYSector / 2);
-		final int secDeZ = (int)((coordinates[2] % SpaceObject.Distance.GalaxyRadius.dm) / dmsPerZSector / 2);
+		final long secDeX = coords[0] / dmsPerXSector;
+		final long secDeY = coords[1] / dmsPerYSector;
+		final long secDeZ = coords[2] / dmsPerZSector;
 
 		final StringBuilder sectorName = new StringBuilder("");
-		sectorName.append(xsecs[(secDeX < 0)?(xsecs.length+secDeX):secDeX]).append(" ");
-		sectorName.append(ysecs[(secDeY < 0)?(ysecs.length+secDeY):secDeY]).append(" ");
-		sectorName.append(zsecs[(secDeZ < 0)?(zsecs.length+secDeZ):secDeZ]);
+		sectorName.append(xsecs[(int)secDeX + xsecs.length/2]).append(" ");
+		sectorName.append(ysecs[(int)secDeY + ysecs.length/2]).append(" ");
+		sectorName.append(zsecs[(int)secDeZ + zsecs.length/2]);
 		return sectorName.toString();
 	}
 
 	@Override
-	public long[] getInSectorCoords(final long[] coordinates)
+	public long[] getInSectorCoords(final long[] coords)
 	{
 		final String[] xsecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_X_NAMES);
 		final String[] ysecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_Y_NAMES);
 		final String[] zsecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_Z_NAMES);
 
-		final long dmsPerXSector = SpaceObject.Distance.GalaxyRadius.dm / xsecs.length;
-		final long dmsPerYSector = SpaceObject.Distance.GalaxyRadius.dm / ysecs.length;
-		final long dmsPerZSector = SpaceObject.Distance.GalaxyRadius.dm / zsecs.length;
+		final long dmsPerXSector = (SpaceObject.Distance.GalaxyRadius.dm / (xsecs.length)) * 2L;
+		final long dmsPerYSector = (SpaceObject.Distance.GalaxyRadius.dm / (ysecs.length)) * 2L;
+		final long dmsPerZSector = (SpaceObject.Distance.GalaxyRadius.dm / (zsecs.length)) * 2L;
 
-		final int secDeX = (int)((coordinates[0] % SpaceObject.Distance.GalaxyRadius.dm) / dmsPerXSector / (2 * (coordinates[0]<0?-1:1)));
-		final int secDeY = (int)((coordinates[1] % SpaceObject.Distance.GalaxyRadius.dm) / dmsPerYSector / (2 * (coordinates[0]<0?-1:1)));
-		final int secDeZ = (int)((coordinates[2] % SpaceObject.Distance.GalaxyRadius.dm) / dmsPerZSector / (2 * (coordinates[0]<0?-1:1)));
-
-		final long[] sectorCoords = Arrays.copyOf(coordinates, 3);
+		final long[] sectorCoords = coords.clone();
 		for(int i=0;i<sectorCoords.length;i++)
 		{
 			if(sectorCoords[i]<0)
 				sectorCoords[i]*=-1;
 		}
-		sectorCoords[0] -= (secDeX * dmsPerXSector) / 1000;
-		sectorCoords[1] -= (secDeY * dmsPerYSector) / 1000;
-		sectorCoords[2] -= (secDeZ * dmsPerZSector) / 1000;
+		sectorCoords[0] = (sectorCoords[0] % dmsPerXSector);
+		sectorCoords[1] = (sectorCoords[1] % dmsPerYSector);
+		sectorCoords[2] = (sectorCoords[2] % dmsPerZSector);
 		return sectorCoords;
+	}
+
+
+	@Override
+	public Map<String,BoundedCube> getSectorMap()
+	{
+		if(sectorMap.size()==0)
+		{
+			final Map<String,BoundedCube> tempMap = new HashMap<String,BoundedCube>();
+			final String[] xsecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_X_NAMES);
+			final String[] ysecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_Y_NAMES);
+			final String[] zsecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_Z_NAMES);
+
+			final long dmsPerXSector = (SpaceObject.Distance.GalaxyRadius.dm / (xsecs.length)) * 2L;
+			final long dmsPerYSector = (SpaceObject.Distance.GalaxyRadius.dm / (ysecs.length)) * 2L;
+			final long dmsPerZSector = (SpaceObject.Distance.GalaxyRadius.dm / (zsecs.length)) * 2L;
+			for(long x=0;x<SpaceObject.Distance.GalaxyRadius.dm-dmsPerXSector;x+=dmsPerXSector)
+			{
+				for(long y=0;y<SpaceObject.Distance.GalaxyRadius.dm-dmsPerYSector;y+=dmsPerYSector)
+				{
+					for(long z=0;z<SpaceObject.Distance.GalaxyRadius.dm-dmsPerZSector;z+=dmsPerZSector)
+					{
+						final long[] coords = new long[] {x, y, z};
+						final BoundedCube cube = new BoundedCube(x,x+dmsPerXSector,y,y+dmsPerYSector,z,z+dmsPerZSector);
+						final String name = getSectorName(coords);
+						if(tempMap.containsKey(name) || (coords[2]<0L))
+							Log.errOut("Argh!");
+						else
+							tempMap.put(name, cube);
+					}
+				}
+			}
+			for(long x=dmsPerXSector;x<SpaceObject.Distance.GalaxyRadius.dm-dmsPerXSector;x+=dmsPerXSector)
+			{
+				for(long y=dmsPerYSector;y<SpaceObject.Distance.GalaxyRadius.dm-dmsPerYSector;y+=dmsPerYSector)
+				{
+					for(long z=dmsPerZSector;z<SpaceObject.Distance.GalaxyRadius.dm-dmsPerZSector;z+=dmsPerZSector)
+					{
+						final long[] coords = new long[] {-x, -y, -z};
+						final BoundedCube cube = new BoundedCube(-x,-x+dmsPerXSector,-y,-y+dmsPerYSector,-z,-z+dmsPerZSector);
+						final String name = getSectorName(coords);
+						if(tempMap.containsKey(name) || (coords[2]>0L))
+							Log.errOut("Argh!!");
+						else
+							tempMap.put(name, cube);
+					}
+				}
+			}
+			sectorMap.putAll(tempMap);
+		}
+		return sectorMap;
 	}
 
 	@Override
@@ -1163,6 +1211,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	public boolean shutdown()
 	{
 		space.clear();
+		sectorMap.clear();
 		if(CMLib.threads().isTicking(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK))
 		{
 			CMLib.threads().deleteTick(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);

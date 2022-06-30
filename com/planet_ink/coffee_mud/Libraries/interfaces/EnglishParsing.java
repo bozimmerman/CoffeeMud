@@ -47,13 +47,31 @@ public interface EnglishParsing extends CMLibrary
 {
 	/**
 	 * Returns whether the given string is an
-	 * article, such as a, an, some, etc..
+	 * article, such as a, an, the, some, etc..
 	 * Colors are not respected.
+	 *
+	 * @see EnglishParsing#isAnIndefiniteArticle(String)
+	 * @see EnglishParsing#startsWithAnArticle(String)
+	 * @see EnglishParsing#startsWithAnIndefiniteArticle(String)
 	 *
 	 * @param s the string to check
 	 * @return true if its an article, false otherwise
 	 */
 	public boolean isAnArticle(String s);
+
+	/**
+	 * Returns whether the given string is an
+	 * indefinite article, such as a, an, some, etc..
+	 * Colors are not respected.
+	 *
+	 * @see EnglishParsing#isAnArticle(String)
+	 * @see EnglishParsing#startsWithAnArticle(String)
+	 * @see EnglishParsing#startsWithAnIndefiniteArticle(String)
+	 *
+	 * @param s the string to check
+	 * @return true if its an indefinite article, false otherwise
+	 */
+	public boolean isAnIndefiniteArticle(String s);
 
 	/**
 	 * If the given phrase begins with an article word
@@ -83,10 +101,30 @@ public interface EnglishParsing extends CMLibrary
 	 * a, an, the, some, etc..
 	 * Colors codes are totally respected.
 	 *
+	 * @see EnglishParsing#isAnArticle(String)
+	 * @see EnglishParsing#isAnIndefiniteArticle(String)
+	 * @see EnglishParsing#startsWithAnIndefiniteArticle(String)
+	 *
 	 * @param s the string to check
 	 * @return true if the string starts with an article
 	 */
 	public boolean startsWithAnArticle(String s);
+
+
+	/**
+	 * Returns whether the given word or
+	 * phrase starts with an indefinite article, such as
+	 * a, an, some, etc..
+	 * Colors codes are totally respected.
+	 *
+	 * @see EnglishParsing#isAnArticle(String)
+	 * @see EnglishParsing#isAnIndefiniteArticle(String)
+	 * @see EnglishParsing#startsWithAnArticle(String)
+	 *
+	 * @param s the string to check
+	 * @return true if the string starts with an indefinite article
+	 */
+	public boolean startsWithAnIndefiniteArticle(final String s);
 
 	/**
 	 * Returns the given string with extended
@@ -126,7 +164,7 @@ public interface EnglishParsing extends CMLibrary
 	 * @return true if punctuation found, false otherwise
 	 */
 	public boolean hasPunctuation(String str);
-	
+
 	/**
 	 * Returns true if the given byte is
 	 * any normal punctuation character. Such as
@@ -136,7 +174,7 @@ public interface EnglishParsing extends CMLibrary
 	 * @return true if punctuation, false otherwise
 	 */
 	public boolean isEnglishPunctuation(final byte b);
-	
+
 	/**
 	 * Returns true if the given string contains
 	 * any normal punctuation characters. Such as
@@ -146,7 +184,7 @@ public interface EnglishParsing extends CMLibrary
 	 * @return true if punctuation found, false otherwise
 	 */
 	public boolean hasEnglishPunctuation(final String str);
-	
+
 	/**
 	 * Returns the given string with normal punctuation
 	 * removed. Must not be colored.
@@ -339,9 +377,9 @@ public interface EnglishParsing extends CMLibrary
 
 	/**
 	 * Returns whether the given string contains any of the srchForStr substrings.
-	 * The searches are case insensitive, and color	 * insensitive, and respects 
+	 * The searches are case insensitive, and color	 * insensitive, and respects
 	 * special syntax like '$' to ensure complete hits.
-	 * 
+	 *
 	 * @param toSrchStr the string to search inside of
 	 * @param srchForStrs the strings to search for
 	 * @return true if any matches are found.

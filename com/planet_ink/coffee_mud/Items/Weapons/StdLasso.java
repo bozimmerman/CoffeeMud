@@ -63,6 +63,14 @@ public class StdLasso extends StdWeapon
 
 	protected MOB lastBinder = null;
 
+	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a lasso");
+	}
+
 	protected void untieIfPoss(final MOB binder, final MOB boundM)
 	{
 		final Room R=boundM.location();

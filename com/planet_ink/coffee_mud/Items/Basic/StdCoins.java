@@ -61,6 +61,14 @@ public class StdCoins extends StdItem implements Coins
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("some money");
+	}
+
+	@Override
 	protected boolean abilityImbuesMagic()
 	{
 		return false;

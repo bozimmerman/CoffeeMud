@@ -192,8 +192,9 @@ public class ShipDiagProgram extends GenShipProgram
 	}
 
 	@Override
-	public void onDeactivate(final MOB mob, final String message)
+	protected void onDeactivate(final MOB mob, final String message)
 	{
+		super.onDeactivate(mob, message);
 		shutdown();
 		super.addScreenMessage("Diagnostic window closed.");
 	}
@@ -218,20 +219,20 @@ public class ShipDiagProgram extends GenShipProgram
 	}
 
 	@Override
-	public boolean checkDeactivate(final MOB mob, final String message)
+	protected boolean checkDeactivate(final MOB mob, final String message)
 	{
 		shutdown();
 		return true;
 	}
 
 	@Override
-	public boolean checkTyping(final MOB mob, final String message)
+	protected boolean checkTyping(final MOB mob, final String message)
 	{
 		return true;
 	}
 
 	@Override
-	public boolean checkPowerCurrent(final int value)
+	protected boolean checkPowerCurrent(final int value)
 	{
 		nextPowerCycleTmr = System.currentTimeMillis() + (8 * 1000);
 		return true;
@@ -531,7 +532,7 @@ public class ShipDiagProgram extends GenShipProgram
 	}
 
 	@Override
-	public boolean checkActivate(final MOB mob, final String message)
+	protected boolean checkActivate(final MOB mob, final String message)
 	{
 		if(!super.checkActivate(mob, message))
 			return false;
@@ -539,14 +540,15 @@ public class ShipDiagProgram extends GenShipProgram
 	}
 
 	@Override
-	public void onActivate(final MOB mob, final String message)
+	protected void onActivate(final MOB mob, final String message)
 	{
 		super.onActivate(mob, message);
-		onTyping(mob, message);
+		if((message!=null)&&(message.length()>0))
+			onTyping(mob, message);
 	}
 
 	@Override
-	public void onTyping(final MOB mob, String message)
+	protected void onTyping(final MOB mob, String message)
 	{
 		synchronized(this)
 		{
@@ -648,7 +650,7 @@ public class ShipDiagProgram extends GenShipProgram
 	}
 
 	@Override
-	public void onPowerCurrent(final int value)
+	protected void onPowerCurrent(final int value)
 	{
 		if (System.currentTimeMillis() > nextPowerCycleTmr)
 		{

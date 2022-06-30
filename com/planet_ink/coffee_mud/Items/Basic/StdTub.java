@@ -64,6 +64,14 @@ public class StdTub extends StdRideable implements Drink
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a tub");
+	}
+
+	@Override
 	public long decayTime()
 	{
 		return decayTime;

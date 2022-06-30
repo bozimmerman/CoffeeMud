@@ -60,6 +60,14 @@ public class GenPiano extends GenRideable implements MusicalInstrument
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a piano");
+	}
+
+	@Override
 	public void recoverPhyStats()
 	{
 		CMLib.flags().setReadable(this, false);

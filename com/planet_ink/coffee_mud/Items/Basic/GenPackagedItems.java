@@ -57,6 +57,14 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a bunch of things");
+	}
+
+	@Override
 	protected boolean abilityImbuesMagic()
 	{
 		return false;

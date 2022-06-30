@@ -66,6 +66,14 @@ public interface GalacticMap extends CMLibrary
 	public int numSpaceObjects();
 
 	/**
+	 * Returns the name of all the sectors, and the cube
+	 * that covers its domain.
+	 *
+	 * @return the sector map
+	 */
+	public Map<String,BoundedCube> getSectorMap();
+
+	/**
 	 * Returns whether the given object is actually in
 	 * the galactic map cache at the moment -- it could
 	 * be landed somewhere.

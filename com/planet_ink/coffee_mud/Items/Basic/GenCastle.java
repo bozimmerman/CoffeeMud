@@ -64,6 +64,13 @@ public class GenCastle extends GenSiegableBoardable
 		return R;
 	}
 
+	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a castle");
+	}
 
 	@Override
 	public int getMaxHullPoints()

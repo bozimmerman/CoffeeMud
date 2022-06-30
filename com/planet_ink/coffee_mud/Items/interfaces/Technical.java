@@ -192,7 +192,11 @@ public interface Technical extends Item
 		TARGETSET(Long.class,Long.class,Long.class),
 		FIRE(),
 		SHIELDSET(ShipDir.class,Integer.class),
-		GRAVITYCHANGE(Boolean.class);
+		GRAVITYCHANGE(Boolean.class),
+		SWSVCALLOW(Software.SWServices.class),
+		SWSVCNEED(Software.SWServices.class, String[].class),
+		SWSVCREQ(Software.SWServices.class, String[].class)
+		;
 		private final Class<?>[]	parms;
 
 		private TechCommand(final Class<?>... parms)

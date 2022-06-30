@@ -2,7 +2,6 @@ package com.planet_ink.coffee_mud.Areas;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
-import com.planet_ink.coffee_mud.core.interfaces.BoundedObject;
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -109,6 +108,21 @@ public class StdThinPlanet extends StdThinArea implements SpaceObject
 	public void setDirection(final double[] dir)
 	{
 		direction = dir;
+	}
+
+	@Override
+	public String genericName()
+	{
+		if(radius >= SpaceObject.Distance.SaturnRadius.dm)
+			return L("a large planet");
+		else
+		if(radius <= SpaceObject.Distance.MoonRadius.dm)
+			return L("a tiny planet");
+		else
+		if(radius < SpaceObject.Distance.PlanetRadius.dm/2)
+			return L("a small planet");
+		else
+			return L("a planet");
 	}
 
 	@Override

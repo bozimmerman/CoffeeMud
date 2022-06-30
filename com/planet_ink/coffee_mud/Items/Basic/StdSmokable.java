@@ -63,6 +63,14 @@ public class StdSmokable extends StdContainer implements Light
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a smokeable thing");
+	}
+
+	@Override
 	public void setDuration(final int duration)
 	{
 		baseDuration=duration;

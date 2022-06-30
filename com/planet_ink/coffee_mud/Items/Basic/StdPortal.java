@@ -70,6 +70,14 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a portal");
+	}
+
+	@Override
 	public Basis rideBasis()
 	{
 		return Rideable.Basis.ENTER_IN;

@@ -60,6 +60,14 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a scroll");
+	}
+
+	@Override
 	public String getSpellList()
 	{
 		return miscText;

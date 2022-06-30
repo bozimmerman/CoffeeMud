@@ -62,6 +62,14 @@ public class StdDissertation extends StdItem implements Scroll
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a dissertation");
+	}
+
+	@Override
 	public String getSpellList()
 	{
 		return miscText;

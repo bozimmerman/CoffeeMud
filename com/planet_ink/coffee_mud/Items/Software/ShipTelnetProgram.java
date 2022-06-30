@@ -75,8 +75,9 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 	}
 
 	@Override
-	public void onDeactivate(final MOB mob, final String message)
+	protected void onDeactivate(final MOB mob, final String message)
 	{
+		super.onDeactivate(mob, message);
 		shutdown();
 		super.addScreenMessage("Telnet connection closed.");
 	}
@@ -141,7 +142,7 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 	}
 
 	@Override
-	public boolean checkActivate(final MOB mob, final String message)
+	protected boolean checkActivate(final MOB mob, final String message)
 	{
 		final List<String> parsed = CMParms.parse(message);
 		if (parsed.size() != 3)
@@ -171,14 +172,14 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 	}
 
 	@Override
-	public boolean checkDeactivate(final MOB mob, final String message)
+	protected boolean checkDeactivate(final MOB mob, final String message)
 	{
 		shutdown();
 		return true;
 	}
 
 	@Override
-	public boolean checkTyping(final MOB mob, final String message)
+	protected boolean checkTyping(final MOB mob, final String message)
 	{
 		synchronized (this)
 		{
@@ -192,7 +193,7 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 	}
 
 	@Override
-	public boolean checkPowerCurrent(final int value)
+	protected boolean checkPowerCurrent(final int value)
 	{
 		nextPowerCycleTmr = System.currentTimeMillis() + (8 * 1000);
 		return true;
@@ -236,7 +237,7 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 	}
 
 	@Override
-	public void onTyping(final MOB mob, final String message)
+	protected void onTyping(final MOB mob, final String message)
 	{
 		synchronized (this)
 		{
@@ -260,7 +261,7 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 	}
 
 	@Override
-	public void onPowerCurrent(final int value)
+	protected void onPowerCurrent(final int value)
 	{
 		if (value > 0)
 			fillWithData();

@@ -130,6 +130,12 @@ public class StdItemWrapper implements Item, CMObjectWrapper
 	}
 
 	@Override
+	public String genericName()
+	{
+		return (item == null) ? L("an item") :item.genericName();
+	}
+
+	@Override
 	public String image()
 	{
 		return (item == null) ? "" :item.image();

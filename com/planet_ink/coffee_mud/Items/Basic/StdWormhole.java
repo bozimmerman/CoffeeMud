@@ -61,6 +61,14 @@ public class StdWormhole extends StdSpaceBody implements SpaceObject.SpaceGatewa
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a wormhole");
+	}
+
+	@Override
 	public void setPermittedDirections(final ShipDir[] newPossDirs)
 	{
 		this.allPossDirs = newPossDirs;

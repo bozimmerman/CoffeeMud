@@ -65,11 +65,11 @@ public class StdItem implements Item
 	protected PhyStats	phyStats			= (PhyStats) CMClass.getCommon("DefaultPhyStats");
 	protected PhyStats	basePhyStats		= (PhyStats) CMClass.getCommon("DefaultPhyStats");
 
-	protected volatile Container		myContainer		= null;
-	protected volatile ItemPossessor	owner			= null;
-	protected SVector<Ability>			affects			= null;
-	protected SVector<Behavior>			behaviors		= null;
-	protected SVector<ScriptingEngine>	scripts			= null;
+	protected volatile Container		myContainer	= null;
+	protected volatile ItemPossessor	owner		= null;
+	protected SVector<Ability>			affects		= null;
+	protected SVector<Behavior>			behaviors	= null;
+	protected SVector<ScriptingEngine>	scripts		= null;
 
 	@SuppressWarnings("rawtypes")
 	protected ApplyAffectPhyStats		affectPhyStats	= new ApplyAffectPhyStats(this);
@@ -188,6 +188,15 @@ public class StdItem implements Item
 		if((cachedImageName!=null)&&(!cachedImageName.equals(newImage)))
 			cachedImageName=null;
 	}
+
+	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("an item");
+	}
+
 
 	@Override
 	public PhyStats phyStats()

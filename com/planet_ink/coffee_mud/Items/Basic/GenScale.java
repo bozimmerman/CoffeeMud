@@ -52,6 +52,14 @@ public class GenScale extends GenRideable
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a scale");
+	}
+
+	@Override
 	public int riderCapacity()
 	{
 		final int contents = this.getContents().size();

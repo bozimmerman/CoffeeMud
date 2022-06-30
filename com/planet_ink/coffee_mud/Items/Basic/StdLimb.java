@@ -71,6 +71,14 @@ public class StdLimb extends StdItem implements FalseLimb
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a limb");
+	}
+
+	@Override
 	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
 		if(!super.okMessage(host, msg))

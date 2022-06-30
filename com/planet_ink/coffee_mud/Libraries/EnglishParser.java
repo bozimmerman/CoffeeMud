@@ -58,6 +58,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	public static boolean[]	PUNCTUATION_TABLE	= null;
 	public static boolean[] NARROW_PUNCTUATION_TABLE = null;
 	public final static String[]	ARTICLES	= { "a", "an", "all of", "some one", "a pair of", "a pile of", "one of", "all", "the", "some", "each" };
+	public final static String[]	INDARTICLES	= { "a", "an", "some"};
 	public final static char[]		ALL_CHRS	= "ALL".toCharArray();
 	public final static String[]	fwords		= { "calf", "half", "knife", "life", "wife", "elf", "self", "shelf", "leaf", "sheaf", "thief", "loaf", "wolf" };
 	public final static String[]	frwords		= { "calves", "halves", "knives", "lives", "wives", "elves", "selves", "shelves", "leaves", "sheaves", "thieves", "loaves", "wolves" };
@@ -172,6 +173,18 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		s=s.toLowerCase();
 		for (final String article : ARTICLES)
+		{
+			if(s.equals(article))
+				return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean isAnIndefiniteArticle(String s)
+	{
+		s=s.toLowerCase();
+		for (final String article : INDARTICLES)
 		{
 			if(s.equals(article))
 				return true;
@@ -534,6 +547,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	public boolean startsWithAnArticle(final String s)
 	{
 		return isAnArticle(getFirstWord(s));
+	}
+
+	@Override
+	public boolean startsWithAnIndefiniteArticle(final String s)
+	{
+		return isAnIndefiniteArticle(getFirstWord(s));
 	}
 
 	@Override

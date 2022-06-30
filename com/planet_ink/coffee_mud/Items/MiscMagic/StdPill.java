@@ -60,6 +60,14 @@ public class StdPill extends StdFood implements Pill
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("a pill");
+	}
+
+	@Override
 	public String secretIdentity()
 	{
 		return StdScroll.makeSecretIdentity("pill",super.secretIdentity(),"",getSpells(this));

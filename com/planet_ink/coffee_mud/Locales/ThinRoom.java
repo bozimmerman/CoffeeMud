@@ -155,6 +155,12 @@ public class ThinRoom implements Room
 	}
 
 	@Override
+	public String genericName()
+	{
+		return L("a place");
+	}
+
+	@Override
 	public int domainType()
 	{
 		return Room.DOMAIN_OUTDOORS_CITY;
