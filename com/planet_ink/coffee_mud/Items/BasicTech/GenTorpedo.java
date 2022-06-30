@@ -61,7 +61,7 @@ public class GenTorpedo extends StdTorpedo
 	{
 		if(this.speed()>0)
 			return L("a moving object");
-		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+		if(CMLib.english().startsWithAnIndefiniteArticle(name())&&(CMStrings.numWords(name())<4))
 			return CMStrings.removeColors(name());
 		return L("a torpedo");
 	}

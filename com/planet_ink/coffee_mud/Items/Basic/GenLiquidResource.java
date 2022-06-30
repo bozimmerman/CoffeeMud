@@ -76,6 +76,14 @@ public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
 	}
 
 	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("some @x1",RawMaterial.CODES.NAME(material()).toLowerCase());
+	}
+
+	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		super.executeMsg(host,msg);

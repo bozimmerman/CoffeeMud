@@ -59,7 +59,7 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 	@Override
 	public String genericName()
 	{
-		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+		if(CMLib.english().startsWithAnIndefiniteArticle(name())&&(CMStrings.numWords(name())<4))
 			return CMStrings.removeColors(name());
 		return L("a book");
 	}

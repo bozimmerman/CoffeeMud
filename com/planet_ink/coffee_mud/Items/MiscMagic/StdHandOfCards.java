@@ -99,7 +99,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	@Override
 	public String genericName()
 	{
-		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+		if(CMLib.english().startsWithAnIndefiniteArticle(name())&&(CMStrings.numWords(name())<4))
 			return CMStrings.removeColors(name());
 		return L("a hand of cards");
 	}

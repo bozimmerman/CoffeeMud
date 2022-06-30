@@ -78,7 +78,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 	{
 		if(this.speed()>0)
 			return L("a ship");
-		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+		if(CMLib.english().startsWithAnIndefiniteArticle(name())&&(CMStrings.numWords(name())<4))
 			return CMStrings.removeColors(name());
 		return L("a ship");
 	}

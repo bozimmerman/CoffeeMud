@@ -70,7 +70,7 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 	@Override
 	public String genericName()
 	{
-		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+		if(CMLib.english().startsWithAnIndefiniteArticle(name())&&(CMStrings.numWords(name())<4))
 			return CMStrings.removeColors(name());
 		return CMLib.english().startWithAorAn(Weapon.CLASS_DESCS[weaponClassification()].toLowerCase());
 	}

@@ -204,7 +204,7 @@ public class StdRideable extends StdContainer implements Rideable
 	@Override
 	public String genericName()
 	{
-		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+		if(CMLib.english().startsWithAnIndefiniteArticle(name())&&(CMStrings.numWords(name())<4))
 			return CMStrings.removeColors(name());
 		switch(rideBasis)
 		{

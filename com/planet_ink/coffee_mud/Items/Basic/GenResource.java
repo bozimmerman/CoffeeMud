@@ -53,6 +53,14 @@ public class GenResource extends GenItem implements RawMaterial
 		recoverPhyStats();
 	}
 
+	@Override
+	public String genericName()
+	{
+		if(CMLib.english().startsWithAnIndefiniteArticle(name()))
+			return CMStrings.removeColors(name());
+		return L("some @x1",RawMaterial.CODES.NAME(material()).toLowerCase());
+	}
+
 	protected String	domainSource	= null;
 	protected String	resourceSubType	= "";
 

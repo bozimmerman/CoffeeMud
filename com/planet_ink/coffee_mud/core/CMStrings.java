@@ -1085,6 +1085,38 @@ public class CMStrings
 	}
 
 	/**
+	 * Returns the number of identifiable words in the string
+	 * @param str the string to count the words in
+	 * @return the number of words
+	 */
+	public final static int numWords(String str)
+	{
+		if(str==null)
+			return 0;
+		str=str.trim();
+		if(str.length()==0)
+			return 0;
+		boolean flag=false;
+		int ct=0;
+		for(int i=0;i<str.length();i++)
+		{
+			final char c=str.charAt(i);
+			if(Character.isLetter(c))
+			{
+				if(!flag)
+				{
+					flag=true;
+					ct++;
+				}
+			}
+			else
+			if(Character.isWhitespace(c) && (flag))
+				flag=false;
+		}
+		return ct;
+	}
+
+	/**
 	 * Capitalizes the first letter in the given string, and forcibly lowercases
 	 * the remaining letters in the string.
 	 * This method respects special CoffeeMUD color codes, skipping over
