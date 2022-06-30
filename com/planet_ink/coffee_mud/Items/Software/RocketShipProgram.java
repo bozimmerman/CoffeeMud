@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.ShipDirectional.ShipDir;
+import com.planet_ink.coffee_mud.Items.interfaces.Software.SWServices;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -74,6 +75,8 @@ public class RocketShipProgram extends GenShipProgram
 	protected final	Map<Technical, Set<SpaceObject>>sensorReps	= new SHashtable<Technical, Set<SpaceObject>>();
 	protected final Map<ShipEngine, Double[]>		injects		= new Hashtable<ShipEngine, Double[]>();
 
+	protected final static long[] emptyCoords = new long[] {0,0,0};
+	protected final static double[] emptyDirection = new double[] {0,0};
 	protected final static PrioritizingLimitedMap<String,TechComponent> cachedComponents = new PrioritizingLimitedMap<String,TechComponent>(1000,60000,600000,0);
 
 	protected void decache()
@@ -563,10 +566,16 @@ public class RocketShipProgram extends GenShipProgram
 							final SpaceObject obj = (SpaceObject)o;
 							final long distance = CMLib.space().getDistanceFrom(spaceMe.coordinates(), obj.coordinates()) - spaceMe.radius() - obj.radius();
 							final double[] direction = CMLib.space().getDirection(spaceMe, obj);
-							final String mass = CMath.abbreviateLong(obj.getMass());
-							final String dirStr = CMLib.english().directionDescShortest(direction);
-							final String distStr = CMLib.english().distanceDescShort(distance);
-							str.append("^W").append(obj.name()).append("^N/^WMass: ^N"+mass+"/^WDir: ^N"+dirStr+"/^WDist: ^N"+distStr);
+							str.append("^W").append(obj.name());
+							if(obj.getMass()>0)
+								str.append("^N/^WMass: ^N").append(CMath.abbreviateLong(obj.getMass()));
+							if(!Arrays.equals(obj.direction(),emptyDirection))
+								str.append("^N/^WDir: ^N").append(CMLib.english().directionDescShortest(direction));
+							else
+							if(obj.radius()>0)
+								str.append("^N/^WRad: ^N").append(CMLib.english().distanceDescShort(obj.radius()));
+							if(!Arrays.equals(obj.coordinates(),emptyCoords))
+								str.append("^N/^WDist: ^N").append(CMLib.english().distanceDescShort(distance));
 						}
 						else
 						if(o instanceof CMObject)
@@ -2347,7 +2356,7 @@ public class RocketShipProgram extends GenShipProgram
 								{
 									// use initial direction to calculate starting position
 									final double futureAccellerationInSameDirectionAsAmmo = 4.0; //TODO: magic number
-									//TODO: adding ship.speed() is wrong because you could be firing aft.
+									//TODO: adding ship.speed() here is still wrong because you could be firing aft.
 									//The initial position of a launched object is tricky.
 									ammoO.setCoords(CMLib.space().moveSpaceObject(ship.coordinates(), targetDirection,
 											(int)Math.round(ship.radius()+ammoO.radius()+ship.speed()
@@ -2791,5 +2800,36 @@ public class RocketShipProgram extends GenShipProgram
 			this.sensorReps.clear();
 		}
 		super.executeMsg(host,msg);
+	}
+
+	@Override
+	protected void provideService(final SWServices service, final Software S, final String[] parms)
+	{
+		if((service == SWServices.TARGETING)
+		&&(S!=null)
+		&&(S!=this)
+		&&(this.currentTarget != null))
+		{
+			final MOB factoryMOB = CMClass.getFactoryMOB(name(), 1, CMLib.map().roomLocation(this));
+			try
+			{
+				final String Name = currentTarget.Name();
+				final String name = currentTarget.name();
+				String coords = "";
+				if((currentTarget.speed()==0)&&(currentTarget.radius()>SpaceObject.Distance.AsteroidRadius.dm))
+					coords = CMParms.toListString(currentTarget.coordinates());
+				final String code=TechCommand.SWSVCREQ.makeCommand(service,new String[] { Name,name,coords });
+				final CMMsg msg=CMClass.getMsg(factoryMOB, S, this,
+								CMMsg.NO_EFFECT, null,
+								CMMsg.MSG_ACTIVATE|CMMsg.MASK_ALWAYS|CMMsg.MASK_CNTRLMSG, code,
+								CMMsg.NO_EFFECT, null);
+				msg.setTargetMessage(code);
+				super.sendSoftwareRespMsg(S, msg);
+			}
+			finally
+			{
+				factoryMOB.destroy();
+			}
+		}
 	}
 }

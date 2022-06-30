@@ -156,6 +156,7 @@ public interface SpaceObject extends Environmental, BoundedObject
 		Parsec("p",3085677580000000L),
 		GalaxyRadius("xr",946073047258080L*1000L),
 		MoonRadius("mr",173740L),
+		AsteroidRadius("mr",32900L),
 		PlanetRadius("pr",639875L),
 		SaturnRadius("sr",6026800L),
 		StarGRadius("gr",69550000L),

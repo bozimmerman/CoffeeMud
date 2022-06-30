@@ -92,7 +92,7 @@ public class StdSpaceBody extends StdItem implements SpaceObject
 		if(radius >= SpaceObject.Distance.MoonRadius.dm/2)
 			return L("a moon");
 		else
-		if(radius >= SpaceObject.Distance.MoonRadius.dm/12)
+		if(radius >= SpaceObject.Distance.AsteroidRadius.dm)
 			return L("a moonlet");
 		else
 			return L("an asteroid");

@@ -55,6 +55,7 @@ public class DatabaseProgram extends GenShipProgram
 	protected JSONObject				data				= new JSONObject();
 	protected BoundedCube				spaceCube			= null;
 	protected Map<String, SpaceObject>	sensorData			= new SHashtable<String, SpaceObject>();
+	protected Pair<String,long[]>		target				= null; // string is
 
 	public DatabaseProgram()
 	{
@@ -119,7 +120,7 @@ public class DatabaseProgram extends GenShipProgram
 	@Override
 	protected SWServices[] getAppreciatedServices()
 	{
-		return new SWServices[0];
+		return new SWServices[] { Software.SWServices.TARGETING };
 	}
 
 	public final Filterer<SpaceObject> spaceFilter = new Filterer<SpaceObject>()
@@ -857,11 +858,14 @@ public class DatabaseProgram extends GenShipProgram
 				if(tf.booleanValue())
 				{
 					sensorData.put(obj.ID(), obj);
-					String name = getDataName(CMParms.toListString(obj.coordinates()));
-					if((name==null)||(name.length()==0))
-						name=getDataName(obj.Name());
-					if((name!=null)&&(name.length()>0))
-						obj.setName(name);
+					if(!obj.Name().equals(obj.name()))
+					{
+						String name = getDataName(CMParms.toListString(obj.coordinates()));
+						if((name==null)||(name.length()==0))
+							name=getDataName(obj.Name()); // using the real, secret name
+						if((name!=null)&&(name.length()>0))
+							obj.setName(name);
+					}
 				}
 				else
 					sensorData.remove(obj.ID());

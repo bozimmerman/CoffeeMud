@@ -394,4 +394,27 @@ public interface CMMiscUtils extends CMLibrary
 	 * @return the full web url with http and everything
 	 */
 	public String getUnsubscribeURL(final String name);
+
+
+	/**
+	 * A enum for item state flags
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public enum ItemState
+	{
+		HAVE_ANY,
+		HAVE_UNCONTAINED,
+		HAVE_CONTAINED,
+		WORN,
+		ROOM_ANY,
+		ROOM_UNCONTAINED,
+		ROOM_CONTAINED,
+		PRESENT_ANY,
+		PRESENT_UNCONTAINED,
+		PRESENT_CONTAINED
+	}
+
+	public boolean isItemInState(final Room R, final MOB mob, final ItemState state, final Item I);
 }

@@ -88,6 +88,12 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 				@Override
 				public String Name()
 				{
+					return obj.Name(); // the real, secret name.. do not show!
+				}
+
+				@Override
+				public String name()
+				{
 					return name;
 				}
 
@@ -192,12 +198,6 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 				public String L(final String str, final String... xs)
 				{
 					return obj.L(str, xs);
-				}
-
-				@Override
-				public String name()
-				{
-					return Name();
 				}
 
 				@Override
@@ -330,8 +330,8 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 				{
 					final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
 					if(sobj!=null)
-						return Arrays.copyOf(sobj.coordinates(), sobj.coordinates().length);
-					return Arrays.copyOf(emptyCoords, emptyCoords.length);
+						return sobj.coordinates().clone();
+					return emptyCoords.clone();
 				}
 
 				@Override
@@ -345,7 +345,7 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 					final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
 					if(sobj!=null)
 						return sobj.radius();
-					return 1;
+					return 0;
 				}
 
 				@Override
@@ -358,8 +358,8 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 				{
 					final SpaceObject sobj=CMLib.space().getSpaceObject(obj, false);
 					if(sobj!=null)
-						return sobj.direction();
-					return emptyDirection;
+						return sobj.direction().clone();
+					return emptyDirection.clone();
 				}
 
 				@Override

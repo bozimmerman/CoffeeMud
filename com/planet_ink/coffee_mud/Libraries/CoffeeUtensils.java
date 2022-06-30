@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CMMiscUtils.ItemState;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -2528,6 +2529,68 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			}
 		}
 		return R;
+	}
+
+	public boolean isItemInState(final Room R, final MOB mob, final ItemState state, final Item I)
+	{
+		switch(state)
+		{
+		case HAVE_ANY:
+			if(mob==null)
+				return I.owner() instanceof MOB;
+			else
+				return I.owner() == mob;
+		case HAVE_CONTAINED:
+			if(I.container()==null)
+				return false;
+			if(mob==null)
+				return I.owner() instanceof MOB;
+			else
+				return I.owner() == mob;
+		case HAVE_UNCONTAINED:
+			if(I.container()!=null)
+				return false;
+			if(mob==null)
+				return I.owner() instanceof MOB;
+			else
+				return I.owner() == mob;
+		case PRESENT_ANY:
+			return true;
+		case PRESENT_CONTAINED:
+			return I.container()!=null;
+		case PRESENT_UNCONTAINED:
+			return I.container()==null;
+		case ROOM_ANY:
+			if(R==null)
+				return I.owner() instanceof Room;
+			else
+				return I.owner() == R;
+		case ROOM_CONTAINED:
+			if(I.container()==null)
+				return false;
+			if(R==null)
+				return I.owner() instanceof Room;
+			else
+				return I.owner() == R;
+		case ROOM_UNCONTAINED:
+			if(I.container()!=null)
+				return false;
+			if(R==null)
+				return I.owner() instanceof Room;
+			else
+				return I.owner() == R;
+		case WORN:
+			if(!(I.owner() instanceof MOB))
+				return false;
+			if(!I.amBeingWornProperly())
+				return false;
+			if(mob==null)
+				return I.owner() instanceof MOB;
+			else
+				return I.owner() == mob;
+		default:
+			return false;
+		}
 	}
 }
 

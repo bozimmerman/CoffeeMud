@@ -58,9 +58,40 @@ public class GenGraviticSensor extends GenElecCompSensor
 
 	protected String getGenericGraviticName(final Environmental E)
 	{
-		// things like small object, enormous light object, small heavy, etc..
-		return L("Unknown");
-		//return E.name();
+		if(E instanceof SpaceObject)
+		{
+			final SpaceObject SO = (SpaceObject)E;
+			final long radius = SO.radius();
+			if(radius >= SpaceObject.Distance.StarBRadius.dm/2)
+				return L("a super star-sized object");
+			else
+			if(radius >= SpaceObject.Distance.StarDRadius.dm)
+				return L("a star-sized object");
+			else
+			if(radius >= SpaceObject.Distance.SaturnRadius.dm)
+				return L("an enormous planet-sized object");
+			else
+			if(radius >= SpaceObject.Distance.SaturnRadius.dm/2)
+				return L("a huge planet-sized object");
+			else
+			if(radius >= SpaceObject.Distance.PlanetRadius.dm*2)
+				return L("an large planet-sized object");
+			else
+			if(radius >= SpaceObject.Distance.PlanetRadius.dm/2)
+				return L("a planet-sized object");
+			else
+			if(radius >= SpaceObject.Distance.MoonRadius.dm/2)
+				return L("a moon-sized object");
+			else
+			if(radius >= SpaceObject.Distance.AsteroidRadius.dm)
+				return L("a moonlet-sized object");
+			else
+			if(radius >= SpaceObject.Distance.AsteroidRadius.dm/10)
+				return L("an asteroid-sized object");
+			else
+				return L("an object");
+		}
+		return L("an object");
 	}
 
 	protected Converter<Environmental, Environmental> gravConverter = new Converter<Environmental, Environmental>()
@@ -82,6 +113,12 @@ public class GenGraviticSensor extends GenElecCompSensor
 
 				@Override
 				public String Name()
+				{
+					return obj.Name(); // the real, secret name.. do not show!
+				}
+
+				@Override
+				public String name()
 				{
 					return name;
 				}
@@ -186,12 +223,6 @@ public class GenGraviticSensor extends GenElecCompSensor
 				public String L(final String str, final String... xs)
 				{
 					return str;
-				}
-
-				@Override
-				public String name()
-				{
-					return Name();
 				}
 
 				@Override
@@ -335,7 +366,7 @@ public class GenGraviticSensor extends GenElecCompSensor
 					final SpaceObject sobj =CMLib.space().getSpaceObject(obj, false);
 					if(sobj!=null)
 						return sobj.radius();
-					return 1;
+					return 0;
 				}
 
 				@Override

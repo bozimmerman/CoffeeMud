@@ -29,6 +29,7 @@
  28. Caravan Building now has a full complete recipe set.
  29. CHANNELS command can now be used to turn all on/off at once.
  30. Suffix and Prefix Titles will automatically combine.  See help. 
+ 31. New property: Prop_Fumble, to cause skill failures
 
 # Build 5.9.12 Release 1/17/2022
   *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG
