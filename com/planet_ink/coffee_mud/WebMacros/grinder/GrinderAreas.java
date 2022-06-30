@@ -35,9 +35,20 @@ import java.util.*;
 */
 public class GrinderAreas
 {
+	private static Comparator<Area> stringPairComparator = new Comparator<Area>()
+	{
+
+		@Override
+		public int compare(final Area o1, final Area o2)
+		{
+			return o1.Name().compareToIgnoreCase(o2.Name());
+		}
+
+	};
+
 	public static PairList<String,String> buildAreaTree(final Enumeration<Area> a, final List<Area> parents, final Area pickedA, final int dashes, final boolean deeper)
 	{
-		final PairList<String,String> areaNames = new PairArrayList<String,String>();
+		final PairArrayList<String,String> areaNames = new PairArrayList<String,String>();
 		for(;a.hasMoreElements();)
 		{
 			final Area A=a.nextElement();
@@ -45,7 +56,11 @@ public class GrinderAreas
 			areaNames.add(A.Name(),areaName);
 			if(deeper
 			&& ((pickedA == A)||(parents.contains(A))))
-				areaNames.addAll(buildAreaTree(A.getChildren(),parents,pickedA,dashes+1,pickedA != A));
+			{
+				final XVector<Area> children = new XVector<Area>(A.getChildren());
+				Collections.sort(children, stringPairComparator);
+				areaNames.addAll(buildAreaTree(children.elements(),parents,pickedA,dashes+1,pickedA != A));
+			}
 		}
 		return areaNames;
 	}
