@@ -76,8 +76,10 @@ public class Prop_Fumble extends Property
 	protected long			flags		= 0;
 	protected String		msgStr		= DEF_MSG_STR;
 	protected boolean		privateM	= true;
+	protected boolean		weapon		= false;
 
-	protected final Set<String>		ids			= new HashSet<String>();
+	protected PairList<Ability, Integer>	spellV	= null;
+	protected final Set<String>				ids		= new HashSet<String>();
 
 	@Override
 	public void setMiscText(final String newMiscText)
@@ -110,6 +112,7 @@ public class Prop_Fumble extends Property
 
 		this.msgStr=CMParms.getParmStr(newMiscText, "MSG", DEF_MSG_STR);
 		this.privateM=CMParms.getParmBool(newMiscText, "PRIVATE", true);
+		this.weapon=CMParms.getParmBool(newMiscText, "WEAPON", false);
 
 		final String idStr=CMParms.getParmStr(newMiscText, "AID", "").toUpperCase();
 		this.ids.clear();
@@ -174,22 +177,126 @@ public class Prop_Fumble extends Property
 					this.flags |= Math.round(Math.pow(2, x));
 			}
 		}
+
+		spellV = null;
+		final String castStr = CMParms.getParmStr(newMiscText, "CAST", "").toUpperCase();
+		final List<String> set=CMParms.parseCommas(castStr,true);
+		Integer ticks = Integer.valueOf(-1);
+		boolean uninvocable=true;
+		for(int s=0;s<set.size();s++)
+		{
+			String thisOne=set.get(s);
+			if(thisOne.equalsIgnoreCase("NOUNINVOKE"))
+			{
+				uninvocable=false;
+				continue;
+			}
+			if(thisOne.toUpperCase().startsWith("TICKS"))
+			{
+				ticks = Integer.valueOf(CMParms.getParmInt(thisOne,"TICKS",-1));
+				continue;
+			}
+			final int pctDex=thisOne.indexOf("% ");
+			if((pctDex>0) && (thisOne.substring(pctDex+1).trim().length()>0))
+				thisOne=thisOne.substring(pctDex+1).trim();
+			String parm="";
+			if((thisOne!=null)&&(thisOne.endsWith(")")))
+			{
+				final int x=thisOne.indexOf('(');
+				if(x>0)
+				{
+					parm=thisOne.substring(x+1,thisOne.length()-1);
+					thisOne=thisOne.substring(0,x).trim();
+				}
+			}
+			Ability A=CMClass.getAbility(thisOne);
+			if((A!=null)
+			&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON))
+			{
+				A=(Ability)A.copyOf();
+				A.setMiscText(parm);
+				if(!uninvocable)
+					A.makeNonUninvokable();
+				if(spellV==null)
+					spellV=new PairVector<Ability,Integer>();
+				spellV.add(A, ticks);
+			}
+		}
+	}
+
+	public boolean addMeIfNeccessary(final Physical target)
+	{
+		final PairList<Ability, Integer> V=spellV;
+		if((target==null)||(V.size()==0))
+			return false;
+		final MOB qualMOB=CMClass.getFactoryMOB(affected.name(), target.phyStats().level(), CMLib.map().roomLocation(target));
+		for(int v=0;v<V.size();v++)
+		{
+			final Pair<Ability, Integer> triad = V.get(v);
+			final Ability A=triad.first;
+			final int ticksA=triad.second.intValue();
+			final int asLevel=0;
+			A.invoke(qualMOB,CMParms.parse(A.text()),target,true,asLevel);
+			final Ability EA=target.fetchEffect(A.ID());
+			if(EA!=null)
+			{
+				if((ticksA>0)
+				&&(ticksA<Short.MAX_VALUE)
+				&&(CMath.s_int(EA.getStat("TICKDOWN"))>ticksA))
+					EA.setStat("TICKDOWN", Integer.toString(ticksA));
+				else
+				if(!A.canBeUninvoked())
+					EA.makeNonUninvokable();
+			}
+		}
+		return true;
+	}
+
+	protected boolean basicChecks(final MOB mob)
+	{
+		if((affected instanceof Item)
+		&&((!CMLib.utensils().isItemInState(mob.location(), mob, itemState, (Item)affected))))
+			return false;
+
+		if((mobMask != null)
+		&&(!CMLib.masking().maskCheck(mobMask, mob, true)))
+			return false;
+		return true;
+	}
+
+	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		if((weapon)
+		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
+		&&(msg.tool() instanceof Weapon)
+		&&(CMLib.dice().rollPercentage()<=this.chance)
+		&&(msg.source().isMine(msg.tool()))
+		&&basicChecks(msg.source()))
+		{
+			if(privateM)
+				msg.source().tell(msg.source(),msg.target(),null,L(msgStr,msg.tool().name(),affected.name(msg.source())));
+			else
+				msg.source().location().show(msg.source(), msg.target(), null, CMMsg.MSG_OK_ACTION,
+						L(msgStr,msg.tool().Name(),affected.name(msg.source())));
+			if(spellV!=null)
+				addMeIfNeccessary(msg.source());
+		}
+		super.executeMsg(myHost, msg);
 	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((msg.tool() instanceof Ability)
+		if((!weapon)
+		&&(msg.tool() instanceof Ability)
 		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 		&&(CMLib.dice().rollPercentage()<=this.chance)
 		&&(msg.source().isMine(msg.tool())))
 		{
-			if((affected instanceof Item)
-			&&(!CMLib.utensils().isItemInState(msg.source().location(), msg.source(), itemState, (Item)affected)))
+			if(!basicChecks(msg.source()))
 				return super.okMessage(myHost,msg);
-			if((mobMask != null)
-			&&(!CMLib.masking().maskCheck(mobMask, msg.source(), true)))
-				return super.okMessage(myHost,msg);
+
 			final Ability A=(Ability)msg.tool();
 			if((ableTypes.length>0)
 			&&(!CMParms.contains(ableTypes, A.classificationCode()&Ability.ALL_ACODES)))
@@ -205,6 +312,8 @@ public class Prop_Fumble extends Property
 				else
 					msg.source().location().show(msg.source(), msg.target(), null, CMMsg.MSG_OK_ACTION,
 							L(msgStr,A.name(),affected.name(msg.source())));
+				if(spellV!=null)
+					addMeIfNeccessary(msg.source());
 				return false;
 			}
 		}
