@@ -652,6 +652,7 @@ public class ShipDiagProgram extends GenShipProgram
 	@Override
 	protected void onPowerCurrent(final int value)
 	{
+		super.onPowerCurrent(value);
 		if (System.currentTimeMillis() > nextPowerCycleTmr)
 		{
 			this.shutdown();

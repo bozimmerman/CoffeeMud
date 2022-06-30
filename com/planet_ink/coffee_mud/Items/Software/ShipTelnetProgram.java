@@ -263,6 +263,7 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 	@Override
 	protected void onPowerCurrent(final int value)
 	{
+		super.onPowerCurrent(value);
 		if (value > 0)
 			fillWithData();
 		if ((container() instanceof Computer) && (((Computer) container()).getCurrentReaders().size() == 0))

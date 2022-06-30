@@ -71,8 +71,8 @@ public class RocketShipProgram extends GenShipProgram
 	protected volatile SpaceObject			programPlanet		= null;
 	protected volatile List<ShipEngine>		programEngines		= null;
 
-	protected final	   Map<Technical, Set<SpaceObject>>	sensorReports	= new SHashtable<Technical, Set<SpaceObject>>();
-	protected final Map<ShipEngine, Double[]>			primeInjects	= new Hashtable<ShipEngine, Double[]>();
+	protected final	Map<Technical, Set<SpaceObject>>sensorReps	= new SHashtable<Technical, Set<SpaceObject>>();
+	protected final Map<ShipEngine, Double[]>		injects		= new Hashtable<ShipEngine, Double[]>();
 
 	protected final static PrioritizingLimitedMap<String,TechComponent> cachedComponents = new PrioritizingLimitedMap<String,TechComponent>(1000,60000,600000,0);
 
@@ -92,8 +92,8 @@ public class RocketShipProgram extends GenShipProgram
 		currentTarget = null;
 		programPlanet = null;
 		programEngines = null;
-		sensorReports.clear();
-		primeInjects.clear();
+		sensorReps.clear();
+		injects.clear();
 	}
 
 	protected enum RocketStateMachine
@@ -416,14 +416,14 @@ public class RocketShipProgram extends GenShipProgram
 		if(sensor==null)
 			return new TreeSet<SpaceObject>(XTreeSet.comparator);
 		final Set<SpaceObject> localSensorReport;
-		synchronized(sensorReports)
+		synchronized(sensorReps)
 		{
-			if(sensorReports.containsKey(sensor))
-				localSensorReport=sensorReports.get(sensor);
+			if(sensorReps.containsKey(sensor))
+				localSensorReport=sensorReps.get(sensor);
 			else
 			{
 				localSensorReport=new TreeSet<SpaceObject>(XTreeSet.comparator);
-				sensorReports.put(sensor, localSensorReport);
+				sensorReps.put(sensor, localSensorReport);
 			}
 		}
 		return localSensorReport;
@@ -1349,10 +1349,10 @@ public class RocketShipProgram extends GenShipProgram
 				{
 					int tries=100;
 					double lastTryAmt;
-					if(this.primeInjects.containsKey(engineE))
+					if(this.injects.containsKey(engineE))
 					{
-						lastTryAmt = this.primeInjects.get(engineE)[0].doubleValue();
-						lastAcceleration=this.primeInjects.get(engineE)[1];
+						lastTryAmt = this.injects.get(engineE)[0].doubleValue();
+						lastAcceleration=this.injects.get(engineE)[1];
 					}
 					else
 						lastTryAmt= 0.0001;
@@ -1374,7 +1374,7 @@ public class RocketShipProgram extends GenShipProgram
 							&&(!limit))
 							{
 								this.lastInject=Double.valueOf(lastTryAmt);
-								this.primeInjects.put(engineE,new Double[] {lastInject,lastAcceleration});
+								this.injects.put(engineE,new Double[] {lastInject,lastAcceleration});
 								return engineE;
 							}
 							else
@@ -1383,7 +1383,7 @@ public class RocketShipProgram extends GenShipProgram
 							else
 							if(prevAcceleration.doubleValue() == thisLastAccel.doubleValue())
 							{
-								this.primeInjects.put(engineE,new Double[] {lastInject,lastAcceleration});
+								this.injects.put(engineE,new Double[] {lastInject,lastAcceleration});
 								break;
 							}
 							else
@@ -1780,7 +1780,7 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Error: Ship is already landed."));
 					return;
 				}
-				if(sensorReports.size()==0)
+				if(sensorReps.size()==0)
 				{
 					super.addScreenMessage(L("Error: no sensor data found to identify landing position."));
 					return;
@@ -1874,7 +1874,7 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Error: TARGET requires the name of the target.   Try HELP."));
 					return;
 				}
-				if(sensorReports.size()==0)
+				if(sensorReps.size()==0)
 				{
 					super.addScreenMessage(L("Error: no sensor data found to identify target."));
 					return;
@@ -1916,7 +1916,7 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Error: FACE requires the name of the object.   Try HELP."));
 					return;
 				}
-				if(sensorReports.size()==0)
+				if(sensorReps.size()==0)
 				{
 					super.addScreenMessage(L("Error: no sensor data found to identify object."));
 					return;
@@ -2070,7 +2070,7 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Error: APPROACH requires the name of the object.   Try HELP."));
 					return;
 				}
-				if(sensorReports.size()==0)
+				if(sensorReps.size()==0)
 				{
 					super.addScreenMessage(L("Error: no sensor data found to identify object."));
 					return;
@@ -2139,7 +2139,7 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Error: MOON requires the name of the object.   Try HELP."));
 					return;
 				}
-				if(sensorReports.size()==0)
+				if(sensorReps.size()==0)
 				{
 					super.addScreenMessage(L("Error: no sensor data found to identify object."));
 					return;
@@ -2788,7 +2788,7 @@ public class RocketShipProgram extends GenShipProgram
 			this.components = null;
 			this.engines = null;
 			this.sensors = null;
-			this.sensorReports.clear();
+			this.sensorReps.clear();
 		}
 		super.executeMsg(host,msg);
 	}

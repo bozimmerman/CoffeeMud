@@ -141,6 +141,11 @@ public class GenShipViewScreen extends GenShipOpticalSensor implements ShipDirec
 			{
 				return new SpaceObject()
 				{
+					final Environmental	obj			= me;
+					protected String	name		= getGenericOpticalName(obj);
+					final String		displayText	= "";
+					final String		description	= "";
+
 					@Override
 					public String ID()
 					{
@@ -150,18 +155,19 @@ public class GenShipViewScreen extends GenShipOpticalSensor implements ShipDirec
 					@Override
 					public String Name()
 					{
-						return obj.name();
+						return name;
 					}
 
 					@Override
 					public void setName(final String newName)
 					{
+						name = newName;
 					}
 
 					@Override
 					public String displayText()
 					{
-						return obj.displayText();
+						return displayText;
 					}
 
 					@Override
@@ -172,7 +178,7 @@ public class GenShipViewScreen extends GenShipOpticalSensor implements ShipDirec
 					@Override
 					public String description()
 					{
-						return obj.description();
+						return description;
 					}
 
 					@Override

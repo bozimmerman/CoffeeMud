@@ -620,7 +620,7 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 	protected boolean doSensing(final MOB mob, final Software controlI)
 	{
 		final List<? extends Environmental> found= getSensedObjects();
-		final Converter<Environmental, Environmental> converter = this.getSensedObjectConverter();
+		final Converter<Environmental, Environmental> converter = getSensedObjectConverter();
 		final Set<Environmental> newlySensed = new TreeSet<Environmental>();
 		for(final Environmental obj : found)
 		{

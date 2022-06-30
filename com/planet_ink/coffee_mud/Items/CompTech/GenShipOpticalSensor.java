@@ -75,7 +75,7 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 			return new SpaceObject()
 			{
 				final Environmental	obj			= me;
-				final String		name		= getGenericOpticalName(obj);
+				protected String	name		= getGenericOpticalName(obj);
 				final String		displayText	= "";
 				final String		description	= "";
 
@@ -94,6 +94,7 @@ public class GenShipOpticalSensor extends GenElecCompSensor
 				@Override
 				public void setName(final String newName)
 				{
+					name = newName;
 				}
 
 				@Override

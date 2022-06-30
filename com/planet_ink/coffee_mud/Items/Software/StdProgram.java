@@ -419,6 +419,16 @@ public class StdProgram extends StdItem implements Software
 
 	}
 
+	protected void sendSoftwareRespMsg(final Software S, final CMMsg msg)
+	{
+		if((S.owner() instanceof Room)
+		&&(((Room)S.owner()).okMessage(msg.source(), msg)))
+			((Room)S.owner()).send(msg.source(), msg);
+		else
+		if(S.okMessage(msg.source(), msg))
+			S.executeMsg(msg.source(), msg);
+	}
+
 	protected void handleServices(final Environmental host, final CMMsg msg)
 	{
 		if((!(msg.tool() instanceof Software))
@@ -459,12 +469,7 @@ public class StdProgram extends StdItem implements Software
 					if(owner() == SW.owner())
 						msg.addTrailerMsg(msg2);
 					else
-					if((SW.owner() instanceof Room)
-					&&(((Room)SW.owner()).okMessage(host, msg2)))
-						((Room)SW.owner()).send(msg2.source(), msg2);
-					else
-					if(SW.okMessage(host, msg2))
-						SW.executeMsg(host, msg2);
+						sendSoftwareRespMsg(SW,msg2);
 				}
 				break;
 			case SWSVCREQ: // request

@@ -16,6 +16,8 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.Software.SWServices;
+import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -48,10 +50,11 @@ public class DatabaseProgram extends GenShipProgram
 		return "DatabaseProgram";
 	}
 
-	protected volatile long			nextPowerCycleTmr	= System.currentTimeMillis() + (8 * 1000);
-	protected final StringBuffer	scr					= new StringBuffer("");
-	protected JSONObject			data				= new JSONObject();
-	protected BoundedCube			spaceCube			= null;
+	protected volatile long				nextPowerCycleTmr	= System.currentTimeMillis() + (8 * 1000);
+	protected final StringBuffer		scr					= new StringBuffer("");
+	protected JSONObject				data				= new JSONObject();
+	protected BoundedCube				spaceCube			= null;
+	protected Map<String, SpaceObject>	sensorData			= new SHashtable<String, SpaceObject>();
 
 	public DatabaseProgram()
 	{
@@ -105,6 +108,18 @@ public class DatabaseProgram extends GenShipProgram
 			}
 		}
 		settings=var;
+	}
+
+	@Override
+	protected SWServices[] getProvidedServices()
+	{
+		return new SWServices[] { Software.SWServices.IDENTIFICATION };
+	}
+
+	@Override
+	protected SWServices[] getAppreciatedServices()
+	{
+		return new SWServices[0];
 	}
 
 	public final Filterer<SpaceObject> spaceFilter = new Filterer<SpaceObject>()
@@ -318,34 +333,6 @@ public class DatabaseProgram extends GenShipProgram
 			}
 		}
 		return "";
-	}
-
-	@Override
-	public String getStat(final String code)
-	{
-		if(code!=null)
-		{
-			if(code.startsWith("DB-NAME:"))
-				return getDataName(code.substring(8));
-			if(code.startsWith("DB-COORDS:"))
-			{
-				final long[] coords = getDataCoords(code.substring(10));
-				if(coords==null)
-					return "";
-				return CMParms.toListString(coords);
-			}
-		}
-		return super.getStat(code);
-	}
-
-	@Override
-	public void setStat(final String code, final String value)
-	{
-		if(code!=null)
-		{
-			//TODO: do submissions of learned space objects from active sensors and things
-		}
-		super.setStat(code, value);
 	}
 
 	protected List<SpaceObject> findDBSpaceObjects(final long[] coords, final long radius)
@@ -849,6 +836,40 @@ public class DatabaseProgram extends GenShipProgram
 	}
 
 	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+
+		if((msg.targetMinor()==CMMsg.TYP_ACTIVATE)
+		&&(msg.target() instanceof Software)
+		&&(msg.target() != this)
+		&&(msg.tool() instanceof SpaceObject)
+		&&(CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
+		&&(msg.targetMessage()!=null))
+		{
+			final String[] parts=msg.targetMessage().split(" ");
+			final TechCommand command=TechCommand.findCommand(parts);
+			if(command==TechCommand.SENSE)
+			{
+				final Object[] parms=command.confirmAndTranslate(parts);
+				final Boolean tf=(parms[1] instanceof Boolean)?(Boolean)parms[1]:Boolean.TRUE;
+				final SpaceObject obj = (SpaceObject)msg.tool();
+				if(tf.booleanValue())
+				{
+					sensorData.put(obj.ID(), obj);
+					String name = getDataName(CMParms.toListString(obj.coordinates()));
+					if((name==null)||(name.length()==0))
+						name=getDataName(obj.Name());
+					if((name!=null)&&(name.length()>0))
+						obj.setName(name);
+				}
+				else
+					sensorData.remove(obj.ID());
+			}
+		}
+	}
+
+	@Override
 	protected void onTyping(final MOB mob, String message)
 	{
 		synchronized(this)
@@ -903,6 +924,7 @@ public class DatabaseProgram extends GenShipProgram
 				msg.append(L("Precede coordinates/name with the word NEAR\n\r"));
 				if(!data.containsKey("DISABLED"))
 				{
+					//TODO:
 					msg.append(L("To set notes, select a *single* object, or search a coordinate, \n\r"));
 					msg.append(L("   then use NOTE followed by comment.\n\r"));
 				}
@@ -930,9 +952,42 @@ public class DatabaseProgram extends GenShipProgram
 	@Override
 	protected void onPowerCurrent(final int value)
 	{
+		super.onPowerCurrent(value);
 		if (System.currentTimeMillis() > nextPowerCycleTmr)
 		{
 			this.shutdown();
+		}
+	}
+
+	@Override
+	protected void provideService(final SWServices service, final Software S, final String[] parms)
+	{
+		if((service == SWServices.IDENTIFICATION)
+		&&(S!=null)
+		&&(S!=this))
+		{
+			if(parms.length==1)
+			{
+				final String resp = getDataName(parms[0]);
+				if(resp.length()>0)
+				{
+					final MOB factoryMOB = CMClass.getFactoryMOB(name(), 1, CMLib.map().roomLocation(this));
+					try
+					{
+						final String code=TechCommand.SWSVCREQ.makeCommand(service,new String[] { resp });
+						final CMMsg msg=CMClass.getMsg(factoryMOB, S, this,
+								CMMsg.NO_EFFECT, null,
+								CMMsg.MSG_ACTIVATE|CMMsg.MASK_ALWAYS|CMMsg.MASK_CNTRLMSG, code,
+								CMMsg.NO_EFFECT, null);
+						msg.setTargetMessage(code);
+						super.sendSoftwareRespMsg(S, msg);
+					}
+					finally
+					{
+						factoryMOB.destroy();
+					}
+				}
+			}
 		}
 	}
 }
