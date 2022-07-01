@@ -950,6 +950,32 @@ public class GenAbility extends StdAbility
 		return true;
 	}
 
+	@Override
+	public boolean autoInvocation(final MOB mob, final boolean force)
+	{
+		if(super.autoInvocation(mob, force))
+		{
+			final String SID=(String)V(ID,V_MOCK);
+			if(SID.length()>0)
+			{
+				final GenAbility affectA=(GenAbility)mob.fetchEffect(ID());
+				if(affectA!=null)
+				{
+					final Ability A=CMClass.getAbility(SID);
+					if(A!=null)
+					{
+						A.setAffectedOne(affectA.affecting());
+						A.setMiscText((String)V(ID,V_MOKT));
+						affectA.quietEffect=A;
+					}
+				}
+			}
+
+			return true;
+		}
+		return false;
+	}
+
 	// lots of work to be done here
 	@Override
 	public int getSaveStatIndex()
