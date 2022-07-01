@@ -127,6 +127,18 @@ public class RocketShipProgram extends GenShipProgram
 		recoverPhyStats();
 	}
 
+	@Override
+	protected SWServices[] getAppreciatedServices()
+	{
+		return new SWServices[] { Software.SWServices.IDENTIFICATION };
+	}
+
+	@Override
+	protected SWServices[] getProvidedServices()
+	{
+		return new SWServices[] { Software.SWServices.TARGETING };
+	}
+
 	private static class DistanceSorter implements Comparator<SpaceObject>
 	{
 		private final GalacticMap space;
@@ -2706,6 +2718,24 @@ public class RocketShipProgram extends GenShipProgram
 
 	}
 
+	protected String getDataName(final String realName, final String coords, final String notName)
+	{
+		final String[] parms = new String[] {coords, realName};
+		final List<String[]> names = super.doServiceTransaction(SWServices.IDENTIFICATION, parms);
+		for(final String[] res : names)
+		{
+			for(final String r : res)
+			{
+				if((r.length()>0)
+				&&(!r.equals(realName))
+				&&(!r.equals(coords))
+				&&(!r.equals(notName)))
+					return r;
+			}
+		}
+		return "";
+	}
+
 	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
@@ -2738,7 +2768,19 @@ public class RocketShipProgram extends GenShipProgram
 							final Set<SpaceObject> sensorReport=getLocalSensorReport(sensorSystem);
 							final SpaceObject spaceObj = (SpaceObject)msg.tool();
 							if(tf.booleanValue())
+							{
 								sensorReport.add(spaceObj);
+								if((!spaceObj.Name().equals(spaceObj.name()))
+								&&(svcs.containsKey(SWServices.IDENTIFICATION)))
+								{
+									final String coords = CMParms.toListString(spaceObj.coordinates());
+									final String realName=spaceObj.Name();
+									final String notName = spaceObj.name();
+									final String name = getDataName(realName, coords, notName);
+									if((name!=null)&&(name.length()>0))
+										spaceObj.setName(name);
+								}
+							}
 							else
 								sensorReport.remove(spaceObj);
 						}
@@ -2803,7 +2845,7 @@ public class RocketShipProgram extends GenShipProgram
 	}
 
 	@Override
-	protected void provideService(final SWServices service, final Software S, final String[] parms)
+	protected void provideService(final SWServices service, final Software S, final String[] parms, final CMMsg msg)
 	{
 		if((service == SWServices.TARGETING)
 		&&(S!=null)
@@ -2818,13 +2860,13 @@ public class RocketShipProgram extends GenShipProgram
 				String coords = "";
 				if((currentTarget.speed()==0)&&(currentTarget.radius()>SpaceObject.Distance.AsteroidRadius.dm))
 					coords = CMParms.toListString(currentTarget.coordinates());
-				final String code=TechCommand.SWSVCREQ.makeCommand(service,new String[] { Name,name,coords });
-				final CMMsg msg=CMClass.getMsg(factoryMOB, S, this,
+				final String code=TechCommand.SWSVCRES.makeCommand(service,new String[] { Name,name,coords });
+				final CMMsg msg2=CMClass.getMsg(factoryMOB, S, this,
 								CMMsg.NO_EFFECT, null,
 								CMMsg.MSG_ACTIVATE|CMMsg.MASK_ALWAYS|CMMsg.MASK_CNTRLMSG, code,
 								CMMsg.NO_EFFECT, null);
-				msg.setTargetMessage(code);
-				super.sendSoftwareRespMsg(S, msg);
+				msg2.setTargetMessage(code);
+				msg.addTrailerMsg(msg2);
 			}
 			finally
 			{

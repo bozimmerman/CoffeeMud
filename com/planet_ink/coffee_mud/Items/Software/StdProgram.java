@@ -286,6 +286,18 @@ public class StdProgram extends StdItem implements Software
 		return null;
 	}
 
+	protected Set<Computer> getResponseComputers(final Software SW)
+	{
+		final Set<Computer> puters;
+		if((SW.owner() instanceof Room)
+		&&(SW instanceof Item)
+		&&(((Item)SW).container() instanceof Computer))
+			puters=new XHashSet<Computer>((Computer)((Item)SW).container());
+		else
+			puters=getPeerComputers();
+		return puters;
+	}
+
 	protected Set<Computer> getPeerComputers()
 	{
 		final Set<Computer> puters=new HashSet<Computer>();
@@ -319,6 +331,56 @@ public class StdProgram extends StdItem implements Software
 		return rooms;
 	}
 
+	protected List<String[]> doServiceTransaction(final SWServices service, final String[] parms)
+	{
+		final List<String[]> lst = new ArrayList<String[]>();
+		final Set<Software> sws = svcs.get(service);
+		if(sws == null)
+			return lst;
+		for(final Software SW : sws)
+		{
+			final MOB factoryMOB = CMClass.getFactoryMOB(name(), 1, CMLib.map().roomLocation(this));
+			try
+			{
+				final String code=TechCommand.SWSVCREQ.makeCommand(service,parms);
+				final CMMsg msg=CMClass.getMsg(factoryMOB, SW, this,
+												CMMsg.NO_EFFECT, null,
+												CMMsg.MSG_ACTIVATE|CMMsg.MASK_ALWAYS|CMMsg.MASK_CNTRLMSG, code,
+												CMMsg.NO_EFFECT, null);
+				sendServiceMsg(factoryMOB, getResponseComputers(SW), msg);
+				if((msg.trailerMsgs()!=null)
+				&&(msg.trailerMsgs().iterator().hasNext()))
+				{
+					for(final CMMsg rmsg : msg.trailerMsgs())
+					{
+						if((rmsg.targetMinor()==CMMsg.TYP_ACTIVATE)
+						&&(rmsg.targetMajor(CMMsg.MASK_CNTRLMSG)))
+						{
+							final String[] parts=msg.targetMessage().split(" ");
+							final TechCommand command=TechCommand.findCommand(parts);
+							if(command == TechCommand.SWSVCRES)
+							{
+								final Object[] rparms=(command != null)?command.confirmAndTranslate(parts):null;
+								if((rparms!=null)
+								&&(rparms.length>0)
+								&&(rparms[0] == service))
+								{
+									final String[] args=(parms.length>1)?(String[])rparms[1]:new String[0];
+									lst.add(args);
+								}
+							}
+						}
+					}
+				}
+			}
+			finally
+			{
+				factoryMOB.destroy();
+			}
+		}
+		return null;
+	}
+
 	protected void sendServiceMsg(final MOB mob, final Set<Computer> puters, final CMMsg msg)
 	{
 		final WorldMap map = CMLib.map();
@@ -341,21 +403,22 @@ public class StdProgram extends StdItem implements Software
 				CMMsg.NO_EFFECT, null);
 		final Set<Computer> puters = this.getPeerComputers();
 		this.svcs.clear();
+		final String[] parm = new String[] { "PLEASE" };
 		for(final SWServices service : getProvidedServices())
 		{
-			final String code=TechCommand.SWSVCALLOW.makeCommand(service,new String[0]);
+			final String code=TechCommand.SWSVCALLOW.makeCommand(service,parm);
 			msg.setTargetMessage(code);
 			sendServiceMsg(mob,puters,msg);
 		}
 		for(final SWServices service : getRequiredServices())
 		{
-			final String code=TechCommand.SWSVCNEED.makeCommand(service,new String[0]);
+			final String code=TechCommand.SWSVCNEED.makeCommand(service,parm);
 			msg.setTargetMessage(code);
 			sendServiceMsg(mob,puters,msg);
 		}
 		for(final SWServices service : getAppreciatedServices())
 		{
-			final String code=TechCommand.SWSVCNEED.makeCommand(service,new String[0]);
+			final String code=TechCommand.SWSVCNEED.makeCommand(service,parm);
 			msg.setTargetMessage(code);
 			sendServiceMsg(mob,puters,msg);
 		}
@@ -413,7 +476,7 @@ public class StdProgram extends StdItem implements Software
 		}
 	}
 
-	protected void provideService(final SWServices service, final Software S, final String[] parms)
+	protected void provideService(final SWServices service, final Software S, final String[] parms, final CMMsg msg)
 	{
 		// if you get a request, and can provide, then provide
 
@@ -464,7 +527,7 @@ public class StdProgram extends StdItem implements Software
 				if(CMParms.contains(getProvidedServices(), service))
 				{
 					final CMMsg msg2=((CMMsg)msg.copyOf()).setTool(this).setTarget(SW);
-					final String code=TechCommand.SWSVCALLOW.makeCommand(service,new String[0]);
+					final String code=TechCommand.SWSVCALLOW.makeCommand(service,new String[] {"PLEASE"});
 					msg2.setTargetMessage(code);
 					if(owner() == SW.owner())
 						msg.addTrailerMsg(msg2);
@@ -473,7 +536,7 @@ public class StdProgram extends StdItem implements Software
 				}
 				break;
 			case SWSVCREQ: // request
-				provideService(service, SW, args);
+				provideService(service, SW, args, msg);
 				break;
 			default:
 				break;

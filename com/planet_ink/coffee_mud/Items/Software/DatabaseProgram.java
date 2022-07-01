@@ -54,8 +54,6 @@ public class DatabaseProgram extends GenShipProgram
 	protected final StringBuffer		scr					= new StringBuffer("");
 	protected JSONObject				data				= new JSONObject();
 	protected BoundedCube				spaceCube			= null;
-	protected Map<String, SpaceObject>	sensorData			= new SHashtable<String, SpaceObject>();
-	protected Pair<String,long[]>		target				= null; // string is
 
 	public DatabaseProgram()
 	{
@@ -281,9 +279,9 @@ public class DatabaseProgram extends GenShipProgram
 			return false;
 		if(sO instanceof SpaceShip)
 			return false;
-		if(sO.radius() < SpaceObject.Distance.MoonRadius.dm)
+		if((sO.radius()>0)&&(sO.radius() < SpaceObject.Distance.MoonRadius.dm))
 			return false;
-		if(sO.getMass() < SpaceObject.MOONLET_MASS)
+		if((sO.getMass()>0) && (sO.getMass() < SpaceObject.MOONLET_MASS))
 			return false;
 		return true;
 	}
@@ -837,43 +835,6 @@ public class DatabaseProgram extends GenShipProgram
 	}
 
 	@Override
-	public void executeMsg(final Environmental myHost, final CMMsg msg)
-	{
-		super.executeMsg(myHost, msg);
-
-		if((msg.targetMinor()==CMMsg.TYP_ACTIVATE)
-		&&(msg.target() instanceof Software)
-		&&(msg.target() != this)
-		&&(msg.tool() instanceof SpaceObject)
-		&&(CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
-		&&(msg.targetMessage()!=null))
-		{
-			final String[] parts=msg.targetMessage().split(" ");
-			final TechCommand command=TechCommand.findCommand(parts);
-			if(command==TechCommand.SENSE)
-			{
-				final Object[] parms=command.confirmAndTranslate(parts);
-				final Boolean tf=(parms[1] instanceof Boolean)?(Boolean)parms[1]:Boolean.TRUE;
-				final SpaceObject obj = (SpaceObject)msg.tool();
-				if(tf.booleanValue())
-				{
-					sensorData.put(obj.ID(), obj);
-					if(!obj.Name().equals(obj.name()))
-					{
-						String name = getDataName(CMParms.toListString(obj.coordinates()));
-						if((name==null)||(name.length()==0))
-							name=getDataName(obj.Name()); // using the real, secret name
-						if((name!=null)&&(name.length()>0))
-							obj.setName(name);
-					}
-				}
-				else
-					sensorData.remove(obj.ID());
-			}
-		}
-	}
-
-	@Override
 	protected void onTyping(final MOB mob, String message)
 	{
 		synchronized(this)
@@ -964,27 +925,28 @@ public class DatabaseProgram extends GenShipProgram
 	}
 
 	@Override
-	protected void provideService(final SWServices service, final Software S, final String[] parms)
+	protected void provideService(final SWServices service, final Software S, final String[] parms, final CMMsg msg)
 	{
 		if((service == SWServices.IDENTIFICATION)
 		&&(S!=null)
-		&&(S!=this))
+		&&(S!=this)
+		&&(parms.length>0))
 		{
-			if(parms.length==1)
+			for(final String parm : parms)
 			{
-				final String resp = getDataName(parms[0]);
+				final String resp = getDataName(parm);
 				if(resp.length()>0)
 				{
 					final MOB factoryMOB = CMClass.getFactoryMOB(name(), 1, CMLib.map().roomLocation(this));
 					try
 					{
-						final String code=TechCommand.SWSVCREQ.makeCommand(service,new String[] { resp });
-						final CMMsg msg=CMClass.getMsg(factoryMOB, S, this,
+						final String code=TechCommand.SWSVCRES.makeCommand(service,new String[] { resp });
+						final CMMsg msg2=CMClass.getMsg(factoryMOB, S, this,
 								CMMsg.NO_EFFECT, null,
 								CMMsg.MSG_ACTIVATE|CMMsg.MASK_ALWAYS|CMMsg.MASK_CNTRLMSG, code,
 								CMMsg.NO_EFFECT, null);
-						msg.setTargetMessage(code);
-						super.sendSoftwareRespMsg(S, msg);
+						msg2.setTargetMessage(code);
+						msg.addTrailerMsg(msg2);
 					}
 					finally
 					{

@@ -195,7 +195,8 @@ public interface Technical extends Item
 		GRAVITYCHANGE(Boolean.class),
 		SWSVCALLOW(Software.SWServices.class),
 		SWSVCNEED(Software.SWServices.class, String[].class),
-		SWSVCREQ(Software.SWServices.class, String[].class)
+		SWSVCREQ(Software.SWServices.class, String[].class),
+		SWSVCRES(Software.SWServices.class, String[].class)
 		;
 		private final Class<?>[]	parms;
 
@@ -232,6 +233,13 @@ public interface Technical extends Item
 				else
 				if (parms[i] == String[].class)
 				{
+					if(parts[i].getClass() == String[].class)
+					{
+						final String[] s = (String[])parts[i];
+						for (int x=0; x < s.length; x++)
+							str.append(" ").append(s[x]);
+					}
+					else
 					for (; i < parms.length; i++)
 						str.append(" ").append(parts[i].toString());
 					break;
