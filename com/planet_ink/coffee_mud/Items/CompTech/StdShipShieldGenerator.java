@@ -311,13 +311,12 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 				}
 				else
 				{
-					final String[] parts=msg.targetMessage().split(" ");
-					final TechCommand command=TechCommand.findCommand(parts);
+					final TechCommand command=TechCommand.findCommand(msg.targetMessage());
 					if(command==null)
 						reportError(this, controlI, mob, lang.L("@x1 does not respond.",me.name(mob)), lang.L("Failure: @x1: control failure.",me.name(mob)));
 					else
 					{
-						final Object[] parms=command.confirmAndTranslate(parts);
+						final Object[] parms=command.confirmAndTranslate(msg.targetMessage());
 						if(parms==null)
 							reportError(this, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control syntax failure.",me.name(mob)));
 						else

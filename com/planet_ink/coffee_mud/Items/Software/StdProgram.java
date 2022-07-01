@@ -356,16 +356,17 @@ public class StdProgram extends StdItem implements Software
 						if((rmsg.targetMinor()==CMMsg.TYP_ACTIVATE)
 						&&(rmsg.targetMajor(CMMsg.MASK_CNTRLMSG)))
 						{
-							final String[] parts=msg.targetMessage().split(" ");
-							final TechCommand command=TechCommand.findCommand(parts);
+							final TechCommand command=TechCommand.findCommand(msg.targetMessage());
 							if(command == TechCommand.SWSVCRES)
 							{
-								final Object[] rparms=(command != null)?command.confirmAndTranslate(parts):null;
+								final Object[] rparms=(command != null)?command.confirmAndTranslate(msg.targetMessage()):null;
 								if((rparms!=null)
 								&&(rparms.length>0)
 								&&(rparms[0] == service))
 								{
-									final String[] args=(parms.length>1)?(String[])rparms[1]:new String[0];
+									final String[] args=new String[rparms.length-1];
+									for(int i=1;i<rparms.length;i++)
+										args[i-1]=rparms[i].toString();
 									lst.add(args);
 								}
 							}
@@ -378,7 +379,7 @@ public class StdProgram extends StdItem implements Software
 				factoryMOB.destroy();
 			}
 		}
-		return null;
+		return lst;
 	}
 
 	protected void sendServiceMsg(final MOB mob, final Set<Computer> puters, final CMMsg msg)
@@ -406,7 +407,7 @@ public class StdProgram extends StdItem implements Software
 		final String[] parm = new String[] { "PLEASE" };
 		for(final SWServices service : getProvidedServices())
 		{
-			final String code=TechCommand.SWSVCALLOW.makeCommand(service,parm);
+			final String code=TechCommand.SWSVCALLOW.makeCommand(service);
 			msg.setTargetMessage(code);
 			sendServiceMsg(mob,puters,msg);
 		}
@@ -502,9 +503,8 @@ public class StdProgram extends StdItem implements Software
 		&&(getAppreciatedServices().length==0))
 			return;
 		final Software SW = (Software)msg.tool();
-		final String[] parts=msg.targetMessage().split(" ");
-		final TechCommand command=TechCommand.findCommand(parts);
-		final Object[] parms=(command != null)?command.confirmAndTranslate(parts):null;
+		final TechCommand command=TechCommand.findCommand(msg.targetMessage());
+		final Object[] parms=(command != null)?command.confirmAndTranslate(msg.targetMessage()):null;
 		if((command!=null)
 		&&(parms!=null)
 		&&(parms.length>0)
@@ -527,7 +527,7 @@ public class StdProgram extends StdItem implements Software
 				if(CMParms.contains(getProvidedServices(), service))
 				{
 					final CMMsg msg2=((CMMsg)msg.copyOf()).setTool(this).setTarget(SW);
-					final String code=TechCommand.SWSVCALLOW.makeCommand(service,new String[] {"PLEASE"});
+					final String code=TechCommand.SWSVCALLOW.makeCommand(service);
 					msg2.setTargetMessage(code);
 					if(owner() == SW.owner())
 						msg.addTrailerMsg(msg2);

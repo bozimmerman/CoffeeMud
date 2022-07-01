@@ -694,8 +694,7 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 				&&(msg.targetMessage()!=null))
 				{
 					final LanguageLibrary lang=CMLib.lang();
-					final String[] parts=msg.targetMessage().split(" ");
-					final TechCommand command=TechCommand.findCommand(parts);
+					final TechCommand command=TechCommand.findCommand(msg.targetMessage());
 					final Software controlI=(msg.tool() instanceof Software)?((Software)msg.tool()):null;
 					synchronized(feedbackObjects)
 					{

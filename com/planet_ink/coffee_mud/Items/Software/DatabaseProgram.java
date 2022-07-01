@@ -714,16 +714,18 @@ public class DatabaseProgram extends GenShipProgram
 				return "";
 			query=CMParms.combine(parsed,0);
 		}
-		// first, was the query directly for coordinates?
 		long[] queryCoords = null;
+		// was the query done by magic word?
 		if(query.equalsIgnoreCase("here"))
 		{
 			final SpaceObject o = CMLib.space().getSpaceObject(this,true);
 			if(o != null)
 				queryCoords = o.coordinates();
 		}
+		// was the query directly for coordinates?
 		if(queryCoords == null)
 			queryCoords = getCheckedCoords(query);
+		// was the query the exact name of a space object in the approved cube area?
 		if(queryCoords == null)
 		{
 			final SpaceObject cubeExactMatch = this.spaceCubeMatch(query.toUpperCase().trim());
@@ -772,14 +774,15 @@ public class DatabaseProgram extends GenShipProgram
 			return str.toString(); // we are done!
 		}
 
+		if(data.containsKey("DISABLED"))
+			return "";
+
 		// at this point, query is NOT coords, and is NOT in an embedded space box
 
-		if((data.containsKey(query.toUpperCase().trim())) // a full name was entered
-		&&(!data.containsKey("DISABLED")))
+		if(data.containsKey(query.toUpperCase().trim())) // a full name was entered
 			return getDataResults(query.toUpperCase().trim());
 
-		if((data.size()>0)
-		&&(!data.containsKey("DISABLED")))
+		if(data.size()>0)
 		{
 			final List<String> winKeys = new LinkedList<String>();
 			if(query.startsWith("*"))
@@ -843,36 +846,59 @@ public class DatabaseProgram extends GenShipProgram
 			final List<String> parsed=CMParms.parse(message);
 			String uword=(parsed.size()>0)?parsed.get(0).toUpperCase():"";
 			if(uword.equalsIgnoreCase("DATABASE")
-			||uword.equalsIgnoreCase("DB"))
+			|| uword.equalsIgnoreCase("DB"))
 			{
 				parsed.remove(0);
 				uword=(parsed.size()>0)?parsed.get(0).toUpperCase():"";
 				message=CMParms.combine(parsed,0);
 			}
-			if(uword.equalsIgnoreCase("NOTE"))
+			if(uword.equalsIgnoreCase("ADDNOTE")
+			|| uword.equalsIgnoreCase("SETNOTE"))
 			{
-				if(parsed.size()==0)
+				if(data.containsKey("DISABLED"))
 				{
-					final String queryStr = L("Note: @x1");
+					final String resp=L("Not supported by this software.");
+					addLineToReadableScreen(resp);
+					super.addScreenMessage(resp);
+					return;
+				}
+				parsed.remove(0);
+				message=CMParms.combine(parsed,0);
+				if((parsed.size()<1)
+				||(uword.equalsIgnoreCase("ADDNOTE")&&(parsed.size()<2)))
+				{
+					final String queryStr = L("Note: @x1",message.toLowerCase());
 					addLineToReadableScreen(queryStr);
-					final String resp =L("No note given.");
+					final String resp =L("No target and note given.");
 					addLineToReadableScreen(resp);
 					super.addScreenMessage(resp);
 				}
 				else
 				{
+					String target=parsed.get(0);
 					message=CMParms.combine(parsed,1);
-					final String queryStr = L("Note: @x1",message.toLowerCase());
-					addLineToReadableScreen(queryStr);
-					if(message.equalsIgnoreCase("space"))
+					if(target.equalsIgnoreCase("TARGET"))
+						target = this.getTargetKey();
+					if(target.length()==0)
 					{
-						final String resp=L("Illegal note.");
+						final String resp=L("No target found.");
 						addLineToReadableScreen(resp);
 						super.addScreenMessage(resp);
 					}
 					else
 					{
-						//TODO: set a note
+						final String queryStr = L("Note: @x1",message.toLowerCase());
+						addLineToReadableScreen(queryStr);
+						if(message.equalsIgnoreCase("space"))
+						{
+							final String resp=L("Illegal note.");
+							addLineToReadableScreen(resp);
+							super.addScreenMessage(resp);
+						}
+						else
+						{
+							//TODO: set a note
+						}
 					}
 				}
 				return; // done, one way or another
@@ -881,17 +907,21 @@ public class DatabaseProgram extends GenShipProgram
 			||(message.equalsIgnoreCase("HELP")))
 			{
 				final StringBuilder msg=new StringBuilder("");
-				msg.append(L("@x1 instructions:\n\r",name()));
-				msg.append(L("Enter search coordinates, e.g. -100gm,400dm,1000km\n\r"));
-				msg.append(L("Enter an object name, e.g. Vulcan\n\r"));
-				msg.append(L("Search for an object, e.g. Vulc*\n\r"));
-				msg.append(L("Use special object names HERE, or a sector name.\n\r"));
-				msg.append(L("Precede coordinates/name with the word NEAR\n\r"));
+				msg.append(L("-- @x1 instructions --\n\r",name()));
+				msg.append(L("Search database:\n\r",name()));
+				msg.append(L("  Enter search coordinates, e.g. -100gm,400dm,1000km\n\r"));
+				msg.append(L("  Enter an object name, e.g. Vulcan\n\r"));
+				msg.append(L("  Search for an object, e.g. Vulc*\n\r"));
+				msg.append(L(" * Use special object names HERE, or a sector name.\n\r"));
+				msg.append(L(" * Precede coordinates/name with the word NEAR\n\r"));
 				if(!data.containsKey("DISABLED"))
 				{
 					//TODO:
-					msg.append(L("To set notes, select a *single* object, or search a coordinate, \n\r"));
-					msg.append(L("   then use NOTE followed by comment.\n\r"));
+					msg.append(L("Setting notes:\n\r"));
+					msg.append(L("  ADDNOTE [KEY] comment\n\r"));
+					msg.append(L("  SETNOTE [KEY] comment\n\r"));
+					if(svcs.containsKey(SWServices.TARGETING))
+						msg.append(L(" * [KEY] can be TARGET\n\r"));
 				}
 				addLineToReadableScreen(msg.toString());
 				super.addScreenMessage(msg.toString());
@@ -922,6 +952,19 @@ public class DatabaseProgram extends GenShipProgram
 		{
 			this.shutdown();
 		}
+	}
+
+	protected String getTargetKey()
+	{
+		final List<String[]> names = super.doServiceTransaction(SWServices.TARGETING, new String[] {"PLEASE"});
+		for(final String[] res : names)
+		{
+			final String Name=(res.length>0)?res[0]:"";
+			final String name=(res.length>1)?res[1]:"";
+			final String coords=(res.length>2)?res[2]:"";
+
+		}
+		return "";
 	}
 
 	@Override

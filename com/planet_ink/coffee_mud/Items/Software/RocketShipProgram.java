@@ -2756,11 +2756,11 @@ public class RocketShipProgram extends GenShipProgram
 				&& (msg.targetMessage()!=null))
 				{
 					final String[] parts=msg.targetMessage().split(" ");
-					final TechCommand command=TechCommand.findCommand(parts);
+					final TechCommand command=TechCommand.findCommand(msg.targetMessage());
 					if((command == TechCommand.SENSE)
 					&& (msg.tool() instanceof SpaceObject)) // this is probably a sensor report
 					{
-						final Object[] parms=command.confirmAndTranslate(parts);
+						final Object[] parms=command.confirmAndTranslate(msg.targetMessage());
 						if((parms!=null)&&(parms.length>1))
 						{
 							final TechComponent sensorSystem = findComponentByID(getShipSensors(), parts[1]);
@@ -2801,11 +2801,10 @@ public class RocketShipProgram extends GenShipProgram
 		&&(msg.isTarget(CMMsg.MASK_CNTRLMSG))
 		&&(msg.targetMessage()!=null))
 		{
-			final String[] parts=msg.targetMessage().split(" ");
-			final TechCommand command=TechCommand.findCommand(parts);
+			final TechCommand command=TechCommand.findCommand(msg.targetMessage());
 			if(command == TechCommand.ACCELERATED)
 			{
-				final Object[] parms=command.confirmAndTranslate(parts);
+				final Object[] parms=command.confirmAndTranslate(msg.targetMessage());
 				if(parms != null)
 				{
 					switch((ShipDir)parms[0])

@@ -420,11 +420,10 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 			case CMMsg.TYP_ACTIVATE:
 				if(CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
 				{
-					final String[] parts=msg.targetMessage().split(" ");
-					final TechCommand command=TechCommand.findCommand(parts);
+					final TechCommand command=TechCommand.findCommand(msg.targetMessage());
 					if(command!=null)
 					{
-						final Object[] parms=command.confirmAndTranslate(parts);
+						final Object[] parms=command.confirmAndTranslate(msg.targetMessage());
 						if(parms!=null)
 						{
 							if(command==Technical.TechCommand.AIRREFRESH)

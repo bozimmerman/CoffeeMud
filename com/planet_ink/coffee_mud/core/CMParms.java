@@ -331,8 +331,16 @@ public class CMParms
 			for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
 			{
 				s=commands.get(commandIndex).toString();
+				int x=s.indexOf("\"");
+				while(x>=0)
+				{
+					s=s.substring(0,x)+"\\"+s.substring(x);
+					x=s.indexOf("\"",x+2);
+				}
 				if(s.indexOf(' ')>=0)
+				{
 					combined.append('\"').append(s).append("\" ");
+				}
 				else
 					combined.append(s).append(" ");
 			}
@@ -395,6 +403,12 @@ public class CMParms
 			for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
 			{
 				s=commands.get(commandIndex).toString();
+				int x=s.indexOf("\"");
+				while(x>=0)
+				{
+					s=s.substring(0,x)+"\\"+s.substring(x);
+					x=s.indexOf("\"",x+2);
+				}
 				if(s.indexOf(' ')>=0)
 					combined.append('\"').append(s).append("\" ");
 				else
@@ -537,8 +551,15 @@ public class CMParms
 		final StringBuilder s=new StringBuilder();
 		final char[] cs=str.toCharArray();
 		int state=0;
-		for(final char c : cs)
+		for(int i=0;i<cs.length;i++)
 		{
+			final char c=cs[i];
+			if((c=='\\')&&(i<cs.length-1))
+			{
+				s.append(cs[++i]);
+				state=(state==0)?1:state;
+			}
+			else
 			switch(state)
 			{
 			case 0:
