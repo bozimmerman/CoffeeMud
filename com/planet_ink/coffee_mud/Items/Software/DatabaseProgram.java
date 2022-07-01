@@ -55,6 +55,10 @@ public class DatabaseProgram extends GenShipProgram
 	protected JSONObject				data				= new JSONObject();
 	protected BoundedCube				spaceCube			= null;
 
+	private static final String[] BASIC_FIELDS = {
+		"NOTE", "NAME", "COORDS", "MASS", "RADIUS"
+	};
+
 	public DatabaseProgram()
 	{
 		super();
@@ -545,6 +549,12 @@ public class DatabaseProgram extends GenShipProgram
 	{
 		if(jo.containsKey("COORDS") && jo.containsKey("SPACE"))
 			return getAllSpaceObjectDataResults(getCheckedCoords(jo.get("COORDS").toString()));
+		int maxLen=0;
+		for(final String k : jo.keySet())
+		{
+			if(k.length()>maxLen)
+				maxLen=k.length();
+		}
 		String coords = "N/A";
 		if(jo.containsKey("COORDS"))
 			coords=CMLib.english().coordDescShort(getCheckedCoords(jo.get("COORDS").toString()));
@@ -555,14 +565,19 @@ public class DatabaseProgram extends GenShipProgram
 		if(jo.containsKey("NAME"))
 			name=jo.get("NAME").toString();
 		final StringBuilder str=new StringBuilder("");
-		str.append(CMStrings.padRight("Coord: "+coords,40));
-		str.append(CMStrings.padRight("Name : "+name,38));
+		str.append(CMStrings.padRight(CMStrings.padRight(L("Coord"),maxLen)+" : "+coords,40));
+		str.append(CMStrings.padRight(CMStrings.padRight(L("Name"),maxLen)+" : "+name,38));
 		if(jo.containsKey("MASS"))
-			str.append("\n\r").append(CMStrings.padRight(L(" Mass: @x1",jo.get("MASS").toString()),38));
+			str.append("\n\r").append(CMStrings.padRight(L(CMStrings.padRight(L("Mass"),maxLen)+": @x1",jo.get("MASS").toString()),38));
 		if(jo.containsKey("RADIUS"))
-			str.append("\n\r").append(CMStrings.padRight(L(" Size: @x1 radius",CMLib.english().distanceDescShort(CMath.s_long(jo.get("RADIUS").toString()))),38));
+			str.append("\n\r").append(CMStrings.padRight(L(CMStrings.padRight(L("Size"),maxLen)+": @x1 radius",CMLib.english().distanceDescShort(CMath.s_long(jo.get("RADIUS").toString()))),38));
 		if(jo.containsKey("NOTE"))
-			str.append("\n\r").append(" Note: ").append(jo.get("NOTE").toString());
+			str.append("\n\r").append(CMStrings.padRight(L("Note"),maxLen)+": ").append(jo.get("NOTE").toString());
+		for(final String k : jo.keySet())
+		{
+			if(!CMParms.contains(DatabaseProgram.BASIC_FIELDS, k))
+				str.append("\n\r").append(CMStrings.padRight(L(CMStrings.capitalizeAndLower(k)),maxLen)+": ").append(jo.get("NOTE").toString());
+		}
 		return str.toString();
 	}
 
@@ -700,20 +715,8 @@ public class DatabaseProgram extends GenShipProgram
 		return sos;
 	}
 
-	protected String doDBQuery(final List<String> parsed, String query)
+	protected List<SpaceObject> dbQuerySpaceObjects(final String query, final boolean near)
 	{
-		if(parsed.size()==0)
-			return "";
-		boolean near=false;
-		if(parsed.get(0).equals("NEAR")
-		||parsed.get(0).equals("AROUND"))
-		{
-			near=true;
-			parsed.remove(0);
-			if(parsed.size()==0)
-				return "";
-			query=CMParms.combine(parsed,0);
-		}
 		long[] queryCoords = null;
 		// was the query done by magic word?
 		if(query.equalsIgnoreCase("here"))
@@ -757,6 +760,139 @@ public class DatabaseProgram extends GenShipProgram
 					objs = null;
 			}
 		}
+		return objs;
+	}
+
+	protected List<String> getValues(final String key, final boolean noNotes)
+	{
+		final List<String> vals = new ArrayList<String>();
+		if(data.get(key) instanceof String)
+		{
+			final String s=((String)data.get(key)).toUpperCase().trim();
+			if(s.equals("SPACE"))
+				return vals;
+			if(this.getCheckedCoords(s) != null)
+				vals.add(key.toUpperCase().trim());
+			else
+				vals.add(s);
+		}
+		else
+		if(data.get(key) instanceof JSONObject)
+		{
+			final JSONObject job=(JSONObject)data.get(key);
+			if(job.containsKey("NAME"))
+				vals.add(((String)job.get("NAME")).toUpperCase().trim());
+			if(job.containsKey("NOTE") && (!noNotes))
+				vals.add(((String)job.get("NOTE")).toUpperCase().trim());
+			for(final String jkey : job.keySet())
+			{
+				if(!CMParms.contains(DatabaseProgram.BASIC_FIELDS, jkey))
+					vals.add(((String)job.get(jkey)).toUpperCase().trim());
+			}
+		}
+		return vals;
+	}
+
+	protected Set<String> doKeyQuery(final String query, final boolean noNotes)
+	{
+		final Set<String> keys = new TreeSet<String>();
+		if(data.containsKey("DISABLED"))
+			return keys;
+
+		// at this point, query is NOT coords, and is NOT in an embedded space box
+		if(data.containsKey(query.toUpperCase().trim())) // a full name was entered
+		{
+			keys.add(query.toUpperCase().trim());
+			return keys;
+		}
+		String q=query;
+		int queryType = 0; // 0=whole word, 1=sw, 2=ew, 3=index
+		if(query.startsWith("*"))
+		{
+			if(query.endsWith("*") && (query.length()>1))
+			{
+				queryType=3;
+				q=query.substring(1,query.length()-1).toUpperCase().trim();
+			}
+			else
+			{
+				queryType=1;
+				q=query.substring(1).toUpperCase().trim();
+			}
+		}
+		else
+		if(query.endsWith("*"))
+		{
+			queryType=2;
+			q=query.substring(0,query.length()-1).toUpperCase().trim();
+		}
+		for(final String key : data.keySet())
+		{
+			final List<String> vals = getValues(key,noNotes);
+			if(vals.size()==0)
+				continue;
+			for(final String v : vals)
+			{
+				boolean match;
+				switch(queryType) // 0=whole word, 1=sw, 2=ew, 3=index
+				{
+				case 0:
+					match = v.equals(q);
+					break;
+				case 1:
+					match = v.startsWith(q);
+					break;
+				case 2:
+					match = v.endsWith(q);
+					break;
+				case 3:
+					match = v.indexOf(q)>=0;
+					break;
+				default:
+					match=false;
+					break;
+				}
+				if(match)
+				{
+					keys.add(key);
+					break;
+				}
+			}
+		}
+		return keys;
+	}
+
+	protected boolean doesNameExistInData(final String name, final String okKey)
+	{
+		final Set<String> keyMatches=this.doKeyQuery(name.toUpperCase().trim(),true);
+		if((keyMatches.size()==1)&&(keyMatches.contains(okKey)))
+			return false;
+		for(final String k : keyMatches)
+		{
+			if(k.equals(okKey))
+				continue;
+			final List<String> vals = getValues(k,true);
+			if(vals.contains(name.toUpperCase().trim()))
+				return true;
+		}
+		return false;
+	}
+
+	protected String doDBQuery(final List<String> parsed, String query)
+	{
+		if(parsed.size()==0)
+			return "";
+		boolean near=false;
+		if(parsed.get(0).equals("NEAR")
+		||parsed.get(0).equals("AROUND"))
+		{
+			near=true;
+			parsed.remove(0);
+			if(parsed.size()==0)
+				return "";
+			query=CMParms.combine(parsed,0);
+		}
+		final List<SpaceObject> objs = dbQuerySpaceObjects(query, near);
 		if(objs != null)
 		{
 			if(objs.size()==0)
@@ -766,8 +902,8 @@ public class DatabaseProgram extends GenShipProgram
 			{
 				if(str.length()>0)
 					str.append("\n\r");
-				str.append(this.getReportOnSpaceObject(obj));
-				final String note=this.getCustomNotes(queryCoords);
+				str.append(getReportOnSpaceObject(obj));
+				final String note=getCustomNotes(obj.coordinates());
 				if((note != null)&&(note.length()>0))
 					str.append("\n\r").append(note);
 			}
@@ -777,63 +913,23 @@ public class DatabaseProgram extends GenShipProgram
 		if(data.containsKey("DISABLED"))
 			return "";
 
-		// at this point, query is NOT coords, and is NOT in an embedded space box
-
-		if(data.containsKey(query.toUpperCase().trim())) // a full name was entered
-			return getDataResults(query.toUpperCase().trim());
-
-		if(data.size()>0)
+		final Set<String> winKeys = this.doKeyQuery(query,false);
+		if(winKeys.size()>0)
 		{
-			final List<String> winKeys = new LinkedList<String>();
-			if(query.startsWith("*"))
+			final StringBuilder str=new StringBuilder("");
+			for(final String key : winKeys)
 			{
-				if(query.endsWith("*") && (query.length()>1))
+				final String res = getDataResults(key);
+				if(res.length()>0)
 				{
-					final String word=query.substring(1,query.length()-1).toUpperCase().trim();
-					for(final String key : data.keySet())
-					{
-						if(key.toUpperCase().indexOf(word)>=0)
-							winKeys.add(key);
-					}
-				}
-				else
-				{
-					final String word=query.substring(1).toUpperCase().trim();
-					for(final String key : data.keySet())
-					{
-						if(key.toUpperCase().endsWith(word))
-							winKeys.add(key);
-					}
+					if(str.length()>0)
+						str.append("\n\r");
+					str.append(res);
 				}
 			}
-			else
-			if(query.endsWith("*"))
-			{
-				final String word=query.substring(0,query.length()-1).toUpperCase().trim();
-				for(final String key : data.keySet())
-				{
-					if(key.toUpperCase().startsWith(word))
-						winKeys.add(key);
-				}
-			}
-			if(winKeys.size()>0)
-			{
-				final StringBuilder str=new StringBuilder("");
-				for(final String key : winKeys)
-				{
-					final String res = getDataResults(key);
-					if(res.length()>0)
-					{
-						if(str.length()>0)
-							str.append("\n\r");
-						str.append(res);
-					}
-				}
-				if(str.length()>0)
-					return str.toString();
-			}
+			if(str.length()>0)
+				return str.toString();
 		}
-		// so so so much work
 		return "";
 	}
 
@@ -852,8 +948,9 @@ public class DatabaseProgram extends GenShipProgram
 				uword=(parsed.size()>0)?parsed.get(0).toUpperCase():"";
 				message=CMParms.combine(parsed,0);
 			}
-			if(uword.equalsIgnoreCase("ADDNOTE")
-			|| uword.equalsIgnoreCase("SETNOTE"))
+			if(uword.equals("ADD")
+			|| uword.equals("DEL")
+			|| uword.startsWith("SET."))
 			{
 				if(data.containsKey("DISABLED"))
 				{
@@ -862,26 +959,105 @@ public class DatabaseProgram extends GenShipProgram
 					super.addScreenMessage(resp);
 					return;
 				}
-				parsed.remove(0);
-				message=CMParms.combine(parsed,0);
-				if((parsed.size()<1)
-				||(uword.equalsIgnoreCase("ADDNOTE")&&(parsed.size()<2)))
+				String dType="";
+				if(uword.startsWith("SET."))
 				{
-					final String queryStr = L("Note: @x1",message.toLowerCase());
+					dType = uword.substring(4).toUpperCase().trim();
+					if((dType.length()==0)||dType.equals("SPACE"))
+					{
+						final String resp=L("Illegal field name.");
+						addLineToReadableScreen(resp);
+						super.addScreenMessage(resp);
+						return;
+					}
+					for(final String s : BASIC_FIELDS) // normalize
+						if(s.startsWith(dType)||dType.startsWith(s))
+							dType=s;
+				}
+				parsed.remove(0);
+				message=CMParms.combine(parsed,1);
+				if((parsed.size()<1)
+				||(!uword.equals("DEL")&&(parsed.size()<2)))
+				{
+					final String queryStr = L("Note: @x1",CMParms.combine(parsed,0).toLowerCase());
 					addLineToReadableScreen(queryStr);
-					final String resp =L("No target and note given.");
+					final String resp;
+					if(uword.startsWith("SET."))
+						resp =L("No target key and/or value given.");
+					else
+						resp =L("No target key given.");
 					addLineToReadableScreen(resp);
 					super.addScreenMessage(resp);
 				}
 				else
 				{
-					String target=parsed.get(0);
+					String key=uword.equals("DEL")?CMParms.combine(parsed,0):parsed.get(0);
 					message=CMParms.combine(parsed,1);
-					if(target.equalsIgnoreCase("TARGET"))
-						target = this.getTargetKey();
-					if(target.length()==0)
+					if(key.equalsIgnoreCase("TARGET")||(key.startsWith("TARGET."))||(key.endsWith(".TARGET")))
 					{
-						final String resp=L("No target found.");
+						final Pair<String,String> tgtP = getTargetKeyName(CMLib.english().getContextDotNumber(key));
+						if(tgtP != null)
+							key=tgtP.first.toUpperCase().trim();
+						else
+							key="";
+					}
+					else
+					{
+						final List<SpaceObject> objs = dbQuerySpaceObjects(key, false);
+						if((objs != null)
+						&&(objs.size()>0))
+						{
+							if(objs.size()==1)
+								key=CMParms.toListString(objs.iterator().next().coordinates());
+							else
+							if(objs.size()>1)
+							{
+								final String resp =L("Multiple targets selected.  Please narrow search.");
+								addLineToReadableScreen(resp);
+								super.addScreenMessage(resp);
+							}
+						}
+						else
+						if(!data.containsKey("DISABLED"))
+						{
+							final Set<String> winKeys = this.doKeyQuery(key,false);
+							if(winKeys.size()==1)
+								key=winKeys.iterator().next();
+							else
+							if(winKeys.size()>1)
+							{
+								final String resp =L("Multiple targets selected.  Please narrow search.");
+								addLineToReadableScreen(resp);
+								super.addScreenMessage(resp);
+							}
+						}
+					}
+					if(key.length()==0)
+					{
+						final String resp=L("No key found.");
+						addLineToReadableScreen(resp);
+						super.addScreenMessage(resp);
+					}
+					else
+					if((message.length()>40)
+					&&(dType.equals("NAME") || uword.equals("ADD")))
+					{
+						final String resp=L("Illegal name length.");
+						addLineToReadableScreen(resp);
+						super.addScreenMessage(resp);
+					}
+					else
+					if(message.length()>120)
+					{
+						final String resp=L("Illegal message length.");
+						addLineToReadableScreen(resp);
+						super.addScreenMessage(resp);
+					}
+					else
+					if((dType.equals("NAME") || uword.equals("ADD"))
+					&&(doesNameExistInData(message, key)))
+					{
+						final String resp=L("Error: Duplicate name given.");
 						addLineToReadableScreen(resp);
 						super.addScreenMessage(resp);
 					}
@@ -889,15 +1065,56 @@ public class DatabaseProgram extends GenShipProgram
 					{
 						final String queryStr = L("Note: @x1",message.toLowerCase());
 						addLineToReadableScreen(queryStr);
-						if(message.equalsIgnoreCase("space"))
+						if(message.equalsIgnoreCase("space")||dType.equalsIgnoreCase("space"))
 						{
-							final String resp=L("Illegal note.");
+							final String resp=L("Illegal field or message.");
+							addLineToReadableScreen(resp);
+							super.addScreenMessage(resp);
+						}
+						else
+						if(uword.equals("ADD"))
+						{
+							if(data.containsKey(key))
+							{
+								final String resp=L("Entry already exists.");
+								addLineToReadableScreen(resp);
+								super.addScreenMessage(resp);
+							}
+							else
+							{
+								final JSONObject obj = new JSONObject();
+								obj.put("NAME", message);
+								data.put(key, obj);
+								final String resp=L("Entry '@x1' added.",message);
+								addLineToReadableScreen(resp);
+								super.addScreenMessage(resp);
+							}
+						}
+						else
+						if((!data.containsKey(key))
+						||(!(data.get(key) instanceof JSONObject)))
+						{
+							final String resp=L("Entry not found.");
+							addLineToReadableScreen(resp);
+							super.addScreenMessage(resp);
+						}
+						else
+						if(uword.equals("DEL"))
+						{
+							final String name = this.getDataName(key);
+							data.remove(key);
+							final String resp=L("Entry @x1 deleted.",name);
 							addLineToReadableScreen(resp);
 							super.addScreenMessage(resp);
 						}
 						else
 						{
-							//TODO: set a note
+							final String name = this.getDataName(key);
+							final JSONObject jobj=(JSONObject)data.get(key);
+							jobj.put(dType.toUpperCase().trim(), message);
+							final String resp=L("Field @x1 in entry @x2 updated.",dType,name);
+							addLineToReadableScreen(resp);
+							super.addScreenMessage(resp);
 						}
 					}
 				}
@@ -916,12 +1133,14 @@ public class DatabaseProgram extends GenShipProgram
 				msg.append(L(" * Precede coordinates/name with the word NEAR\n\r"));
 				if(!data.containsKey("DISABLED"))
 				{
-					//TODO:
-					msg.append(L("Setting notes:\n\r"));
-					msg.append(L("  ADDNOTE [KEY] comment\n\r"));
-					msg.append(L("  SETNOTE [KEY] comment\n\r"));
+					msg.append(L("Setting names, notes, and fields:\n\r"));
+					msg.append(L("  ADD \"[KEY]\" name\n\r"));
+					msg.append(L("  DEL [KEY]\n\r"));
+					msg.append(L("  SET.NOTE \"[KEY]\" comment\n\r"));
 					if(svcs.containsKey(SWServices.TARGETING))
-						msg.append(L(" * [KEY] can be TARGET\n\r"));
+						msg.append(L(" * [KEY] can be TARGET, coordinates, search\n\r"));
+					else
+						msg.append(L(" * [KEY] can be coordinates or search\n\r"));
 				}
 				addLineToReadableScreen(msg.toString());
 				super.addScreenMessage(msg.toString());
@@ -954,17 +1173,42 @@ public class DatabaseProgram extends GenShipProgram
 		}
 	}
 
-	protected String getTargetKey()
+	protected Pair<String,String> getTargetKeyName(final int context)
 	{
 		final List<String[]> names = super.doServiceTransaction(SWServices.TARGETING, new String[] {"PLEASE"});
+		int ct = 0;
 		for(final String[] res : names)
 		{
-			final String Name=(res.length>0)?res[0]:"";
-			final String name=(res.length>1)?res[1]:"";
-			final String coords=(res.length>2)?res[2]:"";
-
+			if(++ct<context)
+				continue;
+			final String NameStr=(res.length>0)?res[0]:"";
+			final String nameStr=(res.length>1)?res[1]:"";
+			final String coordStr=(res.length>2)?res[2]:"";
+			final long[] coords = getCheckedCoords(coordStr);
+			final List<SpaceObject> objs = CMLib.space().getSpaceObjectsByCenterpointWithin(coords, 0, 10);
+			for(final SpaceObject o1 : objs)
+			{
+				if(isDBSpaceObject(o1) // separates planets from ships and random Things
+				&& Arrays.equals(coords, o1.coordinates()))
+				{
+					if((this.spaceCube != null)
+					&&(this.spaceCube.contains(coords)))
+						return new Pair<String,String>(CMParms.toListString(coords), o1.name());
+					else
+						return new Pair<String,String>(CMParms.toListString(coords), L("Object@@x1",coordStr));
+				}
+			}
+			if(NameStr.length()>0)
+			{
+				if(nameStr.length()>0)
+					return new Pair<String,String>(NameStr,nameStr);
+				if(coordStr.length()>0)
+					return new Pair<String,String>(NameStr, L("Object@@x1",coordStr));
+				else
+					return new Pair<String,String>(NameStr, L("Unknown Obj"));
+			}
 		}
-		return "";
+		return null;
 	}
 
 	@Override
@@ -977,7 +1221,10 @@ public class DatabaseProgram extends GenShipProgram
 		{
 			for(final String parm : parms)
 			{
-				final String resp = getDataName(parm);
+				String resp = getDataName(parm);
+				final int x=resp.indexOf('\n');
+				if(x>0)
+					resp=resp.substring(0,x).trim();
 				if(resp.length()>0)
 				{
 					final MOB factoryMOB = CMClass.getFactoryMOB(name(), 1, CMLib.map().roomLocation(this));

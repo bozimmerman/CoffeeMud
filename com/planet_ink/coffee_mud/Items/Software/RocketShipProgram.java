@@ -585,7 +585,7 @@ public class RocketShipProgram extends GenShipProgram
 								str.append("^N/^WDir: ^N").append(CMLib.english().directionDescShortest(direction));
 							else
 							if(obj.radius()>0)
-								str.append("^N/^WRad: ^N").append(CMLib.english().distanceDescShort(obj.radius()));
+								str.append("^N/^WSize: ^N").append(CMLib.english().distanceDescShort(obj.radius()));
 							if(!Arrays.equals(obj.coordinates(),emptyCoords))
 								str.append("^N/^WDist: ^N").append(CMLib.english().distanceDescShort(distance));
 						}
