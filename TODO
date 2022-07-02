@@ -2,7 +2,6 @@ BUGS/UNTESTED STUFF:
   *.
 
 TECH TODO:
-   *. make database for star charts, object identifiers for optics, etc
    *. navigation course system.  easy!
    *. make ship impulse and warp engines -- see tech doc
    *. make ship active scanners
