@@ -297,7 +297,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			{
 				if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), getFinalIgnoreMask(), this))
 					return false;
-				if (CMLib.coffeeShops().standardSellEvaluation(this, msg.source(), msg.tool(), this, budgetRemaining, budgetMax, msg.targetMinor() == CMMsg.TYP_SELL))
+				if (CMLib.coffeeShops().pawnEvaluation(this, msg.source(), msg.tool(), this, budgetRemaining, budgetMax, msg.targetMinor() == CMMsg.TYP_SELL))
 					return super.okMessage(myHost, msg);
 				return false;
 			}
@@ -315,7 +315,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				&& (msg.tool() != null)
 				&& (!msg.tool().okMessage(myHost, msg)))
 					return false;
-				if (CMLib.coffeeShops().standardBuyEvaluation(this, msg.source(), msg.tool(), this, msg.targetMinor() == CMMsg.TYP_BUY))
+				if (CMLib.coffeeShops().sellEvaluation(this, msg.source(), msg.tool(), this, msg.targetMinor() == CMMsg.TYP_BUY))
 					return super.okMessage(myHost, msg);
 				return false;
 			}

@@ -154,7 +154,7 @@ public class IMudInterface implements ImudServices, Serializable
 
 	protected MOB findSessMob(final String mobName)
 	{
-		return CMLib.sessions().findPlayerOnline(mobName, true);
+		return CMLib.sessions().findCharacterOnline(mobName, true);
 	}
 
 	protected Room getUniversalRoom()

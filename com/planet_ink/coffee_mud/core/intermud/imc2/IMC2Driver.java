@@ -1147,7 +1147,7 @@ public final class IMC2Driver extends Thread
 		final MOB mob=CMClass.getFactoryMOB();
 		mob.setName(from);
 		mob.setLocation(CMClass.getLocale("StdRoom"));
-		final MOB smob=CMLib.sessions().findPlayerOnline(d.name,true);
+		final MOB smob=CMLib.sessions().findCharacterOnline(d.name,true);
 		if(smob!=null)
 			CMLib.commands().postSay(mob,smob,text,true,true);
 		final Room R=mob.location();

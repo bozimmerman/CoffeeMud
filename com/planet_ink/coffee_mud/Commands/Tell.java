@@ -120,9 +120,9 @@ public class Tell extends StdCommand
 		if(targetM==null)
 			targetM=CMLib.players().findPlayerOnline(targetName,false);
 		if(targetM==null)
-			targetM=CMLib.sessions().findPlayerOnline(targetName,true);
+			targetM=CMLib.sessions().findCharacterOnline(targetName,true);
 		if(targetM==null)
-			targetM=CMLib.sessions().findPlayerOnline(targetName,false);
+			targetM=CMLib.sessions().findCharacterOnline(targetName,false);
 		if((targetM==null)&&(CMProps.isUsingAccountSystem()))
 		{
 			final PlayerAccount P=CMLib.players().getAccount(targetName);
@@ -131,7 +131,7 @@ public class Tell extends StdCommand
 				for(final Enumeration<String> p = P.getPlayers(); p.hasMoreElements(); )
 				{
 					final String playerName=p.nextElement();
-					targetM=CMLib.sessions().findPlayerOnline(playerName,true);
+					targetM=CMLib.sessions().findCharacterOnline(playerName,true);
 					if(targetM!=null)
 					{
 						targetName=playerName;

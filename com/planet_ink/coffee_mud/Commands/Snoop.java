@@ -84,7 +84,7 @@ public class Snoop extends StdCommand
 		}
 		final String whom=CMParms.combine(commands,0);
 		Session SnoopOn=null;
-		final Session S=CMLib.sessions().findPlayerSessionOnline(whom,false);
+		final Session S=CMLib.sessions().findCharacterSessionOnline(whom,false);
 		if(S!=null)
 		{
 			if(S==mob.session())

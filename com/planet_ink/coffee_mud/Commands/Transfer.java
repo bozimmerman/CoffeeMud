@@ -223,7 +223,7 @@ public class Transfer extends At
 		{
 			if(!allFlag)
 			{
-				final MOB M=CMLib.sessions().findPlayerOnline(searchName,true);
+				final MOB M=CMLib.sessions().findCharacterOnline(searchName,true);
 				if(M!=null)
 					xferObjV.add(M);
 			}

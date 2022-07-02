@@ -57,17 +57,17 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return "CharCreation";
 	}
 
-	protected final Map<String, String>				startRooms			= new Hashtable<String, String>();
-	protected final PairList<CompiledZMask, String>	startRoomMasks		= new PairVector<CompiledZMask, String>();
-	protected final Map<String, String>				deathRooms			= new Hashtable<String, String>();
-	protected final PairList<CompiledZMask, String>	deathRoomMasks		= new PairVector<CompiledZMask, String>();
-	protected final Map<String, String>				bodyRooms			= new Hashtable<String, String>();
-	protected final PairList<CompiledZMask, String>	bodyRoomMasks		= new PairVector<CompiledZMask, String>();
-	protected Pair<String, Integer>[]			randomNameVowels	= null;
-	protected Pair<String, Integer>[]			randomNameConsonants= null;
-	protected CompiledZMask						requiresDeityMask	= null;
-	protected CompiledZMask						deitiesMask			= null;
-	protected boolean							propertiesReLoaded	= true;
+	protected final Map<String, String>				startRooms				= new Hashtable<String, String>();
+	protected final PairList<CompiledZMask, String>	startRoomMasks			= new PairVector<CompiledZMask, String>();
+	protected final Map<String, String>				deathRooms				= new Hashtable<String, String>();
+	protected final PairList<CompiledZMask, String>	deathRoomMasks			= new PairVector<CompiledZMask, String>();
+	protected final Map<String, String>				bodyRooms				= new Hashtable<String, String>();
+	protected final PairList<CompiledZMask, String>	bodyRoomMasks			= new PairVector<CompiledZMask, String>();
+	protected Pair<String, Integer>[]				randomNameVowels		= null;
+	protected Pair<String, Integer>[]				randomNameConsonants	= null;
+	protected CompiledZMask							requiresDeityMask		= null;
+	protected CompiledZMask							deitiesMask				= null;
+	protected boolean								propertiesReLoaded		= true;
 
 	protected final String RECONFIRMSTR="\n\r^WTry entering ^HY^W or ^HN^W: ";
 

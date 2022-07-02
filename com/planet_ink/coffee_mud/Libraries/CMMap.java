@@ -2494,7 +2494,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				if(searchPlayers)
 				{
 					// then look for players
-					final MOB M=CMLib.sessions().findPlayerOnline(srchStr,false);
+					final MOB M=CMLib.sessions().findCharacterOnline(srchStr,false);
 					if(M!=null)
 						room=addWorldRoomsLiberally(rooms,M.location());
 				}

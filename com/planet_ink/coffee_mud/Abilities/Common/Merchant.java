@@ -467,7 +467,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 					return false;
 				final double budgetRemaining=CMLib.beanCounter().getTotalAbsoluteValue(merchantM,CMLib.beanCounter().getCurrency(merchantM));
 				final double budgetMax=budgetRemaining*100;
-				if(CMLib.coffeeShops().standardSellEvaluation(merchantM,msg.source(),msg.tool(),this,budgetRemaining,budgetMax,msg.targetMinor()==CMMsg.TYP_SELL))
+				if(CMLib.coffeeShops().pawnEvaluation(merchantM,msg.source(),msg.tool(),this,budgetRemaining,budgetMax,msg.targetMinor()==CMMsg.TYP_SELL))
 					return super.okMessage(myHost,msg);
 				return false;
 			}
@@ -478,7 +478,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 					return false;
 				if((msg.targetMinor()==CMMsg.TYP_BUY)&&(msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
 					return false;
-				if(CMLib.coffeeShops().standardBuyEvaluation(merchantM,msg.source(),msg.tool(),this,msg.targetMinor()==CMMsg.TYP_BUY))
+				if(CMLib.coffeeShops().sellEvaluation(merchantM,msg.source(),msg.tool(),this,msg.targetMinor()==CMMsg.TYP_BUY))
 					return super.okMessage(myHost,msg);
 				return false;
 			}

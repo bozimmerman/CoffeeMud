@@ -35,32 +35,42 @@ public interface ShoppingLibrary extends CMLibrary
 {
 	public ShopKeeper getShopKeeper(Environmental E);
 	public List<Environmental> getAllShopkeepers(Room here, MOB notMOB);
+	
 	public String getViewDescription(MOB viewerM, Environmental E, Set<ViewType> flags);
-	public double prejudiceValueFromPart(MOB customer, boolean sellTo, String part);
-	public double prejudiceFactor(MOB customer, String factors, boolean sellTo);
+	
+	public MOB parseBuyingFor(MOB buyer, String message);
+	
+	public boolean ignoreIfNecessary(MOB mob, String ignoreMask, MOB whoIgnores);
+	
+	public String storeKeeperString(CoffeeShop shop, ShopKeeper keeper);
+	
+	public boolean doISellThis(Environmental thisThang, ShopKeeper shop);
+	
 	public ShopKeeper.ShopPrice sellingPrice(MOB sellerShopM, MOB buyerCustM, Environmental product, ShopKeeper shopKeeper, CoffeeShop shop, boolean includeSalesTax);
-	public ShopKeeper.ShopPrice pawningPrice(MOB buyerShopM, MOB sellerCustM, Environmental product, ShopKeeper shopKeeper, CoffeeShop shop);
 	public double getSalesTax(Room homeRoom, MOB seller);
-	public boolean standardSellEvaluation(MOB buyerShopM, MOB sellerCustM, Environmental product, ShopKeeper shop, double maxToPay, double maxEverPaid, boolean sellNotValue);
-	public boolean standardBuyEvaluation(MOB sellerShopM, MOB buyerCustM, Environmental product, ShopKeeper shop, boolean buyNotView);
+	public boolean sellEvaluation(MOB sellerShopM, MOB buyerCustM, Environmental product, ShopKeeper shop, boolean buyNotView);
+
+	public void transactMoneyOnly(MOB seller, MOB buyer, ShopKeeper shop, Environmental product, boolean sellerGetsPaid);
+	public List<Environmental> addRealEstateTitles(List<Environmental> V, MOB buyer, CoffeeShop shop, Room myRoom);
+	
+	public ShopKeeper.ShopPrice pawningPrice(MOB buyerShopM, MOB sellerCustM, Environmental product, ShopKeeper shopKeeper, CoffeeShop shop);
+	public boolean pawnEvaluation(MOB buyerShopM, MOB sellerCustM, Environmental product, ShopKeeper shop, double maxToPay, double maxEverPaid, boolean sellNotValue);
+	public double transactPawn(MOB shopkeeper, MOB pawner, ShopKeeper shop, Environmental product);
+	
 	public String getListInventory(MOB seller,  MOB buyer, List<? extends Environmental> inventory, int limit, ShopKeeper shop, String mask);
 	public String findInnRoom(InnKey key, String addThis, Room R);
-	public MOB parseBuyingFor(MOB buyer, String message);
-	public double transactPawn(MOB shopkeeper, MOB pawner, ShopKeeper shop, Environmental product);
-	public void transactMoneyOnly(MOB seller, MOB buyer, ShopKeeper shop, Environmental product, boolean sellerGetsPaid);
+
 	public double[] parseDevalueRate(String factors);
 	public String[] parseItemPricingAdjustments(String factors);
-	public String[] parsePrejudiceFactors(String factors);
 	public Pair<Long,TimeClock.TimePeriod> parseBudget(String budget);
+
 	public boolean purchaseItems(Item baseProduct, List<Environmental> products, MOB seller, MOB mobFor);
 	public boolean purchaseMOB(MOB product, MOB seller, ShopKeeper shop, MOB mobFor);
 	public void purchaseAbility(Ability A,  MOB seller, ShopKeeper shop, MOB mobFor);
-	public List<Environmental> addRealEstateTitles(List<Environmental> V, MOB buyer, CoffeeShop shop, Room myRoom);
-	public boolean ignoreIfNecessary(MOB mob, String ignoreMask, MOB whoIgnores);
-	public String storeKeeperString(CoffeeShop shop, ShopKeeper keeper);
-	public boolean doISellThis(Environmental thisThang, ShopKeeper shop);
-	public String[] bid(MOB mob, double bid, String bidCurrency, AuctionData auctionData, Item I, List<String> auctionAnnounces);
+	
 	public void returnMoney(MOB to, String currency, double amt);
+
+	public String[] bid(MOB mob, double bid, String bidCurrency, AuctionData auctionData, Item I, List<String> auctionAnnounces);
 	public String getAuctionInventory(MOB seller,MOB buyer,Auctioneer auction,String mask);
 	public String getListForMask(String targetMessage);
 	public List<AuctionData> getAuctions(Object ofLike, String auctionHouse);

@@ -333,16 +333,16 @@ public class Sessions extends StdLibrary implements SessionsList
 	}
 
 	@Override
-	public MOB findPlayerOnline(final String srchStr, final boolean exactOnly)
+	public MOB findCharacterOnline(final String srchStr, final boolean exactOnly)
 	{
-		final Session S=findPlayerSessionOnline(srchStr, exactOnly);
+		final Session S=findCharacterSessionOnline(srchStr, exactOnly);
 		if(S==null)
 			return null;
 		return S.mob();
 	}
 
 	@Override
-	public Session findPlayerSessionOnline(final String srchStr, final boolean exactOnly)
+	public Session findCharacterSessionOnline(final String srchStr, final boolean exactOnly)
 	{
 		// then look for players
 		for(final Session S : localOnlineIterable())

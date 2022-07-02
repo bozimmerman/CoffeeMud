@@ -520,8 +520,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		return price;
 	}
 
-	@Override
-	public double prejudiceValueFromPart(final MOB customer, final boolean pawnTo, String part)
+	protected double prejudiceValueFromPart(final MOB customer, final boolean pawnTo, String part)
 	{
 		final int x=part.indexOf('=');
 		if(x<0)
@@ -574,8 +573,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 
 	}
 
-	@Override
-	public double prejudiceFactor(final MOB customer, String factors, final boolean pawnTo)
+	protected double prejudiceFactor(final MOB customer, String factors, final boolean pawnTo)
 	{
 		factors=factors.toUpperCase();
 		if(factors.length()==0)
@@ -726,9 +724,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		return pricingAdjustments;
 	}
 
-	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public String[] parsePrejudiceFactors(final String factors)
+	protected String[] parsePrejudiceFactors(final String factors)
 	{
 		if((factors == null) || (factors.trim().length() == 0))
 			return emptyStringArray;
@@ -1009,7 +1006,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	}
 
 	@Override
-	public boolean standardSellEvaluation(final MOB buyerShopM,
+	public boolean pawnEvaluation(final MOB buyerShopM,
 										  final MOB sellerCustM,
 										  final Environmental product,
 										  final ShopKeeper shop,
@@ -1127,7 +1124,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	}
 
 	@Override
-	public boolean standardBuyEvaluation(final MOB sellerShopM,
+	public boolean sellEvaluation(final MOB sellerShopM,
 										 final MOB buyerCustM,
 										 final Environmental product,
 										 final ShopKeeper shop,

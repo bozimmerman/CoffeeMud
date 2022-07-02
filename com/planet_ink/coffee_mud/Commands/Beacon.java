@@ -63,9 +63,9 @@ public class Beacon extends StdCommand
 		else
 		{
 			final String name=CMParms.combine(commands,0);
-			MOB M=CMLib.sessions().findPlayerOnline(name,true);
+			MOB M=CMLib.sessions().findCharacterOnline(name,true);
 			if(M==null)
-				M=CMLib.sessions().findPlayerOnline(name,false);
+				M=CMLib.sessions().findCharacterOnline(name,false);
 			if(M==null)
 			{
 				Boardable bI=CMLib.map().getShip(name);
