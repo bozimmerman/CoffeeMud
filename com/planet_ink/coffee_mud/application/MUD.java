@@ -1765,8 +1765,8 @@ public class MUD extends Thread implements MudHost
 			}
 
 			if((tCode==MAIN_HOST)
-			||(checkPrivate&&CMProps.isPrivateToMe(CMLib.Library.MAP.name()))
-			||(checkPrivate&&CMProps.isPrivateToMe(CMLib.Library.LOGIN.name())))
+			||(checkPrivate
+				&& CMProps.isPrivateToMe(CMLib.Library.LOGIN.name())))
 			{
 				CMLib.login().initStartRooms(page);
 				CMLib.login().initDeathRooms(page);

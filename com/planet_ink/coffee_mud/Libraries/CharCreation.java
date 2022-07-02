@@ -57,12 +57,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return "CharCreation";
 	}
 
-	protected Map<String, String>				startRooms			= new Hashtable<String, String>();
-	protected PairList<CompiledZMask, String>	startRoomMasks		= new PairVector<CompiledZMask, String>();
-	protected Map<String, String>				deathRooms			= new Hashtable<String, String>();
-	protected PairList<CompiledZMask, String>	deathRoomMasks		= new PairVector<CompiledZMask, String>();
-	protected Map<String, String>				bodyRooms			= new Hashtable<String, String>();
-	protected PairList<CompiledZMask, String>	bodyRoomMasks		= new PairVector<CompiledZMask, String>();
+	protected final Map<String, String>				startRooms			= new Hashtable<String, String>();
+	protected final PairList<CompiledZMask, String>	startRoomMasks		= new PairVector<CompiledZMask, String>();
+	protected final Map<String, String>				deathRooms			= new Hashtable<String, String>();
+	protected final PairList<CompiledZMask, String>	deathRoomMasks		= new PairVector<CompiledZMask, String>();
+	protected final Map<String, String>				bodyRooms			= new Hashtable<String, String>();
+	protected final PairList<CompiledZMask, String>	bodyRoomMasks		= new PairVector<CompiledZMask, String>();
 	protected Pair<String, Integer>[]			randomNameVowels	= null;
 	protected Pair<String, Integer>[]			randomNameConsonants= null;
 	protected CompiledZMask						requiresDeityMask	= null;
@@ -4590,33 +4590,33 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	@Override
 	public void initStartRooms(final CMProps page)
 	{
-		startRooms=new Hashtable<String,String>();
-		startRoomMasks=new PairVector<CompiledZMask,String>();
+		startRooms.clear();
+		startRoomMasks.clear();
 		pageRooms(page,startRooms,startRoomMasks,"START");
 	}
 
 	@Override
 	public void initDeathRooms(final CMProps page)
 	{
-		deathRooms=new Hashtable<String,String>();
-		deathRoomMasks=new PairVector<CompiledZMask,String>();
+		deathRooms.clear();
+		deathRoomMasks.clear();
 		pageRooms(page,deathRooms,deathRoomMasks,"DEATH");
 	}
 
 	@Override
 	public void initBodyRooms(final CMProps page)
 	{
-		bodyRooms=new Hashtable<String,String>();
-		bodyRoomMasks=new PairVector<CompiledZMask,String>();
+		bodyRooms.clear();
+		bodyRoomMasks.clear();
 		pageRooms(page,bodyRooms,bodyRoomMasks,"MORGUE");
 	}
 
 	@Override
 	public boolean shutdown()
 	{
-		bodyRooms=new Hashtable<String,String>();
-		startRooms=new Hashtable<String,String>();
-		deathRooms=new Hashtable<String,String>();
+		bodyRooms.clear();
+		startRooms.clear();
+		deathRooms.clear();
 		return true;
 	}
 
