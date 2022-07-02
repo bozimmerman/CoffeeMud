@@ -320,13 +320,13 @@ public class RocketShipProgram extends GenShipProgram
 	@Override
 	public boolean isActivationString(final String word)
 	{
-		return isCommandString(word, false);
+		return super.isActivationString(word);
 	}
 
 	@Override
 	public boolean isDeActivationString(final String word)
 	{
-		return isCommandString(word, false);
+		return super.isDeActivationString(word);
 	}
 
 	protected TechComponent findComponentByName(final List<? extends TechComponent> list, final String prefix, String name)
@@ -484,7 +484,7 @@ public class RocketShipProgram extends GenShipProgram
 			str.append("^H").append(CMStrings.padRight(L("Docked at ^w@x1",ship.getIsDocked().displayText(null)),60));
 			final SpaceObject planet=CMLib.space().getSpaceObject(ship.getIsDocked(), true);
 			if(planet!=null)
-				str.append("^.^N\n\r^H").append(CMStrings.padRight(L("On Planet ^w@x1",planet.Name()),60));
+				str.append("^.^N\n\r^H").append(CMStrings.padRight(L("On Planet ^w@x1",planet.name()),60));
 		}
 		else
 		if((shipSpaceObject==null)||(!CMLib.space().isObjectInSpace(shipSpaceObject)))
@@ -560,7 +560,7 @@ public class RocketShipProgram extends GenShipProgram
 				str.append(CMStrings.padRight(sensor.activated()?L("^gA"):L("^rI"),2));
 				str.append("^H").append(CMStrings.padRight(L("Pow."),5));
 				str.append("^N").append(CMStrings.padRight(Long.toString(sensor.powerRemaining()),11));
-				str.append("^H").append(CMStrings.padRight(sensor.Name(),31));
+				str.append("^H").append(CMStrings.padRight(sensor.name(),31));
 				str.append("^.^N\n\r");
 				if(sensor.activated())
 				{
@@ -578,6 +578,9 @@ public class RocketShipProgram extends GenShipProgram
 							final SpaceObject obj = (SpaceObject)o;
 							final long distance = CMLib.space().getDistanceFrom(spaceMe.coordinates(), obj.coordinates()) - spaceMe.radius() - obj.radius();
 							final double[] direction = CMLib.space().getDirection(spaceMe, obj);
+							if((currentTarget!=null)
+							&&((currentTarget==o)||(currentTarget.ID().equals(obj.ID()))))
+								str.append("^r*^N ");
 							str.append("^W").append(obj.name());
 							if(obj.getMass()>0)
 								str.append("^N/^WMass: ^N").append(CMath.abbreviateLong(obj.getMass()));
@@ -630,7 +633,7 @@ public class RocketShipProgram extends GenShipProgram
 					str.append("^H").append(CMStrings.padRight(L("Pow."),5));
 					str.append("^N").append(CMStrings.padRight(Long.toString(engine.powerRemaining()),11));
 				}
-				str.append("^H").append(CMStrings.padRight(engine.Name(),31));
+				str.append("^H").append(CMStrings.padRight(engine.name(),31));
 				str.append("^.^N\n\r");
 				engineNumber++;
 			}
@@ -641,7 +644,7 @@ public class RocketShipProgram extends GenShipProgram
 				str.append(CMStrings.padRight(weapon.activated()?L("^gA"):L("^rI"),2));
 				str.append("^H").append(CMStrings.padRight(L("Pow."),5));
 				str.append("^N").append(CMStrings.padRight(Long.toString(weapon.powerRemaining()),11));
-				str.append("^H").append(CMStrings.padRight(weapon.Name(),31));
+				str.append("^H").append(CMStrings.padRight(weapon.name(),31));
 				str.append("^.^N\n\r");
 				weaponNumber++;
 			}
@@ -652,7 +655,7 @@ public class RocketShipProgram extends GenShipProgram
 				str.append(CMStrings.padRight(shield.activated()?L("^gA"):L("^rI"),2));
 				str.append("^H").append(CMStrings.padRight(L("Pow."),5));
 				str.append("^N").append(CMStrings.padRight(Long.toString(shield.powerTarget()),11));
-				str.append("^H").append(CMStrings.padRight(shield.Name(),31));
+				str.append("^H").append(CMStrings.padRight(shield.name(),31));
 				str.append("^.^N\n\r");
 				shieldNumber++;
 			}
@@ -667,8 +670,11 @@ public class RocketShipProgram extends GenShipProgram
 					str.append("^H").append(CMStrings.padRight(L("SYSTEM@x1",""+systemNumber),9));
 					str.append(CMStrings.padRight(component.activated()?L("^gA"):L("^rI"),2));
 					str.append("^H").append(CMStrings.padRight(L("Pow."),5));
-					str.append("^N").append(CMStrings.padRight(Long.toString(component.powerRemaining()),11));
-					str.append("^H").append(CMStrings.padRight(component.Name(),31));
+					if(component instanceof Computer)
+						str.append("^N").append(CMStrings.padRight(Long.toString(component.powerTarget()),11));
+					else
+						str.append("^N").append(CMStrings.padRight(Long.toString(component.powerRemaining()),11));
+					str.append("^H").append(CMStrings.padRight(component.name(),31));
 					str.append("^.^N\n\r");
 					systemNumber++;
 				}
@@ -1915,11 +1921,11 @@ public class RocketShipProgram extends GenShipProgram
 				}
 				if(targetObj.coordinates() == null)
 				{
-					super.addScreenMessage(L("Can not target @x1 due to lack of coordinate information.",targetObj.Name()));
+					super.addScreenMessage(L("Can not target @x1 due to lack of coordinate information.",targetObj.name()));
 					return;
 				}
 				this.currentTarget = targetObj;
-				super.addScreenMessage(L("Target set for @x1.",targetObj.Name()));
+				super.addScreenMessage(L("Target set for @x1.",targetObj.name()));
 				return;
 			}
 			else
@@ -1957,7 +1963,7 @@ public class RocketShipProgram extends GenShipProgram
 				}
 				if(targetObj.coordinates() == null)
 				{
-					super.addScreenMessage(L("Can not face @x1 due to lack of coordinate information.",targetObj.Name()));
+					super.addScreenMessage(L("Can not face @x1 due to lack of coordinate information.",targetObj.name()));
 					return;
 				}
 				final double[] facing=ship.facing();
@@ -1969,7 +1975,7 @@ public class RocketShipProgram extends GenShipProgram
 				final double deltaTo=fdist1+fdist2;
 				//final double deltaTo = CMLib.space().getAngleDelta(ship.facing(), dirTo);
 				if(deltaTo < 0.02)
-					super.addScreenMessage(L("Already facing @x1.",targetObj.Name()));
+					super.addScreenMessage(L("Already facing @x1.",targetObj.name()));
 				else
 				{
 					ShipDirectional.ShipDir portDir;
@@ -2028,7 +2034,7 @@ public class RocketShipProgram extends GenShipProgram
 							}
 							else
 							if(CMath.pctDiff(dirTo[1],ship.facing()[1],Math.PI)<.05)
-								super.addScreenMessage(L("Now facing @x1.",targetObj.Name()));
+								super.addScreenMessage(L("Now facing @x1.",targetObj.name()));
 							else
 							{
 								super.addScreenMessage(L("Error: Fired @x1 engines, but only got to within @x2 percent",
@@ -2111,7 +2117,7 @@ public class RocketShipProgram extends GenShipProgram
 				}
 				if(targetObj.coordinates() == null)
 				{
-					super.addScreenMessage(L("Can not approach @x1 due to lack of coordinate information.",targetObj.Name()));
+					super.addScreenMessage(L("Can not approach @x1 due to lack of coordinate information.",targetObj.name()));
 					return;
 				}
 				this.approachTarget = targetObj;
@@ -2119,7 +2125,7 @@ public class RocketShipProgram extends GenShipProgram
 				this.deproachDistance = (distance - ship.radius() - targetObj.radius())/2;
 				if(deproachDistance < 100)
 				{
-					super.addScreenMessage(L("Can not approach @x1 due being too close.",targetObj.Name()));
+					super.addScreenMessage(L("Can not approach @x1 due being too close.",targetObj.name()));
 					return;
 				}
 				ShipEngine engineE=null;
@@ -2142,7 +2148,7 @@ public class RocketShipProgram extends GenShipProgram
 				findTargetAcceleration(engineE);
 				this.programEngines=new XVector<ShipEngine>(engineE);
 				this.rocketState = RocketStateMachine.APPROACH;
-				super.addScreenMessage(L("Approach to @x1 procedure engaged.",targetObj.Name()));
+				super.addScreenMessage(L("Approach to @x1 procedure engaged.",targetObj.name()));
 				return;
 			}
 			else
@@ -2180,7 +2186,7 @@ public class RocketShipProgram extends GenShipProgram
 				}
 				if(targetObj.coordinates() == null)
 				{
-					super.addScreenMessage(L("Can not moon @x1 due to lack of coordinate information.",targetObj.Name()));
+					super.addScreenMessage(L("Can not moon @x1 due to lack of coordinate information.",targetObj.name()));
 					return;
 				}
 				final double[] facing=ship.facing();
@@ -2193,7 +2199,7 @@ public class RocketShipProgram extends GenShipProgram
 				final double deltaTo=fdist1+fdist2;
 				//final double deltaTo = CMLib.space().getAngleDelta(ship.facing(), dirTo);
 				if(deltaTo < 0.02)
-					super.addScreenMessage(L("Already mooning @x1.",targetObj.Name()));
+					super.addScreenMessage(L("Already mooning @x1.",targetObj.name()));
 				else
 				{
 					ShipDirectional.ShipDir portDir;
@@ -2252,7 +2258,7 @@ public class RocketShipProgram extends GenShipProgram
 							}
 							else
 							if(CMath.pctDiff(dirTo[1],ship.facing()[1],Math.PI)<.05)
-								super.addScreenMessage(L("Now mooning @x1.",targetObj.Name()));
+								super.addScreenMessage(L("Now mooning @x1.",targetObj.name()));
 							else
 							{
 								super.addScreenMessage(L("Error: Fired @x1 engines, but only got to within @x2 percent",
@@ -2341,7 +2347,7 @@ public class RocketShipProgram extends GenShipProgram
 						super.addScreenMessage(L("Error: No weapons found."));
 						return;
 					}
-					super.addScreenMessage(L("Info: Auto selected weapon '@x1'.",finalWeaponToFire.Name()));
+					super.addScreenMessage(L("Info: Auto selected weapon '@x1'.",finalWeaponToFire.name()));
 				}
 				{
 					E=finalWeaponToFire;
@@ -2857,7 +2863,8 @@ public class RocketShipProgram extends GenShipProgram
 				final String Name = currentTarget.Name();
 				final String name = currentTarget.name();
 				String coords = "";
-				if((currentTarget.speed()==0)&&(currentTarget.radius()>SpaceObject.Distance.AsteroidRadius.dm))
+				if((currentTarget.speed()==0)
+				&&(currentTarget.radius()>SpaceObject.Distance.AsteroidRadius.dm))
 					coords = CMParms.toListString(currentTarget.coordinates());
 				final String code=TechCommand.SWSVCRES.makeCommand(service,new String[] { Name,name,coords });
 				final CMMsg msg2=CMClass.getMsg(factoryMOB, S, this,
@@ -2870,6 +2877,43 @@ public class RocketShipProgram extends GenShipProgram
 			finally
 			{
 				factoryMOB.destroy();
+			}
+		}
+		else
+		if((service == SWServices.COORDQUERY)
+		&&(S!=null)
+		&&(S!=this)
+		&&(parms.length>0))
+		{
+			final SpaceObject spaceObject=CMLib.space().getSpaceObject(this,true);
+			final List<SpaceObject> allObjects = new ArrayList<SpaceObject>();
+			for(final TechComponent sensor : sensors)
+				allObjects.addAll(takeNewSensorReport(sensor));
+			Collections.sort(allObjects, new DistanceSorter(spaceObject));
+			for(final String parm : parms)
+			{
+				SpaceObject targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, parm, false);
+				if(targetObj == null)
+					targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, parm, true);
+				final long[] coords=(targetObj!=null) ? targetObj.coordinates() : null;
+				if(coords != null)
+				{
+					final MOB factoryMOB = CMClass.getFactoryMOB(name(), 1, CMLib.map().roomLocation(this));
+					try
+					{
+						final String code=TechCommand.SWSVCRES.makeCommand(service,new String[] { CMParms.toListString(coords) });
+						final CMMsg msg2=CMClass.getMsg(factoryMOB, S, this,
+								CMMsg.NO_EFFECT, null,
+								CMMsg.MSG_ACTIVATE|CMMsg.MASK_ALWAYS|CMMsg.MASK_CNTRLMSG, code,
+								CMMsg.NO_EFFECT, null);
+						msg2.setTargetMessage(code);
+						msg.addTrailerMsg(msg2);
+					}
+					finally
+					{
+						factoryMOB.destroy();
+					}
+				}
 			}
 		}
 	}

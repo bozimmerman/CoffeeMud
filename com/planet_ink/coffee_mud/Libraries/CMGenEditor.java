@@ -9811,8 +9811,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof Software)
 			{
 				final Software E=(Software)me;
-				E.setInternalName(prompt(mob, E.getInternalName(), ++showNumber, showFlag, "Internal Name"));
-				E.setParentMenu(prompt(mob, E.getParentMenu(), ++showNumber, showFlag, "Parent Menu"));
+				E.setInternalName(prompt(mob, E.getInternalName(), ++showNumber, showFlag, "Internal Name",true));
+				E.setParentMenu(prompt(mob, E.getParentMenu(), ++showNumber, showFlag, "Parent Menu",true));
 			}
 			if(me instanceof Electronics)
 			{

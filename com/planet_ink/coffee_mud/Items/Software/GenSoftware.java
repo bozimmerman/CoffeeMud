@@ -50,7 +50,7 @@ public class GenSoftware extends StdProgram
 
 	protected String	readableText	= "";
 	protected String	settings		= "";
-	protected String	intName			= "";
+	protected String	intName			= null;
 	protected String	parent			= "";
 
 	public GenSoftware()
@@ -169,7 +169,7 @@ public class GenSoftware extends StdProgram
 	@Override
 	public String getInternalName()
 	{
-		if(intName==null || intName.length()==0)
+		if(intName==null)
 			return ID();
 		return intName;
 	}

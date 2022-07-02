@@ -322,7 +322,8 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 					if(S.getInternalName().equals(getActiveMenu()))
 					{
 						str.append(S.getCurrentScreenDisplay());
-						isInternal=(S.getInternalName().equals(getActiveMenu()));
+						if(S.getInternalName().length()>0)
+							isInternal=(S.getInternalName().equals(getActiveMenu()));
 					}
 					else
 					if(S.getParentMenu().equals(getActiveMenu()))
@@ -458,10 +459,10 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 					{
 						for(final Software S : software)
 						{
-							if(S.getInternalName().equals(getActiveMenu())
-							&& (getActiveMenu().length()>0))
+							if(S.getInternalName().equals(getActiveMenu()))
 							{
-								if(msg.targetMessage().trim().equals("<"))
+								if((msg.targetMessage().trim().equals("<"))
+								&& (getActiveMenu().length()>0))
 								{
 									msgs.add(CMClass.getMsg(msg.source(),S,null,CMMsg.NO_EFFECT,
 											CMMsg.MASK_ALWAYS|CMMsg.TYP_DEACTIVATE,CMMsg.NO_EFFECT,null));
@@ -475,7 +476,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 							}
 							else
 							if((S.getParentMenu().equals(getActiveMenu()))
-							&&(S.isCommandString(msg.targetMessage(), false)))
+							&&(S.isActivationString(msg.targetMessage())))
 							{
 								msgs.add(CMClass.getMsg(msg.source(),S,null,CMMsg.NO_EFFECT,null,
 										CMMsg.MASK_ALWAYS|CMMsg.TYP_ACTIVATE,msg.targetMessage(),CMMsg.NO_EFFECT,null));
@@ -567,27 +568,22 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 				if((msg.targetMessage()!=null)
 				&&(activated()))
 				{
-					final List<Software> software=getSoftware();
-					final List<CMMsg> msgs=new LinkedList<CMMsg>();
-					synchronized(software)
+					final List<Software> swCache=getSoftware();
+					final List<Software> swQueue=new LinkedList<Software>();
+					synchronized(swCache)
 					{
-						for(final Software S : software)
+						if(msg.isTarget(CMMsg.MASK_CNTRLMSG))
+							swQueue.addAll(swCache);
+						else
+						for(final Software S : swCache)
 						{
-							if(msg.isTarget(CMMsg.MASK_CNTRLMSG))
-								msgs.add(((CMMsg)msg.copyOf()).setTarget(S));
-							else
 							if(S.isActivationString(msg.targetMessage()))
-							{
-								msgs.add(CMClass.getMsg(msg.source(),S,null,
-										CMMsg.NO_EFFECT,null,
-										CMMsg.MASK_ALWAYS|CMMsg.TYP_ACTIVATE,msg.targetMessage(),
-										CMMsg.NO_EFFECT,null));
-							}
+								swQueue.add(S);
 						}
 					}
 					final boolean readFlag=false;
 					final MOB M=msg.source();
-					if(msgs.size()==0)
+					if(swCache.size()==0)
 					{
 						final Room R=M.location();
 						if(R!=null)
@@ -607,12 +603,24 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 						if((Math.random()<getInstalledFactor())
 						&& (Math.random()<damageFailChance))
 						{
-							for(final CMMsg msg2 : msgs)
+							final Room R=CMLib.map().roomLocation(this);
+							final List<CMMsg> trailers = new LinkedList<CMMsg>();
+							for(final Software S : swQueue)
 							{
-								final Room R=CMLib.map().roomLocation(msg2.target());
-								if((R!=null)&&(R.okMessage(M, msg2)))
-									R.send(M, msg2);
+								msg.setTarget(S);
+								if((R!=null)
+								&&(R.okMessage(M, msg)))
+								{
+									R.send(M, msg);
+									if(msg.trailerMsgs()!=null)
+									{
+										trailers.addAll(msg.trailerMsgs());
+										msg.trailerMsgs().clear();
+									}
+								}
 							}
+							if(msg.trailerMsgs()!=null)
+								msg.trailerMsgs().addAll(trailers);
 						}
 						else
 						{
@@ -639,7 +647,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 					{
 						for(final Software S : software)
 						{
-							if(S.isActivationString(msg.targetMessage()))
+							if(S.isDeActivationString(msg.targetMessage()))
 							{
 								msgs.add(CMClass.getMsg(msg.source(),S,null,CMMsg.NO_EFFECT,null,
 										CMMsg.MASK_ALWAYS|CMMsg.TYP_DEACTIVATE,msg.targetMessage(),CMMsg.NO_EFFECT,null));

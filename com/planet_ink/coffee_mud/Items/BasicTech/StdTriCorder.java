@@ -146,7 +146,7 @@ public class StdTriCorder extends StdElecContainer implements Computer
 					if(S.getInternalName().equals(getActiveMenu()))
 					{
 						str.append(S.getCurrentScreenDisplay());
-						isInternal=true;
+						isInternal=(S.getInternalName().length()>0);
 					}
 					else
 					if(S.getParentMenu().equals(getActiveMenu()))

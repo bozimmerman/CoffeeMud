@@ -356,19 +356,14 @@ public class StdProgram extends StdItem implements Software
 						if((rmsg.targetMinor()==CMMsg.TYP_ACTIVATE)
 						&&(rmsg.targetMajor(CMMsg.MASK_CNTRLMSG)))
 						{
-							final TechCommand command=TechCommand.findCommand(msg.targetMessage());
+							final TechCommand command=TechCommand.findCommand(rmsg.targetMessage());
 							if(command == TechCommand.SWSVCRES)
 							{
-								final Object[] rparms=(command != null)?command.confirmAndTranslate(msg.targetMessage()):null;
+								final Object[] rparms=(command != null)?command.confirmAndTranslate(rmsg.targetMessage()):null;
 								if((rparms!=null)
 								&&(rparms.length>0)
 								&&(rparms[0] == service))
-								{
-									final String[] args=new String[rparms.length-1];
-									for(int i=1;i<rparms.length;i++)
-										args[i-1]=rparms[i].toString();
-									lst.add(args);
-								}
+									lst.add((String[])rparms[1]);
 							}
 						}
 					}
@@ -385,20 +380,29 @@ public class StdProgram extends StdItem implements Software
 	protected void sendServiceMsg(final MOB mob, final Set<Computer> puters, final CMMsg msg)
 	{
 		final WorldMap map = CMLib.map();
+		final List<CMMsg> trailers = new LinkedList<CMMsg>();
 		for(final Computer C : puters)
 		{
 			final Room R = map.roomLocation(C);
-			final CMMsg msg2=(CMMsg)msg.copyOf();
-			msg2.setTarget(C);
+			msg.setTarget(C);
 			if((R!=null)
-			&&(R.okMessage(mob, msg2)))
-				R.send(mob, msg2);
+			&&(R.okMessage(mob, msg)))
+			{
+				R.send(mob, msg);
+				if(msg.trailerMsgs()!=null)
+				{
+					trailers.addAll(msg.trailerMsgs());
+					msg.trailerMsgs().clear();
+				}
+			}
 		}
+		if(msg.trailerMsgs()!=null)
+			msg.trailerMsgs().addAll(trailers);
 	}
 
 	protected void doServiceRequests(final MOB mob)
 	{
-		final CMMsg msg=CMClass.getMsg(mob, null, this,
+		final CMMsg omsg=CMClass.getMsg(mob, null, this,
 				CMMsg.NO_EFFECT, null,
 				CMMsg.MSG_ACTIVATE|CMMsg.MASK_ALWAYS|CMMsg.MASK_CNTRLMSG, null,
 				CMMsg.NO_EFFECT, null);
@@ -408,20 +412,20 @@ public class StdProgram extends StdItem implements Software
 		for(final SWServices service : getProvidedServices())
 		{
 			final String code=TechCommand.SWSVCALLOW.makeCommand(service);
-			msg.setTargetMessage(code);
-			sendServiceMsg(mob,puters,msg);
+			omsg.setTargetMessage(code);
+			sendServiceMsg(mob,puters,(CMMsg)omsg.copyOf());
 		}
 		for(final SWServices service : getRequiredServices())
 		{
 			final String code=TechCommand.SWSVCNEED.makeCommand(service,parm);
-			msg.setTargetMessage(code);
-			sendServiceMsg(mob,puters,msg);
+			omsg.setTargetMessage(code);
+			sendServiceMsg(mob,puters,(CMMsg)omsg.copyOf());
 		}
 		for(final SWServices service : getAppreciatedServices())
 		{
 			final String code=TechCommand.SWSVCNEED.makeCommand(service,parm);
-			msg.setTargetMessage(code);
-			sendServiceMsg(mob,puters,msg);
+			omsg.setTargetMessage(code);
+			sendServiceMsg(mob,puters,(CMMsg)omsg.copyOf());
 		}
 		for(final SWServices service : getRequiredServices())
 		{
@@ -462,7 +466,8 @@ public class StdProgram extends StdItem implements Software
 	protected void onPowerCurrent(final int value)
 	{
 		if((value > 0) // >0 means its getting power because its active
-		&&(!isActivated))
+		&&(!isActivated)
+		&&(getInternalName().length()==0)) // should only happen for parent menus
 		{
 			final MOB factoryMOB = CMClass.getFactoryMOB(name(), 1, CMLib.map().roomLocation(this));
 			try

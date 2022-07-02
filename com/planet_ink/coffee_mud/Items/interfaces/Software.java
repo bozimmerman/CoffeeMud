@@ -53,7 +53,8 @@ public interface Software extends Item, Technical
 	public enum SWServices
 	{
 		TARGETING,
-		IDENTIFICATION
+		IDENTIFICATION,
+		COORDQUERY
 	}
 
 	/**

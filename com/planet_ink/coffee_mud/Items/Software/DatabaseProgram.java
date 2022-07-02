@@ -135,15 +135,16 @@ public class DatabaseProgram extends GenShipProgram
 	};
 
 	@Override
-	public boolean isActivationString(final String word)
+	public boolean isActivationString(String word)
 	{
-		return isCommandString(word, false);
+		word=word.toUpperCase().trim();
+		return (word.equals("DATABASE") || word.equals("DB"));
 	}
 
 	@Override
 	public boolean isDeActivationString(final String word)
 	{
-		return isCommandString(word, false);
+		return super.isDeActivationString(word);
 	}
 
 	@Override
@@ -155,10 +156,9 @@ public class DatabaseProgram extends GenShipProgram
 	}
 
 	@Override
-	public boolean isCommandString(String word, final boolean isActive)
+	public boolean isCommandString(final String word, final boolean isActive)
 	{
-		word = word.toUpperCase();
-		return (word.equals("DATABASE") || word.equals("DB"));
+		return isActive;
 	}
 
 	@Override
@@ -283,20 +283,31 @@ public class DatabaseProgram extends GenShipProgram
 			return false;
 		if(sO instanceof SpaceShip)
 			return false;
-		if((sO.radius()>0)&&(sO.radius() < SpaceObject.Distance.MoonRadius.dm))
+		if((sO.radius()>0)&&(sO.radius() < SpaceObject.Distance.MoonRadius.dm/2))
 			return false;
-		if((sO.getMass()>0) && (sO.getMass() < SpaceObject.MOONLET_MASS))
+		if((sO.getMass()>0) && (sO.getMass() < SpaceObject.MOONLET_MASS/2))
 			return false;
 		return true;
 	}
 
-	protected String getDataName(final String key)
+	protected String getDataName(String key)
 	{
+		key=key.toUpperCase().trim();
 		final long[] coords = getCheckedCoords(key);
 		if(coords==null)
 		{
-			if(!data.containsKey(key))
+			if(!data.containsKey(key.toUpperCase().trim()))
 				return "";
+			final Object o = data.get(key);
+			if((o instanceof String) // it must be an ID/NAME!
+			&&(!((String)o).equalsIgnoreCase("SPACE")))
+				return (String)o;
+			if(o instanceof JSONObject)
+			{
+				final JSONObject obj = (JSONObject)o;
+				if(obj.containsKey("NAME"))
+					return obj.get("NAME").toString();
+			}
 			return key;
 		}
 		if(data.containsKey(key))
@@ -549,7 +560,7 @@ public class DatabaseProgram extends GenShipProgram
 	{
 		if(jo.containsKey("COORDS") && jo.containsKey("SPACE"))
 			return getAllSpaceObjectDataResults(getCheckedCoords(jo.get("COORDS").toString()));
-		int maxLen=0;
+		int maxLen=6;
 		for(final String k : jo.keySet())
 		{
 			if(k.length()>maxLen)
@@ -559,8 +570,14 @@ public class DatabaseProgram extends GenShipProgram
 		if(jo.containsKey("COORDS"))
 			coords=CMLib.english().coordDescShort(getCheckedCoords(jo.get("COORDS").toString()));
 		else
-		if(coords != null)
+		if(ccoords != null)
 			coords = CMLib.english().coordDescShort(ccoords);
+		else
+		{
+			final long[] c = getCheckedCoords(key);
+			if(c != null)
+				coords = CMLib.english().coordDescShort(c);
+		}
 		String name=key;
 		if(jo.containsKey("NAME"))
 			name=jo.get("NAME").toString();
@@ -826,6 +843,8 @@ public class DatabaseProgram extends GenShipProgram
 			queryType=2;
 			q=query.substring(0,query.length()-1).toUpperCase().trim();
 		}
+		else
+			q=query.toUpperCase().trim();
 		for(final String key : data.keySet())
 		{
 			final List<String> vals = getValues(key,noNotes);
@@ -938,7 +957,7 @@ public class DatabaseProgram extends GenShipProgram
 	{
 		synchronized(this)
 		{
-			message = message.toUpperCase().trim();
+			message = message.trim();
 			final List<String> parsed=CMParms.parse(message);
 			String uword=(parsed.size()>0)?parsed.get(0).toUpperCase():"";
 			if(uword.equalsIgnoreCase("DATABASE")
@@ -1231,6 +1250,35 @@ public class DatabaseProgram extends GenShipProgram
 					try
 					{
 						final String code=TechCommand.SWSVCRES.makeCommand(service,new String[] { resp });
+						final CMMsg msg2=CMClass.getMsg(factoryMOB, S, this,
+								CMMsg.NO_EFFECT, null,
+								CMMsg.MSG_ACTIVATE|CMMsg.MASK_ALWAYS|CMMsg.MASK_CNTRLMSG, code,
+								CMMsg.NO_EFFECT, null);
+						msg2.setTargetMessage(code);
+						msg.addTrailerMsg(msg2);
+					}
+					finally
+					{
+						factoryMOB.destroy();
+					}
+				}
+			}
+		}
+		else
+		if((service == SWServices.COORDQUERY)
+		&&(S!=null)
+		&&(S!=this)
+		&&(parms.length>0))
+		{
+			for(final String parm : parms)
+			{
+				final long[] coords = this.getDataCoords(parm);
+				if(coords != null)
+				{
+					final MOB factoryMOB = CMClass.getFactoryMOB(name(), 1, CMLib.map().roomLocation(this));
+					try
+					{
+						final String code=TechCommand.SWSVCRES.makeCommand(service,new String[] { CMParms.toListString(coords) });
 						final CMMsg msg2=CMClass.getMsg(factoryMOB, S, this,
 								CMMsg.NO_EFFECT, null,
 								CMMsg.MSG_ACTIVATE|CMMsg.MASK_ALWAYS|CMMsg.MASK_CNTRLMSG, code,
