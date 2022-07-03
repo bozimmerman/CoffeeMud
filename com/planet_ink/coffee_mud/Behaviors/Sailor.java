@@ -263,21 +263,44 @@ public class Sailor extends StdBehavior
 
 	public boolean tryMend(final MOB mob)
 	{
-		if(CMLib.flags().domainAffects(mob, Ability.ACODE_COMMON_SKILL).size()==0)
+		if(((NavigableItem)loyalShipItem).navBasis() == Rideable.Basis.LAND_BASED)
 		{
-			final Ability A=CMClass.getAbility("Shipwright");
-			if((A!=null)
-			&&((A.proficiency()==0)||(A.proficiency()==100)))
+			if(CMLib.flags().domainAffects(mob, Ability.ACODE_COMMON_SKILL).size()==0)
 			{
-				A.setProficiency((mob.phyStats().level()+1) * 4 * 3);
-				if(A.proficiency() >= 100)
-					A.setProficiency(99);
+				final Ability A=CMClass.getAbility("CaravanBuilding");
+				if((A!=null)
+				&&((A.proficiency()==0)||(A.proficiency()==100)))
+				{
+					A.setProficiency((mob.phyStats().level()+1) * 4 * 3);
+					if(A.proficiency() >= 100)
+						A.setProficiency(99);
+				}
+				final Ability mend=mob.fetchAbility("CaravanBuilding");
+				if(mend != null)
+				{
+					mob.enqueCommand(new XVector<String>("CARAVANBUILD","MEND",loyalShipItem.Name()), 0, 0);
+					return true;
+				}
 			}
-			final Ability mend=mob.fetchAbility("Shipwright");
-			if(mend != null)
+		}
+		else
+		{
+			if(CMLib.flags().domainAffects(mob, Ability.ACODE_COMMON_SKILL).size()==0)
 			{
-				mob.enqueCommand(new XVector<String>("SHIPWRIGHT","MEND",loyalShipItem.Name()), 0, 0);
-				return true;
+				final Ability A=CMClass.getAbility("Shipwright");
+				if((A!=null)
+				&&((A.proficiency()==0)||(A.proficiency()==100)))
+				{
+					A.setProficiency((mob.phyStats().level()+1) * 4 * 3);
+					if(A.proficiency() >= 100)
+						A.setProficiency(99);
+				}
+				final Ability mend=mob.fetchAbility("Shipwright");
+				if(mend != null)
+				{
+					mob.enqueCommand(new XVector<String>("SHIPWRIGHT","MEND",loyalShipItem.Name()), 0, 0);
+					return true;
+				}
 			}
 		}
 		return false;
@@ -285,21 +308,24 @@ public class Sailor extends StdBehavior
 
 	public boolean tryTrawl(final MOB mob)
 	{
-		if(CMLib.flags().domainAffects(mob, Ability.ACODE_COMMON_SKILL).size()==0)
+		if(((NavigableItem)loyalShipItem).navBasis() == Rideable.Basis.WATER_BASED)
 		{
-			final Ability A=CMClass.getAbility("Trawling");
-			if((A!=null)
-			&&((A.proficiency()==0)||(A.proficiency()==100)))
+			if(CMLib.flags().domainAffects(mob, Ability.ACODE_COMMON_SKILL).size()==0)
 			{
-				A.setProficiency((mob.phyStats().level()+1) * 4 * 3);
-				if(A.proficiency() >= 100)
-					A.setProficiency(99);
-			}
-			final Ability mend=mob.fetchAbility("Trawling");
-			if(mend != null)
-			{
-				mob.enqueCommand(new XVector<String>("TRAWL"), 0, 0);
-				return true;
+				final Ability A=CMClass.getAbility("Trawling");
+				if((A!=null)
+				&&((A.proficiency()==0)||(A.proficiency()==100)))
+				{
+					A.setProficiency((mob.phyStats().level()+1) * 4 * 3);
+					if(A.proficiency() >= 100)
+						A.setProficiency(99);
+				}
+				final Ability mend=mob.fetchAbility("Trawling");
+				if(mend != null)
+				{
+					mob.enqueCommand(new XVector<String>("TRAWL"), 0, 0);
+					return true;
+				}
 			}
 		}
 		return false;
@@ -495,7 +521,10 @@ public class Sailor extends StdBehavior
 					if((((NavigableItem)loyalShipItem).isAnchorDown())
 					&&(canMoveShip()))
 					{
-						mob.enqueCommand(new XVector<String>("RAISE","ANCHOR"), 0, 0);
+						if(((NavigableItem)loyalShipItem).navBasis() == Rideable.Basis.WATER_BASED)
+							mob.enqueCommand(new XVector<String>("RAISE","ANCHOR"), 0, 0);
+						else
+							mob.enqueCommand(new XVector<String>("UNSET","BRAKE"), 0, 0);
 						return true;
 					}
 				}
@@ -730,7 +759,10 @@ public class Sailor extends StdBehavior
 						if(combatMover && (!peaceMover))
 						{
 							mob.enqueCommand(new XVector<String>("COURSE"), 0, 0);
-							mob.enqueCommand(new XVector<String>("LOWER","ANCHOR"), 0, 0);
+							if(((NavigableItem)loyalShipItem).navBasis() == Rideable.Basis.WATER_BASED)
+								mob.enqueCommand(new XVector<String>("LOWER","ANCHOR"), 0, 0);
+							else
+								mob.enqueCommand(new XVector<String>("SET","BRAKE"), 0, 0);
 						}
 						for(final Enumeration<Item> i=mobRoom.items();i.hasMoreElements();)
 						{
