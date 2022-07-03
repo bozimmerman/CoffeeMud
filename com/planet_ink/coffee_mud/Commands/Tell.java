@@ -195,11 +195,13 @@ public class Tell extends StdCommand
 				ts.snoopSuspension(-1);
 		}
 
-		if((targetM.session()!=null)&&(targetM.session().isAfk()))
+		if((targetM.session()!=null)
+		&&(targetM.session().isAfk()))
 		{
-			mob.tell(targetM.session().getAfkMessage());
 			if(CMLib.flags().isCloaked(targetM))
 				CMLib.commands().postCommandFail(mob,origCmds,L("That person doesn't appear to be online."));
+			else
+				mob.tell(targetM.session().getAfkMessage());
 		}
 		return false;
 	}
