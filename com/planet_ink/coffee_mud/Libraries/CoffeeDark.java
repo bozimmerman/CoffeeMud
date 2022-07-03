@@ -970,6 +970,63 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		}
 	}
 
+	protected double getOldMinDistFrom(final long[] prevPos, final double speed, final double[] dir, final long[] curPosition, 
+									   final double[] directionTo, final long[] objPos)
+	{
+		final BigDecimal currentDistance=getBigDistanceFrom(curPosition, objPos);
+		if(Arrays.equals(prevPos, curPosition))
+			return currentDistance.doubleValue();
+		final BigDecimal prevDistance=getBigDistanceFrom(prevPos, objPos);
+		final BigDecimal baseDistance=BigDecimal.valueOf(speed);
+		if(baseDistance.compareTo(currentDistance.add(prevDistance))>=0)
+		{
+			//Log.debugOut("0:prevDistance="+prevDistance.longValue()+", baseDistance="+baseDistance.longValue()+", currentDistance="+currentDistance.longValue());
+			return 0;
+		}
+		if(prevDistance.subtract(baseDistance).equals(currentDistance)
+		||currentDistance.subtract(baseDistance).equals(prevDistance))
+		{
+			//Log.debugOut("1:prevDistance="+prevDistance.longValue()+", baseDistance="+baseDistance.longValue()+", currentDistance="+currentDistance.longValue());
+			return Math.min(prevDistance.doubleValue(), currentDistance.doubleValue());
+		}
+		//Log.debugOut("2:prevDistance="+prevDistance.longValue()+", baseDistance="+baseDistance.longValue()+", currentDistance="+currentDistance.longValue());
+		final double[] travelDir = dir;
+		final double[] prevDirToObject = getDirection(prevPos, objPos);
+		final double diDelta=getDirDiffSum(travelDir,prevDirToObject);
+		if(diDelta<ZERO_ALMOST)
+		{
+			final double[] currDirToObject = directionTo;
+			final double fiDelta=getDirDiffSum(currDirToObject,prevDirToObject);
+			if(fiDelta>ZERO_ALMOST)
+				return 0;
+			if(prevDistance.compareTo(currentDistance)>0)
+				return currentDistance.doubleValue();
+			else
+				return prevDistance.doubleValue();
+		}
+
+		final BigDecimal semiPerimeter=currentDistance.add(prevDistance).add(baseDistance).divide(TWO, RoundingMode.HALF_UP);
+		final BigDecimal partOfTriangle=semiPerimeter.multiply(semiPerimeter.subtract(currentDistance))
+													.multiply(semiPerimeter.subtract(baseDistance))
+													.multiply(semiPerimeter.subtract(prevDistance));
+
+		final BigDecimal areaOfTriangle=bigSqrt(partOfTriangle);
+		//Log.debugOut("3:semiPerimeter="+semiPerimeter.longValue()+", areaOfTriangle="+areaOfTriangle.doubleValue());
+		if(areaOfTriangle.doubleValue()==0.0)
+		{
+			//Log.debugOut("3.5:semiPerimeter="+semiPerimeter.longValue()+", areaOfTriangle="+areaOfTriangle.doubleValue());
+			if (semiPerimeter.subtract(baseDistance).abs().doubleValue() <= 1)
+				return 0;
+			else
+				return Math.min(prevDistance.doubleValue(), currentDistance.doubleValue());
+		}
+		//Log.debugOut("4:getMinDistanceFrom="+TWO.multiply(areaOfTriangle).divide(baseDistance, RoundingMode.HALF_UP).doubleValue());
+		if((baseDistance.multiply(ONE_THOUSAND).compareTo(currentDistance)<0)
+		&&(baseDistance.multiply(ONE_THOUSAND).compareTo(prevDistance)<0))
+			return Math.min(prevDistance.doubleValue(), currentDistance.doubleValue());
+		return TWO.multiply(areaOfTriangle).divide(baseDistance, RoundingMode.HALF_UP).doubleValue();
+	}
+
 	@Override
 	public ShipDir[] getCurrentBattleCoveredDirections(final ShipDirectional comp)
 	{

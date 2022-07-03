@@ -1049,7 +1049,9 @@ public class MobData extends StdWebMacro
 				str.append("<SELECT ONCHANGE=\"DelItem(this);\" NAME=ITEM"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
 				final String code=CMLib.webMacroFilter().getAppropriateCode(I,M,classes);
-				str.append("<OPTION SELECTED VALUE=\""+code+"\">"+I.Name()+" ("+I.ID()+")");
+				str.append("<OPTION SELECTED VALUE=\""+code+"\">"
+												+CMStrings.limit(CMStrings.removeColors(I.Name()),40)
+												+" ("+I.ID()+")");
 				str.append("</SELECT><BR>");
 				str.append("<FONT COLOR=WHITE SIZE=-1>");
 				str.append("Container: ");
