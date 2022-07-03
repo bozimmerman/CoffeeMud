@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Items.Software;
 import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.core.threads.TimeMs;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
@@ -24,6 +25,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.net.*;
 import java.io.*;
 import java.util.*;
+
+import javax.xml.transform.Source;
 
 /*
    Copyright 2013-2022 Bo Zimmerman
@@ -53,14 +56,14 @@ public class RocketShipProgram extends GenShipProgram
 	protected volatile long nextPowerCycleTmr = System.currentTimeMillis()+(8*1000);
 	protected volatile int	activationCounter = DEFAULT_ACT_8_SEC_COUNTDOWN;
 
-	protected volatile List<ShipEngine>		engines		= null;
-	protected volatile List<TechComponent>	sensors		= null;
-	protected volatile List<TechComponent>	weapons		= null;
-	protected volatile List<TechComponent>	shields		= null;
-	protected volatile List<TechComponent>	components	= null;
-	protected volatile List<TechComponent>	dampers		= null;
-	protected final  Set<TechComponent>		activated	= Collections.synchronizedSet(new HashSet<TechComponent>());
-
+	protected volatile List<ShipEngine>		engines				= null;
+	protected volatile List<TechComponent>	sensors				= null;
+	protected volatile List<TechComponent>	weapons				= null;
+	protected volatile List<TechComponent>	shields				= null;
+	protected volatile List<TechComponent>	components			= null;
+	protected volatile List<TechComponent>	dampers				= null;
+	protected final Set<TechComponent>		activated			= Collections.synchronizedSet(new HashSet<TechComponent>());
+	protected final List<long[]>			course				= new LinkedList<long[]>();
 	protected volatile Double				lastAcceleration	= null;
 	protected volatile Double				lastAngle			= null;
 	protected volatile Double				lastInject			= null;
@@ -71,7 +74,7 @@ public class RocketShipProgram extends GenShipProgram
 	protected volatile SpaceObject			currentTarget		= null;
 	protected volatile SpaceObject			programPlanet		= null;
 	protected volatile List<ShipEngine>		programEngines		= null;
-
+	
 	protected final	Map<Technical, Set<SpaceObject>>sensorReps	= new SHashtable<Technical, Set<SpaceObject>>();
 	protected final Map<ShipEngine, Double[]>		injects		= new Hashtable<ShipEngine, Double[]>();
 
@@ -411,6 +414,7 @@ public class RocketShipProgram extends GenShipProgram
 		||uword.equals("ACTIVATE")
 		||uword.equals("DEACTIVATE")
 		||uword.equals("TARGET")
+		||uword.equals("COURSE")
 		||uword.equals("FACE")
 		||uword.equals("APPROACH")
 		||uword.equals("CANCEL")
@@ -426,6 +430,37 @@ public class RocketShipProgram extends GenShipProgram
 		return findEngineByName(uword)!=null;
 	}
 
+	protected List<long[]> plotCourse(final long[] src, final long sradius, final long[] target, final long tradius)
+	{
+		final List<long[]> course = new LinkedList<long[]>();
+		final GalacticMap space=CMLib.space();
+		// never add source, it is implied!
+		final double[] dir = space.getDirection(src, target);
+		final long sgradius=Math.round(sradius*(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS));
+		final long tgradius=Math.round(tradius*(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS));
+		final long[] srcCoord = space.moveSpaceObject(src, dir, sgradius+1);
+		final long[] tgtCoord = space.moveSpaceObject(target, space.getOppositeDir(dir), tgradius+1);
+		final long distance = space.getDistanceFrom(srcCoord, tgtCoord);
+		final BoundedCube courseRay = new BoundedCube(srcCoord, sgradius);
+		if(courseRay.contains(tgtCoord)||(distance <= sradius))
+		{
+			// this means we are already right on top of it, nowhere to go!
+			return null;
+		}
+		courseRay.expand(dir, distance);
+		final List<SpaceObject> objs = CMLib.space().getSpaceObjectsInBound(courseRay);
+		final SpaceObject me;
+		if((objs.size()==0)||((me = space.getSpaceObject(this,true)) == null))
+		{
+			course.add(tgtCoord); // WIN!
+			return course;
+		}
+		// closest on top
+		Collections.sort(objs, new DistanceSorter(me));
+		//TODO:
+		return course;
+	}
+	
 	protected Set<SpaceObject> getLocalSensorReport(final TechComponent sensor)
 	{
 		if(sensor==null)

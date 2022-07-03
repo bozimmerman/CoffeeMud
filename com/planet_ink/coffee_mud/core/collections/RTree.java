@@ -456,12 +456,15 @@ public class RTree<T extends BoundedObject>
 
 	private void query(final Collection<T> results, final BoundedCube box, final RTreeNode node)
 	{
-		if (node == null) return;
+		if (node == null) 
+			return;
 		if (node.isLeaf())
 		{
 			for (int i = 0; i < node.data.size(); i++)
+			{
 				if (node.data.get(i).getBounds().intersects(box))
 					results.add(node.data.get(i));
+			}
 		}
 		else
 		{

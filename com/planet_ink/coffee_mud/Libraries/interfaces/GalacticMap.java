@@ -471,7 +471,8 @@ public interface GalacticMap extends CMLibrary
 	public List<SpaceObject> getSpaceObjectsWithin(SpaceObject ofObj, long minDistance, long maxDistance);
 
 	/**
-	 * Given a bounded cube, this will return all space objects within that cube.
+	 * Given a bounded cube, this will return all space objects within that cube,
+	 * and by within, i mean even just intersecting it.
 	 *
 	 * @see GalacticMap#getSpaceObjects()
 	 * @see GalacticMap#getSpaceObjectEntries()

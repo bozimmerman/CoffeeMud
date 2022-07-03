@@ -1135,6 +1135,15 @@ public class StdArea implements Area
 					}
 				}
 			}
+			if (!CMath.bset(getTheme(), Area.THEME_HEROIC))
+			{
+				if((msg.tool() instanceof Ability)
+				&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SUPERPOWER))
+				{
+					msg.source().tell(L("Your powers don't seem to work here."));
+					return false;
+				}
+			}
 			else
 			if (!CMath.bset(getTheme(), Area.THEME_TECHNOLOGY))
 			{
