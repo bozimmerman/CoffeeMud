@@ -78,32 +78,54 @@ public class Wimpy extends StdBehavior
 		{
 			tickDown=tickWait;
 			final MOB monster=(MOB)ticking;
-			if(monster.location()!=null)
-			for(int m=0;m<monster.location().numInhabitants();m++)
+			final Room mobR=monster.location();
+			if(mobR!=null)
 			{
-				final MOB M=monster.location().fetchInhabitant(m);
-				if((M!=null)&&(M!=monster)&&(CMLib.masking().maskCheck(getParms(),M,false)))
+				for(int m=0;m<mobR.numInhabitants();m++)
 				{
-					if(M.getVictim()==monster)
+					final MOB M=mobR.fetchInhabitant(m);
+					if((M!=null)
+					&&(M!=monster)
+					&&(CMLib.masking().maskCheck(getParms(),M,false)))
 					{
-						CMLib.commands().postFlee(monster,"");
-						return true;
-					}
-					else
-					if((veryWimpy)&&(!monster.isInCombat()))
-					{
-						final Room oldRoom=monster.location();
-						final List<Behavior> V=CMLib.flags().flaggedBehaviors(monster,Behavior.FLAG_MOBILITY);
-						for(final Behavior B : V)
+						if((M.getVictim()==monster)
+						&&(monster.isInCombat()))
 						{
-							int tries=0;
-							while(((++tries)<100)&&(oldRoom==monster.location()))
-								B.tick(monster,Tickable.TICKID_MOB);
-							if(oldRoom!=monster.location())
-								return true;
+							final List<String> choices = new ArrayList<String>();
+							for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+							{
+								final Room R=mobR.getRoomInDir(d);
+								if((R!=null)
+								&&(R.getArea()==mobR.getArea()))
+								{
+									final Exit E=mobR.getExitInDir(d);
+									if(E!=null)
+									{
+										if(E.isOpen()
+										&&((d != Directions.UP)||(CMLib.flags().isFlying(monster))))
+											choices.add(CMLib.directions().getDirectionName(d));
+									}
+								}
+							}
+							if(choices.size()>0)
+								CMLib.commands().postFlee(monster, choices.get(CMLib.dice().roll(1, choices.size(), -1)));
+							else
+								CMLib.commands().postFlee(monster, "NOWHERE");
 						}
-						if(oldRoom==monster)
-							CMLib.tracking().beMobile(monster,false,false,false,false,null,null);
+						if((veryWimpy&&(!monster.isInCombat())))
+						{
+							final List<Behavior> V=CMLib.flags().flaggedBehaviors(monster,Behavior.FLAG_MOBILITY);
+							for(final Behavior B : V)
+							{
+								int tries=0;
+								while(((++tries)<100)&&(mobR==monster.location()))
+									B.tick(monster,Tickable.TICKID_MOB);
+								if(mobR!=monster.location())
+									return true;
+							}
+							if(mobR==monster.location())
+								CMLib.tracking().beMobile(monster,false,false,false,false,null,null);
+						}
 					}
 				}
 			}
