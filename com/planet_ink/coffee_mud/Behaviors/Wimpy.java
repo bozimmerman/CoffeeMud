@@ -110,7 +110,10 @@ public class Wimpy extends StdBehavior
 							if(choices.size()>0)
 								CMLib.commands().postFlee(monster, choices.get(CMLib.dice().roll(1, choices.size(), -1)));
 							else
+							{
 								CMLib.commands().postFlee(monster, "NOWHERE");
+								CMLib.tracking().beMobile(monster,false,false,false,false,null,null);
+							}
 						}
 						if((veryWimpy&&(!monster.isInCombat())))
 						{
