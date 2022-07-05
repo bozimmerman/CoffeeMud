@@ -233,7 +233,7 @@ public class DatabaseProgram extends GenShipProgram
 		if(coordCom.size()==3)
 		{
 			final long[] coords=new long[3];
-			for(int i=0;i<coordCom.size();i++)
+			for(int i=0;(i<coordCom.size()) && (i<3);i++)
 			{
 				final Long coord=CMLib.english().parseSpaceDistance(coordCom.get(i));
 				if(coord != null)

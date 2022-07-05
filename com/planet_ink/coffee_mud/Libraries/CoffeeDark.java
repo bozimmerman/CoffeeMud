@@ -1056,6 +1056,120 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		return currCoverage;
 	}
 
+
+	protected BoundedCube makeCourseCubeRay(final long[] src, final long sradius, 
+											final long[] target, final long tradius, 
+											final double[] dir)
+	{
+		// never add source, it is implied!
+		final long sgradius=Math.round(CMath.mul(sradius,(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
+		final long tgradius=Math.round(CMath.mul(tradius,(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
+		final long[] srcCoord = moveSpaceObject(src, dir, sgradius+1);
+		final long[] tgtCoord = moveSpaceObject(target, getOppositeDir(dir), tgradius+1);
+		final long distance = getDistanceFrom(srcCoord, tgtCoord);
+		final BoundedCube courseRay = new BoundedCube(srcCoord, sgradius);
+		if(courseRay.contains(tgtCoord)
+		||courseRay.contains(srcCoord)
+		||(distance <= sradius))
+		{
+			// this means we are already right on top of it, nowhere to go!
+			return null;
+		}
+		courseRay.expand(dir, distance);
+		return courseRay;
+	}
+
+	@Override
+	public List<long[]> plotCourse(final long[] osrc, final long sradius, final long[] otarget, final long tradius, int maxTicks)
+	{
+		final List<long[]> course = new LinkedList<long[]>();
+		final SpaceObject me = getSpaceObject(this, true);
+		if(me == null)
+			return course;
+		long[] src=osrc.clone();
+		long[] target = otarget.clone();
+		BoundedCube courseRay;
+		List<SpaceObject> objs;
+		while(!Arrays.equals(src, target))
+		{
+			final double[] dir = getDirection(src, target);
+			courseRay = makeCourseCubeRay(src, sradius, target, tradius,dir);
+			if(courseRay == null)
+				return course; // we are on top of the target, so done
+			objs = getSpaceObjectsInBound(courseRay);
+			double err = 1.0;
+			int tries=100;
+			while((objs.size()>0)&&(--tries>0))
+			{
+				err *= 2.0;
+				for(int dd=0;dd<4;dd++)
+				{
+					if(objs.size()>0)
+					{
+						// find closest
+						SpaceObject bobj = objs.get(0);
+						long bobjdist = getDistanceFrom(src, bobj.coordinates());
+						for(int i=1;i<objs.size();i++)
+						{
+							final SpaceObject notBobj = objs.get(i);
+							final long notbobjdist = getDistanceFrom(src, notBobj.coordinates());
+							if(notbobjdist > bobjdist)
+							{
+								bobjdist = notbobjdist;
+								bobj = notBobj;
+							}
+						}
+						final BigDecimal distanceToBobj = new BigDecimal(bobjdist);
+						final double dsgradius = CMath.mul(sradius, err);
+						final double dtgradius = CMath.mul(bobj.radius(),(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)) * err;
+						final double dirDelta = new BigDecimal(Math.atan(dsgradius + dtgradius))
+											.divide(distanceToBobj, BigVector.SCALE, RoundingMode.HALF_UP).doubleValue();
+						final double[] newDir = dir.clone();
+						switch(dd)
+						{
+						case 0:
+							changeDirection(newDir, new double[] {dirDelta,0});
+							break;
+						case 1:
+							changeDirection(newDir, new double[] {-dirDelta,0});
+							break;
+						case 2:
+							changeDirection(newDir, new double[] {0,dirDelta});
+							break;
+						case 3:
+							changeDirection(newDir, new double[] {0,-dirDelta});
+							break;
+						}
+						final long[] newSubTarget = moveSpaceObject(src, newDir, distanceToBobj.longValue());
+						courseRay = makeCourseCubeRay(src, sradius, newSubTarget, bobj.radius(), newDir);
+						if(courseRay == null)
+							return course; // we are on top of the target, so done
+						objs = getSpaceObjectsInBound(courseRay);
+						if(objs.size()==0)
+						{
+							target=newSubTarget;
+							break;
+						}
+					}
+				}
+			}
+			if(objs.size()==0)
+			{
+				course.add(target); // WIN!
+				src = target.clone();
+				target = otarget.clone();
+				if(--maxTicks<=0)
+					return course;
+			}
+			else
+				break;
+		}
+		return course;
+	}
+
+
+
+
 	@Override
 	public double getGravityForce(final SpaceObject S, final SpaceObject cO)
 	{

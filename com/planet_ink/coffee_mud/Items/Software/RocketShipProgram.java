@@ -24,6 +24,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.net.*;
 import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 import javax.xml.transform.Source;
@@ -64,6 +66,8 @@ public class RocketShipProgram extends GenShipProgram
 	protected volatile List<TechComponent>	dampers				= null;
 	protected final Set<TechComponent>		activated			= Collections.synchronizedSet(new HashSet<TechComponent>());
 	protected final List<long[]>			course				= new LinkedList<long[]>();
+	protected volatile long[]				courseTargetCoords	= null;
+	protected volatile long					courseTargetRadius	= 0;
 	protected volatile Double				lastAcceleration	= null;
 	protected volatile Double				lastAngle			= null;
 	protected volatile Double				lastInject			= null;
@@ -430,37 +434,6 @@ public class RocketShipProgram extends GenShipProgram
 		return findEngineByName(uword)!=null;
 	}
 
-	protected List<long[]> plotCourse(final long[] src, final long sradius, final long[] target, final long tradius)
-	{
-		final List<long[]> course = new LinkedList<long[]>();
-		final GalacticMap space=CMLib.space();
-		// never add source, it is implied!
-		final double[] dir = space.getDirection(src, target);
-		final long sgradius=Math.round(sradius*(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS));
-		final long tgradius=Math.round(tradius*(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS));
-		final long[] srcCoord = space.moveSpaceObject(src, dir, sgradius+1);
-		final long[] tgtCoord = space.moveSpaceObject(target, space.getOppositeDir(dir), tgradius+1);
-		final long distance = space.getDistanceFrom(srcCoord, tgtCoord);
-		final BoundedCube courseRay = new BoundedCube(srcCoord, sgradius);
-		if(courseRay.contains(tgtCoord)||(distance <= sradius))
-		{
-			// this means we are already right on top of it, nowhere to go!
-			return null;
-		}
-		courseRay.expand(dir, distance);
-		final List<SpaceObject> objs = CMLib.space().getSpaceObjectsInBound(courseRay);
-		final SpaceObject me;
-		if((objs.size()==0)||((me = space.getSpaceObject(this,true)) == null))
-		{
-			course.add(tgtCoord); // WIN!
-			return course;
-		}
-		// closest on top
-		Collections.sort(objs, new DistanceSorter(me));
-		//TODO:
-		return course;
-	}
-	
 	protected Set<SpaceObject> getLocalSensorReport(final TechComponent sensor)
 	{
 		if(sensor==null)
@@ -1964,6 +1937,64 @@ public class RocketShipProgram extends GenShipProgram
 				return;
 			}
 			else
+			if(uword.equalsIgnoreCase("COURSE"))
+			{
+				final SpaceObject spaceObject=CMLib.space().getSpaceObject(this,true);
+				final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+				if(ship==null)
+				{
+					super.addScreenMessage(L("Error: Malfunctioning hull interface."));
+					return;
+				}
+				if(parsed.size()<2)
+				{
+					super.addScreenMessage(L("Error: COURSE requires the name/coordinates of the target.   Try HELP."));
+					return;
+				}
+				final String targetStr=CMParms.combine(parsed, 1);
+				long[] targetCoords = null;
+				if(sensorReps.size()>0)
+				{
+					final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
+					for(final TechComponent sensor : sensors)
+						allObjects.addAll(takeNewSensorReport(sensor));
+					Collections.sort(allObjects, new DistanceSorter(spaceObject));
+					SpaceObject targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, false);
+					if(targetObj == null)
+						targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, true);
+					if(targetObj != null)
+					{
+						if(targetObj.coordinates() == null)
+						{
+							super.addScreenMessage(L("Error: Can not plot course to @x1 due to lack of coordinate information.",targetObj.name()));
+							return;
+						}
+						targetCoords = targetObj.coordinates();
+					}
+				}
+				if(targetCoords == null)
+					targetCoords = findCoordinates(targetStr);
+				if(targetCoords == null)
+				{
+					super.addScreenMessage(L("Error: Unable to find course target '@x1'.",targetStr));
+					return;
+				}
+				else
+				{
+					// yes, it's cheating.  deal
+					final List<SpaceObject> objs = CMLib.space().getSpaceObjectsByCenterpointWithin(targetCoords, 0, 10);
+					for(final SpaceObject o1 : objs)
+					{
+						if(Arrays.equals(targetCoords, o1.coordinates()))
+							this.courseTargetRadius = o1.radius();
+					}
+				}
+				this.course.clear();
+				this.courseTargetCoords = targetCoords;
+				super.addScreenMessage(L("Plotting course to @x1.",CMParms.toListString(this.courseTargetCoords)));
+				return;
+			}
+			else
 			if(uword.equalsIgnoreCase("FACE"))
 			{
 				final SpaceObject spaceObject=CMLib.space().getSpaceObject(this,true);
@@ -2756,7 +2787,41 @@ public class RocketShipProgram extends GenShipProgram
 				}
 			}
 		}
-
+		if(this.courseTargetCoords != null)
+		{
+			final SpaceObject me = CMLib.space().getSpaceObject(this,true);
+			if(me == null)
+				this.courseTargetCoords = null;
+			else
+			{
+				long[] srcCoords = me.coordinates();
+				if(this.course.size()>0)
+					srcCoords = course.get(this.course.size()-1).clone();
+				List<long[]> newBits = CMLib.space().plotCourse(srcCoords, me.radius(), courseTargetCoords, courseTargetRadius, 1);
+				if(newBits.size()==0)
+				{
+					this.courseTargetCoords = null;
+					super.addScreenMessage(L("Failed to plot course."));
+				}
+				else
+				{
+					this.course.addAll(newBits);
+					for(final long[] bit : newBits)
+					{
+						if(Arrays.equals(bit, courseTargetCoords))
+						{
+							this.courseTargetCoords = null;
+							super.addScreenMessage(L("Course plotted."));
+							break;
+						}
+					}
+					if(courseTargetCoords != null)
+					{
+						// still plotting
+					}
+				}
+			}
+		}
 	}
 
 	protected String getDataName(final String realName, final String coords, final String notName)
@@ -2775,6 +2840,44 @@ public class RocketShipProgram extends GenShipProgram
 			}
 		}
 		return "";
+	}
+
+	protected long[] convertStringToCoords(final String coordStr)
+	{
+		final List<String> coordCom = CMParms.parseCommas(coordStr,true);
+		if(coordCom.size()==3)
+		{
+			final long[] coords=new long[3];
+			for(int i=0;(i<coordCom.size()) && (i<3);i++)
+			{
+				final Long coord=CMLib.english().parseSpaceDistance(coordCom.get(i));
+				if(coord != null)
+					coords[i]=coord.longValue();
+				else
+					return null;
+			}
+			return coords;
+		}
+		return null;
+	}
+
+	protected long[] findCoordinates(final String name)
+	{
+		final String[] parms = new String[] {name};
+		final List<String[]> names = super.doServiceTransaction(SWServices.COORDQUERY, parms);
+		for(final String[] res : names)
+		{
+			for(final String r : res)
+			{
+				if(r.length()>0)
+				{
+					final long[] coords = convertStringToCoords(r);
+					if(coords !=null)
+						return coords;
+				}
+			}
+		}
+		return null;
 	}
 
 	@Override

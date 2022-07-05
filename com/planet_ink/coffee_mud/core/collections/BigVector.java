@@ -20,8 +20,8 @@ import java.math.RoundingMode;
 */
 public class BigVector
 {
-	private static final BigDecimal	ZERO	= BigDecimal.valueOf(0.0);
-	private static final BigDecimal	TWO		= BigDecimal.valueOf(2L);
+	public static final BigDecimal	ZERO	= BigDecimal.valueOf(0.0);
+	public static final BigDecimal	TWO		= BigDecimal.valueOf(2L);
 	public final static int			SCALE	= 25;
 
 	protected final BigDecimal[] b;
