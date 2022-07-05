@@ -75,6 +75,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	protected boolean		multiplyPhyStats	= false;
 	protected boolean		multiplyCharStates	= false;
 	protected boolean		firstTime			= false;
+	protected boolean		removeOnDeath		= false;
 	protected String[]		parameters			= new String[] { "", "" };
 	protected ItemSetDef	allSet				= null;
 
@@ -282,6 +283,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		this.charStatsChanges=null;
 		this.multiplyPhyStats = false;
 		this.multiplyCharStates = false;
+		this.removeOnDeath=false;
 		parameters=CMLib.masking().separateMaskStrs(text());
 		if(parameters[1].trim().length()==0)
 			mask=CMLib.masking().createEmptyMask();
@@ -295,7 +297,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 				"MULTIPLYPH", "MULTIPLYCH", "abi", "arm", "att", "dam", "dis", "lev",
 				"rej", "sen", "spe", "wei", "hei", "gen", "cla", "cls", "rac", "hit",
 				"hun", "man", "mov", "thi", "ALLSAVES", "ABLEPROFS", "ABLELVLS","chr","hp",
-				"ALLSET"
+				"ALLSET","RONDEATH"
 			}));
 			for(final int i : CharStats.CODES.BASECODES())
 			{
@@ -315,6 +317,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		|| parameters[0].startsWith("-"))
 			errors.add("Likely bad arguments: "+parameters[0]);
 
+		this.removeOnDeath="TRUE".startsWith(getParmStr(ps, parameters[0], "RONDEATH", "").toUpperCase());
 		final String allSet=getParmStr(ps, parameters[0], "ALLSET", null);
 		this.allSet=null;
 		if((allSet!=null) && (allSet.length()>0))
@@ -697,6 +700,23 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			||(msg.sourceMinor()==CMMsg.TYP_GET)
 			||(msg.sourceMinor()==CMMsg.TYP_GIVE))
 				clearSet(msg.source(),this.allSet);
+		}
+		else
+		if((msg.sourceMinor()==CMMsg.TYP_DEATH)
+		&&(this.removeOnDeath)
+		&&((msg.source()==affected)
+			||((affected instanceof Item)&&(msg.source()==((Item)affected).owner()))
+			||(affected instanceof Room)
+			||(affected instanceof Area)))
+		{
+			final Physical P = affected;
+			P.delEffect(this);
+			P.recoverPhyStats();
+			if(P instanceof MOB)
+			{
+				((MOB)P).recoverCharStats();
+				((MOB)P).recoverMaxState();
+			}
 		}
 	}
 
