@@ -970,7 +970,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		}
 	}
 
-	protected double getOldMinDistFrom(final long[] prevPos, final double speed, final double[] dir, final long[] curPosition, 
+	protected double getOldMinDistFrom(final long[] prevPos, final double speed, final double[] dir, final long[] curPosition,
 									   final double[] directionTo, final long[] objPos)
 	{
 		final BigDecimal currentDistance=getBigDistanceFrom(curPosition, objPos);
@@ -1057,8 +1057,8 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 
-	protected BoundedCube makeCourseCubeRay(final long[] src, final long sradius, 
-											final long[] target, final long tradius, 
+	protected BoundedCube makeCourseCubeRay(final long[] src, final long sradius,
+											final long[] target, final long tradius,
 											final double[] dir)
 	{
 		// never add source, it is implied!
@@ -1102,6 +1102,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			while((objs.size()>0)&&(--tries>0))
 			{
 				err *= 2.0;
+				final List<long[]> choices = new ArrayList<long[]>(4);
 				for(int dd=0;dd<4;dd++)
 				{
 					if(objs.size()>0)
@@ -1146,11 +1147,27 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 							return course; // we are on top of the target, so done
 						objs = getSpaceObjectsInBound(courseRay);
 						if(objs.size()==0)
+							choices.add(newSubTarget);
+					}
+				}
+				if(choices.size()>0)
+				{
+					target=choices.get(0);
+					if(choices.size()>1)
+					{
+						long dist = getDistanceFrom(target, otarget);
+						for(int i=1;i<choices.size();i++)
 						{
-							target=newSubTarget;
-							break;
+							final long dist2 = this.getDistanceFrom(choices.get(i), otarget);
+							if(dist2<dist)
+							{
+								target=choices.get(i);
+								dist=dist2;
+							}
 						}
 					}
+					objs.clear();
+					break;
 				}
 			}
 			if(objs.size()==0)
