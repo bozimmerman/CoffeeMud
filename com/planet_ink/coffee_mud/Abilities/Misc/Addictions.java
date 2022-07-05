@@ -95,8 +95,8 @@ public class Addictions extends StdAbility
 
 	private Item puffCredit=null;
 
-	private final static long CRAVE_TIME=TimeManager.MILI_HOUR;
-	private final static long WITHDRAW_TIME=TimeManager.MILI_DAY;
+	private final static long	CRAVE_TIME		= TimeManager.MILI_HOUR;
+	private final static long	WITHDRAW_TIME	= TimeManager.MILI_DAY;
 
 	private boolean craving()
 	{
@@ -212,10 +212,9 @@ public class Addictions extends StdAbility
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Physical target=givenTarget;
-
-		if(target==null)
+		if((target==null)&&(text().length()==0))
 			return false;
-		if(target.fetchEffect(ID())!=null)
+		if(mob.fetchEffect(ID())!=null)
 			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -223,15 +222,21 @@ public class Addictions extends StdAbility
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			String addiction=target.Name().toUpperCase();
-			if(addiction.toUpperCase().startsWith("A POUND OF "))
-				addiction=addiction.substring(11);
-			if(addiction.toUpperCase().startsWith("A "))
-				addiction=addiction.substring(2);
-			if(addiction.toUpperCase().startsWith("AN "))
-				addiction=addiction.substring(3);
-			if(addiction.toUpperCase().startsWith("SOME "))
-				addiction=addiction.substring(5);
+			String addiction;
+			if(target != null)
+			{
+				addiction=target.Name().toUpperCase();
+				if(addiction.toUpperCase().startsWith("A POUND OF "))
+					addiction=addiction.substring(11);
+				if(addiction.toUpperCase().startsWith("A "))
+					addiction=addiction.substring(2);
+				if(addiction.toUpperCase().startsWith("AN "))
+					addiction=addiction.substring(3);
+				if(addiction.toUpperCase().startsWith("SOME "))
+					addiction=addiction.substring(5);
+			}
+			else
+				addiction=text();
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"");
 			if(mob.location()!=null)
 			{
