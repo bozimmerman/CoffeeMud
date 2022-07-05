@@ -41,6 +41,11 @@ public class Addictions extends StdAbility
 		return "Addictions";
 	}
 
+	private final Map<String,Item>	puffCredit		= new Hashtable<String,Item>();
+	private final static long	CRAVE_TIME		= TimeManager.MILI_HOUR;
+	private final static long	WITHDRAW_TIME	= TimeManager.MILI_DAY;
+	private Map<String, long[]>	lastFix			= new Hashtable<String, long[]>();
+
 	private final static String	localizedName	= CMLib.lang().L("Addictions");
 
 	@Override
@@ -49,12 +54,25 @@ public class Addictions extends StdAbility
 		return localizedName;
 	}
 
-	private long	lastFix	= System.currentTimeMillis();
-
 	@Override
 	public String displayText()
 	{
-		return craving() ? "(Addiction to " + text() + ")" : "";
+		final StringBuilder str = new StringBuilder("");
+		final long now=System.currentTimeMillis();
+		for(final String addictedStr : lastFix.keySet())
+		{
+			final long lf = lastFix.get(addictedStr)[0];
+			final long delta = now-lf;
+			if(delta>CRAVE_TIME)
+			{
+				if(str.length()>0)
+					str.append(",");
+				str.append(CMStrings.capitalizeAndLower(addictedStr));
+			}
+		}
+		if(str.length()==0)
+			return "";
+		return L("(Addiction to @x1)", str.toString());
 	}
 
 	@Override
@@ -93,14 +111,14 @@ public class Addictions extends StdAbility
 		return false;
 	}
 
-	private Item puffCredit=null;
 
-	private final static long	CRAVE_TIME		= TimeManager.MILI_HOUR;
-	private final static long	WITHDRAW_TIME	= TimeManager.MILI_DAY;
-
-	private boolean craving()
+	@Override
+	public void setMiscText(final String newMiscText)
 	{
-		return (System.currentTimeMillis() - lastFix) > CRAVE_TIME;
+		super.setMiscText(newMiscText);
+		lastFix = new Hashtable<String, long[]>();
+		for(final String str : CMParms.parseSemicolons(newMiscText,true))
+			lastFix.put(str, new long[] { 0 });
 	}
 
 	@Override
@@ -109,48 +127,56 @@ public class Addictions extends StdAbility
 		if(!super.tick(ticking,tickID))
 			return false;
 
-		if((craving())
-		&&(CMLib.dice().rollPercentage()<=((System.currentTimeMillis()-lastFix)/TimeManager.MILI_HOUR))
-		&&(ticking instanceof MOB))
+		final long now=System.currentTimeMillis();
+		for(final String addictedStr : lastFix.keySet())
 		{
-			if((System.currentTimeMillis()-lastFix)>WITHDRAW_TIME)
+			final long lf = lastFix.get(addictedStr)[0];
+			final long delta = now-lf;
+			if(delta>CRAVE_TIME)
 			{
-				((MOB)ticking).tell(L("You've managed to kick your addiction."));
-				canBeUninvoked=true;
-				unInvoke();
-				((MOB)ticking).delEffect(this);
-				return false;
+				if((CMLib.dice().rollPercentage()<=(delta/TimeManager.MILI_HOUR))
+				&&(ticking instanceof MOB))
+				{
+					if(delta>WITHDRAW_TIME)
+					{
+						((MOB)ticking).tell(L("You've managed to kick your addiction."));
+						canBeUninvoked=true;
+						unInvoke();
+						((MOB)ticking).delEffect(this);
+						return false;
+					}
+					final Item puffCreditI = puffCredit.get(addictedStr);
+					if((puffCreditI!=null)
+					&&(puffCreditI.amDestroyed()
+						||puffCreditI.amWearingAt(Wearable.IN_INVENTORY)
+						||puffCreditI.owner()!=(MOB)affected))
+							this.puffCredit.remove(addictedStr);
+					switch(CMLib.dice().roll(1,7,0))
+					{
+					case 1:
+						((MOB) ticking).tell(L("Man, you could sure use some @x1.", addictedStr));
+						break;
+					case 2:
+						((MOB) ticking).tell(L("Wouldn't some @x1 be great right about now?", addictedStr));
+						break;
+					case 3:
+						((MOB) ticking).tell(L("You are seriously craving @x1.", addictedStr));
+						break;
+					case 4:
+						((MOB) ticking).tell(L("There's got to be some @x1 around here somewhere.", addictedStr));
+						break;
+					case 5:
+						((MOB) ticking).tell(L("You REALLY want some @x1.", addictedStr));
+						break;
+					case 6:
+						((MOB) ticking).tell(L("You NEED some @x1, NOW!", addictedStr));
+						break;
+					case 7:
+						((MOB) ticking).tell(L("Some @x1 would be lovely.", addictedStr));
+						break;
+					}
+				}
 			}
-			if((puffCredit!=null)
-			&&(puffCredit.amDestroyed()
-				||puffCredit.amWearingAt(Wearable.IN_INVENTORY)
-				||puffCredit.owner()!=(MOB)affected))
-				puffCredit=null;
-			switch(CMLib.dice().roll(1,7,0))
-			{
-			case 1:
-				((MOB) ticking).tell(L("Man, you could sure use some @x1.", text()));
-				break;
-			case 2:
-				((MOB) ticking).tell(L("Wouldn't some @x1 be great right about now?", text()));
-				break;
-			case 3:
-				((MOB) ticking).tell(L("You are seriously craving @x1.", text()));
-				break;
-			case 4:
-				((MOB) ticking).tell(L("There's got to be some @x1 around here somewhere.", text()));
-				break;
-			case 5:
-				((MOB) ticking).tell(L("You REALLY want some @x1.", text()));
-				break;
-			case 6:
-				((MOB) ticking).tell(L("You NEED some @x1, NOW!", text()));
-				break;
-			case 7:
-				((MOB) ticking).tell(L("Some @x1 would be lovely.", text()));
-				break;
-			}
-
 		}
 		return true;
 	}
@@ -170,12 +196,27 @@ public class Addictions extends StdAbility
 				if(contents.size()>0)
 				{
 					final Environmental content=contents.get(0);
-					if(CMLib.english().containsString(content.Name(),text()))
-						puffCredit=(Item)msg.target();
+					for(final String addictedStr : lastFix.keySet())
+					{
+						if(CMLib.english().containsString(content.Name(),addictedStr))
+							this.puffCredit.put(addictedStr, (Item)msg.target());
+					}
 				}
 			}
 		}
 		return true;
+	}
+
+	public void maybeFixFix(final String name)
+	{
+		for(final String addictedStr : lastFix.keySet())
+		{
+			if(CMLib.english().containsString(name,addictedStr))
+				lastFix.get(addictedStr)[0] = System.currentTimeMillis();
+			else
+			if(this.puffCredit.containsKey(addictedStr))
+				lastFix.get(addictedStr)[0] = System.currentTimeMillis();
+		}
 	}
 
 	@Override
@@ -190,9 +231,12 @@ public class Addictions extends StdAbility
 					||(msg.target() instanceof Drink)
 					||(msg.target() instanceof Pill)
 					||(msg.target() instanceof Potion))
-				&&(msg.target() instanceof Item)
-				&&(CMLib.english().containsString(msg.target().Name(),text())))
-					lastFix=System.currentTimeMillis();
+				&&(msg.target() instanceof Item))
+					maybeFixFix(msg.target().Name());
+
+				if((msg.targetMinor()==CMMsg.TYP_SNIFF)
+				&&(msg.target() instanceof MagicDust))
+					maybeFixFix(msg.target().Name());
 
 				if((msg.amISource((MOB)affected))
 				&&(msg.targetMinor()==CMMsg.TYP_HANDS)
@@ -200,9 +244,8 @@ public class Addictions extends StdAbility
 				&&(msg.tool() instanceof Light)
 				&&(msg.target()==msg.tool())
 				&&(((Light)msg.target()).amWearingAt(Wearable.WORN_MOUTH))
-				&&(((Light)msg.target()).isLit())
-				&&((puffCredit!=null)||CMLib.english().containsString(msg.target().Name(),text())))
-					lastFix=System.currentTimeMillis();
+				&&(((Light)msg.target()).isLit()))
+					maybeFixFix(msg.target().Name());
 			}
 		}
 		super.executeMsg(myHost,msg);
@@ -217,8 +260,6 @@ public class Addictions extends StdAbility
 		else
 		if((target==mob)&&(text().length()>0))
 			target=null;
-		if(mob.fetchEffect(ID())!=null)
-			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -240,6 +281,13 @@ public class Addictions extends StdAbility
 			}
 			else
 				addiction=text();
+			final Ability oldA=mob.fetchEffect(ID());
+			if(oldA!=null)
+			{
+				if(oldA.text().indexOf(addiction)<0)
+					oldA.setMiscText(oldA.text()+";"+addiction);
+				return false;
+			}
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"");
 			if(mob.location()!=null)
 			{
