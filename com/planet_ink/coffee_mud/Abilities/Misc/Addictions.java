@@ -211,9 +211,12 @@ public class Addictions extends StdAbility
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		final Physical target=givenTarget;
+		Physical target=givenTarget;
 		if((target==null)&&(text().length()==0))
 			return false;
+		else
+		if((target==mob)&&(text().length()>0))
+			target=null;
 		if(mob.fetchEffect(ID())!=null)
 			return false;
 
