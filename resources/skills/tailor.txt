@@ -81,6 +81,8 @@ Warm % Sweater	23	80	20	60	GenArmor	1:BODY	0	6	0	Prop_HaveResister;COLD 50%
 Warm % Quilt	13	40	60	10	GenArmor	3:BODY	0	1	0	Prop_HaveResister;COLD 50%
 Pointy % Cap	2	10	2	2	GenArmor	1:HEAD	0	1	0	
 % Sombrero	6	20	3	8	GenArmor	1:HEAD	0	2	0	
+% Sailor`s Cap	6	30	8	12	GenArmor	HEAD	0	1	0	
+% Captain`s Hat	8	30	8	12	GenArmor	HEAD	0	2	0	
 % Chef`s Hat	10	30	8	12	GenArmor	HEAD	0	3	0	
 % Coxcomb	12	20	3	15	GenArmor	HEAD	0	3	0	
 % Turban	17	25	8	20	GenArmor	1:HEAD	0	4	0	

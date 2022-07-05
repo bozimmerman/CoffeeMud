@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.Thief.Thief_Articles;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.CraftedItem;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.StdBehavior;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -277,6 +278,52 @@ public class Skill_HireCrewmember extends StdSkill
 		return ((articlesA!=null)&&(articlesA.shipName.equals(shipName)));
 	}
 
+	protected List<Item> craftGear(final MOB mob, final String[] gearNames, final String... skillNames)
+	{
+		final List<Item> items = new ArrayList<Item>();
+		final ItemCraftor[] craftors = new ItemCraftor[skillNames.length];
+		final int[] mats = new int[skillNames.length];
+		int c=0, m=0;
+		for(final String skillName : skillNames)
+		{
+			final int mat = RawMaterial.CODES.FIND_IgnoreCase(skillName);
+			if(mat >0)
+				mats[m++]=m;
+			else
+				craftors[c++]=(ItemCraftor)CMClass.getAbility(skillName);
+		}
+		for(final String bit : gearNames)
+		{
+			Item I=null;
+			for(final ItemCraftor craftor : craftors)
+			{
+				final CraftedItem item = craftor.craftItem(bit, -1, true, false);
+				if((item != null)
+				&&(item.item != null))
+				{
+					I=item.item;
+					break;
+				}
+			}
+			if(I != null)
+			{
+				I.setBaseValue(1);
+				if(I.basePhyStats().level()>mob.phyStats().level())
+				{
+					I.basePhyStats().setLevel(mob.phyStats().level());
+					I.phyStats().setLevel(mob.phyStats().level());
+				}
+				mob.addItem(I);
+				I.wearIfPossible(mob);
+				if(!I.amBeingWornProperly())
+					I.destroy();
+				else
+					items.add(I);
+			}
+		}
+		return items;
+	}
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -413,6 +460,57 @@ public class Skill_HireCrewmember extends StdSkill
 						this.makeNonUninvokable();
 						this.setSavable(true);
 						getSailor();
+						//metacraft white pants, blue and white-striped shirts and white hats for everyone else.
+						if((type != CrewType.DEFENDER)
+						&&(type != CrewType.CAPTAIN))
+						{
+							final String[] gear = new String[] {
+								"pants", "shirt", "Sailor`s Cap"
+							};
+							final List<Item> Is = craftGear(mob, gear, "Tailoring", "COTTON");
+							for(final Item I : Is)
+							{
+								final String on = I.Name();
+								final int x=on.indexOf(' ');
+								I.setName(on.substring(0,x)+" ^wwhite^N"+on.substring(x));
+								I.setDisplayText(CMStrings.replaceAll(I.displayText(), on, I.Name()));
+							}
+						}
+						switch(type)
+						{
+						case DEFENDER:
+						{
+							final String[] gear = new String[] {
+								"vambrace", "gauntlets", "vest", "skullcap", "leggings", "bullwhip", "small shield"
+							};
+							craftGear(mob, gear, "LeatherWorking", "LEATHER", "Carpentry", "OAK");
+							break;
+						}
+						case REPAIRER:
+							craftGear(mob, new String[] {"craftsmans hammer"}, "Weaponsmithing", "IRON");
+							break;
+						case CAPTAIN:
+						{
+							final String[] gear = new String[] {
+								"pants", "shirt", "Captain`s Hat"
+							};
+							final List<Item> Is = craftGear(mob, gear, "Tailoring", "COTTON");
+							for(final Item I : Is)
+							{
+								final String on = I.Name();
+								final int x=on.indexOf(' ');
+								I.setName(on.substring(0,x)+" ^bblue^N"+on.substring(x));
+								I.setDisplayText(CMStrings.replaceAll(I.displayText(), on, I.Name()));
+							}
+							break;
+						}
+						case TACTICIAN:
+							craftGear(mob, new String[] {"drum"}, "InstrumentMaking", "OAK");
+							break;
+						case TRAWLER:
+							craftGear(mob, new String[] {"net"}, "Weaving", "HEMP");
+							break;
+						}
 						CMLib.commands().postSay(mob, L("I am ready for duty."));
 					}
 				}
