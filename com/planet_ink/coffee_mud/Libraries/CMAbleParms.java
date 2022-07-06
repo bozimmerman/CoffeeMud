@@ -408,10 +408,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		DVector dataRow = new DVector(2);
 		List<String> currCol = null;
 		String lastDiv = null;
-		
+
 		// detect item xml, and to special line parse
 		{
-			int openTagDex=str.indexOf("<");
+			final int openTagDex=str.indexOf("<");
 			if((openTagDex>=0)
 			&&(str.substring(0,openTagDex).trim().length()==0)
 			&&(columnsV.size()==1))
@@ -424,11 +424,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					str.setLength(0);
 					xml = xml.substring(7,xml.length()-8).trim();
 					uxml = uxml.substring(7,uxml.length()-8).trim();
-					
+
 					while(uxml.startsWith("<ITEM>"))
 					{
-						int closeTagDex=uxml.indexOf("</ITEM>");
-						String itemRow = xml.substring(0,closeTagDex+7);
+						final int closeTagDex=uxml.indexOf("</ITEM>");
+						final String itemRow = xml.substring(0,closeTagDex+7);
 						uxml=uxml.substring(closeTagDex+7).trim();
 						xml=xml.substring(closeTagDex+7).trim();
 						dataRow.addElement(currCol,itemRow);
@@ -4060,7 +4060,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public void createChoices()
 				{
-					createChoices(new String[] { "", "FOOD", "DRINK", "SOAP", "GenPerfume" });
+					createChoices(new String[] { "", "FOOD", "DRINK", "SOAP", "GenPerfume","GenPowder","GenCigar","GenFoodResource"});
 				}
 
 				@Override
@@ -4076,9 +4076,17 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					if(str.startsWith("SOAP ") || str.endsWith(" SOAP") || (str.indexOf("SOAP")>0))
 						return "SOAP";
 					if(I instanceof Perfume)
-						return "PERFUME";
+						return "GenPerfume";
+					if(I instanceof MagicDust)
+						return "GenPowder";
+					if((I instanceof Container)&&(I instanceof Light))
+						return "GenCigar";
+					if((I instanceof Food)&&(I instanceof RawMaterial))
+						return "GenFoodResource";
 					if(I instanceof Food)
 						return "FOOD";
+					if((I instanceof Drink)&&(I instanceof RawMaterial))
+						return "GenLiquidResource";
 					if(I instanceof Drink)
 						return "DRINK";
 					return "";
@@ -5258,7 +5266,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					}
 					return oldVal;
 				}
-				
+
 				@Override
 				public String defaultValue()
 				{
@@ -5272,13 +5280,13 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return defaultValue();
 					return CMLib.coffeeMaker().getItemXML(I);
 				}
-				
+
 				@Override
 				public String prompt()
 				{
 					return "Item";
 				}
-				
+
 				@Override
 				public boolean confirmValue(final String oldVal)
 				{
@@ -5289,8 +5297,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public String webTableField(final HTTPRequest httpReq, final java.util.Map<String, String> parms, final String oldVal)
 				{
-					String val=oldVal;
-					
+					final String val=oldVal;
+
 					if((val != null)
 					&&(val.length()>0)
 					&&(val.trim().startsWith("<")))
@@ -5348,7 +5356,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 								return CMLib.coffeeMaker().getItemXML(I);
 						}
 						String rowNum=fieldName.substring(5);
-						int x=rowNum.indexOf('_');
+						final int x=rowNum.indexOf('_');
 						if(x>0)
 							rowNum=rowNum.substring(0,x);
 						Item I=null;
@@ -5379,7 +5387,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							return data.toString();
 						}
 					}
-					
+
 					Log.debugOut("AbilityEditor:ITEM_CMARE:webValue: "+fieldName+": "+oldVal);
 					return oldVal;
 				}
@@ -5439,7 +5447,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						I=CMClass.getItem(oldVal);
 					while(!mob.session().isStopped())
 					{
-						String showVal = (I==null)?"None?!":(I.Name()+" ("+I.ID()+")");
+						final String showVal = (I==null)?"None?!":(I.Name()+" ("+I.ID()+")");
 						str=CMLib.genEd().prompt(mob,showVal,showNumber[0],showFlag,prompt(),true,"").trim();
 						if(str.equals(oldVal)||(str.equals(showVal))||(str.trim().length()==0))
 							return oldVal;
@@ -5660,7 +5668,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		{
 			return prompt;
 		}
-		
+
 		@Override
 		public String colHeader()
 		{
@@ -5910,7 +5918,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		{
 			return oldVal;
 		}
-		
+
 		@Override
 		public String webField(final HTTPRequest httpReq, final java.util.Map<String,String> parms, final String oldVal, final String fieldName)
 		{

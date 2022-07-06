@@ -1055,7 +1055,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 				buildingI.basePhyStats().setLevel(CMath.s_int(finalRecipe.get(RCP_LEVEL)));
 				buildingI.phyStats().setLevel(buildingI.basePhyStats().level());
 			}
-			int duration=getDuration(mob, 1);
+			final int duration=getDuration(mob, 1);
 			crafted.add(new CraftedItem(buildingI,null,duration));
 			return true;
 		}
