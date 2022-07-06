@@ -563,7 +563,9 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			else
 				itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),"of "+clanTypeName+" "+clanName);
 			if(misctype.length()>0)
+			{
 				buildingI.setReadableText(misctype);
+			}
 		}
 		else
 		{

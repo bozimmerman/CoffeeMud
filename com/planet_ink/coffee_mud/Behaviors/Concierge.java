@@ -72,6 +72,7 @@ public class Concierge extends StdBehavior
 	protected String	mountStr		= "";
 	protected boolean	portal			= false;
 	protected int		maxRange		= 100;
+	protected String	clanName		= null;
 
 	protected TrackingLibrary.TrackingFlags trackingFlags	= CMLib.tracking().newFlags().plus(defaultTrackingFlags);
 	protected TrackingLibrary.TrackingFlags roomRadiusFlags = CMLib.tracking().newFlags().plus(defaultRoomRadiusFlags);
@@ -143,6 +144,7 @@ public class Concierge extends StdBehavior
 	{
 		basePrice=0.0;
 		talkerName="";
+		clanName=null;
 		fakeTalker=null;
 		startRoom=null;
 		greeting=defaultGreeting;
@@ -194,6 +196,12 @@ public class Concierge extends StdBehavior
 				if(s.equals("PORTAL"))
 				{
 					portal=isTrue;
+					continue;
+				}
+				else
+				if(s.equals("CLAN"))
+				{
+					clanName=numStr;
 					continue;
 				}
 				else
@@ -342,6 +350,44 @@ public class Concierge extends StdBehavior
 		return A.getRandomMetroRoom();
 	}
 
+	protected boolean isClanRoom(final Places P)
+	{
+		if(clanName == null)
+			return false;
+		LegalBehavior B=null;
+		if(P instanceof Area)
+		{
+			final Area A=(Area)P;
+			final PrivateProperty rec = CMLib.law().getPropertyRecord(A);
+			if((rec != null)
+			&&(clanName.equalsIgnoreCase(rec.getOwnerName())))
+				return true;
+			B=CMLib.law().getLegalBehavior(A);
+		}
+		else
+		if(P instanceof Room)
+		{
+			final Room R=(Room)P;
+			final PrivateProperty rec = CMLib.law().getPropertyRecord(R);
+			if((rec != null)
+			&&(clanName.equalsIgnoreCase(rec.getOwnerName())))
+				return true;
+			B=CMLib.law().getLegalBehavior(R);
+		}
+		if(B==null)
+			return false;
+		return (B.rulingOrganization().equalsIgnoreCase(clanName));
+	}
+
+	protected boolean isAllowedPlace(final Places A)
+	{
+		if(A==null)
+			return false;
+		if(clanName == null)
+			return true;
+		return this.isClanRoom(A);
+	}
+
 	protected Room findDestination(final Environmental observer, final MOB mob, final Room centerRoom, final String where, final TrackingFlags roomRadiusFlags)
 	{
 		PairVector<String,Double> stringsToDo=null;
@@ -350,7 +396,7 @@ public class Concierge extends StdBehavior
 		if(rates.size()==0)
 		{
 			final Area A=CMLib.map().findArea(where);
-			if(A!=null)
+			if(isAllowedPlace(A))
 			{
 				roomsInRange=getRoomsInRange(centerRoom,roomsInRange,roomRadiusFlags);
 				roomR=findNearestAreaRoom(A,roomsInRange);
@@ -400,23 +446,45 @@ public class Concierge extends StdBehavior
 						ratesVec.add((Room)p.first);
 				}
 			}
-			roomR=(Room)CMLib.english().fetchEnvironmental(ratesVec,where,true);
+			if((clanName != null) && (where.equalsIgnoreCase("home")))
+			{
+				final Clan C=CMLib.clans().getClan(clanName);
+				if((C!=null)&&(C.getRecall()!=null)&&(C.getRecall().length()>0))
+					roomR=CMLib.map().getRoom(C.getRecall());
+			}
+			if(roomR==null)
+				roomR=(Room)CMLib.english().fetchEnvironmental(ratesVec,where,true);
 			if(roomR==null)
 				roomR=(Room)CMLib.english().fetchEnvironmental(ratesVec,where,false);
+			if((roomR != null)
+			&&(!isAllowedPlace(roomR)))
+				roomR=null;
+
 			if(roomR==null)
 			{
 				final Area A=CMLib.map().findArea(where);
-				if(A!=null)
+				if(isAllowedPlace(A))
 				{
 					roomsInRange=getRoomsInRange(centerRoom,roomsInRange,roomRadiusFlags);
 					roomR=findNearestAreaRoom(A,roomsInRange);
 				}
 			}
 		}
+		if((roomR==null)
+		&&(clanName != null)
+		&& (where.equalsIgnoreCase("home")))
+		{
+			final Clan C=CMLib.clans().getClan(clanName);
+			if((C!=null)&&(C.getRecall()!=null)&&(C.getRecall().length()>0))
+				roomR=CMLib.map().getRoom(C.getRecall());
+		}
 		if(roomR==null)
 		{
 			roomsInRange=getRoomsInRange(centerRoom,roomsInRange,roomRadiusFlags);
 			roomR=CMLib.map().findFirstRoom(new IteratorEnumeration<Room>(roomsInRange.iterator()), mob, where, false, 5);
+			if((roomR != null)
+			&&(!isAllowedPlace(roomR)))
+				roomR=null;
 		}
 		return roomR;
 	}
@@ -723,7 +791,10 @@ public class Concierge extends StdBehavior
 						{
 							synchronized(thingsToSay)
 							{
-								thingsToSay.addElement(msg.source(),L("I'm sorry, I don't know where '@x1' is.",say));
+								if(clanName != null)
+									thingsToSay.addElement(msg.source(),L("I'm sorry, I don't know where '@x1' is amongst places controlled by @x2.",say,clanName));
+								else
+									thingsToSay.addElement(msg.source(),L("I'm sorry, I don't know where '@x1' is.",say));
 								return;
 							}
 						}

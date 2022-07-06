@@ -143,7 +143,7 @@ public class StdClanArmor extends StdArmor implements ClanItem
 	{
 		if (!StdClanItem.standardTick(this, tickID))
 			return false;
-		return super.tick(ticking, tickID);
+		return !this.amDestroyed();
 	}
 
 }
