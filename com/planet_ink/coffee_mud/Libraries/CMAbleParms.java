@@ -4061,9 +4061,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				public void createChoices()
 				{
 					createChoices(new String[]
-							{ "", "FOOD", "DRINK", "SOAP",
-									"GenPerfume","GenPowder","GenCigar",
-									"GenFoodResource","GenLiquidResource","GenResource"});
+					{
+						"", "FOOD", "DRINK", "SOAP",
+						"GenPerfume", "GenPowder", "GenCigar",
+						"GenFoodResource", "GenLiquidResource", "GenResource"
+					});
 				}
 
 				@Override
