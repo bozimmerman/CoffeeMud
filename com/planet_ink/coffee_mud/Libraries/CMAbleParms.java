@@ -4060,7 +4060,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public void createChoices()
 				{
-					createChoices(new String[] { "", "FOOD", "DRINK", "SOAP", "GenPerfume","GenPowder","GenCigar","GenFoodResource"});
+					createChoices(new String[]
+							{ "", "FOOD", "DRINK", "SOAP",
+									"GenPerfume","GenPowder","GenCigar",
+									"GenFoodResource","GenLiquidResource","GenResource"});
 				}
 
 				@Override
@@ -4089,6 +4092,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "GenLiquidResource";
 					if(I instanceof Drink)
 						return "DRINK";
+					if(I instanceof RawMaterial)
+						return "GenResource";
 					return "";
 				}
 			},
