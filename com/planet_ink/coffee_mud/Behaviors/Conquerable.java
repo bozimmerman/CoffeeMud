@@ -720,12 +720,19 @@ public class Conquerable extends Arrest
 									CMLib.commands().postChannel(channels.get(i),CMLib.clans().clanRoles(),L("The inhabitants of @x1 have revolted against @x2.",myArea.name(),holdingClan),false);
 								if(journalName.length()>0)
 									CMLib.database().DBWriteJournal(journalName,"Conquest","ALL","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+".","See the subject line.");
+
+								synchronized(clanControlPoints)
+								{
+									clanControlPoints.clear();
+								}
+								/*
 								if((prevHoldingClan.length()>0)
 								&&(!holdingClan.equalsIgnoreCase(prevHoldingClan))
 								&&(CMLib.clans().getClanAnyHost(prevHoldingClan)!=null)
 								&&(flagFound(A,prevHoldingClan)))
 									declareWinner(prevHoldingClan);
 								else
+								*/
 									endClanRule(L(" due to revolt"));
 								revoltFails=0;
 							}

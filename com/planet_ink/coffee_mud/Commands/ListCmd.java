@@ -3617,7 +3617,6 @@ public class ListCmd extends StdCommand
 		mask=CMStrings.replaceAll(mask,"@x1","RANK");
 		mask=CMStrings.replaceAll(mask,"@x2","RANK");
 		mask=CMStrings.replaceAllofAny(mask,new char[] {'{','}','(',')'},'\0');
-		mask=CMStrings.replaceAll(mask,"*","X");
 		mask=CMStrings.replaceAll(mask,"  "," ");
 		return mask;
 	}
