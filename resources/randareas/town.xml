@@ -211,11 +211,11 @@ See guides/RandomAreas.html for information about documents of this type.
 					<ITEM select="all" insert="any_baking_item,any_cooking_item,any_foodprep_item,any_baking_item,any_cooking_item,any_foodprep_item,any_baking_item,any_cooking_item,any_foodprep_item" />
 				</SHOPINVENTORY>
 			</MOB>
-			<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
-			<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
-			<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
-			<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
-			<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
+			<ITEM class="GenTable" name="a private table" display="$ITEM_NAME is here" isgettable="false" />
+			<ITEM class="GenTable" name="a central table" display="$ITEM_NAME is here" isgettable="false" />
+			<ITEM class="GenTable" name="a clean table" display="$ITEM_NAME is here" isgettable="false" />
+			<ITEM class="GenTable" name="a dirty table" display="$ITEM_NAME is here" isgettable="false" />
+			<ITEM class="GenTable" name="a table near the kitchen" display="$ITEM_NAME is here" isgettable="false" />
 		</ROOM>
 		
 		<ROOM id="town_bar" class="WoodRoom"  condition="$__townthird &gt; 5" define="__townbar+=1">
@@ -794,6 +794,85 @@ See guides/RandomAreas.html for information about documents of this type.
 				<MOB class="genmob" copyof="Squirrel"><BEHAVIOR CLASS="Mobile" /></MOB>
 			</MOB>
 		</ROOM>
+		<ROOM id="town_craftingcommission" class="WoodRoom"  condition="$__towncraftingcommission&lt;1 and $__numshoptypes_all &gt; 5" define="__towncraftingcommission+=1,__townsecond+=1">
+			<TITLE select="any-1">
+				<TITLE>The ${c:areaname} Crafting Commissions</TITLE>
+				<TITLE>${c:areaname} Crafting Commissions</TITLE>
+				<TITLE>The ${c:areaname} Crafting Commissions</TITLE>
+				<TITLE>The Crafting Commissions</TITLE>
+			</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>This is the $adj_tidy $adj_phys_size_large ${c:areaname} Crafting Commissions.</DESCRIPTION>
+					<DESCRIPTION>This is the $adj_tidy $adj_phys_size_small ${c:areaname} Crafting Commissions.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Crafting Commissions is $adj_phys_size_small and $adj_tidy.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Crafting Commissions is $adj_tidy.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Rows and stacks of boxes line the room awaiting delivery.</DESCRIPTION>
+					<DESCRIPTION>Piles of assorted goods lay untouched in the corners, collecting cobwebs.</DESCRIPTION>
+					<DESCRIPTION>A long counter divides the room in half, and ropes held keep the long lines of people in order.</DESCRIPTION>
+					<DESCRIPTION>Crates line the walls along side an assortment of requisition orders.</DESCRIPTION>
+					<DESCRIPTION>A very outdated copy of the ${c:areaname} order list hangs near the door.</DESCRIPTION>
+					<DESCRIPTION>Boxes of all sizes are heaped into hugh piles around the room.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Crafters wander in and out carrying cases of all sizes.</DESCRIPTION>
+					<DESCRIPTION>This run down building is still quite busy with delivery boys and patrons.</DESCRIPTION>
+					<DESCRIPTION>Workers are working hard sorting packages.</DESCRIPTION>
+					<DESCRIPTION>Several large crates have been pried open by curious workers.</DESCRIPTION>
+					<DESCRIPTION>Craftsmen wait their turn to speak with the commissary.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted by the counter.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted on the counter.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the counter.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
+				</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="GenDoor" defclosed="false">
+				<AFFECT class="Prop_ClosedDayNight" />
+			</EXIT>
+			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `quests` to see what quests you are currently on.  `quests [quest name]` for mor information on a specifc quest." />
+			<ITEM class="GenWallpaper" name="WANTED posters wall" description="Various customers have left posts of all sizes along the walls for orders, some of which are very old." />
+			<AFFECT class="Prop_ClosedDayNight" />
+			<MOB class="GenMob" level="($level_range)" race="$_humanoid_races" gender="$anygender">
+				<NAME select="any-1">
+					<NAME>Commissary ${c:fantasy_name1}</NAME>
+					<NAME>${c:fantasy_name1} the Commissary</NAME>
+				</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name is awaiting an overdue order.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here, looking to fill an order.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>0?10000</ALIGNMENT>
+				<BEHAVIOR select="all">
+					<BEHAVIOR class="MudChat" parms="" />
+					<BEHAVIOR class="CommonSpeaker" parms="" />
+					<BEHAVIOR class="RandomQuests" parms="min=15 max=30 maxquests=3 template=normal_collect4 QUEST_POINT_AWARDED=NO ANNOUNCECHANNEL=LOCAL AGGRESSION=NO" />
+				</BEHAVIOR>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME select="any-1"><NAME>(a(n)) crafter apron</NAME></NAME>
+					<DISPLAY>$item_name has been left here</DISPLAY>
+					<MATERIAL>COTTON</MATERIAL>
+					<PROPERWORN>TORSO</PROPERWORN><WORNAND>true</WORNAND>
+				</ITEM>
+				<ITEM class="GenWeapon" LEVEL="$mob_level">
+					<NAME>(a(n)) wooden mallet</NAME>
+					<DISPLAY>$item_name has been left here</DISPLAY>
+					<MATERIAL>WOOD</MATERIAL>
+					<WEAPONCLASS>HAMMER</WEAPONCLASS>
+					<WEAPONTYPE>BLUNT</WEAPONTYPE>
+				</ITEM>
+			</MOB>
+		</ROOM>
 		<ROOM id="town_stables" class="WoodRoom"  condition="$__townstables&lt;1 and $__numshoptypes_all &gt; 10 and $__townsecond &gt; 5" define="__townstables+=1,__townthird+=1">
 			<TITLE select="any-1">
 				<TITLE>The ${c:areaname} Stables</TITLE>
@@ -1315,7 +1394,10 @@ See guides/RandomAreas.html for information about documents of this type.
 		</ROOM>
 		<ROOM id="town_prison" class="WoodRoom"  condition="$__townprison&lt;1 and $__numshoptypes_all &gt; 10" define="__townprison+=1,__townsecond+=1">
 			<TITLE select="any-1">
+				<TITLE>The ${c:areaname} Prison</TITLE>
+				<TITLE>${c:areaname} Jail</TITLE>
 				<TITLE>The Jail</TITLE>
+				<TITLE>The Prison</TITLE>
 			</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
