@@ -78,7 +78,7 @@ See guides/RandomAreas.html for information about documents of this type.
     <STRING>desolate</STRING>
     <STRING>lonely</STRING>
     <STRING>godforsaken</STRING>
-    <STRING>foresaken</STRING>
+    <STRING>forsaken</STRING>
     <STRING>isolated</STRING>
     <STRING>remote</STRING>
 </STRING>
@@ -762,7 +762,7 @@ See guides/RandomAreas.html for information about documents of this type.
 	<STRING>nasty</STRING><STRING>naughty</STRING><STRING>nervous</STRING><STRING>obsessive</STRING><STRING>obstinate</STRING><STRING>overcritical</STRING>
 	<STRING>overemotional</STRING><STRING>parsimonious</STRING><STRING>patronizing</STRING><STRING>perverse</STRING><STRING>pessimistic</STRING><STRING>pompous</STRING>
 	<STRING>possessive</STRING><STRING>pusillanimous</STRING><STRING>quarrelsome</STRING><STRING>quick-tempered</STRING><STRING>resentful</STRING><STRING>rude</STRING>
-	<STRING>ruthless</STRING><STRING>sarcastic</STRING><STRING>secretive</STRING><STRING>selfish</STRING><STRING>self-centred</STRING><STRING>self-indulgent</STRING>
+	<STRING>ruthless</STRING><STRING>sarcastic</STRING><STRING>secretive</STRING><STRING>selfish</STRING><STRING>self-centered</STRING><STRING>self-indulgent</STRING>
 	<STRING>silly</STRING><STRING>sneaky</STRING><STRING>stingy</STRING><STRING>stubborn</STRING><STRING>stupid</STRING><STRING>superficial</STRING>
 	<STRING>tactless</STRING><STRING>timid</STRING><STRING>touchy</STRING><STRING>thoughtless</STRING><STRING>truculent</STRING><STRING>unkind</STRING>
 	<STRING>unpredictable</STRING><STRING>unreliable</STRING><STRING>untidy</STRING><STRING>untrustworthy</STRING><STRING>vague</STRING><STRING>vain</STRING>
@@ -792,6 +792,6 @@ See guides/RandomAreas.html for information about documents of this type.
 	<STRING>annoying</STRING>
 	<STRING>comforting</STRING>
 	<STRING>soothing</STRING>
-	<STRING>frightning</STRING>
+	<STRING>frightening</STRING>
 	<STRING>tranquil</STRING>
 </STRING>
