@@ -835,25 +835,19 @@ public class StdMOB implements MOB
 	@Override
 	public int maxCarry()
 	{
-		if (CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.CARRYALL))
-			return Integer.MAX_VALUE / 2;
-		final double str = charStats().getStat(CharStats.STAT_STRENGTH);
-		final double bodyWeight = baseWeight();
-		return (int) Math.round(bodyWeight + ((str + 10.0) * str * bodyWeight / 150.0) + (str * 5.0));
+		return CMLib.login().getMaxCarry(this);
 	}
 
 	@Override
 	public int maxItems()
 	{
-		if (CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.CARRYALL))
-			return Integer.MAX_VALUE / 2;
-		return (2 * Wearable.CODES.TOTAL()) + (2 * charStats().getStat(CharStats.STAT_DEXTERITY)) + (2 * phyStats().level());
+		return CMLib.login().getMaxItems(this);
 	}
 
 	@Override
 	public int maxFollowers()
 	{
-		return ((int) Math.round(CMath.div(charStats().getStat(CharStats.STAT_CHARISMA) - 6, 3.0)) + 1);
+		return CMLib.login().getMaxFollowers(this);
 	}
 
 	@Override

@@ -246,7 +246,10 @@ public class CMProps extends Properties
 		MANACOST,
 		FORMULA_CLASSHPADD,
 		FORMULA_CLASSMNADD,
-		FORMULA_CLASSMVADD
+		FORMULA_CLASSMVADD,
+		FORMULA_MAXCARRY,
+		FORMULA_MAXITEMS,
+		FORMULA_MAXFOLLOW
 	}
 
 	public final static int DEFAULT_MOB_HP_BASE = 11;
@@ -2702,6 +2705,10 @@ public class CMProps extends Properties
 		setUpLowVar(Str.FORMULA_MOVESRECOVER, getStr("FORMULA_MOVESRECOVER","25+(((@x1 - (@xx*@x3/2.0) - (@xx*@x4/2.0) - (@xx*@x5/2.0))*@x2/10.0) + (@xx*@x6*.5) + (@xx/4.0*@x7) + (@xx/4.0*@x8) - (@xx/2.0*@x9))"));
 		setUpLowVar(Str.FORMULA_TOTALCOMBATXP, getStr("FORMULA_TOTALCOMBATXP","100 + ((25*@x1) - (@x1*((25*@x1)^.5)))"));
 		setUpLowVar(Str.FORMULA_INDCOMBATXP, getStr("FORMULA_INDCOMBATXP","(@x1 * (@x2 / @x3)) < 100"));
+
+		setUpLowVar(Str.FORMULA_MAXCARRY, getStr("FORMULA_MAXCARRY","@x1 + ((@x2 + 10.0) * @x2 * @x1 / 150.0) + (@x2 * 5.0)"));
+		setUpLowVar(Str.FORMULA_MAXITEMS, getStr("FORMULA_MAXITEMS","(2 * @x1) + (2 * @x3) + (2 * @x2)"));
+		setUpLowVar(Str.FORMULA_MAXFOLLOW, getStr("FORMULA_MAXFOLLOW","1 + ( ( @x2 - 6.0 ) / 3.0)"));
 
 		final LanguageLibrary lang = CMLib.lang();
 		Directions.instance().reInitialize(getInt("DIRECTIONS"), new Directions.DirectionWordTranslator()

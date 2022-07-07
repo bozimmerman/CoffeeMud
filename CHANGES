@@ -32,6 +32,7 @@
  31. New property: Prop_Fumble, to cause skill failures
  32. Addictions now supports multiple additions, and sniffing magic dust
  33. New Clan Item: StdClanConcierge (and Gen*) for clans getting around
+ 34. MOB max items, max carry weight, and max followers are now in INI file/grinder.
 
 # Build 5.9.12 Release 1/17/2022
   *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG

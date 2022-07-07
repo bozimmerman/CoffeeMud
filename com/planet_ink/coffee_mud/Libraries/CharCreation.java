@@ -68,6 +68,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected CompiledZMask							requiresDeityMask		= null;
 	protected CompiledZMask							deitiesMask				= null;
 	protected boolean								propertiesReLoaded		= true;
+	protected CMath.CompiledFormula					maxCarryFormula			= null;
+	protected CMath.CompiledFormula					maxItemsFormula			= null;
+	protected CMath.CompiledFormula					maxFollowersFormula		= null;
 
 	protected final String RECONFIRMSTR="\n\r^WTry entering ^HY^W or ^HN^W: ";
 
@@ -415,6 +418,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	public void propertiesLoaded()
 	{
 		super.propertiesLoaded();
+		activate();
 		propertiesReLoaded=true;
 	}
 
@@ -4588,6 +4592,65 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	}
 
 	@Override
+	public int getMaxCarry(final MOB mob)
+	{
+		if((mob!=null)
+		&&(maxCarryFormula!=null))
+		{
+			if (CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CARRYALL))
+				return Integer.MAX_VALUE / 2;
+			final double[] parms = new double[] {
+				mob.baseWeight(),
+				mob.charStats().getStat(CharStats.STAT_STRENGTH),
+				mob.baseCharStats().getStat(CharStats.STAT_STRENGTH),
+				mob.charStats().getMaxStat(CharStats.STAT_STRENGTH)
+			};
+			return (int)Math.round(CMath.parseMathExpression(maxCarryFormula, parms, 0.0));
+		}
+		return 0;
+	}
+
+	@Override
+	public int getMaxItems(final MOB mob)
+	{
+		if((mob!=null)
+		&&(maxItemsFormula!=null))
+		{
+			if (CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CARRYALL))
+				return Integer.MAX_VALUE / 2;
+			final double[] parms = new double[] {
+				Wearable.CODES.TOTAL(),
+				mob.phyStats().level(),
+				mob.charStats().getStat(CharStats.STAT_DEXTERITY),
+				mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY),
+				mob.charStats().getMaxStat(CharStats.STAT_DEXTERITY),
+				mob.charStats().getStat(CharStats.STAT_STRENGTH),
+				mob.baseCharStats().getStat(CharStats.STAT_STRENGTH),
+				mob.charStats().getMaxStat(CharStats.STAT_STRENGTH)
+			};
+			return (int)Math.round(CMath.parseMathExpression(maxItemsFormula, parms, 0.0));
+		}
+		return 0;
+	}
+
+	@Override
+	public int getMaxFollowers(final MOB mob)
+	{
+		if((mob!=null)
+		&&(maxFollowersFormula!=null))
+		{
+			final double[] parms = new double[] {
+				mob.phyStats().level(),
+				mob.charStats().getStat(CharStats.STAT_CHARISMA),
+				mob.baseCharStats().getStat(CharStats.STAT_CHARISMA),
+				mob.charStats().getMaxStat(CharStats.STAT_CHARISMA)
+			};
+			return (int)Math.round(CMath.parseMathExpression(maxFollowersFormula, parms, 0.0));
+		}
+		return 0;
+	}
+
+	@Override
 	public void initStartRooms(final CMProps page)
 	{
 		startRooms.clear();
@@ -4895,4 +4958,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			loginSession.attempt=0;
 		}
 	}
+
+	@Override
+	public boolean activate()
+	{
+		maxItemsFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_MAXITEMS));
+		maxCarryFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_MAXCARRY));
+		maxFollowersFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_MAXFOLLOW));
+		return super.activate();
+	}
+
 }

@@ -376,6 +376,30 @@ public interface CharCreationLibrary extends CMLibrary
 	public String generateRandomName(int minSyllable, int maxSyllable);
 
 	/**
+	 * Returns the maximum weight the given mob can carry.
+	 *
+	 * @param mob the mob who wants to carry stuff
+	 * @return the maximum weight they can carry
+	 */
+	public int getMaxCarry(final MOB mob);
+
+	/**
+	 * Returns the maximum items the given mob can carry.
+	 *
+	 * @param mob the mob who wants to carry stuff
+	 * @return the maximum items they can carry
+	 */
+	public int getMaxItems(final MOB mob);
+
+	/**
+	 * Returns the maximum followers the given mob can have
+	 *
+	 * @param mob the mob who wants followers
+	 * @return the maximum followers the mob can have
+	 */
+	public int getMaxFollowers(final MOB mob);
+
+	/**
 	 * Completes the given session and mobs login by putting the mob into the given start room
 	 * in the world, checking their email, and seeing if they are allowed in.
 	 * @see CharCreationLibrary.LoginResult
