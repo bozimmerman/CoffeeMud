@@ -774,6 +774,7 @@ public class DefaultPlayerStats implements PlayerStats
 			}
 			else
 			{
+				final int oldTitleSize = titles.size();
 				for(int i=0;i<titles.size();i++)
 				{
 					final String s1=titles.get(i);
@@ -793,6 +794,8 @@ public class DefaultPlayerStats implements PlayerStats
 							titles.add(1, s);
 						else
 							titles.add(0, s);
+						if(titles.size()!=oldTitleSize)
+							Log.errOut("DefaultPlayerStats", titles.size()+"!="+oldTitleSize);
 						return;
 					}
 				}

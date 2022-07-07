@@ -221,6 +221,15 @@ public interface MaskingLibrary extends CMLibrary
 	public CompiledZMask createEmptyMask();
 
 	/**
+	 * Parses the given string, returning all of the zappermask
+	 * keys in the order in which they appear.
+	 *
+	 * @param maskStr the full zappermask string
+	 * @return the list of mask keys
+	 */
+	public String[] getKeys(final String maskStr);
+
+	/**
 	 * The set of mask types.  Each of these reflects some stat or
 	 * aspect of a CoffeeMud object that is being tested.  ZapperMask
 	 * entries are typically of the type VALUE in SET.  For this reason

@@ -3659,6 +3659,8 @@ public class ListCmd extends StdCommand
 						desc=desc.substring(11);
 					else
 						desc="";
+					final String minLevel = ""+def.getMinimumLevel();
+					//minLevel = def.listRequirements();
 					final String helpEOL=CMStrings.getEOL(desc.toString(),"\n\r");
 					buf.append("\n\r=="+name+"==\n\r");
 					buf.append("{{ExpertiseTemplate"
@@ -3666,7 +3668,7 @@ public class ListCmd extends StdCommand
 							+ "|Requires="+CMLib.masking().maskDesc(def.allRequirements(),true)
 							+ "|Description="+CMStrings.replaceAll(desc,helpEOL,helpEOL+helpEOL)
 							+ "|Cost="+def.costDescription()
-							+ "|Level="+def.getMinimumLevel()
+							+ "|Level="+minLevel
 							+ "|Ranks="+CMLib.expertises().numStages(def.getBaseName())
 							+ "|Flags="+CMStrings.capitalizeAllFirstLettersAndLower(CMParms.toListString(def.getFlagTypes()))
 							+ "}}\n\r");

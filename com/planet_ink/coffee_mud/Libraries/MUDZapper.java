@@ -747,6 +747,63 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	}
 
 	@Override
+	public String[] getKeys(final String maskStr)
+	{
+		final List<String> keys = new ArrayList<String>();
+		if(maskStr.trim().length()==0)
+			return new String[0];
+		final Map<String,ZapperKey> zapCodes=getMaskCodes();
+		final List<String> V=CMParms.parse(maskStr.toUpperCase());
+		for(int v=0;v<V.size();v++)
+		{
+			final String str=V.get(v);
+			if(zapCodes.containsKey(str))
+				keys.add(str);
+			else
+			{
+				for(final SavedClass C : charClasses())
+				{
+					if(str.startsWith("-"+C.nameStart))
+						keys.add(str);
+				}
+				final LinkedList<String> cats=new LinkedList<String>();
+				for(final SavedRace R : races())
+				{
+					if((str.startsWith(R.minusCatNameStart))&&(!cats.contains(R.racialCategory)))
+					{
+						cats.add(R.racialCategory);
+						keys.add(str);
+					}
+				}
+				if(str.startsWith("-"+Faction.Align.EVIL.toString().substring(0,3)))
+					keys.add(str);
+				else
+				if(str.startsWith("-"+Faction.Align.GOOD.toString().substring(0,3)))
+					keys.add(str);
+				else
+				if(str.startsWith("-"+Faction.Align.NEUTRAL.toString().substring(0,3)))
+					keys.add(str);
+				else
+				if(str.startsWith("-MALE"))
+					keys.add(str);
+				else
+				if(str.startsWith("-FEMALE"))
+					keys.add(str);
+				else
+				if(str.startsWith("-NEUTER"))
+					keys.add(str);
+				if(str.startsWith("-"))
+				{
+					final Faction.FRange FR=getRange(str.substring(1));
+					final String desc=CMLib.factions().rangeDescription(FR,"and ");
+					if(desc.length()>0)
+						keys.add(str);
+				}
+			}
+		}
+		return keys.toArray(new String[keys.size()]);
+	}
+	@Override
 	public String maskDesc(final String text, final boolean skipFirstWord)
 	{
 		if(text.trim().length()==0)

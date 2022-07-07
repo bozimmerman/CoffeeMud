@@ -735,6 +735,18 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		};
 	}
 
+	protected String fixDisplayMask(String mask)
+	{
+		mask=CMStrings.replaceAll(mask,"@x1"," rank ");
+		mask=CMStrings.replaceAll(mask,"@x2"," rank ");
+		mask=CMStrings.replaceAllofAny(mask,new char[] {'{','}','(',')'},' ');
+		mask=CMStrings.replaceAll(mask,"*"," X ");
+		mask=CMStrings.replaceAll(mask,"/"," / ");
+		mask=CMStrings.replaceAll(mask,"  "," ");
+		mask=CMStrings.replaceAll(mask,"  "," ");
+		return mask;
+	}
+
 	@Override
 	public String confirmExpertiseLine(String row, String ID, final boolean addIfPossible)
 	{
