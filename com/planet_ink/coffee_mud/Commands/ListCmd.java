@@ -3612,6 +3612,16 @@ public class ListCmd extends StdCommand
 		return buf.toString();
 	}
 
+	protected String fixDisplayMask(String mask)
+	{
+		mask=CMStrings.replaceAll(mask,"@x1","RANK");
+		mask=CMStrings.replaceAll(mask,"@x2","RANK");
+		mask=CMStrings.replaceAllofAny(mask,new char[] {'{','}','(',')'},'\0');
+		mask=CMStrings.replaceAll(mask,"*","X");
+		mask=CMStrings.replaceAll(mask,"  "," ");
+		return mask;
+	}
+
 	public String listExpertises(final Session viewerS, final List<String> commands)
 	{
 		final WikiFlag wiki = getWikiFlagRemoved(commands);
@@ -3659,8 +3669,6 @@ public class ListCmd extends StdCommand
 						desc=desc.substring(11);
 					else
 						desc="";
-					final String minLevel = ""+def.getMinimumLevel();
-					//minLevel = def.listRequirements();
 					final String helpEOL=CMStrings.getEOL(desc.toString(),"\n\r");
 					buf.append("\n\r=="+name+"==\n\r");
 					buf.append("{{ExpertiseTemplate"
@@ -3668,7 +3676,9 @@ public class ListCmd extends StdCommand
 							+ "|Requires="+CMLib.masking().maskDesc(def.allRequirements(),true)
 							+ "|Description="+CMStrings.replaceAll(desc,helpEOL,helpEOL+helpEOL)
 							+ "|Cost="+def.costDescription()
-							+ "|Level="+minLevel
+							+ "|Level="+def.getMinimumLevel()
+							+ "|ListMask="+CMLib.masking().maskDesc(fixDisplayMask(def.rawListMask()),true)
+							+ "|FinalMask="+CMLib.masking().maskDesc(fixDisplayMask(def.rawFinalMask()),true)
 							+ "|Ranks="+CMLib.expertises().numStages(def.getBaseName())
 							+ "|Flags="+CMStrings.capitalizeAllFirstLettersAndLower(CMParms.toListString(def.getFlagTypes()))
 							+ "}}\n\r");

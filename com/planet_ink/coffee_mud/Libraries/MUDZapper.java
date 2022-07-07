@@ -586,19 +586,19 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 
 	protected StringBuilder levelHelp(final String lvl, final char c, final String append)
 	{
-		if(lvl.startsWith(c+">=")&&(CMath.isNumber(lvl.substring(3).trim())))
+		if(lvl.startsWith(c+">="))
 			return new StringBuilder(append+"levels greater than or equal to "+lvl.substring(3).trim()+".  ");
 		else
-		if(lvl.startsWith(c+"<=")&&(CMath.isNumber(lvl.substring(3).trim())))
+		if(lvl.startsWith(c+"<="))
 			return new StringBuilder(append+"levels less than or equal to "+lvl.substring(3).trim()+".  ");
 		else
-		if(lvl.startsWith(c+">")&&(CMath.isNumber(lvl.substring(2).trim())))
+		if(lvl.startsWith(c+">"))
 			return new StringBuilder(append+"levels greater than "+lvl.substring(2).trim()+".  ");
 		else
-		if(lvl.startsWith(c+"<")&&(CMath.isNumber(lvl.substring(2).trim())))
+		if(lvl.startsWith(c+"<"))
 			return new StringBuilder(append+"levels less than "+lvl.substring(2).trim()+".  ");
 		else
-		if(lvl.startsWith(c+"=")&&(CMath.isNumber(lvl.substring(2).trim())))
+		if(lvl.startsWith(c+"="))
 			return new StringBuilder(append+"level "+lvl.substring(2).trim()+".  ");
 		return new StringBuilder("");
 	}
@@ -747,7 +747,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	}
 
 	@Override
-	public String[] getKeys(final String maskStr)
+	public String[] parseMaskKeys(final String maskStr)
 	{
 		final List<String> keys = new ArrayList<String>();
 		if(maskStr.trim().length()==0)
@@ -756,9 +756,44 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		final List<String> V=CMParms.parse(maskStr.toUpperCase());
 		for(int v=0;v<V.size();v++)
 		{
-			final String str=V.get(v);
+			String str=V.get(v);
 			if(zapCodes.containsKey(str))
+			{
+				final ZapperKey z = zapCodes.get(str);
 				keys.add(str);
+				switch(z)
+				{
+				case _LEVEL: // -Levels
+				case _CLASSLEVEL: // -ClassLevels
+				case _MAXCLASSLEVEL: // -MaxclassLevels
+					while(++v<V.size())
+					{
+						str=V.get(v);
+						if(str.startsWith("+>")||str.startsWith("+<")||str.startsWith("+="))
+						{ /* keep looking */ }
+						else
+						{
+							v--;
+							break;
+						}
+					}
+					break;
+				case ANYCLASSLEVEL: // +anyclasslevel
+				case _ANYCLASSLEVEL: // -anyclasslevel
+					while(++v<V.size())
+					{
+						str=V.get(v);
+						if(zapCodes.containsKey(str))
+						{
+							v--;
+							break;
+						}
+					}
+					break;
+				default:
+					break;
+				}
+			}
 			else
 			{
 				for(final SavedClass C : charClasses())
@@ -766,13 +801,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					if(str.startsWith("-"+C.nameStart))
 						keys.add(str);
 				}
-				final LinkedList<String> cats=new LinkedList<String>();
 				for(final SavedRace R : races())
 				{
-					if((str.startsWith(R.minusCatNameStart))&&(!cats.contains(R.racialCategory)))
+					if(str.startsWith(R.minusCatNameStart))
 					{
-						cats.add(R.racialCategory);
 						keys.add(str);
+						break;
 					}
 				}
 				if(str.startsWith("-"+Faction.Align.EVIL.toString().substring(0,3)))
@@ -792,6 +826,15 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				else
 				if(str.startsWith("-NEUTER"))
 					keys.add(str);
+				else
+				if(str.startsWith("+>")||str.startsWith("+<")||str.startsWith("+=")
+				||str.startsWith("->")||str.startsWith("-<")||str.startsWith("-="))
+				{
+					if((str.length()>3)&&(str.charAt(2)=='='))
+						keys.add(str.substring(0,3));
+					else
+						keys.add(str.substring(0,2));
+				}
 				if(str.startsWith("-"))
 				{
 					final Faction.FRange FR=getRange(str.substring(1));
@@ -811,11 +854,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		final StringBuilder buf=new StringBuilder("");
 		final Map<String,ZapperKey> zapCodes=getMaskCodes();
 		final List<String> V=CMParms.parse(text.toUpperCase());
-		int val=-1;
 		for(int v=0;v<V.size();v++)
 		{
 			final String str=V.get(v);
-			val=-1;
 			if(zapCodes.containsKey(str))
 			{
 				final ZapperKey key = zapCodes.get(str);
@@ -1003,19 +1044,40 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _LEVEL: // -Levels
 					{
 						for(int v2=v+1;v2<V.size();v2++)
-							buf.append(levelHelp(V.get(v2),'+',L(skipFirstWord?"Only ":"Allows only ")));
+						{
+							final String str2=V.get(v2);
+							if(str2.length()==0)
+								continue;
+							if(zapCodes.containsKey(str2))
+								break;
+							buf.append(levelHelp(str2,'+',L(skipFirstWord?"Only ":"Allows only ")));
+						}
 					}
 					break;
 				case _CLASSLEVEL: // -ClassLevels
 					{
 						for(int v2=v+1;v2<V.size();v2++)
-							buf.append(levelHelp(V.get(v2),'+',L(skipFirstWord?"Only class ":"Allows only class ")));
+						{
+							final String str2=V.get(v2);
+							if(str2.length()==0)
+								continue;
+							if(zapCodes.containsKey(str2))
+								break;
+							buf.append(levelHelp(str2,'+',L(skipFirstWord?"Only class ":"Allows only class ")));
+						}
 					}
 					break;
 				case _MAXCLASSLEVEL: // -MaxclassLevels
 					{
 						for(int v2=v+1;v2<V.size();v2++)
-							buf.append(levelHelp(V.get(v2),'+',L(skipFirstWord?"Only highest class ":"Allows only highest class ")));
+						{
+							final String str2=V.get(v2);
+							if(str2.length()==0)
+								continue;
+							if(zapCodes.containsKey(str2))
+								break;
+							buf.append(levelHelp(str2,'+',L(skipFirstWord?"Only highest class ":"Allows only highest class ")));
+						}
 					}
 					break;
 				case _CLASSTYPE: // -classtype
@@ -2017,152 +2079,115 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					}
 					break;
 				case ADJSTRENGTH: // +adjstr
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" strength of at least @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" strength of at least @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case ADJINTELLIGENCE: // +adjint
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"An":"Requires an")+" intelligence of at least @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"An":"Requires an")+" intelligence of at least @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case ADJWISDOM: // +adjwis
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" wisdom of at least @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" wisdom of at least @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case ADJDEXTERITY: // +adjdex
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" dexterity of at least @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" dexterity of at least @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case ADJCONSTITUTION: // -adjcha
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" constitution of at least @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" constitution of at least @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case ADJCHARISMA: // +adjcha
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" charisma of at least @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" charisma of at least @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case _ADJSTRENGTH: // -adjstr
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" strength of at most @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" strength of at most @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case _ADJINTELLIGENCE: // -adjint
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"An":"Requires an")+" intelligence of at most @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"An":"Requires an")+" intelligence of at most @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case _ADJWISDOM: // -adjwis
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" wisdom of at most @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" wisdom of at most @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case _ADJDEXTERITY: // -adjdex
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" dexterity of at most @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" dexterity of at most @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case _ADJCONSTITUTION: // -adjcon
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" constitution of at most @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" constitution of at most @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case _ADJCHARISMA: // -adjcha
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" charisma of at most @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" charisma of at most @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case STRENGTH: // +str
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" base strength of at least @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" base strength of at least @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case INTELLIGENCE: // +int
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" base intelligence of at least @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" base intelligence of at least @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case WISDOM: // +wis
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" base wisdom of at least @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" base wisdom of at least @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case DEXTERITY: // +dex
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" base dexterity of at least @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" base dexterity of at least @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case CONSTITUTION: // +con
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" base constitution of at least @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" base constitution of at least @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case CHARISMA: // +cha
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" base charisma of at least @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" base charisma of at least @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case _STRENGTH: // -str
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" base strength of at most @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" base strength of at most @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case _INTELLIGENCE: // -int
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" base intelligence of at most @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" base intelligence of at most @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case _WISDOM: // -wis
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" base wisdom of at most @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" base wisdom of at most @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case _DEXTERITY: // -dex
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" base dexterity of at most @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" base dexterity of at most @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case _CONSTITUTION: // -con
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" base constitution of at most @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" base constitution of at most @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case _CHARISMA: // -cha
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" base charisma of at most @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" base charisma of at most @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case _CHANCE: // -chance
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"":"Allowed ")+" "+(100-val)+"% of the time.  "));
+					buf.append(L((skipFirstWord?"":"Allowed ")+" "+(100-(((++v)<V.size())?CMath.s_int(V.get(v)):0))+"% of the time.  "));
 					break;
 				case ABILITY: // +ability
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" magic/ability of at most @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" magic/ability of at most @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case _ABILITY: // -ability
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" magic/ability of at least @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" magic/ability of at least @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case VALUE: // +value
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" value of at most @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" value of at most @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case _VALUE: // -value
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" value of at least @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" value of at least @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case WEIGHT: // +weight
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" weight/encumbrance of at most @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" weight/encumbrance of at most @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case _WEIGHT: // -weight
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" weight/encumbrance of at least @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" weight/encumbrance of at least @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case ARMOR: // +armor
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" armor rating of at most @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" armor rating of at most @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case _ARMOR: // -armor
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" armor rating of at least @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" armor rating of at least @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case DAMAGE: // +damage
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" damage ability of at most @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" damage ability of at most @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case _DAMAGE: // -damage
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" damage ability of at least @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" damage ability of at least @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case ATTACK: // +attack
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"An":"Requires an")+" attack bonus of at most @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"An":"Requires an")+" attack bonus of at most @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case _ATTACK: // -attack
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"An":"Requires an")+" attack bonus of at least @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"An":"Requires an")+" attack bonus of at least @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case AREA: // +Area
 					{
@@ -2394,12 +2419,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					}
 					break;
 				case _GROUPSIZE: // -groupsize
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" group size of at most @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" group size of at most @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case GROUPSIZE: // +groupsize
-					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
-					buf.append(L((skipFirstWord?"A":"Requires a")+" group size of at least @x1.  ",""+val));
+					buf.append(L((skipFirstWord?"A":"Requires a")+" group size of at least @x1.  ",((++v)<V.size())?V.get(v):"0"));
 					break;
 				case _IF: // -if
 					buf.append(L((skipFirstWord?"n":"Requires n")+"ot meeting the following condition(s):"));

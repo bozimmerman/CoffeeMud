@@ -735,18 +735,6 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		};
 	}
 
-	protected String fixDisplayMask(String mask)
-	{
-		mask=CMStrings.replaceAll(mask,"@x1"," rank ");
-		mask=CMStrings.replaceAll(mask,"@x2"," rank ");
-		mask=CMStrings.replaceAllofAny(mask,new char[] {'{','}','(',')'},' ');
-		mask=CMStrings.replaceAll(mask,"*"," X ");
-		mask=CMStrings.replaceAll(mask,"/"," / ");
-		mask=CMStrings.replaceAll(mask,"  "," ");
-		mask=CMStrings.replaceAll(mask,"  "," ");
-		return mask;
-	}
-
 	@Override
 	public String confirmExpertiseLine(String row, String ID, final boolean addIfPossible)
 	{
@@ -923,6 +911,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				def=addDefinition(WKID,WKname,baseName,WKlistMask,WKfinalMask,costs,data);
 				if(def!=null)
 				{
+					def.addRawMasks(listMask, finalMask);
 					def.getFlagTypes().addAll(fflags);
 					def.compiledFinalMask();
 					def.compiledListMask();
@@ -1316,6 +1305,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			private String[]							data				= new String[0];
 			private String								uncompiledListMask	= "";
 			private String								uncompiledFinalMask	= "";
+			private String								rawListMask			= "";
+			private String								rawFinalMask		= "";
 			private int									minLevel			= Integer.MIN_VALUE + 1;
 			private MaskingLibrary.CompiledZMask		compiledListMask	= null;
 			private final ExpertiseDefinition			parent				= null;
@@ -1406,7 +1397,9 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			{
 				String req=uncompiledListMask;
 				if(req==null)
-					req=""; else req=req.trim();
+					req="";
+				else
+					req=req.trim();
 				if((uncompiledFinalMask!=null)&&(uncompiledFinalMask.length()>0))
 					req=req+" "+uncompiledFinalMask;
 				return req.trim();
@@ -1447,6 +1440,25 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 					uncompiledFinalMask+=mask;
 				compiledFinalMask=CMLib.masking().maskCompile(uncompiledFinalMask);
 				CMLib.ableMapper().addPreRequisites(ID,new Vector<String>(),uncompiledFinalMask.trim());
+			}
+
+			@Override
+			public void addRawMasks(final String listMask, final String finalMask)
+			{
+				this.rawListMask = listMask;
+				this.rawFinalMask = finalMask;
+			}
+
+			@Override
+			public String rawListMask()
+			{
+				return this.rawListMask;
+			}
+
+			@Override
+			public String rawFinalMask()
+			{
+				return this.rawFinalMask;
 			}
 
 			@Override

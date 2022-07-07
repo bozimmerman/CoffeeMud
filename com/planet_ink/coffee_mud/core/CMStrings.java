@@ -583,15 +583,26 @@ public class CMStrings
 		||(str.length()==0)
 		||(!containsAny(str,theseChars)))
 			return str;
-		final char[] newChars = str.toCharArray();
-		for(int i=str.length()-1;i>=0;i--)
+		if(with=='\0')
 		{
-			if(contains(theseChars,str.charAt(i)))
+			final StringBuilder s=new StringBuilder(str);
+			for(int i=str.length()-1;i>=0;i--)
 			{
-				newChars[i]=with;
+				if(contains(theseChars,str.charAt(i)))
+					s.deleteCharAt(i);
 			}
+			return s.toString();
 		}
-		return new String(newChars);
+		else
+		{
+			final char[] newChars = str.toCharArray();
+			for(int i=str.length()-1;i>=0;i--)
+			{
+				if(contains(theseChars,str.charAt(i)))
+					newChars[i]=with;
+			}
+			return new String(newChars);
+		}
 	}
 
 	/**

@@ -526,6 +526,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								}
 
 								@Override
+								public String rawListMask()
+								{
+									return "-LEVEL +>="+number;
+								}
+
+								@Override
+								public String rawFinalMask()
+								{
+									return "";
+								}
+
+								@Override
 								public String finalRequirements()
 								{
 									return "";
@@ -538,6 +550,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 
 								@Override
 								public void addFinalMask(final String mask)
+								{
+								}
+
+								@Override
+								public void addRawMasks(final String mask1, final String mask2)
 								{
 								}
 

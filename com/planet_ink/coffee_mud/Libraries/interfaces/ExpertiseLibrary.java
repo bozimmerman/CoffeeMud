@@ -599,6 +599,25 @@ public interface ExpertiseLibrary extends CMLibrary
 		 */
 		public Set<XType> getFlagTypes();
 
+		/**
+		 * Adds the raw, unprocessed mask strings to this object.
+		 *
+		 * @param listMask the most raw list mask
+		 * @param finalMask the most raw final mask
+		 */
+		public void addRawMasks(final String listMask, final String finalMask);
+
+		/**
+		 * Gets the raw unprocessed list mask
+		 * @return the raw unprocessed list mask
+		 */
+		public String rawListMask();
+
+		/**
+		 * Gets the raw unprocessed final mask
+		 * @return the raw unprocessed final mask
+		 */
+		public String rawFinalMask();
 	}
 
 	/** Enumeration of the types of costs of gaining this ability */

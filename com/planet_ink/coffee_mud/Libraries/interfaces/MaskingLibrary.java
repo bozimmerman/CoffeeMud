@@ -227,7 +227,7 @@ public interface MaskingLibrary extends CMLibrary
 	 * @param maskStr the full zappermask string
 	 * @return the list of mask keys
 	 */
-	public String[] getKeys(final String maskStr);
+	public String[] parseMaskKeys(final String maskStr);
 
 	/**
 	 * The set of mask types.  Each of these reflects some stat or
