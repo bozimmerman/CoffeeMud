@@ -1989,7 +1989,6 @@ public class Factions extends StdLibrary implements FactionManager
 				if(!done[tagRef.ordinal()])
 				{
 					done[tagRef.ordinal()]=true;
-					if(tag.equalsIgnoreCase("CHANGE1"))
 					buf.append(F.getINIDef(tag,CR)+CR);
 				}
 			}
