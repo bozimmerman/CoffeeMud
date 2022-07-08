@@ -958,10 +958,22 @@ public interface DatabaseEngine extends CMLibrary
 	 * will be a new instance, unconnected to any given online
 	 * player, and is for reference or searching only.
 	 *
+	 * @see DatabaseEngine#DBSearchPFIL(String)
+	 *
 	 * @param name the name of the player
 	 * @return the player stats object, or null.
 	 */
 	public PlayerStats DBLoadPlayerStats(String name);
+
+	/**
+	 * Table category: DBPLAYERS
+	 * Searches all player PFIL records for the given match.
+	 * Returns the names, and last login dates from the DB.
+	 *
+	 * @param match the substring to find
+	 * @return the list of names and login dates
+	 */
+	public PairList<String, Long> DBSearchPFIL(String match);
 
 	/**
 	 * Table category: DBPLAYERS

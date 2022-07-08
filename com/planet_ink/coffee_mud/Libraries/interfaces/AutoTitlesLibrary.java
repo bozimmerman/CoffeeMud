@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -46,6 +47,14 @@ public interface AutoTitlesLibrary extends CMLibrary
 	 * @return an enumerator of the auto-title strings themselves
 	 */
 	public Enumeration<String> autoTitles();
+
+	/**
+	 * Returns the full auto-title definition for the given title/id.
+	 *
+	 * @param title the title itself
+	 * @return the AutoTitle object that defines it further
+	 */
+	public AutoTitle getAutoTitle(String title);
 
 	/**
 	 * Returns the string mask attributed to a particular
@@ -113,4 +122,47 @@ public interface AutoTitlesLibrary extends CMLibrary
 	 */
 	public String getAutoTitleInstructions();
 
+	/**
+	 * Class to store the definitional information
+	 * about a single AutoTitle
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public interface AutoTitle
+	{
+		/**
+		 * Returns the ID/Title of the title.
+		 * @return the ID/Title of the title.
+		 */
+		public String getTitle();
+
+		/**
+		 * Returns the uncompiled ZapperMask string
+		 * @return the uncompiled ZapperMask string
+		 */
+		public String getMaskStr();
+
+		/**
+		 * Returns the compiled ZapperMask
+		 * @return the compiled ZapperMask
+		 */
+		public CompiledZMask getMask();
+
+		/**
+		 * Returns the max number of players who
+		 * can have this title.
+		 * @return the max number
+		 */
+		public int getMax();
+
+		/**
+		 * Change and read the counter for number
+		 * of players who presently have this title.
+		 *
+		 * @param amt the amount to change this number by
+		 * @return the current amount
+		 */
+		public int bumpCounter(int amt);
+	}
 }

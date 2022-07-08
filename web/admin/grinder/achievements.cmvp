@@ -20,7 +20,7 @@
         }
         function Title(autotitleid,action)
         {
-            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=150,width=450,alwaysRaised=yes,dependent=yes";
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=200,width=450,alwaysRaised=yes,dependent=yes";
             w=window.open("autotitle.cmvp?AUTH=@Authenticate?AUTH@&AUTOTITLE="+autotitleid+action,
                 "Title",strFeatures, false);
         }
@@ -187,14 +187,16 @@
             <TABLE WIDTH=100% BORDER=1>
             <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Title Manager</H2></FONT></TD></TR>
             <TR>
-            <TD WIDTH=50%><B><FONT COLOR=YELLOW>ID</FONT></b></TD>
-            <TD WIDTH=50%><B><FONT COLOR=YELLOW>Mask</FONT></b></TD>
+            <TD WIDTH=35%><B><FONT COLOR=YELLOW>ID</FONT></b></TD>
+            <TD WIDTH=5%><B><FONT COLOR=YELLOW>Max</FONT></b></TD>
+            <TD WIDTH=60%><B><FONT COLOR=YELLOW>Mask</FONT></b></TD>
             </TR>
             @AutoTitleNext?RESET@
             @loop@
             @AutoTitleNext?ALL@
                 <TR>
                 <TD><a href="javascript:Title('@AutoTitleID?ENCODED@','')"><FONT COLOR=WHITE><B>@AutoTitleID@</B></FONT></a></TD>
+                <TD><FONT COLOR=WHITE><B>@AutoTitleData?MAX@</B></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@AutoTitleData?MASK@</B></FONT></a></TD>
                 </TR>
             @back@

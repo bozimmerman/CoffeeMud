@@ -253,12 +253,12 @@
 			<A href="javascript:Clicked('components.cmvp')"><FONT COLOR=WHITE>Skill Components</FONT></a>
 			<BR>
 			@endif@
-			@if?CheckAuthCode?AUTH_PLANES=true@
-			<A href="javascript:Clicked('planarlist.cmvp')"><FONT COLOR=WHITE>Other Planes</FONT></a>
+			@if?CheckAuthCode?AUTH_TITLES=true@
+			<A href="javascript:Clicked('achievements.cmvp')"><FONT COLOR=WHITE>Achievements/Titles</FONT></a>
 			<BR>
 			@endif@
-			@if?CheckAuthCode?AUTH_TITLES=true@
-			<A href="javascript:Clicked('achievements.cmvp')"><FONT COLOR=WHITE>Achievements</FONT></a>
+			@if?CheckAuthCode?AUTH_PLANES=true@
+			<A href="javascript:Clicked('planarlist.cmvp')"><FONT COLOR=WHITE>Other Planes</FONT></a>
 			<BR>
 			@endif@
 			@if?CheckAuthCode?AUTH_CMDQUESTS=true@

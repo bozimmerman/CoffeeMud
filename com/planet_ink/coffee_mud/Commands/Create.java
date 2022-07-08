@@ -1097,7 +1097,7 @@ public class Create extends StdCommand
 	{
 		if((commands.size()<3)||(CMParms.combine(commands,1).indexOf('=')<0))
 		{
-			mob.tell(L("You have failed to specify the proper fields.\n\rFormat: CREATE TITLE [TITLE]=[ZAPPER MASK] as follows: \n\r"));
+			mob.tell(L("You have failed to specify the proper fields.\n\rFormat: CREATE TITLE [TITLE]=([MAX]:)[ZAPPER MASK] as follows: \n\r"));
 			final String inst = CMLib.titles().getAutoTitleInstructions();
 			if(mob.session()!=null)
 				mob.session().wraplessPrintln(inst);

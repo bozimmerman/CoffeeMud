@@ -109,6 +109,13 @@
         </TD>
     </TR>
     <TR>
+        <TD><FONT COLOR=YELLOW>Max</a>: </FONT></TD>
+        <TD>
+        	<INPUT TYPE=TEXT SIZE=5 NAME=MAX VALUE="@AutoTitleData?MAX@">
+        	<FONT COLOR=WHITE><I>(0=Inf., Use Sparingly!)</I></FONT>
+        </TD>
+    </TR>
+    <TR>
         <TD><FONT COLOR=YELLOW>Mask <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></a>: </FONT></TD>
         <TD><INPUT TYPE=TEXT SIZE=40 NAME=MASK VALUE="@AutoTitleData?MASK@"></TD>
     </TR>

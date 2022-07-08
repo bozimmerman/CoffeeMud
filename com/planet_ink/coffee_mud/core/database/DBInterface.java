@@ -840,6 +840,12 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public PairList<String, Long> DBSearchPFIL(final String match)
+	{
+		return MOBloader.DBSearchPFIL(match);
+	}
+
+	@Override
 	public void DBCreateArea(final Area A)
 	{
 		RoomLoader.DBCreate(A);

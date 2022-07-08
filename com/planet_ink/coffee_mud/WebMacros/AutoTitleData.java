@@ -60,6 +60,9 @@ public class AutoTitleData extends StdWebMacro
 			String newTitle=httpReq.getUrlParameter("TITLE");
 			if((req!=null)&&(req.equalsIgnoreCase("on")))
 				newTitle="{"+newTitle+"}";
+			final String max=httpReq.getUrlParameter("MAX");
+			if((max==null)||(max==null)||(max.length()==0))
+				return "[missing data error]";
 			final String newMask=httpReq.getUrlParameter("MASK");
 			if((newTitle==null)||(newMask==null)||(newTitle.length()==0))
 				return "[missing data error]";
@@ -83,7 +86,10 @@ public class AutoTitleData extends StdWebMacro
 					return err;
 				}
 			}
-			CMLib.titles().appendAutoTitle("\n"+newTitle+"="+newMask);
+			if(CMath.s_int(max)<=0)
+				CMLib.titles().appendAutoTitle("\n"+newTitle+"="+newMask);
+			else
+				CMLib.titles().appendAutoTitle("\n"+newTitle+"="+max+":"+newMask);
 		}
 		else
 		if(parms.containsKey("DELETE"))
@@ -114,6 +120,16 @@ public class AutoTitleData extends StdWebMacro
 				mask=CMLib.titles().getAutoTitleMask(last);
 			if(mask!=null)
 				str.append(CMStrings.replaceAll(mask,"\"","&quot;")+", ");
+		}
+		if(parms.containsKey("MAX"))
+		{
+			String max=httpReq.getUrlParameter("MAX");
+			if(((max==null)||(max.length()==0))
+			&&(last!=null)
+			&&(last.length()>0))
+				max=""+CMLib.titles().getAutoTitle(last).getMax();
+			if(max!=null)
+				str.append(max+", ");
 		}
 		if(parms.containsKey("TITLE"))
 		{

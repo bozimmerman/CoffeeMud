@@ -3171,6 +3171,30 @@ public class MOBloader
 		return null;
 	}
 
+	public PairList<String, Long> DBSearchPFIL(String match)
+	{
+		final PairList<String,Long> names = new PairVector<String,Long>();
+		DBConnection D=null;
+		match=DB.injectionClean(match);
+		// now grab the items
+		try
+		{
+			D=DB.DBFetch();
+			final ResultSet R=D.query("SELECT CMUSERID, CMDATE FROM CMCHAR WHERE CMPFIL like '%"+match+"%'");
+			while(R.next())
+				names.add(DB.getRes(R, "CMUSERID"), Long.valueOf(DB.getLongRes(R, "CMDATE")));
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("MOB",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return names;
+	}
+
 	public PlayerStats DBLoadPlayerStats(String name)
 	{
 		if((name==null)||(name.length()==0))

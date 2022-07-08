@@ -35,6 +35,8 @@
  34. MOB max items, max carry weight, and max followers are now in INI file/grinder.
  35. Statistics for accounts/ips online will now be tracked and shown.
  36. Reaction Factions can now be permanently saved from the MUDGrinder also.
+ 37. AutoTitles now support Max players -- use sparingly, causes DB scans.
+ 
 
 # Build 5.9.12 Release 1/17/2022
   *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG
