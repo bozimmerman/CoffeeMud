@@ -42,12 +42,14 @@ public class CoffeeTableRows extends StdWebMacro
 		return "CoffeeTableRows";
 	}
 
-	//HEADER, FOOTER, DATERANGE, DATESTART, DATEEND, LEVELSUP, DIVORCES, BIRTHS, MARRIAGES, PURGES, CLASSCHANGES, PKDEATHS, DEATHS, NEWPLAYERS, TOTALHOURS, AVERAGETICKS, AVERAGEONLINE, MOSTONLINE, LOGINS,
+	//HEADER, FOOTER, DATERANGE, DATESTART, DATEEND, LEVELSUP, DIVORCES, BIRTHS, MARRIAGES, PURGES, CLASSCHANGES,
+	//PKDEATHS, DEATHS, NEWPLAYERS, TOTALHOURS, AVERAGETICKS, AVERAGEONLINE, MOSTONLINE, AVERAGEPONLINE, MOSTPONLINE, LOGINS,
 	@Override
 	public String runMacro(final HTTPRequest httpReq, String parm, final HTTPResponse httpResp)
 	{
 		if(parm.length()==0)
-			parm="DATERANGE&LOGINS&MOSTONLINE&AVERAGEONLINE&TOTALHOURS&NEWPLAYERS&DEATHS&PKDEATHS&CLASSCHANGES&PURGES&MARRIAGES&BIRTHS&DIVORCES";
+			parm="DATERANGE&LOGINS&MOSTONLINE&AVERAGEONLINE&MOSTPONLINE&AVERAGEPONLINE&TOTALHOURS"
+				+ "&NEWPLAYERS&DEATHS&PKDEATHS&CLASSCHANGES&PURGES&MARRIAGES&BIRTHS&DIVORCES";
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final PairSVector<String,String> orderedParms=parseOrderedParms(parm,false);
 		String header=parms.get("HEADER");
@@ -494,21 +496,28 @@ public class CoffeeTableRows extends StdWebMacro
 				{
 					code = "X"+A.Name().toUpperCase().replace(' ','_');
 					final long[] totals=new long[CoffeeTableRow.STAT_TOTAL];
-					long highestOnline=0;
-					long numberOnlineTotal=0;
+					long highestCOnline=0;
+					long numberCOnlineTotal=0;
+					long highestPOnline=0;
+					long numberPOnlineTotal=0;
 					long numberOnlineCounter=0;
 					for(int s=0;s<set.size();s++)
 					{
 						final CoffeeTableRow T=set.get(s);
 						T.totalUp(code,totals);
-						if(T.highestOnline()>highestOnline)
-							highestOnline=T.highestOnline();
-						numberOnlineTotal+=T.numberOnlineTotal();
+						if(T.highestCharsOnline()>highestCOnline)
+							highestCOnline=T.highestCharsOnline();
+						numberCOnlineTotal+=T.numberCharsOnlineTotal();
+						if(T.highestOnline()>highestPOnline)
+							highestPOnline=T.highestOnline();
+						numberPOnlineTotal+=T.numberOnlineTotal();
 						numberOnlineCounter+=T.numberOnlineCounter();
 					}
 					final long minsOnline=(totals[CoffeeTableRow.STAT_TICKSONLINE]*CMProps.getTickMillis())/(1000*60);
-					double avgOnline=(numberOnlineCounter>0)?CMath.div(numberOnlineTotal,numberOnlineCounter):0.0;
+					double avgOnline=(numberOnlineCounter>0)?CMath.div(numberCOnlineTotal,numberOnlineCounter):0.0;
 					avgOnline=CMath.div(Math.round(avgOnline*10.0),10.0);
+					double avgPOnline=(numberOnlineCounter>0)?CMath.div(numberPOnlineTotal,numberOnlineCounter):0.0;
+					avgPOnline=CMath.div(Math.round(avgPOnline*10.0),10.0);
 					table.append("<TR>");
 					for(int i=0;i<orderedParms.size();i++)
 					{
@@ -532,10 +541,16 @@ public class CoffeeTableRows extends StdWebMacro
 							table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_LOGINS] + footer + "</TD>");
 						else
 						if (key.equalsIgnoreCase("MOSTONLINE"))
-							table.append("<TD" + colspan + ">" + header + highestOnline + footer + "</TD>");
+							table.append("<TD" + colspan + ">" + header + highestCOnline + footer + "</TD>");
 						else
 						if (key.equalsIgnoreCase("AVERAGEONLINE"))
 							table.append("<TD" + colspan + ">" + header + avgOnline + footer + "</TD>");
+						else
+						if (key.equalsIgnoreCase("MOSTPONLINE"))
+							table.append("<TD" + colspan + ">" + header + highestPOnline + footer + "</TD>");
+						else
+						if (key.equalsIgnoreCase("AVERAGEPONLINE"))
+							table.append("<TD" + colspan + ">" + header + avgPOnline + footer + "</TD>");
 						else
 						if (key.equalsIgnoreCase("AVERAGETICKS"))
 							table.append("<TD" + colspan + ">" + header + ((totals[CoffeeTableRow.STAT_LOGINS] > 0) ? (minsOnline / totals[CoffeeTableRow.STAT_LOGINS]) : 0) + "</TD>");
@@ -665,20 +680,27 @@ public class CoffeeTableRows extends StdWebMacro
 					}
 				}
 				final long[] totals=new long[CoffeeTableRow.STAT_TOTAL];
-				long highestOnline=0;
-				long numberOnlineTotal=0;
+				long highestCOnline=0;
+				long numberCOnlineTotal=0;
+				long highestPOnline=0;
+				long numberPOnlineTotal=0;
 				long numberOnlineCounter=0;
 				for(final CoffeeTableRow T :set)
 				{
 					T.totalUp(code,totals);
-					if(T.highestOnline()>highestOnline)
-						highestOnline=T.highestOnline();
-					numberOnlineTotal+=T.numberOnlineTotal();
+					if(T.highestCharsOnline()>highestCOnline)
+						highestCOnline=T.highestCharsOnline();
+					numberCOnlineTotal+=T.numberCharsOnlineTotal();
+					if(T.highestOnline()>highestPOnline)
+						highestPOnline=T.highestOnline();
+					numberPOnlineTotal+=T.numberOnlineTotal();
 					numberOnlineCounter+=T.numberOnlineCounter();
 				}
 				final long minsOnline=(totals[CoffeeTableRow.STAT_TICKSONLINE]*CMProps.getTickMillis())/(1000*60);
-				double avgOnline=(numberOnlineCounter>0)?CMath.div(numberOnlineTotal,numberOnlineCounter):0.0;
+				double avgOnline=(numberOnlineCounter>0)?CMath.div(numberCOnlineTotal,numberOnlineCounter):0.0;
 				avgOnline=CMath.div(Math.round(avgOnline*10.0),10.0);
+				double avgPOnline=(numberOnlineCounter>0)?CMath.div(numberPOnlineTotal,numberOnlineCounter):0.0;
+				avgPOnline=CMath.div(Math.round(avgPOnline*10.0),10.0);
 				table.append("<TR>");
 				for(int i=0;i<orderedParms.size();i++)
 				{
@@ -699,10 +721,16 @@ public class CoffeeTableRows extends StdWebMacro
 						table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_LOGINS] + footer + "</TD>");
 					else
 					if (key.equalsIgnoreCase("MOSTONLINE"))
-						table.append("<TD" + colspan + ">" + header + highestOnline + footer + "</TD>");
+						table.append("<TD" + colspan + ">" + header + highestCOnline + footer + "</TD>");
 					else
 					if (key.equalsIgnoreCase("AVERAGEONLINE"))
 						table.append("<TD" + colspan + ">" + header + avgOnline + footer + "</TD>");
+					else
+					if (key.equalsIgnoreCase("MOSTPONLINE"))
+						table.append("<TD" + colspan + ">" + header + highestPOnline + footer + "</TD>");
+					else
+					if (key.equalsIgnoreCase("AVERAGEPONLINE"))
+						table.append("<TD" + colspan + ">" + header + avgPOnline + footer + "</TD>");
 					else
 					if (key.equalsIgnoreCase("AVERAGETICKS"))
 						table.append("<TD" + colspan + ">" + header + ((totals[CoffeeTableRow.STAT_LOGINS] > 0) ? (minsOnline / totals[CoffeeTableRow.STAT_LOGINS]) : 0) + "</TD>");

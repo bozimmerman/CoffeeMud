@@ -148,6 +148,7 @@ public class Stat  extends Skills
 		boolean questStats=false;
 		boolean crimeStats=false;
 		boolean areaStats=false;
+		boolean players=false;
 		if(rest.toUpperCase().trim().startsWith("SKILLUSE"))
 		{
 			skillUse=true;
@@ -196,6 +197,15 @@ public class Stat  extends Skills
 		if(rest.toUpperCase().trim().startsWith("AREA"))
 		{
 			areaStats=true;
+			final int x=rest.indexOf(' ');
+			if(x>0)
+				rest=rest.substring(x+1).trim();
+			else
+				rest="";
+		}
+		if(rest.toUpperCase().trim().startsWith("PLAY"))
+		{
+			players=true;
 			final int x=rest.indexOf(' ');
 			if(x>0)
 				rest=rest.substring(x+1).trim();
@@ -574,20 +584,30 @@ public class Stat  extends Skills
 					}
 				}
 				final long[] totals=new long[CoffeeTableRow.STAT_TOTAL];
-				long highestOnline=0;
-				long numberOnlineTotal=0;
+				long highestCOnline=0;
+				long numberCOnlineTotal=0;
+				long highestPOnline=0;
+				long numberPOnlineTotal=0;
 				long numberOnlineCounter=0;
 				for(int s=0;s<set.size();s++)
 				{
 					final CoffeeTableRow T=set.get(s);
 					T.totalUp(code,totals);
-					if(T.highestOnline()>highestOnline)
-						highestOnline=T.highestOnline();
-					numberOnlineTotal+=T.numberOnlineTotal();
+					if(T.highestCharsOnline()>highestCOnline)
+						highestCOnline=T.highestCharsOnline();
+					numberCOnlineTotal+=T.numberCharsOnlineTotal();
+					if(T.highestOnline()>highestPOnline)
+						highestPOnline=T.highestOnline();
+					numberPOnlineTotal+=T.numberOnlineTotal();
 					numberOnlineCounter+=T.numberOnlineCounter();
 				}
+				if(players)
+				{
+					highestCOnline=highestPOnline;
+					numberCOnlineTotal=numberPOnlineTotal;
+				}
 				totals[CoffeeTableRow.STAT_TICKSONLINE]=(totals[CoffeeTableRow.STAT_TICKSONLINE]*CMProps.getTickMillis())/scale/(1000*60);
-				double avgOnline=(numberOnlineCounter>0)?CMath.div(numberOnlineTotal,numberOnlineCounter):0.0;
+				double avgOnline=(numberOnlineCounter>0)?CMath.div(numberCOnlineTotal,numberOnlineCounter):0.0;
 				avgOnline=CMath.div(Math.round(avgOnline*10.0),10.0);
 				table.append(CMStrings.padRight(CMLib.time().date2DateString(curTime+1)+" - "+CMLib.time().date2DateString(lastCur-1),25)
 							 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_WARRANTS],10)
@@ -621,24 +641,34 @@ public class Stat  extends Skills
 				{
 					code = "X"+A.Name().toUpperCase().replace(' ','_');
 					final long[] totals=new long[CoffeeTableRow.STAT_TOTAL];
-					long highestOnline=0;
-					long numberOnlineTotal=0;
+					long highestCOnline=0;
+					long numberCOnlineTotal=0;
+					long highestPOnline=0;
+					long numberPOnlineTotal=0;
 					long numberOnlineCounter=0;
 					for(int s=0;s<set.size();s++)
 					{
 						final CoffeeTableRow T=set.get(s);
 						T.totalUp(code,totals);
-						if(T.highestOnline()>highestOnline)
-							highestOnline=T.highestOnline();
-						numberOnlineTotal+=T.numberOnlineTotal();
+						if(T.highestCharsOnline()>highestCOnline)
+							highestCOnline=T.highestCharsOnline();
+						numberCOnlineTotal+=T.numberCharsOnlineTotal();
+						if(T.highestOnline()>highestPOnline)
+							highestPOnline=T.highestOnline();
+						numberPOnlineTotal+=T.numberOnlineTotal();
 						numberOnlineCounter+=T.numberOnlineCounter();
 					}
-					totals[CoffeeTableRow.STAT_TICKSONLINE]=(totals[CoffeeTableRow.STAT_TICKSONLINE]*CMProps.getTickMillis())/scale/(1000*60);
-					double avgOnline=(numberOnlineCounter>0)?CMath.div(numberOnlineTotal,numberOnlineCounter):0.0;
+					if(players)
+					{
+						highestCOnline=highestPOnline;
+						numberCOnlineTotal=numberPOnlineTotal;
+					}
+					double avgOnline=(numberOnlineCounter>0)?CMath.div(numberCOnlineTotal,numberOnlineCounter):0.0;
 					avgOnline=CMath.div(Math.round(avgOnline*10.0),10.0);
+					totals[CoffeeTableRow.STAT_TICKSONLINE]=(totals[CoffeeTableRow.STAT_TICKSONLINE]*CMProps.getTickMillis())/scale/(1000*60);
 					table.append(CMStrings.padRight(A.Name(),25)
 								 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_LOGINS],5)
-								 +CMStrings.centerPreserve(""+highestOnline,5)
+								 +CMStrings.centerPreserve(""+highestCOnline,5)
 								 +CMStrings.centerPreserve(""+avgOnline,5)
 								 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_TICKSONLINE],5)
 								 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_NEWPLAYERS],5)
@@ -675,24 +705,34 @@ public class Stat  extends Skills
 					}
 				}
 				final long[] totals=new long[CoffeeTableRow.STAT_TOTAL];
-				long highestOnline=0;
-				long numberOnlineTotal=0;
+				long highestCOnline=0;
+				long numberCOnlineTotal=0;
+				long highestPOnline=0;
+				long numberPOnlineTotal=0;
 				long numberOnlineCounter=0;
 				for(int s=0;s<set.size();s++)
 				{
 					final CoffeeTableRow T=set.get(s);
 					T.totalUp(code,totals);
-					if(T.highestOnline()>highestOnline)
-						highestOnline=T.highestOnline();
-					numberOnlineTotal+=T.numberOnlineTotal();
+					if(T.highestCharsOnline()>highestCOnline)
+						highestCOnline=T.highestCharsOnline();
+					numberCOnlineTotal+=T.numberCharsOnlineTotal();
+					if(T.highestOnline()>highestPOnline)
+						highestPOnline=T.highestOnline();
+					numberPOnlineTotal+=T.numberOnlineTotal();
 					numberOnlineCounter+=T.numberOnlineCounter();
 				}
-				totals[CoffeeTableRow.STAT_TICKSONLINE]=(totals[CoffeeTableRow.STAT_TICKSONLINE]*CMProps.getTickMillis())/scale/(1000*60);
-				double avgOnline=(numberOnlineCounter>0)?CMath.div(numberOnlineTotal,numberOnlineCounter):0.0;
+				if(players)
+				{
+					highestCOnline=highestPOnline;
+					numberCOnlineTotal=numberPOnlineTotal;
+				}
+				double avgOnline=(numberOnlineCounter>0)?CMath.div(numberCOnlineTotal,numberOnlineCounter):0.0;
 				avgOnline=CMath.div(Math.round(avgOnline*10.0),10.0);
+				totals[CoffeeTableRow.STAT_TICKSONLINE]=(totals[CoffeeTableRow.STAT_TICKSONLINE]*CMProps.getTickMillis())/scale/(1000*60);
 				table.append(CMStrings.padRight(CMLib.time().date2DateString(curTime+1)+" - "+CMLib.time().date2DateString(lastCur-1),25)
 							 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_LOGINS],5)
-							 +CMStrings.centerPreserve(""+highestOnline,5)
+							 +CMStrings.centerPreserve(""+highestCOnline,5)
 							 +CMStrings.centerPreserve(""+avgOnline,5)
 							 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_TICKSONLINE],5)
 							 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_NEWPLAYERS],5)

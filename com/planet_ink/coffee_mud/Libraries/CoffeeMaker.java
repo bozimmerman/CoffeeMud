@@ -3940,7 +3940,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			((Software)E).setSettings(xml.restoreAngleBrackets(xml.getValFromPieces(buf, "SOFTSETT")));
 			((Software)E).setParentMenu(xml.getValFromPieces(buf, "PMENU"));
-			final XMLLibrary.XMLTag piece = xml.getPieceFromPieces(buf, "MNAME"); 
+			final XMLLibrary.XMLTag piece = xml.getPieceFromPieces(buf, "MNAME");
 			if(piece!=null)
 				((Software)E).setInternalName(piece.value());
 		}
@@ -4722,9 +4722,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(V==null)
 			return;
 		for(int v=0;v<V.size();v++)
-			if((!H.contains(V.get(v)))
-			&&(V.get(v) != null))
+		{
+			if((!H.contains(V.get(v)))&&(V.get(v) != null))
 				H.add(V.get(v));
+		}
 	}
 
 	@Override
@@ -4769,6 +4770,18 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			final CoffeeShop shop=(E instanceof Librarian)?((Librarian)E).getBaseLibrary():((ShopKeeper)E).getShop();
 			for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
 				fillFileSet(i.next(),H);
+		}
+		if(E instanceof Area)
+		{
+			final String areaCode = E.Name().toUpperCase().trim().replace(' ','_');
+			final Faction F = CMLib.factions().getFaction("AREA_"+areaCode);
+			if((F!=null)&&(!CMath.bset(F.getInternalFlags(), Faction.IFLAG_NEVERSAVE)))
+			{
+				final CMFile file = new CMFile(Resources.makeFileResourceName(CMLib.factions().makeFactionFilename(F.factionID())),null);
+				if(file.exists()
+				&& (!H.contains(file.getAbsolutePath())))
+					H.add(file.getAbsolutePath());
+			}
 		}
 	}
 

@@ -621,7 +621,9 @@ public class Factions extends StdLibrary implements FactionManager
 				if(autoType.equals("AREA"))
 				{
 					final Area A=R.getArea();
-					if((A!=null)&&(!CMath.bset(A.flags(), Area.FLAG_INSTANCE_CHILD)))
+					if((A!=null)
+					&&(!CMath.bset(A.flags(), Area.FLAG_INSTANCE_CHILD))
+					&&(!(A instanceof Boardable)))
 					{
 						final String areaCode = A.Name().toUpperCase().trim().replace(' ','_');
 						F=getFaction("AREA_"+areaCode);
@@ -1987,6 +1989,7 @@ public class Factions extends StdLibrary implements FactionManager
 				if(!done[tagRef.ordinal()])
 				{
 					done[tagRef.ordinal()]=true;
+					if(tag.equalsIgnoreCase("CHANGE1"))
 					buf.append(F.getINIDef(tag,CR)+CR);
 				}
 			}

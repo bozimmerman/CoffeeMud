@@ -90,6 +90,20 @@ public interface CoffeeTableRow extends CMCommon
 	public long numberOnlineCounter();
 
 	/**
+	 * Returns the highest number of chars online during this period.
+	 * @return the highest number of chars online
+	 */
+	public long highestCharsOnline();
+
+	/**
+	 * Returns the cumulative number online during this period per poll.
+	 * Used to calulate the avg online for the period.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeTableRow#numberCharsOnlineCounter()
+	 * @return the cumulative number online during this period per poll
+	 */
+	public long numberCharsOnlineTotal();
+
+	/**
 	 * Returns an XML document representing all the information in this object.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeTableRow#populate(long, long, String)
 	 * @return an xml document

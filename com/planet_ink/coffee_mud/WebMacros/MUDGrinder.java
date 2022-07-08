@@ -1118,7 +1118,10 @@ public class MUDGrinder extends StdWebMacro
 			}
 			String errMsg=GrinderFactions.modifyFaction(httpReq, parms, F);
 			if(errMsg.length()==0)
+			{
+				F.setInternalFlags(CMath.unsetb(F.getInternalFlags(),  Faction.IFLAG_NEVERSAVE));
 				errMsg=CMLib.factions().resaveFaction(F);
+			}
 			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
 			if(errMsg.length()==0)
 				return "Faction "+F.ID()+" created/modified";

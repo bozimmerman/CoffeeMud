@@ -394,7 +394,7 @@ public class FactionData extends StdWebMacro
 							str.append("</SELECT>");
 							str.append("</TD><TD>");
 							val=""+httpReq.getUrlParameter("CHANGESMASK"+num);
-							str.append("<textarea NAME=CHANGESMASK"+showNum+" rows=4 cols=15 wrap=hard>"+htmlOutgoingFilter(val)+"</textarea>");
+							str.append("<textarea NAME=CHANGESMASK"+showNum+" rows=4 cols=15 wrap=soft>"+htmlOutgoingFilter(val)+"</textarea>");
 							str.append("</TD><TD>");
 							str.append("<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>");
 							str.append("<TR><TD><FONT COLOR=WHITE>");
@@ -468,7 +468,7 @@ public class FactionData extends StdWebMacro
 						str.append("<OPTION VALUE=\""+element+"\">"+CMStrings.capitalizeAndLower(element));
 					str.append("</SELECT>");
 					str.append("</TD><TD>");
-					str.append("<textarea NAME=CHANGESMASK"+showNum+" rows=4 cols=15 wrap=hard></textarea>");
+					str.append("<textarea NAME=CHANGESMASK"+showNum+" rows=4 cols=15 wrap=soft></textarea>");
 					str.append("</TD><TD>");
 					str.append("<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>");
 					str.append("<TR><TD><FONT COLOR=WHITE>");

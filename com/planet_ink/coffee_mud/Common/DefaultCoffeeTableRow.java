@@ -59,6 +59,8 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 	public long	highestOnline		= 0;
 	public long	numberOnlineTotal	= 0;
 	public long	numberOnlineCounter	= 0;
+	public long	highestPOnline		= 0;
+	public long	numberPOnlineTotal	= 0;
 	public long	startTime			= 0;
 	public long	endTime				= 0;
 
@@ -89,19 +91,31 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 	@Override
 	public long highestOnline()
 	{
-		return highestOnline;
+		return highestPOnline;
 	}
 
 	@Override
 	public long numberOnlineTotal()
 	{
-		return numberOnlineTotal;
+		return numberPOnlineTotal;
 	}
 
 	@Override
 	public long numberOnlineCounter()
 	{
 		return numberOnlineCounter;
+	}
+
+	@Override
+	public long highestCharsOnline()
+	{
+		return highestOnline;
+	}
+
+	@Override
+	public long numberCharsOnlineTotal()
+	{
+		return numberOnlineTotal;
 	}
 
 	@Override
@@ -114,6 +128,8 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 			data.append(xml.convertXMLtoTag("HIGH",highestOnline));
 			data.append(xml.convertXMLtoTag("NUMONLINE",numberOnlineTotal));
 			data.append(xml.convertXMLtoTag("NUMCOUNT",numberOnlineCounter));
+			data.append(xml.convertXMLtoTag("HIGHP",highestPOnline));
+			data.append(xml.convertXMLtoTag("NUMPONLINE",numberPOnlineTotal));
 			data.append("<STATS>");
 			final Map<String,long[]> stats=this.stats;
 			if(stats == null)
@@ -178,15 +194,45 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 		if(type==STAT_SPECIAL_NUMONLINE)
 		{
 			int ct=0;
+			int pct=0;
+			final boolean useAcc = CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)<1;
+			final Set<String> A=new HashSet<String>();
 			for(final Session S : CMLib.sessions().localOnlineIterable())
 			{
 				if(S!=null)
+				{
 					ct++;
+					if(useAcc)
+					{
+						final MOB M=S.mob();
+						final PlayerStats ps = (M!=null)?M.playerStats():null;
+						final PlayerAccount pa = (ps!=null)?ps.getAccount():null;
+						if((pa!=null)&&(!A.contains(pa.getAccountName())))
+						{
+							A.add(pa.getAccountName());
+							pct++;
+						}
+					}
+					else
+					{
+						final String addr=S.getAddress();
+						if((addr!=null)
+						&&(addr.length()>0)
+						&&(!A.contains(addr)))
+						{
+							A.add(addr);
+							pct++;
+						}
+					}
+				}
 			}
 			numberOnlineCounter++;
 			numberOnlineTotal+=ct;
 			if(ct>highestOnline)
 				highestOnline=ct;
+			numberPOnlineTotal+=pct;
+			if(pct>highestPOnline)
+				highestPOnline=pct;
 			return;
 		}
 		// classes, races, levels, genders, faiths, clanned, grouped
@@ -245,6 +291,8 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 				return;
 			highestOnline=CMLib.xml().getIntFromPieces(all,"HIGH");
 			numberOnlineTotal=CMLib.xml().getIntFromPieces(all,"NUMONLINE");
+			highestPOnline=CMLib.xml().getIntFromPieces(all,"HIGHP");
+			numberPOnlineTotal=CMLib.xml().getIntFromPieces(all,"NUMPONLINE");
 			numberOnlineCounter=CMLib.xml().getIntFromPieces(all,"NUMCOUNT");
 			final XMLTag X=CMLib.xml().getPieceFromPieces(all,"STATS");
 			if((X==null)||(X.contents()==null)||(X.contents().size()==0)||(!X.tag().equals("STATS")))
