@@ -1,7 +1,7 @@
 Flag %	COTTON/1	OAK/1	0	1	200	2500	0	GenClanFlag						
 Tabbard %	COTTON/10	GOLD/2	14	1	50	1000	0	GenClanTabbard	BODY	0	0	0		
 Journal %	PINE/10			1	20	50	0	GenJournal						
-Sailors Cap %	SILK/5	GOLD/1	15	1	20	1000	0	GenClanSailorsCap	HEAD					
+Sailors Cap %	SILK/5	GOLD/1	15	1	20	1000	0	GenClanSailorsCap	HEAD	0	0	0		
 GuardBanner %	COTTON/1	OAK/1	1	1	40	500	0	GenClanItem	HELD	0	0	0		
 Judges Gavel %	MITHRIL/2	OAK/5	2	1	100	1000	0	GenClanItem	HELD	0	0	0		
 Book of the Laws %	OAK/100			10	100	2000	0	GenLawBook	AREA					
