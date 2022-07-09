@@ -46,6 +46,20 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 
 	protected Map<String,String>		genUsageCost				= new SHashtable<String, String>();
 
+	protected final static String[] SKILL_PREFIXES =
+	{
+		"SPELL_", "PRAYER_", "SONG_", "DANCE_", "PLAY_",
+		"CHANT_","BEHAVIOR_","POWER_","SKILL_","PROP_"
+	};
+
+	protected final static String[] SKILL_SUFFIXES =
+	{
+		"_SPELL", "_PRAYER", "_SONG", "_DANCE", "_PLAY",
+		"_CHANT_", "_POWER_","_SKILL_"
+	};
+
+	protected final int[] proficiencyRanges=new int[]{5,10,20,30,40,50,60,70,75,80,85,90,95,100};
+
 	@Override
 	public boolean isPlayerSkill(String helpStr)
 	{
@@ -56,24 +70,17 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		helpStr=helpStr.toUpperCase().trim();
 		if(helpStr.indexOf(' ')>=0)
 			helpStr=helpStr.replace(' ','_');
-		if(helpStr.startsWith("SPELL_")
-		 ||helpStr.startsWith("SONG_")
-		 ||helpStr.startsWith("DANCE_")
-		 ||helpStr.startsWith("BEHAVIOR_")
-		 ||helpStr.startsWith("POWER_")
-		 ||helpStr.startsWith("CHANT_")
-		 ||helpStr.startsWith("PRAYER_")
-		 ||helpStr.startsWith("SKILL_")
-		 ||helpStr.startsWith("PLAY_"))
-			return true;
+		for(final String pre : SKILL_PREFIXES)
+		{
+			if(helpStr.startsWith(pre))
+				return true;
+		}
 		final String thisTag=getHelpFile().getProperty(helpStr);
 		if((thisTag!=null)
 		&&(thisTag.startsWith("<ABILITY>")||thisTag.startsWith("<EXPERTISE>")))
 			return true;
 		return CMClass.getAbility(helpStr)!=null;
 	}
-
-	protected final int[] proficiencyRanges=new int[]{5,10,20,30,40,50,60,70,75,80,85,90,95,100};
 
 	@Override
 	public String getRPProficiencyStr(final int proficiency)
@@ -777,91 +784,90 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		return getHelpText(helpStr,rHelpFile,forM,false);
 	}
 
-	protected final static String[] SKILL_PREFIXES =
+	protected String getHelpText(String helpKey, final Properties rHelpFile, final MOB forM, final boolean noFix)
 	{
-		"SPELL_", "PRAYER_", "SONG_", "DANCE_", "PLAY_",
-		"CHANT_","BEHAVIOR_","POWER_","SKILL_","PROP_"
-	};
+		final String unfixedHelpKey = helpKey;
+		helpKey=helpKey.toUpperCase().trim();
+		final String origHelpKey = helpKey;
+		if(helpKey.indexOf(' ')>=0)
+			helpKey=helpKey.replace(' ','_');
+		String helpText=null;
 
-	protected String getHelpText(String helpStr, final Properties rHelpFile, final MOB forM, final boolean noFix)
-	{
-		final String unfixedHelpStr = helpStr;
-		helpStr=helpStr.toUpperCase().trim();
-		final String origHelpStr = helpStr;
-		if(helpStr.indexOf(' ')>=0)
-			helpStr=helpStr.replace(' ','_');
-		String thisTag=null;
-
-		final CharClass C=CMClass.findCharClass(helpStr.toUpperCase());
+		CharClass C=CMClass.findCharClass(helpKey);
+		if(C==null)
+			C=CMClass.findCharClass(origHelpKey);
 		if((C!=null)&&(C.isGeneric()))
-			thisTag="<CHARCLASS>"+C.getStat("HELP");
+			helpText="<CHARCLASS>"+C.getStat("HELP");
 
-		final Race R=CMClass.findRace(helpStr.toUpperCase());
+		Race R=CMClass.findRace(helpKey);
+		if(R==null)
+			R=CMClass.findRace(origHelpKey);
 		if((R!=null)
 		&&((CMProps.isTheme(R.availabilityCode()) && (R.getStat("HELP").length()>0))
 			|| (rHelpFile == this.getArcHelpFile())))
 		{
 			if(R.getStat("HELP").length()==0)
-				thisTag="<RACE>"+L("No further information available");
+				helpText="<RACE>"+L("No further information available");
 			else
-				thisTag="<RACE>"+R.getStat("HELP");
+				helpText="<RACE>"+R.getStat("HELP");
 		}
 
-		if(helpStr.equals("!"))
-			helpStr="EXCLAMATION_POINT";
-		if(helpStr.equals(","))
-			helpStr="COMMA";
-		if(helpStr.equals(":"))
-			helpStr="COLON";
-		if(helpStr.equals(";"))
-			helpStr="SEMICOLON";
+		if(helpKey.equals("!"))
+			helpKey="EXCLAMATION_POINT";
+		if(helpKey.equals(","))
+			helpKey="COMMA";
+		if(helpKey.equals(":"))
+			helpKey="COLON";
+		if(helpKey.equals(";"))
+			helpKey="SEMICOLON";
+
 		boolean found=false;
-		if(thisTag==null)
-			thisTag=rHelpFile.getProperty(helpStr);
-		boolean areaTag=(thisTag==null)&&helpStr.startsWith("AREAHELP_");
-		if(thisTag == null)
+		if(helpText==null)
+			helpText=rHelpFile.getProperty(helpKey);
+		boolean areaTag=(helpText==null)&&helpKey.startsWith("AREAHELP_");
+		if(helpText == null)
 		{
 			for(int i=0;i<SKILL_PREFIXES.length;i++)
 			{
 				final String prefix = SKILL_PREFIXES[i];
-				thisTag=rHelpFile.getProperty(prefix+helpStr);
-				if(thisTag!=null)
+				helpText=rHelpFile.getProperty(prefix+helpKey);
+				if(helpText!=null)
 				{
-					helpStr=prefix+helpStr;
+					helpKey=prefix+helpKey;
 					break;
 				}
 			}
 		}
 
 		// specific calling out of a channel
-		if(helpStr.startsWith("CHANNEL_")||helpStr.startsWith("NOCHANNEL_"))
+		if(helpKey.startsWith("CHANNEL_")||helpKey.startsWith("NOCHANNEL_"))
 		{
-			String s=CMLib.channels().findChannelName(helpStr.substring(8).trim());
+			String s=CMLib.channels().findChannelName(helpKey.substring(8).trim());
 			boolean no=false;
 			if(((s==null)||(s.length()==0))
-			&&(helpStr.startsWith("NO")))
+			&&(helpKey.startsWith("NO")))
 			{
-				s=CMLib.channels().findChannelName(helpStr.trim().substring(10));
+				s=CMLib.channels().findChannelName(helpKey.trim().substring(10));
 				no=true;
 			}
 			if((s!=null)&&(s.length()>0))
 			{
 				if(no)
-					thisTag=rHelpFile.getProperty("NOCHANNEL");
+					helpText=rHelpFile.getProperty("NOCHANNEL");
 				else
-					thisTag=rHelpFile.getProperty("CHANNEL");
-				thisTag=CMStrings.replaceAll(thisTag,"[CHANNEL]",s.toUpperCase());
-				thisTag=CMStrings.replaceAll(thisTag,"[channel]",s.toLowerCase());
+					helpText=rHelpFile.getProperty("CHANNEL");
+				helpText=CMStrings.replaceAll(helpText,"[CHANNEL]",s.toUpperCase());
+				helpText=CMStrings.replaceAll(helpText,"[channel]",s.toLowerCase());
 				final String extra = no?"":CMLib.channels().getExtraChannelDesc(s);
-				thisTag=CMStrings.replaceAll(thisTag,"[EXTRA]",extra);
-				return thisTag;
+				helpText=CMStrings.replaceAll(helpText,"[EXTRA]",extra);
+				return helpText;
 			}
 		}
-		found=((thisTag!=null)&&(thisTag.length()>0));
+		found=((helpText!=null)&&(helpText.length()>0));
 
 		if(!found)
 		{
-			String ahelpStr=origHelpStr;
+			String ahelpStr=origHelpKey;
 			if(areaTag)
 				ahelpStr=ahelpStr.substring(9);
 			for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
@@ -870,7 +876,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				if((A.name().equalsIgnoreCase(ahelpStr))
 				&&((forM==null)||(CMLib.flags().canAccess(forM, A))))
 				{
-					helpStr=A.name();
+					helpKey=A.name();
 					found=true;
 					areaTag=true;
 					break;
@@ -880,66 +886,66 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 
 		if((!areaTag)&&(!found))
 		{
-			final String ahelpStr=unfixedHelpStr.toUpperCase();
+			final String ahelpStr=unfixedHelpKey.toUpperCase();
 			if(!found)
 			{
-				String s=CMLib.socials().getSocialsHelp(forM,helpStr.toUpperCase(), true);
-				if((s==null)&&(origHelpStr.indexOf(' ')<0))
-					s=CMLib.socials().getSocialsHelp(forM,origHelpStr,true);
+				String s=CMLib.socials().getSocialsHelp(forM,helpKey.toUpperCase(), true);
+				if((s==null)&&(origHelpKey.indexOf(' ')<0))
+					s=CMLib.socials().getSocialsHelp(forM,origHelpKey,true);
 				if(s!=null)
 				{
-					thisTag=s;
-					helpStr=helpStr.toUpperCase();
+					helpText=s;
+					helpKey=helpKey.toUpperCase();
 					found=true;
 				}
 			}
 			if(!found)
 			{
-				String s=CMLib.clans().getGovernmentHelp(forM,helpStr.toUpperCase(), true);
+				String s=CMLib.clans().getGovernmentHelp(forM,helpKey.toUpperCase(), true);
 				if(s==null)
-					s=CMLib.clans().getGovernmentHelp(forM,origHelpStr,true);
+					s=CMLib.clans().getGovernmentHelp(forM,origHelpKey,true);
 				if(s!=null)
 				{
-					thisTag=s;
-					helpStr=helpStr.toUpperCase();
+					helpText=s;
+					helpKey=helpKey.toUpperCase();
 					found=true;
 				}
 			}
 			if(!found)
 			{
-				Ability A=CMClass.findAbility(helpStr.toUpperCase(),-1,-1,true);
+				Ability A=CMClass.findAbility(helpKey.toUpperCase(),-1,-1,true);
 				if(A==null)
-					A=CMClass.findAbility(origHelpStr,-1,-1,true);
+					A=CMClass.findAbility(origHelpKey,-1,-1,true);
 				if((A!=null)&&(A.isGeneric()))
 				{
-					thisTag=A.getStat("HELP");
+					helpText=A.getStat("HELP");
 					found=true;
 				}
 			}
 			if(!found)
 			{
-				String s=CMLib.expertises().getExpertiseHelp(helpStr.toUpperCase(),true);
+				String s=CMLib.expertises().getExpertiseHelp(helpKey.toUpperCase(),true);
 				if(s==null)
-					s=CMLib.expertises().getExpertiseHelp(origHelpStr,true);
+					s=CMLib.expertises().getExpertiseHelp(origHelpKey,true);
 				if(s!=null)
 				{
-					thisTag=s;
-					helpStr=helpStr.toUpperCase();
+					helpText=s;
+					helpKey=helpKey.toUpperCase();
 					found=true;
 				}
 			}
 			if(!found)
 			{
-				Deity D = CMLib.map().getDeity(helpStr);
+				Deity D = CMLib.map().getDeity(helpKey);
 				if(D==null)
-					D = CMLib.map().getDeity(origHelpStr);
+					D = CMLib.map().getDeity(origHelpKey);
 				if(D != null)
 				{
 					final Command CMD=CMClass.getCommand("Deities");
 					try
 					{
-						thisTag=(String)CMD.executeInternal(forM, MUDCmdProcessor.METAFLAG_FORCED, D);
-						helpStr = D.Name().toUpperCase();
+						helpText=(String)CMD.executeInternal(forM, MUDCmdProcessor.METAFLAG_FORCED, D);
+						helpKey = D.Name().toUpperCase();
 					}
 					catch(final Exception e)
 					{
@@ -949,11 +955,11 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 			if(!found)
 			{
-				final String s=CMLib.achievements().getAchievementsHelp(unfixedHelpStr.toUpperCase(),true);
+				final String s=CMLib.achievements().getAchievementsHelp(unfixedHelpKey.toUpperCase(),true);
 				if(s!=null)
 				{
-					thisTag=s;
-					helpStr=helpStr.toUpperCase();
+					helpText=s;
+					helpKey=helpKey.toUpperCase();
 					found=true;
 				}
 			}
@@ -963,10 +969,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				for(final Enumeration<Object> e=rHelpFile.keys();e.hasMoreElements();)
 				{
 					final String key=((String)e.nextElement()).toUpperCase();
-					if(key.startsWith(helpStr))
+					if(key.startsWith(helpKey))
 					{
-						thisTag=rHelpFile.getProperty(key);
-						helpStr=key;
+						helpText=rHelpFile.getProperty(key);
+						helpKey=key;
 						found=true;
 						break;
 					}
@@ -992,10 +998,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				for(final Enumeration<Object> e=rHelpFile.keys();e.hasMoreElements();)
 				{
 					final String key=((String)e.nextElement()).toUpperCase();
-					if(CMLib.english().containsString(key,helpStr))
+					if(CMLib.english().containsString(key,helpKey))
 					{
-						thisTag=rHelpFile.getProperty(key);
-						helpStr=key;
+						helpText=rHelpFile.getProperty(key);
+						helpKey=key;
 						found=true;
 						break;
 					}
@@ -1004,32 +1010,32 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 
 			if(!found)
 			{
-				final String s=CMLib.socials().getSocialsHelp(forM,helpStr.toUpperCase(), false);
+				final String s=CMLib.socials().getSocialsHelp(forM,helpKey.toUpperCase(), false);
 				if(s!=null)
 				{
-					thisTag=s;
-					helpStr=helpStr.toUpperCase();
+					helpText=s;
+					helpKey=helpKey.toUpperCase();
 					found=true;
 				}
 			}
 
 			if(!found)
 			{
-				final String s=CMLib.clans().getGovernmentHelp(forM,helpStr.toUpperCase(), false);
+				final String s=CMLib.clans().getGovernmentHelp(forM,helpKey.toUpperCase(), false);
 				if(s!=null)
 				{
-					thisTag=s;
-					helpStr=helpStr.toUpperCase();
+					helpText=s;
+					helpKey=helpKey.toUpperCase();
 					found=true;
 				}
 			}
 
 			if(!found)
 			{
-				final Ability A=CMClass.findAbility(helpStr.toUpperCase(),-1,-1,false);
+				final Ability A=CMClass.findAbility(helpKey.toUpperCase(),-1,-1,false);
 				if((A!=null)&&(A.isGeneric()))
 				{
-					thisTag=A.getStat("HELP");
+					helpText=A.getStat("HELP");
 					found=true;
 				}
 			}
@@ -1042,124 +1048,114 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					if((CMLib.english().containsString(A.name(),ahelpStr))
 					&&((forM==null)||(CMLib.flags().canAccess(forM, A))))
 					{
-						helpStr=A.name();
+						helpKey=A.name();
 						break;
 					}
 				}
 			}
 			if(!found)
 			{
-				final String s=CMLib.expertises().getExpertiseHelp(helpStr.toUpperCase(),false);
+				final String s=CMLib.expertises().getExpertiseHelp(helpKey.toUpperCase(),false);
 				if(s!=null)
 				{
-					thisTag=s;
-					helpStr=helpStr.toUpperCase();
+					helpText=s;
+					helpKey=helpKey.toUpperCase();
 					found=true;
 				}
 			}
 			if(!found)
 			{
-				final String s=CMLib.achievements().getAchievementsHelp(unfixedHelpStr.toUpperCase(),false);
+				final String s=CMLib.achievements().getAchievementsHelp(unfixedHelpKey.toUpperCase(),false);
 				if(s!=null)
 				{
-					thisTag=s;
-					helpStr=helpStr.toUpperCase();
+					helpText=s;
+					helpKey=helpKey.toUpperCase();
 					found=true;
 				}
 			}
 
 			if(!found)
 			{
-				final String[] split=helpStr.split("_");
+				final String[] split=helpKey.split("_");
 				if("SOCIAL".startsWith(split[0].toUpperCase()))
 				{
 					final String tempHelpStr=CMParms.combineWith(Arrays.asList(split),' ',1,split.length);
 					final String s=CMLib.socials().getSocialsHelp(forM,tempHelpStr.toUpperCase(), false);
 					if(s!=null)
 					{
-						thisTag=s;
-						helpStr=tempHelpStr.toUpperCase().replace(' ','_');
+						helpText=s;
+						helpKey=tempHelpStr.toUpperCase().replace(' ','_');
 						found=true;
 					}
 				}
 			}
 
 		}
-		while((thisTag!=null)&&(thisTag.length()>0)&&(thisTag.length()<31)&&(!areaTag))
+		while((helpText!=null)&&(helpText.length()>0)&&(helpText.length()<31)&&(!areaTag))
 		{
-			final String thisOtherTag=rHelpFile.getProperty(thisTag);
-			if((thisOtherTag!=null)&&(thisOtherTag.equals(thisTag)))
-				thisTag=null;
+			final String thisOtherTag=rHelpFile.getProperty(helpText);
+			if((thisOtherTag!=null)&&(thisOtherTag.equals(helpText)))
+				helpText=null;
 			else
 			if(thisOtherTag!=null)
 			{
-				helpStr=thisTag;
-				thisTag=thisOtherTag;
+				helpKey=helpText;
+				helpText=thisOtherTag;
 			}
 			else
 				break;
 		}
 
 		// the area exception
-		if((thisTag==null)||(thisTag.length()==0))
+		if((helpText==null)||(helpText.length()==0))
 		{
-			if(CMLib.map().getArea(helpStr.trim())!=null)
-				return CMLib.map().getArea(helpStr.trim()).getAreaStats().toString();
+			if(CMLib.map().getArea(helpKey.trim())!=null)
+				return CMLib.map().getArea(helpKey.trim()).getAreaStats().toString();
 		}
 
 		// internal exceptions
-		if((thisTag==null)||(thisTag.length()==0))
+		if((helpText==null)||(helpText.length()==0))
 		{
-			String s=CMLib.channels().findChannelName(helpStr.trim());
+			String s=CMLib.channels().findChannelName(helpKey.trim());
 			boolean no=false;
 			if(((s==null)||(s.length()==0))
-			&&(helpStr.toLowerCase().startsWith("no")))
+			&&(helpKey.toLowerCase().startsWith("no")))
 			{
-				s=CMLib.channels().findChannelName(helpStr.trim().substring(2));
+				s=CMLib.channels().findChannelName(helpKey.trim().substring(2));
 				no=true;
 			}
 			if((s!=null)&&(s.length()>0))
 			{
 				if(no)
-					thisTag=rHelpFile.getProperty("NOCHANNEL");
+					helpText=rHelpFile.getProperty("NOCHANNEL");
 				else
-					thisTag=rHelpFile.getProperty("CHANNEL");
-				if(thisTag != null)
+					helpText=rHelpFile.getProperty("CHANNEL");
+				if(helpText != null)
 				{
-					thisTag=CMStrings.replaceAll(thisTag,"[CHANNEL]",s.toUpperCase());
-					thisTag=CMStrings.replaceAll(thisTag,"[channel]",s.toLowerCase());
+					helpText=CMStrings.replaceAll(helpText,"[CHANNEL]",s.toUpperCase());
+					helpText=CMStrings.replaceAll(helpText,"[channel]",s.toLowerCase());
 					final String extra = no?"":CMLib.channels().getExtraChannelDesc(s);
-					thisTag=CMStrings.replaceAll(thisTag,"[EXTRA]",extra);
-					return thisTag;
+					helpText=CMStrings.replaceAll(helpText,"[EXTRA]",extra);
+					return helpText;
 				}
 			}
 		}
 
-		if((thisTag==null)||(thisTag.length()==0))
+		if((helpText==null)||(helpText.length()==0))
 		{
-			if(helpStr.indexOf(' ')>=0)
-				helpStr=helpStr.replace(' ','_');
-			if(helpStr.endsWith("_SPELL"))
-				return getHelpText(helpStr.substring(0,helpStr.length()-6),rHelpFile,forM,noFix);
-			if(helpStr.endsWith("_PRAYER"))
-				return getHelpText(helpStr.substring(0,helpStr.length()-7),rHelpFile,forM,noFix);
-			if(helpStr.endsWith("_SONG"))
-				return getHelpText(helpStr.substring(0,helpStr.length()-5),rHelpFile,forM,noFix);
-			if(helpStr.endsWith("_DANCE"))
-				return getHelpText(helpStr.substring(0,helpStr.length()-6),rHelpFile,forM,noFix);
-			if(helpStr.endsWith("_PLAY"))
-				return getHelpText(helpStr.substring(0,helpStr.length()-5),rHelpFile,forM,noFix);
-			if(helpStr.endsWith("_CHANT"))
-				return getHelpText(helpStr.substring(0,helpStr.length()-6),rHelpFile,forM,noFix);
-			if(helpStr.endsWith("_SKILL"))
-				return getHelpText(helpStr.substring(0,helpStr.length()-6),rHelpFile,forM,noFix);
-			if(helpStr.endsWith("_POWER"))
-				return getHelpText(helpStr.substring(0,helpStr.length()-6),rHelpFile,forM,noFix);
+			if(helpKey.indexOf(' ')>=0)
+				helpKey=helpKey.replace(' ','_');
+			for(final String suf : SKILL_SUFFIXES)
+			{
+				if(helpKey.endsWith(suf))
+					return getHelpText(helpKey.substring(0,helpKey.length()-suf.length()),rHelpFile,forM,noFix);
+
+			}
 			return null;
 		}
 		if(noFix)
-			return thisTag;
-		return fixHelp(helpStr,thisTag,forM);
+			return helpText;
+		return fixHelp(helpKey,helpText,forM);
 	}
 
 	@Override
