@@ -130,7 +130,7 @@
         <TD WIDTH=75%><INPUT TYPE=TEXT SIZE=50 NAME="PREFIX" VALUE="@PlanarData?PREFIX@"></TD>
     </TR>
     <TR>
-        <TD WIDTH=25%><FONT COLOR=YELLOW>Level Formula: </FONT></TD>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Level Adjustment Formula: </FONT></TD>
         <TD WIDTH=75%>
         	<INPUT TYPE=TEXT SIZE=50 NAME="LEVELADJ" VALUE="@PlanarData?LEVELADJ@"><BR>
         	<FONT COLOR=WHITE>@x1 = base areas median level, @x2 = specific mob/item level, @x2 = the plane traveling players level</FONT>
