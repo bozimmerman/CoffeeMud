@@ -60,10 +60,10 @@ public class Trap_SporeTrap extends StdTrap
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_SporeTrap()
 	{
-		return 13;
+		super();
+		trapLevel = 13;
 	}
 
 	@Override

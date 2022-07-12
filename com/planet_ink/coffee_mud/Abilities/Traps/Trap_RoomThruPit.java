@@ -48,10 +48,10 @@ public class Trap_RoomThruPit extends Trap_RoomPit
 		return localizedName;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_RoomThruPit()
 	{
-		return 1;
+		super();
+		trapLevel = 1;
 	}
 
 	@Override

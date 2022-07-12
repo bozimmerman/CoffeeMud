@@ -60,10 +60,10 @@ public class Trap_Greasy extends StdTrap
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_Greasy()
 	{
-		return 10;
+		super();
+		trapLevel = 10;
 	}
 
 	@Override

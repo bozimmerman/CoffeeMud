@@ -60,10 +60,10 @@ public class Trap_Spark extends StdTrap
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_Spark()
 	{
-		return 19;
+		super();
+		trapLevel = 19;
 	}
 
 	@Override

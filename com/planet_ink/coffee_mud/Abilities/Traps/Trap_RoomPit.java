@@ -60,10 +60,10 @@ public class Trap_RoomPit extends StdTrap
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_RoomPit()
 	{
-		return 1;
+		super();
+		trapLevel = 1;
 	}
 
 	@Override

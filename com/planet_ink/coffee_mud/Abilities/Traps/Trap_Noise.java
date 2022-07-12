@@ -60,10 +60,10 @@ public class Trap_Noise extends StdTrap
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_Noise()
 	{
-		return 1;
+		super();
+		trapLevel = 1;
 	}
 
 	@Override

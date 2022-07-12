@@ -60,10 +60,10 @@ public class Trap_Avalanche extends StdTrap
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_Avalanche()
 	{
-		return 25;
+		super();
+		trapLevel = 25;
 	}
 
 	@Override

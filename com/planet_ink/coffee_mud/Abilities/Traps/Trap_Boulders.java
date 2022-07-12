@@ -60,10 +60,10 @@ public class Trap_Boulders extends StdTrap
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_Boulders()
 	{
-		return 20;
+		super();
+		trapLevel = 20;
 	}
 
 	@Override

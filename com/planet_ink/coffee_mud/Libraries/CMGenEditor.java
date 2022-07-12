@@ -2001,6 +2001,49 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
+	protected String genAbilityID(final MOB mob, String oldID, final int showNumber, final int showFlag, final String fieldDisp, final boolean emptyOK)
+			throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return oldID;
+		boolean ok=false;
+		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
+		{
+			ok=true;
+			mob.tell(L("@x1. @x2: '@x3'.",""+showNumber,fieldDisp,oldID));
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return oldID;
+			final String newName=mob.session().prompt(L("Enter something new (?)\n\r:"),"");
+			if(newName.length()==0)
+			{
+				mob.tell(L("(no change)"));
+				return oldID;
+			}
+			else
+			if(newName.equalsIgnoreCase("?"))
+			{
+				if(emptyOK)
+					mob.tell("\n\rNULL=No ability.\n\r");
+				mob.tell(CMLib.lister().build3ColTable(mob,CMClass.abilities(),-1).toString());
+			}
+			else
+			if(newName.equalsIgnoreCase("null") && (emptyOK))
+				oldID="";
+			else
+			{
+				final Ability A=CMClass.getAbility(newName);
+				if((A==null)||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON))
+				{
+					mob.tell(L("'@x1' is not recognized.  Try '?'.",newName));
+					ok=false;
+				}
+				else
+					oldID = A.ID();
+			}
+		}
+		return oldID;
+	}
+
 	protected void genReadableTextMisc(final MOB mob, final Item E, final int showNumber, final int showFlag)
 		throws IOException
 	{
@@ -9064,6 +9107,58 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	@Override
+	public void modifyGenTrap(final MOB mob, final Trap me, int showFlag) throws IOException
+	{
+		if(mob.isMonster())
+			return;
+		boolean ok=false;
+		if((showFlag == -1) && (CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0))
+			showFlag=-999;
+		while((mob.session()!=null)
+		&&(!mob.session().isStopped())
+		&&(!ok))
+		{
+			int showNumber=0;
+			// id is bad to change.. make them delete it.
+			//genText(mob,me,null,++showNumber,showFlag,"Enter the class","CLASS");
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Trap name","NAME",false);
+			promptStatInt(mob,me,null,++showNumber,showFlag,"Level","LEVEL");
+			promptStatBool(mob,me,++showNumber,showFlag,"Is Bomb","ISBOMB");
+			promptStatStr(mob,me,"0,"+CMParms.toListString(Ability.CAN_DESCS),++showNumber,showFlag,"Can Affect","CANAFFECTMASK",true);
+			promptStatStr(mob,me,"0,"+CMParms.toListString(Ability.CAN_DESCS),++showNumber,showFlag,"Can Target","CANTARGETMASK",true);
+			me.setStat("ACOMP",modifyComponents(mob, me.getStat("ACOMP"), ++showNumber, showFlag, "Components"));
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Avoid Msg","AVOIDMSG",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Spring Msg","TRIGMSG",false);
+			final String dmgHelp = "@x1=trapLevel, @x2=abilityCode, @x3=invokerLevel, @x4=targetLevel";
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Damage Msg","DAMMSG",true);
+			promptStatStr(mob,me,dmgHelp,++showNumber,showFlag,"Damage Formula","DMGF",true);
+			promptStatStr(mob,me,"0,"+CMParms.toListString(Weapon.TYPE_DESCS),++showNumber,showFlag,"Damage Type","DMGT",false);
+			promptStatStr(mob,me,"0,"+CMParms.toListString(CMMsg.TYPE_DESCS),++showNumber,showFlag,"Dmg Msg Type","DMGM",false);
+			me.setStat("ABILITY",genAbilityID(mob, me.getStat("ABILITY"), ++showNumber, showFlag, "Ability ID", true));
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Ability Parms","ABILTXT",true);
+			promptStatInt(mob,me,null,++showNumber,showFlag,"A.Tick Override","ABILTIK");
+			promptStatStr(mob,me,CMLib.help().getHelpText("Scriptable",mob,true).toString(),++showNumber,showFlag,"Scriptable Parm","SCRIPT",true);
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Help Text","HELP",true);
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
+			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
+			if(showFlag<=0)
+			{
+				showFlag=-1;
+				ok=true;
+			}
+		}
+	}
+
+	@Override
 	public void modifyGenGatheringSkill(final MOB mob, final Ability me, int showFlag) throws IOException
 	{
 		if(mob.isMonster())
@@ -9261,16 +9356,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		return true;
 	}
 
-	@Override
-	public void modifyComponents(final MOB mob, final String skillID, int showFlag) throws IOException
+	protected void modifyComponents(final MOB mob, final List<AbilityComponent> codedDV, int showFlag) throws IOException
 	{
 		if(mob.isMonster())
 			return;
 		boolean ok=false;
 		if((showFlag == -1) && (CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0))
 			showFlag=-999;
-		final List<AbilityComponent> codedDV=CMLib.ableComponents().getAbilityComponents(skillID);
-		if(codedDV!=null)
+		if(codedDV==null)
+			return;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
 			int showNumber=0;
@@ -9330,6 +9424,41 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
+	}
+
+	@Override
+	public void modifyComponents(final MOB mob, final String skillID, int showFlag) throws IOException
+	{
+		if(mob.isMonster())
+			return;
+		if((showFlag == -1) && (CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0))
+			showFlag=-999;
+		final List<AbilityComponent> codedDV=CMLib.ableComponents().getAbilityComponents(skillID);
+		modifyComponents(mob, codedDV, showFlag);
+	}
+
+	protected String modifyComponents(final MOB mob, final String oldVal, final int showNumber, final int showFlag, final String fieldDisp) throws IOException
+	{
+		if((mob==null)||(mob.session() == null))
+			return oldVal;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return oldVal;
+		final String showVal=oldVal;
+		mob.tell(showNumber+". "+fieldDisp+": '"+CMStrings.limit(showVal,30)+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return oldVal;
+		final Map<String,List<AbilityComponent>> m = new HashMap<String,List<AbilityComponent>>();
+		final String ID="ID"+CMLib.dice().getRandomizer().nextDouble()+"!";
+		final String err = CMLib.ableComponents().addAbilityComponent(ID+"="+oldVal, m);
+		if(m.containsKey(ID))
+		{
+			final List<AbilityComponent> c = m.get(ID);
+			this.modifyComponents(mob, c, showFlag);
+			return CMLib.ableComponents().getAbilityComponentCodedString(c);
+		}
+		else
+			mob.tell(err);
+		return oldVal;
 	}
 
 	@Override

@@ -80,10 +80,22 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			return null;
 		else
 		if(comp.getType()==AbilityComponent.CompType.RESOURCE)
-			return CMLib.materials().makeItemResource((int)comp.getLongType(), comp.getSubType());
+		{
+			final Item I = CMLib.materials().makeItemResource((int)comp.getLongType(), comp.getSubType());
+			if(comp.getAmount()>0)
+				I.basePhyStats().setWeight(comp.getAmount());
+			CMLib.materials().adjustResourceName(I);
+			return I;
+		}
 		else
 		if(comp.getType()==AbilityComponent.CompType.MATERIAL)
-			return CMLib.materials().makeItemResource(RawMaterial.CODES.MOST_FREQUENT(((int)comp.getLongType())&RawMaterial.MATERIAL_MASK), comp.getSubType());
+		{
+			final Item I = CMLib.materials().makeItemResource(RawMaterial.CODES.MOST_FREQUENT(((int)comp.getLongType())&RawMaterial.MATERIAL_MASK), comp.getSubType());
+			if(comp.getAmount()>0)
+				I.basePhyStats().setWeight(comp.getAmount());
+			CMLib.materials().adjustResourceName(I);
+			return I;
+		}
 		return null;
 	}
 
@@ -166,7 +178,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 
 	// returns list of components for the requirement list.
 	@Override
-	public List<Item> componentsSample(final List<AbilityComponent> req, final boolean mithrilOK)
+	public List<Item> makeComponentsSample(final List<AbilityComponent> req, final boolean mithrilOK)
 	{
 		if((req==null)||(req.size()==0))
 			return new Vector<Item>(0);
@@ -236,6 +248,34 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			previousValue=amt[0]<=0;
 			if(previousValue)
 				passes.addAll(thisSet);
+		}
+		if(passes.size()==0)
+			return null;
+		return passes;
+	}
+
+	// returns list of components found if all good, returns Integer of bad row if not.
+	@Override
+	public List<Item> makeComponents(final MOB mob, final List<AbilityComponent> req)
+	{
+		if((mob==null)||(req==null)||(req.size()==0))
+			return new Vector<Item>(0);
+		boolean currentAND=false;
+		final List<Item> passes=new ArrayList<Item>();
+		AbilityComponent comp = null;
+		for(int i=0;i<req.size();i++)
+		{
+			comp=req.get(i);
+			currentAND=comp.getConnector()==AbilityComponent.CompConnector.AND;
+			if((!currentAND)&&(passes.size()>0))
+				return passes;
+			// if they fail the zappermask, its like the req is NOT even there...
+			if((comp.getCompiledMask()!=null)
+			&&(!CMLib.masking().maskCheck(comp.getCompiledMask(),mob,true)))
+				continue;
+			final Item I=makeItemComponent(comp, false);
+			if(I!=null)
+				passes.add(I);
 		}
 		if(passes.size()==0)
 			return null;

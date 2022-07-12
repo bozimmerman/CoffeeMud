@@ -60,10 +60,10 @@ public class Trap_Infected extends StdTrap
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_Infected()
 	{
-		return 13;
+		super();
+		trapLevel = 13;
 	}
 
 	@Override

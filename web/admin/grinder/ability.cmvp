@@ -135,6 +135,7 @@
 <INPUT TYPE=HIDDEN NAME=NEWCRAFTSKILL VALUE="@RequestParameter?NEWCRAFTSKILL@">
 <INPUT TYPE=HIDDEN NAME=NEWWRIGHTSKILL VALUE="@RequestParameter?NEWWRIGHTSKILL@">
 <INPUT TYPE=HIDDEN NAME=NEWGATHERINGSKILL VALUE="@RequestParameter?NEWGATHERINGSKILL@">
+<INPUT TYPE=HIDDEN NAME=NEWTRAP VALUE="@RequestParameter?NEWTRAP@">
 <CENTER>
 @if?CheckReqParm?ABILITY=@
     Select a ability above to view/edit.
@@ -484,6 +485,163 @@
                     <INPUT TYPE=TEXT SIZE=5 MAXLENGTH=10 NAME=FINDTICK VALUE="@AbilityData?FINDTICK@">
                 </TD>
             </TR>
+        @else@
+        @if?AbilityData?ISTRAP@
+            <TR>
+                <TD><FONT COLOR=YELLOW>Is Bomb: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=CHECKBOX NAME=ISBOMB @AbilityData?ISBOMB@>
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Base Level: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=4  VALUE="@AbilityData?MOD_LEVEL@">
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Can Affect: </FONT></TD>
+                <TD>
+                    <SELECT NAME=CANAFFECTMASK MULTIPLE>@AbilityData?CANAFFECTMASK@</SELECT>
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Can Target: </FONT></TD>
+                <TD>
+                    <SELECT NAME=CANTARGETMASK MULTIPLE>@AbilityData?CANTARGETMASK@</SELECT>
+                </TD>
+            </TR>
+            
+            <TR>
+                <TD><FONT COLOR=YELLOW>Avoid Msg: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=40  VALUE="@AbilityData?MOD_AVOIDMSG@">
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Spring Msg: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=40  VALUE="@AbilityData?MOD_TRIGMSG@">
+                </TD>
+            </TR>
+            
+            <TR>
+                <TD><FONT COLOR=YELLOW>Dmg. Formula: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=20  VALUE="@AbilityData?MOD_DAMMSG@">
+                    @x1=trapLevel, @x2=abilityCode, @x3=invokerLevel, @x4=targetLevel
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Damage Type: </FONT></TD>
+                <TD>
+                    <SELECT NAME=DMGT>@AbilityData?DMGT@</SELECT>
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Damage Msg Type: </FONT></TD>
+                <TD>
+                    <SELECT NAME=DMGM>@AbilityData?DMGM@</SELECT>
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Damage Message: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=40 NAME=MOD_DAMMSG VALUE="@AbilityData?MOD_DAMMSG@">
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Components: </FONT></TD>
+                <TD>
+                	@AbilityData?COMPS@
+					@ComponentPieceNext?RESET@
+					@loop@
+					    @ComponentPieceNext@
+					    @if?CheckReqParm?COMPONENTPIECE=1@ 
+					        <INPUT TYPE=HIDDEN NAME="@ComponentID@_PIECE_CONNECTOR_@ComponentPieceID@" VALUE="AND">
+					    @else@
+					        <P>
+					        <CENTER>
+					        <SELECT NAME="@ComponentID@_PIECE_CONNECTOR_@ComponentPieceID@"  ONCHANGE="ReShow()">
+					        @ComponentPieceData?CONNECTOREDIT@
+					        </SELECT>
+					        </CENTER>
+					        </P>
+					        <P>
+					    @endif@
+					    <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
+					        <TR>
+					            <TD WIDTH=25%><FONT COLOR=YELLOW>Amount: </FONT></TD>
+					            <TD WIDTH=75%><INPUT TYPE=TEXT SIZE=10 NAME="@ComponentID@_PIECE_AMOUNT_@ComponentPieceID@" VALUE="@ComponentPieceData?AMOUNTEDIT@"></TD>
+					        </TR>
+					        <TR>
+					            <TD WIDTH=25%><FONT COLOR=YELLOW>Required Type: </FONT></TD>
+					            <TD WIDTH=75%>
+					                <SELECT NAME="@ComponentID@_PIECE_TYPE_@ComponentPieceID@" ONCHANGE="ReShow()">
+					                @ComponentPieceData?TYPEEDIT@
+					                </SELECT>
+					            </TD>
+					        </TR>
+					        <TR>
+					            <TD WIDTH=25%><FONT COLOR=YELLOW>Required Item: </FONT></TD>
+					            <TD WIDTH=75%><FONT COLOR=WHITE SIZE=-1>
+					            @ComponentPieceData?STRINGEDIT@
+					            <INPUT TYPE=CHECKBOX NAME="@ComponentID@_PIECE_CONSUMED_@ComponentPieceID@" @ComponentPieceData?CONSUMEDEDIT@>Cns</FONT>
+					            </TD>
+					        </TR>
+					        <TR>
+					            <TD WIDTH=25%><FONT COLOR=YELLOW>Location: </FONT></TD>
+					            <TD WIDTH=75%>
+					                <SELECT NAME="@ComponentID@_PIECE_LOCATION_@ComponentPieceID@">
+					                @ComponentPieceData?LOCATIONEDIT@
+					                </SELECT>
+					            </TD>
+					        </TR>
+					        <TR>
+					            <TD WIDTH=25%><FONT COLOR=YELLOW>Zapper Mask: </FONT><A HREF="javascript:openUp('ZAPPERMASKS')"><FONT COLOR=WHITE>?</FONT></a></TD>
+					            <TD WIDTH=75%><TEXTAREA SIZE=50 COLS=50 ROWS=3 NAME=@ComponentID@_PIECE_MASK_@ComponentPieceID@>@ComponentPieceData?MASKEDIT@</TEXTAREA></TD>
+					        </TR>
+					    </TABLE>
+					    @AddRequestParameter?LAST=@@RequestParameter?COMPONENTPIECE@@ @
+					@back@
+					@AddRequestParameter?LAST=++@
+					<CENTER>
+					<SELECT NAME="@ComponentID@_PIECE_CONNECTOR_@RequestParameter?LAST@"  ONCHANGE="ReShow()">
+					<OPTION VALUE="">Pick one to add
+					<OPTION VALUE="AND">And
+					<OPTION VALUE="OR">Or
+					</SELECT>
+					</CENTER>
+					<BR>
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Scriptable Parm: </FONT>
+                    <A HREF="javascript:OpenUp('ahelp.cmvp','SCRIPTABLE')"><FONT COLOR=WHITE><I>?</I></FONT></a>
+                </TD>
+                <TD>
+                    <TEXTAREA ROWS=10 COLS=55 NAME=SCRIPT>@AbilityData?SCRIPT@</TEXTAREA>
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Spring Ability: </FONT></TD>
+                <TD>
+                    <SELECT NAME=DMGM>@AbilityData?ABLEID@</SELECT>
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Ability Parms: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=40 NAME=MOD_ABILTXT VALUE="@AbilityData?MOD_ABILTXT@">
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Ability Ticks Override: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=5 NAME=MOD_ABILTIK VALUE="@AbilityData?MOD_ABILTIK@">
+                </TD>
+            </TR>
             @else@
             <TR>
                 <TD><FONT COLOR=YELLOW>Type: </FONT></TD>
@@ -693,6 +851,7 @@
                     <FONT SIZE=-1 COLOR=WHITE>@x1=caster level, @x2=target level, @x3=level expertise, @x4-@x8=x1-x5 expertise</FONT>
                 </TD>
             </TR>
+        @endif@
         @endif@
         @endif@
         @endif@

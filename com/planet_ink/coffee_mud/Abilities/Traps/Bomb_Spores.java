@@ -48,10 +48,10 @@ public class Bomb_Spores extends StdBomb
 		return localizedName;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Bomb_Spores()
 	{
-		return 15;
+		super();
+		trapLevel = 15;
 	}
 
 	@Override

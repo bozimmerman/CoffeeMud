@@ -48,10 +48,10 @@ public class Trap_SpikeThruPit extends Trap_SpikePit
 		return localizedName;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_SpikeThruPit()
 	{
-		return 7;
+		super();
+		trapLevel = 7;
 	}
 
 	@Override

@@ -60,10 +60,10 @@ public class Trap_Vanishing extends StdTrap
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_Vanishing()
 	{
-		return 24;
+		super();
+		trapLevel = 24;
 	}
 
 	@Override

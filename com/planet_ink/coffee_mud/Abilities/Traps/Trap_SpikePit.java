@@ -60,10 +60,10 @@ public class Trap_SpikePit extends Trap_RoomPit
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_SpikePit()
 	{
-		return 8;
+		super();
+		trapLevel = 8;
 	}
 
 	@Override

@@ -60,10 +60,10 @@ public class Trap_Ignition extends StdTrap
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_Ignition()
 	{
-		return 8;
+		super();
+		trapLevel = 8;
 	}
 
 	@Override

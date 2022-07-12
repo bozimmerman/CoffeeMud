@@ -60,10 +60,10 @@ public class Trap_Boomerang extends StdTrap
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_Boomerang()
 	{
-		return 24;
+		super();
+		trapLevel = 24;
 	}
 
 	@Override

@@ -48,10 +48,10 @@ public class Bomb_AcidBurst extends StdBomb
 		return localizedName;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Bomb_AcidBurst()
 	{
-		return 20;
+		super();
+		trapLevel = 20;
 	}
 
 	@Override

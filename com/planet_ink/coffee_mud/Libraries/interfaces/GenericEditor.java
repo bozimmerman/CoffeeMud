@@ -192,7 +192,6 @@ public interface GenericEditor extends CMLibrary
 	 */
 	public void modifyGenCraftSkill(MOB mob, Ability me, int showFlag) throws IOException;
 
-
 	/**
 	 * Prompts the given user using the mud's standard menu interface.
 	 * Allows the editing of an existing Generic Wrighting Skill.
@@ -203,7 +202,18 @@ public interface GenericEditor extends CMLibrary
 	 * @throws IOException any i/o errors that occur (socket reset errors usually)
 	 */
 	public void modifyGenWrightSkill(final MOB mob, final Ability me, int showFlag) throws IOException;
-	
+
+	/**
+	 * Prompts the given user using the mud's standard menu interface.
+	 * Allows the editing of an existing Generic Trap.
+	 *
+	 * @param mob the player doing the editing
+	 * @param me the object being edited
+	 * @param showFlag 0 to only show prompt and value, -999 to always edit, or the showNumber to edit
+	 * @throws IOException any i/o errors that occur (socket reset errors usually)
+	 */
+	public void modifyGenTrap(final MOB mob, final Trap me, int showFlag) throws IOException;
+
 	/**
 	 * Prompts the given user using the mud's standard menu interface.
 	 * Allows the editing of an existing Generic Gathering Skill.

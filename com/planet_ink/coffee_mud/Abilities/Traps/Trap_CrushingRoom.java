@@ -60,10 +60,10 @@ public class Trap_CrushingRoom extends StdTrap
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_CrushingRoom()
 	{
-		return 24;
+		super();
+		trapLevel = 24;
 	}
 
 	@Override

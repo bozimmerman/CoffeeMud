@@ -60,10 +60,10 @@ public class Trap_AcidSpray extends StdTrap
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_AcidSpray()
 	{
-		return 15;
+		super();
+		trapLevel = 15;
 	}
 
 	@Override

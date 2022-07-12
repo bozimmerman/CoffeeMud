@@ -48,10 +48,10 @@ public class Bomb_Water extends StdBomb
 		return localizedName;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Bomb_Water()
 	{
-		return 1;
+		super();
+		trapLevel = 1;
 	}
 
 	@Override

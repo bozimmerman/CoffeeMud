@@ -48,10 +48,10 @@ public class Trap_SnakeThruPit extends Trap_SnakePit
 		return localizedName;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_SnakeThruPit()
 	{
-		return 9;
+		super();
+		trapLevel = 9;
 	}
 
 	@Override

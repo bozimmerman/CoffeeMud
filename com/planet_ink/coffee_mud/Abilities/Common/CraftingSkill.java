@@ -1217,7 +1217,7 @@ public class CraftingSkill extends GatheringSkill
 			final List<AbilityComponent> componentsRequirements=getNonStandardComponentRequirements(woodRequiredStr, amount);
 			if(componentsRequirements!=null)
 			{
-				final List<Item> components=CMLib.ableComponents().componentsSample(componentsRequirements, true);
+				final List<Item> components=CMLib.ableComponents().makeComponentsSample(componentsRequirements, true);
 				if(components != null)
 					componentsFoundList.addAll(components);
 			}

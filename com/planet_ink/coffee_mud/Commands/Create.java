@@ -1153,6 +1153,36 @@ public class Create extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just increased!"));
 	}
 
+	public void traps(final MOB mob, final List<String> commands)
+	throws IOException
+	{
+		if(commands.size()<3)
+		{
+			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is CREATE TRAP [TRAP ID]\n\r"));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		final String classD=CMParms.combine(commands,2);
+		final Ability A=CMClass.getAbility(classD);
+		if((A!=null)&&(A.isGeneric()))
+		{
+			mob.tell(L("A generic ability with the ID '@x1' already exists!",A.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		if(classD.indexOf(' ')>=0)
+		{
+			mob.tell(L("'@x1' is an invalid  id, because it contains a space.",classD));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		final Ability CR=(Ability)CMClass.getAbility("GenTrap").copyOf();
+		CR.setStat("CLASS",classD);
+		CMLib.genEd().modifyGenAbility(mob,CR,-1);
+		CMLib.database().DBCreateAbility(CR.ID(),"GenTrap",CR.getStat("ALLXML"));
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just increased!"));
+	}
+
 	public void achievements(final MOB mob, final List<String> commands)
 	throws IOException
 	{
@@ -1481,6 +1511,14 @@ public class Create extends StdCommand
 				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			abilities(mob,commands);
+		}
+		else
+		if(commandType.equals("TRAP"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES))
+				return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
+			traps(mob,commands);
 		}
 		else
 		if(commandType.equals("ACHIEVEMENT"))
@@ -2077,7 +2115,7 @@ public class Create extends StdCommand
 					{
 						mob.tell(L("\n\rYou cannot create a '@x1'. However, you might try an EXIT, ITEM, QUEST, FACTION, COMPONENT, GOVERNMENT, HOLIDAY, "
 								+ "CLAN, MOB, RACE, MIXEDRACE, ABILITY, LANGUAGE, CRAFTSKILL, ACHIEVEMENT, MANUFACTURER, ALLQUALIFY, CLASS, POLL, DEBUGFLAG, "
-								+ "WEBSERVER, DISABLEFLAG, ENABLEFLAG, NEWS, USER, WRIGHTSKILL, GATHERSKILL, or ROOM.",commandType));
+								+ "WEBSERVER, DISABLEFLAG, ENABLEFLAG, NEWS, USER, TRAP, WRIGHTSKILL, GATHERSKILL, or ROOM.",commandType));
 						return false;
 					}
 				}
@@ -2149,7 +2187,7 @@ public class Create extends StdCommand
 					}
 					mob.tell(L("\n\rYou cannot create a '@x1'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, COMPONENT, GOVERNMENT, "
 							+ "MANUFACTURER, HOLIDAY, CLAN, RACE, MIXEDRACE, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, ACHIEVEMENT, CLASS, POLL, USER, "
-							+ "WEBSERVER, DEBUGFLAG, NEWS, DISABLEFLAG, ENABLEFLAG, WRIGHTSKILL, GATHERSKILL, or ROOM.",commandType));
+							+ "WEBSERVER, DEBUGFLAG, NEWS, DISABLEFLAG, ENABLEFLAG, TRAP, WRIGHTSKILL, GATHERSKILL, or ROOM.",commandType));
 					return false;
 				}
 			}

@@ -60,10 +60,10 @@ public class Trap_WeaponSwing extends StdTrap
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_WeaponSwing()
 	{
-		return 9;
+		super();
+		trapLevel = 9;
 	}
 
 	@Override

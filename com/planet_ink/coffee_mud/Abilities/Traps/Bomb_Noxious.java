@@ -48,10 +48,10 @@ public class Bomb_Noxious extends StdBomb
 		return localizedName;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Bomb_Noxious()
 	{
-		return 12;
+		super();
+		trapLevel = 12;
 	}
 
 	@Override

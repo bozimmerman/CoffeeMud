@@ -170,6 +170,7 @@ public class AbilityData extends StdWebMacro
 		final String newCraftSkillID=httpReq.getUrlParameter("NEWCRAFTSKILL");
 		final String newWrightSkillID=httpReq.getUrlParameter("NEWWRIGHTSKILL");
 		final String newGatheringSkillID=httpReq.getUrlParameter("NEWGATHERINGSKILL");
+		final String newTrapID=httpReq.getUrlParameter("NEWTRAP");
 		A=(Ability)httpReq.getRequestObjects().get("ABILITY-"+last);
 		if((A==null)
 		&&(newAbilityID!=null)
@@ -190,6 +191,16 @@ public class AbilityData extends StdWebMacro
 			A.setStat("CLASS9",newLanguageID);
 			last=newLanguageID;
 			httpReq.addFakeUrlParameter("ABILITY",newLanguageID);
+		}
+		if((A==null)
+		&&(newTrapID!=null)
+		&&(newTrapID.length()>0)
+		&&(CMClass.getAbility(newTrapID)==null))
+		{
+			A=(Ability)CMClass.getAbility("GenTrap").copyOf();
+			A.setStat("CLASS9",newTrapID);
+			last=newTrapID;
+			httpReq.addFakeUrlParameter("ABILITY",newTrapID);
 		}
 		if((A==null)
 		&&(newCraftSkillID!=null)
@@ -251,6 +262,15 @@ public class AbilityData extends StdWebMacro
 					return Boolean.toString((A instanceof ItemCraftor)
 							&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
 							&&(((ItemCraftor)A).getCraftorType()==CraftorType.LargeConstructions));
+				}
+				if(parms.containsKey("ISTRAP"))
+				{
+					return Boolean.toString(A instanceof Trap);
+				}
+				if(parms.containsKey("ISBOMB"))
+				{
+					if(A instanceof Trap)
+						return CMath.s_bool(A.getStat("ISBOMB"))?"CHECKED, ":"";
 				}
 				if(parms.containsKey("ISGATHERSKILL"))
 				{
@@ -474,6 +494,75 @@ public class AbilityData extends StdWebMacro
 							if(parms.containsKey("EMPTYOK"))
 								return "<!--EMPTY-->";
 							return " @break@";
+						}
+					}
+				}
+
+				if((A instanceof Trap)
+				&&(A.isGeneric()))
+				{
+					if(parms.containsKey("DMGT"))
+					{
+						String old=httpReq.getUrlParameter("DMGT");
+						if(old==null)
+							old=""+A.getStat("DMGT");
+						str.append("<OPTION VALUE=\""+((old.length()==0)?" SELECTED":"")+">N/A");
+						for (final String element : Weapon.TYPE_DESCS)
+							str.append("<OPTION VALUE=\""+element+"\""+(old.equalsIgnoreCase(element)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(element));
+						str.append(", ");
+					}
+					if(parms.containsKey("DMGM"))
+					{
+						String old=httpReq.getUrlParameter("DMGM");
+						if(old==null)
+							old=""+A.getStat("DMGM");
+						str.append("<OPTION VALUE=\""+((old.length()==0)?" SELECTED":"")+">N/A");
+						for (int e=0;e<CMMsg.TYPE_DESCS.length;e++)
+						{
+							final String element=CMMsg.TYPE_DESCS[e];
+							if(CMParms.contains(CharStats.DEFAULT_STAT_MSG_MAP,e))
+								str.append("<OPTION VALUE=\""+element+"\""+(old.equalsIgnoreCase(element)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(element));
+						}
+						str.append(", ");
+					}
+					if(parms.containsKey("ABLEID"))
+					{
+						String old=httpReq.getUrlParameter("ABLEID");
+						if(old==null)
+							old=""+A.getStat("ABILITY");
+						final List<String> sortMeB=new ArrayList<String>();
+						for(final Enumeration<Ability> b=CMClass.abilities(new Filterer<Ability>() {
+							@Override
+							public boolean passesFilter(Ability obj)
+							{
+								return (obj.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON;
+							}
+						});b.hasMoreElements();)
+						{
+							final Ability A1=b.nextElement();
+							sortMeB.add(A1.ID());
+						}
+						str.append("<OPTION VALUE=\"\""+((old.length()==0)?" SELECTED":"")+">N/A");
+						for (final String ableID : new TreeSet<String>(sortMeB))
+							str.append("<OPTION VALUE=\""+ableID+"\""+(old.equalsIgnoreCase(ableID)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(ableID));
+						str.append(", ");
+					}
+					if(parms.containsKey("COMPS"))
+					{
+						httpReq.addFakeUrlParameter("COMPONENT", A.ID());
+						final String key="COMP4_"+A.ID();
+						final Map<String,List<AbilityComponent>> o = new HashMap<String,List<AbilityComponent>>();
+						CMLib.ableComponents().addAbilityComponent(key+"="+A.getStat("ACOMP"), o);
+						httpReq.getRequestObjects().putAll(o);
+					}
+					for(final String p : A.getStatCodes())
+					{
+						if(parms.containsKey("MOD_"+p))
+						{
+							String old=httpReq.getUrlParameter("MOD_"+p);
+							if(old==null)
+								old=""+A.getStat(p);
+							str.append(old+", ");
 						}
 					}
 				}

@@ -60,10 +60,10 @@ public class Trap_CaveIn extends StdTrap
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_CaveIn()
 	{
-		return 22;
+		super();
+		trapLevel = 22;
 	}
 
 	@Override

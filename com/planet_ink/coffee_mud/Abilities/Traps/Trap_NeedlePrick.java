@@ -60,10 +60,10 @@ public class Trap_NeedlePrick extends StdTrap
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_NeedlePrick()
 	{
-		return 4;
+		super();
+		trapLevel = 4;
 	}
 
 	@Override

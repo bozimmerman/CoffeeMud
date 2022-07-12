@@ -60,10 +60,10 @@ public class Trap_PoisonGas extends StdTrap
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_PoisonGas()
 	{
-		return 17;
+		super();
+		trapLevel = 17;
 	}
 
 	@Override

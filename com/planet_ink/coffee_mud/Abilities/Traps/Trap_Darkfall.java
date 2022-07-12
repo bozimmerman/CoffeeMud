@@ -60,10 +60,10 @@ public class Trap_Darkfall extends StdTrap
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_Darkfall()
 	{
-		return 2;
+		super();
+		trapLevel = 2;
 	}
 
 	@Override

@@ -60,10 +60,10 @@ public class Trap_BearTrap extends StdTrap
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_BearTrap()
 	{
-		return 16;
+		super();
+		trapLevel = 16;
 	}
 
 	@Override

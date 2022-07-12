@@ -60,10 +60,10 @@ public class Trap_ElectricShock extends StdTrap
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_ElectricShock()
 	{
-		return 19;
+		super();
+		trapLevel = 19;
 	}
 
 	@Override

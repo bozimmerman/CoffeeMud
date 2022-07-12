@@ -1168,6 +1168,8 @@ public class MUDGrinder extends StdWebMacro
 			final int code=CMath.s_int(httpReq.getUrlParameter("CLASSIFICATION_ACODE"));
 			if(code==Ability.ACODE_LANGUAGE)
 				type="GenLanguage";
+			if(code==Ability.ACODE_TRAP)
+				type="GenTrap";
 			if(code==Ability.ACODE_COMMON_SKILL)
 			{
 				final String gtype=httpReq.getUrlParameter("NEWGATHERINGSKILL");

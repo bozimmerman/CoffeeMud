@@ -60,10 +60,10 @@ public class Trap_Launcher extends StdTrap
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_Launcher()
 	{
-		return 6;
+		super();
+		trapLevel = 6;
 	}
 
 	@Override

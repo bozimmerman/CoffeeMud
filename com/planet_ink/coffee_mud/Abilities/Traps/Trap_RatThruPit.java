@@ -48,10 +48,10 @@ public class Trap_RatThruPit extends Trap_RatPit
 		return localizedName;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_RatThruPit()
 	{
-		return 11;
+		super();
+		trapLevel = 11;
 	}
 
 	@Override

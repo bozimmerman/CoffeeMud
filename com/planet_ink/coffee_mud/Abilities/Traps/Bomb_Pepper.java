@@ -48,10 +48,10 @@ public class Bomb_Pepper extends StdBomb
 		return localizedName;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Bomb_Pepper()
 	{
-		return 7;
+		super();
+		trapLevel = 7;
 	}
 
 	@Override

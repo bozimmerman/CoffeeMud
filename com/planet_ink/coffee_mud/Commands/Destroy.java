@@ -1287,7 +1287,8 @@ public class Destroy extends StdCommand
 		||commandType.equals("LANGUAGE")
 		||commandType.equals("CRAFTSKILL")
 		||commandType.equals("GATHERSKILL")
-		||commandType.equals("WRIGHTSKILL"))
+		||commandType.equals("WRIGHTSKILL")
+		||commandType.equals("TRAP"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES))
 				return errorOut(mob);
@@ -1934,7 +1935,7 @@ public class Destroy extends StdCommand
 							L("\n\rYou cannot destroy a '@x1'. However, you might try an EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, "
 							+ "SESSION, TICKS, THREAD, HOLIDAY, JOURNAL, SOCIAL, ACHIEVEMENT, CLASS, ABILITY, MANUFACTURER, "
 							+ "LANGUAGE, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, GOVERNMENT, NOPURGE, BUG, TYPO, IDEA, "
-							+ "WEBSERVER, POLL, DEBUGFLAG, DISABLEFLAG, ENABLEFLAG, CRAFTSKILL, GATHERSKILL, WRIGHTSKILL, or a ROOM.",commandType));
+							+ "WEBSERVER, POLL, DEBUGFLAG, DISABLEFLAG, ENABLEFLAG, CRAFTSKILL, GATHERSKILL, TRAP, WRIGHTSKILL, or a ROOM.",commandType));
 					}
 				}
 			}

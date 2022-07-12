@@ -60,10 +60,10 @@ public class Trap_SleepGas extends StdTrap
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_SleepGas()
 	{
-		return 7;
+		super();
+		trapLevel = 7;
 	}
 
 	@Override

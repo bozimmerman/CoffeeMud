@@ -60,10 +60,10 @@ public class Trap_RatPit extends Trap_SnakePit
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_RatPit()
 	{
-		return 12;
+		super();
+		trapLevel = 12;
 	}
 
 	@Override

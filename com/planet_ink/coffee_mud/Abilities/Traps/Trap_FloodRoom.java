@@ -60,10 +60,10 @@ public class Trap_FloodRoom extends StdTrap
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_FloodRoom()
 	{
-		return 29;
+		super();
+		trapLevel = 29;
 	}
 
 	@Override

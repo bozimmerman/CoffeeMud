@@ -189,6 +189,32 @@ public class GrinderAbilities
 		A.setStat("MSGNOTFOUND",(old==null)?"":old);
 		old=httpReq.getUrlParameter("MSGCOMPLETE");
 		A.setStat("MSGCOMPLETE",(old==null)?"":old);
+		if((A instanceof Trap) && (A.isGeneric()))
+		{
+			old=httpReq.getUrlParameter("DMGT");
+			A.setStat("DMGT",(old==null)?"":old);
+			old=httpReq.getUrlParameter("DMGM");
+			A.setStat("DMGM",(old==null)?"":old);
+			old=httpReq.getUrlParameter("ISBOMB");
+			A.setStat("ISBOMB",(old==null)?"":""+old.equalsIgnoreCase("on"));
+			old=httpReq.getUrlParameter("ABLEID");
+			A.setStat("ABILITY",(old==null)?"":old);
+			for(final String p : A.getStatCodes())
+			{
+				if(httpReq.isUrlParameter("MOD_"+p))
+				{
+					old=httpReq.getUrlParameter("MOD_"+p);
+					A.setStat(p,(old==null)?"":old);
+				}
+			}
+			httpReq.addFakeUrlParameter("COMPONENT", A.ID());
+			httpReq.addFakeUrlParameter("_DO_NOT_SAVE_", "true");
+			new GrinderComponent().runMacro(httpReq, "");
+			@SuppressWarnings("unchecked")
+			final List<AbilityComponent> c=(List<AbilityComponent>)httpReq.getRequestObjects().get("COMP4_"+A.ID());
+			if(c!=null)
+				A.setStat("ACOMP", CMLib.ableComponents().getAbilityComponentCodedString(c));
+		}
 
 		{
 			final int minDur = CMath.s_int(httpReq.getUrlParameter("MINDUR"));

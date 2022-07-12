@@ -60,10 +60,10 @@ public class Trap_AcidPit extends Trap_RoomPit
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_AcidPit()
 	{
-		return 18;
+		super();
+		trapLevel = 18;
 	}
 
 	@Override

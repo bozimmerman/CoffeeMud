@@ -60,10 +60,10 @@ public class Trap_SpellBlast extends StdTrap
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_SpellBlast()
 	{
-		return 23;
+		super();
+		trapLevel = 23;
 	}
 
 	@Override

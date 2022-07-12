@@ -57,10 +57,11 @@ public class StdTrap extends StdAbility implements Trap
 		return TRIGGER;
 	}
 
-	protected boolean sprung=false;
-	protected int reset=60; // 5 minute reset is standard
-	protected int ableCode=0;
-	protected boolean disabled=false;
+	protected boolean	sprung		= false;
+	protected int		reset		= 60;	// 5 minute reset is standard
+	protected int		ableCode	= 0;
+	protected boolean	disabled	= false;
+	protected int		trapLevel 	= -1;
 
 	public StdTrap()
 	{
@@ -93,7 +94,7 @@ public class StdTrap extends StdAbility implements Trap
 
 	protected int trapLevel()
 	{
-		return -1;
+		return trapLevel;
 	}
 
 	@Override
@@ -121,11 +122,11 @@ public class StdTrap extends StdAbility implements Trap
 	}
 
 	protected List<String> newMessaging=new ArrayList<String>(0);
-	private String invokerName=null;
+	protected String invokerName=null;
 
-	public PairVector<MOB,Integer> safeDirs=null;
+	protected PairVector<MOB,Integer> safeDirs=null;
 
-	public int baseRejuvTime(int level)
+	protected int baseRejuvTime(int level)
 	{
 		if(level>=30)
 			level=29;
@@ -135,12 +136,12 @@ public class StdTrap extends StdAbility implements Trap
 		return ticks;
 	}
 
-	public int baseDestructTime(final int level)
+	protected int baseDestructTime(final int level)
 	{
 		return level*30;
 	}
 
-	public boolean getTravelThroughFlag()
+	protected boolean getTravelThroughFlag()
 	{
 		return false;
 	}
@@ -153,7 +154,7 @@ public class StdTrap extends StdAbility implements Trap
 			   ||(affected.fetchEffect(ID())==null);
 	}
 
-	public boolean doesSaveVsTraps(final MOB target)
+	protected boolean doesSaveVsTraps(final MOB target)
 	{
 		int save=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS);
 		if(invoker()!=null)
@@ -164,7 +165,7 @@ public class StdTrap extends StdAbility implements Trap
 		return (CMLib.dice().rollPercentage()<=save);
 	}
 
-	public boolean isLocalExempt(final MOB target)
+	protected boolean isLocalExempt(final MOB target)
 	{
 		if(target==null)
 			return false;
@@ -277,9 +278,20 @@ public class StdTrap extends StdAbility implements Trap
 		{
 			final int x=text.indexOf(':');
 			final int y=text.indexOf(':',x+1);
-			if((x>=0)&&(y>x)&&(CMath.isInteger(text.substring(x+1,y).trim())))
+			if((x>=0)&&(y>x))
 			{
-				setAbilityCode(CMath.s_int(text.substring(x+1,y).trim()));
+				final String ac = text.substring(x+1,y).trim();
+				final int z=ac.indexOf('/');
+				if((z>0)
+				&&(CMath.isInteger(ac.substring(0,z).trim()))
+				&&(CMath.isInteger(ac.substring(z+1).trim())))
+				{
+					trapLevel=CMath.s_int(ac.substring(0,z).trim());
+					setAbilityCode(CMath.s_int(ac.substring(z+1).trim()));
+				}
+				else
+				if(CMath.isInteger(ac))
+					setAbilityCode(CMath.s_int(ac));
 				text=text.substring(y+1).trim();
 			}
 		}
@@ -289,10 +301,10 @@ public class StdTrap extends StdAbility implements Trap
 	@Override
 	public String text()
 	{
-		return "`"+invokerName+"` :"+abilityCode()+":"+super.text();
+		return "`"+invokerName+"` :"+trapLevel+"/"+abilityCode()+":"+super.text();
 	}
 
-	public synchronized PairVector<MOB,Integer> getSafeDirs()
+	protected synchronized PairVector<MOB,Integer> getSafeDirs()
 	{
 		if(safeDirs == null)
 			safeDirs=new PairVector<MOB,Integer>();

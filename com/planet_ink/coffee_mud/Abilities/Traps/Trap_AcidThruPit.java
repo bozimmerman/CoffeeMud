@@ -48,10 +48,10 @@ public class Trap_AcidThruPit extends Trap_AcidPit
 		return localizedName;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_AcidThruPit()
 	{
-		return 17;
+		super();
+		trapLevel = 17;
 	}
 
 	@Override

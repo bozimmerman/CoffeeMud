@@ -60,10 +60,10 @@ public class Trap_Snare extends StdTrap
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_Snare()
 	{
-		return 5;
+		super();
+		trapLevel = 5;
 	}
 
 	@Override

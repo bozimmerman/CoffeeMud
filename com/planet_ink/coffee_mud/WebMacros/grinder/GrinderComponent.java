@@ -77,6 +77,12 @@ public class GrinderComponent
 				posDex++;
 			}
 
+			if(httpReq.isUrlParameter("_DO_NOT_SAVE_"))
+			{
+				httpReq.getRequestObjects().put("COMP4_"+last, set);
+				return "";
+			}
+			else
 			if(CMLib.ableComponents().getAbilityComponentMap().containsKey(last.toUpperCase().trim()))
 			{
 				final List<AbilityComponent> xset=CMLib.ableComponents().getAbilityComponentMap().get(last.toUpperCase().trim());

@@ -67,7 +67,17 @@ public interface AbilityComponents extends CMLibrary
 	 * @param mithrilOK true to allow mithril as a metal substitute
 	 * @return a list of sample items
 	 */
-	public List<Item> componentsSample(List<AbilityComponent> req, boolean mithrilOK);
+	public List<Item> makeComponentsSample(List<AbilityComponent> req, boolean mithrilOK);
+
+	/**
+	 * Returns a dirty approximation of the minimal resources in the component
+	 * requirement that match the given mob.  Named items are skipped.
+	 *
+	 * @param mob the mob trying to meet the requirements
+	 * @param req the requirements to be met
+	 * @return null if something goes wrong, or the minimal required resource Items
+	 */
+	public List<Item> makeComponents(final MOB mob, final List<AbilityComponent> req);
 
 	/**
 	 * If the ability component recipe used to build the list of found

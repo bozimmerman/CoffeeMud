@@ -60,10 +60,10 @@ public class Trap_Gluey extends StdTrap
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_Gluey()
 	{
-		return 11;
+		super();
+		trapLevel = 11;
 	}
 
 	@Override

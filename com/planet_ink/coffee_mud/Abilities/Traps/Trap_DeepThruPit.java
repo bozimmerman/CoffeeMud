@@ -48,10 +48,10 @@ public class Trap_DeepThruPit extends Trap_DeepPit
 		return localizedName;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_DeepThruPit()
 	{
-		return 13;
+		super();
+		trapLevel = 13;
 	}
 
 	@Override

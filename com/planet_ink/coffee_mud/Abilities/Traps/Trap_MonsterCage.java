@@ -60,10 +60,10 @@ public class Trap_MonsterCage extends StdTrap
 		return 0;
 	}
 
-	@Override
-	protected int trapLevel()
+	public Trap_MonsterCage()
 	{
-		return 10;
+		super();
+		trapLevel = 10;
 	}
 
 	@Override

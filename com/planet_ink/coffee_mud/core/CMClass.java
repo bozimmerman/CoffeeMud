@@ -3141,6 +3141,7 @@ public class CMClass extends ClassLoader
 							final Ability A=(Ability)(CMClass.getAbility(type).copyOf());
 							A.setStat("ALLXML",rec.data());
 							if((!A.ID().equals("GenAbility"))
+							&&(!A.ID().equals("GenTrap"))
 							&&(!A.ID().equals(type)))
 							{
 								c.abilities.addElement(A);
