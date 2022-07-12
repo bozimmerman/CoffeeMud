@@ -2476,8 +2476,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			item.setContainer(null);
 			if(CMLib.flags().isHidden(item))
 				item.basePhyStats().setDisposition(item.basePhyStats().disposition()&((int)PhyStats.ALLMASK-PhyStats.IS_HIDDEN));
-			if(mob.location().isContent(item))
-				mob.location().delItem(item);
+			final Room R=mob.location();
+			if((R!=null)&&(R.isContent(item)))
+				R.delItem(item);
 			if(!isMine)
 			{
 				mob.addItem(item);
@@ -2487,8 +2488,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					mob.phyStats().setWeight(mob.phyStats().weight()+item.phyStats().weight());
 			}
 			item.unWear();
-			if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
-				mob.location().recoverRoomStats();
+			if((!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))&&(R!=null))
+				R.recoverRoomStats();
 			if(item instanceof Coins)
 				((Coins)item).putCoinsBack();
 			if(item instanceof RawMaterial)

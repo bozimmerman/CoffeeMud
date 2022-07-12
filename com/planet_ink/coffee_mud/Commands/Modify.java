@@ -1363,7 +1363,7 @@ public class Modify extends StdCommand
 			return false;
 		}
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around all @x1s.",A.name()));
-		CMLib.genEd().modifyGenAbility(mob,A,-1);
+		CMLib.genEd().modifyGenTrap(mob,(Trap)A,-1);
 		CMLib.database().DBDeleteAbility(A.ID());
 		CMLib.database().DBCreateAbility(A.ID(),"GenTrap",A.getStat("ALLXML"));
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("@x1's everywhere shake under the transforming power!",A.name()));
