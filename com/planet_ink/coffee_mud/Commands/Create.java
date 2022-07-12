@@ -1178,6 +1178,7 @@ public class Create extends StdCommand
 		}
 		final Ability CR=(Ability)CMClass.getAbility("GenTrap").copyOf();
 		CR.setStat("CLASS",classD);
+		CR.setStat("LEVEL","1");
 		CMLib.genEd().modifyGenTrap(mob,(Trap)CR,-1);
 		CMLib.database().DBCreateAbility(CR.ID(),"GenTrap",CR.getStat("ALLXML"));
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just increased!"));

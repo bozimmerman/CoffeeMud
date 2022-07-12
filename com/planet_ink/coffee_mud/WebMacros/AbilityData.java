@@ -198,6 +198,7 @@ public class AbilityData extends StdWebMacro
 		&&(CMClass.getAbility(newTrapID)==null))
 		{
 			A=(Ability)CMClass.getAbility("GenTrap").copyOf();
+			A.setStat("LEVEL","1");
 			A.setStat("CLASS9",newTrapID);
 			last=newTrapID;
 			httpReq.addFakeUrlParameter("ABILITY",newTrapID);
