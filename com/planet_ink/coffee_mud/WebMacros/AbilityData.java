@@ -550,7 +550,7 @@ public class AbilityData extends StdWebMacro
 					if(parms.containsKey("COMPS"))
 					{
 						httpReq.addFakeUrlParameter("COMPONENT", A.ID());
-						final String key="COMP4_"+A.ID();
+						final String key="COMP4_"+A.ID().toUpperCase();
 						final Map<String,List<AbilityComponent>> o = new HashMap<String,List<AbilityComponent>>();
 						CMLib.ableComponents().addAbilityComponent(key+"="+A.getStat("ACOMP"), o);
 						httpReq.getRequestObjects().putAll(o);

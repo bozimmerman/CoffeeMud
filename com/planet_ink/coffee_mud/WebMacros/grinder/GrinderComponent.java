@@ -79,7 +79,7 @@ public class GrinderComponent
 
 			if(httpReq.isUrlParameter("_DO_NOT_SAVE_"))
 			{
-				httpReq.getRequestObjects().put("COMP4_"+last, set);
+				httpReq.getRequestObjects().put("COMP4_"+last.toUpperCase(), set);
 				return "";
 			}
 			else

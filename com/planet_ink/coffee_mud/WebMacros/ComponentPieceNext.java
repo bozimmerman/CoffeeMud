@@ -58,7 +58,7 @@ public class ComponentPieceNext extends StdWebMacro
 		if(!httpReq.isUrlParameter(fixedCompID+"_PIECE_CONNECTOR_1"))
 		{
 			@SuppressWarnings("unchecked")
-			List<AbilityComponent> set=(List<AbilityComponent>)httpReq.getRequestObjects().get("COMP4_"+compID);
+			List<AbilityComponent> set=(List<AbilityComponent>)httpReq.getRequestObjects().get("COMP4_"+compID.toUpperCase().trim());
 			if(set == null)
 				set=CMLib.ableComponents().getAbilityComponents(compID);
 			if(set!=null)

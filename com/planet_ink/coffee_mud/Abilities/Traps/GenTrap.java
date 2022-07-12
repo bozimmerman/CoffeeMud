@@ -86,7 +86,7 @@ public class GenTrap extends StdTrap
 		O[V_MSGA]="<S-NAME> avoid(s) setting off a trap!";
 		O[V_MSGT]="<S-NAME> set(s) off a trap!";
 		O[V_MSGD]="The trap <DAMAGE> <T-NAME>!";
-		O[V_COMP]="";
+		O[V_COMP]="(inventory:consumed:1:METAL:)";
 		O[V_DMGT]=Integer.valueOf(Weapon.TYPE_BURSTING);
 		O[V_DMGM]=Integer.valueOf(CMMsg.TYP_FIRE);
 		O[V_ABLA]="";
@@ -356,6 +356,30 @@ public class GenTrap extends StdTrap
 		return getStatCodes().length;
 	}
 
+	private String convert(final String[] options, final int val, final boolean mask)
+	{
+		if(mask)
+		{
+			final StringBuffer str=new StringBuffer("");
+			for(int i=0;i<options.length;i++)
+			{
+				if((val&(1<<i))>0)
+					str.append(options[i]+",");
+			}
+			if(str.length()>0)
+			{
+				String sstr=str.toString();
+				if(sstr.endsWith(","))
+					sstr=sstr.substring(0,sstr.length()-1);
+				return sstr;
+			}
+		}
+		else
+		if((val>=0)&&(val<options.length))
+			return options[val];
+		return ""+val;
+	}
+
 	private static final String[] CODES={"CLASS",//0
 										 "TEXT",//1
 										 "NAME",//2S
@@ -411,9 +435,9 @@ public class GenTrap extends StdTrap
 		case 4:
 			return ((Integer)V(ID, V_ACOD)).toString();
 		case 5:
-			return ((Integer)V(ID, V_CAFF)).toString();
+			return convert(Ability.CAN_DESCS, ((Integer) V(ID, V_CAFF)).intValue(), true);
 		case 6:
-			return ((Integer)V(ID, V_CTAR)).toString();
+			return convert(Ability.CAN_DESCS, ((Integer) V(ID, V_CTAR)).intValue(), true);
 		case 7:
 			return ((Boolean)V(ID, V_BOMB)).toString();
 		case 8:
@@ -495,10 +519,10 @@ public class GenTrap extends StdTrap
 			super.ableCode = CMath.s_int(val);
 			break;
 		case 5:
-			SV(ID, V_CAFF, Integer.valueOf(CMath.s_int(val)));
+			SV(ID, V_CAFF, Integer.valueOf(convert(Ability.CAN_DESCS, val, true)));
 			break;
 		case 6:
-			SV(ID, V_CTAR, Integer.valueOf(CMath.s_int(val)));
+			SV(ID, V_CTAR, Integer.valueOf(convert(Ability.CAN_DESCS, val, true)));
 			break;
 		case 7:
 			SV(ID, V_BOMB, Boolean.valueOf(CMath.s_bool(val)));
@@ -516,9 +540,9 @@ public class GenTrap extends StdTrap
 		{
 			SV(ID, V_COMP, val);
 			final Map<String,List<AbilityComponent>> h=new HashMap<String,List<AbilityComponent>>();
-			CMLib.ableComponents().addAbilityComponent(ID+"="+val, h);
-			if(h.containsKey(ID))
-				this.componentsRequirements=h.get(ID);
+			CMLib.ableComponents().addAbilityComponent(ID.toUpperCase()+"="+val, h);
+			if(h.containsKey(ID.toUpperCase()))
+				this.componentsRequirements=h.get(ID.toUpperCase());
 			else
 				this.componentsRequirements=new ArrayList<AbilityComponent>(1);
 			break;
@@ -534,7 +558,7 @@ public class GenTrap extends StdTrap
 			{
 				final int x=CMParms.indexOf(Weapon.TYPE_DESCS, val.toUpperCase().trim());
 				if(x>=0)
-					SV(ID, V_DMGT, Integer.valueOf(CMath.s_int(val)));
+					SV(ID, V_DMGT, Integer.valueOf(x));
 			}
 			break;
 		}
@@ -546,7 +570,7 @@ public class GenTrap extends StdTrap
 			{
 				final int x=CMParms.indexOf(CMMsg.TYPE_DESCS, val.toUpperCase().trim());
 				if(x>=0)
-					SV(ID, V_DMGM, Integer.valueOf(CMath.s_int(val)));
+					SV(ID, V_DMGM, Integer.valueOf(x));
 			}
 			break;
 		}
@@ -617,4 +641,33 @@ public class GenTrap extends StdTrap
 		}
 		return str.toString();
 	}
+
+	private int convert(final String[] options, final String val, final boolean mask)
+	{
+		if(CMath.isInteger(val))
+			return CMath.s_int(val);
+		for(int i=0;i<options.length;i++)
+		{
+			if(val.equalsIgnoreCase(options[i]))
+				return mask?(1<<i):i;
+		}
+		if(val.length()>0)
+		{
+			for(int i=0;i<options.length;i++)
+			{
+				if(options[i].toUpperCase().startsWith(val.toUpperCase()))
+					return mask?(1<<i):i;
+			}
+		}
+		if(mask)
+		{
+			final List<String> V=CMParms.parseCommas(val,true);
+			int num=0;
+			for(int v=0;v<V.size();v++)
+				num=num|(1<<convert(options,V.get(v),false));
+			return num;
+		}
+		return 0;
+	}
+
 }

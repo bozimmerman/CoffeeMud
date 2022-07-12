@@ -211,7 +211,7 @@ public class GrinderAbilities
 			httpReq.addFakeUrlParameter("_DO_NOT_SAVE_", "true");
 			new GrinderComponent().runMacro(httpReq, "");
 			@SuppressWarnings("unchecked")
-			final List<AbilityComponent> c=(List<AbilityComponent>)httpReq.getRequestObjects().get("COMP4_"+A.ID());
+			final List<AbilityComponent> c=(List<AbilityComponent>)httpReq.getRequestObjects().get("COMP4_"+A.ID().toUpperCase().trim());
 			if(c!=null)
 				A.setStat("ACOMP", CMLib.ableComponents().getAbilityComponentCodedString(c));
 		}

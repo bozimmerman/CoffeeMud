@@ -528,7 +528,7 @@
             <TR>
                 <TD><FONT COLOR=YELLOW>Dmg. Formula: </FONT></TD>
                 <TD>
-                    <INPUT TYPE=TEXT SIZE=20  VALUE="@AbilityData?MOD_DAMMSG@">
+                    <INPUT TYPE=TEXT SIZE=20  VALUE="@AbilityData?MOD_DMGF@">
                     @x1=trapLevel, @x2=abilityCode, @x3=invokerLevel, @x4=targetLevel
                 </TD>
             </TR>

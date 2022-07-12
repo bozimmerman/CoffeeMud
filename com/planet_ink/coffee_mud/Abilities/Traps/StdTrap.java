@@ -61,7 +61,7 @@ public class StdTrap extends StdAbility implements Trap
 	protected int		reset		= 60;	// 5 minute reset is standard
 	protected int		ableCode	= 0;
 	protected boolean	disabled	= false;
-	protected int		trapLevel 	= -1;
+	protected int		trapLevel 	= 1;
 
 	public StdTrap()
 	{
