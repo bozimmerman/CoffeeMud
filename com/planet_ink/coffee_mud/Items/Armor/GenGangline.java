@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
+import java.io.IOException;
 import java.util.*;
 
 /*
@@ -82,6 +82,27 @@ public class GenGangline extends GenArmor
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;
+		if((msg.tool()==this)
+		&&(msg.targetMinor()==CMMsg.TYP_PUT)
+		&&(msg.target() instanceof MOB))
+		{
+			final Room R=CMLib.map().roomLocation(msg.target());
+			final Command C=CMClass.getCommand("Dress");
+			if(C!=null)
+			{
+				final String targetName = R.getContextName(msg.target());
+				final String toolName = "$"+name()+"$";
+				try
+				{
+					C.execute(msg.source(), new XVector<String>("Dress",targetName,toolName), 0);
+				}
+				catch (final IOException e)
+				{
+				}
+			}
+			return false;
+		}
+		else
 		if((msg.source()==this)
 		&&(msg.targetMinor()==CMMsg.TYP_LEAVE)
 		&&(msg.target() instanceof Room))
@@ -206,6 +227,17 @@ public class GenGangline extends GenArmor
 						}
 					}
 				}
+			}
+			else
+			if(Character.toUpperCase(msg.targetMessage().charAt(0)) == 'M')
+			{
+				final List<String> parsedFail = CMParms.parse(msg.targetMessage());
+				if(parsedFail.size()<3)
+					return true;
+				final String cmd=parsedFail.get(0).toUpperCase();
+				if((!("MOUNT".startsWith(cmd)))&&(!("PUT".startsWith(cmd))))
+					return true;
+
 			}
 		}
 		return true;

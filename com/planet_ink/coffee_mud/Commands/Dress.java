@@ -70,93 +70,91 @@ public class Dress extends StdCommand
 			CMLib.commands().postCommandFail(mob,origCmds,L("I don't see @x1 here.",whom));
 			return false;
 		}
-		if((target.willFollowOrdersOf(mob))||(CMLib.flags().isBoundOrHeld(target)))
+		final Item item=mob.findItem(null,what);
+		if((item==null)||(!CMLib.flags().canBeSeenBy(item,mob)))
 		{
-			final Item item=mob.findItem(null,what);
-			if((item==null)||(!CMLib.flags().canBeSeenBy(item,mob)))
+			CMLib.commands().postCommandFail(mob,origCmds,L("I don't see @x1 here.",what));
+			return false;
+		}
+		if((!target.willFollowOrdersOf(mob))&&(!CMLib.flags().isBoundOrHeld(target)))
+			CMLib.commands().postCommandFail(mob,origCmds,L("@x1 won't let you.",target.name(mob)));
+		else
+		if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ORDER)
+		||(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS)&&(target.isMonster()))
+		||(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDMOBS)&&(target.isMonster())))
+		{
+			mob.location().show(mob,target,item,CMMsg.MASK_ALWAYS|CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> mystically put(s) <O-NAME> on <T-NAMESELF>."));
+			item.unWear();
+			target.moveItemTo(item);
+			item.wearIfPossible(target);
+			if(item.rawWornCode()!=0)
+				target.executeMsg(target, CMClass.getMsg(target, item,CMMsg.MSG_WEAR|CMMsg.MASK_ALWAYS, null));
+			if((item.rawProperLocationBitmap()!=0)&&(item.amWearingAt(Wearable.IN_INVENTORY))&&(target.isMonster()))
 			{
-				CMLib.commands().postCommandFail(mob,origCmds,L("I don't see @x1 here.",what));
-				return false;
-			}
-			if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ORDER)
-			||(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS)&&(target.isMonster()))
-			||(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDMOBS)&&(target.isMonster())))
-			{
-				mob.location().show(mob,target,item,CMMsg.MASK_ALWAYS|CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> mystically put(s) <O-NAME> on <T-NAMESELF>."));
-				item.unWear();
-				target.moveItemTo(item);
-				item.wearIfPossible(target);
-				if(item.rawWornCode()!=0)
-					target.executeMsg(target, CMClass.getMsg(target, item,CMMsg.MSG_WEAR|CMMsg.MASK_ALWAYS, null));
-				if((item.rawProperLocationBitmap()!=0)&&(item.amWearingAt(Wearable.IN_INVENTORY))&&(target.isMonster()))
+				if(item.rawLogicalAnd())
+					item.wearAt(item.rawProperLocationBitmap());
+				else
 				{
-					if(item.rawLogicalAnd())
-						item.wearAt(item.rawProperLocationBitmap());
-					else
+					for(final long wornCode : Wearable.CODES.ALL())
 					{
-						for(final long wornCode : Wearable.CODES.ALL())
+						if(wornCode != Wearable.IN_INVENTORY)
 						{
-							if(wornCode != Wearable.IN_INVENTORY)
+							if(item.fitsOn(wornCode)&&(wornCode!=Wearable.WORN_HELD))
 							{
-								if(item.fitsOn(wornCode)&&(wornCode!=Wearable.WORN_HELD))
-								{
-									item.wearAt(wornCode);
-									break;
-								}
+								item.wearAt(wornCode);
+								break;
 							}
 						}
-						if(item.amWearingAt(Wearable.IN_INVENTORY))
-							item.wearAt(Wearable.WORN_HELD);
 					}
+					if(item.amWearingAt(Wearable.IN_INVENTORY))
+						item.wearAt(Wearable.WORN_HELD);
 				}
-				target.location().recoverRoomStats();
 			}
-			else
+			target.location().recoverRoomStats();
+		}
+		else
+		{
+			if(!item.amWearingAt(Wearable.IN_INVENTORY))
 			{
-				if(!item.amWearingAt(Wearable.IN_INVENTORY))
+				CMLib.commands().postCommandFail(mob,origCmds,L("You might want to remove that first."));
+				return false;
+			}
+			if(item instanceof Coins)
+			{
+				CMLib.commands().postCommandFail(mob,origCmds,L("I don't think you want to dress someone in @x1.",item.name()));
+				return false;
+			}
+			if(target.isInCombat() && (!CMLib.flags().isBoundOrHeld(target)))
+			{
+				CMLib.commands().postCommandFail(mob,origCmds,L("Not while @x1 is in combat!",target.name(mob)));
+				return false;
+			}
+			CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_QUIETMOVEMENT,null);
+			if(mob.location().okMessage(mob,msg))
+			{
+				if(CMLib.commands().postDrop(mob,item,true,false,false))
 				{
-					CMLib.commands().postCommandFail(mob,origCmds,L("You might want to remove that first."));
-					return false;
-				}
-				if(item instanceof Coins)
-				{
-					CMLib.commands().postCommandFail(mob,origCmds,L("I don't think you want to dress someone in @x1.",item.name()));
-					return false;
-				}
-				if(target.isInCombat())
-				{
-					CMLib.commands().postCommandFail(mob,origCmds,L("Not while @x1 is in combat!",target.name(mob)));
-					return false;
-				}
-				CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_QUIETMOVEMENT,null);
-				if(mob.location().okMessage(mob,msg))
-				{
-					if(CMLib.commands().postDrop(mob,item,true,false,false))
+					msg=CMClass.getMsg(target,item,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,CMMsg.MSG_GET,CMMsg.MSG_GET,null);
+					if(mob.location().okMessage(mob,msg))
 					{
-						msg=CMClass.getMsg(target,item,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,CMMsg.MSG_GET,CMMsg.MSG_GET,null);
+						mob.location().send(mob,msg);
+						msg=CMClass.getMsg(target,item,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_WEAR,CMMsg.MSG_WEAR,CMMsg.MSG_WEAR,null);
 						if(mob.location().okMessage(mob,msg))
 						{
 							mob.location().send(mob,msg);
-							msg=CMClass.getMsg(target,item,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_WEAR,CMMsg.MSG_WEAR,CMMsg.MSG_WEAR,null);
-							if(mob.location().okMessage(mob,msg))
-							{
-								mob.location().send(mob,msg);
-								mob.location().show(mob,target,item,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> put(s) <O-NAME> on <T-NAMESELF>."));
-							}
-							else
-							{
-								CMLib.commands().postCommandFail(mob,origCmds,L("You cannot seem to get @x1 on @x2.",item.name(),target.name(mob)));
-								mob.moveItemTo(item);
-							}
+							mob.location().show(mob,target,item,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> put(s) <O-NAME> on <T-NAMESELF>."));
 						}
 						else
-							CMLib.commands().postCommandFail(mob,origCmds,L("You cannot seem to get @x1 to @x2.",item.name(),target.name(mob)));
+						{
+							CMLib.commands().postCommandFail(mob,origCmds,L("You cannot seem to get @x1 on @x2.",item.name(),target.name(mob)));
+							mob.moveItemTo(item);
+						}
 					}
+					else
+						CMLib.commands().postCommandFail(mob,origCmds,L("You cannot seem to get @x1 to @x2.",item.name(),target.name(mob)));
 				}
 			}
 		}
-		else
-			CMLib.commands().postCommandFail(mob,origCmds,L("@x1 won't let you.",target.name(mob)));
 		return false;
 	}
 

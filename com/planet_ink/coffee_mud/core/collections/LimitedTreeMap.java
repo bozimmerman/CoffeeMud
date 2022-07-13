@@ -35,11 +35,11 @@ public class LimitedTreeMap<L,K> extends TreeMap<L,K>
 {
 	private static final long serialVersionUID = 5949532522375107316L;
 
-	private final long expireMs;
-	private final int max;
-	private long nextCheck = 0;
-	private final boolean caseLess;
-	private final OrderedMap<L,long[]> expirations;
+	private final long					expireMs;
+	private final int					max;
+	private long						nextCheck	= 0;
+	private final boolean				caseLess;
+	private final OrderedMap<L, long[]>	expirations;
 
 	public LimitedTreeMap(final long expireMs, final int max, final boolean caseInsensitive)
 	{

@@ -605,6 +605,9 @@ public class GenAbility extends StdAbility
 									{
 										A.setAffectedOne(affectA.affecting());
 										A.setMiscText((String)V(ID,V_MOKT));
+										affectA.makeLongLasting();
+										affectA.setSavable(false);
+										affectA.setProficiency(100);
 										affectA.quietEffect=A;
 									}
 								}
@@ -945,6 +948,11 @@ public class GenAbility extends StdAbility
 			if(!S.tick(ticking,tickID))
 				return false;
 		}
+		final Ability qA=getQuietAffect();
+		if(qA!=null)
+		{
+			qA.tick(ticking, tickID);
+		}
 		if(this.periodicEffect!=null)
 			this.periodicEffect.run();
 		return true;
@@ -966,6 +974,9 @@ public class GenAbility extends StdAbility
 					{
 						A.setAffectedOne(affectA.affecting());
 						A.setMiscText((String)V(ID,V_MOKT));
+						A.makeLongLasting();
+						A.setSavable(false);
+						A.setProficiency(100);
 						affectA.quietEffect=A;
 					}
 				}

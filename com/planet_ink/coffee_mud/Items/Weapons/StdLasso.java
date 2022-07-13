@@ -158,14 +158,16 @@ public class StdLasso extends StdWeapon
 		&&(msg.targetMessage().length()>0)
 		&&(CMLib.flags().isBound(owner())))
 		{
-			String tmsg=msg.targetMessage().toLowerCase();
-			if(tmsg.startsWith("get ")||tmsg.startsWith("take "))
+			String tmsg=msg.targetMessage().toLowerCase().trim();
+			final int wdx=tmsg.indexOf(' ');
+			final String wd = (wdx<0)?"":tmsg.substring(0,wdx);
+			if("get".startsWith(wd)||"take".startsWith(wd))
 			{
 				final MOB boundM=(MOB)owner();
 				final Room R=boundM.location();
 				if(R!=null)
 				{
-					tmsg=tmsg.substring(4).trim();
+					tmsg=tmsg.substring(wdx+1).trim();
 					final List<String> rest=CMParms.parse(tmsg);
 					String itemName=tmsg;
 					final int x=rest.indexOf("from");
@@ -194,10 +196,10 @@ public class StdLasso extends StdWeapon
 					lastBinder=null;
 			}
 			else
-			if(tmsg.startsWith("untie "))
+			if("untie".startsWith(wd))
 			{
 				final MOB boundM=(MOB)owner();
-				tmsg=tmsg.substring(6).trim();
+				tmsg=tmsg.substring(wdx+1).trim();
 				final Room R=boundM.location();
 				if(R!=null)
 				{

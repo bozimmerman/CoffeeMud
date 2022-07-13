@@ -42,7 +42,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 		return "WandArchon";
 	}
 
-	protected final static String[]	MAGIC_WORDS	= { "LEVEL", "RESTORE", "REFRESH", "BLAST", "BURN", "GAIN", "REWIND" };
+	protected final static String[]	MAGIC_WORDS	= { "LEVEL", "RESTORE", "REFRESH", "BLAST", "BURN", "GAIN", "REWIND", "PRAC" };
 
 	public WandArchon()
 	{
@@ -57,7 +57,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
 		recoverPhyStats();
 		secretWord="REFRESH";
-		secretIdentity="The Wand of the Archons! Commands: REFRESH, REWIND, RESTORE, BLAST, LEVEL X UP, LEVEL X DOWN, BURN, GAIN X/All UP.";
+		secretIdentity="The Wand of the Archons! Commands: REFRESH, REWIND, RESTORE, BLAST, LEVEL X UP, LEVEL X DOWN, BURN, GAIN X/ALL UP, PRAC X/ALL UP.";
 	}
 
 	@Override
@@ -318,6 +318,83 @@ public class WandArchon extends StdWand implements ArchonOnly
 								else
 									mob.tell("Unknown ability: "+map.abilityID());
 							}
+						}
+						if(didSomething)
+							mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly at <T-NAME>.",this.name()));
+
+					}
+					return;
+				}
+				else
+				if(message.startsWith("PRAC ")&&message.endsWith(" UP"))
+				{
+					if(!safetyCheck(mob,message))
+						return;
+					message=message.substring(5).trim();
+					message=message.substring(0,message.length()-2).trim();
+					if((message.length()>0)
+					&&(!message.equalsIgnoreCase("ALL")))
+					{
+						Ability A=CMClass.getAbility(message);
+						if(A==null)
+							A=CMClass.findAbility(message);
+						if(A==null)
+							mob.tell(L("There is no such skill as @x1.",message.toLowerCase()));
+						else
+						if((target.fetchAbility(A.ID())!=null)&&(target.fetchAbility(A.ID()).proficiency()>=100))
+							mob.tell(L("@x1 is already proficient in @x2.",target.Name(),message.toLowerCase()));
+						else
+						{
+							mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly at <T-NAME>.",this.name()));
+							final Ability existA=target.fetchAbility(A.ID());
+							if(existA!=null)
+							{
+								if(existA.proficiency()<100)
+								{
+									existA.setProficiency(99);
+									for(int i=0;i<100 && existA.proficiency()<100;i++)
+									{
+										final int oldInt=target.charStats().getStat(CharStats.STAT_INTELLIGENCE);
+										target.charStats().setStat(CharStats.STAT_INTELLIGENCE,99);
+										existA.helpProficiency(target, 1);
+										target.charStats().setStat(CharStats.STAT_INTELLIGENCE,oldInt);
+									}
+									existA.setProficiency(100);
+									mob.recoverCharStats();
+									final Ability effA=target.fetchEffect(A.ID());
+									if(effA!=null)
+										effA.setProficiency(100);
+								}
+
+							}
+							else
+							{
+								mob.tell(L("@x2 has no such skill as @x1.",message.toLowerCase(),target.name()));
+							}
+						}
+					}
+					else
+					{
+						boolean didSomething = false;
+						for(final Enumeration<Ability> a = target.abilities();a.hasMoreElements();)
+						{
+							final Ability A=a.nextElement();
+							if(A.proficiency()<100)
+							{
+								A.setProficiency(99);
+								for(int i=0;i<100 && A.proficiency()<100;i++)
+								{
+									final int oldInt=target.charStats().getStat(CharStats.STAT_INTELLIGENCE);
+									target.charStats().setStat(CharStats.STAT_INTELLIGENCE,99);
+									A.helpProficiency(target, 1);
+									target.charStats().setStat(CharStats.STAT_INTELLIGENCE,oldInt);
+								}
+								A.setProficiency(100);
+								mob.recoverCharStats();
+								didSomething = true;
+							}
+							if(target.fetchEffect(A.ID())!=null)
+								target.fetchEffect(A.ID()).setProficiency(100);
 						}
 						if(didSomething)
 							mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly at <T-NAME>.",this.name()));

@@ -106,46 +106,64 @@ public class Prop_ReqNoMOB extends Property implements TriggeredAffect
 		&&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area))
 		&&(!CMLib.flags().isFalling(msg.source())))
 		{
-			final HashSet<MOB> H=new HashSet<MOB>();
-			if(noFollow)
-				H.add(msg.source());
-			else
+			if(passesMuster(msg.source()))
+				return super.okMessage(myHost, msg);
+			if(!noFollow)
 			{
-				msg.source().getGroupMembers(H);
-				int hsize=0;
-				while(hsize!=H.size())
+				if((msg.source().amFollowing()!=null)
+				||(msg.source().numFollowers()>0))
 				{
-					hsize=H.size();
-					final HashSet<MOB> H2=new XHashSet<MOB>(H);
-					for(final Iterator<MOB> e=H2.iterator();e.hasNext();)
+					final Set<MOB> H=msg.source().getGroupMembers(new HashSet<MOB>());
+					for(final MOB M : H)
 					{
-						final MOB M=e.next();
-						M.getRideBuddies(H);
+						if(passesMuster(M))
+							return super.okMessage(myHost, msg);
 					}
 				}
-				if(msg.source().isMonster()
-				&&(msg.source().riding() instanceof Boardable))
+				if((msg.source().riding()!=null)
+				||((msg.source() instanceof Rideable)&&(((Rideable)msg.source()).numRiders()>0)))
 				{
-					final Area subA=((Boardable)msg.source().riding()).getArea();
-					for(final Enumeration<Room> r=subA.getProperMap();r.hasMoreElements();)
+					Rideable root = msg.source().riding();
+					if((root == null)&&(msg.source() instanceof Rideable))
+						root=(Rideable)msg.source();
+					int tries=100;
+					while((root.riding() != null)&&(--tries>0))
+						root=root.riding();
+					final LinkedList<Rideable> todo=new LinkedList<Rideable>();
+					if(root != null)
+						todo.add(root);
+					tries=100;
+					while((todo.size()>0)&&(--tries>0))
 					{
-						final Room R=r.nextElement();
-						if(R!=null)
+						final Rideable rideableR=todo.removeFirst();
+						for(int r=0;r<rideableR.numRiders();r++)
 						{
-							for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+							final Rider rideR=rideableR.fetchRider(r);
+							if((rideR instanceof MOB)&&(passesMuster((MOB)rideR)))
+								return super.okMessage(myHost, msg);
+							if(rideR instanceof Rideable)
+								todo.add((Rideable)rideR);
+							if(rideR instanceof Boardable)
 							{
-								final MOB M=m.nextElement();
-								if(M!=null)
-									H.add(M);
+								final Area subA=((Boardable)rideR).getArea();
+								for(final Enumeration<Room> r2=subA.getProperMap();r2.hasMoreElements();)
+								{
+									final Room R=r2.nextElement();
+									if(R!=null)
+									{
+										for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+										{
+											final MOB M=m.nextElement();
+											if((M!=null)
+											&&(passesMuster(M)))
+												return super.okMessage(myHost, msg);
+										}
+									}
+								}
 							}
 						}
 					}
 				}
-			}
-			for (final Object O : H)
-			{
-				if((!(O instanceof MOB))||(passesMuster((MOB)O)))
-					return super.okMessage(myHost,msg);
 			}
 			msg.source().tell(L("You are not allowed in there."));
 			return false;

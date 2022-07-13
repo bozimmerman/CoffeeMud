@@ -173,8 +173,11 @@ public class Skill_Subdue extends StdSkill
 	@Override
 	public void unInvoke()
 	{
-		if((canBeUninvoked())&&(affected instanceof MOB))
-			((MOB)affected).tell(L("You are no longer trying to subdue @x1",whom.name()));
+		final Physical P=affected;
+		if((canBeUninvoked())
+		&&(P instanceof MOB)
+		&&(whom!=null))
+			((MOB)P).tell(L("You are no longer trying to subdue @x1",whom.name()));
 		super.unInvoke();
 	}
 
