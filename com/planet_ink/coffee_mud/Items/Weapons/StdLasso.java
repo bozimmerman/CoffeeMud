@@ -261,6 +261,24 @@ public class StdLasso extends StdWeapon
 			}
 		}
 		else
+		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&(msg.target()==owner())
+		&&(msg.value()>0)
+		&&(owner() != null)
+		&&(msg.tool()!=this)
+		&&(CMLib.flags().isBound(owner()))
+		&&(msg.target() instanceof MOB)
+		&&(lastBinder!=null))
+		{
+			final Ability A=((MOB)owner()).fetchEffect("Thief_Bind");
+			if((A!=null)&&(A.invoker()==lastBinder))
+			{
+				A.unInvoke();
+				msg.addTrailerMsg(CMClass.getMsg((MOB)owner(),this,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,null));
+				msg.addTrailerMsg(CMClass.getMsg(lastBinder,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,null));
+			}
+		}
+		else
 			super.executeMsg(myHost,msg);
 	}
 
