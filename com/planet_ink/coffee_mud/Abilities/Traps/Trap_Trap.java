@@ -399,7 +399,8 @@ public class Trap_Trap extends StdAbility implements Trap
 			victimOfSpell(target);
 			break;
 		default:
-			target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> trigger(s) a trap, but it appears to have misfired."));
+			target.location().show(target,null,CMMsg.MSG_OK_ACTION,
+					L("<S-NAME> trigger(s) a trap, but it appears to have misfired."));
 			break;
 		}
 

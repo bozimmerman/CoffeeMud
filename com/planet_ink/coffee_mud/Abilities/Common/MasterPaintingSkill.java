@@ -55,9 +55,9 @@ public class MasterPaintingSkill extends PaintingSkill
 	protected volatile List<String>		recipe		= null;
 
 	@Override
-	protected String getRecipeFile()
+	public String getRecipeFilename()
 	{
-		return "masterpainting.txt";
+		return "";
 	}
 
 	protected String applyColorMask(final String basePhrase, final String colorPhrase, final String fullMask, final List<String> colorNames, final List<Color256> colors)

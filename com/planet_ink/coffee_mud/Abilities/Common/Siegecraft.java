@@ -60,7 +60,7 @@ public class Siegecraft extends Fletching
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "siegecraft.txt";
 	}

@@ -822,7 +822,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			helpKey="SEMICOLON";
 
 		// first come the callouts:
-		
+
 		// specific calling out of a channel
 		if(helpKey.startsWith("CHANNEL_")||helpKey.startsWith("NOCHANNEL_"))
 		{
@@ -847,7 +847,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				return helpText;
 			}
 		}
-		
+
 		// specifically calling out an area
 		if(helpKey.startsWith("AREAHELP_"))
 		{
@@ -860,8 +860,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					return CMLib.map().getArea(helpKey.trim()).getAreaStats().toString();
 			}
 		}
-		
+
 		// now start the exact, or darn near-exact matches
+		// ** maintaining the actual helpKey index into rHelpFile is necessary!
+
 		boolean found=false;
 		if(helpText==null)
 			helpText=rHelpFile.getProperty(helpKey);
@@ -960,7 +962,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		}
 		if(!found)
 		{
-			String ahelpStr=origHelpKey;
+			final String ahelpStr=origHelpKey;
 			for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 			{
 				final Area A=e.nextElement();
@@ -974,7 +976,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				}
 			}
 		}
-		
+
 		// INEXACT searches start here
 		if(!found)
 		{

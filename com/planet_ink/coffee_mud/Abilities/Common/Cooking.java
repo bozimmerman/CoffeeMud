@@ -106,7 +106,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public String parametersFormat()
+	public String getRecipeFormat()
 	{
 		return
 		"ITEM_NAME\tFOOD_DRINK||RESOURCE_NAME\tSMELL_LIST||CODED_SPELL_LIST\tITEM_LEVEL\t"
@@ -246,7 +246,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "recipes.txt";
 	}
@@ -254,7 +254,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 	@Override
 	protected List<List<String>> loadRecipes()
 	{
-		return super.loadRecipes(parametersFile());
+		return super.loadRecipes(getRecipeFilename());
 	}
 
 	@Override

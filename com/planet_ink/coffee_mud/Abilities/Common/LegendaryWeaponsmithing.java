@@ -64,7 +64,7 @@ public class LegendaryWeaponsmithing extends Weaponsmithing implements ItemCraft
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "legendaryweaponsmith.txt";
 	}
@@ -72,7 +72,7 @@ public class LegendaryWeaponsmithing extends Weaponsmithing implements ItemCraft
 	@Override
 	protected List<List<String>> loadRecipes()
 	{
-		return super.loadRecipes(parametersFile());
+		return super.loadRecipes(getRecipeFilename());
 	}
 
 	@Override

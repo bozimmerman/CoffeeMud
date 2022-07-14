@@ -76,7 +76,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public String parametersFormat()
+	public String getRecipeFormat()
 	{
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
@@ -88,7 +88,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
-	//protected static final int RCP_TICKS=2;
+	protected static final int	RCP_TICKS		= 2;
 	protected static final int	RCP_WOOD		= 3;
 	protected static final int	RCP_VALUE		= 4;
 	protected static final int	RCP_CLASSTYPE	= 5;
@@ -112,7 +112,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "carpentry.txt";
 	}
@@ -120,7 +120,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 	@Override
 	protected List<List<String>> loadRecipes()
 	{
-		return super.loadRecipes(parametersFile());
+		return super.loadRecipes(getRecipeFilename());
 	}
 
 	@Override

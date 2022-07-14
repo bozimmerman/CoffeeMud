@@ -2041,21 +2041,21 @@ public class Modify extends StdCommand
 				mob.tell(L("'@x1' is not a valid skill id.",name));
 				return false;
 			}
-			if(!(A instanceof CraftorAbility))
+			if(!(A instanceof RecipeDriven))
 			{
-				mob.tell(L("'@x1' is not a common crafting/building skill.",A.ID()));
+				mob.tell(L("'@x1' is not a valid recipe skill.",A.ID()));
 				return false;
 			}
-			final CraftorAbility iA = (CraftorAbility)A;
-			if((iA.parametersFormat()==null)
-			||(iA.parametersFormat().length()==0)
-			||(iA.parametersFile()==null)
-			||(iA.parametersFile().length()==0))
+			final RecipeDriven iA = (RecipeDriven)A;
+			if((iA.getRecipeFormat()==null)
+			||(iA.getRecipeFormat().length()==0)
+			||(iA.getRecipeFilename()==null)
+			||(iA.getRecipeFilename().length()==0))
 			{
 				mob.tell(L("'@x1' does not have modifiable recipes.",A.ID()));
 				return false;
 			}
-			CMLib.ableParms().modifyRecipesList(mob,iA.parametersFile(),iA.parametersFormat());
+			CMLib.ableParms().modifyRecipesList(mob,iA.getRecipeFilename(),iA.getRecipeFormat());
 		}
 		else
 		if(commandType.equals("ROOM"))

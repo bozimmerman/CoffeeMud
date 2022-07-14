@@ -80,7 +80,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 	//
 
 	@Override
-	public String parametersFormat()
+	public String getRecipeFormat()
 	{
 		return
 		"ITEM_NAME\tI"
@@ -99,7 +99,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
-	//protected static final int RCP_TICKS=2;
+	protected static final int	RCP_TICKS		= 2;
 	protected static final int	RCP_AMOUNTMATS	= 3;
 	protected static final int	RCP_VALUE		= 4;
 	protected static final int	RCP_CLASSTYPE	= 5;
@@ -148,7 +148,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return (String) V(ID, V_FNAM);
 	}
@@ -440,9 +440,9 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 	@Override
 	protected List<List<String>> loadRecipes()
 	{
-		if(parametersFile().length()==0)
+		if(getRecipeFilename().length()==0)
 			return new Vector<List<String>>();
-		return super.loadRecipes(parametersFile());
+		return super.loadRecipes(getRecipeFilename());
 	}
 
 	@Override
@@ -762,7 +762,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			final String misctype=foundRecipe.get(RCP_MISCTYPE);
 			final Integer[] ipm=super.supportedResourcesMap();
 			final int[] pm=new int[ipm.length];
-			for(int i=0;i<ipm.length;i++) 
+			for(int i=0;i<ipm.length;i++)
 				pm[i]=ipm[i].intValue();
 			bundling=misctype.equalsIgnoreCase("BUNDLE");
 			final int[][] data=fetchFoundResourceData(mob,

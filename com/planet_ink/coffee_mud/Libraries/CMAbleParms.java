@@ -215,7 +215,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	@Override
 	public String makeRecipeFromItem(final ItemCraftor C, final Item I) throws CMException
 	{
-		final Vector<Object> columns = parseRecipeFormatColumns(C.parametersFormat());
+		final Vector<Object> columns = parseRecipeFormatColumns(C.getRecipeFormat());
 		final Map<String,AbilityParmEditor> editors = this.getEditors();
 		final StringBuilder recipe = new StringBuilder("");
 		for(int d=0;d<columns.size();d++)
@@ -276,6 +276,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				final List<String> V=(List<String>)dataRow.elementAt(d,1);
 				if(V.contains("ITEM_CLASS_ID")
 				||V.contains("FOOD_DRINK")
+				||V.contains("COLOR_TERM")
 				||V.contains("ITEM_CMARE")
 				||V.contains("BUILDING_CODE"))
 					return d;
@@ -287,6 +288,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				if(s.equalsIgnoreCase("ITEM_CLASS_ID")
 				||s.equalsIgnoreCase("FOOD_DRINK")
 				||s.equalsIgnoreCase("ITEM_CMARE")
+				||s.equalsIgnoreCase("COLOR_TERM")
 				||s.equalsIgnoreCase("BUILDING_CODE"))
 					return d;
 			}
@@ -444,6 +446,18 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		int lastLen = str.length();
 		while(str.length() > 0)
 		{
+			if(str.charAt(0)=='#')
+			{
+				final int x=str.indexOf("\n");
+				if(x>0)
+				{
+					str.delete(0, x+1);
+					while((str.length()>0)
+					&&((str.charAt(0)=='\r')||(str.charAt(0)=='\n')))
+						str.delete(0, 1);
+					continue;
+				}
+			}
 			lastLen = str.length();
 			for(int c = 0; c < columnsV.size(); c++)
 			{
@@ -503,13 +517,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	protected boolean fixDataColumn(final DVector dataRow, final int rowShow, final Object classModelI) throws CMException
 	{
 		final Map<String,AbilityParmEditor> editors = getEditors();
-		if(classModelI == null)
-		{
-			//Log.errOut("CMAbleParms","Data row "+rowShow+" discarded due to null/empty classID");
-			throw new CMException(L("Data row @x1 discarded due to null/empty classID",""+rowShow));
-		}
 		for(int d=0;d<dataRow.size();d++)
 		{
+			if(!(dataRow.elementAt(d, 1) instanceof List))
+				throw new CMException(L("Data row @x1 discarded due to non-List at @x2",""+rowShow,""+d));
+
 			final List<String> colV=(List<String>)dataRow.elementAt(d,1);
 			if(colV.size()==1)
 			{
@@ -520,6 +532,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			}
 			else
 			{
+				if(classModelI == null)
+				{
+					//Log.errOut("CMAbleParms","Data row "+rowShow+" discarded due to null/empty classID");
+					throw new CMException(L("Data row @x1 discarded due to null/empty classID",""+rowShow));
+				}
 				AbilityParmEditor applicableA = null;
 				for(int c=0;c<colV.size();c++)
 				{
@@ -730,11 +747,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	}
 
 	@Override
-	public StringBuffer getRecipeList(final CraftorAbility iA)
+	public StringBuffer getRecipeList(final RecipeDriven iA)
 	{
-		final AbilityRecipeData recipe = parseRecipe(iA.parametersFile(),iA.parametersFormat());
+		final AbilityRecipeData recipe = parseRecipe(iA.getRecipeFilename(),iA.getRecipeFormat());
 		if(recipe.parseError() != null)
-			return new StringBuffer("File: "+iA.parametersFile()+": "+recipe.parseError());
+			return new StringBuffer("File: "+iA.getRecipeFilename()+": "+recipe.parseError());
 		return getRecipeList(recipe);
 	}
 
@@ -995,13 +1012,13 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		Pair<String[],String[]> codesFlags = (Pair<String[],String[]>)Resources.getResource("BUILDING_SKILL_CODES_FLAGS");
 		if(codesFlags == null)
 		{
-			CraftorAbility A=(CraftorAbility)CMClass.getAbility("Masonry");
+			RecipeDriven A=(RecipeDriven)CMClass.getAbility("Masonry");
 			if(A==null)
-				A=(CraftorAbility)CMClass.getAbility("Construction");
+				A=(RecipeDriven)CMClass.getAbility("Construction");
 			if(A==null)
-				A=(CraftorAbility)CMClass.getAbility("Excavation");
+				A=(RecipeDriven)CMClass.getAbility("Excavation");
 			if(A!=null)
-				A.parametersFormat();
+				A.getRecipeFormat();
 			codesFlags = (Pair<String[],String[]>)Resources.getResource("BUILDING_SKILL_CODES_FLAGS");
 		}
 		return codesFlags;
@@ -1217,7 +1234,105 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return newName;
 				}
 			},
+			new AbilityParmEditorImpl("COLOR_TERM","Color term",ParmType.STRING)
+			{
+				@Override
+				public void createChoices()
+				{
+				}
 
+				@Override
+				public String defaultValue()
+				{
+					return "color name";
+				}
+
+				@Override
+				public boolean confirmValue(final String oldVal)
+				{
+					return true;
+				}
+
+				@Override
+				public int minColWidth()
+				{
+					return 5;
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "";
+				}
+			},
+			new AbilityParmEditorImpl("COLOR_MASK","Color mask",ParmType.STRING)
+			{
+				@Override
+				public void createChoices()
+				{
+				}
+
+				@Override
+				public String defaultValue()
+				{
+					return "";
+				}
+
+				@Override
+				public boolean confirmValue(final String oldVal)
+				{
+					if(oldVal.length()>0)
+					{
+						for(int i=0;i<oldVal.length();i++)
+							if("0123cCwWeEFm-*|".indexOf(oldVal.charAt(i))<0)
+								return false;
+					}
+					return true;
+				}
+
+				@Override
+				public int minColWidth()
+				{
+					return 5;
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "";
+				}
+			},
+			new AbilityParmEditorImpl("EXPERTISENUM","Expertise#",ParmType.NUMBERORNULL)
+			{
+				@Override
+				public void createChoices()
+				{
+				}
+
+				@Override
+				public String defaultValue()
+				{
+					return "";
+				}
+
+				@Override
+				public boolean confirmValue(final String oldVal)
+				{
+					return true;
+				}
+
+				@Override
+				public int minColWidth()
+				{
+					return 5;
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "";
+				}
+			},
 			new AbilityParmEditorImpl("STAIRS_DESC","Exit Desc",ParmType.STRING)
 			{
 				@Override
@@ -3460,6 +3575,291 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 					}
 					return (newVal==null)?oldVal:newVal.toString();
+				}
+			},
+			new AbilityParmEditorImpl("ABILITY_ID","Ability ID",ParmType.SPECIAL)
+			{
+				@Override
+				public void createChoices()
+				{
+				}
+
+				@Override
+				public int maxColWidth()
+				{
+					return 20;
+				}
+
+				@Override
+				public int appliesToClass(final Object o)
+				{
+					return 1;
+				}
+
+				@Override
+				public boolean confirmValue(final String oldVal)
+				{
+					if(oldVal.trim().length()==0)
+						return false;
+					final Ability A=CMClass.getAbility(oldVal);
+					return (A instanceof Trap);
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "";
+				}
+
+				@Override
+				public String defaultValue()
+				{
+					return "";
+				}
+
+				@Override
+				public String[] fakeUserInput(final String oldVal)
+				{
+					if(confirmValue(oldVal))
+						return new String[] {oldVal};
+					return new String[] {defaultValue()};
+				}
+
+				@Override
+				public String webValue(final HTTPRequest httpReq, final java.util.Map<String,String> parms, final String oldVal, final String fieldName)
+				{
+					if(confirmValue(httpReq.getUrlParameter(fieldName)))
+						return httpReq.getUrlParameter(fieldName);
+					return oldVal;
+				}
+
+				@Override
+				public String webField(final HTTPRequest httpReq, final java.util.Map<String,String> parms, final String oldVal, final String fieldName)
+				{
+					final StringBuffer str = new StringBuffer("");
+					final String val = webValue(httpReq,parms,oldVal,fieldName);
+					str.append("\n\r<SELECT NAME="+fieldName+">");
+					str.append("<OPTION SELECTED VALUE=\"\">Select Effect/Behavior");
+					for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+					{
+						final Ability A=a.nextElement();
+						if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_TRAP)
+						&&(A instanceof Trap)
+						&&(((Trap)A).maySetTrap(null, Integer.MAX_VALUE)))
+						{
+							str.append("<OPTION VALUE=\""+A.ID()+"\"");
+							if(A.ID().equalsIgnoreCase(val))
+								str.append(" SELECTED");
+							str.append(">"+A.ID());
+						}
+					}
+					str.append("</SELECT>");
+					return str.toString();
+				}
+
+				@Override
+				public String commandLinePrompt(final MOB mob, String oldVal, final int[] showNumber, final int showFlag) throws java.io.IOException
+				{
+					++showNumber[0];
+					if((showFlag>0)&&(showFlag!=showNumber[0]))
+						return oldVal;
+					String behave="NO";
+					while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
+					{
+						mob.tell(L("@x1. Trap ID: '@x2'.",""+showNumber,oldVal));
+						if((showFlag!=showNumber[0])&&(showFlag>-999))
+							return oldVal;
+						behave=mob.session().prompt(L("Enter trap ability ID (?):"),"");
+						if(behave.length()>0)
+						{
+							if(behave.equalsIgnoreCase("?"))
+							{
+								mob.tell(CMLib.lister().build3ColTable(mob,CMClass.abilities(new Filterer<Ability>() {
+									@Override
+									public boolean passesFilter(final Ability obj)
+									{
+										if(((obj.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_TRAP)
+										&&(obj instanceof Trap)
+										&&(((Trap)obj).maySetTrap(null, Integer.MAX_VALUE)))
+											return true;
+										return false;
+									}
+								})).toString());
+							}
+							else
+							{
+								Ability chosenOne=CMClass.getAbility(behave);
+								if((chosenOne instanceof Ability)
+								&&((chosenOne.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+								&&(!CMSecurity.isASysOp(mob)))
+									chosenOne=null;
+								if((chosenOne!=null)
+								&&((chosenOne.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_TRAP)
+								&&(chosenOne instanceof Trap))
+								{
+									oldVal = chosenOne.ID();
+									behave="";
+								}
+								else
+									mob.tell(L("'@x1' is not a recognized trap.  Try '?'.",behave));
+							}
+						}
+						else
+							mob.tell(L("(no change)"));
+					}
+					return oldVal;
+				}
+			},
+			new AbilityParmEditorImpl("TRIGGER_MSG","Trigger Msg",ParmType.STRINGORNULL)
+			{
+
+				@Override
+				public String defaultValue()
+				{
+					return "";
+				}
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "";
+				}
+				@Override
+				public void createChoices()
+				{
+				}
+			},
+			new AbilityParmEditorImpl("DAMAGE_MSG","Damage Msg",ParmType.STRINGORNULL)
+			{
+				@Override
+				public String defaultValue()
+				{
+					return "";
+				}
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "";
+				}
+				@Override
+				public void createChoices()
+				{
+				}
+			},
+			new AbilityParmEditorImpl("AVOID_MSG","Avoid Msg",ParmType.STRINGORNULL)
+			{
+				@Override
+				public String defaultValue()
+				{
+					return "";
+				}
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "";
+				}
+				@Override
+				public void createChoices()
+				{
+				}
+			},
+			new AbilityParmEditorImpl("ABILITY_ID","Ability ID",ParmType.CHOICES)
+			{
+				@Override
+				public void createChoices()
+				{
+					createChoices(CMClass.abilities(new Filterer<Ability>() {
+
+						@Override
+						public boolean passesFilter(final Ability obj)
+						{
+							return ((obj.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON);
+						}
+					}));
+				}
+
+				@Override
+				public String defaultValue()
+				{
+					return "";
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "";
+				}
+
+				@Override
+				public int maxColWidth()
+				{
+					return 20;
+				}
+
+				@Override
+				public int appliesToClass(final Object o)
+				{
+					return 1;
+				}
+
+				@Override
+				public boolean confirmValue(final String oldVal)
+				{
+					if(oldVal.trim().length()==0)
+						return true;
+					final Ability A=CMClass.getAbility(oldVal);
+					if(A==null)
+						return false;
+					return ((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON);
+				}
+			},
+			new AbilityParmEditorImpl("TRAP_ID","Trap ID",ParmType.CHOICES)
+			{
+				@Override
+				public void createChoices()
+				{
+					createChoices(CMClass.abilities(new Filterer<Ability>() {
+
+						@Override
+						public boolean passesFilter(final Ability obj)
+						{
+							return (obj instanceof Trap)
+								&&((obj.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_TRAP)
+								&&(((Trap)obj).maySetTrap(null, -1));
+						}
+					}));
+				}
+
+				@Override
+				public String defaultValue()
+				{
+					return "";
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "";
+				}
+
+				@Override
+				public int maxColWidth()
+				{
+					return 20;
+				}
+
+				@Override
+				public int appliesToClass(final Object o)
+				{
+					return 1;
+				}
+
+				@Override
+				public boolean confirmValue(final String oldVal)
+				{
+					if(oldVal.trim().length()==0)
+						return false;
+					final Ability A=CMClass.getAbility(oldVal);
+					return (A instanceof Trap);
 				}
 			},
 			new AbilityParmEditorImpl("BASE_DAMAGE","Dmg.",ParmType.NUMBER)

@@ -75,7 +75,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 	}
 
 	@Override
-	public String parametersFormat()
+	public String getRecipeFormat()
 	{
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
@@ -86,7 +86,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
-	//protected static final int RCP_TICKS=2;
+	protected static final int	RCP_TICKS		= 2;
 	protected static final int	RCP_WOOD		= 3;
 	protected static final int	RCP_VALUE		= 4;
 	protected static final int	RCP_CLASSTYPE	= 5;
@@ -108,7 +108,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "scrimshaw.txt";
 	}
@@ -116,7 +116,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 	@Override
 	protected List<List<String>> loadRecipes()
 	{
-		return super.loadRecipes(parametersFile());
+		return super.loadRecipes(getRecipeFilename());
 	}
 
 	@Override

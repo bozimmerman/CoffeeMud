@@ -3049,13 +3049,13 @@ public class ListCmd extends StdCommand
 			for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 			{
 				final Ability A=e.nextElement();
-				if(A instanceof CraftorAbility)
+				if(A instanceof RecipeDriven)
 				{
-					final CraftorAbility iA = (CraftorAbility)A;
-					if((iA.parametersFormat()==null)
-					||(iA.parametersFormat().length()==0)
-					||(iA.parametersFile()==null)
-					||(iA.parametersFile().length()==0))
+					final RecipeDriven iA = (RecipeDriven)A;
+					if((iA.getRecipeFormat()==null)
+					||(iA.getRecipeFormat().length()==0)
+					||(iA.getRecipeFilename()==null)
+					||(iA.getRecipeFilename().length()==0))
 						continue;
 					str.append(A.ID()).append(", ");
 				}
@@ -3069,15 +3069,15 @@ public class ListCmd extends StdCommand
 			if(A==null)
 				str.append(L("Ability '@x1' does not exist -- try list recipes",rest));
 			else
-			if(!(A instanceof CraftorAbility))
+			if(!(A instanceof RecipeDriven))
 				str.append(L("Ability '@x1' is not a proper ability -- try list recipes",A.ID()));
 			else
 			{
-				final CraftorAbility iA = (CraftorAbility)A;
-				if((iA.parametersFormat()==null)
-				||(iA.parametersFormat().length()==0)
-				||(iA.parametersFile()==null)
-				||(iA.parametersFile().length()==0))
+				final RecipeDriven iA = (RecipeDriven)A;
+				if((iA.getRecipeFormat()==null)
+				||(iA.getRecipeFormat().length()==0)
+				||(iA.getRecipeFilename()==null)
+				||(iA.getRecipeFilename().length()==0))
 					str.append(L("Ability '@x1' is not editable -- try list recipes",A.ID()));
 				else
 					str.append(CMLib.ableParms().getRecipeList(iA));

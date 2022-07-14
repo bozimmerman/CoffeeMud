@@ -76,7 +76,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public String parametersFormat()
+	public String getRecipeFormat()
 	{
 		return "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 			+ "ITEM_CLASS_ID\tRESOURCE_OR_MATERIAL\tLID_LOCK||STATUE||RES_SUBTYPE||\tCONTAINER_CAPACITY||PAGES_CHARS\tCODED_SPELL_LIST";
@@ -84,7 +84,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
-	//protected static final int RCP_TICKS=2;
+	protected static final int	RCP_TICKS		= 2;
 	protected static final int	RCP_WOOD		= 3;
 	protected static final int	RCP_VALUE		= 4;
 	protected static final int	RCP_CLASSTYPE	= 5;
@@ -119,7 +119,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "papermaking.txt";
 	}
@@ -127,7 +127,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 	@Override
 	protected List<List<String>> loadRecipes()
 	{
-		return super.loadRecipes(parametersFile());
+		return super.loadRecipes(getRecipeFilename());
 	}
 
 	@Override

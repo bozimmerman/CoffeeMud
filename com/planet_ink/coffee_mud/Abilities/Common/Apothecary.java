@@ -86,7 +86,7 @@ public class Apothecary extends Cooking
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "poisons.txt";
 	}
@@ -113,7 +113,7 @@ public class Apothecary extends Cooking
 	{
 		if(text().toUpperCase().indexOf("ANTIDOTE")<0)
 			return super.loadRecipes();
-		final String filename=parametersFile();
+		final String filename=getRecipeFilename();
 		@SuppressWarnings("unchecked")
 		List<List<String>> recipes=(List<List<String>>)Resources.getResource("PARSED_ANTIDOTE_RECIPE: "+filename);
 		if(recipes==null)

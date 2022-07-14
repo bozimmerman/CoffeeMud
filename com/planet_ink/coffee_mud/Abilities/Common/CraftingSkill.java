@@ -40,7 +40,7 @@ import java.util.concurrent.TimeUnit;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class CraftingSkill extends GatheringSkill
+public class CraftingSkill extends GatheringSkill implements RecipeDriven
 {
 	@Override
 	public String ID()
@@ -87,11 +87,6 @@ public class CraftingSkill extends GatheringSkill
 
 	protected CraftingActivity	activity		= CraftingActivity.CRAFTING;
 	protected boolean			messedUp		= false;
-
-	// common recipe definition indexes
-	protected static final int	RCP_FINALNAME	= 0;
-	protected static final int	RCP_LEVEL		= 1;
-	protected static final int	RCP_TICKS		= 2;
 
 	// for ability component style materials
 	protected static final int	CF_AMOUNT		= 0;
@@ -178,7 +173,7 @@ public class CraftingSkill extends GatheringSkill
 	};
 
 
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "";
 	}
@@ -264,12 +259,11 @@ public class CraftingSkill extends GatheringSkill
 		return L("@x1 made from @x2. ", name, resourceName);
 	}
 
-	@Override
 	protected List<List<String>> addRecipes(final MOB mob, final List<List<String>> recipes)
 	{
 		if(mob==null)
 			return recipes;
-		return super.addRecipes(mob, recipes);
+		return CMLib.utensils().addExtRecipes(mob, ID(), recipes);
 	}
 
 	protected String replacePercent(final String thisStr, final String withThis)
@@ -641,6 +635,7 @@ public class CraftingSkill extends GatheringSkill
 	protected static final int FOUND_AMT=1;
 	protected static final int FOUND_SUB=2;
 
+	@Override
 	public List<List<String>> fetchRecipes()
 	{
 		return loadRecipes();
@@ -1191,6 +1186,7 @@ public class CraftingSkill extends GatheringSkill
 		return range;
 	}
 
+	@Override
 	public List<List<String>> matchingRecipeNames(final String recipeName, final boolean beLoose)
 	{
 		return matchingRecipeNames(fetchRecipes(),recipeName,beLoose);
@@ -2077,9 +2073,17 @@ public class CraftingSkill extends GatheringSkill
 		return new LinkedList<Object>();
 	}
 
+	@Override
+	public String getRecipeFormat()
+	{
+		return "";
+	}
+
+	@Override
 	public Pair<String,Integer> getDecodedItemNameAndLevel(final List<String> recipe)
 	{
-		return new Pair<String,Integer>(recipe.get( RCP_FINALNAME ), Integer.valueOf(CMath.s_int(recipe.get( RCP_LEVEL ))));
+		return new Pair<String,Integer>(recipe.get( RCP_FINALNAME ),
+				Integer.valueOf(CMath.s_int(recipe.get( RCP_LEVEL ))));
 	}
 
 	public String getComponentDescription(final MOB mob, final List<String> recipe, final int RCP_WOOD)
@@ -2211,5 +2215,4 @@ public class CraftingSkill extends GatheringSkill
 		}
 		return true;
 	}
-
 }

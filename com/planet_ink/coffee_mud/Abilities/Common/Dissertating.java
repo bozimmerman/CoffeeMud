@@ -89,7 +89,7 @@ public class Dissertating extends CraftingSkill
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "";
 	}

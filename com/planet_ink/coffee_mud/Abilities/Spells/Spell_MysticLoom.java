@@ -221,7 +221,7 @@ public class Spell_MysticLoom extends Spell
 				if(skill != null)
 				{
 					theLoomer.setLocation(R);
-					final List<List<String>> recipes = ((CraftorAbility)skill).fetchRecipes();
+					final List<List<String>> recipes = ((RecipeDriven)skill).fetchRecipes();
 					for(int i=0;i<10;i++)
 					{
 						final List<String> recipe = recipes.get(CMLib.dice().roll(1, recipes.size(), -1));

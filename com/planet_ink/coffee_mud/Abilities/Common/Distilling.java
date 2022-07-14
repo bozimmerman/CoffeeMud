@@ -80,7 +80,7 @@ public class Distilling extends Cooking
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "liquors.txt";
 	}
@@ -88,7 +88,7 @@ public class Distilling extends Cooking
 	@Override
 	protected List<List<String>> loadRecipes()
 	{
-		return super.loadRecipes(parametersFile());
+		return super.loadRecipes(getRecipeFilename());
 	}
 
 	public Distilling()

@@ -120,7 +120,7 @@ public class GenRecipe extends GenReadable implements Recipe
 					return false;
 				}
 				final Ability A=CMClass.getAbility( getCommonSkillID() );
-				if(!(A instanceof CraftorAbility))
+				if(!(A instanceof RecipeDriven))
 				{
 					msg.source().tell(L("This recipe book is un-prepped."));
 					return false;
@@ -133,8 +133,12 @@ public class GenRecipe extends GenReadable implements Recipe
 						msg.source().tell(L("Your recipes are clearly bad."));
 						return false;
 					}
-					final CraftorAbility C=(CraftorAbility)A;
-					final String components = C.getDecodedComponentsDescription( msg.source(), V );
+					final RecipeDriven C=(RecipeDriven)A;
+					final String components;
+					if(C instanceof CraftorAbility)
+						components = ((CraftorAbility)C).getDecodedComponentsDescription( msg.source(), V );
+					else
+						components="";
 					if(components.equals("?"))
 					{
 						msg.source().tell(L("Your recipes are clearly bad."));
@@ -228,12 +232,17 @@ public class GenRecipe extends GenReadable implements Recipe
 					final Ability A=CMClass.getAbility( getCommonSkillID() );
 					if(A!=null)
 						str.append( L("The following recipe is for the @x1 skill:\n\r",A.name()));
-					if(A instanceof CraftorAbility)
+					if(A instanceof RecipeDriven)
 					{
-						final CraftorAbility C=(CraftorAbility)A;
+						final RecipeDriven C=(RecipeDriven)A;
 						final List<String> V=CMParms.parseTabs( this.getRecipeCodeLines()[x-1]+" ", false );
 						final Pair<String,Integer> nameAndLevel = C.getDecodedItemNameAndLevel( V );
-						final String components = C.getDecodedComponentsDescription( msg.source(), V );
+						final String components;
+						if(C instanceof CraftorAbility)
+							components = ((CraftorAbility)C).getDecodedComponentsDescription( msg.source(), V );
+						else
+							components = "nothing";
+
 						final String name=CMStrings.replaceAll( nameAndLevel.first, "% ", "");
 
 						str.append( name).append(", level "+nameAndLevel.second);
@@ -342,10 +351,10 @@ public class GenRecipe extends GenReadable implements Recipe
 				if((recipeLines!=null)&&(recipeLines.length==1)&&(this.getCommonSkillID().length()>0))
 				{
 					final Ability A=CMClass.getAbility(this.getCommonSkillID());
-					if(A instanceof CraftorAbility)
+					if(A instanceof RecipeDriven)
 					{
 						final List<String> V=CMParms.parseTabs( recipeLines[0], false );
-						final Pair<String,Integer> nameAndLevel = ((CraftorAbility)A).getDecodedItemNameAndLevel( V );
+						final Pair<String,Integer> nameAndLevel = ((RecipeDriven)A).getDecodedItemNameAndLevel( V );
 						String itemName=CMStrings.replaceAll( nameAndLevel.first, "% ","");
 						itemName=CMStrings.replaceAll( itemName, " % ","");
 						if(CMClass.getAbilityPrototype(itemName) != null)

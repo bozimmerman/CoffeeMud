@@ -75,7 +75,7 @@ public class Costuming extends CraftingSkill implements ItemCraftor, MendingSkil
 	}
 
 	@Override
-	public String parametersFormat()
+	public String getRecipeFormat()
 	{
 		return
 		  "ITEM_NAME\t"
@@ -93,7 +93,7 @@ public class Costuming extends CraftingSkill implements ItemCraftor, MendingSkil
 
 	// protected static final int RCP_FINALNAME=0;
 	// protected static final int RCP_LEVEL=1;
-	// protected static final int RCP_TICKS=2;
+	protected static final int 	RCP_TICKS		= 2;
 	protected static final int	RCP_WOOD		= 3;
 	protected static final int	RCP_VALUE		= 4;
 	protected static final int	RCP_CLASSTYPE	= 5;
@@ -121,7 +121,7 @@ public class Costuming extends CraftingSkill implements ItemCraftor, MendingSkil
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "costume.txt";
 	}
@@ -129,7 +129,7 @@ public class Costuming extends CraftingSkill implements ItemCraftor, MendingSkil
 	@Override
 	protected List<List<String>> loadRecipes()
 	{
-		return super.loadRecipes(parametersFile());
+		return super.loadRecipes(getRecipeFilename());
 	}
 
 	@Override

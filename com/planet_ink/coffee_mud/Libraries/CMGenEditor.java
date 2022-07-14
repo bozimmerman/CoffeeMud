@@ -2261,15 +2261,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		else
 			mob.tell(L("(no change)"));
 		final Ability A=CMClass.getAbility(E.getCommonSkillID());
-		final CraftorAbility C;
+		final RecipeDriven C;
 		if((A!=null)
 		&&((A.classificationCode()==(Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CRAFTINGSKILL))
 			||(A.classificationCode()==(Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_EPICUREAN))
 			||(A.classificationCode()==(Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_BUILDINGSKILL)))
-		&&(A instanceof CraftorAbility))
+		&&(A instanceof RecipeDriven))
 		{
-			C=(CraftorAbility)A;
-			mob.tell(L("Params: @x1",CMStrings.replaceAll(C.parametersFormat(), "\t", ",")));
+			C=(RecipeDriven)A;
+			mob.tell(L("Params: @x1",CMStrings.replaceAll(C.getRecipeFormat(), "\t", ",")));
 		}
 		else
 			C = null;
@@ -2297,7 +2297,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					try
 					{
 						if(C!=null)
-							CMLib.ableParms().testRecipeParsing(new StringBuffer(CMStrings.replaceAll(line,",","\t")), C.parametersFormat());
+							CMLib.ableParms().testRecipeParsing(new StringBuffer(CMStrings.replaceAll(line,",","\t")), C.getRecipeFormat());
 					}
 					catch(final CMException cme)
 					{
@@ -2310,7 +2310,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				final String newLine=mob.session().prompt(L("Re-Enter this line, or NULL to delete (?).\n\r:"),"");
 				if(newLine.equalsIgnoreCase("?"))
-					mob.tell((C==null)?"?":CMStrings.replaceAll(C.parametersFormat(), "\t", ","));
+					mob.tell((C==null)?"?":CMStrings.replaceAll(C.getRecipeFormat(), "\t", ","));
 				else
 				if(newLine.equalsIgnoreCase("null"))
 					recipeList.remove(x-1);
@@ -2332,7 +2332,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if((newLine!=null)&&(newLine.trim().length()>0))
 				{
 					if(newLine.equalsIgnoreCase("?"))
-						mob.tell((C==null)?"?":CMStrings.replaceAll(C.parametersFormat(), "\t", ","));
+						mob.tell((C==null)?"?":CMStrings.replaceAll(C.getRecipeFormat(), "\t", ","));
 					else
 					{
 						final String errors = new Checker().getErrors(newLine);

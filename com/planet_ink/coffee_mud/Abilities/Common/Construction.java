@@ -67,7 +67,7 @@ public class Construction extends BuildingSkill
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "construction.txt";
 	}

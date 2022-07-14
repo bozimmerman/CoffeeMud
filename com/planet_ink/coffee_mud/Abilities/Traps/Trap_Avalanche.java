@@ -130,24 +130,33 @@ public class Trap_Avalanche extends StdTrap
 		{
 			if((doesSaveVsTraps(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) setting off an avalanche!"));
-			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> trigger(s) an avalanche!")))
 			{
-				super.spring(target);
-				if((affected!=null)
-				&&(affected instanceof Room))
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,
+						getAvoidMsg(L("<S-NAME> avoid(s) setting off an avalanche!")));
+			}
+			else
+			{
+				final String triggerMsg = getTrigMsg(L("<S-NAME> trigger(s) an avalanche!"));
+				final String damageMsg = getDamMsg(L("The avalanche <DAMAGE> <T-NAME>!"));
+				if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,triggerMsg))
 				{
-					final Room R=(Room)affected;
-					for(int i=0;i<R.numInhabitants();i++)
+					super.spring(target);
+					if((affected!=null)
+					&&(affected instanceof Room))
 					{
-						final MOB M=R.fetchInhabitant(i);
-						if((M!=null)&&(M!=invoker()))
+						final Room R=(Room)affected;
+						for(int i=0;i<R.numInhabitants();i++)
 						{
-							if(invoker().mayIFight(M))
+							final MOB M=R.fetchInhabitant(i);
+							if((M!=null)&&(M!=invoker()))
 							{
-								final int damage=CMLib.dice().roll(trapLevel()+abilityCode(),20,1);
-								CMLib.combat().postDamage(invoker(),M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,L("The avalanche <DAMAGE> <T-NAME>!"));
+								if(invoker().mayIFight(M))
+								{
+									final int damage=CMLib.dice().roll(trapLevel()+abilityCode(),20,1);
+									CMLib.combat().postDamage(invoker(),M,this,damage,
+											CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,
+											Weapon.TYPE_BASHING,damageMsg);
+								}
 							}
 						}
 					}

@@ -60,7 +60,7 @@ public class ImprovedAlchemy extends Alchemy
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "improvedalchemy.txt";
 	}

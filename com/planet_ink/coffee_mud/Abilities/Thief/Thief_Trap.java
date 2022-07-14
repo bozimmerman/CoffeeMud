@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Trap extends ThiefSkill
+public class Thief_Trap extends ThiefSkill implements RecipeDriven
 {
 	@Override
 	public String ID()
@@ -47,6 +47,12 @@ public class Thief_Trap extends ThiefSkill
 	{
 		return localizedName;
 	}
+
+	protected final static int	RCP_TRAPID		= 3;
+	protected final static int	RCP_ABILITYID	= 4;
+	protected final static int	RCP_TRIGGERMSG	= 5;
+	protected final static int	RCP_DAMAGEMSG	= 6;
+	protected final static int	RCP_AVOIDMSG	= 7;
 
 	@Override
 	protected int canAffectCode()
@@ -86,11 +92,6 @@ public class Thief_Trap extends ThiefSkill
 		return USAGE_MOVEMENT | USAGE_MANA;
 	}
 
-	protected int maxLevel()
-	{
-		return Integer.MAX_VALUE;
-	}
-
 	@Override
 	public int castingQuality(final MOB mob, final Physical target)
 	{
@@ -105,18 +106,19 @@ public class Thief_Trap extends ThiefSkill
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
+		final int qualifyingClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(getXLEVELLevel(mob))-CMLib.ableMapper().qualifyingLevel(mob,this)+1;
 		Trap theTrap=null;
-		final List<Ability> traps=new ArrayList<Ability>();
-		int qualifyingClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(getXLEVELLevel(mob))-CMLib.ableMapper().qualifyingLevel(mob,this)+1;
-		if(qualifyingClassLevel>maxLevel())
-			qualifyingClassLevel=maxLevel();
-		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		List<String> theRecipe = null;
+		final PairList<List<String>,Trap> traps=new PairVector<List<String>,Trap>();
+		final List<List<String>> recipes=CMLib.utensils().addExtRecipes(mob,ID(),this.fetchRecipes());
+		for(final List<String> V : recipes)
 		{
-			final Ability A=a.nextElement();
+			final Ability A=CMClass.getAbility(V.get(RCP_TRAPID));
+			final int level = CMath.s_int(V.get(RCP_LEVEL));
+			A.setMiscText(":"+level+":");
 			if((A instanceof Trap)
-			&&(!((Trap)A).isABomb())
 			&&(((Trap)A).maySetTrap(mob,qualifyingClassLevel)))
-				traps.add(A);
+				traps.add(V,(Trap)A);
 		}
 		Physical trapThis=givenTarget;
 		if(trapThis!=null)
@@ -132,11 +134,17 @@ public class Thief_Trap extends ThiefSkill
 		else
 		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))
 		{
-			final StringBuffer buf=new StringBuffer(L("@x1 @x2 Requires\n\r",CMStrings.padRight(L("Trap Name"),15),CMStrings.padRight(L("Affects"),17)));
+			final StringBuffer buf=new StringBuffer(L("@x1 @x2 @x3 Requires\n\r",
+					CMStrings.padRight(L("Trap Name"),15),
+					CMStrings.padRight(L("Lvl"),4),
+					CMStrings.padRight(L("Affects"),17)));
+			final int restLen = CMLib.lister().fixColWidth(78 - 16 - 5 - 18, mob);
 			for(int r=0;r<traps.size();r++)
 			{
-				final Trap T=(Trap)traps.get(r);
-				buf.append(CMStrings.padRight(T.name(),15)+" ");
+				final List<String> V=traps.getFirst(r);
+				final Trap T=traps.getSecond(r);
+				buf.append(CMStrings.padRight(V.get(RCP_FINALNAME),15)+" ");
+				buf.append(CMStrings.padRight(V.get(RCP_LEVEL),4)+" ");
 				if(T.canAffect(Ability.CAN_ROOMS))
 					buf.append(CMStrings.padRight(L("Rooms"),17)+" ");
 				else
@@ -147,7 +155,7 @@ public class Thief_Trap extends ThiefSkill
 					buf.append(CMStrings.padRight(L("Items"),17)+" ");
 				else
 					buf.append(CMStrings.padRight(L("Unknown"),17)+" ");
-				buf.append(T.requiresToSet()+"\n\r");
+				buf.append(CMStrings.limit(T.requiresToSet(),restLen)+"\n\r");
 			}
 			if(mob.session()!=null)
 				mob.session().safeRawPrintln(buf.toString());
@@ -183,23 +191,47 @@ public class Thief_Trap extends ThiefSkill
 			}
 			for(int r=0;r<traps.size();r++)
 			{
-				final Trap T=(Trap)traps.get(r);
-				if(T.name().equalsIgnoreCase(name))
+				final List<String> V=traps.getFirst(r);
+				final Trap T=traps.getSecond(r);
+				if(V.get(RCP_FINALNAME).equalsIgnoreCase(name))
+				{
 					theTrap=T;
+					theRecipe=V;
+				}
 			}
 			if(theTrap==null)
 			{
 				for(int r=0;r<traps.size();r++)
 				{
-					final Trap T=(Trap)traps.get(r);
-					if(CMLib.english().containsString(T.name(),name))
+					final List<String> V=traps.getFirst(r);
+					final Trap T=traps.getSecond(r);
+					if(CMLib.english().containsString(V.get(RCP_FINALNAME),name))
+					{
 						theTrap=T;
+						theRecipe=V;
+					}
 				}
 			}
 			if(theTrap==null)
 			{
 				mob.tell(L("'@x1' is not a valid trap name.  Try @x2 LIST.",name,cmdWord.toUpperCase()));
 				return false;
+			}
+			if(theRecipe.size()>=Thief_Trap.RCP_ABILITYID)
+			{
+				if(theRecipe.get(RCP_ABILITYID).trim().length()>0)
+					theTrap.setMiscText(theRecipe.get(RCP_ABILITYID).trim());
+				if((theRecipe.size()>Thief_Trap.RCP_AVOIDMSG)
+				&&(theRecipe.get(RCP_TRIGGERMSG).length()
+						+theRecipe.get(RCP_DAMAGEMSG).length()
+						+theRecipe.get(RCP_AVOIDMSG).length()>0))
+				{
+					theTrap.setMiscText(
+					"\""+theRecipe.get(RCP_TRIGGERMSG).replace('\"','\'').trim().replace('@',' ')+"\" "+
+					"\""+theRecipe.get(RCP_DAMAGEMSG).replace('\"','\'').trim().replace('@',' ')+"\" "+
+					"\""+theRecipe.get(RCP_AVOIDMSG).replace('\"','\'').trim().replace('@',' ')+"\" "
+					);
+				}
 			}
 
 			final String whatToTrap=CMParms.combine(commands,0);
@@ -283,7 +315,6 @@ public class Thief_Trap extends ThiefSkill
 				return false;
 			}
 		}
-
 		final CMMsg msg=CMClass.getMsg(mob,trapThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_ALWAYS|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_OK_ACTION,
 				(auto?L("@x1 begins to glow!",trapThis.name()):L("<S-NAME> attempt(s) to lay a trap on <T-NAMESELF>.")));
 		if(mob.location().okMessage(mob,msg))
@@ -336,4 +367,56 @@ public class Thief_Trap extends ThiefSkill
 		}
 		return success;
 	}
+
+	@Override
+	public String getRecipeFilename()
+	{
+		return "traps.txt";
+	}
+
+	@Override
+	public List<List<String>> fetchRecipes()
+	{
+		@SuppressWarnings("unchecked")
+		List<List<String>> V=(List<List<String>>)Resources.getResource("PARSED_RECIPE: "+getRecipeFilename());
+		if(V==null)
+		{
+			final StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+getRecipeFilename(),null,CMFile.FLAG_LOGERRORS).text();
+			V=new ReadOnlyList<List<String>>(CMLib.utensils().loadRecipeList(str.toString()));
+			if(V.size()==0)
+				Log.errOut(ID(),"Recipes not found!");
+			Resources.submitResource("PARSED_RECIPE: "+getRecipeFilename(),V);
+		}
+		return V;
+	}
+
+	@Override
+	public String getRecipeFormat()
+	{
+		return
+		"ITEM_NAME\tITEM_LEVEL\tN_A\t"
+		+ "TRAP_ID\tABILITYID\tTRIGGER_MSG\tDAMAGE_MSG\tAVOID_MSG";
+	}
+
+	@Override
+	public List<List<String>> matchingRecipeNames(final String recipeName, final boolean beLoose)
+	{
+		final List<List<String>> matches = new Vector<List<String>>();
+		for(final List<String> list : fetchRecipes())
+		{
+			final String name=list.get(RCP_FINALNAME);
+			if(name.equalsIgnoreCase(recipeName)
+			||(beLoose && (name.toUpperCase().indexOf(recipeName.toUpperCase())>=0)))
+				matches.add(list);
+		}
+		return matches;
+	}
+
+	@Override
+	public Pair<String,Integer> getDecodedItemNameAndLevel(final List<String> recipe)
+	{
+		return new Pair<String,Integer>(recipe.get( RCP_FINALNAME ),
+				Integer.valueOf(CMath.s_int(recipe.get( RCP_LEVEL ))));
+	}
+
 }

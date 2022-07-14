@@ -66,7 +66,7 @@ public class Landscaping extends BuildingSkill
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "landscaping.txt";
 	}

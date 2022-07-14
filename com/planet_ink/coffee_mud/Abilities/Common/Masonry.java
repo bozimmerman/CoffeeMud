@@ -66,7 +66,7 @@ public class Masonry extends BuildingSkill
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "masonry.txt";
 	}

@@ -1129,14 +1129,14 @@ public class Test extends StdCommand
 				for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 				{
 					final Ability A=e.nextElement();
-					if(A instanceof CraftorAbility)
+					if(A instanceof RecipeDriven)
 					{
-						final CraftorAbility iA=(CraftorAbility)A;
-						if(iA.parametersFormat().length()>0)
+						final RecipeDriven iA=(RecipeDriven)A;
+						if(iA.getRecipeFormat().length()>0)
 						{
 							try
 							{
-								CMLib.ableParms().testRecipeParsing(iA.parametersFile(),iA.parametersFormat(),save);
+								CMLib.ableParms().testRecipeParsing(iA.getRecipeFilename(),iA.getRecipeFormat(),save);
 							}
 							catch(final CMException e2)
 							{

@@ -159,18 +159,24 @@ public class Trap_Needle extends StdTrap
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) setting off a needle trap!"));
-			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> set(s) off a needle trap!")))
 			{
-				super.spring(target);
-				Ability A=CMClass.getAbility(text());
-				if(A==null)
-					A=CMClass.getAbility("Poison");
-				if(A!=null)
-					A.invoke(invoker(),target,true,0);
-				if((canBeUninvoked())&&(affected instanceof Item))
-					disable();
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,
+						getAvoidMsg(L("<S-NAME> avoid(s) setting off a needle trap!")));
+			}
+			else
+			{
+				if(target.location().show(target,target,this,
+						CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,getTrigMsg(L("<S-NAME> set(s) off a needle trap!"))))
+				{
+					super.spring(target);
+					Ability A=CMClass.getAbility(miscText);
+					if(A==null)
+						A=CMClass.getAbility("Poison");
+					if(A!=null)
+						A.invoke(invoker(),target,true,trapLevel()+abilityCode());
+					if((canBeUninvoked())&&(affected instanceof Item))
+						disable();
+				}
 			}
 		}
 	}

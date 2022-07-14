@@ -81,7 +81,7 @@ public class FoodPrep extends Cooking
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "foodprep.txt";
 	}
@@ -89,7 +89,7 @@ public class FoodPrep extends Cooking
 	@Override
 	protected List<List<String>> loadRecipes()
 	{
-		return super.loadRecipes(parametersFile());
+		return super.loadRecipes(getRecipeFilename());
 	}
 
 	public FoodPrep()

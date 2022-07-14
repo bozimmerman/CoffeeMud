@@ -75,7 +75,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 	}
 
 	@Override
-	public String parametersFormat()
+	public String getRecipeFormat()
 	{
 		return "ITEM_CMARE";
 	}
@@ -86,7 +86,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
-	//protected static final int RCP_TICKS=2;
+	protected static final int	RCP_TICKS		= 2;
 	protected static final int	RCP_WOOD		= 3;
 	protected static final int	RCP_VALUE		= 4;
 	protected static final int	RCP_SHIPINDEX	= 5;
@@ -120,7 +120,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		List<Item> shipPrototypes = (List<Item>)Resources.getResource(allItemID);
 		if(shipPrototypes == null)
 		{
-			final CMFile F=new CMFile(Resources.makeFileResourceName("skills/"+parametersFile()),null);
+			final CMFile F=new CMFile(Resources.makeFileResourceName("skills/"+getRecipeFilename()),null);
 			if(F.exists())
 			{
 				shipPrototypes=new Vector<Item>();
@@ -135,15 +135,15 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "shipbuilding.cmare";
 	}
 
 	protected String getTempRecipeName()
 	{
-		final String cmareName = parametersFile();
-		int x=cmareName.lastIndexOf('.');
+		final String cmareName = getRecipeFilename();
+		final int x=cmareName.lastIndexOf('.');
 		if(x<=0)
 			return cmareName+".txt";
 		else
@@ -153,7 +153,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 	@Override
 	protected List<List<String>> loadRecipes()
 	{
-		if((!Resources.isResource("PARSED_RECIPE: "+parametersFile()))
+		if((!Resources.isResource("PARSED_RECIPE: "+getRecipeFilename()))
 		||(!Resources.isResource("PARSED_RECIPE: "+getTempRecipeName())))
 		{
 			Resources.removeResource(ID().toUpperCase()+"_PARSED");
@@ -179,7 +179,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				F.delete();
 		}
 		final List<List<String>> recipes = super.loadRecipes(getTempRecipeName());
-		Resources.submitResource("PARSED_RECIPE: "+parametersFile(), Resources.getResource("PARSED_RECIPE: "+getTempRecipeName()));
+		Resources.submitResource("PARSED_RECIPE: "+getRecipeFilename(), Resources.getResource("PARSED_RECIPE: "+getTempRecipeName()));
 		return recipes;
 	}
 

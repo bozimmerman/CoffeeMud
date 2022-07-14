@@ -86,11 +86,6 @@ public class Ranger_SetSnare extends StdAbility
 		return USAGE_MOVEMENT|USAGE_MANA;
 	}
 
-	protected int maxLevel()
-	{
-		return Integer.MAX_VALUE;
-	}
-
 	@Override
 	public int castingQuality(final MOB mob, final Physical target)
 	{

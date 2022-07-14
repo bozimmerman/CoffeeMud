@@ -1,0 +1,5 @@
+noisy trap	1		Trap_Noise			
+popping noise	1		Trap_Popper			
+pit trap	1		Trap_RoomPit			
+small pit trap	1		Trap_RoomThruPit			
+tripline	1		Trap_Tripline			

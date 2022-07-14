@@ -41,15 +41,8 @@ import java.util.*;
  * and internal aspect of the ability, these methods allow that
  * functionality to be exposed for archon use.
  */
-public interface CraftorAbility extends Ability
+public interface CraftorAbility extends Ability, RecipeDriven
 {
-	/**
-	 * A list containing an entry for each craftable recipe
-	 * Each craftable recipe is also a list of strings.
-	 * @return a vector of vectors
-	 */
-	public List<List<String>> fetchRecipes();
-
 	/**
 	 * A list containing an entry for each craftable recipe
 	 * both standard, and extra recipes from given mob
@@ -58,28 +51,6 @@ public interface CraftorAbility extends Ability
 	 * @return a vector of vectors
 	 */
 	public List<List<String>> fetchMyRecipes(final MOB mob);
-
-	/**
-	 * A String containing the format of each entry in the parameter file
-	 * in a recipe.
-	 * @return a String showing the format of each entry in the parameter file
-	 */
-	public String parametersFormat();
-
-	/**
-	 * A String naming the file where the recipes are found
-	 * @return a String naming the file where the recipes are found
-	 */
-	public String parametersFile();
-
-	/**
-	 * Returns a vector containing an entry for each craftable recipe
-	 * whose name matches the given name.  Each entry is also a vector.
-	 * @param recipeName the name of the recipe to craft
-	 * @param beLoose whether to be specific or "loose" with name matching
-	 * @return a vector of vectors
-	 */
-	public List<List<String>> matchingRecipeNames(String recipeName, boolean beLoose);
 
 	/**
 	 * Returns a list of Integer objects where each Integer
@@ -96,14 +67,6 @@ public interface CraftorAbility extends Ability
 	 * @return a descriptive string
 	 */
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe);
-
-	/**
-	 * Given a raw recipe, returns the raw name and level of the item built therefrom.
-	 * @param recipe the raw recipe description
-	 * @return a descriptive pair
-	 */
-	public Pair<String,Integer> getDecodedItemNameAndLevel(final List<String> recipe);
-
 
 	/**
 	 * Class for generating filters of crafted items

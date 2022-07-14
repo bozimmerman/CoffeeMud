@@ -78,7 +78,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public String parametersFormat()
+	public String getRecipeFormat()
 	{
 		return "SPELL_ID\tRESOURCE_NAME";
 	}
@@ -108,7 +108,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "scribing.txt";
 	}
@@ -116,7 +116,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 	@Override
 	protected List<List<String>> loadRecipes()
 	{
-		return super.loadRecipes(parametersFile());
+		return super.loadRecipes(getRecipeFilename());
 	}
 
 	@Override

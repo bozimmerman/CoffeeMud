@@ -110,7 +110,7 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 	}
 
 	@Override
-	public String parametersFormat()
+	public String getRecipeFormat()
 	{
 		return "ITEM_CMARE";
 	}
@@ -145,8 +145,8 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
-	//protected static final int RCP_TICKS=2;
-	protected static final int	RCP_AMOUNTMATS		= 3;
+	protected static final int	RCP_TICKS		= 2;
+	protected static final int	RCP_AMOUNTMATS	= 3;
 	protected static final int	RCP_VALUE		= 4;
 	protected static final int	RCP_SHIPINDEX	= 5;
 
@@ -230,7 +230,7 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return (String)V(ID,V_FNAM);
 	}
@@ -238,9 +238,9 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 	@Override
 	protected List<List<String>> loadRecipes()
 	{
-		if(ID().equals("GenWrightSkill")||(parametersFile().length()==0))
+		if(ID().equals("GenWrightSkill")||(getRecipeFilename().length()==0))
 			return new ArrayList<List<String>>();
-		if((!Resources.isResource("PARSED_RECIPE: "+parametersFile()))
+		if((!Resources.isResource("PARSED_RECIPE: "+getRecipeFilename()))
 		||(!Resources.isResource("PARSED_RECIPE: "+getTempRecipeName())))
 		{
 			Resources.removeResource(ID().toUpperCase()+"_PARSED");
@@ -266,7 +266,7 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 				F.delete();
 		}
 		final List<List<String>> recipes = super.loadRecipes(getTempRecipeName());
-		Resources.submitResource("PARSED_RECIPE: "+parametersFile(), Resources.getResource("PARSED_RECIPE: "+getTempRecipeName()));
+		Resources.submitResource("PARSED_RECIPE: "+getRecipeFilename(), Resources.getResource("PARSED_RECIPE: "+getTempRecipeName()));
 		return recipes;
 	}
 
@@ -529,7 +529,7 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 		}
 		return true;
 	}
-	
+
 	@Override
 	protected boolean canMend(final MOB mob, final Environmental E, final boolean quiet)
 	{

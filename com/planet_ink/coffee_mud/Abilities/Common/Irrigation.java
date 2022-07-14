@@ -66,7 +66,7 @@ public class Irrigation extends BuildingSkill
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "irrigation.txt";
 	}

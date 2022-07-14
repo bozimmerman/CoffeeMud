@@ -200,12 +200,18 @@ public class Trap_CrushingRoom extends StdTrap
 		{
 			if((doesSaveVsTraps(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) setting off a trap!"));
-			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> trigger(s) a trap!")))
 			{
-				super.spring(target);
-				target.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The exits are blocked off! The walls start closing in!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,
+						getAvoidMsg(L("<S-NAME> avoid(s) setting off a trap!")));
+			}
+			else
+			{
+				if(target.location().show(target,target,this,
+						CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,getTrigMsg(L("<S-NAME> trigger(s) a trap!"))))
+				{
+					super.spring(target);
+					target.location().showHappens(CMMsg.MSG_OK_VISUAL,getDamMsg(L("The exits are blocked off! The walls start closing in!")));
+				}
 			}
 		}
 	}

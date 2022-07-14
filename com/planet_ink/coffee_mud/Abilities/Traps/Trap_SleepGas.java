@@ -158,23 +158,29 @@ public class Trap_SleepGas extends StdTrap
 		{
 			if((doesSaveVsTraps(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) setting off a needle trap!"));
-			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> set(s) off a needle trap!")))
 			{
-				super.spring(target);
-				Ability A=CMClass.getAbility(text());
-				if(A==null)
-					A=CMClass.getAbility("Poison_Slumberall");
-				for(int i=0;i<target.location().numInhabitants();i++)
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,
+						getAvoidMsg(L("<S-NAME> avoid(s) setting off a needle trap!")));
+			}
+			else
+			{
+				if(target.location().show(target,target,this,
+						CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,getTrigMsg(L("<S-NAME> set(s) off a needle trap!"))))
 				{
-					final MOB M=target.location().fetchInhabitant(i);
-					if((M!=null)&&(M!=invoker())&&(A!=null))
-						if(invoker().mayIFight(M))
-							A.invoke(invoker(),M,true,0);
+					super.spring(target);
+					Ability A=CMClass.getAbility(miscText);
+					if(A==null)
+						A=CMClass.getAbility("Poison_Slumberall");
+					for(int i=0;i<target.location().numInhabitants();i++)
+					{
+						final MOB M=target.location().fetchInhabitant(i);
+						if((M!=null)&&(M!=invoker())&&(A!=null))
+							if(invoker().mayIFight(M))
+								A.invoke(invoker(),M,true,trapLevel()+abilityCode());
+					}
+					if((canBeUninvoked())&&(affected instanceof Item))
+						disable();
 				}
-				if((canBeUninvoked())&&(affected instanceof Item))
-					disable();
 			}
 		}
 	}

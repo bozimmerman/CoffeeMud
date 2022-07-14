@@ -1,0 +1,41 @@
+noisy trap	1		Trap_Noise			
+popping noise	1		Trap_Popper			
+pit trap	1		Trap_RoomPit			
+small pit trap	1		Trap_RoomThruPit			
+tripline	1		Trap_Tripline			
+darkfall	2		Trap_Darkfall			
+poisoned needle	4		Trap_Needle			
+poisoned pricker	4		Trap_NeedlePrick			
+snare trap	5		Trap_Snare			
+launcher trap	6		Trap_Launcher			
+sleep gas	7		Trap_SleepGas			
+small spike pit	7		Trap_SpikeThruPit			
+ignition trap	8		Trap_Ignition			
+spike pit	8		Trap_SpikePit			
+small snake pit	9		Trap_SnakeThruPit			
+weapon swing	9		Trap_WeaponSwing			
+greasy	10		Trap_Greasy			
+monster cage	10		Trap_MonsterCage			
+snake pit	10		Trap_SnakePit			
+gluey	11		Trap_Gluey			
+small rat pit	11		Trap_RatThruPit			
+rat pit	12		Trap_RatPit			
+small deep pit	13		Trap_DeepThruPit			
+infected	13		Trap_Infected			
+spore trap	13		Trap_SporeTrap			
+deep pit	14		Trap_DeepPit			
+acid spray	15		Trap_AcidSpray			
+bear trap	16		Trap_BearTrap			
+small acid pit	17		Trap_AcidThruPit			
+poison gas	17		Trap_PoisonGas			
+acid pit	18		Trap_AcidPit			
+electric shock	19		Trap_ElectricShock			
+sparking trap	19		Trap_Spark			
+boulders	20		Trap_Boulders			
+cave-in	22		Trap_CaveIn			
+spell blast	23		Trap_SpellBlast			
+boomerang	24		Trap_Boomerang			
+crushing room	24		Trap_CrushingRoom			
+vanishing trap	24		Trap_Vanishing			
+avalanche	25		Trap_Avalanche			
+flood room	29		Trap_FloodRoom			

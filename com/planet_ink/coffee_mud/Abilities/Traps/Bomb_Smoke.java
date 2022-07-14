@@ -93,14 +93,22 @@ public class Bomb_Smoke extends StdBomb
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) the smoke bomb!"));
-			else
-			if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("@x1 explodes smoke into <T-YOUPOSS> eyes!",affected.name())))
 			{
-				super.spring(target);
-				final Ability A=CMClass.getAbility("Spell_Blindness");
-				if(A!=null)
-					A.invoke(target,target,true,0);
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,
+						getAvoidMsg(L("<S-NAME> avoid(s) the smoke bomb!")));
+			}
+			else
+			{
+				final String triggerMsg = getTrigMsg(L("@x1 explodes smoke into <T-YOUPOSS> eyes!",affected.name()));
+				if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,triggerMsg))
+				{
+					super.spring(target);
+					Ability A=(miscText.length()>0)?CMClass.getAbility(miscText):null;
+					if(A==null)
+						A=CMClass.getAbility("Spell_Blindness");
+					if(A!=null)
+						A.invoke(target,target,true,trapLevel()+abilityCode());
+				}
 			}
 		}
 	}

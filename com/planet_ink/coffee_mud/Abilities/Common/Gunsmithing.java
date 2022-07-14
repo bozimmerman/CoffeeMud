@@ -60,7 +60,7 @@ public class Gunsmithing extends Fletching
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "gunsmith.txt";
 	}

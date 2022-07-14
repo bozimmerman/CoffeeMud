@@ -58,7 +58,7 @@ public class MasterCostuming extends Costuming
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "mastercostume.txt";
 	}

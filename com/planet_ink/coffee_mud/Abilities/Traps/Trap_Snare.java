@@ -123,18 +123,26 @@ public class Trap_Snare extends StdTrap
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) tripping a snare trap!"));
-			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> trip(s) a snare trap and get(s) all tangled up!")))
 			{
-				super.spring(target);
-				target.basePhyStats().setDisposition(target.basePhyStats().disposition()|PhyStats.IS_SITTING);
-				target.recoverPhyStats();
-				final Ability A=CMClass.getAbility("Thief_Bind");
-				final Item I=CMClass.getItem("StdItem");
-				I.setName(L("the snare"));
-				A.setAffectedOne(I);
-				A.invoke(invoker(),target,true,0);
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,
+						getAvoidMsg(L("<S-NAME> avoid(s) tripping a snare trap!")));
+			}
+			else
+			{
+				if(target.location().show(target,target,this,
+						CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,getTrigMsg(L("<S-NAME> trip(s) a snare trap and get(s) all tangled up!"))))
+				{
+					super.spring(target);
+					target.basePhyStats().setDisposition(target.basePhyStats().disposition()|PhyStats.IS_SITTING);
+					target.recoverPhyStats();
+					Ability A=(miscText.length()>0)?CMClass.getAbility(miscText):null;
+					if(A==null)
+						A=CMClass.getAbility("Thief_Bind");
+					final Item I=CMClass.getItem("StdItem");
+					I.setName(L("the snare"));
+					A.setAffectedOne(I);
+					A.invoke(invoker(),target,true,trapLevel()+abilityCode());
+				}
 			}
 		}
 	}

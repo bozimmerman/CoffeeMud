@@ -58,7 +58,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public String parametersFormat()
+	public String getRecipeFormat()
 	{
 		return "";
 	}
@@ -83,13 +83,13 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	@Override
 	protected boolean supportsArmors()
 	{
-		return parametersFormat().indexOf("CODED_WEAR_LOCATION")>=0;
+		return getRecipeFormat().indexOf("CODED_WEAR_LOCATION")>=0;
 	}
 
 	@Override
 	protected boolean supportsWeapons()
 	{
-		return parametersFormat().indexOf("WEAPON_CLASS")>=0;
+		return getRecipeFormat().indexOf("WEAPON_CLASS")>=0;
 	}
 
 	@Override
@@ -347,7 +347,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	protected List<List<String>> loadList(final StringBuffer str)
 	{
 		final List<List<String>> lists=super.loadList(str);
-		final List<String> parmNames=CMParms.parseTabs(parametersFormat(), true);
+		final List<String> parmNames=CMParms.parseTabs(getRecipeFormat(), true);
 		int levelParmPos=-1;
 		for(int p=0;p<parmNames.size();p++)
 		{

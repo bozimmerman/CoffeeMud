@@ -65,6 +65,30 @@ public interface CMMiscUtils extends CMLibrary
 	public String getFormattedDate(Environmental E);
 
 	/**
+	 * Parses a DataDriven recipe file into a list of rows
+	 * which is a list of column data.
+	 *
+	 * @see CMMiscUtils#addExtRecipes(MOB, String, List)
+	 *
+	 * @param str the unparsed data
+	 * @return the parsed data
+	 */
+	public List<List<String>> loadRecipeList(final String str);
+
+	/**
+	 * Adds any custom recipes known to the given mob to the given existing
+	 * recipe list, for the given skill ID.
+	 *
+	 * @see CMMiscUtils#loadRecipeList(String)
+	 *
+	 * @param mob the mob who might have more recipes
+	 * @param ID the Ability ID of the RecipeDriven object
+	 * @param recipes the existing recipes
+	 * @return the new fuller recipes
+	 */
+	public List<List<String>> addExtRecipes(final MOB mob, final String ID, List<List<String>> recipes);
+
+	/**
 	 * Returns a rediculous best guess on the amount of memory used
 	 * by the given environmental.
 	 * @param E the object to check for a footprint of

@@ -135,24 +135,33 @@ public class Trap_Ignition extends StdTrap
 		{
 			if((doesSaveVsTraps(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) setting off a trap!"));
-			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> set(s) off a trap! @x1 ignites!",CMStrings.capitalizeAndLower(affected.name()))))
 			{
-				super.spring(target);
-				final Ability B=CMClass.getAbility("Burning");
-				if(B!=null)
-					B.invoke(invoker(),affected,true,(trapLevel()/5)+abilityCode());
-				if(affected instanceof Item)
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,
+						getAvoidMsg(L("<S-NAME> avoid(s) setting off a trap!")));
+			}
+			else
+			{
+				if(target.location().show(target,target,this,
+						CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,getTrigMsg(L("<S-NAME> set(s) off a trap! @x1 ignites!",CMStrings.capitalizeAndLower(affected.name())))))
 				{
-					if(target.isMine(affected))
+					super.spring(target);
+					Ability B=(miscText.length()>0)?CMClass.getAbility(miscText):null;
+					if(B==null)
+						B=CMClass.getAbility("Burning");
+					if(B!=null)
+						B.invoke(invoker(),affected,true,(trapLevel()/5)+abilityCode());
+					if(affected instanceof Item)
 					{
-						target.location().show(target,affected,null,CMMsg.MSG_DROP,L("<S-NAME> drop(s) the burning <T-NAME>!"));
 						if(target.isMine(affected))
-							target.location().moveItemTo((Item)affected,ItemPossessor.Expire.Player_Drop);
+						{
+							target.location().show(target,affected,null,CMMsg.MSG_DROP,
+									getDamMsg(L("<S-NAME> drop(s) the burning <T-NAME>!")));
+							if(target.isMine(affected))
+								target.location().moveItemTo((Item)affected,ItemPossessor.Expire.Player_Drop);
+						}
+						if(canBeUninvoked())
+							disable();
 					}
-					if(canBeUninvoked())
-						disable();
 				}
 			}
 		}

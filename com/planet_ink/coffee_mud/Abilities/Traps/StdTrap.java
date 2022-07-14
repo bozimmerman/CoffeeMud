@@ -295,13 +295,53 @@ public class StdTrap extends StdAbility implements Trap
 				text=text.substring(y+1).trim();
 			}
 		}
-		super.setMiscText(text);
+		if(text.trim().length()>0)
+			super.setMiscText(text.trim());
 	}
 
 	@Override
 	public String text()
 	{
-		return "`"+invokerName+"` :"+trapLevel+"/"+abilityCode()+":"+super.text();
+		final StringBuilder txt=new StringBuilder("");
+		txt.append("`"+invokerName+"` ");
+		for(final String msg : newMessaging)
+			txt.append("\""+msg+"\" ");
+		txt.append(":"+trapLevel()+"/"+abilityCode()+":");
+		txt.append(super.text());
+		return txt.toString();
+	}
+
+	protected String getTrigMsg(final String defMsg)
+	{
+		if(newMessaging.size()>0)
+		{
+			final String str = newMessaging.get(0);
+			if(str.length()>0)
+				return str;
+		}
+		return defMsg;
+	}
+
+	protected String getDamMsg(final String defMsg)
+	{
+		if(newMessaging.size()>1)
+		{
+			final String str = newMessaging.get(1);
+			if(str.length()>0)
+				return str;
+		}
+		return defMsg;
+	}
+
+	protected String getAvoidMsg(final String defMsg)
+	{
+		if(newMessaging.size()>2)
+		{
+			final String str = newMessaging.get(2);
+			if(str.length()>0)
+				return str;
+		}
+		return defMsg;
 	}
 
 	protected synchronized PairVector<MOB,Integer> getSafeDirs()
@@ -475,8 +515,6 @@ public class StdTrap extends StdAbility implements Trap
 	@Override
 	public boolean maySetTrap(final MOB mob, final int asLevel)
 	{
-		if(mob==null)
-			return false;
 		if(trapLevel()<0)
 			return false;
 		if(asLevel<0)

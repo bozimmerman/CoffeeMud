@@ -142,11 +142,11 @@ public class AbilityNext extends StdWebMacro
 			else
 			if(parmsEditable)
 			{
-				okToShow=((A instanceof CraftorAbility)
-						&&(((CraftorAbility)A).parametersFile()!=null)
-						&&(((CraftorAbility)A).parametersFile().length()>0)
-						&&(((CraftorAbility)A).parametersFormat()!=null)
-						&&(((CraftorAbility)A).parametersFormat().length()>0));
+				okToShow=((A instanceof RecipeDriven)
+						&&(((RecipeDriven)A).getRecipeFilename()!=null)
+						&&(((RecipeDriven)A).getRecipeFilename().length()>0)
+						&&(((RecipeDriven)A).getRecipeFormat()!=null)
+						&&(((RecipeDriven)A).getRecipeFormat().length()>0));
 			}
 
 			if((className!=null)&&(className.length()>0))

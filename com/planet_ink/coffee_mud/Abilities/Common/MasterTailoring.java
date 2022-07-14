@@ -58,7 +58,7 @@ public class MasterTailoring extends Tailoring
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "mastertailor.txt";
 	}

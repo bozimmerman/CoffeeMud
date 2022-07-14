@@ -66,7 +66,7 @@ public class Welding extends BuildingSkill
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "welding.txt";
 	}

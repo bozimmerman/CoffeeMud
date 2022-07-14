@@ -123,14 +123,22 @@ public class Trap_Spark extends StdTrap
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) setting off a sparking trap!"));
-			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> set(s) off an sparking trap!")))
 			{
-				super.spring(target);
-				CMLib.combat().postDamage(invoker(),target,null,CMLib.dice().roll(trapLevel()+abilityCode(),8,1),CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,L("The sparks <DAMAGE> <T-NAME>!@x1",CMLib.protocol().msp("shock.wav",30)));
-				if((canBeUninvoked())&&(affected instanceof Item))
-					disable();
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,
+						getAvoidMsg(L("<S-NAME> avoid(s) setting off a sparking trap!")));
+			}
+			else
+			{
+				if(target.location().show(target,target,this,
+						CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,getTrigMsg(L("<S-NAME> set(s) off an sparking trap!"))))
+				{
+					super.spring(target);
+					CMLib.combat().postDamage(invoker(),target,null,CMLib.dice().roll(trapLevel()+abilityCode(),8,1),
+							CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,
+							Weapon.TYPE_BURNING,getDamMsg(L("The sparks <DAMAGE> <T-NAME>!@x1",CMLib.protocol().msp("shock.wav",30))));
+					if((canBeUninvoked())&&(affected instanceof Item))
+						disable();
+				}
 			}
 		}
 	}

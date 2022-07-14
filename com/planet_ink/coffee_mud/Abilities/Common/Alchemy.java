@@ -72,7 +72,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public String parametersFormat()
+	public String getRecipeFormat()
 	{
 		return "SPELL_ID\tRESOURCE_NAME\tPOTION_POWDER";
 	}
@@ -134,7 +134,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "alchemy.txt";
 	}
@@ -142,7 +142,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 	@Override
 	protected List<List<String>> loadRecipes()
 	{
-		return super.loadRecipes(parametersFile());
+		return super.loadRecipes(getRecipeFilename());
 	}
 
 	@Override

@@ -92,20 +92,27 @@ public class Trap_Boomerang extends StdTrap
 		{
 			final boolean ok=((invoker()!=null)&&(invoker().location()!=null));
 			if((!ok)||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> foil(s) a trap on @x1!",affected.name()));
-			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> set(s) off a trap!")))
 			{
-				if(affected instanceof Item)
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,
+						getAvoidMsg(L("<S-NAME> foil(s) a trap on @x1!",affected.name())));
+			}
+			else
+			{
+				final String triggerMsg = getTrigMsg(L("<S-NAME> set(s) off a trap!"));
+				final String damageMsg = getDamMsg(L("Magically, <T-NAME> appear(s) in your inventory."));
+				if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,triggerMsg))
 				{
-					((Item)affected).unWear();
-					((Item)affected).removeFromOwnerContainer();
-					invoker().addItem((Item)affected);
-					invoker().tell(invoker(),affected,null,L("Magically, <T-NAME> appear(s) in your inventory."));
+					if(affected instanceof Item)
+					{
+						((Item)affected).unWear();
+						((Item)affected).removeFromOwnerContainer();
+						invoker().addItem((Item)affected);
+						invoker().tell(invoker(),affected,null,damageMsg);
+					}
+					super.spring(target);
+					if((canBeUninvoked())&&(affected instanceof Item))
+						disable();
 				}
-				super.spring(target);
-				if((canBeUninvoked())&&(affected instanceof Item))
-					disable();
 			}
 		}
 	}

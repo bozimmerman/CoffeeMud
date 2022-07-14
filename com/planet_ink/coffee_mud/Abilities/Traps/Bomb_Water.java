@@ -92,12 +92,18 @@ public class Bomb_Water extends StdBomb
 			if((target==invoker())
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) the water bomb!"));
-			else
-			if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("@x1 explodes water all over <T-NAME>!",affected.name())))
 			{
-				super.spring(target);
-				CMLib.utensils().extinguish(invoker(),target,true);
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,
+						getAvoidMsg(L("<S-NAME> avoid(s) the water bomb!")));
+			}
+			else
+			{
+				final String triggerMsg = getTrigMsg(L("@x1 explodes water all over <T-NAME>!",affected.name()));
+				if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,triggerMsg))
+				{
+					super.spring(target);
+					CMLib.utensils().extinguish(invoker(),target,true);
+				}
 			}
 		}
 	}

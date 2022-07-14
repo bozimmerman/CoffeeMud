@@ -610,17 +610,19 @@ public class GrinderItems
 							thisFieldname = CMStrings.replaceAll(recipeFieldName,"###", ""+(++x));
 						}
 						final String rAstr=httpReq.getUrlParameter("RECIPESKILL");
-						final CraftorAbility rA=(CraftorAbility)CMClass.getAbility(rAstr);
-						if((rA==null)&&(rAstr!=null)&&(rAstr.length()>0))
+						final Ability A=CMClass.getAbility(rAstr);
+						if(((A==null)||(!(A instanceof RecipeDriven)))
+						&&((rAstr!=null)&&(rAstr.length()>0)))
 							return CMLib.lang().L("Skill @x1 is not a crafting skill!",rAstr);
 						else
-						if(rA!=null)
+						if(A!=null)
 						{
+							final RecipeDriven rA=(RecipeDriven)A;
 							try
 							{
 								for(final String line : finalData)
 								{
-									CMLib.ableParms().testRecipeParsing(new StringBuffer(line), rA.parametersFormat());
+									CMLib.ableParms().testRecipeParsing(new StringBuffer(line), rA.getRecipeFormat());
 								}
 							}
 							catch(final CMException cme)

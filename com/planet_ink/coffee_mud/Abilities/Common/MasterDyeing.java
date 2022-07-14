@@ -114,7 +114,7 @@ public class MasterDyeing extends MasterPaintingSkill
 	}
 
 	@Override
-	protected String getRecipeFile()
+	public String getRecipeFilename()
 	{
 		return "masterdyeing.txt";
 	}
@@ -126,7 +126,7 @@ public class MasterDyeing extends MasterPaintingSkill
 		if(super.checkStop(mob, commands))
 			return true;
 
-		final List<List<String>> recipes = addRecipes(mob,super.loadRecipes(getRecipeFile()));
+		final List<List<String>> recipes = CMLib.utensils().addExtRecipes(mob,ID(),super.loadRecipes(getRecipeFilename()));
 		if(CMSecurity.isASysOp(mob) && (CMParms.combine(commands).equalsIgnoreCase("test")))
 		{
 			doPaintingTest(mob, recipes);

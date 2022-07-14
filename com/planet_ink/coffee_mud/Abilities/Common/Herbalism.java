@@ -74,7 +74,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public String parametersFormat()
+	public String getRecipeFormat()
 	{
 		return
 		"SPELL_ID\tITEM_LEVEL\t"
@@ -134,7 +134,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "herbalism.txt";
 	}
@@ -142,7 +142,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 	@Override
 	protected List<List<String>> loadRecipes()
 	{
-		return super.loadRecipes(parametersFile());
+		return super.loadRecipes(getRecipeFilename());
 	}
 
 	@Override

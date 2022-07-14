@@ -62,7 +62,7 @@ public class CageBuilding extends Wainwrighting
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "cagebuilding.txt";
 	}
@@ -70,7 +70,7 @@ public class CageBuilding extends Wainwrighting
 	@Override
 	protected List<List<String>> loadRecipes()
 	{
-		return super.loadRecipes(parametersFile());
+		return super.loadRecipes(getRecipeFilename());
 	}
 
 	@Override

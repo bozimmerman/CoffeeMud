@@ -276,75 +276,84 @@ public class GenTrap extends StdTrap
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,(String)V(ID,V_MSGA));
-			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,(String)V(ID,V_MSGT)))
 			{
-				super.spring(target);
-				// @x1=trapLevel, @x2=abilityCode, @x3=invokerLevel, @x4=targetLevel
-				final String form=(String)V(ID,V_DMGF);
-				final Integer weaponType=(Integer)V(ID,V_DMGT);
-				final Integer wMsgType=(Integer)V(ID,V_DMGM);
-				if((form.trim().length()>0)
-				&&(weaponType.intValue()>=0)
-				&&(wMsgType.intValue()>=0))
+				target.location().show(target,null,null,
+						CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,getAvoidMsg((String)V(ID,V_MSGA)));
+			}
+			else
+			{
+				final String triggerMsg = getTrigMsg((String)V(ID,V_MSGT));
+				final String damageMsg = getDamMsg((String)V(ID,V_MSGD));
+				if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,triggerMsg))
 				{
-					final double[] parms=new double[] {
-						trapLevel(),
-						abilityCode(),
-						invoker().phyStats().level(),
-						target.phyStats().level()
-					};
-					final int dmg = CMath.parseIntExpression(form, parms);
-					CMLib.combat().postDamage(invoker(),target,null,
-											  dmg, CMMsg.MASK_ALWAYS|wMsgType.intValue(), weaponType.intValue(),
-											  (String)V(ID,V_MSGD));
+					super.spring(target);
+					// @x1=trapLevel, @x2=abilityCode, @x3=invokerLevel, @x4=targetLevel
+					final String form=(String)V(ID,V_DMGF);
+					final Integer weaponType=(Integer)V(ID,V_DMGT);
+					final Integer wMsgType=(Integer)V(ID,V_DMGM);
+					if((form.trim().length()>0)
+					&&(weaponType.intValue()>=0)
+					&&(wMsgType.intValue()>=0))
+					{
+						final double[] parms=new double[] {
+							trapLevel(),
+							abilityCode(),
+							invoker().phyStats().level(),
+							target.phyStats().level()
+						};
+						final int dmg = CMath.parseIntExpression(form, parms);
+						CMLib.combat().postDamage(invoker(),target,null,
+												  dmg, CMMsg.MASK_ALWAYS|wMsgType.intValue(), weaponType.intValue(),
+												  damageMsg);
+					}
+					final String able=(String)V(ID,V_ABLA);
+					if(able.trim().length()>0)
+					{
+						final String t=(String)V(ID,V_ABLM);
+						Ability A=(miscText.length()>0)?CMClass.getAbility(miscText):null;
+						if(A==null)
+							A=CMClass.getAbility(able);
+						Vector<String> V2=new Vector<String>();
+						if(t.length()>0)
+						{
+							final int x=t.indexOf('/');
+							if(x<0)
+							{
+								V2=CMParms.parse(t);
+								A.setMiscText("");
+							}
+							else
+							{
+								V2=CMParms.parse(t.substring(0,x));
+								A.setMiscText(t.substring(x+1));
+							}
+						}
+						if((target instanceof Item)
+						||(A.canTarget(target))
+						||(A.canAffect(target)))
+						{
+							final Integer k=(Integer)V(ID,V_ABLT);
+							A.invoke(invoker(),V2,target,true,trapLevel()+abilityCode());
+							if((k.intValue()>0)&&(k.intValue()<Short.MAX_VALUE))
+							{
+								final Ability EA=target.fetchEffect(A.ID());
+								if((EA!=null)&&(CMath.s_int(EA.getStat("TICKDOWN"))>k.intValue()))
+									EA.setStat("TICKDOWN", Integer.toString(k.intValue()));
+							}
+						}
+						final ScriptingEngine S=getScripter();
+						if(S!=null)
+						{
+							final CMMsg msg3=CMClass.getMsg(invoker(),target,this,CMMsg.MSG_OK_VISUAL,null,null,ID);
+							S.executeMsg(target, msg3);
+							S.dequeResponses();
+							target.location().recoverRoomStats();
+						}
+					}
+					if((canBeUninvoked())
+					&&(affected instanceof Item))
+						disable();
 				}
-				final String able=(String)V(ID,V_ABLA);
-				if(able.trim().length()>0)
-				{
-					final String t=(String)V(ID,V_ABLM);
-					final Ability A=CMClass.getAbility(able);
-					Vector<String> V2=new Vector<String>();
-					if(t.length()>0)
-					{
-						final int x=t.indexOf('/');
-						if(x<0)
-						{
-							V2=CMParms.parse(t);
-							A.setMiscText("");
-						}
-						else
-						{
-							V2=CMParms.parse(t.substring(0,x));
-							A.setMiscText(t.substring(x+1));
-						}
-					}
-					if((target instanceof Item)
-					||(A.canTarget(target))
-					||(A.canAffect(target)))
-					{
-						final Integer k=(Integer)V(ID,V_ABLT);
-						A.invoke(invoker(),V2,target,true,trapLevel()+abilityCode());
-						if((k.intValue()>0)&&(k.intValue()<Short.MAX_VALUE))
-						{
-							final Ability EA=target.fetchEffect(A.ID());
-							if((EA!=null)&&(CMath.s_int(EA.getStat("TICKDOWN"))>k.intValue()))
-								EA.setStat("TICKDOWN", Integer.toString(k.intValue()));
-						}
-					}
-					final ScriptingEngine S=getScripter();
-					if(S!=null)
-					{
-						final CMMsg msg3=CMClass.getMsg(invoker(),target,this,CMMsg.MSG_OK_VISUAL,null,null,ID);
-						S.executeMsg(target, msg3);
-						S.dequeResponses();
-						target.location().recoverRoomStats();
-					}
-				}
-				if((canBeUninvoked())
-				&&(affected instanceof Item))
-					disable();
 			}
 		}
 	}

@@ -269,64 +269,10 @@ public class CommonSkill extends StdAbility
 		return true;
 	}
 
+	// so we can override it on a skill-by-skill basis
 	protected List<List<String>> loadList(final StringBuffer str)
 	{
-		final List<List<String>> V=new Vector<List<String>>();
-		if(str==null)
-			return V;
-		List<String> V2=new Vector<String>();
-		boolean oneComma=false;
-		int start=0;
-		int longestList=0;
-		boolean skipLine=(str.length()>0)&&(str.charAt(0)=='#');
-		for(int i=0;i<str.length();i++)
-		{
-			if(str.charAt(i)=='\t')
-			{
-				if(!skipLine)
-				{
-					V2.add(str.substring(start,i));
-					start=i+1;
-					oneComma=true;
-				}
-			}
-			else
-			if((str.charAt(i)=='\n')||(str.charAt(i)=='\r'))
-			{
-				if(skipLine)
-					skipLine=false;
-				else
-				if(oneComma)
-				{
-					V2.add(str.substring(start,i));
-					if(V2.size()>longestList)
-						longestList=V2.size();
-					if(V2 instanceof Vector)
-						((Vector<?>)V2).trimToSize();
-					V.add(V2);
-					V2=new Vector<String>();
-				}
-				start=i+1;
-				oneComma=false;
-				if((start<str.length())&&(str.charAt(start)=='#'))
-					skipLine=true;
-			}
-		}
-		if((oneComma)&&(str.substring(start).trim().length()>0)&&(!skipLine))
-			V2.add(str.substring(start));
-		if(V2.size()>1)
-		{
-			if(V2.size()>longestList)
-				longestList=V2.size();
-			V.add(V2);
-		}
-		for(int v=0;v<V.size();v++)
-		{
-			V2=V.get(v);
-			while(V2.size()<longestList)
-				V2.add("");
-		}
-		return V;
+		return CMLib.utensils().loadRecipeList(str.toString());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -344,67 +290,6 @@ public class CommonSkill extends StdAbility
 			Resources.submitResource("PARSED_RECIPE: "+filename,V);
 		}
 		return V;
-	}
-
-	protected List<List<String>> addRecipes(final MOB mob, List<List<String>> recipes)
-	{
-		if(mob==null)
-			return recipes;
-		Item I=null;
-		List<List<String>> V=null;
-		List<String> V2=null;
-		List<String> lastRecipeV=null;
-		boolean clonedYet=false;
-		for(int i=0;i<mob.numItems();i++)
-		{
-			I=mob.getItem(i);
-			if((I instanceof Recipe)
-			&&(((Recipe)I).getCommonSkillID().equalsIgnoreCase(ID()))
-			&&(CMLib.flags().flaggedAffects(I, Ability.FLAG_UNCRAFTABLE).size()==0))
-			{
-				if(!clonedYet)
-				{
-					recipes=new XVector<List<String>>(recipes);
-					clonedYet=true;
-				}
-				final StringBuffer allRecipeLines=new StringBuffer("");
-				if(((Recipe)I).getRecipeCodeLines().length>0)
-				{
-					for(final String recipeLine : ((Recipe)I).getRecipeCodeLines())
-					{
-						allRecipeLines.append(recipeLine);
-						allRecipeLines.append( "\n" );
-					}
-				}
-				V=loadList(allRecipeLines);
-				for(int v=0;v<V.size();v++)
-				{
-					V2=V.get(v);
-					if(recipes.size()==0)
-						recipes.add(V2);
-					else
-					{
-						lastRecipeV=recipes.get(recipes.size()-1);
-						if((recipes.size()==0)||lastRecipeV.size()<=V2.size())
-							recipes.add(V2);
-						else
-						{
-							//Log.errOut(ID(),"Not enough parms ("+lastRecipeV.size()+"<="+V2.size()+"): "+CMParms.combine(V2));
-							while(V2.size()<lastRecipeV.size())
-								V2.add("");
-							while(V2.size()>lastRecipeV.size())
-								V2.remove(V2.size()-1);
-							recipes.add(V2);
-						}
-					}
-					if(V2 instanceof Vector)
-						((Vector<?>)V2).trimToSize();
-				}
-			}
-		}
-		if(recipes instanceof Vector)
-			((Vector<?>)recipes).trimToSize();
-		return recipes;
 	}
 
 	@Override

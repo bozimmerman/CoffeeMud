@@ -153,12 +153,12 @@ public interface AbilityParameters extends CMLibrary
 		/**
 		 * When building a display table for the command line interface, this will
 		 * return the desired display value for the desired field and old value.
-		 * 
+		 *
 		 * @param oldVal the current value
 		 * @return the desired value, usually oldVal
 		 */
 		public String commandLineValue(final String oldVal);
-		
+
 		/**
 		 * Presents the given mob player the official command line prompt for this editor and
 		 * lets them enter a value or values before returning the final value as a result.
@@ -261,8 +261,8 @@ public interface AbilityParameters extends CMLibrary
 	/**
 	 * Main method for altering a particular recipe list from any of the crafting common
 	 * skills, from the command line, for the given mob.
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.CraftorAbility#parametersFile()
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.CraftorAbility#parametersFormat()
+	 * @see com.planet_ink.coffee_mud.core.interfaces.RecipeDriven#getRecipeFilename()
+	 * @see com.planet_ink.coffee_mud.core.interfaces.RecipeDriven#getRecipeFormat()
 	 * @param mob the mob who is editing this recipe file
 	 * @param recipeFilename the unpathed regular filename of the recipe file to edit
 	 * @param recipeFormat the recipe format from the crafting skill recipe format string
@@ -274,8 +274,8 @@ public interface AbilityParameters extends CMLibrary
 	 * Test method for the crafting common skill recipe parsers.  Basically it loads a recipe
 	 * file, parses it into the editors, re-generates the recipe file data from the
 	 * editors, and then optionally re-saves.
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.CraftorAbility#parametersFile()
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.CraftorAbility#parametersFormat()
+	 * @see com.planet_ink.coffee_mud.core.interfaces.RecipeDriven#getRecipeFilename()
+	 * @see com.planet_ink.coffee_mud.core.interfaces.RecipeDriven#getRecipeFormat()
 	 * @param recipeFilename the unpathed regular filename of the recipe data to start with
 	 * @param recipeFormat the recipe format coded string from
 	 * @param save true to re-save the recipes file, false not to
@@ -286,8 +286,8 @@ public interface AbilityParameters extends CMLibrary
 	 * Test method for the crafting common skill recipe parsers.  Basically it takes loaded
 	 * recipe file data, parses it into the editors, re-generates the recipe file data from the
 	 * editors, and then either returns, or throws an exception if there were parsing errors
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.CraftorAbility#parametersFile()
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.CraftorAbility#parametersFormat()
+	 * @see com.planet_ink.coffee_mud.core.interfaces.RecipeDriven#getRecipeFilename()
+	 * @see com.planet_ink.coffee_mud.core.interfaces.RecipeDriven#getRecipeFormat()
 	 * @param recipesString the raw loaded recipe data
 	 * @param recipeFormat the recipe format coded string from
 	 * @throws CMException a parse error, if any
@@ -297,8 +297,8 @@ public interface AbilityParameters extends CMLibrary
 	/**
 	 * Mian parser for the crafting common skill recipe parsers.  It loads a recipe
 	 * file, parses it into the editors, and then returns the AbilityRecipeData.
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.CraftorAbility#parametersFile()
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.CraftorAbility#parametersFormat()
+	 * @see com.planet_ink.coffee_mud.core.interfaces.RecipeDriven#getRecipeFilename()
+	 * @see com.planet_ink.coffee_mud.core.interfaces.RecipeDriven#getRecipeFormat()
 	 * @see AbilityParameters.AbilityRecipeData
 	 * @param recipeFilename the unpathed regular filename of the recipe data to start with
 	 * @param recipeFormat the recipe format coded string from
@@ -329,11 +329,11 @@ public interface AbilityParameters extends CMLibrary
 	/**
 	 * Given an CraftorAbility object (usually a common skill), this method will load the raw
 	 * recipe file and return it as a stringbuffer.
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.CraftorAbility
+	 * @see com.planet_ink.coffee_mud.core.interfaces.RecipeDriven
 	 * @param iA the CraftorAbility skill
-	 * @return the recipes for that CraftorAbility, as a stringbuffer
+	 * @return the recipes for that DataDriven, as a stringbuffer
 	 */
-	public StringBuffer getRecipeList(CraftorAbility iA);
+	public StringBuffer getRecipeList(RecipeDriven iA);
 
 	/**
 	 * Given an ItemCraftor object (usually a common skill), and an item which the ItemCraftor

@@ -79,20 +79,29 @@ public class Trap_Noise extends StdTrap
 		{
 			if((doesSaveVsTraps(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) setting off a noise trap!"));
-			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> set(s) off a noise trap!")))
 			{
-				super.spring(target);
-				final Area A=target.location().getArea();
-				for(final Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,
+						getAvoidMsg(L("<S-NAME> avoid(s) setting off a noise trap!")));
+			}
+			else
+			{
+				if(target.location().show(target,target,this,
+						CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,getTrigMsg(L("<S-NAME> set(s) off a noise trap!"))))
 				{
-					final Room R=e.nextElement();
-					if(R!=target.location())
-						R.showHappens(CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("You hear a loud noise coming from somewhere."));
+					super.spring(target);
+					final Area A=target.location().getArea();
+					for(final Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
+					{
+						final Room R=e.nextElement();
+						if(R!=target.location())
+						{
+							R.showHappens(CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,
+									getDamMsg(L("You hear a loud noise coming from somewhere.")));
+						}
+					}
+					if((canBeUninvoked())&&(affected instanceof Item))
+						disable();
 				}
-				if((canBeUninvoked())&&(affected instanceof Item))
-					disable();
 			}
 		}
 	}

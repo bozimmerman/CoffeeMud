@@ -93,18 +93,26 @@ public class Bomb_Noxious extends StdBomb
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) the stink bomb!"));
-			else
-			if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("@x1 explodes stink into <T-YOUPOSS> eyes!",affected.name())))
 			{
-				super.spring(target);
-				Ability A=CMClass.getAbility("Spell_StinkingCloud");
-				if(A!=null)
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,
+						getAvoidMsg(L("<S-NAME> avoid(s) the stink bomb!")));
+			}
+			else
+			{
+				final String triggerMsg = getTrigMsg(L("@x1 explodes stink into <T-YOUPOSS> eyes!",affected.name()));
+				if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE, triggerMsg))
 				{
-					A.invoke(target,target,true,invoker().phyStats().level()+abilityCode());
-					A=target.fetchEffect(A.ID());
+					super.spring(target);
+					Ability A=(miscText.length()>0)?CMClass.getAbility(miscText):null;
+					if(A==null)
+						A=CMClass.getAbility("Spell_StinkingCloud");
 					if(A!=null)
-						A.setInvoker(invoker());
+					{
+						A.invoke(target,target,true,trapLevel()+abilityCode());
+						A=target.fetchEffect(A.ID());
+						if(A!=null)
+							A.setInvoker(invoker());
+					}
 				}
 			}
 		}

@@ -218,10 +218,15 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 		final MOB invoker=(invoker()!=null) ? invoker() : CMLib.map().deity();
 		if((!canInvokeTrapOn(invoker,mob))
 		||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
-			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,L("<S-NAME> avoid(s) some @x1caltrops on the floor.",caltropTypeName()));
+		{
+			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,
+					L("<S-NAME> avoid(s) some @x1caltrops on the floor.",caltropTypeName()));
+		}
 		else
+		{
 			CMLib.combat().postDamage(invoker,mob,null,CMLib.dice().roll(1,6,adjustedLevel(invoker(),0)),
 					CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,L("The @x1caltrops on the ground <DAMAGE> <T-NAME>.",caltropTypeName()));
+		}
 		// does not set sprung flag -- as this trap never goes out of use
 	}
 

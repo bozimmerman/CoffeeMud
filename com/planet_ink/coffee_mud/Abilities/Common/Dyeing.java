@@ -114,7 +114,7 @@ public class Dyeing extends PaintingSkill
 	}
 
 	@Override
-	protected String getRecipeFile()
+	public String getRecipeFilename()
 	{
 		return "dyeing.txt";
 	}
@@ -124,7 +124,7 @@ public class Dyeing extends PaintingSkill
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		final List<List<String>> recipes = addRecipes(mob,super.loadRecipes(getRecipeFile()));
+		final List<List<String>> recipes = CMLib.utensils().addExtRecipes(mob,ID(),super.loadRecipes(getRecipeFilename()));
 		writing=CMParms.combine(commands,0).toLowerCase();
 		List<String> finalRecipe = null;
 		if(writing.equalsIgnoreCase("list"))

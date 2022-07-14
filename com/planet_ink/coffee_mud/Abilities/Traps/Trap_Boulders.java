@@ -136,13 +136,21 @@ public class Trap_Boulders extends StdTrap
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) setting off a boulder trap!"));
-			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> trigger(s) a trap!")))
 			{
-				super.spring(target);
-				final int damage=CMLib.dice().roll(trapLevel()+abilityCode(),20,1);
-				CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,L("Dozens of boulders <DAMAGE> <T-NAME>!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,
+						getAvoidMsg(L("<S-NAME> avoid(s) setting off a boulder trap!")));
+			}
+			else
+			{
+				if(target.location().show(target,target,this,
+						CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,getTrigMsg(L("<S-NAME> trigger(s) a trap!"))))
+				{
+					super.spring(target);
+					final int damage=CMLib.dice().roll(trapLevel()+abilityCode(),20,1);
+					CMLib.combat().postDamage(invoker(),target,this,damage,
+							CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,
+							Weapon.TYPE_BASHING,getDamMsg(L("Dozens of boulders <DAMAGE> <T-NAME>!")));
+				}
 			}
 		}
 	}

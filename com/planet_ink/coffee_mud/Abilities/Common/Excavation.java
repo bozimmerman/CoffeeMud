@@ -66,7 +66,7 @@ public class Excavation extends BuildingSkill
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "excavation.txt";
 	}

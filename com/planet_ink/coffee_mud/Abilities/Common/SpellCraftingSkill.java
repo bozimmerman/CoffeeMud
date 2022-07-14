@@ -64,7 +64,7 @@ public class SpellCraftingSkill extends CraftingSkill
 		{
 			final List<List<String>> recipes=loadRecipes();
 			final List<String> V=recipes.get(CMLib.dice().roll(1,recipes.size(),-1));
-			spellName=V.get(RCP_FINALNAME);
+			spellName=V.get(RecipeDriven.RCP_FINALNAME);
 		}
 		return spellName;
 	}
@@ -75,7 +75,7 @@ public class SpellCraftingSkill extends CraftingSkill
 		final List<List<String>> recipes=loadRecipes();
 		for(final List<String> V : recipes)
 		{
-			if (V.get(RCP_FINALNAME).equalsIgnoreCase(spellName))
+			if (V.get(RecipeDriven.RCP_FINALNAME).equalsIgnoreCase(spellName))
 			{
 				spellFound = V;
 				break;
@@ -85,7 +85,7 @@ public class SpellCraftingSkill extends CraftingSkill
 		{
 			for (final List<String> V : recipes)
 			{
-				if (CMLib.english().containsString(V.get(RCP_FINALNAME), spellName))
+				if (CMLib.english().containsString(V.get(RecipeDriven.RCP_FINALNAME), spellName))
 				{
 					spellFound = V;
 					break;
@@ -96,7 +96,7 @@ public class SpellCraftingSkill extends CraftingSkill
 		{
 			for (final List<String> V : recipes)
 			{
-				if (V.get(RCP_FINALNAME).toLowerCase().indexOf(spellName.toLowerCase()) >= 0)
+				if (V.get(RecipeDriven.RCP_FINALNAME).toLowerCase().indexOf(spellName.toLowerCase()) >= 0)
 				{
 					spellFound = V;
 					break;
@@ -117,7 +117,7 @@ public class SpellCraftingSkill extends CraftingSkill
 			{
 				final List<String> spellFound=getCraftableSpellRow(spellName);
 				if(spellFound!=null)
-					theSpell=CMClass.getAbility(spellFound.get(RCP_FINALNAME));
+					theSpell=CMClass.getAbility(spellFound.get(RecipeDriven.RCP_FINALNAME));
 			}
 		}
 		return theSpell;
@@ -131,7 +131,7 @@ public class SpellCraftingSkill extends CraftingSkill
 		{
 			final List<String> spellFound=getCraftableSpellRow(spellName);
 			if(spellFound!=null)
-				return CMath.s_int(spellFound.get(RCP_LEVEL));
+				return CMath.s_int(spellFound.get(RecipeDriven.RCP_LEVEL));
 			theSpell=CMClass.getAbility(commands.get(0));
 			if(theSpell!=null)
 				return CMLib.ableMapper().lowestQualifyingLevel(theSpell.ID());

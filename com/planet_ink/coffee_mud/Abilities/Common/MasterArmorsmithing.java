@@ -58,7 +58,7 @@ public class MasterArmorsmithing extends Armorsmithing implements ItemCraftor
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "masterarmorsmith.txt";
 	}
@@ -66,7 +66,7 @@ public class MasterArmorsmithing extends Armorsmithing implements ItemCraftor
 	@Override
 	protected List<List<String>> loadRecipes()
 	{
-		return super.loadRecipes(parametersFile());
+		return super.loadRecipes(getRecipeFilename());
 	}
 
 	@Override

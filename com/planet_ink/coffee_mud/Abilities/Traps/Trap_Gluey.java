@@ -79,18 +79,24 @@ public class Trap_Gluey extends StdTrap
 		{
 			if((doesSaveVsTraps(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> clean(s) off @x1!",affected.name()));
-			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> notice(s) something about @x1 .. it's kinda sticky.",affected.name())))
 			{
-				super.spring(target);
-				if(affected instanceof Item)
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,
+						getAvoidMsg(L("<S-NAME> clean(s) off @x1!",affected.name())));
+			}
+			else
+			{
+				if(target.location().show(target,target,this,
+						CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,getTrigMsg(L("<S-NAME> notice(s) something about @x1 .. it's kinda sticky.",affected.name()))))
 				{
-					CMLib.flags().setRemovable(((Item)affected),false);
-					CMLib.flags().setDroppable(((Item)affected),false);
+					super.spring(target);
+					if(affected instanceof Item)
+					{
+						CMLib.flags().setRemovable(((Item)affected),false);
+						CMLib.flags().setDroppable(((Item)affected),false);
+					}
+					if((canBeUninvoked())&&(affected instanceof Item))
+						disable();
 				}
-				if((canBeUninvoked())&&(affected instanceof Item))
-					disable();
 			}
 		}
 	}

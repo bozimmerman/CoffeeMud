@@ -1064,7 +1064,7 @@ public class ItemData extends StdWebMacro
 								for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 								{
 									final Ability A2=a.nextElement();
-									if(A2 instanceof CraftorAbility)
+									if(A2 instanceof RecipeDriven)
 									{
 										A=A2;
 										break;
@@ -1074,8 +1074,8 @@ public class ItemData extends StdWebMacro
 						}
 						else
 							A=CMClass.getAbility(httpReq.getUrlParameter("RECIPESKILL"));
-						if(A instanceof CraftorAbility)
-							str.append(((CraftorAbility)A).parametersFormat()).append(", ");
+						if(A instanceof RecipeDriven)
+							str.append(((RecipeDriven)A).getRecipeFormat()).append(", ");
 						break;
 					}
 					case RECIPEDATA: // recipedata

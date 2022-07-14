@@ -62,8 +62,9 @@ public class Thief_MinorTrap extends Thief_Trap
 	}
 
 	@Override
-	protected int maxLevel()
+	public String getRecipeFilename()
 	{
-		return 3;
+		return "mtraps.txt";
 	}
+
 }

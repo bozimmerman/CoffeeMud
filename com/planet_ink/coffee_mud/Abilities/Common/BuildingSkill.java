@@ -146,20 +146,20 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 
 	//protected static final int	RCP_FINALNAME		= 0;
 	//protected static final int	RCP_LEVEL			= 1;
-	//protected static final int	RCP_TICKS			= 2;
-	protected final static int	DAT_WOOD			= 3;
-	protected final static int	DAT_WOODTYPE		= 4;
-	protected final static int	DAT_FLAG			= 5;
-	protected final static int	DAT_BUILDCODE		= 6;
-	protected final static int	DAT_CLASS			= 7;
-	protected final static int	DAT_MISC			= 8;
-	protected final static int	DAT_PROPERTIES		= 9;
-	protected final static int	DAT_DESC			= 10;
-	protected final static int	DAT_BUILDERMASK		= 11;
-	protected final static int	DAT_DESCRIPTION		= 12;
+	protected static final int	RCP_TICKS		= 2;
+	protected final static int	DAT_WOOD		= 3;
+	protected final static int	DAT_WOODTYPE	= 4;
+	protected final static int	DAT_FLAG		= 5;
+	protected final static int	DAT_BUILDCODE	= 6;
+	protected final static int	DAT_CLASS		= 7;
+	protected final static int	DAT_MISC		= 8;
+	protected final static int	DAT_PROPERTIES	= 9;
+	protected final static int	DAT_DESC		= 10;
+	protected final static int	DAT_BUILDERMASK	= 11;
+	protected final static int	DAT_DESCRIPTION	= 12;
 
 	@Override
-	public String parametersFormat()
+	public String getRecipeFormat()
 	{
 		if(Resources.getResource("BUILDING_SKILL_CODES_FLAGS")==null)
 		{
@@ -174,7 +174,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "";
 	}
@@ -241,7 +241,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 
 	public String[][] getRecipeData(final MOB mob)
 	{
-		final List<List<String>> recipeData = addRecipes(mob,loadRecipes(parametersFile()));
+		final List<List<String>> recipeData = addRecipes(mob,loadRecipes(getRecipeFilename()));
 		final String[][] finalDat = new String[recipeData.size()][];
 		for(int i=0;i<recipeData.size();i++)
 			finalDat[i] = recipeData.get(i).toArray(new String[recipeData.get(i).size()]);
@@ -1216,7 +1216,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			{
 				final Room R=mob.location();
 				boolean roomClassFound = false;
-				for(final List<String> recipeChk : loadRecipes(parametersFile()))
+				for(final List<String> recipeChk : loadRecipes(getRecipeFilename()))
 				{
 					if(R.ID().equalsIgnoreCase(recipeChk.get(DAT_CLASS)))
 						roomClassFound=true;
@@ -1270,7 +1270,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		if(checkStop(mob, commands))
 			return true;
 
-		randomRecipeFix(mob,addRecipes(mob,loadRecipes(parametersFile())),commands,0);
+		randomRecipeFix(mob,addRecipes(mob,loadRecipes(getRecipeFilename())),commands,0);
 
 		if(commands.size()==0)
 		{

@@ -73,7 +73,7 @@ public class Rodsmithing extends StaffMaking implements ItemCraftor
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "rodsmithing.txt";
 	}

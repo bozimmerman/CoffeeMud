@@ -35,7 +35,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class PaintingSkill extends CommonSkill
+public class PaintingSkill extends CommonSkill implements RecipeDriven
 {
 	@Override
 	public String ID()
@@ -52,8 +52,8 @@ public class PaintingSkill extends CommonSkill
 	}
 
 	// common recipe definition indexes
-	protected static final int	RCP_FINALNAME	= 0;
-	protected static final int	RCP_LEVEL		= 1;
+	//protected static final int	RCP_FINALNAME	= 0;
+	//protected static final int	RCP_LEVEL		= 1;
 	protected static final int	RCP_TICKS		= 2;
 	protected static final int	RCP_COLOR		= 3;
 	protected static final int	RCP_MASK		= 4;
@@ -62,6 +62,42 @@ public class PaintingSkill extends CommonSkill
 
 	protected Item found=null;
 	protected String writing="";
+
+	@Override
+	public List<List<String>> fetchRecipes()
+	{
+		return loadRecipes(getRecipeFilename());
+	}
+
+	@Override
+	public String getRecipeFormat()
+	{
+		return
+		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\t"
+		+ "COLOR_TERM\tCOLOR_MASK\t"
+		+"EXPERTISENUM\tKEY_VALUE_PARMS";
+	}
+
+	@Override
+	public List<List<String>> matchingRecipeNames(final String recipeName, final boolean beLoose)
+	{
+		final List<List<String>> matches = new Vector<List<String>>();
+		for(final List<String> list : fetchRecipes())
+		{
+			final String name=list.get(RecipeDriven.RCP_FINALNAME);
+			if(name.equalsIgnoreCase(recipeName)
+			||(beLoose && (name.toUpperCase().indexOf(recipeName.toUpperCase())>=0)))
+				matches.add(list);
+		}
+		return matches;
+	}
+
+	@Override
+	public Pair<String,Integer> getDecodedItemNameAndLevel(final List<String> recipe)
+	{
+		return new Pair<String,Integer>(recipe.get( RecipeDriven.RCP_FINALNAME ),
+				Integer.valueOf(CMath.s_int(recipe.get( RecipeDriven.RCP_LEVEL ))));
+	}
 
 	protected String fixColor(final String name, final String colorWord)
 	{
@@ -107,7 +143,7 @@ public class PaintingSkill extends CommonSkill
 					final PaintingSkill P=(PaintingSkill)A;
 					if(!P.ID().endsWith("PaintingSkill"))
 					{
-						for(final List<String> recipe : super.loadRecipes(P.getRecipeFile()))
+						for(final List<String> recipe : super.loadRecipes(P.getRecipeFilename()))
 						{
 							if(recipe.size()>RCP_COLOR)
 							{
@@ -139,7 +175,7 @@ public class PaintingSkill extends CommonSkill
 				if(!colors.contains(C.getName2()))
 					colors.add(C.getName2().toLowerCase());
 			}
-			
+
 			Collections.sort(colors,new Comparator<String>()
 			{
 				@Override
@@ -223,9 +259,10 @@ public class PaintingSkill extends CommonSkill
 		}
 	}
 
-	protected String getRecipeFile()
+	@Override
+	public String getRecipeFilename()
 	{
-		return "paintingskill.txt";
+		return "";
 	}
 
 	protected String getColorCode(final String writing)

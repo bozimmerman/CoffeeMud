@@ -75,7 +75,7 @@ public class CaravanBuilding extends Shipwright
 	}
 
 	@Override
-	public String parametersFile()
+	public String getRecipeFilename()
 	{
 		return "caravanbuilding.cmare";
 	}
