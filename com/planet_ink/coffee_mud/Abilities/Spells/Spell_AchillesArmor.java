@@ -188,6 +188,20 @@ public class Spell_AchillesArmor extends Spell
 	}
 
 	@Override
+	public int castingQuality(final MOB mob, final Physical target)
+	{
+		if((mob!=null)
+		&&(target != null)
+		&&(mob != target))
+		{
+			if(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)
+			||(mob.mayIFight((MOB)target)))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
@@ -197,7 +211,8 @@ public class Spell_AchillesArmor extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final boolean success=proficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
+		success = success & (auto || mob.mayIFight(target) || (target==mob)||(mob.getGroupMembers(new HashSet<MOB>()).contains(target)));
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> attain(s) Achilles Armor!"):L("^S<S-NAME> invoke(s) Achilles Armor around <T-NAMESELF>!^?"));
