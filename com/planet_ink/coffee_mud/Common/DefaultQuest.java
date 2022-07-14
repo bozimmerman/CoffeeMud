@@ -3812,7 +3812,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						for(int i=0;i<toSet.size();i++)
 						{
 							final MOB M2=toSet.get(i);
-							runtimeRegisterAbility(M2,A3.ID(),CMParms.combineQuoted(p,3),true);
+							runtimeRegisterAbility(M2,A3.ID(),CMParms.rest(s,3),true);
 						}
 					}
 					else
@@ -3850,7 +3850,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						{
 							final Environmental E2=(Environmental)toSet.get(i);
 							if(E2 instanceof PhysicalAgent)
-								runtimeRegisterBehavior((PhysicalAgent)E2,B.ID(),CMParms.combineQuoted(p,3),true);
+								runtimeRegisterBehavior((PhysicalAgent)E2,B.ID(),CMParms.rest(s,3),true);
 							if((E2 instanceof Item)
 							&&((((Item)E2).owner()==null)
 								||(!((Item)E2).owner().isContent((Item)E2))))
@@ -3875,7 +3875,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							break;
 						}
 						final String stat=p.get(2);
-						final String val=CMParms.combineQuoted(p,3);
+						final String val=CMParms.rest(s,3);
 						List<Environmental> toSet=new ArrayList<Environmental>();
 						if(q.envObject instanceof List)
 							toSet=(List<Environmental>)q.envObject;
@@ -3947,7 +3947,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give script, script not given.");
 							break;
 						}
-						final String val=CMParms.combineQuoted(p,2);
+						final String val=CMParms.rest(s,2);
 						List<Environmental> toSet=new ArrayList<Environmental>();
 						if(q.envObject instanceof List)
 							toSet=(List<Environmental>)q.envObject;
@@ -4031,7 +4031,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						for(final Object o : toSet)
 						{
 							if(o instanceof PhysicalAgent)
-								runtimeRegisterEffect((PhysicalAgent)o,A3.ID(),CMParms.combineQuoted(p,3),true);
+								runtimeRegisterEffect((PhysicalAgent)o,A3.ID(),CMParms.rest(s,3),true);
 						}
 					}
 					else
@@ -4086,7 +4086,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						for(int i=0;i<toSet.size();i++)
 						{
 							final MOB M2=toSet.get(i);
-							runtimeRegisterAbility(M2,A3.ID(),CMParms.combineQuoted(p,3),false);
+							runtimeRegisterAbility(M2,A3.ID(),CMParms.rest(s,3),false);
 						}
 					}
 					else
@@ -4124,7 +4124,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						{
 							final Environmental E2=(Environmental)toSet.get(i);
 							if(E2 instanceof PhysicalAgent)
-								runtimeRegisterBehavior((PhysicalAgent)E2,B.ID(),CMParms.combineQuoted(p,3),false);
+								runtimeRegisterBehavior((PhysicalAgent)E2,B.ID(),CMParms.rest(s,3),false);
 							if((E2 instanceof Item)
 							&&((((Item)E2).owner()==null)
 								||(!((Item)E2).owner().isContent((Item)E2))))
@@ -4165,7 +4165,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						for(final Object o : toSet)
 						{
 							if(o instanceof PhysicalAgent)
-								runtimeRegisterEffect((PhysicalAgent)o,A3.ID(),CMParms.combineQuoted(p,3),false);
+								runtimeRegisterEffect((PhysicalAgent)o,A3.ID(),CMParms.rest(s,3),false);
 						}
 					}
 					else

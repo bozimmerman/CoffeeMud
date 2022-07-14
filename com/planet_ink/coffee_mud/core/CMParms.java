@@ -233,6 +233,81 @@ public class CMParms
 	}
 
 	/**
+	 * Returns a string containing the remainder of a string after the
+	 * given number of parts have been parsed out.
+	 *
+	 * @param commands the full string
+	 * @param startAt the index in the list to start at.
+	 * @return the remaining string
+	 */
+	public final static String rest(final String commands, final int startAt)
+	{
+		if(startAt<=0)
+			return commands;
+		final StringBuilder s=new StringBuilder();
+		final char[] cs=commands.toCharArray();
+		int state=0;
+		int index=0;
+		for(int i=0;i<cs.length;i++)
+		{
+			final char c=cs[i];
+			if((c=='\\')&&(i<cs.length-1))
+			{
+				s.append(cs[++i]);
+				state=(state==0)?1:state;
+			}
+			else
+			switch(state)
+			{
+			case 0:
+			{
+				if(c=='\"')
+					state=2;
+				else
+				if(!Character.isWhitespace(c))
+				{
+					s.append(c);
+					state=1;
+				}
+				break;
+			}
+			case 1:
+			{
+				if(Character.isWhitespace(c))
+				{
+					if(s.length()>0)
+					{
+						index++;
+						if(index == startAt)
+							return new String(cs,i+1,cs.length-(i+1));
+					}
+					s.setLength(0);
+					state=0;
+				}
+				else
+					s.append(c);
+				break;
+			}
+			case 2:
+			{
+				if(c=='\"')
+				{
+					index++;
+					if(index == startAt)
+						return new String(cs,i+1,cs.length-(i+1));
+					s.setLength(0);
+					state=0;
+				}
+				else
+					s.append(c);
+				break;
+			}
+			}
+		}
+		return "";
+	}
+
+	/**
 	 * Returns a string containing the given objects, with toString()
 	 * called, and now space delimited.
 	 * @param commands the objects to combine into a single string

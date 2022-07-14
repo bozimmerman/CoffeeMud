@@ -169,10 +169,10 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 					weight=I.basePhyStats().weight();
 				recipe.add(I.Name());
 				recipe.add(RawMaterial.CODES.NAME(I.material())+"/"+(weight*2500)); // material
-				recipe.add(""); // material#2
-				recipe.add(""+((I instanceof ClanItem)?((ClanItem)I).getClanItemType().ordinal():0)); // type
 				recipe.add(""+I.basePhyStats().level()); // level
 				recipe.add(""+(weight * 450)); // build time
+				recipe.add(""); // material#2
+				recipe.add(""+((I instanceof ClanItem)?((ClanItem)I).getClanItemType().ordinal():0)); // type
 				recipe.add(""+(weight*50)); // xp cost
 				recipe.add(""+I.baseGoldValue()); // value
 				recipe.add(I.ID()); // class

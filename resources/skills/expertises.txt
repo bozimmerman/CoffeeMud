@@ -392,19 +392,19 @@ HELP_=<EXPERTISE>The ability to engineer using fewer materials.
 
 FORTBAKE@x1=Fortified Baking @x2,10,X4,-SKILL +Baking +MasterBaking,-MAXCLASSLEVEL +>={10+(7*@x1)},+CON {8+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to bake foods that fortify movement.
-DATA_=Least,Lesser,Minor,Moderate,Great,Incredibe,Major,Wonderful,Super,Ultimate
+DATA_=Least,Lesser,Minor,Moderate,Great,Incredible,Major,Wonderful,Super,Ultimate
 
 IMBUDISTIL@x1=Imbued Distilling @x2,10,X4,-SKILL +Distilling +MasterDistilling,-MAXCLASSLEVEL +>={12+(7*@x1)},+CON {8+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to distill drinks that fortify mana.
-DATA_=Least,Lesser,Minor,Moderate,Great,Incredibe,Major,Wonderful,Super,Ultimate
+DATA_=Least,Lesser,Minor,Moderate,Great,Incredible,Major,Wonderful,Super,Ultimate
 
 VIGOCOOK@x1=Vigorous Cooking @x2,10,X4,-SKILL +Cooking +MasterCooking,-MAXCLASSLEVEL +>={11+(7*@x1)},+CON {8+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to cook foods that fortify movement.
-DATA_=Least,Lesser,Minor,Moderate,Great,Incredibe,Major,Wonderful,Super,Ultimate
+DATA_=Least,Lesser,Minor,Moderate,Great,Incredible,Major,Wonderful,Super,Ultimate
 
 VIGOPREP@x1=Creative Food Prep @x2,10,X4,-SKILL +FoodPrep +MasterFoodPrep,-MAXCLASSLEVEL +>={11+(7*@x1)},+CHA {8+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to prep foods that fortify movement.
-DATA_=Least,Lesser,Minor,Moderate,Great,Incredibe,Major,Wonderful,Super,Ultimate
+DATA_=Least,Lesser,Minor,Moderate,Great,Incredible,Major,Wonderful,Super,Ultimate
 
 REDUCEDILLUSION@x1=Reduced Illusing @x2,10,LOWCOST,-SKILLFLAG +ILLUSION,-MAXCLASSLEVEL +>={1+(3*@x1)},+WIS {9+@x1} +STR {9+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to cast illusion spells using less mana.
