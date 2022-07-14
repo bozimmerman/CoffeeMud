@@ -40,10 +40,6 @@ public interface NList<T>
 
 	public void addSharedElements(T[] O);
 
-	public void addElement(T... Os);
-
-	public void add(T... Os);
-
 	public boolean contains(T O);
 
 	public boolean containsIgnoreCase(String S);
@@ -67,8 +63,4 @@ public interface NList<T>
 	public void setElementAt(int index, int dim, T O);
 
 	public void set(int index, int dim, T O);
-
-	public void insertElementAt(int here, T... Os);
-
-	public void add(int here, T... Os);
 }

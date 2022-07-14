@@ -191,7 +191,6 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 		stuff.addElement(O);
 	}
 
-	@Override
 	public synchronized void addElement(final Object... Os)
 	{
 		if(dimensions!=Os.length)
@@ -199,7 +198,6 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 		stuff.addElement(Os);
 	}
 
-	@Override
 	public synchronized void add(final Object... Os)
 	{
 		if(dimensions!=Os.length)
@@ -305,7 +303,6 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 		stuff.elementAt(index)[dim-1]=O;
 	}
 
-	@Override
 	public synchronized void insertElementAt(final int here, final Object... Os)
 	{
 		if(dimensions!=Os.length)
@@ -313,7 +310,6 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 		stuff.insertElementAt(Os,here);
 	}
 
-	@Override
 	public synchronized void add(final int here, final Object... Os)
 	{
 		if(dimensions!=Os.length)
