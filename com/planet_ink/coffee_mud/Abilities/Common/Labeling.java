@@ -130,15 +130,13 @@ public class Labeling extends CommonSkill
 				if(!tagPrefixes.containsKey(itemKey))
 				{
 					tagPrefixes.clear();
-					@SuppressWarnings("unchecked")
 					final
-					MultiEnumeration<Item> i=new MultiEnumeration<Item>(new Enumeration[] {
-						CMClass.basicItems(),
-						CMClass.armor(),
-						CMClass.clanItems(),
-						CMClass.miscMagic(),
-						CMClass.weapons()
-					});
+					MultiEnumeration<? extends Item> i=new MultiEnumeration<Item>()
+						.addEnumeration(CMClass.basicItems())
+						.addEnumeration(CMClass.armor())
+						.addEnumeration(CMClass.clanItems())
+						.addEnumeration(CMClass.miscMagic())
+						.addEnumeration(CMClass.weapons());
 					final HashSet<String> usedShortKeys=new HashSet<String>();
 					for(;i.hasMoreElements();)
 					{

@@ -2215,13 +2215,12 @@ public class StdRoom implements Room
 		return contents.elements();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Enumeration<Item> itemsRecursive()
 	{
-		return new MultiEnumeration<Item>(
-			items(),
-			new Enumeration<Item>()
+		return new MultiEnumeration<Item>()
+			.addEnumeration(items())
+			.addEnumeration(new Enumeration<Item>()
 			{
 				private final Enumeration<MOB> curMobEnumeration = inhabitants();
 				private volatile Enumeration<Item> curItemEnumeration;
@@ -2247,8 +2246,7 @@ public class StdRoom implements Room
 						throw new NoSuchElementException();
 					return curItemEnumeration.nextElement();
 				}
-			}
-		);
+			});
 	}
 
 

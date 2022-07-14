@@ -1989,25 +1989,26 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		for(int c=0;c<mob.charStats().numClasses();c++)
 		{
 			final String charClass=mob.charStats().getMyClass(c).ID();
-			if(completeAbleMap.containsKey(charClass))
+			final Map<String,AbilityMapping> ableMap=completeAbleMap.get(charClass);
+			if(ableMap != null)
 			{
-				final Map<String,AbilityMapping> ableMap=completeAbleMap.get(charClass);
 				if(ableMap.containsKey(abilityID))
 					list.add(ableMap.get(abilityID));
 			}
 		}
-		if(completeAbleMap.containsKey(mob.charStats().getMyRace().ID()))
 		{
 			final Map<String,AbilityMapping> ableMap=completeAbleMap.get(mob.charStats().getMyRace().ID());
-			if(ableMap.containsKey(abilityID))
-				list.add(ableMap.get(abilityID));
+			if(ableMap!=null)
+			{
+				if(ableMap.containsKey(abilityID))
+					list.add(ableMap.get(abilityID));
+			}
 		}
-
 		for(final Pair<Clan,Integer> c : mob.clans())
 		{
-			if(completeAbleMap.containsKey(c.first.getGovernment().getName()))
+			final Map<String,AbilityMapping> ableMap=completeAbleMap.get(c.first.getGovernment().getName());
+			if(ableMap!=null)
 			{
-				final Map<String,AbilityMapping> ableMap=completeAbleMap.get(c.first.getGovernment().getName());
 				if(ableMap.containsKey(abilityID))
 					list.add(ableMap.get(abilityID));
 			}

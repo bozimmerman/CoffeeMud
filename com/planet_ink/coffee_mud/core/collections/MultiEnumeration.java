@@ -23,25 +23,12 @@ import java.util.Vector;
 */
 public class MultiEnumeration<K> implements Enumeration<K>
 {
-	private final LinkedList<Enumeration<K>> enums=new LinkedList<Enumeration<K>>();
-	private volatile Enumeration<K> enumer=null;
+	private final LinkedList<Enumeration<? extends K>> enums=new LinkedList<Enumeration<? extends K>>();
+	private volatile Enumeration<? extends K> enumer=null;
 
 	public static interface MultiEnumeratorBuilder<K>
 	{
 		public MultiEnumeration<K> getList();
-	}
-
-	@SuppressWarnings("unchecked")
-	public MultiEnumeration(final Enumeration<K>... esets)
-	{
-		if((esets!=null)&&(esets.length>0))
-		{
-			for(final Enumeration<K> E : esets)
-			{
-				if(E!=null)
-					enums.add(E);
-			}
-		}
 	}
 
 	public MultiEnumeration(final Collection<Enumeration<K>> esets)
@@ -50,12 +37,16 @@ public class MultiEnumeration<K> implements Enumeration<K>
 			enums.addAll(esets);
 	}
 
+	public MultiEnumeration()
+	{
+	}
+
 	public MultiEnumeration(final Enumeration<K> eset)
 	{
 		enums.add(eset);
 	}
 
-	public MultiEnumeration<K> addEnumeration(final Enumeration<K> set)
+	public MultiEnumeration<K> addEnumeration(final Enumeration<? extends K> set)
 	{
 		if(set != null)
 			enums.add(set);

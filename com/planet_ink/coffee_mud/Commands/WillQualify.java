@@ -70,14 +70,9 @@ public class WillQualify  extends Skills
 		for (int l = 0; l <= highestLevel; l++)
 		{
 			final StringBuffer thisLine = new StringBuffer("");
-			@SuppressWarnings("unchecked")
-			final Enumeration<AbilityMapper.AbilityMapping> emur = new MultiEnumeration<AbilityMapper.AbilityMapping>(
-				new Enumeration[]
-				{
-					CMLib.ableMapper().getClassAbles(classID,true),
-					CMLib.ableMapper().getClassAbles(raceID,false)
-				}
-			);
+			final Enumeration<AbilityMapper.AbilityMapping> emur = new MultiEnumeration<AbilityMapper.AbilityMapping>()
+					.addEnumeration(CMLib.ableMapper().getClassAbles(classID,true))
+					.addEnumeration(CMLib.ableMapper().getClassAbles(raceID,false));
 			for (final Enumeration<AbilityMapper.AbilityMapping> a = emur; a.hasMoreElements(); )
 			{
 				final AbilityMapper.AbilityMapping cimable=a.nextElement();

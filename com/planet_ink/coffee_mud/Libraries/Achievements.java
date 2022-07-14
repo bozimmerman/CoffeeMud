@@ -6934,19 +6934,16 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-
 	@Override
 	public synchronized Enumeration<Achievement> achievements(final Agent agent)
 	{
 		ensureAchievementsLoaded();
 		if(agent == null)
 		{
-			return new MultiEnumeration<Achievement>(new Enumeration[]{
-				new IteratorEnumeration<Achievement>(accountAchievements.iterator()),
-				new IteratorEnumeration<Achievement>(playerAchievements.iterator()),
-				new IteratorEnumeration<Achievement>(clanAchievements.iterator()),
-			});
+			return new MultiEnumeration<Achievement>()
+				.addEnumeration(new IteratorEnumeration<Achievement>(accountAchievements.iterator()))
+				.addEnumeration(new IteratorEnumeration<Achievement>(playerAchievements.iterator()))
+				.addEnumeration(new IteratorEnumeration<Achievement>(clanAchievements.iterator()));
 		}
 		switch(agent)
 		{

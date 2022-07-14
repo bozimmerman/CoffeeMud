@@ -2515,15 +2515,15 @@ public class CMMap extends StdLibrary implements WorldMap
 				final Area A=area;
 				final MultiEnumeratorBuilder<Room> roomer = new MultiEnumeratorBuilder<Room>()
 				{
-					@SuppressWarnings("unchecked")
-
 					@Override
 					public MultiEnumeration<Room> getList()
 					{
 						if(A==null)
 							return new MultiEnumeration<Room>(roomsFilled());
 						else
-							return new MultiEnumeration<Room>(new Enumeration[]{A.getProperMap(),shipsRoomEnumerator(A)});
+							return new MultiEnumeration<Room>()
+									.addEnumeration(A.getProperMap())
+									.addEnumeration(shipsRoomEnumerator(A));
 					}
 				};
 
