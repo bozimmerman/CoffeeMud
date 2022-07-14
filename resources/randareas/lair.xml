@@ -22,6 +22,9 @@ See guides/RandomAreas.html for information about documents of this type.
 	<string condition="$theme=''">kobolds</string>
 	<string condition="$theme=''">goblins</string>
 	<string condition="$theme=''">orcs</string>
+	<string condition="$theme=''">troglodytes</string>
+	<string condition="$theme=''">gnolls</string>
+	<string condition="$theme=''">hobgoblins</string>
 	<string condition="$theme=''">trolls</string>
 </string>
 
@@ -32,24 +35,27 @@ See guides/RandomAreas.html for information about documents of this type.
 <STRING load="/resources/randareas/inc_streetnames.xml" />
 <STRING load="/resources/randareas/inc_fantasynames.xml" />
 
-<AREA id="maze_dungeon" merge=true layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;trolls">
+<AREA id="maze_dungeon" merge=true layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;troglodytes;gnolls;hobgoblins;trolls">
 	<NAME merge=false>$areaname</NAME><SIZE merge=false>$areasize</SIZE>
 	<CLASS merge=false select="any-1"><CLASS condition="$areatype!=''">$areatype</CLASS><CLASS condition="$areatype=''">StdArea</CLASS></CLASS>
 	<ROOM merge=false insert="hallway_rooms,interior_rooms,leaf_rooms" />
 	<BEHAVIOR condition="$theme='kobolds' or $theme='goblins'" class="RandomTraps" parms="mintraps=1 maxtraps=$AREA_SIZE/2 rooms=Y exits=Y" />
 </AREA>
-<AREA id="grid_dungeon" merge=true like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;trolls" />
-<AREA id="square_dungeon" merge=true like="maze_dungeon" layout="BOXCITYSQUARE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;trolls" />
-<AREA id="box_dungeon" merge=true like="maze_dungeon" layout="BOXCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;trolls" />
-<AREA id="cross_dungeon" merge=true like="maze_dungeon" layout="CROSS" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;trolls" />
-<AREA id="tree_dungeon" merge=true like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;trolls" />
+<AREA id="grid_dungeon" merge=true like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;troglodytes;gnolls;hobgoblins;trolls" />
+<AREA id="square_dungeon" merge=true like="maze_dungeon" layout="BOXCITYSQUARE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;troglodytes;gnolls;hobgoblins;trolls" />
+<AREA id="box_dungeon" merge=true like="maze_dungeon" layout="BOXCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;troglodytes;gnolls;hobgoblins;trolls" />
+<AREA id="cross_dungeon" merge=true like="maze_dungeon" layout="CROSS" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;troglodytes;gnolls;hobgoblins;trolls" />
+<AREA id="tree_dungeon" merge=true like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;troglodytes;gnolls;hobgoblins;trolls" />
 
 <STRING id="nasty_race_name" select="any-1">
 	<string condition="$theme='kobolds' or $theme='random'" define="nasty_race_name">kobold</string>
 	<string condition="$theme='goblins' or $theme='random'" define="nasty_race_name">goblin</string>
 	<string condition="$theme='orcs' or $theme='random'" define="nasty_race_name">orc</string>
+	<string condition="$theme='troglodytes' or $theme='random'" define="nasty_race_name">troglodyte</string>
+	<string condition="$theme='gnolls' or $theme='random'" define="nasty_race_name">gnoll</string>
+	<string condition="$theme='hobgoblins' or $theme='random'" define="nasty_race_name">hobgoblin</string>
 	<string condition="$theme='trolls' or $theme='random'" define="nasty_race_name">troll</string>
-	<string condition="$theme!='goblins' and $theme!='orcs' and $theme!='trolls' and $theme!='kobolds' and $theme!='random'" define="nasty_race_name">kobold</string>
+	<string condition="$theme!='goblins' and $theme!='orcs' and $theme!='troglodytes' and $theme!='gnolls' and $theme!='hobgoblins' and $theme!='trolls' and $theme!='kobolds' and $theme!='random'" define="nasty_race_name">kobold</string>
 </STRING>
 
 <STRING id="adj_smallnastyragged" select="any-1">
@@ -76,7 +82,7 @@ See guides/RandomAreas.html for information about documents of this type.
 </STRING>
 
 <ROOM id="interior_rooms" merge=true select="any-1" condition="$roomtag_nodetype='interior' or $roomtag_nodetype='square'">
-	<ROOM class="CaveRoom" condition="$theme='kobolds' or $theme='goblins' or $theme='orcs' or $theme='trolls' or $theme='random'">
+	<ROOM class="CaveRoom" condition="$theme='kobolds' or $theme='goblins' or $theme='orcs' or $theme='troglodytes' or $theme='gnolls' or $theme='hobgoblins' or $theme='trolls' or $theme='random'">
 		<TITLE>$a_streetprefix $_lair_hallways_street_name</TITLE>
 		<DESCRIPTION>$lair_interior_desc</DESCRIPTION>
 		<EXIT class="Open" />
@@ -86,7 +92,7 @@ See guides/RandomAreas.html for information about documents of this type.
 </ROOM>
 
 <ROOM id="leaf_rooms" merge=true select="any-1" condition="$roomtag_nodetype='leaf'">
-	<ROOM select="all" condition="$theme='kobolds' or $theme='goblins' or $theme='orcs' or $theme='trolls' or $theme='random'">
+	<ROOM select="all" condition="$theme='kobolds' or $theme='goblins' or $theme='orcs' or $theme='troglodytes' or $theme='gnolls' or $theme='hobgoblins' or $theme='trolls' or $theme='random'">
 		<ROOM class="CaveRoom" predefine="nasty_picked_race=${l:nasty_race_name}">
 			<TITLE>a $nasty_picked_race nursery</TITLE>
 			<DESCRIPTION>
@@ -221,7 +227,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			<MOB select="repeat-1?3" insert="nasty_lair_guard" />
 			<ITEM condition="1?10=1" select="any-1" insert="lair_junk" />
 		</ROOM>
-		<ROOM class="CaveRoom" condition="$theme='kobolds' or $theme='goblins' or $theme='random'" predefine="nasty_picked_race=${l:nasty_race_name}">
+		<ROOM class="CaveRoom" condition="$theme='kobolds' or $theme='troglodytes' or $theme='gnolls' or $theme='hobgoblins' or $theme='goblins' or $theme='random'" predefine="nasty_picked_race=${l:nasty_race_name}">
 			<TITLE>a $nasty_picked_race workshop</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
@@ -490,23 +496,23 @@ See guides/RandomAreas.html for information about documents of this type.
 			</ITEM>
 			<ITEM condition="1?10=1" select="any-1" insert="lair_junk" />
 		</ROOM>
-		<ROOM class="CaveRoom" condition="$theme='kobolds' or $theme='random'">
+		<ROOM class="CaveRoom" condition="$theme='kobolds' or $theme='troglodytes' or $theme='random'" predefine="nasty_picked_race=$nasty_race_name">
 			<TITLE>a hatchery</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You are standing in (a(n)) $adj_nasty kobold hatchery.</DESCRIPTION>
-					<DESCRIPTION>You`re inside (a(n)) $adj_nasty kobold hatchery. </DESCRIPTION>
-					<DESCRIPTION>You`ve found (a(n)) $adj_nasty kobold hatchery. </DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $adj_nasty kobold hatchery. </DESCRIPTION>
+					<DESCRIPTION>You are standing in (a(n)) $adj_nasty $nasty_picked_race hatchery.</DESCRIPTION>
+					<DESCRIPTION>You`re inside (a(n)) $adj_nasty $nasty_picked_race hatchery. </DESCRIPTION>
+					<DESCRIPTION>You`ve found (a(n)) $adj_nasty $nasty_picked_race hatchery. </DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_nasty $nasty_picked_race hatchery. </DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>Kobold eggs are scattered about haphazardly.</DESCRIPTION>
-					<DESCRIPTION>Kobold eggs are scattered all over the place. </DESCRIPTION>
-					<DESCRIPTION>Kobold eggs are everywhere you look. </DESCRIPTION>
+					<DESCRIPTION>$nasty_picked_race eggs are scattered about haphazardly.</DESCRIPTION>
+					<DESCRIPTION>$nasty_picked_race eggs are scattered all over the place. </DESCRIPTION>
+					<DESCRIPTION>$nasty_picked_race eggs are everywhere you look. </DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You feel quite serene here.  So different from other kobold locales.</DESCRIPTION>
-					<DESCRIPTION>This place seems downright serene for a kobold lair. </DESCRIPTION>
+					<DESCRIPTION>You feel quite serene here.  So different from other $nasty_picked_race locales.</DESCRIPTION>
+					<DESCRIPTION>This place seems downright serene for a $nasty_picked_race lair. </DESCRIPTION>
 					<DESCRIPTION>This must be the quietest room in the whole place. </DESCRIPTION>
 					<DESCRIPTION>You can`t imagine a quieter spot in this lair to be standing in. </DESCRIPTION>
 				</DESCRIPTION>
@@ -518,8 +524,8 @@ See guides/RandomAreas.html for information about documents of this type.
 				<EXIT pickweight=2 class="GenDoor"/>
 			</EXIT>
 			<MOB select="repeat-1?2" insert="nasty_lair_guard" />
-			<ITEM class="GenFoodResource" id="kobold_egg" name="some $adj_nasty kobold eggs" display="$item_name are here" material="EGGS" />
-			<ITEM select="2?13" insert="kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg" />
+			<ITEM class="GenFoodResource" id="nasty_race_egg" name="some $adj_nasty $nasty_picked_race eggs" display="$item_name are here" material="EGGS" />
+			<ITEM select="2?13" insert="nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg,nasty_race_egg" />
 			<ITEM condition="1?10=1" select="any-1" insert="lair_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom" condition="$__throneroom&lt;1" define="__throneroom+=1" predefine="nasty_picked_race=${l:nasty_race_name}">
@@ -614,7 +620,7 @@ See guides/RandomAreas.html for information about documents of this type.
 </ROOM>
 
 <ROOM id="hallway_rooms" merge=true select="pick-1" condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
-	<ROOM class="CaveRoom" pickweight="5" condition="$theme='kobolds' or $theme='goblins' or $theme='orcs' or $theme='trolls' or $theme='random'">
+	<ROOM class="CaveRoom" pickweight="5" condition="$theme='kobolds' or $theme='goblins' or $theme='orcs' or $theme='troglodytes' or $theme='gnolls' or $theme='hobgoblins' or $theme='trolls' or $theme='random'">
 		<TITLE>$a_streetprefix $_lair_hallways_street_name</TITLE>
 		<STRING id="_lair_crawlways_street_name" define="_lair_crawlways_street_name" select="any-1">
 			<STRING>small $_lair_hallways_street_name</STRING>
@@ -639,7 +645,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		<MOB condition="1?2=1" select="any-1" insert="lair_mobs" />
 		<ITEM condition="1?10=1" select="any-1" insert="lair_junk" />
 	</ROOM>
-	<ROOM class="CaveRoom" pickweight="1" condition="$theme='kobolds' or $theme='goblins' or $theme='orcs' or $theme='trolls' or $theme='random'">
+	<ROOM class="CaveRoom" pickweight="1" condition="$theme='kobolds' or $theme='goblins' or $theme='orcs' or $theme='troglodytes' or $theme='gnolls' or $theme='hobgoblins' or $theme='trolls' or $theme='random'">
 		<TITLE>$a_streetprefix $_lair_crawlways_street_name</TITLE>
 		<STRING id="_lair_hallways_street_name" define="_lair_hallways_street_name" select="any-1">
 			<STRING>cavernous $_lair_tunnelword</STRING>
@@ -694,7 +700,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			<STRING>Bits of a sprung trap are splayed about.</STRING>
 			<STRING>Several faint $adj_scary_feeling squealing voices echo in the distance.</STRING>
 		</STRING>
-		<STRING select="all" condition="$theme='orcs' or ($theme='random' and 1?10=1)">
+		<STRING select="all" condition="$theme='orcs' or $theme='hobgoblins' or ($theme='random' and 1?10=1)">
 			<STRING>You hear $adj_scary_feeling voices nearby.</STRING>
 			<STRING>You hear the $adj_scary_feeling sounds of marching feet nearby.</STRING>
 			<STRING>You hear faint but $adj_scary_feeling shouting voices echoing around you.</STRING>
@@ -703,7 +709,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			<STRING>Bits of a dead $_humanoid_races are splayed about.</STRING>
 			<STRING>Several faint $adj_scary_feeling argueing voices echo in the distance.</STRING>
 		</STRING>
-		<STRING select="all" condition="$theme='trolls' or ($theme='random' and 1?10=1)">
+		<STRING select="all" condition="$theme='trolls' or $theme='gnolls' or ($theme='random' and 1?10=1)">
 			<STRING>You hear $adj_scary_feeling growling nearby.</STRING>
 			<STRING>You hear the $adj_scary_feeling sounds of heavy footsteps nearby.</STRING>
 			<STRING>You hear faint but $adj_scary_feeling loud cries echoing around you.</STRING>
@@ -1043,4 +1049,3 @@ See guides/RandomAreas.html for information about documents of this type.
 		<ITEM condition="1?10=1" select="any-1" insert="lair_junk" />
 	</MOB>
 </MOB>
-
