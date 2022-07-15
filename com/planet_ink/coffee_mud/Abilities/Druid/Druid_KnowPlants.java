@@ -144,19 +144,19 @@ public class Druid_KnowPlants extends StdAbility
 				mob.tell(str.toString());
 				final Integer matI = Integer.valueOf(I.material());
 				final List<String> foundIn=new ArrayList<String>();
-				if(I instanceof RawMaterial)
+				for(final Enumeration<Room> r=CMClass.locales();r.hasMoreElements();)
 				{
-					for(final Enumeration<Room> r=CMClass.locales();r.hasMoreElements();)
+					final Room R=r.nextElement();
+					if((R.resourceChoices()!=null)
+					&&(R.resourceChoices().contains(matI))
+					&&(!R.name().toLowerCase().endsWith(" room")))
 					{
-						final Room R=r.nextElement();
-						if((R.resourceChoices()!=null)
-						&&(R.resourceChoices().contains(matI))
-						&&(!R.name().toLowerCase().endsWith(" room")))
-						{
-							foundIn.add(R.name());
-						}
+						foundIn.add(R.name());
 					}
-					if(foundIn.size()>0)
+				}
+				if(foundIn.size()>0)
+				{
+					if(I instanceof RawMaterial)
 					{
 						if(((RawMaterial)I).getSubType().equalsIgnoreCase(RawMaterial.ResourceSubType.SEED.name()))
 							mob.tell(L("It can be grown in @x1.",CMLib.english().toEnglishStringList(foundIn)));
@@ -165,6 +165,12 @@ public class Druid_KnowPlants extends StdAbility
 							mob.tell(L("It can be found in @x1.",CMLib.english().toEnglishStringList(foundIn)));
 						else
 							mob.tell(L("It can be foraged in @x1.",CMLib.english().toEnglishStringList(foundIn)));
+					}
+					else
+					{
+						mob.tell(L("@x1 can be found in @x2.",
+								CMStrings.capitalizeAndLower(rscName),
+								CMLib.english().toEnglishStringList(foundIn)));
 					}
 				}
 				mob.tell(L("@x1 has a hardness of @x2 and a bouancy of @x3.",
