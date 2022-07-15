@@ -1247,6 +1247,20 @@ public interface RawMaterial extends Item
 		}
 
 		/**
+		 * Returns the short descriptive name of the material in the code
+		 *
+		 * @param code the code to get material from
+		 * @return the description of the material in the code
+		 */
+		public static String MAT_DESC(final int code)
+		{
+			final int mat_code = (code & MATERIAL_MASK) >> 8;
+			if((mat_code >=0) && (mat_code <= RawMaterial.Material.values().length))
+				return RawMaterial.Material.values()[mat_code].noun();
+			return "";
+		}
+
+		/**
 		 * Returns the name of the code
 		 *
 		 * @param code the code
