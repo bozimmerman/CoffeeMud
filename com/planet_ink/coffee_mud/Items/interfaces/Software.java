@@ -99,9 +99,9 @@ public interface Software extends Item, Technical
 	 *
 	 * @see Software#getSettings()
 	 *
-	 * @return settings
+	 * @param settings the new settings
 	 */
-	public void setSettings(final String var);
+	public void setSettings(final String settings);
 
 	/**
 	 * Returns whether the given computer-entry command

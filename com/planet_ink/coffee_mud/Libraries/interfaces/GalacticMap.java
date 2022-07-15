@@ -624,12 +624,12 @@ public interface GalacticMap extends CMLibrary
 	 * as it is implied.  If the course list comes back empty, then either something terrible
 	 * went wrong, or the source is already close enough to the target for a course to be
 	 * impossible.
-	 * 
+	 *
 	 * @param osrc the source coordinates
 	 * @param sradius the source object radius
 	 * @param otarget the target coordinates
 	 * @param tradius the target object radius
-	 * @param maxTicks maximum number of direction changes .. always send something > 0
+	 * @param maxTicks maximum number of direction changes .. always send something gt 0
 	 * @return the step coordinates in the course, with the source implied
 	 */
 	public List<long[]> plotCourse(final long[] osrc, final long sradius, final long[] otarget, final long tradius, int maxTicks);

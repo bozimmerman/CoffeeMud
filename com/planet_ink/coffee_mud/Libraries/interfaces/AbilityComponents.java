@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityComponents.AbleTrigger;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -266,6 +267,94 @@ public interface AbilityComponents extends CMLibrary
 	public AbilityLimits getSpecialSkillRemainders(MOB studentM);
 
 	/**
+	 * Given a ritual definition string, this will parse it into
+	 * its constituent trigger steps, for more easy execution
+	 * later.
+	 *
+	 * The format is: a trigger code, followed by one or
+	 * more parms (space delimited), followed by amp or pipe
+	 * and either an alternative step, or the next step.
+	 *
+	 * @see AbilityComponents.AbleTriggerCode
+	 * @see AbilityComponents.AbleTriggerConnector
+	 * @see AbilityComponents#genNextAbleTrigger(MOB, List, Map, Map)
+	 * @see AbilityComponents#getAbleTriggerDesc(List)
+	 * @see AbilityComponents#ableTriggCheck(CMMsg, List, String, Set, List, Map, Map)
+	 *
+	 * @param trigger the encoded ritual string
+	 * @return the list of parsed triggers, or null if something went wrong.
+	 */
+	public List<AbleTrigger> parseAbleTriggers(String trigger);
+
+	/**
+	 * The engine of the ritual system, this method checks if the message
+	 * represents a step in the given ritual, and if so, sets one of the
+	 * trigParts and/or trigTimes values.  If it might cause a recursive
+	 * message loop, it will set the ignoreOf to the source of the message,
+	 * and if it requires a wait, will add him to the waitingFor list.  The
+	 * holyName is required for certain triggers with certain parameters.
+	 * It returns true if anything changed, thus causing the trigParts to
+	 * be re-evaluated.
+	 *
+	 * @see AbilityComponents.AbleTriggerCode
+	 * @see AbilityComponents.AbleTriggerConnector
+	 * @see AbilityComponents#parseAbleTriggers(String)
+	 * @see AbilityComponents#genNextAbleTrigger(MOB, List, Map, Map)
+	 * @see AbilityComponents#getAbleTriggerDesc(List)
+	 *
+	 * @param msg the event that occurred, and might be part of this ritual
+	 * @param waitingFor a global list to add to if a mob requires a ping
+	 * @param holyName the name of the holiest relevant person involved
+	 * @param ignoreOf a global list to add to if the mob should be ignored
+	 * @param trigsV the actual ritual itself
+	 * @param trigParts the global booleans showing which parts have been done
+	 * @param trigTimes a global time that a current wait is waiting for
+	 * @return true if a step was done
+	 */
+	public boolean ableTriggCheck(final CMMsg msg,
+								  final List<MOB> waitingFor,
+								  final String holyName,
+								  final Set<MOB> ignoreOf,
+								  final List<AbleTrigger> trigsV,
+								  final Map<String, boolean[]> trigParts,
+								  final Map<String, Long> trigTimes);
+
+	/**
+	 * Generates an a message, if necessary, for the given mob, which is part
+	 * of a ritual
+	 *
+	 * @see AbilityComponents.AbleTriggerCode
+	 * @see AbilityComponents.AbleTriggerConnector
+	 * @see AbilityComponents#parseAbleTriggers(String)
+	 * @see AbilityComponents#getAbleTriggerDesc(List)
+	 * @see AbilityComponents#ableTriggCheck(CMMsg, List, String, Set, List, Map, Map)
+	 *
+	 * @param mob the mob who needs to do something
+	 * @param svcTriggsV the service trigger list
+	 * @param trigParts the global booleans showing which parts have been done
+	 * @param trigTimes a global time that a current wait is waiting for
+	 * @return null, or a message that needs doing
+	 */
+	public CMMsg genNextAbleTrigger(final MOB mob,
+									final List<AbleTrigger> svcTriggsV,
+									final Map<String, boolean[]> trigParts,
+									final Map<String, Long> trigTimes);
+
+	/**
+	 * Returns a readable description of the given ritual
+	 *
+	 * @see AbilityComponents.AbleTriggerCode
+	 * @see AbilityComponents.AbleTriggerConnector
+	 * @see AbilityComponents#parseAbleTriggers(String)
+	 * @see AbilityComponents#genNextAbleTrigger(MOB, List, Map, Map)
+	 * @see AbilityComponents#ableTriggCheck(CMMsg, List, String, Set, List, Map, Map)
+	 *
+	 * @param V the ritual
+	 * @return the description
+	 */
+	public String getAbleTriggerDesc(final List<AbleTrigger> V);
+
+	/**
 	 * The definition of the key words in the ritual definitions.
 	 * Most of these require a parameter of one sort or another,
 	 * depending on the code.  The command phrases
@@ -273,7 +362,7 @@ public interface AbilityComponents extends CMLibrary
 	 * @author Bo Zimmerman
 	 *
 	 */
-	public enum RitualTriggerCode
+	public enum AbleTriggerCode
 	{
 		SAY,
 		TIME,
@@ -303,11 +392,28 @@ public interface AbilityComponents extends CMLibrary
 	}
 
 	/**
+	 * An interface representing a trigger step in
+	 * a ritual, whether for deities or magic.
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public interface AbleTrigger
+	{
+		/**
+		 * The connector to the Previous trigger
+		 * @see AbilityComponents.AbleTriggerConnector
+		 * @return the connector
+		 */
+		public AbleTriggerConnector connector();
+	}
+
+	/**
 	 * Separator enum constants for ritual definitions.
 	 * @author Bo Zimmerman
 	 *
 	 */
-	public enum RitualConnector
+	public enum AbleTriggerConnector
 	{
 		AND,
 		OR

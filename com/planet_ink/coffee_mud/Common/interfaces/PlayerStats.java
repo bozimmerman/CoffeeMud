@@ -245,6 +245,8 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getActiveTitle()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getTitles()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#delTitle(String)
+	 *
+	 * @param s the new title
 	 */
 	public void addTitle(String s);
 
@@ -256,6 +258,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getTitles()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#addTitle(String)
 	 *
+	 * @param s the old title
 	 * @return  whether a title of the name was removed
 	 */
 	public boolean delTitle(String s);

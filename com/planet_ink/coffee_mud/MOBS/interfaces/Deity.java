@@ -315,8 +315,8 @@ public interface Deity extends MOB
 	 * @see Deity#fetchBlessing(String)
 	 * @see Deity#setClericRitual(String)
 	 * @see Deity#getClericTriggerDesc()
-	 * @see Deity.RitualTrigger
-	 * @see Deity.RitualConnector
+	 * @see AbilityComponents.AbleTrigger
+	 * @see AbilityComponents.AbleTriggerConnector
 	 * @return the coded ritual command string
 	 */
 	public String getClericRitual();
@@ -332,8 +332,8 @@ public interface Deity extends MOB
 	 * @see Deity#fetchBlessing(String)
 	 * @see Deity#getClericRitual()
 	 * @see Deity#getClericTriggerDesc()
-	 * @see Deity.RitualTrigger
-	 * @see Deity.RitualConnector
+	 * @see AbilityComponents.AbleTrigger
+	 * @see AbilityComponents.AbleTriggerConnector
 	 * @param ritual the coded ritual command string
 	 */
 	public void setClericRitual(String ritual);
@@ -345,8 +345,8 @@ public interface Deity extends MOB
 	 * @see Deity#fetchBlessing(String)
 	 * @see Deity#getClericRitual()
 	 * @see Deity#setClericRitual(String)
-	 * @see Deity.RitualTrigger
-	 * @see Deity.RitualConnector
+	 * @see AbilityComponents.AbleTrigger
+	 * @see AbilityComponents.AbleTriggerConnector
 	 * @return a description of the blessing ritual for clerics
 	 */
 	public String getClericTriggerDesc();
@@ -361,8 +361,8 @@ public interface Deity extends MOB
 	 * @see Deity#fetchBlessing(String)
 	 * @see Deity#setServiceRitual(String)
 	 * @see Deity#getServiceTriggerDesc()
-	 * @see Deity.RitualTrigger
-	 * @see Deity.RitualConnector
+	 * @see AbilityComponents.AbleTrigger
+	 * @see AbilityComponents.AbleTriggerConnector
 	 * @return the coded ritual command string
 	 */
 	public String getServiceRitual();
@@ -377,8 +377,8 @@ public interface Deity extends MOB
 	 * @see Deity#fetchBlessing(String)
 	 * @see Deity#getServiceRitual()
 	 * @see Deity#getServiceTriggerDesc()
-	 * @see Deity.RitualTrigger
-	 * @see Deity.RitualConnector
+	 * @see AbilityComponents.AbleTrigger
+	 * @see AbilityComponents.AbleTriggerConnector
 	 * @param ritual the coded ritual command string
 	 */
 	public void setServiceRitual(String ritual);
@@ -390,8 +390,8 @@ public interface Deity extends MOB
 	 * @see Deity#fetchBlessing(String)
 	 * @see Deity#getServiceRitual()
 	 * @see Deity#setServiceRitual(String)
-	 * @see Deity.RitualTrigger
-	 * @see Deity.RitualConnector
+	 * @see AbilityComponents.AbleTrigger
+	 * @see AbilityComponents.AbleTriggerConnector
 	 * @return a description of the service ritual for clerics
 	 */
 	public String getServiceTriggerDesc();
@@ -407,8 +407,8 @@ public interface Deity extends MOB
 	 * @see Deity#fetchBlessing(String)
 	 * @see Deity#setWorshipRitual(String)
 	 * @see Deity#getWorshipTriggerDesc()
-	 * @see Deity.RitualTrigger
-	 * @see Deity.RitualConnector
+	 * @see AbilityComponents.AbleTrigger
+	 * @see AbilityComponents.AbleTriggerConnector
 	 * @return the coded ritual command string
 	 */
 	public String getWorshipRitual();
@@ -424,8 +424,8 @@ public interface Deity extends MOB
 	 * @see Deity#fetchBlessing(String)
 	 * @see Deity#getWorshipRitual()
 	 * @see Deity#getWorshipTriggerDesc()
-	 * @see Deity.RitualTrigger
-	 * @see Deity.RitualConnector
+	 * @see AbilityComponents.AbleTrigger
+	 * @see AbilityComponents.AbleTriggerConnector
 	 * @param ritual the coded ritual command string
 	 */
 	public void setWorshipRitual(String ritual);
@@ -437,8 +437,8 @@ public interface Deity extends MOB
 	 * @see Deity#fetchBlessing(String)
 	 * @see Deity#getWorshipRitual()
 	 * @see Deity#setWorshipRitual(String)
-	 * @see Deity.RitualTrigger
-	 * @see Deity.RitualConnector
+	 * @see AbilityComponents.AbleTrigger
+	 * @see AbilityComponents.AbleTriggerConnector
 	 * @return a description of the blessing ritual for worshippers
 	 */
 	public String getWorshipTriggerDesc();
@@ -567,8 +567,8 @@ public interface Deity extends MOB
 	 * @see Deity#fetchCurse(String)
 	 * @see Deity#setClericSin(String)
 	 * @see Deity#getClericSinDesc()
-	 * @see Deity.RitualTrigger
-	 * @see Deity.RitualConnector
+	 * @see AbilityComponents.AbleTrigger
+	 * @see AbilityComponents.AbleTriggerConnector
 	 * @return the coded ritual command string
 	 */
 	public String getClericSin();
@@ -584,8 +584,8 @@ public interface Deity extends MOB
 	 * @see Deity#fetchCurse(String)
 	 * @see Deity#getClericSin()
 	 * @see Deity#getClericSinDesc()
-	 * @see Deity.RitualTrigger
-	 * @see Deity.RitualConnector
+	 * @see AbilityComponents.AbleTrigger
+	 * @see AbilityComponents.AbleTriggerConnector
 	 * @param ritual the coded ritual command string
 	 */
 	public void setClericSin(String ritual);
@@ -597,8 +597,8 @@ public interface Deity extends MOB
 	 * @see Deity#fetchCurse(String)
 	 * @see Deity#getClericSin()
 	 * @see Deity#setClericSin(String)
-	 * @see Deity.RitualTrigger
-	 * @see Deity.RitualConnector
+	 * @see AbilityComponents.AbleTrigger
+	 * @see AbilityComponents.AbleTriggerConnector
 	 * @return a description of the cursing ritual for clerics
 	 */
 	public String getClericSinDesc();
@@ -614,8 +614,8 @@ public interface Deity extends MOB
 	 * @see Deity#fetchCurse(String)
 	 * @see Deity#setWorshipSin(String)
 	 * @see Deity#getWorshipSinDesc()
-	 * @see Deity.RitualTrigger
-	 * @see Deity.RitualConnector
+	 * @see AbilityComponents.AbleTrigger
+	 * @see AbilityComponents.AbleTriggerConnector
 	 * @return the coded ritual command string
 	 */
 	public String getWorshipSin();
@@ -631,8 +631,8 @@ public interface Deity extends MOB
 	 * @see Deity#fetchCurse(String)
 	 * @see Deity#getWorshipSin()
 	 * @see Deity#getWorshipSinDesc()
-	 * @see Deity.RitualTrigger
-	 * @see Deity.RitualConnector
+	 * @see AbilityComponents.AbleTrigger
+	 * @see AbilityComponents.AbleTriggerConnector
 	 * @param ritual the coded ritual command string
 	 */
 	public void setWorshipSin(String ritual);
@@ -644,8 +644,8 @@ public interface Deity extends MOB
 	 * @see Deity#fetchCurse(String)
 	 * @see Deity#getWorshipSin()
 	 * @see Deity#setWorshipSin(String)
-	 * @see Deity.RitualTrigger
-	 * @see Deity.RitualConnector
+	 * @see AbilityComponents.AbleTrigger
+	 * @see AbilityComponents.AbleTriggerConnector
 	 * @return a description of the cursing ritual for worshippers
 	 */
 	public String getWorshipSinDesc();
@@ -728,8 +728,8 @@ public interface Deity extends MOB
 	 * @see Deity#fetchPower(String)
 	 * @see Deity#setClericPowerup(String)
 	 * @see Deity#getClericPowerupDesc()
-	 * @see Deity.RitualTrigger
-	 * @see Deity.RitualConnector
+	 * @see AbilityComponents.AbleTrigger
+	 * @see AbilityComponents.AbleTriggerConnector
 	 * @return the coded ritual command string
 	 */
 	public String getClericPowerup();
@@ -745,8 +745,8 @@ public interface Deity extends MOB
 	 * @see Deity#fetchPower(String)
 	 * @see Deity#getClericPowerup()
 	 * @see Deity#getClericPowerupDesc()
-	 * @see Deity.RitualTrigger
-	 * @see Deity.RitualConnector
+	 * @see AbilityComponents.AbleTrigger
+	 * @see AbilityComponents.AbleTriggerConnector
 	 * @param ritual the coded ritual command string
 	 */
 	public void setClericPowerup(String ritual);
@@ -758,8 +758,8 @@ public interface Deity extends MOB
 	 * @see Deity#fetchPower(String)
 	 * @see Deity#getClericPowerup()
 	 * @see Deity#setClericPowerup(String)
-	 * @see Deity.RitualTrigger
-	 * @see Deity.RitualConnector
+	 * @see AbilityComponents.AbleTrigger
+	 * @see AbilityComponents.AbleTriggerConnector
 	 * @return a description of the power up ritual for clerics
 	 */
 	public String getClericPowerupDesc();

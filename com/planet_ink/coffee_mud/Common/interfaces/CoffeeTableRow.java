@@ -98,7 +98,7 @@ public interface CoffeeTableRow extends CMCommon
 	/**
 	 * Returns the cumulative number online during this period per poll.
 	 * Used to calulate the avg online for the period.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeTableRow#numberCharsOnlineCounter()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeTableRow#numberOnlineCounter()
 	 * @return the cumulative number online during this period per poll
 	 */
 	public long numberCharsOnlineTotal();
