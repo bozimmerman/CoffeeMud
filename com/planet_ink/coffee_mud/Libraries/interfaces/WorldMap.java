@@ -71,6 +71,7 @@ public interface WorldMap extends CMLibrary
 	public Room getRoom(Room room);
 	public Room getRoom(String calledThis);
 	public Room getRoom(Enumeration<Room> roomSet, String calledThis);
+	public Room getRoomAllHosts(final String calledThis);
 	public Enumeration<Room> rooms();
 	public Enumeration<Room> roomsFilled();
 	public Enumeration<MOB> worldMobs();

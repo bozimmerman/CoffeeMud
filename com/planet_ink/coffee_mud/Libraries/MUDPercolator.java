@@ -1587,9 +1587,17 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			@Override
 			public String attempt() throws CMException, PostProcessException
 			{
-				final String value = findOptionalString(mob,ignoreStats,"MOB_","LEVEL",piece,this.defined, false);
+				String value = findOptionalString(mob,ignoreStats,"MOB_","LEVEL",piece,this.defined, false);
 				if((value != null)&&(value.length()>0))
 				{
+					if(CMath.isInteger(value))
+					{
+						if(CMath.s_int(value)<=0)
+							value="1";
+					}
+					else
+					if(CMath.s_parseIntExpression(value)<=0)
+						value="1";
 					mob.setStat("LEVEL",value);
 					addDefinition("MOB_LEVEL",value,this.defined);
 					CMLib.leveler().fillOutMOB(mob,mob.basePhyStats().level());

@@ -650,7 +650,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 											 int req1Required,
 											 String req1Desc, final int[] req1,
 											 int req2Required,
-											 String req2Desc, final int[] req2,
+											 String req2Desc, int[] req2,
 											 final boolean bundle,
 											 final int autoGeneration,
 											 final PairVector<EnhancedExpertise,Integer> eduMods)
@@ -701,6 +701,17 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 			data[0][FOUND_AMT]=CMLib.materials().findNumberOfResourceLike(mob.location(),firstWood);
 			data[0][FOUND_CODE]=firstWood.material();
 			data[0][FOUND_SUB]=firstWood.getSubType().hashCode();
+		}
+
+		// because this is so damn common
+		if((req2Desc!=null)
+		&&(req2Desc.length()>0)
+		&&(req2Required>0)
+		&&(req2==null))
+		{
+			final int r = RawMaterial.CODES.FIND_IgnoreCase(req2Desc);
+			if(r>0)
+				req2=new int[] {r};
 		}
 
 		if(req2!=null)

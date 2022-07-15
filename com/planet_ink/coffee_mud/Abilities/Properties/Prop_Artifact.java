@@ -88,7 +88,7 @@ public class Prop_Artifact extends Property
 		}
 		return itemID;
 	}
-	
+
 	@Override
 	public void setAffectedOne(final Physical P)
 	{
@@ -349,30 +349,31 @@ public class Prop_Artifact extends Property
 					if((itemSet!=null)&&(itemSet.size()>0))
 						return;
 				}
+				final XMLLibrary lib = CMLib.xml();
 				final StringBuffer data=new StringBuffer("");
 				data.append("<ARTITEM>");
 				if(I.owner() instanceof Room)
-					data.append(CMLib.xml().convertXMLtoTag("ROOMID",CMLib.map().getExtendedRoomID(R)));
+					data.append(lib.convertXMLtoTag("ROOMID",CMLib.map().getExtendedRoomID(R)));
 				else
 				if(I.owner() instanceof MOB)
 				{
 					final MOB M=(MOB)I.owner();
 					if(M.getStartRoom()!=null)
 					{
-						data.append(CMLib.xml().convertXMLtoTag("ROOMID",CMLib.map().getExtendedRoomID(M.getStartRoom())));
-						data.append(CMLib.xml().convertXMLtoTag("MOB",((MOB)I.owner()).Name()));
+						data.append(lib.convertXMLtoTag("ROOMID",CMLib.map().getExtendedRoomID(M.getStartRoom())));
+						data.append(lib.convertXMLtoTag("MOB",((MOB)I.owner()).Name()));
 					}
 					else
-						data.append(CMLib.xml().convertXMLtoTag("ROOMID",CMLib.map().getExtendedRoomID(R)));
+						data.append(lib.convertXMLtoTag("ROOMID",CMLib.map().getExtendedRoomID(R)));
 				}
 				else
-					data.append(CMLib.xml().convertXMLtoTag("ROOMID",CMLib.map().getExtendedRoomID(R)));
-				data.append(CMLib.xml().convertXMLtoTag("ICLAS",CMClass.classID(I)));
-				data.append(CMLib.xml().convertXMLtoTag("IREJV",I.basePhyStats().rejuv()));
-				data.append(CMLib.xml().convertXMLtoTag("IUSES",I.usesRemaining()));
-				data.append(CMLib.xml().convertXMLtoTag("ILEVL",I.basePhyStats().level()));
-				data.append(CMLib.xml().convertXMLtoTag("IABLE",I.basePhyStats().ability()));
-				data.append(CMLib.xml().convertXMLtoTag("ITEXT",CMLib.xml().parseOutAngleBrackets(I.text())));
+					data.append(lib.convertXMLtoTag("ROOMID",CMLib.map().getExtendedRoomID(R)));
+				data.append(lib.convertXMLtoTag("ICLAS",CMClass.classID(I)));
+				data.append(lib.convertXMLtoTag("IREJV",I.basePhyStats().rejuv()));
+				data.append(lib.convertXMLtoTag("IUSES",I.usesRemaining()));
+				data.append(lib.convertXMLtoTag("ILEVL",I.basePhyStats().level()));
+				data.append(lib.convertXMLtoTag("IABLE",I.basePhyStats().ability()));
+				data.append(lib.convertXMLtoTag("ITEXT",lib.parseOutAngleBrackets(I.text())));
 				data.append("</ARTITEM>");
 				destroyArtifact(I);
 				synchronized("SYSTEM_ARTIFACT_SAVER".intern())
@@ -390,16 +391,17 @@ public class Prop_Artifact extends Property
 			final List<PlayerData> itemSet=CMLib.database().DBReadPlayerData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
 			if((itemSet!=null)&&(itemSet.size()>0))
 			{
+				final XMLLibrary lib = CMLib.xml();
 				final String data=itemSet.get(0).xml();
-				final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(data);
+				final List<XMLLibrary.XMLTag> xml=lib.parseAllXML(data);
 				for(int c=0;c<xml.size();c++)
 				{
 					final XMLTag iblk=xml.get(c);
 					if((iblk.tag().equalsIgnoreCase("ARTITEM"))&&(iblk.contents()!=null))
 					{
 						final List<XMLLibrary.XMLTag> roomData=iblk.contents();
-						final String roomID=CMLib.xml().getValFromPieces(roomData,"ROOMID");
-						final String MOBname=CMLib.xml().getValFromPieces(roomData,"MOB");
+						final String roomID=lib.getValFromPieces(roomData,"ROOMID");
+						final String MOBname=lib.getValFromPieces(roomData,"MOB");
 						extraInfo.append(CMStrings.padRight(L("Artifact ID"), 15)).append(": ").append(getItemID()).append("\n\r");
 						extraInfo.append(CMStrings.padRight(L(" Room ID"), 15)).append(": ").append(roomID).append("\n\r");
 						extraInfo.append(CMStrings.padRight(L(" MOB name"), 15)).append(": ").append(MOBname).append("\n\r");
@@ -436,7 +438,8 @@ public class Prop_Artifact extends Property
 		&&(tickID==Tickable.TICKID_ITEM_BOUNCEBACK)
 		&&(!nodb))
 		{
-			if(System.currentTimeMillis()>waitToReload)
+			if((System.currentTimeMillis()>waitToReload)
+			&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
 			{
 				waitToReload=0;
 				if((affected instanceof Item)
@@ -452,7 +455,8 @@ public class Prop_Artifact extends Property
 					if(registeredArtifacts.containsKey(getItemID()))
 						registeredArtifacts.remove(getItemID());
 					final String data=itemSet.get(0).xml();
-					final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(data);
+					final XMLLibrary lib = CMLib.xml();
+					final List<XMLLibrary.XMLTag> xml=lib.parseAllXML(data);
 					if(xml!=null)
 					{
 						for(int c=0;c<xml.size();c++)
@@ -461,123 +465,123 @@ public class Prop_Artifact extends Property
 							if((iblk.tag().equalsIgnoreCase("ARTITEM"))&&(iblk.contents()!=null))
 							{
 								final List<XMLLibrary.XMLTag> roomData=iblk.contents();
-								final String roomID=CMLib.xml().getValFromPieces(roomData,"ROOMID");
-								final String MOBname=CMLib.xml().getValFromPieces(roomData,"MOB");
-								final Room R=CMLib.map().getRoom(roomID);
-								if(R!=null)
+								final String roomID=lib.getValFromPieces(roomData,"ROOMID");
+								final String MOBname=lib.getValFromPieces(roomData,"MOB");
+								final Room R=CMLib.map().getRoomAllHosts(roomID);
+								if(R==null)
 								{
-									final String iClass=CMLib.xml().getValFromPieces(roomData,"ICLAS");
-									final Item newItem=CMClass.getItem(iClass);
-									final HashSet<MOB> doneMOBs=new HashSet<MOB>();
-									if(newItem!=null)
+									Log.errOut("Prop_Artifact","Unknown artifact room: '"+roomID+"' for '"+getItemID()+"'");
+									continue;
+								}
+								final String iClass=lib.getValFromPieces(roomData,"ICLAS");
+								final Item newItem=CMClass.getItem(iClass);
+								final HashSet<MOB> doneMOBs=new HashSet<MOB>();
+								if(newItem!=null)
+								{
+									newItem.basePhyStats().setLevel(lib.getIntFromPieces(roomData,"ILEVL"));
+									newItem.basePhyStats().setAbility(lib.getIntFromPieces(roomData,"IABLE"));
+									newItem.basePhyStats().setRejuv(lib.getIntFromPieces(roomData,"IREJV"));
+									newItem.setUsesRemaining(lib.getIntFromPieces(roomData,"IUSES"));
+									newItem.setMiscText(lib.restoreAngleBrackets(lib.getValFromPieces(roomData,"ITEXT")));
+									newItem.recoverPhyStats();
+									if(!registeredArtifacts.containsKey(getItemID()))
+										registeredArtifacts.put(getItemID(),newItem);
+									else
+										Log.errOut("Prop_Artifact","Possible duplicate artifact: "+newItem.name());
+									MOB foundMOB=null;
+									if(MOBname.length()>0)
 									{
-										newItem.basePhyStats().setLevel(CMLib.xml().getIntFromPieces(roomData,"ILEVL"));
-										newItem.basePhyStats().setAbility(CMLib.xml().getIntFromPieces(roomData,"IABLE"));
-										newItem.basePhyStats().setRejuv(CMLib.xml().getIntFromPieces(roomData,"IREJV"));
-										newItem.setUsesRemaining(CMLib.xml().getIntFromPieces(roomData,"IUSES"));
-										newItem.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(roomData,"ITEXT")));
-										newItem.recoverPhyStats();
-										if(!registeredArtifacts.containsKey(getItemID()))
-											registeredArtifacts.put(getItemID(),newItem);
-										else
-											Log.errOut("Prop_Artifact","Possible duplicate artifact: "+newItem.name());
-										MOB foundMOB=null;
-										if(MOBname.length()>0)
+										for(int i=0;i<R.numInhabitants();i++)
 										{
-											for(int i=0;i<R.numInhabitants();i++)
+											final MOB M=R.fetchInhabitant(i);
+											if((M!=null)
+											&&(M.isMonster())
+											&&(M.name().equals(MOBname))
+											&&(M.getStartRoom()==R)
+											&&(!doneMOBs.contains(M)))
 											{
-												final MOB M=R.fetchInhabitant(i);
+												foundMOB=M;
+												break;
+											}
+										}
+									}
+									final Area A=R.getArea();
+									if((foundMOB==null)&&(MOBname.length()>0))
+									{
+										for(final Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
+										{
+											final Room R2=e.nextElement();
+											for(int i=0;i<R2.numInhabitants();i++)
+											{
+												final MOB M=R2.fetchInhabitant(i);
 												if((M!=null)
 												&&(M.isMonster())
 												&&(M.name().equals(MOBname))
 												&&(M.getStartRoom()==R)
 												&&(!doneMOBs.contains(M)))
 												{
-													foundMOB=M;
+													foundMOB = M;
 													break;
 												}
 											}
 										}
-										final Area A=R.getArea();
-										if((foundMOB==null)&&(MOBname.length()>0))
-										{
-											for(final Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
-											{
-												final Room R2=e.nextElement();
-												for(int i=0;i<R2.numInhabitants();i++)
-												{
-													final MOB M=R2.fetchInhabitant(i);
-													if((M!=null)
-													&&(M.isMonster())
-													&&(M.name().equals(MOBname))
-													&&(M.getStartRoom()==R)
-													&&(!doneMOBs.contains(M)))
-													{
-														foundMOB = M;
-														break;
-													}
-												}
-											}
-										}
-										final Item newItemMinusArtifact=(Item)newItem.copyOf();
-										Ability A2=newItemMinusArtifact.fetchEffect(ID());
-										if(A2!=null)
-											newItemMinusArtifact.delEffect(A2);
-										Item I=null;
-										if(foundMOB!=null)
-										{
-											for(int i=foundMOB.numItems()-1;i>=0;i--)
-											{
-												I=foundMOB.getItem(i);
-												if(I==null)
-													break;
-												if(I.Name().equals(newItemMinusArtifact.Name()))
-												{
-													final Item copyI=(Item)I.copyOf();
-													A2=copyI.fetchEffect(ID());
-													if(A2!=null)
-														copyI.delEffect(A2);
-													if(newItemMinusArtifact.sameAs(copyI))
-														destroyArtifact(I);
-													destroyArtifact(copyI);
-												}
-											}
-											foundMOB.addItem(newItem);
-											newItem.wearAt(newItem.rawProperLocationBitmap());
-										}
-										else
-										if(MOBname.length()==0)
-										{
-											for(int i=R.numItems()-1;i>=0;i--)
-											{
-												I=R.getItem(i);
-												if(I==null)
-													break;
-												if(I.Name().equals(newItemMinusArtifact.Name()))
-												{
-													final Item copyI=(Item)I.copyOf();
-													A2=copyI.fetchEffect(ID());
-													if(A2!=null)
-														copyI.delEffect(A2);
-													if(newItemMinusArtifact.sameAs(copyI))
-														destroyArtifact(I);
-													destroyArtifact(copyI);
-												}
-											}
-											R.addItem(newItem);
-										}
-										else
-										{
-											destroyArtifact(newItemMinusArtifact);
-											Log.errOut("Prop_Artifact","Unable to reset: "+getItemID()+" to "+MOBname+" in "+CMLib.map().getDescriptiveExtendedRoomID(R));
-											waitToReload=System.currentTimeMillis()+10*60000;
-											return true;
-										}
-										destroyArtifact(newItemMinusArtifact);
 									}
+									final Item newItemMinusArtifact=(Item)newItem.copyOf();
+									Ability A2=newItemMinusArtifact.fetchEffect(ID());
+									if(A2!=null)
+										newItemMinusArtifact.delEffect(A2);
+									Item I=null;
+									if(foundMOB!=null)
+									{
+										for(int i=foundMOB.numItems()-1;i>=0;i--)
+										{
+											I=foundMOB.getItem(i);
+											if(I==null)
+												break;
+											if(I.Name().equals(newItemMinusArtifact.Name()))
+											{
+												final Item copyI=(Item)I.copyOf();
+												A2=copyI.fetchEffect(ID());
+												if(A2!=null)
+													copyI.delEffect(A2);
+												if(newItemMinusArtifact.sameAs(copyI))
+													destroyArtifact(I);
+												destroyArtifact(copyI);
+											}
+										}
+										foundMOB.addItem(newItem);
+										newItem.wearAt(newItem.rawProperLocationBitmap());
+									}
+									else
+									if(MOBname.length()==0)
+									{
+										for(int i=R.numItems()-1;i>=0;i--)
+										{
+											I=R.getItem(i);
+											if(I==null)
+												break;
+											if(I.Name().equals(newItemMinusArtifact.Name()))
+											{
+												final Item copyI=(Item)I.copyOf();
+												A2=copyI.fetchEffect(ID());
+												if(A2!=null)
+													copyI.delEffect(A2);
+												if(newItemMinusArtifact.sameAs(copyI))
+													destroyArtifact(I);
+												destroyArtifact(copyI);
+											}
+										}
+										R.addItem(newItem);
+									}
+									else
+									{
+										destroyArtifact(newItemMinusArtifact);
+										Log.errOut("Prop_Artifact","Unable to reset: "+getItemID()+" to "+MOBname+" in "+CMLib.map().getDescriptiveExtendedRoomID(R));
+										waitToReload=System.currentTimeMillis()+10*60000;
+										return true;
+									}
+									destroyArtifact(newItemMinusArtifact);
 								}
-								else
-									Log.errOut("Prop_Artifact","Unknown artifact room artifact: "+roomID+" for "+getItemID());
 							}
 						}
 					}

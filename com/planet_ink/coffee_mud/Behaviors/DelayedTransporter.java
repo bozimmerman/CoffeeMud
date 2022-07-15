@@ -41,8 +41,8 @@ public class DelayedTransporter extends ActiveTicker
 		return "DelayedTransporter";
 	}
 
-	protected Hashtable<String,Integer> transportees=new Hashtable<String,Integer>();
-	protected Vector<String> destRoomNames=new Vector<String>();
+	protected Map<String, Integer>	transportees	= new Hashtable<String, Integer>();
+	protected List<String>			destRoomNames	= new Vector<String>();
 
 	@Override
 	protected int canImproveCode()
@@ -64,18 +64,20 @@ public class DelayedTransporter extends ActiveTicker
 	}
 
 	@Override
-	public void setParms(final String newParms)
+	public void setParms(final String origParms)
 	{
-		String myParms=newParms;
+		// done so copies work
+		transportees = new Hashtable<String, Integer>();
+		destRoomNames = new Vector<String>();
+		String myParms=origParms;
 		int x=myParms.indexOf(';');
 		if(x>0)
 		{
-			final String parmText=myParms.substring(0,x);
-			myParms=myParms.substring(x+1);
-			super.setParms(parmText);
+			final String activeTickParms=myParms.substring(0,x);
+			myParms=myParms.substring(x+1); // and break them for below
+			super.setParms(activeTickParms); // activeticker stuff
 		}
-		destRoomNames=new Vector<String>();
-		transportees=new Hashtable<String,Integer>();
+		super.parms = origParms; // skip activeticker stuff, for now
 		while(myParms.length()>0)
 		{
 			String thisRoom=myParms;
@@ -87,11 +89,9 @@ public class DelayedTransporter extends ActiveTicker
 			}
 			else
 				myParms="";
-
-			if(CMLib.map().getRoom(thisRoom)!=null)
-				destRoomNames.addElement(thisRoom);
+			if(thisRoom.trim().length()>0)
+				destRoomNames.add(thisRoom.trim());
 		}
-		parms=newParms;
 	}
 
 	@Override
@@ -99,7 +99,8 @@ public class DelayedTransporter extends ActiveTicker
 	{
 		super.tick(ticking,tickID);
 		final Room room=this.getBehaversRoom(ticking);
-		if((room!=null)&&(destRoomNames!=null)&&(destRoomNames.size()>0))
+		if((room==null)||(destRoomNames.size()==0))
+			return true;
 		for(int i=0;i<room.numInhabitants();i++)
 		{
 			final MOB inhab=room.fetchInhabitant(i);
@@ -116,7 +117,7 @@ public class DelayedTransporter extends ActiveTicker
 				{
 					if((CMLib.dice().rollPercentage()<chance)||(I.intValue()>maxTicks))
 					{
-						final String roomName=destRoomNames.elementAt(CMLib.dice().roll(1,destRoomNames.size(),-1));
+						final String roomName=destRoomNames.get(CMLib.dice().roll(1,destRoomNames.size(),-1));
 						final Room otherRoom=CMLib.map().getRoom(roomName);
 						if(otherRoom==null)
 							inhab.tell(L("You are whisked nowhere at all, since '@x1' is nowhere to be found.",roomName));

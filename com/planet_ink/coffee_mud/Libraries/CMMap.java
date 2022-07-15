@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMLib.Library;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.collections.MultiEnumeration.MultiEnumeratorBuilder;
@@ -213,7 +214,12 @@ public class CMMap extends StdLibrary implements WorldMap
 		Area A=finder.get(calledThis.toLowerCase());
 		if((A!=null)&&(!A.amDestroyed()))
 			return A;
-		A=areasList.find(calledThis);
+		final SearchIDList<Area> list;
+		synchronized(areasList)
+		{
+			list = areasList;
+		}
+		A=list.find(calledThis);
 		if((A!=null)&&(!A.amDestroyed()))
 		{
 			if(!CMProps.getBoolVar(CMProps.Bool.MAPFINDSNOCACHE))
@@ -1199,6 +1205,25 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Room getRoom(final String calledThis)
 	{
 		return getRoom(null,calledThis);
+	}
+
+	@Override
+	public Room getRoomAllHosts(final String calledThis)
+	{
+		final Room R = getRoom(null,calledThis);
+		if(R!=null)
+			return R;
+		for(final Enumeration<CMLibrary> pl=CMLib.libraries(CMLib.Library.MAP); pl.hasMoreElements(); )
+		{
+			final WorldMap mLib = (WorldMap)pl.nextElement();
+			if(mLib != this)
+			{
+				final Room R2 = mLib.getRoom(calledThis);
+				if(R2 != null)
+					return R2;
+			}
+		}
+		return null;
 	}
 
 	@Override

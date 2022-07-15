@@ -2205,17 +2205,19 @@ public class StdArea implements Area
 	@Override
 	public Room getRoom(String roomID)
 	{
-		if (properRooms.size() == 0)
+		final Map<String,Room> prooms;
+		synchronized (properRooms)
+		{
+			prooms = properRooms;
+		}
+		if (prooms.size() == 0)
 			return null;
 		if (roomID.length() == 0)
 			return null;
-		synchronized (properRooms)
-		{
-			if ((!roomID.startsWith(Name()))
-			&& (roomID.toUpperCase().startsWith(Name().toUpperCase() + "#")))
-				roomID = Name() + roomID.substring(Name().length()); // for case sensitive situations
-			return properRooms.get(roomID);
-		}
+		if ((!roomID.startsWith(Name()))
+		&& (roomID.toUpperCase().startsWith(Name().toUpperCase() + "#")))
+			roomID = Name() + roomID.substring(Name().length()); // for case sensitive situations
+		return prooms.get(roomID);
 	}
 
 	@Override
@@ -2343,7 +2345,12 @@ public class StdArea implements Area
 	@Override
 	public Enumeration<Room> getProperMap()
 	{
-		return new CompleteRoomEnumerator(new IteratorEnumeration<Room>(properRooms.values().iterator()));
+		final Collection<Room> rooms;
+		synchronized(properRooms)
+		{
+			rooms = properRooms.values();
+		}
+		return new CompleteRoomEnumerator(new IteratorEnumeration<Room>(rooms.iterator()));
 	}
 
 	protected final static Comparator<Room> roomComparator = new Comparator<Room>()

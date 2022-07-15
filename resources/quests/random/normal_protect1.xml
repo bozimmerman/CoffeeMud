@@ -429,19 +429,19 @@ settable vars:
 	<STRING ID="target_himher" SELECT="any-1" DEFINE="target_himher">
 		<STRING CONDITION="$target_gender = 'M'">him</STRING>
 		<STRING CONDITION="$target_gender = 'F'">her</STRING>
-		<STRING CONDITION="$target_gender = 'N'">it</STRING>
+		<STRING CONDITION="$target_gender != 'M' and $target_gender != 'F'">it</STRING>
 	</STRING>
 	
 	<STRING ID="target_hisher" SELECT="any-1" DEFINE="target_hisher">
 		<STRING CONDITION="$target_gender = 'M'">his</STRING>
 		<STRING CONDITION="$target_gender = 'F'">her</STRING>
-		<STRING CONDITION="$target_gender = 'N'">it</STRING>
+		<STRING CONDITION="$target_gender != 'M' and $target_gender != 'F'">it</STRING>
 	</STRING>
 	
 	<STRING ID="target_heshe" SELECT="any-1" DEFINE="target_heshe">
 		<STRING CONDITION="$target_gender = 'M'">he</STRING>
 		<STRING CONDITION="$target_gender = 'F'">she</STRING>
-		<STRING CONDITION="$target_gender = 'N'">it</STRING>
+		<STRING CONDITION="$target_gender != 'M' and $target_gender != 'F'">it</STRING>
 	</STRING>
 	
 	<STRING ID="target_area_name" SELECT="any-1" DEFINE="target_area_name">
