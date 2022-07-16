@@ -212,7 +212,7 @@ public class Thief_Trap extends ThiefSkill implements RecipeDriven
 					}
 				}
 			}
-			if(theTrap==null)
+			if((theTrap==null)||(theRecipe==null))
 			{
 				mob.tell(L("'@x1' is not a valid trap name.  Try @x2 LIST.",name,cmdWord.toUpperCase()));
 				return false;

@@ -78,16 +78,19 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			return orConnect;
 		}
 
+		@Override
 		public AbleTriggerCode code()
 		{
 			return triggerCode;
 		}
 
+		@Override
 		public int msgCode()
 		{
 			return cmmsgCode;
 		}
 
+		@Override
 		public String[] parms()
 		{
 			return new String[] { parm1, parm2};
@@ -2093,24 +2096,26 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		// check for valid starter
 		if(putHere.size()>0)
 		{
-			RitualStep r = putHere.get(0);
-			boolean ok=true;
-			while(r != null)
+			int firstActiveCode=-1;
+			for(int i=0;i<putHere.size();i++)
 			{
-				ok = ok && (r.cmmsgCode>0);
-				r=r.orConnect;
-			}
-			if(!ok)
-			{
-				final List<String> okOnes = new ArrayList<String>();
-				for(final AbleTriggerCode t : AbleTriggerCode.values())
+				RitualStep r = putHere.get(i);
+				boolean active=true;
+				while(r != null)
 				{
-					if(getCMMsgCode(t)>0)
-						okOnes.add(t.name());
+					active = active || (r.cmmsgCode>0);
+					r=r.orConnect;
 				}
-				if(errors!=null)
-					errors.add("All rituals must start with one of: "+CMLib.english().toEnglishStringList(okOnes));
-				return null;
+				if(active)
+				{
+					firstActiveCode = i;
+					break;
+				}
+			}
+			if(firstActiveCode > 0)
+			{
+				RitualStep gone = putHere.remove(firstActiveCode);
+				putHere.add(0, gone);
 			}
 		}
 		return putHere.toArray(new AbleTrigger[putHere.size()]);

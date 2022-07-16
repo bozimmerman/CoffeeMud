@@ -127,7 +127,7 @@ public class Prop_ReqNoMOB extends Property implements TriggeredAffect
 					if((root == null)&&(msg.source() instanceof Rideable))
 						root=(Rideable)msg.source();
 					int tries=100;
-					while((root.riding() != null)&&(--tries>0))
+					while((root != null)&&(root.riding() != null)&&(--tries>0))
 						root=root.riding();
 					final LinkedList<Rideable> todo=new LinkedList<Rideable>();
 					if(root != null)
