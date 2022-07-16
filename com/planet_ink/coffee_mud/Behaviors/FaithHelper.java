@@ -72,6 +72,9 @@ public class FaithHelper extends StdBehavior
 		if(parms.length()>0)
 		{
 			deityName=parms;
+			final MOB M = CMLib.map().getDeity(deityName);
+			if(M != null)
+				deityName=M.Name();
 			if(parms.indexOf(' ')>0)
 			{
 				String parms=this.parms;
@@ -120,6 +123,9 @@ public class FaithHelper extends StdBehavior
 			&&(deityName.length()>0)
 			&&(msg.source().baseCharStats().getWorshipCharID().length()==0))
 			{
+				final MOB M = CMLib.map().getDeity(deityName);
+				if(M != null)
+					deityName=M.Name();
 				msg.source().baseCharStats().setWorshipCharID(deityName);
 				msg.source().charStats().setWorshipCharID(deityName);
 			}
