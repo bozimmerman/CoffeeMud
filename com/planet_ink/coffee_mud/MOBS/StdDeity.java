@@ -243,7 +243,8 @@ public class StdDeity extends StdMOB implements Deity
 	public RitualState getCreateRitualState(final MOB mob, final RitualType type)
 	{
 		final RitualTracker tracker = getCreateRitualTracker(mob);
-		return tracker.getState(type);
+		RitualState state = tracker.getState(type);
+		return state;
 	}
 
 	public void clearState(final MOB mob, final RitualType type)
