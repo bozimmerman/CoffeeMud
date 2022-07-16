@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityComponents.AbleTrigger;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityComponents.AbleTriggerCode;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -277,14 +278,15 @@ public interface AbilityComponents extends CMLibrary
 	 *
 	 * @see AbilityComponents.AbleTriggerCode
 	 * @see AbilityComponents.AbleTriggerConnector
-	 * @see AbilityComponents#genNextAbleTrigger(MOB, List, Map, Map)
-	 * @see AbilityComponents#getAbleTriggerDesc(List)
-	 * @see AbilityComponents#ableTriggCheck(CMMsg, List, String, Set, List, Map, Map)
+	 * @see AbilityComponents#genNextAbleTrigger(AbleTrigger[], AbleTriggState)
+	 * @see AbilityComponents#getAbleTriggerDesc(AbleTrigger[])
+	 * @see AbilityComponents#ableTriggCheck(CMMsg, AbleTriggState, AbleTrigger[])
 	 *
 	 * @param trigger the encoded ritual string
+	 * @param errors TODO
 	 * @return the list of parsed triggers, or null if something went wrong.
 	 */
-	public List<AbleTrigger> parseAbleTriggers(String trigger);
+	public AbleTrigger[] parseAbleTriggers(String trigger, List<String> errors);
 
 	/**
 	 * The engine of the ritual system, this method checks if the message
@@ -293,66 +295,52 @@ public interface AbilityComponents extends CMLibrary
 	 * message loop, it will set the ignoreOf to the source of the message,
 	 * and if it requires a wait, will add him to the waitingFor list.  The
 	 * holyName is required for certain triggers with certain parameters.
-	 * It returns true if anything changed, thus causing the trigParts to
-	 * be re-evaluated.
+	 * It returns true if the entire ritual has been completed.
 	 *
 	 * @see AbilityComponents.AbleTriggerCode
 	 * @see AbilityComponents.AbleTriggerConnector
-	 * @see AbilityComponents#parseAbleTriggers(String)
-	 * @see AbilityComponents#genNextAbleTrigger(MOB, List, Map, Map)
-	 * @see AbilityComponents#getAbleTriggerDesc(List)
+	 * @see AbilityComponents#parseAbleTriggers(String, List)
+	 * @see AbilityComponents#genNextAbleTrigger(AbleTrigger[], AbleTriggState)
+	 * @see AbilityComponents#getAbleTriggerDesc(AbleTrigger[])
 	 *
 	 * @param msg the event that occurred, and might be part of this ritual
-	 * @param waitingFor a global list to add to if a mob requires a ping
-	 * @param holyName the name of the holiest relevant person involved
-	 * @param ignoreOf a global list to add to if the mob should be ignored
-	 * @param trigsV the actual ritual itself
-	 * @param trigParts the global booleans showing which parts have been done
-	 * @param trigTimes a global time that a current wait is waiting for
-	 * @return true if a step was done
+	 * @param state TODO
+	 * @param triggers the actual ritual itself
+	 * @return true if the entire ritual is completed
 	 */
 	public boolean ableTriggCheck(final CMMsg msg,
-								  final List<MOB> waitingFor,
-								  final String holyName,
-								  final Set<MOB> ignoreOf,
-								  final List<AbleTrigger> trigsV,
-								  final Map<String, boolean[]> trigParts,
-								  final Map<String, Long> trigTimes);
+								  final AbleTriggState state,
+								  final AbleTrigger[] triggers);
 
 	/**
 	 * Generates an a message, if necessary, for the given mob, which is part
 	 * of a ritual
-	 *
+	 * @param triggers the service trigger list
+	 * @param trigState the global booleans showing which parts have been done
 	 * @see AbilityComponents.AbleTriggerCode
 	 * @see AbilityComponents.AbleTriggerConnector
-	 * @see AbilityComponents#parseAbleTriggers(String)
-	 * @see AbilityComponents#getAbleTriggerDesc(List)
-	 * @see AbilityComponents#ableTriggCheck(CMMsg, List, String, Set, List, Map, Map)
+	 * @see AbilityComponents#parseAbleTriggers(String, List)
+	 * @see AbilityComponents#getAbleTriggerDesc(AbleTrigger[])
+	 * @see AbilityComponents#ableTriggCheck(CMMsg, AbleTriggState, AbleTrigger[])
 	 *
-	 * @param mob the mob who needs to do something
-	 * @param svcTriggsV the service trigger list
-	 * @param trigParts the global booleans showing which parts have been done
-	 * @param trigTimes a global time that a current wait is waiting for
 	 * @return null, or a message that needs doing
 	 */
-	public CMMsg genNextAbleTrigger(final MOB mob,
-									final List<AbleTrigger> svcTriggsV,
-									final Map<String, boolean[]> trigParts,
-									final Map<String, Long> trigTimes);
+	public CMMsg genNextAbleTrigger(final AbleTrigger[] triggers,
+									final AbleTriggState trigState);
 
 	/**
 	 * Returns a readable description of the given ritual
 	 *
 	 * @see AbilityComponents.AbleTriggerCode
 	 * @see AbilityComponents.AbleTriggerConnector
-	 * @see AbilityComponents#parseAbleTriggers(String)
-	 * @see AbilityComponents#genNextAbleTrigger(MOB, List, Map, Map)
-	 * @see AbilityComponents#ableTriggCheck(CMMsg, List, String, Set, List, Map, Map)
+	 * @see AbilityComponents#parseAbleTriggers(String, List)
+	 * @see AbilityComponents#genNextAbleTrigger(AbleTrigger[], AbleTriggState)
+	 * @see AbilityComponents#ableTriggCheck(CMMsg, AbleTriggState, AbleTrigger[])
 	 *
-	 * @param V the ritual
+	 * @param triggers the ritual
 	 * @return the description
 	 */
-	public String getAbleTriggerDesc(final List<AbleTrigger> V);
+	public String getAbleTriggerDesc(final AbleTrigger[] triggers);
 
 	/**
 	 * The definition of the key words in the ritual definitions.
@@ -388,6 +376,7 @@ public interface AbilityComponents extends CMLibrary
 		YOUSAY,
 		OTHERSAY,
 		ALLSAY,
+		SOCIAL,
 		;
 	}
 
@@ -401,22 +390,95 @@ public interface AbilityComponents extends CMLibrary
 	public interface AbleTrigger
 	{
 		/**
-		 * The connector to the Previous trigger
+		 * The connector to an alternative trigger to this one
 		 * @see AbilityComponents.AbleTriggerConnector
-		 * @return the connector
+		 * @return the connector to another trigger, if it exists
 		 */
-		public AbleTriggerConnector connector();
+		public AbleTrigger or();
+
+		/**
+		 * Returns the trigger code for
+		 * @return the trigger code for
+		 */
+		public AbleTriggerCode code();
+
+		/**
+		 * Returns the CMMsg source minor code, or -999
+		 * for this trigger.
+		 * @return the CMMsg source minor code, or -999
+		 */
+		public int msgCode();
+
+		/**
+		 * Returns the parameters for the trigger code
+		 * as a 2-dimensional array.  Entries may be null.
+		 *
+		 * @return the parameters for the trigger code
+		 */
+		public String[] parms();
 	}
 
 	/**
-	 * Separator enum constants for ritual definitions.
+	 * A state for a particular user in the course of triggering
+	 * a ritual, service, form magic, etc..
+	 *
 	 * @author Bo Zimmerman
 	 *
 	 */
-	public enum AbleTriggerConnector
+	public interface AbleTriggState
 	{
-		AND,
-		OR
+		/**
+		 * Returns the actor of this trigger.  If null, the
+		 * trigger should be deleted.
+		 *
+		 * @return the actor of this trigger, or null
+		 */
+		public MOB mob();
+
+		/**
+		 * Returns the current completed state for this ritual.
+		 *
+		 * @return -1, or the index into the trigger in 0
+		 */
+		public int completed();
+
+		/**
+		 * Sets the current completed state for this ritual.
+		 */
+		public void setCompleted();
+
+		/**
+		 * Returns a  when the last trigger was done,
+		 * helping show when waiting triggers should complete.
+		 *
+		 * @return the time of last completion
+		 */
+		public long time();
+
+		/**
+		 * Sets whether actions by this user should be
+		 * ignored for the purposes of triggers.
+		 * This changes quickly and often.
+		 *
+		 * @param truefalse true to ignore, false to allow
+		 */
+		public void setIgnore(boolean truefalse);
+
+		/**
+		 * Some triggers use placeholders for the names
+		 * of deities.  This is that name for this ritual.
+		 *
+		 * @return "", or the name of a deity
+		 */
+		public String getHolyName();
+
+		/**
+		 * Sets whether this user is waiting for
+		 * something to happen.
+		 *
+		 * @param truefalse true if waiting, false otherwise
+		 */
+		public void setWait(boolean truefalse);
 	}
 
 	/**

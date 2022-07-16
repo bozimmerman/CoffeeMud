@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.lang.ref.*;
 import java.util.*;
 
 /*
@@ -56,27 +57,16 @@ public class StdDeity extends StdMOB implements Deity
 
 	protected final PrioritizingLimitedMap<String,int[]> blacklist=new PrioritizingLimitedMap<String,int[]>(20,30*60000L,60*60000L,100);
 
-	protected List<AbleTrigger>	worshipTriggers		= new Vector<AbleTrigger>();
-	protected List<AbleTrigger>	worshipCurseTriggers= new Vector<AbleTrigger>();
-	protected List<AbleTrigger>	clericTriggers		= new Vector<AbleTrigger>();
-	protected List<AbleTrigger>	serviceTriggers		= new Vector<AbleTrigger>();
-	protected List<AbleTrigger>	clericPowerTriggers	= new Vector<AbleTrigger>();
-	protected List<AbleTrigger>	clericCurseTriggers	= new Vector<AbleTrigger>();
-	protected List<DeityPower>		blessings			= new SVector<DeityPower>();
-	protected List<DeityPower>		curses				= new SVector<DeityPower>();
-	protected List<Ability>			powers				= new SVector<Ability>();
-	protected Map<String, boolean[]>trigBlessingParts	= new SHashtable<String, boolean[]>();
-	protected Map<String, Long>		trigBlessingTimes	= new SHashtable<String, Long>();
-	protected Map<String, boolean[]>trigPowerParts		= new SHashtable<String, boolean[]>();
-	protected Map<String, Long>		trigPowerTimes		= new SHashtable<String, Long>();
-	protected Map<String, boolean[]>trigCurseParts		= new SHashtable<String, boolean[]>();
-	protected Map<String, Long>		trigCurseTimes		= new SHashtable<String, Long>();
-	protected Map<String, boolean[]>trigServiceParts	= new SHashtable<String, boolean[]>();
-	protected Map<String, Long>		trigServiceTimes	= new SHashtable<String, Long>();
-	protected List<WorshipService>	services			= new SVector<WorshipService>();
-	protected List<MOB>				waitingFor			= new SLinkedList<MOB>();
-	protected Set<MOB>				ignoreOf			= new SHashSet<MOB>();
-	protected Set<Integer>			neverTriggers		= new XHashSet<Integer>(new Integer[] {
+	protected Map<RitualType, AbleTrigger[]>	rituals		= new SHashtable<RitualType, AbleTrigger[]>();
+	protected Map<String, RitualTracker>		trackers	= new Hashtable<String, RitualTracker>();
+	protected List<DeityPower>					blessings	= new SVector<DeityPower>();
+	protected List<DeityPower>					curses		= new SVector<DeityPower>();
+	protected List<Ability>						powers		= new SVector<Ability>();
+	protected List<WorshipService>				services	= new SVector<WorshipService>();
+	protected List<MOB>							waitingFor	= new SLinkedList<MOB>();
+	protected Set<String>						ignoreOf	= new LimitedTreeSet<String>();
+
+	protected final Set<Integer>	neverTriggers		= new XHashSet<Integer>(new Integer[] {
 		Integer.valueOf(CMMsg.TYP_ENTER),
 		Integer.valueOf(CMMsg.TYP_LEAVE),
 		Integer.valueOf(CMMsg.TYP_LOOK)
@@ -99,11 +89,12 @@ public class StdDeity extends StdMOB implements Deity
 
 	private static class WorshipService
 	{
-		public MOB cleric = null;
-		public Room room = null;
-		public boolean serviceCompleted = false;
-		public long startTime = System.currentTimeMillis();
-		public List<MOB> parishaners = new Vector<MOB>();
+		public MOB			cleric				= null;
+		public Room			room				= null;
+		public boolean		serviceCompleted	= false;
+		public RitualState	state				= null;
+		public long			startTime			= System.currentTimeMillis();
+		public List<MOB>	parishaners			= new Vector<MOB>();
 	}
 
 	private static class DeityPower
@@ -117,30 +108,183 @@ public class StdDeity extends StdMOB implements Deity
 		}
 	}
 
+	protected class RitualState implements AbilityComponents.AbleTriggState
+	{
+		private volatile int			completed	= -1;
+		private final String			holyName;
+		private final Reference<MOB>	charM;
+		private volatile long			time		= System.currentTimeMillis();
+
+		public RitualState(final MOB charM, final String holyName)
+		{
+			this.charM = new WeakReference<MOB>(charM);
+			this.holyName = holyName;
+		}
+
+		@Override
+		public MOB mob()
+		{
+			return charM.get();
+		}
+
+		@Override
+		public synchronized int completed()
+		{
+			return completed;
+		}
+
+		@Override
+		public synchronized void setCompleted()
+		{
+			completed++;
+			time=System.currentTimeMillis();
+		}
+
+		@Override
+		public long time()
+		{
+			return time;
+		}
+
+		@Override
+		public String getHolyName()
+		{
+			return holyName;
+		}
+
+		@Override
+		public void setIgnore(final boolean truefalse)
+		{
+			synchronized(ignoreOf)
+			{
+				final MOB charM=this.charM.get();
+				if(charM != null)
+				{
+					if(truefalse)
+						ignoreOf.add(charM.Name());
+					else
+						ignoreOf.remove(charM.Name());
+				}
+			}
+		}
+
+		@Override
+		public void setWait(final boolean truefalse)
+		{
+			synchronized(waitingFor)
+			{
+				final MOB charM=this.charM.get();
+				if(charM != null)
+				{
+					if(truefalse)
+						waitingFor.add(charM);
+					else
+						waitingFor.remove(charM);
+				}
+			}
+		}
+
+	}
+
+	protected final class RitualTracker
+	{
+		private final Map<RitualType, RitualState>	states	= new LimitedTreeMap<RitualType, RitualState>();
+		private final Reference<MOB>				charM;
+
+		public RitualTracker(final MOB mob)
+		{
+			this.charM = new WeakReference<MOB>(mob);
+
+		}
+
+		public RitualState getState(final RitualType type)
+		{
+			final MOB mob=charM.get();
+			if(mob==null)
+			{
+				states.clear();
+				return null;
+			}
+			if(states.containsKey(type))
+				return states.get(type);
+			final RitualState state = new RitualState(mob,Name());
+			states.put(type, state);
+			return state;
+		}
+	}
+
+	public RitualTracker getRitualTracker(final MOB mob)
+	{
+		synchronized(trackers)
+		{
+			if(trackers.containsKey(mob.Name()))
+			{
+				final RitualTracker tracker = trackers.get(mob.Name());
+				if(tracker.charM.get()!=null)
+					return tracker;
+			}
+		}
+		return null;
+	}
+
+	public RitualTracker getCreateRitualTracker(final MOB mob)
+	{
+		RitualTracker tracker = getRitualTracker(mob);
+		if(tracker != null)
+			return tracker;
+		tracker = new RitualTracker(mob);
+		synchronized(trackers)
+		{
+			trackers.put(mob.Name(), tracker);
+		}
+		return tracker;
+	}
+
+	public RitualState getCreateRitualState(final MOB mob, final RitualType type)
+	{
+		final RitualTracker tracker = getCreateRitualTracker(mob);
+		return tracker.getState(type);
+	}
+
+	public void clearState(final MOB mob, final RitualType type)
+	{
+		final RitualTracker tracker = getRitualTracker(mob);
+		if(tracker != null)
+			tracker.states.remove(type);
+	}
+
+	public RitualState getRitualState(final MOB mob, final RitualType type, final int msgCode, final Environmental tool)
+	{
+		final RitualTracker tracker = getRitualTracker(mob);
+		final RitualState state = (tracker != null)?tracker.states.get(type):null;
+		final int peekIndex = (state!=null)?(state.completed()+1):0;
+		final AbleTrigger[] triggers = rituals.get(type);
+		if(peekIndex >= triggers.length-1)
+			return state;
+		AbleTrigger trig = triggers[peekIndex];
+		while(trig != null)
+		{
+			if((trig.msgCode()<0)
+			||(trig.msgCode()==msgCode)
+			||((tool instanceof Social)&&(trig.code()==AbleTriggerCode.SOCIAL)))
+				return this.getCreateRitualState(mob, type);
+			trig = trig.or();
+		}
+		return null;
+	}
+
 	@Override
 	protected void cloneFix(final MOB E)
 	{
 		super.cloneFix(E);
 		if(E instanceof StdDeity)
 		{
-			worshipTriggers=new XVector<AbleTrigger>(((StdDeity)E).worshipTriggers);
-			worshipCurseTriggers=new XVector<AbleTrigger>(((StdDeity)E).worshipCurseTriggers);
-			clericTriggers=new XVector<AbleTrigger>(((StdDeity)E).clericTriggers);
-			clericPowerTriggers=new XVector<AbleTrigger>(((StdDeity)E).clericPowerTriggers);
-			clericCurseTriggers=new XVector<AbleTrigger>(((StdDeity)E).clericCurseTriggers);
+			rituals	= new SHashtable<RitualType, AbleTrigger[]>(((StdDeity)E).rituals);
 			blessings=new XVector<DeityPower>(((StdDeity)E).blessings);
 			curses=new XVector<DeityPower>(((StdDeity)E).curses);
 			powers=new XVector<Ability>(((StdDeity)E).powers);
 			waitingFor = new SLinkedList<MOB>();
-			ignoreOf = new SHashSet<MOB>();
-			trigBlessingParts=new XHashtable<String,boolean[]>(((StdDeity)E).trigBlessingParts);
-			trigBlessingTimes=new XHashtable<String,Long>(((StdDeity)E).trigBlessingTimes);
-			trigPowerParts=new XHashtable<String,boolean[]>(((StdDeity)E).trigPowerParts);
-			trigPowerTimes=new XHashtable<String,Long>(((StdDeity)E).trigPowerTimes);
-			trigCurseParts=new XHashtable<String,boolean[]>(((StdDeity)E).trigCurseParts);
-			trigCurseTimes=new XHashtable<String,Long>(((StdDeity)E).trigCurseTimes);
-			trigServiceParts=new XHashtable<String,boolean[]>(((StdDeity)E).trigServiceParts);
-			trigServiceTimes=new XHashtable<String,Long>(((StdDeity)E).trigServiceTimes);
+			ignoreOf = new LimitedTreeSet<String>();
 		}
 	}
 
@@ -176,13 +320,25 @@ public class StdDeity extends StdMOB implements Deity
 		return clericRitual;
 	}
 
+	protected void setRitual(final RitualType type, final String ritual)
+	{
+		final List<String> errors = new ArrayList<String>(1);
+		final AbleTrigger[] triggers = CMLib.ableComponents().parseAbleTriggers(ritual, errors);
+		if(triggers == null)
+		{
+			for(final String error : errors)
+				Log.errOut(name(),error);
+			rituals.put(type, new AbleTrigger[0]);
+		}
+		else
+			rituals.put(type, triggers);
+	}
+
 	@Override
 	public void setClericRitual(final String ritual)
 	{
 		clericRitual=ritual;
-		clericTriggers = CMLib.ableComponents().parseAbleTriggers(ritual);
-		if(clericTriggers == null)
-			clericTriggers = new Vector<AbleTrigger>(1);
+		setRitual(RitualType.CLERIC_BLESSING, ritual);
 	}
 
 	@Override
@@ -197,9 +353,7 @@ public class StdDeity extends StdMOB implements Deity
 	public void setWorshipRitual(final String ritual)
 	{
 		worshipRitual=ritual;
-		worshipTriggers = CMLib.ableComponents().parseAbleTriggers(ritual);
-		if(worshipTriggers == null)
-			worshipTriggers = new Vector<AbleTrigger>(1);
+		setRitual(RitualType.WORSHIP_BLESSING, ritual);
 	}
 
 	@Override
@@ -214,9 +368,7 @@ public class StdDeity extends StdMOB implements Deity
 		if((ritual==null)||(ritual.length()==0))
 			ritual="SAY Bless us "+name()+"&wait 10&wait 10&ALLSAY Amen.&SAY Go in peace";
 		serviceRitual=ritual;
-		serviceTriggers = CMLib.ableComponents().parseAbleTriggers(ritual);
-		if(serviceTriggers == null)
-			serviceTriggers = new Vector<AbleTrigger>(1);
+		setRitual(RitualType.SERVICE, ritual);
 	}
 
 
@@ -230,8 +382,10 @@ public class StdDeity extends StdMOB implements Deity
 	public String getClericTriggerDesc()
 	{
 		if(numBlessings()>0)
+		{
 			return L("The blessings of @x1 are placed upon @x2 clerics whenever the cleric does the following: @x3.",
-					name(),charStats().hisher(),CMLib.ableComponents().getAbleTriggerDesc(clericTriggers));
+					name(),charStats().hisher(),CMLib.ableComponents().getAbleTriggerDesc(rituals.get(RitualType.CLERIC_BLESSING)));
+		}
 		return "";
 	}
 
@@ -249,7 +403,7 @@ public class StdDeity extends StdMOB implements Deity
 			return L("The blessings of @x1 are placed upon @x2 worshippers whenever they do the following: @x3.",
 					name(),
 					charStats().hisher(),
-					CMLib.ableComponents().getAbleTriggerDesc(worshipTriggers));
+					CMLib.ableComponents().getAbleTriggerDesc(rituals.get(RitualType.WORSHIP_BLESSING)));
 		}
 		return "";
 	}
@@ -258,7 +412,7 @@ public class StdDeity extends StdMOB implements Deity
 	public String getServiceTriggerDesc()
 	{
 		return L("The services of @x1 are the following: @x2.",
-				name(),CMLib.ableComponents().getAbleTriggerDesc(serviceTriggers));
+				name(),CMLib.ableComponents().getAbleTriggerDesc(rituals.get(RitualType.SERVICE)));
 	}
 
 	@Override
@@ -481,9 +635,9 @@ public class StdDeity extends StdMOB implements Deity
 
 	public synchronized void bestowBlessings(final MOB mob)
 	{
-		ignoreOf.add(mob);
 		try
 		{
+			ignoreOf.add(mob.Name());
 			final Room R=mob.location();
 			if((!alreadyBlessed(mob))
 			&&(numBlessings()>0)
@@ -520,13 +674,13 @@ public class StdDeity extends StdMOB implements Deity
 		}
 		finally
 		{
-			ignoreOf.remove(mob);
+			ignoreOf.remove(mob.Name());
 		}
 	}
 
 	public synchronized void bestowPowers(final MOB mob)
 	{
-		ignoreOf.add(mob);
+		ignoreOf.add(mob.Name());
 		try
 		{
 			if((!alreadyPowered(mob))&&(numPowers()>0))
@@ -543,13 +697,13 @@ public class StdDeity extends StdMOB implements Deity
 		}
 		finally
 		{
-			ignoreOf.remove(mob);
+			ignoreOf.remove(mob.Name());
 		}
 	}
 
 	public synchronized void bestowCurses(final MOB mob)
 	{
-		ignoreOf.add(mob);
+		ignoreOf.add(mob.Name());
 		try
 		{
 			final Room R=mob.location();
@@ -587,7 +741,7 @@ public class StdDeity extends StdMOB implements Deity
 		}
 		finally
 		{
-			ignoreOf.remove(mob);
+			ignoreOf.remove(mob.Name());
 		}
 	}
 
@@ -674,7 +828,7 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		synchronized(ignoreOf)
 		{
-			return ignoreOf.contains(mob);
+			return ignoreOf.contains(mob.Name());
 		}
 	}
 
@@ -735,10 +889,11 @@ public class StdDeity extends StdMOB implements Deity
 					{
 					case SERVICE:
 						{
-							final List<AbleTrigger> svcTriggsV=serviceTriggers;
-							if((svcTriggsV!=null)&&(svcTriggsV.size()>0))
+							final AbleTrigger[] svcTriggsV=rituals.get(RitualType.SERVICE);
+							if((svcTriggsV!=null)&&(svcTriggsV.length>0))
 							{
-								final CMMsg msg2=CMLib.ableComponents().genNextAbleTrigger(msg.source(), svcTriggsV, trigServiceParts, trigServiceTimes);
+								final RitualState state = getCreateRitualState(msg.source(), RitualType.SERVICE);
+								final CMMsg msg2=CMLib.ableComponents().genNextAbleTrigger(svcTriggsV, state);
 								if(msg2 != null)
 									msg.addTrailerMsg(msg2);
 							}
@@ -780,64 +935,43 @@ public class StdDeity extends StdMOB implements Deity
 			{
 				if(numBlessings()>0)
 				{
-					List<AbleTrigger> triggsV=worshipTriggers;
+					RitualType type = RitualType.WORSHIP_BLESSING;
 					if(msg.source().charStats().getStat(CharStats.STAT_FAITH)>=100)
-						triggsV=clericTriggers;
-					if((triggsV!=null)&&(triggsV.size()>0))
-					{
-						final boolean recheck=CMLib.ableComponents().ableTriggCheck(msg,waitingFor,Name(),ignoreOf,triggsV,trigBlessingParts,trigBlessingTimes);
+						type = RitualType.CLERIC_BLESSING;
 
-						if((recheck)
+					final AbleTrigger[] triggsV=rituals.get(type);
+					final RitualState state = getRitualState(msg.source(), type, msg.sourceMinor(), msg.tool());
+					if((triggsV!=null)
+					&&(state!=null)
+					&&(triggsV.length>0))
+					{
+						final boolean done=CMLib.ableComponents().ableTriggCheck(msg,state,triggsV);
+						if((done)
 						&&(!isIgnoring(msg.source()))
 						&&(!alreadyBlessed(msg.source())))
 						{
-							final boolean[] checks=trigBlessingParts.get(msg.source().Name());
-							if((checks!=null)&&(checks.length==triggsV.size())&&(checks.length>0))
-							{
-								boolean rollingTruth=checks[0];
-								for(int v=1;v<triggsV.size();v++)
-								{
-									final AbleTrigger DT=triggsV.get(v);
-									if(DT.connector()==AbleTriggerConnector.AND)
-										rollingTruth=rollingTruth&&checks[v];
-									else
-										rollingTruth=rollingTruth||checks[v];
-								}
-								if(rollingTruth)
-									bestowBlessings(msg.source());
-							}
+							clearState(msg.source(),type);
+							bestowBlessings(msg.source());
 						}
 					}
 				}
 				if(numCurses()>0)
 				{
-					List<AbleTrigger> triggsV=worshipCurseTriggers;
+					RitualType type = RitualType.WORSHIP_CURSE;
 					if(msg.source().charStats().getStat(CharStats.STAT_FAITH)>=100)
-						triggsV=clericCurseTriggers;
+						type = RitualType.CLERIC_CURSE;
+					final AbleTrigger[] triggsV=rituals.get(type);
+					final RitualState state = getRitualState(msg.source(), type, msg.sourceMinor(), msg.tool());
 					if((triggsV!=null)
-					&&(triggsV.size()>0))
+					&&(state!=null)
+					&&(triggsV.length>0))
 					{
-						final boolean recheck=CMLib.ableComponents().ableTriggCheck(msg,waitingFor,Name(),ignoreOf,triggsV,trigCurseParts,trigCurseTimes);
-						if((recheck)
+						final boolean done=CMLib.ableComponents().ableTriggCheck(msg,state,triggsV);
+						if((done)
 						&&(!isIgnoring(msg.source())))
 						{
-							final boolean[] checks=trigCurseParts.get(msg.source().Name());
-							if((checks!=null)
-							&&(checks.length==triggsV.size())
-							&&(checks.length>0))
-							{
-								boolean rollingTruth=checks[0];
-								for(int v=1;v<triggsV.size();v++)
-								{
-									final AbleTrigger DT=triggsV.get(v);
-									if(DT.connector()==AbleTriggerConnector.AND)
-										rollingTruth=rollingTruth&&checks[v];
-									else
-										rollingTruth=rollingTruth||checks[v];
-								}
-								if(rollingTruth)
-									bestowCurses(msg.source());
-							}
+							clearState(msg.source(),type);
+							bestowCurses(msg.source());
 						}
 					}
 				}
@@ -845,31 +979,19 @@ public class StdDeity extends StdMOB implements Deity
 				&&((msg.source().charStats().getStat(CharStats.STAT_FAITH)>=100)
 					||(msg.source().isPlayer() && msg.source().isAttributeSet(Attrib.SYSOPMSGS))))
 				{
-					final List<AbleTrigger> triggsV=clericPowerTriggers;
+					final AbleTrigger[] triggsV=rituals.get(RitualType.POWER);
+					final RitualState state = getRitualState(msg.source(), RitualType.POWER, msg.sourceMinor(), msg.tool());
 					if((triggsV!=null)
-					&&(triggsV.size()>0))
+					&&(state!=null)
+					&&(triggsV.length>0))
 					{
-						final boolean recheck=CMLib.ableComponents().ableTriggCheck(msg,waitingFor,Name(),ignoreOf,triggsV,trigPowerParts,trigPowerTimes);
-
-						if((recheck)
+						final boolean done=CMLib.ableComponents().ableTriggCheck(msg,state,triggsV);
+						if((done)
 						&&(!isIgnoring(msg.source()))
 						&&(!alreadyPowered(msg.source())))
 						{
-							final boolean[] checks=trigPowerParts.get(msg.source().Name());
-							if((checks!=null)&&(checks.length==triggsV.size())&&(checks.length>0))
-							{
-								boolean rollingTruth=checks[0];
-								for(int v=1;v<triggsV.size();v++)
-								{
-									final AbleTrigger DT=triggsV.get(v);
-									if(DT.connector()==AbleTriggerConnector.AND)
-										rollingTruth=rollingTruth&&checks[v];
-									else
-										rollingTruth=rollingTruth||checks[v];
-								}
-								if(rollingTruth)
-									bestowPowers(msg.source());
-							}
+							clearState(msg.source(),RitualType.POWER);
+							bestowPowers(msg.source());
 						}
 					}
 				}
@@ -880,42 +1002,33 @@ public class StdDeity extends StdMOB implements Deity
 					||((msg.source().charStats().getStat(CharStats.STAT_FAITH)>=1000)
 						&&(Name().equals(msg.source().charStats().getWorshipCharID())))))
 				{
-					final List<AbleTrigger> trigsV=serviceTriggers;
-					if((trigsV!=null)
-					&&(trigsV.size()>0))
+					final AbleTrigger[] triggsV=rituals.get(RitualType.SERVICE);
+					final RitualState state = getRitualState(msg.source(), RitualType.SERVICE, msg.sourceMinor(), msg.tool());
+					if((triggsV!=null)
+					&&(state!=null)
+					&&(triggsV.length>0))
 					{
-						final boolean recheck=CMLib.ableComponents().ableTriggCheck(msg,waitingFor,Name(),ignoreOf,trigsV,trigServiceParts,trigServiceTimes);
-						if((recheck)
+						final boolean done=CMLib.ableComponents().ableTriggCheck(msg,state,triggsV);
+						if((done)
 						&&(!isIgnoring(msg.source()))
 						&&(!alreadyServiced(msg.source(),msg.source().location())))
 						{
-							final boolean[] checks=trigServiceParts.get(msg.source().Name());
-							if((checks!=null)&&(checks.length==trigsV.size())&&(checks.length>0))
-							{
-								boolean rollingTruth=checks[0];
-								for(int v=1;v<trigsV.size();v++)
-								{
-									final AbleTrigger DT=trigsV.get(v);
-									if(rollingTruth)
-										startServiceIfNecessary(msg.source(),msg.source().location());
-									if(DT.connector()==AbleTriggerConnector.AND)
-										rollingTruth=rollingTruth&&checks[v];
-									else
-										rollingTruth=rollingTruth||checks[v];
-								}
-								if(rollingTruth)
-									finishService(msg.source(),msg.source().location());
-							}
+							clearState(msg.source(),RitualType.SERVICE);
+							finishService(msg.source(),msg.source().location());
 						}
+						else
+						if((!done)
+						&&(state.completed()>=0))
+							startServiceIfNecessary(msg.source(),state,msg.source().location());
 					}
 				}
 			}
 		}
 	}
 
-	protected void startServiceIfNecessary(final MOB mob, final Room room)
+	protected void startServiceIfNecessary(final MOB mob, final RitualState state, final Room room)
 	{
-		if((mob==null)||(room==null))
+		if((mob==null)||(room==null)||(state==null))
 			return;
 		final List<MOB> parishaners=new ArrayList<MOB>();
 		synchronized(services)
@@ -936,8 +1049,10 @@ public class StdDeity extends StdMOB implements Deity
 			service.room=room;
 			service.parishaners = parishaners;
 			service.startTime = System.currentTimeMillis();
+			service.state = state;
 			service.cleric = mob;
 			service.serviceCompleted = false;
+
 			services.add(service);
 			final Deity.DeityWorshipper A=CMLib.law().getClericInfusion(room);
 			if(A instanceof Ability)
@@ -1098,8 +1213,6 @@ public class StdDeity extends StdMOB implements Deity
 		undoService(service.parishaners);
 		final int exp=(int)Math.round(CMath.div(totalLevels,mob.phyStats().level())*10.0);
 		CMLib.leveler().postExperience(mob,null,null,exp,false);
-		trigServiceParts.remove(mob.Name());
-		trigServiceTimes.remove(mob.Name());
 		return true;
 	}
 
@@ -1144,8 +1257,6 @@ public class StdDeity extends StdMOB implements Deity
 			if(A instanceof Ability)
 				((Ability)A).setAbilityCode(0);
 		}
-		trigServiceParts.remove(mob.Name());
-		trigServiceTimes.remove(mob.Name());
 		return true;
 	}
 
@@ -1266,60 +1377,29 @@ public class StdDeity extends StdMOB implements Deity
 					}
 				}
 			}
-			final long curTime=System.currentTimeMillis()-60000;
-			Long L=null;
-			for(final String key : trigBlessingTimes.keySet())
+			if(services.size()>0)
 			{
-				L=trigBlessingTimes.get(key);
-				if((L!=null)&&(L.longValue()<curTime))
+				final long curTime=System.currentTimeMillis()-120000;
+				LinkedList<WorshipService> delThese = null;
+				synchronized(services)
 				{
-					trigBlessingTimes.remove(key);
-					trigBlessingParts.remove(key);
-				}
-			}
-			for(final String key : trigPowerTimes.keySet())
-			{
-				L=trigPowerTimes.get(key);
-				if((L!=null)&&(L.longValue()<curTime))
-				{
-					trigPowerTimes.remove(key);
-					trigPowerParts.remove(key);
-				}
-			}
-			for(final String key : trigCurseTimes.keySet())
-			{
-				L=trigCurseTimes.get(key);
-				if((L!=null)&&(L.longValue()<curTime))
-				{
-					trigCurseTimes.remove(key);
-					trigCurseParts.remove(key);
-				}
-			}
-			for(final String key : trigServiceTimes.keySet())
-			{
-				L=trigServiceTimes.get(key);
-				if((L!=null)&&(L.longValue()<curTime))
-				{
-					LinkedList<WorshipService> delThese = null;
-					synchronized(services)
+					for(final WorshipService service : services)
 					{
-						for(final WorshipService service : services)
+						if((service.state!=null)
+						&&(service.state.time()<curTime)
+						&&(service.cleric!=null)
+						&&(!service.serviceCompleted))
 						{
-							if((service.cleric!=null)
-							&&(service.cleric.Name().equalsIgnoreCase(key))
-							&&(!service.serviceCompleted))
-							{
-								if(delThese == null)
-									delThese = new LinkedList<WorshipService>();
-								delThese.add(service);
-							}
+							if(delThese == null)
+								delThese = new LinkedList<WorshipService>();
+							delThese.add(service);
 						}
 					}
-					if(delThese != null)
-					{
-						for(final WorshipService w : delThese)
-							cancelService(w);
-					}
+				}
+				if(delThese != null)
+				{
+					for(final WorshipService w : delThese)
+						cancelService(w);
 				}
 			}
 		}
@@ -1546,9 +1626,7 @@ public class StdDeity extends StdMOB implements Deity
 	public void setClericSin(final String ritual)
 	{
 		clericSin=ritual;
-		clericCurseTriggers = CMLib.ableComponents().parseAbleTriggers(ritual);
-		if(clericCurseTriggers == null)
-			clericCurseTriggers = new Vector<AbleTrigger>(1);
+		setRitual(RitualType.CLERIC_CURSE, ritual);
 	}
 
 	@Override
@@ -1557,7 +1635,7 @@ public class StdDeity extends StdMOB implements Deity
 		if(numCurses()>0)
 		{
 			return L("The curses of @x1 are placed upon @x2 clerics whenever the cleric does the following: @x3.",
-					name(),charStats().hisher(),CMLib.ableComponents().getAbleTriggerDesc(clericCurseTriggers));
+					name(),charStats().hisher(),CMLib.ableComponents().getAbleTriggerDesc(rituals.get(RitualType.CLERIC_CURSE)));
 		}
 		return "";
 	}
@@ -1572,9 +1650,7 @@ public class StdDeity extends StdMOB implements Deity
 	public void setWorshipSin(final String ritual)
 	{
 		worshipSin=ritual;
-		worshipCurseTriggers = CMLib.ableComponents().parseAbleTriggers(ritual);
-		if(worshipCurseTriggers == null)
-			worshipCurseTriggers = new Vector<AbleTrigger>(1);
+		setRitual(RitualType.WORSHIP_CURSE, ritual);
 	}
 
 	@Override
@@ -1583,7 +1659,7 @@ public class StdDeity extends StdMOB implements Deity
 		if(numCurses()>0)
 		{
 			return L("The curses of @x1 are placed upon @x2 worshippers whenever the worshipper does the following: @x3.",
-					name(),charStats().hisher(),CMLib.ableComponents().getAbleTriggerDesc(worshipCurseTriggers));
+					name(),charStats().hisher(),CMLib.ableComponents().getAbleTriggerDesc(rituals.get(RitualType.WORSHIP_CURSE)));
 		}
 		return "";
 	}
@@ -1652,9 +1728,7 @@ public class StdDeity extends StdMOB implements Deity
 	public void setClericPowerup(final String ritual)
 	{
 		clericPowerup=ritual;
-		clericPowerTriggers = CMLib.ableComponents().parseAbleTriggers(ritual);
-		if(clericPowerTriggers == null)
-			clericPowerTriggers = new Vector<AbleTrigger>(1);
+		setRitual(RitualType.POWER, ritual);
 	}
 
 	@Override
@@ -1663,7 +1737,7 @@ public class StdDeity extends StdMOB implements Deity
 		if(numPowers()>0)
 		{
 			return L("Special powers of @x1 are placed upon @x2 clerics whenever the cleric does the following: @x3.",
-					name(),charStats().hisher(),CMLib.ableComponents().getAbleTriggerDesc(clericPowerTriggers));
+					name(),charStats().hisher(),CMLib.ableComponents().getAbleTriggerDesc(rituals.get(RitualType.POWER)));
 		}
 		return "";
 	}

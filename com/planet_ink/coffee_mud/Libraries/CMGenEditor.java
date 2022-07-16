@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.SecGroup;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityComponents.AbleTrigger;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericEditor.CMEval;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary.ListStringer;
@@ -5511,6 +5512,33 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
+	protected String genDeityRitual(final MOB mob, final String oldVal, final int showNumber, final int showFlag, final String prompt) throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return oldVal;
+		while((mob.session()!=null)&&(!mob.session().isStopped()))
+		{
+			final String ritual = prompt(mob, oldVal, showNumber, showFlag, prompt, false, false);
+			if((ritual==null)||(ritual.trim().length()==0))
+				return "";
+			else
+			if((showNumber==showFlag)||(showFlag<=-999))
+			{
+				final List<String> error = new ArrayList<String>(1);
+				final AbleTrigger[] t = CMLib.ableComponents().parseAbleTriggers(ritual, error);
+				if((t==null)&&(error.size()>0))
+				{
+					for(final String e : error)
+						mob.tell(e);
+					continue;
+				}
+				return ritual;
+			}
+			return oldVal;
+		}
+		return oldVal;
+	}
+
 	protected void genDeityClericReq(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
 	{
 		E.setClericRequirements(prompt(mob, E.getClericRequirements(), showNumber, showFlag, "Cleric Requirements", false, false));
@@ -5518,17 +5546,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genDeityClericRitual(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setClericRitual(prompt(mob, E.getClericRitual(), showNumber, showFlag, "Cleric Ritual", false, false));
+		E.setClericRitual(genDeityRitual(mob, E.getClericRitual(), showNumber, showFlag, "Cleric Ritual"));
 	}
 
 	protected void genDeityWorshipReq(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setWorshipRequirements(prompt(mob, E.getWorshipRequirements(), showNumber, showFlag, "Worshiper Requirements", false, false));
+		E.setWorshipRequirements(prompt(mob, E.getWorshipRequirements(), showNumber, showFlag, "Worshiper Requirements",false,false));
 	}
 
 	protected void genDeityWorshipRitual(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setWorshipRitual(prompt(mob, E.getWorshipRitual(), showNumber, showFlag, "Worshiper Ritual", false, false));
+		E.setWorshipRitual(genDeityRitual(mob, E.getWorshipRitual(), showNumber, showFlag, "Worshiper Ritual"));
 	}
 
 	protected void genDeityBlessings(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
@@ -5756,22 +5784,22 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genDeityClericSin(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setClericSin(prompt(mob,E.getClericSin(),showNumber,showFlag,"Cleric Sin",false,false));
+		E.setClericSin(genDeityRitual(mob,E.getClericSin(),showNumber,showFlag,"Cleric Sin"));
 	}
 
 	protected void genDeityWorhsipperSin(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setWorshipSin(prompt(mob,E.getWorshipSin(),showNumber,showFlag,"Worshiper Sin",false,false));
+		E.setWorshipSin(genDeityRitual(mob,E.getWorshipSin(),showNumber,showFlag,"Worshiper Sin"));
 	}
 
 	protected void genDeityClericPowerRitual(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setClericPowerup(prompt(mob,E.getClericPowerup(),showNumber,showFlag,"Cleric Power Ritual",false,false));
+		E.setClericPowerup(genDeityRitual(mob,E.getClericPowerup(),showNumber,showFlag,"Cleric Power Ritual"));
 	}
 
 	protected void genDeityServiceRitual(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setServiceRitual(prompt(mob,E.getServiceRitual(),showNumber,showFlag,"Service Ritual",false,false));
+		E.setServiceRitual(genDeityRitual(mob,E.getServiceRitual(),showNumber,showFlag,"Service Ritual"));
 	}
 
 	protected void genPlayerLevel(final MOB mob, final Area A, final int showNumber, final int showFlag) throws IOException

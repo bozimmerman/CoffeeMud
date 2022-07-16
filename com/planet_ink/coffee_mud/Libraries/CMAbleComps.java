@@ -2,7 +2,6 @@ package com.planet_ink.coffee_mud.Libraries;
 
 import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityComponents.AbleTriggerConnector;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityComponents.AbleTriggerCode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityParameters.AbilityParmEditor;
@@ -54,15 +53,45 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 
 	protected RitualStep[] root = new RitualStep[0];
 
+	/**
+	 * Separator enum constants for ritual definitions.
+	 * @author Bo Zimmerman
+	 *
+	 */
+	private enum AbleTriggerConnector
+	{
+		AND,
+		OR
+	}
+
 	protected static class RitualStep implements AbleTrigger
 	{
-		public AbleTriggerCode	triggerCode		= AbleTriggerCode.SAY;
+		public AbleTriggerCode		triggerCode		= AbleTriggerCode.SAY;
 		public String				parm1			= null;
 		public String				parm2			= null;
 		public int					cmmsgCode		= -1;
-		public AbleTriggerConnector		previousConnect	= AbleTriggerConnector.AND;
-		public RitualStep[]			next			= new RitualStep[0];
-		public AbleTriggerConnector connector() { return previousConnect; }
+		public RitualStep			orConnect		= null;
+
+		@Override
+		public AbleTrigger or()
+		{
+			return orConnect;
+		}
+
+		public AbleTriggerCode code()
+		{
+			return triggerCode;
+		}
+
+		public int msgCode()
+		{
+			return cmmsgCode;
+		}
+
+		public String[] parms()
+		{
+			return new String[] { parm1, parm2};
+		}
 	}
 
 	protected final boolean isRightMaterial(final long type, final long itemMaterial, final boolean mithrilOK)
@@ -1187,8 +1216,6 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			return CMMsg.TYP_EAT;
 		case DRINK:
 			return CMMsg.TYP_DRINK;
-		case INROOM:
-			return CMMsg.TYP_LOOK;
 		case CAST:
 			return CMMsg.TYP_CAST_SPELL;
 		case EMOTE:
@@ -1201,6 +1228,9 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			return CMMsg.TYP_FIRE;
 		case READING:
 			return CMMsg.TYP_READ;
+		case SOCIAL:
+			return CMMsg.MSG_OK_ACTION;
+		case INROOM:
 		case TIME:
 		case RIDING:
 		case SITTING:
@@ -1218,483 +1248,425 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	}
 
 	@Override
-	public String getAbleTriggerDesc(final List<AbleTrigger> V)
+	public String getAbleTriggerDesc(final AbleTrigger[] triggers)
 	{
-		if((V==null)||(V.size()==0))
+		if((triggers==null)||(triggers.length==0))
 			return L("Never");
 		final StringBuffer buf=new StringBuffer("");
-		for(int v=0;v<V.size();v++)
+		for(int v=0;v<triggers.length;v++)
 		{
-			final RitualStep DT=(RitualStep)V.get(v);
-			if(v>0)
-				buf.append(", "+((DT.previousConnect==AbleTriggerConnector.AND)?L("and "):L("or ")));
-			switch(DT.triggerCode)
+			AbleTrigger DT=triggers[v];
+			while(DT != null)
 			{
-			case SAY:
-				buf.append(L("the player should say '@x1'",DT.parm1.toLowerCase()));
-				break;
-			case READING:
-				if(DT.parm1.equals("0"))
-					buf.append(L("the player should read something"));
-				else
-					buf.append(L("the player should read '@x1'",DT.parm1.toLowerCase()));
-				break;
-			case TIME:
-				buf.append(L("the hour of the day is @x1",DT.parm1.toLowerCase()));
-				break;
-			case PUTTHING:
-				buf.append(L("the player should put @x1 in @x2",DT.parm1.toLowerCase(),DT.parm2.toLowerCase()));
-				break;
-			case BURNTHING:
-				buf.append(L("the player should burn @x1",DT.parm1.toLowerCase()));
-				break;
-			case DRINK:
-				buf.append(L("the player should drink @x1",DT.parm1.toLowerCase()));
-				break;
-			case EAT:
-				buf.append(L("the player should eat @x1",DT.parm1.toLowerCase()));
-				break;
-			case INROOM:
+				if(v>0)
+					buf.append(", "+((DT==triggers[v])?L("and "):L("or ")));
+				switch(DT.code())
 				{
-				if(DT.parm1.equalsIgnoreCase("holy")
-				||DT.parm1.equalsIgnoreCase("unholy")
-				||DT.parm1.equalsIgnoreCase("balance"))
-					buf.append(L("the player should be in the deities room of infused @x1-ness.",DT.parm1.toLowerCase()));
-				else
-				{
-					final Room R=CMLib.map().getRoom(DT.parm1);
-					if(R==null)
-						buf.append(L("the player should be in some unknown place"));
+				case SAY:
+					buf.append(L("the player should say '@x1'",DT.parms()[0].toLowerCase()));
+					break;
+				case READING:
+					if(DT.parms()[0].equals("0"))
+						buf.append(L("the player should read something"));
 					else
-						buf.append(L("the player should be in '@x1'",R.displayText(null)));
-				}
-				}
-				break;
-			case RIDING:
-				buf.append(L("the player should be on @x1",DT.parm1.toLowerCase()));
-				break;
-			case CAST:
-				{
-				final Ability A=CMClass.findAbility(DT.parm1);
-				if(A==null)
-					buf.append(L("the player should cast '@x1'",DT.parm1));
-				else
-					buf.append(L("the player should cast '@x1'",A.name()));
-				}
-				break;
-			case EMOTE:
-				buf.append(L("the player should emote '@x1'",DT.parm1.toLowerCase()));
-				break;
-			case RANDOM:
-				buf.append(DT.parm1+"% of the time");
-				break;
-			case WAIT:
-				buf.append(L("wait @x1 seconds",""+((CMath.s_int(DT.parm1)*CMProps.getTickMillis())/1000)));
-				break;
-			case YOUSAY:
-				buf.append(L("then you will automatically say '@x1'",DT.parm1.toLowerCase()));
-				break;
-			case OTHERSAY:
-				buf.append(L("then all others will say '@x1'",DT.parm1.toLowerCase()));
-				break;
-			case ALLSAY:
-				buf.append(L("then all will say '@x1'",DT.parm1.toLowerCase()));
-				break;
-			case CHECK:
-				buf.append(CMLib.masking().maskDesc(DT.parm1));
-				break;
-			case PUTVALUE:
-				buf.append(L("the player should put an item worth at least @x1 in @x2",DT.parm1.toLowerCase(),DT.parm2.toLowerCase()));
-				break;
-			case PUTMATERIAL:
-				{
-					String material="something";
-					final int t=CMath.s_int(DT.parm1);
-					RawMaterial.Material m;
-					if(((t&RawMaterial.RESOURCE_MASK)==0)
-					&&((m=RawMaterial.Material.findByMask(t))!=null))
-						material=m.desc().toLowerCase();
+						buf.append(L("the player should read '@x1'",DT.parms()[0].toLowerCase()));
+					break;
+				case SOCIAL:
+					buf.append(L("the player should @x1",DT.parms()[0].toLowerCase()));
+					break;
+				case TIME:
+					buf.append(L("the hour of the day is @x1",DT.parms()[0].toLowerCase()));
+					break;
+				case PUTTHING:
+					buf.append(L("the player should put @x1 in @x2",DT.parms()[0].toLowerCase(),DT.parms()[1].toLowerCase()));
+					break;
+				case BURNTHING:
+					buf.append(L("the player should burn @x1",DT.parms()[0].toLowerCase()));
+					break;
+				case DRINK:
+					buf.append(L("the player should drink @x1",DT.parms()[0].toLowerCase()));
+					break;
+				case EAT:
+					buf.append(L("the player should eat @x1",DT.parms()[0].toLowerCase()));
+					break;
+				case INROOM:
+					{
+					if(DT.parms()[0].equalsIgnoreCase("holy")
+					||DT.parms()[0].equalsIgnoreCase("unholy")
+					||DT.parms()[0].equalsIgnoreCase("balance"))
+						buf.append(L("the player should be in the deities room of infused @x1-ness.",DT.parms()[0].toLowerCase()));
 					else
-					if(RawMaterial.CODES.IS_VALID(t))
-						material=RawMaterial.CODES.NAME(t).toLowerCase();
-					buf.append(L("the player puts an item made of @x1 in @x2",material,DT.parm2.toLowerCase()));
-				}
-				break;
-			case BURNMATERIAL:
-				{
-					String material="something";
-					final int t=CMath.s_int(DT.parm1);
-					RawMaterial.Material m;
-					if(((t&RawMaterial.RESOURCE_MASK)==0)
-					&&((m=RawMaterial.Material.findByMask(t))!=null))
-						material=m.desc().toLowerCase();
+					{
+						final Room R=CMLib.map().getRoom(DT.parms()[0]);
+						if(R==null)
+							buf.append(L("the player should be in some unknown place"));
+						else
+							buf.append(L("the player should be in '@x1'",R.displayText(null)));
+					}
+					}
+					break;
+				case RIDING:
+					buf.append(L("the player should be on @x1",DT.parms()[0].toLowerCase()));
+					break;
+				case CAST:
+					{
+					final Ability A=CMClass.findAbility(DT.parms()[0]);
+					if(A==null)
+						buf.append(L("the player should cast '@x1'",DT.parms()[0]));
 					else
-					if(RawMaterial.CODES.IS_VALID(t))
-						material=RawMaterial.CODES.NAME(t).toLowerCase();
-					buf.append(L("the player should burn an item made of @x1",material));
+						buf.append(L("the player should cast '@x1'",A.name()));
+					}
+					break;
+				case EMOTE:
+					buf.append(L("the player should emote '@x1'",DT.parms()[0].toLowerCase()));
+					break;
+				case RANDOM:
+					buf.append(DT.parms()[0]+"% of the time");
+					break;
+				case WAIT:
+					buf.append(L("wait @x1 seconds",""+((CMath.s_int(DT.parms()[0])*CMProps.getTickMillis())/1000)));
+					break;
+				case YOUSAY:
+					buf.append(L("then you will automatically say '@x1'",DT.parms()[0].toLowerCase()));
+					break;
+				case OTHERSAY:
+					buf.append(L("then all others will say '@x1'",DT.parms()[0].toLowerCase()));
+					break;
+				case ALLSAY:
+					buf.append(L("then all will say '@x1'",DT.parms()[0].toLowerCase()));
+					break;
+				case CHECK:
+					buf.append(CMLib.masking().maskDesc(DT.parms()[0]));
+					break;
+				case PUTVALUE:
+					buf.append(L("the player should put an item worth at least @x1 in @x2",DT.parms()[0].toLowerCase(),DT.parms()[1].toLowerCase()));
+					break;
+				case PUTMATERIAL:
+					{
+						String material="something";
+						final int t=CMath.s_int(DT.parms()[0]);
+						RawMaterial.Material m;
+						if(((t&RawMaterial.RESOURCE_MASK)==0)
+						&&((m=RawMaterial.Material.findByMask(t))!=null))
+							material=m.desc().toLowerCase();
+						else
+						if(RawMaterial.CODES.IS_VALID(t))
+							material=RawMaterial.CODES.NAME(t).toLowerCase();
+						buf.append(L("the player puts an item made of @x1 in @x2",material,DT.parms()[1].toLowerCase()));
+					}
+					break;
+				case BURNMATERIAL:
+					{
+						String material="something";
+						final int t=CMath.s_int(DT.parms()[0]);
+						RawMaterial.Material m;
+						if(((t&RawMaterial.RESOURCE_MASK)==0)
+						&&((m=RawMaterial.Material.findByMask(t))!=null))
+							material=m.desc().toLowerCase();
+						else
+						if(RawMaterial.CODES.IS_VALID(t))
+							material=RawMaterial.CODES.NAME(t).toLowerCase();
+						buf.append(L("the player should burn an item made of @x1",material));
+					}
+					break;
+				case BURNVALUE:
+					buf.append(L("the player should burn an item worth at least @x1",DT.parms()[0].toLowerCase()));
+					break;
+				case SITTING:
+					buf.append(L("the player should sit down"));
+					break;
+				case STANDING:
+					buf.append(L("the player should stand up"));
+					break;
+				case SLEEPING:
+					buf.append(L("the player should go to sleep"));
+					break;
 				}
-				break;
-			case BURNVALUE:
-				buf.append(L("the player should burn an item worth at least @x1",DT.parm1.toLowerCase()));
-				break;
-			case SITTING:
-				buf.append(L("the player should sit down"));
-				break;
-			case STANDING:
-				buf.append(L("the player should stand up"));
-				break;
-			case SLEEPING:
-				buf.append(L("the player should go to sleep"));
-				break;
+				DT=DT.or();
 			}
 		}
 		return buf.toString();
 	}
 
 	@Override
-	public CMMsg genNextAbleTrigger(final MOB mob,
-									final List<AbleTrigger> svcTriggsV,
-									final Map<String, boolean[]> trigParts,
-									final Map<String, Long> trigTimes)
+	public CMMsg genNextAbleTrigger(final AbleTrigger[] triggers,
+									final AbleTriggState trigState)
 	{
-		final boolean[] checks=trigParts.get(mob.Name());
-		for(int v=0;v<svcTriggsV.size();v++)
+		if((triggers==null)||(trigState==null)||(triggers.length>0))
+			return null;
+		final MOB mob=trigState.mob();
+		if(mob == null)
+			return null;
+		final int completed =trigState.completed();
+		if(completed>=triggers.length)
+			return null;
+		final AbleTrigger DT=triggers[completed+1];
+		// in an OR-condition, we always just do the first one....
+		switch(DT.code())
 		{
-			if((checks!=null)
-			&&(checks.length>=v)
-			&&(checks[v]))
-				continue;
-			final RitualStep DT=(RitualStep)svcTriggsV.get(v);
-			switch(DT.triggerCode)
+		case SAY:
+			return CMClass.getMsg(mob, DT.msgCode(), L("^T<S-NAME> say(s) '@x1'.^N",DT.parms()[0]));
+		case TIME:
+			trigState.setCompleted();
+			return null;
+		case RANDOM:
+			trigState.setCompleted();
+			return null;
+		case YOUSAY:
+			return null;
+		case ALLSAY:
+			return null;
+		case OTHERSAY:
+			return null;
+		case WAIT:
+		{
+			final long waitDuration=CMath.s_long(DT.parms()[0])*CMProps.getTickMillis();
+			if(System.currentTimeMillis()>(trigState.time()+waitDuration))
+				return CMClass.getMsg(mob, CMMsg.MSG_OK_ACTION, null); // force the wait to be evaluated
+			return null;
+		}
+		case CHECK:
+			trigState.setCompleted();
+			return null;
+		case PUTTHING:
+		{
+			final Item I=CMClass.getBasicItem("GenItem");
+			final Item cI=CMClass.getBasicItem("GenContainer");
+			I.setName(DT.parms()[0]);
+			cI.setName(DT.parms()[1]);
+			return CMClass.getMsg(mob, cI, I, DT.msgCode(), L("<S-NAME> put(s) <O-NAME> into <T-NAME>."));
+		}
+		case BURNTHING:
+		{
+			final Item I=CMClass.getBasicItem("GenItem");
+			if(DT.parms()[0].equals("0"))
+				I.setName(L("Something"));
+			else
+				I.setName(DT.parms()[0]);
+			return CMClass.getMsg(mob, I, null, DT.msgCode(), L("<S-NAME> burn(s) <T-NAME>."));
+		}
+		case READING:
+		{
+			final Item I=CMClass.getBasicItem("GenItem");
+			if(DT.parms()[0].equals("0"))
+				I.setName(L("Something"));
+			else
+				I.setName(DT.parms()[0]);
+			return CMClass.getMsg(mob, I, null, DT.msgCode(), L("<S-NAME> read(s) <T-NAME>."));
+		}
+		case SOCIAL:
+		{
+			final Social soc = CMLib.socials().fetchSocial((DT.parms()[0]+" "+DT.parms()[1]).toUpperCase().trim(),true);
+			if(soc != null)
 			{
-			case SAY:
-				return CMClass.getMsg(mob, DT.cmmsgCode, L("^T<S-NAME> say(s) '@x1'.^N",DT.parm1));
-			case TIME:
-				if(checks != null)
-					checks[v]=true;
-				return null;
-			case RANDOM:
-				if(checks != null)
-					checks[v]=true;
-				return null;
-			case YOUSAY:
-				return null;
-			case ALLSAY:
-				return null;
-			case OTHERSAY:
-				return null;
-			case WAIT:
-			{
-				if((checks!=null)
-				&&(checks[v-1])
-				&&(trigTimes.get(mob.Name())!=null))
-				{
-					boolean proceed=true;
-					for(int t=v+1;t<checks.length;t++)
-					{
-						if(checks[t])
-							proceed=false;
-					}
-					if(proceed)
-					{
-						final long waitDuration=CMath.s_long(DT.parm1)*CMProps.getTickMillis();
-						if(System.currentTimeMillis()>(trigTimes.get(mob.Name()).longValue()+waitDuration))
-							return CMClass.getMsg(mob, CMMsg.MSG_OK_ACTION, null); // force the wait to be evaluated
-					}
-				}
-				return null;
-			}
-			case CHECK:
-				if(checks != null)
-					checks[v]=true;
-				return null;
-			case PUTTHING:
-			{
-				final Item I=CMClass.getBasicItem("GenItem");
-				final Item cI=CMClass.getBasicItem("GenContainer");
-				I.setName(DT.parm1);
-				cI.setName(DT.parm2);
-				return CMClass.getMsg(mob, cI, I, DT.cmmsgCode, L("<S-NAME> put(s) <O-NAME> into <T-NAME>."));
-			}
-			case BURNTHING:
-			{
-				final Item I=CMClass.getBasicItem("GenItem");
-				if(DT.parm1.equals("0"))
-					I.setName(L("Something"));
+				final MOB target=mob.getVictim();
+				if((target==null)&&(soc.targetName().equals("<T-NAME>")))
+					return CMClass.getMsg(mob,target,soc,CMMsg.MSG_OK_VISUAL,soc.getFailedTargetMessage(), CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null);
 				else
-					I.setName(DT.parm1);
-				return CMClass.getMsg(mob, I, null, DT.cmmsgCode, L("<S-NAME> burn(s) <T-NAME>."));
+					return CMClass.getMsg(mob,target,soc,CMMsg.MSG_OK_VISUAL,soc.getSourceMessage(),soc.getTargetMessage(),soc.getOthersMessage());
 			}
-			case READING:
-			{
-				final Item I=CMClass.getBasicItem("GenItem");
-				if(DT.parm1.equals("0"))
-					I.setName(L("Something"));
-				else
-					I.setName(DT.parm1);
-				return CMClass.getMsg(mob, I, null, DT.cmmsgCode, L("<S-NAME> read(s) <T-NAME>."));
-			}
-			case DRINK:
-			{
-				final Item I=CMClass.getBasicItem("GenItem");
-				if(DT.parm1.equals("0"))
-					I.setName(L("Something"));
-				else
-					I.setName(DT.parm1);
-				return CMClass.getMsg(mob, I, null, DT.cmmsgCode, L("<S-NAME> drink(s) <T-NAME>."));
-			}
-			case EAT:
-			{
-				final Item I=CMClass.getBasicItem("GenItem");
-				if(DT.parm1.equals("0"))
-					I.setName(L("Something"));
-				else
-					I.setName(DT.parm1);
-				return CMClass.getMsg(mob, I, null, DT.cmmsgCode, L("<S-NAME> eat(s) <T-NAME>."));
-			}
-			case INROOM:
-				if(checks != null)
-					checks[v]=true;
-				return null;
-			case RIDING:
-				if(checks != null)
-					checks[v]=true;
-				return null;
-			case CAST:
-			{
-				final Ability A=CMClass.getAbility(DT.parm1);
-				if(A!=null)
-					return CMClass.getMsg(mob, null, A, DT.cmmsgCode, L("<S-NAME> do(es) '@x1'",A.name()));
-				return null;
-			}
-			case EMOTE:
-				return CMClass.getMsg(mob, null, null, DT.cmmsgCode, L("<S-NAME> do(es) '@x1'",DT.parm1));
-			case PUTVALUE:
-			{
-				final Item cI=CMClass.getBasicItem("GenContainer");
-				if(DT.parm2.equals("0"))
-					cI.setName(L("Something"));
-				else
-					cI.setName(DT.parm2);
-				final Item I=CMClass.getBasicItem("GenItem");
-				I.setName(L("valuables"));
-				I.setBaseValue(CMath.s_int(DT.parm1));
-				return CMClass.getMsg(mob, cI, I, DT.cmmsgCode, L("<S-NAME> put(s) <O-NAME> in <T-NAME>."));
-			}
-			case PUTMATERIAL:
-			case BURNMATERIAL:
-			{
-				final Item cI=CMClass.getBasicItem("GenContainer");
-				if(DT.parm2.equals("0"))
-					cI.setName(L("Something"));
-				else
-					cI.setName(DT.parm2);
-				final Item I=CMLib.materials().makeItemResource(CMath.s_int(DT.parm1));
-				return CMClass.getMsg(mob, cI, I, DT.cmmsgCode, L("<S-NAME> put(s) <O-NAME> in <T-NAME>."));
-			}
-			case BURNVALUE:
-			{
-				final Item I=CMClass.getBasicItem("GenItem");
-				I.setName(L("valuables"));
-				I.setBaseValue(CMath.s_int(DT.parm1));
-				return CMClass.getMsg(mob, I, null, DT.cmmsgCode, L("<S-NAME> burn(s) <T-NAME>."));
-			}
-			case SITTING:
-				if(!CMLib.flags().isSitting(mob))
-					return CMClass.getMsg(mob, CMMsg.MSG_SIT, L("<S-NAME> sit(s)."));
-				return null;
-			case STANDING:
-				if(!CMLib.flags().isStanding(mob))
-					return CMClass.getMsg(mob, CMMsg.MSG_STAND, L("<S-NAME> stand(s)."));
-				return null;
-			case SLEEPING:
-				if(!CMLib.flags().isSleeping(mob))
-					return CMClass.getMsg(mob, CMMsg.MSG_SLEEP, L("<S-NAME> sleep(s)."));
-				return null;
-			}
+			break;
+		}
+		case DRINK:
+		{
+			final Item I=CMClass.getBasicItem("GenItem");
+			if(DT.parms()[0].equals("0"))
+				I.setName(L("Something"));
+			else
+				I.setName(DT.parms()[0]);
+			return CMClass.getMsg(mob, I, null, DT.msgCode(), L("<S-NAME> drink(s) <T-NAME>."));
+		}
+		case EAT:
+		{
+			final Item I=CMClass.getBasicItem("GenItem");
+			if(DT.parms()[0].equals("0"))
+				I.setName(L("Something"));
+			else
+				I.setName(DT.parms()[0]);
+			return CMClass.getMsg(mob, I, null, DT.msgCode(), L("<S-NAME> eat(s) <T-NAME>."));
+		}
+		case INROOM:
+			trigState.setCompleted();
+			return null;
+		case RIDING:
+			trigState.setCompleted();
+			return null;
+		case CAST:
+		{
+			final Ability A=CMClass.getAbility(DT.parms()[0]);
+			if(A!=null)
+				return CMClass.getMsg(mob, null, A, DT.msgCode(), L("<S-NAME> do(es) '@x1'",A.name()));
+			return null;
+		}
+		case EMOTE:
+			return CMClass.getMsg(mob, null, null, DT.msgCode(), L("<S-NAME> do(es) '@x1'",DT.parms()[0]));
+		case PUTVALUE:
+		{
+			final Item cI=CMClass.getBasicItem("GenContainer");
+			if(DT.parms()[1].equals("0"))
+				cI.setName(L("Something"));
+			else
+				cI.setName(DT.parms()[1]);
+			final Item I=CMClass.getBasicItem("GenItem");
+			I.setName(L("valuables"));
+			I.setBaseValue(CMath.s_int(DT.parms()[0]));
+			return CMClass.getMsg(mob, cI, I, DT.msgCode(), L("<S-NAME> put(s) <O-NAME> in <T-NAME>."));
+		}
+		case PUTMATERIAL:
+		case BURNMATERIAL:
+		{
+			final Item cI=CMClass.getBasicItem("GenContainer");
+			if(DT.parms()[1].equals("0"))
+				cI.setName(L("Something"));
+			else
+				cI.setName(DT.parms()[1]);
+			final Item I=CMLib.materials().makeItemResource(CMath.s_int(DT.parms()[0]));
+			return CMClass.getMsg(mob, cI, I, DT.msgCode(), L("<S-NAME> put(s) <O-NAME> in <T-NAME>."));
+		}
+		case BURNVALUE:
+		{
+			final Item I=CMClass.getBasicItem("GenItem");
+			I.setName(L("valuables"));
+			I.setBaseValue(CMath.s_int(DT.parms()[0]));
+			return CMClass.getMsg(mob, I, null, DT.msgCode(), L("<S-NAME> burn(s) <T-NAME>."));
+		}
+		case SITTING:
+			if(!CMLib.flags().isSitting(mob))
+				return CMClass.getMsg(mob, CMMsg.MSG_SIT, L("<S-NAME> sit(s)."));
+			return null;
+		case STANDING:
+			if(!CMLib.flags().isStanding(mob))
+				return CMClass.getMsg(mob, CMMsg.MSG_STAND, L("<S-NAME> stand(s)."));
+			return null;
+		case SLEEPING:
+			if(!CMLib.flags().isSleeping(mob))
+				return CMClass.getMsg(mob, CMMsg.MSG_SLEEP, L("<S-NAME> sleep(s)."));
+			return null;
 		}
 		return null;
 	}
 
 	@Override
 	public boolean ableTriggCheck(final CMMsg msg,
-								  final List<MOB> waitingFor,
-								  final String holyName,
-								  final Set<MOB> ignoreOf,
-								  final List<AbleTrigger> trigsV,
-								  final Map<String, boolean[]> trigParts,
-								  final Map<String, Long> trigTimes)
+								  final AbleTriggState state,
+								  final AbleTrigger[] triggers)
 	{
-		boolean recheck=false;
-		for(int v=0;v<trigsV.size();v++)
+		if((triggers == null)||(state==null))
+			return false;
+		if(state.completed()>=triggers.length-1)
+			return true;
+		AbleTrigger DT=triggers[state.completed()+1];
+		final boolean recheck=false;
+		boolean yup = false;
+		while((DT != null)&&(!yup))
 		{
-			boolean yup=false;
-			final RitualStep DT=(RitualStep)trigsV.get(v);
-			if((msg.sourceMinor()==DT.cmmsgCode)
-			||(DT.cmmsgCode==-999))
+			if((msg.sourceMinor()==DT.msgCode())
+			||(DT.msgCode()==-999)
+			||(DT.code()==AbleTriggerCode.SOCIAL))
 			{
-				switch(DT.triggerCode)
+				switch(DT.code())
 				{
 				case SAY:
-					if((msg.sourceMessage()!=null)&&(msg.sourceMessage().toUpperCase().indexOf(DT.parm1)>0))
+					if((msg.sourceMessage()!=null)&&(msg.sourceMessage().toUpperCase().indexOf(DT.parms()[0])>0))
 						yup=true;
 					break;
 				case TIME:
 					if((msg.source().location()!=null)
-					&&(msg.source().location().getArea().getTimeObj().getHourOfDay()==CMath.s_int(DT.parm1)))
+					&&(msg.source().location().getArea().getTimeObj().getHourOfDay()==CMath.s_int(DT.parms()[0])))
 					   yup=true;
 					break;
 				case RANDOM:
-					if(CMLib.dice().rollPercentage()<=CMath.s_int(DT.parm1))
+					if(CMLib.dice().rollPercentage()<=CMath.s_int(DT.parms()[0]))
 						yup=true;
 					break;
 				case YOUSAY:
-					if(v<=0)
-						yup=true;
-					else
+					yup=true;
+					try
 					{
-						final boolean[] checks=trigParts.get(msg.source().Name());
-						if((checks!=null)&&(checks[v-1])&&(!checks[v]))
-						{
-							yup=true;
-							try
-							{
-								ignoreOf.add(msg.source());
-								CMLib.commands().postSay(msg.source(),null,CMStrings.capitalizeAndLower(DT.parm1));
-							}
-							finally
-							{
-								ignoreOf.remove(msg.source());
-							}
-						}
-						else
-						if((checks!=null)&&checks[v])
-							continue;
+						state.setIgnore(true);
+						CMLib.commands().postSay(msg.source(),null,CMStrings.capitalizeAndLower(DT.parms()[0]));
+					}
+					finally
+					{
+						state.setIgnore(false);
 					}
 					break;
 				case ALLSAY:
-					if(v<=0)
-						yup=true;
-					else
+				{
+					final Room R=msg.source().location();
+					if(R!=null)
 					{
-						final boolean[] checks=trigParts.get(msg.source().Name());
-						final Room R=msg.source().location();
-						if((checks!=null)
-						&&(checks[v-1])
-						&&(!checks[v])
-						&&(R!=null))
+						yup=true;
+						for(int m=0;m<R.numInhabitants();m++)
 						{
-							yup=true;
-							for(int m=0;m<R.numInhabitants();m++)
+							final MOB M=R.fetchInhabitant(m);
+							if(M!=null)
 							{
-								final MOB M=R.fetchInhabitant(m);
-								if(M!=null)
+								yup=true;
+								try
 								{
-									yup=true;
-									try
-									{
-										ignoreOf.add(msg.source());
-										CMLib.commands().postSay(M,null,CMStrings.capitalizeAndLower(DT.parm1));
-									}
-									finally
-									{
-										ignoreOf.remove(msg.source());
-									}
+									state.setIgnore(true);
+									CMLib.commands().postSay(M,null,CMStrings.capitalizeAndLower(DT.parms()[0]));
+								}
+								finally
+								{
+									state.setIgnore(false);
 								}
 							}
 						}
-						else
-						if((checks!=null)&&checks[v])
-							continue;
 					}
 					break;
+				}
 				case OTHERSAY:
-					if(v<=0)
-						yup=true;
-					else
+				{
+					final Room R=msg.source().location();
+					if(R!=null)
 					{
-						final boolean[] checks=trigParts.get(msg.source().Name());
-						final Room R=msg.source().location();
-						if((checks!=null)&&(checks[v-1])&&(!checks[v])&&(R!=null))
+						yup=true;
+						for(int m=0;m<R.numInhabitants();m++)
 						{
-							yup=true;
-							for(int m=0;m<R.numInhabitants();m++)
+							final MOB M=R.fetchInhabitant(m);
+							if((M!=null)&&(M!=msg.source()))
 							{
-								final MOB M=R.fetchInhabitant(m);
-								if((M!=null)&&(M!=msg.source()))
+								yup=true;
+								try
 								{
-									yup=true;
-									try
-									{
-										ignoreOf.add(msg.source());
-										CMLib.commands().postSay(M,null,CMStrings.capitalizeAndLower(DT.parm1));
-									}
-									finally
-									{
-										ignoreOf.remove(msg.source());
-									}
+									state.setIgnore(true);
+									CMLib.commands().postSay(M,null,CMStrings.capitalizeAndLower(DT.parms()[0]));
+								}
+								finally
+								{
+									state.setIgnore(false);
 								}
 							}
 						}
-						else
-						if((checks!=null)&&checks[v])
-							continue;
 					}
 					break;
+				}
 				case WAIT:
 				{
-					if(v<=0)
+					final long waitDuration=CMath.s_long(DT.parms()[0])*CMProps.getTickMillis();
+					if(System.currentTimeMillis()>(state.time()+waitDuration))
+					{
 						yup=true;
+						state.setWait(false);
+					}
 					else
 					{
-						final boolean[] checks=trigParts.get(msg.source().Name());
-						if((checks!=null)
-						&&(checks[v-1])
-						&&(!checks[v])
-						&&(trigTimes.get(msg.source().Name())!=null))
-						{
-							boolean proceed=true;
-							for(int t=v+1;t<checks.length;t++)
-							{
-								if(checks[t])
-									proceed=false;
-							}
-							if(proceed)
-							{
-								final long waitDuration=CMath.s_long(DT.parm1)*CMProps.getTickMillis();
-								if(System.currentTimeMillis()>(trigTimes.get(msg.source().Name()).longValue()+waitDuration))
-								{
-									yup=true;
-									synchronized(waitingFor)
-									{
-										waitingFor.remove(msg.source());
-									}
-								}
-								else
-								{
-									synchronized(waitingFor)
-									{
-										waitingFor.add(msg.source());
-									}
-									return recheck;
-								}
-							}
-						}
-						else
-						if((checks!=null)&&(checks[v]))
-							continue;
+						state.setWait(true);
+						return recheck;
 					}
 					break;
 				}
 				case CHECK:
-					if(CMLib.masking().maskCheck(DT.parm1,msg.source(),true))
+					if(CMLib.masking().maskCheck(DT.parms()[0],msg.source(),true))
 						yup=true;
 					break;
 				case PUTTHING:
 					if((msg.target() instanceof Container)
 					&&(msg.tool() instanceof Item)
-					&&(CMLib.english().containsString(msg.tool().name(),DT.parm1))
-					&&(CMLib.english().containsString(msg.target().name(),DT.parm2)))
+					&&(CMLib.english().containsString(msg.tool().name(),DT.parms()[0]))
+					&&(CMLib.english().containsString(msg.target().name(),DT.parms()[1])))
 						yup=true;
 					break;
 				case BURNTHING:
@@ -1702,60 +1674,68 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 				case DRINK:
 				case EAT:
 					if((msg.target()!=null)
-					&&(DT.parm1.equals("0")||CMLib.english().containsString(msg.target().name(),DT.parm1)))
-					   yup=true;
+					&&(DT.parms()[0].equals("0")||CMLib.english().containsString(msg.target().name(),DT.parms()[0])))
+						yup=true;
+					break;
+				case SOCIAL:
+					if((msg.tool() instanceof Social)
+					&&(msg.tool().Name().equalsIgnoreCase((DT.parms()[0]+" "+DT.parms()[1]).trim())))
+						yup=true;
 					break;
 				case INROOM:
 					if(msg.source().location()!=null)
 					{
-						if(DT.parm1.equalsIgnoreCase("holy")
-						||DT.parm1.equalsIgnoreCase("unholy")
-						||DT.parm1.equalsIgnoreCase("balance"))
-							yup=(holyName!=null)&&(holyName.equalsIgnoreCase(CMLib.law().getClericInfused(msg.source().location())));
+						if(DT.parms()[0].equalsIgnoreCase("holy")
+						||DT.parms()[0].equalsIgnoreCase("unholy")
+						||DT.parms()[0].equalsIgnoreCase("balance"))
+						{
+							yup=(state.getHolyName()!=null)
+								&&(state.getHolyName().equalsIgnoreCase(CMLib.law().getClericInfused(msg.source().location())));
+						}
 						else
-						if(msg.source().location().roomID().equalsIgnoreCase(DT.parm1))
+						if(msg.source().location().roomID().equalsIgnoreCase(DT.parms()[0]))
 							yup=true;
 					}
 					break;
 				case RIDING:
 					if((msg.source().riding()!=null)
-					&&(CMLib.english().containsString(msg.source().riding().name(),DT.parm1)))
+					&&(CMLib.english().containsString(msg.source().riding().name(),DT.parms()[0])))
 					   yup=true;
 					break;
 				case CAST:
 					if((msg.tool()!=null)
-					&&((msg.tool().ID().equalsIgnoreCase(DT.parm1))
-					||(CMLib.english().containsString(msg.tool().name(),DT.parm1))))
+					&&((msg.tool().ID().equalsIgnoreCase(DT.parms()[0]))
+					||(CMLib.english().containsString(msg.tool().name(),DT.parms()[0]))))
 						yup=true;
 					break;
 				case EMOTE:
-					if((msg.sourceMessage()!=null)&&(msg.sourceMessage().toUpperCase().indexOf(DT.parm1)>0))
+					if((msg.sourceMessage()!=null)&&(msg.sourceMessage().toUpperCase().indexOf(DT.parms()[0])>0))
 						yup=true;
 					break;
 				case PUTVALUE:
 					if((msg.tool() instanceof Item)
-					&&(((Item)msg.tool()).baseGoldValue()>=CMath.s_int(DT.parm1))
+					&&(((Item)msg.tool()).baseGoldValue()>=CMath.s_int(DT.parms()[0]))
 					&&(msg.target() instanceof Container)
-					&&(CMLib.english().containsString(msg.target().name(),DT.parm2)))
+					&&(CMLib.english().containsString(msg.target().name(),DT.parms()[1])))
 						yup=true;
 					break;
 				case PUTMATERIAL:
 					if((msg.tool() instanceof Item)
-					&&(((((Item)msg.tool()).material()&RawMaterial.RESOURCE_MASK)==CMath.s_int(DT.parm1))
-						||((((Item)msg.tool()).material()&RawMaterial.MATERIAL_MASK)==CMath.s_int(DT.parm1)))
+					&&(((((Item)msg.tool()).material()&RawMaterial.RESOURCE_MASK)==CMath.s_int(DT.parms()[0]))
+						||((((Item)msg.tool()).material()&RawMaterial.MATERIAL_MASK)==CMath.s_int(DT.parms()[0])))
 					&&(msg.target() instanceof Container)
-					&&(CMLib.english().containsString(msg.target().name(),DT.parm2)))
+					&&(CMLib.english().containsString(msg.target().name(),DT.parms()[1])))
 						yup=true;
 					break;
 				case BURNMATERIAL:
 					if((msg.target() instanceof Item)
-					&&(((((Item)msg.target()).material()&RawMaterial.RESOURCE_MASK)==CMath.s_int(DT.parm1))
-						||((((Item)msg.target()).material()&RawMaterial.MATERIAL_MASK)==CMath.s_int(DT.parm1))))
+					&&(((((Item)msg.target()).material()&RawMaterial.RESOURCE_MASK)==CMath.s_int(DT.parms()[0]))
+						||((((Item)msg.target()).material()&RawMaterial.MATERIAL_MASK)==CMath.s_int(DT.parms()[0]))))
 							yup=true;
 					break;
 				case BURNVALUE:
 					if((msg.target() instanceof Item)
-					&&(((Item)msg.target()).baseGoldValue()>=CMath.s_int(DT.parm1)))
+					&&(((Item)msg.target()).baseGoldValue()>=CMath.s_int(DT.parms()[0])))
 						yup=true;
 					break;
 				case SITTING:
@@ -1769,36 +1749,27 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 					break;
 				}
 			}
-			if((yup)||(DT.cmmsgCode==-999))
+			if(yup)
 			{
-				boolean[] checks=trigParts.get(msg.source().Name());
-				if(yup)
-				{
-					recheck=true;
-					trigTimes.remove(msg.source().Name());
-					trigTimes.put(msg.source().Name(),Long.valueOf(System.currentTimeMillis()));
-					if((checks==null)||(checks.length!=trigsV.size()))
-					{
-						checks=new boolean[trigsV.size()];
-						trigParts.put(msg.source().Name(),checks);
-					}
-				}
-				if(checks!=null)
-					checks[v]=yup;
+				state.setCompleted();
+				if(state.completed()>=triggers.length-1)
+					return true;
 			}
+			DT=DT.or();
 		}
-		return recheck;
+		return false;
 	}
 
 	@Override
-	public List<AbleTrigger> parseAbleTriggers(String trigger)
+	public AbleTrigger[] parseAbleTriggers(String trigger, final List<String> errors)
 	{
-		final List<AbleTrigger> putHere = new XVector<AbleTrigger>();
 		trigger=trigger.toUpperCase().trim();
 		AbleTriggerConnector previousConnector=AbleTriggerConnector.AND;
 		if(trigger.equals("-"))
-			return putHere;
+			return new AbleTrigger[0];
 
+		final List<RitualStep> putHere = new XVector<RitualStep>();
+		RitualStep prevDT=null;
 		while(trigger.length()>0)
 		{
 			final int div1=trigger.indexOf('&');
@@ -1837,10 +1808,13 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 							}
 						}
 					}
-					DT.previousConnect=previousConnector;
+					if((previousConnector==AbleTriggerConnector.OR)&&(prevDT!=null))
+						prevDT.orConnect=DT;
 					if(T==null)
 					{
-						Log.errOut(name(),"Illegal trigger: '"+cmd+"','"+trig+"'");
+						if(errors!=null)
+							errors.add("Illegal trigger: '"+cmd+"','"+trig+"'");
+						DT=null;
 						break;
 					}
 					else
@@ -1897,6 +1871,27 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 							DT.parm2=V.lastElement();
 							break;
 						}
+						case SOCIAL:
+						{
+							DT.triggerCode=T;
+							if(V.size()<2)
+							{
+								Log.errOut(name(),"Illegal trigger: "+trig);
+								DT=null;
+								break;
+							}
+							DT.parm1=V.get(1);
+							if(V.size()>2)
+								DT.parm2=V.get(2);
+							final Social soc = CMLib.socials().fetchSocial((DT.parm1+" "+DT.parm2).toUpperCase().trim(),true);
+							if(soc == null)
+							{
+								Log.errOut(name(),"Illegal social in: "+trig);
+								DT=null;
+								break;
+							}
+							break;
+						}
 						case BURNTHING:
 						{
 							DT.triggerCode=T;
@@ -1908,7 +1903,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 							DT.triggerCode=T;
 							if(V.size()<3)
 							{
-								Log.errOut(name(),"Illegal trigger: "+trig);
+								if(errors!=null)
+									errors.add("Illegal trigger: "+trig);
 								DT=null;
 								break;
 							}
@@ -1921,7 +1917,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 							DT.triggerCode=T;
 							if(V.size()<3)
 							{
-								Log.errOut(name(),"Illegal trigger: "+trig);
+								if(errors!=null)
+									errors.add("Illegal trigger: "+trig);
 								DT=null;
 								break;
 							}
@@ -1947,7 +1944,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 							}
 							if(!found)
 							{
-								Log.errOut(name(),"Unknown material: "+trig);
+								if(errors!=null)
+									errors.add("Unknown material: "+trig);
 								DT=null;
 								break;
 							}
@@ -1958,7 +1956,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 							DT.triggerCode=T;
 							if(V.size()<3)
 							{
-								Log.errOut(name(),"Illegal trigger: "+trig);
+								if(errors!=null)
+									errors.add("Illegal trigger: "+trig);
 								DT=null;
 								break;
 							}
@@ -1980,7 +1979,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 							}
 							if(!found)
 							{
-								Log.errOut(name(),"Unknown material: "+trig);
+								if(errors!=null)
+									errors.add("Unknown material: "+trig);
 								DT=null;
 								break;
 							}
@@ -2034,7 +2034,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 							DT.parm1=CMParms.combine(V,1);
 							if(CMClass.findAbility(DT.parm1)==null)
 							{
-								Log.errOut(name(),"Illegal SPELL in: "+trig);
+								if(errors!=null)
+									errors.add("Illegal SPELL in: "+trig);
 								DT=null;
 								break;
 							}
@@ -2063,7 +2064,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 						}
 						default:
 						{
-							Log.errOut(name(),"Illegal trigger: '"+cmd+"','"+trig+"'");
+							if(errors!=null)
+								errors.add("Illegal trigger: '"+cmd+"','"+trig+"'");
 							DT=null;
 							break;
 						}
@@ -2071,19 +2073,46 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 					}
 					if(DT==null)
 						return null;
-					putHere.add(DT);
+					if(div==div1)
+					{
+						previousConnector=AbleTriggerConnector.AND;
+						putHere.add(DT);
+					}
+					else
+						previousConnector=AbleTriggerConnector.OR;
+					prevDT=DT;
 				}
 				else
 				{
-					Log.errOut(name(),"Illegal trigger (need more parameters): "+trig);
+					if(errors!=null)
+						errors.add("Illegal trigger (need more parameters): "+trig);
 					return null;
 				}
 			}
-			if(div==div1)
-				previousConnector=AbleTriggerConnector.AND;
-			else
-				previousConnector=AbleTriggerConnector.OR;
 		}
-		return putHere;
+		// check for valid starter
+		if(putHere.size()>0)
+		{
+			RitualStep r = putHere.get(0);
+			boolean ok=true;
+			while(r != null)
+			{
+				ok = ok && (r.cmmsgCode>0);
+				r=r.orConnect;
+			}
+			if(!ok)
+			{
+				final List<String> okOnes = new ArrayList<String>();
+				for(final AbleTriggerCode t : AbleTriggerCode.values())
+				{
+					if(getCMMsgCode(t)>0)
+						okOnes.add(t.name());
+				}
+				if(errors!=null)
+					errors.add("All rituals must start with one of: "+CMLib.english().toEnglishStringList(okOnes));
+				return null;
+			}
+		}
+		return putHere.toArray(new AbleTrigger[putHere.size()]);
 	}
 }

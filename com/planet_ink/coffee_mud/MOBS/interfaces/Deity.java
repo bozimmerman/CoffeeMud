@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.MOBS.interfaces;
 import java.util.Enumeration;
+import java.util.List;
+import java.util.Vector;
 
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -13,6 +15,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityComponents.AbleTrigger;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -131,6 +134,23 @@ public interface Deity extends MOB
 		BLESSING,		/* sent when a deity sends a blessing */
 		REBUKE,			/* sent when a deity rebukes a worshipper */
 		DISAPPOINTED	/* sent when a deity is disappointed in a worshipper */
+	}
+
+	/**
+	 * The types of rituals that deities will watch for from their
+	 * worshippers and clerics.
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public enum RitualType
+	{
+		WORSHIP_BLESSING, /* how worshippers receive blessings */
+		WORSHIP_CURSE,    /* how worshippers receive curses */
+		CLERIC_BLESSING,  /* how clerics receive blessings */
+		CLERIC_CURSE,     /* how clerics receive curses */
+		SERVICE,          /* cleric services */
+		POWER             /* cleric power ritual */
 	}
 
 	/**
