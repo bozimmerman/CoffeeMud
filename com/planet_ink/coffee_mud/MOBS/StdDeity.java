@@ -63,7 +63,7 @@ public class StdDeity extends StdMOB implements Deity
 	protected List<DeityPower>					curses		= new SVector<DeityPower>();
 	protected List<Ability>						powers		= new SVector<Ability>();
 	protected List<WorshipService>				services	= new SVector<WorshipService>();
-	protected List<MOB>							waitingFor	= new SLinkedList<MOB>();
+	protected List<RitualState>					waitingFor	= new SLinkedList<RitualState>();
 	protected Set<String>						ignoreOf	= new LimitedTreeSet<String>();
 
 	protected final Set<Integer>	neverTriggers		= new XHashSet<Integer>(new Integer[] {
@@ -173,13 +173,12 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			synchronized(waitingFor)
 			{
-				final MOB charM=this.charM.get();
-				if(charM != null)
+				if(charM.get() != null)
 				{
 					if(truefalse)
-						waitingFor.add(charM);
+						waitingFor.add(this);
 					else
-						waitingFor.remove(charM);
+						waitingFor.remove(this);
 				}
 			}
 		}
@@ -188,7 +187,7 @@ public class StdDeity extends StdMOB implements Deity
 
 	protected final class RitualTracker
 	{
-		private final Map<RitualType, RitualState>	states	= new LimitedTreeMap<RitualType, RitualState>();
+		private final Map<RitualType, RitualState>	states	= new LimitedTreeMap<RitualType, RitualState>(300000,100,false);
 		private final Reference<MOB>				charM;
 
 		public RitualTracker(final MOB mob)
@@ -284,7 +283,7 @@ public class StdDeity extends StdMOB implements Deity
 			blessings=new XVector<DeityPower>(((StdDeity)E).blessings);
 			curses=new XVector<DeityPower>(((StdDeity)E).curses);
 			powers=new XVector<Ability>(((StdDeity)E).powers);
-			waitingFor = new SLinkedList<MOB>();
+			waitingFor = new SLinkedList<RitualState>();
 			ignoreOf = new LimitedTreeSet<String>();
 		}
 	}
@@ -412,7 +411,7 @@ public class StdDeity extends StdMOB implements Deity
 	@Override
 	public String getServiceTriggerDesc()
 	{
-		return L("The services of @x1 are the following: @x2.",
+		return L("The services of @x1 requires using an Infused place, and are the following: @x2.",
 				name(),CMLib.ableComponents().getAbleTriggerDesc(rituals.get(RitualType.SERVICE)));
 	}
 
@@ -1257,6 +1256,12 @@ public class StdDeity extends StdMOB implements Deity
 			final Deity.DeityWorshipper A=CMLib.law().getClericInfusion(service.room);
 			if(A instanceof Ability)
 				((Ability)A).setAbilityCode(0);
+			if(service.state != null)
+			{
+				RitualTracker tracker = this.getRitualTracker(mob);
+				if(tracker != null)
+					tracker.states.remove(RitualType.SERVICE);
+			}
 		}
 		return true;
 	}
@@ -1406,27 +1411,33 @@ public class StdDeity extends StdMOB implements Deity
 		}
 		if(waitingFor.size()>0)
 		{
-			final List<MOB> executeMOBList;
+			final List<RitualState> waitDoneList;
 			synchronized(waitingFor)
 			{
 				if(waitingFor.size()>0)
 				{
-					executeMOBList=new ArrayList<MOB>(waitingFor);
+					waitDoneList=new ArrayList<RitualState>(waitingFor);
 					waitingFor.clear();
 				}
 				else
-					executeMOBList=null;
+					waitDoneList=null;
 			}
-			if(executeMOBList != null)
+			if(waitDoneList != null)
 			{
-				for (final MOB M : executeMOBList)
+				final CMMsg msg = CMClass.getMsg(this,null,null,CMMsg.MSG_OK_VISUAL,null);
+				for (final RitualState S : waitDoneList)
 				{
-					try
+					final MOB M = S.mob();
+					if(M!=null)
 					{
-						executeMsg(this,CMClass.getMsg(M,null,null,CMMsg.MSG_OK_VISUAL,null));
-					}
-					catch(final Exception e)
-					{
+						try
+						{
+							msg.setSource(M);
+							executeMsg(M, msg);
+						}
+						catch(final Exception e)
+						{
+						}
 					}
 				}
 			}

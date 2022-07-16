@@ -2726,7 +2726,8 @@ public class CMSecurity
 		TOPTHREAD("Top report thread"),
 		SIEGECOMBAT("sailing ship fights"),
 		QUESTSCRIPTS("quest script parsing"),
-		SPACEMOVES("space object movement")
+		SPACEMOVES("space object movement"),
+		RITUALS("rituals and services")
 		;
 		private final String desc;
 

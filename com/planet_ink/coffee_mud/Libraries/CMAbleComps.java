@@ -1559,7 +1559,6 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		if(state.completed()>=triggers.length-1)
 			return true;
 		AbleTrigger DT=triggers[state.completed()+1];
-		final boolean recheck=false;
 		boolean yup = false;
 		while((DT != null)&&(!yup))
 		{
@@ -1656,8 +1655,10 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 					}
 					else
 					{
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.RITUALS))
+							Log.debugOut(msg.source().Name()+" still waiting ("+(state.completed()+1)+"/"+triggers.length+") ");
 						state.setWait(true);
-						return recheck;
+						return false; // since we set the wait, there's no reason to look further
 					}
 					break;
 				}
@@ -1754,11 +1755,20 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			}
 			if(yup)
 			{
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.RITUALS))
+					Log.debugOut(msg.source().Name()+" completed "+DT.code().name()+" ("+(state.completed()+1)+"/"+triggers.length+") ");
 				state.setCompleted();
 				if(state.completed()>=triggers.length-1)
 					return true;
+				else
+				{
+					DT=triggers[state.completed()+1];
+					yup=false;
+					// try this one now!
+				}
 			}
-			DT=DT.or();
+			else
+				DT=DT.or();
 		}
 		return false;
 	}
@@ -2100,7 +2110,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			for(int i=0;i<putHere.size();i++)
 			{
 				RitualStep r = putHere.get(i);
-				boolean active=true;
+				boolean active=false;
 				while(r != null)
 				{
 					active = active || (r.cmmsgCode>0);
