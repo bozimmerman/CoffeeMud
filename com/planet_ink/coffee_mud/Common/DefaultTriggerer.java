@@ -39,7 +39,7 @@ public class DefaultTriggerer implements Triggerer
 	
 	protected Map<String, TrigTracker>	trackers	= new Hashtable<String, TrigTracker>();
 	protected Map<Object, Trigger[]>	rituals		= new SHashtable<Object, Trigger[]>();
-	protected List<TrigState>			waitingFor	= new SLinkedList<TrigState>();
+	protected List<TrigState>			waitingFor	= Collections.synchronizedList(new LinkedList<TrigState>());
 	protected Set<String>				ignoreOf	= new LimitedTreeSet<String>();
 	protected String					holyName	= "Unknown";
 	
@@ -88,12 +88,12 @@ public class DefaultTriggerer implements Triggerer
 
 	protected static class Trigger
 	{
-		public TriggerCode	triggerCode		= TriggerCode.SAY;
-		public String			parm1			= null;
-		public String			parm2			= null;
-		public List<String>		args			= null;
-		public int				cmmsgCode		= -1;
-		public Trigger			orConnect		= null;
+		public TriggerCode	triggerCode	= TriggerCode.SAY;
+		public String		parm1		= null;
+		public String		parm2		= null;
+		public List<String>	args		= null;
+		public int			cmmsgCode	= -1;
+		public Trigger		orConnect	= null;
 	}
 
 	protected final class TrigTracker
@@ -769,10 +769,10 @@ public class DefaultTriggerer implements Triggerer
 		final Trigger[] triggers = rituals.get(key);
 		if((triggers==null)||(triggers.length==0))
 			return null;
-		final TrigTracker tracker = this.getTrigTracker(mob);
+		final TrigTracker tracker = this.getCreateTrigTracker(mob);
 		if(tracker == null)
 			return null;
-		final TrigState trigState = tracker.states.get(key);
+		final TrigState trigState = tracker.getCreateState(key);
 		if(trigState==null)
 			return null;
 		final int completed =trigState.completed;

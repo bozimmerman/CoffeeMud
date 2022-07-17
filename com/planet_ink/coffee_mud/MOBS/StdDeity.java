@@ -75,6 +75,7 @@ public class StdDeity extends StdMOB implements Deity
 		_name="a Mighty Deity";
 		setDescription("He is Mighty.");
 		setDisplayText("A Mighty Deity stands here!");
+		rituals = ((Triggerer)CMClass.getCommon("DefaultTriggerer")).setName(_name);
 		basePhyStats().setWeight(700);
 		basePhyStats().setAbility(200);
 		basePhyStats().setArmor(0);
@@ -88,9 +89,7 @@ public class StdDeity extends StdMOB implements Deity
 	public CMObject newInstance()
 	{
 		final StdDeity deity = (StdDeity)super.newInstance();
-		deity.rituals = ((Triggerer)CMClass.getCommon("DefaultTriggerer")).setName(Name());
-		if(rituals == null)
-			rituals = ((Triggerer)CMClass.getCommon("DefaultTriggerer")).setName(Name());
+		deity.rituals.setName(rituals.name());
 		return deity;
 	}
 	

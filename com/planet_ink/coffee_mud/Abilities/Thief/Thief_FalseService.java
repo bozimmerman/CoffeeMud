@@ -242,7 +242,7 @@ public class Thief_FalseService extends ThiefSkill
 					final CMMsg msg2=CMClass.getMsg(mob,mob.charStats().getMyDeity(),this,
 							CMMsg.MSG_HOLYEVENT,null,
 							CMMsg.MSG_HOLYEVENT,null,
-							CMMsg.NO_EFFECT, HolyEvent.SERVICE_CANCEL.toString());
+							CMMsg.NO_EFFECT, HolyEvent.SERVICE.toString());
 					if(R.okMessage(mob,msg2))
 						R.send(mob,msg2);
 				}
