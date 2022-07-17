@@ -125,6 +125,7 @@ public class StdDeity extends StdMOB implements Deity
 			blessings=new XVector<DeityPower>(((StdDeity)E).blessings);
 			curses=new XVector<DeityPower>(((StdDeity)E).curses);
 			powers=new XVector<Ability>(((StdDeity)E).powers);
+			services = new SVector<WorshipService>();
 		}
 	}
 

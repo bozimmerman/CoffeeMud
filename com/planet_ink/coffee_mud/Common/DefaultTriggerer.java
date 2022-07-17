@@ -1319,10 +1319,15 @@ public class DefaultTriggerer implements Triggerer
 	@Override
 	public CMObject copyOf()
 	{
-		DefaultTriggerer me;
+		final DefaultTriggerer me;
 		try
 		{
 			me = (DefaultTriggerer) this.clone();
+			me.trackers	= new Hashtable<String, TrigTracker>();
+			me.rituals = new SHashtable<Object, Trigger[]>();
+			me.rituals.putAll(rituals);
+			me.waitingFor = new SLinkedList<TrigState>();
+			me.ignoreOf	= new LimitedTreeSet<String>();
 		}
 		catch (CloneNotSupportedException e)
 		{
