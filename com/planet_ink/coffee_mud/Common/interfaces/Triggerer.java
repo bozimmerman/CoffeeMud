@@ -212,6 +212,22 @@ public interface Triggerer extends CMCommon
 	public Object[] whichCompleted(final Object[] keys, final CMMsg msg);
 
 	/**
+	 * Given a set of trigger keys that may be progressed or 
+	 * completed by the given message, this will progress them, and
+	 * then return the first one which , because of the message, is
+	 * now in a completed state, along with any args accumulated.
+	 * 
+	 * @see Triggerer#isCompleted(Object, CMMsg)
+	 * @see Triggerer#whichTracking(CMMsg)
+	 * @see Triggerer#isTracking(Object, CMMsg)
+	 * 
+	 * @param keys the arbitrary but unique keys to apply the message to 
+	 * @param msg the message which may cause triggers to complete
+	 * @return null, or the key and arguments pair
+	 */
+	public Pair<Object,List<String>> getCompleted(final Object[] keys, final CMMsg msg);
+
+	/**
 	 * If any triggers are currently in a wait state, this will return
 	 * which ones, as of the moment this method was called, are now 
 	 * done waiting.  Calling this will reset those wait times.  It
