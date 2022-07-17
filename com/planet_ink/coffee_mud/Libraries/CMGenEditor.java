@@ -8,7 +8,6 @@ import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.SecGroup;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityComponents.AbleTrigger;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericEditor.CMEval;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary.ListStringer;
@@ -5525,8 +5524,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if((showNumber==showFlag)||(showFlag<=-999))
 			{
 				final List<String> error = new ArrayList<String>(1);
-				final AbleTrigger[] t = CMLib.ableComponents().parseAbleTriggers(ritual, error);
-				if((t==null)&&(error.size()>0))
+				final Triggerer triggerer = (Triggerer)CMClass.getCommon("DefaultTriggerer");
+				triggerer.addTrigger(new Object(), ritual, error);
+				if(error.size()>0)
 				{
 					for(final String e : error)
 						mob.tell(e);
