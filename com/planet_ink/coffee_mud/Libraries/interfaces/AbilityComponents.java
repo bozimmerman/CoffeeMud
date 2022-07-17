@@ -36,9 +36,9 @@ import java.util.*;
 /**
  * Library for configureing and managing the rules for what resource
  * components (magic dust, tools, etc) are required every time a
- * particular skill is used.  Normally this would be part of the
- * skill itself, but since this feature was added so late, it's
- * separate.
+ * particular skill is used, or what actions are required.  
+ * Normally this would be part of the skill itself, but since 
+ * this feature was added so late, it's separate.
  *
  *  Also here are common skill limit utilities, for determining
  *  how many common skills a player can learn.
@@ -283,7 +283,7 @@ public interface AbilityComponents extends CMLibrary
 	 * @see AbilityComponents#ableTriggCheck(CMMsg, AbleTriggState, AbleTrigger[])
 	 *
 	 * @param trigger the encoded ritual string
-	 * @param errors TODO
+	 * @param errors null, or a list to put parsing errors into
 	 * @return the list of parsed triggers, or null if something went wrong.
 	 */
 	public AbleTrigger[] parseAbleTriggers(String trigger, List<String> errors);
@@ -304,7 +304,7 @@ public interface AbilityComponents extends CMLibrary
 	 * @see AbilityComponents#getAbleTriggerDesc(AbleTrigger[])
 	 *
 	 * @param msg the event that occurred, and might be part of this ritual
-	 * @param state TODO
+	 * @param state the trigger state for a given player
 	 * @param triggers the actual ritual itself
 	 * @return true if the entire ritual is completed
 	 */
