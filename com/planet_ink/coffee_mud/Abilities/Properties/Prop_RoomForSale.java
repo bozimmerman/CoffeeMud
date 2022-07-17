@@ -410,8 +410,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				return new int[] {-1, 0};
 			}
 
-			if((lastNumItems<0)
-			&&(T.getOwnerName().length()>0)
+			if((T.getOwnerName().length()>0)
 			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.PROPERTYOWNERCHECKS)))
 			{
 				boolean playerExists = false;
