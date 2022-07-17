@@ -183,28 +183,32 @@ public class Burning extends StdAbility
 		{
 			if(affected instanceof Item)
 			{
-				final Environmental E=((Item)affected).owner();
+				final Item affI = (Item)affected;
+				final Environmental E=affI.owner();
 				if(E==null)
 				{
 					if(!isFlagSet(FIREFLAG_NEVERDESTROYHOST))
-						((Item)affected).destroy();
+						affI.destroy();
 				}
 				else
 				if(E instanceof Room)
 				{
 					final Room room=(Room)E;
-					if((affected instanceof RawMaterial)
+					if(((affI instanceof RawMaterial)||(affI.container()!=null))
 					&&(!CMath.bset(abilityCode(), Burning.FIREFLAG_NOSPREAD))
-					&&(room.isContent((Item)affected)))
+					&&(room.isContent(affI)))
 					{
+						final Container C=affI.container();
 						for(int i=0;i<room.numItems();i++)
 						{
 							final Item I=room.getItem(i);
-							if(I.name().equals(affected.name())
-							&&(I!=affected)
-							&&(I instanceof RawMaterial)
-							&&(I.material()==((Item)affected).material())
-							&&(!CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ITEMNORUIN)))
+							if(I.name().equals(affI.name())
+							&&(I!=affI)
+							&&(I.container()==C)
+							&&((I instanceof RawMaterial)||(C!=null))
+							&&(I.material()==affI.material())
+							&&(!CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ITEMNORUIN))
+							&&(!CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_UNDESTROYABLE)))
 							{
 								int durationOfBurn=CMLib.materials().getBurnDuration(I);
 								if(durationOfBurn<=0)
@@ -217,10 +221,11 @@ public class Burning extends StdAbility
 							}
 						}
 					}
-					if((!(affected instanceof ClanItem))
-					&&(!CMath.bset(affected.phyStats().sensesMask(), PhyStats.SENSE_ITEMNORUIN)))
+					if((!(affI instanceof ClanItem))
+					&&(!CMath.bset(affI.phyStats().sensesMask(), PhyStats.SENSE_ITEMNORUIN))
+					&&(!CMath.bset(affI.phyStats().sensesMask(), PhyStats.SENSE_UNDESTROYABLE)))
 					{
-						switch(((Item)affected).material()&RawMaterial.MATERIAL_MASK)
+						switch(affI.material()&RawMaterial.MATERIAL_MASK)
 						{
 						case RawMaterial.MATERIAL_LIQUID:
 						case RawMaterial.MATERIAL_METAL:
@@ -233,23 +238,23 @@ public class Burning extends StdAbility
 							break;
 						default:
 						{
-							if(CMLib.flags().isABonusItems(affected))
+							if(CMLib.flags().isABonusItems(affI))
 							{
 								if(invoker==null)
 								{
 									invoker=CMClass.getMOB("StdMOB");
 									invoker.setLocation(CMClass.getLocale("StdRoom"));
-									invoker.basePhyStats().setLevel(affected.phyStats().level());
-									invoker.phyStats().setLevel(affected.phyStats().level());
+									invoker.basePhyStats().setLevel(affI.phyStats().level());
+									invoker.phyStats().setLevel(affI.phyStats().level());
 								}
-								room.showHappens(CMMsg.MSG_OK_ACTION,L("@x1 EXPLODES!!!",affected.name()));
+								room.showHappens(CMMsg.MSG_OK_ACTION,L("@x1 EXPLODES!!!",affI.name()));
 								for(int i=0;i<room.numInhabitants();i++)
 								{
 									final MOB target=room.fetchInhabitant(i);
-									CMLib.combat().postDamage(invoker(),target,null,CMLib.dice().roll(affected.phyStats().level(),5,1),CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,L("The blast <DAMAGE> <T-NAME>!"));
+									CMLib.combat().postDamage(invoker(),target,null,CMLib.dice().roll(affI.phyStats().level(),5,1),CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,L("The blast <DAMAGE> <T-NAME>!"));
 								}
 								if(!isFlagSet(FIREFLAG_NEVERDESTROYHOST))
-									((Item)affected).destroy();
+									affI.destroy();
 							}
 							else
 							{
@@ -261,20 +266,20 @@ public class Burning extends StdAbility
 								ash.recoverPhyStats();
 								room.addItem(ash,ItemPossessor.Expire.Monster_EQ);
 								((RawMaterial)ash).rebundle();
-								if((affected instanceof RawMaterial)
-								&&(affected.basePhyStats().weight()>1)
-								&&(CMLib.materials().getBurnDuration(affected)>0))
+								if((affI instanceof RawMaterial)
+								&&(affI.basePhyStats().weight()>1)
+								&&(CMLib.materials().getBurnDuration(affI)>0))
 								{
-									affected.basePhyStats().setWeight(affected.basePhyStats().weight()-1);
-									affected.recoverPhyStats();
-									this.tickDown = CMLib.materials().getBurnDuration(affected);
-									CMLib.materials().adjustResourceName((Item)affected);
+									affI.basePhyStats().setWeight(affI.basePhyStats().weight()-1);
+									affI.recoverPhyStats();
+									this.tickDown = CMLib.materials().getBurnDuration(affI);
+									CMLib.materials().adjustResourceName(affI);
 									room.recoverRoomStats();
 									return super.tick(ticking,tickID);
 								}
-								room.showHappens(CMMsg.MSG_OK_VISUAL, L("@x1 is no longer burning.",affected.name()));
+								room.showHappens(CMMsg.MSG_OK_VISUAL, L("@x1 is no longer burning.",affI.name()));
 								if(!isFlagSet(FIREFLAG_NEVERDESTROYHOST))
-									((Item)affected).destroy();
+									affI.destroy();
 							}
 							break;
 						}
@@ -285,7 +290,7 @@ public class Burning extends StdAbility
 				else
 				if(E instanceof MOB)
 				{
-					switch(((Item)affected).material()&RawMaterial.MATERIAL_MASK)
+					switch(affI.material()&RawMaterial.MATERIAL_MASK)
 					{
 					case RawMaterial.MATERIAL_LIQUID:
 					case RawMaterial.MATERIAL_METAL:
@@ -297,7 +302,7 @@ public class Burning extends StdAbility
 						break;
 					default:
 						if(!isFlagSet(FIREFLAG_NEVERDESTROYHOST))
-							((Item)affected).destroy();
+							affI.destroy();
 						break;
 					}
 					((MOB)E).location().recoverRoomStats();
