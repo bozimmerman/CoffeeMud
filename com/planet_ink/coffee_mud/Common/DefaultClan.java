@@ -2028,10 +2028,12 @@ public class DefaultClan implements Clan
 				return true;
 			tickUp = 0;
 
-			final List<FullMemberRecord> members=getFullMemberList();
-			int activeMembers=0;
 			final long deathMilis=CMProps.getIntVar(CMProps.Int.DAYSCLANDEATH)*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*CMProps.getTickMillis();
 			final long overthrowMilis=CMProps.getIntVar(CMProps.Int.DAYSCLANOVERTHROW)*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*CMProps.getTickMillis();
+			final long purgeDuration=(3L * 24L * 60L * 60L * 1000L);
+
+			final List<FullMemberRecord> members=getFullMemberList();
+			int activeMembers=0;
 
 			for(final FullMemberRecord member : members)
 			{
@@ -2042,74 +2044,10 @@ public class DefaultClan implements Clan
 			final int minimumMembers = getMinClanMembers();
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
 				Log.debugOut("DefaultClan","("+clanID()+"): "+activeMembers+"/"+minimumMembers+" active members.");
-			if(activeMembers<minimumMembers)
-			{
-				if(!isSafeFromPurge())
-				{
-					final long duration=(3L * 24L * 60L * 60L * 1000L);
-					if((lastStatusChange > 0)
-					&& ((System.currentTimeMillis() - this.lastStatusChange)>duration))
-					{
-						if(getStatus()==CLANSTATUS_FADING)
-						{
-							Log.sysOut("Clans","Clan '"+getName()+" deleted with only "+activeMembers+" having logged on lately.");
-							destroyClan();
-							final StringBuffer buf=new StringBuffer("");
-							for(final FullMemberRecord member : members)
-								buf.append(member.name+" on "+CMLib.time().date2String(member.lastActiveTimeMs)+"  ");
-							Log.sysOut("Clans","Clan '"+getName()+" had the following membership: "+buf.toString());
-							return true;
-						}
-						setStatus(CLANSTATUS_FADING);
-						final List<Integer> topRoles=getTopRankedRoles(Function.ASSIGN);
-						for(final MemberRecord member : members)
-						{
-							final String name = member.name;
-							final int role=member.role;
-							//long lastLogin=((Long)members.elementAt(j,3)).longValue();
-							if(topRoles.contains(Integer.valueOf(role)))
-							{
-								if(CMLib.players().playerExists(name))
-								{
-									CMLib.smtp().emailIfPossible("AutoPurge",CMStrings.capitalizeAndLower(name),"AutoPurge: "+name(),
-											""+getGovernmentName()+" "+name()+" is in danger of being deleted if at least "+(minimumMembers-activeMembers)
-											+" members do not log on within 24 hours.");
-								}
-							}
-						}
-
-						Log.sysOut("Clans","Clan '"+getName()+"' fading with only "+activeMembers+" having logged on lately.  Will purge on "+CMLib.time().date2String(this.lastStatusChange)+duration);
-						clanAnnounce(""+getGovernmentName()+" "+name()+" is in danger of being deleted if more members do not log on within 24 hours.");
-						update();
-					}
-				}
-				else
-				if(getStatus()!=CLANSTATUS_ACTIVE)
-				{
-					setStatus(CLANSTATUS_ACTIVE);
-					update();
-				}
-			}
-			else
-			switch(getStatus())
-			{
-			case CLANSTATUS_FADING:
-				setStatus(CLANSTATUS_ACTIVE);
-				clanAnnounce(""+getGovernmentName()+" "+name()+" is no longer in danger of being deleted.  Be aware that there is required activity level.");
-				update();
-				break;
-			case CLANSTATUS_PENDING:
-				setStatus(CLANSTATUS_ACTIVE);
-				Log.sysOut("Clans",""+getGovernmentName()+" '"+getName()+" now active with "+activeMembers+".");
-				clanAnnounce(""+getGovernmentName()+" "+name()+" now has sufficient members.  The "+getGovernmentName()+" is now fully approved.");
-				update();
-				break;
-			default:
-				break;
-			}
-
+			boolean noLeaders = false;
 			// handle any necessary promotions
-			if(govt().getAutoPromoteBy() != AutoPromoteFlag.NONE)
+			if((govt().getAutoPromoteBy() != AutoPromoteFlag.NONE)
+			&&((activeMembers>=minimumMembers)))
 			{
 				// first step is to figure out which positions need filling
 				// 1. if at least one position can assign others, then the highest of those is the answer.
@@ -2431,18 +2369,85 @@ public class DefaultClan implements Clan
 				}
 
 				if(highMembers.size()==0)
+					noLeaders = true;
+			}
+			if((activeMembers<minimumMembers) || noLeaders)
+			{
+				if(!isSafeFromPurge())
 				{
-					if(!isSafeFromPurge())
+					if((lastStatusChange > 0)
+					&& ((System.currentTimeMillis() - this.lastStatusChange)>purgeDuration))
 					{
-						Log.sysOut("Clans","Clan '"+getName()+" deleted for lack of leadership.");
-						destroyClan();
-						final StringBuffer buf=new StringBuffer("");
-						for(final FullMemberRecord member : members)
-							buf.append(member.name+" on "+CMLib.time().date2String(member.lastActiveTimeMs)+"  ");
-						Log.sysOut("Clans","Clan '"+getName()+" had the following membership: "+buf.toString());
-						return true;
+						if(getStatus()==CLANSTATUS_FADING)
+						{
+							if(activeMembers<minimumMembers)
+								Log.sysOut("Clans","Clan '"+getName()+" deleted with only "+activeMembers+" having logged on lately.");
+							else
+								Log.sysOut("Clans","Clan '"+getName()+" deleted, lacking leadership, with "+activeMembers+" having logged on lately.");
+							destroyClan();
+							final StringBuffer buf=new StringBuffer("");
+							for(final FullMemberRecord member : members)
+								buf.append(member.name+" on "+CMLib.time().date2String(member.lastActiveTimeMs)+"  ");
+							Log.sysOut("Clans","Clan '"+getName()+" had the following membership: "+buf.toString());
+							return true;
+						}
+						setStatus(CLANSTATUS_FADING);
+						final List<Integer> topRoles=getTopRankedRoles(Function.ASSIGN);
+						for(final MemberRecord member : members)
+						{
+							final String name = member.name;
+							final int role=member.role;
+							//long lastLogin=((Long)members.elementAt(j,3)).longValue();
+							if(topRoles.contains(Integer.valueOf(role)))
+							{
+								if(CMLib.players().playerExists(name))
+								{
+									if(activeMembers<minimumMembers)
+									{
+										CMLib.smtp().emailIfPossible("AutoPurge",CMStrings.capitalizeAndLower(name),"AutoPurge: "+name(),
+												""+getGovernmentName()+" "+name()+" is in danger of being deleted if at least "+(minimumMembers-activeMembers)
+												+" members do not log on within 24 hours.");
+									}
+									else
+									{
+										CMLib.smtp().emailIfPossible("AutoPurge",CMStrings.capitalizeAndLower(name),"AutoPurge: "+name(),
+												""+getGovernmentName()+" "+name()+" is in danger of being deleted if does not have a leader log on within 24 hours.");
+									}
+								}
+							}
+						}
+
+						if(activeMembers<minimumMembers)
+							Log.sysOut("Clans","Clan '"+getName()+"' fading with only "+activeMembers+" having logged on lately.  Will purge on "+CMLib.time().date2String(this.lastStatusChange)+purgeDuration);
+						else
+							Log.sysOut("Clans","Clan '"+getName()+" fading, lacking leadership, with "+activeMembers+" having logged on lately.");
+						clanAnnounce(""+getGovernmentName()+" "+name()+" is in danger of being deleted if more members do not log on within 24 hours.");
+						update();
 					}
 				}
+				else
+				if(getStatus()!=CLANSTATUS_ACTIVE)
+				{
+					setStatus(CLANSTATUS_ACTIVE);
+					update();
+				}
+			}
+			else
+			switch(getStatus())
+			{
+			case CLANSTATUS_FADING:
+				setStatus(CLANSTATUS_ACTIVE);
+				clanAnnounce(""+getGovernmentName()+" "+name()+" is no longer in danger of being deleted.  Be aware that there is required activity level.");
+				update();
+				break;
+			case CLANSTATUS_PENDING:
+				setStatus(CLANSTATUS_ACTIVE);
+				Log.sysOut("Clans",""+getGovernmentName()+" '"+getName()+" now active with "+activeMembers+".");
+				clanAnnounce(""+getGovernmentName()+" "+name()+" now has sufficient members.  The "+getGovernmentName()+" is now fully approved.");
+				update();
+				break;
+			default:
+				break;
 			}
 
 			boolean anyVoters = false;
