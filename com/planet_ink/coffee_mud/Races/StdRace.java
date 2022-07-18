@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Races;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.InvokeMethod;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -666,12 +667,16 @@ public class StdRace implements Race
 		return CMLib.lang().fullSessionTranslation(str, xs);
 	}
 
-	protected boolean giveMobAbility(final MOB mob, final Ability A, final int proficiency, final String defaultParm, final boolean isBorrowedRace)
+	protected boolean giveMobAbility(final MOB mob, final Ability A, 
+									 final int proficiency, final String defaultParm,
+									 final boolean isBorrowedRace)
 	{
 		return giveMobAbility(mob,A,proficiency,defaultParm,isBorrowedRace,true);
 	}
 
-	protected boolean giveMobAbility(final MOB mob, Ability A, final int proficiency, final String defaultParm, final boolean isBorrowedRace, final boolean autoInvoke)
+	protected boolean giveMobAbility(final MOB mob, Ability A, 
+									 final int proficiency, final String defaultParm, 
+									 final boolean isBorrowedRace, final boolean autoInvoke)
 	{
 		if(mob.fetchAbility(A.ID())==null)
 		{
@@ -1906,7 +1911,7 @@ public class StdRace implements Race
 														 racialAbilityParms()[i],
 														 !racialAbilityQuals()[i],
 														 SecretFlag.PUBLIC,
-														 "");
+														 "", InvokeMethod.WORD);
 			}
 		}
 		if(racialAbilityMap==null)

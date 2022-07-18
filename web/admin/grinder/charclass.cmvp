@@ -388,7 +388,7 @@
             <INPUT TYPE=CHECKBOX NAME=SHOWPARMS ONCLICK="ReShow();" @if?CheckReqParm?SHOWPARMS=@ @else@CHECKED@endif@><FONT COLOR=WHITE>Show Parameters</FONT><BR>
 	        <INPUT TYPE=CHECKBOX NAME=SHOWSECRET ONCLICK="ReShow();" @if?CheckReqParm?SHOWSECRET=@ @else@CHECKED@endif@><FONT COLOR=WHITE>Show Status</FONT>&nbsp;<A HREF="javascript:OpenUp('ahelp.cmvp','ABILITY_SECRET')"><FONT COLOR=WHITE><I>?</I></FONT></a><BR>
             </TD>
-            <TD>@CharClassData?CABILITIES&HEADERCOL1=Skill Name&HEADERCOL2=Level&HEADERCOL3=Proff.&HEADERCOL4=Max.Pf&HEADERCOL5=<BR>&FONT=COLOR=WHITE SIZE=-1@</TD>
+            <TD>@CharClassData?CABILITIES&HEADERCOL1=Skill Name&HEADERCOL2=Level&HEADERCOL3=Proff.&HEADERCOL4=Max.Pf&HEADERCOL5=Invok&HEADERCOL6=<BR>&FONT=COLOR=WHITE SIZE=-1@</TD>
         </TR>
     </TABLE>
 @endif@

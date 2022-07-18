@@ -431,7 +431,8 @@ public class RaceData extends StdWebMacro
 				cables=new QuadVector<String,Integer,Integer,Boolean>();
 			for (final Ability A : ables)
 			{
-				if((A!=null)&&(!cables.containsFirst(A.ID())))
+				if((A!=null)
+				&&(!cables.containsFirst(A.ID())))
 				{
 					final AbilityMapper.AbilityMapping ableMap=CMLib.ableMapper().getAbleMap(ID, A.ID());
 					final boolean defaultGain = ableMap.autoGain();

@@ -37,7 +37,7 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 	public static final long 	serialVersionUID=43353454350L;
 	protected int 				dimensions=1;
 	private final SVector<Object[]> 	stuff;
-	private final static int 	MAX_SIZE=9;
+	private final static int 	MAX_SIZE=10;
 
 	public final static DVector empty = new DVector(1);
 

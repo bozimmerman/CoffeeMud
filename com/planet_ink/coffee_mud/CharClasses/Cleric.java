@@ -331,7 +331,13 @@ public class Cleric extends StdCharClass
 				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID()))
 				&&(!CMLib.ableMapper().getAllQualified(ID(),true,A.ID())))
-					giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
+				{
+					giveMobAbility(mob,A,
+								   CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),
+								   CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),
+								   able.invokeMethod(),
+								   isBorrowedClass);
+				}
 			}
 			return;
 		}
@@ -360,7 +366,11 @@ public class Cleric extends StdCharClass
 			&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())==classLevel)
 			&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
 			{
-				giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
+				final AbilityMapper.AbilityMapping able = CMLib.ableMapper().getQualifyingMapping(ID(), true, A.ID());
+				giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),
+							   CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),
+							   able.invokeMethod(),
+							   isBorrowedClass);
 				break; // one is enough
 			}
 		}

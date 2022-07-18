@@ -349,7 +349,12 @@ public class Delver extends StdCharClass
 				if((A!=null)
 				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
-					giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
+				{
+					giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),
+								   CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),
+								   able.invokeMethod(),
+								   isBorrowedClass);
+				}
 			}
 		}
 	}

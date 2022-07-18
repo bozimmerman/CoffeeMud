@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.InvokeMethod;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -607,6 +608,7 @@ public class GenCharClass extends StdCharClass
 				str.append("<CACLASS>"+ables.elementAt(r).abilityID()+"</CACLASS>");
 				str.append("<CALEVEL>"+ables.elementAt(r).qualLevel()+"</CALEVEL>");
 				str.append("<CAPROFF>"+ables.elementAt(r).defaultProficiency()+"</CAPROFF>");
+				str.append("<CAINVO>"+ables.elementAt(r).invokeMethod().name()+"</CAINVO>");
 				str.append("<CAAGAIN>"+ables.elementAt(r).autoGain()+"</CAAGAIN>");
 				str.append("<CASECR>"+ables.elementAt(r).secretFlag().name()+"</CASECR>");
 				str.append("<CAPARM>"+ables.elementAt(r).defaultParm()+"</CAPARM>");
@@ -874,7 +876,8 @@ public class GenCharClass extends StdCharClass
 									 secretFlag,
 									 CMParms.parseCommas(iblk.getValFromPieces("CAPREQ"),true),
 									 iblk.getValFromPieces("CAMASK"),
-									 null);
+									 null, 
+									 (InvokeMethod)CMath.s_valueOf(InvokeMethod.class, iblk.getValFromPieces("CAINVO"), InvokeMethod.WORD));
 			}
 		}
 
@@ -997,7 +1000,7 @@ public class GenCharClass extends StdCharClass
 									 "SSETLEVEL","NUMWMAT","GETWMAT","ARMORMINOR","STATCLASS",
 									 "EVENTCLASS","GETCABLEPREQ","GETCABLEMASK","HELP","LEVELCAP",
 									 "GETCABLEMAXP","MAXNCS","MAXCRS","MAXCMS","MAXLGS","GETSTATMIN",
-									 "MONEY"
+									 "MONEY","GETCABLEINVO"
 									 };
 
 	@Override
@@ -1146,13 +1149,15 @@ public class GenCharClass extends StdCharClass
 			return getMinimumStatRequirements()[num].second.toString();
 		case 61:
 			return startingMoney;
+		case 62:
+			return getAbleSet().elementAt(num).invokeMethod().name();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 		return "";
 	}
 
-	protected String[] tempables=new String[9];
+	protected String[] tempables=new String[10];
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -1285,7 +1290,8 @@ public class GenCharClass extends StdCharClass
 													 secFlg,
 													 CMParms.parseCommas(tempables[6],true),
 													 tempables[7],
-													 null);
+													 null,
+													 (InvokeMethod)CMath.s_valueOf(InvokeMethod.class, tempables[9], InvokeMethod.WORD));
 			break;
 		}
 		case 26:
@@ -1526,6 +1532,9 @@ public class GenCharClass extends StdCharClass
 		case 61:
 			startingMoney = val;
 			break;
+		case 62:
+			tempables[9] = val;
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
@@ -1559,7 +1568,13 @@ public class GenCharClass extends StdCharClass
 					if((A!=null)
 					&&(!CMLib.ableMapper().getAllQualified(ID(),true,A.ID()))
 					&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
-						giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
+					{
+						giveMobAbility(mob,A,
+								CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),
+								CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),
+								able.invokeMethod(),
+								isBorrowedClass);
+					}
 				}
 			}
 		}

@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.InvokeMethod;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
@@ -97,8 +98,10 @@ public class GrinderAllQualifys
 			}
 			curChkNum++;
 		}
-		newMap=CMLib.ableMapper().makeAbilityMapping(newMap.abilityID(),newMap.qualLevel(),newMap.abilityID(),newMap.defaultProficiency(),100,"",newMap.autoGain(),
-													 SecretFlag.PUBLIC,true,CMParms.parseSpaces(preReqs.toString().trim(), true), newMap.extraMask(),null);
+		newMap=CMLib.ableMapper().makeAbilityMapping(newMap.abilityID(),newMap.qualLevel(),newMap.abilityID(),
+													 newMap.defaultProficiency(),100,"",newMap.autoGain(),
+													 SecretFlag.PUBLIC,true,CMParms.parseSpaces(preReqs.toString().trim(), true), 
+													 newMap.extraMask(),null, InvokeMethod.WORD);
 		map.put(last.toUpperCase().trim(),newMap);
 		CMLib.ableMapper().saveAllQualifysFile(allQualMap);
 		return "";

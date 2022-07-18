@@ -316,7 +316,13 @@ public class Monk extends StdCharClass
 				if((A!=null)
 				&&(!CMLib.ableMapper().getAllQualified(ID(),true,A.ID()))
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
-					giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
+				{
+					giveMobAbility(mob,A,
+								   CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),
+								   CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),
+								   able.invokeMethod(),
+								   isBorrowedClass);
+				}
 			}
 		}
 	}

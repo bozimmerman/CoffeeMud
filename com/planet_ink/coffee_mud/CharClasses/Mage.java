@@ -529,6 +529,7 @@ public class Mage extends StdCharClass
 							   CMClass.getAbility(AID),
 							   CMLib.ableMapper().getDefaultProficiency(ID(),true,AID),
 							   CMLib.ableMapper().getDefaultParm(ID(),true,AID),
+							   CMLib.ableMapper().getQualifyingMapping(ID(),true,AID).invokeMethod(),
 							   isBorrowedClass);
 			}
 		}

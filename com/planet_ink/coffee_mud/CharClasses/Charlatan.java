@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.InvokeMethod;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -408,7 +409,7 @@ public class Charlatan extends StdCharClass
 				return;
 			final Ability A=choices.get(CMLib.dice().roll(1,choices.size(),-1));
 			if(A!=null)
-				giveMobAbility(mob,A,0,"",isBorrowedClass);
+				giveMobAbility(mob,A,0,"",InvokeMethod.WORD,isBorrowedClass);
 		}
 		else
 		{
@@ -422,7 +423,12 @@ public class Charlatan extends StdCharClass
 				if((A!=null)
 				&&(!CMLib.ableMapper().getAllQualified(ID(),true,A.ID()))
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
-					giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
+				{
+					giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),
+								   CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),
+								   able.invokeMethod(),
+								   isBorrowedClass);
+				}
 			}
 		}
 	}

@@ -2452,30 +2452,39 @@ public class DefaultSession implements Session
 	}
 
 	@Override
-	public String choose(final String Message, final String Choices, final String Default, final long maxTime, final List<String> paramsOut) throws IOException
+	public String choose(final String promptMsg, final String choices, final String def, final long maxTime, final List<String> paramsOut) throws IOException
 	{
 		String YN="";
 		String rest=null;
-		while((YN.equals(""))||(Choices.indexOf(YN)<0)&&(!killFlag))
+		final List<String> choiceList;
+		final boolean oneChar=choices.indexOf(',')<0;
+		if(!oneChar)
+			choiceList=CMParms.parseCommas(choices,true);
+		else
 		{
-			promptPrint(Message);
+			choiceList=new ArrayList<String>();
+			for(char c : choices.toCharArray())
+				choiceList.add(""+c);
+		}
+		while((YN.equals("")||(!CMParms.containsIgnoreCase(choiceList, YN)))
+		&&(!killFlag))
+		{
+			promptPrint(promptMsg);
 			YN=blockingIn(maxTime, true);
 			if(YN==null)
-			{
-				return Default.toUpperCase();
-			}
+				return def.toUpperCase();
 			YN=YN.trim();
 			if(YN.equals(""))
-			{
-				return Default.toUpperCase();
-			}
-			if(YN.length()>1)
+				return def.toUpperCase();
+			if((YN.length()>1)
+			&&(oneChar))
 			{
 				if(paramsOut!=null)
 					rest=YN.substring(1).trim();
 				YN=YN.substring(0,1).toUpperCase();
 			}
 			else
+			if(oneChar)
 				YN=YN.toUpperCase();
 		}
 		if((rest!=null)&&(paramsOut!=null)&&(rest.length()>0))
