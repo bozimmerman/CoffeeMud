@@ -311,7 +311,6 @@ public class Druid extends StdCharClass
 					giveMobAbility(mob,A,
 								   CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),
 								   CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),
-								   able.invokeMethod(),
 								   isBorrowedClass);
 				}
 			}
@@ -356,7 +355,6 @@ public class Druid extends StdCharClass
 							   CMClass.getAbility(AID),
 							   CMLib.ableMapper().getDefaultProficiency(ID(),true,AID),
 							   CMLib.ableMapper().getDefaultParm(ID(),true,AID),
-							   CMLib.ableMapper().getQualifyingMapping(ID(), true, AID).invokeMethod(),
 							   isBorrowedClass);
 			}
 		}

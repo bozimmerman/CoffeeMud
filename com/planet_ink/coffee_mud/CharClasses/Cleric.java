@@ -335,7 +335,6 @@ public class Cleric extends StdCharClass
 					giveMobAbility(mob,A,
 								   CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),
 								   CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),
-								   able.invokeMethod(),
 								   isBorrowedClass);
 				}
 			}
@@ -366,10 +365,9 @@ public class Cleric extends StdCharClass
 			&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())==classLevel)
 			&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
 			{
-				final AbilityMapper.AbilityMapping able = CMLib.ableMapper().getQualifyingMapping(ID(), true, A.ID());
+				//final AbilityMapper.AbilityMapping able = CMLib.ableMapper().getQualifyingMapping(ID(), true, A.ID());
 				giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),
 							   CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),
-							   able.invokeMethod(),
 							   isBorrowedClass);
 				break; // one is enough
 			}

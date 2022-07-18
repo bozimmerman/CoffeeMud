@@ -1,7 +1,6 @@
 package com.planet_ink.coffee_mud.Races;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
-import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.InvokeMethod;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -1911,7 +1910,7 @@ public class StdRace implements Race
 														 racialAbilityParms()[i],
 														 !racialAbilityQuals()[i],
 														 SecretFlag.PUBLIC,
-														 "", InvokeMethod.WORD);
+														 "");
 			}
 		}
 		if(racialAbilityMap==null)

@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.InvokeMethod;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -476,7 +475,6 @@ public class Reliquist extends Thief
 					giveMobAbility(mob,A,
 								   CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),
 								   CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),
-								   able.invokeMethod(),
 								   isBorrowedClass);
 				}
 			}
@@ -507,11 +505,10 @@ public class Reliquist extends Thief
 			&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())==classLevel)
 			&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
 			{
-				final AbilityMapper.AbilityMapping able=CMLib.ableMapper().getQualifyingMapping(ID(),true,A.ID());
+				//final AbilityMapper.AbilityMapping able=CMLib.ableMapper().getQualifyingMapping(ID(),true,A.ID());
 				giveMobAbility(mob,A,
 							   CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),
 							   CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),
-							   (able==null)?InvokeMethod.WORD:able.invokeMethod(),
 							   isBorrowedClass);
 				break; // one is enough
 			}

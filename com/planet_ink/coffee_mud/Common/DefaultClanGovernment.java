@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.InvokeMethod;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -1320,8 +1319,7 @@ public class DefaultClanGovernment implements ClanGovernment
 																 clanAbilityParms[i],
 																 !clanAbilityQuals[i],
 																 SecretFlag.PUBLIC,
-																 extraMask, 
-																 InvokeMethod.WORD);
+																 extraMask);
 					if(ableMap != null)
 					{
 						for(final Integer I : clanAbilityRoles[i])

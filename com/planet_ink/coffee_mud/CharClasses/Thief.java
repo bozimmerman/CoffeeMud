@@ -291,7 +291,6 @@ public class Thief extends StdCharClass
 					giveMobAbility(mob,A,
 								   CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),
 								   CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),
-								   able.invokeMethod(),
 								   isBorrowedClass);
 				}
 			}

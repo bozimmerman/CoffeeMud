@@ -8,7 +8,6 @@ import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.SecGroup;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.InvokeMethod;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericEditor.CMEval;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary.ListStringer;
@@ -8210,8 +8209,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		aMAP.defaultProficiency(CMath.s_int(mob.session().prompt(L("Enter the (default) proficiency level (@x1): ",""+aMAP.defaultProficiency()),aMAP.defaultProficiency()+"")));
 		aMAP.maxProficiency(CMath.s_int(mob.session().prompt(L("Enter the (maximum) proficiency level (@x1): ",""+aMAP.maxProficiency()),aMAP.maxProficiency()+"")));
 		aMAP.autoGain(mob.session().confirm(L("Is this skill automatically gained@x1?",(aMAP.autoGain()?"(Y/n)":"(y/N)")),""+aMAP.autoGain()));
-		//aMAP.invokeMethod(InvokeMethod.valueOf(mob.session().choose(L("Enter invocation method (@x1): ",aMAP.invokeMethod().name()), 
-		//		CMParms.toListString(InvokeMethod.values()), aMAP.invokeMethod().name())));
 		aMAP.secretFlag(SecretFlag.startsWithIgnoreCase(
 				mob.session().choose(L("Is this skill P)ublic, S)ecret, or M)asked @x1?",
 						(aMAP.secretFlag()==SecretFlag.PUBLIC?"(P/s/m)":aMAP.secretFlag()==SecretFlag.SECRET?"(p/S/m)":"(p/s/M)")),
@@ -8277,7 +8274,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					aMAP.defaultParm(E.getStat("GETCABLEPARM"+v));
 					aMAP.originalSkillPreReqList(E.getStat("GETCABLEPREQ"+v));
 					aMAP.extraMask(E.getStat("GETCABLEMASK"+v));
-					aMAP.invokeMethod((InvokeMethod)CMath.s_valueOf(InvokeMethod.class,E.getStat("GETCABLEINVO"+v),InvokeMethod.WORD));
 					final int lvlIndex=levelSets.indexOf(Integer.valueOf(aMAP.qualLevel()));
 					Vector<AbilityMapper.AbilityMapping> set=null;
 					if(lvlIndex<0)
@@ -8408,7 +8404,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							E.setStat("GETCABLEPREQ"+dex,aMAP.originalSkillPreReqList());
 							E.setStat("GETCABLEMASK"+dex,aMAP.extraMask());
 							E.setStat("GETCABLEMAXP"+dex,""+aMAP.maxProficiency());
-							E.setStat("GETCABLEINVO"+dex,""+aMAP.invokeMethod().name());
 							// CABLE MUST BE LAST
 							E.setStat("GETCABLE"+dex,aMAP.abilityID());
 							dex++;
@@ -11851,7 +11846,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		final Map<String,AbilityMapper.AbilityMapping> subMap=map.get(eachOrAll.toUpperCase().trim());
 		AbilityMapper.AbilityMapping mapped = subMap.get(me.ID().toUpperCase());
 		if(mapped==null)
-			mapped=CMLib.ableMapper().makeAbilityMapping(me.ID(),1,me.ID(),0,100,"",true,SecretFlag.PUBLIC, true,new Vector<String>(),"",null, InvokeMethod.WORD);
+			mapped=CMLib.ableMapper().makeAbilityMapping(me.ID(),1,me.ID(),0,100,"",true,SecretFlag.PUBLIC, true,new Vector<String>(),"",null);
 		boolean ok=false;
 		while(!ok)
 		{
@@ -11883,7 +11878,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 		return CMLib.ableMapper().makeAbilityMapping(mapped.abilityID(), mapped.qualLevel(), mapped.abilityID(), mapped.defaultProficiency(), 100, "",
 													 mapped.autoGain(), SecretFlag.PUBLIC, true, CMParms.parseSpaces(mapped.originalSkillPreReqList().trim(), true),
-													 mapped.extraMask(), null, mapped.invokeMethod());
+													 mapped.extraMask(), null);
 	}
 
 	@Override

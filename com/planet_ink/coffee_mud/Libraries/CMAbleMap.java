@@ -2,7 +2,6 @@ package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.CompoundingRule;
-import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.InvokeMethod;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -79,7 +78,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												final String abilityID,
 												final Integer[] costOverrides)
 	{
-		return addCharAbilityMapping(ID,qualLevel,abilityID,0,100,"",false,SecretFlag.PUBLIC,new Vector<String>(),"",costOverrides,InvokeMethod.WORD);
+		return addCharAbilityMapping(ID,qualLevel,abilityID,0,100,"",false,SecretFlag.PUBLIC,new Vector<String>(),"",costOverrides);
 	}
 
 	@Override
@@ -265,7 +264,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												final List<String> preReqSkillsList,
 												final String extraMask)
 	{
-		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defaultParam,autoGain,secret,preReqSkillsList,extraMask,null,InvokeMethod.WORD);
+		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defaultParam,autoGain,secret,preReqSkillsList,extraMask,null);
 	}
 
 	public AbilityMapping addCharAbilityMapping(final String ID,
@@ -301,8 +300,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												final String defaultParam,
 												final boolean autoGain,
 												final SecretFlag secret,
-												final String extraMask, 
-												final InvokeMethod invokeMethod)
+												final String extraMask)
 	{
 		delCharAbilityMapping(ID,abilityID);
 		if(CMSecurity.isAbilityDisabled(ID.toUpperCase()))
@@ -313,7 +311,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			ableMap=new SHashtable<String,AbilityMapping>();
 			completeAbleMap.put(ID,ableMap);
 		}
-		final AbilityMapping able = makeAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defaultParam,autoGain,secret, false,new Vector<String>(),extraMask,null,invokeMethod);
+		final AbilityMapping able = makeAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defaultParam,autoGain,secret, false,new Vector<String>(),extraMask,null);
 		mapAbilityFinal(abilityID,ableMap,able);
 		return able;
 	}
@@ -329,7 +327,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												final List<String> preReqSkillsList,
 												final String extraMask)
 	{
-		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,preReqSkillsList,extraMask,null,InvokeMethod.WORD);
+		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,preReqSkillsList,extraMask,null);
 	}
 
 	@Override
@@ -490,8 +488,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												final SecretFlag secret,
 												final List<String> preReqSkillsList,
 												final String extraMask,
-												final Integer[] costOverrides, 
-												final InvokeMethod invokeMethod)
+												final Integer[] costOverrides)
 	{
 		delCharAbilityMapping(ID,abilityID);
 		if(CMSecurity.isAbilityDisabled(ID.toUpperCase()))
@@ -504,7 +501,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			handleEachAndClassAbility(ableMap, getAllQualifiesMap(null), ID);
 		}
 		final AbilityMapping able = makeAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,maxProficiency,
-				defaultParam,autoGain,secret,false,preReqSkillsList,extraMask,costOverrides, invokeMethod);
+				defaultParam,autoGain,secret,false,preReqSkillsList,extraMask,costOverrides);
 		mapAbilityFinal(abilityID,ableMap,able);
 		return able;
 	}
@@ -529,7 +526,6 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			private Integer[]			costOverrides			= new Integer[Cost.values().length];
 			private boolean				allQualifyFlag			= false;
 			private Map<String, String>	extFields				= new Hashtable<String, String>(1);
-			private InvokeMethod		invokeMethod			= InvokeMethod.WORD;
 
 			@Override
 			public String ID()
@@ -580,19 +576,6 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			public AbilityMapping autoGain(final boolean newValue)
 			{
 				autoGain = newValue;
-				return this;
-			}
-
-			@Override
-			public InvokeMethod invokeMethod()
-			{
-				return invokeMethod;
-			}
-
-			@Override
-			public AbilityMapping invokeMethod(final InvokeMethod newValue)
-			{
-				invokeMethod = newValue;
 				return this;
 			}
 
@@ -763,7 +746,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			{
 				final List<String> unfixedPreReqs=CMParms.parseCommas(this.originalSkillPreReqList(), true);
 				makeAbilityMapping(ID, qualLevel, abilityID, defaultProficiency, maxProficiency, defaultParm, autoGain, isSecret,
-									isAllQualified, unfixedPreReqs, extraMask,costOverrides, invokeMethod);
+									isAllQualified, unfixedPreReqs, extraMask,costOverrides);
 			}
 		};
 	}
@@ -780,8 +763,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 											 final boolean isAllQualified,
 											 final List<String> preReqSkillsList,
 											 final String extraMask,
-											 final Integer[] costOverrides, 
-											 final InvokeMethod invokeMethod)
+											 final Integer[] costOverrides)
 	{
 		final AbilityMapping able=newAbilityMapping()
 								.ID(ID)
@@ -796,8 +778,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 								.extraMask(extraMask == null ? "" : extraMask)
 								.costOverrides(costOverrides)
 								.originalSkillPreReqList(CMParms.toListString(preReqSkillsList))
-								.skillPreReqs(new DVector(2))
-								.invokeMethod(invokeMethod);
+								.skillPreReqs(new DVector(2));
 		addPreRequisites(abilityID,preReqSkillsList,extraMask);
 
 		if(preReqSkillsList!=null)
@@ -2190,25 +2171,6 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	}
 
 	@Override
-	public InvokeMethod getInvokeMethod(String ID, boolean checkAll, String abilityID)
-	{
-		if(completeAbleMap.containsKey(ID))
-		{
-			final Map<String,AbilityMapping> ableMap=completeAbleMap.get(ID);
-			if(ableMap.containsKey(abilityID))
-				return ableMap.get(abilityID).invokeMethod();
-		}
-
-		if((checkAll)&&(completeAbleMap.containsKey("All")))
-		{
-			final Map<String,AbilityMapping> ableMap=completeAbleMap.get("All");
-			if(ableMap.containsKey(abilityID))
-				return ableMap.get(abilityID).invokeMethod();
-		}
-		return InvokeMethod.WORD;
-	}
-	
-	@Override
 	public String getDefaultParm(final String ID, final boolean checkAll, final String abilityID)
 	{
 		if(completeAbleMap.containsKey(ID))
@@ -2381,7 +2343,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 							  CMath.s_int(prof.toString().trim()),
 							  100,"",autogain,SecretFlag.PUBLIC,
 							  true,CMParms.parseSpaces(preReqs.toString().trim(), true), 
-							  mask.toString().trim(),null, InvokeMethod.WORD);
+							  mask.toString().trim(),null);
 	}
 
 	@Override

@@ -9,7 +9,6 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.InvokeMethod;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -43,7 +42,7 @@ public class GrinderClasses
 
 	public static DVector cabilities(final HTTPRequest httpReq)
 	{
-		final DVector theclasses=new DVector(10);
+		final DVector theclasses=new DVector(9);
 		if(httpReq.isUrlParameter("CABLES1"))
 		{
 			int num=1;
@@ -76,10 +75,7 @@ public class GrinderClasses
 					String maxp=httpReq.getUrlParameter("CABMPOF"+num);
 					if(maxp==null)
 						maxp="100";
-					String invo=httpReq.getUrlParameter("CAINVOK"+num);
-					if(invo==null)
-						invo=InvokeMethod.WORD.name();
-					theclasses.addElement(behav,levl,prof,qual,secr,parm,prereq,mask,maxp,invo);
+					theclasses.addElement(behav,levl,prof,qual,secr,parm,prereq,mask,maxp);
 				}
 				num++;
 				behav=httpReq.getUrlParameter("CABLES"+num);
@@ -307,7 +303,6 @@ public class GrinderClasses
 			if(DV.elementAt(i,8) instanceof String)
 				C.setStat("GETCABLEMASK"+i, (String)DV.elementAt(i,8));
 			C.setStat("GETCABLEMAXP"+i, (String)DV.elementAt(i,9));
-			C.setStat("GETCABLEINVO"+i, (String)DV.elementAt(i,10));
 			// CABLE MUST BE LAST
 			C.setStat("GETCABLE"+i, (String)DV.elementAt(i,1));
 		}

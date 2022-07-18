@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
-import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.InvokeMethod;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -885,15 +884,15 @@ public class StdCharClass implements CharClass
 
 	protected boolean giveMobAbility(final MOB mob, final Ability A, 
 									 final int proficiency, final String defaultParm, 
-									 final InvokeMethod invoke, final boolean isBorrowedClass)
+									 final boolean isBorrowedClass)
 	{
-		return giveMobAbility(mob,A,proficiency,defaultParm,invoke,isBorrowedClass,true);
+		return giveMobAbility(mob,A,proficiency,defaultParm,isBorrowedClass,true);
 	}
 
 	protected boolean giveMobAbility(final MOB mob, Ability A, 
 									 final int proficiency, final String defaultParm,
-									 final InvokeMethod invoke,
-									 final boolean isBorrowedClass, final boolean autoInvoke)
+									 final boolean isBorrowedClass,
+									 final boolean autoInvoke)
 	{
 		if(mob.fetchAbility(A.ID())==null)
 		{
@@ -958,7 +957,7 @@ public class StdCharClass implements CharClass
 				if((lvl>=0)
 				&&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
 				&&(!alreadyAble.containsKey(A.ID())))
-					giveMobAbility(mob,A,100,"",InvokeMethod.WORD,true,false);
+					giveMobAbility(mob,A,100,"",true,false);
 			}
 			for(final Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
 				mob.addExpertise((e.nextElement()).ID());
@@ -989,7 +988,7 @@ public class StdCharClass implements CharClass
 			{
 				final Ability A=onesToAdd.get(v).first;
 				final AbilityMapping map=onesToAdd.get(v).second;
-				giveMobAbility(mob,A,map.defaultProficiency(),map.defaultParm(),map.invokeMethod(),isBorrowedClass);
+				giveMobAbility(mob,A,map.defaultProficiency(),map.defaultParm(),isBorrowedClass);
 			}
 		}
 	}
@@ -1166,7 +1165,6 @@ public class StdCharClass implements CharClass
 			CR.setStat("GETCABLEPREQ"+i,able.originalSkillPreReqList());
 			CR.setStat("GETCABLEMASK"+i,able.extraMask()==null?"":able.extraMask());
 			CR.setStat("GETCABLEMAXP"+i,Integer.toString(able.maxProficiency()));
-			CR.setStat("GETCABLEINVO"+i,able.invokeMethod().name());
 			// GETCABLE -- MUST BE LAST --
 			CR.setStat("GETCABLE"+i,able.abilityID());
 		}
