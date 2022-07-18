@@ -211,6 +211,8 @@ public class CharClassData extends StdWebMacro
 			str.append("<INPUT TYPE=TEXT NAME=CABMPOF"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,9))+"\" SIZE=2 MAXLENGTH=2>"+font+"%</B></I></FONT>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=10%>");
+			str.append("<INPUT TYPE=HIDDEN NAME=CAINVOK\"+(i+1)+\" VALUE=\"WORD\">");
+			/*
 			str.append("<SELECT NAME=CAINVOK"+(i+1)+">");
 			for(final InvokeMethod v : InvokeMethod.values())
 			{
@@ -220,6 +222,7 @@ public class CharClassData extends StdWebMacro
 				str.append(">"+v.name());
 			}
 			str.append("</SELECT>");
+			*/
 			str.append("</TD>");
 			str.append("<TD WIDTH=20%>");
 			str.append("<INPUT TYPE=CHECKBOX NAME=CABQUA"+(i+1)+" "+(((String)theclasses.elementAt(i,4)).equalsIgnoreCase("on")?"CHECKED":"")+">"+font+"Qualify Only</B></FONT></I>&nbsp;");
@@ -277,10 +280,13 @@ public class CharClassData extends StdWebMacro
 		str.append("<INPUT TYPE=TEXT NAME=CABMPOF"+(theclasses.size()+1)+" VALUE=\"\" SIZE=2 MAXLENGTH=2>"+font+"%</B></I></FONT>");
 		str.append("</TD>");
 		str.append("<TD WIDTH=10%>");
+		str.append("<INPUT TYPE=HIDDEN NAME=CAINVOK\"+(theclasses.size()+1)+\" VALUE=\"WORD\">");
+		/*
 		str.append("<SELECT NAME=CAINVOK"+(theclasses.size()+1)+">");
 		for(final InvokeMethod v : InvokeMethod.values())
 			str.append("<OPTION VALUE=\""+v.name()+"\">"+v.name());
 		str.append("</SELECT>");
+		*/
 		str.append("</TD>");
 		str.append("<TD WIDTH=20%>");
 		str.append("<INPUT TYPE=CHECKBOX NAME=CABQUA"+(theclasses.size()+1)+" >"+font+"Qualify Only</B></I></FONT>&nbsp;");

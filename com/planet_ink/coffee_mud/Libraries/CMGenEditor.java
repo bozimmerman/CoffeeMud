@@ -8210,8 +8210,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		aMAP.defaultProficiency(CMath.s_int(mob.session().prompt(L("Enter the (default) proficiency level (@x1): ",""+aMAP.defaultProficiency()),aMAP.defaultProficiency()+"")));
 		aMAP.maxProficiency(CMath.s_int(mob.session().prompt(L("Enter the (maximum) proficiency level (@x1): ",""+aMAP.maxProficiency()),aMAP.maxProficiency()+"")));
 		aMAP.autoGain(mob.session().confirm(L("Is this skill automatically gained@x1?",(aMAP.autoGain()?"(Y/n)":"(y/N)")),""+aMAP.autoGain()));
-		aMAP.invokeMethod(InvokeMethod.valueOf(mob.session().choose(L("Enter invokation method (@x1): ",aMAP.invokeMethod().name()), 
-				CMParms.toListString(InvokeMethod.values()), aMAP.invokeMethod().name())));
+		//aMAP.invokeMethod(InvokeMethod.valueOf(mob.session().choose(L("Enter invocation method (@x1): ",aMAP.invokeMethod().name()), 
+		//		CMParms.toListString(InvokeMethod.values()), aMAP.invokeMethod().name())));
 		aMAP.secretFlag(SecretFlag.startsWithIgnoreCase(
 				mob.session().choose(L("Is this skill P)ublic, S)ecret, or M)asked @x1?",
 						(aMAP.secretFlag()==SecretFlag.PUBLIC?"(P/s/m)":aMAP.secretFlag()==SecretFlag.SECRET?"(p/S/m)":"(p/s/M)")),
