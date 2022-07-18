@@ -658,7 +658,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		Ability A=getSkillToInvoke(mob,new XVector<String>(commands));
 		if((A!=null)
 		&&(!CMSecurity.isAbilityDisabled(A.ID().toUpperCase())))
+		{
+			//TODO: first place to check for complex triggers?
 			return A;
+		}
 
 		if(getSkillInvokeWord(mob,firstWord)!=null)
 			return null;
@@ -846,7 +849,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			if((A!=null)
 			&&(evokedBy(A,evokeWord)))
 			{
-				if((evokableAbility!=null)&&(!A.ID().equals(evokableAbility.ID())))
+				if((evokableAbility!=null)
+				&&(!A.ID().equals(evokableAbility.ID())))
 				{
 					foundMoreThanOne=true;
 					evokableAbility=null;
