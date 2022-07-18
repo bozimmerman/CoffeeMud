@@ -1247,7 +1247,9 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 					}
 					else
 					{
+						waiting=true;
 						showPrompt();
+						return;
 					}
 				}
 				break;
