@@ -85,6 +85,31 @@ public class Bomb_FlameBurst extends StdBomb
 		return true;
 	}
 
+	protected boolean doesInnerExplosionDestroy(final int material)
+	{
+		switch(material&RawMaterial.MATERIAL_MASK)
+		{
+		case RawMaterial.MATERIAL_MITHRIL:
+		case RawMaterial.MATERIAL_LIQUID:
+		case RawMaterial.MATERIAL_ENERGY:
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	protected boolean canExplodeOutOf(final int material)
+	{
+		switch(material&RawMaterial.MATERIAL_MASK)
+		{
+		case RawMaterial.MATERIAL_METAL:
+		case RawMaterial.MATERIAL_MITHRIL:
+		case RawMaterial.MATERIAL_ROCK:
+			return false;
+		}
+		return true;
+	}
+
 	@Override
 	public void spring(final MOB target)
 	{

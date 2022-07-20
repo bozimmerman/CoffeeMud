@@ -39,6 +39,9 @@
  38. New Generic Trap type, for many new traps for damage, from skills or scripts
  39. The recipes for lacquering, dying, and similar paint skills are now editable
  40. The recipes for Lay Traps and Lay Minor Traps are now editable
+ 41. New bombs: sonic, heat, sticky, shaped
+ 42. Make Bombs can now make their products obviously bombs instead of obsfucated
+ 43. New thief skills: Set Timer, Detect Bombs
 
 # Build 5.9.12 Release 1/17/2022
   *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG

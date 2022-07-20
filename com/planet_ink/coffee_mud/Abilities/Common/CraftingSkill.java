@@ -1198,9 +1198,13 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 	}
 
 	@Override
-	public List<List<String>> matchingRecipeNames(final String recipeName, final boolean beLoose)
+	public List<String> matchingRecipeNames(final String recipeName, final boolean beLoose)
 	{
-		return matchingRecipeNames(fetchRecipes(),recipeName,beLoose);
+		final List<List<String>> recipes = matchingRecipeNames(fetchRecipes(),recipeName,beLoose);
+		final List<String> recipeNames=new Vector<String>(recipes.size());
+		for(final List<String> recipe : recipes)
+			recipeNames.add(recipe.get(RCP_FINALNAME));
+		return recipeNames;
 	}
 
 	protected boolean supportsWeapons()

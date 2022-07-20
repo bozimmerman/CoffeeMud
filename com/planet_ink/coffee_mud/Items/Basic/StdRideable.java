@@ -672,11 +672,7 @@ public class StdRideable extends StdContainer implements Rideable
 				return false;
 			}
 			else
-			if((riding()!=msg.source())
-			&&((rideBasis()==Rideable.Basis.FURNITURE_SIT)
-			||(rideBasis()==Rideable.Basis.ENTER_IN)
-			||(rideBasis()==Rideable.Basis.FURNITURE_TABLE)
-			||(rideBasis()==Rideable.Basis.FURNITURE_SLEEP)))
+			if(riding()!=msg.source())
 			{
 				if(msg.amITarget(this)
 				&&(numRiders()>=riderCapacity())

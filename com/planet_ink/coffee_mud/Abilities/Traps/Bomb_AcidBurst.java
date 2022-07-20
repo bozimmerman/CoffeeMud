@@ -60,6 +60,18 @@ public class Bomb_AcidBurst extends StdBomb
 		return "some lemons";
 	}
 
+	protected boolean doesInnerExplosionDestroy(final int material)
+	{
+		switch(material&RawMaterial.MATERIAL_MASK)
+		{
+		case RawMaterial.MATERIAL_METAL:
+		case RawMaterial.MATERIAL_GLASS:
+		case RawMaterial.MATERIAL_ENERGY:
+			return false;
+		}
+		return true;
+	}
+
 	@Override
 	public List<Item> getTrapComponents()
 	{

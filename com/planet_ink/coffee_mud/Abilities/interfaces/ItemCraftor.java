@@ -55,7 +55,6 @@ public interface ItemCraftor extends CraftorAbility
 		Magic
 	}
 
-
 	/**
 	 * Returns the general craftor type of this skill, to let
 	 * outside subsystems know what they might expect.

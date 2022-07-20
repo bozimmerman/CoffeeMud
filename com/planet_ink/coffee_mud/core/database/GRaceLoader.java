@@ -40,6 +40,8 @@ public class GRaceLoader
 {
 	protected DBConnector DB=null;
 
+	protected Set<String> updateQue = Collections.synchronizedSet(new TreeSet<String>());
+
 	public GRaceLoader(final DBConnector newDB)
 	{
 		DB=newDB;

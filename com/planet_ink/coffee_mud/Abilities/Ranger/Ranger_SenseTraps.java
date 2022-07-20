@@ -102,12 +102,15 @@ public class Ranger_SenseTraps extends StdAbility
 	public String trapCheck(final MOB viewer, final Physical P, final int dir)
 	{
 		if(P!=null)
-		if(CMLib.utensils().fetchMyTrap(P)!=null)
 		{
-			if(dir >= 0)
-				return L("To the @x1, @x2 is trapped.\n\r",CMLib.directions().getDirectionName(dir),P.name(viewer));
-			else
-				return L("@x1 is trapped.\n\r",P.name(viewer));
+			final Trap T=CMLib.utensils().fetchMyTrap(P);
+			if(T!=null)
+			{
+				if(dir >= 0)
+					return L("To the @x1, @x2 is trapped.\n\r",CMLib.directions().getDirectionName(dir),P.name(viewer));
+				else
+					return L("@x1 is trapped.\n\r",P.name(viewer));
+			}
 		}
 		return "";
 	}

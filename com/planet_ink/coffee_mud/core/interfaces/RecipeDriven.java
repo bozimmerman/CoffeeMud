@@ -66,7 +66,7 @@ public interface RecipeDriven extends CMObject
 	 * @param beLoose whether to be specific or "loose" with name matching
 	 * @return a vector of vectors
 	 */
-	public List<List<String>> matchingRecipeNames(String recipeName, boolean beLoose);
+	public List<String> matchingRecipeNames(String recipeName, boolean beLoose);
 
 	/**
 	 * Given a raw recipe, returns the raw name and level of the ting built therefrom.

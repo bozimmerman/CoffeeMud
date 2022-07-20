@@ -105,8 +105,11 @@ public class Skill_Stonecunning extends StdSkill
 	public String trapCheck(final Physical P)
 	{
 		if(P!=null)
-		if(CMLib.utensils().fetchMyTrap(P)!=null)
-			return L("@x1 is trapped.\n\r",P.name());
+		{
+			final Trap T=CMLib.utensils().fetchMyTrap(P);
+			if(T!=null)
+				return L("@x1 is trapped.\n\r",P.name());
+		}
 		return "";
 	}
 

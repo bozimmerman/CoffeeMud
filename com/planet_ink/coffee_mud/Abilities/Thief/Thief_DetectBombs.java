@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2022 Bo Zimmerman
+   Copyright 2022-2022 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_DetectTraps extends ThiefSkill
+public class Thief_DetectBombs extends ThiefSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Thief_DetectTraps";
+		return "Thief_DetectBombs";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Detect Traps");
+	private final static String localizedName = CMLib.lang().L("Detect Bombs");
 
 	@Override
 	public String name()
@@ -78,7 +78,7 @@ public class Thief_DetectTraps extends ThiefSkill
 		return true;
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"CHECK","TCHECK"});
+	private static final String[] triggerStrings =I(new String[] {"BCHECK"});
 	@Override
 	public String[] triggerStrings()
 	{
@@ -87,22 +87,19 @@ public class Thief_DetectTraps extends ThiefSkill
 
 	protected Environmental lastChecked=null;
 
+	protected boolean isABomb(final Physical E)
+	{
+		final Trap T=CMLib.utensils().fetchMyTrap(E);
+		if((T!=null)&&(T.isABomb()))
+			return true;
+		return false;
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final String whatTounlock=CMParms.combine(commands,0);
 		Physical checkThis=givenTarget;
-		Room nextRoom=null;
-		int dirCode=-1;
-		if(checkThis==null)
-		{
-			dirCode=CMLib.directions().getGoodDirectionCode(whatTounlock);
-			if(dirCode>=0)
-			{
-				checkThis=mob.location().getExitInDir(dirCode);
-				nextRoom=mob.location().getRoomInDir(dirCode);
-			}
-		}
 		if((checkThis==null)&&(whatTounlock.equalsIgnoreCase("room")||whatTounlock.equalsIgnoreCase("here")))
 			checkThis=mob.location();
 		if(checkThis==null)
@@ -116,68 +113,55 @@ public class Thief_DetectTraps extends ThiefSkill
 
 		boolean success=proficiencyCheck(mob,+((((mob.phyStats().level()+(2*getXLEVELLevel(mob))))
 											 -checkThis.phyStats().level())*3),auto);
-		Trap theTrap=CMLib.utensils().fetchMyTrap(checkThis);
-		if(checkThis instanceof Exit)
-		{
-			if(dirCode<0)
-			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-			{
-				if(mob.location().getExitInDir(d)==checkThis)
-				{
-					dirCode=d;
-					break;
-				}
-			}
-			if(dirCode>=0)
-			{
-				final Exit exit=mob.location().getReverseExit(dirCode);
-				Trap opTrap=null;
-				Trap roomTrap=null;
-				if(nextRoom!=null)
-					roomTrap=CMLib.utensils().fetchMyTrap(nextRoom);
-				if(exit!=null)
-					opTrap=CMLib.utensils().fetchMyTrap(exit);
-				if((theTrap!=null)&&(opTrap!=null))
-				{
-					if((theTrap.disabled())&&(!opTrap.disabled()))
-						theTrap=opTrap;
-				}
-				else
-				if((opTrap!=null)&&(theTrap==null))
-					theTrap=opTrap;
-				if((theTrap!=null)&&(theTrap.disabled())&&(roomTrap!=null))
-				{
-					opTrap=null;
-					checkThis=nextRoom;
-					theTrap=roomTrap;
-				}
-			}
-		}
-		final String add=(dirCode>=0)?" "+CMLib.directions().getInDirectionName(dirCode):"";
-		final CMMsg msg=CMClass.getMsg(mob,checkThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,auto?null:L("<S-NAME> look(s) @x1@x2 over very carefully.",((checkThis==null)?"":checkThis.name()),add));
-		if((checkThis!=null)&&(mob.location().okMessage(mob,msg)))
+		final Trap theTrap=CMLib.utensils().fetchMyTrap(checkThis);
+		final CMMsg msg=CMClass.getMsg(mob,checkThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,
+				auto?null:L("<S-NAME> look(s) @x1 over very carefully.",((checkThis==null)?"":checkThis.name(mob))));
+		if((checkThis!=null)
+		&&(mob.location().okMessage(mob,msg)))
 		{
 			mob.location().send(mob,msg);
 			if((checkThis==lastChecked)&&((theTrap==null)||(theTrap.disabled())))
 				setProficiency(oldProficiency);
+			if(checkThis instanceof Room)
+			{
+				final Room tR=(Room)checkThis;
+				boolean found=false;
+				boolean maybe=false;
+				if(success)
+				{
+					for(final Enumeration<Item> i=tR.items();i.hasMoreElements();)
+					{
+						final Item I=i.nextElement();
+						if(isABomb(I))
+						{
+							if((I.container()==null)
+							&& CMLib.flags().canBeSeenBy(I, mob))
+							{
+								mob.tell(L("@x1 definitely a bomb.",I.name(mob)));
+								found=true;
+							}
+							else
+								maybe=true;
+						}
+					}
+				}
+				if(maybe)
+					mob.tell(L("It doesn't seem like there are any bombs here, but you have a feeling."));
+				else
+				if(!success || !found)
+					mob.tell(L("It doesn't seem like there are any bombs here."));
+			}
+			else
 			if((!success)||(theTrap==null))
 			{
 				if(!auto)
-					mob.tell(L("You don't find any traps on @x1@x2.",checkThis.name(),add));
+					mob.tell(L("@x1 doesn't seem like a bomb.",checkThis.name(mob)));
 				success=false;
 			}
 			else
 			{
 				if(theTrap.isABomb())
-					mob.tell(L("@x1@x2 definitely a bomb.",checkThis.name(),add));
-				else
-				if(theTrap.disabled())
-					mob.tell(L("@x1@x2 is trapped, but the trap looks disabled for the moment.",checkThis.name(),add));
-				else
-				if(theTrap.sprung())
-					mob.tell(L("@x1@x2 is trapped, and the trap looks sprung.",checkThis.name(),add));
-				else
-					mob.tell(L("@x1@x2 definitely looks trapped.",checkThis.name(),add));
+					mob.tell(L("@x1 definitely a bomb.",checkThis.name(mob)));
 			}
 			lastChecked=checkThis;
 		}

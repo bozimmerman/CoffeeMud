@@ -315,6 +315,10 @@ public interface CMMiscUtils extends CMLibrary
 	 * This method parses the item ruinning rules and possibly ruins the given item
 	 * by returning the ruined version.  Or it might do nothing
 	 * and just return the item.
+	 *
+	 * @see CMMiscUtils#canBeRuined(Item)
+	 * @see CMMiscUtils#ruinItem(Item)
+	 *
 	 * @param mob the mob to get ruin policies for
 	 * @param I the item to potentially ruin
 	 * @return the ruined item, or the original item, depending
@@ -322,8 +326,23 @@ public interface CMMiscUtils extends CMLibrary
 	public Item isRuinedLoot(MOB mob, Item I);
 
 	/**
-	 * Always converts the given item into the Ruined version
+	 * Returns whether the given item is allowed to be ruined
+	 * by anything.
+	 *
 	 * @see CMMiscUtils#isRuinedLoot(MOB, Item)
+	 * @see CMMiscUtils#ruinItem(Item)
+	 *
+	 * @param I the item to check
+	 * @return true if it is ruinable, false otherwise
+	 */
+	public boolean canBeRuined(final Item I);
+
+	/**
+	 * Always converts the given item into the Ruined version
+	 *
+	 * @see CMMiscUtils#isRuinedLoot(MOB, Item)
+	 * @see CMMiscUtils#canBeRuined(Item)
+	 *
 	 * @param I the item to ruin
 	 * @return the new, ruined version
 	 */

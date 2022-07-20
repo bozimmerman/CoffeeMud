@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_MakeBomb extends ThiefSkill
+public class Thief_MakeBomb extends ThiefSkill implements RecipeDriven
 {
 	@Override
 	public String ID()
@@ -47,6 +47,12 @@ public class Thief_MakeBomb extends ThiefSkill
 	{
 		return localizedName;
 	}
+
+	protected final static int	RCP_TRAPID		= 3;
+	protected final static int	RCP_ABILITYID	= 4;
+	protected final static int	RCP_TRIGGERMSG	= 5;
+	protected final static int	RCP_DAMAGEMSG	= 6;
+	protected final static int	RCP_AVOIDMSG	= 7;
 
 	@Override
 	protected int canAffectCode()
@@ -88,30 +94,55 @@ public class Thief_MakeBomb extends ThiefSkill
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
+		final String obvious;
 		Trap theTrap=null;
-		final Vector<Trap> traps=new Vector<Trap>();
+		List<String> theRecipe = null;;
+		final PairList<List<String>,Trap> traps=new PairVector<List<String>,Trap>();
 		final int qualifyingClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(getXLEVELLevel(mob));
-		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		final List<List<String>> recipes=CMLib.utensils().addExtRecipes(mob,ID(),this.fetchRecipes());
+		for(final List<String> V : recipes)
 		{
-			final Ability A=a.nextElement();
+			final Ability A=CMClass.getAbility(V.get(RCP_TRAPID));
+			final int level = CMath.s_int(V.get(RCP_LEVEL));
+			A.setMiscText(":"+level+":");
 			if((A instanceof Trap)
-			&&(((Trap)A).isABomb())
 			&&(((Trap)A).maySetTrap(mob,qualifyingClassLevel)))
-				traps.addElement((Trap)A);
+				traps.add(V,(Trap)A);
 		}
-		final int colWidth=CMLib.lister().fixColWidth(15,mob.session());
+		Collections.sort(traps, new Comparator<Pair<List<String>,Trap>>()
+		{
+			@Override
+			public int compare(final Pair<List<String>, Trap> o1, final Pair<List<String>, Trap> o2)
+			{
+				final List<String> l1=o1.first;
+				final List<String> l2=o2.first;
+				final int v1=CMath.s_int(l1.get(RCP_LEVEL));
+				final int v2=CMath.s_int(l2.get(RCP_LEVEL));
+				return (v1==v2)?0:((v1<v2)?-1:1);
+			}
+		});
 		Physical trapThis=givenTarget;
 		if(trapThis!=null)
-			theTrap=traps.elementAt(CMLib.dice().roll(1,traps.size(),-1));
+		{
+
+			theRecipe=traps.get(CMLib.dice().roll(1,traps.size(),-1)).first;
+			theTrap=(Trap)CMClass.getAbility(theRecipe.get(RCP_TRAPID));
+			obvious=null;
+		}
 		else
 		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))
 		{
-			final StringBuffer buf=new StringBuffer(L("@x1 Requires\n\r",CMStrings.padRight(L("Bomb Name"),colWidth)));
+			final StringBuffer buf=new StringBuffer(L("@x1 @x2 Requires\n\r",
+					CMStrings.padRight(L("Bomb Name"),15),
+					CMStrings.padRight(L("Lvl"),4)));
+			final int restLen = CMLib.lister().fixColWidth(78 - 16 - 5, mob);
 			for(int r=0;r<traps.size();r++)
 			{
-				final Trap T=traps.elementAt(r);
-				buf.append(CMStrings.padRight(T.name(),colWidth)+" ");
-				buf.append(T.requiresToSet()+"\n\r");
+				final List<String> V=traps.getFirst(r);
+				final Trap T=traps.getSecond(r);
+				buf.append(CMStrings.padRight(V.get(RCP_FINALNAME),15)+" ");
+				buf.append(CMStrings.padRight(V.get(RCP_LEVEL),4)+" ");
+				buf.append(CMStrings.limit(T.requiresToSet(),restLen)+"\n\r");
 			}
 			if(mob.session()!=null)
 				mob.session().safeRawPrintln(buf.toString());
@@ -126,11 +157,33 @@ public class Thief_MakeBomb extends ThiefSkill
 			}
 			final String name=commands.get(commands.size()-1);
 			commands.remove(commands.size()-1);
+			if((commands.size()>1)&&(commands.get(commands.size()-1).equalsIgnoreCase("OBVIOUS")))
+				obvious=commands.remove(commands.size()-1);
+			else
+				obvious=null;
 			for(int r=0;r<traps.size();r++)
 			{
-				final Trap T=traps.elementAt(r);
-				if(CMLib.english().containsString(T.name(),name))
+				final List<String> V=traps.getFirst(r);
+				final Trap T=traps.getSecond(r);
+				if(V.get(RCP_FINALNAME).equalsIgnoreCase(name))
+				{
 					theTrap=T;
+					theRecipe=V;
+				}
+			}
+			if(theTrap==null)
+			{
+				for(int r=0;r<traps.size();r++)
+				{
+					final List<String> V=traps.getFirst(r);
+					final Trap T=traps.getSecond(r);
+					if(CMLib.english().containsString(V.get(RCP_FINALNAME),name))
+					{
+						theTrap=T;
+						theRecipe=V;
+						break;
+					}
+				}
 			}
 			if(theTrap==null)
 			{
@@ -171,6 +224,8 @@ public class Thief_MakeBomb extends ThiefSkill
 			{
 				mob.tell(L("You have completed your task."));
 				theTrap.setTrap(mob,trapThis,getXLEVELLevel(mob),adjustedLevel(mob,asLevel),false);
+				if((obvious!=null)&&CMLib.flags().isTrapped(trapThis))
+					trapThis.basePhyStats().addAmbiance("("+theRecipe.get(RCP_FINALNAME)+")");
 			}
 			else
 			{
@@ -187,5 +242,56 @@ public class Thief_MakeBomb extends ThiefSkill
 			}
 		}
 		return success;
+	}
+
+	@Override
+	public String getRecipeFilename()
+	{
+		return "bombs.txt";
+	}
+
+	@Override
+	public List<List<String>> fetchRecipes()
+	{
+		@SuppressWarnings("unchecked")
+		List<List<String>> V=(List<List<String>>)Resources.getResource("PARSED_RECIPE: "+getRecipeFilename());
+		if(V==null)
+		{
+			final StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+getRecipeFilename(),null,CMFile.FLAG_LOGERRORS).text();
+			V=new ReadOnlyList<List<String>>(CMLib.utensils().loadRecipeList(str.toString()));
+			if(V.size()==0)
+				Log.errOut(ID(),"Recipes not found!");
+			Resources.submitResource("PARSED_RECIPE: "+getRecipeFilename(),V);
+		}
+		return V;
+	}
+
+	@Override
+	public String getRecipeFormat()
+	{
+		return
+		"ITEM_NAME\tITEM_LEVEL\tN_A\t"
+		+ "TRAP_ID\tABILITYID\tTRIGGER_MSG\tDAMAGE_MSG\tAVOID_MSG";
+	}
+
+	@Override
+	public List<String> matchingRecipeNames(final String recipeName, final boolean beLoose)
+	{
+		final List<String> matches = new Vector<String>();
+		for(final List<String> list : fetchRecipes())
+		{
+			final String name=list.get(RCP_FINALNAME);
+			if(name.equalsIgnoreCase(recipeName)
+			||(beLoose && (name.toUpperCase().indexOf(recipeName.toUpperCase())>=0)))
+				matches.add(name);
+		}
+		return matches;
+	}
+
+	@Override
+	public Pair<String,Integer> getDecodedItemNameAndLevel(final List<String> recipe)
+	{
+		return new Pair<String,Integer>(recipe.get( RCP_FINALNAME ),
+				Integer.valueOf(CMath.s_int(recipe.get( RCP_LEVEL ))));
 	}
 }

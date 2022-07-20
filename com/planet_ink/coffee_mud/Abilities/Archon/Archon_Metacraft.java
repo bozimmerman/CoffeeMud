@@ -209,11 +209,11 @@ public class Archon_Metacraft extends ArchonSkill
 			for(int i=0;i<craftingSkills.size();i++)
 			{
 				skill=(ItemCraftor)craftingSkills.get(i);
-				final List<List<String>> V=skill.matchingRecipeNames(recipe,false);
+				final List<String> V=skill.matchingRecipeNames(recipe,false);
 				if((V!=null)&&(V.size()>0))
 				{
-					for(final List<String> V2 : V)
-						skillsToUse.add(new Pair<Ability,String>(skill,replacePercent(V2.get(0),"")));
+					for(final String s2 : V)
+						skillsToUse.add(new Pair<Ability,String>(skill,replacePercent(s2,"")));
 				}
 			}
 			if(skillsToUse.size()==0)
@@ -221,11 +221,11 @@ public class Archon_Metacraft extends ArchonSkill
 				for(int i=0;i<craftingSkills.size();i++)
 				{
 					skill=(ItemCraftor)craftingSkills.get(i);
-					final List<List<String>> V=skill.matchingRecipeNames(recipe,true);
+					final List<String> V=skill.matchingRecipeNames(recipe,true);
 					if((V!=null)&&(V.size()>0))
 					{
-						for(final List<String> V2 : V)
-							skillsToUse.add(new Pair<Ability,String>(skill,replacePercent(V2.get(0),"")));
+						for(final String s2 : V)
+							skillsToUse.add(new Pair<Ability,String>(skill,replacePercent(s2,"")));
 					}
 				}
 			}
@@ -252,18 +252,18 @@ public class Archon_Metacraft extends ArchonSkill
 			for(int i=0;i<craftingSkills.size();i++)
 			{
 				skill=(ItemCraftor)craftingSkills.get(i);
-				final List<List<String>> V=skill.matchingRecipeNames(recipe,false);
+				final List<String> V=skill.matchingRecipeNames(recipe,false);
 				if((V!=null)&&(V.size()>0))
-					skillsToUse.add(new Pair<Ability,String>(skill,this.replacePercent(V.get(0).get(0), "")));
+					skillsToUse.add(new Pair<Ability,String>(skill,this.replacePercent(V.get(0), "")));
 			}
 			if(skillsToUse.size()==0)
 			{
 				for(int i=0;i<craftingSkills.size();i++)
 				{
 					skill=(ItemCraftor)craftingSkills.get(i);
-					final List<List<String>> V=skill.matchingRecipeNames(recipe,true);
+					final List<String> V=skill.matchingRecipeNames(recipe,true);
 					if((V!=null)&&(V.size()>0))
-						skillsToUse.add(new Pair<Ability,String>(skill,this.replacePercent(V.get(0).get(0), "")));
+						skillsToUse.add(new Pair<Ability,String>(skill,this.replacePercent(V.get(0), "")));
 				}
 			}
 		}

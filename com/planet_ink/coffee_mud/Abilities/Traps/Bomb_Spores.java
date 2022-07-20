@@ -101,6 +101,18 @@ public class Bomb_Spores extends StdBomb
 	}
 
 	@Override
+	protected boolean canExplodeOutOf(final int material)
+	{
+		switch(material&RawMaterial.MATERIAL_MASK)
+		{
+		case RawMaterial.MATERIAL_ENERGY:
+		case RawMaterial.MATERIAL_GAS:
+			return false;
+		}
+		return true;
+	}
+
+	@Override
 	public Trap setTrap(final MOB mob, final Physical P, final int trapBonus, final int qualifyingClassLevel, final boolean perm)
 	{
 		if(P==null)

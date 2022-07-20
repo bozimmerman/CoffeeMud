@@ -73,9 +73,9 @@ public class StdBomb extends StdTrap
 	}
 
 	@Override
-	public int baseRejuvTime(final int level)
+	protected int baseRejuvTime(final int level)
 	{
-		return 5;
+		return reset;
 	}
 
 	public StdBomb()

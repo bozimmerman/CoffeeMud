@@ -2309,7 +2309,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				for(final ItemCraftor skill : craftors)
 				{
-					final List<List<String>> V=skill.matchingRecipeNames(recipe,false);
+					final List<String> V=skill.matchingRecipeNames(recipe,false);
 					if((V!=null)&&(V.size()>0))
 					{
 						ItemCraftor.CraftedItem pair;
@@ -2334,7 +2334,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				{
 					for(final ItemCraftor skill : craftors)
 					{
-						final List<List<String>> V=skill.matchingRecipeNames(recipe,true);
+						final List<String> V=skill.matchingRecipeNames(recipe,true);
 						if((V!=null)&&(V.size()>0))
 						{
 							ItemCraftor.CraftedItem pair;

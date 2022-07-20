@@ -4,6 +4,7 @@ BUGS/UNTESTED STUFF:
 TECH TODO:
    *. navigation course system.  
    *. make ship impulse and warp engines -- see tech doc
+   *. make orbit ability, integrate with navigation: 1. go dir, 2. adjust point same dist from planet. 3. plot course.
    *. make ship active scanners
    *. make tractor beam system -- esp important for pirates!
    *. make communication system

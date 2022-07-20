@@ -89,7 +89,7 @@ public class ResourceOverride extends ActiveTicker
 			final Integer I=getRscTypeIfAny(which.substring(0,which.length()-1));
 			if(I!=null)
 				code=I.intValue();
-			
+
 		}
 		if(code < 0)
 			return null;
@@ -202,13 +202,15 @@ public class ResourceOverride extends ActiveTicker
 	}
 
 	@Override
-	public boolean tick(final Tickable ticking, final int tickID)
+	public boolean tick(final Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 		if(rscs.size()==0)
 			return true;
 		if(super.canAct(ticking, tickID))
 		{
+			if(tickID == 0)
+				tickID = (ticking instanceof Area) ? Tickable.TICKID_AREA : Tickable.TICKID_ROOM_BEHAVIOR;
 			switch(tickID)
 			{
 			case Tickable.TICKID_ROOM_BEHAVIOR:

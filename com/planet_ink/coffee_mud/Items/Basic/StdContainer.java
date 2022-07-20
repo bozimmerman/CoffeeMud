@@ -101,7 +101,8 @@ public class StdContainer extends StdItem implements Container
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if(msg.amITarget(this))
+		if(msg.amITarget(this)
+		&&(!msg.targetMajor(CMMsg.MASK_ALWAYS)))
 		{
 			final MOB mob=msg.source();
 			switch(msg.targetMinor())

@@ -113,6 +113,18 @@ public class Bomb_Poison extends StdBomb
 	}
 
 	@Override
+	protected boolean canExplodeOutOf(final int material)
+	{
+		switch(material&RawMaterial.MATERIAL_MASK)
+		{
+		case RawMaterial.MATERIAL_ENERGY:
+		case RawMaterial.MATERIAL_GAS:
+			return false;
+		}
+		return true;
+	}
+
+	@Override
 	public void spring(final MOB target)
 	{
 		if(target.location()!=null)

@@ -1201,15 +1201,25 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public Item ruinItem(final Item I)
+	public boolean canBeRuined(final Item I)
 	{
 		if(I==null)
-			return null;
+			return false;
 		if((CMath.bset(I.phyStats().disposition(),PhyStats.IS_UNSAVABLE))
 		||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ITEMNORUIN))
+		||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_UNDESTROYABLE))
+		||((I instanceof DeadBody)&&(((DeadBody)I).isPlayerCorpse()))
 		||(I instanceof Coins))
-			return I;
+			return false;
 		if(I.ID().equals("GenRuinedItem"))
+			return false;
+		return true;
+	}
+
+	@Override
+	public Item ruinItem(final Item I)
+	{
+		if(!canBeRuined(I))
 			return I;
 		final Item I2=CMClass.getItem("GenRuinedItem");
 		I2.basePhyStats().setWeight(I.basePhyStats().weight());

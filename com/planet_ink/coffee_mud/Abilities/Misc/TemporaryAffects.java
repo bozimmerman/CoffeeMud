@@ -18,6 +18,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
+import org.w3c.dom.Text;
+
 /*
    Copyright 2010-2022 Bo Zimmerman
 
@@ -287,9 +289,16 @@ public class TemporaryAffects extends StdAbility
 		else
 		if(txt.trim().length()>0)
 		{
+			boolean imeanit=false;
 			if(txt.startsWith("+"))
 			{
-				txt=txt.substring(1);
+				if(txt.startsWith("++"))
+				{
+					imeanit=true;
+					txt=txt.substring(2);
+				}
+				else
+					txt=txt.substring(1);
 				if(txt.toUpperCase().startsWith("BINDTO "))
 				{
 					final String name=txt.substring(7).trim();
@@ -340,7 +349,8 @@ public class TemporaryAffects extends StdAbility
 					affects.add(new Pair<Object,int[]>(A,new int[] { CMath.s_int(numTicksStr)}));
 					if(A instanceof Ability)
 						((Ability)A).setMiscText(parms);
-					if((A instanceof Behavior) && (affected instanceof PhysicalAgent))
+					if((A instanceof Behavior)
+					&& ((affected instanceof PhysicalAgent)||imeanit))
 						((Behavior)A).setParms(parms);
 					finishInit(A);
 				}
@@ -457,7 +467,8 @@ public class TemporaryAffects extends StdAbility
 		{
 			if(p.first instanceof Tickable)
 			{
-				if(!((Tickable)p.first).tick(ticking, tickID))
+				final Tickable ticker = (ticking == this)?affected:ticking;
+				if(!((Tickable)p.first).tick(ticker, tickID))
 					unAffectAffected(p);
 				else
 				{

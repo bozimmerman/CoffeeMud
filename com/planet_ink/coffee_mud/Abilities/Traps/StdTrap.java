@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Traps;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -213,9 +214,11 @@ public class StdTrap extends StdAbility implements Trap
 	}
 
 	@Override
-	public void setReset(final int Reset)
+	public void setReset(final int resetTicks)
 	{
-		reset = Reset;
+		if((!sprung)&&(!disabled)&&(resetTicks>=0))
+			tickDown=resetTicks;
+		reset = resetTicks;
 	}
 
 	@Override
@@ -303,7 +306,9 @@ public class StdTrap extends StdAbility implements Trap
 	public String text()
 	{
 		final StringBuilder txt=new StringBuilder("");
-		txt.append("`"+invokerName+"` ");
+		if((invokerName != null)
+		&&(!invokerName.equalsIgnoreCase("null")))
+			txt.append("`"+invokerName+"` ");
 		for(final String msg : newMessaging)
 			txt.append("\""+msg+"\" ");
 		txt.append(":"+trapLevel()+"/"+abilityCode()+":");
@@ -648,6 +653,95 @@ public class StdTrap extends StdAbility implements Trap
 		super.setInvoker(mob);
 	}
 
+	protected void tellOwner(final ItemPossessor P, final String msg)
+	{
+		if(P instanceof Room)
+			((Room)P).showHappens(CMMsg.MSG_OK_ACTION, msg);
+		else
+		if(P instanceof MOB)
+			((MOB)P).tell(msg);
+	}
+
+	protected boolean canExplodeOutOf(final int material)
+	{
+		switch(material&RawMaterial.MATERIAL_MASK)
+		{
+		case RawMaterial.MATERIAL_METAL:
+		case RawMaterial.MATERIAL_MITHRIL:
+		case RawMaterial.MATERIAL_GLASS:
+		case RawMaterial.MATERIAL_ROCK:
+		case RawMaterial.MATERIAL_LIQUID:
+		case RawMaterial.MATERIAL_ENERGY:
+		case RawMaterial.MATERIAL_SYNTHETIC:
+		case RawMaterial.MATERIAL_GAS:
+			return false;
+		}
+		return true;
+	}
+
+	protected boolean doesInnerExplosionDestroy(final int material)
+	{
+		return false;
+	}
+
+	protected void explodeContainer(final Container C)
+	{
+		if((!canExplodeOutOf(C.material()))
+		||(!CMLib.utensils().canBeRuined(C)))
+		{
+			tellOwner(C.owner(), L("Something happened inside @x1.",C.name()));
+			return;
+		}
+		if(doesInnerExplosionDestroy(C.material()))
+		{
+			tellOwner(C.owner(), L("@x1 is destroyed.",C.name()));
+			final List<Item> contents=C.getDeepContents();
+			for(final Item I : contents)
+			{
+				final Item I2=CMLib.utensils().ruinItem(I);
+				if(I2 != null)
+				{
+					I.owner().addItem(I2, Expire.Monster_Body);
+					I.destroy();
+				}
+				else
+					I.setContainer(null);
+			}
+			C.destroy();
+		}
+		if(C.owner() instanceof MOB)
+			spring((MOB)C.owner());
+		else
+		if(C.owner() instanceof Room)
+			springOnRoomMobs((Room)C.owner());
+	}
+
+	protected void springOnRoomMobs(final Room R)
+	{
+		if(R!=null)
+		{
+			for(int i=R.numInhabitants()-1;i>=0;i--)
+			{
+				final MOB M=R.fetchInhabitant(i);
+				if(M!=null)
+					spring(M);
+			}
+		}
+	}
+
+	protected void explodeBomb(final Physical P)
+	{
+		final Item I=(Item)affected;
+		if(I.container() != null)
+			explodeContainer(I.container());
+		else
+		if(I.owner() instanceof MOB)
+			spring((MOB)I.owner());
+		else
+		if(I.owner() instanceof Room)
+			springOnRoomMobs((Room)I.owner());
+	}
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -665,24 +759,11 @@ public class StdTrap extends StdAbility implements Trap
 		{
 			if((--tickDown)<=0)
 			{
-				if((isABomb())
-				&&(affected instanceof Item)
-				&&(((Item)affected).owner()!=null))
+				if( isABomb()
+				&&(affected instanceof Item))
 				{
 					final Item I=(Item)affected;
-					if(I.owner() instanceof MOB)
-						spring((MOB)I.owner());
-					else
-					if(I.owner() instanceof Room)
-					{
-						final Room R=(Room)I.owner();
-						for(int i=R.numInhabitants()-1;i>=0;i--)
-						{
-							final MOB M=R.fetchInhabitant(i);
-							if(M!=null)
-								spring(M);
-						}
-					}
+					explodeBomb(I.owner());
 					disable();
 					unInvoke();
 					I.destroy();

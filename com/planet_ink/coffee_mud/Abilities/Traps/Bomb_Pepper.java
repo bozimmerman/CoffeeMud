@@ -69,6 +69,18 @@ public class Bomb_Pepper extends StdBomb
 	}
 
 	@Override
+	protected boolean canExplodeOutOf(final int material)
+	{
+		switch(material&RawMaterial.MATERIAL_MASK)
+		{
+		case RawMaterial.MATERIAL_ENERGY:
+		case RawMaterial.MATERIAL_GAS:
+			return false;
+		}
+		return true;
+	}
+
+	@Override
 	public boolean canSetTrapOn(final MOB mob, final Physical P)
 	{
 		if(!super.canSetTrapOn(mob,P))

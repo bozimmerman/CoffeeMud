@@ -185,10 +185,10 @@ public class Spell_PolymorphObject extends Spell
 		Item intoI = null;
 		for(final ItemCraftor A : getCraftingSkills())
 		{
-			final List<List<String>> L = A.matchingRecipeNames(intoWhat, false);
+			final List<String> L = A.matchingRecipeNames(intoWhat, false);
 			if((L!=null)&&(L.size()>0))
 			{
-				final CraftedItem what=A.craftItem(L.get(0).get(0),targetI.material(),true, false);
+				final CraftedItem what=A.craftItem(L.get(0),targetI.material(),true, false);
 				if((what!=null)&&(what.item!=null))
 				{
 					intoI=what.item;
@@ -200,10 +200,10 @@ public class Spell_PolymorphObject extends Spell
 		{
 			for(final ItemCraftor A : getCraftingSkills())
 			{
-				final List<List<String>> L = A.matchingRecipeNames(intoWhat, true);
+				final List<String> L = A.matchingRecipeNames(intoWhat, true);
 				if((L!=null)&&(L.size()>0))
 				{
-					final CraftedItem what=A.craftItem(L.get(0).get(0),targetI.material(),true, false);
+					final CraftedItem what=A.craftItem(L.get(0),targetI.material(),true, false);
 					if((what!=null)&&(what.item!=null))
 					{
 						intoI=what.item;

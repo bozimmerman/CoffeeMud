@@ -633,9 +633,10 @@ public class StdExit implements Exit
 		default:
 			break;
 		}
-		if(msg.amITarget(this))
+		if(msg.amITarget(this)
+		&&(!msg.targetMajor(CMMsg.MASK_ALWAYS)))
 		{
-			mob.tell(L("You can't do that."));
+			mob.tell(mob,this,null,L("You can't do that to <T-NAME>."));
 			return false;
 		}
 		return true;

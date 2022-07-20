@@ -85,6 +85,12 @@ public class Bomb_Water extends StdBomb
 	}
 
 	@Override
+	protected boolean canExplodeOutOf(final int material)
+	{
+		return false;
+	}
+
+	@Override
 	public void spring(final MOB target)
 	{
 		if(target.location()!=null)

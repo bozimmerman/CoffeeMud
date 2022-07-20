@@ -207,8 +207,7 @@ public class Burning extends StdAbility
 							&&(I.container()==C)
 							&&((I instanceof RawMaterial)||(C!=null))
 							&&(I.material()==affI.material())
-							&&(!CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ITEMNORUIN))
-							&&(!CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_UNDESTROYABLE)))
+							&&(CMLib.utensils().canBeRuined(I)))
 							{
 								int durationOfBurn=CMLib.materials().getBurnDuration(I);
 								if(durationOfBurn<=0)
@@ -222,8 +221,7 @@ public class Burning extends StdAbility
 						}
 					}
 					if((!(affI instanceof ClanItem))
-					&&(!CMath.bset(affI.phyStats().sensesMask(), PhyStats.SENSE_ITEMNORUIN))
-					&&(!CMath.bset(affI.phyStats().sensesMask(), PhyStats.SENSE_UNDESTROYABLE)))
+					&&(CMLib.utensils().canBeRuined(affI)))
 					{
 						switch(affI.material()&RawMaterial.MATERIAL_MASK)
 						{

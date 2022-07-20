@@ -79,15 +79,15 @@ public class PaintingSkill extends CommonSkill implements RecipeDriven
 	}
 
 	@Override
-	public List<List<String>> matchingRecipeNames(final String recipeName, final boolean beLoose)
+	public List<String> matchingRecipeNames(final String recipeName, final boolean beLoose)
 	{
-		final List<List<String>> matches = new Vector<List<String>>();
+		final List<String> matches = new Vector<String>();
 		for(final List<String> list : fetchRecipes())
 		{
 			final String name=list.get(RecipeDriven.RCP_FINALNAME);
 			if(name.equalsIgnoreCase(recipeName)
 			||(beLoose && (name.toUpperCase().indexOf(recipeName.toUpperCase())>=0)))
-				matches.add(list);
+				matches.add(name);
 		}
 		return matches;
 	}

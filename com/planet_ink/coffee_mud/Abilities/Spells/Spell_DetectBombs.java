@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2022 Bo Zimmerman
+   Copyright 2022-2022 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,16 +32,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Spell_DetectTraps extends Spell
+public class Spell_DetectBombs extends Spell
 {
 
 	@Override
 	public String ID()
 	{
-		return "Spell_DetectTraps";
+		return "Spell_DetectBombs";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Detect Traps");
+	private final static String localizedName = CMLib.lang().L("Detect Bombs");
 
 	@Override
 	public String name()
@@ -49,7 +49,7 @@ public class Spell_DetectTraps extends Spell
 		return localizedName;
 	}
 
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Detecting Traps)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Detecting Bombs)");
 
 	@Override
 	public String displayText()
@@ -92,7 +92,7 @@ public class Spell_DetectTraps extends Spell
 			lastRoom=null;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(L("Your senses are no longer sensitive to traps."));
+			mob.tell(L("Your senses are no longer sensitive to bombs."));
 	}
 
 	public String trapCheck(final Physical P)
@@ -100,8 +100,8 @@ public class Spell_DetectTraps extends Spell
 		if(P!=null)
 		{
 			final Trap T=CMLib.utensils().fetchMyTrap(P);
-			if(T!=null)
-				return L("@x1 is trapped.\n\r",P.name());
+			if((T!=null)&&(T.isABomb()))
+				return L("@x1 is a bomb.\n\r",P.name());
 		}
 		return "";
 	}
@@ -111,24 +111,28 @@ public class Spell_DetectTraps extends Spell
 		final StringBuffer msg=new StringBuffer("");
 		if(P==null)
 			return msg.toString();
-		if((P instanceof Room)&&(CMLib.flags().canBeSeenBy(P,mob)))
+		if((P instanceof Room)
+		&&(CMLib.flags().canBeSeenBy(P,mob)))
 			msg.append(trapCheck(mob.location()));
 		else
-		if((P instanceof Container)&&(CMLib.flags().canBeSeenBy(P,mob)))
+		if((P instanceof Container)
+		&&(CMLib.flags().canBeSeenBy(P,mob)))
 		{
 			final Container C=(Container)P;
 			final List<Item> V=C.getDeepContents();
 			for(int v=0;v<V.size();v++)
 			{
 				if(trapCheck(V.get(v)).length()>0)
-					msg.append(L("@x1 contains something trapped.",C.name()));
+					msg.append(L("@x1 contains a bomb.",C.name()));
 			}
 		}
 		else
-		if((P instanceof Item)&&(CMLib.flags().canBeSeenBy(P,mob)))
+		if((P instanceof Item)
+		&&(CMLib.flags().canBeSeenBy(P,mob)))
 			msg.append(trapCheck(P));
 		else
-		if((P instanceof Exit)&&(CMLib.flags().canBeSeenBy(P,mob)))
+		if((P instanceof Exit)
+		&&(CMLib.flags().canBeSeenBy(P,mob)))
 		{
 			final Room room=mob.location();
 			if(room!=null)
@@ -154,7 +158,7 @@ public class Spell_DetectTraps extends Spell
 			{
 				final Item I=((MOB)P).getItem(i);
 				if(trapCheck(I).length()>0)
-					return P.name()+" is carrying something trapped.";
+					return P.name()+" is carrying a bomb.";
 			}
 			final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(P);
 			if(SK!=null)
@@ -165,7 +169,7 @@ public class Spell_DetectTraps extends Spell
 					if(E2 instanceof Item)
 					{
 						if(trapCheck((Item)E2).length()>0)
-							return P.name()+" has something trapped in stock.";
+							return P.name()+" has a bomb in stock.";
 					}
 				}
 			}
@@ -221,7 +225,7 @@ public class Spell_DetectTraps extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already detecting traps."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already detecting bombs."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -231,7 +235,9 @@ public class Spell_DetectTraps extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> gain(s) trap sensitivities!"):L("^S<S-NAME> incant(s) softly, and gain(s) sensitivity to traps!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					auto?L("<T-NAME> gain(s) sensitivity to bombs!"):
+						L("^S<S-NAME> incant(s) softly, and gain(s) sensitivity to bombs!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -120,6 +120,18 @@ public class Thief_Trap extends ThiefSkill implements RecipeDriven
 			&&(((Trap)A).maySetTrap(mob,qualifyingClassLevel)))
 				traps.add(V,(Trap)A);
 		}
+		Collections.sort(traps, new Comparator<Pair<List<String>,Trap>>()
+		{
+			@Override
+			public int compare(final Pair<List<String>, Trap> o1, final Pair<List<String>, Trap> o2)
+			{
+				final List<String> l1=o1.first;
+				final List<String> l2=o2.first;
+				final int v1=CMath.s_int(l1.get(RCP_LEVEL));
+				final int v2=CMath.s_int(l2.get(RCP_LEVEL));
+				return (v1==v2)?0:((v1<v2)?-1:1);
+			}
+		});
 		Physical trapThis=givenTarget;
 		if(trapThis!=null)
 		{
@@ -399,15 +411,15 @@ public class Thief_Trap extends ThiefSkill implements RecipeDriven
 	}
 
 	@Override
-	public List<List<String>> matchingRecipeNames(final String recipeName, final boolean beLoose)
+	public List<String> matchingRecipeNames(final String recipeName, final boolean beLoose)
 	{
-		final List<List<String>> matches = new Vector<List<String>>();
+		final List<String> matches = new Vector<String>();
 		for(final List<String> list : fetchRecipes())
 		{
 			final String name=list.get(RCP_FINALNAME);
 			if(name.equalsIgnoreCase(recipeName)
 			||(beLoose && (name.toUpperCase().indexOf(recipeName.toUpperCase())>=0)))
-				matches.add(list);
+				matches.add(name);
 		}
 		return matches;
 	}

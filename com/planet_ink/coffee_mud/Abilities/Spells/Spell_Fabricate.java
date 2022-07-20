@@ -145,10 +145,10 @@ public class Spell_Fabricate extends Spell
 		Item intoI = null;
 		for(final ItemCraftor A : getCraftingSkills())
 		{
-			final List<List<String>> L = A.matchingRecipeNames(intoWhat, false);
+			final List<String> L = A.matchingRecipeNames(intoWhat, false);
 			if((L!=null)&&(L.size()>0))
 			{
-				final CraftedItem what=A.craftItem(L.get(0).get(0),-1,true, false);
+				final CraftedItem what=A.craftItem(L.get(0),-1,true, false);
 				if((what!=null)&&(what.item!=null))
 				{
 					intoI=what.item;
@@ -160,10 +160,10 @@ public class Spell_Fabricate extends Spell
 		{
 			for(final ItemCraftor A : getCraftingSkills())
 			{
-				final List<List<String>> L = A.matchingRecipeNames(intoWhat, true);
+				final List<String> L = A.matchingRecipeNames(intoWhat, true);
 				if((L!=null)&&(L.size()>0))
 				{
-					final CraftedItem what=A.craftItem(L.get(0).get(0),-1,true, false);
+					final CraftedItem what=A.craftItem(L.get(0),-1,true, false);
 					if((what!=null)
 					&&(what.item!=null))
 					{

@@ -1,0 +1,13 @@
+water bomb	1		Bomb_Water			
+smoke bomb	2		Bomb_Smoke			
+poison gas bomb	5		Bomb_Poison			
+heat bomb	6		Bomb_Heat			
+pepper bomb	7		Bomb_Pepper			
+sonic bomb	8		Bomb_Sonic			
+explosive bomb	10		Bomb_Explosive			
+stink bomb	12		Bomb_Noxious			
+spore bomb	15		Bomb_Spores			
+flame burst bomb	17		Bomb_FlameBurst			
+acid burst bomb	20		Bomb_AcidBurst			
+sticky bomb	25		Bomb_Sticky			
+shaped bomb	30		Bomb_Shaped			

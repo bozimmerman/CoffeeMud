@@ -72,6 +72,7 @@ public class Diviner extends SpecialistMage
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Spellcraft",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_AnalyzeDweomer",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Spell_DetectBombs",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_SolveMaze",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Spell_GroupStatus",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_DetectWeaknesses",25,true);
