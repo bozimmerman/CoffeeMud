@@ -184,7 +184,7 @@ public class Bomb_Shaped extends StdBomb
 		if(isShaped()
 		&&((!(target instanceof Item))
 			||(CMLib.utensils().canBePlayerDestroyed(invoker(), (Item)target, false, false)))
-		&&((!(target instanceof PhysicalAgent))
+		&&((!(target instanceof Boardable))
 			||(CMLib.combat().mayIAttackThisVessel(invoker(), (PhysicalAgent)target))))
 
 		{
@@ -204,7 +204,15 @@ public class Bomb_Shaped extends StdBomb
 				final Room R=CMLib.map().roomLocation(target);
 				if(R.show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,
 						L("An incredible blast go(es) off at <T-NAME>.")+CMLib.protocol().msp("explode.wav",30)))
-					((Item)target).destroy();
+				{
+					if(target instanceof Container)
+					{
+						super.explodeContainer((Container)target);
+						return;
+					}
+					else
+						((Item)target).destroy();
+				}
 			}
 			else
 			if(target instanceof Exit)
@@ -213,12 +221,18 @@ public class Bomb_Shaped extends StdBomb
 				if(R.show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,
 						L("An incredible blast go(es) off at <T-NAME>.")+CMLib.protocol().msp("explode.wav",30)))
 				{
-					final int dirCode=CMLib.map().getExitDir(R, (Exit)target);
 					final MOB mob=invoker();
-					CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_UNLOCK,null);
-					CMLib.utensils().roomAffectFully(msg,R,dirCode);
-					msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OPEN,L("<T-NAME> opens."));
-					CMLib.utensils().roomAffectFully(msg,R,dirCode);
+					int adjustment=(mob.phyStats().level()+abilityCode())-(target.phyStats().level())*5;
+					if(adjustment>0)
+						adjustment=0;
+					if(CMLib.dice().rollPercentage()>adjustment)
+					{
+						final int dirCode=CMLib.map().getExitDir(R, (Exit)target);
+						CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_UNLOCK,null);
+						CMLib.utensils().roomAffectFully(msg,R,dirCode);
+						msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OPEN,L("<T-NAME> opens."));
+						CMLib.utensils().roomAffectFully(msg,R,dirCode);
+					}
 				}
 			}
 		}
