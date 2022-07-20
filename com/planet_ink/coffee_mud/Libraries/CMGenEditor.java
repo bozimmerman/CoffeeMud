@@ -4031,6 +4031,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				final Race R=CMClass.getRace(raceID);
 				if(R!=null)
 				{
+					CMLib.database().registerRaceUsed(R);
 					M.baseCharStats().setMyRace(R);
 					M.baseCharStats().getMyRace().startRacing(M,false);
 					M.baseCharStats().getMyRace().setHeightWeight(M.basePhyStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));

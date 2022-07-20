@@ -1092,6 +1092,24 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public void registerRaceUsed(final Race R)
+	{
+		GRaceLoader.registerRaceUsed(R);
+	}
+
+	@Override
+	public int pruneOldRaces()
+	{
+		return GRaceLoader.DBPruneOldRaces();
+	}
+
+	@Override
+	public int updateAllRaceDates()
+	{
+		return GRaceLoader.updateAllRaceDates();
+	}
+
+	@Override
 	public void DBDeleteRace(final String raceID)
 	{
 		GRaceLoader.DBDeleteRace(raceID);

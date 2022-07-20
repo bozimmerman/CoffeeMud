@@ -1936,8 +1936,53 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBReadRaces()
 	 * @see DatabaseEngine#DBDeleteRace(String)
 	 * @see DatabaseEngine#DBCreateRace(String, String)
+	 * @see DatabaseEngine#updateAllRaceDates()
+	 * @see DatabaseEngine#pruneOldRaces()
 	 */
 	public void DBUpdateRaceCreationDate(final String raceID);
+
+	/**
+	 * Table category: DBRACE
+	 * Registers a generic race as being used recently
+	 *
+	 * @see DatabaseEngine#isRaceExpired(String)
+	 * @see DatabaseEngine#DBUpdateRaceCreationDate(String)
+	 * @see DatabaseEngine#updateAllRaceDates()
+	 * @see DatabaseEngine#pruneOldRaces()
+	 *
+	 * @param R the race to update
+	 */
+	public void registerRaceUsed(final Race R);
+
+	/**
+	 * Table category: DBRACE
+	 * Registers a generic race as being used recently
+	 *
+	 * @see DatabaseEngine#isRaceExpired(String)
+	 * @see DatabaseEngine#DBUpdateRaceCreationDate(String)
+	 * @see DatabaseEngine#updateAllRaceDates()
+	 *
+	 * @see DatabaseEngine#isRaceExpired(String)
+	 * @see DatabaseEngine#DBUpdateRaceCreationDate(String)
+	 * @see DatabaseEngine#registerRaceUsed(Race)
+	 * @see DatabaseEngine#updateAllRaceDates()
+	 *
+	 * @return number of races pruned
+	 */
+	public int pruneOldRaces();
+
+	/**
+	 * Table category: DBRACE
+	 * Updates all generic races used recently.
+	 *
+	 * @see DatabaseEngine#isRaceExpired(String)
+	 * @see DatabaseEngine#DBUpdateRaceCreationDate(String)
+	 * @see DatabaseEngine#registerRaceUsed(Race)
+	 * @see DatabaseEngine#pruneOldRaces()
+	 *
+	 * @return the number of generic races updated
+	 */
+	public int updateAllRaceDates();
 
 	/**
 	 * Table category: DBRACE
@@ -1946,6 +1991,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#isRaceExpired(String)
 	 * @see DatabaseEngine#DBUpdateRaceCreationDate(String)
 	 * @see DatabaseEngine#DBCreateRace(String, String)
+	 *
 	 * @param raceID the ID of the race to delete
 	 */
 	public void DBDeleteRace(String raceID);

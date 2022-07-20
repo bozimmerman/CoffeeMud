@@ -8836,6 +8836,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				&&(!foundendif))
 				{
 					final ScriptLn ln = script.get(si);
+					if(ln==null)
+						continue;
 					s=ln.first;
 					tt=ln.second;
 					if(tt!=null)

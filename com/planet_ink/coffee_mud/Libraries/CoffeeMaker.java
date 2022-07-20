@@ -3841,6 +3841,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			final Race R=(raceID.length()>0)?CMClass.getRace(raceID):null;
 			if(R!=null)
 			{
+				CMLib.database().registerRaceUsed(R);
 				mob.baseCharStats().setMyRace(R);
 				mob.setTrains(0);
 				mob.setPractices(0);
@@ -4489,7 +4490,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			for(int i=0;i<mob.baseCharStats().numClasses();i++)
 				level+=mob.baseCharStats().getClassLevel(mob.baseCharStats().getMyClass(i));
 			mob.basePhyStats().setLevel(level);
-			mob.baseCharStats().setMyRace(CMClass.getRace(mblk.getValFromPieces("RACE")));
+			final Race raceR=CMClass.getRace(mblk.getValFromPieces("RACE"));
+			CMLib.database().registerRaceUsed(raceR);
+			mob.baseCharStats().setMyRace(raceR);
 			mob.baseCharStats().setStat(CharStats.STAT_GENDER,mblk.getValFromPieces("GEND").charAt(0));
 			for(final int i : CharStats.CODES.BASECODES())
 				mob.baseCharStats().setStat(i,mblk.getIntFromPieces(CMStrings.limit(CharStats.CODES.NAME(i),3)));
@@ -5495,8 +5498,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		case CLASS:
 			break; // class
 		case RACE:
-			M.baseCharStats().setMyRace(CMClass.getRace(val));
+		{
+			final Race raceR=CMClass.getRace(val);
+			CMLib.database().registerRaceUsed(raceR);
+			M.baseCharStats().setMyRace(raceR);
 			break; // race
+		}
 		case LEVEL:
 			M.basePhyStats().setLevel(CMath.s_parseIntExpression(val));
 			break; // level

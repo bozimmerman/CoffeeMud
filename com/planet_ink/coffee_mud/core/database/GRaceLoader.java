@@ -116,7 +116,39 @@ public class GRaceLoader
 		return false;
 	}
 
-	public void DBPruneOldRaces()
+	public void registerRaceUsed(final Race R)
+	{
+		if((R!=null)&&(R.isGeneric()))
+			updateQue.add(R.ID());
+	}
+
+	public int updateAllRaceDates()
+	{
+		final List<String> que = new LinkedList<String>(updateQue);
+		final List<String> updates = new ArrayList<String>(que.size());
+		updateQue.clear();
+		final long cDate = System.currentTimeMillis();
+		for(final String id : que)
+		{
+			if(!id.equalsIgnoreCase("GenRace"))
+				updates.add("UPDATE CMGRAC SET CMRCDT="+cDate+" WHERE CMRCID='"+id+"';");
+		}
+		if(updates.size()>0)
+		{
+			try
+			{
+				DB.update(updates.toArray(new String[0]));
+			}
+			catch(final Exception sqle)
+			{
+				Log.errOut("GRaceLoader",sqle);
+			}
+			return updates.size();
+		}
+		return 0;
+	}
+
+	public int DBPruneOldRaces()
 	{
 		final List<String> updates = new ArrayList<String>(1);
 		final long oneHour = (60L * 60L * 1000L);
@@ -157,6 +189,7 @@ public class GRaceLoader
 				Log.errOut("GRaceLoader",sqle);
 			}
 		}
+		return updates.size();
 	}
 
 	protected List<DatabaseEngine.AckStats> DBReadRaceStats()

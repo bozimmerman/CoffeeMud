@@ -21,6 +21,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerCode;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinnerPlayer;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -106,6 +107,7 @@ public class MOBloader
 		if((name==null)||(name.length()==0))
 			return null;
 		DBConnection D=null;
+		final DatabaseEngine dbE = CMLib.database();
 		MOB mob=null;
 		name = DB.injectionClean(name);
 		int oldDisposition=0;
@@ -138,7 +140,9 @@ public class MOBloader
 				pstats.setPassword(password);
 				stats.setMyClasses(DBConnections.getRes(R,"CMCLAS"));
 				stats.setStat(CharStats.STAT_STRENGTH,CMath.s_int(DBConnections.getRes(R,"CMSTRE")));
-				stats.setMyRace(CMClass.getRace(DBConnections.getRes(R,"CMRACE")));
+				final Race raceR=CMClass.getRace(DBConnections.getRes(R,"CMRACE"));
+				dbE.registerRaceUsed(raceR);
+				stats.setMyRace(raceR);
 				stats.setStat(CharStats.STAT_DEXTERITY,CMath.s_int(DBConnections.getRes(R,"CMDEXT")));
 				stats.setStat(CharStats.STAT_CONSTITUTION,CMath.s_int(DBConnections.getRes(R,"CMCONS")));
 				stats.setStat(CharStats.STAT_GENDER,DBConnections.getRes(R,"CMGEND").charAt(0));
@@ -1725,8 +1729,14 @@ public class MOBloader
 		try
 		{
 			D=DB.DBFetch();
-			name=DB.injectionClean(name);
-			final ResultSet R=D.query("SELECT * FROM CMCHFO WHERE CMUSERID='"+name+"'");
+			final ResultSet R;
+			if(name == null)
+				R=D.query("SELECT * FROM CMCHFO");
+			else
+			{
+				name=DB.injectionClean(name);
+				R=D.query("SELECT * FROM CMCHFO WHERE CMUSERID='"+name+"'");
+			}
 			while(R.next())
 			{
 				final String MOBID=DBConnections.getRes(R,"CMFOID");

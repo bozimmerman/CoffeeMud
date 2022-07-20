@@ -198,6 +198,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		}
 		if(R!=null)
 		{
+			CMLib.database().registerRaceUsed(R);
 			mob.baseCharStats().setMyRace(R);
 			mob.charStats().setMyRace(R);
 		}

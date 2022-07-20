@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -174,6 +175,30 @@ public class Save extends StdCommand
 				}
 			}
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes everyone.\n\r"));
+		}
+		else
+		if(lastCommand.equals("GRACES"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDRACES))
+			{
+				mob.tell(L("You are not allowed to save races."));
+				return false;
+			}
+			final DatabaseEngine dbE=CMLib.database();
+			final PlayerLibrary pLib=CMLib.players();
+			for(final String name : pLib.getPlayerLists())
+			{
+				final ThinPlayer T = pLib.getThinPlayer(name);
+				if(T!=null)
+					dbE.registerRaceUsed(CMClass.getRace(T.race()));
+			}
+			for(final MOB M : CMLib.database().DBScanFollowers(null))
+			{
+				dbE.registerRaceUsed(M.charStats().getMyRace());
+				M.destroy();
+			}
+			final int x=CMLib.database().updateAllRaceDates();
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of accounting permeates @x1 races.\n\r",""+x));
 		}
 		else
 		if(lastCommand.equals("ITEMS"))

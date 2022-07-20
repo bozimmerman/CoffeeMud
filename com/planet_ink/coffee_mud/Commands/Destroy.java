@@ -19,6 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.CommandJournalFlags;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 
 import java.util.*;
 import java.io.IOException;
@@ -1631,6 +1632,29 @@ public class Destroy extends StdCommand
 				CMLib.database().DBDeleteJournal(name,null);
 				mob.tell(L("It is done."));
 			}
+		}
+		else
+		if(commandType.equals("GRACES"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDRACES))
+				return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
+			final DatabaseEngine dbE=CMLib.database();
+			final PlayerLibrary pLib=CMLib.players();
+			for(final String name : pLib.getPlayerLists())
+			{
+				final ThinPlayer T = pLib.getThinPlayer(name);
+				if(T!=null)
+					dbE.registerRaceUsed(CMClass.getRace(T.race()));
+			}
+			for(final MOB M : CMLib.database().DBScanFollowers(null))
+			{
+				dbE.registerRaceUsed(M.charStats().getMyRace());
+				M.destroy();
+			}
+			CMLib.database().updateAllRaceDates();
+			final int x = CMLib.database().pruneOldRaces();
+			mob.tell(L("@x1 races pruned.",""+x));
 		}
 		else
 		if(commandType.equals("FACTION"))
