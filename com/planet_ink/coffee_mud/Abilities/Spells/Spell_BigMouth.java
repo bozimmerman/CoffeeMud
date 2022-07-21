@@ -165,16 +165,17 @@ public class Spell_BigMouth extends Spell
 			{
 				if(msg.target() instanceof MOB)
 				{
-					final MOB TastyMorsel=(MOB)msg.target();
-					final CMMsg msg2=CMClass.getMsg(mob,TastyMorsel,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE,null);
-					if(TastyMorsel.location().okMessage(mob,msg2))
+					final MOB tastyMorselM=(MOB)msg.target();
+					final CMMsg msg2=CMClass.getMsg(mob,tastyMorselM,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE,null);
+					if(tastyMorselM.location().okMessage(mob,msg2))
 					{
-						TastyMorsel.location().send(mob,msg2);
+						tastyMorselM.location().send(mob,msg2);
 						if(msg2.value()<=0)
 						{
-							getStomach().bringMobHere(TastyMorsel,false);
-							final CMMsg enterMsg=CMClass.getMsg(TastyMorsel,getStomach(),null,CMMsg.MSG_ENTER,L("<S-NAME> <S-IS-ARE> swallowed whole by @x1!",mob.name()),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> slide(s) down the gullet into the stomach!"));
-							getStomach().send(TastyMorsel,enterMsg);
+							mob.curState().setHunger(mob.maxState().maxHunger(mob.baseWeight()));
+							getStomach().bringMobHere(tastyMorselM,false);
+							final CMMsg enterMsg=CMClass.getMsg(tastyMorselM,getStomach(),null,CMMsg.MSG_ENTER,L("<S-NAME> <S-IS-ARE> swallowed whole by @x1!",mob.name()),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> slide(s) down the gullet into the stomach!"));
+							getStomach().send(tastyMorselM,enterMsg);
 						}
 					}
 				}

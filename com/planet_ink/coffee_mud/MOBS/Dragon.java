@@ -522,10 +522,10 @@ public class Dragon extends StdMOB
 			&&(rangeToTarget()==0)
 			&&(CMLib.flags().canHear(this)||CMLib.flags().canSee(this)||CMLib.flags().canSmell(this)))
 		{
-			final MOB TastyMorsel = getVictim();
-			if(TastyMorsel==null)
+			final MOB tastyMorselM = getVictim();
+			if(tastyMorselM==null)
 				return true;
-			if (TastyMorsel.phyStats().weight()<1500)
+			if (tastyMorselM.phyStats().weight()<1500)
 			{
 				// ===== if it is less than three so roll for it
 				final int roll = (int)Math.round(Math.random()*99);
@@ -536,22 +536,23 @@ public class Dragon extends StdMOB
 					// ===== The player has been eaten.
 					// ===== move the tasty morsel to the stomach
 					final CMMsg EatMsg=CMClass.getMsg(this,
-											   TastyMorsel,
+											   tastyMorselM,
 											   null,
 											   CMMsg.MSG_EAT,
 											   CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,
 											   CMMsg.MSG_NOISYMOVEMENT,
 											   L("<S-NAME> swallow(es) <T-NAMESELF> WHOLE!"));
-					if(location().okMessage(TastyMorsel,EatMsg))
+					if(location().okMessage(tastyMorselM,EatMsg))
 					{
-						location().send(TastyMorsel,EatMsg);
+						location().send(tastyMorselM,EatMsg);
 						if(EatMsg.value()==0)
 						{
-							myStomachR.bringMobHere(TastyMorsel,false);
-							final CMMsg enterMsg=CMClass.getMsg(TastyMorsel,myStomachR,null,CMMsg.MSG_ENTER,myStomachR.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> slide(s) down the gullet into the stomach!"));
-							myStomachR.send(TastyMorsel,enterMsg);
-							if(TastyMorsel.isPlayer())
-								CMLib.achievements().possiblyBumpAchievement(TastyMorsel, Event.AREAVISIT, 1, new Object[] {myStomachR.getArea(), myStomachR});
+							curState().setHunger(maxState().maxHunger(baseWeight()));
+							myStomachR.bringMobHere(tastyMorselM,false);
+							final CMMsg enterMsg=CMClass.getMsg(tastyMorselM,myStomachR,null,CMMsg.MSG_ENTER,myStomachR.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> slide(s) down the gullet into the stomach!"));
+							myStomachR.send(tastyMorselM,enterMsg);
+							if(tastyMorselM.isPlayer())
+								CMLib.achievements().possiblyBumpAchievement(tastyMorselM, Event.AREAVISIT, 1, new Object[] {myStomachR.getArea(), myStomachR});
 						}
 					}
 				}

@@ -294,6 +294,7 @@ public class MOBEater extends ActiveTicker
 					mob.location().send(tastyMorselM,eatMsg);
 					if(eatMsg.value()==0)
 					{
+						mob.curState().setHunger(mob.maxState().maxHunger(mob.baseWeight()));
 						stomachR.bringMobHere(tastyMorselM,false);
 						final CMMsg enterMsg=CMClass.getMsg(tastyMorselM,stomachR,null,CMMsg.MSG_ENTER,stomachR.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> slide(s) down the gullet into the stomach!"));
 						stomachR.send(tastyMorselM,enterMsg);
