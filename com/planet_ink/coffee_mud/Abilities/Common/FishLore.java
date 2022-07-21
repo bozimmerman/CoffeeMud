@@ -48,7 +48,7 @@ public class FishLore extends CommonSkill
 		return localizedName;
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"FISHLORE","FSPECULATE"});
+	private static final String[] triggerStrings =I(new String[] {"FISHLORE", "FISHINGLORE", "FLORE", "FSPECULATE"});
 
 	@Override
 	public String[] triggerStrings()

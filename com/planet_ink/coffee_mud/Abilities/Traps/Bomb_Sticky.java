@@ -269,6 +269,53 @@ public class Bomb_Sticky extends StdBomb
 					}
 				}
 			}
+			else
+				R.showHappens(CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,
+						L("Pops and sparks fly all over @x1!",target.name()));
+		}
+		else
+		if(((!(target instanceof Item))
+			||(CMLib.utensils().canBePlayerDestroyed(invoker(), (Item)target, false, false)))
+		&&(((Item)target).subjectToWearAndTear()))
+		{
+			final int damageLevel = trapLevel()+abilityCode();
+			int die = Math.max(damageLevel,5);
+			switch(((Item)target).material()&RawMaterial.MATERIAL_MASK)
+			{
+			case RawMaterial.MATERIAL_CLOTH:
+				die = die / 2;
+				break;
+			case RawMaterial.MATERIAL_LEATHER:
+				die = die / 3;
+				break;
+			case RawMaterial.MATERIAL_PAPER:
+				die = die * 2;
+				break;
+			case RawMaterial.MATERIAL_LIQUID:
+			case RawMaterial.MATERIAL_MITHRIL:
+			case RawMaterial.MATERIAL_METAL:
+			case RawMaterial.MATERIAL_ROCK:
+			case RawMaterial.MATERIAL_PRECIOUS:
+			case RawMaterial.MATERIAL_SYNTHETIC:
+				die = 0;
+				break;
+			case RawMaterial.MATERIAL_FLESH:
+				die = die / 4;
+				break;
+			default:
+				die = die / 5;
+				break;
+			}
+			final int damage = CMLib.dice().roll(1, die, abilityCode()/2);
+			CMLib.combat().postItemDamage(invoker(), (Item)target, this,
+					damage, CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,
+					L("Some popping sparks from @x1 <DAMAGES> <T-NAME>!",affected.name()));
+		}
+		else
+		if(target != null)
+		{
+			R.showHappens(CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,
+					L("Pops and sparks fly all over @x1!",target.name()));
 		}
 		super.explodeBomb(P);
 	}

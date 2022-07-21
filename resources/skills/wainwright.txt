@@ -11,10 +11,10 @@ all-terrain % baby carriage	37	60	15	255	GenContainer		30		0
 small % coach	10	70	60	340	GenRideable	LID	100	4	0		
 medium % coach	11	75	80	380	GenRideable	LID	200	6	0		
 large % coach	12	80	100	420	GenRideable	LID	300	8	0		
-small % unsprung cart	13	50	50	250	GenRideable		1000	0	0		
+small % unsprung cart	13	50	50	250	GenRideable		1000	2	0		
 small % carriage	14	75	75	375	GenRideable		500	4	0		
 small % sprung cart	15	70	80	360	GenRideable		500	2	0		
-small % storage cart	16	90	100	460	GenRideable	LOCK	1000	0	0		
+small % storage cart	16	90	100	460	GenRideable	LOCK	1000	2	0		
 small lantern wagon	17	90	120	980	GenRideable		1000	2	0		Spell_Light
 small % wagon	18	75	150	450	GenRideable		1000	2	0		
 small covered % wagon	19	80	175	495	GenRideable	LID	1000	2	0		
@@ -23,24 +23,24 @@ medium % carriage	22	95	125	505	GenRideable		1000	6	0
 small % chariot	24	120	225	705	GenRideable		100	1	0		Prop_RideAdjuster;Speed+1
 large % carriage	26	115	175	635	GenRideable		1500	8	0		
 % sleigh	28	90	250	610	GenRideable		2000	6	0		
-medium % unsprung cart	30	80	130	450	GenRideable		3000	0	0		
+medium % unsprung cart	30	80	130	450	GenRideable		3000	2	0		
 medium % wagon	32	105	200	620	GenRideable		2500	2	0		
 medium covered % wagon	34	110	225	665	GenRideable	LID	2500	2	0		
 medium % storage wagon	44	130	300	820	GenRideable	LOCK	2500	2	0		
-% food cart	38	135	150	1690	GenRideable	LID	500	0	131072		prop_icebox
+% food cart	38	135	150	1690	GenRideable	LID	500	0	131072		*Prop_IceBox;
 medium % lantern wagon	40	120	175	1155	GenRideable		2500	2	0		*Spell_Light;
 medium % sprung cart	42	100	130	530	GenRideable		2000	4	0		
-medium % storage cart	36	120	250	730	GenRideable	LOCK	3000	0	0		
+medium % storage cart	36	120	250	730	GenRideable	LOCK	3000	2	0		
 large % chariot	46	150	450	1050	GenRideable		500	3	0		Prop_RideAdjuster;Speed+1
-large % unsprung cart	48	110	230	670	GenRideable		9000	0	0		
+large % unsprung cart	48	110	230	670	GenRideable		9000	2	0		
 large % wagon	50	135	300	840	GenRideable		7500	2	0		
 large covered % wagon	52	140	325	885	GenRideable	LID	7500	2	0		
 large % storage wagon	60	160	450	1090	GenRideable	LOCK	7500	2	0		
 large % lantern wagon	56	150	275	1375	GenRideable		7500	2	0		*Spell_Light;
 large % sprung cart	58	130	250	770	GenRideable		7000	6	0		
-large % storage cart	54	150	500	1100	GenRideable	LOCK	9000	0	0		
+large % storage cart	54	150	500	1100	GenRideable	LOCK	9000	2	0		
 small % war chariot	62	180	650	1370	GenRideable		100	1	0		*Prop_RideAdjuster;Speed+1 Armor-50
-huge % unsprung cart	64	140	430	990	GenRideable		30000	0	0		
+huge % unsprung cart	64	140	430	990	GenRideable		30000	2	0		
 large % war chariot	66	210	750	1590	GenRideable		500	3	0		*Prop_RideAdjuster;Speed+1 Armor-50
 huge % wagon	68	165	500	1160	GenRideable		25000	2	0		
 % chuck wagon	70	185	450	2190	GenRideable	LID	2500	2	131072		prop_icebox

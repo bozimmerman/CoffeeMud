@@ -229,6 +229,10 @@ public class Qualify  extends Skills
 		final boolean showAll=qual.length()==0;
 		int acode=-1;
 		int domain=-1;
+		boolean shownGathering=false;
+		boolean shownCrafting=false;
+		boolean shownCommon=false;
+		boolean shownLangs=false;
 		if(showAll||("SKILLS".startsWith(qual)))
 		{
 			acode=Ability.ACODE_SKILL;
@@ -236,24 +240,33 @@ public class Qualify  extends Skills
 		}
 		if(showAll||("COMMON SKILLS").startsWith(qual))
 		{
+			shownCommon=true;
+			shownCrafting=true;
+			shownGathering=true;
 			acode=Ability.ACODE_COMMON_SKILL;
 			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_COMMON_SKILL,SKILL_ANY,"\n\r^HCommon Skills:^? ",shortOnly));
 		}
 		else
 		if ("CRAFTING SKILLS".startsWith(qual))
 		{
+			shownCommon=true;
+			shownCrafting=true;
 			domain=Ability.DOMAIN_CRAFTINGSKILL;
 			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_COMMON_SKILL,SKILL_CRAFTING_ONLY,"\n\r^HCrafting Skills:^? ",shortOnly));
 		}
 		else
 		if ("EPICUREAN SKILLS".startsWith(qual))
 		{
+			shownCommon=true;
+			shownGathering=true;
 			domain=Ability.DOMAIN_EPICUREAN;
 			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_COMMON_SKILL,SKILL_EPICUREAN_ONLY,"\n\r^HEpicurean Skills:^? ",shortOnly));
 		}
 		else
 		if ("BUILDING SKILLS".startsWith(qual))
 		{
+			shownCommon=true;
+			shownCrafting=true;
 			domain=Ability.DOMAIN_BUILDINGSKILL;
 			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_COMMON_SKILL,SKILL_BUILDING_ONLY,"\n\r^HBuilding Skills:^? ",shortOnly));
 		}
@@ -261,6 +274,8 @@ public class Qualify  extends Skills
 		if ("GATHERING SKILLS".startsWith(qual)
 		||"NON CRAFTING SKILLS".startsWith(qual)||"NON-CRAFTING SKILLS".startsWith(qual)||"NONCRAFTING SKILLS".startsWith(qual))
 		{
+			shownCommon=true;
+			shownGathering=true;
 			domain=Ability.DOMAIN_GATHERINGSKILL;
 			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_COMMON_SKILL,SKILL_GATHERING_ONLY,"\n\r^HNon-Crafting Common Skills:^? ",shortOnly));
 		}
@@ -301,6 +316,7 @@ public class Qualify  extends Skills
 		}
 		if(showAll||"LANGUAGES".startsWith(qual)||"LANGS".startsWith(qual))
 		{
+			shownLangs=true;
 			acode=Ability.ACODE_LANGUAGE;
 			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_LANGUAGE,SKILL_ANY,"\n\r^HLanguages:^? ",shortOnly));
 		}
@@ -492,25 +508,37 @@ public class Qualify  extends Skills
 			if(!mob.isMonster())
 			{
 				final AbilityComponents.AbilityLimits limits = CMLib.ableComponents().getSpecialSkillRemainders(mob);
-				if(limits.commonSkills()<0)
-					limits.commonSkills(0);
-				if(limits.commonSkills() < Integer.MAX_VALUE/2)
-					msg.append(L("\n\r^HYou may learn ^w@x1^H more common skills.^N",""+limits.commonSkills()));
-				if(limits.craftingSkills()<0)
-					limits.craftingSkills(0);
-				if(limits.craftingSkills() < Integer.MAX_VALUE/2)
-					msg.append(L("\n\r^HYou may learn ^w@x1^H more crafting skills.^N",""+limits.craftingSkills()));
-				if(limits.nonCraftingSkills()<0)
-					limits.nonCraftingSkills(0);
-				if(limits.nonCraftingSkills() < Integer.MAX_VALUE/2)
-					msg.append(L("\n\r^HYou may learn ^w@x1^H more non-crafting common skills.^N",""+limits.nonCraftingSkills()));
-				if(limits.languageSkills()<0)
-					limits.languageSkills(0);
-				if(limits.languageSkills() < Integer.MAX_VALUE/2)
-					msg.append(L("\n\r^HYou may learn ^w@x1^H more languages.^N",""+limits.languageSkills()));
-
+				if(shownCommon)
+				{
+					if(limits.commonSkills()<0)
+						limits.commonSkills(0);
+					if(limits.commonSkills() < Integer.MAX_VALUE/2)
+						msg.append(L("\n\r^HYou may learn ^w@x1^H more common skills.^N",""+limits.commonSkills()));
+				}
+				if(shownCrafting)
+				{
+					if(limits.craftingSkills()<0)
+						limits.craftingSkills(0);
+					if(limits.craftingSkills() < Integer.MAX_VALUE/2)
+						msg.append(L("\n\r^HYou may learn ^w@x1^H more crafting skills.^N",""+limits.craftingSkills()));
+				}
+				if(shownGathering)
+				{
+					if(limits.nonCraftingSkills()<0)
+						limits.nonCraftingSkills(0);
+					if(limits.nonCraftingSkills() < Integer.MAX_VALUE/2)
+						msg.append(L("\n\r^HYou may learn ^w@x1^H more non-crafting common skills.^N",""+limits.nonCraftingSkills()));
+				}
+				if(shownLangs)
+				{
+					if(limits.languageSkills()<0)
+						limits.languageSkills(0);
+					if(limits.languageSkills() < Integer.MAX_VALUE/2)
+						msg.append(L("\n\r^HYou may learn ^w@x1^H more languages.^N",""+limits.languageSkills()));
+				}
 				mob.session().wraplessPrintln(L("^!You now qualify for the following unknown abilities:^?@x1",msg.toString()));
-				mob.tell(L("\n\rUse the WILLQUALIFY command to discover what you will qualify for at higher levels."));
+				if(!ID().equals("WillQualify"))
+					mob.tell(L("\n\rUse the WILLQUALIFY command to discover what you will qualify for at higher levels."));
 				mob.tell(L("\n\rUse the GAIN command with your teacher to gain new skills, spells, and expertises."));
 				if(classesFound)
 					mob.tell(L("\n\rUse the TRAIN command to train for a new class."));

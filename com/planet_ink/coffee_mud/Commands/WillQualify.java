@@ -54,10 +54,10 @@ public class WillQualify  extends Skills
 											  final MOB ableM,
 											  final String classID,
 											  final String raceID,
+											  final int startLevel,
 											  final int maxLevel,
 											  final String prefix,
-											  final Set<Object> types,
-											  final Set<Object> noTypes)
+											  final Set<Object> types, final Set<Object> noTypes)
 	{
 		final int highestLevel = maxLevel;
 		final StringBuffer msg = new StringBuffer("");
@@ -67,7 +67,7 @@ public class WillQualify  extends Skills
 		final int COL_LEN3=CMLib.lister().fixColWidth(12.0,viewerM);
 		final int COL_LEN4=CMLib.lister().fixColWidth(13.0,viewerM);
 		final List<AbilityMapper.QualifyingID> DV=CMLib.ableMapper().getClassAllowsList(classID);
-		for (int l = 0; l <= highestLevel; l++)
+		for (int l = startLevel; l <= highestLevel; l++)
 		{
 			final StringBuffer thisLine = new StringBuffer("");
 			final Enumeration<AbilityMapper.AbilityMapping> emur = new MultiEnumeration<AbilityMapper.AbilityMapping>()
@@ -242,34 +242,44 @@ public class WillQualify  extends Skills
 					throws java.io.IOException
 	{
 		final StringBuffer msg=new StringBuffer("");
-		final String willQualErr = "Specify level, class, and or skill-type:  WILLQUALIFY ([LEVEL]) ([CLASS NAME]) ([SKILL TYPE]).";
+		final String willQualErr = "Specify level, class, and or skill-type:  WILLQUALIFY (NEXT)/([LEVEL]) ([CLASS NAME]) ([SKILL TYPE]).";
+		int minLevel=0;
 		int level=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
 		CharClass C=mob.charStats().getCurrentClass();
 		final HashSet<Object> types=new HashSet<Object>();
 		final HashSet<Object> notypes=new HashSet<Object>();
 		if(commands.size()>0)
 			commands.remove(0);
-		if((commands.size()>0)&&(CMath.isNumber(commands.get(0))))
+		if((commands.size()>0)&&(commands.get(0).equalsIgnoreCase("NEXT")))
 		{
-			level=CMath.s_int(commands.get(0));
-			if(level<0)
-			{
-				mob.tell(willQualErr);
-				return false;
-			}
-			if(level>CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))
-			{
-				mob.tell("'"+commands.get(0)+"' is not an available level.");
-			}
+			level=mob.charStats().getCurrentClassLevel()+1;
+			minLevel=level;
 			commands.remove(0);
 		}
-		if(commands.size()>0)
+		else
 		{
-			final CharClass C2=CMClass.findCharClass(commands.get(0));
-			if (C2 != null)
+			if((commands.size()>0)&&(CMath.isNumber(commands.get(0))))
 			{
-				C = C2;
+				level=CMath.s_int(commands.get(0));
+				if(level<0)
+				{
+					mob.tell(willQualErr);
+					return false;
+				}
+				if(level>CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))
+				{
+					mob.tell("'"+commands.get(0)+"' is not an available level.");
+				}
 				commands.remove(0);
+			}
+			if(commands.size()>0)
+			{
+				final CharClass C2=CMClass.findCharClass(commands.get(0));
+				if (C2 != null)
+				{
+					C = C2;
+					commands.remove(0);
+				}
 			}
 		}
 		while(commands.size()>0)
@@ -319,7 +329,7 @@ public class WillQualify  extends Skills
 
 		msg.append(L("At level @x1 of class '@x2', you could qualify for:\n\r",""+level,C.name()));
 		final String raceID = mob.baseCharStats().getMyRace().ID();
-		msg.append(getQualifiedAbilities(mob,mob,C.ID(),raceID,level,"",types, notypes));
+		msg.append(getQualifiedAbilities(mob,mob,C.ID(),raceID,minLevel,level,"", types, notypes));
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());
 		return false;

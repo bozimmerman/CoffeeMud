@@ -3040,7 +3040,7 @@ public class CMStrings
 	{
 		final int lenMinusColors=lengthMinusColors(thisStr);
 		if(lenMinusColors>thisMuch)
-			return removeColors(thisStr);
+			return thisStr;
 		if(thisMuch-lenMinusColors >= SPACES.length())
 			return thisStr+SPACES;
 		return thisStr+SPACES.substring(0,thisMuch-lenMinusColors);

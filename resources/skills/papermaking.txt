@@ -11,16 +11,16 @@ a cigarette	5	20	(onground:consumed:1:PIPEWEED:)&&(onground:consumed:1:a piece o
 a small paper bag	5	10	2	1	GenContainer	PAPER		20	
 an essay	5	40	1	1	GenPaper	WOOD		1/3000	
 a book	7	70	8	20	GenPlayerBook	WOOD		10/5000	
-a sheet of parchment	6	10	1	1	GenPaper	HIDE		1/5000	
+a sheet of parchment	6	10	(onground:consumed:1:HIDE:)	1	GenPaper	HIDE		1/5000	
 a recipe page	7	15	1	10	GenRecipe	WOOD			
 the book	8	70	8	20	GenPlayerBook	WOOD		10/5000	
 a booklet	6	30	3	15	GenPlayerBook	WOOD		5/5000	
-a sheet of rice paper	8	10	1	2	GenPaper	RICE		1/1500	
+a sheet of rice paper	8	10	(onground:consumed:1:RICE:)	2	GenPaper	RICE		1/1500	
 a banner	9	40	5	1	GenPaper	WOOD		1/2500	
-a canvas	9	20	10	5	GenReadable	COTTON			
+a canvas	9	20	(onground:consumed:10:COTTON:)	5	GenReadable	COTTON			
 a % trading card	10	20	4	3	GenPaper	WOOD	STATUE	1/500	
 a nice scroll	10	120	(onground:consumed:2:a piece of paper:)	40	GenScroll	PAPER			
-a sheet of vellum	10	30	1	1	GenPaper	LEATHER		1/4000	
+a sheet of vellum	10	30	(onground:consumed:1:LEATHER:)	1	GenPaper	LEATHER		1/4000	
 a small spellbook	11	200	(onground:consumed:4:a piece of paper:)	50	GenScroll	PAPER			
 a cigar	11	20	(onground:consumed:1:A PIECE OF PAPER:)&&(onground:consumed:2:PIPEWEED:)	5	GenCigar	PAPER		0	
 a poster of %	12	40	3	1	GenPaper	WOOD	STATUE	1/5000	
@@ -29,7 +29,7 @@ a brochure	13	25	2	5	GenPlayerBook	WOOD		3/2000
 a catalogue	13	80	10	25	GenPlayerBook	WOOD		10/5000	
 a medium paper bag	14	20	4	10	GenContainer	PAPER		40	
 the catalogue	14	80	10	25	GenPlayerBook	WOOD		10/5000	
-a sheet of silkscreen	15	50	5	20	GenPaper	SILK		1/6000	
+a sheet of silkscreen	15	50	(onground:consumed:5:SILK:)	20	GenPaper	SILK		1/6000	
 a wedding banner	15	40	(onground:consumed:10:a piece of paper:)	35	GenPaper	PAPER		1/280	
 a journal	16	90	4	30	GenPlayerBook	WOOD		12/5000	
 a kite	17	100	5	40	GenItem	BALSA			*Spell_Fly

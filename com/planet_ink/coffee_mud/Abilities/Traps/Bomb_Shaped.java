@@ -236,6 +236,13 @@ public class Bomb_Shaped extends StdBomb
 				}
 			}
 		}
+		else
+		if(isShaped())
+		{
+			final Room R=CMLib.map().roomLocation(target);
+			R.show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,
+					L("An incredible blast go(es) off at <T-NAME>.")+CMLib.protocol().msp("explode.wav",30));
+		}
 		super.explodeBomb(P);
 	}
 

@@ -273,7 +273,9 @@ public class RandomTraps extends ActiveTicker
 				for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 				{
 					final Ability A=e.nextElement();
-					if(A instanceof Trap)
+					if((A instanceof Trap)
+					&&(!(A.ID().equals("StdTrap")))
+					&&(!(A.ID().equals("GenTrap"))))
 						allTraps.add((Trap)A);
 				}
 			}
@@ -417,6 +419,9 @@ public class RandomTraps extends ActiveTicker
 				Trap T=eligibleTraps.get(CMLib.dice().roll(1,eligibleTraps.size(),-1));
 				T=(Trap)T.copyOf();
 				T.setProficiency(100);
+				final Area A=CMLib.map().areaLocation(ticking);
+				if(A!=null)
+					T.setMiscText(":"+A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()]+":");
 				T.makeLongLasting();
 				T.setSavable(false);
 				P.addEffect(T);

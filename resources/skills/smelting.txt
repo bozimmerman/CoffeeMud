@@ -45,4 +45,4 @@ celesteel	77	777	(onground:consumed:9:ADAMANTITE:)&&(onground:consumed:1:SOME DE
 yautjavian	78	440	(onground:consumed:2:ADAMANTITE:)&&(onground:consumed:1:BRONZE:)&&(onground:consumed:1:MITHRIL:)	280	GenResource	MITHRIL	YAUTJAVIAN	*Prop_Adjuster;CRITPCTWEAPONS+5
 ithildin	80	400	(onground:consumed:2:ADAMANTITE:)&&(onground:consumed:1:DRAGONSCALES:)&&(onground:kept:1:PLATINUM:)	300	GenResource	MITHRIL	ITHILDIN	*Prop_Adjuster;disposition+ISINVISIBLE
 quicksilver	85	400	(onground:consumed:4:SILVER:)&&(onground:consumed:2:IRON:)&&(onground:consumed:1:MITHRIL:)&&(onground:consumed:1:COAL:)	320	GenResource	MITHRIL	QUICKSILVER	*Prop_Adjuster;attack+200 MULTIPLYPH=TRUE
-uru	90	2500	(onground:consumed:7:COPPER:)&&(onground:consumed:7:MITHRIL:)&&(onground:consumed:6:STEEL:)&&(onground:consumed:3:PLATINUM:)&&(inventory:consumed:1:PALLADIUM:)	500	GenResource	ADAMANTITE	URU	*Prop_Adjuster;ABILITY+2 disposition+ISGLOWING
+uru	90	2500	(onground:consumed:7:COPPER:)&&(onground:consumed:7:MITHRIL:)&&(onground:consumed:6:STEEL:)&&(onground:consumed:3:PLATINUM:)&&(onground:consumed:1:PALLADIUM:)	500	GenResource	ADAMANTITE	URU	*Prop_Adjuster;ABILITY+2 disposition+ISGLOWING

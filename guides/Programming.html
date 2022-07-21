@@ -5984,7 +5984,7 @@ Keeping the number of letters close or the same as the Common word
 equivalent provides a certain symmetry, however, and makes it fun for
 the players who don't speak a language to try and guess what is being
 said by counting letters.</p>
-      <pre>  private static final Map&lt;String,String&gt; hashwords = new Hashtable();<br />  public Map&lt;String,String&gt; translationHash(String language)<br />  {<br />    if( ( hashwords != null ) &amp;&amp; ( hashwords.size() &gt; 0 ) )<br />    {<br />      return hashwords;<br />    }<br /><br />    hashwords.put( "ABANDON", "avarta" );<br />    hashwords.put( "ABLE", "pol" );<br />    hashwords.put( "ACCOMMODATE", "camta" );<br />    hashwords.put( "ACT", "car" );<br /><br /> ...<br /><br />    hashwords.put( "WRONG", "raic�" );<br />    hashwords.put( "YES", "y�" );<br />    hashwords.put( "YESTERDAY", "tellaur�" );<br />    return hashwords;<br />  }<br />}<br /></pre>
+      <pre>  private static final Map&lt;String,String&gt; exactWords = new Hashtable();<br />  public Map&lt;String,String&gt; translationHash(String language)<br />  {<br />    if( ( exactWords != null ) &amp;&amp; ( exactWords.size() &gt; 0 ) )<br />    {<br />      return exactWords;<br />    }<br /><br />    exactWords.put( "ABANDON", "avarta" );<br />    exactWords.put( "ABLE", "pol" );<br />    exactWords.put( "ACCOMMODATE", "camta" );<br />    exactWords.put( "ACT", "car" );<br /><br /> ...<br /><br />    exactWords.put( "WRONG", "raic�" );<br />    exactWords.put( "YES", "y�" );<br />    exactWords.put( "YESTERDAY", "tellaur�" );<br />    return exactWords;<br />  }<br />}<br /></pre>
       <p>The last Language method
 is <code>translationHash(String
 language)</code>.
