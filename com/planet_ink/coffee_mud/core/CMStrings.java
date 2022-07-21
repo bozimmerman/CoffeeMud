@@ -2836,6 +2836,22 @@ public class CMStrings
 	}
 
 	/**
+	 * If the given string ends or begins with cr or lf,
+	 * then this method removes them before returning the string, and
+	 * does nothing otherwise.
+	 * @param thisStr the string to remove cr and lf from
+	 * @return the string without cr and lf at the ends, or unchanged
+	 */
+	public final static String trimCRLF(final String thisStr)
+	{
+		while(thisStr.startsWith("\r")||thisStr.startsWith("\n"))
+			return thisStr.substring(1);
+		while(thisStr.endsWith("\r")||thisStr.endsWith("\n"))
+			return thisStr.substring(0,thisStr.length()-1);
+		return thisStr;
+	}
+
+	/**
 	 * Pads the string to the right with spaces until it is the length
 	 * of the given number. If the string is already larger than the given number, the
 	 * string is truncated at the end until it is the given length.  If the string

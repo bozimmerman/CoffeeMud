@@ -10,16 +10,17 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrCallback;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrResolution;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomination;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
-import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomination;
 
 /*
    Copyright 2004-2022 Bo Zimmerman
@@ -1392,10 +1393,208 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	}
 
 	@Override
-	public boolean shutdown()
+	public String findHelpFile(final String key, final HelpSection searchSection, final boolean exactOnly)
 	{
-		unloadHelpFile(null);
+		final String ukey=key.toUpperCase().trim().replace(' ','_');
+		final CMFile directory=new CMFile(Resources.buildResourcePath("help"),null,CMFile.FLAG_LOGERRORS);
+		final Filterer.TextFilter  arcFilter = new Filterer.TextFilter(".arc", true);
+		final Filterer.NotFilterer<String> iniFilter = new Filterer.NotFilterer<String>(arcFilter);
+		if((directory.canRead())&&(directory.isDirectory()))
+		{
+			final String[] list=directory.list();
+			final List<Filterer<String>> filters;
+			switch(searchSection)
+			{
+			case ArchonFirst:
+				filters = new XVector<Filterer<String>>(arcFilter, iniFilter );
+				break;
+			case ArchonOnly:
+				filters = new XVector<Filterer<String>>(arcFilter);
+				break;
+			default:
+			case NormalFirst:
+				filters = new XVector<Filterer<String>>(iniFilter, arcFilter );
+				break;
+			case NormalOnly:
+				filters = new XVector<Filterer<String>>(iniFilter);
+				break;
+			}
+			for(final Filterer<String> f : filters)
+			{
+				for (final String item : list)
+				{
+					if((item!=null)
+					&&(item.length()>0)
+					&&item.toUpperCase().endsWith(".INI")
+					&&(f.passesFilter(item)))
+					{
+						final Properties local=new Properties();
+						try
+						{
+							final CMFile F = new CMFile(Resources.buildResourcePath("help")+item,null,CMFile.FLAG_LOGERRORS);
+							local.load(new ByteArrayInputStream(F.raw()));
+							if(local.containsKey(ukey))
+								return F.getAbsolutePath();
+						}
+						catch (final IOException e)
+						{
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public boolean addModifyHelpEntry(final MOB mob, final String helpFile, final String helpKey, final boolean deleteOnly)
+	{
+		final StringBuilder upStr=new StringBuilder("");
+		final StringBuilder dnStr=new StringBuilder("");
+		final CMFile F = new CMFile(helpFile, null, CMFile.FLAG_LOGERRORS);
+		if(!F.exists())
+			return false;
+		final List<String> bV = Resources.getFileLineVector(F.text());
+		final List<String> keyBlock = new ArrayList<String>();
+		try
+		{
+			final BufferedReader br = new BufferedReader(new StringReader(CMParms.combineWith(bV, '\n')));
+			String line = br.readLine();
+			boolean contLine=false;
+			while((line != null)&&(keyBlock.size()==0))
+			{
+				line = CMStrings.trimCRLF(line);
+				if(!contLine)
+				{
+					if(line.startsWith(helpKey))
+					{
+						final String s = line.substring(helpKey.length());
+						if(s.trim().startsWith("="))
+						{
+							// we have a winner!
+							keyBlock.add(line.substring(line.indexOf('=')+1).trim());
+						}
+					}
+				}
+				if(keyBlock.size()==0)
+					upStr.append(line).append("\n");
+				contLine = line.endsWith("\\");
+				line = br.readLine();
+			}
+			while(keyBlock.size()>0 && contLine && (line != null))
+			{
+				line = CMStrings.trimCRLF(line);
+				keyBlock.add(line);
+				contLine = line.endsWith("\\");
+				line = br.readLine();
+			}
+			while(line != null)
+			{
+				line = CMStrings.trimCRLF(line);
+				dnStr.append(line).append("\n");
+				line = br.readLine();
+			}
+			br.close();
+		}
+		catch(final IOException e)
+		{
+			return false;
+		}
+		if(deleteOnly)
+		{
+			unloadHelpFile(null);
+			return F.saveText(upStr.toString()+dnStr.toString());
+		}
+		else
+		{
+			for(int i=0;i<keyBlock.size();i++)
+			{
+				final String s=keyBlock.get(i);
+				if(s.endsWith("\\"))
+					keyBlock.set(i, s.substring(0,s.length()-1));
+			}
+			CMLib.journals().makeMessageASync(mob, helpKey+": "+helpFile, keyBlock, false, new MsgMkrCallback()
+			{
+				final String key = helpKey;
+				final StringBuilder b4 = new StringBuilder(upStr);
+				final StringBuilder af = new StringBuilder(dnStr);
+				final List<String> data = keyBlock;
+				final CMFile file = F;
+				@Override
+				public void callBack(final MOB mob, final Session sess, final MsgMkrResolution res)
+				{
+					if(res == MsgMkrResolution.SAVEFILE)
+					{
+						final StringBuilder newHelp=new StringBuilder("");
+						newHelp.append(b4.toString());
+						newHelp.append(key).append("=");
+						for(int i=0;i<data.size();i++)
+						{
+							newHelp.append(data.get(i));
+							if((i<data.size()-1)&&(!data.get(i).endsWith("\\")))
+								newHelp.append("\\");
+							newHelp.append("\n");
+						}
+						newHelp.append(af.toString());
+						file.saveText(newHelp);
+						unloadHelpFile(null);
+					}
+				}
+			});
+		}
 		return true;
+	}
+
+	@Override
+	public List<String> getSeeAlsoHelpOn(final String helpSearch, final String helpKey, final String helpText, final MOB mob, final int howMany)
+	{
+		final List<String> seeAlso = seeAlsoCache.get(helpKey);
+		if(seeAlso != null)
+			return seeAlso;
+		final String nKey = helpKey.replace(' ', '_');
+		final List<String> otherHelps = new Vector<String>();
+		final List<String> otherHelpTexts = new ArrayList<String>();
+		otherHelpTexts.add(helpText);
+		for(int i=1;i<(howMany*4) && (otherHelps.size()<howMany);i++)
+		{
+			final Pair<String, String> m = CMLib.help().getHelpMatch(helpSearch,CMLib.help().getHelpFile(),mob, i);
+			if((m==null)
+			||(m.second==null))
+				break;
+			if((m.first.replace(' ', '_').equalsIgnoreCase(nKey))
+			||(otherHelps.contains(m.first))
+			||(otherHelpTexts.contains(m.second)))
+				continue;
+			otherHelps.add(m.first);
+			otherHelpTexts.add(m.second);
+		}
+		if(otherHelps.size()==0)
+		{
+			final Properties rHelpFile2=CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP)?CMLib.help().getArcHelpFile():null;
+			final List<String> thisList = CMLib.help().getHelpList( helpSearch, CMLib.help().getHelpFile(), rHelpFile2, mob);
+			for(final String s : thisList)
+			{
+				if(otherHelps.size()>=howMany)
+					break;
+				if((!s.replace(' ', '_').equalsIgnoreCase(nKey))
+				&&(!otherHelps.contains(s))
+				&&(CMLib.help().getHelpFile().contains(s)))
+				{
+					final Pair<String, String> m = CMLib.help().getHelpMatch(s,CMLib.help().getHelpFile(),mob, 0);
+					if((m==null)
+					||(m.second==null)
+					||(m.first.replace(' ', '_').equalsIgnoreCase(nKey))
+					||(!m.first.replace(' ', '_').equalsIgnoreCase(s.replace(' ', '_')))
+					||(otherHelps.contains(m.first))
+					||(otherHelpTexts.contains(m.second)))
+						continue;
+					otherHelps.add(m.first);
+					otherHelpTexts.add(m.second);
+				}
+			}
+		}
+		seeAlsoCache.put(helpKey,otherHelps);
+		return otherHelps;
 	}
 
 	@Override
@@ -1451,54 +1650,11 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			mob.tell(L("Help files unloaded. Next HELP, AHELP, new char will reload."));
 	}
 
-	public List<String> getSeeAlsoHelpOn(final String helpSearch, final String helpKey, final String helpText, final MOB mob, final int howMany)
+	@Override
+	public boolean shutdown()
 	{
-		final List<String> seeAlso = seeAlsoCache.get(helpKey);
-		if(seeAlso != null)
-			return seeAlso;
-		final String nKey = helpKey.replace(' ', '_');
-		final List<String> otherHelps = new Vector<String>();
-		final List<String> otherHelpTexts = new ArrayList<String>();
-		otherHelpTexts.add(helpText);
-		for(int i=1;i<(howMany*4) && (otherHelps.size()<howMany);i++)
-		{
-			final Pair<String, String> m = CMLib.help().getHelpMatch(helpSearch,CMLib.help().getHelpFile(),mob, i);
-			if((m==null)
-			||(m.second==null))
-				break;
-			if((m.first.replace(' ', '_').equalsIgnoreCase(nKey))
-			||(otherHelps.contains(m.first))
-			||(otherHelpTexts.contains(m.second)))
-				continue;
-			otherHelps.add(m.first);
-			otherHelpTexts.add(m.second);
-		}
-		if(otherHelps.size()==0)
-		{
-			final Properties rHelpFile2=CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP)?CMLib.help().getArcHelpFile():null;
-			final List<String> thisList = CMLib.help().getHelpList( helpSearch, CMLib.help().getHelpFile(), rHelpFile2, mob);
-			for(final String s : thisList)
-			{
-				if(otherHelps.size()>=howMany)
-					break;
-				if((!s.replace(' ', '_').equalsIgnoreCase(nKey))
-				&&(!otherHelps.contains(s))
-				&&(CMLib.help().getHelpFile().contains(s)))
-				{
-					final Pair<String, String> m = CMLib.help().getHelpMatch(s,CMLib.help().getHelpFile(),mob, 0);
-					if((m==null)
-					||(m.second==null)
-					||(m.first.replace(' ', '_').equalsIgnoreCase(nKey))
-					||(!m.first.replace(' ', '_').equalsIgnoreCase(s.replace(' ', '_')))
-					||(otherHelps.contains(m.first))
-					||(otherHelpTexts.contains(m.second)))
-						continue;
-					otherHelps.add(m.first);
-					otherHelpTexts.add(m.second);
-				}
-			}
-		}
-		seeAlsoCache.put(helpKey,otherHelps);
-		return otherHelps;
+		unloadHelpFile(null);
+		return true;
 	}
+
 }

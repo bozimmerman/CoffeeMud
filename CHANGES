@@ -44,6 +44,7 @@
  43. New thief skills: Set Timer, Detect Bombs
  44. Updates to several language vocabularies
  45. Help now shows "see also help on..." that is auto-magically generated.
+ 46. Can now create/modify/destroy HELP entries.
 
 # Build 5.9.12 Release 1/17/2022
   *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG

@@ -29,6 +29,20 @@ public interface Filterer<K>
 		}
 	};
 
+	public static class NotFilterer<L> implements Filterer<L>
+	{
+		private final Filterer<L> filter;
+		public NotFilterer(final Filterer<L> filter)
+		{
+			this.filter = filter;
+		}
+		@Override
+		public boolean passesFilter(final L obj)
+		{
+			return !filter.passesFilter(obj);
+		}
+	};
+
 	public static class TextFilter implements Filterer<String>
 	{
 		final String filter;

@@ -94,14 +94,40 @@ public interface HelpLibrary extends CMLibrary
 	 * will find any other help keys that might be relevant to the search, returning
 	 * the list of also-matching results.
 	 *
-	 * @param helpSearch
-	 * @param helpKey
-	 * @param helpText
-	 * @param mob
-	 * @param howMany
-	 * @return
+	 * @param helpSearch the original search words
+	 * @param helpKey the officially found help key
+	 * @param helpText the officially processed and found help text
+	 * @param mob the mob who wants more options
+	 * @param howMany the maximum number of options to return
+	 * @return the found see-also help keys
 	 */
 	public List<String> getSeeAlsoHelpOn(final String helpSearch, final String helpKey, final String helpText, final MOB mob, final int howMany);
+
+	/**
+	 * Returns the path of the help file that contains the given help key.
+	 *
+	 * @see HelpLibrary#addModifyHelpEntry(MOB, String, String, boolean)
+	 *
+	 * @param key the official help key to look for
+	 * @param searchSection how to search for keys
+	 * @param exactOnly true to return only exact match, false to get best
+	 * @return null, or the help file path
+	 */
+	public String findHelpFile(final String key, final HelpSection searchSection, boolean exactOnly);
+
+	/**
+	 * An asynchronous editor for help entries that also re-saves the file
+	 * when completed.
+	 *
+	 * @see HelpLibrary#findHelpFile(String, HelpSection, boolean)
+	 *
+	 * @param mob the mob who wants to add/edit
+	 * @param helpFile the help file to edit
+	 * @param helpKey the help file key entry to edit
+	 * @param deleteOnly true to delete the entry only
+	 * @return true if editing has STARTED
+	 */
+	public boolean addModifyHelpEntry(final MOB mob, final String helpFile, final String helpKey, boolean deleteOnly);
 
 	/**
 	 * Returns a viewable help entry for the given key, checking the given
@@ -231,4 +257,18 @@ public interface HelpLibrary extends CMLibrary
 	 * @return the cost description
 	 */
 	public String getAbilityCostDesc(Ability A, final MOB forM);
+
+	/**
+	 * An enum for how to search help files.
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static enum HelpSection
+	{
+		ArchonOnly,
+		NormalOnly,
+		ArchonFirst,
+		NormalFirst
+	}
 }

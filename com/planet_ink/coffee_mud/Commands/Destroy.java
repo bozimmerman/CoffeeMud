@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
+import com.planet_ink.coffee_mud.Libraries.interfaces.HelpLibrary.HelpSection;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.CommandJournalFlags;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 
@@ -57,6 +58,14 @@ public class Destroy extends StdCommand
 	{
 		mob.tell(L("You are not allowed to do that here."));
 		return false;
+	}
+
+	public String listOfThings()
+	{
+		return "EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, "
+			+ "SESSION, TICKS, THREAD, HOLIDAY, JOURNAL, SOCIAL, ACHIEVEMENT, CLASS, ABILITY, MANUFACTURER, "
+			+ "LANGUAGE, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, GOVERNMENT, NOPURGE, BUG, TYPO, IDEA, "
+			+ "WEBSERVER, POLL, DEBUGFLAG, DISABLEFLAG, ENABLEFLAG, CRAFTSKILL, GATHERSKILL, TRAP, WRIGHTSKILL, or a ROOM";
 	}
 
 	public boolean mobs(final MOB mob, final List<String> commands)
@@ -431,6 +440,34 @@ public class Destroy extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A wall of inhibition falls @x1.",
 				(CMLib.directions().getInDirectionName(direction, dirType))));
 		Log.sysOut("Exits",mob.location().roomID()+" exits destroyed by "+mob.Name()+".");
+	}
+
+	public boolean helps(final MOB mob, final List<String> commands)
+	{
+		if(commands.size()<3)
+		{
+			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is DESTROY HELP [KEY]\n\r"));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		final boolean preferAHelp = commands.get(1).toUpperCase().startsWith("A");
+		final String helpStr=CMParms.combine(commands,2).toUpperCase().trim().replace(' ','_');
+		final HelpSection section = preferAHelp?HelpSection.ArchonOnly:HelpSection.NormalOnly;
+		final String fileName = CMLib.help().findHelpFile(helpStr, section, true);
+		if(fileName == null)
+		{
+			mob.tell(L("A help file with key '@x1' does not exist!",helpStr));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		if(!CMLib.help().addModifyHelpEntry(mob, fileName, helpStr, true))
+		{
+			mob.tell(L("A help file with key '@x1' could not be destroyed!",helpStr));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The helpfullness of the world just decreased."));
+		return true;
 	}
 
 	private Item getItem(final boolean allFlag, final Room srchRoom, final Item srchContainer, final MOB srchMob, final String itemID)
@@ -1956,10 +1993,7 @@ public class Destroy extends StdCommand
 					else
 					{
 						mob.tell(
-							L("\n\rYou cannot destroy a '@x1'. However, you might try an EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, "
-							+ "SESSION, TICKS, THREAD, HOLIDAY, JOURNAL, SOCIAL, ACHIEVEMENT, CLASS, ABILITY, MANUFACTURER, "
-							+ "LANGUAGE, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, GOVERNMENT, NOPURGE, BUG, TYPO, IDEA, "
-							+ "WEBSERVER, POLL, DEBUGFLAG, DISABLEFLAG, ENABLEFLAG, CRAFTSKILL, GATHERSKILL, TRAP, WRIGHTSKILL, or a ROOM.",commandType));
+							L("\n\rYou cannot destroy a '@x1'. However, you might try a "+listOfThings(),commandType));
 					}
 				}
 			}

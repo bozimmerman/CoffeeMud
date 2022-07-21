@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
+import com.planet_ink.coffee_mud.Libraries.interfaces.HelpLibrary.HelpSection;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -1863,6 +1864,55 @@ public class Modify extends StdCommand
 		return true;
 	}
 
+	public boolean helps(final MOB mob, final List<String> commands)
+	{
+		if(commands.size()<3)
+		{
+			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is MODIFY HELP [KEY]\n\r"));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		final boolean preferAHelp = commands.get(1).toUpperCase().startsWith("A");
+		final String helpStr=CMParms.combine(commands,2).toUpperCase().trim().replace(' ','_');
+		final List<Properties> ps;
+		if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP))
+			ps = new XVector<Properties>(CMLib.help().getHelpFile());
+		else
+		if(preferAHelp)
+			ps = new XVector<Properties>(CMLib.help().getArcHelpFile(), CMLib.help().getHelpFile());
+		else
+			ps = new XVector<Properties>(CMLib.help().getHelpFile(), CMLib.help().getArcHelpFile());
+		Pair<String, String> match=null;
+		for(final Properties p : ps)
+		{
+			match = CMLib.help().getHelpMatch(helpStr,p,mob, 0);
+			if((match!=null)&&(match.second!=null))
+				break;
+		}
+		if((match==null)||(match.second==null))
+		{
+			mob.tell(L("An help entry with key '@x1' does not exist!",helpStr));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		final HelpSection section = preferAHelp?HelpSection.ArchonFirst:HelpSection.NormalFirst;
+		final String fileName = CMLib.help().findHelpFile(match.first, section, true);
+		if(fileName == null)
+		{
+			mob.tell(L("A help file with key '@x1' does not exist!",match.first));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		if(!CMLib.help().addModifyHelpEntry(mob, fileName, match.first, false))
+		{
+			mob.tell(L("A help file with key '@x1' could not be edited!",match.first));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		//mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The vanity of the world just changed!"));
+		return true;
+	}
+
 	public void manufacturer(final MOB mob, final List<String> commands) throws IOException
 	{
 		if(commands.size()<3)
@@ -1995,7 +2045,7 @@ public class Modify extends StdCommand
 	{
 		return "ITEM, RACE, CLASS, ABILITY, LANGUAGE, CRAFTSKILL, GATHERSKILL, WRIGHTSKILL, "
 			+ "ALLQUALIFY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, TITLE, QUEST, "
-			+ "MOB, USER, HOLIDAY, ACHIEVEMENT, MANUFACTURER, EXPERTISE, TRAP, "
+			+ "MOB, USER, HOLIDAY, ACHIEVEMENT, MANUFACTURER, HELP/AHELP, TRAP, "
 			+ "GOVERNMENT, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, NEWS, DAY, MONTH, YEAR, TIME, HOUR, or ROOM";
 	}
 
@@ -2170,6 +2220,14 @@ public class Modify extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.EXPERTISES))
 				return errorOut(mob);
 			mob.tell(L("You can't modify components, you can only LIST, CREATE, and DESTROY them."));
+			return false;
+		}
+		else
+		if(commandType.equals("HELP")||commandType.equals("AHELP"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDHELP))
+				return errorOut(mob);
+			helps(mob, commands);
 			return false;
 		}
 		else
