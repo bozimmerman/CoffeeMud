@@ -56,30 +56,46 @@ public class Help extends StdCommand
 			mob.tell(L("No help is available."));
 			return false;
 		}
-		String thisTag=null;
+		String helpText=null;
 		if(helpStr.length()==0)
-			thisTag=Resources.getFileResource("help/help.txt",true).toString();
+			helpText=Resources.getFileResource("help/help.txt",true).toString();
 		else
-			thisTag=CMLib.help().getHelpText(helpStr,CMLib.help().getHelpFile(),mob);
-		if((thisTag==null)&&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP)))
-			thisTag=CMLib.help().getHelpText(helpStr,CMLib.help().getArcHelpFile(),mob);
-		if(thisTag==null)
 		{
-			final String thisList=
-				CMLib.help().getHelpList(
-					helpStr,
-					CMLib.help().getHelpFile(),
-					CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP)?CMLib.help().getArcHelpFile():null,
-					mob);
-			if((thisList!=null)&&(thisList.length()>0))
-				mob.tell(L("No help is available on '@x1'.\n\rHowever, here are some search matches:\n\r^N@x2",helpStr,thisList.toString().replace('_',' ')));
+			Pair<String, String> match=CMLib.help().getHelpMatch(helpStr,CMLib.help().getHelpFile(),mob, 0);
+			if(((match==null)||(match.second==null))
+			&&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP)))
+				match=CMLib.help().getHelpMatch(helpStr,CMLib.help().getArcHelpFile(),mob, 0);
+			if((match!=null)
+			&&(match.second!=null))
+			{
+				helpText = match.second;
+				final List<String> seeAlso = CMLib.help().getSeeAlsoHelpOn(helpStr, match.first, match.second, mob, 5);
+				if(seeAlso.size()>0)
+				{
+					final String alsoHelpStr = CMLib.english().toEnglishStringList(seeAlso);
+					helpText += "\n\rSee also help on: "+alsoHelpStr;
+				}
+			}
+		}
+		if(helpText==null)
+		{
+			final Properties rHelpFile2=CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP)?CMLib.help().getArcHelpFile():null;
+			final List<String> thisList = CMLib.help().getHelpList( helpStr, CMLib.help().getHelpFile(), rHelpFile2, mob);
+			if((thisList!=null)&&(thisList.size()>0))
+			{
+				final String matchText = CMLib.lister().build4ColTable(mob,thisList).toString();
+				mob.tell(L("No help is available on '@x1'.\n\rHowever, here are some search matches:\n\r^N@x2",helpStr,matchText.replace('_',' ')));
+			}
 			else
-				mob.tell(L("No help is available on '@x1'.\n\rEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list, or 'HELPLIST' to search.",helpStr));
+			{
+				mob.tell(L("No help is available on '@x1'.\n\rEnter 'COMMANDS' for a command list, "
+						+ "or 'TOPICS' for a complete list, or 'HELPLIST' to search.",helpStr));
+			}
 			Log.helpOut("Help",mob.Name()+" wanted help on "+helpStr);
 		}
 		else
 		if(!mob.isMonster())
-			mob.session().wraplessPrintln(thisTag.toString());
+			mob.session().wraplessPrintln(helpText.toString());
 		return false;
 	}
 

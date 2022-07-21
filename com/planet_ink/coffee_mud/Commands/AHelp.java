@@ -151,9 +151,9 @@ public class AHelp extends StdCommand
 		}
 		else
 		{
-			final String text = CMLib.help().getHelpText(helpStr,CMLib.help().getArcHelpFile(),mob);
-			if(text != null)
-				thisTag=new StringBuffer(text.toString());
+			final Pair<String,String> textP = CMLib.help().getHelpMatch(helpStr,CMLib.help().getArcHelpFile(),mob, 0);
+			if((textP != null) && (textP.second != null))
+				thisTag=new StringBuffer(textP.toString());
 		}
 		if(thisTag==null)
 		{

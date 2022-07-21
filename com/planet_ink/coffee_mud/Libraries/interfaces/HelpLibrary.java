@@ -90,8 +90,22 @@ public interface HelpLibrary extends CMLibrary
 	public String getHelpText(String helpStr, MOB forM, boolean favorAHelp, boolean noFix);
 
 	/**
+	 * Given the original search term, and the matching helpKey and helpText and mob, this
+	 * will find any other help keys that might be relevant to the search, returning
+	 * the list of also-matching results.
+	 *
+	 * @param helpSearch
+	 * @param helpKey
+	 * @param helpText
+	 * @param mob
+	 * @param howMany
+	 * @return
+	 */
+	public List<String> getSeeAlsoHelpOn(final String helpSearch, final String helpKey, final String helpText, final MOB mob, final int howMany);
+
+	/**
 	 * Returns a viewable help entry for the given key, checking the given
-	 * help file.
+	 * help file and returning the matching key and help text.
 	 *
 	 * @see HelpLibrary#getArcHelpFile()
 	 * @see HelpLibrary#getHelpFile()
@@ -99,9 +113,10 @@ public interface HelpLibrary extends CMLibrary
 	 * @param helpStr the key
 	 * @param rHelpFile the help file cache to use
 	 * @param forM the mob to get info for
-	 * @return the help entry text
+	 * @param skipEntries number of matches to skip before returning the next one
+	 * @return the help entry key, and help entry text as a pair
 	 */
-	public String getHelpText(String helpStr, Properties rHelpFile, MOB forM);
+	public Pair<String, String> getHelpMatch(String helpStr, Properties rHelpFile, MOB forM, int skipEntries);
 
 	/**
 	 * Returns a list of help entries containing the given string, as an aid
@@ -116,7 +131,7 @@ public interface HelpLibrary extends CMLibrary
 	 * @param forM the mob for whom help entries are searched
 	 * @return a friendly list of help entries in columns suitable for the given mob
 	 */
-	public String getHelpList(String helpStr,  Properties rHelpFile1, Properties rHelpFile2, MOB forM);
+	public List<String> getHelpList(String helpStr,  Properties rHelpFile1, Properties rHelpFile2, MOB forM);
 
 
 	/**

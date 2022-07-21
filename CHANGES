@@ -43,6 +43,7 @@
  42. Make Bombs can now make their products obviously bombs instead of obsfucated
  43. New thief skills: Set Timer, Detect Bombs
  44. Updates to several language vocabularies
+ 45. Help now shows "see also help on..." that is auto-magically generated.
 
 # Build 5.9.12 Release 1/17/2022
   *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG
