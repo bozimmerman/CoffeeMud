@@ -786,22 +786,21 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 
 	protected String getHelpText(String helpKey, final Properties rHelpFile, final MOB forM, final boolean noFix)
 	{
-		final String unfixedHelpKey = helpKey;
 		helpKey=helpKey.toUpperCase().trim();
-		final String origHelpKey = helpKey;
+		final String helpKeyWSpaces = helpKey;
 		if(helpKey.indexOf(' ')>=0)
 			helpKey=helpKey.replace(' ','_');
 		String helpText=null;
 
 		CharClass C=CMClass.findCharClass(helpKey);
 		if(C==null)
-			C=CMClass.findCharClass(origHelpKey);
+			C=CMClass.findCharClass(helpKeyWSpaces);
 		if((C!=null)&&(C.isGeneric()))
 			helpText="<CHARCLASS>"+C.getStat("HELP");
 
 		Race R=CMClass.findRace(helpKey);
 		if(R==null)
-			R=CMClass.findRace(origHelpKey);
+			R=CMClass.findRace(helpKeyWSpaces);
 		if((R!=null)
 		&&((CMProps.isTheme(R.availabilityCode()) && (R.getStat("HELP").length()>0))
 			|| (rHelpFile == this.getArcHelpFile())))
@@ -851,7 +850,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		// specifically calling out an area
 		if(helpKey.startsWith("AREAHELP_"))
 		{
-			final String ahelpStr=origHelpKey.substring(9);
+			final String ahelpStr=helpKeyWSpaces.substring(9);
 			for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 			{
 				final Area A=e.nextElement();
@@ -864,7 +863,6 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		// now start the exact, or darn near-exact matches
 		// ** maintaining the actual helpKey index into rHelpFile is necessary!
 
-		boolean found=false;
 		if(helpText==null)
 			helpText=rHelpFile.getProperty(helpKey);
 
@@ -882,60 +880,192 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 		}
 
-		found=((helpText!=null)&&(helpText.length()>0));
-
-		if(!found)
+		if((helpText==null)||(helpText.length()==0))
 		{
-			String s=CMLib.socials().getSocialsHelp(forM,helpKey.toUpperCase(), true);
-			if((s==null)&&(origHelpKey.indexOf(' ')<0))
-				s=CMLib.socials().getSocialsHelp(forM,origHelpKey,true);
-			if(s!=null)
+			String s=CMLib.socials().getSocialsHelp(forM,helpKey, true);
+			if((s==null)&&(helpKeyWSpaces.indexOf(' ')<0))
 			{
-				helpText=s;
-				helpKey=helpKey.toUpperCase();
-				found=true;
+				s=CMLib.socials().getSocialsHelp(forM,helpKeyWSpaces,true);
+				if(s!=null)
+					helpKey=helpKeyWSpaces;
 			}
+			if(s!=null)
+				helpText=s;
 		}
-		if(!found)
+		if((helpText==null)||(helpText.length()==0))
 		{
-			String s=CMLib.clans().getGovernmentHelp(forM,helpKey.toUpperCase(), true);
+			String s=CMLib.clans().getGovernmentHelp(forM,helpKey, true);
 			if(s==null)
-				s=CMLib.clans().getGovernmentHelp(forM,origHelpKey,true);
+				s=CMLib.clans().getGovernmentHelp(forM,helpKeyWSpaces,true);
 			if(s!=null)
 			{
 				helpText=s;
-				helpKey=helpKey.toUpperCase();
-				found=true;
 			}
 		}
-		if(!found)
+		if((helpText==null)||(helpText.length()==0))
 		{
-			Ability A=CMClass.findAbility(helpKey.toUpperCase(),-1,-1,true);
+			Ability A=CMClass.findAbility(helpKey,-1,-1,true);
 			if(A==null)
-				A=CMClass.findAbility(origHelpKey,-1,-1,true);
+				A=CMClass.findAbility(helpKeyWSpaces,-1,-1,true);
+			if((A!=null)&&(A.isGeneric()))
+				helpText=A.getStat("HELP");
+		}
+		if((helpText==null)||(helpText.length()==0))
+		{
+			String s=CMLib.expertises().getExpertiseHelp(helpKey,true);
+			if(s==null)
+				s=CMLib.expertises().getExpertiseHelp(helpKeyWSpaces,true);
+			if(s!=null)
+			{
+				helpText=s;
+			}
+		}
+		if((helpText==null)||(helpText.length()==0))
+		{
+			final String s=CMLib.achievements().getAchievementsHelp(helpKeyWSpaces,true);
+			if(s!=null)
+			{
+				helpText=s;
+			}
+		}
+		if((helpText==null)||(helpText.length()==0))
+		{
+			final String ahelpStr=helpKeyWSpaces;
+			for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
+			{
+				final Area A=e.nextElement();
+				if((A.name().equalsIgnoreCase(ahelpStr))
+				&&((forM==null)||(CMLib.flags().canAccess(forM, A))))
+				{
+					helpKey=A.name();
+					helpText = CMLib.map().getArea(helpKey.trim()).getAreaStats().toString();
+					break;
+				}
+			}
+		}
+
+		// INEXACT searches start here
+		if((helpText==null)||(helpText.length()==0))
+		{
+			for(final Enumeration<Object> e=rHelpFile.keys();e.hasMoreElements();)
+			{
+				final String key=((String)e.nextElement()).toUpperCase();
+				if(key.startsWith(helpKey))
+				{
+					helpText=rHelpFile.getProperty(key);
+					helpKey=key;
+					break;
+				}
+			}
+		}
+		if((helpText==null)||(helpText.length()==0))
+		{
+			final String currency=CMLib.english().matchAnyCurrencySet(helpKeyWSpaces);
+			if(currency!=null)
+			{
+				final double denom=CMLib.english().matchAnyDenomination(currency,helpKeyWSpaces);
+				if(denom>0.0)
+				{
+					final Coins C2=CMLib.beanCounter().makeCurrency(currency,denom,1);
+					if((C2!=null)&&(C2.description().length()>0))
+					{
+						helpText = C2.name()+" is "+C2.description().toLowerCase();
+					}
+				}
+			}
+		}
+
+		if((helpText==null)||(helpText.length()==0))
+		{
+			for(final Enumeration<Object> e=rHelpFile.keys();e.hasMoreElements();)
+			{
+				final String key=((String)e.nextElement()).toUpperCase();
+				if(CMLib.english().containsString(key,helpKey))
+				{
+					helpText=rHelpFile.getProperty(key);
+					helpKey=key;
+					break;
+				}
+			}
+		}
+
+		if((helpText==null)||(helpText.length()==0))
+		{
+			final String s=CMLib.socials().getSocialsHelp(forM,helpKey, false);
+			if(s!=null)
+			{
+				helpText=s;
+			}
+		}
+
+		if((helpText==null)||(helpText.length()==0))
+		{
+			final String s=CMLib.clans().getGovernmentHelp(forM,helpKey, false);
+			if(s!=null)
+			{
+				helpText=s;
+			}
+		}
+
+		if((helpText==null)||(helpText.length()==0))
+		{
+			final Ability A=CMClass.findAbility(helpKey,-1,-1,false);
 			if((A!=null)&&(A.isGeneric()))
 			{
 				helpText=A.getStat("HELP");
-				found=true;
 			}
 		}
-		if(!found)
+
+		if((helpText==null)||(helpText.length()==0))
 		{
-			String s=CMLib.expertises().getExpertiseHelp(helpKey.toUpperCase(),true);
-			if(s==null)
-				s=CMLib.expertises().getExpertiseHelp(origHelpKey,true);
+			final String s=CMLib.expertises().getExpertiseHelp(helpKey,false);
 			if(s!=null)
 			{
 				helpText=s;
-				helpKey=helpKey.toUpperCase();
-				found=true;
 			}
 		}
-		if(!found)
+		if((helpText==null)||(helpText.length()==0))
+		{
+			final String s=CMLib.achievements().getAchievementsHelp(helpKeyWSpaces,false);
+			if(s!=null)
+			{
+				helpText=s;
+			}
+		}
+
+		if((helpText==null)||(helpText.length()==0))
+		{
+			final String[] split=helpKey.split("_");
+			if("SOCIAL".startsWith(split[0].toUpperCase()))
+			{
+				final String tempHelpStr=CMParms.combineWith(Arrays.asList(split),' ',1,split.length);
+				final String s=CMLib.socials().getSocialsHelp(forM,tempHelpStr.toUpperCase(), false);
+				if(s!=null)
+				{
+					helpText=s;
+					helpKey=tempHelpStr.toUpperCase().replace(' ','_');
+				}
+			}
+		}
+		if((helpText==null)||(helpText.length()==0))
+		{
+			for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
+			{
+				final Area A=e.nextElement();
+				if((CMLib.english().containsString(A.name(),helpKeyWSpaces))
+				&&((forM==null)||(CMLib.flags().canAccess(forM, A))))
+				{
+					helpKey=A.name();
+					helpText = CMLib.map().getArea(helpKey.trim()).getAreaStats().toString();
+					break;
+				}
+			}
+		}
+		if((helpText==null)||(helpText.length()==0))
 		{
 			Deity D = CMLib.map().getDeity(helpKey);
 			if(D==null)
-				D = CMLib.map().getDeity(origHelpKey);
+				D = CMLib.map().getDeity(helpKeyWSpaces);
 			if(D != null)
 			{
 				final Command CMD=CMClass.getCommand("Deities");
@@ -949,164 +1079,6 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				}
 			}
 
-		}
-		if(!found)
-		{
-			final String s=CMLib.achievements().getAchievementsHelp(unfixedHelpKey.toUpperCase(),true);
-			if(s!=null)
-			{
-				helpText=s;
-				helpKey=helpKey.toUpperCase();
-				found=true;
-			}
-		}
-		if(!found)
-		{
-			final String ahelpStr=origHelpKey;
-			for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
-			{
-				final Area A=e.nextElement();
-				if((A.name().equalsIgnoreCase(ahelpStr))
-				&&((forM==null)||(CMLib.flags().canAccess(forM, A))))
-				{
-					helpKey=A.name();
-					helpText = CMLib.map().getArea(helpKey.trim()).getAreaStats().toString();
-					found=true;
-					break;
-				}
-			}
-		}
-
-		// INEXACT searches start here
-		if(!found)
-		{
-			for(final Enumeration<Object> e=rHelpFile.keys();e.hasMoreElements();)
-			{
-				final String key=((String)e.nextElement()).toUpperCase();
-				if(key.startsWith(helpKey))
-				{
-					helpText=rHelpFile.getProperty(key);
-					helpKey=key;
-					found=true;
-					break;
-				}
-			}
-		}
-		if(!found)
-		{
-			final String currency=CMLib.english().matchAnyCurrencySet(origHelpKey);
-			if(currency!=null)
-			{
-				final double denom=CMLib.english().matchAnyDenomination(currency,origHelpKey);
-				if(denom>0.0)
-				{
-					final Coins C2=CMLib.beanCounter().makeCurrency(currency,denom,1);
-					if((C2!=null)&&(C2.description().length()>0))
-					{
-						helpText = C2.name()+" is "+C2.description().toLowerCase();
-						found=true;
-					}
-				}
-			}
-		}
-
-		if(!found)
-		{
-			for(final Enumeration<Object> e=rHelpFile.keys();e.hasMoreElements();)
-			{
-				final String key=((String)e.nextElement()).toUpperCase();
-				if(CMLib.english().containsString(key,helpKey))
-				{
-					helpText=rHelpFile.getProperty(key);
-					helpKey=key;
-					found=true;
-					break;
-				}
-			}
-		}
-
-		if(!found)
-		{
-			final String s=CMLib.socials().getSocialsHelp(forM,helpKey.toUpperCase(), false);
-			if(s!=null)
-			{
-				helpText=s;
-				helpKey=helpKey.toUpperCase();
-				found=true;
-			}
-		}
-
-		if(!found)
-		{
-			final String s=CMLib.clans().getGovernmentHelp(forM,helpKey.toUpperCase(), false);
-			if(s!=null)
-			{
-				helpText=s;
-				helpKey=helpKey.toUpperCase();
-				found=true;
-			}
-		}
-
-		if(!found)
-		{
-			final Ability A=CMClass.findAbility(helpKey.toUpperCase(),-1,-1,false);
-			if((A!=null)&&(A.isGeneric()))
-			{
-				helpText=A.getStat("HELP");
-				found=true;
-			}
-		}
-
-		if(!found)
-		{
-			final String s=CMLib.expertises().getExpertiseHelp(helpKey.toUpperCase(),false);
-			if(s!=null)
-			{
-				helpText=s;
-				helpKey=helpKey.toUpperCase();
-				found=true;
-			}
-		}
-		if(!found)
-		{
-			final String s=CMLib.achievements().getAchievementsHelp(unfixedHelpKey.toUpperCase(),false);
-			if(s!=null)
-			{
-				helpText=s;
-				helpKey=helpKey.toUpperCase();
-				found=true;
-			}
-		}
-
-		if(!found)
-		{
-			final String[] split=helpKey.split("_");
-			if("SOCIAL".startsWith(split[0].toUpperCase()))
-			{
-				final String tempHelpStr=CMParms.combineWith(Arrays.asList(split),' ',1,split.length);
-				final String s=CMLib.socials().getSocialsHelp(forM,tempHelpStr.toUpperCase(), false);
-				if(s!=null)
-				{
-					helpText=s;
-					helpKey=tempHelpStr.toUpperCase().replace(' ','_');
-					found=true;
-				}
-			}
-		}
-		if(!found)
-		{
-			for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
-			{
-				final Area A=e.nextElement();
-				if((CMLib.english().containsString(A.name(),origHelpKey))
-				&&((forM==null)||(CMLib.flags().canAccess(forM, A))))
-				{
-					helpKey=A.name();
-					helpText = CMLib.map().getArea(helpKey.trim()).getAreaStats().toString();
-					found=true;
-					break;
-				}
-			}
 		}
 		while((helpText!=null)&&(helpText.length()>0)&&(helpText.length()<31))
 		{
