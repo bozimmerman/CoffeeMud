@@ -239,11 +239,11 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		if(A.usageType()==Ability.USAGE_NADA)
 			costStr.append(L("None"));
 		if(CMath.bset(A.usageType(),Ability.USAGE_MANA))
-			costStr.append(L("Mana (@x1) ",CMLib.help().getActualAbilityUsageDesc(A,Ability.USAGE_MANA,forM)));
+			costStr.append(L("Mana (@x1) ",getActualAbilityUsageDesc(A,Ability.USAGE_MANA,forM)));
 		if(CMath.bset(A.usageType(),Ability.USAGE_MOVEMENT))
-			costStr.append(L("Movement (@x1) ",CMLib.help().getActualAbilityUsageDesc(A,Ability.USAGE_MOVEMENT,forM)));
+			costStr.append(L("Movement (@x1) ",getActualAbilityUsageDesc(A,Ability.USAGE_MOVEMENT,forM)));
 		if(CMath.bset(A.usageType(),Ability.USAGE_HITPOINTS))
-			costStr.append(L("Hit Points (@x1) ",CMLib.help().getActualAbilityUsageDesc(A,Ability.USAGE_HITPOINTS,forM)));
+			costStr.append(L("Hit Points (@x1) ",getActualAbilityUsageDesc(A,Ability.USAGE_HITPOINTS,forM)));
 		return costStr.toString();
 	}
 
@@ -1570,7 +1570,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		otherHelpTexts.add(helpText);
 		for(int i=1;i<(howMany*4) && (otherHelps.size()<howMany);i++)
 		{
-			final Pair<String, String> m = CMLib.help().getHelpMatch(helpSearch,getHelpFile(),mob, i);
+			final Pair<String, String> m = getHelpMatch(helpSearch,getHelpFile(),mob, i);
 			if((m==null)
 			||(m.second==null))
 				break;
@@ -1583,8 +1583,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		}
 		if(otherHelps.size()==0)
 		{
-			final Properties rHelpFile2=canArc?CMLib.help().getArcHelpFile():null;
-			final List<String> thisList = CMLib.help().getHelpList( helpSearch, getHelpFile(), rHelpFile2, mob);
+			final Properties rHelpFile2=canArc?getArcHelpFile():null;
+			final List<String> thisList = getHelpList( helpSearch, getHelpFile(), rHelpFile2, mob);
 			for(final String s : thisList)
 			{
 				if(otherHelps.size()>=howMany)
@@ -1593,7 +1593,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				&&(!otherHelps.contains(s))
 				&&(getHelpFile().contains(s)||((rHelpFile2!=null)&&(rHelpFile2.contains(s)))))
 				{
-					final Pair<String, String> m = CMLib.help().getHelpMatch(s,getHelpFile(),mob, 0);
+					final Pair<String, String> m = getHelpMatch(s,getHelpFile(),mob, 0);
 					if((m==null)
 					||(m.second==null)
 					||(m.first.replace(' ', '_').equalsIgnoreCase(nKey))
