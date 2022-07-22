@@ -67,17 +67,13 @@ public class Sleep extends StdCommand implements Tickable
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		if(commands.size()<=1)
+
+		if((commands.size()>2)
+		&&(commands.get(commands.size()-2).equalsIgnoreCase("until")))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SLEEP,L("<S-NAME> lay(s) down and take(s) a nap."));
-			if(R.okMessage(mob,msg))
-				R.send(mob,msg);
-			return false;
-		}
-		if((commands.size()==3)
-		&&(commands.get(1).equalsIgnoreCase("until")))
-		{
-			final String what = commands.get(2).toUpperCase().trim();
+			final String what = commands.get(commands.size()-1).toUpperCase().trim();
+			commands.remove(commands.size()-2);
+			commands.remove(commands.size()-1);
 			WaitUntil wait=(WaitUntil)CMath.s_valueOf(WaitUntil.class, what);
 			if(wait == null)
 			{
@@ -100,37 +96,37 @@ public class Sleep extends StdCommand implements Tickable
 			untilMap.put(mob, wait);
 			if(!CMLib.threads().isTicking(this, Tickable.TICKID_MISCELLANEOUS))
 				CMLib.threads().startTickDown(this, Tickable.TICKID_MISCELLANEOUS, 1);
-			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SLEEP,L("<S-NAME> lay(s) down and take(s) a nap until "+wait.name().toLowerCase()+"."));
+		}
+		if(commands.size()<=1)
+		{
+			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SLEEP,L("<S-NAME> lay(s) down and take(s) a nap."));
 			if(R.okMessage(mob,msg))
 				R.send(mob,msg);
-			return true;
+			return false;
 		}
+		final String possibleRideable=CMParms.combine(commands,1);
+		final Environmental E=R.fetchFromRoomFavorItems(null,possibleRideable);
+		if((E==null)||(!CMLib.flags().canBeSeenBy(E,mob)))
+		{
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",possibleRideable));
+			return false;
+		}
+		String mountStr=null;
+		if(E instanceof Rideable)
+			mountStr="<S-NAME> "+((Rideable)E).mountString(CMMsg.TYP_SLEEP,mob)+" <T-NAME>.";
+		else
+			mountStr=L("<S-NAME> sleep(s) on <T-NAME>.");
+		String sourceMountStr=null;
+		if(!CMLib.flags().canBeSeenBy(E,mob))
+			sourceMountStr=mountStr;
 		else
 		{
-			final String possibleRideable=CMParms.combine(commands,1);
-			final Environmental E=R.fetchFromRoomFavorItems(null,possibleRideable);
-			if((E==null)||(!CMLib.flags().canBeSeenBy(E,mob)))
-			{
-				CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",possibleRideable));
-				return false;
-			}
-			String mountStr=null;
-			if(E instanceof Rideable)
-				mountStr="<S-NAME> "+((Rideable)E).mountString(CMMsg.TYP_SLEEP,mob)+" <T-NAME>.";
-			else
-				mountStr=L("<S-NAME> sleep(s) on <T-NAME>.");
-			String sourceMountStr=null;
-			if(!CMLib.flags().canBeSeenBy(E,mob))
-				sourceMountStr=mountStr;
-			else
-			{
-				sourceMountStr=CMStrings.replaceAll(mountStr,"<T-NAME>",E.name());
-				sourceMountStr=CMStrings.replaceAll(sourceMountStr,"<T-NAMESELF>",E.name());
-			}
-			final CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_SLEEP,sourceMountStr,mountStr,mountStr);
-			if(R.okMessage(mob,msg))
-				R.send(mob,msg);
+			sourceMountStr=CMStrings.replaceAll(mountStr,"<T-NAME>",E.name());
+			sourceMountStr=CMStrings.replaceAll(sourceMountStr,"<T-NAMESELF>",E.name());
 		}
+		final CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_SLEEP,sourceMountStr,mountStr,mountStr);
+		if(R.okMessage(mob,msg))
+			R.send(mob,msg);
 		return false;
 	}
 
