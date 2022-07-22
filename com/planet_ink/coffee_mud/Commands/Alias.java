@@ -89,6 +89,36 @@ public class Alias extends StdCommand
 				return false;
 			}
 		}
+		if((commands.size()>2)
+		&&("TEST".equals(commands.get(1).toUpperCase())))
+		{
+			final String key=commands.get(2).toUpperCase();
+			final String rawAliasDefinition=(pStats!=null)?pStats.getAlias(key):"";
+			final List<List<String>> executableCommands=new LinkedList<List<String>>();
+			if(rawAliasDefinition.length()>0)
+			{
+				final List<String> cmds = new XVector<String>(commands);
+				cmds.remove(0);
+				cmds.remove(0);
+				cmds.remove(0);
+				final boolean[] echo = new boolean[1];
+				CMLib.utensils().deAlias(rawAliasDefinition, cmds, executableCommands, echo);
+				mob.tell(L("^HTest of alias '@x1':^N",key));
+				int i=1;
+				for(final List<String> cmd : executableCommands)
+				{
+					mob.tell("^H"+CMStrings.padRight(""+i, 2)+"^N: "+CMParms.combineQuoted(cmd, 0));
+					i++;
+				}
+				mob.tell(L("^HEnd of Test"));
+				return false;
+			}
+			else
+			{
+				mob.tell(L("'@x1' is not a known alias.",key));
+				return false;
+			}
+		}
 		final InputCallback IC[]=new InputCallback[1];
 		IC[0]=new InputCallback(InputCallback.Type.PROMPT,"",0)
 		{

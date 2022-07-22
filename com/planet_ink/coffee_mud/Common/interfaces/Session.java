@@ -974,6 +974,12 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public boolean sendGMCPEvent(final String eventName, final String json);
 
 	/**
+	 * Returns the entire command history cached by this session.
+	 * @return the entire command history cached by this session.
+	 */
+	public Enumeration<List<String>> getHistory();
+
+	/**
 	 * Send this session fake input as if the user had typed it in.
 	 * @param input text to send.
 	 */

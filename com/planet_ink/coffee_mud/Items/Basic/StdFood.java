@@ -171,5 +171,22 @@ public class StdFood extends StdItem implements Food
 				break;
 			}
 		}
+		else
+		if((msg.tool()==this)
+		&&(msg.targetMinor()==CMMsg.TYP_GET)
+		&&(msg.target() instanceof Container)
+		&&(((Container)msg.target()).fetchEffect("Soiled")==null))
+		{
+			if((!(this instanceof RawMaterial))
+			||((material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH))
+			{
+				final Ability A=CMClass.getAbility("Soiled");
+				if(A!=null)
+				{
+					((Container)msg.target()).addNonUninvokableEffect(A);
+					A.setMiscText("DIRTY=TRUE");
+				}
+			}
+		}
 	}
 }

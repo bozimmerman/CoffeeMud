@@ -47,6 +47,9 @@
  46. Can now create/modify/destroy HELP entries.
  47. Hirelings now report their time remaining, and can be queried on that subject.
  48. MPAFFECT Scriptable command can now have number of ticks specified.
+ 49. New command: HISTORY, for showing command history to players
+ 50. New archon command(s): basically do scriptable commands from the cl (MPCOMMAND)
+ 51. ALIAS command now supports TEST argument
 
 # Build 5.9.12 Release 1/17/2022
   *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG

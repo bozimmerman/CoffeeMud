@@ -2725,5 +2725,26 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			return false;
 		}
 	}
+
+	public void deAlias(final String rawAliasDefinition, final List<String> parsedInput,
+						final List<List<String>> executableCommands, final boolean[] doEcho)
+	{
+		final List<String> allAliasedCommands=CMParms.parseSquiggleDelimited(rawAliasDefinition,true);
+		doEcho[0] = true;
+		if((allAliasedCommands.size()>0)&&(allAliasedCommands.get(0).toString().toLowerCase().startsWith("noecho")))
+		{
+			doEcho[0] = false;
+			allAliasedCommands.set(0, allAliasedCommands.get(0).toString().substring(6).trim());
+		}
+		for(final String aliasedCommand : allAliasedCommands)
+		{
+			// just the parsed input arguments, the original command is removed.
+			final List<String> newCommand=new XVector<String>(parsedInput);
+			executableCommands.add(newCommand);
+			final List<String> preCommands=CMParms.parse(aliasedCommand);
+			for(int v=preCommands.size()-1;v>=0;v--)
+				newCommand.add(0,preCommands.get(v));
+		}
+	}
 }
 

@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Common;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -20,6 +21,7 @@ import com.planet_ink.coffee_mud.core.CMClass;
 import com.planet_ink.coffee_mud.core.CMFile;
 import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.Log;
+import com.planet_ink.coffee_mud.core.collections.XVector;
 import com.planet_ink.coffee_mud.core.interfaces.CMObject;
 import com.planet_ink.coffee_mud.core.interfaces.Environmental;
 import com.planet_ink.coffee_mud.core.interfaces.Physical;
@@ -550,6 +552,12 @@ public class FakeSession implements Session
 	public List<String> getPreviousCMD()
 	{
 		return inputV;
+	}
+
+	@Override
+	public Enumeration<List<String>> getHistory()
+	{
+		return new XVector<List<String>>(inputV).elements();
 	}
 
 	@Override

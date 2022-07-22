@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.sql.ResultSet;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -29,6 +30,7 @@ import com.planet_ink.coffee_mud.MOBS.StdMOB;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.CMClass;
 import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
+import com.planet_ink.coffee_mud.core.collections.XVector;
 import com.planet_ink.coffee_mud.core.CMFile;
 import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.CMParms;
@@ -169,7 +171,7 @@ public class VFShell
 					Log.errOut("Database error! Panic shutdown!");
 					System.exit(-1);
 				}
-				
+
 				CMClass.initialize();
 				Resources.initialize();
 				CMSecurity.instance();
@@ -688,6 +690,12 @@ public class VFShell
 					public List<String> getPreviousCMD()
 					{
 						return new Vector<String>();
+					}
+
+					@Override
+					public Enumeration<List<String>> getHistory()
+					{
+						return new XVector<List<String>>(getPreviousCMD()).elements();
 					}
 
 					@Override

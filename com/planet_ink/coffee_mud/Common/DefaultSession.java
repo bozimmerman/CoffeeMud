@@ -71,6 +71,7 @@ public class DefaultSession implements Session
 	protected final boolean		 		mcpDisabled		= CMSecurity.isDisabled(DisFlag.MCP);
 	protected final Map<String,float[]>	mcpSupported	= new TreeMap<String,float[]>();
 	protected final AtomicBoolean 		sockObj 		= new AtomicBoolean(false);
+	protected final LinkedList<List<String>>history		= new LinkedList<List<String>>();
 
 	private volatile Thread  runThread 			 = null;
 	private volatile Thread	 writeThread 		 = null;
@@ -94,7 +95,6 @@ public class DefaultSession implements Session
 	protected StringBuffer   input				 = new StringBuffer("");
 	protected StringBuffer   fakeInput			 = null;
 	protected boolean   	 waiting			 = false;
-	protected List<String>   previousCmd		 = new Vector<String>();
 	protected String[]  	 clookup			 = null;
 	protected String		 lastColorStr		 = "";
 	protected String		 lastStr			 = null;
@@ -965,10 +965,17 @@ public class DefaultSession implements Session
 		killFlag=truefalse;
 	}
 
+	private static final List<String> empty = new ReadOnlyList<String>(new ArrayList<String>(0));
+
 	@Override
 	public List<String> getPreviousCMD()
 	{
-		return previousCmd;
+		synchronized(history)
+		{
+			if(history.size()==0)
+				return empty;
+			return history.getLast();
+		}
 	}
 
 	@Override
@@ -1001,13 +1008,23 @@ public class DefaultSession implements Session
 		return snoopSuspensionStack;
 	}
 
+	public Enumeration<List<String>> getHistory()
+	{
+		final Vector<List<String>> V;
+		synchronized(history)
+		{
+			V = new XVector<List<String>>(history.descendingIterator());
+		}
+		return V.elements();
+	}
+
 	private int metaFlags()
 	{
 		return ((snoops.size()>0)?MUDCmdProcessor.METAFLAG_SNOOPED:0)
 			   |(((mob!=null)&&(mob.soulMate()!=null))?MUDCmdProcessor.METAFLAG_POSSESSED:0);
 	}
 
-	public void setPreviousCmd(final List<String> cmds)
+	protected void setPreviousCmd(final List<String> cmds)
 	{
 		if(cmds==null)
 			return;
@@ -1016,9 +1033,12 @@ public class DefaultSession implements Session
 		if((cmds.size()>0)&&(cmds.get(0).trim().startsWith("!")))
 			return;
 
-		previousCmd.clear();
-		for(int i=0;i<cmds.size();i++)
-			previousCmd.add((cmds.get(i)));
+		synchronized(history)
+		{
+			history.addLast(new XVector<String>(cmds));
+			if(history.size()>100)
+				history.removeFirst();
+		}
 	}
 
 	@Override
@@ -2463,7 +2483,7 @@ public class DefaultSession implements Session
 		else
 		{
 			choiceList=new ArrayList<String>();
-			for(char c : choices.toCharArray())
+			for(final char c : choices.toCharArray())
 				choiceList.add(""+c);
 		}
 		while((YN.equals("")||(!CMParms.containsIgnoreCase(choiceList, YN)))
@@ -3092,7 +3112,10 @@ public class DefaultSession implements Session
 				finalMsg=acct.getAccountName()+": ";
 			else
 				finalMsg="";
-			previousCmd.clear(); // will let system know you are back in login menu
+			synchronized(history)
+			{
+				history.clear(); // will let system know you are back in login menu
+			}
 			if(acct!=null)
 			{
 				try
@@ -3226,22 +3249,9 @@ public class DefaultSession implements Session
 					if(rawAliasDefinition.length()>0)
 					{
 						parsedInput.remove(0);
-						final List<String> allAliasedCommands=CMParms.parseSquiggleDelimited(rawAliasDefinition,true);
-						echoOn=true;
-						if((allAliasedCommands.size()>0)&&(allAliasedCommands.get(0).toString().toLowerCase().startsWith("noecho")))
-						{
-							echoOn=false;
-							allAliasedCommands.set(0, allAliasedCommands.get(0).toString().substring(6).trim());
-						}
-						for(final String aliasedCommand : allAliasedCommands)
-						{
-							// just the parsed input arguments, the original command is removed.
-							final List<String> newCommand=new XVector<String>(parsedInput);
-							executableCommands.add(newCommand);
-							final List<String> preCommands=CMParms.parse(aliasedCommand);
-							for(int v=preCommands.size()-1;v>=0;v--)
-								newCommand.add(0,preCommands.get(v));
-						}
+						final boolean[] echo = new boolean[1];
+						CMLib.utensils().deAlias(rawAliasDefinition, parsedInput, executableCommands, echo);
+						echoOn = echo[0];
 					}
 					else
 						executableCommands.add(parsedInput);
@@ -3643,7 +3653,7 @@ public class DefaultSession implements Session
 		switch (stat)
 		{
 		case PREVCMD:
-			previousCmd = CMParms.parse(val);
+			setPreviousCmd(CMParms.parse(val));
 			break;
 		case ISAFK:
 			setAfkFlag(CMath.s_bool(val));

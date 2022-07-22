@@ -349,6 +349,19 @@ public interface CMMiscUtils extends CMLibrary
 	public Item ruinItem(Item I);
 
 	/**
+	 * Parses a given raw alias definition, putting the resulting
+	 * commands into the executeable commands, and returning whether
+	 * they should be echoed.
+	 *
+	 * @param rawAliasDefinition the raw alias definition
+	 * @param parsedInput the original user input, parsed
+	 * @param executableCommands the resulting list of commands
+	 * @param doEcho 1 dim array to put whether echo is on or off
+	 */
+	public void deAlias(final String rawAliasDefinition, final List<String> parsedInput,
+			final List<List<String>> executableCommands, final boolean[] doEcho);
+
+	/**
 	 * Iterates through every mob and player in the game, replacing the old race
 	 * object with the new one.
 	 * @see CMMiscUtils#reloadCharClasses(CharClass)
