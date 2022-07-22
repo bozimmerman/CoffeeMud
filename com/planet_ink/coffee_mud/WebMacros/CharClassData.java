@@ -170,13 +170,13 @@ public class CharClassData extends StdWebMacro
 			str.append("</TD><TD WIDTH=10%>");
 			if(parms.containsKey("HEADERCOL2"))
 				str.append(sfont + (parms.get("HEADERCOL2")) + efont);
-			str.append("</TD><TD WIDTH=10%>");
+			str.append("</TD><TD WIDTH=15%>");
 			if(parms.containsKey("HEADERCOL3"))
 				str.append(sfont + (parms.get("HEADERCOL3")) + efont);
-			str.append("</TD><TD WIDTH=10%>");
+			str.append("</TD><TD WIDTH=15%>");
 			if(parms.containsKey("HEADERCOL4"))
 				str.append(sfont + (parms.get("HEADERCOL4")) + efont);
-			str.append("</TD><TD WIDTH=30%>");
+			str.append("</TD><TD WIDTH=20%>");
 			if(parms.containsKey("HEADERCOL5"))
 				str.append(sfont + (parms.get("HEADERCOL5")) + efont);
 			str.append("</TD></TR>");
@@ -186,22 +186,22 @@ public class CharClassData extends StdWebMacro
 		{
 			final String theclass=(String)theclasses.elementAt(i,1);
 			used.add(theclass);
-			str.append("<TR><TD WIDTH=40%>");
+			str.append("<TR><TD>");
 			str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=CABLES"+(i+1)+">");
 			str.append("<OPTION VALUE=\"\">Delete!");
 			str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
 			str.append("</SELECT>");
 			str.append("</TD>");
-			str.append("<TD WIDTH=10%>");
+			str.append("<TD>");
 			str.append("<INPUT TYPE=TEXT NAME=CABLVL"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=2 MAXLENGTH=2>");
 			str.append("</TD>");
-			str.append("<TD WIDTH=10%>");
+			str.append("<TD>");
 			str.append("<INPUT TYPE=TEXT NAME=CABPOF"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,3))+"\" SIZE=2 MAXLENGTH=2>"+font+"%</B></I></FONT>");
 			str.append("</TD>");
-			str.append("<TD WIDTH=10%>");
+			str.append("<TD>");
 			str.append("<INPUT TYPE=TEXT NAME=CABMPOF"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,9))+"\" SIZE=2 MAXLENGTH=2>"+font+"%</B></I></FONT>");
 			str.append("</TD>");
-			str.append("<TD WIDTH=30%>");
+			str.append("<TD>");
 			str.append("<INPUT TYPE=CHECKBOX NAME=CABQUA"+(i+1)+" "+(((String)theclasses.elementAt(i,4)).equalsIgnoreCase("on")?"CHECKED":"")+">"+font+"Qualify Only</B></FONT></I>&nbsp;");
 			if(!showParms)
 				str.append("<INPUT TYPE=HIDDEN NAME=CABPRM"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,6))+"\">");
