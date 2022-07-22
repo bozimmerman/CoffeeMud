@@ -1,7 +1,7 @@
 Flag %	1	200	COTTON/1	OAK/1	0	2500	0	GenClanFlag						
 Tabbard %	1	50	COTTON/10	GOLD/2	14	1000	0	GenClanTabbard	BODY	0	0	0		
 Journal %	1	20	PINE/10			50	0	GenJournal						
-Sailors Cap %	1	20	SILK/5	GOLD/1	15	1000	0	GenClanSailorsCap	HEAD	0	0	0		
+Sailors Cap %	6	20	SILK/5	GOLD/1	15	1000	0	GenClanSailorsCap	HEAD	0	0	0		
 GuardBanner %	1	40	COTTON/1	OAK/1	1	500	0	GenClanItem	HELD	0	0	0		
 Judges Gavel %	1	100	MITHRIL/2	OAK/5	2	1000	0	GenClanItem	HELD	0	0	0		
 Book of the Laws %	10	100	OAK/100			2000	0	GenLawBook	AREA					
@@ -39,3 +39,5 @@ Shop Apron %	2	10	COTTON/30		12	250	0	GenClanApron
 Assassins Eye %	5	50	BRONZE/20		6	500	0	GenClanSpecialItem	EVIL					
 Scavengers Sticker %	1	20	MAPLE/20	IRON/20	7	100	0	GenClanSpecialItem						
 Tax Collectors Clipboard %	5	30	IRONWOOD/20	GOLD/10	9	1000	0	GenClanSpecialItem						
+Concierges Uniform %	15	20	WOOL/10	SILK/2	8	500	0	GenClanConcierge	TORSO&&ARMS&&LEGS	0	1	0		
+Concierges Cap %	3	10	WOOL/5		8	100	0	GenClanConcierge	HEAD	0	0	0		
