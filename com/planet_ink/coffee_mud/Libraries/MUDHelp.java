@@ -1560,7 +1560,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	@Override
 	public List<String> getSeeAlsoHelpOn(final String helpSearch, final String helpKey, final String helpText, final MOB mob, final int howMany)
 	{
-		final String[] seeAlso = seeAlsoCache.get(helpKey);
+		final boolean canArc=CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP);
+		final String[] seeAlso = seeAlsoCache.get(helpKey+canArc);
 		if(seeAlso != null)
 			return Arrays.asList(seeAlso);
 		final String nKey = helpKey.replace(' ', '_');
@@ -1582,7 +1583,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		}
 		if(otherHelps.size()==0)
 		{
-			final Properties rHelpFile2=CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP)?CMLib.help().getArcHelpFile():null;
+			final Properties rHelpFile2=canArc?CMLib.help().getArcHelpFile():null;
 			final List<String> thisList = CMLib.help().getHelpList( helpSearch, CMLib.help().getHelpFile(), rHelpFile2, mob);
 			for(final String s : thisList)
 			{
@@ -1605,7 +1606,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				}
 			}
 		}
-		seeAlsoCache.put(helpKey,otherHelps.toArray(new String[otherHelps.size()]));
+		seeAlsoCache.put(helpKey+canArc,otherHelps.toArray(new String[otherHelps.size()]));
 		return otherHelps;
 	}
 
