@@ -149,10 +149,9 @@ public class Druid_KnowPlants extends StdAbility
 					final Room R=r.nextElement();
 					if((R.resourceChoices()!=null)
 					&&(R.resourceChoices().contains(matI))
-					&&(!R.name().toLowerCase().endsWith(" room")))
-					{
+					&&(!R.name().toLowerCase().endsWith(" room"))
+					&&(!foundIn.contains(R.name())))
 						foundIn.add(R.name());
-					}
 				}
 				if(foundIn.size()>0)
 				{
