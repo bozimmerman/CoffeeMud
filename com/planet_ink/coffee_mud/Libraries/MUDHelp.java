@@ -1561,7 +1561,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	public List<String> getSeeAlsoHelpOn(final String helpSearch, final String helpKey, final String helpText, final MOB mob, final int howMany)
 	{
 		final boolean canArc=CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP);
-		final String[] seeAlso = seeAlsoCache.get(helpKey+canArc);
+		final String[] seeAlso = seeAlsoCache.get(canArc+"/"+helpKey);
 		if(seeAlso != null)
 			return Arrays.asList(seeAlso);
 		final String nKey = helpKey.replace(' ', '_');
@@ -1581,9 +1581,25 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			otherHelps.add(m.first);
 			otherHelpTexts.add(m.second);
 		}
+		final Properties rHelpFile2=canArc?getArcHelpFile():null;
+		if(canArc)
+		{
+			for(int i=1;i<(howMany*4) && (otherHelps.size()<howMany);i++)
+			{
+				final Pair<String, String> m = getHelpMatch(helpSearch,rHelpFile2,mob, i);
+				if((m==null)
+				||(m.second==null))
+					break;
+				if((m.first.replace(' ', '_').equalsIgnoreCase(nKey))
+				||(otherHelps.contains(m.first))
+				||(otherHelpTexts.contains(m.second)))
+					continue;
+				otherHelps.add(m.first);
+				otherHelpTexts.add(m.second);
+			}
+		}
 		if(otherHelps.size()==0)
 		{
-			final Properties rHelpFile2=canArc?getArcHelpFile():null;
 			final List<String> thisList = getHelpList( helpSearch, getHelpFile(), rHelpFile2, mob);
 			for(final String s : thisList)
 			{
@@ -1593,7 +1609,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				&&(!otherHelps.contains(s))
 				&&(getHelpFile().contains(s)||((rHelpFile2!=null)&&(rHelpFile2.contains(s)))))
 				{
-					final Pair<String, String> m = getHelpMatch(s,getHelpFile(),mob, 0);
+					Pair<String, String> m = getHelpMatch(s,getHelpFile(),mob, 0);
+					if(((m==null)||(m.second==null))
+					&&(rHelpFile2 != null))
+						m = getHelpMatch(s,rHelpFile2,mob, 0);
 					if((m==null)
 					||(m.second==null)
 					||(m.first.replace(' ', '_').equalsIgnoreCase(nKey))
@@ -1606,7 +1625,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				}
 			}
 		}
-		seeAlsoCache.put(helpKey+canArc,otherHelps.toArray(new String[otherHelps.size()]));
+		seeAlsoCache.put(canArc+"/"+helpKey,otherHelps.toArray(new String[otherHelps.size()]));
 		return otherHelps;
 	}
 
