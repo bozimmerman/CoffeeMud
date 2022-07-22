@@ -863,7 +863,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				final Area A=e.nextElement();
 				if((A.name().equalsIgnoreCase(ahelpStr))
 				&&((forM==null)||(CMLib.flags().canAccess(forM, A))))
-					return new Pair<String,String>(ahelpStr, CMLib.map().getArea(A.Name()).getAreaStats()+"");
+					return new Pair<String,String>(ahelpStr, CMLib.map().getArea(A.Name()).getAreaStats().toString());
 			}
 			return null;
 		}
@@ -1025,7 +1025,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				if((A.name().equalsIgnoreCase(helpKeyWSpaces))
 				&&((forM==null)||(CMLib.flags().canAccess(forM, A))))
 				{
-					helpText = normalizeHelpText(CMLib.map().getArea(A.Name()).getAreaStats()+"",skip);
+					helpText = normalizeHelpText(CMLib.map().getArea(A.Name()).getAreaStats().toString(),skip);
 					if(helpText != null)
 					{
 						helpKey=A.name();
@@ -1127,7 +1127,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				if((CMLib.english().containsString(A.name(),helpKeyWSpaces))
 				&&((forM==null)||(CMLib.flags().canAccess(forM, A))))
 				{
-					helpText=normalizeHelpText(CMLib.map().getArea(A.Name()).getAreaStats()+"",skip);
+					helpText=normalizeHelpText(CMLib.map().getArea(A.Name()).getAreaStats().toString(),skip);
 					if(helpText != null)
 					{
 						helpKey=A.name();
@@ -1164,7 +1164,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		if(helpText==null)
 		{
 			if(CMLib.map().getArea(helpKey)!=null)
-				return new Pair<String,String>(helpKey, normalizeHelpText(CMLib.map().getArea(helpKey).getAreaStats()+"",skip));
+				return new Pair<String,String>(helpKey, normalizeHelpText(CMLib.map().getArea(helpKey).getAreaStats().toString(),skip));
 		}
 
 		// internal exceptions
