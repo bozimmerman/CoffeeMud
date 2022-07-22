@@ -1570,7 +1570,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		otherHelpTexts.add(helpText);
 		for(int i=1;i<(howMany*4) && (otherHelps.size()<howMany);i++)
 		{
-			final Pair<String, String> m = CMLib.help().getHelpMatch(helpSearch,CMLib.help().getHelpFile(),mob, i);
+			final Pair<String, String> m = CMLib.help().getHelpMatch(helpSearch,getHelpFile(),mob, i);
 			if((m==null)
 			||(m.second==null))
 				break;
@@ -1584,16 +1584,16 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		if(otherHelps.size()==0)
 		{
 			final Properties rHelpFile2=canArc?CMLib.help().getArcHelpFile():null;
-			final List<String> thisList = CMLib.help().getHelpList( helpSearch, CMLib.help().getHelpFile(), rHelpFile2, mob);
+			final List<String> thisList = CMLib.help().getHelpList( helpSearch, getHelpFile(), rHelpFile2, mob);
 			for(final String s : thisList)
 			{
 				if(otherHelps.size()>=howMany)
 					break;
 				if((!s.replace(' ', '_').equalsIgnoreCase(nKey))
 				&&(!otherHelps.contains(s))
-				&&(CMLib.help().getHelpFile().contains(s)))
+				&&(getHelpFile().contains(s)||((rHelpFile2!=null)&&(rHelpFile2.contains(s)))))
 				{
-					final Pair<String, String> m = CMLib.help().getHelpMatch(s,CMLib.help().getHelpFile(),mob, 0);
+					final Pair<String, String> m = CMLib.help().getHelpMatch(s,getHelpFile(),mob, 0);
 					if((m==null)
 					||(m.second==null)
 					||(m.first.replace(' ', '_').equalsIgnoreCase(nKey))
