@@ -153,7 +153,7 @@ public class AHelp extends StdCommand
 		{
 			final Pair<String,String> textP = CMLib.help().getHelpMatch(helpStr,CMLib.help().getArcHelpFile(),mob, 0);
 			if((textP != null) && (textP.second != null))
-				thisTag=new StringBuffer(textP.toString());
+				thisTag=new StringBuffer(textP.second.toString());
 		}
 		if(thisTag==null)
 		{
