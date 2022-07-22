@@ -1025,7 +1025,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				if((A.name().equalsIgnoreCase(helpKeyWSpaces))
 				&&((forM==null)||(CMLib.flags().canAccess(forM, A))))
 				{
-					helpText = normalizeHelpText(CMLib.map().getArea(A.Name()).getAreaStats().toString(),skip);
+					helpText = normalizeHelpText(CMLib.map().getArea(A.Name()).getAreaStats()+"",skip);
 					if(helpText != null)
 					{
 						helpKey=A.name();
@@ -1127,7 +1127,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				if((CMLib.english().containsString(A.name(),helpKeyWSpaces))
 				&&((forM==null)||(CMLib.flags().canAccess(forM, A))))
 				{
-					helpText=normalizeHelpText(CMLib.map().getArea(helpKey).getAreaStats()+"",skip);
+					helpText=normalizeHelpText(CMLib.map().getArea(A.Name()).getAreaStats()+"",skip);
 					if(helpText != null)
 					{
 						helpKey=A.name();
