@@ -648,7 +648,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 
 	protected int[][] fetchFoundResourceData(final MOB mob,
 											 int req1Required,
-											 String req1Desc, final int[] req1,
+											 String req1Desc, int[] req1,
 											 int req2Required,
 											 String req2Desc, int[] req2,
 											 final boolean bundle,
@@ -656,11 +656,6 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 											 final PairVector<EnhancedExpertise,Integer> eduMods)
 	{
 		final int[][] data=new int[2][3];
-		if((req1Desc!=null)&&(req1Desc.length()==0))
-			req1Desc=null;
-		if((req2Desc!=null)&&(req2Desc.length()==0))
-			req2Desc=null;
-
 		// the fake resource generation:
 		if(autoGeneration>0)
 		{
@@ -671,6 +666,21 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 			data[0][FOUND_SUB]="".hashCode();
 			data[1][FOUND_SUB]="".hashCode();
 			return data;
+		}
+		if((req1Desc!=null)&&(req1Desc.length()==0))
+			req1Desc=null;
+		if((req2Desc!=null)&&(req2Desc.length()==0))
+			req2Desc=null;
+
+		// this happens!
+		if((req1Desc!=null)
+		&&(req1Desc.length()>0)
+		&&(req1Required>0)
+		&&(req1==null))
+		{
+			final int r = RawMaterial.CODES.FIND_IgnoreCase(req1Desc);
+			if(r>0)
+				req1=new int[] {r};
 		}
 
 		RawMaterial firstWood=null;

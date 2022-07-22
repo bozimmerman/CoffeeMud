@@ -869,7 +869,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			revT.put(able.ID(), able);
 	}
 
-	public synchronized void handleEachAndClassAbility(final Map<String, AbilityMapping> ableMap, final Map<String,Map<String,AbilityMapping>> allQualMap, final String ID)
+	protected synchronized void handleEachAndClassAbility(final Map<String, AbilityMapping> ableMap, final Map<String,Map<String,AbilityMapping>> allQualMap, final String ID)
 	{
 		if(eachClassSet == null)
 		{
@@ -2342,7 +2342,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			makeAbilityMapping(abilityID,qualLevel,abilityID,
 							  CMath.s_int(prof.toString().trim()),
 							  100,"",autogain,SecretFlag.PUBLIC,
-							  true,CMParms.parseSpaces(preReqs.toString().trim(), true), 
+							  true,CMParms.parseSpaces(preReqs.toString().trim(), true),
 							  mask.toString().trim(),null);
 	}
 
@@ -2551,7 +2551,8 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		for(final String ID : completeAbleMap.keySet())
 		{
 			if((!ID.equalsIgnoreCase("All"))
-			&&(!ID.equalsIgnoreCase("Archon")))
+			&&(!ID.equalsIgnoreCase("Archon"))
+			&&(CMClass.getCharClass(ID)!=null))
 				handleEachAndClassAbility(completeAbleMap.get(ID), newMap, ID);
 		}
 
