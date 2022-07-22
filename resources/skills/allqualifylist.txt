@@ -18,10 +18,11 @@
 
 [EACH]
 1 Bandaging 
+1 CaravanBuilding MASK=-class +artisan -ACCCHIEVES +ACCT_REM_ARTISAN10 REQUIRES=Wainwrighting(100) Construction(100) 
 1 Common PROF=100 AUTOGAIN 
+1 PlayInstrument MASK=+WIS 5 
 1 SmokeRings MASK=+CHA 5 
 1 UnderCommon 
-1 PlayInstrument MASK=+WIS 5
 
 3 FireBuilding AUTOGAIN 
 
@@ -36,12 +37,12 @@
 1 Elvish 
 1 Fey 
 1 Fishing MASK=+WIS 8 
+1 Floristry 
 1 Foraging 
 1 Gigantic 
 1 Gnomish 
 1 Goblinese 
 1 Herbology 
-1 Floristry 
 1 Hunting MASK=+WIS 8 
 1 Ignan 
 1 Orcish 
@@ -56,7 +57,6 @@
 2 Embroidering MASK=+CHA 10 REQUIRES=Skill_Write 
 2 Engraving MASK=+CHA 10 REQUIRES=Skill_Write 
 2 Lacquerring MASK=+CHA 8 
-8 Skill_Autocrawl +WIS 5
 
 3 Blacksmithing MASK=+STR 10 
 3 Carpentry MASK=+CON 10 
@@ -67,8 +67,8 @@
 4 Distilling REQUIRES=Cooking 
 4 Mining 
 4 Pottery 
-4 Tanning
 4 Sculpting MASK=+CON 10 
+4 Tanning 
 4 Weaving MASK=+WIS 10 
 
 5 Armorsmithing MASK=+STR 12 REQUIRES=Blacksmithing(75) 
@@ -77,43 +77,44 @@
 5 Fletching MASK=+DEX 12 REQUIRES=Specialization_Ranged Carpentry 
 5 FoodPrep REQUIRES=Cooking 
 5 GlassBlowing MASK=+CON 12 
-5 Painting MASK=+CHA 12
+5 Painting MASK=+CHA 12 
 5 PaperMaking 
 5 ScrimShaw REQUIRES=Sculpting 
 5 Weaponsmithing MASK=+STR 12 REQUIRES=Blacksmithing(75) Specialization_* 
 
-6 Skill_FindHome MASK=+WIS 8
+6 Skill_FindHome MASK=+WIS 8 
 
-7 MeatCuring MASK=+INT 8
+7 MeatCuring MASK=+INT 8 
 
-8 Skill_Autoswim MASK=+CON 8 REQUIRES=Skill_Swim
+8 Skill_Autocrawl 
+8 Skill_Autoswim MASK=+CON 8 REQUIRES=Skill_Swim 
 
+10 Boatwright MASK=+WIS 12 REQUIRES=Carpentry 
 10 Construction MASK=+CON 12 REQUIRES=Carpentry 
-10 Farming
-10 Shrooming
+10 Farming 
 10 JewelMaking MASK=+WIS 16 REQUIRES=Blacksmithing Pottery 
 10 LockSmith MASK=+DEX 14 REQUIRES=Blacksmithing 
 10 Masonry MASK=+CON 12 REQUIRES=Sculpting 
-10 Boatwright MASK=+WIS 12 REQUIRES=Carpentry 
+10 Shrooming 
 10 Siegecraft MASK=+STR 12 REQUIRES=Carpentry 
-10 Smelting MASK=+CON 12
+10 Smelting MASK=+CON 12 
 10 Speculate MASK=+WIS 10 
 10 Taxidermy MASK=+INT 12 
 10 Wainwrighting MASK=+INT 12 REQUIRES=Carpentry 
 
-12 Skill_FindShip MASK=+WIS 8
-12 Gardening
+12 Gardening 
+12 Skill_FindShip MASK=+WIS 8 
 
+15 Composting MASK=+WIS 12 REQUIRES=Farming 
 15 Excavation MASK=+CON 15 REQUIRES=Sculpting 
 15 Irrigation MASK=+CON 15 REQUIRES=Drilling 
 15 Landscaping MASK=+CON 15 REQUIRES=Farming 
-15 Composting MASK=+WIS 12 REQUIRES=Farming
 
-18 FoodPreserving MASK=+INT 12
-18 Skill_Autoclimb MASK=+STR 12 REQUIRES=Skill_Climb
+18 FoodPreserving MASK=+INT 12 
+18 Skill_Autoclimb MASK=+STR 12 REQUIRES=Skill_Climb 
 
+20 Branding 
 
-20 Branding
-
-29 MasterHerbology MASK=+INT 12 REQUIRES=Herbology(100) 
 29 MasterFloristry MASK=+INT 12 REQUIRES=Floristry(100) 
+29 MasterHerbology MASK=+INT 12 REQUIRES=Herbology(100) 
+
