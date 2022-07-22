@@ -595,7 +595,8 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 			final MOB mob = getFactoryAttacker(thisRoom);
 			try
 			{
-				final CMMsg maneuverMsg=CMClass.getMsg(mob,I,null,CMMsg.MSG_ADVANCE,null,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE,null,CMMsg.MSG_ADVANCE,L("<S-NAME> engage(s) @x1.",I.Name()));
+				final CMMsg maneuverMsg=CMClass.getMsg(mob,I,null,CMMsg.MSG_ADVANCE,null,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE,null,
+						CMMsg.MSG_ADVANCE,L("^F<S-NAME> engage(s) @x1.^?",I.Name()));
 				if(thisRoom.okMessage(mob, maneuverMsg))
 				{
 					thisRoom.send(mob, maneuverMsg);

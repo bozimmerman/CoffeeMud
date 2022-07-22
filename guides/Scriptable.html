@@ -1,18 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
 
 
 
 
   <meta name="generator" content="HTML Tidy, see www.w3.org" />
-  <title>Scripting in CoffeeMud 5.9</title>
+  
 
 
-  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
-<!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog -->
-</head>
-
+  <title>Scripting in CoffeeMud 5.9</title><link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head>
 <body>
 
 <center>
@@ -557,7 +553,7 @@ Operators</a></li>
 
             <li><a href="#value">value</a></li>
 
-            <li><a href="#var">var</a></li>
+            <li><a href="#var">var</a></li><li><a href="#visited">visited</a></li>
 
             <li><a href="#worn">worn</a></li>
 
@@ -869,7 +865,7 @@ this your larger sum bribe_progs will never be triggered.</p>
       <p>This type of mobprog is
 triggered by buying an item from a
 shopkeeper. If the item being bought has any of the keywords of the
-buy_prog, the prog is triggered. If there is a &lsquo;p' placed
+buy_prog, the prog is triggered. If there is a &#8216;p' placed
 before
 the keyword list, the keywords of the item must exactly match that of
 the buy_prog. If there is not, then any item with any of the keywords
@@ -904,7 +900,7 @@ sort of item is bought.</p>
 have more than one buy_prog on a mob.
 Generally it is best not to have buy_progs with the same keywords in
 them, unless they are a buy_prog p with different keyword lists but
-some of the same keywords &ndash; for example a buy_prog p apple
+some of the same keywords &#8211; for example a buy_prog p apple
 red
 juicy and a buy_prog p apple red poisoned.
       </p>
@@ -917,7 +913,7 @@ juicy and a buy_prog p apple red poisoned.
       <p>This type of mobprog is
 triggered by the mob having a spell or skill used on them by someone
 else. If the spell or skill name or id matches the keywords of the
-cast_prog, the prog is triggered. If there is a &lsquo;p' placed
+cast_prog, the prog is triggered. If there is a &#8216;p' placed
 before
 the keyword list, the name or id of the spell must exactly match that
 of
@@ -947,7 +943,7 @@ spell or skill is used on the mob.</p>
 have more than one cast_prog on a mob.
 Generally it is best not to have cast_progs with the same keywords in
 them, unless they are a cast_prog p with different keyword lists but
-some of the same keywords &ndash; for example a cast_prog p Spell_Fireball and a cast_prog p Spell_FlamingHands</p>
+some of the same keywords &#8211; for example a cast_prog p Spell_Fireball and a cast_prog p Spell_FlamingHands</p>
 
       <h3><a name="casting_prog">casting_prog</a></h3>
 
@@ -958,7 +954,7 @@ some of the same keywords &ndash; for example a cast_prog p Spell_Fireball and a
       <p>This type of mobprog is
 triggered by the mob casting a spell or skill on someone. If the spell
 cast on the mob matches the keywords of the cast_prog, the prog is
-triggered. If there is a &lsquo;p' placed
+triggered. If there is a &#8216;p' placed
 before
 the keyword list, the name or id of the spell must exactly match that
 of
@@ -992,7 +988,7 @@ mob casts the spell that&nbsp; has the exact ID of Spell_Fireball.&nbsp;</p>
 have more than one casting_prog on a mob.
 Generally it is best not to have casting_progs with the same keywords in
 them, unless they are a casting_prog p with different keyword lists but
-some of the same keywords &ndash; for example a casting_prog p Spell_Fireball and a cast_prog p Spell_IceLance</p>
+some of the same keywords &#8211; for example a casting_prog p Spell_Fireball and a cast_prog p Spell_IceLance</p>
 
 
       <h3><a name="channel_prog">channel_prog</a></h3>
@@ -1206,7 +1202,7 @@ you like.</p>
       <p>This type of mobprog is
 triggered eating or drinking from an
 object. If the object used matches the keywords of the consume_prog,
-the prog is triggered. If there is a &lsquo;p' placed before the
+the prog is triggered. If there is a &#8216;p' placed before the
 keyword list, the keywords of the object must exactly match that of the
 consume_prog. If there is not, then any object with any of the keywords
 in the list in it will trigger it. If a consume_prog all is used, then
@@ -1240,7 +1236,7 @@ object is ate or drank.</p>
 have more than one consume_prog on a
 mob. Generally it is best not to have consume_progs with the same
 keywords in them, unless they are a consume_prog p with different
-keyword lists but some of the same keywords &ndash; for example a
+keyword lists but some of the same keywords &#8211; for example a
 consume_prog p apple red juicy and a consume_prog p apple red poisoned.</p>
 
       <h3><a name="damage_prog">damage_prog</a></h3>
@@ -1342,7 +1338,7 @@ elapsed.</p>
       <p>This type of mobprog is
 triggered by dropping an object. If
 the object dropped matches the keywords of the drop_prog, the prog is
-triggered. If there is a &lsquo;p' placed before the keyword list,
+triggered. If there is a &#8216;p' placed before the keyword list,
 the
 keywords of the object must exactly match that of the drop_prog. If
 there is not, then any object with any of the keywords in the list in
@@ -1379,7 +1375,7 @@ object is dropped.</p>
 have more than one drop_prog on a mob.
 Generally it is best not to have drop_progs with the same keywords in
 them, unless they are a drop_prog p with different keyword lists but
-some of the same keywords &ndash; for example a drop_prog p apple
+some of the same keywords &#8211; for example a drop_prog p apple
 red
 juicy and a drop_prog p apple red poisoned..
       </p>
@@ -1605,7 +1601,7 @@ when called by MPCALLFUNC.</p>
 type of mobprog is
 triggered by someone getting an object. If the
 object picked up matches the keywords of the get_prog, the prog is
-triggered. If there is a &lsquo;p' placed before the keyword list,
+triggered. If there is a &#8216;p' placed before the keyword list,
 the
 keywords of the object must exactly match that of the get_prog. If
 there is not, then any object with any of the keywords in the list in
@@ -1647,7 +1643,7 @@ object is picked up.</p>
 have more than one get_prog on a mob.
 Generally it is best not to have get_progs with the same keywords in
 them, unless they are a get_prog p with different keyword lists but
-some of the same keywords &ndash; for example a get_prog p apple
+some of the same keywords &#8211; for example a get_prog p apple
 red
 juicy and a get_prog p apple red poisoned.</p>
       <h3><a name="getting_prog">getting_prog</a></h3>
@@ -1665,7 +1661,7 @@ As get_prog, but only triggers when the scripted mob or player does the getting.
       <p>This type of mobprog is
 triggered by the mob being given an
 object. If the object given to the mob matches the keywords of the
-give_prog, the prog is triggered. If there is a &lsquo;p' placed
+give_prog, the prog is triggered. If there is a &#8216;p' placed
 before
 the keyword list, the keywords of the object must exactly match that of
 the give_prog. If there is not, then any object with any of the
@@ -1701,7 +1697,7 @@ object is given to the mob.</p>
 have more than one give_prog on a mob.
 Generally it is best not to have give_progs with the same keywords in
 them, unless they are a give_prog p with different keyword lists but
-some of the same keywords &ndash; for example a give_prog p apple
+some of the same keywords &#8211; for example a give_prog p apple
 red
 juicy and a give_prog p apple red poisoned.</p>
 
@@ -1721,7 +1717,7 @@ items other than the ones it will accept in other give_progs.</p>
       <p>This type of mobprog is
 triggered by the mob giving someone an
 object. If the object given to the mob matches the keywords of the
-giving_prog, the prog is triggered. If there is a &lsquo;p' placed
+giving_prog, the prog is triggered. If there is a &#8216;p' placed
 before
 the keyword list, the keywords of the object must exactly match that of
 the giving_prog. If there is not, then any object with any of the
@@ -1760,7 +1756,7 @@ object is being given by the mob</p>
 have more than one giving_prog on a mob.
 Generally it is best not to have giving_progs with the same keywords in
 them, unless they are a giving_prog p with different keyword lists but
-some of the same keywords &ndash; for example a giving_prog p apple
+some of the same keywords &#8211; for example a giving_prog p apple
 red
 juicy and a giving_prog p apple red poisoned.</p>
 
@@ -2263,7 +2259,7 @@ is the thing being put into the container. &nbsp;</p>
 
       <p>Now, if the container involved matches the keywords of
 the
-put_prog, the prog is triggered. If there is a &lsquo;p' placed
+put_prog, the prog is triggered. If there is a &#8216;p' placed
 before
 the keyword list, the keywords of the object must exactly match that of
 the put_prog. If there is not, then any container with any of the
@@ -2301,7 +2297,7 @@ container is used.</p>
 have more than one put_prog on a mob.
 Generally it is best not to have put_progs with the same keywords in
 them, unless they are a put_prog p with different keyword lists but
-some of the same keywords &ndash; for example a put_prog p apple
+some of the same keywords &#8211; for example a put_prog p apple
 red
 juicy and a put_prog p apple red poisoned. </p>
 
@@ -2317,7 +2313,7 @@ triggered by putting a matched thing into a
 container. It does not trigger if the scripted object is the container
 itself, however.&nbsp;If the object being put into the container
 matches the keywords of the
-put_prog, the prog is triggered. If there is a &lsquo;p' placed
+put_prog, the prog is triggered. If there is a &#8216;p' placed
 before
 the keyword list, the keywords of the object must exactly match that of
 the putting_prog. If there is not, then any object with any of the
@@ -2355,7 +2351,7 @@ have more than one putting_prog on a mob.
 Generally it is best not to have putting_progs with the same keywords
 in
 them, unless they are a put_prog p with different keyword lists but
-some of the same keywords &ndash; for example a putting_prog p apple
+some of the same keywords &#8211; for example a putting_prog p apple
 red
 juicy and a putting_prog p apple red poisoned.</p>
 
@@ -2452,7 +2448,7 @@ regmask_progs, so do not try to use them; it won't work.</p>
       <p>This type of mobprog is
 triggered by removing an object. If
 the object removed matches the keywords of the remove_prog, the prog is
-triggered. If there is a &lsquo;p' placed before the keyword list,
+triggered. If there is a &#8216;p' placed before the keyword list,
 the
 keywords of the object must exactly match that of the remove_prog. If
 there is not, then any object with any of the keywords in the list in
@@ -2487,7 +2483,7 @@ object is removed.</p>
 have more than one remove_prog on a
 mob. Generally it is best not to have remove_progs with the same
 keywords in them, unless they are a remove_prog p with different
-keyword lists but some of the same keywords &ndash; for example a
+keyword lists but some of the same keywords &#8211; for example a
 remove_prog p apple red juicy and a remove_prog p apple red poisoned.</p>
 
       <h3><a name="sell_prog">sell_prog</a></h3>
@@ -2499,7 +2495,7 @@ remove_prog p apple red juicy and a remove_prog p apple red poisoned.</p>
       <p>This type of mobprog is
 triggered by selling an item to a
 shopkeeper. If the item being sold has any of the keywords of the
-sell_prog, the prog is triggered. If there is a &lsquo;p' placed
+sell_prog, the prog is triggered. If there is a &#8216;p' placed
 before
 the keyword list, the keywords of the item must exactly match that of
 the sell_prog. If there is not, then any item with any of the keywords
@@ -2534,7 +2530,7 @@ sort of item is sold.</p>
 have more than one sell_prog on a mob.
 Generally it is best not to have sell_progs with the same keywords in
 them, unless they are a sell_prog p with different keyword lists but
-some of the same keywords &ndash; for example a sell_prog p apple
+some of the same keywords &#8211; for example a sell_prog p apple
 red
 juicy and a sell_prog p apple red poisoned.</p>
 
@@ -2575,7 +2571,7 @@ not, then any of the keywords listed will trigger the mobprog. A
 keyword of ALL will trigger on any speech. This type of mobprog is
 useful for quests driven by player scripts or setting up passwords that
 must be spoken. This type of prog can also be used to have a mob
-trigger itself if you want to have multiple connected progs &ndash;
+trigger itself if you want to have multiple connected progs &#8211;
 see
 complex progs for details. Note that this kind of mobprog is only
 triggered by someone using the say command.</p>
@@ -2616,7 +2612,7 @@ keyword of ALL will trigger on any speech. This type of mobprog is
 useful for setting up internal quests, giving out background
 information to people exploring your zone, or setting up passwords that
 must be spoken. This type of prog can also be used to have a mob
-trigger itself if you want to have multiple connected progs &ndash;
+trigger itself if you want to have multiple connected progs &#8211;
 see
 complex progs for details. Note that this kind of mobprog is only
 triggered by someone using the say command.</p>
@@ -2724,7 +2720,7 @@ unlock_prog p door gate and a unlock_prog p door to the gate.</p>
       <p>This type of mobprog is
 triggered by wearing, wielding, or
 holding an item. If the object worn matches the keywords of the
-wear_prog, the prog is triggered. If there is a &lsquo;p' placed
+wear_prog, the prog is triggered. If there is a &#8216;p' placed
 before
 the keyword list, the keywords of the object must exactly match that of
 the wear_prog. If there is not, then any object with any of the
@@ -2759,7 +2755,7 @@ object is worn.</p>
 have more than one wear_prog on a mob.
 Generally it is best not to have wear_progs with the same keywords in
 them, unless they are a wear_prog p with different keyword lists but
-some of the same keywords &ndash; for example a wear_prog p apple
+some of the same keywords &#8211; for example a wear_prog p apple
 red
 juicy and a wear_prog p apple red poisoned.</p>
 
@@ -4714,19 +4710,24 @@ mpacctattoo $n '50 smurfkiller'<br />
 
       <p>Usage:</p>
 
-      <pre>mpaffect [spell name] [target] [parameters]<br /></pre>
+      <pre>mpaffect [spell name] [target] (nTICKS) [parameters]<br /></pre>
 
       <p>This command will put the
 target under the affect of the given Ability (spell, chant, prayer,
 song, skill, or CoffeeMud property). &nbsp; Properties will be applied
 normally, while non-properties will be auto-cast. &nbsp;The spell name
-can be prefixed with <span style="font-weight: bold;">property:</span> to force even non-Properties to be applied without auto-casting or any invokation at all. &nbsp; The
+can be prefixed with <span style="font-weight: bold;">property:</span>
+to force even non-Properties to be applied without auto-casting or any
+invokation at all. &nbsp; The
 parameters given apply specifically to CoffeeMud properties, and are
-unnecessary for most spells, chants, etc.</p>
+unnecessary for most spells, chants, etc. &nbsp;The parameters may be
+preceeded by a number and the word "TICKS" (no spaces between the
+number and TICKS)&nbsp; to force the property or skill to remain an
+effect for a certain period of time.</p>
 
       <p>EXAMPLES:</p>
 
-      <pre>mpaffect Invisibility $n<br />mpaffect property:Invisibility $n<br />mpaffect Prop_PracticeDummy $n KILLABLE<br /></pre>
+      <pre>mpaffect Invisibility $n<br />mpaffect property:Invisibility $n<br />mpaffect Prop_PracticeDummy $n KILLABLE<br />mpaffect Prop_PracticeDummy $n 5TICKS KILLABLE<br /><br /></pre>
 
       <h3><a name="mpalarm">mpalarm</a></h3>
 
@@ -5102,10 +5103,10 @@ although it does set off act_progs.</p>
 
       <p>EXAMPLES:</p>
 
-      <pre>mpecho $i says, &lsquo;Hey how's it going?'<br />mpecho A blast of strong wind rushes into the room suddenly!<br />mpecho $i hisses, &lsquo;So, $n, you've come to face me&hellip;'<br />mpecho A dagger flashes into $i's hand, and $j snickers softly.<br /></pre>
+      <pre>mpecho $i says, &#8216;Hey how's it going?'<br />mpecho A blast of strong wind rushes into the room suddenly!<br />mpecho $i hisses, &#8216;So, $n, you've come to face me&#8230;'<br />mpecho A dagger flashes into $i's hand, and $j snickers softly.<br /></pre>
 
       <p>SPECIAL NOTES: Using
-mpecho $i says, &lsquo;blah' is a safe
+mpecho $i says, &#8216;blah' is a safe
 way to have a mob talk. Anytime you want to have a mob say something,
 you should use this, unless you want it to trigger speech_progs. Also,
 remember that whatever is mpechoed is seen be everyone in the room
@@ -5273,7 +5274,7 @@ specific action which triggers an act_prog.</p>
 that whatever you force something to
 do, it needs to be typed out exactly as if they were typing the command
 themselves. That means if you want a player, for example, to be forced
-to cast &lsquo;heal serious' on your mob, you need to make sure you
+to cast &#8216;heal serious' on your mob, you need to make sure you
 observe the double-quote rule for word groupings, as opposed to the
 single quote rule for mobprog commands.</p>
 
@@ -6682,7 +6683,7 @@ Operators</a></h3>
 in many of the functions below. Here
 are their meanings:</p>
 
-      <pre>== This operator means &lsquo;equal to'<br />!= This operator means &lsquo;not equal to'<br />&gt; This operator means &lsquo;greater than'<br />&lt; This operator means &lsquo;less than'<br />&gt;= This operator means &lsquo;equal or greater than'<br />&lt;= This operator means &lsquo;equal or less than'<br /></pre>
+      <pre>== This operator means &#8216;equal to'<br />!= This operator means &#8216;not equal to'<br />&gt; This operator means &#8216;greater than'<br />&lt; This operator means &#8216;less than'<br />&gt;= This operator means &#8216;equal or greater than'<br />&lt;= This operator means &#8216;equal or less than'<br /></pre>
 
       <h3><a name="affected">affected</a></h3>
 
@@ -8577,7 +8578,19 @@ to use them with quests, and on variable scopes.</p>
 
       <pre>if var($n KILLS &gt; 10)<br /> mpecho The actor's KILLS variable is greater than 10.<br />else<br /> mpecho The actor's KILLS variable is equal to or less than 10.<br />endif<br /></pre>
 
-      <h3><a name="worn">worn</a></h3>
+      <h3><a name="visited">visited</a></h3>
+
+      <p>Usage:</p>
+
+      <pre>visited(character room)<br /></pre>
+
+      <p>This
+function checks whether the Player designated by the first argument has
+ever been in the room designated by the second argument.</p>
+
+      <p>EXAMPLE:</p>
+
+      <pre>if visited($n 'Midgaard#3001')<br /> mpecho The actor's has been to Midgaard Temple<br />else<br /> mpecho The actor's has never been to Midgaard Temple<br />endif</pre><h3><a name="worn">worn</a></h3>
 
       <p>Usage:</p>
 
@@ -8635,5 +8648,4 @@ his feet.</span><br style="font-family: monospace;" />
 
 </center>
 
-</body>
-</html>
+</body></html>

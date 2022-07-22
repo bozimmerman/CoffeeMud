@@ -687,6 +687,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		"EXPERTISE", // 115
 		"ROOMPC", // 116
 		"AREAPC", //117
+		"VISITED", //118
 	};
 
 	/** String list of all valid mobprog commands */

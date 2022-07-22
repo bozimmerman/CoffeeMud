@@ -173,10 +173,11 @@ public class Prayer_AnimateGhoul extends Prayer
 		if((body.charStats()!=null)&&(body.charStats().getMyRace()!=null))
 			race=CMLib.english().startWithAorAn(body.charStats().getMyRace().name()).toLowerCase();
 		String description=body.getMobDescription();
+		final String undeadDesc=L("In undeath, it become emaciated and hairless, with stretch decaying skin and sharp teeth.");
 		if(description.trim().length()==0)
-			description="It looks dead.";
+			description=undeadDesc;
 		else
-			description+="\n\rIt also looks dead.";
+			description+="\n\r"+undeadDesc;
 
 		if(body.basePhyStats().level()<5)
 		{

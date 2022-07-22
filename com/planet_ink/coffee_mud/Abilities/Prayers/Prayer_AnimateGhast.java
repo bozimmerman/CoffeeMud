@@ -177,10 +177,11 @@ public class Prayer_AnimateGhast extends Prayer
 			race=CMLib.english().startWithAorAn(body.charStats().getMyRace().name()).toLowerCase();
 
 		String description=body.getMobDescription();
+		final String undeadDesc=L("In undeath, it has grown taller, more slender, and greyish in color, with a horrid nauseating stench.");
 		if(description.trim().length()==0)
-			description="It looks dead.";
+			description=undeadDesc;
 		else
-			description+="\n\rIt also looks dead.";
+			description+="\n\r"+undeadDesc;
 
 		if(body.basePhyStats().level()<7)
 		{

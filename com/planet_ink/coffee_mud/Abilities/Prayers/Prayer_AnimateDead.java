@@ -148,10 +148,11 @@ public class Prayer_AnimateDead extends Prayer
 		}
 		final String realName=body.getMobName();
 		String description=body.getMobDescription();
+		final String undeadDesc=L("In undeath, it has decayed to a great degree, while dragging and hurling its limbs around clumsily.");
 		if(description.trim().length()==0)
-			description="It looks dead.";
+			description=undeadDesc;
 		else
-			description+="\n\rIt also looks dead.";
+			description+="\n\r"+undeadDesc;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

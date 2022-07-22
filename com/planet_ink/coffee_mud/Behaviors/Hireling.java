@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /*
    Copyright 2003-2022 Bo Zimmerman
@@ -43,6 +44,7 @@ public class Hireling extends StdBehavior
 
 	protected Map<String, Double>	partials		= new Hashtable<String, Double>();
 	protected String				workingFor		= "";
+	protected long					nextWarn		= 0;
 	protected long					onTheJobUntil	= 0;
 	protected double				price			= 100.0;
 	protected int					minutes			= 30;
@@ -197,7 +199,8 @@ public class Hireling extends StdBehavior
 			else
 			{
 				if(talkTo!=null)
-					CMLib.commands().postSay(observer,talkTo,L("Your base time is up, but you've paid for @x1 more minutes, so I'll hang around.",""+additional),true,false);
+					CMLib.commands().postSay(observer,talkTo,L("Your base time is up, but you've paid for @x1 more minutes, so I'll hang around.",
+							""+additional),true,false);
 				onTheJobUntil+=(additional*TimeManager.MILI_MINUTE);
 			}
 		}
@@ -213,6 +216,17 @@ public class Hireling extends StdBehavior
 				CMLib.commands().postFollow(observer,talkTo,false);
 				observer.setFollowing(talkTo);
 			}
+		}
+		else
+		if(System.currentTimeMillis() > nextWarn)
+		{
+			final long l = onTheJobUntil - System.currentTimeMillis();
+			if((l/2) < 20000)
+				nextWarn = Long.MAX_VALUE;
+			else
+				nextWarn = System.currentTimeMillis() + (l/2);
+			if(l > 0)
+				CMLib.commands().postSay(observer, null, L("I'm on the job for @x1 more.",CMLib.time().date2EllapsedTime(l,TimeUnit.MINUTES, false)));
 		}
 		return true;
 	}
@@ -275,15 +289,30 @@ public class Hireling extends StdBehavior
 		&&(!msg.amISource(observer))
 		&&(!msg.source().isMonster()))
 		{
-			final String upperSrcMsg=msg.sourceMessage() == null ? "" : msg.sourceMessage().toUpperCase();
-			if(((upperSrcMsg.indexOf(" HIRE")>0)
-				||(upperSrcMsg.indexOf("'HIRE")>0)
-				||(upperSrcMsg.indexOf("WORK")>0)
-				||(upperSrcMsg.indexOf("AVAILABLE")>0))
-			&&(onTheJobUntil==0))
-				CMLib.commands().postSay(observer,null,L("I'm for hire.  Just give me @x1 and I'll work for you for @x2 \"hours\".",CMLib.beanCounter().nameCurrencyShort(observer,price()),""+gamehours()),false,false);
+			final String upperSrcMsg=CMStrings.getSayFromMessage(msg.sourceMessage()).toUpperCase();
+			if(CMStrings.containsWord(upperSrcMsg, "HIRE")
+			||CMStrings.containsWord(upperSrcMsg, "HIRELING")
+			||CMStrings.containsWord(upperSrcMsg, "WORK")
+			||CMStrings.containsWord(upperSrcMsg, "WORKS")
+			||CMStrings.containsWord(upperSrcMsg, "TIME")
+			||CMStrings.containsWord(upperSrcMsg, "AVAILABLE"))
+			{
+				if(onTheJobUntil==0)
+				{
+					CMLib.commands().postSay(observer,null,L("I'm for hire.  Just give me @x1 and I'll work for you for @x2 \"hours\".",
+							CMLib.beanCounter().nameCurrencyShort(observer,price()),""+gamehours()),false,false);
+				}
+				else
+				{
+					final long l = onTheJobUntil - System.currentTimeMillis();
+					if(l > 0)
+						CMLib.commands().postSay(observer, null, L("I'm on the job for @x1 more.",CMLib.time().date2EllapsedTime(l,TimeUnit.MINUTES, false)));
+					else
+						CMLib.commands().postSay(observer, null, L("I'm on the job, but don't know why."));
+				}
+			}
 			else
-			if(((upperSrcMsg.indexOf(" FIRED")>0))
+			if((CMStrings.containsWord(upperSrcMsg, "FIRED"))
 			&&((workingFor!=null)&&(msg.source().Name().equals(workingFor)))
 			&&(msg.amITarget(observer))
 			&&(onTheJobUntil!=0))
@@ -292,7 +321,7 @@ public class Hireling extends StdBehavior
 				allDone(observer);
 			}
 			else
-			if(((upperSrcMsg.indexOf(" SKILLS") > 0)))
+			if(CMStrings.containsWord(upperSrcMsg, "SKILLS")||CMStrings.containsWord(upperSrcMsg, "SKILL"))
 			{
 				final StringBuffer skills = new StringBuffer("");
 				for(final Enumeration<Ability> a=observer.allAbilities();a.hasMoreElements();)
@@ -360,8 +389,9 @@ public class Hireling extends StdBehavior
 						}
 					}
 					workingFor=source.Name();
-					onTheJobUntil=System.currentTimeMillis();
-					onTheJobUntil+=(minutes()*TimeManager.MILI_MINUTE);
+					final long duration = (minutes()*TimeManager.MILI_MINUTE);
+					onTheJobUntil=System.currentTimeMillis() + duration;
+					nextWarn = System.currentTimeMillis() + (duration/2);
 					CMLib.commands().postFollow(observer,source,false);
 					observer.setFollowing(source);
 					CMLib.commands().postSay(observer,source,L("Ok.  You've got me for at least @x1 \"hours\".  My skills include: @x2.  I'll follow you.  Just ORDER me to do what you want.",""+gamehours(),skills.substring(2)),true,false);

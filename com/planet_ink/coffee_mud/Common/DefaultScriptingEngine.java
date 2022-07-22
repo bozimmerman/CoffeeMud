@@ -3600,6 +3600,27 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 					break;
 				}
+				case 118: // visited
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final PhysicalAgent MP=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if((!(MP instanceof MOB))
+					||(!((MOB)MP).isPlayer()))
+						returnable=false;
+					else
+					{
+						final MOB M=(MOB)MP;
+						final Room P=this.getRoom(arg2,lastKnownLocation);
+						if(P==null)
+							returnable=false;
+						else
+							returnable = M.playerStats().hasVisited(P);
+					}
+					break;
+				}
 				case 59: // isopen
 				{
 					final String arg1=CMParms.cleanBit(funcParms);
@@ -7341,6 +7362,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				break;
 			}
 			case 113: // canhear
+			{
+				break;
+			}
+			case 118: // visited
 			{
 				break;
 			}
@@ -11135,7 +11160,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				final String cast=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
 				final Physical newTarget=getArgumentItem(tt[2],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				final String m2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
+				String m2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
 				Ability A=null;
 				boolean alwaysAffect=false;
 				if(cast!=null)
@@ -11154,12 +11179,41 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
 						Log.sysOut("Scripting",newTarget.Name()+" was MPAFFECTED by "+A.Name());
+					int ticks = -1;
+					if((m2.length()>0)&&(Character.isDigit(m2.charAt(0))))
+					{
+						int i=1;
+						while((i<m2.length())&&(Character.isDigit(m2.charAt(i))))
+							i++;
+						if((i<=m2.length()-5)
+						&&(Character.toUpperCase(m2.charAt(i))=='T')
+						&&((m2+" ").substring(i,i+6).toUpperCase().equals("TICKS ")))
+						{
+							ticks=CMath.s_int(m2.substring(0,i));
+							m2=((m2+" ").substring(i+6)).trim();
+						}
+					}
 					A.setMiscText(m2);
 					if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY) || (alwaysAffect))
 					{
 						if(alwaysAffect)
 							A.setInvoker(monster);
-						newTarget.addNonUninvokableEffect(A);
+						if(ticks < 0)
+							newTarget.addNonUninvokableEffect(A);
+						else
+						{
+							Ability tA=newTarget.fetchEffect("TemporaryAffects");
+							if(tA==null)
+							{
+								tA=CMClass.getAbility("TemporaryAffects");
+								if(newTarget instanceof MOB)
+									newTarget.addEffect(tA);
+								else
+									tA.startTickDown(monster, newTarget, 9999);
+							}
+							tA.makeLongLasting();
+							tA.setMiscText("+"+A.ID()+" "+ticks+" "+m2);
+						}
 					}
 					else
 					{
@@ -11167,6 +11221,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						&&(monster!=null))
 							monster.resetToMaxState();
 						A.invoke(monster,CMParms.parse(m2),newTarget,true,0);
+						if(ticks > 0)
+						{
+							final Ability afA = newTarget.fetchEffect(A.ID());
+							if(afA!=null)
+								afA.setExpirationDate(System.currentTimeMillis()+(CMProps.getTickMillis() * ticks));
+						}
 					}
 				}
 				break;

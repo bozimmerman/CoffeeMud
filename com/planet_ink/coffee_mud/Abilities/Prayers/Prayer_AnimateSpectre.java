@@ -173,10 +173,11 @@ public class Prayer_AnimateSpectre extends Prayer
 		if((body.charStats()!=null)&&(body.charStats().getMyRace()!=null))
 			race=CMLib.english().startWithAorAn(body.charStats().getMyRace().name()).toLowerCase();
 		String description=body.getMobDescription();
+		final String undeadDesc=L("In undeath, it become a nearly transparent luminous incorporeal spirit.");
 		if(description.trim().length()==0)
-			description="It looks dead.";
+			description=undeadDesc;
 		else
-			description+="\n\rIt also looks dead.";
+			description+="\n\r"+undeadDesc;
 
 		if(body.basePhyStats().level()<10)
 		{

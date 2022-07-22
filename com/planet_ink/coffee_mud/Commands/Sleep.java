@@ -65,29 +65,37 @@ public class Sleep extends StdCommand
 				R.send(mob,msg);
 			return false;
 		}
-		final String possibleRideable=CMParms.combine(commands,1);
-		final Environmental E=R.fetchFromRoomFavorItems(null,possibleRideable);
-		if((E==null)||(!CMLib.flags().canBeSeenBy(E,mob)))
+		if((commands.size()==2)
+		&&(commands.get(0).equalsIgnoreCase("until")))
 		{
-			CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",possibleRideable));
-			return false;
+
 		}
-		String mountStr=null;
-		if(E instanceof Rideable)
-			mountStr="<S-NAME> "+((Rideable)E).mountString(CMMsg.TYP_SLEEP,mob)+" <T-NAME>.";
-		else
-			mountStr=L("<S-NAME> sleep(s) on <T-NAME>.");
-		String sourceMountStr=null;
-		if(!CMLib.flags().canBeSeenBy(E,mob))
-			sourceMountStr=mountStr;
 		else
 		{
-			sourceMountStr=CMStrings.replaceAll(mountStr,"<T-NAME>",E.name());
-			sourceMountStr=CMStrings.replaceAll(sourceMountStr,"<T-NAMESELF>",E.name());
+			final String possibleRideable=CMParms.combine(commands,1);
+			final Environmental E=R.fetchFromRoomFavorItems(null,possibleRideable);
+			if((E==null)||(!CMLib.flags().canBeSeenBy(E,mob)))
+			{
+				CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",possibleRideable));
+				return false;
+			}
+			String mountStr=null;
+			if(E instanceof Rideable)
+				mountStr="<S-NAME> "+((Rideable)E).mountString(CMMsg.TYP_SLEEP,mob)+" <T-NAME>.";
+			else
+				mountStr=L("<S-NAME> sleep(s) on <T-NAME>.");
+			String sourceMountStr=null;
+			if(!CMLib.flags().canBeSeenBy(E,mob))
+				sourceMountStr=mountStr;
+			else
+			{
+				sourceMountStr=CMStrings.replaceAll(mountStr,"<T-NAME>",E.name());
+				sourceMountStr=CMStrings.replaceAll(sourceMountStr,"<T-NAMESELF>",E.name());
+			}
+			final CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_SLEEP,sourceMountStr,mountStr,mountStr);
+			if(R.okMessage(mob,msg))
+				R.send(mob,msg);
 		}
-		final CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_SLEEP,sourceMountStr,mountStr,mountStr);
-		if(R.okMessage(mob,msg))
-			R.send(mob,msg);
 		return false;
 	}
 

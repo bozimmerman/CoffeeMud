@@ -153,10 +153,11 @@ public class Prayer_AnimateSkeleton extends Prayer
 			race=CMLib.english().startWithAorAn(oldRace.name()).toLowerCase();
 		}
 		String description=body.getMobDescription();
+		final String undeadDesc=L("In undeath, only its bones and a few tiny clinging bits of flesh remain.");
 		if(description.trim().length()==0)
-			description="It looks dead.";
+			description=undeadDesc;
 		else
-			description+="\n\rIt also looks dead.";
+			description+="\n\r"+undeadDesc;
 		final String undeadRace = ((body.charStats()!=null) && (body.charStats().getMyRace() != null) && (body.charStats().getMyRace().useRideClass())) ?
 				"GenRideableUndead" : "GenUndead";
 		final MOB newMOB=CMClass.getMOB(undeadRace);

@@ -131,6 +131,24 @@ public class Soiled extends StdAbility
 		}
 	}
 
+	public String getDiaperSmell()
+	{
+		switch(CMLib.dice().roll(1,5,0))
+		{
+		case 1:
+			return L("<T-NAME> is stinky!");
+		case 2:
+			return L("<T-NAME> smells like poo.");
+		case 3:
+			return L("<T-NAME> <T-HAS-HAVE> soiled <T-HIM-HERSELF>.");
+		case 4:
+			return L("Whew! <T-NAME> stinks!");
+		case 5:
+			return L("<T-NAME> must have let one go!");
+		}
+		return null;
+	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -162,26 +180,8 @@ public class Soiled extends StdAbility
 		if((msg.target()==affected)
 		&&(msg.targetMinor()==CMMsg.TYP_SNIFF))
 		{
-			String smell=null;
-			switch(CMLib.dice().roll(1,5,0))
-			{
-			case 1:
-				smell = L("<T-NAME> is stinky!");
-				break;
-			case 2:
-				smell = L("<T-NAME> smells like poo.");
-				break;
-			case 3:
-				smell = L("<T-NAME> <T-HAS-HAVE> soiled <T-HIM-HERSELF>.");
-				break;
-			case 4:
-				smell = L("Whew! <T-NAME> stinks!");
-				break;
-			case 5:
-				smell = L("<T-NAME> must have let one go!");
-				break;
-			}
 			final Physical target=(affected==null)?((myHost instanceof Physical)?(Physical)myHost:msg.source()):affected;
+			final String smell=getDiaperSmell();
 			if((CMLib.flags().canSmell(msg.source()))&&(smell!=null))
 				msg.source().tell(msg.source(),target,null,smell);
 		}
@@ -215,25 +215,7 @@ public class Soiled extends StdAbility
 					M.playerStats().setHygiene(10000);
 					M.recoverCharStats();
 				}
-				String smell=null;
-				switch(CMLib.dice().roll(1,5,0))
-				{
-				case 1:
-					smell = L("<S-NAME> <S-IS-ARE> stinky!");
-					break;
-				case 2:
-					smell = L("<S-NAME> smells like poo.");
-					break;
-				case 3:
-					smell = L("<S-NAME> has soiled <T-HIM-HERSELF>.");
-					break;
-				case 4:
-					smell = L("Whew! <S-NAME> stinks!");
-					break;
-				case 5:
-					smell = L("<S-NAME> must have let one go!");
-					break;
-				}
+				final String smell=getDiaperSmell();
 				if((smell!=null)
 				&&(CMLib.flags().isInTheGame(M,true)))
 				{

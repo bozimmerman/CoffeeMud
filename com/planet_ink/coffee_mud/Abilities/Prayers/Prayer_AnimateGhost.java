@@ -150,10 +150,11 @@ public class Prayer_AnimateGhost extends Prayer
 		if((body.charStats()!=null)&&(body.charStats().getMyRace()!=null))
 			race=CMLib.english().startWithAorAn(body.charStats().getMyRace().name()).toLowerCase();
 		String description=body.getMobDescription();
+		final String undeadDesc=L("In undeath, it become a barely visible incorporeal spirit whose cold evil lets it touch the material world.");
 		if(description.trim().length()==0)
-			description="It looks dead.";
+			description=undeadDesc;
 		else
-			description+="\n\rIt also looks dead.";
+			description+="\n\r"+undeadDesc;
 
 		final MOB newMOB=CMClass.getMOB("GenUndead");
 		newMOB.setName(race+((mob==null)?" poltergeist":" ghost"));
