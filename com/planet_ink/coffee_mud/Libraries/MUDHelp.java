@@ -46,7 +46,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	}
 
 	protected final Map<String,String>		genUsageCost	= new SHashtable<String, String>();
-	protected final Map<String,List<String>>seeAlsoCache	= Collections.synchronizedMap(new TreeMap<String,List<String>>());
+	protected final Map<String,String[]>	seeAlsoCache	= Collections.synchronizedMap(new TreeMap<String,String[]>());
 
 	protected final static String[] SKILL_PREFIXES =
 	{
@@ -1503,6 +1503,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		if(deleteOnly)
 		{
 			unloadHelpFile(null);
+			while(upStr.toString().endsWith("\n")&&(dnStr.toString().startsWith("\n")))
+				dnStr.deleteCharAt(0);
+			if(upStr.toString().endsWith("\n")&&(dnStr.length()==0))
+				upStr.deleteCharAt(upStr.length()-1);
 			return F.saveText(upStr.toString()+dnStr.toString());
 		}
 		else
@@ -1527,13 +1531,20 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					{
 						final StringBuilder newHelp=new StringBuilder("");
 						newHelp.append(b4.toString());
-						newHelp.append(key).append("=");
-						for(int i=0;i<data.size();i++)
+						if(data.size()>0)
 						{
-							newHelp.append(data.get(i));
-							if((i<data.size()-1)&&(!data.get(i).endsWith("\\")))
-								newHelp.append("\\");
-							newHelp.append("\n");
+							if((!newHelp.toString().endsWith("\n"))&&(newHelp.length()>0))
+								newHelp.append("\n");
+							newHelp.append(key).append("=");
+							for(int i=0;i<data.size();i++)
+							{
+								newHelp.append(data.get(i));
+								if((i<data.size()-1)&&(!data.get(i).endsWith("\\")))
+									newHelp.append("\\");
+								newHelp.append("\n");
+							}
+							if((!af.toString().startsWith("\n"))&&(af.length()>0))
+								newHelp.append("\n");
 						}
 						newHelp.append(af.toString());
 						file.saveText(newHelp);
@@ -1548,9 +1559,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	@Override
 	public List<String> getSeeAlsoHelpOn(final String helpSearch, final String helpKey, final String helpText, final MOB mob, final int howMany)
 	{
-		final List<String> seeAlso = seeAlsoCache.get(helpKey);
+		final String[] seeAlso = seeAlsoCache.get(helpKey);
 		if(seeAlso != null)
-			return seeAlso;
+			return Arrays.asList(seeAlso);
 		final String nKey = helpKey.replace(' ', '_');
 		final List<String> otherHelps = new Vector<String>();
 		final List<String> otherHelpTexts = new ArrayList<String>();
@@ -1593,7 +1604,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				}
 			}
 		}
-		seeAlsoCache.put(helpKey,otherHelps);
+		seeAlsoCache.put(helpKey,otherHelps.toArray(new String[otherHelps.size()]));
 		return otherHelps;
 	}
 

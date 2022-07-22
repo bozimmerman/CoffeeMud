@@ -1285,6 +1285,14 @@ public class Destroy extends StdCommand
 			exits(mob,commands);
 		}
 		else
+		if(commandType.equals("HELP")||commandType.equals("AHELP"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDHELP))
+				return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
+			helps(mob,commands);
+		}
+		else
 		if(commandType.equals("ITEM"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDITEMS))
