@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2020-2022 Bo Zimmerman
+   Copyright 2022-2022 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,15 +33,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_MaskFaith extends ThiefSkill
+public class Thief_HereticalFaith extends ThiefSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Thief_MaskFaith";
+		return "Thief_HereticalFaith";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Mask Faith");
+	private final static String localizedName = CMLib.lang().L("Heretical Faith");
 
 	@Override
 	public String name()
@@ -49,12 +49,12 @@ public class Thief_MaskFaith extends ThiefSkill
 		return localizedName;
 	}
 
-	private final static String localizedDisplay = CMLib.lang().L("(Masked Faith)");
+	//private final static String localizedDisplay = CMLib.lang().L("(Heretical Faith)");
 
 	@Override
 	public String displayText()
 	{
-		return localizedDisplay;
+		return "";
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class Thief_MaskFaith extends ThiefSkill
 		return Ability.QUALITY_OK_SELF;
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"MASKFAITH","MFAITH"});
+	private static final String[] triggerStrings =I(new String[] {"HERETICALFAITH", "HFAITH"});
 	@Override
 	public String[] triggerStrings()
 	{
@@ -101,35 +101,7 @@ public class Thief_MaskFaith extends ThiefSkill
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(text().length()>0)
-		{
-			if(text().equals("NONE"))
-				affectableStats.setDeityName("");
-			else
-				affectableStats.setDeityName(text());
-		}
-	}
-
-	@Override
-	public boolean okMessage(final Environmental myHost, final CMMsg msg)
-	{
-		if(!super.okMessage(myHost,msg))
-			return false;
-		if((msg.target()==affected)
-		&&(msg.tool() instanceof Ability)
-		&&(affected instanceof MOB)
-		&&(((Ability)msg.tool()).ID().equals("Prayer_SenseDevotion")))
-		{
-			final MOB mob=(MOB)affected;
-			final int levelDiff=msg.source().phyStats().level()-(mob.phyStats().level()+(3*getXLEVELLevel(mob)));
-			if((levelDiff<0)
-			&&(CMLib.dice().rollPercentage()>(10*(-levelDiff))))
-			{
-				msg.source().tell(mob,null,null,L("<S-YOUPOSS> faith seem(s) illusive."));
-				msg.setValue(1);
-			}
-		}
-		return true;
+		affectableStats.setDeityName(text());
 	}
 
 	@Override
@@ -137,10 +109,19 @@ public class Thief_MaskFaith extends ThiefSkill
 	{
 		final MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;
 		String deityName = CMParms.combine(commands,0);
+		if(commands.size()==0)
+		{
+			mob.tell(L("You must specify either a deity to mask yourself in, STOP to remove your mask, or NONE to mask as an atheist."));
+			return false;
+		}
+
+		if(deityName.equalsIgnoreCase("none"))
+			deityName="NONE";
+		else
 		if(deityName.equalsIgnoreCase("stop"))
 			deityName="";
 		else
-			deityName="Some god or goddess";
+			deityName=CMStrings.capitalizeAllFirstLettersAndLower(deityName);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -157,9 +138,9 @@ public class Thief_MaskFaith extends ThiefSkill
 
 			final String mmsg;
 			if(unmask)
-				mmsg = L("<S-NAME> unmask(s) <S-YOUPOSS> religeous beliefs.");
+				mmsg = L("<S-NAME> renounce(s) <S-YOUPOSS> new religeous beliefs.");
 			else
-				mmsg = L("<S-NAME> mask(s) <S-YOUPOSS> religeous beliefs.");
+				mmsg = L("<S-NAME> <S-HAS-HAVE> a conversion experience, altering <S-HIS-HER> religeous beliefs.");
 			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),mmsg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -178,6 +159,8 @@ public class Thief_MaskFaith extends ThiefSkill
 						mA=beneficialAffect(mob,target,asLevel,0);
 					if(mA!=null)
 					{
+						if(deityName.equals("NONE"))
+							deityName="";
 						mA.setMiscText(deityName);
 						mA.makeLongLasting();
 					}
@@ -186,7 +169,7 @@ public class Thief_MaskFaith extends ThiefSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,L("<S-NAME> turn(s) away and then back, but look(s) the same."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> turn(s) away, <S-HAS-HAVE> a conversion experience, but feel(s) the same."));
 
 		return success;
 	}
