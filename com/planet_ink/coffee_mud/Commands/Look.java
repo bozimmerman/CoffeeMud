@@ -46,6 +46,11 @@ public class Look extends StdCommand
 		return access;
 	}
 
+	public boolean listItems(final MOB mob, final List<String> args)
+	{
+		return true;
+	}
+
 	@Override
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
@@ -63,6 +68,7 @@ public class Look extends StdCommand
 		final String textMsg="<S-NAME> look(s) ";
 		if(R==null)
 			return false;
+		boolean listItems=false;
 		if((commands!=null)&&(commands.size()>1))
 		{
 			int dirCode=-1;
@@ -70,12 +76,19 @@ public class Look extends StdCommand
 			Environmental lookingTool=null;
 
 			if((commands.size()>2)&&(commands.get(1).equalsIgnoreCase("at")))
+			{
 				commands.remove(1);
+				if((commands.size()>1)&&(commands.get(1).equalsIgnoreCase("all")))
+				{
+					commands.remove(1);
+					listItems=true;
+				}
+			}
 			else
 			if((commands.size()>2)&&(commands.get(1).equalsIgnoreCase("to")))
 				commands.remove(1);
-			final String ID=CMParms.combine(commands,1);
 
+			final String ID=CMParms.combine(commands,1);
 			if((ID.toUpperCase().startsWith("EXIT"))
 			&&(commands.size()==2)
 			&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=CMProps.Int.EXVIEW_PARAGRAPH))
