@@ -311,7 +311,9 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 						line6+="---"+dirChar(Directions.SOUTH,grid,x,y,'-')+"----";
 					}
 				}
-				if(xcoord>=0)
+				if((xcoord>=0)
+				&&(xcoord<map.length)
+				&&(ycoord<map[xcoord].length))
 				{
 					if(map[xcoord][ycoord]==null)
 						map[xcoord][ycoord]=new StringBuffer("");
