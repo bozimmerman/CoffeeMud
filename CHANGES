@@ -50,6 +50,8 @@
  49. New command: HISTORY, for showing command history to players
  50. New archon command(s): basically do scriptable commands from the cl (MPCOMMAND)
  51. ALIAS command now supports TEST argument
+ 52. New races: Shrimp, Tuna
+ 53. New common skill: Animal Trapping, requires a cage, for trapping small game
 
 # Build 5.9.12 Release 1/17/2022
   *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG

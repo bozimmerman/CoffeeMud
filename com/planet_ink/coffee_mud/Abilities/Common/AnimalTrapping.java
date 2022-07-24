@@ -213,6 +213,22 @@ public class AnimalTrapping extends GatheringSkill
 					MOB stdM = CMClass.getMOB(mobID);
 					if(stdM == null)
 						stdM = CMLib.catalog().getCatalogMob(mobID);
+					if(stdM == null)
+					{
+						final Race raceR=CMClass.getRace(mobID);
+						if(raceR!=null)
+						{
+							if(raceR.useRideClass())
+								stdM=CMClass.getMOB("GenRideable");
+							else
+								stdM=CMClass.getMOB("GenMob");
+							stdM.setName(CMLib.english().startWithAorAn(raceR.name()));
+							stdM.setDisplayText(stdM.Name()+" is here");
+							stdM.baseCharStats().setMyRace(raceR);
+							stdM.recoverPhyStats();
+							stdM.recoverCharStats();
+						}
+					}
 					if(stdM != null)
 					{
 						MOB genM=stdM;

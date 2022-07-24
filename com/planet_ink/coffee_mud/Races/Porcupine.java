@@ -159,7 +159,9 @@ public class Porcupine extends Rodent
 				resources.addElement(makeResource
 					(L("some @x1 quills",name().toLowerCase()),RawMaterial.RESOURCE_CACTUS));
 				resources.addElement(makeResource
-					(L("some @x1 bonus",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
+					(L("a @x1 hide",name().toLowerCase()),RawMaterial.RESOURCE_HIDE));
+				resources.addElement(makeResource
+					(L("some @x1 bones",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 				resources.addElement(makeResource
 					(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 			}
