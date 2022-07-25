@@ -312,7 +312,8 @@ public class Bomb_Sticky extends StdBomb
 					L("Some popping sparks from @x1 <DAMAGES> <T-NAME>!",affected.name()));
 		}
 		else
-		if(target != null)
+		if((target != null)
+		&&(R!=null))
 		{
 			R.showHappens(CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,
 					L("Pops and sparks fly all over @x1!",target.name()));

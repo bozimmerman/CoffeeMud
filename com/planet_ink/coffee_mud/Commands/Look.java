@@ -68,20 +68,26 @@ public class Look extends StdCommand
 		final String textMsg="<S-NAME> look(s) ";
 		if(R==null)
 			return false;
-		boolean listItems=false;
+		//boolean listItems=false;
 		if((commands!=null)&&(commands.size()>1))
 		{
 			int dirCode=-1;
 			Environmental thisThang=null;
 			Environmental lookingTool=null;
 
+			if((commands.size()>1)&&(commands.get(1).equalsIgnoreCase("around")))
+			{
+				commands.remove(1);
+				thisThang=mob.location();
+			}
+			else
 			if((commands.size()>2)&&(commands.get(1).equalsIgnoreCase("at")))
 			{
 				commands.remove(1);
 				if((commands.size()>1)&&(commands.get(1).equalsIgnoreCase("all")))
 				{
 					commands.remove(1);
-					listItems=true;
+					//listItems=true;
 				}
 			}
 			else

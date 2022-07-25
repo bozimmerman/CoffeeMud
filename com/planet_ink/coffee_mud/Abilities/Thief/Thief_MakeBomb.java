@@ -96,7 +96,7 @@ public class Thief_MakeBomb extends ThiefSkill implements RecipeDriven
 	{
 		final String obvious;
 		Trap theTrap=null;
-		List<String> theRecipe = null;;
+		List<String> theRecipe = null;
 		final PairList<List<String>,Trap> traps=new PairVector<List<String>,Trap>();
 		final int qualifyingClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(getXLEVELLevel(mob));
 		final List<List<String>> recipes=CMLib.utensils().addExtRecipes(mob,ID(),this.fetchRecipes());
@@ -185,7 +185,7 @@ public class Thief_MakeBomb extends ThiefSkill implements RecipeDriven
 					}
 				}
 			}
-			if(theTrap==null)
+			if((theTrap==null)||(theRecipe==null))
 			{
 				mob.tell(L("'@x1' is not a valid bomb name.  Try BOMB LIST.",name));
 				return false;

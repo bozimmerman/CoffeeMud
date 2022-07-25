@@ -41,7 +41,7 @@ public interface Filterer<K>
 		{
 			return !filter.passesFilter(obj);
 		}
-	};
+	}
 
 	public static class TextFilter implements Filterer<String>
 	{
