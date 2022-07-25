@@ -44,8 +44,8 @@ public class AnimalTrapping extends GatheringSkill
 	public AnimalTrapping()
 	{
 		super();
-		displayText=L("You are hunting...");
-		verb=L("hunting");
+		displayText=L("You are trapping animals...");
+		verb=L("trapping animals");
 	}
 
 	private final static String localizedName = CMLib.lang().L("Animal Trapping");
@@ -108,7 +108,7 @@ public class AnimalTrapping extends GatheringSkill
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		verb=L("hunting");
+		verb=L("trapping animals");
 		found=null;
 		activityRoom=null;
 		final Room R=mob.location();
@@ -158,7 +158,7 @@ public class AnimalTrapping extends GatheringSkill
 		if((resourceType&RawMaterial.RESOURCE_MASK)>=RawMaterial.CODES.NAMES().length)
 		{
 			resourceType=0;
-			Log.errOut("AnimalHunting","Room "+CMLib.map().getExtendedRoomID(R)+" had resource code "+R.myResource());
+			Log.errOut("AnimalTrapping","Room "+CMLib.map().getExtendedRoomID(R)+" had resource code "+R.myResource());
 		}
 		final String resourceName = RawMaterial.CODES.NAME(resourceType).toUpperCase();
 		final int domainType = R.domainType()&(~Room.INDOORS);
