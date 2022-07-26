@@ -73,7 +73,7 @@ public interface TelnetFilter extends CMLibrary
 	public String[] wrapOnlyFilter(String msg, int wrap);
 	public String getLastWord(StringBuffer buf, int lastSp, int lastSpace);
 	public String fullOutFilter(Session S, MOB mob, Physical source, Environmental target, Environmental tool, String msg, boolean wrapOnly);
-	public String simpleInFilter(StringBuilder input, boolean permitMXPTags);
+	public String simpleInFilter(StringBuilder input, boolean permitMXPTags, boolean isArchon);
 	public String simpleInFilter(StringBuilder input);
 	public String fullInFilter(String input);
 	public String safetyFilter(String s);

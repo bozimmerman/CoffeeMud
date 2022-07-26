@@ -2349,7 +2349,11 @@ public class DefaultSession implements Session
 
 			final String str;
 			if(filter)
-				str=CMLib.coffeeFilter().simpleInFilter(inStr,CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,CMSecurity.SecFlag.MXPTAGS));
+			{
+				final boolean doMxp = CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,CMSecurity.SecFlag.MXPTAGS);
+				final boolean isArchon = CMSecurity.isASysOp(mob);
+				str=CMLib.coffeeFilter().simpleInFilter(inStr,doMxp, isArchon);
+			}
 			else
 				str=inStr.toString();
 			if(str==null)
@@ -2425,7 +2429,9 @@ public class DefaultSession implements Session
 		input.setLength(0);
 		if(!sessionMCPCheck(inStr))
 			return null;
-		final String str=CMLib.coffeeFilter().simpleInFilter(inStr,CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,CMSecurity.SecFlag.MXPTAGS));
+		final boolean doMxp = CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,CMSecurity.SecFlag.MXPTAGS);
+		final boolean isArchon = CMSecurity.isASysOp(mob);
+		final String str=CMLib.coffeeFilter().simpleInFilter(inStr,doMxp, isArchon);
 		if(str==null)
 			return null;
 		snoopSupportPrint(str+"\n\r",true);

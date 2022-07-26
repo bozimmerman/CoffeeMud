@@ -1738,11 +1738,11 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 	@Override
 	public String simpleInFilter(final StringBuilder input)
 	{
-		return simpleInFilter(input, false);
+		return simpleInFilter(input, false, false);
 	}
 
 	@Override
-	public String simpleInFilter(StringBuilder input, final boolean permitMXPTags)
+	public String simpleInFilter(StringBuilder input, final boolean permitMXPTags, final boolean isArchon)
 	{
 		if(input==null)
 			return null;
@@ -1764,7 +1764,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					if((dig1>=0)&&(dig2>=0))
 					{
 						final int val=((dig1*16)+dig2);
-						if((val==0xff)||(val==0)||(val==0x1b))
+						if((val==0)
+						||(((val==0xff)||(val==0x1b)||(val==0x07))&&(!isArchon)))
 						{
 							input.insert(x,'\\');
 							x++;
@@ -1824,7 +1825,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				break;
 			}
 		}
-		return simpleInFilter(buf,false).toString();
+		return simpleInFilter(buf,false, false).toString();
 	}
 
 	@Override
