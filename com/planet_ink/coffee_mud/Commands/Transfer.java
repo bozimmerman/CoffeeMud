@@ -85,16 +85,16 @@ public class Transfer extends At
 				final long minDistance = baseDist+sO.radius()+distanceDm;
 				while(CMLib.space().getDistanceFrom(sO.coordinates(), targetSpace) < minDistance)
 				{
-					long distanceDiff = minDistance - CMLib.space().getDistanceFrom(sO.coordinates(), targetSpace);
+					final long distanceDiff = minDistance - CMLib.space().getDistanceFrom(sO.coordinates(), targetSpace);
 					somethingDone=true;
-					double[] randomDir = new double[] { rand.nextDouble() * Math.PI * 2.0, rand.nextDouble() * Math.PI };
+					final double[] randomDir = new double[] { rand.nextDouble() * Math.PI * 2.0, rand.nextDouble() * Math.PI };
 					targetSpace = CMLib.space().moveSpaceObject(targetSpace, randomDir, distanceDiff);
 				}
 			}
 		}
 		return targetSpace;
 	}
-	
+
 	@Override
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
@@ -112,11 +112,12 @@ public class Transfer extends At
 		String searchName=commands.get(0);
 		final Room curRoom=mob.location();
 		final Vector<Physical> xferObjV=new Vector<Physical>();
-		final StringBuffer cmd = new StringBuffer(CMParms.combine(commands,1));
+		StringBuffer cmd = new StringBuffer(CMParms.combine(commands,1));
 		boolean allFlag=false;
 		if(searchName.equalsIgnoreCase("ALL"))
 		{
 			allFlag=true;
+			cmd = new StringBuffer(CMParms.combine(commands,1));
 			if(commands.size()>2)
 			{
 				commands.remove(0);
@@ -129,6 +130,7 @@ public class Transfer extends At
 		if((searchName.equalsIgnoreCase("item")||(searchName.equalsIgnoreCase("items"))))
 		{
 			itemFlag=true;
+			cmd = new StringBuffer(CMParms.combine(commands,1));
 			if(commands.size()>2)
 			{
 				commands.remove(0);
@@ -461,7 +463,7 @@ public class Transfer extends At
 						&&(CMSecurity.isAllowed(mob, targetRoom, CMSecurity.SecFlag.TRANSFER)))
 						{
 							final String itemXML=CMLib.coffeeMaker().getItemXML(I);
-							writer.write("IMPORT <ITEMS>"+itemXML+"</ITEMS>"+blockEnd);
+							writer.write("IMPORT <ITEMS>"+itemXML.trim()+"</ITEMS>"+blockEnd+"\n");
 							mob.tell(getComResponse(writer,reader));
 						}
 					}
@@ -475,7 +477,7 @@ public class Transfer extends At
 						&&(CMSecurity.isAllowed(mob, targetRoom, CMSecurity.SecFlag.TRANSFER)))
 						{
 							final String mobXML=CMLib.coffeeMaker().getMobXML(M);
-							writer.write("IMPORT <MOBS>"+mobXML+"</MOBS>"+blockEnd);
+							writer.write("IMPORT <MOBS>"+mobXML.trim()+"</MOBS>"+blockEnd);
 							mob.tell(getComResponse(writer,reader));
 						}
 					}
@@ -512,7 +514,7 @@ public class Transfer extends At
 			}
 			if((rest.length()>0)&&(Character.isDigit(rest.charAt(0))))
 			{
-				List<String> bits=CMParms.parseAny(rest,',',true);
+				final List<String> bits=CMParms.parseAny(rest,',',true);
 				if(bits.size()==3)
 					targetSpace=new long[] { CMath.s_long(bits.get(0)), CMath.s_long(bits.get(1)), CMath.s_long(bits.get(2))};
 			}
