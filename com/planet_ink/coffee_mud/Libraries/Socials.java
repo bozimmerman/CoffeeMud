@@ -1177,9 +1177,9 @@ public class Socials extends StdLibrary implements SocialsList
 	}
 
 	@Override
-	public String getSocialsHelp(final MOB mob, final String named, final boolean exact)
+	public String getSocialsHelp(final MOB mob, final String named)
 	{
-		final String realName=findSocialName(named,exact);
+		final String realName=findSocialName(named, true);
 		if(realName==null)
 			return null;
 		final List<Social> list=getSocialsSet(realName.toUpperCase());

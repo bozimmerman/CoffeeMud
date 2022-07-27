@@ -749,8 +749,44 @@ public class Clans extends StdLibrary implements ClanManager
 		return lastGovernmentLoad;
 	}
 
+	public String findGovernmentName(final String named, final boolean exact)
+	{
+		for(final ClanGovernment G : getStockGovernments())
+		{
+			if(G.getName().equalsIgnoreCase(named))
+				return G.getName();
+		}
+		if(!exact)
+		{
+			final String uNamed=named.toUpperCase();
+			for(final ClanGovernment G : getStockGovernments())
+			{
+				if(G.getName().toUpperCase().startsWith(uNamed))
+					return G.getName();
+			}
+			for(final ClanGovernment G : getStockGovernments())
+			{
+				for(final ClanPosition P : G.getPositions())
+				{
+					if(P.getName().equalsIgnoreCase(named)||P.getPluralName().equalsIgnoreCase(named))
+						return P.getName();
+				}
+			}
+			for(final ClanGovernment G : getStockGovernments())
+			{
+				for(final ClanPosition P : G.getPositions())
+				{
+					if(P.getName().toUpperCase().startsWith(named.toUpperCase())
+					||P.getPluralName().toUpperCase().startsWith(named.toUpperCase()))
+						return P.getName();
+				}
+			}
+		}
+		return null;
+	}
+
 	@Override
-	public String getGovernmentHelp(final MOB mob, final String named, final boolean exact)
+	public String getGovernmentHelp(final MOB mob, final String named)
 	{
 		ClanGovernment helpG=null;
 		for(final ClanGovernment G : getStockGovernments())
@@ -758,12 +794,6 @@ public class Clans extends StdLibrary implements ClanManager
 			if(G.getName().equalsIgnoreCase(named))
 				helpG=G;
 		}
-		if((helpG==null)&&(exact))
-			return null;
-		if(helpG==null)
-			for(final ClanGovernment G : getStockGovernments())
-				if(G.getName().toUpperCase().startsWith(named.toUpperCase()))
-					helpG=G;
 		if(helpG==null)
 		{
 			final List<ClanGovernment> gtypes=new Vector<ClanGovernment>();
@@ -778,19 +808,6 @@ public class Clans extends StdLibrary implements ClanManager
 						name=P.getName();
 					}
 				}
-			}
-			if(gtypes.size()==0)
-			{
-				if(exact)
-					return null;
-				for(final ClanGovernment G : getStockGovernments())
-					for(final ClanPosition P : G.getPositions())
-						if(P.getName().toUpperCase().startsWith(named.toUpperCase())
-							||P.getPluralName().toUpperCase().startsWith(named.toUpperCase()))
-						{
-							gtypes.add(G);
-							name=P.getName();
-						}
 			}
 			if(gtypes.size()==0)
 				return null;

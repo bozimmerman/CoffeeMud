@@ -172,26 +172,37 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 
 	@Override
-	public String getExpertiseHelp(String ID, final boolean exact)
+	public String findExpertiseID(String ID, final boolean exact)
 	{
 		if(ID==null)
 			return null;
 		ID=ID.toUpperCase();
+		if(helpMap.containsKey(ID))
+			return ID;
 		if(exact)
-			return helpMap.getProperty(ID);
+			return null;
 		for(final Enumeration<Object> e = helpMap.keys();e.hasMoreElements();)
 		{
 			final String key = e.nextElement().toString();
 			if(key.startsWith(ID))
-				return helpMap.getProperty(key);
+				return key;
 		}
 		for(final Enumeration<Object> e = helpMap.keys();e.hasMoreElements();)
 		{
 			final String key = e.nextElement().toString();
 			if(CMLib.english().containsString(key, ID))
-				return helpMap.getProperty(key);
+				return key;
 		}
 		return null;
+	}
+
+
+	@Override
+	public String getExpertiseHelp(final String ID)
+	{
+		if(ID==null)
+			return null;
+		return helpMap.getProperty(ID.toUpperCase());
 	}
 
 	@Override

@@ -3663,7 +3663,7 @@ public class ListCmd extends StdCommand
 						if(defGuess!=null)
 							def=defGuess;
 					}
-					String desc=CMLib.expertises().getExpertiseHelp(def.name().toUpperCase().replaceAll(" ","_"), true);
+					String desc=CMLib.expertises().getExpertiseHelp(def.name().toUpperCase().replaceAll(" ","_"));
 					if((desc!=null)&&(desc.startsWith("<EXPERTISE>")))
 						desc=desc.substring(11);
 					else

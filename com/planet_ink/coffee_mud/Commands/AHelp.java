@@ -153,7 +153,15 @@ public class AHelp extends StdCommand
 		{
 			final Pair<String,String> textP = CMLib.help().getHelpMatch(helpStr,CMLib.help().getArcHelpFile(),mob, 0);
 			if((textP != null) && (textP.second != null))
+			{
 				thisTag=new StringBuffer(textP.second.toString());
+				final List<String> seeAlso = CMLib.help().getSeeAlsoHelpOn(mob, CMLib.help().getArcHelpFile(), helpStr, textP.first, textP.second, 5);
+				if(seeAlso.size()>0)
+				{
+					final String alsoHelpStr = CMLib.english().toEnglishStringList(seeAlso);
+					thisTag.append("\n\rSee also help on: "+alsoHelpStr);
+				}
+			}
 		}
 		if(thisTag==null)
 		{

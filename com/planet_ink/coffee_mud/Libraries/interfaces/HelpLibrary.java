@@ -93,15 +93,16 @@ public interface HelpLibrary extends CMLibrary
 	 * Given the original search term, and the matching helpKey and helpText and mob, this
 	 * will find any other help keys that might be relevant to the search, returning
 	 * the list of also-matching results.
-	 *
+	 * @param mob the mob who wants more options
+	 * @param rHelpFile TODO
 	 * @param helpSearch the original search words
 	 * @param helpKey the officially found help key
 	 * @param helpText the officially processed and found help text
-	 * @param mob the mob who wants more options
 	 * @param howMany the maximum number of options to return
+	 *
 	 * @return the found see-also help keys
 	 */
-	public List<String> getSeeAlsoHelpOn(final String helpSearch, final String helpKey, final String helpText, final MOB mob, final int howMany);
+	public List<String> getSeeAlsoHelpOn(final MOB mob, Properties rHelpFile, final String helpSearch, final String helpKey, final String helpText, final int howMany);
 
 	/**
 	 * Returns the path of the help file that contains the given help key.

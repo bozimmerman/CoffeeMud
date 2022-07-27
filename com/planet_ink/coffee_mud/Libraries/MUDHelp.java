@@ -913,7 +913,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		}
 		if(helpKey.startsWith("SOCIAL_"))
 		{
-			final String helpText=normalizeHelpText(CMLib.socials().getSocialsHelp(forM,helpKeyWSpaces.substring(7), false),skip);
+			final String helpText=normalizeHelpText(CMLib.socials().getSocialsHelp(forM,helpKeyWSpaces.substring(7)),skip);
 			if(helpText!=null)
 				return new Pair<String,String>(helpKeyWSpaces.substring(7), fixHelp(helpKeyWSpaces.substring(7),helpText,forM));
 			return null;
@@ -939,21 +939,21 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 
 		if(helpText==null)
 		{
-			helpText=normalizeHelpText(CMLib.socials().getSocialsHelp(forM,helpKey, true),skip);
+			helpText=normalizeHelpText(CMLib.socials().getSocialsHelp(forM,helpKey),skip);
 			if((helpText==null)
 			&&(helpKeyWSpaces.indexOf(' ')<0))
 			{
-				helpText=normalizeHelpText(CMLib.socials().getSocialsHelp(forM,helpKeyWSpaces,true),skip);
+				helpText=normalizeHelpText(CMLib.socials().getSocialsHelp(forM,helpKeyWSpaces),skip);
 				if(helpText!=null)
 					helpKey=helpKeyWSpaces;
 			}
 		}
 		if(helpText==null)
 		{
-			helpText=normalizeHelpText(CMLib.clans().getGovernmentHelp(forM,helpKey, true),skip);
+			helpText=normalizeHelpText(CMLib.clans().getGovernmentHelp(forM,helpKey),skip);
 			if(helpText==null)
 			{
-				helpText=normalizeHelpText(CMLib.clans().getGovernmentHelp(forM,helpKeyWSpaces,true),skip);
+				helpText=normalizeHelpText(CMLib.clans().getGovernmentHelp(forM,helpKeyWSpaces),skip);
 				if(helpText!=null)
 					helpKey=helpKeyWSpaces;
 			}
@@ -972,10 +972,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		}
 		if(helpText==null)
 		{
-			helpText=normalizeHelpText(CMLib.expertises().getExpertiseHelp(helpKey,true),skip);
+			helpText=normalizeHelpText(CMLib.expertises().getExpertiseHelp(helpKey),skip);
 			if(helpText==null)
 			{
-				helpText=normalizeHelpText(CMLib.expertises().getExpertiseHelp(helpKeyWSpaces,true),skip);
+				helpText=normalizeHelpText(CMLib.expertises().getExpertiseHelp(helpKeyWSpaces),skip);
 				if(helpText!=null)
 					helpKey=helpKeyWSpaces;
 			}
@@ -1015,7 +1015,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		}
 		if(helpText==null)
 		{
-			helpText=normalizeHelpText(CMLib.achievements().getAchievementsHelp(helpKeyWSpaces,true),skip);
+			helpText=normalizeHelpText(CMLib.achievements().getAchievementsHelp(helpKeyWSpaces),skip);
 		}
 		if(helpText==null)
 		{
@@ -1028,7 +1028,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					helpText = normalizeHelpText(CMLib.map().getArea(A.Name()).getAreaStats().toString(),skip);
 					if(helpText != null)
 					{
-						helpKey=A.name();
+						helpKey=A.name().toUpperCase();
 						break;
 					}
 				}
@@ -1086,39 +1086,86 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				}
 			}
 		}
-
 		if(helpText==null)
 		{
-			helpText=normalizeHelpText(CMLib.socials().getSocialsHelp(forM,helpKey, false),skip);
+			final String realKey = CMLib.socials().findSocialName(helpKey, false);
+			if(realKey != null)
+			{
+				helpText=normalizeHelpText(CMLib.socials().getSocialsHelp(forM,realKey),skip);
+				if(helpText != null)
+					helpKey=realKey;
+			}
 		}
 
 		if(helpText==null)
 		{
-			helpText=normalizeHelpText(CMLib.clans().getGovernmentHelp(forM,helpKey, false),skip);
+			final String realKey = CMLib.socials().findSocialName(helpKey, false);
+			if(realKey != null)
+			{
+				helpText=normalizeHelpText(CMLib.clans().getGovernmentHelp(forM,realKey),skip);
+				if(helpText != null)
+					helpKey=realKey;
+			}
 		}
 
 		if(helpText==null)
 		{
 			Ability A=CMClass.findAbility(helpKey,-1,-1,false);
 			if((A!=null)&&(A.isGeneric()))
+			{
+				helpKey = A.Name();
 				helpText=normalizeHelpText(A.getStat("HELP"),skip);
+			}
 			else
 			{
 				A=CMClass.findAbility(helpKeyWSpaces,-1,-1,false);
 				if((A!=null)&&(A.isGeneric()))
+				{
+					helpKey = A.Name();
 					helpText=normalizeHelpText(A.getStat("HELP"),skip);
+				}
 			}
 		}
 
 		if(helpText==null)
 		{
-			helpText=normalizeHelpText(CMLib.expertises().getExpertiseHelp(helpKey,false),skip);
+			final String realKey = CMLib.expertises().findExpertiseID(helpKey, false);
+			if(realKey != null)
+			{
+				helpText=normalizeHelpText(CMLib.expertises().getExpertiseHelp(realKey),skip);
+				if(helpText != null)
+					helpKey=realKey;
+			}
 		}
 		if(helpText==null)
 		{
-			helpText=normalizeHelpText(CMLib.achievements().getAchievementsHelp(helpKeyWSpaces,false),skip);
+			String realKey = CMLib.expertises().findExpertiseID(helpKey, false);
+			if(realKey == null)
+				realKey = CMLib.expertises().findExpertiseID(helpKeyWSpaces, false);
+			if(realKey != null)
+			{
+				helpText=normalizeHelpText(CMLib.achievements().getAchievementsHelp(realKey),skip);
+				if(helpText != null)
+					helpKey=realKey;
+			}
 		}
 
+		if(helpText==null)
+		{
+			for(final Enumeration<Object> e=rHelpFile.keys();e.hasMoreElements();)
+			{
+				final String key=((String)e.nextElement()).toUpperCase();
+				if(key.indexOf(helpKey)>=0)
+				{
+					helpText=normalizeHelpText(rHelpFile.getProperty(key),skip);
+					if(helpText != null)
+					{
+						helpKey=key;
+						break;
+					}
+				}
+			}
+		}
 		if(helpText==null)
 		{
 			for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
@@ -1130,7 +1177,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					helpText=normalizeHelpText(CMLib.map().getArea(A.Name()).getAreaStats().toString(),skip);
 					if(helpText != null)
 					{
-						helpKey=A.name();
+						helpKey=A.name().toUpperCase();
 						break;
 					}
 				}
@@ -1140,11 +1187,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		{
 			Deity D = CMLib.map().getDeity(helpKey);
 			if(D==null)
-			{
 				D = CMLib.map().getDeity(helpKeyWSpaces);
-				if(D!=null)
-					helpKey=helpKeyWSpaces;
-			}
 			if(D != null)
 			{
 				final Command CMD=CMClass.getCommand("Deities");
@@ -1558,10 +1601,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	}
 
 	@Override
-	public List<String> getSeeAlsoHelpOn(final String helpSearch, final String helpKey, final String helpText, final MOB mob, final int howMany)
+	public List<String> getSeeAlsoHelpOn(final MOB mob, final Properties rHelpFile, final String helpSearch, final String helpKey, final String helpText, final int howMany)
 	{
-		final boolean canArc=CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP);
-		final String[] seeAlso = seeAlsoCache.get(canArc+"/"+helpKey);
+		final boolean isArc = rHelpFile == getArcHelpFile();
+		final String[] seeAlso = seeAlsoCache.get(isArc+"/"+helpKey);
 		if(seeAlso != null)
 			return Arrays.asList(seeAlso);
 		final String nKey = helpKey.replace(' ', '_');
@@ -1570,7 +1613,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		otherHelpTexts.add(helpText);
 		for(int i=1;i<(howMany*4) && (otherHelps.size()<howMany);i++)
 		{
-			final Pair<String, String> m = getHelpMatch(helpSearch,getHelpFile(),mob, i);
+			final Pair<String, String> m = getHelpMatch(helpSearch,rHelpFile,mob, i);
 			if((m==null)
 			||(m.second==null))
 				break;
@@ -1581,38 +1624,18 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			otherHelps.add(m.first);
 			otherHelpTexts.add(m.second);
 		}
-		final Properties rHelpFile2=canArc?getArcHelpFile():null;
-		if(canArc)
-		{
-			for(int i=1;i<(howMany*4) && (otherHelps.size()<howMany);i++)
-			{
-				final Pair<String, String> m = getHelpMatch(helpSearch,rHelpFile2,mob, i);
-				if((m==null)
-				||(m.second==null))
-					break;
-				if((m.first.replace(' ', '_').equalsIgnoreCase(nKey))
-				||(otherHelps.contains(m.first))
-				||(otherHelpTexts.contains(m.second)))
-					continue;
-				otherHelps.add(m.first);
-				otherHelpTexts.add(m.second);
-			}
-		}
 		if(otherHelps.size()==0)
 		{
-			final List<String> thisList = getHelpList( helpSearch, getHelpFile(), rHelpFile2, mob);
+			final List<String> thisList = getHelpList( helpSearch, rHelpFile, null, mob);
 			for(final String s : thisList)
 			{
 				if(otherHelps.size()>=howMany)
 					break;
 				if((!s.replace(' ', '_').equalsIgnoreCase(nKey))
 				&&(!otherHelps.contains(s))
-				&&(getHelpFile().contains(s)||((rHelpFile2!=null)&&(rHelpFile2.contains(s)))))
+				&&(getHelpFile().contains(s)))
 				{
-					Pair<String, String> m = getHelpMatch(s,getHelpFile(),mob, 0);
-					if(((m==null)||(m.second==null))
-					&&(rHelpFile2 != null))
-						m = getHelpMatch(s,rHelpFile2,mob, 0);
+					final Pair<String, String> m = getHelpMatch(s,rHelpFile,mob, 0);
 					if((m==null)
 					||(m.second==null)
 					||(m.first.replace(' ', '_').equalsIgnoreCase(nKey))
@@ -1625,7 +1648,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				}
 			}
 		}
-		seeAlsoCache.put(canArc+"/"+helpKey,otherHelps.toArray(new String[otherHelps.size()]));
+		seeAlsoCache.put(isArc+"/"+helpKey,otherHelps.toArray(new String[otherHelps.size()]));
 		return otherHelps;
 	}
 

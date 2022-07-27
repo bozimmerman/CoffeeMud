@@ -151,10 +151,18 @@ public interface ExpertiseLibrary extends CMLibrary
 	 * Gets the help/info about a specific expertise stage.
 	 *
 	 * @param ID the expertise stage id, or search string
-	 * @param exact true to return exact match, or false for the first
 	 * @return help/info text for the stage
 	 */
-	public String getExpertiseHelp(String ID, boolean exact);
+	public String getExpertiseHelp(String ID);
+
+	/**
+	 * Finds the expertise ID being searched for, or null
+	 *
+	 * @param ID the ID to search for
+	 * @param exact true for exact matches only
+	 * @return null, or the final ID
+	 */
+	public String findExpertiseID(String ID, final boolean exact);
 
 	/**
 	 * Returns the number of stages of the given base

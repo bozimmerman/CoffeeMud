@@ -61,15 +61,25 @@ public class Help extends StdCommand
 			helpText=Resources.getFileResource("help/help.txt",true).toString();
 		else
 		{
-			Pair<String, String> match=CMLib.help().getHelpMatch(helpStr,CMLib.help().getHelpFile(),mob, 0);
+			final Properties helpProps =  CMLib.help().getHelpFile();
+			final Properties ahelpProps =  CMLib.help().getArcHelpFile();
+			Pair<String, String> match=CMLib.help().getHelpMatch(helpStr,helpProps,mob, 0);
 			if(((match==null)||(match.second==null))
 			&&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP)))
-				match=CMLib.help().getHelpMatch(helpStr,CMLib.help().getArcHelpFile(),mob, 0);
+				match=CMLib.help().getHelpMatch(helpStr,ahelpProps,mob, 0);
 			if((match!=null)
 			&&(match.second!=null))
 			{
 				helpText = match.second;
-				final List<String> seeAlso = CMLib.help().getSeeAlsoHelpOn(helpStr, match.first, match.second, mob, 5);
+				final List<String> seeAlso = CMLib.help().getSeeAlsoHelpOn(mob, helpProps, helpStr, match.first, match.second, 5);
+				if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP))
+				{
+					for(final String s : CMLib.help().getSeeAlsoHelpOn(mob, ahelpProps, helpStr, match.first, match.second, 5))
+					{
+						if(!seeAlso.contains(s))
+							seeAlso.add(s);
+					}
+				}
 				if(seeAlso.size()>0)
 				{
 					final String alsoHelpStr = CMLib.english().toEnglishStringList(seeAlso);

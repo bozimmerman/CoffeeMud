@@ -171,14 +171,14 @@ public interface ClanManager extends CMLibrary
 	public int getCommonClanRelations(Clan clan1, Clan clan2);
 
 	/**
-	 * Returns all existing clans who have the given common relationship with 
+	 * Returns all existing clans who have the given common relationship with
 	 * the given clan.
 	 * @param C the clan to find relations with
 	 * @param rel the relationship to find, usually war or ally
 	 * @return the list of clans that are related in the given way
 	 */
 	public List<Clan> getAllCommonClanRelations(final Clan C, final int rel);
-	
+
 	/**
 	 * Get last time governments were loaded/updated
 	 * @return time in ms
@@ -411,12 +411,26 @@ public interface ClanManager extends CMLibrary
 
 	/**
 	 * Returns help on the government type named, if it is available
+	 *
+	 * @see ClanManager#findGovernmentName(String, boolean)
+	 *
 	 * @param mob the viewer of the government type
 	 * @param named the possible name of the government
-	 * @param exact true to only match exact, or false otherwise
 	 * @return null, or the help for the government named
 	 */
-	public String getGovernmentHelp(MOB mob, String named, boolean exact);
+	public String getGovernmentHelp(MOB mob, String named);
+
+	/**
+	 * Find the name of a government, or, if exactness is not
+	 * required, a position in a government.
+	 *
+	 * @see ClanManager#getGovernmentHelp(MOB, String)
+	 *
+	 * @param named the government name for exact, or position name
+	 * @param exact true for exact match only, false otherwise
+	 * @return the more exact name
+	 */
+	public String findGovernmentName(final String named, final boolean exact);
 
 	/**
 	 * Returns a government definition object of the given internal

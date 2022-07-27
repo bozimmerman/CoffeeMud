@@ -8673,51 +8673,53 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	}
 
 	@Override
-	public String getAchievementsHelp(String ID, final boolean exact)
+	public String findAchievementID(String ID, final boolean exact)
 	{
 		if(ID==null)
 			return null;
 		ID = ID.replace('`','\'');
-		Achievement A=this.getAchievement(ID.toUpperCase());
-		if(A == null)
+		final Achievement A=this.getAchievement(ID.toUpperCase());
+		if(A!=null)
+			return ID.toUpperCase();
+		for(final Enumeration<Achievement> a=achievements(null); a.hasMoreElements();)
 		{
-			for(final Enumeration<Achievement> a=achievements(null); a.hasMoreElements();)
-			{
-				final Achievement A2 = a.nextElement();
-				if(A2.getDisplayStr().equalsIgnoreCase(ID))
-				{
-					A=A2;
-					break;
-				}
-			}
+			final Achievement A2 = a.nextElement();
+			if(A2.getDisplayStr().equalsIgnoreCase(ID))
+				return A2.getDisplayStr().toUpperCase();
 		}
 		if(exact)
+			return null;
+		for(final Enumeration<Achievement> a=achievements(null); a.hasMoreElements();)
+		{
+			final Achievement A2 = a.nextElement();
+			if(A2.getTattoo().toUpperCase().startsWith(ID.toUpperCase()))
+				return A2.getTattoo().toUpperCase();
+		}
+		for(final Enumeration<Achievement> a=achievements(null); a.hasMoreElements();)
+		{
+			final Achievement A2 = a.nextElement();
+			if(A2.getDisplayStr().toLowerCase().startsWith(ID.toLowerCase()))
+				return A2.getDisplayStr().toUpperCase();
+		}
+		return null;
+	}
+
+	@Override
+	public String getAchievementsHelp(String ID)
+	{
+		if(ID==null)
+			return null;
+		ID = ID.replace('`','\'');
+		final Achievement A=getAchievement(ID.toUpperCase());
+		if(A!=null)
 			return makeAchievementHelp(A);
-		if(A == null)
+		for(final Enumeration<Achievement> a=achievements(null); a.hasMoreElements();)
 		{
-			for(final Enumeration<Achievement> a=achievements(null); a.hasMoreElements();)
-			{
-				final Achievement A2 = a.nextElement();
-				if(A2.getTattoo().toUpperCase().startsWith(ID.toUpperCase()))
-				{
-					A=A2;
-					break;
-				}
-			}
+			final Achievement A2 = a.nextElement();
+			if(A2.getDisplayStr().equalsIgnoreCase(ID))
+				return makeAchievementHelp(A2);
 		}
-		if(A == null)
-		{
-			for(final Enumeration<Achievement> a=achievements(null); a.hasMoreElements();)
-			{
-				final Achievement A2 = a.nextElement();
-				if(A2.getDisplayStr().toLowerCase().startsWith(ID.toLowerCase()))
-				{
-					A=A2;
-					break;
-				}
-			}
-		}
-		return makeAchievementHelp(A);
+		return null;
 	}
 
 	@Override

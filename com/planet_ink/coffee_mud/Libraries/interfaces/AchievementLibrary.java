@@ -707,10 +707,19 @@ public interface AchievementLibrary extends CMLibrary
 	 * Searches for an Achievement of the given tattoo name or display name,
 	 * and returns a help entry for the achievement.
 	 * @param ID the tattoo name or display name
-	 * @param exact true for exact matches only, false for startswith
 	 * @return the help entry, or ""
 	 */
-	public String getAchievementsHelp(String ID, boolean exact);
+	public String getAchievementsHelp(String ID);
+
+	/**
+	 * Searches for an Achievement of the given tattoo name or display name,
+	 * and returns the tattoo or display name that applies.
+	 *
+	 * @param ID the tattoo name or display name
+	 * @param exact true for exact match only, false otherwise
+	 * @return the final tattoo name or display name
+	 */
+	public String findAchievementID(String ID, final boolean exact);
 
 	/**
 	 * Returns a friendly description of the award, adjusting for the recipient, and
