@@ -116,6 +116,7 @@ public class Skill_Subdue extends StdSkill
 		if(affected instanceof MOB)
 		{
 			final MOB M=(MOB)affected;
+			final MOB whom = (this.whom==null)?M.getVictim():this.whom;
 			if(canBeUninvoked()&&
 			(M.amDead()||(!CMLib.flags().isInTheGame(M, false))||(!M.amActive())||M.amDestroyed()||(M.getVictim()!=whom)))
 			{
@@ -139,6 +140,7 @@ public class Skill_Subdue extends StdSkill
 	{
 		if(affected instanceof MOB)
 		{
+			final MOB whom = (this.whom==null)?((MOB)affected).getVictim():this.whom;
 			if((msg.source()==affected)
 			&&(msg.target()==whom)
 			&&(msg.targetMinor()==CMMsg.TYP_EXAMINE)

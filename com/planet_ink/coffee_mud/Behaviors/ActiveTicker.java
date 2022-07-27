@@ -126,6 +126,8 @@ public class ActiveTicker extends StdBehavior
 				tickReset();
 				if((ticking instanceof MOB)&&(!canActAtAll(ticking)))
 					return false;
+				if(CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+					return false;
 				return canChance();
 			}
 			break;

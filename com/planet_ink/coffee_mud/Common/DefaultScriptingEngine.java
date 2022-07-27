@@ -11697,6 +11697,32 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					monster.setVictim((MOB)newTarget);
 				break;
 			}
+			case 98: // mphit
+			{
+				if(tt==null)
+				{
+					tt=parseBits(script,si,"Cr");
+					if(tt==null)
+						return null;
+				}
+				final Environmental newTarget=getArgumentMOB(tt[1],source,monster,target,primaryItem,secondaryItem,msg,tmp);
+				if((newTarget!=null)
+				&&(newTarget instanceof MOB)
+				&&(monster!=null))
+				{
+					final Room R=((MOB)newTarget).location();
+					final Map<MOB,MOB> preAttackMap = new HashMap<MOB,MOB>();
+					for(final Enumeration<MOB> r=R.inhabitants();r.hasMoreElements();)
+					{
+						final MOB M=r.nextElement();
+						preAttackMap.put(M, M.getVictim());
+					}
+					CMLib.combat().postAttack(monster, (MOB)newTarget, monster.fetchWieldedItem());
+					for(final MOB M : preAttackMap.keySet())
+						M.setVictim(preAttackMap.get(M));
+				}
+				break;
+			}
 			case 51: // mpsetclandata
 			{
 				if(tt==null)
