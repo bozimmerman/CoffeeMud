@@ -122,7 +122,7 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 	public Item buildHouseplant(final MOB mob, final Room room)
 	{
 		final Item newItem=CMClass.getItem("GenItem");
-		newItem.setMaterial(RawMaterial.RESOURCE_GREENS);
+		newItem.setMaterial(RawMaterial.RESOURCE_FLOWERS);
 		switch(CMLib.dice().roll(1,7,0))
 		{
 		case 1:

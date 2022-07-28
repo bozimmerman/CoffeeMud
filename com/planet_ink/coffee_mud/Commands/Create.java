@@ -854,7 +854,7 @@ public class Create extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is CREATE MIXEDRACE [RACE ID] [RACE ID]\n\r"));
+			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is CREATE MIXEDRACE [MOTHER RACE ID] [FATHER RACE ID]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}

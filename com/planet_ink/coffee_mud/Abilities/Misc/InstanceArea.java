@@ -1097,13 +1097,15 @@ public class InstanceArea extends StdAbility
 					if(instVars.containsKey(InstVar.MIXRACE.toString()))
 					{
 						final String mixRace = instVars.get(InstVar.MIXRACE.toString());
-						final Race firstR=CMClass.getRace(mixRace);
-						if(firstR==null)
+						Race motherR=CMClass.getRace(mixRace);
+						if(motherR==null)
 							Log.errOut("InstanceArea","Unknown mixrace: "+mixRace);
 						else
 						{
-							final Race secondR=M.charStats().getMyRace();
-							final Race R=CMLib.utensils().getMixedRace(firstR.ID(),secondR.ID(), false);
+							final boolean mixWithMale = M.charStats().getStat(CharStats.STAT_GENDER) == 'M';
+							final Race fatherR=mixWithMale?M.charStats().getMyRace():motherR;
+							motherR=mixWithMale?motherR:M.charStats().getMyRace();
+							final Race R=CMLib.utensils().getMixedRace(motherR.ID(),fatherR.ID(), false);
 							if(R!=null)
 							{
 								M.baseCharStats().setMyRace(R);

@@ -3600,27 +3600,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 					break;
 				}
-				case 118: // visited
-				{
-					if(tlen==1)
-						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-					final String arg1=tt[t+0];
-					final String arg2=tt[t+1];
-					final PhysicalAgent MP=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-					if((!(MP instanceof MOB))
-					||(!((MOB)MP).isPlayer()))
-						returnable=false;
-					else
-					{
-						final MOB M=(MOB)MP;
-						final Room P=this.getRoom(arg2,lastKnownLocation);
-						if(P==null)
-							returnable=false;
-						else
-							returnable = M.playerStats().hasVisited(P);
-					}
-					break;
-				}
 				case 59: // isopen
 				{
 					final String arg1=CMParms.cleanBit(funcParms);
@@ -4826,7 +4805,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					else
 					{
 						returnable=false;
-						logError(scripted,"EXPLORED","Unknown MOB",tt[t+0]);
+						logError(scripted,"EXPERTISE","Unknown MOB",tt[t+0]);
 						return returnable;
 					}
 					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
@@ -4836,7 +4815,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(A==null)
 					{
 						returnable=false;
-						logError(scripted,"EXPLORED","Unknown Ability on MOB '"+M.name()+"'",tt[t+1]);
+						logError(scripted,"EXPERTISE","Unknown Ability on MOB '"+M.name()+"'",tt[t+1]);
 						return returnable;
 					}
 					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -4844,7 +4823,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(experFlag == null)
 					{
 						returnable=false;
-						logError(scripted,"EXPLORED","Unknown Exper Flag",tt[t+2]);
+						logError(scripted,"EXPERTISE","Unknown Exper Flag",tt[t+2]);
 						return returnable;
 					}
 					final int num=CMLib.expertises().getExpertiseLevelCached(M, A.ID(), experFlag);
@@ -4870,30 +4849,41 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						logError(scripted,"EXPLORED","Unknown Code",whom);
 						return returnable;
 					}
+					final MOB M=(MOB)E;
+					final PlayerStats pStats = M.playerStats();
+					if(pStats == null)
+					{
+						logError(scripted,"EXPLORED","Not a player",whom);
+						return returnable;
+					}
 					Area A=null;
+					int pct=0;
 					if(!where.equalsIgnoreCase("world"))
 					{
 						A=CMLib.map().getArea(where);
 						if(A==null)
 						{
 							final Environmental E2=getArgumentItem(where,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-							if(E2 != null)
+							if((E2 != null)
+							&&(!(E2 instanceof Room)))
 								A=CMLib.map().areaLocation(E2);
 						}
-						if(A==null)
+						if(A!=null)
+							pct=pStats.percentVisited(M,A);
+						else
 						{
-							logError(scripted,"EXPLORED","Unknown Area",where);
-							return returnable;
+							final Room P=getRoom(arg2, lastKnownLocation);
+							if(P==null)
+							{
+								logError(scripted,"EXPLORED","Unknown Area",where);
+								return returnable;
+							}
+							pct = pStats.hasVisited(P) ? 100 : 0;
 						}
 					}
-					if(lastKnownLocation!=null)
-					{
-						int pct=0;
-						final MOB M=(MOB)E;
-						if(M.playerStats()!=null)
-							pct=M.playerStats().percentVisited(M,A);
-						returnable=simpleEval(scripted,""+pct,arg2,cmp,"EXPLORED");
-					}
+					else
+						pct=pStats.percentVisited(M,A);
+					returnable=simpleEval(scripted,""+pct,arg2,cmp,"EXPLORED");
 					break;
 				}
 				case 72: // faction
@@ -7362,10 +7352,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				break;
 			}
 			case 113: // canhear
-			{
-				break;
-			}
-			case 118: // visited
 			{
 				break;
 			}

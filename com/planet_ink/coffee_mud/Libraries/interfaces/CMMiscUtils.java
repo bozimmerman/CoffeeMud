@@ -416,12 +416,12 @@ public interface CMMiscUtils extends CMLibrary
 	 * Absolutely returns the correct race when mixing races of the
 	 * two given IDs.  Applies system rules to the generation.
 	 *
-	 * @param race1 the mother race
-	 * @param race2 the father race
+	 * @param motherRaceID the mother race
+	 * @param fatherRaceID the father race
 	 * @param ignoreRules ignore the ini file override rules
 	 * @return the mixed race
 	 */
-	public Race getMixedRace(String race1, String race2, boolean ignoreRules);
+	public Race getMixedRace(String motherRaceID, String fatherRaceID, boolean ignoreRules);
 
 	/**
 	 * Breaks apart a given generic mixed race ID to figure

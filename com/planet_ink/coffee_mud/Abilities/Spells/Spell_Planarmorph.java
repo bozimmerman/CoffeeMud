@@ -236,11 +236,15 @@ public class Spell_Planarmorph extends Spell
 				if((planarVars != null)&&(planarVars.size()>0))
 				{
 					final String mixRace=planarVars.get(PlanarVar.MIXRACE.name());
+					final Race R;
 					if((mixRace != null)
 					&& (mixRace.length()>0)
-					&& (CMClass.getRace(mixRace) != null))
+					&& ((R=CMClass.getRace(mixRace)) != null))
 					{
-						newRace=CMLib.utensils().getMixedRace(mixRace, target.charStats().getMyRace().ID(), false);
+						final boolean mixWithMale = target.charStats().getStat(CharStats.STAT_GENDER) == 'M';
+						final Race fatherR=mixWithMale?target.charStats().getMyRace():R;
+						final Race motherR=mixWithMale?R:target.charStats().getMyRace();
+						newRace=CMLib.utensils().getMixedRace(motherR.ID(), fatherR.ID(), false);
 						if(newRace != null)
 						{
 							if(target.location()!=null)
@@ -340,12 +344,14 @@ public class Spell_Planarmorph extends Spell
 		plane.setMiscText(planeName);
 		final Map<String,String> planarVars = plane.getPlaneVars();
 		final String mixRace=planarVars.get(PlanarVar.MIXRACE.name());
-		if((mixRace == null) || (mixRace.length()==0) || (CMClass.getRace(mixRace) == null))
+		if((mixRace == null)
+		|| (mixRace.length()==0)
+		|| (CMClass.getRace(mixRace) == null))
 		{
 			mob.tell(L("This magic would not do anything on this plane of existence!"));
 			return false;
 		}
-
+		Race motherR=CMClass.getRace(mixRace);
 		if(target.fetchEffect(this.ID())!=null)
 		{
 			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already polymorphed."));
@@ -358,7 +364,10 @@ public class Spell_Planarmorph extends Spell
 			return false;
 		}
 
-		final Race R=CMLib.utensils().getMixedRace(mixRace, target.charStats().getMyRace().ID(), false);
+		final boolean mixWithMale = target.charStats().getStat(CharStats.STAT_GENDER) == 'M';
+		final Race fatherR=mixWithMale?target.charStats().getMyRace():motherR;
+		motherR=mixWithMale?motherR:target.charStats().getMyRace();
+		final Race R=CMLib.utensils().getMixedRace(motherR.ID(), fatherR.ID(), false);
 		if(R==null)
 		{
 			mob.tell(L("This magic does not seem to work for you here!"));

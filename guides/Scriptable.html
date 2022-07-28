@@ -555,7 +555,7 @@ Operators</a></li>
 
             <li><a href="#value">value</a></li>
 
-            <li><a href="#var">var</a></li><li><a href="#visited">visited</a></li>
+            <li><a href="#var">var</a></li>
 
             <li><a href="#worn">worn</a></li>
 
@@ -3447,7 +3447,7 @@ experience points of the given mob.</td>
           <tr>
 
             <td>EXPLORED([code]
-[areaname or world])</td>
+[areaname, roomid, or "world"])</td>
 
             <td>Returns the % the
 given mob has explored of the world
@@ -7034,19 +7034,21 @@ LOWCOST,&nbsp;XPCOST,&nbsp;LOWFREECOST.<br />
 
       <p>Usage:</p>
 
-      <pre>explored(character areaname == number)<br />explored(character world == number)<br /></pre>
+      <pre>explored(character areaname == number)<br />explored(character world == number)<br />explored(character roomid == number)<br /></pre>
 
-      <p>This function compares
+      <p>This
+function compares
 the percentage of the given area or of
 the world which the given mob has explored. The number should always be
 between 0 and 100, reflecting what percentage of the area or world that
 the character has explored. Where '==' may be any other logical
 operator from above. Remember that percentage exploration is only
-stored for players, not for NPC mobs.</p>
+stored for players, not for NPC mobs. &nbsp;When checking a single
+room, the result will always be 0 or 100, and nothing in-between.</p>
 
       <p>EXAMPLES:</p>
 
-      <pre>if explored($n $a &gt; 10)<br /> mpecho You have explored more than 10% of this area.<br />else<br /> mpecho You have explored less than 10% of this area.<br />endif<br /><br />if explored($n world &gt; 10)<br /> mpecho You have explored more than 10% of the world.<br />else<br /> mpecho You have explored less than 10% of the world.<br />endif<br /></pre>
+      <pre>if explored($n $a &gt; 10)<br /> mpecho You have explored more than 10% of this area.<br />else<br /> mpecho You have explored less than 10% of this area.<br />endif<br /><br />if explored($n 'My Area#4' == 100)<br /> mpecho You have explored this room.<br />else<br /> mpecho You have not explored this room.<br />endif<br /><br />if explored($n world &gt; 10)<br /> mpecho You have explored more than 10% of the world.<br />else<br /> mpecho You have explored less than 10% of the world.<br />endif<br /></pre>
 
       <h3><a name="faction">faction</a></h3>
 
@@ -8594,21 +8596,7 @@ to use them with quests, and on variable scopes.</p>
 
       <p>EXAMPLE:</p>
 
-      <pre>if var($n KILLS &gt; 10)<br /> mpecho The actor's KILLS variable is greater than 10.<br />else<br /> mpecho The actor's KILLS variable is equal to or less than 10.<br />endif<br /></pre>
-
-      <h3><a name="visited">visited</a></h3>
-
-      <p>Usage:</p>
-
-      <pre>visited(character room)<br /></pre>
-
-      <p>This
-function checks whether the Player designated by the first argument has
-ever been in the room designated by the second argument.</p>
-
-      <p>EXAMPLE:</p>
-
-      <pre>if visited($n 'Midgaard#3001')<br /> mpecho The actor's has been to Midgaard Temple<br />else<br /> mpecho The actor's has never been to Midgaard Temple<br />endif</pre><h3><a name="worn">worn</a></h3>
+      <pre>if var($n KILLS &gt; 10)<br /> mpecho The actor's KILLS variable is greater than 10.<br />else<br /> mpecho The actor's KILLS variable is equal to or less than 10.<br />endif<br /></pre><h3><a name="worn">worn</a></h3>
 
       <p>Usage:</p>
 

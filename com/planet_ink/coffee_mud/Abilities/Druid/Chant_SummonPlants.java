@@ -117,7 +117,7 @@ public class Chant_SummonPlants extends Chant
 	public Item buildPlant(final MOB mob, final Room room)
 	{
 		final Item newItem=CMClass.getItem("GenItem");
-		newItem.setMaterial(RawMaterial.RESOURCE_GREENS);
+		newItem.setMaterial(RawMaterial.RESOURCE_FLOWERS);
 		switch(CMLib.dice().roll(1,5,0))
 		{
 		case 1:
@@ -127,11 +127,13 @@ public class Chant_SummonPlants extends Chant
 			break;
 		case 2:
 			newItem.setName(L("some happy weeds"));
+			newItem.setMaterial(RawMaterial.RESOURCE_GREENS);
 			newItem.setDisplayText(L("some happy weeds are growing here."));
 			newItem.setDescription(L("Long stalked little plants with tiny bulbs on top."));
 			break;
 		case 3:
 			newItem.setName(L("a pretty fern"));
+			newItem.setMaterial(RawMaterial.RESOURCE_GREENS);
 			newItem.setDisplayText(L("a pretty fern is growing here."));
 			newItem.setDescription(L("Like a tiny bush, this dark green plant is lovely."));
 			break;

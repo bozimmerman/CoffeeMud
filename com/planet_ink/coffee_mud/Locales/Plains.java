@@ -62,6 +62,7 @@ public class Plains extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_RICE),
 		Integer.valueOf(RawMaterial.RESOURCE_SMURFBERRIES),
 		Integer.valueOf(RawMaterial.RESOURCE_GREENS),
+		Integer.valueOf(RawMaterial.RESOURCE_VEGETABLE),
 		Integer.valueOf(RawMaterial.RESOURCE_CARROTS),
 		Integer.valueOf(RawMaterial.RESOURCE_TOMATOES),
 		Integer.valueOf(RawMaterial.RESOURCE_BEANS),

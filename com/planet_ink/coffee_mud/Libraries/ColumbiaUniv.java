@@ -46,14 +46,15 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		return "ColumbiaUniv";
 	}
 
-	protected SHashtable<String,ExpertiseLibrary.ExpertiseDefinition> completeEduMap=new SHashtable<String,ExpertiseLibrary.ExpertiseDefinition>();
-	protected SHashtable<String,List<String>> baseEduSetLists=new SHashtable<String,List<String>>();
+	protected SHashtable<String, ExpertiseDefinition>	completeEduMap		= new SHashtable<String, ExpertiseDefinition>();
+	protected SHashtable<String, List<String>>			baseEduSetLists		= new SHashtable<String, List<String>>();
+
 	@SuppressWarnings("unchecked")
-	protected Map<String,String>[] completeUsageMap=new Hashtable[ExpertiseLibrary.XType.values().length];
+	protected Map<String, String>[]		completeUsageMap	= new Hashtable[XType.values().length];
 	@SuppressWarnings("unchecked")
-	protected Map<String,String[]>[] completeUsageMaps=new Hashtable[ExpertiseLibrary.XType.values().length];
-	protected Properties helpMap=new Properties();
-	protected DVector rawDefinitions=new DVector(7);
+	protected Map<String, String[]>[]	completeUsageMaps	= new Hashtable[XType.values().length];
+	protected Map<String, String>		helpMap				= new TreeMap<String, String>();
+	protected DVector					rawDefinitions		= new DVector(7);
 
 	protected ExpertiseLibrary.ExpertiseDefinition addDefinition(final String ID, final String name, final String baseName, final String listMask, final String finalMask, final String[] costs, final String[] data)
 	{
@@ -181,15 +182,13 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			return ID;
 		if(exact)
 			return null;
-		for(final Enumeration<Object> e = helpMap.keys();e.hasMoreElements();)
+		for(final String key :  helpMap.keySet())
 		{
-			final String key = e.nextElement().toString();
 			if(key.startsWith(ID))
 				return key;
 		}
-		for(final Enumeration<Object> e = helpMap.keys();e.hasMoreElements();)
+		for(final String key :  helpMap.keySet())
 		{
-			final String key = e.nextElement().toString();
 			if(CMLib.english().containsString(key, ID))
 				return key;
 		}
@@ -202,7 +201,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	{
 		if(ID==null)
 			return null;
-		return helpMap.getProperty(ID.toUpperCase());
+		return helpMap.get(ID.toUpperCase());
 	}
 
 	@Override
@@ -819,10 +818,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				def=getDefinition(ID);
 				WKID=def.name().toUpperCase().replace(' ','_');
 				if(addIfPossible)
-				{
-					helpMap.remove(WKID);
 					helpMap.put(WKID,row);
-				}
 			}
 			else
 			{

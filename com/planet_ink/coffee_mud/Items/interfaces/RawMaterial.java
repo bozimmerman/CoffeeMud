@@ -579,6 +579,7 @@ public interface RawMaterial extends Item
 	public final static int	RESOURCE_FUNGUS			= MATERIAL_VEGETATION | 206;
 	public final static int	RESOURCE_PALLADIUM		= MATERIAL_METAL | 207;
 	public final static int	RESOURCE_NICKEL			= MATERIAL_METAL | 208;
+	public final static int RESOURCE_VEGETABLE		= MATERIAL_VEGETATION | 209;
 
 	public final static int	RESOURCE_MASK			= 255;
 
@@ -817,6 +818,7 @@ public interface RawMaterial extends Item
 		FUNGUS(RESOURCE_FUNGUS			, 1,    3,  1,  750, "", "", null),
 		PALLADIUM(RESOURCE_PALLADIUM	, 25,   1,  7,12020, "", "", null),
 		NICKEL(RESOURCE_NICKEL			, 10,   2,  5, 8900, "", "", null),
+		VEGETABLE(RESOURCE_VEGETABLE	, 1, 5, 1, 540, "very healthy", "", null),
 
 		;//code, 						  v, freq, h, b, smell, effects, ResourceFlag flags
 		public final int			code, value, frequency, hardness, bouancy;

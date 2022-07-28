@@ -1,5 +1,5 @@
 # Build 5.9.13 Release ?/??/2022
-  1. New Scriptable functions: ROOMPC and AREAPC and VISITED
+  1. New Scriptable functions: ROOMPC and AREAPC
   2. Caravans now have their own internal Directions (fore, back, right, left, up, down)
   3. Crafting INFO feature will now give the approx. time to craft
   4. New common skill: Shrooming, for growing mushrooms/fungus
@@ -12,7 +12,7 @@
  11. New spells: Greater Claireaudience, Greater Clairevoyance, Greater Scry
  12. Smelting, Wainwright, Papermaking, and Siegecrafting recipes updated
  13. New account flag: NOCHARPURGE
- 14. New base materials/raw env resources: NICKEL and PALLADIUM (nos 207 and 208)
+ 14. New base materials/raw env resources: NICKEL, PALLADIUM, VEGETABLE
  15. New thief skills: silent wear, silent hold, silent wield
  16. ResourceOverride now has more options and applications
  17. New Zappermask flags: +-RIDE, +-FOLLOW
@@ -53,6 +53,7 @@
  52. New races: Shrimp, Tuna
  53. New common skill: Animal Trapping, requires a cage, for trapping small game
  54. New Scriptable command: MPHIT, for forcing an immediate weapon attack
+ 55. Tents and other ENTER-IN type rideables now protect against some weather affects
 
 # Build 5.9.12 Release 1/17/2022
   *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG

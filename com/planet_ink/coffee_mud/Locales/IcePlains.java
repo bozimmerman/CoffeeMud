@@ -61,6 +61,7 @@ public class IcePlains extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_BERRIES),
 		Integer.valueOf(RawMaterial.RESOURCE_CARROTS),
 		Integer.valueOf(RawMaterial.RESOURCE_GREENS),
+		Integer.valueOf(RawMaterial.RESOURCE_VEGETABLE),
 		Integer.valueOf(RawMaterial.RESOURCE_ONIONS),
 		Integer.valueOf(RawMaterial.RESOURCE_FLINT),
 		Integer.valueOf(RawMaterial.RESOURCE_COTTON),

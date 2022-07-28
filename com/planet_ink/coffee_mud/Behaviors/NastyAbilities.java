@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -47,10 +48,10 @@ public class NastyAbilities extends ActiveTicker
 		return Behavior.CAN_MOBS;
 	}
 
-	protected boolean fightok=false;
-
-	private List<Ability>	mySkills		= null;
-	private int				numAllSkills	= -1;
+	protected boolean		fightok	= false;
+	protected CompiledZMask	mask	= null;
+	protected List<Ability>	mySkills		= null;
+	protected int			numAllSkills	= -1;
 
 	public NastyAbilities()
 	{
@@ -68,8 +69,20 @@ public class NastyAbilities extends ActiveTicker
 	@Override
 	public void setParms(final String newParms)
 	{
-		super.setParms(newParms);
-		fightok=newParms.toUpperCase().indexOf("FIGHTOK")>=0;
+		String parms = newParms;
+		String mask = "";
+		final int x=newParms.indexOf(';');
+		if(x>0)
+		{
+			parms = newParms.substring(0,x);
+			mask = newParms.substring(x+1);
+		}
+		super.setParms(parms);
+		super.parms = newParms;
+		fightok=parms.toUpperCase().indexOf("FIGHTOK")>=0;
+		this.mask = null;
+		if(mask.trim().length()>0)
+			this.mask = CMLib.masking().getPreCompiledMask(mask.trim());
 	}
 
 	@Override
@@ -89,14 +102,41 @@ public class NastyAbilities extends ActiveTicker
 
 			if(thisRoom.numPCInhabitants()>0)
 			{
-				final MOB target=thisRoom.fetchRandomInhabitant();
-				MOB followMOB=target;
-				if((target!=null)&&(target.amFollowing()!=null))
-					followMOB=target.amUltimatelyFollowing();
-				if((target!=null)
-				&&(target!=mob)
-				&&(followMOB.getVictim()!=mob)
-				&&(!followMOB.isMonster()))
+				MOB target=null;
+				if(mask == null)
+				{
+					for(int i=0;(i<10) && (target==null);i++)
+					{
+						target = thisRoom.fetchRandomInhabitant();
+						if((target == null)||(target==mob))
+							target = null;
+						else
+						{
+							MOB followMOB=target;
+							if(target.amFollowing()!=null)
+								followMOB=target.amUltimatelyFollowing();
+							if((followMOB.getVictim()==mob)
+							||(followMOB.isMonster()))
+								target = null;
+						}
+					}
+				}
+				else
+				{
+					final List<MOB> targets = new ArrayList<MOB>(1);
+					for(int i=0;i<thisRoom.numInhabitants();i++)
+					{
+						final MOB M=thisRoom.fetchInhabitant(i);
+						if((M!=null)
+						&&(M!=mob)
+						&&(CMLib.masking().maskCheck(mask, M, false)))
+							targets.add(M);
+					}
+					if(targets.size()==0)
+						return true;
+					target = targets.get(CMLib.dice().roll(1, targets.size(), -1));
+				}
+				if(target!=null)
 				{
 					if((numAllSkills!=mob.numAllAbilities())||(mySkills==null))
 					{
@@ -136,13 +176,15 @@ public class NastyAbilities extends ActiveTicker
 								tryThisOne.invoke(mob,V,target,false,0);
 
 							if(!fightok)
-							for(int i=0;i<thisRoom.numInhabitants();i++)
 							{
-								final MOB M=thisRoom.fetchInhabitant(i);
-								if(H.containsKey(M))
-									M.setVictim(H.get(M));
-								else
-									M.setVictim(null);
+								for(int i=0;i<thisRoom.numInhabitants();i++)
+								{
+									final MOB M=thisRoom.fetchInhabitant(i);
+									if(H.containsKey(M))
+										M.setVictim(H.get(M));
+									else
+										M.setVictim(null);
+								}
 							}
 						}
 					}

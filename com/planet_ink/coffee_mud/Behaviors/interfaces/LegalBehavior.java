@@ -348,4 +348,13 @@ public interface LegalBehavior extends Behavior
 	 * @param warrant the warrant to excuse
 	 */
 	public void release(Area myArea, LegalWarrant warrant);
+
+	/**
+	 * Suppresses warrants for the given crime until the given
+	 * RL timestamp.
+	 *
+	 * @param crime the crime to suppress
+	 * @param until the timeout for the suppression
+	 */
+	public void suppressCrime(String crime, final long until);
 }

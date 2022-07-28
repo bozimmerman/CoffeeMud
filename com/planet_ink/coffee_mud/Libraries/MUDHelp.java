@@ -46,7 +46,6 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	}
 
 	protected final Map<String,String>		genUsageCost	= new SHashtable<String, String>();
-	protected final Map<String,String[]>	seeAlsoCache	= Collections.synchronizedMap(new TreeMap<String,String[]>());
 
 	protected final static String[] SKILL_PREFIXES =
 	{
@@ -1099,7 +1098,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 
 		if(helpText==null)
 		{
-			final String realKey = CMLib.socials().findSocialName(helpKey, false);
+			final String realKey = CMLib.clans().findGovernmentName(helpKey, false);
 			if(realKey != null)
 			{
 				helpText=normalizeHelpText(CMLib.clans().getGovernmentHelp(forM,realKey),skip);
@@ -1139,9 +1138,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		}
 		if(helpText==null)
 		{
-			String realKey = CMLib.expertises().findExpertiseID(helpKey, false);
+			String realKey = CMLib.achievements().findAchievementID(helpKey, false);
 			if(realKey == null)
-				realKey = CMLib.expertises().findExpertiseID(helpKeyWSpaces, false);
+				realKey = CMLib.achievements().findAchievementID(helpKeyWSpaces, false);
 			if(realKey != null)
 			{
 				helpText=normalizeHelpText(CMLib.achievements().getAchievementsHelp(realKey),skip);
@@ -1603,25 +1602,22 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	@Override
 	public List<String> getSeeAlsoHelpOn(final MOB mob, final Properties rHelpFile, final String helpSearch, final String helpKey, final String helpText, final int howMany)
 	{
-		final boolean isArc = rHelpFile == getArcHelpFile();
-		final String[] seeAlso = seeAlsoCache.get(isArc+"/"+helpKey);
-		if(seeAlso != null)
-			return Arrays.asList(seeAlso);
 		final String nKey = helpKey.replace(' ', '_');
 		final List<String> otherHelps = new Vector<String>();
 		final List<String> otherHelpTexts = new ArrayList<String>();
-		otherHelpTexts.add(helpText);
+		otherHelpTexts.add(helpText.replace('_', ' '));
 		for(int i=1;i<(howMany*4) && (otherHelps.size()<howMany);i++)
 		{
 			final Pair<String, String> m = getHelpMatch(helpSearch,rHelpFile,mob, i);
 			if((m==null)
 			||(m.second==null))
 				break;
+			final String f = m.first.replace('_', ' ');
 			if((m.first.replace(' ', '_').equalsIgnoreCase(nKey))
-			||(otherHelps.contains(m.first))
+			||(otherHelps.contains(f))
 			||(otherHelpTexts.contains(m.second)))
 				continue;
-			otherHelps.add(m.first);
+			otherHelps.add(f);
 			otherHelpTexts.add(m.second);
 		}
 		if(otherHelps.size()==0)
@@ -1637,18 +1633,20 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				{
 					final Pair<String, String> m = getHelpMatch(s,rHelpFile,mob, 0);
 					if((m==null)
-					||(m.second==null)
-					||(m.first.replace(' ', '_').equalsIgnoreCase(nKey))
+					||(m.first==null)
+					||(m.second==null))
+						continue;
+					final String f = m.first.replace('_', ' ');
+					if((m.first.replace(' ', '_').equalsIgnoreCase(nKey))
 					||(!m.first.replace(' ', '_').equalsIgnoreCase(s.replace(' ', '_')))
-					||(otherHelps.contains(m.first))
+					||(otherHelps.contains(f))
 					||(otherHelpTexts.contains(m.second)))
 						continue;
-					otherHelps.add(m.first);
+					otherHelps.add(f);
 					otherHelpTexts.add(m.second);
 				}
 			}
 		}
-		seeAlsoCache.put(isArc+"/"+helpKey,otherHelps.toArray(new String[otherHelps.size()]));
 		return otherHelps;
 	}
 
@@ -1685,7 +1683,6 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			Resources.removeResource("MAIN HELP FILE");
 		if(Resources.getResource("ARCHON HELP FILE")!=null)
 			Resources.removeResource("ARCHON HELP FILE");
-		seeAlsoCache.clear();
 
 		// also the intro page
 		final CMFile introDir=new CMFile(Resources.makeFileResourceName("text"),null,CMFile.FLAG_FORCEALLOW);

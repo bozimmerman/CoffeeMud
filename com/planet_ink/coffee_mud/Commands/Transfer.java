@@ -442,17 +442,6 @@ public class Transfer extends At
 				mob.tell(getComResponse(writer,reader));
 				writer.write("TARGET "+foreignThing+"\n\r");
 				mob.tell(getComResponse(writer,reader));
-				writer.write("BLOCK\n\r");
-				final String s=getComResponse(writer,reader);
-				mob.tell(s);
-				String blockEnd;
-				if(s.startsWith("[OK ")&&(s.endsWith("]")))
-					blockEnd=s.substring(4,s.length()-1);
-				else
-				{
-					mob.tell(L("Communication failure."));
-					return false;
-				}
 				for(int i=0;i<xferObjV.size();i++)
 				{
 					if(xferObjV.get(i) instanceof Item)
@@ -462,9 +451,19 @@ public class Transfer extends At
 						if((CMSecurity.isAllowed(mob, itemRoom, CMSecurity.SecFlag.TRANSFER))
 						&&(CMSecurity.isAllowed(mob, targetRoom, CMSecurity.SecFlag.TRANSFER)))
 						{
-							final String itemXML=CMLib.coffeeMaker().getItemXML(I);
-							writer.write("IMPORT <ITEMS>"+itemXML.trim()+"</ITEMS>"+blockEnd+"\n");
-							mob.tell(getComResponse(writer,reader));
+							writer.write("BLOCK\n\r");
+							final String s=getComResponse(writer,reader);
+							mob.tell(s);
+							String blockEnd;
+							if(s.startsWith("[OK ")&&(s.endsWith("]")))
+							{
+								blockEnd=s.substring(4,s.length()-1);
+								final String itemXML=CMLib.coffeeMaker().getItemXML(I);
+								writer.write("IMPORT <ITEMS>"+itemXML.trim()+"</ITEMS>"+blockEnd+"\n");
+								mob.tell(getComResponse(writer,reader));
+							}
+							else
+								mob.tell(L("Communication failure."));
 						}
 					}
 					else
@@ -476,15 +475,25 @@ public class Transfer extends At
 						&&(CMSecurity.isAllowed(mob, mobRoom, CMSecurity.SecFlag.TRANSFER))
 						&&(CMSecurity.isAllowed(mob, targetRoom, CMSecurity.SecFlag.TRANSFER)))
 						{
-							final String mobXML=CMLib.coffeeMaker().getMobXML(M);
-							writer.write("IMPORT <MOBS>"+mobXML.trim()+"</MOBS>"+blockEnd+"\n");
-							mob.tell(getComResponse(writer,reader));
+							writer.write("BLOCK\n\r");
+							final String s=getComResponse(writer,reader);
+							mob.tell(s);
+							String blockEnd;
+							if(s.startsWith("[OK ")&&(s.endsWith("]")))
+							{
+								blockEnd=s.substring(4,s.length()-1);
+								final String mobXML=CMLib.coffeeMaker().getMobXML(M);
+								writer.write("IMPORT <MOBS>"+mobXML.trim()+"</MOBS>"+blockEnd+"\n");
+								mob.tell(getComResponse(writer,reader));
+							}
+							else
+								mob.tell(L("Communication failure."));
 						}
 					}
 				}
 				if(mob.playerStats().getTranPoofOut().length()==0)
 					mob.tell(L("Done."));
-				writer.write("QUIT "+blockEnd);
+				writer.write("QUIT\n\r");
 				CMLib.s_sleep(500);
 				return true;
 			}

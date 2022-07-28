@@ -1057,13 +1057,15 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 					if(planeVars.containsKey(PlanarVar.MIXRACE.toString()))
 					{
 						final String mixRace = planeVars.get(PlanarVar.MIXRACE.toString());
-						final Race firstR=CMClass.getRace(mixRace);
-						if(firstR==null)
+						Race motherR=CMClass.getRace(mixRace);
+						if(motherR==null)
 							Log.errOut("StdPlanarAbility","Unknown mixrace: "+mixRace);
 						else
 						{
-							final Race secondR=M.charStats().getMyRace();
-							final Race R=CMLib.utensils().getMixedRace(firstR.ID(),secondR.ID(), false);
+							final boolean mixWithMale = M.charStats().getStat(CharStats.STAT_GENDER) == 'M';
+							final Race fatherR=mixWithMale?M.charStats().getMyRace():motherR;
+							motherR=mixWithMale?motherR:M.charStats().getMyRace();
+							final Race R=CMLib.utensils().getMixedRace(motherR.ID(),fatherR.ID(), false);
 							if(R!=null)
 							{
 								M.baseCharStats().setMyRace(R);

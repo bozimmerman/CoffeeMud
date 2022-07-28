@@ -426,16 +426,16 @@ public class Pregnancy extends StdAbility implements HealthCondition
 					if (ticksInLabor >= 45)
 					{
 						ticksInLabor = 0;
-						final String race1 = mob.baseCharStats().getMyRace().ID();
+						final String motherR = mob.baseCharStats().getMyRace().ID();
 						String classID="GenMOB";
 						if(mob.isGeneric()
 						&& (!mob.ID().equalsIgnoreCase(classID))
 						&&(!(mob instanceof ShopKeeper)))
 							classID=mob.ID();
 						final int numKids=this.getNumKids();
-						String race2 = this.getFathersRace();
-						if((race2==null)||(race2.length()==0))
-							race2=mob.baseCharStats().getMyRace().ID();
+						String fatherR = this.getFathersRace();
+						if((fatherR==null)||(fatherR.length()==0))
+							fatherR=mob.baseCharStats().getMyRace().ID();
 						String otherParentName = this.getFathersName();
 						if((otherParentName!=null)&&(otherParentName.length()==0))
 							otherParentName = null;
@@ -491,7 +491,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 							}
 							final int numRaces = CMClass.numPrototypes(CMObjectType.RACE);
 							boolean newRaceGenerated = false;
-							Race R = CMLib.utensils().getMixedRace(race1, race2, false);
+							Race R = CMLib.utensils().getMixedRace(motherR, fatherR, false);
 							if (R == null)
 								R = mob.baseCharStats().getMyRace();
 							else

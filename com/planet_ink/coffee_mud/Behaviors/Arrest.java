@@ -58,11 +58,11 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		return Behavior.CAN_AREAS;
 	}
 
-	protected String			lastAreaName	= null;
-
-	protected boolean			loadAttempt		= false;
-	protected Map<MOB, Double>	finesAssessed	= new Hashtable<MOB, Double>();
-	protected volatile Room		lastBanishR		= null;
+	protected String				lastAreaName		= null;
+	protected boolean				loadAttempt			= false;
+	protected Map<MOB, Double>		finesAssessed		= new Hashtable<MOB, Double>();
+	protected volatile Room			lastBanishR			= null;
+	protected Map<String, long[]>	suppressedCrimes	= Collections.synchronizedMap(new TreeMap<String, long[]>());
 
 	@Override
 	public boolean isFullyControlled()
@@ -331,6 +331,15 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	{
 		if(!theLawIsEnabled())
 			return false;
+		synchronized(suppressedCrimes)
+		{
+			if(suppressedCrimes.containsKey(W.crime()))
+			{
+				if(System.currentTimeMillis()<suppressedCrimes.get(W.crime())[0])
+					return false;
+				suppressedCrimes.remove(W.crime());
+			}
+		}
 		if((laws!=null)&&(!laws.warrants().contains(W)))
 		{
 			final Room R=CMLib.map().roomLocation(W.criminal());
@@ -520,6 +529,21 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	protected boolean defaultModifiableNames()
 	{
 		return true;
+	}
+
+	@Override
+	public void suppressCrime(String crime, final long until)
+	{
+		if(crime == null)
+			return;
+		crime = crime.toUpperCase().trim();
+		synchronized(suppressedCrimes)
+		{
+			if(suppressedCrimes.containsKey(crime))
+				suppressedCrimes.get(crime)[0] = until;
+			else
+				suppressedCrimes.put(crime, new long[] { System.currentTimeMillis() });
+		}
 	}
 
 	@Override

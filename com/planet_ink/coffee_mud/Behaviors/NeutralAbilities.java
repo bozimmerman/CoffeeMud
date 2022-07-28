@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -47,8 +48,9 @@ public class NeutralAbilities extends ActiveTicker
 		return Behavior.CAN_MOBS;
 	}
 
-	private List<Ability>	mySkills		= null;
-	private int				numAllSkills	= -1;
+	protected CompiledZMask	mask			= null;
+	protected List<Ability>	mySkills		= null;
+	protected int			numAllSkills	= -1;
 
 	public NeutralAbilities()
 	{
@@ -61,6 +63,24 @@ public class NeutralAbilities extends ActiveTicker
 	public String accountForYourself()
 	{
 		return "random indifferent skill using";
+	}
+
+	@Override
+	public void setParms(final String newParms)
+	{
+		String parms = newParms;
+		String mask = "";
+		final int x=newParms.indexOf(';');
+		if(x>0)
+		{
+			parms = newParms.substring(0,x);
+			mask = newParms.substring(x+1);
+		}
+		super.setParms(parms);
+		super.parms = newParms;
+		this.mask = null;
+		if(mask.trim().length()>0)
+			this.mask = CMLib.masking().getPreCompiledMask(mask.trim());
 	}
 
 	@Override
@@ -80,7 +100,26 @@ public class NeutralAbilities extends ActiveTicker
 
 			if(thisRoom.numPCInhabitants()>0)
 			{
-				if((numAllSkills!=mob.numAllAbilities())||(mySkills==null))
+				MOB target=null;
+				if(mask == null)
+					target=mob;
+				else
+				{
+					final List<MOB> targets = new ArrayList<MOB>(1);
+					for(int i=0;i<thisRoom.numInhabitants();i++)
+					{
+						final MOB M=thisRoom.fetchInhabitant(i);
+						if((M!=null)
+						&&(M!=mob)
+						&&(CMLib.masking().maskCheck(mask, M, false)))
+							targets.add(M);
+					}
+					if(targets.size()==0)
+						return true;
+					target = targets.get(CMLib.dice().roll(1, targets.size(), -1));
+				}
+				if((target != null)
+				&&((numAllSkills!=mob.numAllAbilities())||(mySkills==null)))
 				{
 					numAllSkills=mob.numAbilities();
 					mySkills=new ArrayList<Ability>();
@@ -104,7 +143,13 @@ public class NeutralAbilities extends ActiveTicker
 					{
 						tryThisOne.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,tryThisOne.ID()));
 						final Vector<String> V=new XVector<String>();
-						tryThisOne.invoke(mob,V,null,false,0);
+						if((target != mob)&&(target != null)&&(tryThisOne.canTarget(Ability.CAN_MOBS)))
+						{
+							V.add("$"+target.Name()+"$");
+							tryThisOne.invoke(mob,V,null,false,0);
+						}
+						else
+							tryThisOne.invoke(mob,V,target,false,0);
 					}
 				}
 			}
