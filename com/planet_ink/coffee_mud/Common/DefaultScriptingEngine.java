@@ -4853,7 +4853,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final PlayerStats pStats = M.playerStats();
 					if(pStats == null)
 					{
-						logError(scripted,"EXPLORED","Not a player",whom);
+						//logError(scripted,"EXPLORED","Not a player",whom);
 						return returnable;
 					}
 					Area A=null;
@@ -4861,7 +4861,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(!where.equalsIgnoreCase("world"))
 					{
 						A=CMLib.map().getArea(where);
-						if(A==null)
+						if((A==null)
+						&&(CMLib.map().getRoom(where)==null)
+						&&(!where.startsWith("#")))
 						{
 							final Environmental E2=getArgumentItem(where,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 							if((E2 != null)
