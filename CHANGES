@@ -55,6 +55,7 @@
  54. New Scriptable command: MPHIT, for forcing an immediate weapon attack
  55. Tents and other ENTER-IN type rideables now protect against some weather affects
  56. Archons can now create/list/mod/del periodic script runs (cron jobs)
+ 57. New skill: Skill_Math.  It's a calculator.  woohoo.
 
 # Build 5.9.12 Release 1/17/2022
   *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG
