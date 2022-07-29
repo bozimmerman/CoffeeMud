@@ -65,7 +65,8 @@ public class Destroy extends StdCommand
 		return "EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, "
 			+ "SESSION, TICKS, THREAD, HOLIDAY, JOURNAL, SOCIAL, ACHIEVEMENT, CLASS, ABILITY, MANUFACTURER, "
 			+ "LANGUAGE, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, GOVERNMENT, NOPURGE, BUG, TYPO, IDEA, "
-			+ "WEBSERVER, POLL, DEBUGFLAG, DISABLEFLAG, ENABLEFLAG, CRAFTSKILL, GATHERSKILL, TRAP, WRIGHTSKILL, or a ROOM";
+			+ "WEBSERVER, POLL, DEBUGFLAG, DISABLEFLAG, ENABLEFLAG, CRAFTSKILL, GATHERSKILL, CRON, "
+			+ "TRAP, WRIGHTSKILL, or a ROOM";
 	}
 
 	public boolean mobs(final MOB mob, final List<String> commands)
@@ -144,6 +145,56 @@ public class Destroy extends StdCommand
 			CMLib.tech().delManufacturer(manufacturer);
 			mob.location().recoverRoomStats();
 			Log.sysOut(mob.Name()+" destroyed manufacturer "+manufacturer.name()+".");
+		}
+	}
+
+	public void cron(final MOB mob, final List<String> commands) throws IOException
+	{
+		if(commands.size()<3)
+		{
+			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is DESTROY CRON [NAME/#]\n\r"));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+
+		final String cronID=CMParms.combine(commands,2);
+		final List<JournalEntry> jobs = CMLib.database().DBReadJournalMsgsByCreateDate("SYSTEM_CRON", true);
+		JournalEntry killMe=null;
+		if(CMath.isInteger(cronID)
+		&&(CMath.s_int(cronID)>0)
+		&&(CMath.s_int(cronID)<=jobs.size()))
+			killMe=jobs.get(CMath.s_int(cronID)-1);
+		else
+		{
+			for(final JournalEntry E : jobs)
+			{
+				if(E.subj().equalsIgnoreCase(cronID))
+					killMe=E;
+			}
+			if(killMe == null)
+			{
+				for(final JournalEntry E : jobs)
+				{
+					if(E.subj().toUpperCase().indexOf(cronID.toUpperCase())>=0)
+					{
+						killMe=E;
+						break;
+					}
+				}
+			}
+			if(killMe == null)
+			{
+				mob.tell(L("@x1 is not a valid [NAME/#].  Try LIST CRON.\n\r",cronID));
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+				return;
+			}
+		}
+		if(mob.session().confirm(L("This will complete OBLITERATE the cron job '@x1' forever.  "
+				+ "Are you SURE?! (y/N)?",killMe.subj()),"N"))
+		{
+			CMLib.database().DBDeleteJournal("SYSTEM_CRON", killMe.key());
+			Log.sysOut(mob.Name()+" destroyed cron job "+killMe.subj()+".");
+			CMLib.journals().activate();
 		}
 	}
 
@@ -1746,6 +1797,14 @@ public class Destroy extends StdCommand
 				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			mobs(mob,commands);
+		}
+		else
+		if(commandType.equals("CRON"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCRON))
+				return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
+			cron(mob,commands);
 		}
 		else
 		if(commandType.equals("MANUFACTURER"))

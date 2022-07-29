@@ -1426,7 +1426,7 @@ public class Create extends StdCommand
 			 + "CLAN, MOB, RACE, MIXEDRACE, ABILITY, LANGUAGE, CRAFTSKILL, HELP/AHELP, "
 			 + "ACHIEVEMENT, MANUFACTURER, ALLQUALIFY, CLASS, POLL, DEBUGFLAG, "
 			 + "WEBSERVER, DISABLEFLAG, ENABLEFLAG, NEWS, USER, TRAP, WRIGHTSKILL, "
-			 + "GATHERSKILL, or ROOM";
+			 + "GATHERSKILL, CRON, or ROOM";
 	}
 
 	public void classes(final MOB mob, final List<String> commands)
@@ -1478,6 +1478,41 @@ public class Create extends StdCommand
 		if(C!=null)
 			CMLib.utensils().reloadCharClasses(C);
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The employment of the world just increased!"));
+	}
+
+	public void cron(final MOB mob, final List<String> commands) throws IOException
+	{
+		if(commands.size()<4)
+		{
+			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is CREATE CRON [NAME] [INTERVAL]\n\r"));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		final String name=commands.get(2);
+		final String interval=CMParms.combine(commands,3);
+		long tm = CMLib.time().parseTickExpression(interval);
+		if(tm <= 0)
+		{
+			mob.tell(L("@x1 is not a valid interval.  Try like 10 minutes!",interval));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		tm = tm * CMProps.getTickMillis();
+		final JournalEntry msg = (JournalEntry)CMClass.getCommon("DefaultJournalEntry");
+		msg.from(mob.Name());
+		msg.subj(name);
+		msg.msg("");
+		msg.date(System.currentTimeMillis());
+		msg.update(System.currentTimeMillis()+tm);
+		msg.parent("");
+		msg.msgIcon("");
+		msg.attributes(msg.attributes()|JournalEntry.ATTRIBUTE_PROTECTED);
+		msg.data("INTERVAL="+tm);
+		msg.to("ALL");
+		CMLib.database().DBWriteJournal("SYSTEM_CRON", msg);
+		mob.tell(L("New cron job created.  Use LIST CRON and MODIFY CRON to set a script."));
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The activity in the world just increased!"));
+		CMLib.journals().activate();
 	}
 
 	public void socials(final MOB mob, final List<String> commands)
@@ -1570,6 +1605,14 @@ public class Create extends StdCommand
 				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			achievements(mob,commands);
+		}
+		else
+		if(commandType.equals("CRON"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCRON))
+				return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
+			cron(mob,commands);
 		}
 		else
 		if(commandType.equals("LANGUAGE"))

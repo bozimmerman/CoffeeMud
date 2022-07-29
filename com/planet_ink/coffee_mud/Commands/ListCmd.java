@@ -3530,6 +3530,27 @@ public class ListCmd extends StdCommand
 		return str.toString();
 	}
 
+	public String listCron(final Session viewerS, final String rest)
+	{
+		final StringBuilder str=new StringBuilder("");
+		final int COL_LEN1=CMLib.lister().fixColWidth(5.0,viewerS);
+		final int COL_LEN2=CMLib.lister().fixColWidth(30.0,viewerS);
+		str.append(CMStrings.padRight(L("##"),COL_LEN1)+" ");
+		str.append(CMStrings.padRight(L("Name"),COL_LEN2)+" ");
+		str.append(L("Interval\n\r"));
+		final List<JournalEntry> jobs = CMLib.database().DBReadJournalMsgsByCreateDate("SYSTEM_CRON", true);
+		for(int i=0;i<jobs.size();i++)
+		{
+			final JournalEntry E = jobs.get(i);
+			final long interval = CMParms.getParmLong(E.data(), "INTERVAL", CMProps.getMillisPerMudHour());
+			str.append(CMStrings.padRight(""+(i+1),COL_LEN1+1));
+			str.append(CMStrings.padRight(E.subj(),COL_LEN2+1));
+			str.append(CMLib.time().date2EllapsedTime(interval, TimeUnit.SECONDS, false));
+			str.append("\n\r");
+		}
+		return str.toString();
+	}
+
 	public List<String> getMyCmdWords(final MOB mob)
 	{
 		final ArrayList<String> V=new ArrayList<String>();
@@ -4344,7 +4365,8 @@ public class ListCmd extends StdCommand
 		PLANES("PLANES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.PLANES}),
 		LIBRARIES("LIBRARIES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDMOBS}),
 		POSTOFFICES("POSTOFFICES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDMOBS}),
-		WHO("WHO",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDPLAYERS})
+		WHO("WHO",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDPLAYERS}),
+		CRON("CRON",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDCRON})
 		;
 		public String[]			   cmd;
 		public CMSecurity.SecGroup flags;
@@ -5580,6 +5602,9 @@ public class ListCmd extends StdCommand
 			break;
 		case ENVRESOURCES:
 			s.wraplessPrintln(listEnvResources(mob.session(), rest));
+			break;
+		case CRON:
+			s.wraplessPrintln(listCron(mob.session(), rest));
 			break;
 		case WEAPONS:
 			s.println("^HWeapon Item IDs:^N");

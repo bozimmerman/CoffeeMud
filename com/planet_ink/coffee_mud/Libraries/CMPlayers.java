@@ -433,9 +433,12 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	@Override
 	public MOB getPlayerAllHosts(final String calledThis)
 	{
+		MOB M = getPlayer(calledThis);
+		if(M!=null)
+			return M;
 		for(final PlayerLibrary pLib2 : getOtherPlayerLibAllHosts())
 		{
-			final MOB M=pLib2.getPlayer(calledThis);
+			M=pLib2.getPlayer(calledThis);
 			if(M!=null)
 				return M;
 		}
@@ -445,7 +448,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	@Override
 	public MOB getLoadPlayerAllHosts(final String last)
 	{
-		final MOB M = getPlayerAllHosts(last);
+		final MOB M = getLoadPlayer(last);
 		if(M!=null)
 			return M;
 		final Set<DatabaseEngine> dbset=new HashSet<DatabaseEngine>();

@@ -2169,7 +2169,7 @@ public class CMSecurity
 		PAUSE, PKILL, POLLS, POSSESS, PURGE, RESET, RESETUTILS, RESTRING,
 		SESSIONS, SHUTDOWN, SNOOP, STAT, SUPERSKILL, SYSMSGS, TICKTOCK, TITLES,
 		TRAILTO, TRANSFER, WHERE, WIZEMOTE, WIZINV, MISC, CMDDATABASE, EVERY,
-		ACHIEVEMENTS, PLANES, CMDHELP,
+		ACHIEVEMENTS, PLANES, CMDHELP, CMDCRON,
 
 		AREA_ABILITIES, AREA_ABOVELAW, AREA_AFTER, AREA_AHELP, AREA_ALLSKILLS,
 		AREA_ANNOUNCE, AREA_AS, AREA_ASYNC, AREA_AT, AREA_BAN, AREA_BEACON, AREA_BOOT,
@@ -2727,7 +2727,8 @@ public class CMSecurity
 		SIEGECOMBAT("sailing ship fights"),
 		QUESTSCRIPTS("quest script parsing"),
 		SPACEMOVES("space object movement"),
-		RITUALS("rituals and services")
+		RITUALS("rituals and services"),
+		CRONTRACE("cron job tracing")
 		;
 		private final String desc;
 
@@ -2846,7 +2847,8 @@ public class CMSecurity
 		ITEMREJUV("item rejuv"),
 		RANDOMQUESTS("random quests"),
 		BADEXITS("unlinked exits"),
-		SPACETHREAD("space thread")
+		SPACETHREAD("space thread"),
+		CRONJOBS("cron jobs")
 		;
 		private final String desc;
 

@@ -15,6 +15,8 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.Libraries.interfaces.HelpLibrary.HelpSection;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrCallback;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrResolution;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -887,6 +889,100 @@ public class Modify extends StdCommand
 				CMLib.database().DBUpdateArea(A.Name(),A);
 		}
 		Log.sysOut("Rooms",mob.Name()+" modified area "+myArea.Name()+".");
+	}
+
+	public void cron(final MOB mob, final List<String> commands) throws IOException
+	{
+		if(commands.size()<4)
+		{
+			mob.tell(L("You have failed to specify the proper fields.\n\r"
+					+ "The format is MODIFY CRON [NAME/#] [SUBJECT, INTERVAL, SCRIPT] [VALUE]\n\r"));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+
+		final String cronID=commands.get(2);
+		final String field=commands.get(3).toUpperCase().trim();
+		final String value=CMParms.combine(commands, 4);
+		final List<JournalEntry> jobs = CMLib.database().DBReadJournalMsgsByCreateDate("SYSTEM_CRON", true);
+		JournalEntry modJob=null;
+		if(CMath.isInteger(cronID)
+		&&(CMath.s_int(cronID)>0)
+		&&(CMath.s_int(cronID)<=jobs.size()))
+			modJob=jobs.get(CMath.s_int(cronID)-1);
+		else
+		{
+			for(final JournalEntry E : jobs)
+			{
+				if(E.subj().equalsIgnoreCase(cronID))
+					modJob=E;
+			}
+			if(modJob == null)
+			{
+				for(final JournalEntry E : jobs)
+				{
+					if(E.subj().toUpperCase().indexOf(cronID.toUpperCase())>=0)
+					{
+						modJob=E;
+						break;
+					}
+				}
+			}
+			if(modJob == null)
+			{
+				mob.tell(L("@x1 is not a valid [NAME/#].  Try LIST CRON.\n\r",cronID));
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+				return;
+			}
+		}
+		if(field.equals("SUBJECT"))
+		{
+			if(value.trim().length()==0)
+			{
+				mob.tell(L("'@x1' is not a valid subject.\n\r",value));
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+				return;
+			}
+			modJob.subj(field);
+			CMLib.database().DBUpdateJournal("SYSTEM_CRON", modJob);
+			Log.sysOut(mob.Name()+" modified cron job "+modJob.subj()+".");
+		}
+		else
+		if(field.equals("INTERVAL"))
+		{
+			long tm = CMLib.time().parseTickExpression(value);
+			if((tm <= 0)||(value.trim().length()==0))
+			{
+				mob.tell(L("@x1 is not a valid interval.\n\r",value));
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+				return;
+			}
+			tm = tm * CMProps.getTickMillis();
+			modJob.data("INTERVAL="+tm);
+			modJob.update(System.currentTimeMillis()+tm);
+			CMLib.database().DBUpdateJournal("SYSTEM_CRON", modJob);
+			Log.sysOut(mob.Name()+" modified cron job "+modJob.subj()+".");
+			CMLib.journals().activate();
+		}
+		else
+		if(field.equals("SCRIPT"))
+		{
+			final JournalEntry E=modJob;
+			final List<String> msgV=Resources.getFileLineVector(new StringBuffer(modJob.msg()));
+			CMLib.journals().makeMessageASync(mob, modJob.subj(),msgV, false, new MsgMkrCallback() {
+				final JournalEntry E2 = E;
+				@Override
+				public void callBack(final MOB mob, final Session sess, final MsgMkrResolution res)
+				{
+					if(res == MsgMkrResolution.SAVEFILE)
+					{
+						E2.msg(CMParms.combineWith(msgV, "\n\r"));
+						CMLib.database().DBUpdateJournal("SYSTEM_CRON", E2);
+						Log.sysOut(mob.Name()+" modified cron job "+E2.subj()+".");
+					}
+				}
+			});
+		}
 	}
 
 	public void quests(final MOB mob, final List<String> commands)
@@ -2045,7 +2141,7 @@ public class Modify extends StdCommand
 	{
 		return "ITEM, RACE, CLASS, ABILITY, LANGUAGE, CRAFTSKILL, GATHERSKILL, WRIGHTSKILL, "
 			+ "ALLQUALIFY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, TITLE, QUEST, "
-			+ "MOB, USER, HOLIDAY, ACHIEVEMENT, MANUFACTURER, HELP/AHELP, TRAP, "
+			+ "MOB, USER, HOLIDAY, ACHIEVEMENT, MANUFACTURER, HELP/AHELP, TRAP, CRON, "
 			+ "GOVERNMENT, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, NEWS, DAY, MONTH, YEAR, TIME, HOUR, or ROOM";
 	}
 
@@ -2072,6 +2168,13 @@ public class Modify extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDITEMS))
 				return errorOut(mob);
 			manufacturer(mob,commands);
+		}
+		else
+		if(commandType.equals("CRON"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCRON))
+				return errorOut(mob);
+			cron(mob,commands);
 		}
 		else
 		if(commandType.equals("RECIPE"))

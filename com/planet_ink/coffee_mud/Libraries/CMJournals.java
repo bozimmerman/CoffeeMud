@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -22,6 +23,9 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.IOException;
 import java.util.*;
+
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.ScriptableObject;
 
 /*
    Copyright 2005-2022 Bo Zimmerman
@@ -46,11 +50,14 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		return "CMJournals";
 	}
 
-	public final int QUEUE_SIZE=100;
-	protected final SHashtable<String,CommandJournal>	commandJournals		= new SHashtable<String,CommandJournal>();
-	protected final Vector<ForumJournal> 				forumJournalsSorted	= new Vector<ForumJournal>();
-	protected final SHashtable<String,ForumJournal>	 	forumJournals		= new SHashtable<String,ForumJournal>();
-	protected final SHashtable<String,List<ForumJournal>>clanForums			= new SHashtable<String,List<ForumJournal>>();
+	public final int									QUEUE_SIZE			= 100;
+	protected final static int							SWEEP_TICK_MAX		= 60;
+	protected volatile int								sweepTickDown		= SWEEP_TICK_MAX;
+	protected final SHashtable<String, CommandJournal>	commandJournals		= new SHashtable<String, CommandJournal>();
+	protected final Vector<ForumJournal>				forumJournalsSorted	= new Vector<ForumJournal>();
+	protected final SHashtable<String, ForumJournal>	forumJournals		= new SHashtable<String, ForumJournal>();
+	protected final Map<String, List<ForumJournal>>		clanForums			= new SHashtable<String, List<ForumJournal>>();
+	protected final PairList<Long, String>				cronJobs			= new PairVector<Long, String>();
 
 	protected volatile int lastMotdDate = -1;
 
@@ -678,7 +685,192 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		return commandJournals.get(named.toUpperCase().trim());
 	}
 
-	public void expirationJournalSweep()
+	protected static class JScriptWindow extends ScriptableObject
+	{
+		@Override
+		public String getClassName()
+		{
+			return "JScriptWindow";
+		}
+		static final long serialVersionUID=45;
+		MOB s=null;
+
+		public MOB mob()
+		{
+			return s;
+		}
+
+		public static String[] functions = { "mob", "toJavaString", "getCMType" };
+
+		public JScriptWindow(final MOB executor)
+		{
+			s = executor;
+		}
+
+		public String toJavaString(final Object O)
+		{
+			return Context.toString(O);
+		}
+
+		public String getCMType(final Object O)
+		{
+			if(O == null)
+				return "null";
+			final CMObjectType typ = CMClass.getObjectType(O);
+			if(typ == null)
+				return "unknown";
+			return typ.name().toLowerCase();
+		}
+	}
+
+	protected long runCronJob(final String jobKey, final boolean debug)
+	{
+		Session fakeS=null;
+		long touch = -1;
+		MOB mob=null;
+		try
+		{
+			setThreadStatus(serviceClient,"running job "+jobKey);
+			final JournalEntry E = CMLib.database().DBReadJournalEntry("SYSTEM_CRON", jobKey);
+			if(E==null)
+				return -1;
+			if(System.currentTimeMillis()<E.update())
+				return E.update();
+			if(debug)
+				Log.debugOut("Running cron job "+E.subj());
+			final long interval = CMParms.getParmLong(E.data(), "INTERVAL", CMProps.getMillisPerMudHour());
+			touch = System.currentTimeMillis()+interval;
+			E.update(System.currentTimeMillis()+interval);
+			CMLib.database().DBTouchJournalMessage(jobKey, E.update());
+			mob = CMLib.players().getLoadPlayerAllHosts(E.from());
+			if(mob == null)
+			{
+				Log.errOut("Cron job "+E.subj()+" has unkknown runner "+E.from());
+				return touch;
+			}
+			if(mob.session()==null)
+			{
+				fakeS=(Session)CMClass.getCommon("FakeSession");
+				fakeS.setMob(mob);
+				fakeS.getPreviousCMD().clear();
+				fakeS.getPreviousCMD().addAll(new XVector<String>("Y"));
+			}
+			final PlayerStats pStats=mob.playerStats();
+			final List<String> commands = Resources.getFileLineVector(new StringBuffer(E.msg()));
+			for(int i=0;i<commands.size();i++)
+			{
+				if(fakeS != null)
+				{
+					fakeS.getPreviousCMD().clear();
+					fakeS.getPreviousCMD().addAll(new XVector<String>("Y"));
+				}
+				final String input = commands.get(i).trim().replace('`', '\'');
+				if(input.equalsIgnoreCase("<MOBPROG>"))
+				{
+					final StringBuilder str=new StringBuilder("");
+					i++;
+					while((i<commands.size())&&(!commands.get(i).equalsIgnoreCase("</MOBPROG>")))
+					{
+						str.append(commands.get(i).replace('`', '\'')).append("\n");
+						i++;
+					}
+					if(i>=commands.size())
+					{
+						Log.errOut("Cron job "+E.subj()+" has MOBPROG w/o /MOBPROG");
+						return touch;
+					}
+					if(debug)
+						Log.debugOut("CRON: "+E.subj()+": "+str.toString());
+					final ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+					S.setSavable(false);
+					S.setVarScope("*");
+					S.setScript(str.toString());
+					final CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,L("MPRUN"));
+					S.executeMsg(mob, msg2);
+					S.dequeResponses();
+					S.tick(mob,Tickable.TICKID_MOB);
+				}
+				else
+				if(input.equalsIgnoreCase("<SCRIPT>"))
+				{
+					final StringBuilder str=new StringBuilder("");
+					i++;
+					while((i<commands.size())&&(!commands.get(i).equalsIgnoreCase("</SCRIPT>")))
+					{
+						str.append(commands.get(i).replace('`', '\'')).append("\n\r");
+						i++;
+					}
+					if(i>=commands.size())
+					{
+						Log.errOut("Cron job "+E.subj()+" has SCRIPT w/o /SCRIPT");
+						return touch;
+					}
+					final Context cx = Context.enter();
+					try
+					{
+						if(debug)
+							Log.debugOut("CRON: "+E.subj()+": "+str.toString());
+						final JScriptWindow scope = new JScriptWindow(mob);
+						cx.initStandardObjects(scope);
+						scope.defineFunctionProperties(JScriptWindow.functions,
+													   JScriptWindow.class,
+													   ScriptableObject.DONTENUM);
+						cx.evaluateString(scope, str.toString(),"<cmd>", 1, null);
+					}
+					catch(final Exception e)
+					{
+						Log.errOut("CRON: "+E.subj()+": JavaScript error: @x1",e.getMessage());
+					}
+					Context.exit();
+				}
+				else
+				if(input.trim().length()>0)
+				{
+					if(debug)
+						Log.debugOut("CRON: "+E.subj()+": "+input);
+					List<String> parsedInput=CMParms.parse(input);
+					if((parsedInput.size()>0)&&(mob!=null))
+					{
+						final String firstWord=parsedInput.get(0);
+						final String rawAliasDefinition=(pStats!=null)?pStats.getAlias(firstWord):"";
+						final List<List<String>> executableCommands=new LinkedList<List<String>>();
+						if(rawAliasDefinition.length()>0)
+						{
+							parsedInput.remove(0);
+							final boolean[] echo = new boolean[1];
+							CMLib.utensils().deAlias(rawAliasDefinition, parsedInput, executableCommands, echo);
+						}
+						else
+							executableCommands.add(parsedInput);
+						mob.setActions(0.0);
+						for(final Iterator<List<String>> x=executableCommands.iterator();x.hasNext();)
+						{
+							parsedInput=x.next();
+							final List<List<String>> MORE_CMDS=CMLib.lang().preCommandParser(parsedInput);
+							for(int m=0;m<MORE_CMDS.size();m++)
+								mob.enqueCommand(MORE_CMDS.get(m),MUDCmdProcessor.METAFLAG_INORDER,0);
+						}
+						mob.setActions(99);
+						int tries=99;
+						while(mob.dequeCommand() && (--tries>0))
+							mob.setActions(99);;
+					}
+				}
+			}
+		}
+		finally
+		{
+			if((fakeS != null)&&(mob!=null))
+			{
+				fakeS.setMob(null);
+				if(mob.session()==fakeS)
+					mob.setSession(null);
+			}
+		}
+		return touch;
+	}
+
+	protected void expirationJournalSweep()
 	{
 		setThreadStatus(serviceClient,"expiration journal sweeping");
 		try
@@ -747,7 +939,16 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		if(serviceClient==null)
 		{
 			name="THJournals"+Thread.currentThread().getThreadGroup().getName().charAt(0);
-			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, MudHost.TIME_SAVETHREAD_SLEEP, 1);
+			serviceClient=CMLib.threads().startTickDown(this,
+					Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK,
+					MudHost.TIME_UTILTHREAD_SLEEP/10, 1);
+		}
+		cronJobs.clear();
+		final List<JournalEntry> jobs = CMLib.database().DBReadJournalMsgsByCreateDate("SYSTEM_CRON", true);
+		if(jobs != null)
+		{
+			for(final JournalEntry E : jobs)
+				cronJobs.add(new Pair<Long,String>(Long.valueOf(E.update()),E.key()));
 		}
 		return true;
 	}
@@ -758,22 +959,45 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		tickStatus=Tickable.STATUS_ALIVE;
 		try
 		{
-			if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
-			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.JOURNALTHREAD)))
+			if((--sweepTickDown)<=0)
 			{
-				isDebugging=CMSecurity.isDebugging(DbgFlag.JOURNALTHREAD);
-				tickStatus=Tickable.STATUS_ALIVE;
-				if((this.lastMotdDate > -1)
-				&&(Calendar.getInstance().get(Calendar.DAY_OF_MONTH)!=this.lastMotdDate))
+				sweepTickDown = CMJournals.SWEEP_TICK_MAX;
+				if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
+				&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.JOURNALTHREAD)))
 				{
-					final CMFile motdFile = new CMFile(Resources.buildResourcePath("text")+"motd.txt",null);
-					if(motdFile.exists())
-						motdFile.deleteAll();
+					isDebugging=CMSecurity.isDebugging(DbgFlag.JOURNALTHREAD);
+					if((this.lastMotdDate > -1)
+					&&(Calendar.getInstance().get(Calendar.DAY_OF_MONTH)!=this.lastMotdDate))
+					{
+						final CMFile motdFile = new CMFile(Resources.buildResourcePath("text")+"motd.txt",null);
+						if(motdFile.exists())
+							motdFile.deleteAll();
+					}
+					this.lastMotdDate=Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+					expirationJournalSweep();
 				}
-				this.lastMotdDate=Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-				expirationJournalSweep();
-				setThreadStatus(serviceClient,"sleeping");
 			}
+			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CRONJOBS))
+			{
+				final boolean debug=CMSecurity.isDebugging(DbgFlag.CRONTRACE);
+				final List<Pair<Long,String>> jobsToRun = new ArrayList<Pair<Long,String>>(1);
+				for(int i=0;i<cronJobs.size();i++)
+				{
+					final Long L=cronJobs.getFirst(i);
+					if(System.currentTimeMillis()>L.longValue())
+						jobsToRun.add(cronJobs.get(i));
+				}
+				for(final Pair<Long,String> job : jobsToRun)
+				{
+					final long tm = runCronJob(job.second, debug);
+					if(tm < 0)
+						cronJobs.remove(job);
+					else
+					if(tm != job.first.longValue())
+						job.first=Long.valueOf(tm);
+				}
+			}
+			setThreadStatus(serviceClient,"sleeping");
 		}
 		finally
 		{
@@ -848,6 +1072,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	{
 		clearCommandJournals();
 		clearForumJournals();
+		cronJobs.clear();
 		if(CMLib.threads().isTicking(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK))
 		{
 			CMLib.threads().deleteTick(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);

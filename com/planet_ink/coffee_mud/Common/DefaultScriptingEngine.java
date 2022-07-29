@@ -11327,6 +11327,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				boolean proceed=true;
 				boolean savable=false;
 				boolean execute=false;
+				boolean delete=false;
 				String scope=getVarScope();
 				while(proceed)
 				{
@@ -11338,9 +11339,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						proceed=true;
 					}
 					else
+					if(m2.toUpperCase().startsWith("DELETE "))
+					{
+						delete=true;
+						m2=m2.substring(7).trim();
+						proceed=true;
+					}
+					else
 					if(m2.toUpperCase().startsWith("EXECUTE "))
 					{
 						execute=true;
+						delete=true;
 						m2=m2.substring(8).trim();
 						proceed=true;
 					}
@@ -11361,25 +11370,42 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				if((newTarget!=null)&&(m2.length()>0))
 				{
-					if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
-						Log.sysOut("Scripting",newTarget.Name()+" was MPSCRIPTED: "+defaultQuestName);
-					final ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
-					S.setSavable(savable);
-					S.setVarScope(scope);
-					S.setScript(m2);
-					if((this.questCacheObj!=null)
-					&&(defaultQuest()==this.questCacheObj))
-						S.registerDefaultQuest(defaultQuest());
-					else
-					if((defaultQuestName()!=null)&&(defaultQuestName().length()>0))
-						S.registerDefaultQuest(defaultQuestName());
-					newTarget.addScript(S);
-					if(execute)
+					if(delete && (!execute))
 					{
-						S.tick(newTarget,Tickable.TICKID_MOB);
-						for(int i=0;i<5;i++)
-							S.dequeResponses();
-						newTarget.delScript(S);
+						for(final Enumeration<ScriptingEngine> s1= newTarget.scripts(); s1.hasMoreElements();)
+						{
+							final ScriptingEngine S=s1.nextElement();
+							if(S.getScript().trim().equalsIgnoreCase(m2.trim()))
+							{
+								Log.sysOut("Scripting",newTarget.Name()+" was DE-MPSCRIPTED: "+defaultQuestName);
+								newTarget.delScript(S);
+								break;
+							}
+						}
+					}
+					else
+					{
+						if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
+							Log.sysOut("Scripting",newTarget.Name()+" was MPSCRIPTED: "+defaultQuestName);
+						final ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+						S.setSavable(savable);
+						S.setVarScope(scope);
+						S.setScript(m2);
+						if((this.questCacheObj!=null)
+						&&(defaultQuest()==this.questCacheObj))
+							S.registerDefaultQuest(defaultQuest());
+						else
+						if((defaultQuestName()!=null)&&(defaultQuestName().length()>0))
+							S.registerDefaultQuest(defaultQuestName());
+						newTarget.addScript(S);
+						if(execute)
+						{
+							S.tick(newTarget,Tickable.TICKID_MOB);
+							for(int i=0;i<5;i++)
+								S.dequeResponses();
+						}
+						if(delete)
+							newTarget.delScript(S);
 					}
 				}
 				break;
