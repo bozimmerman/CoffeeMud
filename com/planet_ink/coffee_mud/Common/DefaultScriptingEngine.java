@@ -81,7 +81,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	protected boolean				alwaysTriggers	 = false;
 
 	protected MOB					lastToHurtMe	 = null;
-	protected Room					lastKnownLocation= null;
+	protected volatile Room			lastKnownLocation= null;
 	protected Room					homeKnownLocation= null;
 	protected Tickable				altStatusTickable= null;
 	protected List<Integer>			oncesDone		 = Collections.synchronizedList(new ArrayList<Integer>());
