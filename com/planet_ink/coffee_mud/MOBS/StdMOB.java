@@ -1331,6 +1331,18 @@ public class StdMOB implements MOB
 			if (dropItem != null)
 				addItem(dropItem);
 		}
+		else
+		if(!CMSecurity.isDisabled(DisFlag.ASTROLOGY))
+		{
+			A=fetchEffect("Astrology");
+			if(A==null)
+			{
+				A=CMClass.getAbility("Astrology");
+				if(A!=null)
+					this.addNonUninvokableEffect(A);
+			}
+			A.setMiscText("RESET");
+		}
 
 		CMLib.map().registerWorldObjectLoaded(null, getStartRoom(), this);
 		location().show(this, null, CMMsg.MSG_BRINGTOLIFE, null);

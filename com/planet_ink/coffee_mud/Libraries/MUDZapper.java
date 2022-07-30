@@ -45,6 +45,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	}
 
 	public Map<String,ZapperKey> zapCodes=new Hashtable<String,ZapperKey>();
+	private final static CompiledZMask emptyZMask = new CompiledZapperMaskImpl(new CompiledZMaskEntry[0][0], false, false);
 
 	private static class SavedRace
 	{
@@ -100,6 +101,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	{
 		private final ZapperKey maskType;
 		private final Object[] parms;
+		private final int hashCode;
 
 		@Override
 		public ZapperKey maskType()
@@ -117,6 +119,34 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		{
 			maskType = type;
 			this.parms = parms;
+			int hash = maskType.hashCode();
+			for(final Object o : parms)
+				hash ^= (o==null)?0:o.hashCode();
+			hashCode = hash;
+		}
+
+		@Override
+		public int hashCode()
+		{
+			return hashCode;
+		}
+
+		@Override
+		public boolean equals(final Object o)
+		{
+			if((o == null)||(!(o instanceof CompiledZapperMaskEntryImpl)))
+				return false;
+			if(hashCode != o.hashCode())
+				return false;
+			final CompiledZapperMaskEntryImpl me = (CompiledZapperMaskEntryImpl)o;
+			if (maskType != me.maskType)
+				return false;
+			if(parms.length != me.parms.length)
+				return false;
+			for(int i=0;i<parms.length;i++)
+				if(!parms[i].equals(me.parms[i]))
+					return false;
+			return true;
 		}
 	}
 
@@ -135,6 +165,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		private final boolean useRoomFlag;
 		private final boolean empty;
 		private final CompiledZMaskEntry[][] entries;
+		private final int hashCode;
 
 		@Override
 		public boolean useItemFlag()
@@ -160,23 +191,54 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			return entries;
 		}
 
+		private int makeEntryHash()
+		{
+			int hash = 0;
+			for(final CompiledZMaskEntry[] ce : entries)
+				for(final CompiledZMaskEntry e : ce)
+					hash ^= e.hashCode();
+			return hash;
+		}
+
 		public CompiledZapperMaskImpl(final CompiledZMaskEntry[][] entries,
 									  final boolean useItem, final boolean useRoom)
 		{
 			this.useItemFlag = useItem;
 			this.useRoomFlag = useRoom;
 			this.entries = entries;
-			this.empty = false;
+			this.empty = entries == null || entries.length==0;
+			hashCode = Boolean.valueOf(useItemFlag).hashCode()
+					^ Boolean.valueOf(useRoomFlag).hashCode()
+					^ Boolean.valueOf(empty).hashCode()
+					^ makeEntryHash();
 		}
 
-		public CompiledZapperMaskImpl(final boolean useItem, final boolean useRoom,
-									  final CompiledZMaskEntry[][] entries,
-									  final boolean empty)
+		@Override
+		public int hashCode()
 		{
-			this.useItemFlag = useItem;
-			this.useRoomFlag = useRoom;
-			this.entries = entries;
-			this.empty = empty;
+			return hashCode;
+		}
+
+		@Override
+		public boolean equals(final Object o)
+		{
+			if((o == null)||(!(o instanceof CompiledZapperMaskImpl)))
+				return false;
+			if(hashCode != o.hashCode())
+				return false;
+			final CompiledZapperMaskImpl me = (CompiledZapperMaskImpl)o;
+			if((useItemFlag != me.useItemFlag)
+			||(useRoomFlag != me.useRoomFlag)
+			||(empty != me.empty))
+				return false;
+			if(empty)
+				return true;
+			if(entries.length != me.entries.length)
+				return false;
+			for(int i=0;i<entries.length;i++)
+				if(!entries[i].equals(me.entries[i]))
+					return false;
+			return true;
 		}
 	}
 
@@ -289,7 +351,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	@Override
 	public CompiledZMask createEmptyMask()
 	{
-		return new CompiledZapperMaskImpl(false, false, new CompiledZMaskEntry[0][0], true);
+		return new CompiledZapperMaskImpl(new CompiledZMaskEntry[0][0], false, false);
 	}
 
 	protected Map<String,ZapperKey> getMaskCodes()
@@ -2854,7 +2916,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	{
 		final ArrayList<ArrayList<CompiledZMaskEntry>> bufs=new ArrayList<ArrayList<CompiledZMaskEntry>>();
 		if((text==null)||(text.trim().length()==0))
-			return new CompiledZapperMaskImpl(bufs.toArray(new CompiledZMaskEntry[0][0]), false, false);
+			return emptyZMask;
 		ArrayList<CompiledZMaskEntry> buf=new ArrayList<CompiledZMaskEntry>();
 		bufs.add(buf);
 		final Map<String,ZapperKey> zapCodes=getMaskCodes();

@@ -903,4 +903,23 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 			return localClock(((MOB)P).location());
 		return globalClock();
 	}
+
+	@Override
+	public TimeClock homeClock(final Physical P)
+	{
+		if(P instanceof Area)
+			return ((Area)P).getTimeObj();
+		if(P instanceof Room)
+			return homeClock(((Room)P).getArea());
+		if(P instanceof Item)
+			return homeClock(((Item)P).owner());
+		if(P instanceof MOB)
+		{
+			if(((MOB)P).getStartRoom() == null)
+				return homeClock(((MOB)P).location());
+			else
+				return homeClock(((MOB)P).getStartRoom());
+		}
+		return globalClock();
+	}
 }

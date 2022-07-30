@@ -2848,7 +2848,8 @@ public class CMSecurity
 		RANDOMQUESTS("random quests"),
 		BADEXITS("unlinked exits"),
 		SPACETHREAD("space thread"),
-		CRONJOBS("cron jobs")
+		CRONJOBS("cron jobs"),
+		ASTROLOGY("astrology system")
 		;
 		private final String desc;
 
