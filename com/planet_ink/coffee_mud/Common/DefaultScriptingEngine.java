@@ -2045,7 +2045,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if (y >= 0)
 						{
 							arg1 = mid.substring(0, y).trim();
-							E = getArgumentItem(arg1, source, monster, monster, target, primaryItem, secondaryItem, msg, tmp);
+							E = getArgumentItem(arg1, source, monster, scripted, target, primaryItem, secondaryItem, msg, tmp);
 							mid = mid.substring(y + 1).trim();
 						}
 						if (arg1.length() > 0)

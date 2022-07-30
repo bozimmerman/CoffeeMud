@@ -152,6 +152,9 @@
 				@if?CheckReqParm?FUNCTION=TRANSFER@
 				<CENTER><FONT COLOR=RED><B>@JournalFunction?TRANSFER@</B></FONT></CENTER>
 				@endif@
+				@if?CheckReqParm?FUNCTION=COPY@
+				<CENTER><FONT COLOR=RED><B>@JournalFunction?COPY@</B></FONT></CENTER>
+				@endif@
 				@if?CheckReqParm?FUNCTION=EMAIL@
 				<CENTER><FONT COLOR=RED><B>@JournalFunction?EMAIL@</B></FONT></CENTER>
 				@endif@
@@ -393,6 +396,7 @@
 							<TD WIDTH=51% ALIGN=LEFT VALIGN=TOP>
 								@if?CheckAuthCode?AUTH_JOURNALS=true@
 								<INPUT TYPE=BUTTON NAME=TRANSFER VALUE="Transfer TO:" ONCLICK="if(document.JOURNAL.NEWJOURNAL.selectedIndex>=0)Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','TRANSFER','@RequestParameter?JOURNALCARDINAL@');">
+								<INPUT TYPE=BUTTON NAME=COPY VALUE="Copy TO:" ONCLICK="if(document.JOURNAL.NEWJOURNAL.selectedIndex>=0)Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','COPY','@RequestParameter?JOURNALCARDINAL@');">
 								@AddRequestParameter?THISJOURNAL=@@RequestParameter?JOURNAL@@ @
 								<SELECT NAME=NEWJOURNAL>
 								@JournalNext?RESET@

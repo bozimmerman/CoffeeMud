@@ -56,6 +56,8 @@
  55. Tents and other ENTER-IN type rideables now protect against some weather affects
  56. Archons can now create/list/mod/del periodic script runs (cron jobs)
  57. New skill: Skill_Math.  It's a calculator.  woohoo.
+ 58. Player Prompt now supports % visited area and world
+ 59. Journals now support message COPY option for admins
 
 # Build 5.9.12 Release 1/17/2022
   *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG

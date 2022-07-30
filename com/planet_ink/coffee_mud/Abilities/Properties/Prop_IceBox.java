@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
 
+import com.planet_ink.coffee_mud.core.CMClass;
 import com.planet_ink.coffee_mud.core.collections.EnumerationIterator;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
@@ -47,6 +48,7 @@ public class Prop_IceBox extends Property
 	}
 
 	boolean started=false;
+	protected volatile int numEffects = -1;
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -68,6 +70,28 @@ public class Prop_IceBox extends Property
 				if(I instanceof Decayable)
 					((Decayable)I).setDecayTime(Long.MAX_VALUE);
 			}
+		}
+		else
+		if((msg.targetMinor()==CMMsg.TYP_GET)
+		&&(msg.target()==affected)
+		&&(msg.tool() instanceof Food))
+		{
+			msg.addTrailerRunnable(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					final Physical aff = affected;
+					if((aff != null)
+					&&(aff.numEffects() != numEffects))
+					{
+						final Ability A=aff.fetchEffect("Soiled");
+						if(A!=null)
+							aff.delEffect(A);
+						numEffects = aff.numEffects();
+					}
+				}
+			});
 		}
 	}
 

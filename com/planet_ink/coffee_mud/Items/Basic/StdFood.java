@@ -177,8 +177,9 @@ public class StdFood extends StdItem implements Food
 		&&(msg.target() instanceof Container)
 		&&(((Container)msg.target()).fetchEffect("Soiled")==null))
 		{
-			if((!(this instanceof RawMaterial))
-			||((material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH))
+			if(((!(this instanceof RawMaterial))
+				||((material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH))
+					)
 			{
 				final Ability A=CMClass.getAbility("Soiled");
 				if(A!=null)

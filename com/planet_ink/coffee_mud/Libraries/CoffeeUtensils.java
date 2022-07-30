@@ -1983,6 +1983,20 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					c++;
 					break;
 				}
+				case 'l':
+				{
+					if((mob.playerStats()!=null)&&(mob.location()!=null))
+						buf.append(mob.playerStats().percentVisited(mob, mob.location().getArea())+"%");
+					c++;
+					break;
+				}
+				case 'L':
+				{
+					if(mob.playerStats()!=null)
+						buf.append(mob.playerStats().percentVisited(mob, null)+"%");
+					c++;
+					break;
+				}
 				case 'm':
 				{
 					buf.append("^<Mana^>" + mob.curState().getMana() + "^</Mana^>");

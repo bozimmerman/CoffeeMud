@@ -432,10 +432,11 @@ public class JournalFunction extends StdWebMacro
 				else
 				if(CMSecurity.isAllowedAnywhere(M,CMSecurity.SecFlag.JOURNALS))
 				{
-					if(parms.containsKey("TRANSFER"))
+					if(parms.containsKey("TRANSFER")||parms.containsKey("COPY"))
 					{
 						if((forum!=null)&&(!forum.authorizationCheck(M, ForumJournalFlags.ADMIN)))
 							return "Email not submitted -- Unauthorized.";
+						final boolean transfer=parms.containsKey("TRANSFER");
 						String journal=httpReq.getUrlParameter("NEWJOURNAL"+fieldSuffix);
 						if((journal==null) || (journal.length()==0))
 							messages.append("Transfer #"+cardinalNumber+" not completed -- No journal!<BR>");
@@ -451,28 +452,45 @@ public class JournalFunction extends StdWebMacro
 							final boolean isPlayer=CMLib.players().playerExists(CMStrings.capitalizeAndLower(journal));
 							if(journal.equals("FROM")||users.contains(journal)||isPlayer)
 							{
+								final String toName;
+								MOB toM=null;
 								if(journal.equals("FROM"))
 								{
-									entry.to(entry.from());
-									final MOB toM=CMLib.players().getPlayerAllHosts(journal);
-									if(toM != null)
-										toM.tell(L("A message in @x1 was transferred to you.",journalName));
+									toName=entry.from();
+									toM=CMLib.players().getPlayerAllHosts(journal);
 								}
 								else
 								if(isPlayer)
 								{
-									entry.to(CMStrings.capitalizeAndLower(journal));
-									final MOB toM=CMLib.players().getPlayerAllHosts(journal);
-									if(toM != null)
-										toM.tell(L("A message in @x1 was transferred to you.",journalName));
+									toName=CMStrings.capitalizeAndLower(journal);
+									toM=CMLib.players().getPlayerAllHosts(journal);
 								}
 								else
-									entry.to(journal);
+									toName=journal;
+								if(toM != null)
+								{
+									toM.tell(L("A message in @x1 was "
+											+ ((transfer)?"transferred ":"copied ")
+											+ "to you.",journalName));
+								}
 								CMLib.journals().clearJournalSummaryStats(forum);
 								JournalInfo.clearJournalCache(httpReq, journalName);
-								CMLib.database().DBUpdateJournal(journalName, entry);
+								if(transfer)
+								{
+									entry.to(toName);
+									CMLib.database().DBUpdateJournal(journalName, entry);
+									messages.append("Message #"+cardinalNumber+" transferred<BR>");
+								}
+								else
+								{
+									CMLib.database().DBWriteJournal(journalName,
+																	entry.from(),
+																	toName,
+																	entry.subj(),
+																	entry.msg());
+									messages.append("Message #"+cardinalNumber+" copied<BR>");
+								}
 								journal=null;
-								messages.append("Message #"+cardinalNumber+" transferred<BR>");
 							}
 							else
 							if(journal.equals("MAILBOX"))
@@ -506,14 +524,21 @@ public class JournalFunction extends StdWebMacro
 							else
 							{
 								CMLib.journals().clearJournalSummaryStats(forum);
-								CMLib.database().DBDeleteJournal(journalName,entry.key());
+								if(transfer)
+									CMLib.database().DBDeleteJournal(journalName,entry.key());
 								if(journalName.toUpperCase().startsWith("SYSTEM_"))
 									entry.update(System.currentTimeMillis());
-								CMLib.database().DBWriteJournal(realName,entry);
+								if(transfer)
+									CMLib.database().DBWriteJournal(realName,entry);
+								else
+									CMLib.database().DBWriteJournal(realName, entry.from(), entry.to(), entry.subj(), entry.msg());
 								CMLib.journals().clearJournalSummaryStats(forum);
 								JournalInfo.clearJournalCache(httpReq, journalName);
 								httpReq.addFakeUrlParameter("JOURNALMESSAGE","");
-								messages.append("Message #"+cardinalNumber+" transferred<BR>");
+								if(transfer)
+									messages.append("Message #"+cardinalNumber+" transferred<BR>");
+								else
+									messages.append("Message #"+cardinalNumber+" copied<BR>");
 							}
 						}
 					}

@@ -2135,15 +2135,18 @@ public class CMFile extends File
 		if(dest instanceof CMFile)
 		{
 			final CMFile cmDest=(CMFile)dest;
-			if((this.canVFSEquiv())&&(cmDest.canVFSEquiv()))
+			if((canVFSEquiv())
+			||(cmDest.demandedVFS())
+			||(cmDest.demandedVFS() != demandedVFS()))
 			{
-				if(!this.isDirectory())
+				if(!isDirectory())
 				{
 					if(!cmDest.saveRaw(this.raw()))
 						return false;
-					this.deleteVFS();
+					deleteVFS();
 				}
 			}
+			else
 			if(this.canLocalEquiv()&&(cmDest.canLocalEquiv()))
 			{
 				if((this.localFile!=null)&&(this.localFile.exists()))

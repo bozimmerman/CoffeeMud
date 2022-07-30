@@ -184,7 +184,8 @@ public class StdJournal extends StdItem implements Book
 		return true;
 	}
 
-	protected boolean completeTransfer(final MOB mob, final CMMsg msg, final String journal, final JournalEntry entry2)
+	protected boolean completeTransfer(final MOB mob, final CMMsg msg, final String journal,
+									   final JournalEntry entry2, final boolean transfer)
 	{
 		String realName=null;
 		for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
@@ -203,7 +204,8 @@ public class StdJournal extends StdItem implements Book
 			realName=CMLib.database().DBGetRealJournalName(journal.toUpperCase());
 		if(realName!=null)
 		{
-			CMLib.database().DBDeleteJournal(Name(),entry2.key());
+			if(transfer)
+				CMLib.database().DBDeleteJournal(Name(),entry2.key());
 			CMLib.journals().notifyPosting(realName, entry2.from(), entry2.to(), entry2.subj());
 			CMLib.database().DBWriteJournal(realName,
 											  entry2.from(),
@@ -211,7 +213,10 @@ public class StdJournal extends StdItem implements Book
 											  entry2.subj(),
 											  entry2.msg());
 			msg.setValue(-1);
-			mob.tell(L("Message transferred."));
+			if(transfer)
+				mob.tell(L("Message transferred."));
+			else
+				mob.tell(L("Message copied."));
 			return true;
 		}
 		else
@@ -257,12 +262,26 @@ public class StdJournal extends StdItem implements Book
 			else
 			{
 				final MOB toM=CMLib.players().getPlayerAllHosts(realName);
-				if(toM != null)
-					toM.tell(L("A message in @x1 was transferred to you.",Name()));
-				entry2.to(realName);
-				CMLib.database().DBUpdateJournal(Name(), entry2);
-				msg.setValue(-1);
-				mob.tell(L("Message transferred."));
+				if(transfer)
+				{
+					if(toM != null)
+						toM.tell(L("A message in @x1 was transferred to you.",Name()));
+					entry2.to(realName);
+					CMLib.database().DBUpdateJournal(Name(), entry2);
+					msg.setValue(-1);
+					mob.tell(L("Message transferred."));
+				}
+				else
+				{
+					if(toM != null)
+						toM.tell(L("A message in @x1 was copied to you.",Name()));
+					CMLib.database().DBWriteJournal(Name(),
+													entry2.from(),
+													realName,
+													entry2.subj(),
+													entry2.msg());
+					mob.tell(L("Message copied."));
+				}
 				return true;
 			}
 		}
@@ -402,6 +421,8 @@ public class StdJournal extends StdItem implements Book
 									{
 										prompt+="^<MENU^>T^</MENU^>)ransfer ";
 										cmds+="T";
+										prompt+="^<MENU^>C^</MENU^>)opy ";
+										cmds+="C";
 									}
 									prompt+="or RETURN: ";
 									final String s=mob.session().choose(prompt,cmds+"\n","\n");
@@ -473,9 +494,28 @@ public class StdJournal extends StdItem implements Book
 										journal=journal.trim();
 										if(journal.length()>0)
 										{
-											if(completeTransfer(mob,msg,journal,read))
+											if(completeTransfer(mob,msg,journal,read,true))
 												msg.setValue(-1);
 										}
+										else
+											mob.tell(L("Aborted."));
+									}
+									else
+									if(s.equalsIgnoreCase("C"))
+									{
+										String journal;
+										try {
+											journal=mob.session().prompt(L("Enter the journal or user to copy this msg to: "),"",30000);
+										}
+										catch(final IOException e)
+										{
+											mob.tell(L("Timed out."));
+											repeat=true;
+											continue;
+										}
+										journal=journal.trim();
+										if(journal.length()>0)
+											completeTransfer(mob,msg,journal,read,false);
 										else
 											mob.tell(L("Aborted."));
 									}
@@ -514,7 +554,7 @@ public class StdJournal extends StdItem implements Book
 														&&(cmJournalAlias.getFlag(CommandJournalFlags.REPLYSELF).length()>0))
 														{
 															final String journal=cmJournalAlias.getFlag(CommandJournalFlags.REPLYSELF);
-															completeTransfer(mob,msg,journal,read);
+															completeTransfer(mob,msg,journal,read,true);
 															megaRepeat=false;
 														}
 													}
@@ -526,7 +566,7 @@ public class StdJournal extends StdItem implements Book
 														&&(cmJournalAlias.getFlag(CommandJournalFlags.REPLYALL).length()>0))
 														{
 															final String journal=cmJournalAlias.getFlag(CommandJournalFlags.REPLYALL);
-															completeTransfer(mob,msg,journal,read);
+															completeTransfer(mob,msg,journal,read,true);
 															megaRepeat=false;
 														}
 													}
