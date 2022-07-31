@@ -2699,6 +2699,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		return R;
 	}
 
+	@Override
 	public boolean isItemInState(final Room R, final MOB mob, final ItemState state, final Item I)
 	{
 		switch(state)
@@ -2761,6 +2762,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 	}
 
+	@Override
 	public void deAlias(final String rawAliasDefinition, final List<String> parsedInput,
 						final List<List<String>> executableCommands, final boolean[] doEcho)
 	{
@@ -2782,4 +2784,3 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 	}
 }
-

@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AutoAwardsLibrary.AutoProperties;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -19,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2007-2022 Bo Zimmerman
+   Copyright 2022-2022 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,40 +34,41 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class AutoTitleNext extends StdWebMacro
+public class AutoAwardNext extends StdWebMacro
 {
 	@Override
 	public String name()
 	{
-		return "AutoTitleNext";
+		return "AutoAwardNext";
 	}
 
 	@Override
 	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
-		final String last=httpReq.getUrlParameter("AUTOTITLE");
+		final String last=httpReq.getUrlParameter("AUTOAWARD");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null)
-				httpReq.removeUrlParameter("AUTOTITLE");
+				httpReq.removeUrlParameter("AUTOAWARD");
 			return "";
 		}
 		String lastID="";
-		for(final Enumeration<String> r=CMLib.awards().autoTitles();r.hasMoreElements();)
+		int i=1;
+		for(final Enumeration<AutoProperties> ap = CMLib.awards().getAutoProperties();ap.hasMoreElements();)
 		{
-			final String title=r.nextElement();
-			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!title.equals(lastID))))
+			ap.nextElement();
+			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!(""+i).equals(lastID))))
 			{
-				httpReq.addFakeUrlParameter("AUTOTITLE",title);
+				httpReq.addFakeUrlParameter("AUTOAWARD",(""+i));
 				return "";
 			}
-			lastID=title;
+			lastID=(""+i);
+			i++;
 		}
-		httpReq.addFakeUrlParameter("AUTOTITLE","");
+		httpReq.addFakeUrlParameter("AUTOAWARD","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		return " @break@";
 	}
-
 }

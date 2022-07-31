@@ -16,10 +16,11 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.net.URLEncoder;
 import java.util.*;
 
 /*
-   Copyright 2007-2022 Bo Zimmerman
+   Copyright 2022-2022 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,40 +34,29 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class AutoTitleNext extends StdWebMacro
+public class AutoAwardID extends StdWebMacro
 {
 	@Override
 	public String name()
 	{
-		return "AutoTitleNext";
+		return "AutoAwardID";
 	}
 
 	@Override
 	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
+		final String last=httpReq.getUrlParameter("AUTOAWARD");
+		if(last==null)
+			return " @break@";
 		final java.util.Map<String,String> parms=parseParms(parm);
-		final String last=httpReq.getUrlParameter("AUTOTITLE");
-		if(parms.containsKey("RESET"))
+		try
 		{
-			if(last!=null)
-				httpReq.removeUrlParameter("AUTOTITLE");
-			return "";
+			if(parms.containsKey("ENCODED"))
+				return URLEncoder.encode(last,"UTF-8");
 		}
-		String lastID="";
-		for(final Enumeration<String> r=CMLib.awards().autoTitles();r.hasMoreElements();)
+		catch(final Exception e)
 		{
-			final String title=r.nextElement();
-			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!title.equals(lastID))))
-			{
-				httpReq.addFakeUrlParameter("AUTOTITLE",title);
-				return "";
-			}
-			lastID=title;
 		}
-		httpReq.addFakeUrlParameter("AUTOTITLE","");
-		if(parms.containsKey("EMPTYOK"))
-			return "<!--EMPTY-->";
-		return " @break@";
+		return clearWebMacros(last);
 	}
-
 }

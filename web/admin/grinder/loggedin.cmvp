@@ -253,8 +253,8 @@
 			<A href="javascript:Clicked('components.cmvp')"><FONT COLOR=WHITE>Skill Components</FONT></a>
 			<BR>
 			@endif@
-			@if?CheckAuthCode?AUTH_TITLES=true@
-			<A href="javascript:Clicked('achievements.cmvp')"><FONT COLOR=WHITE>Achievements/Titles</FONT></a>
+			@if?CheckAuthCode?AUTH_TITLES=true&||AUTH_ACHIEVEMENTS=true&||AUTH_AUTOAWARDS=true@
+			<A href="javascript:Clicked('achievements.cmvp')"><FONT COLOR=WHITE>Achievements/Awards</FONT></a>
 			<BR>
 			@endif@
 			@if?CheckAuthCode?AUTH_PLANES=true@

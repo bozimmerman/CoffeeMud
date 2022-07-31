@@ -1124,12 +1124,31 @@ public class Create extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The power of skill usage just increased!"));
 	}
 
+	public void awards(final MOB mob, final List<String> commands)
+	{
+		if((commands.size()<3)
+		||(CMParms.combine(commands,2).split("::").length!=3))
+		{
+			mob.tell(L("You have failed to specify the proper fields.\n\r"
+					+ "Format: CREATE AUTOAWARD [PLAYER MASK]:[DATE MASK]::[PROPS] as follows: \n\r"));
+			final String inst = CMLib.awards().getAutoAwardInstructions(CMLib.awards().getAutoAwardsFilename());
+			if(mob.session()!=null)
+				mob.session().wraplessPrintln(inst);
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		if(CMLib.awards().modifyAutoAwards(Integer.MAX_VALUE, CMParms.combine(commands,2)))
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The superstition of the players just increased!"));
+		else
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+	}
+	
 	public void titles(final MOB mob, final List<String> commands)
 	{
 		if((commands.size()<3)||(CMParms.combine(commands,1).indexOf('=')<0))
 		{
 			mob.tell(L("You have failed to specify the proper fields.\n\rFormat: CREATE TITLE [TITLE]=([MAX]:)[ZAPPER MASK] as follows: \n\r"));
-			final String inst = CMLib.titles().getAutoTitleInstructions();
+			final String inst = CMLib.awards().getAutoAwardInstructions(CMLib.awards().getAutoTitleFilename());
 			if(mob.session()!=null)
 				mob.session().wraplessPrintln(inst);
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
@@ -1137,20 +1156,20 @@ public class Create extends StdCommand
 		}
 		final String parms=CMParms.combineQuoted(commands,2);
 		final String skillID=parms.substring(0,parms.indexOf('='));
-		if(CMLib.titles().isExistingAutoTitle(skillID))
+		if(CMLib.awards().isExistingAutoTitle(skillID))
 		{
 			mob.tell(L("'@x1' already exists, you'll need to destroy it first.",skillID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		final String error=CMLib.titles().evaluateAutoTitle(parms,false);
+		final String error=CMLib.awards().evaluateAutoTitle(parms,false);
 		if(error!=null)
 		{
 			mob.tell(error);
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		CMLib.titles().appendAutoTitle("\n"+parms); //automatically does CMLib.titles().reloadAutoTitles();
+		CMLib.awards().appendAutoTitle("\n"+parms); //automatically does CMLib.titles().reloadAutoTitles();
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The prestige of the players just increased!"));
 	}
 
@@ -1426,7 +1445,7 @@ public class Create extends StdCommand
 			 + "CLAN, MOB, RACE, MIXEDRACE, ABILITY, LANGUAGE, CRAFTSKILL, HELP/AHELP, "
 			 + "ACHIEVEMENT, MANUFACTURER, ALLQUALIFY, CLASS, POLL, DEBUGFLAG, "
 			 + "WEBSERVER, DISABLEFLAG, ENABLEFLAG, NEWS, USER, TRAP, WRIGHTSKILL, "
-			 + "GATHERSKILL, CRON, or ROOM";
+			 + "GATHERSKILL, CRON, TITLE, AWARD, or ROOM";
 	}
 
 	public void classes(final MOB mob, final List<String> commands)
@@ -1685,6 +1704,14 @@ public class Create extends StdCommand
 				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			titles(mob,commands);
+		}
+		else
+		if(commandType.equals("AWARD"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AUTOAWARDS))
+				return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
+			awards(mob,commands);
 		}
 		else
 		if(commandType.equals("AREA"))

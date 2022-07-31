@@ -139,7 +139,7 @@ public class CMLib
 		LANGUAGE(LanguageLibrary.class),
 		CATALOG(CatalogLibrary.class),
 		PLAYERS(PlayerLibrary.class),
-		TITLES(AutoTitlesLibrary.class),
+		AUTOAWARDS(AutoAwardsLibrary.class),
 		ABLEPARMS(AbilityParameters.class),
 		GENEDITOR(GenericEditor.class),
 		AREAGEN(AreaGenerationLibrary.class),
@@ -851,13 +851,13 @@ public class CMLib
 	}
 
 	/**
-	 * Returns a reference to this threads player titles collection/management library.
-	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AutoTitlesLibrary
+	 * Returns a reference to this threads player awards collection/management library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AutoAwardsLibrary
 	 * @return a reference to this threads player titles collection/management library.
 	 */
-	public static final AutoTitlesLibrary titles()
+	public static final AutoAwardsLibrary awards()
 	{
-		return (AutoTitlesLibrary)l().libraries[Library.TITLES.ordinal()];
+		return (AutoAwardsLibrary)l().libraries[Library.AUTOAWARDS.ordinal()];
 	}
 
 	/**
@@ -1393,12 +1393,12 @@ public class CMLib
 
 	/**
 	 * Returns a reference to this instances player titles collection/management library.
-	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AutoTitlesLibrary
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AutoAwardsLibrary
 	 * @return a reference to this instances player titles collection/management library.
 	 */
-	public final AutoTitlesLibrary _titles()
+	public final AutoAwardsLibrary _titles()
 	{
-		return (AutoTitlesLibrary)libraries[Library.TITLES.ordinal()];
+		return (AutoAwardsLibrary)libraries[Library.AUTOAWARDS.ordinal()];
 	}
 
 	/**

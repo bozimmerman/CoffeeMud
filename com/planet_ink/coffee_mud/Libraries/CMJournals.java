@@ -853,7 +853,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						mob.setActions(99);
 						int tries=99;
 						while(mob.dequeCommand() && (--tries>0))
-							mob.setActions(99);;
+							mob.setActions(99);
 					}
 				}
 			}

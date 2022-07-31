@@ -2140,9 +2140,10 @@ public class Modify extends StdCommand
 	protected String listOfThings()
 	{
 		return "ITEM, RACE, CLASS, ABILITY, LANGUAGE, CRAFTSKILL, GATHERSKILL, WRIGHTSKILL, "
-			+ "ALLQUALIFY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, TITLE, QUEST, "
+			+ "ALLQUALIFY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, QUEST, "
 			+ "MOB, USER, HOLIDAY, ACHIEVEMENT, MANUFACTURER, HELP/AHELP, TRAP, CRON, "
-			+ "GOVERNMENT, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, NEWS, DAY, MONTH, YEAR, TIME, HOUR, or ROOM";
+			+ "GOVERNMENT, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, NEWS, DAY, MONTH, YEAR, "
+			+ "TIME, HOUR, or ROOM";
 	}
 
 	@Override
@@ -2339,6 +2340,14 @@ public class Modify extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TITLES))
 				return errorOut(mob);
 			mob.tell(L("You can't modify titles, you can only LIST, CREATE, and DESTROY them."));
+			return false;
+		}
+		else
+		if(commandType.equals("AWARD"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AUTOAWARDS))
+				return errorOut(mob);
+			mob.tell(L("You can't modify auto-awards, you can only LIST, CREATE, and DESTROY them."));
 			return false;
 		}
 		else

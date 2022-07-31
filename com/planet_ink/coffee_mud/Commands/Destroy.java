@@ -66,9 +66,31 @@ public class Destroy extends StdCommand
 			+ "SESSION, TICKS, THREAD, HOLIDAY, JOURNAL, SOCIAL, ACHIEVEMENT, CLASS, ABILITY, MANUFACTURER, "
 			+ "LANGUAGE, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, GOVERNMENT, NOPURGE, BUG, TYPO, IDEA, "
 			+ "WEBSERVER, POLL, DEBUGFLAG, DISABLEFLAG, ENABLEFLAG, CRAFTSKILL, GATHERSKILL, CRON, "
-			+ "TRAP, WRIGHTSKILL, or a ROOM";
+			+ "TRAP, WRIGHTSKILL, AWARD, or a ROOM";
 	}
 
+	public void awards(final MOB mob, final List<String> commands)
+	{
+		if((commands.size()<3)
+		||(!CMath.isInteger(commands.get(2)))
+		||(CMath.s_int(commands.get(2))<1))
+		{
+			mob.tell(L("You have failed to specify the proper fields.\n\r"
+					+ "DESTROY AWARD [NUM].\n\r"));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		int num = CMath.s_int(commands.get(2));
+		if(CMLib.awards().modifyAutoAwards(num, null))
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The superstition of the players just decreased!"));
+		else
+		{
+			mob.tell(L("@x1 is not a proper entry.  Try LIST AWARD.\n\r"));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+	}
+	
 	public boolean mobs(final MOB mob, final List<String> commands)
 	{
 		if(commands.size()<3)
@@ -867,14 +889,14 @@ public class Destroy extends StdCommand
 		}
 
 		final String classID=CMParms.combine(commands,2);
-		if(!CMLib.titles().isExistingAutoTitle(classID))
+		if(!CMLib.awards().isExistingAutoTitle(classID))
 		{
 			mob.tell(L("'@x1' is not an existing auto-title, try LIST TITLES.",classID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 
-		final String error = CMLib.titles().deleteTitleAndResave(classID); // also does CMLib.titles().reloadAutoTitles();
+		final String error = CMLib.awards().deleteTitleAndResave(classID); // also does CMLib.titles().reloadAutoTitles();
 		if(error == null)
 		{
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The prestige of players just decreased!"));
@@ -1441,7 +1463,15 @@ public class Destroy extends StdCommand
 			titles(mob,commands);
 		}
 		else
-	if(commandType.equals("USER")||commandType.equals("PLAYER"))
+		if(commandType.equals("AWARD"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AUTOAWARDS))
+				return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
+			awards(mob,commands);
+		}
+		else
+		if(commandType.equals("USER")||commandType.equals("PLAYER"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS))
 				return errorOut(mob);

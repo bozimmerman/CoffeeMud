@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_AUTOAWARDS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+	<META CHARSET="utf-8"/>
+<head>
+    <link rel="grinder icon" href="/images/grinder.ico" >
+    <title>Astrologies List</title>
+    <script language=JavaScript>
+    <!--
+        function NewAward()
+        {
+            if(confirm('Create a new award rule?'))
+            {
+                var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=150,width=450,alwaysRaised=yes,dependent=yes";
+                w=window.open("autoaward.cmvp?AUTH=@Authenticate?AUTH@&AUTOAWARD=",
+                	"Award",strFeatures, false);
+            }
+        }
+        function Award(autoawardid,action)
+        {
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=150,width=450,alwaysRaised=yes,dependent=yes";
+            w=window.open("autoaward.cmvp?AUTH=@Authenticate?AUTH@&AUTOAWARD="+autoawardid+action,
+            	"Award",strFeatures, false);
+        }
+        function Clicked(action)
+        {
+            document.RESOURCES.action=action;
+            document.RESOURCES.submit();
+        }
+        function Refresh()
+        {
+            document.RESOURCES.action='autoawards.cmvp';
+            document.RESOURCES.submit();
+        }
+    //-->
+    </script>
+</head>
+<body BGCOLOR=BLACK>
+    <TABLE WIDTH=100% BORDER=0>
+    <TR>
+    <TD WIDTH=33% ALIGN=LEFT VALIGN=TOP></TD>
+    <TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
+    <TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP>
+        <TABLE WIDTH=50% BORDER=1>
+        <TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
+        <TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
+        <TR><TD><a href="javascript:Refresh();"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
+        </TABLE>
+    </TD>
+    </TR>
+    </TABLE>
+<CENTER>
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="autoawards.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+    <TABLE WIDTH=100% BORDER=1>
+    <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Award Manager</H2></FONT></TD></TR>
+    <TR>
+    <TD WIDTH=5%><B><FONT COLOR=YELLOW>ID</FONT></b></TD>
+    <TD WIDTH=20%><B><FONT COLOR=YELLOW>Player Mask</FONT></b></TD>
+    <TD WIDTH=20%><B><FONT COLOR=YELLOW>Data Mask</FONT></b></TD>
+    <TD WIDTH=55%><B><FONT COLOR=YELLOW>Properties</FONT></b></TD>
+    </TR>
+    @AutoAwardNext?RESET@
+    @loop@
+    @AutoAwardNext?ALL@
+        <TR>
+        <TD><a href="javascript:Award('@AutoAwardID?ENCODED@','')"><FONT COLOR=WHITE><B>@AutoAwardID@</B></FONT></a></TD>
+        <TD><FONT COLOR=WHITE><B>@AutoAwardData?PMASK@</B></FONT></a></TD>
+        <TD><FONT COLOR=WHITE><B>@AutoAwardData?DMASK@</B></FONT></a></TD>
+        <TD><FONT COLOR=WHITE><B>@AutoAwardData?PROPDESC@</B></FONT></a></TD>
+        </TR>
+    @back@
+    <TR>
+    <TD COLSPAN=4><a href="javascript:NewAward()"><FONT COLOR=WHITE><B>Create New</a></B></FONT></TD>
+    </TR>
+    </TABLE>
+    <P>
+    <TABLE WIDTH=100% BORDER=0>
+    <TR>
+    <TD WIDTH=33% ALIGN=CENTER>
+    </TD>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=REFRESH VALUE="Refresh" ONCLICK="Refresh();"></TD>
+    <TD WIDTH=33% ALIGN=CENTER>
+    </TD>
+    </TR>
+    </TABLE>
+    <CENTER>
+    </CENTER>
+</FORM>
+</BODY>
+</HTML>
+@endif@
+@endif@

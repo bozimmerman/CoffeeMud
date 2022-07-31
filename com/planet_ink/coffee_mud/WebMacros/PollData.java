@@ -499,7 +499,7 @@ public class PollData extends StdWebMacro
 					{
 						String mask=httpReq.getUrlParameter("MASK");
 						if((mask==null)&&(last.length()>0))
-							mask=CMLib.titles().getAutoTitleMask(last);
+							mask=CMLib.awards().getAutoTitleMask(last);
 						if(mask!=null)
 							str.append(CMLib.masking().maskDesc(mask)+", ");
 					}

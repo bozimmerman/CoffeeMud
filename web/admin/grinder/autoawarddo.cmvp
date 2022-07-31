@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_AUTOAWARDS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+	<META CHARSET="utf-8"/>
+<head>
+    <link rel="grinder icon" href="/images/grinder.ico" >
+</head>
+<body BGCOLOR=BLACK>
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+@if?CheckReqParm?FUNCTION=DELAUTOAWARD@
+    var v='@AutoAwardData?DELETE@';
+    if((v != '')&&(alert))
+        alert(v);
+    else
+    if(alert)
+        alert('Award rule deleted.');
+    opener.Refresh();
+    window.close();
+@endif@
+@if?CheckReqParm?FUNCTION=EDITAUTOAWARD@
+    var v='@AutoAwardData?EDIT@';
+    if((v != '')&&(alert))
+        alert(v);
+    else
+    if(alert)
+        alert('Award rule created/modified.');
+    opener.Refresh();
+    window.close();
+@endif@
+@if?CheckReqParm?FUNCTION=REAUTOAWARD@
+    @if?CheckReqParm?NEWAUTOAWARDID=@
+        document.location.href='autoaward.cmvp?AUTH=@Authenticate?AUTH@&AUTOAWARD=@AutoAwardDataID@';
+    @else@
+        document.location.href='autoaward.cmvp?AUTH=@Authenticate?AUTH@&AUTOAWARD=@RequestParameterEncoded?NEWAUTOAWARDID@&NEWAUTOAWARDAUTOAWARD=@RequestParameterEncoded?NEWAUTOAWARDID@';
+    @endif@
+@endif@
+//-->
+</SCRIPT>
+
+</BODY>
+</HTML>
+@endif@
+@endif@

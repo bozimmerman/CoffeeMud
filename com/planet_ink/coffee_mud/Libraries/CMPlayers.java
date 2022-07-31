@@ -2372,7 +2372,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 							&&(CMLib.flags().isInTheGame(M,true)))
 							{
 								//boolean didSomething =
-								CMLib.titles().evaluateAutoTitles(M);
+								CMLib.awards().evaluateAutoTitles(M);
 								//didSomething =
 								CMLib.achievements().evaluatePlayerAchievements(M);// || didSomething;
 								CMLib.achievements().evaluateAccountAchievements(M);// || didSomething;

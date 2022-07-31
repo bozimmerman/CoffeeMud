@@ -24,6 +24,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Currenc
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.ExpertiseAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.StatAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.TitleAward;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AutoAwardsLibrary.AutoProperties;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.CommandJournalFlags;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerSortCode;
@@ -3844,11 +3845,44 @@ public class ListCmd extends StdCommand
 	public String listTitles(final Session viewerS)
 	{
 		final StringBuilder buf=new StringBuilder("^xAll Defined Auto-Titles: ^N\n\r");
-		for(final Enumeration<String> e=CMLib.titles().autoTitles();e.hasMoreElements();)
+		for(final Enumeration<String> e=CMLib.awards().autoTitles();e.hasMoreElements();)
 		{
 			final String title=e.nextElement();
-			final String maskDesc=CMLib.masking().maskDesc(CMLib.titles().getAutoTitleMask(title));
+			final String maskDesc=CMLib.masking().maskDesc(CMLib.awards().getAutoTitleMask(title));
 			buf.append(CMStrings.padRight(title,30)+": "+maskDesc+"\n\r");
+		}
+		if(buf.length()==0)
+			return "None defined.";
+		return buf.toString();
+	}
+
+	public String listAutoAwards(final Session viewerS)
+	{
+		final StringBuilder buf=new StringBuilder("^xAll Auto-Award Rules: ^N\n\r");
+		int i=1;
+		final int COL_LEN1=CMLib.lister().fixColWidth(17.0,viewerS);
+		final int COL_LEN2=CMLib.lister().fixColWidth(17.0,viewerS);
+		final int COL_LEN3=CMLib.lister().fixColWidth(79-18-18-3,viewerS);
+		buf.append("## ");
+		buf.append(CMStrings.padRight(L("Player Mask"), COL_LEN1)).append(" ");
+		buf.append(CMStrings.padRight(L("Date Mask"), COL_LEN2)).append(" ");
+		buf.append(L("Properties")).append("\n\r");
+		for(final Enumeration<AutoProperties> ap = CMLib.awards().getAutoProperties();ap.hasMoreElements();)
+		{
+			final AutoProperties AP = ap.nextElement();
+			buf.append(CMStrings.padRight(""+i, 3));
+			buf.append(CMStrings.padRight(AP.getPlayerMask(), COL_LEN1)).append(" ");
+			buf.append(CMStrings.padRight(AP.getDateMask(), COL_LEN2)).append(" ");
+			final StringBuilder p1 = new StringBuilder("");
+			final StringBuilder p2 = new StringBuilder("");
+			for(final Pair<String,String> a : AP.getProps())
+			{
+				p1.append(a.first).append(" ");
+				p2.append(a.first).append("(").append(a.second).append(") ");
+			}
+			final String props = p2.length()<COL_LEN3?p2.toString().trim():p1.toString().trim();
+			buf.append(CMStrings.limit(props, COL_LEN3)).append("\n\r");
+			i++;
 		}
 		if(buf.length()==0)
 			return "None defined.";
@@ -4327,6 +4361,7 @@ public class ListCmd extends StdCommand
 		CONTENTS("CONTENTS",new SecFlag[]{SecFlag.CMDROOMS,SecFlag.CMDITEMS,SecFlag.CMDMOBS,SecFlag.CMDAREAS}),
 		EXPIRES("EXPIRES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
 		TITLES("TITLES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.TITLES}),
+		AWARDS("AWARDS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.AUTOAWARDS}),
 		ACHIEVEMENTS("ACHIEVEMENTS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.ACHIEVEMENTS}),
 		AREARESOURCES("AREARESOURCES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
 		CONQUERED("CONQUERED",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
@@ -5836,6 +5871,9 @@ public class ListCmd extends StdCommand
 			break;
 		case TITLES:
 			s.wraplessPrintln(listTitles(mob.session()));
+			break;
+		case AWARDS:
+			s.wraplessPrintln(listAutoAwards(mob.session()));
 			break;
 		case ACHIEVEMENTS:
 			s.wraplessPrintln(listAchievements(mob.session()));

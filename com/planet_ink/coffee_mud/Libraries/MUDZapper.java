@@ -5863,8 +5863,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case BIRTHYEAR: // +BIRTHYEAR
 					{
-						if((mob!=null)
-						&&(mob.isPlayer()))
+						if(mob.isPlayer())
 						{
 							final int num = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_YEAR];
 							for(final Object o : entry.parms())
@@ -5878,8 +5877,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _BIRTHYEAR: // -BIRTHYEAR
 					{
 						boolean found=false;
-						if((mob!=null)
-						&&(mob.isPlayer()))
+						if(mob.isPlayer())
 						{
 							final int num = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_YEAR];
 							for(final Object o : entry.parms())
@@ -5929,8 +5927,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case BIRTHWEEK: // +BIRTHWEEK
 					{
-						if((mob!=null)
-						&&(mob.isPlayer())
+						if(mob.isPlayer()
 						&&(mob.getStartRoom()!=null))
 						{
 							final int month = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
@@ -5950,8 +5947,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _BIRTHWEEK: // -BIRTHWEEK
 					{
 						boolean found=false;
-						if((mob!=null)
-						&&(mob.isPlayer())
+						if(mob.isPlayer()
 						&&(mob.getStartRoom()!=null))
 						{
 							final int month = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
@@ -5973,10 +5969,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							return false;
 					}
 					break;
-				case SEASON: // +season
+				case BIRTHSEASON: // +birthseason
 					{
-						if((mob!=null)
-						&&(mob.isPlayer())
+						if(mob.isPlayer()
 						&&(mob.getStartRoom()!=null))
 						{
 							final int month = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
@@ -5993,11 +5988,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						}
 					}
 					break;
-				case _SEASON: // -season
+				case _BIRTHSEASON: // -birthseason
 					{
 						boolean found=false;
-						if((mob!=null)
-						&&(mob.isPlayer())
+						if(mob.isPlayer()
 						&&(mob.getStartRoom()!=null))
 						{
 							final int month = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
@@ -6019,7 +6013,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							return false;
 					}
 					break;
-				case BIRTHSEASON: // +birthseason
+				case SEASON: // +season
 					{
 						if(room!=null)
 						{
@@ -6032,7 +6026,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						}
 					}
 					break;
-				case _BIRTHSEASON: // -birthseason
+				case _SEASON: // -season
 					{
 						boolean found=false;
 						if(room!=null)
@@ -6115,8 +6109,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case BIRTHMONTH: // +birthmonth
 					{
-						if((mob!=null)
-						&&(mob.isPlayer()))
+						if(mob.isPlayer())
 						{
 							final int num = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
 							for(final Object o : entry.parms())
@@ -6130,8 +6123,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _BIRTHMONTH: // -birthmonth
 					{
 						boolean found=false;
-						if((mob!=null)
-						&&(mob.isPlayer()))
+						if(mob.isPlayer())
 						{
 							final int num = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
 							for(final Object o : entry.parms())
@@ -6181,8 +6173,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case BIRTHDAYOFYEAR: // +birthdayofyear
 					{
-						if((mob!=null)
-						&&(mob.isPlayer())
+						if(mob.isPlayer()
 						&&(mob.getStartRoom()!=null))
 						{
 							final int month = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
@@ -6202,8 +6193,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _BIRTHDAYOFYEAR: // -birthdayofyear
 					{
 						boolean found=false;
-						if((mob!=null)
-						&&(mob.isPlayer())
+						if(mob.isPlayer()
 						&&(mob.getStartRoom()!=null))
 						{
 							final int month = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
@@ -6259,8 +6249,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case BIRTHWEEKOFYEAR: // +birthweekofyear
 					{
-						if((mob!=null)
-						&&(mob.isPlayer())
+						if(mob.isPlayer()
 						&&(mob.getStartRoom()!=null))
 						{
 							final int month = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
@@ -6280,8 +6269,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _BIRTHWEEKOFYEAR: // -birthweekofyear
 					{
 						boolean found=false;
-						if((mob!=null)
-						&&(mob.isPlayer())
+						if(mob.isPlayer()
 						&&(mob.getStartRoom()!=null))
 						{
 							final int month = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
@@ -6337,8 +6325,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case BIRTHDAY: // +birthday
 					{
-						if((mob!=null)
-						&&(mob.isPlayer()))
+						if(mob.isPlayer())
 						{
 							final int num = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
 							for(final Object o : entry.parms())
@@ -6352,8 +6339,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _BIRTHDAY: // -birthday
 					{
 						boolean found=false;
-						if((mob!=null)
-						&&(mob.isPlayer()))
+						if(mob.isPlayer())
 						{
 							final int num = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
 							for(final Object o : entry.parms())

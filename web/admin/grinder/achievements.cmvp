@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 @if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
-@if?!CheckAuthCode?AUTH_TITLES=true&||AUTH_ACHIEVEMENTS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_TITLES=true&||AUTH_ACHIEVEMENTS=true&||AUTH_AUTOAWARDS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 <html>
 <head>
 	<META CHARSET="utf-8"/>
@@ -23,6 +23,21 @@
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=200,width=450,alwaysRaised=yes,dependent=yes";
             w=window.open("autotitle.cmvp?AUTH=@Authenticate?AUTH@&AUTOTITLE="+autotitleid+action,
                 "Title",strFeatures, false);
+        }
+        function NewAward()
+        {
+            if(confirm('Create a new award?'))
+            {
+                var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=350,width=750,alwaysRaised=yes,dependent=yes";
+                w=window.open("autoaward.cmvp?AUTH=@Authenticate?AUTH@&AUTOAWARD=",
+                    "Award",strFeatures, false);
+            }
+        }
+        function Award(autoawardid,action)
+        {
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=350,width=750,alwaysRaised=yes,dependent=yes";
+            w=window.open("autoaward.cmvp?AUTH=@Authenticate?AUTH@&AUTOAWARD="+autoawardid+action,
+                "Award",strFeatures, false);
         }
         function NewAchievement(agent)
         {
@@ -54,6 +69,11 @@
             document.RESOURCES.MODE.value='TITLE';
             Refresh();
         }
+        function ToAwards()
+        {
+            document.RESOURCES.MODE.value='AWARD';
+            Refresh();
+        }
         function ToAchievements()
         {
             document.RESOURCES.MODE.value='';
@@ -78,17 +98,57 @@
     </TR>
     </TABLE>
     <CENTER>
-	@if?!CheckAuthCode?AUTH_TITLES=true@ @AddRequestParameter?MODE=@ @endif@
-	@if?!CheckAuthCode?AUTH_ACHIEVEMENTS=true@ @AddRequestParameter?MODE=TITLE@ @endif@
+    @AddRequestParameter?COLS=0@
+	@if?CheckAuthCode?AUTH_ACHIEVEMENTS=true@
+	    @AddRequestParameter?COLS=++@
+	@endif@
+	@if?CheckAuthCode?AUTH_TITLES=true@
+	    @AddRequestParameter?COLS=++@
+	@endif@
+	@if?CheckAuthCode?AUTH_AUTOAWARDS=true@
+	    @AddRequestParameter?COLS=++@
+	@endif@
+    @if?CheckReqParm?MODE=@
+		@if?!CheckAuthCode?AUTH_ACHIEVEMENTS=true@
+			@if?!CheckAuthCode?AUTH_TITLES=true@ 
+				@AddRequestParameter?MODE=AWARD@
+			@else
+				@AddRequestParameter?MODE=TITLE@
+			@endif@
+		@endif@
+	@else@
+	    @if?CheckReqParm?MODE=TITLE@
+			@if?!CheckAuthCode?AUTH_TITLES=true@
+				@if?!CheckAuthCode?AUTH_ACHIEVEMENTS=true@ 
+					@AddRequestParameter?MODE=AWARD@
+				@else
+					@AddRequestParameter?MODE=@
+				@endif@
+			@endif@
+		@else@
+			@if?!CheckAuthCode?AUTH_AUTOAWARDS=true@
+				@if?!CheckAuthCode?AUTH_ACHIEVEMENTS=true@ 
+					@AddRequestParameter?MODE=TITLE@
+				@else
+					@AddRequestParameter?MODE=@
+				@endif@
+			@endif@
+	    @endif@
+    @endif@
     <TABLE WIDTH=100% BORDER=1>
-    <TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Achievements/Titles Manager</H2></FONT></TD></TR>
+    <TR><TD WIDTH=100% COLSPAN=@RequestParameter?COLS@ BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Achievements/Titles/Awards Manager</H2></FONT></TD></TR>
     @if?CheckReqParm?MODE=@
         <TR>
-        <TD WIDTH=50% BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK>Achievements</FONT></TD>
-        <TD WIDTH=50% ALIGN=CENTER><a href="javascript:ToTitles()"><FONT COLOR=WHITE>Automatic Titles</FONT></a></TD>
+        <TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK>Achievements</FONT></TD>
+        @if?CheckAuthCode?AUTH_TITLES=true@ 
+            <TD ALIGN=CENTER><a href="javascript:ToTitles()"><FONT COLOR=WHITE>Auto-Titles</FONT></a></TD>
+        @endif@
+        @if?CheckAuthCode?AUTH_AUTOAWARDS=true@ 
+            <TD ALIGN=CENTER><a href="javascript:ToAwards()"><FONT COLOR=WHITE>Auto-Awards</FONT></a></TD>
+        @endif@
         </TR>
         <TR>
-        <TD WIDTH=100% COLSPAN=2>
+        <TD WIDTH=100% COLSPAN=@RequestParameter?COLS@>
             <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="autotitles.cmvp">
             <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
             <INPUT TYPE=HIDDEN NAME=MODE VALUE="@RequestParameter?MODE@">
@@ -175,12 +235,18 @@
         </TD>
         </TR>
     @else@
+    @if?CheckReqParm?MODE=TITLE@
         <TR>
-        <TD WIDTH=50% ALIGN=CENTER><a href="javascript:ToAchievements()"><FONT COLOR=WHITE>Achievements</FONT></a></TD>
-        <TD WIDTH=50% BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK>Automatic Titles</FONT></TD>
+        @if?CheckAuthCode?AUTH_ACHIEVEMENTS=true@ 
+	        <TD ALIGN=CENTER><a href="javascript:ToAchievements()"><FONT COLOR=WHITE>Achievements</FONT></a></TD>
+        @endif@
+        <TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK>Auto-Titles</FONT></TD>
+        @if?CheckAuthCode?AUTH_AUTOAWARDS=true@ 
+            <TD ALIGN=CENTER><a href="javascript:ToAwards()"><FONT COLOR=WHITE>Auto-Awards</FONT></a></TD>
+        @endif@
         </TR>
         <TR>
-        <TD WIDTH=100% COLSPAN=2>
+        <TD WIDTH=100% COLSPAN=@RequestParameter?COLS@>
             <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="autotitles.cmvp">
             <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
             <INPUT TYPE=HIDDEN NAME=MODE VALUE="@RequestParameter?MODE@">
@@ -208,6 +274,48 @@
             </FORM>
         </TD>
         </TR>
+    @else@
+        <TR>
+        @if?CheckAuthCode?AUTH_ACHIEVEMENTS=true@ 
+	        <TD ALIGN=CENTER><a href="javascript:ToAchievements()"><FONT COLOR=WHITE>Achievements</FONT></a></TD>
+        @endif@
+        @if?CheckAuthCode?AUTH_TITLES=true@ 
+            <TD ALIGN=CENTER><a href="javascript:ToTitles()"><FONT COLOR=WHITE>Auto-Titles</FONT></a></TD>
+        @endif@
+        <TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK>Auto-Awards</FONT></TD>
+        </TR>
+        <TR>
+        <TD WIDTH=100% COLSPAN=@RequestParameter?COLS@>
+            <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="autoawards.cmvp">
+            <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+            <INPUT TYPE=HIDDEN NAME=MODE VALUE="@RequestParameter?MODE@">
+            <TABLE WIDTH=100% BORDER=1>
+            <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Awards Manager</H2></FONT></TD></TR>
+            <TR>
+            <TD WIDTH=5%><B><FONT COLOR=YELLOW>ID</FONT></b></TD>
+            <TD WIDTH=20%><B><FONT COLOR=YELLOW>Player Mask</FONT></b></TD>
+            <TD WIDTH=20%><B><FONT COLOR=YELLOW>Date Mask</FONT></b></TD>
+            <TD WIDTH=55%><B><FONT COLOR=YELLOW>Properties</FONT></b></TD>
+            </TR>
+            @AutoAwardNext?RESET@
+            @loop@
+                @AutoAwardNext?ALL@
+                <TR>
+                <TD><a href="javascript:Award('@AutoAwardID?ENCODED@','')"><FONT COLOR=WHITE><B>@AutoAwardID@</B></FONT></a></TD>
+                <TD><FONT COLOR=WHITE><B>@AutoAwardData?PMASK@</B></FONT></a></TD>
+                <TD><FONT COLOR=WHITE><B>@AutoAwardData?DMASK@</B></FONT></a></TD>
+                <TD><FONT COLOR=WHITE><B>@AutoAwardData?PROPDESC@</B></FONT></a></TD>
+                </TR>
+            @back@
+            <TR>
+            <TD COLSPAN=4><a href="javascript:NewAward()"><FONT COLOR=WHITE><B>Create New</a></B></FONT></TD>
+            </TR>
+            <CENTER>
+            </CENTER>
+            </FORM>
+        </TD>
+        </TR>
+    @endif@
     @endif@
     </TABLE>
     <P>

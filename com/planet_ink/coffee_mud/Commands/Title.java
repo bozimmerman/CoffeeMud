@@ -60,7 +60,7 @@ public class Title extends StdCommand
 		}
 		final PlayerStats ps = mob.playerStats();
 		final StringBuffer menu = new StringBuffer("^xTitles:^.^?\n\r");
-		if(CMLib.titles().evaluateAutoTitles(mob))
+		if(CMLib.awards().evaluateAutoTitles(mob))
 			CMLib.database().DBUpdatePlayerPlayerStats(mob);
 		if (!ps.getTitles().contains("*"))
 			ps.addTitle("*");

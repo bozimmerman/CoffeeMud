@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AutoAwardsLibrary.AutoProperties;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -36,15 +37,15 @@ import java.util.concurrent.TimeUnit;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Astrologies extends StdAbility
+public class AutoAwards extends StdAbility
 {
 	@Override
 	public String ID()
 	{
-		return "Astrologies";
+		return "AutoAwards";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Astrologies");
+	private final static String	localizedName	= CMLib.lang().L("AutoAwards");
 
 	@Override
 	public String name()
@@ -114,204 +115,16 @@ public class Astrologies extends StdAbility
 	protected volatile int[]		affectHash	= null;
 	protected final List<CMObject>	affects		= new Vector<CMObject>();
 
-	protected final Map<TimePeriod, AstrologyEntry[]>	myEntries	= new Hashtable<TimePeriod, AstrologyEntry[]>();
+	protected final Map<TimePeriod, AutoProperties[]>	myEntries	= new Hashtable<TimePeriod, AutoProperties[]>();
 
-	protected final static class AstrologyEntry
-	{
-		public final String					playerMask;
-		public final String					dateMask;
-		public final CompiledZMask			playerCMask;
-		public final CompiledZMask			dateCMask;
-		public final Pair<String, String>[]	props;
-		public final TimePeriod				period;
-		private final int					hashCode;
-
-		public AstrologyEntry(final String pMask, final String dMask, final PairList<String,String> ps)
-		{
-			playerMask = pMask;
-			playerCMask = CMLib.masking().maskCompile(playerMask);
-			dateMask = dMask;
-			dateCMask = CMLib.masking().maskCompile(dateMask);
-			@SuppressWarnings("unchecked")
-			final Pair<String,String>[] base = new Pair[ps.size()];
-			props = ps.toArray(base);
-			TimePeriod per = null;
-			final String udmask = dMask.toUpperCase();
-			for(final TimePeriod p : TimePeriod.values())
-			{
-				if(udmask.indexOf(p.name())>=0)
-				{
-					per=p;
-					break;
-				}
-			}
-			period = (per == null) ? TimePeriod.YEAR : per;
-			int hc = 0;
-			hc = playerCMask.hashCode() ^ dateCMask.hashCode() ^ period.hashCode();
-			for(final Pair<String,String> p : props)
-				hc = (hc << 8) ^ (p.first.hashCode() ^ p.second.hashCode());
-			hashCode = hc;
-		}
-
-		@Override
-		public int hashCode()
-		{
-			return hashCode;
-		}
-	}
-
-	protected static int getAllAstrologyHash()
-	{
-		final Integer hash = (Integer)Resources.getResource("SYSTEM_ASTROLOGY_HASH");
-		if(hash != null)
-			return hash.intValue();
-		int hashh = 0;
-		for(final AstrologyEntry a : getAllAstrology())
-			hashh = (hashh << 8) ^ a.hashCode();
-		Resources.submitResource("SYSTEM_ASTROLOGY_HASH", Integer.valueOf(hashh));
-		return hashh;
-	}
-
-	protected static boolean addProp(final PairList<String,String> fprops, final String propID, final String arg, final String s)
-	{
-		final Ability A=CMClass.getAbility(propID);
-		if(A==null)
-		{
-			final Behavior B = CMClass.getBehavior(propID);
-			if(B == null)
-			{
-				Log.errOut("Astrology","Unknown ability/behav id "+propID+" in "+s);
-				return false;
-			}
-			else
-				fprops.add(B.ID(),arg);
-		}
-		else
-			fprops.add(A.ID(),arg);
-		return true;
-	}
-
-	@SuppressWarnings("unchecked")
-	protected static List<AstrologyEntry> getAllAstrology()
-	{
-		List<AstrologyEntry> astro = (List<AstrologyEntry>)Resources.getResource("SYSTEM_ASTROLOGY_INI");
-		if(astro == null)
-		{
-			synchronized("SYSTEM_ASTROLOGY_INI".intern())
-			{
-				astro = (List<AstrologyEntry>)Resources.getResource("SYSTEM_ASTROLOGY_INI");
-				if(astro != null)
-					return astro;
-				astro = new Vector<AstrologyEntry>();
-				final List<String> lines = Resources.getFileLineVector(new CMFile(Resources.makeFileResourceName("astrologies.txt"),null).text());
-				for(String s : lines)
-				{
-					s=s.trim();
-					if(s.startsWith("#"))
-						continue;
-					final int x1 = s.indexOf("::");
-					if(x1<0)
-						continue;
-					final int x2 = s.indexOf("::",x1+2);
-					if(x2<0)
-						continue;
-					final String pmask = s.substring(0,x1).trim();
-					final String dmask = s.substring(x1+2, x2).trim();
-					final String propStr = s.substring(x2+2).trim();
-					int state=0;
-					final PairList<String,String> fprops = new PairVector<String,String>();
-					String propID="";
-					final StringBuilder str=new StringBuilder("");
-					for(int i=0;i<propStr.length();i++)
-					{
-						final char c=propStr.charAt(i);
-						switch(state)
-						{
-						case 0: // between things
-							if((c=='(')&&(propID.length()>0))
-								state=2;
-							else
-							if(!Character.isWhitespace(c))
-							{
-								if(propID.length()>0)
-								{
-									if(!Astrologies.addProp(fprops, propID, "", s))
-									{
-										i=propStr.length();
-										propID="";
-										break;
-									}
-									propID="";
-									str.setLength(0);
-								}
-								str.append(c);
-								state=1;
-							}
-							break;
-						case 1: // in-proper-id
-							if(Character.isWhitespace(c))
-							{
-								propID=str.toString();
-								state=0;
-							}
-							else
-							if(c=='(')
-							{
-								propID=str.toString();
-								str.setLength(0);
-								state=2;
-							}
-							else
-								str.append(c);
-							break;
-						case 2: // in arg paren
-							if((c=='\\')&&(i<propStr.length()-1))
-							{
-								i++;
-								str.append(propStr.charAt(i));
-							}
-							else
-							if(c==')')
-							{
-								final String args=str.toString();
-								str.setLength(0);
-								if(!Astrologies.addProp(fprops, propID, args, s))
-								{
-									i=propStr.length();
-									propID="";
-									break;
-								}
-								propID="";
-								state=0;
-							}
-							else
-								str.append(c);
-							break;
-						}
-					}
-					if(propID.length()>0)
-						Astrologies.addProp(fprops, propID, str.toString(), s);
-					else
-					if(str.length()>0)
-						Astrologies.addProp(fprops, str.toString(),"", s);
-					final AstrologyEntry entry = new AstrologyEntry(pmask,dmask,fprops);
-					astro.add(entry);
-				}
-				Resources.removeResource("SYSTEM_ASTROLOGY_HASH");
-				Resources.submitResource("SYSTEM_ASTROLOGY_INI", astro);
-			}
-		}
-		return astro;
-	}
-
-	public void gatherEntries(final Physical P, final AstrologyEntry[] entries, final List<AstrologyEntry> apply, final int[] hash)
+	public void gatherEntries(final Physical P, final AutoProperties[] entries, final List<AutoProperties> apply, final int[] hash)
 	{
 		if((entries == null)||(entries.length==0))
 			return;
 		final MaskingLibrary mlib = CMLib.masking();
-		for(final AstrologyEntry E : entries)
+		for(final AutoProperties E : entries)
 		{
-			if(mlib.maskCheck(E.dateCMask, P, true))
+			if(mlib.maskCheck(E.getDateCMask(), P, true))
 			{
 				apply.add(E);
 				hash[0] ^= E.hashCode();
@@ -329,7 +142,8 @@ public class Astrologies extends StdAbility
 		{
 			if(lastClock == null)
 				lastClock = (TimeClock)CMClass.getCommon("DefaultTimeClock");
-			final int astroHash = getAllAstrologyHash();
+
+			final int astroHash = CMLib.awards().getAutoPropertiesHash();
 			if((savedHash==null)
 			||(savedHash[0]!=astroHash))
 			{
@@ -351,7 +165,7 @@ public class Astrologies extends StdAbility
 					||((now.getSeasonCode() != lastClock.getSeasonCode())&&(myEntries.containsKey(TimePeriod.SEASON)))
 					||((now.getYear() != lastClock.getYear())&&(myEntries.containsKey(TimePeriod.YEAR))))
 					{
-						final List<AstrologyEntry> chk = new ArrayList<AstrologyEntry>();
+						final List<AutoProperties> chk = new ArrayList<AutoProperties>();
 						final int[] eHash = new int[] {0};
 						final Room R=CMLib.map().roomLocation(affected);
 						for(final TimePeriod key : myEntries.keySet())
@@ -363,16 +177,16 @@ public class Astrologies extends StdAbility
 								affectHash = new int[1];
 							affectHash[0] = eHash[0];
 							affects.clear();
-							for(final AstrologyEntry aE : chk)
+							for(final AutoProperties aE : chk)
 							{
-								for(final Pair<String,String> pE : aE.props)
+								for(final Pair<String,String> pE : aE.getProps())
 								{
 									final Ability A = CMClass.getAbility(pE.first);
 									if(A != null)
 									{
 										A.setMiscText(pE.second);
 										A.setAffectedOne(affected);
-										A.setProficiency(100);;
+										A.setProficiency(100);
 										affects.add(A);
 									}
 									else
@@ -477,34 +291,34 @@ public class Astrologies extends StdAbility
 	}
 	protected void assignMyEntries(final Physical P)
 	{
-		final Map<TimePeriod,List<AstrologyEntry>> newMap = new HashMap<TimePeriod,List<AstrologyEntry>>();
-		final List<AstrologyEntry> all = getAllAstrology();
+		final Map<TimePeriod,List<AutoProperties>> newMap = new HashMap<TimePeriod,List<AutoProperties>>();
 		final HashMap<CompiledZMask,Boolean> tried = new HashMap<CompiledZMask,Boolean>();
-		for(final AstrologyEntry a : all)
+		for(final Enumeration<AutoProperties> ap = CMLib.awards().getAutoProperties(); ap.hasMoreElements();)
 		{
+			final AutoProperties a = ap.nextElement();
 			Boolean b;
-			if((a.playerCMask == null)||(a.playerCMask.empty()))
+			if((a.getPlayerCMask() == null)||(a.getPlayerCMask().empty()))
 				b=Boolean.TRUE;
 			else
 			{
-				b = tried.get(a.playerCMask);
+				b = tried.get(a.getPlayerCMask());
 				if(b == null)
-					b = Boolean.valueOf(CMLib.masking().maskCheck(a.playerCMask, P, true));
+					b = Boolean.valueOf(CMLib.masking().maskCheck(a.getPlayerCMask(), P, true));
 			}
 			if(b.booleanValue())
 			{
-				List<AstrologyEntry> tuEntries = newMap.get(a.period);
+				List<AutoProperties> tuEntries = newMap.get(a.getPeriod());
 				if(tuEntries == null)
 				{
-					tuEntries = new ArrayList<AstrologyEntry>();
-					newMap.put(a.period, tuEntries);
+					tuEntries = new ArrayList<AutoProperties>();
+					newMap.put(a.getPeriod(), tuEntries);
 				}
 				tuEntries.add(a);
 			}
 		}
 		myEntries.clear();
 		for(final TimePeriod k : newMap.keySet())
-			myEntries.put(k, newMap.get(k).toArray(new AstrologyEntry[0]));
+			myEntries.put(k, newMap.get(k).toArray(new AutoProperties[0]));
 	}
 
 	@Override

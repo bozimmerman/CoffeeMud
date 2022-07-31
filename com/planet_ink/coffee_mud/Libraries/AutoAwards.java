@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -34,19 +35,23 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
+public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 {
 	@Override
 	public String ID()
 	{
-		return "AutoTitles";
+		return "AutoAwards";
 	}
 
-	private Map<String,AutoTitle> autoTitles=null;
+	private Map<String, AutoTitle>	autoTitles		= null;
+	private Integer					autoPropHash	= null;
+	private Vector<AutoProperties>	autoProperties	= null;
 
 	private static final String titleFilename = "titles.ini";
+	private static final String propsFilename = "awards.txt";
 
-	private String getTitleFilename()
+	@Override
+	public String getAutoTitleFilename()
 	{
 		CMFile F = new CMFile(Resources.makeFileResourceName(titleFilename),null);
 		if(F.exists() && (F.canRead()))
@@ -58,6 +63,12 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 		return titleFilename;
 	}
 
+	@Override
+	public String getAutoAwardsFilename()
+	{
+		return propsFilename;
+	}
+	
 	@Override
 	public String evaluateAutoTitle(final String row, final boolean addIfPossible)
 	{
@@ -389,7 +400,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 	@Override
 	public void appendAutoTitle(final String text)
 	{
-		Resources.removeResource(this.getTitleFilename());
+		Resources.removeResource(getAutoTitleFilename());
 		final CMFile F=new CMFile(Resources.makeFileResourceName(titleFilename),null,CMFile.FLAG_LOGERRORS);
 		F.saveText(text,true);
 		reloadAutoTitles();
@@ -409,8 +420,8 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 					@Override
 					public void run()
 					{
-						if(CMLib.titles() instanceof AutoTitles)
-							((AutoTitles)CMLib.titles()).dispossesTitle(title);
+						if(CMLib.awards() instanceof AutoAwards)
+							((AutoAwards)CMLib.awards()).dispossesTitle(title);
 					}
 				});
 			}
@@ -434,10 +445,10 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 	public void reloadAutoTitles()
 	{
 		autoTitles=new STreeMap<String,AutoTitle>();
-		final Iterator<String> k=Resources.findResourceKeys(getTitleFilename());
+		final Iterator<String> k=Resources.findResourceKeys(getAutoTitleFilename());
 		while(k.hasNext())
 			Resources.removeResource(k.next());
-		final List<String> V=Resources.getFileLineVector(Resources.getFileResource(this.getTitleFilename(),true));
+		final List<String> V=Resources.getFileLineVector(Resources.getFileResource(getAutoTitleFilename(),true));
 		String WKID=null;
 		for(int v=0;v<V.size();v++)
 		{
@@ -460,9 +471,9 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 	}
 
 	@Override
-	public String getAutoTitleInstructions()
+	public String getAutoAwardInstructions(String filename)
 	{
-		final StringBuffer buf=new CMFile(Resources.makeFileResourceName(this.getTitleFilename()),null,CMFile.FLAG_LOGERRORS).text();
+		final StringBuffer buf=new CMFile(Resources.makeFileResourceName(filename),null,CMFile.FLAG_LOGERRORS).text();
 		final StringBuffer inst=new StringBuffer("");
 		List<String> V=new Vector<String>();
 		if(buf!=null)
@@ -478,4 +489,288 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 		return inst.toString();
 	}
 
+	protected final static class AutoPropertiesImpl implements AutoProperties
+	{
+		public final String					playerMask;
+		public final String					dateMask;
+		public final CompiledZMask			playerCMask;
+		public final CompiledZMask			dateCMask;
+		public final Pair<String, String>[]	props;
+		public final TimePeriod				period;
+		private final int					hashCode;
+
+		public AutoPropertiesImpl(final String pMask, final String dMask, final PairList<String,String> ps)
+		{
+			playerMask = pMask;
+			playerCMask = CMLib.masking().maskCompile(playerMask);
+			dateMask = dMask;
+			dateCMask = CMLib.masking().maskCompile(dateMask);
+			@SuppressWarnings("unchecked")
+			final Pair<String,String>[] base = new Pair[ps.size()];
+			props = ps.toArray(base);
+			TimePeriod per = null;
+			final String udmask = dMask.toUpperCase();
+			for(final TimePeriod p : TimePeriod.values())
+			{
+				if(udmask.indexOf(p.name())>=0)
+				{
+					per=p;
+					break;
+				}
+			}
+			period = (per == null) ? TimePeriod.YEAR : per;
+			int hc = 0;
+			hc = playerCMask.hashCode() ^ dateCMask.hashCode() ^ period.hashCode();
+			for(final Pair<String,String> p : props)
+				hc = (hc << 8) ^ (p.first.hashCode() ^ p.second.hashCode());
+			hashCode = hc;
+		}
+
+		@Override
+		public int hashCode()
+		{
+			return hashCode;
+		}
+
+		@Override
+		public String getPlayerMask()
+		{
+			return playerMask;
+		}
+
+		@Override
+		public String getDateMask()
+		{
+			return dateMask;
+		}
+
+		@Override
+		public CompiledZMask getPlayerCMask()
+		{
+			return playerCMask;
+		}
+
+		@Override
+		public CompiledZMask getDateCMask()
+		{
+			return dateCMask;
+		}
+
+		@Override
+		public Pair<String, String>[] getProps()
+		{
+			return props;
+		}
+
+		@Override
+		public TimePeriod getPeriod()
+		{
+			return period;
+		}
+	}
+
+	@Override
+	public Enumeration<AutoProperties> getAutoProperties()
+	{
+		final Vector<AutoProperties> props = getAllAutoAwards();
+		return props.elements();
+	}
+	
+	@Override
+	public int getAutoPropertiesHash()
+	{
+		Integer hash;
+		synchronized(this)
+		{
+			hash = autoPropHash;
+		}
+		if(hash != null)
+			return hash.intValue();
+		int hashh = 0;
+		for(final AutoProperties a : getAllAutoAwards())
+			hashh = (hashh << 8) ^ a.hashCode();
+		autoPropHash = Integer.valueOf(hashh);
+		return hashh;
+	}
+
+	protected boolean addProp(final PairList<String,String> fprops, final String propID, final String arg, final String s)
+	{
+		final Ability A=CMClass.getAbility(propID);
+		if(A==null)
+		{
+			final Behavior B = CMClass.getBehavior(propID);
+			if(B == null)
+			{
+				Log.errOut("AutoAwards","Unknown ability/behav id "+propID+" in "+s);
+				return false;
+			}
+			else
+				fprops.add(B.ID(),arg);
+		}
+		else
+			fprops.add(A.ID(),arg);
+		return true;
+	}
+
+	protected Vector<AutoProperties> getAllAutoAwards()
+	{
+		Vector<AutoProperties> astro;
+		synchronized(this)
+		{
+			astro= autoProperties;
+		}
+		if(astro == null)
+		{
+			synchronized(getAutoAwardsFilename().intern())
+			{
+				astro = autoProperties;
+				if(astro != null)
+					return astro;
+				astro = new Vector<AutoProperties>();
+				final List<String> lines = Resources.getFileLineVector(new CMFile(Resources.makeFileResourceName(getAutoAwardsFilename()),null).text());
+				for(String s : lines)
+				{
+					s=s.trim();
+					if(s.startsWith("#"))
+						continue;
+					final int x1 = s.indexOf("::");
+					if(x1<0)
+						continue;
+					final int x2 = s.indexOf("::",x1+2);
+					if(x2<0)
+						continue;
+					final String pmask = s.substring(0,x1).trim();
+					final String dmask = s.substring(x1+2, x2).trim();
+					final String propStr = s.substring(x2+2).trim();
+					int state=0;
+					final PairList<String,String> fprops = new PairVector<String,String>();
+					String propID="";
+					final StringBuilder str=new StringBuilder("");
+					for(int i=0;i<propStr.length();i++)
+					{
+						final char c=propStr.charAt(i);
+						switch(state)
+						{
+						case 0: // between things
+							if((c=='(')&&(propID.length()>0))
+								state=2;
+							else
+							if(!Character.isWhitespace(c))
+							{
+								if(propID.length()>0)
+								{
+									if(!addProp(fprops, propID, "", s))
+									{
+										i=propStr.length();
+										propID="";
+										break;
+									}
+									propID="";
+									str.setLength(0);
+								}
+								str.append(c);
+								state=1;
+							}
+							break;
+						case 1: // in-proper-id
+							if(Character.isWhitespace(c))
+							{
+								propID=str.toString();
+								state=0;
+							}
+							else
+							if(c=='(')
+							{
+								propID=str.toString();
+								str.setLength(0);
+								state=2;
+							}
+							else
+								str.append(c);
+							break;
+						case 2: // in arg paren
+							if((c=='\\')&&(i<propStr.length()-1))
+							{
+								i++;
+								str.append(propStr.charAt(i));
+							}
+							else
+							if(c==')')
+							{
+								final String args=str.toString();
+								str.setLength(0);
+								if(!addProp(fprops, propID, args, s))
+								{
+									i=propStr.length();
+									propID="";
+									break;
+								}
+								propID="";
+								state=0;
+							}
+							else
+								str.append(c);
+							break;
+						}
+					}
+					if(propID.length()>0)
+						addProp(fprops, propID, str.toString(), s);
+					else
+					if(str.length()>0)
+						addProp(fprops, str.toString(),"", s);
+					final AutoPropertiesImpl entry = new AutoPropertiesImpl(pmask,dmask,fprops);
+					astro.add(entry);
+				}
+				autoProperties = astro;
+				autoPropHash = null;
+			}
+		}
+		return astro;
+	}
+
+	@Override
+	public boolean modifyAutoAwards(int lineNum, final String newLine)
+	{
+		int num = lineNum;
+		if(num<1)
+			return false;
+		final StringBuffer buf = new StringBuffer("");
+		final CMFile F = new CMFile(Resources.makeFileResourceName(getAutoAwardsFilename()),null);
+		final List<String> lines=Resources.getFileLineVector(F.text());
+		boolean found=false;
+		int i=1;
+		for(String l : lines)
+		{
+			l=l.trim();
+			if(l.startsWith("#") || (l.length()==0))
+			{
+				buf.append(l).append("\n\r");
+				continue;
+			}
+			if(i!=num)
+				buf.append(l).append("\n\r");
+			else
+			{
+				found=true;
+				if(newLine != null)
+					buf.append(newLine).append("\n\r");
+			}
+			i++;
+		}
+		if((num == Integer.MAX_VALUE)
+		&&(newLine != null))
+		{
+			found=true;
+			if(newLine != null)
+				buf.append(newLine).append("\n\r");
+		}
+		if(!found)
+			return false;
+		else
+		{
+			autoPropHash	= null;
+			autoProperties	= null;
+			return F.saveText(buf);
+		}
+	}
 }

@@ -1332,19 +1332,20 @@ public class StdMOB implements MOB
 				addItem(dropItem);
 		}
 		else
-		if(!CMSecurity.isDisabled(DisFlag.ASTROLOGY))
+		if(!CMSecurity.isDisabled(DisFlag.AUTOAWARDS))
 		{
-			A=fetchEffect("Astrologies");
+			A=fetchEffect("AutoAwards");
 			if(A==null)
 			{
-				A=CMClass.getAbility("Astrologies");
+				A=CMClass.getAbility("AutoAwards");
 				if(A!=null)
 				{
 					addNonUninvokableEffect(A);
 					A.setSavable(false);
 				}
 			}
-			A.setMiscText("RESET");
+			else
+				A.setMiscText("RESET");
 		}
 
 		CMLib.map().registerWorldObjectLoaded(null, getStartRoom(), this);

@@ -175,7 +175,7 @@ public class VFShell
 				CMClass.initialize();
 				Resources.initialize();
 				CMSecurity.instance();
-				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.AutoTitles());
+				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.AutoAwards());
 				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CMJournals());
 				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.BeanCounter());
 				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CharCreation());

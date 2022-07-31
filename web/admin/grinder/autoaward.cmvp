@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_AUTOAWARDS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<html>
+	<META CHARSET="utf-8"/>
+<head>
+    <link rel="grinder icon" href="/images/grinder.ico" >
+    <title>Award Manager</title>
+    <script language=JavaScript>
+    <!--
+        function openUp2(named)
+        {
+            var strFeatures="top=200,left=50,resizeable=no,scrollbars=yes,height=400,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("/property.cmvp?ABILITY="+named,
+                        "Ability",strFeatures, false);
+        }
+        function NewAward()
+        {
+            document.RESOURCES.NEWAUTOAWARDID.value=autoawardid;
+            document.RESOURCES.FUNCTION.value='REAUTOAWARD';
+            document.RESOURCES.action='/grinder/autoawarddo.cmvp';
+            document.RESOURCES.submit();
+        }
+        function Delete()
+        {
+            if(confirm('Delete this award rule?! Confirm!'))
+            {
+                if(confirm('Press OK to Delete this award rule!'))
+                {
+                    document.RESOURCES.action='autoawarddo.cmvp';
+                    document.RESOURCES.FUNCTION.value='DELAUTOAWARD';
+                    document.RESOURCES.submit();
+                }
+            }
+        }
+        function EditDone()
+        {
+            @if?AwardData?ISNEWAUTOAWARD@
+                if(confirm('Create this new award rule?'))
+            @else@
+                if(confirm('Submit your changes to this award rule?'))
+            @endif@
+                {
+                    document.RESOURCES.action='autoawarddo.cmvp';
+                    document.RESOURCES.FUNCTION.value='EDITAUTOAWARD';
+                    document.RESOURCES.submit();
+                }
+        }
+        function AddAffect()
+        {
+        	ReShow();
+        }
+        function DelAffect()
+        {
+        	ReShow();
+        }
+        function EditAffect()
+        {
+        	ReShow();
+        }
+        function ReShow()
+        {
+            document.RESOURCES.FUNCTION.value='';
+            document.RESOURCES.action='/grinder/autoaward.cmvp';
+            document.RESOURCES.submit();
+        }
+        function ReAward()
+        {
+            document.RESOURCES.FUNCTION.value='REAUTOAWARD';
+            document.RESOURCES.action='/grinder/autoawarddo.cmvp';
+            document.RESOURCES.submit();
+        }
+        function Cancel()
+        {
+            window.close();
+        }
+        function OpenUp(file,named)
+        {
+            var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("/"+file+"?HELPTOPIC="+named,
+                        "Help",strFeatures, false);
+        }
+        function Clicked(action)
+        {
+            document.RESOURCES.action=action;
+            document.RESOURCES.submit();
+        }
+    //-->
+    </script>
+</head>
+<body BGCOLOR=BLACK>
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="autoaward.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=NEWAUTOAWARDID VALUE="">
+<INPUT TYPE=HIDDEN NAME=REPLACE VALUE="">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+<INPUT TYPE=HIDDEN NAME=AUTOAWARD VALUE="@RequestParameter?AUTOAWARD@">
+<INPUT TYPE=HIDDEN NAME=NEWAUTOAWARD VALUE="@RequestParameter?NEWAUTOAWARD@">
+<CENTER>
+<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
+    <TR>
+        <TD><FONT COLOR=YELLOW>Player Mask <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')">
+        	<FONT COLOR=WHITE><I>?</I></FONT></a>: </FONT>
+        </TD>
+        <TD><INPUT TYPE=TEXT SIZE=40 NAME=PMASK VALUE="@AutoAwardData?PMASK@"></TD>
+    </TR>
+    <TR>
+        <TD><FONT COLOR=YELLOW>Data Mask <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')">
+        	<FONT COLOR=WHITE><I>?</I></FONT></a>: </FONT>
+        </TD>
+        <TD><INPUT TYPE=TEXT SIZE=40 NAME=DMASK VALUE="@AutoAwardData?DMASK@"></TD>
+    </TR>
+    <TR>
+        <TD><FONT COLOR=YELLOW>Properties</FONT></TD>
+        <TD>@AutoAwardData?PROPERTIES@</TD>
+    </TR>
+</TABLE>
+<BR>
+<TABLE WIDTH=100% BORDER=0>
+<TR>
+    @if?CheckReqParm?AUTOAWARD=@
+        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Create" ONCLICK="EditDone();"></TD>
+    @else@
+        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Modify" ONCLICK="EditDone();"></TD>
+        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();"></TD>
+    @endif@
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Cancel();"></TD>
+</TR>
+</TABLE>
+</FORM>
+</BODY>
+</HTML>
+@endif@
+@endif@

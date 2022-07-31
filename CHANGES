@@ -58,7 +58,7 @@
  57. New skill: Skill_Math.  It's a calculator.  woohoo.
  58. Player Prompt now supports % visited area and world
  59. Journals now support message COPY option for admins
- 60. New optional player date-based bonuses system called 'Astrologies'
+ 60. New optional player date-based bonuses system called AutoAwards (or just Awards)
 
 # Build 5.9.12 Release 1/17/2022
   *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG

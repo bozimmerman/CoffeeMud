@@ -402,7 +402,7 @@ public class Unload extends StdCommand
 				{
 					if(which.toLowerCase().startsWith("title"))
 					{
-						CMLib.titles().reloadAutoTitles();
+						CMLib.awards().reloadAutoTitles();
 						return false;
 					}
 					else
@@ -475,7 +475,7 @@ public class Unload extends StdCommand
 					}
 				}
 				if(which.toLowerCase().startsWith("title"))
-					CMLib.titles().reloadAutoTitles();
+					CMLib.awards().reloadAutoTitles();
 			}
 			else
 			if(commands.get(1).equalsIgnoreCase("FILE"))
