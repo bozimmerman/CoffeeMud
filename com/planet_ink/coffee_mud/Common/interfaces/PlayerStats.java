@@ -529,11 +529,11 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 
 	/**
 	 * Returns a 2-dimensional integer array with the players birth
-	 * day and month (in mud calendar)
+	 * day and month and year and last year celebrated (in mud calendar)
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#initializeBirthday(TimeClock, int, Race)
 	 *
-	 * @return a 2-dimensional integer array (day/month)
+	 * @return a 4-dimensional integer array (day/month/yr/ylc)
 	 */
 	public int[] getBirthday();
 

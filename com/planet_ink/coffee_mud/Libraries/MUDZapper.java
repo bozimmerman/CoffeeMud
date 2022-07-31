@@ -121,7 +121,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			this.parms = parms;
 			int hash = maskType.hashCode();
 			for(final Object o : parms)
-				hash ^= (o==null)?0:o.hashCode();
+				hash = (hash << 8) ^ ((o==null)?0:o.hashCode());
 			hashCode = hash;
 		}
 
@@ -195,8 +195,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		{
 			int hash = 0;
 			for(final CompiledZMaskEntry[] ce : entries)
+			{
 				for(final CompiledZMaskEntry e : ce)
-					hash ^= e.hashCode();
+					hash = (hash << 8) ^ e.hashCode();
+			}
 			return hash;
 		}
 
@@ -236,8 +238,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			if(entries.length != me.entries.length)
 				return false;
 			for(int i=0;i<entries.length;i++)
+			{
 				if(!entries[i].equals(me.entries[i]))
 					return false;
+			}
 			return true;
 		}
 	}
@@ -1602,9 +1606,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						v=appendCommaList(buf,V,v,"+");
 					}
 					break;
+				case BIRTHSEASON: // +birthseason
 				case SEASON: // +season
 					{
-						buf.append(L("Disallowed during the following season"+(multipleQuals(V,v,"-")?"s":"")+": "));
+						if(key == ZapperKey.SEASON)
+							buf.append(L("Disallowed during the following season"+(multipleQuals(V,v,"-")?"s":"")+": "));
+						else
+							buf.append(L("Disallowing those born during the following season"+(multipleQuals(V,v,"-")?"s":"")+": "));
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							final String str2=V.get(v2);
@@ -1631,9 +1639,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.append(".  ");
 					}
 					break;
+				case _BIRTHSEASON: // -birthseason
 				case _SEASON: // -season
 					{
-						buf.append(L((skipFirstWord?"Only ":"Allowed only ")+"during the following season"+(multipleQuals(V,v,"+")?"s":"")+": "));
+						if(key == ZapperKey._SEASON)
+							buf.append(L((skipFirstWord?"Only ":"Allowed only ")+"during the following season"+(multipleQuals(V,v,"+")?"s":"")+": "));
+						else
+							buf.append(L((skipFirstWord?"Only ":"Allowed only ")+"those born during the following season"+(multipleQuals(V,v,"+")?"s":"")+": "));
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							final String str2=V.get(v2);
@@ -1716,6 +1728,78 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if(buf.toString().endsWith(", "))
 							buf.delete(buf.length()-2, buf.length());
 						buf.append(".  ");
+					}
+					break;
+				case BIRTHDAY: //+birthday
+					{
+						buf.append(L("Disallow those born on the following day"+(multipleQuals(V,v,"-")?"s":"")+" of the month: "));
+						v=appendCommaList(buf,V,v,"-");
+					}
+					break;
+				case _BIRTHDAY: // -birthday
+					{
+						buf.append(L((skipFirstWord?"Only ":"Allowed only ")+"those born on the following day"+(multipleQuals(V,v,"+")?"s":"")+" of the month: "));
+						v=appendCommaList(buf,V,v,"+");
+					}
+					break;
+				case _BIRTHDAYOFYEAR: // -birthdayofyear
+					{
+						buf.append(L("Disallowing those born on the following day"+(multipleQuals(V,v,"-")?"s":"")+" of the year: "));
+						v=appendCommaList(buf,V,v,"-");
+					}
+					break;
+				case BIRTHDAYOFYEAR: // +birthdayofyear
+					{
+						buf.append(L((skipFirstWord?"Only ":"Allowed only ")+"those born on the following day"+(multipleQuals(V,v,"+")?"s":"")+" of the year: "));
+						v=appendCommaList(buf,V,v,"+");
+					}
+					break;
+				case _BIRTHWEEK: // -birthweek
+					{
+						buf.append(L((skipFirstWord?"Only ":"Allowed only ")+"those born in the following week"+(multipleQuals(V,v,"+")?"s":"")+": "));
+						v=appendCommaList(buf,V,v,"+");
+					}
+					break;
+				case BIRTHWEEK: // +birthweek
+					{
+						buf.append(L("Disallowing those born in the following week"+(multipleQuals(V,v,"-")?"s":"")+": "));
+						v=appendCommaList(buf,V,v,"-");
+					}
+					break;
+				case _BIRTHWEEKOFYEAR: // -birthweekofyear
+					{
+						buf.append(L("Disallowing those born during the following week"+(multipleQuals(V,v,"-")?"s":"")+" of the year: "));
+						v=appendCommaList(buf,V,v,"-");
+					}
+					break;
+				case BIRTHWEEKOFYEAR: // +birthweekofyear
+					{
+						buf.append(L((skipFirstWord?"Only ":"Allowed only ")+"those born during the following week"+(multipleQuals(V,v,"+")?"s":"")+" of the year: "));
+						v=appendCommaList(buf,V,v,"+");
+					}
+					break;
+				case _BIRTHYEAR: // -birthyear
+					{
+						buf.append(L((skipFirstWord?"Only ":"Allowed only ")+"those born during the following year"+(multipleQuals(V,v,"+")?"s":"")+": "));
+						v=appendCommaList(buf,V,v,"+");
+					}
+					break;
+				case BIRTHYEAR: // +birthyear
+					{
+						buf.append(L("Disallowing those born during the following year"+(multipleQuals(V,v,"-")?"s":"")+": "));
+						v=appendCommaList(buf,V,v,"-");
+					}
+					break;
+				case _BIRTHMONTH: // -birthmonth
+					{
+						buf.append(L((skipFirstWord?"Only ":"Allowed only ")+"those born in the following month"+(multipleQuals(V,v,"+")?"s":"")+": "));
+						v=appendCommaList(buf,V,v,"+");
+					}
+					break;
+				case BIRTHMONTH: // +birthmonth
+					{
+						buf.append(L("Disallowed for those born in the following month"+(multipleQuals(V,v,"-")?"s":"")+": "));
+						v=appendCommaList(buf,V,v,"-");
 					}
 					break;
 				case MONTH: // +month
@@ -3896,6 +3980,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case SEASON: // +Season
 				case _SEASON: // -Season
+				case BIRTHSEASON: // +birthSeason
+				case _BIRTHSEASON: // -birthSeason
 					{
 						final ArrayList<Object> parms=new ArrayList<Object>();
 						buildRoomFlag=true;
@@ -3972,6 +4058,18 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.add(new CompiledZapperMaskEntryImpl(entryType,parms.toArray(new Object[0])));
 					}
 					break;
+				case BIRTHMONTH: // +BIRTHMONTH
+				case _BIRTHMONTH: // -BIRTHMONTH
+				case BIRTHWEEK: // +BIRTHWEEK
+				case _BIRTHWEEK: // -BIRTHWEEK
+				case BIRTHWEEKOFYEAR: // +BIRTHWEEKOFYEAR
+				case _BIRTHWEEKOFYEAR: // -BIRTHWEEKOFYEAR
+				case BIRTHYEAR: // +BIRTHYEAR
+				case _BIRTHYEAR: // -BIRTHYEAR
+				case BIRTHDAY: // +BIRTHDAY
+				case _BIRTHDAY: // -BIRTHDAY
+				case BIRTHDAYOFYEAR: // +BIRTHDAYOFYEAR
+				case _BIRTHDAYOFYEAR: // -BIRTHDAYOFYEAR
 				case HOUR: // +HOUR
 				case _HOUR: // -HOUR
 				case MONTH: // +MONTH
@@ -5763,6 +5861,40 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							return false;
 					}
 					break;
+				case BIRTHYEAR: // +BIRTHYEAR
+					{
+						if((mob!=null)
+						&&(mob.isPlayer()))
+						{
+							final int num = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_YEAR];
+							for(final Object o : entry.parms())
+							{
+								if(isDateMatch(o,num))
+									return false;
+							}
+						}
+					}
+					break;
+				case _BIRTHYEAR: // -BIRTHYEAR
+					{
+						boolean found=false;
+						if((mob!=null)
+						&&(mob.isPlayer()))
+						{
+							final int num = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_YEAR];
+							for(final Object o : entry.parms())
+							{
+								if(isDateMatch(o,num))
+								{
+									found = true;
+									break;
+								}
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
 				case WEEK: // +WEEK
 					{
 						if(room!=null)
@@ -5795,7 +5927,99 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							return false;
 					}
 					break;
+				case BIRTHWEEK: // +BIRTHWEEK
+					{
+						if((mob!=null)
+						&&(mob.isPlayer())
+						&&(mob.getStartRoom()!=null))
+						{
+							final int month = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
+							final int day = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
+							final TimeClock C = (TimeClock)mob.getStartRoom().getArea().getTimeObj().copyOf();
+							C.setMonth(month);
+							C.setDayOfMonth(day);
+							final int num = C.getWeekOfMonth();
+							for(final Object o : entry.parms())
+							{
+								if(isDateMatch(o,num))
+									return false;
+							}
+						}
+					}
+					break;
+				case _BIRTHWEEK: // -BIRTHWEEK
+					{
+						boolean found=false;
+						if((mob!=null)
+						&&(mob.isPlayer())
+						&&(mob.getStartRoom()!=null))
+						{
+							final int month = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
+							final int day = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
+							final TimeClock C = (TimeClock)mob.getStartRoom().getArea().getTimeObj().copyOf();
+							C.setMonth(month);
+							C.setDayOfMonth(day);
+							final int num = C.getWeekOfMonth();
+							for(final Object o : entry.parms())
+							{
+								if(isDateMatch(o,num))
+								{
+									found = true;
+									break;
+								}
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
 				case SEASON: // +season
+					{
+						if((mob!=null)
+						&&(mob.isPlayer())
+						&&(mob.getStartRoom()!=null))
+						{
+							final int month = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
+							final int day = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
+							final TimeClock C = (TimeClock)mob.getStartRoom().getArea().getTimeObj().copyOf();
+							C.setMonth(month);
+							C.setDayOfMonth(day);
+							final int num = C.getSeasonCode().ordinal();
+							for(final Object o : entry.parms())
+							{
+								if(isDateMatch(o,num))
+									return false;
+							}
+						}
+					}
+					break;
+				case _SEASON: // -season
+					{
+						boolean found=false;
+						if((mob!=null)
+						&&(mob.isPlayer())
+						&&(mob.getStartRoom()!=null))
+						{
+							final int month = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
+							final int day = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
+							final TimeClock C = (TimeClock)mob.getStartRoom().getArea().getTimeObj().copyOf();
+							C.setMonth(month);
+							C.setDayOfMonth(day);
+							final int num = C.getSeasonCode().ordinal();
+							for(final Object o : entry.parms())
+							{
+								if(isDateMatch(o,num))
+								{
+									found = true;
+									break;
+								}
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
+				case BIRTHSEASON: // +birthseason
 					{
 						if(room!=null)
 						{
@@ -5808,7 +6032,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						}
 					}
 					break;
-				case _SEASON: // -season
+				case _BIRTHSEASON: // -birthseason
 					{
 						boolean found=false;
 						if(room!=null)
@@ -5889,6 +6113,40 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							return false;
 					}
 					break;
+				case BIRTHMONTH: // +birthmonth
+					{
+						if((mob!=null)
+						&&(mob.isPlayer()))
+						{
+							final int num = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
+							for(final Object o : entry.parms())
+							{
+								if(isDateMatch(o,num))
+									return false;
+							}
+						}
+					}
+					break;
+				case _BIRTHMONTH: // -birthmonth
+					{
+						boolean found=false;
+						if((mob!=null)
+						&&(mob.isPlayer()))
+						{
+							final int num = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
+							for(final Object o : entry.parms())
+							{
+								if(isDateMatch(o,num))
+								{
+									found = true;
+									break;
+								}
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
 				case DAYOFYEAR: // +dayofyear
 					{
 						if(room!=null)
@@ -5908,6 +6166,52 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if(room!=null)
 						{
 							final int num = room.getArea().getTimeObj().getDayOfYear();
+							for(final Object o : entry.parms())
+							{
+								if(isDateMatch(o,num))
+								{
+									found = true;
+									break;
+								}
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
+				case BIRTHDAYOFYEAR: // +birthdayofyear
+					{
+						if((mob!=null)
+						&&(mob.isPlayer())
+						&&(mob.getStartRoom()!=null))
+						{
+							final int month = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
+							final int day = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
+							final TimeClock C = (TimeClock)mob.getStartRoom().getArea().getTimeObj().copyOf();
+							C.setMonth(month);
+							C.setDayOfMonth(day);
+							final int num = C.getDayOfYear();
+							for(final Object o : entry.parms())
+							{
+								if(isDateMatch(o,num))
+									return false;
+							}
+						}
+					}
+					break;
+				case _BIRTHDAYOFYEAR: // -birthdayofyear
+					{
+						boolean found=false;
+						if((mob!=null)
+						&&(mob.isPlayer())
+						&&(mob.getStartRoom()!=null))
+						{
+							final int month = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
+							final int day = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
+							final TimeClock C = (TimeClock)mob.getStartRoom().getArea().getTimeObj().copyOf();
+							C.setMonth(month);
+							C.setDayOfMonth(day);
+							final int num = C.getDayOfYear();
 							for(final Object o : entry.parms())
 							{
 								if(isDateMatch(o,num))
@@ -5953,6 +6257,52 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							return false;
 					}
 					break;
+				case BIRTHWEEKOFYEAR: // +birthweekofyear
+					{
+						if((mob!=null)
+						&&(mob.isPlayer())
+						&&(mob.getStartRoom()!=null))
+						{
+							final int month = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
+							final int day = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
+							final TimeClock C = (TimeClock)mob.getStartRoom().getArea().getTimeObj().copyOf();
+							C.setMonth(month);
+							C.setDayOfMonth(day);
+							final int num = C.getWeekOfYear();
+							for(final Object o : entry.parms())
+							{
+								if(isDateMatch(o,num))
+									return false;
+							}
+						}
+					}
+					break;
+				case _BIRTHWEEKOFYEAR: // -birthweekofyear
+					{
+						boolean found=false;
+						if((mob!=null)
+						&&(mob.isPlayer())
+						&&(mob.getStartRoom()!=null))
+						{
+							final int month = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
+							final int day = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
+							final TimeClock C = (TimeClock)mob.getStartRoom().getArea().getTimeObj().copyOf();
+							C.setMonth(month);
+							C.setDayOfMonth(day);
+							final int num = C.getWeekOfYear();
+							for(final Object o : entry.parms())
+							{
+								if(isDateMatch(o,num))
+								{
+									found = true;
+									break;
+								}
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
 				case DAY: // +day
 					{
 						if(room!=null)
@@ -5972,6 +6322,40 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if(room!=null)
 						{
 							final int num = room.getArea().getTimeObj().getDayOfMonth();
+							for(final Object o : entry.parms())
+							{
+								if(isDateMatch(o,num))
+								{
+									found = true;
+									break;
+								}
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
+				case BIRTHDAY: // +birthday
+					{
+						if((mob!=null)
+						&&(mob.isPlayer()))
+						{
+							final int num = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
+							for(final Object o : entry.parms())
+							{
+								if(isDateMatch(o,num))
+									return false;
+							}
+						}
+					}
+					break;
+				case _BIRTHDAY: // -birthday
+					{
+						boolean found=false;
+						if((mob!=null)
+						&&(mob.isPlayer()))
+						{
+							final int num = mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
 							for(final Object o : entry.parms())
 							{
 								if(isDateMatch(o,num))
@@ -7372,10 +7756,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _SENSES: // -senses
 				case HOUR: // +HOUR
 				case _HOUR: // -HOUR
-				case SEASON: // +season
-				case _SEASON: // -season
 				case WEATHER: // +weather
 				case _WEATHER: // -weather
+				case SEASON: // +season
+				case _SEASON: // -season
 				case MONTH: // +month
 				case _MONTH: // -month
 				case WEEK: // +week
@@ -7388,6 +7772,20 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _DAY: // -day
 				case DAYOFYEAR: // +dayofyear
 				case _DAYOFYEAR: // -dayofyear
+				case BIRTHSEASON: // +birthseason
+				case _BIRTHSEASON: // -birthseason
+				case BIRTHMONTH: // +birthmonth
+				case _BIRTHMONTH: // -mbirthonth
+				case BIRTHWEEK: // +birthweek
+				case _BIRTHWEEK: // -birthweek
+				case BIRTHWEEKOFYEAR: // +birthweekofyear
+				case _BIRTHWEEKOFYEAR: // -birthweekofyear
+				case BIRTHYEAR: // +birthyear
+				case _BIRTHYEAR: // -birthyear
+				case BIRTHDAY: // +birthday
+				case _BIRTHDAY: // -birthday
+				case BIRTHDAYOFYEAR: // +birthdayofyear
+				case _BIRTHDAYOFYEAR: // -birthdayofyear
 				case QUALLVL: // +quallvl
 				case _QUALLVL: // -quallvl
 				case RESOURCE: // +resource

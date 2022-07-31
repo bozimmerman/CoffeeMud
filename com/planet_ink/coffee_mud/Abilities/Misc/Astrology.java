@@ -149,7 +149,7 @@ public class Astrology extends StdAbility
 			int hc = 0;
 			hc = playerCMask.hashCode() ^ dateCMask.hashCode() ^ period.hashCode();
 			for(final Pair<String,String> p : props)
-				hc ^= p.first.hashCode() ^ p.second.hashCode();
+				hc = (hc << 8) ^ (p.first.hashCode() ^ p.second.hashCode());
 			hashCode = hc;
 		}
 
@@ -167,15 +167,13 @@ public class Astrology extends StdAbility
 			return hash.intValue();
 		int hashh = 0;
 		for(final AstrologyEntry a : getAllAstrology())
-			hashh ^= a.hashCode();
-System.out.println("!*!*!*Generated Hash "+hashh);
+			hashh = (hashh << 8) ^ a.hashCode();
 		Resources.submitResource("SYSTEM_ASTROLOGY_HASH", Integer.valueOf(hashh));
 		return hashh;
 	}
 
 	protected static boolean addProp(final PairList<String,String> fprops, final String propID, final String arg, final String s)
 	{
-System.out.println("!*!*!*Add Prop "+propID+"/"+arg);
 		final Ability A=CMClass.getAbility(propID);
 		if(A==null)
 		{
@@ -193,103 +191,115 @@ System.out.println("!*!*!*Add Prop "+propID+"/"+arg);
 		return true;
 	}
 
+	@SuppressWarnings("unchecked")
 	protected static List<AstrologyEntry> getAllAstrology()
 	{
-		@SuppressWarnings("unchecked")
 		List<AstrologyEntry> astro = (List<AstrologyEntry>)Resources.getResource("SYSTEM_ASTROLOGY_INI");
 		if(astro == null)
 		{
-			astro = new Vector<AstrologyEntry>();
-			final List<String> lines = Resources.getFileLineVector(new CMFile(Resources.makeFileResourceName("astrology.ini"),null).text());
-System.out.println("!*!*!*Generating "+lines.size()+" lines");
-			for(String s : lines)
+			synchronized("SYSTEM_ASTROLOGY_INI".intern())
 			{
-				s=s.trim();
-				if(s.startsWith("#"))
-					continue;
-				final int x1 = s.indexOf("::");
-				if(x1<0)
-					continue;
-				final int x2 = s.indexOf("::",x1+2);
-				if(x2<0)
-					continue;
-				final String pmask = s.substring(0,x1).trim();
-				final String dmask = s.substring(x1+2, x2).trim();
-				final String propStr = s.substring(x2+2).trim();
-				int state=0;
-				final PairList<String,String> fprops = new PairVector<String,String>();
-				String propID="";
-				final StringBuilder str=new StringBuilder("");
-				for(int i=0;i<propStr.length();i++)
+				astro = (List<AstrologyEntry>)Resources.getResource("SYSTEM_ASTROLOGY_INI");
+				if(astro != null)
+					return astro;
+				astro = new Vector<AstrologyEntry>();
+				final List<String> lines = Resources.getFileLineVector(new CMFile(Resources.makeFileResourceName("astrology.txt"),null).text());
+				for(String s : lines)
 				{
-					final char c=propStr.charAt(i);
-					switch(state)
+					s=s.trim();
+					if(s.startsWith("#"))
+						continue;
+					final int x1 = s.indexOf("::");
+					if(x1<0)
+						continue;
+					final int x2 = s.indexOf("::",x1+2);
+					if(x2<0)
+						continue;
+					final String pmask = s.substring(0,x1).trim();
+					final String dmask = s.substring(x1+2, x2).trim();
+					final String propStr = s.substring(x2+2).trim();
+					int state=0;
+					final PairList<String,String> fprops = new PairVector<String,String>();
+					String propID="";
+					final StringBuilder str=new StringBuilder("");
+					for(int i=0;i<propStr.length();i++)
 					{
-					case 0: // between things
-						if((c=='(')&&(propID.length()>0))
-							state=2;
-						else
-						if(!Character.isWhitespace(c))
+						final char c=propStr.charAt(i);
+						switch(state)
 						{
-							if(propID.length()>0)
+						case 0: // between things
+							if((c=='(')&&(propID.length()>0))
+								state=2;
+							else
+							if(!Character.isWhitespace(c))
 							{
-								if(!Astrology.addProp(fprops, propID, "", s))
+								if(propID.length()>0)
+								{
+									if(!Astrology.addProp(fprops, propID, "", s))
+									{
+										i=propStr.length();
+										propID="";
+										break;
+									}
+									propID="";
+									str.setLength(0);
+								}
+								str.append(c);
+								state=1;
+							}
+							break;
+						case 1: // in-proper-id
+							if(Character.isWhitespace(c))
+							{
+								propID=str.toString();
+								state=0;
+							}
+							else
+							if(c=='(')
+							{
+								propID=str.toString();
+								str.setLength(0);
+								state=2;
+							}
+							else
+								str.append(c);
+							break;
+						case 2: // in arg paren
+							if((c=='\\')&&(i<propStr.length()-1))
+							{
+								i++;
+								str.append(propStr.charAt(i));
+							}
+							else
+							if(c==')')
+							{
+								final String args=str.toString();
+								str.setLength(0);
+								if(!Astrology.addProp(fprops, propID, args, s))
 								{
 									i=propStr.length();
 									propID="";
 									break;
 								}
 								propID="";
-								str.setLength(0);
+								state=0;
 							}
-							str.append(c);
-							state=1;
+							else
+								str.append(c);
+							break;
 						}
-						break;
-					case 1: // in-proper-id
-						if(Character.isWhitespace(c))
-						{
-							propID=str.toString();
-							state=0;
-						}
-						else
-							str.append(c);
-						break;
-					case 2: // in arg paren
-						if((c=='\\')&&(i<propStr.length()-1))
-						{
-							i++;
-							str.append(propStr.charAt(i));
-						}
-						else
-						if(c==')')
-						{
-							final String args=str.toString();
-							str.setLength(0);
-							if(!Astrology.addProp(fprops, propID, args, s))
-							{
-								i=propStr.length();
-								propID="";
-								break;
-							}
-							propID="";
-							state=0;
-						}
-						else
-							str.append(c);
-						break;
 					}
+					if(propID.length()>0)
+						Astrology.addProp(fprops, propID, str.toString(), s);
+					else
+					if(str.length()>0)
+						Astrology.addProp(fprops, str.toString(),"", s);
+					final AstrologyEntry entry = new AstrologyEntry(pmask,dmask,fprops);
+					astro.add(entry);
 				}
-				if(propID.length()>0)
-					Astrology.addProp(fprops, propID, str.toString(), s);
-				else
-				if(str.length()>0)
-					Astrology.addProp(fprops, str.toString(),"", s);
-				final AstrologyEntry entry = new AstrologyEntry(pmask,dmask,fprops);
-				astro.add(entry);
+				Resources.removeResource("SYSTEM_ASTROLOGY_HASH");
+				Resources.submitResource("SYSTEM_ASTROLOGY_INI", astro);
 			}
-			Resources.removeResource("SYSTEM_ASTROLOGY_HASH");
-			Resources.submitResource("SYSTEM_ASTROLOGY_INI", astro);
 		}
 		return astro;
 	}
@@ -303,7 +313,6 @@ System.out.println("!*!*!*Generating "+lines.size()+" lines");
 		{
 			if(mlib.maskCheck(E.dateCMask, P, true))
 			{
-System.out.println("!*!*!*"+affected.name()+" Gather "+E.dateMask);
 				apply.add(E);
 				hash[0] ^= E.hashCode();
 			}
@@ -332,7 +341,8 @@ System.out.println("!*!*!*"+affected.name()+" Gather "+E.dateMask);
 			if(myEntries.size()>0)
 			{
 				final TimeClock now = CMLib.time().homeClock(affected);
-				if(now.getHourOfDay() != lastClock.getHourOfDay())
+				if((now != null)
+				&& (now.getHourOfDay() != lastClock.getHourOfDay()))
 				{
 					if((myEntries.containsKey(TimePeriod.HOUR))
 					||((now.getDayOfYear() != lastClock.getDayOfYear())&&(myEntries.containsKey(TimePeriod.DAY)))
@@ -346,7 +356,6 @@ System.out.println("!*!*!*"+affected.name()+" Gather "+E.dateMask);
 						final Room R=CMLib.map().roomLocation(affected);
 						for(final TimePeriod key : myEntries.keySet())
 							gatherEntries(R, myEntries.get(key), chk, eHash);
-System.out.println("!*!*!*"+affected.name()+" Gathered: "+chk.size());
 						if((affectHash==null)
 						||(affectHash[0] != eHash[0]))
 						{
@@ -356,7 +365,6 @@ System.out.println("!*!*!*"+affected.name()+" Gathered: "+chk.size());
 							affects.clear();
 							for(final AstrologyEntry aE : chk)
 							{
-System.out.println("!*!*!*"+affected.name()+" Adding props: "+aE.props.length);
 								for(final Pair<String,String> pE : aE.props)
 								{
 									final Ability A = CMClass.getAbility(pE.first);
@@ -382,6 +390,12 @@ System.out.println("!*!*!*"+affected.name()+" Adding props: "+aE.props.length);
 							}
 						}
 						lastClock.setFromHoursSinceEpoc(now.toHoursSinceEpoc());
+						affected.recoverPhyStats();
+						if(affected instanceof MOB)
+						{
+							((MOB)affected).recoverCharStats();
+							((MOB)affected).recoverMaxState();
+						}
 					}
 				}
 				for(final CMObject p : affects)
@@ -488,7 +502,6 @@ System.out.println("!*!*!*"+affected.name()+" Adding props: "+aE.props.length);
 				tuEntries.add(a);
 			}
 		}
-System.out.println("!*!*!*"+affected.name()+" Assign my entries: "+newMap.size());
 		myEntries.clear();
 		for(final TimePeriod k : newMap.keySet())
 			myEntries.put(k, newMap.get(k).toArray(new AstrologyEntry[0]));

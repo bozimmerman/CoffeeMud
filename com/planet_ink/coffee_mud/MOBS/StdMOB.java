@@ -1339,7 +1339,10 @@ public class StdMOB implements MOB
 			{
 				A=CMClass.getAbility("Astrology");
 				if(A!=null)
-					this.addNonUninvokableEffect(A);
+				{
+					addNonUninvokableEffect(A);
+					A.setSavable(false);
+				}
 			}
 			A.setMiscText("RESET");
 		}

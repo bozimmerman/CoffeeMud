@@ -416,6 +416,20 @@ public interface MaskingLibrary extends CMLibrary
 		RIDE,
 		_FOLLOW,
 		FOLLOW,
+		_BIRTHDAY,
+		BIRTHDAY,
+		_BIRTHDAYOFYEAR,
+		BIRTHDAYOFYEAR,
+		_BIRTHSEASON,
+		BIRTHSEASON,
+		_BIRTHWEEK,
+		BIRTHWEEK,
+		_BIRTHWEEKOFYEAR,
+		BIRTHWEEKOFYEAR,
+		_BIRTHYEAR,
+		BIRTHYEAR,
+		_BIRTHMONTH,
+		BIRTHMONTH
 		;
 		private final String[] keys;
 		private ZapperKey(final String... exts)
