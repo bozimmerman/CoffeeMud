@@ -36,15 +36,15 @@ import java.util.concurrent.TimeUnit;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Astrology extends StdAbility
+public class Astrologies extends StdAbility
 {
 	@Override
 	public String ID()
 	{
-		return "Astrology";
+		return "Astrologies";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Astrology");
+	private final static String	localizedName	= CMLib.lang().L("Astrologies");
 
 	@Override
 	public String name()
@@ -203,7 +203,7 @@ public class Astrology extends StdAbility
 				if(astro != null)
 					return astro;
 				astro = new Vector<AstrologyEntry>();
-				final List<String> lines = Resources.getFileLineVector(new CMFile(Resources.makeFileResourceName("astrology.txt"),null).text());
+				final List<String> lines = Resources.getFileLineVector(new CMFile(Resources.makeFileResourceName("astrologies.txt"),null).text());
 				for(String s : lines)
 				{
 					s=s.trim();
@@ -235,7 +235,7 @@ public class Astrology extends StdAbility
 							{
 								if(propID.length()>0)
 								{
-									if(!Astrology.addProp(fprops, propID, "", s))
+									if(!Astrologies.addProp(fprops, propID, "", s))
 									{
 										i=propStr.length();
 										propID="";
@@ -275,7 +275,7 @@ public class Astrology extends StdAbility
 							{
 								final String args=str.toString();
 								str.setLength(0);
-								if(!Astrology.addProp(fprops, propID, args, s))
+								if(!Astrologies.addProp(fprops, propID, args, s))
 								{
 									i=propStr.length();
 									propID="";
@@ -290,10 +290,10 @@ public class Astrology extends StdAbility
 						}
 					}
 					if(propID.length()>0)
-						Astrology.addProp(fprops, propID, str.toString(), s);
+						Astrologies.addProp(fprops, propID, str.toString(), s);
 					else
 					if(str.length()>0)
-						Astrology.addProp(fprops, str.toString(),"", s);
+						Astrologies.addProp(fprops, str.toString(),"", s);
 					final AstrologyEntry entry = new AstrologyEntry(pmask,dmask,fprops);
 					astro.add(entry);
 				}

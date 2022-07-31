@@ -1334,10 +1334,10 @@ public class StdMOB implements MOB
 		else
 		if(!CMSecurity.isDisabled(DisFlag.ASTROLOGY))
 		{
-			A=fetchEffect("Astrology");
+			A=fetchEffect("Astrologies");
 			if(A==null)
 			{
-				A=CMClass.getAbility("Astrology");
+				A=CMClass.getAbility("Astrologies");
 				if(A!=null)
 				{
 					addNonUninvokableEffect(A);
