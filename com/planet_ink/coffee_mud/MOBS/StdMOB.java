@@ -57,97 +57,97 @@ public class StdMOB implements MOB
 		return "StdMOB";
 	}
 
-	public String										_name				= "";
+	public String				_name				= "";
 
-	protected CharStats									baseCharStats		= (CharStats) CMClass.getCommon("DefaultCharStats");
-	protected CharStats									charStats			= (CharStats) CMClass.getCommon("DefaultCharStats");
+	protected CharStats			baseCharStats		= (CharStats) CMClass.getCommon("DefaultCharStats");
+	protected CharStats			charStats			= (CharStats) CMClass.getCommon("DefaultCharStats");
 
-	protected PhyStats									phyStats			= (PhyStats) CMClass.getCommon("DefaultPhyStats");
-	protected PhyStats									basePhyStats		= (PhyStats) CMClass.getCommon("DefaultPhyStats");
+	protected PhyStats			phyStats			= (PhyStats) CMClass.getCommon("DefaultPhyStats");
+	protected PhyStats			basePhyStats		= (PhyStats) CMClass.getCommon("DefaultPhyStats");
 
-	protected PlayerStats								playerStats			= null;
+	protected PlayerStats		playerStats			= null;
 
-	protected boolean									amDestroyed			= false;
-	protected boolean									removeFromGame		= false;
-	protected volatile boolean							amDead				= false;
+	protected boolean			amDestroyed			= false;
+	protected boolean			removeFromGame		= false;
+	protected volatile boolean	amDead				= false;
 
-	protected volatile Room								location			= null;
-	protected volatile Room								lastLocation		= null;
-	protected Rideable									riding				= null;
+	protected volatile Room		location			= null;
+	protected volatile Room		lastLocation		= null;
+	protected Rideable			riding				= null;
 
-	protected volatile Session							mySession			= null;
-	protected Object									description			= null;
-	protected String									displayText			= "";
-	protected String									rawImageName		= null;
-	protected String									cachedImageName		= null;
-	protected Object									miscText			= null;
-	protected String[]									xtraValues			= null;
+	protected volatile Session	mySession			= null;
+	protected Object			description			= null;
+	protected String			displayText			= "";
+	protected String			rawImageName		= null;
+	protected String			cachedImageName		= null;
+	protected Object			miscText			= null;
+	protected String[]			xtraValues			= null;
 
 	// gained attributes
-	protected int										experience			= 0;
-	protected int										practices			= 0;
-	protected int										trains				= 0;
-	protected long										ageMinutes			= 0;
-	protected int										money				= 0;
-	protected double									moneyVariation		= 0.0;
-	protected double									speedAdj			= CMProps.getSpeedAdjustment();
-	protected int										attributesBitmap	= MOB.Attrib.NOTEACH.getBitCode();
-	protected String									databaseID			= "";
+	protected int				experience			= 0;
+	protected int				practices			= 0;
+	protected int				trains				= 0;
+	protected long				ageMinutes			= 0;
+	protected int				money				= 0;
+	protected double			moneyVariation		= 0.0;
+	protected double			speedAdj			= CMProps.getSpeedAdjustment();
+	protected int				attributesBitmap	= MOB.Attrib.NOTEACH.getBitCode();
+	protected String			databaseID			= "";
 
-	protected int										tickAgeCounter		= 0;
-	protected int										recoverTickCter		= 1;
-	protected int										validChkCounter		= 60;
-	private long										expirationDate		= 0;
-	private int											manaConsumeCter		= CMLib.dice().roll(1, 10, 0);
-	private volatile double								freeActions			= 0.0;
+	protected int				tickAgeCounter		= 0;
+	protected int				recoverTickCter		= 1;
+	protected int				validChkCounter		= 60;
+	private long				expirationDate		= 0;
+	private int					manaConsumeCter		= CMLib.dice().roll(1, 10, 0);
+	private volatile double		freeActions			= 0.0;
 
 	// the core state values
-	public CharState									curState			= (CharState) CMClass.getCommon("DefaultCharState");
-	public CharState									maxState			= (CharState) CMClass.getCommon("DefaultCharState");
-	public CharState									baseState			= (CharState) CMClass.getCommon("DefaultCharState");
-	private long										lastTickedTime		= 0;
-	private long										lastCommandTime		= System.currentTimeMillis();
+	public CharState			curState			= (CharState) CMClass.getCommon("DefaultCharState");
+	public CharState			maxState			= (CharState) CMClass.getCommon("DefaultCharState");
+	public CharState			baseState			= (CharState) CMClass.getCommon("DefaultCharState");
+	private long				lastTickedTime		= 0;
+	private long				lastCommandTime		= System.currentTimeMillis();
 
-	protected Room										possStartRoom		= null;
-	protected String									liegeID				= "";
-	protected int										wimpHitPoint		= 0;
-	protected int										questPoint			= 0;
-	protected MOB										victim				= null;
-	protected Followable<MOB>							amFollowing			= null;
-	protected MOB										soulMate			= null;
-	protected int										atRange				= -1;
-	protected long										peaceTime			= 0;
-	protected boolean									kickFlag			= false;
-	protected MOB										me					= this;
+	protected Room				possStartRoom		= null;
+	protected String			liegeID				= "";
+	protected int				wimpHitPoint		= 0;
+	protected int				questPoint			= 0;
+	protected MOB				victim				= null;
+	protected Followable<MOB>	amFollowing			= null;
+	protected MOB				soulMate			= null;
+	protected int				atRange				= -1;
+	protected long				peaceTime			= 0;
+	protected boolean			kickFlag			= false;
+	protected MOB				me					= this;
 
-	protected int										tickStatus			= Tickable.STATUS_NOT;
+	protected int				tickStatus			= Tickable.STATUS_NOT;
 
 	/* containers of items and attributes */
-	protected SVector<Item>								inventory			= new SVector<Item>(1);
-	protected CMUniqSortSVec<Ability>					abilitys			= new CMUniqSortSVec<Ability>(1);
-	protected int[]										abilityUseTrig		= new int[Ability.USAGEINDEX_TOTAL];
-	protected STreeMap<String, int[][]>					abilityUseCache		= new STreeMap<String, int[][]>();
-	protected STreeMap<String, Integer>					expertises			= new STreeMap<String, Integer>();
-	protected SVector<Ability>							affects				= new SVector<Ability>(1);
-	protected CMUniqSortSVec<Behavior>					behaviors			= new CMUniqSortSVec<Behavior>(1);
-	protected CMUniqNameSortSVec<Tattoo>				tattoos				= new CMUniqNameSortSVec<Tattoo>(1);
-	protected volatile PairList<MOB, Short>				followers			= null;
-	protected LinkedList<QMCommand>						commandQue			= new LinkedList<QMCommand>();
-	protected SVector<ScriptingEngine>					scripts				= new SVector<ScriptingEngine>(1);
-	protected volatile List<Ability>					racialAffects		= null;
-	protected volatile List<Ability>					clanAffects			= null;
-	protected SHashtable<String, FData>					factions			= new SHashtable<String, FData>(1);
-	protected volatile WeakReference<Item>				possWieldedItem		= null;
-	protected volatile WeakReference<Item>				possHeldItem		= null;
+	protected SVector<Item>					inventory			= new SVector<Item>(1);
+	protected CMUniqSortSVec<Ability>		abilitys			= new CMUniqSortSVec<Ability>(1);
+	protected int[]							abilityUseTrig		= new int[Ability.USAGEINDEX_TOTAL];
+	protected STreeMap<String, int[][]>		abilityUseCache		= new STreeMap<String, int[][]>();
+	protected STreeMap<String, Integer>		expertises			= new STreeMap<String, Integer>();
+	protected SVector<Ability>				affects				= new SVector<Ability>(1);
+	protected CMUniqSortSVec<Behavior>		behaviors			= new CMUniqSortSVec<Behavior>(1);
+	protected CMUniqNameSortSVec<Tattoo>	tattoos				= new CMUniqNameSortSVec<Tattoo>(1);
+	protected volatile PairList<MOB, Short>	followers			= null;
+	protected LinkedList<QMCommand>			commandQue			= new LinkedList<QMCommand>();
+	protected SVector<ScriptingEngine>		scripts				= new SVector<ScriptingEngine>(1);
+	protected volatile List<Ability>		racialAffects		= null;
+	protected volatile List<Ability>		clanAffects			= null;
+	protected SHashtable<String, FData>		factions			= new SHashtable<String, FData>(1);
+	protected volatile WeakReference<Item>	possWieldedItem		= null;
+	protected volatile WeakReference<Item>	possHeldItem		= null;
 
-	protected ApplyAffectPhyStats<Ability>				affectPhyStats		= new ApplyAffectPhyStats<Ability>(this);
-	protected ApplyRecAffectPhyStats<Item>				recoverAffectP		= new ApplyRecAffectPhyStats<Item>(this);
+	protected ApplyAffectPhyStats<Ability>	affectPhyStats		= new ApplyAffectPhyStats<Ability>(this);
+	protected ApplyRecAffectPhyStats<Item>	recoverAffectP		= new ApplyRecAffectPhyStats<Item>(this);
 	@SuppressWarnings("rawtypes")
-	protected ApplyAffectCharStats						affectCharStats		= new ApplyAffectCharStats(this);
+	protected ApplyAffectCharStats			affectCharStats		= new ApplyAffectCharStats(this);
 	@SuppressWarnings("rawtypes")
-	protected ApplyAffectCharState						affectCharState		= new ApplyAffectCharState(this);
+	protected ApplyAffectCharState			affectCharState		= new ApplyAffectCharState(this);
 
-	protected OrderedMap<String, Pair<Clan, Integer>>	clans				= new OrderedMap<String, Pair<Clan, Integer>>();
+	protected OrderedMap<String, Pair<Clan, Integer>>	clans	= new OrderedMap<String, Pair<Clan, Integer>>();
 
 	public StdMOB()
 	{
@@ -1642,10 +1642,11 @@ public class StdMOB implements MOB
 				{
 					final Item I = fetchWieldedItem();
 					final Item VI = other.fetchWieldedItem();
-					Log.combatOut("STRT", Name() + ":" + phyStats().getCombatStats() + ":" + curState().getCombatStats()
-							+ ":" + ((I == null) ? "null" : I.name()) + ":" + other.Name() + ":"
-							+ other.phyStats().getCombatStats() + ":" + other.curState().getCombatStats() + ":"
-							+ ((VI == null) ? "null" : VI.name()));
+					Log.combatOut("STRT", Name() 
+										+ ":" + phyStats().getCombatStats() + ":" + curState().getCombatStats()
+										+ ":" + ((I == null) ? "null" : I.name()) + ":" + other.Name() 
+										+ ":" + other.phyStats().getCombatStats() + ":" + other.curState().getCombatStats() 
+										+ ":" + ((VI == null) ? "null" : VI.name()));
 				}
 				other.recoverCharStats();
 				other.recoverPhyStats();
