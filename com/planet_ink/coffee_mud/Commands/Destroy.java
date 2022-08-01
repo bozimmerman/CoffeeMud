@@ -81,7 +81,7 @@ public class Destroy extends StdCommand
 			return;
 		}
 		int num = CMath.s_int(commands.get(2));
-		if(CMLib.awards().modifyAutoAwards(num, null))
+		if(CMLib.awards().modifyAutoProperty(num, null))
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The superstition of the players just decreased!"));
 		else
 		{

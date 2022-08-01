@@ -1131,13 +1131,13 @@ public class Create extends StdCommand
 		{
 			mob.tell(L("You have failed to specify the proper fields.\n\r"
 					+ "Format: CREATE AUTOAWARD [PLAYER MASK]:[DATE MASK]::[PROPS] as follows: \n\r"));
-			final String inst = CMLib.awards().getAutoAwardInstructions(CMLib.awards().getAutoAwardsFilename());
+			final String inst = CMLib.awards().getAutoAwardInstructions(CMLib.awards().getAutoPropsFilename());
 			if(mob.session()!=null)
 				mob.session().wraplessPrintln(inst);
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		if(CMLib.awards().modifyAutoAwards(Integer.MAX_VALUE, CMParms.combine(commands,2)))
+		if(CMLib.awards().modifyAutoProperty(Integer.MAX_VALUE, CMParms.combine(commands,2)))
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The superstition of the players just increased!"));
 		else
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));

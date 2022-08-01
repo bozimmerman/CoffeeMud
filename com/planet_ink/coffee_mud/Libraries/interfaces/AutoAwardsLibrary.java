@@ -35,11 +35,11 @@ import java.util.*;
 */
 /**
  * The library for managing the various automatic player awards, such
- * as auto-titles, which are player titles that can, according to a mask, 
- * be automatically added and removed from players as they meet, and stop 
+ * as auto-titles, which are player titles that can, according to a mask,
+ * be automatically added and removed from players as they meet, and stop
  * meeting, various criterium. Similar are the AutoProperties entries, which
  * award properties based on player and date-based masks.
- * 
+ *
  * @see com.planet_ink.coffee_mud.Libraries.interfaces.AutoAwardsLibrary#reloadAutoTitles()
  */
 public interface AutoAwardsLibrary extends CMLibrary
@@ -118,28 +118,28 @@ public interface AutoAwardsLibrary extends CMLibrary
 	 * @return an error message, or null for success
 	 */
 	public String deleteTitleAndResave(String title);
-	
+
 	/**
 	 * Returns the filename of the auto-title recipe
 	 * file.
-	 * 
+	 *
 	 * @return the auto-files filename
 	 */
 	public String getAutoTitleFilename();
-	
-	/**
-	 * Returns the filename of the auto-awards recipe
-	 * file.
-	 * 
-	 * @return the auto-awards filename
-	 */
-	public String getAutoAwardsFilename();
 
 	/**
-	 * Reads the autoaward recipe file given and
+	 * Returns the filename of the auto-properties
+	 * recipe file.
+	 *
+	 * @return the auto-properties filename
+	 */
+	public String getAutoPropsFilename();
+
+	/**
+	 * Reads the auto-award recipe file given and
 	 * returns the instructions from it (basically,
 	 * the comments)
-	 * 
+	 *
 	 * @param filename the file to read
 	 * @return the instructions
 	 */
@@ -147,31 +147,39 @@ public interface AutoAwardsLibrary extends CMLibrary
 
 	/**
 	 * Returns an enumeration of all defined auto-properties
-	 * 
+	 *
 	 * @return the auto-properties
 	 */
 	public Enumeration<AutoProperties> getAutoProperties();
-	
+
 	/**
 	 * Returns a hash of the auto-properties, allowing quick
 	 * checks for changes.
-	 * 
+	 *
 	 * @return the auto-properties hash
 	 */
 	public int getAutoPropertiesHash();
-	
+
 	/**
-	 * In auto awards, this will allow it to be modified on a line-by-line
-	 * basis automatically, either adding, replacing or deleting a line numbered 1..n.  
+	 * Allows the given mob to start participating in
+	 * auto-properties.
+	 *
+	 * @param mob the mob who wants auto properties
+	 */
+	public void giveAutoProperties(final MOB mob);
+
+	/**
+	 * In auto properties, this will allow it to be modified on a line-by-line
+	 * basis automatically, either adding, replacing or deleting a line numbered 1..n.
 	 * Comments beginning with "#" or lines with no content are skipped.
 	 * Send Integer.MAX_VALUE to append.
-	 *  
+	 *
 	 * @param lineNum the line to edit
 	 * @param newLine null to delete the line, or the new line
 	 * @return true if the line was found, false otherwise
 	 */
-	public boolean modifyAutoAwards(int lineNum, final String newLine);
-	
+	public boolean modifyAutoProperty(int lineNum, final String newLine);
+
 	/**
 	 * Class to store the definitional information
 	 * about a single AutoTitle
@@ -215,7 +223,7 @@ public interface AutoAwardsLibrary extends CMLibrary
 		 */
 		public int bumpCounter(int amt);
 	}
-	
+
 	/**
 	 * Class to store the definitional information
 	 * about a single set of AutoProperties
@@ -228,45 +236,45 @@ public interface AutoAwardsLibrary extends CMLibrary
 		/**
 		 * Returns the general player
 		 * zappermask.
-		 * 
+		 *
 		 * @return player zappermask
 		 */
 		public String getPlayerMask();
-		
+
 		/**
 		 * Returns the date-base zappermask.
-		 * 
+		 *
 		 * @return the date-base zappermask.
 		 */
 		public String getDateMask();
-		
+
 		/**
 		 * Returns the general player compiled
-		 * zappermask. 
-		 * 
+		 * zappermask.
+		 *
 		 * @return player compiled zappermask
 		 */
 		public CompiledZMask getPlayerCMask();
-		
+
 		/**
 		 * Returns the date-based compiled zappermask.
 		 * @return the date-based compiled zappermask.
 		 */
 		public CompiledZMask getDateCMask();
-		
+
 		/**
-		 * Returns the pair of ability/behavior id, 
+		 * Returns the pair of ability/behavior id,
 		 * and parms/args to give to those who match
 		 * this mask.
-		 * 
+		 *
 		 * @return the awards
 		 */
 		public Pair<String, String>[] getProps();
-		
+
 		/**
 		 * A quick reference for the date-based mask to
 		 * tell how often to check for changes.
-		 * 
+		 *
 		 * @return the time period of the date mask
 		 */
 		public TimePeriod getPeriod();

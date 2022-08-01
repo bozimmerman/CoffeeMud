@@ -91,7 +91,7 @@ public class AutoAwardData extends StdWebMacro
 			int i=Integer.MAX_VALUE;
 			if((last != null)&&(CMath.isInteger(last)))
 				i=CMath.s_int(last);
-			CMLib.awards().modifyAutoAwards(i, line.toString());
+			CMLib.awards().modifyAutoProperty(i, line.toString());
 			return "";
 		}
 		else
@@ -106,7 +106,7 @@ public class AutoAwardData extends StdWebMacro
 				return " @break@";
 			
 			int num = CMath.s_int(last);
-			if(CMLib.awards().modifyAutoAwards(num, null))
+			if(CMLib.awards().modifyAutoProperty(num, null))
 				return "Award rule deleted.";
 			else
 				return "Unknown award rule!";

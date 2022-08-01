@@ -64,11 +64,11 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 	}
 
 	@Override
-	public String getAutoAwardsFilename()
+	public String getAutoPropsFilename()
 	{
 		return propsFilename;
 	}
-	
+
 	@Override
 	public String evaluateAutoTitle(final String row, final boolean addIfPossible)
 	{
@@ -471,7 +471,7 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 	}
 
 	@Override
-	public String getAutoAwardInstructions(String filename)
+	public String getAutoAwardInstructions(final String filename)
 	{
 		final StringBuffer buf=new CMFile(Resources.makeFileResourceName(filename),null,CMFile.FLAG_LOGERRORS).text();
 		final StringBuffer inst=new StringBuffer("");
@@ -575,7 +575,7 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 		final Vector<AutoProperties> props = getAllAutoAwards();
 		return props.elements();
 	}
-	
+
 	@Override
 	public int getAutoPropertiesHash()
 	{
@@ -621,13 +621,13 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 		}
 		if(astro == null)
 		{
-			synchronized(getAutoAwardsFilename().intern())
+			synchronized(getAutoPropsFilename().intern())
 			{
 				astro = autoProperties;
 				if(astro != null)
 					return astro;
 				astro = new Vector<AutoProperties>();
-				final List<String> lines = Resources.getFileLineVector(new CMFile(Resources.makeFileResourceName(getAutoAwardsFilename()),null).text());
+				final List<String> lines = Resources.getFileLineVector(new CMFile(Resources.makeFileResourceName(getAutoPropsFilename()),null).text());
 				for(String s : lines)
 				{
 					s=s.trim();
@@ -729,13 +729,35 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 	}
 
 	@Override
-	public boolean modifyAutoAwards(int lineNum, final String newLine)
+	public void giveAutoProperties(final MOB mob)
 	{
-		int num = lineNum;
+		if(mob.isMonster())
+			return;
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTOAWARDS))
+		{
+			Ability A=mob.fetchEffect("AutoAwards");
+			if(A==null)
+			{
+				A=CMClass.getAbility("AutoAwards");
+				if(A!=null)
+				{
+					mob.addNonUninvokableEffect(A);
+					A.setSavable(false);
+				}
+			}
+			else
+				A.setMiscText("RESET");
+		}
+	}
+
+	@Override
+	public boolean modifyAutoProperty(final int lineNum, final String newLine)
+	{
+		final int num = lineNum;
 		if(num<1)
 			return false;
 		final StringBuffer buf = new StringBuffer("");
-		final CMFile F = new CMFile(Resources.makeFileResourceName(getAutoAwardsFilename()),null);
+		final CMFile F = new CMFile(Resources.makeFileResourceName(getAutoPropsFilename()),null);
 		final List<String> lines=Resources.getFileLineVector(F.text());
 		boolean found=false;
 		int i=1;

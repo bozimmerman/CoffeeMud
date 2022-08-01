@@ -1331,22 +1331,7 @@ public class StdMOB implements MOB
 			if (dropItem != null)
 				addItem(dropItem);
 		}
-		else
-		if(!CMSecurity.isDisabled(DisFlag.AUTOAWARDS))
-		{
-			A=fetchEffect("AutoAwards");
-			if(A==null)
-			{
-				A=CMClass.getAbility("AutoAwards");
-				if(A!=null)
-				{
-					addNonUninvokableEffect(A);
-					A.setSavable(false);
-				}
-			}
-			else
-				A.setMiscText("RESET");
-		}
+		CMLib.awards().giveAutoProperties(me);
 
 		CMLib.map().registerWorldObjectLoaded(null, getStartRoom(), this);
 		location().show(this, null, CMMsg.MSG_BRINGTOLIFE, null);
@@ -1642,10 +1627,10 @@ public class StdMOB implements MOB
 				{
 					final Item I = fetchWieldedItem();
 					final Item VI = other.fetchWieldedItem();
-					Log.combatOut("STRT", Name() 
+					Log.combatOut("STRT", Name()
 										+ ":" + phyStats().getCombatStats() + ":" + curState().getCombatStats()
-										+ ":" + ((I == null) ? "null" : I.name()) + ":" + other.Name() 
-										+ ":" + other.phyStats().getCombatStats() + ":" + other.curState().getCombatStats() 
+										+ ":" + ((I == null) ? "null" : I.name()) + ":" + other.Name()
+										+ ":" + other.phyStats().getCombatStats() + ":" + other.curState().getCombatStats()
 										+ ":" + ((VI == null) ? "null" : VI.name()));
 				}
 				other.recoverCharStats();
