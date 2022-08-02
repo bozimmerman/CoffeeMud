@@ -71,8 +71,10 @@ public class Concierge extends StdBehavior
 	protected String	greeting		= defaultGreeting;
 	protected String	mountStr		= "";
 	protected boolean	portal			= false;
+	protected boolean	mobile			= false;
 	protected int		maxRange		= 100;
 	protected String	clanName		= null;
+	protected boolean	goHomeFlag		= false;
 
 	protected TrackingLibrary.TrackingFlags trackingFlags	= CMLib.tracking().newFlags().plus(defaultTrackingFlags);
 	protected TrackingLibrary.TrackingFlags roomRadiusFlags = CMLib.tracking().newFlags().plus(defaultRoomRadiusFlags);
@@ -156,6 +158,7 @@ public class Concierge extends StdBehavior
 		destinations.clear();
 		thingsToSay.clear();
 		portal=false;
+		mobile=false;
 	}
 
 	protected void resetFlags()
@@ -196,6 +199,12 @@ public class Concierge extends StdBehavior
 				if(s.equals("PORTAL"))
 				{
 					portal=isTrue;
+					continue;
+				}
+				else
+				if(s.equals("MOBILE"))
+				{
+					mobile=isTrue;
 					continue;
 				}
 				else
@@ -533,8 +542,11 @@ public class Concierge extends StdBehavior
 		final MOB source=msg.source();
 		if(startRoom==null)
 			startRoom=source.location();
-		if((!canFreelyBehaveNormal(host))&&(host instanceof MOB))
-			return true;
+		if(host instanceof MOB)
+		{
+			if((!canFreelyBehaveNormal(host))||(CMLib.flags().isTracking((MOB)host)))
+				return true;
+		}
 		final Environmental observer=host;
 		final Room room=source.location();
 		if(source != observer)
@@ -578,6 +590,19 @@ public class Concierge extends StdBehavior
 						CMLib.commands().postSay(observer,source,msg,true,false);
 				}
 			}
+		}
+		if(this.mobile
+		&& goHomeFlag
+		&& (startRoom != null)
+		&& (ticking instanceof MOB)
+		&& !CMLib.flags().isTracking((MOB)ticking))
+		{
+			final MOB mob=(MOB)ticking;
+			goHomeFlag=false;
+			while(mob.numFollowers()>0)
+				mob.delFollower(mob.fetchFollower(0));
+			CMLib.commands().postSay(mob, L("OK, here you are -- good luck!"));
+			CMLib.tracking().wanderAway(mob, false, true);
 		}
 		return super.tick(ticking,tickID);
 	}
@@ -636,7 +661,8 @@ public class Concierge extends StdBehavior
 		return (destination instanceof Room)?((Room)destination).displayText(mob):destination.name();
 	}
 
-	protected void giveMerchandise(final MOB whoM, Room destination, final Environmental observer, final Room room, final TrackingFlags trackingFlags)
+	protected void giveMerchandise(final MOB whoM, Room destination, final Environmental observer,
+								   final Room room, final TrackingFlags trackingFlags)
 	{
 
 		if(this.portal)
@@ -659,6 +685,28 @@ public class Concierge extends StdBehavior
 				B.setParms("minticks=8 maxticks=12");
 				I.addBehavior(B);
 				thingsToSay.addElement(whoM,L("Enter this portal to @x1.",getDestinationName(whoM,destination)));
+			}
+		}
+		else
+		if(this.mobile && (observer instanceof MOB))
+		{
+			final MOB fromM=(MOB)observer;
+			String name=CMLib.map().getExtendedRoomID(destination);
+			if(name.length()==0)
+				name=destination.displayText();
+			final Ability tracker = CMClass.getAbility("Skill_Track");
+			final List<String> cmds = new ArrayList<String>();
+			cmds.add(name);
+			cmds.add("RADIUS="+maxRange);
+			for(final TrackingFlag flag : trackingFlags)
+				cmds.add("FLAG="+flag.name());
+			if(!tracker.invoke(fromM, cmds, destination, true, maxRange))
+				thingsToSay.addElement(whoM,L("Sorry, I can't get there from here."));
+			else
+			{
+				goHomeFlag=true;
+				CMLib.commands().postFollow(whoM, fromM, false);
+				thingsToSay.addElement(whoM,L("OK! Off we go!"));
 			}
 		}
 		else
@@ -689,8 +737,11 @@ public class Concierge extends StdBehavior
 	{
 		super.executeMsg(affecting,msg);
 
-		if((!canFreelyBehaveNormal(affecting))&&(affecting instanceof MOB))
-			return;
+		if(affecting instanceof MOB)
+		{
+			if((!canFreelyBehaveNormal(affecting))||(CMLib.flags().isTracking((MOB)affecting)))
+				return;
+		}
 
 		final MOB source=msg.source();
 		final Environmental observer=affecting;

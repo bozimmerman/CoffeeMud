@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2022 Bo Zimmerman
+   Copyright 2022-2022 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,16 +32,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Spell_LightSensitivity extends Spell
+public class Spell_DarkSensitivity extends Spell
 {
 
 	@Override
 	public String ID()
 	{
-		return "Spell_LightSensitivity";
+		return "Spell_DarkSensitivity";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Light Sensitivity");
+	private final static String	localizedName	= CMLib.lang().L("Dark Sensitivity");
 
 	@Override
 	public String name()
@@ -49,18 +49,18 @@ public class Spell_LightSensitivity extends Spell
 		return localizedName;
 	}
 
-	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Light Sensitivity)");
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Dark Sensitivity)");
 
 	@Override
 	public String displayText()
 	{
 		final Physical P=this.affected;
-		if((P instanceof MOB) && (isLightBlind((MOB)P)))
+		if((P instanceof MOB) && (isDarkBlind((MOB)P)))
 			return localizedStaticDisplay;
 		return "";
 	}
 
-	protected final static String cancelID="Spell_DarkSensitivity";
+	protected final static String cancelID="Spell_LightSensitivity";
 
 	@Override
 	public int abstractQuality()
@@ -89,21 +89,27 @@ public class Spell_LightSensitivity extends Spell
 		final Room R=((MOB)affected).location();
 		if(R==null)
 			return;
-		if(CMLib.flags().isInDark(R))
-			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
-		else
+		if(CMLib.flags().isInDark(R)) // should be: if you are in the light, you can see in the light
 		{
+			affectableStats.setSensesMask(affectableStats.sensesMask() & (~PhyStats.CAN_SEE_DARK));
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-50);
 			affectableStats.setArmor(affectableStats.armor()+50);
 		}
 	}
 
-	protected boolean isLightBlind(final MOB M)
+	protected boolean isDarkBlind(final MOB M)
 	{
 		final Room R=M.location();
 		if(R==null)
 			return true;
-		return !CMLib.flags().isInDark(R);
+		if(CMLib.flags().isInDark(R))
+			return true;
+		final Area A=R.getArea();
+		if(A.getClimateObj().canSeeTheSun(R))
+			return false;
+		if(!CMLib.map().hasASky(R))
+			return false;
+		return true;
 	}
 
 	@Override
@@ -116,11 +122,11 @@ public class Spell_LightSensitivity extends Spell
 			switch(msg.sourceMinor())
 			{
 			case CMMsg.TYP_EXAMINE:
-				if(isLightBlind(msg.source())
+				if(isDarkBlind(msg.source())
 				&& (!(msg.target() instanceof Room))
 				&&(msg.source().fetchEffect(cancelID)==null))
 				{
-					msg.source().tell(L("You can't seem to make it out that well in this bright light."));
+					msg.source().tell(L("You can't seem to make it out that well in the darkness."));
 					return false;
 				}
 				break;
@@ -136,12 +142,12 @@ public class Spell_LightSensitivity extends Spell
 				if((msg.target()!=null)
 				&&(msg.target()!=msg.source())
 				&&(!(msg.target() instanceof Room))
-				&&(isLightBlind(msg.source()))
+				&&(isDarkBlind(msg.source()))
 				&&(msg.source().fetchEffect(cancelID)==null))
 				{
 					if(CMLib.dice().rollPercentage()>50)
 					{
-						msg.source().tell(msg.source(),msg.target(),null,L("You can't seem to make out <T-NAME> in this bright light."));
+						msg.source().tell(msg.source(),msg.target(),null,L("You can't seem to make out <T-NAME> in the dark."));
 						return false;
 					}
 				}
@@ -161,7 +167,7 @@ public class Spell_LightSensitivity extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(L("Your light sensitivity returns to normal."));
+			mob.tell(L("Your dark sensitivity returns to normal."));
 	}
 
 	@Override
@@ -206,17 +212,23 @@ public class Spell_LightSensitivity extends Spell
 		if(success)
 		{
 			invoker=mob;
-			final String autoStr=L("A flashing light blazes in the eyes of <T-NAME>!");
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?autoStr:L("^SYou invoke a sensitive light into <T-NAME>s eyes.^?"),verbalCastCode(mob,target,auto),auto?autoStr:L("^S<S-NAME> invoke(s) a sensitive light into your eyes.^?"),CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,auto?autoStr:L("^S<S-NAME> invokes a sensitive light into <T-NAME>s eyes.^?"));
+			final String autoStr=L("A black shadow falls over the eyes of <T-NAME>!");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,
+					verbalCastCode(mob,target,auto),
+					auto?autoStr:L("^SYou invoke a sensitive black shadow into <T-NAME>s eyes.^?"),
+					verbalCastCode(mob,target,auto),
+					auto?autoStr:L("^S<S-NAME> invoke(s) a sensitive black shadow into your eyes.^?"),
+					CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,
+					auto?autoStr:L("^S<S-NAME> invokes a sensitive black shadow into <T-NAME>s eyes.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
 					if(CMLib.flags().isInDark(mob.location()))
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) extremely sensitive to light."));
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) extremely sensitive to darkness."));
 					else
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) sensitive to the light."));
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) sensitive to the darkness."));
 					final Ability cancelA=target.fetchEffect(cancelID);
 					if(cancelA!=null)
 					{

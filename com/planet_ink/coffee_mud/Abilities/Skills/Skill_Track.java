@@ -11,6 +11,8 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlags;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -362,7 +364,9 @@ public class Skill_Track extends StdSkill
 	{
 		final List<String> origArgs = (commands != null)?new XVector<String>(commands):new Vector<String>(1);
 		tickStatus=Tickable.STATUS_MISC6;
-		if((!CMLib.flags().isAliveAwakeMobile(mob,false))||(mob.location()==null)||(!CMLib.flags().isInTheGame(mob,true)))
+		if((!CMLib.flags().isAliveAwakeMobile(mob,false))
+		||(mob.location()==null)
+		||(!CMLib.flags().isInTheGame(mob,true)))
 		{
 			tickStatus=Tickable.STATUS_NOT;
 			return false;
@@ -394,7 +398,7 @@ public class Skill_Track extends StdSkill
 					persist=true;
 				}
 			}
-			
+
 			final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
 			for(final Ability A : V)
 				A.unInvoke();
@@ -422,32 +426,51 @@ public class Skill_Track extends StdSkill
 
 		tickStatus=Tickable.STATUS_MISC6+3;
 		int radius=50 + (10*(super.getXMAXRANGELevel(mob)+super.getXLEVELLevel(mob)));
-		boolean allowAir=true;
-		boolean allowWater=true;
+		final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
 		if(commands != null)
 		{
-			if((commands.size()>1)
-			&&((commands.get(commands.size()-1)).toUpperCase().startsWith("RADIUS="))
-			&&(CMath.isInteger((commands.get(commands.size()-1)).substring(7))))
+			while(commands.size()>1)
 			{
-				radius=CMath.s_int((commands.get(commands.size()-1)).substring(7));
-				commands.remove(commands.size()-1);
-			}
-			if((commands.size()>1)&&((commands.get(commands.size()-1)).equalsIgnoreCase("LANDONLY")))
-			{
-				allowAir=false;
-				allowWater=false;
-				commands.remove(commands.size()-1);
-			}
-			if((commands.size()>1)&&((commands.get(commands.size()-1)).equalsIgnoreCase("NOAIR")))
-			{
-				allowAir=false;
-				commands.remove(commands.size()-1);
-			}
-			if((commands.size()>1)&&((commands.get(commands.size()-1)).equalsIgnoreCase("NOWATER")))
-			{
-				allowWater=false;
-				commands.remove(commands.size()-1);
+				if(((commands.get(commands.size()-1)).toUpperCase().startsWith("RADIUS="))
+				&&(CMath.isInteger((commands.get(commands.size()-1)).substring(7))))
+				{
+					radius=CMath.s_int((commands.get(commands.size()-1)).substring(7));
+					commands.remove(commands.size()-1);
+				}
+				else
+				if((commands.get(commands.size()-1)).equalsIgnoreCase("LANDONLY"))
+				{
+					flags.plus(TrackingLibrary.TrackingFlag.NOAIR);
+					flags.plus(TrackingLibrary.TrackingFlag.NOWATER);
+					flags.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
+					commands.remove(commands.size()-1);
+				}
+				else
+				if((commands.get(commands.size()-1)).equalsIgnoreCase("NOAIR"))
+				{
+					flags.plus(TrackingLibrary.TrackingFlag.NOAIR);
+					if(flags.contains(TrackingFlag.NOWATER))
+						flags.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
+					commands.remove(commands.size()-1);
+				}
+				else
+				if((commands.get(commands.size()-1)).equalsIgnoreCase("NOWATER"))
+				{
+					flags.plus(TrackingLibrary.TrackingFlag.NOWATER);
+					if(flags.contains(TrackingFlag.NOAIR))
+						flags.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
+					commands.remove(commands.size()-1);
+				}
+				else
+				if((commands.get(commands.size()-1)).startsWith("FLAG="))
+				{
+					final TrackingFlag flag = (TrackingFlag)CMath.s_valueOf(TrackingFlag.class, (commands.get(commands.size()-1)).substring(5).trim());
+					if(flag != null)
+						flags.plus(flag);
+					commands.remove(commands.size()-1);
+				}
+				else
+					break;
 			}
 		}
 
@@ -495,13 +518,6 @@ public class Skill_Track extends StdSkill
 				rooms.add(R);
 		}
 
-		final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
-		if(!(allowAir||allowWater))
-			flags.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
-		if(!allowAir)
-			flags.plus(TrackingLibrary.TrackingFlag.NOAIR);
-		if(!allowWater)
-			flags.plus(TrackingLibrary.TrackingFlag.NOWATER);
 		tickStatus=Tickable.STATUS_MISC6+5;
 		if(rooms.size()<=0)
 		{

@@ -508,6 +508,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				if(A!=null)
 					A.autoInvocation(M, false);
 			}
+			M.recoverMaxState();
+			M.resetToMaxState(); // how did we get along w/o this?!
 		}
 		return M;
 	}

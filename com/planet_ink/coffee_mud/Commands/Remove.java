@@ -80,12 +80,24 @@ public class Remove extends StdCommand
 			return Boolean.FALSE;
 		if(args[0] instanceof Item)
 		{
+			final Room R=mob.location();
 			final Item item=(Item)args[0];
 			final boolean quiet=((args.length>1) && (args[1] instanceof Boolean)) ? ((Boolean)args[1]).booleanValue() : false;
 			final CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_REMOVE,quiet?null:L("<S-NAME> remove(s) <T-NAME>."));
-			if(mob.location().okMessage(mob,newMsg))
+			if(R==null)
 			{
-				mob.location().send(mob,newMsg);
+				if( mob.okMessage(mob,newMsg)
+				&& item.okMessage(mob,newMsg))
+				{
+					mob.executeMsg(mob,newMsg);
+					item.executeMsg(mob,newMsg);
+					return Boolean.TRUE;
+				}
+			}
+			else
+			if(R.okMessage(mob,newMsg))
+			{
+				R.send(mob,newMsg);
 				return Boolean.TRUE;
 			}
 			return Boolean.FALSE;

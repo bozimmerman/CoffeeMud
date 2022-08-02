@@ -75,7 +75,7 @@ public class GatheringSkill extends CommonSkill
 
 	protected double getRoomSpamDropRate()
 	{
-		return 0.25;
+		return 0.20;
 	}
 
 	protected boolean checkIfAnyYield(Room R)
@@ -210,7 +210,7 @@ public class GatheringSkill extends CommonSkill
 		supportedUseRscs.put(ID(), mats);
 		return mats;
 	}
-	
+
 	public int[] myMaterials()
 	{
 		if(supportedMaterials.containsKey(ID()))

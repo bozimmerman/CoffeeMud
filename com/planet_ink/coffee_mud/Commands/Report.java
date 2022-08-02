@@ -123,39 +123,118 @@ public class Report extends Skills
 				say.append("\n\r^NMy skills:^? "+getAbilities(null,mob,V,Ability.ALL_ACODES,false,level));
 			}
 			else
-			if("SPELLS".startsWith(s))
-				say.append("\n\r^NMy spells:^? "+getAbilities(null,mob,Ability.ACODE_SPELL,-1,false,level));
-			else
-			if("SKILLS".startsWith(s))
 			{
-				final Vector<Integer> V=new Vector<Integer>();
-				V.add(Integer.valueOf(Ability.ACODE_THIEF_SKILL));
-				V.add(Integer.valueOf(Ability.ACODE_SKILL));
-				V.add(Integer.valueOf(Ability.ACODE_TECH));
-				V.add(Integer.valueOf(Ability.ACODE_COMMON_SKILL));
-				say.append("\n\r^NMy skills:^? "+getAbilities(null,mob,V,Ability.ALL_ACODES,false,level));
+				int acode=-1;
+				int adom=-1;
+				final String us = s.toUpperCase().replace(' ','_');
+				for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+				{
+					if(Ability.ACODE_DESCS[i].equals(us)
+					||CMLib.english().makePlural(Ability.ACODE_DESCS[i]).equals(us))
+					{
+						acode=i;
+						break;
+					}
+				}
+				if(acode < 0)
+				{
+					if("POWER".equals(us)||"POWERS".equals(us))
+						acode=Ability.ACODE_SUPERPOWER;
+					else
+					if("LANGS".equals(us))
+						acode=Ability.ACODE_LANGUAGE;
+					else
+					for(int d=0;d<Ability.DOMAIN_DESCS.length;d++)
+					{
+						if(Ability.DOMAIN_DESCS[d].equals(us)
+						||CMLib.english().makePlural(Ability.DOMAIN_DESCS[d]).equals(us))
+						{
+							adom=d;
+							break;
+						}
+					}
+				}
+				if((acode < 0)&&(adom<0))
+				{
+					for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+					{
+						if(CMLib.english().makePlural(Ability.ACODE_DESCS[i]).startsWith(us))
+						{
+							acode=i;
+							break;
+						}
+					}
+				}
+				if((acode < 0)&&(adom<0))
+				{
+					if("POWERS".startsWith(us))
+						acode=Ability.ACODE_SUPERPOWER;
+					else
+					if("LANGS".startsWith(us))
+						acode=Ability.ACODE_LANGUAGE;
+					else
+					for(int d=0;d<Ability.DOMAIN_DESCS.length;d++)
+					{
+						if(CMLib.english().makePlural(Ability.DOMAIN_DESCS[d]).startsWith(us))
+						{
+							adom=d;
+							break;
+						}
+					}
+				}
+				if(acode >= 0)
+				{
+					switch(acode)
+					{
+					case Ability.ACODE_SPELL:
+						say.append("\n\r^NMy spells:^? "+getAbilities(null,mob,Ability.ACODE_SPELL,-1,false,level));
+						break;
+					case Ability.ACODE_SKILL:
+					{
+						final Vector<Integer> V=new Vector<Integer>();
+						V.add(Integer.valueOf(Ability.ACODE_THIEF_SKILL));
+						V.add(Integer.valueOf(Ability.ACODE_SKILL));
+						V.add(Integer.valueOf(Ability.ACODE_TECH));
+						V.add(Integer.valueOf(Ability.ACODE_COMMON_SKILL));
+						say.append("\n\r^NMy skills:^? "+getAbilities(null,mob,V,Ability.ALL_ACODES,false,level));
+						break;
+					}
+					case Ability.ACODE_PRAYER:
+						say.append("\n\r^NMy prayers:^? "+getAbilities(null,mob,Ability.ACODE_PRAYER,-1,false,level));
+						break;
+					case Ability.ACODE_SUPERPOWER:
+						say.append("\n\r^NMy super powers:^? "+getAbilities(null,mob,Ability.ACODE_SUPERPOWER,-1,false,level));
+						break;
+					case Ability.ACODE_CHANT:
+						say.append("\n\r^NMy chants:^? "+getAbilities(null,mob,Ability.ACODE_CHANT,-1,false,level));
+						break;
+					case Ability.ACODE_SONG:
+						say.append("\n\r^NMy songs:^? "+getAbilities(null,mob,Ability.ACODE_SONG,-1,false,level));
+						break;
+					case Ability.ACODE_LANGUAGE:
+						say.append("\n\r^NMy languages:^? "+getAbilities(null,mob,Ability.ACODE_LANGUAGE,-1,false,level));
+						break;
+					case Ability.ACODE_TECH:
+						say.append("\n\r^NMy tech skills:^? "+getAbilities(null,mob,Ability.ACODE_TECH,-1,false,level));
+						break;
+					case Ability.ACODE_COMMON_SKILL:
+						say.append("\n\r^NMy common skills:^? "+getAbilities(null,mob,Ability.ACODE_COMMON_SKILL,-1,false,level));
+						break;
+					}
+				}
+				else
+				if(adom >= 1)
+				{
+					final String domainName = Ability.DOMAIN_DESCS[adom].toLowerCase();
+					say.append("\n\r^NMy "+domainName+" skills:^? "+getAbilities(null,mob,Ability.ALL_ACODES,adom<<5,false,level));
+				}
 			}
-			else
-			if("PRAYERS".startsWith(s))
-				say.append("\n\r^NMy prayers:^? "+getAbilities(null,mob,Ability.ACODE_PRAYER,-1,false,level));
-			else
-			if(("POWERS".startsWith(s))||("SUPER POWERS".startsWith(s)))
-				say.append("\n\r^NMy super powers:^? "+getAbilities(null,mob,Ability.ACODE_SUPERPOWER,-1,false,level));
-			else
-			if("CHANTS".startsWith(s))
-				say.append("\n\r^NMy chants:^? "+getAbilities(null,mob,Ability.ACODE_CHANT,-1,false,level));
-			else
-			if("SONGS".startsWith(s))
-				say.append("\n\r^NMy songs:^? "+getAbilities(null,mob,Ability.ACODE_SONG,-1,false,level));
-			else
-			if("LANGS".startsWith(s)||"LANGUAGES".startsWith(s))
-				say.append("\n\r^NMy languages:^? "+getAbilities(null,mob,Ability.ACODE_LANGUAGE,-1,false,level));
-			else
-			if("TECH SKILLS".startsWith(s))
-				say.append("\n\r^NMy tech skills:^? "+getAbilities(null,mob,Ability.ACODE_TECH,-1,false,level));
 
 			if(say.length()==0)
-				mob.tell(L("'@x1' is unknown.  Try SPELLS, SKILLS, PRAYERS, CHANTS, SONGS, LANGUAGES, EXPERTISES, STATS, or ALL.",s));
+			{
+				mob.tell(L("'@x1' is unknown.  Try SPELLS, SKILLS, PRAYERS, CHANTS, SONGS, "
+						+ "COMMON SKILLS, LANGUAGES, EXPERTISES, STATS, a skill Domain, or ALL.",s));
+			}
 			else
 				CMLib.commands().postSay(mob,null,say.toString(),false,false);
 		}

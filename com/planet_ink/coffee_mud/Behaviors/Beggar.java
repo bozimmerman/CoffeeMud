@@ -106,13 +106,19 @@ public class Beggar extends StdBehavior
 					CMLib.commands().postSay(mob,mob2,L("Spare some change?"),false,false);
 					break;
 				case 4:
-					CMLib.commands().postSay(mob,mob2,L("Please @x1, a little something for an old @x2 down on @x3 luck?",mob2.charStats().MisterMadam(),((mob.charStats().getStat(CharStats.STAT_GENDER)=='M')?"man":"woman"),mob.charStats().hisher()),false,false);
+					CMLib.commands().postSay(mob,mob2,L("Please @x1, a little something for a(n) @x2 down on @x3 luck?",
+							mob2.charStats().MisterMadam(),
+							((mob.charStats().getStat(CharStats.STAT_GENDER)=='M')?"man":"woman"),
+							mob.charStats().hisher()),false,false);
 					break;
 				case 5:
-					CMLib.commands().postSay(mob,mob2,L("Hey, I lost my 'Will Work For Food' sign.  Can you spare me the money to buy one?"),false,false);
+					CMLib.commands().postSay(mob,mob2,L("Hey, I lost my 'Will Work For Food' sign.  "
+							+ "Can you spare me the money to buy one?"),false,false);
 					break;
 				case 6:
-					CMLib.commands().postSay(mob,mob2,L("Spread a little joy to an old fogie?"),false,false);
+					CMLib.commands().postSay(mob,mob2,L("Spread a little joy to a poor @x1?",
+							((mob.charStats().getStat(CharStats.STAT_GENDER)=='M')?"fella":"gal")),
+							false,false);
 					break;
 				case 7:
 					CMLib.commands().postSay(mob,mob2,L("Change?"),false,false);
@@ -124,7 +130,10 @@ public class Beggar extends StdBehavior
 					CMLib.commands().postSay(mob,mob2,L("Can you spare a little gold?"),false,false);
 					break;
 				case 10:
-					CMLib.commands().postSay(mob,mob2,L("Gold piece for a poor fogie down on @x1 luck?",mob.charStats().hisher()),false,false);
+					CMLib.commands().postSay(mob,mob2,L("Gold piece for a poor @x2 down on @x1 luck?",
+														mob.charStats().hisher(),
+														((mob.charStats().getStat(CharStats.STAT_GENDER)=='M')?"fella":"gal")
+														),false,false);
 					break;
 				}
 				mobsHitUp.addElement(mob2);

@@ -1629,34 +1629,62 @@ public class CMStrings
 	 * Replaces @x1 type variables inside a stringbuffer with an actual value
 	 * Not used in the main expression system, this is a stand alone function
 	 * Also uniquely, supports @x numbers above 10.  Values are *1* indexed!!
+	 *
 	 * @param str the stringbuffer to assess
 	 * @param values values to replace each variable with
 	 */
 	public final static void replaceVariables(final StringBuffer str, final String values[])
 	{
+		replaceVariables(str, values, 0);
+	}
+
+	/**
+	 * Replaces @x1 type variables inside a stringbuffer with an actual value
+	 * Not used in the main expression system, this is a stand alone function
+	 * Also uniquely, supports @x numbers above 10.  Values are *1* indexed!!
+	 *
+	 * @param str the stringbuffer to assess
+	 * @param values values to replace each variable with
+	 * @param highDex the index to use for @x0
+	 * @return the highest variable index used
+	 */
+	public final static int replaceVariables(final StringBuffer str, final String values[], int highDex)
+	{
 		final int numValues=(values==null)?0:values.length;
 		final int firstIndex=str.indexOf("@");
 		if((numValues==0)||(firstIndex<0))
-			return;
+			return highDex;
 		final int valueLen=(numValues<=10)?1:Integer.toString(numValues).length();
 		short safety=100;
 		for(int i=firstIndex;(i<str.length()-(1+valueLen));i++)
 		{
 			if((str.charAt(i)=='@')
-			&& (str.charAt(i+1)=='x')
+			&& (Character.toLowerCase(str.charAt(i+1))=='x')
 			&& (Character.isDigit(str.charAt(i+2)))
-			&&((--safety)>0))
+			&&((--safety)>0)
+			&&(values != null))
 			{
 				int endDex=1;
 				while((endDex < valueLen) && (Character.isDigit(str.charAt(i+2+endDex))))
 					endDex++;
 				final int variableIndex = Integer.valueOf(str.substring(i+2,i+2+endDex)).intValue();
 				str.delete(i, i+2+endDex);
-				if((variableIndex >0) && (variableIndex <= numValues) && (values != null))
+				if(variableIndex == 0)
+				{
+					if(highDex < values.length)
+						str.insert(i, CMParms.combineQuoted(Arrays.asList(values),highDex));
+				}
+				else
+				if(variableIndex <= numValues)
+				{
 					str.insert(i, values[variableIndex-1]);
+					if(variableIndex > highDex)
+						highDex = variableIndex;
+				}
 				i--;
 			}
 		}
+		return highDex;
 	}
 
 	/**

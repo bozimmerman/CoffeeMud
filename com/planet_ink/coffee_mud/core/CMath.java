@@ -1355,7 +1355,7 @@ public class CMath
 
 	/**
 	 * A class representing a a list of compiled operation in a complete formula.
-	 * Optomized for speed of execution rather than the obvious wastefulness of storage.
+	 * Optimized for speed of execution rather than the obvious wastefulness of storage.
 	 */
 	public static final class CompiledFormula extends LinkedList<CompiledOperation> implements Cloneable
 	{
@@ -1366,7 +1366,7 @@ public class CMath
 	}
 
 	/**
-	 * A class representing a single piece of a compiled operation.  Optomized for
+	 * A class representing a single piece of a compiled operation.  Optimized for
 	 * speed of execution rather than the obvious wastefulness of storage.
 	 */
 	public static final class CompiledOperation

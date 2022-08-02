@@ -731,23 +731,21 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 	@Override
 	public void giveAutoProperties(final MOB mob)
 	{
-		if(mob.isMonster())
+		if(mob.isMonster()
+		|| CMSecurity.isDisabled(CMSecurity.DisFlag.AUTOAWARDS))
 			return;
-		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTOAWARDS))
+		Ability A=mob.fetchEffect("AutoAwards");
+		if(A==null)
 		{
-			Ability A=mob.fetchEffect("AutoAwards");
-			if(A==null)
+			A=CMClass.getAbility("AutoAwards");
+			if(A!=null)
 			{
-				A=CMClass.getAbility("AutoAwards");
-				if(A!=null)
-				{
-					mob.addNonUninvokableEffect(A);
-					A.setSavable(false);
-				}
+				mob.addNonUninvokableEffect(A);
+				A.setSavable(false);
 			}
-			else
-				A.setMiscText("RESET");
 		}
+		else
+			A.setMiscText("RESET");
 	}
 
 	@Override

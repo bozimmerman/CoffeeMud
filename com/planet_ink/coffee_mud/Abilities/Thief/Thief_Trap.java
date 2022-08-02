@@ -138,7 +138,9 @@ public class Thief_Trap extends ThiefSkill implements RecipeDriven
 			int cuts=0;
 			while(((++cuts)<100)&&(theTrap==null))
 			{
-				theTrap=(Trap)traps.get(CMLib.dice().roll(1,traps.size(),-1));
+				final Pair<List<String>,Trap> P=traps.get(CMLib.dice().roll(1,traps.size(),-1));
+				theTrap = P.second;
+				theRecipe = P.first;
 				if(!theTrap.canSetTrapOn(mob,trapThis))
 					theTrap=null;
 			}
