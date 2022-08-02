@@ -230,11 +230,10 @@ public class AuctionCoffeeShop implements CoffeeShop
 	@Override
 	public Environmental getStock(final String name, final MOB mob)
 	{
-		final List<AuctionData> auctions=CMLib.coffeeShops().getAuctions(null,auctionShop);
 		final Vector<Environmental> auctionItems=new Vector<Environmental>();
-		for(int a=0;a<auctions.size();a++)
+		for(final Enumeration<AuctionData> a=CMLib.coffeeShops().getAuctions(null,auctionShop);a.hasMoreElements();)
 		{
-			final Item I=auctions.get(a).getAuctionedItem();
+			final Item I=a.nextElement().getAuctionedItem();
 			auctionItems.addElement(I);
 		}
 		for(int a=0;a<auctionItems.size();a++)

@@ -2236,7 +2236,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	}
 
 	@Override
-	public String[] bid(final MOB mob, final double bid, final String bidCurrency, final AuctionData auctionData, final Item I, final List<String> auctionAnnounces)
+	public String[] bid(final MOB mob, final double bid, final String bidCurrency,
+						final AuctionData auctionData, final Item I, final List<String> auctionAnnounces)
 	{
 		String bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.getCurrency(),auctionData.getBid());
 		final String currencyName=CMLib.beanCounter().getDenominationName(auctionData.getCurrency());
@@ -2317,21 +2318,21 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	}
 
 	@Override
-	public AuctionData getEnumeratedAuction(final String named, final String auctionHouse)
+	public AuctionData fetchAuctionByItemName(final String named, final String auctionHouse)
 	{
-		final List<AuctionData> V=getAuctions(null,auctionHouse);
 		final List<Item> V2=new ArrayList<Item>();
-		for(int v=0;v<V.size();v++)
-			V2.add(V.get(v).getAuctionedItem());
+		for(final Enumeration<AuctionData> a=CMLib.coffeeShops().getAuctions(null,auctionHouse);a.hasMoreElements();)
+			V2.add(a.nextElement().getAuctionedItem());
 		Environmental E=CMLib.english().fetchEnvironmental(V2,named,true);
 		if(!(E instanceof Item))
 			E=CMLib.english().fetchEnvironmental(V2,named,false);
 		if(E!=null)
 		{
-			for(int v=0;v<V.size();v++)
+			for(final Enumeration<AuctionData> a=CMLib.coffeeShops().getAuctions(null,auctionHouse);a.hasMoreElements();)
 			{
-				if(V.get(v).getAuctionedItem()==E)
-					return V.get(v);
+				final AuctionData A=a.nextElement();
+				if(A.getAuctionedItem()==E)
+					return A;
 			}
 		}
 		return null;
@@ -2367,7 +2368,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	}
 
 	@Override
-	public List<AuctionData> getAuctions(final Object ofLike, final String auctionHouse)
+	public Enumeration<AuctionData> getAuctions(final Object ofLike, final String auctionHouse)
 	{
 		final Vector<AuctionData> auctions=new Vector<AuctionData>();
 		final String house="SYSTEM_AUCTIONS_"+auctionHouse.toUpperCase().trim();
@@ -2415,7 +2416,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				continue;
 			auctions.addElement(data);
 		}
-		return auctions;
+		return auctions.elements();
 	}
 
 	@Override
@@ -2434,18 +2435,24 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	}
 
 	@Override
-	public String getAuctionInventory(final MOB seller, final MOB buyer, final Auctioneer auction, final String mask)
+	public String getAuctionInventory(final MOB seller, final MOB buyer, final Auctioneer auction, final String itemName)
 	{
 		final StringBuilder str=new StringBuilder("");
-		str.append("^x"+CMStrings.padRight(L("Lvl"),3)+" "+CMStrings.padRight(L("Item"),50)+" "+CMStrings.padRight(L("Days"),4)+" ["+CMStrings.padRight(L("Bid"),6)+"] Buy^.^N\n\r");
-		final List<AuctionData> auctions=getAuctions(null,auction.auctionHouse());
-		for(int v=0;v<auctions.size();v++)
+		str.append("^x"+CMStrings.padRight(L("Lvl"),3)+" "
+				  +CMStrings.padRight(L("Item"),50)+" "
+				  +CMStrings.padRight(L("Days"),4)
+				  +" ["+CMStrings.padRight(L("Bid"),6)+"] Buy^.^N\n\r");
+		for(final Enumeration<AuctionData> a=CMLib.coffeeShops().getAuctions(null,auction.auctionHouse());a.hasMoreElements();)
 		{
-			final AuctionData data=auctions.get(v);
+			final AuctionData data=a.nextElement();
 			if(shownInInventory(seller,buyer,data.getAuctionedItem(),auction))
 			{
-				if(((mask==null)||(mask.length()==0)||(CMLib.english().containsString(data.getAuctionedItem().name(),mask)))
-				&&((data.getAuctionTickDown()>System.currentTimeMillis())||(data.getAuctioningMob()==buyer)||(data.getHighBidderMob()==buyer)))
+				if(((itemName==null)
+					||(itemName.length()==0)
+					||(CMLib.english().containsString(data.getAuctionedItem().name(),itemName)))
+				&&((data.getAuctionTickDown()>System.currentTimeMillis())
+					||(data.getAuctioningMob()==buyer)
+					||(data.getHighBidderMob()==buyer)))
 				{
 					Area area=CMLib.map().getStartArea(seller);
 					if(area==null)

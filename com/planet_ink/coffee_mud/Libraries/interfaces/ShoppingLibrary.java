@@ -35,47 +35,248 @@ public interface ShoppingLibrary extends CMLibrary
 {
 	public ShopKeeper getShopKeeper(Environmental E);
 	public List<Environmental> getAllShopkeepers(Room here, MOB notMOB);
-	
+
 	public String getViewDescription(MOB viewerM, Environmental E, Set<ViewType> flags);
-	
+
 	public MOB parseBuyingFor(MOB buyer, String message);
-	
+
 	public boolean ignoreIfNecessary(MOB mob, String ignoreMask, MOB whoIgnores);
-	
+
 	public String storeKeeperString(CoffeeShop shop, ShopKeeper keeper);
-	
+
 	public boolean doISellThis(Environmental thisThang, ShopKeeper shop);
-	
+
 	public ShopKeeper.ShopPrice sellingPrice(MOB sellerShopM, MOB buyerCustM, Environmental product, ShopKeeper shopKeeper, CoffeeShop shop, boolean includeSalesTax);
 	public double getSalesTax(Room homeRoom, MOB seller);
 	public boolean sellEvaluation(MOB sellerShopM, MOB buyerCustM, Environmental product, ShopKeeper shop, boolean buyNotView);
 
 	public void transactMoneyOnly(MOB seller, MOB buyer, ShopKeeper shop, Environmental product, boolean sellerGetsPaid);
 	public List<Environmental> addRealEstateTitles(List<Environmental> V, MOB buyer, CoffeeShop shop, Room myRoom);
-	
+
 	public ShopKeeper.ShopPrice pawningPrice(MOB buyerShopM, MOB sellerCustM, Environmental product, ShopKeeper shopKeeper, CoffeeShop shop);
 	public boolean pawnEvaluation(MOB buyerShopM, MOB sellerCustM, Environmental product, ShopKeeper shop, double maxToPay, double maxEverPaid, boolean sellNotValue);
 	public double transactPawn(MOB shopkeeper, MOB pawner, ShopKeeper shop, Environmental product);
-	
+
+	public String getListForMask(String targetMessage);
 	public String getListInventory(MOB seller,  MOB buyer, List<? extends Environmental> inventory, int limit, ShopKeeper shop, String mask);
 	public String findInnRoom(InnKey key, String addThis, Room R);
 
 	public double[] parseDevalueRate(String factors);
+
+	/**
+	 * Parses the given list of factors into a set of factors.
+	 * Each factor is a mask followed by a decimal percentage
+	 * to adjust prices by.
+	 *
+	 * @see ShoppingLibrary#parseDevalueRate(String)
+	 * @see ShoppingLibrary#parseItemPricingAdjustments(String)
+	 * @see ShoppingLibrary#parseBudget(String)
+	 *
+	 * @param factors the raw factors string
+	 * @return the parsed list of factors
+	 */
 	public String[] parseItemPricingAdjustments(String factors);
+
+	/**
+	 * Parses the given budget string into a data structure
+	 * showing the amount of base currency, and how often
+	 * that amount is reset for the purpose of making
+	 * purchases.
+	 *
+	 * @see ShoppingLibrary#parseDevalueRate(String)
+	 * @see ShoppingLibrary#parseItemPricingAdjustments(String)
+	 * @see ShoppingLibrary#parseBudget(String)
+	 *
+	 * @param budget the encoded budget string (amount time period)
+	 * @return the parsed budget object
+	 */
 	public Pair<Long,TimeClock.TimePeriod> parseBudget(String budget);
 
+	/**
+	 * Completes the purchase of the given item from the given seller to the given
+	 * buyer mob.
+	 *
+	 * @see ShoppingLibrary#purchaseAbility(Ability, MOB, ShopKeeper, MOB)
+	 * @see ShoppingLibrary#purchaseMOB(MOB, MOB, ShopKeeper, MOB)
+	 *
+	 * @param baseProduct the item being purchased
+	 * @param products all items in the item product
+	 * @param seller the seller
+	 * @param mobFor the buyer
+	 */
 	public boolean purchaseItems(Item baseProduct, List<Environmental> products, MOB seller, MOB mobFor);
+
+	/**
+	 * Completes the purchase of the given follower mob from the given seller to the given
+	 * buyer mob.
+	 *
+	 * @see ShoppingLibrary#purchaseAbility(Ability, MOB, ShopKeeper, MOB)
+	 * @see ShoppingLibrary#purchaseItems(Item, List, MOB, MOB)
+	 *
+	 * @param product the follower mob being purchased
+	 * @param seller the seller
+	 * @param shop the seller's shop
+	 * @param mobFor the buyer
+	 */
 	public boolean purchaseMOB(MOB product, MOB seller, ShopKeeper shop, MOB mobFor);
+
+	/**
+	 * Completes the purchase of the given ability from the given seller to the given
+	 * buyer mob.
+	 *
+	 * @see ShoppingLibrary#purchaseMOB(MOB, MOB, ShopKeeper, MOB)
+	 * @see ShoppingLibrary#purchaseItems(Item, List, MOB, MOB)
+	 *
+	 * @param A the ability being purchased
+	 * @param seller the seller
+	 * @param shop the seller's shop
+	 * @param mobFor the buyer
+	 */
 	public void purchaseAbility(Ability A,  MOB seller, ShopKeeper shop, MOB mobFor);
-	
+
+	/**
+	 * A manipulator of the given players money.  Either adds or subtracts
+	 * money as given, and then re-saves the players inventory to the
+	 * database.
+	 *
+	 * @param to the mob who is getting or losing money
+	 * @param currency the currency to add/remove
+	 * @param amt the amount to add/remove
+	 */
 	public void returnMoney(MOB to, String currency, double amt);
 
-	public String[] bid(MOB mob, double bid, String bidCurrency, AuctionData auctionData, Item I, List<String> auctionAnnounces);
-	public String getAuctionInventory(MOB seller,MOB buyer,Auctioneer auction,String mask);
-	public String getListForMask(String targetMessage);
-	public List<AuctionData> getAuctions(Object ofLike, String auctionHouse);
-	public AuctionData getEnumeratedAuction(String named, String auctionHouse);
+	/**
+	 * Submits a new bid for an item by the given mob, of the given
+	 * amount of the given currency to the given auction for the
+	 * given item.  It also returns a message for any public
+	 * auction channels to the given array.  It turns a two-
+	 * dimensional array.
+	 *
+	 * @see AuctionData
+	 * @see ShoppingLibrary#auctionNotify(MOB, String, String)
+	 * @see ShoppingLibrary#saveAuction(AuctionData, String, boolean)
+	 * @see ShoppingLibrary#cancelAuction(String, AuctionData)
+	 * @see ShoppingLibrary#fetchAuctionByItemName(String, String)
+	 * @see ShoppingLibrary#getAuctions(Object, String)
+	 * @see ShoppingLibrary#getAuctionInventory(MOB, MOB, Auctioneer, String)
+	 *
+	 * @param mob the bidder mob
+	 * @param bid the bidding amount in base value
+	 * @param bidCurrency the bidding currency
+	 * @param auctionData the auction data for the auction bid on
+	 * @param I the item bid on (why not use from auction data?)
+	 * @param auctionAnnounces list to put channel messages into
+	 * @return 2-dim array: message to bidder, message to prev high bidder
+	 */
+	public String[] bid(MOB mob, double bid, String bidCurrency,
+						AuctionData auctionData, Item I, List<String> auctionAnnounces);
+
+	/**
+	 * Returns the formal auction listing of all items for the given auctioneer's auction house.
+	 *
+	 * @see AuctionData
+	 * @see ShoppingLibrary#auctionNotify(MOB, String, String)
+	 * @see ShoppingLibrary#saveAuction(AuctionData, String, boolean)
+	 * @see ShoppingLibrary#cancelAuction(String, AuctionData)
+	 * @see ShoppingLibrary#fetchAuctionByItemName(String, String)
+	 * @see ShoppingLibrary#getAuctions(Object, String)
+	 * @see ShoppingLibrary#bid(MOB, double, String, AuctionData, Item, List)
+	 *
+	 * @param seller the seller mob, which is not necessarily the auction house
+	 * @param buyer the buyer doing the listing
+	 * @param auction the auction house object itself
+	 * @param itemName the null or the name of the item interested in
+	 * @return the displayable list of auctioned items
+	 */
+	public String getAuctionInventory(MOB seller, MOB buyer, Auctioneer auction, String itemName);
+
+	/**
+	 * Returns an enumeration of all active auctions in the given auction house,
+	 * of the given name
+	 *
+	 * @see AuctionData
+	 * @see ShoppingLibrary#auctionNotify(MOB, String, String)
+	 * @see ShoppingLibrary#saveAuction(AuctionData, String, boolean)
+	 * @see ShoppingLibrary#cancelAuction(String, AuctionData)
+	 * @see ShoppingLibrary#fetchAuctionByItemName(String, String)
+	 * @see ShoppingLibrary#getAuctionInventory(MOB, MOB, Auctioneer, String)
+	 * @see ShoppingLibrary#bid(MOB, double, String, AuctionData, Item, List)
+	 *
+	 * @param ofLike null, or a name to match
+	 * @param auctionHouse the auction house to return auctions from
+	 * @return an enumeration of all auctions
+	 */
+	public Enumeration<AuctionData> getAuctions(Object ofLike, String auctionHouse);
+
+	/**
+	 * Returns auction data for the auction for an item of the given name
+	 * in the given auction house.
+	 *
+	 * @see AuctionData
+	 * @see ShoppingLibrary#auctionNotify(MOB, String, String)
+	 * @see ShoppingLibrary#saveAuction(AuctionData, String, boolean)
+	 * @see ShoppingLibrary#cancelAuction(String, AuctionData)
+	 * @see ShoppingLibrary#getAuctions(Object, String)
+	 * @see ShoppingLibrary#getAuctionInventory(MOB, MOB, Auctioneer, String)
+	 * @see ShoppingLibrary#bid(MOB, double, String, AuctionData, Item, List)
+	 *
+	 * @param named the item name, or partial match
+	 * @param auctionHouse the auction house to search in
+	 * @return null, or the auctio data
+	 */
+	public AuctionData fetchAuctionByItemName(String named, String auctionHouse);
+
+	/**
+	 * Sends a notification to the given stakeholder in an auction for the given
+	 * item.  It does a tell for online players, and an email for those
+	 * not online.
+	 *
+	 * @see AuctionData
+	 * @see ShoppingLibrary#saveAuction(AuctionData, String, boolean)
+	 * @see ShoppingLibrary#cancelAuction(String, AuctionData)
+	 * @see ShoppingLibrary#fetchAuctionByItemName(String, String)
+	 * @see ShoppingLibrary#getAuctions(Object, String)
+	 * @see ShoppingLibrary#getAuctionInventory(MOB, MOB, Auctioneer, String)
+	 * @see ShoppingLibrary#bid(MOB, double, String, AuctionData, Item, List)
+	 * @see ShoppingLibrary#auctionNotify(MOB, String, String)
+	 *
+	 * @param M the recipient of the message
+	 * @param resp the message
+	 * @param regardingItem the item up for auction
+	 */
 	public void auctionNotify(MOB M, String resp, String regardingItem);
+
+	/**
+	 * Cancels the given auction.
+	 *
+	 * @see AuctionData
+	 * @see ShoppingLibrary#saveAuction(AuctionData, String, boolean)
+	 * @see ShoppingLibrary#fetchAuctionByItemName(String, String)
+	 * @see ShoppingLibrary#getAuctions(Object, String)
+	 * @see ShoppingLibrary#getAuctionInventory(MOB, MOB, Auctioneer, String)
+	 * @see ShoppingLibrary#bid(MOB, double, String, AuctionData, Item, List)
+	 * @see ShoppingLibrary#auctionNotify(MOB, String, String)
+	 *
+	 * @param auctionHouse the auction house the data belongs to
+	 * @param data the AuctionData to delete
+	 */
 	public void cancelAuction(String auctionHouse, AuctionData data);
+
+	/**
+	 * Update the given AuctionData (an auction) for the given auctionHouse.
+	 * Called usually when the auction is created, or max big is raised.
+	 *
+	 * @see AuctionData
+	 * @see ShoppingLibrary#auctionNotify(MOB, String, String)
+	 * @see ShoppingLibrary#cancelAuction(String, AuctionData)
+	 * @see ShoppingLibrary#fetchAuctionByItemName(String, String)
+	 * @see ShoppingLibrary#getAuctions(Object, String)
+	 * @see ShoppingLibrary#getAuctionInventory(MOB, MOB, Auctioneer, String)
+	 * @see ShoppingLibrary#bid(MOB, double, String, AuctionData, Item, List)
+	 *
+	 * @param data the AuctionData to update
+	 * @param auctionHouse the auction house the data belongs to
+	 * @param updateOnly true for update, false when creating
+	 */
 	public void saveAuction(AuctionData data, String auctionHouse, boolean updateOnly);
 }

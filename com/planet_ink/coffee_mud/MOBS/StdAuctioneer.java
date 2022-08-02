@@ -202,10 +202,9 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 				StdAuctioneer.lastCheckTimes.remove(auctionHouse().toUpperCase().trim());
 				final long thisTime=System.currentTimeMillis();
 				StdAuctioneer.lastCheckTimes.put(auctionHouse().toUpperCase().trim(),Long.valueOf(thisTime));
-				final List<AuctionData> auctions=CMLib.coffeeShops().getAuctions(null, auctionHouse());
-				for(int a=0;a<auctions.size();a++)
+				for(final Enumeration<AuctionData> a=CMLib.coffeeShops().getAuctions(null,auctionHouse());a.hasMoreElements();)
 				{
-					final AuctionData data=auctions.get(a);
+					final AuctionData data=a.nextElement();
 					if(thisTime>=data.getAuctionTickDown())
 					{
 						if((lastTime==null)||(data.getAuctionTickDown()>lastTime.longValue()))
@@ -383,9 +382,9 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 					String itemName=msg.tool().name();
 					if((((Item)msg.tool()).expirationDate()>0)&&(((Item)msg.tool()).expirationDate()<1000))
 						itemName+="."+((Item)msg.tool()).expirationDate();
-					AuctionData data=CMLib.coffeeShops().getEnumeratedAuction(itemName, auctionHouse());
+					AuctionData data=CMLib.coffeeShops().fetchAuctionByItemName(itemName, auctionHouse());
 					if(data==null)
-						data=CMLib.coffeeShops().getEnumeratedAuction(msg.tool().name(), auctionHouse());
+						data=CMLib.coffeeShops().fetchAuctionByItemName(msg.tool().name(), auctionHouse());
 					if(data==null)
 					{
 						CMLib.commands().postSay(this,mob,L("That's not up for auction."),true,false);
@@ -466,9 +465,9 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 					String itemName=msg.tool().name();
 					if((((Item)msg.tool()).expirationDate()>0)&&(((Item)msg.tool()).expirationDate()<1000))
 						itemName+="."+((Item)msg.tool()).expirationDate();
-					AuctionData data=CMLib.coffeeShops().getEnumeratedAuction(itemName, auctionHouse());
+					AuctionData data=CMLib.coffeeShops().fetchAuctionByItemName(itemName, auctionHouse());
 					if(data==null)
-						data=CMLib.coffeeShops().getEnumeratedAuction(msg.tool().name(), auctionHouse());
+						data=CMLib.coffeeShops().fetchAuctionByItemName(msg.tool().name(), auctionHouse());
 					if(data==null)
 					{
 						CMLib.commands().postSay(this,mob,L("That's not up for auction."),true,false);
@@ -609,9 +608,9 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						String itemName=msg.tool().name();
 						if((((Item)msg.tool()).expirationDate()>0)&&(((Item)msg.tool()).expirationDate()<1000))
 							itemName+="."+((Item)msg.tool()).expirationDate();
-						AuctionData data=CMLib.coffeeShops().getEnumeratedAuction(itemName, auctionHouse());
+						AuctionData data=CMLib.coffeeShops().fetchAuctionByItemName(itemName, auctionHouse());
 						if(data==null)
-							data=CMLib.coffeeShops().getEnumeratedAuction(msg.tool().name(), auctionHouse());
+							data=CMLib.coffeeShops().fetchAuctionByItemName(msg.tool().name(), auctionHouse());
 						if(data==null)
 							CMLib.commands().postSay(this,mob,L("That's not up for auction."),true,false);
 						else
@@ -667,9 +666,9 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						String itemName=msg.tool().name();
 						if((((Item)msg.tool()).expirationDate()>0)&&(((Item)msg.tool()).expirationDate()<1000))
 							itemName+="."+((Item)msg.tool()).expirationDate();
-						AuctionData data=CMLib.coffeeShops().getEnumeratedAuction(itemName, auctionHouse());
+						AuctionData data=CMLib.coffeeShops().fetchAuctionByItemName(itemName, auctionHouse());
 						if(data==null)
-							data=CMLib.coffeeShops().getEnumeratedAuction(msg.tool().name(), auctionHouse());
+							data=CMLib.coffeeShops().fetchAuctionByItemName(msg.tool().name(), auctionHouse());
 						if(data==null)
 							CMLib.commands().postSay(this,mob,L("That's not up for auction."),true,false);
 						else
@@ -730,9 +729,9 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 					String itemName=msg.tool().name();
 					if((((Item)msg.tool()).expirationDate()>0)&&(((Item)msg.tool()).expirationDate()<1000))
 						itemName+="."+((Item)msg.tool()).expirationDate();
-					AuctionData data=CMLib.coffeeShops().getEnumeratedAuction(itemName, auctionHouse());
+					AuctionData data=CMLib.coffeeShops().fetchAuctionByItemName(itemName, auctionHouse());
 					if(data==null)
-						data=CMLib.coffeeShops().getEnumeratedAuction(msg.tool().name(), auctionHouse());
+						data=CMLib.coffeeShops().fetchAuctionByItemName(msg.tool().name(), auctionHouse());
 					if(data==null)
 						CMLib.commands().postSay(this,mob,L("That's not up for auction."),true,false);
 					else
