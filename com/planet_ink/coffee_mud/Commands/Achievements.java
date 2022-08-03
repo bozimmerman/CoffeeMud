@@ -339,7 +339,7 @@ public class Achievements extends StdCommand
 			prefix=whoM.Name()+L("'s ");
 		}
 
-		final Set<String> WonList = new HashSet<String>();
+		final Set<String> wonList = new HashSet<String>();
 		for(final Agent agent : agents)
 		{
 			final Tattooable T = getTattooable(agent, whoM);
@@ -349,7 +349,7 @@ public class Achievements extends StdCommand
 				{
 					final Achievement A=a.nextElement();
 					if(T.findTattoo(A.getTattoo())!=null)
-						WonList.add(A.getTattoo());
+						wonList.add(A.getTattoo());
 				}
 			}
 		}
@@ -361,7 +361,7 @@ public class Achievements extends StdCommand
 			{
 				final Tattooable T = pair.first;
 				if(T.findTattoo(A.getTattoo())!=null)
-					WonList.add(A.getTattoo());
+					wonList.add(A.getTattoo());
 			}
 		}
 
@@ -413,12 +413,12 @@ public class Achievements extends StdCommand
 				{
 				case ALL:
 				{
-					final List<Achievement> useList = getLowestNumberedTattoos(agent,WonList);
+					final List<Achievement> useList = getLowestNumberedTattoos(agent,wonList);
 					int padding=done.length()+1;
 					for(final Iterator<Achievement> a=useList.iterator();a.hasNext();)
 					{
 						final Achievement A=a.next();
-						if(!WonList.contains(A.getTattoo()))
+						if(!wonList.contains(A.getTattoo()))
 						{
 							final AchievementLibrary.Tracker T=(stat != null) ? stat.getAchievementTracker(A, tracked, mob) : null;
 							final int score = (T==null) ? 0 : T.getCount(tracked);
@@ -438,7 +438,7 @@ public class Achievements extends StdCommand
 						final Achievement A=a.next();
 						if(!A.canBeSeenBy(whoM))
 							continue;
-						if(WonList.contains(A.getTattoo()))
+						if(wonList.contains(A.getTattoo()))
 							achievedList.add(CMStrings.padRight("^H"+done+"^?", padding)+": "+A.getDisplayStr());
 						else
 						{
@@ -458,11 +458,11 @@ public class Achievements extends StdCommand
 				case NOW:
 				{
 					int padding=done.length()+1;
-					final List<Achievement> useList = getLowestNumberedTattoos(agent,WonList);
+					final List<Achievement> useList = getLowestNumberedTattoos(agent,wonList);
 					for(final Iterator<Achievement> a=useList.iterator();a.hasNext();)
 					{
 						final Achievement A=a.next();
-						if(!WonList.contains(A.getTattoo()))
+						if(!wonList.contains(A.getTattoo()))
 						{
 							final AchievementLibrary.Tracker T=(stat != null) ? stat.getAchievementTracker(A, tracked, mob) : null;
 							final int score = (T==null) ? 0 : T.getCount(tracked);
@@ -485,7 +485,7 @@ public class Achievements extends StdCommand
 						final Achievement A=a.next();
 						if(!A.canBeSeenBy(whoM))
 							continue;
-						if(WonList.contains(A.getTattoo()))
+						if(wonList.contains(A.getTattoo()))
 							achievedList.add(CMStrings.padRight("^H"+done+"^?", padding)+": "+A.getDisplayStr());
 						else
 						{
@@ -510,7 +510,7 @@ public class Achievements extends StdCommand
 					for(final Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
 					{
 						final Achievement A=a.nextElement();
-						if((WonList.contains(A.getTattoo()))
+						if((wonList.contains(A.getTattoo()))
 						&&(A.canBeSeenBy(whoM)))
 						{
 							achievedList.add(A.getDisplayStr());

@@ -173,7 +173,7 @@ public class Empty extends Drop
 		else
 		if((itemsV.size()==1)
 		&&(itemsV.get(0) instanceof Drink)
-		&&(!((Drink)itemsV.get(0)).containsDrink())
+		&&(!((Drink)itemsV.get(0)).containsLiquid())
 		)
 			mob.tell(mob,itemsV.get(0),null,L("<T-NAME> is already empty."));
 		else
@@ -184,7 +184,7 @@ public class Empty extends Drop
 				continue;
 
 			boolean skipMessage=false;
-			if((C instanceof Drink)&&(((Drink)C).containsDrink()))
+			if((C instanceof Drink)&&(((Drink)C).containsLiquid()))
 			{
 				if(target instanceof Drink)
 				{

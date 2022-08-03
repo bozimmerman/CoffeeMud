@@ -219,7 +219,7 @@ public class GenCow extends GenRideable implements Drink
 	}
 
 	@Override
-	public boolean containsDrink()
+	public boolean containsLiquid()
 	{
 		return this.liquidRemaining() > 0;
 	}

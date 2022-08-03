@@ -181,7 +181,7 @@ public class Cow extends StdMOB implements Drink
 	}
 
 	@Override
-	public boolean containsDrink()
+	public boolean containsLiquid()
 	{
 		return true;
 	}

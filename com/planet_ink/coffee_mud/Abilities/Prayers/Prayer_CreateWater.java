@@ -90,12 +90,12 @@ public class Prayer_CreateWater extends Prayer
 			return false;
 		}
 		final Drink D=(Drink)target;
-		if(D.containsDrink()&&(D.liquidType()!=RawMaterial.RESOURCE_FRESHWATER))
+		if(D.containsLiquid()&&(D.liquidType()!=RawMaterial.RESOURCE_FRESHWATER))
 		{
 			mob.tell(L("@x1 already contains another liquid, and must be emptied first.",target.name(mob)));
 			return false;
 		}
-		if(D.containsDrink()&&(D.liquidRemaining()>=D.liquidHeld()))
+		if(D.containsLiquid()&&(D.liquidRemaining()>=D.liquidHeld()))
 		{
 			mob.tell(L("@x1 is full.",target.name(mob)));
 			return false;

@@ -82,12 +82,25 @@ public class DefaultPlayerAccount implements PlayerAccount
 
 	protected SVector<PlayerLibrary.ThinPlayer> thinPlayers 	= new SVector<PlayerLibrary.ThinPlayer>();
 	protected Map<String,Tracker>				achievementers	= new STreeMap<String,Tracker>();
-	protected CMUniqNameSortSVec<Tattoo>		tattoos			= new CMUniqNameSortSVec<Tattoo>(1);
+
+	protected final static Filterer<Tattoo> expiringTattooFilter = new Filterer<Tattoo>()
+	{
+		@Override
+		public boolean passesFilter(final Tattoo obj)
+		{
+			return obj.expirationDate()==0 || (System.currentTimeMillis() < obj.expirationDate());
+		}
+	};
+
+	protected CMUniqNameSortListWrapper<Tattoo>	tattoos;
 
 	public DefaultPlayerAccount()
 	{
 		super();
 		xtraValues=CMProps.getExtraStatCodesHolder(this);
+		final List<Tattoo> tattooPackage = new SVector<Tattoo>(1);
+		final FilteredListWrapper<Tattoo> tattWrapper=new FilteredListWrapper<Tattoo>(tattooPackage, expiringTattooFilter);
+		tattoos = new CMUniqNameSortListWrapper<Tattoo>(tattWrapper);
 	}
 
 	@Override
@@ -122,7 +135,9 @@ public class DefaultPlayerAccount implements PlayerAccount
 			O.achievementers = new STreeMap<String,Tracker>();
 			for(final String key : achievementers.keySet())
 				O.achievementers.put(key, achievementers.get(key).copyOf());
-			O.tattoos = new CMUniqNameSortSVec<Tattoo>(tattoos);
+			final List<Tattoo> newTattooPackage = new SVector<Tattoo>(tattoos);
+			final FilteredListWrapper<Tattoo> newTattWrapper=new FilteredListWrapper<Tattoo>(newTattooPackage, expiringTattooFilter);
+			O.tattoos = new CMUniqNameSortListWrapper<Tattoo>(newTattWrapper);
 			O.acctFlags = new SHashSet<AccountFlag>(acctFlags);
 			O.fakePlayerM = null;
 			return O;
@@ -147,7 +162,9 @@ public class DefaultPlayerAccount implements PlayerAccount
 			O.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
 			O.thinPlayers = thinPlayers.copyOf();
 			O.achievementers = new STreeMap<String,Tracker>(achievementers);
-			O.tattoos = new CMUniqNameSortSVec<Tattoo>(tattoos);
+			final List<Tattoo> newTattooPackage = new SVector<Tattoo>(tattoos);
+			final FilteredListWrapper<Tattoo> newTattWrapper=new FilteredListWrapper<Tattoo>(newTattooPackage, expiringTattooFilter);
+			O.tattoos = new CMUniqNameSortListWrapper<Tattoo>(newTattWrapper);
 			O.acctFlags = new SHashSet<AccountFlag>(acctFlags);
 			O.fakePlayerM = null;
 			O.accountName = accountName;
@@ -791,7 +808,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	{
 		if ((of == null) || (of.getTattooName() == null) || (of.getTattooName().length() == 0) || findTattoo(of.getTattooName()) != null)
 			return;
-		tattoos.addElement(of);
+		tattoos.add(of);
 	}
 
 	@Override
@@ -808,7 +825,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	@Override
 	public Enumeration<Tattoo> tattoos()
 	{
-		return tattoos.elements();
+		return new IteratorEnumeration<Tattoo>(tattoos.iterator());
 	}
 
 	@Override

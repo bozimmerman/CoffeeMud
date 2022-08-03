@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.CommandJournal;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary;
@@ -377,7 +378,19 @@ public class CMSecurity
 				newFlags.add((SecFlag)o);
 			else
 			if(o instanceof String)
+			{
 				newJFlags.add((String)o);
+				final CommandJournal J = CMLib.journals().getCommandJournal((String)o);
+				if(J!=null)
+				{
+					if(!J.JOURNAL_NAME().equals(o))
+						newJFlags.add(J.JOURNAL_NAME());
+					if(!J.NAME().equals(o))
+						newJFlags.add(J.NAME());
+					if(!(J.NAME()+"S").equalsIgnoreCase((String)o))
+						newJFlags.add(J.NAME()+"S");
+				}
+			}
 			else
 				Log.errOut("CMSecurity","Unparsed security flag: "+s+" in group "+name);
 		}
@@ -2367,6 +2380,8 @@ public class CMSecurity
 		 */
 		public boolean containsJournal(final String journalFlag)
 		{
+			if(journalFlag.equals("*"))
+				return jFlags.size()>0;
 			if(jFlags.contains(journalFlag))
 				return true;
 			for(final SecGroup group : groups)

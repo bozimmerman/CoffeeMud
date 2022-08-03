@@ -1082,7 +1082,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			&&(!CMath.bset(item.material(), RawMaterial.MATERIAL_GAS))
 			&&((mob==null)||(mobInt>4)))
 			{
-				if(!((Drink)item).containsDrink())
+				if(!((Drink)item).containsLiquid())
 					response.append(L("It is empty.  "));
 				else
 				if(((Drink)item).liquidHeld()>0)
@@ -1099,7 +1099,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 							final Item I=V.get(v);
 							if((I instanceof Drink)
 							&&(I instanceof RawMaterial)
-							&&(((Drink)I).containsDrink()))
+							&&(((Drink)I).containsLiquid()))
 							{
 								remain+=((Drink)I).liquidRemaining();
 								if(((Drink)I).thirstQuenched() > sipSize)
@@ -1462,10 +1462,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			if((contitem.isOpen())
 			&&((contitem.capacity()>0)
 				||(contitem.hasContent())
-				||((contitem instanceof Drink)&&(((Drink)contitem).containsDrink()))))
+				||((contitem instanceof Drink)&&(((Drink)contitem).containsLiquid()))))
 			{
 				if((contitem.hasContent())
-				||((contitem instanceof Drink)&&(((Drink)contitem).containsDrink())))
+				||((contitem instanceof Drink)&&(((Drink)contitem).containsLiquid())))
 					buf.append(item.name()+" contains:^<!ENTITY container \""+CMStrings.removeColors(item.name())+"\"^>"+(mob.isAttributeSet(MOB.Attrib.COMPRESS)?" ":"\n\r"));
 				final List<Item> newItems=new ArrayList<Item>(0);
 				if((item instanceof Drink)

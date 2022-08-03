@@ -159,7 +159,7 @@ public class Prayer_Vampirism extends Prayer
 		&&(msg.target() instanceof Drink))
 		{
 			final Drink D=(Drink)msg.target();
-			if(D.containsDrink()
+			if(D.containsLiquid()
 			&&(D.liquidType()!=RawMaterial.RESOURCE_BLOOD)
 			&&((!(D instanceof Item))||((Item)D).material()!=RawMaterial.RESOURCE_BLOOD))
 				msg.source().curState().adjThirst(-D.thirstQuenched(),msg.source().maxState().maxThirst(msg.source().baseWeight()));

@@ -163,7 +163,7 @@ public class GoatDoe extends Goat implements Drink
 	}
 
 	@Override
-	public boolean containsDrink()
+	public boolean containsLiquid()
 	{
 		return true;
 	}

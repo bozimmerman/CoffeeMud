@@ -193,7 +193,7 @@ public class Soiled extends StdAbility
 			else
 			if((msg.sourceMajor(CMMsg.MASK_MOVE))
 			&&(msg.source().riding() instanceof Drink)
-			&&(((Drink)msg.source().riding()).containsDrink()))
+			&&(((Drink)msg.source().riding()).containsLiquid()))
 				unInvoke();
 			else
 			if(CMLib.commands().isHygienicMessage(msg))
@@ -203,7 +203,7 @@ public class Soiled extends StdAbility
 			&&(((Item)affected).container() instanceof Drink)
 			&&(msg.target()==affected)
 			&&(msg.targetMinor()==CMMsg.TYP_PUT)
-			&&(((Drink)((Item)affected).container()).containsDrink()))
+			&&(((Drink)((Item)affected).container()).containsLiquid()))
 				unInvoke();
 		}
 		if(msg.target()==affected)

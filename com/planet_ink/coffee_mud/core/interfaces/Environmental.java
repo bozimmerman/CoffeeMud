@@ -43,7 +43,7 @@ import java.util.*;
  * @author Bo Zimmerman
  *
  */
-public interface Environmental extends Tickable, StatsAffecting, MsgListener, Contingent, Modifiable
+public interface Environmental extends Tickable, StatsAffecting, MsgListener, Contingent, Modifiable, Expireable
 {
 	/**
 	 * The raw unmodified name of this object as stored in the database.
@@ -162,22 +162,6 @@ public interface Environmental extends Tickable, StatsAffecting, MsgListener, Co
 	 * @return whether this object is the same as the one passed in
 	 */
 	public boolean sameAs(final Environmental E);
-
-	/**
-	 * If this object expires, it should have a timestamp saying when it expires, in real time.
-	 * When it expires, a MSG_EXPIRE message will be sent to it.
-	 * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#setExpirationDate(long)
-	 * @return the time stamp when this thing expires
-	 */
-	public long expirationDate();
-
-	/**
-	 * If this object expires, it should have a timestamp saying when it expires, in real time.
-	 * When it expires, a MSG_EXPIRE message will be sent to it.
-	 * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#expirationDate()
-	 * @param dateTime the time stamp when this thing expires
-	 */
-	public void setExpirationDate(long dateTime);
 
 	/**
 	 * the modified maximum range of this object, if applicable.  Can refer to the size of a room,

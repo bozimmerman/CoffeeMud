@@ -25,11 +25,20 @@ public class FilteredListIterator<K> implements ListIterator<K>
 	private K 				nextElement = null;
 	private K 				prevElement = null;
 	private boolean 		initialized = false;
+	private final boolean	delete;
+
+	public FilteredListIterator(final ListIterator<K> eset, final Filterer<K> fil, final boolean delete)
+	{
+		iter=eset;
+		filterer=fil;
+		this.delete=delete;
+	}
 
 	public FilteredListIterator(final ListIterator<K> eset, final Filterer<K> fil)
 	{
 		iter=eset;
 		filterer=fil;
+		delete = false;
 	}
 
 	public void setFilterer(final Filterer<K> fil)
@@ -46,6 +55,8 @@ public class FilteredListIterator<K> implements ListIterator<K>
 			nextElement = iter.next();
 			if(filterer.passesFilter(nextElement))
 				return;
+			if(delete)
+				iter.remove();
 			nextElement = null;
 		}
 	}
@@ -59,6 +70,8 @@ public class FilteredListIterator<K> implements ListIterator<K>
 			prevElement = iter.previous();
 			if(filterer.passesFilter(prevElement))
 				return;
+			if(delete)
+				iter.remove();
 			prevElement = null;
 		}
 	}
@@ -94,6 +107,12 @@ public class FilteredListIterator<K> implements ListIterator<K>
 	@Override
 	public void remove()
 	{
+		/*
+		 * can't remove because next() is the result of a look-ahead.
+		 * by the time next() is called, iter has already next()ed
+		 * again, meaning that iter.remove() would remove the
+		 * wrong thing
+		*/
 		throw new java.lang.IllegalArgumentException();
 	}
 

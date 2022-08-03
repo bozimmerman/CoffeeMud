@@ -41,7 +41,7 @@ public class DefaultTattoo implements Tattoo
 		return "DefaultTattoo";
 	}
 
-	private int		tickDown	= 0;
+	private long	expires		= 0;
 	private String	tattooName	= "";
 
 	@Override
@@ -61,7 +61,10 @@ public class DefaultTattoo implements Tattoo
 	public Tattoo set(final String name, final int down)
 	{
 		tattooName = name.toUpperCase().trim();
-		tickDown = down;
+		if(down == 0)
+			expires = 0;
+		else
+			expires = System.currentTimeMillis() + (down * CMProps.getTickMillis());
 		return this;
 	}
 
@@ -71,7 +74,10 @@ public class DefaultTattoo implements Tattoo
 	@Override
 	public final void setTickDown(final int tickDown)
 	{
-		this.tickDown = tickDown;
+		if(tickDown == 0)
+			expires = 0;
+		else
+			expires = System.currentTimeMillis() + (tickDown * CMProps.getTickMillis());
 	}
 
 	/**
@@ -80,7 +86,12 @@ public class DefaultTattoo implements Tattoo
 	@Override
 	public final int getTickDown()
 	{
-		return tickDown;
+		if(expires == 0)
+			return 0;
+		final long diff = expires - System.currentTimeMillis();
+		if(diff <= 0)
+			return 1;
+		return (int)Math.round(Math.ceil(CMath.div(diff, CMProps.getTickMillis())));
 	}
 
 	/**
@@ -95,7 +106,7 @@ public class DefaultTattoo implements Tattoo
 	@Override
 	public String toString()
 	{
-		return ((tickDown > 0) ? (tickDown + " ") : "") + tattooName;
+		return ((expires > 0) ? (getTickDown() + " ") : "") + tattooName;
 	}
 
 	@Override
@@ -131,19 +142,25 @@ public class DefaultTattoo implements Tattoo
 	}
 
 	@Override
-	public int tickDown()
+	public long expirationDate()
 	{
-		return --tickDown;
+		return expires;
 	}
 
 	@Override
-	public boolean equals(Object o)
+	public void setExpirationDate(final long dateTime)
+	{
+		expires = dateTime;
+	}
+
+	@Override
+	public boolean equals(final Object o)
 	{
 		if(o instanceof Tattoo)
 			return this.tattooName.equals(((Tattoo)o).getTattooName());
 		return false;
 	}
-	
+
 	@Override
 	public Tattoo parse(final String tattooCode)
 	{
@@ -151,14 +168,18 @@ public class DefaultTattoo implements Tattoo
 		||(tattooCode.length()==0))
 			return this;
 		tattooName=tattooCode;
+		expires = 0;
 		if(Character.isDigit(tattooName.charAt(0)))
 		{
 			final int x=tattooName.indexOf(' ');
-			if((x>0)
-			&&(CMath.isNumber(tattooName.substring(0,x).trim())))
+			if(x>0)
 			{
-				tickDown=CMath.s_int(tattooName.substring(0,x));
-				tattooName=tattooName.substring(x+1).trim();
+				final String tdstr = tattooName.substring(0,x).trim();
+				if(CMath.isNumber(tdstr))
+				{
+					tattooName=tattooName.substring(x+1).trim();
+					setTickDown(CMath.s_int(tdstr));
+				}
 			}
 		}
 		return this;

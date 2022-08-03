@@ -2359,6 +2359,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						val=M.playerStats().getStat(M.playerStats().getStatCodes()[dex]);
 						found=true;
 					}
+					else
+					if(arg2.equalsIgnoreCase("ACCOUNT") && (M.playerStats().getAccount()!=null))
+					{
+						val = M.playerStats().getAccount().getAccountName();
+						found=true;
+					}
 				}
 				if((!found)&&(arg2.startsWith("BASE")))
 				{

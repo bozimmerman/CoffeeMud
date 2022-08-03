@@ -5098,7 +5098,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				{
 					if((!CMSecurity.isDisabled(DisFlag.LANGUAGES))
 					||(!CMClass.isLanguage(newID)))
+					{
 						Log.errOut("CoffeeMaker","Unknown affect "+ablk.getValFromPieces("ACLASS")+" on "+identifier(E,null)+", skipping.");
+					}
 					continue;
 				}
 				newOne.setMiscText(xmlLib.restoreAngleBrackets(aparms));

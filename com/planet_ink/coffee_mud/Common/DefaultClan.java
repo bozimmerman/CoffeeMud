@@ -1991,11 +1991,14 @@ public class DefaultClan implements Clan
 			this.overrideMinClanMembers=null;
 		}
 
-		for (final Tattoo tattoo : tattoos)
+		if(tattoos.size()>0)
 		{
-			if ((tattoo != null) && (tattoo.getTickDown() > 0))
+			final long now = System.currentTimeMillis();
+			for (final Tattoo tattoo : tattoos)
 			{
-				if (tattoo.tickDown() <= 0)
+				if ((tattoo != null)
+				&& (tattoo.expirationDate() > 0)
+				&& (now > tattoo.expirationDate()))
 					delTattoo(tattoo);
 			}
 		}

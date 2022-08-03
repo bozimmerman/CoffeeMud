@@ -74,7 +74,7 @@ public class Lantern extends LightSource
 							return false;
 						}
 						final Drink thePuddle=(Drink)msg.tool();
-						if(!thePuddle.containsDrink())
+						if(!thePuddle.containsLiquid())
 						{
 							mob.tell(L("@x1 is empty.",thePuddle.name()));
 							return false;
@@ -102,7 +102,7 @@ public class Lantern extends LightSource
 				{
 					final Drink thePuddle=(Drink)msg.tool();
 					int amountToTake=1;
-					if(!thePuddle.containsDrink())
+					if(!thePuddle.containsLiquid())
 						amountToTake=0;
 					thePuddle.setLiquidRemaining(thePuddle.liquidRemaining()-amountToTake);
 					setDuration(DURATION_TICKS);

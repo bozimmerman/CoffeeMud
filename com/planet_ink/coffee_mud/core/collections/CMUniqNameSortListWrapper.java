@@ -1,9 +1,11 @@
 package com.planet_ink.coffee_mud.core.collections;
 
+import java.util.List;
+
 import com.planet_ink.coffee_mud.core.interfaces.CMObject;
 
 /*
-   Copyright 2012-2022 Bo Zimmerman
+   Copyright 2022-2022 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -17,28 +19,11 @@ import com.planet_ink.coffee_mud.core.interfaces.CMObject;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-public class CMUniqNameSortSVec<T extends CMObject> extends CMUniqSortSVec<T>
+public class CMUniqNameSortListWrapper<T extends CMObject> extends CMUniqSortListWrapper<T>
 {
-	/**
-	 *
-	 */
-	private static final long	serialVersionUID	= 5770001849890830938L;
-
-	public CMUniqNameSortSVec(final int size)
+	public CMUniqNameSortListWrapper(final List<T> list)
 	{
-		super(size);
-	}
-
-	public CMUniqNameSortSVec()
-	{
-		super();
-	}
-
-	public CMUniqNameSortSVec(final CMUniqNameSortSVec<T> O)
-	{
-		super();
-		for(final T o: O)
-			this.add(o);
+		super(list);
 	}
 
 	@Override
@@ -60,18 +45,4 @@ public class CMUniqNameSortSVec<T extends CMObject> extends CMUniqSortSVec<T>
 			return 0;
 		return arg0.name().compareToIgnoreCase(arg1);
 	}
-
-	@Override
-	public synchronized SVector<T> copyOf()
-	{
-		try
-		{
-			return clone();
-		}
-		catch (final Exception e)
-		{
-			return new CMUniqNameSortSVec<T>(this);
-		}
-	}
-
 }

@@ -151,7 +151,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 	}
 
 	@Override
-	public boolean containsDrink()
+	public boolean containsLiquid()
 	{
 		if((!CMLib.flags().isGettable(this))
 		&&(owner()!=null)
@@ -186,7 +186,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 			case CMMsg.TYP_DRINK:
 				if((mob.isMine(this))||(phyStats().weight()>1000)||(!CMLib.flags().isGettable(this)))
 				{
-					if(!containsDrink())
+					if(!containsLiquid())
 					{
 						mob.tell(L("@x1 is empty.",name()));
 						return false;
@@ -240,7 +240,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 				&&(msg.tool() instanceof Drink))
 				{
 					final Drink thePuddle=(Drink)msg.tool();
-					if(!thePuddle.containsDrink())
+					if(!thePuddle.containsLiquid())
 					{
 						mob.tell(L("@x1 is empty.",thePuddle.name()));
 						return false;

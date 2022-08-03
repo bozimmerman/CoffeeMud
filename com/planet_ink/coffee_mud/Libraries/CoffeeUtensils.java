@@ -2522,6 +2522,47 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		return seenEQ;
 	}
 
+	public Race getSimpleRace(final String rule, final String fatherRaceID, final String motherRaceID)
+	{
+		if(rule.equalsIgnoreCase("FATHER"))
+		{
+			Race R=CMClass.getRace(fatherRaceID);
+			if(R==null)
+				R=CMClass.findRace(fatherRaceID);
+			if(R!=null)
+				return R;
+		}
+		else
+		if(rule.equalsIgnoreCase("MOTHER"))
+		{
+			Race R=CMClass.getRace(motherRaceID);
+			if(R==null)
+				R=CMClass.findRace(motherRaceID);
+			if(R!=null)
+				return R;
+		}
+		else
+		if(rule.equalsIgnoreCase("PARENT"))
+		{
+			Race R;
+			if(CMLib.dice().rollPercentage()>50)
+			{
+				R=CMClass.getRace(motherRaceID);
+				if(R==null)
+					R=CMClass.findRace(motherRaceID);
+			}
+			else
+			{
+				R=CMClass.getRace(fatherRaceID);
+				if(R==null)
+					R=CMClass.findRace(fatherRaceID);
+			}
+			if(R!=null)
+				return R;
+		}
+		return null;
+	}
+
 	@Override
 	public Race getMixedRace(final String motherRaceID, final String fatherRaceID, final boolean ignoreRules)
 	{
@@ -2542,23 +2583,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				for(String rule : rules)
 				{
 					rule=rule.trim();
-					if(rule.equalsIgnoreCase("FATHER"))
-					{
-						Race R=CMClass.getRace(fatherRaceID);
-						if(R==null)
-							R=CMClass.findRace(fatherRaceID);
-						if(R!=null)
-							return R;
-					}
-					else
-					if(rule.equalsIgnoreCase("MOTHER"))
-					{
-						Race R=CMClass.getRace(motherRaceID);
-						if(R==null)
-							R=CMClass.findRace(motherRaceID);
-						if(R!=null)
-							return R;
-					}
+					Race R=getSimpleRace(rule,fatherRaceID,motherRaceID);
+					if(R!=null)
+						return R;
 					else
 					{
 						String chk=raceMixRuleCheck(rule,urace1,urace2);
@@ -2567,7 +2594,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 						if((chk!=null)&&(chk.length()>0))
 						{
 							final String raceID=CMStrings.replaceAll(chk, " ", "_");
-							Race R=CMClass.getRace(raceID);
+							R=getSimpleRace(raceID,fatherRaceID,motherRaceID);
+							if(R==null)
+								R=CMClass.getRace(raceID);
 							if(R==null)
 								R=CMClass.findRace(raceID);
 							if((R!=null)&&(R.isGeneric()))

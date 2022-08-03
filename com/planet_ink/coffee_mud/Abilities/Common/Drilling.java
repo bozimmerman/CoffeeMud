@@ -218,7 +218,7 @@ public class Drilling extends GatheringSkill
 			return false;
 		}
 		final List<Item> V=((Container)I).getContents();
-		if(((Drink)I).containsDrink())
+		if(((Drink)I).containsLiquid())
 		{
 			for(int v=0;v<V.size();v++)
 			{

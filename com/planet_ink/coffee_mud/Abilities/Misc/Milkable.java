@@ -394,7 +394,7 @@ public class Milkable extends StdAbility implements Drink
 	}
 
 	@Override
-	public boolean containsDrink()
+	public boolean containsLiquid()
 	{
 		return this.liquidRemaining() > 0;
 	}

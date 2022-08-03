@@ -161,7 +161,7 @@ public class ShallowWater extends StdRoom implements Drink
 	}
 
 	@Override
-	public boolean containsDrink()
+	public boolean containsLiquid()
 	{
 		return true;
 	}

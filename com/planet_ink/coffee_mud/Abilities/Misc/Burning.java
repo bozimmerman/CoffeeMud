@@ -424,7 +424,7 @@ public class Burning extends StdAbility
 			final Item I=(Item)affected;
 			final Item C=(Container)msg.target();
 			if((C instanceof Drink)
-			   &&(((Drink)C).containsDrink()))
+			   &&(((Drink)C).containsLiquid()))
 			{
 				msg.addTrailerMsg(CMClass.getMsg(invoker,null,CMMsg.MSG_OK_VISUAL,L("@x1 is extinguished.",I.name())));
 				I.delEffect(this);

@@ -4142,18 +4142,18 @@ public class StdMOB implements MOB
 			cStats.getMyRace().tick(ticking, tickID);
 			tickStatus = Tickable.STATUS_END;
 
-			for (final Tattoo tattoo : tattoos)
+			if (lastTickedTime >= 0)
 			{
-				if ((tattoo != null) && (tattoo.getTickDown() > 0))
+				lastTickedTime = System.currentTimeMillis();
+				for (final Tattoo tattoo : tattoos)
 				{
-					if (tattoo.tickDown() <= 0)
+					if ((tattoo != null)
+					&& (tattoo.expirationDate() > 0)
+					&& (lastTickedTime > tattoo.expirationDate()))
 						delTattoo(tattoo);
 				}
 			}
 		}
-
-		if (lastTickedTime >= 0)
-			lastTickedTime = System.currentTimeMillis();
 		tickStatus = Tickable.STATUS_NOT;
 		return !removeFromGame;
 	}

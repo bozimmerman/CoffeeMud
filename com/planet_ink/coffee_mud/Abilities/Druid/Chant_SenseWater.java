@@ -102,7 +102,7 @@ public class Chant_SenseWater extends Chant
 		if(I.container()==container)
 		{
 			if(((I instanceof Drink))
-			&&(((Drink)I).containsDrink())
+			&&(((Drink)I).containsLiquid())
 			&&((((Drink)I).liquidType() == RawMaterial.RESOURCE_FRESHWATER)
 				||(((Drink)I).liquidType() == RawMaterial.RESOURCE_SALTWATER))
 			&&(CMLib.flags().canBeSeenBy(I,mob)))

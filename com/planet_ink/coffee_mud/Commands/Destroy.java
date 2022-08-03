@@ -80,7 +80,7 @@ public class Destroy extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		int num = CMath.s_int(commands.get(2));
+		final int num = CMath.s_int(commands.get(2));
 		if(CMLib.awards().modifyAutoProperty(num, null))
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The superstition of the players just decreased!"));
 		else
@@ -90,7 +90,7 @@ public class Destroy extends StdCommand
 			return;
 		}
 	}
-	
+
 	public boolean mobs(final MOB mob, final List<String> commands)
 	{
 		if(commands.size()<3)
@@ -1129,7 +1129,8 @@ public class Destroy extends StdCommand
 		if((!CMSecurity.isAllowedAnywhereContainsAny(mob,CMSecurity.SECURITY_CMD_GROUP))
 		&&(!CMSecurity.isAllowedContainsAny(mob,mob.location(),CMSecurity.SECURITY_KILL_GROUP))
 		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.BAN))
-		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.NOPURGE)))
+		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.NOPURGE))
+		&&(!((commands.size()>1)&&(CMSecurity.isJournalAccessAllowed(mob, commands.get(1))))))
 		{
 			commands.remove(0);
 			if(commands.size()==0)
@@ -1721,7 +1722,8 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.equals("JOURNAL"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS))
+			if((!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS))
+			&&((!((commands.size()>=3)&&(CMSecurity.isJournalAccessAllowed(mob,CMParms.combine(commands,2)))))))
 				return errorOut(mob);
 			if(commands.size()<3)
 			{

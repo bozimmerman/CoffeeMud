@@ -75,7 +75,7 @@ public class Bomb_FlameBurst extends StdBomb
 			return false;
 		if((!(P instanceof Item))
 		||(!(P instanceof Drink))
-		||(!((((Drink)P).containsDrink())||(((Drink)P).liquidType()!=RawMaterial.RESOURCE_LAMPOIL)))
+		||(!((((Drink)P).containsLiquid())||(((Drink)P).liquidType()!=RawMaterial.RESOURCE_LAMPOIL)))
 		   &&(((Item)P).material()!=RawMaterial.RESOURCE_LAMPOIL))
 		{
 			if(mob!=null)

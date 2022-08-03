@@ -19,15 +19,24 @@ import java.util.Vector;
 */
 public class FilteredIterator<K> implements Iterator<K>
 {
-	private final Iterator<K>  iter;
-	private Filterer<K> 	filterer;
-	private K 				nextElement = null;
-	private boolean 		initialized = false;
+	private final Iterator<K>	iter;
+	private Filterer<K>			filterer;
+	private K					nextElement	= null;
+	private boolean				initialized	= false;
+	private final boolean		delete;
 
 	public FilteredIterator(final Iterator<K> eset, final Filterer<K> fil)
 	{
 		iter=eset;
 		filterer=fil;
+		delete=false;
+	}
+
+	public FilteredIterator(final Iterator<K> eset, final Filterer<K> fil, final boolean delete)
+	{
+		iter=eset;
+		filterer=fil;
+		this.delete=delete;
 	}
 
 	public void setFilterer(final Filterer<K> fil)
@@ -43,6 +52,8 @@ public class FilteredIterator<K> implements Iterator<K>
 			nextElement = iter.next();
 			if(filterer.passesFilter(nextElement))
 				return;
+			if(delete)
+				iter.remove();
 			nextElement = null;
 		}
 	}
@@ -77,6 +88,12 @@ public class FilteredIterator<K> implements Iterator<K>
 	@Override
 	public void remove()
 	{
+		/*
+		 * can't remove because next() is the result of a look-ahead.
+		 * by the time next() is called, iter has already next()ed
+		 * again, meaning that iter.remove() would remove the
+		 * wrong thing
+		*/
 		throw new NoSuchElementException();
 	}
 }

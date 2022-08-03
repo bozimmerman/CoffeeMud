@@ -193,7 +193,7 @@ public class Chant_FilterWater extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final boolean success=D.containsDrink() && (D.thirstQuenched() > 0) && proficiencyCheck(mob,0,auto);
+		final boolean success=D.containsLiquid() && (D.thirstQuenched() > 0) && proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

@@ -85,7 +85,7 @@ public class Trap_Greasy extends StdTrap
 			final Item I=mob.location().getItem(i);
 			if((I!=null)
 			&&(I instanceof Drink)
-			&&(((Drink)I).containsDrink())
+			&&(((Drink)I).containsLiquid())
 			&&(((Drink)I).liquidType()==RawMaterial.RESOURCE_LAMPOIL))
 				return I;
 		}

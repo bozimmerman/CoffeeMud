@@ -88,7 +88,7 @@ public class Trap_FloodRoom extends StdTrap
 		for(int i=0;i<mob.location().numItems();i++)
 		{
 			final Item I=mob.location().getItem(i);
-			if((I instanceof Drink)&&(((Drink)I).containsDrink()))
+			if((I instanceof Drink)&&(((Drink)I).containsLiquid()))
 				num++;
 		}
 		return num;
@@ -116,7 +116,7 @@ public class Trap_FloodRoom extends StdTrap
 		while((num>0)&&(i<mob.location().numItems()))
 		{
 			final Item I=mob.location().getItem(i);
-			if((I instanceof Drink)&&(((Drink)I).containsDrink()))
+			if((I instanceof Drink)&&(((Drink)I).containsLiquid()))
 			{
 				if(I instanceof RawMaterial)
 				{

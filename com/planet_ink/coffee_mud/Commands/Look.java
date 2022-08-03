@@ -68,7 +68,8 @@ public class Look extends StdCommand
 		final String textMsg="<S-NAME> look(s) ";
 		if(R==null)
 			return false;
-		//boolean listItems=false;
+		boolean listItems=false;
+		boolean listAlls=false;
 		if((commands!=null)&&(commands.size()>1))
 		{
 			int dirCode=-1;
@@ -81,14 +82,15 @@ public class Look extends StdCommand
 				thisThang=mob.location();
 			}
 			else
-			if((commands.size()>2)&&(commands.get(1).equalsIgnoreCase("at")))
+			if((commands.size()>2)&&(commands.get(1).equalsIgnoreCase("for")))
 			{
 				commands.remove(1);
 				if((commands.size()>1)&&(commands.get(1).equalsIgnoreCase("all")))
 				{
 					commands.remove(1);
-					//listItems=true;
+					listAlls=true;
 				}
+				listItems=true;
 			}
 			else
 			if((commands.size()>2)&&(commands.get(1).equalsIgnoreCase("to")))
@@ -122,10 +124,10 @@ public class Look extends StdCommand
 			}
 			if((thisThang==null)
 			&&(commands.size()>3)
-			&&((CMParms.indexOfIgnoreCase(commands, "in")>1)
-				||(CMParms.indexOfIgnoreCase(commands, "on")>1))
-			&&((CMParms.indexOfIgnoreCase(commands, "in")<commands.size()-1)
-				||CMParms.indexOfIgnoreCase(commands, "on")<commands.size()-1))
+			&&((CMParms.indexOfIgnoreCase(commands, "in") > 1)
+				||(CMParms.indexOfIgnoreCase(commands, "on") > 1))
+			&&((CMParms.indexOfIgnoreCase(commands, "in") < commands.size()-1)
+				||CMParms.indexOfIgnoreCase(commands, "on") < commands.size()-1))
 			{
 				final List<String> tempCmds=new XVector<String>(commands);
 				final Item containerC=CMLib.english().parsePossibleContainer(mob,tempCmds,true,Wearable.FILTER_ANY);
@@ -143,21 +145,22 @@ public class Look extends StdCommand
 			if(thisThang==null)
 				thisThang=R.fetchFromMOBRoomFavorsItems(mob, null, ID, Wearable.FILTER_ANY);
 			if((thisThang==null)
-			&&(commands.size()>2)
+			&&(commands.size() > 2)
 			&&(commands.get(1).equalsIgnoreCase("in")))
 			{
 				commands.remove(1);
 				final String ID2=CMParms.combine(commands,1);
 				thisThang=R.fetchFromMOBRoomFavorsItems(mob,null,ID2,Wearable.FILTER_ANY);
-				if((thisThang!=null)&&((!(thisThang instanceof Container))||(((Container)thisThang).capacity()==0)))
+				if((thisThang!=null)
+				&&((!(thisThang instanceof Container))||(((Container)thisThang).capacity()==0)))
 				{
 					CMLib.commands().postCommandFail(mob,origCmds,L("That's not a container."));
 					return false;
 				}
 			}
+			final CMFlagLibrary flagLib=CMLib.flags();
 			if(thisThang == null)
 			{
-				final CMFlagLibrary flagLib=CMLib.flags();
 				for(int i=0;i<R.numItems();i++)
 				{
 					final Item I=R.getItem(i);
@@ -188,6 +191,76 @@ public class Look extends StdCommand
 					}
 				}
 			}
+			if((thisThang!=null)&&(listItems))
+			{
+				final List<String> things=new ArrayList<String>();
+				if(listAlls)
+				{
+					for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
+					{
+						final Item I=i.nextElement();
+						if((I!=null)
+						&&((I.container()==null)
+							||((flagLib.isOpenAccessibleContainer(I.container())
+								&&(I.container().container()==null)
+								&&(flagLib.canBeSeenBy(I.container(), mob)))))
+						&&(CMLib.english().containsString(I.name(mob), ID)
+							||CMLib.english().containsString(I.displayText(mob), ID))
+						&&(flagLib.canBeSeenBy(I, mob)))
+						{
+							String name = R.getContextName(I);
+							if(I.container() != null)
+								name += " in " + R.getContextName(I.container());
+							things.add("^I"+name+"^?");
+						}
+					}
+					for(final Enumeration<MOB> i=R.inhabitants();i.hasMoreElements();)
+					{
+						final MOB M = i.nextElement();
+						if((M!=null)
+						&&(M!=mob)
+						&&(CMLib.english().containsString(M.name(mob), ID)
+							||CMLib.english().containsString(M.displayText(mob), ID))
+						&&(flagLib.canBeSeenBy(M, mob)))
+						{
+							final String name = R.getContextName(M);
+							things.add("^M"+name+"^?");
+						}
+					}
+					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+					{
+						if(R.getRoomInDir(d)!=null)
+						{
+							final Exit E = R.getExitInDir(d);
+							if((E!=null)
+							&&(CMLib.english().containsString(E.name(mob), ID)
+								||CMLib.english().containsString(E.displayText(mob), ID))
+							&&(flagLib.canBeSeenBy(E, mob)))
+							{
+								final String name = R.getContextName(E);
+								things.add("^D"+name+"^?");
+							}
+						}
+					}
+				}
+				else
+				{
+					String name = R.getContextName(thisThang);
+					if((thisThang != null) && (((Item)thisThang).container() != null))
+						name += " in " + R.getContextName(((Item)thisThang).container());
+					things.add(name);
+				}
+				if(things.size()==0)
+					mob.tell(L("Nothing like that catches your eye."));
+				else
+				{
+					final String list = CMLib.english().toEnglishStringList(things);
+					final CMMsg msg=CMClass.getMsg(mob,null,lookingTool,CMMsg.MSG_GLANCE,L("You spot '@x1'.",list));
+					if(R.okMessage(mob, msg))
+						R.send(mob, msg);
+				}
+			}
+			else
 			if(thisThang!=null)
 			{
 				String name="at <T-NAMESELF>";

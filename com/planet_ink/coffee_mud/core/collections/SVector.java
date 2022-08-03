@@ -30,7 +30,9 @@ import javax.naming.OperationNotSupportedException;
 public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CList<T>, RandomAccess
 {
 	private static final long	serialVersionUID	= 6687178785122561992L;
+
 	private CopyOnWriteArrayList<T> underList = new CopyOnWriteArrayList<T>();
+
 	private List<T> list = Collections.synchronizedList(underList);
 
 	public SVector()
@@ -161,7 +163,7 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		{
 			synchronized(this)
 			{
-				final SVector<T> copy= (SVector<T>) clone();
+				final SVector<T> copy= clone();
 				copy.underList = (CopyOnWriteArrayList<T>)underList.clone();
 				copy.list = Collections.synchronizedList(copy.underList);
 				return copy;
@@ -171,6 +173,12 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		{
 			return new SVector<T>(list);
 		}
+	}
+
+	@Override
+	public SVector<T> clone()
+	{
+		return copyOf();
 	}
 
 	public void copyInto(final Object[] anArray)
