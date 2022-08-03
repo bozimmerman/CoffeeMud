@@ -701,8 +701,8 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			if((fullName!=null)&&(fullName.length()>0))
 				I.setSecretIdentity(fullName);
 			I.setMaterial(myResource);
-			if(I instanceof Drink)
-				((Drink)I).setLiquidType(myResource);
+			if(I instanceof LiquidHolder)
+				((LiquidHolder)I).setLiquidType(myResource);
 			I.setBaseValue(RawMaterial.CODES.VALUE(myResource));
 			I.basePhyStats().setWeight(1);
 			I.setDomainSource(localeCode);

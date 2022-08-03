@@ -74,8 +74,8 @@ public class Bomb_FlameBurst extends StdBomb
 		if(!super.canSetTrapOn(mob,P))
 			return false;
 		if((!(P instanceof Item))
-		||(!(P instanceof Drink))
-		||(!((((Drink)P).containsLiquid())||(((Drink)P).liquidType()!=RawMaterial.RESOURCE_LAMPOIL)))
+		||(!(P instanceof LiquidHolder))
+		||(!((((LiquidHolder)P).containsLiquid())||(((LiquidHolder)P).liquidType()!=RawMaterial.RESOURCE_LAMPOIL)))
 		   &&(((Item)P).material()!=RawMaterial.RESOURCE_LAMPOIL))
 		{
 			if(mob!=null)

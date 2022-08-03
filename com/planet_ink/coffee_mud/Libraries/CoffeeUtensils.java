@@ -532,7 +532,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					extinguish(tmob,I,mundane);
 			}
 		}
-		if((target instanceof Light)&&(((Light)target).isLit()))
+		if((target instanceof Light)
+		&&(((Light)target).isLit()))
 		{
 			((Light)target).tick(target,Tickable.TICKID_LIGHT_FLICKERS);
 			((Light)target).light(false);

@@ -710,11 +710,15 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			text.append(xmlLib.convertXMLtoTag("BITE",((Food)E).bite()));
 		}
 
+		if(E instanceof LiquidHolder)
+		{
+			text.append(xmlLib.convertXMLtoTag("CAPA2",((LiquidHolder)E).liquidHeld()));
+			text.append(xmlLib.convertXMLtoTag("REMAN",((LiquidHolder)E).liquidRemaining()));
+			text.append(xmlLib.convertXMLtoTag("LTYPE",((LiquidHolder)E).liquidType()));
+		}
+
 		if(E instanceof Drink)
 		{
-			text.append(xmlLib.convertXMLtoTag("CAPA2",((Drink)E).liquidHeld()));
-			text.append(xmlLib.convertXMLtoTag("REMAN",((Drink)E).liquidRemaining()));
-			text.append(xmlLib.convertXMLtoTag("LTYPE",((Drink)E).liquidType()));
 			text.append(xmlLib.convertXMLtoTag("DRINK",((Drink)E).thirstQuenched()));
 		}
 
@@ -4074,18 +4078,21 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			((RawMaterial)E).setSubType(xml.getValFromPieces(buf,"RSUBT"));
 		}
 
-		if(E instanceof Drink)
+		if(E instanceof LiquidHolder)
 		{
-			final int capacity=xml.getIntFromPieces(buf,"CAPA2");
-			((Drink)E).setLiquidHeld(capacity);
+			final int capacity=xml.getIntFromPieces(buf,"CAPA2", 80);
+			((LiquidHolder)E).setLiquidHeld(capacity);
 			final String remaining=xml.getValFromPieces(buf,"REMAN");
 			if(remaining.length()>0)
 			{
-				((Drink)E).setLiquidRemaining(CMath.s_int(remaining));
-				((Drink)E).setLiquidType(xml.getIntFromPieces(buf,"LTYPE"));
+				((LiquidHolder)E).setLiquidRemaining(CMath.s_int(remaining));
+				((LiquidHolder)E).setLiquidType(xml.getIntFromPieces(buf,"LTYPE", 0));
 			}
 			else
-				((Drink)E).setLiquidRemaining(capacity);
+				((LiquidHolder)E).setLiquidRemaining(capacity);
+		}
+		if(E instanceof Drink)
+		{
 			((Drink)E).setThirstQuenched(xml.getIntFromPieces(buf,"DRINK"));
 		}
 		if(E instanceof Weapon)

@@ -1169,6 +1169,34 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				}
 			}
 			else
+			if((item instanceof LiquidHolder)
+			&&(!CMath.bset(item.material(), RawMaterial.MATERIAL_LIQUID))
+			&&(!CMath.bset(item.material(), RawMaterial.MATERIAL_GAS))
+			&&((mob==null)||(mobInt>4)))
+			{
+				if(!((LiquidHolder)item).containsLiquid())
+					response.append(L("It is empty.  "));
+				else
+				if(((LiquidHolder)item).liquidHeld()>0)
+				{
+					int remain = ((LiquidHolder)item).liquidRemaining();
+					final int type = ((LiquidHolder)item).liquidType();
+					if(item instanceof Container)
+					{
+						final List<Item> V=((Container)item).getContents();
+						for(int v=0;v<V.size();v++)
+						{
+							final Item I=V.get(v);
+							if((I instanceof LiquidHolder)
+							&&(I instanceof RawMaterial)
+							&&(((LiquidHolder)I).containsLiquid()))
+								remain+=((Drink)I).liquidRemaining();
+						}
+					}
+					response.append(L("It appears to contain @x1 @x2 remaining.  ",""+remain,RawMaterial.CODES.NAME(type).toLowerCase()));
+				}
+			}
+			else
 			if((item instanceof Food)
 			&&((mob==null)||(mobInt>4))
 			&&(((Food)item).nourishment()>0))
@@ -1468,13 +1496,13 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				||((contitem instanceof Drink)&&(((Drink)contitem).containsLiquid())))
 					buf.append(item.name()+" contains:^<!ENTITY container \""+CMStrings.removeColors(item.name())+"\"^>"+(mob.isAttributeSet(MOB.Attrib.COMPRESS)?" ":"\n\r"));
 				final List<Item> newItems=new ArrayList<Item>(0);
-				if((item instanceof Drink)
-				&&(((Drink)item).liquidRemaining()>0))
+				if((item instanceof LiquidHolder)
+				&&(((LiquidHolder)item).liquidRemaining()>0))
 				{
 					final RawMaterial l=(RawMaterial)CMClass.getItem("GenLiquidResource");
-					final int myResource=((Drink)item).liquidType();
+					final int myResource=((LiquidHolder)item).liquidType();
 					l.setMaterial(myResource);
-					((Drink)l).setLiquidType(myResource);
+					((LiquidHolder)l).setLiquidType(myResource);
 					l.setBaseValue(RawMaterial.CODES.VALUE(myResource));
 					l.basePhyStats().setWeight(1);
 					final String name=RawMaterial.CODES.NAME(myResource).toLowerCase();

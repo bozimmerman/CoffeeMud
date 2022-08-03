@@ -198,7 +198,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		{
 			this.value = newVal;
 		}
-		
+
 		/* (non-Javadoc)
 		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.XMLTag#contents()
 		 */

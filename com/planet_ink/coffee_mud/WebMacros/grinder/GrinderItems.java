@@ -76,7 +76,7 @@ public class GrinderItems
 		RECHARGERATE,OPENTICKS,ISCLOAK,ISBOOK,MAXPAGES,MAXCHARSPAGE,
 		STATESTR,STATESUBJSTR,RIDERSTR,ISRESOURCE,RSCSUBTYPE,
 		ISLIMB,RACEID,ENCHTYPE,ISAMMOWEAPON,ISSHIPDIRCOMP,
-		ISSOFT,SOFTPARENT,SOFTNAME
+		ISSOFT,SOFTPARENT,SOFTNAME,ISLIQUIDHOLDER
 		;
 		public boolean isGenField;
 		private ItemDataField(final boolean isGeneric)
@@ -272,10 +272,10 @@ public class GrinderItems
 				case ISDRINK: // is drink
 					break;
 				case LIQUIDHELD: // liquid held
-					if(I instanceof Drink)
+					if(I instanceof LiquidHolder)
 					{
-						((Drink)I).setLiquidHeld(CMath.s_int(old));
-						((Drink)I).setLiquidRemaining(CMath.s_int(old));
+						((LiquidHolder)I).setLiquidHeld(CMath.s_int(old));
+						((LiquidHolder)I).setLiquidRemaining(CMath.s_int(old));
 					}
 					break;
 				case QUENCHED: // quenched
@@ -435,9 +435,11 @@ public class GrinderItems
 					break;
 				case ISPOTION: // is potion
 					break;
+				case ISLIQUIDHOLDER: // is liquidholder
+					break;
 				case LIQUIDTYPES: // liquid types
-					if((I instanceof Drink)&&(!(I instanceof Potion)))
-						((Drink)I).setLiquidType(CMath.s_int(old));
+					if((I instanceof LiquidHolder)&&(!(I instanceof Potion)))
+						((LiquidHolder)I).setLiquidType(CMath.s_int(old));
 					break;
 				case AMMOTYPE: // ammo types
 					if(I instanceof Ammunition)

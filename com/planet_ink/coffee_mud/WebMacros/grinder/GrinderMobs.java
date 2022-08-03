@@ -895,16 +895,16 @@ public class GrinderMobs
 						((Rideable) M).setRideString(old);
 					break;
 				case LIQUIDTYPES: // liquid types
-					if((M instanceof Drink)&&(!(M instanceof Potion)))
-						((Drink)M).setLiquidType(CMath.s_int(old));
+					if((M instanceof LiquidHolder)&&(!(M instanceof Potion)))
+						((LiquidHolder)M).setLiquidType(CMath.s_int(old));
 					break;
 				case ISDRINK: // is drink
 					break;
 				case LIQUIDHELD: // liquid held
-					if(M instanceof Drink)
+					if(M instanceof LiquidHolder)
 					{
-						((Drink)M).setLiquidHeld(CMath.s_int(old));
-						((Drink)M).setLiquidRemaining(CMath.s_int(old));
+						((LiquidHolder)M).setLiquidHeld(CMath.s_int(old));
+						((LiquidHolder)M).setLiquidRemaining(CMath.s_int(old));
 					}
 					break;
 				case QUENCHED: // quenched

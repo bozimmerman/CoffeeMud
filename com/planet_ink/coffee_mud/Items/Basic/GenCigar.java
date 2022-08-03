@@ -50,7 +50,7 @@ public class GenCigar extends StdSmokable
 		setDescription("");
 		baseGoldValue=5;
 		capacity=0;
-		durationTicks=200;
+		setDuration(200);
 		recoverPhyStats();
 	}
 
@@ -64,6 +64,11 @@ public class GenCigar extends StdSmokable
 	public void setReadableText(final String text)
 	{
 		readableText=text;
+		if(CMath.isInteger(text))
+		{
+			baseDuration=CMath.s_int(text);
+			durationTicks = baseDuration;
+		}
 	}
 
 	@Override

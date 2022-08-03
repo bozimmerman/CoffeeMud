@@ -57,6 +57,7 @@ public class StdSmokable extends StdContainer implements Light
 		containType=Container.CONTAIN_SMOKEABLES;
 		properWornBitmap=Wearable.WORN_MOUTH;
 		setMaterial(RawMaterial.RESOURCE_PIPEWEED);
+		setDuration(200);
 		wornLogicalAnd=false;
 		baseGoldValue=5;
 		recoverPhyStats();
@@ -73,7 +74,20 @@ public class StdSmokable extends StdContainer implements Light
 	@Override
 	public void setDuration(final int duration)
 	{
+		setReadableText(""+duration);
 		baseDuration=duration;
+		durationTicks = duration;
+	}
+
+	@Override
+	public void setReadableText(final String text)
+	{
+		super.setReadableText(text);
+		if(CMath.isInteger(text))
+		{
+			baseDuration=CMath.s_int(text);
+			durationTicks = baseDuration;
+		}
 	}
 
 	@Override
@@ -110,6 +124,13 @@ public class StdSmokable extends StdContainer implements Light
 	public void light(final boolean isLit)
 	{
 		lit=isLit;
+		if((owner() instanceof Room)||(owner() instanceof MOB))
+		{
+			if(lit)
+				CMLib.threads().startTickDown(this, Tickable.TICKID_LIGHT_FLICKERS, 1);
+			else
+				CMLib.threads().deleteTick(me, Tickable.TICKID_LIGHT_FLICKERS);
+		}
 	}
 
 	@Override
@@ -311,7 +332,6 @@ public class StdSmokable extends StdContainer implements Light
 						getAddictedTo(msg.source(),this);
 
 					light(true);
-					CMLib.threads().startTickDown(this,Tickable.TICKID_LIGHT_FLICKERS,1);
 					recoverPhyStats();
 					room.recoverRoomStats();
 				}

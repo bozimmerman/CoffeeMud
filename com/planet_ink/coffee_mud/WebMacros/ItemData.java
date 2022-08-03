@@ -466,10 +466,14 @@ public class ItemData extends StdWebMacro
 							return "true";
 						return "false";
 					case LIQUIDHELD: // liquid held
-						if((firstTime)&&(I instanceof Drink))
-							old=""+((Drink)I).liquidHeld();
+						if((firstTime)&&(I instanceof LiquidHolder))
+							old=""+((LiquidHolder)I).liquidHeld();
 						str.append(old);
 						break;
+					case ISLIQUIDHOLDER: // is liquid holder
+						if(I instanceof LiquidHolder)
+							return "true";
+						return "false";
 					case QUENCHED: // quenched
 						if((firstTime)&&(I instanceof Drink))
 							old=""+((Drink)I).thirstQuenched();
@@ -700,8 +704,8 @@ public class ItemData extends StdWebMacro
 							return "true";
 						return "false";
 					case LIQUIDTYPES: // liquid types
-						if((firstTime)&&(I instanceof Drink))
-							old=""+((Drink)I).liquidType();
+						if((firstTime)&&(I instanceof LiquidHolder))
+							old=""+((LiquidHolder)I).liquidType();
 						final List<Integer> liquids=RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_LIQUID);
 						for(final Integer liquid : liquids)
 						{

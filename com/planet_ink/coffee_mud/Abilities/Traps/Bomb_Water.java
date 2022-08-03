@@ -73,9 +73,9 @@ public class Bomb_Water extends StdBomb
 	{
 		if(!super.canSetTrapOn(mob,P))
 			return false;
-		if((!(P instanceof Drink))
-		||(((Drink)P).liquidHeld()!=((Drink)P).liquidRemaining())
-		||(((Drink)P).liquidType()!=RawMaterial.RESOURCE_FRESHWATER))
+		if((!(P instanceof LiquidHolder))
+		||(((LiquidHolder)P).liquidHeld()!=((LiquidHolder)P).liquidRemaining())
+		||(((LiquidHolder)P).liquidType()!=RawMaterial.RESOURCE_FRESHWATER))
 		{
 			if(mob!=null)
 				mob.tell(L("You need a full water container to make this out of."));

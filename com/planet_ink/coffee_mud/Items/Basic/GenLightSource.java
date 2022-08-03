@@ -90,6 +90,8 @@ public class GenLightSource extends LightSource
 	public void setReadableText(final String text)
 	{
 		readableText=text;
+		if(CMath.isInteger(text))
+			super.setDuration(CMath.s_int(text));
 	}
 
 	@Override

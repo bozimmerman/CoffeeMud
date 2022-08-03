@@ -51,6 +51,7 @@ public class Lantern extends LightSource
 		basePhyStats().setWeight(5);
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 		durationTicks=DURATION_TICKS;
+		durationTickDown=DURATION_TICKS;
 		this.destroyedWhenBurnedOut=false;
 		this.goesOutInTheRain=false;
 		baseGoldValue=60;
@@ -105,7 +106,7 @@ public class Lantern extends LightSource
 					if(!thePuddle.containsLiquid())
 						amountToTake=0;
 					thePuddle.setLiquidRemaining(thePuddle.liquidRemaining()-amountToTake);
-					setDuration(DURATION_TICKS);
+					super.durationTickDown =  DURATION_TICKS;
 					setDescription("The lantern still looks like it has some oil in it.");
 				}
 				break;

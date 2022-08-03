@@ -36,7 +36,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author Bo Zimmerman
  *
  */
-public interface LiquidHolder extends Environmental, Decayable
+public interface LiquidHolder extends Environmental
 {
 	/**
 	 * The total amount of liquid possible to be contained in this liquid container.

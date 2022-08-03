@@ -1586,7 +1586,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return getDirType(((Room)P).getArea());
 		return DirType.COMPASS;
 	}
-	
+
 	@Override
 	public Directions.DirType getInDirType(final MOB M)
 	{
@@ -2522,9 +2522,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			if(((Item)thang).material()==RawMaterial.RESOURCE_LIQUOR)
 				return true;
 		}
-		if(thang instanceof Drink)
+		if(thang instanceof LiquidHolder)
 		{
-			if(((Drink)thang).liquidType()==RawMaterial.RESOURCE_LIQUOR)
+			if(((LiquidHolder)thang).liquidType()==RawMaterial.RESOURCE_LIQUOR)
 				return true;
 			if(thang instanceof Container)
 			{

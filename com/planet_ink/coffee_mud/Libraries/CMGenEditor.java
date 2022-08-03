@@ -1969,7 +1969,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			CMLib.flags().setReadable(E,genGenericPrompt(mob,showNumber+". Is this item readable",E.isReadable()));
 	}
 
-	protected void genDrinkType(final MOB mob, final Drink E, final int showNumber, final int showFlag) throws IOException
+	protected void genDrinkType(final MOB mob, final LiquidHolder E, final int showNumber, final int showFlag) throws IOException
 	{
 		mob.session().println(L("@x1. Current liquid type: @x2",""+showNumber,RawMaterial.CODES.NAME(E.liquidType())));
 		if((showFlag!=showNumber)&&(showFlag>-999))
@@ -2198,9 +2198,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 		}
 		else
-		if(E instanceof Drink)
+		if(E instanceof LiquidHolder)
 		{
-			genDrinkType(mob,(Drink)E,showNumber,showFlag);
+			genDrinkType(mob,(LiquidHolder)E,showNumber,showFlag);
 		}
 	}
 
@@ -6155,7 +6155,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		E.setThirstQuenched(prompt(mob, E.thirstQuenched(), showNumber, showFlag, "Quenched/Drink"));
 	}
 
-	protected void genDrinkHeld(final MOB mob, final Drink E, final int showNumber, final int showFlag) throws IOException
+	protected void genDrinkHeld(final MOB mob, final LiquidHolder E, final int showNumber, final int showFlag) throws IOException
 	{
 		E.setLiquidHeld(prompt(mob,E.liquidHeld(),showNumber,showFlag,"Amount of Drink Held"));
 		E.setLiquidRemaining(E.liquidHeld());
@@ -10021,6 +10021,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genGettable(mob,me,++showNumber,showFlag);
 			genIsReadable(mob,me,++showNumber,showFlag);
 			genReadableTextMisc(mob,me,++showNumber,showFlag);
+			if(me instanceof LiquidHolder)
+			{
+				genDrinkType(mob,(LiquidHolder)me,++showNumber,showFlag);
+				genDrinkHeld(mob,(LiquidHolder)me,++showNumber,showFlag);
+			}
 			if(me instanceof Recipe)
 				genRecipe(mob,(Recipe)me,++showNumber,showFlag);
 			if(me instanceof Light)
