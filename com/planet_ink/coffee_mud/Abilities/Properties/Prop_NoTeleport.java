@@ -41,8 +41,9 @@ public class Prop_NoTeleport extends Property
 		return "Prop_NoTeleport";
 	}
 
-	protected List<String>  exceptionRooms = new ArrayList<String>(1);
-	protected boolean		nosummon	   = false;
+	protected List<String>	exceptionRooms	= new ArrayList<String>(1);
+	protected boolean		nosummon		= false;
+	protected boolean		interAreaOK		= true;
 
 	@Override
 	public String name()
@@ -67,7 +68,8 @@ public class Prop_NoTeleport extends Property
 	{
 		super.setMiscText(newMiscText);
 		exceptionRooms=CMParms.parseCommas(CMParms.getParmStr(newMiscText.toLowerCase(), "EXCEPTIONS", ""), true);
-		nosummon=CMParms.getParmBool(newMiscText.toLowerCase(), "NOSUMMON", false);
+		nosummon=CMParms.getParmBool(newMiscText, "NOSUMMON", false);
+		interAreaOK=CMParms.getParmBool(newMiscText, "INTERAREAOK", true);
 	}
 
 	@Override
@@ -76,39 +78,47 @@ public class Prop_NoTeleport extends Property
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		final Room R=msg.source().location();
 		if((msg.tool() instanceof Ability)
-		&&(R!=null)
-		&&(msg.sourceMinor()!=CMMsg.TYP_LEAVE)
-		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
+		&&(msg.sourceMinor()!=CMMsg.TYP_LEAVE))
 		{
-			final boolean summon=nosummon&&CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING);
-			final boolean teleport=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING);
-			final boolean shere=(R==affected)
+			final Room R=msg.source().location();
+			if((R!=null)
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
+			{
+				final boolean summon=nosummon&&CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING);
+				final boolean teleport=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING);
+				boolean shere=(R==affected)
 								||((affected instanceof Area)
 									&&(((Area)affected).inMyMetroArea(R.getArea())));
-			if(teleport)
-			{
-				if((affected instanceof Area)
-				&& (msg.target() instanceof Room)
-				&& (exceptionRooms.contains(CMLib.map().getExtendedRoomID((Room)msg.target()).toLowerCase())
-					||exceptionRooms.contains(((Room)msg.target()).getArea().Name().toLowerCase())))
-					return true;
-				if((exceptionRooms.contains(msg.tool().ID().toLowerCase()))
-				||((msg.tool() instanceof PlanarAbility)&&(exceptionRooms.contains("planarability"))))
-					return true;
-			}
-
-			if(((!shere)&&(!summon)&&(teleport))
-			   ||((shere)&&(summon)))
-			{
-				final Ability A=(Ability)msg.tool();
-				if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
-				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
-				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
-				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
-					R.showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));
-				return false;
+				if((shere)&&(teleport)&&(!summon)
+				&&(affected instanceof Area)
+				&&(msg.target() instanceof Room)
+				&&(((Area)affected).inMyMetroArea(((Room)msg.target()).getArea()))
+				&&(!interAreaOK))
+					shere = false;
+				if(teleport)
+				{
+					if((affected instanceof Area)
+					&& (msg.target() instanceof Room)
+					&& (exceptionRooms.contains(CMLib.map().getExtendedRoomID((Room)msg.target()).toLowerCase())
+						||exceptionRooms.contains(((Room)msg.target()).getArea().Name().toLowerCase())))
+						return true;
+					if((exceptionRooms.contains(msg.tool().ID().toLowerCase()))
+					||((msg.tool() instanceof PlanarAbility)&&(exceptionRooms.contains("planarability"))))
+						return true;
+				}
+	
+				if(((!shere)&&(!summon)&&(teleport))
+				   ||((shere)&&(summon)))
+				{
+					final Ability A=(Ability)msg.tool();
+					if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
+					||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+					||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+					||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
+						R.showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));
+					return false;
+				}
 			}
 		}
 		return true;
