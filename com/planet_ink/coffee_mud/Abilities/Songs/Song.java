@@ -129,13 +129,67 @@ public class Song extends StdAbility
 	protected volatile int			lyricCtr		= 0;
 	protected volatile int			lyricPauseCtdn	= 0;
 
+	protected volatile Pair<Double,Integer> bonusCache = null;
+
+	@Override
+	public void setAffectedOne(final Physical P)
+	{
+		bonusCache = null;
+		super.setAffectedOne(P);
+	}
+
+	@Override
+	public void setInvoker(final MOB mob)
+	{
+		super.setInvoker(mob);
+		bonusCache = null;
+	}
+
+	protected synchronized Pair<Double,Integer> getBonuses()
+	{
+		if(bonusCache != null)
+			return bonusCache;
+		final Double d = Double.valueOf(innerStatBonusPct());
+		final Integer i = Integer.valueOf(innerAvgStat());
+		bonusCache = new Pair<Double,Integer>(d,i);
+		return bonusCache;
+	}
+
+	protected double statBonusPct()
+	{
+		return getBonuses().first.doubleValue();
+	}
+
+	protected int avgStat()
+	{
+		return getBonuses().second.intValue();
+	}
+
+	protected double innerStatBonusPct()
+	{
+		if(invoker()==null)
+			return 1.0;
+		final double max = CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
+		return CMath.div(invoker().charStats().getStat(CharStats.STAT_CHARISMA), max);
+	}
+
+	protected int innerAvgStat()
+	{
+		if(invoker()==null)
+			return CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
+		return invoker().charStats().getStat(CharStats.STAT_CHARISMA);
+	}
+
 	@Override
 	public int adjustedLevel(final MOB mob, final int asLevel)
 	{
 		final int level=super.adjustedLevel(mob,asLevel);
-		final int charisma=(invoker().charStats().getStat(CharStats.STAT_CHARISMA)-10);
-		if(charisma>10)
-			return level+(charisma/3);
+		if(mob != null)
+		{
+			final int charisma=(mob.charStats().getStat(CharStats.STAT_CHARISMA)-10);
+			if(charisma>10)
+				return level+(charisma/3);
+		}
 		return level;
 	}
 

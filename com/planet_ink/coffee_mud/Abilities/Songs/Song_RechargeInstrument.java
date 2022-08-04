@@ -43,8 +43,6 @@ public class Song_RechargeInstrument extends Song
 
 	private final static String localizedName = CMLib.lang().L("Recharge Instrument");
 
-	private static int RECHARGE_AMT = 5;
-
 	@Override
 	public String name()
 	{
@@ -140,15 +138,17 @@ public class Song_RechargeInstrument extends Song
 				}
 				else
 				{
+					final double pct = CMath.div(mob.charStats().getStat(CharStats.STAT_CHARISMA), CMProps.getIntVar(CMProps.Int.BASEMAXSTAT));
+					final int rechargeAmount = (int)Math.round(CMath.mul(5, pct));
 					boolean willBreak = false;
-					if((((Wand)target).getCharges()+RECHARGE_AMT) > ((Wand)target).getMaxCharges())
+					if((((Wand)target).getCharges()+rechargeAmount) > ((Wand)target).getMaxCharges())
 					{
 						willBreak = true;
 						((Wand)target).setCharges(((Wand)target).getMaxCharges());
 					}
 					else
 					{
-						((Wand)target).setCharges(((Wand)target).getCharges()+RECHARGE_AMT);
+						((Wand)target).setCharges(((Wand)target).getCharges()+rechargeAmount);
 					}
 					if(!(willBreak))
 					{

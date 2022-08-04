@@ -82,7 +82,8 @@ public class Dance_Polka extends Dance
 		if(affected==invoker)
 			return;
 
-		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)-3-getXLEVELLevel(invoker()));
+		final int amt = (int)Math.round(2.0 + super.statBonusPct());
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)-amt-getXLEVELLevel(invoker()));
 	}
 
 	public void show(final MOB mob, final int code, final String text)

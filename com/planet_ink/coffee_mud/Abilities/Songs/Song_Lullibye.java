@@ -80,7 +80,8 @@ public class Song_Lullibye extends Song
 		if(mob==invoker)
 			return true;
 		final boolean oldasleep=asleep;
-		if(CMLib.dice().rollPercentage()>(50-(2*getXLEVELLevel(invoker()))))
+		final double pct = super.statBonusPct();
+		if(CMLib.dice().rollPercentage()>(CMath.div(50,pct)-(2*getXLEVELLevel(invoker()))))
 			asleep=true;
 		else
 			asleep=false;

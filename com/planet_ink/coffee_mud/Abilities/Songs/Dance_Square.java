@@ -96,18 +96,23 @@ public class Dance_Square extends Dance
 			if(cmd!=null)
 			{
 				final MOB M=(MOB)affected;
-				final CMMsg omsg=CMClass.getMsg(invoker(),affected,null,CMMsg.MSG_ORDER,null);
-				if(CMLib.flags().canBeHeardMovingBy(invoker(),M)
-				&&CMLib.flags().canBeSeenBy(invoker(),M)
-				&&(M.location()==invoker().location())
-				&&(M.location().okMessage(M, omsg)))
+				final double pct = super.statBonusPct();
+				final int ilevel = (int)Math.round(CMath.mul(invoker().phyStats().level(),pct));
+				final int chance = ((M.phyStats().level()-(ilevel+getXLEVELLevel(invoker()))*10));
+				if(CMLib.dice().rollPercentage()>chance)
 				{
-					M.location().send(M, omsg);
-					if(omsg.sourceMinor()==CMMsg.TYP_ORDER)
+					final CMMsg omsg=CMClass.getMsg(invoker(),affected,null,CMMsg.MSG_ORDER,null);
+					if(CMLib.flags().canBeHeardMovingBy(invoker(),M)
+					&&CMLib.flags().canBeSeenBy(invoker(),M)
+					&&(M.location().okMessage(M, omsg)))
 					{
-						final CMObject O=CMLib.english().findCommand(M,CMParms.parse(cmd));
-						if((O!=null)&&((!(O instanceof Command))||(((Command)O).canBeOrdered())))
-							M.enqueCommand(CMParms.parse(cmd),MUDCmdProcessor.METAFLAG_FORCED|MUDCmdProcessor.METAFLAG_ORDER,0);
+						M.location().send(M, omsg);
+						if(omsg.sourceMinor()==CMMsg.TYP_ORDER)
+						{
+							final CMObject O=CMLib.english().findCommand(M,CMParms.parse(cmd));
+							if((O!=null)&&((!(O instanceof Command))||(((Command)O).canBeOrdered())))
+								M.enqueCommand(CMParms.parse(cmd),MUDCmdProcessor.METAFLAG_FORCED|MUDCmdProcessor.METAFLAG_ORDER,0);
+						}
 					}
 				}
 			}

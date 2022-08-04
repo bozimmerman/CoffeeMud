@@ -126,7 +126,7 @@ public class Play_Ballad extends Play
 		super.affectPhyStats(mob,stats);
 		if(invoker()!=null)
 			stats.setAttackAdjustment(stats.attackAdjustment()
-									 +invoker().charStats().getStat(CharStats.STAT_CHARISMA)
+									 +super.avgStat()
 									 +adjustedLevel(invoker(),0));
 	}
 }

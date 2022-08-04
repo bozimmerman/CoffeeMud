@@ -58,8 +58,13 @@ public class Prop_Doppleganger extends Property
 	protected int		lastLevel					= Integer.MIN_VALUE;
 	protected int		levelAdd					= 0;
 	protected double	levelPct					= 1.0;
+	protected int		levelCode					= 0;
+	protected boolean	diffGrp						= false;
 	protected int		diffAdd						= 0;
+	protected double	savePct						= 0;
 	protected double	diffPct						= 1.0;
+	protected int		saveAdd						= 0;
+	protected boolean	groupMultiplier				= false;
 	protected boolean	matchPlayersOnly			= false;
 	protected boolean	matchPlayersFollowersOnly	= false;
 	protected int		asMaterial					= -1;
@@ -96,9 +101,12 @@ public class Prop_Doppleganger extends Property
 		{
 			maxLevel=CMParms.getParmInt(text,"MAX",Integer.MAX_VALUE);
 			minLevel=CMParms.getParmInt(text,"MIN",Integer.MIN_VALUE);
+			levelCode=CMParms.getParmInt(text, "LEVELCODE", 0);
 			levelAdd=CMParms.getParmInt(text, "LEVELADD", 0);
-			levelPct=CMParms.getParmInt(text, "LEVELPCT", 100)/100.0;
+			levelPct=CMath.s_pct(CMParms.getParmStr(text, "LEVELPCT", "100"));
 			diffAdd=CMParms.getParmInt(text, "DIFFLADD", 0);
+			savePct=CMath.s_pct(CMParms.getParmStr(text, "SAVEPCT", "0"));
+			diffGrp=CMParms.getParmBool(text, "DIFFGRP", false);
 			diffPct=CMParms.getParmInt(text, "DIFFPCT", 100)/100.0;
 			matchPlayersFollowersOnly=CMParms.getParmBool(text, "PLAYERSNFOLS", false);
 			matchPlayersOnly=CMParms.getParmBool(text, "PLAYERSONLY", false);
@@ -167,35 +175,63 @@ public class Prop_Doppleganger extends Property
 		&&(CMLib.flags().isAliveAwakeMobile(mob,true))
 		&&(mob.curState().getHitPoints()>=mob.maxState().getHitPoints()))
 		{
-			int total=0;
-			int num=0;
 			final MOB victim=mob.getVictim();
+			final Set<MOB> all = new HashSet<MOB>();
 			if(canMimic(victim,R))
-			{
-				total+=victim.phyStats().level();
-				num++;
-			}
+				victim.getGroupMembers(all);
 			if(canMimic(entrantM,R))
-			{
-				total+=entrantM.phyStats().level();
-				num++;
-			}
+				entrantM.getGroupMembers(all);
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				final MOB M=R.fetchInhabitant(i);
 				if((M!=null)
 				&&(M!=mob)
+				&&(!all.contains(mob))
 				&&((M.getVictim()==mob)||(victim==null))
 				&&((M!=victim)&&(M!=entrantM))
 				&&(canMimic(M,R)))
+					M.getGroupMembers(all);
+			}
+			for(final Iterator<MOB> m = all.iterator();m.hasNext();)
+			{
+				if(!canMimic(m.next(),R))
+					m.remove();
+			}
+			int level=levelCode>=0?0:CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
+			int total=0;
+			int num=0;
+			for(final MOB M : all)
+			{
+				switch(levelCode)
 				{
-					total+=M.phyStats().level();
-					num++;
+				case 1:
+					if(M.phyStats().level()>level)
+						level=M.phyStats().level();
+					break;
+				case 0:
+					total += M.phyStats().level();
+					break;
+				case -1:
+					if(M.phyStats().level()<level)
+						level=M.phyStats().level();
+					break;
 				}
+				num++;
 			}
 			if(num>0)
 			{
-				int level=(int)Math.round(CMath.mul(CMath.div(total,num),levelPct))+levelAdd;
+				int levelAdd = this.levelAdd;
+				double levelPct = this.levelPct;
+				double savePct = this.savePct;
+				if(diffGrp)
+				{
+					levelAdd *= num;
+					levelPct = CMath.mul(levelPct,num);
+					savePct = CMath.mul(savePct,num);
+				}
+				if(levelCode == 0)
+					level = (int)Math.round(CMath.div(total,num));
+				level=(int)Math.round(CMath.mul(level,levelPct))+levelAdd;
 				if(level<minLevel)
 					level=minLevel;
 				if(level>maxLevel)
@@ -212,6 +248,12 @@ public class Prop_Doppleganger extends Property
 					mob.baseState().setHitPoints(CMLib.leveler().getPlayerHitPoints(mob));
 					mob.baseState().setMana(CMLib.leveler().getLevelMana(mob));
 					mob.baseState().setMovement(CMLib.leveler().getLevelMove(mob));
+					if(savePct > 0.0)
+					{
+						final int saveSaveAmt = (int)Math.round(CMath.mul(difflevel,savePct));
+						for(final int cd : CharStats.CODES.SAVING_THROWS())
+							mob.baseCharStats().setStat(cd, mob.baseCharStats().getStat(cd) + saveSaveAmt);
+					}
 					mob.basePhyStats().setLevel(level);
 					mob.phyStats().setLevel(level);
 					mob.recoverPhyStats();
@@ -266,10 +308,25 @@ public class Prop_Doppleganger extends Property
 		//&&(lastLevelChangers))
 		{
 			//lastLevelChangers=false;
+			if(msg.source() == affected)
+			{
+				final Room R=(msg.target() instanceof Room)?((Room)msg.target()):msg.source().location();
+				MOB highestM = null;
+				for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+				{
+					final MOB M=m.nextElement();
+					if((M != msg.source())
+					&&((highestM==null)||(M.phyStats().level()>highestM.phyStats().level())))
+						highestM = M;
+				}
+				if(highestM != null)
+					doppleGangMob(highestM, msg.source(), R);
+			}
+			else
 			if(affected instanceof MOB)
 			{
 				final Room R=(msg.target() instanceof Room)?((Room)msg.target()):msg.source().location();
-				this.doppleGangMob(msg.source(), (MOB)affected, R);
+				doppleGangMob(msg.source(), (MOB)affected, R);
 			}
 			else
 			if(affected instanceof Room)
@@ -282,7 +339,7 @@ public class Prop_Doppleganger extends Property
 					&&(M.getStartRoom()!=null)
 					&&(M.amFollowing()==null)
 					&&(M.getStartRoom().getArea()==R.getArea()))
-						this.doppleGangMob(msg.source(), M, R);
+						doppleGangMob(msg.source(), M, R);
 				}
 			}
 			else
@@ -296,7 +353,7 @@ public class Prop_Doppleganger extends Property
 					&&(M.getStartRoom()!=null)
 					&&(M.amFollowing()==null)
 					&&(M.getStartRoom().getArea()==affected))
-						this.doppleGangMob(msg.source(), M, R);
+						doppleGangMob(msg.source(), M, R);
 				}
 			}
 		}

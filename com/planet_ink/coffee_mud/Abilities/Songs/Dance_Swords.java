@@ -178,7 +178,9 @@ public class Dance_Swords extends Dance
 					M.location().show(M,victiM,affected,CMMsg.MSG_OK_ACTION,L("<O-NAME> attacks <T-NAME> and misses!"));
 				else
 				{
-					final int bonusDamage=(affected.phyStats().damage()+5+getXLEVELLevel(M))-M.phyStats().damage();
+					final double pct = super.statBonusPct();
+					final int dmg = (int)Math.round(CMath.mul(5,pct));
+					final int bonusDamage=(affected.phyStats().damage()+dmg+getXLEVELLevel(M))-M.phyStats().damage();
 					final int damage=CMLib.combat().adjustedDamage(M, (Weapon)affected, victiM, bonusDamage,false, false);
 					CMLib.combat().postDamage(M,victiM,affected,damage,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_WEAPONATTACK,
 											((Weapon)affected).weaponDamageType(),L("@x1 attacks and <DAMAGE> <T-NAME>!",affected.name()));

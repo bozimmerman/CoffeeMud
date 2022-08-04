@@ -98,6 +98,62 @@ public class Dance extends StdAbility
 	protected Room			originRoom		= null;
 	protected volatile int	danceDepth		= 0;
 
+	protected volatile Pair<Double,Integer> bonusCache = null;
+
+	@Override
+	public void setAffectedOne(final Physical P)
+	{
+		bonusCache = null;
+		super.setAffectedOne(P);
+	}
+
+	@Override
+	public void setInvoker(final MOB mob)
+	{
+		super.setInvoker(mob);
+		bonusCache = null;
+	}
+
+	protected synchronized Pair<Double,Integer> getBonuses()
+	{
+		if(bonusCache != null)
+			return bonusCache;
+		final Double d = Double.valueOf(innerStatBonusPct());
+		final Integer i = Integer.valueOf(innerAvgStat());
+		bonusCache = new Pair<Double,Integer>(d,i);
+		return bonusCache;
+	}
+
+	protected double statBonusPct()
+	{
+		return getBonuses().first.doubleValue();
+	}
+
+	protected int avgStat()
+	{
+		return getBonuses().second.intValue();
+	}
+
+	protected double innerStatBonusPct()
+	{
+		if(invoker()==null)
+			return 1.0;
+		final double max = CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
+		double pct = CMath.div(invoker().charStats().getStat(CharStats.STAT_CHARISMA)+3, max);
+		pct += CMath.div(invoker().charStats().getStat(CharStats.STAT_STRENGTH)+3, max);
+		return pct / 2.0;
+	}
+
+	protected int innerAvgStat()
+	{
+		final int max = CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
+		if(invoker()==null)
+			return max;
+		final double pct = CMath.div((invoker().charStats().getStat(CharStats.STAT_CHARISMA)+3)
+									+ (invoker().charStats().getStat(CharStats.STAT_STRENGTH)+3),2.0);
+		return (int)Math.round(pct);
+	}
+
 	protected boolean skipStandardDanceInvoke()
 	{
 		return false;
@@ -139,10 +195,12 @@ public class Dance extends StdAbility
 	@Override
 	public int adjustedLevel(final MOB mob, final int asLevel)
 	{
-		final int level=super.adjustedLevel(mob,asLevel);
-		final int charisma=(invoker().charStats().getStat(CharStats.STAT_CHARISMA)-10);
-		if(charisma>0)
-			return level+(charisma/3);
+		int level=super.adjustedLevel(mob,asLevel);
+		if(mob != null)
+		{
+			level += (mob.charStats().getStat(CharStats.STAT_CHARISMA)-10)/4;
+			level += (mob.charStats().getStat(CharStats.STAT_STRENGTH)-10)/5;
+		}
 		return level;
 	}
 

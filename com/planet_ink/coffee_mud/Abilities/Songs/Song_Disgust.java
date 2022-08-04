@@ -85,6 +85,14 @@ public class Song_Disgust extends Song
 			final MOB newMOB=room.fetchRandomInhabitant();
 			if(newMOB!=mob)
 			{
+				if(invoker() != null)
+				{
+					final double pct = super.statBonusPct();
+					final int ilevel = (int)Math.round(CMath.mul(invoker().phyStats().level(),pct));
+					final int chance = ((mob.phyStats().level()-ilevel-getXLEVELLevel(invoker()))*20);
+					if(CMLib.dice().rollPercentage()<chance)
+						return true;
+				}
 				room.show(mob,newMOB,CMMsg.MSG_OK_ACTION,L("<S-NAME> appear(s) disgusted with <T-NAMESELF>."));
 				CMLib.combat().postAttack(mob,newMOB,mob.fetchWieldedItem());
 			}

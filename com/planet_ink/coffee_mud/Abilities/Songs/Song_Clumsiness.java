@@ -63,8 +63,8 @@ public class Song_Clumsiness extends Song
 		if(affected==invoker)
 			return;
 
-		affectableStats.setAttackAdjustment((affectableStats.attackAdjustment()
-										-invoker().charStats().getStat(CharStats.STAT_CHARISMA))
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()
+										-super.avgStat()
 										-(adjustedLevel(invoker(),0)*2));
 	}
 

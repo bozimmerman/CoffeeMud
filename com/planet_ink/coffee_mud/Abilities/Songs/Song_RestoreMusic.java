@@ -148,7 +148,11 @@ public class Song_RestoreMusic extends Song
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("The music notations on <T-NAME> become more definite!"));
-				((Scroll)target).setUsesRemaining(((Scroll)target).usesRemaining()+1);
+				final double pct = CMath.div(mob.charStats().getStat(CharStats.STAT_CHARISMA), CMProps.getIntVar(CMProps.Int.BASEMAXSTAT));
+				final int rechargeAmount = (int)Math.round(CMath.mul(2, pct));
+				((Scroll)target).setUsesRemaining(((Scroll)target).usesRemaining()+rechargeAmount);
+				if(((Scroll)target).usesRemaining()>((Scroll)target).getSpells().size())
+					((Scroll)target).setUsesRemaining(((Scroll)target).getSpells().size());
 			}
 
 		}

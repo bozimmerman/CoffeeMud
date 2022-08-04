@@ -130,6 +130,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		private String[]triggerBits = null;
 
 		@Override
+		public boolean add(final ScriptLn line)
+		{
+			if(line == null)
+				Log.errOut("Tried to add NULL line!",new Exception());
+			return super.add(line);
+		}
+
+		@Override
 		public int getTriggerCode()
 		{
 			if(triggerCode != null)
@@ -8856,7 +8864,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					final ScriptLn ln = script.get(si);
 					if(ln==null)
+					{
+						script.remove(si);
 						continue;
+					}
 					s=ln.first;
 					tt=ln.second;
 					if(tt!=null)

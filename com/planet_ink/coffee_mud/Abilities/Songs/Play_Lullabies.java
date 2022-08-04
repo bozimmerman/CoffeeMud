@@ -86,7 +86,8 @@ public class Play_Lullabies extends Play
 		if(mob==invoker)
 			return true;
 		final boolean oldasleep=asleep;
-		if(CMLib.dice().rollPercentage()>(50-(2*getXLEVELLevel(invoker()))))
+		final int chance=(int)Math.round(CMath.div(50,super.statBonusPct()));
+		if(CMLib.dice().rollPercentage()>(chance-(2*getXLEVELLevel(invoker()))))
 			asleep=true;
 		else
 			asleep=false;

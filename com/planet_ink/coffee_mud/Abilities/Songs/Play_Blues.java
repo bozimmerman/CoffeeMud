@@ -126,7 +126,7 @@ public class Play_Blues extends Play
 		if((invoker==null)||(invoker==affected))
 			return;
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()
-											-((invoker().charStats().getStat(CharStats.STAT_CHARISMA)/4)
+											-((super.avgStat()/4)
 													+(adjustedLevel(invoker(),0))));
 	}
 
@@ -135,7 +135,7 @@ public class Play_Blues extends Play
 	{
 		super.affectCharStats(mob,stats);
 		if((invoker()!=null)&&(invoker()!=mob))
-			stats.setStat(CharStats.STAT_SAVE_JUSTICE,stats.getStat(CharStats.STAT_SAVE_JUSTICE)-(invoker().charStats().getStat(CharStats.STAT_CHARISMA)+getXLEVELLevel(invoker())));
+			stats.setStat(CharStats.STAT_SAVE_JUSTICE,stats.getStat(CharStats.STAT_SAVE_JUSTICE)-(super.avgStat()+getXLEVELLevel(invoker())));
 	}
 }
 

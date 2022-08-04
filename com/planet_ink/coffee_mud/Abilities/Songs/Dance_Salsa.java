@@ -129,7 +129,8 @@ public class Dance_Salsa extends Dance
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+4+getXLEVELLevel(invoker()));
+		final int amt = (int)Math.round(4.0 * super.statBonusPct());
+		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+amt+getXLEVELLevel(invoker()));
 	}
 
 }

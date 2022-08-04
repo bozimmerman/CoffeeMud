@@ -67,6 +67,6 @@ public class Play_Carol extends Play
 		if(invoker()!=null)
 			stats.setStat(CharStats.STAT_SAVE_MIND,stats.getStat(CharStats.STAT_SAVE_MIND)
 								+(adjustedLevel(invoker(),0)*2)
-								+invoker().charStats().getStat(CharStats.STAT_CHARISMA));
+								+super.avgStat());
 	}
 }

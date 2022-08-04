@@ -141,6 +141,7 @@ public class Play_LoveSong extends Play
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+4+(getXLEVELLevel(invoker())));
+		final int chaBonus = (int)Math.round(CMath.mul(4,super.statBonusPct()));
+		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+chaBonus+(getXLEVELLevel(invoker())));
 	}
 }

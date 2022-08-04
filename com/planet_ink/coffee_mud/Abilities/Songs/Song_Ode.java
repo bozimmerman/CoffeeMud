@@ -174,6 +174,7 @@ public class Song_Ode extends Song
 	{
 		if((whom!=null)&&(song!=null))
 		{
+			final int max = 7 + super.avgStat();
 			final Hashtable<Integer,Integer> H=getSongBenefits(song);
 			for(final Enumeration<Integer> e=H.keys();e.hasMoreElements();)
 			{
@@ -187,8 +188,8 @@ public class Song_Ode extends Song
 					switch(chk[2].charAt(0))
 					{
 					case 'a':
-						if(ticks>25)
-							ticks=25;
+						if(ticks>max)
+							ticks=max;
 						affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+ticks+getXLEVELLevel(invoker()));
 						break;
 					default:
@@ -205,6 +206,7 @@ public class Song_Ode extends Song
 		if((whom!=null)&&(song!=null))
 		{
 			final Hashtable<Integer,Integer> H=getSongBenefits(song);
+			final int max = 1 + (super.avgStat()/5);
 			for(final Enumeration<Integer> e=H.keys();e.hasMoreElements();)
 			{
 				final Integer I=e.nextElement();
@@ -219,8 +221,8 @@ public class Song_Ode extends Song
 					final int stat=CMath.s_int(chk[2]);
 					if(CharStats.CODES.isBASE(stat))
 					{
-						if(ticks>5)
-							ticks=5;
+						if(ticks>max)
+							ticks=max;
 					}
 					affectableStats.setStat(stat,affectableStats.getStat(stat)+ticks+getXLEVELLevel(invoker()));
 				}
@@ -234,6 +236,7 @@ public class Song_Ode extends Song
 		if((whom!=null)&&(song!=null))
 		{
 			final Hashtable<Integer,Integer> H=getSongBenefits(song);
+			final int max = 10 + (2*super.avgStat());
 			for(final Enumeration<Integer> e=H.keys();e.hasMoreElements();)
 			{
 				final Integer I=e.nextElement();
@@ -241,8 +244,8 @@ public class Song_Ode extends Song
 				if((chk!=null)&&(chk[1].startsWith("s")))
 				{
 					int ticks=H.get(I).intValue();
-					if(ticks>50)
-						ticks=50;
+					if(ticks>max)
+						ticks=max;
 					if(ticks<=0)
 						ticks=1;
 					switch(chk[2].charAt(0))

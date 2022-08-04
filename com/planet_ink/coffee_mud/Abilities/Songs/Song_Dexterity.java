@@ -65,7 +65,8 @@ public class Song_Dexterity extends Song
 		if(affected==invoker)
 			affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)-amount);
 		else
-			affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+(amount+super.getXLEVELLevel(invoker())));
+			affectableStats.adjStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)
+														+(amount+super.getXLEVELLevel(invoker())));
 	}
 
 	@Override
@@ -90,7 +91,7 @@ public class Song_Dexterity extends Song
 		if(amount<=0)
 		{
 			if(mob.isMonster())
-				amount=mob.charStats().getStat(CharStats.STAT_DEXTERITY)/2;
+				amount=mob.charStats().getStat(CharStats.STAT_DEXTERITY)/4;
 			else
 			{
 				mob.tell(L("Sing about how much dexterity?"));
@@ -98,7 +99,9 @@ public class Song_Dexterity extends Song
 			}
 		}
 
-		if(amount>=mob.charStats().getStat(CharStats.STAT_DEXTERITY))
+		if((amount>=((mob.charStats().getStat(CharStats.STAT_DEXTERITY)/4)
+				+((mob.charStats().getStat(CharStats.STAT_CHARISMA)-10)/3)))
+		||(amount>=(mob.charStats().getStat(CharStats.STAT_DEXTERITY))))
 		{
 			mob.tell(L("You can't sing away that much dexterity."));
 			return false;

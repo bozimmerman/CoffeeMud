@@ -77,11 +77,16 @@ public class Song_Serenity extends Song
 		&&(CMLib.flags().canBeHeardSpeakingBy(invoker,msg.source()))
 		&&(msg.target() instanceof MOB)
 		&&((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
-			||((msg.tool() instanceof Ability)&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)))
-		&&((invoker()==null)
-			||(CMLib.dice().rollPercentage()>((msg.source().phyStats().level()-invoker().phyStats().level()-getXLEVELLevel(invoker()))*20)))
-		)
+			||((msg.tool() instanceof Ability)&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))))
 		{
+			if(invoker() != null)
+			{
+				final double pct = super.statBonusPct();
+				final int ilevel = (int)Math.round(CMath.mul(invoker().phyStats().level(), pct));
+				final int chance = ((msg.source().phyStats().level()-ilevel-getXLEVELLevel(invoker()))*20);
+				if(CMLib.dice().rollPercentage()<chance)
+					return super.okMessage(myHost,msg);
+			}
 			if((msg.tool() instanceof Ability)
 			&&(((Ability)msg.tool()).invoker()==invoker)
 			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)

@@ -72,7 +72,9 @@ public class Song_Death extends Song
 		if(mob==invoker)
 			return true;
 		final MOB invoker=(invoker()!=null) ? invoker() : mob;
-		int hpLoss=(int)Math.round(Math.floor(mob.curState().getHitPoints()*(0.07+(0.02*(1+super.getXLEVELLevel(invoker()))))));
+		double pctHP = 0.06+CMath.mul(0.02,1+super.getXLEVELLevel(invoker()));
+		pctHP += CMath.mul(0.001,super.avgStat());
+		int hpLoss=(int)Math.round(Math.floor(mob.curState().getHitPoints()*pctHP));
 		if(invoker != null)
 		{
 			final Room R=invoker.location();

@@ -60,7 +60,10 @@ public class Song_Knowledge extends Song
 		super.affectCharStats(affected,affectableStats);
 		if(invoker==null)
 			return;
-		affectableStats.setStat( CharStats.STAT_WISDOM, ( affectableStats.getStat( CharStats.STAT_WISDOM ) + 2 + getXLEVELLevel( invoker() ) ) );
-		affectableStats.setStat( CharStats.STAT_INTELLIGENCE, ( affectableStats.getStat( CharStats.STAT_INTELLIGENCE ) + 2 + getXLEVELLevel( invoker() ) ) );
+		final int cha = super.avgStat();
+		affectableStats.setStat( CharStats.STAT_WISDOM, ( Math.max(cha,affectableStats.getStat( CharStats.STAT_WISDOM ))
+															+ 2 + getXLEVELLevel( invoker() ) ) );
+		affectableStats.setStat( CharStats.STAT_INTELLIGENCE, ( Math.max(cha,affectableStats.getStat( CharStats.STAT_INTELLIGENCE ))
+															+ 2 + getXLEVELLevel( invoker() ) ) );
 	}
 }

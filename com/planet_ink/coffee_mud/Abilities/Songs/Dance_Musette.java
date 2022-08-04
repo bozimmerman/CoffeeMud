@@ -69,6 +69,7 @@ public class Dance_Musette extends Dance
 		if(invoker==affected)
 			return;
 
-		affectableStats.setSpeed(CMath.div(affectableStats.speed(),2.0+CMath.mul(super.getXLEVELLevel(invoker()),0.30)));
+		final double pct = 1.0 + super.statBonusPct();
+		affectableStats.setSpeed(CMath.div(affectableStats.speed(),pct+CMath.mul(super.getXLEVELLevel(invoker()),0.30)));
 	}
 }

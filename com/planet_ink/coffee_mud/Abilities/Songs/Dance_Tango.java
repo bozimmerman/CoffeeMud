@@ -58,7 +58,9 @@ public class Dance_Tango extends Dance
 	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMob,affectableStats);
-		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+10+getXLEVELLevel(invoker()));
+		final double pct = super.statBonusPct();
+		final int chaBonus = (int)Math.round(CMath.mul(10,pct));
+		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+chaBonus+getXLEVELLevel(invoker()));
 	}
 
 	@Override

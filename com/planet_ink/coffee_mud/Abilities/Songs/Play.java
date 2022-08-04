@@ -82,6 +82,8 @@ public class Play extends StdAbility
 	protected Room				originRoom		= null;
 	protected volatile int		playDepth		= 0;
 
+	protected volatile Pair<Double,Integer> bonusCache		= null;
+
 	@Override
 	public int classificationCode()
 	{
@@ -97,6 +99,64 @@ public class Play extends StdAbility
 	protected boolean maliciousButNotAggressiveFlag()
 	{
 		return false;
+	}
+
+	@Override
+	public void setAffectedOne(final Physical P)
+	{
+		bonusCache = null;
+		super.setAffectedOne(P);
+	}
+
+	@Override
+	public void setInvoker(final MOB mob)
+	{
+		super.setInvoker(mob);
+		bonusCache = null;
+	}
+
+	protected synchronized Pair<Double,Integer> getBonuses()
+	{
+		if(bonusCache != null)
+			return bonusCache;
+		final Double d = Double.valueOf(innerStatBonusPct());
+		final Integer i = Integer.valueOf(innerAvgStat());
+		bonusCache = new Pair<Double,Integer>(d,i);
+		return bonusCache;
+	}
+
+	protected double statBonusPct()
+	{
+		return getBonuses().first.doubleValue();
+	}
+
+	protected int avgStat()
+	{
+		return getBonuses().second.intValue();
+	}
+
+	protected double innerStatBonusPct()
+	{
+		if(invoker()==null)
+			return 1.0;
+		final double max = CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
+		double pct = CMath.div(invoker().charStats().getStat(CharStats.STAT_CHARISMA)+3, max);
+		pct += CMath.div(invoker().charStats().getStat(CharStats.STAT_INTELLIGENCE)+3, max);
+		if(instrument!=null)
+			pct+=CMath.div(instrument.phyStats().ability() * 2, max);
+		return pct / 2.0;
+	}
+
+	protected int innerAvgStat()
+	{
+		final int max = CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
+		if(invoker()==null)
+			return max;
+		double pct = CMath.div((invoker().charStats().getStat(CharStats.STAT_CHARISMA)+3)
+							+ (invoker().charStats().getStat(CharStats.STAT_INTELLIGENCE)+3),2.0);
+		if(instrument!=null)
+			pct+=instrument.phyStats().ability();
+		return (int)Math.round(pct);
 	}
 
 	@Override
@@ -151,6 +211,11 @@ public class Play extends StdAbility
 	public int adjustedLevel(final MOB mob, final int asLevel)
 	{
 		int level=super.adjustedLevel(mob,asLevel);
+		if(mob != null)
+		{
+			level += (mob.charStats().getStat(CharStats.STAT_CHARISMA)-10)/4;
+			level += (mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)-10)/5;
+		}
 		if(instrument!=null)
 			level+=instrument.phyStats().ability();
 		return level;

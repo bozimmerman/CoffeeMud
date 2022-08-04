@@ -180,7 +180,8 @@ public class Song_EnchantInstrument extends Song
 			return false;
 		}
 
-		int experienceToLose=10*CMLib.ableMapper().lowestQualifyingLevel(enchantA.ID());
+		int experienceToLose=30 + (10*CMLib.ableMapper().lowestQualifyingLevel(enchantA.ID()))
+				-(mob.charStats().getStat(CharStats.STAT_CHARISMA));
 		if((mob.getExperience()-experienceToLose)<0)
 		{
 			mob.tell(L("You don't have enough experience to cast this spell."));
