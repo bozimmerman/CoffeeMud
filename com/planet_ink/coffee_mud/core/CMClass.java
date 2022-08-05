@@ -3588,7 +3588,6 @@ public class CMClass extends ClassLoader
 				o = syncCache.get(key);
 				if(o == null)
 				{
-System.out.println(syncCache.size());
 					o=new Object();
 					syncCache.put(key, o);
 				}
