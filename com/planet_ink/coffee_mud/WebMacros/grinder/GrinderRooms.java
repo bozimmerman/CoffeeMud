@@ -69,7 +69,7 @@ public class GrinderRooms
 		final String className=httpReq.getUrlParameter("CLASSES");
 		if((className==null)||(className.length()==0))
 			return "Please select a class type for this room.";
-		synchronized("SYNC"+R.roomID())
+		synchronized(CMClass.getSync("SYNC"+R.roomID()))
 		{
 			R=CMLib.map().getRoom(R);
 

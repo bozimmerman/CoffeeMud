@@ -239,7 +239,7 @@ public class ThinRoom implements Room
 		{
 			recurse=true;
 			Room myR=null;
-			synchronized(("SYNC"+roomID))
+			synchronized(CMClass.getSync(("SYNC"+roomID)))
 			{
 				myR=CMLib.map().getRoom(roomID);
 				if(myR==null)

@@ -70,7 +70,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		journalSummaryStats= (Hashtable<String,JournalMetaData>)Resources.getResource("FORUM_JOURNAL_STATS");
 		if(journalSummaryStats == null)
 		{
-			synchronized("FORUM_JOURNAL_STATS")
+			synchronized(CMClass.getSync("FORUM_JOURNAL_STATS"))
 			{
 				journalSummaryStats= (Hashtable<String,JournalMetaData>)Resources.getResource("FORUM_JOURNAL_STATS");
 				if(journalSummaryStats==null)

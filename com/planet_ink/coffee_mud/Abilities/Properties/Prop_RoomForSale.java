@@ -268,7 +268,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			Room R=(Room)affected;
 			if(R!=null)
 			{
-				synchronized("SYNC"+R.roomID())
+				synchronized(CMClass.getSync("SYNC"+R.roomID()))
 				{
 					R=CMLib.map().getRoom(R);
 					for(int m=0;m<R.numInhabitants();m++)
@@ -326,7 +326,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		boolean updateItems=false;
 		boolean updateExits=false;
 		boolean updateRoom=false;
-		synchronized("SYNC"+R.roomID())
+		synchronized(CMClass.getSync("SYNC"+R.roomID()))
 		{
 			R=CMLib.map().getRoom(R);
 			if(R==null)
@@ -636,7 +636,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		if(affected instanceof Room)
 		{
 			Room R=(Room)affected;
-			synchronized("SYNC"+R.roomID())
+			synchronized(CMClass.getSync("SYNC"+R.roomID()))
 			{
 				R=CMLib.map().getRoom(R);
 				int[] data=updateLotWithThisData(R,this,false,scheduleReset,optPlayerList,lastItemNums,daysWithNoChange);

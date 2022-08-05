@@ -263,7 +263,7 @@ public class Copy extends StdCommand
 					mob.tell(L("A room already exists @x1!",(CMLib.directions().getInDirectionName(dirCode, dirType))));
 					return false;
 				}
-				synchronized("SYNC"+room.roomID())
+				synchronized(CMClass.getSync("SYNC"+room.roomID()))
 				{
 					final Room newRoom=(Room)E.copyOf();
 					newRoom.clearSky();
@@ -329,7 +329,7 @@ public class Copy extends StdCommand
 						return false;
 					}
 				}
-				synchronized("SYNC"+editRoom.roomID())
+				synchronized(CMClass.getSync("SYNC"+editRoom.roomID()))
 				{
 					final Exit oldE=editRoom.getRawExit(dirCode);
 					if((oldE==null)||(oldE!=E))

@@ -1027,7 +1027,7 @@ public class Reset extends StdCommand
 			for(final Enumeration<Room> e=A.getCompleteMap();e.hasMoreElements();)
 			{
 				Room R=e.nextElement();
-				synchronized("SYNC"+R.roomID())
+				synchronized(CMClass.getSync("SYNC"+R.roomID()))
 				{
 					R=CMLib.map().getRoom(R);
 					if((R.roomID().length()>0)
@@ -1079,7 +1079,7 @@ public class Reset extends StdCommand
 			for(final Enumeration<Room> e=A.getCompleteMap();e.hasMoreElements();)
 			{
 				Room R=e.nextElement();
-				synchronized("SYNC"+R.roomID())
+				synchronized(CMClass.getSync("SYNC"+R.roomID()))
 				{
 					R=CMLib.map().getRoom(R);
 					if((R.roomID().length()>0)
@@ -1138,7 +1138,7 @@ public class Reset extends StdCommand
 				for(final Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
 				{
 					R=e.nextElement();
-					synchronized("SYNC"+R.roomID())
+					synchronized(CMClass.getSync("SYNC"+R.roomID()))
 					{
 						R=CMLib.map().getRoom(R);
 						T=CMLib.law().getLandTitle(R);
@@ -1456,7 +1456,7 @@ public class Reset extends StdCommand
 				{
 					Room R=CMLib.map().getRoom(r.next());
 					if(R!=null)
-					synchronized("SYNC"+R.roomID())
+					synchronized(CMClass.getSync("SYNC"+R.roomID()))
 					{
 						R=CMLib.map().getRoom(R);
 						if(R==null)
@@ -1586,7 +1586,7 @@ public class Reset extends StdCommand
 				{
 					Room R=CMLib.map().getRoom(r.next());
 					if(R!=null)
-					synchronized("SYNC"+R.roomID())
+					synchronized(CMClass.getSync("SYNC"+R.roomID()))
 					{
 						R=CMLib.map().getRoom(R);
 						if(R==null)
@@ -1681,7 +1681,7 @@ public class Reset extends StdCommand
 						Room R=r.nextElement();
 						if(R.roomID().length()==0)
 							continue;
-						synchronized("SYNC"+R.roomID())
+						synchronized(CMClass.getSync("SYNC"+R.roomID()))
 						{
 							R=CMLib.map().getRoom(R);
 							CMLib.map().resetRoom(R, true);
@@ -1731,7 +1731,7 @@ public class Reset extends StdCommand
 						Room R=r.nextElement();
 						if(R.roomID().length()==0)
 							continue;
-						synchronized("SYNC"+R.roomID())
+						synchronized(CMClass.getSync("SYNC"+R.roomID()))
 						{
 							R=CMLib.map().getRoom(R);
 							CMLib.map().resetRoom(R, true);
@@ -1849,7 +1849,7 @@ public class Reset extends StdCommand
 						Room R=r.nextElement();
 						if(R.roomID().length()>0)
 						{
-							synchronized("SYNC"+R.roomID())
+							synchronized(CMClass.getSync("SYNC"+R.roomID()))
 							{
 								R=CMLib.map().getRoom(R);
 								CMLib.map().resetRoom(R, true);
@@ -2130,7 +2130,7 @@ public class Reset extends StdCommand
 						mob.session().rawOut(recordedChanges.toString());
 						recordedChanges.setLength(0);
 					}
-					synchronized("SYNC"+R.roomID())
+					synchronized(CMClass.getSync("SYNC"+R.roomID()))
 					{
 
 						R=CMLib.map().getRoom(R);
@@ -2259,7 +2259,7 @@ public class Reset extends StdCommand
 						Room R=r.nextElement();
 						if(R.roomID().length()==0)
 							continue;
-						synchronized("SYNC"+R.roomID())
+						synchronized(CMClass.getSync("SYNC"+R.roomID()))
 						{
 							R=CMLib.map().getRoom(R);
 							CMLib.map().resetRoom(R, true);

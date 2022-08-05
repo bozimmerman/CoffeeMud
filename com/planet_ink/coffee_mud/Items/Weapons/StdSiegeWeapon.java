@@ -289,25 +289,34 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 		&& (siegeCombatRoom.isContent(this))
 		)
 		{
-			if(coordinates == null)
+			PairList<Item,int[]> coords;
+			synchronized(this)
 			{
-				synchronized((""+siegeCombatRoom + "_SIEGE_TACTICAL"))
+				coords = this.coordinates;
+			}
+			if(coords == null)
+			{
+				synchronized(CMClass.getSync((""+siegeCombatRoom + "_SIEGE_TACTICAL")))
 				{
-					for(int i=0;i<siegeCombatRoom.numItems();i++)
+					coords = this.coordinates;
+					if(coords == null)
 					{
-						final Item I=siegeCombatRoom.getItem(i);
-						if((I instanceof SiegableItem)
-						&&(((SiegableItem)I).getCombatField() != null))
+						for(int i=0;i<siegeCombatRoom.numItems();i++)
 						{
-							this.coordinates = ((SiegableItem)I).getCombatField();
+							final Item I=siegeCombatRoom.getItem(i);
+							if((I instanceof SiegableItem)
+							&&(((SiegableItem)I).getCombatField() != null))
+							{
+								this.coordinates = ((SiegableItem)I).getCombatField();
+							}
 						}
-					}
-					if(coordinates == null)
-					{
-						this.coordinates = new SPairList<Item,int[]>();
+						if(coordinates == null)
+						{
+							this.coordinates = new SPairList<Item,int[]>();
+						}
+						coords = this.coordinates;
 					}
 				}
-				final PairList<Item,int[]> coords = this.coordinates;
 				if(coords != null)
 				{
 					if(!coords.containsFirst(this))
@@ -336,7 +345,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 
 	protected void clearTacticalMode()
 	{
-		synchronized((""+siegeCombatRoom + "_SIEGE_TACTICAL"))
+		synchronized(CMClass.getSync((""+siegeCombatRoom + "_SIEGE_TACTICAL")))
 		{
 			final PairList<Item,int[]> coords = this.coordinates;
 			if(coords != null)
@@ -356,7 +365,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 		if(siegeCombatRoom != null)
 		{
 			PairList<Item,int[]> coords = null;
-			synchronized((""+siegeCombatRoom + "_SIEGE_TACTICAL"))
+			synchronized(CMClass.getSync((""+siegeCombatRoom + "_SIEGE_TACTICAL")))
 			{
 				 coords = this.coordinates;
 			}

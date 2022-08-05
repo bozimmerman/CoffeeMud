@@ -112,7 +112,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 		for(int v=0;v<V.size();v++)
 		{
 			Room R=V.get(v);
-			synchronized("SYNC"+R.roomID())
+			synchronized(CMClass.getSync("SYNC"+R.roomID()))
 			{
 				R=CMLib.map().getRoom(R);
 				final LandTitle A=(LandTitle)R.fetchEffect(ID());

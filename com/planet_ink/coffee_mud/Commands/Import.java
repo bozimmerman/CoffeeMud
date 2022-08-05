@@ -414,7 +414,7 @@ public class Import extends StdCommand
 				final int s1=link.indexOf('/');
 				final int s2=link.lastIndexOf('/');
 				final String sourceRoomID=link.substring(0,s1);
-				synchronized(("SYNC"+sourceRoomID))
+				synchronized(CMClass.getSync(("SYNC"+sourceRoomID)))
 				{
 					final int direction=CMath.s_int(link.substring(s1+1,s2));
 					final String destRoomID=link.substring(s2+1);
@@ -6826,7 +6826,7 @@ public class Import extends StdCommand
 										Room R2=r2.nextElement();
 										if((R2.roomID().endsWith("#"+linkRoomID))&&(R2!=R))
 										{
-											synchronized("SYNC"+R2.roomID())
+											synchronized(CMClass.getSync("SYNC"+R2.roomID()))
 											{
 												R2=CMLib.map().getRoom(R2);
 												for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -7666,7 +7666,7 @@ public class Import extends StdCommand
 					else
 					if(RR==null)
 					{
-						synchronized("SYNC"+R1.roomID())
+						synchronized(CMClass.getSync("SYNC"+R1.roomID()))
 						{
 							R1=CMLib.map().getRoom(R1);
 							R1.rawDoors()[dir]=TR;

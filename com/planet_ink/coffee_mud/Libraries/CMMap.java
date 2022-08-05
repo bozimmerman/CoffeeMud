@@ -464,7 +464,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			return "Opposite room already exists and heads this way.  One-way link created.";
 
 		Exit thisExit=null;
-		synchronized("SYNC"+from.roomID())
+		synchronized(CMClass.getSync("SYNC"+from.roomID()))
 		{
 			from=getRoom(from);
 			if(opRoom!=null)
@@ -479,7 +479,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			}
 			CMLib.database().DBUpdateExits(from);
 		}
-		synchronized("SYNC"+room.roomID())
+		synchronized(CMClass.getSync("SYNC"+room.roomID()))
 		{
 			room=getRoom(room);
 			if(room.rawDoors()[Directions.getOpDirectionCode(direction)]==null)
@@ -1467,7 +1467,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		final List<Room> onesToRenumber=new Vector<Room>();
 		for(Room R : allMyDamnRooms)
 		{
-			synchronized("SYNC"+R.roomID())
+			synchronized(CMClass.getSync("SYNC"+R.roomID()))
 			{
 				R=getRoom(R);
 				R.setArea(A);
@@ -1817,7 +1817,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			{
 				final Room R=p.first;
 				final int d=p.second.intValue();
-				synchronized("SYNC"+R.roomID())
+				synchronized(CMClass.getSync("SYNC"+R.roomID()))
 				{
 					R.rawDoors()[d]=null;
 					if((R.getRawExit(d)!=null)&&(R.getRawExit(d).isGeneric()))
@@ -2208,7 +2208,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			return;
 		if(room.roomID().length()==0)
 			return;
-		synchronized("SYNC"+room.roomID())
+		synchronized(CMClass.getSync("SYNC"+room.roomID()))
 		{
 			room=getRoom(room);
 			if((rebuildGrids)&&(room instanceof GridLocale))

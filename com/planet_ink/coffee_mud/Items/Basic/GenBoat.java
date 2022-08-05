@@ -196,20 +196,23 @@ public class GenBoat extends GenRideable implements SiegableItem
 		{
 			if(coordinates == null)
 			{
-				synchronized((""+siegeCombatRoom + "_SIEGE_TACTICAL"))
+				synchronized(CMClass.getSync((""+siegeCombatRoom + "_SIEGE_TACTICAL")))
 				{
-					for(int i=0;i<siegeCombatRoom.numItems();i++)
-					{
-						final Item I=siegeCombatRoom.getItem(i);
-						if((I instanceof SiegableItem)
-						&&(((SiegableItem)I).getCombatField() != null))
-						{
-							this.coordinates = ((SiegableItem)I).getCombatField();
-						}
-					}
 					if(coordinates == null)
 					{
-						this.coordinates = new SPairList<Item,int[]>();
+						for(int i=0;i<siegeCombatRoom.numItems();i++)
+						{
+							final Item I=siegeCombatRoom.getItem(i);
+							if((I instanceof SiegableItem)
+							&&(((SiegableItem)I).getCombatField() != null))
+							{
+								this.coordinates = ((SiegableItem)I).getCombatField();
+							}
+						}
+						if(coordinates == null)
+						{
+							this.coordinates = new SPairList<Item,int[]>();
+						}
 					}
 				}
 				final PairList<Item,int[]> coords = this.coordinates;
@@ -241,7 +244,7 @@ public class GenBoat extends GenRideable implements SiegableItem
 
 	protected void clearTacticalMode()
 	{
-		synchronized((""+siegeCombatRoom + "_SIEGE_TACTICAL"))
+		synchronized(CMClass.getSync((""+siegeCombatRoom + "_SIEGE_TACTICAL")))
 		{
 			final PairList<Item,int[]> coords = this.coordinates;
 			if(coords != null)
@@ -260,7 +263,7 @@ public class GenBoat extends GenRideable implements SiegableItem
 		if(siegeCombatRoom != null)
 		{
 			PairList<Item,int[]> coords = null;
-			synchronized((""+siegeCombatRoom + "_SIEGE_TACTICAL"))
+			synchronized(CMClass.getSync((""+siegeCombatRoom + "_SIEGE_TACTICAL")))
 			{
 				 coords = this.coordinates;
 			}

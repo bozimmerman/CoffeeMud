@@ -425,7 +425,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 					final Exit E=CMClass.getExit("OpenPrepositional");
 					try
 					{
-						synchronized(("GATE_"+CMLib.map().getExtendedTwinRoomIDs(thisRoom,R)))
+						synchronized(CMClass.getSync(("GATE_"+CMLib.map().getExtendedTwinRoomIDs(thisRoom,R))))
 						{
 							E.setMiscText(name());
 							E2.setMiscText(name());

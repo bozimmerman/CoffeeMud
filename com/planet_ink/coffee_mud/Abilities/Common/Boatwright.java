@@ -127,7 +127,7 @@ public class Boatwright extends CraftingSkill implements ItemCraftor, MendingSki
 
 	protected void buildDoor(Room room, final int dir)
 	{
-		synchronized("SYNC"+room.roomID())
+		synchronized(CMClass.getSync("SYNC"+room.roomID()))
 		{
 			//int size = CMath.s_int(recipe[DAT_MISC]);
 			String closeWord=null;

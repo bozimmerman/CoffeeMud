@@ -766,7 +766,7 @@ public class DBConnections
 			return;
 		}
 
-		synchronized("SQLErrors.que")
+		synchronized(CMClass.getSync("SQLErrors.que"))
 		{
 			PrintWriter out=null;
 			try
@@ -809,7 +809,7 @@ public class DBConnections
 			return;
 		}
 
-		synchronized("SQLErrors.que")
+		synchronized(CMClass.getSync("SQLErrors.que"))
 		{
 			final File myFile=new File("SQLErrors.que");
 			if(myFile.canRead())

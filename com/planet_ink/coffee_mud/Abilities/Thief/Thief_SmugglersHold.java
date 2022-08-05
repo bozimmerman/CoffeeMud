@@ -157,7 +157,7 @@ public class Thief_SmugglersHold extends ThiefSkill
 				}
 				else
 				{
-					synchronized("SYNC"+room.roomID())
+					synchronized(CMClass.getSync("SYNC"+room.roomID()))
 					{
 						final Room R=CMClass.getLocale("WoodRoom");
 						R.setRoomID(room.getArea().getNewRoomID(room,direction));

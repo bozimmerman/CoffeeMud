@@ -55,6 +55,7 @@ public class CMClass extends ClassLoader
 	protected static volatile long					lastUpdateTime	= System.currentTimeMillis();
 	protected static final Map<String, Class<?>>	classes			= new Hashtable<String, Class<?>>();
 	protected static final Map<String,Ability>		ableFinder		= new LimitedTreeMap<String,Ability>(300000,100,true);
+	protected static final Map<String,Object>		syncCache		= new LimitedTreeMap<String,Object>(300000,10000,true);
 
 	private static CMClass[] clss=new CMClass[256];
 	/**
@@ -3573,6 +3574,27 @@ public class CMClass extends ClassLoader
 			}
 		}
 		return false;
+	}
+
+	public final static Object getSync(final String key)
+	{
+		if(key == null)
+			return new Object();
+		Object o = syncCache.get(key);
+		if(o == null)
+		{
+			synchronized(syncCache)
+			{
+				o = syncCache.get(key);
+				if(o == null)
+				{
+System.out.println(syncCache.size());
+					o=new Object();
+					syncCache.put(key, o);
+				}
+			}
+		}
+		return o;
 	}
 
 	/**

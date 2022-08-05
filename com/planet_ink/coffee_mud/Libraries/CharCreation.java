@@ -2344,7 +2344,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		final boolean wizi=(parms.length>1)&&(parms[parms.length-1]).equalsIgnoreCase("!");
 		PlayerLibrary.ThinnerPlayer playMe = null;
 		String name=CMStrings.capitalizeAndLower(cmd);
-		synchronized(("LOGIN_"+acct.name()))
+		synchronized(CMClass.getSync(("LOGIN_"+acct.name())))
 		{
 			final String playerName=acct.findPlayer(name);
 			if(playerName!=null)

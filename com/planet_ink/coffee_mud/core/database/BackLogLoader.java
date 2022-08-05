@@ -47,76 +47,80 @@ public class BackLogLoader
 
 	protected int getCounter(final String channelName, final boolean bump)
 	{
-		synchronized(("BACKLOG_"+channelName))
+		int[] counter = counters.get(channelName);
+		if(counter == null)
 		{
-			int[] counter = counters.get(channelName);
-			if(counter == null)
+			synchronized(CMClass.getSync(("BACKLOG_"+channelName)))
 			{
-				DBConnection D=null;
-				try
-				{
-					D=DB.DBFetch();
-					ResultSet R=D.query("SELECT CMDATE FROM CMBKLG WHERE CMNAME='"+channelName+"' AND CMINDX = 0");
-					if(R.next())
-					{
-						final int setCounter = (int)DBConnections.getLongRes(R, "CMDATE");
-						int c=setCounter;
-						R.close();
-						final StringBuilder sql=new StringBuilder("SELECT CMINDX FROM CMBKLG WHERE CMNAME='"+channelName+"'");
-						sql.append(" AND CMINDX >"+setCounter);
-						R = D.query(sql.toString());
-						while(R.next())
-						{
-							final int i = R.getInt(1);
-							if(i>c)
-								c=i;
-						}
-						R.close();
-						if(c!=setCounter)
-							D.update("UPDATE CMBKLG SET CMDATE="+c+" WHERE CMNAME='"+channelName+"' AND CMINDX=0", 0);
-						counters.put(channelName, new int[] { c });
-
-					}
-					else
-					{
-						R.close();
-						D.update("INSERT INTO CMBKLG (CMNAME,  CMINDX, CMDATE) VALUES ('"+channelName+"', 0, 0)", 0);
-						counters.put(channelName, new int[] {0});
-					}
-				}
-				catch(final Exception sqle)
-				{
-					Log.errOut("BackLog",sqle);
-				}
-				finally
-				{
-					DB.DBDone(D);
-				}
 				counter = counters.get(channelName);
-			}
-			if(bump)
-			{
-				DBConnection D=null;
-				try
+				if(counter == null)
 				{
-					D=DB.DBFetch();
-					synchronized(counter)
+					DBConnection D=null;
+					try
 					{
-						counter[0]++;
-						D.update("UPDATE CMBKLG SET CMDATE="+counter[0]+" WHERE CMNAME='"+channelName+"' AND CMINDX = 0", 0);
+						D=DB.DBFetch();
+						ResultSet R=D.query("SELECT CMDATE FROM CMBKLG WHERE CMNAME='"+channelName+"' AND CMINDX = 0");
+						if(R.next())
+						{
+							final int setCounter = (int)DBConnections.getLongRes(R, "CMDATE");
+							int c=setCounter;
+							R.close();
+							final StringBuilder sql=new StringBuilder("SELECT CMINDX FROM CMBKLG WHERE CMNAME='"+channelName+"'");
+							sql.append(" AND CMINDX >"+setCounter);
+							R = D.query(sql.toString());
+							while(R.next())
+							{
+								final int i = R.getInt(1);
+								if(i>c)
+									c=i;
+							}
+							R.close();
+							if(c!=setCounter)
+								D.update("UPDATE CMBKLG SET CMDATE="+c+" WHERE CMNAME='"+channelName+"' AND CMINDX=0", 0);
+							counters.put(channelName, new int[] { c });
+
+						}
+						else
+						{
+							R.close();
+							D.update("INSERT INTO CMBKLG (CMNAME,  CMINDX, CMDATE) VALUES ('"+channelName+"', 0, 0)", 0);
+							counters.put(channelName, new int[] {0});
+						}
 					}
-				}
-				catch(final Exception sqle)
-				{
-					Log.errOut("BackLog",sqle);
-				}
-				finally
-				{
-					DB.DBDone(D);
+					catch(final Exception sqle)
+					{
+						Log.errOut("BackLog",sqle);
+					}
+					finally
+					{
+						DB.DBDone(D);
+					}
+					counter = counters.get(channelName);
 				}
 			}
-			return counter[0];
 		}
+		if(bump)
+		{
+			DBConnection D=null;
+			try
+			{
+				D=DB.DBFetch();
+				synchronized(counter)
+				{
+					counter[0]++;
+					D.update("UPDATE CMBKLG SET CMDATE="+counter[0]+" WHERE CMNAME='"+channelName+"' AND CMINDX = 0", 0);
+				}
+			}
+			catch(final Exception sqle)
+			{
+				Log.errOut("BackLog",sqle);
+			}
+			finally
+			{
+				DB.DBDone(D);
+			}
+		}
+		return counter[0];
 	}
 
 	protected Integer checkSetBacklogTableVersion(final Integer setVersion)
@@ -191,7 +195,9 @@ public class BackLogLoader
 		DBConnection D=null;
 		try
 		{
-			D=DB.DBFetchPrepared("INSERT INTO CMBKLG (CMNAME, CMSNAM, CMINDX, CMDATE, CMDATA) VALUES ('"+channelName+"', "+subNameField+", "+counter+", "+System.currentTimeMillis()+", ?)");
+Log.debugOut("Inserting into  "+channelName+"/"+subNameField+"/"+counter);
+			D=DB.DBFetchPrepared("INSERT INTO CMBKLG (CMNAME, CMSNAM, CMINDX, CMDATE, CMDATA) "
+					+ "VALUES ('"+channelName+"', "+subNameField+", "+counter+", "+System.currentTimeMillis()+", ?)");
 			D.setPreparedClobs(new String[]{entry});
 			try
 			{
@@ -203,7 +209,8 @@ public class BackLogLoader
 				Log.errOut("Retry: "+sqle.getMessage());
 				DB.DBDone(D);
 				final int counter2 = getCounter(channelName, true);
-				D=DB.DBFetchPrepared("INSERT INTO CMBKLG (CMNAME,  CMSNAM, CMINDX, CMDATE, CMDATA) VALUES ('"+channelName+"', "+subNameField+", "+counter2+", "+System.currentTimeMillis()+", ?)");
+				D=DB.DBFetchPrepared("INSERT INTO CMBKLG (CMNAME,  CMSNAM, CMINDX, CMDATE, CMDATA) "
+						+ "VALUES ('"+channelName+"', "+subNameField+", "+counter2+", "+System.currentTimeMillis()+", ?)");
 				D.setPreparedClobs(new String[]{entry});
 				D.update("",0);
 			}
@@ -278,7 +285,7 @@ public class BackLogLoader
 			try
 			{
 				DB.update(updates);
-				synchronized(("BACKLOG_"+channelName))
+				synchronized(CMClass.getSync(("BACKLOG_"+channelName)))
 				{
 					counters.remove(channelName);
 				}

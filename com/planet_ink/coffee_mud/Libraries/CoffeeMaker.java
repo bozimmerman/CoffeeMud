@@ -1287,7 +1287,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=r.nextElement();
-					synchronized("SYNC"+R.roomID())
+					synchronized(CMClass.getSync("SYNC"+R.roomID()))
 					{
 						R=CMLib.map().getRoom(R);
 						if(R!=null)
@@ -1300,7 +1300,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				for(final Enumeration<Room> r=forceArea.getProperMap();r.hasMoreElements();)
 				{
 					Room R=r.nextElement();
-					synchronized("SYNC"+R.roomID())
+					synchronized(CMClass.getSync("SYNC"+R.roomID()))
 					{
 						R=CMLib.map().getRoom(R);
 						fixFillingRoomUnlinkedExits(newRoom, R, andSave);
@@ -1719,7 +1719,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				for(;r.hasMoreElements();)
 				{
 					R=r.nextElement();
-					synchronized("SYNC"+R.roomID())
+					synchronized(CMClass.getSync("SYNC"+R.roomID()))
 					{
 						R=CMLib.map().getRoom(R);
 						//if(S!=null) S.rawPrint(".");
@@ -5681,7 +5681,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		for(final Enumeration<Room> e=A.getCompleteMap();e.hasMoreElements();)
 		{
 			Room room=e.nextElement();
-			synchronized("SYNC"+room.roomID())
+			synchronized(CMClass.getSync("SYNC"+room.roomID()))
 			{
 				room=CMLib.map().getRoom(room);
 				final Room newRoom=(Room)room.copyOf();
@@ -5715,7 +5715,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			Room newRoom=CMLib.map().getRoom(altID);
 			if(newRoom==null)
 				continue;
-			synchronized("SYNC"+newRoom.roomID())
+			synchronized(CMClass.getSync("SYNC"+newRoom.roomID()))
 			{
 				newRoom=CMLib.map().getRoom(newRoom);
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)

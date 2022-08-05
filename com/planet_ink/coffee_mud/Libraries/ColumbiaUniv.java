@@ -491,11 +491,13 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		if(baseExpertiseCode==null)
 			return new ReadOnlyVector<String>(1);
 		baseExpertiseCode=baseExpertiseCode.toUpperCase();
-		if(!baseEduSetLists.containsKey(baseExpertiseCode))
+		List<String> set=baseEduSetLists.get(baseExpertiseCode);
+		if(set == null)
 		{
-			synchronized(("ListedEduBuild:"+baseExpertiseCode))
+			synchronized(CMClass.getSync(("ListedEduBuild:"+baseExpertiseCode)))
 			{
-				if(!baseEduSetLists.containsKey(baseExpertiseCode))
+				set=baseEduSetLists.get(baseExpertiseCode);
+				if(set==null)
 				{
 					final List<String> codes=new LinkedList<String>();
 					for(final Enumeration<String> e=completeEduMap.keys();e.hasMoreElements();)
@@ -505,11 +507,12 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 						&&(CMath.isInteger(key.substring(baseExpertiseCode.length()))||CMath.isRomanNumeral(key.substring(baseExpertiseCode.length()))))
 							codes.add(key);
 					}
-					baseEduSetLists.put(baseExpertiseCode, new ReadOnlyVector<String>(codes));
+					set=new ReadOnlyVector<String>(codes);
+					baseEduSetLists.put(baseExpertiseCode, set);
 				}
 			}
 		}
-		return baseEduSetLists.get(baseExpertiseCode);
+		return set;
 	}
 
 	@Override

@@ -1059,7 +1059,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public void addToBankLedger(final String bankName, final String owner, final String explanation)
 	{
-		synchronized((this+"LEDGER"+bankName))
+		synchronized(CMClass.getSync((this+"LEDGER"+bankName)))
 		{
 			final List<PlayerData> V=CMLib.database().DBReadPlayerData(owner,"LEDGER-"+bankName,"LEDGER-"+bankName+"/"+owner);
 			if((V!=null)&&(V.size()>0))
