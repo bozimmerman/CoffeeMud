@@ -219,7 +219,7 @@ public class FileCache implements FileCacheManager
 		else
 			fileName=Integer.toString(uncompressedData.hashCode());
 		final boolean cacheActive=(cacheMaxBytes > 0);
-		synchronized(fileName)
+		synchronized(fileName.intern())
 		{
 			final FileCacheEntry entry = getFileData(fileName, null);
 			if((entry != null) && (entry.buf[type.ordinal()]!=null))
@@ -302,7 +302,7 @@ public class FileCache implements FileCacheManager
 		if(entry != null)
 			return new CWDataBuffers(entry.buf[CompressionType.NONE.ordinal()], entry.modified, true);
 
-		synchronized(fileName)
+		synchronized(fileName.intern())
 		{
 			entry = getFileData(fileName, eTag);
 			if(entry != null)
@@ -343,7 +343,7 @@ public class FileCache implements FileCacheManager
 				{
 					synchronized(cache)
 					{
-					cache.put(fileName, new FileCacheEntry(null,0));
+						cache.put(fileName, new FileCacheEntry(null,0));
 					}
 				}
 				// not quite sure how we could get here.
@@ -356,7 +356,7 @@ public class FileCache implements FileCacheManager
 				{
 					synchronized(cache)
 					{
-					cache.put(fileName, new FileCacheEntry(null,0));
+						cache.put(fileName, new FileCacheEntry(null,0));
 					}
 				}
 				throw HTTPException.standardException(HTTPStatus.S404_NOT_FOUND);

@@ -108,7 +108,7 @@ public class GrinderItems
 			shopItemCode="";
 
 		final String sync=("SYNC"+((R==null)?((playerM!=null)?playerM.Name():null):R.roomID()));
-		synchronized(sync)
+		synchronized(CMClass.getSync(sync))
 		{
 			if(R!=null)
 			{

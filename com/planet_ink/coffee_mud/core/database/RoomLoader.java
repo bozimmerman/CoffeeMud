@@ -2099,7 +2099,7 @@ public class RoomLoader
 	{
 		if((roomID==null)||(!item.isSavable())||(item.amDestroyed()))
 			return;
-		synchronized(roomID.toUpperCase())
+		synchronized(CMClass.getSync("SYNC"+roomID.toUpperCase()))
 		{
 			DBDeleteRoomItem(roomID,item);
 			if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROIT)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))

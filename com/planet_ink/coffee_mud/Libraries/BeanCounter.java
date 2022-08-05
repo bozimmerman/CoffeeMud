@@ -695,7 +695,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public double getDebtOwed(final String name, final String owedTo)
 	{
 		final String key=name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim();
-		synchronized(key)
+		synchronized(CMClass.getSync(key))
 		{
 			final List<DebtItem> debt=getDebt(name,owedTo);
 			double total=0.0;
@@ -709,7 +709,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public void delAllDebt(final String name, final String owedTo)
 	{
 		final String key=name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim();
-		synchronized(key)
+		synchronized(CMClass.getSync(key))
 		{
 			CMLib.database().DBDeletePlayerData(name.toUpperCase(),"DEBT",key);
 		}
@@ -734,7 +734,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public void adjustDebt(final String name, final String owedTo, final double adjustAmt, final String reason, final double interest, final long due)
 	{
 		final String key=name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim();
-		synchronized(key)
+		synchronized(CMClass.getSync(key))
 		{
 			final List<DebtItem> debts=getDebt(name,owedTo);
 			final boolean update=debts.size()>0;

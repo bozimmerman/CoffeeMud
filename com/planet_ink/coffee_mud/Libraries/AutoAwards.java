@@ -621,7 +621,7 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 		}
 		if(astro == null)
 		{
-			synchronized(getAutoPropsFilename())
+			synchronized(CMClass.getSync("AUTO_"+getAutoPropsFilename()))
 			{
 				astro = autoProperties;
 				if(astro != null)
