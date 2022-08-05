@@ -2316,7 +2316,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			Log.combatOut("DAMG",attacker.Name()+":"+attacker.phyStats().getCombatStats()+":"+attacker.curState().getCombatStats()+":"+((KI==null)?"null":KI.name())+":"+target.Name()+":"+target.phyStats().getCombatStats()+":"+target.curState().getCombatStats()+":"+((DI==null)?"null":DI.name())+":"+tool+":"+type+":"+dmg);
 		}
 		//TODO: re-consider this synchro-block -- looks heady and dangerous and COMMON
-		synchronized(CMClass.getSync(("DMG"+target.Name().toUpperCase())))
+		synchronized(target.curState())
 		{
 			if((dmg>0)
 			&&(target.curState().getHitPoints()>0))
