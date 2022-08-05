@@ -33,9 +33,9 @@ import java.util.*;
 */
 /**
  * A Triggerer is a manager for one or more series of actions
- * which, when done properly, results in a completed trigger, 
+ * which, when done properly, results in a completed trigger,
  * which can then, well, trigger something.
- * 
+ *
  * @author Bo Zimmerman
  *
  */
@@ -78,11 +78,11 @@ public interface Triggerer extends CMCommon
 		SOCIAL,
 		;
 	}
-	
+
 	/**
 	 * Some triggers benefit from unique names, and in those cases,
 	 * this allows that name to be set for proper matching.
-	 * 
+	 *
 	 * @param name the Name
 	 * @return this is this
 	 */
@@ -93,18 +93,26 @@ public interface Triggerer extends CMCommon
 	 * a complete trigger.  The key is an arbitrary object that
 	 * is sent back to the caller when a trigger occurs, and so
 	 * should be unique to each series of steps
-	 * 
-	 * @param key the arbitrary but unique key object 
+	 *
+	 * @param key the arbitrary but unique key object
 	 * @param encodedTrigger the encoded trigger steps
 	 * @param errors null, or a list to put errors into
 	 */
 	public void addTrigger(final Object key, final String encodedTrigger, final List<String> errors);
 
 	/**
+	 * Returns whether a trigger with the given key is being tracked here.
+	 *
+	 * @param key the trigger key
+	 * @return true if it was found, false otherwise
+	 */
+	public boolean hasTrigger(final Object key);
+
+	/**
 	 * Returns a description of the trigger steps
 	 * of the given trigger key
-	 * 
-	 * @param key the arbitrary but unique key object 
+	 *
+	 * @param key the arbitrary but unique key object
 	 * @return a readable description
 	 */
 	public String getTriggerDesc(final Object key);
@@ -113,9 +121,9 @@ public interface Triggerer extends CMCommon
 	 * Generates a message for the next step in the
 	 * tracked trigger denoted by the given trigger
 	 * key.
-	 * 
+	 *
 	 * @param mob the mob to check
-	 * @param key the arbitrary but unique key object 
+	 * @param key the arbitrary but unique key object
 	 * @return null, or a message for the given mob to do
 	 */
 	public CMMsg genNextAbleTrigger(final MOB mob, final Object key);
@@ -123,7 +131,7 @@ public interface Triggerer extends CMCommon
 	/**
 	 * Sets the given mob as being ignored for the purpose of
 	 * tracking, or re-enables tracking.
-	 * 
+	 *
 	 * @param mob the mob to check
 	 * @param truefalse true to turn on ignoring, false otherwise
 	 */
@@ -132,18 +140,18 @@ public interface Triggerer extends CMCommon
 	/**
 	 * If the given trigger key is in progress by the given mob,
 	 * this cancels it entirely.
-	 * 
+	 *
 	 * @param mob the mob to check
-	 * @param key the arbitrary but unique key object 
+	 * @param key the arbitrary but unique key object
 	 */
 	public void deleteTracking(final MOB mob, final Object key);
 
 	/**
 	 * Returns whether the given trigger key is in progress
 	 * by the given mob
-	 * 
+	 *
 	 * @param mob the mob to check
-	 * @param key the arbitrary but unique key object 
+	 * @param key the arbitrary but unique key object
 	 * @return true if tracking is happening, false otherwise
 	 */
 	public boolean isTracking(final MOB mob, final Object key);
@@ -152,13 +160,13 @@ public interface Triggerer extends CMCommon
 	 * Given a message and a trigger key, this will see if
 	 * the message might begin, progress, or complete the
 	 * given trigger steps.  If it might (just might) do that,
-	 * it will return true, or false otherwise. 
-	 * 
+	 * it will return true, or false otherwise.
+	 *
 	 * @see Triggerer#isCompleted(Object, CMMsg)
 	 * @see Triggerer#whichTracking(CMMsg)
 	 * @see Triggerer#whichCompleted(Object[], CMMsg)
-	 * 
-	 * @param key the arbitrary but unique key object 
+	 *
+	 * @param key the arbitrary but unique key object
 	 * @param msg the message that might be relevant.
 	 * @return true if it is relevant, false otherwise
 	 */
@@ -170,11 +178,11 @@ public interface Triggerer extends CMCommon
 	 * triggers.  If it might (just might) do any of those, this
 	 * will return the trigger keys that should be checked further
 	 * by calling whichCompleted.
-	 * 
+	 *
 	 * @see Triggerer#isCompleted(Object, CMMsg)
 	 * @see Triggerer#isTracking(Object, CMMsg)
 	 * @see Triggerer#whichCompleted(Object[], CMMsg)
-	 * 
+	 *
 	 * @param msg the message that might be relevant
 	 * @return the unique keys being tracked related to the msg
 	 */
@@ -184,44 +192,44 @@ public interface Triggerer extends CMCommon
 	 * Given a trigger key, and a message which may be progressed
 	 * completed by the given message, this will progress it, and
 	 * then return true if it was completed.
-	 * 
+	 *
 	 * @see Triggerer#whichTracking(CMMsg)
 	 * @see Triggerer#isTracking(Object, CMMsg)
 	 * @see Triggerer#whichCompleted(Object[], CMMsg)
-	 * 
-	 * @param key the arbitrary but unique key object 
+	 *
+	 * @param key the arbitrary but unique key object
 	 * @param msg the message which may cause a trigger to complete
 	 * @return true if it is completed, false otherwise
 	 */
 	public boolean isCompleted(final Object key, final CMMsg msg);
 
 	/**
-	 * Given a set of trigger keys that may be progressed or 
+	 * Given a set of trigger keys that may be progressed or
 	 * completed by the given message, this will progress them, and
 	 * then return the set of keys which, because of the message, are
 	 * now in a completed state.
-	 * 
+	 *
 	 * @see Triggerer#isCompleted(Object, CMMsg)
 	 * @see Triggerer#whichTracking(CMMsg)
 	 * @see Triggerer#isTracking(Object, CMMsg)
-	 * 
-	 * @param keys the arbitrary but unique keys to apply the message to 
+	 *
+	 * @param keys the arbitrary but unique keys to apply the message to
 	 * @param msg the message which may cause triggers to complete
 	 * @return the keys for completed triggers
 	 */
 	public Object[] whichCompleted(final Object[] keys, final CMMsg msg);
 
 	/**
-	 * Given a set of trigger keys that may be progressed or 
+	 * Given a set of trigger keys that may be progressed or
 	 * completed by the given message, this will progress them, and
 	 * then return the first one which , because of the message, is
 	 * now in a completed state, along with any args accumulated.
-	 * 
+	 *
 	 * @see Triggerer#isCompleted(Object, CMMsg)
 	 * @see Triggerer#whichTracking(CMMsg)
 	 * @see Triggerer#isTracking(Object, CMMsg)
-	 * 
-	 * @param keys the arbitrary but unique keys to apply the message to 
+	 *
+	 * @param keys the arbitrary but unique keys to apply the message to
 	 * @param msg the message which may cause triggers to complete
 	 * @return null, or the key and arguments pair
 	 */
@@ -229,13 +237,32 @@ public interface Triggerer extends CMCommon
 
 	/**
 	 * If any triggers are currently in a wait state, this will return
-	 * which ones, as of the moment this method was called, are now 
+	 * which ones, as of the moment this method was called, are now
 	 * done waiting.  Calling this will reset those wait times.  It
-	 * returns the set of players who have triggers in wait state. 
+	 * returns the set of players who have triggers in wait state.
 	 * The caller should 'ping' those players with a message that
 	 * called one of the completed methods here.
-	 * 
+	 *
 	 * @return the set of players whose triggers need pinging
 	 */
 	public MOB[] whosDoneWaiting();
+
+	/**
+	 * Returns the trigger keys for any triggers that the given
+	 * mob currently has in progress.
+	 *
+	 * @param mob the mob who started something
+	 * @return all of the trigger keys in progress
+	 */
+	public Object[] getInProgress(final MOB mob);
+
+	/**
+	 * Returns whether the given mob recently completed the trigger
+	 * with the given key, typically within 4 seconds.
+	 *
+	 * @param mob the mob to check
+	 * @param key the object key to check
+	 * @return true if completed recently, false
+	 */
+	public boolean wasCompletedRecently(final MOB mob, final Object key);
 }

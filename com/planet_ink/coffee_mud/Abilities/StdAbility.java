@@ -1822,7 +1822,6 @@ public class StdAbility implements Ability
 	protected boolean checkComponents(final MOB mob)
 	{
 		if((mob!=null)
-		&&(mob.session()!=null)
 		&&(mob.soulMate()==null)
 		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COMPONENTS))
 		)
@@ -1833,9 +1832,11 @@ public class StdAbility implements Ability
 				final List<Object> components=CMLib.ableComponents().componentCheck(mob,componentsRequirements, false);
 				if(components==null)
 				{
-					failureTell(mob,mob,false,L("You lack the necessary materials to use this @x1, the requirements are: @x2.",
+					failureTell(mob,mob,false,L("The requirements to use this @x1 are: @x2.",
 							Ability.ACODE_DESCS[classificationCode()&Ability.ALL_ACODES].toLowerCase(),
 							CMLib.ableComponents().getAbilityComponentDesc(mob,ID())));
+					if(!mob.isPlayer())
+						CMLib.ableComponents().startAbilityComponentTrigger(mob, this);
 					return false;
 				}
 				CMLib.ableComponents().destroyAbilityComponents(components);

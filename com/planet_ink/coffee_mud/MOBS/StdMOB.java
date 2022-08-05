@@ -3502,6 +3502,7 @@ public class StdMOB implements MOB
 					break;
 				}
 			}
+			CMLib.ableComponents().handleAbilityComponentTriggers(msg);
 		}
 		else
 		if ((msg.targetMinor() != CMMsg.NO_EFFECT) && (msg.amITarget(this)))
@@ -4153,6 +4154,8 @@ public class StdMOB implements MOB
 						delTattoo(tattoo);
 				}
 			}
+
+			CMLib.ableComponents().tickAbilityComponentTriggers(this);
 		}
 		tickStatus = Tickable.STATUS_NOT;
 		return !removeFromGame;

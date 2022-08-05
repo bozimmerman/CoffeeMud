@@ -36,20 +36,20 @@ import java.lang.ref.*;
 public class DefaultTriggerer implements Triggerer
 {
 	protected final static Map<String,Trigger[]> ritualCache = new Hashtable<String,Trigger[]>();
-	
+
 	protected Map<String, TrigTracker>	trackers	= new Hashtable<String, TrigTracker>();
 	protected Map<Object, Trigger[]>	rituals		= new SHashtable<Object, Trigger[]>();
 	protected List<TrigState>			waitingFor	= Collections.synchronizedList(new LinkedList<TrigState>());
 	protected Set<String>				ignoreOf	= new LimitedTreeSet<String>();
 	protected String					holyName	= "Unknown";
-	
+
 	private final static Object[]	trackingNothing	= new Object[0];
 	private final static MOB[]		trackingNoone	= new MOB[0];
 
 	public DefaultTriggerer()
 	{
 	}
-	
+
 	@Override
 	public String ID()
 	{
@@ -61,7 +61,7 @@ public class DefaultTriggerer implements Triggerer
 	{
 		return new DefaultTriggerer();
 	}
-	
+
 	@Override
 	public String name()
 	{
@@ -74,7 +74,7 @@ public class DefaultTriggerer implements Triggerer
 		this.holyName = name;
 		return this;
 	}
-	
+
 	/**
 	 * Separator enum constants for ritual definitions.
 	 * @author Bo Zimmerman
@@ -98,8 +98,9 @@ public class DefaultTriggerer implements Triggerer
 
 	protected final class TrigTracker
 	{
-		private final Map<Object, TrigState>	states	= new LimitedTreeMap<Object, TrigState>(120000,100,false);
-		private final Reference<MOB>			charM;
+		private final Map<Object, TrigState>states	= new LimitedTreeMap<Object, TrigState>(120000,100,false);
+		private final Set<Object>			compl	= new LimitedTreeSet<Object>(CMProps.getTickMillis()*2,10,false);
+		private final Reference<MOB>		charM;
 
 		public TrigTracker(final MOB mob)
 		{
@@ -122,7 +123,7 @@ public class DefaultTriggerer implements Triggerer
 			return state;
 		}
 	}
-	
+
 	protected class TrigState
 	{
 		private volatile int			completed	= -1;
@@ -139,7 +140,14 @@ public class DefaultTriggerer implements Triggerer
 			this.key=key;
 			this.holyName = holyName;
 		}
-		
+
+		public List<String> args()
+		{
+			if(args==null)
+				args=new Vector<String>(1);
+			return args;
+		}
+
 		public synchronized void setCompleted()
 		{
 			completed++;
@@ -228,9 +236,16 @@ public class DefaultTriggerer implements Triggerer
 				final Vector<String> V=CMParms.parse(trig);
 				if(V.size()>1)
 				{
-					final String cmd=V.firstElement();
 					Trigger DT=new Trigger();
-					TriggerCode T = (TriggerCode)CMath.s_valueOf(TriggerCode.class, cmd);
+					final String cmd=V.firstElement();
+					TriggerCode T;
+					if(cmd.endsWith("+"))
+					{
+						DT.addArgs=true;
+						T=(TriggerCode)CMath.s_valueOf(TriggerCode.class, cmd.substring(0,cmd.length()-1));
+					}
+					else
+						T = (TriggerCode)CMath.s_valueOf(TriggerCode.class, cmd);
 					if(T==null)
 					{
 						for(final TriggerCode RT : TriggerCode.values())
@@ -317,6 +332,8 @@ public class DefaultTriggerer implements Triggerer
 							DT.parm1=V.get(1);
 							if(V.size()>2)
 								DT.parm2=V.get(2);
+							else
+								DT.parm2="";
 							final Social soc = CMLib.socials().fetchSocial((DT.parm1+" "+DT.parm2).toUpperCase().trim(),true);
 							if(soc == null)
 							{
@@ -545,15 +562,15 @@ public class DefaultTriggerer implements Triggerer
 			}
 			if(firstActiveCode > 0)
 			{
-				Trigger gone = putHere.remove(firstActiveCode);
+				final Trigger gone = putHere.remove(firstActiveCode);
 				putHere.add(0, gone);
 			}
 		}
-		final Trigger[] finalTriggs = putHere.toArray(new Trigger[putHere.size()]); 
+		final Trigger[] finalTriggs = putHere.toArray(new Trigger[putHere.size()]);
 		DefaultTriggerer.ritualCache.put(trigger, finalTriggs);
 		rituals.put(key, finalTriggs);
 	}
-	
+
 	protected TrigTracker getTrigTracker(final MOB mob)
 	{
 		synchronized(trackers)
@@ -562,7 +579,7 @@ public class DefaultTriggerer implements Triggerer
 			{
 				final TrigTracker tracker = trackers.get(mob.Name());
 				if((tracker.charM.get()!=null)
-				&&(tracker.states.size()>0))
+				&&((tracker.states.size()>0)||(tracker.compl.size()>0)))
 					return tracker;
 				trackers.remove(mob.Name());
 			}
@@ -586,7 +603,7 @@ public class DefaultTriggerer implements Triggerer
 	protected TrigState getCreateTrigState(final MOB mob, final Object key)
 	{
 		final TrigTracker tracker = getCreateTrigTracker(mob);
-		TrigState state = tracker.getCreateState(key);
+		final TrigState state = tracker.getCreateState(key);
 		return state;
 	}
 
@@ -601,7 +618,7 @@ public class DefaultTriggerer implements Triggerer
 	{
 		return CMLib.lang().fullSessionTranslation(str, xs);
 	}
-	
+
 	@Override
 	public String getTriggerDesc(final Object key)
 	{
@@ -745,7 +762,7 @@ public class DefaultTriggerer implements Triggerer
 	}
 
 	@Override
-	public void setIgnoreTracking(final MOB mob, boolean truefalse)
+	public void setIgnoreTracking(final MOB mob, final boolean truefalse)
 	{
 		synchronized(ignoreOf)
 		{
@@ -755,13 +772,13 @@ public class DefaultTriggerer implements Triggerer
 				ignoreOf.remove(mob.Name());
 		}
 	}
-	
+
 	@Override
 	public void deleteTracking(final MOB mob, final Object key)
 	{
 		this.clearState(mob, key);
 	}
-	
+
 	@Override
 	public CMMsg genNextAbleTrigger(final MOB mob, final Object key)
 	{
@@ -784,7 +801,7 @@ public class DefaultTriggerer implements Triggerer
 		switch(DT.triggerCode)
 		{
 		case SAY:
-			return CMClass.getMsg(mob, DT.cmmsgCode, L("^T<S-NAME> say(s) '@x1'.^N",DT.parm1));
+			return CMClass.getMsg(mob, CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK, L("^T<S-NAME> say(s) '@x1'.^N",DT.parm1));
 		case TIME:
 			trigState.setCompleted();
 			return null;
@@ -813,7 +830,7 @@ public class DefaultTriggerer implements Triggerer
 			final Item cI=CMClass.getBasicItem("GenContainer");
 			I.setName(DT.parm1);
 			cI.setName(DT.parm2);
-			return CMClass.getMsg(mob, cI, I, DT.cmmsgCode, L("<S-NAME> put(s) <O-NAME> into <T-NAME>."));
+			return CMClass.getMsg(mob, cI, I, CMMsg.MASK_ALWAYS|CMMsg.MSG_PUT, L("<S-NAME> put(s) <O-NAME> into <T-NAME>."));
 		}
 		case BURNTHING:
 		{
@@ -822,7 +839,7 @@ public class DefaultTriggerer implements Triggerer
 				I.setName(L("Something"));
 			else
 				I.setName(DT.parm1);
-			return CMClass.getMsg(mob, I, null, DT.cmmsgCode, L("<S-NAME> burn(s) <T-NAME>."));
+			return CMClass.getMsg(mob, I, null, CMMsg.MASK_ALWAYS|CMMsg.MASK_MOVE|DT.cmmsgCode, L("<S-NAME> burn(s) <T-NAME>."));
 		}
 		case READING:
 		{
@@ -831,7 +848,7 @@ public class DefaultTriggerer implements Triggerer
 				I.setName(L("Something"));
 			else
 				I.setName(DT.parm1);
-			return CMClass.getMsg(mob, I, null, DT.cmmsgCode, L("<S-NAME> read(s) <T-NAME>."));
+			return CMClass.getMsg(mob, I, null, CMMsg.MASK_ALWAYS|CMMsg.MSG_READ, L("<S-NAME> read(s) <T-NAME>."));
 		}
 		case SOCIAL:
 		{
@@ -853,7 +870,7 @@ public class DefaultTriggerer implements Triggerer
 				I.setName(L("Something"));
 			else
 				I.setName(DT.parm1);
-			return CMClass.getMsg(mob, I, null, DT.cmmsgCode, L("<S-NAME> drink(s) <T-NAME>."));
+			return CMClass.getMsg(mob, I, null, CMMsg.MASK_ALWAYS|CMMsg.MSG_DRINK, L("<S-NAME> drink(s) <T-NAME>."));
 		}
 		case EAT:
 		{
@@ -889,7 +906,7 @@ public class DefaultTriggerer implements Triggerer
 			final Item I=CMClass.getBasicItem("GenItem");
 			I.setName(L("valuables"));
 			I.setBaseValue(CMath.s_int(DT.parm1));
-			return CMClass.getMsg(mob, cI, I, DT.cmmsgCode, L("<S-NAME> put(s) <O-NAME> in <T-NAME>."));
+			return CMClass.getMsg(mob, cI, I, CMMsg.MASK_ALWAYS|CMMsg.MSG_PUT, L("<S-NAME> put(s) <O-NAME> in <T-NAME>."));
 		}
 		case PUTMATERIAL:
 		case BURNMATERIAL:
@@ -900,14 +917,14 @@ public class DefaultTriggerer implements Triggerer
 			else
 				cI.setName(DT.parm2);
 			final Item I=CMLib.materials().makeItemResource(CMath.s_int(DT.parm1));
-			return CMClass.getMsg(mob, cI, I, DT.cmmsgCode, L("<S-NAME> put(s) <O-NAME> in <T-NAME>."));
+			return CMClass.getMsg(mob, cI, I, CMMsg.MASK_ALWAYS|CMMsg.MASK_HANDS|DT.cmmsgCode, L("<S-NAME> put(s) <O-NAME> in <T-NAME>."));
 		}
 		case BURNVALUE:
 		{
 			final Item I=CMClass.getBasicItem("GenItem");
 			I.setName(L("valuables"));
 			I.setBaseValue(CMath.s_int(DT.parm1));
-			return CMClass.getMsg(mob, I, null, DT.cmmsgCode, L("<S-NAME> burn(s) <T-NAME>."));
+			return CMClass.getMsg(mob, I, null, CMMsg.MASK_ALWAYS|CMMsg.MASK_HANDS|DT.cmmsgCode, L("<S-NAME> burn(s) <T-NAME>."));
 		}
 		case SITTING:
 			if(!CMLib.flags().isSitting(mob))
@@ -924,7 +941,7 @@ public class DefaultTriggerer implements Triggerer
 		}
 		return null;
 	}
-	
+
 	protected int getCMMsgCode(final TriggerCode trig)
 	{
 		switch(trig)
@@ -971,7 +988,7 @@ public class DefaultTriggerer implements Triggerer
 		}
 		return -999;
 	}
-	
+
 	@Override
 	public boolean isTracking(final MOB mob, final Object key)
 	{
@@ -980,7 +997,7 @@ public class DefaultTriggerer implements Triggerer
 			return false;
 		return tracker.states.containsKey(key);
 	}
-	
+
 	@Override
 	public boolean isTracking(final Object key, final CMMsg msg)
 	{
@@ -1004,7 +1021,7 @@ public class DefaultTriggerer implements Triggerer
 		}
 		return false;
 	}
-	
+
 	@Override
 	public Object[] whichTracking(final CMMsg msg)
 	{
@@ -1051,7 +1068,7 @@ public class DefaultTriggerer implements Triggerer
 		else
 			return target.Name();
 	}
-	
+
 	protected TrigState stepGetCompleted(final Object key, final CMMsg msg)
 	{
 		if(isIgnoring(msg.source()))
@@ -1068,7 +1085,7 @@ public class DefaultTriggerer implements Triggerer
 		{
 			if((msg.sourceMinor()==DT.cmmsgCode)
 			||(DT.cmmsgCode==-999)
-			||((DT.triggerCode==TriggerCode.SOCIAL))&&(msg.tool() instanceof Social))
+			||((DT.triggerCode==TriggerCode.SOCIAL)&&(msg.tool() instanceof Social)))
 			{
 				switch(DT.triggerCode)
 				{
@@ -1076,7 +1093,7 @@ public class DefaultTriggerer implements Triggerer
 					if((msg.sourceMessage()!=null)&&(msg.sourceMessage().toUpperCase().indexOf(DT.parm1)>0))
 					{
 						if(DT.addArgs)
-							state.args.addAll(CMParms.parse(CMStrings.getSayFromMessage(msg.sourceMessage())));
+							state.args().addAll(CMParms.parse(CMStrings.getSayFromMessage(msg.sourceMessage())));
 						yup=true;
 					}
 					break;
@@ -1094,7 +1111,7 @@ public class DefaultTriggerer implements Triggerer
 					try
 					{
 						if(DT.addArgs)
-							state.args.addAll(CMParms.parse(DT.parm1));
+							state.args().addAll(CMParms.parse(DT.parm1));
 						state.setIgnore(true);
 						CMLib.commands().postSay(msg.source(),null,CMStrings.capitalizeAndLower(DT.parm1));
 					}
@@ -1109,7 +1126,7 @@ public class DefaultTriggerer implements Triggerer
 					if(R!=null)
 					{
 						if(DT.addArgs)
-							state.args.addAll(CMParms.parse(DT.parm1));
+							state.args().addAll(CMParms.parse(DT.parm1));
 						yup=true;
 						for(int m=0;m<R.numInhabitants();m++)
 						{
@@ -1137,7 +1154,7 @@ public class DefaultTriggerer implements Triggerer
 					if(R!=null)
 					{
 						if(DT.addArgs)
-							state.args.addAll(CMParms.parse(DT.parm1));
+							state.args().addAll(CMParms.parse(DT.parm1));
 						yup=true;
 						for(int m=0;m<R.numInhabitants();m++)
 						{
@@ -1180,7 +1197,7 @@ public class DefaultTriggerer implements Triggerer
 					if(CMLib.masking().maskCheck(DT.parm1,msg.source(),true))
 					{
 						if(DT.addArgs && (msg.target()!=null))
-							state.args.add(targName(msg.target()));
+							state.args().add(targName(msg.target()));
 						yup=true;
 					}
 					break;
@@ -1191,7 +1208,7 @@ public class DefaultTriggerer implements Triggerer
 					&&(CMLib.english().containsString(msg.target().name(),DT.parm2)))
 					{
 						if(DT.addArgs && (msg.target()!=null))
-							state.args.add(targName(msg.target()));
+							state.args().add(targName(msg.target()));
 						yup=true;
 					}
 					break;
@@ -1203,7 +1220,7 @@ public class DefaultTriggerer implements Triggerer
 					&&(DT.parm1.equals("0")||CMLib.english().containsString(msg.target().name(),DT.parm1)))
 					{
 						if(DT.addArgs && (msg.target()!=null))
-							state.args.add(targName(msg.target()));
+							state.args().add(targName(msg.target()));
 						yup=true;
 					}
 					break;
@@ -1212,7 +1229,7 @@ public class DefaultTriggerer implements Triggerer
 					&&(msg.tool().Name().equalsIgnoreCase((DT.parm1+" "+DT.parm2).trim())))
 					{
 						if(DT.addArgs && (msg.target()!=null))
-							state.args.add(targName(msg.target()));
+							state.args().add(targName(msg.target()));
 						yup=true;
 					}
 					break;
@@ -1228,7 +1245,7 @@ public class DefaultTriggerer implements Triggerer
 							if(yup)
 							{
 								if(DT.addArgs)
-									state.args.add("here");
+									state.args().add("here");
 							}
 						}
 						else
@@ -1236,7 +1253,7 @@ public class DefaultTriggerer implements Triggerer
 						{
 							yup=true;
 							if(DT.addArgs)
-								state.args.add("here");
+								state.args().add("here");
 						}
 					}
 					break;
@@ -1246,7 +1263,7 @@ public class DefaultTriggerer implements Triggerer
 					{
 						yup=true;
 						if(DT.addArgs)
-							state.args.add(targName(msg.source().riding()));
+							state.args().add(targName(msg.source().riding()));
 					}
 					break;
 				case CAST:
@@ -1256,7 +1273,7 @@ public class DefaultTriggerer implements Triggerer
 					{
 						yup=true;
 						if(DT.addArgs && (msg.target()!=null))
-							state.args.add(targName(msg.target()));
+							state.args().add(targName(msg.target()));
 					}
 					break;
 				case EMOTE:
@@ -1265,10 +1282,10 @@ public class DefaultTriggerer implements Triggerer
 						yup=true;
 						if(DT.addArgs)
 						{
-							int x=msg.sourceMessage().indexOf(">");
+							final int x=msg.sourceMessage().indexOf(">");
 							if(DT.addArgs)
 							{
-								state.args.add(CMStrings.removeColors(
+								state.args().add(CMStrings.removeColors(
 										(x>0)?msg.sourceMessage().substring(x+1):msg.sourceMessage()));
 							}
 						}
@@ -1282,7 +1299,7 @@ public class DefaultTriggerer implements Triggerer
 					{
 						yup=true;
 						if(DT.addArgs && (msg.target()!=null))
-							state.args.add(targName(msg.target()));
+							state.args().add(targName(msg.target()));
 					}
 					break;
 				case PUTMATERIAL:
@@ -1294,7 +1311,7 @@ public class DefaultTriggerer implements Triggerer
 					{
 						yup=true;
 						if(DT.addArgs && (msg.target()!=null))
-							state.args.add(targName(msg.target()));
+							state.args().add(targName(msg.target()));
 					}
 					break;
 				case BURNMATERIAL:
@@ -1304,7 +1321,7 @@ public class DefaultTriggerer implements Triggerer
 					{
 						yup=true;
 						if(DT.addArgs && (msg.target()!=null))
-							state.args.add(targName(msg.target()));
+							state.args().add(targName(msg.target()));
 					}
 					break;
 				case BURNVALUE:
@@ -1313,7 +1330,7 @@ public class DefaultTriggerer implements Triggerer
 					{
 						yup=true;
 						if(DT.addArgs && (msg.target()!=null))
-							state.args.add(targName(msg.target()));
+							state.args().add(targName(msg.target()));
 					}
 					break;
 				case SITTING:
@@ -1334,6 +1351,9 @@ public class DefaultTriggerer implements Triggerer
 				state.setCompleted();
 				if(state.completed>=triggers.length-1)
 				{
+					final TrigTracker tracker = getTrigTracker(msg.source());
+					if(tracker != null)
+						tracker.compl.add(key);
 					clearState(msg.source(),key);
 					return state;
 				}
@@ -1349,13 +1369,13 @@ public class DefaultTriggerer implements Triggerer
 		}
 		return null;
 	}
-	
+
 	@Override
 	public boolean isCompleted(final Object key, final CMMsg msg)
 	{
 		return stepGetCompleted(key, msg) != null;
 	}
-	
+
 	@Override
 	public Object[] whichCompleted(final Object[] keys, final CMMsg msg)
 	{
@@ -1375,7 +1395,7 @@ public class DefaultTriggerer implements Triggerer
 			return readyList.toArray();
 		return trackingNothing;
 	}
-	
+
 	@Override
 	public Pair<Object,List<String>> getCompleted(final Object[] keys, final CMMsg msg)
 	{
@@ -1385,11 +1405,35 @@ public class DefaultTriggerer implements Triggerer
 		{
 			final TrigState state = stepGetCompleted(key, msg);
 			if(state != null)
-				return new Pair<Object,List<String>>(key, state.args);
+				return new Pair<Object,List<String>>(key, state.args());
 		}
 		return null;
 	}
-	
+
+	@Override
+	public Object[] getInProgress(final MOB mob)
+	{
+		if(isIgnoring(mob))
+			return trackingNothing;
+		final TrigTracker tracker = getTrigTracker(mob);
+		if(tracker == null)
+			return trackingNothing;
+		if(tracker.states.size()==0)
+			return trackingNothing;
+		return new XVector<Object>(tracker.states.keySet()).toArray();
+	}
+
+	@Override
+	public boolean wasCompletedRecently(final MOB mob, final Object key)
+	{
+		if(isIgnoring(mob))
+			return false;
+		final TrigTracker tracker = getTrigTracker(mob);
+		if(tracker == null)
+			return false;
+		return tracker.compl.contains(key);
+	}
+
 	@Override
 	public MOB[] whosDoneWaiting()
 	{
@@ -1423,6 +1467,12 @@ public class DefaultTriggerer implements Triggerer
 	}
 
 	@Override
+	public boolean hasTrigger(final Object key)
+	{
+		return rituals.containsKey(key);
+	}
+
+	@Override
 	public CMObject copyOf()
 	{
 		final DefaultTriggerer me;
@@ -1435,7 +1485,7 @@ public class DefaultTriggerer implements Triggerer
 			me.waitingFor = new SLinkedList<TrigState>();
 			me.ignoreOf	= new LimitedTreeSet<String>();
 		}
-		catch (CloneNotSupportedException e)
+		catch (final CloneNotSupportedException e)
 		{
 			return newInstance();
 		}
@@ -1448,7 +1498,7 @@ public class DefaultTriggerer implements Triggerer
 	}
 
 	@Override
-	public int compareTo(CMObject o)
+	public int compareTo(final CMObject o)
 	{
 		return o==this?0:(o.hashCode()<hashCode()?1:-1);
 	}

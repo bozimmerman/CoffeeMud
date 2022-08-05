@@ -1631,7 +1631,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							}
 							try
 							{
-								final AbilityComponent able=CMLib.ableComponents().createBlankAbilityComponent();
+								final AbilityComponent able=CMLib.ableComponents().createBlankAbilityComponent("");
 								able.setConnector(AbilityComponent.CompConnector.valueOf(connector));
 								able.setAmount(CMath.s_int(amt));
 								able.setMask("");
@@ -1664,7 +1664,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					}
 					final String subType = (I instanceof RawMaterial)?((RawMaterial)I).getSubType():"";
 					final List<AbilityComponent> comps=new Vector<AbilityComponent>();
-					AbilityComponent able=CMLib.ableComponents().createBlankAbilityComponent();
+					AbilityComponent able=CMLib.ableComponents().createBlankAbilityComponent("");
 					able.setConnector(AbilityComponent.CompConnector.AND);
 					able.setAmount(amt);
 					able.setMask("");
@@ -1674,7 +1674,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					comps.add(able);
 					for(final Integer resourceCode : extraMatsM.keySet())
 					{
-						able=CMLib.ableComponents().createBlankAbilityComponent();
+						able=CMLib.ableComponents().createBlankAbilityComponent("");
 						able.setConnector(AbilityComponent.CompConnector.AND);
 						able.setAmount(extraMatsM.get(resourceCode)[0]);
 						able.setMask("");

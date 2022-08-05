@@ -1034,7 +1034,7 @@ public class Create extends StdCommand
 		}
 		final Vector<AbilityComponent> DV=new Vector<AbilityComponent>();
 		CMLib.ableComponents().getAbilityComponentMap().put(skillID.toUpperCase().trim(),DV);
-		DV.add(CMLib.ableComponents().createBlankAbilityComponent());
+		DV.add(CMLib.ableComponents().createBlankAbilityComponent(skillID.toUpperCase().trim()));
 		CMLib.genEd().modifyComponents(mob,skillID,-1);
 		final String parms=CMLib.ableComponents().getAbilityComponentCodedString(skillID);
 		final String error=CMLib.ableComponents().addAbilityComponent(parms,CMLib.ableComponents().getAbilityComponentMap());
@@ -1142,7 +1142,7 @@ public class Create extends StdCommand
 		else
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 	}
-	
+
 	public void titles(final MOB mob, final List<String> commands)
 	{
 		if((commands.size()<3)||(CMParms.combine(commands,1).indexOf('=')<0))

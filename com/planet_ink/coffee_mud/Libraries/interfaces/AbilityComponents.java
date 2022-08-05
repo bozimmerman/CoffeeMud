@@ -35,8 +35,8 @@ import java.util.*;
  * Library for configureing and managing the rules for what resource
  * components (magic dust, tools, etc) are required every time a
  * particular skill is used.
- *   
- * Normally this would be part of the skill itself, but since 
+ *
+ * Normally this would be part of the skill itself, but since
  * this feature was added so late, it's separate.
  *
  *  Also here are common skill limit utilities, for determining
@@ -196,10 +196,37 @@ public interface AbilityComponents extends CMLibrary
 	public String getAbilityComponentCodedString(List<AbilityComponent> comps);
 
 	/**
+	 * If the source of the given message has event-triggered ability
+	 * components, this will handle any steps in them, possibly causing
+	 * an ability/skill to be invoked.
+	 *
+	 * @param msg the event to check
+	 */
+	public void handleAbilityComponentTriggers(final CMMsg msg);
+
+	/**
+	 * If the given mob has event triggered ability components that
+	 * require action during a tick, this will manage that.
+	 *
+	 * @param mob the mob who might needs to do something
+	 */
+	public void tickAbilityComponentTriggers(final MOB mob);
+
+	/**
+	 * If the given mob is eligible to automatically run through
+	 * a component trigger automatically, this method will kick it off.
+	 *
+	 * @param mob the non-player mob
+	 * @param A the ability to kick off
+	 */
+	public void startAbilityComponentTrigger(final MOB mob, final Ability A);
+
+	/**
 	 * Creates a new blank ability component object
+	 * @param abilityID TODO
 	 * @return a new blank ability component object
 	 */
-	public AbilityComponent createBlankAbilityComponent();
+	public AbilityComponent createBlankAbilityComponent(String abilityID);
 
 	/**
 	 * Alters and saved the ability components definition to on the

@@ -9420,7 +9420,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				mob.tell(L("@x1. Add new component requirement.",""+showNumber));
 				if((showFlag==showNumber)||(showFlag<=-999))
 				{
-					final AbilityComponent comp = CMLib.ableComponents().createBlankAbilityComponent();
+					final AbilityComponent comp = CMLib.ableComponents().createBlankAbilityComponent("");
 					final boolean success=modifyComponent(mob,comp,showFlag);
 					if(!success)
 					{
