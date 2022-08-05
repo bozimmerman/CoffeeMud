@@ -3502,6 +3502,7 @@ public class StdMOB implements MOB
 					break;
 				}
 			}
+			//TODO: DELME4RITUAL
 			//TODO:CMLib.ableComponents().handleAbilityComponentTriggers(msg);
 		}
 		else
@@ -4154,6 +4155,7 @@ public class StdMOB implements MOB
 						delTattoo(tattoo);
 				}
 			}
+			//TODO: DELME4RITUAL
 			//TODO:CMLib.ableComponents().tickAbilityComponentTriggers(this);
 		}
 		tickStatus = Tickable.STATUS_NOT;

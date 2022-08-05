@@ -1822,7 +1822,7 @@ public class StdAbility implements Ability
 	protected boolean checkComponents(final MOB mob)
 	{
 		if((mob!=null)
-		&&(mob.soulMate()==null)
+		&&(mob.isPlayer()) //TODO: DELME4RITUAL
 		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COMPONENTS))
 		)
 		{
