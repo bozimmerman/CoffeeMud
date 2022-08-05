@@ -1372,7 +1372,7 @@ public class MUD extends Thread implements MudHost
 		{
 			super(G,"HOST"+grpid);
 			//threadGroup=G;
-			synchronized("HostGroupInit".intern())
+			synchronized("HostGroupInit")
 			{
 				logName="mud"+((grpid>0)?("."+grpid):"");
 				grpid++;

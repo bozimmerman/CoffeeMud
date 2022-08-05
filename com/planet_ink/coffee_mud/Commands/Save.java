@@ -82,7 +82,7 @@ public class Save extends StdCommand
 
 	public boolean clearSaveAndRestart(final MOB mob, Room room, final SaveTask taskCode, final boolean noPrompt) throws IOException
 	{
-		synchronized(("SYNC"+room.roomID()).intern())
+		synchronized("SYNC"+room.roomID())
 		{
 			room=CMLib.map().getRoom(room);
 			CMLib.threads().clearDebri(room,0);
@@ -235,7 +235,7 @@ public class Save extends StdCommand
 							continue;
 						if(!CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.GMODIFY))
 							continue;
-						synchronized(("SYNC"+R.roomID()).intern())
+						synchronized("SYNC"+R.roomID())
 						{
 							R=CMLib.map().getRoom(R);
 							if((mob.session()==null)

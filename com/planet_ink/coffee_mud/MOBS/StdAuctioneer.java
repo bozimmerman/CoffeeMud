@@ -194,7 +194,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return true;
 		if(CMLib.flags().isInTheGame(this,true))
-		synchronized(("AUCTION_HOUSE_"+auctionHouse().toUpperCase().trim()).intern())
+		synchronized(("AUCTION_HOUSE_"+auctionHouse().toUpperCase().trim()))
 		{
 			final Long lastTime=StdAuctioneer.lastCheckTimes.get(auctionHouse().toUpperCase().trim());
 			if((lastTime==null)||(System.currentTimeMillis()-lastTime.longValue())>(CMProps.getMillisPerMudHour()-5))

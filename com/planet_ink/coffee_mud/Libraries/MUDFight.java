@@ -2315,7 +2315,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			final String type=(msg.sourceMinor()==CMMsg.NO_EFFECT)?"??":CMMsg.TYPE_DESCS[msg.sourceMinor()];
 			Log.combatOut("DAMG",attacker.Name()+":"+attacker.phyStats().getCombatStats()+":"+attacker.curState().getCombatStats()+":"+((KI==null)?"null":KI.name())+":"+target.Name()+":"+target.phyStats().getCombatStats()+":"+target.curState().getCombatStats()+":"+((DI==null)?"null":DI.name())+":"+tool+":"+type+":"+dmg);
 		}
-		synchronized(("DMG"+target.Name().toUpperCase()).intern())
+		synchronized(("DMG"+target.Name().toUpperCase()))
 		{
 			if((dmg>0)
 			&&(target.curState().getHitPoints()>0))

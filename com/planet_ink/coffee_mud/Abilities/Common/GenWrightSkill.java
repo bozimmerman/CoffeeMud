@@ -272,7 +272,7 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 
 	protected void buildDoor(Room room, final int dir)
 	{
-		synchronized(("SYNC"+room.roomID()).intern())
+		synchronized("SYNC"+room.roomID())
 		{
 			//int size = CMath.s_int(recipe[DAT_MISC]);
 			String closeWord=null;

@@ -545,7 +545,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))
 		{
 			checkAgain=false;
-			synchronized(("SYSTEM_LEVELING_"+mob.Name()).intern())
+			synchronized(("SYSTEM_LEVELING_"+mob.Name()))
 			{
 				synchronized(mob) // does this really do anything?
 				{}

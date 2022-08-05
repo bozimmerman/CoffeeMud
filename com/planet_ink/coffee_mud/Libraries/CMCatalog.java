@@ -425,7 +425,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		||(!(PA instanceof DBIdentifiable))
 		||(!((DBIdentifiable)PA).canSaveDatabaseID()))
 			return;
-		synchronized(getSync(PA).intern())
+		synchronized(getSync(PA))
 		{
 			changeCatalogFlag(PA,true);
 			final Physical origP=PA;
@@ -465,7 +465,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		||(!((DBIdentifiable)P).canSaveDatabaseID()))
 			return;
 		CMLib.threads().deleteAllTicks(P);
-		synchronized(getSync(P).intern())
+		synchronized(getSync(P))
 		{
 			if(getCatalogObj(P)!=null)
 				return;
@@ -572,7 +572,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		||(!(modelP instanceof DBIdentifiable))
 		||(!((DBIdentifiable)modelP).canSaveDatabaseID()))
 			return;
-		synchronized(getSync(modelP).intern())
+		synchronized(getSync(modelP))
 		{
 			final CataData data=getCatalogData(modelP);
 			if(data!=null)
@@ -600,7 +600,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		||(!(modelP instanceof DBIdentifiable))
 		||(!((DBIdentifiable)modelP).canSaveDatabaseID()))
 			return;
-		synchronized(getSync(modelP).intern())
+		synchronized(getSync(modelP))
 		{
 			changeCatalogFlag(modelP,false);
 			Physical cataP=(Physical)modelP.copyOf();
@@ -698,7 +698,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	@Override
 	public void newInstance(final Physical P)
 	{
-		synchronized(getSync(P).intern())
+		synchronized(getSync(P))
 		{
 			final PhyStats stats=P.basePhyStats();
 			if((stats!=null)&&(CMath.bset(stats.disposition(),PhyStats.IS_CATALOGED)))
@@ -713,7 +713,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	@Override
 	public void bumpDeathPickup(final Physical P)
 	{
-		synchronized(getSync(P).intern())
+		synchronized(getSync(P))
 		{
 			final PhyStats stats=P.basePhyStats();
 			if((stats!=null)&&(CMath.bset(stats.disposition(),PhyStats.IS_CATALOGED)))
@@ -728,7 +728,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	@Override
 	public void changeCatalogUsage(final Physical P, final boolean toCataloged)
 	{
-		synchronized(getSync(P).intern())
+		synchronized(getSync(P))
 		{
 			if((P!=null)
 			&&(P.basePhyStats()!=null)
@@ -815,7 +815,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	@Override
 	public void updateCatalogIntegrity(final Physical P)
 	{
-		synchronized(getSync(P).intern())
+		synchronized(getSync(P))
 		{
 			if(checkCatalogIntegrity(P)!=null)
 			{
@@ -840,7 +840,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	{
 		if(P==null)
 			return null;
-		synchronized(getSync(P).intern())
+		synchronized(getSync(P))
 		{
 			if(CMLib.flags().isCataloged(P))
 			{

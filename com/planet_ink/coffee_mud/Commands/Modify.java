@@ -444,7 +444,7 @@ public class Modify extends StdCommand
 			{
 				Room R=mob.location();
 				final String oldID=R.roomID();
-				synchronized(("SYNC"+R.roomID()).intern())
+				synchronized("SYNC"+R.roomID())
 				{
 					R=CMLib.map().getRoom(R);
 					final Room reference=CMLib.map().findConnectingRoom(R);
@@ -852,7 +852,7 @@ public class Modify extends StdCommand
 				for(final Enumeration<Room> r=myArea.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=r.nextElement();
-					synchronized(("SYNC"+R.roomID()).intern())
+					synchronized("SYNC"+R.roomID())
 					{
 						R=CMLib.map().getRoom(R);
 						if((R.roomID().startsWith(oldName+"#"))
@@ -1157,7 +1157,7 @@ public class Modify extends StdCommand
 			for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room room=r.nextElement();
-				synchronized(("SYNC"+room.roomID()).intern())
+				synchronized("SYNC"+room.roomID())
 				{
 					room=CMLib.map().getRoom(room);
 					if(room != null)

@@ -88,7 +88,7 @@ public class ItemData extends StdWebMacro
 		Item I=null;
 		MOB M=null;
 		final String sync=("SYNC"+((R!=null)?R.roomID():player));
-		synchronized(sync.intern())
+		synchronized(sync)
 		{
 			if(R!=null)
 				R=CMLib.map().getRoom(R);

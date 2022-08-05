@@ -50,7 +50,7 @@ public class JournalLoader
 		from	= DB.injectionClean(from);
 		to		= DB.injectionClean(to);
 
-		synchronized(journal.toUpperCase().intern())
+		synchronized(journal.toUpperCase())
 		{
 			int ct=0;
 			DBConnection D=null;
@@ -526,7 +526,7 @@ public class JournalLoader
 
 		if(journal==null)
 			return new Vector<JournalEntry>();
-		synchronized(journal.toUpperCase().intern())
+		synchronized(journal.toUpperCase())
 		{
 			//Resources.submitResource("JOURNAL_"+journal);
 			DBConnection D=null;
@@ -555,7 +555,7 @@ public class JournalLoader
 
 		if(journal==null)
 			return new Vector<JournalEntry>();
-		synchronized(journal.toUpperCase().intern())
+		synchronized(journal.toUpperCase())
 		{
 			//Resources.submitResource("JOURNAL_"+journal);
 			DBConnection D=null;
@@ -601,7 +601,7 @@ public class JournalLoader
 
 		if(journal==null)
 			return null;
-		synchronized(journal.toUpperCase().intern())
+		synchronized(journal.toUpperCase())
 		{
 			DBConnection D=null;
 			try
@@ -913,7 +913,7 @@ public class JournalLoader
 
 		if(journal==null)
 			return;
-		synchronized(journal.toUpperCase().intern())
+		synchronized(journal.toUpperCase())
 		{
 			String sql;
 			if(messageKey!=null)
@@ -941,7 +941,7 @@ public class JournalLoader
 
 		if(journal==null)
 			return null;
-		synchronized(journal.toUpperCase().intern())
+		synchronized(journal.toUpperCase())
 		{
 			final JournalEntry entry=DBReadJournalEntry(journal, messageKey);
 			if(entry==null)
@@ -1009,7 +1009,7 @@ public class JournalLoader
 
 		if(journal==null)
 			return;
-		synchronized(journal.toUpperCase().intern())
+		synchronized(journal.toUpperCase())
 		{
 			final long now=System.currentTimeMillis();
 			if(entry.subj().length()>255)

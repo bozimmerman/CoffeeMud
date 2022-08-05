@@ -333,7 +333,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		rsc=(ChattyGroup[])Resources.getResource("MUDCHAT GROUPS-"+filename.toLowerCase());
 		if(rsc!=null)
 			return rsc;
-		synchronized(("MUDCHAT GROUPS-"+filename.toLowerCase()).intern())
+		synchronized(("MUDCHAT GROUPS-"+filename.toLowerCase()))
 		{
 			rsc=(ChattyGroup[])Resources.getResource("MUDCHAT GROUPS-"+filename.toLowerCase());
 			if(rsc!=null)

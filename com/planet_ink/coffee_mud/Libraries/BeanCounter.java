@@ -695,7 +695,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public double getDebtOwed(final String name, final String owedTo)
 	{
 		final String key=name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim();
-		synchronized(key.intern())
+		synchronized(key)
 		{
 			final List<DebtItem> debt=getDebt(name,owedTo);
 			double total=0.0;
@@ -709,7 +709,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public void delAllDebt(final String name, final String owedTo)
 	{
 		final String key=name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim();
-		synchronized(key.intern())
+		synchronized(key)
 		{
 			CMLib.database().DBDeletePlayerData(name.toUpperCase(),"DEBT",key);
 		}
@@ -734,7 +734,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public void adjustDebt(final String name, final String owedTo, final double adjustAmt, final String reason, final double interest, final long due)
 	{
 		final String key=name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim();
-		synchronized(key.intern())
+		synchronized(key)
 		{
 			final List<DebtItem> debts=getDebt(name,owedTo);
 			final boolean update=debts.size()>0;
@@ -1059,7 +1059,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public void addToBankLedger(final String bankName, final String owner, final String explanation)
 	{
-		synchronized((this+"LEDGER"+bankName).intern())
+		synchronized((this+"LEDGER"+bankName))
 		{
 			final List<PlayerData> V=CMLib.database().DBReadPlayerData(owner,"LEDGER-"+bankName,"LEDGER-"+bankName+"/"+owner);
 			if((V!=null)&&(V.size()>0))

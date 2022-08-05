@@ -417,7 +417,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 
 	protected Room buildRoomAbility(Room R, final int dir, String extraProp)
 	{
-		synchronized(("SYNC"+room.roomID()).intern())
+		synchronized("SYNC"+room.roomID())
 		{
 			R=CMLib.map().getRoom(R);
 			extraProp=CMStrings.replaceAll(extraProp, "@dir", CMLib.directions().getDirectionName(dir));
@@ -430,7 +430,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 	protected Exit buildExitAbility(Room R, final int dir, final String extraProp)
 	{
 		Exit E=null;
-		synchronized(("SYNC"+R.roomID()).intern())
+		synchronized("SYNC"+R.roomID())
 		{
 			R=CMLib.map().getRoom(R);
 			E=R.getExitInDir(dir);
@@ -442,7 +442,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 
 	protected Room removeRoomAbility(Room R, final int dir, String extraProp)
 	{
-		synchronized(("SYNC"+R.roomID()).intern())
+		synchronized("SYNC"+R.roomID())
 		{
 			R=CMLib.map().getRoom(R);
 			extraProp=CMStrings.replaceAll(extraProp, "@dir", CMLib.directions().getDirectionName(dir));
@@ -455,7 +455,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 	protected Exit removeExitAbility(Room R, final int dir, final String extraProp)
 	{
 		Exit E=null;
-		synchronized(("SYNC"+R.roomID()).intern())
+		synchronized("SYNC"+R.roomID())
 		{
 			R=CMLib.map().getRoom(R);
 			E=R.getExitInDir(dir);
@@ -468,7 +468,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 	protected Room buildNewRoomType(Room room, String newLocale, final String extraProp, int dimension)
 	{
 		Room R=null;
-		synchronized(("SYNC"+room.roomID()).intern())
+		synchronized("SYNC"+room.roomID())
 		{
 			if((dimension == 0)&&(room instanceof GridLocale))
 				dimension = ((GridLocale)room).xGridSize();
@@ -678,7 +678,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 
 	protected void buildDoor(final String[] recipe, Room room, final int dir, final int recipeLevel)
 	{
-		synchronized(("SYNC"+room.roomID()).intern())
+		synchronized("SYNC"+room.roomID())
 		{
 			final String localeName = recipe[DAT_CLASS];
 			String doorName = recipe[DAT_MISC];
@@ -775,7 +775,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 	protected Room buildStairs(final MOB mob, Room room, final int dir, final String[] recipe)
 	{
 		Room newRoom;
-		synchronized(("SYNC"+room.roomID()).intern())
+		synchronized("SYNC"+room.roomID())
 		{
 			String desc = recipe[DAT_MISC];
 			final String addParms = recipe[DAT_PROPERTIES];
@@ -907,7 +907,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 
 	protected void buildWall(Room room, final int dir)
 	{
-		synchronized(("SYNC"+room.roomID()).intern())
+		synchronized("SYNC"+room.roomID())
 		{
 			room=CMLib.map().getRoom(room);
 			room.setRawExit(dir,null);
@@ -925,7 +925,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 
 	protected void buildTitle(Room room, final String designTitle)
 	{
-		synchronized(("SYNC"+room.roomID()).intern())
+		synchronized("SYNC"+room.roomID())
 		{
 			room=CMLib.map().getRoom(room);
 			Room returnRoom = null;
@@ -949,7 +949,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 
 	protected void buildDesc(Room room, final int dir, final String designDescription)
 	{
-		synchronized(("SYNC"+room.roomID()).intern())
+		synchronized("SYNC"+room.roomID())
 		{
 			room=CMLib.map().getRoom(room);
 			if(room == null)
@@ -992,7 +992,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 
 	protected void demolish(final MOB mob, Room room, final int dir, final String[] recipe)
 	{
-		synchronized(("SYNC"+room.roomID()).intern())
+		synchronized("SYNC"+room.roomID())
 		{
 			room=CMLib.map().getRoom(room);
 			if(dir<0)

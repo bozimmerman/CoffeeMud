@@ -59,7 +59,7 @@ public class GrinderExits
 
 	public static String editExit(Room R, final int dir,final HTTPRequest httpReq, final java.util.Map<String,String> parms)
 	{
-		synchronized(("SYNC"+R.roomID()).intern())
+		synchronized("SYNC"+R.roomID())
 		{
 			R=CMLib.map().getRoom(R);
 			Exit X=R.getRawExit(dir);
@@ -222,7 +222,7 @@ public class GrinderExits
 
 	public static String delExit(Room R, final int dir)
 	{
-		synchronized(("SYNC"+R.roomID()).intern())
+		synchronized("SYNC"+R.roomID())
 		{
 			R=CMLib.map().getRoom(R);
 			R.rawDoors()[dir]=null;
@@ -236,7 +236,7 @@ public class GrinderExits
 
 	public static String linkRooms(Room R, Room R2, final int dir, final int dir2)
 	{
-		synchronized(("SYNC"+R.roomID()).intern())
+		synchronized("SYNC"+R.roomID())
 		{
 			R=CMLib.map().getRoom(R);
 			if((R!=null)
@@ -260,7 +260,7 @@ public class GrinderExits
 
 			R.getArea().fillInAreaRoom(R);
 		}
-		synchronized(("SYNC"+R2.roomID()).intern())
+		synchronized("SYNC"+R2.roomID())
 		{
 			R2=CMLib.map().getRoom(R2);
 			if((R2!=null)
@@ -285,7 +285,7 @@ public class GrinderExits
 
 	public static String createExitForRoom(Room R, final int dir)
 	{
-		synchronized(("SYNC"+R.roomID()).intern())
+		synchronized("SYNC"+R.roomID())
 		{
 			R=CMLib.map().getRoom(R);
 			R.clearSky();

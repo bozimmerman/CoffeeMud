@@ -291,7 +291,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 		{
 			if(coordinates == null)
 			{
-				synchronized((""+siegeCombatRoom + "_SIEGE_TACTICAL").intern())
+				synchronized((""+siegeCombatRoom + "_SIEGE_TACTICAL"))
 				{
 					for(int i=0;i<siegeCombatRoom.numItems();i++)
 					{
@@ -336,7 +336,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 
 	protected void clearTacticalMode()
 	{
-		synchronized((""+siegeCombatRoom + "_SIEGE_TACTICAL").intern())
+		synchronized((""+siegeCombatRoom + "_SIEGE_TACTICAL"))
 		{
 			final PairList<Item,int[]> coords = this.coordinates;
 			if(coords != null)
@@ -356,7 +356,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 		if(siegeCombatRoom != null)
 		{
 			PairList<Item,int[]> coords = null;
-			synchronized((""+siegeCombatRoom + "_SIEGE_TACTICAL").intern())
+			synchronized((""+siegeCombatRoom + "_SIEGE_TACTICAL"))
 			{
 				 coords = this.coordinates;
 			}

@@ -1098,7 +1098,7 @@ public class StdRoom implements Room
 
 		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_EXPIRE))
 		{
-			synchronized(("SYNC"+roomID()).intern())
+			synchronized(("SYNC"+roomID()))
 			{
 				final LinkedList<DeadBody> deadBodies=new LinkedList<DeadBody>();
 				eachItem(new EachApplicable<Item>()

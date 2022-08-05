@@ -137,7 +137,7 @@ public class StdThinInstance extends StdThinArea implements SubArea
 			newR.setArea(this); // must be done after the roomid is corrected for adds
 			addProperRoom(newR);
 
-			synchronized(("SYNC"+roomID).intern())
+			synchronized(("SYNC"+roomID))
 			{
 				final Room[] newDoors = newR.rawDoors();
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -620,7 +620,7 @@ public class StdThinInstance extends StdThinArea implements SubArea
 		int[] statData=(int[])Resources.getResource("STATS_"+areaName.toUpperCase());
 		if(statData!=null)
 			return statData;
-		synchronized(("STATS_"+areaName).intern())
+		synchronized(("STATS_"+areaName))
 		{
 			if(parentArea==null)
 			{

@@ -727,7 +727,7 @@ public class RoomData extends StdWebMacro
 			}
 			httpReq.getRequestObjects().put(last,R);
 		}
-		synchronized(("SYNC"+R.roomID()).intern())
+		synchronized("SYNC"+R.roomID())
 		{
 			R=CMLib.map().getRoom(R);
 			if(R==null)

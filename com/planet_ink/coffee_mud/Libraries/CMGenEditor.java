@@ -1283,7 +1283,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if((R==null)||(newRoom==null))
 			return R;
-		synchronized(("SYNC"+R.roomID()).intern())
+		synchronized("SYNC"+R.roomID())
 		{
 			R=CMLib.map().getRoom(R);
 			final Room oldR=R;

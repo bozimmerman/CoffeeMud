@@ -288,7 +288,7 @@ public class Prop_LimitedItems extends Property
 						}
 					};
 
-					synchronized((ID()+"_"+affId).intern())
+					synchronized((ID()+"_"+affId))
 					{
 						if(!inventoriesChecked.contains(affId))
 						{

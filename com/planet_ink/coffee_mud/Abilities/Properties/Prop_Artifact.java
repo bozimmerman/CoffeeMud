@@ -376,7 +376,7 @@ public class Prop_Artifact extends Property
 				data.append(lib.convertXMLtoTag("ITEXT",lib.parseOutAngleBrackets(I.text())));
 				data.append("</ARTITEM>");
 				destroyArtifact(I);
-				synchronized("SYSTEM_ARTIFACT_SAVER".intern())
+				synchronized("SYSTEM_ARTIFACT_SAVER")
 				{
 					CMLib.database().DBReCreatePlayerData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID(),data.toString());
 				}

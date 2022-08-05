@@ -258,7 +258,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 			for(int v=0;v<V.size();v++)
 			{
 				Room R=V.get(v);
-				synchronized(("SYNC"+R.roomID()).intern())
+				synchronized("SYNC"+R.roomID())
 				{
 					R=CMLib.map().getRoom(R);
 					lastMobSave=System.currentTimeMillis();

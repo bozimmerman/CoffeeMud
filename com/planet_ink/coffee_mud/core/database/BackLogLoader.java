@@ -47,7 +47,7 @@ public class BackLogLoader
 
 	protected int getCounter(final String channelName, final boolean bump)
 	{
-		synchronized(("BACKLOG_"+channelName).intern())
+		synchronized(("BACKLOG_"+channelName))
 		{
 			int[] counter = counters.get(channelName);
 			if(counter == null)
@@ -278,7 +278,7 @@ public class BackLogLoader
 			try
 			{
 				DB.update(updates);
-				synchronized(("BACKLOG_"+channelName).intern())
+				synchronized(("BACKLOG_"+channelName))
 				{
 					counters.remove(channelName);
 				}

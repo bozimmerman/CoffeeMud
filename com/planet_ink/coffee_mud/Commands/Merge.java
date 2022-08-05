@@ -499,7 +499,7 @@ public class Merge extends StdCommand
 				continue;
 			if(R.roomID().length()==0)
 				continue;
-			synchronized(("SYNC"+R.roomID()).intern())
+			synchronized("SYNC"+R.roomID())
 			{
 				R=CMLib.map().getRoom(R);
 				final Area.State oldFlags=R.getArea().getAreaState();
@@ -803,7 +803,7 @@ public class Merge extends StdCommand
 				// import, including exits!
 				continue;
 			}
-			synchronized(("SYNC"+dbR.roomID()).intern())
+			synchronized("SYNC"+dbR.roomID())
 			{
 				final Area.State oldFlags=R.getArea().getAreaState();
 				R.getArea().setAreaState(Area.State.FROZEN);

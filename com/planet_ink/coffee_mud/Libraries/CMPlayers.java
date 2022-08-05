@@ -791,7 +791,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			Room R=r.nextElement();
 			if((R!=null)&&(R.roomID().length()>0))
 			{
-				synchronized(("SYNC"+R.roomID()).intern())
+				synchronized("SYNC"+R.roomID())
 				{
 					R=CMLib.map().getRoom(R);
 					boolean changed=false;

@@ -493,7 +493,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		baseExpertiseCode=baseExpertiseCode.toUpperCase();
 		if(!baseEduSetLists.containsKey(baseExpertiseCode))
 		{
-			synchronized(("ListedEduBuild:"+baseExpertiseCode).intern())
+			synchronized(("ListedEduBuild:"+baseExpertiseCode))
 			{
 				if(!baseEduSetLists.containsKey(baseExpertiseCode))
 				{

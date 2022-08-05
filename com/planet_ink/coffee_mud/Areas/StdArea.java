@@ -1859,7 +1859,7 @@ public class StdArea implements Area
 		int[] statData = (int[]) Resources.getResource("STATS_" + Name().toUpperCase());
 		if (statData != null)
 			return statData;
-		synchronized (("STATS_" + Name()).intern())
+		synchronized (("STATS_" + Name()))
 		{
 			Resources.removeResource("HELP_" + Name().toUpperCase());
 			statData = buildAreaIStats();

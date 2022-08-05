@@ -196,7 +196,7 @@ public class GenBoat extends GenRideable implements SiegableItem
 		{
 			if(coordinates == null)
 			{
-				synchronized((""+siegeCombatRoom + "_SIEGE_TACTICAL").intern())
+				synchronized((""+siegeCombatRoom + "_SIEGE_TACTICAL"))
 				{
 					for(int i=0;i<siegeCombatRoom.numItems();i++)
 					{
@@ -241,7 +241,7 @@ public class GenBoat extends GenRideable implements SiegableItem
 
 	protected void clearTacticalMode()
 	{
-		synchronized((""+siegeCombatRoom + "_SIEGE_TACTICAL").intern())
+		synchronized((""+siegeCombatRoom + "_SIEGE_TACTICAL"))
 		{
 			final PairList<Item,int[]> coords = this.coordinates;
 			if(coords != null)
@@ -260,7 +260,7 @@ public class GenBoat extends GenRideable implements SiegableItem
 		if(siegeCombatRoom != null)
 		{
 			PairList<Item,int[]> coords = null;
-			synchronized((""+siegeCombatRoom + "_SIEGE_TACTICAL").intern())
+			synchronized((""+siegeCombatRoom + "_SIEGE_TACTICAL"))
 			{
 				 coords = this.coordinates;
 			}

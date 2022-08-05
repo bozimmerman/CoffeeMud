@@ -462,7 +462,7 @@ public class DataLoader
 
 	public PlayerData DBReCreate(String name, String section, String key, final String xml)
 	{
-		synchronized(("RECREATE"+key).intern())
+		synchronized(("RECREATE"+key))
 		{
 			DBConnection D=null;
 			try

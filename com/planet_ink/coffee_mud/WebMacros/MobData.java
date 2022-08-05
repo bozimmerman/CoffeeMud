@@ -1136,7 +1136,7 @@ public class MobData extends StdWebMacro
 			shopMobCode="";
 
 		MOB M=null;
-		synchronized(("SYNC"+((R!=null)?R.roomID():"null")).intern())
+		synchronized(("SYNC"+((R!=null)?R.roomID():"null")))
 		{
 			if(R!=null)
 				R=CMLib.map().getRoom(R);

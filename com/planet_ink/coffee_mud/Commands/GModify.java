@@ -1096,7 +1096,7 @@ public class GModify extends StdCommand
 				continue;
 			if((R==null)||(R.roomID()==null)||(R.roomID().length()==0))
 				continue;
-			synchronized(("SYNC"+R.roomID()).intern())
+			synchronized("SYNC"+R.roomID())
 			{
 				R=CMLib.map().getRoom(R);
 				if((sess==null)||(sess.isStopped())||(R==null)||(R.getArea()==null))

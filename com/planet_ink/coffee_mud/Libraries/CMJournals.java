@@ -70,7 +70,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		journalSummaryStats= (Hashtable<String,JournalMetaData>)Resources.getResource("FORUM_JOURNAL_STATS");
 		if(journalSummaryStats == null)
 		{
-			synchronized("FORUM_JOURNAL_STATS".intern())
+			synchronized("FORUM_JOURNAL_STATS")
 			{
 				journalSummaryStats= (Hashtable<String,JournalMetaData>)Resources.getResource("FORUM_JOURNAL_STATS");
 				if(journalSummaryStats==null)
@@ -92,7 +92,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		JournalMetaData metaData = journalSummaryStats.get(journal.NAME().toUpperCase().trim());
 		if(metaData == null)
 		{
-			synchronized(journal.NAME().intern())
+			synchronized(journal.NAME())
 			{
 				metaData = journalSummaryStats.get(journal.NAME().toUpperCase().trim());
 				if(metaData == null)
@@ -240,7 +240,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		if(journal == null)
 			return;
 		final Hashtable<String,JournalMetaData> journalSummaryStats=getSummaryStats();
-		synchronized(journal.NAME().intern())
+		synchronized(journal.NAME())
 		{
 			journalSummaryStats.remove(journal.NAME().toUpperCase().trim());
 		}

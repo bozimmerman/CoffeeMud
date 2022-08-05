@@ -696,7 +696,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	@Override
 	public void colorRoomForSale(Room R, final LandTitle title, final boolean reset)
 	{
-		synchronized(("SYNC"+R.roomID()).intern())
+		synchronized("SYNC"+R.roomID())
 		{
 			R=CMLib.map().getRoom(R);
 			final String theStr=CMLib.lang().L(title.rentalProperty()?RENTSTR:SALESTR);

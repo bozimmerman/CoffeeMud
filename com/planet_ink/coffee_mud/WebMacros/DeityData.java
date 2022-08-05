@@ -154,7 +154,7 @@ public class DeityData extends StdWebMacro
 							httpReq.getRequestObjects().put(roomID,R);
 							D=CMLib.map().getDeity(last);
 						}
-						synchronized(("SYNC"+roomID).intern())
+						synchronized(("SYNC"+roomID))
 						{
 							R=CMLib.map().getRoom(R);
 							for(int m=0;m<R.numInhabitants();m++)

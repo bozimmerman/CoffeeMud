@@ -411,7 +411,7 @@ public class GrinderMobs
 			shopMobCode="";
 
 		CatalogLibrary.CataData cataData=null;
-		synchronized(("SYNC"+((R!=null)?R.roomID():"null")).intern())
+		synchronized(("SYNC"+((R!=null)?R.roomID():"null")))
 		{
 			if(R!=null)
 			{

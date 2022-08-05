@@ -457,7 +457,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		try
 		{
 			final List<Runnable> postWork=new ArrayList<Runnable>();
-			synchronized(("SYNC"+R.roomID()).intern())
+			synchronized("SYNC"+R.roomID())
 			{
 				R=CMLib.map().getRoom(R);
 				if(R!=null)

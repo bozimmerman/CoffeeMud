@@ -1994,7 +1994,7 @@ public class CMProps extends Properties
 			listFileNameStr=p.getProperty("LISTFILE");
 		else
 			listFileNameStr = props['0'].getProperty("LISTFILE");
-		final String rscKey=("PARSED_LISTFILE"+(listFileNameStr.hashCode())).intern();
+		final String rscKey=("PARSED_LISTFILE"+(listFileNameStr.hashCode()));
 		Properties rawListData=(Properties)Resources.getResource(rscKey);
 		if(rawListData==null)
 		{
