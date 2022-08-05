@@ -195,7 +195,6 @@ public class BackLogLoader
 		DBConnection D=null;
 		try
 		{
-Log.debugOut("Inserting into  "+channelName+"/"+subNameField+"/"+counter);
 			D=DB.DBFetchPrepared("INSERT INTO CMBKLG (CMNAME, CMSNAM, CMINDX, CMDATE, CMDATA) "
 					+ "VALUES ('"+channelName+"', "+subNameField+", "+counter+", "+System.currentTimeMillis()+", ?)");
 			D.setPreparedClobs(new String[]{entry});
