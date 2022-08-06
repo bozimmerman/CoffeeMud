@@ -49,6 +49,7 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	protected CharStats			baseCharStats	= (CharStats) CMClass.getCommon("DefaultCharStats");
 	protected PhyStats			basePhyStats	= (PhyStats) CMClass.getCommon("DefaultPhyStats");
 	protected CharState			curState		= (CharState) CMClass.getCommon("DefaultCharState");
+	protected Triggerer			triggerer		= (Triggerer) CMClass.getCommon("NonTriggerer");
 	protected volatile Room		location		= null;
 	protected volatile Room		lastLocation	= null;
 	protected Rideable			riding			= null;
@@ -1007,6 +1008,17 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	public CharStats baseCharStats()
 	{
 		return baseCharStats;
+	}
+
+	@Override
+	public Triggerer triggerer()
+	{
+		return triggerer;
+	}
+
+	@Override
+	public void setTriggerer(final Triggerer triggerer)
+	{
 	}
 
 	@Override

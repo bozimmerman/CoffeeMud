@@ -67,6 +67,8 @@ public class StdMOB implements MOB
 
 	protected PlayerStats		playerStats			= null;
 
+	protected Triggerer			triggerer			= (Triggerer) CMClass.getCommon("NonTriggerer");
+	
 	protected boolean			amDestroyed			= false;
 	protected boolean			removeFromGame		= false;
 	protected volatile boolean	amDead				= false;
@@ -876,6 +878,19 @@ public class StdMOB implements MOB
 	}
 
 	@Override
+	public Triggerer triggerer()
+	{
+		return triggerer;
+	}
+
+	@Override
+	public void setTriggerer(final Triggerer triggerer)
+	{
+		if(triggerer != null)
+			this.triggerer = triggerer;
+	}
+
+	@Override
 	public CharStats baseCharStats()
 	{
 		return baseCharStats;
@@ -1115,6 +1130,7 @@ public class StdMOB implements MOB
 		inventory.setSize(0);
 		followers = null;
 		abilitys.setSize(0);
+		triggerer.setObsolete();
 		abilityUseCache.clear();
 		affects.setSize(0);
 		behaviors.setSize(0);
@@ -3502,8 +3518,8 @@ public class StdMOB implements MOB
 					break;
 				}
 			}
-			//TODO: DELME4RITUAL
-			//TODO:CMLib.ableComponents().handleAbilityComponentTriggers(msg);
+			if(triggerer.isObsolete() || (!triggerer.isDisabled()))
+				CMLib.ableComponents().handleAbilityComponentTriggers(msg);
 		}
 		else
 		if ((msg.targetMinor() != CMMsg.NO_EFFECT) && (msg.amITarget(this)))
@@ -4155,8 +4171,8 @@ public class StdMOB implements MOB
 						delTattoo(tattoo);
 				}
 			}
-			//TODO: DELME4RITUAL
-			//TODO:CMLib.ableComponents().tickAbilityComponentTriggers(this);
+			if(triggerer.isObsolete() || (!triggerer.isDisabled()))
+				CMLib.ableComponents().tickAbilityComponentTriggers(this);
 		}
 		tickStatus = Tickable.STATUS_NOT;
 		return !removeFromGame;
@@ -4670,12 +4686,14 @@ public class StdMOB implements MOB
 		if (abilitys.find(to.ID()) != null)
 			return;
 		abilitys.addElement(to);
+		triggerer.setObsolete();
 	}
 
 	@Override
 	public void delAbility(final Ability to)
 	{
 		abilitys.removeElement(to);
+		triggerer.setObsolete();
 	}
 
 	@Override
@@ -4683,6 +4701,7 @@ public class StdMOB implements MOB
 	{
 		abilitys.clear();
 		abilityUseCache.clear();
+		triggerer.setObsolete();
 	}
 
 	@Override

@@ -53,7 +53,6 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	}
 
 	protected final Map<String, AbilityComponent>	abilitiesWithCompsWithTriggers	= new Hashtable<String, AbilityComponent>();
-	protected final Map<MOB, Triggerer>				mobCompTrigger					= Collections.synchronizedMap(new WeakHashMap<MOB, Triggerer>());
 
 	protected final boolean isRightMaterial(final long type, final long itemMaterial, final boolean mithrilOK)
 	{
@@ -221,9 +220,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			found=false;
 			if(comp.getLocation()==AbilityComponent.CompLocation.TRIGGER)
 			{
-				final Triggerer trig = this.getAbilityComponentTriggers(mob);
-				if((trig != null)
-				&&(trig.wasCompletedRecently(mob, comp.getAbilityID())))
+				final Triggerer trig = confirmAbilityComponentTriggers(mob);
+				if(trig.wasCompletedRecently(mob, comp.getAbilityID()))
 				{
 					amt[0]=0;
 					found=true;
@@ -343,7 +341,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	public void setAbilityComponentCodedFromCodedPairs(final PairList<String,String> decodedDV, final AbilityComponent comp)
 	{
 		final String[] s=new String[7];
-		for(int i=0;i<7;i++)
+		for(int i=0;i<7 && i<decodedDV.size();i++)
 			s[i]=decodedDV.get(i).second;
 		if(s[0].equalsIgnoreCase("||"))
 			comp.setConnector(AbilityComponent.CompConnector.OR);
@@ -423,17 +421,27 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			if(c>0)
 				buf.append(curr.get(0).second);
 			buf.append("(");
-			buf.append(curr.get(1).second);
+			final String type = curr.get(1).second; 
+			buf.append(type);
 			buf.append(":");
-			buf.append(curr.get(2).second);
-			buf.append(":");
-			buf.append(curr.get(3).second);
-			buf.append(":");
-			buf.append(curr.get(4).second);
-			if(curr.get(5).second.toString().length()>0)
-				buf.append("(").append(curr.get(5).second).append(")");
-			buf.append(":");
-			buf.append(curr.get(6).second);
+			if(type.equalsIgnoreCase("TRIGGER"))
+			{
+				buf.append(curr.get(2).second);
+				buf.append(":");
+				buf.append(curr.get(3).second);
+			}
+			else
+			{
+				buf.append(curr.get(2).second);
+				buf.append(":");
+				buf.append(curr.get(3).second);
+				buf.append(":");
+				buf.append(curr.get(4).second);
+				if(curr.get(5).second.toString().length()>0)
+					buf.append("(").append(curr.get(5).second).append(")");
+				buf.append(":");
+				buf.append(curr.get(6).second);
+			}
 			buf.append(")");
 		}
 		return buf.toString();
@@ -469,6 +477,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		{
 			final Triggerer t = (Triggerer)CMClass.getCommon("DefaultTriggerer");
 			t.addTrigger(t, comp.getTriggererDef(), null);
+			if(comp.getCompiledMask()!=null)
+				buf.append("then ");
 			buf.append(t.getTriggerDesc(t));
 		}
 		else
@@ -745,7 +755,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 						Log.errOut("CMAble",error);
 				}
 			}
-			mobCompTrigger.clear();
+			Triggerer.TrigSignal.sig++;
 			Resources.submitResource("COMPONENT_MAP",H);
 		}
 		return H;
@@ -1191,75 +1201,69 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		return aL;
 	}
 
-	public void clearAbilityComponentTriggers(final MOB mob)
-	{
-		if((abilitiesWithCompsWithTriggers.size()>0)
-		&&(mob!=null))
-			mobCompTrigger.remove(mob);
-	}
-
 	protected Triggerer getAbilityComponentTriggers(final MOB mob, final Ability A)
 	{
 		if((abilitiesWithCompsWithTriggers.size()>0)
 		&&(A!=null))
 		{
 			final String AID=A.ID().toUpperCase().trim();
-			if(abilitiesWithCompsWithTriggers.containsKey(AID))
+			final AbilityComponent comp = abilitiesWithCompsWithTriggers.get(AID);
+			if(comp != null)
 			{
-				Triggerer trig = getAbilityComponentTriggers(mob);
-				if((trig != null)
-				&&(trig.hasTrigger(AID)))
+				Triggerer trig = confirmAbilityComponentTriggers(mob);
+				if(trig.hasTrigger(AID))
 					return trig;
-				final AbilityComponent comp = abilitiesWithCompsWithTriggers.get(AID);
-				if(comp == null)
+				if((comp.getCompiledMask()!=null)
+				&&(!CMLib.masking().maskCheck(comp.getCompiledMask(), mob, true)))
 					return null;
-				if(trig == null)
+				if(trig.isDisabled())
 				{
-					if((comp.getCompiledMask()!=null)
-					&&(!CMLib.masking().maskCheck(comp.getCompiledMask(), mob, true)))
-						return null;
 					trig = (Triggerer)CMClass.getCommon("DefaultTriggerer");
+					mob.setTriggerer(trig);
 				}
 				trig.addTrigger(AID, comp.getTriggererDef(), null);
-				mobCompTrigger.put(mob, trig);
 				return trig;
 			}
 		}
 		return null;
 	}
 
-	protected Triggerer getAbilityComponentTriggers(final MOB mob)
+	protected Triggerer confirmAbilityComponentTriggers(final MOB mob)
 	{
-		if(abilitiesWithCompsWithTriggers.size()>0)
+		final Triggerer triggerer = mob.triggerer();
+		if(abilitiesWithCompsWithTriggers.size()==0)
 		{
-			Triggerer trig;
-			if(mobCompTrigger.containsKey(mob))
-				trig=mobCompTrigger.get(mob);
-			else
+			if(triggerer.isObsolete() || (!triggerer.isDisabled()))
 			{
-				final MaskingLibrary mlib = CMLib.masking();
-				trig = null;
-				for(final Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
-				{
-					final Ability A=a.nextElement();
-					if(A!=null)
-					{
-						final AbilityComponent comp = abilitiesWithCompsWithTriggers.get(A.ID().toUpperCase());
-						if((comp != null)
-						&& mlib.maskCheck(comp.getCompiledMask(), mob, true)
-						&& (comp.getTriggererDef().length()>0))
-						{
-							if(trig == null)
-								trig = (Triggerer)CMClass.getCommon("DefaultTriggerer");
-							trig.addTrigger(A.ID().toUpperCase().trim(), comp.getTriggererDef(), null);
-						}
-					}
-				}
-				mobCompTrigger.put(mob, trig);
+				mob.setTriggerer((Triggerer)CMClass.getCommon("NonTriggerer"));
+				return mob.triggerer();
 			}
-			return trig;
+			return triggerer;
 		}
-		return null;
+		if(!triggerer.isObsolete())
+			return triggerer;
+		final MaskingLibrary mlib = CMLib.masking();
+		Triggerer trig = null;
+		for(final Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
+			if(A!=null)
+			{
+				final AbilityComponent comp = abilitiesWithCompsWithTriggers.get(A.ID().toUpperCase());
+				if((comp != null)
+				&& mlib.maskCheck(comp.getCompiledMask(), mob, true)
+				&& (comp.getTriggererDef().length()>0))
+				{
+					if(trig == null)
+						trig = (Triggerer)CMClass.getCommon("DefaultTriggerer");
+					trig.addTrigger(A.ID().toUpperCase().trim(), comp.getTriggererDef(), null);
+				}
+			}
+		}
+		if(trig == null)
+			trig = (Triggerer)CMClass.getCommon("NonTriggerer");
+		mob.setTriggerer(trig);
+		return trig;
 	}
 
 	protected boolean isAbilityComponentTriggerCompletedRecently(final MOB mob, final Ability A)
@@ -1267,8 +1271,6 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		if(abilitiesWithCompsWithTriggers.size()==0)
 			return false;
 		final Triggerer trigs = getAbilityComponentTriggers(mob, A);
-		if(trigs == null)
-			return false;
 		return trigs.wasCompletedRecently(mob, A.ID().toUpperCase());
 	}
 
@@ -1280,9 +1282,9 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		if(!abilitiesWithCompsWithTriggers.containsKey(A.ID().toUpperCase().trim()))
 			return;
 		final Room R=mob.location();
-		final Triggerer trigs = getAbilityComponentTriggers(mob, A);
-		if((trigs == null)&&(R!=null))
+		if(R==null)
 			return;
+		final Triggerer trigs = getAbilityComponentTriggers(mob, A);
 		if(trigs.getInProgress(mob).length>0) // one at a time, plz
 			return;
 		final CMMsg msg = trigs.genNextAbleTrigger(mob, A.ID().toUpperCase().trim());
@@ -1302,11 +1304,14 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	@Override
 	public void tickAbilityComponentTriggers(final MOB mob)
 	{
+		final Triggerer triggerer = mob.triggerer();
 		if(abilitiesWithCompsWithTriggers.size()==0)
+		{
+			if(triggerer.isObsolete() || (!triggerer.isDisabled()))
+				mob.setTriggerer((Triggerer)CMClass.getCommon("NonTriggerer"));
 			return;
-		final Triggerer trigs = getAbilityComponentTriggers(mob);
-		if(trigs == null)
-			return;
+		}
+		final Triggerer trigs = confirmAbilityComponentTriggers(mob);
 		final MOB[] who = trigs.whosDoneWaiting();
 		if(who.length>0)
 		{
@@ -1350,12 +1355,16 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	@Override
 	public void handleAbilityComponentTriggers(final CMMsg msg)
 	{
+		final MOB mob=msg.source();
+		Triggerer triggerer = mob.triggerer();
 		getAbilityComponentMap(); // in case of pre-load
 		if(abilitiesWithCompsWithTriggers.size()==0)
+		{
+			if(triggerer.isObsolete() || (!triggerer.isDisabled()))
+				mob.setTriggerer((Triggerer)CMClass.getCommon("NonTriggerer"));
 			return;
-		final Triggerer trigs = getAbilityComponentTriggers(msg.source());
-		if(trigs == null)
-			return;
+		}
+		final Triggerer trigs = confirmAbilityComponentTriggers(msg.source());
 		final Object[] whichTracking = trigs.whichTracking(msg);
 		if(whichTracking.length>0)
 		{

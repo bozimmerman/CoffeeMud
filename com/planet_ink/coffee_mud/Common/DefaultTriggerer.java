@@ -42,12 +42,14 @@ public class DefaultTriggerer implements Triggerer
 	protected List<TrigState>			waitingFor	= Collections.synchronizedList(new LinkedList<TrigState>());
 	protected Set<String>				ignoreOf	= new LimitedTreeSet<String>();
 	protected String					holyName	= "Unknown";
+	protected int						version		= -1;
 
 	private final static Object[]	trackingNothing	= new Object[0];
 	private final static MOB[]		trackingNoone	= new MOB[0];
 
 	public DefaultTriggerer()
 	{
+		version = TrigSignal.sig;
 	}
 
 	@Override
@@ -73,6 +75,24 @@ public class DefaultTriggerer implements Triggerer
 	{
 		this.holyName = name;
 		return this;
+	}
+	
+	@Override
+	public boolean isObsolete()
+	{
+		return (version != TrigSignal.sig);
+	}
+
+	@Override
+	public void setObsolete()
+	{
+		version = -1;
+	}
+	
+	@Override
+	public boolean isDisabled()
+	{
+		return rituals.size()==0;
 	}
 
 	/**
@@ -1093,7 +1113,13 @@ public class DefaultTriggerer implements Triggerer
 					if((msg.sourceMessage()!=null)&&(msg.sourceMessage().toUpperCase().indexOf(DT.parm1)>0))
 					{
 						if(DT.addArgs)
-							state.args().addAll(CMParms.parse(CMStrings.getSayFromMessage(msg.sourceMessage())));
+						{
+							String str = CMStrings.getSayFromMessage(msg.sourceMessage());
+							int x=str.toUpperCase().indexOf(DT.parm1);
+							if(x>=0)
+								str=str.substring(x+DT.parm1.length()).trim();
+							state.args().addAll(CMParms.parse(str));
+						}
 						yup=true;
 					}
 					break;

@@ -53,6 +53,7 @@ public class GrinderComponent
 			while(httpReq.isUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+posDex) && httpReq.getUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+posDex).trim().length()>0)
 			{
 				final String mask=httpReq.getUrlParameter(fixedCompID+"_PIECE_MASK_"+posDex);
+				final String ritual=httpReq.getUrlParameter(fixedCompID+"_PIECE_RITUAL_"+posDex);
 				final String str=httpReq.getUrlParameter(fixedCompID+"_PIECE_STRING_"+posDex);
 				final String amt=httpReq.getUrlParameter(fixedCompID+"_PIECE_AMOUNT_"+posDex);
 				final String conn=httpReq.getUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+posDex);
@@ -71,7 +72,9 @@ public class GrinderComponent
 					able.setConsumed((consumed!=null)&&(consumed.equalsIgnoreCase("on")||consumed.equalsIgnoreCase("checked")));
 					able.setLocation(AbilityComponent.CompLocation.valueOf(loc));
 					able.setMask(mask);
-					able.setType(AbilityComponent.CompType.valueOf(type), str,stype);
+					able.setTriggererDef(CMStrings.deleteCRLFTAB(ritual==null?"":ritual));
+					if(CMath.s_valueOf(AbilityComponent.CompType.class, type)!=null)
+						able.setType(AbilityComponent.CompType.valueOf(type), str,stype);
 					set.add(able);
 				}
 				posDex++;

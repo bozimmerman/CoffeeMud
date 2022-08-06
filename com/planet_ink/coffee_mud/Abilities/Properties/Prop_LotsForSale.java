@@ -340,7 +340,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			final Room chkR=R.getRoomInDir(d);
 			if((chkR==null)&&(numberOfPeers < 0))
 			{
-				//TODO: this is rediculously inefficient for thin areas
+				//TODO: this is ridiculously inefficient for thin areas
 				final List<Room> allRooms = getConnectedPropertyRooms();
 				if(allRooms.size()>0)
 				{

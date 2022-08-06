@@ -2315,7 +2315,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			final String type=(msg.sourceMinor()==CMMsg.NO_EFFECT)?"??":CMMsg.TYPE_DESCS[msg.sourceMinor()];
 			Log.combatOut("DAMG",attacker.Name()+":"+attacker.phyStats().getCombatStats()+":"+attacker.curState().getCombatStats()+":"+((KI==null)?"null":KI.name())+":"+target.Name()+":"+target.phyStats().getCombatStats()+":"+target.curState().getCombatStats()+":"+((DI==null)?"null":DI.name())+":"+tool+":"+type+":"+dmg);
 		}
-		//TODO: re-consider this synchro-block -- looks heady and dangerous and COMMON
+		//re-consider this synchro-block -- looks heady and dangerous, but this is the only spot, so ok for now
 		synchronized(target.curState())
 		{
 			if((dmg>0)

@@ -157,6 +157,26 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @see MOB#setBaseCharStats(CharStats)
 	 */
 	public void recoverCharStats();
+	
+	/**
+	 * Returns the Triggerer for this mob.
+	 * 
+	 * @see Triggerer
+	 * @see MOB#setTriggerer(Triggerer)
+	 * 
+	 * @return the Triggerer for this mob.
+	 */
+	public Triggerer triggerer();
+	
+	/**
+	 * Sets the Triggerer for this mob.
+	 * 
+	 * @see Triggerer
+	 * @see MOB#triggerer()
+	 * 
+	 * @param triggerer the Triggerer for this mob.
+	 */
+	public void setTriggerer(final Triggerer triggerer);
 
 	/**
 	 * Sets the Base CharStats object for this mob, which are the stats like saves and strength.

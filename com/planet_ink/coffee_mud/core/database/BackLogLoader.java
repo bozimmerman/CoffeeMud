@@ -50,7 +50,8 @@ public class BackLogLoader
 		int[] counter = counters.get(channelName);
 		if(counter == null)
 		{
-			synchronized(CMClass.getSync(("BACKLOG_"+channelName)))
+			final Object sync = CMClass.getSync("BACKLOG_"+channelName); 
+			synchronized(sync)
 			{
 				counter = counters.get(channelName);
 				if(counter == null)

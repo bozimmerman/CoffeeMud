@@ -548,7 +548,7 @@ public class MobData extends StdWebMacro
 				str.append("</SELECT>");
 				str.append("</TD></TR>");
 			}
-			str.append("<TR><TD WIDTH=50%>");
+			str.append("<TR><TD COLSPAN=2>");
 			str.append("<SELECT ONCHANGE=\"AddFaction(this);\" NAME=FACTION"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Faction");
 
@@ -569,7 +569,6 @@ public class MobData extends StdWebMacro
 					str.append("<OPTION VALUE=\""+cnam+"\">"+F.name());
 			}
 			str.append("</SELECT>");
-			str.append("</TD><TD WIDTH=50%><BR>");
 			str.append("</TD></TR>");
 			str.append("</TABLE>");
 		}

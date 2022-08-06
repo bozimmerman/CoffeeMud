@@ -501,7 +501,19 @@ public class MOBloader
 			final int oldmoney = queryCMCHARLong(name, "CMGOLD").intValue();
 			if(oldmoney != 0)
 			{
-				//TODO: query the start room, get the currency, use that to add coins
+				String roomID=queryCMCHARStr(name, "CMROID");
+				if(roomID==null)
+					roomID="";
+				final int x=roomID.indexOf("||");
+				if(x>=0)
+					roomID = roomID.substring(0,x).trim();
+				String currency="";
+				if(roomID.length()>0)
+				{
+					final Room R=CMLib.map().getRoom(roomID);
+					currency = CMLib.beanCounter().getCurrency(R);
+				}
+				coins.addAll(CMLib.beanCounter().makeAllCurrency(currency, oldmoney));
 			}
 			return coins;
 		}

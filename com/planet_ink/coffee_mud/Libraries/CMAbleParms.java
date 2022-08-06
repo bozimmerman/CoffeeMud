@@ -1619,6 +1619,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							final String amt=httpReq.getUrlParameter(fieldName+"_CUST_AMT_"+x);
 							final String strVal=httpReq.getUrlParameter(fieldName+"_CUST_STR_"+x);
 							final String loc=httpReq.getUrlParameter(fieldName+"_CUST_LOC_"+x);
+							final String def=httpReq.getUrlParameter(fieldName+"_CUST_DEF_"+x);
 							final String typ=httpReq.getUrlParameter(fieldName+"_CUST_TYPE_"+x);
 							final String styp=httpReq.getUrlParameter(fieldName+"_CUST_STYPE_"+x);
 							final String con=httpReq.getUrlParameter(fieldName+"_CUST_CON_"+x);
@@ -1634,10 +1635,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 								final AbilityComponent able=CMLib.ableComponents().createBlankAbilityComponent("");
 								able.setConnector(AbilityComponent.CompConnector.valueOf(connector));
 								able.setAmount(CMath.s_int(amt));
-								able.setMask("");
+								able.setMask((def==null)?"":def);
+								able.setTriggererDef("");
 								able.setConsumed((con!=null) && con.equalsIgnoreCase("on"));
 								able.setLocation(AbilityComponent.CompLocation.valueOf(loc));
-								able.setType(AbilityComponent.CompType.valueOf(typ), strVal, styp);
+								if(CMath.s_valueOf(AbilityComponent.CompType.class, typ)!=null)
+									able.setType(AbilityComponent.CompType.valueOf(typ), strVal, styp);
 								comps.add(able);
 							}
 							catch(final Exception e)
@@ -1668,6 +1671,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					able.setConnector(AbilityComponent.CompConnector.AND);
 					able.setAmount(amt);
 					able.setMask("");
+					able.setTriggererDef("");
 					able.setConsumed(true);
 					able.setLocation(AbilityComponent.CompLocation.ONGROUND);
 					able.setType(AbilityComponent.CompType.MATERIAL, Integer.valueOf(I.material() & RawMaterial.MATERIAL_MASK), subType);
@@ -1678,6 +1682,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						able.setConnector(AbilityComponent.CompConnector.AND);
 						able.setAmount(extraMatsM.get(resourceCode)[0]);
 						able.setMask("");
+						able.setTriggererDef("");
 						able.setConsumed(true);
 						able.setLocation(AbilityComponent.CompLocation.ONGROUND);
 						able.setType(AbilityComponent.CompType.RESOURCE, resourceCode, "");
@@ -5697,8 +5702,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public boolean confirmValue(final String oldVal)
 				{
-					//TODO: do this
-					return true;
+					return ((oldVal != null)
+							&&(oldVal.length()>0)
+							&&(oldVal.trim().startsWith("<")));
 				}
 
 				@Override

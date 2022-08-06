@@ -1586,12 +1586,18 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				"-"+Ability.DOMAIN_DESCS[(code&Ability.ALL_DOMAINS)<<5].toLowerCase();
 	}
 
-	protected void resetMsdpConfigurable(final Session session, final String var)
+	protected void resetMsdpConfigurable(final Session session, final String var, final Map<Object,Object> reportables)
 	{
 		final MSDPConfigurableVar type=(MSDPConfigurableVar)CMath.s_valueOf(MSDPConfigurableVar.class, var.toUpperCase().trim());
 		if(type == null)
 			return;
 		//TODO:
+		/*
+		The RESET command works like the LIST command, and can be used to reset groups of variables to 
+		their initial state. Most commonly RESET will be called with REPORTABLE_VARIABLES or 
+		REPORTED_VARIABLES as the argument, though any LIST option can be used.
+		client - IAC SB MSDP MSDP_VAR "RESET" MSDP_VAL "CHESS_MINIGAME" IAC SE	}
+		 */
 	}
 
 	@Override
@@ -1691,7 +1697,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				final Object o=cmds.get(MSDPCommand.LIST.toString());
 				if(o instanceof String)
 				{
-					buf.write(Session.MSDP_VAR);buf.write(((String)o).getBytes(Session.MSDP_CHARSET));buf.write(Session.MSDP_VAL);buf.write(processMsdpList(session,(String)o,reportables));
+					buf.write(Session.MSDP_VAR);
+					buf.write(((String)o).getBytes(Session.MSDP_CHARSET));
+					buf.write(Session.MSDP_VAL);
+					buf.write(processMsdpList(session,(String)o,reportables));
 				}
 				else
 				if(o instanceof List)
@@ -1699,7 +1708,12 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					for(final Object o2 : ((List<?>)o))
 					{
 						if(o2 instanceof String)
-							buf.write(Session.MSDP_VAR);buf.write(((String)o2).getBytes(Session.MSDP_CHARSET));buf.write(Session.MSDP_VAL);buf.write(processMsdpList(session,(String)o2,reportables));
+						{
+							buf.write(Session.MSDP_VAR);
+							buf.write(((String)o2).getBytes(Session.MSDP_CHARSET));
+							buf.write(Session.MSDP_VAL);
+							buf.write(processMsdpList(session,(String)o2,reportables));
+						}
 					}
 				}
 			}
@@ -1731,7 +1745,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				final Object o=cmds.get(MSDPCommand.RESET.toString());
 				if(o instanceof String)
 				{
-					resetMsdpConfigurable(session, (String)o);
+					resetMsdpConfigurable(session, (String)o, reportables);
 				}
 				else
 				if(o instanceof List)
@@ -1739,7 +1753,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					for(final Object o2 : ((List<?>)o))
 					{
 						if(o2 instanceof String)
-							resetMsdpConfigurable(session, (String)o2);
+							resetMsdpConfigurable(session, (String)o2, reportables);
 					}
 				}
 			}

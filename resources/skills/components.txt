@@ -28,3 +28,4 @@
 # SPELL_SLEEP=(held:consumed:5:SAND:-class +wizard)&&(trigger:say you are feeling sleepy&social+ GOODNIGHT <T-NAME>:-class +wizard)
 Thief_Autocaltrops=(inventory:consumed:10:METAL:)||(inventory:consumed:10:MITHRIL:)
 BANDAGING=(inventory:consumed:1:CLOTH:)||(held:consumed:5:DUST:-race +elf)
+FireBuilding=(inventory:consumed:1:CLOTH:)||(trigger:say you are feeling sleepy&social+ GOODNIGHT <T-NAME>:-race +Orc)

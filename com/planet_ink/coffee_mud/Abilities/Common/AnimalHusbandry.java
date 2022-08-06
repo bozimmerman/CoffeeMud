@@ -96,6 +96,7 @@ public class AnimalHusbandry extends CommonSkill
 			{
 				messedUp=true;
 				unInvoke();
+				return false;
 			}
 			for(final MOB husbandM : husbanding)
 			{

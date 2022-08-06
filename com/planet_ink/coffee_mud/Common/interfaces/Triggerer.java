@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /*
    Copyright 2022-2022 Bo Zimmerman
@@ -265,4 +266,44 @@ public interface Triggerer extends CMCommon
 	 * @return true if completed recently, false
 	 */
 	public boolean wasCompletedRecently(final MOB mob, final Object key);
+
+	/**
+	 * If something has changed that requires a triggerer or tracker to
+	 * be reset, then every instance is notified, and this method can
+	 * be called to see if this specific object needs resetting.
+	 * 
+	 * @see Triggerer#setObsolete()
+	 * 
+	 * @return true if this instance is obsolete, false otherwise
+	 */
+	public boolean isObsolete();
+
+	/**
+	 * If this triggering engine needs disabling due to changes in
+	 * local abilities, this method can be called.
+	 * 
+	 * @see Triggerer#isObsolete()
+	 */
+	public void setObsolete();
+
+	/**
+	 * If this triggering engine is disabled, this will return true
+	 * 
+	 * @return true if this instance is disabled
+	 */
+	public boolean isDisabled();
+	
+	/**
+	 * In order to have a Triggerer signaled that the rituals
+	 * may need refreshing, this method exists to be called globally.
+	 * Every Triggerer impl should implement this.
+	 * 
+	 * @see Triggerer#isObsolete()
+	 * 
+	 * @author Bo Zimmerman
+	 */
+	public static class TrigSignal
+	{
+		public static int sig = 0;
+	}
 }
