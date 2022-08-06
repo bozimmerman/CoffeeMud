@@ -80,21 +80,52 @@ public class DBInterface implements DatabaseEngine
 		if(privacyV == null)
 			privacyV = new HashSet<String>();
 		if((baseEngine!=null)&&(baseEngine.getConnector()!=DB)&&(baseEngine.isConnected()))
+		{
 			oldBaseDB=baseEngine.getConnector();
+			if(baseEngine instanceof DBInterface)
+			{
+				this.GAbilityLoader = ((DBInterface) baseEngine).GAbilityLoader;
+				this.GCClassLoader = ((DBInterface) baseEngine).GCClassLoader;
+				this.GRaceLoader = ((DBInterface) baseEngine).GRaceLoader;
+				this.MOBloader = ((DBInterface) baseEngine).MOBloader;
+				this.RoomLoader = ((DBInterface) baseEngine).RoomLoader;
+				this.DataLoader = ((DBInterface) baseEngine).DataLoader;
+				this.StatLoader = ((DBInterface) baseEngine).StatLoader;
+				this.PollLoader = ((DBInterface) baseEngine).PollLoader;
+				this.VFSLoader = ((DBInterface) baseEngine).VFSLoader;
+				this.JournalLoader = ((DBInterface) baseEngine).JournalLoader;
+				this.QuestLoader = ((DBInterface) baseEngine).QuestLoader;
+				this.ClanLoader = ((DBInterface) baseEngine).ClanLoader;
+				this.BackLogLoader = ((DBInterface) baseEngine).BackLogLoader;
+			}
+		}
 
-		this.GAbilityLoader = 	new GAbilityLoader(privacyV.contains(DatabaseTables.DBABILITY.toString()) ? DB : oldBaseDB);
-		this.GCClassLoader = 	new GCClassLoader(privacyV.contains(DatabaseTables.DBCHARCLASS.toString()) ? DB : oldBaseDB);
-		this.GRaceLoader = 		new GRaceLoader(privacyV.contains(DatabaseTables.DBRACE.toString()) ? DB : oldBaseDB);
-		this.MOBloader = 		new MOBloader(privacyV.contains(DatabaseTables.DBPLAYERS.toString()) ? DB : oldBaseDB);
-		this.RoomLoader = 		new RoomLoader(privacyV.contains(DatabaseTables.DBMAP.toString()) ? DB : oldBaseDB);
-		this.DataLoader = 		new DataLoader(this, privacyV.contains(DatabaseTables.DBPLAYERDATA.toString()) ? DB : oldBaseDB);
-		this.StatLoader = 		new StatLoader(privacyV.contains(DatabaseTables.DBSTATS.toString()) ? DB : oldBaseDB);
-		this.PollLoader = 		new PollLoader(privacyV.contains(DatabaseTables.DBPOLLS.toString()) ? DB : oldBaseDB);
-		this.VFSLoader = 		new VFSLoader(privacyV.contains(DatabaseTables.DBVFS.toString()) ? DB : oldBaseDB);
-		this.JournalLoader = 	new JournalLoader(privacyV.contains(DatabaseTables.DBJOURNALS.toString()) ? DB : oldBaseDB);
-		this.QuestLoader = 		new QuestLoader(privacyV.contains(DatabaseTables.DBQUEST.toString()) ? DB : oldBaseDB);
-		this.ClanLoader = 		new ClanLoader(privacyV.contains(DatabaseTables.DBCLANS.toString()) ? DB : oldBaseDB);
-		this.BackLogLoader = 	new BackLogLoader(privacyV.contains(DatabaseTables.DBBACKLOG.toString()) ? DB : oldBaseDB);
+		if((this.GAbilityLoader == null) || privacyV.contains(DatabaseTables.DBABILITY.toString()))
+			this.GAbilityLoader = 	new GAbilityLoader(privacyV.contains(DatabaseTables.DBABILITY.toString()) ? DB : oldBaseDB);
+		if((this.GCClassLoader == null) || privacyV.contains(DatabaseTables.DBCHARCLASS.toString()))
+			this.GCClassLoader = 	new GCClassLoader(privacyV.contains(DatabaseTables.DBCHARCLASS.toString()) ? DB : oldBaseDB);
+		if((this.GRaceLoader == null) || privacyV.contains(DatabaseTables.DBRACE.toString()))
+			this.GRaceLoader = 		new GRaceLoader(privacyV.contains(DatabaseTables.DBRACE.toString()) ? DB : oldBaseDB);
+		if((this.MOBloader == null) || privacyV.contains(DatabaseTables.DBPLAYERS.toString()))
+			this.MOBloader = 		new MOBloader(privacyV.contains(DatabaseTables.DBPLAYERS.toString()) ? DB : oldBaseDB);
+		if((this.RoomLoader == null) || privacyV.contains(DatabaseTables.DBMAP.toString()))
+			this.RoomLoader = 		new RoomLoader(privacyV.contains(DatabaseTables.DBMAP.toString()) ? DB : oldBaseDB);
+		if((this.DataLoader == null) || privacyV.contains(DatabaseTables.DBPLAYERDATA.toString()))
+			this.DataLoader = 		new DataLoader(this, privacyV.contains(DatabaseTables.DBPLAYERDATA.toString()) ? DB : oldBaseDB);
+		if((this.StatLoader == null) || privacyV.contains(DatabaseTables.DBSTATS.toString()))
+			this.StatLoader = 		new StatLoader(privacyV.contains(DatabaseTables.DBSTATS.toString()) ? DB : oldBaseDB);
+		if((this.PollLoader == null) || privacyV.contains(DatabaseTables.DBPOLLS.toString()))
+			this.PollLoader = 		new PollLoader(privacyV.contains(DatabaseTables.DBPOLLS.toString()) ? DB : oldBaseDB);
+		if((this.VFSLoader == null) || privacyV.contains(DatabaseTables.DBVFS.toString()))
+			this.VFSLoader = 		new VFSLoader(privacyV.contains(DatabaseTables.DBVFS.toString()) ? DB : oldBaseDB);
+		if((this.JournalLoader == null) || privacyV.contains(DatabaseTables.DBJOURNALS.toString()))
+			this.JournalLoader = 	new JournalLoader(privacyV.contains(DatabaseTables.DBJOURNALS.toString()) ? DB : oldBaseDB);
+		if((this.QuestLoader == null) || privacyV.contains(DatabaseTables.DBQUEST.toString()))
+			this.QuestLoader = 		new QuestLoader(privacyV.contains(DatabaseTables.DBQUEST.toString()) ? DB : oldBaseDB);
+		if((this.ClanLoader == null) || privacyV.contains(DatabaseTables.DBCLANS.toString()))
+			this.ClanLoader = 		new ClanLoader(privacyV.contains(DatabaseTables.DBCLANS.toString()) ? DB : oldBaseDB);
+		if((this.BackLogLoader == null) || privacyV.contains(DatabaseTables.DBBACKLOG.toString()))
+			this.BackLogLoader = 	new BackLogLoader(privacyV.contains(DatabaseTables.DBBACKLOG.toString()) ? DB : oldBaseDB);
 	}
 
 	@Override
