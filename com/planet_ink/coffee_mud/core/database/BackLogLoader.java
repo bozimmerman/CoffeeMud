@@ -19,6 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.sql.*;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /*
    Copyright 2014-2022 Bo Zimmerman
@@ -38,7 +39,7 @@ import java.util.*;
 public class BackLogLoader
 {
 	protected DBConnector DB=null;
-	protected Map<String,int[]> counters = new Hashtable<String,int[]>();
+	protected Map<String,AtomicInteger> counters = new Hashtable<String,AtomicInteger>();
 
 	public BackLogLoader(final DBConnector newDB)
 	{
@@ -47,7 +48,7 @@ public class BackLogLoader
 
 	protected int getCounter(final String channelName, final boolean bump)
 	{
-		int[] counter = counters.get(channelName);
+		AtomicInteger counter = counters.get(channelName);
 		if(counter == null)
 		{
 			final Object sync = CMClass.getSync("BACKLOG_"+channelName); 
@@ -78,14 +79,14 @@ public class BackLogLoader
 							R.close();
 							if(c!=setCounter)
 								D.update("UPDATE CMBKLG SET CMDATE="+c+" WHERE CMNAME='"+channelName+"' AND CMINDX=0", 0);
-							counters.put(channelName, new int[] { c });
+							counters.put(channelName, new AtomicInteger( c ));
 
 						}
 						else
 						{
 							R.close();
 							D.update("INSERT INTO CMBKLG (CMNAME,  CMINDX, CMDATE) VALUES ('"+channelName+"', 0, 0)", 0);
-							counters.put(channelName, new int[] {0});
+							counters.put(channelName, new AtomicInteger (0));
 						}
 					}
 					catch(final Exception sqle)
@@ -100,28 +101,27 @@ public class BackLogLoader
 				}
 			}
 		}
-		if(bump)
+		synchronized(counter)
 		{
-			DBConnection D=null;
-			try
+			if(bump)
 			{
-				D=DB.DBFetch();
-				synchronized(counter)
+				DBConnection D=null;
+				try
 				{
-					counter[0]++;
-					D.update("UPDATE CMBKLG SET CMDATE="+counter[0]+" WHERE CMNAME='"+channelName+"' AND CMINDX = 0", 0);
+					D=DB.DBFetch();
+					D.update("UPDATE CMBKLG SET CMDATE="+counter.addAndGet(1)+" WHERE CMNAME='"+channelName+"' AND CMINDX = 0", 0);
+				}
+				catch(final Exception sqle)
+				{
+					Log.errOut("BackLog",sqle);
+				}
+				finally
+				{
+					DB.DBDone(D);
 				}
 			}
-			catch(final Exception sqle)
-			{
-				Log.errOut("BackLog",sqle);
-			}
-			finally
-			{
-				DB.DBDone(D);
-			}
+			return counter.get();
 		}
-		return counter[0];
 	}
 
 	protected Integer checkSetBacklogTableVersion(final Integer setVersion)
