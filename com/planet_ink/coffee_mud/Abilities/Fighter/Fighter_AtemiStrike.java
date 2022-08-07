@@ -206,15 +206,14 @@ public class Fighter_AtemiStrike extends MonkSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(msg.value()<=0)
-				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> do(es) not look well."));
-					final int ticks = 20 - (getXLEVELLevel(mob)/2);
-					final Fighter_AtemiStrike strike = (Fighter_AtemiStrike)maliciousAffect(mob,target,asLevel,ticks,-1);
-					strike.tickUp=0;
-					strike.tickTarget = ticks/2;
-					success=strike!=null;
-				}
+				if(msg.value()>0)
+					return maliciousFizzle(mob,target,L("<T-NAME> fight(s) off <S-YOUPOSS> strike."));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> do(es) not look well."));
+				final int ticks = 20 - (getXLEVELLevel(mob)/2);
+				final Fighter_AtemiStrike strike = (Fighter_AtemiStrike)maliciousAffect(mob,target,asLevel,ticks,-1);
+				strike.tickUp=0;
+				strike.tickTarget = ticks/2;
+				success=strike!=null;
 			}
 		}
 		else

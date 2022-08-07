@@ -147,6 +147,8 @@ public class Skill_Bash extends StdSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
+				if(msg.value()>0)
+					return maliciousFizzle(mob,target,L("<T-NAME> fight(s) off <S-YOUPOSS> bash."));
 				final Weapon w=CMClass.getWeapon("ShieldWeapon");
 				if(w!=null)
 				{

@@ -148,6 +148,7 @@ public class Monk extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Fighter_Rescue",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Fighter_ArmorTweaking",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Fighter_Headlock",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Disarm",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Thief_Sneak",false);
@@ -171,6 +172,7 @@ public class Monk extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Fighter_WeaponBreak",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Fighter_Pin",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Fighter_ClinchHold",false);
 
 /**/		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Skill_Dirt",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_Detection",false);

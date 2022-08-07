@@ -1703,10 +1703,8 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	}
 
 	@Override
-	public int qualifyingClassLevel(final MOB studentM, final Ability A)
+	public CharClass qualifyingCharClassByLevel(final MOB studentM, final Ability A)
 	{
-		if(studentM==null)
-			return -1;
 		int greatestDiff=-1;
 		CharClass theClass=null;
 		for(int c=studentM.charStats().numClasses()-1;c>=0;c--)
@@ -1722,6 +1720,15 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 				theClass=C;
 			}
 		}
+		return theClass;
+	}
+	
+	@Override
+	public int qualifyingClassLevel(final MOB studentM, final Ability A)
+	{
+		if(studentM==null)
+			return -1;
+		final CharClass theClass = qualifyingCharClassByLevel(studentM,A);
 		if(theClass==null)
 			return studentM.charStats().getClassLevel(studentM.charStats().getCurrentClass());
 		return studentM.charStats().getClassLevel(theClass);

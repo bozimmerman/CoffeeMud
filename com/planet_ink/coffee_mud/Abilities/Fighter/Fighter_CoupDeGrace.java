@@ -179,12 +179,15 @@ public class Fighter_CoupDeGrace extends FighterSkill
 		final int chance=(-levelDiff)+(-(target.charStats().getStat(CharStats.STAT_CONSTITUTION)*2));
 		final boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
 		final boolean success=proficiencyCheck(mob,chance,auto)&&(hit);
-		if((success)&&((dmg<50)||(dmg<(target.maxState().getHitPoints()/4))))
+		if((success)
+		&&((dmg<50)||(dmg<(target.maxState().getHitPoints()/4))))
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
+				if(msg.value()>0)
+					return maliciousFizzle(mob,target,L("<T-NAME> fight(s) off <S-YOUPOSS> coup-de-grace."));
 				target.curState().setHitPoints(1);
 				CMLib.combat().postDamage(mob,target,ww,dmg,CMMsg.MSG_WEAPONATTACK,ww.weaponClassification(),auto?"":L("^F^<FIGHT^><S-NAME> rear(s) back and Coup-de-Grace(s) <T-NAME>!^</FIGHT^>^?@x1",CMLib.protocol().msp("decap.wav",30)));
 				mob.location().recoverRoomStats();

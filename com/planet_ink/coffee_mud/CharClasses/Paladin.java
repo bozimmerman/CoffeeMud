@@ -179,6 +179,7 @@ public class Paladin extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_CureSerious",false,CMParms.parseSemicolons("Prayer_CureLight",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_HealMount",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Fighter_Headlock",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_MountedCombat",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Paladin_Defend",true);
@@ -190,6 +191,7 @@ public class Paladin extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Paladin_Courage",true);
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
 			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_DispelEvil",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Fighter_ClinchHold",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_RestoreVoice",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Paladin_Purity",false);

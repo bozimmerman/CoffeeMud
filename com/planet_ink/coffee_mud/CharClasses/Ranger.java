@@ -183,6 +183,7 @@ public class Ranger extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Ranger_Sneak",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Fighter_Cleave",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Chant_CalmAnimal",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Fighter_Headlock",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_MountedCombat",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_Hunger",false);
@@ -195,6 +196,7 @@ public class Ranger extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Ranger_Enemy2",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_AnimalFriendship",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_ReadRunes",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Fighter_ClinchHold",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_SummonPeace",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_VenomWard",false);

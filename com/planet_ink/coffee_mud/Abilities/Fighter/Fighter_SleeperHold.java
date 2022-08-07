@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2022 Bo Zimmerman
+   Copyright 2022-2022 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Fighter_Pin extends FighterGrappleSkill
+public class Fighter_SleeperHold extends FighterGrappleSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Fighter_Pin";
+		return "Fighter_SleeperHold";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Pin");
+	private final static String localizedName = CMLib.lang().L("Sleeper Hold");
 
 	@Override
 	public String name()
@@ -52,11 +52,11 @@ public class Fighter_Pin extends FighterGrappleSkill
 	public String displayText()
 	{
 		if(affected==invoker)
-			return "(Pinning)";
-		return "(Pinned)";
+			return "(Sleeper-Holding)";
+		return "(Sleeper-Held)";
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"PIN"});
+	private static final String[] triggerStrings =I(new String[] {"SLEEPERHOLD"});
 
 	@Override
 	public String[] triggerStrings()
@@ -65,58 +65,34 @@ public class Fighter_Pin extends FighterGrappleSkill
 	}
 
 	@Override
-	protected int canAffectCode()
-	{
-		return 0;
-	}
-
-	@Override
-	protected int canTargetCode()
-	{
-		return Ability.CAN_MOBS;
-	}
-
-	@Override
 	protected String grappleWord() 
 	{ 
-		return "pin"; 
+		return "sleeper-hold"; 
 	}
 	
 	@Override
 	protected String grappledWord() 
 	{ 
-		return  "pinned"; 
+		return  "sleeper-held"; 
 	}
 
+	
 	@Override
-	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		super.affectPhyStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SITTING);
-	}
-
-	@Override
-	protected boolean isImmobilizing()
-	{
-		return true;
-	}
-
-	@Override
-	public boolean okMessage(final Environmental myHost, final CMMsg msg)
-	{
-		if(!super.okMessage(myHost, msg))
+		if(!super.tick(ticking, tickID))
 			return false;
-		// pin is more restrictive, can't see, talk, or anything else
-		if(msg.source()==affected)
+		if (affected instanceof MOB)
 		{
-			if(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
+			final MOB mob = (MOB)affected;
+			if(mob != invoker())
 			{
-				if((msg.sourceMajor(CMMsg.MASK_MOUTH))
-				||(msg.sourceMajor(CMMsg.MASK_EYES)))
+				int pctChance = ((5*super.tickUp)+super.getXLEVELLevel(invoker()))
+									-(mob.charStats().getStat(CharStats.STAT_CONSTITUTION));
+				if(CMLib.dice().rollPercentage()<pctChance)
 				{
-					if(msg.sourceMessage()!=null)
-						msg.source().tell(L("You are "+grappledWord()+"!"));
-					return false;
+					final Ability A=CMClass.getAbility("CombatSleep");
+					A.invoke(invoker, mob, true, 0);
 				}
 			}
 		}
@@ -130,31 +106,37 @@ public class Fighter_Pin extends FighterGrappleSkill
 		if(target==null)
 			return false;
 
+		if(target.charStats().getBodyPart(Race.BODY_NECK)==0)
+		{
+			mob.tell(L("@x1 has no neck!",target.name()));
+			return false;
+		}
+		
 		if(!super.invoke(mob,commands,target,auto,asLevel))
 			return false;
 
 		// now see if it worked
 		final boolean hit=(auto)
-							||(super.isGrappled(target)!=null)
-							||CMLib.combat().rollToHit(mob,target);
+						||(super.isGrappled(target)!=null)
+						||CMLib.combat().rollToHit(mob,target);
 		boolean success=proficiencyCheck(mob,0,auto)&&(hit);
 		if(success)
 		{
 			invoker=mob;
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),
-					auto?L("<T-NAME> get(s) "+grappledWord()+"!"):L("^F^<FIGHT^><S-NAME> "+grappleWord()+"(s) <T-NAMESELF> to the floor!^</FIGHT^>^?"));
+					auto?L("<T-NAME> get(s) "+grappledWord()+"!"):L("^F^<FIGHT^><S-NAME> put(s) <T-NAME> in a "+grappleWord()+"!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
-					success = finishGrapple(mob,4,target, asLevel);
+					success = finishGrapple(mob,8,target, asLevel);
 				else
-					return maliciousFizzle(mob,target,L("<T-NAME> fight(s) off <S-YOUPOSS> pinning move."));
+					return maliciousFizzle(mob,target,L("<T-NAME> fight(s) off <S-YOUPOSS> sleeper hold."));
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to "+grappleWord()+" <T-NAMESELF>, but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to put <T-NAME> in a "+name()+", but fail(s)."));
 
 		// return whether it worked
 		return success;

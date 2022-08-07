@@ -151,6 +151,7 @@ public class Assassin extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_DualParry",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Skill_AttackHalf",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_CutThroat",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_ChokeHold",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_CriticalShot",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Specialization_Hammer",false);

@@ -1673,6 +1673,44 @@ public class StdAbility implements Ability
 		return invoke(mob,V,target,auto,asLevel);
 	}
 
+	protected boolean testUsageCost(final MOB mob, final boolean auto, final int[] consumed, final boolean quiet)
+	{
+		if(mob.curState().getMana()<consumed[Ability.USAGEINDEX_MANA])
+		{
+			if(!quiet)
+			{
+				if(mob.maxState().getMana()==consumed[Ability.USAGEINDEX_MANA])
+					failureTell(mob,mob,auto,L("You must be at full mana to do that."));
+				else
+					failureTell(mob,mob,auto,L("You don't have enough mana to do that."));
+			}
+			return false;
+		}
+		if(mob.curState().getMovement()<consumed[Ability.USAGEINDEX_MOVEMENT])
+		{
+			if(!quiet)
+			{
+				if(mob.maxState().getMovement()==consumed[Ability.USAGEINDEX_MOVEMENT])
+					failureTell(mob,mob,auto,L("You must be at full movement to do that."));
+				else
+					failureTell(mob,mob,auto,L("You don't have enough movement to do that.  You are too tired."));
+			}
+			return false;
+		}
+		if(mob.curState().getHitPoints()<consumed[Ability.USAGEINDEX_HITPOINTS])
+		{
+			if(!quiet)
+			{
+				if(mob.maxState().getHitPoints()==consumed[Ability.USAGEINDEX_HITPOINTS])
+					failureTell(mob,mob,auto,L("You must be at full health to do that."));
+				else
+					failureTell(mob,mob,auto,L("You don't have enough hit points to do that."));
+			}
+			return false;
+		}
+		return true;
+	}
+	
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical target, final boolean auto, final int asLevel)
 	{
@@ -1759,31 +1797,10 @@ public class StdAbility implements Ability
 			}
 			else
 				timeCache=null;
-			if(mob.curState().getMana()<consumed[Ability.USAGEINDEX_MANA])
-			{
-				if(mob.maxState().getMana()==consumed[Ability.USAGEINDEX_MANA])
-					failureTell(mob,mob,auto,L("You must be at full mana to do that."));
-				else
-					failureTell(mob,mob,auto,L("You don't have enough mana to do that."));
-				return false;
-			}
-			if(mob.curState().getMovement()<consumed[Ability.USAGEINDEX_MOVEMENT])
-			{
-				if(mob.maxState().getMovement()==consumed[Ability.USAGEINDEX_MOVEMENT])
-					failureTell(mob,mob,auto,L("You must be at full movement to do that."));
-				else
-					failureTell(mob,mob,auto,L("You don't have enough movement to do that.  You are too tired."));
-				return false;
-			}
-			if(mob.curState().getHitPoints()<consumed[Ability.USAGEINDEX_HITPOINTS])
-			{
-				if(mob.maxState().getHitPoints()==consumed[Ability.USAGEINDEX_HITPOINTS])
-					failureTell(mob,mob,auto,L("You must be at full health to do that."));
-				else
-					failureTell(mob,mob,auto,L("You don't have enough hit points to do that."));
-				return false;
-			}
 
+			if(!testUsageCost(mob,false,consumed,auto))
+				return false;
+			
 			if((minCastWaitTime()>0)&&(lastCastHelp>0))
 			{
 				if((System.currentTimeMillis()-lastCastHelp)<minCastWaitTime())

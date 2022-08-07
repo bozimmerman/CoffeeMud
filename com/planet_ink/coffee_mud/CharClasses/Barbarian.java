@@ -151,6 +151,7 @@ public class Barbarian extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_TwoWeaponFighting",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Bash",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Fighter_BearHug",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Fighter_SmokeSignals",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Scalp",false);
@@ -170,6 +171,7 @@ public class Barbarian extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Fighter_Spring",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Apothecary",0,"ANTIDOTES",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Fighter_Headlock",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_Dirt",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Fighter_JungleTactics",false);
@@ -179,6 +181,7 @@ public class Barbarian extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Fighter_Warcry",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Fighter_DesertTactics",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Fighter_ClinchHold",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Fighter_ImprovedThrowing",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Fighter_MountainTactics",false);

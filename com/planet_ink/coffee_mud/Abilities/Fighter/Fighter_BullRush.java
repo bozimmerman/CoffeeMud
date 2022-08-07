@@ -143,6 +143,8 @@ public class Fighter_BullRush extends FighterSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
+			if(msg.value()>0)
+				return maliciousFizzle(mob,target,L("<T-NAME> dodge(s) <S-YOUPOSS> bull rush."));
 			final MOB M1=mob.getVictim();
 			final MOB M2=target.getVictim();
 			mob.makePeace(true);

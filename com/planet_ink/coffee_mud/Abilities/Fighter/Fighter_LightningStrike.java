@@ -217,6 +217,8 @@ public class Fighter_LightningStrike extends MonkSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
+				if(msg.value()>0)
+					return maliciousFizzle(mob,target,L("<T-NAME> fight(s) off <S-YOUPOSS> strike."));
 				final int num=getXLEVELLevel(mob)+CMLib.ableMapper().qualifyingClassLevel(mob,this);
 				final Room R=target.location();
 				for(int i=0;(i<num) && (target.location()==R);i++)

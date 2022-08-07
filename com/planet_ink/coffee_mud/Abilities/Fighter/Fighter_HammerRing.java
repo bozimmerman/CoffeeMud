@@ -264,6 +264,8 @@ public class Fighter_HammerRing extends FighterSkill implements HealthCondition
 						target.makePeace(true);
 					}
 				}
+				else
+					return maliciousFizzle(mob,target,L("<T-NAME> block(s) <S-YOUPOSS> hammerring."));
 			}
 		}
 		else

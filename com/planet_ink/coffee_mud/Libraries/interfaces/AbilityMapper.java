@@ -467,6 +467,17 @@ public interface AbilityMapper extends CMLibrary
 	public int qualifyingClassLevel(MOB studentM, Ability A);
 
 	/**
+	 * Returns the class with the lowest char class level at which the 
+	 * given mob (by race or class) qualified for the given ability 
+	 * if any. Returns current class for no match.
+	 * 
+	 * @param studentM the mob, whose charclass ID() is checked
+	 * @param A the Ability to find a class for
+	 * @return the best char class
+	 */
+	public CharClass qualifyingCharClassByLevel(final MOB studentM, final Ability A);
+	
+	/**
 	 * Returns the class, race, or clan government object that qualifies
 	 * the given mob at the lowest level for the given ability.
 	 * @see AbilityMapper#getQualifyingLevel(String, boolean, String)

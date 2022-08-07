@@ -120,7 +120,7 @@ public class Skill_Nippletwist extends StdSkill
 
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell(L("You are too far away from your target to kick them!"));
+			mob.tell(L("You are too far away from your target to twist them!"));
 			return false;
 		}
 

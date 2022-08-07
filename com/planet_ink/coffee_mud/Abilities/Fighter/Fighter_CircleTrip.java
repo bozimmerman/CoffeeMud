@@ -235,6 +235,11 @@ public class Fighter_CircleTrip extends FighterSkill
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);
+						if(msg.value()>0)
+						{
+							target.location().show(mob, target,CMMsg.MSG_OK_ACTION,L("<T-NAME> dodge(s) <S-YOUPOSS> circle trip."));
+							continue;
+						}
 						maliciousAffect(mob,target,asLevel,2,-1);
 						target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> hit(s) the floor!"));
 					}
