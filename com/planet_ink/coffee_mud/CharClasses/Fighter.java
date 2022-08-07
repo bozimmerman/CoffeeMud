@@ -168,6 +168,7 @@ public class Fighter extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Fighter_CritStrike",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Fighter_ShieldBlock",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Fighter_LegHold",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Fighter_BlindFighting",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Fighter_Toughness",false);
