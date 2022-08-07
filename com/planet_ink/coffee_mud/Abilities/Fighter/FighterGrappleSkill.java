@@ -198,6 +198,8 @@ public class FighterGrappleSkill extends FighterSkill
 	
 	public boolean isMonkish(final MOB mob)
 	{
+		return false;
+		/*
 		if((mob.charStats().getStat(CharStats.STAT_STRENGTH)>=10)
 		&&(mob.charStats().getStat(CharStats.STAT_DEXTERITY)>=10)
 		&&(mob.charStats().getMaxStat(CharStats.STAT_STRENGTH)>=20))
@@ -207,6 +209,12 @@ public class FighterGrappleSkill extends FighterSkill
 			&&(C.allowedArmorLevel() == CharClass.ARMOR_CLOTH))
 				return true;
 		}
+		return false;
+		*/
+	}
+	
+	protected boolean isHandsFree()
+	{
 		return false;
 	}
 
@@ -257,7 +265,7 @@ public class FighterGrappleSkill extends FighterSkill
 			default:
 				if(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 				{
-					if((msg.sourceMajor(CMMsg.MASK_HANDS))
+					if((msg.sourceMajor(CMMsg.MASK_HANDS)&&(!isHandsFree()))
 					||(msg.sourceMajor(CMMsg.MASK_MOVE)))
 					{
 						if(isImmobilizing())
@@ -291,7 +299,7 @@ public class FighterGrappleSkill extends FighterSkill
 		{
 			if((target instanceof MOB)
 			&&(hasWeightLimit())
-			&&(mob.baseWeight()<(((MOB)target).baseWeight()-200)))
+			&&(mob.baseWeight()<(((MOB)target).baseWeight()-(mob.baseWeight()*2))))
 				return Ability.QUALITY_INDIFFERENT;
 			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 				return Ability.QUALITY_INDIFFERENT;
@@ -413,11 +421,11 @@ public class FighterGrappleSkill extends FighterSkill
 			mob.tell(L("You are too far away from your target to "+grappleWord()+" them!"));
 			return false;
 		}
-		
+
 		if((!auto)
 		&&(givenTarget instanceof MOB)
 		&&(hasWeightLimit())
-		&&(mob.baseWeight()<((MOB)givenTarget).baseWeight()-200))
+		&&(mob.baseWeight()<((MOB)givenTarget).baseWeight()-(mob.baseWeight()*2)))
 		{
 			mob.tell(L("@x1 is too big to "+grappleWord()+"!",((MOB)givenTarget).name(mob)));
 			return false;
@@ -438,14 +446,15 @@ public class FighterGrappleSkill extends FighterSkill
 		if(!super.invoke(mob, commands, givenTarget, auto, asLevel))
 			return false;
 		
+		proficiencyDiff = 0;
 		if((givenTarget instanceof MOB)
 		&&(!isMonkish(mob))
 		&&(mob.isInCombat() || ((MOB)givenTarget).isInCombat())
+		&&(isGrappled((MOB)givenTarget)==null)
 		&&((!((MOB)givenTarget).isInCombat())
 			||((((MOB)givenTarget).getVictim()==mob)&&(((MOB)givenTarget).rangeToTarget()==0))))
 		{
 			final MOB victimMOB = (MOB)givenTarget;
-			proficiencyDiff = 0;
 			final int oldHP = mob.curState().getHitPoints();
 			CMLib.combat().postAttack(victimMOB, mob, victimMOB.fetchWieldedItem());
 			final int newHP = mob.curState().getHitPoints();
@@ -457,14 +466,13 @@ public class FighterGrappleSkill extends FighterSkill
 				if(pct > 0)
 					proficiencyDiff = -(int)Math.round(pct); 
 			}
-			
-			int levelDiff=givenTarget.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
-			if(levelDiff>0)
-				levelDiff=levelDiff*10;
-			else
-				levelDiff=0;
-			proficiencyDiff -= levelDiff;
 		}
+		int levelDiff=givenTarget.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
+		if(levelDiff>0)
+			levelDiff=levelDiff*10;
+		else
+			levelDiff=0;
+		proficiencyDiff -= levelDiff;
 		return true;
 	}
 }

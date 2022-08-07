@@ -77,7 +77,7 @@ public class Skill_InstrumentBash extends BardSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;
+		return Ability.ACODE_SKILL|Ability.DOMAIN_WEAPON_USE;
 	}
 
 	@Override

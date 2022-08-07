@@ -175,6 +175,11 @@ public class Thief_CutThroat extends ThiefSkill
 			mob.tell(L("@x1 is watching you too closely to do that.",target.name(mob)));
 			return false;
 		}
+		if((!auto)&&(!CMLib.flags().isStanding(mob))&&(mob!=target))
+		{
+			mob.tell(L("You need to stand up!"));
+			return false;
+		}
 		if(lastMOB.equals(target+""))
 		{
 			failureTell(mob,target,auto,L("@x1 is watching <S-HIS-HER> neck too closely to do that again.",target.name(mob)));

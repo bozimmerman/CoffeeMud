@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Fighter_SleeperHold extends FighterGrappleSkill
+public class Fighter_DoubleArmHold extends FighterGrappleSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Fighter_SleeperHold";
+		return "Fighter_DoubleArmHold";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Sleeper Hold");
+	private final static String localizedName = CMLib.lang().L("Double Arm Hold");
 
 	@Override
 	public String name()
@@ -52,11 +52,11 @@ public class Fighter_SleeperHold extends FighterGrappleSkill
 	public String displayText()
 	{
 		if(affected==invoker)
-			return "(Sleeper-Holding)";
-		return "(Sleeper-Held)";
+			return "(Double-Arm-Holding)";
+		return "(Double-Arm-Held)";
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"SLEEPERHOLD"});
+	private static final String[] triggerStrings =I(new String[] {"ARMHOLD"});
 
 	@Override
 	public String[] triggerStrings()
@@ -67,38 +67,25 @@ public class Fighter_SleeperHold extends FighterGrappleSkill
 	@Override
 	protected String grappleWord() 
 	{ 
-		return "sleeper-hold"; 
+		return "double-arm-hold"; 
 	}
 	
 	@Override
 	protected String grappledWord() 
 	{ 
-		return  "sleeper-held"; 
+		return  "double-arm-held"; 
 	}
 
-	
 	@Override
-	public boolean tick(final Tickable ticking, final int tickID)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
-		if(!super.tick(ticking, tickID))
-			return false;
-		if (affected instanceof MOB)
-		{
-			final MOB mob = (MOB)affected;
-			if(mob != invoker())
-			{
-				int pctChance = ((10*super.tickUp)+super.getXLEVELLevel(invoker()))
-								-(2*mob.charStats().getStat(CharStats.STAT_CONSTITUTION));
-				if(CMLib.dice().rollPercentage()<pctChance)
-				{
-					final Ability A=CMClass.getAbility("CombatSleep");
-					A.invoke(invoker, mob, true, 0);
-				}
-			}
-		}
-		return true;
+		super.affectPhyStats(affected,affectableStats);
+		if(affectableStats.speed()>=2.0)
+			affectableStats.setSpeed(affectableStats.speed()-1.0);
+		else
+			affectableStats.setSpeed(affectableStats.speed()/2.0);
 	}
-	
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -106,9 +93,9 @@ public class Fighter_SleeperHold extends FighterGrappleSkill
 		if(target==null)
 			return false;
 
-		if(target.charStats().getBodyPart(Race.BODY_NECK)==0)
+		if(target.charStats().getBodyPart(Race.BODY_ARM)<1)
 		{
-			mob.tell(L("@x1 has no neck!",target.name()));
+			mob.tell(L("@x1 has no arms!",target.name(mob)));
 			return false;
 		}
 		
@@ -132,11 +119,11 @@ public class Fighter_SleeperHold extends FighterGrappleSkill
 				if(msg.value()<=0)
 					success = finishGrapple(mob,4,target, asLevel);
 				else
-					return maliciousFizzle(mob,target,L("<T-NAME> fight(s) off <S-YOUPOSS> sleeper hold."));
+					return maliciousFizzle(mob,target,L("<T-NAME> fight(s) off <S-YOUPOSS> arm-holding move."));
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to put <T-NAME> in a "+name()+", but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to put <T-NAME> in a "+name().toLowerCase()+", but fail(s)."));
 
 		// return whether it worked
 		return success;

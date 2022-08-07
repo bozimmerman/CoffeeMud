@@ -135,6 +135,11 @@ public class Fighter_CoupDeGrace extends FighterSkill
 			mob.tell(L("You are too far away to try that!"));
 			return false;
 		}
+		if((!auto)&&(!CMLib.flags().isStanding(mob)))
+		{
+			mob.tell(L("You need to stand up!"));
+			return false;
+		}
 		final Item w=mob.fetchWieldedItem();
 		Weapon ww=null;
 		if(!auto)

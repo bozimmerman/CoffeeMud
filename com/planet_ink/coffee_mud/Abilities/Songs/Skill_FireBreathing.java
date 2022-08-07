@@ -123,6 +123,12 @@ public class Skill_FireBreathing extends BardSkill
 		if(target==null)
 			return false;
 
+		if((!auto)&&(!CMLib.flags().isStanding(mob)))
+		{
+			mob.tell(L("You need to stand up!"));
+			return false;
+		}
+
 		final Item fireSource=getFireSource(mob);
 		if((!auto)&&(fireSource==null))
 		{

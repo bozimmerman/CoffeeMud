@@ -84,7 +84,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tWEAPON_CLASS\tWEAPON_TYPE\tBASE_DAMAGE\tATTACK_MODIFICATION\t"
-		+"WEAPON_HANDS_REQUIRED||MAX_WAND_USES\tMIN_MAX_RANGE\tOPTIONAL_RESOURCE_OR_MATERIAL\tCODED_SPELL_LIST";
+		+"WEAPON_HANDS_REQUIRED\tMIN_MAX_RANGE\tOPTIONAL_RESOURCE_OR_MATERIAL\tCODED_SPELL_LIST";
 	}
 
 	//protected static final int RCP_FINALNAME=0;
@@ -548,11 +548,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			if(foundRecipe.size()>RCP_HANDS)
 			{
 				if(buildingI instanceof Wand)
-				{
-					if(foundRecipe.get(RCP_HANDS).trim().length()>0)
-						((Wand)buildingI).setMaxCharges(CMath.s_int(foundRecipe.get(RCP_HANDS).trim()));
-				}
-				else
+					((Wand)buildingI).setMaxCharges(0);
 				if(CMath.s_int(foundRecipe.get(RCP_HANDS))==2)
 					buildingI.setRawLogicalAnd(true);
 			}

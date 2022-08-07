@@ -219,6 +219,12 @@ public class Skill_Dirt extends StdSkill
 			}
 		}
 
+		if((!auto)&&(!CMLib.flags().isStanding(mob)))
+		{
+			mob.tell(L("You need to stand up!"));
+			return false;
+		}
+
 		if((!auto)&&CMLib.flags().isFlying(mob))
 		{
 			mob.tell(L("You are too far from the ground to kick dirt."));

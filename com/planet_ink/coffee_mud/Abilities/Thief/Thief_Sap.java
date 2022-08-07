@@ -196,6 +196,12 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 				return false;
 			}
 
+			if((!auto)&&(!CMLib.flags().isStanding(mob))&&(mob!=target))
+			{
+				mob.tell(L("You need to stand up!"));
+				return false;
+			}
+
 			if(mob.baseWeight()<(target.baseWeight()-100))
 			{
 				mob.tell(L("@x1 is too big to knock out!",target.name(mob)));

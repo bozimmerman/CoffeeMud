@@ -196,7 +196,7 @@ public class Skill_Trip extends StdSkill
 			return false;
 		}
 
-		if((!CMLib.flags().isAliveAwakeMobile(mob,true)||(CMLib.flags().isSitting(mob))))
+		if((!CMLib.flags().isAliveAwakeMobile(mob,true)||(!CMLib.flags().isStanding(mob))))
 		{
 			mob.tell(L("You need to stand up!"));
 			return false;

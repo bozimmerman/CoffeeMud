@@ -84,7 +84,7 @@ public class Fighter_HammerRing extends FighterSkill implements HealthCondition
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;
+		return Ability.ACODE_SKILL|Ability.DOMAIN_WEAPON_USE;
 	}
 
 	@Override

@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Fighter_SleeperHold extends FighterGrappleSkill
+public class Fighter_LegHold extends FighterGrappleSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Fighter_SleeperHold";
+		return "Fighter_LegHold";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Sleeper Hold");
+	private final static String localizedName = CMLib.lang().L("Leg Hold");
 
 	@Override
 	public String name()
@@ -52,11 +52,11 @@ public class Fighter_SleeperHold extends FighterGrappleSkill
 	public String displayText()
 	{
 		if(affected==invoker)
-			return "(Sleeper-Holding)";
-		return "(Sleeper-Held)";
+			return "(Leg-Hold)";
+		return "(Leg-Held)";
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"SLEEPERHOLD"});
+	private static final String[] triggerStrings =I(new String[] {"LEGHOLD"});
 
 	@Override
 	public String[] triggerStrings()
@@ -67,35 +67,46 @@ public class Fighter_SleeperHold extends FighterGrappleSkill
 	@Override
 	protected String grappleWord() 
 	{ 
-		return "sleeper-hold"; 
+		return "leg-hold"; 
 	}
 	
 	@Override
 	protected String grappledWord() 
 	{ 
-		return  "sleeper-held"; 
+		return  "leg-held"; 
 	}
 
+	@Override
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SITTING);
+	}
+
+	@Override
+	protected boolean isHandsFree()
+	{
+		return affected != invoker();
+	}
 	
 	@Override
-	public boolean tick(final Tickable ticking, final int tickID)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!super.tick(ticking, tickID))
-			return false;
-		if (affected instanceof MOB)
+		if(msg.source()==affected)
 		{
-			final MOB mob = (MOB)affected;
-			if(mob != invoker())
+			if(msg.target()==pairedWith)
 			{
-				int pctChance = ((10*super.tickUp)+super.getXLEVELLevel(invoker()))
-								-(2*mob.charStats().getStat(CharStats.STAT_CONSTITUTION));
-				if(CMLib.dice().rollPercentage()<pctChance)
+				if((msg.tool() instanceof FighterGrappleSkill)
+				&&(msg.source().isMine(msg.tool())))
 				{
-					final Ability A=CMClass.getAbility("CombatSleep");
-					A.invoke(invoker, mob, true, 0);
+					unInvoke();
+					// uniquely OK
+					return true;
 				}
 			}
 		}
+		if(!super.okMessage(myHost, msg))
+			return false;
 		return true;
 	}
 	
@@ -106,9 +117,9 @@ public class Fighter_SleeperHold extends FighterGrappleSkill
 		if(target==null)
 			return false;
 
-		if(target.charStats().getBodyPart(Race.BODY_NECK)==0)
+		if(target.charStats().getBodyPart(Race.BODY_LEG)<1)
 		{
-			mob.tell(L("@x1 has no neck!",target.name()));
+			mob.tell(L("@x1 has no legs!",target.name(mob)));
 			return false;
 		}
 		
@@ -132,7 +143,7 @@ public class Fighter_SleeperHold extends FighterGrappleSkill
 				if(msg.value()<=0)
 					success = finishGrapple(mob,4,target, asLevel);
 				else
-					return maliciousFizzle(mob,target,L("<T-NAME> fight(s) off <S-YOUPOSS> sleeper hold."));
+					return maliciousFizzle(mob,target,L("<T-NAME> fight(s) off <S-YOUPOSS> leg-holding move."));
 			}
 		}
 		else

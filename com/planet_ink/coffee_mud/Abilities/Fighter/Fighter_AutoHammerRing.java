@@ -83,7 +83,7 @@ public class Fighter_AutoHammerRing extends FighterSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;
+		return Ability.ACODE_SKILL|Ability.DOMAIN_WEAPON_USE;
 	}
 	
 	protected volatile int tickUp = 3;

@@ -83,7 +83,7 @@ public class Thief_Whiplash extends ThiefSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DIRTYFIGHTING;
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_WEAPON_USE;
 	}
 
 	@Override

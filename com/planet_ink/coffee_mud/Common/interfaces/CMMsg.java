@@ -1344,9 +1344,9 @@ public interface CMMsg extends CMCommon
 	/** combined MAJOR and MINOR codes for useful event message type for general area effects */
 	public static final int MSG_AREAAFFECT=MASK_ALWAYS|TYP_AREAAFFECT;
 	/** combined MAJOR and MINOR codes for useful event message type for a push event */
-	public static final int MSG_PUSH=MASK_HANDS|TYP_PUSH;
+	public static final int MSG_PUSH=MASK_HANDS|MASK_MOVE|TYP_PUSH;
 	/** combined MAJOR and MINOR codes for useful event message type for a pull event*/
-	public static final int MSG_PULL=MASK_HANDS|TYP_PULL;
+	public static final int MSG_PULL=MASK_HANDS|MASK_MOVE|TYP_PULL;
 	/** combined MAJOR and MINOR codes for useful event message type for a recall event*/
 	public static final int MSG_RECALL=MASK_SOUND|TYP_RECALL; // speak precludes animals
 	/** combined MAJOR and MINOR codes for useful event message type for a open event*/

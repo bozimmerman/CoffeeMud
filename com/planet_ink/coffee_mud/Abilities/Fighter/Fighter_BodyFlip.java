@@ -182,7 +182,7 @@ public class Fighter_BodyFlip extends FighterSkill
 			return false;
 		}
 
-		if(CMLib.flags().isSitting(mob))
+		if((!auto)&&(!CMLib.flags().isStanding(mob))&&(mob!=target))
 		{
 			mob.tell(L("You need to stand up!"));
 			return false;

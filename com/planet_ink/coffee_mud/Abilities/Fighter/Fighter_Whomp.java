@@ -211,6 +211,12 @@ public class Fighter_Whomp extends FighterSkill implements HealthCondition
 			return false;
 		}
 
+		if((!auto)&&(!CMLib.flags().isStanding(mob))&&(mob!=target))
+		{
+			mob.tell(L("You need to stand up!"));
+			return false;
+		}
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

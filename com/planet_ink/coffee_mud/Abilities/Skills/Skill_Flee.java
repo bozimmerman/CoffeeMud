@@ -77,7 +77,7 @@ public class Skill_Flee extends StdSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL | Ability.DOMAIN_DIRTYFIGHTING;
+		return Ability.ACODE_SKILL | Ability.DOMAIN_EVASIVE;
 	}
 
 	@Override

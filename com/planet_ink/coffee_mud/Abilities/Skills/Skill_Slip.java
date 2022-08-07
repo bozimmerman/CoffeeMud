@@ -201,6 +201,11 @@ public class Skill_Slip extends StdSkill
 			mob.tell(L("You can't make someone @x1 @x2 slip!",target.riding().stateString(target),target.riding().name()));
 			return false;
 		}
+		if((!auto)&&(!CMLib.flags().isStanding(mob))&&(mob!=target))
+		{
+			mob.tell(L("You need to stand up!"));
+			return false;
+		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
