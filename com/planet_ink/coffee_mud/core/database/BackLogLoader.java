@@ -101,9 +101,9 @@ public class BackLogLoader
 				}
 			}
 		}
-		synchronized(counter)
+		if(bump)
 		{
-			if(bump)
+			synchronized(counter)
 			{
 				DBConnection D=null;
 				try
@@ -119,9 +119,10 @@ public class BackLogLoader
 				{
 					DB.DBDone(D);
 				}
+				return counter.get();
 			}
-			return counter.get();
 		}
+		return counter.get();
 	}
 
 	protected Integer checkSetBacklogTableVersion(final Integer setVersion)
