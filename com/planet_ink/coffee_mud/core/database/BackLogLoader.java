@@ -51,7 +51,7 @@ public class BackLogLoader
 		AtomicInteger counter = counters.get(channelName);
 		if(counter == null)
 		{
-			final Object sync = CMClass.getSync("BACKLOG_"+channelName); 
+			final Object sync = CMClass.getSync("BACKLOG_"+channelName);
 			synchronized(sync)
 			{
 				counter = counters.get(channelName);
@@ -105,11 +105,12 @@ public class BackLogLoader
 		{
 			synchronized(counter)
 			{
+				final int c=counter.incrementAndGet();
 				DBConnection D=null;
 				try
 				{
 					D=DB.DBFetch();
-					D.update("UPDATE CMBKLG SET CMDATE="+counter.addAndGet(1)+" WHERE CMNAME='"+channelName+"' AND CMINDX = 0", 0);
+					D.update("UPDATE CMBKLG SET CMDATE="+c+" WHERE CMNAME='"+channelName+"' AND CMINDX = 0", 0);
 				}
 				catch(final Exception sqle)
 				{
@@ -119,7 +120,7 @@ public class BackLogLoader
 				{
 					DB.DBDone(D);
 				}
-				return counter.get();
+				return c;
 			}
 		}
 		return counter.get();
