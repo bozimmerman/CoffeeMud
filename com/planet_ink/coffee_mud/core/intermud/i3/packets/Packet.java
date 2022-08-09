@@ -64,14 +64,15 @@ public class Packet
 	final static public int FINGER_REPLY = 18;
 	final static public int ERROR_PACKET = 19;
 	final static public int PING_PACKET  = 20;
-	final static public int MAUTH_REQUEST=21;
+	final static public int MAUTH_REQUEST= 21;
 	final static public int MAUTH_REPLY  = 22;
+	final static public int UCACHE_UPDATE= 23;
 
-	public String sender_mud = null;
-	public String sender_name = null;
-	public String target_mud = null;
-	public String target_name = null;
-	public int    type = 0;
+	public String	sender_mud	= null;
+	public String	sender_name	= null;
+	public String	target_mud	= null;
+	public String	target_name	= null;
+	public int		type		= 0;
 
 	public Packet()
 	{

@@ -989,7 +989,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 			else
 			if( type.equals("ucache-update") )
 			{
-				Log.errOut("Intermud","Other packet: " + type);
+				//UCacheUpdate update = new UCacheUpdate(data);
+				//Log.errOut("Intermud","UCache packet has # data: " + data.size());
 				// i have NO idea what to do here
 			}
 			else
