@@ -90,10 +90,19 @@ public class Prop_NoTeleportOut extends Property
 				final boolean summon=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING);
 				final boolean teleport=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING);
 				
+				final Room targetRoom;
+				if(msg.target() instanceof Room)
+					targetRoom = (Room)msg.target();
+				else
+				if((teleport||summon)&&(msg.target() instanceof MOB))
+					targetRoom = CMLib.map().roomLocation(msg.target());
+				else
+					targetRoom = null;
+				
 				if((shere)&&(teleport)&&(!summon)
 				&&(affected instanceof Area)
-				&&(msg.target() instanceof Room)
-				&&(((Area)affected).inMyMetroArea(((Room)msg.target()).getArea()))
+				&&(targetRoom instanceof Room)
+				&&(((Area)affected).inMyMetroArea(targetRoom.getArea()))
 				&&(!interAreaOK))
 					shere = false;
 				
@@ -103,9 +112,9 @@ public class Prop_NoTeleportOut extends Property
 					if(teleport)
 					{
 						if((affected instanceof Area)
-						&& (msg.target() instanceof Room)
-						&& (exceptionRooms.contains(CMLib.map().getExtendedRoomID((Room)msg.target()).toLowerCase())
-							||exceptionRooms.contains(((Room)msg.target()).getArea().Name().toLowerCase())))
+						&& (targetRoom != null)
+						&& (exceptionRooms.contains(CMLib.map().getExtendedRoomID(targetRoom).toLowerCase())
+							||exceptionRooms.contains((targetRoom).getArea().Name().toLowerCase())))
 							return true;
 						if((exceptionRooms.contains(msg.tool().ID().toLowerCase()))
 						||((msg.tool() instanceof PlanarAbility)&&(exceptionRooms.contains("planarability"))))
