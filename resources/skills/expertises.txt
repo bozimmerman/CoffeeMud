@@ -156,7 +156,7 @@ HELP_=<EXPERTISE>The ability to do more damage when using a bashing-type unarmed
 # UNARMEDFOCUS@x1=Unarmed Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_Natural,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
 # HELP_=<EXPERTISE>The ability for fighters to wield higher level natural weapons.
 
-BLUNTSTRIKE@x1=Blunt Striking @x2,10,LEVEL,-SKILL +Specialization_BluntWeapon,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
+BLUNTSTRIKE@x1=Blunt Striking @x2,10,LEVEL,-SKILL +Specialization_BluntWeapon +Skill_InstrumentBash,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using a blunt-class weapon.
 
 BLUNTPIERCE@x1=Blunt Piercing @x2,10,X2,-SKILL +Specialization_BluntWeapon,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
@@ -198,7 +198,7 @@ HELP_=<EXPERTISE>The ability to do more damage when using a siege weapon.
 HAMMERSTRIKE@x1=Hammer Striking @x2,10,LEVEL,-SKILL +Specialization_Hammer,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using a hammer.
 
-HAMMERBASH@x1=Hammer Bashing @x2,10,X3,-SKILL +Specialization_Hammer,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
+HAMMERBASH@x1=Hammer Bashing @x2,10,X3,-SKILL +Specialization_Hammer +Fighter_AutoHammerRing +Fighter_HammerRing,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to do more damage when using a bashing-type hammer.
 
 HAMMERFOCUS@x1=Hammer Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_Hammer,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0

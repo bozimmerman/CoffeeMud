@@ -88,7 +88,7 @@ public class Thief_StrategicRetreat extends ThiefSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DIRTYFIGHTING;
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_EVASIVE;
 	}
 
 	@Override

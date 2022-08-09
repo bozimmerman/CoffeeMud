@@ -462,10 +462,25 @@ public class Scarring extends StdAbility implements LimbDamage, HealthCondition
 				((Room)((Item)affected).owner()).showHappens(CMMsg.MSG_OK_VISUAL,L("^G@x1's @x2 becomes scarred!^?",affected.name(),scarredLimbName));
 			}
 		}
-		setMiscText(text()+scarredLimbName+";");
+		setMiscText(text()+scarredLimbName.toLowerCase()+";");
 		if(affected instanceof MOB)
 			confirmScarring((MOB)affected);
 		return null;
+	}
+
+	@Override
+	public boolean isDamaged(String limbName)
+	{
+		limbName = limbName.toLowerCase();
+		final List<String> theRest = affectedLimbNameSet();
+		if (theRest.contains(limbName))
+			return true;
+		for(final String s : theRest)
+		{
+			if(s.endsWith(" "+limbName))
+				return true;
+		}
+		return false;
 	}
 
 	@Override

@@ -48,6 +48,7 @@ public interface LimbDamage extends Ability
 	 * @return the set of the name of the remaining pieces.
 	 */
 	public List<String> unaffectedLimbSet();
+
 	/**
 	 * Performs the very dirty business of mangling the item of the given
 	 * name on the given target.  An existing instanceof of the LimbDamage
@@ -58,12 +59,22 @@ public interface LimbDamage extends Ability
 	 * @return the item object representing the newly damaged part, if applicable.
 	 */
 	public Item damageLimb(String limbName);
+
+	/**
+	 * Returns whether the limb of the given name has been damaged.
+	 *
+	 * @param limbName the name of the limb to check, full or partial
+	 * @return true if a limb of the given name is hurt by this
+	 */
+	public boolean isDamaged(final String limbName);
+
 	/**
 	 * The opposite of the unaffectedLimbSet method, this method returns
 	 * the list of the names of those parts which have been damaged.
 	 * @return the list of the names of the parts that are damaged!
 	 */
 	public List<String> affectedLimbNameSet();
+
 	/**
 	 * Restores a missing or damaged part, denoted by the given string, and managed by the
 	 * given LimbDamage property

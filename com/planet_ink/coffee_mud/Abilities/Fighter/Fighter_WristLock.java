@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Fighter_LegHold extends FighterGrappleSkill
+public class Fighter_WristLock extends FighterGrappleSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Fighter_LegHold";
+		return "Fighter_WristLock";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Leg Hold");
+	private final static String localizedName = CMLib.lang().L("Wrist Lock");
 
 	@Override
 	public String name()
@@ -52,11 +52,11 @@ public class Fighter_LegHold extends FighterGrappleSkill
 	public String displayText()
 	{
 		if(affected==invoker)
-			return "(Leg-Hold)";
-		return "(Leg-Held)";
+			return "(Wrist-Lock)";
+		return "(Wrist-Locked)";
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"LEGHOLD"});
+	private static final String[] triggerStrings =I(new String[] {"WRISTLOCK"});
 
 	@Override
 	public String[] triggerStrings()
@@ -68,14 +68,67 @@ public class Fighter_LegHold extends FighterGrappleSkill
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(!CMLib.flags().isSleeping(affected))
-			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SITTING);
+	}
+
+	protected int chanceOfStrength(final MOB mob)
+	{
+		final MOB invoker=invoker();
+		if((invoker != null)&&(mob!=null))
+		{
+			final int str = 10 * (invoker.charStats().getStat(CharStats.STAT_STRENGTH) - mob.charStats().getStat(CharStats.STAT_STRENGTH));
+			if(str < 10)
+				return 10;
+			return str;
+		}
+		return 50;
+	}
+
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if (affected instanceof MOB)
+		{
+			final MOB mob = (MOB)affected;
+			if(mob != invoker())
+			{
+				if((tickUp >= 4)
+				&&(CMLib.dice().rollPercentage()<chanceOfStrength(mob)))
+				{
+					LimbDamage dA = (LimbDamage)mob.fetchEffect("BrokenLimbs");
+					if(dA == null)
+					{
+						dA=(LimbDamage)CMClass.getAbility("BrokenLimbs");
+						if(dA!=null)
+							dA.invoke(invoker(), new XVector<String>("HAND"), mob, true, -1);
+					}
+					else
+					if(!dA.isDamaged("hand"))
+						dA.invoke(invoker(), new XVector<String>("HAND"), mob, true, -1);
+					unInvoke();
+					return false;
+				}
+				if(mob.fetchWieldedItem()!=null)
+					CMLib.commands().postRemove(mob, mob.fetchWieldedItem(), false);
+			}
+		}
+		return true;
 	}
 
 	@Override
 	protected boolean isHandsFree()
 	{
-		return affected != invoker();
+		if((affected instanceof MOB)
+		&&(((MOB)affected).charStats().getBodyPart(Race.BODY_HAND)>1))
+			return true;
+		return false;
+	}
+
+	@Override
+	protected boolean hasWeightLimit()
+	{
+		return false;
 	}
 
 	@Override
@@ -83,8 +136,43 @@ public class Fighter_LegHold extends FighterGrappleSkill
 	{
 		if(msg.source()==affected)
 		{
+			if(msg.sourceMinor()==CMMsg.TYP_HOLD)
+				return true;
+			else
+			if(msg.sourceMinor()==CMMsg.TYP_WIELD)
+			{
+				if(msg.sourceMessage()!=null)
+					msg.source().tell(L("You are in a(n) "+name().toLowerCase()+"!"));
+				return false;
+			}
+			else
+			if(msg.sourceMajor(CMMsg.MASK_HANDS)
+			&&(msg.target()==msg.source().fetchWieldedItem()))
+			{
+				if(msg.sourceMessage()!=null)
+					msg.source().tell(L("You are in a(n) "+name().toLowerCase()+"!"));
+				return false;
+			}
+			else
+			if(msg.sourceMajor(CMMsg.MASK_HANDS)
+			&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL))
+			{
+				if(msg.sourceMessage()!=null)
+					msg.source().tell(L("You are in a(n) "+name().toLowerCase()+"!"));
+				return false;
+			}
+			else
 			if(msg.target()==pairedWith)
 			{
+				if((msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
+				&&((!(msg.tool() instanceof Weapon))
+					||(msg.tool()==msg.source().fetchHeldItem())
+					||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)))
+				{
+					// uniquely OK
+					return true;
+				}
+				else
 				if((msg.tool() instanceof FighterGrappleSkill)
 				&&(msg.source().isMine(msg.tool())))
 				{
@@ -106,9 +194,15 @@ public class Fighter_LegHold extends FighterGrappleSkill
 		if(target==null)
 			return false;
 
-		if(target.charStats().getBodyPart(Race.BODY_LEG)<1)
+		if(target.charStats().getBodyPart(Race.BODY_HAND)<1)
 		{
-			mob.tell(L("@x1 has no legs!",target.name(mob)));
+			mob.tell(L("@x1 has no hands!",target.name(mob)));
+			return false;
+		}
+
+		if((!auto)&&(!CMLib.flags().isStanding(mob))&&(mob!=target))
+		{
+			mob.tell(L("You must be standing!"));
 			return false;
 		}
 
@@ -133,11 +227,11 @@ public class Fighter_LegHold extends FighterGrappleSkill
 				if(msg.value()<=0)
 					success = finishGrapple(mob,4,target, asLevel);
 				else
-					return maliciousFizzle(mob,target,L("<T-NAME> fight(s) off <S-YOUPOSS> leg-holding move."));
+					return maliciousFizzle(mob,target,L("<T-NAME> fight(s) off <S-YOUPOSS> wrist-locking move."));
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to put <T-NAME> in a "+name().toLowerCase()+", but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to put <T-NAME> in a "+name()+", but fail(s)."));
 
 		// return whether it worked
 		return success;

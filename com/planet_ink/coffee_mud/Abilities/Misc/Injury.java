@@ -427,6 +427,21 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 	}
 
 	@Override
+	public boolean isDamaged(String limbName)
+	{
+		limbName = limbName.toLowerCase();
+		final List<String> theRest = affectedLimbNameSet();
+		if (theRest.contains(limbName))
+			return true;
+		for(final String s : theRest)
+		{
+			if(s.endsWith(" "+limbName))
+				return true;
+		}
+		return false;
+	}
+
+	@Override
 	public void restoreLimb(final String limbName)
 	{
 		for(int partNum=0;partNum<Race.BODY_PARTS;partNum++)

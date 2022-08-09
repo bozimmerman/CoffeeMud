@@ -77,22 +77,11 @@ public class Fighter_Pin extends FighterGrappleSkill
 	}
 
 	@Override
-	protected String grappleWord() 
-	{ 
-		return "pin"; 
-	}
-	
-	@Override
-	protected String grappledWord() 
-	{ 
-		return  "pinned"; 
-	}
-
-	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SITTING);
+		if(!CMLib.flags().isSleeping(affected))
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SITTING);
 	}
 
 	@Override
@@ -115,14 +104,14 @@ public class Fighter_Pin extends FighterGrappleSkill
 				||(msg.sourceMajor(CMMsg.MASK_EYES)))
 				{
 					if(msg.sourceMessage()!=null)
-						msg.source().tell(L("You are "+grappledWord()+"!"));
+						msg.source().tell(L("You are in a(n) "+name().toLowerCase()+"!"));
 					return false;
 				}
 			}
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -142,7 +131,8 @@ public class Fighter_Pin extends FighterGrappleSkill
 		{
 			invoker=mob;
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),
-					auto?L("<T-NAME> get(s) "+grappledWord()+"!"):L("^F^<FIGHT^><S-NAME> "+grappleWord()+"(s) <T-NAMESELF> to the floor!^</FIGHT^>^?"));
+					auto?L("<T-NAME> get(s) <T-HIMHERSELF> in a(n) "+name().toLowerCase()+"!"):
+						L("^F^<FIGHT^><S-NAME> "+name().toLowerCase()+"(s) <T-NAMESELF> to the floor!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -154,7 +144,7 @@ public class Fighter_Pin extends FighterGrappleSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to "+grappleWord()+" <T-NAMESELF>, but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to "+name().toLowerCase()+" <T-NAMESELF>, but fail(s)."));
 
 		// return whether it worked
 		return success;

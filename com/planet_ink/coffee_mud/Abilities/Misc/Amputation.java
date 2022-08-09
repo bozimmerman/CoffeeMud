@@ -472,6 +472,21 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 	}
 
 	@Override
+	public boolean isDamaged(String limbName)
+	{
+		limbName = limbName.toLowerCase();
+		final List<String> theRest = affectedLimbNameSet();
+		if (theRest.contains(limbName))
+			return true;
+		for(final String s : theRest)
+		{
+			if(s.endsWith(" "+limbName))
+				return true;
+		}
+		return false;
+	}
+
+	@Override
 	public Item damageLimb(final String gone)
 	{
 		Race R=null;

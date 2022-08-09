@@ -51,7 +51,8 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 
 	protected int						HEALING_TICKS	= (int) ((TimeManager.MILI_MINUTE * 10) / CMProps.getTickMillis());
 	protected List<String>				brokenLimbsList	= null;
-	private int[]						brokenParts		= new int[Race.BODY_PARTS];
+	protected final static int			Race_BODY_FINGER= Race.BODY_PARTS;
+	private int[]						brokenParts		= new int[Race.BODY_PARTS+1];
 	private final Map<String, int[]>	setBones		= new STreeMap<String, int[]>();
 
 	@Override
@@ -241,6 +242,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 		if(!super.okMessage(host, msg))
 			return false;
 		if(msg.source() == affected)
+		{
 			switch(msg.sourceMinor())
 			{
 			case CMMsg.TYP_STAND:
@@ -285,7 +287,30 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 				}
 				break;
 			}
+			case CMMsg.TYP_WEAR:
+				if(((brokenParts[Race.BODY_HAND]<0)||(brokenParts[Race_BODY_FINGER]<0))
+				&&(msg.target() instanceof Item)
+				&&((((Item)msg.target()).rawProperLocationBitmap()&(Wearable.WORN_LEFT_FINGER|Wearable.WORN_RIGHT_FINGER))>0))
+				{
+					final MOB mob=msg.source();
+					mob.tell(L("Your broken fingers make putting that on impossible!"));
+					return false;
+				}
+				break;
+			case CMMsg.TYP_REMOVE:
+				if(((brokenParts[Race.BODY_HAND]<0)||(brokenParts[Race_BODY_FINGER]<0))
+				&&(msg.target() instanceof Item)
+				&&((((Item)msg.target()).rawProperLocationBitmap()&(Wearable.WORN_LEFT_FINGER|Wearable.WORN_RIGHT_FINGER))>0))
+				{
+					final MOB mob=msg.source();
+					mob.tell(L("Your broken fingers make removing that on impossible!"));
+					return false;
+				}
+				break;
+			default:
+				break;
 			}
+		}
 		return true;
 	}
 
@@ -387,7 +412,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 		if((!(affected instanceof MOB))&&(!(affected instanceof DeadBody)))
 			return brokenLimbsList;
 		brokenLimbsList=CMParms.parseSemicolons(text(),true);
-		brokenParts=new int[Race.BODY_PARTS];
+		brokenParts=new int[Race.BODY_PARTS+1];
 		boolean right=false;
 		boolean left=false;
 		Integer code=null;
@@ -396,14 +421,18 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 			final String s=brokenLimbsList.get(v).toUpperCase();
 			left=s.startsWith("LEFT ");
 			right=s.startsWith("RIGHT ");
-			code=Race.BODYPARTHASH.get(s.substring(right?6:left?5:0).trim());
+			final String name = s.substring(right?6:left?5:0).trim();
+			code=Race.BODYPARTHASH.get(name);
 			if(code!=null)
 				brokenParts[code.intValue()]--;
+			else
+			if(name.startsWith("FINGER")||name.endsWith(" FINGER")||(name.endsWith(" FINGERS")))
+				brokenParts[Race_BODY_FINGER]--;
 		}
 		return brokenLimbsList;
 	}
 
-	public List<String> completeBrokenLimbNameSet(final Environmental E)
+	protected List<String> completeBrokenLimbNameSet(final Environmental E)
 	{
 		final Vector<String> V=new Vector<String>();
 		if(!(E instanceof MOB))
@@ -465,34 +494,38 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 		final MOB M=(MOB)affected;
 		final int[] limbs=new int[Race.BODY_PARTS];
 		final List<String> affected=affectedLimbNameSet();
-		for(int i=0;i<limbs.length;i++)
+		for(int i=0;i<=limbs.length;i++)
 		{
-			limbs[i]=M.charStats().getBodyPart(i);
-			if((limbs[i]>0)
-			&&(validBrokens[i]))
+			final int bodyCode = (i<limbs.length)?i:Race.BODY_HAND;
+			limbs[bodyCode]=M.charStats().getBodyPart(bodyCode);
+			if((limbs[bodyCode]>0)
+			&&(validBrokens[bodyCode]))
 			{
-				if(brokenParts[i]>0)
+				final String partName = (i==limbs.length)?"finger":Race.BODYPARTSTR[bodyCode].toLowerCase();
+				final int numLimbs = limbs[bodyCode];
+				final int numBroken = brokenParts[i];
+				if(numLimbs>0)
 				{
-					if(limbs[i]-brokenParts[i]==1)
+					if(numLimbs-numBroken==1)
 					{
-						if(!affected.contains(Race.BODYPARTSTR[i].toLowerCase()))
-							remains.add(Race.BODYPARTSTR[i].toLowerCase());
+						if(!affected.contains(partName))
+							remains.add(partName);
 					}
 					else
-					if(limbs[i]-brokenParts[i]==2)
+					if(numLimbs-numBroken==2)
 					{
-						if(!affected.contains("left "+Race.BODYPARTSTR[i].toLowerCase()))
-							remains.add("left "+Race.BODYPARTSTR[i].toLowerCase());
-						if(!affected.contains("right "+Race.BODYPARTSTR[i].toLowerCase()))
-							remains.add("right "+Race.BODYPARTSTR[i].toLowerCase());
+						if(!affected.contains("left "+partName))
+							remains.add("left "+partName);
+						if(!affected.contains("right "+partName))
+							remains.add("right "+partName);
 					}
 					else
-					for(int ii=0;ii<limbs[i];ii++)
-						remains.add(Race.BODYPARTSTR[i].toLowerCase());
+					for(int ii=0;ii<numLimbs;ii++)
+						remains.add(partName);
 				}
 				else
-				for(int ii=0;ii<limbs[i];ii++)
-					remains.add(Race.BODYPARTSTR[i].toLowerCase());
+				for(int ii=0;ii<numLimbs;ii++)
+					remains.add(partName);
 			}
 		}
 		final Amputation A=(Amputation)M.fetchEffect("Amputation");
@@ -500,7 +533,11 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 		{
 			final List<String> missing=A.affectedLimbNameSet();
 			for(final String limb : missing)
+			{
+				if(limb.endsWith("hand"))
+					remains.remove(CMStrings.replaceAll(limb, "hand", "finger"));
 				remains.remove(limb);
+			}
 		}
 		return remains;
 	}
@@ -534,6 +571,21 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 	}
 
 	@Override
+	public boolean isDamaged(String limbName)
+	{
+		limbName = limbName.toLowerCase();
+		final List<String> theRest = affectedLimbNameSet();
+		if (theRest.contains(limbName))
+			return true;
+		for(final String s : theRest)
+		{
+			if(s.endsWith(" "+limbName))
+				return true;
+		}
+		return false;
+	}
+
+	@Override
 	public Item damageLimb(final String brokenLimbName)
 	{
 		if(affected!=null)
@@ -552,7 +604,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 				((Room)((Item)affected).owner()).showHappens(CMMsg.MSG_OK_VISUAL,L("^G@x1's @x2 breaks!^?",affected.name(),brokenLimbName));
 			}
 		}
-		setMiscText(text()+brokenLimbName+";");
+		setMiscText(text()+brokenLimbName.toLowerCase()+";");
 		return null;
 	}
 

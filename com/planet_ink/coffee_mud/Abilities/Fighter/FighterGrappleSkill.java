@@ -71,16 +71,6 @@ public class FighterGrappleSkill extends FighterSkill
 	protected volatile int	proficiencyDiff	= 0;
 	protected volatile int	tickUp			= 0;
 	protected boolean		broken			= false;
-	
-	protected String grappleWord() 
-	{ 
-		return "grapple"; 
-	}
-	
-	protected String grappledWord() 
-	{ 
-		return  "grappled"; 
-	}
 
 	@Override
 	protected int canAffectCode()
@@ -112,7 +102,7 @@ public class FighterGrappleSkill extends FighterSkill
 		}
 		return null;
 	}
-	
+
 	protected boolean isImmobilizing()
 	{
 		return false;
@@ -153,7 +143,7 @@ public class FighterGrappleSkill extends FighterSkill
 				if(!CMLib.combat().rollToHit(mob,pairedWith))
 				{
 					if(R!=null)
-						R.show(mob,pairedWith,CMMsg.MASK_MALICIOUS|CMMsg.MSG_OK_VISUAL,L("<S-NAME> fail(s) to maintain the @x1.",name()));
+						R.show(mob,pairedWith,CMMsg.MASK_MALICIOUS|CMMsg.MSG_OK_VISUAL,L("<S-NAME> fail(s) to maintain the @x1.",name().toLowerCase()));
 					broken=true;
 					unInvoke();
 				}
@@ -186,16 +176,16 @@ public class FighterGrappleSkill extends FighterSkill
 		}
 		return true;
 	}
-	
+
 	private static final int[] exemptDomains = new int[] {
 		Ability.DOMAIN_GRAPPLING, Ability.DOMAIN_DIRTYFIGHTING
 	};
-	
+
 	protected int[] getExemptDomains()
 	{
 		return exemptDomains;
 	}
-	
+
 	public boolean isMonkish(final MOB mob)
 	{
 		return false;
@@ -212,7 +202,7 @@ public class FighterGrappleSkill extends FighterSkill
 		return false;
 		*/
 	}
-	
+
 	protected boolean isHandsFree()
 	{
 		return false;
@@ -271,14 +261,14 @@ public class FighterGrappleSkill extends FighterSkill
 						if(isImmobilizing())
 						{
 							if(msg.sourceMessage()!=null)
-								mob.tell(L("You are "+grappledWord()+"!"));
+								mob.tell(L("You are in a "+name().toLowerCase()+"!"));
 							return false;
 						}
 						if((!(msg.tool() instanceof Ability))
 						||(!CMParms.contains(getExemptDomains(), (((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS))))
 						{
 							if(msg.sourceMessage()!=null)
-								mob.tell(L("You are "+grappledWord()+"!"));
+								mob.tell(L("You are in a "+name().toLowerCase()+"!"));
 							return false;
 						}
 						else
@@ -306,29 +296,29 @@ public class FighterGrappleSkill extends FighterSkill
 		}
 		return super.castingQuality(mob, target);
 	}
-	
+
 	@Override
-	public boolean proficiencyCheck(MOB mob, int adjustment, boolean auto)
+	public boolean proficiencyCheck(final MOB mob, int adjustment, final boolean auto)
 	{
 		adjustment +=proficiencyDiff;
 		return super.proficiencyCheck(mob, adjustment, auto);
 	}
-	
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if(isImmobilizing())
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_MOVE);
-		if(invoker()==affected)
-			affectableStats.addAmbiance("(grappling)");
-		else
-			affectableStats.addAmbiance("(grappled)");
+		final String d = displayText();
+		if(d.length()>0)
+			affectableStats.addAmbiance(d.toLowerCase());
 	}
 
-	public boolean finishGrapple(final MOB mob, final int baseTicks, final MOB target, int asLevel)
+	public boolean finishGrapple(final MOB mob, final int baseTicks, final MOB target, final int asLevel)
 	{
-		int duration = baseTicks + (super.getXLEVELLevel(mob) / 2);
+		tickUp=0;
+		final int duration = baseTicks + (super.getXLEVELLevel(mob) / 2);
 		boolean success = (maliciousAffect(mob,target,asLevel,duration,-1) != null);
 		success=success && (maliciousAffect(mob,mob,asLevel,duration,-1) != null);
 		FighterGrappleSkill targetGrappleA = (FighterGrappleSkill)target.fetchEffect(ID());
@@ -351,7 +341,7 @@ public class FighterGrappleSkill extends FighterSkill
 			targetGrappleA.pairedWith = mob;
 		return success;
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -367,6 +357,7 @@ public class FighterGrappleSkill extends FighterSkill
 			if((!mob.amDead())
 			&&(CMLib.flags().isInTheGame(mob,false)))
 			{
+				final String actName = name().toLowerCase();
 				final Room R=mob.location();
 				final MOB P = pairedWith;
 				if((mob==invoker) && (P != null))
@@ -374,30 +365,30 @@ public class FighterGrappleSkill extends FighterSkill
 					if(broken)
 					{
 						if(R!=null)
-							R.show(P,mob,CMMsg.MSG_OK_ACTION,L("<S-NAME> break(s) out of <T-YOUPOSS> "+grappleWord()+"."));
+							R.show(P,mob,CMMsg.MSG_OK_ACTION,L("<S-NAME> break(s) out of <T-YOUPOSS> "+actName+"."));
 						else
-							mob.tell(L("Your "+grappleWord()+" is broken."));
+							mob.tell(L("Your "+actName+" is broken."));
 					}
 					else
 					if(R!=null)
-						R.show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> release(s) <S-HIS-HER> "+grappleWord()+"."));
+						R.show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> release(s) <S-HIS-HER> "+actName+"."));
 					else
-						mob.tell(L("You release your "+grappleWord()+"."));
+						mob.tell(L("You release your "+actName+"."));
 				}
 				else
 				if(broken)
 				{
 					if(R!=null)
-						R.show(mob,P,CMMsg.MSG_OK_ACTION,L("<S-NAME> break(s) out of <T-YOUPOSS> "+grappleWord()+"."));
+						R.show(mob,P,CMMsg.MSG_OK_ACTION,L("<S-NAME> break(s) out of <T-YOUPOSS> "+actName+"."));
 					else
-						mob.tell(L("You break out of the "+grappleWord()+"."));
+						mob.tell(L("You break out of the "+actName+"."));
 				}
 				else
 				{
 					if(R!=null)
-						R.show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> <S-IS-ARE> released from the "+grappleWord()+""));
+						R.show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> <S-IS-ARE> released from the "+actName+""));
 					else
-						mob.tell(L("You are released from the "+grappleWord()+"."));
+						mob.tell(L("You are released from the "+actName+"."));
 				}
 				CMLib.commands().postStand(mob,true, false);
 			}
@@ -409,7 +400,7 @@ public class FighterGrappleSkill extends FighterSkill
 	{
 		proficiencyDiff = 0;
 		tickUp = 0;
-		
+
 		/*if(isGrappled(mob)!=null)
 		{
 			mob.tell(L("You are already in a grapple."));
@@ -418,7 +409,7 @@ public class FighterGrappleSkill extends FighterSkill
 
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell(L("You are too far away from your target to "+grappleWord()+" them!"));
+			mob.tell(L("You are too far away from your target to "+name().toLowerCase()+" them!"));
 			return false;
 		}
 
@@ -427,7 +418,7 @@ public class FighterGrappleSkill extends FighterSkill
 		&&(hasWeightLimit())
 		&&(mob.baseWeight()<((MOB)givenTarget).baseWeight()-(mob.baseWeight()*2)))
 		{
-			mob.tell(L("@x1 is too big to "+grappleWord()+"!",((MOB)givenTarget).name(mob)));
+			mob.tell(L("@x1 is too big to "+name().toLowerCase()+"!",((MOB)givenTarget).name(mob)));
 			return false;
 		}
 
@@ -436,7 +427,7 @@ public class FighterGrappleSkill extends FighterSkill
 			mob.tell(L("You can't move!"));
 			return false;
 		}
-		
+
 		if((!isImmobilizing())&&(!CMLib.flags().isStanding(mob)))
 		{
 			mob.tell(L("You need to stand up!"));
@@ -445,7 +436,7 @@ public class FighterGrappleSkill extends FighterSkill
 
 		if(!super.invoke(mob, commands, givenTarget, auto, asLevel))
 			return false;
-		
+
 		proficiencyDiff = 0;
 		if((givenTarget instanceof MOB)
 		&&(!isMonkish(mob))
@@ -461,10 +452,10 @@ public class FighterGrappleSkill extends FighterSkill
 			final int hpLost = oldHP - newHP;
 			if(hpLost > 0)
 			{
-				int xdmg = super.getXLEVELLevel(mob) * 5;
-				double pct = (CMath.div(hpLost,mob.maxState().getHitPoints()) * 100.0) - xdmg;
+				final int xdmg = super.getXLEVELLevel(mob) * 5;
+				final double pct = (CMath.div(hpLost,mob.maxState().getHitPoints()) * 100.0) - xdmg;
 				if(pct > 0)
-					proficiencyDiff = -(int)Math.round(pct); 
+					proficiencyDiff = -(int)Math.round(pct);
 			}
 		}
 		int levelDiff=givenTarget.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));

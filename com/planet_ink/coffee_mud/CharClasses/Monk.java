@@ -180,12 +180,14 @@ public class Monk extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_Sweep",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_Cartwheel",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_ElbowLock",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_SideKick",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_BodyShield",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_CircleParry",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_KiStrike",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_WristLock",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_AttackHalf",false);
 
@@ -199,10 +201,12 @@ public class Monk extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Fighter_CircleTrip",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_Listen",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_AnkleLock",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Fighter_LightningStrike",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Fighter_ReturnProjectile",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Fighter_FingerLock",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Fighter_AtemiStrike",true);
 

@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Fighter_BearHug extends FighterGrappleSkill
+public class Fighter_AnkleLock extends FighterGrappleSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Fighter_BearHug";
+		return "Fighter_AnkleLock";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Bear Hug");
+	private final static String localizedName = CMLib.lang().L("Ankle Lock");
 
 	@Override
 	public String name()
@@ -52,11 +52,11 @@ public class Fighter_BearHug extends FighterGrappleSkill
 	public String displayText()
 	{
 		if(affected==invoker)
-			return "(Bear-Hugging)";
-		return "(Bear-Hugged)";
+			return "(Ankle-Lock)";
+		return "(Ankle-Locked)";
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"BEARHUG"});
+	private static final String[] triggerStrings =I(new String[] {"ANKLELOCK"});
 
 	@Override
 	public String[] triggerStrings()
@@ -68,8 +68,87 @@ public class Fighter_BearHug extends FighterGrappleSkill
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if((affected == invoker())&&(pairedWith!=null))
-			affectableStats.setArmor(affectableStats.armor()-pairedWith.phyStats().level()-(5*super.getXLEVELLevel(invoker())));
+		if(!CMLib.flags().isSleeping(affected))
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SITTING);
+	}
+
+	protected int chanceOfStrength(final MOB mob)
+	{
+		final MOB invoker=invoker();
+		if((invoker != null)&&(mob!=null))
+		{
+			final int str = 10 * (invoker.charStats().getStat(CharStats.STAT_STRENGTH) - mob.charStats().getStat(CharStats.STAT_STRENGTH));
+			if(str < 10)
+				return 10;
+			return str;
+		}
+		return 50;
+	}
+
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if (affected instanceof MOB)
+		{
+			final MOB mob = (MOB)affected;
+			if(mob != invoker())
+			{
+				if((tickUp >= 3)
+				&&(CMLib.dice().rollPercentage()<chanceOfStrength(mob)))
+				{
+					LimbDamage dA = (LimbDamage)mob.fetchEffect("BrokenLimbs");
+					if(dA == null)
+					{
+						dA=(LimbDamage)CMClass.getAbility("BrokenLimbs");
+						if(dA!=null)
+							dA.invoke(invoker(), new XVector<String>("FOOT"), mob, true, -1);
+					}
+					else
+					if(!dA.isDamaged("foot"))
+						dA.invoke(invoker(), new XVector<String>("FOOT"), mob, true, -1);
+					unInvoke();
+					return false;
+				}
+				if(mob.fetchWieldedItem()!=null)
+					CMLib.commands().postRemove(mob, mob.fetchWieldedItem(), false);
+			}
+		}
+		return true;
+	}
+
+	@Override
+	protected boolean isHandsFree()
+	{
+		return true;
+	}
+
+	@Override
+	protected boolean hasWeightLimit()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(msg.source()==affected)
+		{
+			if(msg.target()==pairedWith)
+			{
+				if((msg.tool() instanceof FighterGrappleSkill)
+				&&(msg.source().isMine(msg.tool())))
+				{
+					unInvoke();
+					// uniquely OK
+					return true;
+				}
+			}
+		}
+		if(!super.okMessage(myHost, msg))
+			return false;
+		return true;
 	}
 
 	@Override
@@ -78,6 +157,18 @@ public class Fighter_BearHug extends FighterGrappleSkill
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
+
+		if(target.charStats().getBodyPart(Race.BODY_FOOT)<1)
+		{
+			mob.tell(L("@x1 has no feet!",target.name(mob)));
+			return false;
+		}
+
+		if((!auto)&&(CMLib.flags().isStanding(target))&&(mob!=target))
+		{
+			mob.tell(L("Your target must be sitting!"));
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,target,auto,asLevel))
 			return false;
@@ -100,11 +191,11 @@ public class Fighter_BearHug extends FighterGrappleSkill
 				if(msg.value()<=0)
 					success = finishGrapple(mob,4,target, asLevel);
 				else
-					return maliciousFizzle(mob,target,L("<T-NAME> fight(s) off <S-YOUPOSS> hugging move."));
+					return maliciousFizzle(mob,target,L("<T-NAME> fight(s) off <S-YOUPOSS> ankle-locking move."));
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to put <T-NAME> in a "+name().toLowerCase()+", but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to put <T-NAME> in a "+name()+", but fail(s)."));
 
 		// return whether it worked
 		return success;

@@ -65,19 +65,6 @@ public class Fighter_SleeperHold extends FighterGrappleSkill
 	}
 
 	@Override
-	protected String grappleWord() 
-	{ 
-		return "sleeper-hold"; 
-	}
-	
-	@Override
-	protected String grappledWord() 
-	{ 
-		return  "sleeper-held"; 
-	}
-
-	
-	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking, tickID))
@@ -87,7 +74,7 @@ public class Fighter_SleeperHold extends FighterGrappleSkill
 			final MOB mob = (MOB)affected;
 			if(mob != invoker())
 			{
-				int pctChance = ((10*super.tickUp)+super.getXLEVELLevel(invoker()))
+				final int pctChance = ((10*super.tickUp)+super.getXLEVELLevel(invoker()))
 								-(2*mob.charStats().getStat(CharStats.STAT_CONSTITUTION));
 				if(CMLib.dice().rollPercentage()<pctChance)
 				{
@@ -98,7 +85,7 @@ public class Fighter_SleeperHold extends FighterGrappleSkill
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -111,7 +98,7 @@ public class Fighter_SleeperHold extends FighterGrappleSkill
 			mob.tell(L("@x1 has no neck!",target.name()));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,target,auto,asLevel))
 			return false;
 
@@ -124,7 +111,8 @@ public class Fighter_SleeperHold extends FighterGrappleSkill
 		{
 			invoker=mob;
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),
-					auto?L("<T-NAME> get(s) "+grappledWord()+"!"):L("^F^<FIGHT^><S-NAME> put(s) <T-NAME> in a "+grappleWord()+"!^</FIGHT^>^?"));
+					auto?L("<T-NAME> get(s) <T-HIMHERSELF> in a(n) "+name().toLowerCase()+"!"):
+						L("^F^<FIGHT^><S-NAME> put(s) <T-NAME> in a "+name().toLowerCase()+"!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -136,7 +124,7 @@ public class Fighter_SleeperHold extends FighterGrappleSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to put <T-NAME> in a "+name()+", but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to put <T-NAME> in a "+name().toLowerCase()+", but fail(s)."));
 
 		// return whether it worked
 		return success;

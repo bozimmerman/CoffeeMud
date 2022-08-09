@@ -63,18 +63,6 @@ public class Fighter_Headlock extends FighterGrappleSkill
 	}
 
 	@Override
-	protected String grappleWord() 
-	{ 
-		return "headlock"; 
-	}
-	
-	@Override
-	protected String grappledWord() 
-	{ 
-		return "headlocked"; 
-	}
-
-	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -99,7 +87,8 @@ public class Fighter_Headlock extends FighterGrappleSkill
 		{
 			invoker=mob;
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),
-					auto?L("<T-NAME> get(s) "+grappledWord()+"!"):L("^F^<FIGHT^><S-NAME> put(s) <T-NAME> in a "+grappleWord()+"!^</FIGHT^>^?"));
+					auto?L("<T-NAME> get(s) <T-HIMHERSELF> in a(n) "+name().toLowerCase()+"!"):
+						L("^F^<FIGHT^><S-NAME> put(s) <T-NAME> in a "+name().toLowerCase()+"!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -111,7 +100,7 @@ public class Fighter_Headlock extends FighterGrappleSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to put <T-NAME> in a "+name()+", but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to put <T-NAME> in a "+name().toLowerCase()+", but fail(s)."));
 
 		// return whether it worked
 		return success;

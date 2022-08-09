@@ -65,18 +65,6 @@ public class Fighter_ArmHold extends FighterGrappleSkill
 	}
 
 	@Override
-	protected String grappleWord() 
-	{ 
-		return "arm-hold"; 
-	}
-	
-	@Override
-	protected String grappledWord() 
-	{ 
-		return  "arm-held"; 
-	}
-
-	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -94,7 +82,7 @@ public class Fighter_ArmHold extends FighterGrappleSkill
 			return true;
 		return false;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -107,7 +95,7 @@ public class Fighter_ArmHold extends FighterGrappleSkill
 			&&(msg.target()==msg.source().fetchWieldedItem()))
 			{
 				if(msg.sourceMessage()!=null)
-					msg.source().tell(L("You are "+grappledWord()+"!"));
+					msg.source().tell(L("You are in a(n) "+name().toLowerCase()+"!"));
 				return false;
 			}
 			else
@@ -135,7 +123,7 @@ public class Fighter_ArmHold extends FighterGrappleSkill
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -148,7 +136,7 @@ public class Fighter_ArmHold extends FighterGrappleSkill
 			mob.tell(L("@x1 has no arms!",target.name(mob)));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,target,auto,asLevel))
 			return false;
 
@@ -161,7 +149,8 @@ public class Fighter_ArmHold extends FighterGrappleSkill
 		{
 			invoker=mob;
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),
-					auto?L("<T-NAME> get(s) "+grappledWord()+"!"):L("^F^<FIGHT^><S-NAME> put(s) <T-NAME> in a "+grappleWord()+"!^</FIGHT^>^?"));
+					auto?L("<T-NAME> get(s) <T-HIMHERSELF> in a(n) "+name().toLowerCase()+"!"):
+						L("^F^<FIGHT^><S-NAME> put(s) <T-NAME> in a "+name().toLowerCase()+"!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -173,7 +162,7 @@ public class Fighter_ArmHold extends FighterGrappleSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to put <T-NAME> in a "+name()+", but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to put <T-NAME> in a "+name().toLowerCase()+", but fail(s)."));
 
 		// return whether it worked
 		return success;

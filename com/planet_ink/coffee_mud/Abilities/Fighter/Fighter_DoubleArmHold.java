@@ -65,18 +65,6 @@ public class Fighter_DoubleArmHold extends FighterGrappleSkill
 	}
 
 	@Override
-	protected String grappleWord() 
-	{ 
-		return "double-arm-hold"; 
-	}
-	
-	@Override
-	protected String grappledWord() 
-	{ 
-		return  "double-arm-held"; 
-	}
-
-	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -98,7 +86,7 @@ public class Fighter_DoubleArmHold extends FighterGrappleSkill
 			mob.tell(L("@x1 has no arms!",target.name(mob)));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,target,auto,asLevel))
 			return false;
 
@@ -111,7 +99,8 @@ public class Fighter_DoubleArmHold extends FighterGrappleSkill
 		{
 			invoker=mob;
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),
-					auto?L("<T-NAME> get(s) "+grappledWord()+"!"):L("^F^<FIGHT^><S-NAME> put(s) <T-NAME> in a "+grappleWord()+"!^</FIGHT^>^?"));
+					auto?L("<T-NAME> get(s) <T-HIMHERSELF> in a(n) "+name().toLowerCase()+"!"):
+						L("^F^<FIGHT^><S-NAME> put(s) <T-NAME> in a "+name().toLowerCase()+"!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
