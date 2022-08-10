@@ -169,6 +169,27 @@ public class Prayer_SnakeStaff extends Prayer
 		}
 	}
 
+	protected void addToSet(final Set<Integer> set, final Item I)
+	{
+		if(I instanceof Weapon)
+			set.add(Integer.valueOf(((Weapon)I).weaponClassification()));
+	}
+
+	protected Set<Integer> getWeaponClasses(final MOB mob)
+	{
+		final Set<Integer> set=new HashSet<Integer>();
+		set.add(Integer.valueOf(Weapon.CLASS_STAFF));
+		final Deity D = mob.charStats().getMyDeity();
+		if(D != null)
+		{
+			addToSet(set, D.fetchWieldedItem());
+			addToSet(set, D.fetchHeldItem());
+			for(final Enumeration<Item> i=D.items();i.hasMoreElements();)
+				addToSet(set,i.nextElement());
+		}
+		return set;
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -177,7 +198,7 @@ public class Prayer_SnakeStaff extends Prayer
 			target=(Item)givenTarget;
 		if(target == null)
 		{
-			mob.tell(L("You aren't wielding a staff!"));
+			mob.tell(L("You aren't wielding anything!"));
 			return false;
 		}
 		if(target.fetchEffect(this.ID())!=null)
@@ -186,9 +207,10 @@ public class Prayer_SnakeStaff extends Prayer
 			return false;
 		}
 
-		if((!(target instanceof Weapon))||(((Weapon)target).weaponClassification()!=Weapon.CLASS_STAFF))
+		if((!(target instanceof Weapon))
+		||(!getWeaponClasses(mob).contains(Integer.valueOf(((Weapon)target).weaponClassification()))))
 		{
-			mob.tell(L("@x1 is not a staff!",target.name()));
+			mob.tell(L("@x1 is not a holy weapon!",target.name()));
 			return false;
 		}
 

@@ -90,19 +90,6 @@ public class FighterGrappleSkill extends FighterSkill
 		return Ability.QUALITY_MALICIOUS;
 	}
 
-	public FighterGrappleSkill isGrappled(final MOB mob)
-	{
-		if(mob==null)
-			return null;
-		for(final Enumeration<Ability> e=mob.effects();e.hasMoreElements();)
-		{
-			final Ability A=e.nextElement();
-			if(A instanceof FighterGrappleSkill)
-				return (FighterGrappleSkill)A;
-		}
-		return null;
-	}
-
 	protected boolean isImmobilizing()
 	{
 		return false;
@@ -261,18 +248,29 @@ public class FighterGrappleSkill extends FighterSkill
 						if(isImmobilizing())
 						{
 							if(msg.sourceMessage()!=null)
-								mob.tell(L("You are in a "+name().toLowerCase()+"!"));
+							{
+								if(mob==invoker())
+									mob.tell(L("You are holding a "+name().toLowerCase()+"!"));
+								else
+									mob.tell(L("You are in a "+name().toLowerCase()+"!"));
+							}
 							return false;
 						}
 						if((!(msg.tool() instanceof Ability))
 						||(!CMParms.contains(getExemptDomains(), (((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS))))
 						{
 							if(msg.sourceMessage()!=null)
-								mob.tell(L("You are in a "+name().toLowerCase()+"!"));
+							{
+								if(mob==invoker())
+									mob.tell(L("You are holding a "+name().toLowerCase()+"!"));
+								else
+									mob.tell(L("You are in a "+name().toLowerCase()+"!"));
+							}
 							return false;
 						}
 						else
-						if(mob == invoker())
+						if((mob == invoker())
+						&&((msg.sourceMinor()!=CMMsg.TYP_WEAPONATTACK)))
 							unInvoke();
 					}
 				}
@@ -285,13 +283,17 @@ public class FighterGrappleSkill extends FighterSkill
 	@Override
 	public int castingQuality(final MOB mob, final Physical target)
 	{
-		if((mob!=null)&&(target!=null))
+		if((mob!=null)&&(target instanceof MOB))
 		{
-			if((target instanceof MOB)
-			&&(hasWeightLimit())
-			&&(mob.baseWeight()<(((MOB)target).baseWeight()-(mob.baseWeight()*2))))
+			final MOB tmob=(MOB)target;
+			if((hasWeightLimit())
+			&&(mob.baseWeight()<tmob.baseWeight()-(mob.baseWeight()*2)))
 				return Ability.QUALITY_INDIFFERENT;
 			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
+				return Ability.QUALITY_INDIFFERENT;
+			if(tmob.riding()!=mob.riding())
+				return Ability.QUALITY_INDIFFERENT;
+			if((!isImmobilizing())&&(!CMLib.flags().isStanding(mob)))
 				return Ability.QUALITY_INDIFFERENT;
 		}
 		return super.castingQuality(mob, target);
@@ -319,26 +321,21 @@ public class FighterGrappleSkill extends FighterSkill
 	{
 		tickUp=0;
 		final int duration = baseTicks + (super.getXLEVELLevel(mob) / 2);
-		boolean success = (maliciousAffect(mob,target,asLevel,duration,-1) != null);
-		success=success && (maliciousAffect(mob,mob,asLevel,duration,-1) != null);
-		FighterGrappleSkill targetGrappleA = (FighterGrappleSkill)target.fetchEffect(ID());
-		FighterGrappleSkill sourceGrappleA = (FighterGrappleSkill)mob.fetchEffect(ID());
-		if((targetGrappleA != null) && (sourceGrappleA == null))
+		final FighterGrappleSkill targetGrappleA = (FighterGrappleSkill)maliciousAffect(mob,target,asLevel,duration,-1);
+		final FighterGrappleSkill sourceGrappleA = (FighterGrappleSkill)maliciousAffect(mob,mob,asLevel,duration,-1);
+		final boolean success = (sourceGrappleA != null) && (targetGrappleA != null);
+		if(!success)
 		{
-			targetGrappleA.unInvoke();
-			targetGrappleA = null;
-			success=false;
+			if(targetGrappleA!=null)
+				targetGrappleA.unInvoke();
+			if(sourceGrappleA!=null)
+				sourceGrappleA.unInvoke();
 		}
-		if((sourceGrappleA != null) && (targetGrappleA == null))
+		else
 		{
-			sourceGrappleA.unInvoke();
-			sourceGrappleA = null;
-			success=false;
-		}
-		if(sourceGrappleA != null)
 			sourceGrappleA.pairedWith = target;
-		if(targetGrappleA != null)
 			targetGrappleA.pairedWith = mob;
+		}
 		return success;
 	}
 
@@ -401,6 +398,10 @@ public class FighterGrappleSkill extends FighterSkill
 		proficiencyDiff = 0;
 		tickUp = 0;
 
+		if(!(givenTarget instanceof MOB))
+			return false;
+		final MOB target = (MOB)givenTarget;
+
 		/*if(isGrappled(mob)!=null)
 		{
 			mob.tell(L("You are already in a grapple."));
@@ -414,17 +415,25 @@ public class FighterGrappleSkill extends FighterSkill
 		}
 
 		if((!auto)
-		&&(givenTarget instanceof MOB)
 		&&(hasWeightLimit())
-		&&(mob.baseWeight()<((MOB)givenTarget).baseWeight()-(mob.baseWeight()*2)))
+		&&(mob.baseWeight()<target.baseWeight()-(mob.baseWeight()*2)))
 		{
-			mob.tell(L("@x1 is too big to "+name().toLowerCase()+"!",((MOB)givenTarget).name(mob)));
+			mob.tell(L("@x1 is too big to "+name().toLowerCase()+"!",target.name(mob)));
 			return false;
 		}
 
 		if(!CMLib.flags().canMove(mob))
 		{
 			mob.tell(L("You can't move!"));
+			return false;
+		}
+
+		if(target.riding()!=mob.riding())
+		{
+			if(target.riding()!=null)
+				mob.tell(L("You can't do that to someone @x1 @x2!",target.riding().stateString(target),target.riding().name()));
+			else
+				mob.tell(L("You can't do that to someone while @x1 @x2!",mob.riding().stateString(mob),mob.riding().name()));
 			return false;
 		}
 
@@ -441,7 +450,7 @@ public class FighterGrappleSkill extends FighterSkill
 		if((givenTarget instanceof MOB)
 		&&(!isMonkish(mob))
 		&&(mob.isInCombat() || ((MOB)givenTarget).isInCombat())
-		&&(isGrappled((MOB)givenTarget)==null)
+		&&(getGrappleA((MOB)givenTarget)==null)
 		&&((!((MOB)givenTarget).isInCombat())
 			||((((MOB)givenTarget).getVictim()==mob)&&(((MOB)givenTarget).rangeToTarget()==0))))
 		{

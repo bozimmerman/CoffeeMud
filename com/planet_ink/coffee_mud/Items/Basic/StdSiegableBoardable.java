@@ -1383,7 +1383,7 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 									}
 									else
 									if(randomPair != null)
-										CMLib.combat().postWeaponAttackResult(msg.source(), randomPair.first, weapon, false);
+										CMLib.combat().postWeaponAttackResult(msg.source(), randomPair.first, weapon, 0, false);
 									else
 										this.announceToOuterViewers(msg.source(), msg.target(), weapon, weapon.missString());
 								}

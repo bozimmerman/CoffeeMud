@@ -91,18 +91,6 @@ public class Fighter_BodyShield extends FighterSkill
 	}
 
 	public boolean doneThisRound=false;
-	public FighterGrappleSkill isGrappled(final MOB mob)
-	{
-		if(mob==null)
-			return null;
-		for(final Enumeration<Ability> e=mob.effects();e.hasMoreElements();)
-		{
-			final Ability A=e.nextElement();
-			if(A instanceof FighterGrappleSkill)
-				return (FighterGrappleSkill)A;
-		}
-		return null;
-	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -123,11 +111,11 @@ public class Fighter_BodyShield extends FighterSkill
 		&&((msg.value())>0)
 		&&(msg.tool() instanceof Weapon)
 		&&(mob.getVictim()!=null)
-		&&(isGrappled(mob.getVictim())!=null)
+		&&(getGrappleA(mob.getVictim())!=null)
 		&&(!doneThisRound)
 		&&(mob.getVictim().baseWeight()>=(mob.baseWeight()/2)))
 		{
-			final Ability A=isGrappled(mob);
+			final Ability A=getGrappleA(mob);
 			if((A!=null)&&(A.invoker()==mob))
 			{
 				doneThisRound=true;

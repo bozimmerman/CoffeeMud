@@ -64,7 +64,8 @@
  63. Ability Components now support deity-like trigger rituals for invoking skills/spells/etc
  64. New Fighter Skills: Bear Hug, Clinch Hold, Choke Hold, Sleeper Hold, Headlock, Arm Hold
  65. New Fighter Skills: Double Arm Hold, Leg Hold, Finger Lock, Ankle Lock, Wrist Lock
- 66. New Fighter Skills: Elbow Lock
+ 66. New Fighter Skills: Elbow Lock, Bulldog, Gutbuster, Knee, Elbow Jab, Earbox
+ 67. Deities should be given weapons to influence craft holy avenger and other holy magic.
 
 # Build 5.9.12 Release 1/17/2022
   *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG

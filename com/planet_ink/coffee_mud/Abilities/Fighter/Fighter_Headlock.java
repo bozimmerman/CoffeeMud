@@ -75,12 +75,18 @@ public class Fighter_Headlock extends FighterGrappleSkill
 		if(target==null)
 			return false;
 
+		if(target.charStats().getBodyPart(Race.BODY_HEAD)<=0)
+		{
+			mob.tell(L("@x1 has no head!",target.name(mob)));
+			return false;
+		}
+
 		if(!super.invoke(mob,commands,target,auto,asLevel))
 			return false;
 
 		// now see if it worked
 		final boolean hit=(auto)
-						||(super.isGrappled(target)!=null)
+						||(super.getGrappleA(target)!=null)
 						||CMLib.combat().rollToHit(mob,target);
 		boolean success=proficiencyCheck(mob,0,auto)&&(hit);
 		if(success)

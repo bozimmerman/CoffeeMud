@@ -1059,7 +1059,7 @@ public class StdRideable extends StdContainer implements Rideable
 								if(randomPair != null)
 								{
 									msg.source().setLocation(randomPair.second);
-									CMLib.combat().postWeaponAttackResult(msg.source(), randomPair.first, weapon, false);
+									CMLib.combat().postWeaponAttackResult(msg.source(), randomPair.first, weapon, 0, false);
 								}
 								else
 								if(R!=null)

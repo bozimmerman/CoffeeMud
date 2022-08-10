@@ -73,4 +73,28 @@ public class FighterSkill extends StdAbility
 		return CAN_MOBS;
 	}
 
+	public FighterGrappleSkill getGrappleA(final MOB mob)
+	{
+		if(mob==null)
+			return null;
+		for(final Enumeration<Ability> e=mob.effects();e.hasMoreElements();)
+		{
+			final Ability A=e.nextElement();
+			if(A instanceof FighterGrappleSkill)
+				return (FighterGrappleSkill)A;
+		}
+		return null;
+	}
+
+	public void ungrapple(final MOB mob)
+	{
+		if(mob==null)
+			return;
+		for(final Enumeration<Ability> e=mob.effects();e.hasMoreElements();)
+		{
+			final Ability A=e.nextElement();
+			if(A instanceof FighterGrappleSkill)
+				A.unInvoke();
+		}
+	}
 }

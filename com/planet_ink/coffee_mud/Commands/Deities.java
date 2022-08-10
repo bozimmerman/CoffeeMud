@@ -47,6 +47,26 @@ public class Deities extends StdCommand
 
 	private final static Class<?>[][] internalParameters=new Class<?>[][]{{Deity.class},{Deity.class,Boolean.class}};
 
+	protected void addToSet(final Set<String> set, final Item I)
+	{
+		if(I instanceof Weapon)
+			set.add(I.name());
+	}
+
+	protected Set<String> getWeapons(final MOB mob)
+	{
+		final Set<String> set=new HashSet<String>();
+		final Deity D = mob.charStats().getMyDeity();
+		if(D != null)
+		{
+			addToSet(set, D.fetchWieldedItem());
+			addToSet(set, D.fetchHeldItem());
+			for(final Enumeration<Item> i=D.items();i.hasMoreElements();)
+				addToSet(set,i.nextElement());
+		}
+		return set;
+	}
+
 	public String getDeityInformation(final MOB mob, final Deity D, final boolean nameOnly)
 	{
 		final StringBuffer msg = new StringBuffer("");
@@ -78,6 +98,9 @@ public class Deities extends StdCommand
 			msg.append(D.getClericRequirementsDesc()+"\n\r");
 		else
 			msg.append(D.getWorshipRequirementsDesc()+"\n\r");
+		final Set<String> items = getWeapons(mob);
+		if(items.size()>0)
+			msg.append(L("\n\r^HWields: ^N@x1\n\r",CMParms.toListString(items)));
 		if(D.numBlessings()>0)
 		{
 			msg.append(L("\n\r^HBlessings: ^N"));

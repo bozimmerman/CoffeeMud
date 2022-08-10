@@ -80,6 +80,31 @@ public class Prayer_LightHammer extends Prayer
 		return super.castingQuality(mob,target);
 	}
 
+	protected void addToSet(final Set<Item> set, final Item I)
+	{
+		if(I instanceof Weapon)
+			set.add(I);
+	}
+
+	protected String getWeaponName(final MOB mob)
+	{
+		final Deity D = mob.charStats().getMyDeity();
+		if(D != null)
+		{
+			final Set<Item> set=new HashSet<Item>();
+			addToSet(set, D.fetchWieldedItem());
+			addToSet(set, D.fetchHeldItem());
+			for(final Enumeration<Item> i=D.items();i.hasMoreElements();)
+				addToSet(set,i.nextElement());
+			if(set.size()>0)
+			{
+				final List<Item> V = new XVector<Item>(set);
+				return V.get(CMLib.dice().roll(1, V.size(), -1)).name(mob);
+			}
+		}
+		return L("a hammer");
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -93,11 +118,14 @@ public class Prayer_LightHammer extends Prayer
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		if((success)&&(CMLib.flags().isEvil(target)))
+		if((success)
+		&&(CMLib.flags().isEvil(target)))
 		{
+			final String wname = getWeaponName(mob);
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,
 					L(auto?L("<T-NAME> is filled with holy light!"):
-						L("^S<S-NAME> @x1 for a hammer of light to strike <T-NAMESELF>!^?@x2",prayWord(mob),CMLib.protocol().msp("spelldam1.wav",40))));
+						L("^S<S-NAME> @x1 for @x2 of light to strike <T-NAMESELF>!^?@x3",
+								prayWord(mob),wname,CMLib.protocol().msp("spelldam1.wav",40))));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			final Room R=target.location();
 			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
@@ -110,8 +138,11 @@ public class Prayer_LightHammer extends Prayer
 				if(undead)
 					harming=harming*2;
 				if(CMLib.flags().isEvil(target))
+				{
+					final String Wname = CMStrings.capitalizeFirstLetter(wname);
 					CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BURSTING,
-							L("^SA hammer of holy light <DAMAGE> <T-NAME>!^?"));
+							L("^S@x1 of holy light <DAMAGE> <T-NAME>!^?",Wname));
+				}
 			}
 		}
 		else

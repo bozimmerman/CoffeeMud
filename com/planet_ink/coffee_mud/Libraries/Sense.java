@@ -1249,7 +1249,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(isBoundOrHeld(mob))
 		{
 			if(!quiet)
-				mob.tell(L("You are paralyzed!"));
+				mob.tell(L("You can't move!"));
 			return false;
 		}
 		return true;

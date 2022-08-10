@@ -1710,7 +1710,7 @@ public class StdAbility implements Ability
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical target, final boolean auto, final int asLevel)
 	{
@@ -1800,7 +1800,7 @@ public class StdAbility implements Ability
 
 			if(!testUsageCost(mob,false,consumed,auto))
 				return false;
-			
+
 			if((minCastWaitTime()>0)&&(lastCastHelp>0))
 			{
 				if((System.currentTimeMillis()-lastCastHelp)<minCastWaitTime())
@@ -2604,7 +2604,7 @@ public class StdAbility implements Ability
 	}
 
 	private static final String[]	CODES			= { "CLASS", "TEXT" };
-	private static final String[]	INTERNAL_CODES	= { "TICKDOWN","LEVEL","ISANAUTOEFFECT","NAME","NEXTCAST" };
+	private static final String[]	INTERNAL_CODES	= { "TICKDOWN","LEVEL","ISANAUTOEFFECT","NAME","NEXTCAST","CANUNINVOKE" };
 
 	@Override
 	public String[] getStatCodes()
@@ -2660,6 +2660,8 @@ public class StdAbility implements Ability
 				return name();
 			case 4:
 				return ""+this.getTimeOfNextCast();
+			case 5:
+				return ""+this.canBeUninvoked();
 			default:
 				break;
 			}
@@ -2694,6 +2696,11 @@ public class StdAbility implements Ability
 			case 4:
 				if(CMath.isLong(val))
 					setTimeOfNextCast(CMath.s_long(val));
+				break;
+			case 5:
+				this.canBeUninvoked = CMath.s_bool(val);
+				this.unInvoked=false;
+System.out.println(((invoker!=null)?invoker.name():"null")+"->"+((affected!=null)?affected.name():"null")+": "+canBeUninvoked);
 				break;
 			default:
 				break;

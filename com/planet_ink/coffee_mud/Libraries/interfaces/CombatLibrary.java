@@ -342,7 +342,7 @@ public interface CombatLibrary extends CMLibrary
 	public void postDamage(MOB attacker, MOB target, Environmental weapon, int damage, int messageCode, int damageType, String allDisplayMessage);
 
 	/**
-	 * An alternative to {@link CombatLibrary#postWeaponAttackResult(MOB, MOB, Item, boolean)}.
+	 * An alternative to {@link CombatLibrary#postWeaponAttackResult(MOB, MOB, Item, int, boolean)}.
 	 * This method handles only a hit with a weapon, which will post damage.
 	 * Generates a CMMsg message and sends it to the SOURCE room.  Call this
 	 * instead of postAttackResult when the amount of damage done is custom
@@ -366,9 +366,10 @@ public interface CombatLibrary extends CMLibrary
 	 * @param source the attacker
 	 * @param target the target
 	 * @param item the weapon used
+	 * @param bonusDmg some amount of bonus damage to apply
 	 * @param success true if it was a hit with damage, false if it was a miss
 	 */
-	public CMMsg postWeaponAttackResult(MOB source, MOB target, Item item, boolean success);
+	public CMMsg postWeaponAttackResult(MOB source, MOB target, Item item, int bonusDmg, boolean success);
 
 	/**
 	 * This method handles both a hit or a miss with a weapon between two
@@ -589,25 +590,25 @@ public interface CombatLibrary extends CMLibrary
 	 * Given an attacking source and a defending target and the sources weapon
 	 * or skill, this method will calculate the distance between the source and target
 	 * from each other.  Does not care about current combat or range state.
-	 * 
+	 *
 	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#setRangeToTarget(int)
 	 * @see CombatLibrary#establishRange(MOB, MOB, Environmental)
-	 * 
+	 *
 	 * @param source the attacker
 	 * @param target the target
 	 * @param tool the sources weapon
-	 * 
+	 *
 	 * @return the calculated range
 	 */
 	public int calculateRangeToTarget(final MOB source, final MOB target, final Environmental tool);
-	
+
 	/**
 	 * Given an attacking source and a defending target and the sources weapon
 	 * or skill, this method will set the distance between the source and target
 	 * from each other.
 	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#setRangeToTarget(int)
 	 * @see CombatLibrary#calculateRangeToTarget(MOB, MOB, Environmental)
-	 * 
+	 *
 	 * @param source the attacker
 	 * @param target the target
 	 * @param tool the sources weapon

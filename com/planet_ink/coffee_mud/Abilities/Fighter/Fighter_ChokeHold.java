@@ -120,7 +120,7 @@ public class Fighter_ChokeHold extends FighterGrappleSkill
 		if(!super.invoke(mob,commands,target,auto,asLevel))
 			return false;
 
-		final boolean hit=(auto)||(super.isGrappled(target)!=null)
+		final boolean hit=(auto)||(super.getGrappleA(target)!=null)
 				||(CMLib.combat().rollToHit(mob,target));
 		boolean success=proficiencyCheck(mob,0,auto)&&(hit);
 		if(success)

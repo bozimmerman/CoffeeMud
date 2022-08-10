@@ -104,7 +104,7 @@ public class Fighter_SleeperHold extends FighterGrappleSkill
 
 		// now see if it worked
 		final boolean hit=(auto)
-						||(super.isGrappled(target)!=null)
+						||(super.getGrappleA(target)!=null)
 						||CMLib.combat().rollToHit(mob,target);
 		boolean success=proficiencyCheck(mob,0,auto)&&(hit);
 		if(success)

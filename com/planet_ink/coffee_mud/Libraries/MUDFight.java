@@ -1162,7 +1162,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public CMMsg postWeaponAttackResult(final MOB sourceM, final MOB targetM, final Item item, final boolean success)
+	public CMMsg postWeaponAttackResult(final MOB sourceM, final MOB targetM, final Item item, final int bonusDmg, final boolean success)
 	{
 		if(sourceM==null)
 			return null;
@@ -1174,6 +1174,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		{
 			weapon=(Weapon)item;
 			damageInt=adjustedDamage(sourceM,weapon,targetM,0,true,false);
+			if(damageInt > 0)
+				damageInt += bonusDmg;
+			if(damageInt < 0)
+				damageInt = 0;
 		}
 		if(success)
 		{
@@ -2642,7 +2646,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				if(weapon!=null)
 				{
 					final boolean isHit=rollToHit(attacker,target);
-					postWeaponAttackResult(attacker,target,weapon,isHit);
+					postWeaponAttackResult(attacker,target,weapon,0, isHit);
 					if(isHit)
 						msg.setValue(1);
 				}
@@ -2657,7 +2661,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			}
 			else
 			if(msg.tool() instanceof Item)
-				postWeaponAttackResult(attacker,target,(Item)msg.tool(),true);
+				postWeaponAttackResult(attacker,target,(Item)msg.tool(),0, true);
 		}
 		if(CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target))
 			CMLib.commands().postStand(target,true, false);

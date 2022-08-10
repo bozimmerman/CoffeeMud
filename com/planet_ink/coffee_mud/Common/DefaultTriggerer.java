@@ -848,8 +848,14 @@ public class DefaultTriggerer implements Triggerer
 		{
 			final Item I=CMClass.getBasicItem("GenItem");
 			final Item cI=CMClass.getBasicItem("GenContainer");
-			I.setName(DT.parm1);
-			cI.setName(DT.parm2);
+			if(DT.parm1.equals("0"))
+				I.setName(L("Something"));
+			else
+				I.setName(DT.parm1);
+			if(DT.parm1.equals("0"))
+				cI.setName(L("Something"));
+			else
+				cI.setName(DT.parm2);
 			return CMClass.getMsg(mob, cI, I, CMMsg.MASK_ALWAYS|CMMsg.MSG_PUT, L("<S-NAME> put(s) <O-NAME> into <T-NAME>."));
 		}
 		case BURNTHING:
@@ -1089,6 +1095,13 @@ public class DefaultTriggerer implements Triggerer
 			return target.Name();
 	}
 
+	public boolean containsString(final String toSrchStr, final String srchForStr)
+	{
+		if((srchForStr==null)||(srchForStr.length()==0)||(srchForStr.equals("0"))||(srchForStr.equals("*")))
+			return true;
+		return CMLib.english().containsString(toSrchStr, srchForStr);
+	}
+
 	protected TrigState stepGetCompleted(final Object key, final CMMsg msg)
 	{
 		if(isIgnoring(msg.source()))
@@ -1230,8 +1243,8 @@ public class DefaultTriggerer implements Triggerer
 				case PUTTHING:
 					if((msg.target() instanceof Container)
 					&&(msg.tool() instanceof Item)
-					&&(CMLib.english().containsString(msg.tool().name(),DT.parm1))
-					&&(CMLib.english().containsString(msg.target().name(),DT.parm2)))
+					&&(containsString(msg.tool().name(),DT.parm1))
+					&&(containsString(msg.target().name(),DT.parm2)))
 					{
 						if(DT.addArgs && (msg.target()!=null))
 							state.args().add(targName(msg.target()));
@@ -1243,7 +1256,7 @@ public class DefaultTriggerer implements Triggerer
 				case DRINK:
 				case EAT:
 					if((msg.target()!=null)
-					&&(DT.parm1.equals("0")||CMLib.english().containsString(msg.target().name(),DT.parm1)))
+					&&(DT.parm1.equals("0")||containsString(msg.target().name(),DT.parm1)))
 					{
 						if(DT.addArgs && (msg.target()!=null))
 							state.args().add(targName(msg.target()));
@@ -1285,7 +1298,7 @@ public class DefaultTriggerer implements Triggerer
 					break;
 				case RIDING:
 					if((msg.source().riding()!=null)
-					&&(CMLib.english().containsString(msg.source().riding().name(),DT.parm1)))
+					&&(containsString(msg.source().riding().name(),DT.parm1)))
 					{
 						yup=true;
 						if(DT.addArgs)
@@ -1295,7 +1308,7 @@ public class DefaultTriggerer implements Triggerer
 				case CAST:
 					if((msg.tool()!=null)
 					&&((msg.tool().ID().equalsIgnoreCase(DT.parm1))
-					||(CMLib.english().containsString(msg.tool().name(),DT.parm1))))
+					||(containsString(msg.tool().name(),DT.parm1))))
 					{
 						yup=true;
 						if(DT.addArgs && (msg.target()!=null))
@@ -1321,7 +1334,7 @@ public class DefaultTriggerer implements Triggerer
 					if((msg.tool() instanceof Item)
 					&&(((Item)msg.tool()).baseGoldValue()>=CMath.s_int(DT.parm1))
 					&&(msg.target() instanceof Container)
-					&&(CMLib.english().containsString(msg.target().name(),DT.parm2)))
+					&&(containsString(msg.target().name(),DT.parm2)))
 					{
 						yup=true;
 						if(DT.addArgs && (msg.target()!=null))
@@ -1333,7 +1346,7 @@ public class DefaultTriggerer implements Triggerer
 					&&(((((Item)msg.tool()).material()&RawMaterial.RESOURCE_MASK)==CMath.s_int(DT.parm1))
 						||((((Item)msg.tool()).material()&RawMaterial.MATERIAL_MASK)==CMath.s_int(DT.parm1)))
 					&&(msg.target() instanceof Container)
-					&&(CMLib.english().containsString(msg.target().name(),DT.parm2)))
+					&&(containsString(msg.target().name(),DT.parm2)))
 					{
 						yup=true;
 						if(DT.addArgs && (msg.target()!=null))

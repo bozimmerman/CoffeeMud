@@ -914,11 +914,24 @@ public class Socials extends StdLibrary implements SocialsList
 				||((!exactOnly)&&(S.argumentName().startsWith(arg)))))
 					return S;
 		}
+		for(final Social S : listS)
+		{
+			if(S.targetName().startsWith(target)
+			&&(S.argumentName().equals(arg)
+				||((!exactOnly)&&(S.argumentName().startsWith(arg)))))
+					return S;
+		}
 		if(exactOnly || (arg.length()==0))
 			return null;
 		for(final Social S : listS)
 		{
 			if(S.targetName().startsWith("<")
+			&&(S.argumentName().startsWith(arg)))
+				return S;
+		}
+		for(final Social S : listS)
+		{
+			if(S.targetName().startsWith(target)
 			&&(S.argumentName().startsWith(arg)))
 				return S;
 		}
