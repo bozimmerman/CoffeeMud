@@ -426,15 +426,30 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		if(errors.size()>0)
 		{
 			final Prop_HaveAdjuster meSave=this;
+			if(affected != null)
+			{
+				final Physical P = affected;
+				Log.errOut(ID(),"Following errors found on adjuster on "+P.Name()+"@"
+						+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(P))+": ");
+				for(final String err: errors)
+					Log.errOut(ID(),err);
+			}
+			else
 			CMLib.threads().scheduleRunnable(new Runnable()
 			{
 				final Prop_HaveAdjuster me=meSave;
+				Physical P = me.affected;
 				final List<String> errs = new LinkedList<String>(errors);
 				@Override
 				public void run()
 				{
-					if(me.affected != null)
-						Log.errOut(ID(),"Following errors found on adjuster on "+me.affected.Name()+"@"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(me.affected))+": ");
+					if(P == null)
+						P=me.affected;
+					if(P != null)
+					{
+						Log.errOut(ID(),"Following errors found on adjuster on "+P.Name()+"@"
+								+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(P))+": ");
+					}
 					for(final String err: errs)
 						Log.errOut(ID(),err);
 				}
