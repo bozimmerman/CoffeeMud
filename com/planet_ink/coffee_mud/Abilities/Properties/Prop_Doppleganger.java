@@ -231,17 +231,16 @@ public class Prop_Doppleganger extends Property
 			}
 			if(num>0)
 			{
-				int levelAdd = this.levelAdd;
-				double levelPct = this.levelPct;
-				double savePct = this.savePct;
-				if(diffGrp)
-				{
-					levelAdd *= num;
-					levelPct = CMath.mul(levelPct,num);
-					savePct = CMath.mul(savePct,num);
-				}
 				if(levelCode == 0)
 					level = (int)Math.round(CMath.div(total,num));
+				int diffAdd = this.diffAdd;
+				double diffPct = this.diffPct;
+				if(diffGrp)
+				{
+					diffAdd *= num;
+					diffPct += CMath.mul(diffPct-1.0,num);
+					//savePct = CMath.mul(savePct,num);
+				}
 				level=(int)Math.round(CMath.mul(level,levelPct))+levelAdd;
 				if(level<minLevel)
 					level=minLevel;
