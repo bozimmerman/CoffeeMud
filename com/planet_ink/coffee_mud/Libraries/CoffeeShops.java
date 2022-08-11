@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 
 import java.util.*;
@@ -838,7 +839,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			final Vector<String> V=CMParms.parse(factors.trim());
 			if(V.size()==1)
 			{
-				final double rate = CMath.div(CMath.s_double(V.firstElement()),100.0);
+				final double rate = CMath.s_pct(V.firstElement());
 				devalueRate = new double[] { rate , rate };
 			}
 			else
@@ -1400,17 +1401,50 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		if(R==null)
 			return null;
 		final String keyNum=key.getKey();
-		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+		final TrackingFlags flags = CMLib.tracking().newFlags();
+		flags.add(TrackingFlag.AREAONLY);
+		final List<Room> trail = CMLib.tracking().findTrailToAnyRoom(R, new RFilter()
 		{
-			if((R.getExitInDir(d)!=null)&&(R.getExitInDir(d).keyName().equals(keyNum)))
+			@Override
+			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
 			{
-				final String dirName=CMLib.directions().getDirectionName(d, CMLib.flags().getDirType(R));
-				if(addThis.length()>0)
-					return addThis+" and to the "+dirName.toLowerCase();
-				return "to the "+dirName.toLowerCase();
+				if((E!=null)&&(E.keyName().equals(keyNum)))
+					return false;
+				return true;
 			}
+		}, flags, 25);
+		if(trail.size()==0)
+			return "nowhere";
+		else
+		if(trail.size()==1)
+			return "here";
+		Room prevR = R;
+		final PairList<int[],Integer> ttrail = new PairArrayList<int[],Integer>();
+		for(final Iterator<Room> r= new LinkedList<Room>(trail).descendingIterator();r.hasNext();)
+		{
+			final Room R1=r.next();
+			if(prevR != R1)
+			{
+				final int dir = CMLib.map().getRoomDir(prevR, R1);
+				if((ttrail.size()>0)&&(ttrail.get(ttrail.size()-1).second.intValue()==dir))
+					ttrail.get(ttrail.size()-1).first[0]++;
+				else
+					ttrail.add(new int[] { 1 }, Integer.valueOf(dir));
+			}
+			prevR=R1;
 		}
-		return null;
+		final StringBuilder trailStr = new StringBuilder("");
+		for(final Pair<int[],Integer> p : ttrail)
+		{
+			final String dirName = CMLib.directions().getDirectionName(p.second.intValue());
+			if(p.first[0]<=1)
+				trailStr.append(dirName).append(", ");
+			else
+				trailStr.append(p.first[0]+" X " + dirName).append(", ");
+		}
+		if(trailStr.length()>2)
+			return trailStr.substring(0,trailStr.length()-2);
+		return trailStr.toString();
 	}
 
 	@Override
