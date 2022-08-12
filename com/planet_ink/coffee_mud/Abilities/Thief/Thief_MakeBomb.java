@@ -133,14 +133,14 @@ public class Thief_MakeBomb extends ThiefSkill implements RecipeDriven
 		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))
 		{
 			final StringBuffer buf=new StringBuffer(L("@x1 @x2 Requires\n\r",
-					CMStrings.padRight(L("Bomb Name"),15),
+					CMStrings.padRight(L("Bomb Name"),25),
 					CMStrings.padRight(L("Lvl"),4)));
-			final int restLen = CMLib.lister().fixColWidth(78 - 16 - 5, mob);
+			final int restLen = CMLib.lister().fixColWidth(78 - 26 - 5, mob);
 			for(int r=0;r<traps.size();r++)
 			{
 				final List<String> V=traps.getFirst(r);
 				final Trap T=traps.getSecond(r);
-				buf.append(CMStrings.padRight(V.get(RCP_FINALNAME),15)+" ");
+				buf.append(CMStrings.padRight(V.get(RCP_FINALNAME),25)+" ");
 				buf.append(CMStrings.padRight(V.get(RCP_LEVEL),4)+" ");
 				buf.append(CMStrings.limit(T.requiresToSet(),restLen)+"\n\r");
 			}
