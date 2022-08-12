@@ -103,9 +103,12 @@ public class FighterGrappleSkill extends FighterSkill
 	protected boolean makeBreakAttempt()
 	{
 		final MOB targetM=(MOB)affected;
-		final int wbest =  Math.max(invoker().charStats().getStat(CharStats.STAT_DEXTERITY),
-									invoker().charStats().getStat(CharStats.STAT_STRENGTH))
-							+ super.getXLEVELLevel(invoker());
+		final MOB invoker=invoker();
+		if((invoker==null)||(targetM==null))
+			return false;
+		final int wbest =  Math.max(invoker.charStats().getStat(CharStats.STAT_DEXTERITY),
+									invoker.charStats().getStat(CharStats.STAT_STRENGTH))
+							+ super.getXLEVELLevel(invoker);
 		final int mbest =  Math.min(targetM.charStats().getStat(CharStats.STAT_DEXTERITY),
 									targetM.charStats().getStat(CharStats.STAT_STRENGTH))
 							+ super.getXLEVELLevel(targetM)
