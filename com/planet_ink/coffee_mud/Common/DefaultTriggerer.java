@@ -884,7 +884,7 @@ public class DefaultTriggerer implements Triggerer
 		case SOCIAL:
 		{
 			Social soc = CMLib.socials().fetchSocial((DT.parm1+" "+DT.parm2).toUpperCase().trim(),true);
-			if((soc == null)&&(DT.parm2!=null)&&(DT.parm2.length()>0))
+			if((soc == null)&&(DT.parm2.length()>0))
 				soc = CMLib.socials().fetchSocial((DT.parm1+" <T-NAME> "+DT.parm2).toUpperCase().trim(),true);
 			if(soc != null)
 			{
@@ -1273,7 +1273,7 @@ public class DefaultTriggerer implements Triggerer
 				case SOCIAL:
 					if((msg.tool() instanceof Social)
 					&&(msg.tool().Name().equalsIgnoreCase((DT.parm1+" "+DT.parm2).trim())
-						||((DT.parm2!=null)&&(DT.parm2.length()>0)&&(msg.tool().Name().equalsIgnoreCase((DT.parm1+" <T-NAME> "+DT.parm2).trim())))))
+						||((DT.parm2.length()>0)&&(msg.tool().Name().equalsIgnoreCase((DT.parm1+" <T-NAME> "+DT.parm2).trim())))))
 					{
 						if(DT.addArgs && (msg.target()!=null))
 							state.args().add(targName(msg.target()));
