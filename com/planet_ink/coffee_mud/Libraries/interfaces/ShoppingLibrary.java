@@ -54,20 +54,21 @@ public interface ShoppingLibrary extends CMLibrary
 	/**
 	 * Part of a shopkeeper selling an item to a player/mob is the transaction of the price.
 	 * This handles that by taking away the buyers money, qp, xp, or whatever.  The
-	 * price comes from sellingPrice above.
+	 * price comes from sellingPrice above.  Having the money go into the shopkeepers
+	 * pocket is optional.
 	 *
 	 * @see ShoppingLibrary#transactMoneyOnly(MOB, MOB, ShopKeeper, Environmental, boolean)
 	 * @see ShoppingLibrary#sellEvaluation(MOB, MOB, Environmental, ShopKeeper, boolean)
 	 * @see ShoppingLibrary#getSalesTax(Room, MOB)
 	 * @see ShoppingLibrary#sellingPrice(MOB, MOB, Environmental, ShopKeeper, CoffeeShop, boolean)
 	 *
-	 * @param seller
-	 * @param buyer
-	 * @param shop
-	 * @param product
+	 * @param sellerM the seller mob who wants money
+	 * @param buyerM the buyer mob who is losing money
+	 * @param shop the shop itself
+	 * @param product the product being sold, whose value constitutes the price
 	 * @param sellerGetsPaid true to add the money to the shopkeepers
 	 */
-	public void transactMoneyOnly(MOB seller, MOB buyer, ShopKeeper shop, Environmental product, boolean sellerGetsPaid);
+	public void transactMoneyOnly(MOB sellerM, MOB buyerM, ShopKeeper shop, Environmental product, boolean sellerGetsPaid);
 
 
 	/**

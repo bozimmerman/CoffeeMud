@@ -1562,21 +1562,21 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	}
 
 	@Override
-	public void transactMoneyOnly(final MOB seller,
-								  final MOB buyer,
+	public void transactMoneyOnly(final MOB sellerM,
+								  final MOB buyerM,
 								  final ShopKeeper shop,
 								  final Environmental product,
 								  final boolean sellerGetsPaid)
 	{
-		if((seller==null)||(seller.location()==null)||(buyer==null)||(shop==null)||(product==null))
+		if((sellerM==null)||(sellerM.location()==null)||(buyerM==null)||(shop==null)||(product==null))
 			return;
-		final Room room=seller.location();
-		final ShopKeeper.ShopPrice price=sellingPrice(seller,buyer,product,shop,shop.getShop(), true);
+		final Room room=sellerM.location();
+		final ShopKeeper.ShopPrice price=sellingPrice(sellerM,buyerM,product,shop,shop.getShop(), true);
 		if(price.absoluteGoldPrice>0.0)
 		{
-			CMLib.beanCounter().subtractMoney(buyer,CMLib.beanCounter().getCurrency(seller),price.absoluteGoldPrice);
+			CMLib.beanCounter().subtractMoney(buyerM,CMLib.beanCounter().getCurrency(sellerM),price.absoluteGoldPrice);
 			double totalFunds=price.absoluteGoldPrice;
-			if(getSalesTax(seller.getStartRoom(),seller)!=0.0)
+			if(getSalesTax(sellerM.getStartRoom(),sellerM)!=0.0)
 			{
 				final Law theLaw=CMLib.law().getTheLaw(room);
 				final Area A2=CMLib.law().getLegalObject(room);
@@ -1587,35 +1587,35 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					final Container treasuryContainer=treas.container;
 					if(treasuryR!=null)
 					{
-						final double taxAmount=totalFunds-sellingPrice(seller,buyer,product,shop,shop.getShop(), false).absoluteGoldPrice;
+						final double taxAmount=totalFunds-sellingPrice(sellerM,buyerM,product,shop,shop.getShop(), false).absoluteGoldPrice;
 						totalFunds-=taxAmount;
-						final Coins COIN=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(seller),taxAmount,treasuryR,treasuryContainer);
+						final Coins COIN=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(sellerM),taxAmount,treasuryR,treasuryContainer);
 						if(COIN!=null)
 							COIN.putCoinsBack();
 					}
 				}
 			}
-			if(seller.isMonster())
+			if(sellerM.isMonster())
 			{
-				final LandTitle T=CMLib.law().getLandTitle(seller.getStartRoom());
+				final LandTitle T=CMLib.law().getLandTitle(sellerM.getStartRoom());
 				if((T!=null)&&(T.getOwnerName().length()>0))
 				{
-					CMLib.beanCounter().modifyLocalBankGold(seller.getStartRoom().getArea(),
+					CMLib.beanCounter().modifyLocalBankGold(sellerM.getStartRoom().getArea(),
 															T.getOwnerName(),
-															CMLib.utensils().getFormattedDate(buyer)
-																+": Deposit of "+CMLib.beanCounter().nameCurrencyShort(seller,totalFunds)
-																+": Purchase: "+product.Name()+" from "+seller.Name(),
+															CMLib.utensils().getFormattedDate(buyerM)
+																+": Deposit of "+CMLib.beanCounter().nameCurrencyShort(sellerM,totalFunds)
+																+": Purchase: "+product.Name()+" from "+sellerM.Name(),
 															totalFunds);
 				}
 			}
 			if(sellerGetsPaid)
-				CMLib.beanCounter().giveSomeoneMoney(seller,seller,CMLib.beanCounter().getCurrency(seller),totalFunds);
+				CMLib.beanCounter().giveSomeoneMoney(sellerM,sellerM,CMLib.beanCounter().getCurrency(sellerM),totalFunds);
 		}
 		if(price.questPointPrice>0)
-			buyer.setQuestPoint(buyer.getQuestPoint()-price.questPointPrice);
+			buyerM.setQuestPoint(buyerM.getQuestPoint()-price.questPointPrice);
 		if(price.experiencePrice>0)
-			CMLib.leveler().postExperience(buyer,null,null,-price.experiencePrice,false);
-		buyer.recoverPhyStats();
+			CMLib.leveler().postExperience(buyerM,null,null,-price.experiencePrice,false);
+		buyerM.recoverPhyStats();
 	}
 
 	@Override
