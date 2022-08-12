@@ -51,14 +51,89 @@ public interface ShoppingLibrary extends CMLibrary
 	public double getSalesTax(Room homeRoom, MOB seller);
 	public boolean sellEvaluation(MOB sellerShopM, MOB buyerCustM, Environmental product, ShopKeeper shop, boolean buyNotView);
 
+	/**
+	 * Part of a shopkeeper selling an item to a player/mob is the transaction of the price.
+	 * This handles that by taking away the buyers money, qp, xp, or whatever.  The
+	 * price comes from sellingPrice above.
+	 *
+	 * @see ShoppingLibrary#transactMoneyOnly(MOB, MOB, ShopKeeper, Environmental, boolean)
+	 * @see ShoppingLibrary#sellEvaluation(MOB, MOB, Environmental, ShopKeeper, boolean)
+	 * @see ShoppingLibrary#getSalesTax(Room, MOB)
+	 * @see ShoppingLibrary#sellingPrice(MOB, MOB, Environmental, ShopKeeper, CoffeeShop, boolean)
+	 *
+	 * @param seller
+	 * @param buyer
+	 * @param shop
+	 * @param product
+	 * @param sellerGetsPaid true to add the money to the shopkeepers
+	 */
 	public void transactMoneyOnly(MOB seller, MOB buyer, ShopKeeper shop, Environmental product, boolean sellerGetsPaid);
-	public List<Environmental> addRealEstateTitles(List<Environmental> V, MOB buyer, CoffeeShop shop, Room myRoom);
 
+
+	/**
+	 * Adjusts the given inventory of a shopkeepers shop by adding external inventory, which might include
+	 * new real estate titles, or existing titles to real estate, ships, and the like.
+	 *
+	 * @param productsV the existing inventory
+	 * @param buyer the buyer who wants to see the inventory
+	 * @param shop the shop inventory object
+	 * @param myRoom the room where the shopkeeper is
+	 * @return the filled inventory
+	 */
+	public List<Environmental> addRealEstateTitles(List<Environmental> productsV, MOB buyer, CoffeeShop shop, Room myRoom);
+
+	/**
+	 * Gives the value of an item that might be sold to a shopkeeper by a player/mob.
+	 * Takes current stock into account.
+	 *
+	 * @see ShoppingLibrary#transactPawn(MOB, MOB, ShopKeeper, Environmental)
+	 * @see ShoppingLibrary#pawnEvaluation(MOB, MOB, Environmental, ShopKeeper, double, double, boolean)
+	 *
+	 * @param buyerShopM the shopkeeper mob
+	 * @param sellerCustM the player seller mob
+	 * @param product the proposed produce to sell to the shop
+	 * @param shopKeeper the shop itself
+	 * @param shop the inventory object of the shop
+	 * @return the valuation that this shopkeeper will put on the item
+	 */
 	public ShopKeeper.ShopPrice pawningPrice(MOB buyerShopM, MOB sellerCustM, Environmental product,
 											 ShopKeeper shopKeeper, CoffeeShop shop);
+
+	/**
+	 * Evaluates a proposed sale of an item to a shopkeeper by a player/mob
+	 * Returns whether the sale can go forth.  This also handles proposed
+	 * VALUE commands.
+	 *
+	 * @see ShoppingLibrary#transactPawn(MOB, MOB, ShopKeeper, Environmental)
+	 * @see ShoppingLibrary#pawningPrice(MOB, MOB, Environmental, ShopKeeper, CoffeeShop)
+	 *
+	 * @param buyerShopM the shopkeeper mob
+	 * @param sellerCustM the player seller mob
+	 * @param product the proposed produce to sell to the shop
+	 * @param shop the shop itself
+	 * @param maxToPay money the shopkeeper has remaining
+	 * @param maxEverPaid the overall budget of the shopkeeper
+	 * @param sellNotValue true if a sale is proposed, and false for a valuation
+	 * @return true if the sale should go through, false otherwise
+	 */
 	public boolean pawnEvaluation(MOB buyerShopM, MOB sellerCustM, Environmental product,
 								  ShopKeeper shop, double maxToPay, double maxEverPaid, boolean sellNotValue);
-	public double transactPawn(MOB shopkeeper, MOB pawner, ShopKeeper shop, Environmental product);
+
+	/**
+	 * Does the transaction where a player/mob sells an item to a shopkeeper.
+	 * It returns the amount given to the player in absolute value.  Adds
+	 * the item to the shopkeepers inventory
+	 *
+	 * @see ShoppingLibrary#pawnEvaluation(MOB, MOB, Environmental, ShopKeeper, double, double, boolean)
+	 * @see ShoppingLibrary#pawningPrice(MOB, MOB, Environmental, ShopKeeper, CoffeeShop)
+	 *
+	 * @param shopkeeperM the shopkeeper mob being sold to
+	 * @param pawnerM the player/mob selling an item
+	 * @param shop the shopkeeper object
+	 * @param product the product sold to the shopkeeper
+	 * @return the value given to the player
+	 */
+	public double transactPawn(MOB shopkeeperM, MOB pawnerM, ShopKeeper shop, Environmental product);
 
 	/**
 	 * Checks a BUY message for an english embedded 'FOR' message, which
