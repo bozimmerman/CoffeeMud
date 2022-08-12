@@ -1008,120 +1008,120 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 
 	@Override
 	public boolean pawnEvaluation(final MOB buyerShopM,
-										  final MOB sellerCustM,
-										  final Environmental product,
-										  final ShopKeeper shop,
-										  final double maxToPay,
-										  final double maxEverPaid,
-										  final boolean sellNotValue)
+								  final MOB sellerCustM,
+								  final Environmental product,
+								  final ShopKeeper shop,
+								  final double maxToPay,
+								  final double maxEverPaid,
+								  final boolean sellNotValue)
 	{
-		if((product!=null)
-		&&(shop.doISellThis(product))
-		&&(!(product instanceof Coins)))
+		if((product==null)
+		||(!shop.doISellThis(product))
+		||(product instanceof Coins))
 		{
-			final Room shopRoom=buyerShopM.location();
-			if(shopRoom!=null)
-			{
-				int medianLevel=shopRoom.getArea().getPlayerLevel();
-				if(medianLevel==0)
-					medianLevel=shopRoom.getArea().getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
-				if(medianLevel>0)
-				{
-					final String range=CMParms.getParmStr(shop.getFinalPrejudiceFactors(),"RANGE","0");
-					int rangeI=0;
-					if((range.endsWith("%"))&&(CMath.isInteger(range.substring(0,range.length()-1))))
-					{
-						rangeI=CMath.s_int(range.substring(0,range.length()-1));
-						rangeI=(int)Math.round(CMath.mul(medianLevel,CMath.div(rangeI,100.0)));
-					}
-					else
-					if(CMath.isInteger(range))
-						rangeI=CMath.s_int(range);
-					if((rangeI>0)
-					&&(product instanceof Physical)
-					&&((((Physical)product).phyStats().level()>(medianLevel+rangeI))
-						||(((Physical)product).phyStats().level()<(medianLevel-rangeI))))
-					{
-						CMLib.commands().postSay(buyerShopM,sellerCustM,L("I'm sorry, that's out of my level range."),true,false);
-						return false;
-					}
-				}
-			}
-			if((product instanceof Item)
-			&& (!CMLib.law().mayOwnThisItem(sellerCustM, (Item)product))
-			&& ((!CMLib.flags().isEvil(buyerShopM))
-				||(CMLib.flags().isLawful(buyerShopM))))
-			{
-				CMLib.commands().postSay(buyerShopM,sellerCustM,L("I don't buy stolen goods."),true,false);
-				return false;
-			}
-			final double yourValue=pawningPrice(buyerShopM,sellerCustM,product,shop, shop.getShop()).absoluteGoldPrice;
-			if(yourValue<2)
-			{
-				if(!isLotTooLarge(shop, product))
-					CMLib.commands().postSay(buyerShopM,sellerCustM,L("I'm not interested."),true,false);
-				else
-					CMLib.commands().postSay(buyerShopM,sellerCustM,L("I'm not interested in the whole lot, but maybe a smaller count..."),true,false);
-				return false;
-			}
-			if((product instanceof Physical)&&CMLib.flags().isEnspelled((Physical)product) || CMLib.flags().isOnFire((Physical)product))
-			{
-				CMLib.commands().postSay(buyerShopM, sellerCustM, L("I won't buy that in it's present state."), true, false);
-				return false;
-			}
-			if((sellNotValue)&&(yourValue>maxToPay))
-			{
-				if(yourValue>maxEverPaid)
-					CMLib.commands().postSay(buyerShopM,sellerCustM,L("That's way out of my price range! Try AUCTIONing it."),true,false);
-				else
-					CMLib.commands().postSay(buyerShopM,sellerCustM,L("Sorry, I can't afford that right now.  Try back later."),true,false);
-				return false;
-			}
-			if(product instanceof Ability)
-			{
-				CMLib.commands().postSay(buyerShopM,sellerCustM,L("I'm not interested."),true,false);
-				return false;
-			}
-			if((product instanceof Container)&&(((Container)product).hasALock()))
-			{
-				boolean found=false;
-				final List<Item> V=((Container)product).getContents();
-				for(int i=0;i<V.size();i++)
-				{
-					final Item I=V.get(i);
-					if((I instanceof DoorKey)
-					&&(((DoorKey)I).getKey().equals(((Container)product).keyName())))
-						found=true;
-					else
-					if(CMLib.flags().isEnspelled(I) || CMLib.flags().isOnFire(I))
-					{
-						CMLib.commands().postSay(buyerShopM, sellerCustM, L("I won't buy the contents of that in it's present state."), true, false);
-						return false;
-					}
-					else
-					if((!CMLib.law().mayOwnThisItem(sellerCustM, I))
-					&& (!CMLib.flags().isEvil(buyerShopM)))
-					{
-						CMLib.commands().postSay(buyerShopM,sellerCustM,L("I don't buy stolen goods."),true,false);
-						return false;
-					}
-				}
-				if(!found)
-				{
-					CMLib.commands().postSay(buyerShopM,sellerCustM,L("I won't buy that back unless you put the key in it."),true,false);
-					return false;
-				}
-			}
-			if((product instanceof Item)&&(sellerCustM.isMine(product)))
-			{
-				final CMMsg msg2=CMClass.getMsg(sellerCustM,product,CMMsg.MSG_DROP,null);
-				if(!sellerCustM.location().okMessage(sellerCustM,msg2))
-					return false;
-			}
-			return true;
+			CMLib.commands().postSay(buyerShopM,sellerCustM,L("I'm sorry, I'm not buying those."),true,false);
+			return false;
 		}
-		CMLib.commands().postSay(buyerShopM,sellerCustM,L("I'm sorry, I'm not buying those."),true,false);
-		return false;
+		final Room shopRoom=buyerShopM.location();
+		if(shopRoom!=null)
+		{
+			int medianLevel=shopRoom.getArea().getPlayerLevel();
+			if(medianLevel==0)
+				medianLevel=shopRoom.getArea().getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
+			if(medianLevel>0)
+			{
+				final String range=CMParms.getParmStr(shop.getFinalPrejudiceFactors(),"RANGE","0");
+				int rangeI=0;
+				if((range.endsWith("%"))&&(CMath.isInteger(range.substring(0,range.length()-1))))
+				{
+					rangeI=CMath.s_int(range.substring(0,range.length()-1));
+					rangeI=(int)Math.round(CMath.mul(medianLevel,CMath.div(rangeI,100.0)));
+				}
+				else
+				if(CMath.isInteger(range))
+					rangeI=CMath.s_int(range);
+				if((rangeI>0)
+				&&(product instanceof Physical)
+				&&((((Physical)product).phyStats().level()>(medianLevel+rangeI))
+					||(((Physical)product).phyStats().level()<(medianLevel-rangeI))))
+				{
+					CMLib.commands().postSay(buyerShopM,sellerCustM,L("I'm sorry, that's out of my level range."),true,false);
+					return false;
+				}
+			}
+		}
+		if((product instanceof Item)
+		&& (!CMLib.law().mayOwnThisItem(sellerCustM, (Item)product))
+		&& ((!CMLib.flags().isEvil(buyerShopM))
+			||(CMLib.flags().isLawful(buyerShopM))))
+		{
+			CMLib.commands().postSay(buyerShopM,sellerCustM,L("I don't buy stolen goods."),true,false);
+			return false;
+		}
+		final double yourValue=pawningPrice(buyerShopM,sellerCustM,product,shop, shop.getShop()).absoluteGoldPrice;
+		if(yourValue<2)
+		{
+			if(!isLotTooLarge(shop, product))
+				CMLib.commands().postSay(buyerShopM,sellerCustM,L("I'm not interested."),true,false);
+			else
+				CMLib.commands().postSay(buyerShopM,sellerCustM,L("I'm not interested in the whole lot, but maybe a smaller count..."),true,false);
+			return false;
+		}
+		if((product instanceof Physical)&&CMLib.flags().isEnspelled((Physical)product) || CMLib.flags().isOnFire((Physical)product))
+		{
+			CMLib.commands().postSay(buyerShopM, sellerCustM, L("I won't buy that in it's present state."), true, false);
+			return false;
+		}
+		if((sellNotValue)&&(yourValue>maxToPay))
+		{
+			if(yourValue>maxEverPaid)
+				CMLib.commands().postSay(buyerShopM,sellerCustM,L("That's way out of my price range! Try AUCTIONing it."),true,false);
+			else
+				CMLib.commands().postSay(buyerShopM,sellerCustM,L("Sorry, I can't afford that right now.  Try back later."),true,false);
+			return false;
+		}
+		if(product instanceof Ability)
+		{
+			CMLib.commands().postSay(buyerShopM,sellerCustM,L("I'm not interested."),true,false);
+			return false;
+		}
+		if((product instanceof Container)&&(((Container)product).hasALock()))
+		{
+			boolean found=false;
+			final List<Item> V=((Container)product).getContents();
+			for(int i=0;i<V.size();i++)
+			{
+				final Item I=V.get(i);
+				if((I instanceof DoorKey)
+				&&(((DoorKey)I).getKey().equals(((Container)product).keyName())))
+					found=true;
+				else
+				if(CMLib.flags().isEnspelled(I) || CMLib.flags().isOnFire(I))
+				{
+					CMLib.commands().postSay(buyerShopM, sellerCustM, L("I won't buy the contents of that in it's present state."), true, false);
+					return false;
+				}
+				else
+				if((!CMLib.law().mayOwnThisItem(sellerCustM, I))
+				&& (!CMLib.flags().isEvil(buyerShopM)))
+				{
+					CMLib.commands().postSay(buyerShopM,sellerCustM,L("I don't buy stolen goods."),true,false);
+					return false;
+				}
+			}
+			if(!found)
+			{
+				CMLib.commands().postSay(buyerShopM,sellerCustM,L("I won't buy that back unless you put the key in it."),true,false);
+				return false;
+			}
+		}
+		if((product instanceof Item)&&(sellerCustM.isMine(product)))
+		{
+			final CMMsg msg2=CMClass.getMsg(sellerCustM,product,CMMsg.MSG_DROP,null);
+			if(!sellerCustM.location().okMessage(sellerCustM,msg2))
+				return false;
+		}
+		return true;
 	}
 
 	@Override
