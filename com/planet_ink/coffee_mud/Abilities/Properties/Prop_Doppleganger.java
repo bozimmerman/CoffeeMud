@@ -69,6 +69,8 @@ public class Prop_Doppleganger extends Property
 	protected boolean	matchPlayersFollowersOnly	= false;
 	protected int		asMaterial					= -1;
 
+	private volatile int diffLevel					= Integer.MAX_VALUE;
+
 	@Override
 	public long flags()
 	{
@@ -104,7 +106,7 @@ public class Prop_Doppleganger extends Property
 			levelCode=CMParms.getParmInt(text, "LEVELCODE", 0);
 			levelAdd=CMParms.getParmInt(text, "LEVELADD", 0);
 			levelPct=CMath.s_pct(CMParms.getParmStr(text, "LEVELPCT", "100"));
-			diffAdd=CMParms.getParmInt(text, "DIFFLADD", 0);
+			diffAdd=CMParms.getParmInt(text, "DIFFADD", 0);
 			savePct=CMath.s_pct(CMParms.getParmStr(text, "SAVEPCT", "0"));
 			diffGrp=CMParms.getParmBool(text, "DIFFGRP", false);
 			diffPct=CMParms.getParmInt(text, "DIFFPCT", 100)/100.0;
@@ -128,9 +130,9 @@ public class Prop_Doppleganger extends Property
 				level=minLevel;
 			if(level>maxLevel)
 				level=maxLevel;
-			final int difflevel=(int)Math.round(CMath.mul(level,diffPct))+diffAdd;
-			I.basePhyStats().setLevel(difflevel);
-			I.phyStats().setLevel(difflevel);
+			diffLevel=(int)Math.round(CMath.mul(level,diffPct))+diffAdd;
+			I.basePhyStats().setLevel(diffLevel);
+			I.phyStats().setLevel(diffLevel);
 			final int oldMaterial=I.material();
 			if(asMaterial != -1)
 				I.setMaterial(asMaterial);
@@ -246,11 +248,13 @@ public class Prop_Doppleganger extends Property
 					level=minLevel;
 				if(level>maxLevel)
 					level=maxLevel;
-				final int difflevel=(int)Math.round(CMath.mul(level,diffPct))+diffAdd;
-				if(level!=doppleM.basePhyStats().level())
+				final int newDiffLevel =(int)Math.round(CMath.mul(level,diffPct))+diffAdd;
+				if((level!=doppleM.basePhyStats().level())
+				||(newDiffLevel != diffLevel))
 				{
-					doppleM.basePhyStats().setLevel(difflevel);
-					doppleM.phyStats().setLevel(difflevel);
+					diffLevel=newDiffLevel;
+					doppleM.basePhyStats().setLevel(diffLevel);
+					doppleM.phyStats().setLevel(diffLevel);
 					doppleM.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(doppleM));
 					doppleM.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(doppleM));
 					doppleM.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(doppleM));
@@ -260,7 +264,7 @@ public class Prop_Doppleganger extends Property
 					doppleM.baseState().setMovement(CMLib.leveler().getLevelMove(doppleM));
 					if(savePct > 0.0)
 					{
-						final int saveSaveAmt = (int)Math.round(CMath.mul(difflevel,savePct));
+						final int saveSaveAmt = (int)Math.round(CMath.mul(diffLevel,savePct));
 						for(final int cd : CharStats.CODES.SAVING_THROWS())
 							doppleM.baseCharStats().setStat(cd, doppleM.baseCharStats().getStat(cd) + saveSaveAmt);
 					}
