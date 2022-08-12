@@ -354,12 +354,17 @@ public class DefaultTriggerer implements Triggerer
 								DT.parm2=V.get(2);
 							else
 								DT.parm2="";
-							final Social soc = CMLib.socials().fetchSocial((DT.parm1+" "+DT.parm2).toUpperCase().trim(),true);
+							Social soc = CMLib.socials().fetchSocial((DT.parm1+" "+DT.parm2).toUpperCase().trim(),true);
 							if(soc == null)
 							{
-								Log.errOut(name(),"Illegal social in: "+trig);
-								DT=null;
-								break;
+								if(DT.parm2.length()>0)
+									soc = CMLib.socials().fetchSocial((DT.parm1+" <T-NAME> "+DT.parm2).toUpperCase().trim(),true);
+								if(soc == null)
+								{
+									Log.errOut(name(),"Illegal social in: "+trig);
+									DT=null;
+									break;
+								}
 							}
 							break;
 						}
@@ -665,7 +670,7 @@ public class DefaultTriggerer implements Triggerer
 						buf.append(L("the player should read '@x1'",DT.parm1.toLowerCase()));
 					break;
 				case SOCIAL:
-					buf.append(L("the player should @x1",DT.parm1.toLowerCase()));
+					buf.append(L("the player should @x1",(DT.parm1.toLowerCase()+" "+DT.parm2).trim()));
 					break;
 				case TIME:
 					buf.append(L("the hour of the day is @x1",DT.parm1.toLowerCase()));
@@ -878,7 +883,9 @@ public class DefaultTriggerer implements Triggerer
 		}
 		case SOCIAL:
 		{
-			final Social soc = CMLib.socials().fetchSocial((DT.parm1+" "+DT.parm2).toUpperCase().trim(),true);
+			Social soc = CMLib.socials().fetchSocial((DT.parm1+" "+DT.parm2).toUpperCase().trim(),true);
+			if((soc == null)&&(DT.parm2!=null)&&(DT.parm2.length()>0))
+				soc = CMLib.socials().fetchSocial((DT.parm1+" <T-NAME> "+DT.parm2).toUpperCase().trim(),true);
 			if(soc != null)
 			{
 				final MOB target=mob.getVictim();
@@ -1265,7 +1272,8 @@ public class DefaultTriggerer implements Triggerer
 					break;
 				case SOCIAL:
 					if((msg.tool() instanceof Social)
-					&&(msg.tool().Name().equalsIgnoreCase((DT.parm1+" "+DT.parm2).trim())))
+					&&(msg.tool().Name().equalsIgnoreCase((DT.parm1+" "+DT.parm2).trim())
+						||((DT.parm2!=null)&&(DT.parm2.length()>0)&&(msg.tool().Name().equalsIgnoreCase((DT.parm1+" <T-NAME> "+DT.parm2).trim())))))
 					{
 						if(DT.addArgs && (msg.target()!=null))
 							state.args().add(targName(msg.target()));
