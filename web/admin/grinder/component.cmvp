@@ -108,7 +108,7 @@
 	            <TD WIDTH=25%><FONT COLOR=YELLOW>Required Item: </FONT></TD>
 	            <TD WIDTH=75%><FONT COLOR=WHITE SIZE=-1>
 	            @ComponentPieceData?STRINGEDIT@
-	            <INPUT TYPE=CHECKBOX NAME="@ComponentID@_PIECE_CONSUMED_@ComponentPieceID@" @ComponentPieceData?CONSUMEDEDIT@>Cns</FONT>
+	            <INPUT TYPE=CHECKBOX NAME="@ComponentID@_PIECE_CONSUMED_@ComponentPieceID@" @ComponentPieceData?CONSUMEDEDIT@>Cons</FONT>
 	            </TD>
 	        </TR>
 	    @endif@
@@ -130,7 +130,7 @@
 	    @endif@
         <TR>
             <TD WIDTH=25%><FONT COLOR=YELLOW>Zapper Mask: </FONT><A HREF="javascript:openUp('ZAPPERMASKS')"><FONT COLOR=WHITE>?</FONT></a></TD>
-            <TD WIDTH=75%><TEXTAREA SIZE=50 COLS=50 ROWS=3 NAME=@ComponentID@_PIECE_MASK_@ComponentPieceID@>@ComponentPieceData?MASKEDIT@</TEXTAREA></TD>
+            <TD WIDTH=75%><TEXTAREA SIZE=50 COLS=40 ROWS=3 NAME=@ComponentID@_PIECE_MASK_@ComponentPieceID@>@ComponentPieceData?MASKEDIT@</TEXTAREA></TD>
         </TR>
     </TABLE>
     @AddRequestParameter?LAST=@@RequestParameter?COMPONENTPIECE@@ @
