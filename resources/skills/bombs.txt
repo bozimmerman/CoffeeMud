@@ -1,13 +1,117 @@
-water bomb	1		Bomb_Water			
-smoke bomb	2		Bomb_Smoke			
-poison gas bomb	5		Bomb_Poison			
-heat bomb	6		Bomb_Heat			
-pepper bomb	7		Bomb_Pepper			
-sonic bomb	8		Bomb_Sonic			
-explosive bomb	10		Bomb_Explosive			
-stink bomb	12		Bomb_Noxious			
-spore bomb	15		Bomb_Spores			
-flame burst bomb	17		Bomb_FlameBurst			
-acid burst bomb	20		Bomb_AcidBurst			
-sticky bomb	25		Bomb_Sticky			
-shaped bomb	30		Bomb_Shaped			
+Tiny water bomb	1		Bomb_Water				
+Tiny smoke bomb	2		Bomb_Smoke				
+Tiny poison gas bomb	3		Bomb_Poison				
+Tiny heat bomb	4		Bomb_Heat				
+Tiny pepper bomb	5		Bomb_Pepper				
+Tiny sonic bomb	6		Bomb_Sonic				
+Tiny explosive bomb	7		Bomb_Explosive				
+Tiny stink bomb	8		Bomb_Noxious				
+Tiny spore bomb	9		Bomb_Spores				
+Tiny flame burst bomb	10		Bomb_FlameBurst				
+Tiny acid burst bomb	11		Bomb_AcidBurst				
+Tiny sticky bomb	12		Bomb_Sticky				
+Tiny shaped bomb	13		Bomb_Shaped				
+Small water bomb	11		Bomb_Water				
+Small smoke bomb	12		Bomb_Smoke				
+Small poison gas bomb	13		Bomb_Poison				
+Small heat bomb	14		Bomb_Heat				
+Small pepper bomb	15		Bomb_Pepper				
+Small sonic bomb	16		Bomb_Sonic				
+Small explosive bomb	17		Bomb_Explosive				
+Small stink bomb	18		Bomb_Noxious				
+Small spore bomb	19		Bomb_Spores				
+Small flame burst bomb	20		Bomb_FlameBurst				
+Small acid burst bomb	21		Bomb_AcidBurst				
+Small sticky bomb	22		Bomb_Sticky				
+Small shaped bomb	23		Bomb_Shaped				
+Lesser water bomb	21		Bomb_Water				
+Lesser smoke bomb	22		Bomb_Smoke				
+Lesser poison gas bomb	23		Bomb_Poison				
+Lesser heat bomb	24		Bomb_Heat				
+Lesser pepper bomb	25		Bomb_Pepper				
+Lesser sonic bomb	26		Bomb_Sonic				
+Lesser explosive bomb	27		Bomb_Explosive				
+Lesser stink bomb	28		Bomb_Noxious				
+Lesser spore bomb	29		Bomb_Spores				
+Lesser flame burst bomb	30		Bomb_FlameBurst				
+Lesser acid burst bomb	31		Bomb_AcidBurst				
+Lesser sticky bomb	32		Bomb_Sticky				
+Lesser shaped bomb	33		Bomb_Shaped				
+Moderate water bomb	31		Bomb_Water				
+Moderate smoke bomb	32		Bomb_Smoke				
+Moderate poison gas bomb	33		Bomb_Poison				
+Moderate heat bomb	34		Bomb_Heat				
+Moderate pepper bomb	35		Bomb_Pepper				
+Moderate sonic bomb	36		Bomb_Sonic				
+Moderate explosive bomb	37		Bomb_Explosive				
+Moderate stink bomb	38		Bomb_Noxious				
+Moderate spore bomb	39		Bomb_Spores				
+Moderate flame burst bomb	40		Bomb_FlameBurst				
+Moderate acid burst bomb	41		Bomb_AcidBurst				
+Moderate sticky bomb	42		Bomb_Sticky				
+Moderate shaped bomb	43		Bomb_Shaped				
+Improved water bomb	41		Bomb_Water				
+Improved smoke bomb	42		Bomb_Smoke				
+Improved poison gas bomb	43		Bomb_Poison				
+Improved heat bomb	44		Bomb_Heat				
+Improved pepper bomb	45		Bomb_Pepper				
+Improved sonic bomb	46		Bomb_Sonic				
+Improved explosive bomb	47		Bomb_Explosive				
+Improved stink bomb	48		Bomb_Noxious				
+Improved spore bomb	49		Bomb_Spores				
+Improved flame burst bomb	50		Bomb_FlameBurst				
+Improved acid burst bomb	51		Bomb_AcidBurst				
+Improved sticky bomb	52		Bomb_Sticky				
+Improved shaped bomb	53		Bomb_Shaped				
+Greater water bomb	51		Bomb_Water				
+Greater smoke bomb	52		Bomb_Smoke				
+Greater poison gas bomb	53		Bomb_Poison				
+Greater heat bomb	54		Bomb_Heat				
+Greater pepper bomb	55		Bomb_Pepper				
+Greater sonic bomb	56		Bomb_Sonic				
+Greater explosive bomb	57		Bomb_Explosive				
+Greater stink bomb	58		Bomb_Noxious				
+Greater spore bomb	59		Bomb_Spores				
+Greater flame burst bomb	60		Bomb_FlameBurst				
+Greater acid burst bomb	61		Bomb_AcidBurst				
+Greater sticky bomb	62		Bomb_Sticky				
+Greater shaped bomb	63		Bomb_Shaped				
+Large water bomb	61		Bomb_Water				
+Large smoke bomb	62		Bomb_Smoke				
+Large poison gas bomb	63		Bomb_Poison				
+Large heat bomb	64		Bomb_Heat				
+Large pepper bomb	65		Bomb_Pepper				
+Large sonic bomb	66		Bomb_Sonic				
+Large explosive bomb	67		Bomb_Explosive				
+Large stink bomb	68		Bomb_Noxious				
+Large spore bomb	69		Bomb_Spores				
+Large flame burst bomb	70		Bomb_FlameBurst				
+Large acid burst bomb	71		Bomb_AcidBurst				
+Large sticky bomb	72		Bomb_Sticky				
+Large shaped bomb	73		Bomb_Shaped				
+Huge water bomb	71		Bomb_Water				
+Huge smoke bomb	72		Bomb_Smoke				
+Huge poison gas bomb	73		Bomb_Poison				
+Huge heat bomb	74		Bomb_Heat				
+Huge pepper bomb	75		Bomb_Pepper				
+Huge sonic bomb	76		Bomb_Sonic				
+Huge explosive bomb	77		Bomb_Explosive				
+Huge stink bomb	78		Bomb_Noxious				
+Huge spore bomb	79		Bomb_Spores				
+Huge flame burst bomb	80		Bomb_FlameBurst				
+Huge acid burst bomb	81		Bomb_AcidBurst				
+Huge sticky bomb	82		Bomb_Sticky				
+Huge shaped bomb	83		Bomb_Shaped				
+Massive water bomb	81		Bomb_Water				
+Massive smoke bomb	82		Bomb_Smoke				
+Massive poison gas bomb	83		Bomb_Poison				
+Massive heat bomb	84		Bomb_Heat				
+Massive pepper bomb	85		Bomb_Pepper				
+Massive sonic bomb	86		Bomb_Sonic				
+Massive explosive bomb	87		Bomb_Explosive				
+Massive stink bomb	88		Bomb_Noxious				
+Massive spore bomb	89		Bomb_Spores				
+Massive flame burst bomb	90		Bomb_FlameBurst				
+Massive acid burst bomb	91		Bomb_AcidBurst				
+Massive sticky bomb	92		Bomb_Sticky				
+Massive shaped bomb	93		Bomb_Shaped				
