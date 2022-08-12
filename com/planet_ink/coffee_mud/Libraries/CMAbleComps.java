@@ -934,6 +934,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			text.append(parms+'\n');
 		}
 		F.saveText(text.toString(),false);
+		Resources.removeResource("COMPONENT_MAP");
 	}
 
 	@Override
