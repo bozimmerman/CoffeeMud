@@ -149,15 +149,15 @@ public class Thief_Trap extends ThiefSkill implements RecipeDriven
 		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))
 		{
 			final StringBuffer buf=new StringBuffer(L("@x1 @x2 @x3 Requires\n\r",
-					CMStrings.padRight(L("Trap Name"),15),
+					CMStrings.padRight(L("Trap Name"),25),
 					CMStrings.padRight(L("Lvl"),4),
 					CMStrings.padRight(L("Affects"),17)));
-			final int restLen = CMLib.lister().fixColWidth(78 - 16 - 5 - 18, mob);
+			final int restLen = CMLib.lister().fixColWidth(78 - 26 - 5 - 18, mob);
 			for(int r=0;r<traps.size();r++)
 			{
 				final List<String> V=traps.getFirst(r);
 				final Trap T=traps.getSecond(r);
-				buf.append(CMStrings.padRight(V.get(RCP_FINALNAME),15)+" ");
+				buf.append(CMStrings.padRight(V.get(RCP_FINALNAME),25)+" ");
 				buf.append(CMStrings.padRight(V.get(RCP_LEVEL),4)+" ");
 				if(T.canAffect(Ability.CAN_ROOMS))
 					buf.append(CMStrings.padRight(L("Rooms"),17)+" ");
