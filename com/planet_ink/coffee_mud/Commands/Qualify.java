@@ -408,6 +408,8 @@ public class Qualify  extends Skills
 				}
 			}
 			msg.append(msg2.toString());
+			if(msg2.length()>0)
+				msg.append("\n\r");
 		}
 
 		if((mob!=null)
@@ -479,6 +481,8 @@ public class Qualify  extends Skills
 						}
 					}
 					msg.append(msg2.toString());
+					if(msg2.length()>0)
+						msg.append("\n\r");
 				}
 			}
 		}
