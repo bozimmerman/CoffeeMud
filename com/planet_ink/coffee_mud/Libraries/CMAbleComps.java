@@ -226,6 +226,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 					amt[0]=0;
 					found=true;
 				}
+				else
+					minAmt=1;
 			}
 			else
 			if(!mob.isPlayer())
@@ -421,7 +423,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			if(c>0)
 				buf.append(curr.get(0).second);
 			buf.append("(");
-			final String type = curr.get(1).second; 
+			final String type = curr.get(1).second;
 			buf.append(type);
 			buf.append(":");
 			if(type.equalsIgnoreCase("TRIGGER"))
@@ -1356,7 +1358,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	public void handleAbilityComponentTriggers(final CMMsg msg)
 	{
 		final MOB mob=msg.source();
-		Triggerer triggerer = mob.triggerer();
+		final Triggerer triggerer = mob.triggerer();
 		getAbilityComponentMap(); // in case of pre-load
 		if(abilitiesWithCompsWithTriggers.size()==0)
 		{
