@@ -2013,6 +2013,18 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	protected Room getWhere(final String where, final List<Room> set)
 	{
 		Room R2=CMLib.map().getRoom(where);
+		if(R2 == null)
+		{
+			for(int i=0;i<set.size();i++)
+			{
+				final Room R=set.get(i);
+				if((""+R).equals(where))
+				{
+					R2=R;
+					break;
+				}
+			}
+		}
 		if(R2==null)
 		{
 			for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)

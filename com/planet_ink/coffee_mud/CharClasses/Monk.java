@@ -140,6 +140,7 @@ public class Monk extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Thief_Hide",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Skill_Climb",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Fighter_ForearmBlock",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Parry",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_TwoWeaponFighting",false);

@@ -68,7 +68,7 @@ public class StdMOB implements MOB
 	protected PlayerStats		playerStats			= null;
 
 	protected Triggerer			triggerer			= (Triggerer) CMClass.getCommon("NonTriggerer");
-	
+
 	protected boolean			amDestroyed			= false;
 	protected boolean			removeFromGame		= false;
 	protected volatile boolean	amDead				= false;
@@ -3877,6 +3877,11 @@ public class StdMOB implements MOB
 							return false;
 						}
 					}
+					if((R != getStartRoom())
+					&&(getStartRoom() != null))
+					{
+						// if npc is not mobile, perhaps it should consider going home?
+					}
 				}
 				if ((R != null) && (A != null))
 				{
@@ -3897,7 +3902,8 @@ public class StdMOB implements MOB
 
 					tickStatus = Tickable.STATUS_ALIVE;
 
-					if ((CMProps.getIntVar(CMProps.Int.COMBATSYSTEM) == CombatLibrary.CombatSystem.TURNBASED.ordinal()) && isInCombat())
+					if ( isInCombat()
+					&&(CMProps.getIntVar(CMProps.Int.COMBATSYSTEM) == CombatLibrary.CombatSystem.TURNBASED.ordinal()))
 					{
 						if (CMLib.combat().doTurnBasedCombat(this, R, A))
 						{

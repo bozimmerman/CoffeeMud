@@ -1033,6 +1033,25 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				}
 			}
 		}
+		if(helpText==null)
+		{
+			Deity D = CMLib.map().getDeity(helpKey);
+			if(D==null)
+				D = CMLib.map().getDeity(helpKeyWSpaces);
+			if(D != null)
+			{
+				final Command CMD=CMClass.getCommand("Deities");
+				try
+				{
+					helpText=normalizeHelpText((String)CMD.executeInternal(forM, MUDCmdProcessor.METAFLAG_FORCED, D),skip);
+					if(helpText!=null)
+						helpKey = D.Name().toUpperCase();
+				}
+				catch(final Exception e)
+				{
+				}
+			}
+		}
 
 		// INEXACT searches start here
 		if(helpText==null)
@@ -1179,25 +1198,6 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						helpKey=A.name().toUpperCase();
 						break;
 					}
-				}
-			}
-		}
-		if(helpText==null)
-		{
-			Deity D = CMLib.map().getDeity(helpKey);
-			if(D==null)
-				D = CMLib.map().getDeity(helpKeyWSpaces);
-			if(D != null)
-			{
-				final Command CMD=CMClass.getCommand("Deities");
-				try
-				{
-					helpText=normalizeHelpText((String)CMD.executeInternal(forM, MUDCmdProcessor.METAFLAG_FORCED, D),skip);
-					if(helpText!=null)
-						helpKey = D.Name().toUpperCase();
-				}
-				catch(final Exception e)
-				{
 				}
 			}
 		}

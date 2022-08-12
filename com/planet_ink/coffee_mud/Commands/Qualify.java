@@ -125,14 +125,15 @@ public class Qualify  extends Skills
 	{
 		final Set<Integer> set=new TreeSet<Integer>();
 		final boolean checkUnMet=ableM.charStats().getCurrentClass().showThinQualifyList();
+		final AbilityMapper ableMapper = CMLib.ableMapper();
 		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			final int level=CMLib.ableMapper().qualifyingLevel(ableM,A);
-			if((CMLib.ableMapper().qualifiesByLevel(ableM,A))
-			&&(level<(CMLib.ableMapper().qualifyingClassLevel(ableM,A)+1))
+			final int level=ableMapper.qualifyingLevel(ableM,A);
+			if((ableMapper.qualifiesByLevel(ableM,A))
+			&&(level<(ableMapper.qualifyingClassLevel(ableM,A)+1))
 			&&(CMLib.ableComponents().getSpecialSkillRemainder(ableM, A).specificSkillLimit() > 0)
-			&&(!checkUnMet || CMLib.ableMapper().getUnmetPreRequisites(ableM,A).size()==0))
+			&&(!checkUnMet || ableMapper.getUnmetPreRequisites(ableM,A).size()==0))
 			{
 				final Integer acode =Integer.valueOf(A.classificationCode() & Ability.ALL_ACODES);
 				final Integer dcode =Integer.valueOf(A.classificationCode() & Ability.ALL_DOMAINS);
@@ -145,6 +146,24 @@ public class Qualify  extends Skills
 		return set;
 	}
 
+	protected boolean ableCheck(final AbilityMapper ableMapper, final MOB ableM, final Ability A,
+								final boolean checkUnMet, final Filterer<Ability> filter)
+	{
+		if((ableMapper.qualifiesByLevel(ableM,A))
+		&&(!ableMapper.getSecretSkill(ableM,A.ID()))
+		&&(ableM.fetchAbility(A.ID())==null)
+		&&(filter.passesFilter(A))
+		&&(CMLib.ableComponents().getSpecialSkillRemainder(ableM, A).specificSkillLimit() > 0)
+		&&(!checkUnMet || ableMapper.getUnmetPreRequisites(ableM,A).size()==0))
+		{
+			final String extraMask=ableMapper.getApplicableMask(ableM,A);
+			if((extraMask.length()==0)||(CMLib.masking().maskCheck(extraMask,ableM,true)))
+				return true;
+		}
+		return false;
+
+	}
+
 	public StringBuffer getQualifiedAbilities(final MOB viewerM,
 											  final MOB ableM,
 											  final Filterer<Ability> filter,
@@ -154,18 +173,14 @@ public class Qualify  extends Skills
 		int highestLevel=0;
 		final StringBuffer msg=new StringBuffer("");
 		final boolean checkUnMet=ableM.charStats().getCurrentClass().showThinQualifyList();
+		final AbilityMapper ableMapper = CMLib.ableMapper();
 		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			final int level=CMLib.ableMapper().qualifyingLevel(ableM,A);
-			if((CMLib.ableMapper().qualifiesByLevel(ableM,A))
-			&&(!CMLib.ableMapper().getSecretSkill(ableM,A.ID()))
+			final int level=ableMapper.qualifyingLevel(ableM,A);
+			if(ableCheck(ableMapper,ableM,A,checkUnMet,filter)
 			&&(level>highestLevel)
-			&&(level<(CMLib.ableMapper().qualifyingClassLevel(ableM,A)+1))
-			&&(filter.passesFilter(A))
-			&&(CMLib.ableComponents().getSpecialSkillRemainder(ableM, A).specificSkillLimit() > 0)
-			&&(ableM.fetchAbility(A.ID())==null)
-			&&(!checkUnMet || CMLib.ableMapper().getUnmetPreRequisites(ableM,A).size()==0))
+			&&(level<(ableMapper.qualifyingClassLevel(ableM,A)+1)))
 				highestLevel=level;
 		}
 		int col=1;
@@ -178,13 +193,8 @@ public class Qualify  extends Skills
 			for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
-				if((CMLib.ableMapper().qualifiesByLevel(ableM,A))
-				   &&(CMLib.ableMapper().qualifyingLevel(ableM,A)==l)
-				   &&(!CMLib.ableMapper().getSecretSkill(ableM,A.ID()))
-				   &&(ableM.fetchAbility(A.ID())==null)
-				   &&(filter.passesFilter(A))
-				   &&(CMLib.ableComponents().getSpecialSkillRemainder(ableM, A).specificSkillLimit() > 0)
-				   &&(!checkUnMet || CMLib.ableMapper().getUnmetPreRequisites(ableM,A).size()==0))
+				if(ableCheck(ableMapper,ableM,A,checkUnMet,filter)
+				   &&(ableMapper.qualifyingLevel(ableM,A)==l))
 				{
 					thisLine.append("^N[^H"+CMStrings.padRight(""+l,COL_LEN1)+"^?] "
 										   +CMStrings.padRight("^<HELP^>"+A.name()+"^</HELP^>",COL_LEN2)+" "
@@ -538,7 +548,7 @@ public class Qualify  extends Skills
 				}
 				mob.session().wraplessPrintln(L("^!You now qualify for the following unknown abilities:^?@x1",msg.toString()));
 				if(!ID().equals("WillQualify"))
-					mob.tell(L("\n\rUse the WILLQUALIFY command to discover what you will qualify for at higher levels."));
+					mob.tell(L("\n\rUse WILLQUALIFY to see everything available now, or in later levels."));
 				mob.tell(L("\n\rUse the GAIN command with your teacher to gain new skills, spells, and expertises."));
 				if(classesFound)
 					mob.tell(L("\n\rUse the TRAIN command to train for a new class."));

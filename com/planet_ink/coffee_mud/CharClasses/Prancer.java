@@ -171,6 +171,7 @@ public class Prancer extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Fighter_BodyFlip",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Dance_Tango",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Fighter_Breakout",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Fighter_Spring",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Dance_Polka",true);

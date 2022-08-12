@@ -1414,10 +1414,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			}
 		}, flags, 25);
 		if(trail.size()==0)
-			return "nowhere";
+			return addThis+"nowhere";
 		else
 		if(trail.size()==1)
-			return "here";
+			return addThis+"here";
 		Room prevR = R;
 		final PairList<int[],Integer> ttrail = new PairArrayList<int[],Integer>();
 		for(final Iterator<Room> r= new LinkedList<Room>(trail).descendingIterator();r.hasNext();)
@@ -1443,8 +1443,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				trailStr.append(p.first[0]+" X " + dirName).append(", ");
 		}
 		if(trailStr.length()>2)
-			return trailStr.substring(0,trailStr.length()-2);
-		return trailStr.toString();
+			return addThis+trailStr.substring(0,trailStr.length()-2);
+		return addThis+trailStr.toString();
 	}
 
 	@Override
@@ -1637,13 +1637,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			if(baseProduct instanceof InnKey)
 			{
 				final InnKey item =(InnKey)baseProduct;
-				String buf=findInnRoom(item, "", room);
-				if(buf==null)
-					buf=findInnRoom(item, "upstairs", room.getRoomInDir(Directions.UP));
-				if(buf==null)
-					buf=findInnRoom(item, "downstairs", room.getRoomInDir(Directions.DOWN));
-				if(buf!=null)
-					CMLib.commands().postSay(seller,mobFor,L("Your room is @x1.",buf),true,false);
+				final String buf=findInnRoom(item, "", room);
+				CMLib.commands().postSay(seller,mobFor,L("Your room is @x1.",buf),true,false);
 			}
 			return true;
 		}
@@ -2458,12 +2453,12 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	{
 		if(targetMessage==null)
 			return null;
-		final int x=targetMessage.toUpperCase().lastIndexOf("FOR '");
+		final int x=targetMessage.toUpperCase().lastIndexOf(" FOR '");
 		if(x>0)
 		{
 			final int y=targetMessage.lastIndexOf('\'');
 			if(y>x)
-				return targetMessage.substring(x+5,y);
+				return targetMessage.substring(x+6,y);
 		}
 		return null;
 	}

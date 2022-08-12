@@ -46,21 +46,71 @@ public interface ShoppingLibrary extends CMLibrary
 
 	public boolean doISellThis(Environmental thisThang, ShopKeeper shop);
 
-	public ShopKeeper.ShopPrice sellingPrice(MOB sellerShopM, MOB buyerCustM, Environmental product, ShopKeeper shopKeeper, CoffeeShop shop, boolean includeSalesTax);
+	public ShopKeeper.ShopPrice sellingPrice(MOB sellerShopM, MOB buyerCustM, Environmental product,
+											 ShopKeeper shopKeeper, CoffeeShop shop, boolean includeSalesTax);
 	public double getSalesTax(Room homeRoom, MOB seller);
 	public boolean sellEvaluation(MOB sellerShopM, MOB buyerCustM, Environmental product, ShopKeeper shop, boolean buyNotView);
 
 	public void transactMoneyOnly(MOB seller, MOB buyer, ShopKeeper shop, Environmental product, boolean sellerGetsPaid);
 	public List<Environmental> addRealEstateTitles(List<Environmental> V, MOB buyer, CoffeeShop shop, Room myRoom);
 
-	public ShopKeeper.ShopPrice pawningPrice(MOB buyerShopM, MOB sellerCustM, Environmental product, ShopKeeper shopKeeper, CoffeeShop shop);
-	public boolean pawnEvaluation(MOB buyerShopM, MOB sellerCustM, Environmental product, ShopKeeper shop, double maxToPay, double maxEverPaid, boolean sellNotValue);
+	public ShopKeeper.ShopPrice pawningPrice(MOB buyerShopM, MOB sellerCustM, Environmental product,
+											 ShopKeeper shopKeeper, CoffeeShop shop);
+	public boolean pawnEvaluation(MOB buyerShopM, MOB sellerCustM, Environmental product,
+								  ShopKeeper shop, double maxToPay, double maxEverPaid, boolean sellNotValue);
 	public double transactPawn(MOB shopkeeper, MOB pawner, ShopKeeper shop, Environmental product);
 
+	/**
+	 * Checks a BUY message for an english embedded 'FOR' message, which
+	 * can affect the assignment of purchased private property.
+	 *
+	 * @see ShoppingLibrary#getListInventory(MOB, MOB, List, int, ShopKeeper, String)
+	 * @see ShoppingLibrary#getListForMask(String)
+	 *
+	 * @param targetMessage the target message string
+	 * @return null, or a name that the object is being purchased for
+	 */
 	public String getListForMask(String targetMessage);
-	public String getListInventory(MOB seller,  MOB buyer, List<? extends Environmental> inventory, int limit, ShopKeeper shop, String mask);
+
+	/**
+	 * Formats and returns a displayable inventory for a shopkeeper.
+	 *
+	 * @see ShoppingLibrary#getListInventory(MOB, MOB, List, int, ShopKeeper, String)
+	 * @see ShoppingLibrary#getListForMask(String)
+	 *
+	 * @param seller the seller mob who speaks
+	 * @param buyer the buyer mob who is ... buying
+	 * @param inventory the inventory of the seller to show
+	 * @param limit 0, or maximum number of rows to display
+	 * @param shop the ShopKeeper object
+	 * @param mask null, or a name substring mask for items to show
+	 * @return the formatted displayable inventory
+	 */
+	public String getListInventory(MOB seller,  MOB buyer, List<? extends Environmental> inventory,
+								   int limit, ShopKeeper shop, String mask);
+
+	/**
+	 * Given an inn key, and a starting room, this will return
+	 * the directions to follow to reach the room.
+	 *
+	 * @param key the key to find the room for
+	 * @param addThis a word to prefix the directions with
+	 * @param R the room starting from
+	 * @return the directions to the room
+	 */
 	public String findInnRoom(InnKey key, String addThis, Room R);
 
+	/**
+	 * Parses a rate of devaluation for each purchase, preceded
+	 * optionally by a special rate just for raw resources. Each
+	 * numbe is a percentage like 30%.
+	 *
+	 * @see ShoppingLibrary#parseItemPricingAdjustments(String)
+	 * @see ShoppingLibrary#parseBudget(String)
+	 *
+	 * @param factors the rate of devaluation(s)
+	 * @return the raw material followed by normal devalue rate 0-1
+	 */
 	public double[] parseDevalueRate(String factors);
 
 	/**
@@ -69,7 +119,6 @@ public interface ShoppingLibrary extends CMLibrary
 	 * to adjust prices by.
 	 *
 	 * @see ShoppingLibrary#parseDevalueRate(String)
-	 * @see ShoppingLibrary#parseItemPricingAdjustments(String)
 	 * @see ShoppingLibrary#parseBudget(String)
 	 *
 	 * @param factors the raw factors string
@@ -85,7 +134,6 @@ public interface ShoppingLibrary extends CMLibrary
 	 *
 	 * @see ShoppingLibrary#parseDevalueRate(String)
 	 * @see ShoppingLibrary#parseItemPricingAdjustments(String)
-	 * @see ShoppingLibrary#parseBudget(String)
 	 *
 	 * @param budget the encoded budget string (amount time period)
 	 * @return the parsed budget object

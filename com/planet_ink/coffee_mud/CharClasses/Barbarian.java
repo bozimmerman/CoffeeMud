@@ -186,6 +186,7 @@ public class Barbarian extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Fighter_ImprovedThrowing",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Fighter_MountainTactics",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Fighter_Breakout",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Climb",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_WeaponBreak",true);
@@ -396,12 +397,12 @@ public class Barbarian extends StdCharClass
 	@Override
 	public String getOtherLimitsDesc()
 	{
-		StringBuilder str = new StringBuilder(super.getOtherLimitsDesc());
+		final StringBuilder str = new StringBuilder(super.getOtherLimitsDesc());
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
 			str.append("  Requires a Chaotic alignment to become a Barbarian.");
 		return str.toString().trim();
 	}
-	
+
 	@Override
 	public boolean qualifiesForThisClass(final MOB mob, final boolean quiet)
 	{

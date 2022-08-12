@@ -100,6 +100,25 @@ public class FighterGrappleSkill extends FighterSkill
 		return true;
 	}
 
+	protected boolean makeBreakAttempt()
+	{
+		final MOB targetM=(MOB)affected;
+		final int wbest =  Math.max(invoker().charStats().getStat(CharStats.STAT_DEXTERITY),
+									invoker().charStats().getStat(CharStats.STAT_STRENGTH))
+							+ super.getXLEVELLevel(invoker());
+		final int mbest =  Math.min(targetM.charStats().getStat(CharStats.STAT_DEXTERITY),
+									targetM.charStats().getStat(CharStats.STAT_STRENGTH))
+							+ super.getXLEVELLevel(targetM)
+							+ (tickUp * 2);
+		if(mbest >= wbest)
+		{
+			broken=true;
+			unInvoke();
+			return false;
+		}
+		return true;
+	}
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -145,20 +164,8 @@ public class FighterGrappleSkill extends FighterSkill
 				if(R!=null)
 					R.show(mob,pairedWith,CMMsg.MASK_MALICIOUS|CMMsg.MSG_OK_VISUAL,null);
 				tickUp++;
-				final MOB targetM=(MOB)affected;
-				final int wbest =  Math.max(invoker().charStats().getStat(CharStats.STAT_DEXTERITY),
-											invoker().charStats().getStat(CharStats.STAT_STRENGTH))
-									+ super.getXLEVELLevel(invoker());
-				final int mbest =  Math.min(targetM.charStats().getStat(CharStats.STAT_DEXTERITY),
-											targetM.charStats().getStat(CharStats.STAT_STRENGTH))
-									+ super.getXLEVELLevel(targetM)
-									+ (tickUp * 2);
-				if(mbest >= wbest)
-				{
-					broken=true;
-					unInvoke();
+				if(!makeBreakAttempt())
 					return false;
-				}
 			}
 		}
 		return true;
@@ -240,39 +247,41 @@ public class FighterGrappleSkill extends FighterSkill
 					return super.okMessage(myHost,msg);
 			//$FALL-THROUGH$
 			default:
-				if(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
+				if((!msg.sourceMajor(CMMsg.MASK_ALWAYS))
+				&&(msg.sourceMajor(CMMsg.MASK_HANDS)||msg.sourceMajor(CMMsg.MASK_MOVE)))
 				{
-					if((msg.sourceMajor(CMMsg.MASK_HANDS)&&(!isHandsFree()))
-					||(msg.sourceMajor(CMMsg.MASK_MOVE)))
+					if(mob != invoker())
+						makeBreakAttempt();
+					if((((!msg.sourceMajor(CMMsg.MASK_MOVE))&&(isHandsFree())))
+					||(msg.sourceMinor()==CMMsg.TYP_DELICATE_HANDS_ACT))
+						break;
+					if(isImmobilizing())
 					{
-						if(isImmobilizing())
+						if(msg.sourceMessage()!=null)
 						{
-							if(msg.sourceMessage()!=null)
-							{
-								if(mob==invoker())
-									mob.tell(L("You are holding a "+name().toLowerCase()+"!"));
-								else
-									mob.tell(L("You are in a "+name().toLowerCase()+"!"));
-							}
-							return false;
+							if(mob==invoker())
+								mob.tell(L("You are holding a "+name().toLowerCase()+"!"));
+							else
+								mob.tell(L("You are in a "+name().toLowerCase()+"!"));
 						}
-						if((!(msg.tool() instanceof Ability))
-						||(!CMParms.contains(getExemptDomains(), (((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS))))
-						{
-							if(msg.sourceMessage()!=null)
-							{
-								if(mob==invoker())
-									mob.tell(L("You are holding a "+name().toLowerCase()+"!"));
-								else
-									mob.tell(L("You are in a "+name().toLowerCase()+"!"));
-							}
-							return false;
-						}
-						else
-						if((mob == invoker())
-						&&((msg.sourceMinor()!=CMMsg.TYP_WEAPONATTACK)))
-							unInvoke();
+						return false;
 					}
+					if((!(msg.tool() instanceof Ability))
+					||(!CMParms.contains(getExemptDomains(), (((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS))))
+					{
+						if(msg.sourceMessage()!=null)
+						{
+							if(mob==invoker())
+								mob.tell(L("You are holding a "+name().toLowerCase()+"!"));
+							else
+								mob.tell(L("You are in a "+name().toLowerCase()+"!"));
+						}
+						return false;
+					}
+					else
+					if((mob == invoker())
+					&&((msg.sourceMinor()!=CMMsg.TYP_WEAPONATTACK)))
+						unInvoke();
 				}
 				break;
 			}
