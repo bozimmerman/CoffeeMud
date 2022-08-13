@@ -38,17 +38,94 @@ public interface ShoppingLibrary extends CMLibrary
 
 	public String getViewDescription(MOB viewerM, Environmental E, Set<ViewType> flags);
 
+	/**
+	 *
+	 *
+	 * @param buyer
+	 * @param message
+	 * @return
+	 */
 	public MOB parseBuyingFor(MOB buyer, String message);
 
+	/**
+	 * Returns whether the given ignorer (usually a shopkeeper mob) is ignoring
+	 * the given mob for most purposes.
+	 *
+	 * @param mob the mob who might be ignored
+	 * @param ignoreMask the zappermask determining if the mob is ignored
+	 * @param whoIgnores the mob who might be ignoring
+	 * @return true if ignored, false othwrwise
+	 */
 	public boolean ignoreIfNecessary(MOB mob, String ignoreMask, MOB whoIgnores);
 
+	/**
+	 * Returns a brief plain ordinary camel-cased description of what kind
+	 * of shopkeeper this is: Miscellaneous Magic Items, General Items, etc.
+	 *
+	 * @param shop coffee shop inventory to check
+	 * @param keeper the actual coffee shop
+	 * @return the items sold description
+	 */
 	public String storeKeeperString(CoffeeShop shop, ShopKeeper keeper);
 
+	/**
+	 * Returns whether the given shopkeeper shop sells the given thing
+	 * normally.  Does not care whether its in stock.
+	 *
+	 * @param thisThang the thing to see if its ordinary stock
+	 * @param shop the actual shop to check for a good match
+	 * @return true if the shop would sell it, false otherwise
+	 */
 	public boolean doISellThis(Environmental thisThang, ShopKeeper shop);
 
+	/**
+	 * Gives the price of an item that might be sold to a player/mob by a shopkeeper.
+	 *
+	 * @see ShoppingLibrary#transactMoneyOnly(MOB, MOB, ShopKeeper, Environmental, boolean)
+	 * @see ShoppingLibrary#sellEvaluation(MOB, MOB, Environmental, ShopKeeper, boolean)
+	 * @see ShoppingLibrary#getSalesTax(Room, MOB)
+	 *
+	 * @param sellerShopM the shopkeeper mob
+	 * @param buyerCustM the player buyer mob
+	 * @param product the proposed produce to sell to the shop
+	 * @param shopKeeper the shop itself
+	 * @param shop the inventory object of the shop
+	 * @param includeSalesTax
+	 * @return the selling price that this shopkeeper will put on the item
+	 */
 	public ShopKeeper.ShopPrice sellingPrice(MOB sellerShopM, MOB buyerCustM, Environmental product,
 											 ShopKeeper shopKeeper, CoffeeShop shop, boolean includeSalesTax);
+
+	/**
+	 * Returns the applicable sales tax percentage for the given seller from the
+	 * given room.
+	 *
+	 * @see ShoppingLibrary#transactMoneyOnly(MOB, MOB, ShopKeeper, Environmental, boolean)
+	 * @see ShoppingLibrary#sellEvaluation(MOB, MOB, Environmental, ShopKeeper, boolean)
+	 * @see ShoppingLibrary#sellingPrice(MOB, MOB, Environmental, ShopKeeper, CoffeeShop, boolean)
+	 *
+	 * @param homeRoom the room the shopkeeper is originally from
+	 * @param seller the seller him or herself
+	 * @return a value from 0-1.
+	 */
 	public double getSalesTax(Room homeRoom, MOB seller);
+
+	/**
+	 * Evaluates a potential sale of an item from a shopkeeper to a player/npc.
+	 * Returns whether the sale can go forth.  This also handles proposed
+	 * VIEW commands.
+	 *
+	 * @see ShoppingLibrary#transactMoneyOnly(MOB, MOB, ShopKeeper, Environmental, boolean)
+	 * @see ShoppingLibrary#getSalesTax(Room, MOB)
+	 * @see ShoppingLibrary#sellingPrice(MOB, MOB, Environmental, ShopKeeper, CoffeeShop, boolean)
+	 *
+	 * @param sellerShopM the mob doing the selling
+	 * @param buyerCustM the player or mob doing the buying
+	 * @param product the product to potentiall sell to the buyer
+	 * @param shop the actual shop
+	 * @param buyNotView true if a buy is requested, false for a view
+	 * @return true if the buy or view should go forward
+	 */
 	public boolean sellEvaluation(MOB sellerShopM, MOB buyerCustM, Environmental product, ShopKeeper shop, boolean buyNotView);
 
 	/**
@@ -57,7 +134,6 @@ public interface ShoppingLibrary extends CMLibrary
 	 * price comes from sellingPrice above.  Having the money go into the shopkeepers
 	 * pocket is optional.
 	 *
-	 * @see ShoppingLibrary#transactMoneyOnly(MOB, MOB, ShopKeeper, Environmental, boolean)
 	 * @see ShoppingLibrary#sellEvaluation(MOB, MOB, Environmental, ShopKeeper, boolean)
 	 * @see ShoppingLibrary#getSalesTax(Room, MOB)
 	 * @see ShoppingLibrary#sellingPrice(MOB, MOB, Environmental, ShopKeeper, CoffeeShop, boolean)
