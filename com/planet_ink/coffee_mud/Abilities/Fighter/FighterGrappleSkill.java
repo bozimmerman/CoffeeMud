@@ -344,6 +344,7 @@ public class FighterGrappleSkill extends FighterSkill
 				sourceGrappleA.unInvoke();
 		}
 		else
+		if((sourceGrappleA != null) && (targetGrappleA != null)) // makes dumb eclipse linter happy
 		{
 			sourceGrappleA.pairedWith = target;
 			targetGrappleA.pairedWith = mob;
