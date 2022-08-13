@@ -335,19 +335,23 @@ public class FighterGrappleSkill extends FighterSkill
 		final int duration = baseTicks + (super.getXLEVELLevel(mob) / 2);
 		final FighterGrappleSkill targetGrappleA = (FighterGrappleSkill)maliciousAffect(mob,target,asLevel,duration,-1);
 		final FighterGrappleSkill sourceGrappleA = (FighterGrappleSkill)maliciousAffect(mob,mob,asLevel,duration,-1);
-		final boolean success = (sourceGrappleA != null) && (targetGrappleA != null);
-		if(!success)
+		boolean success = false;
+		if(sourceGrappleA == null)
 		{
 			if(targetGrappleA!=null)
 				targetGrappleA.unInvoke();
+		}
+		else
+		if(targetGrappleA == null)
+		{
 			if(sourceGrappleA!=null)
 				sourceGrappleA.unInvoke();
 		}
 		else
-		if((sourceGrappleA != null) && (targetGrappleA != null)) // makes dumb eclipse linter happy
 		{
 			sourceGrappleA.pairedWith = target;
 			targetGrappleA.pairedWith = mob;
+			success=true;
 		}
 		return success;
 	}
