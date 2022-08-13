@@ -47,8 +47,8 @@ public class Unload extends StdCommand
 		return access;
 	}
 
-	final String[]	ARCHON_LIST	= { 
-		"CLASS", "HELP", "USER", "AREA", "FACTION", "ALL", "FILE", 
+	final String[]	ARCHON_LIST	= {
+		"CLASS", "HELP", "USER", "AREA", "FACTION", "ALL", "FILE",
 		"RESOURCE", "INIFILE", "ACHIEVEMENTS", "[FILENAME]", "VFS",
 		"INI", "SETTINGS"
 	};
@@ -249,7 +249,7 @@ public class Unload extends StdCommand
 			else
 			if(str.equalsIgnoreCase("ini")||str.equalsIgnoreCase("settings")||str.equalsIgnoreCase("inifile"))
 			{
-				CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
+				final CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
 				if((ipage!=null)&&(ipage.isLoaded()))
 				{
 					ipage.resetSystemVars();
@@ -396,6 +396,13 @@ public class Unload extends StdCommand
 			if(commands.get(1).equalsIgnoreCase("RESOURCE"))
 			{
 				String which=CMParms.combine(commands,2);
+				if(which.trim().length()==0)
+				{
+					mob.tell(L("You need to specify a resource mask to unload, or ALL to unload all."));
+					return false;
+				}
+				if(which.trim().equalsIgnoreCase("all"))
+					which="";
 				Iterator<String> k=Resources.findResourceKeys(which);
 				final List<String> subKeys = new ArrayList<String>();
 				if(!k.hasNext())
