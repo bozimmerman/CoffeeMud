@@ -3232,7 +3232,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					boolean success=true;
 					for(final Environmental E : stuffToGo)
 					{
-						setThreadStatus(serviceClient,"expiring "+E.Name());
+						//setThreadStatus(serviceClient,"expiring "+E.Name()); // just too much -- ms count here
 						expireMsg.setTarget(E);
 						if(R.okMessage(expireM,expireMsg))
 							R.sendOthers(expireM,expireMsg);
@@ -3361,7 +3361,6 @@ public class CMMap extends StdLibrary implements WorldMap
 										+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been put aside."));
 							}
 							R.delInhabitant(mob);//keeps it from happening again.
-							setThreadStatus(serviceClient,"checking");
 						}
 					}
 				}
