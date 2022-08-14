@@ -522,51 +522,25 @@ public class Socials extends StdLibrary implements SocialsList
 				for(int v=0;v<socials.size();v++)
 				{
 					final Social S=socials.get(v);
-					final int x=S.Name().indexOf(' ');
-					final int y=(x<0)?-1:S.Name().indexOf(' ',x+1);
-					if(x<0)
+					if((S.targetName().length()==0)&&(S.argumentName().length()==0))
 					{
 						str.append((v+1)+") No Target (NONE)\n\r");
 						continue;
 					}
 					if((rest.length()>0)
-					&&(S.Name().substring(x+1).toUpperCase().trim().equalsIgnoreCase(rest.toUpperCase().trim())))
+					&&((S.targetName()+" "+S.argumentName()).trim().equalsIgnoreCase(rest.trim())))
 						selection=(v+1);
-					if(S.Name().substring(x+1).toUpperCase().trim().startsWith("<T-NAME>"))
+					if(S.targetName().startsWith("<"))
 					{
-						str.append((v+1)+") MOB Targeted (MOBTARGET)");
-						if(y>x)
-							str.append(" with argument ("+S.Name().substring(y+1)+")");
+						str.append((v+1)+") "+S.getTargetDesc()+" ("+S.targetName()+")");
+						if(S.argumentName().trim().length()>0)
+							str.append(" with argument ("+S.argumentName()+")");
 						str.append("\n\r");
 						continue;
 					}
-					if(S.Name().substring(x+1).toUpperCase().trim().startsWith("<I-NAME>"))
-					{
-						str.append((v+1)+") Room Item Targeted (ITEMTARGET)");
-						if(y>x)
-							str.append(" with argument ("+S.Name().substring(y+1)+")");
-						str.append("\n\r");
-						continue;
-					}
-					if(S.Name().substring(x+1).toUpperCase().trim().startsWith("<V-NAME>"))
-					{
-						str.append((v+1)+") Inventory Targeted (INVTARGET)");
-						if(y>x)
-							str.append(" with argument ("+S.Name().substring(y+1)+")");
-						str.append("\n\r");
-						continue;
-					}
-					if(S.Name().substring(x+1).toUpperCase().trim().startsWith("<E-NAME>"))
-					{
-						str.append((v+1)+") Equipment Targeted (EQUIPTARGET)");
-						if(y>x)
-							str.append(" with argument ("+S.Name().substring(y+1)+")");
-						str.append("\n\r");
-						continue;
-					}
-					str.append((v+1)+") "+S.Name().substring(x+1).toUpperCase().trim());
-					if(y>x)
-						str.append(" with argument ("+S.Name().substring(y+1)+")");
+					str.append((v+1)+") "+S.getTargetDesc());
+					if(S.argumentName().trim().length()>0)
+						str.append(" with argument ("+S.argumentName()+")");
 					str.append("\n\r");
 				}
 				str.append(L("@x1) Add a new target\n\r",""+(socials.size()+1)));
@@ -598,7 +572,9 @@ public class Socials extends StdLibrary implements SocialsList
 					{
 						newOne=mob.session().prompt(L("\n\rNew target (?): "),"").toUpperCase().trim();
 						if(newOne.equals("?"))
-							mob.session().println(L("Choices: MOBTARGET, ITEMTARGET, INVTARGET, EQUIPTARGET, NONE, ALL, SELF"));
+							mob.session().println(L("Choices: <T-NAME> (MOBTARGET), <I-NAME> (ITEMTARGET), "
+													+ "<V-NAME> (INVTARGET), <T-NAME> (EQUIPTARGET), "
+													+ "NONE, ALL, SELF"));
 					}
 					if(newOne.trim().length()==0)
 					{

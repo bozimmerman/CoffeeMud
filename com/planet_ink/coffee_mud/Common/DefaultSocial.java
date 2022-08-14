@@ -114,6 +114,21 @@ public class DefaultSocial implements Social
 	}
 
 	@Override
+	public String getTargetDesc()
+	{
+		final String targ = this.socialTarget.toUpperCase().trim();
+		if(targ.equals("<T-NAME>"))
+			return ("MOB Target "+this.socialArg).toString();
+		if(targ.equals("<I-NAME>"))
+			return ("Room Item Target "+this.socialArg).toString();
+		if(targ.equals("<V-NAME>"))
+			return ("Inventory Target "+this.socialArg).toString();
+		if(targ.equals("<E-NAME>"))
+			return ("Equipment Target "+this.socialArg).toString();
+		return this.socialFullTail;
+	}
+	
+	@Override
 	public void setName(final String newName)
 	{
 		socialFullID = newName.toUpperCase().trim();

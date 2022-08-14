@@ -670,8 +670,16 @@ public class DefaultTriggerer implements Triggerer
 						buf.append(L("the player should read '@x1'",DT.parm1.toLowerCase()));
 					break;
 				case SOCIAL:
-					buf.append(L("the player should @x1",(DT.parm1.toLowerCase()+" "+DT.parm2).trim()));
+				{
+					Social soc = CMLib.socials().fetchSocial((DT.parm1+" "+DT.parm2).toUpperCase().trim(),true);
+					if((soc == null)&&(DT.parm2.length()>0))
+						soc = CMLib.socials().fetchSocial((DT.parm1+" <T-NAME> "+DT.parm2).toUpperCase().trim(),true);
+					if(soc == null)
+						buf.append(L("the player should do the impossible"));
+					else
+						buf.append(L("the player should @x1",(soc.baseName().toLowerCase()+" "+soc.getTargetDesc()).trim()));
 					break;
+				}
 				case TIME:
 					buf.append(L("the hour of the day is @x1",DT.parm1.toLowerCase()));
 					break;

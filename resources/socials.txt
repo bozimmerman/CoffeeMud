@@ -228,6 +228,7 @@ oo	FLAUGH <T-NAME>	You fall down laughing mercilessly at <T-NAME>.	<S-NAME> fall
 oo	FLAUGH SELF	You fall over laughing at yourself. What a dork!	<S-NAME> falls over laughing at <S-him-herself>.					
 mo	FLEX	You flex your muscles proudly!	<S-NAME> flexes <S-HIS-HER> muscles...what a stud!?!					
 mo	FLEX <T-NAME>	You show off to <T-NAMESELF>, flexing your muscles proudly.	<S-NAME> flexes <S-HIS-HER> muscles, in a vain attempt to impress <T-NAMESELF>.	<S-NAME> flexes <S-HIS-HER> muscles in a vain attempt to show off to you.				
+ov	FLICK <T-NAME>	You flick <T-NAME>.	<S-NAME> flicks <T-NAMESELF>.	<S-NAME> flicks you.	Flick who?			
 mo	FLINCH	EEEK... You flinch in obvious pain.	<S-NAME> flinches in obvious pain... you wonder what <S-HE-SHE> did THIS time.					
 mo	FLINCH <T-NAME>	Don't you wish you could just crawl under a rock and die?	<S-NAME> sneaks a glance at <T-NAMESELF> and flinches.	<S-NAME> flinches in response to your cold rebuke.	Relax, <T-HE-SHE> is gone.			
 mo	FLINCH SELF	You can't belive what you've done...	<S-NAME> twitches violently, shocked at <S-HIS-HER> own behavior.					

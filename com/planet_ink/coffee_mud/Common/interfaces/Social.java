@@ -58,6 +58,13 @@ public interface Social extends Environmental, CMCommon
 	public String tailName();
 
 	/**
+	 * Returns a friendly description of the target, including any argument
+	 * 
+	 * @return a friendly description of the target, including any argument
+	 */
+	public String getTargetDesc();
+	
+	/**
 	 * Target name is the social's target argument only, such as &lt;T-NAME&gt;.
 	 * It is NOT unique to a social object however, since a socials name usually
 	 * includes their target extension.
