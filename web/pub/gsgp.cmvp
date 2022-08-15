@@ -1,0 +1,4 @@
+{
+	name: CoffeeMud,
+	active_players: @NumPlayers@
+}
