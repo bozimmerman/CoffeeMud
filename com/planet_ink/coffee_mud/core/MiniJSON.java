@@ -33,19 +33,90 @@ import java.lang.reflect.*;
  */
 public class MiniJSON
 {
-	private enum ObjectParseState
-	{
-		INITIAL, NEEDKEY, GOTKEY, NEEDOBJECT, GOTOBJECT
+	/**
+	 * JSON object-level state machine states.
+	 */
+	private enum ObjectParseState {
+		/**
+		 * Waiting for the first { character.
+		 */
+		INITIAL,
+		/**
+		 * Waiting for the opening quotation mark.
+		 */
+		NEEDKEY,
+		/**
+		 * Waiting for the colon between key and value.
+		 */
+		GOTKEY,
+		/**
+		 * Waiting for the value to begin.
+		 */
+		NEEDOBJECT,
+		/**
+		 * Got the value, waiting for a comma or closing } character.
+		 */
+		GOTOBJECT
 	}
 
-	private enum NumberParseState
-	{
-		INITIAL, NEEDN0DIGIT, HAVEDIGIT, NEEDDOT, NEEDDOTDIGIT, HAVEDOTDIGIT, HAVEE, HAVEEDIGIT
+	/**
+	 * Numeric value state machine states.
+	 */
+	private enum NumberParseState {
+		/**
+		 * Waiting for first numeric character.
+		 */
+		INITIAL,
+		/**
+		 * Got a dash, so waiting for a non-dash first character.
+		 */
+		NEEDNODASH,
+		/**
+		 * Waiting for a digit, or dot, or e.
+		 */
+		HAVEDIGIT,
+		/**
+		 * Got a leading 0, so need a dot.
+		 */
+		NEEDDOT,
+		/**
+		 * Got a dot, so need a non-dot digit, or e
+		 */
+		NEEDDOTDIGIT,
+		/**
+		 * Waiting for more dot digits, or e
+		 */
+		HAVEDOTDIGIT,
+		/**
+		 * Got an e, so waiting for first e digit.
+		 */
+		HAVEE,
+		/**
+		 * Got e digit, so waiting for the end.
+		 */
+		HAVEEDIGIT
 	}
 
-	private enum ArrayParseState
-	{
-		INITIAL, EXPECTOBJECT, NEEDOBJECT, GOTOBJECT
+	/**
+	 * Array parsing state machine states.
+	 */
+	private enum ArrayParseState {
+		/**
+		 * Waiting for the opening bracket.
+		 */
+		INITIAL,
+		/**
+		 * Got the opening bracket, so waiting for an object or ] char.
+		 */
+		EXPECTOBJECT,
+		/**
+		 * Got a comma so expect only another object.
+		 */
+		NEEDOBJECT,
+		/**
+		 * Got an object, so expect ] char or comma.
+		 */
+		GOTOBJECT
 	}
 
 	/**
@@ -350,7 +421,7 @@ public class MiniJSON
 				newObj.put(key, jsonDeepCopy(this.get(key)));
 			return newObj;
 		}
-		
+
 		public void putString(final String key, final String value)
 		{
 			if(value == null)
@@ -384,16 +455,19 @@ public class MiniJSON
 					state=NumberParseState.NEEDDOT;
 				else
 				if(c=='-')
-					state=NumberParseState.NEEDN0DIGIT;
+					state=NumberParseState.NEEDNODASH;
 				else
 				if(Character.isDigit(c))
 					state=NumberParseState.HAVEDIGIT;
 				else
 					throw new MJSONException("Expected digit at "+index[0]);
 				break;
-			case NEEDN0DIGIT:
-				if(c=='0')
+			case NEEDNODASH:
+				if(c=='-')
 					throw new MJSONException("Expected digit at "+index[0]);
+				else
+				if(c=='0')
+					state=NumberParseState.NEEDDOT;
 				else
 				if(Character.isDigit(c))
 					state=NumberParseState.HAVEDIGIT;
