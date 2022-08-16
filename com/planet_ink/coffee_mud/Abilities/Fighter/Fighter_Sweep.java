@@ -85,6 +85,20 @@ public class Fighter_Sweep extends FighterSkill
 		return USAGE_MOVEMENT;
 	}
 
+	private volatile int weaponRange = 0;
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(weaponRange);
+	}
+
+	@Override
+	public int minRange()
+	{
+		return 0;
+	}
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
@@ -126,12 +140,21 @@ public class Fighter_Sweep extends FighterSkill
 			mob.tell(L("You must be in combat to sweep!"));
 			return false;
 		}
+		final Item w=mob.fetchWieldedItem();
+		if((w==null)||(!(w instanceof Weapon)))
+		{
+			mob.tell(L("You need a weapon to sweep!"));
+			return false;
+		}
+		final Weapon wp=(Weapon)w;
+		weaponRange=Math.min(1,wp.maxRange());
+
 		Set<MOB> h=properTargets(mob,givenTarget,false);
 		if(h==null)
 			h=new HashSet<MOB>();
 		for(final MOB M : h)
 		{
-			if((M.rangeToTarget()<0)||(M.rangeToTarget()>0))
+			if((M.rangeToTarget()<0)||(M.rangeToTarget()>weaponRange))
 				h.remove(M);
 		}
 
@@ -141,13 +164,6 @@ public class Fighter_Sweep extends FighterSkill
 			return false;
 		}
 
-		final Item w=mob.fetchWieldedItem();
-		if((w==null)||(!(w instanceof Weapon)))
-		{
-			mob.tell(L("You need a weapon to sweep!"));
-			return false;
-		}
-		final Weapon wp=(Weapon)w;
 		if(wp.weaponDamageType()!=Weapon.TYPE_SLASHING)
 		{
 			mob.tell(L("You cannot sweep with @x1!",wp.name()));
