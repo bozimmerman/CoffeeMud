@@ -91,6 +91,7 @@ public class Prop_Doppleganger extends Property
 		diffAdd=0;
 		levelPct=1.0;
 		diffPct=1.0;
+		diffLevel=0;
 		asMaterial=-1;
 		maxLevel=Integer.MAX_VALUE;
 		minLevel=Integer.MIN_VALUE;
@@ -239,8 +240,17 @@ public class Prop_Doppleganger extends Property
 				double diffPct = this.diffPct;
 				if(diffGrp)
 				{
-					diffAdd *= num;
-					diffPct += CMath.mul(diffPct-1.0,num);
+					if(diffAdd > 0)
+						diffAdd *= num;
+					else
+					if(diffAdd < 0)
+						diffAdd += num;
+					final double absDiffPct = Math.abs(diffPct);
+					if(absDiffPct > 1.0)
+						diffPct += Math.signum(diffPct) * CMath.mul(absDiffPct-1.0,num-1);
+					else
+					if(absDiffPct < 1.0)
+						diffPct -= CMath.div(diffPct,num+1);
 					//savePct = CMath.mul(savePct,num);
 				}
 				level=(int)Math.round(CMath.mul(level,levelPct))+levelAdd;
