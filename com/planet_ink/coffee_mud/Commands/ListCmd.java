@@ -352,7 +352,73 @@ public class ListCmd extends StdCommand
 		return "?";
 	}
 
-	public StringBuffer getStuff(final MOB mob, final List<String> commands, final int start, final Enumeration<Room> r)
+	public String getAreaStuffLine(final Room R, final MOB mob, final Environmental E, final Environmental cE,
+								   final WikiFlag wiki, final int col1, final int roomNameCol, final Set<String> uniq,
+								   final ShopKeeper SK, final boolean shopOnly)
+	{
+		final StringBuilder line = new StringBuilder("");
+		if(uniq != null)
+		{
+			final String chkName = CMStrings.replaceAllofAny(CMStrings.removeColors(E.name()),"[]{}<>|".toCharArray(),"______!".toCharArray()).replace(' ','_');
+			if(uniq.contains(chkName))
+				return "";
+			uniq.add(chkName);
+		}
+		if(wiki == WikiFlag.WIKILIST)
+		{
+			final String anam=((R!=null)&&(R.getArea() != null))?R.getArea().name():"";
+			line.append("[["+CMStrings.replaceAllofAny(CMStrings.removeColors(E.name()),"[]{}<>|".toCharArray(),"______!".toCharArray()).replace(' ','_'));
+			line.append("("+CMStrings.replaceAllofAny(anam,"[]{}<>|".toCharArray(),"()()()!".toCharArray())+")");
+			line.append("|"+CMStrings.replaceAllofAny(CMStrings.removeColors(E.name()),"[]{}<>|".toCharArray(),"()()()!".toCharArray()));
+			line.append("]]");
+			return line.toString();
+		}
+		else
+		if(wiki == WikiFlag.WIKIHELP)
+		{
+			line.append("{{[itemtype]Template");
+			line.append("|Name="+CMStrings.replaceAllofAny(CMStrings.removeColors(E.name()),"[]{}<>|".toCharArray(),"()()()!".toCharArray()));
+			line.append("|Display="+CMStrings.replaceAllofAny(CMStrings.removeColors(E.displayText()),"[]{}<>|".toCharArray(),"()()()!".toCharArray()));
+			line.append("|Description="+CMStrings.replaceAllofAny(CMStrings.removeColors(E.description()),"[]{}<>|".toCharArray(),"()()()!".toCharArray()));
+			if(E instanceof Physical)
+				line.append("|Level="+((Physical)E).phyStats().level());
+			line.append("}}");
+			return line.toString();
+		}
+		final String name;
+		if(E instanceof Exit)
+			name = CMLib.directions().getDirectionName(CMLib.map().getExitDir(R, (Exit)E))+" ("+E.name()+")";
+		else
+		if(E instanceof Physical)
+			name = ((Physical)E).name(mob);
+		else
+			name=E.name();
+		final String ename;
+		if(cE instanceof Physical)
+			ename = ((Physical)cE).name(mob);
+		else
+		if(cE != null)
+			ename=cE.name();
+		else
+			ename = null;
+		line.append("^!"+CMStrings.padRight(cataMark(E)+name,col1)+"^N| ");
+		if(cE != null)
+		{
+			if(SK != null)
+				line.append("SHOP: "+cataMark(cE)+ename+"^N");
+			else
+				line.append("IN: "+cataMark(cE)+ename+"^N");
+		}
+		else
+			line.append(CMStrings.limit(R.displayText(mob),roomNameCol));
+		line.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
+		if((SK != null)&&(shopOnly))
+			line.append("| "+getShopPrice(R,mob,SK,E));
+		line.append("\n\r");
+		return line.toString();
+	}
+
+	public StringBuffer getAreaStuff(final MOB mob, final List<String> commands, final int start, final Enumeration<Room> r)
 	{
 		boolean mobOnly = false;
 		boolean itemOnly = false;
@@ -361,6 +427,8 @@ public class ListCmd extends StdCommand
 		boolean exitOnly = false;
 		boolean zapperMask = false;
 		boolean zapperMask2 = false;
+		final WikiFlag wiki = getWikiFlagRemoved(commands);
+		final Set<String> uniqNames = (wiki==WikiFlag.NO)?null:new HashSet<String>();
 		MaskingLibrary.CompiledZMask compiledZapperMask=null;
 		String who="";
 		if(commands.size()>start)
@@ -423,7 +491,8 @@ public class ListCmd extends StdCommand
 			mobOnly=true;
 			zapperMask=true;
 			commands.remove(start);
-			lines.append("^xMask used:^?^.^N "+CMLib.masking().maskDesc(who)+"\n\r");
+			if(wiki == WikiFlag.NO)
+				lines.append("^xMask used:^?^.^N "+CMLib.masking().maskDesc(who)+"\n\r");
 			compiledZapperMask=CMLib.masking().maskCompile(CMParms.combine(commands,start));
 			rest="";
 		}
@@ -434,7 +503,8 @@ public class ListCmd extends StdCommand
 			itemOnly=true;
 			zapperMask=true;
 			commands.remove(start);
-			lines.append("^xMask used:^?^.^N "+CMLib.masking().maskDesc(who)+"\n\r");
+			if(wiki == WikiFlag.NO)
+				lines.append("^xMask used:^?^.^N "+CMLib.masking().maskDesc(who)+"\n\r");
 			compiledZapperMask=CMLib.masking().maskCompile(CMParms.combine(commands,start));
 			rest="";
 		}
@@ -446,7 +516,8 @@ public class ListCmd extends StdCommand
 			zapperMask2=true;
 			commands.remove(start);
 			rest=CMParms.combine(commands,start);
-			lines.append("^xMask used:^?^.^N "+CMLib.masking().maskDesc(rest)+"\n\r");
+			if(wiki == WikiFlag.NO)
+				lines.append("^xMask used:^?^.^N "+CMLib.masking().maskDesc(rest)+"\n\r");
 		}
 		else
 		if(who.equals("ITEMMASK2")
@@ -456,7 +527,8 @@ public class ListCmd extends StdCommand
 			zapperMask2=true;
 			commands.remove(start);
 			rest=CMParms.combine(commands,start);
-			lines.append("^xMask used:^?^.^N "+CMLib.masking().maskDesc(rest)+"\n\r");
+			if(wiki == WikiFlag.NO)
+				lines.append("^xMask used:^?^.^N "+CMLib.masking().maskDesc(rest)+"\n\r");
 		}
 		Room R = null;
 
@@ -476,12 +548,7 @@ public class ListCmd extends StdCommand
 						if((rest.length()==0)
 						||CMLib.english().containsString(R.displayText(),rest)
 						||CMLib.english().containsString(R.description(),rest))
-						{
-							lines.append("^!"+CMStrings.padRight("*",col1)+"^?| ");
-							lines.append(CMStrings.limit(R.displayText(mob),roomNameCol));
-							lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
-							lines.append("\n\r");
-						}
+							lines.append(getAreaStuffLine(R, mob, R, null, wiki, col1, roomNameCol, uniqNames, null, shopOnly));
 					}
 					if(exitOnly)
 					{
@@ -493,11 +560,7 @@ public class ListCmd extends StdCommand
 								||((E.Name().length()>0)&&(CMLib.english().containsString(E.Name(),rest)))
 								||((E.doorName().length()>0)&& CMLib.english().containsString(E.doorName(),rest))
 								||(CMLib.english().containsString(E.viewableText(mob,R).toString(),rest))))
-							{
-								lines.append("^!"+CMStrings.padRight(CMLib.directions().getDirectionName(d),col1)+"^N| ");
-								lines.append("^N^. (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
-								lines.append("\n\r");
-							}
+									lines.append(getAreaStuffLine(R, mob, E, null, wiki, col1, roomNameCol, uniqNames, null, shopOnly));
 						}
 					}
 					if(shopOnly)
@@ -512,14 +575,7 @@ public class ListCmd extends StdCommand
 								||(CMLib.english().containsString(E.name(),rest))
 								||(CMLib.english().containsString(E.displayText(),rest))
 								||(CMLib.english().containsString(E.description(),rest)))
-								{
-									lines.append("^!"+CMStrings.padRight(cataMark(E)+E.name(),col1)+"^N| ");
-									lines.append("SHOP: "+cataMark(R)+R.name(mob)+"^N");
-									lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
-									if(shopOnly)
-										lines.append("| "+getShopPrice(R,mob,SK,E));
-									lines.append("\n\r");
-								}
+									lines.append(getAreaStuffLine(R, mob, E, R, wiki, col1, roomNameCol, uniqNames, SK, shopOnly));
 							}
 						}
 					}
@@ -531,35 +587,20 @@ public class ListCmd extends StdCommand
 							if((zapperMask)&&(itemOnly))
 							{
 								if(CMLib.masking().maskCheck(compiledZapperMask,I,true))
-								{
-									lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),col1)+"^N| ");
-									lines.append(CMStrings.limit(R.displayText(mob),roomNameCol));
-									lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
-									lines.append("\n\r");
-								}
+									lines.append(getAreaStuffLine(R, mob, I, null, wiki, col1, roomNameCol, uniqNames, null, shopOnly));
 							}
 							else
 							if((zapperMask2)&&(itemOnly))
 							{
 								if(CMLib.masking().maskCheck(rest,I,true))
-								{
-									lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),col1)+"^N| ");
-									lines.append(CMStrings.limit(R.displayText(mob),roomNameCol));
-									lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
-									lines.append("\n\r");
-								}
+									lines.append(getAreaStuffLine(R, mob, I, null, wiki, col1, roomNameCol, uniqNames, null, shopOnly));
 							}
 							else
 							if((rest.length()==0)
 							||(CMLib.english().containsString(I.name(),rest))
 							||(CMLib.english().containsString(I.displayText(),rest))
 							||(CMLib.english().containsString(I.description(),rest)))
-							{
-								lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),col1)+"^N| ");
-								lines.append(CMStrings.limit(R.displayText(mob),roomNameCol));
-								lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
-								lines.append("\n\r");
-							}
+								lines.append(getAreaStuffLine(R, mob, I, null, wiki, col1, roomNameCol, uniqNames, null, shopOnly));
 						}
 					}
 					for(int m=0;m<R.numInhabitants();m++)
@@ -572,35 +613,20 @@ public class ListCmd extends StdCommand
 								if((zapperMask)&&(mobOnly))
 								{
 									if(CMLib.masking().maskCheck(compiledZapperMask,M,true))
-									{
-										lines.append("^!"+CMStrings.padRight(cataMark(M)+M.name(mob),col1)+"^N| ");
-										lines.append(CMStrings.limit(R.displayText(mob),roomNameCol));
-										lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
-										lines.append("\n\r");
-									}
+										lines.append(getAreaStuffLine(R, mob, M, null, wiki, col1, roomNameCol, uniqNames, null, shopOnly));
 								}
 								else
 								if((zapperMask2)&&(mobOnly))
 								{
 									if(CMLib.masking().maskCheck(rest,M,true))
-									{
-										lines.append("^!"+CMStrings.padRight(cataMark(M)+M.name(mob),col1)+"^N| ");
-										lines.append(CMStrings.limit(R.displayText(mob),roomNameCol));
-										lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
-										lines.append("\n\r");
-									}
+										lines.append(getAreaStuffLine(R, mob, M, null, wiki, col1, roomNameCol, uniqNames, null, shopOnly));
 								}
 								else
 								if((rest.length()==0)
 								||(CMLib.english().containsString(M.name(),rest))
 								||(CMLib.english().containsString(M.displayText(),rest))
 								||(CMLib.english().containsString(M.description(),rest)))
-								{
-									lines.append("^!"+CMStrings.padRight(cataMark(M)+M.name(mob),col1)+"^N| ");
-									lines.append(CMStrings.limit(R.displayText(mob),roomNameCol));
-									lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
-									lines.append("\n\r");
-								}
+									lines.append(getAreaStuffLine(R, mob, M, null, wiki, col1, roomNameCol, uniqNames, null, shopOnly));
 							}
 							if((!mobOnly)&&(!roomOnly)&&(!exitOnly))
 							{
@@ -612,35 +638,20 @@ public class ListCmd extends StdCommand
 										if((zapperMask)&&(itemOnly))
 										{
 											if(CMLib.masking().maskCheck(compiledZapperMask,I,true))
-											{
-												lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),col1)+"^N| ");
-												lines.append("INV: "+cataMark(M)+M.name(mob)+"^N");
-												lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
-												lines.append("\n\r");
-											}
+												lines.append(getAreaStuffLine(R, mob, I, M, wiki, col1, roomNameCol, uniqNames, null, shopOnly));
 										}
 										else
 										if((zapperMask2)&&(itemOnly))
 										{
 											if(CMLib.masking().maskCheck(rest,I,true))
-											{
-												lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),col1)+"^N| ");
-												lines.append("INV: "+cataMark(M)+M.name(mob)+"^N");
-												lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
-												lines.append("\n\r");
-											}
+												lines.append(getAreaStuffLine(R, mob, I, M, wiki, col1, roomNameCol, uniqNames, null, shopOnly));
 										}
 										else
 										if((rest.length()==0)
 										||(CMLib.english().containsString(I.name(),rest))
 										||(CMLib.english().containsString(I.displayText(),rest))
 										||(CMLib.english().containsString(I.description(),rest)))
-										{
-											lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),col1)+"^N| ");
-											lines.append("INV: "+cataMark(M)+M.name(mob)+"^N");
-											lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
-											lines.append("\n\r");
-										}
+											lines.append(getAreaStuffLine(R, mob, I, M, wiki, col1, roomNameCol, uniqNames, null, shopOnly));
 									}
 								}
 								final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
@@ -652,67 +663,32 @@ public class ListCmd extends StdCommand
 										if((zapperMask)&&(E instanceof Item)&&(itemOnly))
 										{
 											if(CMLib.masking().maskCheck(compiledZapperMask,E,true))
-											{
-												lines.append("^!"+CMStrings.padRight(cataMark(E)+E.name(),col1)+"^N| ");
-												lines.append("SHOP: "+cataMark(M)+M.name(mob)+"^N");
-												lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
-												if(shopOnly)
-													lines.append("| "+getShopPrice(R,mob,SK,E));
-												lines.append("\n\r");
-											}
+												lines.append(getAreaStuffLine(R, mob, E, M, wiki, col1, roomNameCol, uniqNames, SK, shopOnly));
 										}
 										else
 										if((zapperMask)&&(E instanceof MOB)&&(mobOnly))
 										{
 											if(CMLib.masking().maskCheck(compiledZapperMask,E,true))
-											{
-												lines.append("^!"+CMStrings.padRight(cataMark(E)+E.name(),col1)+"^N| ");
-												lines.append("SHOP: "+cataMark(M)+M.name(mob)+"^N");
-												lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
-												if(shopOnly)
-													lines.append("| "+getShopPrice(R,mob,SK,E));
-												lines.append("\n\r");
-											}
+												lines.append(getAreaStuffLine(R, mob, E, M, wiki, col1, roomNameCol, uniqNames, SK, shopOnly));
 										}
 										else
 										if((zapperMask2)&&(E instanceof Item)&&(itemOnly))
 										{
 											if(CMLib.masking().maskCheck(rest,E,true))
-											{
-												lines.append("^!"+CMStrings.padRight(cataMark(E)+E.name(),col1)+"^N| ");
-												lines.append("SHOP: "+cataMark(M)+M.name(mob)+"^N");
-												lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
-												if(shopOnly)
-													lines.append("| "+getShopPrice(R,mob,SK,E));
-												lines.append("\n\r");
-											}
+												lines.append(getAreaStuffLine(R, mob, E, M, wiki, col1, roomNameCol, uniqNames, SK, shopOnly));
 										}
 										else
 										if((zapperMask2)&&(E instanceof MOB)&&(mobOnly))
 										{
 											if(CMLib.masking().maskCheck(rest,E,true))
-											{
-												lines.append("^!"+CMStrings.padRight(cataMark(E)+E.name(),col1)+"^N| ");
-												lines.append("SHOP: "+cataMark(M)+M.name(mob)+"^N");
-												lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
-												if(shopOnly)
-													lines.append("| "+getShopPrice(R,mob,SK,E));
-												lines.append("\n\r");
-											}
+												lines.append(getAreaStuffLine(R, mob, E, M, wiki, col1, roomNameCol, uniqNames, SK, shopOnly));
 										}
 										else
 										if((rest.length()==0)
 										||(CMLib.english().containsString(E.name(),rest))
 										||(CMLib.english().containsString(E.displayText(),rest))
 										||(CMLib.english().containsString(E.description(),rest)))
-										{
-											lines.append("^!"+CMStrings.padRight(cataMark(E)+E.name(),col1)+"^N| ");
-											lines.append("SHOP: "+cataMark(M)+M.name(mob)+"^N");
-											lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
-											if(shopOnly)
-												lines.append("| "+getShopPrice(R,mob,SK,E));
-											lines.append("\n\r");
-										}
+											lines.append(getAreaStuffLine(R, mob, E, M, wiki, col1, roomNameCol, uniqNames, SK, shopOnly));
 									}
 								}
 							}
@@ -751,7 +727,7 @@ public class ListCmd extends StdCommand
 		else
 		{
 			lines.append("^HStuff:^N\n\r");
-			lines.append(getStuff(mob, commands, 1, these));
+			lines.append(getAreaStuff(mob, commands, 1, these));
 		}
 		return lines;
 	}
