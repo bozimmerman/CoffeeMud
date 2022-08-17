@@ -1148,7 +1148,16 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			try
 			{
-				session.readlineContinue();
+				final String s = session.readlineContinue();
+				if((s!=null) && s.equalsIgnoreCase("MSSP-REQUEST")
+				&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSSP)))
+				{
+					session.rawOut(getMSSPPacket());
+					session.stopSession(false,false,false);
+					loginObj.reset=true;
+					loginObj.state=LoginState.LOGIN_START;
+					return LoginResult.NO_LOGIN;
+				}
 			}
 			catch(final Exception x)
 			{
