@@ -68,6 +68,9 @@ public class ListCmd extends StdCommand
 
 	protected boolean helpChecked = false;
 
+	private static final char[] BAD_WIKI_CHARS = "[]{}<>|".toCharArray();
+	private static final char[] GOOD_WIKI_CHARS = "\"\"()()!".toCharArray();
+
 	private enum WikiFlag
 	{
 		NO,
@@ -359,7 +362,7 @@ public class ListCmd extends StdCommand
 		final StringBuilder line = new StringBuilder("");
 		if(uniq != null)
 		{
-			final String chkName = CMStrings.replaceAllofAny(CMStrings.removeColors(E.name()),"[]{}<>|".toCharArray(),"______!".toCharArray()).replace(' ','_');
+			final String chkName = CMStrings.replaceAllofAny(CMStrings.removeColors(E.name()),BAD_WIKI_CHARS,"______!".toCharArray()).replace(' ','_');
 			if(uniq.contains(chkName))
 				return "";
 			uniq.add(chkName);
@@ -367,21 +370,23 @@ public class ListCmd extends StdCommand
 		if(wiki == WikiFlag.WIKILIST)
 		{
 			final String anam=((R!=null)&&(R.getArea() != null))?R.getArea().name():"";
-			line.append("[["+CMStrings.replaceAllofAny(CMStrings.removeColors(E.name()),"[]{}<>|".toCharArray(),"______!".toCharArray()).replace(' ','_'));
-			line.append("("+CMStrings.replaceAllofAny(anam,"[]{}<>|".toCharArray(),"()()()!".toCharArray())+")");
-			line.append("|"+CMStrings.replaceAllofAny(CMStrings.removeColors(E.name()),"[]{}<>|".toCharArray(),"()()()!".toCharArray()));
+			line.append("[["+CMStrings.replaceAllofAny(CMStrings.removeColors(E.name()),BAD_WIKI_CHARS,"______!".toCharArray()).replace(' ','_'));
+			line.append("("+CMStrings.replaceAllofAny(anam,BAD_WIKI_CHARS,GOOD_WIKI_CHARS)+")");
+			line.append("|"+CMStrings.replaceAllofAny(CMStrings.removeColors(E.name()),BAD_WIKI_CHARS,GOOD_WIKI_CHARS));
 			line.append("]]");
 			return line.toString();
 		}
 		else
 		if(wiki == WikiFlag.WIKIHELP)
 		{
-			line.append("{{[itemtype]Template");
-			line.append("|Name="+CMStrings.replaceAllofAny(CMStrings.removeColors(E.name()),"[]{}<>|".toCharArray(),"()()()!".toCharArray()));
-			line.append("|Display="+CMStrings.replaceAllofAny(CMStrings.removeColors(E.displayText()),"[]{}<>|".toCharArray(),"()()()!".toCharArray()));
-			line.append("|Description="+CMStrings.replaceAllofAny(CMStrings.removeColors(E.description()),"[]{}<>|".toCharArray(),"()()()!".toCharArray()));
+			line.append("{{["+E.ID()+"]Template");
+			line.append("|Name="+CMStrings.replaceAllofAny(CMStrings.removeColors(E.name()),BAD_WIKI_CHARS,GOOD_WIKI_CHARS));
+			line.append("|Display="+CMStrings.replaceAllofAny(CMStrings.removeColors(E.displayText()),BAD_WIKI_CHARS,GOOD_WIKI_CHARS));
+			line.append("|Description="+CMStrings.replaceAllofAny(CMStrings.removeColors(E.description()),BAD_WIKI_CHARS,GOOD_WIKI_CHARS));
 			if(E instanceof Physical)
 				line.append("|Level="+((Physical)E).phyStats().level());
+			for(final String stat : E.getStatCodes())
+				line.append("|"+stat+"="+CMStrings.replaceAllofAny(CMStrings.removeColors(E.getStat(stat)),BAD_WIKI_CHARS,GOOD_WIKI_CHARS));
 			line.append("}}");
 			return line.toString();
 		}
@@ -4648,10 +4653,10 @@ public class ListCmd extends StdCommand
 				commandList.append("\n\r=="+s+"==\n\r");
 				commandList.append("{{CommandTemplate"
 								+ "|Name="+s
-								+ "|Usage="+CMStrings.replaceAllofAny(usage,"[]{}<>|".toCharArray(),"\"\"()()!".toCharArray())
+								+ "|Usage="+CMStrings.replaceAllofAny(usage,BAD_WIKI_CHARS,GOOD_WIKI_CHARS)
 								+ "|Examples="+example
 								+ "|Shorts="+shorts
-								+ "|Description="+CMStrings.replaceAllofAny(helpStr,"[]{}<>|".toCharArray(),"()()()!".toCharArray())
+								+ "|Description="+CMStrings.replaceAllofAny(helpStr,BAD_WIKI_CHARS,GOOD_WIKI_CHARS)
 								+ "}}\n\r");
 			}
 			else
@@ -5071,9 +5076,9 @@ public class ListCmd extends StdCommand
 						+ "|Targets="+targets
 						+ "|Range="+range
 						+ "|Commands="+CMParms.toListString(A.triggerStrings())
-						+ "|Usage="+CMStrings.replaceAllofAny(usage,"[]{}<>|".toCharArray(),"\"\"()()!".toCharArray())
+						+ "|Usage="+CMStrings.replaceAllofAny(usage,BAD_WIKI_CHARS,GOOD_WIKI_CHARS)
 						+ "|Examples="+example
-						+ "|Description="+CMStrings.replaceAllofAny(helpStr,"[]{}<>|".toCharArray(),"()()()!".toCharArray())
+						+ "|Description="+CMStrings.replaceAllofAny(helpStr,BAD_WIKI_CHARS,GOOD_WIKI_CHARS)
 						+ "}}\n\r");
 			}
 			s.wraplessPrintln(str.toString());
@@ -5160,10 +5165,10 @@ public class ListCmd extends StdCommand
 				str.append("\n\r=="+B.name()+"==\n\r");
 				str.append("{{BehaviorTemplate"
 						+ "|Name="+B.name()
-						+ "|Targets="+CMStrings.replaceAllofAny(targets,"[]{}<>|".toCharArray(),"\"\"()()!".toCharArray())
-						+ "|Usage="+CMStrings.replaceAllofAny(usage,"[]{}<>|".toCharArray(),"\"\"()()!".toCharArray())
+						+ "|Targets="+CMStrings.replaceAllofAny(targets,BAD_WIKI_CHARS,GOOD_WIKI_CHARS)
+						+ "|Usage="+CMStrings.replaceAllofAny(usage,BAD_WIKI_CHARS,GOOD_WIKI_CHARS)
 						+ "|Examples="+example
-						+ "|Description="+CMStrings.replaceAllofAny(helpStr,"[]{}<>|".toCharArray(),"()()()!".toCharArray())
+						+ "|Description="+CMStrings.replaceAllofAny(helpStr,BAD_WIKI_CHARS,GOOD_WIKI_CHARS)
 						+ "}}\n\r");
 			}
 			s.wraplessPrintln(str.toString());
