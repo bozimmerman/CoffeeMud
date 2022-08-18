@@ -168,6 +168,7 @@ public class Decorating extends CommonSkill
 							if(mountWord.equals("mount"))
 								I.setDisplayText(I.name()+" is mounted here.");
 							else
+							if(!mountWord.equals("stick"))
 								I.setDisplayText(I.name()+" is hanging here.");
 							room.moveItemTo(I, Expire.Never);
 							room.show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to "+mountWord+" @x1.",I.name()));
@@ -220,12 +221,15 @@ public class Decorating extends CommonSkill
 			{
 			case CMMsg.TYP_GET:
 			{
-				final Room R=CMLib.map().roomLocation(affected);
-				R.show(msg.source(), affected, CMMsg.MSG_DELICATE_HANDS_ACT, L("<S-NAME> remove(s) <T-NAME> from the wall."));
-				if(text().length()>0)
-					affected.setDisplayText(text());
-				affected.delEffect(this);
-				this.destroy();
+				if(msg.tool() == null)
+				{
+					final Room R=CMLib.map().roomLocation(affected);
+					R.show(msg.source(), affected, CMMsg.MSG_DELICATE_HANDS_ACT, L("<S-NAME> remove(s) <T-NAME> from the wall."));
+					if(text().length()>0)
+						affected.setDisplayText(text());
+					affected.delEffect(this);
+					this.destroy();
+				}
 				break;
 			}
 			default:
