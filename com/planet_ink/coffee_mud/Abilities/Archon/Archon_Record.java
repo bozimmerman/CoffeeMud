@@ -100,7 +100,10 @@ public class Archon_Record extends ArchonSkill
 		return USAGE_MOVEMENT;
 	}
 
-	Session sess = null;
+	protected volatile Session	sess		= null;
+	protected volatile String	filename	= null;
+	protected volatile boolean	stripSnoop	= false;
+	protected volatile boolean	stripCRLF	= false;
 
 	@Override
 	public void unInvoke()
@@ -139,6 +142,32 @@ public class Archon_Record extends ArchonSkill
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
+		if(commands.size()>2)
+		{
+			if(commands.get(0).equalsIgnoreCase("set"))
+			{
+				if(commands.get(1).equalsIgnoreCase("filename"))
+				{
+					filename = CMParms.combine(commands,2);
+					mob.tell(L("Ok."));
+					return true;
+				}
+				else
+				if(commands.get(1).equalsIgnoreCase("stripsnoop"))
+				{
+					stripSnoop = CMath.s_bool(CMParms.combine(commands,2));
+					mob.tell(L("Ok."));
+					return true;
+				}
+				else
+				if(commands.get(1).equalsIgnoreCase("stripcrlf"))
+				{
+					stripCRLF = CMath.s_bool(CMParms.combine(commands,2));
+					mob.tell(L("Ok."));
+					return true;
+				}
+			}
+		}
 		MOB target=CMLib.players().getLoadPlayer(CMParms.combine(commands,0));
 		if(target==null)
 			target=getTargetAnywhere(mob,commands,givenTarget,false,true,false);
@@ -148,10 +177,17 @@ public class Archon_Record extends ArchonSkill
 		final Archon_Record A=(Archon_Record)target.fetchEffect(ID());
 		if(A!=null)
 		{
+			final Session S = A.sess;
 			A.unInvoke();
 			target.delEffect(A);
 			if(target.playerStats()!=null)
 				target.playerStats().setLastUpdated(0);
+			if(target.session()==S)
+				target.setSession(null);
+			else
+			if((target.session()!=null)
+			&&(target.session().isBeingSnoopedBy(S)))
+				target.session().setBeingSnoopedBy(A.sess, false);
 			mob.tell(L("@x1 will no longer be recorded.",target.Name()));
 			return true;
 		}
@@ -168,8 +204,10 @@ public class Archon_Record extends ArchonSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final String filename="/"+target.Name()+System.currentTimeMillis()+".log";
-				final CMFile file=new CMFile(filename,null,CMFile.FLAG_LOGERRORS);
+				final String filename = (this.filename!=null)?this.filename:
+									"/"+target.Name()+System.currentTimeMillis()+".log";
+				this.filename=null;
+				final CMFile file=new CMFile(filename,mob,CMFile.FLAG_LOGERRORS);
 				if(!file.canWrite())
 				{
 					if(!CMSecurity.isASysOp(mob)||(CMSecurity.isASysOp(target)))
@@ -180,11 +218,17 @@ public class Archon_Record extends ArchonSkill
 					if(!CMSecurity.isASysOp(mob)||(CMSecurity.isASysOp(target)))
 						Log.sysOut("Record",mob.Name()+" started recording "+target.name()+" to /"+filename+".");
 					final Archon_Record A2=(Archon_Record)copyOf();
-					final Session F=(Session)CMClass.getCommon("FakeSession");
-					F.initializeSession(null,Thread.currentThread().getThreadGroup().getName(),filename);
+					final Session sessF=(Session)CMClass.getCommon("FakeSession");
+					if(this.stripSnoop)
+						sessF.setStat("STRIPSNOOP", "true");
+					if(this.stripCRLF)
+						sessF.setStat("STRIPCRLF", "true");
+					this.stripSnoop = this.stripCRLF = false;
+					sessF.initializeSession(null,Thread.currentThread().getThreadGroup().getName(),filename);
+					sessF.setMob(target);
 					if(target.session()==null)
-						target.setSession(F);
-					A2.sess=F;
+						target.setSession(sessF);
+					A2.sess=sessF;
 					target.addNonUninvokableEffect(A2);
 					mob.tell(L("Enter RECORD @x1 again to stop recording.",target.Name()));
 				}

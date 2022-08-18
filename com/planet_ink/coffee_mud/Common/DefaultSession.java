@@ -3578,7 +3578,7 @@ public class DefaultSession implements Session
 	private static enum SESS_STAT_CODES {PREVCMD,ISAFK,AFKMESSAGE,ADDRESS,IDLETIME,
 										 LASTMSG,LASTNPCFIGHT,LASTPKFIGHT,TERMTYPE,
 										 TOTALMILLIS,TOTALTICKS,WRAP,LASTLOOPTIME,
-										 ROOMLOOK}
+										 ROOMLOOK,TWRAP}
 
 	@Override
 	public int getSaveStatIndex()
@@ -3641,6 +3641,8 @@ public class DefaultSession implements Session
 			return CMLib.time().date2String(getInputLoopTime());
 		case ROOMLOOK:
 			break; // do nothing
+		case TWRAP:
+			return ""+this.terminalWidth;
 		default:
 			Log.errOut("Session", "getStat:Unhandled:" + stat.toString());
 			break;
@@ -3689,6 +3691,9 @@ public class DefaultSession implements Session
 			break;
 		case TOTALTICKS:
 			tickTotal = CMath.s_int(val);
+			break;
+		case TWRAP:
+			this.terminalWidth = CMath.s_int(val);
 			break;
 		case WRAP:
 			if ((mob != null) && (mob.playerStats() != null))

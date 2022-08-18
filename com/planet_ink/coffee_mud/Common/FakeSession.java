@@ -20,6 +20,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.CMClass;
 import com.planet_ink.coffee_mud.core.CMFile;
 import com.planet_ink.coffee_mud.core.CMLib;
+import com.planet_ink.coffee_mud.core.CMStrings;
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.collections.XVector;
 import com.planet_ink.coffee_mud.core.interfaces.CMObject;
@@ -43,10 +44,15 @@ import com.planet_ink.coffee_mud.core.interfaces.Tickable;
 */
 public class FakeSession implements Session
 {
-	protected CMFile				theFile	= null;
-	protected ByteArrayOutputStream	bout	= null;
-	protected MOB					mob		= null;
-	protected Vector<String>		inputV	= new Vector<String>();
+	protected CMFile				theFile		= null;
+	protected ByteArrayOutputStream	bout		= null;
+	protected MOB					mob			= null;
+	protected boolean				stripSnoop	= false;
+	protected boolean				stripCRLF	= false;
+	protected Vector<String>		inputV		= new Vector<String>();
+
+	protected final static char[]	COLOR_CRLF	= new char[] { '\n', '\r' };
+	protected String 				stripStr	= null;
 
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -220,8 +226,12 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public void onlyPrint(final String msg, final boolean noCache)
+	public void onlyPrint(String msg, final boolean noCache)
 	{
+		if(stripSnoop)
+			msg = CMStrings.replaceAll(msg, stripStr, "");
+		if(stripCRLF)
+			msg = CMStrings.deleteAllofAny(msg, COLOR_CRLF);
 		if (theFile != null)
 		{
 			synchronized (theFile)
@@ -570,6 +580,12 @@ public class FakeSession implements Session
 	public void setMob(final MOB newmob)
 	{
 		mob = newmob;
+		if(mob != null)
+		{
+			final String COLOR_IMP3 = CMLib.color().standardColorLookups()[ColorLibrary.SpecialColor.IMPORTANT3.getCodeChar()];
+			final String COLOR_NORM = CMLib.color().standardColorLookups()[ColorLibrary.SpecialColor.NORMAL.getCodeChar()];
+			stripStr = COLOR_IMP3+((mob==null)?"?":mob.Name())+":"+COLOR_NORM+" ";
+		}
 	}
 
 	@Override
@@ -766,6 +782,14 @@ public class FakeSession implements Session
 	@Override
 	public void setStat(final String code, final String val)
 	{
+		if(code != null)
+		{
+			if(code.equalsIgnoreCase("STRIPSNOOP"))
+				this.stripSnoop=true;
+			else
+			if(code.equalsIgnoreCase("STRIPCRLF"))
+				this.stripCRLF=true;
+		}
 	}
 
 	@Override
