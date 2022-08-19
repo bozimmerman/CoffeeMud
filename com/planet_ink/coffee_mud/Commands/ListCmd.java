@@ -70,6 +70,7 @@ public class ListCmd extends StdCommand
 
 	private static final char[] BAD_WIKI_CHARS = "[]{}<>|".toCharArray();
 	private static final char[] GOOD_WIKI_CHARS = "\"\"()()!".toCharArray();
+	private static final char[] UNDER_WIKI_CHARS = "______!".toCharArray();
 
 	private enum WikiFlag
 	{
@@ -362,7 +363,7 @@ public class ListCmd extends StdCommand
 		final StringBuilder line = new StringBuilder("");
 		if(uniq != null)
 		{
-			final String chkName = CMStrings.replaceAllofAny(CMStrings.removeColors(E.name()),BAD_WIKI_CHARS,"______!".toCharArray()).replace(' ','_');
+			final String chkName = CMStrings.replaceAllofAny(CMStrings.removeColors(E.name()),BAD_WIKI_CHARS,UNDER_WIKI_CHARS).replace(' ','_');
 			if(uniq.contains(chkName))
 				return "";
 			uniq.add(chkName);
@@ -370,15 +371,16 @@ public class ListCmd extends StdCommand
 		if(wiki == WikiFlag.WIKILIST)
 		{
 			final String anam=((R!=null)&&(R.getArea() != null))?R.getArea().name():"";
-			line.append("[["+CMStrings.replaceAllofAny(CMStrings.removeColors(E.name()),BAD_WIKI_CHARS,"______!".toCharArray()).replace(' ','_'));
+			line.append("*[["+CMStrings.replaceAllofAny(CMStrings.removeColors(E.name()),BAD_WIKI_CHARS,UNDER_WIKI_CHARS).replace(' ','_'));
 			line.append("("+CMStrings.replaceAllofAny(anam,BAD_WIKI_CHARS,GOOD_WIKI_CHARS)+")");
 			line.append("|"+CMStrings.replaceAllofAny(CMStrings.removeColors(E.name()),BAD_WIKI_CHARS,GOOD_WIKI_CHARS));
-			line.append("]]");
+			line.append("]]\n\r");
 			return line.toString();
 		}
 		else
 		if(wiki == WikiFlag.WIKIHELP)
 		{
+			line.append("==="+CMStrings.removeColors(E.name())+"===\n\r");
 			line.append("{{["+E.ID()+"]Template");
 			line.append("|Name="+CMStrings.replaceAllofAny(CMStrings.removeColors(E.name()),BAD_WIKI_CHARS,GOOD_WIKI_CHARS));
 			line.append("|Display="+CMStrings.replaceAllofAny(CMStrings.removeColors(E.displayText()),BAD_WIKI_CHARS,GOOD_WIKI_CHARS));
@@ -387,7 +389,7 @@ public class ListCmd extends StdCommand
 				line.append("|Level="+((Physical)E).phyStats().level());
 			for(final String stat : E.getStatCodes())
 				line.append("|"+stat+"="+CMStrings.replaceAllofAny(CMStrings.removeColors(E.getStat(stat)),BAD_WIKI_CHARS,GOOD_WIKI_CHARS));
-			line.append("}}");
+			line.append("}}\n\r");
 			return line.toString();
 		}
 		final String name;
