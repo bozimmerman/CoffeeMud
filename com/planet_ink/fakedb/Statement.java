@@ -66,11 +66,21 @@ public class Statement implements java.sql.Statement
 				sql = sql.substring(1);
 				continue;
 			}
+			if (sql.charAt(0) == ';')
+			{
+				sql = sql.substring(1);
+				continue;
+			}
 			int index;
 			for (index = 0; index < sql.length(); index++)
 			{
 				char c = sql.charAt(index);
 				if (c == ' ')
+				{
+					break;
+				}
+				else
+				if (c == ';')
 				{
 					break;
 				}
@@ -108,7 +118,10 @@ public class Statement implements java.sql.Statement
 			if (s >= sql.length())
 				return "";
 			int e = s;
-			while ((e < sql.length()) && (sql.charAt(e) != ' ') && (sql.charAt(e) != '\t') && (sql.charAt(e) != ','))
+			while ((e < sql.length())
+			&& (sql.charAt(e) != ' ')
+			&& (sql.charAt(e) != '\t')
+			&& (sql.charAt(e) != ','))
 				e++;
 			if (e >= sql.length()) // was whatever it was the last word.. done
 				return sql.substring(s);
@@ -116,7 +129,8 @@ public class Statement implements java.sql.Statement
 			cols.add(word);
 			if (sql.charAt(e) != ',')
 			{
-				while ((e < sql.length()) && ((sql.charAt(e) == ' ') || (sql.charAt(e) == '\t')))
+				while ((e < sql.length())
+				&& ((sql.charAt(e) == ' ') || (sql.charAt(e) == '\t')))
 					e++;
 			}
 			if ((e >= sql.length()) || (sql.charAt(e) != ','))
@@ -249,7 +263,10 @@ public class Statement implements java.sql.Statement
 				}
 				else
 				{
-					while ((e < sql.length()) && (sql.charAt(e) != ' ') && (sql.charAt(e) != '\t'))
+					while ((e < sql.length())
+					&& (sql.charAt(e) != ' ')
+					&& (sql.charAt(e) != '\t')
+					&& (sql.charAt(e) != ';'||(s==e)))
 						e++;
 					value = sql.substring(s, e);
 					if (value.equalsIgnoreCase("?"))
@@ -262,6 +279,8 @@ public class Statement implements java.sql.Statement
 			while ((s < sql.length()) && (sql.charAt(s) == ' ' || sql.charAt(s) == '\t'))
 				s++;
 			if (s >= sql.length())
+				break;
+			if(sql.charAt(s)==';')
 				break;
 			int e = s;
 			while ((e < sql.length()) && (sql.charAt(e) != ' ') && (sql.charAt(e) != '\t'))
@@ -414,7 +433,7 @@ public class Statement implements java.sql.Statement
 			for (index = 0; index < sql.length(); ++index)
 			{
 				final char c = sql.charAt(index);
-				if ((c == ' ') || (c == ',') || (c == ')'))
+				if ((c == ' ') || (c == ',') || (c == ')')|| ((c == ';')&&(index>0)))
 					break;
 				buffer.append(c);
 			}
@@ -497,7 +516,6 @@ public class Statement implements java.sql.Statement
 		sql = split(sql, token);
 		if (!token[0].equalsIgnoreCase("set"))
 			throw new java.sql.SQLException("no set");
-
 		final java.util.List<String> columnList = new java.util.LinkedList<String>();
 		final java.util.List<String> valueList = new java.util.LinkedList<String>();
 		final java.util.List<Boolean> unPreparedValueList = new java.util.LinkedList<Boolean>();
@@ -554,13 +572,25 @@ public class Statement implements java.sql.Statement
 				unPreparedValueList.add(Boolean.valueOf(r[2] != null));
 			}
 			sql = skipWS(sql);
-			if ((sql.length() > 0) && (sql.charAt(0) == ','))
-				sql = skipWS(sql.substring(1));
+			if (sql.length() > 0)
+			{
+				if (sql.charAt(0) == ',')
+					sql = skipWS(sql.substring(1));
+				else
+				if(sql.charAt(0) == ';')
+				{
+					sql = skipWS(sql.substring(1));
+					break;
+				}
+			}
 		}
 		final List<Backend.FakeCondition> conditions = new ArrayList<Backend.FakeCondition>();
-		sql = parseWhereClause(tableName, sql, conditions);
-		if (conditions.size() == 0)
-			throw new java.sql.SQLException("no more where clause!");
+		if(sql.length()>0)
+		{
+			sql = parseWhereClause(tableName, sql, conditions);
+			if (conditions.size() == 0)
+				throw new java.sql.SQLException("no more where clause!");
+		}
 		return new Backend.ImplUpdateStatement(tableName, conditions, columnList.toArray(new String[0]), valueList.toArray(new String[0]), unPreparedValueList.toArray(new Boolean[0]));
 
 	}

@@ -18,6 +18,7 @@ package com.planet_ink.fakedb;
  */
 
 import java.io.*;
+import java.sql.SQLException;
 import java.util.*;
 
 public class Backend
@@ -379,6 +380,7 @@ public class Backend
 		private int						fileSize;
 		private byte[]					fileBuffer;
 		private FakeColumn[]			columns;
+		private String[]				columnNames;
 		private Map<String, Integer>	columnHash	= new Hashtable<String, Integer>();
 		private int[]					columnIndexesOfIndexed;
 		private IndexedRowMap			rowRecords	= new IndexedRowMap();
@@ -460,6 +462,7 @@ public class Backend
 				file = null;
 			}
 			columns = null;
+			columnNames = null;
 			columnHash = null;
 			columnIndexesOfIndexed = null;
 			rowRecords = new IndexedRowMap();
@@ -974,18 +977,23 @@ public class Backend
 		 * @param conditions
 		 * @param columns
 		 * @param values
+		 * @param dupDangerTable
 		 * @return
 		 */
-		protected synchronized int updateRecord(final List<FakeCondition> conditions, final int[] columns, final ComparableValue[] values)
+		protected synchronized int updateRecord(final List<FakeCondition> conditions,
+												final int[] columns,
+												final ComparableValue[] values,
+												final Backend backend,
+												final FakeTable dupDangerTable) throws SQLException
 		{
 			final int[] count = { 0 };
 			try
 			{
 				final FakeConditionResponder responder = new FakeConditionResponder()
 				{
-					public int[]				count;
-					public int[]				newCols;
-					public ComparableValue[]	updatedValues	= null;
+					private int[]				count;
+					private int[]				newCols;
+					private ComparableValue[]	updatedValues	= null;
 
 					public FakeConditionResponder init(final int[] c, final int[] a, final ComparableValue[] n)
 					{
@@ -1013,6 +1021,13 @@ public class Backend
 						}
 						if (somethingChanged)
 						{
+							if(dupDangerTable != null)
+							{
+								final String[] vals = new String[values.length];
+								for(int x=0;x<values.length;x++)
+									vals[x]=values[x].getValue().toString();
+								backend.dupKeyCheck(dupDangerTable.name, dupDangerTable.columnNames, vals);
+							}
 							file.seek(info.offset);
 							file.write(new byte[] { (byte) '*' });
 							rowRecords.remove(info);
@@ -1025,6 +1040,9 @@ public class Backend
 			}
 			catch (final Exception e)
 			{
+				if((e instanceof SQLException)
+				&&((""+e.getMessage()).indexOf("dup")>=0))
+					throw (SQLException)e;
 				e.printStackTrace();
 				return -1;
 			}
@@ -1056,9 +1074,9 @@ public class Backend
 				if (fakeTables.get(fakeTableName) != null)
 					throw new IOException("Can not read schema: tableName is missing: " + fakeTableName);
 
-				final List<FakeColumn> columns = new Vector<FakeColumn>();
-				final List<String> keys = new Vector<String>();
-				final List<String> indexes = new Vector<String>();
+				final List<FakeColumn> columns = new ArrayList<FakeColumn>();
+				final List<String> keys = new ArrayList<String>();
+				final List<String> indexes = new ArrayList<String>();
 				while (true)
 				{
 					String line = in.readLine();
@@ -1135,12 +1153,14 @@ public class Backend
 
 				final FakeTable fakeTable = new FakeTable(fakeTableName, new File(basePath, "fakedb.data." + fakeTableName));
 				fakeTable.columns = new FakeColumn[columns.size()];
+				fakeTable.columnNames = new String[columns.size()];
 				fakeTable.columnHash = new Hashtable<String, Integer>();
 				int index = 0;
 				for (final Iterator<FakeColumn> iter = columns.iterator(); iter.hasNext(); ++index)
 				{
 					final FakeColumn current = iter.next();
 					fakeTable.columns[index] = current;
+					fakeTable.columnNames[index] = current.name;
 					fakeTable.columnHash.put(current.name, Integer.valueOf(index));
 				}
 				index = 0;
@@ -1561,35 +1581,40 @@ public class Backend
 				throw new java.sql.SQLException("unknown column " + varNames[index]);
 
 		final ComparableValue[] values = new ComparableValue[fakeTable.columns.length];
+		boolean doDupCheck = false;
 		for (int index = 0; index < sqlValues.length; index++)
 		{
 			final FakeColumn col = fakeTable.columns[vars[index]];
 			try
 			{
+				final ComparableValue newVal;
 				if ((sqlValues[index] == null) || (sqlValues[index].equals("null")))
-					values[index] = new ComparableValue(null);
+					newVal = new ComparableValue(null);
 				else
 				{
 					switch (col.type)
 					{
 					case FakeColumn.TYPE_INTEGER:
-						values[index] = new ComparableValue(Integer.valueOf(sqlValues[index]));
+						newVal = new ComparableValue(Integer.valueOf(sqlValues[index]));
 						break;
 					case FakeColumn.TYPE_LONG:
-						values[index] = new ComparableValue(Long.valueOf(sqlValues[index]));
+						newVal = new ComparableValue(Long.valueOf(sqlValues[index]));
 						break;
 					default:
-						values[index] = new ComparableValue(sqlValues[index]);
+						newVal = new ComparableValue(sqlValues[index]);
 						break;
 					}
 				}
+				if(col.keyNumber>=0)
+					doDupCheck = true;
+				values[index] = newVal;
 			}
 			catch (final Exception e)
 			{
 				throw new java.sql.SQLException("illegal value '" + sqlValues[index] + "' for column " + col.name);
 			}
 		}
-		fakeTable.updateRecord(conditions, vars, values);
+		fakeTable.updateRecord(conditions, vars, values,this,doDupCheck?this.fakeTables.get(stmt.tableName):null);
 	}
 
 	/**

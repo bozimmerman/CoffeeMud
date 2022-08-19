@@ -142,14 +142,11 @@ public class ResultSet implements java.sql.ResultSet
 		return wasNullFlag;
 	}
 
-	private Object getProperValue(int columnIndex)
+	private Object getProperValue(int columnIndex) throws SQLException
 	{
 		wasNullFlag = false;
 		if ((columnIndex < 1) || (columnIndex > showCols.length))
-		{
-			wasNullFlag = true;
-			return null;
-		}
+			throw new SQLException("Illegal column number "+columnIndex+"/"+showCols.length);
 		columnIndex = showCols[columnIndex - 1];
 		if (columnIndex == FakeColumn.INDEX_COUNT)
 			return this.countValue;
@@ -775,7 +772,7 @@ public class ResultSet implements java.sql.ResultSet
 			@Override
 			public int getColumnDisplaySize(final int column) throws SQLException
 			{
-				if ((column < 1) || (column >= showCols.length))
+				if ((column < 1) || (column > showCols.length))
 					throw new SQLException("Value out of range.");
 				if (showCols[column - 1] == FakeColumn.INDEX_COUNT)
 					return 6;
@@ -802,7 +799,7 @@ public class ResultSet implements java.sql.ResultSet
 			@Override
 			public String getColumnName(final int column) throws SQLException
 			{
-				if ((column < 1) || (column >= showCols.length))
+				if ((column < 1) || (column > showCols.length))
 					throw new SQLException("Value out of range.");
 				if (showCols[column - 1] == FakeColumn.INDEX_COUNT)
 					return "COUNT";
