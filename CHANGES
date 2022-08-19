@@ -11,7 +11,7 @@
  10. MUDGrinder Player Manager now links to a WhiteList editor.
  11. New spells: Greater Claireaudience, Greater Clairevoyance, Greater Scry
  12. Smelting, Wainwright, Papermaking, and Siegecrafting recipes updated
- 13. New account flag: NOCHARPURGE
+ 13. New account flag: NOCHARPURGE to protect all account players
  14. New base materials/raw env resources: NICKEL, PALLADIUM, VEGETABLE
  15. New thief skills: silent wear, silent hold, silent wield
  16. ResourceOverride now has more options and applications
