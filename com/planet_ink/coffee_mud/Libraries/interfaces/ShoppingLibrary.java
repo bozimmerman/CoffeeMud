@@ -31,19 +31,61 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * This library handles everything related to shopkeepers
+ * and merchants.  This includes all the buying, selling, paying,
+ * being paid, viewing, and valueing.
+ * Although there are shopkeeper mobs, there are also shopkeeper
+ * properties that can appear on anything, and so you'll often see
+ * that shopkeeper interface is considered separate from the host
+ * object that the player sees as the shop.
+ *
+ * @author Bo Zimmerman
+ *
+ */
 public interface ShoppingLibrary extends CMLibrary
 {
+	/**
+	 * Given a potential shopkeeper host, this will return
+	 * the shopkeeper shop itself.  Sometimes they are the
+	 * same, sometimes not.
+	 *
+	 * @param E the potential shopkeeper host
+	 * @return null, or the shopkeeper shop
+	 */
 	public ShopKeeper getShopKeeper(Environmental E);
+
+	/**
+	 * Returns all the shopkeeper hosts accessible by anyone in
+	 * the given room.
+	 *
+	 * @param here the room to find shopkeeper
+	 * @param notMOB an exception, or null for no exceptions
+	 * @return the list of all shopkeeper hosts
+	 */
 	public List<Environmental> getAllShopkeepers(Room here, MOB notMOB);
 
+	/**
+	 * Returns the official view message for the given item and viewer
+	 * mob.
+	 *
+	 * @see ShopKeeper.ViewType
+	 *
+	 * @param viewerM the mob viewing the irem
+	 * @param E the item being viewed
+	 * @param flags the level of information returned
+	 * @return the official 'view' of an item
+	 */
 	public String getViewDescription(MOB viewerM, Environmental E, Set<ViewType> flags);
 
 	/**
+	 * Given a BUY message string, will look for the FOR syntax
+	 * and return the mob in the same room as the agent buyer
+	 * with that name, or null.
 	 *
-	 *
-	 * @param buyer
-	 * @param message
-	 * @return
+	 * @param buyer the agent buyer in the room
+	 * @param message the buy message string
+	 * @return the mob in the room the item is really for
 	 */
 	public MOB parseBuyingFor(MOB buyer, String message);
 
@@ -90,7 +132,7 @@ public interface ShoppingLibrary extends CMLibrary
 	 * @param product the proposed produce to sell to the shop
 	 * @param shopKeeper the shop itself
 	 * @param shop the inventory object of the shop
-	 * @param includeSalesTax
+	 * @param includeSalesTax true to include sales tax in the price, false otherwise
 	 * @return the selling price that this shopkeeper will put on the item
 	 */
 	public ShopKeeper.ShopPrice sellingPrice(MOB sellerShopM, MOB buyerCustM, Environmental product,
@@ -303,6 +345,7 @@ public interface ShoppingLibrary extends CMLibrary
 	 * @param products all items in the item product
 	 * @param seller the seller
 	 * @param mobFor the buyer
+	 * @return true if the purchase went through, false otherwise
 	 */
 	public boolean purchaseItems(Item baseProduct, List<Environmental> products, MOB seller, MOB mobFor);
 
@@ -317,6 +360,7 @@ public interface ShoppingLibrary extends CMLibrary
 	 * @param seller the seller
 	 * @param shop the seller's shop
 	 * @param mobFor the buyer
+	 * @return true if the purchase went through, false otherwise
 	 */
 	public boolean purchaseMOB(MOB product, MOB seller, ShopKeeper shop, MOB mobFor);
 

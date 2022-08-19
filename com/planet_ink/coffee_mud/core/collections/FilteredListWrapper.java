@@ -29,7 +29,7 @@ import javax.naming.OperationNotSupportedException;
  *
  * @author Bo Zimmerman
  *
- * @param <T>
+ * @param <T> the type of list to wrap
  */
 public class FilteredListWrapper<T> implements List<T>
 {
