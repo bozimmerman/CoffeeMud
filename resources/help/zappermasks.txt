@@ -54,6 +54,7 @@
 +GROUPSIZE X (<WORD> those in groups smaller than X)
 -AREA +thatarea "+my areaname" (<WORD> all except those in listed area)
 +AREA -thatarea "-my areaname" (<WORD> only those in listed area)
+-PARENTAREA +PARENTAREA (As +-AREA but checks parents)
 -HOME "+area name" (<WORD> all except those from listed home/beacon area)
 +HOME "-my areaname" (<WORD> only those from listed home/beacon area)
 -ISHOME (<WORD> all npcs not currently in their home/beacon areas)
@@ -88,7 +89,7 @@
 +ABILITY X (<WORD> those with magical ability greater than X)
 -HOUR/-MONTH/-DAY(OFYEAR) +X (<WORD> always, unless the hr/mn/day is X)
 +HOUR/+MONTH/+DAY(OFYEAR) -X (<WORD> those only when the hr/mn/day is X)
-     /+-WEEK(OFYEAR)/+-YEAR  ( ... also supports "Xnd Y" and "X of Y"
+     /+-WEEK(OFYEAR)/+-YEAR  ( ... also supports "Xnd Y" and "X of Y")
 -SEASON +FALL (<WORD> those only when season is FALL)
 +SEASON -SPRING (<WORD> those whenever the season is SPRING)
 -WEATHER +DROUGHT (<WORD> those only when weather is DROUGHT)

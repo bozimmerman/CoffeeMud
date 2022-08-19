@@ -2347,6 +2347,18 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						v=appendCommaList(buf,V,v,"+");
 					}
 					break;
+				case _PARENTAREA:
+					{
+						buf.append(L((skipFirstWord?"The":"Requires the")+" following general area"+(multipleQuals(V,v,"+")?"s":"")+": "));
+						v=appendCommaList(buf,V,v,"+");
+					}
+					break;
+				case PARENTAREA:
+					{
+						buf.append(L("Disallows the following general area"+(multipleQuals(V,v,"-")?"s":"")+": "));
+						v=appendCommaList(buf,V,v,"-");
+					}
+					break;
 				case AREABLURB: // +Areablurb
 					{
 						buf.append(L("Disallows the following area blurb"+(multipleQuals(V,v,"-")?"s":"")+": "));
@@ -3535,6 +3547,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					}
 					break;
 				case _AREA: // -Area
+				case _PARENTAREA: // -parentarea
 					buildRoomFlag=true;
 				//$FALL-THROUGH$
 				case _TATTOO: // -Tattoos
@@ -3766,6 +3779,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					}
 					break;
 				case AREA: // +Area
+				case PARENTAREA: // +parentarea
 					buildRoomFlag=true;
 				//$FALL-THROUGH$
 				case TATTOO: // +Tattoos
@@ -6824,19 +6838,22 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						boolean found=false;
 						if(room!=null)
 						{
-							final Area A=room.getArea();
+							final String aName1 = room.getArea().Name();
+							final String aName2 = room.getArea().name();
 							for(final Object o : entry.parms())
 							{
 								if(((String)o).startsWith("*"))
 								{
-									if(A.Name().toLowerCase().endsWith(((String)o).substring(1).toLowerCase()))
+									if((aName1.toLowerCase().endsWith(((String)o).substring(1).toLowerCase()))
+									||(aName2.toLowerCase().endsWith(((String)o).substring(1).toLowerCase())))
 									{
 										found = true;
 										break;
 									}
 								}
 								else
-								if(A.Name().equalsIgnoreCase((String)o))
+								if((aName1.equalsIgnoreCase((String)o))
+								||(aName2.equalsIgnoreCase((String)o)))
 								{
 									found = true;
 									break;
@@ -6851,16 +6868,82 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					{
 						if(room!=null)
 						{
-							final Area A=room.getArea();
+							final String aName1 = room.getArea().Name();
+							final String aName2 = room.getArea().name();
 							for(final Object o : entry.parms())
 							{
 								if(((String)o).startsWith("*"))
 								{
-									if(A.Name().toLowerCase().endsWith(((String)o).substring(1).toLowerCase()))
+									if((aName1.toLowerCase().endsWith(((String)o).substring(1).toLowerCase()))
+									||(aName2.toLowerCase().endsWith(((String)o).substring(1).toLowerCase())))
 										return false;
 								}
 								else
-								if(A.Name().equalsIgnoreCase((String)o))
+								if((aName1.equalsIgnoreCase((String)o))||(aName2.equalsIgnoreCase((String)o)))
+									return false;
+							}
+						}
+						break;
+					}
+				case _PARENTAREA: // -parentarea
+					{
+						boolean found=false;
+						if(room!=null)
+						{
+							final Area A=room.getArea();
+							final String aName1 = A.Name();
+							final String aName2 = A.name();
+							for(final Object o : entry.parms())
+							{
+								if(((String)o).startsWith("*"))
+								{
+									if((aName1.toLowerCase().endsWith(((String)o).substring(1).toLowerCase()))
+									||(aName2.toLowerCase().endsWith(((String)o).substring(1).toLowerCase())))
+									{
+										found = true;
+										break;
+									}
+								}
+								else
+								if((aName1.equalsIgnoreCase((String)o))
+								||(aName2.equalsIgnoreCase((String)o)))
+								{
+									found = true;
+									break;
+								}
+								else
+								if(A.isParentRecurse((String)o))
+								{
+									found = true;
+									break;
+								}
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
+				case PARENTAREA: // +parentarea
+					{
+						if(room!=null)
+						{
+							final Area A=room.getArea();
+							final String aName1 = A.Name();
+							final String aName2 = A.name();
+							for(final Object o : entry.parms())
+							{
+								if(((String)o).startsWith("*"))
+								{
+									if((aName1.toLowerCase().endsWith(((String)o).substring(1).toLowerCase()))
+									||(aName2.toLowerCase().endsWith(((String)o).substring(1).toLowerCase())))
+										return false;
+								}
+								else
+								if((aName1.equalsIgnoreCase((String)o))
+								||(aName2.equalsIgnoreCase((String)o)))
+									return false;
+								else
+								if(A.isParentRecurse((String)o))
 									return false;
 							}
 						}
@@ -7818,6 +7901,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _VALUE: // -value
 				case _AREA: // -area
 				case AREA: // +area
+				case PARENTAREA: // +parentarea
+				case _PARENTAREA: // -parentarea
 				case _AREAINSTANCE: // -areainstance
 				case AREAINSTANCE: // +areainstance
 				case _AREABLURB: // -areablurb

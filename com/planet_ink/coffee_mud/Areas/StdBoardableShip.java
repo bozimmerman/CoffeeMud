@@ -1799,6 +1799,12 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 	}
 
 	@Override
+	public boolean isChildRecurse(final String named)
+	{
+		return false;
+	}
+
+	@Override
 	public boolean isChild(final String named)
 	{
 		return false;
@@ -1895,6 +1901,20 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 			final Area A=a.next();
 			if((A.name().equalsIgnoreCase(named))
 			||(A.Name().equalsIgnoreCase(named)))
+				return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean isParentRecurse(final String named)
+	{
+		for (final Iterator<Area> a = getParentsIterator(); a.hasNext();)
+		{
+			final Area A = a.next();
+			if (A.Name().equalsIgnoreCase(named)||A.name().equalsIgnoreCase(named))
+				return true;
+			if(A.isParentRecurse(named))
 				return true;
 		}
 		return false;

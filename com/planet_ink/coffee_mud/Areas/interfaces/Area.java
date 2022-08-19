@@ -557,6 +557,15 @@ public interface Area extends Economics, PhysicalAgent, Places
 	public boolean isChild(String named);
 
 	/**
+	 * Returns whether the Area named is a Child of this Area,
+	 * or child of a child of this area, recursively.
+	 * A Child Area passes down certain behaviors and property effects to its children
+	 * @param named the name of an Area
+	 * @return whether the area named is a Child of this one
+	 */
+	public boolean isChildRecurse(String named);
+
+	/**
 	 * Designates the given Area object as a Child of this one.
 	 * A Child Area inherets certain behaviors and property effects from its Parents
 	 * @param area an Area object
@@ -616,6 +625,15 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return whether the area named is a Parent of this one
 	 */
 	public boolean isParent(String named);
+
+	/**
+	 * Returns whether the Area named is a Parent of this Area,
+	 * or parent of a parent of this area, recursively.
+	 * A Parent Area passes down certain behaviors and property effects to its children
+	 * @param named the name of an Area
+	 * @return whether the area named is a Parent of this one
+	 */
+	public boolean isParentRecurse(String named);
 
 	/**
 	 * Designates the given Area object as a Parent of this one.

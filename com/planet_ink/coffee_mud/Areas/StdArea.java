@@ -2528,6 +2528,20 @@ public class StdArea implements Area
 	}
 
 	@Override
+	public boolean isChildRecurse(final String named)
+	{
+		for (final Iterator<Area> a = getChildrenIterator(); a.hasNext();)
+		{
+			final Area A = a.next();
+			if (A.Name().equalsIgnoreCase(named)||A.name().equalsIgnoreCase(named))
+				return true;
+			if(A.isChildRecurse(named))
+				return true;
+		}
+		return false;
+	}
+
+	@Override
 	public void addChild(final Area area)
 	{
 		if (!canChild(area))
@@ -2613,6 +2627,20 @@ public class StdArea implements Area
 		{
 			final Area A = a.next();
 			if (A == area)
+				return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean isParentRecurse(final String named)
+	{
+		for (final Iterator<Area> a = getParentsIterator(); a.hasNext();)
+		{
+			final Area A = a.next();
+			if (A.Name().equalsIgnoreCase(named)||A.name().equalsIgnoreCase(named))
+				return true;
+			if(A.isParentRecurse(named))
 				return true;
 		}
 		return false;
