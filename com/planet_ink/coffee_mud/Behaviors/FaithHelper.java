@@ -127,7 +127,7 @@ public class FaithHelper extends StdBehavior
 				if(M != null)
 					deityName=M.Name();
 				msg.source().baseCharStats().setWorshipCharID(deityName);
-				msg.source().charStats().setWorshipCharID(deityName);
+				msg.source().recoverCharStats();
 			}
 			return;
 		}

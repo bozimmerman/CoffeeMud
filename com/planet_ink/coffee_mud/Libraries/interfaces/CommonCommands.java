@@ -620,6 +620,15 @@ public interface CommonCommands extends CMLibrary
 	public String getExamineItemString(MOB mob, Item item);
 
 	/**
+	 * This method builds a string of the things a container
+	 * can contain..
+	 *
+	 * @param E the container containing things
+	 * @return the message of things the container contains
+	 */
+	public String makeContainerTypes(final Container E);
+
+	/**
 	 * Returns true if the given message reflects something that would improve
 	 * someone's hygiene, such as washing.
 	 *

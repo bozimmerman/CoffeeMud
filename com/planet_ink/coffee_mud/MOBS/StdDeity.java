@@ -92,7 +92,7 @@ public class StdDeity extends StdMOB implements Deity
 		deity.rituals.setName(rituals.name());
 		return deity;
 	}
-	
+
 	private static class WorshipService
 	{
 		public MOB			cleric				= null;
@@ -665,6 +665,17 @@ public class StdDeity extends StdMOB implements Deity
 		return false;
 	}
 
+	@Override
+	public void recoverCharStats()
+	{
+		super.recoverCharStats();
+		if(charStats.getMyDeity()==this)
+		{
+			if(baseCharStats.getMyDeity()==this)
+				baseCharStats.setWorshipCharID("");
+			charStats.setWorshipCharID("");
+		}
+	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)

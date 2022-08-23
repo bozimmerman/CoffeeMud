@@ -291,8 +291,18 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 					final List<Item> V=cookingPot.getDeepContents();
 					for(int v=0;v<V.size();v++)
 						V.get(v).destroy();
-					if((cookingPot instanceof Drink)&&(buildingI instanceof Drink))
-						((Drink)cookingPot).setLiquidRemaining(0);
+					if(cookingPot instanceof Drink)
+					{
+						if(buildingI.phyStats().weight()>0)
+						{
+							if(((Drink)cookingPot).liquidRemaining()>buildingI.phyStats().weight())
+								((Drink)cookingPot).setLiquidRemaining(((Drink)cookingPot).liquidRemaining()-buildingI.phyStats().weight());
+							else
+								((Drink)cookingPot).setLiquidRemaining(0);
+						}
+						else
+							((Drink)cookingPot).setLiquidRemaining(0);
+					}
 					if(!aborted)
 					{
 						final CMMsg msg=CMClass.getMsg(mob,buildingI,this,CMMsg.TYP_ITEMGENERATED|CMMsg.MASK_ALWAYS,null);
@@ -480,10 +490,15 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 				&&((!honorHerbs())||(!ingredient2.toUpperCase().startsWith("HERBS/")))
 				&&(!ingredient2.toUpperCase().startsWith("WATER/")))
 				{
-					String content=contents[i];
-					if(content.indexOf('/')>=0)
-						content=content.substring(0,content.indexOf('/'));
-					list.add(content);
+					final int x=ingredient2.indexOf('/');
+					final int rsc = (x>0)?RawMaterial.CODES.FIND_IgnoreCase(ingredient2.substring(0,x))&RawMaterial.MATERIAL_MASK:-1;
+					if(rsc != RawMaterial.MATERIAL_LIQUID)
+					{
+						String content=contents[i];
+						if(content.indexOf('/')>=0)
+							content=content.substring(0,content.indexOf('/'));
+						list.add(content);
+					}
 				}
 			}
 			codedList=new Ingredients(amountMade, list);

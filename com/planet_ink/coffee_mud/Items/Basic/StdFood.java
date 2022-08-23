@@ -184,8 +184,9 @@ public class StdFood extends StdItem implements Food
 				final Ability A=CMClass.getAbility("Soiled");
 				if(A!=null)
 				{
-					((Container)msg.target()).addNonUninvokableEffect(A);
+					((Container)msg.target()).addEffect(A);
 					A.setMiscText("DIRTY=TRUE");
+					A.makeLongLasting();
 				}
 			}
 		}

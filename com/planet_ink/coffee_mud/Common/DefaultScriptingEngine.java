@@ -4888,7 +4888,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							pct=pStats.percentVisited(M,A);
 						else
 						{
-							final Room P=getRoom(arg2, lastKnownLocation);
+							final Room P=getRoom(where, lastKnownLocation);
 							if(P==null)
 							{
 								logError(scripted,"EXPLORED","Unknown Area",where);

@@ -277,8 +277,6 @@ public class DefaultTriggerer implements Triggerer
 							}
 						}
 					}
-					if((previousConnector==TriggConnector.OR)&&(prevDT!=null))
-						prevDT.orConnect=DT;
 					if(T==null)
 					{
 						if(errors!=null)
@@ -549,11 +547,13 @@ public class DefaultTriggerer implements Triggerer
 					}
 					if(DT==null)
 						return;
-					if(div==div1)
-					{
-						previousConnector=TriggConnector.AND;
+					if(previousConnector==TriggConnector.AND)
 						putHere.add(DT);
-					}
+					else
+					if(prevDT!=null)
+						prevDT.orConnect=DT;
+					if(div==div1)
+						previousConnector=TriggConnector.AND;
 					else
 						previousConnector=TriggConnector.OR;
 					prevDT=DT;

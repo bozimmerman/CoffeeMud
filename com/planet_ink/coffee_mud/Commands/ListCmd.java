@@ -356,6 +356,78 @@ public class ListCmd extends StdCommand
 		return "?";
 	}
 
+	protected String getSpecialItemTags(final Item I)
+	{
+		final StringBuilder xml = new StringBuilder("");
+		xml.append("|Weight="+I.phyStats().weight());
+		if((I instanceof RawMaterial)&&(((RawMaterial)I).getSubType().length()>0))
+			xml.append("|Material="+((RawMaterial)I).getSubType().toLowerCase());
+		else
+			xml.append("|Material="+RawMaterial.CODES.NAME(I.material()).toLowerCase());
+		if(I instanceof Container)
+		{
+			if(((Container)I).capacity()>=I.phyStats().weight())
+				xml.append("|Capacity="+(((Container)I).capacity() - ((Container)I).basePhyStats().weight()));
+			if(((Container)I).capacity()>=I.phyStats().weight())
+				xml.append("|Contains="+CMLib.commands().makeContainerTypes((Container)I));
+		}
+		if((I instanceof Drink)
+		&&(!CMath.bset(I.material(), RawMaterial.MATERIAL_LIQUID))
+		&&(!CMath.bset(I.material(), RawMaterial.MATERIAL_GAS)))
+		{
+			xml.append("|LiquidRemaining="+((Drink)I).liquidRemaining());
+			xml.append("|Quench="+((Drink)I).thirstQuenched());
+		}
+		if((I instanceof Food)
+		&&(((Food)I).nourishment()>0))
+		{
+			xml.append("|Nourishment="+((Food)I).nourishment());
+			xml.append("|BiteSize="+((Food)I).bite());
+		}
+		if(I instanceof Ammunition)
+			xml.append("|AmmoType="+((Ammunition)I).ammunitionType());
+		if(I instanceof Weapon)
+		{
+			xml.append("|WeaponHands=");
+			if((I.rawLogicalAnd())&&CMath.bset(I.rawProperLocationBitmap(),Wearable.WORN_WIELD|Wearable.WORN_HELD))
+				xml.append("TWO");
+			else
+				xml.append("ONE");
+			xml.append("|WeaponClass="+CMStrings.capitalizeAndLower(Weapon.CLASS_DESCS[((Weapon)I).weaponClassification()]));
+			xml.append("|DamageType="+CMStrings.capitalizeAndLower(Weapon.TYPE_DESCS[((Weapon)I).weaponDamageType()]));
+			if((I instanceof AmmunitionWeapon)
+			&& ((AmmunitionWeapon)I).requiresAmmunition())
+				xml.append("|AmmoType="+((AmmunitionWeapon)I).ammunitionType());
+		}
+		if(I instanceof Armor)
+		{
+			if(I.phyStats().height()>0)
+				xml.append("|Size="+I.phyStats().height());
+			if((I.rawProperLocationBitmap()!=Wearable.WORN_HELD)&&(I.rawProperLocationBitmap()!=(Wearable.WORN_HELD|Wearable.WORN_WIELD)))
+			{
+				xml.append("|WornOn=");
+				final Wearable.CODES codes = Wearable.CODES.instance();
+				for(final long wornCode : codes.all())
+				{
+					if((wornCode != Wearable.IN_INVENTORY)
+					&&(CMath.bset(I.rawProperLocationBitmap(),wornCode)))
+						xml.append(codes.name(wornCode)).append(",");
+				}
+				if(xml.charAt(xml.length()-1)==',')
+					xml.delete(xml.length()-1, xml.length());
+				final short layer=((Armor)I).getClothingLayer();
+				if(layer < 0)
+					xml.append("|Layer=BELOW");
+				else
+				if(layer > 0)
+					xml.append("|Layer=OVER");
+				else
+					xml.append("|Layer=");
+			}
+		}
+		return xml.toString();
+	}
+
 	public String getAreaStuffLine(final Room R, final MOB mob, final Environmental E, final Environmental cE,
 								   final WikiFlag wiki, final int col1, final int roomNameCol, final Set<String> uniq,
 								   final ShopKeeper SK, final boolean shopOnly)
@@ -387,8 +459,10 @@ public class ListCmd extends StdCommand
 			line.append("|Description="+CMStrings.replaceAllofAny(CMStrings.removeColors(E.description()),BAD_WIKI_CHARS,GOOD_WIKI_CHARS));
 			if(E instanceof Physical)
 				line.append("|Level="+((Physical)E).phyStats().level());
-			for(final String stat : E.getStatCodes())
-				line.append("|"+stat+"="+CMStrings.replaceAllofAny(CMStrings.removeColors(E.getStat(stat)),BAD_WIKI_CHARS,GOOD_WIKI_CHARS));
+			if(E instanceof Item)
+				line.append(this.getSpecialItemTags((Item)E));
+			//for(final String stat : E.getStatCodes())
+			//	line.append("|"+stat+"="+CMStrings.replaceAllofAny(CMStrings.removeColors(E.getStat(stat)),BAD_WIKI_CHARS,GOOD_WIKI_CHARS));
 			line.append("}}\n\r");
 			return line.toString();
 		}
