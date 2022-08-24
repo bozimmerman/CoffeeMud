@@ -1832,7 +1832,7 @@ public class Spell_Wish extends Spell
 					{
 					case 1001:
 						((MOB)target).setTrains(((MOB)target).getTrains()-1);
-						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 has lost a training point.",target.name()));
+						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 has lost a training session.",target.name()));
 						break;
 					case 1002:
 						((MOB)target).setPractices(((MOB)target).getPractices()-1);
@@ -1891,7 +1891,7 @@ public class Spell_Wish extends Spell
 							mob.setExperience(CMLib.leveler().getLevelExperience(mob, mob.basePhyStats().level()+1));
 						}
 						((MOB)target).setTrains(((MOB)target).getTrains()+1);
-						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 has gained a training point.",target.name()));
+						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 has gained a training session.",target.name()));
 						break;
 					case 1002:
 						baseLoss+=((CMLib.leveler().getLevelExperienceJustThisLevel(mob, mob.basePhyStats().level())/3));

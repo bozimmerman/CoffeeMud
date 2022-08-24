@@ -80,7 +80,8 @@ public class Learn extends StdCommand
 		}
 
 		final String what=CMParms.combine(commands,0);
-		final List<String> V=Train.getAllPossibleThingsToTrainFor();
+		final Train trainCmd = (Train)CMClass.getCommand("Train");
+		final List<String> V=trainCmd.getAllPossibleThingsToTrainFor();
 		if(V.contains(what.toUpperCase().trim()))
 		{
 			final Vector<String> CC=CMParms.parse(sayTo+" "+teacherName+" I would like to be trained in "+what);

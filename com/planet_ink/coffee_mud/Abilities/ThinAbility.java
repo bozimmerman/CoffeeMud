@@ -155,9 +155,9 @@ public class ThinAbility implements Ability
 	}
 
 	@Override
-	public ExpertiseLibrary.SkillCost getTrainingCost(final MOB mob)
+	public ExpertiseLibrary.CostManager getTrainingCost(final MOB mob)
 	{
-		return CMLib.expertises().createNewSkillCost(ExpertiseLibrary.CostType.TRAIN, Double.valueOf(1.0));
+		return CMLib.expertises().createCostManager(ExpertiseLibrary.CostType.TRAIN, Double.valueOf(1.0));
 	}
 
 	@Override

@@ -157,23 +157,23 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @see MOB#setBaseCharStats(CharStats)
 	 */
 	public void recoverCharStats();
-	
+
 	/**
 	 * Returns the Triggerer for this mob.
-	 * 
+	 *
 	 * @see Triggerer
 	 * @see MOB#setTriggerer(Triggerer)
-	 * 
+	 *
 	 * @return the Triggerer for this mob.
 	 */
 	public Triggerer triggerer();
-	
+
 	/**
 	 * Sets the Triggerer for this mob.
-	 * 
+	 *
 	 * @see Triggerer
 	 * @see MOB#triggerer()
-	 * 
+	 *
 	 * @param triggerer the Triggerer for this mob.
 	 */
 	public void setTriggerer(final Triggerer triggerer);
@@ -483,16 +483,16 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public void setPractices(int newVal);
 
 	/**
-	 * Returns the number of training points this mob has
+	 * Returns the number of training sessions this mob has
 	 * @see MOB#setTrains(int)
-	 * @return the number of training points this mob has
+	 * @return the number of training sessions this mob has
 	 */
 	public int getTrains();
 
 	/**
-	 * Sets the number of training points this mob has
+	 * Sets the number of training sessions this mob has
 	 * @see MOB#getTrains()
-	 * @param newVal the number of training points this mob has
+	 * @param newVal the number of training sessions this mob has
 	 */
 	public void setTrains(int newVal);
 

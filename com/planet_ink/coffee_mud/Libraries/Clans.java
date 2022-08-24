@@ -1711,14 +1711,14 @@ public class Clans extends StdLibrary implements ClanManager
 					}
 					final Room donateR=(winnerC.getDonation()==null||winnerC.getDonation().length()==0)?null:CMLib.map().getRoom(winnerC.getDonation());
 					if(donateR == null)
-						winnerC.clanAnnounce(L("The @x1 @x2 would have been awarded @x3 training point(s) at their donation room, but there isn't one.",winnerC.getGovernmentName(),winnerC.name(),""+amt));
+						winnerC.clanAnnounce(L("The @x1 @x2 would have been awarded @x3 training session(s) at their donation room, but there isn't one.",winnerC.getGovernmentName(),winnerC.name(),""+amt));
 					else
 					{
 						final List<Item> items=new ArrayList<Item>(num);
 						for(int i=0;i<num;i++)
 						{
 							final Pill P=(Pill)CMClass.getMiscMagic("GenSuperPill");
-							P.setName("a training point for "+winnerC.getGovernmentName()+" "+winnerC.name());
+							P.setName("a training session for "+winnerC.getGovernmentName()+" "+winnerC.name());
 							P.setDisplayText(P.name()+" is just sitting here");
 							P.setMiscText("TRAIN+1");
 							final Ability A=CMClass.getAbility("Prop_HaveZapper");
@@ -1729,7 +1729,7 @@ public class Clans extends StdLibrary implements ClanManager
 						}
 						for(int i=0;i<items.size();i++)
 							donateR.addItem(items.get(i), Expire.Never);
-						winnerC.clanAnnounce(L("The @x1 @x2 has been awarded @x3 training point(s) at their donation room.",winnerC.getGovernmentName(),winnerC.name(),""+amt));
+						winnerC.clanAnnounce(L("The @x1 @x2 has been awarded @x3 training session(s) at their donation room.",winnerC.getGovernmentName(),winnerC.name(),""+amt));
 					}
 				}
 			}

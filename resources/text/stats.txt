@@ -1,4 +1,4 @@
-^yYour stats below reflect your physical and mental gifts.  They can be boosted through the use of ^HTraining points^?, which are granted at first level, and are gained at a rate of one per level.  These training points are also needed to gain new spells and abilities which your class qualifies for, but does not get at first level.^N
+^yYour stats below reflect your physical and mental gifts.  They can be boosted through the use of ^HTraining sessions^?, which are granted at first level, and are gained at a rate of one per level.  These training sessions are also needed to gain new spells and abilities which your class qualifies for, but does not get at first level.^N
 
 ^ZStrength:^.^? Physical strength and fighting prowess is reflected in strength. Fighter-types love their muscles.
 ^ZIntelligence:^.^? Memory and concentration, and the ability to gain greater proficiency in skills is reflected in Intelligence. Mages require intellect.

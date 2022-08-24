@@ -249,7 +249,8 @@ public class CMProps extends Properties
 		FORMULA_CLASSMVADD,
 		FORMULA_MAXCARRY,
 		FORMULA_MAXITEMS,
-		FORMULA_MAXFOLLOW
+		FORMULA_MAXFOLLOW,
+		TRAINCOSTS
 	}
 
 	public final static int DEFAULT_MOB_HP_BASE = 11;
@@ -2411,6 +2412,7 @@ public class CMProps extends Properties
 		setVar(Str.RPAWARDS,getStr("RPAWARDS",""));
 		parseRPAwards(getVar(Str.RPAWARDS));
 		setVar(Str.LOGOUTMASK,getStr("LOGOUTMASK",""));
+		setVar(Str.TRAINCOSTS,getStr("TRAINCOSTS","HITPOINTS 10 1 TRAIN, MANA 20 1 TRAIN, MOVES 20 1 TRAIN, GAIN 1 7 PRACTICE, PRACTICES 5 1 TRAIN"));
 		String ppath=getStr("PRIVATERESOURCEPATH","");
 		if(!ppath.endsWith("/"))
 			ppath += "/";

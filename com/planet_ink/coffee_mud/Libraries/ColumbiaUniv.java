@@ -2,7 +2,7 @@ package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.CostType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
-import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.SkillCost;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.CostManager;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMSecurity.SecFlag;
@@ -638,9 +638,9 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 
 	@Override
-	public SkillCost createNewSkillCost(final CostType costType, final Double value)
+	public CostManager createCostManager(final CostType costType, final Double value)
 	{
-		return new SkillCost()
+		return new CostManager()
 		{
 			/**
 			 * Returns a simple description of the Type of
@@ -1321,7 +1321,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			private MaskingLibrary.CompiledZMask		compiledListMask	= null;
 			private final ExpertiseDefinition			parent				= null;
 			private MaskingLibrary.CompiledZMask		compiledFinalMask	= null;
-			private final List<SkillCost>				costs				= new LinkedList<SkillCost>();
+			private final List<CostManager>				costs				= new LinkedList<CostManager>();
 			private final Set<XType>					xTypes				= new HashSet<XType>();
 
 			@Override
@@ -1474,14 +1474,14 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			@Override
 			public void addCost(final CostType type, final Double value)
 			{
-				costs.add(createNewSkillCost(type,value));
+				costs.add(createCostManager(type,value));
 			}
 
 			@Override
 			public String costDescription()
 			{
 				final StringBuffer costStr=new StringBuffer("");
-				for(final SkillCost cost : costs)
+				for(final CostManager cost : costs)
 					costStr.append(cost.requirements(null)).append(", ");
 				if(costStr.length()==0)
 					return "";
@@ -1491,7 +1491,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			@Override
 			public boolean meetsCostRequirements(final MOB mob)
 			{
-				for(final SkillCost cost : costs)
+				for(final CostManager cost : costs)
 				{
 					if(!cost.doesMeetCostRequirements(mob))
 						return false;
@@ -1502,7 +1502,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			@Override
 			public void spendCostRequirements(final MOB mob)
 			{
-				for(final SkillCost cost : costs)
+				for(final CostManager cost : costs)
 					cost.spendSkillCost(mob);
 			}
 

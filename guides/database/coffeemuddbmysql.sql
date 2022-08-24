@@ -99,7 +99,7 @@ ALTER TABLE CMPOLL ADD ( UNIQUE KEY (CMNAME) );
   CMEXLV  : Experience needed for next level
   CMWORS  : Deity/Worshipped ID
   CMPRAC  : Practice points
-  CMTRAI  : Training points
+  CMTRAI  : Training sessions
   CMAGEH  : Minutes played
   CMGOLD  : (Deprecated) Amount of gold
   CMWIMP  : Wimpy points 

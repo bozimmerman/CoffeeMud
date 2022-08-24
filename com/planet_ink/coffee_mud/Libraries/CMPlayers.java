@@ -1490,7 +1490,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		if(mask.hashCode() != this.autoPurgeHash)
 		{
 			final int lastLevel=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)+100;
-			final long[][] presorted=CMLib.utensils().compileConditionalRange(CMParms.parseCommas(mask.trim(),true), 2, 0, lastLevel);
+			final List<String> entries = CMParms.parseCommas(mask.trim(),true);
+			final long[][] presorted=CMLib.utensils().compileConditionalRange(entries, 2, 0, lastLevel);
 			autoPurgeDaysLevels=new long[lastLevel+1];
 			prePurgeLevels=new long[lastLevel+1];
 			for (int i = 0; i < autoPurgeDaysLevels.length; i++)

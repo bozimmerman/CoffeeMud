@@ -66,7 +66,7 @@ public interface ExpertiseLibrary extends CMLibrary
 	 * @see ExpertiseLibrary#numStages(String)
 	 * @see ExpertiseLibrary#getDefinition(String)
 	 * @see ExpertiseLibrary#definitions()
-	 * @see ExpertiseLibrary#createNewSkillCost(CostType, Double)
+	 * @see ExpertiseLibrary#createCostManager(CostType, Double)
 	 * @see ExpertiseLibrary#confirmExpertiseLine(String, String, boolean)
 	 *
 	 * @param codedLine the coded expertise line
@@ -206,7 +206,7 @@ public interface ExpertiseLibrary extends CMLibrary
 	 * Validate the syntax of a coded expertise definition line,
 	 * returning a readable error if found.
 	 * @see ExpertiseLibrary#addModifyDefinition(String, boolean)
-	 * @see ExpertiseLibrary#createNewSkillCost(CostType, Double)
+	 * @see ExpertiseLibrary#createCostManager(CostType, Double)
 	 *
 	 * @param row the coded definition
 	 * @param ID the expertise definition id code
@@ -225,7 +225,7 @@ public interface ExpertiseLibrary extends CMLibrary
 	 * @param value the amount of the type
 	 * @return the SkillCost object
 	 */
-	public SkillCost createNewSkillCost(CostType costType, Double value);
+	public CostManager createCostManager(CostType costType, Double value);
 
 	/**
 	 * Given a mob and expertise id, this method will return the definition for the
@@ -666,7 +666,7 @@ public interface ExpertiseLibrary extends CMLibrary
 	 * Class for the cost of a skill, or similar things perhaps
 	 * @author Bo Zimmerman
 	 */
-	public interface SkillCost
+	public interface CostManager
 	{
 		/**
 		 * Returns a simple description of the Type of

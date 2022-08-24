@@ -105,7 +105,7 @@ public class Wizard extends Mage
 	@Override
 	public String getOtherBonusDesc()
 	{
-		return L("Can memorize any spell for casting without expending a training point.");
+		return L("Can memorize any spell for casting without expending a training session.");
 	}
 
 	@Override

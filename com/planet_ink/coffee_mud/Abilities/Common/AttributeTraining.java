@@ -160,7 +160,7 @@ public class AttributeTraining extends CommonSkill
 							int trainsRequired=CMLib.login().getTrainingCost(follower, attribute, false)*costMultiplier;
 							if(trainsRequired>=0)
 								trainsRequired+=costAdder;
-							commonTell(mob,L("The training cost @x1 @x2 training points.",follower.name(),""+trainsRequired));
+							commonTell(mob,L("The training cost @x1 @x2 training sessions.",follower.name(),""+trainsRequired));
 							if(trainsRequired > follower.getTrains())
 								follower.setTrains(0);
 							else
@@ -272,13 +272,13 @@ public class AttributeTraining extends CommonSkill
 			{
 				if(trainsRequired>1)
 				{
-					commonTell(mob,L("@x1 requires @x1 training points to do that.",M.name(mob),""+trainsRequired));
+					commonTell(mob,L("@x1 requires @x1 training session(s) to do that.",M.name(mob),""+trainsRequired));
 					return false;
 				}
 				else
 				if(trainsRequired==1)
 				{
-					commonTell(mob,L("@x1 requires @x1 training point to do that.",M.name(mob),""+trainsRequired));
+					commonTell(mob,L("@x1 requires @x1 training session(s) to do that.",M.name(mob),""+trainsRequired));
 					return false;
 				}
 			}

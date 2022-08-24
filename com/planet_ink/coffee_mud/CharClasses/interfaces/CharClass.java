@@ -340,7 +340,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	public int getPracsFirstLevel();
 
 	/**
-	 * Returns the number of training points received by members of
+	 * Returns the number of training sessions received by members of
 	 * this class when they are first created.
 	 * @return the number of initial trains to grant
 	 */
@@ -456,7 +456,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return a text description of weapon retrictions
 	 */
 	public String getWeaponLimitDesc();
-	
+
 	/**
 	 * Returns a text description of any armor restrictions
 	 * imposed by this class upon its members.
@@ -470,7 +470,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return a text description of misc retrictions
 	 */
 	public String getOtherLimitsDesc();
-	
+
 	/**
 	 * Returns a text description of any bonus properties
 	 * granted by this class to its members.

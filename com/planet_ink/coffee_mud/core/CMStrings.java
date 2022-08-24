@@ -1749,7 +1749,7 @@ public class CMStrings
 	{
 		if(s==null)
 			return "";
-		if(s.indexOf('^')<0)
+		if((s.indexOf('^')<0)&&(s.indexOf((char)27)<0))
 			return s;
 		final StringBuilder str=new StringBuilder(s);
 		int count = 0;
@@ -1761,6 +1761,12 @@ public class CMStrings
 			case 'm':
 				if(colorStart>=0)
 					colorStart=-1;
+				else
+				{
+					count++;
+					if(count >= thisMuch)
+						return str.substring(0,i+1);
+				}
 				break;
 			case (char) 27:
 				colorStart = i;
@@ -1866,7 +1872,7 @@ public class CMStrings
 	{
 		if(s==null)
 			return "";
-		if(s.indexOf('^')<0)
+		if((s.indexOf('^')<0)&&(s.indexOf((char)27)<0))
 			return s;
 		final StringBuilder str=new StringBuilder(s);
 		int colorStart=-1;
@@ -1878,6 +1884,7 @@ public class CMStrings
 				if(colorStart>=0)
 				{
 					str.delete(colorStart,i+1);
+					i=colorStart-1;
 					colorStart=-1;
 				}
 				break;
@@ -2117,75 +2124,92 @@ public class CMStrings
 	{
 		if(thisStr==null)
 			return 0;
-		if(thisStr.indexOf('^')<0)
+		if((thisStr.indexOf('^')<0)&&(thisStr.indexOf((char)27)<0))
 			return thisStr.length();
 		int size=0;
+		boolean colorStart = false;
 		for(int i=0;i<thisStr.length();i++)
 		{
-			if(thisStr.charAt(i)=='^')
+			switch(thisStr.charAt(i))
 			{
-				i++;
-				if((i+1)<thisStr.length())
+			case 'm':
+				if(colorStart)
+					colorStart=false;
+				else
+					size++;
+				break;
+			case (char) 27:
+				colorStart = true;
+				break;
+			case '^':
+				if(!colorStart)
 				{
-					final int tagStart=i;
-					switch(thisStr.charAt(i))
+					i++;
+					if((i+1)<thisStr.length())
 					{
-					case ColorLibrary.COLORCODE_BACKGROUND:
-						i++;
-						break;
-					case ColorLibrary.COLORCODE_FANSI256:
-						i += 3;
-						break;
-					case ColorLibrary.COLORCODE_BANSI256:
-						i += 3;
-						break;
-					case '<':
-					{
-						while(i<(thisStr.length()-1))
+						final int tagStart=i;
+						switch(thisStr.charAt(i))
 						{
-							if((thisStr.charAt(i)!='^')||(thisStr.charAt(i+1)!='>'))
+						case ColorLibrary.COLORCODE_BACKGROUND:
+							i++;
+							break;
+						case ColorLibrary.COLORCODE_FANSI256:
+							i += 3;
+							break;
+						case ColorLibrary.COLORCODE_BANSI256:
+							i += 3;
+							break;
+						case '<':
+						{
+							while(i<(thisStr.length()-1))
 							{
-								i++;
-								if(i>=(thisStr.length()-1))
+								if((thisStr.charAt(i)!='^')||(thisStr.charAt(i+1)!='>'))
 								{
-									i=tagStart+1;
+									i++;
+									if(i>=(thisStr.length()-1))
+									{
+										i=tagStart+1;
+										break;
+									}
+								}
+								else
+								{
+									i++;
 									break;
 								}
 							}
-							else
-							{
-								i++;
-								break;
-							}
+							break;
 						}
-						break;
-					}
-					case '&':
-					{
-						while(i<(thisStr.length()-1))
+						case '&':
 						{
-							if(thisStr.charAt(i)!=';')
+							while(i<(thisStr.length()-1))
 							{
-								i++;
-								if(i>=(thisStr.length()-1))
+								if(thisStr.charAt(i)!=';')
 								{
-									i=tagStart+1;
+									i++;
+									if(i>=(thisStr.length()-1))
+									{
+										i=tagStart+1;
+										break;
+									}
+								}
+								else
+								{
+									i++;
 									break;
 								}
 							}
-							else
-							{
-								i++;
-								break;
-							}
+							break;
 						}
-						break;
-					}
+						}
 					}
 				}
+				break;
+			default:
+				if(!colorStart)
+					size++;
+				break;
 			}
-			else
-				size++;
 		}
 		return size;
 	}

@@ -667,7 +667,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 				s="^<"+tag+"^>"+s+"^</"+tag+"^>";
 			if(s!=null)
 			{
-				if(s.length()>colSize)
+				if(CMStrings.removeColors(s).length()>colSize)
 				{
 					if(col == numCols)
 						topicBuffer.append("\n\r");

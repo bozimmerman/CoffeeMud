@@ -67,6 +67,7 @@
  66. New Fighter Skills: Elbow Lock, Bulldog, Gutbuster, Knee, Elbow Jab, Earbox
  67. Deities should be given weapons to influence craft holy avenger and other holy magic.
  68. New Fighter Skills: Forearm Block, Breakout
+ 69. New INI entry TRAINCOSTS for setting (or removing) costs for various things.
 
 # Build 5.9.12 Release 1/17/2022
   *. DB Changes: CMCOLR field in CMCHAR increased in size to 255 chars, CMSNAM field added to CMBKLG

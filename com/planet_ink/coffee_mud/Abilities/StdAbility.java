@@ -214,7 +214,7 @@ public class StdAbility implements Ability
 	}
 
 	@Override
-	public ExpertiseLibrary.SkillCost getTrainingCost(final MOB mob)
+	public ExpertiseLibrary.CostManager getTrainingCost(final MOB mob)
 	{
 		int qualifyingLevel;
 		int playerLevel=1;
@@ -225,10 +225,10 @@ public class StdAbility implements Ability
 			{
 				Integer val=O[AbilityMapper.Cost.TRAIN.ordinal()];
 				if(val!=null)
-					return CMLib.expertises().createNewSkillCost(ExpertiseLibrary.CostType.TRAIN,Double.valueOf(val.intValue()));
+					return CMLib.expertises().createCostManager(ExpertiseLibrary.CostType.TRAIN,Double.valueOf(val.intValue()));
 				val=O[AbilityMapper.Cost.PRAC.ordinal()];
 				if(val!=null)
-					return CMLib.expertises().createNewSkillCost(ExpertiseLibrary.CostType.PRACTICE,Double.valueOf(val.intValue()));
+					return CMLib.expertises().createCostManager(ExpertiseLibrary.CostType.PRACTICE,Double.valueOf(val.intValue()));
 			}
 			qualifyingLevel=CMLib.ableMapper().qualifyingLevel(mob, this);
 			playerLevel=mob.basePhyStats().level();
@@ -242,10 +242,10 @@ public class StdAbility implements Ability
 			qualifyingLevel=1;
 		final ExpertiseLibrary.SkillCostDefinition rawCost=getRawTrainingCost();
 		if(rawCost==null)
-			return CMLib.expertises().createNewSkillCost(ExpertiseLibrary.CostType.TRAIN,Double.valueOf(1.0));
+			return CMLib.expertises().createCostManager(ExpertiseLibrary.CostType.TRAIN,Double.valueOf(1.0));
 		final double[] vars=new double[]{ qualifyingLevel,playerLevel};
 		final double value=CMath.parseMathExpression(rawCost.costDefinition(),vars);
-		return CMLib.expertises().createNewSkillCost(rawCost.type(),Double.valueOf(value));
+		return CMLib.expertises().createCostManager(rawCost.type(),Double.valueOf(value));
 	}
 
 	protected int practicesToPractice(final MOB mob)
@@ -2183,14 +2183,14 @@ public class StdAbility implements Ability
 	@Override
 	public String requirements(final MOB mob)
 	{
-		final ExpertiseLibrary.SkillCost cost=getTrainingCost(mob);
+		final ExpertiseLibrary.CostManager cost=getTrainingCost(mob);
 		return cost.requirements(mob);
 	}
 
 	@Override
 	public boolean canBeLearnedBy(final MOB teacher, final MOB student)
 	{
-		final ExpertiseLibrary.SkillCost cost=getTrainingCost(student);
+		final ExpertiseLibrary.CostManager cost=getTrainingCost(student);
 		if(!cost.doesMeetCostRequirements(student))
 		{
 			final String ofWhat=cost.costType(student);
@@ -2469,7 +2469,7 @@ public class StdAbility implements Ability
 	{
 		if(student.fetchAbility(ID())==null)
 		{
-			final ExpertiseLibrary.SkillCost cost=getTrainingCost(student);
+			final ExpertiseLibrary.CostManager cost=getTrainingCost(student);
 			if(!cost.doesMeetCostRequirements(student))
 				return;
 			cost.spendSkillCost(student);

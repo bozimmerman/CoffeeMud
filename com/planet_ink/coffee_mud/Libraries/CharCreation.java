@@ -3214,14 +3214,19 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				return null;
 			}
 			final String list = CMProps.getVar(CMProps.Str.STATCOSTS);
-			final long[][] costs=CMLib.utensils().compileConditionalRange(CMParms.parseCommas(list.trim(),true), 1, 0, 101);
+			final List<String> entries = CMParms.parseCommas(list.trim(),true);
+			final long[][] costs=CMLib.utensils().compileConditionalRange(entries, 1, 0, 101);
 			int pointsCost=0;
 			int curStatValue=CT.getStat(statCode);
 			for(int i=0;i<statPointsChange;i++)
 			{
 				final int statPoint=remove?curStatValue-1:curStatValue;
 				int statCost=1;
-				if((statPoint>0)&&(statPoint<costs.length)&&(costs[statPoint]!=null)&&(costs[statPoint].length>0)&&(costs[statPoint][0]!=0))
+				if((statPoint>0)
+				&&(statPoint<costs.length)
+				&&(costs[statPoint]!=null)
+				&&(costs[statPoint].length>0)
+				&&(costs[statPoint][0]!=0))
 					statCost=(int)costs[statPoint][0];
 				pointsCost += remove ? -statCost : statCost;
 				curStatValue += remove ? -1 : 1;
@@ -4533,8 +4538,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	{
 		final int curStat=mob.baseCharStats().getRacialStat(mob, abilityCode);
 		final String list = CMProps.getVar(CMProps.Str.STATCOSTS);
-		final int maxStat = CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(abilityCode));
-		final long[][] costs=CMLib.utensils().compileConditionalRange(CMParms.parseCommas(list.trim(),true), 1, 0, maxStat+10);
+		final int maxStat = CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)
+							+ mob.charStats().getStat(CharStats.CODES.toMAXBASE(abilityCode));
+		final List<String> entries = CMParms.parseCommas(list.trim(),true);
+		final long[][] costs=CMLib.utensils().compileConditionalRange(entries, 1, 0, maxStat+10);
 		int curStatIndex=curStat;
 		while((curStatIndex>0)
 		&&((curStatIndex>=costs.length)||(costs[curStatIndex]==null)||(costs[curStatIndex].length==0)))
