@@ -960,7 +960,9 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 		&&(((++tries)<20)))
 		{
 			final List<CraftedItem> V=new ArrayList<CraftedItem>(1);
+			final CharState state = (CharState)mob.curState().copyOf();
 			autoGenInvoke(mob,recipes,null,true,-1,material,forceLevels,V);
+			state.copyInto(mob.curState());
 			if(V.size()>0)
 			{
 				key = V.get(V.size()-1).key;
