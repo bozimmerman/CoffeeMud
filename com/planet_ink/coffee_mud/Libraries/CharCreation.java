@@ -346,13 +346,19 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			if(CMLib.english().containsString(login, element))
 				return true;
 		}
-		final List<String> V2=CMParms.parseCommas(CMProps.getVar(CMProps.Str.BADNAMES),true);
+		final List<String> V2=CMParms.parseCommas(CMProps.getVar(CMProps.Str.BADNAMES).toUpperCase(),true);
 		for(int v2=0;v2<V2.size();v2++)
 		{
 			final String str2=V2.get(v2);
 			if(str2.length()>0)
 			{
 				if(CMLib.english().containsString(login, str2))
+					return true;
+				if(str2.endsWith("*")
+				&&(login.startsWith(str2.substring(0,str2.length()-1))))
+					return true;
+				if(str2.startsWith("*")
+				&&(login.endsWith(str2.substring(1))))
 					return true;
 			}
 		}

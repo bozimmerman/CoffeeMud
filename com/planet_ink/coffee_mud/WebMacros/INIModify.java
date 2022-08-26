@@ -237,14 +237,112 @@ public class INIModify extends StdWebMacro
 					continue;
 				final String thisKey=s.substring(0,x).trim().toUpperCase();
 
+				boolean keyModified=false;
+				String val;
+				if(httpReq.isUrlParameter(thisKey))
+					val = httpReq.getUrlParameter(thisKey);
+				else
+				if(ipage.containsKey(thisKey))
+					val = ipage.getStr(thisKey);
+				else
+					continue;
 				if(httpReq.isUrlParameter(thisKey)
 				&&(ipage.containsKey(thisKey))
-				&&(!modified.contains(thisKey))
-				&&(!httpReq.getUrlParameter(thisKey).equals(ipage.getStr(thisKey))))
+				&&(!modified.contains(thisKey)))
+				{
+					if(thisKey.toUpperCase().startsWith("GROUP_"))
+					{
+						httpReq.addFakeUrlParameter(thisKey, val);
+						val = val.toUpperCase().trim();
+					}
+					if(!httpReq.getUrlParameter(thisKey).equals(ipage.getStr(thisKey)))
+					{
+						modified.add(thisKey);
+						keyModified=true;
+						Log.sysOut("INIModify","Key '"+thisKey+"' modified.");
+					}
+				}
+				final int maxAllLineLength = 89;
+				if((val.length()>maxAllLineLength)
+				&&(!thisKey.startsWith("FORMULA_"))
+				&&(val.indexOf('\n')<0))
+				{
+					final boolean nextRule;
+					if(thisKey.equals("CHANNELS")
+					||thisKey.equals("COMMANDJOURNALS")
+					||thisKey.equals("FORUMJOURNALS")
+					||thisKey.equals("ICHANNELS")
+					||thisKey.equals("IMC2CHANNELS"))
+						nextRule=true;
+					else
+						nextRule=false;
+					final String ogVal=val;
+					final int prefixLen = thisKey.length()+1;
+					final int maxLineLen = maxAllLineLength - prefixLen;
+					int tabs = (int)Math.round(Math.floor(CMath.div(prefixLen,4.0)));
+					int spaces = prefixLen % 4;
+					StringBuilder newStr = new StringBuilder(thisKey+"=");
+					if(nextRule)
+					{
+						newStr.append("\\\r\n\t");
+						tabs=1;
+						spaces=0;
+					}
+					char sep=' ';
+					if(nextRule || CMStrings.countChars(val,',')>2)
+						sep=',';
+					if((sep != ' ')
+					||(thisKey.endsWith("FILTER"))
+					||(thisKey.endsWith("NAMES")))
+					{
+						int sepx;
+						if(nextRule)
+							sepx=val.indexOf(sep);
+						else
+							sepx=val.lastIndexOf(sep,maxLineLen);
+						keyModified = true;
+						while(val.length()>0)
+						{
+							if(sepx<0)
+							{
+								newStr = new StringBuilder(ogVal);
+								keyModified=false;
+								break;
+							}
+							newStr.append(val.substring(0,sepx+1))
+								.append("\\\r\n");
+							newStr.append(CMStrings.repeat('\t', tabs));
+							newStr.append(CMStrings.repeat(' ', spaces));
+							val = val.substring(sepx+1).trim();
+							if(nextRule)
+							{
+								sepx=val.indexOf(sep);
+								if((sepx < 0)&&(val.length()>0))
+								{
+									newStr.append(val);
+									val="";
+								}
+							}
+							else
+							if(val.length() < maxLineLen)
+							{
+								newStr.append(val);
+								val="";
+							}
+							else
+							{
+								sepx = val.lastIndexOf(sep,maxLineLen);
+								if(sepx<0)
+									sepx=val.indexOf(sep);
+							}
+						}
+						val=newStr.toString();
+					}
+				}
+				if(keyModified || modified.contains(thisKey))
 				{
 					modified.add(thisKey);
-					Log.sysOut("INIModify","Key '"+thisKey+"' modified.");
-					page.set(p,thisKey+"="+httpReq.getUrlParameter(thisKey));
+					page.set(p,val);
 				}
 			}
 			if(modified.size()>0)
@@ -457,5 +555,4 @@ public class INIModify extends StdWebMacro
 		addForumJournalsVar(httpReq,"",str);
 		return str.toString();
 	}
-
 }

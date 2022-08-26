@@ -50,7 +50,7 @@
  49. New command: HISTORY, for showing command history to players
  50. New archon command(s): basically do scriptable commands from the cl (MPCOMMAND)
  51. ALIAS command now supports TEST argument
- 52. New races: Shrimp, Tuna
+ 52. New races: Shrimp, Tuna, Half Ogre, Drider, Birdman, Tiefling
  53. New common skill: Animal Trapping, requires a cage, for trapping small game
  54. New Scriptable command: MPHIT, for forcing an immediate weapon attack
  55. Tents and other ENTER-IN type rideables now protect against some weather affects
