@@ -1603,6 +1603,11 @@ public class CMSecurity
 		final List<String> V=CMParms.parseCommas(commaDelimFlagList.toUpperCase(),true);
 		final CMSecurity inst=instance();
 		inst.disVars.clear();
+		inst.expDisVars.clear();
+		inst.cmdDisVars.clear();
+		inst.racDisVars.clear();
+		inst.clsDisVars.clear();
+		inst.facDisVars.clear();
 		for(final String var : V)
 		{
 			if(!setAnyDisableVar(var))
