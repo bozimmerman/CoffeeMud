@@ -90,7 +90,7 @@ public class Skill_WildernessLore extends StdSkill
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		boolean report=false;
-		if((commands.size()>1)&&(commands.get(commands.size()-1).equalsIgnoreCase("REPORT")))
+		if((commands.size()>0)&&(commands.get(commands.size()-1).equalsIgnoreCase("REPORT")))
 		{
 			commands.remove(commands.size()-1);
 			report=true;
