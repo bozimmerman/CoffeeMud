@@ -23,11 +23,11 @@
 #     See the help entry for ZAPPERMASKS for more information on creating zapper masks.
 # [RITUAL] is a triggering ritual. (see AHELP RITUALS or Archon Guide under StdDeity "Cleric Ritual")
 # Examples:
-# Spell_Sleep=(held:consumed:1:cotton:-CLASS +MAGE) || (inventory:consumed:10:sand:-CLASS +MAGE)
-#   (the above requires either cotton in hand, or 10 sand in inventory to cast sleep -- applies only to mages)
-# Woodchopping=(held:kept:1:*axe*:)
+# WOODCHOPPING=(held:kept:1:*axe*:)
 #   (the above requires an item with the characters "axe" in the name to do woodchopping)
-# Example:
+# SPELL_SLEEP=(held:consumed:1:cotton:-CLASS +MAGE) || (inventory:consumed:10:sand:-CLASS +MAGE)
+#   (the above requires either cotton in hand, or 10 sand in inventory to cast sleep -- applies only to mages)
 # SPELL_SLEEP=(held:consumed:5:SAND:-class +wizard)&&(trigger:say you are feeling sleepy&social+ GOODNIGHT <T-NAME>:-class +wizard)
+#   (the aove requires held sane if you are a wizard AND a trigger ritual with SAY and GOODNIGHT social.)
 Thief_Autocaltrops=(inventory:consumed:10:METAL:)||(inventory:consumed:10:MITHRIL:)
 BANDAGING=(inventory:consumed:1:CLOTH:)||(held:consumed:5:DUST:-race +elf)
