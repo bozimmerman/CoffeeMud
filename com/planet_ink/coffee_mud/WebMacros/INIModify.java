@@ -285,7 +285,8 @@ public class INIModify extends StdWebMacro
 					int tabs = (int)Math.round(Math.floor(CMath.div(prefixLen,4.0)));
 					int spaces = prefixLen % 4;
 					StringBuilder newStr = new StringBuilder(thisKey+"=");
-					if(nextRule)
+					if(nextRule
+					&&(!thisKey.equals("AUTOPURGE")))
 					{
 						newStr.append("\\\r\n\t");
 						tabs=1;
