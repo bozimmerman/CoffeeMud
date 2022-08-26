@@ -263,15 +263,18 @@ public class INIModify extends StdWebMacro
 					}
 				}
 				final int maxAllLineLength = 89;
-				if((val.length()>maxAllLineLength)
+				if(((val.length()>maxAllLineLength)
+					||thisKey.equals("AUTOPURGE"))
 				&&(!thisKey.startsWith("FORMULA_"))
 				&&(val.indexOf('\n')<0))
 				{
 					final boolean nextRule;
 					if(thisKey.equals("CHANNELS")
 					||thisKey.equals("COMMANDJOURNALS")
+					||thisKey.equals("COLORSCHEME")
 					||thisKey.equals("FORUMJOURNALS")
 					||thisKey.equals("ICHANNELS")
+					||thisKey.equals("AUTOPURGE")
 					||thisKey.equals("IMC2CHANNELS"))
 						nextRule=true;
 					else
