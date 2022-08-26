@@ -453,7 +453,7 @@ public class ListCmd extends StdCommand
 		if(wiki == WikiFlag.WIKIHELP)
 		{
 			line.append("==="+CMStrings.removeColors(E.name())+"===\n\r");
-			line.append("{{["+E.ID()+"]Template");
+			line.append("{{"+E.ID()+"Template");
 			line.append("|Name="+CMStrings.replaceAllofAny(CMStrings.removeColors(E.name()),BAD_WIKI_CHARS,GOOD_WIKI_CHARS));
 			line.append("|Display="+CMStrings.replaceAllofAny(CMStrings.removeColors(E.displayText()),BAD_WIKI_CHARS,GOOD_WIKI_CHARS));
 			line.append("|Description="+CMStrings.replaceAllofAny(CMStrings.removeColors(E.description()),BAD_WIKI_CHARS,GOOD_WIKI_CHARS));
