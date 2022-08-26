@@ -17,9 +17,9 @@
 #   an item name for a string match (like "a long crooked stick" or "stick" or "crooked"
 # * NOTE! If you use && or || conjunctions, the same item may be found multiple times!
 # [MASK] is the zapper mask for which players in which conditions require this component.
-#     Note that only ONE trigger component is permitted per mob/player, so this mask 
-#     might be important in ensuring that can't happens for component sets with 
-#     multiple triggers.
+#     Note that only ONE trigger component is permitted per mob/player per skill requirement, 
+#     so this mask might be important in ensuring that can't happens for skill requirements 
+#     that have multiple TRIGGER type components in them.
 #     See the help entry for ZAPPERMASKS for more information on creating zapper masks.
 # [RITUAL] is a triggering ritual. (see AHELP RITUALS or Archon Guide under StdDeity "Cleric Ritual")
 # Examples:
@@ -31,4 +31,3 @@
 # SPELL_SLEEP=(held:consumed:5:SAND:-class +wizard)&&(trigger:say you are feeling sleepy&social+ GOODNIGHT <T-NAME>:-class +wizard)
 Thief_Autocaltrops=(inventory:consumed:10:METAL:)||(inventory:consumed:10:MITHRIL:)
 BANDAGING=(inventory:consumed:1:CLOTH:)||(held:consumed:5:DUST:-race +elf)
-SPELL_MAGICMISSILE=(trigger:SOCIAL+ FLICK <T-NAME> | SOCIAL+ SMILE <T-NAME>:-names +Zac)
