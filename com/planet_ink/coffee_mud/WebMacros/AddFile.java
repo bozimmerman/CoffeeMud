@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.WebMacros;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -55,6 +56,7 @@ public class AddFile extends StdWebMacro
 		final StringBuffer buf=new StringBuffer("");
 		boolean webify=false;
 		boolean replace=false;
+		String template="";
 		for(final Pair<String,String> p : parms)
 		{
 			final String key=p.first;
@@ -63,6 +65,33 @@ public class AddFile extends StdWebMacro
 			{
 				try
 				{
+					if(key.trim().equalsIgnoreCase("template"))
+						template=file;
+					else
+					if(key.trim().equalsIgnoreCase("new"))
+					{
+						if(template.length()==0)
+							return " @break@";
+						else
+						{
+							final MOB mob=Authenticate.getAuthenticatedMob(httpReq);
+							final CMFile tF = new CMFile(template,mob);
+							if((!tF.exists())||(!tF.canRead()))
+								return " @break@";
+							final CMFile nF = new CMFile(file,mob);
+							if(!nF.canWrite())
+								return " @break@";
+							final long[] processStartTime=new long[]{System.currentTimeMillis()};
+							final String[] lastFoundMacro=new String[]{""};
+							final byte[] savable = CMLib.webMacroFilter().virtualPageFilter(httpReq,
+									httpReq.getRequestObjects(),
+									processStartTime,
+									lastFoundMacro,
+									new StringBuffer(new String(tF.raw()))).toString().getBytes();
+							nF.saveRaw(savable);
+						}
+					}
+					else
 					if(key.trim().equalsIgnoreCase("webify"))
 						webify=true;
 					else
@@ -88,6 +117,10 @@ public class AddFile extends StdWebMacro
 						buf.append(new String(getHTTPFileData(httpReq,file.trim())));
 				}
 				catch(final HTTPException e)
+				{
+					Log.warnOut("Failed "+name()+" "+file);
+				}
+				catch (final HTTPRedirectException e)
 				{
 					Log.warnOut("Failed "+name()+" "+file);
 				}

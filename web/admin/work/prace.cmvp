@@ -3,47 +3,29 @@
 	<META CHARSET="utf-8"/>
 	<head>
 	  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	  <title>CoffeeMud Default Player Race Reference</title>
+	  <title>CoffeeMud Player Race Reference</title>
 	  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
 	</head>
 	<body>
-		<center><table width=90% cellpadding=10 cellspacing=0 border=1 bordercolor=gray><tr>
-		<td width=100% colspan=2 bgcolor=#DFDFDF align=left> 
-		<h1>Default Player Race Reference</h1>
-		<h2> CoffeeMud 5.9 </h2>
-		</td></tr><tr><td width=20% valign=top align=left>
-		<ul>
-			@RaceNext?RESET@
-			@loop@
-				<li>@RaceNext@<a href="#@RaceID@">@RaceName@</a>
-			&nbsp;
-			@back@
-		</ul>
-		</td><td valign=top align=left>
-			@RaceNext?RESET@
-			@loop@
-				@RaceNext@
-				<P>
-				<TABLE WIDTH=100% BORDER=1>
-				<TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=#DFDFDF ALIGN=CENTER><a name="@RaceID@"><H3>@RaceName@</H3></a></TD></TR>
-				<TR><TD WIDTH=25% BGCOLOR=#DFDFDF><B>Description</B></TD><TD>@RaceData?help@</TD>
-				<TR><TD WIDTH=25% BGCOLOR=#DFDFDF><B>Stat Adjustments</B></TD><TD>@RaceData?stats&trains&pracs@</TD>
-				<TR><TD WIDTH=25% BGCOLOR=#DFDFDF><B>Bonus Abilities</B></TD><TD>@RaceData?senses&dispositions&abilities@</TD>
-				<TR><TD WIDTH=25% BGCOLOR=#DFDFDF><B>Bonus Languages</B></TD><TD>@RaceData?langs@</TD>
-				<TR><TD WIDTH=25% BGCOLOR=#DFDFDF><B>Life expectancy</B></TD><TD>@RaceData?expectancy@ years</TD>
-				<TR><TD WIDTH=25% BGCOLOR=#DFDFDF><B>Starting Equipment</B></TD><TD>@RaceData?startingeq@</TD>
-				<TR><TD WIDTH=25% BGCOLOR=#DFDFDF><B>Qualifying Classes</B></TD>
-				<TD>
-				@RaceClassNext?reset@
-				@loop@
-				@RaceClassNext@
-					@CharClassName@
-				@back@
-				</TD>
-				</TR>
-				</TABLE>
-				</P>
-			@back@
-		</td></tr></table></center>
+		<P>
+		<TABLE WIDTH=100% BORDER=1>
+		<TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=#DFDFDF ALIGN=CENTER><a name="@RaceID@"><H3>@RaceName@</H3></a></TD></TR>
+		<TR><TD WIDTH=25% BGCOLOR=#DFDFDF><B>Description</B></TD><TD>@RaceData?help@</TD>
+		<TR><TD WIDTH=25% BGCOLOR=#DFDFDF><B>Stat Adjustments</B></TD><TD>@RaceData?stats&trains&pracs@</TD>
+		<TR><TD WIDTH=25% BGCOLOR=#DFDFDF><B>Bonus Abilities</B></TD><TD>@RaceData?senses&dispositions&abilities@</TD>
+		<TR><TD WIDTH=25% BGCOLOR=#DFDFDF><B>Bonus Languages</B></TD><TD>@RaceData?langs@</TD>
+		<TR><TD WIDTH=25% BGCOLOR=#DFDFDF><B>Life expectancy</B></TD><TD>@RaceData?expectancy@ years</TD>
+		<TR><TD WIDTH=25% BGCOLOR=#DFDFDF><B>Starting Equipment</B></TD><TD>@RaceData?startingeq@</TD>
+		<TR><TD WIDTH=25% BGCOLOR=#DFDFDF><B>Qualifying Classes</B></TD>
+		<TD>
+		@RaceClassNext?reset@
+		@loop@
+		@RaceClassNext@
+			@CharClassName@
+		@back@
+		</TD>
+		</TR>
+		</TABLE>
+		</P>
 	</body>
 </html>

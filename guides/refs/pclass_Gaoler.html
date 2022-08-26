@@ -1,0 +1,3323 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<META CHARSET="utf-8"/>
+	<head>
+	  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	  <title>CoffeeMud Player Class Reference</title>
+	  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
+	</head>
+	<body>
+		<P>
+		<TABLE WIDTH=95% BORDER=1>
+		<TR><TD WIDTH=95% COLSPAN=2 BGCOLOR=#DFDFDF VALIGN=CENTER ALIGN=CENTER><a name="Gaoler"><H2><FONT COLOR=BLACK>Gaoler</FONT></H2></a></TD></TR>
+		<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#DFDFDF><B>Description</B></TD><TD>The Gaoler (pronounced like Jailer), is the ancient dungeon keeper.  He<BR>specializes in those implements and activities which reflect the worst and<BR>most sadistic side of human nature.  Although not much use as an adventurer,<BR>a player with a Gaoler background can be a valuable member of a clan, or a<BR>man-for-hire. </TD></TR>
+		<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#DFDFDF><B>Prime Statistic</B></TD><TD>Strength</TD></TR>
+		<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#DFDFDF><B>Qualifications</B></TD><TD>Strength 5+, Dexterity 5+</TD></TR>
+		<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#DFDFDF><B>Practices</B></TD><TD>5 +[(Wisdom/6)+2 per lvl]</TD></TR>
+		<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#DFDFDF><B>Training Points</B></TD><TD>3 +1 per level</TD></TR>
+		<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#DFDFDF><B>Hit Points</B></TD><TD>20 +[(Con/6)+(1d5) /lvl]</TD></TR>
+		<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#DFDFDF><B>Mana</B></TD><TD>100 +[(Int/10)+(1d2)/lvl]</TD></TR>
+		<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#DFDFDF><B>Movement</B></TD><TD>100 +[5X(Str/18) /lvl]</TD></TR>
+		<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#DFDFDF><B>Attack Skill</B></TD><TD>+(Str/18)-1 per level</TD></TR>
+		<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#DFDFDF><B>Damage Bonus</B></TD><TD>+1 damage per 5 level(s)</TD></TR>
+		<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#DFDFDF><B>Other Bonuses</B></TD><TD>Gains experience when using certain skills, the screams of victims from certain skills per hr, sleeping by an occupied cell, feeding inmates bad food.</TD></TR>
+		<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#DFDFDF><B>Weapons</B></TD><TD>Must use flailed weapons.</TD></TR>
+		<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#DFDFDF><B>Armor</B></TD><TD>Must wear cloth, vegetation, or paper based armor.</TD></TR>
+		<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#DFDFDF><B>Other Limitations</B></TD><TD>None</TD></TR>
+		<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#DFDFDF><B>Starting Equipment</B></TD><TD>a long leather whip</TD></TR>
+		<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#DFDFDF><B>Qualifying Races</B></TD><TD>
+				   Duergar   Dwarf   Elf   Gnome   Half Elf   Half Ogre   Halfling   Human  </TD></TR>
+		<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#DFDFDF><B>Languages</B></TD>
+		<TD>   Common   Draconic   Drowish   Dwarven   Elvish   Fey   Gigantic   Gnomish   Goblinese   Ignan   Orcish   Sign Language   Undercommon </TD>
+		<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#DFDFDF><B>Abilities</B></TD>
+		<TD>
+			<TABLE WIDTH=100% BORDER=1>  
+			 
+			<TR><TD WIDTH=10%>1</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Epicurean)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Baking</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Skill: Anatomy)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Bandaging</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Crafting)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Caravan Building</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Crafting)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Clan Crafting</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Epicurean)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Cooking</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Nature lore)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Floristry</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Epicurean)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Food Prep</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Artistic)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Play Instrument</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Skill: Fitness)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT></TD>
+				<TD WIDTH=50%>&nbsp;Climb</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Skill: Conjuration)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT></TD>
+				<TD WIDTH=50%>&nbsp;Recall</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Skill: Fitness)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Swim</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Skill: Calligraphy)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT></TD>
+				<TD WIDTH=50%>&nbsp;Write</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Artistic)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT></TD>
+				<TD WIDTH=50%>&nbsp;Smoke Rings</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Skill: Weapon use)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT></TD>
+				<TD WIDTH=50%>&nbsp;Flailing Weapon Specialization</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Skill: Weapon use)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Hand to hand combat</TD></TR>
+				
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>2</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Gathering)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Butchering</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Epicurean)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT></TD>
+				<TD WIDTH=50%>&nbsp;Gaol Food</TD></TR>
+				
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>3</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Artistic)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT></TD>
+				<TD WIDTH=50%>&nbsp;Body Piercing</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Nature lore)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT></TD>
+				<TD WIDTH=50%>&nbsp;Fire Building</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Skill: Dirty fighting)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Groin</TD></TR>
+				
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>4</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Alert)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Searching</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Nature lore)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Tanning</TD></TR>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Combat Fluidity I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Reduced Conjuring I)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>5</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Crafting)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT></TD>
+				<TD WIDTH=50%>&nbsp;Blacksmithing</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Skill: Dirty fighting)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Nipple Twist</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Skill: Martial lore)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Whipsmack</TD></TR>
+				
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>6</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Crafting)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Carpentry</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Skill: Nature lore)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Find Home</TD></TR>
+				
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>7</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Epicurean)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Meat Curing</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Artistic)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT></TD>
+				<TD WIDTH=50%>&nbsp;Tattooing</TD></TR>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Combat Fluidity II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Reduced Conjuring II)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>8</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				  
+				<TR><TD WIDTH=35%>(Skill: Grappling)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT></TD>
+				<TD WIDTH=50%>&nbsp;Gutbuster</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Building)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Locksmithing</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Skill: Fitness)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;AutoCrawl</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Skill: Fitness)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;AutoSwim</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Skill: Legal)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Prison Assignment</TD></TR>
+				
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>9</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				  
+				<TR><TD WIDTH=35%>(Skill: Legal)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT></TD>
+				<TD WIDTH=50%>&nbsp;Warrants</TD></TR>
+				
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>10</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Crafting)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Siegecrafting</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Thief skill: Stealthy)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Hide</TD></TR>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Combat Fluidity III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Reduced Conjuring III)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>11</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				  
+				<TR><TD WIDTH=35%>(Skill: Grappling)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Leg Hold</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Spell: Enchantment/Charm)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT></TD>
+				<TD WIDTH=50%>&nbsp;Brainwash</TD></TR>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Reduced Enchanting I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Reduced Enchanting II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Reduced Enchanting III)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>12</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Gathering)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Gardening</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Skill: Legal)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT></TD>
+				<TD WIDTH=50%>&nbsp;Arresting Sap</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Skill: Nature lore)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Find Ship</TD></TR>
+				
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>13</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				  
+				<TR><TD WIDTH=35%>(Skill: Binding)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Handcuff</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Skill: Legal)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Prisoner Transfer</TD></TR>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Combat Fluidity IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Reduced Conjuring IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Reduced Enchanting IV)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>14</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				  
+				<TR><TD WIDTH=35%>(Skill: Grappling)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Arm Hold</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Thief skill: Legal)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT></TD>
+				<TD WIDTH=50%>&nbsp;Tar And Feather</TD></TR>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Anatomy I)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>15</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Gathering)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Composting</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Skill: Grappling)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Headlock</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Thief skill: Legal)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Flay</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Thief skill: Weapon use)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Whiplash</TD></TR>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Home Cooking I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Stealthy I)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>16</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Crafting)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Torturesmithing</TD></TR>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Combat Fluidity V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Reduced Conjuring V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Reduced Enchanting V)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>17</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				  
+				<TR><TD WIDTH=35%>(Skill: Anatomy)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Leeching</TD></TR>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fortified Baking I)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>18</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Epicurean)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Food Preserving</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Skill: Fitness)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;AutoClimb</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Skill: Legal)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT></TD>
+				<TD WIDTH=50%>&nbsp;Collect Bounty</TD></TR>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Creative Food Prep I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vigorous Cooking I)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>19</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				  
+				<TR><TD WIDTH=35%>(Skill: Legal)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Arrest</TD></TR>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Anatomy II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Combat Fluidity VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Imbued Distilling I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Reduced Conjuring VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Reduced Enchanting VI)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>20</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Animal affinity)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Branding</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Skill: Anatomy)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT></TD>
+				<TD WIDTH=50%>&nbsp;Behead</TD></TR>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Home Cooking II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Shadow I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Stealthy II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vigilantly I)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>21</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				  
+				<TR><TD WIDTH=35%>(Prayer: Evangelism)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Stoning</TD></TR>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Advanced Cooking I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Advanced Crafting I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Nature Lore I)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>22</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				  
+				<TR><TD WIDTH=35%>(Skill: Anatomy)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Lobotomizing</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Criminal)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT></TD>
+				<TD WIDTH=50%>&nbsp;Slave Trading</TD></TR>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Combat Fluidity VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Evangelising I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Reduced Conjuring VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Reduced Enchanting VII)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>23</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				  
+				<TR><TD WIDTH=35%>(Skill: Criminal)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Enslave</TD></TR>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Legal Lore I)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>24</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				  
+				<TR><TD WIDTH=35%>(Skill: Legal)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT></TD>
+				<TD WIDTH=50%>&nbsp;Jail Key</TD></TR>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Anatomy III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Criminal Deviousness I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Dirty Fighting I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Extended Conjuring I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Extended Enchanting I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fortified Baking II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Power Conjuring I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Power Enchanting I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ranged Conjuring I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ranged Enchanting I)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>25</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				  
+				<TR><TD WIDTH=35%>(Skill: Anatomy)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Chirgury</TD></TR>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Combat Fluidity VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Creative Food Prep II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Home Cooking III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Reduced Conjuring VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Reduced Enchanting VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Shadow II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Stealthy III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vigilantly II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vigorous Cooking II)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>26</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Imbued Distilling II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ingenious Engineering I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Nature Lore II)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>27</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Evangelising II)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>28</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Combat Fluidity IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fine Calligraphy I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Reduced Conjuring IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Reduced Enchanting IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Rope Use I)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>29</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Nature lore)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Master Floristry</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Common skill: Nature lore)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT>(Qualify)</TD>
+				<TD WIDTH=50%>&nbsp;Master Herbology</TD></TR>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Anatomy IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Criminal Deviousness II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Dirty Fighting II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Extended Conjuring II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Extended Enchanting II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Striking I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Legal Lore II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Power Conjuring II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Power Enchanting II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ranged Conjuring II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ranged Enchanting II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Striking I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vice-Gripping I)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>30</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				  
+				<TR><TD WIDTH=35%>(Skill: Anatomy)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT></TD>
+				<TD WIDTH=50%>&nbsp;Amputation</TD></TR>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Animal Affinity I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fitness I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Shadow III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Stealthy IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vigilantly III)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>31</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Combat Fluidity X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fortified Baking III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ingenious Engineering II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Nature Lore III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Reduced Conjuring X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Reduced Enchanting X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Wise Crafting I)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>32</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Artsy I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Creative Food Prep III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Doopy!! I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Evangelising III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Bashing I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Focus I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Slicing I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Influencing I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Oopy I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Poopy I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Bashing I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Piercing I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Slicing I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vigorous Cooking III)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>33</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fine Calligraphy II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Imbued Distilling III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Rope Use II)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>34</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Anatomy V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Criminal Deviousness III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Dirty Fighting III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Extended Conjuring III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Extended Enchanting III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Striking II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Martial Lore I)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Power Conjuring III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Power Enchanting III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ranged Conjuring III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ranged Enchanting III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Striking II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vice-Gripping II)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>35</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Animal Affinity II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fitness II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Legal Lore III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Shadow IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Stealthy V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vigilantly IV)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>36</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ingenious Engineering III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Nature Lore IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Wise Crafting II)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>37</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Artsy II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Doopy!! II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Evangelising IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Bashing II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Focus II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Slicing II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Influencing II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Oopy II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Poopy II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Bashing II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Piercing II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Slicing II)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>38</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fine Calligraphy III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fortified Baking IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Rope Use III)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>39</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Anatomy VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Creative Food Prep IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Criminal Deviousness IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Dirty Fighting IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Extended Conjuring IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Extended Enchanting IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Striking III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Martial Lore II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Power Conjuring IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Power Enchanting IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ranged Conjuring IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ranged Enchanting IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Striking III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vice-Gripping III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vigorous Cooking IV)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>40</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Animal Affinity III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fitness III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Imbued Distilling IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Shadow V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Stealthy VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vigilantly V)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>41</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Advanced Cooking II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Advanced Crafting II)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ingenious Engineering IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Legal Lore IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Nature Lore V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Wise Crafting III)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>42</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Artsy III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Doopy!! III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Evangelising V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Bashing III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Focus III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Slicing III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Influencing III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Oopy III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Poopy III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Bashing III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Piercing III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Slicing III)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>43</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fine Calligraphy IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Rope Use IV)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>44</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Anatomy VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Criminal Deviousness V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Dirty Fighting V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Extended Conjuring V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Extended Enchanting V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Striking IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Martial Lore III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Power Conjuring V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Power Enchanting V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ranged Conjuring V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ranged Enchanting V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Striking IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vice-Gripping IV)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>45</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Animal Affinity IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fitness IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fortified Baking V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Shadow VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Stealthy VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vigilantly VI)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>46</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Creative Food Prep V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ingenious Engineering V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Nature Lore VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vigorous Cooking V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Wise Crafting IV)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>47</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Artsy IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Doopy!! IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Evangelising VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Bashing IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Focus IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Slicing IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Imbued Distilling V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Influencing IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Legal Lore V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Oopy IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Poopy IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Bashing IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Piercing IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Slicing IV)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>48</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fine Calligraphy V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Rope Use V)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>49</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Anatomy VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Criminal Deviousness VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Dirty Fighting VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Extended Conjuring VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Extended Enchanting VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Striking V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Martial Lore IV)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Power Conjuring VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Power Enchanting VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ranged Conjuring VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ranged Enchanting VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Striking V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vice-Gripping V)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>50</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Animal Affinity V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fitness V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Shadow VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Stealthy VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vigilantly VII)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>51</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ingenious Engineering VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Nature Lore VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Wise Crafting V)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>52</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Artsy V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Doopy!! V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Evangelising VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Bashing V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Focus V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Slicing V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fortified Baking VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Influencing V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Oopy V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Poopy V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Bashing V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Piercing V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Slicing V)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>53</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Creative Food Prep VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fine Calligraphy VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Legal Lore VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Rope Use VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vigorous Cooking VI)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>54</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Anatomy IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Criminal Deviousness VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Dirty Fighting VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Extended Conjuring VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Extended Enchanting VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Striking VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Imbued Distilling VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Martial Lore V)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Power Conjuring VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Power Enchanting VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ranged Conjuring VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ranged Enchanting VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Striking VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vice-Gripping VI)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>55</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Animal Affinity VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fitness VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Shadow VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Stealthy IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vigilantly VIII)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>56</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ingenious Engineering VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Nature Lore VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Wise Crafting VI)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>57</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Artsy VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Doopy!! VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Evangelising VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Bashing VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Focus VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Slicing VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Influencing VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Oopy VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Poopy VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Bashing VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Piercing VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Slicing VI)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>58</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fine Calligraphy VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Rope Use VII)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>59</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Anatomy X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Criminal Deviousness VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Dirty Fighting VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Extended Conjuring VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Extended Enchanting VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Striking VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fortified Baking VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Legal Lore VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Martial Lore VI)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Power Conjuring VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Power Enchanting VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ranged Conjuring VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ranged Enchanting VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Striking VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vice-Gripping VII)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>60</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Animal Affinity VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Creative Food Prep VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fitness VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Shadow IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Stealthy X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vigilantly IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vigorous Cooking VII)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>61</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Advanced Cooking III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Advanced Crafting III)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Imbued Distilling VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ingenious Engineering VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Nature Lore IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Wise Crafting VII)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>62</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Artsy VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Doopy!! VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Evangelising IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Bashing VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Focus VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Slicing VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Influencing VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Oopy VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Poopy VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Bashing VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Piercing VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Slicing VII)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>63</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fine Calligraphy VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Rope Use VIII)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>64</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Criminal Deviousness IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Dirty Fighting IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Extended Conjuring IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Extended Enchanting IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Striking VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Martial Lore VII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Power Conjuring IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Power Enchanting IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ranged Conjuring IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ranged Enchanting IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Striking VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vice-Gripping VIII)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>65</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Animal Affinity VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fitness VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Legal Lore VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Shadow X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vigilantly X)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>66</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fortified Baking VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ingenious Engineering IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Nature Lore X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Wise Crafting VIII)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>67</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Artsy VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Creative Food Prep VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Doopy!! VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Evangelising X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Bashing VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Focus VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Slicing VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Influencing VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Oopy VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Poopy VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Bashing VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Piercing VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Slicing VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vigorous Cooking VIII)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>68</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fine Calligraphy IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Imbued Distilling VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Rope Use IX)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>69</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Criminal Deviousness X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Dirty Fighting X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Extended Conjuring X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Extended Enchanting X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Striking IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Martial Lore VIII)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Power Conjuring X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Power Enchanting X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ranged Conjuring X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ranged Enchanting X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Striking IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vice-Gripping IX)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>70</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Animal Affinity IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fitness IX)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>71</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Ingenious Engineering X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Legal Lore IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Wise Crafting IX)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>72</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Artsy IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Doopy!! IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Bashing IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Focus IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Slicing IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Influencing IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Oopy IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Poopy IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Bashing IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Piercing IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Slicing IX)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>73</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fine Calligraphy X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fortified Baking IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Rope Use X)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>74</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Creative Food Prep IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Striking X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Martial Lore IX)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Striking X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vice-Gripping X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vigorous Cooking IX)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>75</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Animal Affinity X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fitness X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Imbued Distilling IX)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>76</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Wise Crafting X)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>77</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Artsy X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Doopy!! X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Bashing X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Focus X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Flailed Slicing X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Influencing X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Legal Lore X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Oopy X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Poopy X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Bashing X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Piercing X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Unarmed Slicing X)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>78</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>79</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Martial Lore X)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>80</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Fortified Baking X)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>81</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Creative Food Prep X)</a> 
+				</TD></TR>
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Vigorous Cooking X)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>82</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				  
+				<TR><TD WIDTH=35%>(Expertise)</TD>
+				<TD WIDTH=15% ALIGN=RIGHT><FONT COLOR=BLACK>(Available)</FONT></TD>
+				<TD WIDTH=50%>&nbsp;(Imbued Distilling X)</a> 
+				</TD></TR>
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>83</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>84</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>85</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>86</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>87</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>88</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>89</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>90</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				
+				</TABLE>
+			</TD>
+			</TR>
+			 
+			<TR><TD WIDTH=10%>91</TD>
+			<TD WIDTH=90%> 
+			<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+				
+				
+				</TABLE>
+			</TD>
+			</TR>
+			
+			</TABLE></TD></TR>
+		</TABLE>
+		</P>
+	</body>
+</html>
+
