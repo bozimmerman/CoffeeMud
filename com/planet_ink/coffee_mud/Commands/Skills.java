@@ -112,15 +112,22 @@ public class Skills extends StdCommand
 					level=0;
 				final StringBuffer line=new StringBuffer("");
 				line.append("\n\rLevel ^!"+level+"^?:\n\r");
+				int proficiency = A2.proficiency();
+				proficiency += mob.charStats().getAbilityAdjustment("PROF+"+A2.ID().toUpperCase());
+				proficiency += mob.charStats().getAbilityAdjustment("PROF+"+Ability.ACODE_DESCS[A2.classificationCode()&Ability.ALL_ACODES]);
+				proficiency += mob.charStats().getAbilityAdjustment("PROF+"+Ability.DOMAIN_DESCS[(A2.classificationCode()&Ability.ALL_DOMAINS)>> 5]);
+				proficiency += mob.charStats().getAbilityAdjustment("PROF+*");
+				if(proficiency>100)
+					proficiency=100;
 				if(useWords)
 				{
-					final String message = CMLib.help().getRPProficiencyStr(A2.proficiency());
+					final String message = CMLib.help().getRPProficiencyStr(proficiency);
 					line.append(CMStrings.padRight("^<HELP^>"+A2.name()+"^</HELP^>",19));
 					line.append(" ("+CMStrings.padRight(message,3)+")");
 				}
 				else
 				{
-					line.append("^N[^H"+CMStrings.padRight(Integer.toString(A2.proficiency()),3)+"%^?]^N ");
+					line.append("^N[^H"+CMStrings.padRight(Integer.toString(proficiency),3)+"%^?]^N ");
 					line.append(CMStrings.padRight("^<HELP^>"+A2.name()+"^</HELP^>",19));
 				}
 				line.append("^?\n\r");
@@ -361,9 +368,16 @@ public class Skills extends StdCommand
 							thisLine.append("\n\rLevel ^!"+l+"^?:\n\r");
 					}
 					col++;
+					int proficiency = A.proficiency();
+					proficiency += ableM.charStats().getAbilityAdjustment("PROF+"+A.ID().toUpperCase());
+					proficiency += ableM.charStats().getAbilityAdjustment("PROF+"+Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES]);
+					proficiency += ableM.charStats().getAbilityAdjustment("PROF+"+Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>> 5]);
+					proficiency += ableM.charStats().getAbilityAdjustment("PROF+*");
+					if(proficiency>100)
+						proficiency=100;
 					if(!useWords)
 					{
-						thisLine.append("^N[^H").append(CMStrings.padRight(Integer.toString(A.proficiency()),COL_LEN1));
+						thisLine.append("^N[^H").append(CMStrings.padRight(Integer.toString(proficiency),COL_LEN1));
 						thisLine.append("%^?]^N");
 						thisLine.append(" ");//+(A.isAutoInvoked()?"^H.^N":" ")
 						if(col < MAX_COLS)
@@ -377,7 +391,7 @@ public class Skills extends StdCommand
 					else
 					{
 						thisLine.append(CMStrings.padRight("^<HELP^>",A.name(),"^</HELP^>",COL_LEN2));
-						final String message = CMLib.help().getRPProficiencyStr(A.proficiency());
+						final String message = CMLib.help().getRPProficiencyStr(proficiency);
 						if(col < MAX_COLS)
 							thisLine.append(CMStrings.padRight("^N(^H",message,"^?)^N",COL_LEN3));
 						else

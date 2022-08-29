@@ -507,7 +507,7 @@ public class AbilityData extends StdWebMacro
 						String old=httpReq.getUrlParameter("DMGT");
 						if(old==null)
 							old=""+A.getStat("DMGT");
-						str.append("<OPTION VALUE=\""+((old.length()==0)?" SELECTED":"")+">N/A");
+						str.append("<OPTION VALUE=\"\" "+((old.length()==0)?" SELECTED":"")+">N/A");
 						for (final String element : Weapon.TYPE_DESCS)
 							str.append("<OPTION VALUE=\""+element+"\""+(old.equalsIgnoreCase(element)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(element));
 						str.append(", ");
@@ -654,6 +654,20 @@ public class AbilityData extends StdWebMacro
 					String old=httpReq.getUrlParameter("DISPLAY");
 					if(old==null)
 						old=A.displayText();
+					str.append(old+", ");
+				}
+				if(parms.containsKey("LEVEL"))
+				{
+					String old=httpReq.getUrlParameter("LEVEL");
+					if(old==null)
+						old=A.getStat("LEVEL");
+					str.append(old+", ");
+				}
+				if(parms.containsKey("BASELEVEL"))
+				{
+					String old=httpReq.getUrlParameter("BASELEVEL");
+					if(old==null)
+						old=A.getStat("BASELEVEL");
 					str.append(old+", ");
 				}
 				if(parms.containsKey("AUTOINVOKE"))

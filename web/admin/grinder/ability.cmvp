@@ -496,7 +496,7 @@
             <TR>
                 <TD><FONT COLOR=YELLOW>Base Level: </FONT></TD>
                 <TD>
-                    <INPUT TYPE=TEXT SIZE=4  VALUE="@AbilityData?MOD_LEVEL@">
+                    <INPUT TYPE=TEXT SIZE=4 NAME=BASELEVEL VALUE="@AbilityData?BASELEVEL@">
                 </TD>
             </TR>
             <TR>
@@ -515,20 +515,20 @@
             <TR>
                 <TD><FONT COLOR=YELLOW>Avoid Msg: </FONT></TD>
                 <TD>
-                    <INPUT TYPE=TEXT SIZE=40  VALUE="@AbilityData?MOD_AVOIDMSG@">
+                    <INPUT TYPE=TEXT SIZE=40  NAME=MOD_AVOIDMSG VALUE="@AbilityData?MOD_AVOIDMSG@">
                 </TD>
             </TR>
             <TR>
                 <TD><FONT COLOR=YELLOW>Spring Msg: </FONT></TD>
                 <TD>
-                    <INPUT TYPE=TEXT SIZE=40  VALUE="@AbilityData?MOD_TRIGMSG@">
+                    <INPUT TYPE=TEXT SIZE=40  NAME=MOD_TRIGMSG VALUE="@AbilityData?MOD_TRIGMSG@">
                 </TD>
             </TR>
             
             <TR>
                 <TD><FONT COLOR=YELLOW>Dmg. Formula: </FONT></TD>
                 <TD>
-                    <INPUT TYPE=TEXT SIZE=20  VALUE="@AbilityData?MOD_DMGF@">
+                    <INPUT TYPE=TEXT SIZE=20 NAME=MOD_DMGF VALUE="@AbilityData?MOD_DMGF@">
                     @x1=trapLevel, @x2=abilityCode, @x3=invokerLevel, @x4=targetLevel
                 </TD>
             </TR>
@@ -639,7 +639,7 @@
             <TR>
                 <TD><FONT COLOR=YELLOW>Spring Ability: </FONT></TD>
                 <TD>
-                    <SELECT NAME=DMGM>@AbilityData?ABLEID@</SELECT>
+                    <SELECT NAME=ABLEID>@AbilityData?ABLEID@</SELECT>
                 </TD>
             </TR>
             <TR>

@@ -69,7 +69,7 @@ public class AutoAwardData extends StdWebMacro
 				int i1=1;
 				while(httpReq.isUrlParameter("AFFECTBEHAVS_AFFECT"+i1))
 				{
-					Pair<String,String> p = new Pair<String,String>("","");
+					final Pair<String,String> p = new Pair<String,String>("","");
 					p.first=httpReq.getUrlParameter("AFFECTBEHAVS_AFFECT"+i1);
 					p.second=httpReq.getUrlParameter("AFFECTBEHAVS_ADATA"+i1);
 					if(p.first.trim().length()>0)
@@ -104,8 +104,8 @@ public class AutoAwardData extends StdWebMacro
 				return "[authentication error]";
 			if((last==null)||(CMath.s_int(last)<1))
 				return " @break@";
-			
-			int num = CMath.s_int(last);
+
+			final int num = CMath.s_int(last);
 			if(CMLib.awards().modifyAutoProperty(num, null))
 				return "Award rule deleted.";
 			else
@@ -124,9 +124,7 @@ public class AutoAwardData extends StdWebMacro
 				break;
 			i++;
 		}
-		if(P==null)
-			return " @break@";
-		
+
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("PMASK"))
 		{
@@ -177,7 +175,7 @@ public class AutoAwardData extends StdWebMacro
 				int i1=1;
 				while(httpReq.isUrlParameter("AFFECTBEHAVS_AFFECT"+i1))
 				{
-					Pair<String,String> p = new Pair<String,String>("","");
+					final Pair<String,String> p = new Pair<String,String>("","");
 					p.first=httpReq.getUrlParameter("AFFECTBEHAVS_AFFECT"+i1);
 					p.second=httpReq.getUrlParameter("AFFECTBEHAVS_ADATA"+i1);
 					if(p.first.trim().length()>0)
@@ -186,7 +184,10 @@ public class AutoAwardData extends StdWebMacro
 				}
 			}
 			else
+			if(P!=null)
 				properties=Arrays.asList(P.getProps());
+			else
+				properties = new ArrayList<Pair<String,String>>();
 			str.append("<TABLE WIDTH=100% BORDER=\"1\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i1=0;i1<properties.size();i1++)
 			{

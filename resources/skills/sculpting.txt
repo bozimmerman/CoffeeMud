@@ -40,7 +40,7 @@ small % bench	29	40	40	450	GenChair	CHAIR	2	0
 % twelve-sided die	31	70	1	22	GenDice		12		
 % figurine	31	40	3	36	GenItem	STATUE			
 % book shelf	32	40	70	875	GenContainer		30	384	
-plan % sarcophagus	32	40	500	6125	GenBed	BED	500	64	Prop_NoPurge
+plain % sarcophagus	32	40	500	6125	GenBed	BED	500	64	*Prop_NoPurge;
 % stool	33	20	50	300	GenChair	CHAIR	1	0	
 % tub	33	60	400	8000	GenTub	CHAIR	2000	0	
 % saucer	34	15	2	9	GenContainer		5	2048	

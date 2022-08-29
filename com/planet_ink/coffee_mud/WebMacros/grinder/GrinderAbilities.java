@@ -191,6 +191,10 @@ public class GrinderAbilities
 		A.setStat("MSGCOMPLETE",(old==null)?"":old);
 		if((A instanceof Trap) && (A.isGeneric()))
 		{
+			old=httpReq.getUrlParameter("LEVEL");
+			A.setStat("LEVEL",(old==null)?"":old);
+			old=httpReq.getUrlParameter("BASELEVEL");
+			A.setStat("BASELEVEL",(old==null)?"":old);
 			old=httpReq.getUrlParameter("DMGT");
 			A.setStat("DMGT",(old==null)?"":old);
 			old=httpReq.getUrlParameter("DMGM");
@@ -204,7 +208,8 @@ public class GrinderAbilities
 				if(httpReq.isUrlParameter("MOD_"+p))
 				{
 					old=httpReq.getUrlParameter("MOD_"+p);
-					A.setStat(p,(old==null)?"":old);
+					if(old != null)
+						A.setStat(p,old);
 				}
 			}
 			httpReq.addFakeUrlParameter("COMPONENT", A.ID());

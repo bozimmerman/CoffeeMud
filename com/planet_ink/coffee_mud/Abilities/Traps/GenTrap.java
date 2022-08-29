@@ -70,8 +70,9 @@ public class GenTrap extends StdTrap
 	private static final int V_ABLT=14;//I
 	private static final int V_SCRP=15;//S
 	private static final int V_HELP=16;//S
+	private static final int V_LEVL=17;//I
 
-	private static final int NUM_VS=17;//S
+	private static final int NUM_VS=18;//S
 
 	private static final Object[] makeEmpty()
 	{
@@ -82,6 +83,7 @@ public class GenTrap extends StdTrap
 		O[V_ACOD]=Integer.valueOf(0);
 		O[V_CAFF]=Integer.valueOf(Ability.CAN_ITEMS);
 		O[V_CTAR]=Integer.valueOf(0);
+		O[V_LEVL]=Integer.valueOf(0);
 		O[V_BOMB]=Boolean.FALSE;
 		O[V_MSGA]="<S-NAME> avoid(s) setting off a trap!";
 		O[V_MSGT]="<S-NAME> set(s) off a trap!";
@@ -139,6 +141,7 @@ public class GenTrap extends StdTrap
 			A.ID=ID;
 			getScripter();
 			A.scriptParmHash=scriptParmHash;
+			A.trapLevel=((Integer)V(ID,V_LEVL)).intValue();
 			if(scriptObj!=null)
 			{
 				A.scriptObj=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
@@ -409,6 +412,7 @@ public class GenTrap extends StdTrap
 										 "ABILTIK",//17I
 										 "SCRIPT",//18S
 										 "HELP",//19S
+										 "BASELEVEL",//22I
 										};
 
 	@Override
@@ -473,12 +477,17 @@ public class GenTrap extends StdTrap
 			return (String)V(ID, V_SCRP);
 		case 19:
 			return (String)V(ID, V_HELP);
+		case 20:
+			return ((Integer)V(ID, V_LEVL)).toString();
 		default:
 			if (code.equalsIgnoreCase("javaclass"))
 				return "GenTrap";
 			else
 			if (code.equalsIgnoreCase("allxml"))
-				return getAllXML();
+			{
+				final String str=getAllXML();
+				return str;
+			}
 			else
 				return super.getStat(code);
 		}
@@ -597,6 +606,9 @@ public class GenTrap extends StdTrap
 			break;
 		case 19:
 			SV(ID, V_HELP, val);
+			break;
+		case 20:
+			SV(ID, V_LEVL, Integer.valueOf(CMath.s_int(val)));
 			break;
 		default:
 			if (code.equalsIgnoreCase("allxml") && ID.equalsIgnoreCase("GenTrap"))

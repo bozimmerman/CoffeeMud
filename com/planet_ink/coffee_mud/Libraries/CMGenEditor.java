@@ -9151,7 +9151,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			// id is bad to change.. make them delete it.
 			//genText(mob,me,null,++showNumber,showFlag,"Enter the class","CLASS");
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Trap name","NAME",false);
-			promptStatInt(mob,me,null,++showNumber,showFlag,"Level","LEVEL");
+			promptStatInt(mob,me,null,++showNumber,showFlag,"Level","BASELEVEL");
 			promptStatBool(mob,me,++showNumber,showFlag,"Is Bomb","ISBOMB");
 			promptStatStr(mob,me,"0,"+CMParms.toListString(Ability.CAN_DESCS),++showNumber,showFlag,"Can Affect","CANAFFECTMASK",true);
 			promptStatStr(mob,me,"0,"+CMParms.toListString(Ability.CAN_DESCS),++showNumber,showFlag,"Can Target","CANTARGETMASK",true);
