@@ -122,6 +122,8 @@ public class Disease_Vampirism extends Disease
 		return 9;
 	}
 
+	protected final static String cancelID="Spell_DarkSensitivity";
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
@@ -133,24 +135,66 @@ public class Disease_Vampirism extends Disease
 		if(CMLib.flags().isInDark(((MOB)affected).location()))
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
 		else
-			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SEE);
+		{
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-50);
+			affectableStats.setArmor(affectableStats.armor()+50);
+		}
+	}
+
+	protected boolean isLightBlind(final MOB M)
+	{
+		final Room R=M.location();
+		if(R==null)
+			return true;
+		return !CMLib.flags().isInDark(R);
 	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(affected instanceof MOB)
+		if(!super.okMessage(myHost, msg))
+			return false;
+		if(msg.source()==affected)
 		{
-			final MOB mob=(MOB)affected;
-			if(msg.amISource(mob)
-			&&(msg.tool()!=null)
+			if((msg.tool() instanceof Ability)
 			&&(msg.tool().ID().equals("Skill_Swim")))
 			{
-				mob.tell(L("You can't swim!"));
+				msg.source().tell(L("You can't swim!"));
 				return false;
 			}
+			switch(msg.sourceMinor())
+			{
+			case CMMsg.TYP_EXAMINE:
+				if(isLightBlind(msg.source())
+				&& (!(msg.target() instanceof Room))
+				&&(msg.source().fetchEffect(cancelID)==null))
+				{
+					msg.source().tell(L("You can't seem to make it out that well in this bright light."));
+					return false;
+				}
+				break;
+			case CMMsg.TYP_JUSTICE:
+			{
+				if(!msg.targetMajor(CMMsg.MASK_DELICATE))
+					return true;
+			}
+				//$FALL-THROUGH$
+			case CMMsg.TYP_DELICATE_HANDS_ACT:
+			case CMMsg.TYP_CAST_SPELL:
+			{
+				if((msg.target()!=null)
+				&&(msg.target()!=msg.source())
+				&&(!(msg.target() instanceof Room))
+				&&(isLightBlind(msg.source()))
+				&&(msg.source().fetchEffect(cancelID)==null))
+				{
+					msg.source().tell(msg.source(),msg.target(),null,L("You can't seem to make out <T-NAME> in this bright light."));
+					return false;
+				}
+			}
+			}
 		}
-		return super.okMessage(myHost,msg);
+		return true;
 	}
 
 	@Override
