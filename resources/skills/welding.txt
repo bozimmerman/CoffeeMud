@@ -14,7 +14,7 @@ Crawlway	1	25	500		INDOOR DIR NOWALL	DOOR	GenExit	crawlway	Prop_Crawlspace	crawl
 Pool	1	190	400		OUTDOOR	ROOM	WaterSurface	0		pool		Turns an outdoor place into a swimmable water place.
 Deep Pool	1	230	700		OUTDOOR	ROOM	WaterSurface	1		pool		Turns an outdoor place into a deep diveable swimmable place.
 Portcullis	1	25	100	METAL	DIR	DOOR	GenDoor	portcullis|raise|lower|A portcullis blocks your way.		portcullis @x1		Openable exit between two places.
-Stairs	1	240	2550		INDOOR	STAIRS		@x1stairs to the @x2 floor		stairway @x1		Exit from an indoor place to a new indoor room above it.
+Upstairs	1	240	2550		INDOOR	STAIRS		@x1stairs to the @x2 floor		stairway @x1		Exit from an indoor place to a new indoor room above it.
 Hole Floor	1	210	2550		INDOOR	STAIRS	MetalRoom	@x1 a hole to the @x2 floor.	Spell_Fly()	hole @x1 to another floor		Exit from an indoor place to an existing room below it.
 Fence	1	25	50		OUTDOOR DIR	WALL	NA			fence @x1		Blocks entry or exit between two outdoor places.
 Secret Door	1	25	200		INDOOR DIR	DOOR	GenDoor	secret door	Prop_Hidden	secret door @x1	-BASECLASS +Thief	Hidden openable exit between two indoor places.

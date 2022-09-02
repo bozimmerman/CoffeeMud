@@ -14,13 +14,13 @@ low roof	9	85	250		OUTDOOR	ROOM	WoodRoom	0	Prop_Crawlspace()	lower frame and roo
 weak door	10	35	40		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.
 crawlway	11	50	250		INDOOR DIR NOWALL	DOOR	GenExit	crawlway	Prop_Crawlspace	crawlway @x1		Exit between two indoor places you crawl through.
 beaded curtain	13	35	25	CLOTH	INDOOR DIR	DOOR	GenCurtain	beaded curtain|draw open|draw close|A closed beaded curtain.|An open doorway.		curtain @x1		Openable bead strands exit between two indoor places.
-half door	15	35	45		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.
+half door	15	35	45		DIR INDOOR	DOOR	GenDoor	half door|||||a half door hangs in the doorway.		half door @x1		Openable exit between two indoor places.
 water pad	16	35	200		OUTDOOR	ROOM	ShallowWater	0		wet room		Turns outdoor room into a very wet outdoor room.
 medium maze	17	185	2500		OUTDOOR	ROOM	WoodRoomMaze	5		maze frame and roof		Turns an outdoor place into a larger indoor one of twisting turns.
 light gate	18	35	35		OUTDOOR DIR	DOOR	GenDoor	gate		gate @x1		Openable exit between two outdoor places.
 wide roof	19	135	1000		OUTDOOR	ROOM	WoodRoom	0	Prop_EnlargeRoom(10)	broad frame and roof		Turns an outdoor place into an indoor one of exceptional size.
 simple door	20	45	60		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.
-stairs	21	195	2550		INDOOR	STAIRS		@x1stairs to the @x2 floor		stairway @x1		Exit from an indoor place to a new indoor room above it.
+upstairs	21	195	2550		INDOOR	STAIRS		@x1stairs to the @x2 floor		stairway @x1		Exit from an indoor place to a new indoor room above it.
 tab drape	23	45	50	CLOTH	INDOOR DIR	DOOR	GenCurtain	tab drape|draw open|draw close|A closed tab drape.|A passage offstage.		curtain @x1		Openable cloth exit between a stage and offstage.
 light door	25	45	70		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.
 window	26	45	50	GLASS	INDOOR DIR NOWALL	DOOR	GenDoor	window|open|close|A window.|An open window.	Prop_Crawlspace()Prop_RoomView()	window @x1		Object that, when looked at, shows you what's behind it.

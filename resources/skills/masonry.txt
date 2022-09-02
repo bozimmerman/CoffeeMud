@@ -17,7 +17,7 @@ outdoor pool	17	160	400		OUTDOOR	ROOM	WaterSurface	0		pool		Turns an outdoor pla
 medium maze	18	200	2500		OUTDOOR	ROOM	StoneMaze	5		maze frame and roof		Turns an outdoor place into a larger indoor one of twisting turns
 wide roof	29	150	1000		OUTDOOR	ROOM	StoneRoom	0	Prop_EnlargeRoom(10)	broad frame and roof		Turns an outdoor place into an indoor one of exceptional size.
 light stone door	20	45	60		INDOOR DIR	DOOR	GenDoor	light stone door		door @x1		Openable exit between two indoor places.
-stairs	21	210	2550		INDOOR	STAIRS		@x1stairs to the @x2 floor		stairway @x1		Exit from an indoor place to a new indoor room above it.
+upstairs	21	210	2550		INDOOR	STAIRS		@x1stairs to the @x2 floor		stairway @x1		Exit from an indoor place to a new indoor room above it.
 window	26	25	100		INDOOR DIR NOWALL	DOOR	GenDoor	window|open(s)|close(s)|A window.|An open window.	Prop_Crawlspace()Prop_RoomView()	window @x1		Object that, when looked at, shows you what's behind it.
 outdoor deep pool	27	200	700		OUTDOOR	ROOM	WaterSurface	1		pool		Turns an outdoor place into a deep diveable swimmable place.
 big maze	28	225	3500		OUTDOOR	ROOM	StoneMaze	7		large maze frame and roof		Turns an outdoor place into a large indoor one of twisting turns.
