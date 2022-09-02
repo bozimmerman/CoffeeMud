@@ -106,7 +106,7 @@
         <TD><INPUT TYPE=TEXT SIZE=40 NAME=PMASK VALUE="@AutoAwardData?PMASK@"></TD>
     </TR>
     <TR>
-        <TD><FONT COLOR=YELLOW>Data Mask <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')">
+        <TD><FONT COLOR=YELLOW>Date Mask <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')">
         	<FONT COLOR=WHITE><I>?</I></FONT></a>: </FONT>
         </TD>
         <TD><INPUT TYPE=TEXT SIZE=40 NAME=DMASK VALUE="@AutoAwardData?DMASK@"></TD>

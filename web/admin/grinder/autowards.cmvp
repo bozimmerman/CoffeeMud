@@ -59,7 +59,7 @@
     <TR>
     <TD WIDTH=5%><B><FONT COLOR=YELLOW>ID</FONT></b></TD>
     <TD WIDTH=20%><B><FONT COLOR=YELLOW>Player Mask</FONT></b></TD>
-    <TD WIDTH=20%><B><FONT COLOR=YELLOW>Data Mask</FONT></b></TD>
+    <TD WIDTH=20%><B><FONT COLOR=YELLOW>Date Mask</FONT></b></TD>
     <TD WIDTH=55%><B><FONT COLOR=YELLOW>Properties</FONT></b></TD>
     </TR>
     @AutoAwardNext?RESET@
