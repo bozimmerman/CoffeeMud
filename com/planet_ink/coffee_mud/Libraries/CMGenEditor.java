@@ -421,18 +421,19 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		String showVal=oldVal;
 		if((maxChars > 0)&&(showVal.length()>maxChars)&& (!((showFlag!=showNumber)&&(showFlag>-999))))
 			showVal=showVal.substring(0,maxChars)+"...";
+		final String numStr = (showNumber == 0)?"   ":(showNumber+". ");
 		if(rawPrint)
 		{
 			if((showFlag==showNumber)||(showFlag<=-999))
 			{
 				sess.sendGMCPEvent("Siplet.Input", "{\"title\":\""+MiniJSON.toJSONString(fieldDisp)+"\",\"text\":\""+MiniJSON.toJSONString(oldVal)+"\"}");
-				sess.safeRawPrintln(showNumber+". "+fieldDisp+": '"+showVal+"'.");
+				sess.safeRawPrintln(numStr+fieldDisp+": '"+showVal+"'.");
 			}
 			else
-				sess.safeRawPrintln(showNumber+". "+fieldDisp+": '"+CMStrings.ellipse(showVal,60)+"'.");
+				sess.safeRawPrintln(numStr+fieldDisp+": '"+CMStrings.ellipse(showVal,60)+"'.");
 		}
 		else
-			mob.tell(showNumber+". "+fieldDisp+": '"+showVal+"'.");
+			mob.tell(numStr+fieldDisp+": '"+showVal+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return oldVal;
 		String newName="?";

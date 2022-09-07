@@ -1068,6 +1068,23 @@ public class StdArea implements Area
 		return derivedClimate;
 	}
 
+	protected boolean isAreaLocation(final Environmental E)
+	{
+		if(E==null)
+			return false;
+		if(E instanceof MOB)
+			return isAreaLocation(((MOB)E).location());
+		if(E instanceof Room)
+			return ((Room)E).getArea()==this;
+		if(E==this)
+			return true;
+		if(E instanceof Area)
+			return false;
+		if(E instanceof Item)
+			return isAreaLocation(((Item) E).owner());
+		return false;
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -1123,14 +1140,15 @@ public class StdArea implements Area
 				|| (CMath.bset(msg.targetMajor(), CMMsg.MASK_MAGIC))
 				|| (CMath.bset(msg.othersMajor(), CMMsg.MASK_MAGIC)))
 				{
-					Room room = msg.source().location();
-					if ((msg.target() instanceof MOB)
-					&& (((MOB) msg.target()).location() != null))
-						room = ((MOB) msg.target()).location();
-					if((room != null)
-					&&(room.getArea() == this))
+					if(isAreaLocation(msg.source())
+					|| isAreaLocation(msg.target()))
 					{
-						room.showHappens(CMMsg.MSG_OK_ACTION, L("Magic doesn't seem to work here."));
+						final Room R;
+						if(isAreaLocation(msg.source()))
+							R=CMLib.map().roomLocation(msg.source());
+						else
+							R=CMLib.map().roomLocation(msg.target());
+						R.showHappens(CMMsg.MSG_OK_ACTION,L("Magic doesn't seem to work here."));
 						return false;
 					}
 				}
@@ -1140,8 +1158,17 @@ public class StdArea implements Area
 				if((msg.tool() instanceof Ability)
 				&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SUPERPOWER))
 				{
-					msg.source().tell(L("Your powers don't seem to work here."));
-					return false;
+					if(isAreaLocation(msg.source())
+					|| isAreaLocation(msg.target()))
+					{
+						final Room R;
+						if(isAreaLocation(msg.source()))
+							R=CMLib.map().roomLocation(msg.source());
+						else
+							R=CMLib.map().roomLocation(msg.target());
+						R.showHappens(CMMsg.MSG_OK_ACTION,L("Powers don't seem to work here."));
+						return false;
+					}
 				}
 			}
 			else
@@ -1170,19 +1197,22 @@ public class StdArea implements Area
 				case CMMsg.TYP_BORROW:
 					break;
 				case CMMsg.TYP_POWERCURRENT:
-					return false;
+					if(isAreaLocation(msg.source())
+					|| isAreaLocation(msg.target()))
+						return false;
+					break;
 				default:
 					if (msg.tool() instanceof Technical)
 					{
-						final Room room;
-						if (msg.target() instanceof MOB)
-							room = ((MOB) msg.target()).location();
-						else
-							room = msg.source().location();
-						if((room != null)
-						&&(room.getArea() == this))
+						if(isAreaLocation(msg.source())
+						|| isAreaLocation(msg.target()))
 						{
-							room.showHappens(CMMsg.MSG_OK_VISUAL, L("Technology doesn't seem to work here."));
+							final Room R;
+							if(isAreaLocation(msg.source()))
+								R=CMLib.map().roomLocation(msg.source());
+							else
+								R=CMLib.map().roomLocation(msg.target());
+							R.showHappens(CMMsg.MSG_OK_VISUAL, L("Technology doesn't seem to work here."));
 							return false;
 						}
 					}

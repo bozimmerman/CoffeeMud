@@ -370,7 +370,11 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			final MOB powerMOB=CMClass.getMOB("StdMOB");
 			powerMOB.baseCharStats().setMyRace(CMClass.getRace("ElectricityElemental"));
 			powerMOB.setSavable(false);
-			powerMOB.setLocation(CMLib.map().getRandomRoom());
+			final Room R=CMClass.getLocale("StdRoom");
+			final Area A=CMClass.getAreaType("StdArea");
+			A.setTheme(Area.THEME_TECHNOLOGY);
+			R.setArea(A);
+			powerMOB.setLocation(R);
 			powerMOB.recoverCharStats();
 			powerMsg=CMClass.getMsg(powerMOB, CMMsg.MSG_POWERCURRENT, null);
 		}

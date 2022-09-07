@@ -48,6 +48,13 @@ public class Power_WebSpinning extends SuperPower
 		return localizedName;
 	}
 
+	private static final String[] triggerStrings =I(new String[] {"WEBSPIN"});
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Webbed)");
 
 	@Override

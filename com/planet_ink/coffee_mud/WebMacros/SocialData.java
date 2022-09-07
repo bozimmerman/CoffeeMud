@@ -558,7 +558,7 @@ public class SocialData extends StdWebMacro
 										old = S.getSoundFile();
 										break;
 									case 'Z':
-										old = S.getCriteriaZappermask();
+										old = super.htmlOutgoingFilter(S.getCriteriaZappermask());
 										break;
 									case 'A':
 										old = S.argumentName();

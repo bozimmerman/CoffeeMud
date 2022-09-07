@@ -200,6 +200,43 @@
 		<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=MISCTEXT SIZE=60  MAXLENGTH=255 VALUE="@ItemData?MISCTEXT@"></TD>
 	</TR>
 @else@
+@block?LIDLOCKBLOCK@
+	@if?ItemData?ISCONTAINER@
+		</TR>
+		<TR>
+			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Has a Lid:</B></FONT></TD>
+			<TD WIDTH=450 COLSPAN=2><INPUT TYPE=CHECKBOX NAME=HASALID @ItemData?HASALID@ ONCLICK="ReShow();"></TD>
+		</TR>
+		@AddRequestParameter?HASALID=@@ItemData?HASALID@@ @
+		@if?CheckReqParm?HASALID=checked@
+			<TR>
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Default Closed:</B></FONT></TD>
+				<TD WIDTH=450 COLSPAN=2><INPUT TYPE=CHECKBOX NAME=DEFAULTSCLOSED @ItemData?DEFAULTSCLOSED@></TD>
+			</TR>
+			<TR>
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Has a Lock:</B></FONT></TD>
+				<TD WIDTH=450 COLSPAN=2><INPUT TYPE=CHECKBOX NAME=HASALOCK @ItemData?HASALOCK@ ONCLICK="ReShow();"></TD>
+			</TR>
+			<TR>
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Open Delay (Ticks):</B></FONT></TD>
+				<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=OPENTICKS SIZE=5 VALUE="@ItemData?OPENTICKS@">
+				</TD>
+			</TR>
+			@AddRequestParameter?HASALOCK=@@ItemData?HASALOCK@@ @
+			@if?CheckReqParm?HASALOCK=checked@
+			<TR>
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Default Locked:</B></FONT></TD>
+				<TD WIDTH=450 COLSPAN=2><INPUT TYPE=CHECKBOX NAME=DEFAULTSLOCKED @ItemData?DEFAULTSLOCKED@></TD>
+			</TR>
+			<TR>
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Key Code:</B></FONT></TD>
+				<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=KEYCODE SIZE=5 VALUE="@ItemData?KEYCODE@">
+				</TD>
+			</TR>
+			@endif@
+		@endif@
+	@endif@
+@/block@
 @block?ELECTRONICBLOCK@
 	@if?ItemData?ISELECTRONIC@
 	<TR>
@@ -500,39 +537,8 @@
 				<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=KEYCODE SIZE=50 VALUE="@ItemData?KEYCODE@">
 				</TD>
 			</TR>
-		@else
-			<TR>
-				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Has a Lid:</B></FONT></TD>
-				<TD WIDTH=450 COLSPAN=2><INPUT TYPE=CHECKBOX NAME=HASALID @ItemData?HASALID@ ONCLICK="ReShow();"></TD>
-			</TR>
-		@endif@
-		@AddRequestParameter?HASALID=@@ItemData?HASALID@@ @
-		@if?CheckReqParm?HASALID=checked@
-			<TR>
-				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Default Closed:</B></FONT></TD>
-				<TD WIDTH=450 COLSPAN=2><INPUT TYPE=CHECKBOX NAME=DEFAULTSCLOSED @ItemData?DEFAULTSCLOSED@></TD>
-			</TR>
-			<TR>
-				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Has a Lock:</B></FONT></TD>
-				<TD WIDTH=450 COLSPAN=2><INPUT TYPE=CHECKBOX NAME=HASALOCK @ItemData?HASALOCK@ ONCLICK="ReShow();"></TD>
-			</TR>
-			<TR>
-				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Open Delay (Ticks):</B></FONT></TD>
-				<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=OPENTICKS SIZE=5 VALUE="@ItemData?OPENTICKS@">
-				</TD>
-			</TR>
-			@AddRequestParameter?HASALOCK=@@ItemData?HASALOCK@@ @
-			@if?CheckReqParm?HASALOCK=checked@
-				<TR>
-					<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Default Locked:</B></FONT></TD>
-					<TD WIDTH=450 COLSPAN=2><INPUT TYPE=CHECKBOX NAME=DEFAULTSLOCKED @ItemData?DEFAULTSLOCKED@></TD>
-				</TR>
-				<TR>
-					<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Key Code:</B></FONT></TD>
-					<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=KEYCODE SIZE=5 VALUE="@ItemData?KEYCODE@">
-					</TD>
-				</TR>
-			@endif@
+		@else@
+			@insert?LIDLOCKBLOCK@
 		@endif@
 	@endif@
 	<TR>
@@ -584,6 +590,7 @@
 		</TD>
 	</TR>
 	@endif@
+	@insert?LIDLOCKBLOCK@
 	@if?ItemData?ISPOTION@
 	<TR>
 		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Spells to cast on drinker:</B></FONT></TD>
@@ -866,38 +873,7 @@
 		</SELECT>
 		</TD>
 	</TR>
-	<TR>
-		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Has a Lid:</B></FONT></TD>
-		<TD WIDTH=450 COLSPAN=2><INPUT TYPE=CHECKBOX NAME=HASALID @ItemData?HASALID@ ONCLICK="ReShow();"></TD>
-	</TR>
-	@AddRequestParameter?HASALID=@@ItemData?HASALID@@ @
-	@if?CheckReqParm?HASALID=checked@
-		<TR>
-			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Default Closed:</B></FONT></TD>
-			<TD WIDTH=450 COLSPAN=2><INPUT TYPE=CHECKBOX NAME=DEFAULTSCLOSED @ItemData?DEFAULTSCLOSED@></TD>
-		</TR>
-		<TR>
-			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Has a Lock:</B></FONT></TD>
-			<TD WIDTH=450 COLSPAN=2><INPUT TYPE=CHECKBOX NAME=HASALOCK @ItemData?HASALOCK@ ONCLICK="ReShow();"></TD>
-		</TR>
-		<TR>
-			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Open Delay (Ticks):</B></FONT></TD>
-			<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=OPENTICKS SIZE=5 VALUE="@ItemData?OPENTICKS@">
-			</TD>
-		</TR>
-		@AddRequestParameter?HASALOCK=@@ItemData?HASALOCK@@ @
-		@if?CheckReqParm?HASALOCK=checked@
-		<TR>
-			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Default Locked:</B></FONT></TD>
-			<TD WIDTH=450 COLSPAN=2><INPUT TYPE=CHECKBOX NAME=DEFAULTSLOCKED @ItemData?DEFAULTSLOCKED@></TD>
-		</TR>
-		<TR>
-			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Key Code:</B></FONT></TD>
-			<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=KEYCODE SIZE=5 VALUE="@ItemData?KEYCODE@">
-			</TD>
-		</TR>
-		@endif@
-	@endif@
+	@insert?LIDLOCKBLOCK@
 	<TR>
 		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Uses Code</B></FONT></TD>
 		<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=USESREMAIN SIZE=5 VALUE="@ItemData?USESREMAIN@">

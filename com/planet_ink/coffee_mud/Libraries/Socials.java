@@ -320,7 +320,11 @@ public class Socials extends StdLibrary implements SocialsList
 			actionDesc = "HEARING NOISE";
 			break;
 		}
-		mob.session().safeRawPrintln(L("@x1. Others Effect type: @x2",""+showNumber,actionDesc));
+		final String numStr = (showNumber == 0)?"   ":(showNumber+". ");
+		if(me.targetName().equals("<T-NAME>"))
+			mob.session().safeRawPrintln(L("@x1Others/Target Effect type: @x2",numStr,actionDesc));
+		else
+			mob.session().safeRawPrintln(L("@x1Others Effect type: @x2",numStr,actionDesc));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		String newName=mob.session().choose(L("Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands, Q)uiet move: "),L("WMSVHQ"),"");
@@ -365,7 +369,13 @@ public class Socials extends StdLibrary implements SocialsList
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
-		mob.session().safeRawPrintln(L("@x1. Target Effect type: @x2",""+showNumber,((me.getTargetCode()==CMMsg.MSG_HANDS)?"HANDS":((me.getTargetCode()==CMMsg.MSG_OK_VISUAL)?"VISUAL ONLY":((me.getTargetCode()==CMMsg.MSG_SPEAK)?"HEARING WORDS":((me.getTargetCode()==CMMsg.MSG_NOISYMOVEMENT)?"BEING MOVED ON":"HEARING NOISE"))))));
+		final String numStr = (showNumber == 0)?"   ":(showNumber+". ");
+		mob.session().safeRawPrintln(L("@x1Target Effect type: @x2",numStr,
+				((me.getTargetCode()==CMMsg.MSG_HANDS)?"HANDS":
+					((me.getTargetCode()==CMMsg.MSG_OK_VISUAL)?"VISUAL ONLY"
+							:((me.getTargetCode()==CMMsg.MSG_SPEAK)?"HEARING WORDS":
+								((me.getTargetCode()==CMMsg.MSG_NOISYMOVEMENT)?"BEING MOVED ON":
+									"HEARING NOISE"))))));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		String newName=mob.session().choose(L("Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands, Q)uiet move: "),L("WMSVHQ"),"");
@@ -423,7 +433,8 @@ public class Socials extends StdLibrary implements SocialsList
 			actionDesc="MAKING NOISE";
 			break;
 		}
-		mob.session().safeRawPrintln(L("@x1. Your action type: @x2",""+showNumber,actionDesc));
+		final String numStr = (showNumber == 0)?"   ":(showNumber+". ");
+		mob.session().safeRawPrintln(L("@x1Your action type: @x2",numStr,actionDesc));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		String newName=mob.session().choose(L("Change W)ords, M)ovement (small), S)ound, L)arge Movement, Q)uiet Move: "),L("WMSLQ"),"");
@@ -672,7 +683,7 @@ public class Socials extends StdLibrary implements SocialsList
 						soc.setTargetMessage(CMLib.genEd().prompt(mob,soc.getTargetMessage(),++showNumber,showFlag,L("Target-sees string"),false,true));
 						if(soc.getTargetCode()==CMMsg.MSG_OK_ACTION)
 							soc.setTargetCode(CMMsg.MSG_HANDS);
-						modifySocialTargetCode(mob,soc,++showNumber,showFlag);
+						modifySocialTargetCode(mob,soc,0,-1);
 					}
 					if(soc.targetName().equals("<T-NAME>")
 					||soc.targetName().equals("<I-NAME>")
