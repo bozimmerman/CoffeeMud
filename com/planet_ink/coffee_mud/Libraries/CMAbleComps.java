@@ -555,7 +555,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		final StringBuffer buf=new StringBuffer("");
 		for (int r = 0; r < req.size(); r++)
 		{
-			buf.append(getAbilityComponentDesc(mob, req.get(r), r>0));
+			buf.append(getAbilityComponentDesc(mob, req.get(r), buf.length()>0));
 		}
 		return buf.toString();
 	}
