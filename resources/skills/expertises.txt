@@ -636,7 +636,7 @@ PLANTMASTER@x1=Plant Mastering @x2,10,LEVEL|LOWCOST,-SKILLFLAG +PLANT_CONTROL,-M
 HELP_=<EXPERTISE>The ability to cast plant controlling chants at a higher power level, producing longer and more malicious/beneficial magic, while also reducing mana cost.
 
 BONELORE@x1=Bone Lore @x2,10,X1,-SKILL +Prayer_AnimateDead +Prayer_AnimateSkeleton +Prayer_AnimateMummy,-MAXCLASSLEVEL +>={1+(8*@x1)},+STR {12+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to magically generate higher level skeletons, zombies, and mummies.
+HELP_=<EXPERTISE>The ability to magically generate higher level skeletons, and mummies.
 
 GHOULLORE@x1=Ghoul Lore @x2,10,X1,-SKILL +Prayer_AnimateGhoul +Prayer_AnimateGhast,-MAXCLASSLEVEL +>={7+(7*@x1)},+INT {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to magically generate higher level ghouls and ghasts.
