@@ -123,7 +123,7 @@ public class NonTriggerer implements Triggerer
 	}
 
 	@Override
-	public CMMsg genNextAbleTrigger(MOB mob, Object key)
+	public CMMsg genNextAbleTrigger(MOB mob, Object key, boolean force)
 	{
 		return null;
 	}

@@ -125,9 +125,10 @@ public interface Triggerer extends CMCommon
 	 *
 	 * @param mob the mob to check
 	 * @param key the arbitrary but unique key object
+	 * @param force true to force even an unstarted trigger
 	 * @return null, or a message for the given mob to do
 	 */
-	public CMMsg genNextAbleTrigger(final MOB mob, final Object key);
+	public CMMsg genNextAbleTrigger(final MOB mob, final Object key, boolean force);
 
 	/**
 	 * Sets the given mob as being ignored for the purpose of
@@ -271,9 +272,9 @@ public interface Triggerer extends CMCommon
 	 * If something has changed that requires a triggerer or tracker to
 	 * be reset, then every instance is notified, and this method can
 	 * be called to see if this specific object needs resetting.
-	 * 
+	 *
 	 * @see Triggerer#setObsolete()
-	 * 
+	 *
 	 * @return true if this instance is obsolete, false otherwise
 	 */
 	public boolean isObsolete();
@@ -281,25 +282,25 @@ public interface Triggerer extends CMCommon
 	/**
 	 * If this triggering engine needs disabling due to changes in
 	 * local abilities, this method can be called.
-	 * 
+	 *
 	 * @see Triggerer#isObsolete()
 	 */
 	public void setObsolete();
 
 	/**
 	 * If this triggering engine is disabled, this will return true
-	 * 
+	 *
 	 * @return true if this instance is disabled
 	 */
 	public boolean isDisabled();
-	
+
 	/**
 	 * In order to have a Triggerer signaled that the rituals
 	 * may need refreshing, this method exists to be called globally.
 	 * Every Triggerer impl should implement this.
-	 * 
+	 *
 	 * @see Triggerer#isObsolete()
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 */
 	public static class TrigSignal

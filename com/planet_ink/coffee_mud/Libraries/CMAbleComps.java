@@ -199,22 +199,29 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		final List<Object> passes=new Vector<Object>();
 		final List<Object> thisSet=new ArrayList<Object>();
 		boolean found=false;
+		boolean first=true;
 		AbilityComponent comp = null;
 		final Room room = mob.location();
 		int minAmt = 0;
 		for(int i=0;i<req.size();i++)
 		{
 			comp=req.get(i);
-			currentAND=comp.getConnector()==AbilityComponent.CompConnector.AND;
-			if(previousValue&&(!currentAND))
-				return passes;
-			if((!previousValue)&&currentAND)
-				return null;
-
 			// if they fail the zappermask, its like the req is NOT even there...
 			if((comp.getCompiledMask()!=null)
 			&&(!CMLib.masking().maskCheck(comp.getCompiledMask(),mob,true)))
 				continue;
+
+			if(!first)
+			{
+				currentAND=comp.getConnector()==AbilityComponent.CompConnector.AND;
+				if(previousValue&&(!currentAND))
+					return passes;
+				if((!previousValue)&&currentAND)
+					return null;
+			}
+			else
+				first=false;
+
 			amt[0]=comp.getAmount();
 			thisSet.clear();
 			found=false;
@@ -1303,7 +1310,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		final Triggerer trigs = getAbilityComponentTriggers(mob, A);
 		if(trigs.getInProgress(mob).length>0) // one at a time, plz
 			return;
-		final CMMsg msg = trigs.genNextAbleTrigger(mob, A.ID().toUpperCase().trim());
+		final CMMsg msg = trigs.genNextAbleTrigger(mob, A.ID().toUpperCase().trim(), true);
 		try
 		{
 			if(R.okMessage(R, msg))
@@ -1353,7 +1360,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			return;
 		for(final Object key : keys)
 		{
-			final CMMsg msg = trigs.genNextAbleTrigger(mob, key);
+			final CMMsg msg = trigs.genNextAbleTrigger(mob, key, false);
 			try
 			{
 				if(R.okMessage(R, msg))

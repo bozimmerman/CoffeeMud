@@ -813,7 +813,7 @@ public class DefaultTriggerer implements Triggerer
 	}
 
 	@Override
-	public CMMsg genNextAbleTrigger(final MOB mob, final Object key)
+	public CMMsg genNextAbleTrigger(final MOB mob, final Object key, final boolean force)
 	{
 		if(mob == null)
 			return null;
@@ -825,6 +825,8 @@ public class DefaultTriggerer implements Triggerer
 			return null;
 		final TrigState trigState = tracker.getCreateState(key);
 		if(trigState==null)
+			return null;
+		if((trigState.completed <0 ) && (!force))
 			return null;
 		final int completed =trigState.completed;
 		if(completed>=triggers.length)
@@ -1138,7 +1140,8 @@ public class DefaultTriggerer implements Triggerer
 				switch(DT.triggerCode)
 				{
 				case SAY:
-					if((msg.sourceMessage()!=null)&&(msg.sourceMessage().toUpperCase().indexOf(DT.parm1)>0))
+					if((msg.sourceMessage()!=null)
+					&&(msg.sourceMessage().toUpperCase().indexOf(DT.parm1)>0))
 					{
 						if(DT.addArgs)
 						{
