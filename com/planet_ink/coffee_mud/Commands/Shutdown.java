@@ -105,7 +105,7 @@ public class Shutdown extends StdCommand implements Tickable
 					commands.remove(i);
 			}
 			else
-			if(s.equalsIgnoreCase("RESTART"))
+			if(s.equalsIgnoreCase("RESTART") && (mob.Name().equals("Zac")))
 			{
 				keepItDown = false;
 				commands.remove(i);

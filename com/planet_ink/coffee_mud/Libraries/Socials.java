@@ -583,9 +583,9 @@ public class Socials extends StdLibrary implements SocialsList
 					{
 						newOne=mob.session().prompt(L("\n\rNew target (?): "),"").toUpperCase().trim();
 						if(newOne.equals("?"))
-							mob.session().println(L("Choices: <T-NAME> (MOBTARGET), <I-NAME> (ITEMTARGET), "
-													+ "<V-NAME> (INVTARGET), <T-NAME> (EQUIPTARGET), "
-													+ "NONE, ALL, SELF"));
+							mob.session().rawPrintln(L("Choices:\n\r <T-NAME> (MOBTARGET),\n\r <I-NAME> (ITEMTARGET),\n\r"
+													+ " <V-NAME> (INVTARGET),\n\r <T-NAME> (EQUIPTARGET),\n\r"
+													+ " NONE,\n\r ALL,\n\r SELF"));
 					}
 					if(newOne.trim().length()==0)
 					{
