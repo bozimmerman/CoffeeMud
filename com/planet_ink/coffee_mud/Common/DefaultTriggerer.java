@@ -1489,7 +1489,10 @@ public class DefaultTriggerer implements Triggerer
 		final TrigTracker tracker = getTrigTracker(mob);
 		if(tracker == null)
 			return false;
-		return tracker.compl.contains(key);
+		final boolean comp = tracker.compl.contains(key);
+		if(comp)
+			tracker.compl.remove(key);
+		return comp;
 	}
 
 	@Override

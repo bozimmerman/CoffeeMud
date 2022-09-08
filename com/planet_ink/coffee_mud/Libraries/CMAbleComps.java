@@ -199,28 +199,26 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		final List<Object> passes=new Vector<Object>();
 		final List<Object> thisSet=new ArrayList<Object>();
 		boolean found=false;
-		boolean first=true;
 		AbilityComponent comp = null;
 		final Room room = mob.location();
 		int minAmt = 0;
 		for(int i=0;i<req.size();i++)
 		{
 			comp=req.get(i);
+
+			currentAND=comp.getConnector()==AbilityComponent.CompConnector.AND;
+			if(previousValue&&(!currentAND))
+				return passes;
+			if((!previousValue)&&currentAND)
+				return null;
+
 			// if they fail the zappermask, its like the req is NOT even there...
 			if((comp.getCompiledMask()!=null)
 			&&(!CMLib.masking().maskCheck(comp.getCompiledMask(),mob,true)))
-				continue;
-
-			if(!first)
 			{
-				currentAND=comp.getConnector()==AbilityComponent.CompConnector.AND;
-				if(previousValue&&(!currentAND))
-					return passes;
-				if((!previousValue)&&currentAND)
-					return null;
+				previousValue=false;
+				continue;
 			}
-			else
-				first=false;
 
 			amt[0]=comp.getAmount();
 			thisSet.clear();
@@ -1396,7 +1394,19 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			{
 				final Ability A=msg.source().fetchAbility(comps.first.toString());
 				if(A!=null)
-					A.invoke(msg.source(), comps.second, null, false, 0);
+				{
+					msg.addTrailerRunnable(new Runnable()
+					{
+						final MOB mob = msg.source();
+						final List<String> args = new XVector<String>(comps.second);
+						final Ability ableA = A;
+						@Override
+						public void run()
+						{
+							ableA.invoke(mob, args, null, false, 0);
+						}
+					});
+				}
 			}
 		}
 	}
