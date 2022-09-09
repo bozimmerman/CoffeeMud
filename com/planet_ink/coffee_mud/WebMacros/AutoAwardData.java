@@ -117,12 +117,15 @@ public class AutoAwardData extends StdWebMacro
 		final int num=CMath.s_int(last);
 		int i=1;
 		AutoProperties P = null;
-		for(final Enumeration<AutoProperties> p =CMLib.awards().getAutoProperties();p.hasMoreElements();)
+		if(num>0)
 		{
-			P=p.nextElement();
-			if(num == i)
-				break;
-			i++;
+			for(final Enumeration<AutoProperties> p =CMLib.awards().getAutoProperties();p.hasMoreElements();)
+			{
+				P=p.nextElement();
+				if(num == i)
+					break;
+				i++;
+			}
 		}
 
 		final StringBuffer str=new StringBuffer("");
