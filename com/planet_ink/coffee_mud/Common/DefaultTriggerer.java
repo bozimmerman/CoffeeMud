@@ -128,7 +128,7 @@ public class DefaultTriggerer implements Triggerer
 
 		}
 
-		public TrigState getCreateState(final Object key)
+		public TrigState getState(final Object key)
 		{
 			final MOB mob=charM.get();
 			if(mob==null)
@@ -138,7 +138,16 @@ public class DefaultTriggerer implements Triggerer
 			}
 			if(states.containsKey(key))
 				return states.get(key);
-			final TrigState state = new TrigState(mob, key, holyName);
+			return null;
+		}
+
+		public TrigState getCreateState(final Object key)
+		{
+			final MOB mob=charM.get();
+			TrigState state = getState(key);
+			if((state != null)||(mob==null))
+				return state;
+			state = new TrigState(mob, key, holyName);
 			states.put(key, state);
 			return state;
 		}
@@ -632,6 +641,14 @@ public class DefaultTriggerer implements Triggerer
 		return state;
 	}
 
+	protected TrigState getTrigState(final MOB mob, final Object key)
+	{
+		final TrigTracker tracker = getTrigTracker(mob);
+		if(tracker == null)
+			return null;
+		return tracker.getState(key);
+	}
+
 	protected void clearState(final MOB mob, final Object type)
 	{
 		final TrigTracker tracker = getTrigTracker(mob);
@@ -823,10 +840,12 @@ public class DefaultTriggerer implements Triggerer
 		final TrigTracker tracker = this.getCreateTrigTracker(mob);
 		if(tracker == null)
 			return null;
-		final TrigState trigState = tracker.getCreateState(key);
+		final TrigState trigState;
+		if(force)
+			trigState = tracker.getCreateState(key);
+		else
+			trigState = tracker.getState(key);
 		if(trigState==null)
-			return null;
-		if((trigState.completed <0 ) && (!force))
 			return null;
 		final int completed =trigState.completed;
 		if(completed>=triggers.length)
@@ -1478,7 +1497,18 @@ public class DefaultTriggerer implements Triggerer
 			return trackingNothing;
 		if(tracker.states.size()==0)
 			return trackingNothing;
-		return new XVector<Object>(tracker.states.keySet()).toArray();
+		List<Object> inProgress = null;
+		for(final Object key : tracker.states.keySet())
+		{
+			final TrigState state = tracker.states.get(key);
+			if(state.completed>=0)
+			{
+				if(inProgress == null)
+					inProgress  = new ArrayList<Object>(1);
+				inProgress.add(key);
+			}
+		}
+		return (inProgress == null) ? trackingNothing : inProgress.toArray();
 	}
 
 	@Override

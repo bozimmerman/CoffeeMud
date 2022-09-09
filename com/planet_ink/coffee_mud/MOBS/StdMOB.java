@@ -4105,6 +4105,9 @@ public class StdMOB implements MOB
 
 			manaConsumeCter = CMLib.commands().tickManaConsumption(this, manaConsumeCter);
 
+			if(triggerer.isObsolete() || (!triggerer.isDisabled()))
+				CMLib.ableComponents().tickAbilityComponentTriggers(this);
+
 			tickStatus = Tickable.STATUS_BEHAVIOR;
 			if (numBehaviors() > 0)
 			{
@@ -4177,8 +4180,6 @@ public class StdMOB implements MOB
 						delTattoo(tattoo);
 				}
 			}
-			if(triggerer.isObsolete() || (!triggerer.isDisabled()))
-				CMLib.ableComponents().tickAbilityComponentTriggers(this);
 		}
 		tickStatus = Tickable.STATUS_NOT;
 		return !removeFromGame;

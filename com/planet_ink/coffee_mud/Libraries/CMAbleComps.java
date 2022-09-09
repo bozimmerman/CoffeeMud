@@ -1395,6 +1395,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 				final Ability A=msg.source().fetchAbility(comps.first.toString());
 				if(A!=null)
 				{
+					mob.setActions(mob.actions()-CMProps.getSkillCombatActionCost(A.ID()));
 					msg.addTrailerRunnable(new Runnable()
 					{
 						final MOB mob = msg.source();

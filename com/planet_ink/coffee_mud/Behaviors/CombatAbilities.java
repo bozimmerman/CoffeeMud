@@ -579,7 +579,8 @@ public class CombatAbilities extends ActiveTicker
 			}
 		}
 
-		if(tryA!=null)
+		if((tryA!=null)
+		&&(mob.actions()>=CMProps.getSkillCombatActionCost(tryA.ID())))
 		{
 			if(CMath.bset(tryA.usageType(),Ability.USAGE_MANA))
 			{
@@ -634,6 +635,8 @@ public class CombatAbilities extends ActiveTicker
 			}
 			if(skillUsed)
 			{
+				if(mob.actions()>=CMProps.getSkillCombatActionCost(tryA.ID()))
+					mob.setActions(mob.actions()-CMProps.getSkillCombatActionCost(tryA.ID()));
 				skillUsed=true;
 				if(lastSpell!=null)
 					lastSpell=tryA.ID();
