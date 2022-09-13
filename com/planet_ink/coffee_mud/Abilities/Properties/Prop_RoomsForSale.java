@@ -85,15 +85,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 	@Override
 	public String getTitleID()
 	{
-		if(affected instanceof Room)
-			return "LAND_TITLE_FOR#"+CMLib.map().getExtendedRoomID((Room)affected);
-		else
-		{
-			final Room R=CMLib.map().getRoom(landPropertyID());
-			if(R!=null)
-				return "LAND_TITLE_FOR#"+CMLib.map().getExtendedRoomID(R);
-		}
-		return "";
+		return this.getUniqueLotID();
 	}
 
 	// update title, since it may affect room clusters, worries about EVERYONE

@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -48,13 +49,37 @@ public class Mageness extends CombatAbilities
 
 	protected void getSomeMoreMageAbilities(final MOB mob)
 	{
+		final List<AbilityMapping> all=new ArrayList<AbilityMapping>();
+		for(final CharClass C : mob.baseCharStats().getCharClasses())
+			all.addAll(CMLib.ableMapper().getUpToLevelListings(C.ID(), mob.baseCharStats().getClassLevel(C),false,false));
+		{
+			final Set<String> dup = new TreeSet<String>();
+			for(final Iterator<AbilityMapping> i=all.iterator();i.hasNext();)
+			{
+				final AbilityMapping map = i.next();
+				if(dup.contains(map.abilityID()))
+					i.remove();
+				else
+				{
+					dup.add(map.abilityID());
+					if(mob.fetchAbility(map.abilityID())!=null)
+						i.remove();
+				}
+			}
+		}
+		if(all.size()==0)
+			return;
 		for(int a=0;a<((mob.basePhyStats().level())+5);a++)
 		{
 			Ability addThis=null;
+			AbilityMapping map=null;
 			int tries=0;
 			while((addThis==null)&&((++tries)<10))
 			{
-				addThis=CMClass.randomAbility();
+				map = all.get(CMLib.dice().roll(1, all.size(), -1));
+				addThis=CMClass.getAbility(map.abilityID());
+				if(addThis == null)
+					addThis=CMClass.randomAbility();
 				if((CMLib.ableMapper().qualifyingLevel(mob,addThis)<0)
 				||(!CMLib.ableMapper().qualifiesByLevel(mob,addThis))
 				||(((addThis.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)&&(!addThis.appropriateToMyFactions(mob)))
@@ -71,6 +96,8 @@ public class Mageness extends CombatAbilities
 				addThis.setProficiency(CMLib.ableMapper().getMaxProficiency(addThis.ID())/2);
 				mob.addAbility(addThis);
 				addThis.autoInvocation(mob, false);
+				if(map != null)
+					all.remove(map);
 			}
 		}
 	}

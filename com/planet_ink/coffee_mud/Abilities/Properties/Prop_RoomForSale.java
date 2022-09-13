@@ -426,7 +426,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				}
 				if(!playerExists)
 				{
-					String id=T.getUniqueLotID();
+					String id=T.getTitleID();
 					if((id==null)||(id.equalsIgnoreCase("null")))
 						id=CMLib.map().getExtendedRoomID(R);
 					Log.warnOut("Property owned by non-existant player "+T.getOwnerName()+" is now lost: "+id);

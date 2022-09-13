@@ -1813,9 +1813,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				if(T!=null)
 				{
 					if((!titles.contains(T))
-					&&(!foundNames.contains(T.getUniqueLotID())))
+					&&(!foundNames.contains(T.getTitleID())))
 					{
-						foundNames.add(T.getUniqueLotID());
+						foundNames.add(T.getTitleID());
 						titles.add(T);
 					}
 					roomTitleMap.put(R, T);
@@ -1828,9 +1828,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				if((towner.length()>0) // someone elses title, so never ever list it
 				&&(!towner.equals(name))
 				&&((!towner.equals(buyer.getLiegeID()))||(!buyer.isMarriedToLiege())))
-				{
 					continue;
-				}
 
 				boolean skipThisOne=false;
 				final WorldMap map=CMLib.map();

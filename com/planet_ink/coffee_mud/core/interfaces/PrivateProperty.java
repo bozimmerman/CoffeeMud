@@ -68,7 +68,9 @@ public interface PrivateProperty extends Environmental
 	public boolean isProperlyOwned();
 
 	/**
-	 * Returns a unique id for this particular title and the rooms is represents, even if the contents change.
+	 * Returns a unique id for this particular title and the purchase-able lot
+	 * it represents.  Could be a single item when items are purchased separately,
+	 * or represent a group or items in other cases.
 	 * @return a unique id
 	 */
 	public String getTitleID();
