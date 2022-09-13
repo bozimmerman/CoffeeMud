@@ -558,7 +558,7 @@ public class SocialData extends StdWebMacro
 										old = S.getSoundFile();
 										break;
 									case 'Z':
-										old = super.htmlOutgoingFilter(S.getCriteriaZappermask());
+										old = S.getCriteriaZappermask();
 										break;
 									case 'A':
 										old = S.argumentName();
@@ -568,7 +568,7 @@ public class SocialData extends StdWebMacro
 										break;
 									}
 								}
-								str.append(old+", ");
+								str.append(super.htmlOutgoingFilter(old)+", ");
 							}
 							if(parms.containsKey(fnam+"C"))
 							{
