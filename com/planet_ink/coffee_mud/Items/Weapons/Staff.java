@@ -197,8 +197,15 @@ public class Staff extends StdWeapon implements Wand
 					}
 				}
 				final String said=CMStrings.getSayFromMessage(msg.sourceMessage());
-				if((!alreadyWanding)&&(said!=null)&&(checkWave(mob,said)))
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,said,CMMsg.NO_EFFECT,null));
+				if((!alreadyWanding)
+				&&(said!=null)
+				&&(checkWave(mob,said)))
+				{
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,msg.target(),
+							CMMsg.NO_EFFECT,null,
+							CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,said,
+							CMMsg.NO_EFFECT,null));
+				}
 			}
 			break;
 		default:

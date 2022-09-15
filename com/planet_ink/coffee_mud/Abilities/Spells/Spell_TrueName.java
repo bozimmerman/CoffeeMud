@@ -243,7 +243,7 @@ public class Spell_TrueName extends Spell
 			else
 			if((monster!=null)
 			&&(msg.target()==monster)
-			&&(!CMStrings.getSayFromMessage(msg.sourceMessage()).equalsIgnoreCase(getTrueName())))
+			&&(!(""+getTrueName()).equalsIgnoreCase(CMStrings.getSayFromMessage(msg.sourceMessage()))))
 			{
 				Ability A=monster.fetchEffect("Spell_Geas");
 				if(A==null)

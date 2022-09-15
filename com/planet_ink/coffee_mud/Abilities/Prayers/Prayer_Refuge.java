@@ -124,7 +124,7 @@ public class Prayer_Refuge extends Prayer
 			&&(msg.target()==I)
 			&&((msg.source()==I.owner())||(I.owner() instanceof Room))
 			&&(msg.sourceMessage()!=null)
-			&&(CMLib.english().containsString(CMStrings.getSayFromMessage(msg.sourceMessage()).toUpperCase(), "REFUGE")))
+			&&(CMLib.english().containsString(CMStrings.getSayFromMessage(msg.sourceMessage()), "REFUGE")))
 			{
 				final Room newRoom=this.getRefuge(I);
 				if((newRoom!=null)&&(newRoom!=msg.source().location()))

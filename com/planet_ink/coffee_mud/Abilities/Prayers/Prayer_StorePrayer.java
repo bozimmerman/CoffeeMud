@@ -258,7 +258,10 @@ public class Prayer_StorePrayer extends Prayer implements AbilityContainer, Disc
 					final int x=msg.sourceMessage().toUpperCase().indexOf(name);
 					if(x>=0)
 					{
-						msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,CMStrings.getSayFromMessage(msg.sourceMessage()),CMMsg.NO_EFFECT,null));
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,msg.target(),
+								CMMsg.NO_EFFECT,null,
+								CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,CMStrings.getSayFromMessage(msg.sourceMessage()),
+								CMMsg.NO_EFFECT,null));
 					}
 				}
 			}
