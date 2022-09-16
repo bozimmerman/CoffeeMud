@@ -2819,6 +2819,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			Log.errOut("CoffeeMaker","Error parsing 'ABLTYS' of "+identifier(M,null)+".  Load aborted");
 			return;
 		}
+		Ability A;
 		for(int i=0;i<V.size();i++)
 		{
 			final XMLTag ablk=V.get(i);
@@ -2848,7 +2849,14 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			else
 				newOne.setProficiency(100);
 			unpackEnvironmentalMiscTextXML(newOne,adat,true);
-			if(M.fetchAbility(newOne.ID())==null)
+			A=M.fetchAbility(newOne.ID());
+			if((A!=null)
+			&&(!A.isSavable()))
+			{
+				M.delAbility(A);
+				A=null;
+			}
+			if(A==null)
 			{
 				M.addAbility(newOne);
 				newOne.autoInvocation(M, false);
