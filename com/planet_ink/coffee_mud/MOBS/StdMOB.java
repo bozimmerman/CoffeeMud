@@ -27,6 +27,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.lang.ref.WeakReference;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Event;
@@ -121,6 +122,7 @@ public class StdMOB implements MOB
 	protected long				peaceTime			= 0;
 	protected boolean			kickFlag			= false;
 	protected MOB				me					= this;
+	protected AtomicBoolean		lifeGate			= new AtomicBoolean(false);
 
 	protected int				tickStatus			= Tickable.STATUS_NOT;
 
@@ -1216,25 +1218,35 @@ public class StdMOB implements MOB
 	@Override
 	public void bringToLife()
 	{
-		amDead = false;
-		removeFromGame = false;
-		speedAdj = CMProps.getSpeedAdjustment();
-
-		// will ensure no duplicate ticks, this obj, this id
-		kickFlag = true;
-		CMLib.threads().startTickDown(this, Tickable.TICKID_MOB, 1);
-		if (tickStatus == Tickable.STATUS_NOT)
+		try
 		{
-			final boolean isImMobile = CMath.bset(phyStats.sensesMask(), PhyStats.CAN_NOT_MOVE);
-			try
+			if(!lifeGate.getAndSet(true))
 			{
-				phyStats.setSensesMask(phyStats.sensesMask() | PhyStats.CAN_NOT_MOVE);
-				tick(this, Tickable.TICKID_MOB); // slap on the butt
+				amDead = false;
+				removeFromGame = false;
+				speedAdj = CMProps.getSpeedAdjustment();
+		
+				// will ensure no duplicate ticks, this obj, this id
+				kickFlag = true;
+				CMLib.threads().startTickDown(this, Tickable.TICKID_MOB, 1);
+				if (tickStatus == Tickable.STATUS_NOT)
+				{
+					final boolean isImMobile = CMath.bset(phyStats.sensesMask(), PhyStats.CAN_NOT_MOVE);
+					try
+					{
+						phyStats.setSensesMask(phyStats.sensesMask() | PhyStats.CAN_NOT_MOVE);
+						tick(this, Tickable.TICKID_MOB); // slap on the butt
+					}
+					finally
+					{
+						phyStats.setSensesMask(CMath.dobit(phyStats.sensesMask(), PhyStats.CAN_NOT_MOVE, isImMobile));
+					}
+				}
 			}
-			finally
-			{
-				phyStats.setSensesMask(CMath.dobit(phyStats.sensesMask(), PhyStats.CAN_NOT_MOVE, isImMobile));
-			}
+		}
+		finally
+		{
+			lifeGate.set(false);
 		}
 	}
 
@@ -1260,110 +1272,120 @@ public class StdMOB implements MOB
 	@Override
 	public void bringToLife(final Room newLocation, final boolean resetStats)
 	{
-		amDead = false;
-		speedAdj = CMProps.getSpeedAdjustment();
-		if ((miscText != null) && (resetStats) && (isGeneric()))
+		try
 		{
-			if (CMProps.getBoolVar(CMProps.Bool.MOBCOMPRESS) && (miscText instanceof byte[]))
+			if(!lifeGate.getAndSet(true))
 			{
-				final String decompressedStr = CMLib.encoder().decompressString((byte[]) miscText);
-				final String unpackedStr = CMLib.coffeeMaker().getGenMOBTextUnpacked(this, decompressedStr);
-				CMLib.coffeeMaker().resetGenMOB(this,unpackedStr );
+				amDead = false;
+				speedAdj = CMProps.getSpeedAdjustment();
+				if ((miscText != null) && (resetStats) && (isGeneric()))
+				{
+					if (CMProps.getBoolVar(CMProps.Bool.MOBCOMPRESS) && (miscText instanceof byte[]))
+					{
+						final String decompressedStr = CMLib.encoder().decompressString((byte[]) miscText);
+						final String unpackedStr = CMLib.coffeeMaker().getGenMOBTextUnpacked(this, decompressedStr);
+						CMLib.coffeeMaker().resetGenMOB(this,unpackedStr );
+					}
+					else
+					{
+						final String unpackedStr = CMLib.coffeeMaker().getGenMOBTextUnpacked(this, CMStrings.bytesToStr(miscText));
+						CMLib.coffeeMaker().resetGenMOB(this, unpackedStr);
+					}
+				}
+				if (CMLib.map().getStartRoom(this) == null)
+					setStartRoom(isMonster() ? newLocation : CMLib.login().getDefaultStartRoom(this));
+				setLocation(newLocation);
+				if (location() == null)
+				{
+					setLocation(CMLib.map().getStartRoom(this));
+					if (!confirmLocation(newLocation))
+						return;
+				}
+				if (!location().isInhabitant(this))
+					location().addInhabitant(this);
+				removeFromGame = false;
+		
+				if (session() != null)
+				{
+					final Area area = CMLib.map().areaLocation(location());
+					if (area != null)
+						CMLib.sessions().moveSessionToCorrectThreadGroup(session(), area.getTheme());
+				}
+		
+				// will ensure no duplicate ticks, this obj, this id
+				kickFlag = true;
+				CMLib.threads().startTickDown(this, Tickable.TICKID_MOB, 1);
+		
+				Ability A = null;
+				for (int a = 0; a < numAbilities(); a++)
+				{
+					A = fetchAbility(a);
+					if (A != null)
+						A.autoInvocation(this, false);
+				}
+				if (!confirmLocation(newLocation))
+					return;
+		
+				if ((this.tattoos.size() == 0) || (findTattoo("SYSTEM_SUMMONED") == null))
+					CMLib.factions().updatePlayerFactions(this, location(), false);
+				if (tickStatus == Tickable.STATUS_NOT)
+				{
+					final boolean isImMobile = CMath.bset(phyStats.sensesMask(), PhyStats.CAN_NOT_MOVE);
+					try
+					{
+						phyStats.setSensesMask(phyStats.sensesMask() | PhyStats.CAN_NOT_MOVE);
+						tick(this, Tickable.TICKID_MOB); // slap on the butt
+					}
+					catch (final Exception t)
+					{
+						t.printStackTrace();
+					}
+					finally
+					{
+						phyStats.setSensesMask(CMath.dobit(phyStats.sensesMask(), PhyStats.CAN_NOT_MOVE, isImMobile));
+					}
+				}
+				if (!confirmLocation(newLocation))
+					return;
+		
+				location().recoverRoomStats();
+				if ((!isGeneric()) && (resetStats))
+				{
+					resetToMaxState();
+				}
+		
+				if (!confirmLocation(newLocation))
+					return;
+		
+				if (isMonster())
+				{
+					final Item dropItem = CMLib.catalog().getDropItem(this, true);
+					if (dropItem != null)
+						addItem(dropItem);
+				}
+				CMLib.awards().giveAutoProperties(me);
+		
+				CMLib.map().registerWorldObjectLoaded(null, getStartRoom(), this);
+				location().show(this, null, CMMsg.MSG_BRINGTOLIFE, null);
+				if (!amDestroyed)
+				{
+					if (CMLib.flags().isSleeping(this))
+						tell(L("(You are asleep)"));
+					else
+						CMLib.commands().postLook(this, true);
+				}
+				possWieldedItem = null;
+				possHeldItem = null;
+				inventory.trimToSize();
+				abilitys.trimToSize();
+				affects.trimToSize();
+				behaviors.trimToSize();
 			}
-			else
-			{
-				final String unpackedStr = CMLib.coffeeMaker().getGenMOBTextUnpacked(this, CMStrings.bytesToStr(miscText));
-				CMLib.coffeeMaker().resetGenMOB(this, unpackedStr);
-			}
 		}
-		if (CMLib.map().getStartRoom(this) == null)
-			setStartRoom(isMonster() ? newLocation : CMLib.login().getDefaultStartRoom(this));
-		setLocation(newLocation);
-		if (location() == null)
+		finally
 		{
-			setLocation(CMLib.map().getStartRoom(this));
-			if (!confirmLocation(newLocation))
-				return;
+			lifeGate.set(false);
 		}
-		if (!location().isInhabitant(this))
-			location().addInhabitant(this);
-		removeFromGame = false;
-
-		if (session() != null)
-		{
-			final Area area = CMLib.map().areaLocation(location());
-			if (area != null)
-				CMLib.sessions().moveSessionToCorrectThreadGroup(session(), area.getTheme());
-		}
-
-		// will ensure no duplicate ticks, this obj, this id
-		kickFlag = true;
-		CMLib.threads().startTickDown(this, Tickable.TICKID_MOB, 1);
-
-		Ability A = null;
-		for (int a = 0; a < numAbilities(); a++)
-		{
-			A = fetchAbility(a);
-			if (A != null)
-				A.autoInvocation(this, false);
-		}
-		if (!confirmLocation(newLocation))
-			return;
-
-		if ((this.tattoos.size() == 0) || (findTattoo("SYSTEM_SUMMONED") == null))
-			CMLib.factions().updatePlayerFactions(this, location(), false);
-		if (tickStatus == Tickable.STATUS_NOT)
-		{
-			final boolean isImMobile = CMath.bset(phyStats.sensesMask(), PhyStats.CAN_NOT_MOVE);
-			try
-			{
-				phyStats.setSensesMask(phyStats.sensesMask() | PhyStats.CAN_NOT_MOVE);
-				tick(this, Tickable.TICKID_MOB); // slap on the butt
-			}
-			catch (final Exception t)
-			{
-				t.printStackTrace();
-			}
-			finally
-			{
-				phyStats.setSensesMask(CMath.dobit(phyStats.sensesMask(), PhyStats.CAN_NOT_MOVE, isImMobile));
-			}
-		}
-		if (!confirmLocation(newLocation))
-			return;
-
-		location().recoverRoomStats();
-		if ((!isGeneric()) && (resetStats))
-		{
-			resetToMaxState();
-		}
-
-		if (!confirmLocation(newLocation))
-			return;
-
-		if (isMonster())
-		{
-			final Item dropItem = CMLib.catalog().getDropItem(this, true);
-			if (dropItem != null)
-				addItem(dropItem);
-		}
-		CMLib.awards().giveAutoProperties(me);
-
-		CMLib.map().registerWorldObjectLoaded(null, getStartRoom(), this);
-		location().show(this, null, CMMsg.MSG_BRINGTOLIFE, null);
-		if (!amDestroyed)
-		{
-			if (CMLib.flags().isSleeping(this))
-				tell(L("(You are asleep)"));
-			else
-				CMLib.commands().postLook(this, true);
-		}
-		possWieldedItem = null;
-		possHeldItem = null;
-		inventory.trimToSize();
-		abilitys.trimToSize();
-		affects.trimToSize();
-		behaviors.trimToSize();
 	}
 
 	@Override
