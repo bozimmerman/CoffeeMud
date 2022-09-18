@@ -917,11 +917,16 @@ public class DefaultTriggerer implements Triggerer
 				soc = CMLib.socials().fetchSocial((DT.parm1+" <T-NAME> "+DT.parm2).toUpperCase().trim(),true);
 			if(soc != null)
 			{
-				final MOB target=mob.getVictim();
-				if((target==null)&&(soc.targetName().equals("<T-NAME>")))
-					return CMClass.getMsg(mob,target,soc,CMMsg.MSG_OK_VISUAL,soc.getFailedTargetMessage(), CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null);
-				else
+				final MOB target;
+				if(soc.targetName().equals("<T-NAME>"))
+				{
+					target=mob.getVictim();
+					if(target==null)
+						return CMClass.getMsg(mob,target,soc,CMMsg.MSG_OK_VISUAL,soc.getFailedTargetMessage(), CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null);
 					return CMClass.getMsg(mob,target,soc,CMMsg.MSG_OK_VISUAL,soc.getSourceMessage(),soc.getTargetMessage(),soc.getOthersMessage());
+				}
+				else
+					return CMClass.getMsg(mob,null,soc,CMMsg.MSG_OK_VISUAL,soc.getSourceMessage(),soc.getTargetMessage(),soc.getOthersMessage());
 			}
 			break;
 		}
