@@ -10743,7 +10743,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final java.lang.StackTraceElement[] stackTrace=Thread.currentThread().getStackTrace();
 				boolean noRecurse=false;
 				for (final StackTraceElement element : stackTrace)
-					if("resetRoom".equalsIgnoreCase(element.getMethodName()))
+					if(("resetRoom".equalsIgnoreCase(element.getMethodName()))
+					||("resetArea".equalsIgnoreCase(element.getMethodName())))
 						noRecurse=true;
 				if(noRecurse)
 					break;
