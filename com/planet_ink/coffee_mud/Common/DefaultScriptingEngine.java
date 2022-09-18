@@ -10740,6 +10740,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(tt==null)
 						return null;
 				}
+				final java.lang.StackTraceElement[] stackTrace=Thread.currentThread().getStackTrace();
+				boolean noRecurse=false;
+				for (final StackTraceElement element : stackTrace)
+					if("resetRoom".equalsIgnoreCase(element.getMethodName()))
+						noRecurse=true;
+				if(noRecurse)
+					break;
 				final String arg=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
 				if(arg.equalsIgnoreCase("area"))
 				{
