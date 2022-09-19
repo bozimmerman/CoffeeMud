@@ -1622,23 +1622,27 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					mob.baseCharStats().setStat(CharStats.STAT_GENDER,CMLib.dice().rollPercentage()>50?'M':'F');
 				PostProcessAttempter(this.defined,new PostProcessAttempt()
 				{
+					final MOB M = mob;
 					@Override
 					public String attempt() throws CMException, PostProcessException
 					{
-						final String value = findOptionalString(mob,ignoreStats,"MOB_","RACE",piece,this.defined, false);
+						final String value = findOptionalString(M,ignoreStats,"MOB_","RACE",piece,this.defined, false);
 						if((value != null)&&(value.length()>0))
 						{
-							mob.setStat("RACE",value);
+							M.setStat("RACE",value); // WTF -- this is literally Not a Thing
 							addDefinition("MOB_RACE",value,this.defined);
 							Race R=CMClass.getRace(value);
 							if(R==null)
 							{
-								final List<Race> races=findRaces(mob,piece, this.defined);
+								final List<Race> races=findRaces(M,piece, this.defined);
 								if(races.size()>0)
 									R=races.get(CMLib.dice().roll(1, races.size(), -1));
 							}
 							if(R!=null)
-								R.setHeightWeight(mob.basePhyStats(),(char)mob.baseCharStats().getStat(CharStats.STAT_GENDER));
+							{
+								M.baseCharStats().setMyRace(R);
+								R.setHeightWeight(M.basePhyStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
+							}
 						}
 						return value;
 					}

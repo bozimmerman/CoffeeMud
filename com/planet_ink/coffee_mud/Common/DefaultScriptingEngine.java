@@ -2512,6 +2512,29 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return null;
 	}
 
+	protected static final boolean safeResetCheck()
+	{
+		final java.lang.StackTraceElement[] stackTrace=Thread.currentThread().getStackTrace();
+		int count = 0;
+		for (final StackTraceElement element : stackTrace)
+			if(("safeResetRoom".equalsIgnoreCase(element.getMethodName()))
+			||("safeResetArea".equalsIgnoreCase(element.getMethodName())))
+				count ++;
+		return count < 2;
+	}
+
+	protected static final void safeResetRoom(final Room room)
+	{
+		if(safeResetCheck() && (room != null))
+			CMLib.map().resetRoom(room, true);
+	}
+
+	protected static final void safeResetArea(final Area area)
+	{
+		if(safeResetCheck() && (area != null))
+			CMLib.map().resetArea(area);
+	}
+
 	@Override
 	public void setVar(final String baseName, String key, String val)
 	{
@@ -10740,14 +10763,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(tt==null)
 						return null;
 				}
-				final java.lang.StackTraceElement[] stackTrace=Thread.currentThread().getStackTrace();
-				boolean noRecurse=false;
-				for (final StackTraceElement element : stackTrace)
-					if(("resetRoom".equalsIgnoreCase(element.getMethodName()))
-					||("resetArea".equalsIgnoreCase(element.getMethodName())))
-						noRecurse=true;
-				if(noRecurse)
-					break;
 				final String arg=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
 				if(arg.equalsIgnoreCase("area"))
 				{
@@ -10758,18 +10773,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(arg.equalsIgnoreCase("room"))
 				{
 					if(lastKnownLocation!=null)
-						CMLib.map().resetRoom(lastKnownLocation, true);
+						safeResetRoom(lastKnownLocation);
 				}
 				else
 				{
 					final Room R=CMLib.map().getRoom(arg);
 					if(R!=null)
-						CMLib.map().resetRoom(R, true);
+						safeResetRoom(R);
 					else
 					{
 						final Area A=CMLib.map().findArea(arg);
 						if(A!=null)
-							CMLib.map().resetArea(A);
+							safeResetArea(A);
 						else
 						{
 							final Physical newTarget=getArgumentItem(arg,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);

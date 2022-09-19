@@ -723,7 +723,7 @@ public class AbilityData extends StdWebMacro
 					final int o=CMath.s_int(old);
 					str.append("<OPTION VALUE=\"-1\""+((o==-1)?" SELECTED":"")+">Use Default");
 					str.append("<OPTION VALUE=\"0\""+((o==0)?" SELECTED":"")+">None (free skill)");
-					str.append("<OPTION VALUE=\"\""+(((o>0)&&(o<Ability.COST_PCT))?" SELECTED":"")+"\">Custom Value");
+					str.append("<OPTION VALUE=\"\" "+(((o>0)&&(o<Ability.COST_PCT))?" SELECTED":"")+">Custom Value");
 					str.append("<OPTION VALUE=\""+Ability.COST_ALL+"\""+((o==Ability.COST_ALL)?" SELECTED":"")+">All Mana");
 					for(int v=Ability.COST_ALL-5;v>=Ability.COST_ALL-95;v-=5)
 					{

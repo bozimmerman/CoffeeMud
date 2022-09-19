@@ -11,13 +11,13 @@
     <!--
         function openUp2(named)
         {
-            var strFeatures="top=200,left=50,resizeable=no,scrollbars=yes,height=400,width=650,alwaysRaised=yes,dependent=yes";
+            var strFeatures="top=200,left=50,resizeable=no,scrollbars=yes,height=400,width=600,alwaysRaised=yes,dependent=yes";
             w=window.open("/property.cmvp?ABILITY="+named,
                         "Ability",strFeatures, false);
         }
 		function openUpHelp(named)
 		{
-			var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+			var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=600,alwaysRaised=yes,dependent=yes";
 			w=window.open("/ahelp.cmvp?HELPTOPIC="+named,
 						"Help",strFeatures, false);
 		}
@@ -77,7 +77,7 @@
         }
 		function AddNewItem()
 		{
-			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=600,alwaysRaised=yes,dependent=yes";
 			w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&ITEM=NEW&ROOM=ANY&RESPONSEFIELD=RESOURCES.NEWITEM&REPLACEFIELD=NEWITEM","Skill_Item",strFeatures, false);
 		}
 		function EditItemDone()
@@ -110,7 +110,7 @@
         }
         function OpenUp(file,named)
         {
-            var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+            var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=600,alwaysRaised=yes,dependent=yes";
             w=window.open("/"+file+"?HELPTOPIC="+named,
                         "Help",strFeatures, false);
         }
@@ -764,7 +764,7 @@
                     <A HREF="javascript:OpenUp('ahelp.cmvp','PROP_HEREADJUSTER')"><FONT COLOR=WHITE><I>?</I></FONT></a>
                 </TD>
                 <TD>
-                    <INPUT TYPE=TEXT SIZE=80 MAXLENGTH=255 NAME=HERESTATS VALUE="@AbilityData?HERESTATS@">
+                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=255 NAME=HERESTATS VALUE="@AbilityData?HERESTATS@">
                 </TD>
             </TR>
             <TR>
@@ -803,31 +803,31 @@
             <TR>
                 <TD><FONT COLOR=YELLOW>Fizzle Message: </FONT></TD>
                 <TD>
-                    <INPUT TYPE=TEXT SIZE=80 MAXLENGTH=255 NAME=FIZZLEMSG VALUE="@AbilityData?FIZZLEMSG@">
+                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=255 NAME=FIZZLEMSG VALUE="@AbilityData?FIZZLEMSG@">
                 </TD>
             </TR>
             <TR>
                 <TD><FONT COLOR=YELLOW>Auto-Cast Message: </FONT></TD>
                 <TD>
-                    <INPUT TYPE=TEXT SIZE=80 MAXLENGTH=255 NAME=AUTOCASTMSG VALUE="@AbilityData?AUTOCASTMSG@">
+                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=255 NAME=AUTOCASTMSG VALUE="@AbilityData?AUTOCASTMSG@">
                 </TD>
             </TR>
             <TR>
                 <TD><FONT COLOR=YELLOW>Normal-Cast Message: </FONT></TD>
                 <TD>
-                    <INPUT TYPE=TEXT SIZE=80 MAXLENGTH=255 NAME=CASTMSG VALUE="@AbilityData?CASTMSG@">
+                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=255 NAME=CASTMSG VALUE="@AbilityData?CASTMSG@">
                 </TD>
             </TR>
             <TR>
                 <TD><FONT COLOR=YELLOW>Post-Cast Message: </FONT></TD>
                 <TD>
-                    <INPUT TYPE=TEXT SIZE=80 MAXLENGTH=255 NAME=POSTCASTMSG VALUE="@AbilityData?POSTCASTMSG@">
+                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=255 NAME=POSTCASTMSG VALUE="@AbilityData?POSTCASTMSG@">
                 </TD>
             </TR>
             <TR>
                 <TD><FONT COLOR=YELLOW>Uninvoke Message: </FONT></TD>
                 <TD>
-                    <INPUT TYPE=TEXT SIZE=80 MAXLENGTH=255 NAME=UNINVOKEMSG VALUE="@AbilityData?UNINVOKEMSG@">
+                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=255 NAME=UNINVOKEMSG VALUE="@AbilityData?UNINVOKEMSG@">
                 </TD>
             </TR>
             <TR>
