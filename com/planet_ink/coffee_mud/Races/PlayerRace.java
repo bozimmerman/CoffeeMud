@@ -201,44 +201,6 @@ public class PlayerRace extends Human
 	}
 
 	@Override
-	public String healthText(final MOB viewer, final MOB mob)
-	{
-		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
-
-		if(pct<.10)
-			return L("^r@x1^r is mortally wounded and will soon die.^N",mob.name(viewer));
-		else
-		if(pct<.20)
-			return L("^r@x1^r is covered in blood.^N",mob.name(viewer));
-		else
-		if(pct<.30)
-			return L("^r@x1^r is bleeding badly from lots of wounds.^N",mob.name(viewer));
-		else
-		if(pct<.40)
-			return L("^y@x1^y has numerous bloody wounds and gashes.^N",mob.name(viewer));
-		else
-		if(pct<.50)
-			return L("^y@x1^y has some bloody wounds and gashes.^N",mob.name(viewer));
-		else
-		if(pct<.60)
-			return L("^p@x1^p has a few bloody wounds.^N",mob.name(viewer));
-		else
-		if(pct<.70)
-			return L("^p@x1^p is cut and bruised.^N",mob.name(viewer));
-		else
-		if(pct<.80)
-			return L("^g@x1^g has some minor cuts and bruises.^N",mob.name(viewer));
-		else
-		if(pct<.90)
-			return L("^g@x1^g has a few bruises and scratches.^N",mob.name(viewer));
-		else
-		if(pct<.99)
-			return L("^g@x1^g has a few small bruises.^N",mob.name(viewer));
-		else
-			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
-	}
-
-	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
