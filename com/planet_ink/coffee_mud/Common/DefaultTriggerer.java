@@ -832,7 +832,7 @@ public class DefaultTriggerer implements Triggerer
 	@Override
 	public CMMsg genNextAbleTrigger(final MOB mob, final Object key, final boolean force)
 	{
-		if(mob == null)
+		if((mob == null)||(mob.amDead()))
 			return null;
 		final Trigger[] triggers = rituals.get(key);
 		if((triggers==null)||(triggers.length==0))
