@@ -80,7 +80,7 @@ public class Spell_Geas extends Spell
 		return Ability.QUALITY_OK_OTHERS;
 	}
 
-	public SlaveryLibrary.GeasSteps STEPS=null;
+	public SlaveryLibrary.GeasSteps steps=null;
 
 	@Override
 	public void unInvoke()
@@ -92,7 +92,7 @@ public class Spell_Geas extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			if((STEPS==null)||(STEPS.size()==0)||(STEPS.isDone()))
+			if((steps==null)||(steps.size()==0)||(steps.isDone()))
 				mob.tell(L("You have completed your geas."));
 			else
 				mob.tell(L("You have been released from your geas."));
@@ -117,14 +117,14 @@ public class Spell_Geas extends Spell
 		&&((msg.value())>0))
 			CMLib.combat().postPanic(mob,msg);
 		if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
-		&&(STEPS!=null)
+		&&(steps!=null)
 		&&(msg.sourceMessage()!=null)
 		&&((msg.target()==null)||(msg.target() instanceof MOB))
 		&&(msg.sourceMessage().length()>0))
 		{
 			final String str=CMStrings.getSayFromMessage(msg.sourceMessage());
 			if(str!=null)
-				STEPS.sayResponse(msg.source(),(MOB)msg.target(),str);
+				steps.sayResponse(msg.source(),(MOB)msg.target(),str);
 		}
 	}
 
@@ -133,16 +133,16 @@ public class Spell_Geas extends Spell
 	{
 		if(!(affected instanceof MOB))
 			return super.tick(ticking,tickID);
-		if((tickID==Tickable.TICKID_MOB)&&(STEPS!=null))
+		if((tickID==Tickable.TICKID_MOB)&&(steps!=null))
 		{
-			if((STEPS!=null)&&((STEPS.size()==0)||(STEPS.isDone())))
+			if((steps!=null)&&((steps.size()==0)||(steps.isDone())))
 			{
 				if(CMSecurity.isDebugging(DbgFlag.GEAS))
 				{
-					if(STEPS==null)
+					if(steps==null)
 						Log.debugOut("Done GEAS because: null STEPS");
 					else
-					if(STEPS.size()==0)
+					if(steps.size()==0)
 						Log.debugOut("Done GEAS because: empty STEPS");
 					else
 						Log.debugOut("Done GEAS because: done did STEPS");
@@ -152,7 +152,7 @@ public class Spell_Geas extends Spell
 				unInvoke();
 				return false;
 			}
-			STEPS.step();
+			steps.step();
 		}
 		return super.tick(ticking,tickID);
 	}
@@ -195,10 +195,10 @@ public class Spell_Geas extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				STEPS=CMLib.slavery().processRequest(mob,target,CMParms.combine(commands,0));
-				if((STEPS==null)||(STEPS.size()==0))
+				steps=CMLib.slavery().processRequest(mob,target,CMParms.combine(commands,0));
+				if((steps==null)||(steps.size()==0))
 				{
-					STEPS=null;
+					steps=null;
 					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> look(s) confused."));
 					return false;
 				}

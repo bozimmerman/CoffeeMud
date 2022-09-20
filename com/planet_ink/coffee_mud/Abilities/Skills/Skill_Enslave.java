@@ -97,7 +97,8 @@ public class Skill_Enslave extends StdSkill
 	protected Room		lastRoom		= null;
 
 	protected List<Pair<Clan, Integer>>	oldClans		= null;
-	protected SlaveryLibrary.GeasSteps	STEPS			= null;
+	protected SlaveryLibrary.GeasSteps	steps			= null;
+
 	protected final static int			HUNGERTICKMAX	= 4;
 	protected final static int			SPEEDMAX		= 2;
 
@@ -162,7 +163,7 @@ public class Skill_Enslave extends StdSkill
 		&&(msg.sourceMessage()!=null)
 		&&(msg.sourceMessage().length()>0))
 		{
-			if(STEPS!=null)
+			if(steps!=null)
 			{
 				if((msg.target()==null)||(msg.target() instanceof MOB))
 				{
@@ -176,11 +177,11 @@ public class Skill_Enslave extends StdSkill
 							if(V.contains("STOP")||V.contains("CANCEL"))
 							{
 								CMLib.commands().postSay(mob,msg.source(),L("Yes master."),false,false);
-								STEPS=null;
+								steps=null;
 								return;
 							}
 						}
-						STEPS.sayResponse(msg.source(),(MOB)msg.target(),response);
+						steps.sayResponse(msg.source(),(MOB)msg.target(),response);
 					}
 				}
 			}
@@ -219,12 +220,12 @@ public class Skill_Enslave extends StdSkill
 								CMLib.commands().postSay(mob,msg.source(),L("Master, please begin your instruction with the words 'I command you to '.  You can also tell me to 'stop' or 'cancel' any order you give."),false,false);
 								return;
 							}
-							STEPS=CMLib.slavery().processRequest(msg.source(),mob,response);
-							if((STEPS!=null)&&(STEPS.size()>0))
+							steps=CMLib.slavery().processRequest(msg.source(),mob,response);
+							if((steps!=null)&&(steps.size()>0))
 								CMLib.commands().postSay(mob,msg.source(),L("Yes master."),false,false);
 							else
 							{
-								STEPS=null;
+								steps=null;
 								CMLib.commands().postSay(mob,msg.source(),L("Huh? Wuh?"),false,false);
 							}
 						}
@@ -366,16 +367,16 @@ public class Skill_Enslave extends StdSkill
 						mob.setClan(p.first.clanID(),p.first.getGovernment().getAcceptPos());
 				}
 			}
-			if(STEPS==null)
+			if(steps==null)
 			{
 				// wait to be told to do something
 			}
 			else
-			if((STEPS.size()==0)||(STEPS.isDone()))
+			if((steps.size()==0)||(steps.isDone()))
 			{
 				if(mob.isInCombat())
 					return true; // let them finish fighting.
-				if((STEPS!=null)&&((STEPS.size()==0)||(STEPS.isDone())))
+				if((steps!=null)&&((steps.size()==0)||(steps.isDone())))
 					mob.tell(L("You have completed your masters task."));
 				else
 					mob.tell(L("You have been released from your masters task."));
@@ -385,12 +386,12 @@ public class Skill_Enslave extends StdSkill
 				&&(mob.location()!=mob.getStartRoom()))
 					CMLib.tracking().wanderAway(mob,true,true);
 				unInvoke();
-				STEPS=null;
+				steps=null;
 				return !canBeUninvoked();
 			}
-			if(STEPS!=null)
+			if(steps!=null)
 			{
-				STEPS.step();
+				steps.step();
 			}
 		}
 		return super.tick(ticking,tickID);
