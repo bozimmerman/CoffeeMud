@@ -561,6 +561,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 				botheredPlaces.add(slaveM.location());
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
 				Log.debugOut("GEAS","BEINGMOBILE: "+wander);
+			// this is bad, because it guarantees near misses and bottlenecks instead of thoroughness
 			if(!CMLib.tracking().beMobile(slaveM,true,true,wander,true,null,botheredPlaces))
 				CMLib.tracking().beMobile(slaveM,true,true,false,false,null,null);
 		}
