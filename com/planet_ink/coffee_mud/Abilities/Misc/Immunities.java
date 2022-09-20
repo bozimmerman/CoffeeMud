@@ -146,11 +146,13 @@ public class Immunities extends StdAbility
 			|| immunes.contains(Integer.valueOf(msg.sourceMinor())))
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS)||(msg.targetMinor()==CMMsg.TYP_DAMAGE)||(msg.targetMinor()==CMMsg.TYP_LEGALWARRANT)))
 		{
-			String immunityName="certain";
-			if(msg.tool()!=null)
-				immunityName=msg.tool().name();
 			if(!msg.sourceMajor(CMMsg.MASK_CNTRLMSG) && !msg.targetMajor(CMMsg.MASK_CNTRLMSG))
 			{
+				String immunityName="certain";
+				if(msg.tool() instanceof MOB)
+					Log.debugOut("Got a weird Immunity: "+msg.toFlatString());
+				if(msg.tool()!=null)
+					immunityName=msg.tool().name();
 				final Room R=CMLib.map().roomLocation(msg.target());
 				if(msg.target()!=msg.source())
 					R.show(msg.source(),msg.target(),CMMsg.MSG_OK_VISUAL,L("<T-NAME> seem(s) immune to @x1 attacks from <S-NAME>.",immunityName));

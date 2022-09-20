@@ -292,9 +292,12 @@ public class Undead extends StdRace
 				case CMMsg.TYP_POISON:
 				case CMMsg.TYP_DISEASE:
 					if((!mob.amDead())
-					&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS)))
+					&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
+					&&(!msg.sourceMajor(CMMsg.MASK_CNTRLMSG) && !msg.targetMajor(CMMsg.MASK_CNTRLMSG)))
 					{
 						String immunityName="certain";
+						if(msg.tool() instanceof MOB)
+							Log.debugOut("Got a weird Undead Immunity: "+msg.toFlatString());
 						if(msg.tool()!=null)
 							immunityName=msg.tool().name();
 						if(mob!=msg.source())
