@@ -356,16 +356,24 @@ public class DefaultTriggerer implements Triggerer
 								DT=null;
 								break;
 							}
-							DT.parm1=V.get(1);
+							DT.parm1=V.get(1).toUpperCase().trim();
 							if(V.size()>2)
-								DT.parm2=V.get(2);
+								DT.parm2=V.get(2).toUpperCase().trim();
 							else
 								DT.parm2="";
-							Social soc = CMLib.socials().fetchSocial((DT.parm1+" "+DT.parm2).toUpperCase().trim(),true);
+							Social soc = null;
+							if(DT.parm2.equals("*"))
+							{
+								final List<Social> lst = CMLib.socials().getSocialsSet(DT.parm1);
+								if((lst != null)&&(lst.size()>0))
+									soc = lst.get(0);
+							}
+							if(soc == null)
+								soc = CMLib.socials().fetchSocial((DT.parm1+" "+DT.parm2).trim(),true);
 							if(soc == null)
 							{
 								if(DT.parm2.length()>0)
-									soc = CMLib.socials().fetchSocial((DT.parm1+" <T-NAME> "+DT.parm2).toUpperCase().trim(),true);
+									soc = CMLib.socials().fetchSocial(DT.parm1+" <T-NAME> "+DT.parm2,true);
 								if(soc == null)
 								{
 									Log.errOut(name(),"Illegal social in: "+trig);
@@ -688,9 +696,19 @@ public class DefaultTriggerer implements Triggerer
 					break;
 				case SOCIAL:
 				{
-					Social soc = CMLib.socials().fetchSocial((DT.parm1+" "+DT.parm2).toUpperCase().trim(),true);
+					if(DT.parm2.equals("*"))
+					{
+						final List<Social> lst = CMLib.socials().getSocialsSet(DT.parm1);
+						if((lst != null)&&(lst.size()>0))
+						{
+							final Social soc = lst.get(0);
+							buf.append(L("the player should @x1",soc.baseName().toLowerCase()));
+							break;
+						}
+					}
+					Social soc = CMLib.socials().fetchSocial((DT.parm1+" "+DT.parm2).trim(),true);
 					if((soc == null)&&(DT.parm2.length()>0))
-						soc = CMLib.socials().fetchSocial((DT.parm1+" <T-NAME> "+DT.parm2).toUpperCase().trim(),true);
+						soc = CMLib.socials().fetchSocial((DT.parm1+" <T-NAME> "+DT.parm2).trim(),true);
 					if(soc == null)
 						buf.append(L("the player should do the impossible"));
 					else
@@ -912,9 +930,28 @@ public class DefaultTriggerer implements Triggerer
 		}
 		case SOCIAL:
 		{
-			Social soc = CMLib.socials().fetchSocial((DT.parm1+" "+DT.parm2).toUpperCase().trim(),true);
+			Social soc;
+			if(DT.parm2.equals("*"))
+			{
+				soc = null;
+				if(mob.getVictim()!=null)
+					soc = CMLib.socials().fetchSocial(DT.parm1+" <T-NAME>",true);
+				if(soc == null)
+					soc = CMLib.socials().fetchSocial(DT.parm1,true);
+				if(soc == null)
+				{
+					final List<Social> lst = CMLib.socials().getSocialsSet(DT.parm1);
+					if((lst != null)&&(lst.size()>0))
+						soc = lst.get(0);
+				}
+			}
+			else
+			if(DT.parm2.length()==0)
+				soc = CMLib.socials().fetchSocial(DT.parm1,true);
+			else
+				soc = CMLib.socials().fetchSocial(DT.parm1+" "+DT.parm2,true);
 			if((soc == null)&&(DT.parm2.length()>0))
-				soc = CMLib.socials().fetchSocial((DT.parm1+" <T-NAME> "+DT.parm2).toUpperCase().trim(),true);
+				soc = CMLib.socials().fetchSocial(DT.parm1+" <T-NAME> "+DT.parm2,true);
 			if(soc != null)
 			{
 				final MOB target;
@@ -1307,12 +1344,16 @@ public class DefaultTriggerer implements Triggerer
 					break;
 				case SOCIAL:
 					if((msg.tool() instanceof Social)
-					&&(msg.tool().Name().equalsIgnoreCase((DT.parm1+" "+DT.parm2).trim())
-						||((DT.parm2.length()>0)&&(msg.tool().Name().equalsIgnoreCase((DT.parm1+" <T-NAME> "+DT.parm2).trim())))))
+					&&(((Social)msg.tool()).baseName().equals(DT.parm1)))
 					{
-						if(DT.addArgs && (msg.target()!=null))
-							state.args().add(targName(msg.target()));
-						yup=true;
+						if((msg.tool().Name().equals((DT.parm1+" "+DT.parm2).trim())
+						||(DT.parm2.equals("*"))
+						||((DT.parm2.length()>0)&&(msg.tool().Name().equalsIgnoreCase((DT.parm1+" <T-NAME> "+DT.parm2).trim())))))
+						{
+							if(DT.addArgs && (msg.target()!=null))
+								state.args().add(targName(msg.target()));
+							yup=true;
+						}
 					}
 					break;
 				case INROOM:
