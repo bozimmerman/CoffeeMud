@@ -99,6 +99,12 @@ public class Load extends StdCommand
 				&&(((AmmunitionWeapon)I).requiresAmmunition())
 				&&((AmmunitionWeapon)I).isFreeStanding())
 					tryArchon=false;
+				else
+				{
+					I=mob.fetchItem(null, Wearable.FILTER_UNWORNONLY, name);
+					if((I instanceof AmmunitionWeapon)&&((AmmunitionWeapon)I).requiresAmmunition())
+						tryArchon=false;
+				}
 			}
 			for(final String aList : ARCHON_LIST)
 			{
