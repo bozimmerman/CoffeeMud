@@ -62,9 +62,6 @@ public class RaceData extends StdWebMacro
 				str.append("<OPTION VALUE=\""+R2ID+"\" "+((old.equalsIgnoreCase(R2ID))?"SELECTED":"")+">"+R2ID);
 			}
 			else
-			if(R2.isGeneric())
-				str.append("<OPTION VALUE=\""+R2.ID()+"\" "+((old.equalsIgnoreCase(R2.ID())||old.equalsIgnoreCase(R2ID))?"SELECTED":"")+">"+R2.ID()+" (Generic)");
-			else
 				str.append("<OPTION VALUE=\""+R2ID+"\" "+((old.equalsIgnoreCase(R2.ID())||old.equalsIgnoreCase(R2ID))?"SELECTED":"")+">"+R2ID);
 		}
 		return str.toString();
