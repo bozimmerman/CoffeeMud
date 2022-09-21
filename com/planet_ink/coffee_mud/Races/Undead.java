@@ -295,6 +295,8 @@ public class Undead extends StdRace
 					&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 					&&(!msg.sourceMajor(CMMsg.MASK_CNTRLMSG) && !msg.targetMajor(CMMsg.MASK_CNTRLMSG)))
 					{
+						if((msg.tool()==msg.source())&&(msg.sourceMinor()==CMMsg.TYP_GAS))
+							return false;
 						String immunityName="certain";
 						if(msg.tool() instanceof MOB)
 							Log.debugOut("Got a weird Undead Immunity: "+msg.toFlatString());
@@ -322,6 +324,8 @@ public class Undead extends StdRace
 						String immunityName="certain";
 						if(msg.tool()!=null)
 							immunityName=msg.tool().name();
+						if((msg.tool()==msg.source())&&(msg.sourceMinor()==CMMsg.TYP_GAS))
+							return false;
 						if(mob!=msg.source())
 							mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) immune to @x1 attacks from <T-NAME>.",immunityName));
 						else

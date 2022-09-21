@@ -156,6 +156,8 @@ public class Spell_Immunity extends Spell
 		&&(!mob.amDead())
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 		{
+			if((msg.tool()==msg.source())&&(msg.sourceMinor()==CMMsg.TYP_GAS))
+				return false;
 			mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) immune to @x1 attack from <T-NAME>.",immunityName));
 			return false;
 		}

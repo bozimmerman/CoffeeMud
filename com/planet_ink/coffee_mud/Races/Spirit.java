@@ -146,11 +146,13 @@ public class Spirit extends Undead
 			||(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			||(msg.targetMinor()==CMMsg.TYP_LEGALWARRANT)))
 		{
-			String immunityName="certain";
-			if(msg.tool()!=null)
-				immunityName=msg.tool().name();
 			if(!msg.sourceMajor(CMMsg.MASK_CNTRLMSG) && !msg.targetMajor(CMMsg.MASK_CNTRLMSG))
 			{
+				if((msg.tool()==msg.source())&&(msg.sourceMinor()==CMMsg.TYP_GAS))
+					return false;
+				String immunityName="certain";
+				if(msg.tool()!=null)
+					immunityName=msg.tool().name();
 				final Room R=CMLib.map().roomLocation(msg.target());
 				if(msg.target()!=msg.source())
 					R.show(msg.source(),msg.target(),CMMsg.MSG_OK_VISUAL,L("<T-NAME> seem(s) immune to @x1 attacks from <S-NAME>.",immunityName));

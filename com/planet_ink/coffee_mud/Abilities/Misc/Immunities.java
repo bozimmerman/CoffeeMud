@@ -146,6 +146,8 @@ public class Immunities extends StdAbility
 			|| immunes.contains(Integer.valueOf(msg.sourceMinor())))
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS)||(msg.targetMinor()==CMMsg.TYP_DAMAGE)||(msg.targetMinor()==CMMsg.TYP_LEGALWARRANT)))
 		{
+			if((msg.tool()==msg.source())&&(msg.sourceMinor()==CMMsg.TYP_GAS))
+				return false;
 			if(!msg.sourceMajor(CMMsg.MASK_CNTRLMSG) && !msg.targetMajor(CMMsg.MASK_CNTRLMSG))
 			{
 				String immunityName="certain";
