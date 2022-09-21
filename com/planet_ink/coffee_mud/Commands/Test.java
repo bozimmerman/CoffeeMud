@@ -3942,7 +3942,7 @@ public class Test extends StdCommand
 						{
 							CMLib.space().changeDirection(dir, Math.toRadians(l[2][1]), 0);
 						}
-						//System.out.println(dir[0]+","+dir[1]);
+						//Log.debugOut(dir[0]+","+dir[1]);
 						final boolean expectHit=l[4][0]>0;
 						final long[] shipCoord2=CMLib.space().moveSpaceObject(shipCoord1, dir, speed);
 						final double swish=CMLib.space().getMinDistanceFrom(shipCoord1, shipCoord2, targetCoord);
@@ -3974,7 +3974,7 @@ public class Test extends StdCommand
 						{
 							CMLib.space().changeDirection(dir, Math.toRadians(l[2][1]), 0);
 						}
-						//System.out.println(dir[0]+","+dir[1]);
+						//Log.debugOut(dir[0]+","+dir[1]);
 						final boolean expectHit=l[4][0]>0;
 						final long[] shipCoord2=CMLib.space().moveSpaceObject(shipCoord1, dir, speed);
 						final double swish=CMLib.space().getMinDistanceFrom(shipCoord1, shipCoord2, targetCoord);
@@ -4055,7 +4055,7 @@ public class Test extends StdCommand
 									{
 										if(curSpeed > oldCurSpeed)
 										{
-											System.out.println("Step "+steps+" of "+
+											Log.debugOut("Step "+steps+" of "+
 													Math.round(Math.toDegrees(oldCurDir[0]))+"@"+Math.round(Math.toDegrees(oldCurDir[1]))
 													+" -> "
 													+Math.round(Math.toDegrees(accelDir[0]))+"@"+Math.round(Math.toDegrees(accelDir[1]))
@@ -4070,7 +4070,7 @@ public class Test extends StdCommand
 									{
 										if(curSpeed < oldCurSpeed)
 										{
-											System.out.println("Step "+steps+" of "+
+											Log.debugOut("Step "+steps+" of "+
 													Math.round(Math.toDegrees(oldCurDir[0]))+"@"+Math.round(Math.toDegrees(oldCurDir[1]))
 													+" -> "
 													+Math.round(Math.toDegrees(accelDir[0]))+"@"+Math.round(Math.toDegrees(accelDir[1]))
@@ -4081,7 +4081,7 @@ public class Test extends StdCommand
 								}
 								// Test Ideas
 								// test whether smaller angle diffs result in fewer steps.
-								System.out.println(Math.round(Math.toDegrees(totDirDiff))+", ="+steps+"                      fspeed="+curSpeed);
+								Log.debugOut(Math.round(Math.toDegrees(totDirDiff))+", ="+steps+"                      fspeed="+curSpeed);
 								results.add(new double[]{Math.round(Math.toDegrees(totDirDiff)),steps});
 								*/
 							}

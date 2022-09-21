@@ -895,8 +895,6 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		}
 		if(!super.okMessage(myHost, msg))
 		{
-			if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
-				System.out.println("StdItem said no"); //TODO:BZ:DELME
 			return false;
 		}
 		if(msg.amITarget(this))

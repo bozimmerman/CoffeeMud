@@ -6,6 +6,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.Socket;
 import java.sql.ResultSet;
 import java.util.Arrays;
@@ -65,6 +66,8 @@ limitations under the License.
 */
 public class VFShell
 {
+	public final static PrintStream outStream = System.out;
+
 	public static void main(final String[] args)
 	{
 		final ThreadGroup g=new ThreadGroup("0");
@@ -107,7 +110,7 @@ public class VFShell
 				page=CMProps.loadPropPage(iniFile);
 				if ((page==null)||(!page.isLoaded()))
 				{
-					System.out.println("ERROR: Unable to read ini file: '"+iniFile+"'.");
+					outStream.println("ERROR: Unable to read ini file: '"+iniFile+"'.");
 					System.exit(-1);
 					return;
 				}
@@ -919,8 +922,8 @@ public class VFShell
 				final Shell shell = new Shell();
 				String command="";
 				String pwd="";
-				System.out.println("CoffeeMud VFShell started. Use 'exit' to quit.");
-				System.out.println("");
+				outStream.println("CoffeeMud VFShell started. Use 'exit' to quit.");
+				outStream.println("");
 				while((command!=null)&&(!command.equalsIgnoreCase("exit")))
 				{
 					try

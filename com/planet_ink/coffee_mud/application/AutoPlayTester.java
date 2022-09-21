@@ -40,6 +40,8 @@ public class AutoPlayTester
 	private int 				port = 5555;
 	private String				filename="resources/autoplayer/autoplay.js";
 
+	private static final PrintStream	outStream = System.out;
+
 	public AutoPlayTester(final String host, final int port, final String charName, final String script)
 	{
 		this.host=host;
@@ -83,7 +85,7 @@ public class AutoPlayTester
 
 	public String globalReactionary(final String s)
 	{
-		System.out.println(s);
+		outStream.println(s);
 		return s;
 	}
 
@@ -140,7 +142,7 @@ public class AutoPlayTester
 
 	public void writeln(final String s) throws IOException
 	{
-		System.out.println(s);
+		outStream.println(s);
 		s_sleep(500);
 		out.write(s+"\n");
 		out.flush();
@@ -191,7 +193,7 @@ public class AutoPlayTester
 
 	public void run()
 	{
-		System.out.println("Executing: "+filename);
+		outStream.println("Executing: "+filename);
 		final String js=getJavaScript(filename);
 
 		final Context cx = Context.enter();
@@ -273,7 +275,7 @@ public class AutoPlayTester
 		{
 			try
 			{
-				System.out.println(toJavaString(O));
+				outStream.println(toJavaString(O));
 			}
 			catch (final Exception e)
 			{
@@ -381,8 +383,8 @@ public class AutoPlayTester
 	{
 		if(args.length<4)
 		{
-			System.out.println("AutoPlayTester (** Not Sufficiently Implemented**)");
-			System.out.println("AutoPlayTester [host] [port] [character name] [script path]");
+			outStream.println("AutoPlayTester (** Not Sufficiently Implemented**)");
+			outStream.println("AutoPlayTester [host] [port] [character name] [script path]");
 			System.exit(-1);
 		}
 		final StringBuilder path=new StringBuilder(args[3]);

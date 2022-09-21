@@ -53,6 +53,7 @@ public class Log extends java.util.logging.Logger
 	private final Map<Type,Conf>CONFS			 = new Hashtable<Type,Conf>();
 	private final Map<PrintWriter,long[]> WRITTEN= new Hashtable<PrintWriter,long[]>();
 	private static final Type[] TYPE_LEVEL_MAP   = new Type[1001];
+	private final PrintStream 		outStream		 = System.out;
 
 	/**
 	 * The internally used targets for a log
@@ -628,7 +629,7 @@ public class Log extends java.util.logging.Logger
 		}
 		catch(final IOException e)
 		{
-			System.out.println("NO OPEN LOG: "+e.toString());
+			outStream.println("NO OPEN LOG: "+e.toString());
 		}
 	}
 
@@ -1380,7 +1381,7 @@ public class Log extends java.util.logging.Logger
 				final String firstLine=makeLogEntry(type,module,msg);
 				outWriter=writeBytes(conf,outWriter, firstLine);
 				if(conf.target==Target.BOTH)
-					System.out.println(firstLine);
+					outStream.println(firstLine);
 				if(e!=null)
 				{
 					e.printStackTrace(outWriter);
@@ -1414,7 +1415,7 @@ public class Log extends java.util.logging.Logger
 				e.printStackTrace(outWriter);
 				if(conf.target==Target.BOTH)
 				{
-					System.out.println(line);
+					outStream.println(line);
 					e.printStackTrace(System.out);
 					System.out.flush();
 				}
@@ -1441,7 +1442,7 @@ public class Log extends java.util.logging.Logger
 			{
 				writeBytes(conf, outWriter, line);
 				if(conf.target==Target.BOTH)
-					System.out.println(line);
+					outStream.println(line);
 			}
 		}
 	}
@@ -1467,7 +1468,7 @@ public class Log extends java.util.logging.Logger
 				final String line=makeLogEntry(type,module,msg);
 				writeBytes(conf, outWriter, line);
 				if(conf.target==Target.BOTH)
-					System.out.println(line);
+					outStream.println(line);
 			}
 		}
 	}
@@ -1494,7 +1495,7 @@ public class Log extends java.util.logging.Logger
 				final String line=makeLogEntry(type,module,C.get(Calendar.MINUTE)+":"+C.get(Calendar.SECOND)+":"+C.get(Calendar.MILLISECOND)+": "+msg);
 				writeBytes(conf, outWriter, line);
 				if(getTarget(type)==Target.BOTH)
-					System.out.println(line);
+					outStream.println(line);
 			}
 		}
 	}
