@@ -1495,9 +1495,11 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		final StringBuilder upStr=new StringBuilder("");
 		final StringBuilder dnStr=new StringBuilder("");
 		final CMFile F = new CMFile(helpFile, null, CMFile.FLAG_LOGERRORS);
-		if(!F.exists())
-			return false;
-		final List<String> bV = Resources.getFileLineVector(F.text());
+		final List<String> bV;
+		if(F.exists())
+			bV = Resources.getFileLineVector(F.text());
+		else
+			bV = new Vector<String>();
 		final List<String> keyBlock = new ArrayList<String>();
 		try
 		{
