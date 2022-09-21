@@ -1,5 +1,6 @@
 package com.planet_ink.siplet.support;
 
+import java.io.PrintStream;
 import java.util.*;
 
 /*
@@ -38,6 +39,7 @@ public class MXPElement implements Cloneable
 	private List<String>	userParms				= new Vector<String>();
 	private boolean			basicElement			= true;
 
+	private final static PrintStream 		debugStream				= System.out;
 	private Hashtable<String,String>		attributeValues			= null;
 	private Hashtable<String,String>		alternativeAttributes	= null;
 
@@ -345,8 +347,8 @@ public class MXPElement implements Cloneable
 				{
 					if (MXP.tagDebug)
 					{
-						System.out.println("/TAG/CLOSER2S=" + Util.toStringList(tags));
-						System.out.flush();
+						debugStream.println("/TAG/CLOSER2S=" + Util.toStringList(tags));
+						debugStream.flush();
 					}
 					return tags;
 				}
@@ -387,8 +389,8 @@ public class MXPElement implements Cloneable
 		}
 		if (MXP.tagDebug)
 		{
-			System.out.println("/TAG/CLOSERS=" + Util.toStringList(tags));
-			System.out.flush();
+			debugStream.println("/TAG/CLOSERS=" + Util.toStringList(tags));
+			debugStream.flush();
 		}
 		return tags;
 	}

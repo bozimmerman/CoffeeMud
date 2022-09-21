@@ -41,9 +41,10 @@ public class Shutdown
 
 	public static void main(final String a[])
 	{
+		final PrintStream outStream = System.out;
 		if(a.length<4)
 		{
-			System.out.println("Command usage: Shutdown <host> <port> <username> <password> (<true/false for reboot> <external command>)");
+			outStream.println("Command usage: Shutdown <host> <port> <username> <password> (<true/false for reboot> <external command>)");
 			return;
 		}
 		Socket sock=null;
@@ -63,7 +64,7 @@ public class Shutdown
 			String read="";
 			while(!read.startsWith("\033[1z<"))
 				read=in.readLine();
-			System.out.println(read.substring("\033[1z<".length()));
+			outStream.println(read.substring("\033[1z<".length()));
 		}
 		catch (final Exception e)
 		{

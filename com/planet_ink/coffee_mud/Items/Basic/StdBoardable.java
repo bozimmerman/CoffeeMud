@@ -876,11 +876,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			break;
 		default:
 			if(!confirmAreaMessage(msg, true))
-			{
-				if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
-					System.out.println("StdBoardable CAM said no"); //TODO:BZ:DELME
 				return false;
-			}
 			break;
 		}
 

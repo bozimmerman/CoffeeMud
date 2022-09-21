@@ -234,7 +234,7 @@ public class Spell_MysticLoom extends Spell
 						final Ability A=this.skill=theLoomer.fetchEffect(skill.ID());
 						if(A!=null)
 						{
-							//System.out.println("GO: "+recipe.get(0));//BZ:COMMENTMEOUT
+							//println("GO: "+recipe.get(0));//BZ:COMMENTMEOUT
 							int tickDown = CMath.s_int(A.getStat("TICKDOWN"));
 							if(tickDown > 0)
 							{
@@ -249,7 +249,7 @@ public class Spell_MysticLoom extends Spell
 						}
 						else
 						{
-							//System.out.println("FAIL: "+recipe.get(0));//BZ:COMMENTMEOUT
+							//println("FAIL: "+recipe.get(0));//BZ:COMMENTMEOUT
 						}
 					}
 				}

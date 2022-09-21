@@ -1782,7 +1782,6 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		final StringBuilder str=new StringBuilder("");
 		if(CMProps.Int.Prowesses.ARMOR_ADJ.is(prowessCode)||CMProps.Int.Prowesses.ARMOR_ADV.is(prowessCode))
 		{
-			//System.out.println("Player: "+armor+", Mob="+(-adjustedArmor(CMLib.leveler().getLevelMOBArmor(mob))));
 			final int normalizedArmor = (int)Math.round(Math.ceil(CMath.div(armor + adjustedArmor(CMLib.leveler().getLevelMOBArmor(mob)),5.0)));
 			final int normalizedMax = CMProps.getListFileIndexedListSize(CMProps.ListFile.ARMOR_ADJS);
 			final int medianValue = normalizedMax / 2;
@@ -1830,7 +1829,6 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		final StringBuilder str=new StringBuilder("");
 		if(CMProps.Int.Prowesses.COMBAT_ADJ.is(prowessCode)||CMProps.Int.Prowesses.COMBAT_ADV.is(prowessCode))
 		{
-			//System.out.println("Player: "+attackProwess+", Mob="+(adjustedAttackBonus(CMLib.leveler().getLevelAttack(mob))- ATTACK_ADJUSTMENT));
 			final int normalizedAttack = (int)Math.round(Math.ceil(CMath.div(attackProwess - (adjustedAttackBonus(CMLib.leveler().getLevelAttack(mob))- ATTACK_ADJUSTMENT),12.0)));
 			final int normalizedMax = CMProps.getListFileIndexedListSize(CMProps.ListFile.COMBAT_ADJS);
 			final int medianValue = normalizedMax / 2;
@@ -1889,7 +1887,6 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		final StringBuilder str=new StringBuilder("");
 		if(CMProps.Int.Prowesses.DAMAGE_ADJ.is(prowessCode)||CMProps.Int.Prowesses.DAMAGE_ADV.is(prowessCode))
 		{
-			//System.out.println("Player: "+damageProwess+", Mob="+(adjustedAttackBonus(CMLib.leveler().getLevelMOBDamage(mob))- ATTACK_ADJUSTMENT));
 			final int normalizedDamage = (int)Math.round(Math.ceil(CMath.div(damageProwess - (adjustedDamage(CMLib.leveler().getLevelMOBDamage(mob),mob.phyStats().level(),true)),3.0)));
 			final int normalizedMax = CMProps.getListFileIndexedListSize(CMProps.ListFile.DAMAGE_ADJS);
 			final int medianValue = normalizedMax / 2;

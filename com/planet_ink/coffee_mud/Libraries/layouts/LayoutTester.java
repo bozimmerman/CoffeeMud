@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries.layouts;
 import java.util.*;
+import java.io.PrintStream;
 import java.text.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.*;
@@ -24,13 +25,14 @@ import com.planet_ink.coffee_mud.core.Directions;
 public class LayoutTester
 {
 	private final static String[] DEFAULT_DIRECTIONS_LIST_COMPASS	= "North,South,East,West,Up,Down,There,Northeast,Northwest,Southeast,Southwest".split(",");
+	private final static PrintStream testOut = System.out;
 
 	public static void draw(final LayoutManager layout, final int size, final int dir)
 	{
 		final List<LayoutNode> V=layout.generate(size, dir);
 		final LayoutNode firstNode = (V.size()==0) ? null : V.get(0);
 
-		System.out.println("Layout "+layout.name()+", size="+V.size()+", dir="+DEFAULT_DIRECTIONS_LIST_COMPASS[dir]+": "+continuityCheck(V));
+		testOut.println("Layout "+layout.name()+", size="+V.size()+", dir="+DEFAULT_DIRECTIONS_LIST_COMPASS[dir]+": "+continuityCheck(V));
 		long lowestX=Long.MAX_VALUE;
 		long lowestY=Long.MAX_VALUE;
 		long highestX=Long.MIN_VALUE;
@@ -66,12 +68,12 @@ public class LayoutTester
 						if(H.containsKey(Long.valueOf(x)))
 						{
 							final LayoutNode n = H.get(Long.valueOf(x));
-							System.out.print(n.getColorRepresentation((firstNode==n ? 'O':'*'),i));
+							testOut.print(n.getColorRepresentation((firstNode==n ? 'O':'*'),i));
 						}
 						else
-							System.out.print("   ");
+							testOut.print("   ");
 					}
-					System.out.println("");
+					testOut.println("");
 				}
 			}
 		}

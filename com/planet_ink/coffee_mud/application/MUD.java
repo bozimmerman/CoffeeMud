@@ -38,6 +38,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.io.PrintWriter; // for writing to sockets
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -1823,7 +1824,7 @@ public class MUD extends Thread implements MudHost
 			if ((page==null)||(!page.isLoaded()))
 			{
 				Log.errOut(Thread.currentThread().getName(),"ERROR: Unable to read ini file: '"+iniFile+"'.");
-				System.out.println("MUD/ERROR: Unable to read ini file: '"+iniFile+"'.");
+				System.err.println("MUD/ERROR: Unable to read ini file: '"+iniFile+"'.");
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"A terminal error has occured!");
 				return;
 			}
@@ -2069,7 +2070,7 @@ public class MUD extends Thread implements MudHost
 			Log.instance().configureLog(Log.Type.combat, "BOTH");
 			Log.instance().configureLog(Log.Type.access, "BOTH");
 			Log.errOut(Thread.currentThread().getName(),"ERROR: Unable to read ini file: '"+iniFile+"'.");
-			System.out.println("MUD/ERROR: Unable to read ini file: '"+iniFile+"'.");
+			System.err.println("MUD/ERROR: Unable to read ini file: '"+iniFile+"'.");
 			CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"A terminal error has occured!");
 			System.exit(-1);
 			return;
@@ -2100,7 +2101,8 @@ public class MUD extends Thread implements MudHost
 
 		while(!bringDown)
 		{
-			System.out.println();
+			final PrintStream eolStream = System.out;
+			eolStream.println();
 			grpid=0;
 			Log.sysOut(Thread.currentThread().getName(),"CoffeeMud v"+HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR);
 			Log.sysOut(Thread.currentThread().getName(),"(C) 2000-2022 Bo Zimmerman");

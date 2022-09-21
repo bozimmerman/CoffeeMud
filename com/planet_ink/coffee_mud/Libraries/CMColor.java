@@ -275,9 +275,9 @@ public class CMColor extends StdLibrary implements ColorLibrary
 					for(final Color bC : Color.values())
 					{
 						if((bC.getCodeChar() != 0)
-						&& (bC.getBGCodeChar() != 0) 
+						&& (bC.getBGCodeChar() != 0)
 						&& (bgCodeMap.containsKey(Character.valueOf(bC.getBGCodeChar()))))
-							bgCodeMap.put(Character.valueOf(bC.getCodeChar()), 
+							bgCodeMap.put(Character.valueOf(bC.getCodeChar()),
 										bgCodeMap.get(Character.valueOf(bC.getBGCodeChar())));
 					}
 				}
@@ -816,7 +816,6 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			}
 			if(namesUsed.contains(c.getName1()))
 			{
-				//System.out.println("Re-used: "+c.getName1());
 				continue;
 			}
 			final String misc = (c.getCmChars().indexOf('#')>0)?"ANSI256=TRUE":"";

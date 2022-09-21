@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.File;
+import java.io.PrintStream;
 import java.util.*;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -1812,8 +1813,10 @@ public class ServiceEngine implements ThreadEngine
 		{
 			debugDumpThreadGroup(topTG,str);
 		}
-		System.err.println(str.toString());
-		System.out.println(str.toString());
+		final PrintStream sysOut=System.out;
+		final PrintStream errOut=System.out;
+		errOut.println(str.toString());
+		sysOut.println(str.toString());
 		Log.errOut(str.toString());
 	}
 }

@@ -29,9 +29,10 @@ public class Siplet
 {
 	public final static boolean debugDataOut=false;
 
-	public final static long serialVersionUID=7;
-	public static final float VERSION_MAJOR=(float)2.3;
-	public static final long  VERSION_MINOR=0;
+	public static final long			serialVersionUID	= 7;
+	public static final float			VERSION_MAJOR		= (float) 2.3;
+	public static final long			VERSION_MINOR		= 0;
+	private static final PrintStream	debugStream			= System.out;
 
 	protected StringBuffer		buf			= new StringBuffer("");
 	protected String			lastURL		= "coffeemud.net";
@@ -73,13 +74,13 @@ public class Siplet
 	public void start()
 	{
 		if (debugDataOut)
-			System.out.println("starting siplet " + VERSION_MAJOR + "." + VERSION_MINOR + " ");
+			debugStream.println("starting siplet " + VERSION_MAJOR + "." + VERSION_MINOR + " ");
 	}
 
 	public void stop()
 	{
 		if (debugDataOut)
-			System.out.println("!stopped siplet!");
+			debugStream.println("!stopped siplet!");
 	}
 
 	public void destroy()
@@ -93,7 +94,7 @@ public class Siplet
 
 	public void addItem(final String newWord)
 	{
-		if(debugDataOut) System.out.println(newWord);
+		if(debugDataOut) debugStream.println(newWord);
 		buffer.append(newWord);
 		//repaint();
 	}
@@ -122,7 +123,7 @@ public class Siplet
 			lastURL=url;
 			lastPort=port;
 			if (debugDataOut)
-				System.out.println("connecting to " + url + ":" + port + " ");
+				debugStream.println("connecting to " + url + ":" + port + " ");
 			sock = new Socket(InetAddress.getByName(url), port);
 			Thread.sleep(100);
 			rawin=sock.getInputStream();
@@ -133,7 +134,7 @@ public class Siplet
 		}
 		catch(final Exception e)
 		{
-			e.printStackTrace(System.out);
+			e.printStackTrace(debugStream);
 			return false;
 		}
 		return true;
@@ -164,7 +165,7 @@ public class Siplet
 			lastURL=url;
 			lastPort=port;
 			if (debugDataOut)
-				System.out.println("internal connect to " + url + ":" + port + " ");
+				debugStream.println("internal connect to " + url + ":" + port + " ");
 			this.sock=sock;
 			rawin=sock.getInputStream();
 			in[0] = new IACReader(rawin, CMProps.getVar(CMProps.Str.CHARSETINPUT));
@@ -174,7 +175,7 @@ public class Siplet
 		}
 		catch(final Exception e)
 		{
-			e.printStackTrace(System.out);
+			e.printStackTrace(debugStream);
 			return false;
 		}
 		return true;
@@ -316,7 +317,7 @@ public class Siplet
 			if (debugDataOut)
 			{
 				if (data.length() > 0)
-					System.out.println("/DATA=" + data.toString());
+					debugStream.println("/DATA=" + data.toString());
 			}
 			return data.toString();
 		}

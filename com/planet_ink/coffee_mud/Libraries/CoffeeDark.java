@@ -912,7 +912,6 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 				chaserCoords=moveSpaceObject(chaserCoords, dirTo, speedToUse);
 				if(getMinDistanceFrom(oldCoords, chaserCoords, runnerCoords)<radius)
 				{
-					System.out.println(tries);
 					return new Pair<double[], Long>(dirTo, Long.valueOf(speedToUse));
 				}
 
@@ -926,7 +925,6 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 				if(newTicks == curTicks)
 					newTicks = newTicks+1;
 			}
-			System.out.println("Fail: "+tries);
 			return new Pair<double[], Long>(dirTo,Long.valueOf(speedToUse));
 		}
 		else

@@ -1352,8 +1352,6 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				else
 					col="";
 				col += CMStrings.padRightPreserve("^<SHOP^>"+E.name()+"^</SHOP^>",prodWidth);
-				if(E.name().equalsIgnoreCase("some spiked iron banded greaves"))
-					System.out.println(""+(E.name().length()+2));
 				if(E.name().length()>=prodWidth)
 				{
 					if(colNum>=totalCols)

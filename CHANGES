@@ -1,4 +1,4 @@
-# Build 5.9.13 Release ?/??/2022
+# Build 5.9.13 Release 9/21/2022
   1. New Scriptable functions: ROOMPC and AREAPC
   2. Caravans now have their own internal Directions (fore, back, right, left, up, down)
   3. Crafting INFO feature will now give the approx. time to craft

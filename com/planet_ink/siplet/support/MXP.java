@@ -1,6 +1,7 @@
 package com.planet_ink.siplet.support;
 
 import java.applet.*;
+import java.io.PrintStream;
 import java.net.*;
 import java.util.*;
 
@@ -46,6 +47,7 @@ public class MXP
 	private boolean				eatAllEOLN			= false;
 	private int					mode				= 0;
 
+	private final static PrintStream 			debugStream		= System.out;
 	private final StringBuffer					responses		= new StringBuffer("");
 	private final StringBuffer					jscriptBuffer	= new StringBuffer("");
 	private final Hashtable<String, MXPElement>	elements		= new Hashtable<String,MXPElement>();
@@ -378,13 +380,13 @@ public class MXP
 		}
 		if (tagDebug)
 		{
-			System.out.println("/***:::!!!TAG/" + oldI + "/" + substr(buf, oldI, oldI + 10));
-			System.out.flush();
+			debugStream.println("/***:::!!!TAG/" + oldI + "/" + substr(buf, oldI, oldI + 10));
+			debugStream.flush();
 		}
 		if (tagDebugLong)
 		{
-			System.out.println("/TAG>" + substr(buf, 0, buf.length()));
-			System.out.flush();
+			debugStream.println("/TAG>" + substr(buf, 0, buf.length()));
+			debugStream.flush();
 		}
 		boolean selfCloser=false;
 		while ((bit != null) && ((++i) < buf.length()))
@@ -397,8 +399,8 @@ public class MXP
 				buf.insert(oldI + 1, "lt;");
 				if (tagDebug)
 				{
-					System.out.println("/TAG*/****/Tag has CR!!!!");
-					System.out.flush();
+					debugStream.println("/TAG*/****/Tag has CR!!!!");
+					debugStream.flush();
 				}
 				return 3;
 			case ' ':
@@ -425,8 +427,8 @@ public class MXP
 						buf.insert(oldI + 1, "lt;");
 						if (tagDebug)
 						{
-							System.out.println("/TAG*/****/Tag has weird quote!!!!");
-							System.out.flush();
+							debugStream.println("/TAG*/****/Tag has weird quote!!!!");
+							debugStream.flush();
 						}
 						return 3;
 					}
@@ -461,8 +463,8 @@ public class MXP
 					buf.insert(oldI + 1, "lt;");
 					if (tagDebug)
 					{
-						System.out.println("/TAG*/****/Tag has REOPEN!!!!");
-						System.out.flush();
+						debugStream.println("/TAG*/****/Tag has REOPEN!!!!");
+						debugStream.flush();
 					}
 					return 3;
 				}
@@ -501,8 +503,8 @@ public class MXP
 					buf.insert(oldI + 1, "lt;");
 					if (tagDebug)
 					{
-						System.out.println("/TAG*/****/Char is illegal!!!");
-						System.out.flush();
+						debugStream.println("/TAG*/****/Char is illegal!!!");
+						debugStream.flush();
 					}
 					return 3;
 				}
@@ -515,8 +517,8 @@ public class MXP
 		{
 			if (tagDebug)
 			{
-				System.out.println("/TAG*/****/Tag is unclosed!!!!");
-				System.out.flush();
+				debugStream.println("/TAG*/****/Tag is unclosed!!!!");
+				debugStream.flush();
 			}
 			return Integer.MAX_VALUE;
 		}
@@ -537,8 +539,8 @@ public class MXP
 			buf.insert(oldI + 1, "lt;");
 			if (tagDebug)
 			{
-				System.out.println("/TAG*/****/Tag is unknown!!!!");
-				System.out.flush();
+				debugStream.println("/TAG*/****/Tag is unknown!!!!");
+				debugStream.flush();
 			}
 			return 3;
 		}
@@ -567,8 +569,8 @@ public class MXP
 			{
 				if (tagDebug)
 				{
-					System.out.println("/TAG*/****/Closed tag never opened!!!");
-					System.out.flush();
+					debugStream.println("/TAG*/****/Closed tag never opened!!!");
+					debugStream.flush();
 				}
 				return -1;
 			}
@@ -579,8 +581,8 @@ public class MXP
 			final String close = closeTag(E);
 			if (tagDebug)
 			{
-				System.out.println("/TAG/ENDENTITY=" + E.name() + "/CLOSE=" + close);
-				System.out.flush();
+				debugStream.println("/TAG/ENDENTITY=" + E.name() + "/CLOSE=" + close);
+				debugStream.flush();
 			}
 			if (close.length() > 0)
 				buf.insert(oldI, close + ">");
@@ -589,9 +591,9 @@ public class MXP
 				if (!E.needsText())
 				{
 					if (tagDebugLong)
-						System.out.println("/TAG>" + substr(buf, 0, buf.length()));
-					System.out.println("/TAG/END/!2!/" + substr(buf, oldI + 1 + close.length(), oldI + 40));
-					System.out.flush();
+						debugStream.println("/TAG>" + substr(buf, 0, buf.length()));
+					debugStream.println("/TAG/END/!2!/" + substr(buf, oldI + 1 + close.length(), oldI + 40));
+					debugStream.flush();
 				}
 			}
 			if (E.needsText())
@@ -607,8 +609,8 @@ public class MXP
 					oldI = E.getBufInsert();
 					if (tagDebug)
 					{
-						System.out.println("/TAG/END/text=" + substr(text, 0, 100));
-						System.out.flush();
+						debugStream.println("/TAG/END/text=" + substr(text, 0, 100));
+						debugStream.flush();
 					}
 				}
 			}
@@ -619,8 +621,8 @@ public class MXP
 					specialProcessorElements(E, true);
 				if (tagDebug)
 				{
-					System.out.println("/TAG*/END/3/adji=!2.5!/" + (close.length() - 1));
-					System.out.flush();
+					debugStream.println("/TAG*/END/3/adji=!2.5!/" + (close.length() - 1));
+					debugStream.flush();
 				}
 				return close.length();
 			}
@@ -629,8 +631,8 @@ public class MXP
 			{
 				if (tagDebug)
 				{
-					System.out.println("/TAG*/END/4/adji=!2.5!/" + (close.length() - 1));
-					System.out.flush();
+					debugStream.println("/TAG*/END/4/adji=!2.5!/" + (close.length() - 1));
+					debugStream.flush();
 				}
 				return close.length();
 			}
@@ -639,13 +641,13 @@ public class MXP
 			{
 				if (tagDebug)
 				{
-					System.out.println("/TAG/END/5/adji=" + (-((oldI - E.getBufInsert()) + 1)));
-					System.out.flush();
+					debugStream.println("/TAG/END/5/adji=" + (-((oldI - E.getBufInsert()) + 1)));
+					debugStream.flush();
 				}
 				if (tagDebug)
 				{
-					System.out.println("/TAG*/END/6/willbe=" + substr(buf, oldI - ((oldI - E.getBufInsert())), oldI + 80));
-					System.out.flush();
+					debugStream.println("/TAG*/END/6/willbe=" + substr(buf, oldI - ((oldI - E.getBufInsert())), oldI + 80));
+					debugStream.flush();
 				}
 				return -((oldI - E.getBufInsert()) + 1);
 			}
@@ -653,8 +655,8 @@ public class MXP
 			{
 				if (tagDebug)
 				{
-					System.out.println("/TAG*/END/6/adji=!2.5!/" + (close.length() - 1));
-					System.out.flush();
+					debugStream.println("/TAG*/END/6/adji=!2.5!/" + (close.length() - 1));
+					debugStream.flush();
 				}
 				return close.length();
 			}
@@ -669,20 +671,20 @@ public class MXP
 			buf.delete(oldI, endI);
 			if (tagDebug)
 			{
-				System.out.println("/TAG/ENTITY=" + E.name());
-				System.out.flush();
+				debugStream.println("/TAG/ENTITY=" + E.name());
+				debugStream.flush();
 			}
 			if (E.needsText())
 			{
 				if (tagDebugLong)
 				{
-					System.out.println("/TAG>" + substr(buf, 0, buf.length()));
-					System.out.flush();
+					debugStream.println("/TAG>" + substr(buf, 0, buf.length()));
+					debugStream.flush();
 				}
 				if (tagDebug)
 				{
-					System.out.println("/TAG*/Entity needs text, so purge and look for close.");
-					System.out.flush();
+					debugStream.println("/TAG*/Entity needs text, so purge and look for close.");
+					debugStream.flush();
 				}
 				return -1; // we want it to continue to look for closing tag
 			}
@@ -703,22 +705,22 @@ public class MXP
 			buf.insert(oldI, totalDefinition);
 			if (tagDebugLong)
 			{
-				System.out.println("/TAG>" + substr(buf, 0, buf.length()));
-				System.out.flush();
+				debugStream.println("/TAG>" + substr(buf, 0, buf.length()));
+				debugStream.flush();
 			}
 			if ((endTag) && (oldI < oldOldI))
 			{
 				if (tagDebug)
 				{
-					System.out.println("/TAG*/ENDEND1/" + substr(buf, (oldOldI + 1 + (-((oldOldI - oldI) + 1))), oldOldI + 80));
-					System.out.flush();
+					debugStream.println("/TAG*/ENDEND1/" + substr(buf, (oldOldI + 1 + (-((oldOldI - oldI) + 1))), oldOldI + 80));
+					debugStream.flush();
 				}
 				return -((oldOldI - oldI) + 1);
 			}
 			if (tagDebug)
 			{
-				System.out.println("/TAG*/THEEND1/" + substr(buf, (oldOldI + (totalDefinition.length() - 1)) + 1, oldOldI + 80));
-				System.out.flush();
+				debugStream.println("/TAG*/THEEND1/" + substr(buf, (oldOldI + (totalDefinition.length() - 1)) + 1, oldOldI + 80));
+				debugStream.flush();
 			}
 			return totalDefinition.length() - 1;
 		}
@@ -727,15 +729,15 @@ public class MXP
 		buf.insert(oldI, def.toString());
 		if (tagDebugLong)
 		{
-			System.out.println("/TAG/" + substr(buf, 0, buf.length()));
-			System.out.flush();
+			debugStream.println("/TAG/" + substr(buf, 0, buf.length()));
+			debugStream.flush();
 		}
 		if ((endTag) && (oldI < oldOldI))
 		{
 			if (tagDebug)
 			{
-				System.out.println("/TAG*/ENDEND2/" + oldI + "/" + oldOldI + "/" + substr(buf, oldOldI + 1 + (-((oldOldI - oldI) + 1)), oldOldI + 80));
-				System.out.flush();
+				debugStream.println("/TAG*/ENDEND2/" + oldI + "/" + oldOldI + "/" + substr(buf, oldOldI + 1 + (-((oldOldI - oldI) + 1)), oldOldI + 80));
+				debugStream.flush();
 			}
 			return -((oldOldI - oldI) + 1);
 		}
@@ -743,15 +745,15 @@ public class MXP
 		{
 			if (tagDebug)
 			{
-				System.out.println("/TAG*/THEEND2/" + substr(buf, oldOldI + 1 + (def.toString().length() - 1), oldOldI + 80));
-				System.out.flush();
+				debugStream.println("/TAG*/THEEND2/" + substr(buf, oldOldI + 1 + (def.toString().length() - 1), oldOldI + 80));
+				debugStream.flush();
 			}
 			return def.toString().length() - 1;
 		}
 		if (tagDebug)
 		{
-			System.out.println("/TAG*/THEEND3/" + substr(buf, (oldOldI - 1) + 1, oldOldI + 80));
-			System.out.flush();
+			debugStream.println("/TAG*/THEEND3/" + substr(buf, (oldOldI - 1) + 1, oldOldI + 80));
+			debugStream.flush();
 		}
 		return -1;
 	}
@@ -1364,13 +1366,13 @@ public class MXP
 		if ((i >= buf.length()) && (content.length() > 0) && ((buf.length() - i) < 10))
 		{
 			if (entityDebug)
-				System.out.println("e=INCOMPLETE: " + content.toString());
+				debugStream.println("e=INCOMPLETE: " + content.toString());
 			return Integer.MAX_VALUE;
 		}
 		if ((convertIt) || (content.length() == 0) || (buf.charAt(i) != ';'))
 		{
 			if (entityDebug)
-				System.out.println("e=ILLEGAL1: " + content.toString());
+				debugStream.println("e=ILLEGAL1: " + content.toString());
 			if (convertIfNecessary)
 			{
 				buf.insert(oldI + 1, "amp;");
@@ -1382,7 +1384,7 @@ public class MXP
 		final String val = getEntityValue(tag, currentE);
 		final String oldValue = buf.substring(oldI, i + 1);
 		if (entityDebug)
-			System.out.println("entity=" + tag + ", val=" + val);
+			debugStream.println("entity=" + tag + ", val=" + val);
 		buf.delete(oldI, i + 1);
 		if (val != null)
 		{

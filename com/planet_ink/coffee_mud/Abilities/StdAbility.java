@@ -2700,7 +2700,6 @@ public class StdAbility implements Ability
 			case 5:
 				this.canBeUninvoked = CMath.s_bool(val);
 				this.unInvoked=false;
-System.out.println(((invoker!=null)?invoker.name():"null")+"->"+((affected!=null)?affected.name():"null")+": "+canBeUninvoked);
 				break;
 			default:
 				break;

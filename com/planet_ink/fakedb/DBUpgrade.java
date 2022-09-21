@@ -697,7 +697,7 @@ public class DBUpgrade
 			catch (final Exception e)
 			{
 				e.printStackTrace();
-				System.out.println("Something is wrong with the table sorter.");
+				pl("Something is wrong with the table sorter.");
 			}
 		}
 
