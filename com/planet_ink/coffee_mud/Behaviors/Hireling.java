@@ -290,10 +290,10 @@ public class Hireling extends StdBehavior
 		&&(msg.sourceMessage()!=null)
 		&&(!msg.source().isMonster()))
 		{
-			final String upperSrcMsg=CMStrings.getSayFromMessage(msg.sourceMessage()).toUpperCase();
+			final String upperSrcMsg=CMStrings.getSayFromMessage(msg.sourceMessage().toUpperCase());
 			if(upperSrcMsg == null)
 			{
-				// do nothing
+				// nothing done
 			}
 			else
 			if(CMStrings.containsWord(upperSrcMsg, "HIRE")
