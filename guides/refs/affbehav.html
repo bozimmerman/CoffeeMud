@@ -9,7 +9,7 @@
 	<body>
 		<center><table width=90% cellpadding=10 cellspacing=0 border=1 bordercolor=gray><tr><td width=100% colspan=2 bgcolor=#DFDFDF align=left> 
 		<h1>Properties Reference</h1>
-		<h2> CoffeeMud 5.9 </h2>
+		<h2> CoffeeMud 5.10 </h2>
 		</td></tr><tr><td width=20% valign=top align=left>
 		<a href="behav.html"><B>Behaviors</B></a><BR>
 		<B>Properties/Affects</B><BR>
@@ -3408,7 +3408,7 @@
 			
 			<p>
 			<a name="Prop_LangTranslator"><B>Prop_LangTranslator: Language Translator</B></a>
-			<pre>Property   : Prop_LangTranslator <BR>Targets    : Mobs, Items, Rooms <BR>Parameters : (NOTRANSLATE) ([PERCENT]) (`WORDS) ([LANGUAGE ID]) ... <BR>Parameters : (#[PLAYERNAME]) <BR>Example    :  <BR>Example    : 100% Dwarven 50% Elvish <BR>Example    : Dwarven Elvish <BR>Example    : PASSIVE 75% `smile `beer Dwarven #BOB <BR>Description:  <BR>This is property has two distinct but related purposes.  The original is to<BR>allow the mob or item to translate any words spoken in the room in a language<BR>other than Common, into Common.  The mob or item will SAY the translation out<BR>loud.  The percentage chance given, which defaults to 100%, will be the chance<BR>that the mob or item will translate any given sentence. <BR> <BR>The other function of this property is activated when NOTRANSLATE is one of the<BR>parameters.  In this case, this property on a mob will allow that mob to<BR>understand languages they otherwise would not.  In fact, understanding can be<BR>limited to specific words by prefixing a language id with one or more `words. <BR>This mode can also support passing commands through to mobs by including the<BR>names of trusted players using the # syntax, or a wildcard name of #*.</pre>
+			<pre>Property   : Prop_LangTranslator <BR>Targets    : Mobs, Items, Rooms <BR>Parameters : (NOTRANSLATE) ([PERCENT]) (`WORDS) ([LANGUAGE ID]) ... <BR>Parameters : (#[PLAYERNAME]) <BR>Example    :  <BR>Example    : 100% Dwarven 50% Elvish <BR>Example    : Dwarven Elvish <BR>Example    : NOTRANSLATE 75% `smile `beer Dwarven #BOB <BR>Description:  <BR>This is property has two distinct but related purposes.  The original is to<BR>allow the mob or item to translate any words spoken in the room in a language<BR>other than Common, into Common.  The mob or item will SAY the translation out<BR>loud.  The percentage chance given, which defaults to 100%, will be the chance<BR>that the mob or item will translate any given sentence. <BR> <BR>The other function of this property is activated when NOTRANSLATE is one of the<BR>parameters.  In this case, this property on a mob will allow that mob to<BR>understand languages they otherwise would not.  In fact, understanding can be<BR>limited to specific words by prefixing a language id with one or more `words. <BR>This mode can also support passing commands through to mobs by including the<BR>names of trusted players using the # syntax, or a wildcard name of #*.</pre>
 			</P>
 			
 			<p>

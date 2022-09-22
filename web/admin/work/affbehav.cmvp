@@ -9,7 +9,7 @@
 	<body>
 		<center><table width=90% cellpadding=10 cellspacing=0 border=1 bordercolor=gray><tr><td width=100% colspan=2 bgcolor=#DFDFDF align=left> 
 		<h1>Properties Reference</h1>
-		<h2> CoffeeMud 5.9 </h2>
+		<h2> CoffeeMud 5.10 </h2>
 		</td></tr><tr><td width=20% valign=top align=left>
 		<a href="behav.cmvp"><B>Behaviors</B></a><BR>
 		<B>Properties/Affects</B><BR>

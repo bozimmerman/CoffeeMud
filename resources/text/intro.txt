@@ -7,7 +7,7 @@
        /  /    |                             |
        |  |    | @MudInfo?NAME@
         \  \   |                             |
-         `\ `\ | Powered By CoffeeMud v5.9   |
+         `\ `\ | Powered By CoffeeMud v5.10  |
            `\ `| (C) 2000-2022 Bo Zimmerman  |
            _/ /\ www.coffeemud.org           /
           (__/  \  This file is:            /
