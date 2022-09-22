@@ -181,4 +181,10 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 		}
 		return true;
 	}
+
+	@Override
+	public List<CoffeeTableRow> readRawStats(final long startDate, final long endDate)
+	{
+		return CMLib.database().DBReadStats(startDate,endDate);
+	}
 }

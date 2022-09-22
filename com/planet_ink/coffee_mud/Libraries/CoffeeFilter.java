@@ -37,10 +37,49 @@ import java.util.*;
 */
 public class CoffeeFilter extends StdLibrary implements TelnetFilter
 {
+	public final static String hexStr="0123456789ABCDEF";
+
 	@Override
 	public String ID()
 	{
 		return "CoffeeFilter";
+	}
+
+	/**
+	 * One of the most useful enum in the game, listing
+	 * the pronoun conversions that are correctly
+	 * rendered at runtime by context.
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public enum Pronoun
+	{
+		HISHER("-HIS-HER","-h"),
+		HIMHER("-HIM-HER","-m"),
+		NAME("-NAME",null),
+		NAMESELF("-NAMESELF","-s"),
+		HESHE("-HE-SHE","-e"),
+		ISARE("-IS-ARE",null),
+		HASHAVE("-HAS-HAVE",null),
+		YOUPOSS("-YOUPOSS","`s"),
+		HIMHERSELF("-HIM-HERSELF","-ms"),
+		HISHERSELF("-HIS-HERSELF","-hs"),
+		SIRMADAM("-SIRMADAM",null),
+		MRMS("-MRMS",null),
+		MISTERMADAM("-MISTERMADAM",null),
+		ISARE2("IS-ARE",null),
+		NAMENOART("-NAMENOART",null),
+		ACCOUNTNAME("-ACCOUNTNAME",null),
+		WITHNAME("-WITHNAME",null)
+		;
+		public final String suffix;
+		public final String emoteSuffix;
+		private Pronoun(final String suffix, final String emoteSuffix)
+		{
+			this.suffix=suffix;
+			this.emoteSuffix=emoteSuffix;
+		}
 	}
 
 	private static final String[][]		finalFilter	= new String[][]{{"<S-","[S-"},{"<T-","[T-"},{"@x","0x"}};
@@ -53,8 +92,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		normalColor = CMLib.color().getNormalColor();
 	}
 
-	@Override
-	public Map<String, Pronoun> getTagTable()
+	protected Map<String, Pronoun> getPronounTagTable()
 	{
 		if(tagTable==null)
 		{
@@ -63,6 +101,12 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					tagTable.put(P.suffix, P);
 		}
 		return tagTable;
+	}
+
+	@Override
+	public Set<String> getPronounSuffixes()
+	{
+		return getPronounTagTable().keySet();
 	}
 
 	@Override
@@ -899,8 +943,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		return buf.toString();
 	}
 
-	@Override
-	public String getLastWord(final StringBuffer buf, final int lastSp, final int lastSpace)
+	protected String getLastWord(final StringBuffer buf, final int lastSp, final int lastSpace)
 	{
 		String lastWord="";
 		if(lastSp>lastSpace)
@@ -1222,7 +1265,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 								break;
 							}
 							String replacement=null;
-							final Pronoun P=getTagTable().get(cmd.substring(1));
+							final Pronoun P=getPronounTagTable().get(cmd.substring(1));
 							if(P==null)
 							{
 								if((S!=null)
@@ -1829,7 +1872,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 	}
 
 	@Override
-	public String safetyFilter(final String s)
+	public String safetyInFilter(final String s)
 	{
 		final StringBuffer s1=new StringBuffer(s);
 

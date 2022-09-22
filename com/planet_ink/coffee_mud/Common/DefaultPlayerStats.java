@@ -819,7 +819,7 @@ public class DefaultPlayerStats implements PlayerStats
 		for(int t=0;t<titles.size();t++)
 		{
 			final String s=titles.get(t);
-			str.append("<TITLE>"+CMLib.xml().parseOutAngleBrackets(CMLib.coffeeFilter().safetyFilter(s))+"</TITLE>");
+			str.append("<TITLE>"+CMLib.xml().parseOutAngleBrackets(CMLib.coffeeFilter().safetyInFilter(s))+"</TITLE>");
 		}
 		return str.toString();
 	}

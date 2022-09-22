@@ -31,8 +31,38 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * Library for updating player statistics and tables.
+ * This really needs reading and management utilities added.
+ *
+ * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeTableRow
+ * @author Bo Zimmerman
+ *
+ */
 public interface StatisticsLibrary extends CMLibrary
 {
+	/**
+	 * Flush any cached statistics to the database.
+	 */
 	public void update();
+
+	/**
+	 * Add a new statistic by bumping its total.
+	 * See all the STAT_ constants in CoffeeTableRow
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeTableRow#STAT_ARRESTS
+	 *
+	 * @param E the object that is having its stat bumped
+	 * @param type the type of stat to bump
+	 */
 	public void bump(CMObject E, int type);
+
+	/**
+	 * Returns all of the statistics rows between the given dates, with
+	 * the end date usually being 0 for some reason.
+	 *
+	 * @param startDate the start date in milliseconds
+	 * @param endDate 0 for 'up to the present', or an end date in milliseconds
+	 * @return a list of all relevant rows
+	 */
+	public List<CoffeeTableRow> readRawStats(long startDate, long endDate);
 }

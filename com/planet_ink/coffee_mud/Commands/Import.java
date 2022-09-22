@@ -352,7 +352,7 @@ public class Import extends StdCommand
 				if(areaName.indexOf(color[0])>=0)
 					areaName=CMStrings.replaceAll(areaName,color[0],color[1]);
 		}
-		return CMStrings.removeColors(CMLib.coffeeFilter().safetyFilter(areaName));
+		return CMStrings.removeColors(CMLib.coffeeFilter().safetyInFilter(areaName));
 	}
 
 	protected static Room getRoom(final java.util.Map<String, Room> hashedRoomSet, final String areaName, String calledThis)
@@ -2478,7 +2478,7 @@ public class Import extends StdCommand
 			if(useThisOne!=null)
 			{
 				if(okString)
-					useThisOne.add(CMLib.coffeeFilter().safetyFilter(buf.get(0)));
+					useThisOne.add(CMLib.coffeeFilter().safetyInFilter(buf.get(0)));
 				buf.remove(0);
 			}
 			else
@@ -2823,10 +2823,10 @@ public class Import extends StdCommand
 			if(!mobID.equals(OfThisID))
 				continue;
 
-			final String simpleName=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
-			String mobName=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
-			final String mobDisplay=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
-			final String mobDescription=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
+			final String simpleName=CMLib.coffeeFilter().safetyInFilter(eatLineSquiggle(objV));
+			String mobName=CMLib.coffeeFilter().safetyInFilter(eatLineSquiggle(objV));
+			final String mobDisplay=CMLib.coffeeFilter().safetyInFilter(eatLineSquiggle(objV));
+			final String mobDescription=CMLib.coffeeFilter().safetyInFilter(eatLineSquiggle(objV));
 			Race R=null;
 			boolean circleFormat=false;
 			if(nextLine(objV).endsWith("~"))
@@ -4017,12 +4017,12 @@ public class Import extends StdCommand
 			if(!objectID.equals(OfThisID))
 				continue;
 
-			final String simpleName=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
-			String objectName=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
-			final String objectDisplay=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
+			final String simpleName=CMLib.coffeeFilter().safetyInFilter(eatLineSquiggle(objV));
+			String objectName=CMLib.coffeeFilter().safetyInFilter(eatLineSquiggle(objV));
+			final String objectDisplay=CMLib.coffeeFilter().safetyInFilter(eatLineSquiggle(objV));
 			String objectDescription="";
 			if((nextLine(objV).indexOf('~')>=0)||((nextLine(objV).length()>0)&&(!Character.isDigit(nextLine(objV).charAt(0)))))
-				objectDescription=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
+				objectDescription=CMLib.coffeeFilter().safetyInFilter(eatLineSquiggle(objV));
 
 			String codeStr1=eatNextLine(objV);
 			String codeStr2=eatNextLine(objV);
@@ -4644,7 +4644,7 @@ public class Import extends StdCommand
 					}
 					if(!squiggleFound)
 						objV.add("~");
-					final String desc=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
+					final String desc=CMLib.coffeeFilter().safetyInFilter(eatLineSquiggle(objV));
 					I.setDescription(I.description()+desc);
 					if(I.ID().equals("GenReadable"))
 						I.setReadableText(fixReadableContent(I.description()));
@@ -4896,7 +4896,7 @@ public class Import extends StdCommand
 				{
 					eatNextLine(objV); // extra
 					eatLineSquiggle(objV); // key word
-					final String desc=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV)); // description
+					final String desc=CMLib.coffeeFilter().safetyInFilter(eatLineSquiggle(objV)); // description
 					I.setDescription(I.description()+desc);
 					if(I.ID().equals("GenReadable"))
 						I.setReadableText(fixReadableContent(I.description()));
@@ -6309,8 +6309,8 @@ public class Import extends StdCommand
 					}
 					else
 					{
-						R.setDisplayText(CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV)));
-						R.setDescription(CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV)));
+						R.setDisplayText(CMLib.coffeeFilter().safetyInFilter(eatLineSquiggle(roomV)));
+						R.setDescription(CMLib.coffeeFilter().safetyInFilter(eatLineSquiggle(roomV)));
 					}
 					if(R.expirationDate()!=0)
 						R.setExpirationDate(R.expirationDate()+(360000));
@@ -6621,8 +6621,8 @@ public class Import extends StdCommand
 						else
 						if(nextLine.toUpperCase().startsWith("E"))
 						{
-							final String nameString=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
-							final String descString=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
+							final String nameString=CMLib.coffeeFilter().safetyInFilter(eatLineSquiggle(roomV));
+							final String descString=CMLib.coffeeFilter().safetyInFilter(eatLineSquiggle(roomV));
 							Item I=null;
 							if(hasReadableContent(nameString))
 							{
@@ -6641,8 +6641,8 @@ public class Import extends StdCommand
 						if(nextLine.toUpperCase().startsWith("D"))
 						{
 							int dirCode=CMath.s_int(CMParms.getCleanBit(nextLine,0).substring(1).trim());
-							final String descStr=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
-							final String nameStr=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
+							final String descStr=CMLib.coffeeFilter().safetyInFilter(eatLineSquiggle(roomV));
+							final String nameStr=CMLib.coffeeFilter().safetyInFilter(eatLineSquiggle(roomV));
 							String codeStr=eatLine(roomV);
 							if(codeStr.equalsIgnoreCase("~"))
 								codeStr=eatLine(roomV);

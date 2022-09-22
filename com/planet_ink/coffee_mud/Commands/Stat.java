@@ -135,7 +135,7 @@ public class Stat  extends Skills
 		ENDQ.set(Calendar.SECOND,59);
 		ENDQ.set(Calendar.MILLISECOND,999);
 		CMLib.coffeeTables().update();
-		final List<CoffeeTableRow> V=CMLib.database().DBReadStats(ENDQ.getTimeInMillis()-1,0);
+		final List<CoffeeTableRow> V=CMLib.coffeeTables().readRawStats(ENDQ.getTimeInMillis()-1,0);
 		if (V.size() == 0)
 		{
 			mob.tell(L("No Stats?!"));

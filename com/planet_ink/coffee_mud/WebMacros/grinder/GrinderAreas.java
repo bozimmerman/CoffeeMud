@@ -338,13 +338,13 @@ public class GrinderAreas
 		String desc=httpReq.getUrlParameter("DESCRIPTION");
 		if(desc==null)
 			desc="";
-		A.setDescription(CMLib.coffeeFilter().safetyFilter(desc));
+		A.setDescription(CMLib.coffeeFilter().safetyInFilter(desc));
 
 		// image
 		String img=httpReq.getUrlParameter("IMAGE");
 		if(img==null)
 			img="";
-		A.setImage(CMLib.coffeeFilter().safetyFilter(img));
+		A.setImage(CMLib.coffeeFilter().safetyInFilter(img));
 
 		// playerlevel
 		final String plvl=httpReq.getUrlParameter("PLAYERLEVEL");
@@ -364,55 +364,55 @@ public class GrinderAreas
 		String author=httpReq.getUrlParameter("AUTHOR");
 		if(author==null)
 			author="";
-		A.setAuthorID(CMLib.coffeeFilter().safetyFilter(author));
+		A.setAuthorID(CMLib.coffeeFilter().safetyInFilter(author));
 
 		// currency
 		String currency=httpReq.getUrlParameter("CURRENCY");
 		if(currency==null)
 			currency="";
-		A.setCurrency(CMLib.coffeeFilter().safetyFilter(currency));
+		A.setCurrency(CMLib.coffeeFilter().safetyInFilter(currency));
 
 		// SHOPPREJ
 		String SHOPPREJ=httpReq.getUrlParameter("SHOPPREJ");
 		if(SHOPPREJ==null)
 			SHOPPREJ="";
-		A.setPrejudiceFactors(CMLib.coffeeFilter().safetyFilter(SHOPPREJ));
+		A.setPrejudiceFactors(CMLib.coffeeFilter().safetyInFilter(SHOPPREJ));
 
 		// BUDGET
 		String BUDGET=httpReq.getUrlParameter("BUDGET");
 		if(BUDGET==null)
 			BUDGET="";
-		A.setBudget(CMLib.coffeeFilter().safetyFilter(BUDGET));
+		A.setBudget(CMLib.coffeeFilter().safetyInFilter(BUDGET));
 
 		// DEVALRATE
 		String DEVALRATE=httpReq.getUrlParameter("DEVALRATE");
 		if(DEVALRATE==null)
 			DEVALRATE="";
-		A.setDevalueRate(CMLib.coffeeFilter().safetyFilter(DEVALRATE));
+		A.setDevalueRate(CMLib.coffeeFilter().safetyInFilter(DEVALRATE));
 
 		// INVRESETRATE
 		String INVRESETRATE=httpReq.getUrlParameter("INVRESETRATE");
 		if(INVRESETRATE==null)
 			INVRESETRATE="0";
-		A.setInvResetRate(CMath.s_int(CMLib.coffeeFilter().safetyFilter(INVRESETRATE)));
+		A.setInvResetRate(CMath.s_int(CMLib.coffeeFilter().safetyInFilter(INVRESETRATE)));
 
 		// IGNOREMASK
 		String IGNOREMASK=httpReq.getUrlParameter("IGNOREMASK");
 		if(IGNOREMASK==null)
 			IGNOREMASK="";
-		A.setIgnoreMask(CMLib.coffeeFilter().safetyFilter(IGNOREMASK));
+		A.setIgnoreMask(CMLib.coffeeFilter().safetyInFilter(IGNOREMASK));
 
 		if(A instanceof AutoGenArea)
 		{
 			String AGXMLPATH=httpReq.getUrlParameter("AGXMLPATH");
 			if(AGXMLPATH==null)
 				AGXMLPATH="";
-			((AutoGenArea) A).setGeneratorXmlPath(CMLib.coffeeFilter().safetyFilter(AGXMLPATH));
+			((AutoGenArea) A).setGeneratorXmlPath(CMLib.coffeeFilter().safetyInFilter(AGXMLPATH));
 
 			String AGAUTOVAR=httpReq.getUrlParameter("AGAUTOVAR");
 			if(AGAUTOVAR==null)
 				AGAUTOVAR="";
-			((AutoGenArea) A).setAutoGenVariables(CMLib.coffeeFilter().safetyFilter(AGAUTOVAR));
+			((AutoGenArea) A).setAutoGenVariables(CMLib.coffeeFilter().safetyInFilter(AGAUTOVAR));
 		}
 
 		// PRICEFACTORS

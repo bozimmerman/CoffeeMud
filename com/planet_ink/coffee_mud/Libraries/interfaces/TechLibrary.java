@@ -32,6 +32,18 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * The Tech library mainly deals with technical items, and making them work.
+ * It registers groups of items into circuits according to a tech 'key',
+ * and then uses all the items in the circuit to trigger electricity
+ * generation and distribution.
+ *
+ * It also manages the list of tech manufacturers and their stats, as
+ * well as the Global Tech Level.
+ *
+ * @author Bo Zimmerman
+ *
+ */
 public interface TechLibrary extends CMLibrary
 {
 	/**

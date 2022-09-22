@@ -84,7 +84,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 
 		try
 		{
-			illegalTags=CMLib.coffeeFilter().getTagTable().keySet();
+			illegalTags=CMLib.coffeeFilter().getPronounSuffixes();
 		}
 		catch(final Exception e)
 		{

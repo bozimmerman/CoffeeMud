@@ -1598,7 +1598,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		else
 			CMLib.flags().setSavable(newArea, false);
 
-		newArea.setDescription(CMLib.coffeeFilter().safetyFilter(CMLib.xml().getValFromPieces(aV,"ADESC")));
+		newArea.setDescription(CMLib.coffeeFilter().safetyInFilter(CMLib.xml().getValFromPieces(aV,"ADESC")));
 		newArea.setClimateType(CMLib.xml().getIntFromPieces(aV,"ACLIM"));
 		newArea.setTheme(CMLib.xml().getIntFromPieces(aV,"ATECH"));
 		newArea.setSubOpList(CMLib.xml().getValFromPieces(aV,"ASUBS"));
@@ -1658,7 +1658,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			throw new CMException(unpackErr("Area","No class: "+areaClass));
 		newArea.setName(areaName);
 
-		newArea.setDescription(CMLib.coffeeFilter().safetyFilter(xmlLib.getValFromPieces(aV,"ADESC")));
+		newArea.setDescription(CMLib.coffeeFilter().safetyInFilter(xmlLib.getValFromPieces(aV,"ADESC")));
 		newArea.setClimateType(xmlLib.getIntFromPieces(aV,"ACLIM"));
 		newArea.setTheme(xmlLib.getIntFromPieces(aV,"ATECH"));
 		newArea.setSubOpList(xmlLib.getValFromPieces(aV,"ASUBS"));
