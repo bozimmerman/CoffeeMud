@@ -50,7 +50,7 @@ public class SocialTbl extends StdWebMacro
 		if(TBL!=null)
 			return TBL.toString();
 
-		final List<String> socialVec=CMLib.socials().getSocialsList();
+		final List<String> socialVec=CMLib.socials().getSocialsBaseList();
 		final StringBuffer msg=new StringBuffer("\n\r");
 		int col=0;
 		int percent = 100/AT_MAX_COL;

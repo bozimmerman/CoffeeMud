@@ -1635,10 +1635,11 @@ public class MUD extends Thread implements MudHost
 			{
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading socials");
 				CMLib.socials().unloadSocials();
-				if(CMLib.socials().numSocialSets()==0)
+				final List<String> list = CMLib.socials().getSocialsBaseList();
+				if(list.size()==0)
 					Log.errOut(Thread.currentThread().getName(),"WARNING: Unable to load socials from socials.txt!");
 				else
-					Log.sysOut(Thread.currentThread().getName(),"Socials loaded    : "+CMLib.socials().numSocialSets());
+					Log.sysOut(Thread.currentThread().getName(),"Socials loaded    : "+list.size());
 			}
 
 			final Map<String,Clan> clanPostLoads=new TreeMap<String,Clan>();

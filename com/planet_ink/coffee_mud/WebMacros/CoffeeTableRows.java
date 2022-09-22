@@ -99,7 +99,7 @@ public class CoffeeTableRows extends StdWebMacro
 				classes.add((S==null)?null:S.baseName());
 			}
 			if(classes.size()==0)
-				classes.addAll(CMLib.socials().getSocialsList());
+				classes.addAll(CMLib.socials().getSocialsBaseList());
 
 			final long[][] totals=new long[classes.size()][CoffeeTableRow.STAT_TOTAL];
 			while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))

@@ -1071,9 +1071,11 @@ public class DefaultFaction implements Faction, MsgListener
 			return null;
 		if(socChangeCache.size()==0)
 		{
-			if(CMLib.socials().numSocialSets()==0)
+
+			final Enumeration<Social> s=CMLib.socials().getAllSocials();
+			if(s == null)
 				return null;
-			for(final Enumeration<Social> s=CMLib.socials().getAllSocials();s.hasMoreElements();)
+			for(;s.hasMoreElements();)
 			{
 				final Social S = s.nextElement();
 				if(changes.containsKey(S.name()))

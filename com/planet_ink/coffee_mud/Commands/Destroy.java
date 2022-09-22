@@ -1051,7 +1051,7 @@ public class Destroy extends StdCommand
 		}
 		if(mob.session().confirm(L("Are you sure you want to delete that social (y/N)? "),"N"))
 		{
-			CMLib.socials().remove(soc2.name());
+			CMLib.socials().delSocial(soc2.name());
 			CMLib.socials().save(mob);
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The happiness of all mankind has just decreased!"));
 			Log.sysOut("SysopSocials",mob.Name()+" destroyed social "+soc2.name()+".");

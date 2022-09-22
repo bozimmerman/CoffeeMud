@@ -59,9 +59,9 @@ public class SocialNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		for(int s=0;s<CMLib.socials().getSocialsList().size();s++)
+		for(int s=0;s<CMLib.socials().getSocialsBaseList().size();s++)
 		{
-			final String name=CMLib.socials().getSocialsList().get(s);
+			final String name=CMLib.socials().getSocialsBaseList().get(s);
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!name.equalsIgnoreCase(lastID))))
 			{
 				httpReq.addFakeUrlParameter("SOCIAL",name);

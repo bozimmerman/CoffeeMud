@@ -1106,7 +1106,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		}
 		if(helpText==null)
 		{
-			final String realKey = CMLib.socials().findSocialName(helpKey, false);
+			final String realKey = CMLib.socials().findSocialBaseName(helpKey, false);
 			if(realKey != null)
 			{
 				helpText=normalizeHelpText(CMLib.socials().getSocialsHelp(forM,realKey),skip);

@@ -320,7 +320,7 @@ public class SocialData extends StdWebMacro
 			if(OSV!=null)
 			{
 				for(final Social S : OSV)
-					CMLib.socials().remove(S.Name());
+					CMLib.socials().delSocial(S.Name());
 			}
 
 			for(final Social S : SV)
@@ -350,7 +350,7 @@ public class SocialData extends StdWebMacro
 				return "Unknown social!";
 			SV=new XVector<Social>(SV);
 			for(int s=0;s<SV.size();s++)
-				CMLib.socials().remove(SV.get(s).Name());
+				CMLib.socials().delSocial(SV.get(s).Name());
 			CMLib.socials().save(M);
 			Log.sysOut(M.name()+" deleted social "+last);
 			return "Social deleted.";
