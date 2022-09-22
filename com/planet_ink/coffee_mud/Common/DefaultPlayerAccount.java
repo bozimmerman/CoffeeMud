@@ -244,11 +244,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	@Override
 	public void setPassword(final String newPassword)
 	{
-		if(CMProps.getBoolVar(CMProps.Bool.HASHPASSWORDS)
-		&&(!CMLib.encoder().isARandomHashString(newPassword)))
-			password=CMLib.encoder().makeRandomHashString(newPassword);
-		else
-			password=newPassword;
+		password = CMLib.encoder().makeFinalPasswordString(newPassword);
 	}
 
 	@Override

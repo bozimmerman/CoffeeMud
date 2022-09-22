@@ -100,8 +100,7 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 		return result;
 	}
 
-	@Override
-	public String makeRandomHashString(final String password)
+	protected String makeRandomHashString(final String password)
 	{
 		final int salt=(int)Math.round(CMath.random() * Integer.MAX_VALUE);
 		final int passHash=(password+salt).toLowerCase().hashCode();
@@ -110,20 +109,29 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 	}
 
 	@Override
+	public String makeFinalPasswordString(final String rawPassword)
+	{
+		if(CMProps.getBoolVar(CMProps.Bool.HASHPASSWORDS)
+		&&(!isARandomHashString(rawPassword)))
+			return makeRandomHashString(rawPassword);
+		else
+			return rawPassword;
+	}
+
+
+	@Override
 	public String makeRepeatableHashString(final String str)
 	{
 		final int passHash=str.toLowerCase().hashCode();
 		return "|"+B64Encoder.B64encodeBytes(enDeCrypt(ByteBuffer.allocate(4).putInt(passHash).array()));
 	}
 
-	@Override
-	public boolean isARandomHashString(final String password)
+	protected boolean isARandomHashString(final String password)
 	{
 		return ((password.length()>2) && (password.startsWith("|")) && (password.indexOf('|',1)>1));
 	}
 
-	@Override
-	public boolean checkPasswordAgainstRandomHashString(final String passwordString, final String hashString)
+	protected boolean checkPasswordAgainstRandomHashString(final String passwordString, final String hashString)
 	{
 		final int hashDex=hashString.indexOf('|',1);
 		final int salt=ByteBuffer.wrap(B64Encoder.B64decode(hashString.substring(1,hashDex))).getInt();
@@ -131,8 +139,7 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 		return hash==(passwordString+salt).toLowerCase().hashCode();
 	}
 
-	@Override
-	public boolean checkHashStringPairs(final String hashString1, final String hashString2)
+	protected boolean checkHashStringPairs(final String hashString1, final String hashString2)
 	{
 		final int hashDex1=hashString1.indexOf('|',1);
 		final int salt1=ByteBuffer.wrap(B64Encoder.B64decode(hashString1.substring(1,hashDex1))).getInt();
