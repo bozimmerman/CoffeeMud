@@ -1,3 +1,5 @@
+# Build 5.10.? Release ?/??/2022
+  1. FasterRecovery expanded, also, new char stat REJUVRATE 
 # Build 5.10.0 Release 9/23/2022
   1. New Scriptable functions: ROOMPC and AREAPC
   2. Caravans now have their own internal Directions (fore, back, right, left, up, down)

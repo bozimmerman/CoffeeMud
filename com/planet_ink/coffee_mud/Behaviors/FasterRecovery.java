@@ -56,12 +56,12 @@ public class FasterRecovery extends StdBehavior
 	}
 
 	@SuppressWarnings("unchecked")
-	protected Triad<RecType,Integer,int[]>[] changes = new Triad[0];
+	protected Triad<RecType,Integer,int[]>[] tickChanges = new Triad[0];
 
 	@Override
 	public String accountForYourself()
 	{
-		return "faster/slower recovering";
+		return "faster recovering";
 	}
 
 	@Override
@@ -71,21 +71,47 @@ public class FasterRecovery extends StdBehavior
 		final List<Triad<RecType,Integer,int[]>> lst = new ArrayList<Triad<RecType,Integer,int[]>>();
 		for(final RecType r : RecType.values())
 		{
-			final int val  = CMParms.getParmInt(parameters,r.name(),1)-1;
-			if(val != 0)
-				lst.add(new Triad<RecType,Integer,int[]>(r,Integer.valueOf(val),new int[] {0}));
+			final String val = CMParms.getParmStr(parameters, r.name(), "").trim();
+			if(val.length()>0)
+			{
+				if(Character.isDigit(val.charAt(0)))
+				{
+					int valn;
+					int ticks = 1;
+					final int x=val.indexOf('/');
+					if(x>0)
+					{
+						valn = CMath.s_int(val.substring(0,x).trim());
+						ticks = CMath.s_int(val.substring(x+1).trim());
+					}
+					else
+						valn  = CMath.s_int(val);
+					if(valn != 0)
+						lst.add(new Triad<RecType,Integer,int[]>(r,Integer.valueOf(valn),new int[] {ticks, ticks}));
+				}
+				else
+					Log.errOut("Unknown val '"+val+"' on FasterRecovery");
+			}
 		}
 		@SuppressWarnings("unchecked")
 		final Triad<RecType,Integer,int[]>[] ch = new Triad[lst.size()];
-		changes = lst.toArray(ch);
+		tickChanges = lst.toArray(ch);
 	}
 
-	public void doBe(final MOB M)
+	public void recoverTick(final MOB M)
 	{
-		if((M==null)||(changes.length==0))
+		if((M==null)||(tickChanges.length==0))
 			return;
-		for(final Triad<RecType,Integer,int[]> typ : changes)
+		for(final Triad<RecType,Integer,int[]> typ : tickChanges)
 		{
+			final int[] td;
+			synchronized(typ.third)
+			{
+				td = typ.third;
+			}
+			if(--td[0] > 0)
+				continue;
+			td[0] = td[1];
 			switch(typ.first)
 			{
 			case BURST:
@@ -132,7 +158,7 @@ public class FasterRecovery extends StdBehavior
 		}
 	}
 
-	public void doBe(final Room room)
+	public void recoverTick(final Room room)
 	{
 		if(room==null)
 			return;
@@ -140,29 +166,31 @@ public class FasterRecovery extends StdBehavior
 		{
 			final MOB M=room.fetchInhabitant(i);
 			if(M!=null)
-				doBe(M);
+				recoverTick(M);
 		}
 	}
 
-	public void doBe(final Area area)
+	public void recoverTick(final Area area)
 	{
 		if(area==null)
 			return;
 		for(final Enumeration<Room> r=area.getMetroMap();r.hasMoreElements();)
 		{
 			final Room R=r.nextElement();
-			doBe(R);
+			recoverTick(R);
 		}
 	}
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
+		if(tickChanges.length==0)
+			return super.tick(ticking, tickID);
 		if(ticking instanceof Room)
-			doBe((Room)ticking);
+			recoverTick((Room)ticking);
 		else
 		if(ticking instanceof Area)
-			doBe((Area)ticking);
+			recoverTick((Area)ticking);
 		else
 		if(ticking instanceof Rideable)
 		{
@@ -171,24 +199,24 @@ public class FasterRecovery extends StdBehavior
 			{
 				R=((Rideable)ticking).fetchRider(r);
 				if(R instanceof MOB)
-					doBe((MOB)R);
+					recoverTick((MOB)R);
 			}
 		}
 		else
 		if(ticking instanceof MOB)
-			doBe((MOB)ticking);
+			recoverTick((MOB)ticking);
 		else
 		if(ticking instanceof Item)
 		{
 			if(CMLib.flags().isGettable((Item)ticking)
 			&&(((Item)ticking).owner() instanceof MOB)
 			&&(((Item)ticking).amBeingWornProperly()))
-				doBe((MOB)((Item)ticking).owner());
+				recoverTick((MOB)((Item)ticking).owner());
 			else
 			if(!CMLib.flags().isGettable((Item)ticking)
 			&&(((Item)ticking).owner() instanceof Room))
-				doBe((Room)((Item)ticking).owner());
+				recoverTick((Room)((Item)ticking).owner());
 		}
-		return true;
+		return super.tick(ticking, tickID);
 	}
 }

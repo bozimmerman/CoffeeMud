@@ -4666,9 +4666,9 @@ public class Import extends StdCommand
 						B=CMClass.getBehavior("Sounder");
 						if(B!=null)
 							I.addBehavior(B);
+						B.setParms(codeLine.substring(1).trim());
 					}
-					// no else please
-					if(B!=null)
+					else
 					{
 						if(B.getParms().length()==0)
 							B.setParms(codeLine.substring(1).trim());

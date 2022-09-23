@@ -1534,8 +1534,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					if((B!=null)&&(newArea.fetchBehavior(B.ID())==null))
 					{
 						B.setSavable(false);
-						newArea.addBehavior(B);
 						B.setParms(parms);
+						newArea.addBehavior(B);
 					}
 					else
 					{

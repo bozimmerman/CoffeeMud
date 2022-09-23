@@ -11351,7 +11351,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						newTarget.addBehavior(B);
 						if((defaultQuestName()!=null)&&(defaultQuestName().length()>0))
-						B.registerDefaultQuest(defaultQuestName());
+							B.registerDefaultQuest(defaultQuestName());
 					}
 				}
 				break;

@@ -4508,16 +4508,19 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 									Behavior B=BB.fetchBehavior(((Behavior)O).ID());
 									if((E instanceof MOB)&&(B instanceof ScriptingEngine))
 										((ScriptingEngine)B).endQuest((PhysicalAgent)E,(MOB)E,name());
-									if((V.size()>2)&&(V.get(2) instanceof String))
+									if((V.size()>2)
+									&&(V.get(2) instanceof String))
 									{
 										if(B==null)
 										{
 											B=(Behavior)O;
+											B.setParms((String)V.get(2));
 											BB.addBehavior(B);
 										}
+										else
+											B.setParms((String)V.get(2));
 										if(debug)
 											Log.debugOut("QuestScript#"+parseId+": Reverting bparms on "+B.name()+" on "+E.Name()+" @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(E)));
-										B.setParms((String)V.get(2));
 									}
 									else
 									if(B!=null)
