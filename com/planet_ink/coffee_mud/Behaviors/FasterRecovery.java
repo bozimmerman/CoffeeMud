@@ -46,99 +46,93 @@ public class FasterRecovery extends StdBehavior
 		return Behavior.CAN_ROOMS|Behavior.CAN_AREAS|Behavior.CAN_ITEMS;
 	}
 
-	protected int	burst	= 0;
-	protected int	health	= 0;
-	protected int	hits	= 0;
-	protected int	mana	= 0;
-	protected int	move	= 0;
+	protected static enum RecType
+	{
+		BURST,
+		HEALTH,
+		HITS,
+		MANA,
+		MOVE
+	}
+
+	@SuppressWarnings("unchecked")
+	protected Triad<RecType,Integer,int[]>[] changes = new Triad[0];
 
 	@Override
 	public String accountForYourself()
 	{
-		return "faster recovering";
+		return "faster/slower recovering";
 	}
 
 	@Override
 	public void setParms(final String parameters)
 	{
 		super.setParms(parameters);
-		burst=getVal(parameters,"BURST",0)-1;
-		health=getVal(parameters,"HEALTH",0)-1;
-		hits=getVal(parameters,"HITS",0)-1;
-		mana=getVal(parameters,"MANA",0)-1;
-		move=getVal(parameters,"MOVE",0)-1;
-	}
-
-	public static int getVal(String text, String key, final int defaultValue)
-	{
-		text=text.toUpperCase();
-		key=key.toUpperCase();
-		int x=text.indexOf(key);
-		while(x>=0)
+		final List<Triad<RecType,Integer,int[]>> lst = new ArrayList<Triad<RecType,Integer,int[]>>();
+		for(final RecType r : RecType.values())
 		{
-			if((x==0)||(!Character.isLetter(text.charAt(x-1))))
-			{
-				while((x<text.length())&&(text.charAt(x)!='=')&&(!Character.isDigit(text.charAt(x))))
-					x++;
-				if((x<text.length())&&(text.charAt(x)=='='))
-				{
-					while((x<text.length())&&(!Character.isDigit(text.charAt(x))))
-						x++;
-					if(x<text.length())
-					{
-						text=text.substring(x);
-						x=0;
-						while((x<text.length())&&(Character.isDigit(text.charAt(x))))
-							x++;
-						return CMath.s_int(text.substring(0,x));
-					}
-				}
-				x=-1;
-			}
-			else
-				x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
+			final int val  = CMParms.getParmInt(parameters,r.name(),1)-1;
+			if(val != 0)
+				lst.add(new Triad<RecType,Integer,int[]>(r,Integer.valueOf(val),new int[] {0}));
 		}
-		return defaultValue;
+		@SuppressWarnings("unchecked")
+		final Triad<RecType,Integer,int[]>[] ch = new Triad[lst.size()];
+		changes = lst.toArray(ch);
 	}
 
-	public void doBe(final MOB M, final int burst, final int health, final int hits, final int mana, final int move)
+	public void doBe(final MOB M)
 	{
-		if(M==null)
+		if((M==null)||(changes.length==0))
 			return;
-		for(int i2=0;i2<burst;i2++)
-			M.tick(M,Tickable.TICKID_MOB);
-		for(int i2=0;i2<health;i2++)
-			CMLib.combat().recoverTick(M);
-		if(hits!=0)
+		for(final Triad<RecType,Integer,int[]> typ : changes)
 		{
-			final int oldMana=M.curState().getMana();
-			final int oldMove=M.curState().getMovement();
-			for(int i2=0;i2<hits;i2++)
-				CMLib.combat().recoverTick(M);
-			M.curState().setMana(oldMana);
-			M.curState().setMovement(oldMove);
-		}
-		if(mana!=0)
-		{
-			final int oldHP=M.curState().getHitPoints();
-			final int oldMove=M.curState().getMovement();
-			for(int i2=0;i2<mana;i2++)
-				CMLib.combat().recoverTick(M);
-			M.curState().setHitPoints(oldHP);
-			M.curState().setMovement(oldMove);
-		}
-		if(move!=0)
-		{
-			final int oldMana=M.curState().getMana();
-			final int oldHP=M.curState().getHitPoints();
-			for(int i2=0;i2<mana;i2++)
-				CMLib.combat().recoverTick(M);
-			M.curState().setMana(oldMana);
-			M.curState().setHitPoints(oldHP);
+			switch(typ.first)
+			{
+			case BURST:
+				for(int i2=0;i2<typ.second.intValue();i2++)
+					M.tick(M,Tickable.TICKID_MOB);
+				break;
+			case HEALTH:
+				for(int i2=0;i2<typ.second.intValue();i2++)
+					CMLib.combat().recoverTick(M);
+				break;
+			case HITS:
+			{
+				final int oldMana=M.curState().getMana();
+				final int oldMove=M.curState().getMovement();
+				for(int i2=0;i2<RecType.HITS.ordinal();i2++)
+					CMLib.combat().recoverTick(M);
+				M.curState().setMana(oldMana);
+				M.curState().setMovement(oldMove);
+				break;
+			}
+			case MANA:
+			{
+				final int oldHP=M.curState().getHitPoints();
+				final int oldMove=M.curState().getMovement();
+				for(int i2=0;i2<RecType.MANA.ordinal();i2++)
+					CMLib.combat().recoverTick(M);
+				M.curState().setHitPoints(oldHP);
+				M.curState().setMovement(oldMove);
+				break;
+			}
+			case MOVE:
+			{
+				final int oldMana=M.curState().getMana();
+				final int oldHP=M.curState().getHitPoints();
+				for(int i2=0;i2<RecType.MOVE.ordinal();i2++)
+					CMLib.combat().recoverTick(M);
+				M.curState().setMana(oldMana);
+				M.curState().setHitPoints(oldHP);
+				break;
+			}
+			default:
+				break;
+			}
 		}
 	}
 
-	public void doBe(final Room room, final int burst, final int health, final int hits, final int mana, final int move)
+	public void doBe(final Room room)
 	{
 		if(room==null)
 			return;
@@ -146,18 +140,18 @@ public class FasterRecovery extends StdBehavior
 		{
 			final MOB M=room.fetchInhabitant(i);
 			if(M!=null)
-				doBe(M,burst,health,hits,mana,move);
+				doBe(M);
 		}
 	}
 
-	public void doBe(final Area area, final int burst, final int health, final int hits, final int mana, final int move)
+	public void doBe(final Area area)
 	{
 		if(area==null)
 			return;
 		for(final Enumeration<Room> r=area.getMetroMap();r.hasMoreElements();)
 		{
 			final Room R=r.nextElement();
-			doBe(R,burst,health,hits,mana,move);
+			doBe(R);
 		}
 	}
 
@@ -165,10 +159,10 @@ public class FasterRecovery extends StdBehavior
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(ticking instanceof Room)
-			doBe((Room)ticking,burst,health,hits,mana,move);
+			doBe((Room)ticking);
 		else
 		if(ticking instanceof Area)
-			doBe((Area)ticking,burst,health,hits,mana,move);
+			doBe((Area)ticking);
 		else
 		if(ticking instanceof Rideable)
 		{
@@ -177,23 +171,23 @@ public class FasterRecovery extends StdBehavior
 			{
 				R=((Rideable)ticking).fetchRider(r);
 				if(R instanceof MOB)
-					doBe((MOB)R,burst,health,hits,mana,move);
+					doBe((MOB)R);
 			}
 		}
 		else
 		if(ticking instanceof MOB)
-			doBe((MOB)ticking,burst,health,hits,mana,move);
+			doBe((MOB)ticking);
 		else
 		if(ticking instanceof Item)
 		{
 			if(CMLib.flags().isGettable((Item)ticking)
 			&&(((Item)ticking).owner() instanceof MOB)
 			&&(((Item)ticking).amBeingWornProperly()))
-				doBe((MOB)((Item)ticking).owner(),burst,health,hits,mana,move);
+				doBe((MOB)((Item)ticking).owner());
 			else
 			if(!CMLib.flags().isGettable((Item)ticking)
 			&&(((Item)ticking).owner() instanceof Room))
-				doBe((Room)((Item)ticking).owner(),burst,health,hits,mana,move);
+				doBe((Room)((Item)ticking).owner());
 		}
 		return true;
 	}

@@ -3930,7 +3930,8 @@ public class StdMOB implements MOB
 							CMLib.combat().postDamage(killerM, this, this, (int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)),
 									CMMsg.MASK_ALWAYS | CMMsg.TYP_WATER, -1,
 									L("^Z<T-NAME> can't breathe!^.^?") + CMLib.protocol().msp("choke.wav", 10));
-							recoverTickCter = CMProps.getIntVar(CMProps.Int.RECOVERRATE) * CharState.REAL_TICK_ADJUST_FACTOR;
+							recoverTickCter = CMProps.getIntVar(CMProps.Int.RECOVERRATE)
+									* (CharState.REAL_TICK_ADJUST_FACTOR + charStats().getStat(CharStats.STAT_RECOVERRATE5_ADJ));
 						}
 						else
 						if (!flag.canBreatheHere(this, R))
@@ -3947,7 +3948,8 @@ public class StdMOB implements MOB
 									msgStr = L("^Z<T-NAME> <T-IS-ARE> drowning in @x1!^.^?", RawMaterial.CODES.NAME(atmo).toLowerCase()) + CMLib.protocol().msp("choke.wav", 10);
 								CMLib.combat().postDamage(killerM, this, this, (int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)),
 										CMMsg.MASK_ALWAYS | CMMsg.TYP_WATER, -1, msgStr);
-								recoverTickCter = CMProps.getIntVar(CMProps.Int.RECOVERRATE) * CharState.REAL_TICK_ADJUST_FACTOR;
+								recoverTickCter = CMProps.getIntVar(CMProps.Int.RECOVERRATE)
+										* (CharState.REAL_TICK_ADJUST_FACTOR + charStats().getStat(CharStats.STAT_RECOVERRATE5_ADJ));
 							}
 							else
 							{
@@ -3962,7 +3964,8 @@ public class StdMOB implements MOB
 								final MOB killerM = CMLib.combat().getBreatheKiller(this);
 								CMLib.combat().postDamage(killerM, this, this, (int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)),
 										CMMsg.MASK_ALWAYS | CMMsg.TYP_GAS, -1, msgStr);
-								recoverTickCter = CMProps.getIntVar(CMProps.Int.RECOVERRATE) * CharState.REAL_TICK_ADJUST_FACTOR;
+								recoverTickCter = CMProps.getIntVar(CMProps.Int.RECOVERRATE)
+										* (CharState.REAL_TICK_ADJUST_FACTOR + charStats().getStat(CharStats.STAT_RECOVERRATE5_ADJ));
 							}
 						}
 					}
@@ -3970,7 +3973,8 @@ public class StdMOB implements MOB
 					if ((--recoverTickCter) <= 0)
 					{
 						CMLib.combat().recoverTick(this);
-						recoverTickCter = CMProps.getIntVar(CMProps.Int.RECOVERRATE) * CharState.REAL_TICK_ADJUST_FACTOR;
+						recoverTickCter = CMProps.getIntVar(CMProps.Int.RECOVERRATE)
+								* (CharState.REAL_TICK_ADJUST_FACTOR + charStats().getStat(CharStats.STAT_RECOVERRATE5_ADJ));
 					}
 					if (!isMonster)
 						CMLib.combat().expendEnergy(this, false);

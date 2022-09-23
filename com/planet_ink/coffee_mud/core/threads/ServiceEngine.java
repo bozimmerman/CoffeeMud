@@ -306,8 +306,7 @@ public class ServiceEngine implements ThreadEngine
 		return 128;
 	}
 
-	@Override
-	public long getTicksEllapsedSinceStartup()
+	protected long getTicksEllapsedSinceStartup()
 	{
 		return globalTickID;
 	}
@@ -424,7 +423,7 @@ public class ServiceEngine implements ThreadEngine
 	}
 
 	@Override
-	public long msToNextTick(final Tickable E, final int tickID)
+	public long getTimeMsToNextTick(final Tickable E, final int tickID)
 	{
 		for(final Iterator<TickableGroup> e=tickGroups();e.hasNext();)
 		{
@@ -509,7 +508,7 @@ public class ServiceEngine implements ThreadEngine
 	}
 
 	@Override
-	public String systemReport(final String itemCode)
+	public String getSystemReport(final String itemCode)
 	{
 		final String cd=itemCode.toLowerCase();
 		if(cd.startsWith("topmob")||cd.startsWith("totalmob"))
@@ -1093,7 +1092,7 @@ public class ServiceEngine implements ThreadEngine
 	}
 
 	@Override
-	public String tickInfo(final String which)
+	public String getTickInfoReport(final String which)
 	{
 		int grpstart=-1;
 		for(int i=0;i<which.length();i++)
@@ -1450,7 +1449,7 @@ public class ServiceEngine implements ThreadEngine
 	}
 
 	@Override
-	public void debugDumpStack(final String ID, final Thread theThread)
+	public void dumpDebugStack(final String ID, final Thread theThread)
 	{
 		// I wish Java had compiler directives.  Would be great to un-comment this for 1.5 JVMs
 		final StringBuffer dump = new StringBuffer("");
@@ -1561,7 +1560,7 @@ public class ServiceEngine implements ThreadEngine
 						}
 					}
 					// no isDEBUGGING check -- just always let her rip.
-					debugDumpStack(Thread.currentThread().getName(),almostTock.getCurrentThread());
+					dumpDebugStack(Thread.currentThread().getName(),almostTock.getCurrentThread());
 				}
 			}
 		}

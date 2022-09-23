@@ -133,8 +133,10 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 	public static final int STAT_CRIT_DAMAGE_PCT_MAGIC=43;
 	/** stat constant for amount of faith? */
 	public static final int STAT_FAITH=44;
+	/** stat constant for recovery rate */
+	public static final int STAT_RECOVERRATE5_ADJ=45;
 	/** constant for total number of stat codes */
-	public final static int DEFAULT_NUM_STATS=45;
+	public final static int DEFAULT_NUM_STATS=46;
 
 	/**
 	 * Copies the internal data of this object into another of kind.
@@ -816,7 +818,8 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 		"cRM",
 		"cDW",
 		"cDM",
-		"F"
+		"F",
+		"R"
 	};
 
 	/** string array of descriptions of each stat code, ordered by numeric value */
@@ -866,7 +869,8 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 		"CRIT MAGIC CHANCE PCT",
 		"CRIT WEAPON DAMAGE PCT",
 		"CRIT MAGIC DAMAGE PCT",
-		"FAITH"
+		"FAITH",
+		"REJUVENATION RATE ADJ"
 	};
 
 	/** string array of descriptions of each stat code, ordered by numeric value */
@@ -916,7 +920,8 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 		"CRITPCTMAGIC",
 		"CRITDMGWEAPONS",
 		"CRITDMGMAGIC",
-		"FAITH"
+		"FAITH",
+		"REJUVRATE"
 	};
 
 	/** string array of attributable descriptions of each stat code, ordered by numeric value */
@@ -966,7 +971,8 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 		"BONUS TO MAGIC CRIT CHANCE",
 		"BONUS TO WEAPON CRIT DAMAGE",
 		"BONUS TO MAGIC CRIT DAMAGE",
-		"FAITHFUL"
+		"FAITHFUL",
+		"REJUVENATINGLY DIFFERENT"
 	};
 
 	/** an appropriate CMMsg MSG type to correspond to the given saving throw, indexed as STAT_SAVE_ constant */
@@ -1018,6 +1024,7 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 		-1, // bonus weapon crit damage
 		-1, // bonus magic crit damage
 		-1, // faith
+		-1, // rejuv rate
 	};
 
 	/**

@@ -924,7 +924,7 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 							msg.source().tell(L("@x1 needs to be LOADed first.",weapon.Name()));
 							return false;
 						}
-						final String timeToFire=""+(CMLib.threads().msToNextTick((Tickable)CMLib.combat(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK) / 1000);
+						final String timeToFire=""+(CMLib.threads().getTimeMsToNextTick((Tickable)CMLib.combat(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK) / 1000);
 						final String msgStr=L("<S-NAME> aim(s) <O-NAME> at <T-NAME> (@x1).",""+leadAmt);
 						if(msg.source().isMonster() && aimings.containsFirst(weapon))
 						{

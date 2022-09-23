@@ -33,6 +33,15 @@ import java.text.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A timestamp conversion library, for generating readable times
+ * and dates, as well as parsing strings into millisecond timestamps.
+ * Also manages MUD-Dates and times, by tracking global clocks and
+ * providing utility methods for local ones.
+ *
+ * @author Bo Zimmerman
+ *
+ */
 public interface TimeManager extends CMLibrary
 {
 	/**

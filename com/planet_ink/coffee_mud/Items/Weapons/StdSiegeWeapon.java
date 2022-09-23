@@ -1080,7 +1080,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 					msg.source().tell(L("@x1 needs to be LOADed first.",Name()));
 					return false;
 				}
-				final String timeToFire=""+(CMLib.threads().msToNextTick(this, Tickable.TICKID_SPECIALCOMBAT) / 1000);
+				final String timeToFire=""+(CMLib.threads().getTimeMsToNextTick(this, Tickable.TICKID_SPECIALCOMBAT) / 1000);
 				final String msgStr=L("<S-NAME> aim(s) <O-NAME> at <T-NAME> (@x1).",""+leadAmt);
 				if(msg.source().isMonster() && aiming != null)
 				{

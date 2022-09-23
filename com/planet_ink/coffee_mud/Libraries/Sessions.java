@@ -213,7 +213,7 @@ public class Sessions extends StdLibrary implements SessionsList
 							Log.errOut(serviceClient.getName(),"KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+CMLib.time().date2EllapsedTime(time, TimeUnit.MILLISECONDS, true));
 							Log.errOut(serviceClient.getName(),"STATUS  was :"+S.getStatus()+", LASTCMD was :"+((S.getPreviousCMD()!=null)?S.getPreviousCMD().toString():""));
 							if(S instanceof Thread)
-								CMLib.threads().debugDumpStack("Sessions",(Thread)S);
+								CMLib.threads().dumpDebugStack("Sessions",(Thread)S);
 						}
 						setThreadStatus(serviceClient,"killing session ");
 						stopSessionAtAllCosts(S);
@@ -257,7 +257,7 @@ public class Sessions extends StdLibrary implements SessionsList
 					{
 						Log.errOut(serviceClient.getName(),"KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+CMLib.time().date2EllapsedTime(time, TimeUnit.MILLISECONDS, true));
 						if(S instanceof Thread)
-							CMLib.threads().debugDumpStack("Sessions",(Thread)S);
+							CMLib.threads().dumpDebugStack("Sessions",(Thread)S);
 					}
 					if(S.getStatus()!=Session.SessionStatus.HANDSHAKE_MCCP)
 					{

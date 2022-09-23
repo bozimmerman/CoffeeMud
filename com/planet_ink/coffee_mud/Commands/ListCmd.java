@@ -1556,10 +1556,10 @@ public class ListCmd extends StdCommand
 		final long total=Runtime.getRuntime().totalMemory()/1024;
 		buf.append(L("The system is utilizing ^H@x1^?kb out of ^H@x2^?kb.\n\r",""+(total-free),""+total));
 		buf.append(L("\n\r^xTickables report:^.^N\n\r"));
-		final String totalTickers=CMLib.threads().systemReport("totalTickers");
-		final String tickGroupSize=CMLib.threads().systemReport("TICKGROUPSIZE");
-		final long totalMillis=CMath.s_long(CMLib.threads().systemReport("totalMillis"));
-		final long totalTicks=CMath.s_long(CMLib.threads().systemReport("totalTicks"));
+		final String totalTickers=CMLib.threads().getSystemReport("totalTickers");
+		final String tickGroupSize=CMLib.threads().getSystemReport("TICKGROUPSIZE");
+		final long totalMillis=CMath.s_long(CMLib.threads().getSystemReport("totalMillis"));
+		final long totalTicks=CMath.s_long(CMLib.threads().getSystemReport("totalTicks"));
 		buf.append(L("There are ^H@x1^? ticking objects in ^H@x2^? groups.\n\r",totalTickers,tickGroupSize));
 		buf.append(L("The ticking objects have consumed: ^H@x1^?.\n\r",CMLib.english().stringifyElapsedTimeOrTicks(totalMillis,totalTicks)));
 		/*
@@ -1579,22 +1579,22 @@ public class ListCmd extends StdCommand
 		*/
 		buf.append("\n\r");
 		buf.append(L("^xServices report:^.^N\n\r"));
-		buf.append(L("There are ^H@x1^? active out of ^H@x2^? live worker threads.\n\r",CMLib.threads().systemReport("numactivethreads"),CMLib.threads().systemReport("numthreads")));
+		buf.append(L("There are ^H@x1^? active out of ^H@x2^? live worker threads.\n\r",CMLib.threads().getSystemReport("numactivethreads"),CMLib.threads().getSystemReport("numthreads")));
 		int threadNum=0;
-		String threadName=CMLib.threads().systemReport("Thread"+threadNum+"name");
+		String threadName=CMLib.threads().getSystemReport("Thread"+threadNum+"name");
 		while(threadName.trim().length()>0)
 		{
-			final long saveThreadMilliTotal=CMath.s_long(CMLib.threads().systemReport("Thread"+threadNum+"MilliTotal"));
-			final long saveThreadTickTotal=CMath.s_long(CMLib.threads().systemReport("Thread"+threadNum+"TickTotal"));
-			buf.append("Service '"+threadName+"' has consumed: ^H"+CMLib.english().stringifyElapsedTimeOrTicks(saveThreadMilliTotal,saveThreadTickTotal)+" ("+CMLib.threads().systemReport("Thread"+threadNum+"Status")+")^?.");
+			final long saveThreadMilliTotal=CMath.s_long(CMLib.threads().getSystemReport("Thread"+threadNum+"MilliTotal"));
+			final long saveThreadTickTotal=CMath.s_long(CMLib.threads().getSystemReport("Thread"+threadNum+"TickTotal"));
+			buf.append("Service '"+threadName+"' has consumed: ^H"+CMLib.english().stringifyElapsedTimeOrTicks(saveThreadMilliTotal,saveThreadTickTotal)+" ("+CMLib.threads().getSystemReport("Thread"+threadNum+"Status")+")^?.");
 			buf.append("\n\r");
 			threadNum++;
-			threadName=CMLib.threads().systemReport("Thread"+threadNum+"name");
+			threadName=CMLib.threads().getSystemReport("Thread"+threadNum+"name");
 		}
 		buf.append("\n\r");
 		buf.append(L("^xSession report:^.^N\n\r"));
-		final long totalMOBMillis=CMath.s_long(CMLib.threads().systemReport("totalMOBMillis"));
-		final long totalMOBTicks=CMath.s_long(CMLib.threads().systemReport("totalMOBTicks"));
+		final long totalMOBMillis=CMath.s_long(CMLib.threads().getSystemReport("totalMOBMillis"));
+		final long totalMOBTicks=CMath.s_long(CMLib.threads().getSystemReport("totalMOBTicks"));
 		buf.append(L("There are ^H@x1^? ticking players logged on.\n\r",""+CMLib.sessions().numLocalOnline()));
 		buf.append(L("The ticking players have consumed: ^H@x1^?.\n\r",""+CMLib.english().stringifyElapsedTimeOrTicks(totalMOBMillis,totalMOBTicks)));
 		/*
@@ -2719,22 +2719,22 @@ public class ListCmd extends StdCommand
 	protected StringBuilder appendTick(final int group, final int tick, final boolean activeOnly, final String mask, final String finalCol, final int[] col, final int[] COL)
 	{
 		final StringBuilder msg=new StringBuilder("");
-		final long tickerlaststartdate=CMath.s_long(CMLib.threads().tickInfo("tickerlaststartmillis"+group+"-"+tick));
-		final long tickerlaststopdate=CMath.s_long(CMLib.threads().tickInfo("tickerlaststopmillis"+group+"-"+tick));
+		final long tickerlaststartdate=CMath.s_long(CMLib.threads().getTickInfoReport("tickerlaststartmillis"+group+"-"+tick));
+		final long tickerlaststopdate=CMath.s_long(CMLib.threads().getTickInfoReport("tickerlaststopmillis"+group+"-"+tick));
 		final boolean isActive=(tickerlaststopdate<tickerlaststartdate);
 		if((!activeOnly)||(isActive))
 		{
-			final String name=CMLib.threads().tickInfo("tickerName"+group+"-"+tick);
+			final String name=CMLib.threads().getTickInfoReport("tickerName"+group+"-"+tick);
 			if((mask==null)||(name.toUpperCase().indexOf(mask)>=0))
 			{
-				String id=CMLib.threads().tickInfo("tickerID"+group+"-"+tick);
+				String id=CMLib.threads().getTickInfoReport("tickerID"+group+"-"+tick);
 				if(CMath.isInteger(id))
 				{
 					final int idx=CMath.s_int(id);
 					id=Integer.toString(idx & 255);
 				}
-				String finalVal=CMLib.threads().tickInfo(finalCol+group+"-"+tick);
-				final boolean suspended=CMath.s_bool(CMLib.threads().tickInfo("tickerSuspended"+group+"-"+tick));
+				String finalVal=CMLib.threads().getTickInfoReport(finalCol+group+"-"+tick);
+				final boolean suspended=CMath.s_bool(CMLib.threads().getTickInfoReport("tickerSuspended"+group+"-"+tick));
 				final int realCol4Len=COL[3]-(suspended?2:1);
 				if(finalVal.length()>realCol4Len)
 				{
@@ -2839,7 +2839,7 @@ public class ListCmd extends StdCommand
 				msg.append("\n\r\n\r^HProblems by average time used:^N\n\r\n\r");
 			}
 			whichTicks=new LinkedHashSet<Pair<Integer,Integer>>();
-			final String problemSets=CMLib.threads().systemReport(probType);
+			final String problemSets=CMLib.threads().getSystemReport(probType);
 			final List<String> sets=CMParms.parseSemicolons(problemSets, true);
 			for(final String set : sets)
 			{
@@ -2871,7 +2871,7 @@ public class ListCmd extends StdCommand
 			msg.append(CMStrings.padRight(L("G#"),COL_LEN1)+" "+CMStrings.padRight(L("ID"),COL_LEN3)+CMStrings.padRight(L("Client"),COL_LEN2)+" "+CMStrings.padRight(finalColName,COL_LEN4));
 		msg.append(CMStrings.padRight(L("G#"),COL_LEN1)+" "+CMStrings.padRight(L("ID"),COL_LEN3)+CMStrings.padRight(L("Client"),COL_LEN2)+" "+CMStrings.padRight(finalColName,COL_LEN4)+"\n\r");
 		msg.append("^N");
-		final int numGroups=CMath.s_int(CMLib.threads().tickInfo("tickGroupSize"));
+		final int numGroups=CMath.s_int(CMLib.threads().getTickInfoReport("tickGroupSize"));
 		if((mask!=null)&&(mask.length()==0))
 			mask=null;
 		final int[] col= {0};
@@ -2891,7 +2891,7 @@ public class ListCmd extends StdCommand
 			{
 				if((whichGroups==null)||(whichGroups.contains(Integer.valueOf(group))))
 				{
-					final int tickersSize=CMath.s_int(CMLib.threads().tickInfo("tickersSize"+group));
+					final int tickersSize=CMath.s_int(CMLib.threads().getTickInfoReport("tickersSize"+group));
 					for(int tick=0;tick<tickersSize;tick++)
 						msg.append(this.appendTick(group, tick, activeOnly, mask, finalCol, col, COL));
 				}

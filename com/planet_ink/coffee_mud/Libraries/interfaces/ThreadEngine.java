@@ -34,12 +34,18 @@ import java.util.*;
 public interface ThreadEngine extends CMLibrary, Runnable
 {
 	// tick related
-	public TickClient startTickDown(Tickable E, int tickID, long TICK_TIME, int numTicks);
+	public TickClient startTickDown(Tickable E, int tickID, long tickTimeMs, int numTicks);
 	public TickClient startTickDown(Tickable E, int tickID, int numTicks);
+	public boolean isTicking(Tickable E, int tickID);
+	public long getTimeMsToNextTick(Tickable E, int tickID);
+
+	public Iterator<TickableGroup> tickGroups();
 	public long getTickGroupPeriod(final Tickable E, final int tickID);
+
 	public boolean deleteTick(Tickable E, int tickID);
-	public boolean setTickPending(Tickable E, int tickID);
 	public boolean deleteAllTicks(Tickable E);
+
+	public boolean setTickPending(Tickable E, int tickID);
 	public void suspendTicking(Tickable E, int tickID);
 	public void resumeTicking(Tickable E, int tickID);
 	public void suspendResumeRecurse(CMObject O, boolean skipEmbeddedAreas, boolean suspend);
@@ -47,22 +53,21 @@ public interface ThreadEngine extends CMLibrary, Runnable
 	public void suspendAll(CMRunnable[] exceptRs);
 	public void resumeAll();
 	public boolean isAllSuspended();
-	public void clearDebri(Room room, int taskCode);
-	public String tickInfo(String which);
-	public void tickAllTickers(Room here);
-	public void rejuv(Room here, int tickID);
-	public String systemReport(String itemCode);
-	public long msToNextTick(Tickable E, int tickID);
-	public boolean isTicking(Tickable E, int tickID);
-	public  Iterator<TickableGroup> tickGroups();
-	public String getTickStatusSummary(Tickable obj);
-	public List<Tickable> getNamedTickingObjects(String name);
-	public Runnable findRunnableByThread(final Thread thread);
-	public List<TickClient> findTickClient(final String name, final boolean exactOnly);
-	public void executeRunnable(Runnable R);
+
 	public void scheduleRunnable(Runnable R, long ellapsedMs);
+	public void executeRunnable(Runnable R);
 	public void executeRunnable(String threadGroupName, Runnable R);
 	public void executeRunnable(final char threadGroupId, final Runnable R);
-	public void debugDumpStack(final String ID, Thread theThread);
-	public long getTicksEllapsedSinceStartup();
+
+	public void tickAllTickers(Room here);
+	public void rejuv(Room here, int tickID);
+	public void clearDebri(Room room, int taskCode);
+
+	public String getTickInfoReport(String which);
+	public String getSystemReport(String itemCode);
+	public String getTickStatusSummary(Tickable obj);
+	public List<Tickable> getNamedTickingObjects(String name);
+	public List<TickClient> findTickClient(final String name, final boolean exactOnly);
+	public Runnable findRunnableByThread(final Thread thread);
+	public void dumpDebugStack(final String ID, Thread theThread);
 }

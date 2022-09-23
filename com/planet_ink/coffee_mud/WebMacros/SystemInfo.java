@@ -56,9 +56,9 @@ public class SystemInfo extends StdWebMacro
 		{
 			if(key.length()>0)
 			{
-				String answer=CMLib.threads().tickInfo(key);
+				String answer=CMLib.threads().getTickInfoReport(key);
 				if(answer.length()==0)
-					answer=CMLib.threads().systemReport(key);
+					answer=CMLib.threads().getSystemReport(key);
 				str.append(answer+", ");
 			}
 		}
