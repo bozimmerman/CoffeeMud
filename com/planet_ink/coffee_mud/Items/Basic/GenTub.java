@@ -113,7 +113,7 @@ public class GenTub extends StdTub
 		case 8:
 			return "" + liquidHeld();
 		case 9:
-			return "" + liquidType();
+			return RawMaterial.CODES.NAME(liquidType());
 		case 10:
 			return "" + defaultsClosed();
 		case 11:

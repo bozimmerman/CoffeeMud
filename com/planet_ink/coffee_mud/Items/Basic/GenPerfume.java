@@ -126,7 +126,7 @@ public class GenPerfume extends StdPerfume
 		case 6:
 			return "" + liquidHeld();
 		case 7:
-			return "" + liquidType();
+			return RawMaterial.CODES.NAME(liquidType());
 		case 8:
 			return "" + getSmellList();
 		case 9:

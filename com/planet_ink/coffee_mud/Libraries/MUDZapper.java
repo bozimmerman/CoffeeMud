@@ -6404,7 +6404,32 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						boolean found=false;
 						for(final Object o : entry.parms())
 						{
-							if(E.ID().equalsIgnoreCase((String)o))
+							final String s = (String)o;
+							if(s.startsWith("."))
+							{
+								Class<?> c = E.getClass();
+								while(c != null)
+								{
+									if(c.getName().toUpperCase().endsWith(s))
+									{
+										found = true;
+										break;
+									}
+									for(final Class<?> c1 : c.getInterfaces())
+									{
+										if(c1.getName().toUpperCase().endsWith(s))
+										{
+											found = true;
+											break;
+										}
+									}
+									if(found)
+										break;
+									c=c.getSuperclass();
+								}
+							}
+							else
+							if(E.ID().equalsIgnoreCase(s))
 							{
 								found = true;
 								break;
@@ -6417,7 +6442,24 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case JAVACLASS: // +JavaClass
 					for(final Object o : entry.parms())
 					{
-						if(E.ID().equalsIgnoreCase((String)o))
+						final String s = (String)o;
+						if(s.startsWith("."))
+						{
+							for(final Class<?> c : E.getClass().getInterfaces())
+							{
+								if(c.getName().toUpperCase().endsWith(s))
+									return false;
+							}
+							Class<?> c = E.getClass();
+							while(c != null)
+							{
+								if(c.getName().toUpperCase().endsWith(s))
+									return false;
+								c=c.getSuperclass();
+							}
+						}
+						else
+						if(E.ID().equalsIgnoreCase(s))
 							return false;
 					}
 					break;

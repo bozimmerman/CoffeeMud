@@ -37,11 +37,11 @@
 #$QUEST_CRITERIA=$ZAPPERMASK
 #Instructions: 
 #Specify some the instructions and justification for the quest.
-#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=You need to capture some folks.  They are somewhere around somewhere.  You might have to get rough with them.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=You need to find some money.  It is somewhere around somewhere.
 #
 #Success:
 #This is what the player sees when the player completes the quest.
-#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=They have all been captured! Congratulations $i! They are all taken away...
+#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=That's all I needed. Congratulations $i!
 #
 #!QUESTMAKER_PAGE Specify the Amount and Type of money
 #The money to collect..

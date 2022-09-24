@@ -225,7 +225,7 @@ public class GenLantern extends GenLightSource implements LiquidHolder
 		case 0:
 			return "" + liquidHeld();
 		case 1:
-			return "" + liquidType();
+			return RawMaterial.CODES.NAME(liquidType());
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}

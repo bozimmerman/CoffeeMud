@@ -242,7 +242,7 @@ public class GenCow extends GenRideable implements Drink
 		case 1:
 			return "" + liquidHeld();
 		case 2:
-			return "" + liquidType();
+			return RawMaterial.CODES.NAME(liquidType());
 		default:
 			if(super.isStat(code))
 				return super.getStat(code);

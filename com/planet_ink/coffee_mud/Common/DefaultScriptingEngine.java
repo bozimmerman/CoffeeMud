@@ -4219,15 +4219,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(E instanceof Armor)
 							num=((Item)E).numberOfItems();
 						else
+						if(E instanceof RawMaterial)
+							num=((Item)E).phyStats().weight();
+						else
 						if(E instanceof Container)
 						{
 							num++;
 							for(final Item I : ((Container)E).getContents())
 								num+=I.numberOfItems();
 						}
-						else
-						if(E instanceof RawMaterial)
-							num=((Item)E).phyStats().weight();
 						else
 						if(E instanceof Item)
 							num=((Item)E).numberOfItems();
@@ -7404,15 +7404,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(E instanceof Armor)
 						num=((Item)E).numberOfItems();
 					else
+					if(E instanceof RawMaterial)
+						num=((Item)E).phyStats().weight();
+					else
 					if(E instanceof Container)
 					{
 						num++;
 						for(final Item I : ((Container)E).getContents())
 							num+=I.numberOfItems();
 					}
-					else
-					if(E instanceof RawMaterial)
-						num=((Item)E).phyStats().weight();
 					else
 					if(E instanceof Item)
 						num=((Item)E).numberOfItems();

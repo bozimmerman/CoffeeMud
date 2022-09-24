@@ -145,7 +145,7 @@ public class GenDrink extends StdDrink
 		case 6:
 			return "" + liquidHeld();
 		case 7:
-			return "" + liquidType();
+			return RawMaterial.CODES.NAME(liquidType());
 		case 8:
 			return "" + defaultsClosed();
 		case 9:

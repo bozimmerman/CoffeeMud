@@ -39,11 +39,11 @@
 #
 #Instructions: 
 #Specify some the instructions and justification for the quest.
-#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=You need to collect some things from some folk.  You might have to get rough with them.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=You need to gather some things.
 #
 #Success:
 #This is what the player sees when the player completes the quest.
-#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=They have all been collected! Congratulations $i!
+#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=They have all been gathered! Congratulations $i!
 #
 #!QUESTMAKER_PAGE Specify the Collectables
 #The Collectables are the items that must be found or created.
@@ -113,7 +113,11 @@ FUNCTION_PROG CHECK_DONE
 	for $0 = 1 to $%NUMITEMSMOB($i)%
 		MPARGSET $1 $%MOBITEM($i $0)%
 		if ISLIKE($1 '$COLLECTABLE_ITEMS')
-			mpsetvar $i $QUEST_ID_GOT +$%ITEMCOUNT($1)%
+			IF ISLIKE($1 '+JAVACLASS -.RawMaterial -JAVACLASS +.DRINK')
+				MPSETVAR $i $QUEST_ID_GOT +$%GSTAT($1 LIQUIDREMAINING)%
+			ELSE
+				MPSETVAR $i $QUEST_ID_GOT +$%ITEMCOUNT($1)%
+			ENDIF
 		endif
 	next
 	if var($n $QUEST_ID_GOT >= $NUM_COLLECTABLES) and QUESTSCRIPTED($i *)
@@ -201,7 +205,11 @@ QUEST_TIME_PROG * 1
 
 EXECMSG_PROG GET ALL
 	if ISLIKE($t '$COLLECTABLE_ITEMS') and EVAL($n == $i) AND EVAL('$<$n $QUEST_ID_GOT>' < $NUM_COLLECTABLES)
-		MPSETVAR $i $QUEST_ID_GOT +$%ITEMCOUNT($t)%
+		IF ISLIKE($t '+JAVACLASS -.RawMaterial -JAVACLASS +.DRINK')
+			MPSETVAR $i $QUEST_ID_GOT +$%GSTAT($t LIQUIDREMAINING)%
+		ELSE
+			MPSETVAR $i $QUEST_ID_GOT +$%ITEMCOUNT($t)%
+		ENDIF
 		mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES
 		MPCALLFUNC CHECK_DONE
 	endif	
@@ -209,7 +217,11 @@ EXECMSG_PROG GET ALL
 
 EXECMSG_PROG DROP ALL
 	if ISLIKE($t '$COLLECTABLE_ITEMS') and QUESTSCRIPTED($n *) and EVAL($n == $i) AND EVAL('$<$n $QUEST_ID_GOT>' > 0) 
-		MPSETVAR $n $QUEST_ID_GOT -$%ITEMCOUNT($t)%
+		IF ISLIKE($t '+JAVACLASS -.RawMaterial -JAVACLASS +.DRINK')
+			MPSETVAR $n $QUEST_ID_GOT -$%GSTAT($t LIQUIDREMAINING)%
+		ELSE
+			MPSETVAR $n $QUEST_ID_GOT -$%ITEMCOUNT($t)%
+		ENDIF
 		mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES
 	endif	
 ~
