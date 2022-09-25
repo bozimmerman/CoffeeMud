@@ -510,6 +510,8 @@ public class StdWebMacro implements WebMacro
 
 	protected static String htmlOutgoingFilter(final String buf)
 	{
+		if(buf == null)
+			return null;
 		return htmlOutgoingFilter(new StringBuffer(buf)).toString();
 	}
 

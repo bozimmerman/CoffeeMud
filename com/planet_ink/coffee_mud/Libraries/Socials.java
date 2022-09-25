@@ -941,13 +941,14 @@ public class Socials extends StdLibrary implements SocialsList
 	{
 		final Social soc=(Social)CMClass.getCommon("DefaultSocial");
 		type = type.trim().toUpperCase();
+		final String typTrim = type;
 		if((type.length()>0)&&(!type.startsWith(" ")))
 			type=" "+type;
 		soc.setName(name+type);
 		String funnyAppendage="";
 		if(soc.argumentName().length()>0)
 			funnyAppendage=" in the "+soc.argumentName().toLowerCase();
-		if(type.length()==0)
+		if(typTrim.length()==0)
 		{
 			soc.setSourceMessage("You "+name.toLowerCase()+".");
 			soc.setOthersMessage("<S-NAME> "+name.toLowerCase()+"s.");
@@ -955,7 +956,7 @@ public class Socials extends StdLibrary implements SocialsList
 			soc.setOthersCode(CMMsg.MSG_HANDS);
 		}
 		else
-		if(type.equals("ALL"))
+		if(typTrim.equals("ALL"))
 		{
 			soc.setSourceMessage("You "+name.toLowerCase()+" everyone"+funnyAppendage+".");
 			soc.setOthersMessage("<S-NAME> "+name.toLowerCase()+"s everyone"+funnyAppendage+".");
@@ -964,7 +965,7 @@ public class Socials extends StdLibrary implements SocialsList
 			soc.setOthersCode(CMMsg.MSG_SPEAK);
 		}
 		else
-		if(type.startsWith("<"))
+		if(typTrim.startsWith("<"))
 		{
 			soc.setSourceMessage("You "+name.toLowerCase()+" <T-NAME>"+funnyAppendage+".");
 			soc.setTargetMessage("<S-NAME> "+name.toLowerCase()+"s you"+funnyAppendage+".");
@@ -975,7 +976,7 @@ public class Socials extends StdLibrary implements SocialsList
 			soc.setOthersCode(CMMsg.MSG_NOISYMOVEMENT);
 		}
 		else
-		if(type.equals("SELF"))
+		if(typTrim.equals("SELF"))
 		{
 			soc.setSourceMessage("You "+name.toLowerCase()+" yourself"+funnyAppendage+".");
 			soc.setOthersMessage("<S-NAME> "+name.toLowerCase()+"s <S-HIM-HERSELF>"+funnyAppendage+".");
