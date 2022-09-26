@@ -2355,7 +2355,15 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 							CMLib.commands().postCommandFail(mob,new XVector<String>(commands),L("You can only handle @x1 at a time.",""+max));
 							return -1;
 						}
-						final Environmental toWhat=CMLib.materials().unbundle((Item)fromWhat,maxToGive,null);
+						final Environmental toWhat;
+						if(fromWhat instanceof RawMaterial)
+						{
+							toWhat=CMLib.materials().splitBundle((Item)fromWhat,maxToGive,null);
+							if(toWhat != null)
+								maxToGive = 1;
+						}
+						else
+							toWhat=CMLib.materials().unbundle((Item)fromWhat,maxToGive,null);
 						if(toWhat==null)
 						{
 							if(throwError)
