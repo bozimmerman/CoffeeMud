@@ -576,12 +576,16 @@
 <TABLE WIDTH=100% BORDER=0>
 <TR>
     @if?!CheckReqParm?SOCIAL=@
-        @if?SocialData?ISNEWSOCIAL@
-            <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Create" ONCLICK="EditDone();"></TD>
+        @if?CheckReqParm?COMPONENT=true@
+            <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Submit" ONCLICK="EditDone();"></TD>
         @else@
-            <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Modify" ONCLICK="EditDone();"></TD>
-            <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();"></TD>
-        @endif@
+	        @if?SocialData?ISNEWSOCIAL@
+	            <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Create" ONCLICK="EditDone();"></TD>
+	        @else@
+	            <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Modify" ONCLICK="EditDone();"></TD>
+	            <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();"></TD>
+	        @endif@
+	    @endif@
         <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Cancel();"></TD>
     @endif@
 </TR>

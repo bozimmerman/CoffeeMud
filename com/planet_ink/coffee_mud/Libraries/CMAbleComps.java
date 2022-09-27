@@ -779,7 +779,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			{
 				for(int v=0;v<V.size();v++)
 				{
-					s=V.get(v).trim();
+					s=CMStrings.trimCRLF(V.get(v));
 					if(s.startsWith("#")||(s.length()==0)||s.startsWith(";")||s.startsWith(":"))
 						continue;
 					error=addAbilityComponent(s,H);
@@ -944,8 +944,14 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		boolean addIt=true;
 		int delFromHere=-1;
 		final String upID;
-		if((isSocial)&&(compID.indexOf('\t')>0))
-			upID=compID.toUpperCase()+"\t";
+		if(isSocial)
+		{
+			final int x=compID.indexOf('\t',3);
+			if(x<0)
+				upID=compID.toUpperCase()+"\t";
+			else
+				upID=compID.substring(3,x+1).toUpperCase();
+		}
 		else
 			upID=compID.toUpperCase();
 		for(int t=0;t<text.length();t++)
@@ -969,16 +975,14 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 				break;
 			}
 			else
-			if((lastWasCR)&&(Character.toUpperCase(text.charAt(t))==upID.charAt(0)))
+			if((lastWasCR)
+			&&((isSocial && text.substring(t+3).startsWith(upID))
+			  ||((!isSocial)
+				&&(text.substring(t).toUpperCase().startsWith(upID))
+				&&(text.substring(t+upID.length()).trim().startsWith("=")))))
 			{
-				if((isSocial && text.substring(3).startsWith(compID))
-				||((!isSocial)
-					&&(text.substring(t).toUpperCase().startsWith(upID))
-					&&((!isSocial)&&text.substring(t+upID.length()).trim().startsWith("="))))
-				{
-					addIt=false;
-					delFromHere=t;
-				}
+				addIt=false;
+				delFromHere=t;
 				lastWasCR=false;
 			}
 			else
@@ -987,7 +991,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		if(delFromHere>0)
 		{
 			text.delete(delFromHere,text.length());
-			text.append(parms+'\n');
+			if(!delete)
+				text.append(parms+'\n');
 		}
 		if(addIt)
 		{

@@ -11,13 +11,13 @@
     <!--
         function Component(action)
         {
-            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=550,alwaysRaised=yes,dependent=yes";
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=550,width=550,alwaysRaised=yes,dependent=yes";
             w=window.open("component.cmvp?AUTH=@Authenticate?AUTH@&COMPONENT="+action,
                 "Component for "+action,strFeatures, false);
         }
 	    function Social(action,newsoc)
 	    {
-	        var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=550,alwaysRaised=yes,dependent=yes";
+	        var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=550,width=750,alwaysRaised=yes,dependent=yes";
             w=window.open("social.cmvp?AUTH=@Authenticate?AUTH@&SOCIAL="+action+"&NEWSOCIAL="+newsoc+"&COMPONENT=true",
                 	"Component Social",strFeatures, false);
 	    }

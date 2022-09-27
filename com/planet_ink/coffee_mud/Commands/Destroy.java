@@ -838,7 +838,7 @@ public class Destroy extends StdCommand
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 				return false;
 			}
-			CMLib.ableComponents().alterAbilityComponentFile(soc.getEncodedLine().trim(),true);
+			CMLib.ableComponents().alterAbilityComponentFile(CMStrings.trimCRLF(soc.getEncodedLine()),true);
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The complication of skill usage just decreased!"));
 			return true;
 		}

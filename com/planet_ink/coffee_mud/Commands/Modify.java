@@ -1704,14 +1704,17 @@ public class Modify extends StdCommand
 				return;
 			}
 			final List<Social> copy = new XArrayList<Social>(socials);
+			final List<String> socEncV = new ArrayList<String>(socials.size());
+			for(final Social S : copy)
+				socEncV.add(S.getEncodedLine());
 			CMLib.socials().modifySocialInterface(mob, socials, rest);
 			for(final Social copyS : copy)
 				if(!socials.contains(copyS))
-					CMLib.ableComponents().alterAbilityComponentFile(copyS.getEncodedLine().trim(), true);
+					CMLib.ableComponents().alterAbilityComponentFile(CMStrings.trimCRLF(copyS.getEncodedLine()), true);
 			for(final Social newS : socials)
 			{
-				if(!socials.contains(newS))
-					CMLib.ableComponents().alterAbilityComponentFile(newS.getEncodedLine().trim(), false);
+				if((!socials.contains(newS))||(!socEncV.contains(newS.getEncodedLine())))
+					CMLib.ableComponents().alterAbilityComponentFile(CMStrings.trimCRLF(newS.getEncodedLine()), false);
 			}
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The complication of skill usage just increased!"));
 			return;
