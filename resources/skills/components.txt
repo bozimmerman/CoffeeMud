@@ -22,6 +22,7 @@
 #     that have multiple TRIGGER type components in them.
 #     See the help entry for ZAPPERMASKS for more information on creating zapper masks.
 # [RITUAL] is a triggering ritual. (see AHELP RITUALS or Archon Guide under StdDeity "Cleric Ritual")
+# ** You can also include component-only socials in this file.  See socials.txt for line format.
 # Examples:
 # WOODCHOPPING=(held:kept:1:*axe*:)
 #   (the above requires an item with the characters "axe" in the name to do woodchopping)
