@@ -741,7 +741,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					if(components!=null)
 					{
 						prepend.append(L("\n\rComponent: "));
-						prepend.append(CMLib.ableComponents().getAbilityComponentDesc(forM,A.ID()));
+						prepend.append(CMLib.ableComponents().getAbilityComponentDesc(forM,A.ID()).replace('\n',','));
 					}
 					prepend.append(L("\n\rUse Cost : "));
 					prepend.append(this.getAbilityCostDesc(A, forM));

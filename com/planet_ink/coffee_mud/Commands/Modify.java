@@ -1782,8 +1782,37 @@ public class Modify extends StdCommand
 			allSocials=new ArrayList<Social>();
 		for(int a = 0; a<allSocials.size();a++)
 			oldSocials.add((Social)allSocials.get(a).copyOf());
-		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around the idea of  @x1s.",S.name()));
-		CMLib.socials().modifySocialInterface(mob,(name+" "+oldStuff).trim());
+		{
+			final Vector<String> socialsParse=CMParms.parse((name+" "+oldStuff).trim());
+			if(socialsParse.size()==0)
+			{
+				mob.tell(L("Which social?"));
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
+				return;
+			}
+			final String sname=socialsParse.firstElement().toUpperCase().trim();
+			final String rest=socialsParse.size()>1?CMParms.combine(socialsParse,1):"";
+			final List<Social> socials=CMLib.socials().getSocialsSet(socialsParse.firstElement());
+			if((socials==null)||(socials.size()==0))
+			{
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("The social '@x1' does not exist. Try LIST SOCIALS ",sname));
+				return;
+			}
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around the idea of  @x1s.",S.name()));
+			final List<Social> copy=new XArrayList<Social>(socials);
+			CMLib.socials().modifySocialInterface(mob,socials, rest);
+			{
+				for(final Social copyS : copy)
+					if(!socials.contains(copyS))
+						CMLib.socials().delSocial(copyS.name());
+				for(final Social newS : socials)
+				{
+					if(!socials.contains(newS))
+						CMLib.socials().addSocial(newS);
+				}
+			}
+			CMLib.socials().save(mob);
+		}
 		allSocials = CMLib.socials().getSocialsSet(name);
 		if(allSocials==null)
 			allSocials=new ArrayList<Social>();

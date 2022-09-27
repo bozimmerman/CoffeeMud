@@ -69,7 +69,7 @@ public class NonTriggerer implements Triggerer
 	{
 		return this;
 	}
-	
+
 	@Override
 	public boolean isObsolete()
 	{
@@ -100,76 +100,76 @@ public class NonTriggerer implements Triggerer
 	}
 
 	@Override
-	public int compareTo(CMObject o)
+	public int compareTo(final CMObject o)
 	{
 		return o == this?0:(o.hashCode()>=hashCode()?-1:1);
 	}
 
 	@Override
-	public void addTrigger(Object key, String encodedTrigger, List<String> errors)
+	public void addTrigger(final Object key, final String encodedTrigger, Map<String, List<Social>> socials, final List<String> errors)
 	{
 	}
 
 	@Override
-	public boolean hasTrigger(Object key)
+	public boolean hasTrigger(final Object key)
 	{
 		return false;
 	}
 
 	@Override
-	public String getTriggerDesc(Object key)
+	public String getTriggerDesc(final Object key)
 	{
 		return "";
 	}
 
 	@Override
-	public CMMsg genNextAbleTrigger(MOB mob, Object key, boolean force)
+	public CMMsg genNextAbleTrigger(final MOB mob, final Object key, final boolean force)
 	{
 		return null;
 	}
 
 	@Override
-	public void setIgnoreTracking(MOB mob, boolean truefalse)
+	public void setIgnoreTracking(final MOB mob, final boolean truefalse)
 	{
 	}
 
 	@Override
-	public void deleteTracking(MOB mob, Object key)
+	public void deleteTracking(final MOB mob, final Object key)
 	{
 	}
 
 	@Override
-	public boolean isTracking(MOB mob, Object key)
-	{
-		return false;
-	}
-
-	@Override
-	public boolean isTracking(Object key, CMMsg msg)
+	public boolean isTracking(final MOB mob, final Object key)
 	{
 		return false;
 	}
 
 	@Override
-	public Object[] whichTracking(CMMsg msg)
+	public boolean isTracking(final Object key, final CMMsg msg)
+	{
+		return false;
+	}
+
+	@Override
+	public Object[] whichTracking(final CMMsg msg)
 	{
 		return trackingNothing;
 	}
 
 	@Override
-	public boolean isCompleted(Object key, CMMsg msg)
+	public boolean isCompleted(final Object key, final CMMsg msg)
 	{
 		return false;
 	}
 
 	@Override
-	public Object[] whichCompleted(Object[] keys, CMMsg msg)
+	public Object[] whichCompleted(final Object[] keys, final CMMsg msg)
 	{
 		return trackingNothing;
 	}
 
 	@Override
-	public Pair<Object, List<String>> getCompleted(Object[] keys, CMMsg msg)
+	public Pair<Object, List<String>> getCompleted(final Object[] keys, final CMMsg msg)
 	{
 		return null;
 	}
@@ -181,14 +181,20 @@ public class NonTriggerer implements Triggerer
 	}
 
 	@Override
-	public Object[] getInProgress(MOB mob)
+	public Object[] getInProgress(final MOB mob)
 	{
 		return trackingNothing;
 	}
 
 	@Override
-	public boolean wasCompletedRecently(MOB mob, Object key)
+	public boolean wasCompletedRecently(final MOB mob, final Object key)
 	{
 		return false;
+	}
+
+	@Override
+	public Social fetchSocial(final List<String> commands, final boolean exactOnly, final boolean checkItemTargets)
+	{
+		return null;
 	}
 }

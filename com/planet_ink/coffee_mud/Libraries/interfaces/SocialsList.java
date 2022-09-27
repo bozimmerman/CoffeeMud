@@ -71,11 +71,12 @@ public interface SocialsList extends CMLibrary
 	 * modifying a social set.
 	 *
 	 * @param mob the mob editor
-	 * @param socialString the social id or base name
+	 * @param socials the social id or base name
+	 * @param rest any extra terms used from command line
 	 * @return true if something was done
 	 * @throws IOException any i/o errors that occured, usually disconnect
 	 */
-	public boolean modifySocialInterface(MOB mob, String socialString)
+	public boolean modifySocialInterface(MOB mob, List<Social> socials, String rest)
 		throws IOException;
 
 	/**
@@ -149,13 +150,14 @@ public interface SocialsList extends CMLibrary
 	 * list of parseable social lines, where the format is:
 	 * 12\tID\tYouSee\tOthersSee\tTargetSees\tNoTargetSees\tMSP filename\tZappermask\t
 	 * 1 = source code, 2 = others/target code
+	 * @return the number of socials added to hash
 	 *
 	 * @see SocialsList#fetchSocialFromSet(Map, List, boolean, boolean)
 	 *
 	 * @param socialsMap the map to put the socials into
 	 * @param lines the lines to parse
 	 */
-	public void putSocialsInHash(final Map<String,List<Social>> socialsMap, final List<String> lines);
+	public int putSocialsInHash(final Map<String,List<Social>> socialsMap, final List<String> lines);
 
 	/**
 	 * Returns the social set of the given base name.

@@ -3701,7 +3701,11 @@ public class ListCmd extends StdCommand
 		{
 			final List<AbilityComponent> DV=CMLib.ableComponents().getAbilityComponentMap().get(ID);
 			if(DV!=null)
-				buf.append(CMStrings.padRight(ID,20)+": "+CMLib.ableComponents().getAbilityComponentDesc(null,ID)+"\n\r");
+			{
+				final String s= CMLib.ableComponents().getAbilityComponentDesc(null,ID);
+				for(final String s1 : s.split("\n"))
+					buf.append(CMStrings.padRight(ID,20)+": "+s1.trim()+"\n\r");
+			}
 		}
 		if(buf.length()==0)
 			return "None defined.";

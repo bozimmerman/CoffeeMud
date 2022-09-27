@@ -40,9 +40,11 @@ public class SocialData extends StdWebMacro
 	{
 		return "SocialData";
 	}
-	static String[] BTYPES={"NONE","ALL","SELF","TARGETMOB","TARGETITEM","TARGETINV","TARGETEQUIP"};
-	static String[] BEXTNS={""," ALL"," SELF"," <T-NAME>"," <I-NAME>"," <V-NAME>"," <E-NAME>"};
-	static String[] BFIELDS={"YOMZ","YONMZ","YOMZ","YTONMAZ","YONMZ","YONMZ","YONMZ"};
+	static final String[] BTYPES={"NONE","ALL","SELF","TARGETMOB","TARGETITEM","TARGETINV","TARGETEQUIP"};
+	static final String[] BEXTNS={""," ALL"," SELF"," <T-NAME>"," <I-NAME>"," <V-NAME>"," <E-NAME>"};
+	static final String[] BFIELDS={"YOMZ","YONMZ","YOMZ","YTONMAZ","YONMZ","YONMZ","YONMZ"};
+	static final List<String> TYPES=Arrays.asList(BTYPES);
+	static final List<String> EXTNS=Arrays.asList(BEXTNS);
 
 	static String[] CODESTR={"WORDS","MOVEMENT","SOUND","VISUAL","HANDS","QUIETMOVE"};
 	static int[] CODES={CMMsg.MSG_SPEAK,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISE,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_HANDS,CMMsg.MSG_SUBTLEMOVEMENT};
@@ -51,6 +53,8 @@ public class SocialData extends StdWebMacro
 	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
+		final boolean isCompSocial = CMath.s_bool(httpReq.getUrlParameter("COMPONENT"))
+									|| CMath.s_bool(httpReq.getUrlParameter("COMPONENTS"));
 		String last=httpReq.getUrlParameter("SOCIAL");
 		if(parms.containsKey("ISVFS"))
 			return ""+(new CMFile("::/resources/socials.txt",null,CMFile.FLAG_LOGERRORS).exists());
@@ -171,11 +175,18 @@ public class SocialData extends StdWebMacro
 			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
 			if(M==null)
 				return "[authentication error]";
+			if((isCompSocial)
+			&&(!((CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.CMDABILITIES))
+				||(CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.CMDSOCIALS)))))
+				return "[authentication error]";
+			else
 			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.CMDSOCIALS))
 				return "[authentication error]";
 
 			boolean create=false;
 			List<Social> SV=CMLib.socials().getSocialsSet(last);
+			if((SV == null)&&(isCompSocial))
+				SV = CMLib.ableComponents().getSocialsSet(last);
 			List<Social> OSV=null;
 			if(SV==null)
 				create=true;
@@ -194,12 +205,6 @@ public class SocialData extends StdWebMacro
 				last=old;
 			}
 
-			final List<String> TYPES=new ArrayList<String>();
-			final List<String> EXTNS=new ArrayList<String>();
-			for (final String element : BTYPES)
-				TYPES.add(element);
-			for (final String element : BEXTNS)
-				EXTNS.add(element);
 			old=httpReq.getUrlParameter("NUMXTRAS");
 			if(old!=null)
 			{
@@ -319,17 +324,37 @@ public class SocialData extends StdWebMacro
 			}
 			if(OSV!=null)
 			{
-				for(final Social S : OSV)
-					CMLib.socials().delSocial(S.Name());
+				if(isCompSocial)
+				{
+					for(final Social S : OSV)
+						CMLib.ableComponents().alterAbilityComponentFile(S.Name(),true);
+				}
+				else
+				{
+					for(final Social S : OSV)
+						CMLib.socials().delSocial(S.Name());
+				}
 			}
 
-			for(final Social S : SV)
-				CMLib.socials().addSocial(S);
+			if(isCompSocial)
+			{
+				for(final Social S : SV)
+					CMLib.ableComponents().alterAbilityComponentFile(S.getEncodedLine(),false);
+			}
+			else
+			{
+				for(final Social S : SV)
+					CMLib.socials().addSocial(S);
+			}
 
-			CMLib.socials().save(M);
+			if(!isCompSocial)
+				CMLib.socials().save(M);
 			if(create)
 			{
-				Log.sysOut(M.name()+" created social "+last);
+				if(!isCompSocial)
+					Log.sysOut(M.name()+" created social "+last);
+				else
+					Log.sysOut(M.name()+" created component social "+last);
 				return "Social "+last+" created";
 			}
 			Log.sysOut(M.name()+" updated social "+last);
@@ -346,13 +371,24 @@ public class SocialData extends StdWebMacro
 			if(last==null)
 				return " @break@";
 			List<Social> SV=CMLib.socials().getSocialsSet(last);
+			if((SV == null)&&(isCompSocial))
+				SV = CMLib.ableComponents().getSocialsSet(last);
 			if(SV==null)
 				return "Unknown social!";
 			SV=new XVector<Social>(SV);
-			for(int s=0;s<SV.size();s++)
-				CMLib.socials().delSocial(SV.get(s).Name());
-			CMLib.socials().save(M);
-			Log.sysOut(M.name()+" deleted social "+last);
+			if(isCompSocial)
+			{
+				for(int s=0;s<SV.size();s++)
+					CMLib.ableComponents().alterAbilityComponentFile(SV.get(s).Name(),true);
+				Log.sysOut(M.name()+" deleted componentn social "+last);
+			}
+			else
+			{
+				for(int s=0;s<SV.size();s++)
+					CMLib.socials().delSocial(SV.get(s).Name());
+				CMLib.socials().save(M);
+				Log.sysOut(M.name()+" deleted social "+last);
+			}
 			return "Social deleted.";
 		}
 		else
@@ -375,6 +411,8 @@ public class SocialData extends StdWebMacro
 				}
 				if(SV==null)
 					SV=CMLib.socials().getSocialsSet(last);
+				if((SV == null)&&(isCompSocial))
+					SV=CMLib.ableComponents().getSocialsSet(last);
 				if(parms.containsKey("ISNEWSOCIAL"))
 					return ""+(CMLib.socials().getSocialsSet(last)==null);
 				if(SV!=null)

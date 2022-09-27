@@ -163,7 +163,7 @@ public class StdDeity extends StdMOB implements Deity
 	protected void setRitual(final RitualType type, final String ritual)
 	{
 		final List<String> errors = new ArrayList<String>(1);
-		rituals.addTrigger(type, ritual, errors);
+		rituals.addTrigger(type, ritual, null, errors);
 		if(errors.size()>0)
 		{
 			for(final String error : errors)

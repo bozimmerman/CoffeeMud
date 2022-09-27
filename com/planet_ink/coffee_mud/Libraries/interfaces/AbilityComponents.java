@@ -223,7 +223,7 @@ public interface AbilityComponents extends CMLibrary
 
 	/**
 	 * Creates a new blank ability component object
-	 * @param abilityID TODO
+	 * @param abilityID the ability id to based this component on
 	 * @return a new blank ability component object
 	 */
 	public AbilityComponent createBlankAbilityComponent(String abilityID);
@@ -292,6 +292,26 @@ public interface AbilityComponents extends CMLibrary
 	 * @return the character-class based common skill ability limits
 	 */
 	public AbilityLimits getSpecialSkillRemainders(MOB studentM);
+
+
+	/**
+	 * Returns the social set of the given base name.
+	 *
+	 * @see AbilityComponents#getComponentSocials()
+	 *
+	 * @param named the social base name
+	 * @return null, or the social set
+	 */
+	public List<Social> getSocialsSet(String named);
+
+	/**
+	 * Gets the unique socials applicable to components.
+	 *
+	 * @see AbilityComponents#getSocialsSet(String)
+	 *
+	 * @return the component socials map
+	 */
+	public Map<String,List<Social>> getComponentSocials();
 
 	/**
 	 * Ability Limits object, denoting how many of different types

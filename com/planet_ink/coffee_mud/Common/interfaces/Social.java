@@ -59,11 +59,11 @@ public interface Social extends Environmental, CMCommon
 
 	/**
 	 * Returns a friendly description of the target, including any argument
-	 * 
+	 *
 	 * @return a friendly description of the target, including any argument
 	 */
 	public String getTargetDesc();
-	
+
 	/**
 	 * Target name is the social's target argument only, such as &lt;T-NAME&gt;.
 	 * It is NOT unique to a social object however, since a socials name usually
@@ -368,6 +368,7 @@ public interface Social extends Environmental, CMCommon
 	 * @return the number of player free actions required to do this
 	 */
 	public double actionsCost(final MOB mob, final List<String> cmds);
+
 	/**
 	 * Returns the number of actions required to completely
 	 * activate this social. A value of 0.0 means perform
@@ -380,6 +381,7 @@ public interface Social extends Environmental, CMCommon
 	 * @return the number of player free actions required to do this
 	 */
 	public double combatActionsCost(final MOB mob, final List<String> cmds);
+
 	/**
 	 * Returns the number of actions required to completely
 	 * activate this social. A value of 0.0 means perform
@@ -392,6 +394,14 @@ public interface Social extends Environmental, CMCommon
 	 * @return the number of player free actions required to do this
 	 */
 	public double checkedActionsCost(final MOB mob, final List<String> cmds);
+
+	/**
+	 * Returns the encoded social line.  This will have the EOLN, so trim
+	 * it if that is something you don't want.
+	 *
+	 * @return this social, encoded as a string
+	 */
+	public String getEncodedLine();
 
 	/**
 	 * Returns the readable/writeable flag set for this social.

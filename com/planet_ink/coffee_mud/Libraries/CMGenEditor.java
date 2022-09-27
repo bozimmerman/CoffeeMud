@@ -5527,7 +5527,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				final List<String> error = new ArrayList<String>(1);
 				final Triggerer triggerer = (Triggerer)CMClass.getCommon("DefaultTriggerer");
-				triggerer.addTrigger(new Object(), ritual, error);
+				triggerer.addTrigger(new Object(), ritual, null, error);
 				if(error.size()>0)
 				{
 					for(final String e : error)

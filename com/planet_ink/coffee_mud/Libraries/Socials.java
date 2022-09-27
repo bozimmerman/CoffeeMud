@@ -48,8 +48,9 @@ public class Socials extends StdLibrary implements SocialsList
 	}
 
 	@Override
-	public void putSocialsInHash(final Map<String,List<Social>> socialsMap, final List<String> lines)
+	public int putSocialsInHash(final Map<String,List<Social>> socialsMap, final List<String> lines)
 	{
+		int added = 0;
 		for(int v=0;v<lines.size();v++)
 		{
 			String getline=lines.get(v);
@@ -59,58 +60,76 @@ public class Socials extends StdLibrary implements SocialsList
 				final Social socobj=(Social)CMClass.getCommon("DefaultSocial");
 				final String s=getline.substring(0,x).toUpperCase();
 				if(s.length()>0)
-				switch(s.charAt(0))
 				{
-				case 'W':
-					socobj.setSourceCode(CMMsg.MSG_SPEAK);
-					break;
-				case 'M':
-					socobj.setSourceCode(CMMsg.MSG_HANDS);
-					break;
-				case 'S':
-					socobj.setSourceCode(CMMsg.MSG_NOISE);
-					break;
-				case 'O':
-					socobj.setSourceCode(CMMsg.MSG_NOISYMOVEMENT);
-					break;
-				case 'Q':
-					socobj.setSourceCode(CMMsg.MSG_SUBTLEMOVEMENT);
-					break;
-				default:
-					socobj.setSourceCode(CMMsg.MSG_HANDS);
-					break;
+					boolean fail=false;
+					switch(s.charAt(0))
+					{
+					case 'W':
+						socobj.setSourceCode(CMMsg.MSG_SPEAK);
+						break;
+					case 'M':
+						socobj.setSourceCode(CMMsg.MSG_HANDS);
+						break;
+					case 'S':
+						socobj.setSourceCode(CMMsg.MSG_NOISE);
+						break;
+					case 'O':
+						socobj.setSourceCode(CMMsg.MSG_NOISYMOVEMENT);
+						break;
+					case 'Q':
+						socobj.setSourceCode(CMMsg.MSG_SUBTLEMOVEMENT);
+						break;
+					default:
+						fail=true;
+						socobj.setSourceCode(CMMsg.MSG_HANDS);
+						break;
+					}
+					if(fail)
+					{
+						Log.errOut("Socials", "Unknown S code: '"+s.charAt(1)+"' in "+getline);
+						continue;
+					}
 				}
 				if(s.length()>1)
-				switch(s.charAt(1))
 				{
-				case 'T':
-					socobj.setOthersCode(CMMsg.MSG_HANDS);
-					socobj.setTargetCode(CMMsg.MSG_HANDS);
-					break;
-				case 'S':
-					socobj.setOthersCode(CMMsg.MSG_NOISE);
-					socobj.setTargetCode(CMMsg.MSG_NOISE);
-					break;
-				case 'W':
-					socobj.setOthersCode(CMMsg.MSG_SPEAK);
-					socobj.setTargetCode(CMMsg.MSG_SPEAK);
-					break;
-				case 'V':
-					socobj.setOthersCode(CMMsg.MSG_NOISYMOVEMENT);
-					socobj.setTargetCode(CMMsg.MSG_NOISYMOVEMENT);
-					break;
-				case 'O':
-					socobj.setOthersCode(CMMsg.MSG_OK_VISUAL);
-					socobj.setTargetCode(CMMsg.MSG_OK_VISUAL);
-					break;
-				case 'Q':
-					socobj.setOthersCode(CMMsg.MSG_SUBTLEMOVEMENT);
-					socobj.setTargetCode(CMMsg.MSG_SUBTLEMOVEMENT);
-					break;
-				default:
-					socobj.setOthersCode(CMMsg.MSG_NOISYMOVEMENT);
-					socobj.setTargetCode(CMMsg.MSG_NOISYMOVEMENT);
-					break;
+					boolean fail = false;
+					switch(s.charAt(1))
+					{
+					case 'T':
+						socobj.setOthersCode(CMMsg.MSG_HANDS);
+						socobj.setTargetCode(CMMsg.MSG_HANDS);
+						break;
+					case 'S':
+						socobj.setOthersCode(CMMsg.MSG_NOISE);
+						socobj.setTargetCode(CMMsg.MSG_NOISE);
+						break;
+					case 'W':
+						socobj.setOthersCode(CMMsg.MSG_SPEAK);
+						socobj.setTargetCode(CMMsg.MSG_SPEAK);
+						break;
+					case 'V':
+						socobj.setOthersCode(CMMsg.MSG_NOISYMOVEMENT);
+						socobj.setTargetCode(CMMsg.MSG_NOISYMOVEMENT);
+						break;
+					case 'O':
+						socobj.setOthersCode(CMMsg.MSG_OK_VISUAL);
+						socobj.setTargetCode(CMMsg.MSG_OK_VISUAL);
+						break;
+					case 'Q':
+						socobj.setOthersCode(CMMsg.MSG_SUBTLEMOVEMENT);
+						socobj.setTargetCode(CMMsg.MSG_SUBTLEMOVEMENT);
+						break;
+					default:
+						fail = true;
+						socobj.setOthersCode(CMMsg.MSG_NOISYMOVEMENT);
+						socobj.setTargetCode(CMMsg.MSG_NOISYMOVEMENT);
+						break;
+					}
+					if(fail)
+					{
+						Log.errOut("Socials", "Unknown TO code: '"+s.charAt(1)+"' in "+getline);
+						continue;
+					}
 				}
 				getline=getline.substring(x+1);
 				x=getline.indexOf("\t");
@@ -175,11 +194,13 @@ public class Socials extends StdLibrary implements SocialsList
 
 							}
 						}
+						added++;
 						put(socialsMap,socobj.Name(),socobj);
 					}
 				}
 			}
 		}
+		return added;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -497,25 +518,11 @@ public class Socials extends StdLibrary implements SocialsList
 	}
 
 	@Override
-	public boolean modifySocialInterface(final MOB mob, final String socialString)
+	public boolean modifySocialInterface(final MOB mob, final List<Social> socials, String rest)
 		throws IOException
 	{
-		final Vector<String> socialsParse=CMParms.parse(socialString);
-		if(socialsParse.size()==0)
-		{
-			mob.tell(L("Which social?"));
-			return false;
-		}
-		final String name=socialsParse.firstElement().toUpperCase().trim();
-		String rest=socialsParse.size()>1?CMParms.combine(socialsParse,1):"";
-		List<Social> socials=getSocialsSet(socialsParse.firstElement());
-		if(((socials==null)||(socials.size()==0))
-		&&((mob.session()==null)
-			||(!mob.session().confirm(L("The social '@x1' does not exist.  Create it (y/N)? ",name),"N"))))
-			return false;
-		if(socials==null)
-			socials=new Vector<Social>();
 		boolean resaveSocials=true;
+		boolean changesMade=false;
 		while(resaveSocials
 		&&(mob.session()!=null)
 		&&(!mob.session().isStopped()))
@@ -651,9 +658,9 @@ public class Socials extends StdLibrary implements SocialsList
 					if(!pickNewSocial)
 					{
 						soc=makeDefaultSocial(name,newOne);
-						addSocial(soc);
 						if(!socials.contains(soc))
 							socials.add(soc);
+						changesMade=true;
 						resaveSocials=true;
 					}
 				}
@@ -711,7 +718,7 @@ public class Socials extends StdLibrary implements SocialsList
 					showFlag=CMath.s_int(input);
 					if((input!=null)&&(input.equalsIgnoreCase("DELETE")))
 					{
-						delSocial(soc.Name());
+						changesMade=true;
 						socials.remove(soc);
 						mob.session().rawOut(L("\n\rSocial variation '@x1' deleted.\n\r",soc.Name()));
 						showFlag=-1;
@@ -727,14 +734,13 @@ public class Socials extends StdLibrary implements SocialsList
 			}
 			if((resaveSocials)&&(soc!=null))
 			{
-				save(mob);
 				Log.sysOut("Socials",mob.Name()+" modified social "+soc.name()+".");
 				soc=null;
 				if(rest.length()>0)
 					break;
 			}
 		}
-		return true;
+		return changesMade;
 	}
 
 	protected Social fetchSocial(final List<Social> socials, String targetCode, String arg, final boolean exactOnly)
@@ -1038,74 +1044,7 @@ public class Socials extends StdLibrary implements SocialsList
 		for(int v=0;v<V2.size();v++)
 		{
 			final Social socObj=V2.elementAt(v);
-
-			switch(socObj.getSourceCode())
-			{
-			case CMMsg.MSG_SPEAK:
-				buf.append('w');
-				break;
-			case CMMsg.MSG_HANDS:
-				buf.append('m');
-				break;
-			case CMMsg.MSG_NOISE:
-				buf.append('s');
-				break;
-			case CMMsg.MSG_NOISYMOVEMENT:
-				buf.append('o');
-				break;
-			case CMMsg.MSG_QUIETMOVEMENT:
-			case CMMsg.MSG_SUBTLEMOVEMENT:
-				buf.append('q');
-				break;
-			default:
-				buf.append(' ');
-				break;
-			}
-			switch(socObj.getTargetCode())
-			{
-			case CMMsg.MSG_HANDS:
-				buf.append('t');
-				break;
-			case CMMsg.MSG_NOISE:
-				buf.append('s');
-				break;
-			case CMMsg.MSG_SPEAK:
-				buf.append('w');
-				break;
-			case CMMsg.MSG_NOISYMOVEMENT:
-				buf.append('v');
-				break;
-			case CMMsg.MSG_QUIETMOVEMENT:
-			case CMMsg.MSG_SUBTLEMOVEMENT:
-				buf.append('q');
-				break;
-			case CMMsg.MSG_OK_VISUAL:
-				buf.append('o');
-				break;
-			default:
-				buf.append(' ');
-				break;
-			}
-			final String[] stuff=new String[] {
-				socObj.name(),
-				socObj.getSourceMessage(),
-				socObj.getOthersMessage(),
-				socObj.getTargetMessage(),
-				socObj.getFailedTargetMessage(),
-				socObj.getSoundFile(),
-				socObj.getCriteriaZappermask(),
-				CMParms.toListString(socObj.getFlags())
-			};
-			buf.append('\t');
-			for (final String element : stuff)
-			{
-				if(element==null)
-					buf.append("\t");
-				else
-					buf.append(element+"\t");
-			}
-			buf.setCharAt(buf.length()-1,'\r');
-			buf.append('\n');
+			buf.append(socObj.getEncodedLine());
 		}
 		// allowed is forced because this is already protected by SOCIALS security flag
 		if(!new CMFile(filename,whom,CMFile.FLAG_FORCEALLOW).saveText(buf))

@@ -53,6 +53,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	}
 
 	protected final Map<String, List<AbilityComponent>>	abilitiesWithCompsWithTriggers	= new Hashtable<String, List<AbilityComponent>>();
+	protected Map<String,List<Social>> compSocials=new SHashtable<String,List<Social>>();
 
 	protected final boolean isRightMaterial(final long type, final long itemMaterial, final boolean mithrilOK)
 	{
@@ -483,7 +484,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		if(comp.getLocation()==AbilityComponent.CompLocation.TRIGGER)
 		{
 			final Triggerer t = (Triggerer)CMClass.getCommon("DefaultTriggerer");
-			t.addTrigger(t, comp.getTriggererDef(), null);
+			t.addTrigger(t, comp.getTriggererDef(), compSocials, null);
 			if(comp.getCompiledMask()!=null)
 				buf.append("then ");
 			buf.append(t.getTriggerDesc(t));
@@ -549,7 +550,22 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	@Override
 	public String getAbilityComponentDesc(final MOB mob, final String AID)
 	{
-		return getAbilityComponentDesc(mob,getAbilityComponents(AID));
+		final List<AbilityComponent> comp = getAbilityComponents(AID);
+		if((comp != null)&&(comp.size()>0))
+			return getAbilityComponentDesc(mob,comp);
+		final List<Social> soc = this.compSocials.get(AID);
+		if(soc != null)
+		{
+			final StringBuilder buf = new StringBuilder("");
+			for(final Social s : soc)
+			{
+				if(buf.length()>0)
+					buf.append("\n\r");
+				buf.append(s.Name());
+			}
+			return buf.toString();
+		}
+		return "";
 	}
 
 	@Override
@@ -570,7 +586,11 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	{
 		int x=s.indexOf('=');
 		if(x<0)
-			return "Malformed component line (code 0): "+s;
+		{
+			if(CMLib.socials().putSocialsInHash(compSocials, new XArrayList<String>(s)) == 0)
+				return "Malformed component line (code 0): "+s;
+			return null;
+		}
 		final String id=s.substring(0,x).toUpperCase().trim();
 		String parms=s.substring(x+1);
 
@@ -748,6 +768,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		{
 			H=new Hashtable<String,List<AbilityComponent>>();
 			abilitiesWithCompsWithTriggers.clear();
+			compSocials.clear();
 			final StringBuffer buf=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,CMFile.FLAG_LOGERRORS).text();
 			List<String> V=new Vector<String>();
 			if(buf!=null)
@@ -770,6 +791,13 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			Resources.submitResource("COMPONENT_MAP",H);
 		}
 		return H;
+	}
+
+	@Override
+	public Map<String,List<Social>> getComponentSocials()
+	{
+		getAbilityComponentMap();
+		return compSocials;
 	}
 
 	@Override
@@ -884,20 +912,42 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	}
 
 	@Override
+	public List<Social> getSocialsSet(String named)
+	{
+		getAbilityComponentMap();
+		named=named.toUpperCase().trim();
+		final int spdex=named.indexOf(' ');
+		if(spdex>0)
+			named=named.substring(0,spdex);
+		return compSocials.get(named);
+	}
+
+	@Override
 	public void alterAbilityComponentFile(final String compID, final boolean delete)
 	{
 		final CMFile F=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,CMFile.FLAG_LOGERRORS);
+		final boolean isSocial =
+				((compID.length()>2)&&(compID.charAt(2)=='\t'))
+				||compSocials.containsKey(compID.trim().toUpperCase());
 		if(delete)
 		{
-			Resources.findRemoveProperty(F, compID);
-			return;
+			//if it's not a social, you get to use the Resource method
+			if(!isSocial)
+			{
+				Resources.findRemoveProperty(F, compID);
+				return;
+			}
 		}
-		final String parms=getAbilityComponentCodedString(compID);
+		final String parms=isSocial?compID:getAbilityComponentCodedString(compID);
 		final StringBuffer text=F.textUnformatted();
 		boolean lastWasCR=true;
 		boolean addIt=true;
 		int delFromHere=-1;
-		final String upID=compID.toUpperCase();
+		final String upID;
+		if((isSocial)&&(compID.indexOf('\t')>0))
+			upID=compID.toUpperCase()+"\t";
+		else
+			upID=compID.toUpperCase();
 		for(int t=0;t<text.length();t++)
 		{
 			if(text.charAt(t)=='\n')
@@ -912,7 +962,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			if((lastWasCR)&&(delFromHere>=0))
 			{
 				text.delete(delFromHere,t);
-				text.insert(delFromHere,parms+'\n');
+				if(!delete)
+					text.insert(delFromHere,parms+'\n');
 				delFromHere=-1;
 				addIt=false;
 				break;
@@ -920,8 +971,10 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			else
 			if((lastWasCR)&&(Character.toUpperCase(text.charAt(t))==upID.charAt(0)))
 			{
-				if((text.substring(t).toUpperCase().startsWith(upID))
-				&&(text.substring(t+upID.length()).trim().startsWith("=")))
+				if((isSocial && text.substring(3).startsWith(compID))
+				||((!isSocial)
+					&&(text.substring(t).toUpperCase().startsWith(upID))
+					&&((!isSocial)&&text.substring(t+upID.length()).trim().startsWith("="))))
 				{
 					addIt=false;
 					delFromHere=t;
@@ -944,6 +997,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		}
 		F.saveText(text.toString(),false);
 		Resources.removeResource("COMPONENT_MAP");
+		abilitiesWithCompsWithTriggers.clear();
+		compSocials.clear();
 	}
 
 	@Override
@@ -1235,7 +1290,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 							trig = (Triggerer)CMClass.getCommon("DefaultTriggerer");
 							mob.setTriggerer(trig);
 						}
-						trig.addTrigger(AID, comp.getTriggererDef(), null);
+						trig.addTrigger(AID, comp.getTriggererDef(), compSocials, null);
 						return trig;
 					}
 				}
@@ -1275,7 +1330,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 						{
 							if(trig == null)
 								trig = (Triggerer)CMClass.getCommon("DefaultTriggerer");
-							trig.addTrigger(A.ID().toUpperCase().trim(), comp.getTriggererDef(), null);
+							trig.addTrigger(A.ID().toUpperCase().trim(), comp.getTriggererDef(), compSocials, null);
 						}
 					}
 				}

@@ -127,7 +127,7 @@ public class DefaultSocial implements Social
 			return ("Equipment Target "+this.socialArg).toString();
 		return this.socialFullTail;
 	}
-	
+
 	@Override
 	public void setName(final String newName)
 	{
@@ -340,7 +340,6 @@ public class DefaultSocial implements Social
 	{
 		return this.zapperMask != null ? this.zapperMask : "";
 	}
-
 
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical target, final boolean auto)
@@ -705,6 +704,80 @@ public class DefaultSocial implements Social
 	@Override
 	public void setDisplayText(final String str)
 	{
+	}
+
+	@Override
+	public String getEncodedLine()
+	{
+		final StringBuilder buf = new StringBuilder("");
+		switch(getSourceCode())
+		{
+		case CMMsg.MSG_SPEAK:
+			buf.append('w');
+			break;
+		case CMMsg.MSG_HANDS:
+			buf.append('m');
+			break;
+		case CMMsg.MSG_NOISE:
+			buf.append('s');
+			break;
+		case CMMsg.MSG_NOISYMOVEMENT:
+			buf.append('o');
+			break;
+		case CMMsg.MSG_QUIETMOVEMENT:
+		case CMMsg.MSG_SUBTLEMOVEMENT:
+			buf.append('q');
+			break;
+		default:
+			buf.append(' ');
+			break;
+		}
+		switch(getTargetCode())
+		{
+		case CMMsg.MSG_HANDS:
+			buf.append('t');
+			break;
+		case CMMsg.MSG_NOISE:
+			buf.append('s');
+			break;
+		case CMMsg.MSG_SPEAK:
+			buf.append('w');
+			break;
+		case CMMsg.MSG_NOISYMOVEMENT:
+			buf.append('v');
+			break;
+		case CMMsg.MSG_QUIETMOVEMENT:
+		case CMMsg.MSG_SUBTLEMOVEMENT:
+			buf.append('q');
+			break;
+		case CMMsg.MSG_OK_VISUAL:
+			buf.append('o');
+			break;
+		default:
+			buf.append(' ');
+			break;
+		}
+		final String[] stuff=new String[] {
+			name(),
+			getSourceMessage(),
+			getOthersMessage(),
+			getTargetMessage(),
+			getFailedTargetMessage(),
+			getSoundFile(),
+			getCriteriaZappermask(),
+			CMParms.toListString(getFlags())
+		};
+		buf.append('\t');
+		for (final String element : stuff)
+		{
+			if(element==null)
+				buf.append("\t");
+			else
+				buf.append(element+"\t");
+		}
+		buf.setCharAt(buf.length()-1,'\r');
+		buf.append('\n');
+		return buf.toString();
 	}
 
 	@Override

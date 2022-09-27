@@ -15,6 +15,12 @@
             w=window.open("component.cmvp?AUTH=@Authenticate?AUTH@&COMPONENT="+action,
                 "Component for "+action,strFeatures, false);
         }
+	    function Social(action,newsoc)
+	    {
+	        var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=550,alwaysRaised=yes,dependent=yes";
+            w=window.open("social.cmvp?AUTH=@Authenticate?AUTH@&SOCIAL="+action+"&NEWSOCIAL="+newsoc+"&COMPONENT=true",
+                	"Component Social",strFeatures, false);
+	    }
         function Clicked(val)
         {
             document.RESOURCES.action=val;
@@ -58,14 +64,19 @@
     @loop@
     @ComponentNext@
     <TR>
-    <TD><a href="javascript:Component('@ComponentID@')"><FONT COLOR=WHITE>@ComponentID@</FONT></a></TD>
+	    @if?ComponentData?ISSOCIAL@
+		    <TD><FONT COLOR=WHITE><B>Component Social:</B></FONT>&nbsp;
+		    <a href="javascript:Social('@ComponentID@','')"><FONT COLOR=WHITE>@ComponentID@</FONT></a></TD>
+		@else@
+		    <TD><a href="javascript:Component('@ComponentID@')"><FONT COLOR=WHITE>@ComponentID@</FONT></a></TD>
+		@endif@
     <TD COLSPAN=5><FONT COLOR=WHITE>@ComponentData?DESC@</FONT></TD>
     </TR>
     @back@
     <TR>
         <TD COLSPAN=6>
                 <a href="javascript:Component(document.RESOURCES.NEW.options[document.RESOURCES.NEW.selectedIndex].value)">
-                <FONT COLOR=WHITE><B>Create New:</a>
+                <FONT COLOR=WHITE><B>Create New Component:</a>
                 <SELECT NAME=NEW>
                     @AbilityNext?RESET@
                     @loop@
@@ -73,6 +84,14 @@
                         <OPTION VALUE="@AbilityID@">@AbilityID@
                     @back@
                 </SELECT>
+                </B></FONT>
+        </TD>
+    </TR>
+    <TR>
+        <TD COLSPAN=6>
+                <a href="javascript:Social(document.RESOURCES.NEWSOCIAL.value,document.RESOURCES.NEWSOCIAL.value)">
+                <FONT COLOR=WHITE><B>Create New Comp. Social:</a>
+                <INPUT TYPE=TEXT NAME=NEWSOCIAL SIZE=20 VALUE="">
                 </B></FONT>
         </TD>
     </TR>

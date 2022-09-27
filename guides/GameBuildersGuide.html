@@ -2,10 +2,8 @@
 <html><head>
   
   <meta name="generator" content="HTML Tidy, see www.w3.org">
-  <title></title>
-
-  
-</head><body>
+  <title></title></head>
+<body>
 <center>
 <table border="1" bordercolor="gray" cellpadding="10" cellspacing="0" width="90%">
   <tbody>
@@ -1277,14 +1275,20 @@ see when they enter HELP ABILITYNAME.</td>
 Spells, etc..)</font></a></strong>
       <p>A Component in this
 context
-refers to an item or items that a player must have or have access to in
+refers to an item/items or process that a player must have or do in
 order to use a particular skill, cast a particular spell, prayer, song,
-etc. &nbsp;Components are required only at the time the skill or
+etc. &nbsp;</p><p>Material components are required only at the time the skill or
 spell in invoked, and may be consumed or not by the invocation.
 &nbsp;An example of this would be cloth for the bandaging skills, a
-forge for the blacksmithing skill, or sand for the sleep spell.</p>
-      <p>From the command line,
-skill components can be created using the CREATE command:</p>
+forge for the blacksmithing skill, or sand for the sleep spell.</p><p>Process/Ritual
+components are a series of tasks that must be performed in order to
+invoke a skill or spell. &nbsp;An example would be saying some magic
+words, then waving your hands, then pointing at a target.</p><p>Material
+and Process components can be separate, or combined into a single and
+very complex set of spell casting requirements. &nbsp;Components can
+then have a ZapperMask to define which players/mobs&nbsp; the
+requirements apply to.</p>
+      <p>From the command line, all&nbsp; kinds of skill components can be created using the CREATE command:</p>
       <p><b>CREATE
 COMPONENT Skill_Sleep</b></p>
       <p>You can also modify the
@@ -1322,15 +1326,14 @@ say OR. &nbsp;On the command line, enter X to delete the entire
 component.</td>
           </tr>
           <tr>
-            <td><em>Component
-Position</em></td>
+            <td><em>Location / Position</em></td>
             <td>this is where the
 item must be
-in order to be used as a component. &nbsp;This value can be
+in order to be used as a component, or if this component is actually a process/ritual/trigger. &nbsp;This value can be
 'inventory' for the players inventory, 'onground' to be on the ground
 in the same room as the player, 'held' to require it be in the players
 held position, 'worn' to require it be worn, or nearby for an item in a
-nearby container.</td>
+nearby container. &nbsp;Select Trigger to make this a ritual or process.</td>
           </tr>
           <tr>
             <td><em>Component
@@ -1366,12 +1369,15 @@ type
 of required material or resource item. </td>
           </tr>
           <tr>
-            <td><em>Component
+            <td><em>Component / Zapper
 Mask</em></td>
             <td>a zapper mask (see
 help on zapper masks) to filter in what kind of player this component
 applies to.</td>
-          </tr>
+          </tr><tr><td><span style="font-style: italic;">Trigger Ritual</span></td><td>if
+Location/Position is set to trigger, this is where you would put the
+complete ritual definition. &nbsp;See help on 'rituals' or look up
+Deity Rituals in the Archon's Guide for more information on this syntax.</td></tr>
         </tbody>
       </table>
       <p>If you no longer want a
@@ -1379,7 +1385,14 @@ skill to require a component, you can always just obliterate it with
 the DESTROY command:</p>
       <p><b>DESTROY
 COMPONENT Skill_Sleep</b></p>
-      <p>Of course, all this can
+      <p>Now,
+because Trigger rituals can incorporate Socials into them, and because
+it may be common for very specific spell-casting socials to be unique
+only to components, the Components system also allows you to define a
+series of Socials which are available ONLY if the player/mob has access
+to a Component which is a Trigger Ritual which uses one of those
+special socials. &nbsp;These are created, etc by using <b>CREATE
+COMPONENT SOCIAL Handwave, MODIFY COMPONENT SOCIAL Fingertwiddle, DESTROY COMPONENT SOCIAL Invoke, etc.</b></p><p>Of course, all this can
 also be done from the MUDGrinder Components editor.</p>
       <p><br>
       <strong><a name="allqualifys"><font color="blue"><font size="5">All-Qualify

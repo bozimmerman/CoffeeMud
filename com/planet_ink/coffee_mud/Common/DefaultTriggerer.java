@@ -43,6 +43,7 @@ public class DefaultTriggerer implements Triggerer
 	protected Set<String>				ignoreOf	= new LimitedTreeSet<String>();
 	protected String					holyName	= "Unknown";
 	protected int						version		= 0;
+	protected Map<String,List<Social>>	socialsMap	= new Hashtable<String,List<Social>>();
 
 	private final static Object[]	trackingNothing	= new Object[0];
 	private final static MOB[]		trackingNoone	= new MOB[0];
@@ -111,6 +112,8 @@ public class DefaultTriggerer implements Triggerer
 		public TriggerCode	triggerCode	= TriggerCode.SAY;
 		public String		parm1		= null;
 		public String		parm2		= null;
+		public Social		soc			= null;
+		public Social		socT		= null;
 		public int			cmmsgCode	= -1;
 		public Trigger		orConnect	= null;
 		public boolean		addArgs		= false;
@@ -223,7 +226,7 @@ public class DefaultTriggerer implements Triggerer
 	}
 
 	@Override
-	public void addTrigger(final Object key, String trigger, final List<String> errors)
+	public void addTrigger(final Object key, String trigger, final Map<String, List<Social>> socials, final List<String> errors)
 	{
 		trigger=trigger.toUpperCase().trim();
 		if(DefaultTriggerer.ritualCache.containsKey(trigger))
@@ -364,16 +367,37 @@ public class DefaultTriggerer implements Triggerer
 							Social soc = null;
 							if(DT.parm2.equals("*"))
 							{
-								final List<Social> lst = CMLib.socials().getSocialsSet(DT.parm1);
+								List<Social> lst = socials.get(DT.parm1);
+								if((lst == null)||(lst.size()==0))
+									lst = CMLib.socials().getSocialsSet(DT.parm1);
 								if((lst != null)&&(lst.size()>0))
-									soc = lst.get(0);
+								{
+									for(final Social S : lst)
+									{
+										if(S.name().equalsIgnoreCase(S.baseName()))
+											soc = S;
+										else
+										if(S.targetName().equalsIgnoreCase("<T-NAME>"))
+											DT.socT = S;
+									}
+									if(soc == null)
+										soc = lst.get(0);
+								}
 							}
 							if(soc == null)
-								soc = CMLib.socials().fetchSocial((DT.parm1+" "+DT.parm2).trim(),true);
+							{
+								soc = CMLib.socials().fetchSocialFromSet(socials,CMParms.parse((DT.parm1+" "+DT.parm2).trim()),true,true);
+								if(soc == null)
+									soc = CMLib.socials().fetchSocial((DT.parm1+" "+DT.parm2).trim(),true);
+							}
 							if(soc == null)
 							{
 								if(DT.parm2.length()>0)
-									soc = CMLib.socials().fetchSocial(DT.parm1+" <T-NAME> "+DT.parm2,true);
+								{
+									soc = CMLib.socials().fetchSocialFromSet(socials,new XArrayList<String>(DT.parm1,"<T-NAME>",DT.parm2),true,true);
+									if(soc == null)
+										soc = CMLib.socials().fetchSocial(DT.parm1+" <T-NAME> "+DT.parm2,true);
+								}
 								if(soc == null)
 								{
 									Log.errOut(name(),"Illegal social in: "+trig);
@@ -381,6 +405,9 @@ public class DefaultTriggerer implements Triggerer
 									break;
 								}
 							}
+							if(socials.containsKey(soc.baseName()))
+								socialsMap.put(soc.baseName(), socials.get(soc.baseName()));
+							DT.soc = soc;
 							break;
 						}
 						case BURNTHING:
@@ -696,23 +723,13 @@ public class DefaultTriggerer implements Triggerer
 					break;
 				case SOCIAL:
 				{
-					if(DT.parm2.equals("*"))
-					{
-						final List<Social> lst = CMLib.socials().getSocialsSet(DT.parm1);
-						if((lst != null)&&(lst.size()>0))
-						{
-							final Social soc = lst.get(0);
-							buf.append(L("the player should @x1",soc.baseName().toLowerCase()));
-							break;
-						}
-					}
-					Social soc = CMLib.socials().fetchSocial((DT.parm1+" "+DT.parm2).trim(),true);
-					if((soc == null)&&(DT.parm2.length()>0))
-						soc = CMLib.socials().fetchSocial((DT.parm1+" <T-NAME> "+DT.parm2).trim(),true);
-					if(soc == null)
+					if(DT.soc == null)
 						buf.append(L("the player should do the impossible"));
 					else
-						buf.append(L("the player should @x1",(soc.baseName().toLowerCase()+" "+soc.getTargetDesc()).trim()));
+					if(DT.parm2.equals("*"))
+						buf.append(L("the player should @x1",DT.soc.baseName().toLowerCase()));
+					else
+						buf.append(L("the player should @x1",(DT.soc.baseName().toLowerCase()+" "+DT.soc.getTargetDesc()).trim()));
 					break;
 				}
 				case TIME:
@@ -933,25 +950,12 @@ public class DefaultTriggerer implements Triggerer
 			Social soc;
 			if(DT.parm2.equals("*"))
 			{
-				soc = null;
-				if(mob.getVictim()!=null)
-					soc = CMLib.socials().fetchSocial(DT.parm1+" <T-NAME>",true);
+				soc = (mob.getVictim()!=null) ? DT.socT : null;
 				if(soc == null)
-					soc = CMLib.socials().fetchSocial(DT.parm1,true);
-				if(soc == null)
-				{
-					final List<Social> lst = CMLib.socials().getSocialsSet(DT.parm1);
-					if((lst != null)&&(lst.size()>0))
-						soc = lst.get(0);
-				}
+					soc = DT.soc;
 			}
 			else
-			if(DT.parm2.length()==0)
-				soc = CMLib.socials().fetchSocial(DT.parm1,true);
-			else
-				soc = CMLib.socials().fetchSocial(DT.parm1+" "+DT.parm2,true);
-			if((soc == null)&&(DT.parm2.length()>0))
-				soc = CMLib.socials().fetchSocial(DT.parm1+" <T-NAME> "+DT.parm2,true);
+				soc = DT.soc;
 			if(soc != null)
 			{
 				final MOB target;
@@ -1344,11 +1348,10 @@ public class DefaultTriggerer implements Triggerer
 					break;
 				case SOCIAL:
 					if((msg.tool() instanceof Social)
-					&&(((Social)msg.tool()).baseName().equals(DT.parm1)))
+					&&(DT.soc != null)
+					&&(((Social)msg.tool()).baseName().equals(DT.soc.baseName())))
 					{
-						if((msg.tool().Name().equals((DT.parm1+" "+DT.parm2).trim())
-						||(DT.parm2.equals("*"))
-						||((DT.parm2.length()>0)&&(msg.tool().Name().equalsIgnoreCase((DT.parm1+" <T-NAME> "+DT.parm2).trim())))))
+						if((msg.tool() == DT.soc)||(DT.parm2.equals("*")))
 						{
 							if(DT.addArgs && (msg.target()!=null))
 								state.args().add(targName(msg.target()));
@@ -1610,6 +1613,12 @@ public class DefaultTriggerer implements Triggerer
 	}
 
 	@Override
+	public Social fetchSocial(final List<String> commands, final boolean exactOnly, final boolean checkItemTargets)
+	{
+		return CMLib.socials().fetchSocialFromSet(socialsMap, commands, exactOnly, checkItemTargets);
+	}
+
+	@Override
 	public CMObject copyOf()
 	{
 		final DefaultTriggerer me;
@@ -1619,6 +1628,8 @@ public class DefaultTriggerer implements Triggerer
 			me.trackers	= new Hashtable<String, TrigTracker>();
 			me.rituals = new SHashtable<Object, Trigger[]>();
 			me.rituals.putAll(rituals);
+			me.socialsMap = new SHashtable<String,List<Social>>();
+			me.socialsMap.putAll(socialsMap);
 			me.waitingFor = new SLinkedList<TrigState>();
 			me.ignoreOf	= new LimitedTreeSet<String>();
 		}

@@ -97,9 +97,11 @@ public interface Triggerer extends CMCommon
 	 *
 	 * @param key the arbitrary but unique key object
 	 * @param encodedTrigger the encoded trigger steps
+	 * @param socials null, or list of custom socials that might apply to this trigger
 	 * @param errors null, or a list to put errors into
 	 */
-	public void addTrigger(final Object key, final String encodedTrigger, final List<String> errors);
+	public void addTrigger(final Object key, final String encodedTrigger,
+						   final Map<String, List<Social>> socials, final List<String> errors);
 
 	/**
 	 * Returns whether a trigger with the given key is being tracked here.
@@ -248,6 +250,17 @@ public interface Triggerer extends CMCommon
 	 * @return the set of players whose triggers need pinging
 	 */
 	public MOB[] whosDoneWaiting();
+
+	/**
+	 * Given a parsed user command line entry, this will search the trigger internal
+	 * socials for a likely social object match, and return it.
+	 *
+	 * @param commands the parsed user command line
+	 * @param exactOnly true for exact base name match only
+	 * @param checkItemTargets true to consider I-NAME target socials
+	 * @return null, or the found social.
+	 */
+	public Social fetchSocial(List<String> commands, boolean exactOnly, boolean checkItemTargets);
 
 	/**
 	 * Returns the trigger keys for any triggers that the given

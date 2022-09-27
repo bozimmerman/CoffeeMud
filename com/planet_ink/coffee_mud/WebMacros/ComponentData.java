@@ -55,7 +55,11 @@ public class ComponentData extends StdWebMacro
 		final StringBuilder str=new StringBuilder("");
 		if(parms.containsKey("DESC"))
 		{
-			str.append(CMLib.ableComponents().getAbilityComponentDesc(null, last));
+			str.append(super.helpHelp(CMLib.ableComponents().getAbilityComponentDesc(null, last)));
+		}
+		if(parms.containsKey("ISSOCIAL"))
+		{
+			return ""+(CMLib.ableComponents().getSocialsSet(last)!=null);
 		}
 		String strstr=str.toString();
 		if(strstr.endsWith(", "))

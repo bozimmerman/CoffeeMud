@@ -571,6 +571,14 @@
 					    @endif@
 					    @AddRequestParameter?TEMPLOC=@@ComponentPieceData?LOCATION@@ @
 					    <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
+					        <TR>
+					            <TD WIDTH=25%><FONT COLOR=YELLOW>Location: </FONT></TD>
+					            <TD WIDTH=75%>
+					                <SELECT NAME="@ComponentID@_PIECE_LOCATION_@ComponentPieceID@">
+					                @ComponentPieceData?LOCATIONEDIT@
+					                </SELECT>
+					            </TD>
+					        </TR>
 						    @if?CheckReqParm?!TEMPLOC=Trigger@
 						        <TR>
 						            <TD WIDTH=25%><FONT COLOR=YELLOW>Amount: </FONT></TD>
@@ -592,14 +600,6 @@
 						            </TD>
 						        </TR>
 						    @endif@
-					        <TR>
-					            <TD WIDTH=25%><FONT COLOR=YELLOW>Location: </FONT></TD>
-					            <TD WIDTH=75%>
-					                <SELECT NAME="@ComponentID@_PIECE_LOCATION_@ComponentPieceID@">
-					                @ComponentPieceData?LOCATIONEDIT@
-					                </SELECT>
-					            </TD>
-					        </TR>
 						    @if?CheckReqParm?!TEMPLOC=Trigger@
 					            <TD WIDTH=25%>
 					            	<FONT COLOR=YELLOW>Trigger Ritual: </FONT>

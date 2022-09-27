@@ -26,7 +26,13 @@
         alert(v);
     else
     if(alert)
-        alert('Social created/modified.');
+    {
+        @if?CheckReqParm?COMPONENT=true@
+            alert('Social created/modified.');
+        @else@
+	        alert('Component Social created/modified.');
+        @endif@
+    }
     opener.Refresh();
     window.close();
 @endif@
