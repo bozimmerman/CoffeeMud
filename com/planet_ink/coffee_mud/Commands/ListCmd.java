@@ -3696,7 +3696,7 @@ public class ListCmd extends StdCommand
 
 	public String listComponents(final Session viewerS)
 	{
-		final StringBuilder buf=new StringBuilder("^xAll Defined Spells and required components: ^N\n\r");
+		final StringBuilder buf=new StringBuilder("^xAbility IDs and their required components: ^N\n\r");
 		for(final String ID : CMLib.ableComponents().getAbilityComponentMap().keySet())
 		{
 			final List<AbilityComponent> DV=CMLib.ableComponents().getAbilityComponentMap().get(ID);
@@ -3705,6 +3705,17 @@ public class ListCmd extends StdCommand
 				final String s= CMLib.ableComponents().getAbilityComponentDesc(null,ID);
 				for(final String s1 : s.split("\n"))
 					buf.append(CMStrings.padRight(ID,20)+": "+s1.trim()+"\n\r");
+			}
+		}
+		buf.append("\n\r^xSpecial component socials: ^N\n\r");
+		if(CMLib.ableComponents().getComponentSocials().size()==0)
+			buf.append("   None.\n\r");
+		else
+		{
+			for(final String socialID : CMLib.ableComponents().getComponentSocials().keySet())
+			{
+				for(final Social soc : CMLib.ableComponents().getComponentSocials().get(socialID))
+					buf.append(CMStrings.padRight(soc.name(),20)+": "+soc.getSourceMessage()+"\n\r");
 			}
 		}
 		if(buf.length()==0)

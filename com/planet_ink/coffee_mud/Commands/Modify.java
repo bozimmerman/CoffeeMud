@@ -1678,8 +1678,42 @@ public class Modify extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell(L("You have failed to specify the proper fields.\n\rFormat: MODIFY COMPONENT [SKILL ID]\n\r"));
+			mob.tell(L("You have failed to specify the proper fields.\n\r"
+					+ "Format: MODIFY COMPONENT [SKILL ID]\n\r"
+					+ "Format: MODIFY COMPONENT SOCIAL [SOCIAL ID]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		if(commands.get(2).equalsIgnoreCase("SOCIAL"))
+		{
+			final String socialID=CMParms.combine(commands,3);
+			final Vector<String> socialsParse=CMParms.parse(socialID);
+			if(socialsParse.size()==0)
+			{
+				mob.tell(L("Which social? That doesn't exist.  Try LIST COMPONENTS"));
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
+				return;
+			}
+			final String name=socialsParse.firstElement().toUpperCase().trim();
+			final String rest=socialsParse.size()>1?CMParms.combine(socialsParse,1):"";
+			final List<Social> socials=CMLib.ableComponents().getSocialsSet(name);
+			if((socials==null)||(socials.size()==0))
+			{
+				mob.tell(L("'@x1' does not exist, try LIST COMPONENTS.",socialID));
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+				return;
+			}
+			final List<Social> copy = new XArrayList<Social>(socials);
+			CMLib.socials().modifySocialInterface(mob, socials, rest);
+			for(final Social copyS : copy)
+				if(!socials.contains(copyS))
+					CMLib.ableComponents().alterAbilityComponentFile(copyS.getEncodedLine().trim(), true);
+			for(final Social newS : socials)
+			{
+				if(!socials.contains(newS))
+					CMLib.ableComponents().alterAbilityComponentFile(newS.getEncodedLine().trim(), false);
+			}
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The complication of skill usage just increased!"));
 			return;
 		}
 		String skillID=CMParms.combine(commands,2);

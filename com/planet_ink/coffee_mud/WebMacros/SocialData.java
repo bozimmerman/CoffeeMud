@@ -327,7 +327,7 @@ public class SocialData extends StdWebMacro
 				if(isCompSocial)
 				{
 					for(final Social S : OSV)
-						CMLib.ableComponents().alterAbilityComponentFile(S.Name(),true);
+						CMLib.ableComponents().alterAbilityComponentFile(S.getEncodedLine().trim(),true);
 				}
 				else
 				{
@@ -339,7 +339,7 @@ public class SocialData extends StdWebMacro
 			if(isCompSocial)
 			{
 				for(final Social S : SV)
-					CMLib.ableComponents().alterAbilityComponentFile(S.getEncodedLine(),false);
+					CMLib.ableComponents().alterAbilityComponentFile(S.getEncodedLine().trim(),false);
 			}
 			else
 			{

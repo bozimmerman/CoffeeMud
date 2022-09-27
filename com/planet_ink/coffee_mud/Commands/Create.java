@@ -1055,6 +1055,8 @@ public class Create extends StdCommand
 				if(!socials.contains(newS))
 					CMLib.ableComponents().alterAbilityComponentFile(newS.getEncodedLine().trim(), false);
 			}
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The complication of skill usage just increased!"));
+			return;
 		}
 		String skillID=CMParms.combine(commands,2);
 		final Ability A=CMClass.getAbility(skillID);

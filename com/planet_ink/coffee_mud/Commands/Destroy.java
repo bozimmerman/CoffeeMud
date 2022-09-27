@@ -814,11 +814,34 @@ public class Destroy extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is DESTROY COMPONENT [SKILL ID]\n\r"));
+			mob.tell(L("You have failed to specify the proper fields.\n\r"
+					+ "The format: DESTROY COMPONENT [SKILL ID]\n\r"
+					+ "The format: DESTROY COMPONENT SOCIAL [SOCIAL ID]\n\r"
+					));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
-
+		if(commands.get(2).equalsIgnoreCase("SOCIAL"))
+		{
+			final String classID=CMParms.combine(commands,3);
+			final List<Social> socials=CMLib.ableComponents().getSocialsSet(classID);
+			Social soc=null;
+			if((socials!=null)&&(socials.size()>0))
+			{
+				final Map<String,List<Social>> allsoc = new HashMap<String,List<Social>>();
+				allsoc.put(socials.get(0).baseName(), socials);
+				soc = CMLib.socials().fetchSocialFromSet(allsoc, CMParms.parse(classID), true, true);
+			}
+			if(soc == null)
+			{
+				mob.tell(L("'@x1' does not exist, try LIST COMPONENTS.",classID));
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+				return false;
+			}
+			CMLib.ableComponents().alterAbilityComponentFile(soc.getEncodedLine().trim(),true);
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The complication of skill usage just decreased!"));
+			return true;
+		}
 		final String classID=CMParms.combine(commands,2);
 		if(CMLib.ableComponents().getAbilityComponentMap().get(classID.toUpperCase())==null)
 		{
