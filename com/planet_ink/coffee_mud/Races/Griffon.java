@@ -69,13 +69,13 @@ public class Griffon extends GreatBird
 	@Override
 	public int lightestWeight()
 	{
-		return 160;
+		return 440;
 	}
 
 	@Override
 	public int weightVariance()
 	{
-		return 80;
+		return 120;
 	}
 
 	@Override
