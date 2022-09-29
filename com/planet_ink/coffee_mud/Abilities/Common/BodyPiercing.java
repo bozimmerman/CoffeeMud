@@ -165,6 +165,8 @@ public class BodyPiercing extends CommonSkill
 		final MOB target=super.getTarget(mob,new XVector<String>(name),givenTarget);
 		if(target==null)
 			return false;
+		if((!auto)&&(CMLib.flags().isSleeping(target)))
+			CMLib.commands().postStand(target, true, true);
 		if((target.isMonster())
 		&&(CMLib.flags().isAliveAwakeMobile(target,true))
 		&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))

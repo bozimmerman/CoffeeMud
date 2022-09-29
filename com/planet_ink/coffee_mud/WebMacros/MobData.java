@@ -1436,7 +1436,7 @@ public class MobData extends StdWebMacro
 					for(int r=0;r<Rideable.Basis.values().length;r++)
 					{
 						str.append("<OPTION VALUE=\""+r+"\"");
-						if(r==CMath.s_int(old))
+						if((r==CMath.s_int(old))||(Rideable.Basis.values()[r].toString().equals(old)))
 							str.append(" SELECTED");
 						str.append(">"+Rideable.Basis.values()[r].toString());
 					}
