@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftParms;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.EnhancedExpertise;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.CraftedItem;
 import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.CraftorType;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -93,6 +94,8 @@ public class GlassBlowing extends EnhancedCraftingSkill implements ItemCraftor
 	protected static final int	RCP_CAPACITY	= 7;
 	protected static final int	RCP_SPELL		= 8;
 
+	protected DoorKey key=null;
+
 	@Override
 	public List<List<String>> fetchMyRecipes(final MOB mob)
 	{
@@ -162,9 +165,16 @@ public class GlassBlowing extends EnhancedCraftingSkill implements ItemCraftor
 					{
 						dropAWinner(mob,buildingI);
 						CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, 1, this, buildingI);
+						if(key!=null)
+						{
+							dropAWinner(mob,key);
+							if(buildingI instanceof Container)
+								key.setContainer((Container)buildingI);
+						}
 					}
 				}
 				buildingI=null;
+				key=null;
 			}
 		}
 		super.unInvoke();
@@ -349,6 +359,7 @@ public class GlassBlowing extends EnhancedCraftingSkill implements ItemCraftor
 			return false;
 		activity = CraftingActivity.CRAFTING;
 		buildingI=null;
+		key=null;
 		messedUp=false;
 		int amount=-1;
 		if((commands.size()>1)&&(CMath.isNumber(commands.get(commands.size()-1))))
@@ -478,6 +489,7 @@ public class GlassBlowing extends EnhancedCraftingSkill implements ItemCraftor
 		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
 		buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 		setBrand(mob, buildingI);
+		key=null;
 		final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 		final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 		addSpellsOrBehaviors(buildingI,spell,deadMats.getLostProps(),deadComps.getLostProps());
@@ -535,6 +547,14 @@ public class GlassBlowing extends EnhancedCraftingSkill implements ItemCraftor
 			{
 				((Container)buildingI).setDoorsNLocks(true,false,true,true,false,true);
 				((Container)buildingI).setKeyName(Double.toString(Math.random()));
+				key=(DoorKey)CMClass.getItem("GenKey");
+				key.setKey(((Container)buildingI).keyName());
+				key.setName(L("a key"));
+				key.setDisplayText(L("a small key sits here"));
+				key.setDescription(L("looks like a key to @x1",buildingI.name()));
+				key.recoverPhyStats();
+				setBrand(mob, key);
+				key.text();
 			}
 			if(!(buildingI instanceof Armor))
 				((Container)buildingI).setContainTypes(getContainerType(misctype));
@@ -578,7 +598,7 @@ public class GlassBlowing extends EnhancedCraftingSkill implements ItemCraftor
 
 		if(autoGenerate>0)
 		{
-			crafted.add(new CraftedItem(buildingI,null,duration));
+			crafted.add(new CraftedItem(buildingI,key,duration));
 			return true;
 		}
 
