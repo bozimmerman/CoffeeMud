@@ -1903,16 +1903,18 @@ public class RoomLoader
 		statements.add(new DBPreparedBatchEntry("DELETE FROM CMROEX WHERE CMROID='"+room.roomID()+"'"));
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			Exit thisExit=room.getRawExit(d);
-			Room thisRoom=room.rawDoors()[d];
+			Exit linkE=room.getRawExit(d);
+			Room linkR=room.rawDoors()[d];
 
-			if((thisExit!=null)&&(!thisExit.isSavable()))
-				thisExit=null;
-			if((thisRoom!=null)&&(!thisRoom.isSavable()))
-				thisRoom=null;
-			if((thisRoom!=null)||(thisExit!=null))
+			if((linkE!=null)&&(!linkE.isSavable()))
+				linkE=null;
+			if((linkR!=null)
+			&&(!linkR.isSavable())
+			&&(!linkR.ID().equals("ThinRoom")))
+				linkR=null;
+			if((linkR!=null)||(linkE!=null))
 			{
-				CMLib.map().registerWorldObjectLoaded(room.getArea(), room, thisExit);
+				CMLib.map().registerWorldObjectLoaded(room.getArea(), room, linkE);
 				final String fullSQL ="INSERT INTO CMROEX ("
 						+"CMROID, "
 						+"CMDIRE, "
@@ -1922,10 +1924,10 @@ public class RoomLoader
 						+") values ("
 						+"'"+room.roomID()+"',"
 						+d+","
-						+"'"+((thisExit==null)?" ":thisExit.ID())+"',"
+						+"'"+((linkE==null)?" ":linkE.ID())+"',"
 						+"?,"
-						+"'"+((thisRoom==null)?" ":thisRoom.roomID())+"')";
-				final String exitText = (thisExit==null)?" ":thisExit.text();
+						+"'"+((linkR==null)?" ":linkR.roomID())+"')";
+				final String exitText = (linkE==null)?" ":linkE.text();
 				if(!useBulkInserts)
 					statements.add(new DBPreparedBatchEntry(fullSQL,exitText));
 				else

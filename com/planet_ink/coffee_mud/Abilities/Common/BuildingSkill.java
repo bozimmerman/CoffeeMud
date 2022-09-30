@@ -727,11 +727,12 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			room.setRawExit(dir,X);
 			if(room.rawDoors()[dir]!=null)
 			{
+				final Room oroom = room.rawDoors()[dir].prepareRoomInDir(room, dir);
 				final Exit X2=(Exit)X.copyOf();
 				X2.recoverPhyStats();
 				X2.text();
-				room.rawDoors()[dir].setRawExit(Directions.getOpDirectionCode(dir),X2);
-				CMLib.database().DBUpdateExits(room.rawDoors()[dir]);
+				oroom.setRawExit(Directions.getOpDirectionCode(dir),X2);
+				CMLib.database().DBUpdateExits(oroom);
 			}
 			CMLib.database().DBUpdateExits(room);
 		}
@@ -913,8 +914,9 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			room.setRawExit(dir,null);
 			if(room.rawDoors()[dir]!=null)
 			{
-				room.rawDoors()[dir].setRawExit(Directions.getOpDirectionCode(dir),null);
-				CMLib.database().DBUpdateExits(room.rawDoors()[dir]);
+				final Room oroom = room.rawDoors()[dir].prepareRoomInDir(room, dir);
+				oroom.setRawExit(Directions.getOpDirectionCode(dir),null);
+				CMLib.database().DBUpdateExits(oroom);
 			}
 			CMLib.database().DBUpdateExits(room);
 			final LandTitle title=CMLib.law().getLandTitle(room);

@@ -87,87 +87,89 @@ public class GrinderExits
 				if(old==null)
 					old="";
 				if(X.isGeneric()||(!generic))
-				switch(o)
 				{
-				case 0: // name
-					X.setName(old);
-					break;
-				case 1: // classes
-					break;
-				case 2: // displaytext
-					X.setDisplayText(old);
-					break;
-				case 3: // description
-					X.setDescription(old);
-					break;
-				case 4: // level
-					X.basePhyStats().setLevel(CMath.s_int(old));
-					break;
-				case 5: // levelrestricted;
-					break;
-				case 6: // istrapped
-					break;
-				case 7: // hasadoor
-					if(old.equals("on"))
-						X.setDoorsNLocks(true,!X.defaultsClosed(),X.defaultsClosed(),X.hasALock(),X.hasALock(),X.defaultsLocked());
-					else
-						X.setDoorsNLocks(false,true,false,false,false,false);
-					break;
-				case 8: // closedtext
-					X.setExitParams(X.doorName(),X.closeWord(),X.openWord(),old);
-					break;
-				case 9: // defaultsclosed
-					X.setDoorsNLocks(X.hasADoor(),X.isOpen(),old.equals("on"),X.hasALock(),X.isLocked(),X.defaultsLocked());
-					break;
-				case 10: // openword
-					X.setExitParams(X.doorName(),X.closeWord(),old,X.closedText());
-					break;
-				case 11: // closeword
-					X.setExitParams(X.doorName(),old,X.openWord(),X.closedText());
-					break;
-				case 12: // hasalock
-					if(old.equals("on"))
-						X.setDoorsNLocks(true,!X.defaultsClosed(),X.defaultsClosed(),true,X.defaultsLocked(),X.defaultsLocked());
-					else
-						X.setDoorsNLocks(X.hasADoor(),X.isOpen(),X.defaultsClosed(),false,false,false);
-					break;
-				case 13: // defaultslocked
-					X.setDoorsNLocks(X.hasADoor(),X.isOpen(),X.defaultsClosed(),X.hasALock(),X.isLocked(),old.equals("on"));
-					break;
-				case 14: // keyname
-					if(X.hasALock()&&(old.length()>0))
-						X.setKeyName(old);
-					break;
-				case 15: // isreadable
-					X.setReadable(old.equals("on"));
-					break;
-				case 16: // readable text
-					if(X.isReadable())
-						X.setReadableText(old);
-					break;
-				case 17: // isclassrestricuted
-					break;
-				case 18: // restrictedclasses
-					break;
-				case 19: // isalignmentrestricuted
-					break;
-				case 20: // restrictedalignments
-					break;
-				case 21: // misctext
-					if(!X.isGeneric())
-						X.setMiscText(old);
-					break;
-				case 22: // is generic
-					break;
-				case 23: // door name
-					X.setExitParams(old,X.closeWord(),X.openWord(),X.closedText());
-					break;
-				case 24: // image
-					X.setImage(old);
-					break;
-				case 25:
-					X.setOpenDelayTicks(CMath.s_int(old));
-					break;
+					switch(o)
+					{
+					case 0: // name
+						X.setName(old);
+						break;
+					case 1: // classes
+						break;
+					case 2: // displaytext
+						X.setDisplayText(old);
+						break;
+					case 3: // description
+						X.setDescription(old);
+						break;
+					case 4: // level
+						X.basePhyStats().setLevel(CMath.s_int(old));
+						break;
+					case 5: // levelrestricted;
+						break;
+					case 6: // istrapped
+						break;
+					case 7: // hasadoor
+						if(old.equals("on"))
+							X.setDoorsNLocks(true,!X.defaultsClosed(),X.defaultsClosed(),X.hasALock(),X.hasALock(),X.defaultsLocked());
+						else
+							X.setDoorsNLocks(false,true,false,false,false,false);
+						break;
+					case 8: // closedtext
+						X.setExitParams(X.doorName(),X.closeWord(),X.openWord(),old);
+						break;
+					case 9: // defaultsclosed
+						X.setDoorsNLocks(X.hasADoor(),X.isOpen(),old.equals("on"),X.hasALock(),X.isLocked(),X.defaultsLocked());
+						break;
+					case 10: // openword
+						X.setExitParams(X.doorName(),X.closeWord(),old,X.closedText());
+						break;
+					case 11: // closeword
+						X.setExitParams(X.doorName(),old,X.openWord(),X.closedText());
+						break;
+					case 12: // hasalock
+						if(old.equals("on"))
+							X.setDoorsNLocks(true,!X.defaultsClosed(),X.defaultsClosed(),true,X.defaultsLocked(),X.defaultsLocked());
+						else
+							X.setDoorsNLocks(X.hasADoor(),X.isOpen(),X.defaultsClosed(),false,false,false);
+						break;
+					case 13: // defaultslocked
+						X.setDoorsNLocks(X.hasADoor(),X.isOpen(),X.defaultsClosed(),X.hasALock(),X.isLocked(),old.equals("on"));
+						break;
+					case 14: // keyname
+						if(X.hasALock()&&(old.length()>0))
+							X.setKeyName(old);
+						break;
+					case 15: // isreadable
+						X.setReadable(old.equals("on"));
+						break;
+					case 16: // readable text
+						if(X.isReadable())
+							X.setReadableText(old);
+						break;
+					case 17: // isclassrestricuted
+						break;
+					case 18: // restrictedclasses
+						break;
+					case 19: // isalignmentrestricuted
+						break;
+					case 20: // restrictedalignments
+						break;
+					case 21: // misctext
+						if(!X.isGeneric())
+							X.setMiscText(old);
+						break;
+					case 22: // is generic
+						break;
+					case 23: // door name
+						X.setExitParams(old,X.closeWord(),X.openWord(),X.closedText());
+						break;
+					case 24: // image
+						X.setImage(old);
+						break;
+					case 25:
+						X.setOpenDelayTicks(CMath.s_int(old));
+						break;
+					}
 				}
 			}
 
