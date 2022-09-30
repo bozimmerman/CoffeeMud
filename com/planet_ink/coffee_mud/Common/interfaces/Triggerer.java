@@ -47,37 +47,46 @@ public interface Triggerer extends CMCommon
 	 * Most of these require a parameter of one sort or another,
 	 * depending on the code.  The command phrases
 	 * are separated by &amp; (for and) or | for or.
+	 * While all arguments are stored as strings (mostly),
+	 * the enum does give clues about the number and
+	 * ultimate type of each argument.
+	 *
 	 * @author Bo Zimmerman
 	 *
 	 */
 	public enum TriggerCode
 	{
-		SAY,
-		TIME,
-		PUTTHING,
-		BURNMATERIAL,
-		BURNTHING,
-		EAT,
-		DRINK,
-		INROOM,
-		RIDING,
-		CAST,
-		EMOTE,
-		PUTVALUE,
-		PUTMATERIAL,
-		BURNVALUE,
-		SITTING,
-		STANDING,
-		SLEEPING,
-		READING,
-		RANDOM,
-		CHECK,
-		WAIT,
-		YOUSAY,
-		OTHERSAY,
-		ALLSAY,
-		SOCIAL,
+		SAY(String.class),
+		TIME(Integer.class),
+		PUTTHING(String.class, String.class),
+		BURNMATERIAL(RawMaterial.Material.class),
+		BURNTHING(String.class),
+		EAT(String.class),
+		DRINK(String.class),
+		INROOM(String.class),
+		RIDING(String.class),
+		CAST(Ability.class),
+		EMOTE(String.class),
+		PUTVALUE(Integer.class, String.class),
+		PUTMATERIAL(RawMaterial.Material.class, String.class),
+		BURNVALUE(Integer.class),
+		SITTING(),
+		STANDING(),
+		SLEEPING(),
+		READING(String.class),
+		RANDOM(String.class),
+		CHECK(String.class),
+		WAIT(Integer.class),
+		YOUSAY(String.class),
+		OTHERSAY(String.class),
+		ALLSAY(String.class),
+		SOCIAL(Social.class, String.class),
 		;
+		public Class<?>[] parmTypes;
+		private TriggerCode(final Class<?>... parms)
+		{
+			parmTypes = parms;
+		}
 	}
 
 	/**
